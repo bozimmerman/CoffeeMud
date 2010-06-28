@@ -2285,3 +2285,4 @@ Special/Reserved Quest called holidays can be added to/modified on an area-by-ar
 16.Another playable race: Duergar
 17.Apprentice can now play only level 1 -- we had too many people playing all the way to 5 and regretting it.
 18.IMPORT now supports areatype parameter for converting to different types.
+19.MODIFY [TYPE] [NAME] [STAT] [VALUE] command syntax has had first expansion since CM 1.0!

@@ -46,7 +46,7 @@ public class Modify extends StdCommand
 	{
 		if(commands.size()<3)
 		{
-			mob.tell("You have failed to specify the proper fields.\n\rThe format is MODIFY ITEM [ITEM NAME](@ room/[MOB NAME]) [LEVEL, ABILITY, REJUV, USES, MISC] [NUMBER, TEXT]\n\r");
+			mob.tell("You have failed to specify the proper fields.\n\rThe format is MODIFY ITEM [ITEM NAME](@ room/[MOB NAME]) [LEVEL, ABILITY, REJUV, USES, MISC, ?] [NUMBER, TEXT]\n\r");
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
 			return;
 		}
@@ -178,6 +178,12 @@ public class Modify extends StdCommand
 			mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,modItem.name()+" shake(s) under the transforming power.");
 		}
 		else
+		if(CMLib.coffeeMaker().isAnyGenStat(modItem, command))
+		{
+			CMLib.coffeeMaker().setAnyGenStat(modItem,command, restStr);
+			mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,modItem.name()+" shake(s) under the transforming power.");
+		}
+		else
 		if((command.length()==0)&&(modItem.isGeneric()))
 		{
 			CMLib.genEd().genMiscSet(mob,modItem);
@@ -185,7 +191,10 @@ public class Modify extends StdCommand
 		}
 		else
 		{
-			mob.tell("...but failed to specify an aspect.  Try LEVEL, ABILITY, HEIGHT, REJUV, USES, or MISC.");
+			STreeSet<String> set=new STreeSet<String>();
+			set.addAll(CMParms.parseCommas("LEVEL,ABILITY,HEIGHT,REJUV,USES,MISC",true));
+			set.addAll(CMLib.coffeeMaker().getAllGenStats(modItem));
+			mob.tell("...but failed to specify an aspect.  Try one of: "+CMParms.toStringList(set));
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
 		}
 		if(!copyItem.sameAs(modItem))
@@ -193,17 +202,18 @@ public class Modify extends StdCommand
 		copyItem.destroy();
 	}
 
-    protected void flunkCmd1(MOB mob)
+    protected void flunkRoomCmd(MOB mob)
 	{
-		mob.tell("You have failed to specify the proper fields.\n\rThe format is MODIFY ROOM [NAME, AREA, DESCRIPTION, AFFECTS, BEHAVIORS, CLASS, XGRID, YGRID] [TEXT]\n\r");
+		mob.tell("You have failed to specify the proper fields.\n\rThe format is MODIFY ROOM [NAME, AREA, DESCRIPTION, AFFECTS, BEHAVIORS, CLASS, XGRID, YGRID, ?] [TEXT]\n\r");
 		mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a powerful spell.");
 	}
 
-    protected void flunkCmd2(MOB mob)
+    protected void flunkAreaCmd(MOB mob)
 	{
-		mob.tell("You have failed to specify the proper fields.\n\rThe format is MODIFY AREA [NAME, DESCRIPTION, CLIMATE, FILE, AFFECTS, BEHAVIORS, ADDSUB, DELSUB, XGRID, YGRID] [TEXT]\n\r");
+		mob.tell("You have failed to specify the proper fields.\n\rThe format is MODIFY AREA [NAME, DESCRIPTION, CLIMATE, FILE, AFFECTS, BEHAVIORS, ADDSUB, DELSUB, XGRID, YGRID, ?] [TEXT]\n\r");
 		mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a powerful spell.");
 	}
+    
 	public void rooms(MOB mob, Vector commands)
 		throws IOException
 	{
@@ -227,7 +237,7 @@ public class Modify extends StdCommand
 			oldRoom.destroy();
 			return;
 		}
-		if(commands.size()<3) { flunkCmd1(mob); return;}
+		if(commands.size()<3) { flunkRoomCmd(mob); return;}
 
 		String command=((String)commands.elementAt(2)).toUpperCase();
 		String restStr="";
@@ -236,7 +246,7 @@ public class Modify extends StdCommand
 
 		if(command.equalsIgnoreCase("AREA"))
 		{
-			if(commands.size()<4) { flunkCmd1(mob); return;}
+			if(commands.size()<4) { flunkRoomCmd(mob); return;}
 			Area A=CMLib.map().getArea(restStr);
 			boolean reid=false;
 			if(A==null)
@@ -308,7 +318,7 @@ public class Modify extends StdCommand
 		else
 		if(command.equalsIgnoreCase("NAME"))
 		{
-			if(commands.size()<4) { flunkCmd1(mob); return;}
+			if(commands.size()<4) { flunkRoomCmd(mob); return;}
 			mob.location().setDisplayText(restStr);
 			CMLib.database().DBUpdateRoom(mob.location());
 			mob.location().showHappens(CMMsg.MSG_OK_ACTION,"There is something different about this place...\n\r");
@@ -316,7 +326,7 @@ public class Modify extends StdCommand
 		else
 		if(command.equalsIgnoreCase("CLASS"))
 		{
-			if(commands.size()<4) { flunkCmd1(mob); return;}
+			if(commands.size()<4) { flunkRoomCmd(mob); return;}
 			Room newRoom=CMClass.getLocale(restStr);
 			if(newRoom==null)
 			{
@@ -329,7 +339,7 @@ public class Modify extends StdCommand
 		else
 		if((command.equalsIgnoreCase("XGRID"))&&(mob.location() instanceof GridLocale))
 		{
-			if(commands.size()<4) { flunkCmd1(mob); return;}
+			if(commands.size()<4) { flunkRoomCmd(mob); return;}
 			((GridLocale)mob.location()).setXGridSize(CMath.s_int(restStr));
 			((GridLocale)mob.location()).buildGrid();
 			CMLib.database().DBUpdateRoom(mob.location());
@@ -338,7 +348,7 @@ public class Modify extends StdCommand
 		else
 		if((command.equalsIgnoreCase("YGRID"))&&(mob.location() instanceof GridLocale))
 		{
-			if(commands.size()<4) { flunkCmd1(mob); return;}
+			if(commands.size()<4) { flunkRoomCmd(mob); return;}
 			((GridLocale)mob.location()).setYGridSize(CMath.s_int(restStr));
 			((GridLocale)mob.location()).buildGrid();
 			CMLib.database().DBUpdateRoom(mob.location());
@@ -347,7 +357,7 @@ public class Modify extends StdCommand
 		else
 		if(command.equalsIgnoreCase("DESCRIPTION"))
 		{
-			if(commands.size()<4) { flunkCmd1(mob); return;}
+			if(commands.size()<4) { flunkRoomCmd(mob); return;}
 			mob.location().setDescription(restStr);
 			CMLib.database().DBUpdateRoom(mob.location());
 			mob.location().showHappens(CMMsg.MSG_OK_ACTION,"The very nature of reality changes.\n\r");
@@ -369,8 +379,20 @@ public class Modify extends StdCommand
 			mob.location().showHappens(CMMsg.MSG_OK_ACTION,"The very nature of reality changes.\n\r");
 		}
 		else
+		if(CMLib.coffeeMaker().isAnyGenStat(mob.location(), command))
 		{
-			flunkCmd1(mob);
+			CMLib.coffeeMaker().setAnyGenStat(mob.location(),command, restStr);
+			mob.location().recoverPhyStats();
+			CMLib.database().DBUpdateRoom(mob.location());
+			mob.location().showHappens(CMMsg.MSG_OK_ACTION,"The very nature of reality changes.\n\r");
+		}
+		else
+		{
+			STreeSet<String> set=new STreeSet<String>();
+			set.addAll(CMParms.parseCommas("NAME,AREA,DESCRIPTION,AFFECTS,BEHAVIORS,CLASS,XGRID,YGRID",true));
+			set.addAll(CMLib.coffeeMaker().getAllGenStats(mob.location()));
+			mob.tell("...but failed to specify an aspect.  Try one of: "+CMParms.toStringList(set));
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
 			return;
 		}
 		mob.location().recoverRoomStats();
@@ -452,7 +474,7 @@ public class Modify extends StdCommand
             CMLib.genEd().modifyGenArea(mob,myArea);
 		else
 		{
-			if(commands.size()<3) { flunkCmd1(mob); return;}
+			if(commands.size()<3) { flunkAreaCmd(mob); return;}
 
 			String command=((String)commands.elementAt(2)).toUpperCase();
 			String restStr="";
@@ -461,36 +483,36 @@ public class Modify extends StdCommand
 
 			if(command.equalsIgnoreCase("NAME"))
 			{
-				if(commands.size()<4) { flunkCmd2(mob); return;}
+				if(commands.size()<4) { flunkAreaCmd(mob); return;}
 				myArea.setName(restStr);
 			}
 			else
 			if(command.equalsIgnoreCase("DESC"))
 			{
-				if(commands.size()<4) { flunkCmd2(mob); return;}
+				if(commands.size()<4) { flunkAreaCmd(mob); return;}
 				myArea.setDescription(restStr);
 			}
 			else
 			if(command.equalsIgnoreCase("FILE"))
 			{
-				if(commands.size()<4) { flunkCmd2(mob); return;}
+				if(commands.size()<4) { flunkAreaCmd(mob); return;}
 				myArea.setArchivePath(restStr);
 			}
 			else
 			if((command.equalsIgnoreCase("XGRID"))&&(myArea instanceof GridZones))
 			{
-				if(commands.size()<4) { flunkCmd2(mob); return;}
+				if(commands.size()<4) { flunkAreaCmd(mob); return;}
 				((GridZones)myArea).setXGridSize(CMath.s_int(restStr));
 			}
 			else
 			if((command.equalsIgnoreCase("YGRID"))&&(myArea instanceof GridZones))
 			{
-				if(commands.size()<4) { flunkCmd2(mob); return;}
+				if(commands.size()<4) { flunkAreaCmd(mob); return;}
 				((GridZones)myArea).setYGridSize(CMath.s_int(restStr));
 			}
 			if(command.equalsIgnoreCase("CLIMATE"))
 			{
-				if(commands.size()<4) { flunkCmd2(mob); return;}
+				if(commands.size()<4) { flunkAreaCmd(mob); return;}
 				int newClimate=0;
 				for(int i=0;i<restStr.length();i++)
 					switch(Character.toUpperCase(restStr.charAt(i)))
@@ -553,8 +575,18 @@ public class Modify extends StdCommand
 				myArea.recoverPhyStats();
 			}
 			else
+			if(CMLib.coffeeMaker().isAnyGenStat(myArea, command))
 			{
-				flunkCmd2(mob);
+				CMLib.coffeeMaker().setAnyGenStat(myArea,command, restStr);
+				myArea.recoverPhyStats();
+			}
+			else
+			{
+				STreeSet<String> set=new STreeSet<String>();
+				set.addAll(CMParms.parseCommas("NAME,DESCRIPTION,CLIMATE,FILE,AFFECTS,BEHAVIORS,ADDSUB,DELSUB,XGRID,YGRID",true));
+				set.addAll(CMLib.coffeeMaker().getAllGenStats(myArea));
+				mob.tell("...but failed to specify an aspect.  Try one of: "+CMParms.toStringList(set));
+				mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
 				return;
 			}
 		}
@@ -761,7 +793,7 @@ public class Modify extends StdCommand
 		}
 		if(commands.size()<3)
 		{
-			mob.tell("You have failed to specify the proper fields.\n\rThe format is MODIFY EXIT [DIRECTION] ([NEW MISC TEXT])\n\r");
+			mob.tell("You have failed to specify the proper fields.\n\rThe format is MODIFY EXIT [DIRECTION] (TEXT, ?) (VALUE)\n\r");
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
 			return;
 		}
@@ -783,30 +815,41 @@ public class Modify extends StdCommand
 		}
 		mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> wave(s) <S-HIS-HER> hands around to the "+Directions.getInDirectionName(direction)+".");
 
-		if(thisExit.isGeneric())
+		if(thisExit.isGeneric() && (commands.size()<5))
 		{
             CMLib.genEd().modifyGenExit(mob,thisExit);
 			return;
 		}
 		
-		if(commands.size()<4)
+		if(commands.size()<6)
 		{
-			mob.tell("You have failed to specify the proper fields.\n\rThe format is MODIFY EXIT [DIRECTION] ([NEW MISC TEXT])\n\r");
+			mob.tell("You have failed to specify the proper fields.\n\rThe format is MODIFY EXIT [DIRECTION] (TEXT, ?) (VALUE)\n\r");
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
 			return;
 		}
 
-		//String command=((String)commands.elementAt(2)).toUpperCase();
-		String restStr=CMParms.combine(commands,3);
+		String command=((String)commands.elementAt(3)).toUpperCase();
+		String restStr=CMParms.combine(commands,4);
 
-		if(thisExit.isGeneric())
-            CMLib.genEd().modifyGenExit(mob,thisExit);
+		if(command.equalsIgnoreCase("text"))
+		{
+			if(thisExit.isGeneric())
+	            CMLib.genEd().modifyGenExit(mob,thisExit);
+			else
+				thisExit.setMiscText(restStr);
+		}
 		else
-		if(restStr.length()>0)
-			thisExit.setMiscText(restStr);
+		if(CMLib.coffeeMaker().isAnyGenStat(thisExit, command))
+		{
+			CMLib.coffeeMaker().setAnyGenStat(thisExit,command, restStr);
+			thisExit.recoverPhyStats();
+		}
 		else
 		{
-			mob.tell("You have failed to specify the proper fields.\n\rThe format is MODIFY EXIT [DIRECTION] ([NEW MISC TEXT])\n\r");
+			STreeSet<String> set=new STreeSet<String>();
+			set.addAll(CMParms.parseCommas("TEXT",true));
+			set.addAll(CMLib.coffeeMaker().getAllGenStats(thisExit));
+			mob.tell("...but failed to specify an aspect.  Try one of: "+CMParms.toStringList(set));
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
 			return;
 		}
@@ -1006,8 +1049,6 @@ public class Modify extends StdCommand
         mob.location().showHappens(CMMsg.MSG_OK_ACTION,"The complication of skill usage just increased!");
     }
     
-    
-    
 	public void socials(MOB mob, Vector commands)
 		throws IOException
 	{
@@ -1073,12 +1114,12 @@ public class Modify extends StdCommand
 	{
 		if(commands.size()<3)
 		{
-			mob.tell("You have failed to specify the proper fields.\n\rThe format is MODIFY USER [PLAYER NAME]\n\r");
+			mob.tell("You have failed to specify the proper fields.\n\rThe format is MODIFY USER [PLAYER NAME] ([STAT],?) (VALUE)\n\r");
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a powerful spell.");
 			return;
 		}
 
-		String mobID=CMParms.combine(commands,2);
+		String mobID=(String)commands.elementAt(2);
 		MOB M=CMLib.players().getLoadPlayer(mobID);
 		if(M!=null)
 		{
@@ -1096,9 +1137,33 @@ public class Modify extends StdCommand
 		}
 		mob.location().showOthers(mob,M,CMMsg.MSG_OK_ACTION,"<S-NAME> wave(s) <S-HIS-HER> hands around <T-NAMESELF>.");
 		MOB copyMOB=(MOB)M.copyOf();
-        CMLib.genEd().modifyPlayer(mob,M);
-		if(!copyMOB.sameAs(M))
-			Log.sysOut("Mobs",mob.Name()+" modified player "+M.Name()+".");
+		if(commands.size()<5)
+		{
+	        CMLib.genEd().modifyPlayer(mob,M);
+			if(!copyMOB.sameAs(M))
+				Log.sysOut("Mobs",mob.Name()+" modified player "+M.Name()+".");
+		}
+		else
+		{
+			String command=((String)commands.elementAt(3)).toUpperCase();
+			String restStr=CMParms.combine(commands,4);
+			if(CMLib.coffeeMaker().isAnyGenStat(M, command))
+			{
+				CMLib.coffeeMaker().setAnyGenStat(M,command, restStr);
+				M.recoverPhyStats();
+				M.recoverCharStats();
+				M.recoverMaxState();
+				if(!copyMOB.sameAs(M))
+					Log.sysOut("Mobs",mob.Name()+" modified player "+M.Name()+".");
+			}
+			else
+			{
+				STreeSet<String> set=new STreeSet<String>();
+				set.addAll(CMLib.coffeeMaker().getAllGenStats(M));
+				mob.tell("...but failed to specify an aspect.  Try one of: "+CMParms.toStringList(set));
+				mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
+			}
+		}
 		copyMOB.setSession(null); // prevents logoffs.
 		copyMOB.setLocation(null);
 		copyMOB.destroy();
@@ -1110,7 +1175,7 @@ public class Modify extends StdCommand
 
 		if(commands.size()<4)
 		{
-			mob.tell("You have failed to specify the proper fields.\n\rThe format is MODIFY MOB [MOB NAME] [LEVEL, ABILITY, REJUV, MISC] [NUMBER, TEXT]\n\r");
+			mob.tell("You have failed to specify the proper fields.\n\rThe format is MODIFY MOB [MOB NAME] [LEVEL, ABILITY, REJUV, MISC, ?] [NUMBER, TEXT]\n\r");
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a powerful spell.");
 			return;
 		}
@@ -1184,9 +1249,18 @@ public class Modify extends StdCommand
 			mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,modMOB.name()+" shakes under the transforming power.");
 		}
 		else
+		if(CMLib.coffeeMaker().isAnyGenStat(modMOB, command))
 		{
-			mob.tell("...but failed to specify an aspect.  Try LEVEL, ABILITY, REJUV, or MISC.");
-			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a powerful spell.");
+			CMLib.coffeeMaker().setAnyGenStat(modMOB,command, restStr);
+			mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,modMOB.name()+" shake(s) under the transforming power.");
+		}
+		else
+		{
+			STreeSet<String> set=new STreeSet<String>();
+			set.addAll(CMParms.parseCommas("LEVEL,ABILITY,REJUV,MISC",true));
+			set.addAll(CMLib.coffeeMaker().getAllGenStats(modMOB));
+			mob.tell("...but failed to specify an aspect.  Try one of: "+CMParms.toStringList(set));
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
 		}
 		if(!modMOB.sameAs(copyMOB))
 			Log.sysOut("Mobs",mob.Name()+" modified mob "+modMOB.Name()+".");
