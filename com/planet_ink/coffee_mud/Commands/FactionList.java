@@ -43,8 +43,11 @@ public class FactionList extends StdCommand
 	{
 		StringBuffer msg=new StringBuffer("\n\r^HFaction Standings:^?^N\n\r");
         boolean none=true;
-        for(Enumeration e=mob.fetchFactions();e.hasMoreElements();) {
-            String name=(String)e.nextElement();
+        XVector<String> list=new XVector<String>(mob.fetchFactions());
+        list.sort();
+        for(Enumeration<String> e=list.elements();e.hasMoreElements();) 
+        {
+            String name=e.nextElement();
             Faction F=CMLib.factions().getFaction(name);
             if((F!=null)&&(F.showInFactionsCommand()))
             {
