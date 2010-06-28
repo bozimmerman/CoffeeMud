@@ -326,15 +326,39 @@ public class RoomLoader
                     String nextRoomID=DBConnections.getRes(R,"CMNRID");
                     newRoom=allRooms.get(nextRoomID);
                     Exit newExit=CMClass.getExit(exitID);
+                    if(nextRoomID.length()==0)
+                    { /* this is likely a room link (rebuilt by import at a later time) */}
+                    else
             		if(newRoom==null)
             		{
+            			int x=nextRoomID.indexOf('#');
+            			Area otherA=null;
+            			if((unloadedRooms!=null)&&(unloadedRooms.contains(nextRoomID)))
+            				otherA=thisRoom.getArea();
+            			else
+            			if(x>0)
+            			{
+            				otherA=CMLib.map().getArea(nextRoomID.substring(0,x));
+                			if((otherA!=null)&&(otherA!=thisRoom.getArea()))
+                				newRoom=otherA.getRoom(nextRoomID);
+            			}
+            			else
+            				otherA=null;
+            			if(newRoom!=null)
+            			{ /* its all worked out now */}
+            			else
+            			if(otherA==null)
+            				Log.errOut("RoomLoader","Unknown area for unlinked room #"+nextRoomID);
+            			else
             			if(((unloadedRooms!=null)&&(unloadedRooms.contains(nextRoomID)))
-            			||(CMath.bset(thisRoom.getArea().flags(),Area.FLAG_THIN)))
+            			||(CMath.bset(otherA.flags(),Area.FLAG_THIN)))
             			{
             				newRoom=CMClass.getLocale("ThinRoom");
             				newRoom.setRoomID(nextRoomID);
-            				newRoom.setArea(thisRoom.getArea());
+            				newRoom.setArea(otherA);
             			}
+            			else
+            				Log.errOut("RoomLoader","Unknown unlinked room #"+nextRoomID);
             		}
             				
                     if((newExit==null)&&(newRoom==null))

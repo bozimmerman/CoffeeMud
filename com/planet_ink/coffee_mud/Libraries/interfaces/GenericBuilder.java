@@ -69,8 +69,8 @@ public interface GenericBuilder extends CMLibrary
     public String fillCustomVectorFromXML(List<XMLpiece> xml,  Vector custom, Hashtable externalFiles);
     public String fillAreasVectorFromXML(String buf,  List<List<XMLpiece>> areas, Vector custom, Hashtable externalFiles);
     public void addAutoPropsToAreaIfNecessary(Area newArea);
-    public String unpackAreaFromXML(List<XMLpiece> aV, Session S, boolean andRooms);
-    public String unpackAreaFromXML(String buf, Session S, boolean andRooms);
+	public String unpackAreaFromXML(List<XMLpiece> aV, Session S, String overrideAreaType, boolean andRooms);
+    public String unpackAreaFromXML(String buf, Session S, String overrideAreaType, boolean andRooms);
     public StringBuffer getAreaXML(Area area,  Session S, HashSet custom, HashSet files, boolean andRooms);
     public StringBuffer logTextDiff(String e1, String e2);
     public void logDiff(Environmental E1, Environmental E2);

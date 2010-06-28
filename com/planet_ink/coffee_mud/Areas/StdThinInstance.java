@@ -118,12 +118,15 @@ public class StdThinInstance extends StdThinArea
 					if(dirR!=null)
 					{
 						String myRID=dirR.roomID();
-						if(dirR.getArea()==parentA)
+						if((myRID!=null)&&(myRID.length()>0)&&(dirR.getArea()==parentA))
 						{
 							String localDirRID=convertToMyArea(myRID);
 							Room localDirR=getProperRoom(localDirRID);
 							if(localDirR!=null)
 								R.rawDoors()[d]=localDirR;
+							else
+							if(localDirRID==null)
+								Log.errOut("StdThinInstance","Error in linked room ID "+origRoom.roomID()+", dir="+d);
 							else
 							{
 	            				R.rawDoors()[d]=CMClass.getLocale("ThinRoom");
@@ -136,6 +139,9 @@ public class StdThinInstance extends StdThinArea
 					}
 				}
 			}
+			for(Enumeration<MOB> e=R.inhabitants();e.hasMoreElements();)
+				e.nextElement().bringToLife(R,true);
+			R.startItemRejuv();
 			fillInAreaRoom(R);
 			R.setExpirationDate(System.currentTimeMillis()+WorldMap.ROOM_EXPIRATION_MILLIS);
     	}
@@ -166,7 +172,10 @@ public class StdThinInstance extends StdThinArea
         					if(CMLib.flags().isInTheGame(M,true)
         					&&(M.location()!=null)
         					&&(M.location().getArea()==childA))
+        					{
         						anyInside=true;
+        						break;
+        					}
         				}
         				if(!anyInside)
         				{

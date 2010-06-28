@@ -3937,25 +3937,41 @@ public class Import extends StdCommand
 		Hashtable externalFiles=new Hashtable();
 		HashSet customBotherChecker=new HashSet();
 		boolean compileErrors=false;
-		
-		
+		String areaType=null;
 		commands.removeElementAt(0);
-		
-		if(((commands.size()>0)
-		&&(commands.elementAt(0) instanceof String)
-		&&((String)commands.elementAt(0)).equalsIgnoreCase("nodelete")))
-		{
-			commands.removeElementAt(0);
-			nodelete=true;
-		}
-		if(((commands.size()>0)
-		&&(commands.elementAt(0) instanceof String)
-		&&((String)commands.elementAt(0)).equalsIgnoreCase("noprompt")))
-		{
-			commands.removeElementAt(0);
-			prompt=false;
-		}
-		
+		for(int i=0;i<commands.size();i++)
+			if(commands.elementAt(i) instanceof String)
+			{
+				String s=(String)commands.elementAt(i);
+				if(s.equalsIgnoreCase("nodelete"))
+				{
+					commands.remove(i);
+					nodelete=true;
+				}
+				else
+				if(s.equalsIgnoreCase("noprompt"))
+				{
+					commands.remove(i);
+					prompt=false;
+				}
+				else
+				if(s.toLowerCase().startsWith("areatype="))
+				{
+					s=s.substring(9);
+					if(CMClass.getAreaType(s)!=null)
+						areaType=s;
+					else
+					{
+						mob.tell("Unknown area type : "+s);
+						return false;
+					}
+					commands.remove(i);
+				}
+				else
+					break;
+			}
+			else
+				break;
 		Session session=mob.session();
 		if((commands.size()>0)&&(commands.lastElement() instanceof StringBuffer))
 		{
@@ -4074,7 +4090,7 @@ public class Import extends StdCommand
 					if(session!=null)
 						session.rawPrint("Unpacking area #"+(a+1)+"/"+num+"...");
 					List<XMLLibrary.XMLpiece> area=areas.get(0);
-					error=CMLib.coffeeMaker().unpackAreaFromXML(area,session,true);
+					error=CMLib.coffeeMaker().unpackAreaFromXML(area,session,areaType,true);
 					if(session!=null)
 						session.rawPrintln("!");
 					if(error.startsWith("Area Exists: "))
@@ -4137,7 +4153,7 @@ public class Import extends StdCommand
 				if(error.length()==0) importCustomObjects(mob,custom,customBotherChecker,!prompt,nodelete);
 				if(error.length()==0) importCustomFiles(mob,externalFiles,customBotherChecker,!prompt,nodelete);
 				if(error.length()==0)
-					error=CMLib.coffeeMaker().unpackAreaFromXML(areaD,session,true);
+					error=CMLib.coffeeMaker().unpackAreaFromXML(areaD,session,areaType,true);
 				if(session!=null)
 					session.rawPrintln("!");
 				if(error.startsWith("Area Exists: "))
@@ -4157,7 +4173,7 @@ public class Import extends StdCommand
 						return false;
 					if(session!=null)
 						session.rawPrint("Unpacking area from file: '"+areaFileName+"'...");
-					error=CMLib.coffeeMaker().unpackAreaFromXML(areaD,session,true);
+					error=CMLib.coffeeMaker().unpackAreaFromXML(areaD,session,areaType,true);
 					if(session!=null)
 						session.rawPrintln("!");
 				}
@@ -4617,7 +4633,10 @@ public class Import extends StdCommand
 				Area A=CMLib.map().getArea(areaName);
 				if(A==null)
 				{
-					A=CMClass.getAreaType("StdArea");
+					if(areaType==null)
+						A=CMClass.getAreaType("StdArea");
+					else
+						A=CMClass.getAreaType(areaType);
 					A.setName(areaName);
 					A.setAuthorID(areaAuthor);
 					CMLib.map().addArea(A);

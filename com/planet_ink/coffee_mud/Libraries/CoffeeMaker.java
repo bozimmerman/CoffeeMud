@@ -991,12 +991,14 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
         }
     }
 
-	public String unpackAreaFromXML(List<XMLpiece> aV, Session S, boolean andRooms)
+	public String unpackAreaFromXML(List<XMLpiece> aV, Session S, String overrideAreaType, boolean andRooms)
 	{
 		String areaClass=CMLib.xml().getValFromPieces(aV,"ACLAS");
 		String areaName=CMLib.xml().getValFromPieces(aV,"ANAME");
 
 		if(CMLib.map().getArea(areaName)!=null) return "Area Exists: "+areaName;
+		if(overrideAreaType!=null)
+			areaClass=overrideAreaType;
 		Area newArea=CMClass.getAreaType(areaClass);
 		if(newArea==null) return unpackErr("Area","No class: "+areaClass);
 		newArea.setName(areaName);
@@ -1025,13 +1027,13 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 		}
 		return "";
 	}
-	public String unpackAreaFromXML(String buf, Session S, boolean andRooms)
+	public String unpackAreaFromXML(String buf, Session S, String overrideAreaType, boolean andRooms)
 	{
 		List<XMLLibrary.XMLpiece> xml=CMLib.xml().parseAllXML(buf);
 		if(xml==null) return unpackErr("Area","null 'xml'");
 		List<XMLLibrary.XMLpiece> aV=CMLib.xml().getContentsFromPieces(xml,"AREA");
 		if(aV==null) return unpackErr("Area","null 'aV'");
-		return unpackAreaFromXML(aV,S,andRooms);
+		return unpackAreaFromXML(aV,S,overrideAreaType,andRooms);
 	}
 
 	public StringBuffer getAreaXML(Area area,

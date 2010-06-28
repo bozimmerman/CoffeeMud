@@ -80,7 +80,7 @@ public class ThinRoom implements Room {
 	public Room prepareRoomInDir(Room R, int direction)
 	{
 		if(R==null) return null;
-		if((roomID.length()==0)||(recurse)) return null;
+		if((roomID==null)||(roomID.length()==0)||(recurse)) return null;
 		recurse=true;
 		Room myR=null;
 		synchronized(("SYNC"+roomID).intern())

@@ -396,7 +396,7 @@ public class StdRoom implements Room
 		if(!skyedYet) return;
 		Room skyGridRoom=rawDoors()[Directions.UP];
 		if(skyGridRoom==null) return;
-		if((skyGridRoom.roomID().length()==0)
+		if(((skyGridRoom.roomID()==null)||(skyGridRoom.roomID().length()==0))
 		&&((skyGridRoom instanceof EndlessSky)||(skyGridRoom instanceof EndlessThinSky)))
 		{
 			((GridLocale)skyGridRoom).clearGrid(null);
@@ -1190,6 +1190,7 @@ public class StdRoom implements Room
 			{
 				Room thinMeR=CMClass.getLocale("ThinRoom");
 				thinMeR.setRoomID(roomID());
+				thinMeR.setArea(myArea);
 				if(R.rawDoors()[direction]==this)
 					R.rawDoors()[direction]=thinMeR;
 				return thinMeR.prepareRoomInDir(R,direction);
