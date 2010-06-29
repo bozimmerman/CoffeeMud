@@ -180,6 +180,9 @@ public class Prayer_UnholyArmament extends Prayer
 				A.setMiscText("-GOOD -NEUTRAL -NAMES \"+"+mob.Name()+"\"");
 				I.addNonUninvokableEffect(A);
 			}
+			A=CMClass.getAbility("Prop_ScrapExplode");
+			if(A!=null)
+				I.addNonUninvokableEffect(A);
 			I.recoverPhyStats();
 			if((mob.findItem(null,"$"+I.name()+"$")!=null)
 			||(mob.location().findItem(null,"$"+I.name()+"$")!=null))
