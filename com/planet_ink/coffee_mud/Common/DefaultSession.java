@@ -492,6 +492,7 @@ public class DefaultSession extends Thread implements Session
 			{
 				int pageBreak=getPageBreak();
 				int lines=0;
+				int last=0;
 				if(pageBreak>0)
 				for(int i=0;i<msg.length();i++)
 				{
@@ -503,8 +504,8 @@ public class DefaultSession extends Thread implements Session
 							lines=0;
 							if((i<(msg.length()-1)&&(msg.charAt(i+1)=='\r')))
 								i++;
-							out(msg.substring(0,i+1).toCharArray());
-							msg=msg.substring(i+1);
+							out(msg.substring(last,i+1).toCharArray());
+							last=i+1;
 							out("<pause - enter>".toCharArray());
 							try{ 
 								String s=blockingIn(); 
