@@ -65,7 +65,7 @@ public class Skill_Conduct extends BardSkill
 			return false;
 
 		boolean success=proficiencyCheck(mob,0,auto);
-		new Play().unplay(mob,mob,false);
+		new Play().unplayAll(mob,mob);
 		if(success)
 		{
 			String str=auto?"^SSymphonic Conduction Begins!^?":"^S<S-NAME> begin(s) to wave <S-HIS-HER> arms in a mystical way!^?";

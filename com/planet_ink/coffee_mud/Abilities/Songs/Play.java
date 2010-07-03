@@ -57,7 +57,7 @@ public class Play extends StdAbility
     protected boolean HAS_QUANTITATIVE_ASPECT(){return true;}
 
 	protected MusicalInstrument instrument=null;
-    protected int steadyDown=-1;
+    protected long timeOut=0;
     protected Vector commonRoomSet=null;
     protected Room originRoom=null;
 
@@ -144,7 +144,7 @@ public class Play extends StdAbility
 		||(invoker.fetchEffect(ID())==null)
 		||(commonRoomSet==null)
 		||(!commonRoomSet.contains(mob.location())))
-			return possiblyUnplay(mob,null,false);
+			return unplayMe(mob,null);
 		
 		if(skipStandardSongTick())
 			return true;
@@ -153,7 +153,7 @@ public class Play extends StdAbility
 		||((instrument!=null)&&(!usingInstrument(instrument,invoker)))
 		||(!CMLib.flags().aliveAwakeMobileUnbound(invoker,true))
 		||(!CMLib.flags().canBeHeardBy(invoker,mob)))
-			return possiblyUnplay(mob,null,false);
+			return unplayMe(mob,null);
 		return true;
 	}
 
@@ -196,21 +196,49 @@ public class Play extends StdAbility
 		}
 	}
 
-	protected void unplay(MOB mob, MOB invoker, boolean notMe)
+	protected void unplayAll(MOB mob, MOB invoker)
 	{
-		if(mob==null) return;
-		for(int a=mob.numEffects()-1;a>=0;a--)
+		if(mob!=null)
+			for(int a=mob.numEffects()-1;a>=0;a--)
+			{
+				Ability A=mob.fetchEffect(a);
+				if((A instanceof Play)
+				&&((invoker==null)||(A.invoker()==null)||(A.invoker()==invoker)))
+					((Play)A).unplayMe(mob,invoker);
+			}
+	}
+
+	protected void unplayAllByThis(MOB mob, MOB invoker)
+	{
+		if(mob!=null)
+			for(int a=mob.numEffects()-1;a>=0;a--)
+			{
+				Ability A=mob.fetchEffect(a);
+				if((A instanceof Play)
+				&&(!A.ID().equals(ID()))
+				&&((invoker==null)||(A.invoker()==null)||(A.invoker()==invoker)))
+					((Play)A).unplayMe(mob,invoker);
+			}
+	}
+
+	protected boolean unplayMe(MOB mob, MOB invoker)
+	{
+		if(mob==null) return false;
+		Ability A=mob.fetchEffect(ID());
+		if((A instanceof Play)
+		&&((invoker==null)||(A.invoker()==null)||(A.invoker()==invoker)))
 		{
-			Ability A=mob.fetchEffect(a);
-			if((A!=null)
-			&&(A instanceof Play)
-			&&((!notMe)||(!A.ID().equals(ID())))
-			&&((invoker==null)||(A.invoker()==null)||(A.invoker()==invoker)))
-            {
-                if((!(A instanceof Play))||(((Play)A).steadyDown<=0))
-    				A.unInvoke();
-            }
+			Play P=(Play)A;
+			if(P.timeOut==0)
+				P.timeOut = System.currentTimeMillis() 
+						  + (CMProps.getTickMillis() * (((invoker()!=null)&&(invoker()!=mob))?super.getXTIMELevel(invoker()):0));
+			if(System.currentTimeMillis() >= P.timeOut)
+			{
+				A.unInvoke();
+				return false;
+			}
 		}
+		return true;
 	}
 
 	public static MusicalInstrument getInstrument(MOB mob, int requiredInstrumentType, boolean noisy)
@@ -274,19 +302,6 @@ public class Play extends StdAbility
     		rooms.addElement(invoker().location());
     	return rooms;
     }
-    
-	protected boolean possiblyUnplay(MOB mob, MOB invoker, boolean notMe)
-	{
-        if(steadyDown<0) steadyDown=((invoker()!=null)&&(invoker()!=mob))?super.getXTIMELevel(invoker()):0;
-        if(steadyDown==0)
-        {
-            unplay(mob,invoker,notMe);
-            return false;
-        }
-        mob.tell("The "+songOf()+" lingers in your head ("+steadyDown+").");
-        steadyDown--;
-        return true;
-	}
 
 	protected int getCorrectDirToOriginRoom(Room R, int v)
 	{
@@ -358,7 +373,7 @@ public class Play extends StdAbility
 	
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-        steadyDown=-1;
+        timeOut=0;
 		if(!auto)
 		{
 			instrument=getInstrument(mob,requiredInstrumentType(),true);
@@ -416,7 +431,7 @@ public class Play extends StdAbility
 			return false;
 
 		boolean success=proficiencyCheck(mob,0,auto);
-		unplay(mob,mob,true);
+		unplayAll(mob,mob);
 		if(success)
 		{
 			invoker=mob;

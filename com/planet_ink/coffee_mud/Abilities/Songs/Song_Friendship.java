@@ -150,7 +150,7 @@ public class Song_Friendship extends Song
 
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-        steadyDown=-1;
+        timeOut=0;
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
@@ -161,7 +161,7 @@ public class Song_Friendship extends Song
 		}
 
 		boolean success=proficiencyCheck(mob,0,auto);
-		unsing(mob,mob,true);
+		unsingAllByThis(mob,mob);
 		if(success)
 		{
 			invoker=mob;

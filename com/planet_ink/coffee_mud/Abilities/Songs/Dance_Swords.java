@@ -49,7 +49,7 @@ public class Dance_Swords extends Dance
 		||(affected==null))
 		{
 			if(affected instanceof MOB)
-				undance((MOB)affected,null,false);
+				undanceMe((MOB)affected,null);
 			else
 				unInvoke();
 			return false;
@@ -61,7 +61,7 @@ public class Dance_Swords extends Dance
 			case CMMsg.TYP_GET:
 			case CMMsg.TYP_REMOVE:
 				if(affected instanceof MOB)
-					undance((MOB)affected,null,false);
+					undanceMe((MOB)affected,null);
 				else
 					unInvoke();
 				break;
@@ -161,7 +161,7 @@ public class Dance_Swords extends Dance
 		else
 		{
 			if(affected instanceof MOB)
-				undance((MOB)affected,null,false);
+				undanceMe((MOB)affected,null);
 			else
 				unInvoke();
 			return false;
@@ -171,7 +171,7 @@ public class Dance_Swords extends Dance
 
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		steadyDown=-1;
+		timeOut=0;
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
@@ -179,7 +179,7 @@ public class Dance_Swords extends Dance
 			return false;
 
 		boolean success=proficiencyCheck(mob,0,auto);
-		undance(mob,null,true);
+		undanceAll(mob,null);
 		if(success)
 		{
 			invoker=mob;

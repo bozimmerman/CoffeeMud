@@ -54,11 +54,11 @@ public class Play_Reveille extends Play
     
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		steadyDown=-1;
+		timeOut=0;
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 		boolean success=proficiencyCheck(mob,0,auto);
-		unplay(mob,mob,true);
+		unplayAll(mob,mob);
 		if(success)
 		{
 			invoker=mob;

@@ -47,7 +47,7 @@ public class Dance extends StdAbility
 	public int usageType(){return USAGE_MOVEMENT;}
     public int maxRange(){return adjustedMaxInvokerRange(2);}
 	protected int invokerManaCost=-1;
-    protected int steadyDown=-1;
+    protected long timeOut=0;
     protected Vector commonRoomSet=null;
     protected Room originRoom=null;
 
@@ -109,7 +109,7 @@ public class Dance extends StdAbility
 		||(invoker.fetchEffect(ID())==null)
 		||(commonRoomSet==null)
 		||(!commonRoomSet.contains(mob.location())))
-			return possiblyUndance(mob,null,false);
+			return undanceMe(mob,null);
 		
 		if(skipStandardDanceTick())
 			return true;
@@ -119,32 +119,61 @@ public class Dance extends StdAbility
 		||(!CMLib.flags().aliveAwakeMobile(mob,true))
 		||(!CMLib.flags().aliveAwakeMobile(invoker(),true))
 		||(!CMLib.flags().canBeSeenBy(invoker,mob)))
-			return possiblyUndance(mob,null,false);
+			return undanceMe(mob,null);
+		
 		if(invokerManaCost<0) invokerManaCost=usageCost(invoker(),false)[1];
 		if(!mob.curState().adjMovement(-(invokerManaCost/15),mob.maxState()))
 		{
 			mob.tell("The dancing exhausts you.");
-			undance(mob,null,false);
+			undanceAll(mob,null);
 			return false;
 		}
 		return true;
 	}
 
-	protected void undance(MOB mob, MOB invoker, boolean notMe)
+	protected void undanceAll(MOB mob, MOB invoker)
 	{
-		if(mob==null) return;
-		for(int a=mob.numEffects()-1;a>=0;a--)
+		if(mob!=null)
+			for(int a=mob.numEffects()-1;a>=0;a--)
+			{
+				Ability A=mob.fetchEffect(a);
+				if((A instanceof Dance)
+				&&((invoker==null)||(A.invoker()==null)||(A.invoker()==invoker)))
+					((Dance)A).undanceMe(mob,invoker);
+			}
+	}
+
+	protected void undanceAllByThis(MOB mob, MOB invoker)
+	{
+		if(mob!=null)
+			for(int a=mob.numEffects()-1;a>=0;a--)
+			{
+				Ability A=mob.fetchEffect(a);
+				if((A instanceof Dance)
+				&&(!A.ID().equals(ID()))
+				&&((invoker==null)||(A.invoker()==null)||(A.invoker()==invoker)))
+					((Dance)A).undanceMe(mob,invoker);
+			}
+	}
+
+	protected boolean undanceMe(MOB mob, MOB invoker)
+	{
+		if(mob==null) return false;
+		Ability A=mob.fetchEffect(ID());
+		if((A instanceof Dance)
+		&&((invoker==null)||(A.invoker()==null)||(A.invoker()==invoker)))
 		{
-			Ability A=mob.fetchEffect(a);
-			if((A!=null)
-			&&(A instanceof Dance)
-			&&((!notMe)||(!A.ID().equals(ID())))
-			&&((invoker==null)||(A.invoker()==null)||(A.invoker()==invoker)))
-            {
-                if((!(A instanceof Dance))||(((Dance)A).steadyDown<=0))
-    				A.unInvoke();
-            }
+			Dance D=(Dance)A;
+			if(D.timeOut==0)
+				D.timeOut = System.currentTimeMillis() 
+						  + (CMProps.getTickMillis() * (((invoker()!=null)&&(invoker()!=mob))?super.getXTIMELevel(invoker()):0));
+			if(System.currentTimeMillis() >= D.timeOut)
+			{
+				A.unInvoke();
+				return false;
+			}
 		}
+		return true;
 	}
 
     protected Vector getInvokerScopeRoomSet(MOB backupMob)
@@ -171,19 +200,6 @@ public class Dance extends StdAbility
     	return rooms;
     }
     
-	protected boolean possiblyUndance(MOB mob, MOB invoker, boolean notMe)
-	{
-        if(steadyDown<0) steadyDown=((invoker()!=null)&&(invoker()!=mob))?super.getXTIMELevel(invoker()):0;
-        if(steadyDown==0)
-        {
-            undance(mob,invoker,notMe);
-            return false;
-        }
-        mob.tell("The "+danceOf()+" lingers in your head ("+steadyDown+").");
-        steadyDown--;
-        return true;
-	}
-
 	protected int getCorrectDirToOriginRoom(Room R, int v)
 	{
 		if(v<0) return -1;
@@ -278,7 +294,7 @@ public class Dance extends StdAbility
 
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-        steadyDown=-1;
+        timeOut=0;
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
@@ -302,7 +318,7 @@ public class Dance extends StdAbility
 
 		boolean success=proficiencyCheck(mob,0,auto);
 
-		undance(mob,null,true);
+		undanceAll(mob,null);
 
 		if(success)
 		{

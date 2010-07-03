@@ -53,7 +53,7 @@ public class Song extends StdAbility
 	protected boolean maliciousButNotAggressiveFlag(){return false;}
 	protected boolean skipSimpleStandardSongTickToo(){return false;}
 	protected String songOf(){return "Song of "+name();}
-    protected int steadyDown=-1;
+    protected long timeOut = 0;
     protected Vector commonRoomSet=null;
     protected Room originRoom=null;
 
@@ -148,7 +148,7 @@ public class Song extends StdAbility
 		||(invoker.fetchEffect(ID())==null)
 		||(commonRoomSet==null)
 		||(!commonRoomSet.contains(mob.location())))
-			return possiblyUnsing(mob,null,false);
+			return unsingMe(mob,null);
 		
 		if(skipStandardSongTick())
 			return true;
@@ -156,25 +156,53 @@ public class Song extends StdAbility
 		if((invoker==null)
 		||(!CMLib.flags().aliveAwakeMobile(invoker,true))
 		||(!CMLib.flags().canBeHeardBy(invoker,mob)))
-			return possiblyUnsing(mob,null,false);
+			return unsingMe(mob,null);
 		return true;
 	}
 	
-	protected void unsing(MOB mob, MOB invoker, boolean notMe)
+	protected void unsingAll(MOB mob, MOB invoker)
 	{
-		if(mob==null) return;
-		for(int a=mob.numEffects()-1;a>=0;a--)
+		if(mob!=null)
+			for(int a=mob.numEffects()-1;a>=0;a--)
+			{
+				Ability A=mob.fetchEffect(a);
+				if((A instanceof Song)
+				&&((invoker==null)||(A.invoker()==null)||(A.invoker()==invoker)))
+					((Song)A).unsingMe(mob,invoker);
+			}
+	}
+
+	protected void unsingAllByThis(MOB mob, MOB invoker)
+	{
+		if(mob!=null)
+			for(int a=mob.numEffects()-1;a>=0;a--)
+			{
+				Ability A=mob.fetchEffect(a);
+				if((A instanceof Song)
+				&&(!A.ID().equals(ID()))
+				&&((invoker==null)||(A.invoker()==null)||(A.invoker()==invoker)))
+					((Song)A).unsingMe(mob,invoker);
+			}
+	}
+
+	protected boolean unsingMe(MOB mob, MOB invoker)
+	{
+		if(mob==null) return false;
+		Ability A=mob.fetchEffect(ID());
+		if((A instanceof Song)
+		&&((invoker==null)||(A.invoker()==null)||(A.invoker()==invoker)))
 		{
-			Ability A=mob.fetchEffect(a);
-			if((A!=null)
-			&&(A instanceof Song)
-			&&((!notMe)||(!A.ID().equals(ID())))
-			&&((invoker==null)||(A.invoker()==null)||(A.invoker()==invoker)))
-            {
-                if((!(A instanceof Song))||(((Song)A).steadyDown<=0))
-    				A.unInvoke();
-            }
+			Song S=(Song)A;
+			if(S.timeOut==0)
+				S.timeOut = System.currentTimeMillis() 
+						  + (CMProps.getTickMillis() * (((invoker()!=null)&&(invoker()!=mob))?super.getXTIMELevel(invoker()):0));
+			if(System.currentTimeMillis() >= S.timeOut)
+			{
+				A.unInvoke();
+				return false;
+			}
 		}
+		return true;
 	}
 
     protected Vector getInvokerScopeRoomSet(MOB backupMob)
@@ -201,19 +229,6 @@ public class Song extends StdAbility
     	return rooms;
     }
     
-	protected boolean possiblyUnsing(MOB mob, MOB invoker, boolean notMe)
-	{
-        if(steadyDown<0) steadyDown=((invoker()!=null)&&(invoker()!=mob))?super.getXTIMELevel(invoker()):0;
-        if(steadyDown==0)
-        {
-            unsing(mob,invoker,notMe);
-            return false;
-        }
-        mob.tell("The "+songOf()+" lingers in your head ("+steadyDown+").");
-        steadyDown--;
-        return true;
-	}
-
 	protected int getCorrectDirToOriginRoom(Room R, int v)
 	{
 		if(v<0) return -1;
@@ -281,7 +296,7 @@ public class Song extends StdAbility
 	
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-        steadyDown=-1;
+        timeOut=0;
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
@@ -307,7 +322,7 @@ public class Song extends StdAbility
 		}
 
 		boolean success=proficiencyCheck(mob,0,auto);
-		unsing(mob,mob,true);
+		unsingAllByThis(mob,mob);
 		if(success)
 		{
 			invoker=mob;

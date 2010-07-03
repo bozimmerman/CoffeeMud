@@ -56,13 +56,12 @@ public class Play_Break extends Play
 			if((A!=null)&&(A instanceof Play))
 				foundOne=true;
 		}
-		unplay(mob,mob,true);
 		if(!foundOne)
 		{
 			mob.tell(auto?"There is noone playing.":"You aren't playing anything.");
 			return true;
 		}
-
+		unplayAll(mob,mob);
 		mob.location().show(mob,null,CMMsg.MSG_NOISE,auto?"Silence.":"<S-NAME> stop(s) playing.");
 		mob.location().recoverRoomStats();
 		return true;

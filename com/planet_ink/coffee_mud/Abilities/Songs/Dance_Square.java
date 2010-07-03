@@ -82,7 +82,7 @@ public class Dance_Square extends Dance
 
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		steadyDown=-1;
+		timeOut=0;
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
@@ -90,7 +90,7 @@ public class Dance_Square extends Dance
 			return false;
 
 		boolean success=proficiencyCheck(mob,0,auto);
-		undance(mob,null,true);
+		undanceAll(mob,null);
 		if(success)
 		{
 			invoker=mob;

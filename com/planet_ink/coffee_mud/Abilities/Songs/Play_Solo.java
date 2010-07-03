@@ -63,14 +63,14 @@ public class Play_Solo extends Play
 					&&((otherBard.location()==originRoom)
 							||(originRoom==null)
 							||originRoom.showOthers(otherBard, myChar, null, CMMsg.MSG_OK_ACTION,"<S-NAME> upstage(s) <T-NAMESELF>, stopping <T-HIS-HER> solo!")))
-								unplay(myChar,null,false);
+								unplayMe(myChar,null);
 				}
 				else
 				if(otherBard.location()!=null)
 				{
 					otherBard.tell("You can't seem to upstage "+myChar.name()+"'s solo.");
 					if(!invoker().curState().adjMana(-10,invoker().maxState()))
-						unplay(myChar,null,false);
+						unplayMe(myChar,null);
 					return false;
 				}
 			}
@@ -90,12 +90,12 @@ public class Play_Solo extends Play
     
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		steadyDown=-1;
+		timeOut=0;
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		boolean success=proficiencyCheck(mob,0,auto);
-		unplay(mob,mob,true);
+		unplayAll(mob,mob);
 		if(success)
 		{
 			invoker=mob;
@@ -143,20 +143,7 @@ public class Play_Solo extends Play
 					for(int i=0;i<songsToCancel.size();i++)
 					{
 						Ability A=(Ability)songsToCancel.elementAt(i);
-						if((A.affecting()!=null)
-						&&(A.affecting() instanceof MOB))
-						{
-							MOB M=(MOB)A.affecting();
-							if(A instanceof Song) ((Song)A).unsing(M,null,false);
-							else
-							if(A instanceof Dance) ((Dance)A).undance(M,null,false);
-							else
-							if(A instanceof Play) ((Play)A).unplay(M,null,false);
-							else
-								A.unInvoke();
-						}
-						else
-							A.unInvoke();
+						A.unInvoke();
 					}
 					mob.addEffect(newOne);
 					R.recoverRoomStats();

@@ -266,7 +266,7 @@ public class Song_Ode extends Song
 			   ||(!commonRoomSet.contains(whom.location()))
 			   ||(CMLib.flags().isSleeping(invoker))
 			   ||(!CMLib.flags().canBeSeenBy(whom,invoker)))
-					return possiblyUnsing(mob,null,false);
+					return unsingMe(mob,null);
 		}
 
 		if((whom!=null)&&(song!=null)&&(affected==invoker())
@@ -349,7 +349,7 @@ public class Song_Ode extends Song
 
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-        steadyDown=-1;
+        timeOut=0;
 		if(auto) return false;
 
 		Hashtable H=getSongs();
@@ -415,7 +415,7 @@ public class Song_Ode extends Song
 		boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			unsing(mob,mob,false);
+			unsingAll(mob,mob);
             invoker=mob;
             originRoom=mob.location();
             commonRoomSet=getInvokerScopeRoomSet(null);
