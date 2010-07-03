@@ -66,6 +66,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
     
 	protected CompiledZapperMask preCompiled(String str)
     {
+		if(str==null) str="";
         Hashtable<String,CompiledZapperMask> H=(Hashtable<String,CompiledZapperMask>)Resources.getResource("SYSTEM_HASHED_MASKS");
         if(H==null)
         { 
