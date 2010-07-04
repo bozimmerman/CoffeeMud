@@ -516,7 +516,8 @@ public class CMAble extends StdLibrary implements AbilityMapper
 										i+=8;
 									}
 									else
-									if(ss.startsWith("AUTOGAIN") && (ss.length()==8))
+									if(ss.startsWith("AUTOGAIN") 
+									&& (ss.length()==8))
 									{
 										cur=null;
 										autogain=true;
@@ -534,26 +535,27 @@ public class CMAble extends StdLibrary implements AbilityMapper
 						}
 				    	if(CMSecurity.isDisabled("ABILITY_"+abilityID.toUpperCase())) continue;
 						AbilityMapping able = 
-							makeAbilityMapping(abilityID,qualLevel,abilityID,CMath.s_int(prof.toString()),100,"",autogain,false,
+							makeAbilityMapping(ID,qualLevel,abilityID,CMath.s_int(prof.toString().trim()),100,"",autogain,false,
 									CMParms.parseSpaces(preReqs.toString().trim(), true), mask.toString().trim(),null);
 						if(eachMode)
 							eachClassSet.add(able);
 						else
 						{
+							able.ID="All";
 					    	Map<String, AbilityMapping> allMap=completeAbleMap.get("All");
 							if(allMap == null)
 							{
 								allMap=new SHashtable<String,AbilityMapping>();
 								completeAbleMap.put("All",allMap);
 							}
-							addClassAbility(able.ID, allMap, able);
+							addClassAbility(able.abilityName, allMap, able);
 						}
 					}
 				}
 			}
 		}
 		for(AbilityMapping able : eachClassSet)
-			addClassAbility(ID, ableMap, able);
+			addClassAbility(able.abilityName, ableMap, able);
 	}
 	
 	
