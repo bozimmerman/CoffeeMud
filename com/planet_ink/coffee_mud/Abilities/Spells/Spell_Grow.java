@@ -42,7 +42,17 @@ public class Spell_Grow extends Spell
 	protected int canAffectCode(){return CAN_MOBS;}
 	public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_TRANSMUTATION;}
     public int abstractQuality(){ return Ability.QUALITY_OK_OTHERS;}
-	protected int oldWeight=0;
+    
+	protected int getOldWeight()
+	{
+		if(!CMath.isInteger(super.text()))
+		{
+			if(affected!=null)
+				super.setMiscText(Integer.toString(affected.basePhyStats().weight()));
+			return 0;
+		}
+		return CMath.s_int(text());
+	}
 
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
@@ -53,6 +63,7 @@ public class Spell_Grow extends Spell
 			affectableStats.setHeight((int)Math.round(CMath.mul(affectableStats.height(),aff)));
 		}
 	}
+	
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{
 		super.affectCharStats(affected,affectableStats);
@@ -65,10 +76,10 @@ public class Spell_Grow extends Spell
 		if(affected instanceof MOB)
 		{
 			MOB mob=(MOB)affected;
-			if(oldWeight<1)
+			if(getOldWeight()<1)
 				mob.baseCharStats().getMyRace().setHeightWeight(mob.basePhyStats(),(char)mob.baseCharStats().getStat(CharStats.STAT_GENDER));
 			else
-				mob.basePhyStats().setWeight(oldWeight);
+				mob.basePhyStats().setWeight(getOldWeight());
 			if((mob.location()!=null)&&(!mob.amDead()))
 				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> shrink(s) back down to size.");
 		}
@@ -97,13 +108,18 @@ public class Spell_Grow extends Spell
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				mob.location().show(mob,target,CMMsg.MSG_OK_ACTION,"<T-NAME> grow(s) to an enormous size!");
-				oldWeight=target.basePhyStats().weight();
 				double aff=1.0 + CMath.mul(0.1,(target.phyStats().level()));
 				aff=aff*aff;
-				target.basePhyStats().setWeight((int)Math.round(CMath.mul(target.basePhyStats().weight(),aff)));
 				beneficialAffect(mob,target,asLevel,0);
-				CMLib.utensils().confirmWearability(target);
+				Ability A=target.fetchEffect(ID());
+				if(A!=null)
+				{
+					mob.location().show(mob,target,CMMsg.MSG_OK_ACTION,"<T-NAME> grow(s) to an enormous size!");
+					setMiscText(Integer.toString(target.basePhyStats().weight()));
+					A.setMiscText(Integer.toString(target.basePhyStats().weight()));
+					target.basePhyStats().setWeight((int)Math.round(CMath.mul(target.basePhyStats().weight(),aff)));
+					CMLib.utensils().confirmWearability(target);
+				}
 			}
 
 		}

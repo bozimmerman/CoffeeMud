@@ -158,6 +158,8 @@ public class MOBloader
         mob.phyStats().setDisposition(PhyStats.IS_NOT_SEEN|PhyStats.IS_SNEAKING);
         CMLib.players().addPlayer(mob);
         DBReadUserOnly(mob);
+        mob.recoverPhyStats();
+        mob.recoverCharStats();
         Room oldLoc=mob.location();
         boolean inhab=false;
         if(oldLoc!=null) inhab=oldLoc.isInhabitant(mob);

@@ -22,7 +22,7 @@ public class CMStrings
     private static CMStrings inst=new CMStrings();
     public final static CMStrings instance(){return inst;}
     
-    public final static String SPACES="                                                                     ";
+    public final static String SPACES="                                                                                                                                          ";
     public final static String repeat(final String str1, final int times)
     {
         if(times<=0) return "";
@@ -473,6 +473,8 @@ public class CMStrings
     	final int lenMinusColors=lengthMinusColors(thisStr);
         if(lenMinusColors>thisMuch)
             return removeColors(thisStr).substring(0,thisMuch);
+        if(thisMuch-lenMinusColors >= SPACES.length())
+            return thisStr+SPACES;
         return thisStr+SPACES.substring(0,thisMuch-lenMinusColors);
     }
     public final static String limit(final String thisStr, final int thisMuch)
@@ -487,6 +489,8 @@ public class CMStrings
     	final int lenMinusColors=lengthMinusColors(thisStr);
         if(lenMinusColors>thisMuch)
             return removeColors(thisStr).substring(0,thisMuch)+colorSuffix;
+        if(thisMuch-lenMinusColors >= SPACES.length())
+            return thisStr+colorSuffix+SPACES;
         return thisStr+colorSuffix+SPACES.substring(0,thisMuch-lenMinusColors);
     }
     public final static String padRightPreserve(final String thisStr, final int thisMuch)
@@ -494,6 +498,8 @@ public class CMStrings
     	final int lenMinusColors=lengthMinusColors(thisStr);
         if(lenMinusColors>thisMuch)
             return removeColors(thisStr);
+        if(thisMuch-lenMinusColors >= SPACES.length())
+            return thisStr+SPACES;
         return thisStr+SPACES.substring(0,thisMuch-lenMinusColors);
     }
     public final static String centerPreserve(final String thisStr, final int thisMuch)
@@ -503,6 +509,8 @@ public class CMStrings
             return removeColors(thisStr);
         final int left=(thisMuch-lenMinusColors)/2;
         final int right=((left+left+lenMinusColors)<thisMuch)?left+1:left;
+        if(thisMuch-lenMinusColors >= SPACES.length())
+            return thisStr+SPACES;
         return SPACES.substring(0,left)+thisStr+SPACES.substring(0,right);
     }
     public final static String padLeftPreserve(final String thisStr, final int thisMuch)
