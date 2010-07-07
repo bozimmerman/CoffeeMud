@@ -241,6 +241,7 @@ public class Equipment extends StdCommand
 		        	if((T.tattooName.startsWith(wornName+":"))
 				    &&((--numTattoosToShow)>=0))
 				    {
+		        		tat=T.tattooName;
                         if(paragraphView)
                         {
                             tat=tat.substring(wornName.length()+1).toLowerCase();
