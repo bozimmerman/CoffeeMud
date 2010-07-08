@@ -66,42 +66,42 @@ public class XVector<T> extends Vector<T>
 				add(E.next());
 	}
 	
-	public void addAll(Enumeration<T> E)
+	public synchronized void addAll(Enumeration<T> E)
 	{
 		if(E!=null)
 			for(;E.hasMoreElements();)
 				add(E.nextElement());
 	}
 	
-	public void addAll(T[] E)
+	public synchronized void addAll(T[] E)
 	{
 		if(E!=null)
 			for(T e : E)
 				add(e);
 	}
 	
-	public void addAll(Iterator<T> E)
+	public synchronized void addAll(Iterator<T> E)
 	{
 		if(E!=null)
 			for(;E.hasNext();)
 				add(E.next());
 	}
 	
-	public void removeAll(Enumeration<T> E)
+	public synchronized void removeAll(Enumeration<T> E)
 	{
 		if(E!=null)
 			for(;E.hasMoreElements();)
 				remove(E.nextElement());
 	}
 	
-	public void removeAll(Iterator<T> E)
+	public synchronized void removeAll(Iterator<T> E)
 	{
 		if(E!=null)
 			for(;E.hasNext();)
 				remove(E.next());
 	}
 	
-	public void removeAll(List<T> E)
+	public synchronized void removeAll(List<T> E)
 	{
 		if(E!=null)
 			for(T o : E)

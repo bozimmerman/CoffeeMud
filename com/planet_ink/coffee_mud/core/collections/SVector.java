@@ -77,42 +77,42 @@ public class SVector<T> implements Serializable, Iterable<T>, Collection<T>, Lis
 				add(o);
 	}
 	
-	public void addAll(Enumeration<T> E)
+	public synchronized void addAll(Enumeration<T> E)
 	{
 		if(E!=null)
 			for(;E.hasMoreElements();)
 				V.add(E.nextElement());
 	}
 	
-	public void addAll(T[] E)
+	public synchronized void addAll(T[] E)
 	{
 		if(E!=null)
 			for(T e : E)
 				V.add(e);
 	}
 	
-	public void addAll(Iterator<T> E)
+	public synchronized void addAll(Iterator<T> E)
 	{
 		if(E!=null)
 			for(;E.hasNext();)
 				V.add(E.next());
 	}
 	
-	public void removeAll(Enumeration<T> E)
+	public synchronized void removeAll(Enumeration<T> E)
 	{
 		if(E!=null)
 			for(;E.hasMoreElements();)
 				V.remove(E.nextElement());
 	}
 	
-	public void removeAll(Iterator<T> E)
+	public synchronized void removeAll(Iterator<T> E)
 	{
 		if(E!=null)
 			for(;E.hasNext();)
 				V.remove(E.next());
 	}
 	
-	public void removeAll(List<T> E)
+	public synchronized void removeAll(List<T> E)
 	{
 		if(E!=null)
 			for(T o : E)

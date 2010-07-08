@@ -72,35 +72,35 @@ public class SHashSet<K> implements Serializable, Iterable<K>, Collection<K>, Se
 				add(o);
 	}
 	
-	public void addAll(Enumeration<K> E)
+	public synchronized void addAll(Enumeration<K> E)
 	{
 		if(E!=null)
 			for(;E.hasMoreElements();)
 				T.add(E.nextElement());
 	}
 	
-	public void addAll(Iterator<K> E)
+	public synchronized void addAll(Iterator<K> E)
 	{
 		if(E!=null)
 			for(;E.hasNext();)
 				T.add(E.next());
 	}
 	
-	public void removeAll(Enumeration<K> E)
+	public synchronized void removeAll(Enumeration<K> E)
 	{
 		if(E!=null)
 			for(;E.hasMoreElements();)
 				T.remove(E.nextElement());
 	}
 	
-	public void removeAll(Iterator<K> E)
+	public synchronized void removeAll(Iterator<K> E)
 	{
 		if(E!=null)
 			for(;E.hasNext();)
 				T.remove(E.next());
 	}
 	
-	public void removeAll(List<K> E)
+	public synchronized void removeAll(List<K> E)
 	{
 		if(E!=null)
 			for(K o : E)

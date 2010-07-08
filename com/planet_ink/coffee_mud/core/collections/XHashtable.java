@@ -39,21 +39,21 @@ public class XHashtable<K,V> extends Hashtable<K,V>
 			putAll(V);
 	}
 	
-	public void removeAll(Enumeration<K> E)
+	public synchronized void removeAll(Enumeration<K> E)
 	{
 		if(E!=null)
 			for(;E.hasMoreElements();)
 				remove(E.nextElement());
 	}
 	
-	public void removeAll(Iterator<K> E)
+	public synchronized void removeAll(Iterator<K> E)
 	{
 		if(E!=null)
 			for(;E.hasNext();)
 				remove(E.next());
 	}
 	
-	public void removeAll(List<K> E)
+	public synchronized void removeAll(List<K> E)
 	{
 		if(E!=null)
 			for(K o : E)
