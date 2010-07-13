@@ -1696,11 +1696,19 @@ public class CMMap extends StdLibrary implements WorldMap
 	
 	protected void cleanScriptHosts(SLinkedList<LocatedPair> hosts, PhysicalAgent oneToDel, boolean fullCleaning)
 	{
+		PhysicalAgent PA;
 		for(LocatedPair W : hosts)
-			if((W.obj()==oneToDel)
-			||(W.obj().amDestroyed())
-			||((fullCleaning)&&(!isAQualifyingScriptHost(W.obj()))))
+			if(W==null)
 				hosts.remove(W);
+			else
+			{
+				PA=W.obj();
+				if((PA==null)
+				||(PA==oneToDel)
+				||(PA.amDestroyed())
+				||((fullCleaning)&&(!isAQualifyingScriptHost(PA))))
+					hosts.remove(W);
+			}
 	}
 
 	protected boolean isAQualifyingScriptHost(PhysicalAgent host)

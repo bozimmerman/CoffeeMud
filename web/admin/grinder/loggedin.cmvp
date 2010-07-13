@@ -176,7 +176,7 @@
 </TD></TR>
 </TABLE>
 @else@
-<FONT COLOR=RED>You suck, go away.</FONT>
+<!-- Limited access SubOp -->
 @endif@
 @if?CheckAuthCode?ANYMODAREAS=true@
 	<P>
