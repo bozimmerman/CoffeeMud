@@ -97,9 +97,9 @@ public class Prayer_RemovePoison extends Prayer implements MendingSkill
 				mob.location().send(mob,msg);
 				for(int a=offensiveAffects.size()-1;a>=0;a--)
 					((Ability)offensiveAffects.get(a)).unInvoke();
-				if((target instanceof Drink)&&(((Drink)target).liquidHeld()==RawMaterial.RESOURCE_POISON))
+				if((target instanceof Drink)&&(((Drink)target).liquidType()==RawMaterial.RESOURCE_POISON))
 				{
-					((Drink)target).setLiquidHeld(RawMaterial.RESOURCE_FRESHWATER);
+					((Drink)target).setLiquidType(RawMaterial.RESOURCE_FRESHWATER);
 					target.basePhyStats().setAbility(0);
 				}
 				if(!CMLib.flags().stillAffectedBy(target,offensiveAffects,false))

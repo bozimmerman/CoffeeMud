@@ -54,7 +54,7 @@ public class Disease_Leeches extends Disease
 	protected int hp=Integer.MAX_VALUE;
 	protected String thename="";
 
-	public static List<Ability> returnOffensiveAffects(Physical fromMe)
+	public List<Ability> returnOffensiveAffects(Physical fromMe)
 	{
 		Vector offenders=new Vector();
 
