@@ -80,7 +80,7 @@ public class Cow extends StdMOB implements Drink
 				mob.tell("You are no longer thirsty.");
 			else
 			if(full)
-				mob.tell("You have drunk all you can.");
+				mob.tell("You have drank all you can.");
 		}
 		else
 		if((msg.tool()==this)
