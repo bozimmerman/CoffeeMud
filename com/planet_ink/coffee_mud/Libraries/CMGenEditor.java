@@ -3617,7 +3617,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
                             {
                                 roles.append(Clan.ROL_DESCS[E.getGovernment()][i]+", ");
                                 if(newRoleStr.equalsIgnoreCase(Clan.ROL_DESCS[E.getGovernment()][i]))
-                                    newRole=Clan.POSORDER[i];
+                                    newRole=i;
                             }
                             roles=new StringBuffer(roles.substring(0,roles.length()-2));
                             if(newRole<0)
@@ -7010,7 +7010,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
             {
                 roles.append(Clan.ROL_DESCS[C.getGovernment()][i]+", ");
                 if(newName.equalsIgnoreCase(Clan.ROL_DESCS[C.getGovernment()][i]))
-                    newRole=Clan.POSORDER[i];
+                    newRole=i;
             }
             roles=new StringBuffer(roles.substring(0,roles.length()-2));
             if(newRole<0)

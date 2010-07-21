@@ -574,6 +574,9 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
         "TOPMEMBER" // 16
     };
 	
+	/** meaningless variable-- means this clan is a clan -- does not denote government, or anything else. */
+	public static final int TYPE_CLAN=1;
+	
 	/** Applicant constant for a clan members position. */
 	public static final int POS_APPLICANT=0;
 	/** Normal member constant for a clan members position. */
@@ -581,21 +584,15 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
 	/** Staff constant for a clan members position. */
 	public static final int POS_STAFF=2;
 	/** Enchanter constant for a clan members position. */
-	public static final int POS_ENCHANTER=4;
+	public static final int POS_ENCHANTER=3;
 	/** Treasurer constant for a clan members position. */
-	public static final int POS_TREASURER=8;
+	public static final int POS_TREASURER=4;
 	/** Leader constant for a clan members position. */
-	public static final int POS_LEADER=16;
+	public static final int POS_LEADER=5;
 	/** Boss constant for a clan members position. */
-	public static final int POS_BOSS=32;
-	/** Numeric ordering for the Clan.POS_* constants, ordered by value. @see Clan */
-	public static final int[] POSORDER={POS_APPLICANT,
-										POS_MEMBER,
-										POS_STAFF,
-										POS_ENCHANTER,
-										POS_TREASURER,
-										POS_LEADER,
-										POS_BOSS};
+	public static final int POS_BOSS=6;
+	/** Number constant for number of clan members positions. */
+	public static final int POS_TOTAL=7;
 
 	/** constant for the Clan.getStatus() method, denoting normal status. @see Clan#getStatus() .*/
 	public static final int CLANSTATUS_ACTIVE=0;
@@ -609,6 +606,44 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
 		"PENDING",
 		"FADING"
 	};
+	
+	/** constant for the clan function of accepting new members. @see Clan#allowedToDoThis(MOB, int) */
+	public static final int FUNC_CLANACCEPT=0;
+	/** constant for the clan function of promoting or demoting members. @see Clan#allowedToDoThis(MOB, int) */
+	public static final int FUNC_CLANASSIGN=1;
+	/** constant for the clan function of exihiling members. @see Clan#allowedToDoThis(MOB, int) */
+	public static final int FUNC_CLANEXILE=2;
+	/** constant for the clan function of setting a new clan home. @see Clan#allowedToDoThis(MOB, int) */
+	public static final int FUNC_CLANHOMESET=3;
+	/** constant for the clan function of setting a new donation room. @see Clan#allowedToDoThis(MOB, int) */
+	public static final int FUNC_CLANDONATESET=4;
+	/** constant for the clan function of rejecting an applicant. @see Clan#allowedToDoThis(MOB, int) */
+	public static final int FUNC_CLANREJECT=5;
+	/** constant for the clan function of writing a new clan premise. @see Clan#allowedToDoThis(MOB, int) */
+	public static final int FUNC_CLANPREMISE=6;
+	/** constant for the clan function of acting as owner of clan property. @see Clan#allowedToDoThis(MOB, int) */
+	public static final int FUNC_CLANPROPERTYOWNER=7;
+	/** constant for the clan function of withdrawing from clan bank accounts. @see Clan#allowedToDoThis(MOB, int) */
+	public static final int FUNC_CLANWITHDRAW=8;
+	/** constant for the clan function of ordering lower ranked clan members. @see Clan#allowedToDoThis(MOB, int) */
+	public static final int FUNC_CLANCANORDERUNDERLINGS=9;
+	/** constant for the clan function of ordering mobs in clan conquered areas. @see Clan#allowedToDoThis(MOB, int) */
+	public static final int FUNC_CLANCANORDERCONQUERED=10;
+	/** constant for the clan function of voting on promotions. @see Clan#allowedToDoThis(MOB, int) */
+	public static final int FUNC_CLANVOTEASSIGN=11;
+	/** constant for the clan function of voting on non-promotion questions . @see Clan#allowedToDoThis(MOB, int) */
+	public static final int FUNC_CLANVOTEOTHER=12;
+	/** constant for the clan function of depositing and listing clan bank accounts. @see Clan#allowedToDoThis(MOB, int) */
+	public static final int FUNC_CLANDEPOSITLIST=13;
+	/** constant for the clan function of declaring war and peace . @see Clan#allowedToDoThis(MOB, int) */
+	public static final int FUNC_CLANDECLARE=14;
+	/** constant for the clan function of changing the clans tax rate. @see Clan#allowedToDoThis(MOB, int) */
+	public static final int FUNC_CLANTAX=15;
+	/** constant for the clan function of clanenchanting items. @see Clan#allowedToDoThis(MOB, int) */
+	public static final int FUNC_CLANENCHANT=16;
+	/** constant for the number of clan functions. @see Clan#allowedToDoThis(MOB, int) */
+	public static final int FUNC_TOTAL=17;
+	
 	/** constant for Clan.getClanRelations method, denoting neutral status towards. @see Clan#getClanRelations(String) */
 	public static final int REL_NEUTRAL=0;
 	/** constant for Clan.getClanRelations method, denoting at war with. @see Clan#getClanRelations(String) */
@@ -655,6 +690,75 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
 	/** long descriptor strings for the Clan.TROPHY_* constants, ordered by their value.  @see Clan */
 	public static final String TROPHY_DESCS[]={"","Most control points","Most clan experience","","Most controlled areas","","","","Most rival player-kills"};
 
+	/**
+	 * An enumeration of relationships between a clan position and a
+	 * particular power of clans.
+	 * @author bzimmerman
+	 */
+	public static enum ClanPositionPower
+	{
+		CAN_NOT_DO,
+		CAN_DO,
+		MUST_VOTE_ON
+	}
+	
+	/**
+	 * A class for the characteristics of a position within a clan.
+	 * @author bzimmerman
+	 */
+	public static class	ClanPosition
+	{
+		/** the ordered rank of the position */
+		public int 		rank			= -1;
+		/** the name of the position within this government */
+		public String	name			= "Unknown";
+		/** the maximum number of members that can hold this position */
+		public int		max				= Integer.MAX_VALUE;
+		/** a chart of whether this position can perform the indexed function in this government */
+		public ClanPositionPower[]		functionChart	= new ClanPositionPower[FUNC_TOTAL];
+		/**
+		 * Initialize a new clan position
+		 * @param rank the ordered rank number (0+)
+		 * @param name the name of this position
+		 * @param max the maximum number of members that can hold this position
+		 * @param funcChart an array of ClanPositionPower objects for each function that can be performed.
+		 */
+		public ClanPosition(int rank, String name, int max, ClanPositionPower[] funcChart)
+		{
+			this.rank=rank; this.name=name; this.max=max;this.functionChart=funcChart;
+		}
+	}
+
+	/**
+	 * A class defining the characteristics of a clan government,
+	 * and its membership.
+	 * @author bzimmerman
+	 */
+	public static class ClanGovernment
+	{
+		/** If this is a default government type, this is its ID, otherwise -1 */
+		public int 		ID		= -1;
+		/** The name of this government type, which is its identifier when ID above is -1 */
+		public String 	name	= "Unknown";
+		/** The highest possible rank for a clan position within this government type */
+		public int		topRank	= -1;
+		/** The list of ClanPosition objects for each holdable position in this government */
+		public ClanPosition[] positions = new ClanPosition[0];
+		/**
+		 * Initialize a new Clan Government
+		 * @param ID
+		 * @param name
+		 * @param pos
+		 */
+		public ClanGovernment(int ID, String name, ClanPosition[] pos)
+		{
+			this.ID=ID; this.name=name; this.positions=pos;
+			for(ClanPosition P : pos)
+				if(P.rank > topRank)
+					topRank=P.rank;
+		}
+	}
+	
 	/** constant for the getGovernment @see Clan#getGovernment() method. Denotes Clan. */
 	public static final int GVT_DICTATORSHIP=0;
 	/** constant for the getGovernment @see Clan#getGovernment() method. Denotes Guild. */
@@ -677,7 +781,7 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
         "FAMILY"
 	};
 	/** top ranks for each govt, ordered by the value of the Clan.GVT_* constants.  @see Clan */
-	public static final int[] topRanks={
+	public static final int[] DEFAULT_TOP_RANKS={
 		POS_BOSS,
 		POS_BOSS,
 		POS_BOSS,
@@ -705,8 +809,6 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
         {Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE,1,1,Integer.MAX_VALUE,1},
         {Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE,1,1},
 	};
-	/** meaningless variable-- means this clan is a clan -- does not denote government, or anything else. */
-	public static final int TYPE_CLAN=1;
     /** chart of which roles can perform which functions for various clan types */
     public static final String[][] FUNC_PROCEDURE={
         /*GANG*/{"BL","B","B","B","B","BL","B","B","BT","BL","BELST","","","BT","B","B","BE"},
@@ -716,38 +818,4 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
         /*THEO*/{"BL","B","BL","B","B","BL","B","BL","BT","BLETSM","BLETSM","","","BLETSM","B","B","E"},
         /*FAML*/{"A","BL","BL","BL","BL","BL","BL","BL","BLET","A","A","","","A","BL","BL","BLET"},
         };
-	/** constant for the clan function of accepting new members. @see Clan#allowedToDoThis(MOB, int) */
-	public static final int FUNC_CLANACCEPT=0;
-	/** constant for the clan function of promoting or demoting members. @see Clan#allowedToDoThis(MOB, int) */
-	public static final int FUNC_CLANASSIGN=1;
-	/** constant for the clan function of exihiling members. @see Clan#allowedToDoThis(MOB, int) */
-	public static final int FUNC_CLANEXILE=2;
-	/** constant for the clan function of setting a new clan home. @see Clan#allowedToDoThis(MOB, int) */
-	public static final int FUNC_CLANHOMESET=3;
-	/** constant for the clan function of setting a new donation room. @see Clan#allowedToDoThis(MOB, int) */
-	public static final int FUNC_CLANDONATESET=4;
-	/** constant for the clan function of rejecting an applicant. @see Clan#allowedToDoThis(MOB, int) */
-	public static final int FUNC_CLANREJECT=5;
-	/** constant for the clan function of writing a new clan premise. @see Clan#allowedToDoThis(MOB, int) */
-	public static final int FUNC_CLANPREMISE=6;
-	/** constant for the clan function of acting as owner of clan property. @see Clan#allowedToDoThis(MOB, int) */
-	public static final int FUNC_CLANPROPERTYOWNER=7;
-	/** constant for the clan function of withdrawing from clan bank accounts. @see Clan#allowedToDoThis(MOB, int) */
-	public static final int FUNC_CLANWITHDRAW=8;
-	/** constant for the clan function of ordering lower ranked clan members. @see Clan#allowedToDoThis(MOB, int) */
-	public static final int FUNC_CLANCANORDERUNDERLINGS=9;
-	/** constant for the clan function of ordering mobs in clan conquered areas. @see Clan#allowedToDoThis(MOB, int) */
-	public static final int FUNC_CLANCANORDERCONQUERED=10;
-	/** constant for the clan function of voting on promotions. @see Clan#allowedToDoThis(MOB, int) */
-	public static final int FUNC_CLANVOTEASSIGN=11;
-	/** constant for the clan function of voting on non-promotion questions . @see Clan#allowedToDoThis(MOB, int) */
-	public static final int FUNC_CLANVOTEOTHER=12;
-	/** constant for the clan function of depositing and listing clan bank accounts. @see Clan#allowedToDoThis(MOB, int) */
-	public static final int FUNC_CLANDEPOSITLIST=13;
-	/** constant for the clan function of declaring war and peace . @see Clan#allowedToDoThis(MOB, int) */
-	public static final int FUNC_CLANDECLARE=14;
-	/** constant for the clan function of changing the clans tax rate. @see Clan#allowedToDoThis(MOB, int) */
-	public static final int FUNC_CLANTAX=15;
-	/** constant for the clan function of clanenchanting items. @see Clan#allowedToDoThis(MOB, int) */
-	public static final int FUNC_CLANENCHANT=16;
 }

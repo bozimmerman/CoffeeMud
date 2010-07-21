@@ -381,13 +381,12 @@ public class DefaultClan implements Clan
         }
 
         if(M.playerStats()!=null)
-        for(int i=0;i<POSORDER.length;i++)
+        for(int i=0;i<POS_TOTAL;i++)
         {
-            int pos=POSORDER[i];
-            String title="*, "+CMLib.clans().getRoleName(getGovernment(),pos,true,false)+" of "+name();
-            if((M.getClanRole()==pos)
+            String title="*, "+CMLib.clans().getRoleName(getGovernment(),i,true,false)+" of "+name();
+            if((M.getClanRole()==i)
             &&(M.getClanID().equals(clanID()))
-            &&(pos!=POS_APPLICANT))
+            &&(i!=POS_APPLICANT))
             {
                 if(!M.playerStats().getTitles().contains(title))
                     M.playerStats().getTitles().add(title);
@@ -799,9 +798,10 @@ public class DefaultClan implements Clan
         int realmembers=0;
         int bosses=0;
         List<MemberRecord> members=getMemberList();
+        final int topRank = getTopRank(null);
         for(MemberRecord member : members)
         {
-            if(member.role==POS_BOSS)
+            if(member.role==topRank)
             {
                 realmembers++;
                 bosses++;
@@ -820,13 +820,15 @@ public class DefaultClan implements Clan
     }
 
 
-    public int getTopRank(MOB mob) {
+    public int getTopRank(MOB mob) 
+    {
         if((getGovernment()>=0)
-        &&(getGovernment()<topRanks.length))
+        &&(getGovernment()<DEFAULT_TOP_RANKS.length))
         {
-            int topRank=topRanks[getGovernment()];
-            while((topRank > 0)&&(!canBeAssigned(mob,topRank)))
-                topRank--;
+            int topRank=DEFAULT_TOP_RANKS[getGovernment()];
+            if(mob!=null)
+	            while((topRank > 0)&&(!canBeAssigned(mob,topRank)))
+	                topRank--;
             return topRank;
         }
         return POS_BOSS;
@@ -842,13 +844,13 @@ public class DefaultClan implements Clan
         	List<MemberRecord> members=getMemberList();
             int activeMembers=0;
             long deathMilis=CMProps.getIntVar(CMProps.SYSTEMI_DAYSCLANDEATH)*CMProps.getIntVar(CMProps.SYSTEMI_TICKSPERMUDDAY)*CMProps.getTickMillis();
-            int[] numTypes=new int[POSORDER.length];
+            int[] numTypes=new int[POS_TOTAL];
             for(MemberRecord member : members)
             {
                 long lastLogin=member.timestamp;
                 if(((System.currentTimeMillis()-lastLogin)<deathMilis)||(deathMilis==0))
                     activeMembers++;
-                numTypes[CMLib.clans().getRoleOrder(member.role)]++;
+                numTypes[member.role]++;
             }
 
             // handle any necessary promotions
@@ -857,7 +859,7 @@ public class DefaultClan implements Clan
                 int highestCleric=0;
                 MOB highestClericM=null;
                 MOB currentHighCleric = getResponsibleMember();
-                int max=topRanks[getGovernment()];
+                int max=getTopRank(null);
                 for(MemberRecord member : members)
                 {
                     long lastLogin=member.timestamp;
@@ -869,7 +871,7 @@ public class DefaultClan implements Clan
                         if(M2.charStats().getCurrentClass().baseClass().equals("Cleric")
                             ||CMSecurity.isASysOp(M2))
                         {
-                            if((CMLib.clans().getRoleOrder(member.role)==max)
+                            if((member.role==max)
                             &&(M2.phyStats().level()>=highestCleric))
                             {
                                 highestCleric=M2.phyStats().level();
@@ -939,12 +941,12 @@ public class DefaultClan implements Clan
                 int highest=0;
                 for(int i=numTypes.length-1;i>=0;i--)
                     if(numTypes[i]>0){ highest=i; break;}
-                int maxRank=topRanks[getGovernment()];
-                if(highest<CMLib.clans().getRoleOrder(maxRank))
+                int maxRank=getTopRank(null);
+                if(highest<maxRank)
                 {
                     for(MemberRecord member : members)
                     {
-                        if(CMLib.clans().getRoleOrder(member.role)==highest)
+                        if(member.role==highest)
                         {
                             String name = member.name;
                             MOB M2=CMLib.players().getLoadPlayer(name);
@@ -967,12 +969,12 @@ public class DefaultClan implements Clan
                 int highest=0;
                 for(int i=numTypes.length-1;i>=0;i--)
                     if(numTypes[i]>0){ highest=i; break;}
-                int maxRank=topRanks[getGovernment()];
-                if(highest<CMLib.clans().getRoleOrder(maxRank)-1)
+                int maxRank=getTopRank(null);
+                if(highest<maxRank-1)
                 {
                     for(MemberRecord member : members)
                     {
-                        if(CMLib.clans().getRoleOrder(member.role)==highest)
+                        if(member.role==highest)
                         {
                             String name = member.name;
                             MOB M2=CMLib.players().getLoadPlayer(name);
@@ -1010,7 +1012,7 @@ public class DefaultClan implements Clan
                     String name = member.name;
                     int role=member.role;
                     //long lastLogin=((Long)members.elementAt(j,3)).longValue();
-					if(CMLib.clans().getRoleOrder(role)==Clan.POSORDER.length-1)
+					if(role==getTopRank(null))
 					{
 						MOB player=CMLib.players().getLoadPlayer(name);
 						if(player!=null)
@@ -1111,7 +1113,7 @@ public class DefaultClan implements Clan
                                     MOB mob=CMClass.getMOB("StdMOB");
                                     mob.setName(clanID());
                                     mob.setClanID(clanID());
-                                    mob.setClanRole(POS_BOSS);
+                                    mob.setClanRole(getTopRank(null));
                                     mob.basePhyStats().setLevel(1000);
                                     if(mob.location()==null)
                                     {

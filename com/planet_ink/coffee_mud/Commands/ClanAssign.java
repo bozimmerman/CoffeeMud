@@ -112,7 +112,7 @@ public class ClanAssign extends StdCommand
 							for(MemberRecord member : members)
 								if(member.role==newPos)
 									currentMembersInNewPosV.addElement(member.name);
-							if(CMLib.clans().getRoleOrder(oldPos)==Clan.POSORDER.length-1)
+							if(oldPos==C.getTopRank(null))
 							{ // If you WERE already the highest order.. you must be being demoted.
 								// so we check to see if there will be any other high officers left
 							    int numMembers=0;

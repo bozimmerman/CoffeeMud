@@ -168,21 +168,13 @@ public class Clans extends StdLibrary implements ClanManager
         return false;
     }
     
-	public int getRoleOrder(int role)
-	{
-		for(int i=0;i<Clan.POSORDER.length;i++)
-			if(Clan.POSORDER[i]==role) return i;
-		return 1;
-	}
-
-
 	public String getRoleName(int government, int role, boolean titleCase, boolean plural)
 	{
 		StringBuffer roleName=new StringBuffer();
 		if((government<0)||(government>=Clan.ROL_DESCS.length))
 			government=0;
 		String[] roles=Clan.ROL_DESCS[government];
-		roleName.append(roles[getRoleOrder(role)].toLowerCase());
+		roleName.append(roles[role].toLowerCase());
 		if(titleCase)
 		{
 			String titled=CMStrings.capitalizeAndLower(roleName.toString());

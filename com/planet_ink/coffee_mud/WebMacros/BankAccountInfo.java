@@ -91,7 +91,7 @@ public class BankAccountInfo extends StdWebMacro
 				playerM.setLocation(M.location());
 				playerM.setStartRoom(M.getStartRoom());
 				playerM.setClanID(C.clanID());
-				playerM.setClanRole(Clan.POS_BOSS);
+				playerM.setClanRole(C.getTopRank(null));
 				destroyPlayer=true;
 			}
 			else

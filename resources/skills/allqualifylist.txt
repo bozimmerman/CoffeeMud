@@ -43,6 +43,7 @@
 1 Ignan
 1 Orcish
 1 SignLanguage
+1 Undercommon
 
 2 Butchering
 2 Chopping

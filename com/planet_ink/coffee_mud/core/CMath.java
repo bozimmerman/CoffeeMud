@@ -1056,6 +1056,20 @@ public class CMath
     }
 
     /**
+     * Returns the first set bit number of the bitmask given
+     * @param mask the bit mask given.
+     * @return the first set bit number of the bitmask given
+     */
+    public final static int bitNumber(final long mask)
+    {
+    	if(mask<=0) return 0;
+    	for(int i=0;i<64;i++)
+    		if((mask&CMath.pow(2,i))>0)
+    			return i+1;
+    	return 0;
+    }
+    
+    /**
      * Returns the absolute value (X>=0) of the
      * given number
      * @param val the number

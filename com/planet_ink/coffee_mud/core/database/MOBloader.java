@@ -110,7 +110,12 @@ public class MOBloader
                 if((colorStr!=null)&&(colorStr.length()>0)&&(!colorStr.equalsIgnoreCase("NULL"))) pstats.setColorStr(colorStr);
                 pstats.setLastIP(DBConnections.getRes(R,"CMLSIP"));
                 mob.setClanID(DBConnections.getRes(R,"CMCLAN"));
-                mob.setClanRole((int)DBConnections.getLongRes(R,"CMCLRO"));
+                Clan C=CMLib.clans().getClan(mob.getClanID());
+                int clanRole = (int)DBConnections.getLongRes(R,"CMCLRO");
+                if(((C!=null)&&(clanRole > C.getTopRank(null)))
+                ||(clanRole >= Clan.POS_TOTAL))
+                	clanRole = CMath.bitNumber(clanRole); 
+                mob.setClanRole(clanRole);
                 pstats.setEmail(DBConnections.getRes(R,"CMEMAL"));
                 String buf=DBConnections.getRes(R,"CMPFIL");
                 pstats.setXML(buf);

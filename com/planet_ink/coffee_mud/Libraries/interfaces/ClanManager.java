@@ -96,14 +96,6 @@ public interface ClanManager extends CMLibrary
      */
     public Clan getNewClanObjectOfType(int type);
     /**
-     * Returns the order-ranking (with higher being more important)
-     * of a given clan role.  This then can be used to make some very
-     * general evaluations about pecking order.
-     * @param role the Clan Role
-     * @return the numeric order ranking of that role.
-     */
-    public int getRoleOrder(int role);
-    /**
      * Returns the friendly descriptive name of a given role in a clan, based
      * on very specific criteria.
      * @param government the type of government the clan has

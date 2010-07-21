@@ -94,12 +94,12 @@ public class ClanData extends StdWebMacro
                 str.append("</TD>");
                 str.append("<TD WIDTH=65% COLSPAN=2>");
                 str.append("<SELECT NAME=ROLE"+(i+1)+">");
-                for(int r=0;r<Clan.POSORDER.length;r++)
+                for(int r=0;r<Clan.POS_TOTAL;r++)
                 {
-                    str.append("<OPTION VALUE=\""+Clan.POSORDER[r]+"\"");
-                    if(Clan.POSORDER[r]==role.intValue())
+                    str.append("<OPTION VALUE=\""+r+"\"");
+                    if(r==role.intValue())
                         str.append(" SELECTED");
-                    str.append(">"+CMLib.clans().getRoleName(C.getGovernment(),Clan.POSORDER[r],true,false));
+                    str.append(">"+CMLib.clans().getRoleName(C.getGovernment(),r,true,false));
                 }
                 str.append("</SELECT>");
                 str.append("</TD>");
@@ -116,10 +116,10 @@ public class ClanData extends StdWebMacro
             str.append("</TD>");
             str.append("<TD WIDTH=65% COLSPAN=2>");
             str.append("<SELECT NAME=ROLE"+(themembers.size()+1)+">");
-            for(int r=0;r<Clan.POSORDER.length;r++)
+            for(int r=0;r<Clan.POS_TOTAL;r++)
             {
-                str.append("<OPTION VALUE=\""+Clan.POSORDER[r]+"\"");
-                str.append(">"+CMLib.clans().getRoleName(C.getGovernment(),Clan.POSORDER[r],true,false));
+                str.append("<OPTION VALUE=\""+r+"\"");
+                str.append(">"+CMLib.clans().getRoleName(C.getGovernment(),r,true,false));
             }
             str.append("</SELECT>");
             str.append("</TD>");
@@ -235,8 +235,8 @@ public class ClanData extends StdWebMacro
                     String old=httpReq.getRequestParameter("AUTOPOSITIONID");
                     if(old==null) old=""+C.getAutoPosition();
                     int autoPos=CMath.s_int(old);
-                    for(int i=0;i<Clan.POSORDER.length;i++)
-                        str.append("<OPTION VALUE="+Clan.POSORDER[i]+" "+((autoPos==Clan.POSORDER[i])?"SELECTED":"")+">"+CMLib.clans().getRoleName(C.getGovernment(),Clan.POSORDER[i],true,false));
+                    for(int i=0;i<Clan.POS_TOTAL;i++)
+                        str.append("<OPTION VALUE="+i+" "+((autoPos==i)?"SELECTED":"")+">"+CMLib.clans().getRoleName(C.getGovernment(),i,true,false));
                 }
 				if(parms.containsKey("TROPHIES"))
 				{
