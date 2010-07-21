@@ -279,12 +279,10 @@ public class CMAble extends StdLibrary implements AbilityMapper
     	List<AbilityMapping> ABLES=getUpToLevelListings(classID,CMProps.getIntVar(CMProps.SYSTEMI_LASTPLAYERLEVEL),false,false);
         SHashtable alreadyDone=new SHashtable();
         List<QualifyingID> DV=new Vector<QualifyingID>(2);
-        List<String> V2=null;
         Integer Ix=null;
         for(AbilityMapping able : ABLES)
         {
-            if((V2==null)||(V2.size()==0)) continue;
-            for(Iterator<String> i=getAbilityAllowsList(able.ID);i.hasNext();)
+            for(Iterator<String> i=getAbilityAllowsList(able.abilityName);i.hasNext();)
             {
             	String s = i.next();
             	Ix=(Integer)alreadyDone.get(s);
