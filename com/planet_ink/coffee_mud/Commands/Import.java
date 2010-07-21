@@ -3946,12 +3946,14 @@ public class Import extends StdCommand
 				if(s.equalsIgnoreCase("nodelete"))
 				{
 					commands.remove(i);
+					i--;
 					nodelete=true;
 				}
 				else
 				if(s.equalsIgnoreCase("noprompt"))
 				{
 					commands.remove(i);
+					i--;
 					prompt=false;
 				}
 				else
@@ -3966,6 +3968,7 @@ public class Import extends StdCommand
 						return false;
 					}
 					commands.remove(i);
+					i--;
 				}
 				else
 					break;
