@@ -410,11 +410,6 @@ public class CMAble extends StdLibrary implements AbilityMapper
 		int qualLevel = able.qualLevel;
 		int maxProficiency = able.maxProficiency;
 		
-		// archons get everything
-		int arc_level=getQualifyingLevel("Archon",true,ability);
-		if((arc_level<0)||((qualLevel>=0)&&(qualLevel<arc_level)))
-			addCharAbilityMapping("Archon",qualLevel,ability,true);
-		
 		// set lowest level map
 		Integer lowLevel=(Integer)lowestQualifyingLevelMap.get(ability);
 		if((lowLevel==null)
@@ -436,6 +431,13 @@ public class CMAble extends StdLibrary implements AbilityMapper
 		}
 		if(!revT.containsKey(ID)) 
 			revT.put(ID, able);
+		
+		// archons get everything
+		int arc_level=getQualifyingLevel("Archon",true,ability);
+		if(((arc_level<0)||((qualLevel>=0)&&(qualLevel<arc_level)))
+		&&(!ID.equalsIgnoreCase("Archon"))
+		&&(!ID.equalsIgnoreCase("All")))
+			addCharAbilityMapping("Archon",qualLevel,ability,true);
 	}
 	
 

@@ -193,6 +193,7 @@ public class LPCData {
         else if( Character.isDigit(str.charAt(0)) || str.charAt(0) == '-' ) {
             String tmp;
             int x;
+            boolean decimalFound=false;
 
             if( str.length() > 1 && str.startsWith("0x" ) ) {
                 tmp = "0x";
@@ -221,9 +222,16 @@ public class LPCData {
             catch( NumberFormatException e ) {
                 throw new I3Exception("Invalid number format: " + tmp);
             }
+            if((str.length()>1)&&(str.charAt(0)=='.'))
+        	{
+    			str=str.substring(1);
+        		while((str.length()>0)&&(Character.isDigit(str.charAt(0))))
+        			str=str.substring(1);
+        	}
             if( !flag ) {
                 return Integer.valueOf(x);
             }
+            	
             data.setElementAt(Integer.valueOf(x), 0);
             data.setElementAt(str, 1);
             return data;
