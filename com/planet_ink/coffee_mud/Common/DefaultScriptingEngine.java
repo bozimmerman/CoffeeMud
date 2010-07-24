@@ -5377,7 +5377,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
             }
             case 84: // math
             {
-                String arg1=CMParms.cleanBit(funcParms);
+                String arg1=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.cleanBit(funcParms));
                 results.append(""+Math.round(CMath.s_parseMathExpression(arg1)));
                 break;
             }
