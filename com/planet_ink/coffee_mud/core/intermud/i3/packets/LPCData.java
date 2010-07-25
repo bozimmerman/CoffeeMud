@@ -193,8 +193,6 @@ public class LPCData {
         else if( Character.isDigit(str.charAt(0)) || str.charAt(0) == '-' ) {
             String tmp;
             int x;
-            boolean decimalFound=false;
-
             if( str.length() > 1 && str.startsWith("0x" ) ) {
                 tmp = "0x";
                 str = str.substring(2, str.length());
