@@ -123,7 +123,7 @@ public class StdMOB implements MOB
     protected boolean 	imMobile=false;
 
     public long lastTickedDateTime(){return lastTickedDateTime;}
-    public void flagVariableEq(){lastTickedDateTime=-2;}
+    public void flagVariableEq(){lastTickedDateTime=-3;}
     public long getAgeHours(){return ageHours;}
 	public int getPractices(){return practices;}
 	public int getExperience(){return experience;}
@@ -318,15 +318,19 @@ public class StdMOB implements MOB
 			if(I!=null)
 				addItem((Item)I.copyOf());
 		}
+		Item I2=null;
 		for(int i=0;i<numItems();i++)
 		{
 			I=getItem(i);
 			if((I!=null)
 			&&(I.container()!=null)
 			&&(!isMine(I.container())))
-				for(int ii=0;ii<M.numItems();ii++)
-					if((M.getItem(ii)==I.container())&&(ii<numItems()))
-					{ I.setContainer((Container)getItem(ii)); break;}
+				for(Enumeration<Item> e=M.items();e.hasMoreElements();)
+				{
+					I2=(Item)e.nextElement();
+					if((I2==I.container())&&(I2 instanceof Container))
+					{ I.setContainer((Container)I2); break;}
+				}
 		}
 		Ability A=null;
 		for(int i=0;i<M.numLearnedAbilities();i++)
