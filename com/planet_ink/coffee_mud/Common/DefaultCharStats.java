@@ -2,6 +2,8 @@ package com.planet_ink.coffee_mud.Common;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
+import com.planet_ink.coffee_mud.core.exceptions.CMException;
+import com.planet_ink.coffee_mud.core.exceptions.CoffeeMudException;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
 import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
@@ -697,7 +699,7 @@ public class DefaultCharStats implements CharStats
 	public void setStat(int abilityCode, int value)
 	{
         if((value>Short.MAX_VALUE)||(value<Short.MIN_VALUE))
-            Log.errOut("Value out of range",new Exception("Value out of range: "+value+" for "+abilityCode));
+            Log.errOut("Value out of range",new CMException("Value out of range: "+value+" for "+abilityCode));
         if(abilityCode<stats.length)
 			stats[abilityCode]=(short)value;
 	}
