@@ -426,6 +426,20 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 				start=commentEnd;
 				continue;
 			}
+			if((buf.charAt(start+1)=='?')&&(buf.charAt(end-1)=='?'))
+			{
+				start=end;
+				end=-1;
+				continue;
+			}
+			if((buf.charAt(start+1)=='!')&&(buf.substring(start,start+9).equals("<![CDATA[")))
+			{
+				int commentEnd=buf.indexOf("]]>",start+1);
+				if(commentEnd<0) return null;
+				end=-1;
+				start=commentEnd;
+				continue;
+			}
             int nextStart=buf.indexOf("<",start+1);
             while((nextStart>=0)&&(nextStart<end))
             {
