@@ -190,13 +190,4 @@ public interface ClanManager extends CMLibrary
      * @return the role mask/code number for this government, oe -1
      */
     public int getRoleFromName(int government, String position);
-    
-    /**
-     * Returns the iterative order number for a given clan role.
-     * Clan roles are bit-based, whereas an order number will
-     * always be from 0 - number of clan roles.
-     * @param roleType the role bitmask
-     * @return the ordered number
-     */
-    public int getIntFromRole(int roleType);
 }

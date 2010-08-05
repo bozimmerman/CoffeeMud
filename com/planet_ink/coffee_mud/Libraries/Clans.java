@@ -364,30 +364,18 @@ public class Clans extends StdLibrary implements ClanManager
             CMLib.commands().postChannel(mob,(String)channels.get(i),msg,true);
     }
 
-    public int getIntFromRole(int roleType)
-    {
-        switch(roleType)
-        {
-        case Clan.POS_APPLICANT: return 0;
-        case Clan.POS_MEMBER: return 1;
-        case Clan.POS_STAFF: return 2;
-        case Clan.POS_ENCHANTER: return 3;
-        case Clan.POS_TREASURER: return 4;
-        case Clan.POS_LEADER: return 5;
-        case Clan.POS_BOSS: return 6;
-
-        }
-        return 0;
-    }
-    
     public int getRoleFromName(int government, String position)
     {
         if((government<0)||(government>=Clan.GVT_DESCS.length))
             government=0;
+        position=position.trim();
         String[] roles=Clan.ROL_DESCS[government];
         for(int i=0;i<roles.length;i++)
+            if(roles[i].equalsIgnoreCase(position))
+            	return i;
+        for(int i=0;i<roles.length;i++)
             if(roles[i].startsWith(position.toUpperCase()))
-                return (int)CMath.pow(2,i-1);
+                return i;
         return -1;
     }
 }

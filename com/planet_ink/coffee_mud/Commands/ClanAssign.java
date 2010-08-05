@@ -107,7 +107,7 @@ public class ClanAssign extends StdCommand
 						if(skipChecks||CMLib.clans().goForward(mob,C,commands,Clan.FUNC_CLANASSIGN,true))
 						{
 						    int oldPos=M.getClanRole();
-							int maxInNewPos=Clan.ROL_MAX[C.getGovernment()][CMLib.clans().getIntFromRole(newPos)];
+							int maxInNewPos=Clan.ROL_MAX[C.getGovernment()][newPos];
 							Vector currentMembersInNewPosV=new Vector();
 							for(MemberRecord member : members)
 								if(member.role==newPos)
