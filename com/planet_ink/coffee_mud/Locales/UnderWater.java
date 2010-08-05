@@ -98,7 +98,7 @@ public class UnderWater extends StdRoom implements Drink
 				mob.tell("You are no longer thirsty.");
 			else
 			if(full)
-				mob.tell("You have drank all you can.");
+				mob.tell("You have drunk all you can.");
 		}
 		
 		if((msg.source().playerStats()!=null)
