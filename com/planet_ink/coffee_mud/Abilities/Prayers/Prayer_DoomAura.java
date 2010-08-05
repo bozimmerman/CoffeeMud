@@ -41,7 +41,7 @@ public class Prayer_DoomAura extends Prayer
 	public String displayText(){ return "(Doom Aura)";}
 	protected int canAffectCode(){return CAN_MOBS;}
 	protected int canTargetCode(){return CAN_MOBS;}
-	public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_CREATION;}
+	public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_CORRUPTION;}
 	public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_SELF;}
 	public long flags(){return Ability.FLAG_UNHOLY;}
 	String lastMessage=null;
