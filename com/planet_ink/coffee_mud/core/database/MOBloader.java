@@ -639,11 +639,10 @@ public class MOBloader
             {
                 String username=DB.getRes(R,"CMUSERID");
                 long lastDateTime=CMath.s_long(DBConnections.getRes(R,"CMDATE"));
-                int role=(int)DB.getLongRes(R,"CMCLRO");
                 int clanRole = (int)DBConnections.getLongRes(R,"CMCLRO");
                 if(clanRole >= Clan.POS_TOTAL)
                 	clanRole = CMath.bitNumber(clanRole); 
-                Clan.MemberRecord member = new Clan.MemberRecord(username,role,lastDateTime);
+                Clan.MemberRecord member = new Clan.MemberRecord(username,clanRole,lastDateTime);
                 members.addElement(member);
                 MOB M=CMLib.players().getPlayer(username);
                 if((M!=null)&&(M.lastTickedDateTime()>0))
