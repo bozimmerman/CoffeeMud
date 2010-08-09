@@ -251,6 +251,19 @@ public class DefaultPlayerAccount implements PlayerAccount
 		return players.contains(CMStrings.capitalizeAndLower(name));
 	}
 	
+	public void delPlayer(String name) 
+	{
+		players.remove(name);
+		try
+		{
+			for(String name1 : players)
+				if(name1.equalsIgnoreCase(name))
+					players.remove(name1);
+		}
+		catch(Exception e) {}
+		thinPlayers.clear();
+	}
+	
 	public void delPlayer(MOB mob) 
 	{
 		if(mob==fakePlayerM)

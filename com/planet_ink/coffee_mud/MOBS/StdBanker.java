@@ -33,7 +33,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("unchecked")
 public class StdBanker extends StdShopKeeper implements Banker
 {
 	public String ID(){return "StdBanker";}
@@ -41,7 +40,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 	protected double coinInterest=-0.008;
 	protected double itemInterest=-0.001;
 	protected double loanInterest=0.01;
-	protected static Hashtable bankTimes=new Hashtable();
+	protected static Hashtable<String,Long> bankTimes=new Hashtable<String,Long>();
 
 	public StdBanker()
 	{
@@ -171,14 +170,14 @@ public class StdBanker extends StdShopKeeper implements Banker
 	}
 	public List<Item> getDepositedItems(MOB mob)
 	{
-		if(mob==null) return new Vector();
+		if(mob==null) return new Vector<Item>();
 		return getDepositedItems((isSold(ShopKeeper.DEAL_CLANBANKER))?mob.getClanID():mob.Name());
 	}
 	public List<Item> getDepositedItems(String mob)
 	{
 		if((mob==null)||(mob.length()==0)) return new Vector<Item>();
 		List<PlayerData> V=getRawPDDepositInventory(mob);
-		Vector mine=new Vector();
+		Vector<Item> mine=new Vector<Item>();
 		for(int v=0;v<V.size();v++)
 		{
 			DatabaseEngine.PlayerData PD=(DatabaseEngine.PlayerData)V.get(v);
@@ -194,8 +193,8 @@ public class StdBanker extends StdShopKeeper implements Banker
 	public List<String> getAccountNames()
 	{
 		List<PlayerData> V=CMLib.database().DBReadData(bankChain());
-		HashSet h=new HashSet();
-		Vector mine=new Vector();
+		HashSet<String> h=new HashSet<String>();
+		Vector<String> mine=new Vector<String>();
 		for(int v=0;v<V.size();v++)
 		{
 			DatabaseEngine.PlayerData V2=(DatabaseEngine.PlayerData)V.get(v);
@@ -307,7 +306,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 				if(proceed)
 				{
 					List<PlayerData> bankDataV=CMLib.database().DBReadData(bankChain());
-					Vector userNames=new Vector();
+					Vector<String> userNames=new Vector<String>();
 					for(int v=0;v<bankDataV.size();v++)
 					{
 						DatabaseEngine.PlayerData dat=(DatabaseEngine.PlayerData)bankDataV.get(v);

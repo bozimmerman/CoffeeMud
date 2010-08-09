@@ -57,6 +57,12 @@ public interface PlayerAccount extends CMCommon, AccountStats, Modifiable
 	public void delPlayer(MOB mob);
 
 	/**
+	 * Removes a player of this name from this account.
+	 * @param name the name of the player to remove.
+	 */
+	public void delPlayer(String name);
+	
+	/**
 	 * Retrieves a fake account mob, for forum and 
 	 * other access systems not directly relayed to gameplay.
 	 * @return mob the fake player.

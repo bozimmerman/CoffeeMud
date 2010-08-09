@@ -6770,11 +6770,16 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
         {
             int showNumber=0;
             genName(mob,me,++showNumber,showFlag);
-            while((!me.Name().equals(oldName))&&(CMLib.players().playerExists(me.Name()))
-            &&(mob.session()!=null)&&(!mob.session().killFlag()))
+            me.setName(CMStrings.capitalizeAndLower(me.Name()));
+            while(
+            (!me.Name().equals(oldName))
+            &&(CMLib.players().playerExists(me.Name()))
+            &&(mob.session()!=null)
+            &&(!mob.session().killFlag()))
             {
                 mob.tell("The name given cannot be chosen, as it is already being used.");
                 genName(mob,me,showNumber,showFlag);
+                me.setName(CMStrings.capitalizeAndLower(me.Name()));
             }
             if(CMProps.getIntVar(CMProps.SYSTEMI_COMMONACCOUNTSYSTEM)>1)
             {
@@ -6871,22 +6876,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
         me.recoverPhyStats();
         me.resetToMaxState();
         if(!oldName.equals(me.Name()))
-        {
-            MOB fakeMe=(MOB)me.copyOf();
-            fakeMe.setName(oldName);
-            CMLib.database().DBDeleteMOB(fakeMe);
-            CMLib.database().DBCreateCharacter(me);
-            PlayerStats pstats = me.playerStats();
-            if(pstats != null)
-            {
-            	PlayerAccount account = pstats.getAccount();
-            	if(account != null)
-            	{
-            		account.delPlayer(fakeMe);
-            		account.addNewPlayer(me);
-            	}
-            }
-        }
+        	CMLib.database().DBPlayerNameChange(oldName, me);
         CMLib.database().DBUpdatePlayer(me);
         CMLib.database().DBUpdateFollowers(me);
     }
