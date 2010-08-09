@@ -62,7 +62,7 @@
 4 Mining
 4 Pottery
 4 Sculpting MASK=+CON 10
-4 Costuming REQUIRES=Tailoring +INT 12
+4 Costuming REQUIRES=Tailoring MASK=+INT 12
 4 Distilling REQUIRES=Cooking
 4 Weaving MASK=+WIS 10
 
