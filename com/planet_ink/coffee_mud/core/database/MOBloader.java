@@ -886,7 +886,7 @@ public class MOBloader
     	||(newName.trim().length()==0)
     	||(newName.indexOf('\'')>=0))
     		return;
-        DB.update("UPDATE CMCHAB SET CMUSERID='"+newName+"' WHERE CMCHAB='"+oldName+"'");
+        DB.update("UPDATE CMCHAB SET CMUSERID='"+newName+"' WHERE CMUSERID='"+oldName+"'");
         DB.update("UPDATE CMCHAR SET CMUSERID='"+newName+"' WHERE CMUSERID='"+oldName+"'");
         DB.update("UPDATE CMCHAR SET CMWORS='"+newName+"' WHERE CMWORS='"+oldName+"'");
         DB.update("UPDATE CMCHAR SET CMLEIG='"+newName+"' WHERE CMLEIG='"+oldName+"'");

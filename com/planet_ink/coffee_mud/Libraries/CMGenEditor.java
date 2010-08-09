@@ -6770,17 +6770,21 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
         {
             int showNumber=0;
             genName(mob,me,++showNumber,showFlag);
-            me.setName(CMStrings.capitalizeAndLower(me.Name()));
+            String newName=CMStrings.capitalizeAndLower(me.Name());
+            me.setName(oldName);
             while(
-            (!me.Name().equals(oldName))
-            &&(CMLib.players().playerExists(me.Name()))
+            (!newName.equals(oldName))
+            &&(CMLib.players().playerExists(newName))
             &&(mob.session()!=null)
             &&(!mob.session().killFlag()))
             {
                 mob.tell("The name given cannot be chosen, as it is already being used.");
                 genName(mob,me,showNumber,showFlag);
-                me.setName(CMStrings.capitalizeAndLower(me.Name()));
+                newName=CMStrings.capitalizeAndLower(me.Name());
+                me.setName(oldName);
             }
+            me.setName(newName);
+            
             if(CMProps.getIntVar(CMProps.SYSTEMI_COMMONACCOUNTSYSTEM)>1)
             {
             	String oldAccountName = ((me.playerStats()!=null)&&(me.playerStats().getAccount()!=null))?me.playerStats().getAccount().accountName():"";
