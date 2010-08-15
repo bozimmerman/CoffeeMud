@@ -964,7 +964,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 	            reRollStats(mob,mob.baseCharStats());
 	            mob.recoverCharStats();
 	            List<CharClass> V=classQualifies(mob,theme);
-	            if(V.size()>0)
+	            if((V.size()>0)||CMSecurity.isDisabled("CLASSES"))
 	            {
 	                StringBuffer classes=new StringBuffer("");
 	                listOfClasses = new StringBuffer("");

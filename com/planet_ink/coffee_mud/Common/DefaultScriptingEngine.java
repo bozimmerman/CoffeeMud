@@ -349,6 +349,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
         return newLine;
         
     }
+    
     public boolean endQuest(PhysicalAgent hostObj, MOB mob, String quest)
     {
         if(mob!=null)
@@ -413,7 +414,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
         return rawHost;
     }
 
-    public boolean isVar(String host, String var) {
+    public boolean isVar(String host, String var) 
+    {
         if(host.equalsIgnoreCase("*"))
         {
             String val=null;
@@ -9545,7 +9547,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                     if(t==null)
                     {
                     	t=parseBits(script,0,"CT");
-                    	for(int i=0;i<t.length;i++)
+                    	for(int i=1;i<t.length;i++)
                     		t[i]=CMLib.english().stripPunctuation(CMStrings.removeColors(t[i]));
                     }
                     boolean doIt=false;
