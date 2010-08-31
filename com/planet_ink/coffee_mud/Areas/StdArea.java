@@ -751,13 +751,15 @@ public class StdArea implements Area
 		if(senses>0) affectableStats.setSensesMask(affectableStats.sensesMask()|senses);
 		int disposition=phyStats().disposition()
 			&((Integer.MAX_VALUE-(PhyStats.IS_SLEEPING|PhyStats.IS_HIDDEN)));
-		if((affected instanceof Room)&&(CMLib.map().hasASky((Room)affected)))
+		if((affected instanceof Room)
+		&&(CMLib.map().hasASky((Room)affected)))
 		{
 		    Climate C=getClimateObj();
 			if((C==null)
-		    ||(C.weatherType((Room)affected)==Climate.WEATHER_BLIZZARD)
-		    ||(C.weatherType((Room)affected)==Climate.WEATHER_DUSTSTORM)
-		    ||(getTimeObj().getTODCode()==TimeClock.TIME_NIGHT))
+		    ||(((C.weatherType((Room)affected)==Climate.WEATHER_BLIZZARD)
+		    		||(C.weatherType((Room)affected)==Climate.WEATHER_DUSTSTORM))
+		    		&&(!CMSecurity.isDisabled("DARKWEATHER")))
+		    ||((getTimeObj().getTODCode()==TimeClock.TIME_NIGHT)&&(!CMSecurity.isDisabled("DARKNIGHTS"))))
 				disposition=disposition|PhyStats.IS_DARK;
 		}
 		if(disposition>0)
