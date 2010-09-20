@@ -95,9 +95,10 @@ command like ROM's "SCAN" for seeing in
 multiple rooms?</a></li>
         <li><a href="#q37">How can I make CoffeeMud support other
 human languages?</a></li>
+        <li><a href="#q38">How can I delete Classes I don't want?</a></li>
+        <li><a href="#q39">How can I delete Player Races I don't want?</a></li>
       </ul>
-      <a name="answers" id="answers">&nbsp;
-      </a>
+      <a name="answers" id="answers">&nbsp; </a>
       <h3><a name="q00" id="q00">What should I know to run
 a CoffeeMud?</a></h3>
       <p>Well, for starters, if
@@ -435,9 +436,10 @@ Regional Awareness skill. It is restricted
 in the base distribution, but can easily be made generally available to
 all players.&nbsp;</p>
       <p>If you want to do this
-programmatically, just open up the file resources/skills/allqualifylist.txt
+programmatically, just open up the file
+resources/skills/allqualifylist.txt
 and add a line like:</p>
-list therein:</p>
+list therein:
       <pre>1 Skill_RegionalAwareness<br /></pre>
       <p>If you want to do this
 through the MUDGrinder, you'll have to modify each and every one of
@@ -471,18 +473,47 @@ should have the appropriate behaviors and skills to make them a healer
 property. That last will make it so that the player is forced to pay
 the mob for his services, and makes sure that the mob is saved at the
 players home.</p>
-      <h3><a name="q35" id="q35">
-How can my players
+      <h3><a name="q35" id="q35">How can my players
 sell their raw gathered resources?</a></h3>
-      <h3><a name="q36" id="q36">
-How
+      <p>Yes. Put a healer mob up
+for sale at a shop. The healer mob
+should have the appropriate behaviors and skills to make them a healer
+(such as Healer, or NiceAbilities behaviors) and the Prop_Retainable
+property. That last will make it so that the player is forced to pay
+the mob for his services, and makes sure that the mob is saved at the
+players home.</p>
+      <h3><a name="q36" id="q36">How
 can I have a
 command like ROM's "SCAN" for seeing in
 multiple rooms?</a></h3>
-      <h3><a name="q37" id="q37">
-How can I make CoffeeMud
+      <p>Give every class the skill "Spell_Farsight" or
+"Skill_RegionalAwareness", depending on what you are after.
+&nbsp;Farsight lets them see into adjacent rooms. &nbsp;Regional
+Awareness lets them get see the gist of the entire outdoor area with
+little graphic characters.</p>
+      <h3><a name="q37" id="q37">How can I make CoffeeMud
 support other human languages?</a></h3>
-      <p></p>
+      <p>CoffeeMud supports other languages through a translation
+system which utilizes regular expressions. &nbsp;Check out the file
+resources/parser_en_TX.properties and
+resources/translation_en_TX.properties. &nbsp;The former translates
+text entered by the user, the later translates text sent TO the user.
+&nbsp;Experimenting with these features will get you there, one phrase
+at a time.</p>
+      <h3><a name="q38" id="q36">How can I delete Player Classes I
+don't want?</a></h3>
+      <p>From the MUDGrinder or Command Line, you simply need to modify
+each class you don't want and convert them into a Generic Class
+(GenClass). &nbsp;This will allow you to alter their availability to
+Never be available.</p>
+      <h3><a name="q39" id="q37">How can I delete Player Races I don't
+want?</a></h3>
+      <p>From the MUDGrinder or Command Line, you simply need to modify
+each race you don't want and convert them into a Generic Race
+(GenRace).
+&nbsp;This will allow you to alter their availability to Never be
+available, or available only from skills.</p>
+      <br />
       </td>
     </tr>
   </tbody>
