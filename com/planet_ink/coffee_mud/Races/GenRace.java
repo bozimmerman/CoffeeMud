@@ -835,7 +835,13 @@ public class GenRace extends StdRace
 		case 39: {
 					Vector aV=CMParms.parseCommas(val,true);
 					for(int v=0;v<aV.size();v++)
-					    getAgingChart()[v]=CMath.s_int((String)aV.elementAt(v));
+					{
+						int x=CMath.s_int((String)aV.elementAt(v));
+						if(x<0)
+						    getAgingChart()[v]=Integer.MAX_VALUE;
+						else
+						    getAgingChart()[v]=x;
+					}
 		    		break;
 				 }
 		case 40: disableFlags=CMath.s_int(val); break;

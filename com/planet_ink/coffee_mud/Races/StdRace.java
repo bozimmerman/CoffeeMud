@@ -776,7 +776,11 @@ public class StdRace implements Race
 		for(int i=0;i<aging.length;i++)
 		    aging[i]+=race2.getAgingChart()[i];
 		for(int i=0;i<aging.length;i++)
+		{
 		    aging[i]=aging[i]/2;
+		    if(aging[i]<0)
+		    	aging[i]=Integer.MAX_VALUE;
+		}
 
 		long race1worn=CMath.s_long(otherRace.getStat("WEAR"));
 		long race2worn=CMath.s_long(nonHuman.getStat("WEAR"));
