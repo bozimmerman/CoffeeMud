@@ -687,6 +687,10 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 
     public String getEmailAddress(Session session, boolean[] emailConfirmation) throws java.io.IOException
     {
+        if(CMProps.getVar(CMProps.SYSTEM_EMAILREQ).toUpperCase().startsWith("DISABLE"))
+        {
+        	return "";
+        }
         boolean emailPassword=((CMProps.getVar(CMProps.SYSTEM_EMAILREQ).toUpperCase().startsWith("PASS"))
 				 &&(CMProps.getVar(CMProps.SYSTEM_MAILBOX).length()>0));
 
