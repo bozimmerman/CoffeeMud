@@ -48,7 +48,7 @@ public interface CombatLibrary extends CMLibrary
     public void postDeath(MOB killerM, MOB deadM, CMMsg addHere);
     public boolean postAttack(MOB attacker, MOB target, Item weapon);
     public boolean postHealing(MOB healer, MOB target, Environmental tool, int messageCode, int healing, String allDisplayMessage);
-    public String replaceDamageTag(String str, int damage, int damageType);
+    public String replaceDamageTag(String str, int damage, int damageType, char sourceTargetSTO);
     public void postDamage(MOB attacker, MOB target, Environmental weapon, int damage, int messageCode, int damageType, String allDisplayMessage);
     public void postWeaponDamage(MOB source, MOB target, Item item, boolean success);
     public void processFormation(List<MOB>[] done, MOB leader, int level);

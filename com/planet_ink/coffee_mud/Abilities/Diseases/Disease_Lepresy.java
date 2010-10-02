@@ -71,7 +71,7 @@ public class Disease_Lepresy extends Disease
 						  msg.target(),
 						  msg.tool(),
 						  msg.sourceCode(),msg.sourceMessage(),
-						  msg.targetCode(),CMLib.combat().replaceDamageTag(msg.targetMessage(),1,0),
+						  msg.targetCode(),CMLib.combat().replaceDamageTag(msg.targetMessage(),1,0,'T'),
 						  msg.othersCode(),msg.othersMessage());
 			else
 			if((msg.tool()!=null)&&(msg.tool() instanceof Weapon))

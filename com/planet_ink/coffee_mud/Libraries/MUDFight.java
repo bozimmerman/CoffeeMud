@@ -37,6 +37,8 @@ import java.util.*;
 public class MUDFight extends StdLibrary implements CombatLibrary
 {
     public String ID(){return "MUDFight";}
+    static final char[] PARENS={'(',')'};
+    
     public String lastStr="";
     public long lastRes=0;
     public String[][] hitWordIndex=null;
@@ -346,26 +348,33 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 		return false;
 	}
 
-	public String replaceDamageTag(String str, int damage, int damageType)
+	public String replaceDamageTag(String str, int damage, int damageType, char sourceTargetSTO)
 	{
 		if(str==null) return null;
-		int replace=str.indexOf("<DAMAGE>");
-		if(replace>=0)
-		{
-			if(!CMProps.getVar(CMProps.SYSTEM_SHOWDAMAGE).equalsIgnoreCase("YES"))
-				return str.substring(0,replace)+standardHitWord(damageType,damage)+str.substring(replace+8);
-			return str.substring(0,replace)+standardHitWord(damageType,damage)+" ("+damage+")"+ str.substring(replace+8);
-		}
-        replace=str.indexOf("<DAMAGES>");
-        if(replace>=0)
+		final int replace=str.indexOf("<DAMAGE");
+		if(replace < 0)
+			return str;
+		if(str.length() < replace+9)
+			return str;
+		final boolean damages = (str.charAt(replace+7)=='S') && (str.charAt(replace+8)=='>');
+		final String showDamage = CMProps.getVar(CMProps.SYSTEM_SHOWDAMAGE);
+		final boolean showNumbers = showDamage.equalsIgnoreCase("YES")
+								||((sourceTargetSTO=='S')&&showDamage.equalsIgnoreCase("SOURCE"))
+								||((sourceTargetSTO=='T')&&showDamage.equalsIgnoreCase("TARGET"));
+		if(damages)
         {
-            String hitWord=standardHitWord(damageType,damage);
-            hitWord=CMStrings.replaceAll(hitWord,"(","");
-            hitWord=CMStrings.replaceAll(hitWord,")","");
-            if(!CMProps.getVar(CMProps.SYSTEM_SHOWDAMAGE).equalsIgnoreCase("YES"))
+            final String hitWord=CMStrings.deleteAllofAny(standardHitWord(damageType,damage),PARENS);
+			if(!showNumbers)
                 return str.substring(0,replace)+hitWord+str.substring(replace+9);
             return str.substring(0,replace)+hitWord+" ("+damage+")"+ str.substring(replace+9);
         }
+		else
+		if(str.charAt(replace+7)=='>')
+		{
+			if(!showNumbers)
+				return str.substring(0,replace)+standardHitWord(damageType,damage)+str.substring(replace+8);
+			return str.substring(0,replace)+standardHitWord(damageType,damage)+" ("+damage+")"+ str.substring(replace+8);
+		}
 		return str;
 	}
 
@@ -399,11 +408,11 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 							   msg.target(),
 							   msg.tool(),
 							   msg.sourceCode(),
-							   replaceDamageTag(msg.sourceMessage(),msg.value(),damageType),
+							   replaceDamageTag(msg.sourceMessage(),msg.value(),damageType,'S'),
 							   msg.targetCode(),
-							   replaceDamageTag(msg.targetMessage(),msg.value(),damageType),
+							   replaceDamageTag(msg.targetMessage(),msg.value(),damageType,'T'),
 							   msg.othersCode(),
-							   replaceDamageTag(msg.othersMessage(),msg.value(),damageType));
+							   replaceDamageTag(msg.othersMessage(),msg.value(),damageType,'O'));
 				R.send(target,msg);
 			}
 	}
@@ -573,11 +582,11 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 							   msg.target(),
 							   msg.tool(),
 							   msg.sourceCode(),
-							   replaceDamageTag(msg.sourceMessage(),msg.value(),damageType),
+							   replaceDamageTag(msg.sourceMessage(),msg.value(),damageType,'S'),
 							   msg.targetCode(),
-							   replaceDamageTag(msg.targetMessage(),msg.value(),damageType),
+							   replaceDamageTag(msg.targetMessage(),msg.value(),damageType,'T'),
 							   msg.othersCode(),
-							   replaceDamageTag(msg.othersMessage(),msg.value(),damageType));
+							   replaceDamageTag(msg.othersMessage(),msg.value(),damageType,'O'));
 				}
 				if((source.mayIFight(target))
 				&&(source.location()==room)

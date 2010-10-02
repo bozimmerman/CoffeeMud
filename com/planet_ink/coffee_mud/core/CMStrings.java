@@ -100,16 +100,29 @@ public class CMStrings
         ||(str.length()==0)
         ||(!containsAny(str,theseChars)))
             return str;
-        char[] newChars = null;
+        final char[] newChars = str.toCharArray();
         for(int i=str.length()-1;i>=0;i--)
         	if(contains(theseChars,str.charAt(i)))
 	        {
-	        	if(newChars==null) newChars=str.toCharArray();
 	        	newChars[i]=with;
 	        }
-        if(newChars != null)
-        	return new String(newChars);
-        return str;
+    	return new String(newChars);
+    }
+    
+    public final static String deleteAllofAny(final String str, final char[] theseChars)
+    {
+        if((str==null)
+        ||(theseChars==null)
+        ||(str.length()==0)
+        ||(!containsAny(str,theseChars)))
+            return str;
+        final StringBuilder buf=new StringBuilder(str);
+        for(int i=buf.length()-1;i>=0;i--)
+        	if(contains(theseChars,buf.charAt(i)))
+	        {
+    			buf.deleteCharAt(i);
+	        }
+    	return buf.toString();
     }
     
     public final static String replaceAll(String str, final String thisStr, final String withThisStr)
