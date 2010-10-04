@@ -755,11 +755,12 @@ public class StdArea implements Area
 		&&(CMLib.map().hasASky((Room)affected)))
 		{
 		    Climate C=getClimateObj();
-			if((C==null)
-		    ||(((C.weatherType((Room)affected)==Climate.WEATHER_BLIZZARD)
-		    		||(C.weatherType((Room)affected)==Climate.WEATHER_DUSTSTORM))
-		    		&&(!CMSecurity.isDisabled("DARKWEATHER")))
-		    ||((getTimeObj().getTODCode()==TimeClock.TIME_NIGHT)&&(!CMSecurity.isDisabled("DARKNIGHTS"))))
+			if(((C==null)
+			    ||(((C.weatherType((Room)affected)==Climate.WEATHER_BLIZZARD)
+			    		||(C.weatherType((Room)affected)==Climate.WEATHER_DUSTSTORM))
+			    		&&(!CMSecurity.isDisabled("DARKWEATHER")))
+			    ||((getTimeObj().getTODCode()==TimeClock.TIME_NIGHT)&&(!CMSecurity.isDisabled("DARKNIGHTS"))))
+			&&((disposition&PhyStats.IS_LIGHTSOURCE)==0))
 				disposition=disposition|PhyStats.IS_DARK;
 		}
 		if(disposition>0)
