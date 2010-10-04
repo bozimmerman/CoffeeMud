@@ -723,6 +723,7 @@ public class CMath
                 case '<':
                 case '>':
                 case '-':
+                case '%':
                 case '*':
                 case '\\':
                 case '/':
@@ -742,6 +743,7 @@ public class CMath
                 case '+': finalValue+=curValue; break;
                 case '-': finalValue-=curValue; break;
                 case '*': finalValue*=curValue; break;
+                case '%': finalValue%=curValue; break;
                 case '/':
                 case '\\': finalValue/=curValue; break;
                 case '?': finalValue= ((curValue-finalValue+0.5) * rand.nextDouble()) + finalValue; break;
@@ -843,6 +845,7 @@ public class CMath
 	            }
 	            case '+':
 	            case '-':
+                case '%':
 	            case '*':
 	            case '\\':
 	            case '/':
@@ -861,6 +864,7 @@ public class CMath
 	            {
 	            case '+':
 	            case '-':
+                case '%':
 	            case '*':
 	            case '?':
                 case '<':
@@ -909,6 +913,7 @@ public class CMath
     				{
     	                case '+': finalValue+=curValue; break;
     	                case '-': finalValue-=curValue; break;
+    	                case '%': finalValue%=curValue; break;
     	                case '*': finalValue*=curValue; break;
     	                case '/': finalValue/=curValue; break;
     	                case '?': finalValue= ((curValue-finalValue+0.5) * rand.nextDouble()) + finalValue; break;
