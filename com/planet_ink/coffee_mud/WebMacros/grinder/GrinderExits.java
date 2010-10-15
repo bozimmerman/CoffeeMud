@@ -40,7 +40,7 @@ public class GrinderExits
       "HASALOCK","DEFAULTSLOCKED","KEYNAME","ISREADABLE",
       "READABLETEXT","ISCLASSRESTRICTED","RESTRICTEDCLASSES",
       "ISALIGNMENTRESTRICTED","RESTRICTEDALIGNMENTS",
-      " MISCTEXT","ISGENERIC","DOORNAME","IMAGE"};
+      " MISCTEXT","ISGENERIC","DOORNAME","IMAGE","OPENTICKS"};
     
 	public static String dispositions(Physical P, ExternalHTTPRequests httpReq, java.util.Map<String,String> parms)
 	{
@@ -159,6 +159,9 @@ public class GrinderExits
 				case 24: // image
 				    X.setImage(old);
 				    break;
+				case 25:
+					X.setOpenDelayTicks(CMath.s_int(old));
+					break;
 				}
 			}
 			

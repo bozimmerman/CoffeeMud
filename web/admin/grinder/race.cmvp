@@ -260,6 +260,10 @@
 			<TD WIDTH=25%><FONT COLOR=YELLOW>Cultural Abilities: </FONT></TD>
 			<TD WIDTH=66%><FONT COLOR=WHITE SIZE=-1>@RaceData?CABLE&FONT=<FONT COLOR=WHITE SIZE=-2>@</FONT></TD>
 		</TR>
+		<TR>
+			<TD WIDTH=25%><FONT COLOR=YELLOW>Aging Chart: </FONT></TD>
+			<TD WIDTH=66%><FONT COLOR=WHITE>@RaceData?AGING@</FONT></TD>
+		</TR>
         <TR>
             <TD><FONT COLOR=YELLOW>Help Entry: </FONT></TD>
             <TD><TEXTAREA ROWS=10 COLS=55 NAME=GENHELP>@RaceData?GENHELP@</TEXTAREA></TD>

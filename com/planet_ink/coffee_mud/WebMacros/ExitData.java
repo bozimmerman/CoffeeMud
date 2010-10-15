@@ -44,7 +44,7 @@ public class ExitData extends StdWebMacro
         "HASALOCK","DEFAULTSLOCKED","KEYNAME","ISREADABLE",
         "READABLETEXT","ISCLASSRESTRICTED","RESTRICTEDCLASSES",
         "ISALIGNMENTRESTRICTED","RESTRICTEDALIGNMENTS",
-        "MISCTEXT","ISGENERIC","DOORNAME","IMAGE"};
+        "MISCTEXT","ISGENERIC","DOORNAME","IMAGE","OPENTICKS"};
 	public static String dispositions(Physical P,
 									  boolean firstTime,
 									  ExternalHTTPRequests httpReq,
@@ -96,7 +96,7 @@ public class ExitData extends StdWebMacro
 				X=CMClass.getExit(newClassID);
 
 		boolean firstTime=(!httpReq.isRequestParameter("ACTION"))
-					||(!(httpReq.getRequestParameter("ACTION")).equals("MODIFYEXIT"))
+					||(!httpReq.getRequestParameter("ACTION").equals("MODIFYEXIT"))
 					||(((httpReq.isRequestParameter("CHANGEDCLASS"))&&(httpReq.getRequestParameter("CHANGEDCLASS")).equals("true")));
 
 		if(X==null) return "@break@";
@@ -237,6 +237,11 @@ public class ExitData extends StdWebMacro
 				break;
 			case 24: // image
 				if(firstTime) old=X.rawImage();
+				str.append(old);
+				break;
+			case 25: // open ticks
+				if((firstTime)||(old==null)||(old.length()==0)) 
+					old=Integer.toString(X.openDelayTicks());
 				str.append(old);
 				break;
 			}
