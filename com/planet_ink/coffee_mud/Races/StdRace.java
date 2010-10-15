@@ -1019,7 +1019,7 @@ public class StdRace implements Race
 			racialAbilityMap=new Hashtable<Integer,List<Ability>>();
 			for(int i=0;i<racialAbilityNames().length;i++)
 			{
-				CMLib.ableMapper().addCharAbilityMapping(ID(),
+				CMLib.ableMapper().addRaceAbilityMapping(ID(),
 											 racialAbilityLevels()[i],
 											 racialAbilityNames()[i],
 											 racialAbilityProficiencies()[i],

@@ -191,6 +191,26 @@ public class CMAble extends StdLibrary implements AbilityMapper
 									  String extraMasks)
 	{ addCharAbilityMapping(ID,qualLevel,ability,defaultProficiency,maxProficiency,defaultParam,autoGain,secret,new Vector(),extraMasks);}
 
+	public void addRaceAbilityMapping(String ID,
+									  int qualLevel,
+									  String ability,
+									  int defaultProficiency,
+									  String defaultParam,
+									  boolean autoGain,
+									  boolean secret)
+	{ 
+		delCharAbilityMapping(ID,ability);
+    	if(CMSecurity.isDisabled("ABILITY_"+ID.toUpperCase())) return;
+    	Map<String, AbilityMapping> ableMap=completeAbleMap.get(ID);
+		if(ableMap == null)
+		{
+			ableMap=new SHashtable<String,AbilityMapping>();
+			completeAbleMap.put(ID,ableMap);
+		}
+		AbilityMapping able = makeAbilityMapping(ID,qualLevel,ability,defaultProficiency,100,defaultParam,autoGain,secret, new Vector(),"",null);
+		addClassAbility(ability,ableMap,able);
+	}
+
     public void addCharAbilityMapping(String ID,
                                       int qualLevel,
                                       String ability,

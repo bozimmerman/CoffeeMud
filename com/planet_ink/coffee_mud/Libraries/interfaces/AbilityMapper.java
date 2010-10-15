@@ -99,6 +99,8 @@ public interface AbilityMapper extends CMLibrary
     public void addCharAbilityMapping(String ID, int qualLevel, String ability, int defaultProficiency, 
                                       int maxProficiency, String defaultParam, boolean autoGain, boolean secret,
                                       List<String> preReqSkillsList, String extraMask, Integer[] costOverrides);
+    public void addRaceAbilityMapping(String ID, int qualLevel, String ability, int defaultProficiency, 
+			  						  String defaultParam, boolean autoGain, boolean secret);
     public void delCharAbilityMapping(String ID, String ability);
     
 	public void addPreRequisites(String ID, List<String> preReqSkillsList, String extraMask);
