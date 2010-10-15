@@ -403,8 +403,7 @@ public class CMAble extends StdLibrary implements AbilityMapper
 
 	public void addClassAbility(String ability, Map<String, AbilityMapping> ableMap, AbilityMapping able)
 	{
-		String ID = able.ID;
-    	if(CMSecurity.isDisabled("ABILITY_"+ID.toUpperCase())) return;
+    	if(CMSecurity.isDisabled("ABILITY_"+able.abilityName.toUpperCase())) return;
 		ableMap.put(ability,able);
 
 		int qualLevel = able.qualLevel;
@@ -429,14 +428,14 @@ public class CMAble extends StdLibrary implements AbilityMapper
 			revT = new TreeMap<String, AbilityMapping>();
 			reverseAbilityMap.put(ability,revT);
 		}
-		if(!revT.containsKey(ID)) 
-			revT.put(ID, able);
+		if(!revT.containsKey(able.ID)) 
+			revT.put(able.ID, able);
 		
 		// archons get everything
 		int arc_level=getQualifyingLevel("Archon",true,ability);
 		if(((arc_level<0)||((qualLevel>=0)&&(qualLevel<arc_level)))
-		&&(!ID.equalsIgnoreCase("Archon"))
-		&&(!ID.equalsIgnoreCase("All")))
+		&&(!able.ID.equalsIgnoreCase("Archon"))
+		&&(!able.ID.equalsIgnoreCase("All")))
 			addCharAbilityMapping("Archon",qualLevel,ability,true);
 	}
 	

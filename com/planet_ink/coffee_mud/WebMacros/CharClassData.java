@@ -110,7 +110,7 @@ public class CharClassData extends StdWebMacro
             int maxLvl=Integer.MIN_VALUE;
             for(AbilityMapper.AbilityMapping able : data1)
             {
-                aID=able.ID;
+                aID=able.abilityName;
                 int qlvl=CMLib.ableMapper().getQualifyingLevel(E.ID(), false, aID);
                 if(qlvl>maxLvl) maxLvl=qlvl;
                 if(qlvl<minLvl) minLvl=qlvl;

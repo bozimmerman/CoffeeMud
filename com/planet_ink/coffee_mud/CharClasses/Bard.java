@@ -271,7 +271,7 @@ public class Bard extends StdCharClass
                     										 false);
 			for(AbilityMapper.AbilityMapping able : V)
 			{
-				Ability A=CMClass.getAbility(able.ID);
+				Ability A=CMClass.getAbility(able.abilityName);
 				if((A!=null)
 				&&((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_SONG)
 				&&(!CMLib.ableMapper().getDefaultGain(ID(),true,A.ID())))

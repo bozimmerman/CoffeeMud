@@ -637,8 +637,8 @@ public class GenCharClass extends StdCharClass
 		List<AbilityMapper.AbilityMapping> V=CMLib.ableMapper().getUpToLevelListings(ID(),Integer.MAX_VALUE,true,false);
 		for(AbilityMapper.AbilityMapping able : V)
 		{
-			String AID=able.ID;
-			AbilityMapper.AbilityMapping newMAP=new AbilityMapper.AbilityMapping(AID);
+			String AID=able.abilityName;
+			AbilityMapper.AbilityMapping newMAP=new AbilityMapper.AbilityMapping(ID());
 			newMAP.abilityName = AID;
 			newMAP.qualLevel = CMLib.ableMapper().getQualifyingLevel(ID(),false,AID); 
 			newMAP.defaultProficiency = CMLib.ableMapper().getDefaultProficiency(ID(),false,AID);

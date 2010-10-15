@@ -539,38 +539,23 @@ public class StdCharClass implements CharClass
         CR.setStat("ASTATE",CMLib.coffeeMaker().getCharStateStr(CS));
 
         List<AbilityMapper.AbilityMapping> data1=CMLib.ableMapper().getUpToLevelListings(ID(),Integer.MAX_VALUE,true,false);
-        String aID=null;
-        DVector completeSet=new DVector(9);
-        for(AbilityMapper.AbilityMapping able : data1)
-        {
-            aID=able.ID;
-            completeSet.addElement(aID,
-                                   Integer.valueOf(CMLib.ableMapper().getQualifyingLevel(ID(),false,aID)),
-                                   Integer.valueOf(CMLib.ableMapper().getDefaultProficiency(ID(),false,aID)),
-                                   Boolean.valueOf(CMLib.ableMapper().getDefaultGain(ID(),false,aID)),
-                                   Boolean.valueOf(CMLib.ableMapper().getSecretSkill(ID(),false,aID)),
-                                   CMLib.ableMapper().getDefaultParm(ID(),false,aID),
-                                   CMLib.ableMapper().getPreReqStrings(ID(),false,aID),
-                                   CMLib.ableMapper().getExtraMask(ID(),false,aID),
-                                   Integer.valueOf(CMLib.ableMapper().getMaxProficiency(ID(),false,aID)));
-        }
-
-        if(completeSet.size()>0)
-            CR.setStat("NUMCABLE",""+completeSet.size());
+        if(data1.size()>0)
+            CR.setStat("NUMCABLE",""+data1.size());
         else
             CR.setStat("NUMCABLE","");
-        for(int i=0;i<completeSet.size();i++)
+        for(int i=0;i<data1.size();i++)
         {
-            CR.setStat("GETCABLELVL"+i,completeSet.elementAt(i,2).toString());
-            CR.setStat("GETCABLEPROF"+i,completeSet.elementAt(i,3).toString());
-            CR.setStat("GETCABLEGAIN"+i,completeSet.elementAt(i,4).toString());
-            CR.setStat("GETCABLESECR"+i,completeSet.elementAt(i,5).toString());
-            CR.setStat("GETCABLEPARM"+i,completeSet.elementAt(i,6).toString());
-            CR.setStat("GETCABLEPREQ"+i,completeSet.elementAt(i,7).toString());
-            CR.setStat("GETCABLEMASK"+i,completeSet.elementAt(i,8).toString());
-            CR.setStat("GETCABLEMAXP"+i,completeSet.elementAt(i,9).toString());
+        	AbilityMapper.AbilityMapping able = data1.get(i);
+            CR.setStat("GETCABLELVL"+i,Integer.toString(able.qualLevel));
+            CR.setStat("GETCABLEPROF"+i,Integer.toString(able.defaultProficiency));
+            CR.setStat("GETCABLEGAIN"+i,Boolean.toString(able.autoGain));
+            CR.setStat("GETCABLESECR"+i,Boolean.toString(able.isSecret));
+            CR.setStat("GETCABLEPARM"+i,able.defaultParm);
+            CR.setStat("GETCABLEPREQ"+i,able.originalSkillPreReqList);
+            CR.setStat("GETCABLEMASK"+i,able.extraMask==null?"":able.extraMask);
+            CR.setStat("GETCABLEMAXP"+i,Integer.toString(able.maxProficiency));
             // GETCABLE -- MUST BE LAST --
-            CR.setStat("GETCABLE"+i,completeSet.elementAt(i,1).toString());
+            CR.setStat("GETCABLE"+i,able.abilityName);
         }
 
         HashSet H=disallowedWeaponClasses(null);

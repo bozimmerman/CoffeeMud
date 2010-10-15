@@ -151,6 +151,8 @@ public class GrinderClasses
         C.setStat("LVLPRAC",(old==null)?"0":old);
         old=httpReq.getRequestParameter("LVLATT");
         C.setStat("LVLATT",(old==null)?"0":old);
+        old=httpReq.getRequestParameter("ATTATT");
+        C.setStat("ATTATT",(old==null)?"0":old);
         old=httpReq.getRequestParameter("FSTTRAN");
         C.setStat("FSTTRAN",(old==null)?"0":old);
         old=httpReq.getRequestParameter("FSTPRAC");
