@@ -1667,13 +1667,27 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
                     C.execute(mob,new XVector("WIZINV"),0);
             }
             showTheNews(mob);
-            mob.bringToLife(mob.location(),false);
+            Room startRoom = mob.location();
+            if(startRoom==null)
+            {
+            	Log.errOut("CharCreation",mob.name()+" has no location.. sending to start room");
+            	startRoom = mob.getStartRoom();
+            	if(startRoom == null) 
+            		startRoom = CMLib.map().getStartRoom(mob);
+            	
+            }
+            mob.bringToLife(startRoom,false);
             CMLib.coffeeTables().bump(mob,CoffeeTableRow.STAT_LOGINS);
-            mob.location().showOthers(mob,mob.location(),CMMsg.MASK_ALWAYS|CMMsg.MSG_ENTER,"<S-NAME> appears!");
+            startRoom.showOthers(mob,startRoom,CMMsg.MASK_ALWAYS|CMMsg.MSG_ENTER,"<S-NAME> appears!");
         }
         else
         {
         	mob=CMLib.players().getLoadPlayer(login);
+        	if((mob == null) || (session == null))
+        	{
+            	Log.errOut("CharCreation",login+" does not exist ("+(session!=null)+")! FAIL!");
+            	return LoginResult.NO_LOGIN;
+        	}
         	mob.setSession(session);
         	session.setMob(mob);
             if(isExpired(mob.playerStats().getAccount(),session,mob.playerStats().getAccountExpiration())) 
