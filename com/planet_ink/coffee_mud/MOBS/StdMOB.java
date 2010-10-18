@@ -2282,6 +2282,7 @@ public class StdMOB implements MOB
 
 			switch(msg.sourceMinor())
 			{
+			case CMMsg.TYP_LIFE: CMLib.commands().handleComeToLife(this,msg); break;
 			case CMMsg.TYP_PANIC: CMLib.commands().postFlee(this,""); break;
 			case CMMsg.TYP_EXPCHANGE: CMLib.leveler().handleExperienceChange(msg); break;
             case CMMsg.TYP_FACTIONCHANGE:
@@ -2477,6 +2478,9 @@ public class StdMOB implements MOB
             &&(msg.sourceMinor()==CMMsg.TYP_DEATH)
             &&(location()!=null))
                 CMLib.combat().handleObserveDeath(this,victim,msg);
+			else
+			if(msg.sourceMinor()==CMMsg.TYP_LIFE)
+				CMLib.commands().handleObserveComesToLife(this,msg.source(),msg);
 		}
 
         int num=numItems();

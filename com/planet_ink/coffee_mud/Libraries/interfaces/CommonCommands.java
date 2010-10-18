@@ -74,8 +74,10 @@ public interface CommonCommands extends CMLibrary
     public void handleBeingHeld(CMMsg msg);
     public void lookAtExits(Room room, MOB mob);
     public void lookAtExitsShort(Room room, MOB mob);
+    public void handleObserveComesToLife(MOB observer, MOB lifer, CMMsg msg);
 	public boolean handleUnknownCommand(MOB mob, List<String> command);
     public void handleIntroductions(MOB speaker, MOB me, String said);
+    public void handleComeToLife(MOB mob, CMMsg msg);
     public void tickAging(MOB mob);
     public int tickManaConsumption(MOB mob, int manaConsumeCounter);
 }

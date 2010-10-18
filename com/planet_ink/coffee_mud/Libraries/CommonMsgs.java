@@ -405,6 +405,16 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
                 sniffingmob.tell(sniffedmob.displayName(sniffingmob)+" reeks of noxious odors.");
         }
     }
+    
+    public void handleObserveComesToLife(MOB observer, MOB lifer, CMMsg msg)
+    {
+    	
+    }
+
+    public void handleComeToLife(MOB mob, CMMsg msg)
+    {
+    	
+    }
 
     public void handleSit(CMMsg msg)
     {
