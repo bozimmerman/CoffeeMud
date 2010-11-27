@@ -216,7 +216,11 @@ public class DBConnections
 						if(errMsg.toLowerCase().indexOf("access denied")>=0)
 						{
 							Log.errOut("DBConnections",e.getMessage());
-							return null;
+							if(connections.size()==0)
+							{
+								disconnected=true;
+								return null;
+							}
 						}
 						if(errMsg.indexOf("java.io.EOFException")<0)
 							Log.errOut("DBConnections",e);
