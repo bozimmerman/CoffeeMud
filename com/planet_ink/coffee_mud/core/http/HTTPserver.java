@@ -299,6 +299,11 @@ public class HTTPserver extends Thread implements MudHost
 					Log.errOut(getName(),t.getMessage());
 				try 
 				{
+					if(servsock==null)
+					{
+						sock = null;
+						break;
+					}
 					if(servsock.isClosed())
 					{
 						Log.sysOut(getName(),"Reconnecting.");

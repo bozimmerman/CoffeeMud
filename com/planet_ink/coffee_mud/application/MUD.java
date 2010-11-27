@@ -193,7 +193,7 @@ public class MUD extends Thread implements MudHost
 
 			DBConnection DBTEST=currentDBconnector.DBFetch();
 			if(DBTEST!=null) currentDBconnector.DBDone(DBTEST);
-			if((currentDBconnector.amIOk())&&(CMLib.database().isConnected()))
+			if((DBTEST!=null)&&(currentDBconnector.amIOk())&&(CMLib.database().isConnected()))
 			{
 				Log.sysOut(Thread.currentThread().getName(),"Connected to "+currentDBconnector.service());
 				databases.add(currentDBconnector);
@@ -233,16 +233,23 @@ public class MUD extends Thread implements MudHost
 		    for(int s=0;s<serverNames.size();s++)
 		    {
 		        String serverName=(String)serverNames.elementAt(s);
-    			HTTPserver webServerThread = new HTTPserver(CMLib.mud(0),serverName,0);
-    			webServerThread.start();
-    			webServers.add(webServerThread);
-    			int numToDo=webServerThread.totalPorts();
-    			while((--numToDo)>0)
-    			{
-    				webServerThread = new HTTPserver(CMLib.mud(0),"pub",numToDo);
-    				webServerThread.start();
-    				webServers.add(webServerThread);
-    			}
+		        try
+		        {
+	    			HTTPserver webServerThread = new HTTPserver(CMLib.mud(0),serverName,0);
+	    			webServerThread.start();
+	    			webServers.add(webServerThread);
+	    			int numToDo=webServerThread.totalPorts();
+	    			while((--numToDo)>0)
+	    			{
+	    				webServerThread = new HTTPserver(CMLib.mud(0),"pub",numToDo);
+	    				webServerThread.start();
+	    				webServers.add(webServerThread);
+	    			}
+		        }
+		        catch(Exception e)
+		        {
+		        	Log.errOut("MUD","HTTP server "+serverName+"NOT started: "+e.getMessage());
+		        }
 		    }
 			CMLib.registerLibrary(new ProcessHTTPrequest(null,(webServers.size()>0)?(HTTPserver)webServers.get(0):null,null,true));
 		}

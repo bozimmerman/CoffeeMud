@@ -49,6 +49,10 @@ public class VFSLoader
         try
         {
             D=DB.DBFetch();
+            if(D==null)
+            {
+            	return null;
+            }
             ResultSet R=D.query("SELECT * FROM CMVFS");
             while(R.next())
             {

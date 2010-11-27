@@ -210,7 +210,19 @@ public class DBConnections
 					ThisDB=new DBConnection(this,dbClass,dbService,dbUser,dbPass,reuse);
 					connections.addElement(ThisDB);
 				}catch(Exception e){
-					if((e.getMessage()==null)||(e.getMessage().indexOf("java.io.EOFException")<0))
+					final String errMsg = e.getMessage();
+					if(errMsg!=null)
+					{
+						if(errMsg.toLowerCase().indexOf("access denied")>=0)
+						{
+							Log.errOut("DBConnections",e.getMessage());
+							return null;
+						}
+						if(errMsg.indexOf("java.io.EOFException")<0)
+							Log.errOut("DBConnections",e);
+					}
+					else
+					if(e.getMessage()==null)
 						Log.errOut("DBConnections",e);
 					ThisDB=null;
 				}
