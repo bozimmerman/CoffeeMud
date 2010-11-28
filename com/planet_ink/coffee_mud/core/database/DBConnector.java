@@ -95,6 +95,10 @@ public class DBConnector
 		if(dbConnections!=null) return dbConnections.deregisterDriver();
 		return false;
 	}
+	public boolean isFakeDB()
+	{
+		return (dbConnections!=null)?dbConnections.isFakeDB():false;
+	}
 	
 	public int update(String[] updateStrings){ return (dbConnections!=null)?dbConnections.update(updateStrings):0;}
 	public int update(String updateString){ return (dbConnections!=null)?dbConnections.update(new String[]{updateString}):0;}

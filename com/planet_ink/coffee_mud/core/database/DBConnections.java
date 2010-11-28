@@ -64,7 +64,8 @@ public class DBConnections
 	protected boolean reuse=false;
 	/** last time resetconnections called (or resetconnections) */
 	private long lastReset=0;
-
+	/** check for whether these connections are fakedb */
+	private Boolean isFakeDB = null;
 
 	/**
 	 * Initialize this class.  Must be called at first,
@@ -368,10 +369,34 @@ public class DBConnections
 		consecutiveFailures=0;
 		disconnected=false;
 		lockedUp=false;
-
+		if(isFakeDB==null)
+		{
+			isFakeDB=Boolean.valueOf(ThisDB.isFakeDB());
+		}
 		return ThisDB;
 	}
 
+	public boolean isFakeDB()
+	{
+		if(isFakeDB==null)
+		{
+			DBConnection c = DBFetchAny("",false);
+			if(c!=null)
+			{
+				if(isFakeDB==null)
+				{
+					isFakeDB=c.isFakeDB();
+				}
+				c.doneUsing("");
+			}
+		}
+		if(isFakeDB!=null)
+		{
+			return isFakeDB.booleanValue();
+		}
+		return false;
+	}
+	
 	public DBConnection DBFetchPrepared(String SQL)
 	{
 		return DBFetchAny(SQL,true);
