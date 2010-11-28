@@ -170,6 +170,9 @@ public class DBConnections
 							if(vals[t]==null)
 								DBToUse.getPreparedStatement().setNull(t+1, updateTypes[t].intValue());
 							else
+							if(vals[t] instanceof ByteArrayInputStream)
+								DBToUse.getPreparedStatement().setAsciiStream(t+1, (ByteArrayInputStream)vals[t]);
+							else
 								DBToUse.getPreparedStatement().setObject(t+1, vals[t], updateTypes[t].intValue());
 					Result=DBToUse.update("",0);
 				}
