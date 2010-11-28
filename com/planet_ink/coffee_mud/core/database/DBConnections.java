@@ -98,7 +98,6 @@ public class DBConnections
 	}
 
 	/**
-	 *
 	 * <br><br><b>Usage: update("UPDATE...");</b>
 	 * @param updateStrings	the update SQL commands
 	 * @return int	the responseCode, or -1
@@ -148,6 +147,62 @@ public class DBConnections
 		return Result;
 	}
 
+
+	/**
+	 * <br><br><b>Usage: update("UPDATE...");</b>
+	 * @param updateStrings	the update SQL commands
+	 * @return int	the responseCode, or -1
+	 */
+	public int update(String updateString, Integer[] updateTypes, Object[][] values)
+	{
+		DBConnection DBToUse=null;
+		int Result=-1;
+		try
+		{
+			DBToUse=DBFetchPrepared(updateString);
+			for(int i=0;i<values.length;i++)
+			{
+				Object[] vals=values[i];
+				try
+				{
+					for(int t=0;t<updateTypes.length;t++)
+						if(updateTypes[t]!=null)
+							if(vals[t]==null)
+								DBToUse.getPreparedStatement().setNull(t+1, updateTypes[t].intValue());
+							else
+								DBToUse.getPreparedStatement().setObject(t+1, vals[t], updateTypes[t].intValue());
+					Result=DBToUse.update("",0);
+				}
+				catch(Exception sqle)
+				{
+	                if(sqle instanceof java.io.EOFException)
+	                {
+	                    Log.errOut("DBConnections",""+sqle);
+	                    DBDone(DBToUse);
+	                    return -1;
+	                }
+	                if(sqle instanceof SQLException)
+	                {
+	                    // queued by the connection for retry
+	                }
+				}
+				if(Result<0)
+				{
+					Log.errOut("DBConnections",""+DBToUse.getLastError()+"/"+updateString);
+				}
+			}
+		}
+		catch(Exception e)
+		{
+			enQueueError(updateString,""+e,""+0);
+			reportError();
+			Log.errOut("DBConnections",""+e);
+		}
+		if(DBToUse!=null)
+			DBDone(DBToUse);
+		return Result;
+	}
+	
 	/**
 	 * Return the number of connections made.
 	 *
@@ -230,11 +285,22 @@ public class DBConnections
 			{
 				try{
 					for(DBConnection conn : connections)
+					{
+						if(prepared)
+						{
+							if( conn.usePrepared(SQL))
+							{
+								ThisDB=conn;
+								break;
+							}
+						}
+						else
 						if(conn.use(""))
 						{
 							ThisDB=conn;
 							break;
 						}
+					}
 				}catch(Exception e){}
 			}
 			if((ThisDB!=null)&&(ThisDB.isProbablyDead()||ThisDB.isProbablyLockedUp()||(!ThisDB.ready())))
@@ -288,7 +354,10 @@ public class DBConnections
 			}
 			else
 			{
-				ThisDB.use(SQL);
+				if(prepared)
+					ThisDB.usePrepared(SQL);
+				else
+					ThisDB.use(SQL);
 			}
 		}
 

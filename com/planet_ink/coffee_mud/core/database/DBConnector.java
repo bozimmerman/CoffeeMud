@@ -98,6 +98,10 @@ public class DBConnector
 	
 	public int update(String[] updateStrings){ return (dbConnections!=null)?dbConnections.update(updateStrings):0;}
 	public int update(String updateString){ return (dbConnections!=null)?dbConnections.update(new String[]{updateString}):0;}
+	public int update(String updateString, Integer[] updateTypes, Object[][] values)
+	{
+		return (dbConnections!=null)?dbConnections.update(updateString, updateTypes, values):0;
+	}
 	
 	public int queryRows(String queryString){ return (dbConnections!=null)?dbConnections.queryRows(queryString):0;}
 

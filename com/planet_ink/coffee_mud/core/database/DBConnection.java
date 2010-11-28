@@ -70,6 +70,9 @@ public class DBConnection
 	/** for tracking the last sql statement made */
 	protected String lastSQL = "";
 	
+	/** for remembering whether this is a fakeDB connection */
+	private Boolean isFakeDB = null;
+	
 	/** 
 	 * construction
 	 * 
@@ -118,6 +121,13 @@ public class DBConnection
 		}
 		catch(Exception e){}
 		return "";
+	}
+	
+	public boolean isFakeDB()
+	{
+		if(isFakeDB==null)
+			isFakeDB = Boolean.valueOf(catalog().equalsIgnoreCase("FAKEDB"));
+		return isFakeDB.booleanValue();
 	}
 	
 	/** 
@@ -347,6 +357,9 @@ public class DBConnection
 				if(myStatement!=null)
 					responseCode=myStatement.executeUpdate(updateString);
 				else
+				if(myPreparedStatement!=null)
+					responseCode=myPreparedStatement.executeUpdate();
+				else
 					lastError="DBConnection Statement not open.";
 				sqlserver=false;
 			}
@@ -358,7 +371,7 @@ public class DBConnection
 					failuresInARow++;
 				lastError=""+sqle;
                 Log.errOut("DBConnection",updateString+": "+sqle);
-				if(myParent!=null)
+				if((myParent!=null) && (myStatement != null))
 					myParent.enQueueError(updateString,""+sqle,""+(retryNum+1));
 				if(isProbablyDead())
 					if(myParent!=null)
