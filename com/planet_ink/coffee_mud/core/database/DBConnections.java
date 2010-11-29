@@ -154,7 +154,7 @@ public class DBConnections
 	 * @param updateStrings	the update SQL commands
 	 * @return int	the responseCode, or -1
 	 */
-	public int update(String updateString, Integer[] updateTypes, Object[][] values)
+	public int updateWithClobs(String updateString, String[][] values)
 	{
 		DBConnection DBToUse=null;
 		int Result=-1;
@@ -166,15 +166,11 @@ public class DBConnections
 				Object[] vals=values[i];
 				try
 				{
-					for(int t=0;t<updateTypes.length;t++)
-						if(updateTypes[t]!=null)
+					for(int t=0;t<values.length;t++)
 							if(vals[t]==null)
-								DBToUse.getPreparedStatement().setNull(t+1, updateTypes[t].intValue());
+								DBToUse.getPreparedStatement().setNull(t+1, java.sql.Types.CLOB);
 							else
-							if(vals[t] instanceof ByteArrayInputStream)
-								DBToUse.getPreparedStatement().setAsciiStream(t+1, (ByteArrayInputStream)vals[t]);
-							else
-								DBToUse.getPreparedStatement().setObject(t+1, vals[t], updateTypes[t].intValue());
+								DBToUse.getPreparedStatement().setObject(t+1, vals[t]);
 					Result=DBToUse.update("",0);
 				}
 				catch(Exception sqle)

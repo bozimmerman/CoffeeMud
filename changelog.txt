@@ -2290,3 +2290,4 @@ Special/Reserved Quest called holidays can be added to/modified on an area-by-ar
 21.ACT_PROG P clarified in the Scriptable document.
 22.New DISABLE flags: DARKNIGHTS, DARKWEATHER
 23.EMAILREQ can now be set to disabled.
+24.FakeDB now supports PreparedStatements, and Apache Derby support is now complete.

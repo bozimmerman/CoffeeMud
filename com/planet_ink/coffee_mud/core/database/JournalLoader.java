@@ -422,7 +422,7 @@ public class JournalLoader
 		subject = DB.injectionClean(subject);
 		msg = DB.injectionClean(msg);
 		
-		DB.update("UPDATE CMJRNL SET CMSUBJ='"+subject+"', CMMSGT='"+msg+"', CMATTR="+newAttributes+" WHERE CMJKEY='"+key+"'");
+		DB.updateWithClobs("UPDATE CMJRNL SET CMSUBJ='"+subject+"', CMMSGT=?, CMATTR="+newAttributes+" WHERE CMJKEY='"+key+"'",new String[][]{{msg}});
 	}
 	
 	public void DBUpdateJournal(String Journal, JournalsLibrary.JournalEntry entry)
@@ -446,13 +446,13 @@ public class JournalLoader
 				 +"CMATTR="+entry.attributes+" "
 				 +"CMDATA='"+entry.data+"' "
 				 +"WHERE CMJRNL='"+Journal+"' AND CMJKEY='"+entry.key+"'");
-		DB.update("UPDATE CMJRNL SET "
+		DB.updateWithClobs("UPDATE CMJRNL SET "
 				 +"CMUPTM="+entry.update+", "
 				 +"CMIMGP='"+entry.msgIcon+"', "
 				 +"CMVIEW="+entry.views+", "
 				 +"CMREPL="+entry.replies+", "
-				 +"CMMSGT='"+entry.msg+"' "
-				 +"WHERE CMJRNL='"+Journal+"' AND CMJKEY='"+entry.key+"'");
+				 +"CMMSGT=? "
+				 +"WHERE CMJRNL='"+Journal+"' AND CMJKEY='"+entry.key+"'",new String[][]{{entry.msg}});
 	}
 	
 	public void DBTouchJournalMessage(String key)
@@ -695,7 +695,7 @@ public class JournalLoader
 			 +"^yReply from^N: "+from+"%0D"
 			 +"^yDate/Time ^N: "+CMLib.time().date2String(now)+"%0D"
 			 +message;
-			DB.update("UPDATE CMJRNL SET CMUPTM="+now+", CMMSGT='"+message+"', CMREPL="+replies+" WHERE CMJKEY='"+oldkey+"'");
+			DB.updateWithClobs("UPDATE CMJRNL SET CMUPTM="+now+", CMMSGT=?, CMREPL="+replies+" WHERE CMJKEY='"+oldkey+"'",new String[][]{{message}});
 		}
 	}
 	
@@ -747,7 +747,7 @@ public class JournalLoader
 				entry.date=now;
 			if(entry.update==0)
 				entry.update=now;
-			DB.update(
+			DB.updateWithClobs(
 			"INSERT INTO CMJRNL ("
 			+"CMJKEY, "
 			+"CMJRNL, "
@@ -777,7 +777,7 @@ public class JournalLoader
 			+",'"+entry.msgIcon
 			+"',"+entry.views
 			+","+entry.replies
-			+",'"+entry.msg+"')");
+			+",?)",new String[][]{{entry.msg}});
 			if((entry.parent!=null)&&(entry.parent.length()>0))
 			{
 				// this constitutes a threaded reply -- update the counter

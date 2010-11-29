@@ -123,7 +123,7 @@ public class VFSLoader
             Log.errOut("VFSLoader","Unable to save "+filename+" due to illegal data type: "+data.getClass().getName());
             return;
         }
-        DB.update(
+        DB.updateWithClobs(
          "INSERT INTO CMVFS ("
          +"CMFNAM, "
          +"CMDTYP, "
@@ -135,8 +135,8 @@ public class VFSLoader
          +""+(bits&CMFile.VFS_MASK_MASKSAVABLE)+","
          +""+System.currentTimeMillis()+","
          +"'"+creator+"',"
-         +"'"+buf+"'"
-         +")");
+         +"?"
+         +")",new String[][]{{buf}});
     }
     
     
