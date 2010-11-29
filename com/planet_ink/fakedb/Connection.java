@@ -92,8 +92,9 @@ public class Connection implements java.sql.Connection
 
    public java.sql.PreparedStatement prepareStatement(String sql) throws java.sql.SQLException
    {
-      log("prepareStatement");
-      return null;
+	  PreparedStatement p = new PreparedStatement(this);
+	  p.prepare(sql);
+	  return p;
    }
    
    public java.sql.PreparedStatement prepareStatement(String sql,int a) throws java.sql.SQLException
