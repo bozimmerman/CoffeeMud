@@ -993,15 +993,15 @@ public class Backend
     * @return
     * @throws java.sql.SQLException
     */
-   protected java.sql.ResultSet constructScan(Statement s,
-		                                      String tableName,
-		                                      List<String> cols,
-		                                      List<Backend.FakeCondition> conditions,
-		                                      String[] orderVars,
-		                                      String[] orderModifiers) 
-   throws java.sql.SQLException
+   protected java.sql.ResultSet constructScan(final ImplSelectStatement stmt) throws java.sql.SQLException
    {
-      FakeTable table=(FakeTable)fakeTables.get(tableName);
+	  final Statement s=stmt.s;
+	  final String tableName=stmt.tableName;
+	  final List<String> cols=stmt.cols;
+	  final List<Backend.FakeCondition> conditions=stmt.conditions;
+	  final String[] orderVars=stmt.orderVars;
+	  final String[] orderModifiers=stmt.orderModifiers;	   
+	  final FakeTable table=(FakeTable)fakeTables.get(tableName);
       if (table==null) throw new java.sql.SQLException("unknown table "+tableName);
       int[] showCols;
       if((cols.size()==0)||(cols.contains("*")))
@@ -1052,14 +1052,98 @@ public class Backend
    }
    
    /**
+    * Parameters to execute an insert statement
+    * @author bzimmerman
+    */
+   public static class ImplInsertStatement
+   {
+	   public ImplInsertStatement(String tableName, String[] columns, String[] sqlValues)
+	   {
+		   this.tableName = tableName;
+		   this.columns = columns;
+		   this.sqlValues = sqlValues;
+	   }
+	   public final String tableName;
+	   public final String[] columns;
+	   public final String[] sqlValues;
+   }
+   
+   /**
+    * Parameters to execute an update statement
+    * @author bzimmerman
+    */
+   public static class ImplUpdateStatement
+   {
+	   public ImplUpdateStatement(final String tableName, final List<FakeCondition> conditions, final String[] columns, final String[] sqlValues)
+	   {
+		   this.tableName = tableName;
+		   this.columns = columns;
+		   this.sqlValues = sqlValues;
+		   this.conditions = conditions;
+	   }
+	   public final String tableName;
+	   public final String[] columns;
+	   public final String[] sqlValues;
+	   public final List<FakeCondition> conditions;
+   }
+
+   /**
+    * Parameters to execute an select statement
+    * @author bzimmerman
+    */
+   public static class ImplSelectStatement
+   {
+	   public ImplSelectStatement(final Statement s,
+			   					  final String tableName,
+			   					  final List<String> cols,
+			   					  final List<Backend.FakeCondition> conditions,
+			   					  final String[] orderVars,
+			   					  final String[] orderModifiers)
+	   {
+		   this.s=s;
+		   this.tableName=tableName;
+		   this.cols=cols;
+		   this.conditions=conditions;
+		   this.orderVars=orderVars;
+		   this.orderModifiers=orderModifiers;
+	   }
+	   
+	   final Statement s;
+	   final String tableName;
+	   final List<String> cols;
+	   final List<Backend.FakeCondition> conditions;
+	   final String[] orderVars;
+	   final String[] orderModifiers;
+   }
+   
+   /**
+    * Parameters to execute an delete statement
+    * @author bzimmerman
+    */
+   public static class ImplDeleteStatement
+   {
+	   public ImplDeleteStatement(final String tableName, final List<FakeCondition> conditions)
+	   {
+		   this.tableName = tableName;
+		   this.conditions = conditions;
+	   }
+	   public final String tableName;
+	   public final List<FakeCondition> conditions;
+   }
+   
+   /**
     * 
     * @param tableName
     * @param columns
     * @param dataValues
     * @throws java.sql.SQLException
     */
-   protected void insertValues(String tableName, String[] columns, String[] sqlValues) throws java.sql.SQLException
+   protected void insertValues(final ImplInsertStatement stmt) throws java.sql.SQLException
    {
+	  final String tableName=stmt.tableName;
+	  final String[] columns=stmt.columns;
+	  final String[] sqlValues=stmt.sqlValues;
+	  
       FakeTable fakeTable=(FakeTable)fakeTables.get(tableName);
       if (fakeTable==null) throw new java.sql.SQLException("unknown table "+tableName);
 
@@ -1110,13 +1194,13 @@ public class Backend
     * @param conditionValue
     * @throws java.sql.SQLException
     */
-   protected void deleteRecord(String tableName, List<FakeCondition> conditions) throws java.sql.SQLException
+   protected void deleteRecord(final ImplDeleteStatement stmt) throws java.sql.SQLException
    {
-      FakeTable fakeTable=(FakeTable)fakeTables.get(tableName);
+      FakeTable fakeTable=(FakeTable)fakeTables.get(stmt.tableName);
       if (fakeTable==null) 
-    	  throw new java.sql.SQLException("unknown table "+tableName);
+    	  throw new java.sql.SQLException("unknown table "+stmt.tableName);
 
-      fakeTable.deleteRecord(conditions);
+      fakeTable.deleteRecord(stmt.conditions);
    }
    
    /**
@@ -1128,8 +1212,13 @@ public class Backend
     * @param values
     * @throws java.sql.SQLException
     */
-   protected void updateRecord(String tableName, List<FakeCondition> conditions, String[] varNames, String[] sqlValues) throws java.sql.SQLException
+   protected void updateRecord(final ImplUpdateStatement stmt) throws java.sql.SQLException
    {
+	  final String tableName=stmt.tableName;
+	  final List<FakeCondition> conditions=stmt.conditions;
+	  final String[] varNames=stmt.columns;
+	  final String[] sqlValues=stmt.sqlValues;
+	  
       FakeTable fakeTable=(FakeTable)fakeTables.get(tableName);
       if (fakeTable==null) 
     	  throw new java.sql.SQLException("unknown table "+tableName);
