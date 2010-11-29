@@ -1302,14 +1302,16 @@ public class ProcessHTTPrequest implements CMRunnable, ExternalHTTPRequests
 					{
 						// got empty line, but no data yet!
 						contentLength=getContentLength(data);
-                        if(contentLength<0) return data;
+                        if(contentLength<0) 
+                        	return data;
 					}
 					else
 					{
 						String s=new String(out.toByteArray());
 						out=new ByteArrayOutputStream();
 						data.addElement(s);
-                        if(s.startsWith("GET ")||s.startsWith("MUD")) return data;
+                        if(s.startsWith("GET ")||s.startsWith("MUD")) 
+                        	return data;
 					}
 				}
 				else
