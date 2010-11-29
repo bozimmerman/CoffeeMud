@@ -97,6 +97,7 @@ public class ProcessHTTPrequest implements CMRunnable, ExternalHTTPRequests
 	private FileGrabber templateGrabber;
 	private boolean virtualPage;
 	private boolean completed=false;
+	private boolean debugMacros=false;
 
 	private Hashtable objects=null;
 
@@ -110,6 +111,7 @@ public class ProcessHTTPrequest implements CMRunnable, ExternalHTTPRequests
         pageGrabber=new FileGrabber(null);
         templateGrabber=new FileGrabber(null);
         processStartTime=System.currentTimeMillis();
+        debugMacros=CMSecurity.isDebugging("HTTPMACROS");
     }
 	public ProcessHTTPrequest(Socket a_sock,
 							  HTTPserver a_webServer,
@@ -126,6 +128,7 @@ public class ProcessHTTPrequest implements CMRunnable, ExternalHTTPRequests
 		webServer = a_webServer;
 		sock = a_sock;
 		isAdminServer = a_isAdminServer;
+        debugMacros=CMSecurity.isDebugging("HTTPMACROS");
 		if(webServer!=null)
 		{
 			pageGrabber=webServer.getPageGrabber();
@@ -207,6 +210,9 @@ public class ProcessHTTPrequest implements CMRunnable, ExternalHTTPRequests
 				case 500: status=S_500; break;
 				case 501: status=S_501; break;
 				}
+				if((err!=200)&&(CMSecurity.isDebugging("HTTPERR")))
+					Log.debugOut("ProcessHTTPRequest",inLine);
+						
 				return false;
 			}
 
@@ -707,12 +713,16 @@ public class ProcessHTTPrequest implements CMRunnable, ExternalHTTPRequests
                     String foundMacro=parseFoundMacro(s,i,false);
                     if((foundMacro!=null)&&(foundMacro.length()>0))
                     {
+                    	if(debugMacros) Log.debugOut("ProcessHTTPRequest", "Found macro: "+foundMacro);
                         if(foundMacro.startsWith("if?"))
                         {
                             int l=foundMacro.length()+2;
                             int v=myEndif(s,i+l);
                             if(v<0)
+                            {
+                            	if(debugMacros) Log.debugOut("ProcessHTTPRequest", "if without endif");
                                 s.replace(i,i+l,"[if without endif]");
+                            }
                             else
                             {
                                 int v2=myElse(s,i+l,v);
@@ -725,9 +735,12 @@ public class ProcessHTTPrequest implements CMRunnable, ExternalHTTPRequests
                                         foundMacro=foundMacro.substring(1);
                                         compare="false";
                                     }
+                                	if(debugMacros) Log.debugOut("ProcessHTTPRequest", "Found IF macro: "+foundMacro);
                                     String q=runMacro(foundMacro);
+                                	if(debugMacros) Log.debugOut("ProcessHTTPRequest", "Ran IF macro: "+foundMacro+"="+q);
                                     if((q!=null)&&(q.equalsIgnoreCase(compare)))
                                     {
+                                    	if(debugMacros) Log.debugOut("ProcessHTTPRequest", "Result IF macro: TRUE");
                                         if(v2>=0)
                                             s.replace(v2,v+7,"");
                                         else
@@ -736,6 +749,7 @@ public class ProcessHTTPrequest implements CMRunnable, ExternalHTTPRequests
                                     }
                                     else
                                     {
+                                    	if(debugMacros) Log.debugOut("ProcessHTTPRequest", "Result IF macro: FALSE");
                                         if(v2>=0)
                                             s.replace(i,v2+6,"");
                                         else
@@ -744,6 +758,7 @@ public class ProcessHTTPrequest implements CMRunnable, ExternalHTTPRequests
                                 }
                                 catch (HTTPRedirectException e)
                                 {
+                                	if(debugMacros) Log.debugOut("ProcessHTTPRequest", "if exception: "+e.getMessage());
                                     redirectTo = e.getMessage();
                                 }
                             }
@@ -854,6 +869,7 @@ public class ProcessHTTPrequest implements CMRunnable, ExternalHTTPRequests
                             {
                                 int l=foundMacro.length();
                                 String q=runMacro(foundMacro);
+                            	if(debugMacros) Log.debugOut("ProcessHTTPRequest", "Ran Macro: "+foundMacro+"="+q);
                                 if (q != null)
                                 {
                                     if((analLogging)&&(q.toUpperCase().indexOf("@BREAK@")>=0))
