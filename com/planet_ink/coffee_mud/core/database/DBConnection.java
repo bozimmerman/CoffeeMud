@@ -73,6 +73,8 @@ public class DBConnection
 	/** for remembering whether this is a fakeDB connection */
 	private Boolean isFakeDB = null;
 	
+	public static enum FetchType {EMPTY,STATEMENT,PREPAREDSTATEMENT};
+	
 	/** 
 	 * construction
 	 * 
@@ -211,6 +213,29 @@ public class DBConnection
 	
 	
 	/** 
+	 * set up this connection for use
+	 * 
+	 * <br><br><b>Usage:</b> useEmpty()
+	 * @param Opener	Any SQL string you'd like to send
+	 * @return boolean	The connection being used
+	 */
+	public synchronized boolean useEmpty()
+	{
+		if((!inUse)&&(ready())&&(!isProbablyDead()))
+		{
+			lastError=null;
+			myPreparedStatement=null;
+			sqlserver=true;
+			myStatement=null;
+			sqlserver=false;
+			useTime=System.currentTimeMillis();
+			inUse=true;
+			return true;
+		}
+		return false;
+	}
+	
+	/** 
 	 * set up this connection for use as a prepared statement
 	 * 
 	 * <br><br><b>Usage:</b> usePrepared("SQL String")
@@ -249,13 +274,47 @@ public class DBConnection
 		return false;
 	}
 	
+	
 	/** 
-	 * report this connection as being free
+	 * set up this connection for use as a prepared statement
+	 * Requires an already in use connection.
 	 * 
-	 * <br><br><b>Usage:</b> doneUsing("roll back");
-	 * @param Closer	Any SQL string you'd like to send
+	 * <br><br><b>Usage:</b> rePrepare("SQL String")
+	 * @param SQL	Any SQL string you'd like to use
+	 * @return boolean	The connection being used
 	 */
-	protected void doneUsing(String Closer)
+	public synchronized boolean rePrepare(String SQL)
+	{
+		if(inUse)
+		{
+			closeStatements("");
+			lastError=null;
+			try
+			{
+				myStatement=null;
+				sqlserver=true;
+				lastSQL=SQL;
+				myPreparedStatement=myConnection.prepareStatement(SQL);
+				sqlserver=false;
+			}
+			catch(SQLException e)
+			{
+				sqlserver=false;
+				myConnection=null;
+				failuresInARow++;
+				return false;
+			}
+		
+			sqlserver=false;
+			useTime=System.currentTimeMillis();
+			failuresInARow=0;
+			inUse=true;
+			return true;
+		}
+		return false;
+	}
+
+	protected void closeStatements(String Closer)
 	{
 		try
 		{
@@ -287,6 +346,17 @@ public class DBConnection
 		{
 			// not a real error?
 		}
+	}
+	
+	/** 
+	 * report this connection as being free
+	 * 
+	 * <br><br><b>Usage:</b> doneUsing("roll back");
+	 * @param Closer	Any SQL string you'd like to send
+	 */
+	protected void doneUsing(String Closer)
+	{
+		closeStatements(Closer);
 		if(!isReusable) close();
 		inUse=false;
 	}
@@ -340,6 +410,19 @@ public class DBConnection
 			myParent.clearErrors();
 		myResultSet=R;
 		return R;
+	}
+	
+	public void setPreparedClobs(String[] vals) throws SQLException
+	{
+		if(getPreparedStatement()==null)
+		{
+			return;
+		}
+		for(int t=0;t<vals.length;t++)
+			if(vals[t]==null)
+				getPreparedStatement().setNull(t+1, java.sql.Types.CLOB);
+			else
+				getPreparedStatement().setObject(t+1, vals[t]);
 	}
 	
 	/** 

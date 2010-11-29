@@ -422,7 +422,7 @@ public class JournalLoader
 		subject = DB.injectionClean(subject);
 		msg = DB.injectionClean(msg);
 		
-		DB.updateWithClobs("UPDATE CMJRNL SET CMSUBJ='"+subject+"', CMMSGT=?, CMATTR="+newAttributes+" WHERE CMJKEY='"+key+"'",new String[][]{{msg}});
+		DB.updateWithClobs("UPDATE CMJRNL SET CMSUBJ='"+subject+"', CMMSGT=?, CMATTR="+newAttributes+" WHERE CMJKEY='"+key+"'",msg);
 	}
 	
 	public void DBUpdateJournal(String Journal, JournalsLibrary.JournalEntry entry)
@@ -452,7 +452,8 @@ public class JournalLoader
 				 +"CMVIEW="+entry.views+", "
 				 +"CMREPL="+entry.replies+", "
 				 +"CMMSGT=? "
-				 +"WHERE CMJRNL='"+Journal+"' AND CMJKEY='"+entry.key+"'",new String[][]{{entry.msg}});
+				 +"WHERE CMJRNL='"+Journal+"' AND CMJKEY='"+entry.key+"'",
+				 entry.msg);
 	}
 	
 	public void DBTouchJournalMessage(String key)
@@ -695,7 +696,7 @@ public class JournalLoader
 			 +"^yReply from^N: "+from+"%0D"
 			 +"^yDate/Time ^N: "+CMLib.time().date2String(now)+"%0D"
 			 +message;
-			DB.updateWithClobs("UPDATE CMJRNL SET CMUPTM="+now+", CMMSGT=?, CMREPL="+replies+" WHERE CMJKEY='"+oldkey+"'",new String[][]{{message}});
+			DB.updateWithClobs("UPDATE CMJRNL SET CMUPTM="+now+", CMMSGT=?, CMREPL="+replies+" WHERE CMJKEY='"+oldkey+"'",message);
 		}
 	}
 	
@@ -777,7 +778,8 @@ public class JournalLoader
 			+",'"+entry.msgIcon
 			+"',"+entry.views
 			+","+entry.replies
-			+",?)",new String[][]{{entry.msg}});
+			+",?)",
+			entry.msg);
 			if((entry.parent!=null)&&(entry.parent.length()>0))
 			{
 				// this constitutes a threaded reply -- update the counter

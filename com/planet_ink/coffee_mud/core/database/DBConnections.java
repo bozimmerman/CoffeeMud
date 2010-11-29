@@ -2,6 +2,7 @@ package com.planet_ink.coffee_mud.core.database;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
+import com.planet_ink.coffee_mud.core.database.DBConnector.DBPreparedBatchEntry;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
 import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
@@ -148,30 +149,28 @@ public class DBConnections
 		return Result;
 	}
 
-
 	/**
-	 * <br><br><b>Usage: update("UPDATE...");</b>
+	 * <br><br><b>Usage: updateWithClobs("UPDATE...");</b>
 	 * @param updateStrings	the update SQL commands
 	 * @return int	the responseCode, or -1
 	 */
-	public int updateWithClobs(String updateString, String[][] values)
+	public int updateWithClobs(final List<DBPreparedBatchEntry> entries)
 	{
 		DBConnection DBToUse=null;
 		int Result=-1;
 		try
 		{
-			DBToUse=DBFetchPrepared(updateString);
-			for(int i=0;i<values.length;i++)
+			DBToUse=DBFetchEmpty();
+			for(final DBPreparedBatchEntry entry : entries)
 			{
-				Object[] vals=values[i];
 				try
 				{
-					for(int t=0;t<values.length;t++)
-							if(vals[t]==null)
-								DBToUse.getPreparedStatement().setNull(t+1, java.sql.Types.CLOB);
-							else
-								DBToUse.getPreparedStatement().setObject(t+1, vals[t]);
-					Result=DBToUse.update("",0);
+					DBToUse.rePrepare(entry.sql);
+					for(int ii=0;ii<entry.clobs.length;ii++)
+					{
+						DBToUse.setPreparedClobs(entry.clobs[ii]);
+						Result=DBToUse.update("",0);
+					}
 				}
 				catch(Exception sqle)
 				{
@@ -188,19 +187,41 @@ public class DBConnections
 				}
 				if(Result<0)
 				{
-					Log.errOut("DBConnections",""+DBToUse.getLastError()+"/"+updateString);
+					Log.errOut("DBConnections",""+DBToUse.getLastError()+"/"+entry.sql);
 				}
 			}
 		}
 		catch(Exception e)
 		{
-			enQueueError(updateString,""+e,""+0);
 			reportError();
 			Log.errOut("DBConnections",""+e);
 		}
 		if(DBToUse!=null)
 			DBDone(DBToUse);
 		return Result;
+	}
+	
+	/**
+	 * <br><br><b>Usage: updateWithClobs("UPDATE...");</b>
+	 * @param updateStrings	the update SQL commands
+	 * @return int	the responseCode, or -1
+	 */
+	public int updateWithClobs(String[] updateStrings, String[][][] values)
+	{
+		final LinkedList<DBPreparedBatchEntry> entries = new LinkedList<DBPreparedBatchEntry>();
+		for(int i=0;i<updateStrings.length;i++)
+			entries.add(new DBPreparedBatchEntry(updateStrings[i],values[i]));
+		return updateWithClobs(entries);
+	}
+	
+	/**
+	 * <br><br><b>Usage: updateWithClobs("UPDATE...");</b>
+	 * @param updateStrings	the update SQL commands
+	 * @return int	the responseCode, or -1
+	 */
+	public int updateWithClobs(String updateString, String[][] values)
+	{
+		return updateWithClobs(Arrays.asList(new DBPreparedBatchEntry(updateString,values)));
 	}
 	
 	/**
@@ -233,7 +254,7 @@ public class DBConnections
 	 */
 	public DBConnection DBFetch()
 	{
-		return DBFetchAny("",false);
+		return DBFetchAny("",DBConnection.FetchType.STATEMENT);
 	}
 
 	/**
@@ -246,7 +267,7 @@ public class DBConnections
 	 * @param prepared	whether the statement should be a prepared one
 	 * @return DBConnection	The DBConnection to use
 	 */
-	public DBConnection DBFetchAny(String SQL, boolean prepared)
+	public DBConnection DBFetchAny(final String SQL, final DBConnection.FetchType type)
 	{
 		DBConnection ThisDB=null;
 		while(ThisDB==null)
@@ -286,7 +307,7 @@ public class DBConnections
 				try{
 					for(DBConnection conn : connections)
 					{
-						if(prepared)
+						if(type==DBConnection.FetchType.PREPAREDSTATEMENT)
 						{
 							if( conn.usePrepared(SQL))
 							{
@@ -295,10 +316,21 @@ public class DBConnections
 							}
 						}
 						else
-						if(conn.use(""))
+						if(type==DBConnection.FetchType.STATEMENT)
 						{
-							ThisDB=conn;
-							break;
+							if(conn.use(""))
+							{
+								ThisDB=conn;
+								break;
+							}
+						}
+						else
+						{
+							if(conn.useEmpty())
+							{
+								ThisDB=conn;
+								break;
+							}
 						}
 					}
 				}catch(Exception e){}
@@ -354,10 +386,13 @@ public class DBConnections
 			}
 			else
 			{
-				if(prepared)
+				if(type==DBConnection.FetchType.PREPAREDSTATEMENT)
 					ThisDB.usePrepared(SQL);
 				else
+				if(type==DBConnection.FetchType.STATEMENT)
 					ThisDB.use(SQL);
+				else
+					ThisDB.useEmpty();
 			}
 		}
 
@@ -376,7 +411,7 @@ public class DBConnections
 	{
 		if(isFakeDB==null)
 		{
-			DBConnection c = DBFetchAny("",false);
+			DBConnection c = DBFetchAny("",DBConnection.FetchType.EMPTY);
 			if(c!=null)
 			{
 				if(isFakeDB==null)
@@ -395,7 +430,12 @@ public class DBConnections
 	
 	public DBConnection DBFetchPrepared(String SQL)
 	{
-		return DBFetchAny(SQL,true);
+		return DBFetchAny(SQL,DBConnection.FetchType.PREPAREDSTATEMENT);
+	}
+
+	public DBConnection DBFetchEmpty()
+	{
+		return DBFetchAny("",DBConnection.FetchType.EMPTY);
 	}
 
 	/**

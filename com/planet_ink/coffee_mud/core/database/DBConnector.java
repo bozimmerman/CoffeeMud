@@ -17,6 +17,7 @@ import java.sql.ResultSet;
 
 import java.io.PrintStream;
 import java.sql.SQLException;
+import java.util.List;
 /* 
    Copyright 2000-2010 Bo Zimmerman
 
@@ -43,6 +44,32 @@ public class DBConnector
 	private int numConnections=0;
 	private boolean doErrorQueueing=false;
 	private boolean newErrorQueueing=false;
+	
+	public static final class DBPreparedBatchEntry
+	{
+		public DBPreparedBatchEntry(final String sql)
+		{
+			this.sql=sql;
+			this.clobs=new String[][]{{}};
+		}
+		public DBPreparedBatchEntry(final String sql, final String[] clobs)
+		{
+			this.sql=sql;
+			this.clobs=new String[][]{clobs};
+		}
+		public DBPreparedBatchEntry(final String sql, final String clobs)
+		{
+			this.sql=sql;
+			this.clobs=new String[][]{{clobs}};
+		}
+		public DBPreparedBatchEntry(final String sql, final String[][] clobs)
+		{
+			this.sql=sql;
+			this.clobs=clobs;
+		}
+		public final String sql;
+		public final String[][] clobs;
+	}
 	
 	public DBConnector (){super();}
 	
@@ -100,12 +127,14 @@ public class DBConnector
 		return (dbConnections!=null)?dbConnections.isFakeDB():false;
 	}
 	
-	public int update(String[] updateStrings){ return (dbConnections!=null)?dbConnections.update(updateStrings):0;}
-	public int update(String updateString){ return (dbConnections!=null)?dbConnections.update(new String[]{updateString}):0;}
-	public int updateWithClobs(String updateString, String[][] values)
-	{
-		return (dbConnections!=null)?dbConnections.updateWithClobs(updateString, values):0;
-	}
+	public int update(final String[] updateStrings){ return (dbConnections!=null)?dbConnections.update(updateStrings):0;}
+	public int update(final String updateString){ return (dbConnections!=null)?dbConnections.update(new String[]{updateString}):0;}
+	public int updateWithClobs(String[] updateStrings, String[][][] values){ return (dbConnections!=null)?dbConnections.updateWithClobs(updateStrings,values):0;}
+	public int updateWithClobs(final List<DBPreparedBatchEntry> entries) { return (dbConnections!=null)?dbConnections.updateWithClobs(entries):0; }
+	public int updateWithClobs(final DBPreparedBatchEntry entry) { return updateWithClobs(entry.sql,entry.clobs); }
+	public int updateWithClobs(final String updateString, final String values) { return updateWithClobs(updateString, new String[][]{{values}}); }
+	public int updateWithClobs(final String updateString, final String[] values) { return updateWithClobs(updateString, new String[][]{values}); }
+	public int updateWithClobs(final String updateString, final String[][] values) { return (dbConnections!=null)?dbConnections.updateWithClobs(updateString, values):0; }
 	
 	public int queryRows(String queryString){ return (dbConnections!=null)?dbConnections.queryRows(queryString):0;}
 
@@ -118,6 +147,17 @@ public class DBConnector
 	 * @return DBConnection	The DBConnection to use
 	 */
 	public DBConnection DBFetch(){return (dbConnections!=null)?dbConnections.DBFetch():null;}
+	
+
+	/** 
+	 * Fetch a single, not in use DBConnection object.  Must be rePrepared afterwards 
+	 * You can then call DBConnection.query and DBConnection.update on this object.
+	 * The user must ALWAYS call DBDone when done with the object.
+	 * 
+	 * <br><br><b>Usage: DB=DBFetchEmpty();</b> 
+	 * @return DBConnection	The DBConnection to use
+	 */
+	public DBConnection DBFetchEmpty(){return (dbConnections!=null)?dbConnections.DBFetchEmpty():null;}
 	
     public int numConnectionsMade(){return (dbConnections!=null)?dbConnections.numConnectionsMade():0;}
 	public int numDBConnectionsInUse(){ return (dbConnections!=null)?dbConnections.numInUse():0;}

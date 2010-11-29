@@ -88,14 +88,14 @@ public class ClanLoader
 		String str="UPDATE CMCLAN SET "
 				+"CMDESC='"+C.getPremise()+"',"
 				+"CMACPT='"+C.getAcceptanceSettings()+"',"
-				+"CMPOLI='"+C.getPolitics()+"',"
+				+"CMPOLI=?,"
 				+"CMRCLL='"+C.getRecall()+"',"
 				+"CMDNAT='"+C.getDonation()+"',"
 				+"CMSTAT="+C.getStatus()+","
 				+"CMMORG='"+C.getMorgue()+"',"
 				+"CMTROP="+C.getTrophies()+""
 				+" WHERE CMCLID='"+C.clanID()+"'";
-		DB.update(str);
+		DB.updateWithClobs(str, C.getPolitics());
 	}
 
 	public void DBCreate(Clan C)
@@ -117,14 +117,14 @@ public class ClanLoader
 			+""+C.getType()+","
 			+"'"+C.getPremise()+"',"
 			+"'"+C.getAcceptanceSettings()+"',"
-			+"'"+C.getPolitics()+"',"
+			+"?,"
 			+"'"+C.getRecall()+"',"
 			+"'"+C.getDonation()+"',"
 			+""+C.getStatus()+","
 			+"'"+C.getMorgue()+"',"
 			+""+C.getTrophies()
 			+")";
-			DB.update(str);
+			DB.updateWithClobs(str, C.getPolitics());
 	}
 
 	public void DBDelete(Clan C)

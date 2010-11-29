@@ -116,7 +116,7 @@ public class StatLoader
 			Log.debugOut("StatLoader","Updating Stat  "+CMLib.time().date2String(startTime));
 		try
 		{
-			DB.update("UPDATE CMSTAT SET CMDATA='"+data+"' WHERE CMSTRT="+startTime);
+			DB.updateWithClobs("UPDATE CMSTAT SET CMDATA=? WHERE CMSTRT="+startTime, data);
 		}
 		catch(Exception sqle)
 		{
@@ -127,7 +127,7 @@ public class StatLoader
 	{
 		if(Log.debugChannelOn()&&(CMSecurity.isDebugging("CMSTAT")))
 			Log.debugOut("StatLoader","Creating Stat  "+CMLib.time().date2String(startTime));
-		DB.update(
+		DB.updateWithClobs(
 		 "INSERT INTO CMSTAT ("
 		 +"CMSTRT, "
 		 +"CMENDT, "
@@ -135,7 +135,7 @@ public class StatLoader
 		 +") values ("
 		 +""+startTime+","
 		 +""+endTime+","
-		 +"'"+data+"'"
-		 +")");
+		 +"?"
+		 +")", data);
 	}
 }

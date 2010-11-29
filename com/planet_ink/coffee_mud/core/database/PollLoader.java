@@ -111,31 +111,31 @@ public class PollLoader
                                 String results,
                                 long expiration)
     {
-        DB.update(
+        DB.updateWithClobs(
                 "UPDATE CMPOLL SET"
-                +" CMRESL='"+results+" '"
-                +" WHERE CMNAME='"+OldName+"'");
+                +" CMRESL=?"
+                +" WHERE CMNAME='"+OldName+"'", results+" ");
         
-        DB.update(
+        DB.updateWithClobs(
             "UPDATE CMPOLL SET"
             +"  CMNAME='"+name+"'"
             +", CMBYNM='"+player+"'"
             +", CMSUBJ='"+subject+"'"
-            +", CMDESC='"+description+" '"
-            +", CMOPTN='"+optionXML+" '"
+            +", CMDESC=?"
+            +", CMOPTN=?"
             +", CMFLAG="+flag
             +", CMQUAL='"+qualZapper+"'"
             +", CMEXPI="+expiration
-            +"  WHERE CMNAME='"+OldName+"'");
+            +"  WHERE CMNAME='"+OldName+"'", new String[][]{{description+" ", optionXML+" "}});
 
     }
     
     public void DBUpdate(String name,  String results)
     {
-        DB.update(
+        DB.updateWithClobs(
         "UPDATE CMPOLL SET"
-        +" CMRESL='"+results+" '"
-        +" WHERE CMNAME='"+name+"'");
+        +" CMRESL=?"
+        +" WHERE CMNAME='"+name+"'", results+" ");
     }
     
     public void DBDelete(String name)
@@ -156,7 +156,7 @@ public class PollLoader
                                 String results,
                                 long expiration)
     {
-        DB.update(
+        DB.updateWithClobs(
          "INSERT INTO CMPOLL ("
          +"CMNAME, "
          +"CMBYNM, "
@@ -171,12 +171,12 @@ public class PollLoader
          +"'"+name+"',"
          +"'"+player+"',"
          +"'"+subject+"',"
-         +"'"+description+"', "
-         +"'"+optionXML+"',"
+         +"?, "
+         +"?,"
          +""+flag+","
          +"'"+qualZapper+"',"
-         +"'"+results+" ',"
+         +"?,"
          +""+expiration+""
-         +")");
+         +")", new String[][]{{description,optionXML,results+" "}});
     }
 }

@@ -76,13 +76,14 @@ public class GCClassLoader
     
     public void DBCreateClass(String classID, String data)
     {
-        DB.update(
+        DB.updateWithClobs(
          "INSERT INTO CMCCAC ("
          +"CMCCID, "
          +"CMCDAT "
          +") values ("
          +"'"+classID+"',"
-         +"'"+data+" '"
-         +")");
+         +"?"
+         +")", 
+         data+" ");
     }
 }

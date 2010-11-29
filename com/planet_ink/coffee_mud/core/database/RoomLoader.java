@@ -2,6 +2,7 @@ package com.planet_ink.coffee_mud.core.database;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
+import com.planet_ink.coffee_mud.core.database.DBConnector.DBPreparedBatchEntry;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
 import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
@@ -889,7 +890,7 @@ public class RoomLoader
 		return contents;
     }
     
-    protected String getDBCreateItemString(String roomID, Item thisItem)
+    protected DBPreparedBatchEntry getDBCreateItemString(String roomID, Item thisItem)
     {
         boolean catalog=((roomID!=null)&&(roomID.startsWith("CATALOG_")));
 		thisItem.setExpirationDate(0); // saved items won't clear!
@@ -912,7 +913,7 @@ public class RoomLoader
 			if(dataI!=null)
 		        text+=dataI.data();
 		}
-		return
+		return new DBPreparedBatchEntry(
 		"INSERT INTO CMROIT ("
 		+"CMROID, "
 		+"CMITNM, "
@@ -929,16 +930,17 @@ public class RoomLoader
 		+"'"+itemID+"',"
 		+"'"+thisItem.ID()+"',"
 		+"'"+((container!=null)?(""+container):"")+"',"
-		+"'"+text+" ',"
+		+"?,"
 		+thisItem.basePhyStats().rejuv()+","
 		+thisItem.usesRemaining()+","
 		+thisItem.basePhyStats().level()+","
 		+thisItem.basePhyStats().ability()+","
-		+thisItem.basePhyStats().height()+")";
+		+thisItem.basePhyStats().height()+")",
+		text+" ");
     }
 	public void DBCreateThisItem(String roomID, Item thisItem)
 	{
-		DB.update(getDBCreateItemString(roomID,thisItem));
+		DB.updateWithClobs(getDBCreateItemString(roomID,thisItem));
 	}
 	
 	public void DBUpdateTheseItems(Room room, List<Item> items)
@@ -946,15 +948,15 @@ public class RoomLoader
 		if((!room.isSavable())||(room.amDestroyed())) return;
 		if(Log.debugChannelOn()&&(CMSecurity.isDebugging("CMROIT")||CMSecurity.isDebugging("DBROOMS")))
 			Log.debugOut("RoomLoader","Start item update for room "+room.roomID());
-		Vector<String> statements=new Vector<String>();
-		statements.addElement("DELETE FROM CMROIT WHERE CMROID='"+room.roomID()+"'");
+		LinkedList<DBPreparedBatchEntry> statements=new LinkedList<DBPreparedBatchEntry>();
+		statements.add(new DBPreparedBatchEntry("DELETE FROM CMROIT WHERE CMROID='"+room.roomID()+"'"));
 		for(int i=0;i<items.size();i++)
 		{
 			Item thisItem=(Item)items.get(i);
     		CMLib.map().registerWorldObjectLoaded(room.getArea(), room, thisItem);
-			statements.addElement(getDBCreateItemString(room.roomID(),thisItem));
+			statements.add(getDBCreateItemString(room.roomID(),thisItem));
 		}
-		DB.update(CMParms.toStringArray(statements));
+		DB.updateWithClobs(statements);
 		if(Log.debugChannelOn()&&(CMSecurity.isDebugging("CMROIT")||CMSecurity.isDebugging("DBROOMS")))
 			Log.debugOut("RoomLoader","Finished items update for room "+room.roomID());
 	}
@@ -971,8 +973,8 @@ public class RoomLoader
 		
 		if(Log.debugChannelOn()&&(CMSecurity.isDebugging("CMROEX")||CMSecurity.isDebugging("DBROOMS")))
 			Log.debugOut("RoomLoader","Starting exit update for room "+room.roomID());
-		Vector<String> statements=new Vector<String>();
-		statements.addElement("DELETE FROM CMROEX WHERE CMROID='"+room.roomID()+"'");
+		LinkedList<DBPreparedBatchEntry> statements=new LinkedList<DBPreparedBatchEntry>();
+		statements.add(new DBPreparedBatchEntry("DELETE FROM CMROEX WHERE CMROID='"+room.roomID()+"'"));
 		for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 		{
 			Exit thisExit=room.getRawExit(d);
@@ -985,7 +987,7 @@ public class RoomLoader
 			if((thisRoom!=null)||(thisExit!=null))
 			{
 	    		CMLib.map().registerWorldObjectLoaded(room.getArea(), room, thisExit);
-				statements.addElement(
+				statements.add(new DBPreparedBatchEntry(
 				"INSERT INTO CMROEX ("
 				+"CMROID, "
 				+"CMDIRE, "
@@ -996,8 +998,9 @@ public class RoomLoader
 				+"'"+room.roomID()+"',"
 				+d+","
 				+"'"+((thisExit==null)?" ":thisExit.ID())+"',"
-				+"'"+((thisExit==null)?" ":thisExit.text())+" ',"
-				+"'"+((thisRoom==null)?" ":thisRoom.roomID())+"')");
+				+"?,"
+				+"'"+((thisRoom==null)?" ":thisRoom.roomID())+"')",
+				((thisExit==null)?" ":thisExit.text())));
 			}
 		}
 		if(room instanceof GridLocale)
@@ -1028,7 +1031,7 @@ public class RoomLoader
 					StringBuffer exitStr=new StringBuffer("");
 					for(Iterator<String> a=oldStrs.iterator();a.hasNext();)
 						exitStr.append((String)a.next());
-					statements.addElement(
+					statements.add(new DBPreparedBatchEntry(
 					"INSERT INTO CMROEX ("
 					+"CMROID, "
 					+"CMDIRE, "
@@ -1039,22 +1042,23 @@ public class RoomLoader
 					+"'"+room.roomID()+"',"
 					+(256+(++ordinal))+","
 					+"'Open',"
-					+"'"+exitStr.toString()+"',"
-					+"'"+R.roomID()+"')");
+					+"?,"
+					+"'"+R.roomID()+"')",
+					exitStr.toString()));
 				}
 			}
 		}
-		DB.update(CMParms.toStringArray(statements));
+		DB.updateWithClobs(statements);
 		if(Log.debugChannelOn()&&(CMSecurity.isDebugging("CMROEX")||CMSecurity.isDebugging("DBROOMS")))
 			Log.debugOut("RoomLoader","Finished exit update for room "+room.roomID());
 	}
 
 	public void DBCreateThisMOB(String roomID, MOB thisMOB)
 	{
-		DB.update(getDBCreateMOBString(roomID,thisMOB));
+		DB.updateWithClobs(getDBCreateMOBString(roomID,thisMOB));
 	}
 	
-	public String getDBCreateMOBString(String roomID, MOB thisMOB)
+	public DBPreparedBatchEntry getDBCreateMOBString(String roomID, MOB thisMOB)
 	{
 		if(Log.debugChannelOn()&&(CMSecurity.isDebugging("CMROCH")||CMSecurity.isDebugging("DBROOMS")))
 			Log.debugOut("RoomLoader","Creating mob "+thisMOB.name()+" for room "+roomID);
@@ -1077,7 +1081,7 @@ public class RoomLoader
 		if((CMProps.getBoolVar(CMProps.SYSTEMB_MOBNOCACHE))&&(!catalog))
 		   thisMOB.setMiscText("%DBID>"+roomID+mobID.substring(mobID.indexOf('@')));
 		
-		return
+		return new DBPreparedBatchEntry(
 		"INSERT INTO CMROCH ("
 		+"CMROID, "
 		+"CMCHNM, "
@@ -1091,12 +1095,13 @@ public class RoomLoader
 		+"'"+roomID+"',"
 		+"'"+mobID+"',"
 		+"'"+CMClass.classID(thisMOB)+"',"
-		+"'"+thisMOB.text()+" ',"
+		+"?,"
 		+thisMOB.basePhyStats().level()+","
 		+thisMOB.basePhyStats().ability()+","
 		+thisMOB.basePhyStats().rejuv()+","
 		+"'"+ride+"'"
-		+")";
+		+")",
+		thisMOB.text()+" ");
 	}
 	
 	public void DBUpdateTheseMOBs(Room room, List<MOB> mobs)
@@ -1105,17 +1110,17 @@ public class RoomLoader
 		if(Log.debugChannelOn()&&(CMSecurity.isDebugging("CMROCH")||CMSecurity.isDebugging("DBROOMS")))
 			Log.debugOut("RoomLoader","Updating mobs for room "+room.roomID());
 		if(mobs==null) mobs=new Vector<MOB>();
-		Vector<String> statements=new Vector<String>();
-		statements.addElement("DELETE FROM CMROCH WHERE CMROID='"+room.roomID()+"'");
+		List<DBPreparedBatchEntry> statements=new LinkedList<DBPreparedBatchEntry>();
+		statements.add(new DBPreparedBatchEntry("DELETE FROM CMROCH WHERE CMROID='"+room.roomID()+"'"));
 		for(int m=0;m<mobs.size();m++)
 		{
 			MOB thisMOB=(MOB)mobs.get(m);
     		CMLib.map().registerWorldObjectLoaded(room.getArea(), room, thisMOB);
-			statements.addElement(getDBCreateMOBString(room.roomID(),thisMOB));
+			statements.add(getDBCreateMOBString(room.roomID(),thisMOB));
 		}
 		if(Log.debugChannelOn()&&(CMSecurity.isDebugging("CMROCH")||CMSecurity.isDebugging("DBROOMS")))
 			Log.debugOut("RoomLoader","Done updating mobs for room "+room.roomID());
-		DB.update(CMParms.toStringArray(statements));
+		DB.updateWithClobs(statements);
 	}
 
 	public void DBUpdateMOBs(Room room)
@@ -1147,14 +1152,15 @@ public class RoomLoader
 		if(Log.debugChannelOn()&&(CMSecurity.isDebugging("CMROOM")||CMSecurity.isDebugging("DBROOMS")))
 			Log.debugOut("RoomLoader","Start updating room "+room.roomID());
 		CMLib.map().registerWorldObjectLoaded(room.getArea(), room, room);
-		DB.update(
+		DB.updateWithClobs(
 		"UPDATE CMROOM SET "
 		+"CMLOID='"+CMClass.classID(room)+"',"
 		+"CMAREA='"+room.getArea().Name()+"',"
 		+"CMDESC1='"+room.displayText()+" ',"
-		+"CMDESC2='"+room.description()+" ',"
-		+"CMROTX='"+room.text()+" '"
-		+"WHERE CMROID='"+room.roomID()+"'");
+		+"CMDESC2=?,"
+		+"CMROTX=?"
+		+"WHERE CMROID='"+room.roomID()+"'",
+		new String[]{room.description()+" ",room.text()+" "});
 		if(CMProps.getBoolVar(CMProps.SYSTEMB_ROOMDNOCACHE))
 			room.setDescription("");
 		if(Log.debugChannelOn()&&(CMSecurity.isDebugging("CMROOM")||CMSecurity.isDebugging("DBROOMS")))
@@ -1221,7 +1227,7 @@ public class RoomLoader
 
 		CMLib.map().registerWorldObjectLoaded(A, null, A);
 		
-		DB.update(
+		DB.updateWithClobs(
 		"INSERT INTO CMAREA ("
 		+"CMAREA,"
 		+"CMTYPE,"
@@ -1235,9 +1241,10 @@ public class RoomLoader
 		+"'"+A.ID()+"',"
 		+""+A.climateType()+","
 		+"'"+A.getSubOpList()+"',"
-		+"'"+A.description()+" ',"
-		+"'"+A.text()+" ',"
-		+A.getTechLevel()+")");
+		+"?,"
+		+"?,"
+		+A.getTechLevel()+")",
+		new String[][]{{A.description()+" ",A.text()+" "}});
         A.setAreaState(Area.STATE_ACTIVE);
 		if(Log.debugChannelOn()&&(CMSecurity.isDebugging("CMAREA")||CMSecurity.isDebugging("DBROOMS")))
 			Log.debugOut("RoomLoader","Done creating area "+A.name());
@@ -1249,16 +1256,17 @@ public class RoomLoader
 			Log.debugOut("RoomLoader","Updating area "+A.name());
 		boolean ignoreType=CMSecurity.isDisabled("FATAREAS")||CMSecurity.isDisabled("THINAREAS");
 		CMLib.map().registerWorldObjectLoaded(A, null, A);
-		DB.update(
+		DB.updateWithClobs(
 		"UPDATE CMAREA SET "
 		+"CMAREA='"+A.Name()+"',"
 		+(ignoreType?"":"CMTYPE='"+A.ID()+"',")
 		+"CMCLIM="+A.climateType()+","
 		+"CMSUBS='"+A.getSubOpList()+"',"
-		+"CMDESC='"+A.description()+" ',"
-		+"CMROTX='"+A.text()+" ',"
+		+"CMDESC=?,"
+		+"CMROTX=?,"
 		+"CMTECH="+A.getTechLevel()+" "
-		+"WHERE CMAREA='"+keyName+"'");
+		+"WHERE CMAREA='"+keyName+"'",
+		new String[]{A.description()+" ",A.text()+" "});
 		if(Log.debugChannelOn()&&(CMSecurity.isDebugging("CMAREA")||CMSecurity.isDebugging("DBROOMS")))
 			Log.debugOut("RoomLoader","Done updating area "+A.name());
 	}
@@ -1330,7 +1338,7 @@ public class RoomLoader
 		if(Log.debugChannelOn()&&(CMSecurity.isDebugging("CMROOM")||CMSecurity.isDebugging("DBROOMS")))
 			Log.debugOut("RoomLoader","Creating new room "+room.roomID());
 		CMLib.map().registerWorldObjectLoaded(room.getArea(), room, room);
-		DB.update(
+		DB.updateWithClobs(
 		"INSERT INTO CMROOM ("
 		+"CMROID,"
 		+"CMLOID,"
@@ -1343,8 +1351,9 @@ public class RoomLoader
 		+"'"+CMClass.classID(room)+"',"
 		+"'"+room.getArea().Name()+"',"
 		+"'"+room.displayText()+" ',"
-		+"'"+room.description()+" ',"
-		+"'"+room.text()+" ')");
+		+"?,"
+		+"?)",
+		new String[][]{{room.description()+" ",room.text()+" "}});
 		if(Log.debugChannelOn()&&(CMSecurity.isDebugging("CMROOM")||CMSecurity.isDebugging("DBROOMS")))
 			Log.debugOut("RoomLoader","Done creating new room "+room.roomID());
 	}

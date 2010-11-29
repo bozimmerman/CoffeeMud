@@ -49,14 +49,15 @@ public class GRaceLoader
     }
     public void DBCreateRace(String raceID, String data)
     {
-        DB.update(
+        DB.updateWithClobs(
          "INSERT INTO CMGRAC ("
          +"CMRCID, "
          +"CMRDAT "
          +") values ("
          +"'"+raceID+"',"
-         +"'"+data+" '"
-         +")");
+         +"?"
+         +")", 
+         data+" ");
     }
     public List<DatabaseEngine.AckRecord> DBReadRaces()
     {

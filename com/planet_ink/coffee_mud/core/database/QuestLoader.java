@@ -81,7 +81,7 @@ public class QuestLoader
 	{
 		if(Q==null) return;
 		DB.update("DELETE FROM CMQUESTS WHERE CMQUESID='"+Q.name()+"'");
-		DB.update(
+		DB.updateWithClobs(
 		"INSERT INTO CMQUESTS ("
 		+"CMQUESID, "
 		+"CMQUTYPE, "
@@ -90,9 +90,9 @@ public class QuestLoader
 		+") values ("
 		+"'"+Q.name()+"',"
 		+"'"+CMClass.classID(Q)+"',"
-		+"'"+Q.script()+" ',"
-		+"'"+Q.getWinnerStr()+" '"
-		+")");
+		+"?,"
+		+"?"
+		+")", new String[][]{{Q.script()+" ",Q.getWinnerStr()+" "}});
 	}
 	public void DBUpdateQuests(List<Quest> quests)
 	{
@@ -108,13 +108,13 @@ public class QuestLoader
 		try{Thread.sleep((1000+(quests.size()*100)));}catch(Exception e){}
 		if(DB.queryRows("SELECT * FROM CMQUESTS WHERE CMQUTYPE='Quests'")>0) 
 			Log.errOut("Failed to delete quest typed 'Quests'.");
-		D=DB.DBFetch();
+		D=DB.DBFetchEmpty();
 		for(int m=0;m<quests.size();m++)
 		{
 			Quest Q=(Quest)quests.get(m);
             if(Q.isCopy()) continue;
 			try{
-				D.update(
+				D.rePrepare(
 				"INSERT INTO CMQUESTS ("
 				+"CMQUESID, "
 				+"CMQUTYPE, "
@@ -123,9 +123,11 @@ public class QuestLoader
 				+") values ("
 				+"'"+Q.name()+"',"
 				+"'"+CMClass.classID(Q)+"',"
-				+"'"+Q.script()+" ',"
-				+"'"+Q.getWinnerStr()+" '"
-				+")",0);
+				+"?,"
+				+"?"
+				+")");
+				D.setPreparedClobs(new String[]{Q.script()+" ",Q.getWinnerStr()+" "});
+				D.update("",0);
 			}
 			catch(java.sql.SQLException sqle)
 			{

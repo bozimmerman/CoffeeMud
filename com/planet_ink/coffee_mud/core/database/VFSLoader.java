@@ -136,7 +136,8 @@ public class VFSLoader
          +""+System.currentTimeMillis()+","
          +"'"+creator+"',"
          +"?"
-         +")",new String[][]{{buf}});
+         +")",
+         buf);
     }
     
     

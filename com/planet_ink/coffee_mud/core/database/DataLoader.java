@@ -306,7 +306,7 @@ public class DataLoader
     
     public void DBUpdate(String key, String xml)
     {
-    	DB.update("UPDATE CMPDAT SET CMPDAT='"+xml+"' WHERE CMPKEY='"+key+"'");
+    	DB.updateWithClobs("UPDATE CMPDAT SET CMPDAT=? WHERE CMPKEY='"+key+"'", xml);
     }
     
 	public void DBDelete(String playerID, String section)
@@ -378,7 +378,7 @@ public class DataLoader
 	
 	public void DBCreate(String player, String section, String key, String data)
 	{
-		DB.update(
+		DB.updateWithClobs(
 		 "INSERT INTO CMPDAT ("
 		 +"CMPLID, "
 		 +"CMSECT, "
@@ -388,8 +388,9 @@ public class DataLoader
 		 +"'"+player+"',"
 		 +"'"+section+"',"
 		 +"'"+key+"',"
-		 +"'"+data+" '"
-		 +")");
+		 +"?"
+		 +")", 
+		 data+" ");
 	}
 	
 	public void DBReadArtifacts()

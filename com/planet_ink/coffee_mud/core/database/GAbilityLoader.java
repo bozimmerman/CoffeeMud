@@ -64,14 +64,15 @@ public class GAbilityLoader
     }
     public void DBCreateAbility(String classID, String data)
     {
-        DB.update(
+        DB.updateWithClobs(
          "INSERT INTO CMGAAC ("
          +"CMGAID, "
          +"CMGAAT "
          +") values ("
          +"'"+classID+"',"
-         +"'"+data+" '"
-         +")");
+         +"?"
+         +")", 
+         data+" ");
     }
     public void DBDeleteAbility(String classID)
     {

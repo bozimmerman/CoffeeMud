@@ -3,6 +3,7 @@ package com.planet_ink.coffee_mud.core.database;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
+import com.planet_ink.coffee_mud.core.database.DBConnector.DBPreparedBatchEntry;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
 import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
@@ -726,7 +727,7 @@ public class MOBloader
         PlayerStats pstats=mob.playerStats();
         if(pstats==null) return;
         String pfxml=getPlayerStatsXML(mob);
-        DB.update("UPDATE CMCHAR SET CMPFIL='"+pfxml.toString()+"' WHERE CMUSERID='"+mob.Name()+"'");
+        DB.updateWithClobs("UPDATE CMCHAR SET CMPFIL=? WHERE CMUSERID='"+mob.Name()+"'", pfxml.toString());
     }
     
     public void DBUpdateJustMOB(MOB mob)
@@ -790,17 +791,17 @@ public class MOBloader
                 +", CMLSIP='"+pstats.lastIP()+"'"
                 +", CMCLRO="+mob.getClanRole()
                 +", CMEMAL='"+pstats.getEmail()+"'"
-                +", CMPFIL='"+pfxml.toString()+"'"
+                +", CMPFIL=?"
                 +", CMSAVE='"+mob.baseCharStats().getNonBaseStatsAsString()+"'"
-                +", CMMXML='"+cleanXML.toString()+"'"
+                +", CMMXML=?"
                 +"  WHERE CMUSERID='"+mob.Name()+"'");
-        DB.update("UPDATE CMCHAR SET CMDESC='"+mob.description()+"' WHERE CMUSERID='"+mob.Name()+"'");
+        DB.updateWithClobs("UPDATE CMCHAR SET CMDESC='"+mob.description()+"' WHERE CMUSERID='"+mob.Name()+"'", new String[][]{{pfxml,cleanXML.toString()}});
     }
 
-    private List<String> getDBItemUpdateStrings(MOB mob)
+    private List<DBPreparedBatchEntry> getDBItemUpdateStrings(MOB mob)
     {
         HashSet<String> done=new HashSet<String>();
-        Vector<String> strings=new Vector<String>();
+        List<DBPreparedBatchEntry> strings=new LinkedList<DBPreparedBatchEntry>();
         for(int i=0;i<mob.numItems();i++)
         {
             Item thisItem=mob.getItem(i);
@@ -809,11 +810,11 @@ public class MOBloader
             	CMLib.catalog().updateCatalogIntegrity(thisItem);
                 String str="INSERT INTO CMCHIT (CMUSERID, CMITNM, CMITID, CMITTX, CMITLO, CMITWO, "
                 +"CMITUR, CMITLV, CMITAB, CMHEIT"
-                +") values ('"+mob.Name()+"','"+(thisItem)+"','"+thisItem.ID()+"','"+thisItem.text()+" ','"
+                +") values ('"+mob.Name()+"','"+(thisItem)+"','"+thisItem.ID()+"',?,'"
                 +((thisItem.container()!=null)?(""+thisItem.container()):"")+"',"+thisItem.rawWornCode()+","
                 +thisItem.usesRemaining()+","+thisItem.basePhyStats().level()+","+thisItem.basePhyStats().ability()+","
                 +thisItem.basePhyStats().height()+")";
-                strings.addElement(str);
+                strings.add(new DBPreparedBatchEntry(str,thisItem.text()+" "));
                 done.add(""+thisItem);
             }
         }
@@ -823,10 +824,10 @@ public class MOBloader
     public void DBUpdateItems(MOB mob)
     {
         if(mob.Name().length()==0) return;
-        Vector<String> statements=new Vector<String>();
-        statements.addElement("DELETE FROM CMCHIT WHERE CMUSERID='"+mob.Name()+"'");
+        List<DBPreparedBatchEntry> statements=new LinkedList<DBPreparedBatchEntry>();
+        statements.add(new DBPreparedBatchEntry("DELETE FROM CMCHIT WHERE CMUSERID='"+mob.Name()+"'"));
         statements.addAll(getDBItemUpdateStrings(mob));
-        DB.update(statements.toArray(new String[0]));
+        DB.updateWithClobs(statements);
     }
 
     // this method is unused, but is a good idea of how to collect riders, followers, carts, etc.
@@ -859,8 +860,8 @@ public class MOBloader
     public void DBUpdateFollowers(MOB mob)
     {
         if((mob==null)||(mob.Name().length()==0)) return;
-        Vector<String> statements=new Vector<String>();
-        statements.addElement("DELETE FROM CMCHFO WHERE CMUSERID='"+mob.Name()+"'");
+        List<DBPreparedBatchEntry> statements=new LinkedList<DBPreparedBatchEntry>();
+        statements.add(new DBPreparedBatchEntry("DELETE FROM CMCHFO WHERE CMUSERID='"+mob.Name()+"'"));
         for(int f=0;f<mob.numFollowers();f++)
         {
             MOB thisMOB=mob.fetchFollower(f);
@@ -868,12 +869,12 @@ public class MOBloader
             {
             	CMLib.catalog().updateCatalogIntegrity(thisMOB);
                 String str="INSERT INTO CMCHFO (CMUSERID, CMFONM, CMFOID, CMFOTX, CMFOLV, CMFOAB"
-                +") values ('"+mob.Name()+"',"+f+",'"+CMClass.classID(thisMOB)+"','"+thisMOB.text()+" ',"
+                +") values ('"+mob.Name()+"',"+f+",'"+CMClass.classID(thisMOB)+"',?,"
                 +thisMOB.basePhyStats().level()+","+thisMOB.basePhyStats().ability()+")";
-                statements.addElement(str);
+                statements.add(new DBPreparedBatchEntry(str,thisMOB.text()+" "));
             }
         }
-        DB.update(CMParms.toStringArray(statements));
+        DB.updateWithClobs(statements);
     }
 
     public void DBNameChange(String oldName, MOB mob)
@@ -981,8 +982,8 @@ public class MOBloader
     public void DBUpdateAbilities(MOB mob)
     {
         if(mob.Name().length()==0) return;
-        Vector<String> statements=new Vector<String>();
-        statements.addElement("DELETE FROM CMCHAB WHERE CMUSERID='"+mob.Name()+"'");
+        List<DBPreparedBatchEntry> statements=new LinkedList<DBPreparedBatchEntry>();
+        statements.add(new DBPreparedBatchEntry("DELETE FROM CMCHAB WHERE CMUSERID='"+mob.Name()+"'"));
         HashSet<String> H=new HashSet<String>();
         for(int a=0;a<mob.numLearnedAbilities();a++)
         {
@@ -997,8 +998,8 @@ public class MOBloader
                 }
                 H.add(thisAbility.ID());
                 String str="INSERT INTO CMCHAB (CMUSERID, CMABID, CMABPF,CMABTX"
-                +") values ('"+mob.Name()+"','"+thisAbility.ID()+"',"+proficiency+",'"+thisAbility.text()+"')";
-                statements.addElement(str);
+                +") values ('"+mob.Name()+"','"+thisAbility.ID()+"',"+proficiency+",?)";
+                statements.add(new DBPreparedBatchEntry(str,thisAbility.text()));
             }
         }
         for(int a=0;a<mob.numEffects();a++)
@@ -1007,8 +1008,8 @@ public class MOBloader
             if((thisAffect!=null)&&(!H.contains(thisAffect.ID()))&&(thisAffect.isSavable())&&(!thisAffect.canBeUninvoked()))
             {
                 String str="INSERT INTO CMCHAB (CMUSERID, CMABID, CMABPF,CMABTX"
-                +") values ('"+mob.Name()+"','"+thisAffect.ID()+"',"+Integer.MAX_VALUE+",'"+thisAffect.text()+"')";
-                statements.addElement(str);
+                +") values ('"+mob.Name()+"','"+thisAffect.ID()+"',"+Integer.MAX_VALUE+",?)";
+                statements.add(new DBPreparedBatchEntry(str,thisAffect.text()));
             }
         }
 		for(Enumeration<Behavior> e=mob.behaviors();e.hasMoreElements();)
@@ -1017,21 +1018,21 @@ public class MOBloader
             if((B!=null)&&(B.isSavable()))
             {
                 String str="INSERT INTO CMCHAB (CMUSERID, CMABID, CMABPF,CMABTX"
-                +") values ('"+mob.Name()+"','"+B.ID()+"',"+(Integer.MIN_VALUE+1)+",'"+B.getParms()+"'"
+                +") values ('"+mob.Name()+"','"+B.ID()+"',"+(Integer.MIN_VALUE+1)+",?"
                 +")";
-                statements.addElement(str);
+                statements.add(new DBPreparedBatchEntry(str,B.getParms()));
             }
         }
         String scriptStuff = CMLib.coffeeMaker().getGenScripts(mob,true);
         if(scriptStuff.length()>0)
         {
             String str="INSERT INTO CMCHAB (CMUSERID, CMABID, CMABPF,CMABTX"
-            +") values ('"+mob.Name()+"','ScriptingEngine',"+(Integer.MIN_VALUE+1)+",'"+scriptStuff+"'"
+            +") values ('"+mob.Name()+"','ScriptingEngine',"+(Integer.MIN_VALUE+1)+",?"
             +")";
-            statements.addElement(str);
+            statements.add(new DBPreparedBatchEntry(str,scriptStuff));
         }
 
-        DB.update(CMParms.toStringArray(statements));
+        DB.updateWithClobs(statements);
     }
 
     public void DBCreateCharacter(MOB mob)
@@ -1056,7 +1057,8 @@ public class MOBloader
     {
     	if(account == null) return;
     	String characters = CMParms.toSemicolonList(account.getPlayers());
-        DB.update("UPDATE CMACCT SET CMPASS='"+account.password()+"',  CMCHRS='"+characters+"',  CMAXML='"+account.getXML()+"'  WHERE CMANAM='"+account.accountName()+"'");
+        DB.updateWithClobs("UPDATE CMACCT SET CMPASS='"+account.password()+"',  CMCHRS=?,  CMAXML=?  WHERE CMANAM='"+account.accountName()+"'",
+        		new String[][]{{characters,account.getXML()}});
     }
 
     public void DBDeleteAccount(PlayerAccount account)
@@ -1070,7 +1072,8 @@ public class MOBloader
     	if(account == null) return;
     	account.setAccountName(CMStrings.capitalizeAndLower(account.accountName()));
     	String characters = CMParms.toSemicolonList(account.getPlayers());
-        DB.update("INSERT INTO CMACCT (CMANAM, CMPASS, CMCHRS, CMAXML) VALUES ('"+account.accountName()+"','"+account.password()+"','"+characters+"','"+account.getXML()+"')");
+        DB.updateWithClobs("INSERT INTO CMACCT (CMANAM, CMPASS, CMCHRS, CMAXML) "
+        		+"VALUES ('"+account.accountName()+"','"+account.password()+"',?,?)",new String[][]{{characters,account.getXML()}});
     }
     
     public PlayerAccount MakeAccount(String username, ResultSet R) throws SQLException
