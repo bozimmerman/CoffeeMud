@@ -23,6 +23,8 @@ import java.util.*;
 @SuppressWarnings("unchecked")
 public class Backend
 {
+   public static enum StatementType { SELECT,INSERT,UPDATE,DELETE};
+   
    File basePath;
    private Map<String,FakeTable> fakeTables=new HashMap<String,FakeTable>();
 
@@ -94,6 +96,8 @@ public class Backend
 	   public boolean lt=false;
 	   public boolean gt=false;
 	   public boolean not=false;
+	   public boolean unPrepared=false;
+	   public int colType=0;
 	   public ConnectorType connector = ConnectorType.AND;
 	   public List<FakeCondition> contains = null;
 	   public boolean compareValue(ComparableValue subKey)
@@ -1052,46 +1056,74 @@ public class Backend
    }
    
    /**
+    * For prepared statements, an abstract way into things
+    * @author bzimmerman
+    */
+   public static abstract class ImplAbstractStatement
+   {
+	   public abstract String[] values();
+	   public abstract Boolean[] unPreparedValuesFlags();
+	   public abstract List<FakeCondition> conditions();
+	   public abstract StatementType getStatementType();
+   }
+   
+   /**
     * Parameters to execute an insert statement
     * @author bzimmerman
     */
-   public static class ImplInsertStatement
+   public static class ImplInsertStatement extends ImplAbstractStatement
    {
-	   public ImplInsertStatement(String tableName, String[] columns, String[] sqlValues)
+	   public ImplInsertStatement(final String tableName, final String[] columns, final String[] sqlValues, final Boolean[] unPreparedValues)
 	   {
 		   this.tableName = tableName;
 		   this.columns = columns;
 		   this.sqlValues = sqlValues;
+		   this.unPreparedValues = unPreparedValues;
 	   }
 	   public final String tableName;
 	   public final String[] columns;
 	   public final String[] sqlValues;
+	   public final Boolean[] unPreparedValues;
+	   public final String[] values() { return sqlValues;}
+	   public final List<FakeCondition> conditions(){ return null;}
+	   public final Boolean[] unPreparedValuesFlags(){ return unPreparedValues;}
+	   public final StatementType getStatementType() { return StatementType.INSERT;}
    }
    
    /**
     * Parameters to execute an update statement
     * @author bzimmerman
     */
-   public static class ImplUpdateStatement
+   public static class ImplUpdateStatement extends ImplAbstractStatement
    {
-	   public ImplUpdateStatement(final String tableName, final List<FakeCondition> conditions, final String[] columns, final String[] sqlValues)
+	   public ImplUpdateStatement(final String tableName, 
+			   					  final List<FakeCondition> conditions, 
+			   					  final String[] columns, 
+			   					  final String[] sqlValues, 
+			   					  final Boolean[] unPreparedValues )
 	   {
 		   this.tableName = tableName;
 		   this.columns = columns;
 		   this.sqlValues = sqlValues;
 		   this.conditions = conditions;
+		   this.unPreparedValues = unPreparedValues;
 	   }
 	   public final String tableName;
 	   public final String[] columns;
 	   public final String[] sqlValues;
+	   public final Boolean[] unPreparedValues;
 	   public final List<FakeCondition> conditions;
+	   public final String[] values() { return sqlValues;}
+	   public final List<FakeCondition> conditions(){ return conditions;}
+	   public final Boolean[] unPreparedValuesFlags(){ return unPreparedValues;}
+	   public final StatementType getStatementType() { return StatementType.UPDATE;}
    }
 
    /**
     * Parameters to execute an select statement
     * @author bzimmerman
     */
-   public static class ImplSelectStatement
+   public static class ImplSelectStatement extends ImplAbstractStatement
    {
 	   public ImplSelectStatement(final Statement s,
 			   					  final String tableName,
@@ -1114,13 +1146,18 @@ public class Backend
 	   final List<Backend.FakeCondition> conditions;
 	   final String[] orderVars;
 	   final String[] orderModifiers;
+	   private final Boolean[] unPreparedValues=new Boolean[0];
+	   public final Boolean[] unPreparedValuesFlags(){ return unPreparedValues;}
+	   public final String[] values() { return null;}
+	   public final List<FakeCondition> conditions(){ return conditions;}
+	   public final StatementType getStatementType() { return StatementType.SELECT;}
    }
    
    /**
     * Parameters to execute an delete statement
     * @author bzimmerman
     */
-   public static class ImplDeleteStatement
+   public static class ImplDeleteStatement extends ImplAbstractStatement
    {
 	   public ImplDeleteStatement(final String tableName, final List<FakeCondition> conditions)
 	   {
@@ -1129,6 +1166,11 @@ public class Backend
 	   }
 	   public final String tableName;
 	   public final List<FakeCondition> conditions;
+	   private final Boolean[] unPreparedValues=new Boolean[0];
+	   public final Boolean[] unPreparedValuesFlags(){ return unPreparedValues;}
+	   public final String[] values() { return null;}
+	   public final List<FakeCondition> conditions(){ return conditions;}
+	   public final StatementType getStatementType() { return StatementType.DELETE;}
    }
    
    /**
@@ -1144,16 +1186,16 @@ public class Backend
 	  final String[] columns=stmt.columns;
 	  final String[] sqlValues=stmt.sqlValues;
 	  
-      FakeTable fakeTable=(FakeTable)fakeTables.get(tableName);
+	  final FakeTable fakeTable=(FakeTable)fakeTables.get(tableName);
       if (fakeTable==null) throw new java.sql.SQLException("unknown table "+tableName);
 
-      ComparableValue[] values=new ComparableValue[fakeTable.columns.length];
+      final ComparableValue[] values=new ComparableValue[fakeTable.columns.length];
       for (int index=0;index<columns.length;index++) 
       {
-         int id=fakeTable.findColumn(columns[index]);
+         final int id=fakeTable.findColumn(columns[index]);
          if (id<0) 
         	 throw new java.sql.SQLException("unknown column "+columns[index]);
-         FakeColumn col = fakeTable.columns[id];
+         final FakeColumn col = fakeTable.columns[id];
          try
          {
         	 if((sqlValues[index]==null)||(sqlValues[index].equals("null")))
@@ -1171,7 +1213,7 @@ public class Backend
         	 throw new java.sql.SQLException("illegal value '"+sqlValues[index]+"' for column "+col.name);
          }
       }
-      ComparableValue[] keys=new ComparableValue[fakeTable.columnIndexesOfIndexed.length];
+      final ComparableValue[] keys=new ComparableValue[fakeTable.columnIndexesOfIndexed.length];
       for (int index=0;index<fakeTable.columnIndexesOfIndexed.length;index++) 
       {
          int id=fakeTable.columnIndexesOfIndexed[index];
@@ -1196,7 +1238,7 @@ public class Backend
     */
    protected void deleteRecord(final ImplDeleteStatement stmt) throws java.sql.SQLException
    {
-      FakeTable fakeTable=(FakeTable)fakeTables.get(stmt.tableName);
+      final FakeTable fakeTable=(FakeTable)fakeTables.get(stmt.tableName);
       if (fakeTable==null) 
     	  throw new java.sql.SQLException("unknown table "+stmt.tableName);
 
@@ -1219,16 +1261,16 @@ public class Backend
 	  final String[] varNames=stmt.columns;
 	  final String[] sqlValues=stmt.sqlValues;
 	  
-      FakeTable fakeTable=(FakeTable)fakeTables.get(tableName);
+	  final FakeTable fakeTable=(FakeTable)fakeTables.get(tableName);
       if (fakeTable==null) 
     	  throw new java.sql.SQLException("unknown table "+tableName);
 
-      int[] vars=new int[varNames.length];
+      final int[] vars=new int[varNames.length];
       for (int index=0;index<vars.length;index++)
          if ((vars[index]=fakeTable.findColumn(varNames[index]))<0)
             throw new java.sql.SQLException("unknown column "+varNames[index]);
       
-      ComparableValue[] values=new ComparableValue[fakeTable.columns.length];
+      final ComparableValue[] values=new ComparableValue[fakeTable.columns.length];
       for (int index=0;index<sqlValues.length;index++) 
       {
          FakeColumn col = fakeTable.columns[vars[index]];
@@ -1261,11 +1303,12 @@ public class Backend
     * @return
     * @throws java.sql.SQLException
     */
-   public FakeCondition buildFakeCondition(String tableName, String columnName, String comparitor, String value) throws java.sql.SQLException
+   public FakeCondition buildFakeCondition(String tableName, String columnName, String comparitor, String value, boolean unPrepared) throws java.sql.SQLException
    {
-      FakeTable fakeTable=(FakeTable)fakeTables.get(tableName);
+	  final FakeTable fakeTable=(FakeTable)fakeTables.get(tableName);
       if (fakeTable==null) throw new java.sql.SQLException("unknown table "+tableName);
-      FakeCondition fake = new FakeCondition();
+      final FakeCondition fake = new FakeCondition();
+      fake.unPrepared = unPrepared;
       if(columnName==null)
 	  {
     	  fake.conditionIndex = 0;
@@ -1274,10 +1317,11 @@ public class Backend
 	  }
       if((fake.conditionIndex = fakeTable.findColumn(columnName))<0)
 	      throw new java.sql.SQLException("unknown column "+tableName+"."+columnName);
-      FakeColumn col = fakeTable.columns[fake.conditionIndex];
+      final FakeColumn col = fakeTable.columns[fake.conditionIndex];
       if(col == null)
 	      throw new java.sql.SQLException("bad column "+tableName+"."+columnName);
-      if((value==null)||value.equals("null"))
+      fake.colType=col.type;
+      if((value==null)||value.equals("null")||unPrepared)
     	  fake.conditionValue=new ComparableValue(null);
       else
       switch(col.type)
