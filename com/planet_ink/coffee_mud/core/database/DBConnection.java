@@ -126,7 +126,13 @@ public class DBConnection
 	public boolean isFakeDB()
 	{
 		if(isFakeDB==null)
-			isFakeDB = Boolean.valueOf(catalog().equalsIgnoreCase("FAKEDB"));
+		{
+			String catalog = catalog();
+			if(catalog==null)
+				isFakeDB=Boolean.FALSE;
+			else
+				isFakeDB = Boolean.valueOf(catalog.equalsIgnoreCase("FAKEDB"));
+		}
 		return isFakeDB.booleanValue();
 	}
 	
