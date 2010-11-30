@@ -64,7 +64,10 @@ public class GCClassLoader
         {
             Log.errOut("DataLoader",sqle);
         }
-        if(D!=null) DB.DBDone(D);
+        finally
+        {
+	        DB.DBDone(D);
+        }
         // log comment
         return rows;
     }

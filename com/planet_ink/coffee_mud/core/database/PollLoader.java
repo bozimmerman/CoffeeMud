@@ -67,7 +67,10 @@ public class PollLoader
         {
             Log.errOut("PollLoader",sqle);
         }
-        if(D!=null) DB.DBDone(D);
+        finally
+        {
+	        DB.DBDone(D);
+        }
         // log comment
         return null;
     }
@@ -95,7 +98,10 @@ public class PollLoader
         {
             Log.errOut("PollLoader",sqle);
         }
-        if(D!=null) DB.DBDone(D);
+        finally
+        {
+	        DB.DBDone(D);
+        }
         // log comment
         return rows;
     }

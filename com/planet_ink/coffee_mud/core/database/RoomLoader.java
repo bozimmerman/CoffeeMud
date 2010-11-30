@@ -90,13 +90,15 @@ public class RoomLoader
                     CMProps.setUpLowVar(CMProps.SYSTEM_MUDSTATUS,"Booting: Loading Areas ("+currentRecordPos+" of "+recordCount+")");
                 areas.addElement(A);
             }
-            DB.DBDone(D);
         }
         catch(SQLException sqle)
         {
             Log.errOut("Area",sqle);
-            if(D!=null) DB.DBDone(D);
             return null;
+        }
+        finally
+        {
+	        DB.DBDone(D);
         }
         return areas;
     }
@@ -113,14 +115,16 @@ public class RoomLoader
             ResultSet R=D.query("SELECT * FROM CMROOM"+((areaName==null)?"":" WHERE CMAREA='"+areaName+"'"));
             while(R.next())
             	roomSet.add(DBConnections.getRes(R,"CMROID"));
-		    DB.DBDone(D);
 		}
 		catch(SQLException sqle)
 		{
 		    Log.errOut("RoomSet",sqle);
-		    if(D!=null) DB.DBDone(D);
 		    return null;
 		}
+        finally
+        {
+	        DB.DBDone(D);
+        }
 		return roomSet;
     }
     
@@ -147,7 +151,7 @@ public class RoomLoader
         }
         finally
         {
-	        if(D!=null) DB.DBDone(D);
+	        DB.DBDone(D);
         }
         return new Room[0];
     }
@@ -203,7 +207,7 @@ public class RoomLoader
         }
         finally
         {
-	        if(D!=null) DB.DBDone(D);
+	        DB.DBDone(D);
         }
         return null;
     }
@@ -287,7 +291,7 @@ public class RoomLoader
         }
         finally
         {
-	        if(D!=null) DB.DBDone(D);
+	        DB.DBDone(D);
         }
         return roomSet;
     }
@@ -417,7 +421,7 @@ public class RoomLoader
         }
         finally
         {
-            if(D!=null) DB.DBDone(D);
+	        DB.DBDone(D);
         }
     }
     
@@ -485,16 +489,17 @@ public class RoomLoader
 			if(R.next())
 			{
 				String txt=DBConnections.getRes(R,"CMDESC2");
-				DB.DBDone(D);
 				return txt;
 			}
-			DB.DBDone(D);
 		}
 		catch(SQLException sqle)
 		{
 			Log.errOut("Room",sqle);
-			if(D!=null) DB.DBDone(D);
 		}
+        finally
+        {
+	        DB.DBDone(D);
+        }
 		return null;
 	}
 	
@@ -512,17 +517,18 @@ public class RoomLoader
 				if(NUMID.equalsIgnoreCase(mobID))
 				{
 					String txt=DBConnections.getRes(R,"CMCHTX");
-					DB.DBDone(D);
 					return txt;
 				}
 			}
-			DB.DBDone(D);
 		}
 		catch(SQLException sqle)
 		{
 			Log.errOut("Room",sqle);
-			if(D!=null) DB.DBDone(D);
 		}
+        finally
+        {
+	        DB.DBDone(D);
+        }
 		return null;
 	}
 
@@ -713,10 +719,10 @@ public class RoomLoader
 		{
 			Log.errOut("Room",sqle);
 		}
-		finally
-		{
-			if(D!=null) DB.DBDone(D);
-		}
+        finally
+        {
+	        DB.DBDone(D);
+        }
 
 		// now grab the inhabitants
 		try
@@ -788,10 +794,10 @@ public class RoomLoader
 		{
 			Log.errOut("Room",sqle);
 		}
-		finally
-		{
-			if(D!=null) DB.DBDone(D);
-		}
+        finally
+        {
+	        DB.DBDone(D);
+        }
 		if(thisRoom!=null)
 		{
 			rooms=new STreeMap<String,Room>();

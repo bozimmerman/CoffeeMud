@@ -137,8 +137,6 @@ public class MOBloader
                 mob.setImage(CMLib.xml().returnXMLValue(buf,"IMG"));
                 List<XMLLibrary.XMLpiece> CleanXML=CMLib.xml().parseAllXML(DBConnections.getRes(R,"CMMXML"));
                 R.close();
-                DB.DBDone(D);
-                D=null;
                 CMLib.coffeeMaker().setFactionFromXML(mob,CleanXML);
                 found=true;
             }
@@ -149,8 +147,7 @@ public class MOBloader
         }
         finally
         {
-        	if(D!=null) 
-        		DB.DBDone(D);
+	        DB.DBDone(D);
         }
         return found;
     }
@@ -219,11 +216,15 @@ public class MOBloader
                     container.recoverPhyStats();
                 }
             }
-        }catch(Exception sqle)
+        }
+        catch(Exception sqle)
         {
             Log.errOut("MOB",sqle);
         }
-        if(D!=null) DB.DBDone(D);
+        finally
+        {
+	        DB.DBDone(D);
+        }
         D=null;
         if(oldLoc!=null)
         {
@@ -298,11 +299,15 @@ public class MOBloader
                     }
                 }
             }
-        }catch(Exception sqle)
+        }
+        catch(Exception sqle)
         {
             Log.errOut("MOB",sqle);
         }
-        if(D!=null) DB.DBDone(D);
+        finally
+        {
+	        DB.DBDone(D);
+        }
         D=null;
         mob.basePhyStats().setDisposition(oldDisposition);
         mob.recoverCharStats();
@@ -338,11 +343,15 @@ public class MOBloader
                 String username=DBConnections.getRes(R,"CMUSERID");
                 V.addElement(username);
             }
-        }catch(Exception sqle)
+        }
+        catch(Exception sqle)
         {
             Log.errOut("MOB",sqle);
         }
-        if(D!=null) DB.DBDone(D);
+        finally
+        {
+	        DB.DBDone(D);
+        }
         return V;
     }
 
@@ -405,11 +414,15 @@ public class MOBloader
             ResultSet R=D.query("SELECT * FROM CMCHAR WHERE CMUSERID='"+name+"'");
             if(R!=null) while(R.next())
             	thisUser=parseThinUser(R);
-        }catch(Exception sqle)
+        }
+        catch(Exception sqle)
         {
             Log.errOut("MOB",sqle);
         }
-        if(D!=null) DB.DBDone(D);
+        finally
+        {
+	        DB.DBDone(D);
+        }
         return thisUser;
     }
     
@@ -427,11 +440,15 @@ public class MOBloader
             	if(thisUser != null)
                     allUsers.addElement(thisUser);
             }
-        }catch(Exception sqle)
+        }
+        catch(Exception sqle)
         {
             Log.errOut("MOB",sqle);
         }
-        if(D!=null) DB.DBDone(D);
+        finally
+        {
+	        DB.DBDone(D);
+        }
         return allUsers;
     }
 
@@ -516,11 +533,15 @@ public class MOBloader
                 }
             }
             mob.tell(head.toString());
-        }catch(Exception sqle)
+        }
+        catch(Exception sqle)
         {
             Log.errOut("MOB",sqle);
         }
-        if(D!=null) DB.DBDone(D);
+        finally
+        {
+	        DB.DBDone(D);
+        }
     }
 
     public DVector worshippers(String deityID)
@@ -553,11 +574,15 @@ public class MOBloader
                               ""+level,
                               race);
             }
-        }catch(Exception sqle)
+        }
+        catch(Exception sqle)
         {
             Log.errOut("MOB",sqle);
         }
-        if(D!=null) DB.DBDone(D);
+        finally
+        {
+	        DB.DBDone(D);
+        }
         return DV;
     }
 
@@ -589,11 +614,15 @@ public class MOBloader
                     V.addElement(newMOB);
                 }
             }
-        }catch(Exception sqle)
+        }
+        catch(Exception sqle)
         {
             Log.errOut("MOB",sqle);
         }
-        if(D!=null) DB.DBDone(D);
+        finally
+        {
+	        DB.DBDone(D);
+        }
         return V;
     }
     
@@ -656,7 +685,7 @@ public class MOBloader
         }
         finally
         {
-	        if(D!=null) DB.DBDone(D);
+	        DB.DBDone(D);
         }
         return members;
     }
@@ -1115,7 +1144,10 @@ public class MOBloader
         {
             Log.errOut("MOB",sqle);
         }
-        if(D!=null) DB.DBDone(D);
+        finally
+        {
+	        DB.DBDone(D);
+        }
         return account;
     }
     
@@ -1147,7 +1179,10 @@ public class MOBloader
         {
             Log.errOut("MOB",sqle);
         }
-        if(D!=null) DB.DBDone(D);
+        finally
+        {
+	        DB.DBDone(D);
+        }
         return accounts;
     }
     
@@ -1176,11 +1211,15 @@ public class MOBloader
                 // Acct Exp Code
                 buf=DBConnections.getRes(R,"CMPFIL");
             }
-        }catch(Exception sqle)
+        }
+        catch(Exception sqle)
         {
             Log.errOut("MOB",sqle);
         }
-        if(D!=null) DB.DBDone(D);
+        finally
+        {
+	        DB.DBDone(D);
+        }
         if((buf!=null)&&(thinPlayer!=null))
         {
         	PlayerAccount acct = null;
@@ -1225,16 +1264,19 @@ public class MOBloader
                 // String username=DB.getRes(R,"CMUSERID");
                 int btmp=CMath.s_int(DB.getRes(R,"CMBTMP"));
                 String temail=DB.getRes(R,"CMEMAL");
-                DB.DBDone(D);
                 data[0]=temail;
                 data[1]=""+((btmp&MOB.ATT_AUTOFORWARD)==MOB.ATT_AUTOFORWARD);
                 return data;
             }
-        }catch(Exception sqle)
+        }
+        catch(Exception sqle)
         {
             Log.errOut("MOB",sqle);
         }
-        if(D!=null) DB.DBDone(D);
+        finally
+        {
+	        DB.DBDone(D);
+        }
         return null;
     }
 
@@ -1256,15 +1298,18 @@ public class MOBloader
                 String temail=DB.getRes(R,"CMEMAL");
                 if(temail.equalsIgnoreCase(email))
                 {
-                    DB.DBDone(D);
                     return username;
                 }
             }
-        }catch(Exception sqle)
+        }
+        catch(Exception sqle)
         {
             Log.errOut("MOB",sqle);
         }
-        if(D!=null) DB.DBDone(D);
+        finally
+        {
+	        DB.DBDone(D);
+        }
         return null;
     }
 }

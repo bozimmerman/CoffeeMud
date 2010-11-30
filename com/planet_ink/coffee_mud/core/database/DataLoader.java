@@ -68,7 +68,10 @@ public class DataLoader
 		{
 			Log.errOut("DataLoader",sqle);
 		}
-		if(D!=null) DB.DBDone(D);
+        finally
+        {
+	        DB.DBDone(D);
+        }
 		// log comment
 		return rows;
 	}
@@ -98,7 +101,10 @@ public class DataLoader
 		{
 			Log.errOut("DataLoader",sqle);
 		}
-		if(D!=null) DB.DBDone(D);
+        finally
+        {
+	        DB.DBDone(D);
+        }
 		// log comment
 		return rows;
 	}
@@ -119,7 +125,10 @@ public class DataLoader
 		{
 			Log.errOut("DataLoader",sqle);
 		}
-		if(D!=null) DB.DBDone(D);
+        finally
+        {
+	        DB.DBDone(D);
+        }
 		// log comment
 		return rows;
 	}
@@ -154,7 +163,10 @@ public class DataLoader
 		{
 			Log.errOut("DataLoader",sqle);
 		}
-		if(D!=null) DB.DBDone(D);
+        finally
+        {
+	        DB.DBDone(D);
+        }
 		// log comment
 		return rows;
 	}
@@ -184,7 +196,10 @@ public class DataLoader
 		{
 			Log.errOut("DataLoader",sqle);
 		}
-		if(D!=null) DB.DBDone(D);
+        finally
+        {
+	        DB.DBDone(D);
+        }
 		// log comment
 		return rows;
 	}
@@ -214,7 +229,10 @@ public class DataLoader
 		{
 			Log.errOut("DataLoader",sqle);
 		}
-		if(D!=null) DB.DBDone(D);
+        finally
+        {
+	        DB.DBDone(D);
+        }
 		// log comment
 		return rows;
 	}
@@ -241,7 +259,10 @@ public class DataLoader
 		{
 			Log.errOut("DataLoader",sqle);
 		}
-		if(D!=null) DB.DBDone(D);
+        finally
+        {
+	        DB.DBDone(D);
+        }
 		// log comment
 		return rows;
 	}
@@ -274,7 +295,10 @@ public class DataLoader
         {
             Log.errOut("DataLoader",sqle);
         }
-        if(D!=null) DB.DBDone(D);
+        finally
+        {
+	        DB.DBDone(D);
+        }
         // log comment
         return rows;
     }
@@ -290,6 +314,7 @@ public class DataLoader
 				ResultSet R=D.query("SELECT * FROM CMPDAT WHERE CMPKEY='"+key+"'");
 				boolean exists=R.next();
 				DB.DBDone(D);
+				D=null;
 				if(exists)
 					DBUpdate(key,xml);
 				else
@@ -300,7 +325,10 @@ public class DataLoader
 	        {
 	            Log.errOut("DataLoader",sqle);
 	        }
-	        if(D!=null) DB.DBDone(D);
+	        finally
+	        {
+		        DB.DBDone(D);
+	        }
     	}
     }
     
@@ -324,11 +352,10 @@ public class DataLoader
 		{
 			Log.errOut("DataLoader",sqle);
 		}
-		finally
-		{
-			if(D!=null) 
-				DB.DBDone(D);
-		}
+        finally
+        {
+	        DB.DBDone(D);
+        }
 	}
 
 	public void DBDeletePlayer(String playerID)
@@ -346,7 +373,10 @@ public class DataLoader
 		{
 			Log.errOut("DataLoader",sqle);
 		}
-		if(D!=null) DB.DBDone(D);
+        finally
+        {
+	        DB.DBDone(D);
+        }
 	}
 	
 	public void DBDelete(String playerID, String section, String key)
@@ -365,7 +395,10 @@ public class DataLoader
 		{
 			Log.errOut("DataLoader",sqle);
 		}
-		if(D!=null) DB.DBDone(D);
+        finally
+        {
+	        DB.DBDone(D);
+        }
 	}
 	
 	public void DBDelete(String section)

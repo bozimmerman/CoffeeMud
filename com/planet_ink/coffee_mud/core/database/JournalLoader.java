@@ -71,10 +71,10 @@ public class JournalLoader
 				Log.errOut("Journal",sqle);
 				return ct;
 			}
-			finally
-			{
-				if(D!=null) DB.DBDone(D);
-			}
+	        finally
+	        {
+		        DB.DBDone(D);
+	        }
 			return ct;
 		}
 	}
@@ -104,10 +104,10 @@ public class JournalLoader
         {
             Log.errOut("Journal",sqle);
         }
-		finally
-		{
-			if(D!=null) DB.DBDone(D);
-		}
+        finally
+        {
+	        DB.DBDone(D);
+        }
         return realName;
     }
 	
@@ -136,10 +136,10 @@ public class JournalLoader
 		{
 			Log.errOut("Journal",sqle);
 		}
-		finally
-		{
-			if(D!=null) DB.DBDone(D);
-		}
+        finally
+        {
+	        DB.DBDone(D);
+        }
 		return newest;
 	}
 	
@@ -167,10 +167,10 @@ public class JournalLoader
 			Log.errOut("Journal",sqle);
 			return null;
 		}
-		finally
-		{
-			if(D!=null) DB.DBDone(D);
-		}
+        finally
+        {
+	        DB.DBDone(D);
+        }
 		return journals;
 	}
 	
@@ -283,10 +283,10 @@ public class JournalLoader
 			Log.errOut("Journal",sqle);
 			return null;
 		}
-		finally
-		{
-			if(D!=null) DB.DBDone(D);
-		}
+        finally
+        {
+	        DB.DBDone(D);
+        }
 		return journal;
 	}
 	
@@ -317,10 +317,10 @@ public class JournalLoader
 			Log.errOut("Journal",sqle);
 			return null;
 		}
-		finally
-		{
-			if(D!=null) DB.DBDone(D);
-		}
+        finally
+        {
+	        DB.DBDone(D);
+        }
 		Collections.sort(journal);
 		return journal;
 	}
@@ -353,10 +353,10 @@ public class JournalLoader
 				Log.errOut("Journal",sqle);
 				return null;
 			}
-			finally
-			{
-				if(D!=null) DB.DBDone(D);
-			}
+	        finally
+	        {
+		        DB.DBDone(D);
+	        }
 			Collections.sort(journal);
 			return journal;
 		}
@@ -387,10 +387,10 @@ public class JournalLoader
 				Log.errOut("Journal",sqle);
 				return null;
 			}
-			finally
-			{
-				if(D!=null) DB.DBDone(D);
-			}
+	        finally
+	        {
+		        DB.DBDone(D);
+	        }
 			return null;
 		}
 	}
@@ -514,10 +514,10 @@ public class JournalLoader
 		{
 			Log.errOut("Journal",sqle);
 		}
-		finally
-		{
-			if(D!=null) DB.DBDone(D);
-		}
+        finally
+        {
+	        DB.DBDone(D);
+        }
 	}
 	
 	public void DBUpdateJournalStats(String Journal, JournalsLibrary.JournalSummaryStats stats)
@@ -566,10 +566,10 @@ public class JournalLoader
 		{
 			Log.errOut("JournalLoader",sqle.getMessage());
 		}
-		finally
-		{
-			if(D!=null) DB.DBDone(D);
-		}
+        finally
+        {
+	        DB.DBDone(D);
+        }
 	}
 	
 	public void DBReadJournalSummaryStats(JournalsLibrary.JournalSummaryStats stats)
@@ -643,10 +643,10 @@ public class JournalLoader
 		{
 			Log.errOut("JournalLoader",sqle.getMessage());
 		}
-		finally
-		{
-			if(D!=null) DB.DBDone(D);
-		}
+        finally
+        {
+	        DB.DBDone(D);
+        }
 	}
 
 	

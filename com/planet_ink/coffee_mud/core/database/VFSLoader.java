@@ -68,7 +68,10 @@ public class VFSLoader
             Log.errOut("VFSLoader",sqle);
             return null;
         }
-        DB.DBDone(D);
+        finally
+        {
+	        DB.DBDone(D);
+        }
         // log comment
         return root;
     }
@@ -99,7 +102,10 @@ public class VFSLoader
         {
             Log.errOut("VFSLoader",sqle);
         }
-        if(D!=null) DB.DBDone(D);
+        finally
+        {
+	        DB.DBDone(D);
+        }
         // log comment
         return row;
     }
@@ -156,7 +162,10 @@ public class VFSLoader
         {
             Log.errOut("VFSLoader",sqle);
         }
-        if(D!=null) DB.DBDone(D);
+        finally
+        {
+	        DB.DBDone(D);
+        }
     }
     
     

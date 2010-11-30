@@ -79,7 +79,10 @@ public class ClanLoader
 		{
 			Log.errOut("Clan",sqle);
 		}
-		if(D!=null) DB.DBDone(D);
+        finally
+        {
+	        DB.DBDone(D);
+        }
 		// log comment
 	}
 

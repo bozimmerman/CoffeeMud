@@ -73,7 +73,10 @@ public class QuestLoader
 		{
 			Log.errOut("Quest",sqle);
 		}
-		if(D!=null) DB.DBDone(D);
+        finally
+        {
+	        DB.DBDone(D);
+        }
 	}
 	
 	
