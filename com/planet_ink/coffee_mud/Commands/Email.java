@@ -195,7 +195,15 @@ public class Email extends StdCommand
             }
         }
 		if((pstats.getEmail()==null)||(pstats.getEmail().length()==0))
+		{
+	        if(CMProps.getVar(CMProps.SYSTEM_EMAILREQ).toUpperCase().startsWith("DISABLED"))
+	        {
+				if(commands!=null)
+					mob.session().println("\n\rAn email address is not required by this system.");
+				return false;
+	        }
 			mob.session().println("\n\rYou have no email address on file for this character.");
+		}
 		else
 		{
 			if(commands==null) return true;

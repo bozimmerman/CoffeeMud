@@ -842,6 +842,13 @@ public class Import extends StdCommand
 			if(customBother.contains(filename))
 			   continue;
 	
+			if((!filename.startsWith("//"))&&(!filename.startsWith("::")))
+			{
+				if(!filename.startsWith("/"))
+					filename="/"+filename;
+				filename="::"+filename;
+			}
+			
 			if(new CMFile(filename,mob,false).exists())
 			{
 				if(noDelete)
