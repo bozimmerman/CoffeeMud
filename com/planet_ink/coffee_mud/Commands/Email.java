@@ -200,7 +200,7 @@ public class Email extends StdCommand
 	        {
 				if(commands!=null)
 					mob.session().println("\n\rAn email address is not required by this system.");
-				return false;
+				return true;
 	        }
 			mob.session().println("\n\rYou have no email address on file for this character.");
 		}
