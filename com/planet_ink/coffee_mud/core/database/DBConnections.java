@@ -165,11 +165,19 @@ public class DBConnections
 			{
 				try
 				{
-					DBToUse.rePrepare(entry.sql);
-					for(int ii=0;ii<entry.clobs.length;ii++)
+					if((entry.clobs==null)||(entry.clobs.length==0))
 					{
-						DBToUse.setPreparedClobs(entry.clobs[ii]);
-						Result=DBToUse.update("",0);
+						DBToUse.closeStatements("");
+						Result=DBToUse.update(entry.sql,0);
+					}
+					else
+					{
+						DBToUse.rePrepare(entry.sql);
+						for(int ii=0;ii<entry.clobs.length;ii++)
+						{
+							DBToUse.setPreparedClobs(entry.clobs[ii]);
+							Result=DBToUse.update("",0);
+						}
 					}
 				}
 				catch(Exception sqle)

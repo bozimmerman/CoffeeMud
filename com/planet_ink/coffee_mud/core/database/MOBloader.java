@@ -780,7 +780,8 @@ public class MOBloader
         String pfxml=getPlayerStatsXML(mob);
         StringBuffer cleanXML=new StringBuffer();
         cleanXML.append(CMLib.coffeeMaker().getFactionXML(mob));
-        DB.update("UPDATE CMCHAR SET  CMPASS='"+pstats.password()+"'"
+        DB.updateWithClobs(
+        		 "UPDATE CMCHAR SET  CMPASS='"+pstats.password()+"'"
                 +", CMCLAS='"+mob.baseCharStats().getMyClassesStr()+"'"
                 +", CMSTRE="+mob.baseCharStats().getStat(CharStats.STAT_STRENGTH)
                 +", CMRACE='"+mob.baseCharStats().getMyRace().ID()+"'"
@@ -814,17 +815,19 @@ public class MOBloader
                 +", CMLEIG='"+mob.getLiegeID()+"'"
                 +", CMHEIT="+mob.basePhyStats().height()
                 +", CMWEIT="+mob.basePhyStats().weight()
-                +", CMPRPT='"+pstats.getPrompt()+"'"
-                +", CMCOLR='"+pstats.getColorStr()+"'"
+                +", CMPRPT=?"
+                +", CMCOLR=?"
                 +", CMCLAN='"+mob.getClanID()+"'"
                 +", CMLSIP='"+pstats.lastIP()+"'"
                 +", CMCLRO="+mob.getClanRole()
-                +", CMEMAL='"+pstats.getEmail()+"'"
+                +", CMEMAL=?"
                 +", CMPFIL=?"
-                +", CMSAVE='"+mob.baseCharStats().getNonBaseStatsAsString()+"'"
+                +", CMSAVE=?"
                 +", CMMXML=?"
-                +"  WHERE CMUSERID='"+mob.Name()+"'");
-        DB.updateWithClobs("UPDATE CMCHAR SET CMDESC='"+mob.description()+"' WHERE CMUSERID='"+mob.Name()+"'", new String[][]{{pfxml,cleanXML.toString()}});
+                +", CMDESC=?"
+                +"  WHERE CMUSERID='"+mob.Name()+"'"
+                ,new String[][]{{pstats.getPrompt(),pstats.getColorStr(),pstats.getEmail(),
+                				 pfxml,mob.baseCharStats().getNonBaseStatsAsString(),cleanXML.toString(),mob.description()}});
     }
 
     private List<DBPreparedBatchEntry> getDBItemUpdateStrings(MOB mob)

@@ -422,7 +422,7 @@ public class DBConnection
 			if(vals[t]==null)
 				getPreparedStatement().setNull(t+1, java.sql.Types.CLOB);
 			else
-				getPreparedStatement().setObject(t+1, vals[t]);
+				getPreparedStatement().setString(t+1, vals[t]);
 	}
 	
 	/** 
@@ -449,7 +449,10 @@ public class DBConnection
 				if(myPreparedStatement!=null)
 					responseCode=myPreparedStatement.executeUpdate();
 				else
-					lastError="DBConnection Statement not open.";
+				{
+					myStatement=myConnection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,ResultSet.CONCUR_READ_ONLY);
+					responseCode=myStatement.executeUpdate(updateString);
+				}
 				sqlserver=false;
 			}
 			catch(SQLException sqle)
