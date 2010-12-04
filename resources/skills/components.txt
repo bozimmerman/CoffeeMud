@@ -5,7 +5,7 @@
 #    Spell_Sleep=([COMPONENT PARAMETER])&&([COMPONENT PARAMETER])||([COMPONENT PARAMETER])&&..etc..
 # [COMPONENT PARAMETER] are as follows:
 #    Spell_sleep=([DISPOSITION]:[FATE]:[AMOUNT]:[COMPONENT ID]:[MASK])
-# [DISPOSITION] is either: inventory, held, worn (default inventory)
+# [DISPOSITION] is either: inventory, held, worn, nearby, onground (default inventory)
 # [FATE] is either: consumed, kept (default consumed)
 # [AMOUNT] is the number of amount of the component required (default 1)
 # [COMPONENT ID] is one of the following:
