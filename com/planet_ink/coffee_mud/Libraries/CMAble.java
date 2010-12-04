@@ -10,6 +10,7 @@ import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.AbilityComponent.CompLocation;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
@@ -1481,6 +1482,71 @@ public class CMAble extends StdLibrary implements AbilityMapper
 		return 0;
 	}
 
+	public boolean IsItemComponent(MOB mob, AbilityComponent comp, int[] amt, Item I, List<Object> thisSet)
+	{
+		if(I==null)
+			return false;
+		Item container=null;
+		if((comp.getType()==AbilityComponent.CompType.STRING)&&(!CMLib.english().containsString(I.name(),comp.getStringType())))
+			return false;
+		else
+		if((comp.getType()==AbilityComponent.CompType.RESOURCE)&&((!(I instanceof RawMaterial))||(I.material()!=comp.getLongType())))
+			return false;
+		else
+		if((comp.getType()==AbilityComponent.CompType.MATERIAL)&&((!(I instanceof RawMaterial))||((I.material()&RawMaterial.MATERIAL_MASK)!=comp.getLongType())))
+			return false;
+		container=I.ultimateContainer();
+		if(container==null) container=I;
+		switch(comp.getLocation())
+		{
+		case INVENTORY:
+			if((container.owner() instanceof Room)||(!container.amWearingAt(Wearable.IN_INVENTORY)))
+				return false;
+			break;
+		case HELD:
+			if((container.owner() instanceof Room)||(!container.amWearingAt(Wearable.WORN_HELD)))
+				return false;
+			break;
+		case WORN:
+			if((container.owner() instanceof Room)||(container.amWearingAt(Wearable.IN_INVENTORY)))
+				return false;
+			break;
+		default:
+		case NEARBY:
+			if((container.owner() instanceof Room)||(!CMLib.flags().canBeSeenBy(container, mob)))
+				return false;
+			break;
+		}
+        if((comp.getType()!=AbilityComponent.CompType.STRING)
+        &&(CMLib.flags().isOnFire(I)||CMLib.flags().enchanted(I)))
+			return false;
+		if(comp.getType()==AbilityComponent.CompType.STRING)
+        {
+            if(I instanceof PackagedItems)
+                I=(Item)CMLib.materials().unbundle(I,amt[0]);
+			amt[0]-=I.numberOfItems();
+        }
+		else
+        if(I.phyStats().weight()>amt[0])
+        {
+            I=(Item)CMLib.materials().unbundle(I,amt[0]);
+            if(I==null) 
+    			return false;
+			amt[0]=amt[0]-I.phyStats().weight();
+        }
+        else
+            amt[0]=amt[0]-I.phyStats().weight();
+        thisSet.add(I);
+
+		if(amt[0]<=0)
+		{
+			if(thisSet.size()>0)
+                thisSet.add(Boolean.valueOf(comp.isConsumed()));
+			return true;
+		}
+		return false;
+	}
+	
 	// returns Vector of components found if all good, returns Integer of bad row if not.
 	public List<Object> componentCheck(MOB mob, List<AbilityComponent> req)
 	{
@@ -1488,12 +1554,12 @@ public class CMAble extends StdLibrary implements AbilityMapper
 			return new Vector();
 		boolean currentAND=false;
 		boolean previousValue=true;
-		int amt=0;
-		Vector passes=new Vector();
-		Item I=null;
-		Item container=null;
-		Vector thisSet=new Vector();
+		final int[] amt={0};
+		final List<Object> passes=new Vector<Object>();
+		final List<Object> thisSet=new LinkedList<Object>();
+		boolean found=false;
 		AbilityComponent comp = null;
+		Room room = mob.location();
 		for(int i=0;i<req.size();i++)
 		{
 			comp=req.get(i);
@@ -1504,57 +1570,23 @@ public class CMAble extends StdLibrary implements AbilityMapper
 			if((comp.getCompiledMask()!=null)
 			&&(!CMLib.masking().maskCheck(comp.getCompiledMask(),mob,true)))
 				continue;
-			amt=comp.getAmount();
+			amt[0]=comp.getAmount();
 			thisSet.clear();
-			for(int ii=0;ii<mob.numItems();ii++)
+			found=false;
+			if(comp.getLocation()!=CompLocation.ONGROUND)
+				for(int ii=0;ii<mob.numItems();ii++)
+					if(found=IsItemComponent(mob, comp, amt, mob.getItem(ii), thisSet))
+						break;
+			if((!found)
+			&&(room!=null)
+			&&((comp.getLocation()==CompLocation.ONGROUND)||(comp.getLocation()==CompLocation.NEARBY)))
 			{
-				I=mob.getItem(ii);
-				if(I==null) continue;
-				if((comp.getType()==AbilityComponent.CompType.STRING)&&(!CMLib.english().containsString(I.name(),comp.getStringType())))
-					continue;
-				else
-				if((comp.getType()==AbilityComponent.CompType.RESOURCE)&&((!(I instanceof RawMaterial))||(I.material()!=comp.getLongType())))
-					continue;
-				else
-				if((comp.getType()==AbilityComponent.CompType.MATERIAL)&&((!(I instanceof RawMaterial))||((I.material()&RawMaterial.MATERIAL_MASK)!=comp.getLongType())))
-					continue;
-				container=I.ultimateContainer();
-				if(container==null) container=I;
-				if((comp.getLocation()==AbilityComponent.CompLocation.INVENTORY)&&(!container.amWearingAt(Wearable.IN_INVENTORY)))
-					continue;
-				if((comp.getLocation()==AbilityComponent.CompLocation.HELD)&&(!container.amWearingAt(Wearable.WORN_HELD)))
-					continue;
-				if((comp.getLocation()==AbilityComponent.CompLocation.WORN)&&(container.amWearingAt(Wearable.IN_INVENTORY)))
-					continue;
-                if((comp.getType()!=AbilityComponent.CompType.STRING)
-                &&(CMLib.flags().isOnFire(I)||CMLib.flags().enchanted(I)))
-                    continue;
-				if(comp.getType()==AbilityComponent.CompType.STRING)
-                {
-                    if(I instanceof PackagedItems)
-                        I=(Item)CMLib.materials().unbundle(I,amt);
-					amt-=I.numberOfItems();
-                }
-				else
-                if(I.phyStats().weight()>amt)
-                {
-                    I=(Item)CMLib.materials().unbundle(I,amt);
-                    if(I==null) continue;
-					amt=amt-I.phyStats().weight();
-                }
-                else
-                    amt=amt-I.phyStats().weight();
-                thisSet.addElement(I);
-
-				if(amt<=0)
-				{
-					if(thisSet.size()>0)
-                        thisSet.addElement(Boolean.valueOf(comp.isConsumed()));
-					break;
-				}
+				for(int ii=0;ii<room.numItems();ii++)
+					if(found=IsItemComponent(mob, comp, amt, mob.getItem(ii), thisSet))
+						break;
 			}
-			if((amt>0)&&(currentAND)&&(i>0)) return null;
-			previousValue=amt<=0;
+			if((amt[0]>0)&&(currentAND)&&(i>0)) return null;
+			previousValue=amt[0]<=0;
 			if(previousValue) passes.addAll(thisSet);
 		}
 		if(passes.size()==0) return null;
@@ -1575,7 +1607,15 @@ public class CMAble extends StdLibrary implements AbilityMapper
         if(comp.getLocation()==AbilityComponent.CompLocation.WORN)
         	curr.addElement("DISPOSITION","worn");
         else
+        if(comp.getLocation()==AbilityComponent.CompLocation.NEARBY)
+        	curr.addElement("DISPOSITION","nearby");
+        else
+        if(comp.getLocation()==AbilityComponent.CompLocation.ONGROUND)
+        	curr.addElement("DISPOSITION","onground");
+        else
+        if(comp.getLocation()==AbilityComponent.CompLocation.INVENTORY)
         	curr.addElement("DISPOSITION","inventory");
+        
         if(comp.isConsumed())
             curr.addElement("FATE","consumed");
         else
@@ -1609,6 +1649,12 @@ public class CMAble extends StdLibrary implements AbilityMapper
         else
         if(s[1].equalsIgnoreCase("worn"))
             comp.setLocation(AbilityComponent.CompLocation.WORN);
+        else
+        if(s[1].equalsIgnoreCase("nearby"))
+            comp.setLocation(AbilityComponent.CompLocation.NEARBY);
+        else
+        if(s[1].equalsIgnoreCase("onground"))
+            comp.setLocation(AbilityComponent.CompLocation.ONGROUND);
         else
             comp.setLocation(AbilityComponent.CompLocation.INVENTORY);
         if(s[2].equalsIgnoreCase("consumed"))
@@ -1711,6 +1757,12 @@ public class CMAble extends StdLibrary implements AbilityMapper
         else
         if(comp.getLocation()==AbilityComponent.CompLocation.WORN)
         	buf.append(itemDesc+" worn or wielded");
+        else
+        if(comp.getLocation()==AbilityComponent.CompLocation.NEARBY)
+        	buf.append(itemDesc+" nearby");
+        else
+        if(comp.getLocation()==AbilityComponent.CompLocation.ONGROUND)
+        	buf.append(itemDesc+" on the ground");
         return buf.toString();
     }
 
@@ -1780,6 +1832,12 @@ public class CMAble extends StdLibrary implements AbilityMapper
 			else
 			if(parmS.substring(0,x).equalsIgnoreCase("worn")) 
 				build.setLocation(AbilityComponent.CompLocation.WORN);
+			else
+			if(parmS.substring(0,x).equalsIgnoreCase("nearby")) 
+				build.setLocation(AbilityComponent.CompLocation.NEARBY);
+			else
+			if(parmS.substring(0,x).equalsIgnoreCase("onground")) 
+				build.setLocation(AbilityComponent.CompLocation.ONGROUND);
 			else
 			if((x>0)&&(!parmS.substring(0,x).equalsIgnoreCase("inventory")))
 			{

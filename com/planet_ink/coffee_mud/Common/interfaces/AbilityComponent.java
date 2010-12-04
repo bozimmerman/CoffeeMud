@@ -166,7 +166,7 @@ public interface AbilityComponent extends CMCommon
 	 * @author Bo Zimmerman
 	 *
 	 */
-	public enum CompLocation { INVENTORY, HELD, WORN };
+	public enum CompLocation { INVENTORY, HELD, WORN, NEARBY, ONGROUND };
 	
 	/**
 	 * An component type item filter for determining 
