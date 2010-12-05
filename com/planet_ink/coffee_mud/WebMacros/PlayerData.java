@@ -493,7 +493,7 @@ public class PlayerData extends StdWebMacro
 			if(parms.containsKey("BASEGENDER"))
 			{
 				String old=httpReq.getRequestParameter("BASEGENDER");
-				if(firstTime) old=""+M.baseCharStats().getStat(CharStats.STAT_GENDER);
+				if(firstTime) old=""+(char)M.baseCharStats().getStat(CharStats.STAT_GENDER);
 			    str.append("<OPTION VALUE=M "+((old.equalsIgnoreCase("M"))?"SELECTED":"")+">M");
 			    str.append("<OPTION VALUE=F "+((old.equalsIgnoreCase("F"))?"SELECTED":"")+">F");
 			    str.append("<OPTION VALUE=N "+((old.equalsIgnoreCase("N"))?"SELECTED":"")+">N");
