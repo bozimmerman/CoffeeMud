@@ -44,7 +44,7 @@ public class ScrimShaw extends EnhancedCraftingSkill implements ItemCraftor, Men
 	public String[] triggerStrings(){return triggerStrings;}
     public String supportedResourceString(){return "BONE";}
     public String parametersFormat(){ return 
-        "ITEM_NAME\tITEM_LEVEL\tBUILD_TIME_TICKS\tAMOUNT_MATERIAL_REQUIRED\tITEM_BASE_VALUE\t"
+        "ITEM_NAME\tITEM_LEVEL\tBUILD_TIME_TICKS\tMATERIALS_REQUIRED\tITEM_BASE_VALUE\t"
         +"ITEM_CLASS_ID\tSTATUE||LID_LOCK||WEAPON_CLASS||RIDE_BASIS\t"
         +"CONTAINER_CAPACITY||BASE_DAMAGE||LIGHT_DURATION";}
 
@@ -168,8 +168,7 @@ public class ScrimShaw extends EnhancedCraftingSkill implements ItemCraftor, Men
 				{
 					String item=replacePercent((String)V.get(RCP_FINALNAME),"");
 					int level=CMath.s_int((String)V.get(RCP_LEVEL));
-					int wood=CMath.s_int((String)V.get(RCP_WOOD));
-                    wood=adjustWoodRequired(wood,mob);
+					String wood=getComponentDescription(mob,V,RCP_WOOD);
 					if((level<=xlevel(mob))
 					&&((mask==null)||(mask.length()==0)||mask.equalsIgnoreCase("all")||CMLib.english().containsString(item,mask)))
 						buf.append(CMStrings.padRight(item,16)+" "+CMStrings.padRight(""+level,3)+" "+wood+"\n\r");
@@ -233,8 +232,13 @@ public class ScrimShaw extends EnhancedCraftingSkill implements ItemCraftor, Men
 				commonTell(mob,"You don't know how to scrim a '"+recipeName+"'.  Try \"scrim list\" for a list.");
 				return false;
 			}
-			int woodRequired=CMath.s_int((String)foundRecipe.get(RCP_WOOD));
-            woodRequired=adjustWoodRequired(woodRequired,mob);
+			
+			final String woodRequiredStr = (String)foundRecipe.get(RCP_WOOD);
+			final List<Object> componentsFoundList=getAbilityComponents(mob, woodRequiredStr, "make "+CMLib.english().startWithAorAn(recipeName), autoGenerate);
+			if(componentsFoundList==null) return false;
+			int woodRequired=CMath.s_int(woodRequiredStr);
+	        woodRequired=adjustWoodRequired(woodRequired,mob);
+	        
 			String misctype=(String)foundRecipe.get(RCP_MISCTYPE);
 			int[] pm={RawMaterial.RESOURCE_BONE};
             bundling=misctype.equalsIgnoreCase("BUNDLE");
@@ -245,12 +249,14 @@ public class ScrimShaw extends EnhancedCraftingSkill implements ItemCraftor, Men
 												autoGenerate,
 												enhancedTypes);
 			if(data==null) return false;
+			fixDataForComponents(data,componentsFoundList);
 			woodRequired=data[0][FOUND_AMT];
 			if(amount>woodRequired) woodRequired=amount;
 			if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 				return false;
 			int lostValue=autoGenerate>0?0:
-                CMLib.materials().destroyResources(mob.location(),woodRequired,data[0][FOUND_CODE],0,null);
+                CMLib.materials().destroyResources(mob.location(),woodRequired,data[0][FOUND_CODE],0,null)
+                +CMLib.ableMapper().destroyAbilityComponents(componentsFoundList);
 			building=CMClass.getItem((String)foundRecipe.get(RCP_CLASSTYPE));
 			if(building==null)
 			{

@@ -44,7 +44,7 @@ public class LeatherWorking extends EnhancedCraftingSkill implements ItemCraftor
 	public String[] triggerStrings(){return triggerStrings;}
     public String supportedResourceString(){return "LEATHER";}
     public String parametersFormat(){ return 
-        "ITEM_NAME\tITEM_LEVEL\tBUILD_TIME_TICKS\tAMOUNT_MATERIAL_REQUIRED\tITEM_BASE_VALUE\t"
+        "ITEM_NAME\tITEM_LEVEL\tBUILD_TIME_TICKS\tMATERIALS_REQUIRED\tITEM_BASE_VALUE\t"
         +"ITEM_CLASS_ID\tWEAPON_CLASS||CODED_WEAR_LOCATION\t"
         +"CONTAINER_CAPACITY||LIQUID_CAPACITY||WEAPON_HANDS_REQUIRED\tBASE_DAMAGE||BASE_ARMOR_AMOUNT\t"
         +"CONTAINER_TYPE\tCODED_SPELL_LIST";}
@@ -203,12 +203,16 @@ public class LeatherWorking extends EnhancedCraftingSkill implements ItemCraftor
 				{
 					String item=replacePercent((String)V.get(RCP_FINALNAME),"");
 					int level=CMath.s_int((String)V.get(RCP_LEVEL));
-					int wood=CMath.s_int((String)V.get(RCP_WOOD));
-                    wood=adjustWoodRequired(wood,mob);
+					String wood=getComponentDescription(mob,V,RCP_WOOD);
+					if(wood.length()>5)
+					{
+						if(toggler>1) buf.append("\n\r");
+						toggler=toggleTop;
+					}
 					if((level<=xlevel(mob))
 					&&((mask==null)||(mask.length()==0)||mask.equalsIgnoreCase("all")||CMLib.english().containsString(item,mask)))
 					{
-						buf.append(CMStrings.padRight(item,16)+" "+CMStrings.padRight(""+level,3)+" "+CMStrings.padRight(""+wood,3)+((toggler!=toggleTop)?" ":"\n\r"));
+						buf.append(CMStrings.padRight(item,16)+" "+CMStrings.padRight(""+level,3)+" "+CMStrings.padRightPreserve(""+wood,3)+((toggler!=toggleTop)?" ":"\n\r"));
 						if(++toggler>toggleTop) toggler=1;
 					}
 				}
@@ -310,8 +314,13 @@ public class LeatherWorking extends EnhancedCraftingSkill implements ItemCraftor
 				commonTell(mob,"You don't know how to make a '"+recipeName+"'.  Try \"leatherwork list\" for a list.");
 				return false;
 			}
-			int woodRequired=CMath.s_int((String)foundRecipe.get(RCP_WOOD));
-            woodRequired=adjustWoodRequired(woodRequired,mob);
+			
+			final String woodRequiredStr = (String)foundRecipe.get(RCP_WOOD);
+			final List<Object> componentsFoundList=getAbilityComponents(mob, woodRequiredStr, "make "+CMLib.english().startWithAorAn(recipeName), autoGenerate);
+			if(componentsFoundList==null) return false;
+			int woodRequired=CMath.s_int(woodRequiredStr);
+	        woodRequired=adjustWoodRequired(woodRequired,mob);
+	        
 			if(amount>woodRequired) woodRequired=amount;
 			int[] pm={RawMaterial.MATERIAL_LEATHER};
 			int[] pm1={RawMaterial.MATERIAL_METAL,RawMaterial.MATERIAL_MITHRIL};
@@ -326,11 +335,13 @@ public class LeatherWorking extends EnhancedCraftingSkill implements ItemCraftor
 												autoGenerate,
 												enhancedTypes);
 			if(data==null) return false;
+			fixDataForComponents(data,componentsFoundList);
 			woodRequired=data[0][FOUND_AMT];
 			if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 				return false;
 			int lostValue=autoGenerate>0?0:
-                CMLib.materials().destroyResources(mob.location(),woodRequired,data[0][FOUND_CODE],data[1][FOUND_CODE],null);
+                CMLib.materials().destroyResources(mob.location(),woodRequired,data[0][FOUND_CODE],data[1][FOUND_CODE],null)
+                +CMLib.ableMapper().destroyAbilityComponents(componentsFoundList);
 			building=CMClass.getItem((String)foundRecipe.get(RCP_CLASSTYPE));
 			if(building==null)
 			{

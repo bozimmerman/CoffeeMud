@@ -44,7 +44,7 @@ public class Torturesmithing extends CraftingSkill implements ItemCraftor
 	public String[] triggerStrings(){return triggerStrings;}
     public String supportedResourceString(){return "METAL|MITHRIL|CLOTH";}
     public String parametersFormat(){ return 
-        "ITEM_NAME\tITEM_LEVEL\tBUILD_TIME_TICKS\tAMOUNT_MATERIAL_REQUIRED\t"
+        "ITEM_NAME\tITEM_LEVEL\tBUILD_TIME_TICKS\tMATERIALS_REQUIRED\t"
        +"ITEM_BASE_VALUE\tITEM_CLASS_ID\t"
        +"LID_LOCK||CONTAINER_TYPE||RIDE_BASIS||WEAPON_CLASS||CODED_WEAR_LOCATION\t"
        +"CONTAINER_CAPACITY||LIQUID_CAPACITY\t"
@@ -117,8 +117,8 @@ public class Torturesmithing extends CraftingSkill implements ItemCraftor
 					String item=replacePercent((String)V.get(RCP_FINALNAME),"");
 					int level=CMath.s_int((String)V.get(RCP_LEVEL));
 					String mat=(String)V.get(RCP_MATERIAL);
-					int wood=CMath.s_int((String)V.get(RCP_WOOD));
-                    wood=adjustWoodRequired(wood,mob);
+					String wood=getComponentDescription(mob,V,RCP_WOOD);
+					if(wood.length()>5) mat="";
 					if((level<=xlevel(mob))
 					&&((mask==null)||(mask.length()==0)||mask.equalsIgnoreCase("all")||CMLib.english().containsString(item,mask)))
 						buf.append(CMStrings.padRight(item,16)+" "+CMStrings.padRight(""+level,3)+" "+wood+" "+mat.toLowerCase()+"\n\r");
@@ -157,8 +157,13 @@ public class Torturesmithing extends CraftingSkill implements ItemCraftor
 			commonTell(mob,"You don't know how to make a '"+recipeName+"'.  Try \""+triggerStrings[0].toLowerCase()+" list\" for a list.");
 			return false;
 		}
-		int woodRequired=CMath.s_int((String)foundRecipe.get(RCP_WOOD));
+		
+		final String woodRequiredStr = (String)foundRecipe.get(RCP_WOOD);
+		final List<Object> componentsFoundList=getAbilityComponents(mob, woodRequiredStr, "make "+CMLib.english().startWithAorAn(recipeName), autoGenerate);
+		if(componentsFoundList==null) return false;
+		int woodRequired=CMath.s_int(woodRequiredStr);
         woodRequired=adjustWoodRequired(woodRequired,mob);
+        
 		if(amount>woodRequired) woodRequired=amount;
 		String misctype=(String)foundRecipe.get(RCP_MISCTYPE);
 		String materialtype=(String)foundRecipe.get(RCP_MATERIAL);
@@ -193,7 +198,8 @@ public class Torturesmithing extends CraftingSkill implements ItemCraftor
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 		int lostValue=autoGenerate>0?0:
-            CMLib.materials().destroyResources(mob.location(),data[0][FOUND_AMT],data[0][FOUND_CODE],0,null);
+            CMLib.materials().destroyResources(mob.location(),data[0][FOUND_AMT],data[0][FOUND_CODE],0,null)
+            +CMLib.ableMapper().destroyAbilityComponents(componentsFoundList);
 		building=CMClass.getItem((String)foundRecipe.get(RCP_CLASSTYPE));
 		if(building==null)
 		{

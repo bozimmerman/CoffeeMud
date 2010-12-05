@@ -147,6 +147,7 @@ public interface AbilityMapper extends CMLibrary
 	public int getMaxProficiency(String abilityID);
 	public int getMaxProficiency(MOB mob, boolean checkAll, String ability);
 	public List<Object> componentCheck(MOB mob, List<AbilityComponent> req);
+	public int destroyAbilityComponents(List<Object> found);
 	public String getAbilityComponentDesc(MOB mob, String AID);
 	public Map<String, List<AbilityComponent>> getAbilityComponentMap();
 	public String addAbilityComponent(String s, Map<String, List<AbilityComponent>> H);

@@ -269,7 +269,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
         Vector<String> oldVals = new Vector<String>();
         if(CMath.s_int(oldVal) > 0) {
             for(int c=0;c<choices.size();c++)
-                if(CMath.bset(CMath.s_int(oldVal),((Integer)choices.elementAt(c,1)).intValue()))
+                if(CMath.bset(CMath.s_int(oldVal),CMath.s_int((String)choices.elementAt(c,1))))
                     oldVals.addElement((String)choices.elementAt(c,2));
         }
         else

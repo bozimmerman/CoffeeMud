@@ -43,7 +43,7 @@ public class Carpentry extends EnhancedCraftingSkill implements ItemCraftor
 	public String[] triggerStrings(){return triggerStrings;}
 	public String supportedResourceString(){return "WOODEN";}
     public String parametersFormat(){ return 
-        "ITEM_NAME\tITEM_LEVEL\tBUILD_TIME_TICKS\tAMOUNT_MATERIAL_REQUIRED\t"
+        "ITEM_NAME\tITEM_LEVEL\tBUILD_TIME_TICKS\tMATERIALS_REQUIRED\t"
        +"ITEM_BASE_VALUE\tITEM_CLASS_ID\t"
        +"LID_LOCK||STATUE||RIDE_BASIS||WEAPON_CLASS||CODED_WEAR_LOCATION||SMOKE_FLAG\t"
        +"CONTAINER_CAPACITY||WEAPON_HANDS_REQUIRED||LIQUID_CAPACITY||LIGHT_DURATION\t"
@@ -184,12 +184,16 @@ public class Carpentry extends EnhancedCraftingSkill implements ItemCraftor
 				{
 					String item=replacePercent((String)V.get(RCP_FINALNAME),"");
 					int level=CMath.s_int((String)V.get(RCP_LEVEL));
-					int wood=CMath.s_int((String)V.get(RCP_WOOD));
-                    wood=adjustWoodRequired(wood,mob);
+					String wood=getComponentDescription(mob,V,RCP_WOOD);
+					if(wood.length()>5)
+					{
+						if(toggler>1) buf.append("\n\r");
+						toggler=toggleTop;
+					}
 					if((level<=xlevel(mob))
 					&&((mask==null)||(mask.length()==0)||mask.equalsIgnoreCase("all")||CMLib.english().containsString(item,mask)))
 					{
-						buf.append(CMStrings.padRight(item,15)+" "+CMStrings.padRight(""+level,3)+" "+CMStrings.padRight(""+wood,4)+((toggler!=toggleTop)?" ":"\n\r"));
+						buf.append(CMStrings.padRight(item,15)+" "+CMStrings.padRight(""+level,3)+" "+CMStrings.padRightPreserve(""+wood,4)+((toggler!=toggleTop)?" ":"\n\r"));
 						if(++toggler>toggleTop) toggler=1;
 					}
 				}
@@ -285,9 +289,13 @@ public class Carpentry extends EnhancedCraftingSkill implements ItemCraftor
 				commonTell(mob,"You don't know how to carve a '"+recipeName+"'.  Try \"carve list\" for a list.");
 				return false;
 			}
-
-			int woodRequired=CMath.s_int((String)foundRecipe.get(RCP_WOOD));
-            woodRequired=adjustWoodRequired(woodRequired,mob);
+			
+			final String woodRequiredStr = (String)foundRecipe.get(RCP_WOOD);
+			final List<Object> componentsFoundList=getAbilityComponents(mob, woodRequiredStr, "make "+CMLib.english().startWithAorAn(recipeName), autoGenerate);
+			if(componentsFoundList==null) return false;
+			int woodRequired=CMath.s_int(woodRequiredStr);
+	        woodRequired=adjustWoodRequired(woodRequired,mob);
+	        
 			if(amount>woodRequired) woodRequired=amount;
 			String misctype=(String)foundRecipe.get(RCP_MISCTYPE);
 			int[] pm={RawMaterial.MATERIAL_WOODEN};
@@ -299,11 +307,13 @@ public class Carpentry extends EnhancedCraftingSkill implements ItemCraftor
 												autoGenerate,
 												enhancedTypes);
 			if(data==null) return false;
+			fixDataForComponents(data,componentsFoundList);
 			woodRequired=data[0][FOUND_AMT];
 			if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 				return false;
 			int lostValue=autoGenerate>0?0:
-                CMLib.materials().destroyResources(mob.location(),woodRequired,data[0][FOUND_CODE],0,null);
+                CMLib.materials().destroyResources(mob.location(),woodRequired,data[0][FOUND_CODE],0,null)
+                +CMLib.ableMapper().destroyAbilityComponents(componentsFoundList);
 			building=CMClass.getItem((String)foundRecipe.get(RCP_CLASSTYPE));
 			if(building==null)
 			{

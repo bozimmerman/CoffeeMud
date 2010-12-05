@@ -711,6 +711,68 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
                     public boolean confirmValue(String oldVal) { return true;}
                     public String defaultValue(){ return "10";}
                 },
+                new AbilityParmEditorImpl("MATERIALS_REQUIRED","Amount/Cmp",PARMTYPE_SPECIAL){
+                    public void createChoices() {}
+                    public boolean confirmValue(String oldVal) { return true;}
+                    public String webValue(ExternalHTTPRequests httpReq, java.util.Map<String,String> parms, String oldVal, String fieldName) {
+                        if(httpReq.isRequestParameter(fieldName+"_WHICH"))
+                        {
+                            String which=httpReq.getRequestParameter(fieldName+"_WHICH");
+                            if(which.trim().length()>0)
+                                return httpReq.getRequestParameter(fieldName+"_COMPONENT");
+                            return httpReq.getRequestParameter(fieldName+"_AMOUNT");
+                        }
+                        return oldVal;
+                    }
+                    public String webField(ExternalHTTPRequests httpReq, java.util.Map<String,String> parms, String oldVal, String fieldName) {
+                        String value=webValue(httpReq,parms,oldVal,fieldName);
+                        if(value.endsWith("$")) 
+                            value = value.substring(0,oldVal.length()-1);
+                        value = value.trim();
+                        boolean comp=(value.trim().length()==0)||(CMLib.ableMapper().getAbilityComponentMap().containsKey(value.toUpperCase().trim()));
+                        StringBuffer str = new StringBuffer("<FONT SIZE=-1>");
+                        str.append("\n\rAmount: <INPUT TYPE=RADIO NAME="+fieldName+"_WHICH ");
+                        if(!comp) str.append("CHECKED ");
+                        str.append("VALUE=\"\">");
+                        str.append("\n\r<INPUT TYPE=TEXT SIZE=3 NAME="+fieldName+"_AMOUNT VALUE=\""+(comp?"":value)+"\"  ONKEYDOWN=\"document.RESOURCES."+fieldName+"_WHICH[0].checked=true;\">");
+                        str.append("&nbsp;&nbsp;&nbsp;Alt. Component:");
+                        str.append("\n\r<INPUT TYPE=RADIO NAME="+fieldName+"_WHICH ");
+                        if(comp) str.append("CHECKED ");
+                        str.append("VALUE=\"COMPONENT\">");
+                        str.append("\n\r<SELECT NAME="+fieldName+"_COMPONENT ONCHANGE=\"document.RESOURCES."+fieldName+"_WHICH[1].checked=true;\">");
+                        str.append("<OPTION VALUE=\"0\"");
+                        if((!comp)||(value.length()==0)||(value.equalsIgnoreCase("0")))
+                            str.append(" SELECTED");
+                        str.append(">&nbsp;");
+                        for(String S : CMLib.ableMapper().getAbilityComponentMap().keySet())
+                        {
+                            str.append("<OPTION VALUE=\""+S+"\"");
+                            if(comp&&(value.equalsIgnoreCase(S)))
+                                str.append(" SELECTED");
+                            str.append(">"+S);
+                        }
+                        str.append("</SELECT></FONT>");
+                        return str.toString();
+                    }
+                    public String[] fakeUserInput(String oldVal) { return  new String[]{oldVal}; }
+                    public String commandLinePrompt(MOB mob, String oldVal, int[] showNumber, int showFlag) throws java.io.IOException
+                    {
+                        ++showNumber[0];
+                        String str = oldVal;
+                        while(!mob.session().killFlag())
+                        {
+                            str=CMLib.genEd().prompt(mob,oldVal,showNumber[0],showFlag,prompt(),true,CMParms.toStringList(CMLib.ableMapper().getAbilityComponentMap().keySet())).trim();
+                            if(str.equals(oldVal)) return oldVal;
+                            if(CMath.isInteger(str)) 
+                            	return Integer.toString(CMath.s_int(str));
+                            if(CMLib.ableMapper().getAbilityComponentMap().containsKey(str.toUpperCase().trim()))
+                            	return str.toUpperCase().trim();
+                            mob.session().println("'"+str+"' is not an amount of material, or a component key.  Please use ? for help.");
+                        }
+                        return str;
+                    }
+                    public String defaultValue(){ return "1";}
+                },
                 new AbilityParmEditorImpl("OPTIONAL_AMOUNT_REQUIRED","Amt",PARMTYPE_NUMBER){
                     public void createChoices() {}
                     public boolean confirmValue(String oldVal) { return true;}
@@ -1170,7 +1232,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
                         ++showNumber[0];
                         boolean proceed = true;
                         String str = oldVal;
-                        while(proceed)
+                        while(proceed&&(!mob.session().killFlag()))
                         {
                             proceed = false;
                             str=CMLib.genEd().prompt(mob,oldVal,showNumber[0],showFlag,prompt(),true,CMParms.toStringList(RawMaterial.CODES.NAMES())).trim();
@@ -1228,7 +1290,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
                         boolean proceed = true;
                         String str = oldVal;
                         String orig = oldVal;
-                        while(proceed)
+                        while(proceed&&(!mob.session().killFlag()))
                         {
                             proceed = false;
                             if(oldVal.trim().endsWith("$")) oldVal=oldVal.trim().substring(0,oldVal.trim().length()-1);
@@ -1682,7 +1744,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
                 } else {
                     Vector V = new Vector();
                     for(int c=0;c<choices.size();c++)
-                        if(CMath.bset(CMath.s_int(oldVal),((Integer)choices.elementAt(c,1)).intValue()))
+                        if(CMath.bset(CMath.s_int(oldVal),CMath.s_int((String)choices.elementAt(c,1))))
                         {
                             V.addElement((String)choices.elementAt(c,2));
                             V.addElement((String)choices.elementAt(c,2));
@@ -1712,7 +1774,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
             {
                 ++showNumber[0];
                 boolean proceed = true;
-                while(proceed) {
+                while(proceed&&(!mob.session().killFlag())) {
                     str = CMLib.genEd().prompt(mob,oldVal,showNumber[0],showFlag,prompt(),emptyOK).trim();
                     if((!spaceOK) && (str.indexOf(' ') >= 0))
                         mob.tell("Spaces are not allowed here.");
@@ -1848,10 +1910,12 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
             if(choices != null) return choices;
             choices = createChoices(new XVector<String>(S).elements());
             for(int i=0;i<choices.size();i++)
+            {
                 if(i==0)
                     choices.setElementAt(i,1,Integer.toString(0));
                 else
                     choices.setElementAt(i,1,Integer.toString(1<<(i-1)));
+            }
             return choices;
         }
         public DVector createNumberedChoices(String[] S) { 

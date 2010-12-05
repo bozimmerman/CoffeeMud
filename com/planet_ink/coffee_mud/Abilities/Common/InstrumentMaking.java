@@ -44,7 +44,7 @@ public class InstrumentMaking extends CraftingSkill implements ItemCraftor
 	public String[] triggerStrings(){return triggerStrings;}
     public String supportedResourceString(){return "WOODEN";}
     public String parametersFormat(){ return 
-        "ITEM_NAME\tITEM_LEVEL\tBUILD_TIME_TICKS\tAMOUNT_MATERIAL_REQUIRED\tITEM_BASE_VALUE\t"
+        "ITEM_NAME\tITEM_LEVEL\tBUILD_TIME_TICKS\tMATERIALS_REQUIRED\tITEM_BASE_VALUE\t"
         +"ITEM_CLASS_ID\tRIDE_CAPACITY||CODED_WEAR_LOCATION\tMETAL_OR_WOOD\tOPTIONAL_RACE_ID\tINSTRUMENT_TYPE";}
 
 	protected static final int RCP_FINALNAME=0;
@@ -132,9 +132,9 @@ public class InstrumentMaking extends CraftingSkill implements ItemCraftor
 				{
 					String item=replacePercent((String)V.get(RCP_FINALNAME),"");
 					int level=CMath.s_int((String)V.get(RCP_LEVEL));
-					int wood=CMath.s_int((String)V.get(RCP_WOOD));
-                    wood=adjustWoodRequired(wood,mob);
 					String type=(String)V.get(RCP_MATERIAL);
+					String wood=getComponentDescription(mob,V,RCP_WOOD);
+					if(wood.length()>5) type="";
 					String race=((String)V.get(RCP_RACES)).trim();
 					String itype=CMStrings.capitalizeAndLower(((String)V.get(RCP_TYPE)).toLowerCase()).trim();
 					if((level<xlevel(mob))
@@ -176,8 +176,13 @@ public class InstrumentMaking extends CraftingSkill implements ItemCraftor
 			commonTell(mob,"You don't know how to make a '"+recipeName+"'.  Try \"instrumentmake list\" for a list.");
 			return false;
 		}
-		int woodRequired=CMath.s_int((String)foundRecipe.get(RCP_WOOD));
+		
+		final String woodRequiredStr = (String)foundRecipe.get(RCP_WOOD);
+		final List<Object> componentsFoundList=getAbilityComponents(mob, woodRequiredStr, "make "+CMLib.english().startWithAorAn(recipeName), autoGenerate);
+		if(componentsFoundList==null) return false;
+		int woodRequired=CMath.s_int(woodRequiredStr);
         woodRequired=adjustWoodRequired(woodRequired,mob);
+        
 		if(amount>woodRequired) woodRequired=amount;
 		String materialRequired=(String)foundRecipe.get(RCP_MATERIAL);
 		String misctype=(String)foundRecipe.get(RCP_MISCTYPE);
@@ -199,7 +204,8 @@ public class InstrumentMaking extends CraftingSkill implements ItemCraftor
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 		int lostValue=autoGenerate>0?0:
-            CMLib.materials().destroyResources(mob.location(),woodRequired,data[0][FOUND_CODE],0,null);
+            CMLib.materials().destroyResources(mob.location(),woodRequired,data[0][FOUND_CODE],0,null)
+            +CMLib.ableMapper().destroyAbilityComponents(componentsFoundList);
 		building=CMClass.getItem((String)foundRecipe.get(RCP_CLASSTYPE));
 		if(building==null)
 		{

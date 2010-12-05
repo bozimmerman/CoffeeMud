@@ -809,4 +809,45 @@ public class CraftingSkill extends GatheringSkill
 		return true;
 	}
 
+	public List<Object> getAbilityComponents(MOB mob, String componentID, String doingWhat, int autoGenerate)
+	{
+		if(autoGenerate>0) return new LinkedList<Object>();
+		
+    	final List<AbilityComponent> componentsRequirements=(Vector<AbilityComponent>)CMLib.ableMapper().getAbilityComponentMap().get(componentID.toUpperCase());
+        if(componentsRequirements!=null)
+        {
+        	List<Object> components=CMLib.ableMapper().componentCheck(mob,componentsRequirements);
+            if(components!=null)
+            {
+            	return components;
+            }
+            mob.tell("You lack the necessary materials to "
+                    +doingWhat.toLowerCase()
+                    +", the requirements are: "
+                    +CMLib.ableMapper().getAbilityComponentDesc(mob,componentID)+".");
+            return null;
+        }
+        return new LinkedList<Object>();
+	}
+	
+	public String getComponentDescription(final MOB mob, final List<String> recipe, final int RCP_WOOD)
+	{
+		final String woodStr = (String)recipe.get(RCP_WOOD);
+		if(CMath.isInteger(woodStr))
+		{
+			int wood=CMath.s_int(woodStr);
+	        wood=adjustWoodRequired(wood,mob);
+	        return Integer.toString(wood);
+		}
+		else
+		{
+	    	final List<AbilityComponent> componentsRequirements=(Vector<AbilityComponent>)CMLib.ableMapper().getAbilityComponentMap().get(woodStr.toUpperCase().trim());
+	        if(componentsRequirements!=null)
+	        {
+	        	return CMLib.ableMapper().getAbilityComponentDesc(mob, woodStr.toUpperCase().trim());
+	        }
+		}
+		return "?";
+	}
+	
 }

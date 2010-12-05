@@ -1005,21 +1005,7 @@ public class StdAbility implements Ability
                             +CMLib.ableMapper().getAbilityComponentDesc(mob,ID())+".");
                     return false;
                 }
-                while(components.size()>0)
-                {
-                    int i=0;
-                    boolean destroy=false;
-                    for(;i<components.size();i++)
-                        if(components.get(i) instanceof Boolean)
-                        { destroy=((Boolean)components.get(i)).booleanValue(); break;}
-                    while(i>=0)
-                    {
-                        if((destroy)&&(components.get(0) instanceof Item))
-                            ((Item)components.get(0)).destroy();
-                        components.remove(0);
-                        i--;
-                    }
-                }
+                CMLib.ableMapper().destroyAbilityComponents(components);
             }
         }
         return true;

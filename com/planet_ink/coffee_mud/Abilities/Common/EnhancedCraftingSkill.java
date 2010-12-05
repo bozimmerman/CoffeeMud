@@ -153,6 +153,31 @@ public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
 				bundle,autoGeneration,expMods);
 	}
 
+	public void fixDataForComponents(int[][] data, List<Object> componentsFoundList)
+	{
+		if((componentsFoundList==null)||(componentsFoundList.size()==0))
+			return;
+		
+		if((data[0][FOUND_CODE]==0)&&(data[1][FOUND_CODE]==0))
+		{
+			final List<Integer> rscs=myResources();
+			for(Object o : componentsFoundList)
+			{
+				if(o instanceof Item)
+				{
+					Item I=(Item)o;
+					if(rscs.contains(Integer.valueOf(I.material())))
+					{
+						data[0][FOUND_CODE]=I.material();
+						return;
+					}
+				}
+			}
+			data[0][FOUND_CODE]=rscs.get(0).intValue();
+		}
+	}
+
+	
 	private final static int atLeast1(int value, double pct)
 	{
 		int change=(int)Math.round(CMath.mul(value,pct));

@@ -43,7 +43,7 @@ public class Weaving extends EnhancedCraftingSkill implements ItemCraftor, Mendi
 	public String[] triggerStrings(){return triggerStrings;}
     public String supportedResourceString(){return "WHEAT|VINE|SEAWEED|HEMP|SILK|COTTON";}
     public String parametersFormat(){ return 
-        "ITEM_NAME\tITEM_LEVEL\tBUILD_TIME_TICKS\tAMOUNT_MATERIAL_REQUIRED\tITEM_BASE_VALUE\t"
+        "ITEM_NAME\tITEM_LEVEL\tBUILD_TIME_TICKS\tMATERIALS_REQUIRED\tITEM_BASE_VALUE\t"
         +"ITEM_CLASS_ID\tWEAPON_CLASS||CODED_WEAR_LOCATION||RIDE_BASIS||LID_LOCK\t"
         +"CONTAINER_CAPACITY||WEAPON_HANDS_REQUIRED\tBASE_ARMOR_AMOUNT||BASE_DAMAGE\t"
         +"CONTAINER_TYPE\tCODED_SPELL_LIST";}
@@ -200,12 +200,16 @@ public class Weaving extends EnhancedCraftingSkill implements ItemCraftor, Mendi
 				{
 					String item=replacePercent((String)V.get(RCP_FINALNAME),"");
 					int level=CMath.s_int((String)V.get(RCP_LEVEL));
-					int wood=CMath.s_int((String)V.get(RCP_WOOD));
-                    wood=adjustWoodRequired(wood,mob);
+					String wood=getComponentDescription(mob,V,RCP_WOOD);
+					if(wood.length()>5)
+					{
+						if(toggler>1) buf.append("\n\r");
+						toggler=toggleTop;
+					}
 					if((level<=xlevel(mob))
 					&&((mask==null)||(mask.length()==0)||mask.equalsIgnoreCase("all")||CMLib.english().containsString(item,mask)))
 					{
-						buf.append(CMStrings.padRight(item,10)+" "+CMStrings.padRight(""+level,3)+" "+CMStrings.padRight(""+wood,10)+((toggler!=toggleTop)?" ":"\n\r"));
+						buf.append(CMStrings.padRight(item,10)+" "+CMStrings.padRight(""+level,3)+" "+CMStrings.padRightPreserve(""+wood,10)+((toggler!=toggleTop)?" ":"\n\r"));
 						if(++toggler>toggleTop) toggler=1;
 					}
 				}
@@ -307,8 +311,13 @@ public class Weaving extends EnhancedCraftingSkill implements ItemCraftor, Mendi
 				commonTell(mob,"You don't know how to weave a '"+recipeName+"'.  Try \"weave list\" for a list.");
 				return false;
 			}
-			int woodRequired=CMath.s_int((String)foundRecipe.get(RCP_WOOD));
-            woodRequired=adjustWoodRequired(woodRequired,mob);
+			
+			final String woodRequiredStr = (String)foundRecipe.get(RCP_WOOD);
+			final List<Object> componentsFoundList=getAbilityComponents(mob, woodRequiredStr, "make "+CMLib.english().startWithAorAn(recipeName), autoGenerate);
+			if(componentsFoundList==null) return false;
+			int woodRequired=CMath.s_int(woodRequiredStr);
+	        woodRequired=adjustWoodRequired(woodRequired,mob);
+	        
 			if(amount>woodRequired) woodRequired=amount;
 			int[] pm={RawMaterial.RESOURCE_COTTON,
 					  RawMaterial.RESOURCE_SILK,
@@ -326,11 +335,13 @@ public class Weaving extends EnhancedCraftingSkill implements ItemCraftor, Mendi
 												autoGenerate,
 												enhancedTypes);
 			if(data==null) return false;
+			fixDataForComponents(data,componentsFoundList);
 			woodRequired=data[0][FOUND_AMT];
 			if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 				return false;
 			int lostValue=autoGenerate>0?0:
-                CMLib.materials().destroyResources(mob.location(),woodRequired,data[0][FOUND_CODE],0,null);
+                CMLib.materials().destroyResources(mob.location(),woodRequired,data[0][FOUND_CODE],0,null)
+                +CMLib.ableMapper().destroyAbilityComponents(componentsFoundList);
 			building=CMClass.getItem((String)foundRecipe.get(RCP_CLASSTYPE));
 			if(building==null)
 			{

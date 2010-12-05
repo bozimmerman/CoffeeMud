@@ -1513,7 +1513,11 @@ public class CMAble extends StdLibrary implements AbilityMapper
 			break;
 		default:
 		case NEARBY:
-			if((container.owner() instanceof Room)||(!CMLib.flags().canBeSeenBy(container, mob)))
+			if(!CMLib.flags().canBeSeenBy(container, mob))
+				return false;
+			break;
+		case ONGROUND:
+			if((!(container.owner() instanceof Room))||(!CMLib.flags().canBeSeenBy(container, mob)))
 				return false;
 			break;
 		}
@@ -1582,7 +1586,7 @@ public class CMAble extends StdLibrary implements AbilityMapper
 			&&((comp.getLocation()==CompLocation.ONGROUND)||(comp.getLocation()==CompLocation.NEARBY)))
 			{
 				for(int ii=0;ii<room.numItems();ii++)
-					if(found=IsItemComponent(mob, comp, amt, mob.getItem(ii), thisSet))
+					if(found=IsItemComponent(mob, comp, amt, room.getItem(ii), thisSet))
 						break;
 			}
 			if((amt[0]>0)&&(currentAND)&&(i>0)) return null;
@@ -1926,5 +1930,33 @@ public class CMAble extends StdLibrary implements AbilityMapper
 			Resources.submitResource("COMPONENT_MAP",H);
 		}
 		return H;
+	}
+	
+	public int destroyAbilityComponents(List<Object> found)
+	{
+		int value=0;
+		if(found==null)
+		{
+			return 0;
+		}
+        while(found.size()>0)
+        {
+            int i=0;
+            boolean destroy=false;
+            for(;i<found.size();i++)
+                if(found.get(i) instanceof Boolean)
+                { destroy=((Boolean)found.get(i)).booleanValue(); break;}
+            while(i>=0)
+            {
+                if((destroy)&&(found.get(0) instanceof Item))
+                {
+                	value +=((Item)found.get(0)).value();
+                    ((Item)found.get(0)).destroy();
+                }
+                found.remove(0);
+                i--;
+            }
+        }
+        return value;
 	}
 }

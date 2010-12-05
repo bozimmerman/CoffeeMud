@@ -44,7 +44,7 @@ public class Shipwright extends CraftingSkill implements ItemCraftor, MendingSki
 	public String[] triggerStrings(){return triggerStrings;}
     public String supportedResourceString(){return "WOODEN";}
     public String parametersFormat(){ return 
-        "ITEM_NAME\tITEM_LEVEL\tBUILD_TIME_TICKS\tAMOUNT_MATERIAL_REQUIRED\tITEM_BASE_VALUE\t"
+        "ITEM_NAME\tITEM_LEVEL\tBUILD_TIME_TICKS\tMATERIALS_REQUIRED\tITEM_BASE_VALUE\t"
         +"ITEM_CLASS_ID\tRIDE_BASIS\tCONTAINER_CAPACITY||RIDE_CAPACITY\tCONTAINER_TYPE\t"
         +"CODED_SPELL_LIST";}
 
@@ -174,8 +174,7 @@ public class Shipwright extends CraftingSkill implements ItemCraftor, MendingSki
 				{
 					String item=replacePercent((String)V.get(RCP_FINALNAME),"");
 					int level=CMath.s_int((String)V.get(RCP_LEVEL));
-					int wood=CMath.s_int((String)V.get(RCP_WOOD));
-                    wood=adjustWoodRequired(wood,mob);
+					String wood=getComponentDescription(mob,V,RCP_WOOD);
 					int capacity=CMath.s_int((String)V.get(RCP_CAPACITY));
 					if((level<=xlevel(mob))
 					&&((mask==null)||(mask.length()==0)||mask.equalsIgnoreCase("all")||CMLib.english().containsString(item,mask)))
@@ -239,8 +238,13 @@ public class Shipwright extends CraftingSkill implements ItemCraftor, MendingSki
 				commonTell(mob,"You don't know how to carve a '"+recipeName+"'.  Try \"shipwright list\" for a list.");
 				return false;
 			}
-			int woodRequired=CMath.s_int((String)foundRecipe.get(RCP_WOOD));
-            woodRequired=adjustWoodRequired(woodRequired,mob);
+			
+			final String woodRequiredStr = (String)foundRecipe.get(RCP_WOOD);
+			final List<Object> componentsFoundList=getAbilityComponents(mob, woodRequiredStr, "make "+CMLib.english().startWithAorAn(recipeName), autoGenerate);
+			if(componentsFoundList==null) return false;
+			int woodRequired=CMath.s_int(woodRequiredStr);
+	        woodRequired=adjustWoodRequired(woodRequired,mob);
+	        
 			if(amount>woodRequired) woodRequired=amount;
 			int[] pm={RawMaterial.MATERIAL_WOODEN};
 			String misctype=(String)foundRecipe.get(RCP_MISCTYPE);
@@ -257,7 +261,8 @@ public class Shipwright extends CraftingSkill implements ItemCraftor, MendingSki
 				return false;
 			int woodDestroyed=woodRequired;
 			int lostValue=autoGenerate>0?0:
-                CMLib.materials().destroyResources(mob.location(),woodDestroyed,data[0][FOUND_CODE],0,null);
+                CMLib.materials().destroyResources(mob.location(),woodDestroyed,data[0][FOUND_CODE],0,null)
+                +CMLib.ableMapper().destroyAbilityComponents(componentsFoundList);
 			building=CMClass.getItem((String)foundRecipe.get(RCP_CLASSTYPE));
 			if(building==null)
 			{

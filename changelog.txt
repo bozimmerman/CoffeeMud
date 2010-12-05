@@ -2291,3 +2291,5 @@ Special/Reserved Quest called holidays can be added to/modified on an area-by-ar
 22.New DISABLE flags: DARKNIGHTS, DARKWEATHER
 23.EMAILREQ can now be set to disabled.
 24.FakeDB now supports PreparedStatements, and Apache Derby support is now complete.
+25.Skill Recipes: Skill Component entries can now be substituted for ingredient amount in skill recipes.
+ 
