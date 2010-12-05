@@ -54,11 +54,13 @@ public class Learn extends StdCommand
 		}
 		commands.removeElementAt(0);
         String teacherName="";
+        String sayTo="SAY";
         if(commands.size()>1)
         {
-            teacherName=" "+(String)commands.lastElement();
-            if(teacherName.length()>1)
+            teacherName="\""+((String)commands.lastElement())+"\" ";
+            if((teacherName.length()>1)&&(mob.location().fetchFromRoomFavorMOBs(null, (String)commands.lastElement()) instanceof MOB))
             {
+            	sayTo="SAYTO";
                 commands.removeElementAt(commands.size()-1);
                 if((commands.size()>1)&&(((String)commands.lastElement()).equalsIgnoreCase("FROM")))
                     commands.removeElementAt(commands.size()-1);
@@ -71,16 +73,15 @@ public class Learn extends StdCommand
 		Vector V=Train.getAllPossibleThingsToTrainFor();
 		if(V.contains(what.toUpperCase().trim()))
 		{
-			Vector CC=new XVector("SAY","I would like to be trained in "+what);
+			Vector CC=CMParms.parse(sayTo+" "+teacherName+"I would like to be trained in "+what);
 			mob.doCommand(CC,metaFlags);
-			if(teacherName.length()>0) commands.addElement(teacherName.trim());
 			Command C=CMClass.getCommand("TRAIN");
 			if(C!=null) C.execute(mob, commands,metaFlags);
 			return true;
 		}
-		if(CMClass.findAbility(what+teacherName, mob)!=null)
+		if(CMClass.findAbility(what, mob)!=null)
 		{
-			Vector CC=new XVector("SAY","I would like you to teach me "+what);
+			Vector CC=CMParms.parse(sayTo+" "+teacherName+"I would like you to teach me "+what);
 			mob.doCommand(CC,metaFlags);
 			return true;
 		}
@@ -89,10 +90,8 @@ public class Learn extends StdCommand
         for(Enumeration e=V2.elements();e.hasMoreElements();)
         {
             ExpertiseLibrary.ExpertiseDefinition def=(ExpertiseLibrary.ExpertiseDefinition)e.nextElement();
-            if((def.name.equalsIgnoreCase(what+teacherName)
+            if((def.name.equalsIgnoreCase(what)
             ||def.name.equalsIgnoreCase(what))
-            ||(def.name.toLowerCase().startsWith((what+teacherName).toLowerCase())
-                &&(CMath.isRomanNumeral(def.name.substring((what+teacherName).length()).trim())||CMath.isNumber(def.name.substring((what+teacherName).length()).trim())))
             ||(def.name.toLowerCase().startsWith((what).toLowerCase())
                     &&(CMath.isRomanNumeral(def.name.substring((what).length()).trim())||CMath.isNumber(def.name.substring((what).length()).trim())))
             )
@@ -102,8 +101,7 @@ public class Learn extends StdCommand
         for(Enumeration e=CMLib.expertises().definitions();e.hasMoreElements();)
         {
             ExpertiseLibrary.ExpertiseDefinition def=(ExpertiseLibrary.ExpertiseDefinition)e.nextElement();
-            if((def.name.equalsIgnoreCase(what+teacherName)
-                 ||def.name.equalsIgnoreCase(what)))
+            if(def.name.equalsIgnoreCase(what))
             { theExpertise=def; break;}
         }
         if(theExpertise!=null)
@@ -116,15 +114,14 @@ public class Learn extends StdCommand
 		for(int v=0;v<V.size();v++)
 			if(((String)V.elementAt(v)).startsWith(what.toUpperCase().trim()))
 			{
-				Vector CC=new XVector("SAY","I would like to be trained in "+what);
+				Vector CC=CMParms.parse(sayTo+" "+teacherName+"I would like to be trained in "+what);
 				mob.doCommand(CC,metaFlags);
-				if(teacherName.length()>0) commands.addElement(teacherName.trim());
 				Command C=CMClass.getCommand("TRAIN");
 				if(C!=null) C.execute(mob, commands,metaFlags);
 				return true;
 				
 			}
-		Vector CC=new XVector("SAY","I would like you to teach me "+what+teacherName);
+		Vector CC=CMParms.parse(sayTo+" "+teacherName+"I would like you to teach me "+what);
 		mob.doCommand(CC,metaFlags);
 		return false;
 	}
