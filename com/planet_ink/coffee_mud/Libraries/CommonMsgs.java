@@ -553,20 +553,22 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 
     public void tickAging(MOB mob)
     {
+    	if(mob==null) return;
         mob.setAgeHours(mob.getAgeHours()+1); // this is really minutes
+    	final PlayerStats stats = mob.playerStats();
+    	if(stats==null) return;
+    	final int[] birthDay = stats.getBirthday();
         if((mob.baseCharStats().getStat(CharStats.STAT_AGE)>0)
-        &&(mob.playerStats()!=null)
-        &&(mob.playerStats().getBirthday()!=null)
+        &&(birthDay!=null)
         &&((mob.getAgeHours()%20)==0))
         {
-            int tage=mob.baseCharStats().getMyRace().getAgingChart()[Race.AGE_YOUNGADULT]
-                    +CMLib.time().globalClock().getYear()
-                    -mob.playerStats().getBirthday()[2];
-            int month=CMLib.time().globalClock().getMonth();
-            int day=CMLib.time().globalClock().getDayOfMonth();
-            int bday=mob.playerStats().getBirthday()[0];
-            int bmonth=mob.playerStats().getBirthday()[1];
-            while((tage>mob.baseCharStats().getStat(CharStats.STAT_AGE))
+        	final TimeClock clock = CMLib.time().globalClock();
+        	final int currYear=clock.getYear();
+        	final int month=clock.getMonth();
+        	final int day=clock.getDayOfMonth();
+        	final int bday=birthDay[0];
+        	final int bmonth=birthDay[1];
+            while((currYear>birthDay[3])
             &&((month>bmonth)||((month==bmonth)&&(day>=bday))))
             {
                 if(!CMSecurity.isAllowed(mob,mob.location(),"IMMORT"))
@@ -580,9 +582,9 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
                 }
                 else
                 {
-                    mob.playerStats().getBirthday()[2]++;
-                    tage--;
+                	birthDay[2]++;
                 }
+                birthDay[3]++;
             }
             if(!CMSecurity.isAllowed(mob,mob.location(),"IMMORT"))
             {

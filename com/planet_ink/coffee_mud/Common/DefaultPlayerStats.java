@@ -421,11 +421,12 @@ public class DefaultPlayerStats implements PlayerStats
 	public int[] getBirthday(){return birthday;}
 	public int initializeBirthday(int ageHours, Race R)
 	{
-	    birthday=new int[3];
+	    birthday=new int[4];
 	    TimeClock C=CMLib.time().globalClock();
 	    birthday[0]=C.getDayOfMonth();
 	    birthday[1]=C.getMonth();
 	    birthday[2]=C.getYear();
+	    birthday[3]=C.getYear();
 	    while(ageHours>15)
 	    {
 	        birthday[2]-=1;
@@ -491,9 +492,14 @@ public class DefaultPlayerStats implements PlayerStats
 		if((bday!=null)&&(bday.length()>0))
 		{
 		    Vector<String> V=CMParms.parseCommas(bday,true);
-		    birthday=new int[3];
+		    birthday=new int[4];
 		    for(int v=0;v<V.size();v++)
 		        birthday[v]=CMath.s_int((String)V.elementAt(v));
+		    if(V.size()<4)
+		    {
+			    TimeClock C=CMLib.time().globalClock();
+		    	birthday[3]=C.getYear();
+		    }
 		}
 	}
 	

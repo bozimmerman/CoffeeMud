@@ -2241,14 +2241,11 @@ public class DefaultScriptingEngine implements ScriptingEngine
                          returnable=false;
                     else
                     {
-                        int tage=mob.baseCharStats().getMyRace().getAgingChart()[Race.AGE_YOUNGADULT]
-                                                                                 +CMLib.time().globalClock().getYear()
-                                                                                 -mob.playerStats().getBirthday()[2];
                          int month=CMLib.time().globalClock().getMonth();
                          int day=CMLib.time().globalClock().getDayOfMonth();
                          int bday=mob.playerStats().getBirthday()[0];
                          int bmonth=mob.playerStats().getBirthday()[1];
-                         if((tage>mob.baseCharStats().getStat(CharStats.STAT_AGE))
+                         if((CMLib.time().globalClock().getYear()>mob.playerStats().getBirthday()[3])
                          &&((month==bmonth)&&(day==bday)))
                              returnable=true;
                          else
