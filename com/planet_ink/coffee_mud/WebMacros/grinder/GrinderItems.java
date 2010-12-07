@@ -52,7 +52,7 @@ public class GrinderItems
           "SMELLS","IMAGE","ISEXIT","EXITNAME","EXITCLOSEDTEXT",
           "NUMCOINS","CURRENCY","DENOM","ISRECIPE","RECIPESKILL",
           "RECIPEDATA", "LAYER","SEETHRU","MULTIWEAR","ISCATALOGED",
-          "CATARATE","CATALIVE","CATAMASK","BITE"};
+          "CATARATE","CATALIVE","CATAMASK","BITE","MAXUSES"};
 	public static String editItem(ExternalHTTPRequests httpReq,
 								  java.util.Map<String,String> parms,
 								  MOB whom,
@@ -548,6 +548,10 @@ public class GrinderItems
                 case 87: // bite
                     if(I instanceof Food)
                         ((Food)I).setBite(CMath.s_int(old));
+                    break;
+                case 88: // max uses
+                    if(I instanceof Wand)
+                        ((Wand)I).setMaxUses(CMath.s_int(old));
                     break;
 				}
 			}

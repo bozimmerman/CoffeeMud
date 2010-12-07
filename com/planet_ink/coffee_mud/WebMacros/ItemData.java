@@ -60,7 +60,7 @@ public class ItemData extends StdWebMacro
       "IMAGE","ISEXIT","EXITNAME","EXITCLOSEDTEXT","NUMCOINS",
       "CURRENCY","DENOM","ISRECIPE","RECIPESKILL","RECIPEDATA",
       "LAYER","SEETHRU","MULTIWEAR","ISCATALOGED","CATARATE",
-      "CATALIVE","CATAMASK","BITE"};
+      "CATALIVE","CATAMASK","BITE","MAXUSES"};
     
     public ItemData()
     {
@@ -948,6 +948,11 @@ public class ItemData extends StdWebMacro
                 case 91: // bite
                     if((firstTime)&&(I instanceof Food))
                         old=""+((Food)I).bite();
+                    str.append(old);
+                    break;
+                case 92: // max uses
+                    if((firstTime)&&(I instanceof Wand))
+                        old=""+((Wand)I).maxUses();
                     str.append(old);
                     break;
 				}
