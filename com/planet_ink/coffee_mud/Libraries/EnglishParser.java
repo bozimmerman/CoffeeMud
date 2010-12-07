@@ -44,6 +44,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
     private final static String[] articles={"a","an","all of","some one","a pair of","one of","all","the","some"};
     public static boolean[] PUNCTUATION_TABLE=null;
     public final static char[] ALL_CHRS="ALL".toCharArray();
+    public final static String[] fwords={"calf", "half", "knife", "life", "wife", "elf", "self", "shelf", "leaf", "sheaf", "thief", "loaf", "wolf"};
     
     public boolean isAnArticle(String s)
     {
@@ -53,6 +54,24 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
         return false;
     }
 
+    public String makePlural(String str)
+    {
+    	if((str==null)||(str.length()==0))
+    		return str;
+    	final boolean uppercase=Character.isUpperCase(str.charAt(str.length()-1));
+    	final String lowerStr=str.toLowerCase();
+    	if(lowerStr.endsWith("is"))
+    		return str.substring(0,str.length()-2)+(uppercase?"ES":"es");
+    	if(lowerStr.endsWith("s")||lowerStr.endsWith("z")||lowerStr.endsWith("x")||lowerStr.endsWith("ch")||lowerStr.endsWith("sh"))
+    		return str+(uppercase?"ES":"es");
+    	if(lowerStr.endsWith("ay")||lowerStr.endsWith("ey")||lowerStr.endsWith("iy")||lowerStr.endsWith("oy")||lowerStr.endsWith("uy"))
+    		return str+(uppercase?"S":"s");
+    	if(lowerStr.endsWith("y"))
+    		return str.substring(0,str.length()-1)+(uppercase?"IES":"ies");
+    	if(CMStrings.contains(fwords, lowerStr))
+    		return str.substring(0,str.length()-1)+(uppercase?"VES":"ves");
+    	return str+(uppercase?"S":"s");
+    }
     public String cleanArticles(String s)
     {
         boolean didSomething=true;

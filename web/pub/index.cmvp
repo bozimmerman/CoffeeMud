@@ -58,7 +58,7 @@ Players currently online: <FONT COLOR=RED><b>@NUMPLAYERS@</B></FONT>
 @BaseCharClassNext?RESET@
 @loop@
 @BaseCharClassNext@
-<LI><B>@BaseCharClassName@s: </B>
+<LI><B>@BaseCharClassName?PLURAL@: </B>
 	@CharClassNext?RESET@
 	@loop@
 		@CharClassNext@

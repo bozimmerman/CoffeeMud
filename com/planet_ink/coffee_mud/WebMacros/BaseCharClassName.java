@@ -43,14 +43,23 @@ public class BaseCharClassName extends StdWebMacro
 		if(last==null) return " @break@";
 		if(last.length()>0)
 		{
+			java.util.Map<String,String> parms=parseParms(parm);
 			CharClass C=CMClass.getCharClass(last);
 			if(C!=null)
-                return clearWebMacros(C.name());
+			{
+				if(parms.containsKey("PLURAL"))
+	                return clearWebMacros(C.name());
+				else
+	                return clearWebMacros(CMLib.english().makePlural(C.name()));
+			}
 			for(Enumeration e=CMClass.charClasses();e.hasMoreElements();)
 			{
 				C=(CharClass)e.nextElement();
 				if(C.baseClass().equalsIgnoreCase(last))
-                    return clearWebMacros(C.baseClass());
+					if(parms.containsKey("PLURAL"))
+	                    return clearWebMacros(CMLib.english().makePlural(C.baseClass()));
+					else
+	                    return clearWebMacros(C.baseClass());
 			}
 		}
 		return "";
