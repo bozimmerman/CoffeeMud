@@ -169,7 +169,7 @@ public class Spell_Cogniportive extends Spell
 		switch(msg.targetMinor())
 		{
 		case CMMsg.TYP_WAND_USE:
-			if(msg.amITarget(affected))
+			if(msg.amITarget(affected)&&((msg.tool()==null)||(msg.tool() instanceof Physical)))
 				waveIfAble(mob,msg.tool(),(Item)affected);
 			break;
 		case CMMsg.TYP_SPEAK:
@@ -187,7 +187,7 @@ public class Spell_Cogniportive extends Spell
 						if((str.length()>0)
 						&&((CMLib.english().containsString(affected.name(),str)
 								||CMLib.english().containsString(affected.displayText(),str))))
-							msg.addTrailerMsg(CMClass.getMsg(msg.source(),affected,msg.target(),CMMsg.NO_EFFECT,null,CMMsg.MASK_ALWAYS|CMMsg.TYP_WAND_USE,msg.sourceMessage(),CMMsg.NO_EFFECT,null));
+							msg.addTrailerMsg(CMClass.getMsg(msg.source(),affected,msg.target(),CMMsg.NO_EFFECT,null,CMMsg.MASK_ALWAYS|CMMsg.TYP_WAND_USE,CMStrings.getSayFromMessage(msg.sourceMessage()),CMMsg.NO_EFFECT,null));
 					}
 				}
 			}

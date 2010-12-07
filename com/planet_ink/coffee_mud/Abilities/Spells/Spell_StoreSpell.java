@@ -122,12 +122,12 @@ public class Spell_StoreSpell extends Spell
 		switch(msg.targetMinor())
 		{
 		case CMMsg.TYP_WAND_USE:
-			if((msg.amITarget(affected))&&(affected instanceof Item)&&(msg.tool() instanceof Physical))
+			if((msg.amITarget(affected))&&(affected instanceof Item)&&((msg.tool()==null)||(msg.tool() instanceof Physical)))
 				waveIfAble(mob,(Physical)msg.tool(),msg.targetMessage(),(Item)affected);
 			break;
 		case CMMsg.TYP_SPEAK:
 			if(msg.sourceMinor()==CMMsg.TYP_SPEAK)
-				msg.addTrailerMsg(CMClass.getMsg(msg.source(),affected,msg.target(),CMMsg.NO_EFFECT,null,CMMsg.MASK_ALWAYS|CMMsg.TYP_WAND_USE,msg.targetMessage(),CMMsg.NO_EFFECT,null));
+				msg.addTrailerMsg(CMClass.getMsg(msg.source(),affected,msg.target(),CMMsg.NO_EFFECT,null,CMMsg.MASK_ALWAYS|CMMsg.TYP_WAND_USE,CMStrings.getSayFromMessage(msg.sourceMessage()),CMMsg.NO_EFFECT,null));
 			break;
 		default:
 			break;

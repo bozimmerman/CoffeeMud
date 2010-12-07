@@ -65,7 +65,7 @@ public class Spell_Knock extends Spell
 		}
 
 		String whatToOpen=CMParms.combine(commands,0);
-		Physical openThis=null;
+		Physical openThis=givenTarget;
 		int dirCode=Directions.getGoodDirectionCode(whatToOpen);
 		if(dirCode>=0)
 			openThis=R.getExitInDir(dirCode);
