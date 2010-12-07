@@ -70,6 +70,10 @@ public class GenWand extends StdWand
 	public String readableText(){return readableText;}
 	public void setReadableText(String text){ readableText=text;secretWord=StdWand.getWandWord(readableText);}
 
+	protected int maxUses=Integer.MAX_VALUE;
+	public int maxUses(){return maxUses;}
+	public void setMaxUses(int newMaxUses){maxUses=newMaxUses;}
+	
 	public String text()
 	{
 		return CMLib.coffeeMaker().getPropertiesStr(this,false);
