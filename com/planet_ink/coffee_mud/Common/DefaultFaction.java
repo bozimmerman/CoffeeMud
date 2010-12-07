@@ -1647,7 +1647,7 @@ public class DefaultFaction implements Faction, MsgListener
 					{
 						MOB M=null;
 				    	Room R=(Room)msg.target();
-				    	Vector<Ability> lightPresenceReactions=new Vector<Ability>();
+				    	List<Ability> lightPresenceReactions=new LinkedList<Ability>();
 				    	Ability A=null;
 						for(int m=0;m<R.numInhabitants();m++)
 						{
@@ -1687,11 +1687,13 @@ public class DefaultFaction implements Faction, MsgListener
 						{
 							M=R.fetchInhabitant(m);
 							if((M!=null)&&(M!=myHost)&&(M.isMonster()))
-								presenceReactionPrototype.invoke(M,new Vector(),null,true,0);
+								presenceReactionPrototype.invoke(M,new Vector(),null,true,0); // this shuts it down
 						}
 		    			lightPresenceAbilities=new Ability[0];
 					}
 					else
+					if((msg.source().isMonster())
+					&&(myHost instanceof Physical))
 					{
 						presenceReactionPrototype.invoke(msg.source(),new Vector(),null,true,0);
 						Ability[] newAbilities = new Ability[lightPresenceAbilities.length];
