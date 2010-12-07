@@ -865,7 +865,7 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 	
 	public void subtractMoney(MOB mob, String currency, double absoluteAmount)
 	{
-		subtractMoney(mob,null,getCurrency(mob),absoluteAmount);
+		subtractMoney(mob,null,currency,absoluteAmount);
 	}
 	public void subtractMoney(MOB mob, Container container, String currency, double absoluteAmount)
 	{
