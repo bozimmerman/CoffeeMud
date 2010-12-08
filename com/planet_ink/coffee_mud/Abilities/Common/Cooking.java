@@ -254,7 +254,8 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 					{
 						String ingredient2=contents[i].toUpperCase();
 						int amount2=amounts[i];
-						if(ingredient2.indexOf(ingredient+"/")>=0)
+						int index =ingredient2.indexOf(ingredient+"/");
+						if((index==0)||((index>0)&&(!Character.isLetter(ingredient2.charAt(index-1)))))
 						{
 							amounts[i]=amount2-amount;
 							if(amounts[i]<0) NotEnoughForThisRun=true;
@@ -313,8 +314,9 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 			for(int vr=RCP_MAININGR;vr<Vr.size();vr+=2)
 			{
 				String ingredient2=((String)Vr.get(vr)).toUpperCase();
+				int index=ingredient.toUpperCase().indexOf(ingredient2+"/");
 				if((ingredient2.length()>0)
-				&&(((!perfectOnly)&&(ingredient.toUpperCase().indexOf(ingredient2+"/"))>=0)
+				&&(((!perfectOnly)&&((index==0)||((index>0)&&(!Character.isLetter(ingredient.charAt(index-1))))))
 				||((perfectOnly)&&ingredient.toUpperCase().equalsIgnoreCase(ingredient2))))
 					found=true;
 			}
@@ -347,7 +349,8 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 				for(Enumeration e=oldPotContents.keys();e.hasMoreElements();)
 				{
 					String ingredient2=((String)e.nextElement()).toUpperCase();
-					if((ingredient2.indexOf(ingredient.toUpperCase()+"/")>=0)
+					int index=ingredient2.toUpperCase().indexOf(ingredient.toUpperCase()+"/");
+					if((((index==0)||((index>0)&&(!Character.isLetter(ingredient2.charAt(index-1))))))
 					||((!perfectOnly)&&ingredient2.equalsIgnoreCase(ingredient.toUpperCase())))
 					{ found=true; break;}
 				}
@@ -727,7 +730,8 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 			for(Enumeration e=oldPotContents.keys();e.hasMoreElements();)
 			{
 				String ingredient2=((String)e.nextElement()).toUpperCase();
-				if(ingredient2.indexOf(((String)Vr.get(RCP_MAININGR)).toUpperCase()+"/")>=0)
+				int index =ingredient2.indexOf(((String)Vr.get(RCP_MAININGR)).toUpperCase()+"/"); 
+				if((index==0)||((index>0)&&(!Character.isLetter(ingredient2.charAt(index-1)))))
 				{ found=true; break;}
 			}
 			if(found)
