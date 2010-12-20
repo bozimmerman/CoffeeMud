@@ -1215,14 +1215,23 @@ public class CMFile
                 if(fixedName.charAt(f)=='*')
                 {
                     if(f==fixedName.length()-1) break;
-                    char mustMatchC=fixedName.charAt(f+1);
-                    for(;n<name.length();n++)
-                        if(name.charAt(n)==mustMatchC)
-                            break;
-                    if((n<name.length())&&(name.charAt(n)==mustMatchC))
-                    { n--; continue;}
-                    ismatch=false;
-                    break;
+                    int endOfMatchStr=fixedName.indexOf('*',f+1);
+                    if(endOfMatchStr<0) endOfMatchStr=fixedName.indexOf('?',f+1);
+                    int mbEnd = fixedName.length();
+                    if(endOfMatchStr>f)
+                    	mbEnd = endOfMatchStr;
+                    String matchBuf = fixedName.substring(f+1,mbEnd);
+                    int found = name.indexOf(matchBuf,n);
+                    if(found < 0)
+                    {
+                    	ismatch=false;
+                    	break;
+                    }
+                    else
+                    {
+	                    n=found + matchBuf.length() - 1;
+	                    f+=matchBuf.length();
+                    }
                 }
                 else
                 if((n>=name.length())||(fixedName.charAt(f)!=name.charAt(n)))
