@@ -6880,7 +6880,11 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
         me.recoverPhyStats();
         me.resetToMaxState();
         if(!oldName.equals(me.Name()))
+        {
         	CMLib.database().DBPlayerNameChange(oldName, me);
+        	Log.sysOut("CMGenEditor",mob.name()+" changed user "+oldName+" to "+me.name());
+        }
+    	Log.sysOut("CMGenEditor",mob.name()+" edited user "+me.name());
         CMLib.database().DBUpdatePlayer(me);
         CMLib.database().DBUpdateFollowers(me);
     }

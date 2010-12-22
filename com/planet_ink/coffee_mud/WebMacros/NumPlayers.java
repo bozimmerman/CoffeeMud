@@ -7,6 +7,7 @@ import com.planet_ink.coffee_mud.Areas.interfaces.*;
 import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.PlayerLibrary.ThinPlayer;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
@@ -40,6 +41,22 @@ public class NumPlayers extends StdWebMacro
 		java.util.Map<String,String> parms=parseParms(parm);
 		if(parms.containsKey("ALL"))
 			return ""+CMLib.sessions().getCountLocalOnline();
+		if(parms.containsKey("TOTALCACHED"))
+			return ""+CMLib.players().numPlayers();
+		if(parms.containsKey("TOTAL"))
+		{
+			Enumeration<ThinPlayer> pe=CMLib.players().thinPlayers("",httpReq.getRequestObjects());
+			int x=0;
+			for(;pe.hasMoreElements();pe.nextElement()) x++;
+			return ""+x;
+		}
+		if(parms.containsKey("ACCOUNTS"))
+		{
+			Enumeration<PlayerAccount> pe=CMLib.players().accounts("",httpReq.getRequestObjects());
+			int x=0;
+			for(;pe.hasMoreElements();pe.nextElement()) x++;
+			return ""+x;
+		}
 
 		int numPlayers=0;
 		for(Session S : CMLib.sessions().localOnlineIterable())
