@@ -328,7 +328,7 @@ public class DefaultRoomnumberSet implements RoomnumberSet
 	        	CI=(CMIntegerGrouper)CMClass.getCommon("DefaultCMIntegerGrouper");
         	root.put(areaName,CI);
         }
-        if(roomNum>=0)
+        if((CI!=null)&&(roomNum>=0))
 	        CI.add(roomNum);
     }
     

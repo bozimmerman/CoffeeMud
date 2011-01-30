@@ -136,7 +136,7 @@ public class StdCharClass implements CharClass
         else
 		if((!mob.isMonster())&&(mob.basePhyStats().level()>0))
 		{
-			CharClass curClass = (mob==null)?null:mob.baseCharStats().getCurrentClass();
+			CharClass curClass = mob.baseCharStats().getCurrentClass();
 			if(curClass.ID().equals(ID()))
 			{
 				if(!quiet)

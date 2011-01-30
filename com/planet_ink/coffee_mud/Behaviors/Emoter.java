@@ -252,6 +252,9 @@ public class Emoter extends ActiveTicker
 					case EMOTE_SMELL:
 						if(CMLib.flags().canSmell(M)) M.executeMsg(M,msg);
 						break;
+					case EMOTE_SOCIAL:
+						// handled above
+						break;
 					}
 			}
 		if(oldLoc!=null) emoter.setLocation(oldLoc);

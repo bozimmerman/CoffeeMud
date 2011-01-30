@@ -1001,6 +1001,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 				}
 				else
 					return true;
+				break;
 			}
 			default:
 				break;

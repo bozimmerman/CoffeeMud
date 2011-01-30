@@ -414,7 +414,10 @@ public class GetStat extends CM1Command
 		if(mod==null)
 			return "USAGE: "+getCommandWord()+" "+CMParms.toStringList(getApplicableStatCodes(target));
 		else
+		if(rest != null)
 			return "USAGE: "+getCommandWord()+" "+rest.toUpperCase().trim()+" "+CMParms.toStringList(getStatCodes(target,mod));
+		else
+			return "USAGE: "+getCommandWord()+" "+CMParms.toStringList(getStatCodes(target,mod));
 		
 	}
 }

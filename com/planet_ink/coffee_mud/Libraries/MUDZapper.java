@@ -2474,6 +2474,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 				case 79: // -security
 				case 31: // -Area
 					buildRoomFlag=true;
+	            //$FALL-THROUGH$
 				case 120: // -Mood
 				case 81: // -expertise
 				case 14: // -Clan
@@ -2524,6 +2525,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 				case 80: // +security
 				case 32: // +Area
 					buildRoomFlag=true;
+	            //$FALL-THROUGH$
 				case 121: // +Mood
 				case 82: // +expertise
 				case 15: // +Clan
@@ -2824,6 +2826,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                 case 110: // +subop
                 case 111: // +subop
                 	buildRoomFlag=true;
+	            //$FALL-THROUGH$
                 case 108: // +sysop
                 case 109: // +sysop
                 {
@@ -2888,6 +2891,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                 case 59: // +value
                 case 60: // -value
                     buildItemFlag=true;
+	            //$FALL-THROUGH$
 				case 19: // +adjstr
 				case 20: // +adjint
 				case 21: // +adjwis

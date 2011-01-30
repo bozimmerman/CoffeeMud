@@ -776,7 +776,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 			if(recipe.equalsIgnoreCase("anything"))
 			{
 				long startTime=System.currentTimeMillis();
-				while((contents==null)||(contents.size()==0)&&((System.currentTimeMillis()-startTime)<500))
+				while((contents.size()==0)&&((System.currentTimeMillis()-startTime)<500))
 				{
 					ItemCraftor skill=(ItemCraftor)craftors.get(CMLib.dice().roll(1,craftors.size(),-1));
 					if(skill.fetchRecipes().size()>0)
@@ -793,7 +793,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 						}
 						if((skillContents!=null)&&(skillContents.size()>0))
 							contents.addAll(skillContents.get(CMLib.dice().roll(1,skillContents.size(),-1)).asList());
-						if((contents==null)||(contents.size()==0))
+						if(contents.size()==0)
 							Log.errOut("MUDPercolator","Tried metacrafting anything, got "+((skillContents==null)?"null":Integer.toString(skillContents.size()))+" from "+skill.ID());
 					}
 				}
@@ -812,7 +812,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 						else
 							skillContents=skill.craftAllItemSets();
 						if((skillContents==null)||(skillContents.size()==0))
-							Log.errOut("MUDPercolator","Tried metacrafting any-"+recipe+", got "+((contents==null)?"null":Integer.toString(contents.size()))+" from "+skill.ID());
+							Log.errOut("MUDPercolator","Tried metacrafting any-"+recipe+", got "+Integer.toString(contents.size())+" from "+skill.ID());
 						break;
 					}
 				}

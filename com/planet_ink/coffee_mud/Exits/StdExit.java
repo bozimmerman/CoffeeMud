@@ -397,6 +397,7 @@ public class StdExit implements Exit
 				mob.tell("There is nothing to lock that way!");
 				return false;
 			}
+		//$FALL-THROUGH$
 		case CMMsg.TYP_UNLOCK:
 			if(!hasADoor())
 			{

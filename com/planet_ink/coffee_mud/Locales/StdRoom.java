@@ -1623,6 +1623,7 @@ public class StdRoom implements Room
 		case Player_Body: numMins = CMProps.getIntVar(CMProps.SYSTEMI_EXPIRE_PLAYER_BODY); break;
 		case Player_Drop: numMins = CMProps.getIntVar(CMProps.SYSTEMI_EXPIRE_PLAYER_DROP); break;
 		case Resource: numMins = CMProps.getIntVar(CMProps.SYSTEMI_EXPIRE_RESOURCE); break;
+		case Never: break;
 		}
 		if(numMins==0)
 			item.setExpirationDate(0);

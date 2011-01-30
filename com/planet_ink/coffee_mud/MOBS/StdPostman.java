@@ -971,6 +971,7 @@ public class StdPostman extends StdShopKeeper implements PostOffice
                 }
                 else
                     return true;
+                break;
             }
             default:
                 break;

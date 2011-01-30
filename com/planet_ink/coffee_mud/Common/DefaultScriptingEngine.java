@@ -275,6 +275,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
             case 'p': newLine[i]=CMParms.getPastBit(line,i-1); break;
             case 'P': newLine[i]=CMParms.getPastBit(line,i-1).toUpperCase().trim(); break;
             case 'S': line=line.toUpperCase();
+            //$FALL-THROUGH$
             case 's': 
             {
                 String s=CMParms.getPastBit(line,i-1);
@@ -289,6 +290,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 break;
             }
             case 'T': line=line.toUpperCase();
+            //$FALL-THROUGH$
             case 't': 
             {
                 String s=CMParms.getPastBit(line,i-1);
@@ -4807,6 +4809,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                     E=Q.getQuestRoom(num);
                 }
                 results.append(list.toString().trim());
+                break;
             }
             case 29: // questmob
             {
@@ -9230,10 +9233,13 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 break;
             case 34: // open_prog
                 if(targetMinorTrigger<0) targetMinorTrigger=CMMsg.TYP_OPEN;
+	            //$FALL-THROUGH$
             case 35: // close_prog
                 if(targetMinorTrigger<0) targetMinorTrigger=CMMsg.TYP_CLOSE;
+	            //$FALL-THROUGH$
             case 36: // lock_prog
                 if(targetMinorTrigger<0) targetMinorTrigger=CMMsg.TYP_LOCK;
+	            //$FALL-THROUGH$
             case 37: // unlock_prog
             {
                 if(targetMinorTrigger<0) targetMinorTrigger=CMMsg.TYP_UNLOCK;
@@ -9534,10 +9540,12 @@ public class DefaultScriptingEngine implements ScriptingEngine
             case 12: // mask_prog
                 if(!canTrigger(12))
                     break;
+            //$FALL-THROUGH$
             case 18: // act_prog
                 if((msg.amISource(monster))
                 ||((triggerCode==18)&&(!canTrigger(18))))
                     break;
+            //$FALL-THROUGH$
             case 43: // imask_prog
                 if((triggerCode!=43)||(msg.amISource(monster)&&canTrigger(43)))
                 {

@@ -74,6 +74,7 @@ public class MSP
                 if(part.length()>0)
                     parts.addElement(part.toString());
                 done=true;
+            //$FALL-THROUGH$
             default:
                 part.append(buf.charAt(i));
                 break;

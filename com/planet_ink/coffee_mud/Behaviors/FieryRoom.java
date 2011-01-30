@@ -88,7 +88,8 @@ public class FieryRoom
 	            for (int i = 0; i < room.numInhabitants(); i++) 
 	            {
 	                MOB inhab = room.fetchInhabitant(i);
-	                if ((inhab!=null)&&(inhab.isMonster())) 
+	                if(inhab==null) continue;
+	                if (inhab.isMonster()) 
 	                {
 	                    boolean reallyAffect = true;
 	                    if (noNpc) {

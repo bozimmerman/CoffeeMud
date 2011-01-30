@@ -195,6 +195,7 @@ public class MudChat extends StdBehavior implements ChattyBehavior
 			case '*':
 				if((str.length()==1)||("([{".indexOf(str.charAt(1))<0))
 					break;
+            //$FALL-THROUGH$
 			case '(':
 			case '[':
 			case '{':
@@ -213,11 +214,11 @@ public class MudChat extends StdBehavior implements ChattyBehavior
 				currentChatGroup.entries = currentChatEntries.toArray(new ChattyEntry[0]);
 				currentChatEntries.clear();
 				currentChatGroup=newChattyGroup(str.substring(1).trim());
+				if(currentChatGroup == null) return null;
 				chatGroups.add(currentChatGroup);
 				currentChatEntry=null;
 				break;
 			case '@':
-				if(currentChatGroup!=null)
 				{
 					otherChatGroup=matchChatGroup(null,str.substring(1).trim(),chatGroups.toArray(new ChattyGroup[0]));
 					if(otherChatGroup==null)

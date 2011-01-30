@@ -61,6 +61,7 @@ public class CharGen extends StdCommand
 				{
 				case CharClass.WEAPONS_EVILCLERIC:
 					CMLib.factions().setAlignment(M,Faction.ALIGN_EVIL);
+	            //$FALL-THROUGH$
 				case CharClass.WEAPONS_THIEFLIKE:
 				case CharClass.WEAPONS_BURGLAR:
 				case CharClass.WEAPONS_ANY:
@@ -78,6 +79,7 @@ public class CharGen extends StdCommand
 					break;
 				case CharClass.WEAPONS_GOODCLERIC:
 					CMLib.factions().setAlignment(M,Faction.ALIGN_GOOD);
+	            //$FALL-THROUGH$
 				case CharClass.WEAPONS_MAGELIKE:
 					W.setMaterial(RawMaterial.RESOURCE_OAK);
 					W.setWeaponClassification(Weapon.CLASS_STAFF);

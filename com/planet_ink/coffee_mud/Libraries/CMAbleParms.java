@@ -1692,6 +1692,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
             switch(fieldType) {
             case PARMTYPE_STRINGORNULL:
                 emptyOK = true;
+            //$FALL-THROUGH$
             case PARMTYPE_ONEWORD:
             case PARMTYPE_STRING:
             {
@@ -1715,6 +1716,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
             switch(fieldType) {
             case PARMTYPE_STRINGORNULL:
                 emptyOK = true;
+            //$FALL-THROUGH$
             case PARMTYPE_ONEWORD:
             case PARMTYPE_STRING:
             {
@@ -1769,6 +1771,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
             switch(fieldType) {
             case PARMTYPE_STRINGORNULL:
                 emptyOK = true;
+            //$FALL-THROUGH$
             case PARMTYPE_ONEWORD:
             case PARMTYPE_STRING:
             {
@@ -1836,6 +1839,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
             switch(fieldType) {
             case PARMTYPE_ONEWORD:
                 textSize = 10;
+            //$FALL-THROUGH$
             case PARMTYPE_STRINGORNULL:
             case PARMTYPE_STRING:
                 return "\n\r<INPUT TYPE=TEXT NAME=" + fieldName + " SIZE=" + textSize + " VALUE=\"" + webValue + "\">";
@@ -1857,6 +1861,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
                     }
                 }
             }
+            //$FALL-THROUGH$
             case PARMTYPE_CHOICES:
             {
                 if(choiceValues.size()==0)

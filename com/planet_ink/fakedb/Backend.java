@@ -169,6 +169,11 @@ public class Backend
 		   else
 			   this.v=v;
 	   }
+	   public int hashCode()
+	   {
+		   if(v!=null) return v.hashCode();
+		   return 0;
+	   }
 	   public Comparable getValue(){return v;}
 	   public boolean equals(Object o){
 		   Object t=o;

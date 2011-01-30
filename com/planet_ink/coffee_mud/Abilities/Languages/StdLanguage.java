@@ -310,24 +310,26 @@ public class StdLanguage extends StdAbility implements Language
 				case CMMsg.TYP_VIEW:
 				case CMMsg.TYP_WITHDRAW:
 				case CMMsg.TYP_DEPOSIT:
-				if((!CMSecurity.isAllowed(msg.source(),msg.source().location(),"ORDER"))
-				&&(!CMSecurity.isAllowed(msg.source(),msg.source().location(),"CMDMOBS")||(!((MOB)msg.target()).isMonster()))
-				&&(!CMSecurity.isAllowed(msg.source(),msg.source().location(),"CMDROOMS")||(!((MOB)msg.target()).isMonster())))
 				{
-					Language L=getAnyTranslator(ID(),msg.source());
-					if((L==null)
-					||(!L.beingSpoken(ID()))
-					||((CMLib.dice().rollPercentage()*2)>(L.getProficiency(ID())+getProficiency(ID()))))
+					if((!CMSecurity.isAllowed(msg.source(),msg.source().location(),"ORDER"))
+					&&(!CMSecurity.isAllowed(msg.source(),msg.source().location(),"CMDMOBS")||(!((MOB)msg.target()).isMonster()))
+					&&(!CMSecurity.isAllowed(msg.source(),msg.source().location(),"CMDROOMS")||(!((MOB)msg.target()).isMonster())))
 					{
-						msg.setTargetCode(CMMsg.TYP_SPEAK);
-						msg.setSourceCode(CMMsg.TYP_SPEAK);
-						msg.setOthersCode(CMMsg.TYP_SPEAK);
-						String reply=null;
-						if((L==null)||(!L.beingSpoken(ID())))
-							reply="<S-NAME> <S-IS-ARE> speaking "+name()+" and do(es) not appear to understand <T-YOUPOSS> words.";
-						else
-							reply="<S-NAME> <S-IS-ARE> having trouble understanding <T-YOUPOSS> pronunciation.";
-						msg.addTrailerMsg(CMClass.getMsg((MOB)msg.target(),msg.source(),null,CMMsg.MSG_OK_VISUAL,reply));
+						Language L=getAnyTranslator(ID(),msg.source());
+						if((L==null)
+						||(!L.beingSpoken(ID()))
+						||((CMLib.dice().rollPercentage()*2)>(L.getProficiency(ID())+getProficiency(ID()))))
+						{
+							msg.setTargetCode(CMMsg.TYP_SPEAK);
+							msg.setSourceCode(CMMsg.TYP_SPEAK);
+							msg.setOthersCode(CMMsg.TYP_SPEAK);
+							String reply=null;
+							if((L==null)||(!L.beingSpoken(ID())))
+								reply="<S-NAME> <S-IS-ARE> speaking "+name()+" and do(es) not appear to understand <T-YOUPOSS> words.";
+							else
+								reply="<S-NAME> <S-IS-ARE> having trouble understanding <T-YOUPOSS> pronunciation.";
+							msg.addTrailerMsg(CMClass.getMsg((MOB)msg.target(),msg.source(),null,CMMsg.MSG_OK_VISUAL,reply));
+						}
 					}
 					break;
 				}
