@@ -73,7 +73,7 @@ public interface AreaGenerationLibrary extends CMLibrary
 		public void setRoom(Room room);
 	}
 	
-	public enum LayoutTags { NODERUN, NODEFLAGS, NODETYPE, NODEEXITS, NODEGATEEXIT};
+	public enum LayoutTags { NODERUN, NODEFLAGS, NODETYPE, NODEEXITS, NODEGATEEXIT}
 	public enum LayoutTypes { surround, leaf, street, square, interior }
 	public enum LayoutFlags { corner, gate, intersection, tee, offleaf }
 	public enum LayoutRuns { ew,ns,ud,nesw,nwse }

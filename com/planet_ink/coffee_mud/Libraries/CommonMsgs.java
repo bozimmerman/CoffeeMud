@@ -81,7 +81,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 		{
 			Log.errOut("CommonMsgs",e);
 		}
-		return false;
+		return Boolean.FALSE;
     }
     
     public Object forceInternalCommand(MOB mob, String command, Object... parms)
@@ -96,7 +96,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 		{
 			Log.errOut("CommonMsgs",e);
 		}
-		return false;
+		return Boolean.FALSE;
 	}
 
 	public boolean forceStandardCommand(MOB mob, String command, Vector parms)

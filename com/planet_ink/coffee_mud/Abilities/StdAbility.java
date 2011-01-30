@@ -55,7 +55,7 @@ public class StdAbility implements Ability
 	public boolean bubbleAffect(){return false;}
 	public int getTicksBetweenCasts() { return 0;}
 	public long getTimeOfNextCast(){ return 0;}
-	public void setTimeOfNextCast(long absoluteTime){};
+	public void setTimeOfNextCast(long absoluteTime){}
 	protected int iniTrainsRequired(){return CMProps.getIntVar(CMProps.SYSTEMI_SKILLTRAINCOST);}
 	protected int iniPracticesRequired(){return CMProps.getIntVar(CMProps.SYSTEMI_SKILLPRACCOST);}
 	public int trainsRequired(MOB mob)

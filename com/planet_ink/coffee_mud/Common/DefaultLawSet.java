@@ -347,7 +347,8 @@ public class DefaultLawSet implements Law
                         if((evasionBits!=null)
                         &&(evasionBits[Law.BIT_CRIMENAME].length()>0)
                         &&(responsibleMob!=null))
-                            while(getWarrant(responsibleMob,evasionBits[Law.BIT_CRIMENAME],true,debugging)!=null);
+                            while(getWarrant(responsibleMob,evasionBits[Law.BIT_CRIMENAME],true,debugging)!=null)
+                            	{}
                     }
                 }
             }

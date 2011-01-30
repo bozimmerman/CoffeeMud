@@ -533,12 +533,16 @@ public class Merge extends StdCommand
     
     private boolean amMergingType(Integer doType, Environmental E)
     {
-    	if(doType==null) return true;
-    	if(doType==CMClass.OBJECT_LOCALE) return true;
-    	if(doType==CMClass.OBJECT_MOB) return E instanceof MOB;
-    	if(doType==CMClass.OBJECT_ITEM) return E instanceof Item;
-    	if(doType==CMClass.OBJECT_WEAPON) return E instanceof Weapon;
-    	if(doType==CMClass.OBJECT_ARMOR) return E instanceof Armor;
+    	if(doType==null) 
+    		return true;
+    	switch(doType.intValue())
+    	{
+    	case CMClass.OBJECT_LOCALE: return true;
+    	case CMClass.OBJECT_MOB: return E instanceof MOB;
+    	case CMClass.OBJECT_ITEM: return E instanceof Item;
+    	case CMClass.OBJECT_WEAPON: return E instanceof Weapon;
+    	case CMClass.OBJECT_ARMOR: return E instanceof Armor;
+    	}
     	return false;
     }
     
@@ -624,7 +628,7 @@ public class Merge extends StdCommand
 		if(doType!=null)
 			commands.remove(0);
 		else
-			doType=CMClass.OBJECT_LOCALE;
+			doType=Integer.valueOf(CMClass.OBJECT_LOCALE);
 		
 		String theRest = CMParms.combineWithQuotes(commands, 0);
 		DBConnector dbConnector=null;

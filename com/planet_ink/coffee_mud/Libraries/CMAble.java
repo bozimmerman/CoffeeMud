@@ -1579,15 +1579,21 @@ public class CMAble extends StdLibrary implements AbilityMapper
 			found=false;
 			if(comp.getLocation()!=CompLocation.ONGROUND)
 				for(int ii=0;ii<mob.numItems();ii++)
-					if(found=IsItemComponent(mob, comp, amt, mob.getItem(ii), thisSet))
+				{
+					found=IsItemComponent(mob, comp, amt, mob.getItem(ii), thisSet);
+					if(found)
 						break;
+				}
 			if((!found)
 			&&(room!=null)
 			&&((comp.getLocation()==CompLocation.ONGROUND)||(comp.getLocation()==CompLocation.NEARBY)))
 			{
 				for(int ii=0;ii<room.numItems();ii++)
-					if(found=IsItemComponent(mob, comp, amt, room.getItem(ii), thisSet))
+				{
+					found=IsItemComponent(mob, comp, amt, room.getItem(ii), thisSet);
+					if(found)
 						break;
+				}
 			}
 			if((amt[0]>0)&&(currentAND)&&(i>0)) return null;
 			previousValue=amt[0]<=0;

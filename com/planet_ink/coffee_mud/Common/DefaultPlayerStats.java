@@ -57,7 +57,7 @@ public class DefaultPlayerStats implements PlayerStats
     protected String 	announceMsg="";
     protected String 	notes="";
 	protected int 		wrap=78;
-	protected int 		pageBreak=CMProps.getIntVar(CMProps.SYSTEMI_PAGEBREAK);;
+	protected int 		pageBreak=CMProps.getIntVar(CMProps.SYSTEMI_PAGEBREAK);
     protected int[] 	birthday=null;
 	protected MOB 		replyTo=null;
 	protected int 		replyType=0;

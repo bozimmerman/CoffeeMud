@@ -278,7 +278,7 @@ public class Export extends StdCommand
 				if(!CMSecurity.isAllowedEverywhere(mob,"EXPORT"))
 				{
 					if(S!=null) mob.tell("You are not allowed to export world data.");
-					return false;
+					return Boolean.FALSE;
 				}
 				StringBuffer buf=new StringBuffer("");
 				if(fileNameCode!=2) buf.append("<AREAS>");

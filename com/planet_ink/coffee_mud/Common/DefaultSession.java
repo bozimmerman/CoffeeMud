@@ -1544,7 +1544,8 @@ public class DefaultSession extends Thread implements Session
 								needPrompt=true;
 							}
 							if(mob==null) break;
-	                        while((!killFlag)&&(mob!=null)&&(mob.dequeCommand()));
+	                        while((!killFlag)&&(mob!=null)&&(mob.dequeCommand()))
+	                        	{}
 	
 							if(((System.currentTimeMillis()-lastBlahCheck)>=60000)
 							&&(mob()!=null))

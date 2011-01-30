@@ -192,7 +192,8 @@ public class Log
 				}
 			}
             int x=flag.length();
-			while(Character.isDigit(flag.charAt(--x)));
+			while(Character.isDigit(flag.charAt(--x)))
+				{}
 			int max=s_int(flag.substring(x+1));
 			for(int i=max+1;i<10;i++)
 				writers[i]=null;

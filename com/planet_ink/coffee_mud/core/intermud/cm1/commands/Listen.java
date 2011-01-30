@@ -42,7 +42,7 @@ import java.util.concurrent.atomic.*;
 public class Listen extends CM1Command
 {
 	public String getCommandWord(){ return "LISTEN";}
-	protected static enum STATTYPE {CHANNEL,LOGINS,MOB,ROOM,PLAYER,ABILITY,ITEM,TARGET,SOURCE,TOOL,TARGETCODE,SOURCECODE,OTHERSCODE,AREA,TARGETMASK,SOURCEMASK,OTHERSMASK};
+	protected static enum STATTYPE {CHANNEL,LOGINS,MOB,ROOM,PLAYER,ABILITY,ITEM,TARGET,SOURCE,TOOL,TARGETCODE,SOURCECODE,OTHERSCODE,AREA,TARGETMASK,SOURCEMASK,OTHERSMASK}
 	protected static SLinkedList<Listener> listeners=new SLinkedList<Listener>();
 	
 	public Listen(RequestHandler req, String parameters) 

@@ -2627,7 +2627,8 @@ public class StdMOB implements MOB
 					}
 				}
                 else
-                while((!amDead())&&dequeCommand());
+                while((!amDead())&&dequeCommand())
+                	{}
 
 				if((riding()!=null)&&(CMLib.map().roomLocation(riding())!=location()))
 					setRiding(null);

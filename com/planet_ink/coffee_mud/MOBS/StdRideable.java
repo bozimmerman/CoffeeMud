@@ -134,7 +134,8 @@ public class StdRideable extends StdMOB implements Rideable
 	public void delRider(Rider mob)
 	{
 		if(mob!=null)
-			while(riders.removeElement(mob));
+			while(riders.removeElement(mob))
+				{}
 	}
 	public void recoverPhyStats()
 	{

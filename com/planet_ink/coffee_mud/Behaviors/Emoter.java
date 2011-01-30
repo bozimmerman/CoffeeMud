@@ -68,7 +68,7 @@ public class Emoter extends ActiveTicker
 		public EmoteObj(EMOTE_TYPE type, String msg, boolean broadcast)
 		{ this.type=type; this.msg=msg; this.broadcast=broadcast;}
 	}
-	protected static enum EMOTE_TYPE { EMOTE_VISUAL, EMOTE_SOUND, EMOTE_SMELL, EMOTE_SOCIAL };
+	protected static enum EMOTE_TYPE { EMOTE_VISUAL, EMOTE_SOUND, EMOTE_SMELL, EMOTE_SOCIAL }
 	protected EMOTE_TYPE emoteType=EMOTE_TYPE.EMOTE_VISUAL;
 
     protected boolean setEmoteType(String str)

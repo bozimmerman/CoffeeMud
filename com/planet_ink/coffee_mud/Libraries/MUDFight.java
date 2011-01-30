@@ -1488,7 +1488,8 @@ public class MUDFight extends StdLibrary implements CombatLibrary
         // before using any attacks
         while((CMProps.getIntVar(CMProps.SYSTEMI_COMBATSYSTEM)==CombatLibrary.COMBAT_QUEUE)
         &&(!fighter.amDead())
-        &&(fighter.dequeCommand()));
+        &&(fighter.dequeCommand()))
+        	{}
     }
     protected void subtickAfterAttack(MOB fighter)
     {

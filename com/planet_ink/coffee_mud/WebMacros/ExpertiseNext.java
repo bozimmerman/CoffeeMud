@@ -98,7 +98,7 @@ public class ExpertiseNext extends StdWebMacro
             			E=(ExpertiseLibrary.ExpertiseDefinition)CMLib.expertises().getDefinition(xpertise);
             			if(E!=null)
             			{
-            				qualLevel=qID.qualifyingLevel;
+            				qualLevel=Integer.valueOf(qID.qualifyingLevel);
                         	int minLevel=E.getMinimumLevel();
                         	if((qualLevel!=null)&&(minLevel<qualLevel.intValue()))
                         		minLevel=qualLevel.intValue();

@@ -20,7 +20,7 @@ limitations under the License.
 @SuppressWarnings("unchecked")
 public class EmptyIterator<K> implements Iterator<K>
 {
-	private EmptyIterator(){};
+	private EmptyIterator(){}
     public boolean hasNext(){ return false;}
     public K next(){ throw new NoSuchElementException(); }
     public void remove() { throw new NoSuchElementException();}

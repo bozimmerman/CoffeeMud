@@ -115,7 +115,7 @@ public class After extends StdCommand implements Tickable
 		if(commands.size()==0){ mob.tell(afterErr); return false;}
 		AfterCommand V=new AfterCommand();
 		V.start=System.currentTimeMillis();
-		V.duration=Long.valueOf(time);
+		V.duration=time;
 		V.every=every;
 		V.M=mob;
 		V.command=commands;

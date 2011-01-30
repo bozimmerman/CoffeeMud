@@ -36,7 +36,7 @@ import java.net.URLEncoder;
 public class RequestParameter extends StdWebMacro
 {
 	public String name()	{return this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);}
-	private static enum MODIFIER {UPPERCASE,LOWERCASE,LEFT,RIGHT,ELLIPSE,TRIM};
+	private static enum MODIFIER {UPPERCASE,LOWERCASE,LEFT,RIGHT,ELLIPSE,TRIM}
 	private static HashSet<String> modifiers=new HashSet<String>();
 	static
 	{

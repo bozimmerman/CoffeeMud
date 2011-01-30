@@ -51,15 +51,15 @@ public class Directions
 
 	public static final int NUM_DIRECTIONS(){
         return d().NUM_DIRECTIONS;
-    };
-	
+    }
+
     public static final int[] DIRECTIONS_BASE(){
         return d().DIRECTIONS_BASE;
-    };
+    }
     
     public static final String DIRECTIONS_DESC(){
         return d().DIRECTIONS_DESC;
-    };
+    }
     
 	public static final int NORTH=0;
 	public static final int SOUTH=1;

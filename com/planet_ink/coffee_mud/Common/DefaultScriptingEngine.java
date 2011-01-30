@@ -10000,7 +10000,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
         return true;
     }
 
-    public void initializeClass(){};
+    public void initializeClass(){}
     public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
 
     public void enqueResponse(PhysicalAgent host,

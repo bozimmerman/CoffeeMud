@@ -53,7 +53,7 @@ public class AreaScriptNext extends StdWebMacro
 			this.fileName=fileName;
 			this.key=key;
 		}
-	};
+	}
 
 	public AreaScriptInstance addScript(TreeMap<String,ArrayList<AreaScriptInstance>> list, 
 			ArrayList<String> prefix, String scriptKey, String immediateHost, String key, String file)

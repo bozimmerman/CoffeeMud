@@ -1244,7 +1244,7 @@ public class CMParms
                 lastDex=l+1;
                 break;
             }
-        if((!ignoreNulls)||(lastDex<buf1.length()));
+        if((!ignoreNulls)||(lastDex<buf1.length()))
             V.addElement(buf1.substring(lastDex,buf1.length()));
         return V;
     }

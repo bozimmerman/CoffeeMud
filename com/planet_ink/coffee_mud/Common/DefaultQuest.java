@@ -4247,7 +4247,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
     			 new ConvertingIterator<PreservedQuestObject,PhysicalAgent>(o.iterator(),converter);
     		return iter;
     	}
-    };
+    }
     
     /**
      * A quest state class maps the parse-state of a quest, since quest parsing

@@ -79,7 +79,7 @@ public class VFSLoader
     public CMFile.CMVFSFile DBRead(String filename)
     {
         DBConnection D=null;
-        CMFile.CMVFSFile row = null;;
+        CMFile.CMVFSFile row = null;
         try
         {
             D=DB.DBFetch();

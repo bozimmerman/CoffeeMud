@@ -147,11 +147,11 @@ public interface ItemPossessor extends PhysicalAgent
 	public boolean isContent(Item item);
 
 	/** constants for the addItem methods to denote how long the item lives before expiring */
-	public enum Expire { Never, Monster_EQ, Player_Drop, Resource, Monster_Body, Player_Body	};
+	public enum Expire { Never, Monster_EQ, Player_Drop, Resource, Monster_Body, Player_Body	}
 
 	/** constant for the moveItemTo methods to denote flags are being given -- normal operation */
-	public enum Move { Followers} ;
+	public enum Move { Followers}
 	
 	/** constant for the findItem/findItems method denoting special modifying flags on the search */
-	public enum Find { WornOnly, UnwornOnly, AddCoins, RespectLocation} ;
+	public enum Find { WornOnly, UnwornOnly, AddCoins, RespectLocation} 
 }

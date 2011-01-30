@@ -23,7 +23,7 @@ import java.util.*;
 @SuppressWarnings("unchecked")
 public class Backend
 {
-   public static enum StatementType { SELECT,INSERT,UPDATE,DELETE};
+   public static enum StatementType { SELECT,INSERT,UPDATE,DELETE}
    
    File basePath;
    private Map<String,FakeTable> fakeTables=new HashMap<String,FakeTable>();

@@ -3165,7 +3165,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 	            for(Iterator<Environmental> i=M.getShop().getStoreInventory();i.hasNext();)
 	            {
 	            	Environmental E2=i.next();
-	                if(!M.doISellThis(E2));
+	                if(!M.doISellThis(E2))
 	                    M.getShop().delAllStoreInventory(E2);
 	            }
 	        }

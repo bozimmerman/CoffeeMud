@@ -424,7 +424,7 @@ public class DBConnections
 			{
 				if(isFakeDB==null)
 				{
-					isFakeDB=c.isFakeDB();
+					isFakeDB=Boolean.valueOf(c.isFakeDB());
 				}
 				c.doneUsing("");
 			}

@@ -110,7 +110,8 @@ public class StdRideable extends StdContainer implements Rideable
 	public void delRider(Rider mob)
 	{
 		if(mob!=null)
-			while(riders.removeElement(mob));
+			while(riders.removeElement(mob))
+				{}
 	}
 
 	protected void cloneFix(Item E)

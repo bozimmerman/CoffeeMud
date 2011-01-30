@@ -159,14 +159,14 @@ public interface AbilityComponent extends CMCommon
 	 * @author Bo Zimmerman
 	 *
 	 */
-	public enum CompConnector { AND, OR };
+	public enum CompConnector { AND, OR }
 	
 	/**
 	 * Where worn locations for determining where a component must be
 	 * @author Bo Zimmerman
 	 *
 	 */
-	public enum CompLocation { INVENTORY, HELD, WORN, NEARBY, ONGROUND };
+	public enum CompLocation { INVENTORY, HELD, WORN, NEARBY, ONGROUND }
 	
 	/**
 	 * An component type item filter for determining 
@@ -174,5 +174,5 @@ public interface AbilityComponent extends CMCommon
 	 * @author Bo Zimmerman
 	 *
 	 */
-	public enum CompType { RESOURCE, MATERIAL, STRING };
+	public enum CompType { RESOURCE, MATERIAL, STRING }
 }

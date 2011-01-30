@@ -216,7 +216,7 @@ public class CMMap extends StdLibrary implements WorldMap
     	}
     	return deityStandIn;
     }
-    public MOB mobCreated() { return mobCreated(this.getRandomRoom());};
+    public MOB mobCreated() { return mobCreated(this.getRandomRoom());}
     public MOB mobCreated(Room R){
         MOB everywhereMOB=CMClass.getMOB("StdMOB");
         everywhereMOB.setName("somebody");

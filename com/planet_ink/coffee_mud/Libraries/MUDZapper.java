@@ -2977,7 +2977,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                     if(str.equals("-"+C.name().toUpperCase().trim()))
                     {
                         Vector<Object> parms=new Vector<Object>();
-                        entryType=zapCodes.get("+CLASS").intValue();
+                        entryType=zapCodes.get("+CLASS");
                         parms.addElement(C.name());
                         found=true;
 						buf.add(new CompiledZapperMaskEntry(entryType.intValue(),parms.toArray(new Object[0])));
@@ -2992,7 +2992,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                     if(str.equals("-"+race))
                     {
                         Vector<Object> parms=new Vector<Object>();
-                        entryType=zapCodes.get("+RACE").intValue();
+                        entryType=zapCodes.get("+RACE");
                         parms.addElement(R.name());
                         found=true;
 						buf.add(new CompiledZapperMaskEntry(entryType.intValue(),parms.toArray(new Object[0])));
@@ -3003,7 +3003,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                 &&(str.equals("-"+Faction.ALIGN_NAMES[Faction.ALIGN_EVIL].toUpperCase())))
                 {
                     Vector<Object> parms=new Vector<Object>();
-                    entryType=zapCodes.get("+ALIGNMENT").intValue();
+                    entryType=zapCodes.get("+ALIGNMENT");
                     parms.addElement(Faction.ALIGN_NAMES[Faction.ALIGN_EVIL]);
                     found=true;
 					buf.add(new CompiledZapperMaskEntry(entryType.intValue(),parms.toArray(new Object[0])));
@@ -3012,7 +3012,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                 &&(str.equals("-"+Faction.ALIGN_NAMES[Faction.ALIGN_GOOD].toUpperCase())))
                 {
                     Vector<Object> parms=new Vector<Object>();
-                    entryType=zapCodes.get("+ALIGNMENT").intValue();
+                    entryType=zapCodes.get("+ALIGNMENT");
                     parms.addElement(Faction.ALIGN_NAMES[Faction.ALIGN_GOOD]);
                     found=true;
 					buf.add(new CompiledZapperMaskEntry(entryType.intValue(),parms.toArray(new Object[0])));
@@ -3021,7 +3021,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                 &&(str.equals("-"+Faction.ALIGN_NAMES[Faction.ALIGN_NEUTRAL].toUpperCase())))
                 {
                     Vector<Object> parms=new Vector<Object>();
-                    entryType=zapCodes.get("+ALIGNMENT").intValue();
+                    entryType=zapCodes.get("+ALIGNMENT");
                     parms.addElement(Faction.ALIGN_NAMES[Faction.ALIGN_NEUTRAL]);
                     found=true;
 					buf.add(new CompiledZapperMaskEntry(entryType.intValue(),parms.toArray(new Object[0])));
@@ -3029,7 +3029,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                 if((!found)&&(str.equals("-MALE")))
                 {
                     Vector<Object> parms=new Vector<Object>();
-                    entryType=zapCodes.get("+GENDER").intValue();
+                    entryType=zapCodes.get("+GENDER");
                     parms.addElement("M");
                     found=true;
 					buf.add(new CompiledZapperMaskEntry(entryType.intValue(),parms.toArray(new Object[0])));
@@ -3037,7 +3037,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                 if((!found)&&(str.equals("-FEMALE")))
                 {
                     Vector<Object> parms=new Vector<Object>();
-                    entryType=zapCodes.get("+GENDER").intValue();
+                    entryType=zapCodes.get("+GENDER");
                     parms.addElement("F");
                     found=true;
 					buf.add(new CompiledZapperMaskEntry(entryType.intValue(),parms.toArray(new Object[0])));
@@ -3045,7 +3045,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                 if((!found)&&(str.equals("-NEUTER")))
                 {
                     Vector<Object> parms=new Vector<Object>();
-                    entryType=zapCodes.get("+GENDER").intValue();
+                    entryType=zapCodes.get("+GENDER");
                     parms.addElement("N");
                     found=true;
 					buf.add(new CompiledZapperMaskEntry(entryType.intValue(),parms.toArray(new Object[0])));
@@ -3055,7 +3055,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                 &&(CMLib.factions().isRangeCodeName(str.substring(1))))
                 {
                     Vector<Object> parms=new Vector<Object>();
-                    entryType=zapCodes.get("+FACTION").intValue();
+                    entryType=zapCodes.get("+FACTION");
                     parms.addElement(str.substring(1));
                     found=true;
 					buf.add(new CompiledZapperMaskEntry(entryType.intValue(),parms.toArray(new Object[0])));
@@ -3067,7 +3067,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 					if(str.startsWith("-"+CMStrings.padRight(C.name(),4).toUpperCase().trim()))
 					{
 						Vector<Object> parms=new Vector<Object>();
-	                    entryType=zapCodes.get("+CLASS").intValue();
+	                    entryType=zapCodes.get("+CLASS");
 						parms.addElement(C.name());
                         found=true;
 						buf.add(new CompiledZapperMaskEntry(entryType.intValue(),parms.toArray(new Object[0])));
@@ -3081,7 +3081,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 					if(str.startsWith("-"+CMStrings.padRight(R.name(),6).toUpperCase().trim()))
 					{
 						Vector<Object> parms=new Vector<Object>();
-	                    entryType=zapCodes.get("+RACE").intValue();
+	                    entryType=zapCodes.get("+RACE");
 						parms.addElement(R.name());
                         found=true;
 						buf.add(new CompiledZapperMaskEntry(entryType.intValue(),parms.toArray(new Object[0])));
@@ -3097,7 +3097,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                     if(str.startsWith("-"+cat))
                     {
                         Vector<Object> parms=new Vector<Object>();
-	                    entryType=zapCodes.get("+RACECAT").intValue();
+	                    entryType=zapCodes.get("+RACECAT");
                         parms.addElement(R.racialCategory());
 						buf.add(new CompiledZapperMaskEntry(entryType.intValue(),parms.toArray(new Object[0])));
                     }
@@ -3106,7 +3106,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 				&&(str.startsWith("-"+Faction.ALIGN_NAMES[Faction.ALIGN_EVIL].substring(0,3))))
 				{
 					Vector<Object> parms=new Vector<Object>();
-                    entryType=zapCodes.get("+ALIGNMENT").intValue();
+                    entryType=zapCodes.get("+ALIGNMENT");
 					parms.addElement(Faction.ALIGN_NAMES[Faction.ALIGN_EVIL]);
                     found=true;
 					buf.add(new CompiledZapperMaskEntry(entryType.intValue(),parms.toArray(new Object[0])));
@@ -3115,7 +3115,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 				&&(str.startsWith("-"+Faction.ALIGN_NAMES[Faction.ALIGN_GOOD].substring(0,3))))
 				{
 					Vector<Object> parms=new Vector<Object>();
-                    entryType=zapCodes.get("+ALIGNMENT").intValue();
+                    entryType=zapCodes.get("+ALIGNMENT");
 					parms.addElement(Faction.ALIGN_NAMES[Faction.ALIGN_GOOD]);
                     found=true;
 					buf.add(new CompiledZapperMaskEntry(entryType.intValue(),parms.toArray(new Object[0])));
@@ -3124,7 +3124,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 				&&(str.startsWith("-"+Faction.ALIGN_NAMES[Faction.ALIGN_NEUTRAL].substring(0,3))))
 				{
 					Vector<Object> parms=new Vector<Object>();
-                    entryType=zapCodes.get("+ALIGNMENT").intValue();
+                    entryType=zapCodes.get("+ALIGNMENT");
 					parms.addElement(Faction.ALIGN_NAMES[Faction.ALIGN_NEUTRAL]);
                     found=true;
 					buf.add(new CompiledZapperMaskEntry(entryType.intValue(),parms.toArray(new Object[0])));
@@ -3133,7 +3133,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 				&&(str.startsWith("-MALE")))
 				{
 					Vector<Object> parms=new Vector<Object>();
-                    entryType=zapCodes.get("+GENDER").intValue();
+                    entryType=zapCodes.get("+GENDER");
 					parms.addElement("M");
                     found=true;
 					buf.add(new CompiledZapperMaskEntry(entryType.intValue(),parms.toArray(new Object[0])));
@@ -3142,7 +3142,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 				&&(str.startsWith("-FEMALE")))
 				{
 					Vector<Object> parms=new Vector<Object>();
-                    entryType=zapCodes.get("+GENDER").intValue();
+                    entryType=zapCodes.get("+GENDER");
 					parms.addElement("F");
                     found=true;
 					buf.add(new CompiledZapperMaskEntry(entryType.intValue(),parms.toArray(new Object[0])));
@@ -3151,7 +3151,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                 &&(str.startsWith("-NEUTER")))
 				{
 					Vector<Object> parms=new Vector<Object>();
-                    entryType=zapCodes.get("+GENDER").intValue();
+                    entryType=zapCodes.get("+GENDER");
 					parms.addElement("N");
                     found=true;
 					buf.add(new CompiledZapperMaskEntry(entryType.intValue(),parms.toArray(new Object[0])));
@@ -3161,7 +3161,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
  		        &&(CMLib.factions().isRangeCodeName(str.substring(1))))
 				{
 					Vector<Object> parms=new Vector<Object>();
-                    entryType=zapCodes.get("+FACTION").intValue();
+                    entryType=zapCodes.get("+FACTION");
 					parms.addElement(str.substring(1));
                     found=true;
 					buf.add(new CompiledZapperMaskEntry(entryType.intValue(),parms.toArray(new Object[0])));

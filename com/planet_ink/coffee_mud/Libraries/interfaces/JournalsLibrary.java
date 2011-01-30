@@ -114,7 +114,7 @@ public interface JournalsLibrary extends CMLibrary, Runnable
     
     public static enum CommandJournalFlags {
         CHANNEL,ADDROOM,EXPIRE,ADMINECHO,CONFIRM,SCRIPT;
-    };
+    }
     
     public static class ForumJournal
     {
@@ -175,6 +175,6 @@ public interface JournalsLibrary extends CMLibrary, Runnable
     
     public static enum ForumJournalFlags {
         EXPIRE,READ,POST,REPLY,ADMIN;
-    };
+    }
     
 }

@@ -1585,7 +1585,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
             DEFAULT_EDITORS.put(A.ID(),A);
         }
         return DEFAULT_EDITORS;
-    };
+    }
     
     protected class AbilityRecipeDataImpl implements AbilityRecipeData 
     {

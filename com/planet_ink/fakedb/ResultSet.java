@@ -467,7 +467,8 @@ public class ResultSet implements java.sql.ResultSet
    public boolean last() 
    { 
 	   try{
-		   while(next());
+		   while(next())
+			   {}
 	   }
 	   catch(java.sql.SQLException sqle){
 		   sqle.printStackTrace();
