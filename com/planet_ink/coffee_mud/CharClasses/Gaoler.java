@@ -127,7 +127,7 @@ public class Gaoler extends StdCharClass
 		CMLib.ableMapper().addCharAbilityMapping(ID(),30,"Engraving",0,"",false,true,CMParms.parseSemicolons("Skill_Write",true),"");
 		CMLib.ableMapper().addCharAbilityMapping(ID(),30,"Lacquerring",0,"",false,true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),30,"Smelting",0,"",false,true);
-		CMLib.ableMapper().addCharAbilityMapping(ID(),30,"Armorsmithing",0,"",false,true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),30,"Armorsmithing",0,"",false,true,CMParms.parseSemicolons("Blacksmithing",true),"");
 		CMLib.ableMapper().addCharAbilityMapping(ID(),30,"Fletching",0,"",false,true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),30,"Weaponsmithing",0,"",false,true,CMParms.parseSemicolons("Blacksmithing;Specialization_*",true),"");
 		CMLib.ableMapper().addCharAbilityMapping(ID(),30,"Shipwright",0,"",false,true,CMParms.parseSemicolons("Carpentry",true),"");
