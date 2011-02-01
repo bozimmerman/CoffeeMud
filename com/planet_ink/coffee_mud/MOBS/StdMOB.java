@@ -1417,7 +1417,10 @@ public class StdMOB implements MOB
                 tickDelay=isInCombat()?((Command)command).combatActionsCost(this,commands):((Command)command).actionsCost(this,commands);
             else
             if(command instanceof Ability)
-                tickDelay=isInCombat()?((Ability)command).combatCastingTime(this,commands):((Ability)command).castingTime(this,commands);
+            {
+            	boolean isInCombat = isInCombat() || (((Ability)command).abstractQuality() == Ability.QUALITY_MALICIOUS);
+                tickDelay=isInCombat?((Ability)command).combatCastingTime(this,commands):((Ability)command).castingTime(this,commands);
+            }
             else
                 tickDelay=1.0;
         }
@@ -2277,7 +2280,9 @@ public class StdMOB implements MOB
                 CMLib.combat().establishRange(this,(MOB)msg.target(),msg.tool());
                 if((msg.tool() instanceof Weapon)
 				||(!CMLib.flags().aliveAwakeMobileUnbound((MOB)msg.target(),true)))
+                {
 					setVictim((MOB)msg.target());
+                }
 			}
 
 			switch(msg.sourceMinor())

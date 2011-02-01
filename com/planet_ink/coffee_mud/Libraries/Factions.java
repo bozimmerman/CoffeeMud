@@ -129,7 +129,9 @@ public class Factions extends StdLibrary implements FactionManager
 		if(!FILE.exists()) return null;
         StringBuffer buf=FILE.text();
 	    if((buf!=null)&&(buf.length()>0))
+	    {
 	    	return buildFactionFromXML(buf, factionID);
+	    }
         return null;
 	}
 	
@@ -271,7 +273,7 @@ public class Factions extends StdLibrary implements FactionManager
 		return true;
 	}
 
-    protected Faction makeReactionFaction(String prefix, String classID, String Name, String baseTemplateFilename)
+    protected Faction makeReactionFaction(String prefix, String classID, String Name, String code, String baseTemplateFilename)
     {
     	String codedName=Name.toUpperCase().trim().replace(' ','_');
     	String factionID=prefix+codedName;
@@ -286,6 +288,7 @@ public class Factions extends StdLibrary implements FactionManager
     	StringBuffer buf = rebuildFactionProperties(templateF);
     	factionSet.remove(templateF.factionID().toUpperCase().trim());
     	String bufStr = buf.toString();
+    	bufStr = CMStrings.replaceAll(bufStr,"<CODE>",code);
     	bufStr = CMStrings.replaceAll(bufStr,"<NAME>",Name);
     	bufStr = CMStrings.replaceAll(bufStr,"<FACTIONID>",factionID);
     	bufStr = CMStrings.replaceAll(bufStr,"<CLASSID>",classID);
@@ -314,7 +317,7 @@ public class Factions extends StdLibrary implements FactionManager
 	        	String areaCode = A.Name().toUpperCase().trim().replace(' ','_');
 	        	F=getFaction("AREA_"+areaCode);
 	        	if(F==null)
-	        		F=makeReactionFaction("AREA_",A.ID(),A.Name(),"examples/areareaction.ini");
+	        		F=makeReactionFaction("AREA_",A.ID(),A.Name(),areaCode,"examples/areareaction.ini");
 	        	if(F==null) return null;
 	        	return new Faction[]{F};
         	}
@@ -331,7 +334,7 @@ public class Factions extends StdLibrary implements FactionManager
     	        	String nameCode = M.Name().toUpperCase().trim().replace(' ','_');
     	        	F=getFaction("NAME_"+nameCode);
     	        	if(F==null)
-    	        		F=makeReactionFaction("NAME_",M.ID(),M.Name(),"examples/namereaction.ini");
+    	        		F=makeReactionFaction("NAME_",M.ID(),M.Name(),nameCode,"examples/namereaction.ini");
     	        	if(F!=null)
     	        		Fs.add(F);
         		}
@@ -354,7 +357,7 @@ public class Factions extends StdLibrary implements FactionManager
     	        	String nameCode = rR.name().toUpperCase().trim().replace(' ','_');
     	        	F=getFaction("RACE_"+nameCode);
     	        	if(F==null)
-    	        		F=makeReactionFaction("RACE_",rR.ID(),rR.name(),"examples/racereaction.ini");
+    	        		F=makeReactionFaction("RACE_",rR.ID(),rR.name(),nameCode,"examples/racereaction.ini");
     	        	if(F!=null)
     	        		Fs.add(F);
         		}
