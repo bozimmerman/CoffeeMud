@@ -50,6 +50,17 @@ public class StdAbility implements Ability
 	public int minRange(){return 0;}
     public double castingTime(MOB mob, List<String> cmds){return CMath.div(CMProps.getIntVar(CMProps.SYSTEMI_DEFABLETIME),100.0);}
     public double combatCastingTime(MOB mob, List<String> cmds){return CMath.div(CMProps.getIntVar(CMProps.SYSTEMI_DEFCOMABLETIME),100.0);}
+    public double checkedCastingTime(MOB mob, List<String> commands)
+    {
+    	if(mob!=null)
+    	{
+	    	if(mob.isInCombat()) 
+	    		return combatCastingTime(mob,commands);
+	    	if(abstractQuality()==Ability.QUALITY_MALICIOUS)
+	    		return combatCastingTime(mob,commands);
+    	}
+    	return castingTime(mob,commands);
+    }
 	public boolean putInCommandlist(){return true;}
 	public boolean isAutoInvoked(){return false;}
 	public boolean bubbleAffect(){return false;}

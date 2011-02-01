@@ -69,6 +69,12 @@ public class StdCommand implements Command
 	
     public double actionsCost(MOB mob, List<String> cmds){return 0.0;}
     public double combatActionsCost(MOB mob, List<String> cmds){return 0.0;}
+    public double checkedActionsCost(MOB mob, List<String> cmds)
+    {
+    	if(mob!=null)
+    		return mob.isInCombat() ? combatActionsCost(mob,cmds) : actionsCost(mob,cmds);
+    	return actionsCost(mob,cmds);
+    }
 	public boolean canBeOrdered(){return true;}
 	public boolean securityCheck(MOB mob){return true;}
 	public boolean staffCommand(){return false;}

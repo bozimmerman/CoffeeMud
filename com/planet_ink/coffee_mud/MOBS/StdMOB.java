@@ -1414,13 +1414,10 @@ public class StdMOB implements MOB
         {
             if(command==null){ tell("Huh?!"); return -1.0;}
             if(command instanceof Command)
-                tickDelay=isInCombat()?((Command)command).combatActionsCost(this,commands):((Command)command).actionsCost(this,commands);
+                tickDelay=((Command)command).checkedActionsCost(this, commands);
             else
             if(command instanceof Ability)
-            {
-            	boolean isInCombat = isInCombat() || (((Ability)command).abstractQuality() == Ability.QUALITY_MALICIOUS);
-                tickDelay=isInCombat?((Ability)command).combatCastingTime(this,commands):((Ability)command).castingTime(this,commands);
-            }
+            	tickDelay = ((Ability)command).checkedCastingTime(this,commands);
             else
                 tickDelay=1.0;
         }

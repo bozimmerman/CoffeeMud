@@ -51,6 +51,7 @@ public interface Command extends CMObject
 	 * instantly.  This method only applies when the user
 	 * is not in combat.
 	 * @see Command#combatActionsCost(MOB, List<String>)
+	 * @see Command#checkedActionsCost(MOB, List)
      * @param mob the mob executing the command, if any
      * @param cmds the parameters to be passed to the command, if any
 	 * @return the number of player free actions required to do this
@@ -62,11 +63,24 @@ public interface Command extends CMObject
 	 * instantly.  This method only applies when the user
 	 * is fighting in combat.
 	 * @see Command#actionsCost(MOB, List)
+	 * @see Command#checkedActionsCost(MOB, List)
      * @param mob the mob executing the command, if any
      * @param cmds the parameters to be passed to the command, if any
 	 * @return the number of player free actions required to do this
 	 */
     public double combatActionsCost(MOB mob, List<String> cmds);
+	/**
+	 * Returns the number of actions required to completely
+	 * activate this command. A value of 0.0 means perform 
+	 * instantly.  This method only should check whether the
+	 * user is in combat and return a proper value.
+	 * @see Command#combatActionsCost(MOB, List)
+	 * @see Command#actionsCost(MOB, List)
+     * @param mob the mob executing the command, if any
+     * @param cmds the parameters to be passed to the command, if any
+	 * @return the number of player free actions required to do this
+	 */
+    public double checkedActionsCost(MOB mob, List<String> cmds);
     /**
      * Whether the a group leader or charmer can order their followers
      * to do this command.
