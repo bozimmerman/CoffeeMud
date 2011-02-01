@@ -270,6 +270,8 @@ public class CMProps extends Properties
     protected long 				TIME_TICK=4000;
     protected long 				MILLIS_PER_MUDHOUR=600000;
     protected long 				TICKS_PER_RLMIN=(int)Math.round(60000.0/(double)TIME_TICK);
+    protected long 				TICKS_PER_RLHOUR=TICKS_PER_RLMIN * 60;
+    protected long 				TICKS_PER_RLDAY=TICKS_PER_RLHOUR * 24;
     protected double 			TIME_TICK_DOUBLE=(double)TIME_TICK;
 
 	public CMProps(InputStream in)
@@ -765,6 +767,8 @@ public class CMProps extends Properties
         if(TIME_TICK<500) TIME_TICK=4000;
         TIME_TICK_DOUBLE=(double)TIME_TICK;
         TICKS_PER_RLMIN=(int)Math.round(60000.0/TIME_TICK_DOUBLE);
+        TICKS_PER_RLHOUR=TICKS_PER_RLMIN * 60;
+        TICKS_PER_RLDAY=TICKS_PER_RLHOUR * 24;
         MILLIS_PER_MUDHOUR=getLong("MILLISPERMUDHOUR");
         if(MILLIS_PER_MUDHOUR < TIME_TICK)
         	MILLIS_PER_MUDHOUR = 600000;
@@ -1481,6 +1485,16 @@ public class CMProps extends Properties
     public static final long getTicksPerMinute()
     {
     	return p().TICKS_PER_RLMIN;
+    }
+    
+    public static final long getTicksPerHour()
+    {
+    	return p().TICKS_PER_RLHOUR;
+    }
+    
+    public static final long getTicksPerDay()
+    {
+    	return p().TICKS_PER_RLDAY;
     }
     
     public static final String msp(final String soundName, final int priority)
