@@ -133,11 +133,23 @@ public class CMAble extends StdLibrary implements AbilityMapper
 	{
 		if(!completeAbleMap.containsKey(ID))
 			completeAbleMap.put(ID,new SHashtable<String, AbilityMapping>());
-		Map<String, AbilityMapping> ableMap=completeAbleMap.get(ID);
-		Map<String, AbilityMapping> allAbleMap=completeAbleMap.get("All");
+		final Map<String, AbilityMapping> ableMap=completeAbleMap.get(ID);
+		final Map<String, AbilityMapping> allAbleMap=completeAbleMap.get("All");
 		if((!addAll)||(allAbleMap==null)) 
 			return new IteratorEnumeration<AbilityMapping>(ableMap.values().iterator());
-		Iterator[] iters=new Iterator[]{ableMap.values().iterator(),allAbleMap.values().iterator()};
+		final Iterator[] iters=new Iterator[]{
+				ableMap.values().iterator(),
+				new FilteredIterator(allAbleMap.values().iterator(),
+					new Filterer<Object>(){
+						public boolean passesFilter(Object obj) {
+							if((obj instanceof AbilityMapping)
+							&&(ableMap.containsKey(((AbilityMapping)obj).abilityName)))
+								return false;
+							return true;
+						}
+					}
+				)
+		};
 		return new IteratorEnumeration(new MultiIterator(iters));
 	}
 	

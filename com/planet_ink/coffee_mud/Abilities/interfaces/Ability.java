@@ -416,8 +416,8 @@ public interface Ability extends Environmental
 	 * @param student the potential learner of this skill
 	 * @return whether the teacher can teach the skill to the student
 	 */
-	
 	public boolean canBeTaughtBy(MOB teacher, MOB student);
+	
 	/**
 	 * Returns whether the given teacher mob is able and allowed to practice
 	 * this skill with the given student *and* whether the student is able
