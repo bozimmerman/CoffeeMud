@@ -140,7 +140,7 @@ public class Chant_SummonMount extends Chant
 				newRoom.recoverRoomStats();
 				target.setStartRoom(null);
 				if(target.isInCombat()) target.makePeace();
-				CMLib.tracking().move(target,opDir,false,false);
+				CMLib.tracking().walk(target,opDir,false,false);
 				if(target.location()==mob.location())
 				{
 					if(target.isInCombat()) target.makePeace();

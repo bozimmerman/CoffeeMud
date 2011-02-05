@@ -127,7 +127,7 @@ public class Skill_Track extends StdSkill
 						{
 							int dir=nextDirection;
 							nextDirection=-2;
-							CMLib.tracking().move(mob,dir,false,false);
+							CMLib.tracking().walk(mob,dir,false,false);
 							if((reclose)&&(mob.location()==nextRoom))
 							{
 								Exit opExit=nextRoom.getExitInDir(opDirection);

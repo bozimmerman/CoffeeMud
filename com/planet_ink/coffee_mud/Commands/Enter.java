@@ -77,7 +77,7 @@ public class Enter extends Go
 				return false;
 			}
 		}
-		move(mob,dir,false,false,false);
+		CMLib.tracking().walk(mob,dir,false,false,false);
 		return false;
 	}
 	public boolean canBeOrdered(){return true;}

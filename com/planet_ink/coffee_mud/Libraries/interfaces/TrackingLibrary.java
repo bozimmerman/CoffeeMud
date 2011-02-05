@@ -38,18 +38,15 @@ public interface TrackingLibrary extends CMLibrary
     public int radiatesFromDir(Room room, List<Room> rooms);
     public void getRadiantRooms(Room room, List<Room> rooms, TrackingFlags flags, Room radiateTo, int maxDepth, Set<Room> ignoreRooms);
 	public List<Room> getRadiantRooms(Room room, TrackingFlags flags, int maxDepth);
-    public boolean beMobile(MOB mob,
-                            boolean dooropen,
-                            boolean wander,
-                            boolean roomprefer, 
-                            boolean roomobject,
-                            long[] status,
-                            List<Room> rooms);
+    public boolean beMobile(MOB mob, boolean dooropen, boolean wander, boolean roomprefer, boolean roomobject, long[] status, List<Room> rooms);
     public void wanderAway(MOB M, boolean mindPCs, boolean andGoHome);
     public void wanderFromTo(MOB M, Room toHere, boolean mindPCs);
     public void wanderIn(MOB M, Room toHere);
-    public boolean move(MOB mob, int directionCode, boolean flee, boolean nolook, boolean noriders);
-    public boolean move(MOB mob, int directionCode, boolean flee, boolean nolook);
+    public boolean walk(MOB mob, int directionCode, boolean flee, boolean nolook);
+    public boolean walk(MOB mob, int directionCode, boolean flee, boolean nolook, boolean noriders);
+	public boolean run(MOB mob, int directionCode, boolean flee, boolean nolook, boolean noriders);
+	public boolean walk(MOB mob, int directionCode, boolean flee, boolean nolook, boolean noriders, boolean always);
+	public boolean run(MOB mob, int directionCode, boolean flee, boolean nolook, boolean noriders, boolean always);
     public int findExitDir(MOB mob, Room R, String desc);
     public int findRoomDir(MOB mob, Room R);
 	public List<List<Integer>> findAllTrails(Room from, Room to, List<Room> radiantTrail);

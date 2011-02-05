@@ -130,7 +130,7 @@ public class Hireling extends StdBehavior
 				direction=Directions.DIRECTIONS_BASE()[d];
             }
 		if(direction>=0)
-			CMLib.tracking().move(observer,direction,false,false);
+			CMLib.tracking().walk(observer,direction,false,false);
 		if(observer.getStartRoom()!=null)
 			observer.getStartRoom().bringMobHere(observer,false);
 	}

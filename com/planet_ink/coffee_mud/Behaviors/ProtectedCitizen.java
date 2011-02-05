@@ -182,7 +182,7 @@ public class ProtectedCitizen extends ActiveTicker
 				{
 					int dir=CMLib.tracking().radiatesFromDir(R,V);
 					if(dir>=0)
-						CMLib.tracking().move(M,dir,false,false);
+						CMLib.tracking().walk(M,dir,false,false);
 				}
 			}
 		}

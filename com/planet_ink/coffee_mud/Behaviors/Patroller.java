@@ -524,7 +524,7 @@ public class Patroller extends ActiveTicker
 				{
 					try {
 						rideCheckCt++;
-						CMLib.tracking().move(mob,direction,false,false);
+						CMLib.tracking().walk(mob,direction,false,false);
 					} finally {
 						rideCheckCt--;
 					}

@@ -114,7 +114,7 @@ public class Thief_Shadow extends ThiefSkill
 				if(!mob.isMonster())
 					mob.enqueCommand(CMParms.parse(directionWent),Command.METAFLAG_FORCED,0);
 				else
-					CMLib.tracking().move(mob,dir,false,false);
+					CMLib.tracking().walk(mob,dir,false,false);
 			}
 		}
 		if((shadowing!=null)&&(invoker!=null)&&(shadowing.location()==invoker.location()))

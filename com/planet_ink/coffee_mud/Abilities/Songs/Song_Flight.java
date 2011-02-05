@@ -125,7 +125,7 @@ public class Song_Flight extends Song
 										mob.tell("Flee where?!");
 										return false;
 									}
-									CMLib.tracking().move(follower,directionCode,true,false);
+									CMLib.tracking().walk(follower,directionCode,true,false);
 								}
 							}
 						}

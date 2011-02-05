@@ -103,7 +103,7 @@ public class Thief_Shadowpass extends ThiefSkill
 					int dir=((Integer)trail.elementAt(i)).intValue();
                     if(!kaplah)
                     {
-                        if(!CMLib.tracking().move(mob,dir,false,true,true))
+                        if(!CMLib.tracking().walk(mob,dir,false,true,true))
                             return beneficialVisualFizzle(mob,null,"<S-NAME> do(es) not know <S-HIS-HER> way through shadowpass.");
                         mob.curState().expendEnergy(mob,mob.maxState(),true);
                     }
@@ -121,7 +121,7 @@ public class Thief_Shadowpass extends ThiefSkill
 		for(int i=0;i<trail.size();i++)
 		{
 			int dir=((Integer)trail.elementAt(i)).intValue();
-			if(!CMLib.tracking().move(mob,dir,false,true,true))
+			if(!CMLib.tracking().walk(mob,dir,false,true,true))
 				return beneficialVisualFizzle(mob,null,"<S-NAME> lose(s) <S-HIS-HER> way during the shadowpass.");
 			mob.curState().expendEnergy(mob,mob.maxState(),true);
 			mob.curState().expendEnergy(mob,mob.maxState(),true);

@@ -113,7 +113,7 @@ public class Chant_HowlersMoon extends Chant
 				target.location().showOthers(target,null,CMMsg.MSG_OK_ACTION,"<S-NAME> appears!");
 				newRoom.recoverRoomStats();
 				target.setStartRoom(null);
-				CMLib.tracking().move(target,opDir,false,false);
+				CMLib.tracking().walk(target,opDir,false,false);
 				if(target.location()==room)
 				{
 					int d=CMLib.dice().rollPercentage();

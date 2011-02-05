@@ -128,7 +128,7 @@ public class Ranger_Sneak extends StdAbility
 				mob.basePhyStats().setDisposition(mob.basePhyStats().disposition()|PhyStats.IS_SNEAKING);
 				mob.recoverPhyStats();
 			}
-			CMLib.tracking().move(mob,dirCode,false,false);
+			CMLib.tracking().walk(mob,dirCode,false,false);
 			if(success)
 			{
 

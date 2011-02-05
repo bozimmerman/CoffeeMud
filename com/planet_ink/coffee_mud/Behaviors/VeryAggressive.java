@@ -124,7 +124,7 @@ public class VeryAggressive extends Aggressive
 		if((dirCode>=0)
 		&&(!CMSecurity.isDisabled("MOBILITY")))
 		{
-			CMLib.tracking().move(mob,dirCode,false,false);
+			CMLib.tracking().walk(mob,dirCode,false,false);
 			pickAFight(mob,zapStr,mobKiller,misBehave,attackMsg);
 		}
 	}

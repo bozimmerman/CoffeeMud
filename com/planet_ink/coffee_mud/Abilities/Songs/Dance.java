@@ -97,7 +97,7 @@ public class Dance extends StdAbility
 			{
 				int dir=this.getCorrectDirToOriginRoom(mob.location(),commonRoomSet.indexOf(mob.location()));
 				if(dir>=0)
-					CMLib.tracking().move(mob,dir,false,false);
+					CMLib.tracking().walk(mob,dir,false,false);
 			}
 			else
 			if((mob.location().isInhabitant(invoker()))

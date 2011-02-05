@@ -206,7 +206,7 @@ public class Follower extends ActiveTicker
 						move=false;
 				}
 				if(move)
-					CMLib.tracking().move(mob,direction,false,false);
+					CMLib.tracking().walk(mob,direction,false,false);
 				direction=-1;
 			}
 		}

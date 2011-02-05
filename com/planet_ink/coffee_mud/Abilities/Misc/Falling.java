@@ -158,7 +158,7 @@ public class Falling extends StdAbility
 						damageToTake+=CMLib.dice().roll(1,(int)Math.round(CMath.mul(CMath.mul(mob.maxState().getHitPoints(),0.1),CMath.div(mob.baseWeight(),150.0))),0);
 				}
 				temporarilyDisable=true;
-				CMLib.tracking().move(mob,direction,false,false);
+				CMLib.tracking().walk(mob,direction,false,false);
 				temporarilyDisable=false;
 				if(!canFallFrom(mob.location(),direction))
 					return stopFalling(mob);

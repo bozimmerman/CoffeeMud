@@ -99,7 +99,7 @@ public class Push extends Go
     			            R.moveItemTo((Item)pushThis,ItemPossessor.Expire.Player_Drop,ItemPossessor.Move.Followers);
     			        else
     			        if(pushThis instanceof MOB)
-    			            move((MOB)pushThis,dirCode,((MOB)pushThis).isInCombat(),false,true,true);
+    			        	CMLib.tracking().walk((MOB)pushThis,dirCode,((MOB)pushThis).isInCombat(),false,true,true);
     		        }
 		        }
 		    }

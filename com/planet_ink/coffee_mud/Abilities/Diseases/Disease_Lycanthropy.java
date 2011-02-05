@@ -177,7 +177,7 @@ public class Disease_Lycanthropy extends Disease
 				if((nextRoom!=null)
 				&&((nextRoom.getArea()==mob.location().getArea()))||(!mob.isMonster()))
 				{
-					if(!CMLib.tracking().move(mob,nextDirection,false,false))
+					if(!CMLib.tracking().walk(mob,nextDirection,false,false))
 						deathTrail=null;
 					else
 					if(CMLib.dice().rollPercentage()<15)

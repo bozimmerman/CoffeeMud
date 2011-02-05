@@ -64,7 +64,7 @@ public class Crawl extends Go
 			{
 				if(!CMLib.flags().isSitting(mob))
 					mob.location().send(mob,msg);
-				move(mob,direction,false,false,false);
+				CMLib.tracking().walk(mob,direction,false,false,false);
 			}
 		}
 		else

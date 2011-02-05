@@ -91,9 +91,9 @@ public class Fighter_BullRush extends FighterSkill
 			MOB M2=target.getVictim();
 			mob.makePeace();
 			target.makePeace();
-			if((success)&&(CMLib.tracking().move(mob,dirCode,false,false))&&(CMLib.flags().canBeHeardMovingBy(target,mob)))
+			if((success)&&(CMLib.tracking().walk(mob,dirCode,false,false))&&(CMLib.flags().canBeHeardMovingBy(target,mob)))
 			{
-				CMLib.tracking().move(target,dirCode,false,false);
+				CMLib.tracking().walk(target,dirCode,false,false);
 				mob.setVictim(M1);
 				target.setVictim(M2);
 			}

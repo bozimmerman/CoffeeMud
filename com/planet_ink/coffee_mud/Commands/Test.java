@@ -623,9 +623,9 @@ public class Test extends StdCommand
                 A2.setMiscText((HereSpellCast).text());
                 R2.addNonUninvokableEffect(A2);
                 R2.recoverRoomStats();
-                CMLib.tracking().move(mobs[0],Directions.UP,false,false);
+                CMLib.tracking().walk(mobs[0],Directions.UP,false,false);
                 if(!effectCheck(spells,mobs[0])){ mob.tell("Error7-1"); return false;}
-                CMLib.tracking().move(mobs[0],Directions.DOWN,false,false);
+                CMLib.tracking().walk(mobs[0],Directions.DOWN,false,false);
                 if(effectCheck(spells,mobs[0])){ mob.tell("Error7-2"); return false;}
                 
                 reset(mobs,backups,R,IS,R2);
@@ -635,12 +635,12 @@ public class Test extends StdCommand
                 A2.setMiscText((HereSpellCast).text());
                 R2.addNonUninvokableEffect(A2);
                 R2.recoverRoomStats();
-                CMLib.tracking().move(mobs[0],Directions.UP,false,false);
-                CMLib.tracking().move(mobs[1],Directions.UP,false,false);
+                CMLib.tracking().walk(mobs[0],Directions.UP,false,false);
+                CMLib.tracking().walk(mobs[1],Directions.UP,false,false);
                 if(!effectCheck(spells,mobs[0])){ mob.tell("Error7-3"); return false;}
                 if(effectCheck(spells,mobs[1])){ mob.tell("Error7-4"); return false;}
-                CMLib.tracking().move(mobs[0],Directions.DOWN,false,false);
-                CMLib.tracking().move(mobs[1],Directions.DOWN,false,false);
+                CMLib.tracking().walk(mobs[0],Directions.DOWN,false,false);
+                CMLib.tracking().walk(mobs[1],Directions.DOWN,false,false);
                 if(effectCheck(spells,mobs[0])){ mob.tell("Error7-5"); return false;}
                 if(effectCheck(spells,mobs[1])){ mob.tell("Error7-6"); return false;}
                 
@@ -651,12 +651,12 @@ public class Test extends StdCommand
                 A2.setMiscText((HereSpellCast).text());
                 R2.addNonUninvokableEffect(A2);
                 R2.recoverRoomStats();
-                CMLib.tracking().move(mobs[0],Directions.UP,false,false);
-                CMLib.tracking().move(mobs[1],Directions.UP,false,false);
+                CMLib.tracking().walk(mobs[0],Directions.UP,false,false);
+                CMLib.tracking().walk(mobs[1],Directions.UP,false,false);
                 if(!effectCheck(spells,mobs[0])){ mob.tell("Error7-7"); return false;}
                 if(effectCheck(spells,mobs[1])){ mob.tell("Error7-8"); return false;}
-                CMLib.tracking().move(mobs[0],Directions.DOWN,false,false);
-                CMLib.tracking().move(mobs[1],Directions.DOWN,false,false);
+                CMLib.tracking().walk(mobs[0],Directions.DOWN,false,false);
+                CMLib.tracking().walk(mobs[1],Directions.DOWN,false,false);
                 if(effectCheck(spells,mobs[0])){ mob.tell("Error7-9"); return false;}
                 if(effectCheck(spells,mobs[1])){ mob.tell("Error7-10"); return false;}
             }
@@ -669,9 +669,9 @@ public class Test extends StdCommand
                 mob.tell("Test#8-1: "+SpellAdder.accountForYourself());
                 R2.addNonUninvokableEffect(SpellAdder);
                 R2.recoverRoomStats();
-                CMLib.tracking().move(mobs[0],Directions.UP,false,false);
+                CMLib.tracking().walk(mobs[0],Directions.UP,false,false);
                 if(!effectCheck(spells,mobs[0])){ mob.tell("Error8-1"); return false;}
-                CMLib.tracking().move(mobs[0],Directions.DOWN,false,false);
+                CMLib.tracking().walk(mobs[0],Directions.DOWN,false,false);
                 if(effectCheck(spells,mobs[0])){ mob.tell("Error8-2"); return false;}
             }
             if((what.equalsIgnoreCase("all_properties"))
@@ -1111,10 +1111,10 @@ public class Test extends StdCommand
                 R2.addNonUninvokableEffect(A2);
                 R2.recoverRoomStats();
                 if(isAnyAdjusted(mobs[0])){ mob.tell("Error22-0"); return false;}
-                CMLib.tracking().move(mobs[0],Directions.UP,false,false);
+                CMLib.tracking().walk(mobs[0],Directions.UP,false,false);
                 R2.recoverRoomStats();
                 if(!isAllAdjusted(mobs[0])){ mob.tell("Error22-1"); return false;}
-                CMLib.tracking().move(mobs[0],Directions.DOWN,false,false);
+                CMLib.tracking().walk(mobs[0],Directions.DOWN,false,false);
                 R2.recoverRoomStats();
                 if(isAnyAdjusted(mobs[0])){ mob.tell("Error22-2"); return false;}
                 
@@ -1125,13 +1125,13 @@ public class Test extends StdCommand
                 A2.setMiscText((HereAdjuster).text());
                 R2.addNonUninvokableEffect(A2);
                 R2.recoverRoomStats();
-                CMLib.tracking().move(mobs[0],Directions.UP,false,false);
-                CMLib.tracking().move(mobs[1],Directions.UP,false,false);
+                CMLib.tracking().walk(mobs[0],Directions.UP,false,false);
+                CMLib.tracking().walk(mobs[1],Directions.UP,false,false);
                 R2.recoverRoomStats();
                 if(!isAllAdjusted(mobs[0])){ mob.tell("Error22-3"); return false;}
                 if(isAnyAdjusted(mobs[1])){ mob.tell("Error22-4"); return false;}
-                CMLib.tracking().move(mobs[0],Directions.DOWN,false,false);
-                CMLib.tracking().move(mobs[1],Directions.DOWN,false,false);
+                CMLib.tracking().walk(mobs[0],Directions.DOWN,false,false);
+                CMLib.tracking().walk(mobs[1],Directions.DOWN,false,false);
                 R2.recoverRoomStats();
                 if(isAnyAdjusted(mobs[0])){ mob.tell("Error22-5"); return false;}
                 if(isAnyAdjusted(mobs[1])){ mob.tell("Error22-6"); return false;}
@@ -1143,13 +1143,13 @@ public class Test extends StdCommand
                 A2.setMiscText((HereAdjuster).text());
                 R2.addNonUninvokableEffect(A2);
                 R2.recoverRoomStats();
-                CMLib.tracking().move(mobs[0],Directions.UP,false,false);
-                CMLib.tracking().move(mobs[1],Directions.UP,false,false);
+                CMLib.tracking().walk(mobs[0],Directions.UP,false,false);
+                CMLib.tracking().walk(mobs[1],Directions.UP,false,false);
                 R2.recoverRoomStats();
                 if(!isAllAdjusted(mobs[0])){ mob.tell("Error22-7"); return false;}
                 if(isAnyAdjusted(mobs[1])){ mob.tell("Error22-8"); return false;}
-                CMLib.tracking().move(mobs[0],Directions.DOWN,false,false);
-                CMLib.tracking().move(mobs[1],Directions.DOWN,false,false);
+                CMLib.tracking().walk(mobs[0],Directions.DOWN,false,false);
+                CMLib.tracking().walk(mobs[1],Directions.DOWN,false,false);
                 R2.recoverRoomStats();
                 if(isAnyAdjusted(mobs[0])){ mob.tell("Error22-9"); return false;}
                 if(isAnyAdjusted(mobs[1])){ mob.tell("Error22-10"); return false;}
@@ -1164,12 +1164,12 @@ public class Test extends StdCommand
                 
         		CMLib.factions().setAlignment(mobs[0],Faction.ALIGN_EVIL);
                 
-                CMLib.tracking().move(mobs[0],Directions.UP,false,false);
+                CMLib.tracking().walk(mobs[0],Directions.UP,false,false);
                 if(mobs[0].location() == R2)
                 { mob.tell("Error23-1"); return false;}
                 
         		CMLib.factions().setAlignment(mobs[0],Faction.ALIGN_NEUTRAL);
-                CMLib.tracking().move(mobs[0],Directions.UP,false,false);
+                CMLib.tracking().walk(mobs[0],Directions.UP,false,false);
                 if(mobs[0].location() != R2)
                 { mob.tell("Error23-2"); return false;}
                 
@@ -1178,13 +1178,13 @@ public class Test extends StdCommand
                 reqA.setMiscText("NOFOL -ALL +EVIL");
         		CMLib.factions().setAlignment(mobs[0],Faction.ALIGN_NEUTRAL);
                 
-                CMLib.tracking().move(mobs[0],Directions.UP,false,false);
+                CMLib.tracking().walk(mobs[0],Directions.UP,false,false);
                 if(mobs[0].location() == R2)
                 { mob.tell("Error23-3"); return false;}
                 
         		CMLib.factions().setAlignment(mobs[0],Faction.ALIGN_EVIL);
                 
-                CMLib.tracking().move(mobs[0],Directions.UP,false,false);
+                CMLib.tracking().walk(mobs[0],Directions.UP,false,false);
                 if(mobs[0].location() != R2)
                 { mob.tell("Error23-4"); return false;}
                 
@@ -1199,11 +1199,11 @@ public class Test extends StdCommand
                 R2.addNonUninvokableEffect(reqA);
                 IS=giveTo(CMClass.getWeapon("Sword"),null,mobs[0],mobs[1],0);
             	
-                CMLib.tracking().move(mobs[0],Directions.UP,false,false);
+                CMLib.tracking().walk(mobs[0],Directions.UP,false,false);
                 if(mobs[0].location() != R2)
                 { mob.tell("Error24-1"); return false;}
                 
-                CMLib.tracking().move(mobs[1],Directions.UP,false,false);
+                CMLib.tracking().walk(mobs[1],Directions.UP,false,false);
                 if(mobs[1].location() == R2)
                 { mob.tell("Error24-2"); return false;}
                 

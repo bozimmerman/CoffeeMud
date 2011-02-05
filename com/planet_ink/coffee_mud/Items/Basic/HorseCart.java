@@ -1,4 +1,4 @@
-package com.planet_ink.coffee_mud.Commands;
+package com.planet_ink.coffee_mud.Items.Basic;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
@@ -14,7 +14,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import java.util.*;
 
 /* 
    Copyright 2000-2010 Bo Zimmerman
@@ -31,28 +30,24 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("unchecked")
-public class Southwest extends Go
+public class HorseCart extends StdRideable
 {
-	public Southwest(){}
-
-	private final String[] access={"SOUTHWEST","SW"};
-	public String[] getAccessWords(){return access;}
-	public boolean execute(MOB mob, Vector commands, int metaFlags)
-		throws java.io.IOException
+	public String ID(){	return "HorseCart";}
+	public HorseCart()
 	{
-		standIfNecessary(mob,metaFlags);
-		if((CMLib.flags().isSitting(mob))||(CMLib.flags().isSleeping(mob)))
-		{
-			mob.tell("You need to stand up first.");
-			return false;
-		}
-		if(CMath.bset(mob.getBitmap(),MOB.ATT_AUTORUN))
-			CMLib.tracking().run(mob, Directions.SOUTHWEST, false,false,false);
-		else
-			CMLib.tracking().walk(mob, Directions.SOUTHWEST, false,false,false);
-		return false;
+		super();
+		setName("a horse cart");
+		setDisplayText("a large horse cart is here");
+		setDescription("Looks like quite a bit can ride in there!");
+		capacity=1000;
+		baseGoldValue=500;
+		basePhyStats().setWeight(500);
+		setMaterial(RawMaterial.RESOURCE_OAK);
+	    setRideBasis(Rideable.RIDEABLE_WAGON);
+	    setRiderCapacity(10);
+		recoverPhyStats();
 	}
-	public boolean canBeOrdered(){return true;}
-	public boolean securityCheck(MOB mob){return Directions.NUM_DIRECTIONS()>6;}
+
+
+
 }

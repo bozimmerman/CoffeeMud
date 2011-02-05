@@ -436,7 +436,7 @@ public interface SlaveryLibrary extends CMLibrary
                     if(CMParms.parse(name).size()>1)
                         cur.set(1,CMParms.combine(CMParms.parse(name),1));
                     step=STEP_EVAL;
-                    CMLib.tracking().move(me,dirCode,false,false);
+                    CMLib.tracking().walk(me,dirCode,false,false);
                     return "HOLD";
                 }
 

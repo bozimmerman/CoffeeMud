@@ -84,7 +84,7 @@ public class Power_SuperClimb extends SuperPower
 				mob.recoverPhyStats();
 			}
 
-			CMLib.tracking().move(mob,dirCode,false,false);
+			CMLib.tracking().walk(mob,dirCode,false,false);
 			mob.delEffect(this);
 			mob.recoverPhyStats();
 			if(!success)

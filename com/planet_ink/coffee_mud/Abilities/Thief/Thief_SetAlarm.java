@@ -121,7 +121,7 @@ public class Thief_SetAlarm extends ThiefSkill implements Trap
 							&&(CMLib.dice().rollPercentage()>M.charStats().getSave(CharStats.STAT_SAVE_TRAPS)))
 							{
 								mobsDone.addElement(M);
-								CMLib.tracking().move(M,dir,false,false);
+								CMLib.tracking().walk(M,dir,false,false);
 							}
 						}
 					}

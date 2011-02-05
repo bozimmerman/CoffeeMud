@@ -106,7 +106,7 @@ public class Thief_CarefulStep extends ThiefSkill
 			if(success)
 				mob.baseCharStats().setStat(CharStats.STAT_DEXTERITY,oldDex+100);
 			mob.recoverCharStats();
-			CMLib.tracking().move(mob,dirCode,false,false);
+			CMLib.tracking().walk(mob,dirCode,false,false);
 			if(oldDex!=mob.baseCharStats().getStat(CharStats.STAT_DEXTERITY))
 				mob.baseCharStats().setStat(CharStats.STAT_DEXTERITY,oldDex);
 			mob.recoverCharStats();

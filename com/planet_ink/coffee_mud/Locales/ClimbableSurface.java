@@ -150,7 +150,7 @@ public class ClimbableSurface extends StdRoom
 							mountLadder(mob,ladder);
 						}
 						if(CMLib.flags().isClimbing(mob))
-							CMLib.tracking().move(mob,Directions.DOWN,false,true);
+							CMLib.tracking().walk(mob,Directions.DOWN,false,true);
 						else
 							InTheAir.makeFall(mob,this,0);
 					}

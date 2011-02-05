@@ -58,6 +58,7 @@ public class StdPortal extends StdContainer implements Rideable, Exit
 	public int riderCapacity(){ return 1;}
 	public void setRiderCapacity(int newCapacity){}
 	public int numRiders(){return 0;}
+	public Iterator<Rider> riders(){return EmptyIterator.INSTANCE;}
 	public Rider fetchRider(int which){return null;}
 	public void addRider(Rider mob){}
 	public void delRider(Rider mob){}
@@ -165,7 +166,7 @@ public class StdPortal extends StdContainer implements Rideable, Exit
                     Exit E2=CMClass.getExit("OpenNameable");
                     E2.basePhyStats().setDisposition(PhyStats.IS_NOT_SEEN);
                     R.setRawExit(Directions.GATE,E2);
-					CMLib.tracking().move(msg.source(),Directions.GATE,false,false,false);
+					CMLib.tracking().walk(msg.source(),Directions.GATE,false,false,false);
 					thisRoom.rawDoors()[Directions.GATE]=oldR;
 					thisRoom.setRawExit(Directions.GATE,oldE);
                     R.setRawExit(Directions.GATE,oldE2);

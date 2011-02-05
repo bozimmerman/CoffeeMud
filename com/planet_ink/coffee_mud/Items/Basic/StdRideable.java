@@ -39,7 +39,7 @@ public class StdRideable extends StdContainer implements Rideable
 	public String ID(){	return "StdRideable";}
 	protected int rideBasis=Rideable.RIDEABLE_WATER;
 	protected int riderCapacity=4;
-	protected Vector riders=new Vector();
+	protected List<Rider> riders=new SVector<Rider>();
 	public StdRideable()
 	{
 		super();
@@ -98,26 +98,27 @@ public class StdRideable extends StdContainer implements Rideable
 	public int numRiders(){return riders.size();}
 	public Rider fetchRider(int which)
 	{
-		try	{ return (Rider)riders.elementAt(which);	}
+		try	{ return (Rider)riders.get(which);	}
 		catch(java.lang.ArrayIndexOutOfBoundsException e){}
 		return null;
 	}
 	public void addRider(Rider mob)
 	{
 		if((mob!=null)&&(!riders.contains(mob)))
-			riders.addElement(mob);
+			riders.add(mob);
 	}
+	public Iterator<Rider> riders(){return riders.iterator();}
 	public void delRider(Rider mob)
 	{
 		if(mob!=null)
-			while(riders.removeElement(mob))
+			while(riders.remove(mob))
 				{}
 	}
 
 	protected void cloneFix(Item E)
 	{
 		super.cloneFix(E);
-		riders=new Vector();
+		riders=new SVector();
 	}
 	public Set<MOB> getRideBuddies(Set<MOB> list)
 	{

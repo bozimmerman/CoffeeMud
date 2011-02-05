@@ -104,7 +104,7 @@ public class Disease_Alzheimers extends Disease
 					else
 					{
 						int dir=((Integer)dirs.elementAt(CMLib.dice().roll(1,dirs.size(),-1))).intValue();
-						CMLib.tracking().move(mob,dir,false,false,false);
+						CMLib.tracking().walk(mob,dir,false,false,false);
 					}
 				}
 			}

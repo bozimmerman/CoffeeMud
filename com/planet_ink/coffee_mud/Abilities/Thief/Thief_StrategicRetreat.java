@@ -97,7 +97,7 @@ public class Thief_StrategicRetreat extends ThiefSkill
 					return false;
 				}
 				mob.makePeace();
-				CMLib.tracking().move(mob,directionCode,true,false);
+				CMLib.tracking().walk(mob,directionCode,true,false);
 			}
 		}
 		return success;

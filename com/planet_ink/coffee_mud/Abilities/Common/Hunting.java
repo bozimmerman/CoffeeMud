@@ -90,7 +90,7 @@ public class Hunting extends CommonSkill
 		if(possibilities.size()>0)
 		{
 			int dir=((Integer)possibilities.elementAt(CMLib.dice().roll(1,possibilities.size(),-1))).intValue();
-			CMLib.tracking().move(found,dir,true,false);
+			CMLib.tracking().walk(found,dir,true,false);
 		}
 	}
 
@@ -159,7 +159,7 @@ public class Hunting extends CommonSkill
 				{
 					Room R=mob.location().getRoomInDir(d);
 					if((R!=null)&&(R==found.location()))
-					{ CMLib.tracking().move(mob,d,false,false); break;}
+					{ CMLib.tracking().walk(mob,d,false,false); break;}
 				}
 			}
 		}

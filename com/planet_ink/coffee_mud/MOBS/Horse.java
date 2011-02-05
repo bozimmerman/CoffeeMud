@@ -1,4 +1,4 @@
-package com.planet_ink.coffee_mud.Commands;
+package com.planet_ink.coffee_mud.MOBS;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
@@ -31,28 +31,40 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("unchecked")
-public class Southwest extends Go
+public class Horse extends StdRideable
 {
-	public Southwest(){}
-
-	private final String[] access={"SOUTHWEST","SW"};
-	public String[] getAccessWords(){return access;}
-	public boolean execute(MOB mob, Vector commands, int metaFlags)
-		throws java.io.IOException
+	public String ID(){return "Horse";}
+	public Horse()
 	{
-		standIfNecessary(mob,metaFlags);
-		if((CMLib.flags().isSitting(mob))||(CMLib.flags().isSleeping(mob)))
-		{
-			mob.tell("You need to stand up first.");
-			return false;
-		}
-		if(CMath.bset(mob.getBitmap(),MOB.ATT_AUTORUN))
-			CMLib.tracking().run(mob, Directions.SOUTHWEST, false,false,false);
-		else
-			CMLib.tracking().walk(mob, Directions.SOUTHWEST, false,false,false);
-		return false;
+		super();
+		Random randomizer = new Random(System.currentTimeMillis());
+
+		username="a horse";
+		setDescription("It\\`s a beautiful brown steed.");
+		setDisplayText("A horse stands here.");
+		CMLib.factions().setAlignment(this,Faction.ALIGN_NEUTRAL);
+		setMoney(0);
+		basePhyStats.setWeight(700 + Math.abs(randomizer.nextInt() % 200));
+		setWimpHitPoint(2);
+
+		basePhyStats().setDamage(4);
+		setRideBasis(Rideable.RIDEABLE_LAND);
+		setRiderCapacity(2);
+
+		baseCharStats().setStat(CharStats.STAT_INTELLIGENCE,1);
+
+		basePhyStats().setAbility(0);
+		basePhyStats().setLevel(1);
+		basePhyStats().setArmor(10);
+
+		baseCharStats().setMyRace(CMClass.getRace("Horse"));
+		baseCharStats().getMyRace().startRacing(this,false);
+		baseState.setHitPoints(CMLib.dice().roll(basePhyStats().level(),20,basePhyStats().level()));
+
+		recoverMaxState();
+		resetToMaxState();
+		recoverPhyStats();
+		recoverCharStats();
 	}
-	public boolean canBeOrdered(){return true;}
-	public boolean securityCheck(MOB mob){return Directions.NUM_DIRECTIONS()>6;}
+
 }

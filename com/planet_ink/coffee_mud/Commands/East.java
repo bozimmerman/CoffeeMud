@@ -47,12 +47,10 @@ public class East extends Go
 			mob.tell("You need to stand up first.");
 			return false;
 		}
-		Go goClass = null;
-		if(CMath.bset(mob.getBitmap(),MOB.ATT_AUTORUN)) {
-			goClass=(Go)CMClass.getCommand("Run");
-		}
-		if(goClass == null) goClass = this;
-		goClass.move(mob,Directions.EAST,false,false,false);
+		if(CMath.bset(mob.getBitmap(),MOB.ATT_AUTORUN))
+			CMLib.tracking().run(mob, Directions.EAST, false,false,false);
+		else
+			CMLib.tracking().walk(mob, Directions.EAST, false,false,false);
 		return false;
 	}
 	public boolean canBeOrdered(){return true;}

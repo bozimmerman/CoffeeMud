@@ -93,7 +93,7 @@ public class Ranger_TrackAnimal extends StdAbility
 					{
 						int dir=nextDirection;
 						nextDirection=-2;
-						CMLib.tracking().move(mob,dir,false,false);
+						CMLib.tracking().walk(mob,dir,false,false);
 					}
 					else
 						unInvoke();

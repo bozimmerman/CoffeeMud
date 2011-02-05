@@ -53,7 +53,7 @@ public class Play_Retreat extends Play
 			return;
 		}
 		mob.makePeace();
-		CMLib.tracking().move(mob,directionCode,true,false);
+		CMLib.tracking().walk(mob,directionCode,true,false);
 	}
 
     public int castingQuality(MOB mob, Physical target)

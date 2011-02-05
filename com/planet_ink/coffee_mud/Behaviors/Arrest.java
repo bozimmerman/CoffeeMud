@@ -553,7 +553,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 				if(M!=null)
 				{
 					int direction=Directions.getOpDirectionCode(d);
-					CMLib.tracking().move(M,direction,false,false);
+					CMLib.tracking().walk(M,direction,false,false);
 					if(M.location()==R) return M;
 				}
 			}

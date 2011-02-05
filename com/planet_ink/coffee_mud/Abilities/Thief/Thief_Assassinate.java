@@ -142,14 +142,14 @@ public class Thief_Assassinate extends ThiefSkill
 							{
 								int dir=nextDirection;
 								nextDirection=-2;
-								CMLib.tracking().move(mob,dir,false,false);
+								CMLib.tracking().walk(mob,dir,false,false);
 							}
 						}
 						else
 						{
 							int dir=nextDirection;
 							nextDirection=-2;
-							CMLib.tracking().move(mob,dir,false,false);
+							CMLib.tracking().walk(mob,dir,false,false);
 						}
 					}
 					else

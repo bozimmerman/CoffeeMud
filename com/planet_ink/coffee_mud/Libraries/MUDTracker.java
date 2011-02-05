@@ -36,6 +36,7 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 public class MUDTracker extends StdLibrary implements TrackingLibrary
 {
     public String ID(){return "MUDTracker";}
+    
     public List<Room> findBastardTheBestWay(Room location,
 								            Room destRoom,
 								            TrackingFlags flags,
@@ -43,6 +44,7 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
     {
     	return findBastardTheBestWay(location,destRoom,flags,maxRadius,null);
     }
+    
     public List<Room> findBastardTheBestWay(Room location,
 	                                        Room destRoom,
 	                                        TrackingFlags flags,
@@ -518,7 +520,7 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 		else
         {
             if(status!=null)status[0]=Tickable.STATUS_MISC7+20;
-			move(mob,direction,false,false);
+			walk(mob,direction,false,false);
         }
         if(status!=null)status[0]=Tickable.STATUS_MISC7+21;
 
@@ -598,33 +600,323 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 		toHere.bringMobHere(M,true);
 	}
 
-	public boolean move(MOB mob,
-					    int directionCode,
-					    boolean flee,
-					    boolean nolook,
-					    boolean noriders)
+	public void ridersBehind(List<Rider> riders, Room sourceRoom, Room destRoom, int directionCode, boolean flee, boolean running)
 	{
-		try{
-			Command C=CMClass.getCommand("Go");
-			if(C!=null)
+		if(riders!=null)
+		for(Rider rider : riders)
+		{
+			if(rider instanceof MOB)
 			{
-				Vector<Object> V=new Vector<Object>();
-				V.addElement(Integer.valueOf(directionCode));
-				V.addElement(Boolean.valueOf(flee));
-				V.addElement(Boolean.valueOf(nolook));
-				V.addElement(Boolean.valueOf(noriders));
-				return C.execute(mob,V,Command.METAFLAG_FORCED);
+				MOB rMOB=(MOB)rider;
+
+				if((rMOB.location()==sourceRoom)
+				   ||(rMOB.location()==destRoom))
+				{
+					boolean fallOff=false;
+					if(rMOB.location()==sourceRoom)
+					{
+						if(rMOB.riding()!=null)
+							rMOB.tell("You ride "+rMOB.riding().name()+" "+Directions.getDirectionName(directionCode)+".");
+						if(!move(rMOB,directionCode,flee,false,true,false,running))
+							fallOff=true;
+					}
+					if(fallOff)
+					{
+						if(rMOB.riding()!=null)
+							rMOB.tell("You fall off "+rMOB.riding().name()+"!");
+						rMOB.setRiding(null);
+					}
+				}
+				else
+					rMOB.setRiding(null);
+			}
+			else
+			if(rider instanceof Item)
+			{
+				Item rItem=(Item)rider;
+				if((rItem.owner()==sourceRoom)
+				||(rItem.owner()==destRoom))
+					destRoom.moveItemTo(rItem);
+				else
+					rItem.setRiding(null);
 			}
 		}
-		catch(Exception e)
-		{
-			Log.errOut("MUDTracker",e);
-		}
-		return false;
 	}
-	public boolean move(MOB mob, int directionCode, boolean flee, boolean nolook)
+
+	public static List<Rider> addRiders(Rider theRider, Rideable riding, List<Rider> riders)
 	{
-		return move(mob,directionCode,flee,nolook,false);
+
+		if((riding!=null)&&(riding.mobileRideBasis()))
+			for(int r=0;r<riding.numRiders();r++)
+			{
+				Rider rider=riding.fetchRider(r);
+				if((rider!=null)
+				&&(rider!=theRider)
+				&&(!riders.contains(rider)))
+				{
+					riders.add(rider);
+					if(rider instanceof Rideable)
+						addRiders(theRider,(Rideable)rider,riders);
+				}
+			}
+		return riders;
+	}
+
+	public List<Rider> ridersAhead(Rider theRider, Room sourceRoom, Room destRoom, int directionCode, boolean flee, boolean running)
+	{
+		LinkedList<Rider> riders=new LinkedList<Rider>();
+		Rideable riding=theRider.riding();
+		LinkedList<Rideable> rideables=new LinkedList<Rideable>();
+		while((riding!=null)&&(riding.mobileRideBasis()))
+		{
+			rideables.add(riding);
+			addRiders(theRider,riding,riders);
+			if((riding instanceof Rider)&&((Rider)riding).riding()!=theRider.riding())
+				riding=((Rider)riding).riding();
+			else
+				riding=null;
+		}
+		if(theRider instanceof Rideable)
+			addRiders(theRider,(Rideable)theRider,riders);
+		for(Iterator<Rider> r=riders.descendingIterator(); r.hasNext(); )
+		{
+			Rider R=r.next();
+			if((R instanceof Rideable)&&(((Rideable)R).numRiders()>0))
+			{
+				if(!rideables.contains(R))
+					rideables.add((Rideable)R);
+				r.remove();
+			}
+		}
+		for(ListIterator<Rideable> r=rideables.listIterator(); r.hasNext();)
+		{
+			riding=r.next();
+			if((riding instanceof Item)
+			&&((sourceRoom).isContent((Item)riding)))
+				destRoom.moveItemTo((Item)riding);
+			else
+			if((riding instanceof MOB)
+			&&((sourceRoom).isInhabitant((MOB)riding)))
+			{
+				((MOB)riding).tell("You are ridden "+Directions.getDirectionName(directionCode)+".");
+				if(!move(((MOB)riding),directionCode,false,false,true,false,running))
+				{
+					if(theRider instanceof MOB)
+						((MOB)theRider).tell(((MOB)riding).name()+" won't seem to let you go that way.");
+					for(;r.hasPrevious();)
+					{
+						riding=r.previous();
+						if((riding instanceof Item)
+						&&((destRoom).isContent((Item)riding)))
+							sourceRoom.moveItemTo((Item)riding);
+						else
+						if((riding instanceof MOB)
+						&&(((MOB)riding).isMonster())
+						&&((destRoom).isInhabitant((MOB)riding)))
+							sourceRoom.bringMobHere((MOB)riding,false);
+					}
+					return null;
+				}
+			}
+		}
+		return riders;
+	}
+
+	public boolean walk(MOB mob, int directionCode, boolean flee, boolean nolook, boolean noriders)
+	{
+	    return walk(mob,directionCode,flee,nolook,noriders,false);
+	}
+	
+	public boolean run(MOB mob, int directionCode, boolean flee, boolean nolook, boolean noriders)
+	{
+	    return run(mob,directionCode,flee,nolook,noriders,false);
+	}
+	
+	public boolean walk(MOB mob, int directionCode, boolean flee, boolean nolook, boolean noriders, boolean always)
+	{
+		return move(mob,directionCode,flee,nolook,noriders,always,false);
+	}
+	
+	public boolean run(MOB mob, int directionCode, boolean flee, boolean nolook, boolean noriders, boolean always)
+	{
+		return move(mob,directionCode,flee,nolook,noriders,always,true);
+	}
+	
+	public boolean move(MOB mob, int directionCode, boolean flee, boolean nolook, boolean noriders, boolean always, boolean running)
+	{
+		if(directionCode<0) return false;
+		if(mob==null) return false;
+		Room thisRoom=mob.location();
+		if(thisRoom==null) return false;
+		Room destRoom=thisRoom.getRoomInDir(directionCode);
+		Exit exit=thisRoom.getExitInDir(directionCode);
+		if(destRoom==null)
+		{
+			mob.tell("You can't go that way.");
+			return false;
+		}
+
+		Exit opExit=thisRoom.getReverseExit(directionCode);
+		String directionName=(directionCode==Directions.GATE)&&(exit!=null)?"through "+exit.name():Directions.getDirectionName(directionCode);
+		String otherDirectionName=(Directions.getOpDirectionCode(directionCode)==Directions.GATE)&&(exit!=null)?exit.name():Directions.getFromDirectionName(Directions.getOpDirectionCode(directionCode));
+
+		int generalMask=always?CMMsg.MASK_ALWAYS:0;
+		int leaveCode=generalMask|CMMsg.MSG_LEAVE;
+		if(flee)
+			leaveCode=generalMask|CMMsg.MSG_FLEE;
+
+		CMMsg enterMsg=null;
+		CMMsg leaveMsg=null;
+		if((mob.riding()!=null)&&(mob.riding().mobileRideBasis()))
+		{
+			enterMsg=CMClass.getMsg(mob,destRoom,exit,generalMask|CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,"<S-NAME> ride(s) "+mob.riding().name()+" in from "+otherDirectionName+".");
+			leaveMsg=CMClass.getMsg(mob,thisRoom,opExit,leaveCode,((flee)?"You flee "+directionName+".":null),leaveCode,null,leaveCode,((flee)?"<S-NAME> flee(s) with "+mob.riding().name()+" "+directionName+".":"<S-NAME> ride(s) "+mob.riding().name()+" "+directionName+"."));
+		}
+		else
+		{
+			enterMsg=CMClass.getMsg(mob,destRoom,exit,generalMask|CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,"<S-NAME> "+CMLib.flags().dispositionString(mob,CMFlagLibrary.flag_arrives)+" from "+otherDirectionName+".");
+			leaveMsg=CMClass.getMsg(mob,thisRoom,opExit,leaveCode,((flee)?"You flee "+directionName+".":null),leaveCode,null,leaveCode,((flee)?"<S-NAME> flee(s) "+directionName+".":"<S-NAME> "+CMLib.flags().dispositionString(mob,CMFlagLibrary.flag_leaves)+" "+directionName+"."));
+		}
+		boolean gotoAllowed=CMSecurity.isAllowed(mob,destRoom,"GOTO");
+		if((exit==null)&&(!gotoAllowed))
+		{
+			mob.tell("You can't go that way.");
+			return false;
+		}
+		else
+		if(exit==null)
+			thisRoom.showHappens(CMMsg.MSG_OK_VISUAL,"The area to the "+directionName+" shimmers and becomes transparent.");
+		else
+		if((!exit.okMessage(mob,enterMsg))&&(!gotoAllowed))
+			return false;
+		else
+		if(!leaveMsg.target().okMessage(mob,leaveMsg)&&(!gotoAllowed))
+			return false;
+		else
+		if((opExit!=null)&&(!opExit.okMessage(mob,leaveMsg))&&(!gotoAllowed))
+			return false;
+		else
+		if(!enterMsg.target().okMessage(mob,enterMsg)&&(!gotoAllowed))
+			return false;
+		else
+		if(!mob.okMessage(mob,enterMsg)&&(!gotoAllowed))
+			return false;
+
+		if(mob.riding()!=null)
+		{
+			if((!mob.riding().okMessage(mob,enterMsg))&&(!gotoAllowed))
+				return false;
+		}
+		else
+		{
+			if(!mob.isMonster())
+			{
+				final int expense = running
+										? CMProps.getIntVar(CMProps.SYSTEMI_RUNCOST)
+										: CMProps.getIntVar(CMProps.SYSTEMI_WALKCOST);
+				for(int i=0;i<expense;i++)
+					mob.curState().expendEnergy(mob,mob.maxState(),true);
+			}
+			if((!flee)&&(!mob.curState().adjMovement(-1,mob.maxState()))&&(!gotoAllowed))
+			{
+				mob.tell("You are too tired.");
+				return false;
+			}
+			if((mob.soulMate()==null)&&(mob.playerStats()!=null)&&(mob.riding()==null)&&(mob.location()!=null))
+			    mob.playerStats().adjHygiene(mob.location().pointsPerMove(mob));
+		}
+
+		List<Rider> riders=null;
+		if(!noriders)
+		{
+			riders=ridersAhead(mob,(Room)leaveMsg.target(),(Room)enterMsg.target(),directionCode,flee, running);
+			if(riders==null) return false;
+		}
+        List<CMMsg> enterTrailersSoFar=null;
+        List<CMMsg> leaveTrailersSoFar=null;
+        if((leaveMsg.trailerMsgs()!=null)&&(leaveMsg.trailerMsgs().size()>0))
+        {
+            leaveTrailersSoFar=new LinkedList<CMMsg>();
+            leaveTrailersSoFar.addAll(leaveMsg.trailerMsgs());
+            leaveMsg.trailerMsgs().clear();
+        }
+        if((enterMsg.trailerMsgs()!=null)&&(enterMsg.trailerMsgs().size()>0))
+        {
+            enterTrailersSoFar=new LinkedList<CMMsg>();
+            enterTrailersSoFar.addAll(enterMsg.trailerMsgs());
+            enterMsg.trailerMsgs().clear();
+        }
+		if(exit!=null) exit.executeMsg(mob,enterMsg);
+		if(mob.location()!=null)  mob.location().delInhabitant(mob);
+		((Room)leaveMsg.target()).send(mob,leaveMsg);
+
+		if(enterMsg.target()==null)
+		{
+		    ((Room)leaveMsg.target()).bringMobHere(mob,false);
+			mob.tell("You can't go that way.");
+			return false;
+		}
+		mob.setLocation((Room)enterMsg.target());
+		((Room)enterMsg.target()).addInhabitant(mob);
+		((Room)enterMsg.target()).send(mob,enterMsg);
+
+		if(opExit!=null) opExit.executeMsg(mob,leaveMsg);
+
+		if(!nolook)
+        {
+			CMLib.commands().postLook(mob,true);
+            if((!mob.isMonster())
+            &&(CMath.bset(mob.getBitmap(),MOB.ATT_AUTOWEATHER))
+            &&(((Room)enterMsg.target())!=null)
+            &&((thisRoom.domainType()&Room.INDOORS)>0)
+            &&((((Room)enterMsg.target()).domainType()&Room.INDOORS)==0)
+            &&(((Room)enterMsg.target()).getArea().getClimateObj().weatherType(((Room)enterMsg.target()))!=Climate.WEATHER_CLEAR)
+            &&(((Room)enterMsg.target()).isInhabitant(mob)))
+                mob.tell("\n\r"+((Room)enterMsg.target()).getArea().getClimateObj().weatherDescription(((Room)enterMsg.target())));
+        }
+
+		if(!noriders)
+			ridersBehind(riders,(Room)leaveMsg.target(),(Room)enterMsg.target(),directionCode,flee, running);
+
+		if(!flee)
+		for(int f=0;f<mob.numFollowers();f++)
+		{
+			MOB follower=mob.fetchFollower(f);
+			if(follower!=null)
+			{
+				if((follower.amFollowing()==mob)
+				&&((follower.location()==thisRoom)||(follower.location()==destRoom)))
+				{
+					if((follower.location()==thisRoom)&&(CMLib.flags().aliveAwakeMobile(follower,true)))
+					{
+						if(CMath.bset(follower.getBitmap(),MOB.ATT_AUTOGUARD))
+							thisRoom.show(follower,null,null,CMMsg.MSG_OK_ACTION,"<S-NAME> remain(s) on guard here.");
+						else
+						{
+							follower.tell("You follow "+mob.name()+" "+Directions.getDirectionName(directionCode)+".");
+							if(!move(follower,directionCode,false,false,false,false, running))
+							{
+								//follower.setFollowing(null);
+							}
+						}
+					}
+				}
+				//else
+				//	follower.setFollowing(null);
+			}
+		}
+        if((leaveTrailersSoFar!=null)&&(leaveMsg.target() instanceof Room))
+	        for(CMMsg msg : leaveTrailersSoFar)
+	            ((Room)leaveMsg.target()).send(mob,msg);
+        if((enterTrailersSoFar!=null)&&(enterMsg.target() instanceof Room))
+	        for(CMMsg msg : enterTrailersSoFar)
+	            ((Room)enterMsg.target()).send(mob,msg);
+		return true;
+	}
+
+	public boolean walk(MOB mob, int directionCode, boolean flee, boolean nolook)
+	{
+		return walk(mob,directionCode,flee,nolook,false);
 	}
 
 	public int findExitDir(MOB mob, Room R, String desc)

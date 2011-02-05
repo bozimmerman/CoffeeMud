@@ -99,7 +99,7 @@ public class Prayer_Wave extends Prayer
 						int chanceToStay=10+(target.charStats().getStat(CharStats.STAT_STRENGTH)-(mob.phyStats().level()+(2*super.getXLEVELLevel(mob)))*4);
 						int roll=CMLib.dice().rollPercentage();
 						if((roll!=1)&&(roll>chanceToStay))
-							CMLib.tracking().move(target,dir,true,false);
+							CMLib.tracking().walk(target,dir,true,false);
 					}
 				}
 				else

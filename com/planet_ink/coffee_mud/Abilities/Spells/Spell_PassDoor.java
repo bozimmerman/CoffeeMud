@@ -141,7 +141,7 @@ public class Spell_PassDoor extends Spell
 				mob.addEffect(this);
 				mob.recoverPhyStats();
 				mob.tell("\n\r\n\r");
-				CMLib.tracking().move(mob,dirCode,false,false);
+				CMLib.tracking().walk(mob,dirCode,false,false);
 				mob.delEffect(this);
 				mob.recoverPhyStats();
 			}

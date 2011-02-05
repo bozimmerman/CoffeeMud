@@ -206,7 +206,9 @@ public class CMProps extends Properties
     public static final int SYSTEMI_MAXCRAFTINGSKILLS=66;
     public static final int SYSTEMI_MAXNONCRAFTINGSKILLS=67;
     public static final int SYSTEMI_MAXLANGUAGES=68;
-    public static final int NUMI_SYSTEM=69;
+    public static final int SYSTEMI_WALKCOST=69;
+    public static final int SYSTEMI_RUNCOST=70;
+    public static final int NUMI_SYSTEM=71;
 
     public static final int SYSTEMB_MOBCOMPRESS=0;
     public static final int SYSTEMB_ITEMDCOMPRESS=1;
@@ -945,6 +947,8 @@ public class CMProps extends Properties
         setIntVar(SYSTEMI_MAXCRAFTINGSKILLS,getStr("MAXCRAFTINGSKILLS"),2);
         setIntVar(SYSTEMI_MAXNONCRAFTINGSKILLS,getStr("MAXNONCRAFTINGSKILLS"),5);
         setIntVar(SYSTEMI_MAXLANGUAGES,getStr("MAXLANGUAGES"),3);
+        setIntVar(SYSTEMI_WALKCOST,getStr("WALKCOST"),1);
+        setIntVar(SYSTEMI_RUNCOST,getStr("RUNCOST"),2);
 
         V=CMParms.parseCommas(getStr("INJURYSYSTEM"),true);
 

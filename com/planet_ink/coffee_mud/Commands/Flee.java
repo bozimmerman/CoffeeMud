@@ -108,7 +108,7 @@ public class Flee extends Go
 				return false;
 			}
 		}
-		if((direction.equals("NOWHERE"))||((directionCode>=0)&&(move(mob,directionCode,true,false,false))))
+		if((direction.equals("NOWHERE"))||((directionCode>=0)&&(CMLib.tracking().walk(mob,directionCode,true,false,false))))
 		{
 			mob.makePeace();
 			if(XPloss&&(fighting!=null))

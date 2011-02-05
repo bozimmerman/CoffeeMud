@@ -105,7 +105,7 @@ public class MobileGoodGuardian extends Mobile
 		&&(!CMSecurity.isDisabled("MOBILITY")))
 		{
             tickStatus=Tickable.STATUS_MISC+121;
-			CMLib.tracking().move(mob,dirCode,false,false);
+			CMLib.tracking().walk(mob,dirCode,false,false);
             tickStatus=Tickable.STATUS_MISC+122;
 			GoodGuardian.keepPeace(mob,victim);
             tickStatus=Tickable.STATUS_MISC+123;

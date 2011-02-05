@@ -86,13 +86,13 @@ public class Pull extends Go
 		    {
 		        Room R=(Room)msg.tool();
 		        dirCode=CMLib.tracking().findRoomDir(mob,R);
-		        if((dirCode>=0)&&(super.move(mob,dirCode,false,false,false,false)))
+		        if((dirCode>=0)&&(CMLib.tracking().walk(mob,dirCode,false,false,false,false)))
 		        {
 			        if(openThis instanceof Item)
 			            R.moveItemTo((Item)openThis,ItemPossessor.Expire.Player_Drop,ItemPossessor.Move.Followers);
 			        else
 			        if(openThis instanceof MOB)
-			            move((MOB)openThis,dirCode,((MOB)openThis).isInCombat(),false,true,true);
+			        	CMLib.tracking().walk((MOB)openThis,dirCode,((MOB)openThis).isInCombat(),false,true,true);
 		        }
 		    }
 		}
