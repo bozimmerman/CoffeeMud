@@ -63,7 +63,7 @@ public class Thief_Evesdrop extends ThiefSkill
 		&&(invoker().location()==((MOB)msg.target()).location())
 		&&(!CMLib.flags().canBeSeenBy(invoker(),(MOB)affected))
 		&&(CMLib.flags().isInTheGame(invoker(),true))
-		&&(CMLib.flags().canBeHeardBy(affected,invoker())))
+		&&(CMLib.flags().canBeHeardSpeakingBy(affected,invoker())))
 		{
 			CMMsg msg2=(CMMsg)msg.copyOf();
 			String targMsg=msg.targetMessage();

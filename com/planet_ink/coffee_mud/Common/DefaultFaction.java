@@ -806,7 +806,7 @@ public class DefaultFaction implements Faction, MsgListener
             	{
             		MOB M=R.fetchInhabitant(m);
             		if((M!=null)&&(M.isMonster())
-            		&&(CMLib.flags().canBeHeardBy(msg.source(),M))
+            		&&(CMLib.flags().canBeHeardSpeakingBy(msg.source(),M))
             		&&(M.amFollowing()!=msg.source()))
             			targets.add(M);
             	}
@@ -861,7 +861,7 @@ public class DefaultFaction implements Faction, MsgListener
             	{
             		MOB M=R.fetchInhabitant(m);
             		if((M!=null)&&(M.isMonster())
-            		&&(CMLib.flags().canBeHeardBy(msg.source(),M))
+            		&&(CMLib.flags().canBeHeardSpeakingBy(msg.source(),M))
             		&&(M.amFollowing()!=msg.source()))
             			targets.add(M);
             	}
@@ -1605,7 +1605,7 @@ public class DefaultFaction implements Faction, MsgListener
         
         private Ability setPresenceReaction(MOB M, Physical myHost)
         {
-        	if((!CMLib.flags().canBeSeenBy(myHost, M))&&(!CMLib.flags().canBeHeardBy(myHost,M)))
+        	if((!CMLib.flags().canBeSeenBy(myHost, M))&&(!CMLib.flags().canBeHeardMovingBy(myHost,M)))
         		return null;
         		
 	    	Vector<Object> myReactions=null;

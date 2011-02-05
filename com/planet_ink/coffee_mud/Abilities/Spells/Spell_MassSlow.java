@@ -67,9 +67,9 @@ public class Spell_MassSlow extends Spell
 			{
 				MOB target=(MOB)f.next();
 
-				// if they can't hear the sleep spell, it
+				// if they can't hear the slow spell, it
 				// won't happen
-				if(CMLib.flags().canBeHeardBy(mob,target))
+				if(CMLib.flags().canBeHeardSpeakingBy(mob,target))
 				{
 					// it worked, so build a copy of this ability,
 					// and add it to the affects list of the

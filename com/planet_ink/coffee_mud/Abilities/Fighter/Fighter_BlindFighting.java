@@ -64,7 +64,7 @@ public class Fighter_BlindFighting extends FighterSkill
 		MOB mob=(MOB)ticking;
 		if(!mob.isInCombat()) return true;
 		if((!CMLib.flags().canBeSeenBy(mob.getVictim(),mob))
-		&&(CMLib.flags().canBeHeardBy(mob.getVictim(),mob))
+		&&(CMLib.flags().canBeHeardMovingBy(mob.getVictim(),mob))
 		&&((mob.fetchAbility(ID())==null)||proficiencyCheck(mob,0,false)))
 		{
 			seeEnabled=true;

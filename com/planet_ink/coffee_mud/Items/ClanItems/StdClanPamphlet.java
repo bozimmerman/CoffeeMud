@@ -96,7 +96,7 @@ public class StdClanPamphlet extends StdClanItem
 					&&(M.getClanID().equals(rulingClan))
 					&&(!CMLib.flags().isAnimalIntelligence(M))
 					&&(CMLib.flags().canBeSeenBy(M,mob))
-					&&(CMLib.flags().canBeHeardBy(M,mob)))
+					&&(CMLib.flags().canBeHeardMovingBy(M,mob)))
 					{
 						CMLib.commands().postSay(mob,M,"Hey, take a look at this.",false,false);
 						ClanItem I=(ClanItem)copyOf();

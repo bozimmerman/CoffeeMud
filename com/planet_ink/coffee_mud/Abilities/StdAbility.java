@@ -446,7 +446,7 @@ public class StdAbility implements Ability
 			targetName=target.name();
 
 		if((target==null)
-		||((givenTarget==null)&&(!CMLib.flags().canBeSeenBy(target,mob))&&((!CMLib.flags().canBeHeardBy(target,mob))||(!target.isInCombat()))))
+		||((givenTarget==null)&&(!CMLib.flags().canBeSeenBy(target,mob))&&((!CMLib.flags().canBeHeardMovingBy(target,mob))||(!target.isInCombat()))))
 		{
 			if(!quiet)
 			{
@@ -541,7 +541,7 @@ public class StdAbility implements Ability
 		if((target==null)
 		||((givenTarget==null)
 		   &&(!CMLib.flags().canBeSeenBy(target,mob))
-		   &&((!CMLib.flags().canBeHeardBy(target,mob))
+		   &&((!CMLib.flags().canBeHeardMovingBy(target,mob))
                    ||((target instanceof MOB)&&(!((MOB)target).isInCombat())))))
 		{
 			if(targetName.trim().length()==0)

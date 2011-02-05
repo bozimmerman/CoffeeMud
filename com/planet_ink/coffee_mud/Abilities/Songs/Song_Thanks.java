@@ -157,7 +157,7 @@ public class Song_Thanks extends Song
 						int affectType=CMMsg.MSG_CAST_VERBAL_SPELL;
 						if(auto) affectType=affectType|CMMsg.MASK_ALWAYS;
 	
-						if((CMLib.flags().canBeHeardBy(invoker,follower)&&(follower.fetchEffect(this.ID())==null)))
+						if((CMLib.flags().canBeHeardSpeakingBy(invoker,follower)&&(follower.fetchEffect(this.ID())==null)))
 						{
 							CMMsg msg2=CMClass.getMsg(mob,follower,this,affectType,null);
 							CMMsg msg3=msg2;

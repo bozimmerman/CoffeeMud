@@ -95,7 +95,7 @@ public class Order extends StdCommand
 		{
 			target=(MOB)V.firstElement();
 			if((!CMLib.flags().canBeSeenBy(target,mob))
-			||(!CMLib.flags().canBeHeardBy(mob,target))
+			||(!CMLib.flags().canBeHeardSpeakingBy(mob,target))
 			||(target.location()!=mob.location()))
 			{
 				mob.tell("'"+whomToOrder+"' doesn't seem to be listening.");
@@ -145,7 +145,7 @@ public class Order extends StdCommand
 				}
 			}
 			if((!CMLib.flags().canBeSeenBy(target,mob))
-			||(!CMLib.flags().canBeHeardBy(mob,target))
+			||(!CMLib.flags().canBeHeardSpeakingBy(mob,target))
 			||(target.location()!=mob.location()))
 				mob.tell("'"+whomToOrder+"' doesn't seem to be listening.");
 			else

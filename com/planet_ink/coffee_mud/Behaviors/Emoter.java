@@ -247,7 +247,7 @@ public class Emoter extends ActiveTicker
 						if(CMLib.flags().canBeSeenBy(emoter,M))	M.executeMsg(M,msg);
 						break;
 					case EMOTE_SOUND:
-						if(CMLib.flags().canBeHeardBy(emoter,M)) M.executeMsg(M,msg);
+						if(CMLib.flags().canBeHeardSpeakingBy(emoter,M)) M.executeMsg(M,msg);
 						break;
 					case EMOTE_SMELL:
 						if(CMLib.flags().canSmell(M)) M.executeMsg(M,msg);

@@ -1817,7 +1817,7 @@ public class StdMOB implements MOB
 						if(msg.target()!=null)
 						{
 							if((msg.target() instanceof MOB)
-							&&(!CMLib.flags().canBeHeardBy(this,(MOB)msg.target())))
+							&&(!CMLib.flags().canBeHeardSpeakingBy(this,(MOB)msg.target())))
 							{
 								tell(msg.target().name()+" can't hear you!");
 								return false;
@@ -1871,7 +1871,7 @@ public class StdMOB implements MOB
 					if(msg.target() instanceof Deity)
 						break;
 					if((msg.target() instanceof MOB)
-					&&(!CMLib.flags().canBeHeardBy(this,(MOB)msg.target())))
+					&&(!CMLib.flags().canBeHeardSpeakingBy(this,(MOB)msg.target())))
 					{
 						tell(msg.target().name()+" can't hear you!");
 						return false;
@@ -2252,7 +2252,9 @@ public class StdMOB implements MOB
 
 		boolean asleep=CMLib.flags().isSleeping(this);
 		boolean canseesrc=CMLib.flags().canBeSeenBy(msg.source(),this);
-		boolean canhearsrc=CMLib.flags().canBeHeardBy(msg.source(),this);
+		boolean canhearsrc=(msg.targetMinor()==CMMsg.TYP_SPEAK)
+							?CMLib.flags().canBeHeardSpeakingBy(msg.source(),this)
+							:CMLib.flags().canBeHeardMovingBy(msg.source(),this);
 
 		// first do special cases...
 		if(msg.amITarget(this)&&(!amDead))
@@ -2372,7 +2374,6 @@ public class StdMOB implements MOB
                 if((CMProps.getBoolVar(CMProps.SYSTEMB_INTRODUCTIONSYSTEM))
                 &&(!asleep)&&(canhearsrc))
                     CMLib.commands().handleIntroductions(msg.source(),this,msg.targetMessage());
-        		canhearsrc=CMLib.flags().canBeHeardBy(msg.source(),this);
                 break;
             default:
                 if((CMath.bset(msg.targetCode(),CMMsg.MASK_MALICIOUS))&&(!amDead))
@@ -2396,8 +2397,10 @@ public class StdMOB implements MOB
 				if((msg.targetMinor()==CMMsg.TYP_SPEAK)
 				 &&(msg.source()!=null)
 				 &&(playerStats()!=null)
-				 &&(!msg.source().isMonster()))
+				 &&(!msg.source().isMonster())
+				 &&(CMLib.flags().canBeHeardSpeakingBy(msg.source(), this)))
 					playerStats().setReplyTo(msg.source(),PlayerStats.REPLY_SAY);
+				
 				tell(msg.source(),msg.target(),msg.tool(),msg.targetMessage());
 			}
 			else

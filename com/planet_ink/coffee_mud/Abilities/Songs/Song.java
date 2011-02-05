@@ -155,7 +155,7 @@ public class Song extends StdAbility
 
 		if((invoker==null)
 		||(!CMLib.flags().aliveAwakeMobile(invoker,true))
-		||(!CMLib.flags().canBeHeardBy(invoker,mob)))
+		||(!CMLib.flags().canBeHeardSpeakingBy(invoker,mob)))
 			return unsingMe(mob,null);
 		return true;
 	}
@@ -352,7 +352,7 @@ public class Song extends StdAbility
 						if((castingQuality(mob,follower)==Ability.QUALITY_MALICIOUS)&&(follower!=mob))
 							affectType=affectType|CMMsg.MASK_MALICIOUS;
 	
-						if((CMLib.flags().canBeHeardBy(invoker,follower)&&(follower.fetchEffect(this.ID())==null)))
+						if((CMLib.flags().canBeHeardSpeakingBy(invoker,follower)&&(follower.fetchEffect(this.ID())==null)))
 						{
 							CMMsg msg2=CMClass.getMsg(mob,follower,this,affectType,null);
 							CMMsg msg3=msg2;

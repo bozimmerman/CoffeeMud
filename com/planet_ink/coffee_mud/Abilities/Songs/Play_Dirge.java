@@ -102,7 +102,7 @@ public class Play_Dirge extends Play
 						int expGained=(int)Math.round(exp);
 	
 						// malicious songs must not affect the invoker!
-						if(CMLib.flags().canBeHeardBy(invoker,follower)&&(expGained>0))
+						if(CMLib.flags().canBeHeardSpeakingBy(invoker,follower)&&(expGained>0))
 							CMLib.leveler().postExperience(follower,null,null,expGained,false);
 					}
 					R.recoverRoomStats();

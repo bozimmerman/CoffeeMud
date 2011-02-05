@@ -174,7 +174,7 @@ public class Spell_Charm extends Spell
                 return Ability.QUALITY_INDIFFERENT;
             if(target instanceof MOB)
             {
-                if(!CMLib.flags().canBeHeardBy(mob,(MOB)target))
+                if(!CMLib.flags().canBeHeardSpeakingBy(mob,(MOB)target))
                     return Ability.QUALITY_INDIFFERENT;
                 if((mob.isMonster())&&(((MOB)target).isMonster()))
                     return Ability.QUALITY_INDIFFERENT;
@@ -199,7 +199,7 @@ public class Spell_Charm extends Spell
 
 		// if they can't hear the sleep spell, it
 		// won't happen
-		if((!auto)&&(!CMLib.flags().canBeHeardBy(mob,target)))
+		if((!auto)&&(!CMLib.flags().canBeHeardSpeakingBy(mob,target)))
 		{
 			mob.tell(target.charStats().HeShe()+" can't hear your words.");
 			return false;

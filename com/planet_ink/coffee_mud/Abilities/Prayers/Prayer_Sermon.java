@@ -155,7 +155,7 @@ public class Prayer_Sermon extends Prayer
 			{
 				MOB target=(MOB)f.nextElement();
 
-				if((CMLib.flags().canBeHeardBy(mob,target))&&(mob.mayIFight(target)))
+				if((CMLib.flags().canBeHeardSpeakingBy(mob,target))&&(mob.mayIFight(target)))
 				{
 					// it worked, so build a copy of this ability,
 					// and add it to the affects list of the

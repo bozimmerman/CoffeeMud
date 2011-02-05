@@ -62,7 +62,7 @@ public class Spell_Sonar extends Spell
 		{
 			MOB mob=(MOB)affected;
 			MOB victim=mob.getVictim();
-			if((victim==null)||(CMLib.flags().canBeHeardBy(victim,mob)))
+			if((victim==null)||(CMLib.flags().canBeHeardMovingBy(victim,mob)))
 				affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_SEE_VICTIM);
 			if(CMLib.flags().canHear(mob))
 			{

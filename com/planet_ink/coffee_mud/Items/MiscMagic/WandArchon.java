@@ -124,9 +124,7 @@ public class WandArchon extends StdWand implements ArchonOnly
 			if((mob.location()!=null)&&(afftarget!=null)&&(afftarget instanceof MOB))
 			{
 				MOB target=(MOB)afftarget;
-				message=CMStrings.getSayFromMessage(message.toUpperCase());
-                if(message==null) return;
-                message=message.trim();
+                message=message.toUpperCase().trim();
 				if(message.equals("LEVEL ALL UP"))
 				{
 				    if(!safetyCheck(mob,message.toUpperCase())) return;

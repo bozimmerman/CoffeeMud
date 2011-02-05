@@ -123,7 +123,7 @@ public class Prayer_HolyWord extends Prayer implements MendingSkill
 					mob.location().send(mob,msg);
 					if(msg.value()<=0)
 					{
-						if(CMLib.flags().canBeHeardBy(mob,target))
+						if(CMLib.flags().canBeHeardSpeakingBy(mob,target))
 						{
 							str=null;
 							Item I=Prayer_Bless.getSomething(target,true);

@@ -92,7 +92,7 @@ public class ArchonSkill extends StdAbility
 
 		
 		if(((target==null)||((playerOnly)&&(target.isMonster())))
-		||((givenTarget==null)&&(!CMLib.flags().canBeSeenBy(target,mob))&&((!CMLib.flags().canBeHeardBy(target,mob))||(!target.isInCombat()))))
+		||((givenTarget==null)&&(!CMLib.flags().canBeSeenBy(target,mob))&&((!CMLib.flags().canBeHeardMovingBy(target,mob))||(!target.isInCombat()))))
 		{
 			if(!quiet)
 			{

@@ -112,7 +112,7 @@ public class Prayer_UnholyWord extends Prayer
 					room.send(mob,msg);
 					if(msg.value()<=0)
 					{
-						if(CMLib.flags().canBeHeardBy(mob,target))
+						if(CMLib.flags().canBeHeardSpeakingBy(mob,target))
 						{
 							Item I=Prayer_Curse.getSomething(mob,true);
 							if(I!=null)

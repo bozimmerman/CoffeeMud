@@ -82,7 +82,7 @@ public class Spell_MassSleep extends Spell
 
 				// if they can't hear the sleep spell, it
 				// won't happen
-				if(CMLib.flags().canBeHeardBy(mob,target))
+				if(CMLib.flags().canBeHeardSpeakingBy(mob,target))
 				{
 					// it worked, so build a copy of this ability,
 					// and add it to the affects list of the

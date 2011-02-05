@@ -528,7 +528,7 @@ public class MudChat extends StdBehavior implements ChattyBehavior
 			lastThingSaid=CMStrings.getSayFromMessage(msg.othersMessage());
 		else
 		if((!mob.isMonster())
-		&&(CMLib.flags().canBeHeardBy(mob,monster))
+		&&(CMLib.flags().canBeHeardSpeakingBy(mob,monster))
 		&&(CMLib.flags().canBeSeenBy(mob,monster))
 		&&(CMLib.flags().canBeSeenBy(monster,mob)))
 		{
@@ -544,7 +544,7 @@ public class MudChat extends StdBehavior implements ChattyBehavior
 			      &&(mob.location()==monster.location())
 				  &&(talkDown<=0)
 				  &&(mob.location().numPCInhabitants()<3)))
-			&&(CMLib.flags().canBeHeardBy(mob,monster))
+			&&(CMLib.flags().canBeHeardSpeakingBy(mob,monster))
 			&&(myChatGroup!=null)
 			&&(lastReactedTo!=msg.source())
 			&&(msg.sourceMessage()!=null)
@@ -577,11 +577,11 @@ public class MudChat extends StdBehavior implements ChattyBehavior
 			else // dont interrupt another mob
 			if((msg.sourceMinor()==CMMsg.TYP_SPEAK) 
 			&&(mob.isMonster())  // this is another mob (not me) talking
-			&&(CMLib.flags().canBeHeardBy(mob,monster))
+			&&(CMLib.flags().canBeHeardSpeakingBy(mob,monster))
 			&&(CMLib.flags().canBeSeenBy(mob,monster)))
 			   talkDown=TALK_WAIT_DELAY;
 			else // dont parse unless we are done waiting
-			if((CMLib.flags().canBeHeardBy(mob,monster))
+			if((CMLib.flags().canBeHeardMovingBy(mob,monster))
 			&&(CMLib.flags().canBeSeenBy(mob,monster))
 			&&(CMLib.flags().canBeSeenBy(monster,mob))
 			&&(talkDown<=0)

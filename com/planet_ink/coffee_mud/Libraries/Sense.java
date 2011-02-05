@@ -376,7 +376,8 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 		}
 		return false;
 	}
-	public boolean canBeHeardBy(Physical heard , MOB hearer)
+	
+	public boolean canBeHeardMovingBy(Physical heard , MOB hearer)
 	{
 		if(hearer==heard) return true;
 		if(hearer==null)
@@ -390,11 +391,21 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 		return true;
 	}
 
+	public boolean canBeHeardSpeakingBy(Physical heard , MOB hearer)
+	{
+		if(hearer==heard) return true;
+		if(hearer==null)
+			return false;
+		if(heard==null)
+			return false;
+		if(!canHear(hearer))
+			return false;
+		return true;
+	}
+
 	public boolean canSenseMoving(Physical sensed, MOB sensor)
 	{
-		if(isSneaking(sensed)&&(!canSeeSneakers(sensor)))
-		   return false;
-		return (canBeHeardBy(sensed,sensor)||canBeSeenBy(sensed,sensor));
+		return (canBeHeardMovingBy(sensed,sensor)||canBeSeenBy(sensed,sensor));
 	}
 
     public boolean aliveAwakeMobileUnbound(MOB mob, boolean quiet)

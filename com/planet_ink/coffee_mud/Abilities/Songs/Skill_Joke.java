@@ -50,7 +50,7 @@ public class Skill_Joke extends BardSkill
 
 		// if they can't hear the sleep spell, it
 		// won't happen
-		if((!auto)&&(!CMLib.flags().canBeHeardBy(mob,target)))
+		if((!auto)&&(!CMLib.flags().canBeHeardSpeakingBy(mob,target)))
 		{
 			mob.tell(target.charStats().HeShe()+" can't hear your words.");
 			return false;

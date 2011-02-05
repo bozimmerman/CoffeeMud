@@ -65,7 +65,7 @@ public class Dance_Square extends Dance
 			if(cmd!=null)
 			{
 				MOB M=(MOB)affected;
-                if(CMLib.flags().canBeHeardBy(invoker(),M)
+                if(CMLib.flags().canBeHeardMovingBy(invoker(),M)
                 &&CMLib.flags().canBeSeenBy(invoker(),M)
                 &&(M.location()==invoker().location())
                 &&(M.location().show(invoker(),affected,CMMsg.MSG_ORDER,null)))

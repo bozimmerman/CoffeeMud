@@ -87,7 +87,7 @@ public class Prayer_Doomspout extends Prayer implements DiseaseAffect
 			{
 				MOB target=mob.location().fetchInhabitant(CMLib.dice().roll(1,mob.location().numInhabitants(),-1));
 				if((target!=null)
-				&&(CMLib.flags().canBeHeardBy(mob,target))
+				&&(CMLib.flags().canBeHeardSpeakingBy(mob,target))
 				&&(target!=invoker)
 				&&(target!=mob)
 				&&(target.fetchEffect(ID())==null))

@@ -152,7 +152,7 @@ public class Play extends StdAbility
 		if((invoker==null)
 		||((instrument!=null)&&(!usingInstrument(instrument,invoker)))
 		||(!CMLib.flags().aliveAwakeMobileUnbound(invoker,true))
-		||(!CMLib.flags().canBeHeardBy(invoker,mob)))
+		||(!CMLib.flags().canBeHeardSpeakingBy(invoker,mob)))
 			return unplayMe(mob,null);
 		return true;
 	}
@@ -466,7 +466,7 @@ public class Play extends StdAbility
 						if((castingQuality(mob,follower)==Ability.QUALITY_MALICIOUS)&&(follower!=mob))
 							msgType=msgType|CMMsg.MASK_MALICIOUS;
 	
-						if(CMLib.flags().canBeHeardBy(invoker,follower)
+						if(CMLib.flags().canBeHeardSpeakingBy(invoker,follower)
                         &&(follower.fetchEffect(this.ID())==null))
 						{
 							CMMsg msg2=CMClass.getMsg(mob,follower,this,msgType|CMMsg.MASK_HANDS,null,msgType,null,msgType,null);

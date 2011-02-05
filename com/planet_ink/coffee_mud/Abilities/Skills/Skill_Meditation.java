@@ -74,7 +74,7 @@ public class Skill_Meditation extends StdSkill
 		&&((CMath.bset(msg.sourceCode(),CMMsg.MASK_MOVE))||(CMath.bset(msg.sourceCode(),CMMsg.MASK_HANDS))||(CMath.bset(msg.sourceCode(),CMMsg.MASK_MOUTH))))
 			unInvoke();
 		if(CMath.bset(msg.othersCode(),CMMsg.MASK_SOUND)
-		   &&(CMLib.flags().canBeHeardBy(msg.source(),mob)))
+		   &&(CMLib.flags().canBeHeardMovingBy(msg.source(),mob)))
 		{
 			if(!msg.amISource(mob))
 				msg.addTrailerMsg(CMClass.getMsg(mob,null,null,CMMsg.TYP_GENERAL|CMMsg.MASK_HANDS,CMMsg.NO_EFFECT,CMMsg.NO_EFFECT,"Your meditation is interrupted by the noise."));
