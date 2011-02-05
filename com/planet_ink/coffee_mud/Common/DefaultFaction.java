@@ -1605,6 +1605,9 @@ public class DefaultFaction implements Faction, MsgListener
         
         private Ability setPresenceReaction(MOB M, Physical myHost)
         {
+        	if((!CMLib.flags().canBeSeenBy(myHost, M))&&(!CMLib.flags().canBeHeardBy(myHost,M)))
+        		return null;
+        		
 	    	Vector<Object> myReactions=null;
 	    	List<Faction.FactionReactionItem> tempReactSet=null;
 	    	for(int d=0;d<currentReactionSets.size();d++)
