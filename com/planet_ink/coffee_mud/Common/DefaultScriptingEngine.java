@@ -9001,7 +9001,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 &&(!msg.amISource(eventMob))
                 &&(canFreelyBehaveNormal(monster)||(!(affecting instanceof MOB)))
                 &&canTrigger(1)
-                &&((!(affecting instanceof MOB))||CMLib.flags().canSenseMoving(msg.source(),(MOB)affecting)))
+                &&((!(affecting instanceof MOB))||CMLib.flags().canSenseEnteringLeaving(msg.source(),(MOB)affecting)))
                 {
                     if(t==null) t=parseBits(script,0,"CR");
                     int prcnt=CMath.s_int(t[1]);

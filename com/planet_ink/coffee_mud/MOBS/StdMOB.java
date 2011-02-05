@@ -1785,7 +1785,7 @@ public class StdMOB implements MOB
 							&&(M!=this)
 							&&(M.getVictim()==this)
 							&&(CMLib.flags().aliveAwakeMobile(M,true))
-							&&(CMLib.flags().canSenseMoving(mob,M)))
+							&&(CMLib.flags().canSenseEnteringLeaving(mob,M)))
 							{
 								tell("Not while you are fighting!");
 								return false;
@@ -2442,7 +2442,7 @@ public class StdMOB implements MOB
 			||(othersMinor==CMMsg.TYP_LEAVE))
 			{
 				if(((!asleep)||(msg.othersMinor()==CMMsg.TYP_ENTER))
-				&&(CMLib.flags().canSenseMoving(msg.source(),this)))
+				&&(CMLib.flags().canSenseEnteringLeaving(msg.source(), this)))
 					tell(msg.source(),msg.target(),msg.tool(),msg.othersMessage());
 			}
 			else

@@ -132,7 +132,7 @@ public class DoorwayGuardian extends StdBehavior
 		&&(mob!=monster)
 		&&(msg.target()!=null)
 		&&(!BrotherHelper.isBrother(mob,monster,false))
-        &&(CMLib.flags().canSenseMoving(mob,monster)||nosneak))
+        &&(CMLib.flags().canSenseEnteringLeaving(mob,monster)||nosneak))
 		{
 			if(msg.target() instanceof Exit)
 			{

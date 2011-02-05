@@ -408,7 +408,7 @@ public class BribeGateGuard extends StdBehavior
 		    && (mob != monster)
 		    && (msg.target() != null)
 		    && (!BrotherHelper.isBrother(mob, monster,false))
-		    && (CMLib.flags().canSenseMoving(mob, monster))
+		    && (CMLib.flags().canSenseEnteringLeaving(mob, monster))
 		    && (!CMLib.masking().maskCheck(getParms(), mob,false))) {
 		  if ( (msg.tool() != null)
 		     && (msg.target()instanceof Room)
@@ -430,7 +430,7 @@ public class BribeGateGuard extends StdBehavior
 		MOB observer = (MOB) affecting;
 		if ( (msg.sourceMinor() == CMMsg.TYP_ENTER)
 		    && (!msg.amISource(observer))
-		    && (CMLib.flags().canSenseMoving(msg.source(), observer))
+		    && (CMLib.flags().canSenseEnteringLeaving(msg.source(), observer))
 		    && (!msg.source().isMonster())) {
 		  // check if the msg.source() has paid enough.  if so, time to react
 		  if (checkBalance(price(), source)) {

@@ -93,6 +93,7 @@ public interface CMFlagLibrary extends CMLibrary
 	public boolean canBeHeardMovingBy(Physical heard , MOB hearer);
 	public boolean canBeHeardSpeakingBy(Physical heard , MOB hearer);
     public boolean canSenseMoving(Physical sensed, MOB sensor);
+    public boolean canSenseEnteringLeaving(Physical sensed, MOB sensor);
     public boolean aliveAwakeMobileUnbound(MOB mob, boolean quiet);
     public boolean aliveAwakeMobile(MOB mob, boolean quiet);
     public boolean isStanding(MOB mob);

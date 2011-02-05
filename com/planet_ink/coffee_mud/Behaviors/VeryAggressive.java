@@ -107,7 +107,7 @@ public class VeryAggressive extends Aggressive
 						MOB inhab=room.fetchInhabitant(i);
 						if((inhab!=null)
 						&&((!inhab.isMonster())||(mobKiller))
-						&&(CMLib.flags().canSenseMoving(inhab,mob))
+						&&(CMLib.flags().canSenseEnteringLeaving(inhab,mob))
 						&&(CMLib.masking().maskCheck(zapStr,inhab,false))
 						&&((zapStr.length()>0)
 						||((inhab.phyStats().level()<(mob.phyStats().level()+15))

@@ -407,6 +407,11 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 	{
 		return (canBeHeardMovingBy(sensed,sensor)||canBeSeenBy(sensed,sensor));
 	}
+	
+    public boolean canSenseEnteringLeaving(Physical sensed, MOB sensor)
+    {
+		return canBeHeardMovingBy(sensed,sensor);
+    }
 
     public boolean aliveAwakeMobileUnbound(MOB mob, boolean quiet)
     {

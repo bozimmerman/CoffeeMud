@@ -153,7 +153,7 @@ public class Hunting extends CommonSkill
 			&&(CMLib.dice().rollPercentage()>50)
 			&&(CMLib.flags().isMobile(mob))
 			&&(CMLib.flags().aliveAwakeMobile(mob,true))
-			&&(CMLib.flags().canSenseMoving(found,mob)))
+			&&(CMLib.flags().canSenseEnteringLeaving(found,mob)))
 			{
 				for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 				{
