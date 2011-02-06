@@ -853,18 +853,18 @@ public class CMAble extends StdLibrary implements AbilityMapper
 		}
 	}
 
+	public DVector getCommonPreRequisites(MOB mob, Ability A)
+	{
+		DVector preReqs=getRawPreRequisites(mob,A);
+		if((preReqs==null)||(preReqs.size()==0)) 
+			return getCommonPreRequisites(A);
+		fillPreRequisites(A,preReqs);
+		return preReqs;
+	}
+	
 	public DVector getCommonPreRequisites(Ability A)
 	{
-		DVector preReqs=null;
-		{
-			Map<String,AbilityMapping> ableMap=null;
-			if(completeAbleMap.containsKey("All"))
-			{
-				ableMap=completeAbleMap.get("All");
-				if(ableMap.containsKey(A.ID()))
-					preReqs=ableMap.get(A.ID()).skillPreReqs;
-			}
-		}
+		DVector preReqs=getRawPreRequisites("All", false, A.ID());
 		if(preReqs==null)
 			for(Map<String,AbilityMapping> ableMap : completeAbleMap.values())
 				if(ableMap.containsKey(A.ID()))
@@ -873,10 +873,9 @@ public class CMAble extends StdLibrary implements AbilityMapper
 					if((preReqs!=null)&&(preReqs.size()>0)) break;
 				}
 		if((preReqs==null)||(preReqs.size()==0)) return new DVector(2);
-		DVector reqs=preReqs.copyOf();
-		fillPreRequisites(A,reqs);
-		return reqs;
-
+		final DVector requisites=preReqs.copyOf(); 
+		fillPreRequisites(A,requisites);
+		return requisites;
 	}
 
 	public String getCommonExtraMask(Ability A)
@@ -946,7 +945,7 @@ public class CMAble extends StdLibrary implements AbilityMapper
 		return V;
 	}
 
-	public DVector getPreReqs(String ID, boolean checkAll, String abilityID)
+	public DVector getRawPreRequisites(String ID, boolean checkAll, String abilityID)
 	{
 		if(completeAbleMap.containsKey(ID))
 		{
@@ -1032,7 +1031,7 @@ public class CMAble extends StdLibrary implements AbilityMapper
 			int classLevel=studentM.charStats().getClassLevel(C);
 			if((level>=0)&&(classLevel>=level))
 			{
-				reqs=getPreReqs(C.ID(),true,A.ID());
+				reqs=getRawPreRequisites(C.ID(),true,A.ID());
 				if(reqs!=null) return reqs.copyOf();
 			}
 		}
@@ -1040,10 +1039,10 @@ public class CMAble extends StdLibrary implements AbilityMapper
 		int classLevel=studentM.basePhyStats().level();
 		if((level>=0)&&(classLevel>=level))
 		{
-			reqs=getPreReqs(studentM.charStats().getMyRace().ID(),false,A.ID());
+			reqs=getRawPreRequisites(studentM.charStats().getMyRace().ID(),false,A.ID());
 			if(reqs!=null) return reqs.copyOf();
 		}
-		reqs=getPreReqs(studentM.charStats().getCurrentClass().ID(),true,A.ID());
+		reqs=getRawPreRequisites(studentM.charStats().getCurrentClass().ID(),true,A.ID());
 		return (reqs==null)?new DVector(2):reqs.copyOf();
 	}
 

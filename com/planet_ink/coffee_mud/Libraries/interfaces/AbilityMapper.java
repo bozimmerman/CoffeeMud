@@ -130,6 +130,7 @@ public interface AbilityMapper extends CMLibrary
 	public String getApplicableMask(MOB studentM, Ability A);
 	public DVector getUnmetPreRequisites(MOB studentM, Ability A);
 	public DVector getCommonPreRequisites(Ability A);
+	public DVector getCommonPreRequisites(MOB mob, Ability A);
 	public String getCommonExtraMask(Ability A);
 	public String formatPreRequisites(DVector preReqs);
     public int qualifyingClassLevel(MOB studentM, Ability A);

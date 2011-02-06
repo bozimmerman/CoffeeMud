@@ -162,6 +162,7 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
     	else
     		getHelpFile().put(ID.toUpperCase(),text);
     }
+    
 	private void appendAllowed(StringBuilder prepend, String ID)
 	{
 		List<String> allows=new SVector<String>();
@@ -516,7 +517,12 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 							prepend.append("\n\rAvailable: ");
 						prepend.append(((String)avail.elementAt(c))+" ");
 					}
-					DVector preReqs=CMLib.ableMapper().getCommonPreRequisites(A);
+					
+					DVector preReqs;
+					if(forMOB==null)
+						preReqs=CMLib.ableMapper().getCommonPreRequisites(A);
+					else
+						preReqs=CMLib.ableMapper().getCommonPreRequisites(forMOB,A);
 					if(preReqs.size()>0)
 					{
 						String names=CMLib.ableMapper().formatPreRequisites(preReqs);

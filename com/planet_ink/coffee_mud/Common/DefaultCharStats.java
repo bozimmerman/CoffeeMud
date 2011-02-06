@@ -430,6 +430,8 @@ public class DefaultCharStats implements CharStats
 		return myClasses[myClasses.length-1];
 	}
 	
+	public Collection<CharClass> getCharClasses() { return Arrays.asList(myClasses);}
+	
     public int getCurrentClassLevel()
     {
         if(myLevels==null) return -1;

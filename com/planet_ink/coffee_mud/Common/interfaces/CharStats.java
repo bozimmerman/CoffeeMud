@@ -184,16 +184,19 @@ public interface CharStats extends CMCommon, Modifiable
      * @return the final saving throw value
      */
 	public int getSave(int which);
+	
     /**
      * Get saving throw and max stat info as an semicolon string list.
      * @return semicolon string
      */
     public String getNonBaseStatsAsString();
+    
     /**
      * set saving throw and max stat info from a semicolon string list.
      * @param str semicolon string
      */
     public void setNonBaseStatsFromString(String str);
+    
     /**
      * Return the number of a given body part which this mob has.  The
      * racial part number comes from the Race interface BODY_ constants.
@@ -202,6 +205,7 @@ public interface CharStats extends CMCommon, Modifiable
      * @return the number of the given body part this mob has
      */
     public int getBodyPart(int racialPartNumber);
+    
     /**
      * Alter the number of a given body part which this mob has.  The
      * racial part number comes from the Race interface BODY_ constants.
@@ -211,6 +215,7 @@ public interface CharStats extends CMCommon, Modifiable
      * @param number the amount to change by, positive or negative
      */
     public void alterBodypart(int racialPartNumber, int number);
+    
     /**
      * Check the difference between the number of a given body part which
      * this mob has and the number he or she should have.  The
@@ -221,11 +226,13 @@ public interface CharStats extends CMCommon, Modifiable
      * @return the difference between parts he has and should have
      */
     public int getBodypartAlteration(int racialPartNumber);
+    
     /**
      * Returns the entire current body part situation as a string list.
      * @return the body parts alteration list
      */
     public String getBodyPartsAsString();
+    
     /**
      * Sets the body part situation for this mob from a string list.  The
      * name is a reminder to make sure the mobs Race is established first.
@@ -240,6 +247,7 @@ public interface CharStats extends CMCommon, Modifiable
      * @return number of character classes
 	 */
 	public int numClasses();
+	
     /**
      * Returns the CharClass object for this mob which corresponds to the
      * the given index.  The oldest class is always indexed at 0, with next
@@ -249,16 +257,29 @@ public interface CharStats extends CMCommon, Modifiable
      * @return the CharClass object
      */
 	public CharClass getMyClass(int i);
+	
     /**
      * Returns the CharClass object for this mob which corresponds to the
      * the final index.  The oldest class is always indexed at 0, with next
      * newest at 1, and the current one last.
      * @see #numClasses()
+     * @see #getCharClasses()
      * @see com.planet_ink.coffee_mud.CharClasses.interfaces.CharClass
      * @return the 0 index CharClass object
      */
 	public CharClass getCurrentClass();
+	
     /**
+     * Returns all CharClass objects for this mob. 
+     * The oldest class is always indexed at 0, with next
+     * newest at 1, and the current one last.
+     * @see #numClasses()
+     * @see com.planet_ink.coffee_mud.CharClasses.interfaces.CharClass
+     * @return the Collection of CharClass objects
+     */
+	public Collection<CharClass> getCharClasses();
+	
+	/**
      * Returns the number of levels that this mob has in the CharClass
      * object which corresponds to the final index.
      * The oldest class is always indexed at 0, with next
@@ -267,12 +288,14 @@ public interface CharStats extends CMCommon, Modifiable
      * @return the number of levels in the 0 index class
      */
     public int getCurrentClassLevel();
+    
     /**
      * Creates the enumerated set of character class objects stored here
      * from a semicolon list of string names
      * @param classes the semicolon list of character class names
      */
 	public void setMyClasses(String classes);
+	
     /**
      * Creates the enumerated set of character class levels stored here
      * from a semicolon list of levels.
