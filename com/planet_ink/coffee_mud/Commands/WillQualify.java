@@ -44,29 +44,30 @@ public class WillQualify  extends Skills
 	private final String[] access={"WILLQUALIFY"};
 	public String[] getAccessWords(){return access;}
 
-	public StringBuffer getQualifiedAbilities(MOB able, 
-											  String Class,
+	public StringBuffer getQualifiedAbilities(MOB ableM, 
+											  String classID,
 	                                          int maxLevel, 
 	                                          String prefix,
-	                                          Vector types)
+	                                          HashSet<Object> types)
 	{
 		int highestLevel = maxLevel;
 		StringBuffer msg = new StringBuffer("");
 		int col = 0;
-        List<AbilityMapper.QualifyingID> DV=CMLib.ableMapper().getClassAllowsList(Class);
+        List<AbilityMapper.QualifyingID> DV=CMLib.ableMapper().getClassAllowsList(classID);
 		for (int l = 0; l <= highestLevel; l++) 
 		{
 			StringBuffer thisLine = new StringBuffer("");
-			for (Enumeration a = CMLib.ableMapper().getClassAbles(Class,true); a.hasMoreElements(); ) 
+			for (Enumeration a = CMLib.ableMapper().getClassAbles(classID,true); a.hasMoreElements(); ) 
 			{
 				AbilityMapper.AbilityMapping cimable=(AbilityMapper.AbilityMapping)a.nextElement();
 				if((cimable.qualLevel ==l)&&(!cimable.isSecret))
 				{
-					Ability A=CMClass.getAbility(cimable.abilityName);
+					Ability A=CMClass.getAbility(cimable.abilityID);
 					if((A!=null)
                     &&((types.size()==0)
 						||(types.contains(Integer.valueOf(A.classificationCode()&Ability.ALL_ACODES)))
-						||(types.contains(Integer.valueOf(A.classificationCode()&Ability.ALL_DOMAINS)))))
+						||(types.contains(Integer.valueOf(A.classificationCode()&Ability.ALL_DOMAINS))))
+					&&(CMLib.ableMapper().getCommonSkillLimit(ableM, A).specificSkillLimit > 0))
 					{
 						if ( (++col) > 2) 
 						{
@@ -131,7 +132,7 @@ public class WillQualify  extends Skills
 		String willQualErr = "Specify level, class, and or skill-type:  WILLQUALIFY ([LEVEL]) ([CLASS NAME]) ([SKILL TYPE]).";
 		int level=CMProps.getIntVar(CMProps.SYSTEMI_LASTPLAYERLEVEL);
 		CharClass C=mob.charStats().getCurrentClass();
-		Vector types=new Vector();
+		HashSet<Object> types=new HashSet<Object>();
 		if(commands.size()>0) commands.removeElementAt(0);
 		if((commands.size()>0)&&(CMath.isNumber((String)commands.firstElement())))
 		{
@@ -154,7 +155,7 @@ public class WillQualify  extends Skills
 			int x=CMParms.indexOf(Ability.ACODE_DESCS,str);
 			if(x<0) x=CMParms.indexOf(Ability.ACODE_DESCS,str.replace(' ','_'));
 			if(x>=0)
-				types.addElement(Integer.valueOf(x));
+				types.add(Integer.valueOf(x));
 			else
 			{
 				x=CMParms.indexOf(Ability.DOMAIN_DESCS,str);
@@ -170,10 +171,10 @@ public class WillQualify  extends Skills
 						mob.tell(willQualErr);
 						return false;
 					}
-					types.addElement(str.toUpperCase().trim());
+					types.add(str.toUpperCase().trim());
 				}
 				else
-					types.addElement(Integer.valueOf(x<<5));
+					types.add(Integer.valueOf(x<<5));
 			}
 			commands.removeElementAt(0);
 		}

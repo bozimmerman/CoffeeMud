@@ -5459,7 +5459,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
     	AbilityMapper.AbilityMapping aMAP=new AbilityMapper.AbilityMapping(ableID);
         if(origLevelIndex<0)
         {
-        	aMAP.abilityName=ableID;
+        	aMAP.abilityID=ableID;
         	aMAP.defaultProficiency=0;
         	aMAP.maxProficiency=100;
         	aMAP.defaultParm="";
@@ -5534,7 +5534,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
                 if(A!=null)
                 {
                 	AbilityMapper.AbilityMapping aMAP=new AbilityMapper.AbilityMapping(A.ID());
-                	aMAP.abilityName=A.ID();
+                	aMAP.abilityID=A.ID();
                 	aMAP.autoGain=CMath.s_bool(E.getStat("GETCABLEGAIN"+v));
                     aMAP.defaultProficiency=CMath.s_int(E.getStat("GETCABLEPROF"+v));
                     aMAP.qualLevel=CMath.s_int(E.getStat("GETCABLELVL"+v));
@@ -5578,7 +5578,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
                 {
                 	AbilityMapper.AbilityMapping aMAP=(AbilityMapper.AbilityMapping)set.get(s);
                     parts.append(spaces+CMStrings.padRight(""+i,3)+" "
-                                       +CMStrings.padRight(""+aMAP.abilityName,25)+" "
+                                       +CMStrings.padRight(""+aMAP.abilityID,25)+" "
                                        +CMStrings.padRight(""+aMAP.defaultProficiency,5)+" "
                                        +CMStrings.padRight(""+aMAP.autoGain,5)+" "
                                        +CMStrings.padRight(""+aMAP.isSecret,6)+" "
@@ -5603,7 +5603,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
                 {
                 	List lvls=(List)levelSets.elementAt(s,2);
                     for(int l=0;l<lvls.size();l++)
-                        if(CMLib.english().containsString(((AbilityMapper.AbilityMapping)lvls.get(l)).abilityName,newName))
+                        if(CMLib.english().containsString(((AbilityMapper.AbilityMapping)lvls.get(l)).abilityID,newName))
                         {
                             lvlIndex=s;
                             ableIndex=l;
@@ -5632,7 +5632,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
                 else
                 if(myLevelSet!=null)
                 {
-                    String aID=((AbilityMapper.AbilityMapping)myLevelSet.get(ableIndex)).abilityName;
+                    String aID=((AbilityMapper.AbilityMapping)myLevelSet.get(ableIndex)).abilityID;
                     if(genClassAbleMod(mob,levelSets,aID,lvlIndex,ableIndex)!=null)
                         mob.tell(aID+" modified.");
                     else
@@ -5666,7 +5666,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
                             E.setStat("GETCABLEMASK"+dex,aMAP.extraMask);
                             E.setStat("GETCABLEMAXP"+dex,""+aMAP.maxProficiency);
                             // CABLE MUST BE LAST
-                            E.setStat("GETCABLE"+dex,aMAP.abilityName);
+                            E.setStat("GETCABLE"+dex,aMAP.abilityID);
                             dex++;
                         }
                     }

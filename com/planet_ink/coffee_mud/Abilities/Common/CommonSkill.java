@@ -278,16 +278,16 @@ public class CommonSkill extends StdAbility
 		return mob.phyStats().level()+(2*getXLEVELLevel(mob));
 	}
     
-	public boolean confirmPossibleMaterialLocation(int resource, Room location)
+	public boolean confirmPossibleMaterialLocation(int resource, Room room)
 	{
-		if(location==null) return false;
+		if(room==null) return false;
 		Integer I=Integer.valueOf(resource);
 		boolean isMaterial=(resource&RawMaterial.RESOURCE_MASK)==0;
-		int roomResourceType=location.myResource();
+		int roomResourceType=room.myResource();
 		if(((isMaterial&&(resource==(roomResourceType&RawMaterial.MATERIAL_MASK))))
 		||(I.intValue()==roomResourceType))
 			return true;
-		List<Integer> resources=location.resourceChoices();
+		List<Integer> resources=room.resourceChoices();
 		if(resources!=null)
 		for(int i=0;i<resources.size();i++)
 			if(isMaterial&&(resource==(((Integer)resources.get(i)).intValue()&RawMaterial.MATERIAL_MASK)))
@@ -298,55 +298,27 @@ public class CommonSkill extends StdAbility
 		return false;
 	}
 
-	private int[] remainingLearnsFromClassMax(MOB student)
+	public boolean canBeLearnedBy(MOB teacherM, MOB studentM)
 	{
-		if(student==null) return null;
-		CharClass C=student.charStats().getCurrentClass();
-		boolean crafting = ((classificationCode()&Ability.ALL_DOMAINS)==Ability.DOMAIN_CRAFTINGSKILL);
-		
-		int[] remaining = {C.maxCommonSkills(), crafting?C.maxCraftingSkills():C.maxNonCraftingSkills()};
-		if(remaining[0]==0) remaining[0]=Integer.MAX_VALUE;
-		if(remaining[1]==0) remaining[1]=Integer.MAX_VALUE;
-		
-		DVector culturalAbilitiesDV = student.baseCharStats().getMyRace().culturalAbilities();
-		HashSet culturalAbilities=new HashSet();
-		for(int i=0;i<culturalAbilitiesDV.size();i++)
-			culturalAbilities.add(culturalAbilitiesDV.elementAt(i, 1).toString().toLowerCase());
-		for(int a=0;a<student.numLearnedAbilities();a++)
-		{
-			Ability A=student.fetchAbility(a);
-			if(A instanceof CommonSkill)
-			{
-				if((CMLib.ableMapper().getQualifyingLevel(C.ID(), false, A.ID())>=0)||(culturalAbilities.contains(A.ID().toLowerCase())))
-					continue;
-				remaining[0]--;
-				if(crafting == ((A.classificationCode()&Ability.ALL_DOMAINS)==Ability.DOMAIN_CRAFTINGSKILL))
-					remaining[1]--;
-			}
-		}
-		return remaining;
-	}
-	
-	public boolean canBeLearnedBy(MOB teacher, MOB student)
-	{
-		if(!super.canBeLearnedBy(teacher,student))
+		if(!super.canBeLearnedBy(teacherM,studentM))
 			return false;
-		if(student==null) return true;
-		CharClass C=student.charStats().getCurrentClass();
+		if(studentM==null) return true;
+		CharClass C=studentM.charStats().getCurrentClass();
 		if(CMLib.ableMapper().getQualifyingLevel(C.ID(), false, ID())>=0)
 			return true;
 		boolean crafting = ((classificationCode()&Ability.ALL_DOMAINS)==Ability.DOMAIN_CRAFTINGSKILL);
-		int[] remaining = remainingLearnsFromClassMax(student);
-		if(remaining[0]<=0)
+		AbilityMapper.AbilityLimits remainders = CMLib.ableMapper().getCommonSkillRemainder(studentM, this);
+		if(remainders.commonSkills<=0)
 		{
-			teacher.tell(student.name()+" can not learn any more common skills.");
-			student.tell("You may only learn " + C.maxCommonSkills() + " common skills.");
+			teacherM.tell(studentM.name()+" can not learn any more common skills.");
+			studentM.tell("You have learned the maximum "+C.maxCommonSkills()+" common skills, and may not learn any more.");
 			return false;
 		}
-		if(remaining[1]<=0)
+		if(remainders.specificSkillLimit<=0)
 		{
-			teacher.tell(student.name()+" can not learn any more " + (crafting?"":"non-") + "crafting common skills.");
-			student.tell("You may only learn " + (crafting?""+C.maxCraftingSkills()+" ":C.maxNonCraftingSkills()+" non-") + "crafting common skills.");
+			teacherM.tell(studentM.name()+" can not learn any more " + (crafting?"":"non-") + "crafting common skills.");
+			final int max = crafting ? C.maxCraftingSkills() : C.maxNonCraftingSkills();
+			studentM.tell("You have learned the maximum "+max+""+(crafting?" ":" non-") + "crafting skills, and may not learn any more.");
 			return false;
 		}
 		return true;
@@ -361,17 +333,17 @@ public class CommonSkill extends StdAbility
 			if(CMLib.ableMapper().getQualifyingLevel(C.ID(), false, ID())>=0)
 				return;
 			boolean crafting = ((classificationCode()&Ability.ALL_DOMAINS)==Ability.DOMAIN_CRAFTINGSKILL);
-			int[] remaining = remainingLearnsFromClassMax(student);
-			if(remaining[0]<=0)
+			AbilityMapper.AbilityLimits remainders = CMLib.ableMapper().getCommonSkillRemainder(student, this);
+			if(remainders.commonSkills<=0)
 				student.tell(student.name()+" may not learn any more common skills.");
 			else
-			if(remaining[0]<Integer.MAX_VALUE/2)
-				student.tell(student.name()+" may learn "+remaining[0]+" more common skills.");
-			if(remaining[1]<=0)
+			if(remainders.commonSkills<=Integer.MAX_VALUE/2)
+				student.tell(student.name()+" may learn "+remainders.commonSkills+" more common skills.");
+			if(remainders.specificSkillLimit<=0)
 				student.tell(student.name()+" may not learn any more "+(crafting?"":"non-") +"crafting common skills.");
 			else
-			if(remaining[1]<Integer.MAX_VALUE/2)
-				student.tell(student.name()+" may learn "+remaining[1]+" more "+(crafting?"":"non-") +"crafting common skills.");
+			if(remainders.specificSkillLimit<=Integer.MAX_VALUE/2)
+				student.tell(student.name()+" may learn "+remainders.specificSkillLimit+" more "+(crafting?"":"non-") +"crafting common skills.");
 		}
 	}
 	

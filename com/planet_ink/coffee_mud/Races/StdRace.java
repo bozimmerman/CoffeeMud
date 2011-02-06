@@ -957,17 +957,17 @@ public class StdRace implements Race
 			GR.setStat("NUMRABLE","");
 		for(int i=0;i<dvata1.size();i++)
 		{
-			GR.setStat("GETRABLE"+i,(String)dvata1.get(i).abilityName);
-			GR.setStat("GETRABLELVL"+i,""+CMLib.ableMapper().getQualifyingLevel(race1.ID(),false,(String)dvata1.get(i).abilityName));
-			GR.setStat("GETRABLEQUAL"+i,""+(!CMLib.ableMapper().getDefaultGain(race1.ID(),false,(String)dvata1.get(i).abilityName)));
-			GR.setStat("GETRABLEPROF"+i,""+CMLib.ableMapper().getDefaultProficiency(race1.ID(),false,(String)dvata1.get(i).abilityName));
+			GR.setStat("GETRABLE"+i,(String)dvata1.get(i).abilityID);
+			GR.setStat("GETRABLELVL"+i,""+CMLib.ableMapper().getQualifyingLevel(race1.ID(),false,(String)dvata1.get(i).abilityID));
+			GR.setStat("GETRABLEQUAL"+i,""+(!CMLib.ableMapper().getDefaultGain(race1.ID(),false,(String)dvata1.get(i).abilityID)));
+			GR.setStat("GETRABLEPROF"+i,""+CMLib.ableMapper().getDefaultProficiency(race1.ID(),false,(String)dvata1.get(i).abilityID));
 		}
 		for(int i=0;i<dvata2.size();i++)
 		{
-			GR.setStat("GETRABLE"+(i+dvata1.size()),(String)dvata2.get(i).abilityName);
-			GR.setStat("GETRABLELVL"+(i+dvata1.size()),""+CMLib.ableMapper().getQualifyingLevel(race2.ID(),false,(String)dvata2.get(i).abilityName));
-			GR.setStat("GETRABLEQUAL"+(i+dvata1.size()),""+(!CMLib.ableMapper().getDefaultGain(race2.ID(),false,(String)dvata2.get(i).abilityName)));
-			GR.setStat("GETRABLEPROF"+(i+dvata1.size()),""+CMLib.ableMapper().getDefaultProficiency(race2.ID(),false,(String)dvata2.get(i).abilityName));
+			GR.setStat("GETRABLE"+(i+dvata1.size()),(String)dvata2.get(i).abilityID);
+			GR.setStat("GETRABLELVL"+(i+dvata1.size()),""+CMLib.ableMapper().getQualifyingLevel(race2.ID(),false,(String)dvata2.get(i).abilityID));
+			GR.setStat("GETRABLEQUAL"+(i+dvata1.size()),""+(!CMLib.ableMapper().getDefaultGain(race2.ID(),false,(String)dvata2.get(i).abilityID)));
+			GR.setStat("GETRABLEPROF"+(i+dvata1.size()),""+CMLib.ableMapper().getDefaultProficiency(race2.ID(),false,(String)dvata2.get(i).abilityID));
 		}
 
 		List<Ability> data=new Vector<Ability>();
@@ -1040,7 +1040,7 @@ public class StdRace implements Race
 		List<Ability> finalV=new Vector();
 		for(AbilityMapper.AbilityMapping able : V)
 		{
-			Ability A=CMClass.getAbility(able.abilityName);
+			Ability A=CMClass.getAbility(able.abilityID);
 			if(A!=null)
 			{
 				A.setProficiency(CMLib.ableMapper().getDefaultProficiency(ID(),false,A.ID()));

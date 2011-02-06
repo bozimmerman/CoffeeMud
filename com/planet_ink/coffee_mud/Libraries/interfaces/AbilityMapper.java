@@ -52,6 +52,14 @@ public interface AbilityMapper extends CMLibrary
     	{ abilityIDs=ids; proficiency=prof;}
     }
     
+    public static class AbilityLimits
+    {
+    	public int commonSkills;
+    	public int craftingSkills;
+    	public int nonCraftingSkills;
+    	public int specificSkillLimit;
+    }
+    
     public static class AbilityMapping
     {
     	public static final int COST_PRAC=0;
@@ -60,7 +68,7 @@ public interface AbilityMapper extends CMLibrary
     	public static final int COST_PRACPRAC=3;
     	public static final int COST_NUM=4;
     	public String ID="";
-        public String abilityName="";
+        public String abilityID="";
         public int qualLevel=-1;
         public boolean autoGain=false;
         public int defaultProficiency=0;
@@ -74,40 +82,40 @@ public interface AbilityMapper extends CMLibrary
         public AbilityMapping(String id){ ID=id;}
     }
     
-    public void addCharAbilityMapping(String ID, int qualLevel, String ability, boolean autoGain);
-    public void addCharAbilityMapping(String ID, int qualLevel, String ability, boolean autoGain, List<String> preReqSkillsList);
-    public void addCharAbilityMapping(String ID, int qualLevel, String ability, boolean autoGain, String extraMasks);
-    public void addCharAbilityMapping(String ID, int qualLevel, String ability, boolean autoGain, List<String> preReqSkillsList, String extraMasks);
-    public void addCharAbilityMapping(String ID, int qualLevel, String ability, int defaultProficiency, String defParm, boolean autoGain);
-    public void addCharAbilityMapping(String ID, int qualLevel, String ability, int defaultProficiency, String defParm, boolean autoGain, String extraMasks);
-    public void addCharAbilityMapping(String ID, int qualLevel, String ability, int defaultProficiency, boolean autoGain);
-    public void addCharAbilityMapping(String ID, int qualLevel, String ability, int defaultProficiency, boolean autoGain, String extraMasks);
-    public void addCharAbilityMapping(String ID, int qualLevel, String ability, int defaultProficiency, 
+    public void addCharAbilityMapping(String ID, int qualLevel, String abilityID, boolean autoGain);
+    public void addCharAbilityMapping(String ID, int qualLevel, String abilityID, boolean autoGain, List<String> preReqSkillsList);
+    public void addCharAbilityMapping(String ID, int qualLevel, String abilityID, boolean autoGain, String extraMasks);
+    public void addCharAbilityMapping(String ID, int qualLevel, String abilityID, boolean autoGain, List<String> preReqSkillsList, String extraMasks);
+    public void addCharAbilityMapping(String ID, int qualLevel, String abilityID, int defaultProficiency, String defParm, boolean autoGain);
+    public void addCharAbilityMapping(String ID, int qualLevel, String abilityID, int defaultProficiency, String defParm, boolean autoGain, String extraMasks);
+    public void addCharAbilityMapping(String ID, int qualLevel, String abilityID, int defaultProficiency, boolean autoGain);
+    public void addCharAbilityMapping(String ID, int qualLevel, String abilityID, int defaultProficiency, boolean autoGain, String extraMasks);
+    public void addCharAbilityMapping(String ID, int qualLevel, String abilityID, int defaultProficiency, 
 									  String defaultParam, boolean autoGain, boolean secret);
-	public void addCharAbilityMapping(String ID, int qualLevel, String ability, int defaultProficiency, 
+	public void addCharAbilityMapping(String ID, int qualLevel, String abilityID, int defaultProficiency, 
 									  String defaultParam, boolean autoGain, boolean secret, String extraMasks);
-	public void addCharAbilityMapping(String ID, int qualLevel, String ability, int defaultProficiency, 
+	public void addCharAbilityMapping(String ID, int qualLevel, String abilityID, int defaultProficiency, 
 									  String defaultParam, boolean autoGain, boolean secret,
 									  List<String> preReqSkillsList, String extraMask);
-    public void addCharAbilityMapping(String ID, int qualLevel, String ability, int defaultProficiency, 
+    public void addCharAbilityMapping(String ID, int qualLevel, String abilityID, int defaultProficiency, 
     								  int maxProficiency, String defaultParam, boolean autoGain, boolean secret);
-    public void addCharAbilityMapping(String ID, int qualLevel, String ability, int defaultProficiency, 
+    public void addCharAbilityMapping(String ID, int qualLevel, String abilityID, int defaultProficiency, 
     								  int maxProficiency, String defaultParam, boolean autoGain, boolean secret, String extraMasks);
-    public void addCharAbilityMapping(String ID, int qualLevel, String ability, int defaultProficiency, 
+    public void addCharAbilityMapping(String ID, int qualLevel, String abilityID, int defaultProficiency, 
     								  int maxProficiency, String defaultParam, boolean autoGain, boolean secret,
     								  List<String> preReqSkillsList, String extraMask);
-    public void addCharAbilityMapping(String ID, int qualLevel, String ability, int defaultProficiency, 
+    public void addCharAbilityMapping(String ID, int qualLevel, String abilityID, int defaultProficiency, 
                                       int maxProficiency, String defaultParam, boolean autoGain, boolean secret,
                                       List<String> preReqSkillsList, String extraMask, Integer[] costOverrides);
-    public void addRaceAbilityMapping(String ID, int qualLevel, String ability, int defaultProficiency, 
+    public void addRaceAbilityMapping(String ID, int qualLevel, String abilityID, int defaultProficiency, 
 			  						  String defaultParam, boolean autoGain, boolean secret);
-    public void delCharAbilityMapping(String ID, String ability);
+    public void delCharAbilityMapping(String ID, String abilityID);
     
 	public void addPreRequisites(String ID, List<String> preReqSkillsList, String extraMask);
     public void delCharMappings(String ID);
     public Enumeration<AbilityMapping> getClassAbles(String ID, boolean addAll);
     public boolean qualifiesByAnyCharClass(String abilityID);
-    public int lowestQualifyingLevel(String ability);
+    public int lowestQualifyingLevel(String abilityID);
     public boolean classOnly(String classID, String abilityID);
 	public boolean classOnly(MOB mob, String classID, String abilityID);
 	public boolean availableToTheme(String abilityID, int theme, boolean publicly);
@@ -116,36 +124,40 @@ public interface AbilityMapper extends CMLibrary
     public List<QualifyingID> getClassAllowsList(String ID);
     public List<String> getLevelListings(String ID, boolean checkAll, int level);
     public List<AbilityMapping> getUpToLevelListings(String ID, int level, boolean ignoreAll, boolean gainedOnly);
-    public int getQualifyingLevel(String ID, boolean checkAll, String ability);
-    public int qualifyingLevel(MOB student, Ability A);
-    public String getExtraMask(String ID, boolean checkAll, String ability);
-	public String getApplicableMask(MOB student, Ability A);
-	public DVector getUnmetPreRequisites(MOB student, Ability A);
+    public int getQualifyingLevel(String ID, boolean checkAll, String abilityID);
+    public int qualifyingLevel(MOB studentM, Ability A);
+    public String getExtraMask(String ID, boolean checkAll, String abilityID);
+	public String getApplicableMask(MOB studentM, Ability A);
+	public DVector getUnmetPreRequisites(MOB studentM, Ability A);
 	public DVector getCommonPreRequisites(Ability A);
 	public String getCommonExtraMask(Ability A);
 	public String formatPreRequisites(DVector preReqs);
-    public int qualifyingClassLevel(MOB student, Ability A);
-    public Object lowestQualifyingClassRace(MOB student, Ability A);
-    public boolean qualifiesByCurrentClassAndLevel(MOB student, Ability A);
-    public boolean qualifiesByLevel(MOB student, Ability A);
-	public boolean qualifiesByLevel(MOB student, String ability);
-    public boolean getDefaultGain(String ID, boolean checkAll, String ability);
-    public AbilityMapping getAllAbleMap(String ability);
-    public AbilityMapping getAbleMap(String ID, String ability);
-    public boolean getSecretSkill(String ID, boolean checkAll, String ability);
-    public boolean getAllSecretSkill(String ability);
-    public boolean getSecretSkill(MOB mob, String ability);
-    public boolean getSecretSkill(String ability);
-    public Integer[] getCostOverrides(String ID, boolean checkAll, String ability);
-    public Integer[] getAllCostOverrides(String ability);
-    public Integer[] getCostOverrides(MOB mob, String ability);
-    public Integer[] getCostOverrides(String ability);
-    public String getDefaultParm(String ID, boolean checkAll, String ability);
-    public String getPreReqStrings(String ID, boolean checkAll, String ability);
-    public int getDefaultProficiency(String ID, boolean checkAll, String ability);
-    public int getMaxProficiency(String ID, boolean checkAll, String ability);
+    public int qualifyingClassLevel(MOB studentM, Ability A);
+    public Object lowestQualifyingClassRace(MOB studentM, Ability A);
+    public boolean qualifiesByCurrentClassAndLevel(MOB studentM, Ability A);
+    public boolean qualifiesByLevel(MOB studentM, Ability A);
+	public boolean qualifiesByLevel(MOB studentM, String abilityID);
+    public boolean getDefaultGain(String ID, boolean checkAll, String abilityID);
+    public AbilityMapping getAllAbleMap(String abilityID);
+    public AbilityMapping getAbleMap(String ID, String abilityID);
+    public boolean getSecretSkill(String ID, boolean checkAll, String abilityID);
+    public boolean getAllSecretSkill(String abilityID);
+    public boolean getSecretSkill(MOB mob, String abilityID);
+    public boolean getSecretSkill(String abilityID);
+	public AbilityLimits getCommonSkillLimit(MOB studentM);
+	public AbilityLimits getCommonSkillLimit(MOB studentM, Ability A);
+	public AbilityLimits getCommonSkillRemainder(MOB studentM, Ability A);
+	public AbilityLimits getCommonSkillRemainders(MOB student);
+    public Integer[] getCostOverrides(String ID, boolean checkAll, String abilityID);
+    public Integer[] getAllCostOverrides(String abilityID);
+    public Integer[] getCostOverrides(MOB mob, String abilityID);
+    public Integer[] getCostOverrides(String abilityID);
+    public String getDefaultParm(String ID, boolean checkAll, String abilityID);
+    public String getPreReqStrings(String ID, boolean checkAll, String abilityID);
+    public int getDefaultProficiency(String ID, boolean checkAll, String abilityID);
+    public int getMaxProficiency(String ID, boolean checkAll, String abilityID);
 	public int getMaxProficiency(String abilityID);
-	public int getMaxProficiency(MOB mob, boolean checkAll, String ability);
+	public int getMaxProficiency(MOB mob, boolean checkAll, String abilityID);
 	public List<Object> componentCheck(MOB mob, List<AbilityComponent> req);
 	public int destroyAbilityComponents(List<Object> found);
 	public String getAbilityComponentDesc(MOB mob, String AID);

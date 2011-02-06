@@ -555,7 +555,7 @@ public class StdCharClass implements CharClass
             CR.setStat("GETCABLEMASK"+i,able.extraMask==null?"":able.extraMask);
             CR.setStat("GETCABLEMAXP"+i,Integer.toString(able.maxProficiency));
             // GETCABLE -- MUST BE LAST --
-            CR.setStat("GETCABLE"+i,able.abilityName);
+            CR.setStat("GETCABLE"+i,able.abilityID);
         }
 
         HashSet H=disallowedWeaponClasses(null);

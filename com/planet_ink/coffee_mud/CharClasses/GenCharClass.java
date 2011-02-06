@@ -358,7 +358,7 @@ public class GenCharClass extends StdCharClass
 			for(int r=0;r<ables.size();r++)
 			{
 				str.append("<CABILITY>");
-				str.append("<CACLASS>"+((AbilityMapper.AbilityMapping)ables.elementAt(r)).abilityName+"</CACLASS>");
+				str.append("<CACLASS>"+((AbilityMapper.AbilityMapping)ables.elementAt(r)).abilityID+"</CACLASS>");
 				str.append("<CALEVEL>"+((AbilityMapper.AbilityMapping)ables.elementAt(r)).qualLevel+"</CALEVEL>");
 				str.append("<CAPROFF>"+((AbilityMapper.AbilityMapping)ables.elementAt(r)).defaultProficiency+"</CAPROFF>");
 				str.append("<CAAGAIN>"+((AbilityMapper.AbilityMapping)ables.elementAt(r)).autoGain+"</CAAGAIN>");
@@ -637,9 +637,9 @@ public class GenCharClass extends StdCharClass
 		List<AbilityMapper.AbilityMapping> V=CMLib.ableMapper().getUpToLevelListings(ID(),Integer.MAX_VALUE,true,false);
 		for(AbilityMapper.AbilityMapping able : V)
 		{
-			String AID=able.abilityName;
+			String AID=able.abilityID;
 			AbilityMapper.AbilityMapping newMAP=new AbilityMapper.AbilityMapping(ID());
-			newMAP.abilityName = AID;
+			newMAP.abilityID = AID;
 			newMAP.qualLevel = CMLib.ableMapper().getQualifyingLevel(ID(),false,AID); 
 			newMAP.defaultProficiency = CMLib.ableMapper().getDefaultProficiency(ID(),false,AID);
 			newMAP.autoGain = CMLib.ableMapper().getDefaultGain(ID(),false,AID);
@@ -706,7 +706,7 @@ public class GenCharClass extends StdCharClass
 		case 22: return (setStats==null)?"":CMLib.coffeeMaker().getCharStatsStr(setStats);
 		case 23: return (adjState==null)?"":CMLib.coffeeMaker().getCharStateStr(adjState);
 		case 24: return Integer.toString(getAbleSet().size());
-		case 25: return ((AbilityMapper.AbilityMapping)getAbleSet().elementAt(num)).abilityName;
+		case 25: return ((AbilityMapper.AbilityMapping)getAbleSet().elementAt(num)).abilityID;
 		case 26: return Integer.toString(((AbilityMapper.AbilityMapping)getAbleSet().elementAt(num)).qualLevel);
 		case 27: return Integer.toString(((AbilityMapper.AbilityMapping)getAbleSet().elementAt(num)).defaultProficiency);
 		case 28: return Boolean.toString(((AbilityMapper.AbilityMapping)getAbleSet().elementAt(num)).autoGain);

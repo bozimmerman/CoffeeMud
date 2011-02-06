@@ -46,19 +46,19 @@ public class Qualify  extends Skills
                                               String prefix,
                                               boolean shortOnly)
 	{
-		Vector V=new Vector();
+		HashSet<Integer> V=new HashSet<Integer>();
 		int mask=Ability.ALL_ACODES;
 		if(ofDomain>=0)
 		{
 			mask=Ability.ALL_ACODES|Ability.ALL_DOMAINS;
 			ofType=ofType|ofDomain;
 		}
-		V.addElement(Integer.valueOf(ofType));
+		V.add(Integer.valueOf(ofType));
 		return getQualifiedAbilities(able,V,mask,prefix,shortOnly);
 	}
 
-	public StringBuffer getQualifiedAbilities(MOB able,
-											  Vector ofTypes,
+	public StringBuffer getQualifiedAbilities(MOB ableM,
+											  HashSet<Integer> ofTypes,
 											  int mask,
 											  String prefix,
                                               boolean shortOnly)
@@ -68,13 +68,14 @@ public class Qualify  extends Skills
 		for(Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
 		{
 			Ability A=(Ability)a.nextElement();
-			int level=CMLib.ableMapper().qualifyingLevel(able,A);
-			if((CMLib.ableMapper().qualifiesByLevel(able,A))
-			&&(!CMLib.ableMapper().getSecretSkill(able,A.ID()))
+			int level=CMLib.ableMapper().qualifyingLevel(ableM,A);
+			if((CMLib.ableMapper().qualifiesByLevel(ableM,A))
+			&&(!CMLib.ableMapper().getSecretSkill(ableM,A.ID()))
 			&&(level>highestLevel)
-			&&(level<(CMLib.ableMapper().qualifyingClassLevel(able,A)+1))
-			&&(able.fetchAbility(A.ID())==null)
-			&&(ofTypes.contains(Integer.valueOf(A.classificationCode()&mask))))
+			&&(level<(CMLib.ableMapper().qualifyingClassLevel(ableM,A)+1))
+			&&(ableM.fetchAbility(A.ID())==null)
+			&&(ofTypes.contains(Integer.valueOf(A.classificationCode()&mask)))
+			&&(CMLib.ableMapper().getCommonSkillRemainder(ableM, A).specificSkillLimit > 0))
 				highestLevel=level;
 		}
 		int col=0;
@@ -84,11 +85,12 @@ public class Qualify  extends Skills
 			for(Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
 			{
 				Ability A=(Ability)a.nextElement();
-				if((CMLib.ableMapper().qualifiesByLevel(able,A))
-				   &&(CMLib.ableMapper().qualifyingLevel(able,A)==l)
-				   &&(!CMLib.ableMapper().getSecretSkill(able,A.ID()))
-				   &&(able.fetchAbility(A.ID())==null)
-				   &&(ofTypes.contains(Integer.valueOf(A.classificationCode()&mask))))
+				if((CMLib.ableMapper().qualifiesByLevel(ableM,A))
+				   &&(CMLib.ableMapper().qualifyingLevel(ableM,A)==l)
+				   &&(!CMLib.ableMapper().getSecretSkill(ableM,A.ID()))
+				   &&(ableM.fetchAbility(A.ID())==null)
+				   &&(ofTypes.contains(Integer.valueOf(A.classificationCode()&mask)))
+				   &&(CMLib.ableMapper().getCommonSkillRemainder(ableM, A).specificSkillLimit > 0))
 				{
 					if((++col)>2)
 					{
@@ -276,6 +278,13 @@ public class Qualify  extends Skills
 			else
 			if(!mob.isMonster())
 			{
+				AbilityMapper.AbilityLimits limits = CMLib.ableMapper().getCommonSkillRemainders(mob);
+				if(limits.commonSkills < Integer.MAX_VALUE/2)
+					msg.append("\n\r^HYou may learn ^w"+limits.commonSkills+"^H more common skills.^N");
+				if(limits.craftingSkills < Integer.MAX_VALUE/2)
+					msg.append("\n\r^HYou may learn ^w"+limits.craftingSkills+"^H more crafting skills.^N");
+				if(limits.nonCraftingSkills < Integer.MAX_VALUE/2)
+					msg.append("\n\r^HYou may learn ^w"+limits.nonCraftingSkills+"^H more non-crafting common skills.^N");
 				mob.session().wraplessPrintln("^!You now qualify for the following unknown abilities:^?"+msg.toString());
 				mob.tell("\n\rUse the GAIN command with your teacher to gain new skills, spells, and expertises.");
 				if(classesFound) 

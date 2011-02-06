@@ -176,7 +176,7 @@ public class Minstrel extends StdCharClass
 												false);
 			for(AbilityMapper.AbilityMapping able : V)
 			{
-				Ability A=CMClass.getAbility(able.abilityName);
+				Ability A=CMClass.getAbility(able.abilityID);
 				if((A!=null)
 				&&((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_SONG)
 				&&(!CMLib.ableMapper().getDefaultGain(ID(),true,A.ID())))
