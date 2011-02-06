@@ -816,9 +816,12 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
     public boolean resurrect(MOB tellMob, Room corpseRoom, DeadBody body, int XPLevel)
     {
 		MOB rejuvedMOB=CMLib.players().getPlayer(((DeadBody)body).mobName());
-		if(rejuvedMOB!=null)
-		{
+		
+		if(rejuvedMOB!=null) // doing this here is helpful -- it can trigger a socket error.
 			rejuvedMOB.tell("You are being resurrected.");
+		
+		if((rejuvedMOB!=null)&&(rejuvedMOB.session()!=null)&&(!rejuvedMOB.session().killFlag()))
+		{
 			if(rejuvedMOB.location()!=corpseRoom)
 			{
 				rejuvedMOB.location().showOthers(rejuvedMOB,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> disappears!");
