@@ -18,13 +18,13 @@ var tenthlimit=limit/10;
 
 function closeWindow()
 {
-    //var theapplet=document.getElementById("myApplet");
+    //var theapplet=document.getElementById("Siplet");
     theapplet.disconnectFromURL();
     top.document.location.href='/index.cmvp';
 }
 function reconnect()
 {
-    //var theapplet=document.getElementById("myApplet");
+    //var theapplet=document.getElementById("Siplet");
     theapplet.disconnectFromURL();
     setTimeout('connect("@MudInfo?DOMAIN@",@MudInfo?PORT@);',500);
 }
@@ -77,7 +77,7 @@ function addToWindow(s)
 }
 function displayData()
 {
-    //var theapplet=document.getElementById("myApplet");
+    //var theapplet=document.getElementById("Siplet");
     if(!theapplet.isConnectedToURL())
     {
         var thespan=top.term.document.getElementById(myname+'bar');
@@ -103,7 +103,7 @@ function displayData()
 }
 function sendData(me)
 {
-    //var theapplet=document.getElementById("myApplet");
+    //var theapplet=document.getElementById("Siplet");
 	var s=''+me;
     theapplet.sendData(s);
 }
@@ -181,7 +181,7 @@ function NoJava()
 }
 function connect(url,port)
 {
-    //var theapplet=document.getElementById("myApplet");
+    //var theapplet=document.getElementById("Siplet");
     window.onerror=new Function('NoJava();');
     var s=theapplet.info();
     window.onerror=null;
@@ -225,15 +225,15 @@ top.term.allwindows[top.term.currentWindow]=this;
     codebase="siplet.jar"
     width="0"
     height="0"
-    name="myApplet"
-    id="myApplet"
+    name="Siplet"
+    id="Siplet"
     mayscript="TRUE">
 </applet><BR>
 <DIV ID=DISPLAYSPAN NAME=DISPLAYSPAN>
 </DIV>
 <DIV ID=NODISPLAY NAME=NODISPLAY></DIV>
 <script language=JavaScript>
-    theapplet=document.getElementById("myApplet").create();
+    theapplet=document.getElementById("Siplet").create();
     top.term.allapplets[top.term.currentWindow] = theapplet;
     setTimeout('connect("@MudInfo?DOMAIN@",@MudInfo?PORT@);',500);
 //-->

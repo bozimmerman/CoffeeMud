@@ -27,7 +27,7 @@ public class Siplet extends Applet
     
     public final static long serialVersionUID=7;
     public static final float VERSION_MAJOR=(float)2.0;
-    public static final long  VERSION_MINOR=8;
+    public static final long  VERSION_MINOR=9;
     protected StringBuffer buf=new StringBuffer("");
     protected String lastURL="coffeemud.net";
     protected int lastPort=23;
@@ -54,12 +54,12 @@ public class Siplet extends Applet
 
     public void start()
     {
-        //addItem("starting siplet "+VERSION_MAJOR+"."+VERSION_MINOR+" ");
+    	System.out.println("starting siplet "+VERSION_MAJOR+"."+VERSION_MINOR+" ");
     }
 
     public void stop()
     {
-        //addItem("!stopped siplet!");
+    	System.out.println("!stopped siplet!");
     }
 
     public void destroy()
@@ -107,6 +107,8 @@ public class Siplet extends Applet
             PrintWriter pw=new PrintWriter(new OutputStreamWriter(bw));
             e.printStackTrace(pw);
             pw.flush();
+            if(debugDataOut)
+            	e.printStackTrace(System.out);
             //addItem(bw.toString());
             return false;
         }
