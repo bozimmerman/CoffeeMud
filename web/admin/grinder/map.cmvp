@@ -173,8 +173,11 @@ function checkLocation() {
   object="layersMenu";
   yy=eval(y);
   xx=eval(x);
-  eval(dS+object+sD+v+yy);
-  eval(dS+object+sD+w+xx);
+  if (navigator.appName != "Netscape") 
+  {
+	  eval(dS+object+sD+v+yy);
+	  eval(dS+object+sD+w+xx);
+  }
   setTimeout("checkLocation()",10);
 }
 @if?AreaData?ISGRID@
@@ -216,15 +219,26 @@ function checkLocation() {
 		}
 	}
 @endif@
+@if?CheckReqParm?MAPSTYLE=Z@
+	function showPage()
+	{
+		preloadImages();
+		setVariables();
+		checkLocation();
+		@if?!CheckReqParm?MAPLEVEL=@
+			setTimeout('showDiv("@RequestParameterEncoded?MAPLEVEL@");',1000); 
+		@endif@
+	}
+@endif@
 	//-->
 	</SCRIPT>
 </head>
 
 @if?CheckReqParm?MAPSTYLE=Z@
 	@if?!CheckReqParm?MAPLEVEL=@ 
-	<BODY OnLoad="preloadImages();setVariables();checkLocation();setTimeout(showDiv('@RequestParameterEncoded?MAPLEVEL@'),1000)">
+	<BODY OnLoad="showPage();">
 	@else@
-	<BODY OnLoad="preloadImages();setVariables();checkLocation()">
+	<BODY OnLoad="showPage();">
 	@endif@
 @else@
 	<BODY>
