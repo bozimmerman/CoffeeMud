@@ -125,7 +125,7 @@
             <li><a href="#mppracs">mppracs</a></li>
             <li><a href="#mpprompt">mpprompt</a></li>
             <li><a href="#mppurge">mppurge</a></li>
-            <li><a href="#questpoints">mpquestpoints</a></li>
+            <li><a href="#mpquestpoints">mpquestpoints</a></li>
             <li><a href="#mpquestwin">mpquestwin</a></li>
             <li><a href="#mpqset">mpqset</a></li>
             <li><a href="#mprejuv">mprejuv</a></li>
@@ -134,6 +134,7 @@
             <li><a href="#mpscript">mpscript</a></li>
             <li><a href="#mpset">mpset</a></li>
             <li><a href="#mpsetclandata">mpsetclandata</a></li>
+            <li><a href="#mpsetinternal">mpsetinternal</a></li>
             <li><a href="#mpsetvar">mpsetvar</a></li>
             <li><a href="#mpslay">mpslay</a></li>
             <li><a href="#mpstartquest">mpstartquest</a></li>
@@ -315,8 +316,10 @@ together, we have a high level syntax that looks like this:</p>
       <h2><a name="events">Scripting Events</a></h2>
       <p>Below are a list of the valid event triggers, along with their
 parameters, and a description of the events or circumstances under
-which the events occur. These docs borrow heavily from the nicely
-written MOBPROG Tutorial at: <a
+which the events occur. * Note: Most triggers fire after a short delay, and
+only when the scripted mob is healthy and non-follower.  See the MPSETINTERNAL
+command to change default global triggering behavior.</p>
+<p>These docs borrow heavily from the nicely written MOBPROG Tutorial at: <a
  href="http://www.pandapub.com/tutorial/MobprogTutorial.htm">http://www.pandapub.com/tutorial/MobprogTutorial.htm</a>.</p>
       <h3><a name="all_greet_prog">all_greet_prog</a></h3>
       <p>Usage:</p>
@@ -3108,6 +3111,20 @@ PREMISE, RECALL, STATUS, TAXES, TROPHIES.</p>
       <pre>mpsetclandata 'Groovy Clan' EXP 0<br />mpecho Groovy Clans experience is now gone!<br />mpset $n PREMISE my premise is new.<br />mpecho Whoever $n is, their clan now has a new premise!<br /></pre>
       <p>SPECIAL NOTES: Be very careful with this command, to ensure no
 damage is done to clan records.</p>
+      <h3><a name="mpsetinternal">mpsetinternal</a></h3>
+      <p>Usage:</p>
+      <pre>mpsetinternal [variable] [value]<br /></pre>
+      <p>This command is used to set one of the internal scripting engine
+variables. The variables included, and their meaning, is as follows:</p>
+<P>
+<UL>
+	<li><B>SCOPE</B>: Manually changes the scope of variable resolution. * is global/default.</li>
+	<li><B>NODELAY</B>: Whether a 1 tick delay is seen before some triggers fire.  Values are true or false.</li>
+	<li><B>ACTIVETRIGGERS</B>: Whether a mob will always trigger, despite being unhealthy or a follower.  Values are true or false.</li>
+	<li><B>DEFAULTQUEST</B>: Changes which quest this script is registerd with.  Affects only the Quest related MP commands.</li>
+	<li><B>SAVABLE</B>: Determines if this script will be saved as a permanent part of the host.  Values are true or false.</li>
+</UL>
+</P>
       <h3><a name="mpsetvar">mpsetvar</a></h3>
       <p>Usage:</p>
       <pre>mpsetvar [mob name] [variable name] [value]<br />mpsetvar [mob name] [variable name] ++<br />mpsetvar [mob name] [variable name] --<br />mpsetvar [mob name] [variable name] +[number]<br />mpsetvar [mob name] [variable name] -[number]<br />mpsetvar [mob name] [variable name] *[number]<br />mpsetvar [mob name] [variable name] /[number]<br /></pre>

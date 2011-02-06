@@ -2276,7 +2276,7 @@ Special/Reserved Quest called holidays can be added to/modified on an area-by-ar
  7.Internal: Lots of refactoring done. Lots.
  8.INI entries: OBJSPERTHREAD, TICKTIME, MILLISPERMUDHOUR -- control time and thread spawning!
  9.Web & SMTP server INI files have some tweeking options for performance (MAXTHREADS/REQUESTTIMEOUTMINS)
-10.Scriptable Command: MPPOSSESS
+10.New Scriptable Commands: MPPOSSESS, MPSETINTERNAL
 11.MERGE command can now be used to merge different database instances of areas/rooms/etc..
 12.Ability INI entries: MAXCOMMONSKILLS, MAXCRAFTINGSKILLS, MAXNONCRAFTINGSKILLS, MAXLANGUAGES, WALKCOST, RUNCOST
 13.Added an all-skills configuration file: /resources/skills/allqualifylist

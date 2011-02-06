@@ -57,6 +57,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 
     protected long tickStatus=Tickable.STATUS_NOT;
     protected boolean isSavable=true;
+    protected boolean alwaysActiveTriggers=false;
 
     protected MOB lastToHurtMe=null;
     protected Room lastKnownLocation=null;
@@ -527,12 +528,14 @@ public class DefaultScriptingEngine implements ScriptingEngine
             oncesDone.clear();
     }
 
-    public boolean canActAtAll(Tickable affecting)
-    { return CMLib.flags().canActAtAll(affecting);}
-
-    public boolean canFreelyBehaveNormal(Tickable affecting)
-    { return CMLib.flags().canFreelyBehaveNormal(affecting);}
-
+    public boolean isFreeToBeTriggered(Tickable affecting)
+    { 
+    	if(alwaysActiveTriggers)
+	    	return CMLib.flags().canActAtAll(affecting);
+    	else
+	    	return CMLib.flags().canFreelyBehaveNormal(affecting);
+    }
+    
     protected String parseLoads(String text, int depth, Vector filenames, StringBuffer nonFilenameScript)
     {
         StringBuffer results=new StringBuffer("");
@@ -6313,6 +6316,9 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 if(arg2.equals("NODELAY"))
                     noDelay=CMath.s_bool(arg3);
                 else
+                if(arg2.equals("ACTIVETRIGGER")||arg2.equals("ACTIVETRIGGERS"))
+                    alwaysActiveTriggers=CMath.s_bool(arg3);
+                else
                 if(arg2.equals("DEFAULTQUEST"))
                     registerDefaultQuest(arg3);
                 else
@@ -8999,7 +9005,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 if((msg.targetMinor()==CMMsg.TYP_ENTER)
                 &&(msg.amITarget(lastKnownLocation))
                 &&(!msg.amISource(eventMob))
-                &&(canFreelyBehaveNormal(monster)||(!(affecting instanceof MOB)))
+                &&(isFreeToBeTriggered(monster)||(!(affecting instanceof MOB)))
                 &&canTrigger(1)
                 &&((!(affecting instanceof MOB))||CMLib.flags().canSenseEnteringLeaving(msg.source(),(MOB)affecting)))
                 {
@@ -9016,7 +9022,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 if((msg.targetMinor()==CMMsg.TYP_ENTER)&&canTrigger(2)
                 &&(msg.amITarget(lastKnownLocation))
                 &&(!msg.amISource(eventMob))
-                &&(canActAtAll(monster)))
+                &&(isFreeToBeTriggered(monster))
+                &&(CMLib.flags().canActAtAll(monster)))
                 {
                     if(t==null) t=parseBits(script,0,"CR");
                     int prcnt=CMath.s_int(t[1]);
@@ -9033,7 +9040,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 &&(!CMath.bset(msg.othersMajor(),CMMsg.MASK_CHANNEL))
                 &&(((msg.othersMessage()!=null)&&((msg.tool()==null)||(!(msg.tool() instanceof Ability))||((((Ability)msg.tool()).classificationCode()&Ability.ALL_ACODES)!=Ability.ACODE_LANGUAGE)))
                    ||((msg.target()==monster)&&(msg.targetMessage()!=null)&&(msg.tool()==null)))
-                &&(canFreelyBehaveNormal(monster)||(!(affecting instanceof MOB))))
+                &&(isFreeToBeTriggered(monster)||(!(affecting instanceof MOB))))
                 {
                     if(t==null) t=parseBits(script,0,"CT");
                     String str=null;
@@ -9079,7 +9086,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                         ||(affecting instanceof Area))
                 &&(!msg.amISource(monster))
                 &&(msg.tool() instanceof Item)
-                &&(canFreelyBehaveNormal(monster)||(!(affecting instanceof MOB))))
+                &&(isFreeToBeTriggered(monster)||(!(affecting instanceof MOB))))
                 {
                     String check=standardTriggerCheck(script,t,msg.tool());
                     if(check!=null)
@@ -9094,7 +9101,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
             case 40: // llook_prog
                 if((msg.targetMinor()==CMMsg.TYP_EXAMINE)&&canTrigger(40)
                 &&(!msg.amISource(monster))
-                &&(canFreelyBehaveNormal(monster)||(!(affecting instanceof MOB))))
+                &&(isFreeToBeTriggered(monster)||(!(affecting instanceof MOB))))
                 {
                     String check=standardTriggerCheck(script,t,msg.target());
                     if(check!=null)
@@ -9169,7 +9176,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
             case 39: // look_prog
                 if((msg.targetMinor()==CMMsg.TYP_LOOK)&&canTrigger(39)
                 &&(!msg.amISource(monster))
-                &&(canFreelyBehaveNormal(monster)||(!(affecting instanceof MOB))))
+                &&(isFreeToBeTriggered(monster)||(!(affecting instanceof MOB))))
                 {
                     String check=standardTriggerCheck(script,t,msg.target());
                     if(check!=null)
@@ -9184,7 +9191,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 &&((msg.amITarget(affecting))||(affecting instanceof Room)||(affecting instanceof Area)||(affecting instanceof MOB))
                 &&(!msg.amISource(monster))
                 &&(msg.target() instanceof Item)
-                &&(canFreelyBehaveNormal(monster)||(!(affecting instanceof MOB))))
+                &&(isFreeToBeTriggered(monster)||(!(affecting instanceof MOB))))
                 {
                     String check=standardTriggerCheck(script,t,msg.target());
                     if(check!=null)
@@ -9201,7 +9208,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 &&((msg.amITarget(affecting))||(affecting instanceof Room)||(affecting instanceof Area)||(affecting instanceof MOB))
                 &&(!msg.amISource(monster))
                 &&(msg.target() instanceof Item)
-                &&(canFreelyBehaveNormal(monster)||(!(affecting instanceof MOB))))
+                &&(isFreeToBeTriggered(monster)||(!(affecting instanceof MOB))))
                 {
                     String check=standardTriggerCheck(script,t,msg.target());
                     if(check!=null)
@@ -9221,7 +9228,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 &&((msg.amITarget(affecting))||(affecting instanceof Room)||(affecting instanceof Area)||(affecting instanceof MOB))
                 &&(!msg.amISource(monster))
                 &&(msg.target() instanceof Item)
-                &&(canFreelyBehaveNormal(monster)||(!(affecting instanceof MOB))))
+                &&(isFreeToBeTriggered(monster)||(!(affecting instanceof MOB))))
                 {
                     String check=standardTriggerCheck(script,t,msg.target());
                     if(check!=null)
@@ -9246,7 +9253,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 if((msg.targetMinor()==targetMinorTrigger)&&canTrigger(triggerCode)
                 &&((msg.amITarget(affecting))||(affecting instanceof Room)||(affecting instanceof Area)||(affecting instanceof MOB))
                 &&(!msg.amISource(monster))
-                &&(canFreelyBehaveNormal(monster)||(!(affecting instanceof MOB))))
+                &&(isFreeToBeTriggered(monster)||(!(affecting instanceof MOB))))
                 {
                     Item I=(msg.target() instanceof Item)?(Item)msg.target():defaultItem;
                     String check=standardTriggerCheck(script,t,msg.target());
@@ -9263,7 +9270,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 &&((msg.amITarget(affecting))||(affecting instanceof Room)||(affecting instanceof Area)||(affecting instanceof MOB))
                 &&(!msg.amISource(monster))&&canTrigger(25)
                 &&(msg.target() instanceof Item)
-                &&(canFreelyBehaveNormal(monster)||(!(affecting instanceof MOB))))
+                &&(isFreeToBeTriggered(monster)||(!(affecting instanceof MOB))))
                 {
                     String check=standardTriggerCheck(script,t,msg.target());
                     if(check!=null)
@@ -9283,7 +9290,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 &&(msg.tool() instanceof Item)
                 &&(!msg.amISource(monster))
                 &&(msg.target() instanceof Item)
-                &&(canFreelyBehaveNormal(monster)||(!(affecting instanceof MOB))))
+                &&(isFreeToBeTriggered(monster)||(!(affecting instanceof MOB))))
                 {
                     String check=standardTriggerCheck(script,t,msg.target());
                     if(check!=null)
@@ -9303,7 +9310,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 &&((!(affecting instanceof ShopKeeper))
                     ||msg.amITarget(affecting))
                 &&(!msg.amISource(monster))
-                &&(canFreelyBehaveNormal(monster)||(!(affecting instanceof MOB))))
+                &&(isFreeToBeTriggered(monster)||(!(affecting instanceof MOB))))
                 {
                     String check=standardTriggerCheck(script,t,msg.tool());
                     if(check!=null)
@@ -9322,7 +9329,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 if((msg.targetMinor()==CMMsg.TYP_SELL)&&canTrigger(28)
                 &&((msg.amITarget(affecting))||(!(affecting instanceof ShopKeeper)))
                 &&(!msg.amISource(monster))
-                &&(canFreelyBehaveNormal(monster)||(!(affecting instanceof MOB))))
+                &&(isFreeToBeTriggered(monster)||(!(affecting instanceof MOB))))
                 {
                     String check=standardTriggerCheck(script,t,msg.tool());
                     if(check!=null)
@@ -9344,7 +9351,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 &&((msg.amITarget(affecting))||(affecting instanceof Room)||(affecting instanceof Area)||(affecting instanceof MOB))
                 &&(!msg.amISource(monster))&&canTrigger(23)
                 &&(msg.target() instanceof Item)
-                &&(canFreelyBehaveNormal(monster)||(!(affecting instanceof MOB))))
+                &&(isFreeToBeTriggered(monster)||(!(affecting instanceof MOB))))
                 {
                     String check=standardTriggerCheck(script,t,msg.target());
                     if(check!=null)
@@ -9359,7 +9366,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 &&(msg.amITarget(eventMob)||(!(affecting instanceof MOB)))
                 &&(!msg.amISource(monster))&&canTrigger(19)
                 &&(msg.tool() instanceof Coins)
-                &&(canFreelyBehaveNormal(monster)||(!(affecting instanceof MOB))))
+                &&(isFreeToBeTriggered(monster)||(!(affecting instanceof MOB))))
                 {
                     if(t==null) t=parseBits(script,0,"CR");
                     if(t[1].startsWith("ANY")||t[1].startsWith("ALL"))
@@ -9387,7 +9394,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                     ||(msg.target()==affecting)
                     ||(msg.tool()==affecting)
                     ||(affecting instanceof Item))
-                &&(canFreelyBehaveNormal(monster)||(!(affecting instanceof MOB))))
+                &&(isFreeToBeTriggered(monster)||(!(affecting instanceof MOB))))
                 {
                     if(t==null) t=parseBits(script,0,"CR");
                     int prcnt=CMath.s_int(t[1]);
@@ -9417,7 +9424,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 if((msg.targetMinor()==CMMsg.TYP_LEAVE)&&canTrigger(9)
                 &&(msg.amITarget(lastKnownLocation))
                 &&(!msg.amISource(eventMob))
-                &&(canFreelyBehaveNormal(monster)||(!(affecting instanceof MOB))))
+                &&(isFreeToBeTriggered(monster)||(!(affecting instanceof MOB))))
                 {
                     if(t==null) t=parseBits(script,0,"CR");
                     int prcnt=CMath.s_int(t[1]);
@@ -9492,7 +9499,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                     registeredSpecialEvents.add(Integer.valueOf(CMMsg.TYP_LOGIN));
                 }
                 if((msg.sourceMinor()==CMMsg.TYP_LOGIN)&&canTrigger(29)
-                &&(canFreelyBehaveNormal(monster)||(!(affecting instanceof MOB)))
+                &&(isFreeToBeTriggered(monster)||(!(affecting instanceof MOB)))
                 &&(!CMLib.flags().isCloaked(msg.source())))
                 {
                     if(t==null) t=parseBits(script,0,"CR");
@@ -9511,7 +9518,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                     registeredSpecialEvents.add(Integer.valueOf(CMMsg.TYP_LEVEL));
                 }
                 if((msg.sourceMinor()==CMMsg.TYP_LEVEL)&&canTrigger(32)
-                &&(canFreelyBehaveNormal(monster)||(!(affecting instanceof MOB)))
+                &&(isFreeToBeTriggered(monster)||(!(affecting instanceof MOB)))
                 &&(!CMLib.flags().isCloaked(msg.source())))
                 {
                     if(t==null) t=parseBits(script,0,"CR");
@@ -9525,7 +9532,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 break;
             case 30: // logoff_prog
                 if((msg.sourceMinor()==CMMsg.TYP_QUIT)&&canTrigger(30)
-                &&(canFreelyBehaveNormal(monster)||(!(affecting instanceof MOB)))
+                &&(isFreeToBeTriggered(monster)||(!(affecting instanceof MOB)))
                 &&(!CMLib.flags().isCloaked(msg.source())))
                 {
                     if(t==null) t=parseBits(script,0,"CR");
