@@ -42,7 +42,8 @@ public class StdRoom implements Room
 	protected String 	myID="";
 	protected String 	name="the room";
 	protected String 	displayText="Standard Room";
-	protected String 	imageName=null;
+	protected String 	rawImageName=null;
+	protected String	cachedImageName=null;
 	protected byte[] 	description=null;
 	protected Area 		myArea=null;
 	protected PhyStats 	phyStats=(PhyStats)CMClass.getCommon("DefaultPhyStats");
@@ -106,24 +107,24 @@ public class StdRoom implements Room
 
     public String image()
     {
-        if(imageName==null) 
-            imageName=CMProps.getDefaultMXPImage(this);
-        return imageName;
+        if(cachedImageName==null) 
+        	cachedImageName=CMProps.getDefaultMXPImage(this);
+        return cachedImageName;
     }
     public String rawImage()
     {
-        if(imageName==null) 
+        if(rawImageName==null) 
             return "";
-        return imageName;
+        return rawImageName;
     }
     public void setImage(String newImage)
     {
         if((newImage==null)||(newImage.trim().length()==0))
-            imageName=null;
+        	rawImageName=null;
         else
-            imageName=newImage;
+        	rawImageName=newImage;
+        cachedImageName=null;
     }
-    
 	
 	public boolean isGeneric(){return false;}
 	
@@ -1469,7 +1470,8 @@ public class StdRoom implements Room
 			}
 		}
 		CMLib.threads().deleteTick(this,-1);
-        imageName=null;
+        rawImageName=null;
+        cachedImageName=null;
         setArea(null); // this actually deletes the room from the cache map
         basePhyStats=(PhyStats)CMClass.getCommon("DefaultPhyStats");
         phyStats=basePhyStats;

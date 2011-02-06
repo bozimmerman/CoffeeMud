@@ -1202,7 +1202,7 @@ public class CMProps extends Properties
         else
         if(O instanceof MOB)
         {
-            String raceName=((MOB)O).charStats().raceName().toUpperCase();
+            final String raceName=((MOB)O).charStats().raceName();
             Race R=null;
             for(Enumeration<Race> e=CMClass.races();e.hasMoreElements();)
             {

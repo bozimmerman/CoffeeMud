@@ -63,7 +63,8 @@ public class StdMOB implements MOB
 	protected boolean 	pleaseDestroy=false;
 	protected byte[] 	description=null;
 	protected String 	displayText="";
-	protected String 	imageName=null;
+	protected String 	rawImageName=null;
+	protected String 	cachedImageName=null;
 	protected byte[] 	miscText=null;
     protected String[] 	xtraValues=null;
     protected int		possibleWeaponIndex=-1;
@@ -255,25 +256,26 @@ public class StdMOB implements MOB
 
 	public String image()
     {
-        if(imageName==null)
-            imageName=CMProps.getDefaultMXPImage(this);
+        if(cachedImageName==null)
+        	cachedImageName=CMProps.getDefaultMXPImage(this);
         if(!baseCharStats().getMyRace().name().equalsIgnoreCase(charStats().raceName()))
             return CMProps.getDefaultMXPImage(this);
-        if(imageName==null) return "";
-        return imageName;
+        if(cachedImageName==null) return "";
+        return cachedImageName;
     }
     public String rawImage()
     {
-        if(imageName==null)
+        if(rawImageName==null)
             return "";
-        return imageName;
+        return rawImageName;
     }
 	public void setImage(String newImage)
     {
         if((newImage==null)||(newImage.trim().length()==0))
-            imageName=null;
+        	rawImageName=null;
         else
-            imageName=newImage;
+        	rawImageName=newImage;
+        cachedImageName=null;
     }
 
 	public StdMOB()
@@ -671,7 +673,8 @@ public class StdMOB implements MOB
         lastLocation=null;
         riding=null;
         mySession=null;
-        imageName=null;
+        rawImageName=null;
+        cachedImageName=null;
         inventory=new SVector<Item>(1);
         followers=null;
         abilities=new SVector<Ability>(1);

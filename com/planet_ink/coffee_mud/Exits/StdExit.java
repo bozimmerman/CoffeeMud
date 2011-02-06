@@ -41,7 +41,8 @@ public class StdExit implements Exit
 	protected boolean 	isOpen=true;
 	protected boolean 	isLocked=false;
 	protected String 	miscText="";
-	protected String 	imageName=null;
+	protected String    cachedImageName=null;
+	protected String 	rawImageName=null;
     protected boolean 	amDestroyed=false;
     protected short 	usage=0;
 	
@@ -119,7 +120,8 @@ public class StdExit implements Exit
         CMLib.map().registerWorldObjectDestroyed(null,null,this);
         CMLib.threads().deleteTick(this,-1);
         affects=null;
-        imageName=null;
+        rawImageName=null;
+        cachedImageName=null;
         behaviors=null;
         scripts=null;
         miscText=null;
@@ -131,22 +133,23 @@ public class StdExit implements Exit
     
     public String image()
     {
-        if(imageName==null) 
-            imageName=CMProps.getDefaultMXPImage(this);
-        return imageName;
+        if(cachedImageName==null) 
+        	cachedImageName=CMProps.getDefaultMXPImage(this);
+        return cachedImageName;
     }
     public String rawImage()
     {
-        if(imageName==null) 
+        if(rawImageName==null) 
             return "";
-        return imageName;
+        return rawImageName;
     }
     public void setImage(String newImage)
     {
         if((newImage==null)||(newImage.trim().length()==0))
-            imageName=null;
+        	rawImageName=null;
         else
-            imageName=newImage;
+        	rawImageName=newImage;
+        cachedImageName=null;
     }
 	
 	public CMObject newInstance()

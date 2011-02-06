@@ -45,7 +45,8 @@ public class StdItem implements Item
 	protected int 			myUses=Integer.MAX_VALUE;
 	protected long 			myWornCode=Wearable.IN_INVENTORY;
 	protected String 		miscText="";
-	protected String    	imageName=null;
+	protected String    	rawImageName=null;
+	protected String		cachedImageName=null;
 	protected String		secretIdentity=null;
 	protected boolean		wornLogicalAnd=false;
 	protected long 			properWornBitmap=Wearable.WORN_HELD;
@@ -90,22 +91,23 @@ public class StdItem implements Item
 	}
     public String image()
     {
-        if(imageName==null) 
-            imageName=CMProps.getDefaultMXPImage(this);
-        return imageName;
+        if(cachedImageName==null) 
+        	cachedImageName=CMProps.getDefaultMXPImage(this);
+        return cachedImageName;
     }
     public String rawImage()
     {
-        if(imageName==null) 
+        if(rawImageName==null) 
             return "";
-        return imageName;
+        return rawImageName;
     }
     public void setImage(String newImage)
     {
         if((newImage==null)||(newImage.trim().length()==0))
-            imageName=null;
+        	rawImageName=null;
         else
-            imageName=newImage;
+        	rawImageName=newImage;
+        cachedImageName=null;
     }
 	
 	public PhyStats phyStats()
@@ -1224,7 +1226,8 @@ public class StdItem implements Item
 			}
 		}
         myContainer=null;
-        imageName=null;
+        rawImageName=null;
+        cachedImageName=null;
         secretIdentity=null;
         owner=null;
         affects=null;
