@@ -1415,11 +1415,17 @@ public class StdArea implements Area
         return finalSet;
 	}
 	
-	public void initializeAreaLink() 
+	public synchronized void initializeAreaLink() 
 	{
 		initializedArea=true;
-		parents=loadAreas(parentsToLoad);
-		children=loadAreas(childrenToLoad);
+		SLinkedList<Area> futureParents=loadAreas(parentsToLoad);
+		for(Area parentA : futureParents)
+			if(canParent(parentA))
+				addParent(parentA);
+		SLinkedList<Area> futureChildren=loadAreas(childrenToLoad);
+		for(Area childA : futureChildren)
+			if(canChild(childA))
+				addChild(childA);
 	}
 	
     protected final Iterator<Area> getParentsIterator()
