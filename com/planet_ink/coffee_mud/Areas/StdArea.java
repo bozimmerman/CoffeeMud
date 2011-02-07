@@ -1424,14 +1424,14 @@ public class StdArea implements Area
 			if(canParent(parentA))
 				addParent(parentA);
 			else
-				Log.errOut("StdSpaceShip","Can not make '"+parentA.name()+"' parent of '"+name+"'");
+				Log.errOut("StdArea","Can not make '"+parentA.name()+"' parent of '"+name+"'");
 		children=new SLinkedList<Area>();
 		SLinkedList<Area> futureChildren=loadAreas(childrenToLoad);
 		for(Area childA : futureChildren)
 			if(canChild(childA))
 				addChild(childA);
 			else
-				Log.errOut("StdSpaceShip","Can not make '"+childA.name()+"' child of '"+name+"'");
+				Log.errOut("StdArea","Can not make '"+childA.name()+"' child of '"+name+"'");
 		initializedArea=true;
 	}
 	
