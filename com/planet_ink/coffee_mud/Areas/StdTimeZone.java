@@ -60,7 +60,7 @@ public class StdTimeZone extends StdArea
 		super.addChild(area);
 		area.setTimeObj(getTimeObj());
 	}
-	public void initializeAreaLink() 
+	public synchronized void initializeAreaLink() 
 	{
 		super.initializeAreaLink();
 		for(final Iterator<Area> a=getChildrenIterator();a.hasNext();)

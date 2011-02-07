@@ -913,11 +913,18 @@ public class StdSpaceShip implements Area, SpaceObject, SpaceShip
         return finalSet;
 	}
 	
-	public void initializeAreaLink() 
+	public synchronized void initializeAreaLink() 
 	{
+		if(initializedArea)
+			return;
 		initializedArea=true;
-		parents=loadAreas(parentsToLoad);
+		SLinkedList<Area> futureParents=loadAreas(parentsToLoad);
+		parents=new SLinkedList<Area>();
+		for(Area parentA : futureParents)
+			if(canParent(parentA))
+				addParent(parentA);
 	}
+		
 	
     protected final Iterator<Area> getParentsIterator()
     {
