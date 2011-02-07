@@ -310,7 +310,7 @@ public class RaceData extends StdWebMacro
                     str.append("<OPTION SELECTED VALUE=\""+I+"\">"+I.Name()+" ("+I.ID()+")");
             }
             else
-                str.append("<OPTION VALUE=\""+I+"\">"+I.Name()+" ("+I.ID()+")");
+                str.append("<OPTION VALUE=\""+I+"\">"+I.Name()+RoomData.getObjIDSuffix(I));
         }
         if(one)
         {

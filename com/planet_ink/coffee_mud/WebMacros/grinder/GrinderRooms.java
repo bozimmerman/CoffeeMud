@@ -213,9 +213,9 @@ public class GrinderRooms
 					else
 					if(MATCHING.indexOf('@')>0)
 					{
-						for(int m=0;m<RoomData.mobs.size();m++)
+						for(Iterator<MOB> m=RoomData.mobs.iterator(); m.hasNext();)
 						{
-							MOB M2=(MOB)RoomData.mobs.get(m);
+							MOB M2=m.next();
 							if(MATCHING.equals(""+M2))
 							{
 								happilyAddMob((MOB)M2.copyOf(),R);
@@ -267,7 +267,7 @@ public class GrinderRooms
 	                if(CONTAINER.length()==0) continue;
 	                Item I2=(Item)items.elementAt(i);
 	                Item C2=(Item)CMLib.english().fetchEnvironmental(items,CONTAINER,true);
-	                if(I2 instanceof Container)
+	                if(C2 instanceof Container)
 	                	I2.setContainer((Container)C2);
 	            }
 			}

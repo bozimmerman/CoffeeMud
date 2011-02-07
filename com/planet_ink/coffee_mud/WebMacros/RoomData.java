@@ -14,6 +14,7 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 
 
@@ -36,8 +37,8 @@ import java.util.*;
 public class RoomData extends StdWebMacro
 {
 	public String name()	{return this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);}
-	public static List<MOB> mobs=new Vector<MOB>();
-	public static List<Item> items=new Vector<Item>();
+	public static List<MOB> mobs=new SLinkedList<MOB>();
+	public static List<Item> items=new SLinkedList<Item>();
 
 	public static String getItemCode(Room R, Item I)
 	{
@@ -51,12 +52,22 @@ public class RoomData extends StdWebMacro
 	public static String getItemCode(List<Item> allitems, Item I)
 	{
 		if(I==null) return "";
-		for(int i=0;i<allitems.size();i++)
-			if(allitems.get(i)==I)
-				return Long.toString((I.ID()+"/"+I.Name()+"/"+I.displayText()).hashCode()<<5)+i;
-        for(int i=0;i<allitems.size();i++)
-            if(((Environmental)allitems.get(i)).sameAs(I))
-                return Long.toString((I.ID()+"/"+I.Name()+"/"+I.displayText()).hashCode()<<5)+i;
+		int x=0;
+		for(Iterator<Item> i=allitems.iterator(); i.hasNext();)
+		{
+			final Item I2=i.next();
+			if(I2==I)
+				return Long.toString((I.ID()+"/"+I.Name()+"/"+I.displayText()).hashCode()<<5)+x;
+			x++;
+		}
+		x=0;
+		for(Iterator<Item> i=allitems.iterator(); i.hasNext();)
+		{
+			final Item I2=i.next();
+            if(I2.sameAs(I))
+                return Long.toString((I.ID()+"/"+I.Name()+"/"+I.displayText()).hashCode()<<5)+x;
+			x++;
+		}
 		return "";
 	}
 
@@ -88,9 +99,14 @@ public class RoomData extends StdWebMacro
 	public static String getMOBCode(List<MOB> mobs, MOB M)
 	{
 		if(M==null) return "";
-		for(int i=0;i<mobs.size();i++)
-			if(mobs.get(i)==M)
+		int i=0;
+		for(Iterator<MOB> m=mobs.iterator(); m.hasNext();)
+		{
+			MOB M2=m.next();
+			if(M2==M)
 				return Long.toString( ( M.ID() + "/" + M.Name() + "/" + M.displayText() ).hashCode() << 5 ) + i;
+			i++;
+		}
 		return "";
 	}
 
@@ -124,13 +140,19 @@ public class RoomData extends StdWebMacro
 	{
         if(code.startsWith("CATALOG-"))
             return getItemFromCatalog(code);
-		for(int i=0;i<allitems.size();i++)
-			if(getItemCode(allitems,(Item)allitems.get(i)).equals(code))
-				return (Item)allitems.get(i);
+		for(Iterator<Item> i=allitems.iterator(); i.hasNext();)
+		{
+			Item I=i.next();
+			if(getItemCode(allitems,I).equals(code))
+				return I;
+		}
 		if(code.length()>2) code=code.substring(0,code.length()-2);
-		for(int i=0;i<allitems.size();i++)
-			if(getItemCode(allitems,(Item)allitems.get(i)).startsWith(code))
-				return (Item)allitems.get(i);
+		for(Iterator<Item> i=allitems.iterator(); i.hasNext();)
+		{
+			Item I=i.next();
+			if(getItemCode(allitems,I).startsWith(code))
+				return I;
+		}
 		return null;
 	}
 
@@ -151,13 +173,19 @@ public class RoomData extends StdWebMacro
 	{
         if(code.startsWith("CATALOG-"))
             return getMOBFromCatalog(code);
-		for(int i=0;i<allmobs.size();i++)
-			if(getMOBCode(allmobs,((MOB)allmobs.get(i))).equals(code))
-				return ((MOB)allmobs.get(i));
+		for(Iterator<MOB> m=allmobs.iterator(); m.hasNext();)
+		{
+			MOB M2=m.next();
+			if(getMOBCode(allmobs,M2).equals(code))
+				return M2;
+		}
 		if(code.length()>2) code=code.substring(0,code.length()-2);
-		for(int i=0;i<allmobs.size();i++)
-			if(getMOBCode(allmobs,((MOB)allmobs.get(i))).startsWith(code))
-				return ((MOB)allmobs.get(i));
+		for(Iterator<MOB> m=allmobs.iterator(); m.hasNext();)
+		{
+			MOB M2=m.next();
+			if(getMOBCode(allmobs,M2).startsWith(code))
+				return M2;
+		}
 		return null;
 	}
 
@@ -223,9 +251,9 @@ public class RoomData extends StdWebMacro
         else
 		if(MATCHING.indexOf('@')>0)
 		{
-			for(int m=0;m<items.size();m++)
+			for(Iterator<Item> i=items.iterator(); i.hasNext();)
 			{
-				Item I2=(Item)items.get(m);
+				Item I2=i.next();
 				if(MATCHING.equals(""+I2))
 					return I2;
 			}
@@ -241,9 +269,9 @@ public class RoomData extends StdWebMacro
     public static MOB getReferenceMOB(MOB M)
     {
         if(M==null) return null;
-        for(int m=0;m<mobs.size();m++)
-        {
-            MOB M2=(MOB)mobs.get(m);
+		for(Iterator<MOB> m=mobs.iterator(); m.hasNext();)
+		{
+			MOB M2=m.next();
             if(M.sameAs(M2)) return M2;
         }
         return null;
@@ -252,9 +280,9 @@ public class RoomData extends StdWebMacro
     public static Item getReferenceItem(Item I)
     {
         if(I==null) return null;
-        for(int i=0;i<items.size();i++)
-        {
-            Item I2=(Item)mobs.get(i);
+		for(Iterator<Item> i=items.iterator(); i.hasNext();)
+		{
+			Item I2=i.next();
             if(I.sameAs(I2)) return I2;
         }
         return null;
@@ -262,14 +290,15 @@ public class RoomData extends StdWebMacro
 
 	public static List<MOB> contributeMOBs(List<MOB> inhabs)
 	{
-		for(int i=0;i<inhabs.size();i++)
+		for(Iterator<MOB> m=inhabs.iterator(); m.hasNext();)
 		{
-			MOB M=(MOB)inhabs.get(i);
+			MOB M=m.next();
 			if(M.isGeneric())
 			{
 				if((getReferenceMOB(M)==null)&&(M.isSavable()))
 				{
 					MOB M3=(MOB)M.copyOf();
+					M3.setExpirationDate(System.currentTimeMillis());
 					mobs.add(M3);
 					for(int i3=0;i3<M3.numItems();i3++)
 					{
@@ -294,15 +323,15 @@ public class RoomData extends StdWebMacro
 
 	public static List<Item> contributeItems(List<Item> inhabs)
 	{
-		for(int i=0;i<inhabs.size();i++)
+		for(Iterator<Item> i=inhabs.iterator(); i.hasNext();)
 		{
-			Item I=(Item)inhabs.get(i);
+			Item I=i.next();
 			if(I.isGeneric())
 			{
 				boolean found=false;
-				for(int i2=0;i2<items.size();i2++)
+				for(Iterator<Item> i2=items.iterator(); i2.hasNext();)
 				{
-					Item I2=(Item)items.get(i2);
+					Item I2=i2.next();
 					if(I.sameAs(I2))
 					{	found=true;	break;	}
 				}
@@ -311,12 +340,28 @@ public class RoomData extends StdWebMacro
 					Item I2=(Item)I.copyOf();
                     I2.setContainer(null);
                     I2.wearAt(Wearable.IN_INVENTORY);
+					I2.setExpirationDate(System.currentTimeMillis());
 					items.add(I2);
 					I2.stopTicking();
 				}
 			}
 		}
 		return items;
+	}
+	
+	public static final String getObjIDSuffix(Environmental E)
+	{
+		if((E.expirationDate() > (System.currentTimeMillis() - TimeManager.MILI_DAY))
+		&&(E.expirationDate() < System.currentTimeMillis()))
+		{
+			String time = CMLib.time().date2ShortEllapsedTime(System.currentTimeMillis() - E.expirationDate(),TimeUnit.MINUTES);
+			if(time.length()==0)
+				return " (cached new)";
+			else
+				return " (cached "+time+")";
+		}
+		else
+			return " ("+E.ID()+")";
 	}
 
 
@@ -444,9 +489,9 @@ public class RoomData extends StdWebMacro
 						else
 						if(MATCHING.indexOf('@')>0)
 						{
-							for(int m=0;m<moblist.size();m++)
+							for(Iterator<MOB> m=moblist.iterator(); m.hasNext();)
 							{
-								MOB M2=(MOB)moblist.get(m);
+								MOB M2=m.next();
 								if(MATCHING.equals(""+M2))
 								{	classes.addElement(M2);	break;	}
 							}
@@ -495,10 +540,10 @@ public class RoomData extends StdWebMacro
 				str.append("<TR><TD WIDTH=90% ALIGN=CENTER>");
 				str.append("<SELECT ONCHANGE=\"AddMOB(this);\" NAME=MOB"+(classes.size()+1)+">");
 				str.append("<OPTION SELECTED VALUE=\"\">Select a new MOB");
-				for(int i=0;i<moblist.size();i++)
+				for(Iterator<MOB> m=moblist.iterator(); m.hasNext();)
 				{
-					MOB M=(MOB)moblist.get(i);
-					str.append("<OPTION VALUE=\""+M+"\">"+M.Name()+" ("+M.ID()+")");
+					MOB M=m.next();
+					str.append("<OPTION VALUE=\""+M+"\">"+M.Name()+getObjIDSuffix(M));
 				}
 				StringBuffer mlist=(StringBuffer)Resources.getResource("MUDGRINDER-MOBLIST");
 				if(mlist==null)
@@ -607,10 +652,10 @@ public class RoomData extends StdWebMacro
 				str.append("<TR><TD WIDTH=90% ALIGN=CENTER>");
 				str.append("<SELECT ONCHANGE=\"AddItem(this);\" NAME=ITEM"+(classes.size()+1)+">");
 				str.append("<OPTION SELECTED VALUE=\"\">Select a new Item");
-				for(int i=0;i<itemlist.size();i++)
+				for(Iterator<Item> i=itemlist.iterator();i.hasNext();)
 				{
-					Item I=(Item)itemlist.get(i);
-					str.append("<OPTION VALUE=\""+I+"\">"+I.Name()+" ("+I.ID()+")");
+					Item I=i.next();
+					str.append("<OPTION VALUE=\""+I+"\">"+I.Name()+getObjIDSuffix(I));
 				}
 				StringBuffer ilist=(StringBuffer)Resources.getResource("MUDGRINDER-ITEMLIST");
 				if(ilist==null)

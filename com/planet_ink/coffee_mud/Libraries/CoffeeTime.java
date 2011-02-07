@@ -3,6 +3,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.util.Calendar;
 import java.util.TimeZone;
+import java.util.concurrent.TimeUnit;
 
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
@@ -525,6 +526,11 @@ public class CoffeeTime extends StdLibrary implements TimeManager
     
     public String date2ShortEllapsedTime(long time)
     {
+    	return date2ShortEllapsedTime(time, TimeUnit.MILLISECONDS);
+    }
+    
+    public String date2ShortEllapsedTime(long time, TimeUnit minUnit)
+    {
     	StringBuilder str=new StringBuilder("");
     	if(time > (TimeManager.MILI_YEAR))
     	{
@@ -550,24 +556,28 @@ public class CoffeeTime extends StdLibrary implements TimeManager
     		time = time % TimeManager.MILI_DAY;
     		str.append(num+"d ");
     	}
+    	if(minUnit == TimeUnit.DAYS) return str.toString().trim();
     	if(time > (TimeManager.MILI_HOUR))
     	{
     		int num=(int)Math.round(CMath.div(time,TimeManager.MILI_HOUR));
     		time = time % TimeManager.MILI_HOUR;
     		str.append(num+"h ");
     	}
+    	if(minUnit == TimeUnit.HOURS) return str.toString().trim();
     	if(time > (TimeManager.MILI_MINUTE))
     	{
     		int num=(int)Math.round(CMath.div(time,TimeManager.MILI_MINUTE));
     		time = time % TimeManager.MILI_MINUTE;
     		str.append(num+"m ");
     	}
+    	if(minUnit == TimeUnit.MINUTES) return str.toString().trim();
     	if(time > (TimeManager.MILI_SECOND))
     	{
     		int num=(int)Math.round(CMath.div(time,TimeManager.MILI_SECOND));
     		time = time % TimeManager.MILI_SECOND;
     		str.append(num+"s ");
     	}
+    	if(minUnit == TimeUnit.SECONDS) return str.toString().trim();
     	if(str.length()>0)
     		return str.substring(0,str.length()-1);
     	return time+"ms";

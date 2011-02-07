@@ -715,9 +715,9 @@ public class GrinderMobs
 						if(MATCHING.indexOf('@')>0)
 						{
 							Environmental O=null;
-							for(int m=0;m<RoomData.mobs.size();m++)
+							for(Iterator<MOB> m=RoomData.mobs.iterator(); m.hasNext();)
 							{
-								MOB M2=(MOB)RoomData.mobs.get(m);
+								MOB M2=m.next();
 								if(MATCHING.equals(""+M2))
 								{	O=M2;	break;	}
 							}

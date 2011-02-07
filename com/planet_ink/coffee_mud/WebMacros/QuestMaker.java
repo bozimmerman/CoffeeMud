@@ -72,7 +72,7 @@ public class QuestMaker extends StdWebMacro
             if((oldItem!=null)&&(oldItem.sameAs(I)))
                 list.append("SELECTED");
             list.append(">");
-            list.append(I.Name()+" ("+I.ID()+")");
+            list.append(I.Name()+RoomData.getObjIDSuffix(I));
         }
         list.append("<OPTION VALUE=\"\">------ CATALOGED -------");
         String[] names=CMLib.catalog().getCatalogItemNames();
@@ -125,7 +125,7 @@ public class QuestMaker extends StdWebMacro
             if((oldMob!=null)&&(oldMob.sameAs(M2)))
                 list.append("SELECTED");
             list.append(">");
-            list.append(M2.Name()+" ("+M2.ID()+")");
+            list.append(M2.Name()+RoomData.getObjIDSuffix(M2));
         }
         list.append("<OPTION VALUE=\"\">------ CATALOGED -------");
         String[] names=CMLib.catalog().getCatalogMobNames();

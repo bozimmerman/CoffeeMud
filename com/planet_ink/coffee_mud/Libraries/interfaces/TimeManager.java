@@ -15,6 +15,7 @@ import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 import java.text.*;
 
 /* 
@@ -252,6 +253,18 @@ public interface TimeManager extends CMLibrary
      * @return String Formatted ellapsed time
      */
     public String date2ShortEllapsedTime(long time);
+    /**
+     * Converts a given number of ms,
+     * into a number of rl y, m, d,
+     * h, m, and s.
+     * 
+     * <br><br><b>Usage:</b> date2LongEllapsedTime(time)
+     * @param time The time in miliseconds
+     * @param minUnit The smallest unit to return
+     * @return String Formatted ellapsed time
+     */
+    public String date2ShortEllapsedTime(long time, TimeUnit minUnit);
+
     /**
      * Converts a given date into a string of form:
      * MM/DD/YYYY HH:MM AP
