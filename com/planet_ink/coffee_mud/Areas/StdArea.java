@@ -553,7 +553,6 @@ public class StdArea implements Area
         int x=finalInvResetRate(this);
         if(x!=0) return x;
         return CMath.s_int(CMProps.getVar(CMProps.SYSTEM_INVRESETRATE));
-
     }
     
     protected int finalInvResetRate(Area A)
