@@ -1665,7 +1665,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
     throws IOException
     {
         String c="Q";
-        String commandStr="ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890!@#$%^&*()=+-";
+        String commandStr="ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890!@#$%&*()=+-[]|{}_?,.;:~";
         while((mob.session()!=null)&&(!mob.session().killFlag())&&(!c.equals("\n")))
         {
             for(int i : CharStats.CODES.ALL())
