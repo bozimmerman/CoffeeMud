@@ -451,9 +451,9 @@ public class StdArea implements Area
     protected String finalPrejudiceFactors(Area A)
     {
         if(A.prejudiceFactors().length()>0) return A.prejudiceFactors();
-        for(Iterator<Area> i=getParentsIterator();i.hasNext();)
+        for(Enumeration<Area> i=A.getParents();i.hasMoreElements();)
         { 
-        	final String  s=finalPrejudiceFactors(i.next()); 
+        	final String  s=finalPrejudiceFactors(i.nextElement()); 
         	if(s.length()!=0) 
         		return s;
         }
@@ -474,9 +474,9 @@ public class StdArea implements Area
     {
         if(A.itemPricingAdjustments().length>0) 
         	return A.itemPricingAdjustments();
-        for(Iterator<Area> i=getParentsIterator();i.hasNext();)
+        for(Enumeration<Area> i=A.getParents();i.hasMoreElements();)
         { 
-        	final String[] s=finalItemPricingAdjustments(i.next()); 
+        	final String[] s=finalItemPricingAdjustments(i.nextElement()); 
         	if(s.length!=0) 
         		return s;
         }
@@ -493,11 +493,11 @@ public class StdArea implements Area
     }
     protected String finalIgnoreMask(Area A)
     {
-        if(A.ignoreMask().length()>0) return 
-        A.ignoreMask();
-        for(Iterator<Area> i=getParentsIterator();i.hasNext();)
+        if(A.ignoreMask().length()>0) 
+        	return A.ignoreMask();
+        for(Enumeration<Area> i=A.getParents();i.hasMoreElements();)
         { 
-        	final String s=finalIgnoreMask(i.next()); 
+         	final String s=finalIgnoreMask(i.nextElement()); 
         	if(s.length()!=0) 
         		return s;
         }
@@ -515,9 +515,9 @@ public class StdArea implements Area
     {
         if(A.budget().length()>0) 
         	return A.budget();
-        for(Iterator<Area> i=getParentsIterator();i.hasNext();)
+        for(Enumeration<Area> i=A.getParents();i.hasMoreElements();)
         { 
-        	final String s=finalBudget(i.next()); 
+        	final String s=finalBudget(i.nextElement()); 
         	if(s.length()!=0) 
         		return s;
         }
@@ -535,9 +535,9 @@ public class StdArea implements Area
     {
         if(A.devalueRate().length()>0) 
         	return A.devalueRate();
-        for(Iterator<Area> i=getParentsIterator();i.hasNext();)
+        for(Enumeration<Area> i=A.getParents();i.hasMoreElements();)
         { 
-        	final String s=finalDevalueRate(i.next()); 
+        	final String s=finalDevalueRate(i.nextElement()); 
         	if(s.length()!=0) 
         		return s;
         }
@@ -560,9 +560,9 @@ public class StdArea implements Area
     {
         if(A.invResetRate()!=0) 
         	return A.invResetRate();
-        for(Iterator<Area> i=getParentsIterator();i.hasNext();)
+        for(Enumeration<Area> i=A.getParents();i.hasMoreElements();)
         { 
-        	final int x=finalInvResetRate(i.next()); 
+        	final int x=finalInvResetRate(i.nextElement()); 
         	if(x!=0) 
         		return x;
         }
