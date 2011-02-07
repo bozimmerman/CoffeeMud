@@ -169,8 +169,10 @@ public class AbilityRecipeData extends StdWebMacro
                     {
                         AbilityParameters.AbilityParmEditor editor =
                             (AbilityParameters.AbilityParmEditor)CMLib.ableParms().getEditors().get((String)dataRow.elementAt(c,1));
-                        String oldVal = (String)dataRow.elementAt(c,2);
-                        dataRow.setElementAt(c,2,editor.webValue(httpReq,parms,oldVal,"DATA_"+row+"_"+c));
+                        final String oldVal = (String)dataRow.elementAt(c,2);
+                        String newVal = editor.webValue(httpReq,parms,oldVal,"DATA_"+row+"_"+c);
+                        if(newVal != null) newVal = newVal.replace('\'', '`');
+                        dataRow.setElementAt(c,2,newVal);
                     }
             		MOB M = Authenticate.getAuthenticatedMob(httpReq);
                     if(M==null) return " @break@";
