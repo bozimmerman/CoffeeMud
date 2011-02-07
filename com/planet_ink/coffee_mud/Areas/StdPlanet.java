@@ -65,15 +65,4 @@ public class StdPlanet extends StdTimeZone implements SpaceObject
 	public SpaceObject orbiting=null;
 	public SpaceObject orbiting(){return orbiting;}
 	public void setOrbiting(SpaceObject O){orbiting=O;}
-
-	public void addChild(Area Adopted) {
-		super.addChild(Adopted);
-		Adopted.setTimeObj(getTimeObj());
-	}
-	public void initChildren() {
-		super.initChildren();
-		if(children!=null)
-			for(int i=0;i<children.size();i++)
-				((Area)children.elementAt(i)).setTimeObj(getTimeObj());
-	}
 }

@@ -94,8 +94,8 @@ public class StdThinArea extends StdArea
 				getRandomProperRoom();
 		}
 		MultiEnumeration<Room> multiEnumerator = new MultiEnumeration<Room>(new RoomIDEnumerator(this));
-		for(int c=getNumChildren()-1;c>=0;c--)
-			multiEnumerator.addEnumeration(getChild(c).getMetroMap());
+		for(final Iterator<Area> a=getChildrenReverseIterator();a.hasNext();)
+			multiEnumerator.addEnumeration(a.next().getMetroMap());
 		return new CompleteRoomEnumerator(multiEnumerator);
 	}
 }

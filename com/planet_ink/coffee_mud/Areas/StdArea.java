@@ -40,39 +40,40 @@ public class StdArea implements Area
 {
 	public String ID(){	return "StdArea";}
 	protected String 	name="the area";
-	protected String 	description="";
-	protected String 	miscText="";
-	protected String 	archPath="";
-	protected String 	imageName="";
-	protected int 		techLevel=0;
-	protected int 		climateID=Area.CLIMASK_NORMAL;
-	protected long 		tickStatus=Tickable.STATUS_NOT;
-	protected long 		expirationDate=0;
-    protected long 		lastPlayerTime=System.currentTimeMillis();
-    protected int 		flag=Area.STATE_ACTIVE;
-    protected String[] 	xtraValues=null;
-	protected String 	author="";
-	protected String 	currency="";
-    protected STreeMap<String,String> 		
-    					blurbFlags=new STreeMap<String,String>();
+	protected String 	description		="";
+	protected String 	miscText		="";
+	protected String 	archPath		="";
+	protected String 	imageName		="";
+	protected int 		techLevel		=0;
+	protected int 		climateID		=Area.CLIMASK_NORMAL;
+	protected long 		tickStatus		=Tickable.STATUS_NOT;
+	protected long 		expirationDate	=0;
+    protected long 		lastPlayerTime	=System.currentTimeMillis();
+    protected int 		flag			=Area.STATE_ACTIVE;
+    protected String[] 	xtraValues		=null;
+	protected String 	author			="";
+	protected String 	currency		="";
+    protected String 	devalueRate		="";
+    protected String 	budget			="";
+    protected String 	ignoreMask		="";
+    protected String 	prejudiceFactors="";
+    protected boolean 	amDestroyed		=false;
+	protected PhyStats 	phyStats		=(PhyStats)CMClass.getCommon("DefaultPhyStats");
+	protected PhyStats 	basePhyStats	=(PhyStats)CMClass.getCommon("DefaultPhyStats");
+    protected boolean   initializedArea = false;
 	
-	protected PhyStats 	phyStats=(PhyStats)CMClass.getCommon("DefaultPhyStats");
-	protected PhyStats 	basePhyStats=(PhyStats)CMClass.getCommon("DefaultPhyStats");
-	
-	protected STreeMap<String, Room>
-						properRooms=new STreeMap<String, Room>(new RoomIDComparator());
-	protected RoomnumberSet 	properRoomIDSet=null;
-	protected RoomnumberSet 	metroRoomIDSet=null;
-	
-    protected SVector<Area>		children=null;
-    protected SVector<Area>		parents=null;
-    protected SVector<String>	childrenToLoad=new SVector<String>(1);
-    protected SVector<String>	parentsToLoad=new SVector<String>(1);
-	protected SVector<Ability> 	affects=new SVector<Ability>(1);
-	protected SVector<Behavior>	behaviors=new SVector<Behavior>(1);
-	protected SVector<String> 	subOps=new SVector<String>(1);
-    protected SVector<ScriptingEngine> 
-    							scripts=new SVector<ScriptingEngine>(1);
+    protected STreeMap<String,String> blurbFlags		=new STreeMap<String,String>();
+	protected STreeMap<String, Room>  properRooms		=new STreeMap<String, Room>(new RoomIDComparator());
+	protected RoomnumberSet 		  properRoomIDSet	=null;
+	protected RoomnumberSet 		  metroRoomIDSet	=null;
+    protected SLinkedList<Area>		  children			=null;
+    protected SLinkedList<Area>		  parents			=null;
+    protected SLinkedList<String>	  childrenToLoad	=new SLinkedList<String>();
+    protected SLinkedList<String>	  parentsToLoad		=new SLinkedList<String>();
+	protected SVector<Ability> 		  affects			=new SVector<Ability>(1);
+	protected SVector<Behavior>		  behaviors			=new SVector<Behavior>(1);
+	protected SVector<String> 		  subOps			=new SVector<String>(1);
+    protected SVector<ScriptingEngine>scripts			=new SVector<ScriptingEngine>(1);
 
     public void initializeClass(){}
 	public long flags(){return 0;}
@@ -98,8 +99,8 @@ public class StdArea implements Area
     protected Enumeration<String> allBlurbFlags()
     {
     	MultiEnumeration<String> multiEnum = new MultiEnumeration<String>(areaBlurbFlags());
-        for(Enumeration<Area> e=getParents();e.hasMoreElements();)
-        	multiEnum.addEnumeration(e.nextElement().areaBlurbFlags());
+        for(Iterator<Area> i=getParentsIterator();i.hasNext();)
+        	multiEnum.addEnumeration(i.next().areaBlurbFlags());
         return multiEnum;
     }
 
@@ -113,8 +114,8 @@ public class StdArea implements Area
     public int numAllBlurbFlags()
     {
     	int num=numBlurbFlags();
-        for(Enumeration<Area> e = getParents(); e.hasMoreElements();)
-        	num += e.nextElement().numAllBlurbFlags();
+        for(Iterator<Area> i=getParentsIterator();i.hasNext();)
+        	num += i.next().numAllBlurbFlags();
     	return num;
     }
     public Enumeration<String> areaBlurbFlags()
@@ -173,7 +174,6 @@ public class StdArea implements Area
         xtraValues=CMProps.getExtraStatCodesHolder(this);
 	}
     protected void finalize(){CMClass.unbumpCounter(this,CMClass.OBJECT_AREA);}
-    protected boolean amDestroyed=false;
     public void destroy()
     {
         CMLib.map().registerWorldObjectDestroyed(this,null,this);
@@ -189,6 +189,7 @@ public class StdArea implements Area
         currency=null;
         children=null;
         parents=null;
+        initializedArea=true;
         childrenToLoad=null;
         parentsToLoad=null;
         blurbFlags=null;
@@ -199,7 +200,14 @@ public class StdArea implements Area
         climateObj=null;
         properRoomIDSet=null;
         metroRoomIDSet=null;
+    	author="";
+    	currency="";
+        devalueRate="";
+        budget="";
+        ignoreMask="";
+        prejudiceFactors="";
     }
+    
     public boolean amDestroyed(){return amDestroyed;}
     public boolean isSavable()
     {	
@@ -382,12 +390,15 @@ public class StdArea implements Area
 		basePhyStats=(PhyStats)areaA.basePhyStats().copyOf();
 		phyStats=(PhyStats)areaA.phyStats().copyOf();
 
-		parents=null;
-		if(areaA.parents!=null)
+		if(areaA.parents==null)
+			parents=null;
+		else
 			parents=areaA.parents.copyOf();
-		children=null;
-		if(areaA.children!=null)
+		if(areaA.children==null)
+			children=null;
+		else
 			children=areaA.children.copyOf();
+		initializedArea=areaA.initializedArea;
 		if(areaA.blurbFlags!=null)
 			blurbFlags=areaA.blurbFlags.copyOf();
 		affects=new SVector<Ability>(1);
@@ -432,17 +443,21 @@ public class StdArea implements Area
 	}
 	public String displayText(){return "";}
 	public void setDisplayText(String newDisplayText){}
-    protected String prejudiceFactors="";
     public String finalPrejudiceFactors()
     {
         String s=finalPrejudiceFactors(this);
         if(s.length()>0) return s;
         return CMProps.getVar(CMProps.SYSTEM_IGNOREMASK);
     }
-    protected String finalPrejudiceFactors(Area A){
+    protected String finalPrejudiceFactors(Area A)
+    {
         if(A.prejudiceFactors().length()>0) return A.prejudiceFactors();
-        for(Enumeration e=A.getParents();e.hasMoreElements();)
-        { String  s=finalPrejudiceFactors((Area)e.nextElement()); if(s.length()!=0) return s;}
+        for(Iterator<Area> i=getParentsIterator();i.hasNext();)
+        { 
+        	final String  s=finalPrejudiceFactors(i.next()); 
+        	if(s.length()!=0) 
+        		return s;
+        }
         return "";
     }
     public String prejudiceFactors(){return prejudiceFactors;}
@@ -451,59 +466,82 @@ public class StdArea implements Area
     protected final static String[] empty=new String[0];
     public String[] finalItemPricingAdjustments()
     {
-        String[] s=finalItemPricingAdjustments(this);
+        final String[] s=finalItemPricingAdjustments(this);
         if(s.length>0) return s;
         return CMParms.toStringArray(CMParms.parseSemicolons(CMProps.getVar(CMProps.SYSTEM_PRICEFACTORS).trim(),true));
     }
-    protected String[] finalItemPricingAdjustments(Area A){
-        if(A.itemPricingAdjustments().length>0) return A.itemPricingAdjustments();
-        for(Enumeration e=A.getParents();e.hasMoreElements();)
-        { String[]  s=finalItemPricingAdjustments((Area)e.nextElement()); if(s.length!=0) return s;}
+    
+    protected String[] finalItemPricingAdjustments(Area A)
+    {
+        if(A.itemPricingAdjustments().length>0) 
+        	return A.itemPricingAdjustments();
+        for(Iterator<Area> i=getParentsIterator();i.hasNext();)
+        { 
+        	final String[] s=finalItemPricingAdjustments(i.next()); 
+        	if(s.length!=0) 
+        		return s;
+        }
         return empty;
     }
+    
     public String[] itemPricingAdjustments(){return itemPricingAdjustments;}
     public void setItemPricingAdjustments(String[] factors){itemPricingAdjustments=factors;}
-    protected String ignoreMask="";
     public String finalIgnoreMask()
     {
         String s=finalIgnoreMask(this);
         if(s.length()>0) return s;
         return CMProps.getVar(CMProps.SYSTEM_IGNOREMASK);
     }
-    protected String finalIgnoreMask(Area A){
-        if(A.ignoreMask().length()>0) return A.ignoreMask();
-        for(Enumeration e=A.getParents();e.hasMoreElements();)
-        { String  s=finalIgnoreMask((Area)e.nextElement()); if(s.length()!=0) return s;}
+    protected String finalIgnoreMask(Area A)
+    {
+        if(A.ignoreMask().length()>0) return 
+        A.ignoreMask();
+        for(Iterator<Area> i=getParentsIterator();i.hasNext();)
+        { 
+        	final String s=finalIgnoreMask(i.next()); 
+        	if(s.length()!=0) 
+        		return s;
+        }
         return "";
     }
     public String ignoreMask(){return ignoreMask;}
     public void setIgnoreMask(String factors){ignoreMask=factors;}
-    protected String budget="";
     public String finalBudget()
     {
-        String s=finalBudget(this);
+        final String s=finalBudget(this);
         if(s.length()>0) return s;
         return CMProps.getVar(CMProps.SYSTEM_BUDGET);
     }
-    protected String finalBudget(Area A){
-        if(A.budget().length()>0) return A.budget();
-        for(Enumeration e=A.getParents();e.hasMoreElements();)
-        { String  s=finalBudget((Area)e.nextElement()); if(s.length()!=0) return s;}
+    protected String finalBudget(Area A)
+    {
+        if(A.budget().length()>0) 
+        	return A.budget();
+        for(Iterator<Area> i=getParentsIterator();i.hasNext();)
+        { 
+        	final String s=finalBudget(i.next()); 
+        	if(s.length()!=0) 
+        		return s;
+        }
         return "";
     }
     public String budget(){return budget;}
     public void setBudget(String factors){budget=factors;}
-    protected String devalueRate="";
     public String finalDevalueRate()
     {
-        String s=finalDevalueRate(this);
+        final String s=finalDevalueRate(this);
         if(s.length()>0) return s;
         return CMProps.getVar(CMProps.SYSTEM_DEVALUERATE);
     }
-    protected String finalDevalueRate(Area A){
-        if(A.devalueRate().length()>0) return A.devalueRate();
-        for(Enumeration e=A.getParents();e.hasMoreElements();)
-        { String  s=finalDevalueRate((Area)e.nextElement()); if(s.length()!=0) return s;}
+    protected String finalDevalueRate(Area A)
+    {
+        if(A.devalueRate().length()>0) 
+        	return A.devalueRate();
+        for(Iterator<Area> i=getParentsIterator();i.hasNext();)
+        { 
+        	final String s=finalDevalueRate(i.next()); 
+        	if(s.length()!=0) 
+        		return s;
+        }
         return "";
     }
     public String devalueRate(){return devalueRate;}
@@ -518,10 +556,17 @@ public class StdArea implements Area
         return CMath.s_int(CMProps.getVar(CMProps.SYSTEM_INVRESETRATE));
 
     }
-    protected int finalInvResetRate(Area A){
-        if(A.invResetRate()!=0) return A.invResetRate();
-        for(Enumeration e=A.getParents();e.hasMoreElements();)
-        { int x=finalInvResetRate((Area)e.nextElement()); if(x!=0) return x;}
+    
+    protected int finalInvResetRate(Area A)
+    {
+        if(A.invResetRate()!=0) 
+        	return A.invResetRate();
+        for(Iterator<Area> i=getParentsIterator();i.hasNext();)
+        { 
+        	final int x=finalInvResetRate(i.next()); 
+        	if(x!=0) 
+        		return x;
+        }
         return 0;
     }
 
@@ -584,9 +629,9 @@ public class StdArea implements Area
 				return false;
 		}
 		if(parents!=null)
-		for(int i=0;i<parents.size();i++)
-			if(!((Area)parents.elementAt(i)).okMessage(myHost,msg))
-				return false;
+			for(final Iterator<Area> a=parents.iterator();a.hasNext();)
+				if(!a.next().okMessage(myHost,msg))
+					return false;
 
 		if((getTechLevel()>0)&&(!CMath.bset(getTechLevel(),Area.THEME_FANTASY)))
 		{
@@ -690,8 +735,8 @@ public class StdArea implements Area
 			delSubOp(msg.source().Name());
 
 		if(parents!=null)
-		for(int i=0;i<parents.size();i++)
-			((Area)parents.elementAt(i)).executeMsg(myHost,msg);
+			for(final Iterator<Area> a=parents.iterator();a.hasNext();)
+				a.next().executeMsg(myHost,msg);
 	}
 
 	public long getTickStatus(){ return tickStatus;}
@@ -840,10 +885,10 @@ public class StdArea implements Area
 	}
 	public boolean inMyMetroArea(Area A)
 	{
-		if(A==this) return true;
-		if(getNumChildren()==0) return false;
-		for(int i=0;i<getNumChildren();i++)
-			if(getChild(i).inMyMetroArea(A))
+		if(A==this) 
+			return true;
+		for(final Iterator<Area> i=getChildrenIterator();i.hasNext();)
+			if(i.next().inMyMetroArea(A))
 				return true;
 		return false;
 	}
@@ -1182,8 +1227,8 @@ public class StdArea implements Area
 		{
 			metroRoomIDSet.add(roomID);
 			if(!CMath.bset(flags(),Area.FLAG_INSTANCE_CHILD))
-			for(int p=getNumParents()-1;p>=0;p--)
-				getParent(p).addMetroRoomnumber(roomID);
+				for(final Iterator<Area> a=getParentsReverseIterator();a.hasNext();)
+					a.next().addMetroRoomnumber(roomID);
 		}
     }
     public void delMetroRoomnumber(String roomID)
@@ -1195,8 +1240,8 @@ public class StdArea implements Area
 		{
 			metroRoomIDSet.remove(roomID);
 			if(!CMath.bset(flags(),Area.FLAG_INSTANCE_CHILD))
-			for(int p=getNumParents()-1;p>=0;p--)
-				getParent(p).delMetroRoomnumber(roomID);
+				for(final Iterator<Area> a=getParentsReverseIterator();a.hasNext();)
+					a.next().delMetroRoomnumber(roomID);
 		}
     }
     public boolean isRoom(Room R)
@@ -1206,6 +1251,7 @@ public class StdArea implements Area
         	return getProperRoomnumbers().contains(R.roomID());
         return properRooms.containsValue(R);
     }
+    
     public void delProperRoom(Room R)
     {
         if(R==null) return;
@@ -1260,10 +1306,11 @@ public class StdArea implements Area
 	public int metroSize()
 	{
 		int num=properSize();
-		for(int c=getNumChildren()-1;c>=0;c--)
-			num+=getChild(c).metroSize();
+		for(final Iterator<Area> a=getChildrenReverseIterator();a.hasNext();)
+			num+=a.next().metroSize();
 		return num;
 	}
+	
 	public int numberOfProperIDedRooms()
 	{
 		int num=0;
@@ -1278,6 +1325,7 @@ public class StdArea implements Area
 		}
 		return num;
 	}
+	
 	public Room getRandomProperRoom()
 	{
 		String roomID=getProperRoomnumbers().random();
@@ -1287,6 +1335,7 @@ public class StdArea implements Area
 			Log.errOut("StdArea","Unable to random-find: "+roomID);
 		return R;
 	}
+	
 	public Room getRandomMetroRoom()
 	{
 		/*synchronized(metroRooms)
@@ -1334,221 +1383,251 @@ public class StdArea implements Area
         }
         return V.elements();
     }
+    
 	public Enumeration<Room> getCompleteMap(){return getProperMap();}
+	
 	public Enumeration<Room> getMetroMap()
 	{
 		MultiEnumeration<Room> multiEnumerator = new MultiEnumeration<Room>(new IteratorEnumeration<Room>(properRooms.values().iterator()));
-		for(int c=getNumChildren()-1;c>=0;c--)
-			multiEnumerator.addEnumeration(getChild(c).getMetroMap());
+		for(Iterator<Area> a=getChildrenReverseIterator();a.hasNext();)
+			multiEnumerator.addEnumeration(a.next().getMetroMap());
 		return new CompleteRoomEnumerator(multiEnumerator);
 	}
+	
 	public Enumeration<String> subOps()
 	{
 		return subOps.elements();
 	}
 
-    public void addChildToLoad(String str) { childrenToLoad.addElement(str);}
-    public void addParentToLoad(String str) { parentsToLoad.addElement(str);}
-
-	// Children
-	public void initChildren()
+    public void addChildToLoad(String str) { childrenToLoad.add(str);}
+    public void addParentToLoad(String str) { parentsToLoad.add(str); }
+    
+	public SLinkedList<Area> loadAreas(Collection<String> loadableSet) 
 	{
-	    if(children==null)
-		{
-	        children=new SVector<Area>(1);
-	        for(int i=0;i<childrenToLoad.size();i++)
-			{
-	          Area A=CMLib.map().getArea((String)childrenToLoad.elementAt(i));
-	          if(A==null)
-	            continue;
-			children.addElement(A);
-			}
-		}
+    	final SLinkedList<Area> finalSet = new SLinkedList<Area>();
+        for (final String areaName : loadableSet) 
+        {
+            Area A = CMLib.map().getArea(areaName);
+            if (A == null)
+                continue;
+            finalSet.add(A);
+        }
+        return finalSet;
 	}
-	public Enumeration<Area> getChildren() { initChildren(); return children.elements(); }
-	public String getChildrenList() {
-	        initChildren();
-	        StringBuffer str=new StringBuffer("");
-	        for(Enumeration e=getChildren(); e.hasMoreElements();) {
-	                Area A=(Area)e.nextElement();
-	                if(str.length()>0) str.append(";");
-	                str.append(A.name());
-	        }
-	        return str.toString();
+	
+	public void initializeAreaLink() 
+	{
+		initializedArea=true;
+		parents=loadAreas(parentsToLoad);
+		children=loadAreas(childrenToLoad);
+	}
+	
+    protected final Iterator<Area> getParentsIterator()
+    {
+    	if(!initializedArea) initializeAreaLink();
+    	return parents.iterator();
+    }
+    
+    protected final Iterator<Area> getParentsReverseIterator()
+    {
+    	if(!initializedArea) initializeAreaLink();
+    	return parents.descendingIterator();
+    }
+    
+    protected final Iterator<Area> getChildrenIterator()
+    {
+    	if(!initializedArea) initializeAreaLink();
+    	return children.iterator();
+    }
+    
+    protected final Iterator<Area> getChildrenReverseIterator()
+    {
+    	if(!initializedArea) initializeAreaLink();
+    	return children.descendingIterator();
+    }
+    
+	public Enumeration<Area> getChildren() 
+	{ 
+		return new IteratorEnumeration<Area>(getChildrenIterator()); 
+	}
+	
+	public String getChildrenList() 
+	{
+        final StringBuffer str=new StringBuffer("");
+        for(final Iterator<Area> i=getChildrenIterator(); i.hasNext();) 
+        {
+            if(str.length()>0) str.append(";");
+            str.append(i.next().name());
+        }
+        return str.toString();
 	}
 
-	public int getNumChildren() { initChildren(); return children.size(); }
-	public Area getChild(int num) { initChildren(); return (Area)children.elementAt(num); }
-	public Area getChild(String named) {
-	        initChildren();
-	        for(int i=0;i<children.size();i++){
-	                Area A=(Area)children.elementAt(i);
-	                if((A.name().equalsIgnoreCase(named))
-	                   ||(A.Name().equalsIgnoreCase(named)))
-	                       return A;
-	        }
-	        return null;
+	public Area getChild(String named) 
+	{
+        for(final Iterator<Area> i=getChildrenIterator(); i.hasNext();) 
+        {
+            final Area A=i.next();
+            if((A.name().equalsIgnoreCase(named))
+            ||(A.Name().equalsIgnoreCase(named)))
+               return A;
+        }
+        return null;
 	}
-	public boolean isChild(Area named) {
-	        initChildren();
-	        for(int i=0;i<children.size();i++){
-	                Area A=(Area)children.elementAt(i);
-	                if(A.equals(named))
-	                       return true;
-	        }
-	        return false;
+	
+	public boolean isChild(Area area) 
+	{
+        for(final Iterator<Area> i=getChildrenIterator(); i.hasNext();) 
+            if(i.next().equals(area))
+               return true;
+        return false;
 	}
-	public boolean isChild(String named) {
-	        initChildren();
-	        for(int i=0;i<children.size();i++){
-	                Area A=(Area)children.elementAt(i);
-	                if((A.name().equalsIgnoreCase(named))
-	                   ||(A.Name().equalsIgnoreCase(named)))
-	                        return true;
-	        }
-	        return false;
+	
+	public boolean isChild(String named) 
+	{
+        for(final Iterator<Area> i=getChildrenIterator(); i.hasNext();) 
+        {
+            final Area A=i.next();
+            if((A.name().equalsIgnoreCase(named))
+            ||(A.Name().equalsIgnoreCase(named)))
+                return true;
+        }
+        return false;
 	}
-	public void addChild(Area Adopted) {
-	        initChildren();
-	        // So areas can load ok, the code needs to be able to replace 'dummy' children with 'real' ones
-	        for(int i=0;i<children.size();i++){
-	                Area A=(Area)children.elementAt(i);
-	                if(A.Name().equalsIgnoreCase(Adopted.Name())){
-	                        children.setElementAt(Adopted, i);
-	                        return;
-	                }
-	        }
-	        children.addElement(Adopted);
+	
+	public void addChild(Area area) 
+	{
+		if(!canChild(area))
+			return;
+        for(final Iterator<Area> i=getChildrenIterator(); i.hasNext();) 
+        {
+            final Area A=i.next();
+            if(A.Name().equalsIgnoreCase(area.Name()))
+            {
+            	children.remove(A);
+            	break;
+            }
+        }
+        children.add(area);
 	}
-	public void removeChild(Area Disowned) { initChildren(); children.removeElement(Disowned); }
-	public void removeChild(int Disowned) { initChildren(); children.removeElementAt(Disowned); }
+	
+	public void removeChild(Area area) 
+	{ 
+		if(isChild(area))
+			children.remove(area);
+	}
+	
 	// child based circular reference check
-	public boolean canChild(Area newChild) {
-	        initParents();
-	        // Someone asked this area if newChild can be a child to them,
-	        // which means this is a parent to someone.  If newChild is a
-	        // parent, directly or indirectly, return false.
-	        if(parents.contains(newChild))
-	        {
-	                return false; // It is directly a parent
-	        }
-	        for(int i=0;i<parents.size();i++) {
-	                // check with all the parents about how they feel
-	                Area rent=(Area)parents.elementAt(i);
-	                // as soon as any parent says false, dump that false back to them
-	                if(!(rent.canChild(newChild)))
-	                {
-	                        return false;
-	                }
-	        }
-	        // no parent is the same as newChild, nor is it indirectly a parent.
-	        // Go for it!
-	        return true;
+	public boolean canChild(Area area) 
+	{
+		for(final Iterator<Area> a=getParentsIterator(); a.hasNext(); )
+		{
+			final Area A=a.next();
+			if(A==area) 
+				return false;
+			if(!A.canChild(area))
+				return false;
+		}
+		return true;
 	}
 
 	// Parent
-	public void initParents() {
-	        if (parents == null) {
-	                parents = new SVector<Area>();
-	                for (int i = 0; i < parentsToLoad.size(); i++) {
-	                        Area A = CMLib.map().getArea((String)parentsToLoad.elementAt(i));
-	                        if (A == null)
-	                                continue;
-	                        parents.addElement(A);
-	                }
-	        }
+	public Enumeration<Area> getParents() 
+	{ 
+		return new IteratorEnumeration<Area>(getParentsIterator());
 	}
-	public Enumeration<Area> getParents() { initParents(); return parents.elements(); }
+	
     public List<Area> getParentsRecurse()
     {
-        Vector V=new Vector();
-        Area A=null;
-        for(Enumeration e=getParents();e.hasMoreElements();)
+        final LinkedList<Area> V=new LinkedList<Area>();
+        for(final Iterator<Area> a=getParentsIterator();a.hasNext();)
         {
-            A=(Area)e.nextElement();
-            V.addElement(A);
+            final Area A=(Area)a.next();
+            V.add(A);
             V.addAll(A.getParentsRecurse());
         }
         return V;
     }
 
-	public String getParentsList() {
-	        initParents();
-	        StringBuffer str=new StringBuffer("");
-	        for(Enumeration e=getParents(); e.hasMoreElements();) 
-	        {
-                Area A=(Area)e.nextElement();
-                if(str.length()>0) str.append(";");
-                str.append(A.name());
-	        }
-	        return str.toString();
+	public String getParentsList() 
+	{
+        StringBuffer str=new StringBuffer("");
+        for(final Iterator<Area> a=getParentsIterator();a.hasNext();)
+        {
+            final Area A=(Area)a.next();
+            if(str.length()>0) str.append(";");
+            str.append(A.name());
+        }
+        return str.toString();
 	}
 
-	public int getNumParents() { initParents(); return parents.size(); }
-	public Area getParent(int num) { initParents(); return (Area)parents.elementAt(num); }
-	public Area getParent(String named) {
-	        initParents();
-	        for(int i=0;i<parents.size();i++){
-	                Area A=(Area)parents.elementAt(i);
-	                if((A.name().equalsIgnoreCase(named))
-	                   ||(A.Name().equalsIgnoreCase(named)))
-	                       return A;
-	        }
-	        return null;
+	public Area getParent(String named) 
+	{
+        for(final Iterator<Area> a=getParentsIterator();a.hasNext();)
+        {
+            final Area A=(Area)a.next();
+            if((A.name().equalsIgnoreCase(named))
+            ||(A.Name().equalsIgnoreCase(named)))
+               return A;
+        }
+        return null;
 	}
-	public boolean isParent(Area named) {
-	        initParents();
-	        for(int i=0;i<parents.size();i++){
-	                Area A=(Area)parents.elementAt(i);
-	                if(A.equals(named))
-	                       return true;
-	        }
-	        return false;
+	
+	public boolean isParent(Area area) 
+	{
+        for(final Iterator<Area> a=getParentsIterator();a.hasNext();)
+        {
+            final Area A=(Area)a.next();
+            if(A == area)
+               return true;
+        }
+        return false;
 	}
-	public boolean isParent(String named) {
-	        initParents();
-	        for(int i=0;i<parents.size();i++){
-	                Area A=(Area)parents.elementAt(i);
-	                if((A.name().equalsIgnoreCase(named))
-	                   ||(A.Name().equalsIgnoreCase(named)))
-	                        return true;
-	        }
-	        return false;
+	
+	public boolean isParent(String named) 
+	{
+        for(final Iterator<Area> a=getParentsIterator();a.hasNext();)
+        {
+            final Area A=(Area)a.next();
+            if((A.name().equalsIgnoreCase(named))
+            ||(A.Name().equalsIgnoreCase(named)))
+                return true;
+        }
+        return false;
 	}
-	public void addParent(Area Adopted) {
-	        initParents();
-	        for(int i=0;i<parents.size();i++){
-	                Area A=(Area)parents.elementAt(i);
-	                if(A.Name().equalsIgnoreCase(Adopted.Name())){
-	                        parents.setElementAt(Adopted, i);
-	                        return;
-	                }
-	        }
-	        parents.addElement(Adopted);
+	
+	public void addParent(Area area) 
+	{
+		if(!canParent(area))
+			return;
+        for(final Iterator<Area> i=getParentsIterator(); i.hasNext();) 
+        {
+            final Area A=i.next();
+            if(A.Name().equalsIgnoreCase(area.Name()))
+            {
+            	parents.remove(A);
+            	break;
+            }
+        }
+        parents.add(area);
 	}
-	public void removeParent(Area Disowned) { initParents();parents.removeElement(Disowned); }
-	public void removeParent(int Disowned) { initParents();parents.removeElementAt(Disowned); }
-	public boolean canParent(Area newParent) {
-	        initChildren();
-	        // Someone asked this area if newParent can be a parent to them,
-	        // which means this is a child to someone.  If newParent is a
-	        // child, directly or indirectly, return false.
-	        if(children.contains(newParent))
-	        {
-	                return false; // It is directly a child, so it can't Parent
-	        }
-	        for(int i=0;i<children.size();i++) {
-	                // check with all the children about how they feel
-	                Area child=(Area)children.elementAt(i);
-	                // as soon as any child says false, dump that false back to them
-	                if(!(child.canParent(newParent)))
-	                {
-	                        return false;
-	                }
-	        }
-	        // no child is the same as newParent, nor is it indirectly a child.
-	        // Go for it!
-	        return true;
+	
+	public void removeParent(Area area) 
+	{ 
+		if(isParent(area))
+			parents.remove(area);
+	}
+	
+	public boolean canParent(Area area) 
+	{
+		for(final Iterator<Area> a=getChildrenIterator(); a.hasNext(); )
+		{
+			final Area A=a.next();
+			if(A==area) 
+				return false;
+			if(!A.canParent(area))
+				return false;
+		}
+		return true;
 	}
 
     public int getSaveStatIndex(){return (xtraValues==null)?getStatCodes().length:getStatCodes().length-xtraValues.length;}

@@ -39,11 +39,11 @@ public class StdThinInstance extends StdThinArea
 	public String ID(){	return "StdThinInstance";}
 	private long flags=Area.FLAG_THIN|Area.FLAG_INSTANCE_PARENT;
 	public long flags(){return flags;}
-	private class ThinChild
+	private class ThinInstanceChild
 	{
 		public List<MOB> mobs;
 		public StdThinInstance A;
-		public ThinChild(StdThinInstance A, List<MOB> mobs)
+		public ThinInstanceChild(StdThinInstance A, List<MOB> mobs)
 		{
 			this.A=A;
 			this.mobs=mobs;
@@ -51,7 +51,7 @@ public class StdThinInstance extends StdThinArea
 
 	}
 	
-	private SVector<ThinChild> children = new SVector<ThinChild>();
+	private SVector<ThinInstanceChild> instanceChildren = new SVector<ThinInstanceChild>();
 	private volatile int instanceCounter=0;
 	private long childCheckDown=CMProps.getMillisPerMudHour()/CMProps.getTickMillis();
 	
@@ -157,14 +157,14 @@ public class StdThinInstance extends StdThinArea
 		if((--childCheckDown)<=0)
 		{
 			childCheckDown=CMProps.getMillisPerMudHour()/CMProps.getTickMillis();
-	    	synchronized(children)
+	    	synchronized(instanceChildren)
 	    	{
-        		for(int i=children.size()-1;i>=0;i--) 
+        		for(int i=instanceChildren.size()-1;i>=0;i--) 
         		{
-        			StdThinInstance childA=children.elementAt(i).A;
+        			StdThinInstance childA=instanceChildren.elementAt(i).A;
         			if(childA.getAreaState() > Area.STATE_ACTIVE)
         			{
-        				List<MOB> V=children.elementAt(i).mobs;
+        				List<MOB> V=instanceChildren.elementAt(i).mobs;
         				boolean anyInside=false;
         				for(int v=0;v<V.size();v++)
         				{
@@ -179,7 +179,7 @@ public class StdThinInstance extends StdThinArea
         				}
         				if(!anyInside)
         				{
-        					children.remove(i);
+        					instanceChildren.remove(i);
             				for(int v=0;v<V.size();v++)
             				{
             					MOB M=(MOB)V.get(v);
@@ -217,18 +217,18 @@ public class StdThinInstance extends StdThinArea
         &&(!CMSecurity.isAllowed(msg.source(),(Room)msg.target(),"CMDAREAS"))
         &&(((msg.source().getStartRoom()==null)||(msg.source().getStartRoom().getArea()!=this))))
         {
-        	synchronized(children)
+        	synchronized(instanceChildren)
         	{
         		int myDex=-1;
-        		for(int i=0;i<children.size();i++) {
-        			List<MOB> V=children.elementAt(i).mobs;
+        		for(int i=0;i<instanceChildren.size();i++) {
+        			List<MOB> V=instanceChildren.elementAt(i).mobs;
         			if(V.contains(msg.source())){  myDex=i; break;}
         		}
         		Set<MOB> grp = msg.source().getGroupMembers(new HashSet<MOB>());
-        		for(int i=0;i<children.size();i++) {
+        		for(int i=0;i<instanceChildren.size();i++) {
         			if(i!=myDex)
         			{
-        				List<MOB> V=children.elementAt(i).mobs;
+        				List<MOB> V=instanceChildren.elementAt(i).mobs;
 	        			for(int v=V.size()-1;v>=0;v--)
 	        			{
 	        				MOB M=(MOB)V.get(v);
@@ -241,10 +241,10 @@ public class StdThinInstance extends StdThinArea
 		        				}
 		        				else
 		        				if((CMLib.flags().isInTheGame(M,true))
-	        					&&(M.location().getArea()!=children.elementAt(i).A))
+	        					&&(M.location().getArea()!=instanceChildren.elementAt(i).A))
 		        				{
 		        					V.remove(M);
-		        					children.get(myDex).mobs.add(M);
+		        					instanceChildren.get(myDex).mobs.add(M);
 		        				}
 		        			}
 	        			}
@@ -265,10 +265,10 @@ public class StdThinInstance extends StdThinArea
         			redirectA=newA;
         			CMLib.map().addArea(newA);
         			newA.setAreaState(Area.STATE_ACTIVE); // starts ticking
-        			children.add(new ThinChild(redirectA,new SVector<MOB>(msg.source())));
+        			instanceChildren.add(new ThinInstanceChild(redirectA,new SVector<MOB>(msg.source())));
         		}
         		else
-        			redirectA=children.get(myDex).A;
+        			redirectA=instanceChildren.get(myDex).A;
         		Room R=redirectA.getRoom(redirectA.convertToMyArea(CMLib.map().getExtendedRoomID((Room)msg.target())));
         		if(R!=null) msg.setTarget(R);
         	}

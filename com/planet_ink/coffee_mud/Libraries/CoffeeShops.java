@@ -1104,9 +1104,9 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
                     {
                         boolean related=myArea.isChild(A)||A.isParent(myArea);
                         if(!related)
-                            for(int p=0;p<myArea.getNumParents();p++)
-                            {
-                                Area P=myArea.getParent(p);
+            	        	for(Enumeration<Area> p=A.getParents();p.hasMoreElements();)
+            		        {
+                                Area P=p.nextElement();
                                 if((P!=null)&&(P!=myArea)&&((P==A)||(A.isParent(P))||(P.isChild(A))))
                                 { related=true; break;}
                             }

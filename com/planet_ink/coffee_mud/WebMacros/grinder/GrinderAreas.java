@@ -290,8 +290,8 @@ public class GrinderAreas
 
         // modify Child Area list
         String parents=httpReq.getRequestParameter("PARENT");
-        for(int v=0;v<A.getNumParents();v++)
-            A.removeParent(v);
+        while(A.getParents().hasMoreElements())
+        	A.removeParent(A.getParents().nextElement());
         if((parents!=null)&&(parents.length()>0))
         {
             Area parent=CMLib.map().getArea(parents);
@@ -330,8 +330,8 @@ public class GrinderAreas
 
         // modify Child Area list
         String children=httpReq.getRequestParameter("CHILDREN");
-        for(int v=0;v<A.getNumChildren();v++)
-            A.removeChild(v);
+        while(A.getChildren().hasMoreElements())
+        	A.removeChild(A.getChildren().nextElement());
         if((children!=null)&&(children.length()>0))
         {
 			Area child=CMLib.map().getArea(children);

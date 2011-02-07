@@ -427,6 +427,12 @@ public interface Area extends Economics, PhysicalAgent
 	 */
 	public Enumeration<String> subOps();
 	/**
+	 * Initialize Area Links is called after an area is loaded from disk
+	 * to resolve any hard, children or parent links, or perform other
+	 * related area initialization.
+	 */
+	public void initializeAreaLink(); 
+	/**
 	 * Returns a descriptive list of statistics about this area based on a
 	 * snapshot from getAreaIStats(), which is cached after being generated.
 	 * This stringbuffer returned is user-readable.
@@ -473,19 +479,6 @@ public interface Area extends Economics, PhysicalAgent
      */
     public String getChildrenList();
     /**
-     * Returns the number of Child areas to this Area
-     * A Child Area inherets certain behaviors and property effects from its Parents
-     * @return the number of children this Area has
-     */
-    public int getNumChildren();
-    /**
-     * Returns the enumerated Child Area object for this Area
-     * A Child Area inherets certain behaviors and property effects from its Parents
-     * @param num which child to return
-     * @return an Area Child object
-     */
-    public Area getChild(int num);
-    /**
      * Returns the named Child Area object for this Area
      * A Child Area inherets certain behaviors and property effects from its Parents
      * @param named the name of an Area
@@ -495,10 +488,10 @@ public interface Area extends Economics, PhysicalAgent
     /**
      * Returns whether the Area is a child of this Area
      * A Child Area inherets certain behaviors and property effects from its Parents
-     * @param named an Area object
+     * @param area an Area object
      * @return whether the area is a child of this one
      */
-    public boolean isChild(Area named);
+    public boolean isChild(Area area);
     /**
      * Returns whether the Area named is a child of this Area
      * A Child Area inherets certain behaviors and property effects from its Parents
@@ -509,28 +502,22 @@ public interface Area extends Economics, PhysicalAgent
     /**
      * Designates the given Area object as a Child of this one.
      * A Child Area inherets certain behaviors and property effects from its Parents
-     * @param Adopted an Area object
+     * @param area an Area object
      */
-    public void addChild(Area Adopted);
+    public void addChild(Area area);
     /**
      * Designates the given Area object as no longer being Child of this one.
      * A Child Area inherets certain behaviors and property effects from its Parents
-     * @param Disowned an Area object
+     * @param area an Area object
      */
-    public void removeChild(Area Disowned);
-    /**
-     * Designates the given Area enumerated as no longer being Child of this one.
-     * A Child Area inherets certain behaviors and property effects from its Parents
-     * @param Disowned the index into this Areas children
-     */
-    public void removeChild(int Disowned);
+    public void removeChild(Area area);
     /**
      * Returns whether the Area named MAY BE designated as a child of this Area
      * A Child Area inherets certain behaviors and property effects from its Parents
-     * @param newChild an Area to check
+     * @param area an Area to check
      * @return whether the Area named MAY BE designated as a child of this Area
      */
-    public boolean canChild(Area newChild);
+    public boolean canChild(Area area);
     /**
      * An enumerator list of Area objects representing the Parent Areas of this
      * Area.
@@ -545,19 +532,6 @@ public interface Area extends Economics, PhysicalAgent
      * @return a string of semicolon-delimited names
      */
     public String getParentsList();
-    /**
-     * Returns the number of Parent areas to this Area
-     * A Parent Area passes down certain behaviors and property effects to its children
-     * @return the number of children this Area has
-     */
-    public int getNumParents();
-    /**
-     * Returns the named Parent Area object for this Area
-     * A Parent Area passes down certain behaviors and property effects to its children
-     * @param num the num of an Parent
-     * @return an Area Parent object
-     */
-    public Area getParent(int num);
     /**
      * Returns the named Parent Area object for this Area
      * A Parent Area passes down certain behaviors and property effects to its children
@@ -577,7 +551,7 @@ public interface Area extends Economics, PhysicalAgent
      * @param named an Area object
      * @return whether the area is a Parent of this one
      */
-    public boolean isParent(Area named);
+    public boolean isParent(Area area);
     /**
      * Returns whether the Area named is a Parent of this Area
      * A Parent Area passes down certain behaviors and property effects to its children
@@ -588,21 +562,15 @@ public interface Area extends Economics, PhysicalAgent
     /**
      * Designates the given Area object as a Parent of this one.
      * A Parent Area passes down certain behaviors and property effects to its children
-     * @param Adopted an Area object
+     * @param area an Area object
      */
-    public void addParent(Area Adopted);
+    public void addParent(Area area);
     /**
      * Designates the given Area object as no longer being Parent of this one.
      * A Parent Area passes down certain behaviors and property effects to its children
-     * @param Disowned an Area object
+     * @param area an Area object
      */
-    public void removeParent(Area Disowned);
-    /**
-     * Designates the given Area enumerated as no longer being Parent of this one.
-     * A Parent Area passes down certain behaviors and property effects to its children
-     * @param Disowned the index into this Areas children
-     */
-    public void removeParent(int Disowned);
+    public void removeParent(Area area);
     /**
      * Returns whether the Area named MAY BE designated as a parent of this Area
      * A Parent Area passes down certain behaviors and property effects to its children
