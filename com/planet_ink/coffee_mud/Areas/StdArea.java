@@ -1420,12 +1420,12 @@ public class StdArea implements Area
 			return;
 		SLinkedList<Area> futureParents=loadAreas(parentsToLoad);
 		parents=new SLinkedList<Area>();
+		children=new SLinkedList<Area>();
 		for(Area parentA : futureParents)
 			if(canParent(parentA))
 				addParent(parentA);
 			else
 				Log.errOut("StdArea","Can not make '"+parentA.name()+"' parent of '"+name+"'");
-		children=new SLinkedList<Area>();
 		SLinkedList<Area> futureChildren=loadAreas(childrenToLoad);
 		for(Area childA : futureChildren)
 			if(canChild(childA))
