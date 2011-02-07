@@ -1419,7 +1419,6 @@ public class StdArea implements Area
 	{
 		if(initializedArea)
 			return;
-		initializedArea=true;
 		SLinkedList<Area> futureParents=loadAreas(parentsToLoad);
 		parents=new SLinkedList<Area>();
 		for(Area parentA : futureParents)
@@ -1430,6 +1429,7 @@ public class StdArea implements Area
 		for(Area childA : futureChildren)
 			if(canChild(childA))
 				addChild(childA);
+		initializedArea=true;
 	}
 	
     protected final Iterator<Area> getParentsIterator()

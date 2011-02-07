@@ -917,12 +917,12 @@ public class StdSpaceShip implements Area, SpaceObject, SpaceShip
 	{
 		if(initializedArea)
 			return;
-		initializedArea=true;
 		SLinkedList<Area> futureParents=loadAreas(parentsToLoad);
 		parents=new SLinkedList<Area>();
 		for(Area parentA : futureParents)
 			if(canParent(parentA))
 				addParent(parentA);
+		initializedArea=true;
 	}
 		
 	
