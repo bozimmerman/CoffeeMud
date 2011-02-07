@@ -18,7 +18,6 @@ import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
-import java.util.Map;
 
 /*
    Copyright 2000-2010 Bo Zimmerman
@@ -1424,11 +1423,15 @@ public class StdArea implements Area
 		for(Area parentA : futureParents)
 			if(canParent(parentA))
 				addParent(parentA);
+			else
+				Log.errOut("StdSpaceShip","Can not make '"+parentA.name()+"' parent of '"+name+"'");
 		children=new SLinkedList<Area>();
 		SLinkedList<Area> futureChildren=loadAreas(childrenToLoad);
 		for(Area childA : futureChildren)
 			if(canChild(childA))
 				addChild(childA);
+			else
+				Log.errOut("StdSpaceShip","Can not make '"+childA.name()+"' child of '"+name+"'");
 		initializedArea=true;
 	}
 	

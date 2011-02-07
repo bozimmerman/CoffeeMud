@@ -922,6 +922,8 @@ public class StdSpaceShip implements Area, SpaceObject, SpaceShip
 		for(Area parentA : futureParents)
 			if(canParent(parentA))
 				addParent(parentA);
+			else
+				Log.errOut("StdSpaceShip","Can not make '"+parentA.name()+"' parent of '"+name+"'");
 		initializedArea=true;
 	}
 		
