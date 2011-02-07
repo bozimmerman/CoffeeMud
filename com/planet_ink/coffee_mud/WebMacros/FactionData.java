@@ -404,16 +404,13 @@ public class FactionData extends StdWebMacro
                     if((mask==null)&&(F.factors()!=null))
                     {
                         int v=0;
-                        for(Enumeration e=F.factors();e.hasMoreElements();)
+                        for(Enumeration<Faction.FactionZapFactor> e=F.factors();e.hasMoreElements();)
                         {
-                            Object[] factor=(Object[])e.nextElement();
-                            if(factor.length==3)
-                            {
-                                httpReq.addRequestParameters("ADJFACTOR"+v,(String)factor[2]);
-                                httpReq.addRequestParameters("ADJFACTORGAIN"+v,CMath.toPct(((Double)factor[0]).doubleValue()));
-                                httpReq.addRequestParameters("ADJFACTORLOSS"+v,CMath.toPct(((Double)factor[1]).doubleValue()));
-                                v++;
-                            }
+                            Faction.FactionZapFactor factor=e.nextElement();
+                            httpReq.addRequestParameters("ADJFACTOR"+v,factor.MOBMask());
+                            httpReq.addRequestParameters("ADJFACTORGAIN"+v,CMath.toPct(factor.gainFactor()));
+                            httpReq.addRequestParameters("ADJFACTORLOSS"+v,CMath.toPct(factor.gainFactor()));
+                            v++;
                         }
                     }
                     

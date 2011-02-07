@@ -1069,13 +1069,14 @@ public class StdMOB implements MOB
 	public Rideable riding(){return riding;}
 	public void setRiding(Rideable ride)
 	{
-		if((ride!=null)&&(riding()!=null)&&(riding()==ride)&&(riding().amRiding(this)))
+		final Rideable amRiding=riding();
+		if((ride!=null)&&(amRiding!=null)&&(amRiding==ride)&&(amRiding.amRiding(this)))
 			return;
-		if((riding()!=null)&&(riding().amRiding(this)))
-			riding().delRider(this);
+		if((amRiding!=null)&&(amRiding.amRiding(this)))
+			amRiding.delRider(this);
 		riding=ride;
-		if((riding()!=null)&&(!riding().amRiding(this)))
-			riding().addRider(this);
+		if((ride!=null)&&(!ride.amRiding(this)))
+			ride.addRider(this);
 	}
 	public Session session()
 	{

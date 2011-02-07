@@ -18,6 +18,8 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import com.jcraft.jzlib.*;
 import java.io.*;
 import java.util.*;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.locks.ReentrantLock;
 import java.sql.*;
 import java.net.*;
 
@@ -39,65 +41,63 @@ import java.net.*;
 @SuppressWarnings("unchecked")
 public class DefaultSession extends Thread implements Session
 {
-	protected int status=0;
-	protected int snoopSuspensionStack=0;
-    protected Socket sock;
+    protected static final int 		SOTIMEOUT		= 300;
+    private final HashSet 			telnetSupportSet= new HashSet();
+    private static final HashSet 	mxpSupportSet	= new HashSet();
+    private static final Hashtable  mxpVersionInfo	= new Hashtable();
+    protected static int 			sessionCounter	= 0;
+    
+	protected int 		     status =0;
+	protected int 		     snoopSuspensionStack=0;
+    protected Socket 	     sock;
     protected BufferedReader in;
-    protected PrintWriter out;
-    protected OutputStream rawout;
-	protected MOB mob;
-	protected PlayerAccount acct=null;
-	protected boolean killFlag=false;
-	protected boolean needPrompt=false;
-	protected boolean afkFlag=false;
-    protected String afkMessage=null;
-    protected StringBuffer input=new StringBuffer("");
-    private StringBuffer preliminaryInput=new StringBuffer("");
-    private StringBuffer fakeInput=null;
-	protected boolean waiting=false;
-    protected static final int SOTIMEOUT=300;
-	protected Vector<String> previousCmd=new Vector<String>();
-    protected String[] clookup=null;
-	protected String lastColorStr="";
-	protected String lastStr=null;
-	protected int spamStack=0;
-	protected Vector snoops=new Vector();
-	protected Vector<String> prevMsgs=new Vector<String>();
-	protected StringBuffer curPrevMsg=null;
+    protected PrintWriter    out;
+    protected OutputStream   rawout;
+	protected MOB 		     mob;
+	protected PlayerAccount  acct=null;
+	protected boolean 	     killFlag=false;
+	protected boolean 	     needPrompt=false;
+	protected boolean 	     afkFlag=false;
+    protected String 	     afkMessage=null;
+    protected StringBuffer   input=new StringBuffer("");
+    protected StringBuffer   preliminaryInput=new StringBuffer("");
+    protected StringBuffer   fakeInput=null;
+	protected boolean 	     waiting=false;
+	protected List<String>   previousCmd=new Vector<String>();
+    protected String[] 	     clookup=null;
+	protected String 	     lastColorStr="";
+	protected String 	     lastStr=null;
+	protected int 		     spamStack=0;
+	protected List 		     snoops=new Vector();
+	protected List<String>   prevMsgs=new Vector<String>();
+	protected StringBuffer   curPrevMsg=null;
+	protected boolean 	     lastWasCR=false;
+	protected boolean 	     lastWasLF=false;
+	protected boolean 	     suspendCommandLine=false;
+	protected boolean[]      serverTelnetCodes=new boolean[256];
+	protected boolean[]      clientTelnetCodes=new boolean[256];
+    protected String 	     terminalType="UNKNOWN";
+    protected int 		     terminalWidth = 80;
+    protected int 		     terminalHeight = 25;
+    protected long 		     writeStartTime=0;
+    protected boolean 	     bNextByteIs255=false;
+    protected boolean 	     connectionComplete=false;
+    protected ReentrantLock  writeLock = new ReentrantLock(true);
 
-	protected boolean lastWasCR=false;
-	protected boolean lastWasLF=false;
-	protected boolean suspendCommandLine=false;
-
-    private long lastStart=System.currentTimeMillis();
-    private long lastStop=System.currentTimeMillis();
-    private long lastLoopTop=System.currentTimeMillis();
-    private long userLoginTime=System.currentTimeMillis();
-    private long onlineTime=System.currentTimeMillis();
-    private long lastPKFight=0;
-    private long lastNPCFight=0;
-    private long lastBlahCheck=0;
-    private long milliTotal=0;
-    private long tickTotal=0;
-    private long lastKeystroke=0;
-    private long promptLastShown=0;
-
-    private boolean[] serverTelnetCodes=new boolean[256];
-    private boolean[] clientTelnetCodes=new boolean[256];
-    protected String terminalType="UNKNOWN";
-    protected int terminalWidth = 80;
-    protected int terminalHeight = 25;
-    protected long writeStartTime=0;
-
-    private final HashSet telnetSupportSet=new HashSet();
-    private static final HashSet mxpSupportSet=new HashSet();
-    private static final Hashtable mxpVersionInfo=new Hashtable();
-    private boolean bNextByteIs255=false;
-    private boolean connectionComplete=false;
-
-    private int currentColor='N';
-    private int lastColor=-1;
-    protected static int sessionCounter=0;
+    protected int  currentColor='N';
+    protected int  lastColor=-1;
+    protected long lastStart=System.currentTimeMillis();
+    protected long lastStop=System.currentTimeMillis();
+    protected long lastLoopTop=System.currentTimeMillis();
+    protected long userLoginTime=System.currentTimeMillis();
+    protected long onlineTime=System.currentTimeMillis();
+    protected long lastPKFight=0;
+    protected long lastNPCFight=0;
+    protected long lastBlahCheck=0;
+    protected long milliTotal=0;
+    protected long tickTotal=0;
+    protected long lastKeystroke=0;
+    protected long promptLastShown=0;
 
     public String ID(){return "DefaultSession";}
     public CMObject newInstance(){try{return (CMObject)getClass().newInstance();}catch(Exception e){return new DefaultSession();}}
@@ -338,7 +338,7 @@ public class DefaultSession extends Thread implements Session
     public void setLastPKFight(){lastPKFight=System.currentTimeMillis();}
     public long getLastNPCFight(){return lastNPCFight;}
     public void setLastNPCFight(){lastNPCFight=System.currentTimeMillis();}
-    public List<String> getLastMsgs(){return (Vector<String>)prevMsgs.clone();}
+    public List<String> getLastMsgs(){return new XVector(prevMsgs);}
 
     public String getTerminalType(){ return terminalType;}
 	public MOB mob(){return mob;}
@@ -355,12 +355,12 @@ public class DefaultSession extends Thread implements Session
 	public void startBeingSnoopedBy(Session S)
 	{
 		if(!snoops.contains(S))
-			snoops.addElement(S);
+			snoops.add(S);
 	}
 	public void stopBeingSnoopedBy(Session S)
 	{
 		while(snoops.contains(S))
-			snoops.removeElement(S);
+			snoops.remove(S);
 	}
 	public boolean amBeingSnoopedBy(Session S)
 	{
@@ -384,9 +384,9 @@ public class DefaultSession extends Thread implements Session
 		if((cmds.size()>0)&&(((String)cmds.get(0)).trim().startsWith("!")))
 			return;
 
-		previousCmd.removeAllElements();
+		previousCmd.clear();
 		for(int i=0;i<cmds.size();i++)
-			previousCmd.addElement(((String)cmds.get(i)));
+			previousCmd.add(((String)cmds.get(i)));
 	}
 
 	public boolean afkFlag(){return afkFlag;}
@@ -418,37 +418,47 @@ public class DefaultSession extends Thread implements Session
 		killFlag=true;
 	}
 
-	public long getWriteStartTime(){return writeStartTime;}
+	protected long getWriteStartTime(){return writeStartTime;}
 	public boolean isLockedUpWriting(){
 		long time=writeStartTime;
 		if(time==0) return false;
 		return ((System.currentTimeMillis()-time)>10000);
 	}
 
-	public void out(char[] c){
-		try{
-			if((out!=null)&&(c!=null)&&(c.length>0))
-			{
-                if(isLockedUpWriting())
-                {
-                    String name=(mob!=null)?mob.Name():getAddress();
-                    Log.errOut("DefaultSession","Kicked out "+name+" due to write-lock ("+out.getClass().getName()+".");
-                    kill(true,true,true);
-                    kill(true,true,true);
-            		CMLib.killThread(this,500,1);
-                }
-                else
-                {
-    				writeStartTime=System.currentTimeMillis()+c.length;
+	public void out(char[] c)
+	{
+		if((out==null)||(c==null)||(c.length==0))
+			return;
+		try
+		{
+        	if(writeLock.tryLock(10000, TimeUnit.MILLISECONDS))
+        	{
+        		try
+        		{
+    				writeStartTime=System.currentTimeMillis();
     				out.write(c);
     				if(out.checkError())
                         kill(true,true,true);
-                }
-			}
+        		}
+        		finally
+        		{
+					writeStartTime=0;
+					writeLock.unlock();
+        		}
+        	}
+        	else
+    		if(!killFlag)
+    		{
+                final String name=(mob!=null)?mob.Name():getAddress();
+                Log.errOut("DefaultSession","Kicked out "+name+" due to write-lock ("+out.getClass().getName()+".");
+                kill(true,true,true);
+                kill(true,true,true);
+        		CMLib.killThread(this,500,1);
+    		}
 		}
         catch(Exception ioe){ killFlag=true;}
-		finally{writeStartTime=0;}
 	}
+	
     public void out(String c){ if(c!=null) out(c.toCharArray());}
     public void out(char c){ char[] cs={c}; out(cs);}
 	public void onlyPrint(String msg){onlyPrint(msg,false);}
@@ -462,7 +472,7 @@ public class DefaultSession extends Thread implements Session
                 {
                     String msgColored=CMStrings.replaceAll(msg,"\n\r",CMLib.coffeeFilter().colorOnlyFilter("\n\r^Z"+((mob==null)?"?":mob.Name())+":^N ",this));
 					for(int s=0;s<snoops.size();s++)
-						((Session)snoops.elementAt(s)).onlyPrint(msgColored,noCache);
+						((Session)snoops.get(s)).onlyPrint(msgColored,noCache);
                 }
 			}catch(IndexOutOfBoundsException x){}
 
@@ -534,8 +544,8 @@ public class DefaultSession extends Thread implements Session
 						synchronized(prevMsgs)
 						{
 							while(prevMsgs.size()>=MAX_PREVMSGS)
-								prevMsgs.removeElementAt(0);
-							prevMsgs.addElement(curPrevMsg.toString());
+								prevMsgs.remove(0);
+							prevMsgs.add(curPrevMsg.toString());
 							curPrevMsg.setLength(0);
 						}
 					}
@@ -1026,7 +1036,7 @@ public class DefaultSession extends Thread implements Session
         }
         if(in.ready()) return in.read();
         int times=sock.getSoTimeout()/100;
-        for(int i=0;i<times;i++) {
+        for(int i=0;i<times && !killFlag;i++) {
             if((in!=null)&&(in.ready())) return in.read();
             try { Thread.sleep(100); } catch(Exception e){ break; }
         }
@@ -1529,7 +1539,7 @@ public class DefaultSession extends Thread implements Session
 	                                    {
 	                                        String msgColored=CMStrings.replaceAll(input,"\n\r",CMLib.coffeeFilter().colorOnlyFilter("\n\r^Z"+((mob==null)?"?":mob.Name())+":^N ",this));
 	    									for(int s=0;s<snoops.size();s++)
-	    										((Session)snoops.elementAt(s)).rawPrintln(msgColored);
+	    										((Session)snoops.get(s)).rawPrintln(msgColored);
 	                                    }
 	
 	    								lastStart=System.currentTimeMillis();
@@ -1614,7 +1624,7 @@ public class DefaultSession extends Thread implements Session
 							}
 						}
 						status=Session.STATUS_LOGOUT2;
-						previousCmd.removeAllElements(); // will let system know you are back in login menu
+						previousCmd.clear(); // will let system know you are back in login menu
 					}
 					else
 						mob=null;
