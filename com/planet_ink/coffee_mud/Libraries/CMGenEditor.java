@@ -728,15 +728,15 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
         {
 
             Clan C=CMLib.clans().getClan(M.getClanID());
-            mob.tell(showNumber+". Clan (Role): '"+CMLib.clans().getRoleName(C.getGovernment(),M.getClanRole(),true,false)+"'.");
+            mob.tell(showNumber+". Clan (Role): '"+C.getRoleName(M.getClanRole(),true,false)+"'.");
             if((showFlag==showNumber)||(showFlag<=-999))
             {
                 String newName=mob.session().prompt("Enter a new one\n\r:","");
                 if(newName.length()>0)
                 {
-                    int newRole=CMLib.clans().getRoleFromName(C.getGovernment(), newName);
+                    int newRole=C.getRoleFromName(newName);
                     if(newRole<0)
-                        mob.tell("That role is invalid. Try: "+CMParms.toStringList(Clan.ROL_DESCS[C.getGovernment()]));
+                        mob.tell("That role is invalid. Try: "+CMParms.toStringList(C.getRolesList()));
                     else
                         M.setClanRole(newRole);
                 }
@@ -3565,7 +3565,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
         {
             String memberStr="";
             for(Clan.MemberRecord member : members)
-                memberStr+=member.name+" ("+CMLib.clans().getRoleName(E.getGovernment(),member.role,true,false)+"), ";
+                memberStr+=member.name+" ("+E.getRoleName(member.role,true,false)+"), ";
             if(memberStr.length()>0)
                 memberStr=memberStr.substring(0,memberStr.length()-2);
             mob.tell(showNumber+". Clan Members : '"+memberStr+"'.");
@@ -3605,9 +3605,9 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
                         int newRole=-1;
                         while((mob.session()!=null)&&(!mob.session().killFlag())&&(newRole<0))
                         {
-                            String newRoleStr=mob.session().prompt("Enter this members role (?) '"+CMLib.clans().getRoleName(E.getGovernment(),members.get(index).role,true,false)+"': ","");
+                            String newRoleStr=mob.session().prompt("Enter this members role (?) '"+E.getRoleName(members.get(index).role,true,false)+"': ","");
                             StringBuffer roles=new StringBuffer();
-                            newRole = CMLib.clans().getRoleFromName(E.getGovernment(), newRoleStr);
+                            newRole =E.getRoleFromName(newRoleStr);
                             roles=new StringBuffer(roles.substring(0,roles.length()-2));
                             if(newRole<0)
                                 mob.tell("That role is invalid.  Valid roles include: "+roles.toString());
@@ -6981,7 +6981,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
     throws IOException
     {
         if((showFlag>0)&&(showFlag!=showNumber)) return;
-        mob.tell(showNumber+". Clan (Role): '"+CMLib.clans().getRoleName(C.getGovernment(),C.getAutoPosition(),true,false)+"'.");
+        mob.tell(showNumber+". Clan (Role): '"+C.getRoleName(C.getAutoPosition(),true,false)+"'.");
         if((showFlag!=showNumber)&&(showFlag>-999)) return;
         while((mob.session()!=null)&&(!mob.session().killFlag()))
         {
@@ -6993,10 +6993,10 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
             }
             int newRole=-1;
             StringBuffer roles=new StringBuffer();
-            for(int i=0;i<Clan.ROL_DESCS[C.getGovernment()].length;i++)
+            for(int i=0;i<C.getRolesList().length;i++)
             {
-                roles.append(Clan.ROL_DESCS[C.getGovernment()][i]+", ");
-                if(newName.equalsIgnoreCase(Clan.ROL_DESCS[C.getGovernment()][i]))
+                roles.append(C.getRolesList()[i]+", ");
+                if(newName.equalsIgnoreCase(C.getRolesList()[i]))
                     newRole=i;
             }
             roles=new StringBuffer(roles.substring(0,roles.length()-2));

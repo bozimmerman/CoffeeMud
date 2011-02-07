@@ -382,6 +382,58 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
 	 * @return rate the tax rate 0-100.0
 	 */
 	public double getTaxes();
+	
+	/**
+	 * Returns the maximum number of players who can hold the given 
+	 * role in this clan.  For assignment purposes.
+	 * @param roleID the role to get a max for
+	 * @return the max
+	 */
+	public int getMostInRole(int roleID);
+	
+    /**
+     * Returns the friendly descriptive name of a given role in a clan, based
+     * on very specific criteria.
+     * @param roleID the role code of the role to describe
+     * @param titleCase whether or not to uppercase the first word
+     * @param plural whether or not to return the word as a plural
+     * @return the friendly descriptive name of a given role in a clan
+     */
+    public String getRoleName(int roleID, boolean titleCase, boolean plural);
+    
+    /**
+     * For the clan government type, this function will return
+     * the clan role that most closely matches the given string "position".
+     * It will return -1 if no position is found that matches the string.
+     * The returned value will an an official role bitmask.
+     * @param government the clan governmnet
+     * @param position the name of the position to look for
+     * @return the role mask/code number for this government, oe -1
+     */
+    public int getRoleFromName(String position);
+
+    /**
+     * Returns whether this clan gets listed with the clanlist command.
+     * Does not affect clanlog messaging.
+     * @param mob the person viewing
+     * @return true if it is, false otherwise.
+     */
+    public boolean isPubliclyListedFor(MOB mob);
+
+    /**
+     * Returns whether this clan only accepts applicants
+     * from people who are family of current members/founder.
+     * @return true if it is, false otherwise.
+     */
+    public boolean isOnlyFamilyApplicants();
+    
+    /**
+     * Returns the list of roles for people in this clan, from
+     * lowest rank to the highest.  Must correspond with roleIDs
+     * @return the role list
+     */
+    public String[] getRolesList();
+    
 	/**
 	 * Returns the set of members, where
 	 * each row represents a MemberRecord
@@ -441,6 +493,21 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
 	 * @return the Clan.GVT_* constant
 	 */
 	public int getGovernment();
+	
+	/**
+	 * Returns whether this clan attains conquest loyalty 
+	 * through giving out clan items.
+	 * @return true if if does, false otherwise
+	 */
+	public boolean isLoyaltyThroughItems();
+	
+	/**
+	 * Returns whether this clan attains conquest loyalty 
+	 * through mobs worshiping the same deity as their leader.
+	 * @return true if if does, false otherwise
+	 */
+	public boolean isLoyaltyThroughWorship();
+	
 	/**
 	 * Returns the Clan.GVT_* constant representing the government type
 	 * of this clan.
@@ -789,7 +856,6 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
         POS_BOSS,
         POS_BOSS
 	};
-
 
 	/** descriptor table with x axis being Clan.POS_* constants, and y axis being Clan.GVT_* constants.  @see Clan */
 	public static final String[][] ROL_DESCS={

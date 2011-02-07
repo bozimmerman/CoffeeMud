@@ -77,7 +77,7 @@ public class ClanAssign extends StdCommand
 						mob.tell("There are no members in your "+C.typeName()+"");
 						return false;
 					}
-					int newPos=CMLib.clans().getRoleFromName(C.getGovernment(),pos);
+					int newPos=C.getRoleFromName(pos);
 					if(newPos<0)
 					{
 						mob.tell("'"+pos+"' is not a valid role.");
@@ -101,13 +101,13 @@ public class ClanAssign extends StdCommand
 						}
 						if(!C.canBeAssigned(M, newPos))
 						{
-							mob.tell(M.name()+" may not be assigned to "+CMLib.clans().getRoleName(C.getGovernment(),newPos,true,false)+".");
+							mob.tell(M.name()+" may not be assigned to "+C.getRoleName(newPos,true,false)+".");
 							return false;
 						}
 						if(skipChecks||CMLib.clans().goForward(mob,C,commands,Clan.FUNC_CLANASSIGN,true))
 						{
 						    int oldPos=M.getClanRole();
-							int maxInNewPos=Clan.ROL_MAX[C.getGovernment()][newPos];
+							int maxInNewPos=C.getMostInRole(newPos);
 							Vector currentMembersInNewPosV=new Vector();
 							for(MemberRecord member : members)
 								if(member.role==newPos)
@@ -122,7 +122,7 @@ public class ClanAssign extends StdCommand
 											numMembers++;
 								if(numMembers==0)
 								{
-								    mob.tell(M.Name()+" is the last "+CMLib.clans().getRoleName(C.getGovernment(),oldPos,true,false)+" and must be replaced before being reassigned.");
+								    mob.tell(M.Name()+" is the last "+C.getRoleName(oldPos,true,false)+" and must be replaced before being reassigned.");
 								    return false;
 								}
 							}
@@ -133,7 +133,7 @@ public class ClanAssign extends StdCommand
 								{
 									String s=(String)currentMembersInNewPosV.elementAt(0);
 									currentMembersInNewPosV.removeElementAt(0);
-									CMLib.clans().clanAnnounce(mob," "+s+" of the "+C.typeName()+" "+C.clanID()+" is now a "+CMLib.clans().getRoleName(C.getGovernment(),Clan.POS_MEMBER,true,false)+".");
+									CMLib.clans().clanAnnounce(mob," "+s+" of the "+C.typeName()+" "+C.clanID()+" is now a "+C.getRoleName(Clan.POS_MEMBER,true,false)+".");
 									MOB M2=CMLib.players().getPlayer(s);
 									if(M2!=null) M2.setClanRole(Clan.POS_MEMBER);
 									CMLib.database().DBUpdateClanMembership(s, C.clanID(), Clan.POS_MEMBER);
@@ -141,10 +141,10 @@ public class ClanAssign extends StdCommand
 								}
 							}
 							// finally, promote
-							CMLib.clans().clanAnnounce(mob,M.name()+" of the "+C.typeName()+" "+C.clanID()+" changed from "+CMLib.clans().getRoleName(C.getGovernment(),M.getClanRole(),true,false)+" to "+CMLib.clans().getRoleName(C.getGovernment(),newPos,true,false)+".");
+							CMLib.clans().clanAnnounce(mob,M.name()+" of the "+C.typeName()+" "+C.clanID()+" changed from "+C.getRoleName(M.getClanRole(),true,false)+" to "+C.getRoleName(newPos,true,false)+".");
                             C.addMember(M,newPos);
-							mob.tell(M.Name()+" of the "+C.typeName()+" "+C.clanID()+" has been assigned to be "+CMLib.english().startWithAorAn(CMLib.clans().getRoleName(C.getGovernment(),newPos,false,false))+". ");
-							M.tell("You have been assigned to be "+CMLib.english().startWithAorAn(CMLib.clans().getRoleName(C.getGovernment(),newPos,false,false))+" of "+C.typeName()+" "+C.clanID()+".");
+							mob.tell(M.Name()+" of the "+C.typeName()+" "+C.clanID()+" has been assigned to be "+CMLib.english().startWithAorAn(C.getRoleName(newPos,false,false))+". ");
+							M.tell("You have been assigned to be "+CMLib.english().startWithAorAn(C.getRoleName(newPos,false,false))+" of "+C.typeName()+" "+C.clanID()+".");
 							return false;
 						}
 					}

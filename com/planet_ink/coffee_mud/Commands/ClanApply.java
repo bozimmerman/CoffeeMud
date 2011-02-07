@@ -53,7 +53,7 @@ public class ClanApply extends StdCommand
 				Clan C=CMLib.clans().findClan(qual);
 				if(C!=null)
 				{
-                    if((C.getGovernment()==Clan.GVT_FAMILY)
+                    if(C.isOnlyFamilyApplicants()
                     &&(!CMLib.clans().isFamilyOfMembership(mob,C.getMemberList())))
                     {
                         msg.append("The clan  "+C.clanID()+" is a family.  You can not join a family, you must be born or married into it.");
@@ -62,7 +62,7 @@ public class ClanApply extends StdCommand
 					if(CMLib.masking().maskCheck(C.getAcceptanceSettings(),mob,true))
 					{
                         if((CMLib.masking().maskCheck("-<"+CMProps.getIntVar(CMProps.SYSTEMI_MINCLANLEVEL),mob,true))
-                        ||(C.getGovernment() == Clan.GVT_FAMILY))
+                        ||(CMLib.clans().isFamilyOfMembership(mob,C.getMemberList())))
                         {
                         	int maxMembers=CMProps.getIntVar(CMProps.SYSTEMI_MAXCLANMEMBERS);
                         	int numMembers=C.getSize();

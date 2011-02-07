@@ -96,7 +96,7 @@ public class Conquerable extends Arrest
                     str.append("Full control will automatically be achieved in "+remainStr+".\n\r");
                 }
                 
-                if(C.getGovernment()!=Clan.GVT_THEOCRACY)
+                if(C.isLoyaltyThroughItems())
                 {
                     int pts=calcItemControlPoints(myArea);
                     int chance=calcRevoltChance(myArea);
@@ -160,7 +160,7 @@ public class Conquerable extends Arrest
     {
     	if(myArea==null) return 100;
         Clan C=CMLib.clans().getClan(holdingClan);
-        if((C==null)||(C.getGovernment()!=Clan.GVT_THEOCRACY))
+        if((C==null)||(C.isLoyaltyThroughItems()))
 	    	return calcRevoltChance(myArea);
         return 0;
     }
@@ -548,7 +548,7 @@ public class Conquerable extends Arrest
                 if(holdingClan.length()>0)
                 {
                     Clan C=CMLib.clans().getClan(holdingClan);
-                    if((C==null)||(C.getGovernment()!=Clan.GVT_THEOCRACY))
+                    if((C==null)||(C.isLoyaltyThroughItems()))
                     {
                         int chance=calcRevoltChance(A);
                     	if((REVOLTNOW)&&(chance<100))
@@ -635,7 +635,7 @@ public class Conquerable extends Arrest
         if(holdingClan.length()==0) return null; 
         Clan C=CMLib.clans().getClan(holdingClan);
         if(C==null) return null;
-        if(C.getGovernment()==Clan.GVT_THEOCRACY)
+        if(C.isLoyaltyThroughWorship())
         {
             MOB M=C.getResponsibleMember();
             if((M!=null)&&(M.getWorshipCharID().length()>0))
@@ -774,9 +774,9 @@ public class Conquerable extends Arrest
             {
                 if((!msg.source().getClanID().equals(holdingClan))
                 ||(CMLib.clans().getClan(holdingClan)==null)
-                ||(CMLib.clans().getClan(holdingClan).getGovernment()!=Clan.GVT_THEOCRACY))
+                ||(!CMLib.clans().getClan(holdingClan).isLoyaltyThroughWorship()))
                 {
-                    msg.source().tell("Only a member of a conquering theocracy can pray for that here.");
+                    msg.source().tell("Only a member of a conquering deity clan can pray for that here.");
                     return false;
                 }
             }
@@ -1101,7 +1101,7 @@ public class Conquerable extends Arrest
                             {
     							Clan C=CMLib.clans().getClan(killer.getClanID());
                                 int level=msg.source().phyStats().level();
-    							if((C!=null)&&(C.getGovernment()==Clan.GVT_THEOCRACY)
+    							if((C!=null)&&(C.isLoyaltyThroughWorship())
     							&&(killer.getWorshipCharID().equals(msg.source().getWorshipCharID())))
     								level=(level>1)?level/2:level;
                                 if(debugging) Log.debugOut("Conquest",killer.getClanID()+" gain "+level+" points by killing "+msg.source().name());
@@ -1112,7 +1112,7 @@ public class Conquerable extends Arrest
                             {
     							Clan C=CMLib.clans().getClan(killer.amFollowing().getClanID());
                                 int level=msg.source().phyStats().level();
-    							if((C!=null)&&(C.getGovernment()==Clan.GVT_THEOCRACY)
+    							if((C!=null)&&(C.isLoyaltyThroughWorship())
     							&&(killer.amFollowing().getWorshipCharID().equals(msg.source().getWorshipCharID())))
     								level=(level>1)?level/2:level;
                                 if(debugging) Log.debugOut("Conquest",killer.amFollowing().getClanID()+" gain "+level+" points by killing "+msg.source().name());
@@ -1142,7 +1142,7 @@ public class Conquerable extends Arrest
             {
                 Clan C=CMLib.clans().getClan(msg.source().getClanID());
                 if((C!=null)
-                &&(C.getGovernment()==Clan.GVT_THEOCRACY)
+                &&(C.isLoyaltyThroughWorship())
                 &&(((Area)myHost).inMyMetroArea(((MOB)msg.target()).getStartRoom().getArea()))
                 &&(!msg.source().getClanID().equals(holdingClan))
                 &&(flagFound((Area)myHost,msg.source().getClanID())))

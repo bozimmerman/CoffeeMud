@@ -96,16 +96,6 @@ public interface ClanManager extends CMLibrary
      */
     public Clan getNewClanObjectOfType(int type);
     /**
-     * Returns the friendly descriptive name of a given role in a clan, based
-     * on very specific criteria.
-     * @param government the type of government the clan has
-     * @param role the role code of the role to describe
-     * @param titleCase whether or not to uppercase the first word
-     * @param plural whether or not to return the word as a plural
-     * @return the friendly descriptive name of a given role in a clan
-     */
-    public String getRoleName(int government, int role, boolean titleCase, boolean plural);
-    /**
      * Returns an enumeration of all the Clans in the game 
      * @return an enumeration of all the Clans in the game
      */
@@ -178,16 +168,4 @@ public interface ClanManager extends CMLibrary
      * @return true to execute the given command, and false not to.
      */
     public boolean goForward(MOB mob, Clan C, Vector commands, int function, boolean voteIfNecessary);
-    
-    
-    /**
-     * For the given clan government type, this function will return
-     * the clan role that most closely matches the given string "position".
-     * It will return -1 if no position is found that matches the string.
-     * The returned value will an an official role bitmask.
-     * @param government the clan governmnet
-     * @param position the name of the position to look for
-     * @return the role mask/code number for this government, oe -1
-     */
-    public int getRoleFromName(int government, String position);
 }

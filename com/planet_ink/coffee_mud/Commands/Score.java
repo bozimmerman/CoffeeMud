@@ -130,7 +130,7 @@ public class Score extends Affect
 			Clan C=CMLib.clans().getClan(mob.getClanID());
 			if(C!=null)
 			{
-				String role=CMLib.clans().getRoleName(C.getGovernment(),mob.getClanRole(),true,false);
+				String role=C.getRoleName(mob.getClanRole(),true,false);
 				role=CMLib.english().startWithAorAn(role);
 				msg.append("You are "+role+" of the ^H"+mob.getClanID()+"^?^. Clan.\n\r");
 			}

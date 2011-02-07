@@ -99,7 +99,7 @@ public class ClanData extends StdWebMacro
                     str.append("<OPTION VALUE=\""+r+"\"");
                     if(r==role.intValue())
                         str.append(" SELECTED");
-                    str.append(">"+CMLib.clans().getRoleName(C.getGovernment(),r,true,false));
+                    str.append(">"+C.getRoleName(r,true,false));
                 }
                 str.append("</SELECT>");
                 str.append("</TD>");
@@ -119,7 +119,7 @@ public class ClanData extends StdWebMacro
             for(int r=0;r<Clan.POS_TOTAL;r++)
             {
                 str.append("<OPTION VALUE=\""+r+"\"");
-                str.append(">"+CMLib.clans().getRoleName(C.getGovernment(),r,true,false));
+                str.append(">"+C.getRoleName(r,true,false));
             }
             str.append("</SELECT>");
             str.append("</TD>");
@@ -228,7 +228,7 @@ public class ClanData extends StdWebMacro
 				if(parms.containsKey("AUTOPOSITION"))
 				{
 					int pos=C.getAutoPosition();
-					str.append(CMLib.clans().getRoleName(C.getGovernment(),pos,true,false)+", ");
+					str.append(C.getRoleName(pos,true,false)+", ");
 				}
                 if(parms.containsKey("AUTOPOSITIONID"))
                 {
@@ -236,7 +236,7 @@ public class ClanData extends StdWebMacro
                     if(old==null) old=""+C.getAutoPosition();
                     int autoPos=CMath.s_int(old);
                     for(int i=0;i<Clan.POS_TOTAL;i++)
-                        str.append("<OPTION VALUE="+i+" "+((autoPos==i)?"SELECTED":"")+">"+CMLib.clans().getRoleName(C.getGovernment(),i,true,false));
+                        str.append("<OPTION VALUE="+i+" "+((autoPos==i)?"SELECTED":"")+">"+C.getRoleName(i,true,false));
                 }
 				if(parms.containsKey("TROPHIES"))
 				{
@@ -383,7 +383,7 @@ public class ClanData extends StdWebMacro
                             if(name.equals(cmember))
                             {
                                 int i = member.role;
-                                str.append(CMStrings.capitalizeAndLower(CMLib.clans().getRoleName(C.getGovernment(),i,true,false))+", ");
+                                str.append(CMStrings.capitalizeAndLower(C.getRoleName(i,true,false))+", ");
                                 break;
                             }
                         }

@@ -168,44 +168,6 @@ public class Clans extends StdLibrary implements ClanManager
         return false;
     }
     
-	public String getRoleName(int government, int role, boolean titleCase, boolean plural)
-	{
-		StringBuffer roleName=new StringBuffer();
-		if((government<0)||(government>=Clan.ROL_DESCS.length))
-			government=0;
-		String[] roles=Clan.ROL_DESCS[government];
-		roleName.append(roles[role].toLowerCase());
-		if(titleCase)
-		{
-			String titled=CMStrings.capitalizeAndLower(roleName.toString());
-			roleName.setLength(0);
-			roleName.append(titled);
-		}
-		if(plural)
-		{
-			if(roleName.toString().equalsIgnoreCase("Staff"))
-			{
-				// do nothing
-			}
-			else
-			if(new Character(roleName.charAt(roleName.length()-1)).equals(new Character(("y").charAt(0))))
-			{
-				roleName.setCharAt(roleName.length()-1,'i');
-				roleName.append("es");
-			}
-			else
-			if(new Character(roleName.charAt(roleName.length()-1)).equals(new Character(("s").charAt(0))))
-			{
-				roleName.append("es");
-			}
-			else
-			{
-				roleName.append("s");
-			}
-		}
-		return roleName.toString();
-	}
-
 	public Enumeration<Clan> clans()
 	{
 		return all.elements();
@@ -362,20 +324,5 @@ public class Clans extends StdLibrary implements ClanManager
     	List<String> channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.CLANINFO);
         for(int i=0;i<channels.size();i++)
             CMLib.commands().postChannel(mob,(String)channels.get(i),msg,true);
-    }
-
-    public int getRoleFromName(int government, String position)
-    {
-        if((government<0)||(government>=Clan.GVT_DESCS.length))
-            government=0;
-        position=position.trim();
-        String[] roles=Clan.ROL_DESCS[government];
-        for(int i=0;i<roles.length;i++)
-            if(roles[i].equalsIgnoreCase(position))
-            	return i;
-        for(int i=0;i<roles.length;i++)
-            if(roles[i].startsWith(position.toUpperCase()))
-                return i;
-        return -1;
     }
 }
