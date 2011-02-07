@@ -428,6 +428,27 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 		return V.elements();
     }
 
+    private boolean isProtected(List<String> protectedOnes, String name)
+    {
+        boolean protectedOne=false;
+        for(int p=0;p<protectedOnes.size();p++)
+        {
+            String P=(String)protectedOnes.get(p);
+            if(P.equalsIgnoreCase(name))
+            {
+                protectedOne=true;
+                break;
+            }
+        }
+        if(protectedOne)
+        {
+            if(CMSecurity.isDebugging("AUTOPURGE"))
+                Log.debugOut(thread.getName(),name+" is protected from purging.");
+        	return true;
+        }
+        return false;
+    }
+    
     private boolean autoPurge()
     {
         if(CMSecurity.isDisabled("AUTOPURGE"))
@@ -532,22 +553,8 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
                 Log.debugOut(thread.getName(),name+" last on "+CMLib.time().date2String(userLastLoginDateTime)+" will be warned on "+CMLib.time().date2String(warnDateTime)+" and purged on "+CMLib.time().date2String(purgeDateTime));
             if((System.currentTimeMillis()>purgeDateTime)||(System.currentTimeMillis()>warnDateTime))
             {
-                boolean protectedOne=false;
-                for(int p=0;p<protectedOnes.size();p++)
-                {
-                    String P=(String)protectedOnes.get(p);
-                    if(P.equalsIgnoreCase(name))
-                    {
-                        protectedOne=true;
-                        break;
-                    }
-                }
-                if(protectedOne)
-                {
-                    if(CMSecurity.isDebugging("AUTOPURGE"))
-                        Log.debugOut(thread.getName(),name+" is protected from purging.");
+                if(isProtected(protectedOnes, name))
                 	continue;
-                }
                 
                 List<String> warnedOnes=Resources.getFileLineVector(Resources.getFileResource("warnedplayers.ini",false));
                 long foundWarningDateTime=-1;
@@ -589,11 +596,33 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
                     if((M!=null)&&(!CMSecurity.isASysOp(M))&&(!CMSecurity.isAllowedAnywhere(M, "NOPURGE")))
                     {
                         obliteratePlayer(M,true);
+                        M.destroy();
                         Log.sysOut(thread.getName(),"AutoPurged user "+name+". Last logged in "+(CMLib.time().date2String(userLastLoginDateTime))+".");
                     }
                 }
             }
         }
+        
+        // accounts!
+        if(!CMSecurity.isDisabled("PURGEACCOUNTS"))
+			for(final Enumeration<PlayerAccount> pe=CMLib.players().accounts("",null); pe.hasMoreElements();)
+			{
+				PlayerAccount PA=pe.nextElement();
+				if((PA.numPlayers() > 0)
+                ||(isProtected(protectedOnes, PA.accountName())))
+                	continue;
+				final long lastDateTimePurge = PA.lastDateTime() + TimeManager.MILI_WEEK;
+				final long lastUpdatedPurge = PA.lastUpdated() + TimeManager.MILI_WEEK;
+				final long accountExpPurge = PA.getAccountExpiration();
+				long lastTime = lastDateTimePurge;
+				if(lastUpdatedPurge > lastTime) lastTime=lastUpdatedPurge;
+				if(accountExpPurge > lastTime) lastTime=accountExpPurge;
+				if(System.currentTimeMillis()>lastTime)
+				{
+	                Log.sysOut(thread.getName(),"AutoPurged account "+PA.accountName()+".");
+	            	CMLib.players().obliterateAccountOnly(PA);
+				}
+			}
         return true;
     }
 
