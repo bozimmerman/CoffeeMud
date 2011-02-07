@@ -1423,13 +1423,13 @@ public class StdArea implements Area
 		children=new SLinkedList<Area>();
 		for(Area parentA : futureParents)
 			if(canParent(parentA))
-				addParent(parentA);
+				parents.add(parentA);
 			else
 				Log.errOut("StdArea","Can not make '"+parentA.name()+"' parent of '"+name+"'");
 		SLinkedList<Area> futureChildren=loadAreas(childrenToLoad);
 		for(Area childA : futureChildren)
 			if(canChild(childA))
-				addChild(childA);
+				children.add(childA);
 			else
 				Log.errOut("StdArea","Can not make '"+childA.name()+"' child of '"+name+"'");
 		initializedArea=true;
@@ -1532,14 +1532,15 @@ public class StdArea implements Area
 	// child based circular reference check
 	public boolean canChild(Area area) 
 	{
-		for(final Iterator<Area> a=getParentsIterator(); a.hasNext(); )
-		{
-			final Area A=a.next();
-			if(A==area) 
-				return false;
-			if(!A.canChild(area))
-				return false;
-		}
+		if(parents != null)
+			for(final Iterator<Area> a=parents.iterator(); a.hasNext(); )
+			{
+				final Area A=a.next();
+				if(A==area) 
+					return false;
+				if(!A.canChild(area))
+					return false;
+			}
 		return true;
 	}
 
@@ -1632,14 +1633,15 @@ public class StdArea implements Area
 	
 	public boolean canParent(Area area) 
 	{
-		for(final Iterator<Area> a=getChildrenIterator(); a.hasNext(); )
-		{
-			final Area A=a.next();
-			if(A==area) 
-				return false;
-			if(!A.canParent(area))
-				return false;
-		}
+		if(children != null)
+			for(final Iterator<Area> a=children.iterator(); a.hasNext(); )
+			{
+				final Area A=a.next();
+				if(A==area) 
+					return false;
+				if(!A.canParent(area))
+					return false;
+			}
 		return true;
 	}
 

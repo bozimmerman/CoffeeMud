@@ -921,7 +921,7 @@ public class StdSpaceShip implements Area, SpaceObject, SpaceShip
 		parents=new SLinkedList<Area>();
 		for(Area parentA : futureParents)
 			if(canParent(parentA))
-				addParent(parentA);
+				parents.add(parentA);
 			else
 				Log.errOut("StdSpaceShip","Can not make '"+parentA.name()+"' parent of '"+name+"'");
 		initializedArea=true;
