@@ -55,6 +55,7 @@ public class DefaultPlayerStats implements PlayerStats
 	protected String 	tranpoofin="";
 	protected String 	tranpoofout="";
     protected String 	announceMsg="";
+    protected String 	savedPose="";
     protected String 	notes="";
 	protected int 		wrap=78;
 	protected int 		pageBreak=CMProps.getIntVar(CMProps.SYSTEMI_PAGEBREAK);
@@ -88,7 +89,8 @@ public class DefaultPlayerStats implements PlayerStats
 									 "COLORSTR","PROMPT","POOFIN",
 									 "POOFOUT","TRANPOOFIN","TRAINPOOFOUT",
 									 "ANNOUNCEMSG","NOTES","WRAP","BIRTHDAY",
-									 "ACCTEXPIRATION","INTRODUCTIONS","PAGEBREAK"};
+									 "ACCTEXPIRATION","INTRODUCTIONS","PAGEBREAK",
+									 "SAVEDPOSE"};
 	public String getStat(String code)
 	{
 		switch(getCodeNum(code))
@@ -114,6 +116,7 @@ public class DefaultPlayerStats implements PlayerStats
 		case 18: return ""+accountExpiration;
 		case 19: return getPrivateList(introductions);
 		case 20: return ""+pageBreak;
+		case 21: return ""+savedPose;
         default:
             return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
 		}
@@ -143,6 +146,7 @@ public class DefaultPlayerStats implements PlayerStats
 		case 18: accountExpiration=CMath.s_long(val); break;
 		case 19: introductions=getHashFrom(val); break;
 		case 20: pageBreak=CMath.s_int(val); break;
+		case 21: savedPose=val; break;
 		default:
             CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code, val);
             break;
@@ -261,6 +265,8 @@ public class DefaultPlayerStats implements PlayerStats
 	public void setColorStr(String newColors){colorStr=newColors;}
     public String announceMessage(){return announceMsg;}
     public void setAnnounceMessage(String msg){announceMsg=msg;}
+    public String getSavedPose(){return savedPose;}
+    public void setSavedPose(String msg){savedPose=msg;}
 	public String getPrompt()
 	{
 		if((prompt==null)||(prompt.length()==0))
@@ -479,6 +485,7 @@ public class DefaultPlayerStats implements PlayerStats
 			+((notes.length()>0)?"<NOTES>"+CMLib.xml().parseOutAngleBrackets(notes)+"</NOTES>":"")
 			+((poofout.length()>0)?"<POOFOUT>"+CMLib.xml().parseOutAngleBrackets(poofout)+"</POOFOUT>":"")
             +((announceMsg.length()>0)?"<ANNOUNCE>"+CMLib.xml().parseOutAngleBrackets(announceMsg)+"</ANNOUNCE>":"")
+            +((savedPose.length()>0)?"<POSE>"+CMLib.xml().parseOutAngleBrackets(savedPose)+"</POSE>":"")
 			+((tranpoofin.length()>0)?"<TRANPOOFIN>"+CMLib.xml().parseOutAngleBrackets(tranpoofin)+"</TRANPOOFIN>":"")
 			+((tranpoofout.length()>0)?"<TRANPOOFOUT>"+CMLib.xml().parseOutAngleBrackets(tranpoofout)+"</TRANPOOFOUT>":"")
             +"<DATES>"+this.getLevelDateTimesStr()+"</DATES>"
@@ -581,6 +588,10 @@ public class DefaultPlayerStats implements PlayerStats
         announceMsg=CMLib.xml().getValFromPieces(xml,"ANNOUNCE");
         if(announceMsg==null) announceMsg="";
         announceMsg=CMLib.xml().restoreAngleBrackets(announceMsg);
+        
+        savedPose=CMLib.xml().getValFromPieces(xml,"POSE");
+        if(savedPose==null) savedPose="";
+        savedPose=CMLib.xml().restoreAngleBrackets(savedPose);
         
         notes=CMLib.xml().getValFromPieces(xml,"NOTES");
         if(notes==null) notes="";

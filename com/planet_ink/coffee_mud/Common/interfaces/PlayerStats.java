@@ -121,6 +121,24 @@ public interface PlayerStats extends CMCommon, Modifiable, AccountStats
 	public void setColorStr(String color);
 	
 	/**
+     * Gets the saved pose string for players.
+     * 
+     * @see com.planet_ink.coffee_mud.Common.interfaces.PlayerStats#setSavedPose(String)
+     * 
+	 * @return a saved pose string
+	 */
+    public String getSavedPose();
+    
+	/**
+     * Sets the saved pose string for players.
+     * 
+     * @see com.planet_ink.coffee_mud.Common.interfaces.PlayerStats#getSavedPose()
+     * 
+	 * @param msg a saved pose string
+	 */
+    public void setSavedPose(String msg);
+    
+	/**
 	 * Returns the word wrap column number for this player, or 0.
      * 
      * @see com.planet_ink.coffee_mud.Common.interfaces.PlayerStats#setWrap(int)

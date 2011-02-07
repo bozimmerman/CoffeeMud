@@ -137,6 +137,8 @@ public class MOBloader
                 mob.setImage(CMLib.xml().returnXMLValue(buf,"IMG"));
                 List<XMLLibrary.XMLpiece> CleanXML=CMLib.xml().parseAllXML(DBConnections.getRes(R,"CMMXML"));
                 R.close();
+                if(pstats.getSavedPose().length()>0)
+                	mob.setDisplayText(pstats.getSavedPose());
                 CMLib.coffeeMaker().setFactionFromXML(mob,CleanXML);
                 found=true;
             }

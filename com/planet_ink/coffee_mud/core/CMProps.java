@@ -135,7 +135,8 @@ public class CMProps extends Properties
     public static final int SYSTEM_FORMULA_DAMAGERANGEDFUDGE=78;
     public static final int SYSTEM_WIZLISTMASK=79;
     public static final int SYSTEM_AUTOREACTION=80;
-    public static final int NUM_SYSTEM=81;
+    public static final int SYSTEM_POSEFILTER=81;
+    public static final int NUM_SYSTEM=82;
 
     public static final int SYSTEMI_EXPRATE=0;
     public static final int SYSTEMI_SKYSIZE=1;
@@ -263,6 +264,7 @@ public class CMProps extends Properties
     protected final List<String>sayFilter=new Vector<String>();
     protected final List<String>channelFilter=new Vector<String>();
     protected final List<String>emoteFilter=new Vector<String>();
+    protected final List<String>poseFilter=new Vector<String>();
     protected final DVector 	newusersByIP=new DVector(2);
     protected final DVector 	skillMaxManaExceptions=new DVector(2);
     protected final DVector 	skillMinManaExceptions=new DVector(2);
@@ -823,6 +825,9 @@ public class CMProps extends Properties
         setVar(SYSTEM_EMOTEFILTER,getStr("EMOTEFILTER"));
         p().emoteFilter.clear();
         p().emoteFilter.addAll(CMParms.parse((getStr("EMOTEFILTER")).toUpperCase()));
+        setVar(SYSTEM_POSEFILTER,getStr("POSEFILTER"));
+        p().poseFilter.clear();
+        p().poseFilter.addAll(CMParms.parse((getStr("POSEFILTER")).toUpperCase()));
         setVar(SYSTEM_SAYFILTER,getStr("SAYFILTER"));
         p().sayFilter.clear();
         p().sayFilter.addAll(CMParms.parse((getStr("SAYFILTER")).toUpperCase()));
@@ -1032,6 +1037,7 @@ public class CMProps extends Properties
         switch(whichFilter)
         {
         case SYSTEM_EMOTEFILTER: filter=p().emoteFilter; break;
+        case SYSTEM_POSEFILTER: filter=p().poseFilter; break;
         case SYSTEM_SAYFILTER: filter=p().sayFilter; break;
         case SYSTEM_CHANNELFILTER: filter=p().channelFilter; break;
         }
