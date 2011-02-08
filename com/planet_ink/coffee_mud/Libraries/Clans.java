@@ -245,16 +245,16 @@ public class Clans extends StdLibrary implements ClanManager
     public boolean goForward(MOB mob, Clan C, Vector commands, int function, boolean voteIfNecessary)
     {
         if((mob==null)||(C==null)) return false;
-        int allowed=C.allowedToDoThis(mob,function);
-        if(allowed==1) return true;
-        if(allowed==-1) return false;
+        Clan.ClanPositionPower allowed=C.getAuthority(mob.getClanRole(),function);
+        if(allowed==Clan.ClanPositionPower.CAN_DO) return true;
+        if(allowed==Clan.ClanPositionPower.CAN_NOT_DO) return false;
         if(function==Clan.FUNC_CLANASSIGN)
         {
-            if(C.allowedToDoThis(mob,Clan.FUNC_CLANVOTEASSIGN)<=0)
+            if(C.getAuthority(mob.getClanRole(),Clan.FUNC_CLANVOTEASSIGN)!=Clan.ClanPositionPower.CAN_DO)
                return false;
         }
         else
-        if(C.allowedToDoThis(mob,Clan.FUNC_CLANVOTEOTHER)<=0)
+        if(C.getAuthority(mob.getClanRole(),Clan.FUNC_CLANVOTEOTHER)!=Clan.ClanPositionPower.CAN_DO)
            return false;
         if(!voteIfNecessary) return true;
         String matter=CMParms.combine(commands,0);
@@ -289,25 +289,37 @@ public class Clans extends StdLibrary implements ClanManager
                 CV.voteStatus=Clan.VSTAT_STARTED;
                 C.addVote(CV);
                 C.updateVotes();
-                switch(C.getGovernment())
+                final int voteFunctionType = (function == Clan.FUNC_CLANASSIGN) ? Clan.FUNC_CLANVOTEASSIGN : Clan.FUNC_CLANVOTEOTHER;
+                final List<Integer> votingRoles = new LinkedList<Integer>();
+                for(int i=0;i<C.getRolesList().length;i++)
+                	if(C.getAuthority(i, voteFunctionType)==Clan.ClanPositionPower.CAN_DO)
+                		votingRoles.add(Integer.valueOf(i));
+                if(votingRoles.size()>0)
                 {
-                case Clan.GVT_DEMOCRACY:
-                    clanAnnounce(mob,"The "+C.typeName()+" "+C.clanID()+" has a new matter to vote on. Members should use CLANVOTE to participate.");
-                    break;
-                case Clan.GVT_DICTATORSHIP:
-                case Clan.GVT_THEOCRACY:
-                case Clan.GVT_FAMILY:
-                    clanAnnounce(mob,"The "+C.typeName()+" "+C.clanID()+" has a vote -- lord only knows how.");
-                    break;
-                case Clan.GVT_OLIGARCHY:
-                    clanAnnounce(mob,"The guildmasters of the "+C.typeName()+" "+C.clanID()+" have a new matter to vote upon. They should use CLANVOTE to participate.");
-                    break;
-                case Clan.GVT_REPUBLIC:
-                    if(function==Clan.FUNC_CLANASSIGN)
-                        clanAnnounce(mob,"The "+C.typeName()+" "+C.clanID()+" has a new election to vote upon. Citizens should use CLANVOTE to participate.");
-                    else
-                        clanAnnounce(mob,"The senators of "+C.typeName()+" "+C.clanID()+" have a new matter to vote upon. They should use CLANVOTE to participate.");
-                    break;
+                	final String firstRoleName = C.getRoleName(votingRoles.iterator().next().intValue(), true, true);
+                	final String rest = " "+firstRoleName+" should use CLANVOTE to participate.";
+	                if(votingRoles.size() >= (C.getRolesList().length-2))
+	                {
+	                	if(function == Clan.FUNC_CLANASSIGN)
+	                        clanAnnounce(mob,"The "+C.typeName()+" "+C.clanID()+" has a new election to vote upon. "+rest);
+	                	else
+	                        clanAnnounce(mob,"The "+C.typeName()+" "+C.clanID()+" has a new matter to vote upon. "+rest);
+	                }
+	                else
+	                if(votingRoles.size()==1)
+                        clanAnnounce(mob,"The "+C.typeName()+" "+C.clanID()+" has a new matter to vote upon. "+rest);
+	                else
+	                {
+	                	final String[] roleNames = new String[votingRoles.size()];
+	                	for(int i=0;i<votingRoles.size();i++)
+	                	{
+	                		Integer roleID=votingRoles.get(i);
+	                		roleNames[i]=C.getRoleName(roleID, true, true);
+	                	}
+	                	String list = CMLib.english().toEnglishStringList(roleNames);
+                        clanAnnounce(mob,"The "+C.typeName()+" "+C.clanID()+" has a new matter to vote upon. "
+                        		+list+" should use CLANVOTE to participate.");
+	                }
                 }
                 mob.tell("Your vote has started.  Use CLANVOTE to cast your vote.");
                 return false;

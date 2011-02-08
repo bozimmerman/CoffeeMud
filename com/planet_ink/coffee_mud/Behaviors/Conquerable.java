@@ -1273,7 +1273,8 @@ public class Conquerable extends Arrest
 
 	protected boolean isAnUltimateAuthorityHere(MOB M, Law laws)
 	{
-		if((holdingClan.length()==0)
+		if((M==null)
+		||(holdingClan.length()==0)
 		||(!allowLaw)
 		||(totalControlPoints<0)
 		||(!CMProps.getBoolVar(CMProps.SYSTEMB_MUDSTARTED)))
@@ -1285,7 +1286,7 @@ public class Conquerable extends Arrest
             endClanRule(); 
             return false;
         }
-		return C.allowedToDoThis(M,Clan.FUNC_CLANCANORDERCONQUERED)==1;
+		return C.getAuthority(M.getClanRole(),Clan.FUNC_CLANCANORDERCONQUERED)==Clan.ClanPositionPower.CAN_DO;
 	}
 
 	protected boolean theLawIsEnabled()

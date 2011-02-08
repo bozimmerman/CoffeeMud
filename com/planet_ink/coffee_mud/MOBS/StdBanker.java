@@ -790,7 +790,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 							return false;
 						}
 
-						if(C.allowedToDoThis(msg.source(),Clan.FUNC_CLANWITHDRAW)<0)
+						if(C.getAuthority(msg.source().getClanRole(),Clan.FUNC_CLANWITHDRAW)==Clan.ClanPositionPower.CAN_NOT_DO)
 						{
 							CMLib.commands().postSay(this,mob,"I'm sorry, you aren't authorized by your clan to do that.",true,false);
 							return false;
@@ -904,7 +904,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 						CMLib.commands().postSay(this,mob,"I'm sorry, I only do business with Clans, and you aren't part of one.",true,false);
 						return false;
 					}
-					if(C.allowedToDoThis(msg.source(),Clan.FUNC_CLANWITHDRAW)<0)
+					if(C.getAuthority(msg.source().getClanRole(),Clan.FUNC_CLANWITHDRAW)==Clan.ClanPositionPower.CAN_NOT_DO)
 					{
 						CMLib.commands().postSay(this,mob,"I'm sorry, you aren't authorized by your clan to do that.",true,false);
 						return false;
@@ -965,7 +965,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 						CMLib.commands().postSay(this,mob,"I'm sorry, I only do business with Clans, and you aren't part of one.",true,false);
 						return false;
 					}
-					if(C.allowedToDoThis(msg.source(),Clan.FUNC_CLANDEPOSITLIST)<0)
+					if(C.getAuthority(msg.source().getClanRole(),Clan.FUNC_CLANDEPOSITLIST)==Clan.ClanPositionPower.CAN_NOT_DO)
 					{
 						CMLib.commands().postSay(this,mob,"I'm sorry, you aren't authorized by your clan to do that.",true,false);
 						return false;

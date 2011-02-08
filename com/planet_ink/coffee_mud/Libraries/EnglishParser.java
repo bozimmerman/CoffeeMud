@@ -46,6 +46,24 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
     public final static char[] ALL_CHRS="ALL".toCharArray();
     public final static String[] fwords={"calf", "half", "knife", "life", "wife", "elf", "self", "shelf", "leaf", "sheaf", "thief", "loaf", "wolf"};
     
+    public String toEnglishStringList(final String[] V)
+    {
+        if((V==null)||(V.length==0)){
+            return "";
+        }
+        if(V.length==1) return V[0];
+        final StringBuffer s=new StringBuffer("");
+        for(int v=0;v<V.length-1;v++)
+        {
+        	if(v>0) s.append(", ");
+        	s.append(V[0]);
+        }
+        s.append(" and ");
+        s.append(V[V.length-1]);
+        return s.toString();
+    }
+
+    
     public boolean isAnArticle(String s)
     {
         for(int a=0;a<articles.length;a++)

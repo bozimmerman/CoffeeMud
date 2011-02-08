@@ -104,7 +104,7 @@ public class StdLawBook extends StdItem
                 &&(mob.getClanID().equals(rulingClan)))
 				{
 					Clan C=CMLib.clans().getClan(rulingClan);
-					if((C!=null)&&(C.allowedToDoThis(mob,Clan.FUNC_CLANCANORDERCONQUERED)==1))
+					if((C!=null)&&(C.getAuthority(mob.getClanRole(),Clan.FUNC_CLANCANORDERCONQUERED)==Clan.ClanPositionPower.CAN_DO))
 						allowedToModify=true;
 				}
 

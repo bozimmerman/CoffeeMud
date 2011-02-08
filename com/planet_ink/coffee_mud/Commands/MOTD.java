@@ -20,7 +20,6 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import com.planet_ink.coffee_mud.core.exceptions.HTTPRedirectException;
 
 import java.util.*;
-import java.util.List;
 
 /* 
    Copyright 2000-2010 Bo Zimmerman
@@ -125,7 +124,8 @@ public class MOTD extends StdCommand
                     if(mob.getClanID().length()>0)
                     {
                         C=CMLib.clans().getClan(mob.getClanID());
-                        if((C!=null)&&(C.allowedToDoThis(mob,Clan.FUNC_CLANWITHDRAW)>=0))
+                        if((C!=null)
+                        &&(C.getAuthority(mob.getClanRole(),Clan.FUNC_CLANWITHDRAW)!=Clan.ClanPositionPower.CAN_NOT_DO))
                         {
                             V=CMLib.database().DBReadData(C.name(),postalChains);
                             if(V.size()>0)

@@ -16,7 +16,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
-import java.util.Map;
 
 
 
@@ -888,7 +887,7 @@ public class StdPostman extends StdShopKeeper implements PostOffice
                             return false;
                         }
 
-                        if(C.allowedToDoThis(msg.source(),Clan.FUNC_CLANWITHDRAW)<0)
+                        if(C.getAuthority(msg.source().getClanRole(),Clan.FUNC_CLANWITHDRAW)==Clan.ClanPositionPower.CAN_NOT_DO)
                         {
                             CMLib.commands().postSay(this,mob,"I'm sorry, you aren't authorized by your clan to do that.",true,false);
                             return false;
@@ -940,7 +939,7 @@ public class StdPostman extends StdShopKeeper implements PostOffice
                         CMLib.commands().postSay(this,mob,"I'm sorry, I only do business with Clans, and you aren't part of one.",true,false);
                         return false;
                     }
-                    if(C.allowedToDoThis(msg.source(),Clan.FUNC_CLANDEPOSITLIST)<0)
+                    if(C.getAuthority(msg.source().getClanRole(),Clan.FUNC_CLANDEPOSITLIST)==Clan.ClanPositionPower.CAN_NOT_DO)
                     {
                         CMLib.commands().postSay(this,mob,"I'm sorry, you aren't authorized by your clan to do that.",true,false);
                         return false;

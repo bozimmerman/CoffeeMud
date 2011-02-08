@@ -9,6 +9,7 @@ import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.Clan.ClanPositionPower;
 import com.planet_ink.coffee_mud.Common.interfaces.Clan.ClanVote;
 import com.planet_ink.coffee_mud.Common.interfaces.Clan.MemberRecord;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
@@ -379,7 +380,7 @@ public class DefaultClan implements Clan
             }
         }
         if(((M.getClanID().equals(clanID())))
-        &&(allowedToDoThis(M,FUNC_CLANCANORDERCONQUERED)>0))
+        &&(getAuthority(M.getClanRole(),FUNC_CLANCANORDERCONQUERED)!=Clan.ClanPositionPower.CAN_NOT_DO))
         {
             if(M.fetchAbility("Spell_Flagportation")==null)
             {
@@ -544,7 +545,8 @@ public class DefaultClan implements Clan
             msg.append("-----------------------------------------------------------------\n\r"
                       +"^x"+CMStrings.padRight(getRoleName(POS_MEMBER,true,true),16)
                       +":^.^N "+crewList(POS_MEMBER)+"\n\r");
-            if((allowedToDoThis(mob,FUNC_CLANACCEPT)>=0)||sysmsgs)
+            if((mob!=null)
+            &&((getAuthority(mob.getClanRole(),FUNC_CLANACCEPT)!=Clan.ClanPositionPower.CAN_NOT_DO)||sysmsgs))
             {
                 msg.append("-----------------------------------------------------------------\n\r"
                         +"^x"+CMStrings.padRight(getRoleName(POS_APPLICANT,true,true),16)+":^.^N "+crewList(POS_APPLICANT)+"\n\r");
@@ -665,27 +667,25 @@ public class DefaultClan implements Clan
 		return false;
 	}
 
-    public int allowedToDoThis(MOB mob, int function)
+	public ClanPositionPower getAuthority(int roleID, int function)
     {
-        if(mob==null) return -1;
-        int role=mob.getClanRole();
-        if(role==POS_APPLICANT) return -1;
+        if(roleID==POS_APPLICANT) return Clan.ClanPositionPower.CAN_NOT_DO;
         String[] funcs=FUNC_PROCEDURE[government];
         char[] who=funcs[function].toCharArray();
-        if(who.length==0) return -1;
-        if(who[0]=='V') return 0;
-        if(who[0]=='A') return 1;
+        if(who.length==0) return Clan.ClanPositionPower.CAN_NOT_DO;
+        if(who[0]=='V') return Clan.ClanPositionPower.MUST_VOTE_ON;
+        if(who[0]=='A') return Clan.ClanPositionPower.CAN_DO;
         for(int c=0;c<who.length;c++)
             switch(who[c])
             {
-            case 'B': if(role==POS_BOSS) return 1; break;
-            case 'L': if(role==POS_LEADER) return 1; break;
-            case 'E': if(role==POS_ENCHANTER) return 1; break;
-            case 'T': if(role==POS_TREASURER) return 1; break;
-            case 'S': if(role==POS_STAFF) return 1; break;
-            case 'M': if(role==POS_MEMBER) return 1; break;
+            case 'B': if(roleID==POS_BOSS) return Clan.ClanPositionPower.CAN_DO; break;
+            case 'L': if(roleID==POS_LEADER) return Clan.ClanPositionPower.CAN_DO; break;
+            case 'E': if(roleID==POS_ENCHANTER) return Clan.ClanPositionPower.CAN_DO; break;
+            case 'T': if(roleID==POS_TREASURER) return Clan.ClanPositionPower.CAN_DO; break;
+            case 'S': if(roleID==POS_STAFF) return Clan.ClanPositionPower.CAN_DO; break;
+            case 'M': if(roleID==POS_MEMBER) return Clan.ClanPositionPower.CAN_DO; break;
             }
-        return -1;
+        return Clan.ClanPositionPower.CAN_NOT_DO;
     }
 
     public List<MemberRecord> getRealMemberList(int PosFilter)

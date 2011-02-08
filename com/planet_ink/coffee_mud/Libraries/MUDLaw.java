@@ -236,7 +236,8 @@ public class MUDLaw extends StdLibrary implements LegalLibrary
 		if(title.landOwner().equals(mob.getClanID()))
 		{
 			Clan C=CMLib.clans().getClan(mob.getClanID());
-			if((C!=null)&&(C.allowedToDoThis(mob,Clan.FUNC_CLANPROPERTYOWNER)>=0))
+			if((C!=null)
+			&&(C.getAuthority(mob.getClanRole(),Clan.FUNC_CLANPROPERTYOWNER)!=Clan.ClanPositionPower.CAN_NOT_DO))
 				return true;
 		}
 		if(mob.amFollowing()!=null) 

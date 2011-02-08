@@ -51,7 +51,7 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
 {
 
 	/**
-	 * Returns whether the given mob is allowed to perform the
+	 * Returns whether the given roleID is allowed to perform the
 	 * given function.  The return value can designate that they
 	 * may do it now, that they may not do it, or that it requires
 	 * a vote.  A return value 1 means they can do it now, 0 means
@@ -59,11 +59,12 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
 	 * functions are defined in the Clan interface as FUNC_*
 	 * constants.
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Clan
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.Clan.ClanPositionPower
 	 * @param mob the mob whose priviledges to check.
 	 * @param function the Clan.FUNC_* constant to use
-	 * @return either 1, 0, or -1 saying if they are allowed.
+	 * @return the ClanPositionPower enum
 	 */
-	public int allowedToDoThis(MOB mob, int function);
+	public ClanPositionPower getAuthority(int roleID, int function);
 
 	/**
 	 * Sends a message to all members of all clans.
