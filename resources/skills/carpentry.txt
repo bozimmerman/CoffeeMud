@@ -20,7 +20,7 @@ Small % Chair	1	15	15	5	GenChair	CHAIR	1		0
 Small % Bench	1	20	20	10	GenChair	CHAIR	2		0	
 Small % Bed	1	25	30	15	GenBed	BED	1		0	
 Small % Box	1	15	15	5	GenContainer		25		0	
-% Club	2	15	10	200	GenWeapon	BLUNT	1	5	-20	
+% Club	2	15	10	200	GenWeapon	BLUNT	1	6	-20	
 % Mace	3	20	20	528	GenWeapon	BLUNT	1	5	0	
 % Bookshelf	3	30	10	15	GenContainer		10		384	
 % Scroll Case	3	30	10	10	GenContainer		3		256	
@@ -79,3 +79,8 @@ Ornate % Quarterstaff	55	180	150	1376	GenWeapon	STAFF	2	55	0
 The % Club	64	150	200	1300	GenWeapon	BLUNT	1	40	-20	
 The % Mace	70	180	240	4000	GenWeapon	BLUNT	1	35	0	
 The % Quarterstaff	80	270	300	2700	GenWeapon	STAFF	2	80	0	
+% Shiv	3	15	15	250	GenWeapon	DAGGER	1	6	0	
+% Stake	18	20	40	300	GenWeapon	DAGGER	1	14	0	
+% Cermonial Dagger	28	20	80	350	GenWeapon	DAGGER	1	16	10	
+The Mighty % Shiv	45	30	100	500	GenWeapon	DAGGER	1	20	10	
+The Mighty % Dagger	75	40	120	1200	GenWeapon	DAGGER	1	36	10	
