@@ -330,6 +330,30 @@ public class Clans extends StdLibrary implements ClanManager
         return false;
     }
 
+    public Clan.ClanGovernment parseGovernmentXML(StringBuffer xml)
+    {
+    	List<XMLLibrary.XMLpiece> xmlV = CMLib.xml().parseAllXML(xml);
+    	XMLLibrary.XMLpiece clanTypesTag = CMLib.xml().getPieceFromPieces(xmlV, "CLANTYPES");
+    	List<XMLLibrary.XMLpiece> clanTypes = null;
+    	if(clanTypesTag != null)
+    		clanTypes = clanTypesTag.contents;
+    	else
+    	{
+        	XMLLibrary.XMLpiece clanType = CMLib.xml().getPieceFromPieces(xmlV, "CLANTYPE");
+        	if(clanType != null)
+        	{
+        		clanTypes = new LinkedList<XMLLibrary.XMLpiece>();
+        		clanTypes.add(clanType);
+        	}
+        	else
+        	{
+	    		Log.errOut("Clans","No CLANTYPES found in xml"); 
+	        	return null;
+        	}
+    	}
+    	
+    	return null;
+    }
 
     public void clanAnnounce(MOB mob, String msg)
     {
