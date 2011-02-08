@@ -604,16 +604,16 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
         }
         
         // accounts!
-        if(!CMSecurity.isDisabled("PURGEACCOUNTS"))
+        if((!CMSecurity.isDisabled("PURGEACCOUNTS"))&&(CMProps.getIntVar(CMProps.SYSTEMI_ACCOUNTPURGEDAYS)>0))
 			for(final Enumeration<PlayerAccount> pe=CMLib.players().accounts("",null); pe.hasMoreElements();)
 			{
 				PlayerAccount PA=pe.nextElement();
 				if((PA.numPlayers() > 0)
                 ||(isProtected(protectedOnes, PA.accountName())))
                 	continue;
-				final long lastDateTimePurge = PA.lastDateTime() + TimeManager.MILI_WEEK;
-				final long lastUpdatedPurge = PA.lastUpdated() + TimeManager.MILI_WEEK;
-				final long accountExpPurge = PA.getAccountExpiration();
+				final long lastDateTimePurge = PA.lastDateTime() + (TimeManager.MILI_DAY * (long)CMProps.getIntVar(CMProps.SYSTEMI_ACCOUNTPURGEDAYS));
+				final long lastUpdatedPurge = PA.lastUpdated() + (TimeManager.MILI_DAY * (long)CMProps.getIntVar(CMProps.SYSTEMI_ACCOUNTPURGEDAYS));
+				final long accountExpPurge = PA.getAccountExpiration() + (TimeManager.MILI_DAY * (long)CMProps.getIntVar(CMProps.SYSTEMI_ACCOUNTPURGEDAYS));
 				long lastTime = lastDateTimePurge;
 				if(lastUpdatedPurge > lastTime) lastTime=lastUpdatedPurge;
 				if(accountExpPurge > lastTime) lastTime=accountExpPurge;

@@ -2294,4 +2294,4 @@ Special/Reserved Quest called holidays can be added to/modified on an area-by-ar
 25.Skill Recipes: Skill Component entries can now be substituted for ingredient amount in skill recipes.
 26.WebMacro NumPlayers supports ALL, TOTAL, TOTALCACHED, and ACCOUNTS.  See Web Guide for more info.
 27.New command: POSE, with new filter INI entry for it: POSEFILTER
-28.Old accounts will now be purged when they run out of characters. Use the PURGEACCOUNTS flag in DISABLE INI.
+28.Old accounts will now be purged when they run out of characters. See INI entry: ACCOUNTPURGE

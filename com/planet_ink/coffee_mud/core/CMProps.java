@@ -209,6 +209,7 @@ public class CMProps extends Properties
     public static final int SYSTEMI_MAXLANGUAGES=68;
     public static final int SYSTEMI_WALKCOST=69;
     public static final int SYSTEMI_RUNCOST=70;
+    public static final int SYSTEMI_ACCOUNTPURGEDAYS=71;
     public static final int NUMI_SYSTEM=71;
 
     public static final int SYSTEMB_MOBCOMPRESS=0;
@@ -802,6 +803,7 @@ public class CMProps extends Properties
         setVar(SYSTEM_CLANVOTEO,getStr("CLANVOTEO"));
         setVar(SYSTEM_CLANVOTER,getStr("CLANVOTER"));
         setVar(SYSTEM_AUTOPURGE,getStr("AUTOPURGE"));
+        setIntVar(SYSTEMI_ACCOUNTPURGEDAYS,getStr("ACCOUNTPURGE"),14);
         setVar(SYSTEM_IDLETIMERS,getStr("IDLETIMERS"));
         setVar(SYSTEM_CORPSEGUARD,getStr("CORPSEGUARD"));
         setUpLowVar(SYSTEM_MUDDOMAIN,getStr("DOMAIN"));
