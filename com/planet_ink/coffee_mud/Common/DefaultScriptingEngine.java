@@ -7522,10 +7522,10 @@ public class DefaultScriptingEngine implements ScriptingEngine
             case 80: // mpspeak
             {
                 if(tt==null){
-                	tt=parseBits(script,si,"Cr");
+                	tt=parseBits(script,si,"Ccr");
                 	if(tt==null) return null;
                 }
-                String language=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[1]);
+                String language=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[2]);
                 Environmental newTarget=getArgumentMOB(tt[1],source,monster,target,primaryItem,secondaryItem,msg,tmp);
                 Ability A=CMClass.getAbility(language);
                 if((A instanceof Language)&&(newTarget instanceof MOB))
