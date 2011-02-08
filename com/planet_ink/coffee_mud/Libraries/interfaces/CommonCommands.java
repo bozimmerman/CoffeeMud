@@ -34,6 +34,8 @@ import java.util.*;
 @SuppressWarnings("unchecked")
 public interface CommonCommands extends CMLibrary
 {
+    public void tickAging(MOB mob);
+    public int tickManaConsumption(MOB mob, int manaConsumeCounter);
     public void delGlobalMonitor(MsgMonitor M);
     public void monitorGlobalMessage(Room room, CMMsg msg);
     public void addGlobalMonitor(MsgMonitor M);
@@ -58,6 +60,8 @@ public interface CommonCommands extends CMLibrary
     public void postSay(MOB mob, MOB target, String text, boolean isPrivate, boolean tellFlag);
     public void postSay(MOB mob, MOB target,String text);
     public void postSay(MOB mob, String text);
+    public void lookAtExits(Room room, MOB mob);
+    public void lookAtExitsShort(Room room, MOB mob);
     public void handleBeingLookedAt(CMMsg msg);
     public void handleBeingRead(CMMsg msg);
     public void handleRecall(CMMsg msg);
@@ -72,12 +76,9 @@ public interface CommonCommands extends CMLibrary
     public void handleBeingWorn(CMMsg msg);
     public void handleBeingWielded(CMMsg msg);
     public void handleBeingHeld(CMMsg msg);
-    public void lookAtExits(Room room, MOB mob);
-    public void lookAtExitsShort(Room room, MOB mob);
+    public void handleHygenicMessage(final CMMsg msg, final int minHygeine, final long adjHygiene);
     public void handleObserveComesToLife(MOB observer, MOB lifer, CMMsg msg);
 	public boolean handleUnknownCommand(MOB mob, List<String> command);
     public void handleIntroductions(MOB speaker, MOB me, String said);
     public void handleComeToLife(MOB mob, CMMsg msg);
-    public void tickAging(MOB mob);
-    public int tickManaConsumption(MOB mob, int manaConsumeCounter);
 }

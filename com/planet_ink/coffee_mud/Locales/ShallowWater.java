@@ -65,19 +65,10 @@ public class ShallowWater extends StdRoom implements Drink
 	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);
-		if((msg.source().playerStats()!=null)
-		&&(CMath.bset(msg.sourceMajor(),CMMsg.MASK_MOVE))
-		&&(msg.source().soulMate()==null)
-		&&(msg.source().playerStats().getHygiene()>100)
-		&&(msg.source().riding()==null))
-		{
-		    if((domainType()==Room.DOMAIN_INDOORS_UNDERWATER)
-		    ||(domainType()==Room.DOMAIN_OUTDOORS_UNDERWATER))
-			    msg.source().playerStats().adjHygiene(PlayerStats.HYGIENE_WATERCLEAN);
-		    else
-		    if(!CMLib.flags().isFlying(msg.source()))
-			    msg.source().playerStats().adjHygiene(PlayerStats.HYGIENE_WATERCLEAN);
-		}
+		
+	    if((domainType()==Room.DOMAIN_INDOORS_UNDERWATER)||(domainType()==Room.DOMAIN_OUTDOORS_UNDERWATER))
+	    	CMLib.commands().handleHygenicMessage(msg, 100, PlayerStats.HYGIENE_WATERCLEAN);
+	    
 		if(msg.amITarget(this)&&(msg.targetMinor()==CMMsg.TYP_DRINK))
 		{
 			MOB mob=msg.source();

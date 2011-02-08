@@ -314,7 +314,7 @@ public class Clans extends StdLibrary implements ClanManager
 	                	for(int i=0;i<votingRoles.size();i++)
 	                	{
 	                		Integer roleID=votingRoles.get(i);
-	                		roleNames[i]=C.getRoleName(roleID, true, true);
+	                		roleNames[i]=C.getRoleName(roleID.intValue(), true, true);
 	                	}
 	                	String list = CMLib.english().toEnglishStringList(roleNames);
                         clanAnnounce(mob,"The "+C.typeName()+" "+C.clanID()+" has a new matter to vote upon. "

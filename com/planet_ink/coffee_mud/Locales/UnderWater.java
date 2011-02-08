@@ -101,22 +101,7 @@ public class UnderWater extends StdRoom implements Drink
 				mob.tell("You have drunk all you can.");
 		}
 		
-		if((msg.source().playerStats()!=null)
-        &&(CMath.bset(msg.sourceMajor(),CMMsg.MASK_MOVE)
-            ||((msg.tool() instanceof Social)
-                &&((msg.tool().Name().toUpperCase().startsWith("BATHE"))
-                ||(msg.tool().Name().toUpperCase().startsWith("WASH")))))
-		&&(msg.source().soulMate()==null)
-		&&(msg.source().playerStats().getHygiene()>100)
-		&&(msg.source().riding()==null))
-		{
-		    if((room.domainType()==Room.DOMAIN_INDOORS_UNDERWATER)
-		    ||(room.domainType()==Room.DOMAIN_OUTDOORS_UNDERWATER))
-			    msg.source().playerStats().adjHygiene(PlayerStats.HYGIENE_WATERCLEAN);
-		    else
-		    if(!CMLib.flags().isFlying(msg.source()))
-			    msg.source().playerStats().adjHygiene(PlayerStats.HYGIENE_WATERCLEAN);
-		}
+		CMLib.commands().handleHygenicMessage(msg, 100, PlayerStats.HYGIENE_WATERCLEAN);
 
 		if(CMLib.flags().isSleeping(room))
 			return;
