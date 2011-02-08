@@ -506,6 +506,7 @@ public interface ScriptingEngine extends CMCommon, Tickable, MsgListener
         "ISODD", // 92
         "QUESTSCRIPTED", //93
         "QUESTROOM", // 94
+        "ISSPEAKING", // 95
     };
     
     /** String list of all valid mobprog commands */
@@ -589,6 +590,7 @@ public interface ScriptingEngine extends CMCommon, Tickable, MsgListener
         "MPMONEY", // 77
         "MPHEAL", // 78
         "MPPOSSESS", // 79
+        "MPSPEAK", // 80
     };
 
     /** a list of some some extra stat codes for mobs*/

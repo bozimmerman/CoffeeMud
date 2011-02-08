@@ -2433,6 +2433,37 @@ public class DefaultScriptingEngine implements ScriptingEngine
                     returnable=true;
                 break;
             }
+            case 95: // isspeaking
+            {
+                if(tlen==1) tt=parseBits(eval,t,"cr"); /* tt[t+0] */
+                String arg1=tt[t+0];
+                String arg2=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+1]);
+                Environmental E=getArgumentMOB(arg1,source,monster,target,primaryItem,secondaryItem,msg,tmp);
+                if((E==null)||(!(E instanceof MOB))||(lastKnownLocation==null))
+                    returnable=false;
+                else
+                {
+                	final MOB TM=(MOB)E;
+                	Language L=null;
+                	Ability A=null;
+                	for(int i=0;i<TM.numEffects();i++)
+                	{
+                		A=TM.fetchEffect(i);
+                		if((A instanceof Language) && (((Language)A).beingSpoken(A.ID())))
+                			L=(Language)A;
+                	}
+                	if((L!=null)
+                	&&(!L.ID().equalsIgnoreCase("Common"))
+                	&&(L.ID().equalsIgnoreCase(arg2)||L.Name().equalsIgnoreCase(arg2)||arg2.equalsIgnoreCase("any")))
+                		returnable=true;
+                	else
+                	if(arg2.equalsIgnoreCase("common")||arg2.equalsIgnoreCase("none"))
+                		returnable=true;
+                	else
+                		returnable=false;
+                }
+                break;
+            }
             case 55: // ispkill
             {
                 String arg1=CMParms.cleanBit(funcParms);
@@ -4678,6 +4709,28 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 Environmental E=getArgumentMOB(arg1,source,monster,target,primaryItem,secondaryItem,msg,tmp);
                 if((E!=null)&&(E instanceof MOB)&&(((MOB)E).getLiegeID()!=null)&&(((MOB)E).getLiegeID().length()>0))
                     results.append(((MOB)E).getLiegeID());
+                break;
+            }
+            case 95: // isspeaking
+            {
+                String arg1=CMParms.cleanBit(funcParms);
+                Environmental E=getArgumentMOB(arg1,source,monster,target,primaryItem,secondaryItem,msg,tmp);
+                if((E!=null)&&(E instanceof MOB))
+                {
+                	final MOB TM=(MOB)E;
+                	Language L=null;
+                	Ability A=null;
+                	for(int i=0;i<TM.numEffects();i++)
+                	{
+                		A=TM.fetchEffect(i);
+                		if((A instanceof Language) && (((Language)A).beingSpoken(A.ID())))
+                			L=(Language)A;
+                	}
+                	if(L!=null)
+	                    results.append(L.Name());
+                	else
+	                    results.append("Common");
+                }
                 break;
             }
             case 56: // name
@@ -7463,6 +7516,31 @@ public class DefaultScriptingEngine implements ScriptingEngine
                         newTarget.addNonUninvokableEffect(A);
                     else
                         A.invoke(monster,CMParms.parse(m2),newTarget,true,0);
+                }
+                break;
+            }
+            case 80: // mpspeak
+            {
+                if(tt==null){
+                	tt=parseBits(script,si,"Cr");
+                	if(tt==null) return null;
+                }
+                String language=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[1]);
+                Environmental newTarget=getArgumentMOB(tt[1],source,monster,target,primaryItem,secondaryItem,msg,tmp);
+                Ability A=CMClass.getAbility(language);
+                if((A instanceof Language)&&(newTarget instanceof MOB))
+                {
+                	((Language)A).setProficiency(100);
+                	((Language)A).autoInvocation((MOB)newTarget);
+                	Ability langA=((MOB)newTarget).fetchEffect(A.ID());
+                	if(langA!=null)
+                	{
+	                	if(((MOB)newTarget).isMonster())
+	                		langA.setProficiency(100);
+	                	langA.invoke((MOB)newTarget,CMParms.parse(""),(MOB)newTarget,false,0);
+                	}
+                	else
+	                	A.invoke((MOB)newTarget,CMParms.parse(""),(MOB)newTarget,false,0);
                 }
                 break;
             }
