@@ -299,10 +299,10 @@ public class Hireling extends StdBehavior
 					if(workingFor.equals(source.Name()))
 						CMLib.commands().postSay(observer,source,"I'm still working for you.  I'll put that towards an extension though.",true,false);
 					else
-						CMLib.commands().postSay(observer,source,"Sorry, I'm on the job right now.  Give me "+CMLib.beanCounter().nameCurrencyShort(observer,(price()-given))+" more later on and I'll work.",true,false);
+						CMLib.commands().postSay(observer,source,"Sorry, I'm on the job right now.  Give me "+CMLib.beanCounter().nameCurrencyShort(observer,(price()-given))+" more later on and I'll work for "+gamehours()+" \"hours\".",true,false);
 				}
 				else
-					CMLib.commands().postSay(observer,source,"My price is "+CMLib.beanCounter().nameCurrencyShort(observer,price())+".  Give me "+CMLib.beanCounter().nameCurrencyShort(observer,(price()-given))+" more and I'll work.",true,false);
+					CMLib.commands().postSay(observer,source,"My price is "+CMLib.beanCounter().nameCurrencyShort(observer,price())+".  Give me "+CMLib.beanCounter().nameCurrencyShort(observer,(price()-given))+" more and I'll work for you for "+gamehours()+" \"hours\".",true,false);
 				partials.put(msg.source().Name(),Double.valueOf(given));
 			}
 			else
