@@ -5,7 +5,7 @@
     C     O  O  F     F     E     E     M   M  U  U  D  D
      CCC   OO   F     F     EEEE  EEEE  M   M   UU   DDD    v5.6
 
-                (C) 2000 - 2010 Bo Zimmerman
+                (C) 2000-2011 Bo Zimmerman
 
                         (
                           )     (

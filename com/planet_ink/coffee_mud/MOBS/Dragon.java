@@ -18,7 +18,7 @@ import java.util.*;
 
 
 /* 
-   Copyright 2000-2010 Mike Rundell
+   Copyright 2000-2011 Mike Rundell
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
