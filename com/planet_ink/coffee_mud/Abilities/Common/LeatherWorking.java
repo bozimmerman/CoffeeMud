@@ -192,7 +192,7 @@ public class LeatherWorking extends EnhancedCraftingSkill implements ItemCraftor
 			String mask=CMParms.combine(commands,1);
 			StringBuffer buf=new StringBuffer("");
 			int toggler=1;
-			int toggleTop=3;
+			int toggleTop=2;
 			for(int r=0;r<toggleTop;r++)
 				buf.append(CMStrings.padRight("Item",16)+" Lvl "+CMStrings.padRight("Amt",3)+" ");
 			buf.append("\n\r");
@@ -212,7 +212,7 @@ public class LeatherWorking extends EnhancedCraftingSkill implements ItemCraftor
 					if((level<=xlevel(mob))
 					&&((mask==null)||(mask.length()==0)||mask.equalsIgnoreCase("all")||CMLib.english().containsString(item,mask)))
 					{
-						buf.append(CMStrings.padRight(item,16)+" "+CMStrings.padRight(""+level,3)+" "+CMStrings.padRightPreserve(""+wood,3)+((toggler!=toggleTop)?" ":"\n\r"));
+						buf.append(CMStrings.padRight(item,29)+" "+CMStrings.padRight(""+level,3)+" "+CMStrings.padRightPreserve(""+wood,3)+((toggler!=toggleTop)?" ":"\n\r"));
 						if(++toggler>toggleTop) toggler=1;
 					}
 				}

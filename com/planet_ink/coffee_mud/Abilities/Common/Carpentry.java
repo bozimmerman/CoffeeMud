@@ -173,7 +173,7 @@ public class Carpentry extends EnhancedCraftingSkill implements ItemCraftor
 			String mask=CMParms.combine(commands,1);
 			StringBuffer buf=new StringBuffer("Item <S-NAME> <S-IS-ARE> skilled at carving:\n\r");
 			int toggler=1;
-			int toggleTop=3;
+			int toggleTop=2;
 			for(int r=0;r<toggleTop;r++)
 				buf.append(CMStrings.padRight("Item",15)+" Lvl "+CMStrings.padRight("Wood",4)+" ");
 			buf.append("\n\r");
@@ -193,7 +193,7 @@ public class Carpentry extends EnhancedCraftingSkill implements ItemCraftor
 					if((level<=xlevel(mob))
 					&&((mask==null)||(mask.length()==0)||mask.equalsIgnoreCase("all")||CMLib.english().containsString(item,mask)))
 					{
-						buf.append(CMStrings.padRight(item,15)+" "+CMStrings.padRight(""+level,3)+" "+CMStrings.padRightPreserve(""+wood,4)+((toggler!=toggleTop)?" ":"\n\r"));
+						buf.append(CMStrings.padRight(item,29)+" "+CMStrings.padRight(""+level,3)+" "+CMStrings.padRightPreserve(""+wood,4)+((toggler!=toggleTop)?" ":"\n\r"));
 						if(++toggler>toggleTop) toggler=1;
 					}
 				}

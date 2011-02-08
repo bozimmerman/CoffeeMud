@@ -43,7 +43,7 @@ public class Weaponsmithing extends EnhancedCraftingSkill implements ItemCraftor
 	private static final String[] triggerStrings = {"WEAPONSMITH","WEAPONSMITHING"};
 	public String[] triggerStrings(){return triggerStrings;}
     public String supportedResourceString(){return "METAL|MITHRIL";}
-    protected int displayColumns(){return 3;}
+    protected int displayColumns(){return 2;}
     public String parametersFormat(){ return 
         "ITEM_NAME\tITEM_LEVEL\tBUILD_TIME_TICKS\tMATERIALS_REQUIRED\tITEM_BASE_VALUE\t"
         +"ITEM_CLASS_ID\tWEAPON_CLASS\tWEAPON_TYPE\tBASE_DAMAGE\tATTACK_MODIFICATION\t"
