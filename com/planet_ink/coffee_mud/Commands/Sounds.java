@@ -45,18 +45,32 @@ public class Sounds extends StdCommand
 	{
         if(!mob.isMonster())
         {
+        	boolean force=false;
+        	if(commands != null)
+	        	for(Object o : commands)
+	        		if(o.toString().equalsIgnoreCase("force"))
+	        			force=true;
+        	Session session=mob.session();
             if((!CMath.bset(mob.getBitmap(),MOB.ATT_SOUND))
-            ||(!mob.session().clientTelnetMode(Session.TELNET_MSP)))
+            ||(!session.clientTelnetMode(Session.TELNET_MSP)))
             {
-                mob.session().changeTelnetMode(Session.TELNET_MSP,true);
-                for(int i=0;((i<5)&&(!mob.session().clientTelnetMode(Session.TELNET_MSP)));i++)
+            	session.changeTelnetMode(Session.TELNET_MSP,true);
+                for(int i=0;((i<5)&&(!session.clientTelnetMode(Session.TELNET_MSP)));i++)
                 {
                     try{mob.session().prompt("",100);}catch(Exception e){}
                 }
-                if(mob.session().clientTelnetMode(Session.TELNET_MSP))
+                if(session.clientTelnetMode(Session.TELNET_MSP))
                 {
                     mob.setBitmap(CMath.setb(mob.getBitmap(),MOB.ATT_SOUND));
                     mob.tell("MSP Sound/Music enabled.\n\r");
+                }
+                else
+                if(force)
+                {
+                	session.setClientTelnetMode(Session.TELNET_MSP, true);
+                	session.setServerTelnetMode(Session.TELNET_MSP, true);
+                    mob.setBitmap(CMath.setb(mob.getBitmap(),MOB.ATT_SOUND));
+                    mob.tell("MSP Sound/Music has been forceably enabled.\n\r");
                 }
                 else
                     mob.tell("Your client does not appear to support MSP.");

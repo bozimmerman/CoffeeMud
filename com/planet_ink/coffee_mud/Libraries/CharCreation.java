@@ -92,6 +92,23 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
         return false;
     }
 
+    public boolean getRetireReason(final String mobName, final Session session)
+    {
+    	try
+    	{
+			if((session!=null)&&(!CMSecurity.isDisabled("RETIREREASON")))
+			{
+				String reason=session.prompt("OK.  Please leave us a short message as to why you are deleting this"
+												  +" character.  Your answers will be kept confidential, "
+												  +"and are for administrative purposes only.\n\r: ","",120000);
+				Log.sysOut("Retire","Retired: "+mobName+": "+reason);
+				return true;
+			}
+    	}
+    	catch(IOException ioe){}
+		return false;
+    }
+    
     public List<CharClass> classQualifies(MOB mob, int theme)
     {
         Vector them=new Vector();
@@ -471,7 +488,9 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
     			{
     				MOB M=CMLib.players().getLoadPlayer(delMe.name);
     				if(M!=null)
+    				{
 	    				CMLib.players().obliteratePlayer(M, false);
+    				}
     				session.println(delMe.name+" has been deleted.");
     			}
     			continue;

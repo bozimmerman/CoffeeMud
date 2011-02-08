@@ -54,13 +54,7 @@ public class Retire extends StdCommand
 			mob.tell("Password incorrect.");
 			return false;
 		}
-		if(!CMSecurity.isDisabled("RETIREREASON"))
-		{
-			String reason=session.prompt("OK.  Please leave us a short message as to why you are deleting this"
-											  +" character.  Your answers will be kept confidential, "
-											  +"and are for administrative purposes only.\n\r: ","",120000);
-			Log.sysOut("Retire",mob.Name()+" retiring: "+reason);
-		}
+		CMLib.login().getRetireReason(mob.Name(),mob.session());
 		CMLib.players().obliteratePlayer(mob,false);
 		return false;
 	}
