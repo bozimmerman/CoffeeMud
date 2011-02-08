@@ -137,6 +137,7 @@
             <li><a href="#mpsetinternal">mpsetinternal</a></li>
             <li><a href="#mpsetvar">mpsetvar</a></li>
             <li><a href="#mpslay">mpslay</a></li>
+            <li><a href="#mpspeak">mpspeak</a></li>
             <li><a href="#mpstartquest">mpstartquest</a></li>
             <li><a href="#mpstop">mpstop</a></li>
             <li><a href="#mptattoo">mptattoo</a></li>
@@ -207,6 +208,7 @@
             <li><a href="#isrecall">isrecall</a></li>
             <li><a href="#isseason">isseason</a></li>
             <li><a href="#isservant">isservant</a></li>
+            <li><a href="#isspeaking">isspeaking</a></li>
             <li><a href="#istime">istime</a></li>
             <li><a href="#isweather">isweather</a></li>
             <li><a href="#level">level</a></li>
@@ -1876,6 +1878,10 @@ quest.</td>
 serving, or nothing otherwise.</td>
           </tr>
           <tr>
+            <td>ISSPEAKING([code])</td>
+            <td>Returns the language being spoken by the given mob, or Common.</td>
+          </tr>
+          <tr>
             <td>ISTIME()</td>
             <td>Returns the approximate time of day in words.</td>
           </tr>
@@ -3116,15 +3122,15 @@ damage is done to clan records.</p>
       <pre>mpsetinternal [variable] [value]<br /></pre>
       <p>This command is used to set one of the internal scripting engine
 variables. The variables included, and their meaning, is as follows:</p>
-<P>
-<UL>
-	<li><B>SCOPE</B>: Manually changes the scope of variable resolution. * is global/default.</li>
-	<li><B>NODELAY</B>: Whether a 1 tick delay is seen before some triggers fire.  Values are true or false.</li>
-	<li><B>ACTIVETRIGGERS</B>: Whether a mob will always trigger, despite being unhealthy or a follower.  Values are true or false.</li>
-	<li><B>DEFAULTQUEST</B>: Changes which quest this script is registerd with.  Affects only the Quest related MP commands.</li>
-	<li><B>SAVABLE</B>: Determines if this script will be saved as a permanent part of the host.  Values are true or false.</li>
-</UL>
-</P>
+		<p>
+		<ul>
+			<li><b>SCOPE</b>: Manually changes the scope of variable resolution. * is global/default.</li>
+			<li><b>NODELAY</b>: Whether a 1 tick delay is seen before some triggers fire.  Values are true or false.</li>
+			<li><b>ACTIVETRIGGERS</b>: Whether a mob will always trigger, despite being unhealthy or a follower.  Values are true or false.</li>
+			<li><b>DEFAULTQUEST</b>: Changes which quest this script is registerd with.  Affects only the Quest related MP commands.</li>
+			<li><b>SAVABLE</b>: Determines if this script will be saved as a permanent part of the host.  Values are true or false.</li>
+		</ul>
+		</p>
       <h3><a name="mpsetvar">mpsetvar</a></h3>
       <p>Usage:</p>
       <pre>mpsetvar [mob name] [variable name] [value]<br />mpsetvar [mob name] [variable name] ++<br />mpsetvar [mob name] [variable name] --<br />mpsetvar [mob name] [variable name] +[number]<br />mpsetvar [mob name] [variable name] -[number]<br />mpsetvar [mob name] [variable name] *[number]<br />mpsetvar [mob name] [variable name] /[number]<br /></pre>
@@ -3163,6 +3169,14 @@ ever wanted to do once you get the hang of them.</p>
       <p>This command kills the victim dead.</p>
       <p>EXAMPLES:</p>
       <pre>mpslay $n<br />mpslay ogre<br /></pre>
+      
+      <h3><a name="mpspeak">mpspeak</a></h3>
+      <p>Usage:</p>
+      <pre>mpspeak [language name] [target]<br /></pre>
+      <p>This command will force the target mob to speak the given language, even if they don't know it. Simple.</p>
+      <p>EXAMPLES:</p>
+      <pre>mpspeak Elvish $n<br /></pre>
+      
       <h3><a name="mpstartquest">mpstartquest</a></h3>
       <p>Usage:</p>
       <pre>mpstartquest [quest name]<br /></pre>
@@ -3776,6 +3790,13 @@ seasonnames include "WINTER", "SPRING", "SUMMER", or "FALL".</p>
 is serving anyone in the room.</p>
       <p>EXAMPLE:</p>
       <pre>if isservant($i)<br />  say I greet my master.<br />else<br />  say I await my master.<br />endif<br /></pre>
+      <h3><a name="isspeaking">isspeaking</a></h3>
+      <p>Usage:</p>
+      <pre>isspeaking(character language)<br /></pre>
+      <p>This function returns whether the given character is speaking the given language.  You can also enter NONE as a language name 
+      to check for Common.</p>
+      <p>EXAMPLES:</p>
+      <pre>if isspeaking($n Elvish)<br />  mpecho The actor who caused the trigger is speaking Elvish.<br />else<br />  mpecho The actor who caused the trigger is not speaking Elvish.<br />endif<br /></pre>
       <h3><a name="istime">istime</a></h3>
       <p>Usage:</p>
       <pre>istime(integer)<br />istime(todword)<br /></pre>
