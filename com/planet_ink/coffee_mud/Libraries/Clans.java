@@ -11,6 +11,10 @@ import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.DefaultClan;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.Clan.ClanFunction;
+import com.planet_ink.coffee_mud.Common.interfaces.Clan.ClanGovernment;
+import com.planet_ink.coffee_mud.Common.interfaces.Clan.ClanPosition;
+import com.planet_ink.coffee_mud.Common.interfaces.Clan.ClanPositionPower;
 import com.planet_ink.coffee_mud.Common.interfaces.Clan.MemberRecord;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
@@ -330,7 +334,7 @@ public class Clans extends StdLibrary implements ClanManager
         return false;
     }
 
-    public Clan.ClanGovernment parseGovernmentXML(StringBuffer xml)
+    public Clan.ClanGovernment[] parseGovernmentXML(StringBuffer xml)
     {
     	List<XMLLibrary.XMLpiece> xmlV = CMLib.xml().parseAllXML(xml);
     	XMLLibrary.XMLpiece clanTypesTag = CMLib.xml().getPieceFromPieces(xmlV, "CLANTYPES");
@@ -352,7 +356,101 @@ public class Clans extends StdLibrary implements ClanManager
         	}
     	}
     	
-    	return null;
+    	List<ClanGovernment> governments=new LinkedList<ClanGovernment>();
+    	for(XMLLibrary.XMLpiece clanTypePieceTag : clanTypes)
+    	{
+			final String typeName=clanTypePieceTag.parms.get("NAME");
+			final int typeID=CMath.s_int(clanTypePieceTag.parms.get("TYPEID"));
+	    	
+			ClanPositionPower[]	baseFunctionChart = new ClanPositionPower[ClanFunction.values().length];
+			for(int i=0;i<ClanFunction.values().length;i++)
+				baseFunctionChart[i]=ClanPositionPower.CAN_NOT_DO;
+	    	XMLLibrary.XMLpiece votingTag = CMLib.xml().getPieceFromPieces(xmlV, "VOTING");
+	    	for(XMLLibrary.XMLpiece piece : votingTag.contents)
+	    	{
+	    		if(piece.tag.equalsIgnoreCase("POWER"))
+	    		{
+	    			ClanPositionPower power = ClanPositionPower.valueOf(piece.value);
+	    			if(power == null)
+	    	    		Log.errOut("Clans","Illegal power found in xml: "+piece.value);
+	    			else
+	    				baseFunctionChart[power.ordinal()] = ClanPositionPower.MUST_VOTE_ON;
+	    		}
+	    	}
+	    	
+	    	final List<ClanPosition> positions=new LinkedList<ClanPosition>();
+	    	XMLLibrary.XMLpiece positionsTag = CMLib.xml().getPieceFromPieces(clanTypePieceTag.contents, "POSITIONS");
+	    	for(XMLLibrary.XMLpiece posPiece : positionsTag.contents)
+	    	{
+	    		if(posPiece.tag.equalsIgnoreCase("POSITION"))
+	    		{
+	    			ClanPositionPower[]	functionChart = baseFunctionChart.clone();
+	    			final String ID=posPiece.parms.get("ID");
+	    			final int roleID=CMath.s_int(posPiece.parms.get("ROLEID"));
+	    			final int rank=CMath.s_int(posPiece.parms.get("RANK"));
+	    			final String name=posPiece.parms.get("NAME");
+	    			final String pluralName=posPiece.parms.get("PLURAL");
+	    			final int max=CMath.s_int(posPiece.parms.get("MAX"));
+	    			final String innerMaskStr=posPiece.parms.get("INNERMASK");
+	    	    	for(XMLLibrary.XMLpiece powerPiece : posPiece.contents)
+	    	    	{
+	    	    		if(powerPiece.tag.equalsIgnoreCase("POWER"))
+	    	    		{
+	    	    			ClanPositionPower power = ClanPositionPower.valueOf(powerPiece.value);
+	    	    			if(power == null)
+	    	    	    		Log.errOut("Clans","Illegal power found in xml: "+powerPiece.value);
+	    	    			else
+	    	    				baseFunctionChart[power.ordinal()] = ClanPositionPower.CAN_DO;
+	    	    		}
+	    	    	}
+	    			ClanPosition pos=new ClanPosition(ID,roleID,rank,name,pluralName,max,innerMaskStr,functionChart);
+	    			positions.add(pos);
+	    		}
+	    	}
+			String	topRoleStr=CMLib.xml().getValFromPieces(clanTypePieceTag.contents, "HIGHPOSITION");
+			ClanPosition topRole=null;
+			for(ClanPosition pos : positions)
+				if(pos.ID.equalsIgnoreCase(topRoleStr) )
+					topRole=pos;
+			if(topRole==null)
+			{
+	    		Log.errOut("Clans","Illegal role found in xml: "+topRoleStr);
+	    		return null;
+			}
+			String	autoRoleStr=CMLib.xml().getValFromPieces(clanTypePieceTag.contents, "AUTOPOSITION");
+			ClanPosition autoRole=null;
+			for(ClanPosition pos : positions)
+				if(pos.ID.equalsIgnoreCase(autoRoleStr) )
+					autoRole=pos;
+			if(autoRole==null)
+			{
+	    		Log.errOut("Clans","Illegal role found in xml: "+autoRoleStr);
+	    		return null;
+			}
+			String requiredMaskStr=CMLib.xml().getValFromPieces(clanTypePieceTag.contents, "REQUIREDMASK");
+			boolean autoPromote=CMath.s_bool(CMLib.xml().getValFromPieces(clanTypePieceTag.contents, "AUTOPROMOTE"));
+			boolean isPublic=CMath.s_bool(CMLib.xml().getValFromPieces(clanTypePieceTag.contents, "PUBLIC"));
+			boolean isFamilyOnly=CMath.s_bool(CMLib.xml().getValFromPieces(clanTypePieceTag.contents, "FAMILYONLY"));
+			String	overrideMinMembersStr=CMLib.xml().getValFromPieces(clanTypePieceTag.contents, "OVERRIDEMINMEMBERS");
+			Integer overrideMinMembers = null;
+			if((overrideMinMembersStr!=null)&&CMath.isInteger(overrideMinMembersStr))
+				overrideMinMembers=Integer.valueOf(CMath.s_int(overrideMinMembersStr));
+			XMLLibrary.XMLpiece conquestTag = CMLib.xml().getPieceFromPieces(xmlV, "CONQUEST");
+			boolean conquestEnabled=true;
+			boolean conquestItemLoyalty=true;
+			boolean conquestDeityBasis=false;
+			if(conquestTag!=null)
+			{
+				conquestEnabled=CMath.s_bool(CMLib.xml().getValFromPieces(conquestTag.contents, "ENABLED"));
+				conquestItemLoyalty=CMath.s_bool(CMLib.xml().getValFromPieces(conquestTag.contents, "ITEMLOYALTY"));
+				conquestDeityBasis=CMath.s_bool(CMLib.xml().getValFromPieces(conquestTag.contents, "DEITYBASIS"));
+			}
+			ClanGovernment gvt=new ClanGovernment(typeID,typeName,positions.toArray(new ClanPosition[0]), 
+					topRole.roleID, autoRole.roleID,requiredMaskStr,autoPromote,isPublic,isFamilyOnly,
+					  overrideMinMembers, conquestEnabled,conquestItemLoyalty,conquestDeityBasis);
+			governments.add(gvt);
+    	}
+    	return governments.toArray(new ClanGovernment[0]);
     }
 
     public void clanAnnounce(MOB mob, String msg)

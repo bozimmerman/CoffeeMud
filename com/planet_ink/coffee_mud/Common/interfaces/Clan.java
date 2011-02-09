@@ -10,6 +10,7 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.MaskingLibrary.CompiledZapperMask;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -771,29 +772,72 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
 	}
 	
 	/**
+	 * An enumation of all the major clan functions gated
+	 * by internal security
+	 * @author bzimmerman
+	 */
+	public static enum ClanFunction
+	{
+		ACCEPT,
+		ASSIGN,
+		EXILE,
+		HOMESET,
+		DONATESET,
+		REJECT,
+		PREMISE,
+		PROPERTYOWNER,
+		WITHDRAW,
+		CANORDERUNDERLINGS,
+		CANORDERCONQUERED,
+		VOTEASSIGN,
+		VOTEOTHER,
+		DEPOSITLIST,
+		DECLARE,
+		TAX,
+		ENCHANT,
+	}
+	
+	/**
 	 * A class for the characteristics of a position within a clan.
 	 * @author bzimmerman
 	 */
 	public static class	ClanPosition
 	{
+		/** the named ID of the position */
+		public final String ID;
+		/** the named ID of the position */
+		public final int roleID;
 		/** the ordered rank of the position */
-		public int 		rank			= -1;
+		public final int 	rank;
 		/** the name of the position within this government */
-		public String	name			= "Unknown";
+		public final String	name;
+		/** the plural name of the position within this government */
+		public final String	pluralName;
 		/** the maximum number of members that can hold this position */
-		public int		max				= Integer.MAX_VALUE;
+		public final int	max;
+		/** the internal zapper mask for internal requirements to this position */
+		public final String	innerMaskStr;
+		/** the zapper mask for internal requirements to this position */
+		public final CompiledZapperMask	internalMask;
 		/** a chart of whether this position can perform the indexed function in this government */
-		public ClanPositionPower[]		functionChart	= new ClanPositionPower[FUNC_TOTAL];
+		public final ClanPositionPower[]functionChart;
+		
 		/**
 		 * Initialize a new clan position
+		 * @param ID the coded name of the rank
+		 * @param roleID the numeric ID of the rank
 		 * @param rank the ordered rank number (0+)
 		 * @param name the name of this position
+		 * @param plural the plural name of this position
 		 * @param max the maximum number of members that can hold this position
+		 * @param innermask basic internal requirements for this position
 		 * @param funcChart an array of ClanPositionPower objects for each function that can be performed.
 		 */
-		public ClanPosition(int rank, String name, int max, ClanPositionPower[] funcChart)
+		public ClanPosition(String ID, int roleID, int rank, String name, String plural, int max, String innerMask, ClanPositionPower[] funcChart)
 		{
+			this.ID=ID; this.roleID=roleID; this.pluralName=name; this.innerMaskStr=innerMask;
 			this.rank=rank; this.name=name; this.max=max;this.functionChart=funcChart;
+			internalMask=CMLib.masking().maskCompile(innerMask);
 		}
 	}
 
@@ -805,25 +849,61 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
 	public static class ClanGovernment
 	{
 		/** If this is a default government type, this is its ID, otherwise -1 */
-		public int 		ID		= -1;
+		public int 		ID;
 		/** The name of this government type, which is its identifier when ID above is -1 */
-		public String 	name	= "Unknown";
+		public String 	name;
 		/** The highest possible rank for a clan position within this government type */
-		public int		topRank	= -1;
+		public int		topRole;
+		/** The role automatically assigned to those who apply successfully */
+		public int		autoRole;
+		/** Zapper mask for requirements to even apply */
+		public String 	requiredMaskStr;
+		/**  Whether an unfilled topRole is automatically filled by those who meet its innermask  */
+		public boolean 	autoPromote;
+		/**  Whether this clan type is shown on the list  */
+		public boolean 	isPublic;
+		/**  Whether mambers must all be in the same family */
+		public boolean 	isFamilyOnly;
+		/**  The number of minimum members for the clan to survive -- overrides coffeemud.ini */
+		public Integer	overrideMinMembers;
+		/** Whether conquest is enabled for this clan */
+		public boolean 	conquestEnabled;
+		/** Whether clan items increase loyalty in conquered areas for this clan type */
+		public boolean 	conquestItemLoyalty;
+		/** Whether loyalty and conquest are determined by what deity the mobs are */
+		public boolean 	conquestDeityBasis;
 		/** The list of ClanPosition objects for each holdable position in this government */
-		public ClanPosition[] positions = new ClanPosition[0];
+		public ClanPosition[] 	  positions;
+		/** Zapper mask for requirements to even apply */
+		public CompiledZapperMask requiredMask;
+		
 		/**
 		 * Initialize a new Clan Government
 		 * @param ID
 		 * @param name
 		 * @param pos
+		 * @param highPos
+		 * @param autoPos
+		 * @param requiredMask
+		 * @param autoPromote
+		 * @param isPublic
+		 * @param isFamilyOnly
+		 * @param overrideMinMembers
+		 * @param conquestEnabled
+		 * @param conquestItemLoyalty
+		 * @param conquestDeityBasis
 		 */
-		public ClanGovernment(int ID, String name, ClanPosition[] pos)
+		public ClanGovernment(int ID, String name, ClanPosition[] pos, int highPos, int autoPos, 
+							  String requiredMask, boolean autoPromote, boolean isPublic, boolean isFamilyOnly,
+							  Integer overrideMinMembers,
+							  boolean conquestEnabled, boolean conquestItemLoyalty, boolean conquestDeityBasis)
 		{
-			this.ID=ID; this.name=name; this.positions=pos;
-			for(ClanPosition P : pos)
-				if(P.rank > topRank)
-					topRank=P.rank;
+			this.ID=ID; this.name=name; this.positions=pos; this.topRole=highPos; this.autoRole=autoPos;
+			this.requiredMaskStr=requiredMask; this.autoPromote=autoPromote; this.isPublic=isPublic;
+			this.isFamilyOnly=isFamilyOnly; this.overrideMinMembers=overrideMinMembers; 
+			this.conquestEnabled=conquestEnabled; this.conquestItemLoyalty=conquestItemLoyalty;
+			this.conquestDeityBasis=conquestDeityBasis;
+			this.requiredMask=CMLib.masking().maskCompile(requiredMaskStr);
 		}
 	}
 	
