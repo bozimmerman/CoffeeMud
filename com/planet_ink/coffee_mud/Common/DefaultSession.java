@@ -1321,20 +1321,18 @@ public class DefaultSession extends Thread implements Session
 		{
 			if(sock!=null)
 			{
-				status=Session.STATUS_LOGOUT6;
-				if(out!=null) out.flush();
 				status=Session.STATUS_LOGOUT7;
                 if(sock!=null) sock.shutdownInput();
 				status=Session.STATUS_LOGOUT8;
-				if(sock!=null) sock.shutdownOutput();
-				status=Session.STATUS_LOGOUT9;
 				if(out!=null){
 					try{
 						out.write(' ');
 						out.flush();
-					} catch(Exception e){}
+					} catch(Throwable t){}
 					out.close();
 				}
+				status=Session.STATUS_LOGOUT9;
+				if(sock!=null) sock.shutdownOutput();
 				status=Session.STATUS_LOGOUT10;
                 if(sock!=null) sock.close();
 				status=Session.STATUS_LOGOUT11;
@@ -1639,12 +1637,14 @@ public class DefaultSession extends Thread implements Session
 		}
 		catch(SocketException e)
 		{
-			if(!Log.isMaskedErrMsg(e.getMessage())&&((!killFlag)||(sock.isConnected())))
+			if(!Log.isMaskedErrMsg(e.getMessage())&&((!killFlag)||((sock!=null)&&sock.isConnected())))
 				errorOut(e);
 		}
 		catch(Exception t)
 		{
-			if(!Log.isMaskedErrMsg(t.getMessage())&&((!killFlag)||(sock.isConnected())))
+			if((t!=null)&&(!Log.isMaskedErrMsg(t.getMessage()))
+			&&((!killFlag)
+					||(sock!=null&&sock.isConnected())))
 				errorOut(t);
 		}
 		status=Session.STATUS_LOGOUT3;

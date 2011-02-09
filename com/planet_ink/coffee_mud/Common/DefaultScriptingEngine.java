@@ -1707,7 +1707,10 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 int amount=CMath.s_int(val.trim());
                 String num=(String)H.get(key);
                 if(num==null) num="0";
-                val=Integer.toString(CMath.s_int(num.trim())/amount);
+                if(amount==0)
+                	Log.errOut("Scripting","Scripting SetVar error: Division by 0: "+name+"/"+key+"="+val);
+                else
+	                val=Integer.toString(CMath.s_int(num.trim())/amount);
             }
             if(H.containsKey(key))
                 H.remove(key);

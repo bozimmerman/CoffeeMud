@@ -64,11 +64,16 @@ public class WizList extends StdCommand
 	        	C=player.charStats().getCurrentClass();
 	        else
 	        	C=CMClass.getCharClass(U.charClass);
+	        if(C==null)
+	        	C=CMClass.findCharClass(U.charClass);
 			if(((player!=null)&&(CMLib.masking().maskCheck(compiledMask, player, true)))
 			||(CMLib.masking().maskCheck(compiledMask, U)))
 			{
 				head.append("[");
-				head.append(CMStrings.padRight(C.name(),16)+" ");
+				if(C!=null)
+					head.append(CMStrings.padRight(C.name(),16)+" ");
+				else
+					head.append(CMStrings.padRight("Unknown",16)+" ");
 				head.append(CMStrings.padRight(U.race,8)+" ");
                 if((C==null)||(!C.leveless()))
     				head.append(CMStrings.padRight(""+U.level,4)+" ");
