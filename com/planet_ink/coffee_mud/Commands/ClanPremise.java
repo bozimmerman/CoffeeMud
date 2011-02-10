@@ -54,7 +54,7 @@ public class ClanPremise extends StdCommand
 		else
 		{
 			Clan C=CMLib.clans().getClan(mob.getClanID());
-			if((!skipChecks)&&(!CMLib.clans().goForward(mob,C,commands,Clan.FUNC_CLANPREMISE,false)))
+			if((!skipChecks)&&(!CMLib.clans().goForward(mob,C,commands,Clan.ClanFunction.PREMISE,false)))
 			{
 				msg.append("You aren't in the right position to set the premise to your "+C.typeName()+".");
 			}
@@ -71,7 +71,7 @@ public class ClanPremise extends StdCommand
 					if(premise.length()>0)
 					{
 						commands.addElement(premise);
-						if(skipChecks||CMLib.clans().goForward(mob,C,commands,Clan.FUNC_CLANPREMISE,true))
+						if(skipChecks||CMLib.clans().goForward(mob,C,commands,Clan.ClanFunction.PREMISE,true))
 						{
 							C.setPremise(premise);
 							C.update();

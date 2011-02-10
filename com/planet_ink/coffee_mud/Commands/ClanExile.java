@@ -63,7 +63,7 @@ public class ClanExile extends StdCommand
 					mob.tell("There is no longer a clan called "+mob.getClanID()+".");
 					return false;
 				}
-				if(skipChecks||CMLib.clans().goForward(mob,C,commands,Clan.FUNC_CLANEXILE,false))
+				if(skipChecks||CMLib.clans().goForward(mob,C,commands,Clan.ClanFunction.EXILE,false))
 				{
 					List<MemberRecord> apps=C.getMemberList();
 					if(apps.size()<1)
@@ -86,7 +86,7 @@ public class ClanExile extends StdCommand
 							mob.tell(qual+" was not found.  Could not exile from "+C.typeName()+".");
 							return false;
 						}
-						if(skipChecks||CMLib.clans().goForward(mob,C,commands,Clan.FUNC_CLANEXILE,true))
+						if(skipChecks||CMLib.clans().goForward(mob,C,commands,Clan.ClanFunction.EXILE,true))
 						{
 							CMLib.clans().clanAnnounce(mob,"Member exiled from "+C.typeName()+" "+C.name()+": "+M.Name());
                             mob.tell(M.Name()+" has been exiled from "+C.typeName()+" '"+C.clanID()+"'.");

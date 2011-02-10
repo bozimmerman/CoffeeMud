@@ -140,13 +140,7 @@ public class Clans extends StdLibrary implements ClanManager
 
 	public Clan getNewClanObjectOfType(int type)
 	{
-		switch(type)
-		{
-		case Clan.TYPE_CLAN:
-			return (Clan)CMClass.getCommon("DefaultClan");
-		default:
-			return (Clan)CMClass.getCommon("DefaultClan");
-		}
+		return (Clan)CMClass.getCommon("DefaultClan");
 	}
 
     public boolean isFamilyOfMembership(MOB M, List<MemberRecord> members) {
@@ -246,19 +240,19 @@ public class Clans extends StdLibrary implements ClanManager
 	    
 	}
     
-    public boolean goForward(MOB mob, Clan C, Vector commands, int function, boolean voteIfNecessary)
+    public boolean goForward(MOB mob, Clan C, Vector commands, Clan.ClanFunction function, boolean voteIfNecessary)
     {
         if((mob==null)||(C==null)) return false;
         Clan.ClanPositionPower allowed=C.getAuthority(mob.getClanRole(),function);
         if(allowed==Clan.ClanPositionPower.CAN_DO) return true;
         if(allowed==Clan.ClanPositionPower.CAN_NOT_DO) return false;
-        if(function==Clan.FUNC_CLANASSIGN)
+        if(function==Clan.ClanFunction.ASSIGN)
         {
-            if(C.getAuthority(mob.getClanRole(),Clan.FUNC_CLANVOTEASSIGN)!=Clan.ClanPositionPower.CAN_DO)
+            if(C.getAuthority(mob.getClanRole(),Clan.ClanFunction.VOTEASSIGN)!=Clan.ClanPositionPower.CAN_DO)
                return false;
         }
         else
-        if(C.getAuthority(mob.getClanRole(),Clan.FUNC_CLANVOTEOTHER)!=Clan.ClanPositionPower.CAN_DO)
+        if(C.getAuthority(mob.getClanRole(),Clan.ClanFunction.VOTEOTHER)!=Clan.ClanPositionPower.CAN_DO)
            return false;
         if(!voteIfNecessary) return true;
         String matter=CMParms.combine(commands,0);
@@ -287,13 +281,13 @@ public class Clans extends StdLibrary implements ClanManager
                 Clan.ClanVote CV=new Clan.ClanVote();
                 CV.matter=matter;
                 CV.voteStarter=mob.Name();
-                CV.function=function;
+                CV.function=function.ordinal();
                 CV.voteStarted=System.currentTimeMillis();
                 CV.votes=new DVector(2);
                 CV.voteStatus=Clan.VSTAT_STARTED;
                 C.addVote(CV);
                 C.updateVotes();
-                final int voteFunctionType = (function == Clan.FUNC_CLANASSIGN) ? Clan.FUNC_CLANVOTEASSIGN : Clan.FUNC_CLANVOTEOTHER;
+                final Clan.ClanFunction voteFunctionType = (function == Clan.ClanFunction.ASSIGN) ? Clan.ClanFunction.VOTEASSIGN : Clan.ClanFunction.VOTEOTHER;
                 final List<Integer> votingRoles = new LinkedList<Integer>();
                 for(int i=0;i<C.getRolesList().length;i++)
                 	if(C.getAuthority(i, voteFunctionType)==Clan.ClanPositionPower.CAN_DO)
@@ -304,7 +298,7 @@ public class Clans extends StdLibrary implements ClanManager
                 	final String rest = " "+firstRoleName+" should use CLANVOTE to participate.";
 	                if(votingRoles.size() >= (C.getRolesList().length-2))
 	                {
-	                	if(function == Clan.FUNC_CLANASSIGN)
+	                	if(function == Clan.ClanFunction.ASSIGN)
 	                        clanAnnounce(mob,"The "+C.typeName()+" "+C.clanID()+" has a new election to vote upon. "+rest);
 	                	else
 	                        clanAnnounce(mob,"The "+C.typeName()+" "+C.clanID()+" has a new matter to vote upon. "+rest);
@@ -338,8 +332,8 @@ public class Clans extends StdLibrary implements ClanManager
     {
     	return CMStrings.SPACES.substring(0,x*3);
     }
-    
-    public Clan.ClanGovernment getStockGovernment(int typeid)
+
+    public Clan.ClanGovernment[] getStockGovernments()
     {
     	Clan.ClanGovernment[] gvts=(Clan.ClanGovernment[])Resources.getResource("parsed_clangovernments");
     	if(gvts==null)
@@ -359,10 +353,16 @@ public class Clans extends StdLibrary implements ClanManager
     			}
     		}
     	}
-    	if(gvts.length >=typeid)
+    	return gvts;
+    }
+    
+    public Clan.ClanGovernment getStockGovernment(int typeid)
+    {
+    	final Clan.ClanGovernment[] gvts=getStockGovernments();
+    	if(gvts.length <= typeid)
     	{
     		Log.errOut("Clans","Someone mistakenly requested stock government typeid "+typeid);
-    		return null;
+    		return gvts[0];
     	}
     	return gvts[typeid];
     }
@@ -371,6 +371,7 @@ public class Clans extends StdLibrary implements ClanManager
     {
     	final StringBuilder str=new StringBuilder("");
     	str.append("<CLANTYPE ").append("TYPEID="+gvt.ID+" ").append("NAME="+gvt.name+" ").append(">\n");
+    	str.append(indt(1)).append("<SHORTDESC>").append(gvt.shortDesc).append("</SHORTDESC>\n");
     	str.append(indt(1)).append("<POSITIONS>\n");
     	Set<Clan.ClanPositionPower> voteSet = new HashSet<Clan.ClanPositionPower>(); 
     	for(Clan.ClanPosition pos : gvt.positions)
@@ -459,12 +460,12 @@ public class Clans extends StdLibrary implements ClanManager
 			ClanPositionPower[]	baseFunctionChart = new ClanPositionPower[ClanFunction.values().length];
 			for(int i=0;i<ClanFunction.values().length;i++)
 				baseFunctionChart[i]=ClanPositionPower.CAN_NOT_DO;
-	    	XMLLibrary.XMLpiece votingTag = CMLib.xml().getPieceFromPieces(xmlV, "VOTING");
+	    	XMLLibrary.XMLpiece votingTag = CMLib.xml().getPieceFromPieces(clanTypePieceTag.contents, "VOTING");
 	    	for(XMLLibrary.XMLpiece piece : votingTag.contents)
 	    	{
 	    		if(piece.tag.equalsIgnoreCase("POWER"))
 	    		{
-	    			ClanPositionPower power = ClanPositionPower.valueOf(piece.value);
+	    			ClanFunction power = ClanFunction.valueOf(piece.value);
 	    			if(power == null)
 	    	    		Log.errOut("Clans","Illegal power found in xml: "+piece.value);
 	    			else
@@ -490,7 +491,7 @@ public class Clans extends StdLibrary implements ClanManager
 	    	    	{
 	    	    		if(powerPiece.tag.equalsIgnoreCase("POWER"))
 	    	    		{
-	    	    			ClanPositionPower power = ClanPositionPower.valueOf(powerPiece.value);
+	    	    			ClanFunction power = ClanFunction.valueOf(powerPiece.value);
 	    	    			if(power == null)
 	    	    	    		Log.errOut("Clans","Illegal power found in xml: "+powerPiece.value);
 	    	    			else
@@ -501,6 +502,22 @@ public class Clans extends StdLibrary implements ClanManager
 	    			positions.add(pos);
 	    		}
 	    	}
+    		ClanPosition[] posArray = new ClanPosition[positions.size()];
+    		for(ClanPosition pos : positions)
+    			if((pos.roleID>=0)&&(pos.roleID<positions.size()))
+    				posArray[pos.roleID]=pos;
+    		
+    		for(int i=0;i<positions.size();i++)
+    			if(posArray[i]==null)
+    			{
+    	    		Log.errOut("Clans","Missing ROLEID "+i+" in positions list in "+typeName);
+    	    		continue;
+    			}
+    		if(posArray.length==0)
+			{
+	    		Log.errOut("Clans","Missing positions in "+typeName);
+	    		continue;
+			}
 			String	topRoleStr=CMLib.xml().getValFromPieces(clanTypePieceTag.contents, "HIGHPOSITION");
 			ClanPosition topRole=null;
 			for(ClanPosition pos : positions)
@@ -509,7 +526,7 @@ public class Clans extends StdLibrary implements ClanManager
 			if(topRole==null)
 			{
 	    		Log.errOut("Clans","Illegal role found in xml: "+topRoleStr);
-	    		return null;
+	    		continue;
 			}
 			String	autoRoleStr=CMLib.xml().getValFromPieces(clanTypePieceTag.contents, "AUTOPOSITION");
 			ClanPosition autoRole=null;
@@ -519,9 +536,10 @@ public class Clans extends StdLibrary implements ClanManager
 			if(autoRole==null)
 			{
 	    		Log.errOut("Clans","Illegal role found in xml: "+autoRoleStr);
-	    		return null;
+	    		continue;
 			}
 			String requiredMaskStr=CMLib.xml().getValFromPieces(clanTypePieceTag.contents, "REQUIREDMASK");
+			String shortDesc=CMLib.xml().getValFromPieces(clanTypePieceTag.contents, "SHORTDESC");
 			boolean autoPromote=CMath.s_bool(CMLib.xml().getValFromPieces(clanTypePieceTag.contents, "AUTOPROMOTE"));
 			boolean isPublic=CMath.s_bool(CMLib.xml().getValFromPieces(clanTypePieceTag.contents, "PUBLIC"));
 			boolean isFamilyOnly=CMath.s_bool(CMLib.xml().getValFromPieces(clanTypePieceTag.contents, "FAMILYONLY"));
@@ -529,7 +547,7 @@ public class Clans extends StdLibrary implements ClanManager
 			Integer overrideMinMembers = null;
 			if((overrideMinMembersStr!=null)&&CMath.isInteger(overrideMinMembersStr))
 				overrideMinMembers=Integer.valueOf(CMath.s_int(overrideMinMembersStr));
-			XMLLibrary.XMLpiece conquestTag = CMLib.xml().getPieceFromPieces(xmlV, "CONQUEST");
+			XMLLibrary.XMLpiece conquestTag = CMLib.xml().getPieceFromPieces(clanTypePieceTag.contents, "CONQUEST");
 			boolean conquestEnabled=true;
 			boolean conquestItemLoyalty=true;
 			boolean conquestDeityBasis=false;
@@ -539,12 +557,25 @@ public class Clans extends StdLibrary implements ClanManager
 				conquestItemLoyalty=CMath.s_bool(CMLib.xml().getValFromPieces(conquestTag.contents, "ITEMLOYALTY"));
 				conquestDeityBasis=CMath.s_bool(CMLib.xml().getValFromPieces(conquestTag.contents, "DEITYBASIS"));
 			}
-			ClanGovernment gvt=new ClanGovernment(typeID,typeName,positions.toArray(new ClanPosition[0]), 
+			ClanGovernment gvt=new ClanGovernment(typeID,typeName,posArray, 
 					topRole.roleID, autoRole.roleID,requiredMaskStr,autoPromote,isPublic,isFamilyOnly,
-					  overrideMinMembers, conquestEnabled,conquestItemLoyalty,conquestDeityBasis);
+					  overrideMinMembers, conquestEnabled,conquestItemLoyalty,conquestDeityBasis,shortDesc);
 			governments.add(gvt);
     	}
-    	return governments.toArray(new ClanGovernment[0]);
+    	ClanGovernment[] govts=new ClanGovernment[governments.size()];
+    	for(ClanGovernment govt : governments)
+    		if((govt.ID < 0)||(govt.ID >=governments.size()) || (govts[govt.ID]!=null))
+    		{
+	    		Log.errOut("Clans","Bad TYPEID "+govt.ID);
+	    		return new ClanGovernment[0];
+    		}
+    		else
+    			govts[govt.ID]=govt;
+    	if(governments.size()>0)
+	    	for(int i=0;i<govts.length;i++)
+	    		if(govts[i]==null)
+	    			govts[i]=governments.get(0);
+    	return govts;
     }
 
     public void clanAnnounce(MOB mob, String msg)

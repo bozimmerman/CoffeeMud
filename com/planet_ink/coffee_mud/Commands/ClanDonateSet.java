@@ -71,14 +71,14 @@ public class ClanDonateSet extends StdCommand
 			mob.tell("You cannot set a donation room.  Your "+C.typeName()+" does not have enough members to be considered active.");
 			return false;
 		}
-		if(skipChecks||CMLib.clans().goForward(mob,C,commands,Clan.FUNC_CLANDONATESET,false))
+		if(skipChecks||CMLib.clans().goForward(mob,C,commands,Clan.ClanFunction.DONATESET,false))
 		{
 			if(!CMLib.law().doesOwnThisProperty(C.clanID(),R))
 			{
 				mob.tell("Your "+C.typeName()+" does not own this room.");
 				return false;
 			}
-			if(skipChecks||CMLib.clans().goForward(mob,C,commands,Clan.FUNC_CLANDONATESET,true))
+			if(skipChecks||CMLib.clans().goForward(mob,C,commands,Clan.ClanFunction.DONATESET,true))
 			{
 				C.setDonation(CMLib.map().getExtendedRoomID(R));
 				C.update();

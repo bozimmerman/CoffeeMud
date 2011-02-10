@@ -119,7 +119,7 @@ public class ClanCrafting extends CraftingSkill implements ItemCraftor
 			student.tell("You need to belong to a clan before you can learn "+name()+".");
 			return false;
 		}
-		if(C.getAuthority(student.getClanRole(),Clan.FUNC_CLANENCHANT)!=Clan.ClanPositionPower.CAN_DO)
+		if(C.getAuthority(student.getClanRole(),Clan.ClanFunction.ENCHANT)!=Clan.ClanPositionPower.CAN_DO)
 		{
 			teacher.tell(student.name()+" is not authorized to draw from the power of "+student.charStats().hisher()+" "+C.typeName()+".");
 			student.tell("You must be authorized to draw from the power of your "+C.typeName()+" to learn this skill.");
@@ -159,7 +159,7 @@ public class ClanCrafting extends CraftingSkill implements ItemCraftor
 				mob.tell("You must be a member of a clan to use this skill.");
 				return false;
 			}
-			if((C.getAuthority(mob.getClanRole(),Clan.FUNC_CLANENCHANT)!=Clan.ClanPositionPower.CAN_DO)
+			if((C.getAuthority(mob.getClanRole(),Clan.ClanFunction.ENCHANT)!=Clan.ClanPositionPower.CAN_DO)
 			&&(!CMSecurity.isASysOp(mob)))
 			{
 				mob.tell("You are not authorized to draw from the power of your "+C.typeName()+".");

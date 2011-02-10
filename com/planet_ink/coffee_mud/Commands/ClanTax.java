@@ -54,7 +54,7 @@ public class ClanTax extends StdCommand
 		else
 		{
 			Clan C=CMLib.clans().getClan(mob.getClanID());
-			if((!skipChecks)&&(!CMLib.clans().goForward(mob,C,commands,Clan.FUNC_CLANTAX,false)))
+			if((!skipChecks)&&(!CMLib.clans().goForward(mob,C,commands,Clan.ClanFunction.TAX,false)))
 			{
 				msg.append("You aren't in the right position to set the experience tax rate for your "+C.typeName()+".");
 			}
@@ -85,7 +85,7 @@ public class ClanTax extends StdCommand
 						commands.addElement(t);
 						newRate=CMath.div(CMath.s_int(t),100);
 					}
-					if(skipChecks||CMLib.clans().goForward(mob,C,commands,Clan.FUNC_CLANTAX,true))
+					if(skipChecks||CMLib.clans().goForward(mob,C,commands,Clan.ClanFunction.TAX,true))
 					{
 						C.setTaxes(newRate);
 						C.update();

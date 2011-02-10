@@ -154,6 +154,15 @@ public interface ClanManager extends CMLibrary
     public Clan.ClanGovernment getStockGovernment(int typeid);
     
     /**
+     * Returns all government definition objects from internal
+     * stock clangovernments.ini file.  See /resources/clangovernments.ini
+     * Also:
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Clan.ClanGovernment
+     * @return the clan government object
+     */
+    public Clan.ClanGovernment[] getStockGovernments();
+    
+    /**
      * Converts a given clan government object into xml.
      * @see com.planet_ink.coffee_mud.Common.interfaces.Clan.ClanGovernment
      * @see com.planet_ink.coffee_mud.Libraries.interfaces.ClanManager#makeGovernmentXML(com.planet_ink.coffee_mud.Common.interfaces.Clan.ClanGovernment[])
@@ -207,5 +216,5 @@ public interface ClanManager extends CMLibrary
      * @param voteIfNecessary true to start a vote if one is needed, false to just return true.
      * @return true to execute the given command, and false not to.
      */
-    public boolean goForward(MOB mob, Clan C, Vector commands, int function, boolean voteIfNecessary);
+    public boolean goForward(MOB mob, Clan C, Vector commands, Clan.ClanFunction function, boolean voteIfNecessary);
 }

@@ -80,7 +80,7 @@ public class Spell_BaseClanEq extends Spell
 			mob.tell("You aren't even a member of a clan.");
 			return false;
 		}
-		if(C.getAuthority(mob.getClanRole(),Clan.FUNC_CLANENCHANT)!=Clan.ClanPositionPower.CAN_DO)
+		if(C.getAuthority(mob.getClanRole(),Clan.ClanFunction.ENCHANT)!=Clan.ClanPositionPower.CAN_DO)
 		{
 			mob.tell("You are not authorized to draw from the power of your "+C.typeName()+".");
 			return false;

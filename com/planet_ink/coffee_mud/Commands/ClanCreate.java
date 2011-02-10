@@ -82,25 +82,28 @@ public class ClanCreate extends StdCommand
 								int govtType=-1;
 								while(govtType==-1)
 								{
-									String govt=mob.session().prompt(
-									"Now enter a political style for this clan. Choices are:\n\r"
-									+"GANG  - Ruled by a boss who assigns underlings.\n\r"
-									+"GUILD - Ruled by a numerous bosses who assign underlings.\n\r"
-									+"UNION - Ruled by an elected set of leaders and staff.\n\r"
-									+"FELLOWSHIP - All decisions and staff are set through the vote.\n\r"
-									+"THEOCRACY - Clerics rule, can conquer through conversion.\n\r"
-                                    +"FAMILY - Patron or Matron rules an unlisted group only relations join.\n\r"
-									+": ","");
+									StringBuilder promptmsg=new StringBuilder("Now enter a political style for this clan. Choices are:\n\r");
+									{
+										int longest=0;
+							            for(Clan.ClanGovernment gvt : CMLib.clans().getStockGovernments())
+							            	if(gvt.name.length() > longest)
+							            		longest=gvt.name.length();
+							            for(Clan.ClanGovernment gvt : CMLib.clans().getStockGovernments())
+							            	promptmsg.append(CMStrings.padRight(gvt.name, longest))
+										            	.append(":").append(gvt.shortDesc).append("\n\r");
+										
+									}
+									String govt=mob.session().prompt(promptmsg.toString()+"\n\r: ","");
 									if(govt.length()==0){ mob.tell("Aborted."); return false;}
-									for(int i=0;i<Clan.GVT_DESCS.length;i++)
-										if(govt.equalsIgnoreCase(Clan.GVT_DESCS[i]))
-											govtType=i;
+						            for(Clan.ClanGovernment gvt : CMLib.clans().getStockGovernments())
+										if(govt.equalsIgnoreCase(gvt.name))
+											govtType=gvt.ID;
 								}
 
 								if(cost>0)
 									CMLib.beanCounter().subtractMoney(mob,cost);
 
-								Clan newClan=CMLib.clans().getNewClanObjectOfType(Clan.TYPE_CLAN);
+								Clan newClan=CMLib.clans().getNewClanObjectOfType(0);
 								newClan.setName(doubleCheck);
 								newClan.setGovernment(govtType);
 								newClan.setStatus(Clan.CLANSTATUS_PENDING);

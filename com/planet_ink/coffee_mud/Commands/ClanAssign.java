@@ -69,7 +69,7 @@ public class ClanAssign extends StdCommand
 					mob.tell("There is no longer a clan called "+mob.getClanID()+".");
 					return false;
 				}
-				if(skipChecks||CMLib.clans().goForward(mob,C,commands,Clan.FUNC_CLANASSIGN,false))
+				if(skipChecks||CMLib.clans().goForward(mob,C,commands,Clan.ClanFunction.ASSIGN,false))
 				{
 					List<MemberRecord> members=C.getMemberList();
 					if(members.size()<1)
@@ -104,7 +104,7 @@ public class ClanAssign extends StdCommand
 							mob.tell(M.name()+" may not be assigned to "+C.getRoleName(newPos,true,false)+".");
 							return false;
 						}
-						if(skipChecks||CMLib.clans().goForward(mob,C,commands,Clan.FUNC_CLANASSIGN,true))
+						if(skipChecks||CMLib.clans().goForward(mob,C,commands,Clan.ClanFunction.ASSIGN,true))
 						{
 						    int oldPos=M.getClanRole();
 							int maxInNewPos=C.getMostInRole(newPos);

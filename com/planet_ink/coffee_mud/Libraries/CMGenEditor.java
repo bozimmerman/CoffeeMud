@@ -3639,7 +3639,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
                             &&(!M.getClanID().equalsIgnoreCase(E.clanID())))
                             {
                                 M.setClanID("");
-                                M.setClanRole(Clan.POS_APPLICANT);
+                                M.setClanRole(0);
                                 oldC.updateClanPrivileges(M);
                             }
                             int role=members.get(m).role;
@@ -3676,7 +3676,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
                         if(M!=null)
                         {
                             M.setClanID("");
-                            M.setClanRole(Clan.POS_APPLICANT);
+                            M.setClanRole(0);
                             E.updateClanPrivileges(M);
                         }
                     }
@@ -6931,11 +6931,11 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
             }
             int newGovt=-1;
             StringBuffer gvts=new StringBuffer();
-            for(int i=0;i<Clan.GVT_DESCS.length;i++)
+            for(Clan.ClanGovernment gvt : CMLib.clans().getStockGovernments())
             {
-                gvts.append(Clan.GVT_DESCS[i]+", ");
-                if(newName.equalsIgnoreCase(Clan.GVT_DESCS[i]))
-                    newGovt=i;
+                gvts.append(gvt.name+", ");
+                if(newName.equalsIgnoreCase(gvt.name))
+                    newGovt=gvt.ID;
             }
             gvts=new StringBuffer(gvts.substring(0,gvts.length()-2));
             if(newGovt<0)

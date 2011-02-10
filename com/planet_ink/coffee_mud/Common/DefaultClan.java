@@ -9,6 +9,7 @@ import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.Clan.ClanPosition;
 import com.planet_ink.coffee_mud.Common.interfaces.Clan.ClanPositionPower;
 import com.planet_ink.coffee_mud.Common.interfaces.Clan.ClanVote;
 import com.planet_ink.coffee_mud.Common.interfaces.Clan.MemberRecord;
@@ -49,9 +50,9 @@ public class DefaultClan implements Clan
     protected String clanClass="";
     protected String clanDonationRoom="";
     protected int clanTrophies=0;
-    protected int autoPosition=Clan.POS_APPLICANT;
+    protected int autoPosition=0;
     protected String AcceptanceSettings="";
-    protected int clanType=TYPE_CLAN;
+    protected int clanType=0;
     protected int ClanStatus=0;
     protected Vector<ClanVote> voteList=null;
     protected long exp=0;
@@ -61,7 +62,8 @@ public class DefaultClan implements Clan
 
     //*****************
     public Hashtable<String,long[]> relations=new Hashtable<String,long[]>();
-    public int government=GVT_DICTATORSHIP;
+    public int government=0;
+    public ClanGovernment customGovt = null;
     //*****************
 
     /** return a new instance of the object*/
@@ -80,6 +82,20 @@ public class DefaultClan implements Clan
         }
     }
 
+    protected ClanGovernment govt() 
+    {
+    	if((government < 0) && (customGovt != null))
+    		return customGovt;
+    	else
+    	{
+    		final ClanGovernment govt = CMLib.clans().getStockGovernment(government);
+    		if(govt != null) return govt;
+    		if(CMLib.clans().getStockGovernments().length>0)
+    			return CMLib.clans().getStockGovernment(0);
+    		return new ClanGovernment(0,"none",new ClanPosition[0],0,0,"",false,false,false,null,false,false,false,"");
+    	}
+    }
+    
     private synchronized void clanKills()
     {
         if(lastClanKillRecord==null)
@@ -173,17 +189,17 @@ public class DefaultClan implements Clan
 
     public boolean isOnlyFamilyApplicants()
     {
-    	return government==Clan.GVT_FAMILY;
+    	return govt().isFamilyOnly;
     }
 
 	public boolean isLoyaltyThroughItems()
 	{
-		return government != Clan.GVT_THEOCRACY;
+		return govt().conquestItemLoyalty;
 	}
 
 	public boolean isLoyaltyThroughWorship()
 	{
-		return government == Clan.GVT_THEOCRACY;
+		return govt().conquestDeityBasis;
 	}
 
     public long calculateMapPoints()
@@ -380,7 +396,7 @@ public class DefaultClan implements Clan
             }
         }
         if(((M.getClanID().equals(clanID())))
-        &&(getAuthority(M.getClanRole(),FUNC_CLANCANORDERCONQUERED)!=Clan.ClanPositionPower.CAN_NOT_DO))
+        &&(getAuthority(M.getClanRole(),ClanFunction.CANORDERCONQUERED)!=Clan.ClanPositionPower.CAN_NOT_DO))
         {
             if(M.fetchAbility("Spell_Flagportation")==null)
             {
@@ -488,7 +504,7 @@ public class DefaultClan implements Clan
                   +"-----------------------------------------------------------------\n\r"
                   +getPremise()+"\n\r"
                   +"-----------------------------------------------------------------\n\r"
-                  +"^xType            :^.^N "+CMStrings.capitalizeAndLower(GVT_DESCS[getGovernment()])+"\n\r"
+                  +"^xType            :^.^N "+govt().name+"\n\r"
                   +"^xQualifications  :^.^N "+((getAcceptanceSettings().length()==0)?"Anyone may apply":CMLib.masking().maskDesc(getAcceptanceSettings()))+"\n\r");
         CharClass clanC=getClanClassC();
         if(clanC!=null) msg.append("^xClass           :^.^N "+clanC.name()+"\n\r");
@@ -546,7 +562,7 @@ public class DefaultClan implements Clan
                       +"^x"+CMStrings.padRight(getRoleName(POS_MEMBER,true,true),16)
                       +":^.^N "+crewList(POS_MEMBER)+"\n\r");
             if((mob!=null)
-            &&((getAuthority(mob.getClanRole(),FUNC_CLANACCEPT)!=Clan.ClanPositionPower.CAN_NOT_DO)||sysmsgs))
+            &&((getAuthority(mob.getClanRole(),ClanFunction.ACCEPT)!=Clan.ClanPositionPower.CAN_NOT_DO)||sysmsgs))
             {
                 msg.append("-----------------------------------------------------------------\n\r"
                         +"^x"+CMStrings.padRight(getRoleName(POS_APPLICANT,true,true),16)+":^.^N "+crewList(POS_APPLICANT)+"\n\r");
@@ -617,75 +633,21 @@ public class DefaultClan implements Clan
         return list.toString();
     }
 
-    public String typeName()
-    {
-        switch(clanType)
-        {
-        case TYPE_CLAN:
-            if((getGovernment()>=0)&&(getGovernment()<GVT_DESCS.length))
-                return CMStrings.capitalizeAndLower(GVT_DESCS[getGovernment()].toLowerCase());
-        }
-        return "Clan";
-    }
+    public String typeName() { return govt().name;}
 
 	public boolean canBeAssigned(MOB mob, int role)
 	{
         if(mob==null) return false;
-        if(role<0) return false;
-        switch(government)
-        {
-        case GVT_OLIGARCHY:
-    		return true;
-        case GVT_REPUBLIC:
-    		return true;
-        case GVT_DEMOCRACY:
-    		return true;
-        case GVT_THEOCRACY:
-        	if(role>=POS_LEADER)
-        	{
-        		if((mob.baseCharStats().getCurrentClass().baseClass().equalsIgnoreCase("Cleric"))
-        		||(mob.baseCharStats().getCurrentClass().baseClass().equalsIgnoreCase("Priest"))
-        		||(mob.baseCharStats().getCurrentClass().baseClass().equalsIgnoreCase("Clergy")))
-        			return true;
-        		return false;
-        	}
-    		return true;
-        case GVT_DICTATORSHIP:
-    		return true;
-        case GVT_FAMILY:
-            if((role == POS_LEADER)||(role == POS_TREASURER)) {
-                if(mob.baseCharStats().getStat(CharStats.STAT_GENDER)!='F')
-                    return false;
-            } 
-            else 
-            if((role == POS_BOSS)||(role == POS_ENCHANTER)) {
-                if(mob.baseCharStats().getStat(CharStats.STAT_GENDER) == 'F')
-                    return false;
-            }
-            return true; // technically requires some sort of familial check, but this will be enforced elsewhere.
-        }
-		return false;
+        if((role<0)||(role>govt().positions.length)) return false;
+        ClanPosition pos = govt().positions[role];
+        return CMLib.masking().maskCheck(pos.internalMask, mob, true);
 	}
 
-	public ClanPositionPower getAuthority(int roleID, int function)
+	public ClanPositionPower getAuthority(int roleID, ClanFunction function)
     {
-        if(roleID==POS_APPLICANT) return Clan.ClanPositionPower.CAN_NOT_DO;
-        String[] funcs=FUNC_PROCEDURE[government];
-        char[] who=funcs[function].toCharArray();
-        if(who.length==0) return Clan.ClanPositionPower.CAN_NOT_DO;
-        if(who[0]=='V') return Clan.ClanPositionPower.MUST_VOTE_ON;
-        if(who[0]=='A') return Clan.ClanPositionPower.CAN_DO;
-        for(int c=0;c<who.length;c++)
-            switch(who[c])
-            {
-            case 'B': if(roleID==POS_BOSS) return Clan.ClanPositionPower.CAN_DO; break;
-            case 'L': if(roleID==POS_LEADER) return Clan.ClanPositionPower.CAN_DO; break;
-            case 'E': if(roleID==POS_ENCHANTER) return Clan.ClanPositionPower.CAN_DO; break;
-            case 'T': if(roleID==POS_TREASURER) return Clan.ClanPositionPower.CAN_DO; break;
-            case 'S': if(roleID==POS_STAFF) return Clan.ClanPositionPower.CAN_DO; break;
-            case 'M': if(roleID==POS_MEMBER) return Clan.ClanPositionPower.CAN_DO; break;
-            }
-        return Clan.ClanPositionPower.CAN_NOT_DO;
+    	if((roleID<0)||(roleID>=govt().positions.length))
+    		return ClanPositionPower.CAN_NOT_DO;
+    	return govt().positions[roleID].functionChart[function.ordinal()];
     }
 
     public List<MemberRecord> getRealMemberList(int PosFilter)
@@ -748,7 +710,7 @@ public class DefaultClan implements Clan
     public void setPolitics(String politics)
     {
         relations.clear();
-        government=GVT_DICTATORSHIP;
+        government=0;
         if(politics.trim().length()==0) return;
         List<XMLLibrary.XMLpiece> xml=CMLib.xml().parseAllXML(politics);
         if(xml==null)
@@ -808,7 +770,7 @@ public class DefaultClan implements Clan
         return filteredMembers;
     }
 
-    public int getNumVoters(int function)
+    public int getNumVoters(ClanFunction function)
     {
         int realmembers=0;
         int bosses=0;
@@ -829,7 +791,7 @@ public class DefaultClan implements Clan
         if(getGovernment()==GVT_DEMOCRACY)
             numVotes=realmembers;
         else
-        if((getGovernment()==GVT_REPUBLIC)&&(function==FUNC_CLANASSIGN))
+        if((getGovernment()==GVT_REPUBLIC)&&(function==ClanFunction.ASSIGN))
             numVotes=realmembers;
         return numVotes;
     }
@@ -837,36 +799,35 @@ public class DefaultClan implements Clan
 
     public int getTopRank(MOB mob) 
     {
-        if((getGovernment()>=0)
-        &&(getGovernment()<DEFAULT_TOP_RANKS.length))
-        {
-            int topRank=DEFAULT_TOP_RANKS[getGovernment()];
-            if(mob!=null)
-	            while((topRank > 0)&&(!canBeAssigned(mob,topRank)))
-	                topRank--;
-            return topRank;
-        }
-        return POS_BOSS;
+        int topRank=govt().topRole;
+        if(mob!=null)
+            while((topRank > 0)&&(!canBeAssigned(mob,topRank)))
+                topRank--;
+        return topRank;
     }
     
     public int getRoleFromName(String position)
     {
-        if((government<0)||(government>=Clan.GVT_DESCS.length))
-            government=0;
-        position=position.trim();
-        String[] roles=Clan.ROL_DESCS[government];
-        for(int i=0;i<roles.length;i++)
-            if(roles[i].equalsIgnoreCase(position))
-            	return i;
-        for(int i=0;i<roles.length;i++)
-            if(roles[i].startsWith(position.toUpperCase()))
-                return i;
+        position=position.toUpperCase().trim();
+        for(ClanPosition pos : govt().positions)
+        	if(pos.ID.equalsIgnoreCase(position)
+        	||pos.name.equalsIgnoreCase(position)
+        	||pos.pluralName.equalsIgnoreCase(position))
+        		return pos.roleID;
+        for(ClanPosition pos : govt().positions)
+        	if(pos.ID.toUpperCase().startsWith(position)
+        	||pos.name.toUpperCase().equalsIgnoreCase(position))
+        		return pos.roleID;
+        for(ClanPosition pos : govt().positions)
+        	if((pos.ID.toUpperCase().indexOf(position)>0)
+			||(pos.name.toUpperCase().indexOf(position)>0))
+        		return pos.roleID;
         return -1;
     }
     
     public boolean isPubliclyListedFor(MOB mob)
     {
-        if((getGovernment() == Clan.GVT_FAMILY)
+        if((!govt().isPublic)
         &&(!mob.getClanID().equals(clanID())))
         	return false;
         return true;
@@ -874,32 +835,36 @@ public class DefaultClan implements Clan
     
     public String[] getRolesList()
     {
-    	return Clan.ROL_DESCS[government];
+    	final List<String> roleNames=new LinkedList<String>();
+    	for(final ClanPosition pos : govt().positions)
+    		roleNames.add(pos.name);
+    	return roleNames.toArray(new String[0]);
     }
 
 	public int getMostInRole(int roleID)
 	{
-		return Clan.ROL_MAX[government][roleID];
+    	if((roleID<0)||(roleID>=govt().positions.length))
+    		return 0;
+    	return govt().positions[roleID].max;
 	}
 
     
     public String getRoleName(int roleID, boolean titleCase, boolean plural)
     {
-		String roleName;
-		if((government<0)||(government>=Clan.ROL_DESCS.length))
-			government=0;
-		String[] roles=Clan.ROL_DESCS[government];
-		roleName=roles[roleID].toLowerCase();
-		if(titleCase)
-		{
-			roleName=CMStrings.capitalizeAndLower(roleName);
-		}
+    	if((roleID<0)||(roleID>=govt().positions.length))
+    		return "";
+		ClanPosition pos=govt().positions[roleID];
 		if(plural)
 		{
-			if(!roleName.equalsIgnoreCase("staff"))
-				roleName = CMLib.english().makePlural(roleName);
+			if(!titleCase)
+				return pos.pluralName.toLowerCase();
+			else
+				return pos.pluralName;
 		}
-		return roleName;
+		if(!titleCase)
+			return pos.name.toLowerCase();
+		else
+			return pos.name;
     }
 
     public boolean tick(Tickable ticking, int tickID)
@@ -1061,7 +1026,9 @@ public class DefaultClan implements Clan
             }
 
 
-            int minimumMembers = (getGovernment()==Clan.GVT_FAMILY)?1:CMProps.getIntVar(CMProps.SYSTEMI_MINCLANMEMBERS);
+            int minimumMembers = CMProps.getIntVar(CMProps.SYSTEMI_MINCLANMEMBERS);
+            if(govt().overrideMinMembers!=null)
+            	minimumMembers = govt().overrideMinMembers.intValue();
             if(activeMembers<minimumMembers)
             {
                 if(getStatus()==CLANSTATUS_FADING)
@@ -1142,7 +1109,7 @@ public class DefaultClan implements Clan
                 for(Enumeration<ClanVote> e=votes();e.hasMoreElements();)
                 {
                     ClanVote CV=(ClanVote)e.nextElement();
-                    int numVotes=getNumVoters(CV.function);
+                    int numVotes=getNumVoters(ClanFunction.values()[CV.function]);
                     int quorum=50;
                     if(data.size()>1) quorum=CMath.s_int((String)data.lastElement());
                     quorum=(int)Math.round(CMath.mul(CMath.div(quorum,100.0),numVotes));
@@ -1415,7 +1382,7 @@ public class DefaultClan implements Clan
         case 1: return getDetail(null);
         case 2: return getDonation();
         case 3: return ""+getExp();
-        case 4: return Clan.GVT_DESCS[getGovernment()];
+        case 4: return ""+typeName();
         case 5: return getMorgue();
         case 6: return getPolitics();
         case 7: return getPremise();

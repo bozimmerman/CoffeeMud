@@ -8,6 +8,7 @@ import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.Clan.ClanFunction;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
@@ -57,10 +58,10 @@ public class ClanVote extends StdCommand
 			for(Enumeration e=C.votes();e.hasMoreElements();)
 			{
 				Clan.ClanVote CV=(Clan.ClanVote)e.nextElement();
-				if(((CV.function==Clan.FUNC_CLANASSIGN)
-					&&(C.getAuthority(mob.getClanRole(),Clan.FUNC_CLANVOTEASSIGN)!=Clan.ClanPositionPower.CAN_NOT_DO))
-				||((CV.function!=Clan.FUNC_CLANASSIGN)
-					&&(C.getAuthority(mob.getClanRole(),Clan.FUNC_CLANVOTEOTHER)!=Clan.ClanPositionPower.CAN_NOT_DO)))
+				if(((CV.function==Clan.ClanFunction.ASSIGN.ordinal())
+					&&(C.getAuthority(mob.getClanRole(),Clan.ClanFunction.VOTEASSIGN)!=Clan.ClanPositionPower.CAN_NOT_DO))
+				||((CV.function!=Clan.ClanFunction.ASSIGN.ordinal())
+					&&(C.getAuthority(mob.getClanRole(),Clan.ClanFunction.VOTEOTHER)!=Clan.ClanPositionPower.CAN_NOT_DO)))
 						votesForYou.addElement(CV);
 			}
 			if(commands.size()<2)
@@ -178,7 +179,7 @@ public class ClanVote extends StdCommand
 								break;
 							}
 						}
-						int numVotes=C.getNumVoters(CV.function);
+						int numVotes=C.getNumVoters(ClanFunction.values()[CV.function]);
 						if(numVotes<=(yeas+nays))
 						{
 							updateVote=true;
