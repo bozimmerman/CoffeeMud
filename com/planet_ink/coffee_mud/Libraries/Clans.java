@@ -334,6 +334,100 @@ public class Clans extends StdLibrary implements ClanManager
         return false;
     }
 
+    protected String indt(int x)
+    {
+    	return CMStrings.SPACES.substring(0,x*3);
+    }
+    
+    public Clan.ClanGovernment getStockGovernment(int typeid)
+    {
+    	Clan.ClanGovernment[] gvts=(Clan.ClanGovernment[])Resources.getResource("parsed_clangovernments");
+    	if(gvts==null)
+    	{
+    		synchronized(this)
+    		{
+    			if(gvts==null)
+    			{
+    				StringBuffer str=Resources.getFileResource("clangovernments.ini", true);
+    				if(str==null)
+    					gvts=new Clan.ClanGovernment[0];
+    				else
+    				{
+    					gvts=parseGovernmentXML(str);
+    				}
+    				Resources.submitResource("parsed_clangovernments",gvts);
+    			}
+    		}
+    	}
+    	if(gvts.length >=typeid)
+    	{
+    		Log.errOut("Clans","Someone mistakenly requested stock government typeid "+typeid);
+    		return null;
+    	}
+    	return gvts[typeid];
+    }
+    
+    public String makeGovernmentXML(Clan.ClanGovernment gvt)
+    {
+    	final StringBuilder str=new StringBuilder("");
+    	str.append("<CLANTYPE ").append("TYPEID="+gvt.ID+" ").append("NAME="+gvt.name+" ").append(">\n");
+    	str.append(indt(1)).append("<POSITIONS>\n");
+    	Set<Clan.ClanPositionPower> voteSet = new HashSet<Clan.ClanPositionPower>(); 
+    	for(Clan.ClanPosition pos : gvt.positions)
+    	{
+        	str.append(indt(2)).append("<POSITION ").append("ID=\""+pos.ID+"\" ").append("ROLEID="+pos.roleID+" ")
+        						.append("RANK="+pos.rank+" ").append("NAME=\""+pos.name+"\" ").append("PLURAL=\""+pos.pluralName+"\" ")
+        						.append("MAX="+pos.max+" ").append("INNERMASK=\""+pos.innerMaskStr+"\" ")
+        						.append(">\n");
+        	for(Clan.ClanPositionPower pow : pos.functionChart)
+        		if(pow==Clan.ClanPositionPower.CAN_DO)
+	            	str.append(indt(3)).append("<POWER>").append(pow.toString()).append("</POWER>\n");
+        		else
+        		if(pow==Clan.ClanPositionPower.MUST_VOTE_ON)
+        			voteSet.add(pow);
+        	str.append(indt(2)).append("</POSITION>\n");
+    	}
+    	str.append(indt(1)).append("</POSITIONS>\n");
+    	if(voteSet.size()==0)
+	    	str.append(indt(1)).append("<VOTING/>\n");
+    	else
+    	{
+	    	str.append(indt(1)).append("<VOTING>\n");
+	    	for(Clan.ClanPositionPower pow : voteSet)
+            	str.append(indt(3)).append("<POWER>").append(pow.toString()).append("</POWER>\n");
+	    	str.append(indt(1)).append("</VOTING>\n");
+    	}
+    	str.append(indt(1)).append("<HIGHPOSITION>").append(gvt.positions[gvt.topRole].ID).append("</HIGHPOSITION>\n");
+    	str.append(indt(1)).append("<AUTOPOSITION>").append(gvt.positions[gvt.autoRole].ID).append("</AUTOPOSITION>\n");
+    	str.append(indt(1)).append("<REQUIREDMASK>").append(gvt.requiredMaskStr).append("</REQUIREDMASK>\n");
+    	str.append(indt(1)).append("<AUTOPROMOTE>").append(gvt.autoPromote).append("</AUTOPROMOTE>\n");
+    	str.append(indt(1)).append("<PUBLIC>").append(gvt.isPublic).append("</PUBLIC>\n");
+    	str.append(indt(1)).append("<FAMILYONLY>").append(gvt.isFamilyOnly).append("</FAMILYONLY>\n");
+    	if(gvt.overrideMinMembers == null)
+	    	str.append(indt(1)).append("<OVERRIDEMINMEMBERS />\n");
+    	else
+	    	str.append(indt(1)).append("<OVERRIDEMINMEMBERS>").append(gvt.overrideMinMembers.toString()).append("</OVERRIDEMINMEMBERS>\n");
+    	str.append(indt(1)).append("<CONQUEST>\n");
+    	{
+        	str.append(indt(2)).append("<ENABLED>").append(gvt.conquestEnabled).append("</ENABLED>\n");
+        	str.append(indt(2)).append("<ITEMLOYALTY>").append(gvt.conquestItemLoyalty).append("</ITEMLOYALTY>\n");
+        	str.append(indt(2)).append("<DEITYBASIS>").append(gvt.conquestDeityBasis).append("</DEITYBASIS>\n");
+    	}
+    	str.append(indt(1)).append("</CONQUEST>\n");
+    	str.append("</CLANTYPE>\n");
+    	return str.toString();
+    }
+    
+    public String makeGovernmentXML(Clan.ClanGovernment gvts[])
+    {
+    	final StringBuilder str=new StringBuilder("");
+    	str.append("<CLANTYPES>\n");
+    	for(Clan.ClanGovernment gvt : gvts)
+    		str.append(makeGovernmentXML(gvt));
+    	str.append("</CLANTYPES>\n");
+    	return str.toString();
+    }
+    
     public Clan.ClanGovernment[] parseGovernmentXML(StringBuffer xml)
     {
     	List<XMLLibrary.XMLpiece> xmlV = CMLib.xml().parseAllXML(xml);

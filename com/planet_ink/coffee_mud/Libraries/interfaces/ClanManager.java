@@ -144,6 +144,46 @@ public interface ClanManager extends CMLibrary
     public boolean isFamilyOfMembership(MOB M, List<MemberRecord> members);
     
     /**
+     * Returns a government definition object of the given internal
+     * stock clangovernments.ini id.  See /resources/clangovernments.ini
+     * Also:
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Clan.ClanGovernment
+     * @param typeid the internal typeid
+     * @return the clan government object
+     */
+    public Clan.ClanGovernment getStockGovernment(int typeid);
+    
+    /**
+     * Converts a given clan government object into xml.
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Clan.ClanGovernment
+     * @see com.planet_ink.coffee_mud.Libraries.interfaces.ClanManager#makeGovernmentXML(com.planet_ink.coffee_mud.Common.interfaces.Clan.ClanGovernment[])
+     * @see com.planet_ink.coffee_mud.Libraries.interfaces.ClanManager#parseGovernmentXML(StringBuffer)
+     * @param gvt the clan government object
+     * @return the xml
+     */
+    public String makeGovernmentXML(Clan.ClanGovernment gvt);
+    
+    /**
+     * Converts a given clan government objects into xml.
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Clan.ClanGovernment
+     * @see com.planet_ink.coffee_mud.Libraries.interfaces.ClanManager#makeGovernmentXML(com.planet_ink.coffee_mud.Common.interfaces.Clan.ClanGovernment)
+     * @see com.planet_ink.coffee_mud.Libraries.interfaces.ClanManager#parseGovernmentXML(StringBuffer)
+     * @param gvts the clan government objects
+     * @return the xml
+     */
+    public String makeGovernmentXML(Clan.ClanGovernment gvts[]);
+    
+    /**
+     * Converts xml into clan government objects.
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Clan.ClanGovernment
+     * @see com.planet_ink.coffee_mud.Libraries.interfaces.ClanManager#makeGovernmentXML(com.planet_ink.coffee_mud.Common.interfaces.Clan.ClanGovernment)
+     * @see com.planet_ink.coffee_mud.Libraries.interfaces.ClanManager#makeGovernmentXML(com.planet_ink.coffee_mud.Common.interfaces.Clan.ClanGovernment[])
+     * @param xml the xml
+     * @return the clan government objects
+     */
+    public Clan.ClanGovernment[] parseGovernmentXML(StringBuffer xml);
+    
+    /**
      * Makes an announcement to the clan announcement channel from
      * the given mob.  These are channels marked in the coffeemud.ini file
      * as receiving clan info messages.  These messages are only seen
