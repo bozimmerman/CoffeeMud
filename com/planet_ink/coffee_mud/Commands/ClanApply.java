@@ -72,18 +72,18 @@ public class ClanApply extends StdCommand
                                 C.addMember(mob,role);
 	    						if(mob.getClanRole()==Clan.POS_APPLICANT)
 	    						{
-	        						CMLib.clans().clanAnnounce(mob,"The "+C.typeName()+" "+C.clanID()+" has a new Applicant: "+mob.Name());
+	        						CMLib.clans().clanAnnounce(mob,"The "+C.getGovernmentName()+" "+C.clanID()+" has a new Applicant: "+mob.Name());
 		    						mob.tell("You have successfully applied for membership in clan "+C.clanID()+".  Your application will be reviewed by management.  Use SCORE to check for a change in status.");
 	    						}
 	    						else
 	    						{
-	        						CMLib.clans().clanAnnounce(mob,"The "+C.typeName()+" "+C.clanID()+" has a new member: "+mob.Name());
+	        						CMLib.clans().clanAnnounce(mob,"The "+C.getGovernmentName()+" "+C.clanID()+" has a new member: "+mob.Name());
 	    							mob.tell("You have successfully joined "+C.clanID()+".  Use CLANDETAILS for information.");
 	    						}
                         	}
                         	else
                         	{
-                                msg.append("This "+C.typeName()+" already has the maximum number of members ("+numMembers+"/"+maxMembers+") and can not accept new applicants.");
+                                msg.append("This "+C.getGovernmentName()+" already has the maximum number of members ("+numMembers+"/"+maxMembers+") and can not accept new applicants.");
                         	}
                         }
                         else

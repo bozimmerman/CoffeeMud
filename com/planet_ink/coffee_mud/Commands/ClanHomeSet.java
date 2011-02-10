@@ -68,28 +68,28 @@ public class ClanHomeSet extends StdCommand
 		}
 		if(C.getStatus()>Clan.CLANSTATUS_ACTIVE)
 		{
-			mob.tell("You cannot set a home.  Your "+C.typeName()+" does not have enough members to be considered active.");
+			mob.tell("You cannot set a home.  Your "+C.getGovernmentName()+" does not have enough members to be considered active.");
 			return false;
 		}
 		if(skipChecks||CMLib.clans().goForward(mob,C,commands,Clan.ClanFunction.HOMESET,false))
 		{
 			if(!CMLib.law().doesOwnThisProperty(C.clanID(),R))
 			{
-				mob.tell("Your "+C.typeName()+" does not own this room.");
+				mob.tell("Your "+C.getGovernmentName()+" does not own this room.");
 				return false;
 			}
 			if(skipChecks||CMLib.clans().goForward(mob,C,commands,Clan.ClanFunction.HOMESET,true))
 			{
 				C.setRecall(CMLib.map().getExtendedRoomID(R));
 				C.update();
-				mob.tell("The "+C.typeName()+" "+C.clanID()+" home is now set to "+R.roomTitle(mob)+".");
-				CMLib.clans().clanAnnounce(mob,"The "+C.typeName()+" "+C.clanID()+" home is now set to "+R.roomTitle(mob)+".");
+				mob.tell("The "+C.getGovernmentName()+" "+C.clanID()+" home is now set to "+R.roomTitle(mob)+".");
+				CMLib.clans().clanAnnounce(mob,"The "+C.getGovernmentName()+" "+C.clanID()+" home is now set to "+R.roomTitle(mob)+".");
 				return true;
 			}
 		}
 		else
 		{
-			mob.tell("You aren't in the right position to set your "+C.typeName()+"'s home.");
+			mob.tell("You aren't in the right position to set your "+C.getGovernmentName()+"'s home.");
 			return false;
 		}
 		return false;

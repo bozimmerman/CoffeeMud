@@ -1091,7 +1091,7 @@ public class StdArea implements Area
 				{
 					Clan C=CMLib.clans().getClan(ruler);
 					if(C!=null)
-						s.append("Controlled by  : "+C.typeName()+" "+C.name()+"\n\r");
+						s.append("Controlled by  : "+C.getGovernmentName()+" "+C.name()+"\n\r");
 				}
 			}
 			s.append("Level range    : "+statData[Area.AREASTAT_MINLEVEL]+" to "+statData[Area.AREASTAT_MAXLEVEL]+"\n\r");

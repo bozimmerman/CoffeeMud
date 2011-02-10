@@ -67,7 +67,7 @@ public class ClanVote extends StdCommand
 			if(commands.size()<2)
 			{
 				if(votesForYou.size()==0)
-					msg.append("Your "+C.typeName()+" does not have anything up for your vote.");
+					msg.append("Your "+C.getGovernmentName()+" does not have anything up for your vote.");
 				else
 				{
 					msg.append(" "+CMStrings.padRight("#",3)
@@ -172,7 +172,7 @@ public class ClanVote extends StdCommand
 								&&(mob.session().confirm("This will cancel this entire vote, are you sure (N/y)?","N")))
 								{
 									C.delVote(CV);
-									CMLib.clans().clanAnnounce(mob,"A prior vote for "+C.typeName()+" "+C.clanID()+" has been deleted.");
+									CMLib.clans().clanAnnounce(mob,"A prior vote for "+C.getGovernmentName()+" "+C.clanID()+" has been deleted.");
 									msg.append("The vote has been deleted.");
 									updateVote=true;
 								}

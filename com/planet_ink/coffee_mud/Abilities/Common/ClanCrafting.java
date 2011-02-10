@@ -121,8 +121,8 @@ public class ClanCrafting extends CraftingSkill implements ItemCraftor
 		}
 		if(C.getAuthority(student.getClanRole(),Clan.ClanFunction.ENCHANT)!=Clan.ClanPositionPower.CAN_DO)
 		{
-			teacher.tell(student.name()+" is not authorized to draw from the power of "+student.charStats().hisher()+" "+C.typeName()+".");
-			student.tell("You must be authorized to draw from the power of your "+C.typeName()+" to learn this skill.");
+			teacher.tell(student.name()+" is not authorized to draw from the power of "+student.charStats().hisher()+" "+C.getGovernmentName()+".");
+			student.tell("You must be authorized to draw from the power of your "+C.getGovernmentName()+" to learn this skill.");
 			return false;
 		}
 		return true;
@@ -162,11 +162,11 @@ public class ClanCrafting extends CraftingSkill implements ItemCraftor
 			if((C.getAuthority(mob.getClanRole(),Clan.ClanFunction.ENCHANT)!=Clan.ClanPositionPower.CAN_DO)
 			&&(!CMSecurity.isASysOp(mob)))
 			{
-				mob.tell("You are not authorized to draw from the power of your "+C.typeName()+".");
+				mob.tell("You are not authorized to draw from the power of your "+C.getGovernmentName()+".");
 				return false;
 			}
 			clanName=C.name();
-			clanTypeName=C.typeName();
+			clanTypeName=C.getGovernmentName();
 		}
 		List<List<String>> recipes=addRecipes(mob,loadRecipes());
 		String str=(String)commands.elementAt(0);

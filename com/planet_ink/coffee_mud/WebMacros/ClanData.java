@@ -323,7 +323,7 @@ public class ClanData extends StdWebMacro
                     str.append(old+", ");
                 }
 				if(parms.containsKey("TYPE"))
-					str.append(C.typeName()+", ");
+					str.append(C.getGovernmentName()+", ");
                 if(parms.containsKey("TYPEID"))
                 {
                     String old=httpReq.getRequestParameter("TYPEID");

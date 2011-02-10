@@ -138,11 +138,6 @@ public class Clans extends StdLibrary implements ClanManager
         return null;
     }
 
-	public Clan getNewClanObjectOfType(int type)
-	{
-		return (Clan)CMClass.getCommon("DefaultClan");
-	}
-
     public boolean isFamilyOfMembership(MOB M, List<MemberRecord> members) {
         if(M == null)
             return false;
@@ -299,13 +294,13 @@ public class Clans extends StdLibrary implements ClanManager
 	                if(votingRoles.size() >= (C.getRolesList().length-2))
 	                {
 	                	if(function == Clan.ClanFunction.ASSIGN)
-	                        clanAnnounce(mob,"The "+C.typeName()+" "+C.clanID()+" has a new election to vote upon. "+rest);
+	                        clanAnnounce(mob,"The "+C.getGovernmentName()+" "+C.clanID()+" has a new election to vote upon. "+rest);
 	                	else
-	                        clanAnnounce(mob,"The "+C.typeName()+" "+C.clanID()+" has a new matter to vote upon. "+rest);
+	                        clanAnnounce(mob,"The "+C.getGovernmentName()+" "+C.clanID()+" has a new matter to vote upon. "+rest);
 	                }
 	                else
 	                if(votingRoles.size()==1)
-                        clanAnnounce(mob,"The "+C.typeName()+" "+C.clanID()+" has a new matter to vote upon. "+rest);
+                        clanAnnounce(mob,"The "+C.getGovernmentName()+" "+C.clanID()+" has a new matter to vote upon. "+rest);
 	                else
 	                {
 	                	final String[] roleNames = new String[votingRoles.size()];
@@ -315,7 +310,7 @@ public class Clans extends StdLibrary implements ClanManager
 	                		roleNames[i]=C.getRoleName(roleID.intValue(), true, true);
 	                	}
 	                	String list = CMLib.english().toEnglishStringList(roleNames);
-                        clanAnnounce(mob,"The "+C.typeName()+" "+C.clanID()+" has a new matter to vote upon. "
+                        clanAnnounce(mob,"The "+C.getGovernmentName()+" "+C.clanID()+" has a new matter to vote upon. "
                         		+list+" should use CLANVOTE to participate.");
 	                }
                 }

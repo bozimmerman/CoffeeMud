@@ -250,7 +250,7 @@ public class MUDGrinder extends StdWebMacro
             ||(last.equalsIgnoreCase("All")))
                 return "@break@";
             if(!CMSecurity.isAllowedEverywhere(mob,"CMDCLANS")) return "@break@";
-            Clan newClan=CMLib.clans().getNewClanObjectOfType(0);
+            Clan newClan=(Clan)CMClass.getCommon("DefaultClan");
             newClan.setName(last);
             newClan.setGovernment(CMLib.clans().getStockGovernments()[0].ID);
             newClan.setStatus(Clan.CLANSTATUS_PENDING);

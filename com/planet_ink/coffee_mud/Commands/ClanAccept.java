@@ -69,7 +69,7 @@ public class ClanAccept extends StdCommand
 					List<MemberRecord> apps=C.getMemberList(Clan.POS_APPLICANT);
 					if(apps.size()<1)
 					{
-						mob.tell("There are no applicants to your "+C.typeName()+".");
+						mob.tell("There are no applicants to your "+C.getGovernmentName()+".");
 						return false;
 					}
 					qual=CMStrings.capitalizeAndLower(qual);
@@ -85,26 +85,26 @@ public class ClanAccept extends StdCommand
 						MOB M=CMLib.players().getLoadPlayer(qual);
 						if(M==null)
 						{
-							mob.tell(qual+" was not found.  Could not add to "+C.typeName()+".");
+							mob.tell(qual+" was not found.  Could not add to "+C.getGovernmentName()+".");
 							return false;
 						}
 						if(skipChecks||CMLib.clans().goForward(mob,C,commands,Clan.ClanFunction.ACCEPT,true))
 						{
                             C.addMember(M,Clan.POS_MEMBER);
-							CMLib.clans().clanAnnounce(mob,M.Name()+" is now a new member of "+C.typeName()+" "+C.name()+".");
-							mob.tell(M.Name()+" has been accepted into "+C.typeName()+" '"+C.clanID()+"'.");
-							M.tell(mob.Name()+" has accepted you as a member of "+C.typeName()+" '"+C.clanID()+"'.");
+							CMLib.clans().clanAnnounce(mob,M.Name()+" is now a new member of "+C.getGovernmentName()+" "+C.name()+".");
+							mob.tell(M.Name()+" has been accepted into "+C.getGovernmentName()+" '"+C.clanID()+"'.");
+							M.tell(mob.Name()+" has accepted you as a member of "+C.getGovernmentName()+" '"+C.clanID()+"'.");
 							return false;
 						}
 					}
 					else
 					{
-						msg.append(qual+" isn't an applicant of your "+C.typeName()+".");
+						msg.append(qual+" isn't an applicant of your "+C.getGovernmentName()+".");
 					}
 				}
 				else
 				{
-					msg.append("You aren't in the right position to accept members into your "+C.typeName()+".");
+					msg.append("You aren't in the right position to accept members into your "+C.getGovernmentName()+".");
 				}
 			}
 		}

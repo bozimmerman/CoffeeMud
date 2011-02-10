@@ -109,7 +109,7 @@ public class ClanDeclare extends StdCommand
 					}
 					if(skipChecks||CMLib.clans().goForward(mob,C,commands,Clan.ClanFunction.DECLARE,true))
 					{
-						CMLib.clans().clanAnnounce(mob,"The "+C.typeName()+" "+C.clanID()+" has declared "+CMStrings.capitalizeAndLower(Clan.REL_STATES[newRole].toLowerCase())+" "+C2.name()+".");
+						CMLib.clans().clanAnnounce(mob,"The "+C.getGovernmentName()+" "+C.clanID()+" has declared "+CMStrings.capitalizeAndLower(Clan.REL_STATES[newRole].toLowerCase())+" "+C2.name()+".");
 						C.setClanRelations(C2.clanID(),newRole,System.currentTimeMillis());
 						C.update();
 						return false;
@@ -117,7 +117,7 @@ public class ClanDeclare extends StdCommand
 				}
 				else
 				{
-					msg.append("You aren't in the right position to declare relationships with your "+C.typeName()+".");
+					msg.append("You aren't in the right position to declare relationships with your "+C.getGovernmentName()+".");
 				}
 			}
 		}

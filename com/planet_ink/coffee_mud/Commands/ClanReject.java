@@ -67,7 +67,7 @@ public class ClanReject extends StdCommand
 					List<MemberRecord> apps=C.getMemberList(Clan.POS_APPLICANT);
 					if(apps.size()<1)
 					{
-						mob.tell("There are no applicants to your "+C.typeName()+".");
+						mob.tell("There are no applicants to your "+C.getGovernmentName()+".");
 						return false;
 					}
 					qual=CMStrings.capitalizeAndLower(qual);
@@ -83,25 +83,25 @@ public class ClanReject extends StdCommand
 						MOB M=CMLib.players().getLoadPlayer(qual);
 						if(M==null)
 						{
-							mob.tell(qual+" was not found.  Could not reject from "+C.typeName()+".");
+							mob.tell(qual+" was not found.  Could not reject from "+C.getGovernmentName()+".");
 							return false;
 						}
 						if(skipChecks||CMLib.clans().goForward(mob,C,commands,Clan.ClanFunction.REJECT,true))
 						{
                             C.delMember(M);
-							mob.tell(M.Name()+" has been denied acceptance to "+C.typeName()+" '"+C.clanID()+"'.");
-							M.tell("You have been rejected as a member of "+C.typeName()+" '"+C.clanID()+"'.");
+							mob.tell(M.Name()+" has been denied acceptance to "+C.getGovernmentName()+" '"+C.clanID()+"'.");
+							M.tell("You have been rejected as a member of "+C.getGovernmentName()+" '"+C.clanID()+"'.");
 							return false;
 						}
 					}
 					else
 					{
-						msg.append(qual+" isn't a member of your "+C.typeName()+".");
+						msg.append(qual+" isn't a member of your "+C.getGovernmentName()+".");
 					}
 				}
 				else
 				{
-				  msg.append("You aren't in the right position to reject applicants to your "+C.typeName()+".");
+				  msg.append("You aren't in the right position to reject applicants to your "+C.getGovernmentName()+".");
 				}
 			}
 		}

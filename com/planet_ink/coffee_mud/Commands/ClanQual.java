@@ -56,7 +56,7 @@ public class ClanQual extends StdCommand
 			Clan C=CMLib.clans().getClan(mob.getClanID());
 			if((!skipChecks)&&(!CMLib.clans().goForward(mob,C,commands,Clan.ClanFunction.PREMISE,false)))
 			{
-				msg.append("You aren't in the right position to set the qualifications to your "+C.typeName()+".");
+				msg.append("You aren't in the right position to set the qualifications to your "+C.getGovernmentName()+".");
 			}
 			else
 			{
@@ -69,7 +69,7 @@ public class ClanQual extends StdCommand
 							premise=CMParms.combine(commands,1);
 						else
 						if(mob.session()!=null)
-							premise=mob.session().prompt("Describe your "+C.typeName()+"'s Qualification Code (?)\n\r: ","");
+							premise=mob.session().prompt("Describe your "+C.getGovernmentName()+"'s Qualification Code (?)\n\r: ","");
 
 						if(premise.equals("?"))
 							mob.tell(CMLib.masking().maskHelp("\n\r","disallow"));
@@ -84,7 +84,7 @@ public class ClanQual extends StdCommand
 								{
 									C.setAcceptanceSettings(premise);
 									C.update();
-									CMLib.clans().clanAnnounce(mob,"The qualifications of "+C.typeName()+" "+C.clanID()+" have been changed.");
+									CMLib.clans().clanAnnounce(mob,"The qualifications of "+C.getGovernmentName()+" "+C.clanID()+" have been changed.");
 									return false;
 								}
 							}

@@ -58,7 +58,7 @@ public class ClanResign extends StdCommand
 				if(check.equalsIgnoreCase("Y"))
 				{
 					if(C!=null)
-                        CMLib.clans().clanAnnounce(mob,"Member resigned from "+C.typeName()+" "+C.name()+": "+mob.Name());
+                        CMLib.clans().clanAnnounce(mob,"Member resigned from "+C.getGovernmentName()+" "+C.name()+": "+mob.Name());
 					if(C!=null)
                         C.delMember(mob);
 					else

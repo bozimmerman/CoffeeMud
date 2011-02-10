@@ -6919,7 +6919,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
     throws IOException
     {
         if((showFlag>0)&&(showFlag!=showNumber)) return;
-        mob.tell(showNumber+". Government type: '"+C.typeName()+"'.");
+        mob.tell(showNumber+". Government type: '"+C.getGovernmentName()+"'.");
         if((showFlag!=showNumber)&&(showFlag>-999)) return;
         while((mob.session()!=null)&&(!mob.session().killFlag()))
         {

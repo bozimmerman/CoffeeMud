@@ -56,7 +56,7 @@ public class ClanPremise extends StdCommand
 			Clan C=CMLib.clans().getClan(mob.getClanID());
 			if((!skipChecks)&&(!CMLib.clans().goForward(mob,C,commands,Clan.ClanFunction.PREMISE,false)))
 			{
-				msg.append("You aren't in the right position to set the premise to your "+C.typeName()+".");
+				msg.append("You aren't in the right position to set the premise to your "+C.getGovernmentName()+".");
 			}
 			else
 			{
@@ -67,7 +67,7 @@ public class ClanPremise extends StdCommand
 						premise=CMParms.combine(commands,1);
 					else
 					if(mob.session()!=null)
-						premise=mob.session().prompt("Describe your "+C.typeName()+"'s Premise\n\r: ","");
+						premise=mob.session().prompt("Describe your "+C.getGovernmentName()+"'s Premise\n\r: ","");
 					if(premise.length()>0)
 					{
 						commands.addElement(premise);
@@ -75,7 +75,7 @@ public class ClanPremise extends StdCommand
 						{
 							C.setPremise(premise);
 							C.update();
-							CMLib.clans().clanAnnounce(mob,"The premise of "+C.typeName()+" "+C.clanID()+" has been changed.");
+							CMLib.clans().clanAnnounce(mob,"The premise of "+C.getGovernmentName()+" "+C.clanID()+" has been changed.");
 							return false;
 						}
 					}

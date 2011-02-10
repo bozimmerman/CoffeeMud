@@ -82,11 +82,11 @@ public class Spell_BaseClanEq extends Spell
 		}
 		if(C.getAuthority(mob.getClanRole(),Clan.ClanFunction.ENCHANT)!=Clan.ClanPositionPower.CAN_DO)
 		{
-			mob.tell("You are not authorized to draw from the power of your "+C.typeName()+".");
+			mob.tell("You are not authorized to draw from the power of your "+C.getGovernmentName()+".");
 			return false;
 		}
 		String ClanName=C.clanID();
-		String ClanType=C.typeName();
+		String ClanType=C.getGovernmentName();
 
 		// Invoking will be like:
 		//   CAST [CLANEQSPELL] ITEM QUANTITY
@@ -117,7 +117,7 @@ public class Spell_BaseClanEq extends Spell
 		long exp=points*CMProps.getIntVar(CMProps.SYSTEMI_CLANENCHCOST);
 		if((C.getExp()<exp)||(exp<0))
 		{
-			mob.tell("You need "+exp+" to do that, but your "+C.typeName()+" has only "+C.getExp()+" experience points.");
+			mob.tell("You need "+exp+" to do that, but your "+C.getGovernmentName()+" has only "+C.getExp()+" experience points.");
 			return false;
 		}
 

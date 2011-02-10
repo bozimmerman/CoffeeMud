@@ -87,10 +87,10 @@ public class Conquerable extends Arrest
             if(C!=null)
             {
                 if(isFullyControlled())
-                    str.append("Area '"+myArea.name()+"' is controlled by "+C.typeName()+" "+C.name()+".\n\r");
+                    str.append("Area '"+myArea.name()+"' is controlled by "+C.getGovernmentName()+" "+C.name()+".\n\r");
                 else
                 {
-                    str.append("Area '"+myArea.name()+"' is occupied by "+C.typeName()+" "+C.name()+".\n\r");
+                    str.append("Area '"+myArea.name()+"' is occupied by "+C.getGovernmentName()+" "+C.name()+".\n\r");
                     long remain=CONTROLTIME-(System.currentTimeMillis()-conquestDate);
                     String remainStr=myArea.getTimeObj().deriveEllapsedTimeString(remain);
                     str.append("Full control will automatically be achieved in "+remainStr+".\n\r");
@@ -127,7 +127,7 @@ public class Conquerable extends Arrest
                 int[] ic=(int[])clanControlPoints.elementAt(i,2);
                 Clan C=CMLib.clans().getClan(clanID);
                 if(C!=null)
-                    str.append(C.typeName()+" "+C.name()+" has "+ic[0]+" control points.\n\r");
+                    str.append(C.getGovernmentName()+" "+C.name()+" has "+ic[0]+" control points.\n\r");
             }
         }
         return str.toString();

@@ -500,7 +500,7 @@ public class DefaultClan implements Clan
         StringBuffer msg=new StringBuffer("");
         boolean member=(mob!=null)&&mob.getClanID().equalsIgnoreCase(clanID())&&(mob.getClanRole()>Clan.POS_APPLICANT);
         boolean sysmsgs=(mob!=null)&&CMath.bset(mob.getBitmap(),MOB.ATT_SYSOPMSGS);
-        msg.append("^x"+typeName()+" Profile   :^.^N "+clanID()+"\n\r"
+        msg.append("^x"+getGovernmentName()+" Profile   :^.^N "+clanID()+"\n\r"
                   +"-----------------------------------------------------------------\n\r"
                   +getPremise()+"\n\r"
                   +"-----------------------------------------------------------------\n\r"
@@ -633,7 +633,7 @@ public class DefaultClan implements Clan
         return list.toString();
     }
 
-    public String typeName() { return govt().name;}
+    public String getGovernmentName() { return govt().name;}
 
 	public boolean canBeAssigned(MOB mob, int role)
 	{
@@ -918,13 +918,13 @@ public class DefaultClan implements Clan
                             }
                             if((M2.getClanRole()<max) && (M2 != currentHighCleric))
                             {
-                                clanAnnounce(M2.Name()+" is now a "+getRoleName(max,true,false)+" of the "+typeName()+" "+name()+".");
+                                clanAnnounce(M2.Name()+" is now a "+getRoleName(max,true,false)+" of the "+getGovernmentName()+" "+name()+".");
                                 Log.sysOut("Clans",M2.Name()+" of clan "+name()+" was autopromoted to "+getRoleName(max,true,false)+".");
                                 M2.setClanRole(max);
                                 CMLib.database().DBUpdateClanMembership(M2.Name(), name(), max);
                                 
                                 int mid = max-1;
-                                clanAnnounce(currentHighCleric.Name()+" is now a "+getRoleName(mid,true,false)+" of the "+typeName()+" "+name()+".");
+                                clanAnnounce(currentHighCleric.Name()+" is now a "+getRoleName(mid,true,false)+" of the "+getGovernmentName()+" "+name()+".");
                                 Log.sysOut("Clans",currentHighCleric.Name()+" of clan "+name()+" was autodemoted to "+getRoleName(mid,true,false)+".");
                                 currentHighCleric.setClanRole(mid);
                                 CMLib.database().DBUpdateClanMembership(currentHighCleric.Name(), name(), mid);
@@ -945,7 +945,7 @@ public class DefaultClan implements Clan
                 else
                 if(highestClericM.getClanRole()!=max)
                 {
-                    clanAnnounce(highestClericM.Name()+" is now a "+getRoleName(max,true,false)+" of the "+typeName()+" "+name()+".");
+                    clanAnnounce(highestClericM.Name()+" is now a "+getRoleName(max,true,false)+" of the "+getGovernmentName()+" "+name()+".");
                     Log.sysOut("Clans",highestClericM.Name()+" of clan "+name()+" was autopromoted to "+getRoleName(max,true,false)+".");
                     highestClericM.setClanRole(max);
                     CMLib.database().DBUpdateClanMembership(highestClericM.Name(), name(), max);
@@ -986,7 +986,7 @@ public class DefaultClan implements Clan
                             if(M2!=null)
                             {
                                 int newRank = getTopRank(M2);
-                                clanAnnounce(name+" is now a "+getRoleName(newRank,true,false)+" of the "+typeName()+" "+name()+".");
+                                clanAnnounce(name+" is now a "+getRoleName(newRank,true,false)+" of the "+getGovernmentName()+" "+name()+".");
                                 Log.sysOut("Clans",name+" of clan "+name()+" was autopromoted to "+getRoleName(newRank,true,false)+".");
                                 M2.setClanRole(newRank);
                                 CMLib.database().DBUpdateClanMembership(name, name(), newRank);
@@ -1014,7 +1014,7 @@ public class DefaultClan implements Clan
                             if(M2!=null)
                             {
                                 int newRank = getTopRank(M2);
-                                clanAnnounce(name+" is now a "+getRoleName(newRank,true,false)+" of the "+typeName()+" "+name()+".");
+                                clanAnnounce(name+" is now a "+getRoleName(newRank,true,false)+" of the "+getGovernmentName()+" "+name()+".");
                                 Log.sysOut("Clans",name+" of clan "+name()+" was autopromoted to "+getRoleName(newRank,true,false)+".");
                                 M2.setClanRole(newRank);
                                 CMLib.database().DBUpdateClanMembership(name, name(), newRank);
@@ -1052,13 +1052,13 @@ public class DefaultClan implements Clan
 						MOB player=CMLib.players().getLoadPlayer(name);
 						if(player!=null)
 							CMLib.smtp().emailIfPossible("AutoPurge",player,"AutoPurge: "+name(), 
-									""+typeName()+" "+name()+" is in danger of being deleted if at least "+(minimumMembers-activeMembers)
+									""+getGovernmentName()+" "+name()+" is in danger of being deleted if at least "+(minimumMembers-activeMembers)
 									+" members do not log on within 24 hours.");
 					}
                 }
                 
                 Log.sysOut("Clans","Clan '"+getName()+" fading with only "+activeMembers+" having logged on lately.");
-                clanAnnounce(""+typeName()+" "+name()+" is in danger of being deleted if more members do not log on within 24 hours.");
+                clanAnnounce(""+getGovernmentName()+" "+name()+" is in danger of being deleted if more members do not log on within 24 hours.");
                 update();
             }
             else
@@ -1066,12 +1066,12 @@ public class DefaultClan implements Clan
             {
             case CLANSTATUS_FADING:
                 setStatus(CLANSTATUS_ACTIVE);
-                clanAnnounce(""+typeName()+" "+name()+" is no longer in danger of being deleted.  Be aware that there is required activity level.");
+                clanAnnounce(""+getGovernmentName()+" "+name()+" is no longer in danger of being deleted.  Be aware that there is required activity level.");
                 break;
             case CLANSTATUS_PENDING:
                 setStatus(CLANSTATUS_ACTIVE);
-                Log.sysOut("Clans",""+typeName()+" '"+getName()+" now active with "+activeMembers+".");
-                clanAnnounce(""+typeName()+" "+name()+" now has sufficient members.  The "+typeName()+" is now fully approved.");
+                Log.sysOut("Clans",""+getGovernmentName()+" '"+getName()+" now active with "+activeMembers+".");
+                clanAnnounce(""+getGovernmentName()+" "+name()+" now has sufficient members.  The "+getGovernmentName()+" is now fully approved.");
                 break;
             default:
                 break;
@@ -1193,14 +1193,14 @@ public class DefaultClan implements Clan
                         if((!CMath.bset(getTrophies(),TROPHY_EXP))&&(getExp()>0))
                         {
                             setTrophies(getTrophies()|TROPHY_EXP);
-                            CMLib.clans().clanAnnounceAll("The "+typeName()+" "+name()+" has been awarded the trophy for "+TROPHY_DESCS[TROPHY_EXP]+".");
+                            CMLib.clans().clanAnnounceAll("The "+getGovernmentName()+" "+name()+" has been awarded the trophy for "+TROPHY_DESCS[TROPHY_EXP]+".");
                         }
                     }
                     else
                     if(CMath.bset(getTrophies(),TROPHY_EXP))
                     {
                         setTrophies(getTrophies()-TROPHY_EXP);
-                        clanAnnounce("The "+typeName()+" "+name()+" has lost control of the trophy for "+TROPHY_DESCS[TROPHY_EXP]+".");
+                        clanAnnounce("The "+getGovernmentName()+" "+name()+" has lost control of the trophy for "+TROPHY_DESCS[TROPHY_EXP]+".");
                     }
                 }
 
@@ -1220,14 +1220,14 @@ public class DefaultClan implements Clan
                         &&(getCurrentClanKills()>0))
                         {
                             setTrophies(getTrophies()|TROPHY_PK);
-                            CMLib.clans().clanAnnounceAll("The "+typeName()+" "+name()+" has been awarded the trophy for "+TROPHY_DESCS[TROPHY_PK]+".");
+                            CMLib.clans().clanAnnounceAll("The "+getGovernmentName()+" "+name()+" has been awarded the trophy for "+TROPHY_DESCS[TROPHY_PK]+".");
                         }
                     }
                     else
                     if(CMath.bset(getTrophies(),TROPHY_PK))
                     {
                         setTrophies(getTrophies()-TROPHY_PK);
-                        clanAnnounce("The "+typeName()+" "+name()+" has lost control of the trophy for "+TROPHY_DESCS[TROPHY_PK]+".");
+                        clanAnnounce("The "+getGovernmentName()+" "+name()+" has lost control of the trophy for "+TROPHY_DESCS[TROPHY_PK]+".");
                     }
                 }
 
@@ -1264,14 +1264,14 @@ public class DefaultClan implements Clan
                         if(!CMath.bset(getTrophies(),TROPHY_AREA))
                         {
                             setTrophies(getTrophies()|TROPHY_AREA);
-                            CMLib.clans().clanAnnounceAll("The "+typeName()+" "+name()+" has been awarded the trophy for "+TROPHY_DESCS[TROPHY_AREA]+".");
+                            CMLib.clans().clanAnnounceAll("The "+getGovernmentName()+" "+name()+" has been awarded the trophy for "+TROPHY_DESCS[TROPHY_AREA]+".");
                         }
                     }
                     else
                     if(CMath.bset(getTrophies(),TROPHY_AREA))
                     {
                         setTrophies(getTrophies()-TROPHY_AREA);
-                        clanAnnounce("The "+typeName()+" "+name()+" has lost control of the trophy for "+TROPHY_DESCS[TROPHY_AREA]+".");
+                        clanAnnounce("The "+getGovernmentName()+" "+name()+" has lost control of the trophy for "+TROPHY_DESCS[TROPHY_AREA]+".");
                     }
                     if((winnerMostControlPoints==this)
                     &&(CMProps.getVar(CMProps.SYSTEM_CLANTROPCP).length()>0)
@@ -1280,14 +1280,14 @@ public class DefaultClan implements Clan
                         if(!CMath.bset(getTrophies(),TROPHY_CONTROL))
                         {
                             setTrophies(getTrophies()|TROPHY_CONTROL);
-                            CMLib.clans().clanAnnounceAll("The "+typeName()+" "+name()+" has been awarded the trophy for "+TROPHY_DESCS[TROPHY_CONTROL]+".");
+                            CMLib.clans().clanAnnounceAll("The "+getGovernmentName()+" "+name()+" has been awarded the trophy for "+TROPHY_DESCS[TROPHY_CONTROL]+".");
                         }
                     }
                     else
                     if(CMath.bset(getTrophies(),TROPHY_CONTROL))
                     {
                         setTrophies(getTrophies()-TROPHY_CONTROL);
-                        clanAnnounce("The "+typeName()+" "+name()+" has lost control of the trophy for "+TROPHY_DESCS[TROPHY_CONTROL]+".");
+                        clanAnnounce("The "+getGovernmentName()+" "+name()+" has lost control of the trophy for "+TROPHY_DESCS[TROPHY_CONTROL]+".");
                     }
                 }
             }
@@ -1382,7 +1382,7 @@ public class DefaultClan implements Clan
         case 1: return getDetail(null);
         case 2: return getDonation();
         case 3: return ""+getExp();
-        case 4: return ""+typeName();
+        case 4: return ""+getGovernmentName();
         case 5: return getMorgue();
         case 6: return getPolitics();
         case 7: return getPremise();

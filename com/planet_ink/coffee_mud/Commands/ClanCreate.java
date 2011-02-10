@@ -103,14 +103,14 @@ public class ClanCreate extends StdCommand
 								if(cost>0)
 									CMLib.beanCounter().subtractMoney(mob,cost);
 
-								Clan newClan=CMLib.clans().getNewClanObjectOfType(0);
+								Clan newClan=(Clan)CMClass.getCommon("DefaultClan");
 								newClan.setName(doubleCheck);
 								newClan.setGovernment(govtType);
 								newClan.setStatus(Clan.CLANSTATUS_PENDING);
 								newClan.create();
 								CMLib.database().DBUpdateClanMembership(mob.Name(),newClan.getName(),newClan.getTopRank(mob));
 								newClan.updateClanPrivileges(mob);
-								CMLib.clans().clanAnnounce(mob, "The "+newClan.typeName()+" "+newClan.clanID()+" is online and can now accept applicants.");
+								CMLib.clans().clanAnnounce(mob, "The "+newClan.getGovernmentName()+" "+newClan.clanID()+" is online and can now accept applicants.");
 							}
 						}
 					}

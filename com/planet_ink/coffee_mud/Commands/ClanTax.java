@@ -56,7 +56,7 @@ public class ClanTax extends StdCommand
 			Clan C=CMLib.clans().getClan(mob.getClanID());
 			if((!skipChecks)&&(!CMLib.clans().goForward(mob,C,commands,Clan.ClanFunction.TAX,false)))
 			{
-				msg.append("You aren't in the right position to set the experience tax rate for your "+C.typeName()+".");
+				msg.append("You aren't in the right position to set the experience tax rate for your "+C.getGovernmentName()+".");
 			}
 			else
 			{
@@ -70,7 +70,7 @@ public class ClanTax extends StdCommand
 					{
 						String t=null;
 						if((commands.size()<=1)||(!CMath.isNumber(CMParms.combine(commands,1))))
-							t=mob.session().prompt("Enter your "+C.typeName()+"'s new tax rate (0-25)\n\r: ","");
+							t=mob.session().prompt("Enter your "+C.getGovernmentName()+"'s new tax rate (0-25)\n\r: ","");
 						else
 							t=CMParms.combine(commands,1);
 						if(t.length()==0) return false;
@@ -89,7 +89,7 @@ public class ClanTax extends StdCommand
 					{
 						C.setTaxes(newRate);
 						C.update();
-						CMLib.clans().clanAnnounce(mob,"The experience tax rate of "+C.typeName()+" "+C.clanID()+" has been changed to "+((int)Math.round(C.getTaxes()*100.0)+"%."));
+						CMLib.clans().clanAnnounce(mob,"The experience tax rate of "+C.getGovernmentName()+" "+C.clanID()+" has been changed to "+((int)Math.round(C.getTaxes()*100.0)+"%."));
 						return false;
 					}
 				}

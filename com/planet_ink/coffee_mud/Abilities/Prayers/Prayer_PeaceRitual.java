@@ -147,7 +147,7 @@ public class Prayer_PeaceRitual extends Prayer
 		if((otherClan==null)
 		||((myClan.getClanRelations(clan2)!=Clan.REL_WAR)&&(otherClan.getClanRelations(clan1)!=Clan.REL_WAR)))
 		{
-			mob.tell("Your "+myClan.typeName()+" is not at war with "+clan2+"!");
+			mob.tell("Your "+myClan.getGovernmentName()+" is not at war with "+clan2+"!");
 			return false;
 		}
 		clan2=otherClan.clanID();

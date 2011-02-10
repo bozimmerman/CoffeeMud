@@ -137,7 +137,7 @@ public class MOTD extends StdCommand
                     {
                         P=(PostOffice)e.nextElement();
                         int[] ct=(int[])res2.get(P);
-                        buf.append("\n\r"+report("Your "+C.typeName()+" has",P,ct));
+                        buf.append("\n\r"+report("Your "+C.getGovernmentName()+" has",P,ct));
                     }
                     if((res.size()>0)||((C!=null)&&(res2.size()>0)))
                         buf.append("\n\r--------------------------------------\n\r");

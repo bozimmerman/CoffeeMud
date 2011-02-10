@@ -68,28 +68,28 @@ public class ClanMorgueSet extends StdCommand
 		}
 		if(C.getStatus()>Clan.CLANSTATUS_ACTIVE)
 		{
-			mob.tell("You cannot set a morgue.  Your "+C.typeName()+" does not have enough members to be considered active.");
+			mob.tell("You cannot set a morgue.  Your "+C.getGovernmentName()+" does not have enough members to be considered active.");
 			return false;
 		}
 		if(skipChecks||CMLib.clans().goForward(mob,C,commands,Clan.ClanFunction.HOMESET,false))
 		{
 			if(!CMLib.law().doesOwnThisProperty(C.clanID(),R))
 			{
-				mob.tell("Your "+C.typeName()+" does not own this room.");
+				mob.tell("Your "+C.getGovernmentName()+" does not own this room.");
 				return false;
 			}
 			if(skipChecks||CMLib.clans().goForward(mob,C,commands,Clan.ClanFunction.HOMESET,true))
 			{
 				C.setMorgue(CMLib.map().getExtendedRoomID(R));
 				C.update();
-				mob.tell("Your "+C.typeName()+" morgue is now set to "+R.roomTitle(mob)+".");
-				CMLib.clans().clanAnnounce(mob, "The morgue of "+C.typeName()+" "+C.clanID()+" is now set to "+R.roomTitle(mob)+".");
+				mob.tell("Your "+C.getGovernmentName()+" morgue is now set to "+R.roomTitle(mob)+".");
+				CMLib.clans().clanAnnounce(mob, "The morgue of "+C.getGovernmentName()+" "+C.clanID()+" is now set to "+R.roomTitle(mob)+".");
 				return true;
 			}
 		}
 		else
 		{
-			mob.tell("You aren't in the right position to set your "+C.typeName()+"'s morgue.");
+			mob.tell("You aren't in the right position to set your "+C.getGovernmentName()+"'s morgue.");
 			return false;
 		}
 		return false;

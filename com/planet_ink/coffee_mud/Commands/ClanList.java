@@ -66,7 +66,7 @@ public class ClanList extends StdCommand
             
 			msg.append(" ");
 			msg.append("^<CLAN^>"+CMStrings.padRight(CMStrings.removeColors(thisClan.clanID()),30)+"^</CLAN^>  ");
-			msg.append(CMStrings.padRight(thisClan.typeName(),10)+"  ");
+			msg.append(CMStrings.padRight(thisClan.getGovernmentName(),10)+"  ");
 			boolean war=false;
 			for(Enumeration e2=CMLib.clans().clans();e2.hasMoreElements();)
 			{

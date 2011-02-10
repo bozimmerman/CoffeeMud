@@ -89,13 +89,6 @@ public interface ClanManager extends CMLibrary
      */
     public Clan findClan(String id);
     /**
-     * Returns a fresh new empty clan object of the given type.
-	 * @see com.planet_ink.coffee_mud.Common.interfaces.Clan
-     * @param type a type of clan to create.
-     * @return a fresh new empty clan object of the given type.
-     */
-    public Clan getNewClanObjectOfType(int type);
-    /**
      * Returns an enumeration of all the Clans in the game 
      * @return an enumeration of all the Clans in the game
      */

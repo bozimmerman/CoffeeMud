@@ -137,17 +137,12 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
 	 */
 	public void setName(String newName);
 	/**
-	 * Returns the clan type, a meaningless variable.
-	 * @return always returns TYPE_CLAN
-	 */
-	public int getType();
-	/**
 	 * Returns Clan, Republic, or another one of the
-	 * clan government types defined by Clan.GVT_DESC
+	 * clan government types.
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Clan
 	 * @return the clans government types
 	 */
-	public String typeName();
+	public String getGovernmentName();
 
 	/**
 	 * This method is called when a given mobs clan status
@@ -488,11 +483,11 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
 	 */
 	public void setClanRelations(String id, int rel, long time);
 	/**
-	 * Returns the Clan.GVT_* constant representing the government type
+	 * Returns the id representing the government type
 	 * of this clan.
 	 * @see Clan
 	 * @see Clan#setGovernment(int)
-	 * @return the Clan.GVT_* constant
+	 * @return the if constant
 	 */
 	public int getGovernment();
 	
@@ -511,11 +506,11 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
 	public boolean isLoyaltyThroughWorship();
 	
 	/**
-	 * Returns the Clan.GVT_* constant representing the government type
+	 * Returns the id constant representing the government type
 	 * of this clan.
 	 * @see Clan
 	 * @see Clan#getGovernment()
-	 * @param type the Clan.GVT_* constant
+	 * @param type the type id constant
 	 */
 	public void setGovernment(int type);
 	/**

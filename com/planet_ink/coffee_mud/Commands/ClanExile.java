@@ -68,7 +68,7 @@ public class ClanExile extends StdCommand
 					List<MemberRecord> apps=C.getMemberList();
 					if(apps.size()<1)
 					{
-						mob.tell("There are no members in your "+C.typeName()+".");
+						mob.tell("There are no members in your "+C.getGovernmentName()+".");
 						return false;
 					}
 					for(MemberRecord member : apps)
@@ -83,26 +83,26 @@ public class ClanExile extends StdCommand
 						MOB M=CMLib.players().getLoadPlayer(qual);
 						if(M==null)
 						{
-							mob.tell(qual+" was not found.  Could not exile from "+C.typeName()+".");
+							mob.tell(qual+" was not found.  Could not exile from "+C.getGovernmentName()+".");
 							return false;
 						}
 						if(skipChecks||CMLib.clans().goForward(mob,C,commands,Clan.ClanFunction.EXILE,true))
 						{
-							CMLib.clans().clanAnnounce(mob,"Member exiled from "+C.typeName()+" "+C.name()+": "+M.Name());
-                            mob.tell(M.Name()+" has been exiled from "+C.typeName()+" '"+C.clanID()+"'.");
-                            M.tell("You have been exiled from "+C.typeName()+" '"+C.clanID()+"'.");
+							CMLib.clans().clanAnnounce(mob,"Member exiled from "+C.getGovernmentName()+" "+C.name()+": "+M.Name());
+                            mob.tell(M.Name()+" has been exiled from "+C.getGovernmentName()+" '"+C.clanID()+"'.");
+                            M.tell("You have been exiled from "+C.getGovernmentName()+" '"+C.clanID()+"'.");
                             C.delMember(M);
 							return false;
 						}
 					}
 					else
 					{
-						msg.append(qual+" isn't a member of your "+C.typeName()+".");
+						msg.append(qual+" isn't a member of your "+C.getGovernmentName()+".");
 					}
 				}
 				else
 				{
-					msg.append("You aren't in the right position to exile anyone from your "+C.typeName()+".");
+					msg.append("You aren't in the right position to exile anyone from your "+C.getGovernmentName()+".");
 				}
 			}
 		}
