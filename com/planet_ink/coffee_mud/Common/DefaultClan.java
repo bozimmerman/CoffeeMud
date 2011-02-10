@@ -88,11 +88,13 @@ public class DefaultClan implements Clan
     		return customGovt;
     	else
     	{
-    		final ClanGovernment govt = CMLib.clans().getStockGovernment(government);
-    		if(govt != null) return govt;
-    		if(CMLib.clans().getStockGovernments().length>0)
-    			return CMLib.clans().getStockGovernment(0);
-    		return new ClanGovernment(0,"none",new ClanPosition[0],0,0,"",false,false,false,null,false,false,false,"");
+    		ClanGovernment govt = CMLib.clans().getStockGovernment(government);
+    		if(govt == null)
+    		{
+				govt = CMLib.clans().getDefaultGovernment();
+				government = govt.ID;
+    		}
+			return govt;
     	}
     }
     

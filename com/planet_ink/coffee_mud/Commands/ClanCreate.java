@@ -80,7 +80,7 @@ public class ClanCreate extends StdCommand
 							if(mob.session().confirm("Is '"+doubleCheck+"' correct (y/N)?", "N"))
 							{
 								int govtType=-1;
-								while(govtType==-1)
+								while((govtType==-1)&&(!mob.session().killFlag()))
 								{
 									StringBuilder promptmsg=new StringBuilder("Now enter a political style for this clan. Choices are:\n\r");
 									{

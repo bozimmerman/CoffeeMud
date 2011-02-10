@@ -344,11 +344,32 @@ public class Clans extends StdLibrary implements ClanManager
     				{
     					gvts=parseGovernmentXML(str);
     				}
+    				if((gvts==null)||(gvts.length==0))
+    				{
+	    	    		ClanPositionPower[] pows=new ClanPositionPower[ClanFunction.values().length];
+	    	    		for(int i=0;i<pows.length;i++) pows[i]=ClanPositionPower.CAN_DO;
+	    	    		ClanPosition pos=new ClanPosition("FREEMAN", 0, 0, "Freeman", "Freemen", Integer.MAX_VALUE, "", pows);
+	    				ClanGovernment gvt=new ClanGovernment(0,"Anarchy",new ClanPosition[]{pos}, 
+	    						0, 0,"",false,true,false,Integer.valueOf(1),true,true,false,"I wanna be...");
+	    				gvt.isDefault=true;
+	    				gvts=new ClanGovernment[]{gvt};
+    				}
     				Resources.submitResource("parsed_clangovernments",gvts);
     			}
     		}
     	}
     	return gvts;
+    }
+    
+    public Clan.ClanGovernment getDefaultGovernment()
+    {
+    	final Clan.ClanGovernment[] gvts=getStockGovernments();
+    	for(Clan.ClanGovernment gvt : gvts)
+    	{
+    		if(gvt.isDefault)
+    			return gvt;
+    	}
+		return gvts[0];
     }
     
     public Clan.ClanGovernment getStockGovernment(int typeid)
@@ -366,6 +387,8 @@ public class Clans extends StdLibrary implements ClanManager
     {
     	final StringBuilder str=new StringBuilder("");
     	str.append("<CLANTYPE ").append("TYPEID="+gvt.ID+" ").append("NAME="+gvt.name+" ").append(">\n");
+    	if(gvt.isDefault)
+    		str.append(indt(1)).append("<ISDEFAULT>true</ISDEFAULT>\n");
     	str.append(indt(1)).append("<SHORTDESC>").append(gvt.shortDesc).append("</SHORTDESC>\n");
     	str.append(indt(1)).append("<POSITIONS>\n");
     	Set<Clan.ClanPositionPower> voteSet = new HashSet<Clan.ClanPositionPower>(); 
@@ -451,6 +474,7 @@ public class Clans extends StdLibrary implements ClanManager
     	{
 			final String typeName=clanTypePieceTag.parms.get("NAME");
 			final int typeID=CMath.s_int(clanTypePieceTag.parms.get("TYPEID"));
+			final boolean isDefault=CMath.s_bool(clanTypePieceTag.parms.get("ISDEFAULT"));
 	    	
 			ClanPositionPower[]	baseFunctionChart = new ClanPositionPower[ClanFunction.values().length];
 			for(int i=0;i<ClanFunction.values().length;i++)
@@ -555,6 +579,7 @@ public class Clans extends StdLibrary implements ClanManager
 			ClanGovernment gvt=new ClanGovernment(typeID,typeName,posArray, 
 					topRole.roleID, autoRole.roleID,requiredMaskStr,autoPromote,isPublic,isFamilyOnly,
 					  overrideMinMembers, conquestEnabled,conquestItemLoyalty,conquestDeityBasis,shortDesc);
+			gvt.isDefault=isDefault;
 			governments.add(gvt);
     	}
     	ClanGovernment[] govts=new ClanGovernment[governments.size()];
@@ -566,11 +591,18 @@ public class Clans extends StdLibrary implements ClanManager
     		}
     		else
     			govts[govt.ID]=govt;
+    	
     	if(governments.size()>0)
+    	{
 	    	for(int i=0;i<govts.length;i++)
 	    		if(govts[i]==null)
 	    			govts[i]=governments.get(0);
-    	return govts;
+	    	return govts;
+    	}
+    	else
+    	{
+    		return null;
+    	}
     }
 
     public void clanAnnounce(MOB mob, String msg)

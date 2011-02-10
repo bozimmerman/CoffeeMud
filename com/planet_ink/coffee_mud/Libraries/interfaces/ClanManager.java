@@ -147,6 +147,15 @@ public interface ClanManager extends CMLibrary
     public Clan.ClanGovernment getStockGovernment(int typeid);
     
     /**
+     * Returns the default government definition object.  
+     * See /resources/clangovernments.ini
+     * Also:
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Clan.ClanGovernment
+     * @return the clan government object
+     */
+    public Clan.ClanGovernment getDefaultGovernment();
+    
+    /**
      * Returns all government definition objects from internal
      * stock clangovernments.ini file.  See /resources/clangovernments.ini
      * Also:

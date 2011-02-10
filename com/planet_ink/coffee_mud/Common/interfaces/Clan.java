@@ -821,35 +821,37 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
 	public static class ClanGovernment
 	{
 		/** If this is a default government type, this is its ID, otherwise -1 */
-		public int 		ID;
+		public final int 	 ID;
 		/** The name of this government type, which is its identifier when ID above is -1 */
-		public String 	name;
+		public final String  name;
 		/** The highest possible rank for a clan position within this government type */
-		public int		topRole;
+		public final int	 topRole;
 		/** The role automatically assigned to those who apply successfully */
-		public int		autoRole;
+		public final int	 autoRole;
 		/** A short description of this government type for players */
-		public String   shortDesc;
+		public final String  shortDesc;
 		/** Zapper mask for requirements to even apply */
-		public String 	requiredMaskStr;
+		public final String  requiredMaskStr;
 		/**  Whether an unfilled topRole is automatically filled by those who meet its innermask  */
-		public boolean 	autoPromote;
+		public final boolean autoPromote;
 		/**  Whether this clan type is shown on the list  */
-		public boolean 	isPublic;
+		public final boolean isPublic;
 		/**  Whether mambers must all be in the same family */
-		public boolean 	isFamilyOnly;
+		public final boolean isFamilyOnly;
 		/**  The number of minimum members for the clan to survive -- overrides coffeemud.ini */
-		public Integer	overrideMinMembers;
+		public final Integer overrideMinMembers;
 		/** Whether conquest is enabled for this clan */
-		public boolean 	conquestEnabled;
+		public final boolean conquestEnabled;
 		/** Whether clan items increase loyalty in conquered areas for this clan type */
-		public boolean 	conquestItemLoyalty;
+		public final boolean conquestItemLoyalty;
 		/** Whether loyalty and conquest are determined by what deity the mobs are */
-		public boolean 	conquestDeityBasis;
+		public final boolean conquestDeityBasis;
+		/**  Whether this is the default government  */
+		public boolean 		 isDefault = false;
 		/** The list of ClanPosition objects for each holdable position in this government */
-		public ClanPosition[] 	  positions;
+		public final ClanPosition[] 	  positions;
 		/** Zapper mask for requirements to even apply */
-		public CompiledZapperMask requiredMask;
+		public final CompiledZapperMask   requiredMask;
 		
 		/**
 		 * Initialize a new Clan Government
