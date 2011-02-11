@@ -658,9 +658,9 @@ public class MOBloader
         DB.update("UPDATE CMCHAR SET  CMEMAL='"+pstats.getEmail()+"'  WHERE CMUSERID='"+mob.Name()+"'");
     }
 
-    public Vector<Clan.MemberRecord> DBClanMembers(String clan)
+    public List<Clan.MemberRecord> DBClanMembers(String clan)
     {
-    	Vector<Clan.MemberRecord> members = new Vector<Clan.MemberRecord>();
+    	List<Clan.MemberRecord> members = new Vector<Clan.MemberRecord>();
         DBConnection D=null;
         try
         {
@@ -674,7 +674,7 @@ public class MOBloader
                 if(clanRole >= 7)
                 	clanRole = CMath.bitNumber(clanRole); 
                 Clan.MemberRecord member = new Clan.MemberRecord(username,clanRole,lastDateTime);
-                members.addElement(member);
+                members.add(member);
                 MOB M=CMLib.players().getPlayer(username);
                 if((M!=null)&&(M.lastTickedDateTime()>0))
                     member.timestamp=M.lastTickedDateTime();

@@ -777,14 +777,14 @@ public class DefaultClan implements Clan
     public String getDonation() { return clanDonationRoom; }
     public void setDonation(String newDonation) { clanDonationRoom=newDonation; }
 
-    public Vector<MemberRecord> getMemberList()
+    public List<MemberRecord> getMemberList()
     {
         return getMemberList(-1);
     }
 
-    public Vector<MemberRecord> getMemberList(int PosFilter)
+    public List<MemberRecord> getMemberList(int PosFilter)
     {
-    	Vector<MemberRecord> members;
+    	List<MemberRecord> members;
         members = CMLib.database().DBClanMembers(clanID());
         Vector<MemberRecord> filteredMembers=new Vector<MemberRecord>();
         for(MemberRecord member : members)

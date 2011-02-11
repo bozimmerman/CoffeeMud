@@ -445,7 +445,7 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
 	 * @see Clan.MemberRecord
 	 * @return the membership
 	 */
-	public Vector<MemberRecord> getMemberList();
+	public List<MemberRecord> getMemberList();
 	/**
 	 * Returns the set of members, where
 	 * each row represents a MemberRecord.
@@ -455,7 +455,7 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
 	 * @param PosFilter
 	 * @return the membership
 	 */
-	public Vector<MemberRecord> getMemberList(int PosFilter);
+	public List<MemberRecord> getMemberList(int PosFilter);
 
 	/**
 	 * Returns the highest ranking member of this clan.

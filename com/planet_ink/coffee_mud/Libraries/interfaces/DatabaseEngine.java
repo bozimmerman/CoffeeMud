@@ -85,7 +85,7 @@ public interface DatabaseEngine extends CMLibrary
 	public void DBReCreate(Room room, String oldID);
 	public void DBDeleteRoom(Room room);
 	public void DBReadPlayer(MOB mob);
-	public Vector<MemberRecord> DBClanMembers(String clan);
+	public List<MemberRecord> DBClanMembers(String clan);
 	public void DBUpdateClanMembership(String name, String clan, int role);
 	public void DBReadAllClans();
 	public void DBUpdateClan(Clan C);

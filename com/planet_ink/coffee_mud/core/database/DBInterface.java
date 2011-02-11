@@ -107,7 +107,7 @@ public class DBInterface implements DatabaseEngine
 	public void DBReadAllClans()
 	{ ClanLoader.DBRead();}
 	
-	public Vector<MemberRecord> DBClanMembers(String clan)
+	public List<MemberRecord> DBClanMembers(String clan)
 	{ return MOBloader.DBClanMembers(clan);}
 	
 	public void DBUpdateClanMembership(String name, String clan, int role)
