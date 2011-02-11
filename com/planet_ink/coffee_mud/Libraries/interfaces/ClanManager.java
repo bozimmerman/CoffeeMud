@@ -165,7 +165,7 @@ public interface ClanManager extends CMLibrary
     
     /**
      * Returns a government definition object of the given internal
-     * stock clangovernments.ini id.  See /resources/clangovernments.ini
+     * stock clangovernments.xml id.  See /resources/clangovernments.xml
      * Also:
      * @see com.planet_ink.coffee_mud.Common.interfaces.Clan.Government
      * @param typeid the internal typeid
@@ -175,7 +175,7 @@ public interface ClanManager extends CMLibrary
     
     /**
      * Returns the default government definition object.  
-     * See /resources/clangovernments.ini
+     * See /resources/clangovernments.xml
      * Also:
      * @see com.planet_ink.coffee_mud.Common.interfaces.Clan.Government
      * @return the clan government object
@@ -184,7 +184,7 @@ public interface ClanManager extends CMLibrary
     
     /**
      * Returns all government definition objects from internal
-     * stock clangovernments.ini file.  See /resources/clangovernments.ini
+     * stock clangovernments.xml file.  See /resources/clangovernments.xml
      * Also:
      * @see com.planet_ink.coffee_mud.Common.interfaces.Clan.Government
      * @return the clan government object

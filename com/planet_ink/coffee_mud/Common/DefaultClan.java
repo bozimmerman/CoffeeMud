@@ -288,8 +288,18 @@ public class DefaultClan implements Clan
         return voteList.elements();
     }
 
-    public int getAutoPosition(){return autoPosition<0?govt().autoRole:autoPosition;}
-    public void setAutoPosition(int pos){autoPosition=pos;}
+    public int getAutoPosition()
+    {
+    	return autoPosition<0?govt().autoRole:autoPosition;
+    }
+    
+    public void setAutoPosition(int pos)
+    {
+    	if(pos == govt().autoRole)
+	    	autoPosition=-1;
+    	else
+    		autoPosition=pos;
+    }
 
     public long getExp(){return exp;}
     public void setExp(long newexp){exp=newexp;}

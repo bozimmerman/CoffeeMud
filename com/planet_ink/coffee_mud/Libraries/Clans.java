@@ -344,7 +344,7 @@ public class Clans extends StdLibrary implements ClanManager
     		{
     			if(gvts==null)
     			{
-    				StringBuffer str=Resources.getFileResource("clangovernments.ini", true);
+    				StringBuffer str=Resources.getFileResource("clangovernments.xml", true);
     				if(str==null)
     					gvts=new Clan.Government[0];
     				else
