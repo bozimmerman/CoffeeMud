@@ -51,7 +51,7 @@ public class DefaultClan implements Clan
     protected String clanClass="";
     protected String clanDonationRoom="";
     protected int clanTrophies=0;
-    protected int autoPosition=0;
+    protected int autoPosition=-1;
     protected String AcceptanceSettings="";
     protected int ClanStatus=0;
     protected Vector<ClanVote> voteList=null;
@@ -83,6 +83,8 @@ public class DefaultClan implements Clan
         }
     }
 
+    public Government getGovernment() { return govt();}
+    
     protected Government govt() 
     {
     	if((govt != null) && ((government < 0) || (lastGovernmentLoadTime == CMLib.clans().getLastGovernmentLoad())))
@@ -286,7 +288,7 @@ public class DefaultClan implements Clan
         return voteList.elements();
     }
 
-    public int getAutoPosition(){return autoPosition;}
+    public int getAutoPosition(){return autoPosition<0?govt().autoRole:autoPosition;}
     public void setAutoPosition(int pos){autoPosition=pos;}
 
     public long getExp(){return exp;}
@@ -328,8 +330,8 @@ public class DefaultClan implements Clan
         relations.put(id.toUpperCase(),i);
     }
 
-    public int getGovernment(){return government;}
-    public void setGovernment(int type){government=type;}
+    public int getGovernmentID(){return government;}
+    public void setGovernmentID(int type){government=type; lastGovernmentLoadTime=-1;}
 
     public void create()
     {
@@ -362,7 +364,7 @@ public class DefaultClan implements Clan
         boolean did=false;
         if(M==null) return false;
         if(M.getClanID().equals(clanID())
-        &&(M.getClanRole()!=POS_APPLICANT))
+        &&(getAuthority(M.getClanRole(),Function.CLANSPELLS)!=Clan.Authority.CAN_NOT_DO))
         {
         	if(getClanClassC()!=null)
         	{
@@ -418,12 +420,12 @@ public class DefaultClan implements Clan
         }
 
         if(M.playerStats()!=null)
-        for(int i=0;i<POS_TOTAL;i++)
+        for(Position pos : govt().positions)
         {
-            String title="*, "+getRoleName(i,true,false)+" of "+name();
-            if((M.getClanRole()==i)
+            String title="*, "+pos.name+" of "+name();
+            if((M.getClanRole()==pos.roleID)
             &&(M.getClanID().equals(clanID()))
-            &&(i!=POS_APPLICANT))
+            &&(getAuthority(M.getClanRole(),Function.CLANSPELLS)!=Clan.Authority.CAN_NOT_DO))
             {
                 if(!M.playerStats().getTitles().contains(title))
                     M.playerStats().getTitles().add(title);
@@ -503,7 +505,7 @@ public class DefaultClan implements Clan
     public String getDetail(MOB mob)
     {
         StringBuffer msg=new StringBuffer("");
-        boolean member=(mob!=null)&&mob.getClanID().equalsIgnoreCase(clanID())&&(mob.getClanRole()>Clan.POS_APPLICANT);
+        boolean member=(mob!=null)&&mob.getClanID().equalsIgnoreCase(clanID())&&(getAuthority(mob.getClanRole(),Function.LISTMEMBERS)!=Authority.CAN_NOT_DO);
         boolean sysmsgs=(mob!=null)&&CMath.bset(mob.getBitmap(),MOB.ATT_SYSOPMSGS);
         msg.append("^x"+getGovernmentName()+" Profile   :^.^N "+clanID()+"\n\r"
                   +"-----------------------------------------------------------------\n\r"
@@ -511,6 +513,8 @@ public class DefaultClan implements Clan
                   +"-----------------------------------------------------------------\n\r"
                   +"^xType            :^.^N "+govt().name+"\n\r"
                   +"^xQualifications  :^.^N "+((getAcceptanceSettings().length()==0)?"Anyone may apply":CMLib.masking().maskDesc(getAcceptanceSettings()))+"\n\r");
+        if(govt().requiredMaskStr.trim().length()>0)
+        	msg.append("^x           Plus :^.^N "+CMLib.masking().maskDesc(govt().requiredMaskStr)+"\n\r");
         CharClass clanC=getClanClassC();
         if(clanC!=null) msg.append("^xClass           :^.^N "+clanC.name()+"\n\r");
         msg.append("^xExp. Tax Rate   :^.^N "+((int)Math.round(getTaxes()*100))+"%\n\r");
@@ -536,12 +540,10 @@ public class DefaultClan implements Clan
                     msg.append("^xRecall          :^.^N "+R.displayText()+"\n\r");
             }
         }
-        msg.append("^x"+CMStrings.padRight(getRoleName(POS_BOSS,true,true),16)+":^.^N "+crewList(POS_BOSS)+"\n\r"
-                  +"^x"+CMStrings.padRight(getRoleName(POS_LEADER,true,true),16)+":^.^N "+crewList(POS_LEADER)+"\n\r"
-                  +"^x"+CMStrings.padRight(getRoleName(POS_TREASURER,true,true),16)+":^.^N "+crewList(POS_TREASURER)+"\n\r"
-                  +"^x"+CMStrings.padRight(getRoleName(POS_ENCHANTER,true,true),16)+":^.^N "+crewList(POS_ENCHANTER)+"\n\r"
-                  +"^x"+CMStrings.padRight(getRoleName(POS_STAFF,true,true),16)+":^.^N "+crewList(POS_STAFF)+"\n\r"
-                  +"^xTotal Members   :^.^N "+getSize()+"\n\r");
+        for(Position pos : govt().positions)
+        	if(pos.isPublic)
+	            msg.append("^x"+CMStrings.padRight(pos.pluralName,16)+":^.^N "+crewList(pos.roleID)+"\n\r");
+        msg.append("^xTotal Members   :^.^N "+getSize()+"\n\r");
         if(CMLib.clans().numClans()>1)
         {
             msg.append("-----------------------------------------------------------------\n\r");
@@ -562,15 +564,22 @@ public class DefaultClan implements Clan
         }
         if(member||sysmsgs)
         {
-            if(member) updateClanPrivileges(mob);
-            msg.append("-----------------------------------------------------------------\n\r"
-                      +"^x"+CMStrings.padRight(getRoleName(POS_MEMBER,true,true),16)
-                      +":^.^N "+crewList(POS_MEMBER)+"\n\r");
+            updateClanPrivileges(mob);
+            for(Position pos : govt().positions)
+            	if((!pos.isPublic)&&(member)
+            	&&((pos.roleID!=govt().autoRole)||(pos.roleID==govt().acceptPos)))
+            	{
+		            msg.append("-----------------------------------------------------------------\n\r"
+		                      +"^x"+CMStrings.padRight(pos.pluralName,16)
+		                      +":^.^N "+crewList(pos.roleID)+"\n\r");
+            	}
             if((mob!=null)
+        	&&(govt().autoRole!=govt().acceptPos)
             &&((getAuthority(mob.getClanRole(),Function.ACCEPT)!=Clan.Authority.CAN_NOT_DO)||sysmsgs))
             {
+            	Position pos=govt().positions[getAutoPosition()];
                 msg.append("-----------------------------------------------------------------\n\r"
-                        +"^x"+CMStrings.padRight(getRoleName(POS_APPLICANT,true,true),16)+":^.^N "+crewList(POS_APPLICANT)+"\n\r");
+                        +"^x"+CMStrings.padRight(pos.pluralName,16)+":^.^N "+crewList(pos.roleID)+"\n\r");
             }
         }
         Vector<String> control=new Vector<String>();
@@ -686,7 +695,7 @@ public class DefaultClan implements Clan
     {
         StringBuffer str=new StringBuffer("");
         str.append("<POLITICS>");
-        str.append(CMLib.xml().convertXMLtoTag("GOVERNMENT",""+getGovernment()));
+        str.append(CMLib.xml().convertXMLtoTag("GOVERNMENT",""+getGovernmentID()));
         str.append(CMLib.xml().convertXMLtoTag("TAXRATE",""+getTaxes()));
         str.append(CMLib.xml().convertXMLtoTag("EXP",""+getExp()));
         str.append(CMLib.xml().convertXMLtoTag("CCLASS",""+getClanClass()));
@@ -1430,7 +1439,7 @@ public class DefaultClan implements Clan
         case 1: break; // detail
         case 2: setDonation(val); break;
         case 3: setExp(CMath.s_long(val.trim())); break;
-        case 4: setGovernment(CMath.s_int(val.trim())); break;
+        case 4: setGovernmentID(CMath.s_int(val.trim())); break;
         case 5: setMorgue(val); break;
         case 6: setPolitics(val); break;
         case 7: setPremise(val); break;

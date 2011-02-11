@@ -100,7 +100,7 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 		if(getChannelFlags(i).contains(ChannelFlag.CLANONLY)||getChannelFlags(i).contains(ChannelFlag.CLANALLYONLY))
         {
             // only way to fail an all-clan send is to have NO clan.
-            if((M.getClanID().length()==0)||(M.getClanRole()==Clan.POS_APPLICANT))
+            if((M.getClanID().length()==0)||(!CMLib.clans().authCheck(M.getClanID(), M.getClanRole(), Clan.Function.CHANNEL)))
                 return false;
             if((!sender.getClanID().equalsIgnoreCase("ALL"))
             &&(!M.getClanID().equalsIgnoreCase(sender.getClanID()))
@@ -141,7 +141,7 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 		if(getChannelFlags(i).contains(ChannelFlag.CLANONLY)||getChannelFlags(i).contains(ChannelFlag.CLANALLYONLY))
         {
             // only way to fail an all-clan send is to have NO clan.
-            if((M.getClanID().length()==0)||(M.getClanRole()==Clan.POS_APPLICANT))
+            if((M.getClanID().length()==0)||(!CMLib.clans().authCheck(M.getClanID(), M.getClanRole(), Clan.Function.CHANNEL)))
                 return false;
             if((!sender.getClanID().equalsIgnoreCase("ALL"))
             &&(!M.getClanID().equalsIgnoreCase(sender.getClanID()))
@@ -171,7 +171,7 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 	        return false;
 	    
 		if((getChannelFlags(i).contains(ChannelFlag.CLANONLY)||getChannelFlags(i).contains(ChannelFlag.CLANALLYONLY))
-		&&((M.getClanID().length()==0)||(M.getClanRole()==Clan.POS_APPLICANT)))
+		&&((M.getClanID().length()==0)||(!CMLib.clans().authCheck(M.getClanID(), M.getClanRole(), Clan.Function.CHANNEL))))
 		    return false;
 
 		if(((zapCheckOnly)||((!M.amDead())&&(M.location()!=null)))

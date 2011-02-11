@@ -59,6 +59,13 @@ public class ClanApply extends StdCommand
                         msg.append("The clan  "+C.clanID()+" is a family.  You can not join a family, you must be born or married into it.");
                         return false;
                     }
+                    
+                    if(!CMLib.masking().maskCheck(C.getGovernment().requiredMask, mob, true))
+                    {
+						msg.append("You are not of the right qualities to join "+C.clanID()+". Use CLANDETAILS \""+C.clanID()+"\" for more information.");
+						return false;
+                    }
+                    
 					if(CMLib.masking().maskCheck(C.getAcceptanceSettings(),mob,true))
 					{
                         if((CMLib.masking().maskCheck("-<"+CMProps.getIntVar(CMProps.SYSTEMI_MINCLANLEVEL),mob,true))
@@ -70,7 +77,8 @@ public class ClanApply extends StdCommand
                         	{
 	                        	int role=C.getAutoPosition();
                                 C.addMember(mob,role);
-	    						if(mob.getClanRole()==Clan.POS_APPLICANT)
+	    						if((mob.getClanRole()!=C.getGovernment().acceptPos)
+	    						&&(mob.getClanRole()==C.getGovernment().autoRole))
 	    						{
 	        						CMLib.clans().clanAnnounce(mob,"The "+C.getGovernmentName()+" "+C.clanID()+" has a new Applicant: "+mob.Name());
 		    						mob.tell("You have successfully applied for membership in clan "+C.clanID()+".  Your application will be reviewed by management.  Use SCORE to check for a change in status.");

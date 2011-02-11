@@ -1860,7 +1860,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
     public Room getDefaultBodyRoom(MOB mob)
     {
         if((mob.getClanID().length()>0)
-        &&(mob.getClanRole()!=Clan.POS_APPLICANT)
+        &&(CMLib.clans().authCheck(mob.getClanID(), mob.getClanRole(), Clan.Function.MORGUE))
         &&((!mob.isMonster())||(mob.getStartRoom()==null)))
         {
             Clan C=CMLib.clans().getClan(mob.getClanID());

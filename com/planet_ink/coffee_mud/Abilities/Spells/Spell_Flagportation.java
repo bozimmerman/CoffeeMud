@@ -51,7 +51,7 @@ public class Spell_Flagportation extends Spell
 	        mob.tell("You must belong to a clan to use this spell.");
 	        return false;
 	    }
-	    if((!auto)&&(mob.getClanRole()<Clan.POS_ENCHANTER))
+	    if((!auto)&&(C.getAuthority(mob.getClanRole(), Clan.Function.ENCHANT)==Clan.Authority.CAN_NOT_DO))
 	    {
 	        mob.tell("You do not have priviledges to use this spell.");
 	        return false;

@@ -80,6 +80,9 @@ public class ClanCreate extends StdCommand
 							if(mob.session().confirm("Is '"+doubleCheck+"' correct (y/N)?", "N"))
 							{
 								int govtType=-1;
+								int newRoleID=-1;
+								Clan newClan=(Clan)CMClass.getCommon("DefaultClan");
+								newClan.setName(doubleCheck);
 								while((govtType==-1)&&(!mob.session().killFlag()))
 								{
 									StringBuilder promptmsg=new StringBuilder("Now enter a political style for this clan. Choices are:\n\r");
@@ -97,18 +100,30 @@ public class ClanCreate extends StdCommand
 									if(govt.length()==0){ mob.tell("Aborted."); return false;}
 						            for(Clan.Government gvt : CMLib.clans().getStockGovernments())
 										if(govt.equalsIgnoreCase(gvt.name))
+										{
 											govtType=gvt.ID;
+							            	if(!CMLib.masking().maskCheck(gvt.requiredMask, mob, true))
+							            	{
+							            		mob.tell("You are not qualified to create a clan of this style.\n\rRequirements: "+CMLib.masking().maskDesc(gvt.requiredMaskStr));
+							            		govtType=-1;
+							            	}
+											newClan.setGovernmentID(govtType);
+											newRoleID=newClan.getTopQualifiedRoleID(Clan.Function.ASSIGN,mob);
+											if(newClan.getAuthority(newRoleID, Clan.Function.ASSIGN) == Clan.Authority.CAN_NOT_DO)
+											{
+							            		mob.tell("You are not qualified to lead a clan of this style.\n\r");
+							            		govtType=-1;
+											}
+						            		break;
+										}
 								}
 
 								if(cost>0)
 									CMLib.beanCounter().subtractMoney(mob,cost);
 
-								Clan newClan=(Clan)CMClass.getCommon("DefaultClan");
-								newClan.setName(doubleCheck);
-								newClan.setGovernment(govtType);
 								newClan.setStatus(Clan.CLANSTATUS_PENDING);
 								newClan.create();
-								CMLib.database().DBUpdateClanMembership(mob.Name(),newClan.getName(),newClan.getTopQualifiedRoleID(Clan.Function.ASSIGN,mob));
+								CMLib.database().DBUpdateClanMembership(mob.Name(),newClan.getName(),newRoleID);
 								newClan.updateClanPrivileges(mob);
 								CMLib.clans().clanAnnounce(mob, "The "+newClan.getGovernmentName()+" "+newClan.clanID()+" is online and can now accept applicants.");
 							}

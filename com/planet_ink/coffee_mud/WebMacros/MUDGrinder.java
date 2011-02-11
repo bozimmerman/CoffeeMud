@@ -252,7 +252,7 @@ public class MUDGrinder extends StdWebMacro
             if(!CMSecurity.isAllowedEverywhere(mob,"CMDCLANS")) return "@break@";
             Clan newClan=(Clan)CMClass.getCommon("DefaultClan");
             newClan.setName(last);
-            newClan.setGovernment(CMLib.clans().getDefaultGovernment().ID);
+            newClan.setGovernmentID(CMLib.clans().getDefaultGovernment().ID);
             newClan.setStatus(Clan.CLANSTATUS_PENDING);
             newClan.create();
             Log.sysOut("Grinder",mob.Name()+" created clan "+newClan.clanID());

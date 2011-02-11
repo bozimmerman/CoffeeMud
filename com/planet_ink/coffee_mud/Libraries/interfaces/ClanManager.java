@@ -87,6 +87,7 @@ public interface ClanManager extends CMLibrary
      * @return the Clan object associated with the given clan name
      */
     public Clan getClan(String id);
+    
     /**
      * Returns the Clan object associated with the given clan name, or
      * if the name is not found, the name that most closely matches it.
@@ -95,33 +96,51 @@ public interface ClanManager extends CMLibrary
      * @return the Clan object associated with the given clan name
      */
     public Clan findClan(String id);
+    
     /**
      * Returns an enumeration of all the Clans in the game 
      * @return an enumeration of all the Clans in the game
      */
     public Enumeration<Clan> clans();
+    
     /**
      * Adds the given clan to the games list
      * @param C the clan to add
      */
     public void addClan(Clan C);
+    
     /**
      * Removes the given clan from the games list
      * @param C the clan to remove
      */
     public void removeClan(Clan C);
+    
     /**
      * Forces all clans to go through their maintenance process, which
      * normally only occurs infrequently.  This does things like handle
      * automatic promotions, manage votes, and clean out inactive clans.
      */
     public void tickAllClans();
+    
     /**
      * Sends a message to the games official CLAN chat channel.  This
      * is normally for messages that may interest all clans.
      * @param msg the message to send
      */
     public void clanAnnounceAll(String msg);
+    
+    /**
+     * If the clan exists, it will check to see if the given role
+     * is allowed (or at least not disallowed) from the given
+     * clan function
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.Clan
+     * @param clanID the clan name
+     * @param roleID the clan roleID
+     * @param function the clan function
+     * @return true if they aren't disallowed, false otherwise
+     */
+    public boolean authCheck(String clanID, int roleID, Clan.Function function);
+    
     /**
      * Returns a descriptive name for the given trophy code number.
      * @see com.planet_ink.coffee_mud.Common.interfaces.Clan#TROPHY_DESCS
@@ -129,6 +148,7 @@ public interface ClanManager extends CMLibrary
      * @return the descriptive name
      */
     public String translatePrize(int trophy);
+    
     /**
      * Returns whether this mud has activated its trophy system for clans.
      * @return whether this mud has activated its trophy system for clans.

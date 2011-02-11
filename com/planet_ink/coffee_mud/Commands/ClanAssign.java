@@ -134,10 +134,10 @@ public class ClanAssign extends StdCommand
 								{
 									String s=(String)currentMembersInNewPosV.elementAt(0);
 									currentMembersInNewPosV.removeElementAt(0);
-									CMLib.clans().clanAnnounce(mob," "+s+" of the "+C.getGovernmentName()+" "+C.clanID()+" is now a "+C.getRoleName(Clan.POS_MEMBER,true,false)+".");
+									CMLib.clans().clanAnnounce(mob," "+s+" of the "+C.getGovernmentName()+" "+C.clanID()+" is now a "+C.getRoleName(C.getGovernment().acceptPos,true,false)+".");
 									MOB M2=CMLib.players().getPlayer(s);
-									if(M2!=null) M2.setClanRole(Clan.POS_MEMBER);
-									CMLib.database().DBUpdateClanMembership(s, C.clanID(), Clan.POS_MEMBER);
+									if(M2!=null) M2.setClanRole(C.getGovernment().acceptPos);
+									CMLib.database().DBUpdateClanMembership(s, C.clanID(), C.getGovernment().acceptPos);
 									C.updateClanPrivileges(M2);
 								}
 							}

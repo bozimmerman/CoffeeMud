@@ -355,7 +355,7 @@ public class Clans extends StdLibrary implements ClanManager
     				{
 	    	    		Authority[] pows=new Authority[Function.values().length];
 	    	    		for(int i=0;i<pows.length;i++) pows[i]=Authority.CAN_DO;
-	    	    		Position pos=new Position("FREEMAN", 0, 0, "Freeman", "Freemen", Integer.MAX_VALUE, "", pows);
+	    	    		Position pos=new Position("FREEMAN", 0, 0, "Freeman", "Freemen", Integer.MAX_VALUE, "", pows, false);
 	    				Government gvt=new Government(0,"Anarchy",new Position[]{pos}, 
 	    						0,0,"",AutoPromoteFlag.NONE,true,false,Integer.valueOf(1),true,true,false,"I wanna be...",0,0);
 	    				gvt.isDefault=true;
@@ -405,6 +405,7 @@ public class Clans extends StdLibrary implements ClanManager
         	str.append(indt(2)).append("<POSITION ").append("ID=\""+pos.ID+"\" ").append("ROLEID="+pos.roleID+" ")
         						.append("RANK="+pos.rank+" ").append("NAME=\""+pos.name+"\" ").append("PLURAL=\""+pos.pluralName+"\" ")
         						.append("MAX="+pos.max+" ").append("INNERMASK=\""+pos.innerMaskStr+"\" ")
+        						.append("PUBLIC=\""+pos.isPublic+"\" ")
         						.append(">\n");
         	for(Clan.Authority pow : pos.functionChart)
         		if(pow==Clan.Authority.CAN_DO)
@@ -515,6 +516,7 @@ public class Clans extends StdLibrary implements ClanManager
 	    			final String name=posPiece.parms.get("NAME");
 	    			final String pluralName=posPiece.parms.get("PLURAL");
 	    			final int max=CMath.s_int(posPiece.parms.get("MAX"));
+	    			final boolean isPublic=CMath.s_bool(posPiece.parms.get("PUBLIC"));
 	    			final String innerMaskStr=posPiece.parms.get("INNERMASK");
 	    	    	for(XMLLibrary.XMLpiece powerPiece : posPiece.contents)
 	    	    	{
@@ -527,7 +529,7 @@ public class Clans extends StdLibrary implements ClanManager
 	    	    				functionChart[power.ordinal()] = Authority.CAN_DO;
 	    	    		}
 	    	    	}
-	    			Position pos=new Position(ID,roleID,rank,name,pluralName,max,innerMaskStr,functionChart);
+	    			Position pos=new Position(ID,roleID,rank,name,pluralName,max,innerMaskStr,functionChart,isPublic);
 	    			positions.add(pos);
 	    		}
 	    	}
@@ -630,4 +632,12 @@ public class Clans extends StdLibrary implements ClanManager
         for(int i=0;i<channels.size();i++)
             CMLib.commands().postChannel(mob,(String)channels.get(i),msg,true);
     }
+    
+	public boolean authCheck(String clanID, int roleID, Function function) 
+	{
+		if((clanID==null)||(clanID.length()==0)) return false;
+		Clan C=(Clan)all.get(clanID.toUpperCase());
+        if(C==null) return false;
+        return C.getAuthority(roleID, function)!=Clan.Authority.CAN_NOT_DO;
+	}
 }

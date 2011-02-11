@@ -712,13 +712,24 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
                 if(newName.equalsIgnoreCase("null"))
                     M.setClanID("");
                 else
-                if(newName.length()>0)
                 {
-                    M.setClanID(newName);
-                    M.setClanRole(Clan.POS_MEMBER);
+                	Clan C=CMLib.clans().getClan(newName);
+                	if(C==null)
+                		C=CMLib.clans().findClan(newName);
+	                if((newName.length()>0)&&(C!=null))
+	                {
+	                    M.setClanID(C.clanID());
+	                    M.setClanRole(C.getGovernment().acceptPos);
+	                }
+	                else
+	                if(C==null)
+	                {
+	                    mob.tell("(no clan "+newName+")");
+	                    return;
+	                }
+	                else
+	                    mob.tell("(no change)");
                 }
-                else
-                    mob.tell("(no change)");
             }
         }
         if(((showFlag<=0)||(showFlag==showNumber))
@@ -3599,7 +3610,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
                         if(index<0)
                         {
                             index=members.size();
-                            members.addElement(new MemberRecord(M.name(),Clan.POS_MEMBER,M.playerStats().lastDateTime()));
+                            members.addElement(new MemberRecord(M.name(),E.getGovernment().acceptPos,M.playerStats().lastDateTime()));
                         }
 
                         int newRole=-1;
@@ -6942,7 +6953,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
                 mob.tell("That government type is invalid.  Valid types include: "+gvts.toString());
             else
             {
-                C.setGovernment(newGovt);
+                C.setGovernmentID(newGovt);
                 break;
             }
         }
@@ -6981,7 +6992,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
     throws IOException
     {
         if((showFlag>0)&&(showFlag!=showNumber)) return;
-        mob.tell(showNumber+". Clan (Role): '"+C.getRoleName(C.getAutoPosition(),true,false)+"'.");
+        mob.tell(showNumber+". Apply Role: '"+C.getRoleName(C.getAutoPosition(),true,false)+"'.");
         if((showFlag!=showNumber)&&(showFlag>-999)) return;
         while((mob.session()!=null)&&(!mob.session().killFlag()))
         {

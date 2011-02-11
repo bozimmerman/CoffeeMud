@@ -64,9 +64,14 @@ public class ClanAccept extends StdCommand
 					mob.tell("There is no longer a clan called "+mob.getClanID()+".");
 					return false;
 				}
+				if(C.getGovernment().autoRole == C.getGovernment().acceptPos)
+				{
+					mob.tell("Everyone is already accepted.");
+					return false;
+				}
 				if(skipChecks||CMLib.clans().goForward(mob,C,commands,Clan.Function.ACCEPT,false))
 				{
-					List<MemberRecord> apps=C.getMemberList(Clan.POS_APPLICANT);
+					List<MemberRecord> apps=C.getMemberList(C.getGovernment().autoRole);
 					if(apps.size()<1)
 					{
 						mob.tell("There are no applicants to your "+C.getGovernmentName()+".");
@@ -90,7 +95,7 @@ public class ClanAccept extends StdCommand
 						}
 						if(skipChecks||CMLib.clans().goForward(mob,C,commands,Clan.Function.ACCEPT,true))
 						{
-                            C.addMember(M,Clan.POS_MEMBER);
+                            C.addMember(M,C.getGovernment().acceptPos);
 							CMLib.clans().clanAnnounce(mob,M.Name()+" is now a new member of "+C.getGovernmentName()+" "+C.name()+".");
 							mob.tell(M.Name()+" has been accepted into "+C.getGovernmentName()+" '"+C.clanID()+"'.");
 							M.tell(mob.Name()+" has accepted you as a member of "+C.getGovernmentName()+" '"+C.clanID()+"'.");

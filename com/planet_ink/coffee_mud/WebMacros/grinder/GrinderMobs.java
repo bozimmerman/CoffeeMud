@@ -514,7 +514,13 @@ public class GrinderMobs
 				case 39: // clan
 					M.setClanID(old);
 					if(M.getClanID().length()>0)
-						M.setClanRole(Clan.POS_MEMBER);
+					{
+						Clan C=CMLib.clans().getClan(M.getClanID());
+						if(C!=null)
+							M.setClanRole(C.getGovernment().acceptPos);
+						else
+							M.setClanRole(0);
+					}
 					break;
 				case 40: // tattoos
 					{

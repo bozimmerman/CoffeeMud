@@ -104,7 +104,7 @@ public class Channel extends StdCommand
 		}
         
         HashSet<ChannelsLibrary.ChannelFlag> flags=CMLib.channels().getChannelFlags(channelInt);
-		if((mob.getClanID().equalsIgnoreCase("")||mob.getClanRole()==Clan.POS_APPLICANT)
+		if((mob.getClanID().equalsIgnoreCase("")||(!CMLib.clans().authCheck(mob.getClanID(), mob.getClanRole(), Clan.Function.CHANNEL)))
         &&(flags.contains(ChannelsLibrary.ChannelFlag.CLANONLY)||flags.contains(ChannelsLibrary.ChannelFlag.CLANALLYONLY)))
 		{
             mob.tell("You can't talk to your clan - you don't have one.");

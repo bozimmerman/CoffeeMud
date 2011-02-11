@@ -154,7 +154,7 @@ public class GrinderClans
                 str=httpReq.getRequestParameter("ACCEPTANCEID");
                 if(str!=null) C.setAcceptanceSettings(str);
                 str=httpReq.getRequestParameter("TYPEID");
-                if(str!=null) C.setGovernment(CMath.s_int(str));
+                if(str!=null) C.setGovernmentID(CMath.s_int(str));
                 String err=GrinderClans.membersList(C,httpReq);
                 if(err.length()>0) return err;
                 err=GrinderClans.relationsList(C,httpReq);

@@ -671,7 +671,7 @@ public class MOBloader
                 String username=DB.getRes(R,"CMUSERID");
                 long lastDateTime=CMath.s_long(DBConnections.getRes(R,"CMDATE"));
                 int clanRole = (int)DBConnections.getLongRes(R,"CMCLRO");
-                if(clanRole >= Clan.POS_TOTAL)
+                if(clanRole >= 7)
                 	clanRole = CMath.bitNumber(clanRole); 
                 Clan.MemberRecord member = new Clan.MemberRecord(username,clanRole,lastDateTime);
                 members.addElement(member);
