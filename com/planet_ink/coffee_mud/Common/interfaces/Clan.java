@@ -60,12 +60,12 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
 	 * functions are defined in the Clan interface as FUNC_*
 	 * constants.
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Clan
-	 * @see com.planet_ink.coffee_mud.Common.interfaces.Clan.ClanPositionPower
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.Clan.Authority
 	 * @param mob the mob whose priviledges to check.
 	 * @param function the ClanFunction function constant to use
 	 * @return the ClanPositionPower enum
 	 */
-	public ClanPositionPower getAuthority(int roleID, ClanFunction function);
+	public Authority getAuthority(int roleID, Function function);
 
 	/**
 	 * Sends a message to all members of all clans.
@@ -108,7 +108,7 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
 	 * @param function the FUNC_* constant
 	 * @return the number of members of this clan who can vote on it
 	 */
-	public int getNumVoters(ClanFunction function);
+	public int getNumVoters(Function function);
 	/**
 	 * Returns the number of members of this clan.
 	 * @return the membership count.
@@ -513,15 +513,35 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
 	 * @param type the type id constant
 	 */
 	public void setGovernment(int type);
+	
 	/**
-	 * Returns the Clan.POS_* constant representing the highest rank
-	 * in this clan type.
-	 * @see Clan
+	 * Returns the roleid constant representing the highest rank
+	 * in this clan type that can perform the given function
+	 * or null.
+	 * @see Clan.Position
+	 * @see Clan.Function
+     * @param func the function (or null) they must be able to do
      * @param mob the mob to check for a top rank
-	 * @return the Clan.POS_* constant
+	 * @return the roleid constant
 	 */
-	public int getTopRank(MOB mob);
-
+	public int getTopQualifiedRoleID(Function func, MOB mob);
+	
+	/**
+	 * Returns the roleid(s) constant representing the highest rank
+	 * roleid(s) in this clan type that can perform the given function.
+	 * @see Clan.Position
+	 * @see Clan.Function
+	 * @parm func the function to perform, or null just to return privileged rank
+	 * @return the top roleid
+	 */
+	public List<Integer> getTopRankedRoles(Function func);
+	
+	/**
+	 * Returns the number of roles (max roleid)
+	 * @return number of roles
+	 */
+	public int getNumberRoles();
+	
     /**
      * Del a member from this clan
      * @param M the member to remove
@@ -719,7 +739,7 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
 	 * particular power of clans.
 	 * @author bzimmerman
 	 */
-	public static enum ClanPositionPower
+	public static enum Authority
 	{
 		CAN_NOT_DO,
 		CAN_DO,
@@ -727,11 +747,24 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
 	}
 	
 	/**
+	 * An enumeration of ways auto-promotion can work in a clan
+	 * @author bzimmerman
+	 */
+	public static enum AutoPromoteFlag
+	{
+		NONE,
+		LEVEL,
+		RANK,
+		LEVEL_OVERWRITE,
+		RANK_OVERWRITE
+	}
+	
+	/**
 	 * An enumation of all the major clan functions gated
 	 * by internal security
 	 * @author bzimmerman
 	 */
-	public static enum ClanFunction
+	public static enum Function
 	{
 		/** constant for the clan function of accepting new members. @see Clan#allowedToDoThis(MOB, int) */
 		ACCEPT,
@@ -773,7 +806,7 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
 	 * A class for the characteristics of a position within a clan.
 	 * @author bzimmerman
 	 */
-	public static class	ClanPosition
+	public static class	Position
 	{
 		/** the named ID of the position */
 		public final String ID;
@@ -792,7 +825,7 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
 		/** the zapper mask for internal requirements to this position */
 		public final CompiledZapperMask	internalMask;
 		/** a chart of whether this position can perform the indexed function in this government */
-		public final ClanPositionPower[]functionChart;
+		public final Authority[]functionChart;
 		
 		/**
 		 * Initialize a new clan position
@@ -805,7 +838,7 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
 		 * @param innermask basic internal requirements for this position
 		 * @param funcChart an array of ClanPositionPower objects for each function that can be performed.
 		 */
-		public ClanPosition(String ID, int roleID, int rank, String name, String plural, int max, String innerMask, ClanPositionPower[] funcChart)
+		public Position(String ID, int roleID, int rank, String name, String plural, int max, String innerMask, Authority[] funcChart)
 		{
 			this.ID=ID; this.roleID=roleID; this.pluralName=name; this.innerMaskStr=innerMask;
 			this.rank=rank; this.name=name; this.max=max;this.functionChart=funcChart;
@@ -818,22 +851,20 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
 	 * and its membership.
 	 * @author bzimmerman
 	 */
-	public static class ClanGovernment
+	public static class Government
 	{
 		/** If this is a default government type, this is its ID, otherwise -1 */
 		public final int 	 ID;
 		/** The name of this government type, which is its identifier when ID above is -1 */
 		public final String  name;
-		/** The highest possible rank for a clan position within this government type */
-		public final int	 topRole;
 		/** The role automatically assigned to those who apply successfully */
 		public final int	 autoRole;
+		/** The role automatically assigned to those who are accepted */
+		public final int	 acceptPos;
 		/** A short description of this government type for players */
 		public final String  shortDesc;
 		/** Zapper mask for requirements to even apply */
 		public final String  requiredMaskStr;
-		/**  Whether an unfilled topRole is automatically filled by those who meet its innermask  */
-		public final boolean autoPromote;
 		/**  Whether this clan type is shown on the list  */
 		public final boolean isPublic;
 		/**  Whether mambers must all be in the same family */
@@ -846,10 +877,16 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
 		public final boolean conquestItemLoyalty;
 		/** Whether loyalty and conquest are determined by what deity the mobs are */
 		public final boolean conquestDeityBasis;
+		/** maximum number of mud days a vote will go on for */
+		public final int 	 maxVoteDays;
+		/** minimum % of voters who must have voted for a vote to be valid if time expires*/
+		public final int 	 voteQuorumPct;
 		/**  Whether this is the default government  */
 		public boolean 		 isDefault = false;
+		/**  Whether an unfilled topRole is automatically filled by those who meet its innermask  */
+		public final AutoPromoteFlag 	  autoPromoteBy;
 		/** The list of ClanPosition objects for each holdable position in this government */
-		public final ClanPosition[] 	  positions;
+		public final Position[] 	  positions;
 		/** Zapper mask for requirements to even apply */
 		public final CompiledZapperMask   requiredMask;
 		
@@ -860,8 +897,9 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
 		 * @param pos
 		 * @param highPos
 		 * @param autoPos
+		 * @param acceptPos
 		 * @param requiredMask
-		 * @param autoPromote
+		 * @param autoPromoteBy
 		 * @param isPublic
 		 * @param isFamilyOnly
 		 * @param overrideMinMembers
@@ -869,32 +907,22 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
 		 * @param conquestItemLoyalty
 		 * @param conquestDeityBasis
 		 * @param shortDesc
+		 * @param maxVoteDays
+		 * @param voteQuorumPct
 		 */
-		public ClanGovernment(int ID, String name, ClanPosition[] pos, int highPos, int autoPos, 
-							  String requiredMask, boolean autoPromote, boolean isPublic, boolean isFamilyOnly,
+		public Government(int ID, String name, Position[] pos, int autoPos, int acceptPos,
+							  String requiredMask, AutoPromoteFlag autoPromoteBy, boolean isPublic, boolean isFamilyOnly,
 							  Integer overrideMinMembers,
 							  boolean conquestEnabled, boolean conquestItemLoyalty, boolean conquestDeityBasis,
-							  String shortDesc)
+							  String shortDesc, int maxVoteDays, int voteQuorumPct)
 		{
-			this.ID=ID; this.name=name; this.positions=pos; this.topRole=highPos; this.autoRole=autoPos;
-			this.requiredMaskStr=requiredMask; this.autoPromote=autoPromote; this.isPublic=isPublic;
+			this.ID=ID; this.name=name; this.positions=pos; this.autoRole=autoPos; this.acceptPos=acceptPos;
+			this.requiredMaskStr=requiredMask; this.autoPromoteBy=autoPromoteBy; this.isPublic=isPublic;
 			this.isFamilyOnly=isFamilyOnly; this.overrideMinMembers=overrideMinMembers; 
 			this.conquestEnabled=conquestEnabled; this.conquestItemLoyalty=conquestItemLoyalty;
 			this.conquestDeityBasis=conquestDeityBasis; this.shortDesc=shortDesc;
+			this.maxVoteDays=maxVoteDays;this.voteQuorumPct=voteQuorumPct;
 			this.requiredMask=CMLib.masking().maskCompile(requiredMaskStr);
 		}
 	}
-	
-	/** constant for the getGovernment @see Clan#getGovernment() method. Denotes Clan. */
-	public static final int GVT_DICTATORSHIP=0;
-	/** constant for the getGovernment @see Clan#getGovernment() method. Denotes Guild. */
-	public static final int GVT_OLIGARCHY=1;
-	/** constant for the getGovernment @see Clan#getGovernment() method. Denotes Republic. */
-	public static final int GVT_REPUBLIC=2;
-	/** constant for the getGovernment @see Clan#getGovernment() method. Denotes Democracy. */
-	public static final int GVT_DEMOCRACY=3;
-    /** constant for the getGovernment @see Clan#getGovernment() method. Denotes Theocracy. */
-    public static final int GVT_THEOCRACY=4;
-    /** constant for the getGovernment @see Clan#getGovernment() method. Denotes Family. */
-    public static final int GVT_FAMILY=5;
 }

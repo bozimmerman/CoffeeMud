@@ -71,14 +71,14 @@ public class ClanMorgueSet extends StdCommand
 			mob.tell("You cannot set a morgue.  Your "+C.getGovernmentName()+" does not have enough members to be considered active.");
 			return false;
 		}
-		if(skipChecks||CMLib.clans().goForward(mob,C,commands,Clan.ClanFunction.HOMESET,false))
+		if(skipChecks||CMLib.clans().goForward(mob,C,commands,Clan.Function.HOMESET,false))
 		{
 			if(!CMLib.law().doesOwnThisProperty(C.clanID(),R))
 			{
 				mob.tell("Your "+C.getGovernmentName()+" does not own this room.");
 				return false;
 			}
-			if(skipChecks||CMLib.clans().goForward(mob,C,commands,Clan.ClanFunction.HOMESET,true))
+			if(skipChecks||CMLib.clans().goForward(mob,C,commands,Clan.Function.HOMESET,true))
 			{
 				C.setMorgue(CMLib.map().getExtendedRoomID(R));
 				C.update();

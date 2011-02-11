@@ -8,6 +8,7 @@ import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.Clan.Function;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
@@ -91,7 +92,7 @@ public class BankAccountInfo extends StdWebMacro
 				playerM.setLocation(M.location());
 				playerM.setStartRoom(M.getStartRoom());
 				playerM.setClanID(C.clanID());
-				playerM.setClanRole(C.getTopRank(null));
+				playerM.setClanRole(C.getTopRankedRoles(Function.DEPOSITLIST).get(0));
 				destroyPlayer=true;
 			}
 			else

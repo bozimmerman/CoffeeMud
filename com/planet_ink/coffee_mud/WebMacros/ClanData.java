@@ -328,8 +328,8 @@ public class ClanData extends StdWebMacro
                 {
                     String old=httpReq.getRequestParameter("TYPEID");
                     if(old==null) old=C.getGovernment()+"";
-                    Clan.ClanGovernment[] gvts=CMLib.clans().getStockGovernments();
-                    for(Clan.ClanGovernment gvt : gvts)
+                    Clan.Government[] gvts=CMLib.clans().getStockGovernments();
+                    for(Clan.Government gvt : gvts)
                         str.append("<OPTION VALUE="+gvt.ID+" "+((old.equals(""+gvt.ID))?"SELECTED":"")+">"+CMStrings.capitalizeAndLower(gvt.name));
                 }
 				if(parms.containsKey("CLANIDRELATIONS"))

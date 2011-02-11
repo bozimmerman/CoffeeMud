@@ -64,7 +64,7 @@ public class ClanAccept extends StdCommand
 					mob.tell("There is no longer a clan called "+mob.getClanID()+".");
 					return false;
 				}
-				if(skipChecks||CMLib.clans().goForward(mob,C,commands,Clan.ClanFunction.ACCEPT,false))
+				if(skipChecks||CMLib.clans().goForward(mob,C,commands,Clan.Function.ACCEPT,false))
 				{
 					List<MemberRecord> apps=C.getMemberList(Clan.POS_APPLICANT);
 					if(apps.size()<1)
@@ -88,7 +88,7 @@ public class ClanAccept extends StdCommand
 							mob.tell(qual+" was not found.  Could not add to "+C.getGovernmentName()+".");
 							return false;
 						}
-						if(skipChecks||CMLib.clans().goForward(mob,C,commands,Clan.ClanFunction.ACCEPT,true))
+						if(skipChecks||CMLib.clans().goForward(mob,C,commands,Clan.Function.ACCEPT,true))
 						{
                             C.addMember(M,Clan.POS_MEMBER);
 							CMLib.clans().clanAnnounce(mob,M.Name()+" is now a new member of "+C.getGovernmentName()+" "+C.name()+".");

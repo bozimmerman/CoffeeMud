@@ -54,7 +54,7 @@ public class ClanQual extends StdCommand
 		else
 		{
 			Clan C=CMLib.clans().getClan(mob.getClanID());
-			if((!skipChecks)&&(!CMLib.clans().goForward(mob,C,commands,Clan.ClanFunction.PREMISE,false)))
+			if((!skipChecks)&&(!CMLib.clans().goForward(mob,C,commands,Clan.Function.PREMISE,false)))
 			{
 				msg.append("You aren't in the right position to set the qualifications to your "+C.getGovernmentName()+".");
 			}
@@ -80,7 +80,7 @@ public class ClanQual extends StdCommand
 							if((mob.session()!=null)&&(mob.session().confirm("Is this correct (Y/n)?","Y")))
 							{
 								commands.addElement(premise);
-								if(skipChecks||CMLib.clans().goForward(mob,C,commands,Clan.ClanFunction.PREMISE,true))
+								if(skipChecks||CMLib.clans().goForward(mob,C,commands,Clan.Function.PREMISE,true))
 								{
 									C.setAcceptanceSettings(premise);
 									C.update();

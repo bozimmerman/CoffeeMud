@@ -85,17 +85,17 @@ public class ClanCreate extends StdCommand
 									StringBuilder promptmsg=new StringBuilder("Now enter a political style for this clan. Choices are:\n\r");
 									{
 										int longest=0;
-							            for(Clan.ClanGovernment gvt : CMLib.clans().getStockGovernments())
+							            for(Clan.Government gvt : CMLib.clans().getStockGovernments())
 							            	if(gvt.name.length() > longest)
 							            		longest=gvt.name.length();
-							            for(Clan.ClanGovernment gvt : CMLib.clans().getStockGovernments())
+							            for(Clan.Government gvt : CMLib.clans().getStockGovernments())
 							            	promptmsg.append(CMStrings.padRight(gvt.name, longest))
 										            	.append(":").append(gvt.shortDesc).append("\n\r");
 										
 									}
 									String govt=mob.session().prompt(promptmsg.toString()+"\n\r: ","");
 									if(govt.length()==0){ mob.tell("Aborted."); return false;}
-						            for(Clan.ClanGovernment gvt : CMLib.clans().getStockGovernments())
+						            for(Clan.Government gvt : CMLib.clans().getStockGovernments())
 										if(govt.equalsIgnoreCase(gvt.name))
 											govtType=gvt.ID;
 								}
@@ -108,7 +108,7 @@ public class ClanCreate extends StdCommand
 								newClan.setGovernment(govtType);
 								newClan.setStatus(Clan.CLANSTATUS_PENDING);
 								newClan.create();
-								CMLib.database().DBUpdateClanMembership(mob.Name(),newClan.getName(),newClan.getTopRank(mob));
+								CMLib.database().DBUpdateClanMembership(mob.Name(),newClan.getName(),newClan.getTopQualifiedRoleID(Clan.Function.ASSIGN,mob));
 								newClan.updateClanPrivileges(mob);
 								CMLib.clans().clanAnnounce(mob, "The "+newClan.getGovernmentName()+" "+newClan.clanID()+" is online and can now accept applicants.");
 							}

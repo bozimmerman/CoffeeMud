@@ -62,7 +62,7 @@ public class ClanReject extends StdCommand
 					mob.tell("There is no longer a clan called "+mob.getClanID()+".");
 					return false;
 				}
-				if(skipChecks||CMLib.clans().goForward(mob,C,commands,Clan.ClanFunction.REJECT,false))
+				if(skipChecks||CMLib.clans().goForward(mob,C,commands,Clan.Function.REJECT,false))
 				{
 					List<MemberRecord> apps=C.getMemberList(Clan.POS_APPLICANT);
 					if(apps.size()<1)
@@ -86,7 +86,7 @@ public class ClanReject extends StdCommand
 							mob.tell(qual+" was not found.  Could not reject from "+C.getGovernmentName()+".");
 							return false;
 						}
-						if(skipChecks||CMLib.clans().goForward(mob,C,commands,Clan.ClanFunction.REJECT,true))
+						if(skipChecks||CMLib.clans().goForward(mob,C,commands,Clan.Function.REJECT,true))
 						{
                             C.delMember(M);
 							mob.tell(M.Name()+" has been denied acceptance to "+C.getGovernmentName()+" '"+C.clanID()+"'.");

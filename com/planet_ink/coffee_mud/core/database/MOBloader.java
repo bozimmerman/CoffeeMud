@@ -113,8 +113,7 @@ public class MOBloader
                 mob.setClanID(DBConnections.getRes(R,"CMCLAN"));
                 Clan C=CMLib.clans().getClan(mob.getClanID());
                 int clanRole = (int)DBConnections.getLongRes(R,"CMCLRO");
-                if(((C!=null)&&(clanRole > C.getTopRank(null)))
-                ||(clanRole >= Clan.POS_TOTAL))
+                if((C!=null)&&(clanRole > C.getNumberRoles()))
                 	clanRole = CMath.bitNumber(clanRole); 
                 mob.setClanRole(clanRole);
                 pstats.setEmail(DBConnections.getRes(R,"CMEMAL"));

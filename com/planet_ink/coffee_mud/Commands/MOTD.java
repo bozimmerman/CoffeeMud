@@ -125,7 +125,7 @@ public class MOTD extends StdCommand
                     {
                         C=CMLib.clans().getClan(mob.getClanID());
                         if((C!=null)
-                        &&(C.getAuthority(mob.getClanRole(),Clan.ClanFunction.WITHDRAW)!=Clan.ClanPositionPower.CAN_NOT_DO))
+                        &&(C.getAuthority(mob.getClanRole(),Clan.Function.WITHDRAW)!=Clan.Authority.CAN_NOT_DO))
                         {
                             V=CMLib.database().DBReadData(C.name(),postalChains);
                             if(V.size()>0)

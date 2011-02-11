@@ -69,7 +69,7 @@ public class ClanDeclare extends StdCommand
 					mob.tell("There is no longer a clan called "+mob.getClanID()+".");
 					return false;
 				}
-				if(skipChecks||CMLib.clans().goForward(mob,C,commands,Clan.ClanFunction.DECLARE,false))
+				if(skipChecks||CMLib.clans().goForward(mob,C,commands,Clan.Function.DECLARE,false))
 				{
 					int newRole=-1;
 					for(int i=0;i<Clan.REL_DESCS.length;i++)
@@ -107,7 +107,7 @@ public class ClanDeclare extends StdCommand
 							return false;
 						}
 					}
-					if(skipChecks||CMLib.clans().goForward(mob,C,commands,Clan.ClanFunction.DECLARE,true))
+					if(skipChecks||CMLib.clans().goForward(mob,C,commands,Clan.Function.DECLARE,true))
 					{
 						CMLib.clans().clanAnnounce(mob,"The "+C.getGovernmentName()+" "+C.clanID()+" has declared "+CMStrings.capitalizeAndLower(Clan.REL_STATES[newRole].toLowerCase())+" "+C2.name()+".");
 						C.setClanRelations(C2.clanID(),newRole,System.currentTimeMillis());

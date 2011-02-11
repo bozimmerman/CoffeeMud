@@ -6931,7 +6931,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
             }
             int newGovt=-1;
             StringBuffer gvts=new StringBuffer();
-            for(Clan.ClanGovernment gvt : CMLib.clans().getStockGovernments())
+            for(Clan.Government gvt : CMLib.clans().getStockGovernments())
             {
                 gvts.append(gvt.name+", ");
                 if(newName.equalsIgnoreCase(gvt.name))

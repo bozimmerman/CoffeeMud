@@ -72,9 +72,9 @@ public class CMProps extends Properties
     public static final int SYSTEM_ESC9=15;
     public static final int SYSTEM_MSPPATH=16;
     public static final int SYSTEM_BADNAMES=17;
-    public static final int SYSTEM_CLANVOTEO=18;
-    public static final int SYSTEM_CLANVOTER=19;
-    public static final int SYSTEM_CLANVOTED=20;
+    //public static final int SYSTEM_CLANVOTEO=18;
+    //public static final int SYSTEM_CLANVOTER=19;
+    //public static final int SYSTEM_CLANVOTED=20;
     public static final int SYSTEM_AUTOPURGE=21;
     public static final int SYSTEM_MUDNAME=22;
     public static final int SYSTEM_MUDVER=23;
@@ -799,9 +799,6 @@ public class CMProps extends Properties
         setVar(SYSTEM_ESC8,getStr("ESCAPE8"));
         setVar(SYSTEM_ESC9,getStr("ESCAPE9"));
         setVar(SYSTEM_MSPPATH,getStr("SOUNDPATH"),false);
-        setVar(SYSTEM_CLANVOTED,getStr("CLANVOTED"));
-        setVar(SYSTEM_CLANVOTEO,getStr("CLANVOTEO"));
-        setVar(SYSTEM_CLANVOTER,getStr("CLANVOTER"));
         setVar(SYSTEM_AUTOPURGE,getStr("AUTOPURGE"));
         setIntVar(SYSTEMI_ACCOUNTPURGEDAYS,getStr("ACCOUNTPURGE"),14);
         setVar(SYSTEM_IDLETIMERS,getStr("IDLETIMERS"));

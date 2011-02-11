@@ -8,6 +8,7 @@ import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.Clan.Function;
 import com.planet_ink.coffee_mud.Common.interfaces.Clan.MemberRecord;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
@@ -16,7 +17,6 @@ import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
-import java.util.List;
 
 /*
    Copyright 2000-2011 Bo Zimmerman
@@ -69,7 +69,7 @@ public class ClanAssign extends StdCommand
 					mob.tell("There is no longer a clan called "+mob.getClanID()+".");
 					return false;
 				}
-				if(skipChecks||CMLib.clans().goForward(mob,C,commands,Clan.ClanFunction.ASSIGN,false))
+				if(skipChecks||CMLib.clans().goForward(mob,C,commands,Clan.Function.ASSIGN,false))
 				{
 					List<MemberRecord> members=C.getMemberList();
 					if(members.size()<1)
@@ -104,7 +104,7 @@ public class ClanAssign extends StdCommand
 							mob.tell(M.name()+" may not be assigned to "+C.getRoleName(newPos,true,false)+".");
 							return false;
 						}
-						if(skipChecks||CMLib.clans().goForward(mob,C,commands,Clan.ClanFunction.ASSIGN,true))
+						if(skipChecks||CMLib.clans().goForward(mob,C,commands,Clan.Function.ASSIGN,true))
 						{
 						    int oldPos=M.getClanRole();
 							int maxInNewPos=C.getMostInRole(newPos);
@@ -112,13 +112,14 @@ public class ClanAssign extends StdCommand
 							for(MemberRecord member : members)
 								if(member.role==newPos)
 									currentMembersInNewPosV.addElement(member.name);
-							if(oldPos==C.getTopRank(null))
+							List<Integer> topRoleIDs=C.getTopRankedRoles(Function.ASSIGN);
+							if(topRoleIDs.contains(Integer.valueOf(oldPos)))
 							{ // If you WERE already the highest order.. you must be being demoted.
 								// so we check to see if there will be any other high officers left
 							    int numMembers=0;
 								for(MemberRecord member : members)
 								    if(!M.Name().equalsIgnoreCase(member.name))
-										if(member.role==oldPos)
+										if(topRoleIDs.contains(member.role))
 											numMembers++;
 								if(numMembers==0)
 								{

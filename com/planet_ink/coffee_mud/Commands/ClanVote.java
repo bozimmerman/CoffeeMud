@@ -8,7 +8,7 @@ import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
-import com.planet_ink.coffee_mud.Common.interfaces.Clan.ClanFunction;
+import com.planet_ink.coffee_mud.Common.interfaces.Clan.Function;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
@@ -58,10 +58,10 @@ public class ClanVote extends StdCommand
 			for(Enumeration e=C.votes();e.hasMoreElements();)
 			{
 				Clan.ClanVote CV=(Clan.ClanVote)e.nextElement();
-				if(((CV.function==Clan.ClanFunction.ASSIGN.ordinal())
-					&&(C.getAuthority(mob.getClanRole(),Clan.ClanFunction.VOTEASSIGN)!=Clan.ClanPositionPower.CAN_NOT_DO))
-				||((CV.function!=Clan.ClanFunction.ASSIGN.ordinal())
-					&&(C.getAuthority(mob.getClanRole(),Clan.ClanFunction.VOTEOTHER)!=Clan.ClanPositionPower.CAN_NOT_DO)))
+				if(((CV.function==Clan.Function.ASSIGN.ordinal())
+					&&(C.getAuthority(mob.getClanRole(),Clan.Function.VOTEASSIGN)!=Clan.Authority.CAN_NOT_DO))
+				||((CV.function!=Clan.Function.ASSIGN.ordinal())
+					&&(C.getAuthority(mob.getClanRole(),Clan.Function.VOTEOTHER)!=Clan.Authority.CAN_NOT_DO)))
 						votesForYou.addElement(CV);
 			}
 			if(commands.size()<2)
@@ -179,7 +179,7 @@ public class ClanVote extends StdCommand
 								break;
 							}
 						}
-						int numVotes=C.getNumVoters(ClanFunction.values()[CV.function]);
+						int numVotes=C.getNumVoters(Function.values()[CV.function]);
 						if(numVotes<=(yeas+nays))
 						{
 							updateVote=true;
@@ -191,7 +191,7 @@ public class ClanVote extends StdCommand
 								MOB mob2=CMClass.getMOB("StdMOB");
 								mob2.setName(C.clanID());
 								mob2.setClanID(C.clanID());
-								mob2.setClanRole(C.getTopRank(null));
+								mob2.setClanRole(C.getTopRankedRoles(Function.ASSIGN).get(0).intValue());
 								mob2.basePhyStats().setLevel(1000);
 								if(mob2.location()==null)
 								{
