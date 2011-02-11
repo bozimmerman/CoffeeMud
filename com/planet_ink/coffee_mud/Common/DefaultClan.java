@@ -1278,6 +1278,19 @@ public class DefaultClan implements Clan
         return true;
     }
 
+	public boolean doesOutRank(int highRoleID, int lowRoleID)
+	{
+		Government govt=govt();
+		if((highRoleID == lowRoleID)
+		||(highRoleID < 0)
+		||(highRoleID >= govt.positions.length))
+			return false;
+		if((lowRoleID<0)
+		||(lowRoleID >= govt.positions.length))
+			return true;
+		return govt.positions[highRoleID].rank < govt.positions[lowRoleID].rank;
+	}
+	
     public void clanAnnounce(String msg)
     {
     	List<String> channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.CLANINFO);

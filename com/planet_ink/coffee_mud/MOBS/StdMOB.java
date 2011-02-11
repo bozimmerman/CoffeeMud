@@ -2926,7 +2926,7 @@ public class StdMOB implements MOB
 			if(C!=null)
 			{
 				if((C.getAuthority(mob.getClanRole(),Clan.Function.CANORDERUNDERLINGS)!=Clan.Authority.CAN_NOT_DO)
-				&&(mob.getClanRole()>getClanRole()))
+				&&(C.doesOutRank(mob.getClanRole(), getClanRole())))
 					return true;
 				else
 				if((isMonster())

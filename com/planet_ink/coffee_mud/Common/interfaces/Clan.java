@@ -161,6 +161,15 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
 	 * @return the story of this clan
 	 */
 	public String getPremise();
+	
+	/**
+	 * Returns whether the high role id outranks the low roldid
+	 * @param highRoleID first
+	 * @param lowRoleID second
+	 * @return true if highRoleiD outranks lowRoleID
+	 */
+	public boolean doesOutRank(int highRoleID, int lowRoleID);
+	
 	/**
 	 * Sets this Clan's basic story.
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Clan#getPremise()

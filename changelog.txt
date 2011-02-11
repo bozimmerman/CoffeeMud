@@ -2296,3 +2296,4 @@ Special/Reserved Quest called holidays can be added to/modified on an area-by-ar
 27.New command: POSE, with new filter INI entry for it: POSEFILTER
 28.Old accounts will now be purged when they run out of characters. See INI entry: ACCOUNTPURGE
 29.New Scriptable Commands: ISSPEAKING
+30.Clan types (governments) can now be defined by resources clangovernments.ini file
