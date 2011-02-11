@@ -825,7 +825,7 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
 		/** the zapper mask for internal requirements to this position */
 		public final CompiledZapperMask	internalMask;
 		/** a chart of whether this position can perform the indexed function in this government */
-		public final Authority[]functionChart;
+		public final Authority[] functionChart;
 		
 		/**
 		 * Initialize a new clan position

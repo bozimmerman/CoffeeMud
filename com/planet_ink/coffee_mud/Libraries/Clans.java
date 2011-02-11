@@ -524,7 +524,7 @@ public class Clans extends StdLibrary implements ClanManager
 	    	    			if(power == null)
 	    	    	    		Log.errOut("Clans","Illegal power found in xml: "+powerPiece.value);
 	    	    			else
-	    	    				baseFunctionChart[power.ordinal()] = Authority.CAN_DO;
+	    	    				functionChart[power.ordinal()] = Authority.CAN_DO;
 	    	    		}
 	    	    	}
 	    			Position pos=new Position(ID,roleID,rank,name,pluralName,max,innerMaskStr,functionChart);
@@ -534,14 +534,16 @@ public class Clans extends StdLibrary implements ClanManager
     		Position[] posArray = new Position[positions.size()];
     		for(Position pos : positions)
     			if((pos.roleID>=0)&&(pos.roleID<positions.size()))
-    				posArray[pos.roleID]=pos;
-    		
-    		for(int i=0;i<positions.size();i++)
-    			if(posArray[i]==null)
-    			{
-    	    		Log.errOut("Clans","Missing ROLEID "+i+" in positions list in "+typeName);
-    	    		continue;
-    			}
+    				if(posArray[pos.roleID]!=null)
+    				{
+        	    		Log.errOut("Clans","Bad ROLEID "+pos.roleID+" in positions list in "+typeName);
+        	    		posArray=new Position[0];
+        	    		break;
+    				}
+    				else
+	    			{
+	    				posArray[pos.roleID]=pos;
+	    			}
     		if(posArray.length==0)
 			{
 	    		Log.errOut("Clans","Missing positions in "+typeName);
@@ -594,8 +596,8 @@ public class Clans extends StdLibrary implements ClanManager
 			}
 			Government gvt=new Government(typeID,typeName,posArray, 
 						   autoRole.roleID,acceptRole.roleID,requiredMaskStr,autoPromote,isPublic,isFamilyOnly,
-						  overrideMinMembers, conquestEnabled,conquestItemLoyalty,conquestDeityBasis,shortDesc,
-						  maxVotingDays,minVotingPct);
+						   overrideMinMembers, conquestEnabled,conquestItemLoyalty,conquestDeityBasis,shortDesc,
+						   maxVotingDays,minVotingPct);
 			gvt.isDefault=isDefault;
 			governments.add(gvt);
     	}

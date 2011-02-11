@@ -974,37 +974,32 @@ public class DefaultClan implements Clan
                 if(overWrite || (highMembers.size()==0))
                 {
                 	List<MemberRecord> highestQualifiedMembers = new LinkedList<MemberRecord>();
-                	int highestLevel=-1;
                     for(MemberRecord member : members)
                 	{
             			if((member.role<0)||(member.role>=govt().positions.length))
             				continue;
-                		if(basePromoteBy==AutoPromoteFlag.RANK)
-                		{
-                			Position currentPos = govt().positions[member.role];
-                			if((highestLevel==-1)&&(currentPos.rank >= highestLevel))
-                				continue;
-                            MOB M=CMLib.players().getLoadPlayer(member.name);
-                            if(M==null) continue;
-                            for(Integer posI : highPositionList)
-                                if(canBeAssigned(M, posI.intValue()))
-                                {
-                                	highestLevel=currentPos.rank;
-                                	highestQualifiedMembers.add(member);
-                                }
-                		}
-                		else
-            			if(basePromoteBy==AutoPromoteFlag.LEVEL)
-            			{
-                            MOB M=CMLib.players().getLoadPlayer(member.name);
-                            if(M==null) continue;
-                            for(Integer posI : highPositionList)
-                                if(canBeAssigned(M, posI.intValue()))
-                                	highestQualifiedMembers.add(member);
-            			}
+	                    MOB M=CMLib.players().getLoadPlayer(member.name);
+	                    if(M==null) continue;
+	                    for(Integer posI : highPositionList)
+	                        if((((System.currentTimeMillis()-member.timestamp)<deathMilis)||(deathMilis==0))
+	                        &&(canBeAssigned(M, posI.intValue())))
+	                        	highestQualifiedMembers.add(member);
                 	}
+            		if(basePromoteBy==AutoPromoteFlag.RANK)
+            		{
+            			Position bestPos=null;
+                        for(MemberRecord member : highestQualifiedMembers)
+                    	{
+                			Position currentPos = govt().positions[member.role];
+                			if((bestPos==null)||(currentPos.rank < bestPos.rank))
+                				bestPos=currentPos;
+                    	}
+                        for(Iterator<MemberRecord> i=highestQualifiedMembers.iterator();i.hasNext();)
+                        	if(i.next().role != bestPos.roleID)
+                        		i.remove();
+            		}
                     
-                	highestLevel=-1;
+                	int highestLevel=-1;
                 	for(MemberRecord member : highestQualifiedMembers)
                 	{
                         MOB M=CMLib.players().getLoadPlayer(member.name);
