@@ -3570,8 +3570,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
     {
         if((showFlag>0)&&(showFlag!=showNumber)) return;
         String behave="NO";
-        Vector<MemberRecord> members=E.getMemberList();
-        Vector<MemberRecord> membersCopy=(Vector<MemberRecord>)members.clone();
+        List<MemberRecord> members=E.getMemberList();
+        List<MemberRecord> membersCopy=new XVector<MemberRecord>(members);
         while((mob.session()!=null)&&(!mob.session().killFlag())&&(behave.length()>0))
         {
             String memberStr="";
@@ -3586,12 +3586,12 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
             {
                 int chosenOne=-1;
                 for(int m=0;m<members.size();m++)
-                    if(behave.equalsIgnoreCase(members.elementAt(m).name))
+                    if(behave.equalsIgnoreCase(members.get(m).name))
                         chosenOne=m;
                 if(chosenOne>=0)
                 {
-                    mob.tell(members.elementAt(chosenOne).name+" removed.");
-                    members.removeElementAt(chosenOne);
+                    mob.tell(members.get(chosenOne).name+" removed.");
+                    members.remove(chosenOne);
                 }
                 else
                 {
@@ -3603,14 +3603,14 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
                             if(behave.equalsIgnoreCase(membersCopy.get(m).name))
                             {
                                 oldNum=m;
-                                members.addElement(membersCopy.get(m));
+                                members.add(membersCopy.get(m));
                                 break;
                             }
                         int index=oldNum;
                         if(index<0)
                         {
                             index=members.size();
-                            members.addElement(new MemberRecord(M.name(),E.getGovernment().acceptPos,M.playerStats().lastDateTime()));
+                            members.add(new MemberRecord(M.name(),E.getGovernment().acceptPos,M.playerStats().lastDateTime()));
                         }
 
                         int newRole=-1;
@@ -3629,7 +3629,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
                             mob.tell(M.Name()+" added.");
                         else
                             mob.tell(M.Name()+" re-added.");
-                        members.elementAt(index).role=newRole;
+                        members.get(index).role=newRole;
                     }
                     else
                     {
