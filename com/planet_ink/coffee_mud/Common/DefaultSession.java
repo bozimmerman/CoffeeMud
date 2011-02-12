@@ -1755,51 +1755,56 @@ public class DefaultSession extends Thread implements Session
         }
     }
 
-	private static String[] STAT_CODES=new String[]{"PREVCMD","ISAFK","AFKMESSAGE","ADDRESS","IDLETIME",
-													"LASTMSG","LASTNPCFIGHT","LASTPKFIGHT","TERMTYPE",
-													"TOTALMILLIS","TOTALTICKS","WRAP","LASTLOOPTIME"};
-	public int getSaveStatIndex() { return STAT_CODES.length;}
-	public String[] getStatCodes() { return STAT_CODES;}
-	public boolean isStat(String code) { return CMParms.contains(getStatCodes(),code.toUpperCase().trim());}
+	private static enum SESS_STAT_CODES {PREVCMD,ISAFK,AFKMESSAGE,ADDRESS,IDLETIME,
+										 LASTMSG,LASTNPCFIGHT,LASTPKFIGHT,TERMTYPE,
+										 TOTALMILLIS,TOTALTICKS,WRAP,LASTLOOPTIME};
+	public int getSaveStatIndex() { return SESS_STAT_CODES.values().length;}
+	public String[] getStatCodes() { return CMParms.toStringArray(SESS_STAT_CODES.values());}
+	public boolean isStat(String code) { return getStatIndex(code)!=null;}
+	private SESS_STAT_CODES getStatIndex(String code) { return (SESS_STAT_CODES)CMath.s_valueOf(SESS_STAT_CODES.values(),code); }
 	public String getStat(String code) 
 	{
-		if(code==null) return null;
-		switch(CMParms.indexOf(getStatCodes(),code.toUpperCase().trim()))
+		final SESS_STAT_CODES stat = getStatIndex(code);
+		if(stat==null){ return "";}
+		switch(stat)
 		{
-		case 0: return CMParms.combineWithQuotes(previousCMD(),0);
-		case 1: return ""+afkFlag();
-		case 2: return afkMessage();
-		case 3: return getAddress();
-		case 4: return CMLib.time().date2String(System.currentTimeMillis()-getIdleMillis());
-		case 5: return CMParms.combineWithQuotes(getLastMsgs(),0);
-		case 6: return CMLib.time().date2String(getLastNPCFight());
-		case 7: return CMLib.time().date2String(getLastPKFight());
-		case 8: return getTerminalType();
-		case 9: return CMLib.time().date2String(System.currentTimeMillis()-getTotalMillis());
-		case 10: return ""+getTotalTicks();
-		case 11: return ""+getWrap();
-		case 12: return CMLib.time().date2String(lastLoopTime());
+		case PREVCMD: return CMParms.combineWithQuotes(previousCMD(),0);
+		case ISAFK: return ""+afkFlag();
+		case AFKMESSAGE: return afkMessage();
+		case ADDRESS: return getAddress();
+		case IDLETIME: return CMLib.time().date2String(System.currentTimeMillis()-getIdleMillis());
+		case LASTMSG: return CMParms.combineWithQuotes(getLastMsgs(),0);
+		case LASTNPCFIGHT: return CMLib.time().date2String(getLastNPCFight());
+		case LASTPKFIGHT: return CMLib.time().date2String(getLastPKFight());
+		case TERMTYPE: return getTerminalType();
+		case TOTALMILLIS: return CMLib.time().date2String(System.currentTimeMillis()-getTotalMillis());
+		case TOTALTICKS: return ""+getTotalTicks();
+		case WRAP: return ""+getWrap();
+		case LASTLOOPTIME: return CMLib.time().date2String(lastLoopTime());
+		default: Log.errOut("Session","getStat:Unhandled:"+stat.toString()); break;
 		}
 		return null;
 	}
 	public void setStat(String code, String val) 
 	{
-		if(code==null) return;
-		switch(CMParms.indexOf(getStatCodes(),code.toUpperCase().trim()))
+		final SESS_STAT_CODES stat = getStatIndex(code);
+		if(stat==null){ return;}
+		switch(stat)
 		{
-		case 0: previousCmd=CMParms.parse(val); break;
-		case 1: afkFlag=CMath.s_bool(val); break;
-		case 2: afkMessage=val; break;
-		case 3: return;
-		case 4: lastKeystroke=CMLib.time().string2Millis(val); break;
-		case 5: prevMsgs=CMParms.parse(val); break;
-		case 6: lastNPCFight=CMLib.time().string2Millis(val); break;
-		case 7: lastPKFight=CMLib.time().string2Millis(val); break;
-		case 8: terminalType=val; break;
-		case 9: milliTotal = System.currentTimeMillis() - CMLib.time().string2Millis(val); break;
-		case 10: tickTotal= CMath.s_int(val); break;
-		case 11: if((mob!=null)&&(mob.playerStats()!=null)) mob.playerStats().setWrap(CMath.s_int(val)); break;
-		case 12: lastLoopTop=CMLib.time().string2Millis(val); break;
+		case PREVCMD: previousCmd=CMParms.parse(val); break;
+		case ISAFK: afkFlag=CMath.s_bool(val); break;
+		case AFKMESSAGE: afkMessage=val; break;
+		case ADDRESS: return;
+		case IDLETIME: lastKeystroke=CMLib.time().string2Millis(val); break;
+		case LASTMSG: prevMsgs=CMParms.parse(val); break;
+		case LASTNPCFIGHT: lastNPCFight=CMLib.time().string2Millis(val); break;
+		case LASTPKFIGHT: lastPKFight=CMLib.time().string2Millis(val); break;
+		case TERMTYPE: terminalType=val; break;
+		case TOTALMILLIS: milliTotal = System.currentTimeMillis() - CMLib.time().string2Millis(val); break;
+		case TOTALTICKS: tickTotal= CMath.s_int(val); break;
+		case WRAP: if((mob!=null)&&(mob.playerStats()!=null)) mob.playerStats().setWrap(CMath.s_int(val)); break;
+		case LASTLOOPTIME: lastLoopTop=CMLib.time().string2Millis(val); break;
+		default: Log.errOut("Session","setStat:Unhandled:"+stat.toString()); break;
 		}
 	}
 }

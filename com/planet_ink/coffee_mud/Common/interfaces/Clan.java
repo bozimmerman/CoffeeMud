@@ -60,7 +60,7 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
 	 * functions are defined in the Clan interface as FUNC_*
 	 * constants.
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Clan
-	 * @see com.planet_ink.coffee_mud.Common.interfaces.Clan.Authority
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.Authority
 	 * @param mob the mob whose priviledges to check.
 	 * @param function the ClanFunction function constant to use
 	 * @return the ClanPositionPower enum
@@ -75,34 +75,34 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
 
 	/**
 	 * If the clan type allows voting, this returns a
-	 * series of Clan.ClanVote objects
-	 * @see com.planet_ink.coffee_mud.Common.interfaces.Clan.ClanVote
+	 * series of ClanVote objects
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.ClanVote
 	 * @return the set of clan votes
 	 */
 	public Enumeration<ClanVote> votes();
 	/**
 	 * Orders the system to save any changes to existing
-	 * ongoing votes for this clan.
+	 * ongoing votes for this 
 	 */
 	public void updateVotes();
 	/**
 	 * Adds a new ClanVote object to the list of ongoing
-	 * votes for this clan.
-	 * @see com.planet_ink.coffee_mud.Common.interfaces.Clan.ClanVote
+	 * votes for this 
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.ClanVote
 	 * @param CV the clanvote object to add
 	 */
 	public void addVote(ClanVote CV);
 	/**
 	 * Removes a new ClanVote object from the list of ongoing
-	 * votes for this clan.
-	 * @see com.planet_ink.coffee_mud.Common.interfaces.Clan.ClanVote
+	 * votes for this 
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.ClanVote
 	 * @param CV the clanvote object to remove
 	 */
 	public void delVote(ClanVote CV);
 
 	/**
 	 * Returns the number of members allowed to vote on the
-	 * given function.  The function is one of the Clan.FUNC_*
+	 * given function.  The function is one of the FUNC_*
 	 * constants.
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Clan
 	 * @param function the FUNC_* constant
@@ -110,7 +110,7 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
 	 */
 	public int getNumVoters(Function function);
 	/**
-	 * Returns the number of members of this clan.
+	 * Returns the number of members of this 
 	 * @return the membership count.
 	 */
 	public int getSize();
@@ -119,18 +119,18 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
 	 * Returns the name of the clan, which is almost always the
 	 * same as the ID, which is why clans can't change their names.
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Clan#setName(String)
-	 * @return the name of the clan.
+	 * @return the name of the 
 	 */
 	public String getName();
 	/**
 	 * Returns the unique identifying ID of the clan for reference
 	 * elsewhere.
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Clan#getName()
-	 * @return the unique identifier of the clan.
+	 * @return the unique identifier of the 
 	 */
 	public String clanID();
 	/**
-	 * Sets a new name for this clan.
+	 * Sets a new name for this 
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Clan#getName()
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Clan#clanID()
 	 * @param newName the new name of this clan
@@ -200,7 +200,7 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
 
 	/**
 	 * Returns a mask used to identify whether a player is allowed
-	 * to join a particular clan.
+	 * to join a particular 
 	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.MaskingLibrary
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Clan#setAcceptanceSettings(String)
 	 * @return the mask used to identify prospects
@@ -208,7 +208,7 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
 	public String getAcceptanceSettings();
 	/**
 	 * Sets a mask used to identify whether a player is allowed
-	 * to join a particular clan.
+	 * to join a particular 
 	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.MaskingLibrary
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Clan#getAcceptanceSettings()
 	 * @param newSettings the mask used to identify prospects
@@ -230,14 +230,14 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
 	 */
 	public void setPolitics(String politics);
 	/**
-	 * Returns whether membership is automatically approved to this clan.
+	 * Returns whether membership is automatically approved to this 
 	 * And if so, what the default position for members are.
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Clan#setAutoPosition(int)
 	 * @return xml document describing the politics of this clan
 	 */
 	public int getAutoPosition();
 	/**
-	 * Sets whether membership is automatically approved to this clan.
+	 * Sets whether membership is automatically approved to this 
 	 * And if so, what the default position for members are.
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Clan#getAutoPosition()
 	 * @param pos the positition to give to applicants
@@ -248,7 +248,7 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
 	 * status of this clan for acceptable, or whether its one its way out.
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Clan
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Clan#setStatus(int)
-	 * @return a Clan.CLANSTAT_* constant
+	 * @return a CLANSTAT_* constant
 	 */
 	public int getStatus();
 	/**
@@ -256,7 +256,7 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
 	 * status of this clan for acceptable, or whether its one its way out.
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Clan
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Clan#getStatus()
-	 * @param newStatus a Clan.CLANSTAT_* constant
+	 * @param newStatus a CLANSTAT_* constant
 	 */
 	public void setStatus(int newStatus);
 
@@ -287,16 +287,16 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
 	public void setMorgue(String newRecall);
 
 	/**
-	 * Returns a bitmap representing the trophies won by this clan.
-	 * The bitmap is made up of Clan.TROPHY_* constants.
+	 * Returns a bitmap representing the trophies won by this 
+	 * The bitmap is made up of TROPHY_* constants.
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Clan
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Clan#setTrophies(int)
 	 * @return a bitmap of the trophies
 	 */
 	public int getTrophies();
 	/**
-	 * Sets a bitmap representing the trophies won by this clan.
-	 * The bitmap is made up of Clan.TROPHY_* constants.
+	 * Sets a bitmap representing the trophies won by this 
+	 * The bitmap is made up of TROPHY_* constants.
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Clan
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Clan#getTrophies()
 	 * @param trophyFlag a bitmap of the trophies
@@ -317,17 +317,17 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
 	public void setDonation(String newDonation);
 
 	/**
-	 * Gets the amount of experience earned by this clan.
+	 * Gets the amount of experience earned by this 
 	 * @return the experience earned
 	 */
 	public long getExp();
 	/**
-	 * Sets the amount of experience earned by this clan.
+	 * Sets the amount of experience earned by this 
 	 * @param exp the experience earned
 	 */
 	public void setExp(long exp);
 	/**
-	 * Adjusts the amount of experience earned by this clan.
+	 * Adjusts the amount of experience earned by this 
 	 * @param howMuch the experience adjustment, + or -
 	 */
 	public void adjExp(int howMuch);
@@ -339,7 +339,7 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
 	 */
 	public int applyExpMods(int exp);
 	/**
-	 * Called when a member of this clan kills a member of another clan.
+	 * Called when a member of this clan kills a member of another 
 	 * Will update the clan in the database.
 	 */
     public void recordClanKill();
@@ -367,7 +367,7 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
 	 */
 	public long calculateMapPoints();
 	/**
-	 * Returns all the areas on the map controlled by this clan.
+	 * Returns all the areas on the map controlled by this 
 	 * @see com.planet_ink.coffee_mud.Behaviors.Conquerable
 	 * @see com.planet_ink.coffee_mud.Areas.interfaces.Area
 	 * @return a vector of area objects
@@ -375,13 +375,13 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
 	public List<Area> getControlledAreas();
 
 	/**
-	 * Sets the tax rate for this clan.
+	 * Sets the tax rate for this 
 	 * @see Clan#getTaxes()
 	 * @param rate the tax rate 0-100.0
 	 */
 	public void setTaxes(double rate);
 	/**
-	 * Gets the tax rate for this clan.
+	 * Gets the tax rate for this 
 	 * @see Clan#setTaxes(double)
 	 * @return rate the tax rate 0-100.0
 	 */
@@ -389,7 +389,7 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
 	
 	/**
 	 * Returns the maximum number of players who can hold the given 
-	 * role in this clan.  For assignment purposes.
+	 * role in this   For assignment purposes.
 	 * @param roleID the role to get a max for
 	 * @return the max
 	 */
@@ -442,39 +442,39 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
 	 * Returns the set of members, where
 	 * each row represents a MemberRecord
 	 * @see Clan#getMemberList(int)
-	 * @see Clan.MemberRecord
+	 * @see MemberRecord
 	 * @return the membership
 	 */
 	public List<MemberRecord> getMemberList();
 	/**
 	 * Returns the set of members, where
 	 * each row represents a MemberRecord.
-	 * Will filter by the given Clan.POS_* constant.
+	 * Will filter by the given POS_* constant.
 	 * @see Clan
-	 * @see Clan.MemberRecord
+	 * @see MemberRecord
 	 * @param PosFilter
 	 * @return the membership
 	 */
 	public List<MemberRecord> getMemberList(int PosFilter);
 
 	/**
-	 * Returns the highest ranking member of this clan.
+	 * Returns the highest ranking member of this 
 	 * @return the mob object for the highest ranking member.
 	 */
 	public MOB getResponsibleMember();
 
 	/**
-	 * Returns a Clan.REL_* constant denoting the relationship
+	 * Returns a REL_* constant denoting the relationship
 	 * between this clan and the clan of the given name.
 	 * @see Clan#setClanRelations(String, int, long)
 	 * @see Clan#getLastRelationChange(String)
-	 * @param id the name of another clan.
-	 * @return the Clan.REL_* constant
+	 * @param id the name of another 
+	 * @return the REL_* constant
 	 */
 	public int getClanRelations(String id);
 	/**
 	 * Returns the time/date stamp when this clan last changed
-	 * its relations with the given clan.
+	 * its relations with the given 
 	 * @see Clan#setClanRelations(String, int, long)
 	 * @see Clan#getClanRelations(String)
 	 * @param id the other clan
@@ -485,14 +485,14 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
 	 * Sets a new relationship between this clan and the clan
 	 * with the given id.
 	 * @param id another clan
-	 * @param rel the Clan.REL_* constant for the new relationship
+	 * @param rel the REL_* constant for the new relationship
 	 * @param time a current date/time stamp for this change
 	 */
 	public void setClanRelations(String id, int rel, long time);
 	
 	/**
 	 * Returns the id representing the government type
-	 * of this clan.
+	 * of this 
 	 * @see Clan
 	 * @see Clan#setGovernmentID(int)
 	 * @see Clan#getGovernment()
@@ -502,8 +502,8 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
 	
 	/**
 	 * Returns the object representing the government
-	 * of this clan.
-	 * @see Clan.Government
+	 * of this 
+	 * @see Government
 	 * @see Clan#getGovernmentID()
 	 * @see Clan#setGovernmentID(int)
 	 * @return the if constant
@@ -526,7 +526,7 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
 	
 	/**
 	 * Returns the id constant representing the government type
-	 * of this clan.
+	 * of this 
 	 * @see Clan
 	 * @see Clan#getGovernmentID()
 	 * @see Clan#getGovernment()
@@ -538,8 +538,8 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
 	 * Returns the roleid constant representing the highest rank
 	 * in this clan type that can perform the given function
 	 * or null.
-	 * @see Clan.Position
-	 * @see Clan.Function
+	 * @see Position
+	 * @see Function
      * @param func the function (or null) they must be able to do
      * @param mob the mob to check for a top rank
 	 * @return the roleid constant
@@ -549,8 +549,8 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
 	/**
 	 * Returns the roleid(s) constant representing the highest rank
 	 * roleid(s) in this clan type that can perform the given function.
-	 * @see Clan.Position
-	 * @see Clan.Function
+	 * @see Position
+	 * @see Function
 	 * @parm func the function to perform, or null just to return privileged rank
 	 * @return the top roleid
 	 */
@@ -602,7 +602,7 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
     	 */
         public String voteStarter="";
         /**
-         * One of the Clan.VSTAT_* constants representing
+         * One of the VSTAT_* constants representing
          * the status of this vote.
          * @see Clan
          */
@@ -616,7 +616,7 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
          */
         public String matter="";
         /**
-         * The Clan.FUNC_* constant representing this vote.
+         * The FUNC_* constant representing this vote.
          * @see Clan
          */
         public int function=0;
@@ -643,13 +643,13 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
     	public String toString() { return name;}
     }
     
-    /** Vote just started constant for the Clan.ClanVote.voteStatus member. @see Clan.ClanVote#voteStatus */
+    /** Vote just started constant for the ClanVote.voteStatus member. @see ClanVote#voteStatus */
 	public final static int VSTAT_STARTED=0;
-    /** Vote has failed constant for the Clan.ClanVote.voteStatus member. @see Clan.ClanVote#voteStatus */
+    /** Vote has failed constant for the ClanVote.voteStatus member. @see ClanVote#voteStatus */
 	public final static int VSTAT_FAILED=1;
-    /** Vote has passed constant for the Clan.ClanVote.voteStatus member. @see Clan.ClanVote#voteStatus */
+    /** Vote has passed constant for the ClanVote.voteStatus member. @see ClanVote#voteStatus */
 	public final static int VSTAT_PASSED=2;
-    /** Descriptors for the values of Clan.ClanVote.voteStatus member. @see Clan.ClanVote#voteStatus */
+    /** Descriptors for the values of ClanVote.voteStatus member. @see ClanVote#voteStatus */
 	public final static String[] VSTAT_DESCS={
 		"In Progress",
 		"Failed",
@@ -678,32 +678,32 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
         "TOPMEMBER" // 16
     };
 
-	/** constant for the Clan.getStatus() method, denoting normal status. @see Clan#getStatus() .*/
+	/** constant for the getStatus() method, denoting normal status. @see Clan#getStatus() .*/
 	public static final int CLANSTATUS_ACTIVE=0;
-	/** constant for the Clan.getStatus() method, denoting unapproved status. @see Clan#getStatus() .*/
+	/** constant for the getStatus() method, denoting unapproved status. @see Clan#getStatus() .*/
 	public static final int CLANSTATUS_PENDING=1;
-	/** constant for the Clan.getStatus() method, denoting fading status. @see Clan#getStatus() .*/
+	/** constant for the getStatus() method, denoting fading status. @see Clan#getStatus() .*/
 	public static final int CLANSTATUS_FADING=2;
-	/** constant descriptor strings for the Clan.CLANSTATUS_* constants, ordered by their value. @see Clan .*/
+	/** constant descriptor strings for the CLANSTATUS_* constants, ordered by their value. @see Clan .*/
 	public static final String[] CLANSTATUS_DESC={
 		"ACTIVE",
 		"PENDING",
 		"FADING"
 	};
 	
-	/** constant for Clan.getClanRelations method, denoting neutral status towards. @see Clan#getClanRelations(String) */
+	/** constant for getClanRelations method, denoting neutral status towards. @see Clan#getClanRelations(String) */
 	public static final int REL_NEUTRAL=0;
-	/** constant for Clan.getClanRelations method, denoting at war with. @see Clan#getClanRelations(String) */
+	/** constant for getClanRelations method, denoting at war with. @see Clan#getClanRelations(String) */
 	public static final int REL_WAR=1;
-	/** constant for Clan.getClanRelations method, denoting hostile to. @see Clan#getClanRelations(String) */
+	/** constant for getClanRelations method, denoting hostile to. @see Clan#getClanRelations(String) */
 	public static final int REL_HOSTILE=2;
-	/** constant for Clan.getClanRelations method, denoting friendly to. @see Clan#getClanRelations(String) */
+	/** constant for getClanRelations method, denoting friendly to. @see Clan#getClanRelations(String) */
 	public static final int REL_FRIENDLY=3;
-	/** constant for Clan.getClanRelations method, denoting ally with. @see Clan#getClanRelations(String) */
+	/** constant for getClanRelations method, denoting ally with. @see Clan#getClanRelations(String) */
 	public static final int REL_ALLY=4;
     /** constant used to determine something about clan relations */
     public static final int[] REL_NEUTRALITYGAUGE={/*REL_NEUTRAL*/0,/*REL_WAR*/4, /*REL_HOSTILE*/1,/*REL_FRIENDLY*/1,/*REL_ALLY*/4};
-    /** table used to determine how two clans are related when their declared relations differ.  both axis are Clan.REL_* constants. @see Clan */
+    /** table used to determine how two clans are related when their declared relations differ.  both axis are REL_* constants. @see Clan */
 	public static final int[][] RELATIONSHIP_VECTOR={
 	{REL_NEUTRAL,	REL_WAR,		REL_HOSTILE,	REL_FRIENDLY,	REL_FRIENDLY},
 	{REL_WAR,		REL_WAR,		REL_WAR,		REL_WAR,		REL_WAR},
@@ -711,11 +711,11 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
 	{REL_FRIENDLY,	REL_WAR,		REL_HOSTILE,	REL_FRIENDLY,	REL_FRIENDLY},
 	{REL_FRIENDLY,	REL_WAR,		REL_HOSTILE,	REL_FRIENDLY,	REL_ALLY},
 	};
-	/** descriptor strings for the Clan.REL_* constants, ordered by their value.  @see Clan */
+	/** descriptor strings for the REL_* constants, ordered by their value.  @see Clan */
 	public static final String[] REL_DESCS={
 		"NEUTRAL","WAR","HOSTILE","FRIENDLY","ALLY"
 	};
-	/** long descriptor strings for the Clan.REL_* constants, ordered by their value.  @see Clan */
+	/** long descriptor strings for the REL_* constants, ordered by their value.  @see Clan */
 	public static final String[] REL_STATES={
 		"NEUTRALITY TOWARDS",
 		"WAR WITH",
@@ -724,17 +724,17 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
 		"AN ALLIANCE WITH"
 	};
 
-	/** constant for the Clan.getTrophies @see Clan#getTrophies() method. Denotes control points. */
+	/** constant for the getTrophies @see Clan#getTrophies() method. Denotes control points. */
 	public static final int TROPHY_CONTROL=1;
-	/** constant for the Clan.getTrophies @see Clan#getTrophies() method. Denotes exp. */
+	/** constant for the getTrophies @see Clan#getTrophies() method. Denotes exp. */
 	public static final int TROPHY_EXP=2;
-	/** constant for the Clan.getTrophies @see Clan#getTrophies() method. Denotes most areas. */
+	/** constant for the getTrophies @see Clan#getTrophies() method. Denotes most areas. */
 	public static final int TROPHY_AREA=4;
-	/** constant for the Clan.getTrophies @see Clan#getTrophies() method. Denotes most pkills. */
+	/** constant for the getTrophies @see Clan#getTrophies() method. Denotes most pkills. */
     public static final int TROPHY_PK=8;
-	/** descriptor strings for the Clan.TROPHY_* constants, ordered by their value.  @see Clan */
+	/** descriptor strings for the TROPHY_* constants, ordered by their value.  @see Clan */
 	public static final String TROPHY_DESCS_SHORT[]={"","CP","EXP","","AREA","","","","PK"};
-	/** long descriptor strings for the Clan.TROPHY_* constants, ordered by their value.  @see Clan */
+	/** long descriptor strings for the TROPHY_* constants, ordered by their value.  @see Clan */
 	public static final String TROPHY_DESCS[]={"","Most control points","Most clan experience","","Most controlled areas","","","","Most rival player-kills"};
 
 	/**
@@ -769,59 +769,59 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
 	 */
 	public static enum Function
 	{
-		/** constant for the clan function of accepting new members. @see Clan#getAuthority(int,Clan.Function) */
+		/** constant for the clan function of accepting new members. @see Clan#getAuthority(int,Function) */
 		ACCEPT,
-		/** constant for the clan function of promoting or demoting members. @see Clan#getAuthority(int,Clan.Function) */
+		/** constant for the clan function of promoting or demoting members. @see Clan#getAuthority(int,Function) */
 		ASSIGN,
-		/** constant for the clan function of exihiling members. @see Clan#getAuthority(int,Clan.Function) */
+		/** constant for the clan function of exihiling members. @see Clan#getAuthority(int,Function) */
 		EXILE,
-		/** constant for the clan function of setting a new clan home. @see Clan#getAuthority(int,Clan.Function) */
+		/** constant for the clan function of setting a new clan home. @see Clan#getAuthority(int,Function) */
 		HOMESET,
-		/** constant for the clan function of setting a new donation room. @see Clan#getAuthority(int,Clan.Function) */
+		/** constant for the clan function of setting a new donation room. @see Clan#getAuthority(int,Function) */
 		DONATESET,
-		/** constant for the clan function of rejecting an applicant. @see Clan#getAuthority(int,Clan.Function) */
+		/** constant for the clan function of rejecting an applicant. @see Clan#getAuthority(int,Function) */
 		REJECT,
-		/** constant for the clan function of writing a new clan premise. @see Clan#getAuthority(int,Clan.Function) */
+		/** constant for the clan function of writing a new clan premise. @see Clan#getAuthority(int,Function) */
 		PREMISE,
-		/** constant for the clan function of acting as owner of clan property. @see Clan#getAuthority(int,Clan.Function) */
+		/** constant for the clan function of acting as owner of clan property. @see Clan#getAuthority(int,Function) */
 		PROPERTYOWNER,
-		/** constant for the clan function of withdrawing from clan bank accounts. @see Clan#getAuthority(int,Clan.Function) */
+		/** constant for the clan function of withdrawing from clan bank accounts. @see Clan#getAuthority(int,Function) */
 		WITHDRAW,
-		/** constant for the clan function of ordering lower ranked clan members. @see Clan#getAuthority(int,Clan.Function) */
+		/** constant for the clan function of ordering lower ranked clan members. @see Clan#getAuthority(int,Function) */
 		CANORDERUNDERLINGS,
-		/** constant for the clan function of ordering mobs in clan conquered areas. @see Clan#getAuthority(int,Clan.Function) */
+		/** constant for the clan function of ordering mobs in clan conquered areas. @see Clan#getAuthority(int,Function) */
 		CANORDERCONQUERED,
-		/** constant for the clan function of voting on promotions. @see Clan#getAuthority(int,Clan.Function) */
+		/** constant for the clan function of voting on promotions. @see Clan#getAuthority(int,Function) */
 		VOTEASSIGN,
-		/** constant for the clan function of voting on non-promotion questions . @see Clan#getAuthority(int,Clan.Function) */
+		/** constant for the clan function of voting on non-promotion questions . @see Clan#getAuthority(int,Function) */
 		VOTEOTHER,
-		/** constant for the clan function of depositing and listing clan bank accounts. @see Clan#getAuthority(int,Clan.Function) */
+		/** constant for the clan function of depositing and listing clan bank accounts. @see Clan#getAuthority(int,Function) */
 		DEPOSITLIST,
-		/** constant for the clan function of declaring war and peace . @see Clan#getAuthority(int,Clan.Function) */
+		/** constant for the clan function of declaring war and peace . @see Clan#getAuthority(int,Function) */
 		DECLARE,
-		/** constant for the clan function of changing the clans tax rate. @see Clan#getAuthority(int,Clan.Function) */
+		/** constant for the clan function of changing the clans tax rate. @see Clan#getAuthority(int,Function) */
 		TAX,
-		/** constant for the clan function of clanenchanting items. @see Clan#getAuthority(int,Clan.Function) */
+		/** constant for the clan function of clanenchanting items. @see Clan#getAuthority(int,Function) */
 		ENCHANT,
-		/** constant for the clan function of channeling with clan. @see Clan#getAuthority(int,Clan.Function) */
+		/** constant for the clan function of channeling with  @see Clan#getAuthority(int,Function) */
 		CHANNEL,
-		/** constant for the clan function of using the morgue. @see Clan#getAuthority(int,Clan.Function) */
+		/** constant for the clan function of using the morgue. @see Clan#getAuthority(int,Function) */
 		MORGUE,
-		/** constant for the clan function of seeing private members. @see Clan#getAuthority(int,Clan.Function) */
+		/** constant for the clan function of seeing private members. @see Clan#getAuthority(int,Function) */
 		LISTMEMBERS,
-		/** constant for the clan function of enjoying clan homes. @see Clan#getAuthority(int,Clan.Function) */
+		/** constant for the clan function of enjoying clan homes. @see Clan#getAuthority(int,Function) */
 		HOMEPRIVILEGES,
-		/** constant for the clan function of enjoying clan homes. @see Clan#getAuthority(int,Clan.Function) */
+		/** constant for the clan function of enjoying clan homes. @see Clan#getAuthority(int,Function) */
 		CLANSPELLS,
-		/** constant for the clan function of enjoying clan homes. @see Clan#getAuthority(int,Clan.Function) */
+		/** constant for the clan function of enjoying clan homes. @see Clan#getAuthority(int,Function) */
 		CLANTITLES,
 	}
 	
 	/**
-	 * A class for the characteristics of a position within a clan.
+	 * A class for the characteristics of a position within a 
 	 * @author bzimmerman
 	 */
-	public static class	Position
+	public static class	Position implements Modifiable
 	{
 		/** the named ID of the position */
 		public String 	ID;
@@ -862,6 +862,69 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
 			this.isPublic=isPublic;
 			internalMask=CMLib.masking().maskCompile(innerMask);
 		}
+		
+		private static enum POS_STAT_CODES {
+			ID,RANK,NAME,PLURALNAME,MAX,INNERMASK,ISPUBLIC,FUNCTIONS
+		};
+		public String[] getStatCodes() { return CMParms.toStringArray(POS_STAT_CODES.values());}
+		public int getSaveStatIndex() { return POS_STAT_CODES.values().length;}
+		private POS_STAT_CODES getStatIndex(String code) { return (POS_STAT_CODES)CMath.s_valueOf(POS_STAT_CODES.values(),code); }
+		public String getStat(String code) 
+		{
+			final POS_STAT_CODES stat = getStatIndex(code);
+			if(stat==null){ return "";}
+			switch(stat)
+			{
+			case NAME: return name;
+			case ID: return ID;
+			case RANK: return Integer.toString(rank);
+			case MAX: return Integer.toString(max);
+			case PLURALNAME: return pluralName;
+			case INNERMASK: return innerMaskStr;
+			case ISPUBLIC: return Boolean.toString(isPublic);
+			case FUNCTIONS:{
+				final StringBuilder str=new StringBuilder("");
+				for(int a=0;a<Function.values().length;a++)
+					if(functionChart[a]==Authority.CAN_DO)
+					{
+						if(str.length()>0) str.append(",");
+						str.append(Function.values()[a]);
+					}
+				return str.toString();
+			}
+			default: Log.errOut("Clan","getStat:Unhandled:"+stat.toString()); break;
+			}
+			return "";
+		}
+		public boolean isStat(String code) { return getStatIndex(code)!=null;}
+		public void setStat(String code, String val) 
+		{
+			final POS_STAT_CODES stat = getStatIndex(code);
+			if(stat==null){ return;}
+			switch(stat)
+			{
+			case NAME: name=val; break;
+			case ISPUBLIC: isPublic=CMath.s_bool(val); break;
+			case ID: ID=val; break;
+			case RANK: rank=CMath.s_int(val); break;
+			case MAX: max=CMath.s_int(val); break;
+			case PLURALNAME: pluralName=val; break;
+			case INNERMASK: innerMaskStr=val; break;
+			case FUNCTIONS:{
+				final Vector<String> funcs=CMParms.parseCommas(val.toUpperCase().trim(), true);
+				for(int a=0;a<Function.values().length;a++)
+					if(functionChart[a]!=Authority.MUST_VOTE_ON)
+						functionChart[a]=Authority.CAN_NOT_DO;
+				for(final String funcName : funcs)
+				{
+					Authority auth=(Authority)CMath.s_valueOf(Function.values(), funcName);
+					if(auth!=null) functionChart[auth.ordinal()] = Authority.CAN_DO;
+				}
+				break;
+			}
+			default: Log.errOut("Clan","setStat:Unhandled:"+stat.toString()); break;
+			}
+		}
 	}
 
 	/**
@@ -869,7 +932,7 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
 	 * and its membership.
 	 * @author bzimmerman
 	 */
-	public static class Government
+	public static class Government implements Modifiable
 	{
 		/** If this is a default government type, this is its ID, otherwise -1 */
 		public int		ID;
@@ -941,6 +1004,142 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
 			this.conquestDeityBasis=conquestDeityBasis; this.shortDesc=shortDesc;
 			this.maxVoteDays=maxVoteDays;this.voteQuorumPct=voteQuorumPct;
 			this.requiredMask=CMLib.masking().maskCompile(requiredMaskStr);
+		}
+
+		public Position getPosition(String pos)
+		{
+			if(pos==null) return null;
+			pos=pos.trim();
+			for(Position P : positions)
+				if(P.ID.equalsIgnoreCase(pos))
+					return P;
+			return null;
+		}
+		public void delPosition(Position pos)
+		{
+			List<Position> newPos=new LinkedList<Position>();
+			for(Position P : positions)
+				if(P!=pos) newPos.add(P);
+			positions=newPos.toArray(new Position[0]);
+		}
+		public Position addPosition()
+		{
+    		Authority[] pows=new Authority[Function.values().length];
+    		for(int i=0;i<pows.length;i++) pows[i]=Authority.CAN_NOT_DO;
+    		Set<Integer> roles=new HashSet<Integer>();
+    		int highestRank=0;
+    		for(Position pos : positions)
+    		{
+    			roles.add(Integer.valueOf(pos.roleID));
+    			if(highestRank<pos.rank)
+    				highestRank=pos.rank;
+    		}
+    		if(positions.length>0)
+    			for(int i=0;i<pows.length;i++)
+    				pows[i]=positions[0].functionChart[i];
+			positions=Arrays.copyOf(positions, positions.length+1);
+			Position P=new Position(positions.length+""+Math.random(),0,highestRank,"Unnamed","Unnameds",Integer.MAX_VALUE,"",pows,true);
+			positions[positions.length-1]=P;
+			for(int i=0;i<positions.length;i++)
+				if(!roles.contains(Integer.valueOf(i)))
+				{
+					P.roleID=i;
+					break;
+				}
+			return P;
+		}
+		private static enum GOVT_STAT_CODES {
+			NAME,AUTOROLE,ACCEPTPOS,SHORTDESC,REQUIREDMASK,ISPUBLIC,ISFAMILYONLY,OVERRIDEMINMEMBERS,
+			CONQUESTENABLED,CONQUESTITEMLOYALTY,CONQUESTDEITYBASIS,MAXVOTEDAYS,VOTEQUORUMPCT,
+			AUTOPROMOTEBY,VOTEFUNCS
+		};
+		public String[] getStatCodes() { return CMParms.toStringArray(GOVT_STAT_CODES.values());}
+		public int getSaveStatIndex() { return GOVT_STAT_CODES.values().length;}
+		private GOVT_STAT_CODES getStatIndex(String code) { return (GOVT_STAT_CODES)CMath.s_valueOf(GOVT_STAT_CODES.values(),code); }
+		public String getStat(String code) 
+		{
+			final GOVT_STAT_CODES stat = getStatIndex(code);
+			if(stat==null){ return "";}
+			switch(stat)
+			{
+			case NAME: return name;
+			case AUTOROLE: return (autoRole < 0 || autoRole > positions.length) ? "" : positions[autoRole].ID;
+			case ACCEPTPOS: return (acceptPos < 0 || acceptPos > positions.length) ? "" : positions[acceptPos].ID;
+			case SHORTDESC: return shortDesc;
+			case REQUIREDMASK: return requiredMaskStr;
+			case ISPUBLIC: return Boolean.toString(isPublic);
+			case ISFAMILYONLY: return Boolean.toString(isFamilyOnly);
+			case OVERRIDEMINMEMBERS: return overrideMinMembers == null ? "" : overrideMinMembers.toString();
+			case CONQUESTENABLED: return Boolean.toString(conquestEnabled);
+			case CONQUESTITEMLOYALTY: return Boolean.toString(conquestItemLoyalty);
+			case CONQUESTDEITYBASIS: return Boolean.toString(conquestDeityBasis);
+			case MAXVOTEDAYS: return Integer.toString(maxVoteDays);
+			case VOTEQUORUMPCT: return Integer.toString(voteQuorumPct);
+			case AUTOPROMOTEBY: return autoPromoteBy.toString();
+			case VOTEFUNCS:{
+				final StringBuilder str=new StringBuilder("");
+				for(Position pos : positions)
+				{
+					for(int a=0;a<Function.values().length;a++)
+						if(pos.functionChart[a]==Authority.MUST_VOTE_ON)
+						{
+							if(str.length()>0) str.append(",");
+							str.append(Function.values()[a]);
+						}
+					break;
+				}
+				return str.toString();
+			}
+			default: Log.errOut("Clan","getStat:Unhandled:"+stat.toString()); break;
+			}
+			return "";
+		}
+		public boolean isStat(String code) { return getStatIndex(code)!=null;}
+		public void setStat(String code, String val) 
+		{
+			final GOVT_STAT_CODES stat = getStatIndex(code);
+			if(stat==null){ return;}
+			switch(stat)
+			{
+			case NAME: name=val; break;
+			case AUTOROLE: { Position P=getPosition(val); if(P!=null) autoRole=P.roleID; break; }
+			case ACCEPTPOS: { Position P=getPosition(val); if(P!=null) acceptPos=P.roleID; break; }
+			case SHORTDESC: shortDesc=val; break;
+			case REQUIREDMASK: requiredMaskStr=val; requiredMask=CMLib.masking().maskCompile(requiredMaskStr); break; 
+			case ISPUBLIC: isPublic=CMath.s_bool(val); break;
+			case ISFAMILYONLY: isFamilyOnly=CMath.s_bool(val); break;
+			case OVERRIDEMINMEMBERS: {
+				if(val.length()==0) overrideMinMembers = null; 
+				else overrideMinMembers=Integer.valueOf(CMath.s_int(val)); 
+				break;
+			}
+			case CONQUESTENABLED: conquestEnabled=CMath.s_bool(val); break;
+			case CONQUESTITEMLOYALTY: conquestItemLoyalty=CMath.s_bool(val); break;
+			case CONQUESTDEITYBASIS: conquestDeityBasis=CMath.s_bool(val); break;
+			case MAXVOTEDAYS: maxVoteDays=CMath.s_int(val); break;
+			case VOTEQUORUMPCT: voteQuorumPct=CMath.s_int(val); break;
+			case AUTOPROMOTEBY:{
+				AutoPromoteFlag flag=(AutoPromoteFlag)CMath.s_valueOf(AutoPromoteFlag.values(),code);
+				if(flag!=null) autoPromoteBy=flag;
+				break;
+			}
+			case VOTEFUNCS:{
+				final Vector<String> funcs=CMParms.parseCommas(val.toUpperCase().trim(), true);
+				for(Position pos : positions)
+				{
+					for(int a=0;a<Function.values().length;a++)
+						if(pos.functionChart[a]==Authority.MUST_VOTE_ON)
+							pos.functionChart[a]=Authority.CAN_NOT_DO;
+					for(final String funcName : funcs)
+					{
+						Authority auth=(Authority)CMath.s_valueOf(Function.values(), funcName);
+						if(auth!=null) pos.functionChart[auth.ordinal()] = Authority.MUST_VOTE_ON;
+					}
+				}
+				break;
+			}
+			default: Log.errOut("Clan","setStat:Unhandled:"+stat.toString()); break;
+			}
 		}
 	}
 }

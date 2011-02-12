@@ -158,6 +158,22 @@ public class CMath
     }
 
     /**
+     * Returns which object in the object array is same as the
+     * string, when cast to a string.
+     * @param o array of objects
+     * @param s the string to look
+     * @return the object or null
+     */
+    public final static Object s_valueOf(Object[] o, String s)
+    {
+    	if(s==null) return null;
+    	for(Object a : o)
+    		if(a.toString().equalsIgnoreCase(s.trim()))
+    			return a;
+    	return null;
+    }
+    
+    /**
      * Returns true if the string is a number (float or int)
      * @param s the string to test
      * @return true if a number, false otherwise

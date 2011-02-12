@@ -5886,6 +5886,31 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
         }
     }
 
+    public void modifyGovernment(MOB mob, Clan.Government me) throws IOException
+    {
+        if(mob.isMonster())
+            return;
+        boolean ok=false;
+        int showFlag=-1;
+        if(CMProps.getIntVar(CMProps.SYSTEMI_EDITORTYPE)>0)
+            showFlag=-999;
+        while((mob.session()!=null)&&(!mob.session().killFlag())&&(!ok))
+        {
+            int showNumber=0;
+            
+            
+            
+            if(showFlag<-900){ ok=true; break;}
+            if(showFlag>0){ showFlag=-1; continue;}
+            showFlag=CMath.s_int(mob.session().prompt("Edit which? ",""));
+            if(showFlag<=0)
+            {
+                showFlag=-1;
+                ok=true;
+            }
+        }
+    }
+    
     public void modifyGenAbility(MOB mob, Ability me) throws IOException
     {
         if(mob.isMonster())
