@@ -222,6 +222,25 @@ public interface ClanManager extends CMLibrary
     public Clan.Government[] parseGovernmentXML(StringBuffer xml);
     
     /**
+     * Forces the stock governments to be re-saved to clangovernments.xml.
+     */
+    public void reSaveGovernmentsXML();
+    
+    /**
+     * Creates the new stock government
+     * @param name governmentname
+     * @return new stock government
+     */
+    public Clan.Government createGovernment(String name);
+    
+    /**
+     * Deletes the stock government.. confusing all the clans that
+     * currently use it.
+     * @param the government to delete
+     */
+    public boolean removeGovernment(Clan.Government government);
+    
+    /**
      * Makes an announcement to the clan announcement channel from
      * the given mob.  These are channels marked in the coffeemud.ini file
      * as receiving clan info messages.  These messages are only seen

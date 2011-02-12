@@ -1489,6 +1489,35 @@ public class Modify extends StdCommand
             quests(mob,commands);
 		}
         else
+		if(commandType.equals("GOVERNMENT"))
+		{
+			if(!CMSecurity.isAllowed(mob,mob.location(),"CMDCLANS")) return errorOut(mob);
+			if(commands.size()<3)
+				mob.tell("Modify which government?  Use list governments.");
+			else
+			{
+				String name=CMParms.combine(commands,2);
+				Clan.Government G = null;
+				for(Clan.Government g : CMLib.clans().getStockGovernments())
+					if(g.name.equalsIgnoreCase(name))
+						G=g;
+				if(G==null)
+					for(Clan.Government g : CMLib.clans().getStockGovernments())
+						if(g.name.toLowerCase().startsWith(name.toLowerCase()))
+							G=g;
+				if(G==null)
+					mob.tell("Government '"+name+"' is unknown.  Try list governments.");
+				else
+                if(!mob.isMonster())
+                {
+					mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> wave(s) <S-HIS-HER> hands around "+G.name+".");
+                    CMLib.genEd().modifyGovernment(mob, G);
+                    CMLib.clans().reSaveGovernmentsXML();
+                    Log.sysOut("CreateEdit",mob.Name()+" modified Clan Government "+G.name+".");
+                }
+            }
+		}
+        else
         if(commandType.equals("FACTION"))
         {
             if(!CMSecurity.isAllowed(mob,mob.location(),"CMDFACTIONS")) return errorOut(mob);
@@ -1676,7 +1705,7 @@ public class Modify extends StdCommand
 				execute(mob,commands,metaFlags);
 			}
 			else
-				mob.tell("\n\rYou cannot modify a '"+commandType+"'. However, you might try an ITEM, RACE, CLASS, ABILITY, AREA, EXIT, COMPONENT, RECIPE, EXPERTISE, TITLE, QUEST, MOB, USER, HOLIDAY, JSCRIPT, FACTION, SOCIAL, CLAN, POLL, or ROOM.");
+				mob.tell("\n\rYou cannot modify a '"+commandType+"'. However, you might try an ITEM, RACE, CLASS, ABILITY, AREA, EXIT, COMPONENT, RECIPE, EXPERTISE, TITLE, QUEST, MOB, USER, HOLIDAY, GOVERNMENT, JSCRIPT, FACTION, SOCIAL, CLAN, POLL, or ROOM.");
 		}
 		return false;
 	}

@@ -41,12 +41,12 @@ public class ListCmd extends StdCommand
 	public String[] getAccessWords(){return access;}
 
 
-	public StringBuffer roomDetails(Vector these, Room likeRoom)
+	public StringBuilder roomDetails(Vector these, Room likeRoom)
 	{return roomDetails(these.elements(),likeRoom);}
 
-	public StringBuffer roomDetails(Enumeration these, Room likeRoom)
+	public StringBuilder roomDetails(Enumeration these, Room likeRoom)
 	{
-		StringBuffer lines=new StringBuffer("");
+		StringBuilder lines=new StringBuilder("");
 		if(!these.hasMoreElements()) return lines;
 		if(likeRoom==null) return lines;
         Room thisThang=null;
@@ -62,9 +62,9 @@ public class ListCmd extends StdCommand
 		return lines;
 	}
 
-	public StringBuffer roomExpires(Enumeration these, Room likeRoom)
+	public StringBuilder roomExpires(Enumeration these, Room likeRoom)
 	{
-		StringBuffer lines=new StringBuffer("The time is: "+CMLib.time().date2String(System.currentTimeMillis())+"\n\r\n\r");
+		StringBuilder lines=new StringBuilder("The time is: "+CMLib.time().date2String(System.currentTimeMillis())+"\n\r\n\r");
 		if(!these.hasMoreElements()) return lines;
 		if(likeRoom==null) return lines;
         Room thisThang=null;
@@ -86,9 +86,9 @@ public class ListCmd extends StdCommand
 		lines.append("\n\r");
 		return lines;
 	}
-    public StringBuffer roomPropertyDetails(Enumeration these, Room likeRoom)
+    public StringBuilder roomPropertyDetails(Enumeration these, Room likeRoom)
     {
-        StringBuffer lines=new StringBuffer("");
+        StringBuilder lines=new StringBuilder("");
         if(!these.hasMoreElements()) return lines;
         if(likeRoom==null) return lines;
         LandTitle t=null;
@@ -108,11 +108,11 @@ public class ListCmd extends StdCommand
         lines.append("\n\r");
         return lines;
     }
-	public StringBuffer roomTypes(Vector these, Room likeRoom)
+	public StringBuilder roomTypes(Vector these, Room likeRoom)
 	{return roomTypes(these.elements(),likeRoom);}
-	public StringBuffer roomTypes(Enumeration these, Room likeRoom)
+	public StringBuilder roomTypes(Enumeration these, Room likeRoom)
 	{
-		StringBuffer lines=new StringBuffer("");
+		StringBuilder lines=new StringBuilder("");
 		if(!these.hasMoreElements()) return lines;
 		if(likeRoom==null) return lines;
         Room thisThang=null;
@@ -128,11 +128,11 @@ public class ListCmd extends StdCommand
 		return lines;
 	}
 
-	public StringBuffer roomResources(Vector these, Room likeRoom)
+	public StringBuilder roomResources(Vector these, Room likeRoom)
 	{return roomResources(these.elements(),likeRoom);}
-	public StringBuffer roomResources(Enumeration these, Room likeRoom)
+	public StringBuilder roomResources(Enumeration these, Room likeRoom)
 	{
-		StringBuffer lines=new StringBuffer(CMStrings.padRight("Room ID#",30)+"| "
+		StringBuilder lines=new StringBuilder(CMStrings.padRight("Room ID#",30)+"| "
 										   +CMStrings.padRight("Room Type",15)+"| "
 										   +"Resource\n\r");
 		if(!these.hasMoreElements()) return lines;
@@ -157,9 +157,9 @@ public class ListCmd extends StdCommand
 		return lines;
 	}
 
-	public StringBuffer areaConquests(Enumeration these)
+	public StringBuilder areaConquests(Enumeration these)
 	{
-		StringBuffer lines=new StringBuffer(CMStrings.padRight("Area",26)+"| "
+		StringBuilder lines=new StringBuilder(CMStrings.padRight("Area",26)+"| "
 										   +CMStrings.padRight("Clan",40)+"| "
 										   +"Controlled\n\r");
 		if(!these.hasMoreElements()) return lines;
@@ -188,7 +188,7 @@ public class ListCmd extends StdCommand
 		return lines;
 	}
 
-	public void dumpThreadGroup(StringBuffer lines,ThreadGroup tGroup, boolean ignoreZeroTickThreads)
+	public void dumpThreadGroup(StringBuilder lines,ThreadGroup tGroup, boolean ignoreZeroTickThreads)
 	{
 		int ac = tGroup.activeCount();
 		int agc = tGroup.activeGroupCount();
@@ -254,9 +254,9 @@ public class ListCmd extends StdCommand
 	}
 
 
-	public StringBuffer listThreads(MOB mob, boolean ignoreZeroTickThreads)
+	public StringBuilder listThreads(MOB mob, boolean ignoreZeroTickThreads)
 	{
-		StringBuffer lines=new StringBuffer("^xStatus|Name                 ^.^?\n\r");
+		StringBuilder lines=new StringBuilder("^xStatus|Name                 ^.^?\n\r");
 		try
 		{
 			ThreadGroup topTG = Thread.currentThread().getThreadGroup();
@@ -319,12 +319,12 @@ public class ListCmd extends StdCommand
 		}
 	}
 	
-	public StringBuffer listScripts(MOB mob, Vector cmds)
+	public StringBuilder listScripts(MOB mob, Vector cmds)
 	{
-		if(cmds.size()==0) return new StringBuffer("");
+		if(cmds.size()==0) return new StringBuilder("");
 		cmds.removeElementAt(0);
 		if(cmds.size()==0)
-			return new StringBuffer("List what script details? Try LIST SCRIPTS (COUNT/DETAILS/CUSTOM)");
+			return new StringBuilder("List what script details? Try LIST SCRIPTS (COUNT/DETAILS/CUSTOM)");
 		String rest=CMParms.combine(cmds,0);
 		DVector scriptTree=new DVector(6);
 		Area A=null;
@@ -376,10 +376,10 @@ public class ListCmd extends StdCommand
 			}
 		}
 		
-		StringBuffer lines=new StringBuffer("");
+		StringBuilder lines=new StringBuilder("");
 		if(rest.equalsIgnoreCase("COUNT"))
 		{
-			lines=new StringBuffer("^x")
+			lines=new StringBuilder("^x")
 			.append(CMStrings.padRight("Script File",50))
 			.append(CMStrings.padRight("Usage",5))
 			.append("^.^N\n\r");
@@ -412,7 +412,7 @@ public class ListCmd extends StdCommand
 		else
 		if(rest.equalsIgnoreCase("DETAILS"))
 		{
-			lines=new StringBuffer("^x")
+			lines=new StringBuilder("^x")
 			.append(CMStrings.padRight("Script File",30))
 			.append(CMStrings.padRight("Host",20))
 			.append(CMStrings.padRight("Location",25))
@@ -435,7 +435,7 @@ public class ListCmd extends StdCommand
 		else
 		if(rest.equalsIgnoreCase("CUSTOM"))
 		{
-			lines=new StringBuffer("^xCustom Scripts")
+			lines=new StringBuilder("^xCustom Scripts")
 									.append("^.^N\n\r");
 			scriptTree.sortBy(1);
 			if(scriptTree.size()>0)
@@ -457,11 +457,11 @@ public class ListCmd extends StdCommand
 			}
 		}
 		else
-			return new StringBuffer("Invalid parameter for LIST SCRIPTS.  Enter LIST SCRIPTS alone for help.");
+			return new StringBuilder("Invalid parameter for LIST SCRIPTS.  Enter LIST SCRIPTS alone for help.");
 		return lines;
 	}
 
-	public StringBuffer listLinkages(MOB mob)
+	public StringBuilder listLinkages(MOB mob)
 	{
 	    Faction useFaction=null;
 	    for(Enumeration<Faction> e=CMLib.factions().factions();e.hasMoreElements();)
@@ -469,7 +469,7 @@ public class ListCmd extends StdCommand
 	        Faction F=(Faction)e.nextElement();
 	        if(F.showInSpecialReported()) useFaction=F;
 	    }
-		StringBuffer buf=new StringBuffer("Links: \n\r");
+		StringBuilder buf=new StringBuilder("Links: \n\r");
 		List<List<Area>> areaLinkGroups=new Vector<List<Area>>();
 		for(Enumeration a=CMLib.map().sortedAreas();a.hasMoreElements();)
 		{
@@ -558,7 +558,7 @@ public class ListCmd extends StdCommand
 				}
 
 			}
-			StringBuffer ext=new StringBuffer("links ");
+			StringBuilder ext=new StringBuilder("links ");
 			List<Area> myVec=null;
 			List<Area> clearVec=null;
 			for(Enumeration r=A.getCompleteMap();r.hasMoreElements();)
@@ -627,7 +627,7 @@ public class ListCmd extends StdCommand
 			if(areaLinkGroups.get(g).size()==0)
 				areaLinkGroups.remove(g);
 		}
-		StringBuffer unlinkedGroups=new StringBuffer("");
+		StringBuilder unlinkedGroups=new StringBuilder("");
 		for(List<Area> V : areaLinkGroups)
 		{
 			buf.append(V.size()+" ");
@@ -646,9 +646,9 @@ public class ListCmd extends StdCommand
 	}
 
 
-	public StringBuffer journalList(String partialjournal)
+	public StringBuilder journalList(String partialjournal)
 	{
-		StringBuffer buf=new StringBuffer("");
+		StringBuilder buf=new StringBuilder("");
         String journal=null;
         for(Enumeration<JournalsLibrary.CommandJournal> e=CMLib.journals().commandJournals();e.hasMoreElements();)
         {
@@ -673,7 +673,7 @@ public class ListCmd extends StdCommand
 		return buf;
 	}
 
-	public StringBuffer listReports(MOB mob)
+	public StringBuilder listReports(MOB mob)
 	{
 		mob.tell("\n\r^xCoffeeMud System Report:^.^N");
 		try
@@ -681,7 +681,7 @@ public class ListCmd extends StdCommand
 			System.gc();
 			Thread.sleep(1500);
 		}catch(Exception e){}
-		StringBuffer buf=new StringBuffer("");
+		StringBuilder buf=new StringBuilder("");
 		long totalTime=System.currentTimeMillis()-CMSecurity.getStartTime();
 		buf.append("The system has been running for ^H"+CMLib.english().returnTime(totalTime,0)+"^?.\n\r");
 		long free=Runtime.getRuntime().freeMemory()/1000;
@@ -752,7 +752,7 @@ public class ListCmd extends StdCommand
 				return;
 			}
 		}
-		StringBuffer head=new StringBuffer("");
+		StringBuilder head=new StringBuilder("");
 		head.append("[");
 		head.append(CMStrings.padRight("Race",8)+" ");
 		head.append(CMStrings.padRight("Class",10)+" ");
@@ -840,7 +840,7 @@ public class ListCmd extends StdCommand
 				return;
 			}
 		}
-		StringBuffer head=new StringBuffer("");
+		StringBuilder head=new StringBuilder("");
 		head.append("^X");
 		head.append("[");
 		head.append(CMStrings.padRight("Account",10)+" ");
@@ -908,7 +908,7 @@ public class ListCmd extends StdCommand
 		for(int u=0;u<allAccounts.size();u++)
 		{
 			PlayerAccount U=allAccounts.get(u);
-			StringBuffer line=new StringBuffer("");
+			StringBuilder line=new StringBuilder("");
 			line.append("[");
 			line.append(CMStrings.padRight(U.accountName(),10)+" ");
 			line.append(CMStrings.padRight(CMLib.time().date2String(U.lastDateTime()),18)+" ");
@@ -949,9 +949,9 @@ public class ListCmd extends StdCommand
 		mob.tell(head.toString());
 	}
 
-	public StringBuffer listRaces(Enumeration these, boolean shortList)
+	public StringBuilder listRaces(Enumeration these, boolean shortList)
 	{
-		StringBuffer lines=new StringBuffer("");
+		StringBuilder lines=new StringBuilder("");
 		if(!these.hasMoreElements()) return lines;
 		int column=0;
         if(shortList)
@@ -977,9 +977,9 @@ public class ListCmd extends StdCommand
 		lines.append("\n\r");
 		return lines;
 	}
-    public StringBuffer listRaceCats(Enumeration these, boolean shortList)
+    public StringBuilder listRaceCats(Enumeration these, boolean shortList)
     {
-        StringBuffer lines=new StringBuffer("");
+        StringBuilder lines=new StringBuilder("");
         if(!these.hasMoreElements()) return lines;
         int column=0;
         Vector raceCats=new Vector();
@@ -1013,9 +1013,9 @@ public class ListCmd extends StdCommand
         return lines;
     }
 
-	public StringBuffer listQuests()
+	public StringBuilder listQuests()
 	{
-		StringBuffer buf=new StringBuffer("");
+		StringBuilder buf=new StringBuilder("");
 		if(CMLib.quests().numQuests()==0)
 			buf.append("No quests loaded.");
 		else
@@ -1065,9 +1065,9 @@ public class ListCmd extends StdCommand
 		return buf;
 	}
 
-    public StringBuffer listJournals()
+    public StringBuilder listJournals()
     {
-        StringBuffer buf=new StringBuffer("");
+        StringBuilder buf=new StringBuilder("");
         List<String> journals=CMLib.database().DBReadJournals();
 
         if(journals.size()==0)
@@ -1087,9 +1087,9 @@ public class ListCmd extends StdCommand
         return buf;
     }
 
-	public StringBuffer listTicks(String whichTickTock)
+	public StringBuilder listTicks(String whichTickTock)
 	{
-		StringBuffer msg=new StringBuffer("\n\r");
+		StringBuilder msg=new StringBuilder("\n\r");
 		boolean activeOnly=false;
 		String mask=null;
 		if("ACTIVE".startsWith(whichTickTock.toUpperCase())&&(whichTickTock.length()>0))
@@ -1144,9 +1144,9 @@ public class ListCmd extends StdCommand
 		return msg;
 	}
 
-	public StringBuffer listSubOps(MOB mob)
+	public StringBuilder listSubOps(MOB mob)
 	{
-		StringBuffer msg=new StringBuffer("");
+		StringBuilder msg=new StringBuilder("");
 		for(Enumeration a=CMLib.map().sortedAreas();a.hasMoreElements();)
 		{
 			Area A=(Area)a.nextElement();
@@ -1161,7 +1161,7 @@ public class ListCmd extends StdCommand
 
 	protected String reallyFindOneWays(MOB mob, Vector commands)
 	{
-		StringBuffer str=new StringBuffer("");
+		StringBuilder str=new StringBuilder("");
 		try
 		{
 			for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
@@ -1185,7 +1185,7 @@ public class ListCmd extends StdCommand
 
 	protected String unlinkedExits(MOB mob, Vector commands)
 	{
-		StringBuffer str=new StringBuffer("");
+		StringBuilder str=new StringBuilder("");
 		try
 		{
 			for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
@@ -1214,7 +1214,7 @@ public class ListCmd extends StdCommand
 		String key = keyIter.next();
 		if(!keyIter.hasNext())
 		{
-			StringBuffer str=new StringBuffer("^x"+key+"^?\n\r");
+			StringBuilder str=new StringBuilder("^x"+key+"^?\n\r");
 			Object o=Resources.getResource(key);
 			if(o instanceof List) str.append(CMParms.toStringList((List)o));
 			else
@@ -1283,7 +1283,7 @@ public class ListCmd extends StdCommand
 		}
 		DVector sightingsDV=DVector.toDVector(readyEntries);
 		sightingsDV.sortBy(2);
-		StringBuffer str=new StringBuffer("^HHelp entries, sorted by popularity: ^N\n\r");
+		StringBuilder str=new StringBuilder("^HHelp entries, sorted by popularity: ^N\n\r");
 		for(int d=0;d<sightingsDV.size();d++)
 			str.append("^w"+CMStrings.padRight(sightingsDV.elementAt(d,2).toString(),4))
 			   .append(" ")
@@ -1294,7 +1294,7 @@ public class ListCmd extends StdCommand
 	
 	public String listRecipes(MOB mob, String rest)
     {
-        StringBuffer str = new StringBuffer("");
+        StringBuilder str = new StringBuilder("");
         if(rest.trim().length()==0)
         {
             str.append("Common Skills with editable recipes: ");
@@ -1345,7 +1345,7 @@ public class ListCmd extends StdCommand
 	{
         if(shortList)
             return CMParms.toStringList(RawMaterial.CODES.NAMES());
-		StringBuffer str=new StringBuffer("");
+		StringBuilder str=new StringBuilder("");
         for(String S : RawMaterial.CODES.NAMES())
             str.append(CMStrings.padRight(CMStrings.capitalizeAndLower(S.toLowerCase()),16));
 		str.append(CMStrings.padRight("Resource",15)+" ");
@@ -1361,7 +1361,7 @@ public class ListCmd extends StdCommand
 			str.append(CMStrings.padRight(""+RawMaterial.CODES.VALUE(i),4));
 			str.append(CMStrings.padRight(""+RawMaterial.CODES.FREQUENCY(i),5));
 			str.append(CMStrings.padRight(""+RawMaterial.CODES.HARDNESS(i),4));
-			StringBuffer locales=new StringBuffer("");
+			StringBuilder locales=new StringBuilder("");
 			for(Enumeration e=CMClass.locales();e.hasMoreElements();)
 			{
 				Room R=(Room)e.nextElement();
@@ -1372,7 +1372,7 @@ public class ListCmd extends StdCommand
 			while(locales.length()>36)
 			{
 				str.append(locales.toString().substring(0,36)+"\n\r"+CMStrings.padRight(" ",40));
-				locales=new StringBuffer(locales.toString().substring(36));
+				locales=new StringBuilder(locales.toString().substring(36));
 			}
 			str.append(locales.toString());
 			str.append("\n\r");
@@ -1452,7 +1452,7 @@ public class ListCmd extends StdCommand
 
     public String listComponents()
     {
-        StringBuffer buf=new StringBuffer("^xAll Defined Spells and required components: ^N\n\r");
+        StringBuilder buf=new StringBuilder("^xAll Defined Spells and required components: ^N\n\r");
         for(String ID : CMLib.ableMapper().getAbilityComponentMap().keySet())
         {
             List<AbilityComponent> DV=CMLib.ableMapper().getAbilityComponentMap().get(ID);
@@ -1465,7 +1465,7 @@ public class ListCmd extends StdCommand
 
     public String listExpertises()
     {
-        StringBuffer buf=new StringBuffer("^xAll Defined Expertise Codes: ^N\n\r");
+        StringBuilder buf=new StringBuilder("^xAll Defined Expertise Codes: ^N\n\r");
         for(Enumeration e=CMLib.expertises().definitions();e.hasMoreElements();)
         {
             ExpertiseLibrary.ExpertiseDefinition def=(ExpertiseLibrary.ExpertiseDefinition)e.nextElement();
@@ -1477,7 +1477,7 @@ public class ListCmd extends StdCommand
 
     public String listTitles()
     {
-        StringBuffer buf=new StringBuffer("^xAll Defined Auto-Titles: ^N\n\r");
+        StringBuilder buf=new StringBuilder("^xAll Defined Auto-Titles: ^N\n\r");
         for(Enumeration e=CMLib.titles().autoTitles();e.hasMoreElements();)
         {
             String title=(String)e.nextElement();
@@ -1488,6 +1488,27 @@ public class ListCmd extends StdCommand
         return buf.toString();
     }
 
+    public String listClanGovernments(MOB mob,List commands)
+    {
+        StringBuilder buf=new StringBuilder("^xAll Clan Governments: ^N\n\r");
+    	for(Clan.Government G : CMLib.clans().getStockGovernments())
+    	{
+            buf.append(CMStrings.padRight(G.name,30)+": "+G.shortDesc+"\n\r");
+    	}
+    	return buf.toString();
+    }
+    
+    public String listClans(MOB mob,List commands)
+    {
+        StringBuilder buf=new StringBuilder("^xAll Clans: ^N\n\r");
+    	for(Enumeration<Clan> c=CMLib.clans().clans();c.hasMoreElements();)
+    	{
+    		Clan C=c.nextElement();
+            buf.append(CMStrings.padRight(C.clanID(),30)+": "+C.getMemberList().size()+" members\n\r");
+    	}
+    	return buf.toString();
+    }
+    
 	public final static String[][] SECURITY_LISTMAP={
 		/*00*/{"UNLINKEDEXITS","CMDEXITS","CMDROOMS","CMDAREAS"},
 		/*01*/{"ITEMS","CMDITEMS"},
@@ -1517,7 +1538,7 @@ public class ListCmd extends StdCommand
 		/*25*/{"TICKS","LISTADMIN"},
 		/*26*/{"MAGIC","CMDITEMS"},
 		/*27*/{"TECH","CMDITEMS"},
-		/*28*/{"CLANITEMS","CMDITEMS"},
+		/*28*/{"CLANITEMS","CMDITEMS","CMDCLANS"},
 		/*29*/{"COMMANDJOURNAL",""}, // blank, but used!
         /*30*/{"REALESTATE","CMDMOBS","CMDITEMS","CMDROOMS","CMDAREAS","CMDEXITS","CMDRACES","CMDCLASSES"},
 		/*31*/{"NOPURGE","NOPURGE"},
@@ -1549,9 +1570,11 @@ public class ListCmd extends StdCommand
         /*57*/{"HELPFILEREQUESTS","LISTADMIN"},
 		/*58*/{"SCRIPTS","CMDMOBS","CMDITEMS","CMDROOMS","CMDAREAS","CMDEXITS","CMDRACES","CMDCLASSES"},
 		/*59*/{"ACCOUNTS","CMDPLAYERS","STAT"},
+		/*60*/{"GOVERNMENTS","CMDCLANS"},
+		/*61*/{"CLANS","CMDCLANS"},
 	};
 
-    public StringBuffer listContent(MOB mob, Vector commands)
+    public StringBuilder listContent(MOB mob, Vector commands)
     {
         commands.removeElementAt(0);
         Enumeration roomsToDo=null;
@@ -1572,10 +1595,10 @@ public class ListCmd extends StdCommand
                 if(R!=null)
                     roomsToDo=new XVector(mob.location()).elements();
                 else
-                    return new StringBuffer("There's no such place as '"+rest+"'");
+                    return new StringBuilder("There's no such place as '"+rest+"'");
             }
         }
-        StringBuffer buf=new StringBuffer("");
+        StringBuilder buf=new StringBuilder("");
         Room R=null;
         Room TR=null;
         Map<String,Room> set=null;
@@ -1631,7 +1654,7 @@ public class ListCmd extends StdCommand
             mob.tell("\n\rNo polls available.  Fix that by entering CREATE POLL!");
         else
         {
-            StringBuffer str=new StringBuffer("");
+            StringBuilder str=new StringBuilder("");
             int v=1;
             for(;i.hasNext();v++)
             {
@@ -1785,7 +1808,7 @@ public class ListCmd extends StdCommand
 				mob.tell("You are not allowed to use this command!");
 			else
 			{
-				StringBuffer str=new StringBuffer("");
+				StringBuilder str=new StringBuilder("");
 				for(int v=0;v<V.size();v++)
 					if(((String)V.elementAt(v)).length()>0)
 					{
@@ -1835,7 +1858,7 @@ public class ListCmd extends StdCommand
         case 30: s.wraplessPrintln(roomPropertyDetails(mob.location().getArea().getMetroMap(),mob.location()).toString()); break;
 		case 31:
 		{
-			StringBuffer str=new StringBuffer("\n\rProtected players:\n\r");
+			StringBuilder str=new StringBuilder("\n\rProtected players:\n\r");
 			List<String> protectedOnes=Resources.getFileLineVector(Resources.getFileResource("protectedplayers.ini",false));
 			if((protectedOnes!=null)&&(protectedOnes.size()>0))
 			for(int b=0;b<protectedOnes.size();b++)
@@ -1845,7 +1868,7 @@ public class ListCmd extends StdCommand
 		}
 		case 32:
 		{
-			StringBuffer str=new StringBuffer("\n\rBanned names/ips:\n\r");
+			StringBuilder str=new StringBuilder("\n\rBanned names/ips:\n\r");
 			List<String> banned=Resources.getFileLineVector(Resources.getFileResource("banned.ini",false));
 			if((banned!=null)&&(banned.size()>0))
 			for(int b=0;b<banned.size();b++)
@@ -1880,6 +1903,8 @@ public class ListCmd extends StdCommand
         case 57: s.wraplessPrint(listHelpFileRequests(mob,CMParms.combine(commands,1))); break;
         case 58: s.wraplessPrintln(listScripts(mob,commands).toString()); break;
 		case 59: listAccounts(mob,commands); break;
+		case 60: s.wraplessPrintln(listClanGovernments(mob,commands)); break;
+		case 61: s.wraplessPrintln(listClans(mob,commands)); break;
         default:
 			s.println("List?!");
 			break;

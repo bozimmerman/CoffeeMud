@@ -1270,6 +1270,33 @@ public class Destroy extends StdCommand
 			}
 		}
 		else
+		if(commandType.equals("GOVERNMENT"))
+		{
+			if(!CMSecurity.isAllowed(mob,mob.location(),"CMDCLANS")) return errorOut(mob);
+			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"^S<S-NAME> wave(s) <S-HIS-HER> arms...^?");
+			if(commands.size()<3)
+				mob.tell("Destroy which government?  Use list governments.");
+			else
+			{
+				String name=CMParms.combine(commands,2);
+				Clan.Government G=null;
+				for(Clan.Government g : CMLib.clans().getStockGovernments())
+					if(g.name.equalsIgnoreCase(name))
+						G=g;
+				if(G==null)
+					mob.tell("Government '"+name+"' is unknown.  Try list governments.");
+				else
+				if(CMLib.clans().removeGovernment(G))
+				{
+					mob.tell("Government '"+G.name+"' is destroyed!");
+					CMLib.clans().reSaveGovernmentsXML();
+					Log.sysOut("CreateEdit","Government '"+G.name+" destroyed by "+mob.name()+".");
+				}
+				else
+					mob.tell("You can't delete the last remaining clan government.");
+			}
+		}
+		else
 		{
 			String allWord=CMParms.combine(commands,1);
 			Environmental thang=mob.location().fetchFromRoomFavorItems(null,allWord);
@@ -1330,7 +1357,7 @@ public class Destroy extends StdCommand
 					mob.tell(
 						"\n\rYou cannot destroy a '"+commandType+"'. "
 						+"However, you might try an "
-						+"EXIT, ITEM, AREA, USER, MOB, QUEST, FACTION, SESSION, TICKS, THREAD, HOLIDAY, JOURNAL, SOCIAL, CLASS, ABILITY, COMPONENT, RACE, EXPERTISE, TITLE, CLAN, BAN, NOPURGE, BUG, TYPO, IDEA, POLL, or a ROOM.");
+						+"EXIT, ITEM, AREA, USER, MOB, QUEST, FACTION, SESSION, TICKS, THREAD, HOLIDAY, JOURNAL, SOCIAL, CLASS, ABILITY, COMPONENT, RACE, EXPERTISE, TITLE, CLAN, BAN, GOVERNMENT, NOPURGE, BUG, TYPO, IDEA, POLL, or a ROOM.");
 				}
 			}
 		}

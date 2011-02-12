@@ -796,6 +796,17 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 				}
 			}
 			
+			/*if(!found)
+			{ 
+				String s=CMLib.clans().getGovernmentHelp(forMOB,helpStr.toUpperCase(), false);
+				if(s!=null)
+				{
+					thisTag=s;
+					helpStr=helpStr.toUpperCase();
+					found=true;
+				}
+			}*/
+			
 			if(!found)
 			{
 		        Ability A=CMClass.findAbility(helpStr.toUpperCase(),-1,-1,false);

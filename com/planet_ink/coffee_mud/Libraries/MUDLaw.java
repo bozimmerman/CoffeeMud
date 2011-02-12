@@ -188,7 +188,7 @@ public class MUDLaw extends StdLibrary implements LegalLibrary
 		if(title.landOwner().equals(mob.Name())) return true;
 		if((title.landOwner().equals(mob.getLiegeID())&&(mob.isMarriedToLiege())))
 			return true;
-		if(title.landOwner().equals(mob.getClanID())&&(CMLib.clans().authCheck(mob.getClanID(), mob.getClanRole(), Clan.Function.HOMEPRIVILEGES)))
+		if(title.landOwner().equals(mob.getClanID())&&(CMLib.clans().authCheck(mob.getClanID(), mob.getClanRole(), Clan.Function.HOME_PRIVS)))
 			return true;
 		if(mob.amFollowing()!=null) 
 			return doesHavePriviledgesHere(mob.amFollowing(),room);
@@ -237,7 +237,7 @@ public class MUDLaw extends StdLibrary implements LegalLibrary
 		{
 			Clan C=CMLib.clans().getClan(mob.getClanID());
 			if((C!=null)
-			&&(C.getAuthority(mob.getClanRole(),Clan.Function.PROPERTYOWNER)!=Clan.Authority.CAN_NOT_DO))
+			&&(C.getAuthority(mob.getClanRole(),Clan.Function.PROPERTY_OWNER)!=Clan.Authority.CAN_NOT_DO))
 				return true;
 		}
 		if(mob.amFollowing()!=null) 

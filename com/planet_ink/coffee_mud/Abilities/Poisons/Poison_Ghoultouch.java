@@ -40,7 +40,7 @@ public class Poison_Ghoultouch extends Poison
 	public String[] triggerStrings(){return triggerStrings;}
 	public long flags(){return Ability.FLAG_PARALYZING|Ability.FLAG_UNHOLY;}
 
-	protected int POISON_TICKS(){return 15;} // 0 means no adjustment!
+	protected int POISON_TICKS(){return 7;} // 0 means no adjustment!
 	protected int POISON_DELAY(){return 1;}
 	protected String POISON_DONE(){return "Your muscles relax again.";}
 	protected String POISON_START(){return "^G<S-NAME> become(s) stiff and immobile!^?";}

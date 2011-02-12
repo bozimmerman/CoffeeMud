@@ -123,7 +123,7 @@ public class Trap_BearTrap extends StdTrap
 			||(CMLib.flags().isInFlight(target))
 			||(invoker().getGroupMembers(new HashSet<MOB>()).contains(target))
 			||(target==invoker())
-			||(CMLib.dice().rollPercentage()<=target.charStats().getSave(CharStats.STAT_SAVE_TRAPS)))
+			||(doesSaveVsTraps(target)))
 				target.location().show(target,null,null,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,"<S-NAME> avoid(s) a bear trap!");
 			else
 			if(target.location().show(target,target,this,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,"<S-NAME> step(s) on a bear trap!"))

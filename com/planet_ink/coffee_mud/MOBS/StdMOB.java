@@ -2925,12 +2925,12 @@ public class StdMOB implements MOB
 			Clan C=CMLib.clans().getClan(getClanID());
 			if(C!=null)
 			{
-				if((C.getAuthority(mob.getClanRole(),Clan.Function.CANORDERUNDERLINGS)!=Clan.Authority.CAN_NOT_DO)
+				if((C.getAuthority(mob.getClanRole(),Clan.Function.ORDER_UNDERLINGS)!=Clan.Authority.CAN_NOT_DO)
 				&&(C.doesOutRank(mob.getClanRole(), getClanRole())))
 					return true;
 				else
 				if((isMonster())
-				&&(C.getAuthority(mob.getClanRole(),Clan.Function.CANORDERCONQUERED)!=Clan.Authority.CAN_NOT_DO)
+				&&(C.getAuthority(mob.getClanRole(),Clan.Function.ORDER_CONQUERED)!=Clan.Authority.CAN_NOT_DO)
 				&&(getStartRoom()!=null))
 				{
 					LegalBehavior B=CMLib.law().getLegalBehavior(getStartRoom());

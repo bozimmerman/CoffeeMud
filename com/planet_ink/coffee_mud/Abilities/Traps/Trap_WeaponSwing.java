@@ -104,7 +104,7 @@ public class Trap_WeaponSwing extends StdTrap
 			||(isLocalExempt(target))
 			||(invoker().getGroupMembers(new HashSet<MOB>()).contains(target))
 			||(target==invoker())
-			||(CMLib.dice().rollPercentage()<=target.charStats().getSave(CharStats.STAT_SAVE_TRAPS)))
+			||(doesSaveVsTraps(target)))
 				target.location().show(target,null,null,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,"<S-NAME> avoid(s) setting off "+name+" trap!");
 			else
 			if(target.location().show(target,target,this,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,"<S-NAME> <S-IS-ARE> struck by "+name+" trap!"))

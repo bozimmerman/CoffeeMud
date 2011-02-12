@@ -72,6 +72,17 @@ public class StdTrap extends StdAbility implements Trap
 			   ||(affected.fetchEffect(ID())==null);
 	}
 	
+	public boolean doesSaveVsTraps(MOB target)
+	{
+		int save=target.charStats().getSave(CharStats.STAT_SAVE_TRAPS);
+		if(invoker()!=null)
+		{
+			save += target.phyStats().level();
+			save -= invoker().phyStats().level();
+		}
+		return (CMLib.dice().rollPercentage()<=save);
+	}
+	
 	public boolean isLocalExempt(MOB target)
 	{
 		if(target==null) return false;

@@ -50,7 +50,7 @@ public interface Command extends CMObject
 	 * activate this command. A value of 0.0 means perform 
 	 * instantly.  This method only applies when the user
 	 * is not in combat.
-	 * @see Command#combatActionsCost(MOB, List<String>)
+	 * @see Command#combatActionsCost(MOB, List)
 	 * @see Command#checkedActionsCost(MOB, List)
      * @param mob the mob executing the command, if any
      * @param cmds the parameters to be passed to the command, if any

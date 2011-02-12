@@ -632,7 +632,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
                     CMLib.commands().postSay(seller,buyer,"I only sell to clans.",true,false);
                     return false;
                 }
-                if((C.getAuthority(buyer.getClanRole(),Clan.Function.PROPERTYOWNER)==Clan.Authority.CAN_NOT_DO)
+                if((C.getAuthority(buyer.getClanRole(),Clan.Function.PROPERTY_OWNER)==Clan.Authority.CAN_NOT_DO)
                 &&(!buyer.isMonster()))
                 {
                     CMLib.commands().postSay(seller,buyer,"You are not authorized by your clan to handle property.",true,false);

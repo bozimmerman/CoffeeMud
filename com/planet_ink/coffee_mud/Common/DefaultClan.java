@@ -374,7 +374,7 @@ public class DefaultClan implements Clan
         boolean did=false;
         if(M==null) return false;
         if(M.getClanID().equals(clanID())
-        &&(getAuthority(M.getClanRole(),Function.CLANSPELLS)!=Clan.Authority.CAN_NOT_DO))
+        &&(getAuthority(M.getClanRole(),Function.CLAN_SPELLS)!=Clan.Authority.CAN_NOT_DO))
         {
         	if(getClanClassC()!=null)
         	{
@@ -413,7 +413,7 @@ public class DefaultClan implements Clan
             }
         }
         if(((M.getClanID().equals(clanID())))
-        &&(getAuthority(M.getClanRole(),Function.CANORDERCONQUERED)!=Clan.Authority.CAN_NOT_DO))
+        &&(getAuthority(M.getClanRole(),Function.ORDER_CONQUERED)!=Clan.Authority.CAN_NOT_DO))
         {
             if(M.fetchAbility("Spell_Flagportation")==null)
             {
@@ -435,7 +435,7 @@ public class DefaultClan implements Clan
             String title="*, "+pos.name+" of "+name();
             if((M.getClanRole()==pos.roleID)
             &&(M.getClanID().equals(clanID()))
-            &&(getAuthority(M.getClanRole(),Function.CLANSPELLS)!=Clan.Authority.CAN_NOT_DO))
+            &&(getAuthority(M.getClanRole(),Function.CLAN_SPELLS)!=Clan.Authority.CAN_NOT_DO))
             {
                 if(!M.playerStats().getTitles().contains(title))
                     M.playerStats().getTitles().add(title);
@@ -515,7 +515,7 @@ public class DefaultClan implements Clan
     public String getDetail(MOB mob)
     {
         StringBuffer msg=new StringBuffer("");
-        boolean member=(mob!=null)&&mob.getClanID().equalsIgnoreCase(clanID())&&(getAuthority(mob.getClanRole(),Function.LISTMEMBERS)!=Authority.CAN_NOT_DO);
+        boolean member=(mob!=null)&&mob.getClanID().equalsIgnoreCase(clanID())&&(getAuthority(mob.getClanRole(),Function.LIST_MEMBERS)!=Authority.CAN_NOT_DO);
         boolean sysmsgs=(mob!=null)&&CMath.bset(mob.getBitmap(),MOB.ATT_SYSOPMSGS);
         msg.append("^x"+getGovernmentName()+" Profile   :^.^N "+clanID()+"\n\r"
                   +"-----------------------------------------------------------------\n\r"
@@ -809,7 +809,7 @@ public class DefaultClan implements Clan
     {
         int voters=0;
         List<MemberRecord> members=getMemberList();
-        final Function voteFunc = (function == Function.ASSIGN) ? Function.VOTEASSIGN : Function.VOTEOTHER;
+        final Function voteFunc = (function == Function.ASSIGN) ? Function.VOTE_ASSIGN : Function.VOTE_OTHER;
         for(MemberRecord member : members)
         	if(getAuthority(member.role, voteFunc)==Authority.CAN_DO)
         		voters++;
@@ -1105,8 +1105,8 @@ public class DefaultClan implements Clan
 
             boolean anyVoters = false;
             for(Position pos : govt().positions)
-            	if((pos.functionChart[Function.VOTEASSIGN.ordinal()]==Clan.Authority.CAN_DO)
-            	||(pos.functionChart[Function.VOTEOTHER.ordinal()]==Clan.Authority.CAN_DO))
+            	if((pos.functionChart[Function.VOTE_ASSIGN.ordinal()]==Clan.Authority.CAN_DO)
+            	||(pos.functionChart[Function.VOTE_OTHER.ordinal()]==Clan.Authority.CAN_DO))
             		anyVoters=true;
             // now do votes
             if(anyVoters&&(votes()!=null))

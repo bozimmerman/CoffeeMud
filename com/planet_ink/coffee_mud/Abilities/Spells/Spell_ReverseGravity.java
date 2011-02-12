@@ -168,7 +168,7 @@ public class Spell_ReverseGravity extends Spell
 			{
 				childrenAffects=new Vector();
 				mob.location().send(mob,msg);
-				beneficialAffect(mob,mob.location(),asLevel,7);
+				beneficialAffect(mob,mob.location(),asLevel,4);
 			}
 		}
 		else

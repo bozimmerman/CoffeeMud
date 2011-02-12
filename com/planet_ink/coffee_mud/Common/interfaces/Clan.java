@@ -776,27 +776,27 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
 		/** constant for the clan function of exihiling members. @see Clan#getAuthority(int,Function) */
 		EXILE,
 		/** constant for the clan function of setting a new clan home. @see Clan#getAuthority(int,Function) */
-		HOMESET,
+		SET_HOME,
 		/** constant for the clan function of setting a new donation room. @see Clan#getAuthority(int,Function) */
-		DONATESET,
+		SET_DONATE,
 		/** constant for the clan function of rejecting an applicant. @see Clan#getAuthority(int,Function) */
 		REJECT,
 		/** constant for the clan function of writing a new clan premise. @see Clan#getAuthority(int,Function) */
 		PREMISE,
 		/** constant for the clan function of acting as owner of clan property. @see Clan#getAuthority(int,Function) */
-		PROPERTYOWNER,
+		PROPERTY_OWNER,
 		/** constant for the clan function of withdrawing from clan bank accounts. @see Clan#getAuthority(int,Function) */
 		WITHDRAW,
 		/** constant for the clan function of ordering lower ranked clan members. @see Clan#getAuthority(int,Function) */
-		CANORDERUNDERLINGS,
+		ORDER_UNDERLINGS,
 		/** constant for the clan function of ordering mobs in clan conquered areas. @see Clan#getAuthority(int,Function) */
-		CANORDERCONQUERED,
+		ORDER_CONQUERED,
 		/** constant for the clan function of voting on promotions. @see Clan#getAuthority(int,Function) */
-		VOTEASSIGN,
+		VOTE_ASSIGN,
 		/** constant for the clan function of voting on non-promotion questions . @see Clan#getAuthority(int,Function) */
-		VOTEOTHER,
+		VOTE_OTHER,
 		/** constant for the clan function of depositing and listing clan bank accounts. @see Clan#getAuthority(int,Function) */
-		DEPOSITLIST,
+		DEPOSIT_LIST,
 		/** constant for the clan function of declaring war and peace . @see Clan#getAuthority(int,Function) */
 		DECLARE,
 		/** constant for the clan function of changing the clans tax rate. @see Clan#getAuthority(int,Function) */
@@ -808,13 +808,13 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
 		/** constant for the clan function of using the morgue. @see Clan#getAuthority(int,Function) */
 		MORGUE,
 		/** constant for the clan function of seeing private members. @see Clan#getAuthority(int,Function) */
-		LISTMEMBERS,
+		LIST_MEMBERS,
 		/** constant for the clan function of enjoying clan homes. @see Clan#getAuthority(int,Function) */
-		HOMEPRIVILEGES,
+		HOME_PRIVS,
 		/** constant for the clan function of enjoying clan homes. @see Clan#getAuthority(int,Function) */
-		CLANSPELLS,
+		CLAN_SPELLS,
 		/** constant for the clan function of enjoying clan homes. @see Clan#getAuthority(int,Function) */
-		CLANTITLES,
+		CLAN_TITLES,
 	}
 	
 	/**
@@ -925,6 +925,7 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
 			default: Log.errOut("Clan","setStat:Unhandled:"+stat.toString()); break;
 			}
 		}
+		public String toString() { return ID;}
 	}
 
 	/**
@@ -944,6 +945,8 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
 		public int		acceptPos;
 		/** A short description of this government type for players */
 		public String	shortDesc;
+		/** A long description of this government type for players */
+		public String	longDesc;
 		/** Zapper mask for requirements to even apply */
 		public String	requiredMaskStr;
 		/**  Whether this clan type is shown on the list  */
@@ -988,6 +991,7 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
 		 * @param conquestItemLoyalty
 		 * @param conquestDeityBasis
 		 * @param shortDesc
+		 * @param longDesc
 		 * @param maxVoteDays
 		 * @param voteQuorumPct
 		 */
@@ -995,13 +999,13 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
 						  String requiredMask, AutoPromoteFlag autoPromoteBy, boolean isPublic, boolean isFamilyOnly,
 						  Integer overrideMinMembers,
 						  boolean conquestEnabled, boolean conquestItemLoyalty, boolean conquestDeityBasis,
-						  String shortDesc, int maxVoteDays, int voteQuorumPct)
+						  String shortDesc, String longDesc, int maxVoteDays, int voteQuorumPct)
 		{
 			this.ID=ID; this.name=name; this.positions=pos; this.autoRole=autoPos; this.acceptPos=acceptPos;
 			this.requiredMaskStr=requiredMask; this.autoPromoteBy=autoPromoteBy; this.isPublic=isPublic;
 			this.isFamilyOnly=isFamilyOnly; this.overrideMinMembers=overrideMinMembers; 
 			this.conquestEnabled=conquestEnabled; this.conquestItemLoyalty=conquestItemLoyalty;
-			this.conquestDeityBasis=conquestDeityBasis; this.shortDesc=shortDesc;
+			this.conquestDeityBasis=conquestDeityBasis; this.shortDesc=shortDesc; this.longDesc=longDesc;
 			this.maxVoteDays=maxVoteDays;this.voteQuorumPct=voteQuorumPct;
 			this.requiredMask=CMLib.masking().maskCompile(requiredMaskStr);
 		}
@@ -1051,7 +1055,7 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
 		private static enum GOVT_STAT_CODES {
 			NAME,AUTOROLE,ACCEPTPOS,SHORTDESC,REQUIREDMASK,ISPUBLIC,ISFAMILYONLY,OVERRIDEMINMEMBERS,
 			CONQUESTENABLED,CONQUESTITEMLOYALTY,CONQUESTDEITYBASIS,MAXVOTEDAYS,VOTEQUORUMPCT,
-			AUTOPROMOTEBY,VOTEFUNCS
+			AUTOPROMOTEBY,VOTEFUNCS,LONGDESC
 		};
 		public String[] getStatCodes() { return CMParms.toStringArray(GOVT_STAT_CODES.values());}
 		public int getSaveStatIndex() { return GOVT_STAT_CODES.values().length;}
@@ -1066,6 +1070,7 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
 			case AUTOROLE: return (autoRole < 0 || autoRole > positions.length) ? "" : positions[autoRole].ID;
 			case ACCEPTPOS: return (acceptPos < 0 || acceptPos > positions.length) ? "" : positions[acceptPos].ID;
 			case SHORTDESC: return shortDesc;
+			case LONGDESC: return longDesc;
 			case REQUIREDMASK: return requiredMaskStr;
 			case ISPUBLIC: return Boolean.toString(isPublic);
 			case ISFAMILYONLY: return Boolean.toString(isFamilyOnly);
@@ -1105,6 +1110,7 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
 			case AUTOROLE: { Position P=getPosition(val); if(P!=null) autoRole=P.roleID; break; }
 			case ACCEPTPOS: { Position P=getPosition(val); if(P!=null) acceptPos=P.roleID; break; }
 			case SHORTDESC: shortDesc=val; break;
+			case LONGDESC: longDesc=val; break;
 			case REQUIREDMASK: requiredMaskStr=val; requiredMask=CMLib.masking().maskCompile(requiredMaskStr); break; 
 			case ISPUBLIC: isPublic=CMath.s_bool(val); break;
 			case ISFAMILYONLY: isFamilyOnly=CMath.s_bool(val); break;

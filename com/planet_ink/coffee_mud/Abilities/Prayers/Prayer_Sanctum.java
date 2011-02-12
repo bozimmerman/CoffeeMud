@@ -47,7 +47,7 @@ public class Prayer_Sanctum extends Prayer
     {
         boolean inRoom=((CMLib.law().doesHavePriviledgesHere(mob,R))
                 ||((text().length()>0)&&(mob.Name().equals(text())))
-                ||((text().length()>0)&&(mob.getClanID().equals(text()))&&(CMLib.clans().authCheck(mob.getClanID(), mob.getClanRole(), Clan.Function.HOMEPRIVILEGES))));
+                ||((text().length()>0)&&(mob.getClanID().equals(text()))&&(CMLib.clans().authCheck(mob.getClanID(), mob.getClanRole(), Clan.Function.HOME_PRIVS))));
         for(int i=0;i<R.numInhabitants();i++)
         {
             MOB M=R.fetchInhabitant(i);

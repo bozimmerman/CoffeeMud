@@ -33,8 +33,6 @@ import java.util.*;
 */
 public interface GenericEditor extends CMLibrary
 {
-    public static interface CMEval { public Object eval(Object val, Object[] choices, boolean emptyOK) throws CMException; }
-    
     public void modifyGenArea(MOB mob, Area myArea) throws IOException;
     public void modifyRoom(MOB mob, Room R) throws IOException;
     public void modifyAccount(MOB mob, PlayerAccount A) throws IOException;
@@ -47,6 +45,7 @@ public interface GenericEditor extends CMLibrary
     public void modifyGenExit(MOB mob, Exit me) throws IOException;
     public void modifyGenRace(MOB mob, Race me) throws IOException;
     public void modifyPlayer(MOB mob, MOB me) throws IOException;
+    public void modifyGovernment(MOB mob, Clan.Government me) throws IOException;
     
     public Room changeRoomType(Room R, Room newRoom);
     public void spells(MOB mob, List<Ability> V, int showNumber, int showFlag, boolean inParms) throws IOException;
@@ -79,6 +78,16 @@ public interface GenericEditor extends CMLibrary
     public int prompt(MOB mob, int oldVal, int showNumber, int showFlag, String FieldDisp, String help) throws IOException;
     public long prompt(MOB mob, long oldVal, int showNumber, int showFlag, String FieldDisp) throws IOException;
     public long prompt(MOB mob, long oldVal, int showNumber, int showFlag, String FieldDisp, String help) throws IOException;
+    public String prompt(MOB mob,
+			            String oldVal,
+			            int showNumber,
+			            int showFlag,
+			            String FieldDisp,
+			            boolean emptyOK,
+			            boolean rawPrint,
+			            String help,
+			            CMEval eval,
+			            Object[] choices) throws IOException;
     public String prompt(MOB mob, 
                         String oldVal, 
                         int showNumber, 
@@ -86,6 +95,7 @@ public interface GenericEditor extends CMLibrary
                         String FieldDisp, 
                         boolean emptyOK, 
                         boolean rawPrint, 
+                        int maxChars,
                         String help, 
                         CMEval eval,
                         Object[] choices) throws IOException;
@@ -95,4 +105,22 @@ public interface GenericEditor extends CMLibrary
     public void promptStatInt(MOB mob, Modifiable E, String help, int showNumber, int showFlag, String FieldDisp, String Field) throws IOException;
     public void promptStatBool(MOB mob, Modifiable E, int showNumber, int showFlag, String FieldDisp, String Field) throws IOException;
     public void promptStatBool(MOB mob, Modifiable E, String help, int showNumber, int showFlag, String FieldDisp, String Field) throws IOException;
+    public void promptStatChoices(MOB mob, Modifiable E, String help, int showNumber, int showFlag, String FieldDisp, String Field, Object[] choices) throws IOException;
+	public void promptStatCommaChoices(MOB mob, Modifiable E, String help, int showNumber, int showFlag, String FieldDisp, String Field, Object[] choices) throws IOException;
+    
+    public static interface CMEval { public Object eval(Object val, Object[] choices, boolean emptyOK) throws CMException; }
+    public static class CMEvalStrChoice implements CMEval
+    { 
+    	public static CMEvalStrChoice INSTANCE = new CMEvalStrChoice();
+    	public Object eval(Object val, Object[] choices, boolean emptyOK) throws CMException
+    	{
+    		if(choices.length==0) return "";
+    		String str=val.toString().trim();
+    		for(Object o : choices)
+    			if(str.equalsIgnoreCase(o.toString()))
+					return o.toString();
+    		throw new CMException("That was not one of your choices.");
+    	}
+    }
+    
 }

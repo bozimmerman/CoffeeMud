@@ -56,7 +56,7 @@ public class Trap_Boomerang extends StdTrap
 		if((target!=invoker())&&(target.location()!=null))
 		{
 			boolean ok=((invoker()!=null)&&(invoker().location()!=null));
-			if((!ok)||(CMLib.dice().rollPercentage()<=target.charStats().getSave(CharStats.STAT_SAVE_TRAPS)))
+			if((!ok)||(doesSaveVsTraps(target)))
 				target.location().show(target,null,null,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,"<S-NAME> foil(s) a trap on "+affected.name()+"!");
 			else
 			if(target.location().show(target,target,this,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,"<S-NAME> set(s) off a trap!"))

@@ -328,7 +328,7 @@ public class StdTitle extends StdItem implements LandTitle
 			||(msg.source().getLiegeID().equals(landOwner())&&msg.source().isMarriedToLiege())
             ||(msg.source().getClanID().equals(landOwner())
                 &&(CMLib.clans().getClan(msg.source().getClanID())!=null)
-                &&(CMLib.clans().getClan(msg.source().getClanID()).getAuthority(msg.source().getClanRole(),Clan.Function.PROPERTYOWNER)!=Clan.Authority.CAN_NOT_DO)))
+                &&(CMLib.clans().getClan(msg.source().getClanID()).getAuthority(msg.source().getClanRole(),Clan.Function.PROPERTY_OWNER)!=Clan.Authority.CAN_NOT_DO)))
 		&&(msg.target()!=null)
 		&&(msg.target() instanceof MOB)
 		&&(!(msg.target() instanceof Banker))
@@ -344,7 +344,7 @@ public class StdTitle extends StdItem implements LandTitle
 			}
             if(msg.source().getClanID().equals(landOwner())
             &&(CMLib.clans().getClan(msg.source().getClanID())!=null)
-            &&(CMLib.clans().getClan(msg.source().getClanID()).getAuthority(msg.source().getClanRole(),Clan.Function.PROPERTYOWNER)!=Clan.Authority.CAN_NOT_DO))
+            &&(CMLib.clans().getClan(msg.source().getClanID()).getAuthority(msg.source().getClanRole(),Clan.Function.PROPERTY_OWNER)!=Clan.Authority.CAN_NOT_DO))
                 A.setLandOwner(((MOB)msg.target()).getClanID());
             else
     			A.setLandOwner(msg.target().Name());

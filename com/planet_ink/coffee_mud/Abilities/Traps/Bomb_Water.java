@@ -63,7 +63,7 @@ public class Bomb_Water extends StdBomb
 		{
 			if((target==invoker())
 			||(invoker().getGroupMembers(new HashSet<MOB>()).contains(target))
-			||(CMLib.dice().rollPercentage()<=target.charStats().getSave(CharStats.STAT_SAVE_TRAPS)))
+			||(doesSaveVsTraps(target)))
 				target.location().show(target,null,null,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,"<S-NAME> avoid(s) the water bomb!");
 			else
 			if(target.location().show(invoker(),target,this,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,affected.name()+" explodes water all over <T-NAME>!"))

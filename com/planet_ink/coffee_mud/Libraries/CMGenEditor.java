@@ -66,6 +66,15 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
     public void promptStatStr(MOB mob, Modifiable E, String help, int showNumber, int showFlag, String FieldDisp, String Field, boolean emptyOK)
     throws IOException
     { E.setStat(Field,prompt(mob,E.getStat(Field),showNumber,showFlag,FieldDisp,emptyOK,false,help,null,null)); }
+    public void promptStatStr(MOB mob, Modifiable E, String help, int showNumber, int showFlag, String FieldDisp, String Field, int maxChars)
+    throws IOException
+    { E.setStat(Field,prompt(mob,E.getStat(Field),showNumber,showFlag,FieldDisp,false,false,maxChars,help,null,null)); }
+    public void promptStatChoices(MOB mob, Modifiable E, String help, int showNumber, int showFlag, String FieldDisp, String Field, Object[] choices)
+    throws IOException
+    {	E.setStat(Field,prompt(mob,E.getStat(Field),showNumber,showFlag,FieldDisp,false,false,help,CMEvalStrChoice.INSTANCE,choices)); }
+	public void promptStatCommaChoices(MOB mob, Modifiable E, String help, int showNumber, int showFlag, String FieldDisp, String Field, Object[] choices)
+	throws IOException
+	{	E.setStat(Field,this.promptCommaList(mob, E.getStat(Field), showNumber, showFlag, FieldDisp, help, CMEvalStrChoice.INSTANCE, choices)); }
     public String prompt(MOB mob, String oldVal, int showNumber, int showFlag, String FieldDisp)
     throws IOException
     { return prompt(mob,oldVal,showNumber,showFlag,FieldDisp,false,false,null,null,null); }
@@ -110,6 +119,87 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
         return true;
     }
 
+    public String promptCommaList(MOB mob, 
+    							  String oldVal, 
+    							  int showNumber, 
+    							  int showFlag, 
+    							  String FieldDisp, 
+    							  String help, 
+    							  CMEval eval, 
+    							  Object[] choices) throws IOException
+    {
+        if((showFlag>0)&&(showFlag!=showNumber)) return oldVal;
+        mob.tell(showNumber+". "+FieldDisp+": '"+oldVal+"'.");
+        if((showFlag!=showNumber)&&(showFlag>-999)) return oldVal;
+        String newName="?";
+    	String promptStr="Enter a value to add/remove"+(help!=null?" (?)":"")+"\n\r:";
+    	String oldOldVal=oldVal;
+        while((mob.session()!=null)&&(!mob.session().killFlag()))
+        {
+            newName=mob.session().prompt(promptStr,"");
+            if(newName.equals("?")&&(help!=null))
+                mob.tell(help);
+            else
+            if(newName.trim().length()==0)
+            {
+            	if(oldVal.equals(oldOldVal))
+                    mob.tell("(no change)");
+            	return oldVal;
+            }
+            else
+            if(newName.equalsIgnoreCase("null"))
+        		oldVal="";
+            else
+            {
+                if(eval!=null)
+                try
+                {
+                    Object value=eval.eval(newName,choices,false);
+                    if(value instanceof String)
+                        newName=(String)value;
+                }
+                catch(CMException e)
+                {
+                    mob.tell(e.getMessage());
+                    continue;
+                }
+                List<String> curSet=CMParms.parseCommas(oldVal,true);
+                String oldOne=null;
+                for(String c : curSet)
+                	if(c.equalsIgnoreCase(newName))
+                		oldOne=c;
+                if(oldOne!=null)
+                {
+                	curSet.remove(oldOne);
+                	mob.tell("'"+oldOne+"' removed.");
+                }
+                else
+                {
+                	curSet.add(newName);
+                	mob.tell("'"+oldOne+"' added.");
+                }
+                oldVal=CMParms.toStringList(curSet);
+            }
+        }
+        mob.tell("(no change)");
+        return oldVal;
+    }
+    
+    public String prompt(MOB mob,
+			            String oldVal,
+			            int showNumber,
+			            int showFlag,
+			            String FieldDisp,
+			            boolean emptyOK,
+			            boolean rawPrint,
+			            String help,
+			            CMEval eval,
+			            Object[] choices)
+	throws IOException
+	{
+    	return prompt(mob,oldVal,showNumber,showFlag,FieldDisp,emptyOK,rawPrint,0,help,eval,choices);
+	}
+    
     public String prompt(MOB mob,
                          String oldVal,
                          int showNumber,
@@ -117,21 +207,26 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
                          String FieldDisp,
                          boolean emptyOK,
                          boolean rawPrint,
+                         int maxChars,
                          String help,
                          CMEval eval,
                          Object[] choices)
     throws IOException
     {
         if((showFlag>0)&&(showFlag!=showNumber)) return oldVal;
+        String showVal=oldVal;
+        if((maxChars > 0)&&(showVal.length()>maxChars)&& (!((showFlag!=showNumber)&&(showFlag>-999))))
+        	showVal=showVal.substring(0,maxChars)+"...";
         if(rawPrint)
-            mob.session().rawPrintln(showNumber+". "+FieldDisp+": '"+oldVal+"'.");
+            mob.session().rawPrintln(showNumber+". "+FieldDisp+": '"+showVal+"'.");
         else
-            mob.tell(showNumber+". "+FieldDisp+": '"+oldVal+"'.");
+            mob.tell(showNumber+". "+FieldDisp+": '"+showVal+"'.");
         if((showFlag!=showNumber)&&(showFlag>-999)) return oldVal;
         String newName="?";
+    	String promptStr="Enter a new value "+(emptyOK?"(or NULL)":"")+(help!=null?" (?)":"")+"\n\r:";
         while(newName.equals("?")&&(mob.session()!=null)&&(!mob.session().killFlag()))
         {
-            newName=mob.session().prompt("Enter a new value "+(emptyOK?"(or NULL)":"")+(help!=null?" (?)":"")+"\n\r:","");
+            newName=mob.session().prompt(promptStr,"");
             if(newName.equals("?")&&(help!=null))
                 mob.tell(help);
             else
@@ -5886,6 +5981,88 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
         }
     }
 
+    public void modifyClanPosition(MOB mob, Clan.Position me) throws IOException
+    {
+        if(mob.isMonster())
+            return;
+        boolean ok=false;
+        int showFlag=-1;
+        if(CMProps.getIntVar(CMProps.SYSTEMI_EDITORTYPE)>0)
+            showFlag=-999;
+        while((mob.session()!=null)&&(!mob.session().killFlag())&&(!ok))
+        {
+            int showNumber=0;
+            promptStatStr(mob,me,null,++showNumber,showFlag,"Simple ID","ID",false);
+            promptStatStr(mob,me,null,++showNumber,showFlag,"Name","NAME",false);
+            promptStatStr(mob,me,null,++showNumber,showFlag,"Name (Plural)","PLURALNAME",false);
+            promptStatInt(mob, me,++showNumber, showFlag,"Rank (low=better)", "RANK");
+            if((me.rank<0)||(me.rank>99)) me.rank=0;
+            promptStatInt(mob, me,++showNumber, showFlag,"Maximum", "MAX");
+            if((me.max<0)||(me.max>9999)) me.max=Integer.MAX_VALUE;
+            promptStatStr(mob,me,CMLib.masking().maskHelp("\n","disallow"),++showNumber,showFlag,"Required Mask","INNERMASK",false);
+            promptStatBool(mob, me,++showNumber, showFlag,"Is Public", "ISPUBLIC");
+            promptStatCommaChoices(mob, me,CMParms.toStringList(Clan.Function.values()),++showNumber, showFlag,"Powers", "FUNCTIONS",Clan.Function.values());
+            
+            if(showFlag<-900){ ok=true; break;}
+            if(showFlag>0){ showFlag=-1; continue;}
+            showFlag=CMath.s_int(mob.session().prompt("Edit which? ",""));
+            if(showFlag<=0)
+            {
+                showFlag=-1;
+                ok=true;
+            }
+        }
+    }
+    
+    public void clanGovernmentPositions(MOB mob, Clan.Government me, int showNumber, int showFlag) throws IOException
+    {
+        if((showFlag>0)&&(showFlag!=showNumber)) return;
+    	String list = CMParms.toStringList(me.positions);
+        mob.tell(showNumber+". Positions: "+list);
+        if((showFlag!=showNumber)&&(showFlag>-999)) return;
+    	String promptStr="Enter a position ID to edit/remove or ADD\n\r:";
+        while((mob.session()!=null)&&(!mob.session().killFlag()))
+        {
+            String word=mob.session().prompt(promptStr,"");
+            if(word.trim().length()==0)
+            {
+            	return;
+            }
+            if(word.trim().equalsIgnoreCase("ADD"))
+            {
+            	Clan.Position P=me.addPosition();
+            	modifyClanPosition(mob,P);
+            }
+            else
+            {
+	            Clan.Position editMe=null;
+	            for(Clan.Position pos : me.positions)
+	            	if(pos.ID.equalsIgnoreCase(word))
+	            		editMe=pos;
+	            if(editMe == null)
+	            {
+	            	list = CMParms.toStringList(me.positions);
+	            	mob.tell("Position "+word+" is not listed.  Try one of these: "+list);
+	            }
+	            else
+	            if(mob.session()!=null)
+	            {
+	            	String choice=mob.session().choose("Edit or Delete position "+editMe.ID+" (E/D/)?", "ED", "");
+	            	if(choice.equalsIgnoreCase("E"))
+		            	modifyClanPosition(mob,editMe);
+	            	else
+	            	if(choice.equalsIgnoreCase("D"))
+	            	{
+	            		if(me.positions.length==1)
+	            			mob.tell("You can't delete the last position.");
+	            		else
+		            		me.delPosition(editMe);
+	            	}
+	            }
+            }
+        }
+    }
+    
     public void modifyGovernment(MOB mob, Clan.Government me) throws IOException
     {
         if(mob.isMonster())
@@ -5897,8 +6074,36 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
         while((mob.session()!=null)&&(!mob.session().killFlag())&&(!ok))
         {
             int showNumber=0;
+            promptStatStr(mob,me,null,++showNumber,showFlag,"Type Name","NAME",false);
+            promptStatStr(mob,me,null,++showNumber,showFlag,"Short Desc","SHORTDESC",false);
+            promptStatStr(mob,me,null,++showNumber,showFlag,"Long Desc","LONGDESC",60);
+            promptStatStr(mob,me,CMLib.masking().maskHelp("\n","disallow"),++showNumber,showFlag,"Required Mask","REQUIREDMASK",false);
+            promptStatBool(mob, me,++showNumber, showFlag,"Is Public", "ISPUBLIC");
+            promptStatBool(mob, me,++showNumber, showFlag,"Requires Family", "ISFAMILYONLY");
+            promptStatInt(mob, me,++showNumber, showFlag,"Minimum Members", "OVERRIDEMINMEMBERS");
+            if((me.overrideMinMembers!=null)&&((me.overrideMinMembers.intValue()<0)||(me.overrideMinMembers.intValue()>999)))
+            	me.overrideMinMembers=null;
             
+            ++showNumber;
+            clanGovernmentPositions(mob,me,++showNumber,showFlag);
             
+            promptStatBool(mob, me,++showNumber, showFlag,"Conquest Enabled", "CONQUESTENABLED");
+            if(CMath.s_bool(me.getStat("CONQUESTENABLED")))
+            {
+	            promptStatBool(mob, me,++showNumber, showFlag,"Conq. Loyalty by Clan Items", "CONQUESTITEMLOYALTY");
+	            promptStatBool(mob, me,++showNumber, showFlag,"Conq. Loyalty by Worship", "CONQUESTDEITYBASIS");
+            }
+            promptStatCommaChoices(mob, me,CMParms.toStringList(Clan.Function.values()),++showNumber, showFlag,"Vote Approved", "VOTEFUNCS",Clan.Function.values());
+            if(me.getStat("VOTEFUNCS").length()>0)
+            {
+	            promptStatInt(mob, me,++showNumber, showFlag,"Max Vote Days", "MAXVOTEDAYS");
+	            if((me.maxVoteDays<0)||(me.maxVoteDays>999999)) me.maxVoteDays=10;
+	            promptStatInt(mob, me,++showNumber, showFlag,"Vote Quorum (Pct%)", "VOTEQUORUMPCT");
+	            if((me.voteQuorumPct<0)||(me.voteQuorumPct>100)) me.voteQuorumPct=100;
+            }
+            promptStatChoices(mob,me,CMParms.toStringList(Clan.AutoPromoteFlag.values()),++showNumber,showFlag,"Auto-Promotion","AUTOPROMOTEBY",Clan.AutoPromoteFlag.values());
+            promptStatChoices(mob,me,CMParms.toStringList(me.positions),++showNumber,showFlag,"Apply Role","AUTOROLE",me.positions);
+            promptStatChoices(mob,me,CMParms.toStringList(me.positions),++showNumber,showFlag,"Accept Role","ACCEPTPOS",me.positions);
             
             if(showFlag<-900){ ok=true; break;}
             if(showFlag>0){ showFlag=-1; continue;}

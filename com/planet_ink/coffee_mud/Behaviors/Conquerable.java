@@ -1286,7 +1286,7 @@ public class Conquerable extends Arrest
             endClanRule(); 
             return false;
         }
-		return C.getAuthority(M.getClanRole(),Clan.Function.CANORDERCONQUERED)==Clan.Authority.CAN_DO;
+		return C.getAuthority(M.getClanRole(),Clan.Function.ORDER_CONQUERED)==Clan.Authority.CAN_DO;
 	}
 
 	protected boolean theLawIsEnabled()

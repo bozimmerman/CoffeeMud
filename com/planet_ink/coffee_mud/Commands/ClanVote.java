@@ -59,9 +59,9 @@ public class ClanVote extends StdCommand
 			{
 				Clan.ClanVote CV=(Clan.ClanVote)e.nextElement();
 				if(((CV.function==Clan.Function.ASSIGN.ordinal())
-					&&(C.getAuthority(mob.getClanRole(),Clan.Function.VOTEASSIGN)!=Clan.Authority.CAN_NOT_DO))
+					&&(C.getAuthority(mob.getClanRole(),Clan.Function.VOTE_ASSIGN)!=Clan.Authority.CAN_NOT_DO))
 				||((CV.function!=Clan.Function.ASSIGN.ordinal())
-					&&(C.getAuthority(mob.getClanRole(),Clan.Function.VOTEOTHER)!=Clan.Authority.CAN_NOT_DO)))
+					&&(C.getAuthority(mob.getClanRole(),Clan.Function.VOTE_OTHER)!=Clan.Authority.CAN_NOT_DO)))
 						votesForYou.addElement(CV);
 			}
 			if(commands.size()<2)

@@ -999,6 +999,29 @@ public class Create extends StdCommand
 			}
 		}
 		else
+		if(commandType.equals("GOVERNMENT"))
+		{
+			if(!CMSecurity.isAllowed(mob,mob.location(),"CMDCLANS")) return errorOut(mob);
+			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"^S<S-NAME> wave(s) <S-HIS-HER> arms...^?");
+			if(commands.size()<3)
+				mob.tell("You must specify a valid government name.  Try LIST GOVERNMENTS.");
+			else
+			{
+				String name=CMParms.combine(commands,2);
+				Clan.Government G=CMLib.clans().createGovernment(name);
+				if(G==null)
+					mob.tell("You must specify an unused government name.");
+				else
+				if(!mob.isMonster())
+				{
+					mob.tell("Government '"+G.name+"' created.");
+					CMLib.genEd().modifyGovernment(mob, G);
+					CMLib.clans().reSaveGovernmentsXML();
+                    Log.sysOut("CreateEdit",mob.Name()+" created Clan Government "+G.name+".");
+				}
+			}
+		}
+		else
 		{
 			String allWord=CMParms.combine(commands,1);
 			String lastWord=null;
@@ -1063,10 +1086,10 @@ public class Create extends StdCommand
 						execute(mob,commands,metaFlags);
 					}
 					else
-						mob.tell("\n\rYou cannot create a '"+commandType+"'. However, you might try an EXIT, ITEM, QUEST, FACTION, COMPONENT, HOLIDAY, CLAN, MOB, RACE, ABILITY, CLASS, POLL, USER, or ROOM.");
+						mob.tell("\n\rYou cannot create a '"+commandType+"'. However, you might try an EXIT, ITEM, QUEST, FACTION, COMPONENT, GOVERNMENT, HOLIDAY, CLAN, MOB, RACE, ABILITY, CLASS, POLL, USER, or ROOM.");
 				}
 				else
-					mob.tell("\n\rYou cannot create a '"+commandType+"'. However, you might try an EXIT, ITEM, QUEST, FACTION, MOB, COMPONENT, HOLIDAY, CLAN, RACE, ABILITY, CLASS, POLL, USER, or ROOM.");
+					mob.tell("\n\rYou cannot create a '"+commandType+"'. However, you might try an EXIT, ITEM, QUEST, FACTION, MOB, COMPONENT, GOVERNMENT, HOLIDAY, CLAN, RACE, ABILITY, CLASS, POLL, USER, or ROOM.");
 			}
 		}
 		return false;

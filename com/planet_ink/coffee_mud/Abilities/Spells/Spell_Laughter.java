@@ -83,7 +83,7 @@ public class Spell_Laughter extends Spell
 
 		int levelDiff=target.phyStats().level()-(mob.phyStats().level()+(2*getXLEVELLevel(mob)));
 		if(levelDiff<0) levelDiff=0;
-		if(levelDiff>7) levelDiff=7;
+		if(levelDiff>5) levelDiff=5;
 
 		// if they can't hear the sleep spell, it
 		// won't happen
