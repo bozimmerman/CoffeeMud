@@ -1025,9 +1025,10 @@ public class DefaultClan implements Clan
                 			if((bestPos==null)||(currentPos.rank < bestPos.rank))
                 				bestPos=currentPos;
                     	}
-                        for(Iterator<MemberRecord> i=highestQualifiedMembers.iterator();i.hasNext();)
-                        	if(i.next().role != bestPos.roleID)
-                        		i.remove();
+                        if(bestPos!=null)
+	                        for(Iterator<MemberRecord> i=highestQualifiedMembers.iterator();i.hasNext();)
+	                        	if(i.next().role != bestPos.roleID)
+	                        		i.remove();
             		}
                     
                 	int highestLevel=-1;
@@ -1383,7 +1384,7 @@ public class DefaultClan implements Clan
         int level = -1;
         for(MemberRecord member : members)
         {
-        	if(topRoles.contains(member.role))
+        	if(topRoles.contains(Integer.valueOf(member.role)))
         	{
         		MOB M=CMLib.players().getLoadPlayer(member.name);
         		if((M!=null)&&(M.basePhyStats().level() > level))
@@ -1397,7 +1398,7 @@ public class DefaultClan implements Clan
         for(MemberRecord member : members)
             if((member.role<govt().positions.length)
             &&(member.role>=0)
-            &&(newPos==null)||(govt().positions[member.role].rank<newPos.rank))
+            &&((newPos==null)||(govt().positions[member.role].rank<newPos.rank)))
             {
             	newPos = govt().positions[member.role];
             	memberName = member.name;

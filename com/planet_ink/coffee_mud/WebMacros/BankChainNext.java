@@ -68,7 +68,7 @@ public class BankChainNext extends StdWebMacro
 				playerM.setLocation(M.location());
 				playerM.setStartRoom(M.getStartRoom());
 				playerM.setClanID(C.clanID());
-				playerM.setClanRole(C.getTopRankedRoles(Function.DEPOSIT_LIST).get(0));
+				playerM.setClanRole(C.getTopRankedRoles(Function.DEPOSIT_LIST).get(0).intValue());
 				destroyPlayer=true;
 			}
 			else

@@ -1757,7 +1757,7 @@ public class DefaultSession extends Thread implements Session
 
 	private static enum SESS_STAT_CODES {PREVCMD,ISAFK,AFKMESSAGE,ADDRESS,IDLETIME,
 										 LASTMSG,LASTNPCFIGHT,LASTPKFIGHT,TERMTYPE,
-										 TOTALMILLIS,TOTALTICKS,WRAP,LASTLOOPTIME};
+										 TOTALMILLIS,TOTALTICKS,WRAP,LASTLOOPTIME}
 	public int getSaveStatIndex() { return SESS_STAT_CODES.values().length;}
 	public String[] getStatCodes() { return CMParms.toStringArray(SESS_STAT_CODES.values());}
 	public boolean isStat(String code) { return getStatIndex(code)!=null;}

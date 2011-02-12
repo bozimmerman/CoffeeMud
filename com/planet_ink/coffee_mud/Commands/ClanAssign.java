@@ -119,7 +119,7 @@ public class ClanAssign extends StdCommand
 							    int numMembers=0;
 								for(MemberRecord member : members)
 								    if(!M.Name().equalsIgnoreCase(member.name))
-										if(topRoleIDs.contains(member.role))
+										if(topRoleIDs.contains(Integer.valueOf(member.role)))
 											numMembers++;
 								if(numMembers==0)
 								{

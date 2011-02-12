@@ -865,7 +865,7 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
 		
 		private static enum POS_STAT_CODES {
 			ID,RANK,NAME,PLURALNAME,MAX,INNERMASK,ISPUBLIC,FUNCTIONS
-		};
+		}
 		public String[] getStatCodes() { return CMParms.toStringArray(POS_STAT_CODES.values());}
 		public int getSaveStatIndex() { return POS_STAT_CODES.values().length;}
 		private POS_STAT_CODES getStatIndex(String code) { return (POS_STAT_CODES)CMath.s_valueOf(POS_STAT_CODES.values(),code); }
@@ -1056,7 +1056,7 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
 			NAME,AUTOROLE,ACCEPTPOS,SHORTDESC,REQUIREDMASK,ISPUBLIC,ISFAMILYONLY,OVERRIDEMINMEMBERS,
 			CONQUESTENABLED,CONQUESTITEMLOYALTY,CONQUESTDEITYBASIS,MAXVOTEDAYS,VOTEQUORUMPCT,
 			AUTOPROMOTEBY,VOTEFUNCS,LONGDESC
-		};
+		}
 		public String[] getStatCodes() { return CMParms.toStringArray(GOVT_STAT_CODES.values());}
 		public int getSaveStatIndex() { return GOVT_STAT_CODES.values().length;}
 		private GOVT_STAT_CODES getStatIndex(String code) { return (GOVT_STAT_CODES)CMath.s_valueOf(GOVT_STAT_CODES.values(),code); }
