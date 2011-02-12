@@ -156,7 +156,7 @@ public interface Environmental extends Tickable, StatsAffecting, MsgListener, Co
     /**
      * Whether this object instance is functionally identical to the object passed in.  Works by repeatedly
      * calling getStat on both objects and comparing the values.
-     * @see com.planet_ink.coffee_mud.core.interfaces.ModigetStatCodes()
+     * @see com.planet_ink.coffee_mud.core.interfaces.Modifiable#getStatCodes()
      * @see com.planet_ink.coffee_mud.core.interfaces.Modifiable#getStat(String)
      * @param E the object to compare this one to
      * @return whether this object is the same as the one passed in
