@@ -550,9 +550,21 @@ public class DefaultClan implements Clan
                     msg.append("^xRecall          :^.^N "+R.displayText()+"\n\r");
             }
         }
-        for(Position pos : govt().positions)
-        	if(pos.isPublic)
-	            msg.append("^x"+CMStrings.padRight(pos.pluralName,16)+":^.^N "+crewList(pos.roleID)+"\n\r");
+        final Set<Position> sortedPositions=new HashSet<Position>();
+        for(int i=0;i<govt().positions.length;i++)
+        {
+        	Position topRankedPos=null;
+	        for(Position pos : govt().positions)
+	        	if((pos.isPublic)
+	        	&&(!sortedPositions.contains(pos))
+	        	&&((topRankedPos==null)||(pos.rank < topRankedPos.rank)))
+	        		topRankedPos = pos;
+	        if(topRankedPos != null)
+	        {
+		        msg.append("^x"+CMStrings.padRight(topRankedPos.pluralName,16)+":^.^N "+crewList(topRankedPos.roleID)+"\n\r");
+	        	sortedPositions.add(topRankedPos);
+	        }
+        }
         msg.append("^xTotal Members   :^.^N "+getSize()+"\n\r");
         if(CMLib.clans().numClans()>1)
         {

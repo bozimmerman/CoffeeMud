@@ -145,7 +145,8 @@ public class ClanAssign extends StdCommand
 							CMLib.clans().clanAnnounce(mob,M.name()+" of the "+C.getGovernmentName()+" "+C.clanID()+" changed from "+C.getRoleName(M.getClanRole(),true,false)+" to "+C.getRoleName(newPos,true,false)+".");
                             C.addMember(M,newPos);
 							mob.tell(M.Name()+" of the "+C.getGovernmentName()+" "+C.clanID()+" has been assigned to be "+CMLib.english().startWithAorAn(C.getRoleName(newPos,false,false))+". ");
-							M.tell("You have been assigned to be "+CMLib.english().startWithAorAn(C.getRoleName(newPos,false,false))+" of "+C.getGovernmentName()+" "+C.clanID()+".");
+							if((M.session()!=null)&&(M.session().mob()==M))
+								M.tell("You have been assigned to be "+CMLib.english().startWithAorAn(C.getRoleName(newPos,false,false))+" of "+C.getGovernmentName()+" "+C.clanID()+".");
 							return false;
 						}
 					}

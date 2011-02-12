@@ -98,7 +98,8 @@ public class ClanAccept extends StdCommand
                             C.addMember(M,C.getGovernment().acceptPos);
 							CMLib.clans().clanAnnounce(mob,M.Name()+" is now a new member of "+C.getGovernmentName()+" "+C.name()+".");
 							mob.tell(M.Name()+" has been accepted into "+C.getGovernmentName()+" '"+C.clanID()+"'.");
-							M.tell(mob.Name()+" has accepted you as a member of "+C.getGovernmentName()+" '"+C.clanID()+"'.");
+							if((M.session()!=null)&&(M.session().mob()==M))
+								M.tell(mob.Name()+" has accepted you as a member of "+C.getGovernmentName()+" '"+C.clanID()+"'.");
 							return false;
 						}
 					}

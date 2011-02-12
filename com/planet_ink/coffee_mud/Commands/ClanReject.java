@@ -95,7 +95,8 @@ public class ClanReject extends StdCommand
 						{
                             C.delMember(M);
 							mob.tell(M.Name()+" has been denied acceptance to "+C.getGovernmentName()+" '"+C.clanID()+"'.");
-							M.tell("You have been rejected as a member of "+C.getGovernmentName()+" '"+C.clanID()+"'.");
+							if((M.session()!=null)&&(M.session().mob()==M))
+								M.tell("You have been rejected as a member of "+C.getGovernmentName()+" '"+C.clanID()+"'.");
 							return false;
 						}
 					}

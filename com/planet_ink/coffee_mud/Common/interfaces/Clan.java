@@ -857,7 +857,7 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
 		 */
 		public Position(String ID, int roleID, int rank, String name, String plural, int max, String innerMask, Authority[] funcChart, boolean isPublic)
 		{
-			this.ID=ID; this.roleID=roleID; this.pluralName=name; this.innerMaskStr=innerMask;
+			this.ID=ID; this.roleID=roleID; this.pluralName=plural; this.innerMaskStr=innerMask;
 			this.rank=rank; this.name=name; this.max=max;this.functionChart=funcChart;
 			this.isPublic=isPublic;
 			internalMask=CMLib.masking().maskCompile(innerMask);

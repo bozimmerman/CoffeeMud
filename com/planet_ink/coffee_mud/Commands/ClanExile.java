@@ -90,7 +90,8 @@ public class ClanExile extends StdCommand
 						{
 							CMLib.clans().clanAnnounce(mob,"Member exiled from "+C.getGovernmentName()+" "+C.name()+": "+M.Name());
                             mob.tell(M.Name()+" has been exiled from "+C.getGovernmentName()+" '"+C.clanID()+"'.");
-                            M.tell("You have been exiled from "+C.getGovernmentName()+" '"+C.clanID()+"'.");
+							if((M.session()!=null)&&(M.session().mob()==M))
+	                            M.tell("You have been exiled from "+C.getGovernmentName()+" '"+C.clanID()+"'.");
                             C.delMember(M);
 							return false;
 						}
