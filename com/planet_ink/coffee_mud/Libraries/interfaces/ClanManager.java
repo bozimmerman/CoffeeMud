@@ -164,6 +164,15 @@ public interface ClanManager extends CMLibrary
     public boolean isFamilyOfMembership(MOB M, List<MemberRecord> members);
     
     /**
+     * Returns help on the government type named, if it is available
+     * @param mob the viewer of the government type
+     * @param named the possible name of the government
+     * @param exact true to only match exact, or false otherwise
+     * @return null, or the help for the government named
+     */
+    public String getGovernmentHelp(MOB mob, String named, boolean exact);
+    
+    /**
      * Returns a government definition object of the given internal
      * stock clangovernments.xml id.  See /resources/clangovernments.xml
      * Also:

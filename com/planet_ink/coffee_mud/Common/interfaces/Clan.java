@@ -974,6 +974,9 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
 		/** Zapper mask for requirements to even apply */
 		public CompiledZapperMask   requiredMask;
 		
+		/** A save help entry of this government type for players */
+		public String	helpStr = null;
+		
 		/**
 		 * Initialize a new Clan Government
 		 * @param ID

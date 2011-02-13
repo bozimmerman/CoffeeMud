@@ -335,7 +335,7 @@ public class Clans extends StdLibrary implements ClanManager
     	return lastGovernmentLoad;
     }
 
-    public String getSocialsHelp(MOB mob, String named, boolean exact)
+    public String getGovernmentHelp(MOB mob, String named, boolean exact)
     {
     	Clan.Government helpG=null;
     	for(Clan.Government G : getStockGovernments())
@@ -346,35 +346,146 @@ public class Clans extends StdLibrary implements ClanManager
         	for(Clan.Government G : getStockGovernments())
         		if(G.name.toUpperCase().startsWith(named.toUpperCase()))
         			helpG=G;
-    	if(helpG==null) return null;
-    	StringBuilder str=new StringBuilder("\n\rOrganization type: "+helpG.name+"\n\r");
-    	str.append(helpG.longDesc).append("\n\r").append("\n\r");
-    	int[] posses=new int[helpG.positions.length];
-    	List<Position> sortedPositions=new Vector<Position>();
-    	while(sortedPositions.size() < helpG.positions.length)
+    	if(helpG==null)
     	{
-    		Position highPos=null;
+    		List<Clan.Government> gtypes=new LinkedList<Clan.Government>();
+    		String name=null;
+        	for(Clan.Government G : getStockGovernments())
+        		for(Position P : G.positions)
+        			if(P.name.equalsIgnoreCase(named)||P.pluralName.equalsIgnoreCase(named))
+        			{
+        				gtypes.add(G);
+        				name=P.name;
+        			}
+        	if(gtypes.size()==0)
+        	{
+        		if(exact) return null;
+            	for(Clan.Government G : getStockGovernments())
+            		for(Position P : G.positions)
+            			if(P.name.toUpperCase().startsWith(named.toUpperCase())
+            				||P.pluralName.toUpperCase().startsWith(named.toUpperCase()))
+            			{
+            				gtypes.add(G);
+            				name=P.name;
+            			}
+        	}
+        	if(gtypes.size()==0)
+        		return null;
+        	String[] typeNames=new String[gtypes.size()];
+        	for(int g=0;g<gtypes.size();g++)
+        		typeNames[g]=gtypes.get(g).name;
+        	return "The "+name+" is a rank or position within the following clan types: "
+        		   +CMLib.english().toEnglishStringList(typeNames)
+        		   +".  Please see help on CLAN or on one of the listed clan types for more information. ";
+    	}
+    	if(helpG.longDesc.length()==0)
+    		return null;
+    	if(helpG.helpStr==null)
+    	{
+	    	StringBuilder str=new StringBuilder("\n\rOrganization type: "+helpG.name+"\n\r\n\r");
+	    	str.append(helpG.longDesc).append("\n\r").append("\n\rAuthority Chart:\n\r\n\r");
+	    	final List<Position> showablePositions=new Vector<Position>();
     		for(Position P : helpG.positions)
-    			if((!sortedPositions.contains(P))
-    			&&((highPos==null)||(highPos.rank>P.rank)))
-    				highPos=P;
-    		sortedPositions.add(highPos);
+    		{
+    			boolean showMe=false;
+    			for(Clan.Authority a : P.functionChart)
+    				if(a==Authority.CAN_DO)
+    					showMe=true;
+    			if(showMe)
+    				showablePositions.add(P);
+    		}
+	    	final List<Position> sortedPositions=new Vector<Position>();
+	    	while(sortedPositions.size() < showablePositions.size())
+	    	{
+	    		Position highPos=null;
+	    		for(Position P : showablePositions)
+	    			if((!sortedPositions.contains(P))
+	    			&&((highPos==null)||(highPos.rank<P.rank)))
+	    				highPos=P;
+	    		sortedPositions.add(highPos);
+	    	}
+	    	final int[] posses=new int[sortedPositions.size()];
+	    	int posTotalLen=0;
+	    	for(int p=0;p<sortedPositions.size();p++)
+	    	{
+	    		posses[p]=sortedPositions.get(p).name.length()+2;
+	    		posTotalLen+=posses[p];
+	    	}
+	    	int funcMaxLen=0;
+	    	int funcTotal=0;
+	    	String[] functionNames=new String[Clan.Function.values().length];
+	    	for(int f=0;f<Clan.Function.values().length;f++)
+	    	{
+	    		Clan.Function func=Clan.Function.values()[f];
+				funcTotal+=func.name().length()+1;
+	    		if(func.name().length() > funcMaxLen)
+	    			funcMaxLen=func.name().length()+1;
+	    		functionNames[f]=func.name();
+	    	}
+	    	int funcAvg = funcTotal / Clan.Function.values().length;
+	    	int funcMaxAvg = (int)CMath.round((double)funcAvg * 1.3);
+	    	while((funcMaxLen > funcMaxAvg)&&((funcMaxAvg + posTotalLen)>78))
+	    		funcMaxLen--;
+	    	if(posses.length>0)
+		    	while((funcMaxLen + posTotalLen) > 78)
+		    	{
+		    		int highPos=0;
+		        	for(int p=1;p<sortedPositions.size();p++)
+		        		if(posses[p]>posses[highPos])
+		        			highPos=p;
+		        	posTotalLen--;
+		        	posses[highPos]--;
+		    	}
+	    	
+	    	final int commandColLen = funcMaxLen;
+	    	str.append(CMStrings.padRight("Command",commandColLen-1)).append("!");
+	    	for(int p=0;p<posses.length;p++)
+	    	{
+	    		Clan.Position pos = sortedPositions.get(p);
+	    		String name=CMStrings.capitalizeAndLower(pos.name.replace('_',' '));
+		    	str.append(CMStrings.padRight(name,posses[p]-1));
+		    	if(p<posses.length-1)
+		    		str.append("!");
+	    	}
+	    	str.append("\n\r");
+	    	Object lineDraw = new Object(){
+	    		private static final String line = "----------------------------------------------------------------------------"; 
+	    		public String toString() {
+	    			StringBuilder s=new StringBuilder("");
+	    	    	s.append(line.substring(0,commandColLen-1)).append("+");
+	    	    	for(int p=0;p<posses.length;p++)
+	    	    	{
+	    		    	s.append(CMStrings.padRight(line,posses[p]-1));
+	    		    	if(p<posses.length-1)
+	    		    		s.append("+");
+	    	    	}
+	    	    	return s.toString();
+	    		}
+	    	};
+	    	str.append(lineDraw.toString()).append("\n\r");
+	    	for(Clan.Function func : Clan.Function.values())
+	    	{
+	    		String fname=CMStrings.capitalizeAndLower(func.toString().replace('_', ' '));
+		    	str.append(CMStrings.padRight(fname,commandColLen-1)).append("!");
+		    	for(int p=0;p<sortedPositions.size();p++)
+		    	{
+		    		Clan.Position pos = sortedPositions.get(p);
+		    		Authority auth = pos.functionChart[func.ordinal()];
+		    		String x = "";
+		    		if(auth==Authority.CAN_DO)
+		    			x="X";
+		    		else
+		    		if(auth==Authority.MUST_VOTE_ON)
+		    			x="v";
+    		    	str.append(CMStrings.padCenter(x,posses[p]-1));
+    		    	if(p<posses.length-1)
+    		    		str.append("!");
+		    	}
+		    	str.append("\n\r").append(lineDraw.toString()).append("\n\r");
+	    	}
+	    	helpG.helpStr=str.toString();
     	}
-    	int totalLen=0;
-    	for(int p=0;p<sortedPositions.size();p++)
-    	{
-    		posses[p]=sortedPositions.get(p).name.length()+2;
-    		totalLen+=posses[p];
-    	}
-    	int funcLen=0;
-    	for(Clan.Function func : Clan.Function.values())
-    		if(func.name().length() > funcLen)
-    			funcLen=func.name().length()+1;
-    	while((funcLen + totalLen) > 78)
-    	{
-    		
-    	}
-    	return str.toString();
+    	return helpG.helpStr;
     }
     
     public Clan.Government createAnarchy()
