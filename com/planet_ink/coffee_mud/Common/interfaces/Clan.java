@@ -904,7 +904,7 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
 			{
 			case NAME: name=val; break;
 			case ISPUBLIC: isPublic=CMath.s_bool(val); break;
-			case ID: ID=val; break;
+			case ID: ID=val.toUpperCase().trim(); break;
 			case RANK: rank=CMath.s_int(val); break;
 			case MAX: max=CMath.s_int(val); break;
 			case PLURALNAME: pluralName=val; break;
@@ -916,8 +916,8 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
 						functionChart[a]=Authority.CAN_NOT_DO;
 				for(final String funcName : funcs)
 				{
-					Authority auth=(Authority)CMath.s_valueOf(Function.values(), funcName);
-					if(auth!=null) functionChart[auth.ordinal()] = Authority.CAN_DO;
+					Clan.Function func=(Clan.Function)CMath.s_valueOf(Function.values(), funcName);
+					if(func!=null) functionChart[func.ordinal()] = Authority.CAN_DO;
 				}
 				break;
 			}
@@ -1126,7 +1126,7 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
 			case MAXVOTEDAYS: maxVoteDays=CMath.s_int(val); break;
 			case VOTEQUORUMPCT: voteQuorumPct=CMath.s_int(val); break;
 			case AUTOPROMOTEBY:{
-				AutoPromoteFlag flag=(AutoPromoteFlag)CMath.s_valueOf(AutoPromoteFlag.values(),code);
+				AutoPromoteFlag flag=(AutoPromoteFlag)CMath.s_valueOf(AutoPromoteFlag.values(),val);
 				if(flag!=null) autoPromoteBy=flag;
 				break;
 			}

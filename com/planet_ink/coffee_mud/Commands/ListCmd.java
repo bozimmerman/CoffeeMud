@@ -1491,20 +1491,29 @@ public class ListCmd extends StdCommand
     public String listClanGovernments(MOB mob,List commands)
     {
         StringBuilder buf=new StringBuilder("^xAll Clan Governments: ^N\n\r");
+        int glen=0;
     	for(Clan.Government G : CMLib.clans().getStockGovernments())
-    	{
-            buf.append(CMStrings.padRight(G.name,30)+": "+G.shortDesc+"\n\r");
-    	}
+    		if(G.name.length()>glen)
+    			glen=G.name.length();
+    	for(Clan.Government G : CMLib.clans().getStockGovernments())
+            buf.append(CMStrings.padRight(G.name,glen)+": "+CMStrings.limit(G.shortDesc,78-glen-2)+"\n\r");
     	return buf.toString();
     }
     
     public String listClans(MOB mob,List commands)
     {
         StringBuilder buf=new StringBuilder("^xAll Clans: ^N\n\r");
+        int clen=0;
     	for(Enumeration<Clan> c=CMLib.clans().clans();c.hasMoreElements();)
     	{
     		Clan C=c.nextElement();
-            buf.append(CMStrings.padRight(C.clanID(),30)+": "+C.getMemberList().size()+" members\n\r");
+    		if(C.clanID().length()>clen)
+    			clen=C.clanID().length();
+    	}
+    	for(Enumeration<Clan> c=CMLib.clans().clans();c.hasMoreElements();)
+    	{
+    		Clan C=c.nextElement();
+            buf.append(CMStrings.padRight(C.clanID(),clen)+": "+CMStrings.limit(C.getMemberList().size()+" members",78-clen-2)+"\n\r");
     	}
     	return buf.toString();
     }

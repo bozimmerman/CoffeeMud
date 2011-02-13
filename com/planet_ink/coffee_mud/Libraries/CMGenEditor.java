@@ -176,7 +176,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
                 else
                 {
                 	curSet.add(newName);
-                	mob.tell("'"+oldOne+"' added.");
+                	mob.tell("'"+newName+"' added.");
                 }
                 oldVal=CMParms.toStringList(curSet);
             }

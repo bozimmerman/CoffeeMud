@@ -178,12 +178,12 @@
         </POSITION>
     </POSITIONS>
     <VOTING MAXDAYS=24 QUORUMPCT=100>
-        <POWER>PREMISE</POWER>
         <POWER>SET_DONATE</POWER>
-        <POWER>TAX</POWER>
         <POWER>DECLARE</POWER>
-        <POWER>ASSIGN</POWER>
+        <POWER>PREMISE</POWER>
         <POWER>SET_HOME</POWER>
+        <POWER>ASSIGN</POWER>
+        <POWER>TAX</POWER>
     </VOTING>
     <AUTOPOSITION>APPLICANT</AUTOPOSITION>
     <ACCEPTPOSITION>MEMBER</ACCEPTPOSITION>
@@ -271,15 +271,15 @@
         </POSITION>
     </POSITIONS>
     <VOTING MAXDAYS=48 QUORUMPCT=66>
-        <POWER>PREMISE</POWER>
-        <POWER>ACCEPT</POWER>
-        <POWER>REJECT</POWER>
         <POWER>SET_DONATE</POWER>
-        <POWER>EXILE</POWER>
-        <POWER>TAX</POWER>
         <POWER>DECLARE</POWER>
-        <POWER>ASSIGN</POWER>
+        <POWER>PREMISE</POWER>
         <POWER>SET_HOME</POWER>
+        <POWER>ACCEPT</POWER>
+        <POWER>EXILE</POWER>
+        <POWER>ASSIGN</POWER>
+        <POWER>REJECT</POWER>
+        <POWER>TAX</POWER>
     </VOTING>
     <AUTOPOSITION>APPLICANT</AUTOPOSITION>
     <ACCEPTPOSITION>CITIZEN</ACCEPTPOSITION>
@@ -372,15 +372,15 @@
         </POSITION>
     </POSITIONS>
     <VOTING MAXDAYS=100 QUORUMPCT=33>
-        <POWER>PREMISE</POWER>
-        <POWER>ACCEPT</POWER>
-        <POWER>REJECT</POWER>
         <POWER>SET_DONATE</POWER>
-        <POWER>EXILE</POWER>
-        <POWER>TAX</POWER>
         <POWER>DECLARE</POWER>
-        <POWER>ASSIGN</POWER>
+        <POWER>PREMISE</POWER>
         <POWER>SET_HOME</POWER>
+        <POWER>ACCEPT</POWER>
+        <POWER>EXILE</POWER>
+        <POWER>ASSIGN</POWER>
+        <POWER>REJECT</POWER>
+        <POWER>TAX</POWER>
     </VOTING>
     <AUTOPOSITION>APPLICANT</AUTOPOSITION>
     <ACCEPTPOSITION>CITIZEN</ACCEPTPOSITION>
@@ -397,8 +397,7 @@
 </CLANTYPE>
 <CLANTYPE TYPEID=4 NAME="Theocracy">
     <SHORTDESC>clerics rule, can conquer through conversion</SHORTDESC>
-    <LONGDESC>The theocracy is an organization that is always run by the highest level cleric.  All other clerics enjoy second-in-command privileges.  All members are required to worship the clans deity, which is the deity of the high priest. The high priest has all the powers and authority mentioned above, and can assign priests, treasurers, or crusaders to assist with some menial clan chores.  All members have the authority to maintain discipline in the ranks using the ORDER command.
-Theocracies have a unique benefit among all other clan types.  They are the only clan type that can attain conquest control points by converting the area inhabitants to their religion.  They are also uniquely allowed to sanctify churches in conquered areas and hold services.</LONGDESC>
+    <LONGDESC>The theocracy is an organization that is always run by the highest level cleric.  All other clerics enjoy second-in-command privileges.  All members are required to worship the clans deity, which is the deity of the high priest. The high priest has all the powers and authority mentioned above, and can assign priests, treasurers, or crusaders to assist with some menial clan chores.  All members have the authority to maintain discipline in the ranks using the ORDER command.\n\nTheocracies have a unique benefit among all other clan types.  They are the only clan type that can attain conquest control points by converting the area inhabitants to their religion.  They are also uniquely allowed to sanctify churches in conquered areas and hold services.</LONGDESC>
     <POSITIONS>
         <POSITION ID="HIGH PRIEST" ROLEID=6 RANK=0 NAME="High Priest" PLURAL="High Priests" MAX=1 INNERMASK="-BASECLASS +Cleric" PUBLIC="true">
             <POWER>ACCEPT</POWER>
@@ -623,6 +622,50 @@ Theocracies have a unique benefit among all other clan types.  They are the only
     <PUBLIC>false</PUBLIC>
     <FAMILYONLY>true</FAMILYONLY>
     <OVERRIDEMINMEMBERS>0</OVERRIDEMINMEMBERS>
+    <CONQUEST>
+        <ENABLED>true</ENABLED>
+        <ITEMLOYALTY>true</ITEMLOYALTY>
+        <DEITYBASIS>false</DEITYBASIS>
+    </CONQUEST>
+</CLANTYPE>
+<CLANTYPE TYPEID=6 NAME="Anarchy">
+    <SHORTDESC>anyone can join, anyone can do anything</SHORTDESC>
+    <LONGDESC>The most primitive and purely human of social arrangements.</LONGDESC>
+    <POSITIONS>
+        <POSITION ID="FREEMAN" ROLEID=0 RANK=0 NAME="Freeman" PLURAL="Freemen" MAX=2147483647 INNERMASK="" PUBLIC="true">
+            <POWER>ACCEPT</POWER>
+            <POWER>ASSIGN</POWER>
+            <POWER>EXILE</POWER>
+            <POWER>SET_HOME</POWER>
+            <POWER>SET_DONATE</POWER>
+            <POWER>REJECT</POWER>
+            <POWER>PREMISE</POWER>
+            <POWER>PROPERTY_OWNER</POWER>
+            <POWER>WITHDRAW</POWER>
+            <POWER>ORDER_UNDERLINGS</POWER>
+            <POWER>ORDER_CONQUERED</POWER>
+            <POWER>VOTE_ASSIGN</POWER>
+            <POWER>VOTE_OTHER</POWER>
+            <POWER>DEPOSIT_LIST</POWER>
+            <POWER>DECLARE</POWER>
+            <POWER>TAX</POWER>
+            <POWER>ENCHANT</POWER>
+            <POWER>CHANNEL</POWER>
+            <POWER>MORGUE</POWER>
+            <POWER>LIST_MEMBERS</POWER>
+            <POWER>HOME_PRIVS</POWER>
+            <POWER>CLAN_SPELLS</POWER>
+            <POWER>CLAN_TITLES</POWER>
+        </POSITION>
+    </POSITIONS>
+    <VOTING />
+    <AUTOPOSITION>FREEMAN</AUTOPOSITION>
+    <ACCEPTPOSITION>FREEMAN</ACCEPTPOSITION>
+    <REQUIREDMASK></REQUIREDMASK>
+    <AUTOPROMOTEBY>NONE</AUTOPROMOTEBY>
+    <PUBLIC>true</PUBLIC>
+    <FAMILYONLY>false</FAMILYONLY>
+    <OVERRIDEMINMEMBERS>1</OVERRIDEMINMEMBERS>
     <CONQUEST>
         <ENABLED>true</ENABLED>
         <ITEMLOYALTY>true</ITEMLOYALTY>

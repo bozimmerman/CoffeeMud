@@ -327,7 +327,7 @@ public class Clans extends StdLibrary implements ClanManager
 
     protected String indt(int x)
     {
-    	return CMStrings.SPACES.substring(0,x*3);
+    	return CMStrings.SPACES.substring(0,x*4);
     }
 
     public long getLastGovernmentLoad()
@@ -600,36 +600,36 @@ public class Clans extends StdLibrary implements ClanManager
     public String makeGovernmentXML(Clan.Government gvt)
     {
     	final StringBuilder str=new StringBuilder("");
-    	str.append("<CLANTYPE ").append("TYPEID="+gvt.ID+" ").append("NAME="+gvt.name+" ").append(">\n");
+    	str.append("<CLANTYPE ").append("TYPEID="+gvt.ID+" ").append("NAME=\""+gvt.name+"\">\n");
     	if(gvt.isDefault)
     		str.append(indt(1)).append("<ISDEFAULT>true</ISDEFAULT>\n");
     	str.append(indt(1)).append("<SHORTDESC>").append(CMLib.xml().parseOutAngleBrackets(gvt.shortDesc)).append("</SHORTDESC>\n");
     	str.append(indt(1)).append("<LONGDESC>").append(CMLib.xml().parseOutAngleBrackets(gvt.longDesc)).append("</LONGDESC>\n");
     	str.append(indt(1)).append("<POSITIONS>\n");
-    	Set<Clan.Authority> voteSet = new HashSet<Clan.Authority>(); 
-    	for(Clan.Position pos : gvt.positions)
+    	Set<Clan.Function> voteSet = new HashSet<Clan.Function>(); 
+    	for(int p=gvt.positions.length-1;p>=0;p--)
     	{
+    		Clan.Position pos = gvt.positions[p];
         	str.append(indt(2)).append("<POSITION ").append("ID=\""+pos.ID+"\" ").append("ROLEID="+pos.roleID+" ")
         						.append("RANK="+pos.rank+" ").append("NAME=\""+pos.name+"\" ").append("PLURAL=\""+pos.pluralName+"\" ")
         						.append("MAX="+pos.max+" ").append("INNERMASK=\""+CMLib.xml().parseOutAngleBrackets(pos.innerMaskStr)+"\" ")
-        						.append("PUBLIC=\""+pos.isPublic+"\" ")
-        						.append(">\n");
-        	for(Clan.Authority pow : pos.functionChart)
-        		if(pow==Clan.Authority.CAN_DO)
-	            	str.append(indt(3)).append("<POWER>").append(pow.toString()).append("</POWER>\n");
+        						.append("PUBLIC=\""+pos.isPublic+"\">\n");
+        	for(Clan.Function func : Clan.Function.values()) 
+        		if(pos.functionChart[func.ordinal()]==Clan.Authority.CAN_DO)
+	            	str.append(indt(3)).append("<POWER>").append(func.toString()).append("</POWER>\n");
         		else
-        		if(pow==Clan.Authority.MUST_VOTE_ON)
-        			voteSet.add(pow);
+        		if(pos.functionChart[func.ordinal()]==Clan.Authority.MUST_VOTE_ON)
+        			voteSet.add(func);
         	str.append(indt(2)).append("</POSITION>\n");
     	}
     	str.append(indt(1)).append("</POSITIONS>\n");
     	if(voteSet.size()==0)
-	    	str.append(indt(1)).append("<VOTING/>\n");
+	    	str.append(indt(1)).append("<VOTING />\n");
     	else
     	{
-	    	str.append(indt(1)).append("<VOTING>\n");
-	    	for(Clan.Authority pow : voteSet)
-            	str.append(indt(3)).append("<POWER>").append(pow.toString()).append("</POWER>\n");
+	    	str.append(indt(1)).append("<VOTING ").append("MAXDAYS="+gvt.maxVoteDays+" QUORUMPCT="+gvt.voteQuorumPct+">\n");
+	    	for(Clan.Function func : voteSet)
+            	str.append(indt(2)).append("<POWER>").append(func.toString()).append("</POWER>\n");
 	    	str.append(indt(1)).append("</VOTING>\n");
     	}
     	str.append(indt(1)).append("<AUTOPOSITION>").append(gvt.positions[gvt.autoRole].ID).append("</AUTOPOSITION>\n");
