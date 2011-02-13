@@ -398,6 +398,7 @@
 <CLANTYPE TYPEID=4 NAME="Theocracy">
     <SHORTDESC>clerics rule, can conquer through conversion</SHORTDESC>
     <LONGDESC>The theocracy is an organization that is always run by the highest level cleric.  All other clerics enjoy second-in-command privileges.  All members are required to worship the clans deity, which is the deity of the high priest. The high priest has all the powers and authority mentioned above, and can assign priests, treasurers, or crusaders to assist with some menial clan chores.  All members have the authority to maintain discipline in the ranks using the ORDER command.
+
 Theocracies have a unique benefit among all other clan types.  They are the only clan type that can attain conquest control points by converting the area inhabitants to their religion.  They are also uniquely allowed to sanctify churches in conquered areas and hold services.</LONGDESC>
     <POSITIONS>
         <POSITION ID="HIGH PRIEST" ROLEID=6 RANK=0 NAME="High Priest" PLURAL="High Priests" MAX=1 INNERMASK="-BASECLASS +Cleric" PUBLIC="true">
