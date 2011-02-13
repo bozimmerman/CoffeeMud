@@ -126,7 +126,7 @@ public class Conquerable extends Arrest
                 String clanID=(String)clanControlPoints.elementAt(i,1);
                 int[] ic=(int[])clanControlPoints.elementAt(i,2);
                 Clan C=CMLib.clans().getClan(clanID);
-                if(C!=null)
+                if((C!=null)&&(C.getGovernment().conquestEnabled))
                     str.append(C.getGovernmentName()+" "+C.name()+" has "+ic[0]+" control points.\n\r");
             }
         }
@@ -149,7 +149,8 @@ public class Conquerable extends Arrest
                 if(clanID2.equalsIgnoreCase(clanID))
                 {
                     Clan C=CMLib.clans().getClan(clanID);
-                    if(C!=null) return ic[0];
+                    if(C!=null) 
+                    	return ic[0];
                 }
             }
         }
@@ -808,7 +809,8 @@ public class Conquerable extends Arrest
 		if((holdingClan.equals(clanID))||(totalControlPoints<0))
 			return;
 		Clan C=CMLib.clans().findClan(clanID);
-		if(C==null) return;
+		if((C==null)||(!C.getGovernment().conquestEnabled))
+			return;
 
         MOB mob=CMLib.map().mobCreated();
         mob.setName(clanID);
@@ -890,7 +892,9 @@ public class Conquerable extends Arrest
 
     protected boolean flagFound(Area A, String clanID)
 	{
-		if(CMLib.clans().findClan(clanID)==null) return false;
+    	Clan C=CMLib.clans().findClan(clanID);
+    	if((C==null)||(!C.getGovernment().conquestEnabled))
+    		return false;
 		synchronized(clanItems)
 		{
 			for(int i=0;i<clanItems.size();i++)
