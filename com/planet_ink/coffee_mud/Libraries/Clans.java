@@ -542,7 +542,7 @@ public class Clans extends StdLibrary implements ClanManager
     	govts.remove(government);
     	if(govts.size()==gvts.length) return false;
     	Resources.submitResource("parsed_clangovernments", govts.toArray(new Clan.Government[0]));
-    	return false;
+    	return true;
     }
     
     public Clan.Government[] getStockGovernments()
