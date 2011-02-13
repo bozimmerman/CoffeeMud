@@ -5,14 +5,14 @@
 <html>
 <head>
  	<link rel="grinder icon" href="/images/grinder.ico" >
-	<title>Clans List</title>
+	<title>Clan Governments List</title>
 	<script language=JavaScript>
 	<!--
-		function Clan(action)
+		function Government(action)
 		{
 			var strFeatures="top=0,left=75,resizeable=no,scrollbars=yes,height=600,width=650,alwaysRaised=yes,dependent=yes";
-			w=window.open("clan.cmvp?AUTH=@Authenticate?AUTH@&CLAN="+action,
-				"Clan",strFeatures, false);
+			w=window.open("government.cmvp?AUTH=@Authenticate?AUTH@&GOVERNMENT="+action,
+				"Government",strFeatures, false);
 		}
 		function Clicked(action)
 		{
@@ -21,7 +21,7 @@
 		}
 		function Refresh()
 		{
-			document.RESOURCES.action='clans.cmvp';
+			document.RESOURCES.action='governments.cmvp';
 			document.RESOURCES.submit();
 		}
 	//-->
@@ -36,37 +36,33 @@
 		<TABLE WIDTH=50% BORDER=1>
 		<TR><TD BGCOLOR=WHITE ALIGN=CENTER><FONT COLOR=BLACK SIZE=-1><B>Menu</B></FONT></TD></TR>
 		<TR><TD><a href="javascript:Clicked('/grinder/loggedin.cmvp');"><FONT COLOR=WHITE SIZE=-1><B>MUDGrinder Menu</B></FONT></A></TD></TR>
-		<TR><TD><a href="javascript:Clicked('/grinder/governments.cmvp');"><FONT COLOR=WHITE SIZE=-1><B>Clan Governments</B></FONT></A></TD></TR>
+		<TR><TD><a href="javascript:Clicked('/grinder/clans.cmvp');"><FONT COLOR=WHITE SIZE=-1><B>Clan Manager</B></FONT></A></TD></TR>
 		<TR><TD><a href="javascript:Refresh();"><FONT COLOR=WHITE SIZE=-1><B>Refresh Page</B></FONT></A></TD></TR>
 		</TABLE>
 	</TD>
 	</TR>
 	</TABLE>
 <CENTER>
-<FORM NAME=RESOURCES TARGET=_top METHOD=POST ACTION="clans.cmvp">
+<FORM NAME=RESOURCES TARGET=_top METHOD=POST ACTION="governments.cmvp">
 <INPUT TYPE=HIDDEN NAME=AUTH VALUE="@Authenticate?AUTH@">
 	<TABLE WIDTH=100% BORDER=1>
-	<TR><TD WIDTH=100% COLSPAN=6 BGCOLOR=WHITE ALIGN=CENTER><FONT COLOR=BLACK><H2>CoffeeMud @MudServerVersion@ Clan Manager</H2></FONT></TD></TR>
+	<TR><TD WIDTH=100% COLSPAN=6 BGCOLOR=WHITE ALIGN=CENTER><FONT COLOR=BLACK><H2>CoffeeMud @MudServerVersion@ Clan Governments</H2></FONT></TD></TR>
 	<TR>
-	<TD WIDTH=50%><B><FONT COLOR=YELLOW>Name</FONT></b></TD>
-	<TD WIDTH=10%><B><FONT COLOR=YELLOW>Type</FONT></b></TD>
-	<TD WIDTH=10%><B><FONT COLOR=YELLOW>Members</FONT></B></TD>
-	<TD WIDTH=10%><B><FONT COLOR=YELLOW>Status</FONT></B></TD>
-	<TD WIDTH=20%><B><FONT COLOR=YELLOW>Trophies</FONT></B></TD>
+	<TD WIDTH=5%><B><FONT COLOR=YELLOW>#</FONT></b></TD>
+	<TD WIDTH=25%><B><FONT COLOR=YELLOW>Name</FONT></b></TD>
+	<TD WIDTH=70%><B><FONT COLOR=YELLOW>Description</FONT></b></TD>
 	</TR>
-	@ClanNext?RESET@
+	@ClanGovernmentNext?RESET@
 	@loop@
-	@ClanNext@
+	@ClanGovernmentNext@
 	<TR>
-	<TD><a href="javascript:Clan('@ClanID@')"><FONT COLOR=WHITE><B>@ClanID@</B></FONT></a></TD>
-	<TD><FONT COLOR=WHITE>@ClanData?TYPE@</FONT></TD>
-	<TD><FONT COLOR=WHITE>@ClanData?NUMMEMBERS@</FONT></TD>
-	<TD><FONT COLOR=WHITE>@ClanData?STATUS@</FONT></TD>
-	<TD><FONT COLOR=WHITE>@ClanData?TROPHIESHORT@</FONT></TD>
+	<TD><a href="javascript:Government('@ClanGovernmentID@')"><FONT COLOR=WHITE><B>@ClanGovernmentID@</B></FONT></a></TD>
+	<TD><FONT COLOR=WHITE>@ClanGovernmentData?NAME@</FONT></TD>
+	<TD><FONT COLOR=WHITE>@ClanGovernmentData?SHORTDESC@</FONT></TD>
 	</TR>
 	@back@
 	<TR>
-	<TD COLSPAN=5><a href="javascript:if(document.RESOURCES.NEWCLANID.value!='')Clan('_NEWONE_&NEWCLANID='+document.RESOURCES.NEWCLANID.value)"><FONT COLOR=WHITE><B>Create New:</a> <INPUT TYPE=TEXT NAME=NEWCLANID SIZE=70></B></FONT></TD>
+	<TD COLSPAN=5><a href="javascript:if(document.RESOURCES.NEWGOVERNMENTID.value!='')Government('_NEWONE_&NEWGOVERNMENTID='+document.RESOURCES.NEWGOVERNMENTID.value)"><FONT COLOR=WHITE><B>Create New:</a> <INPUT TYPE=TEXT NAME=NEWGOVERNMENTID SIZE=70></B></FONT></TD>
 	</TR>
 	</TABLE>
 	<P>

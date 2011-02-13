@@ -1015,6 +1015,12 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
 		{
 			if(pos==null) return null;
 			pos=pos.trim();
+			if(CMath.isInteger(pos))
+			{
+				int i=CMath.s_int(pos);
+				if((i>=0)&&(i<positions.length))
+					return positions[i];
+			}
 			for(Position P : positions)
 				if(P.ID.equalsIgnoreCase(pos))
 					return P;
