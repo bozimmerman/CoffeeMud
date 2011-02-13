@@ -6,11 +6,9 @@
 <head>
  	<link rel="grinder icon" href="/images/grinder.ico" >
 	<title>Clan Information</title>
+	<!--@ClanGovernmentData?NAME@-->
 	<script language=JavaScript>
 	<!--
-		@if?CheckReqParm?GOVERNMENT=_NEWONE_@ 
-			window.alert('@MUDGrinder?ADDGOVERNMENT@');
-		@endif@
 		function openUp2(named)
 		{
 			var strFeatures="top=200,left=50,resizeable=no,scrollbars=yes,height=400,width=650,alwaysRaised=yes,dependent=yes";
@@ -155,7 +153,7 @@
 		<BR>&nbsp;&nbsp;&nbsp;
 		<INPUT TYPE=CHECKBOX NAME="GPOSISPUBLIC_@RequestParameter?GOVTPOSITION@" @ClanGovernmentData?GPOSISPUBLIC_@@RequestParameter?GOVTPOSITION@@ @>
 		<FONT COLOR=WHITE SIZE=-1>Public:</FONT>
-		<INPUT TYPE=HIDDEN NAME="GPOSROLEID_@RequestParameter?GOVTPOSITION@" @ClanGovernmentData?GPOSROLEID_@@RequestParameter?GOVTPOSITION@@ @>
+		<INPUT TYPE=HIDDEN NAME="GPOSROLEID_@RequestParameter?GOVTPOSITION@" VALUE="@ClanGovernmentData?GPOSROLEID_@@RequestParameter?GOVTPOSITION@@ @">
 		</TD>
 		<TD VALIGN=TOP><INPUT TYPE=TEXT SIZE=1 NAME="GPOSRANK_@RequestParameter?GOVTPOSITION@" VALUE="@ClanGovernmentData?GPOSRANK_@@RequestParameter?GOVTPOSITION@@ @"></TD>
 		<TD VALIGN=TOP><INPUT TYPE=TEXT SIZE=5 NAME="GPOSNAME_@RequestParameter?GOVTPOSITION@" VALUE="@ClanGovernmentData?GPOSNAME_@@RequestParameter?GOVTPOSITION@@ @"></TD>

@@ -43,24 +43,37 @@ public class GrinderClanGovernments
         if(last==null) return " @break@";
         if(last.length()>0)
         {
-			int lastID=CMath.s_int(last);
-			Clan.Government G=CMLib.clans().getStockGovernment(lastID);
+			Clan.Government G=null;
+			if(CMath.isInteger(last))
+			{
+				int lastID=CMath.s_int(last);
+				G=CMLib.clans().getStockGovernment(lastID);
+			}
+			else
+			if((httpReq.getRequestParameter("NAME")==null)||httpReq.getRequestParameter("NAME").length()==0)
+				return " @break@";
+			else
+			{
+				Set<Integer> usedTypeIDs=new HashSet<Integer>();
+				for(Clan.Government G2 : CMLib.clans().getStockGovernments())
+					usedTypeIDs.add(Integer.valueOf(G2.ID));
+        		G=CMLib.clans().createGovernment(httpReq.getRequestParameter("NAME"));
+				for(int i=0;i<CMLib.clans().getStockGovernments().length;i++)
+					if(!usedTypeIDs.contains(Integer.valueOf(i)))
+					{
+						httpReq.addRequestParameters("GOVERNMENT", Integer.toString(i));
+						G.ID=i;
+						break;
+					}
+			}
+				
             String str=null;
             str=httpReq.getRequestParameter("NAME");
-            if(str!=null)
-            {
-            	if(G==null)
-            		G=CMLib.clans().createGovernment(str);
-            	else
-	            	G.name=str;
-            }
-            else
-            	return " @break@";
-            
+            if(str!=null) G.name=str;
             str=httpReq.getRequestParameter("ACCEPTPOS");
-            if(str!=null) G.autoRole=CMath.s_int(str);
-            str=httpReq.getRequestParameter("AUTOROLE");
             if(str!=null) G.acceptPos=CMath.s_int(str);
+            str=httpReq.getRequestParameter("AUTOROLE");
+            if(str!=null) G.autoRole=CMath.s_int(str);
             str=httpReq.getRequestParameter("SHORTDESC");
             if(str!=null) G.shortDesc=str;
             str=httpReq.getRequestParameter("REQUIREDMASK");
@@ -86,9 +99,21 @@ public class GrinderClanGovernments
             str=httpReq.getRequestParameter("LONGDESC");
             if(str!=null) G.longDesc=str;
             G.helpStr=null;
+            String old=httpReq.getRequestParameter("VOTEFUNCS");
+			Set<String> voteFuncs=new HashSet<String>();
+			if((old!=null)&&(old.length()>0))
+			{
+				voteFuncs.add(old);
+				int x=1;
+				while(httpReq.getRequestParameter("VOTEFUNCS"+x)!=null)
+				{
+					voteFuncs.add(httpReq.getRequestParameter("VOTEFUNCS"+x));
+					x++;
+				}
+			}
             
 			List<Clan.Position> posList=new Vector<Clan.Position>();
-			String posDexStr="";
+			String posDexStr="0";
 			int posDex=0;
 			while(httpReq.isRequestParameter("GPOSID_"+posDexStr) && httpReq.getRequestParameter("GPOSID_"+posDexStr).trim().length()>0)
 			{
@@ -112,6 +137,11 @@ public class GrinderClanGovernments
 					powerFuncs[auth.ordinal()]=Clan.Authority.CAN_DO;
 					authDex++;
 					authDexStr=Integer.toString(authDex);
+				}
+				for(String s : voteFuncs)
+				{
+					Clan.Function auth = (Clan.Function)CMath.s_valueOf(Clan.Function.values(),s);
+					powerFuncs[auth.ordinal()]=Clan.Authority.MUST_VOTE_ON;
 				}
 				Clan.Position pos = new Clan.Position(oldID, oldRoleID, oldRank, oldName, oldPluralName, oldMax, oldMask, powerFuncs, oldIsPublic);
 				posList.add(pos);

@@ -44,8 +44,26 @@ public class ClanGovernmentData extends StdWebMacro
 		if(last==null) return " @break@";
 		if(last.length()>0)
 		{
-			int lastID=CMath.s_int(last);
-			Clan.Government G=CMLib.clans().getStockGovernment(lastID);
+			Clan.Government G=null;
+			if(CMath.isInteger(last))
+			{
+				int lastID=CMath.s_int(last);
+				G=CMLib.clans().getStockGovernment(lastID);
+			}
+			if(G==null)
+			{
+				Set<Integer> usedTypeIDs=new HashSet<Integer>();
+				for(Clan.Government G2 : CMLib.clans().getStockGovernments())
+					usedTypeIDs.add(Integer.valueOf(G2.ID));
+				G=CMLib.clans().createSampleGovernment();
+				G.name=httpReq.getRequestParameter("NAME");
+				for(int i=0;i<CMLib.clans().getStockGovernments().length;i++)
+					if(!usedTypeIDs.contains(Integer.valueOf(i)))
+					{
+						G.ID=i;
+						break;
+					}
+			}
 			if(G!=null)
 			{
 				StringBuffer str=new StringBuffer("");

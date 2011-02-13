@@ -488,14 +488,26 @@ public class Clans extends StdLibrary implements ClanManager
     	return helpG.helpStr;
     }
     
-    public Clan.Government createAnarchy()
+    public Clan.Government createSampleGovernment()
     {
-		Authority[] pows=new Authority[Function.values().length];
-		for(int i=0;i<pows.length;i++) pows[i]=Authority.CAN_DO;
-		Position pos=new Position("FREEMAN", 0, 0, "Freeman", "Freemen", Integer.MAX_VALUE, "", pows, false);
-		Government gvt=new Government(0,"Anarchy",new Position[]{pos}, 
-				0,0,"",AutoPromoteFlag.NONE,true,false,Integer.valueOf(1),true,true,false,"I wanna be...","",0,0);
-		gvt.isDefault=true;
+		Authority[] pows1=new Authority[Function.values().length];
+		for(int i=0;i<pows1.length;i++) pows1[i]=Authority.CAN_NOT_DO;
+		Authority[] pows2=new Authority[Function.values().length];
+		for(int i=0;i<pows2.length;i++) pows2[i]=Authority.CAN_DO;
+		Position pos1=new Position("APPLICANT", 0, 0, "Applicant", "Applicants", Integer.MAX_VALUE, "", pows1, false);
+		Position pos2=new Position("MEMBER", 1, 1, "Member", "Members", Integer.MAX_VALUE, "", pows2, true);
+		Set<Integer> usedTypeIDs=new HashSet<Integer>();
+		for(Clan.Government G2 : CMLib.clans().getStockGovernments())
+			usedTypeIDs.add(Integer.valueOf(G2.ID));
+		int id=0;
+		for(int i=0;i<CMLib.clans().getStockGovernments().length;i++)
+			if(!usedTypeIDs.contains(Integer.valueOf(i)))
+			{
+				id=i; break;
+			}
+		
+		Government gvt=new Government(id,"Sample Govt",new Position[]{pos1,pos2}, 
+				0,1,"",AutoPromoteFlag.NONE,true,false,Integer.valueOf(1),true,true,false,"Change Me!","",10,66);
 		return gvt;
     }
     
@@ -519,7 +531,7 @@ public class Clans extends StdLibrary implements ClanManager
     	for(Clan.Government G : gvts)
     		if(G.name.equalsIgnoreCase(name))
     			return null;
-    	Clan.Government newG=createAnarchy();
+    	Clan.Government newG=createSampleGovernment();
     	Set<Integer> takenIDs=new HashSet<Integer>();
     	for(Clan.Government g : gvts)
     		takenIDs.add(Integer.valueOf(g.ID));
@@ -563,7 +575,7 @@ public class Clans extends StdLibrary implements ClanManager
     				}
     				if((gvts==null)||(gvts.length==0))
     				{
-	    				Government gvt=createAnarchy();
+	    				Government gvt=createSampleGovernment();
 	    				gvt.isDefault=true;
 	    				gvts=new Government[]{gvt};
     				}

@@ -192,6 +192,12 @@ public interface ClanManager extends CMLibrary
     public Clan.Government getDefaultGovernment();
     
     /**
+     * Creates, but does not add, a sample government object
+     * @return a sample government object
+     */
+    public Clan.Government createSampleGovernment();
+    
+    /**
      * Returns all government definition objects from internal
      * stock clangovernments.xml file.  See /resources/clangovernments.xml
      * Also:

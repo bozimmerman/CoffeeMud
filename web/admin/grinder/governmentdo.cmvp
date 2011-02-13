@@ -11,6 +11,7 @@
 <SCRIPT LANGUAGE=JavaScript>
 <!--
 	window.alert('@MUDGrinder?DELCLANGOVERNMENT@');
+    opener.Refresh();
 	window.close();
 //-->
 </SCRIPT>
@@ -19,6 +20,7 @@
 <SCRIPT LANGUAGE=JavaScript>
 <!--
 	window.alert('@MUDGrinder?EDITCLANGOVERNMENT@');
+    opener.Refresh();
 	window.close();
 //-->
 </SCRIPT>

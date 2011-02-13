@@ -42,9 +42,13 @@ public class ClanGovernmentID extends StdWebMacro
 		if(last==null) return " @break@";
 		if(last.length()>0)
 		{
-			Clan.Government G=CMLib.clans().getStockGovernment(CMath.s_int(last));
-			if(G!=null)
-                return clearWebMacros(Integer.toString(G.ID));
+			if(CMath.isInteger(last))
+			{
+				Clan.Government G=CMLib.clans().getStockGovernment(CMath.s_int(last));
+				if(G!=null)
+	                return clearWebMacros(Integer.toString(G.ID));
+			}
+			return clearWebMacros(last);
 		}
 		return "";
 	}
