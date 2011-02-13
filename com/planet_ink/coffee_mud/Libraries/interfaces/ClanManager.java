@@ -245,7 +245,7 @@ public interface ClanManager extends CMLibrary
     /**
      * Deletes the stock government.. confusing all the clans that
      * currently use it.
-     * @param the government to delete
+     * @param government the government to delete
      */
     public boolean removeGovernment(Clan.Government government);
     
@@ -265,7 +265,7 @@ public interface ClanManager extends CMLibrary
      * the given clan forbids the given mob from performing the given function, or from
      * even starting a vote on it, the method will return false. If the mob is allowed
      * to perform 
-     * @see com.planet_ink.coffee_mud.Common.interfaces.Clan#FUNC_CLANACCEPT
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Clan.Function#ACCEPT
      * @param mob the player who wants to perform the function
      * @param C the clan that the player belongs to
      * @param commands the command list describing the function that wants to be executed

@@ -60,8 +60,8 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
 	 * functions are defined in the Clan interface as FUNC_*
 	 * constants.
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Clan
-	 * @see com.planet_ink.coffee_mud.Common.interfaces.Authority
-	 * @param mob the mob whose priviledges to check.
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.Clan.Authority
+	 * @param roleID the roleID whose priviledges to check.
 	 * @param function the ClanFunction function constant to use
 	 * @return the ClanPositionPower enum
 	 */
@@ -76,7 +76,7 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
 	/**
 	 * If the clan type allows voting, this returns a
 	 * series of ClanVote objects
-	 * @see com.planet_ink.coffee_mud.Common.interfaces.ClanVote
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.Clan.ClanVote
 	 * @return the set of clan votes
 	 */
 	public Enumeration<ClanVote> votes();
@@ -88,14 +88,14 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
 	/**
 	 * Adds a new ClanVote object to the list of ongoing
 	 * votes for this 
-	 * @see com.planet_ink.coffee_mud.Common.interfaces.ClanVote
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.Clan.ClanVote
 	 * @param CV the clanvote object to add
 	 */
 	public void addVote(ClanVote CV);
 	/**
 	 * Removes a new ClanVote object from the list of ongoing
 	 * votes for this 
-	 * @see com.planet_ink.coffee_mud.Common.interfaces.ClanVote
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.Clan.ClanVote
 	 * @param CV the clanvote object to remove
 	 */
 	public void delVote(ClanVote CV);
@@ -410,7 +410,6 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
      * the clan role that most closely matches the given string "position".
      * It will return -1 if no position is found that matches the string.
      * The returned value will an an official role bitmask.
-     * @param government the clan governmnet
      * @param position the name of the position to look for
      * @return the role mask/code number for this government, oe -1
      */
@@ -551,7 +550,7 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
 	 * roleid(s) in this clan type that can perform the given function.
 	 * @see Position
 	 * @see Function
-	 * @parm func the function to perform, or null just to return privileged rank
+	 * @param func the function to perform, or null just to return privileged rank
 	 * @return the top roleid
 	 */
 	public List<Integer> getTopRankedRoles(Function func);
@@ -852,7 +851,7 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
 		 * @param name the name of this position
 		 * @param plural the plural name of this position
 		 * @param max the maximum number of members that can hold this position
-		 * @param innermask basic internal requirements for this position
+		 * @param innerMask basic internal requirements for this position
 		 * @param funcChart an array of ClanPositionPower objects for each function that can be performed.
 		 */
 		public Position(String ID, int roleID, int rank, String name, String plural, int max, String innerMask, Authority[] funcChart, boolean isPublic)
@@ -982,7 +981,6 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
 		 * @param ID
 		 * @param name
 		 * @param pos
-		 * @param highPos
 		 * @param autoPos
 		 * @param acceptPos
 		 * @param requiredMask

@@ -167,10 +167,10 @@ public class DBConnection
 	 * set up this connection for use
 	 * 
 	 * <br><br><b>Usage:</b> use("begin transaction")
-	 * @param Opener	Any SQL string you'd like to send
+	 * @param openerSQL	Any SQL string you'd like to send
 	 * @return boolean	The connection being used
 	 */
-	public synchronized boolean use(String Opener)
+	public synchronized boolean use(String openerSQL)
 	{
 		if((!inUse)&&(ready())&&(!isProbablyDead()))
 		{
@@ -192,10 +192,10 @@ public class DBConnection
 			sqlserver=false;
 			try
 			{
-				if(!Opener.equals(""))
+				if(!openerSQL.equals(""))
 				{
-					lastSQL=Opener;
-					myStatement.executeUpdate(Opener);
+					lastSQL=openerSQL;
+					myStatement.executeUpdate(openerSQL);
 				}
 			}
 			catch(SQLException e)
@@ -216,7 +216,6 @@ public class DBConnection
 	 * set up this connection for use
 	 * 
 	 * <br><br><b>Usage:</b> useEmpty()
-	 * @param Opener	Any SQL string you'd like to send
 	 * @return boolean	The connection being used
 	 */
 	public synchronized boolean useEmpty()

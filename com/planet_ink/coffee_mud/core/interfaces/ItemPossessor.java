@@ -31,7 +31,7 @@ public interface ItemPossessor extends PhysicalAgent
 	 * Adds a new item to its possessor. By default, the item is added
 	 * in a default resting state -- no containers, timeouts, or other
 	 * modifiers are set.  Duplicates will not be permitted.
-	 * @see com.planet_ink.core.interfaces.ItemPossessor#delItem(Item)
+	 * @see com.planet_ink.coffee_mud.core.interfaces.ItemPossessor#delItem(Item)
 	 * @param item the item to add
 	 */
 	public void addItem(Item item);
@@ -40,7 +40,7 @@ public interface ItemPossessor extends PhysicalAgent
 	/**
 	 * Adds a new item to its possessor, with an expiration code.
 	 * Duplicates will not be permitted.
-	 * @see com.planet_ink.coffee_mud.core.Expire.ItemExpiration
+	 * @see com.planet_ink.coffee_mud.core.interfaces.ItemPossessor.Expire
 	 * @param item the item to add
 	 */
 	public void addItem(Item item, Expire expire);
@@ -51,7 +51,7 @@ public interface ItemPossessor extends PhysicalAgent
 	 * and possibly followers/riders if the item is a cart.  An
 	 * expiration can be set on the move to have the items expire.
 	 * Duplicates will not be permitted.
-	 * @see com.planet_ink.coffee_mud.core.Expire.ItemExpiration
+	 * @see com.planet_ink.coffee_mud.core.interfaces.ItemPossessor.Expire
 	 * @param container the item to add
 	 * @param expire the expiration code 
 	 * @param moveFlags any flags related to the move
@@ -64,7 +64,7 @@ public interface ItemPossessor extends PhysicalAgent
 	 * Is the same as calling the longer moveItemTo with a Never
 	 * expiration, and NO movement flags.
 	 * Duplicates will not be permitted.
-	 * @see com.planet_ink.coffee_mud.core.Expire.ItemExpiration
+	 * @see com.planet_ink.coffee_mud.core.interfaces.ItemPossessor.Expire
 	 * @param container the item to add
 	 */
 	public void moveItemTo(Item container);

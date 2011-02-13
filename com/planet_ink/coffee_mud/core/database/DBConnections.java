@@ -151,7 +151,7 @@ public class DBConnections
 
 	/**
 	 * <br><br><b>Usage: updateWithClobs("UPDATE...");</b>
-	 * @param updateStrings	the update SQL commands
+	 * @param entries	the update SQL commands
 	 * @return int	the responseCode, or -1
 	 */
 	public int updateWithClobs(final List<DBPreparedBatchEntry> entries)
@@ -212,6 +212,7 @@ public class DBConnections
 	/**
 	 * <br><br><b>Usage: updateWithClobs("UPDATE...");</b>
 	 * @param updateStrings	the update SQL commands
+	 * @param values	the update SQL command values
 	 * @return int	the responseCode, or -1
 	 */
 	public int updateWithClobs(String[] updateStrings, String[][][] values)
@@ -224,7 +225,8 @@ public class DBConnections
 	
 	/**
 	 * <br><br><b>Usage: updateWithClobs("UPDATE...");</b>
-	 * @param updateStrings	the update SQL commands
+	 * @param updateString	the update SQL commands
+	 * @param values	the update SQL values
 	 * @return int	the responseCode, or -1
 	 */
 	public int updateWithClobs(String updateString, String[][] values)
@@ -272,7 +274,7 @@ public class DBConnections
 	 *
 	 * <br><br><b>Usage: DB=DBFetchPrepared();</b>
 	 * @param SQL	The prepared statement SQL
-	 * @param prepared	whether the statement should be a prepared one
+	 * @param type	the type of fetching to do
 	 * @return DBConnection	The DBConnection to use
 	 */
 	public DBConnection DBFetchAny(final String SQL, final DBConnection.FetchType type)

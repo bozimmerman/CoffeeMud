@@ -288,7 +288,7 @@ public interface Faction extends CMCommon, MsgListener
      * A default faction mask/value is defined as a number, along with an
      * optional Zapper mask describing to whom the value is applied.
      * @see com.planet_ink.coffee_mud.Common.interfaces.Faction#changeEventKeys()
-     * @see com.planet_ink.coffee_mud.Common.interfaces.Faction#setDefaults(List<String>)
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Faction#setDefaults(List)
      * @see com.planet_ink.coffee_mud.Libraries.interfaces.MaskingLibrary
      * @return the default faction mask/value list
      */

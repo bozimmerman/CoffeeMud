@@ -548,7 +548,7 @@ public interface Area extends Economics, PhysicalAgent
     /**
      * Returns whether the Area is a Parent of this Area
      * A Parent Area passes down certain behaviors and property effects to its children
-     * @param named an Area object
+     * @param area an Area object
      * @return whether the area is a Parent of this one
      */
     public boolean isParent(Area area);
