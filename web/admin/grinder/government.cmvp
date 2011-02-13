@@ -17,14 +17,6 @@
 			w=window.open("/property.cmvp?ABILITY="+named,
 			            "Ability",strFeatures, false);
 		}
-		function AddPosition(v)
-		{
-			ReShow();
-		}
-		function EditPosition(v)
-		{
-			ReShow();
-		}
 		function Delete()
 		{
 			if(confirm('Delete this government?! Confirm!'))
@@ -32,7 +24,7 @@
 				if(confirm('Press OK to Delete this government!'))
 				{
 					document.RESOURCES.action='governmentdo.cmvp';
-					document.RESOURCES.FUNCTION.value='DELGOVERNMENT';
+					document.RESOURCES.FUNCTION.value='DELCLANGOVERNMENT';
 					document.RESOURCES.GOVERNMENT.value='@ClanGovernmentID@';
 					document.RESOURCES.submit();
 				}
@@ -43,7 +35,7 @@
 			if(confirm('Submit your changes to this government?'))
 			{
 				document.RESOURCES.action='governmentdo.cmvp';
-				document.RESOURCES.FUNCTION.value='EDITGOVERNMENT';
+				document.RESOURCES.FUNCTION.value='EDITCLANGOVERNMENT';
 				document.RESOURCES.GOVERNMENT.value='@ClanGovernmentID@';
 				document.RESOURCES.submit();
 			}
@@ -57,7 +49,7 @@
 		}
         function Cancel()
         {
-            document.location.href='government.cmvp?AUTH=@Authenticate?AUTH@';
+        	window.close();
         }
 		function OpenUp(file,named)
 		{
@@ -163,15 +155,31 @@
 		<BR>&nbsp;&nbsp;&nbsp;
 		<INPUT TYPE=CHECKBOX NAME="GPOSISPUBLIC_@RequestParameter?GOVTPOSITION@" @ClanGovernmentData?GPOSISPUBLIC_@@RequestParameter?GOVTPOSITION@@ @>
 		<FONT COLOR=WHITE SIZE=-1>Public:</FONT>
+		<INPUT TYPE=HIDDEN NAME="GPOSROLEID_@RequestParameter?GOVTPOSITION@" @ClanGovernmentData?GPOSROLEID_@@RequestParameter?GOVTPOSITION@@ @>
 		</TD>
 		<TD VALIGN=TOP><INPUT TYPE=TEXT SIZE=1 NAME="GPOSRANK_@RequestParameter?GOVTPOSITION@" VALUE="@ClanGovernmentData?GPOSRANK_@@RequestParameter?GOVTPOSITION@@ @"></TD>
 		<TD VALIGN=TOP><INPUT TYPE=TEXT SIZE=5 NAME="GPOSNAME_@RequestParameter?GOVTPOSITION@" VALUE="@ClanGovernmentData?GPOSNAME_@@RequestParameter?GOVTPOSITION@@ @"></TD>
 		<TD VALIGN=TOP><INPUT TYPE=TEXT SIZE=5 NAME="GPOSPLURALNAME_@RequestParameter?GOVTPOSITION@" VALUE="@ClanGovernmentData?GPOSPLURALNAME_@@RequestParameter?GOVTPOSITION@@ @"></TD>
 		<TD VALIGN=TOP><INPUT TYPE=TEXT SIZE=2 NAME="GPOSMAX_@RequestParameter?GOVTPOSITION@" VALUE="@ClanGovernmentData?GPOSMAX_@@RequestParameter?GOVTPOSITION@@ @"></TD>
-		<TD VALIGN=TOP><TEXTAREA NAME="GPOSINNERMASK_@RequestParameter?GOVTPOSITION@" ROWS=3 COLS=5 WRAP>@ClanGovernmentData?GPOSINNERMASK_@@RequestParameter?GOVTPOSITION@@ @</TEXTAREA></TD>
+		<TD VALIGN=TOP><TEXTAREA NAME="GPOSINNERMASK_@RequestParameter?GOVTPOSITION@" ROWS=3 COLS=7 WRAP>@ClanGovernmentData?GPOSINNERMASK_@@RequestParameter?GOVTPOSITION@@ @</TEXTAREA></TD>
 		<TD VALIGN=TOP><SELECT MULTIPLE SIZE=4 NAME="GPOSPOWER_@RequestParameter?GOVTPOSITION@_">@ClanGovernmentData?GPOSPOWER_@@RequestParameter?GOVTPOSITION@@_@</TD>
 		</TR>
 		@back@
+		<TR>
+		<TD VALIGN=TOP><INPUT TYPE=TEXT SIZE=9 NAME="GPOSID_@RequestParameter?GOVTPOSITION@" VALUE="">
+		<BR>&nbsp;&nbsp;&nbsp;
+		<INPUT TYPE=CHECKBOX NAME="GPOSISPUBLIC_@RequestParameter?GOVTPOSITION@">
+		<FONT COLOR=WHITE SIZE=-1>Public:</FONT>
+		<INPUT TYPE=HIDDEN NAME="GPOSROLEID_@RequestParameter?GOVTPOSITION@" @ClanGovernmentData?NEXTPOSITIONID@>
+		<BR><INPUT TYPE=BUTTON NAME=Add VALUE=Add ONCLICK="ReShow()">
+		</TD>
+		<TD VALIGN=TOP><INPUT TYPE=TEXT SIZE=1 NAME="GPOSRANK_@RequestParameter?GOVTPOSITION@" VALUE=""></TD>
+		<TD VALIGN=TOP><INPUT TYPE=TEXT SIZE=5 NAME="GPOSNAME_@RequestParameter?GOVTPOSITION@" VALUE=""></TD>
+		<TD VALIGN=TOP><INPUT TYPE=TEXT SIZE=5 NAME="GPOSPLURALNAME_@RequestParameter?GOVTPOSITION@" VALUE=""></TD>
+		<TD VALIGN=TOP><INPUT TYPE=TEXT SIZE=2 NAME="GPOSMAX_@RequestParameter?GOVTPOSITION@" VALUE=""></TD>
+		<TD VALIGN=TOP><TEXTAREA NAME="GPOSINNERMASK_@RequestParameter?GOVTPOSITION@" ROWS=3 COLS=7 WRAP></TEXTAREA></TD>
+		<TD VALIGN=TOP><SELECT MULTIPLE SIZE=4 NAME="GPOSPOWER_@RequestParameter?GOVTPOSITION@_">@ClanGovernmentData?GPOSPOWERLIST@</TD>
+		</TR>
 		</TABLE>
 		</TD>
 	</TR>
