@@ -503,7 +503,7 @@
     <SHORTDESC>patron/patron rules a private group only family can join</SHORTDESC>
     <LONGDESC>The Family is a clan rules by either a Matron, a Patron, or both.  The traditional powers of treasurer and enchanter can be held by any of the adult members of the family, which includes Misters and Mistresses.  All other minor powers are held equally by all members, including the cousins, the children, and even the black sheep of the family.</LONGDESC>
     <POSITIONS>
-        <POSITION ID="PATRON" ROLEID=6 RANK=0 NAME="Patron" PLURAL="Patrons" MAX=1 INNERMASK="-SEX +MALE" PUBLIC="true">
+        <POSITION ID="PATRON" ROLEID=6 RANK=0 NAME="Patron" PLURAL="Patrons" MAX=1 INNERMASK="-FEMALE -NEUTER" PUBLIC="true">
             <POWER>ACCEPT</POWER>
             <POWER>ASSIGN</POWER>
             <POWER>EXILE</POWER>
@@ -526,7 +526,7 @@
             <POWER>CLAN_SPELLS</POWER>
             <POWER>CLAN_TITLES</POWER>
         </POSITION>
-        <POSITION ID="MATRON" ROLEID=5 RANK=0 NAME="Matron" PLURAL="Matrons" MAX=1 INNERMASK="-SEX +FEMALE" PUBLIC="true">
+        <POSITION ID="MATRON" ROLEID=5 RANK=0 NAME="Matron" PLURAL="Matrons" MAX=1 INNERMASK="-MALE -NEUTER" PUBLIC="true">
             <POWER>ACCEPT</POWER>
             <POWER>ASSIGN</POWER>
             <POWER>EXILE</POWER>
@@ -549,7 +549,7 @@
             <POWER>CLAN_SPELLS</POWER>
             <POWER>CLAN_TITLES</POWER>
         </POSITION>
-        <POSITION ID="MISTRESS" ROLEID=4 RANK=1 NAME="Mistress" PLURAL="Mistresses" MAX=1 INNERMASK="-SEX +FEMALE" PUBLIC="true">
+        <POSITION ID="MISTRESS" ROLEID=4 RANK=1 NAME="Mistress" PLURAL="Mistresses" MAX=1 INNERMASK="-MALE -NEUTER" PUBLIC="true">
             <POWER>ACCEPT</POWER>
             <POWER>ASSIGN</POWER>
             <POWER>WITHDRAW</POWER>
@@ -565,7 +565,7 @@
             <POWER>CLAN_SPELLS</POWER>
             <POWER>CLAN_TITLES</POWER>
         </POSITION>
-        <POSITION ID="MISTER" ROLEID=3 RANK=1 NAME="Mister" PLURAL="Misters" MAX=999999 INNERMASK="-SEX +MALE" PUBLIC="true">
+        <POSITION ID="MISTER" ROLEID=3 RANK=1 NAME="Mister" PLURAL="Misters" MAX=999999 INNERMASK="-FEMALE -NEUTER" PUBLIC="true">
             <POWER>ACCEPT</POWER>
             <POWER>ASSIGN</POWER>
             <POWER>WITHDRAW</POWER>

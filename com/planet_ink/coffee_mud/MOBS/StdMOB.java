@@ -46,8 +46,8 @@ public class StdMOB implements MOB
 	public String 		username="";
 
     protected String 	clanID=null;
-    protected WeakReference<Clan>	 	
-    					cachedClan=new WeakReference(null);
+    protected WeakReference<Clan>
+    					cachedClan=null;
     protected int 		clanRole=0;
 
 	protected CharStats baseCharStats=(CharStats)CMClass.getCommon("DefaultCharStats");
@@ -204,18 +204,7 @@ public class StdMOB implements MOB
 			setWorshipCharID("");
 		return bob;
 	}
-	public final Clan getMyClan()
-	{
-		final String id = clanID;
-		if((id==null)||(id.length()==0)) return null;
-		final Clan C = cachedClan.get(); 
-		if((C!=null)&&(C.clanID().equals(id)))
-			return C;
-		cachedClan=new WeakReference(CMLib.clans().getClan(id));
-		if(cachedClan.get()==null)
-			setClanID("");
-		return cachedClan.get();
-	}
+	public final Clan getMyClan() { return (cachedClan!=null)?cachedClan.get():null;}
 
     public void initializeClass(){}
 	public CMObject newInstance()
@@ -682,7 +671,7 @@ public class StdMOB implements MOB
         	CMLib.threads().deleteTick(this,-1);
         kickFlag=false;
         clanID=null;
-        cachedClan.clear();
+        cachedClan=null;
         charStats=baseCharStats;
         phyStats=basePhyStats;
         playerStats=null;
@@ -756,7 +745,14 @@ public class StdMOB implements MOB
 	}
 
 	public String getClanID(){return ((clanID==null)?"":clanID);}
-	public void setClanID(String clan){clanID=clan; cachedClan.clear();}
+	public void setClanID(String clan)
+	{
+		clanID=clan;
+		if((clan==null)||(clan.trim().length()==0))
+			cachedClan=null;
+		else
+			cachedClan=new WeakReference(CMLib.clans().getClan(clan));
+	}
 	public int getClanRole(){return clanRole;}
 	public void setClanRole(int role){clanRole=role;}
 
