@@ -336,6 +336,12 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
 	 */
 	public void setExp(long exp);
 	/**
+	 * Returns the inner (government usually)
+	 * requirements to even apply to this clan 
+	 * @return the zapper mask that applies
+	 */
+	public String getBasicRequirementMask();
+	/**
 	 * Adjusts the amount of experience earned by this 
 	 * @param howMuch the experience adjustment, + or -
 	 */
@@ -848,8 +854,6 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
 		public String	innerMaskStr;
 		/** the internal zapper mask for internal requirements to this position */
 		public boolean 	isPublic;
-		/** the zapper mask for internal requirements to this position */
-		public CompiledZapperMask	internalMask;
 		/** a chart of whether this position can perform the indexed function in this government */
 		public Authority[] functionChart;
 		
@@ -869,7 +873,6 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
 			this.ID=ID; this.roleID=roleID; this.pluralName=plural; this.innerMaskStr=innerMask;
 			this.rank=rank; this.name=name; this.max=max;this.functionChart=funcChart;
 			this.isPublic=isPublic;
-			internalMask=CMLib.masking().maskCompile(innerMask);
 		}
 		
 		private static enum POS_STAT_CODES {
@@ -978,8 +981,6 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
 		public Position[] positions;
 		/**  Whether an unfilled topRole is automatically filled by those who meet its innermask  */
 		public AutoPromoteFlag 		autoPromoteBy;
-		/** Zapper mask for requirements to even apply */
-		public CompiledZapperMask   requiredMask;
 		
 		// the follow are derived, or post-create set options:
 		
@@ -1025,7 +1026,6 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
 			this.conquestEnabled=conquestEnabled; this.conquestItemLoyalty=conquestItemLoyalty;
 			this.conquestDeityBasis=conquestDeityBasis; this.shortDesc=shortDesc; this.longDesc=longDesc;
 			this.maxVoteDays=maxVoteDays;this.voteQuorumPct=voteQuorumPct;
-			this.requiredMask=CMLib.masking().maskCompile(requiredMaskStr);
 		}
 
 		public Position getPosition(String pos)
@@ -1135,7 +1135,7 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
 			case ACCEPTPOS: { Position P=getPosition(val); if(P!=null) acceptPos=P.roleID; break; }
 			case SHORTDESC: shortDesc=val; break;
 			case LONGDESC: longDesc=val; break;
-			case REQUIREDMASK: requiredMaskStr=val; requiredMask=CMLib.masking().maskCompile(requiredMaskStr); break; 
+			case REQUIREDMASK: requiredMaskStr=val;break; 
 			case ISPUBLIC: isPublic=CMath.s_bool(val); break;
 			case ISFAMILYONLY: isFamilyOnly=CMath.s_bool(val); break;
 			case OVERRIDEMINMEMBERS: {

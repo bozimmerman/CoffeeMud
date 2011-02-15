@@ -526,8 +526,8 @@ public class DefaultClan implements Clan
                   +"-----------------------------------------------------------------\n\r"
                   +"^xType            :^.^N "+govt().name+"\n\r"
                   +"^xQualifications  :^.^N "+((getAcceptanceSettings().length()==0)?"Anyone may apply":CMLib.masking().maskDesc(getAcceptanceSettings()))+"\n\r");
-        if(govt().requiredMaskStr.trim().length()>0)
-        	msg.append("^x           Plus :^.^N "+CMLib.masking().maskDesc(govt().requiredMaskStr)+"\n\r");
+        if(getBasicRequirementMask().length()>0)
+        	msg.append("^x           Plus :^.^N "+CMLib.masking().maskDesc(getBasicRequirementMask())+"\n\r");
         CharClass clanC=getClanClassC();
         if(clanC!=null) msg.append("^xClass           :^.^N "+clanC.name()+"\n\r");
         msg.append("^xExp. Tax Rate   :^.^N "+((int)Math.round(getTaxes()*100))+"%\n\r");
@@ -679,7 +679,7 @@ public class DefaultClan implements Clan
         if(mob==null) return false;
         if((role<0)||(role>govt().positions.length)) return false;
         Position pos = govt().positions[role];
-        return CMLib.masking().maskCheck(pos.internalMask, mob, true);
+        return CMLib.masking().maskCheck(pos.innerMaskStr, mob, true);
 	}
 
 	public Authority getAuthority(int roleID, Function function)
@@ -689,6 +689,36 @@ public class DefaultClan implements Clan
     	return govt().positions[roleID].functionChart[function.ordinal()];
     }
 
+	public String getBasicRequirementMask()
+	{
+		if(govt().requiredMaskStr==null) return "";
+		StringBuffer mask=new StringBuffer(govt().requiredMaskStr.trim());
+		if(mask.length()==0) return "";
+		MOB M=getResponsibleMember();
+		int x=mask.indexOf("@<");
+		while(x>=0)
+		{
+			int y=mask.indexOf(">@",x+1);
+			if(y>x)
+			{
+				String tag=mask.substring(x+2,y);
+				String value="Unknown";
+				if(M!=null)
+				{
+					if(tag.equalsIgnoreCase("WORSHIPCHARID"))
+						value=M.getWorshipCharID();
+					else
+					if(CMLib.coffeeMaker().isAnyGenStat(M, tag))
+						value=CMLib.coffeeMaker().getAnyGenStat(M, tag);
+				}
+				mask.replace(x, y+2, value);
+			}
+			if(x>=mask.length()-1)
+				break;
+			x=mask.indexOf("@<",x+1);
+		}
+		return mask.toString();
+	}
     public List<MemberRecord> getRealMemberList(int PosFilter)
     {
     	List<MemberRecord> members=getMemberList(PosFilter);

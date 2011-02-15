@@ -102,11 +102,13 @@ public class ClanCreate extends StdCommand
 										if(govt.equalsIgnoreCase(gvt.name))
 										{
 											govtType=gvt.ID;
-							            	if(!CMLib.masking().maskCheck(gvt.requiredMask, mob, true))
+											/*
+							            	if(!CMLib.masking().maskCheck(C.getBasicRequirementMask(), mob, true))
 							            	{
 							            		mob.tell("You are not qualified to create a clan of this style.\n\rRequirements: "+CMLib.masking().maskDesc(gvt.requiredMaskStr));
 							            		govtType=-1;
 							            	}
+							            	*/
 											newClan.setGovernmentID(govtType);
 											newRoleID=newClan.getTopQualifiedRoleID(Clan.Function.ASSIGN,mob);
 											if(newClan.getAuthority(newRoleID, Clan.Function.ASSIGN) == Clan.Authority.CAN_NOT_DO)

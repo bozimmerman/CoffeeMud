@@ -6000,7 +6000,6 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
             promptStatInt(mob, me,++showNumber, showFlag,"Maximum", "MAX");
             if((me.max<0)||(me.max>9999)) me.max=Integer.MAX_VALUE;
             promptStatStr(mob,me,CMLib.masking().maskHelp("\n","disallow"),++showNumber,showFlag,"Required Mask","INNERMASK",false);
-            me.internalMask=CMLib.masking().maskCompile(me.innerMaskStr);
             promptStatBool(mob, me,++showNumber, showFlag,"Is Public", "ISPUBLIC");
             promptStatCommaChoices(mob, me,CMParms.toStringList(Clan.Function.values()),++showNumber, showFlag,"Powers", "FUNCTIONS",Clan.Function.values());
             
@@ -6079,7 +6078,6 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
             promptStatStr(mob,me,null,++showNumber,showFlag,"Short Desc","SHORTDESC",false);
             promptStatStr(mob,me,null,++showNumber,showFlag,"Long Desc","LONGDESC",60);
             promptStatStr(mob,me,CMLib.masking().maskHelp("\n","disallow"),++showNumber,showFlag,"Required Mask","REQUIREDMASK",true);
-            me.requiredMask=CMLib.masking().maskCompile(me.requiredMaskStr);
             promptStatBool(mob, me,++showNumber, showFlag,"Is Public", "ISPUBLIC");
             promptStatBool(mob, me,++showNumber, showFlag,"Requires Family", "ISFAMILYONLY");
             promptStatInt(mob, me,++showNumber, showFlag,"Minimum Members", "OVERRIDEMINMEMBERS");

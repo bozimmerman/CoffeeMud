@@ -77,7 +77,7 @@ public class GrinderClanGovernments
             str=httpReq.getRequestParameter("SHORTDESC");
             if(str!=null) G.shortDesc=str;
             str=httpReq.getRequestParameter("REQUIREDMASK");
-            if(str!=null){ G.requiredMaskStr=str; G.requiredMask=CMLib.masking().maskCompile(G.requiredMaskStr); }
+            if(str!=null){ G.requiredMaskStr=str;}
             str=httpReq.getRequestParameter("ISPUBLIC");
             G.isPublic = (str==null)?false:str.equalsIgnoreCase("on");
             str=httpReq.getRequestParameter("ISFAMILYONLY");
