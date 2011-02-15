@@ -144,20 +144,20 @@ public class Skills extends StdCommand
         return getAbilities(able,V,mask,addQualLine,maxLevel);
     }
     
-    protected StringBuilder getAbilities(MOB able, Vector ofTypes, int mask, boolean addQualLine, int maxLevel)
+    protected StringBuilder getAbilities(MOB ableM, Vector ofTypes, int mask, boolean addQualLine, int maxLevel)
     {
         int highestLevel=0;
-        int lowestLevel=able.phyStats().level()+1;
+        int lowestLevel=ableM.phyStats().level()+1;
         StringBuilder msg=new StringBuilder("");
-        for(int a=0;a<able.numAbilities();a++)
+        for(Enumeration<Ability> a=ableM.enumAbilities();a.hasMoreElements();)
         {
-            Ability thisAbility=able.fetchAbility(a);
-            int level=CMLib.ableMapper().qualifyingLevel(able,thisAbility);
+            Ability A=a.nextElement();
+            int level=CMLib.ableMapper().qualifyingLevel(ableM,A);
             if(level<0) level=0;
-            if((thisAbility!=null)
+            if((A!=null)
             &&(level>highestLevel)
             &&(level<lowestLevel)
-            &&(ofTypes.contains(Integer.valueOf(thisAbility.classificationCode()&mask))))
+            &&(ofTypes.contains(Integer.valueOf(A.classificationCode()&mask))))
                 highestLevel=level;
         }
         if((maxLevel>=0)&&(maxLevel<highestLevel))
@@ -166,14 +166,14 @@ public class Skills extends StdCommand
         {
         	StringBuilder thisLine=new StringBuilder("");
             int col=0;
-            for(int a=0;a<able.numAbilities();a++)
+            for(Enumeration<Ability> a=ableM.enumAbilities();a.hasMoreElements();)
             {
-                Ability thisAbility=able.fetchAbility(a);
-                int level=CMLib.ableMapper().qualifyingLevel(able,thisAbility);
+                Ability A=a.nextElement();
+                int level=CMLib.ableMapper().qualifyingLevel(ableM,A);
                 if(level<0) level=0;
-                if((thisAbility!=null)
+                if((A!=null)
                 &&(level==l)
-                &&(ofTypes.contains(Integer.valueOf(thisAbility.classificationCode()&mask))))
+                &&(ofTypes.contains(Integer.valueOf(A.classificationCode()&mask))))
                 {
                     if(thisLine.length()==0)
                         thisLine.append("\n\rLevel ^!"+l+"^?:\n\r");
@@ -182,7 +182,7 @@ public class Skills extends StdCommand
                         thisLine.append("\n\r");
                         col=1;
                     }
-                    thisLine.append("^N[^H"+CMStrings.padRight(Integer.toString(thisAbility.proficiency()),3)+"%^?]^N "+CMStrings.padRight("^<HELP^>"+thisAbility.name()+"^</HELP^>",(col==3)?18:19));
+                    thisLine.append("^N[^H"+CMStrings.padRight(Integer.toString(A.proficiency()),3)+"%^?]^N "+CMStrings.padRight("^<HELP^>"+A.name()+"^</HELP^>",(col==3)?18:19));
                 }
             }
             if(thisLine.length()>0)

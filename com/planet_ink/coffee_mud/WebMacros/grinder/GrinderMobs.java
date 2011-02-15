@@ -515,7 +515,7 @@ public class GrinderMobs
 					M.setClanID(old);
 					if(M.getClanID().length()>0)
 					{
-						Clan C=CMLib.clans().getClan(M.getClanID());
+						Clan C=M.getMyClan();
 						if(C!=null)
 							M.setClanRole(C.getGovernment().acceptPos);
 						else

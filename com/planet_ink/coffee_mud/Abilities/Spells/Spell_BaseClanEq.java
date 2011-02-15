@@ -53,9 +53,9 @@ public class Spell_BaseClanEq extends Spell
 	{
 		if(student!=null)
 		{
-			for(int a=0;a<student.numAbilities();a++)
-			{
-				Ability A=student.fetchAbility(a);
+	        for(Enumeration<Ability> a=student.enumAbilities();a.hasMoreElements();)
+	        {
+	            Ability A=a.nextElement();
 				if((A!=null)&&(A instanceof Spell_BaseClanEq))
 				{
 					teacher.tell(student.name()+" already knows '"+A.name()+"', and may not learn another clan enchantment.");
@@ -74,7 +74,7 @@ public class Spell_BaseClanEq extends Spell
 			mob.tell("You aren't even a member of a clan.");
 			return false;
 		}
-		Clan C=CMLib.clans().getClan(mob.getClanID());
+		Clan C=mob.getMyClan();
 		if(C==null)
 		{
 			mob.tell("You aren't even a member of a clan.");

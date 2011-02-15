@@ -128,10 +128,11 @@ public interface MOB extends Rider, DBIdentifiable, PhysicalAgent, ItemPossessor
 	public Weapon myNaturalWeapon();
 
 	// misc characteristics
-	public String getWorshipCharID();
 	public String getLiegeID();
 	public boolean isMarriedToLiege();
+	public String getWorshipCharID();
 	public Deity getMyDeity();
+	public Clan getMyClan();
 	public String getClanID();
 	public void setClanID(String clan);
 	public int getClanRole();
@@ -194,6 +195,7 @@ public interface MOB extends Rider, DBIdentifiable, PhysicalAgent, ItemPossessor
 	public Ability fetchAbility(int index);
 	public Ability findAbility(String name);
 	public Ability fetchAbility(String ID);
+	public Enumeration<Ability> enumAbilities();
 
 	/** Manipulation of the expertise list */
 	public void addExpertise(String of);

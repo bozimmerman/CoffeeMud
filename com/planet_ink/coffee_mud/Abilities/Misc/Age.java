@@ -321,7 +321,7 @@ public class Age extends StdAbility
                     }
                     if(newMan.getClanID().length()>0)
                     {
-	                    Clan C = CMLib.clans().findClan(newMan.getClanID());
+	                    Clan C = newMan.getMyClan();
                         newMan.setClanRole(C.getGovernment().acceptPos);
 	                    if(C!=null) C.addMember(newMan, C.getGovernment().acceptPos);
                     }

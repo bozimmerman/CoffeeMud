@@ -123,7 +123,7 @@ public class MOTD extends StdCommand
                     Clan C=null;
                     if(mob.getClanID().length()>0)
                     {
-                        C=CMLib.clans().getClan(mob.getClanID());
+                        C=mob.getMyClan();
                         if((C!=null)
                         &&(C.getAuthority(mob.getClanRole(),Clan.Function.WITHDRAW)!=Clan.Authority.CAN_NOT_DO))
                         {

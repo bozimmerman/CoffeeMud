@@ -45,7 +45,7 @@ public class Spell_Flagportation extends Spell
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 
-	    Clan C=mob.getClanID().length()>0?CMLib.clans().getClan(mob.getClanID()):null;
+	    Clan C=mob.getClanID().length()>0?mob.getMyClan():null;
 	    if(C==null)
 	    {
 	        mob.tell("You must belong to a clan to use this spell.");

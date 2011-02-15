@@ -307,7 +307,7 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
         }
         if((mob.getClanID().length()>0)&&(amount>2))
         {
-            Clan C=CMLib.clans().getClan(mob.getClanID());
+            Clan C=mob.getMyClan();
             if((C!=null)&&(C.getTaxes()>0.0))
             {
                 int clanshare=(int)Math.round(CMath.mul(amount,C.getTaxes()));
@@ -425,8 +425,11 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 		mob.tell(theNews.toString());
 		curClass=mob.baseCharStats().getCurrentClass();
         HashSet<String> oldAbilities=new HashSet<String>();
-        for(int a=0;a<mob.numAbilities();a++)
-            oldAbilities.add(mob.fetchAbility(a).ID());
+        for(Enumeration<Ability> a=mob.enumAbilities();a.hasMoreElements();)
+        {
+            Ability A=a.nextElement();
+            if(A!=null) oldAbilities.add(A.ID());
+        }
 
         curClass.grantAbilities(mob,false);
 
@@ -440,10 +443,10 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 		}
 
 		List<String> newAbilityIDs=new Vector<String>();
-        for(int a=0;a<mob.numAbilities();a++)
+        for(Enumeration<Ability> a=mob.enumAbilities();a.hasMoreElements();)
         {
-            Ability A=mob.fetchAbility(a);
-            if(!oldAbilities.contains(A.ID()))
+            Ability A=a.nextElement();
+            if((A!=null)&&(!oldAbilities.contains(A.ID())))
             	newAbilityIDs.add(A.ID());
         }
 
@@ -532,7 +535,7 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 
 		if((mob.getClanID().length()>0)&&(amount>2))
 		{
-			Clan C=CMLib.clans().getClan(mob.getClanID());
+			Clan C=mob.getMyClan();
 			if(C!=null) amount=C.applyExpMods(amount);
 		}
 

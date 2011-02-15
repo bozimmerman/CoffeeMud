@@ -69,9 +69,9 @@ public class Spell_EnchantWand extends Spell
 
 		String spellName=CMParms.combine(commands,0).trim();
 		Spell wandThis=null;
-        for(int a=0;a<mob.numAbilities();a++)
+        for(Enumeration<Ability> a=mob.enumAbilities();a.hasMoreElements();)
         {
-            Ability A=mob.fetchAbility(a);
+            Ability A=a.nextElement();
             if((A!=null)
             &&(A instanceof Spell)
             &&((!A.isSavable())||(CMLib.ableMapper().qualifiesByLevel(mob,A)))
@@ -80,16 +80,16 @@ public class Spell_EnchantWand extends Spell
                 wandThis=(Spell)A;
         }
         if(wandThis==null)
-        for(int a=0;a<mob.numAbilities();a++)
-        {
-            Ability A=mob.fetchAbility(a);
-            if((A!=null)
-            &&(A instanceof Spell)
-            &&((!A.isSavable())||(CMLib.ableMapper().qualifiesByLevel(mob,A)))
-            &&(CMLib.english().containsString(A.name(),spellName))
-            &&(!A.ID().equals(this.ID())))
-                wandThis=(Spell)A;
-        }
+            for(Enumeration<Ability> a=mob.enumAbilities();a.hasMoreElements();)
+            {
+                Ability A=a.nextElement();
+	            if((A!=null)
+	            &&(A instanceof Spell)
+	            &&((!A.isSavable())||(CMLib.ableMapper().qualifiesByLevel(mob,A)))
+	            &&(CMLib.english().containsString(A.name(),spellName))
+	            &&(!A.ID().equals(this.ID())))
+	                wandThis=(Spell)A;
+	        }
 		if(wandThis==null)
 		{
 			mob.tell("You don't know how to enchant anything with '"+spellName+"'.");

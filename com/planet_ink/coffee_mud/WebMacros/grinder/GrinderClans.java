@@ -58,7 +58,7 @@ public class GrinderClans
                     {
                         if(M.getClanID().length()>0)
                         {
-                            Clan oldClan=CMLib.clans().getClan(M.getClanID());
+                            Clan oldClan=M.getMyClan();
                             if(oldClan!=null) oldClan.delMember(M);
                         }
                         C.addMember(M,newRole);

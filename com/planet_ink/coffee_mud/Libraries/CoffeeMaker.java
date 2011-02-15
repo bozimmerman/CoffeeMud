@@ -2252,7 +2252,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 			mob.setClanID(CMLib.xml().getValFromPieces(buf,"CLAN"));
 			if(mob.getClanID().length()>0)
 			{
-				Clan C=CMLib.clans().getClan(mob.getClanID());
+				Clan C=mob.getMyClan();
 				if(C!=null)
 					mob.setClanRole(C.getGovernment().acceptPos);
 				else

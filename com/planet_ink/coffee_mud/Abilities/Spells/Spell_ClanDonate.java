@@ -60,7 +60,7 @@ public class Spell_ClanDonate extends Spell
 			mob.tell("You aren't even a member of a clan.");
 			return false;
 		}
-		Clan C=CMLib.clans().getClan(mob.getClanID());
+		Clan C=mob.getMyClan();
 		clanDonateRoom=CMLib.map().getRoom(C.getDonation());
 		if(clanDonateRoom==null)
 		{

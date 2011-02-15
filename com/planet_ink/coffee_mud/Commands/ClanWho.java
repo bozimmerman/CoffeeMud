@@ -45,7 +45,7 @@ public class ClanWho extends Who
 	{
 		if((mob.getClanID()==null)
 		||(mob.getClanID().equalsIgnoreCase(""))
-		||(CMLib.clans().getClan(mob.getClanID())==null))
+		||(mob.getMyClan()==null))
 		{
 			mob.tell("You aren't even a member of a clan.");
 			return false;

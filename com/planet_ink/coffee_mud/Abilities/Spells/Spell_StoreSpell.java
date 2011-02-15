@@ -160,9 +160,9 @@ public class Spell_StoreSpell extends Spell
 
 		String spellName=CMParms.combine(commands,0).trim();
 		Spell wandThis=null;
-		for(int a=0;a<mob.numAbilities();a++)
-		{
-			Ability A=mob.fetchAbility(a);
+        for(Enumeration<Ability> a=mob.enumAbilities();a.hasMoreElements();)
+        {
+            Ability A=a.nextElement();
 			if((A!=null)
 			&&(A instanceof Spell)
 			&&((!A.isSavable())||(CMLib.ableMapper().qualifiesByLevel(mob,A)))

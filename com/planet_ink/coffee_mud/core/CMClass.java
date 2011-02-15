@@ -800,10 +800,10 @@ public class CMClass extends ClassLoader
 	{
 		final List<Ability> As=new LinkedList<Ability>();
         Ability A=null;
-		for(int a=0;a<mob.numAbilities();a++)
-		{
-		    Ability B=mob.fetchAbility(a);
-		    if(B!=null) As.add(B);
+        for(Enumeration<Ability> a=mob.enumAbilities();a.hasMoreElements();)
+        {
+            A=a.nextElement();
+		    if(A!=null) As.add(A);
 		}
 		A=(Ability)CMLib.english().fetchEnvironmental(As,calledThis,true);
 		if(A==null)

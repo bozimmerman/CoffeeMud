@@ -1024,9 +1024,10 @@ public class CMAble extends StdLibrary implements AbilityMapper
 	{
 		if(studentM==null) return new DVector(2);
 		DVector reqs=null;
-		for(int c=studentM.charStats().numClasses()-1;c>=0;c--)
+		final CharStats cStats = studentM.charStats();
+		for(int c=cStats.numClasses()-1;c>=0;c--)
 		{
-			CharClass C=studentM.charStats().getMyClass(c);
+			CharClass C=cStats.getMyClass(c);
 			int level=getQualifyingLevel(C.ID(),true,A.ID());
 			int classLevel=studentM.charStats().getClassLevel(C);
 			if((level>=0)&&(classLevel>=level))
@@ -1035,14 +1036,14 @@ public class CMAble extends StdLibrary implements AbilityMapper
 				if(reqs!=null) return reqs.copyOf();
 			}
 		}
-		int level=getQualifyingLevel(studentM.charStats().getMyRace().ID(),false,A.ID());
+		int level=getQualifyingLevel(cStats.getMyRace().ID(),false,A.ID());
 		int classLevel=studentM.basePhyStats().level();
 		if((level>=0)&&(classLevel>=level))
 		{
-			reqs=getRawPreRequisites(studentM.charStats().getMyRace().ID(),false,A.ID());
+			reqs=getRawPreRequisites(cStats.getMyRace().ID(),false,A.ID());
 			if(reqs!=null) return reqs.copyOf();
 		}
-		reqs=getRawPreRequisites(studentM.charStats().getCurrentClass().ID(),true,A.ID());
+		reqs=getRawPreRequisites(cStats.getCurrentClass().ID(),true,A.ID());
 		return (reqs==null)?new DVector(2):reqs.copyOf();
 	}
 
@@ -1107,14 +1108,14 @@ public class CMAble extends StdLibrary implements AbilityMapper
 				theLevel=level;
 			}
 		}
-		int level=getQualifyingLevel(studentM.charStats().getMyRace().ID(),false,A.ID());
+		int raceLevel=getQualifyingLevel(studentM.charStats().getMyRace().ID(),false,A.ID());
 		int classLevel=studentM.basePhyStats().level();
-		if((level>=0)
-		&&(classLevel>=level)
-		&&((classLevel-level)>greatestDiff))
+		if((raceLevel>=0)
+		&&(classLevel>=raceLevel)
+		&&((classLevel-raceLevel)>greatestDiff))
 		{
-			greatestDiff=classLevel-level;
-			theLevel=level;
+			greatestDiff=classLevel-raceLevel;
+			theLevel=raceLevel;
 		}
 		if(theLevel<0)
 			return getQualifyingLevel(studentM.charStats().getCurrentClass().ID(),true,A.ID());
@@ -1168,9 +1169,9 @@ public class CMAble extends StdLibrary implements AbilityMapper
 				theClass=C;
 			}
 		}
-		int level=getQualifyingLevel(studentM.charStats().getMyRace().ID(),false,A.ID());
-		if((level>=0)
-		&&((theClass==null)||((studentM.basePhyStats().level()>=level)&&(theLevel>level))))
+		int raceLevel=getQualifyingLevel(studentM.charStats().getMyRace().ID(),false,A.ID());
+		if((raceLevel>=0)
+		&&((theClass==null)||((studentM.basePhyStats().level()>=raceLevel)&&(theLevel>raceLevel))))
 			return studentM.charStats().getMyRace();
 		return theClass;
 	}

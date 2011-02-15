@@ -3225,9 +3225,9 @@ public class StdMOB implements MOB
 	private void clearExpertiseCache()
 	{
 		Ability A=null;
-		for(int a=0;a<numAbilities();a++)
-		{
-			A=fetchAbility(a);
+        for(Enumeration<Ability> a=enumAbilities();a.hasMoreElements();)
+        {
+            A=a.nextElement();
 			if(A!=null) A.clearExpertiseCache();
 		}
 		for(int a=0;a<numEffects();a++)

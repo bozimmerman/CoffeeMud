@@ -127,7 +127,7 @@ public class Score extends Affect
 		msg.append(".\n\r");
 		if((mob.getClanID()!=null)&&(mob.getClanID().length()>0))
 		{
-			Clan C=CMLib.clans().getClan(mob.getClanID());
+			Clan C=mob.getMyClan();
 			if(C!=null)
 			{
 				String role=C.getRoleName(mob.getClanRole(),true,false);

@@ -859,7 +859,7 @@ public class StdPostman extends StdShopKeeper implements PostOffice
                     if(msg.tool()==null) return false;
                     if((isSold(ShopKeeper.DEAL_CLANPOSTMAN))
                     &&((msg.source().getClanID().length()==0)
-                      ||(CMLib.clans().getClan(msg.source().getClanID())==null)))
+                      ||(msg.source().getMyClan()==null)))
                     {
                         CMLib.commands().postSay(this,mob,"I'm sorry, I only do business with Clans, and you aren't part of one.",true,false);
                         return false;
@@ -879,7 +879,7 @@ public class StdPostman extends StdShopKeeper implements PostOffice
                     if(isSold(ShopKeeper.DEAL_CLANPOSTMAN))
                     {
                         thename=msg.source().getClanID();
-                        Clan C=CMLib.clans().getClan(msg.source().getClanID());
+                        Clan C=msg.source().getMyClan();
                         if((msg.source().getClanID().length()==0)
                           ||(C==null))
                         {
@@ -932,7 +932,7 @@ public class StdPostman extends StdShopKeeper implements PostOffice
                 if(isSold(ShopKeeper.DEAL_CLANPOSTMAN))
                 {
                     thename=msg.source().getClanID();
-                    Clan C=CMLib.clans().getClan(msg.source().getClanID());
+                    Clan C=msg.source().getMyClan();
                     if((msg.source().getClanID().length()==0)
                       ||(C==null))
                     {

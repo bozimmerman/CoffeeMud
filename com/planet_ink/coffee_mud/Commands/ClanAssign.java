@@ -63,7 +63,7 @@ public class ClanAssign extends StdCommand
 			}
 			else
 			{
-				C=CMLib.clans().getClan(mob.getClanID());
+	            C=mob.getMyClan();
 				if(C==null)
 				{
 					mob.tell("There is no longer a clan called "+mob.getClanID()+".");

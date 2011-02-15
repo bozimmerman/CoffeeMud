@@ -1205,7 +1205,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 	                &&(killer.session()!=null)
 	                &&(!deadmob.session().getAddress().equalsIgnoreCase(killer.session().getAddress())))
 	                {
-	                    Clan C=CMLib.clans().getClan(killer.getClanID());
+	                    Clan C=killer.getMyClan();
 	                    if(C!=null) C.recordClanKill();
 	                }
                 }

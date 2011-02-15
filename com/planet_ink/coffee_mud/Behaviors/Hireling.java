@@ -268,12 +268,15 @@ public class Hireling extends StdBehavior
 			if(((msg.sourceMessage().toUpperCase().indexOf(" SKILLS") > 0)))
 			{
 				StringBuffer skills = new StringBuffer("");
-				for (int a = 0; a < observer.numAbilities(); a++)
-				{
-					Ability A = observer.fetchAbility(a);
-					if(A.proficiency() == 0)
-						A.setProficiency(50 + observer.phyStats().level() - CMLib.ableMapper().lowestQualifyingLevel(A.ID()));
-					skills.append(", " + A.name());
+		        for(Enumeration<Ability> a=observer.enumAbilities();a.hasMoreElements();)
+		        {
+		            Ability A=a.nextElement();
+		            if(A!=null)
+		            {
+						if(A.proficiency() == 0)
+							A.setProficiency(50 + observer.phyStats().level() - CMLib.ableMapper().lowestQualifyingLevel(A.ID()));
+						skills.append(", " + A.name());
+		            }
 				}
 				if(skills.length()>2)
 					CMLib.commands().postSay(observer, source, "My skills include: " + skills.substring(2) + ".",false,false);
@@ -320,12 +323,15 @@ public class Hireling extends StdBehavior
 					if(given>price())
 						partials.put(msg.source().Name(),Double.valueOf(given-price()));
 					StringBuffer skills=new StringBuffer("");
-					for(int a=0;a<observer.numAbilities();a++)
-					{
-						Ability A=observer.fetchAbility(a);
-						if(A.proficiency()==0)
-							A.setProficiency(50+observer.phyStats().level()-CMLib.ableMapper().lowestQualifyingLevel(A.ID()));
-						skills.append(", "+A.name());
+			        for(Enumeration<Ability> a=observer.enumAbilities();a.hasMoreElements();)
+			        {
+			            Ability A=a.nextElement();
+			            if(A!=null)
+			            {
+							if(A.proficiency()==0)
+								A.setProficiency(50+observer.phyStats().level()-CMLib.ableMapper().lowestQualifyingLevel(A.ID()));
+							skills.append(", "+A.name());
+			            }
 					}
 					workingFor=source.Name();
 					onTheJobUntil=System.currentTimeMillis();

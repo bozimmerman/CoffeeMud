@@ -322,7 +322,7 @@ public class StdClanItem extends StdItem implements ClanItem
 				if((!msg.source().getClanID().equals(((ClanItem)myHost).clanID()))
 				&&(((ClanItem)myHost).ciType()!=ClanItem.CI_PROPAGANDA))
 				{
-					Clan C=CMLib.clans().getClan(msg.source().getClanID());
+					Clan C=msg.source().getMyClan();
 					int relation=-1;
 					if(C!=null)
 						relation=C.getClanRelations(((ClanItem)myHost).clanID());
@@ -375,7 +375,7 @@ public class StdClanItem extends StdItem implements ClanItem
             }
             else
 			{
-				Clan C=CMLib.clans().getClan(M.getClanID());
+				Clan C=M.getMyClan();
 				if(M.location()!=null)
 					M.location().show(M,myHost,CMMsg.MSG_OK_ACTION,"<T-NAME> is destroyed by <S-YOUPOSS> touch!");
 				if(C!=null)

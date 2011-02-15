@@ -739,7 +739,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 					double balance=getBalance(mob);
 					if((isSold(ShopKeeper.DEAL_CLANBANKER))
 					&&((msg.source().getClanID().length()==0)
-					  ||(CMLib.clans().getClan(msg.source().getClanID())==null)))
+					  ||(msg.source().getMyClan()==null)))
 					{
 						CMLib.commands().postSay(this,mob,"I'm sorry, I only do business with Clans, and you aren't part of one.",true,false);
 						return false;
@@ -782,7 +782,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 					if(isSold(ShopKeeper.DEAL_CLANBANKER))
 					{
 						thename=msg.source().getClanID();
-						Clan C=CMLib.clans().getClan(msg.source().getClanID());
+						Clan C=msg.source().getMyClan();
 						if((msg.source().getClanID().length()==0)
 						  ||(C==null))
 						{
@@ -897,7 +897,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 				if(isSold(ShopKeeper.DEAL_CLANBANKER))
 				{
 					thename=msg.source().getClanID();
-					Clan C=CMLib.clans().getClan(msg.source().getClanID());
+					Clan C=msg.source().getMyClan();
 					if((msg.source().getClanID().length()==0)
 					  ||(C==null))
 					{
@@ -958,7 +958,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 				if(isSold(ShopKeeper.DEAL_CLANBANKER))
 				{
 					thename=msg.source().getClanID();
-					Clan C=CMLib.clans().getClan(msg.source().getClanID());
+					Clan C=msg.source().getMyClan();
 					if((msg.source().getClanID().length()==0)
 					  ||(C==null))
 					{

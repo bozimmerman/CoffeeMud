@@ -112,7 +112,7 @@ public class ClanCrafting extends CraftingSkill implements ItemCraftor
 			student.tell("You need to belong to a clan before you can learn "+name()+".");
 			return false;
 		}
-		Clan C=CMLib.clans().getClan(student.getClanID());
+		Clan C=student.getMyClan();
 		if(C==null)
 		{
 			teacher.tell(student.name()+" is not a member of a clan.");
@@ -153,7 +153,7 @@ public class ClanCrafting extends CraftingSkill implements ItemCraftor
 				mob.tell("You must be a member of a clan to use this skill.");
 				return false;
 			}
-			C=CMLib.clans().getClan(mob.getClanID());
+            C=mob.getMyClan();
 			if(C==null)
 			{
 				mob.tell("You must be a member of a clan to use this skill.");

@@ -47,13 +47,13 @@ public class ClanTax extends StdCommand
 		StringBuffer msg=new StringBuffer("");
 		if((mob.getClanID()==null)
 		||(mob.getClanID().equalsIgnoreCase(""))
-		||(CMLib.clans().getClan(mob.getClanID())==null))
+		||(mob.getMyClan()==null))
 		{
 			msg.append("You aren't even a member of a clan.");
 		}
 		else
 		{
-			Clan C=CMLib.clans().getClan(mob.getClanID());
+			Clan C=mob.getMyClan();
 			if((!skipChecks)&&(!CMLib.clans().goForward(mob,C,commands,Clan.Function.TAX,false)))
 			{
 				msg.append("You aren't in the right position to set the experience tax rate for your "+C.getGovernmentName()+".");

@@ -175,12 +175,15 @@ public class Prop_Retainable extends Property
         StringBuffer skills = new StringBuffer("");
         if(me instanceof ShopKeeper)
             skills.append(", selling "+CMLib.coffeeShops().storeKeeperString(((ShopKeeper)me).getShop()).toLowerCase());
-        for (int a = 0; a < me.numAbilities(); a++)
+        for(Enumeration<Ability> a=me.enumAbilities();a.hasMoreElements();)
         {
-            Ability A = me.fetchAbility(a);
-            if(A.proficiency() == 0)
-                A.setProficiency(50 + me.phyStats().level() - CMLib.ableMapper().lowestQualifyingLevel(A.ID()));
-            skills.append(", " + A.name());
+            Ability A=a.nextElement();
+            if(A!=null)
+            {
+	            if(A.proficiency() == 0)
+	                A.setProficiency(50 + me.phyStats().level() - CMLib.ableMapper().lowestQualifyingLevel(A.ID()));
+	            skills.append(", " + A.name());
+            }
         }
         if(me instanceof ShopKeeper)
             skills.append(".  Once I'm at my permanent post, you may give me appropriate items to sell at any time");

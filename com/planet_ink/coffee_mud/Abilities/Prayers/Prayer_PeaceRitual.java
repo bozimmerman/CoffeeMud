@@ -130,12 +130,12 @@ public class Prayer_PeaceRitual extends Prayer
             mob.tell(mob,target,null,"<T-NAME> <T-IS-ARE> already affected by "+name()+".");
 			return false;
 		}
-		if((mob.getClanID().length()==0)||(CMLib.clans().getClan(mob.getClanID())==null))
+		if((mob.getClanID().length()==0)||(mob.getMyClan()==null))
 		{
 			mob.tell("You must belong to a clan to use this prayer.");
 			return false;
 		}
-		Clan myClan=CMLib.clans().getClan(mob.getClanID());
+		Clan myClan=mob.getMyClan();
 		clan1=myClan.clanID();
 		if(commands.size()<1)
 		{

@@ -16,7 +16,6 @@ import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
-import java.util.List;
 
 /*
    Copyright 2000-2011 Bo Zimmerman
@@ -58,7 +57,7 @@ public class ClanAccept extends StdCommand
 			}
 			else
 			{
-				C=CMLib.clans().getClan(mob.getClanID());
+	            C=mob.getMyClan();
 				if(C==null)
 				{
 					mob.tell("There is no longer a clan called "+mob.getClanID()+".");

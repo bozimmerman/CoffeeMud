@@ -51,7 +51,7 @@ public class ClanResign extends StdCommand
 		else
 		if(!mob.isMonster())
 		{
-			Clan C=CMLib.clans().getClan(mob.getClanID());
+			Clan C=mob.getMyClan();
 			try
 			{
 				String check=mob.session().prompt("Are you absolutely SURE (y/N)?","N");

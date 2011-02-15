@@ -70,9 +70,9 @@ public class Prayer_SenseProfessions extends Prayer
 			{
 				mob.location().send(mob,msg);
 				Vector professionsV = new Vector();
-				for(int a=0;a<target.numAbilities();a++)
-				{
-					Ability A = target.fetchAbility(a);
+		        for(Enumeration<Ability> a=target.enumAbilities();a.hasMoreElements();)
+		        {
+		            Ability A=a.nextElement();
 					if((A!=null) 
 					&& ((A.classificationCode() & Ability.ALL_ACODES)==senseWhat()))
 						professionsV.addElement(A.name() + " ("+A.proficiency()+"%)");

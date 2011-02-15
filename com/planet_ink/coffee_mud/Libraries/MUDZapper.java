@@ -405,9 +405,9 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                 return false;
             o=makeSkillFlagObject(str);
             if(o==null) continue;
-            for(int a=0;a<mob.numAbilities();a++)
+            for(Enumeration<Ability> a=mob.enumAbilities();a.hasMoreElements();)
             {
-                A=mob.fetchAbility(a);
+                A=a.nextElement();
                 if(evaluateSkillFlagObject(o,A))
                 	return true;
             }
@@ -3491,9 +3491,9 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                     boolean found=false;
 					for(Object o : entry.parms)
                     {
-                        for(int a=0;a<mob.numAbilities();a++)
-                        {
-                            A=mob.fetchAbility(a);
+				        for(Enumeration<Ability> a=mob.enumAbilities();a.hasMoreElements();)
+				        {
+				            A=a.nextElement();
                             if(evaluateSkillFlagObject(o,A))
                             { found=true; break;}
                         }
@@ -3518,9 +3518,9 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                     Ability A=null;
 					for(Object o : entry.parms)
                     {
-                        for(int a=0;a<mob.numAbilities();a++)
-                        {
-                            A=mob.fetchAbility(a);
+				        for(Enumeration<Ability> a=mob.enumAbilities();a.hasMoreElements();)
+				        {
+				            A=a.nextElement();
                             if(evaluateSkillFlagObject(o,A))
                             	return false;
                         }

@@ -45,14 +45,14 @@ public class ClanVote extends StdCommand
 		StringBuffer msg=new StringBuffer("");
 		if((mob.getClanID()==null)
 		||(mob.getClanID().equalsIgnoreCase(""))
-		||(CMLib.clans().getClan(mob.getClanID())==null))
+		||(mob.getMyClan()==null))
 		{
 			msg.append("You aren't even a member of a clan.");
 		}
 		else
 		if(!mob.isMonster())
 		{
-			Clan C=CMLib.clans().getClan(mob.getClanID());
+			Clan C=mob.getMyClan();
 			if(C==null) return false;
 			Vector votesForYou=new Vector();
 			for(Enumeration e=C.votes();e.hasMoreElements();)

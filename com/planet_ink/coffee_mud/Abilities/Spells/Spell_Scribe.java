@@ -68,9 +68,9 @@ public class Spell_Scribe extends Spell
 
 		String spellName=CMParms.combine(commands,0).trim();
 		Spell scrollThis=null;
-		for(int a=0;a<mob.numAbilities();a++)
-		{
-			Ability A=mob.fetchAbility(a);
+        for(Enumeration<Ability> a=mob.enumAbilities();a.hasMoreElements();)
+        {
+            Ability A=a.nextElement();
 			if((A!=null)
 			&&(A instanceof Spell)
 			&&(A.name().equalsIgnoreCase(spellName))
@@ -78,15 +78,15 @@ public class Spell_Scribe extends Spell
 				scrollThis=(Spell)A;
 		}
         if(scrollThis==null)
-        for(int a=0;a<mob.numAbilities();a++)
-        {
-            Ability A=mob.fetchAbility(a);
-            if((A!=null)
-            &&(A instanceof Spell)
-            &&(CMLib.english().containsString(A.name(),spellName))
-            &&(!A.ID().equals(this.ID())))
-                scrollThis=(Spell)A;
-        }
+            for(Enumeration<Ability> a=mob.enumAbilities();a.hasMoreElements();)
+            {
+                Ability A=a.nextElement();
+	            if((A!=null)
+	            &&(A instanceof Spell)
+	            &&(CMLib.english().containsString(A.name(),spellName))
+	            &&(!A.ID().equals(this.ID())))
+	                scrollThis=(Spell)A;
+	        }
 		if(scrollThis==null)
 		{
 			mob.tell("You don't know how to scribe '"+spellName+"'.");

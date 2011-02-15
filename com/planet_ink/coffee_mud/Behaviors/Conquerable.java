@@ -1103,7 +1103,7 @@ public class Conquerable extends Arrest
                         {
     						if(killer.getClanID().length()>0)
                             {
-    							Clan C=CMLib.clans().getClan(killer.getClanID());
+    							Clan C=killer.getMyClan();
                                 int level=msg.source().phyStats().level();
     							if((C!=null)&&(C.isLoyaltyThroughWorship())
     							&&(killer.getWorshipCharID().equals(msg.source().getWorshipCharID())))
@@ -1114,7 +1114,7 @@ public class Conquerable extends Arrest
                             else
                             if((killer.amFollowing()!=null)&&(killer.amFollowing().getClanID().length()>0))
                             {
-    							Clan C=CMLib.clans().getClan(killer.amFollowing().getClanID());
+    							Clan C=killer.amFollowing().getMyClan();
                                 int level=msg.source().phyStats().level();
     							if((C!=null)&&(C.isLoyaltyThroughWorship())
     							&&(killer.amFollowing().getWorshipCharID().equals(msg.source().getWorshipCharID())))
@@ -1144,7 +1144,7 @@ public class Conquerable extends Arrest
             &&(((MOB)msg.target()).isMonster())
             &&(((MOB)msg.target()).getStartRoom()!=null)))
             {
-                Clan C=CMLib.clans().getClan(msg.source().getClanID());
+                Clan C=msg.source().getMyClan();
                 if((C!=null)
                 &&(C.isLoyaltyThroughWorship())
                 &&(((Area)myHost).inMyMetroArea(((MOB)msg.target()).getStartRoom().getArea()))

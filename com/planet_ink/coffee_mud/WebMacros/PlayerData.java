@@ -162,7 +162,7 @@ public class PlayerData extends StdWebMacro
 		case 22: str.append(M.getClanID()+", "); break;
 		case 23: if(M.getClanID().length()>0)
 				 {
-					 Clan C=CMLib.clans().getClan(M.getClanID());
+					 Clan C=M.getMyClan();
 					 if(C!=null)
 						str.append(C.getRoleName(M.getClanRole(),true,false)+", ");
 				 }

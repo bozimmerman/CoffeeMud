@@ -830,10 +830,10 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
         if(((showFlag<=0)||(showFlag==showNumber))
            &&(!M.isMonster())
            &&(M.getClanID().length()>0)
-           &&(CMLib.clans().getClan(M.getClanID())!=null))
+           &&(M.getMyClan()!=null))
         {
 
-            Clan C=CMLib.clans().getClan(M.getClanID());
+            Clan C=M.getMyClan();
             mob.tell(showNumber+". Clan (Role): '"+C.getRoleName(M.getClanRole(),true,false)+"'.");
             if((showFlag==showNumber)||(showFlag<=-999))
             {
@@ -3740,7 +3740,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
                         MOB M=CMLib.players().getLoadPlayer(newName);
                         if(M!=null)
                         {
-                            Clan oldC=CMLib.clans().getClan(M.getClanID());
+                            Clan oldC=M.getMyClan();
                             if((oldC!=null)
                             &&(!M.getClanID().equalsIgnoreCase(E.clanID())))
                             {

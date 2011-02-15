@@ -626,7 +626,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
             &&((shop.isSold(ShopKeeper.DEAL_CLANDSELLER))||(shop.isSold(ShopKeeper.DEAL_CSHIPSELLER))))
             {
                 Clan C=null;
-                if(buyer.getClanID().length()>0)C=CMLib.clans().getClan(buyer.getClanID());
+                if(buyer.getClanID().length()>0)C=buyer.getMyClan();
                 if(C==null)
                 {
                     CMLib.commands().postSay(seller,buyer,"I only sell to clans.",true,false);

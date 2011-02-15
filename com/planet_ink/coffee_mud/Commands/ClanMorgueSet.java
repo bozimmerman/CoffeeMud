@@ -60,7 +60,7 @@ public class ClanMorgueSet extends StdCommand
 			mob.tell("You aren't even a member of a clan.");
 			return false;
 		}
-		Clan C=CMLib.clans().getClan(mob.getClanID());
+        Clan C=mob.getMyClan();
 		if(C==null)
 		{
 			mob.tell("There is no longer a clan called "+mob.getClanID()+".");

@@ -125,9 +125,9 @@ public class CombatAbilities extends StdBehavior
 	protected void newCharacter(MOB mob)
 	{
 		Vector oldAbilities=new Vector();
-		for(int a=0;a<mob.numAbilities();a++)
-		{
-			Ability A=mob.fetchAbility(a);
+        for(Enumeration<Ability> a=mob.enumAbilities();a.hasMoreElements();)
+        {
+            Ability A=a.nextElement();
 			if(A!=null)
 			{
 				int proficiency=CMLib.ableMapper().getMaxProficiency(mob,true,A.ID())/2;

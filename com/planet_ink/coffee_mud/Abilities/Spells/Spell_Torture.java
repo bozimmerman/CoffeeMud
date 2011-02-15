@@ -92,7 +92,7 @@ public class Spell_Torture extends Spell
 			    roll=CMLib.dice().roll(1,10,0);
 			else
 			{
-		        Clan C=CMLib.clans().getClan(mob.getClanID());
+		        Clan C=mob.getMyClan();
 				if(C==null)
 				    roll=CMLib.dice().roll(1,10,0);
 				else
@@ -116,7 +116,7 @@ public class Spell_Torture extends Spell
 			    roll=CMLib.dice().roll(1,10,0);
 			else
 			{
-		        Clan C=CMLib.clans().getClan(mob.getClanID());
+		        Clan C=mob.getMyClan();
 				if(C==null)
 				    roll=CMLib.dice().roll(1,10,0);
 				else

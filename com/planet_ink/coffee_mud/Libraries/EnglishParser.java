@@ -207,11 +207,11 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
         }
 
 		// second, inexacting pass
-		for(int a=0;a<mob.numAbilities();a++)
-		{
-			A=mob.fetchAbility(a);
+        for(Enumeration<Ability> a=mob.enumAbilities();a.hasMoreElements();)
+        {
+            A=a.nextElement();
             HashSet tried=new HashSet();
-			if(A.triggerStrings()!=null)
+			if((A!=null)&&(A.triggerStrings()!=null))
 				for(int t=0;t<A.triggerStrings().length;t++)
 					if((A.triggerStrings()[t].toUpperCase().startsWith(firstWord))
                     &&(!tried.contains(A.triggerStrings()[t])))
@@ -308,9 +308,9 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
         if(mob==null) return null;
         Ability A=null;
         HashSet done=new HashSet();
-        for(int i=0;i<mob.numAbilities();i++)
+        for(Enumeration<Ability> a=mob.enumAbilities();a.hasMoreElements();)
         {
-            A=mob.fetchAbility(i);
+            A=a.nextElement();
             if((A!=null)
             &&(A.triggerStrings()!=null)
             &&(!done.contains(A.triggerStrings())))
@@ -330,11 +330,11 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 
 		boolean foundMoreThanOne=false;
 		Ability evokableAbility=null;
-		for(int a=0;a<mob.numAbilities();a++)
-		{
-			Ability thisAbility=mob.fetchAbility(a);
-			if((thisAbility!=null)
-			&&(evokedBy(thisAbility,evokeWord)))
+        for(Enumeration<Ability> a=mob.enumAbilities();a.hasMoreElements();)
+        {
+            Ability A=a.nextElement();
+			if((A!=null)
+			&&(evokedBy(A,evokeWord)))
             {
 				if(evokableAbility!=null)
 				{
@@ -342,7 +342,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 					evokableAbility=null;
 					break;
 				}
-				evokableAbility=thisAbility;
+				evokableAbility=A;
             }
 		}
 
@@ -371,16 +371,16 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 			commands.remove(0);
 			foundMoreThanOne=false;
 			String secondWord=((String)commands.get(0)).toUpperCase();
-			for(int a=0;a<mob.numAbilities();a++)
-			{
-				Ability thisAbility=mob.fetchAbility(a);
-				if((thisAbility!=null)
-				&&(evokedBy(thisAbility,evokeWord,secondWord.toUpperCase())))
+	        for(Enumeration<Ability> a=mob.enumAbilities();a.hasMoreElements();)
+	        {
+	            Ability A=a.nextElement();
+				if((A!=null)
+				&&(evokedBy(A,evokeWord,secondWord.toUpperCase())))
 				{
-					if((thisAbility.name().equalsIgnoreCase(secondWord))
-					||(collapsedName(thisAbility).equalsIgnoreCase(secondWord)))
+					if((A.name().equalsIgnoreCase(secondWord))
+					||(collapsedName(A).equalsIgnoreCase(secondWord)))
 					{
-						evokableAbility=thisAbility;
+						evokableAbility=A;
 						foundMoreThanOne=false;
 						break;
 					}
@@ -388,7 +388,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 					if(evokableAbility!=null)
 						foundMoreThanOne=true;
 					else
-						evokableAbility=thisAbility;
+						evokableAbility=A;
 				}
 			}
 			if((evokableAbility!=null)&&(!foundMoreThanOne))
@@ -398,13 +398,12 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 			{
 				String secondAndThirdWord=secondWord+" "+((String)commands.get(1)).toUpperCase();
 
-				for(int a=0;a<mob.numAbilities();a++)
-				{
-					Ability thisAbility=mob.fetchAbility(a);
-					if((thisAbility!=null)
-					   &&(evokedBy(thisAbility,evokeWord,secondAndThirdWord.toUpperCase())))
+		        for(Enumeration<Ability> a=mob.enumAbilities();a.hasMoreElements();)
+		        {
+		            Ability A=a.nextElement();
+					if((A!=null) && (evokedBy(A,evokeWord,secondAndThirdWord.toUpperCase())))
 					{
-						evokableAbility=thisAbility;
+						evokableAbility=A;
 						break;
 					}
 				}
@@ -416,14 +415,14 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 			}
 			else
 			{
-				for(int a=0;a<mob.numAbilities();a++)
-				{
-					Ability thisAbility=mob.fetchAbility(a);
-					if((thisAbility!=null)
-					&&(evokedBy(thisAbility,evokeWord))
-					&&(thisAbility.name().toUpperCase().indexOf(" "+secondWord.toUpperCase())>0))
+		        for(Enumeration<Ability> a=mob.enumAbilities();a.hasMoreElements();)
+		        {
+		            Ability A=a.nextElement();
+					if((A!=null)
+					&&(evokedBy(A,evokeWord))
+					&&(A.name().toUpperCase().indexOf(" "+secondWord.toUpperCase())>0))
 					{
-						evokableAbility=thisAbility;
+						evokableAbility=A;
 						commands.remove(0);
 						break;
 					}

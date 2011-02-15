@@ -70,10 +70,10 @@ public class AbilityPlayerNext extends StdWebMacro
 
         Vector abilities=new Vector();
         HashSet foundIDs=new HashSet();
-        for(int a=0;a<M.numAbilities();a++)
+        for(Enumeration<Ability> a=M.enumAbilities();a.hasMoreElements();)
         {
-            Ability A=M.fetchAbility(a);
-            if(!foundIDs.contains(A.ID()))
+            Ability A=a.nextElement();
+            if((A!=null)&&(!foundIDs.contains(A.ID())))
             {
                 foundIDs.add(A.ID());
                 abilities.addElement(A);
