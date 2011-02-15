@@ -16,6 +16,8 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.MOB.Tattoo;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
+
+import java.lang.ref.WeakReference;
 import java.util.*;
 
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
@@ -44,7 +46,8 @@ public class StdMOB implements MOB
 	public String 		username="";
 
     protected String 	clanID=null;
-    protected Clan	 	cachedClan=null;
+    protected WeakReference<Clan>	 	
+    					cachedClan=new WeakReference(null);
     protected int 		clanRole=0;
 
 	protected CharStats baseCharStats=(CharStats)CMClass.getCommon("DefaultCharStats");
@@ -205,12 +208,13 @@ public class StdMOB implements MOB
 	{
 		final String id = clanID;
 		if((id==null)||(id.length()==0)) return null;
-		if((cachedClan!=null)&&(cachedClan.clanID().equals(id)))
-			return cachedClan;
-		cachedClan=CMLib.clans().getClan(id);
-		if(cachedClan==null)
+		final Clan C = cachedClan.get(); 
+		if((C!=null)&&(C.clanID().equals(id)))
+			return C;
+		cachedClan=new WeakReference(CMLib.clans().getClan(id));
+		if(cachedClan.get()==null)
 			setClanID("");
-		return cachedClan;
+		return cachedClan.get();
 	}
 
     public void initializeClass(){}
@@ -678,7 +682,7 @@ public class StdMOB implements MOB
         	CMLib.threads().deleteTick(this,-1);
         kickFlag=false;
         clanID=null;
-        cachedClan=null;
+        cachedClan.clear();
         charStats=baseCharStats;
         phyStats=basePhyStats;
         playerStats=null;
@@ -752,7 +756,7 @@ public class StdMOB implements MOB
 	}
 
 	public String getClanID(){return ((clanID==null)?"":clanID);}
-	public void setClanID(String clan){clanID=clan; cachedClan=null;}
+	public void setClanID(String clan){clanID=clan; cachedClan.clear();}
 	public int getClanRole(){return clanRole;}
 	public void setClanRole(int role){clanRole=role;}
 
