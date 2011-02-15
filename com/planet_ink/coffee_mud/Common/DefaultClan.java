@@ -679,7 +679,7 @@ public class DefaultClan implements Clan
         if(mob==null) return false;
         if((role<0)||(role>govt().positions.length)) return false;
         Position pos = govt().positions[role];
-        return CMLib.masking().maskCheck(pos.innerMaskStr, mob, true);
+        return CMLib.masking().maskCheck(fixRequirementMask(pos.innerMaskStr), mob, true);
 	}
 
 	public Authority getAuthority(int roleID, Function function)
@@ -689,16 +689,16 @@ public class DefaultClan implements Clan
     	return govt().positions[roleID].functionChart[function.ordinal()];
     }
 
-	public String getBasicRequirementMask()
+	public String fixRequirementMask(final String oldMask)
 	{
-		if(govt().requiredMaskStr==null) return "";
-		StringBuffer mask=new StringBuffer(govt().requiredMaskStr.trim());
+		if((oldMask==null)||(oldMask.trim().length()==0)) return "";
+		StringBuffer mask=new StringBuffer(oldMask.trim());
 		if(mask.length()==0) return "";
 		MOB M=getResponsibleMember();
-		int x=mask.indexOf("@<");
+		int x=mask.indexOf("@[");
 		while(x>=0)
 		{
-			int y=mask.indexOf(">@",x+1);
+			int y=mask.indexOf("]@",x+1);
 			if(y>x)
 			{
 				String tag=mask.substring(x+2,y);
@@ -715,9 +715,14 @@ public class DefaultClan implements Clan
 			}
 			if(x>=mask.length()-1)
 				break;
-			x=mask.indexOf("@<",x+1);
+			x=mask.indexOf("@[",x+1);
 		}
 		return mask.toString();
+	}
+	
+	public String getBasicRequirementMask()
+	{
+		return fixRequirementMask(govt().requiredMaskStr);
 	}
     public List<MemberRecord> getRealMemberList(int PosFilter)
     {
