@@ -49,16 +49,17 @@ public class DefaultClan implements Clan
     protected String clanRecall="";
     protected String clanMorgue="";
     protected String clanClass="";
+    protected int	 clanLevel=0;
     protected String clanDonationRoom="";
-    protected int clanTrophies=0;
-    protected int autoPosition=-1;
-    protected String AcceptanceSettings="";
-    protected int ClanStatus=0;
-    protected Vector<ClanVote> voteList=null;
-    protected long exp=0;
-    protected Vector<Long> clanKills=new Vector<Long>();
+    protected int 	 clanTrophies=0;
+    protected int 	 autoPosition=-1;
+    protected String acceptanceSettings="";
+    protected int 	 clanStatus=0;
+    protected long 	 exp=0;
     protected String lastClanKillRecord=null;
     protected double taxRate=0.0;
+    protected Vector<ClanVote> voteList=null;
+    protected Vector<Long> clanKills=new Vector<Long>();
 
     //*****************
     public Hashtable<String,long[]> relations=new Hashtable<String,long[]>();
@@ -66,6 +67,8 @@ public class DefaultClan implements Clan
     public long lastGovernmentLoadTime=-1;
     public Government govt = null;
     //*****************
+    
+    protected final static List<Ability> empty=new LinkedList<Ability>(); 
 
     /** return a new instance of the object*/
     public CMObject newInstance(){try{return (CMObject)getClass().newInstance();}catch(Exception e){return new DefaultClan();}}
@@ -174,12 +177,12 @@ public class DefaultClan implements Clan
         if(!(CV instanceof ClanVote))
             return;
         votes();
-        voteList.addElement((ClanVote)CV);
+        voteList.add((ClanVote)CV);
     }
     public void delVote(ClanVote CV)
     {
         votes();
-        voteList.removeElement(CV);
+        voteList.remove(CV);
     }
 
     public void recordClanKill()
@@ -707,8 +710,11 @@ public class DefaultClan implements Clan
     public String getPremise() {return clanPremise;}
     public void setPremise(String newPremise){ clanPremise = newPremise;}
 
-    public String getAcceptanceSettings() { return AcceptanceSettings; }
-    public void setAcceptanceSettings(String newSettings) { AcceptanceSettings=newSettings; }
+    public int getClanLevel() {return clanLevel;}
+    public void setClanLevel(int newClanLevel){ clanLevel = newClanLevel;}
+
+    public String getAcceptanceSettings() { return acceptanceSettings; }
+    public void setAcceptanceSettings(String newSettings) { acceptanceSettings=newSettings; }
 
     public String getClanClass(){return clanClass;}
     public void setClanClass(String newClass){clanClass=newClass;}
@@ -720,6 +726,7 @@ public class DefaultClan implements Clan
         str.append(CMLib.xml().convertXMLtoTag("GOVERNMENT",""+getGovernmentID()));
         str.append(CMLib.xml().convertXMLtoTag("TAXRATE",""+getTaxes()));
         str.append(CMLib.xml().convertXMLtoTag("EXP",""+getExp()));
+        str.append(CMLib.xml().convertXMLtoTag("LEVEL",""+getClanLevel()));
         str.append(CMLib.xml().convertXMLtoTag("CCLASS",""+getClanClass()));
         str.append(CMLib.xml().convertXMLtoTag("AUTOPOS",""+getAutoPosition()));
         if(relations.size()==0)
@@ -777,8 +784,8 @@ public class DefaultClan implements Clan
         }
     }
 
-    public int getStatus() { return ClanStatus; }
-    public void setStatus(int newStatus) { ClanStatus=newStatus; }
+    public int getStatus() { return clanStatus; }
+    public void setStatus(int newStatus) { clanStatus=newStatus; }
 
     public String getRecall() { return clanRecall; }
     public void setRecall(String newRecall) { clanRecall=newRecall; }
@@ -1330,6 +1337,33 @@ public class DefaultClan implements Clan
             CMLib.commands().postChannel((String)channels.get(i),clanID(),msg,true);
     }
 
+	public List<Ability> clanAbilities(MOB mob)
+	{
+		Map<Integer,List<Ability>> gAbles=govt().abilities;
+		final Integer level;
+		if(mob!=null)
+			level=Integer.valueOf(mob.phyStats().level());
+		else
+			level=Integer.valueOf(Integer.MAX_VALUE);
+		if(gAbles.containsKey(level))
+			return gAbles.get(level);
+		final List<AbilityMapper.AbilityMapping> V=CMLib.ableMapper().getUpToLevelListings("CLAN_"+ID(),level.intValue(),true,(mob!=null));
+		final List<Ability> finalV=new Vector<Ability>();
+		for(AbilityMapper.AbilityMapping able : V)
+		{
+			Ability A=CMClass.getAbility(able.abilityID);
+			if(A!=null)
+			{
+				A.setProficiency(CMLib.ableMapper().getDefaultProficiency("CLAN_"+ID(),false,A.ID()));
+				A.setSavable(false);
+				A.setMiscText(CMLib.ableMapper().getDefaultParm("CLAN_"+ID(),false,A.ID()));
+				finalV.add(A);
+			}
+		}
+		govt().abilities.put(level,finalV);
+		return finalV;
+	}
+	
     public int applyExpMods(int exp)
     {
         boolean changed=false;
@@ -1450,6 +1484,7 @@ public class DefaultClan implements Clan
             if(M!=null) return M.Name();
             return "";
         }
+        case 17: return Integer.toString(getClanLevel());
         }
         return "";
     }
@@ -1475,6 +1510,7 @@ public class DefaultClan implements Clan
         case 14: break; // areas
         case 15: break; // memberlist
         case 16: break; // topmember
+        case 17: setClanLevel(CMath.s_int(val.trim())); break; // clanlevel
         }
     }
     

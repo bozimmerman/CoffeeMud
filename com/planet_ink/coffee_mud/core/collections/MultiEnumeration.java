@@ -30,7 +30,7 @@ public class MultiEnumeration<K> implements Enumeration<K>
         	enums.add((Enumeration<K>)EmptyEnumeration.INSTANCE);
         else
         for(Enumeration<K> E : esets)
-        	enums.add(E);
+        	if(E!=null) enums.add(E);
         hasMoreElements();
     }
     

@@ -154,6 +154,15 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
 	public boolean updateClanPrivileges(MOB mob);
 
 	/**
+	 * Return a vector of skills, spells, and other abilities granted to the given
+	 * mob of the given mobs level.
+	 * @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability
+	 * @param mob the mob to grant the abilities to
+	 * @return a vector of the Ability objects
+	 */
+	public List<Ability> clanAbilities(MOB mob);
+	
+	/**
 	 * Retrieves this Clan's basic story.
 	 * This is to make the Clan's more RP based and so we can
 	 * provide up-to-date information on Clans on the web server.
@@ -674,7 +683,8 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
         "TYPE", // 13
         "AREAS", // 14
         "MEMBERLIST", // 15
-        "TOPMEMBER" // 16
+        "TOPMEMBER", // 16
+        "CLANLEVEL" // 17
     };
 
 	/** constant for the getStatus() method, denoting normal status. @see Clan#getStatus() .*/
@@ -964,8 +974,6 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
 		public int		maxVoteDays;
 		/** minimum % of voters who must have voted for a vote to be valid if time expires*/
 		public int		voteQuorumPct;
-		/**  Whether this is the default government  */
-		public boolean	isDefault = false;
 		/** The list of ClanPosition objects for each holdable position in this government */
 		public Position[] positions;
 		/**  Whether an unfilled topRole is automatically filled by those who meet its innermask  */
@@ -973,8 +981,17 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
 		/** Zapper mask for requirements to even apply */
 		public CompiledZapperMask   requiredMask;
 		
+		// the follow are derived, or post-create set options:
+		
+		/** The list of xp amounts to progress in level */
+		public int[] 	levelProgression = new int[0];
+		/**  Whether this is the default government  */
+		public boolean	isDefault 		 = false;
 		/** A save help entry of this government type for players */
-		public String	helpStr = null;
+		public String	helpStr 		 = null;
+		
+		/** list of abilities gained by users, by level */
+		public Map<Integer,List<Ability>> abilities = new Hashtable<Integer,List<Ability>>();
 		
 		/**
 		 * Initialize a new Clan Government
