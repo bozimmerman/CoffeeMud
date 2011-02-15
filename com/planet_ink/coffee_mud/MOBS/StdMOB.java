@@ -3102,7 +3102,7 @@ public class StdMOB implements MOB
 		for(Enumeration<Ability> a=enumAbilities();a.hasMoreElements();)
 		{
 			final Ability A=a.nextElement();
-			if((A.ID().equalsIgnoreCase(ID))||(A.Name().equalsIgnoreCase(ID)))
+			if((A!=null)&&((A.ID().equalsIgnoreCase(ID))||(A.Name().equalsIgnoreCase(ID))))
 				return A;
 		}
 		return null;

@@ -20,7 +20,7 @@ limitations under the License.
 */
 public class MultiEnumeration<K> implements Enumeration<K>
 {
-	private Vector<Enumeration<K>> enums=new Vector<Enumeration<K>>();
+	private Vector<Enumeration<K>> enums=new Vector<Enumeration<K>>(4);
 	private int dex=0;
     
 	@SuppressWarnings("unchecked")
