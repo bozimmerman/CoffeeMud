@@ -1016,6 +1016,7 @@ public class StdRace implements Race
 		&&(racialAbilityProficiencies()!=null)
 		&&(racialAbilityQuals()!=null))
 		{
+			CMLib.ableMapper().delCharMappings(ID()); // necessary for a "clean start"
 			racialAbilityMap=new Hashtable<Integer,List<Ability>>();
 			for(int i=0;i<racialAbilityNames().length;i++)
 			{
