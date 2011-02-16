@@ -94,13 +94,13 @@ public class ClanData extends StdWebMacro
                 str.append("</TD>");
                 str.append("<TD WIDTH=65% COLSPAN=2>");
                 str.append("<SELECT NAME=ROLE"+(i+1)+">");
-                Clan.Government govt=C.getGovernment();
-                for(Clan.Position pos : govt.positions)
+                ClanGovernment govt=C.getGovernment();
+                for(ClanPosition pos : govt.getPositions())
                 {
-                    str.append("<OPTION VALUE=\""+pos.roleID+"\"");
-                    if(pos.roleID==role.intValue())
+                    str.append("<OPTION VALUE=\""+pos.getRoleID()+"\"");
+                    if(pos.getRoleID()==role.intValue())
                         str.append(" SELECTED");
-                    str.append(">"+pos.name);
+                    str.append(">"+pos.getName());
                 }
                 str.append("</SELECT>");
                 str.append("</TD>");
@@ -117,11 +117,11 @@ public class ClanData extends StdWebMacro
             str.append("</TD>");
             str.append("<TD WIDTH=65% COLSPAN=2>");
             str.append("<SELECT NAME=ROLE"+(themembers.size()+1)+">");
-            Clan.Government govt=C.getGovernment();
-            for(Clan.Position pos : govt.positions)
+            ClanGovernment govt=C.getGovernment();
+            for(ClanPosition pos : govt.getPositions())
             {
-                str.append("<OPTION VALUE=\""+pos.roleID+"\"");
-                str.append(">"+pos.name);
+                str.append("<OPTION VALUE=\""+pos.getRoleID()+"\"");
+                str.append(">"+pos.getName());
             }
             str.append("</SELECT>");
             str.append("</TD>");
@@ -167,7 +167,7 @@ public class ClanData extends StdWebMacro
                 if(CC==C) continue;
                 relat++;
                 Integer relation=(Integer)therelations.elementAt(relat);
-                str.append("<TR><TD WIDTH=35%><FONT COLOR=YELLOW><B>"+CC.name()+"</B></FONT>");
+                str.append("<TR><TD WIDTH=35%><FONT COLOR=YELLOW><B>"+CC.getName()+"</B></FONT>");
                 str.append("<TD WIDTH=65% COLSPAN=2>");
                 str.append("<SELECT NAME=RELATION"+(relat+1)+">");
                 for(int r=0;r<Clan.REL_DESCS.length;r++)
@@ -237,9 +237,9 @@ public class ClanData extends StdWebMacro
                     String old=httpReq.getRequestParameter("AUTOPOSITIONID");
                     if(old==null) old=""+C.getAutoPosition();
                     int autoPos=CMath.s_int(old);
-                    Clan.Government govt=C.getGovernment();
-                    for(Clan.Position pos : govt.positions)
-                        str.append("<OPTION VALUE="+pos.roleID+" "+((autoPos==pos.roleID)?"SELECTED":"")+">"+pos.name);
+                    ClanGovernment govt=C.getGovernment();
+                    for(ClanPosition pos : govt.getPositions())
+                        str.append("<OPTION VALUE="+pos.getRoleID()+" "+((autoPos==pos.getRoleID())?"SELECTED":"")+">"+pos.getName());
                 }
 				if(parms.containsKey("TROPHIES"))
 				{
@@ -331,9 +331,9 @@ public class ClanData extends StdWebMacro
                 {
                     String old=httpReq.getRequestParameter("TYPEID");
                     if(old==null) old=C.getGovernmentID()+"";
-                    Clan.Government[] gvts=CMLib.clans().getStockGovernments();
-                    for(Clan.Government gvt : gvts)
-                        str.append("<OPTION VALUE="+gvt.ID+" "+((old.equals(""+gvt.ID))?"SELECTED":"")+">"+CMStrings.capitalizeAndLower(gvt.name));
+                    ClanGovernment[] gvts=CMLib.clans().getStockGovernments();
+                    for(ClanGovernment gvt : gvts)
+                        str.append("<OPTION VALUE="+gvt.getID()+" "+((old.equals(""+gvt.getID()))?"SELECTED":"")+">"+CMStrings.capitalizeAndLower(gvt.getName()));
                 }
 				if(parms.containsKey("CLANIDRELATIONS"))
 					str.append(CMStrings.capitalizeAndLower(Clan.REL_DESCS[C.getClanRelations(httpReq.getRequestParameter("CLANID"))].toLowerCase())+", ");
@@ -425,7 +425,7 @@ public class ClanData extends StdWebMacro
                 {
                     String member=httpReq.getRequestParameter("CLANID");
                     Clan CC=CMLib.clans().getClan(member);
-                    if(CC!=null) str.append(CC.name()+", ");
+                    if(CC!=null) str.append(CC.getName()+", ");
                 }
                 str.append(ClanData.members(C,httpReq,parms,0));
                 str.append(ClanData.relations(C,httpReq,parms,0));

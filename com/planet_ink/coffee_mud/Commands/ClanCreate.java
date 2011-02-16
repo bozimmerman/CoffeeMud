@@ -88,20 +88,20 @@ public class ClanCreate extends StdCommand
 									StringBuilder promptmsg=new StringBuilder("Now enter a political style for this clan. Choices are:\n\r");
 									{
 										int longest=0;
-							            for(Clan.Government gvt : CMLib.clans().getStockGovernments())
-							            	if(gvt.name.length() > longest)
-							            		longest=gvt.name.length();
-							            for(Clan.Government gvt : CMLib.clans().getStockGovernments())
-							            	promptmsg.append(CMStrings.padRight(gvt.name, longest))
-										            	.append(":").append(gvt.shortDesc).append("\n\r");
+							            for(ClanGovernment gvt : CMLib.clans().getStockGovernments())
+							            	if(gvt.getName().length() > longest)
+							            		longest=gvt.getName().length();
+							            for(ClanGovernment gvt : CMLib.clans().getStockGovernments())
+							            	promptmsg.append(CMStrings.padRight(gvt.getName(), longest))
+										            	.append(":").append(gvt.getShortDesc()).append("\n\r");
 										
 									}
 									String govt=mob.session().prompt(promptmsg.toString()+"\n\r: ","");
 									if(govt.length()==0){ mob.tell("Aborted."); return false;}
-						            for(Clan.Government gvt : CMLib.clans().getStockGovernments())
-										if(govt.equalsIgnoreCase(gvt.name))
+						            for(ClanGovernment gvt : CMLib.clans().getStockGovernments())
+										if(govt.equalsIgnoreCase(gvt.getName()))
 										{
-											govtType=gvt.ID;
+											govtType=gvt.getID();
 											/*
 							            	if(!CMLib.masking().maskCheck(C.getBasicRequirementMask(), mob, true))
 							            	{

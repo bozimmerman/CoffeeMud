@@ -814,7 +814,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 	                if((newName.length()>0)&&(C!=null))
 	                {
 	                    M.setClanID(C.clanID());
-	                    M.setClanRole(C.getGovernment().acceptPos);
+	                    M.setClanRole(C.getGovernment().getAcceptPos());
 	                }
 	                else
 	                if(C==null)
@@ -3705,7 +3705,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
                         if(index<0)
                         {
                             index=members.size();
-                            members.add(new MemberRecord(M.name(),E.getGovernment().acceptPos,M.playerStats().lastDateTime()));
+                            members.add(new MemberRecord(M.name(),E.getGovernment().getAcceptPos(),M.playerStats().lastDateTime()));
                         }
 
                         int newRole=-1;
@@ -5981,7 +5981,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
         }
     }
 
-    public void modifyClanPosition(MOB mob, Clan.Position me) throws IOException
+    public void modifyClanPosition(MOB mob, ClanPosition me) throws IOException
     {
         if(mob.isMonster())
             return;
@@ -5996,11 +5996,11 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
             promptStatStr(mob,me,null,++showNumber,showFlag,"Name","NAME",false);
             promptStatStr(mob,me,null,++showNumber,showFlag,"Name (Plural)","PLURALNAME",false);
             promptStatInt(mob, me,++showNumber, showFlag,"Rank (low=better)", "RANK");
-            if((me.rank<0)||(me.rank>99)) me.rank=0;
+            if((me.getRank()<0)||(me.getRank()>99)) me.setRank(0);
             promptStatInt(mob, me,++showNumber, showFlag,"Maximum", "MAX");
-            if((me.max<0)||(me.max>9999)) me.max=Integer.MAX_VALUE;
-            promptStatStr(mob,me,CMLib.masking().maskHelp("\n","disallow"),++showNumber,showFlag,"Required Mask","INNERMASK",false);
-            promptStatBool(mob, me,++showNumber, showFlag,"Is Public", "ISPUBLIC");
+            if((me.getMax()<0)||(me.getMax()>9999)) me.setMax(Integer.MAX_VALUE);
+            promptStatStr(mob,me,CMLib.masking().maskHelp("\n","disallow"),++showNumber,showFlag,"Position Mask","INNERMASK",false);
+            promptStatBool(mob, me,++showNumber, showFlag,"Is Shown", "ISPUBLIC");
             promptStatCommaChoices(mob, me,CMParms.toStringList(Clan.Function.values()),++showNumber, showFlag,"Powers", "FUNCTIONS",Clan.Function.values());
             
             if(showFlag<-900){ ok=true; break;}
@@ -6014,10 +6014,10 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
         }
     }
     
-    public void clanGovernmentPositions(MOB mob, Clan.Government me, int showNumber, int showFlag) throws IOException
+    public void clanGovernmentPositions(MOB mob, ClanGovernment me, int showNumber, int showFlag) throws IOException
     {
         if((showFlag>0)&&(showFlag!=showNumber)) return;
-    	String list = CMParms.toStringList(me.positions);
+    	String list = CMParms.toStringList(me.getPositions());
         mob.tell(showNumber+". Positions: "+list);
         if((showFlag!=showNumber)&&(showFlag>-999)) return;
     	String promptStr="Enter a position ID to edit/remove or ADD\n\r:";
@@ -6030,30 +6030,30 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
             }
             if(word.trim().equalsIgnoreCase("ADD"))
             {
-            	Clan.Position P=me.addPosition();
+            	ClanPosition P=me.addPosition();
             	modifyClanPosition(mob,P);
             }
             else
             {
-	            Clan.Position editMe=null;
-	            for(Clan.Position pos : me.positions)
-	            	if(pos.ID.equalsIgnoreCase(word))
+	            ClanPosition editMe=null;
+	            for(ClanPosition pos : me.getPositions())
+	            	if(pos.getID().equalsIgnoreCase(word))
 	            		editMe=pos;
 	            if(editMe == null)
 	            {
-	            	list = CMParms.toStringList(me.positions);
+	            	list = CMParms.toStringList(me.getPositions());
 	            	mob.tell("Position "+word+" is not listed.  Try one of these: "+list);
 	            }
 	            else
 	            if(mob.session()!=null)
 	            {
-	            	String choice=mob.session().choose("Edit or Delete position "+editMe.ID+" (E/D/)?", "ED", "");
+	            	String choice=mob.session().choose("Edit or Delete position "+editMe.getID()+" (E/D/)?", "ED", "");
 	            	if(choice.equalsIgnoreCase("E"))
 		            	modifyClanPosition(mob,editMe);
 	            	else
 	            	if(choice.equalsIgnoreCase("D"))
 	            	{
-	            		if(me.positions.length==1)
+	            		if(me.getPositions().length==1)
 	            			mob.tell("You can't delete the last position.");
 	            		else
 		            		me.delPosition(editMe);
@@ -6063,7 +6063,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
         }
     }
     
-    public void modifyGovernment(MOB mob, Clan.Government me) throws IOException
+    public void modifyGovernment(MOB mob, ClanGovernment me) throws IOException
     {
         if(mob.isMonster())
             return;
@@ -6077,12 +6077,12 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
             promptStatStr(mob,me,null,++showNumber,showFlag,"Type Name","NAME",false);
             promptStatStr(mob,me,null,++showNumber,showFlag,"Short Desc","SHORTDESC",false);
             promptStatStr(mob,me,null,++showNumber,showFlag,"Long Desc","LONGDESC",60);
-            promptStatStr(mob,me,CMLib.masking().maskHelp("\n","disallow"),++showNumber,showFlag,"Required Mask","REQUIREDMASK",true);
+            promptStatStr(mob,me,CMLib.masking().maskHelp("\n","disallow"),++showNumber,showFlag,"Member Mask","REQUIREDMASK",true);
             promptStatBool(mob, me,++showNumber, showFlag,"Is Public", "ISPUBLIC");
-            promptStatBool(mob, me,++showNumber, showFlag,"Requires Family", "ISFAMILYONLY");
+            promptStatBool(mob, me,++showNumber, showFlag,"Is Family", "ISFAMILYONLY");
             promptStatInt(mob, me,++showNumber, showFlag,"Minimum Members", "OVERRIDEMINMEMBERS");
-            if((me.overrideMinMembers!=null)&&((me.overrideMinMembers.intValue()<0)||(me.overrideMinMembers.intValue()>999)))
-            	me.overrideMinMembers=null;
+            if((me.getOverrideMinMembers()!=null)&&((me.getOverrideMinMembers().intValue()<0)||(me.getOverrideMinMembers().intValue()>999)))
+            	me.setOverrideMinMembers(null);
             
             ++showNumber;
             clanGovernmentPositions(mob,me,++showNumber,showFlag);
@@ -6090,20 +6090,20 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
             promptStatBool(mob, me,++showNumber, showFlag,"Conquest Enabled", "CONQUESTENABLED");
             if(CMath.s_bool(me.getStat("CONQUESTENABLED")))
             {
-	            promptStatBool(mob, me,++showNumber, showFlag,"Conq. Loyalty by Clan Items", "CONQUESTITEMLOYALTY");
-	            promptStatBool(mob, me,++showNumber, showFlag,"Conq. Loyalty by Worship", "CONQUESTDEITYBASIS");
+	            promptStatBool(mob, me,++showNumber, showFlag,"Clan Item Loyalty", "CONQUESTITEMLOYALTY");
+	            promptStatBool(mob, me,++showNumber, showFlag,"Conq. by Worship", "CONQUESTDEITYBASIS");
             }
             promptStatCommaChoices(mob, me,CMParms.toStringList(Clan.Function.values()),++showNumber, showFlag,"Vote Approved", "VOTEFUNCS",Clan.Function.values());
             if(me.getStat("VOTEFUNCS").length()>0)
             {
 	            promptStatInt(mob, me,++showNumber, showFlag,"Max Vote Days", "MAXVOTEDAYS");
-	            if((me.maxVoteDays<0)||(me.maxVoteDays>999999)) me.maxVoteDays=10;
+	            if((me.getMaxVoteDays()<0)||(me.getMaxVoteDays()>999999)) me.setMaxVoteDays(10);
 	            promptStatInt(mob, me,++showNumber, showFlag,"Vote Quorum (Pct%)", "VOTEQUORUMPCT");
-	            if((me.voteQuorumPct<0)||(me.voteQuorumPct>100)) me.voteQuorumPct=100;
+	            if((me.getVoteQuorumPct()<0)||(me.getVoteQuorumPct()>100)) me.setVoteQuorumPct(100);
             }
             promptStatChoices(mob,me,CMParms.toStringList(Clan.AutoPromoteFlag.values()),++showNumber,showFlag,"Auto-Promotion","AUTOPROMOTEBY",Clan.AutoPromoteFlag.values());
-            promptStatChoices(mob,me,CMParms.toStringList(me.positions),++showNumber,showFlag,"Apply Role","AUTOROLE",me.positions);
-            promptStatChoices(mob,me,CMParms.toStringList(me.positions),++showNumber,showFlag,"Accept Role","ACCEPTPOS",me.positions);
+            promptStatChoices(mob,me,CMParms.toStringList(me.getPositions()),++showNumber,showFlag,"Apply Position","AUTOROLE",me.getPositions());
+            promptStatChoices(mob,me,CMParms.toStringList(me.getPositions()),++showNumber,showFlag,"Accept Position","ACCEPTPOS",me.getPositions());
             
             if(showFlag<-900){ ok=true; break;}
             if(showFlag>0){ showFlag=-1; continue;}
@@ -7172,11 +7172,11 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
             }
             int newGovt=-1;
             StringBuffer gvts=new StringBuffer();
-            for(Clan.Government gvt : CMLib.clans().getStockGovernments())
+            for(ClanGovernment gvt : CMLib.clans().getStockGovernments())
             {
-                gvts.append(gvt.name+", ");
-                if(newName.equalsIgnoreCase(gvt.name))
-                    newGovt=gvt.ID;
+                gvts.append(gvt.getName()+", ");
+                if(newName.equalsIgnoreCase(gvt.getName()))
+                    newGovt=gvt.getID();
             }
             gvts=new StringBuffer(gvts.substring(0,gvts.length()-2));
             if(newGovt<0)

@@ -1279,18 +1279,18 @@ public class Destroy extends StdCommand
 			else
 			{
 				String name=CMParms.combine(commands,2);
-				Clan.Government G=null;
-				for(Clan.Government g : CMLib.clans().getStockGovernments())
-					if(g.name.equalsIgnoreCase(name))
+				ClanGovernment G=null;
+				for(ClanGovernment g : CMLib.clans().getStockGovernments())
+					if(g.getName().equalsIgnoreCase(name))
 						G=g;
 				if(G==null)
 					mob.tell("Government '"+name+"' is unknown.  Try list governments.");
 				else
 				if(CMLib.clans().removeGovernment(G))
 				{
-					mob.tell("Government '"+G.name+"' is destroyed!");
+					mob.tell("Government '"+G.getName()+"' is destroyed!");
 					CMLib.clans().reSaveGovernmentsXML();
-					Log.sysOut("CreateEdit","Government '"+G.name+" destroyed by "+mob.name()+".");
+					Log.sysOut("CreateEdit","Government '"+G.getName()+" destroyed by "+mob.name()+".");
 				}
 				else
 					mob.tell("You can't delete the last remaining clan government.");

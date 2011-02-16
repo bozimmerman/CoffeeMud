@@ -1497,23 +1497,23 @@ public class Modify extends StdCommand
 			else
 			{
 				String name=CMParms.combine(commands,2);
-				Clan.Government G = null;
-				for(Clan.Government g : CMLib.clans().getStockGovernments())
-					if(g.name.equalsIgnoreCase(name))
+				ClanGovernment G = null;
+				for(ClanGovernment g : CMLib.clans().getStockGovernments())
+					if(g.getName().equalsIgnoreCase(name))
 						G=g;
 				if(G==null)
-					for(Clan.Government g : CMLib.clans().getStockGovernments())
-						if(g.name.toLowerCase().startsWith(name.toLowerCase()))
+					for(ClanGovernment g : CMLib.clans().getStockGovernments())
+						if(g.getName().toLowerCase().startsWith(name.toLowerCase()))
 							G=g;
 				if(G==null)
 					mob.tell("Government '"+name+"' is unknown.  Try list governments.");
 				else
                 if(!mob.isMonster())
                 {
-					mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> wave(s) <S-HIS-HER> hands around "+G.name+".");
+					mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> wave(s) <S-HIS-HER> hands around "+G.getName()+".");
                     CMLib.genEd().modifyGovernment(mob, G);
                     CMLib.clans().reSaveGovernmentsXML();
-                    Log.sysOut("CreateEdit",mob.Name()+" modified Clan Government "+G.name+".");
+                    Log.sysOut("CreateEdit",mob.Name()+" modified Clan Government "+G.getName()+".");
                 }
             }
 		}

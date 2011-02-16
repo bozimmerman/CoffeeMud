@@ -126,7 +126,7 @@ public class Conquerable extends Arrest
                 String clanID=(String)clanControlPoints.elementAt(i,1);
                 int[] ic=(int[])clanControlPoints.elementAt(i,2);
                 Clan C=CMLib.clans().getClan(clanID);
-                if((C!=null)&&(C.getGovernment().conquestEnabled))
+                if((C!=null)&&(C.getGovernment().isConquestEnabled()))
                     str.append(C.getGovernmentName()+" "+C.name()+" has "+ic[0]+" control points.\n\r");
             }
         }
@@ -532,7 +532,8 @@ public class Conquerable extends Arrest
 				&&(totalControlPoints>=0)
 				&&(!flagFound(A,holdingClan)))
                 {
-                    if(CMSecurity.isDebugging("CONQUEST")) Log.debugOut("Conquest",holdingClan+" has "+totalControlPoints+" points and flag="+flagFound(A,holdingClan));
+                    if(CMSecurity.isDebugging("CONQUEST")) 
+                    	Log.debugOut("Conquest",holdingClan+" has "+totalControlPoints+" points and flag="+flagFound(A,holdingClan));
                     if((prevHoldingClan.length()>0)
                     &&(!holdingClan.equalsIgnoreCase(prevHoldingClan))
                     &&(CMLib.clans().getClan(prevHoldingClan)!=null)
@@ -636,7 +637,7 @@ public class Conquerable extends Arrest
         if(holdingClan.length()==0) return null; 
         Clan C=CMLib.clans().getClan(holdingClan);
         if(C==null) return null;
-        if(C.isLoyaltyThroughWorship())
+        if(C.isWorshipConquest())
         {
             MOB M=C.getResponsibleMember();
             if((M!=null)&&(M.getWorshipCharID().length()>0))
@@ -759,7 +760,7 @@ public class Conquerable extends Arrest
 		&&(msg.source().getVictim()!=msg.target())
 		&&(((MOB)msg.target()).getClanID().equals(holdingClan))
 		&&(noMultiFollows.contains(msg.target()))
-        &&(flagFound((Area)myHost,msg.source().getClanID())))
+        &&(flagFound((Area)myHost,msg.source().getMyClan())))
 		{
 			noMultiFollows.remove(msg.target());
             if(debugging) Log.debugOut("Conquest",msg.source().getClanID()+" lose "+(((MOB)msg.target()).phyStats().level())+" points by harming "+msg.target().name());
@@ -775,7 +776,7 @@ public class Conquerable extends Arrest
             {
                 if((!msg.source().getClanID().equals(holdingClan))
                 ||(CMLib.clans().getClan(holdingClan)==null)
-                ||(!CMLib.clans().getClan(holdingClan).isLoyaltyThroughWorship()))
+                ||(!CMLib.clans().getClan(holdingClan).isWorshipConquest()))
                 {
                     msg.source().tell("Only a member of a conquering deity clan can pray for that here.");
                     return false;
@@ -809,7 +810,7 @@ public class Conquerable extends Arrest
 		if((holdingClan.equals(clanID))||(totalControlPoints<0))
 			return;
 		Clan C=CMLib.clans().findClan(clanID);
-		if((C==null)||(!C.getGovernment().conquestEnabled))
+		if((C==null)||(!C.getGovernment().isConquestEnabled()))
 			return;
 
         MOB mob=CMLib.map().mobCreated();
@@ -893,14 +894,20 @@ public class Conquerable extends Arrest
     protected boolean flagFound(Area A, String clanID)
 	{
     	Clan C=CMLib.clans().findClan(clanID);
-    	if((C==null)||(!C.getGovernment().conquestEnabled))
+    	if((C==null)||(!C.getGovernment().isConquestEnabled()))
+    		return false;
+    	return flagFound(A,C);
+	}
+    protected boolean flagFound(Area A, Clan C)
+	{
+    	if((C==null)||(!C.getGovernment().isConquestEnabled()))
     		return false;
 		synchronized(clanItems)
 		{
 			for(int i=0;i<clanItems.size();i++)
 			{
 				ClanItem I=(ClanItem)clanItems.elementAt(i);
-				if((I.clanID().equals(clanID))
+				if((I.clanID().equals(C.clanID()))
 				&&(!I.amDestroyed())
 				&&(I.ciType()==ClanItem.CI_FLAG))
 				{
@@ -910,7 +917,7 @@ public class Conquerable extends Arrest
 				}
 			}
 		}
-		if((holdingClan.length()>0)&&(holdingClan.equalsIgnoreCase(clanID))&&(myArea!=null))
+		if((holdingClan.length()>0)&&(holdingClan.equalsIgnoreCase(C.clanID()))&&(myArea!=null))
 		{
 			// make a desperation check if we are talking about the holding clan.
 			Room R=null;
@@ -923,7 +930,7 @@ public class Conquerable extends Arrest
 					I=R.getItem(i);
 					if((I instanceof ClanItem)
 					&&(((ClanItem)I).ciType()==ClanItem.CI_FLAG)
-					&&(((ClanItem)I).clanID().equals(clanID))
+					&&(((ClanItem)I).clanID().equals(C.clanID()))
 					&&(!I.amDestroyed()))
 					{
 						registerClanItem(I);
@@ -1099,13 +1106,13 @@ public class Conquerable extends Arrest
 					if(((Area)myHost).inMyMetroArea(msg.source().getStartRoom().getArea()))
 					{ // a native was killed
 						if((!killer.getClanID().equals(holdingClan))
-                        &&(flagFound((Area)myHost,killer.getClanID())))
+                        &&(flagFound((Area)myHost,killer.getMyClan())))
                         {
     						if(killer.getClanID().length()>0)
                             {
     							Clan C=killer.getMyClan();
                                 int level=msg.source().phyStats().level();
-    							if((C!=null)&&(C.isLoyaltyThroughWorship())
+    							if((C!=null)&&(C.isWorshipConquest())
     							&&(killer.getWorshipCharID().equals(msg.source().getWorshipCharID())))
     								level=(level>1)?level/2:level;
                                 if(debugging) Log.debugOut("Conquest",killer.getClanID()+" gain "+level+" points by killing "+msg.source().name());
@@ -1116,7 +1123,7 @@ public class Conquerable extends Arrest
                             {
     							Clan C=killer.amFollowing().getMyClan();
                                 int level=msg.source().phyStats().level();
-    							if((C!=null)&&(C.isLoyaltyThroughWorship())
+    							if((C!=null)&&(C.isWorshipConquest())
     							&&(killer.amFollowing().getWorshipCharID().equals(msg.source().getWorshipCharID())))
     								level=(level>1)?level/2:level;
                                 if(debugging) Log.debugOut("Conquest",killer.amFollowing().getClanID()+" gain "+level+" points by killing "+msg.source().name());
@@ -1129,7 +1136,7 @@ public class Conquerable extends Arrest
                     &&(holdingClan.length()>0)
 					&&(msg.source().getClanID().length()>0)     // killed is a conquesting one
 					&&(!msg.source().getClanID().equals(holdingClan))
-					&&(flagFound((Area)myHost,msg.source().getClanID())))
+					&&(flagFound((Area)myHost,msg.source().getMyClan())))
                     {
                         if(debugging) Log.debugOut("Conquest",msg.source().getClanID()+" lose "+(msg.source().phyStats().level())+" points by allowing the death of "+msg.source().name());
 						changeControlPoints(msg.source().getClanID(),-msg.source().phyStats().level(),killer.location());
@@ -1146,10 +1153,10 @@ public class Conquerable extends Arrest
             {
                 Clan C=msg.source().getMyClan();
                 if((C!=null)
-                &&(C.isLoyaltyThroughWorship())
+                &&(C.isWorshipConquest())
                 &&(((Area)myHost).inMyMetroArea(((MOB)msg.target()).getStartRoom().getArea()))
                 &&(!msg.source().getClanID().equals(holdingClan))
-                &&(flagFound((Area)myHost,msg.source().getClanID())))
+                &&(flagFound((Area)myHost,msg.source().getMyClan())))
                 {
                     if(debugging) Log.debugOut("Conquest",msg.source().getClanID()+" gain "+(msg.source().phyStats().level())+" points by converting "+msg.source().name());
                     changeControlPoints(msg.source().getClanID(),((MOB)msg.target()).phyStats().level(),msg.source().location());
@@ -1303,7 +1310,9 @@ public class Conquerable extends Arrest
 			return false;
 		if(flagFound(null,holdingClan))
 			return true;
-        if(CMSecurity.isDebugging("CONQUEST")) Log.debugOut("Conquest",holdingClan+" has "+totalControlPoints+" points and flag="+flagFound(null,holdingClan)+" in law check.");
+        if(CMSecurity.isDebugging("CONQUEST")) 
+        	Log.debugOut("Conquest",holdingClan+" has "+totalControlPoints+" points and flag="
+        		+flagFound(null,holdingClan)+" in law check.");
 		endClanRule();
 		return false;
 	}

@@ -1008,16 +1008,16 @@ public class Create extends StdCommand
 			else
 			{
 				String name=CMParms.combine(commands,2);
-				Clan.Government G=CMLib.clans().createGovernment(name);
+				ClanGovernment G=CMLib.clans().createGovernment(name);
 				if(G==null)
 					mob.tell("You must specify an unused government name.");
 				else
 				if(!mob.isMonster())
 				{
-					mob.tell("Government '"+G.name+"' created.");
+					mob.tell("Government '"+G.getName()+"' created.");
 					CMLib.genEd().modifyGovernment(mob, G);
 					CMLib.clans().reSaveGovernmentsXML();
-                    Log.sysOut("CreateEdit",mob.Name()+" created Clan Government "+G.name+".");
+                    Log.sysOut("CreateEdit",mob.Name()+" created Clan Government "+G.getName()+".");
 				}
 			}
 		}

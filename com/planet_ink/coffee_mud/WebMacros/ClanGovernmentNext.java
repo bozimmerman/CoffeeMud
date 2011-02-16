@@ -46,14 +46,14 @@ public class ClanGovernmentNext extends StdWebMacro
 			return "";
 		}
 		int lastID=-1;
-		for(Clan.Government G : CMLib.clans().getStockGovernments())
+		for(ClanGovernment G : CMLib.clans().getStockGovernments())
 		{
-			if((last==null)||((last.length()>0)&&(CMath.s_int(last)==lastID)&&(G.ID!=lastID)))
+			if((last==null)||((last.length()>0)&&(CMath.s_int(last)==lastID)&&(G.getID()!=lastID)))
 			{
-				httpReq.addRequestParameters("GOVERNMENT",Integer.toString(G.ID));
+				httpReq.addRequestParameters("GOVERNMENT",Integer.toString(G.getID()));
 				return "";
 			}
-			lastID=G.ID;
+			lastID=G.getID();
 		}
 		httpReq.addRequestParameters("GOVERNMENT","");
 		if(parms.containsKey("EMPTYOK"))

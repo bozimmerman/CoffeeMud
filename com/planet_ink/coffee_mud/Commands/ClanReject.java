@@ -62,14 +62,14 @@ public class ClanReject extends StdCommand
 					mob.tell("There is no longer a clan called "+mob.getClanID()+".");
 					return false;
 				}
-				if(C.getGovernment().autoRole == C.getGovernment().acceptPos)
+				if(C.getGovernment().getAutoRole() == C.getGovernment().getAcceptPos())
 				{
 					mob.tell("Everyone is already accepted.");
 					return false;
 				}
 				if(skipChecks||CMLib.clans().goForward(mob,C,commands,Clan.Function.REJECT,false))
 				{
-					List<MemberRecord> apps=C.getMemberList(C.getGovernment().autoRole);
+					List<MemberRecord> apps=C.getMemberList(C.getGovernment().getAutoRole());
 					if(apps.size()<1)
 					{
 						mob.tell("There are no applicants to your "+C.getGovernmentName()+".");

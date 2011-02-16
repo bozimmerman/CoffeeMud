@@ -176,65 +176,65 @@ public interface ClanManager extends CMLibrary
      * Returns a government definition object of the given internal
      * stock clangovernments.xml id.  See /resources/clangovernments.xml
      * Also:
-     * @see com.planet_ink.coffee_mud.Common.interfaces.Clan.Government
+     * @see com.planet_ink.coffee_mud.Common.interfaces.ClanGovernment
      * @param typeid the internal typeid
      * @return the clan government object
      */
-    public Clan.Government getStockGovernment(int typeid);
+    public ClanGovernment getStockGovernment(int typeid);
     
     /**
      * Returns the default government definition object.  
      * See /resources/clangovernments.xml
      * Also:
-     * @see com.planet_ink.coffee_mud.Common.interfaces.Clan.Government
+     * @see com.planet_ink.coffee_mud.Common.interfaces.ClanGovernment
      * @return the clan government object
      */
-    public Clan.Government getDefaultGovernment();
+    public ClanGovernment getDefaultGovernment();
     
     /**
      * Creates, but does not add, a sample government object
      * @return a sample government object
      */
-    public Clan.Government createSampleGovernment();
+    public ClanGovernment createSampleGovernment();
     
     /**
      * Returns all government definition objects from internal
      * stock clangovernments.xml file.  See /resources/clangovernments.xml
      * Also:
-     * @see com.planet_ink.coffee_mud.Common.interfaces.Clan.Government
+     * @see com.planet_ink.coffee_mud.Common.interfaces.ClanGovernment
      * @return the clan government object
      */
-    public Clan.Government[] getStockGovernments();
+    public ClanGovernment[] getStockGovernments();
     
     /**
      * Converts a given clan government object into xml.
-     * @see com.planet_ink.coffee_mud.Common.interfaces.Clan.Government
-     * @see com.planet_ink.coffee_mud.Libraries.interfaces.ClanManager#makeGovernmentXML(com.planet_ink.coffee_mud.Common.interfaces.Clan.Government[])
+     * @see com.planet_ink.coffee_mud.Common.interfaces.ClanGovernment
+     * @see com.planet_ink.coffee_mud.Libraries.interfaces.ClanManager#makeGovernmentXML(com.planet_ink.coffee_mud.Common.interfaces.ClanGovernment[])
      * @see com.planet_ink.coffee_mud.Libraries.interfaces.ClanManager#parseGovernmentXML(StringBuffer)
      * @param gvt the clan government object
      * @return the xml
      */
-    public String makeGovernmentXML(Clan.Government gvt);
+    public String makeGovernmentXML(ClanGovernment gvt);
     
     /**
      * Converts a given clan government objects into xml.
-     * @see com.planet_ink.coffee_mud.Common.interfaces.Clan.Government
-     * @see com.planet_ink.coffee_mud.Libraries.interfaces.ClanManager#makeGovernmentXML(com.planet_ink.coffee_mud.Common.interfaces.Clan.Government)
+     * @see com.planet_ink.coffee_mud.Common.interfaces.ClanGovernment
+     * @see com.planet_ink.coffee_mud.Libraries.interfaces.ClanManager#makeGovernmentXML(com.planet_ink.coffee_mud.Common.interfaces.ClanGovernment)
      * @see com.planet_ink.coffee_mud.Libraries.interfaces.ClanManager#parseGovernmentXML(StringBuffer)
      * @param gvts the clan government objects
      * @return the xml
      */
-    public String makeGovernmentXML(Clan.Government gvts[]);
+    public String makeGovernmentXML(ClanGovernment gvts[]);
     
     /**
      * Converts xml into clan government objects.
-     * @see com.planet_ink.coffee_mud.Common.interfaces.Clan.Government
-     * @see com.planet_ink.coffee_mud.Libraries.interfaces.ClanManager#makeGovernmentXML(com.planet_ink.coffee_mud.Common.interfaces.Clan.Government)
-     * @see com.planet_ink.coffee_mud.Libraries.interfaces.ClanManager#makeGovernmentXML(com.planet_ink.coffee_mud.Common.interfaces.Clan.Government[])
+     * @see com.planet_ink.coffee_mud.Common.interfaces.ClanGovernment
+     * @see com.planet_ink.coffee_mud.Libraries.interfaces.ClanManager#makeGovernmentXML(com.planet_ink.coffee_mud.Common.interfaces.ClanGovernment)
+     * @see com.planet_ink.coffee_mud.Libraries.interfaces.ClanManager#makeGovernmentXML(com.planet_ink.coffee_mud.Common.interfaces.ClanGovernment[])
      * @param xml the xml
      * @return the clan government objects
      */
-    public Clan.Government[] parseGovernmentXML(StringBuffer xml);
+    public ClanGovernment[] parseGovernmentXML(StringBuffer xml);
     
     /**
      * Forces the stock governments to be re-saved to clangovernments.xml.
@@ -246,14 +246,14 @@ public interface ClanManager extends CMLibrary
      * @param name governmentname
      * @return new stock government
      */
-    public Clan.Government createGovernment(String name);
+    public ClanGovernment createGovernment(String name);
     
     /**
      * Deletes the stock government.. confusing all the clans that
      * currently use it.
      * @param government the government to delete
      */
-    public boolean removeGovernment(Clan.Government government);
+    public boolean removeGovernment(ClanGovernment government);
     
     /**
      * Makes an announcement to the clan announcement channel from

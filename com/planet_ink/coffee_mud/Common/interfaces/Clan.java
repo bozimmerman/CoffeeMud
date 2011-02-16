@@ -50,7 +50,6 @@ import java.util.*;
   */
 public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
 {
-
 	/**
 	 * Returns whether the given roleID is allowed to perform the
 	 * given function.  The return value can designate that they
@@ -80,11 +79,13 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
 	 * @return the set of clan votes
 	 */
 	public Enumeration<ClanVote> votes();
+	
 	/**
 	 * Orders the system to save any changes to existing
 	 * ongoing votes for this 
 	 */
 	public void updateVotes();
+	
 	/**
 	 * Adds a new ClanVote object to the list of ongoing
 	 * votes for this 
@@ -92,6 +93,7 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
 	 * @param CV the clanvote object to add
 	 */
 	public void addVote(ClanVote CV);
+	
 	/**
 	 * Removes a new ClanVote object from the list of ongoing
 	 * votes for this 
@@ -109,6 +111,7 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
 	 * @return the number of members of this clan who can vote on it
 	 */
 	public int getNumVoters(Function function);
+	
 	/**
 	 * Returns the number of members of this 
 	 * @return the membership count.
@@ -122,6 +125,7 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
 	 * @return the name of the 
 	 */
 	public String getName();
+	
 	/**
 	 * Returns the unique identifying ID of the clan for reference
 	 * elsewhere.
@@ -129,6 +133,7 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
 	 * @return the unique identifier of the 
 	 */
 	public String clanID();
+	
 	/**
 	 * Sets a new name for this 
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Clan#getName()
@@ -136,6 +141,7 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
 	 * @param newName the new name of this clan
 	 */
 	public void setName(String newName);
+	
 	/**
 	 * Returns Clan, Republic, or another one of the
 	 * clan government types.
@@ -215,6 +221,7 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
 	 * @return the mask used to identify prospects
 	 */
 	public String getAcceptanceSettings();
+	
 	/**
 	 * Sets a mask used to identify whether a player is allowed
 	 * to join a particular 
@@ -231,6 +238,7 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
 	 * @return xml document describing the politics of this clan
 	 */
 	public String getPolitics();
+	
 	/**
 	 * Sets an XML string used to identify the political relations
 	 * between this clan and others.
@@ -238,6 +246,7 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
 	 * @param politics xml document describing the politics of this clan
 	 */
 	public void setPolitics(String politics);
+	
 	/**
 	 * Returns whether membership is automatically approved to this 
 	 * And if so, what the default position for members are.
@@ -245,6 +254,7 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
 	 * @return xml document describing the politics of this clan
 	 */
 	public int getAutoPosition();
+	
 	/**
 	 * Sets whether membership is automatically approved to this 
 	 * And if so, what the default position for members are.
@@ -252,6 +262,7 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
 	 * @param pos the positition to give to applicants
 	 */
 	public void setAutoPosition(int pos);
+	
 	/**
 	 * Returns one of the CLANSTAT_* constants describing the pending
 	 * status of this clan for acceptable, or whether its one its way out.
@@ -260,6 +271,7 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
 	 * @return a CLANSTAT_* constant
 	 */
 	public int getStatus();
+	
 	/**
 	 * Sets one of the CLANSTAT_* constants describing the pending
 	 * status of this clan for acceptable, or whether its one its way out.
@@ -269,6 +281,20 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
 	 */
 	public void setStatus(int newStatus);
 
+	/**
+	 * Returns the current clan level
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.Clan#setClanLevel(int)
+	 * @return the current clan level
+	 */
+    public int getClanLevel();
+    
+    /**
+     * Sets the new clan level
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.Clan#getClanLevel()
+     * @param newClanLevel the new clan level
+     */
+    public void setClanLevel(int newClanLevel);
+    
 	/**
 	 * Returns the roomID of this clans recall room (their clan home)
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Clan#setRecall(String)
@@ -288,6 +314,7 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
 	 * @return the roomID of this clans morgue room
 	 */
 	public String getMorgue();
+	
 	/**
 	 * Sets the roomID of this clans morgue room
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Clan#getMorgue()
@@ -318,6 +345,7 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
 	 * @return the roomID of this clans donation room
 	 */
 	public String getDonation();
+	
 	/**
 	 * Sets the roomID of this clans donation room
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Clan#getDonation()
@@ -330,22 +358,26 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
 	 * @return the experience earned
 	 */
 	public long getExp();
+	
 	/**
 	 * Sets the amount of experience earned by this 
 	 * @param exp the experience earned
 	 */
 	public void setExp(long exp);
+	
 	/**
 	 * Returns the inner (government usually)
 	 * requirements to even apply to this clan 
 	 * @return the zapper mask that applies
 	 */
 	public String getBasicRequirementMask();
+	
 	/**
 	 * Adjusts the amount of experience earned by this 
 	 * @param howMuch the experience adjustment, + or -
 	 */
 	public void adjExp(int howMuch);
+	
 	/**
 	 * Adjusts the amount of experience earned by a player based
 	 * on the tax rate.  Will automatically adjust the exp of
@@ -353,16 +385,19 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
 	 * @param exp the old experience
 	 */
 	public int applyExpMods(int exp);
+	
 	/**
 	 * Called when a member of this clan kills a member of another 
 	 * Will update the clan in the database.
 	 */
     public void recordClanKill();
+    
     /**
      * Returns the number of other-clan kills this clan has recorded.
      * @return the number of kills.
      */
     public int getCurrentClanKills();
+    
 	/**
 	 * Returns the total control points represented by the list of
 	 * controlled areas given.
@@ -373,6 +408,7 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
 	 * @return the number of control points represented
 	 */
 	public long calculateMapPoints(List<Area> controlledAreas);
+	
 	/**
 	 * Returns the total control points earned by this clan
 	 * @see Clan#calculateMapPoints(List)
@@ -381,6 +417,7 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
 	 * @return the number of control points represented
 	 */
 	public long calculateMapPoints();
+	
 	/**
 	 * Returns all the areas on the map controlled by this 
 	 * @see com.planet_ink.coffee_mud.Behaviors.Conquerable
@@ -395,6 +432,7 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
 	 * @param rate the tax rate 0-100.0
 	 */
 	public void setTaxes(double rate);
+	
 	/**
 	 * Gets the tax rate for this 
 	 * @see Clan#setTaxes(double)
@@ -460,6 +498,7 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
 	 * @return the membership
 	 */
 	public List<MemberRecord> getMemberList();
+	
 	/**
 	 * Returns the set of members, where
 	 * each row represents a MemberRecord.
@@ -486,6 +525,7 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
 	 * @return the REL_* constant
 	 */
 	public int getClanRelations(String id);
+	
 	/**
 	 * Returns the time/date stamp when this clan last changed
 	 * its relations with the given 
@@ -495,6 +535,7 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
 	 * @return when the last change was
 	 */
 	public long getLastRelationChange(String id);
+	
 	/**
 	 * Sets a new relationship between this clan and the clan
 	 * with the given id.
@@ -522,7 +563,7 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
 	 * @see Clan#setGovernmentID(int)
 	 * @return the if constant
 	 */
-    public Government getGovernment();
+    public ClanGovernment getGovernment();
     
 	/**
 	 * Returns whether this clan attains conquest loyalty 
@@ -536,7 +577,7 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
 	 * through mobs worshiping the same deity as their leader.
 	 * @return true if if does, false otherwise
 	 */
-	public boolean isLoyaltyThroughWorship();
+	public boolean isWorshipConquest();
 	
 	/**
 	 * Returns the id constant representing the government type
@@ -581,26 +622,34 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
      * @param M the member to remove
      */
     public void delMember(MOB M);
+    
     /**
      * Adds a new member to this clan
      * @param M the member to add
      * @param role the coded role number
      */
     public void addMember(MOB M, int role);
+    
 	/**
 	 * Orders the system to update this clan in the database.
 	 */
 	public void update();
+	
 	/**
 	 * Orders the system to destroy this clan in the database.
 	 */
 	public void destroyClan();
+	
 	/**
 	 * Orders the system to create this clan in the database.
 	 */
 	public void create();
-	/*
+
+	/**
 	 * Returns whether the given user can be assigned the given role
+	 * @param mob the mob to check
+	 * @param role the role to check for
+	 * @return true if they can, false otherwise
 	 */
 	public boolean canBeAssigned(MOB mob, int role);
 
@@ -832,344 +881,4 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
 		CLAN_TITLES,
 	}
 	
-	/**
-	 * A class for the characteristics of a position within a 
-	 * @author bzimmerman
-	 */
-	public static class	Position implements Modifiable
-	{
-		/** the named ID of the position */
-		public String 	ID;
-		/** the named ID of the position */
-		public int 		roleID;
-		/** the ordered rank of the position */
-		public int 		rank;
-		/** the name of the position within this government */
-		public String	name;
-		/** the plural name of the position within this government */
-		public String	pluralName;
-		/** the maximum number of members that can hold this position */
-		public int		max;
-		/** the internal zapper mask for internal requirements to this position */
-		public String	innerMaskStr;
-		/** the internal zapper mask for internal requirements to this position */
-		public boolean 	isPublic;
-		/** a chart of whether this position can perform the indexed function in this government */
-		public Authority[] functionChart;
-		
-		/**
-		 * Initialize a new clan position
-		 * @param ID the coded name of the rank
-		 * @param roleID the numeric ID of the rank
-		 * @param rank the ordered rank number (0+)
-		 * @param name the name of this position
-		 * @param plural the plural name of this position
-		 * @param max the maximum number of members that can hold this position
-		 * @param innerMask basic internal requirements for this position
-		 * @param funcChart an array of ClanPositionPower objects for each function that can be performed.
-		 */
-		public Position(String ID, int roleID, int rank, String name, String plural, int max, String innerMask, Authority[] funcChart, boolean isPublic)
-		{
-			this.ID=ID; this.roleID=roleID; this.pluralName=plural; this.innerMaskStr=innerMask;
-			this.rank=rank; this.name=name; this.max=max;this.functionChart=funcChart;
-			this.isPublic=isPublic;
-		}
-		
-		private static enum POS_STAT_CODES {
-			ID,RANK,NAME,PLURALNAME,MAX,INNERMASK,ISPUBLIC,FUNCTIONS
-		}
-		public String[] getStatCodes() { return CMParms.toStringArray(POS_STAT_CODES.values());}
-		public int getSaveStatIndex() { return POS_STAT_CODES.values().length;}
-		private POS_STAT_CODES getStatIndex(String code) { return (POS_STAT_CODES)CMath.s_valueOf(POS_STAT_CODES.values(),code); }
-		public String getStat(String code) 
-		{
-			final POS_STAT_CODES stat = getStatIndex(code);
-			if(stat==null){ return "";}
-			switch(stat)
-			{
-			case NAME: return name;
-			case ID: return ID;
-			case RANK: return Integer.toString(rank);
-			case MAX: return Integer.toString(max);
-			case PLURALNAME: return pluralName;
-			case INNERMASK: return innerMaskStr;
-			case ISPUBLIC: return Boolean.toString(isPublic);
-			case FUNCTIONS:{
-				final StringBuilder str=new StringBuilder("");
-				for(int a=0;a<Function.values().length;a++)
-					if(functionChart[a]==Authority.CAN_DO)
-					{
-						if(str.length()>0) str.append(",");
-						str.append(Function.values()[a]);
-					}
-				return str.toString();
-			}
-			default: Log.errOut("Clan","getStat:Unhandled:"+stat.toString()); break;
-			}
-			return "";
-		}
-		public boolean isStat(String code) { return getStatIndex(code)!=null;}
-		public void setStat(String code, String val) 
-		{
-			final POS_STAT_CODES stat = getStatIndex(code);
-			if(stat==null){ return;}
-			switch(stat)
-			{
-			case NAME: name=val; break;
-			case ISPUBLIC: isPublic=CMath.s_bool(val); break;
-			case ID: ID=val.toUpperCase().trim(); break;
-			case RANK: rank=CMath.s_int(val); break;
-			case MAX: max=CMath.s_int(val); break;
-			case PLURALNAME: pluralName=val; break;
-			case INNERMASK: innerMaskStr=val; break;
-			case FUNCTIONS:{
-				final Vector<String> funcs=CMParms.parseCommas(val.toUpperCase().trim(), true);
-				for(int a=0;a<Function.values().length;a++)
-					if(functionChart[a]!=Authority.MUST_VOTE_ON)
-						functionChart[a]=Authority.CAN_NOT_DO;
-				for(final String funcName : funcs)
-				{
-					Clan.Function func=(Clan.Function)CMath.s_valueOf(Function.values(), funcName);
-					if(func!=null) functionChart[func.ordinal()] = Authority.CAN_DO;
-				}
-				break;
-			}
-			default: Log.errOut("Clan","setStat:Unhandled:"+stat.toString()); break;
-			}
-		}
-		public String toString() { return ID;}
-	}
-
-	/**
-	 * A class defining the characteristics of a clan government,
-	 * and its membership.
-	 * @author bzimmerman
-	 */
-	public static class Government implements Modifiable
-	{
-		/** If this is a default government type, this is its ID, otherwise -1 */
-		public int		ID;
-		/** The name of this government type, which is its identifier when ID above is -1 */
-		public String	name;
-		/** The role automatically assigned to those who apply successfully */
-		public int		autoRole;
-		/** The role automatically assigned to those who are accepted */
-		public int		acceptPos;
-		/** A short description of this government type for players */
-		public String	shortDesc;
-		/** A long description of this government type for players */
-		public String	longDesc;
-		/** Zapper mask for requirements to even apply */
-		public String	requiredMaskStr;
-		/**  Whether this clan type is shown on the list  */
-		public boolean	isPublic;
-		/**  Whether mambers must all be in the same family */
-		public boolean	isFamilyOnly;
-		/**  The number of minimum members for the clan to survive -- overrides coffeemud.ini */
-		public Integer	overrideMinMembers;
-		/** Whether conquest is enabled for this clan */
-		public boolean	conquestEnabled;
-		/** Whether clan items increase loyalty in conquered areas for this clan type */
-		public boolean	conquestItemLoyalty;
-		/** Whether loyalty and conquest are determined by what deity the mobs are */
-		public boolean	conquestDeityBasis;
-		/** maximum number of mud days a vote will go on for */
-		public int		maxVoteDays;
-		/** minimum % of voters who must have voted for a vote to be valid if time expires*/
-		public int		voteQuorumPct;
-		/** The list of ClanPosition objects for each holdable position in this government */
-		public Position[] positions;
-		/**  Whether an unfilled topRole is automatically filled by those who meet its innermask  */
-		public AutoPromoteFlag 		autoPromoteBy;
-		
-		// the follow are derived, or post-create set options:
-		
-		/** The list of xp amounts to progress in level */
-		public int[] 	levelProgression = new int[0];
-		/**  Whether this is the default government  */
-		public boolean	isDefault 		 = false;
-		/** A save help entry of this government type for players */
-		public String	helpStr 		 = null;
-		
-		/** list of abilities gained by users, by level */
-		public Map<Integer,List<Ability>> abilities = new Hashtable<Integer,List<Ability>>();
-		
-		/**
-		 * Initialize a new Clan Government
-		 * @param ID
-		 * @param name
-		 * @param pos
-		 * @param autoPos
-		 * @param acceptPos
-		 * @param requiredMask
-		 * @param autoPromoteBy
-		 * @param isPublic
-		 * @param isFamilyOnly
-		 * @param overrideMinMembers
-		 * @param conquestEnabled
-		 * @param conquestItemLoyalty
-		 * @param conquestDeityBasis
-		 * @param shortDesc
-		 * @param longDesc
-		 * @param maxVoteDays
-		 * @param voteQuorumPct
-		 */
-		public Government(int ID, String name, Position[] pos, int autoPos, int acceptPos,
-						  String requiredMask, AutoPromoteFlag autoPromoteBy, boolean isPublic, boolean isFamilyOnly,
-						  Integer overrideMinMembers,
-						  boolean conquestEnabled, boolean conquestItemLoyalty, boolean conquestDeityBasis,
-						  String shortDesc, String longDesc, int maxVoteDays, int voteQuorumPct)
-		{
-			this.ID=ID; this.name=name; this.positions=pos; this.autoRole=autoPos; this.acceptPos=acceptPos;
-			this.requiredMaskStr=requiredMask; this.autoPromoteBy=autoPromoteBy; this.isPublic=isPublic;
-			this.isFamilyOnly=isFamilyOnly; this.overrideMinMembers=overrideMinMembers; 
-			this.conquestEnabled=conquestEnabled; this.conquestItemLoyalty=conquestItemLoyalty;
-			this.conquestDeityBasis=conquestDeityBasis; this.shortDesc=shortDesc; this.longDesc=longDesc;
-			this.maxVoteDays=maxVoteDays;this.voteQuorumPct=voteQuorumPct;
-		}
-
-		public Position getPosition(String pos)
-		{
-			if(pos==null) return null;
-			pos=pos.trim();
-			if(CMath.isInteger(pos))
-			{
-				int i=CMath.s_int(pos);
-				if((i>=0)&&(i<positions.length))
-					return positions[i];
-			}
-			for(Position P : positions)
-				if(P.ID.equalsIgnoreCase(pos))
-					return P;
-			return null;
-		}
-		public void delPosition(Position pos)
-		{
-			List<Position> newPos=new LinkedList<Position>();
-			for(Position P : positions)
-				if(P!=pos) newPos.add(P);
-			positions=newPos.toArray(new Position[0]);
-		}
-		public Position addPosition()
-		{
-    		Authority[] pows=new Authority[Function.values().length];
-    		for(int i=0;i<pows.length;i++) pows[i]=Authority.CAN_NOT_DO;
-    		Set<Integer> roles=new HashSet<Integer>();
-    		int highestRank=0;
-    		for(Position pos : positions)
-    		{
-    			roles.add(Integer.valueOf(pos.roleID));
-    			if(highestRank<pos.rank)
-    				highestRank=pos.rank;
-    		}
-    		if(positions.length>0)
-    			for(int i=0;i<pows.length;i++)
-    				pows[i]=positions[0].functionChart[i];
-			positions=Arrays.copyOf(positions, positions.length+1);
-			Position P=new Position(positions.length+""+Math.random(),0,highestRank,"Unnamed","Unnameds",Integer.MAX_VALUE,"",pows,true);
-			positions[positions.length-1]=P;
-			for(int i=0;i<positions.length;i++)
-				if(!roles.contains(Integer.valueOf(i)))
-				{
-					P.roleID=i;
-					break;
-				}
-			return P;
-		}
-		private static enum GOVT_STAT_CODES {
-			NAME,AUTOROLE,ACCEPTPOS,SHORTDESC,REQUIREDMASK,ISPUBLIC,ISFAMILYONLY,OVERRIDEMINMEMBERS,
-			CONQUESTENABLED,CONQUESTITEMLOYALTY,CONQUESTDEITYBASIS,MAXVOTEDAYS,VOTEQUORUMPCT,
-			AUTOPROMOTEBY,VOTEFUNCS,LONGDESC
-		}
-		public String[] getStatCodes() { return CMParms.toStringArray(GOVT_STAT_CODES.values());}
-		public int getSaveStatIndex() { return GOVT_STAT_CODES.values().length;}
-		private GOVT_STAT_CODES getStatIndex(String code) { return (GOVT_STAT_CODES)CMath.s_valueOf(GOVT_STAT_CODES.values(),code); }
-		public String getStat(String code) 
-		{
-			final GOVT_STAT_CODES stat = getStatIndex(code);
-			if(stat==null){ return "";}
-			switch(stat)
-			{
-			case NAME: return name;
-			case AUTOROLE: return (autoRole < 0 || autoRole > positions.length) ? "" : positions[autoRole].ID;
-			case ACCEPTPOS: return (acceptPos < 0 || acceptPos > positions.length) ? "" : positions[acceptPos].ID;
-			case SHORTDESC: return shortDesc;
-			case LONGDESC: return longDesc;
-			case REQUIREDMASK: return requiredMaskStr;
-			case ISPUBLIC: return Boolean.toString(isPublic);
-			case ISFAMILYONLY: return Boolean.toString(isFamilyOnly);
-			case OVERRIDEMINMEMBERS: return overrideMinMembers == null ? "" : overrideMinMembers.toString();
-			case CONQUESTENABLED: return Boolean.toString(conquestEnabled);
-			case CONQUESTITEMLOYALTY: return Boolean.toString(conquestItemLoyalty);
-			case CONQUESTDEITYBASIS: return Boolean.toString(conquestDeityBasis);
-			case MAXVOTEDAYS: return Integer.toString(maxVoteDays);
-			case VOTEQUORUMPCT: return Integer.toString(voteQuorumPct);
-			case AUTOPROMOTEBY: return autoPromoteBy.toString();
-			case VOTEFUNCS:{
-				final StringBuilder str=new StringBuilder("");
-				for(Position pos : positions)
-				{
-					for(int a=0;a<Function.values().length;a++)
-						if(pos.functionChart[a]==Authority.MUST_VOTE_ON)
-						{
-							if(str.length()>0) str.append(",");
-							str.append(Function.values()[a]);
-						}
-					break;
-				}
-				return str.toString();
-			}
-			default: Log.errOut("Clan","getStat:Unhandled:"+stat.toString()); break;
-			}
-			return "";
-		}
-		public boolean isStat(String code) { return getStatIndex(code)!=null;}
-		public void setStat(String code, String val) 
-		{
-			final GOVT_STAT_CODES stat = getStatIndex(code);
-			if(stat==null){ return;}
-			switch(stat)
-			{
-			case NAME: name=val; break;
-			case AUTOROLE: { Position P=getPosition(val); if(P!=null) autoRole=P.roleID; break; }
-			case ACCEPTPOS: { Position P=getPosition(val); if(P!=null) acceptPos=P.roleID; break; }
-			case SHORTDESC: shortDesc=val; break;
-			case LONGDESC: longDesc=val; break;
-			case REQUIREDMASK: requiredMaskStr=val;break; 
-			case ISPUBLIC: isPublic=CMath.s_bool(val); break;
-			case ISFAMILYONLY: isFamilyOnly=CMath.s_bool(val); break;
-			case OVERRIDEMINMEMBERS: {
-				if(val.length()==0) overrideMinMembers = null; 
-				else overrideMinMembers=Integer.valueOf(CMath.s_int(val)); 
-				break;
-			}
-			case CONQUESTENABLED: conquestEnabled=CMath.s_bool(val); break;
-			case CONQUESTITEMLOYALTY: conquestItemLoyalty=CMath.s_bool(val); break;
-			case CONQUESTDEITYBASIS: conquestDeityBasis=CMath.s_bool(val); break;
-			case MAXVOTEDAYS: maxVoteDays=CMath.s_int(val); break;
-			case VOTEQUORUMPCT: voteQuorumPct=CMath.s_int(val); break;
-			case AUTOPROMOTEBY:{
-				AutoPromoteFlag flag=(AutoPromoteFlag)CMath.s_valueOf(AutoPromoteFlag.values(),val);
-				if(flag!=null) autoPromoteBy=flag;
-				break;
-			}
-			case VOTEFUNCS:{
-				final Vector<String> funcs=CMParms.parseCommas(val.toUpperCase().trim(), true);
-				for(Position pos : positions)
-				{
-					for(int a=0;a<Function.values().length;a++)
-						if(pos.functionChart[a]==Authority.MUST_VOTE_ON)
-							pos.functionChart[a]=Authority.CAN_NOT_DO;
-					for(final String funcName : funcs)
-					{
-						Authority auth=(Authority)CMath.s_valueOf(Function.values(), funcName);
-						if(auth!=null) pos.functionChart[auth.ordinal()] = Authority.MUST_VOTE_ON;
-					}
-				}
-				break;
-			}
-			default: Log.errOut("Clan","setStat:Unhandled:"+stat.toString()); break;
-			}
-		}
-	}
 }

@@ -252,7 +252,7 @@ public class MUDGrinder extends StdWebMacro
             if(!CMSecurity.isAllowedEverywhere(mob,"CMDCLANS")) return "@break@";
             Clan newClan=(Clan)CMClass.getCommon("DefaultClan");
             newClan.setName(last);
-            newClan.setGovernmentID(CMLib.clans().getDefaultGovernment().ID);
+            newClan.setGovernmentID(CMLib.clans().getDefaultGovernment().getID());
             newClan.setStatus(Clan.CLANSTATUS_PENDING);
             newClan.create();
             Log.sysOut("Grinder",mob.Name()+" created clan "+newClan.clanID());
@@ -267,13 +267,13 @@ public class MUDGrinder extends StdWebMacro
             String last=httpReq.getRequestParameter("GOVERNMENT");
             if(last==null) return "@break@";
             if(last.length()==0) return "@break@";
-            Clan.Government G=CMLib.clans().getStockGovernment(CMath.s_int(last));
+            ClanGovernment G=CMLib.clans().getStockGovernment(CMath.s_int(last));
             if(G==null) return "@break@";
             if(!CMSecurity.isAllowedEverywhere(mob,"CMDCLANS")) return "@break@";
             if(!CMLib.clans().removeGovernment(G)) 
             	return "Unable to remove last government.";
-            Log.sysOut("Grinder",mob.Name()+" destroyed clan government "+G.name);
-            return "The clan government "+G.name+" has been successfully destroyed.";
+            Log.sysOut("Grinder",mob.Name()+" destroyed clan government "+G.getName());
+            return "The clan government "+G.getName()+" has been successfully destroyed.";
         }
         else
         if(parms.containsKey("EDITCLANGOVERNMENT"))
@@ -283,14 +283,14 @@ public class MUDGrinder extends StdWebMacro
             String last=httpReq.getRequestParameter("GOVERNMENT");
             if(last==null) return "@break@";
             if(last.length()==0) return "@break@";
-            Clan.Government G=CMLib.clans().getStockGovernment(CMath.s_int(last));
+            ClanGovernment G=CMLib.clans().getStockGovernment(CMath.s_int(last));
             if(G==null) return "@break@";
             if(!CMSecurity.isAllowedEverywhere(mob,"CMDCLANS")) return "@break@";
             String err=new GrinderClanGovernments().runMacro(httpReq,parm);
             if(err.length()>0) return err;
 			CMLib.clans().reSaveGovernmentsXML();
-            Log.sysOut("Grinder",mob.Name()+" modified clan government "+G.name);
-            return "The clan government "+G.name+" has been successfully modified.";
+            Log.sysOut("Grinder",mob.Name()+" modified clan government "+G.getName());
+            return "The clan government "+G.getName()+" has been successfully modified.";
         }
         else
 		if(parms.containsKey("IMPORTAREA"))

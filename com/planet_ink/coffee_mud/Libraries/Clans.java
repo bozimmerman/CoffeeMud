@@ -13,8 +13,6 @@ import com.planet_ink.coffee_mud.Common.DefaultClan;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.Clan.AutoPromoteFlag;
 import com.planet_ink.coffee_mud.Common.interfaces.Clan.Function;
-import com.planet_ink.coffee_mud.Common.interfaces.Clan.Government;
-import com.planet_ink.coffee_mud.Common.interfaces.Clan.Position;
 import com.planet_ink.coffee_mud.Common.interfaces.Clan.Authority;
 import com.planet_ink.coffee_mud.Common.interfaces.Clan.MemberRecord;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
@@ -337,168 +335,79 @@ public class Clans extends StdLibrary implements ClanManager
 
     public String getGovernmentHelp(MOB mob, String named, boolean exact)
     {
-    	Clan.Government helpG=null;
-    	for(Clan.Government G : getStockGovernments())
-    		if(G.name.equalsIgnoreCase(named))
+    	ClanGovernment helpG=null;
+    	for(ClanGovernment G : getStockGovernments())
+    		if(G.getName().equalsIgnoreCase(named))
     			helpG=G;
     	if((helpG==null)&&(exact)) return null;
     	if(helpG==null)
-        	for(Clan.Government G : getStockGovernments())
-        		if(G.name.toUpperCase().startsWith(named.toUpperCase()))
+        	for(ClanGovernment G : getStockGovernments())
+        		if(G.getName().toUpperCase().startsWith(named.toUpperCase()))
         			helpG=G;
     	if(helpG==null)
     	{
-    		List<Clan.Government> gtypes=new LinkedList<Clan.Government>();
+    		List<ClanGovernment> gtypes=new LinkedList<ClanGovernment>();
     		String name=null;
-        	for(Clan.Government G : getStockGovernments())
-        		for(Position P : G.positions)
-        			if(P.name.equalsIgnoreCase(named)||P.pluralName.equalsIgnoreCase(named))
+        	for(ClanGovernment G : getStockGovernments())
+        		for(ClanPosition P : G.getPositions())
+        			if(P.getName().equalsIgnoreCase(named)||P.getPluralName().equalsIgnoreCase(named))
         			{
         				gtypes.add(G);
-        				name=P.name;
+        				name=P.getName();
         			}
         	if(gtypes.size()==0)
         	{
         		if(exact) return null;
-            	for(Clan.Government G : getStockGovernments())
-            		for(Position P : G.positions)
-            			if(P.name.toUpperCase().startsWith(named.toUpperCase())
-            				||P.pluralName.toUpperCase().startsWith(named.toUpperCase()))
+            	for(ClanGovernment G : getStockGovernments())
+            		for(ClanPosition P : G.getPositions())
+            			if(P.getName().toUpperCase().startsWith(named.toUpperCase())
+            				||P.getPluralName().toUpperCase().startsWith(named.toUpperCase()))
             			{
             				gtypes.add(G);
-            				name=P.name;
+            				name=P.getName();
             			}
         	}
         	if(gtypes.size()==0)
         		return null;
         	String[] typeNames=new String[gtypes.size()];
         	for(int g=0;g<gtypes.size();g++)
-        		typeNames[g]=gtypes.get(g).name;
+        		typeNames[g]=gtypes.get(g).getName();
         	return "The "+name+" is a rank or position within the following clan types: "
         		   +CMLib.english().toEnglishStringList(typeNames)
         		   +".  Please see help on CLAN or on one of the listed clan types for more information. ";
     	}
-    	if(helpG.longDesc.length()==0)
-    		return null;
-    	if(helpG.helpStr==null)
-    	{
-	    	StringBuilder str=new StringBuilder("\n\rOrganization type: "+helpG.name+"\n\r\n\r");
-	    	str.append(helpG.longDesc).append("\n\r").append("\n\rAuthority Chart:\n\r\n\r");
-	    	final List<Position> showablePositions=new Vector<Position>();
-    		for(Position P : helpG.positions)
-    		{
-    			boolean showMe=false;
-    			for(Clan.Authority a : P.functionChart)
-    				if(a==Authority.CAN_DO)
-    					showMe=true;
-    			if(showMe)
-    				showablePositions.add(P);
-    		}
-	    	final List<Position> sortedPositions=new Vector<Position>();
-	    	while(sortedPositions.size() < showablePositions.size())
-	    	{
-	    		Position highPos=null;
-	    		for(Position P : showablePositions)
-	    			if((!sortedPositions.contains(P))
-	    			&&((highPos==null)||(highPos.rank<P.rank)))
-	    				highPos=P;
-	    		sortedPositions.add(highPos);
-	    	}
-	    	final int[] posses=new int[sortedPositions.size()];
-	    	int posTotalLen=0;
-	    	for(int p=0;p<sortedPositions.size();p++)
-	    	{
-	    		posses[p]=sortedPositions.get(p).name.length()+2;
-	    		posTotalLen+=posses[p];
-	    	}
-	    	int funcMaxLen=0;
-	    	int funcTotal=0;
-	    	String[] functionNames=new String[Clan.Function.values().length];
-	    	for(int f=0;f<Clan.Function.values().length;f++)
-	    	{
-	    		Clan.Function func=Clan.Function.values()[f];
-				funcTotal+=func.name().length()+1;
-	    		if(func.name().length() > funcMaxLen)
-	    			funcMaxLen=func.name().length()+1;
-	    		functionNames[f]=func.name();
-	    	}
-	    	int funcAvg = funcTotal / Clan.Function.values().length;
-	    	int funcMaxAvg = (int)CMath.round((double)funcAvg * 1.3);
-	    	while((funcMaxLen > funcMaxAvg)&&((funcMaxAvg + posTotalLen)>78))
-	    		funcMaxLen--;
-	    	if(posses.length>0)
-		    	while((funcMaxLen + posTotalLen) > 78)
-		    	{
-		    		int highPos=0;
-		        	for(int p=1;p<sortedPositions.size();p++)
-		        		if(posses[p]>posses[highPos])
-		        			highPos=p;
-		        	posTotalLen--;
-		        	posses[highPos]--;
-		    	}
-	    	
-	    	final int commandColLen = funcMaxLen;
-	    	str.append(CMStrings.padRight("Command",commandColLen-1)).append("!");
-	    	for(int p=0;p<posses.length;p++)
-	    	{
-	    		Clan.Position pos = sortedPositions.get(p);
-	    		String name=CMStrings.capitalizeAndLower(pos.name.replace('_',' '));
-		    	str.append(CMStrings.padRight(name,posses[p]-1));
-		    	if(p<posses.length-1)
-		    		str.append("!");
-	    	}
-	    	str.append("\n\r");
-	    	Object lineDraw = new Object(){
-	    		private static final String line = "----------------------------------------------------------------------------"; 
-	    		public String toString() {
-	    			StringBuilder s=new StringBuilder("");
-	    	    	s.append(line.substring(0,commandColLen-1)).append("+");
-	    	    	for(int p=0;p<posses.length;p++)
-	    	    	{
-	    		    	s.append(CMStrings.padRight(line,posses[p]-1));
-	    		    	if(p<posses.length-1)
-	    		    		s.append("+");
-	    	    	}
-	    	    	return s.toString();
-	    		}
-	    	};
-	    	str.append(lineDraw.toString()).append("\n\r");
-	    	for(Clan.Function func : Clan.Function.values())
-	    	{
-	    		String fname=CMStrings.capitalizeAndLower(func.toString().replace('_', ' '));
-		    	str.append(CMStrings.padRight(fname,commandColLen-1)).append("!");
-		    	for(int p=0;p<sortedPositions.size();p++)
-		    	{
-		    		Clan.Position pos = sortedPositions.get(p);
-		    		Authority auth = pos.functionChart[func.ordinal()];
-		    		String x = "";
-		    		if(auth==Authority.CAN_DO)
-		    			x="X";
-		    		else
-		    		if(auth==Authority.MUST_VOTE_ON)
-		    			x="v";
-    		    	str.append(CMStrings.padCenter(x,posses[p]-1));
-    		    	if(p<posses.length-1)
-    		    		str.append("!");
-		    	}
-		    	str.append("\n\r").append(lineDraw.toString()).append("\n\r");
-	    	}
-	    	helpG.helpStr=str.toString();
-    	}
-    	return helpG.helpStr;
+    	return helpG.getHelpStr();
     }
     
-    public Clan.Government createSampleGovernment()
+    public ClanGovernment createSampleGovernment()
     {
 		Authority[] pows1=new Authority[Function.values().length];
 		for(int i=0;i<pows1.length;i++) pows1[i]=Authority.CAN_NOT_DO;
 		Authority[] pows2=new Authority[Function.values().length];
 		for(int i=0;i<pows2.length;i++) pows2[i]=Authority.CAN_DO;
-		Position pos1=new Position("APPLICANT", 0, 0, "Applicant", "Applicants", Integer.MAX_VALUE, "", pows1, false);
-		Position pos2=new Position("MEMBER", 1, 1, "Member", "Members", Integer.MAX_VALUE, "", pows2, true);
+		ClanPosition P1=(ClanPosition)CMClass.getCommon("DefaultClanPosition");
+		P1.setID("APPLICANT");
+		P1.setRoleID(0);
+		P1.setRank(0);
+		P1.setName("Applicant");
+		P1.setPluralName("Applicants");
+		P1.setMax(Integer.MAX_VALUE);
+		P1.setInnerMaskStr("");
+		P1.setFunctionChart(pows1);
+		P1.setPublic(false);
+		ClanPosition P2=(ClanPosition)CMClass.getCommon("DefaultClanPosition");
+		P2.setID("MEMBER");
+		P2.setRoleID(1);
+		P2.setRank(1);
+		P2.setName("Member");
+		P2.setPluralName("Members");
+		P2.setMax(Integer.MAX_VALUE);
+		P2.setInnerMaskStr("");
+		P2.setFunctionChart(pows2);
+		P2.setPublic(false);
 		Set<Integer> usedTypeIDs=new HashSet<Integer>();
-		for(Clan.Government G2 : CMLib.clans().getStockGovernments())
-			usedTypeIDs.add(Integer.valueOf(G2.ID));
+		for(ClanGovernment G2 : CMLib.clans().getStockGovernments())
+			usedTypeIDs.add(Integer.valueOf(G2.getID()));
 		int id=0;
 		for(int i=0;i<CMLib.clans().getStockGovernments().length;i++)
 			if(!usedTypeIDs.contains(Integer.valueOf(i)))
@@ -506,15 +415,32 @@ public class Clans extends StdLibrary implements ClanManager
 				id=i; break;
 			}
 		
-		Government gvt=new Government(id,"Sample Govt",new Position[]{pos1,pos2}, 
-				0,1,"",AutoPromoteFlag.NONE,true,false,Integer.valueOf(1),true,true,false,"Change Me!","",10,66);
-		return gvt;
+		ClanGovernment G=(ClanGovernment)CMClass.getCommon("DefaultClanGovernment");
+		G.setID(id);
+		G.setName("Sample Govt");
+		G.setPositions(new ClanPosition[]{P1,P2});
+		G.setAutoRole(0);
+		G.setAcceptPos(1);
+		G.setRequiredMaskStr("");
+		G.setAutoPromoteBy(AutoPromoteFlag.NONE);
+		G.setPublic(true);
+		G.setFamilyOnly(false);
+		G.setOverrideMinMembers(Integer.valueOf(1));
+		G.setConquestEnabled(true);
+		G.setConquestItemLoyalty(true);
+		G.setConquestByWorship(false);
+		G.setShortDesc("Change Me!");
+		G.setLongDesc("");
+		G.setMaxVoteDays(10);
+		G.setVoteQuorumPct(66);
+		G.setDefault(true);
+		return G;
     }
     
     
     public void reSaveGovernmentsXML()
     {
-    	Clan.Government[] govt = getStockGovernments();
+    	ClanGovernment[] govt = getStockGovernments();
     	String xml = makeGovernmentXML(govt);
     	if(!Resources.updateFileResource("clangovernments.xml", xml))
     	{
@@ -524,42 +450,42 @@ public class Clans extends StdLibrary implements ClanManager
     	getStockGovernments();
     }
     
-    public Clan.Government createGovernment(String name)
+    public ClanGovernment createGovernment(String name)
     {
-    	Clan.Government[] gvts=getStockGovernments();
-    	List<Clan.Government> govts = new SLinkedList<Clan.Government>(gvts);
-    	for(Clan.Government G : gvts)
-    		if(G.name.equalsIgnoreCase(name))
+    	ClanGovernment[] gvts=getStockGovernments();
+    	List<ClanGovernment> govts = new SLinkedList<ClanGovernment>(gvts);
+    	for(ClanGovernment G : gvts)
+    		if(G.getName().equalsIgnoreCase(name))
     			return null;
-    	Clan.Government newG=createSampleGovernment();
+    	ClanGovernment newG=createSampleGovernment();
     	Set<Integer> takenIDs=new HashSet<Integer>();
-    	for(Clan.Government g : gvts)
-    		takenIDs.add(Integer.valueOf(g.ID));
+    	for(ClanGovernment g : gvts)
+    		takenIDs.add(Integer.valueOf(g.getID()));
     	int newID=CMLib.dice().roll(1, Integer.MAX_VALUE, 0);
     	for(int i=0;i<gvts.length+1;i++)
     		if(!takenIDs.contains(Integer.valueOf(i)))
     			newID=i;
-    	newG.ID=newID;
-    	newG.name=name;
+    	newG.setID(newID);
+    	newG.setName(name);
     	govts.add(newG);
-    	Resources.submitResource("parsed_clangovernments", govts.toArray(new Clan.Government[0]));
+    	Resources.submitResource("parsed_clangovernments", govts.toArray(new ClanGovernment[0]));
     	return newG;
     }
     
-    public boolean removeGovernment(Clan.Government government)
+    public boolean removeGovernment(ClanGovernment government)
     {
-    	Clan.Government[] gvts=getStockGovernments();
+    	ClanGovernment[] gvts=getStockGovernments();
     	if(gvts.length==1) return false;
-    	List<Clan.Government> govts = new SLinkedList<Clan.Government>(gvts);
+    	List<ClanGovernment> govts = new SLinkedList<ClanGovernment>(gvts);
     	govts.remove(government);
     	if(govts.size()==gvts.length) return false;
-    	Resources.submitResource("parsed_clangovernments", govts.toArray(new Clan.Government[0]));
+    	Resources.submitResource("parsed_clangovernments", govts.toArray(new ClanGovernment[0]));
     	return true;
     }
     
-    public Clan.Government[] getStockGovernments()
+    public ClanGovernment[] getStockGovernments()
     {
-    	Clan.Government[] gvts=(Clan.Government[])Resources.getResource("parsed_clangovernments");
+    	ClanGovernment[] gvts=(ClanGovernment[])Resources.getResource("parsed_clangovernments");
     	if(gvts==null)
     	{
     		synchronized(this)
@@ -568,16 +494,16 @@ public class Clans extends StdLibrary implements ClanManager
     			{
     				StringBuffer str=Resources.getFileResource("clangovernments.xml", true);
     				if(str==null)
-    					gvts=new Clan.Government[0];
+    					gvts=new ClanGovernment[0];
     				else
     				{
     					gvts=parseGovernmentXML(str);
     				}
     				if((gvts==null)||(gvts.length==0))
     				{
-	    				Government gvt=createSampleGovernment();
-	    				gvt.isDefault=true;
-	    				gvts=new Government[]{gvt};
+	    				ClanGovernment gvt=createSampleGovernment();
+	    				gvt.setDefault(true);
+	    				gvts=new ClanGovernment[]{gvt};
     				}
     				lastGovernmentLoad=System.currentTimeMillis();
     				Resources.submitResource("parsed_clangovernments",gvts);
@@ -587,20 +513,20 @@ public class Clans extends StdLibrary implements ClanManager
     	return gvts;
     }
     
-    public Clan.Government getDefaultGovernment()
+    public ClanGovernment getDefaultGovernment()
     {
-    	final Clan.Government[] gvts=getStockGovernments();
-    	for(Clan.Government gvt : gvts)
+    	final ClanGovernment[] gvts=getStockGovernments();
+    	for(ClanGovernment gvt : gvts)
     	{
-    		if(gvt.isDefault)
+    		if(gvt.isDefault())
     			return gvt;
     	}
 		return gvts[0];
     }
     
-    public Clan.Government getStockGovernment(int typeid)
+    public ClanGovernment getStockGovernment(int typeid)
     {
-    	final Clan.Government[] gvts=getStockGovernments();
+    	final ClanGovernment[] gvts=getStockGovernments();
     	if(gvts.length <= typeid)
     	{
     		Log.errOut("Clans","Someone mistakenly requested stock government typeid "+typeid);
@@ -609,28 +535,28 @@ public class Clans extends StdLibrary implements ClanManager
     	return gvts[typeid];
     }
     
-    public String makeGovernmentXML(Clan.Government gvt)
+    public String makeGovernmentXML(ClanGovernment gvt)
     {
     	final StringBuilder str=new StringBuilder("");
-    	str.append("<CLANTYPE ").append("TYPEID="+gvt.ID+" ").append("NAME=\""+gvt.name+"\">\n");
-    	if(gvt.isDefault)
+    	str.append("<CLANTYPE ").append("TYPEID="+gvt.getID()+" ").append("NAME=\""+gvt.getName()+"\">\n");
+    	if(gvt.isDefault())
     		str.append(indt(1)).append("<ISDEFAULT>true</ISDEFAULT>\n");
-    	str.append(indt(1)).append("<SHORTDESC>").append(CMLib.xml().parseOutAngleBrackets(gvt.shortDesc)).append("</SHORTDESC>\n");
-    	str.append(indt(1)).append("<LONGDESC>").append(CMLib.xml().parseOutAngleBrackets(gvt.longDesc)).append("</LONGDESC>\n");
+    	str.append(indt(1)).append("<SHORTDESC>").append(CMLib.xml().parseOutAngleBrackets(gvt.getShortDesc())).append("</SHORTDESC>\n");
+    	str.append(indt(1)).append("<LONGDESC>").append(CMLib.xml().parseOutAngleBrackets(gvt.getLongDesc())).append("</LONGDESC>\n");
     	str.append(indt(1)).append("<POSITIONS>\n");
     	Set<Clan.Function> voteSet = new HashSet<Clan.Function>(); 
-    	for(int p=gvt.positions.length-1;p>=0;p--)
+    	for(int p=gvt.getPositions().length-1;p>=0;p--)
     	{
-    		Clan.Position pos = gvt.positions[p];
-        	str.append(indt(2)).append("<POSITION ").append("ID=\""+pos.ID+"\" ").append("ROLEID="+pos.roleID+" ")
-        						.append("RANK="+pos.rank+" ").append("NAME=\""+pos.name+"\" ").append("PLURAL=\""+pos.pluralName+"\" ")
-        						.append("MAX="+pos.max+" ").append("INNERMASK=\""+CMLib.xml().parseOutAngleBrackets(pos.innerMaskStr)+"\" ")
-        						.append("PUBLIC=\""+pos.isPublic+"\">\n");
+    		ClanPosition pos = gvt.getPositions()[p];
+        	str.append(indt(2)).append("<POSITION ").append("ID=\""+pos.getID()+"\" ").append("ROLEID="+pos.getRoleID()+" ")
+        						.append("RANK="+pos.getRank()+" ").append("NAME=\""+pos.getName()+"\" ").append("PLURAL=\""+pos.getPluralName()+"\" ")
+        						.append("MAX="+pos.getMax()+" ").append("INNERMASK=\""+CMLib.xml().parseOutAngleBrackets(pos.getInnerMaskStr())+"\" ")
+        						.append("PUBLIC=\""+pos.isPublic()+"\">\n");
         	for(Clan.Function func : Clan.Function.values()) 
-        		if(pos.functionChart[func.ordinal()]==Clan.Authority.CAN_DO)
+        		if(pos.getFunctionChart()[func.ordinal()]==Clan.Authority.CAN_DO)
 	            	str.append(indt(3)).append("<POWER>").append(func.toString()).append("</POWER>\n");
         		else
-        		if(pos.functionChart[func.ordinal()]==Clan.Authority.MUST_VOTE_ON)
+        		if(pos.getFunctionChart()[func.ordinal()]==Clan.Authority.MUST_VOTE_ON)
         			voteSet.add(func);
         	str.append(indt(2)).append("</POSITION>\n");
     	}
@@ -639,43 +565,43 @@ public class Clans extends StdLibrary implements ClanManager
 	    	str.append(indt(1)).append("<VOTING />\n");
     	else
     	{
-	    	str.append(indt(1)).append("<VOTING ").append("MAXDAYS="+gvt.maxVoteDays+" QUORUMPCT="+gvt.voteQuorumPct+">\n");
+	    	str.append(indt(1)).append("<VOTING ").append("MAXDAYS="+gvt.getMaxVoteDays()+" QUORUMPCT="+gvt.getVoteQuorumPct()+">\n");
 	    	for(Clan.Function func : voteSet)
             	str.append(indt(2)).append("<POWER>").append(func.toString()).append("</POWER>\n");
 	    	str.append(indt(1)).append("</VOTING>\n");
     	}
-    	str.append(indt(1)).append("<AUTOPOSITION>").append(gvt.positions[gvt.autoRole].ID).append("</AUTOPOSITION>\n");
-    	str.append(indt(1)).append("<ACCEPTPOSITION>").append(gvt.positions[gvt.acceptPos].ID).append("</ACCEPTPOSITION>\n");
-    	str.append(indt(1)).append("<REQUIREDMASK>").append(CMLib.xml().parseOutAngleBrackets(gvt.requiredMaskStr)).append("</REQUIREDMASK>\n");
-    	str.append(indt(1)).append("<AUTOPROMOTEBY>").append(gvt.autoPromoteBy.toString()).append("</AUTOPROMOTEBY>\n");
-    	str.append(indt(1)).append("<PUBLIC>").append(gvt.isPublic).append("</PUBLIC>\n");
-    	str.append(indt(1)).append("<FAMILYONLY>").append(gvt.isFamilyOnly).append("</FAMILYONLY>\n");
-    	if(gvt.overrideMinMembers == null)
+    	str.append(indt(1)).append("<AUTOPOSITION>").append(gvt.getPositions()[gvt.getAutoRole()].getID()).append("</AUTOPOSITION>\n");
+    	str.append(indt(1)).append("<ACCEPTPOSITION>").append(gvt.getPositions()[gvt.getAcceptPos()].getID()).append("</ACCEPTPOSITION>\n");
+    	str.append(indt(1)).append("<REQUIREDMASK>").append(CMLib.xml().parseOutAngleBrackets(gvt.getRequiredMaskStr())).append("</REQUIREDMASK>\n");
+    	str.append(indt(1)).append("<AUTOPROMOTEBY>").append(gvt.getAutoPromoteBy().toString()).append("</AUTOPROMOTEBY>\n");
+    	str.append(indt(1)).append("<PUBLIC>").append(gvt.isPublic()).append("</PUBLIC>\n");
+    	str.append(indt(1)).append("<FAMILYONLY>").append(gvt.isFamilyOnly()).append("</FAMILYONLY>\n");
+    	if(gvt.getOverrideMinMembers() == null)
 	    	str.append(indt(1)).append("<OVERRIDEMINMEMBERS />\n");
     	else
-	    	str.append(indt(1)).append("<OVERRIDEMINMEMBERS>").append(gvt.overrideMinMembers.toString()).append("</OVERRIDEMINMEMBERS>\n");
+	    	str.append(indt(1)).append("<OVERRIDEMINMEMBERS>").append(gvt.getOverrideMinMembers().toString()).append("</OVERRIDEMINMEMBERS>\n");
     	str.append(indt(1)).append("<CONQUEST>\n");
     	{
-        	str.append(indt(2)).append("<ENABLED>").append(gvt.conquestEnabled).append("</ENABLED>\n");
-        	str.append(indt(2)).append("<ITEMLOYALTY>").append(gvt.conquestItemLoyalty).append("</ITEMLOYALTY>\n");
-        	str.append(indt(2)).append("<DEITYBASIS>").append(gvt.conquestDeityBasis).append("</DEITYBASIS>\n");
+        	str.append(indt(2)).append("<ENABLED>").append(gvt.isConquestEnabled()).append("</ENABLED>\n");
+        	str.append(indt(2)).append("<ITEMLOYALTY>").append(gvt.isConquestItemLoyalty()).append("</ITEMLOYALTY>\n");
+        	str.append(indt(2)).append("<DEITYBASIS>").append(gvt.isConquestByWorship()).append("</DEITYBASIS>\n");
     	}
     	str.append(indt(1)).append("</CONQUEST>\n");
     	str.append("</CLANTYPE>\n");
     	return str.toString();
     }
     
-    public String makeGovernmentXML(Clan.Government gvts[])
+    public String makeGovernmentXML(ClanGovernment gvts[])
     {
     	final StringBuilder str=new StringBuilder("");
     	str.append("<CLANTYPES>\n");
-    	for(Clan.Government gvt : gvts)
+    	for(ClanGovernment gvt : gvts)
     		str.append(makeGovernmentXML(gvt));
     	str.append("</CLANTYPES>\n");
     	return str.toString();
     }
     
-    public Clan.Government[] parseGovernmentXML(StringBuffer xml)
+    public ClanGovernment[] parseGovernmentXML(StringBuffer xml)
     {
     	List<XMLLibrary.XMLpiece> xmlV = CMLib.xml().parseAllXML(xml);
     	XMLLibrary.XMLpiece clanTypesTag = CMLib.xml().getPieceFromPieces(xmlV, "CLANTYPES");
@@ -697,7 +623,7 @@ public class Clans extends StdLibrary implements ClanManager
         	}
     	}
     	 
-    	List<Government> governments=new LinkedList<Government>();
+    	List<ClanGovernment> governments=new LinkedList<ClanGovernment>();
     	for(XMLLibrary.XMLpiece clanTypePieceTag : clanTypes)
     	{
 			final String typeName=clanTypePieceTag.parms.get("NAME");
@@ -722,7 +648,7 @@ public class Clans extends StdLibrary implements ClanManager
 	    		}
 	    	}
 	    	
-	    	final List<Position> positions=new LinkedList<Position>();
+	    	final List<ClanPosition> positions=new LinkedList<ClanPosition>();
 	    	XMLLibrary.XMLpiece positionsTag = CMLib.xml().getPieceFromPieces(clanTypePieceTag.contents, "POSITIONS");
 	    	for(XMLLibrary.XMLpiece posPiece : positionsTag.contents)
 	    	{
@@ -748,22 +674,31 @@ public class Clans extends StdLibrary implements ClanManager
 	    	    				functionChart[power.ordinal()] = Authority.CAN_DO;
 	    	    		}
 	    	    	}
-	    			Position pos=new Position(ID,roleID,rank,name,pluralName,max,innerMaskStr,functionChart,isPublic);
-	    			positions.add(pos);
+	    			ClanPosition P=(ClanPosition)CMClass.getCommon("DefaultClanPosition");
+	    			P.setID(ID);
+	    			P.setRoleID(roleID);
+	    			P.setRank(rank);
+	    			P.setName(name);
+	    			P.setPluralName(pluralName);
+	    			P.setMax(max);
+	    			P.setInnerMaskStr(innerMaskStr);
+	    			P.setFunctionChart(functionChart);
+	    			P.setPublic(isPublic);
+	    			positions.add(P);
 	    		}
 	    	}
-    		Position[] posArray = new Position[positions.size()];
-    		for(Position pos : positions)
-    			if((pos.roleID>=0)&&(pos.roleID<positions.size()))
-    				if(posArray[pos.roleID]!=null)
+    		ClanPosition[] posArray = new ClanPosition[positions.size()];
+    		for(ClanPosition pos : positions)
+    			if((pos.getRoleID()>=0)&&(pos.getRoleID()<positions.size()))
+    				if(posArray[pos.getRoleID()]!=null)
     				{
-        	    		Log.errOut("Clans","Bad ROLEID "+pos.roleID+" in positions list in "+typeName);
-        	    		posArray=new Position[0];
+        	    		Log.errOut("Clans","Bad ROLEID "+pos.getRoleID()+" in positions list in "+typeName);
+        	    		posArray=new ClanPosition[0];
         	    		break;
     				}
     				else
 	    			{
-	    				posArray[pos.roleID]=pos;
+	    				posArray[pos.getRoleID()]=pos;
 	    			}
     		if(posArray.length==0)
 			{
@@ -771,9 +706,9 @@ public class Clans extends StdLibrary implements ClanManager
 	    		continue;
 			}
 			String	autoRoleStr=CMLib.xml().getValFromPieces(clanTypePieceTag.contents, "AUTOPOSITION");
-			Position autoRole=null;
-			for(Position pos : positions)
-				if(pos.ID.equalsIgnoreCase(autoRoleStr) )
+			ClanPosition autoRole=null;
+			for(ClanPosition pos : positions)
+				if(pos.getID().equalsIgnoreCase(autoRoleStr) )
 					autoRole=pos;
 			if(autoRole==null)
 			{
@@ -781,9 +716,9 @@ public class Clans extends StdLibrary implements ClanManager
 	    		continue;
 			}
 			String	acceptRoleStr=CMLib.xml().getValFromPieces(clanTypePieceTag.contents, "ACCEPTPOSITION");
-			Position acceptRole=null;
-			for(Position pos : positions)
-				if(pos.ID.equalsIgnoreCase(acceptRoleStr) )
+			ClanPosition acceptRole=null;
+			for(ClanPosition pos : positions)
+				if(pos.getID().equalsIgnoreCase(acceptRoleStr) )
 					acceptRole=pos;
 			if(acceptRole==null)
 			{
@@ -816,22 +751,36 @@ public class Clans extends StdLibrary implements ClanManager
 				conquestItemLoyalty=CMath.s_bool(CMLib.xml().getValFromPieces(conquestTag.contents, "ITEMLOYALTY"));
 				conquestDeityBasis=CMath.s_bool(CMLib.xml().getValFromPieces(conquestTag.contents, "DEITYBASIS"));
 			}
-			Government gvt=new Government(typeID,typeName,posArray, 
-						   autoRole.roleID,acceptRole.roleID,requiredMaskStr,autoPromote,isPublic,isFamilyOnly,
-						   overrideMinMembers, conquestEnabled,conquestItemLoyalty,conquestDeityBasis,shortDesc,
-						   longDesc,maxVotingDays,minVotingPct);
-			gvt.isDefault=isDefault;
-			governments.add(gvt);
+			ClanGovernment G=(ClanGovernment)CMClass.getCommon("DefaultClanGovernment");
+			G.setID(typeID);
+			G.setName(typeName);
+			G.setPositions(posArray);
+			G.setAutoRole(autoRole.getRoleID());
+			G.setAcceptPos(acceptRole.getRoleID());
+			G.setRequiredMaskStr(requiredMaskStr);
+			G.setAutoPromoteBy(autoPromote);
+			G.setPublic(isPublic);
+			G.setFamilyOnly(isFamilyOnly);
+			G.setOverrideMinMembers(overrideMinMembers);
+			G.setConquestEnabled(conquestEnabled);
+			G.setConquestItemLoyalty(conquestItemLoyalty);
+			G.setConquestByWorship(conquestDeityBasis);
+			G.setShortDesc(shortDesc);
+			G.setLongDesc(longDesc);
+			G.setMaxVoteDays(maxVotingDays);
+			G.setVoteQuorumPct(minVotingPct);
+			G.setDefault(isDefault);
+			governments.add(G);
     	}
-    	Government[] govts=new Government[governments.size()];
-    	for(Government govt : governments)
-    		if((govt.ID < 0)||(govt.ID >=governments.size()) || (govts[govt.ID]!=null))
+    	ClanGovernment[] govts=new ClanGovernment[governments.size()];
+    	for(ClanGovernment govt : governments)
+    		if((govt.getID() < 0)||(govt.getID() >=governments.size()) || (govts[govt.getID()]!=null))
     		{
-	    		Log.errOut("Clans","Bad TYPEID "+govt.ID);
-	    		return new Government[0];
+	    		Log.errOut("Clans","Bad TYPEID "+govt.getID());
+	    		return new ClanGovernment[0];
     		}
     		else
-    			govts[govt.ID]=govt;
+    			govts[govt.getID()]=govt;
     	
     	if(governments.size()>0)
     	{

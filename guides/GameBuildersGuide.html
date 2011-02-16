@@ -27,6 +27,7 @@
         <li><a href="#socials">Socials</a></li>
         <li><a href="#polls">Polls</a></li>
         <li><a href="#clans">Clans</a></li>
+        <li><a href="#governments">Governments</a></li>
         <li
  style="list-style-type: none; list-style-image: none; list-style-position: outside;"><span
  style="text-decoration: underline;"><br>
@@ -2727,6 +2728,149 @@ automatically by CoffeeMud, but can be altered here.<br>
             <td>the list of all current members and their
 position/rank/role within the clan. This list can be altered manually
 here.</td>
+          </tr>
+        </tbody>
+      </table>
+      <br>
+      <br>
+      <br>
+      <p class="MsoNormal"><a name="governments"><strong><font color="#008000"
+ size="5">Clan Governments</font></strong></a></p>
+      <p>You might want to read the previous section on Clans before
+      proceeding.</p>
+      <p>Clan governments provide a basic structure to clans, and serve 
+      a purpose similar to the one Character Classes do for players. 
+      However, as clans are social arrangements, most aspects of 
+      governments deal with the structuring of these arrangements.<br>
+      </p>
+      <p>By default, clan governments are defined in your resources
+      directory in the file clangovernments.xml.  The Archon commands
+      available serve to modify this file.</p>
+      <p><strong>CREATE GOVERNMENT &lt;clangovtname&gt;</strong></p>
+      <p>This command will create a new government with the given name. You can
+then enter the following commands at any time:<br>
+      </p>
+      <p><strong>DESTROY GOVERNMENT &lt;clangovtname&gt;</strong></p>
+      <p><strong>MODIFY GOVERNMENT &lt;clangovtname&gt;</strong></p>
+      <p>When a government is modified, you are presented with a list of
+properties to fill in. Pressing enter will leave the property
+unchanged. The properties include:</p>
+      <table style="width: 100%;" bgcolor="yellow" border="1"
+ cellpadding="1" cellspacing="1" width="100%">
+        <tbody>
+          <tr>
+            <td width="25%"><strong>Property</strong></td>
+            <td width="75%"><strong>Description</strong></td>
+          </tr>
+          <tr>
+            <td><em>Type Name</em></td>
+            <td>the simple friendly name of this government<br>
+            </td>
+          </tr>
+          <tr>
+            <td><em>Short Desc</em></td>
+            <td>6-10 word description shown during clan creation<br>
+            </td>
+          </tr>
+          <tr>
+            <td><em>Long Desc</em></td>
+            <td>longer form description shown in the help system<br>
+            </td>
+          </tr>
+          <tr>
+            <td><em>Is Public</em></td>
+            <td>true if clans of this type are listed publicly<br>
+            </td>
+          </tr>
+          <tr>
+            <td><em>Is Family</em></td>
+            <td>true if only family of existing members can join<br>
+            </td>
+          </tr>
+          <tr>
+            <td><em>Min Members</em></td>
+            <td>if set, overrides the minimum members in coffeemud.ini<br>
+            </td>
+          </tr>
+          <tr>
+            <td><em>Conquest Enabled</em></td>
+            <td>true if clans of this type can conquer areas<br>
+            </td>
+          </tr>
+          <tr>
+            <td><em>Clan Item Loyalty</em></td>
+            <td>true if clan items are used to gain loyalty in conquered areas<br>
+            </td>
+          </tr>
+          <tr>
+            <td><em>Conquest by Worship</em></td>
+            <td>true if conquest is obtained through deity conversion<br>
+            </td>
+          </tr>
+          <tr>
+            <td><em>Vote Approved</em></td>
+            <td>list of clan functions that require a vote to occur<br>
+            </td>
+          </tr>
+          <tr>
+            <td><em>Auto-Promotion</em></td>
+            <td>automatic promotion policy, by rank, by char level, and whether an
+            existing leader can be replaced<br>
+            </td>
+          </tr>
+          <tr>
+            <td><em>Apply Position</em></td>
+            <td>the position users receive when they apply for membership<br>
+            </td>
+          </tr>
+          <tr>
+            <td><em>Accept Position</em></td>
+            <td>the position users receive when they are CLANACCEPted.  If this
+            is the same as the Apply Position, CLANACCEPT and CLANREJECT are
+            disabled.<br>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <p><strong><em>Positions</em></strong> constitute the ranks, roles, or positions within 
+      this clan.  These also have their own fields, enumerated below:</em></p>
+      <BR>
+      <table style="width: 100%;" bgcolor="#ddd800" border="1"
+ cellpadding="1" cellspacing="1" width="100%">
+        <tbody>
+          <tr>
+            <td width="25%"><strong>Property</strong></td>
+            <td width="75%"><strong>Description</strong></td>
+          </tr>
+          <tr>
+            <td><em>Simple ID</em></td>
+            <td>a simple identifier for this role type, should be all uppercase without spaces<br>
+            </td>
+          </tr>
+          <tr>
+            <td><em>Name</em></td>
+            <td>the singular display name of this position<br>
+            </td>
+          </tr>
+          <tr>
+            <td><em>Name (Plural)</em></td>
+            <td>the plural display name of this position<br>
+            </td>
+          </tr>
+          <tr>
+            <td><em>Maximum</em></td>
+            <td>the maximum number of characters that can hold this role per clan<br>
+            </td>
+          </tr>
+          <tr>
+            <td><em>Is Shown</em></td>
+            <td>true if this position can be seen by the public, false for only by members<br>
+            </td>
+          </tr>
+          <tr>
+            <td><em>Powers</em></td>
+            <td>list of clan functions that this role can always perform, without a vote<br>
+            </td>
           </tr>
         </tbody>
       </table>

@@ -3802,7 +3802,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 						return false;
 					boolean found=false;
 					for(Object o : entry.parms)
-						if(mob.getWorshipCharID().equalsIgnoreCase((String)o))
+						if(mob.getWorshipCharID().equalsIgnoreCase((String)o)||((String)o).equals("ANY"))
 						{ found=true; break;}
 					if(!found) return false;
 				}

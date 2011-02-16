@@ -50,7 +50,7 @@ public class ClanHelper extends StdBehavior
 				if(C==null)
 					C=CMLib.clans().findClan(parms.trim());
 				if(C!=null)
-					((MOB)forMe).setClanRole(C.getGovernment().acceptPos);
+					((MOB)forMe).setClanRole(C.getGovernment().getAcceptPos());
 				else
 					((MOB)forMe).setClanRole(0);
 			}

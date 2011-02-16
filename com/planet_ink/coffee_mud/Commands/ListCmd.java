@@ -1492,11 +1492,11 @@ public class ListCmd extends StdCommand
     {
         StringBuilder buf=new StringBuilder("^xAll Clan Governments: ^N\n\r");
         int glen=0;
-    	for(Clan.Government G : CMLib.clans().getStockGovernments())
-    		if(G.name.length()>glen)
-    			glen=G.name.length();
-    	for(Clan.Government G : CMLib.clans().getStockGovernments())
-            buf.append(CMStrings.padRight(G.name,glen)+": "+CMStrings.limit(G.shortDesc,78-glen-2)+"\n\r");
+    	for(ClanGovernment G : CMLib.clans().getStockGovernments())
+    		if(G.getName().length()>glen)
+    			glen=G.getName().length();
+    	for(ClanGovernment G : CMLib.clans().getStockGovernments())
+            buf.append(CMStrings.padRight(G.getName(),glen)+": "+CMStrings.limit(G.getShortDesc(),78-glen-2)+"\n\r");
     	return buf.toString();
     }
     
