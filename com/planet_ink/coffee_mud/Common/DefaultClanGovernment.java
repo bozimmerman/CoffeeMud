@@ -58,7 +58,7 @@ public class DefaultClanGovernment implements ClanGovernment
 	/** minimum % of voters who must have voted for a vote to be valid if time expires*/
 	public int		voteQuorumPct;
 /** uncompiled level xp calculation formula */
-public String 	xpCalculationFormua;
+public String 	xpCalculationFormulaStr;
 	/**  Whether this is the default government  */
 	public boolean	isDefault 		 = false;
 	/** The list of ClanPosition objects for each holdable position in this government */
@@ -66,6 +66,10 @@ public String 	xpCalculationFormua;
 	/** Whether an unfilled topRole is automatically filled by those who meet its innermask  */
 	public Clan.AutoPromoteFlag 	autoPromoteBy;
 
+	// derived variable
+	public LinkedList<CMath.CompiledOperation> xpCalculationFormula = CMath.compileMathExpression("1000 * @x1");
+
+	
     /** return a new instance of the object*/
     public CMObject newInstance(){try{return (CMObject)getClass().newInstance();}catch(Exception e){return new DefaultClanGovernment();}}
     public void initializeClass(){}
@@ -81,7 +85,7 @@ public String 	xpCalculationFormua;
             return new DefaultClanGovernment();
         }
     }
-    
+
 	public int getID() {
 		return ID;
 	}
@@ -173,11 +177,19 @@ public String 	xpCalculationFormua;
 	public void setVoteQuorumPct(int voteQuorumPct) {
 		this.voteQuorumPct = voteQuorumPct;
 	}
-	public String getXpCalculationFormua() {
-		return xpCalculationFormua;
+	public String getXpCalculationFormulaStr() {
+		return xpCalculationFormulaStr;
 	}
-	public void setXpCalculationFormua(String xpCalculationFormua) {
-		this.xpCalculationFormua = xpCalculationFormua;
+	public LinkedList<CMath.CompiledOperation> getXPCalculationFormula()
+	{
+		return xpCalculationFormula;
+	}
+	public void setXpCalculationFormulaStr(String newXpCalculationFormula) {
+		xpCalculationFormulaStr = newXpCalculationFormula;
+		if(xpCalculationFormulaStr.trim().length()==0)
+			this.xpCalculationFormula = CMath.compileMathExpression("1000 * @x1");
+		else
+			this.xpCalculationFormula = CMath.compileMathExpression(xpCalculationFormulaStr);
 	}
 	public boolean isDefault() {
 		return isDefault;

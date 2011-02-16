@@ -250,18 +250,24 @@ public interface ClanGovernment extends Modifiable, CMCommon
 	public void setVoteQuorumPct(int voteQuorumPct);
 	
 	/**
-	 * Gets the xp calculation formua.
+	 * Gets the xp calculation formula.
 	 *
-	 * @return the xp calculation formua
+	 * @return the xp calculation formula
 	 */
-	public String getXpCalculationFormua();
+	public String getXpCalculationFormulaStr();
 	
 	/**
-	 * Sets the xp calculation formua.
+	 * Sets the xp calculation formula.
 	 *
-	 * @param xpCalculationFormua the new xp calculation formua
+	 * @param xpCalculationFormula the new xp calculation formula
 	 */
-	public void setXpCalculationFormua(String xpCalculationFormua);
+	public void setXpCalculationFormulaStr(String xpCalculationFormulaStr);
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public LinkedList<CMath.CompiledOperation> getXPCalculationFormula();
 	
 	/**
 	 * Checks if is default.

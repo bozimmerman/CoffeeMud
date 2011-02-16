@@ -54,9 +54,10 @@ public class DefaultClan implements Clan
     protected int 	 autoPosition=-1;
     protected String acceptanceSettings="";
     protected int 	 clanStatus=0;
-    protected long 	 exp=0;
     protected String lastClanKillRecord=null;
     protected double taxRate=0.0;
+    protected volatile long exp=0;
+    protected Object expSync = new Object();
     protected Vector<ClanVote> voteList=null;
     protected Vector<Long> clanKills=new Vector<Long>();
 
@@ -303,13 +304,39 @@ public class DefaultClan implements Clan
     		autoPosition=pos;
     }
 
-    public long getExp(){return exp;}
-    public void setExp(long newexp){exp=newexp;}
-    public void adjExp(int howMuch)
+    public void setExp(long newexp)
     {
-        exp=exp+howMuch;
-        if(exp<0) exp=0;
+    	synchronized(expSync)
+    	{
+	    	final long oldxp=exp;
+	    	exp=newexp;
+	    	if(exp<0) exp=0;
+	        final LinkedList<CMath.CompiledOperation> form = govt().getXPCalculationFormula();
+	        if(oldxp < exp) // we gained
+	        {
+		        double nextLevelXP = CMath.parseMathExpression(form, new double[]{getClanLevel()}, 0.0);
+		        if((double)exp > nextLevelXP)
+		        {
+		        	setClanLevel(getClanLevel()+1);
+	                clanAnnounce(""+getGovernmentName()+" "+name()+" has attained clan level "+getClanLevel()+"!");
+		        	update();
+		        }
+	        }
+	        else
+	        if((oldxp > exp) && (getClanLevel()>1))
+	        {
+		        double prevLevelXP = CMath.parseMathExpression(form, new double[]{getClanLevel()-1}, 0.0);
+		        if((double)exp < prevLevelXP)
+		        {
+		        	setClanLevel(getClanLevel()-1);
+	                clanAnnounce(""+getGovernmentName()+" "+name()+" has reverted to clan level "+getClanLevel()+"!");
+		        	update();
+		        }
+	        }
+        }
     }
+    public void adjExp(int howMuch) { if(howMuch!=0) setExp(getExp()+howMuch); }
+    public long getExp(){return exp;}
 
     public int getTrophies(){return clanTrophies;}
     public void setTrophies(int trophyFlag){clanTrophies=trophyFlag;}
