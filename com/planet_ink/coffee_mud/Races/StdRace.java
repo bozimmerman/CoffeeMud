@@ -52,7 +52,7 @@ public class StdRace implements Race
 	protected List<Weapon> 	naturalWeaponChoices=null;
 	protected Map<Integer,List<Ability>> 
 							racialAbilityMap=null;
-	protected Map<Integer,ReusableObjectPool>
+	protected Map<Integer,ReusableObjectPool<Ability>>
 							racialEffectMap=null;
 	
 	public String 		name(){ return "StdRace"; }
@@ -544,18 +544,39 @@ public class StdRace implements Race
 		return Body;
 	}
 
+	public int numRacialEffects(MOB mob)
+	{
+		final ReusableObjectPool<Ability> pool=racialEffectsPool(mob);
+		if(pool==null) return 0;
+		return pool.getListSize();
+	}
+	
 	public List<Ability> racialEffects(MOB mob)
 	{
+		final ReusableObjectPool<Ability> pool=racialEffectsPool(mob);
+		if(pool==null) return empty;
+		final List<Ability> finalV=pool.get();
+		for(Ability A : finalV)
+		{
+			A.makeNonUninvokable();
+			A.setSavable(false); // must come AFTER the above
+			A.setAffectedOne(mob);
+		}
+		return finalV;
+	}
+	
+	public ReusableObjectPool racialEffectsPool(MOB mob)
+	{
 		if(racialEffectNames()==null)
-			return empty;
+			return null;
 
 		if((racialEffectMap==null)
 		&&(racialEffectNames()!=null)
 		&&(racialEffectLevels()!=null)
 		&&(racialEffectParms()!=null))
-			racialEffectMap=new Hashtable();
+			racialEffectMap=new Hashtable<Integer,ReusableObjectPool<Ability>>();
 
-		if(racialEffectMap==null) return empty;
+		if(racialEffectMap==null) return null;
 
 		Integer level=null;
 		if(mob!=null)
@@ -565,16 +586,7 @@ public class StdRace implements Race
 
 		final List<Ability> finalV;
 		if(racialEffectMap.containsKey(level))
-		{
-			finalV = racialEffectMap.get(level).get(); 
-			for(Ability A : finalV)
-			{
-				A.makeNonUninvokable();
-				A.setSavable(false); // must come AFTER the above
-				A.setAffectedOne(mob);
-			}
-			return finalV;
-		}
+			return racialEffectMap.get(level); 
 		finalV = new Vector<Ability>();
 		for(int v=0;v<racialEffectLevels().length;v++)
 		{
@@ -593,8 +605,9 @@ public class StdRace implements Race
 				}
 			}
 		}
-		racialEffectMap.put(level,new ReusableObjectPool<Ability>(finalV,100));
-		return finalV;
+		final ReusableObjectPool<Ability> pool= new ReusableObjectPool<Ability>(finalV,100);
+		racialEffectMap.put(level,pool);
+		return pool;
 	}
 
 	public Race makeGenRace()

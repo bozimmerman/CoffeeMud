@@ -178,6 +178,16 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
 	public List<Ability> clanEffects(MOB mob);
 	
 	/**
+	 * Return size of a vector of skills, spells, and other effects granted to the given
+	 * mob of the given mobs level. Much more efficient than getting the whole list 
+	 * and checking its size.
+	 * @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability
+	 * @param mob the mob to grant the abilities to
+	 * @return a size of a vector of the Ability objects
+	 */
+	public int numClanEffects(MOB mob);
+	
+	/**
 	 * Retrieves this Clan's basic story.
 	 * This is to make the Clan's more RP based and so we can
 	 * provide up-to-date information on Clans on the web server.

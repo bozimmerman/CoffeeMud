@@ -307,10 +307,21 @@ public interface Race extends Tickable, StatsAffecting, MsgListener, CMObject, M
 	 * mob of the given mobs level.  This method is not functionally used because
 	 * it doesn't quite work correctly yet.
 	 * @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability
+	 * @see com.planet_ink.coffee_mud.Races.interfaces.Race#numRacialEffects(MOB)
 	 * @param mob the mob to grant the abilities to
 	 * @return a vector of the Ability objects
 	 */
 	public List<Ability> racialEffects(MOB mob);
+	
+	/**
+	 * Returns the number of racial effects elligible to the given lob. Must 
+	 * faster and more efficient than getting the whole list and checking its
+	 * size.
+	 * @param mob the mob to grant the abilities to
+	 * @return number of entries in the ability object vector
+	 */
+	public int numRacialEffects(MOB mob);
+	
 	/**
 	 * Apply any affects of the given mob at the given age to the given base and/or
 	 * current char stats.

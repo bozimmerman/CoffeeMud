@@ -30,9 +30,10 @@ public class ReusableObjectPool<T extends CMObject>
 {
 	private final NotifyingCMObjectVector<T>   			masterList;
 	private final Stack<NotifyingCMObjectVector<T>>		masterPool = new Stack<NotifyingCMObjectVector<T>>();
-	private volatile int								outstanding= 0;
+	private volatile int								created    = 0;
 	private volatile int								requests   = 0;
-	private volatile int								returns    = 0;
+	private volatile int								distributed= 0;
+	private volatile int								returned   = 0;
 	private final    int								minEntries;
 	private final    Object								sync	   = new Object();
 	private final    PoolFixer							fixer	   = new PoolFixer();
@@ -40,6 +41,17 @@ public class ReusableObjectPool<T extends CMObject>
 	private class PoolFixer implements Runnable
 	{
 		private volatile boolean running = false;
+		
+		public void fix()
+		{
+			Runtime.getRuntime().runFinalization(); 
+			System.gc();
+			try{Thread.sleep(100);}catch(Exception e){}
+			Runtime.getRuntime().runFinalization(); 
+			try{Thread.sleep(100);}catch(Exception e){}
+			System.gc();
+		}
+		
 		public void run()
 		{
 			if(running) return;
@@ -48,20 +60,20 @@ public class ReusableObjectPool<T extends CMObject>
 				running = true;
 				synchronized(this)
 				{
+					int iters=0;
 					while(masterPool.size() < minEntries)
 					{
-						if(masterPool.size() < minEntries)
+						fix();
+						if((masterPool.size() < minEntries)
+						&&(iters > 5))
 						{
-							System.gc();
-							try{Thread.sleep(100);}catch(Exception e){}
+							iters=0;
 							synchronized(sync)
 							{
 								masterPool.add(makeNewEntry());
 							}
-							Runtime.getRuntime().runFinalization(); 
-							try{Thread.sleep(100);}catch(Exception e){}
-							System.gc();
 						}
+						iters++;
 					}
 				}
 			}
@@ -89,7 +101,7 @@ public class ReusableObjectPool<T extends CMObject>
 			final NotifyingCMObjectVector<T> V = new NotifyingCMObjectVector<T>(this);
 			synchronized(sync)
 			{
-				returns++;
+				returned++;
 		    	masterPool.push(V);
 			}
 			super.finalize();
@@ -109,14 +121,16 @@ public class ReusableObjectPool<T extends CMObject>
 	
 	public int getMasterPoolSize() { return masterPool.size();}
 	
+	public int getListSize() { return masterList.size(); }
+	
 	@SuppressWarnings("unchecked")
 	private final NotifyingCMObjectVector<T> makeNewEntry()
 	{
 		final NotifyingCMObjectVector<T> myList=new NotifyingCMObjectVector<T>(masterList.size());
 		for(final T o : masterList)
 			myList.add((T)o.copyOf());
-		outstanding++;
-		if(outstanding == minEntries * 1000)
+		created++;
+		if(created == minEntries * 1000)
 			Log.errOut("ReuseOP","Reusable Object Pool pass all reason: "+CMParms.toStringList(masterList));
 		return myList;
 	}
@@ -126,6 +140,8 @@ public class ReusableObjectPool<T extends CMObject>
 		if(masterList.size()==0)
 			return masterList;
 		requests++;
+		if(masterPool.size() < minEntries / 2)
+			new Thread(fixer).start();
 		synchronized(sync)
 		{
 			if(!masterPool.isEmpty())
@@ -133,11 +149,16 @@ public class ReusableObjectPool<T extends CMObject>
 				final NotifyingCMObjectVector<T> myList=masterPool.pop();
 				if(myList != null)
 				{
+					distributed++;
 					return myList;
 				}
 			}
-			new Thread(fixer).start();
-			return makeNewEntry();
 		}
+		fixer.fix();
+		return makeNewEntry();
+		//final List<T> myList=new Vector<T>(masterList.size());
+		//for(final T o : masterList)
+		//	myList.add((T)o.copyOf());
+		//return myList;
 	}
 }

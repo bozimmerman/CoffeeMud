@@ -630,11 +630,11 @@ protected Map<Integer,ReusableObjectPool<Ability>>  clanEffectMap=null;
 		clanAbilityMap.put(level,finalV);
 		return finalV;
 	}
-	
-	public List<Ability> getClanLevelEffects(MOB mob, Integer level)
+
+	protected ReusableObjectPool<Ability> getClanLevelEffectPool(MOB mob, Integer level)
 	{
 		if(clanEffectNames==null)
-			return empty;
+			return null;
 
 		if((clanEffectMap==null)
 		&&(clanEffectNames!=null)
@@ -642,21 +642,11 @@ protected Map<Integer,ReusableObjectPool<Ability>>  clanEffectMap=null;
 		&&(clanEffectParms!=null))
 			clanEffectMap=new Hashtable<Integer,ReusableObjectPool<Ability>>();
 
-		if(clanEffectMap==null) return empty;
-
-		final List<Ability> finalV;
+		if(clanEffectMap==null) return null;
+		
 		if(clanEffectMap.containsKey(level))
-		{
-			finalV = clanEffectMap.get(level).get(); 
-			for(Ability A : finalV)
-			{
-				A.makeNonUninvokable();
-				A.setSavable(false); // must come AFTER the above
-				A.setAffectedOne(mob);
-			}
-			return finalV;
-		}
-		finalV = new Vector<Ability>();
+			return clanEffectMap.get(level); 
+		final List<Ability> finalV = new Vector<Ability>();
 		for(int v=0;v<clanEffectLevels.length;v++)
 		{
 			if((clanEffectLevels[v]<=level.intValue())
@@ -674,7 +664,29 @@ protected Map<Integer,ReusableObjectPool<Ability>>  clanEffectMap=null;
 				}
 			}
 		}
-		clanEffectMap.put(level,new ReusableObjectPool<Ability>(finalV,100));
+		final ReusableObjectPool<Ability> pool = new ReusableObjectPool<Ability>(finalV,100); 
+		clanEffectMap.put(level,pool);
+		return pool;
+	}
+	
+	public int getClanLevelEffectsSize(MOB mob, Integer level)
+	{
+		final ReusableObjectPool<Ability> pool = getClanLevelEffectPool(mob,level);
+		if(pool == null) return 0;
+		return pool.getListSize();
+	}
+	
+	public List<Ability> getClanLevelEffects(MOB mob, Integer level)
+	{
+		final ReusableObjectPool<Ability> pool = getClanLevelEffectPool(mob,level);
+		if(pool == null) return empty;
+		final List<Ability> finalV = pool.get();
+		for(Ability A : finalV)
+		{
+			A.makeNonUninvokable();
+			A.setSavable(false); // must come AFTER the above
+			A.setAffectedOne(mob);
+		}
 		return finalV;
 	}
 }

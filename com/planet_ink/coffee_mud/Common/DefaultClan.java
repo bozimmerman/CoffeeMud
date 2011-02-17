@@ -1427,6 +1427,11 @@ public class DefaultClan implements Clan
 		return govt().getClanLevelAbilities(Integer.valueOf(getClanLevel()));
 	}
 	
+	public int numClanEffects(MOB mob)
+	{
+		return govt().getClanLevelEffectsSize(mob, Integer.valueOf(getClanLevel()));
+	}
+	
 	public List<Ability> clanEffects(MOB mob)
 	{
 		return govt().getClanLevelEffects(mob,Integer.valueOf(getClanLevel()));

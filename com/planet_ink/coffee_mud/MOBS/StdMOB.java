@@ -3153,8 +3153,8 @@ public class StdMOB implements MOB
 	{
 		final Clan C=getMyClan();
 		return affects.size()
-			  +charStats().getMyRace().racialEffects(this).size()
-			  +((C==null)?0:C.clanEffects(this).size());
+			  +charStats().getMyRace().numRacialEffects(this)
+			  +((C==null)?0:C.numClanEffects(this));
 	}
 
 	public int numEffects()
@@ -3167,12 +3167,11 @@ public class StdMOB implements MOB
 		try
 		{
 			if(index<affects.size())
-				return (Ability)affects.elementAt(index);
-			final List<Ability> racialEffects=charStats().getMyRace().racialEffects(this);
-			if(index<abilitees.size() + racialEffects.size())
-				return (Ability)charStats().getMyRace().racialEffects(this).get(index-affects.size());
+				return affects.elementAt(index);
+			if(index<abilitees.size() + charStats().getMyRace().numRacialEffects(this))
+				return charStats().getMyRace().racialEffects(this).get(index-affects.size());
 			final Clan C=getMyClan();
-			return (C==null)?null:C.clanAbilities(this).get(index-affects.size()-racialEffects.size());
+			return (C==null)?null:C.clanAbilities(this).get(index-affects.size()-charStats().getMyRace().numRacialEffects(this));
 		}
 		catch(java.lang.ArrayIndexOutOfBoundsException x){}
 		return null;

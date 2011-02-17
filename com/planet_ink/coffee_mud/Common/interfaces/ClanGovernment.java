@@ -370,4 +370,14 @@ public interface ClanGovernment extends Modifiable, CMCommon
 	 * @return list of abilities
 	 */
 	public List<Ability> getClanLevelEffects(MOB mob, Integer level);
+	
+	/**
+	 * Return the size of the list of effects owned by someone
+	 * who is a part of this clan of the given level. Much more
+	 * efficient than getting the whole list and checking its size.
+	 * @param mob the mob affected
+	 * @param level the clan level
+	 * @return the size of the list of abilities
+	 */
+	public int getClanLevelEffectsSize(MOB mob, Integer level);
 }
