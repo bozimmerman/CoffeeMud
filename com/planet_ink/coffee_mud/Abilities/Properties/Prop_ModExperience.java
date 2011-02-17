@@ -10,6 +10,7 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.MaskingLibrary;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -38,6 +39,8 @@ public class Prop_ModExperience extends Property
 	public String ID() { return "Prop_ModExperience"; }
 	public String name(){ return "Modifying Experience Gained";}
 	protected int canAffectCode(){return Ability.CAN_MOBS|Ability.CAN_ITEMS|Ability.CAN_AREAS|Ability.CAN_ROOMS;}
+	protected LinkedList<CMath.CompiledOperation> operation = null;
+	protected MaskingLibrary.CompiledZapperMask   mask = null;
 
 	public String accountForYourself()
 	{ return "";	}
@@ -51,53 +54,69 @@ public class Prop_ModExperience extends Property
 		return CMath.s_int(val);
 	}
 
+	public String translateNumber(String val)
+	{
+		if(val.endsWith("%"))
+			return "@x1 * (" + val.substring(0,val.length()-1) + " / 100)";
+		return Integer.toString(CMath.s_int(val));
+	}
+	
+	public void setMiscText(String newText)
+	{
+		super.setMiscText(newText);
+		operation = null;
+		mask=null;
+		String s=newText.trim();
+		int x=s.indexOf(';');
+		if(x>=0)
+		{
+			mask=CMLib.masking().maskCompile(s.substring(x+1).trim());
+			s=s.substring(0,x).trim();
+		}
+		if(s.startsWith("="))
+			operation = CMath.compileMathExpression(translateNumber(s.substring(1)).trim());
+		else
+		if(s.startsWith("+"))
+			operation = CMath.compileMathExpression("@x1 + "+translateNumber(s.substring(1)).trim());
+		else
+		if(s.startsWith("-"))
+			operation = CMath.compileMathExpression("@x1 - "+translateNumber(s.substring(1)).trim());
+		else
+		if(s.startsWith("*"))
+			operation = CMath.compileMathExpression("@x1 * "+translateNumber(s.substring(1)).trim());
+		else
+		if(s.startsWith("/"))
+			operation = CMath.compileMathExpression("@x1 / "+translateNumber(s.substring(1)).trim());
+		else
+		if(s.startsWith("(")&&(s.endsWith(")")))
+			operation = CMath.compileMathExpression(s);
+		else
+			operation = CMath.compileMathExpression(translateNumber(s.trim()));
+	}
+	
 	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
 		if((msg.sourceMinor()==CMMsg.TYP_EXPCHANGE)
+		&&(operation != null)
 		&&(((msg.target()==affected)&&(affected instanceof MOB))
 		   ||((affected instanceof Item)
-                   &&(msg.source()==((Item)affected).owner())
-                   &&(!((Item)affected).amWearingAt(Wearable.IN_INVENTORY)))
+               &&(msg.source()==((Item)affected).owner())
+               &&(!((Item)affected).amWearingAt(Wearable.IN_INVENTORY)))
 		   ||(affected instanceof Room)
 		   ||(affected instanceof Area)))
 		{
-			String s=text().trim();
-			int x=s.indexOf(';');
-			if(x>=0)
+			if(mask!=null)
 			{
-				String mask=s.substring(x+1).trim();
-				s=s.substring(0,x).trim();
 				if(affected instanceof Item)
 				{
-					if((mask.length()>0)
-					&&((msg.target()==null)||(!(msg.target() instanceof MOB))||(!CMLib.masking().maskCheck(mask,msg.target(),true))))
+					if((msg.target()==null)||(!(msg.target() instanceof MOB))||(!CMLib.masking().maskCheck(mask,msg.target(),true)))
 						return super.okMessage(myHost,msg);
 				}
 				else
-				if((mask.length()>0)
-				&&(!CMLib.masking().maskCheck(mask,msg.source(),true)))
+				if(!CMLib.masking().maskCheck(mask,msg.source(),true))
 					return super.okMessage(myHost,msg);
 			}
-
-			if(s.length()==0)
-				msg.setValue(0);
-			else
-			if(s.startsWith("="))
-				msg.setValue(translateAmount(msg.value(),s.substring(1)));
-			else
-			if(s.startsWith("+"))
-				msg.setValue(msg.value()+translateAmount(msg.value(),s.substring(1)));
-			else
-			if(s.startsWith("-"))
-				msg.setValue(msg.value()-translateAmount(msg.value(),s.substring(1)));
-			else
-			if(s.startsWith("*"))
-				msg.setValue(msg.value()*translateAmount(msg.value(),s.substring(1)));
-			else
-			if(s.startsWith("/"))
-				msg.setValue((int)Math.round(CMath.div(msg.value(),translateAmount(msg.value(),s.substring(1)))));
-			else
-				msg.setValue(translateAmount(msg.value(),s));
+			msg.setValue((int)Math.round(CMath.parseMathExpression(operation, new double[]{msg.value()}, 0.0)));
 		}
 		return super.okMessage(myHost,msg);
 	}
