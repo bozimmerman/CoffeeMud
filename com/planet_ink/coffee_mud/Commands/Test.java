@@ -183,7 +183,7 @@ public class Test extends StdCommand
 
     public void reset(MOB[] mobs,MOB[] backups, Room R, Item[] IS,Room R2)
     {
-        while(R2.numEffects()>0)
+        while(R2.numEffects()>0) // personal
         {
             int num=R2.numEffects();
             R2.fetchEffect(0).unInvoke();

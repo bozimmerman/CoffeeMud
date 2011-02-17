@@ -123,9 +123,9 @@ public class StdItem implements Item
 	public void recoverPhyStats()
 	{
 		basePhyStats.copyInto(phyStats);
-		for(int a=0;a<numEffects();a++)
+		for(final Enumeration<Ability> a=effects();a.hasMoreElements();)
 		{
-			Ability A=fetchEffect(a);
+			final Ability A=a.nextElement();
 			if(A!=null)
 				A.affectPhyStats(this,phyStats);
 		}
@@ -174,9 +174,9 @@ public class StdItem implements Item
             if(SE!=null) addScript((ScriptingEngine)SE.copyOf());
         }
 
-		for(int a=0;a<I.numEffects();a++)
+		for(final Enumeration<Ability> a=I.effects();a.hasMoreElements();)
 		{
-			Ability A=I.fetchEffect(a);
+			final Ability A=a.nextElement();
 			if((A!=null)&&(!A.canBeUninvoked())&&(!A.ID().equals("ItemRejuv")))
 				addEffect((Ability)A.copyOf());
 		}
@@ -431,30 +431,27 @@ public class StdItem implements Item
 			&&((!(affected instanceof MOB))||(((MOB)affected).riding()!=this)))
 				affectableStats.setWeight(affectableStats.weight()+phyStats().weight());
 		}
-        int num=numEffects();
-		for(int a=0;a<num;a++)
+		for(final Enumeration<Ability> a=effects();a.hasMoreElements();)
 		{
-			Ability A=fetchEffect(a);
+			final Ability A=a.nextElement();
 			if((A!=null)&&(A.bubbleAffect()))
 			   A.affectPhyStats(affected,affectableStats);
 		}
 	}
 	public void affectCharStats(MOB affectedMob, CharStats affectableStats)
 	{
-        int num=numEffects();
-		for(int a=0;a<num;a++)
+		for(final Enumeration<Ability> a=effects();a.hasMoreElements();)
 		{
-			Ability A=fetchEffect(a);
+			final Ability A=a.nextElement();
 			if((A!=null)&&(A.bubbleAffect()))
 			   A.affectCharStats(affectedMob,affectableStats);
 		}
 	}
 	public void affectCharState(MOB affectedMob, CharState affectableMaxState)
 	{
-        int num=numEffects();
-		for(int a=0;a<num;a++)
+		for(final Enumeration<Ability> a=effects();a.hasMoreElements();)
 		{
-			Ability A=fetchEffect(a);
+			final Ability A=a.nextElement();
 			if((A!=null)&&(A.bubbleAffect()))
 			   A.affectCharState(affectedMob,affectableMaxState);
 		}
@@ -698,10 +695,9 @@ public class StdItem implements Item
             if((N!=null)&&(!N.okMessage(this,msg)))
                 return false;
         }
-        num=numEffects();
-		for(int a=0;a<num;a++)
+		for(final Enumeration<Ability> a=effects();a.hasMoreElements();)
 		{
-			N=fetchEffect(a);
+			N=a.nextElement();
 			if((N!=null)&&(!N.okMessage(this,msg)))
 				return false;
 		}
@@ -1078,9 +1074,9 @@ public class StdItem implements Item
             if(N!=null)
                 N.executeMsg(this,msg);
         }
-		for(int a=0;a<numEffects();a++)
+		for(final Enumeration<Ability> a=effects();a.hasMoreElements();)
 		{
-			N=fetchEffect(a);
+			N=a.nextElement();
 			if(N!=null)
 				N.executeMsg(this,msg);
 		}
@@ -1175,13 +1171,13 @@ public class StdItem implements Item
 		myContainer=null;
         CMLib.map().registerWorldObjectDestroyed(null,null,this);
         try {CMLib.catalog().changeCatalogUsage(this,false);} catch(Throwable t){}
-		for(int a=numEffects()-1;a>=0;a--)
+		for(final Enumeration<Ability> a=effects();a.hasMoreElements();)
 		{
-			Ability aff=fetchEffect(a);
-			if((aff!=null)&&(!(aff.ID().equals("ItemRejuv"))))
+			final Ability A=a.nextElement();
+			if((A!=null)&&(!(A.ID().equals("ItemRejuv"))))
             {
-				aff.unInvoke();
-                delEffect(aff);
+				A.unInvoke();
+                delEffect(A);
             }
 		}
 		for(int b=numBehaviors()-1;b>=0;b--)
@@ -1295,6 +1291,9 @@ public class StdItem implements Item
 		if(affects.remove(to))
 			to.setAffectedOne(null);
 	}
+	
+	public Enumeration<Ability> effects(){return (affects==null)?EmptyEnumeration.INSTANCE:affects.elements();}
+
 	public int numEffects()
 	{
 		if(affects==null) return 0;
@@ -1313,9 +1312,9 @@ public class StdItem implements Item
 	public Ability fetchEffect(String ID)
 	{
 		if(affects==null) return null;
-		for(int a=0;a<numEffects();a++)
+		for(final Enumeration<Ability> a=effects();a.hasMoreElements();)
 		{
-			Ability A=fetchEffect(a);
+			final Ability A=a.nextElement();
 			if((A!=null)&&(A.ID().equals(ID)))
 				return A;
 		}
@@ -1414,9 +1413,9 @@ public class StdItem implements Item
 		String identity="";
 		if(numEffects()>0)
 			identity+="\n\rHas the following magical properties: ";
-		for(int a=0;a<numEffects();a++)
+		for(final Enumeration<Ability> a=effects();a.hasMoreElements();)
 		{
-			Ability A=fetchEffect(a);
+			final Ability A=a.nextElement();
 			if((A!=null)&&(A.accountForYourself().length()>0))
 				identity+="\n\r"+A.accountForYourself();
 		}

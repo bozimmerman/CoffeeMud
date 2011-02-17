@@ -361,10 +361,10 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 			{
 				Exit opExit=nextRoom.getExitInDir(Directions.getOpDirectionCode(direction));
                 if(status!=null)status[0]=Tickable.STATUS_MISC7+6;
-				for(int a=0;a<nextExit.numEffects();a++)
-				{
-					Ability aff=nextExit.fetchEffect(a);
-					if((aff!=null)&&(aff instanceof Trap))
+    			for(final Enumeration<Ability> a=nextExit.effects();a.hasMoreElements();)
+    			{
+    				final Ability A=a.nextElement();
+					if((A!=null)&&(A instanceof Trap))
 						direction=-1;
 				}
 
@@ -372,10 +372,10 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 				if(opExit!=null)
 				{
                     if(status!=null)status[0]=Tickable.STATUS_MISC7+8;
-					for(int a=0;a<opExit.numEffects();a++)
-					{
-						Ability aff=opExit.fetchEffect(a);
-						if((aff!=null)&&(aff instanceof Trap))
+        			for(final Enumeration<Ability> a=opExit.effects();a.hasMoreElements();)
+        			{
+        				final Ability A=a.nextElement();
+						if((A!=null)&&(A instanceof Trap))
 							direction=-1;
 					}
 				}

@@ -1066,9 +1066,9 @@ public class CMMap extends StdLibrary implements WorldMap
 			if((I!=null)&&(I.expirationDate()!=0))
 				return false;
 		}
-		for(int a=0;a<R.numEffects();a++)
+		for(final Enumeration<Ability> a=R.effects();a.hasMoreElements();)
 		{
-			Ability A=R.fetchEffect(a);
+			final Ability A=a.nextElement();
 			if((A!=null)&&(!A.isSavable()))
 				return false;
 		}
@@ -1122,9 +1122,9 @@ public class CMMap extends StdLibrary implements WorldMap
 
 	public void obliterateRoom(Room deadRoom)
 	{
-		for(int a=deadRoom.numEffects()-1;a>=0;a--)
+		for(final Enumeration<Ability> a=deadRoom.effects();a.hasMoreElements();)
 		{
-			Ability A=deadRoom.fetchEffect(a);
+			final Ability A=a.nextElement();
 			if(A!=null)
 			{
 				A.unInvoke();
@@ -1173,18 +1173,18 @@ public class CMMap extends StdLibrary implements WorldMap
 		CMLib.database().DBDeleteRoom(deadRoom);
 	}
 
-	public void emptyArea(Area A)
+	public void emptyArea(Area area)
 	{
-		for(int a=A.numEffects()-1;a>=0;a--)
+		for(final Enumeration<Ability> a=area.effects();a.hasMoreElements();)
 		{
-			Ability A1=A.fetchEffect(a);
-			if(A1!=null)
+			final Ability A=a.nextElement();
+			if(A!=null)
 			{
-				A1.unInvoke();
-				A.delEffect(A1);
+				A.unInvoke();
+				area.delEffect(A);
 			}
 		}
-		for(Enumeration<Room> e=A.getProperMap();e.hasMoreElements();)
+		for(Enumeration<Room> e=area.getProperMap();e.hasMoreElements();)
 		{
 			Room R=(Room)e.nextElement();
 			emptyRoom(R,null);
@@ -1362,10 +1362,9 @@ public class CMMap extends StdLibrary implements WorldMap
 			resetMsg.setTarget(room);
 			room.executeMsg(room,resetMsg);
 			emptyRoom(room,null);
-	        Ability A=null;
-	        for(int a=room.numEffects()-1;a>=0;a--)
-	        {
-	            A=room.fetchEffect(a);
+			for(final Enumeration<Ability> a=room.effects();a.hasMoreElements();)
+			{
+				final Ability A=a.nextElement();
 	            if((A!=null)&&(A.canBeUninvoked()))
 	                A.unInvoke();
 	        }

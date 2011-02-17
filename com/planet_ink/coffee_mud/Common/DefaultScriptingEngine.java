@@ -4757,7 +4757,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
                 if(E instanceof MOB)
                 {
-                    if(((MOB)E).numAllEffects()>0)
+                    if(((MOB)E).numAllEffects()>0) // random
                         results.append(((MOB)E).fetchEffect(CMLib.dice().roll(1,((MOB)E).numAllEffects(),-1)).name());
                 }
                 else

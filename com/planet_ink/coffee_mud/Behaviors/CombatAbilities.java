@@ -125,7 +125,7 @@ public class CombatAbilities extends StdBehavior
 	protected void newCharacter(MOB mob)
 	{
 		Vector oldAbilities=new Vector();
-        for(Enumeration<Ability> a=mob.enumAbilities();a.hasMoreElements();)
+        for(Enumeration<Ability> a=mob.abilities();a.hasMoreElements();)
         {
             Ability A=a.nextElement();
 			if(A!=null)

@@ -149,7 +149,7 @@ public class Skills extends StdCommand
         int highestLevel=0;
         int lowestLevel=ableM.phyStats().level()+1;
         StringBuilder msg=new StringBuilder("");
-        for(Enumeration<Ability> a=ableM.enumAbilities();a.hasMoreElements();)
+        for(Enumeration<Ability> a=ableM.abilities();a.hasMoreElements();)
         {
             Ability A=a.nextElement();
             int level=CMLib.ableMapper().qualifyingLevel(ableM,A);
@@ -166,7 +166,7 @@ public class Skills extends StdCommand
         {
         	StringBuilder thisLine=new StringBuilder("");
             int col=0;
-            for(Enumeration<Ability> a=ableM.enumAbilities();a.hasMoreElements();)
+            for(Enumeration<Ability> a=ableM.abilities();a.hasMoreElements();)
             {
                 Ability A=a.nextElement();
                 int level=CMLib.ableMapper().qualifyingLevel(ableM,A);

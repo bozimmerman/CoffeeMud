@@ -42,13 +42,12 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
     {
         if(E==null) return null;
         if(E instanceof ShopKeeper) return (ShopKeeper)E;
-        Ability A=null;
         if(E instanceof Physical)
         {
         	Physical P=(Physical)E;
-	        for(int a=0;a<P.numEffects();a++)
-	        {
-	            A=P.fetchEffect(a);
+    		for(final Enumeration<Ability> a=P.effects();a.hasMoreElements();)
+    		{
+    			final Ability A=a.nextElement();
 	            if(A instanceof ShopKeeper)
 	                return (ShopKeeper)A;
 	        }
@@ -63,12 +62,12 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
                 if(I instanceof ShopKeeper)
                     return (ShopKeeper)I;
                 if(I!=null)
-                for(int a=0;a<I.numEffects();a++)
-                {
-                    A=I.fetchEffect(a);
-                    if(A instanceof ShopKeeper)
-                        return (ShopKeeper)A;
-                }
+            		for(final Enumeration<Ability> a=I.effects();a.hasMoreElements();)
+            		{
+            			final Ability A=a.nextElement();
+	                    if(A instanceof ShopKeeper)
+	                        return (ShopKeeper)A;
+	                }
             }
         }
         return null;

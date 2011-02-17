@@ -377,9 +377,9 @@ public class StdCharClass implements CharClass
             // the most efficient way of doing this -- just hash em!
             Hashtable alreadyAble=new Hashtable();
             Hashtable alreadyAff=new Hashtable();
-            for(int a=0;a<mob.numAllEffects();a++)
-            {
-                Ability A=mob.fetchEffect(a);
+    		for(final Enumeration<Ability> a=mob.effects();a.hasMoreElements();)
+    		{
+    			final Ability A=a.nextElement();
                 if(A!=null) alreadyAff.put(A.ID(),A);
             }
             for(int a=0;a<mob.numLearnedAbilities();a++)

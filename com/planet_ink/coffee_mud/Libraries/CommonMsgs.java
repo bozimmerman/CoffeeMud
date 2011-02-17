@@ -491,9 +491,9 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
         {
             Vector expenseAffects=new Vector();
             manaConsumeCounter=CMProps.getIntVar(CMProps.SYSTEMI_MANACONSUMETIME);
-            for(int a=0;a<mob.numAllEffects();a++)
-            {
-                Ability A=mob.fetchEffect(a);
+    		for(final Enumeration<Ability> a=mob.effects();a.hasMoreElements();)
+    		{
+    			final Ability A=a.nextElement();
                 if(A!=null)
                 {
                     if((!A.isAutoInvoked())

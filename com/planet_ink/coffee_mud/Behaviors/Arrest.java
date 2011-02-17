@@ -1650,9 +1650,9 @@ public class Arrest extends StdBehavior implements LegalBehavior
 							info[Law.BIT_WARNMSG]);
 		}
 
-		for(int a=0;a<msg.source().numAllEffects();a++)
+		for(final Enumeration<Ability> a=msg.source().effects();a.hasMoreElements();)
 		{
-			Ability A=msg.source().fetchEffect(a);
+			final Ability A=a.nextElement();
 			if((A!=null)
 			&&(!A.isAutoInvoked())
 			&&((A.canBeUninvoked()||(!msg.source().isMonster())))

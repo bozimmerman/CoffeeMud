@@ -153,9 +153,9 @@ public class Gaoler extends StdCharClass
 			if(mob.charStats().getCurrentClass().ID().equals(ID()))
 			{
 				int exp=0;
-				for(int a=0;a<mob.numAllEffects();a++)
-				{
-					Ability A=mob.fetchEffect(a);
+	    		for(final Enumeration<Ability> a=mob.effects();a.hasMoreElements();)
+	    		{
+	    			final Ability A=a.nextElement();
 					if((A!=null)
 					&&(!A.isAutoInvoked())
 					&&(mob.isMine(A))

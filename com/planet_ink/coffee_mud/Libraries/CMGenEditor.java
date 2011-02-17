@@ -889,9 +889,9 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
             Room oldR=R;
             R=newRoom;
             Vector<CMObject> oldBehavsNEffects=new Vector<CMObject>();
-            for(int a=oldR.numEffects()-1;a>=0;a--)
-            {
-                Ability A=oldR.fetchEffect(a);
+			for(final Enumeration<Ability> a=oldR.effects();a.hasMoreElements();)
+			{
+				final Ability A=a.nextElement();
                 if(A!=null)
                 {
                     if(!A.canBeUninvoked())

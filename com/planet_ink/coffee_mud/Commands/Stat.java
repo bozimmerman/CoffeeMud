@@ -580,9 +580,9 @@ public class Stat  extends Skills
 				if((I!=null)&&(!I.amWearingAt(Wearable.IN_INVENTORY))){ recoverMOB(M); base=CMLib.combat().adjustedAttackBonus(M,null); testMOB(target,M,I); int diff=CMLib.combat().adjustedAttackBonus(M,null)-base; reportOnDiffMOB(I,diff,str);}
 			}
 			recoverMOB(M);
-			for(int i=0;i<target.numAllEffects();i++)
-			{
-				Ability A=target.fetchEffect(i);
+    		for(final Enumeration<Ability> a=target.effects();a.hasMoreElements();)
+    		{
+    			final Ability A=a.nextElement();
 				if(A!=null){ recoverMOB(M); base=CMLib.combat().adjustedAttackBonus(M,null); testMOB(target,M,A); int diff=CMLib.combat().adjustedAttackBonus(M,null)-base; reportOnDiffMOB(A,diff,str);}
 			}
 			recoverMOB(target);
@@ -598,9 +598,9 @@ public class Stat  extends Skills
 				if(I!=null){ recoverMOB(M); base=CMLib.combat().adjustedArmor(M); testMOB(target,M,I); int diff=CMLib.combat().adjustedArmor(M)-base; reportOnDiffMOB(I,diff,str);}
 			}
 			recoverMOB(M);
-			for(int i=0;i<target.numAllEffects();i++)
-			{
-				Ability A=target.fetchEffect(i);
+    		for(final Enumeration<Ability> a=target.effects();a.hasMoreElements();)
+    		{
+    			final Ability A=a.nextElement();
 				if(A!=null){ recoverMOB(M); base=CMLib.combat().adjustedArmor(M); testMOB(target,M,A); int diff=CMLib.combat().adjustedArmor(M)-base; reportOnDiffMOB(A,diff,str);}
 			}
 			recoverMOB(target);
@@ -616,9 +616,9 @@ public class Stat  extends Skills
 				if(I!=null){ recoverMOB(M); base=averageDamage(M); testMOB(target,M,I); int diff=averageDamage(M)-base; reportOnDiffMOB(I,diff,str);}
 			}
 			recoverMOB(M);
-			for(int i=0;i<target.numAllEffects();i++)
-			{
-				Ability A=target.fetchEffect(i);
+    		for(final Enumeration<Ability> a=target.effects();a.hasMoreElements();)
+    		{
+    			final Ability A=a.nextElement();
 				if(A!=null){ recoverMOB(M); base=averageDamage(M); testMOB(target,M,A); int diff=averageDamage(M)-base; reportOnDiffMOB(A,diff,str);}
 			}
 			recoverMOB(target);
@@ -634,9 +634,9 @@ public class Stat  extends Skills
 				if(I!=null){ recoverMOB(M); base=(int)Math.round(M.phyStats().speed()*100); testMOB(target,M,I); int diff=(int)Math.round(M.phyStats().speed()*100)-base; reportOnDiffMOB(I,diff,str);}
 			}
 			recoverMOB(M);
-			for(int i=0;i<target.numAllEffects();i++)
-			{
-				Ability A=target.fetchEffect(i);
+    		for(final Enumeration<Ability> a=target.effects();a.hasMoreElements();)
+    		{
+    			final Ability A=a.nextElement();
 				if(A!=null){ recoverMOB(M); base=(int)Math.round(M.phyStats().speed()*100); testMOB(target,M,A); int diff=(int)Math.round(M.phyStats().speed()*100)-base; reportOnDiffMOB(A,diff,str);}
 			}
 			recoverMOB(target);

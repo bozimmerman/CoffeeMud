@@ -124,9 +124,9 @@ public class StdCoins extends StdItem implements Coins
 			basePhyStats.setWeight((int)Math.round((basePhyStats().ability()/100.0)));
 		basePhyStats.copyInto(phyStats);
 		// import not to sup this, otherwise 'ability' makes it magical!
-		for(int a=0;a<numEffects();a++)
+		for(final Enumeration<Ability> a=effects();a.hasMoreElements();)
 		{
-			Ability A=fetchEffect(a);
+			final Ability A=a.nextElement();
             if(A!=null)	A.affectPhyStats(this,phyStats);
 		}
 	}

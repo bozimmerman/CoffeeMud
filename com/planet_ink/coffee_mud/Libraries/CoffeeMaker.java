@@ -2880,7 +2880,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 		{
 			Physical P = (Physical)E;
 			StringBuffer affectstr=new StringBuffer("");
-			for(int a=0;a<P.numEffects();a++)
+			for(int a=0;a<P.numEffects();a++) // definitely personal
 			{
 				Ability A=P.fetchEffect(a);
 				if((A!=null)&&(A.isSavable()))

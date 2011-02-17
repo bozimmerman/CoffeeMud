@@ -202,9 +202,9 @@ public class Mobile extends ActiveTicker
 			}
             tickStatus=Tickable.STATUS_MISC2+15;
             Ability A=null;
-            for(int i=0;i<mob.numEffects();i++)
-            {
-                A=mob.fetchEffect(i);
+			for(final Enumeration<Ability> a=mob.effects();a.hasMoreElements();)
+			{
+				A=a.nextElement();
                 if((A.canBeUninvoked())
                 &&(!A.isAutoInvoked())
                 &&((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_COMMON_SKILL)

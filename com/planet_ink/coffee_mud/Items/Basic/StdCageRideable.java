@@ -69,9 +69,9 @@ public class StdCageRideable extends StdRideable
 					if(B!=null)
 						B.executeMsg(this,msg);
 
-			for(int a=0;a<numEffects();a++)
-			{
-				Ability A=fetchEffect(a);
+    		for(final Enumeration<Ability> a=effects();a.hasMoreElements();)
+    		{
+    			final Ability A=a.nextElement();
 				if(A!=null)
 					A.executeMsg(this,msg);
 			}

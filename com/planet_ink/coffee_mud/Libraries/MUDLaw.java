@@ -156,9 +156,9 @@ public class MUDLaw extends StdLibrary implements LegalLibrary
 	public LandTitle getLandTitle(Area area)
 	{
 		if(area==null) return null;
-		for(int a=0;a<area.numEffects();a++)
+		for(final Enumeration<Ability> a=area.effects();a.hasMoreElements();)
 		{
-			Ability A=area.fetchEffect(a);
+			final Ability A=a.nextElement();
 			if((A!=null)&&(A instanceof LandTitle))
 				return (LandTitle)A;
 		}
@@ -169,10 +169,9 @@ public class MUDLaw extends StdLibrary implements LegalLibrary
 		if(room==null) return null;
 		LandTitle title=getLandTitle(room.getArea());
 		if(title!=null) return title;
-        Ability A=null;
-		for(int a=0;a<room.numEffects();a++)
+		for(final Enumeration<Ability> a=room.effects();a.hasMoreElements();)
 		{
-			A=room.fetchEffect(a);
+			final Ability A=a.nextElement();
 			if((A!=null)&&(A instanceof LandTitle))
 				return (LandTitle)A;
 		}
@@ -208,10 +207,9 @@ public class MUDLaw extends StdLibrary implements LegalLibrary
     public Ability getClericInfusion(Physical room)
     {
         if(room==null) return null;
-        Ability A=null;
-        for(int e=room.numEffects()-1;e>=0;e--)
-        {
-            A=room.fetchEffect(e);
+		for(final Enumeration<Ability> a=room.effects();a.hasMoreElements();)
+		{
+			final Ability A=a.nextElement();
             if((A!=null)&&(A.ID().startsWith("Prayer_Infuse")))
                 return A;
         }

@@ -1,5 +1,7 @@
 package com.planet_ink.coffee_mud.core.interfaces;
 
+import java.util.Enumeration;
+
 import com.planet_ink.coffee_mud.Abilities.interfaces.Ability;
 import com.planet_ink.coffee_mud.Behaviors.interfaces.Behavior;
 import com.planet_ink.coffee_mud.Common.interfaces.PhyStats;
@@ -125,4 +127,10 @@ public interface Affectable
      * @return the ability object effecting this object
      */
 	public Ability fetchEffect(String ID);
+    /**
+     * Returns an enumerator of abilities listed as effects on this object. 
+     * @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability
+     * @return the enumerator of ability objects effecting this object
+     */
+	public Enumeration<Ability> effects();
 }

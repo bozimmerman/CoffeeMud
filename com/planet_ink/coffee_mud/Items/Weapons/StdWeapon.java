@@ -212,9 +212,9 @@ public class StdWeapon extends StdItem implements Weapon
 				{
 					boolean recover=false;
 
-					for(int a=0;a<numEffects();a++)
+					for(final Enumeration<Ability> a=effects();a.hasMoreElements();)
 					{
-						Ability A=fetchEffect(a);
+						final Ability A=a.nextElement();
 						if((A!=null)&&(!A.isSavable())&&(A.invoker()==null))
 						{
 							recover=true;
@@ -239,9 +239,9 @@ public class StdWeapon extends StdItem implements Weapon
 									howMuchToTake=I.usesRemaining();
 								setAmmoRemaining(howMuchToTake);
 								I.setUsesRemaining(I.usesRemaining()-howMuchToTake);
-								for(int a=0;a<I.numEffects();a++)
+								for(final Enumeration<Ability> a=I.effects();a.hasMoreElements();)
 								{
-									Ability A=I.fetchEffect(a);
+									Ability A=a.nextElement();
 									if((A!=null)&&(A.isSavable())&&(fetchEffect(A.ID())==null))
 									{
 										A=(Ability)A.copyOf();

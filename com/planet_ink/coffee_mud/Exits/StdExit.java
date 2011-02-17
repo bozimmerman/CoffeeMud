@@ -103,9 +103,9 @@ public class StdExit implements Exit
 	public void recoverPhyStats()
 	{
 		basePhyStats.copyInto(phyStats);
-		for(int a=0;a<numEffects();a++)
+		for(final Enumeration<Ability> a=effects();a.hasMoreElements();)
 		{
-			Ability A=fetchEffect(a);
+			final Ability A=a.nextElement();
 			if(A!=null)
 				A.affectPhyStats(this,phyStats);
 		}
@@ -279,9 +279,9 @@ public class StdExit implements Exit
             if((N!=null)&&(!N.okMessage(this,msg)))
                 return false;
         }
-        for(int i=0;i<numEffects();i++)
-        {
-            N=fetchEffect(i);
+		for(final Enumeration<Ability> a=effects();a.hasMoreElements();)
+		{
+			N=a.nextElement();
             if((N!=null)&&(!N.okMessage(this,msg)))
                 return false;
         }
@@ -510,9 +510,9 @@ public class StdExit implements Exit
                 N.executeMsg(this,msg);
         }
         
-        for(int a=0;a<numEffects();a++)
-        {
-            N=fetchEffect(a);
+		for(final Enumeration<Ability> a=effects();a.hasMoreElements();)
+		{
+			N=a.nextElement();
             if(N!=null)
                 N.executeMsg(this,msg);
         }
@@ -600,20 +600,14 @@ public class StdExit implements Exit
 		}
 		else
 		{
-			int a=0;
-			while(a<numEffects())
+			for(final Enumeration<Ability> a=effects();a.hasMoreElements();)
 			{
-				Ability A=fetchEffect(a);
+				final Ability A=a.nextElement();
 				if(A!=null)
 				{
-					int s=affects.size();
 					if(!A.tick(ticking,tickID))
 						A.unInvoke();
-					if(affects.size()==s)
-						a++;
 				}
-				else
-					a++;
 			}
 			return true;
 		}
@@ -690,6 +684,9 @@ public class StdExit implements Exit
 		if(affects.remove(to))
 			to.setAffectedOne(null);
 	}
+	@SuppressWarnings("unchecked")
+	public Enumeration<Ability> effects(){return (affects==null)?EmptyEnumeration.INSTANCE:affects.elements();}
+	
 	public int numEffects()
 	{
 		if(affects==null) return 0;
@@ -708,9 +705,9 @@ public class StdExit implements Exit
 	public Ability fetchEffect(String ID)
 	{
 		if(affects==null) return null;
-		for(int a=0;a<numEffects();a++)
+		for(final Enumeration<Ability> a=effects();a.hasMoreElements();)
 		{
-			Ability A=fetchEffect(a);
+			final Ability A=a.nextElement();
 			if((A!=null)&&(A.ID().equals(ID)))
 			   return A;
 		}

@@ -655,7 +655,7 @@ public class MUD extends Thread implements MudHost
                 	{
                         M.playerStats().setLastDateTime(System.currentTimeMillis());
                         // important! shutdown their affects!
-                        for(int a=M.numAllEffects()-1;a>=0;a--)
+                        for(int a=M.numAllEffects()-1;a>=0;a--) // reverse enumeration
                         {
                         	Ability A=M.fetchEffect(a);
                         	try {

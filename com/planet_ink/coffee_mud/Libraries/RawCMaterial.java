@@ -156,9 +156,9 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
 		for(int i=0;i<found.size();i++)
 		{
 			I=(Item)found.elementAt(i);
-		    for(int a=0;a<I.numEffects();a++)
-		    {
-		        A=I.fetchEffect(a);
+			for(final Enumeration<Ability> a=I.effects();a.hasMoreElements();)
+			{
+				A=a.nextElement();
 		        if((A!=null)
 		        &&(!A.canBeUninvoked())
 		        &&(!foundAblesH.containsKey(A.ID())))

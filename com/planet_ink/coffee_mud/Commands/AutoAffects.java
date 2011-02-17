@@ -43,17 +43,17 @@ public class AutoAffects extends StdCommand
         int NUM_COLS=2;
         int COL_LEN=25;
         int colnum=NUM_COLS;
-        for(int a=0;a<((P instanceof MOB)?((MOB)P).numAllEffects():P.numEffects());a++)
-        {
-            Ability thisAffect=P.fetchEffect(a);
-            String disp=thisAffect.name();
-            if((thisAffect!=null)
-            &&(thisAffect.displayText().length()==0)
-            &&((!(P instanceof MOB))||(((MOB)P).fetchAbility(thisAffect.ID())!=null))
-            &&(thisAffect.isAutoInvoked()))
+		for(final Enumeration<Ability> a=P.effects();a.hasMoreElements();)
+		{
+			final Ability A=a.nextElement();
+            String disp=A.name();
+            if((A!=null)
+            &&(A.displayText().length()==0)
+            &&((!(P instanceof MOB))||(((MOB)P).fetchAbility(A.ID())!=null))
+            &&(A.isAutoInvoked()))
             {
                 if(((++colnum)>NUM_COLS)||(disp.length()>COL_LEN)){ msg.append("\n\r"); colnum=0;}
-                msg.append("^S"+CMStrings.padRightPreserve("^<HELPNAME NAME='"+thisAffect.Name()+"'^>"+disp+"^</HELPNAME^>",COL_LEN));
+                msg.append("^S"+CMStrings.padRightPreserve("^<HELPNAME NAME='"+A.Name()+"'^>"+disp+"^</HELPNAME^>",COL_LEN));
                 if(disp.length()>COL_LEN) colnum=99;
             }
         }

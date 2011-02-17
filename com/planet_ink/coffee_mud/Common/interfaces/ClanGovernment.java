@@ -361,4 +361,12 @@ public interface ClanGovernment extends Modifiable, CMCommon
 	 * @return list of abilities
 	 */
 	public List<Ability> getClanLevelAbilities(Integer level);
+	
+	/**
+	 * Return the list of effects owned by someone
+	 * who is part of a clan of the given level.
+	 * @param level clan level
+	 * @return list of abilities
+	 */
+	public List<Ability> getClanLevelEffects(Integer level);
 }

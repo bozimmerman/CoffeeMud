@@ -181,10 +181,9 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 	public Trap fetchMyTrap(Physical myThang)
 	{
 		if(myThang==null) return null;
-        Ability A=null;
-		for(int a=0;a<myThang.numEffects();a++)
+		for(final Enumeration<Ability> a=myThang.effects();a.hasMoreElements();)
 		{
-			A=myThang.fetchEffect(a);
+			final Ability A=a.nextElement();
 			if((A!=null)&&(A instanceof  Trap))
 				return (Trap)A;
 		}
@@ -247,7 +246,7 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 			}
 			return;
 		}
-		for(int a=target.numEffects()-1;a>=0;a--)
+		for(int a=target.numEffects()-1;a>=0;a--) // personal effects
 		{
 			Ability A=target.fetchEffect(a);
 			if((A!=null)&&((!mundane)||((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_PROPERTY)))

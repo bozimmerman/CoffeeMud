@@ -147,7 +147,7 @@ public class Unload extends StdCommand
             	if(saveFirst)
             	{
                     // important! shutdown their affects!
-                    for(int a=M.numAllEffects()-1;a>=0;a--)
+                    for(int a=M.numEffects()-1;a>=0;a--) // personal affects
                     {
                     	Ability A=M.fetchEffect(a);
                     	if((A!=null)&&(A.canBeUninvoked()))

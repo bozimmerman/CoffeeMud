@@ -291,6 +291,7 @@ public class GenWallpaper implements Item
 	public void addEffect(Ability to){}
 	public void delEffect(Ability to){}
 	public int numEffects(){return 0;}
+	public Enumeration<Ability> effects(){return EmptyEnumeration.INSTANCE;}
 	public Ability fetchEffect(int index){return null;}
 	public Ability fetchEffect(String ID){return null;}
 	public int maxRange(){return 0;}

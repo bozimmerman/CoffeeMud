@@ -44,22 +44,22 @@ public class Affect extends StdCommand
         int COL_LEN=xtra?38:25;
 		int colnum=NUM_COLS;
         MOB mob=(S!=null)?S.mob():null;
-		for(int a=0;a<((P instanceof MOB)?((MOB)P).numAllEffects():P.numEffects());a++)
+		for(final Enumeration<Ability> a=P.effects();a.hasMoreElements();)
 		{
-			Ability thisAffect=P.fetchEffect(a);
-			String disp=thisAffect.displayText();
-			if((thisAffect!=null)&&(disp.length()>0))
+			final Ability A=a.nextElement();
+			String disp=A.displayText();
+			if((A!=null)&&(disp.length()>0))
 			{
                 if(xtra)
                 {
                     disp+="^N: TR=";
-                    long tr=thisAffect.expirationDate() / CMProps.getTickMillis();
+                    long tr=A.expirationDate() / CMProps.getTickMillis();
                     if(tr>=(Integer.MAX_VALUE/2))
                         disp+="~";
                     else
                         disp+=tr;
                     
-                    disp+=", BY="+((thisAffect.invoker()==null)?"N/A":thisAffect.invoker().Name());
+                    disp+=", BY="+((A.invoker()==null)?"N/A":A.invoker().Name());
                 }
                 String[] disps={disp};
                 if(disp.length()>(COL_LEN*NUM_COLS))
@@ -75,7 +75,7 @@ public class Affect extends StdCommand
                 for(int d=0;d<disps.length;d++) {
                     disp=disps[d];
     				if(((++colnum)>NUM_COLS)||(disp.length()>COL_LEN)){ msg.append("\n\r"); colnum=0;}
-    			    msg.append("^S"+CMStrings.padRightPreserve("^<HELPNAME NAME='"+thisAffect.Name()+"'^>"+disp+"^</HELPNAME^>",COL_LEN));
+    			    msg.append("^S"+CMStrings.padRightPreserve("^<HELPNAME NAME='"+A.Name()+"'^>"+disp+"^</HELPNAME^>",COL_LEN));
     				if(disp.length()>COL_LEN) colnum=99;
                 }
 			}

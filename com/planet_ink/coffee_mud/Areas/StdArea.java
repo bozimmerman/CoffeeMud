@@ -251,9 +251,9 @@ public class StdArea implements Area
 	public void recoverPhyStats()
 	{
 		basePhyStats.copyInto(phyStats);
-		for(int a=0;a<numEffects();a++)
+		for(final Enumeration<Ability> a=effects();a.hasMoreElements();)
 		{
-			Ability A=fetchEffect(a);
+			final Ability A=a.nextElement();
 			if(A!=null)
 				A.affectPhyStats(this,phyStats);
 		}
@@ -409,9 +409,9 @@ public class StdArea implements Area
 			if(B!=null)
 				behaviors.addElement((Behavior)B.copyOf());
 		}
-		for(int a=0;a<areaA.numEffects();a++)
+		for(final Enumeration<Ability> a=areaA.effects();a.hasMoreElements();)
 		{
-			Ability A=areaA.fetchEffect(a);
+			final Ability A=a.nextElement();
 			if(A!=null)
 				affects.addElement((Ability)A.copyOf());
 		}
@@ -604,9 +604,9 @@ public class StdArea implements Area
             if((N!=null)&&(!N.okMessage(this,msg)))
                 return false;
         }
-        for(int i=0;i<numEffects();i++)
-        {
-            N=fetchEffect(i);
+		for(final Enumeration<Ability> a=effects();a.hasMoreElements();)
+		{
+			N=a.nextElement();
             if((N!=null)&&(!N.okMessage(this,msg)))
                 return false;
         }
@@ -721,9 +721,9 @@ public class StdArea implements Area
                 N.executeMsg(this,msg);
         }
 
-        for(int a=0;a<numEffects();a++)
-        {
-            N=fetchEffect(a);
+		for(final Enumeration<Ability> a=effects();a.hasMoreElements();)
+		{
+			N=a.nextElement();
             if(N!=null)
                 N.executeMsg(this,msg);
         }
@@ -767,21 +767,15 @@ public class StdArea implements Area
                 if(SE!=null)
                     SE.tick(ticking,tickID);
 
-			int a=0;
-			while(a<numEffects())
+			for(final Enumeration<Ability> a=effects();a.hasMoreElements();)
 			{
-				Ability A=fetchEffect(a);
+				final Ability A=a.nextElement();
 				if(A!=null)
 				{
-					tickStatus=Tickable.STATUS_AFFECT+a;
-					int s=affects.size();
+					tickStatus=Tickable.STATUS_AFFECT;
 					if(!A.tick(ticking,tickID))
 						A.unInvoke();
-					if(affects.size()==s)
-						a++;
 				}
-				else
-					a++;
 			}
 		}
 		tickStatus=Tickable.STATUS_NOT;
@@ -809,27 +803,27 @@ public class StdArea implements Area
 		if(disposition>0)
 			affectableStats.setDisposition(affectableStats.disposition()|disposition);
 		affectableStats.setWeight(affectableStats.weight()+phyStats().weight());
-        for(int a=0;a<numEffects();a++)
-        {
-            Ability A=fetchEffect(a);
+		for(final Enumeration<Ability> a=effects();a.hasMoreElements();)
+		{
+			final Ability A=a.nextElement();
             if((A!=null)&&(A.bubbleAffect()))
                A.affectPhyStats(affected,affectableStats);
         }
 	}
 	public void affectCharStats(MOB affectedMob, CharStats affectableStats)
 	{
-        for(int a=0;a<numEffects();a++)
-        {
-            Ability A=fetchEffect(a);
+		for(final Enumeration<Ability> a=effects();a.hasMoreElements();)
+		{
+			final Ability A=a.nextElement();
             if((A!=null)&&(A.bubbleAffect()))
                A.affectCharStats(affectedMob,affectableStats);
         }
     }
 	public void affectCharState(MOB affectedMob, CharState affectableMaxState)
 	{
-        for(int a=0;a<numEffects();a++)
-        {
-            Ability A=fetchEffect(a);
+		for(final Enumeration<Ability> a=effects();a.hasMoreElements();)
+		{
+			final Ability A=a.nextElement();
             if((A!=null)&&(A.bubbleAffect()))
                A.affectCharState(affectedMob,affectableMaxState);
         }
@@ -862,6 +856,9 @@ public class StdArea implements Area
 	{
 		return (affects==null)?0:affects.size();
 	}
+	
+	public Enumeration<Ability> effects(){return (affects==null)?EmptyEnumeration.INSTANCE:affects.elements();}
+	
 	public Ability fetchEffect(int index)
 	{
 		try
@@ -873,9 +870,9 @@ public class StdArea implements Area
 	}
 	public Ability fetchEffect(String ID)
 	{
-		for(int a=0;a<numEffects();a++)
+		for(final Enumeration<Ability> a=effects();a.hasMoreElements();)
 		{
-			Ability A=fetchEffect(a);
+			final Ability A=a.nextElement();
 			if((A!=null)&&(A.ID().equals(ID)))
 			   return A;
 		}

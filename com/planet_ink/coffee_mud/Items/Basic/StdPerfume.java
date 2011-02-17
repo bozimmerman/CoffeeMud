@@ -120,9 +120,9 @@ public class StdPerfume extends StdDrink implements Perfume
 						if(B!=null)
 							B.executeMsg(this,msg);
 
-				for(int a=0;a<numEffects();a++)
+				for(final Enumeration<Ability> a=effects();a.hasMoreElements();)
 				{
-					Ability A=fetchEffect(a);
+					final Ability A=a.nextElement();
 					if(A!=null)
 						A.executeMsg(this,msg);
 				}

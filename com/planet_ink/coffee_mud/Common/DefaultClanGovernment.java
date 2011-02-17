@@ -491,6 +491,12 @@ public Map<Integer,List<Ability>> abilities = new Hashtable<Integer,List<Ability
     	return helpStr;
 	}
 
+	public List<Ability> getClanLevelEffects(Integer level)
+	{
+		final List<Ability> finalV=new Vector<Ability>();
+		return finalV;
+	}
+	
 	public List<Ability> getClanLevelAbilities(Integer level)
 	{
 		if(abilities.containsKey(level))

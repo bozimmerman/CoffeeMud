@@ -1035,14 +1035,14 @@ public class MOBloader
                 statements.add(new DBPreparedBatchEntry(str,thisAbility.text()));
             }
         }
-        for(int a=0;a<mob.numEffects();a++)
-        {
-            Ability thisAffect=mob.fetchEffect(a);
-            if((thisAffect!=null)&&(!H.contains(thisAffect.ID()))&&(thisAffect.isSavable())&&(!thisAffect.canBeUninvoked()))
+		for(final Enumeration<Ability> a=mob.personalEffects();a.hasMoreElements();)
+		{
+			final Ability A=a.nextElement();
+            if((A!=null)&&(!H.contains(A.ID()))&&(A.isSavable())&&(!A.canBeUninvoked()))
             {
                 String str="INSERT INTO CMCHAB (CMUSERID, CMABID, CMABPF,CMABTX"
-                +") values ('"+mob.Name()+"','"+thisAffect.ID()+"',"+Integer.MAX_VALUE+",?)";
-                statements.add(new DBPreparedBatchEntry(str,thisAffect.text()));
+                +") values ('"+mob.Name()+"','"+A.ID()+"',"+Integer.MAX_VALUE+",?)";
+                statements.add(new DBPreparedBatchEntry(str,A.text()));
             }
         }
 		for(Enumeration<Behavior> e=mob.behaviors();e.hasMoreElements();)
