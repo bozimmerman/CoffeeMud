@@ -147,7 +147,7 @@ public class AreaData extends StdWebMacro
 				}
 			}
 			else
-			for(int a=0;a<P.numEffects();a++)
+			for(int a=0;a<P.numEffects();a++) // personal effects
 			{
 				Ability Able=P.fetchEffect(a);
 				if((Able!=null)&&(Able.isSavable()))

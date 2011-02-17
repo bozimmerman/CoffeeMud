@@ -81,7 +81,7 @@ public class GrinderAreas
 	
 	public static String doAffects(Physical P, ExternalHTTPRequests httpReq, java.util.Map<String,String> parms)
 	{
-		while(P.numEffects()>0)
+		while(P.numEffects()>0) // personal effects
 			P.delEffect(P.fetchEffect(0));
 		if(httpReq.isRequestParameter("AFFECT1"))
 		{

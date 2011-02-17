@@ -84,7 +84,7 @@ public class GrinderRooms
 				R=CMClass.getLocale(className);
 				if(R==null)
 					return "The class you chose does not exist.  Choose another.";
-				for(int a=oldR.numEffects()-1;a>=0;a--)
+				for(int a=oldR.numEffects()-1;a>=0;a--) // personal
 				{
 					Ability A=oldR.fetchEffect(a);
 					if(A!=null)
