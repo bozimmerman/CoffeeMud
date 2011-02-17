@@ -453,9 +453,9 @@ public class StdRace implements Race
 			room.addItem(Body,mob.isMonster()?ItemPossessor.Expire.Monster_Body:ItemPossessor.Expire.Player_Body);
 		Body.setDestroyAfterLooting(destroyBodyAfterUse());
 		Body.recoverPhyStats();
-		for(int i=0;i<mob.numAllEffects();i++)
+		for(final Enumeration<Ability> a=mob.effects();a.hasMoreElements();)
 		{
-			Ability A=mob.fetchEffect(i);
+			final Ability A=a.nextElement();
 			if((A!=null)&&(A instanceof DiseaseAffect))
 			{
 				if((CMath.bset(((DiseaseAffect)A).abilityCode(),DiseaseAffect.SPREAD_CONSUMPTION))
