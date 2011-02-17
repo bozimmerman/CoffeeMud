@@ -179,9 +179,9 @@ public class StdRoom implements Room
 				inhabitants.addElement(M);
 			}
 		}
-		for(int i=0;i<R.numEffects();i++)
+		for(final Enumeration<Ability> a=R.effects();a.hasMoreElements();)
 		{
-			Ability A=R.fetchEffect(i);
+			final Ability A=a.nextElement();
 			if((A!=null)&&(!A.canBeUninvoked()))
 				addEffect((Ability)A.copyOf());
 		}
@@ -553,9 +553,9 @@ public class StdRoom implements Room
 			if((N!=null)&&(!N.okMessage(this,msg)))
 				return false;
 		}
-		for(int i=0;i<numEffects();i++)
+		for(final Enumeration<Ability> a=effects();a.hasMoreElements();)
 		{
-			N=fetchEffect(i);
+			N=a.nextElement();
 			if((N!=null)&&(!N.okMessage(this,msg)))
 				return false;
 		}
@@ -663,9 +663,9 @@ public class StdRoom implements Room
                 N.executeMsg(this,msg);
         }
         
-		for(int a=0;a<numEffects();a++)
+		for(final Enumeration<Ability> a=effects();a.hasMoreElements();)
 		{
-			N=fetchEffect(a);
+			N=a.nextElement();
 			if(N!=null)
 				N.executeMsg(this,msg);
 		}
@@ -797,17 +797,16 @@ public class StdRoom implements Room
 		tickStatus=Tickable.STATUS_START;
 		if(tickID==Tickable.TICKID_ROOM_BEHAVIOR)
 		{
-            int numB=numBehaviors();
             Tickable T=null;
-            for(int b=0;b<numB;b++)
-            {
-                tickStatus=Tickable.STATUS_BEHAVIOR+b;
-                T=fetchBehavior(b);
+            tickStatus=Tickable.STATUS_BEHAVIOR;
+			for(final Enumeration<Behavior> b=behaviors();b.hasMoreElements();)
+			{
+				T=b.nextElement();
                 if(T!=null)
                     T.tick(ticking,tickID);
             }
             int numS=numScripts();
-            if((numB<=0)&&(numS<=0)) return false;
+            if((numBehaviors()<=0)&&(numS<=0)) return false;
             for(int s=0;s<numS;s++)
             {
                 tickStatus=Tickable.STATUS_SCRIPT+s;
@@ -818,21 +817,13 @@ public class StdRoom implements Room
 		}
 		else
 		{
-			int a=0;
-			while(a<numEffects())
+			tickStatus=Tickable.STATUS_AFFECT;
+			for(final Enumeration<Ability> a=effects();a.hasMoreElements();)
 			{
-				Ability A=fetchEffect(a);
+				final Ability A=a.nextElement();
 				if(A!=null)
-				{
-					int s=numEffects();
-					tickStatus=Tickable.STATUS_AFFECT+a;
 					if(!A.tick(ticking,tickID))
 						A.unInvoke();
-					if(numEffects()==s)
-						a++;
-				}
-				else
-					a++;
 			}
 		}
 		tickStatus=Tickable.STATUS_NOT;
@@ -854,9 +845,9 @@ public class StdRoom implements Room
 		if(myArea!=null)
 			myArea.affectPhyStats(this,phyStats());
 
-		for(int a=0;a<numEffects();a++)
+		for(final Enumeration<Ability> a=effects();a.hasMoreElements();)
 		{
-			Ability A=fetchEffect(a);
+			final Ability A=a.nextElement();
 			if(A!=null) A.affectPhyStats(this,phyStats);
 		}
 		for(Item I : contents) I.affectPhyStats(this,phyStats);
@@ -902,9 +893,9 @@ public class StdRoom implements Room
 			&((Integer.MAX_VALUE-(PhyStats.IS_DARK|PhyStats.IS_LIGHTSOURCE|PhyStats.IS_SLEEPING|PhyStats.IS_HIDDEN)));
 		if(disposition>0)
 			affectableStats.setDisposition(affectableStats.disposition()|disposition);
-		for(int a=0;a<numEffects();a++)
+		for(final Enumeration<Ability> a=effects();a.hasMoreElements();)
 		{
-			Ability A=fetchEffect(a);
+			final Ability A=a.nextElement();
 			if((A!=null)&&(A.bubbleAffect()))
 			   A.affectPhyStats(affected,affectableStats);
 		}
@@ -912,9 +903,9 @@ public class StdRoom implements Room
 	public void affectCharStats(MOB affectedMob, CharStats affectableStats)
 	{
 		getArea().affectCharStats(affectedMob,affectableStats);
-		for(int a=0;a<numEffects();a++)
+		for(final Enumeration<Ability> a=effects();a.hasMoreElements();)
 		{
-			Ability A=fetchEffect(a);
+			final Ability A=a.nextElement();
 			if((A!=null)&&(A.bubbleAffect()))
 			   A.affectCharStats(affectedMob,affectableStats);
 		}
@@ -922,9 +913,9 @@ public class StdRoom implements Room
 	public void affectCharState(MOB affectedMob, CharState affectableMaxState)
 	{
 		getArea().affectCharState(affectedMob,affectableMaxState);
-		for(int a=0;a<numEffects();a++)
+		for(final Enumeration<Ability> a=effects();a.hasMoreElements();)
 		{
-			Ability A=fetchEffect(a);
+			final Ability A=a.nextElement();
 			if((A!=null)&&(A.bubbleAffect()))
 			   A.affectCharState(affectedMob,affectableMaxState);
 		}
@@ -1899,6 +1890,9 @@ public class StdRoom implements Room
 		if(affects==null) return 0;
 		return affects.size();
 	}
+	
+	public Enumeration<Ability> effects(){return (affects==null)?EmptyEnumeration.INSTANCE:affects.elements();}
+	
 	public Ability fetchEffect(int index)
 	{
 		if(affects==null) return null;
@@ -1912,9 +1906,9 @@ public class StdRoom implements Room
 	public Ability fetchEffect(String ID)
 	{
 		if(affects==null) return null;
-		for(int a=0;a<numEffects();a++)
+		for(final Enumeration<Ability> a=effects();a.hasMoreElements();)
 		{
-			Ability A=fetchEffect(a);
+			final Ability A=a.nextElement();
 			if((A!=null)&&(A.ID().equals(ID)))
 			   return A;
 		}

@@ -821,8 +821,8 @@ public class StdGrid extends StdRoom implements GridLocale
 			gc.setDescription((String)descriptions[c]);
 		}
 
-		for(int a=0;a<numEffects();a++)
-			gc.addEffect((Ability)fetchEffect(a).copyOf());
+		for(final Enumeration<Ability> a=effects();a.hasMoreElements();)
+			gc.addEffect((Ability)a.nextElement().copyOf());
 		if(behaviors != null)
 			for(Behavior B : behaviors)
 				gc.addBehavior((Behavior)B.copyOf());
