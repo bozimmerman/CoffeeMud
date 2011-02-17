@@ -549,7 +549,7 @@ public class StdDeity extends StdMOB implements Deity
 		if((alreadyBlessed(mob))&&(mob.location()!=null))
 		{
 			mob.location().show(this,mob,CMMsg.MSG_OK_VISUAL,"<S-NAME> remove(s) <S-HIS-HER> blessings from <T-NAME>.");
-			for(int a=mob.numEffects()-1;a>=0;a--)
+			for(int a=mob.numEffects()-1;a>=0;a--) // reverse, and personal
 			{
 				Ability A=mob.fetchEffect(a);
 				if((A!=null)&&(A.invoker()==this))
@@ -585,9 +585,9 @@ public class StdDeity extends StdMOB implements Deity
 
 	public boolean alreadyBlessed(MOB mob)
 	{
-		for(int a=0;a<mob.numEffects();a++)
+		for(final Enumeration<Ability> a=mob.effects();a.hasMoreElements();)
 		{
-			Ability A=mob.fetchEffect(a);
+			final Ability A=a.nextElement();
 			if((A!=null)&&(A.invoker()==this))
 				return true;
 		}

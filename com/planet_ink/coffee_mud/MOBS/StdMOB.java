@@ -77,7 +77,7 @@ public class StdMOB implements MOB
 
 	/* containers of items and attributes*/
 	protected SVector<Item>		inventory	= new SVector<Item>(1);
-	protected SVector<Ability>	abilities	= new SVector<Ability>(1);
+	protected SVector<Ability>	abilitees	= new SVector<Ability>(1);
 	protected SVector<Ability> 	affects		= new SVector<Ability>(1);
 	protected SVector<Behavior>	behaviors	= new SVector<Behavior>(1);
 	protected SVector<Tattoo>	tattoos		= new SVector<Tattoo>(1);
@@ -314,7 +314,7 @@ public class StdMOB implements MOB
 
 		inventory=new SVector<Item>(1);
 		followers=null;
-		abilities=new SVector<Ability>(1);
+		abilitees=new SVector<Ability>(1);
 		affects=new SVector<Ability>(1);
 		behaviors=new SVector<Behavior>(1);
 		scripts=new SVector<ScriptingEngine>(1);
@@ -346,20 +346,20 @@ public class StdMOB implements MOB
 			if(A!=null)
 				addAbility((Ability)A.copyOf());
 		}
-		for(int i=0;i<M.numEffects();i++)
+		for(final Enumeration<Ability> a=M.personalEffects();a.hasMoreElements();)
 		{
-			A=M.fetchEffect(i);
+			A=a.nextElement();
 			if((A!=null)&&(!A.canBeUninvoked()))
 				addEffect((Ability)A.copyOf());
 		}
-		for(Enumeration<Behavior> e=M.behaviors();e.hasMoreElements();)
+		for(final Enumeration<Behavior> e=M.behaviors();e.hasMoreElements();)
 		{
 			Behavior B=e.nextElement();
 			if(B!=null) // iteration during a clone would just be messed up.
 				behaviors.addElement((Behavior)B.copyOf()); 
 		}
 		ScriptingEngine SE=null;
-		for(Enumeration<ScriptingEngine> e=M.scripts();e.hasMoreElements();)
+		for(final Enumeration<ScriptingEngine> e=M.scripts();e.hasMoreElements();)
 		{
 			SE=e.nextElement();
             if(SE!=null)
@@ -421,10 +421,9 @@ public class StdMOB implements MOB
 			}
 		}
         Ability effect=null;
-        num=numAllEffects();
-		for(int a=0;a<num;a++)
+		for(final Enumeration<Ability> a=effects();a.hasMoreElements();)
 		{
-			effect=fetchEffect(a);
+			effect=a.nextElement();
 			if(effect!=null)
 				effect.affectPhyStats(this,phyStats);
 		}
@@ -494,15 +493,14 @@ public class StdMOB implements MOB
 		if(riding()!=null) riding().affectCharStats(this,charStats);
 		if(getMyDeity()!=null) getMyDeity().affectCharStats(this,charStats);
         Ability effect=null;
-        int num=numAllEffects();
-		for(int a=0;a<num;a++)
+		for(final Enumeration<Ability> a=effects();a.hasMoreElements();)
 		{
-			effect=fetchEffect(a);
+			effect=a.nextElement();
 			if(effect!=null)
 				effect.affectCharStats(this,charStats);
 		}
         Item item=null;
-        num=numItems();
+        int num=numItems();
 		for(int i=0;i<num;i++)
 		{
 			item=getItem(i);
@@ -589,10 +587,9 @@ public class StdMOB implements MOB
         for(int c=0;c<num;c++)
             charStats.getMyClass(c).affectCharState(this,maxState);
         Ability effect=null;
-        num=numAllEffects();
-		for(int a=0;a<num;a++)
+		for(final Enumeration<Ability> a=effects();a.hasMoreElements();)
 		{
-			effect=fetchEffect(a);
+			effect=a.nextElement();
 			if(effect!=null)
 				effect.affectCharState(this,maxState);
 		}
@@ -683,7 +680,7 @@ public class StdMOB implements MOB
         cachedImageName=null;
         inventory=new SVector<Item>(1);
         followers=null;
-        abilities=new SVector<Ability>(1);
+        abilitees=new SVector<Ability>(1);
         affects=new SVector<Ability>(1);
         behaviors=new SVector<Behavior>(1);
         tattoos=new SVector<Tattoo>(1);
@@ -856,7 +853,7 @@ public class StdMOB implements MOB
 		else
 			CMLib.commands().postLook(this,true);
 		inventory.trimToSize();
-		abilities.trimToSize();
+		abilitees.trimToSize();
 		affects.trimToSize();
 		behaviors.trimToSize();
 	}
@@ -1504,15 +1501,14 @@ public class StdMOB implements MOB
 		}
 
 		MsgListener ML=null;
-        int num=numAllEffects();
-        for(int i=0;i<num;i++)
+		for(final Enumeration<Ability> a=effects();a.hasMoreElements();)
 		{
-            ML=fetchEffect(i);
+			ML=a.nextElement();
 			if((ML!=null)&&(!ML.okMessage(this,msg)))
 				return false;
 		}
 
-        num=numItems();
+        int num=numItems();
         for(int i=num-1;i>=0;i--)
 		{
 			ML=getItem(i);
@@ -2513,10 +2509,9 @@ public class StdMOB implements MOB
 			    ML.executeMsg(this,msg);
 		}
 
-        num=numAllEffects();
-        for(int i=0;i<num;i++)
+		for(final Enumeration<Ability> a=effects();a.hasMoreElements();)
 		{
-            ML=fetchEffect(i);
+			ML=a.nextElement();
 			if(ML!=null)
 			    ML.executeMsg(this,msg);
 		}
@@ -2663,7 +2658,7 @@ public class StdMOB implements MOB
                         tickCounter=0;
                         if(inventory!=null) inventory.trimToSize();
                         if(affects!=null) affects.trimToSize();
-                        if(abilities!=null) abilities.trimToSize();
+                        if(abilitees!=null) abilitees.trimToSize();
                         if(followers!=null) followers.trimToSize();
                         CMLib.commands().tickAging(this);
                     }
@@ -3051,23 +3046,23 @@ public class StdMOB implements MOB
 			if((A!=null)&&(A.ID().equals(to.ID())))
 				return;
 		}
-		abilities.addElement(to);
+		abilitees.addElement(to);
 	}
 	public void delAbility(Ability to)
 	{
-		abilities.removeElement(to);
+		abilitees.removeElement(to);
 	}
 	public int numLearnedAbilities()
 	{
-		return abilities.size();
+		return abilitees.size();
 	}
 	
-	public Enumeration<Ability> enumAbilities()
+	public Enumeration<Ability> abilities()
 	{
 		final Clan C=getMyClan();
 		final MultiEnumeration multi =
 			new MultiEnumeration(
-					new Enumeration[] {abilities.elements(),new IteratorEnumeration(charStats().getMyRace().racialAbilities(this).iterator())});
+					new Enumeration[] {abilitees.elements(),new IteratorEnumeration(charStats().getMyRace().racialAbilities(this).iterator())});
 		if(C!=null)
 			multi.addEnumeration(new IteratorEnumeration(C.clanAbilities(this).iterator()));
 		return multi;
@@ -3076,7 +3071,7 @@ public class StdMOB implements MOB
 	public int numAbilities()
 	{
 		final Clan C=getMyClan();
-		return abilities.size()
+		return abilitees.size()
 			  +charStats().getMyRace().racialAbilities(this).size()
 			  +((C==null)?0:C.clanAbilities(this).size());
 	}
@@ -3085,13 +3080,13 @@ public class StdMOB implements MOB
 	{
 		try
 		{
-			if(index<abilities.size())
-				return (Ability)abilities.elementAt(index);
+			if(index<abilitees.size())
+				return (Ability)abilitees.elementAt(index);
 			final List<Ability> racialAbilities=charStats().getMyRace().racialAbilities(this);
-			if(index<abilities.size() + racialAbilities.size())
-				return (Ability)charStats().getMyRace().racialAbilities(this).get(index-abilities.size());
+			if(index<abilitees.size() + racialAbilities.size())
+				return (Ability)charStats().getMyRace().racialAbilities(this).get(index-abilitees.size());
 			final Clan C=getMyClan();
-			return (C==null)?null:C.clanAbilities(this).get(index-abilities.size()-racialAbilities.size());
+			return (C==null)?null:C.clanAbilities(this).get(index-abilitees.size()-racialAbilities.size());
 		}
 		catch(java.lang.ArrayIndexOutOfBoundsException x){}
 		return null;
@@ -3099,7 +3094,7 @@ public class StdMOB implements MOB
 	
 	public Ability fetchAbility(String ID)
 	{
-		for(Enumeration<Ability> a=enumAbilities();a.hasMoreElements();)
+		for(Enumeration<Ability> a=abilities();a.hasMoreElements();)
 		{
 			final Ability A=a.nextElement();
 			if((A!=null)&&((A.ID().equalsIgnoreCase(ID))||(A.Name().equalsIgnoreCase(ID))))
@@ -3111,10 +3106,10 @@ public class StdMOB implements MOB
 	{
 		final Clan C=getMyClan();
 		final Race R=charStats().getMyRace();
-		Ability A=(Ability)CMLib.english().fetchEnvironmental(abilities,ID,true);
+		Ability A=(Ability)CMLib.english().fetchEnvironmental(abilitees,ID,true);
         if(A==null) A=(Ability)CMLib.english().fetchEnvironmental(R.racialAbilities(this),ID,true);
         if((A==null)&&(C!=null)) A=(Ability)CMLib.english().fetchEnvironmental(C.clanAbilities(this),ID,true);
-        if(A==null) A=(Ability)CMLib.english().fetchEnvironmental(abilities,ID,false);
+        if(A==null) A=(Ability)CMLib.english().fetchEnvironmental(abilitees,ID,false);
 		if(A==null) A=(Ability)CMLib.english().fetchEnvironmental(R.racialAbilities(this),ID,false);
         if((A==null)&&(C!=null)) A=(Ability)CMLib.english().fetchEnvironmental(C.clanAbilities(this),ID,false);
 		if(A==null) A=fetchAbility(ID);
@@ -3156,20 +3151,28 @@ public class StdMOB implements MOB
 
 	public int numAllEffects()
 	{
-		return affects.size();//+charStats().getMyRace().racialEffects(this).size();
+		final Clan C=getMyClan();
+		return affects.size()
+			  +charStats().getMyRace().racialEffects(this).size()
+			  +((C==null)?0:C.clanEffects(this).size());
 	}
 
 	public int numEffects()
 	{
 		return affects.size();
 	}
+	
 	public Ability fetchEffect(int index)
 	{
 		try
 		{
-			//if(index<affects.size())
+			if(index<affects.size())
 				return (Ability)affects.elementAt(index);
-			//return (Ability)charStats().getMyRace().racialEffects(this).elementAt(index-affects.size());
+			final List<Ability> racialEffects=charStats().getMyRace().racialEffects(this);
+			if(index<abilitees.size() + racialEffects.size())
+				return (Ability)charStats().getMyRace().racialEffects(this).get(index-affects.size());
+			final Clan C=getMyClan();
+			return (C==null)?null:C.clanAbilities(this).get(index-affects.size()-racialEffects.size());
 		}
 		catch(java.lang.ArrayIndexOutOfBoundsException x){}
 		return null;
@@ -3177,16 +3180,31 @@ public class StdMOB implements MOB
 	public Ability fetchEffect(String ID)
 	{
         Ability A=null;
-        int num=numAllEffects();
-		for(int a=0;a<num;a++)
+		for(final Enumeration<Ability> a = effects();a.hasMoreElements();)
 		{
-			A=fetchEffect(a);
+			A=a.nextElement();
 			if((A!=null)&&(A.ID().equals(ID)))
 				return A;
 		}
 		return null;
 	}
-
+	
+	public Enumeration<Ability> personalEffects()
+	{
+		return affects.elements();
+	}
+	
+	public Enumeration<Ability> effects()
+	{
+		final Clan C=getMyClan();
+		final MultiEnumeration multi =
+			new MultiEnumeration(
+					new Enumeration[] {affects.elements(),new IteratorEnumeration(charStats().getMyRace().racialEffects(this).iterator())});
+		if(C!=null)
+			multi.addEnumeration(new IteratorEnumeration(C.clanEffects(this).iterator()));
+		return multi;
+	}
+	
 	/** Manipulation of Behavior objects, which includes
 	 * movement, speech, spellcasting, etc, etc.*/
 	public void addBehavior(Behavior to)
@@ -3225,14 +3243,14 @@ public class StdMOB implements MOB
 	private void clearExpertiseCache()
 	{
 		Ability A=null;
-        for(Enumeration<Ability> a=enumAbilities();a.hasMoreElements();)
+        for(Enumeration<Ability> a=abilities();a.hasMoreElements();)
         {
             A=a.nextElement();
 			if(A!=null) A.clearExpertiseCache();
 		}
-		for(int a=0;a<numEffects();a++)
+		for(final Enumeration<Ability> a = personalEffects();a.hasMoreElements();)
 		{
-			A=fetchEffect(a);
+			A=a.nextElement();
 			if(A!=null) A.clearExpertiseCache();
 		}
 	}
@@ -3632,7 +3650,7 @@ public class StdMOB implements MOB
 		else
 		if(env instanceof Ability)
 		{
-			if(abilities.contains(env)) 
+			if(abilitees.contains(env)) 
 				return true;
 			if(affects.contains(env)) 
 				return true;

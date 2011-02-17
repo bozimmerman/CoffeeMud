@@ -151,9 +151,9 @@ public class StdRideable extends StdMOB implements Rideable
 	{
 		super.affectCharStats(affected,affectableStats);
 		if(amRiding(affected))
-			for(int a=0;a<numEffects();a++)
+			for(final Enumeration<Ability> a=effects();a.hasMoreElements();)
 			{
-				Ability A=fetchEffect(a);
+				final Ability A=a.nextElement();
 				if((A!=null)&&(A.bubbleAffect()))
 				   A.affectCharStats(affected,affectableStats);
 			}
@@ -162,9 +162,9 @@ public class StdRideable extends StdMOB implements Rideable
 	{
 		super.affectCharState(affected,affectableStats);
 		if(amRiding(affected))
-			for(int a=0;a<numEffects();a++)
+			for(final Enumeration<Ability> a=effects();a.hasMoreElements();)
 			{
-				Ability A=fetchEffect(a);
+				final Ability A=a.nextElement();
 				if((A!=null)&&(A.bubbleAffect()))
 				   A.affectCharState(affected,affectableStats);
 			}
@@ -184,9 +184,9 @@ public class StdRideable extends StdMOB implements Rideable
 					affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()-mob.basePhyStats().attackAdjustment());
 					affectableStats.setDamage(affectableStats.damage()-mob.basePhyStats().damage());
 				}
-				for(int a=0;a<numEffects();a++)
+				for(final Enumeration<Ability> a=effects();a.hasMoreElements();)
 				{
-					Ability A=fetchEffect(a);
+					final Ability A=a.nextElement();
 					if((A!=null)&&(A.bubbleAffect()))
 					   A.affectPhyStats(affected,affectableStats);
 				}
