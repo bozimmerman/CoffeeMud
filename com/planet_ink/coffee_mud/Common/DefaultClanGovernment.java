@@ -67,9 +67,20 @@ public String 	xpCalculationFormulaStr;
 	public Clan.AutoPromoteFlag 	autoPromoteBy;
 
 	// derived variable
-	public static final String DEFAULT_XP_FORMULA = "(500 * @x1) + (1000 * @x1 * @x1 * @x1)";
+	public static final List<Ability>		   empty = new ReadOnlyList<Ability>(new Vector<Ability>());
+	public static final String 				   DEFAULT_XP_FORMULA = "(500 * @x1) + (1000 * @x1 * @x1 * @x1)";
 	public LinkedList<CMath.CompiledOperation> xpCalculationFormula = CMath.compileMathExpression(DEFAULT_XP_FORMULA);
 
+	// derived and internal vars
+protected Map<Integer,List<Ability>> 	   			clanAbilityMap=null;
+protected Map<Integer,ReusableObjectPool<Ability>>  clanEffectMap=null;
+	protected String[] 	clanEffectNames			=null;
+	protected int[] 	clanEffectLevels		=null;
+	protected String[] 	clanEffectParms			=null;
+	protected String[] 	clanAbilityNames		=null;
+	protected int[] 	clanAbilityLevels		=null;
+	protected int[] 	clanAbilityProficiencies=null;
+	protected boolean[] clanAbilityQuals		=null;
 	
     /** return a new instance of the object*/
     public CMObject newInstance(){try{return (CMObject)getClass().newInstance();}catch(Exception e){return new DefaultClanGovernment();}}
@@ -223,9 +234,6 @@ public String 	xpCalculationFormulaStr;
 	/** A save help entry of this government type for players */
 	public String	helpStr 		 = null;
 	
-/** list of abilities gained by users, by level */
-public Map<Integer,List<Ability>> abilities = new Hashtable<Integer,List<Ability>>();
-	
 	public ClanPosition getPosition(String pos)
 	{
 		if(pos==null) return null;
@@ -286,13 +294,23 @@ public Map<Integer,List<Ability>> abilities = new Hashtable<Integer,List<Ability
 	private static enum GOVT_STAT_CODES {
 		NAME,AUTOROLE,ACCEPTPOS,SHORTDESC,REQUIREDMASK,ISPUBLIC,ISFAMILYONLY,OVERRIDEMINMEMBERS,
 		CONQUESTENABLED,CONQUESTITEMLOYALTY,CONQUESTDEITYBASIS,MAXVOTEDAYS,VOTEQUORUMPCT,
-		AUTOPROMOTEBY,VOTEFUNCS,LONGDESC
+		AUTOPROMOTEBY,VOTEFUNCS,LONGDESC,
+		NUMRABLE,GETRABLE,GETRABLEPROF,GETRABLEQUAL,GETRABLELVL,
+		NUMREFF,GETREFF,GETREFFPARM,GETREFFLVL,
 	}
 	public String[] getStatCodes() { return CMParms.toStringArray(GOVT_STAT_CODES.values());}
 	public int getSaveStatIndex() { return GOVT_STAT_CODES.values().length;}
 	private GOVT_STAT_CODES getStatIndex(String code) { return (GOVT_STAT_CODES)CMath.s_valueOf(GOVT_STAT_CODES.values(),code); }
 	public String getStat(String code) 
 	{
+		int num=0;
+        int numDex=code.length();
+        while((numDex>0)&&(Character.isDigit(code.charAt(numDex-1)))) numDex--;
+        if(numDex<code.length())
+        {
+            num=CMath.s_int(code.substring(numDex));
+            code=code.substring(0,numDex);
+        }
 		final GOVT_STAT_CODES stat = getStatIndex(code);
 		if(stat==null){ return "";}
 		switch(stat)
@@ -326,6 +344,15 @@ public Map<Integer,List<Ability>> abilities = new Hashtable<Integer,List<Ability
 			}
 			return str.toString();
 		}
+		case NUMRABLE: return (clanAbilityNames==null)?"0":(""+clanAbilityNames.length);
+		case GETRABLE: return (clanAbilityNames==null)?"":(""+clanAbilityNames[num]);
+		case GETRABLEPROF: return (clanAbilityProficiencies==null)?"0":(""+clanAbilityProficiencies[num]);
+		case GETRABLEQUAL: return (clanAbilityQuals==null)?"false":(""+clanAbilityQuals[num]);
+		case GETRABLELVL: return (clanAbilityLevels==null)?"0":(""+clanAbilityLevels[num]);
+		case NUMREFF: return (clanEffectNames==null)?"0":(""+clanEffectNames.length);
+		case GETREFF: return (clanEffectNames==null)?"":(""+clanEffectNames[num]);
+		case GETREFFPARM: return (clanEffectParms==null)?"0":(""+clanEffectParms[num]);
+		case GETREFFLVL: return (clanEffectLevels==null)?"0":(""+clanEffectLevels[num]);
 		default: Log.errOut("Clan","getStat:Unhandled:"+stat.toString()); break;
 		}
 		return "";
@@ -333,6 +360,14 @@ public Map<Integer,List<Ability>> abilities = new Hashtable<Integer,List<Ability
 	public boolean isStat(String code) { return getStatIndex(code)!=null;}
 	public void setStat(String code, String val) 
 	{
+		int num=0;
+        int numDex=code.length();
+        while((numDex>0)&&(Character.isDigit(code.charAt(numDex-1)))) numDex--;
+        if(numDex<code.length())
+        {
+            num=CMath.s_int(code.substring(numDex));
+            code=code.substring(0,numDex);
+        }
 		final GOVT_STAT_CODES stat = getStatIndex(code);
 		if(stat==null){ return;}
 		switch(stat)
@@ -375,6 +410,69 @@ public Map<Integer,List<Ability>> abilities = new Hashtable<Integer,List<Ability
 			}
 			break;
 		}
+		case NUMRABLE: 
+				 clanAbilityMap=null;
+				 if(CMath.s_int(val)==0){
+					 clanAbilityNames=null;
+					 clanAbilityProficiencies=null;
+					 clanAbilityQuals=null;
+					 clanAbilityLevels=null;
+				 }
+				 else{
+					 clanAbilityNames=new String[CMath.s_int(val)];
+					 clanAbilityProficiencies=new int[CMath.s_int(val)];
+					 clanAbilityQuals=new boolean[CMath.s_int(val)];
+					 clanAbilityLevels=new int[CMath.s_int(val)];
+				 }
+				 break;
+		case GETRABLE: 
+				 {   if(clanAbilityNames==null) clanAbilityNames=new String[num+1];
+				     clanAbilityNames[num]=val;
+					 break;
+				 }
+		case GETRABLEPROF: 
+				 {   if(clanAbilityProficiencies==null) clanAbilityProficiencies=new int[num+1];
+				     clanAbilityProficiencies[num]=CMath.s_parseIntExpression(val);
+					 break;
+				 }
+		case GETRABLEQUAL: 
+				 {   if(clanAbilityQuals==null) clanAbilityQuals=new boolean[num+1];
+				     clanAbilityQuals[num]=CMath.s_bool(val);
+					 break;
+				 }
+		case GETRABLELVL: 
+				 {   if(clanAbilityLevels==null) clanAbilityLevels=new int[num+1];
+				     clanAbilityLevels[num]=CMath.s_parseIntExpression(val);
+					 break;
+				 }
+		case NUMREFF: 
+				 clanEffectMap=null;
+				 if(CMath.s_int(val)==0){
+					 clanEffectNames=null;
+					 clanEffectParms=null;
+					 clanEffectLevels=null;
+				 }
+				 else{
+					 clanEffectNames=new String[CMath.s_int(val)];
+					 clanEffectParms=new String[CMath.s_int(val)];
+					 clanEffectLevels=new int[CMath.s_int(val)];
+				 }
+				 break;
+		case GETREFF: 
+		 		 {   if(clanEffectNames==null) clanEffectNames=new String[num+1];
+				     clanEffectNames[num]=val;
+					 break;
+				 }
+		case GETREFFPARM: 
+				 {   if(clanEffectParms==null) clanEffectParms=new String[num+1];
+				     clanEffectParms[num]=val;
+					 break;
+				 }
+		case GETREFFLVL: 
+		 		 {   if(clanEffectLevels==null) clanEffectLevels=new int[num+1];
+				     clanEffectLevels[num]=CMath.s_int(val);
+					 break;
+				 }
 		default: Log.errOut("Clan","setStat:Unhandled:"+stat.toString()); break;
 		}
 	}
@@ -492,30 +590,91 @@ public Map<Integer,List<Ability>> abilities = new Hashtable<Integer,List<Ability
     	return helpStr;
 	}
 
-	public List<Ability> getClanLevelEffects(Integer level)
-	{
-		final List<Ability> finalV=new Vector<Ability>();
-		return finalV;
-	}
-	
 	public List<Ability> getClanLevelAbilities(Integer level)
 	{
-		if(abilities.containsKey(level))
-			return abilities.get(level);
-		final List<AbilityMapper.AbilityMapping> V=CMLib.ableMapper().getUpToLevelListings("CLANGOVT_"+getID(),level.intValue(),true,true);
-		final List<Ability> finalV=new Vector<Ability>();
+		if((clanAbilityMap==null)
+		&&(clanAbilityNames!=null)
+		&&(clanAbilityLevels!=null)
+		&&(clanAbilityProficiencies!=null)
+		&&(clanAbilityQuals!=null))
+		{
+			CMLib.ableMapper().delCharMappings(ID()); // necessary for a "clean start"
+			clanAbilityMap=new Hashtable<Integer,List<Ability>>();
+			for(int i=0;i<clanAbilityNames.length;i++)
+			{
+				CMLib.ableMapper().addRaceAbilityMapping(ID(),
+											 clanAbilityLevels[i],
+											 clanAbilityNames[i],
+											 clanAbilityProficiencies[i],
+											 "",
+											 !clanAbilityQuals[i],
+											 false);
+			}
+		}
+		if(clanAbilityMap==null) return empty;
+		if(clanAbilityMap.containsKey(level))
+			return clanAbilityMap.get(level);
+		List<AbilityMapper.AbilityMapping> V=CMLib.ableMapper().getUpToLevelListings(ID(),level.intValue(),true,true);
+		List<Ability> finalV=new Vector<Ability>();
 		for(AbilityMapper.AbilityMapping able : V)
 		{
 			Ability A=CMClass.getAbility(able.abilityID);
 			if(A!=null)
 			{
-				A.setProficiency(CMLib.ableMapper().getDefaultProficiency("CLANGOVT_"+getID(),false,A.ID()));
+				A.setProficiency(CMLib.ableMapper().getDefaultProficiency(ID(),false,A.ID()));
 				A.setSavable(false);
-				A.setMiscText(CMLib.ableMapper().getDefaultParm("CLANGOVT_"+getID(),false,A.ID()));
+				A.setMiscText(CMLib.ableMapper().getDefaultParm(ID(),false,A.ID()));
 				finalV.add(A);
 			}
 		}
-		abilities.put(level,finalV);
+		clanAbilityMap.put(level,finalV);
+		return finalV;
+	}
+	
+	public List<Ability> getClanLevelEffects(MOB mob, Integer level)
+	{
+		if(clanEffectNames==null)
+			return empty;
+
+		if((clanEffectMap==null)
+		&&(clanEffectNames!=null)
+		&&(clanEffectLevels!=null)
+		&&(clanEffectParms!=null))
+			clanEffectMap=new Hashtable<Integer,ReusableObjectPool<Ability>>();
+
+		if(clanEffectMap==null) return empty;
+
+		final List<Ability> finalV;
+		if(clanEffectMap.containsKey(level))
+		{
+			finalV = clanEffectMap.get(level).get(); 
+			for(Ability A : finalV)
+			{
+				A.makeNonUninvokable();
+				A.setSavable(false); // must come AFTER the above
+				A.setAffectedOne(mob);
+			}
+			return finalV;
+		}
+		finalV = new Vector<Ability>();
+		for(int v=0;v<clanEffectLevels.length;v++)
+		{
+			if((clanEffectLevels[v]<=level.intValue())
+			&&(clanEffectNames.length>v)
+			&&(clanEffectParms.length>v))
+			{
+				Ability A=CMClass.getAbility(clanEffectNames[v]);
+				if(A!=null)
+				{
+					A.setProficiency(CMLib.ableMapper().getMaxProficiency(mob, true, A.ID()));
+					A.setMiscText(clanEffectParms[v]);
+					A.makeNonUninvokable();
+					A.setSavable(false); // must go AFTER the ablve
+					finalV.add(A);
+				}
+			}
+		}
+		clanEffectMap.put(level,new ReusableObjectPool<Ability>(finalV,100));
 		return finalV;
 	}
 }

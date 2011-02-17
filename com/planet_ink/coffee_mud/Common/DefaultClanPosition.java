@@ -53,7 +53,7 @@ public class DefaultClanPosition implements ClanPosition
 	protected boolean 	isPublic;
 	/** a chart of whether this position can perform the indexed function in this government */
 	protected Clan.Authority[] functionChart;
-
+	
     /** return a new instance of the object*/
     public CMObject newInstance(){try{return (CMObject)getClass().newInstance();}catch(Exception e){return new DefaultClanPosition();}}
     public void initializeClass(){}

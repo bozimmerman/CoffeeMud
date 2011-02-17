@@ -1007,8 +1007,6 @@ public class StdRace implements Race
 		return GR;
 	}
 
-
-
     public DVector culturalAbilities()
     {
         DVector ables=new DVector(2);
@@ -1018,6 +1016,7 @@ public class StdRace implements Race
                 ables.addElement(culturalAbilityNames()[i],Integer.valueOf(culturalAbilityProficiencies()[i]));
         return ables;
     }
+    
 	public List<Ability> racialAbilities(MOB mob)
 	{
 		if((racialAbilityMap==null)

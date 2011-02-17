@@ -365,8 +365,9 @@ public interface ClanGovernment extends Modifiable, CMCommon
 	/**
 	 * Return the list of effects owned by someone
 	 * who is part of a clan of the given level.
+	 * @param mob the mob affected
 	 * @param level clan level
 	 * @return list of abilities
 	 */
-	public List<Ability> getClanLevelEffects(Integer level);
+	public List<Ability> getClanLevelEffects(MOB mob, Integer level);
 }

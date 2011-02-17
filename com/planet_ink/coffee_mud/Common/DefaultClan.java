@@ -1429,7 +1429,7 @@ public class DefaultClan implements Clan
 	
 	public List<Ability> clanEffects(MOB mob)
 	{
-		return govt().getClanLevelEffects(Integer.valueOf(getClanLevel()));
+		return govt().getClanLevelEffects(mob,Integer.valueOf(getClanLevel()));
 	}
 	
     public int applyExpMods(int exp)
