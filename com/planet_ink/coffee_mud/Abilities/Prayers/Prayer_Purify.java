@@ -89,7 +89,7 @@ public class Prayer_Purify extends Prayer
 					target.basePhyStats().setAbility(0);
 					target.recoverPhyStats();
 				}
-				while(target.numEffects()>0)
+				while(target.numEffects()>0) // personal affects
 				{
 					doneSomething=true;
 					Ability A=target.fetchEffect(0);

@@ -48,9 +48,9 @@ public class Spell_DispelMagic extends Spell
             Ability A=null;
             if(target==mob)
             {
-                for(int e=0;e<mob.numEffects();e++)
-                {
-                    A=mob.fetchEffect(e);
+    			for(final Enumeration<Ability> a=mob.effects();a.hasMoreElements();)
+    			{
+    				A=a.nextElement();
                     if((A!=null)
                     &&(A.canBeUninvoked())
                     &&(A.abstractQuality()==Ability.QUALITY_MALICIOUS)
@@ -62,9 +62,9 @@ public class Spell_DispelMagic extends Spell
             else
             if(target instanceof MOB)
             {
-                for(int e=0;e<((MOB)target).numEffects();e++)
-                {
-                    A=((MOB)target).fetchEffect(e);
+    			for(final Enumeration<Ability> a=((MOB)target).personalEffects();a.hasMoreElements();)
+    			{
+    				A=a.nextElement();
                     if((A!=null)
                     &&((A.abstractQuality()==Ability.QUALITY_BENEFICIAL_OTHERS)
                         ||(A.abstractQuality()==Ability.QUALITY_BENEFICIAL_SELF))

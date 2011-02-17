@@ -63,7 +63,7 @@ public class Prop_SparringRoom extends Property
 			}
 			target.makePeace();
 			target.setRiding(null);
-			for(int a=target.numEffects()-1;a>=0;a--)
+			for(int a=target.numEffects()-1;a>=0;a--) // personal effects
 			{
 				Ability A=target.fetchEffect(a);
 				if(A!=null) A.unInvoke();

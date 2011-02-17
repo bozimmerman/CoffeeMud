@@ -188,10 +188,9 @@ public class StdLanguage extends StdAbility implements Language
     protected Language getMyTranslator(String id, Physical P, Language winner) 
     {
         if(P==null) return winner;
-        Ability A=null;
-        for(int a=0;a<P.numEffects();a++) 
-        {
-            A=P.fetchEffect(a);
+		for(final Enumeration<Ability> a=P.effects();a.hasMoreElements();)
+		{
+			final Ability A=a.nextElement();
             if((A instanceof Language) 
             && ((Language)A).translatesLanguage(id)
             && ((winner==null)
@@ -246,16 +245,15 @@ public class StdLanguage extends StdAbility implements Language
 
     protected boolean tryLinguisticWriting(CMMsg msg)
     {
-        Ability L=null;
         if(msg.target() instanceof Physical)
         {
         	Physical P = (Physical)msg.target();
-	        for(int i=P.numEffects()-1;i>=0;i--)
-	        {
-	            L=P.fetchEffect(i);
-	            if((L instanceof Language)&&(!L.ID().equals(ID())))
+    		for(final Enumeration<Ability> a=P.effects();a.hasMoreElements();)
+    		{
+    			final Ability A=a.nextElement();
+	            if((A instanceof Language)&&(!A.ID().equals(ID())))
 	            {
-	                msg.source().tell(msg.target().name()+" is already written in "+L.name()+" and can not have "+writtenName()+" writing added.");
+	                msg.source().tell(msg.target().name()+" is already written in "+A.name()+" and can not have "+writtenName()+" writing added.");
 	                return false;
 	            }
 	        }
@@ -407,9 +405,9 @@ public class StdLanguage extends StdAbility implements Language
 	{
 		if(!auto)
 		{
-			for(int a=0;a<mob.numAllEffects();a++)
-			{
-				Ability A=mob.fetchEffect(a);
+    		for(final Enumeration<Ability> a=mob.effects();a.hasMoreElements();)
+    		{
+    			final Ability A=a.nextElement();
 				if((A!=null)&&(A instanceof Language))
 				{
 					if(mob.isMonster())
@@ -501,7 +499,7 @@ public class StdLanguage extends StdAbility implements Language
         {
         	Item I = (Item)msg.target();
             Ability L=null;
-            for(int i=I.numEffects()-1;i>=0;i--)
+            for(int i=I.numEffects()-1;i>=0;i--) // reverse enumeration
             {
                 L=I.fetchEffect(i);
                 if(L instanceof Language)

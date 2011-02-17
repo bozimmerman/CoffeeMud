@@ -125,9 +125,9 @@ public class Chant_ManicMoon extends Chant
             {
                 if(!R.getArea().getClimateObj().canSeeTheMoon(R,null))
                     return Ability.QUALITY_INDIFFERENT;
-                for(int a=0;a<R.numEffects();a++)
-                {
-                    Ability A=R.fetchEffect(a);
+    			for(final Enumeration<Ability> a=R.effects();a.hasMoreElements();)
+    			{
+    				final Ability A=a.nextElement();
                     if((A!=null)
                     &&((A.classificationCode()&Ability.ALL_DOMAINS)==Ability.DOMAIN_MOONALTERING))
                         return Ability.QUALITY_INDIFFERENT;
@@ -152,9 +152,9 @@ public class Chant_ManicMoon extends Chant
 			mob.tell("This place is already under the manic moon.");
 			return false;
 		}
-		for(int a=0;a<target.numEffects();a++)
+		for(final Enumeration<Ability> a=target.effects();a.hasMoreElements();)
 		{
-			Ability A=target.fetchEffect(a);
+			final Ability A=a.nextElement();
 			if((A!=null)
 			&&((A.classificationCode()&Ability.ALL_DOMAINS)==Ability.DOMAIN_MOONALTERING))
 			{

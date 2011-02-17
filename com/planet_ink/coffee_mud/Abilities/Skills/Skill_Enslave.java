@@ -184,7 +184,7 @@ public class Skill_Enslave extends StdSkill
 			MOB mob=(MOB)ticking;
 			if((speedDown>-500)&&((--speedDown)>=0))
 			{
-			    for(int a=mob.numEffects()-1;a>=0;a--)
+			    for(int a=mob.numEffects()-1;a>=0;a--) // personal
 			    {
 			        Ability A=mob.fetchEffect(a);
 			        if((A!=null)&&((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_COMMON_SKILL))

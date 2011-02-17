@@ -59,7 +59,7 @@ public class Prayer_DeathsDoor extends Prayer
 				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> <S-IS-ARE> pulled back from death's door!");
 				mob.getStartRoom().bringMobHere(mob,false);
 				unInvoke();
-				for(int a=mob.numEffects()-1;a>=0;a--)
+				for(int a=mob.numEffects()-1;a>=0;a--) // personal effects
 				{
 					Ability A=mob.fetchEffect(a);
 					if(A!=null) A.unInvoke();

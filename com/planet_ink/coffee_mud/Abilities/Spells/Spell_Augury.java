@@ -43,9 +43,9 @@ public class Spell_Augury extends Spell
 
 	public boolean isTrapped(Physical P)
 	{
-		for(int a=0;a<P.numEffects();a++)
+		for(final Enumeration<Ability> a=P.effects();a.hasMoreElements();)
 		{
-			Ability A=P.fetchEffect(a);
+			final Ability A=a.nextElement();
 			if((A!=null)&&(A instanceof Trap))
 				return true;
 		}

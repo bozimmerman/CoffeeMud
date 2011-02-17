@@ -58,7 +58,7 @@ public class Prayer_MassFreedom extends Prayer implements MendingSkill
 		Vector offenders=new Vector();
 
 		CMMsg msg=CMClass.getMsg(newMOB,null,null,CMMsg.MSG_SIT,null);
-		for(int a=0;a<fromMe.numEffects();a++)
+		for(int a=0;a<fromMe.numEffects();a++) // personal
 		{
 			Ability A=fromMe.fetchEffect(a);
 			if(A!=null)

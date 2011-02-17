@@ -67,7 +67,7 @@ public class Spell_Permanency extends Spell
 			{
 				mob.location().send(mob,msg);
                 StdAbility theOne=null;
-				for(int a=target.numEffects()-1;a>=0;a--)
+				for(int a=target.numEffects()-1;a>=0;a--) // personal effects
 				{
 					Ability A=target.fetchEffect(a);
 					if((A.invoker()==mob)

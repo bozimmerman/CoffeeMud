@@ -83,15 +83,16 @@ public class Spell_ConjureNexus extends Spell
 			{
 				Room R=(Room)r.nextElement();
 				if(CMLib.flags().canAccess(mob,R))
-				for(int a=0;a<R.numEffects();a++)
-				{
-					Ability A=R.fetchEffect(a);
-					if((A!=null)&&(A.ID().equals(ID())))
+					for(final Enumeration<Ability> a=R.effects();a.hasMoreElements();)
 					{
-						A.unInvoke();
-						break;
+						final Ability A=a.nextElement();
+						if((A!=null)&&(A.ID().equals(ID())))
+						{
+							A.unInvoke();
+							break;
+						}
+						
 					}
-				}
 			}
 	    }catch(NoSuchElementException nse){}
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))

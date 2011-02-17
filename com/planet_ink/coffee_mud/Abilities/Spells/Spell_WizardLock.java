@@ -194,10 +194,13 @@ public class Spell_WizardLock extends Spell
 					{
 						Room R=mob.location();
 						if(!CMLib.law().doesHavePriviledgesHere(mob,R))
-							for(int a=0;a<R.numEffects();a++)
-								if((R.fetchEffect(a) instanceof LandTitle)
-								   &&(((LandTitle)R.fetchEffect(a)).landOwner().length()>0))
+							for(final Enumeration<Ability> a=R.effects();a.hasMoreElements();)
+							{
+								final Ability A=a.nextElement();
+								if((A instanceof LandTitle)
+								   &&(((LandTitle)A).landOwner().length()>0))
 									lock.setMiscText(lock.text()+" MALICIOUS");
+							}
 					}
 				}
 			}

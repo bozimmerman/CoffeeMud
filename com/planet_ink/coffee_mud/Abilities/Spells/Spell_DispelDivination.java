@@ -46,7 +46,7 @@ public class Spell_DispelDivination extends Spell
 		List<Ability> offenders=new Vector<Ability>();
         boolean admin=CMSecurity.isASysOp(caster);
         Ability A=null;
-        for(int e=0;e<fromMe.numEffects();e++)
+        for(int e=0;e<fromMe.numEffects();e++) // personal
         {
             A=fromMe.fetchEffect(e);
             if((A!=null)

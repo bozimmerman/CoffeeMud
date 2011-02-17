@@ -51,9 +51,9 @@ public class Prayer_NeutralizeLand extends Prayer
             if(R!=null)
             {
                 boolean foundAny=false;
-                for(int e=0;e<R.numEffects();e++)
-                {
-                    Ability A=R.fetchEffect(e);
+    			for(final Enumeration<Ability> a=R.effects();a.hasMoreElements();)
+    			{
+    				final Ability A=a.nextElement();
                     if((A!=null)&&(A.invoker()!=mob))
                         foundAny=true;
                 }
@@ -83,7 +83,7 @@ public class Prayer_NeutralizeLand extends Prayer
 				mob.location().send(mob,msg);
 				Ability revokeThis=null;
 				boolean foundSomethingAtLeast=false;
-				for(int a=0;a<target.numEffects();a++)
+				for(int a=0;a<target.numEffects();a++) // personal affects
 				{
 					Ability A=target.fetchEffect(a);
 					if((A!=null)

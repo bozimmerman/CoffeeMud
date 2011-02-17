@@ -62,7 +62,7 @@ public class Play_Tribal extends Play
 		{
 			MOB mob=R.fetchInhabitant(m);
 			if(mob!=null)
-			for(int i=0;i<mob.numEffects();i++)
+			for(int i=0;i<mob.numEffects();i++) // personal
 			{
 				Ability A=mob.fetchEffect(i);
 				if((A!=null)

@@ -72,9 +72,9 @@ public class Prayer_Contagion extends Prayer implements DiseaseAffect
 		if(mob.location().numInhabitants()==1)
 			return true;
 		Vector choices=new Vector();
-		for(int a=0;a<mob.numEffects();a++)
+		for(final Enumeration<Ability> a=mob.effects();a.hasMoreElements();)
 		{
-			Ability A=mob.fetchEffect(a);
+			final Ability A=a.nextElement();
 			if((A!=null)
 			   &&(A.canBeUninvoked())
 			   &&(!A.ID().equals(ID()))

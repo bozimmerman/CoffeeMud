@@ -57,7 +57,7 @@ public class Prayer_RestoreSmell extends Prayer implements MendingSkill
 		MOB newMOB=CMClass.getMOB("StdMOB");
 		Vector offenders=new Vector();
 
-		for(int a=0;a<fromMe.numEffects();a++)
+		for(int a=0;a<fromMe.numEffects();a++) // personal
 		{
 			Ability A=fromMe.fetchEffect(a);
 			if(A!=null)

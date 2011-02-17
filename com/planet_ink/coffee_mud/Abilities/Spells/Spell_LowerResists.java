@@ -80,7 +80,7 @@ public class Spell_LowerResists extends Spell
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				for(int a=0;a<target.numEffects();a++)
+				for(int a=0;a<target.numEffects();a++) // personal effects
 				{
 					Ability A=target.fetchEffect(a);
 					if((!A.isAutoInvoked())

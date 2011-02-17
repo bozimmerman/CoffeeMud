@@ -141,9 +141,9 @@ public class Druid_PackCall extends StdAbility
 			return false;
 		}
 		Druid_ShapeShift D=null;
-		for(int a=0;a<mob.numAllEffects();a++)
+		for(final Enumeration<Ability> a=mob.effects();a.hasMoreElements();)
 		{
-			Ability A=mob.fetchEffect(a);
+			final Ability A=a.nextElement();
 			if((A!=null)&&(A instanceof Druid_ShapeShift))
 				D=(Druid_ShapeShift)A;
 		}

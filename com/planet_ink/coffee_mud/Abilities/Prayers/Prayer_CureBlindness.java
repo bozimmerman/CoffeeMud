@@ -60,7 +60,7 @@ public class Prayer_CureBlindness extends Prayer implements MendingSkill
 		Vector offenders=new Vector();
 
 		CMMsg msg=CMClass.getMsg(newMOB,newerMOB,null,CMMsg.MSG_LOOK,null);
-		for(int a=0;a<fromMe.numEffects();a++)
+		for(int a=0;a<fromMe.numEffects();a++) // personal
 		{
 			Ability A=fromMe.fetchEffect(a);
 			if(A!=null)

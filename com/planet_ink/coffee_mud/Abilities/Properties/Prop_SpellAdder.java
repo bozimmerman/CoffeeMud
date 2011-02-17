@@ -308,7 +308,7 @@ public class Prop_SpellAdder extends Property
 		int x=0;
 		Vector eff=new Vector();
 		Ability thisAffect=null;
-		for(x=0;x<P.numEffects();x++)
+		for(x=0;x<P.numEffects();x++) // personal
 		{
 			thisAffect=P.fetchEffect(x);
 			if(thisAffect!=null)

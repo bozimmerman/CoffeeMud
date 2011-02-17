@@ -76,17 +76,17 @@ public class Spell_MarkerPortal extends Spell
 			{
 				Room R=(Room)r.nextElement();
 				if(CMLib.flags().canAccess(mob,R))
-				for(int a=0;a<R.numEffects();a++)
-				{
-					Ability A=R.fetchEffect(a);
-					if((A!=null)
-					&&(A.ID().equals("Spell_SummonMarker"))
-					&&(A.invoker()==mob))
+					for(final Enumeration<Ability> a=R.effects();a.hasMoreElements();)
 					{
-						newRoom=R;
-						break;
+						final Ability A=a.nextElement();
+						if((A!=null)
+						&&(A.ID().equals("Spell_SummonMarker"))
+						&&(A.invoker()==mob))
+						{
+							newRoom=R;
+							break;
+						}
 					}
-				}
 				if(newRoom!=null) break;
 			}
 	    }catch(NoSuchElementException nse){}

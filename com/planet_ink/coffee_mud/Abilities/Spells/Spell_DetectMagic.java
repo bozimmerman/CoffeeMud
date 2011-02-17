@@ -68,9 +68,9 @@ public class Spell_DetectMagic extends Spell
 		{
 			String msg2=null;
 			Physical targetP=(Physical)msg.target();
-			for(int a=0;a<targetP.numEffects();a++)
+			for(final Enumeration<Ability> a=targetP.effects();a.hasMoreElements();)
 			{
-				Ability A=targetP.fetchEffect(a);
+				final Ability A=a.nextElement();
 				if((A!=null)
 				&&(!A.isAutoInvoked())
 				&&(A.displayText().length()>0)

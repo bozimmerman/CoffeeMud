@@ -124,7 +124,7 @@ public class Play_Solo extends Play
 					{
 						MOB M=R.fetchInhabitant(i);
 						if(M!=null)
-						for(int a=0;a<M.numEffects();a++)
+						for(int a=0;a<M.numEffects();a++) // personal affects
 						{
 							Ability A=M.fetchEffect(a);
 							if((A!=null)

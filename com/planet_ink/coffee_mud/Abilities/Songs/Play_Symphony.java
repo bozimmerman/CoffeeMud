@@ -716,9 +716,9 @@ public class Play_Symphony extends Play
 		case CODE_SPEEDCOMMONSKILLS:
 			{
 				MOB M=(MOB)affected;
-				for(int a=0;a<M.numAllEffects();a++)
-				{
-					Ability A=M.fetchEffect(a);
+	    		for(final Enumeration<Ability> a=M.effects();a.hasMoreElements();)
+	    		{
+	    			final Ability A=a.nextElement();
 					if((A!=null)
 					&&(A.invoker()==M)
 					&&((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_COMMON_SKILL))

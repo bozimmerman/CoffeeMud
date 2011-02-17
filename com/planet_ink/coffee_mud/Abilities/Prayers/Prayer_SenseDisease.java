@@ -63,19 +63,9 @@ public class Prayer_SenseDisease extends Prayer
 
 	public Ability getDisease(Physical mob)
 	{
-		if(mob instanceof MOB)
+		for(final Enumeration<Ability> a=mob.effects();a.hasMoreElements();)
 		{
-			for(int m=0;m<((MOB)mob).numAllEffects();m++)
-			{
-				Ability A=((MOB)mob).fetchEffect(m);
-				if((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_DISEASE)
-					return A;
-			}
-		}
-		else
-		for(int m=0;m<mob.numEffects();m++)
-		{
-			Ability A=mob.fetchEffect(m);
+			final Ability A=a.nextElement();
 			if((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_DISEASE)
 				return A;
 		}

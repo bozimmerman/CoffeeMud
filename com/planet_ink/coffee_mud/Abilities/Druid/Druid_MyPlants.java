@@ -53,9 +53,9 @@ public class Druid_MyPlants extends StdAbility
 		&&(I.owner()!=null)
 		&&(I.owner() instanceof Room))
 		{
-			for(int a=0;a<I.numEffects();a++)
+			for(final Enumeration<Ability> a=I.effects();a.hasMoreElements();)
 			{
-				Ability A=I.fetchEffect(a);
+				final Ability A=a.nextElement();
 				if((A!=null)
 				&&((A.invoker()==mob)||(A.text().equals(mob.Name())))
 				&&(A instanceof Chant_SummonPlants))

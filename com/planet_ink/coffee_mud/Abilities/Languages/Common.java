@@ -49,9 +49,9 @@ public class Common extends StdLanguage
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		boolean anythingDone=false;
-		for(int a=0;a<mob.numAllEffects();a++)
+		for(final Enumeration<Ability> a=mob.effects();a.hasMoreElements();)
 		{
-			Ability A=mob.fetchEffect(a);
+			final Ability A=a.nextElement();
 			if((A!=null)&&(A instanceof Language))
 				if(((Language)A).beingSpoken(ID()))
 				{

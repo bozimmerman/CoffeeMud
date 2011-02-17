@@ -86,9 +86,12 @@ public class Spell_ManaShield extends Spell
         Physical target=mob;
         if((auto)&&(givenTarget!=null)) target=givenTarget;
         boolean oldOne=false;
-        for(int a=0;a<target.numEffects();a++)
-            if(target.fetchEffect(a) instanceof Spell_ManaShield)
+		for(final Enumeration<Ability> a=target.effects();a.hasMoreElements();)
+		{
+			final Ability A=a.nextElement();
+            if(A instanceof Spell_ManaShield)
                 oldOne=true;
+		}
         if(oldOne)
         {
             mob.tell(mob,target,null,"<T-NAME> <T-IS-ARE> already affected by "+name()+".");

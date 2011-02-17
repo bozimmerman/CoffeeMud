@@ -70,9 +70,9 @@ public class Spell_Disenchant extends Spell
 		}
 
 		Vector affects=new Vector();
-		for(int a=target.numEffects()-1;a>=0;a--)
+		for(final Enumeration<Ability> a=target.effects();a.hasMoreElements();)
 		{
-			Ability A=target.fetchEffect(a);
+			final Ability A=a.nextElement();
 			if(A!=null)
 				affects.addElement(A);
 		}

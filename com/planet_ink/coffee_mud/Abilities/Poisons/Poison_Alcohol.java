@@ -278,9 +278,9 @@ public class Poison_Alcohol extends Poison
 			Vector found=new Vector();
 			Vector remove=new Vector();
 			largest=0;
-			for(int a=0;a<givenTarget.numEffects();a++)
+			for(final Enumeration<Ability> a=givenTarget.effects();a.hasMoreElements();)
 			{
-				Ability A=givenTarget.fetchEffect(a);
+				final Ability A=a.nextElement();
 				if(A instanceof Poison_Alcohol)
 				{
 					largest+=((Poison_Alcohol)A).drunkness;

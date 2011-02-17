@@ -343,15 +343,15 @@ public class Prop_RoomForSale extends Property implements LandTitle
 				}
 	            Ability A=null;
 	            if(clearAllItems)
-	            for(int a=R.numEffects();a>=0;a--)
-	            {
-	                A=R.fetchEffect(a);
-	                if(((A!=null)&&((A.classificationCode()&Ability.ALL_ACODES)!=Ability.ACODE_PROPERTY)))
-	                {
-	                    A.unInvoke();
-	                    R.delEffect(A);
-	                    updateRoom=true;
-	                }
+	        		for(final Enumeration<Ability> a=R.effects();a.hasMoreElements();)
+	        		{
+	        			A=a.nextElement();
+		                if(((A!=null)&&((A.classificationCode()&Ability.ALL_ACODES)!=Ability.ACODE_PROPERTY)))
+		                {
+		                    A.unInvoke();
+		                    R.delEffect(A);
+		                    updateRoom=true;
+		                }
 	            }
 	            for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 	            {

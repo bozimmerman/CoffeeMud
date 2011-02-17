@@ -53,7 +53,7 @@ public class Spell_BaseClanEq extends Spell
 	{
 		if(student!=null)
 		{
-	        for(Enumeration<Ability> a=student.enumAbilities();a.hasMoreElements();)
+	        for(Enumeration<Ability> a=student.abilities();a.hasMoreElements();)
 	        {
 	            Ability A=a.nextElement();
 				if((A!=null)&&(A instanceof Spell_BaseClanEq))

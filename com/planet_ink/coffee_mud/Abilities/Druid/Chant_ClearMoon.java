@@ -46,7 +46,7 @@ public class Chant_ClearMoon extends Chant
 	public void clearMoons(Physical P)
 	{
 		if(P!=null)
-		for(int a=P.numEffects()-1;a>=0;a--)
+		for(int a=P.numEffects()-1;a>=0;a--) // personal and reverse enumeration
 		{
 			Ability A=P.fetchEffect(a);
 			if((A!=null)

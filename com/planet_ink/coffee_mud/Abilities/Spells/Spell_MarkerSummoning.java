@@ -51,19 +51,19 @@ public class Spell_MarkerSummoning extends Spell
 			{
 				Room R=(Room)r.nextElement();
 				if(CMLib.flags().canAccess(mob,R))
-				for(int a=0;a<R.numEffects();a++)
-				{
-					Ability A=R.fetchEffect(a);
-					if((A!=null)
-					&&(A.invoker()==mob))
+					for(final Enumeration<Ability> a=R.effects();a.hasMoreElements();)
 					{
-						if(A.ID().equals("Spell_SummonMarker"))
+						final Ability A=a.nextElement();
+						if((A!=null)
+						&&(A.invoker()==mob))
 						{
-							oldRoom=R;
-							break;
+							if(A.ID().equals("Spell_SummonMarker"))
+							{
+								oldRoom=R;
+								break;
+							}
 						}
 					}
-				}
 				if(oldRoom!=null) break;
 			}
 	    }catch(NoSuchElementException nse){}

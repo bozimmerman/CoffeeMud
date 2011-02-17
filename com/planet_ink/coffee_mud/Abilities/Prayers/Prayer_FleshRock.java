@@ -189,7 +189,7 @@ public class Prayer_FleshRock extends Prayer
 				if(msg.value()<=0)
 				{
 					int a=0;
-					while(a<target.numEffects())
+					while(a<target.numEffects()) // personal effects
 					{
 						Ability A=target.fetchEffect(a);
 						int s=target.numEffects();

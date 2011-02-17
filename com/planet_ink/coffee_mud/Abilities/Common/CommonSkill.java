@@ -371,9 +371,9 @@ public class CommonSkill extends StdAbility
 			commonTell(mob,"You need to stand up!");
 			return false;
 		}
-		for(int a=mob.numEffects()-1;a>=0;a--)
+		for(final Enumeration<Ability> a=mob.personalEffects();a.hasMoreElements();)
 		{
-			Ability A=mob.fetchEffect(a);
+			final Ability A=a.nextElement();
 			if((A!=null)&&((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_COMMON_SKILL))
 			{
 				if(A instanceof CommonSkill)

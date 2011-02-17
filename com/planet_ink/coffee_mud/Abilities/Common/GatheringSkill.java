@@ -139,9 +139,9 @@ public class GatheringSkill extends CommonSkill
 				    &&(((Decayable)I).decayTime()>0)
 				    &&(((Decayable)I).decayTime()<lowestNonZeroFoodNumber))
 				        lowestNonZeroFoodNumber=((Decayable)I).decayTime();
-				    for(int a=0;a<I.numEffects();a++)
-				    {
-				        A=I.fetchEffect(a);
+	    			for(final Enumeration<Ability> a=I.effects();a.hasMoreElements();)
+	    			{
+	    				A=a.nextElement();
 				        if((A!=null)
 				        &&(!A.canBeUninvoked())
 				        &&(!foundAblesH.containsKey(A.ID())))

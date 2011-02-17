@@ -49,9 +49,9 @@ public class Prayer_Nullification extends Prayer
         {
             if(target instanceof MOB)
             {
-                for(int a=0;a<target.numEffects();a++)
-                {
-                    Ability A=target.fetchEffect(a);
+    			for(final Enumeration<Ability> a=target.effects();a.hasMoreElements();)
+    			{
+    				final Ability A=a.nextElement();
                     if((A!=null)&&(A.canBeUninvoked())&&(!A.isAutoInvoked())
                     &&(((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_SPELL)
                        ||((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_PRAYER)
@@ -94,7 +94,7 @@ public class Prayer_Nullification extends Prayer
 					mob.location().send(mob,msg);
 					Ability revokeThis=null;
 					boolean foundSomethingAtLeast=false;
-					for(int a=0;a<target.numEffects();a++)
+					for(int a=0;a<target.numEffects();a++) // personal affects
 					{
 						Ability A=target.fetchEffect(a);
 						if((A!=null)&&(A.canBeUninvoked())&&(!A.isAutoInvoked())

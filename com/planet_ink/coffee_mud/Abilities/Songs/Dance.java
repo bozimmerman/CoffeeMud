@@ -285,9 +285,12 @@ public class Dance extends StdAbility
     {
         if(mob!=null)
         {
-            for(int e=0;e<mob.numAllEffects();e++)
-                if(mob.fetchEffect(e) instanceof Dance)
+    		for(final Enumeration<Ability> a=mob.effects();a.hasMoreElements();)
+    		{
+    			final Ability A=a.nextElement();
+                if(A instanceof Dance)
                     return Ability.QUALITY_INDIFFERENT;
+    		}
         }
         return super.castingQuality(mob,target);
     }

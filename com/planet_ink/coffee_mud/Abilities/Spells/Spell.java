@@ -62,9 +62,9 @@ public class Spell extends StdAbility
 		{
 			MOB tmob=(MOB)target;
 			int num=0;
-			for(int i=0;i<tmob.numEffects();i++)
+			for(final Enumeration<Ability> a=tmob.effects();a.hasMoreElements();)
 			{
-				Ability A=tmob.fetchEffect(i);
+				final Ability A=a.nextElement();
 				if((A!=null)
 				&&(A instanceof Spell)
 				&&(A.abstractQuality()==Ability.QUALITY_MALICIOUS))

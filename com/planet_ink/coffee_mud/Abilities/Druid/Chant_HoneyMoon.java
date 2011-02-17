@@ -97,9 +97,9 @@ public class Chant_HoneyMoon extends Chant
 			mob.tell("This place is already under the honey moon.");
 			return false;
 		}
-		for(int a=0;a<target.numEffects();a++)
+		for(final Enumeration<Ability> a=target.effects();a.hasMoreElements();)
 		{
-			Ability A=target.fetchEffect(a);
+			final Ability A=a.nextElement();
 			if((A!=null)
 			&&((A.classificationCode()&Ability.ALL_DOMAINS)==Ability.DOMAIN_MOONALTERING))
 			{

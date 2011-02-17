@@ -331,17 +331,17 @@ public class Spell_Meld extends Spell
 				}
 				if(melded!=null)
 				{
-					for(int a=0;a<itemOne.numEffects();a++)
+					for(final Enumeration<Ability> a=itemOne.effects();a.hasMoreElements();)
 					{
-						Ability aff=itemOne.fetchEffect(a);
-						if((aff!=null)&&(melded.fetchEffect(aff.ID())==null))
-							melded.addEffect(aff);
+						final Ability A=a.nextElement();
+						if((A!=null)&&(melded.fetchEffect(A.ID())==null))
+							melded.addEffect(A);
 					}
-					for(int a=0;a<itemTwo.numEffects();a++)
+					for(final Enumeration<Ability> a=itemTwo.effects();a.hasMoreElements();)
 					{
-						Ability aff=itemTwo.fetchEffect(a);
-						if((aff!=null)&&(melded.fetchEffect(aff.ID())==null))
-							melded.addEffect(aff);
+						final Ability A=a.nextElement();
+						if((A!=null)&&(melded.fetchEffect(A.ID())==null))
+							melded.addEffect(A);
 					}
 					for(Enumeration<Behavior> e=itemOne.behaviors();e.hasMoreElements();)
 					{

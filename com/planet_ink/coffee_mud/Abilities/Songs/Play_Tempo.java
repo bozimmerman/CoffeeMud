@@ -57,9 +57,9 @@ public class Play_Tempo extends Play
 		if((affected!=null)&&(affected instanceof MOB))
 		{
 			MOB mob=(MOB)affected;
-			for(int i=0;i<mob.numAllEffects();i++)
-			{
-				Ability A=mob.fetchEffect(i);
+    		for(final Enumeration<Ability> a=mob.effects();a.hasMoreElements();)
+    		{
+    			final Ability A=a.nextElement();
 				if((A!=null)
 				&&((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_COMMON_SKILL))
 					A.tick(mob,Tickable.TICKID_MOB);

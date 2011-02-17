@@ -54,7 +54,7 @@ public class Chant_NeutralizePoison extends Chant implements MendingSkill
 	{
 		Vector offenders=new Vector();
 
-		for(int a=0;a<fromMe.numEffects();a++)
+		for(int a=0;a<fromMe.numEffects();a++) // personal
 		{
 			Ability A=fromMe.fetchEffect(a);
 			if((A!=null)&&((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_POISON))

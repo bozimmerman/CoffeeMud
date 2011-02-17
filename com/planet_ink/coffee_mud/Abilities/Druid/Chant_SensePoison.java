@@ -47,22 +47,16 @@ public class Chant_SensePoison extends Chant
 	{
 		Vector offenders=new Vector();
 
-		for(int a=0;a<fromMe.numEffects();a++)
+		for(final Enumeration<Ability> a=fromMe.effects();a.hasMoreElements();)
 		{
-			Ability A=fromMe.fetchEffect(a);
+			final Ability A=a.nextElement();
 			if((A!=null)&&((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_POISON))
 				offenders.addElement(A);
 		}
 		if(fromMe instanceof MOB)
 		{
 			MOB mob=(MOB)fromMe;
-			for(int a=0;a<mob.numAllEffects();a++)
-			{
-				Ability A=mob.fetchEffect(a);
-				if((A!=null)&&((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_POISON)&&(!offenders.contains(A)))
-					offenders.addElement(A);
-			}
-	        for(Enumeration<Ability> a=mob.enumAbilities();a.hasMoreElements();)
+	        for(Enumeration<Ability> a=mob.abilities();a.hasMoreElements();)
 	        {
 	            Ability A=a.nextElement();
 				if((A!=null)&&((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_POISON))

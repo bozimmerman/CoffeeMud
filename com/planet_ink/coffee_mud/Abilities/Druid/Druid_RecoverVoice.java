@@ -52,7 +52,7 @@ public class Druid_RecoverVoice extends StdAbility
 		MOB newMOB=CMClass.getMOB("StdMOB");
 		Vector offenders=new Vector();
 
-		for(int a=0;a<fromMe.numEffects();a++)
+		for(int a=0;a<fromMe.numEffects();a++) // personal
 		{
 			Ability A=fromMe.fetchEffect(a);
 			if(A!=null)

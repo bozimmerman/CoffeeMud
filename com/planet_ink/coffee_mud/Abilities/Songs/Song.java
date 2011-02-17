@@ -97,9 +97,12 @@ public class Song extends StdAbility
     {
         if(mob!=null)
         {
-            for(int e=0;e<mob.numAllEffects();e++)
-                if(mob.fetchEffect(e) instanceof Song)
+    		for(final Enumeration<Ability> a=mob.effects();a.hasMoreElements();)
+    		{
+    			final Ability A=a.nextElement();
+                if(A instanceof Song)
                     return Ability.QUALITY_INDIFFERENT;
+    		}
         }
         return super.castingQuality(mob,target);
     }

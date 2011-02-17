@@ -106,9 +106,9 @@ public class Thief_Listen extends ThiefSkill
 		}
 
 		if(room!=null)
-		for(int a=room.numEffects()-1;a>=0;a--)
+		for(final Enumeration<Ability> a=room.effects();a.hasMoreElements();)
 		{
-			Ability A=room.fetchEffect(a);
+			final Ability A=a.nextElement();
 			if((A.ID().equals(ID()))&&(invoker()==mob))
 				A.unInvoke();
 		}

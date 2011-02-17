@@ -180,9 +180,9 @@ public class Druid_ShapeShift extends StdAbility
 	public static boolean isShapeShifted(MOB mob)
 	{
 		if(mob==null) return false;
-		for(int a=0;a<mob.numAllEffects();a++)
+		for(final Enumeration<Ability> a=mob.effects();a.hasMoreElements();)
 		{
-			Ability A=mob.fetchEffect(a);
+			final Ability A=a.nextElement();
 			if((A!=null)&&(A instanceof Druid_ShapeShift))
 				return true;
 		}
@@ -211,9 +211,9 @@ public class Druid_ShapeShift extends StdAbility
 
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		for(int a=mob.numEffects()-1;a>=0;a--)
+		for(final Enumeration<Ability> a=mob.personalEffects();a.hasMoreElements();)
 		{
-			Ability A=mob.fetchEffect(a);
+			final Ability A=a.nextElement();
 			if((A!=null)&&(A instanceof Druid_ShapeShift))
 			{
 				A.unInvoke();

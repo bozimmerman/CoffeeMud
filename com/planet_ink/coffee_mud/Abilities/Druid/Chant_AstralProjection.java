@@ -146,9 +146,9 @@ public class Chant_AstralProjection extends Chant
 			target.makePeace();
 			peaceAt(target);
 			MOB spirit=(MOB)target.copyOf();
-			for(int a=0;a<spirit.numEffects();a++)
+			for(final Enumeration<Ability> a=spirit.effects();a.hasMoreElements();)
 			{
-				Ability A=spirit.fetchEffect(a);
+				final Ability A=a.nextElement();
 				if(A.canBeUninvoked()) spirit.delEffect(A);
 			}
 			while(spirit.numItems()>0)

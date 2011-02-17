@@ -48,9 +48,9 @@ public class Thief_UsePoison extends ThiefSkill
 	{
 		Vector offenders=new Vector();
 
-		for(int a=0;a<fromMe.numEffects();a++)
+		for(final Enumeration<Ability> a=fromMe.effects();a.hasMoreElements();)
 		{
-			Ability A=fromMe.fetchEffect(a);
+			final Ability A=a.nextElement();
 			if((A!=null)&&((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_POISON))
 				offenders.addElement(A);
 		}

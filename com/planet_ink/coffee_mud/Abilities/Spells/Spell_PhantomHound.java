@@ -58,7 +58,7 @@ public class Spell_PhantomHound extends Spell
 			{
 				MOB beast=(MOB)affected;
 				int a=0;
-				while(a<beast.numEffects())
+				while(a<beast.numEffects()) // personal
 				{
 					Ability A=beast.fetchEffect(a);
 					if(A!=null)

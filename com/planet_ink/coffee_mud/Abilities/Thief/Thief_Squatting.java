@@ -125,9 +125,12 @@ public class Thief_Squatting extends ThiefSkill
 		}
 		LandTitle T=CMLib.law().getLandTitle(mob.location());
 		boolean confirmed=false;
-		for(int r=0;r<mob.location().numEffects();r++)
-			if(mob.location().fetchEffect(r)==T)
+		for(final Enumeration<Ability> a=mob.location().effects();a.hasMoreElements();)
+		{
+			final Ability A=a.nextElement();
+			if(A==T)
 				confirmed=true;
+		}
 		if(T==null)
 		{
 			mob.tell("This property is not available for sale, and cannot be squatted upon.");

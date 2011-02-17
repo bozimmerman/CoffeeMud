@@ -66,7 +66,7 @@ public class Prayer_Disenchant extends Prayer
 				beneficialAffect(mob,target,asLevel,0);
 				target.basePhyStats().setAbility(0);
 				Vector affects=new Vector();
-				for(int a=target.numEffects()-1;a>=0;a--)
+				for(int a=target.numEffects()-1;a>=0;a--) // personal affects
 				{
 					Ability A=target.fetchEffect(a);
 					if(A!=null)

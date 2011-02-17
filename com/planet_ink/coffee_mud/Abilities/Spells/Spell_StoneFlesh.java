@@ -48,7 +48,7 @@ public class Spell_StoneFlesh extends Spell
 		if(target==null) return false;
 
 		Ability revokeThis=null;
-		for(int a=0;a<target.numEffects();a++)
+		for(int a=0;a<target.numEffects();a++) // personal effects
 		{
 			Ability A=target.fetchEffect(a);
 			if((A!=null)&&(A.canBeUninvoked())

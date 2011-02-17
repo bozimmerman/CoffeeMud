@@ -67,9 +67,9 @@ public class Ranger_Enemy1 extends StdAbility
 				   &&(((Ranger_Enemy1)A).miscText.length()>0))
 					choices.remove(((Ranger_Enemy1)A).miscText);
 			}
-			for(int a=0;a<mob.numAllEffects();a++)
-			{
-				Ability A=mob.fetchEffect(a);
+    		for(final Enumeration<Ability> a=mob.effects();a.hasMoreElements();)
+    		{
+    			final Ability A=a.nextElement();
 				if((A instanceof Ranger_Enemy1)
 				   &&(((Ranger_Enemy1)A).miscText.length()>0))
 					choices.remove(((Ranger_Enemy1)A).miscText);
@@ -84,7 +84,7 @@ public class Ranger_Enemy1 extends StdAbility
 				if((A!=null)&&(A.ID().equals(ID())))
 					((Ranger_Enemy1)A).miscText=miscText;
 			}
-			for(int a=0;a<mob.numEffects();a++)
+			for(int a=0;a<mob.numEffects();a++) // personal
 			{
 				Ability A=mob.fetchEffect(a);
 				if((A!=null)&&(A.ID().equals(ID())))

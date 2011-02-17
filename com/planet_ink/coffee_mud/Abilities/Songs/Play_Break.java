@@ -50,7 +50,7 @@ public class Play_Break extends Play
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		boolean foundOne=false;
-		for(int a=0;a<mob.numEffects();a++)
+		for(int a=0;a<mob.numEffects();a++) // personal affects
 		{
 			Ability A=mob.fetchEffect(a);
 			if((A!=null)&&(A instanceof Play))
