@@ -52,7 +52,7 @@ public class StdRace implements Race
 	protected List<Weapon> 	naturalWeaponChoices=null;
 	protected Map<Integer,List<Ability>> 
 							racialAbilityMap=null;
-	protected Map<Integer,List<Ability>> 
+	protected Map<Integer,ReusableObjectPool>
 							racialEffectMap=null;
 	
 	public String 		name(){ return "StdRace"; }
@@ -563,9 +563,19 @@ public class StdRace implements Race
 		else
 			level=Integer.valueOf(Integer.MAX_VALUE);
 
+		final List<Ability> finalV;
 		if(racialEffectMap.containsKey(level))
-			return racialEffectMap.get(level);
-		List<Ability> finalV=new Vector();
+		{
+			finalV = racialEffectMap.get(level).get(); 
+			for(Ability A : finalV)
+			{
+				A.makeNonUninvokable();
+				A.setSavable(false); // must come AFTER the above
+				A.setAffectedOne(mob);
+			}
+			return finalV;
+		}
+		finalV = new Vector<Ability>();
 		for(int v=0;v<racialEffectLevels().length;v++)
 		{
 			if((racialEffectLevels()[v]<=level.intValue())
@@ -576,14 +586,14 @@ public class StdRace implements Race
 				if(A!=null)
 				{
 					A.setProficiency(CMLib.ableMapper().getMaxProficiency(mob,true,A.ID()));
-					A.setSavable(false);
 					A.setMiscText(racialEffectParms()[v]);
 					A.makeNonUninvokable();
+					A.setSavable(false); // must go AFTER the ablve
 					finalV.add(A);
 				}
 			}
 		}
-		racialEffectMap.put(level,finalV);
+		racialEffectMap.put(level,new ReusableObjectPool<Ability>(finalV,100));
 		return finalV;
 	}
 

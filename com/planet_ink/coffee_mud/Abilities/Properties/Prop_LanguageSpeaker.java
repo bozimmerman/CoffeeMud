@@ -123,8 +123,8 @@ public class Prop_LanguageSpeaker extends Property
 				default: // item
 					break;
 				}
-				lang.setSavable(false);
 				mob.addNonUninvokableEffect(lang);
+				lang.setSavable(false);
 				lang.invoke(mob,mob,false,0);
 			}
 		}

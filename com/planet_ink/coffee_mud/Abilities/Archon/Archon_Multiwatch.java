@@ -211,8 +211,8 @@ public class Archon_Multiwatch extends ArchonSkill
 						if(MN.fetchEffect(ID())==null)
 						{
 							Ability A=(Ability)copyOf();
-							A.setSavable(false);
 							MN.addNonUninvokableEffect(A);
+							A.setSavable(false);
 						}
 						rpt.append(MN.Name()+" ");
 					}
@@ -282,8 +282,8 @@ public class Archon_Multiwatch extends ArchonSkill
 					if(MN.fetchEffect(ID())==null)
 					{
 						Ability A=(Ability)copyOf();
-						A.setSavable(false);
 						MN.addNonUninvokableEffect(A);
+						A.setSavable(false);
 					}
 				}
 				IPS.put("MANUAL"+(IPS.size()+1),V);

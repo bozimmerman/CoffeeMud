@@ -118,7 +118,7 @@
 	</TR>
 	<TR>
 		<TD WIDTH=25%><FONT COLOR=YELLOW>Experience: </FONT></TD>
-		<TD WIDTH=66%><INPUT TYPE=TEXT SIZE=10 NAME=EXP VALUE="@ClanData?EXP@"></TD>
+		<TD WIDTH=66%><INPUT TYPE=TEXT SIZE=10 NAME=EXP VALUE="@ClanData?EXP@">&nbsp;nbsp;<FONT COLOR=WHITE>Level: @ClanData?LEVEL@</TD>
 	</TR>
 	<TR>
 		<TD WIDTH=25%><FONT COLOR=YELLOW>Qualification Mask: </FONT></TD>

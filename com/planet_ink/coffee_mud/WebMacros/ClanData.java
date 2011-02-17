@@ -308,6 +308,12 @@ public class ClanData extends StdWebMacro
                     if(old==null) old=C.getExp()+"";
                     str.append(old+", ");
                 }
+				if(parms.containsKey("LEVEL"))
+                {
+                    String old=httpReq.getRequestParameter("LEVEL");
+                    if(old==null) old=C.getClanLevel()+"";
+                    str.append(old+", ");
+                }
 				if(parms.containsKey("STATUS"))
 					str.append(CMStrings.capitalizeAndLower(Clan.CLANSTATUS_DESC[C.getStatus()].toLowerCase())+", ");
                 if(parms.containsKey("STATUSID"))

@@ -981,8 +981,8 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 	        			A=CMClass.getAbility(prop);
 	        			if((A!=null)&&(newArea.fetchEffect(A.ID())==null))
 	        			{
-	        				A.setSavable(false);
 	        				newArea.addNonUninvokableEffect(A);
+	        				A.setSavable(false);
 	        				A.setMiscText(parms);
 	        			}
 	        		}

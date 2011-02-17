@@ -6339,7 +6339,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
             genRaceBuddy(mob,me,++showNumber,showFlag,"Weapons Race","WEAPONRACE");
             genRacialAbilities(mob,me,++showNumber,showFlag);
             genCulturalAbilities(mob,me,++showNumber,showFlag);
-            //genRacialEffects(mob,me,++showNumber,showFlag);
+            genRacialEffects(mob,me,++showNumber,showFlag);
             if(showFlag<-900){ ok=true; break;}
             if(showFlag>0){ showFlag=-1; continue;}
             showFlag=CMath.s_int(mob.session().prompt("Edit which? ",""));

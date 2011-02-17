@@ -183,6 +183,30 @@ public class GrinderRaces
         return theclasses;
     }
 
+    public static DVector reffects(ExternalHTTPRequests httpReq)
+    {
+        DVector theclasses=new DVector(3);
+        if(httpReq.isRequestParameter("REFFS1"))
+        {
+            int num=1;
+            String behav=httpReq.getRequestParameter("REFFS"+num);
+            while(behav!=null)
+            {
+                if(behav.length()>0)
+                {
+                    String parm=httpReq.getRequestParameter("REFPRM"+num);
+                    if(parm==null) parm="";
+                    String levl=httpReq.getRequestParameter("REFLVL"+num);
+                    if(levl==null) levl="0";
+                    theclasses.addElement(behav,parm,levl);
+                }
+                num++;
+                behav=httpReq.getRequestParameter("REFFS"+num);
+            }
+        }
+        return theclasses;
+    }
+
 
     public static DVector cabilities(ExternalHTTPRequests httpReq)
     {
@@ -307,6 +331,7 @@ public class GrinderRaces
             R.setStat("WEAPONCLASS",((Environmental)V.get(0)).ID());
             R.setStat("WEAPONXML",((Environmental)V.get(0)).text());
         }
+        
         DVector DV=rabilities(httpReq);
         R.setStat("NUMRABLE", ""+DV.size());
         for(int i=0;i<DV.size();i++)
@@ -316,6 +341,16 @@ public class GrinderRaces
             R.setStat("GETRABLEQUAL"+i, ((String)DV.elementAt(i,3)).equalsIgnoreCase("on")?"true":"false");
             R.setStat("GETRABLELVL"+i, (String)DV.elementAt(i,4));
         }
+        
+        DV=reffects(httpReq);
+        R.setStat("NUMREFF", ""+DV.size());
+        for(int i=0;i<DV.size();i++)
+        {
+            R.setStat("GETREFF"+i, (String)DV.elementAt(i,1));
+            R.setStat("GETREFFLVL"+i, (String)DV.elementAt(i,3));
+            R.setStat("GETREFFPARM"+i, (String)DV.elementAt(i,2));
+        }
+        
         DV=cabilities(httpReq);
         R.setStat("NUMCABLE", ""+DV.size());
         for(int i=0;i<DV.size();i++)

@@ -67,7 +67,8 @@ public String 	xpCalculationFormulaStr;
 	public Clan.AutoPromoteFlag 	autoPromoteBy;
 
 	// derived variable
-	public LinkedList<CMath.CompiledOperation> xpCalculationFormula = CMath.compileMathExpression("1000 * @x1");
+	public static final String DEFAULT_XP_FORMULA = "(500 * @x1) + (1000 * @x1 * @x1 * @x1)";
+	public LinkedList<CMath.CompiledOperation> xpCalculationFormula = CMath.compileMathExpression(DEFAULT_XP_FORMULA);
 
 	
     /** return a new instance of the object*/
@@ -187,7 +188,7 @@ public String 	xpCalculationFormulaStr;
 	public void setXpCalculationFormulaStr(String newXpCalculationFormula) {
 		xpCalculationFormulaStr = newXpCalculationFormula;
 		if(xpCalculationFormulaStr.trim().length()==0)
-			this.xpCalculationFormula = CMath.compileMathExpression("1000 * @x1");
+			this.xpCalculationFormula = CMath.compileMathExpression(DEFAULT_XP_FORMULA);
 		else
 			this.xpCalculationFormula = CMath.compileMathExpression(xpCalculationFormulaStr);
 	}

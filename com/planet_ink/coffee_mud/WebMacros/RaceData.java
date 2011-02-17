@@ -434,6 +434,81 @@ public class RaceData extends StdWebMacro
     }
 
 
+    public static StringBuffer reffects(Race E, ExternalHTTPRequests httpReq, java.util.Map<String,String> parms, int borderSize, String font)
+    {
+        StringBuffer str=new StringBuffer("");
+        DVector theclasses=new DVector(3);
+        if(httpReq.isRequestParameter("REFFS1"))
+        {
+            int num=1;
+            String behav=httpReq.getRequestParameter("REFFS"+num);
+            while(behav!=null)
+            {
+                if(behav.length()>0)
+                {
+                    String parm=httpReq.getRequestParameter("REFPRM"+num);
+                    if(parm==null) parm="";
+                    String levl=httpReq.getRequestParameter("REFLVL"+num);
+                    if(levl==null) levl="0";
+                    theclasses.addElement(behav,parm,levl);
+                }
+                num++;
+                behav=httpReq.getRequestParameter("REFFS"+num);
+            }
+        }
+        else
+        {
+            List<Ability> ables=E.racialEffects(null);
+            for(Ability A : ables)
+            {
+                if(A!=null)
+                {
+                	int qualifyingLevel = CMLib.ableMapper().getQualifyingLevel(E.ID(), false,A.ID()) ;
+                    theclasses.addElement(A.ID(),A.text(),qualifyingLevel+"");
+                }
+            }
+        }
+        if(font==null) font="<FONT COLOR=WHITE><B>";
+        str.append("<TABLE WIDTH=100% BORDER="+borderSize+" CELLSPACING=0 CELLPADDING=0>");
+        for(int i=0;i<theclasses.size();i++)
+        {
+            String theclass=(String)theclasses.elementAt(i,1);
+            str.append("<TR><TD WIDTH=35%>");
+            str.append("<SELECT ONCHANGE=\"EditAffect(this);\" NAME=REFFS"+(i+1)+">");
+            str.append("<OPTION VALUE=\"\">Delete!");
+            str.append("<OPTION VALUE=\""+theclass+"\" SELECTED>"+theclass);
+            str.append("</SELECT>");
+            str.append("</TD>");
+            str.append("<TD WIDTH=25%>");
+            str.append(font+"Lvl:</B></FONT> <INPUT TYPE=TEXT NAME=REFLVL"+(i+1)+" VALUE=\""+((String)theclasses.elementAt(i,3))+"\" SIZE=3 MAXLENGTH=3>");
+            str.append("</TD>");
+            str.append("<TD WIDTH=40%>");
+            str.append("<INPUT TYPE=TEXT NAME=REFPRM"+(i+1)+" VALUE=\""+((String)theclasses.elementAt(i,2))+"\" SIZE=25>");
+            str.append("</TD>");
+            str.append("</TR>");
+        }
+        str.append("<TR><TD WIDTH=35%>");
+        str.append("<SELECT ONCHANGE=\"AddAffect(this);\" NAME=REFFS"+(theclasses.size()+1)+">");
+        str.append("<OPTION SELECTED VALUE=\"\">Select an Ability");
+        for(Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
+        {
+            String cnam=((Ability)a.nextElement()).ID();
+            str.append("<OPTION VALUE=\""+cnam+"\">"+cnam);
+        }
+        str.append("</SELECT>");
+        str.append("</TD>");
+        str.append("<TD WIDTH=25%>");
+        str.append(font+"Lvl:</B></I></FONT> <INPUT TYPE=TEXT NAME=REFLVL"+(theclasses.size()+1)+" VALUE=\"\" SIZE=3 MAXLENGTH=3>");
+        str.append("</TD>");
+        str.append("<TD WIDTH=40%>");
+        str.append("<INPUT TYPE=TEXT NAME=REFPRM"+(theclasses.size()+1)+" VALUE=\"\" SIZE=25>");
+        str.append("</TD>");
+        str.append("</TR>");
+        str.append("</TABLE>");
+        return str;
+    }
+
+
     public static StringBuffer cabilities(Race E, ExternalHTTPRequests httpReq, java.util.Map<String,String> parms, int borderSize, String font)
     {
         StringBuffer str=new StringBuffer("");
@@ -472,7 +547,7 @@ public class RaceData extends StdWebMacro
             str.append("</SELECT>");
             str.append("</TD>");
             str.append("<TD WIDTH=65%>");
-            str.append("<INPUT TYPE=TEXT NAME=CABPOF"+(i+1)+" VALUE=\""+((String)theclasses.elementAt(i,2))+"\" SIZE=3 MAXLENGTH=3>"+font+"%</B></I></FONT>");
+            str.append(font+"Pct:</B></I></FONT> <INPUT TYPE=TEXT NAME=CABPOF"+(i+1)+" VALUE=\""+((String)theclasses.elementAt(i,2))+"\" SIZE=3 MAXLENGTH=3>"+font+"%</B></I></FONT>");
             str.append("</TD>");
             str.append("</TR>");
         }
@@ -487,7 +562,7 @@ public class RaceData extends StdWebMacro
         str.append("</SELECT>");
         str.append("</TD>");
         str.append("<TD WIDTH=65%>");
-        str.append("<INPUT TYPE=TEXT NAME=CABPOF"+(theclasses.size()+1)+" VALUE=\"\" SIZE=3 MAXLENGTH=3>"+font+"%</B></I></FONT>");
+        str.append(font+"Pct:</B></I></FONT> <INPUT TYPE=TEXT NAME=CABPOF"+(theclasses.size()+1)+" VALUE=\"\" SIZE=3 MAXLENGTH=3>"+font+"%</B></I></FONT>");
         str.append("</TD>");
         str.append("</TR>");
         str.append("</TABLE>");
@@ -701,6 +776,8 @@ public class RaceData extends StdWebMacro
                 }
                 if(parms.containsKey("RABLE"))
                     str.append(rabilities(R,httpReq,parms,0,(String)parms.get("FONT"))+", ");
+                if(parms.containsKey("REFFS"))
+                    str.append(reffects(R,httpReq,parms,0,(String)parms.get("FONT"))+", ");
                 if(parms.containsKey("CABLE"))
                     str.append(cabilities(R,httpReq,parms,0,(String)parms.get("FONT"))+", ");
                 if(parms.containsKey("WEARID"))
