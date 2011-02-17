@@ -6080,7 +6080,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
             promptStatStr(mob,me,CMLib.masking().maskHelp("\n","disallow"),++showNumber,showFlag,"Member Mask","REQUIREDMASK",true);
             promptStatBool(mob, me,++showNumber, showFlag,"Is Public", "ISPUBLIC");
             promptStatBool(mob, me,++showNumber, showFlag,"Is Family", "ISFAMILYONLY");
-            promptStatInt(mob, me,++showNumber, showFlag,"Minimum Members", "OVERRIDEMINMEMBERS");
+            promptStatStr(mob, me,null,++showNumber, showFlag,"Minimum Members", "OVERRIDEMINMEMBERS",true);
             if((me.getOverrideMinMembers()!=null)&&((me.getOverrideMinMembers().intValue()<0)||(me.getOverrideMinMembers().intValue()>999)))
             	me.setOverrideMinMembers(null);
             
