@@ -40,7 +40,25 @@ public class ReusableObjectPool<T extends CMObject>
 
 	private class PoolFixer implements Runnable
 	{
-		private volatile boolean running = false;
+		private boolean isRunning = false;
+		public void startFixing()
+		{
+			if(isRunning)
+			{
+				fix();
+				return;
+			}
+			synchronized(this)
+			{
+				if(!isRunning)
+				{
+					isRunning = true;
+					new Thread(this).start();
+					return;
+				}
+			}
+			fix();
+		}
 		
 		public void fix()
 		{
@@ -54,32 +72,30 @@ public class ReusableObjectPool<T extends CMObject>
 		
 		public void run()
 		{
-			if(running) return;
 			try
 			{
-				running = true;
-				synchronized(this)
+				int iters=0;
+				while(masterPool.size() < minEntries)
 				{
-					int iters=0;
-					while(masterPool.size() < minEntries)
+					fix();
+					if((masterPool.size() < minEntries)
+					&&(iters > 5))
 					{
-						fix();
-						if((masterPool.size() < minEntries)
-						&&(iters > 5))
+						iters=0;
+						synchronized(sync)
 						{
-							iters=0;
-							synchronized(sync)
-							{
-								masterPool.add(makeNewEntry());
-							}
+							masterPool.add(makeNewEntry());
 						}
-						iters++;
 					}
+					iters++;
 				}
 			}
 			finally
 			{
-				running = false;
+				synchronized(this)
+				{
+					isRunning = false;
+				}
 			}
 		}
 	}
@@ -141,7 +157,7 @@ public class ReusableObjectPool<T extends CMObject>
 			return masterList;
 		requests++;
 		if(masterPool.size() < minEntries / 2)
-			new Thread(fixer).start();
+			fixer.startFixing();
 		synchronized(sync)
 		{
 			if(!masterPool.isEmpty())
