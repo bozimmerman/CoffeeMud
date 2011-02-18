@@ -33,17 +33,24 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Prop_ModExperience extends Property
+public class Prop_ModFaction extends Property
 {
-	public String ID() { return "Prop_ModExperience"; }
-	public String name(){ return "Modifying Experience Gained";}
+	public String ID() { return "Prop_ModFaction"; }
+	public String name(){ return "Modifying Faction Gained";}
 	protected int canAffectCode(){return Ability.CAN_MOBS|Ability.CAN_ITEMS|Ability.CAN_AREAS|Ability.CAN_ROOMS;}
 	protected String operationFormula = "";
+	protected String factionID = "";
 	protected LinkedList<CMath.CompiledOperation> operation = null;
 	protected MaskingLibrary.CompiledZapperMask   mask = null;
 
 	public String accountForYourself()
-	{ return "Modifies experience gained: "+operationFormula;	}
+	{
+		final Faction F=CMLib.factions().getFaction(factionID);
+		final String factionName=
+			(factionID.length()==0)?"any faction": 
+				((F==null)?"some faction":F.name());
+		return "Modifies faction with "+factionName+" gained: "+operationFormula;	
+	}
 
 
 	public int translateAmount(int amount, String val)
@@ -65,6 +72,7 @@ public class Prop_ModExperience extends Property
 	{
 		super.setMiscText(newText);
 		operation = null;
+		factionID = "";
 		mask=null;
 		String s=newText.trim();
 		int x=s.indexOf(';');
@@ -72,6 +80,12 @@ public class Prop_ModExperience extends Property
 		{
 			mask=CMLib.masking().maskCompile(s.substring(x+1).trim());
 			s=s.substring(0,x).trim();
+		}
+		x=s.indexOf(':');
+		if(x>=0)
+		{
+			factionID=s.substring(0,x).trim();
+			s=s.substring(x).trim();
 		}
 		operationFormula="AMOUNT "+s;
 		if(s.startsWith("="))
@@ -101,14 +115,18 @@ public class Prop_ModExperience extends Property
 	
 	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
-		if((msg.sourceMinor()==CMMsg.TYP_EXPCHANGE)
+		if((msg.sourceMinor()==CMMsg.TYP_FACTIONCHANGE)
 		&&(operation != null)
 		&&(((msg.target()==affected)&&(affected instanceof MOB))
 		   ||((affected instanceof Item)
                &&(msg.source()==((Item)affected).owner())
                &&(!((Item)affected).amWearingAt(Wearable.IN_INVENTORY)))
 		   ||(affected instanceof Room)
-		   ||(affected instanceof Area)))
+		   ||(affected instanceof Area))
+		&&(msg.value()!=Integer.MAX_VALUE)
+		&&(msg.value()!=Integer.MIN_VALUE)
+		&&((factionID.length()==0)||(msg.othersMessage().equalsIgnoreCase(factionID)))
+		)
 		{
 			if(mask!=null)
 			{
