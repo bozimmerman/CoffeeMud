@@ -89,6 +89,10 @@ public class StdMOB implements MOB
 								scripts		= new SVector(1);
     protected SHashtable<String,Faction.FactionData> 
     							factions	= new SHashtable<String,Faction.FactionData>(1);
+	protected CameleonList<Ability> 
+								racialAffects= null;
+	protected CameleonList<Ability> 
+								clanAffects	 = null;
 
 	// gained attributes
 	protected int 		experience=0;
@@ -3116,6 +3120,20 @@ public class StdMOB implements MOB
 		return A;
 	}
 
+	protected final CameleonList<Ability> racialEffects()
+	{
+		if(racialAffects==null)
+			racialAffects=charStats.getMyRace().racialEffects(this);
+		return racialAffects;
+	}
+	
+	protected final CameleonList<Ability> clanEffects()
+	{
+		if(clanAffects==null)
+			clanAffects=charStats.getMyRace().racialEffects(this);
+		return clanAffects;
+	}
+	
 	public void addNonUninvokableEffect(Ability to)
 	{
 		if(to==null) return;
@@ -3169,7 +3187,7 @@ public class StdMOB implements MOB
 			if(index<affects.size())
 				return affects.elementAt(index);
 			if(index<abilitees.size() + charStats().getMyRace().numRacialEffects(this))
-				return charStats().getMyRace().racialEffects(this).get(index-affects.size());
+				return racialEffects().get(index-affects.size());
 			final Clan C=getMyClan();
 			return (C==null)?null:C.clanAbilities(this).get(index-affects.size()-charStats().getMyRace().numRacialEffects(this));
 		}
@@ -3198,7 +3216,7 @@ public class StdMOB implements MOB
 		final Clan C=getMyClan();
 		final MultiEnumeration multi =
 			new MultiEnumeration(
-					new Enumeration[] {affects.elements(),new IteratorEnumeration(charStats().getMyRace().racialEffects(this).iterator())});
+					new Enumeration[] {affects.elements(),new IteratorEnumeration(racialEffects().iterator())});
 		if(C!=null)
 			multi.addEnumeration(new IteratorEnumeration(C.clanEffects(this).iterator()));
 		return multi;

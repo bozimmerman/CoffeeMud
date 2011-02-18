@@ -52,7 +52,7 @@ public class StdRace implements Race
 	protected List<Weapon> 	naturalWeaponChoices=null;
 	protected Map<Integer,List<Ability>> 
 							racialAbilityMap=null;
-	protected Map<Integer,ReusableObjectPool<Ability>>
+	protected Map<Integer,List<Ability>>
 							racialEffectMap=null;
 	
 	public String 		name(){ return "StdRace"; }
@@ -108,7 +108,7 @@ public class StdRace implements Race
 	}
 
 	public Race healthBuddy(){return this;}
-
+	
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 
@@ -546,37 +546,56 @@ public class StdRace implements Race
 
 	public int numRacialEffects(MOB mob)
 	{
-		final ReusableObjectPool<Ability> pool=racialEffectsPool(mob);
-		if(pool==null) return 0;
-		return pool.getListSize();
+		return racialEffectsList(mob).size();
 	}
 	
-	public List<Ability> racialEffects(MOB mob)
+	public CameleonList<Ability> racialEffects(final MOB mob)
 	{
-		final ReusableObjectPool<Ability> pool=racialEffectsPool(mob);
-		if(pool==null) return empty;
-		final List<Ability> finalV=pool.get();
-		for(Ability A : finalV)
+		final Race myRace = this;
+		final List<Ability> myList=racialEffectsList(mob);
+		final List<Ability> finalV=new Vector<Ability>(myList.size());
+		for(final Ability A : myList)
 		{
 			A.makeNonUninvokable();
 			A.setSavable(false); // must come AFTER the above
 			A.setAffectedOne(mob);
+			finalV.add(A);
 		}
-		return finalV;
+		final CameleonList finalFinalV = new CameleonList(finalV,
+			new CameleonList.Signaler<Ability>(finalV) {
+				public boolean isInnerDeprecated() 
+				{
+					final List<Ability> activeList = myList;
+					final MOB oldMOB = mob;
+					final Race activeRace = oldMOB.charStats().getMyRace();
+					final Race oldRace = myRace;
+					if((activeList != oldList.get()) || (activeRace != oldRace))
+						return true;
+					return false;
+				}
+				public synchronized List<Ability> innerChangeMe(final CameleonList<Ability> me) 
+				{
+					final CameleonList<Ability> newList = mob.charStats().getMyRace().racialEffects(mob);
+					me.signaler = newList.signaler;
+					me.masterCounter = newList.masterCounter;
+					return ((CameleonList)newList).list;
+				}
+			});
+		return finalFinalV;
 	}
 	
-	public ReusableObjectPool racialEffectsPool(MOB mob)
+	public List<Ability> racialEffectsList(MOB mob)
 	{
 		if(racialEffectNames()==null)
-			return null;
+			return empty;
 
 		if((racialEffectMap==null)
 		&&(racialEffectNames()!=null)
 		&&(racialEffectLevels()!=null)
 		&&(racialEffectParms()!=null))
-			racialEffectMap=new Hashtable<Integer,ReusableObjectPool<Ability>>();
+			racialEffectMap=new Hashtable<Integer,List<Ability>>();
 
-		if(racialEffectMap==null) return null;
+		if(racialEffectMap==null) return empty;
 
 		Integer level=null;
 		if(mob!=null)
@@ -605,9 +624,7 @@ public class StdRace implements Race
 				}
 			}
 		}
-		final ReusableObjectPool<Ability> pool= new ReusableObjectPool<Ability>(finalV,100);
-		racialEffectMap.put(level,pool);
-		return pool;
+		return finalV;
 	}
 
 	public Race makeGenRace()

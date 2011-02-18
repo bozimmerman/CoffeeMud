@@ -311,7 +311,7 @@ public interface Race extends Tickable, StatsAffecting, MsgListener, CMObject, M
 	 * @param mob the mob to grant the abilities to
 	 * @return a vector of the Ability objects
 	 */
-	public List<Ability> racialEffects(MOB mob);
+	public CameleonList<Ability> racialEffects(MOB mob);
 	
 	/**
 	 * Returns the number of racial effects elligible to the given lob. Must 
