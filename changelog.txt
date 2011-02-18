@@ -2270,7 +2270,7 @@ Special/Reserved Quest called holidays can be added to/modified on an area-by-ar
  1.Can now enter I3 RESTART or IMC2 RESTART to reconnect to the intermuds
  2.Language: Undercommon
  3.Property/skill: TemporaryAffects (for timer-dependent behaviors/properties)
- 4.Property: Prop_LanguageSpeaker
+ 4.Property: Prop_LanguageSpeaker, Prop_ModFaction
  5.INI entry: WIZLISTMASK -- WIZLIST command modified to support it.
  6.MUDGrinder Map editor now has a Scripts editor button on the map screen.
  7.Internal: Lots of refactoring done. Lots.
@@ -2285,15 +2285,17 @@ Special/Reserved Quest called holidays can be added to/modified on an area-by-ar
 16.Another playable race: Duergar
 17.Apprentice can now play only level 1 -- we had too many people playing all the way to 5 and regretting it.
 18.IMPORT now supports areatype parameter for converting to different types.
-19.MODIFY [TYPE] [NAME] [STAT] [VALUE] command syntax has had first expansion since CM 1.0!
-20.CLAN ROLEs renumbered.  System will fix some deprecated values, but enchanters/treasurers will be confused.
+19.MODIFY [TYPE] [NAME] [STAT] [VALUE] command syntax has had its first expansion since CM 1.0!
+20.CLAN ROLE IDs renumbered.  System will attempt to fix some deprecated values, but enchanters/treasurers will be confused.
 21.ACT_PROG P clarified in the Scriptable document.
 22.New DISABLE flags in coffeemud.ini: DARKNIGHTS, DARKWEATHER
 23.EMAILREQ can now be set to disabled in coffeemud.ini file.
-24.FakeDB now supports PreparedStatements, and Apache Derby support is now complete.
-25.Skill Recipes: Skill Component entries can now be substituted for ingredient amount in skill recipes.
+24.FakeDB now supports PreparedStatements, and Apache Derby support is now complete. 
+25.Skill Recipes: Skill Component entries can now be substituted for ingredient amount in skill recipes. Make items from other items!
 26.WebMacro NumPlayers supports ALL, TOTAL, TOTALCACHED, and ACCOUNTS.  See Web Guide for more info.
-27.New command: POSE, with new filter INI entry for it: POSEFILTER
+27.New command: POSE, with new filter INI entry for it: POSEFILTER.  DISABLEd in coffeemud.ini file by default.
 28.Old accounts will now be purged when they run out of characters. See INI entry: ACCOUNTPURGE
 29.New Scriptable Commands: ISSPEAKING
 30.Clan types (governments) are now configurable with clangovernments.xml, create, modify, destroy, mudgrinder
+31.Racial Effects are now implemented as inexpensively as possible.  See genraces in command line & mudgrinder.
+//notyet:32.Clans (via their governments) now support custom help entries, clan effects, and clan abilities.

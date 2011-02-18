@@ -40,6 +40,8 @@ public class Prop_ModFaction extends Property
 	protected int canAffectCode(){return Ability.CAN_MOBS|Ability.CAN_ITEMS|Ability.CAN_AREAS|Ability.CAN_ROOMS;}
 	protected String operationFormula = "";
 	protected String factionID = "";
+	protected boolean gainonly=false;
+	protected boolean lossonly=false;
 	protected LinkedList<CMath.CompiledOperation> operation = null;
 	protected MaskingLibrary.CompiledZapperMask   mask = null;
 
@@ -74,6 +76,8 @@ public class Prop_ModFaction extends Property
 		operation = null;
 		factionID = "";
 		mask=null;
+		gainonly=false;
+		lossonly=false;
 		String s=newText.trim();
 		int x=s.indexOf(';');
 		if(x>=0)
@@ -85,6 +89,11 @@ public class Prop_ModFaction extends Property
 		if(x>=0)
 		{
 			factionID=s.substring(0,x).trim();
+			if(factionID.startsWith("+"))
+			{ gainonly=true; factionID=factionID.substring(1).trim();}
+			else
+			if(factionID.startsWith("-"))
+			{ lossonly=true; factionID=factionID.substring(1).trim();}
 			s=s.substring(x).trim();
 		}
 		operationFormula="AMOUNT "+s;
@@ -125,6 +134,8 @@ public class Prop_ModFaction extends Property
 		   ||(affected instanceof Area))
 		&&(msg.value()!=Integer.MAX_VALUE)
 		&&(msg.value()!=Integer.MIN_VALUE)
+		&&((!gainonly)||(msg.value()>0))
+		&&((!lossonly)||(msg.value()<0))
 		&&((factionID.length()==0)||(msg.othersMessage().equalsIgnoreCase(factionID)))
 		)
 		{
