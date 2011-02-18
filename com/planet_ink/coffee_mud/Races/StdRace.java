@@ -18,6 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 
 
+import java.lang.ref.WeakReference;
 import java.util.*;
 
 /*
@@ -549,9 +550,9 @@ public class StdRace implements Race
 		return racialEffectsList(mob).size();
 	}
 	
-	public CameleonList<Ability> racialEffects(final MOB mob)
+	public ChameleonList<Ability> racialEffects(final MOB mob)
 	{
-		final Race myRace = this;
+		final StdRace myRace = this;
 		final List<Ability> myList=racialEffectsList(mob);
 		final List<Ability> finalV=new Vector<Ability>(myList.size());
 		for(final Ability A : myList)
@@ -561,30 +562,32 @@ public class StdRace implements Race
 			A.setAffectedOne(mob);
 			finalV.add(A);
 		}
-		final CameleonList finalFinalV = new CameleonList(finalV,
-			new CameleonList.Signaler<Ability>(finalV) {
-				public boolean isInnerDeprecated() 
+		final ChameleonList finalFinalV = new ChameleonList(finalV,
+			new ChameleonList.Signaler<Ability>(myList) 
+			{
+				public boolean isDeprecated()
 				{
-					final List<Ability> activeList = myList;
-					final MOB oldMOB = mob;
-					final Race activeRace = oldMOB.charStats().getMyRace();
-					final Race oldRace = myRace;
-					if((activeList != oldList.get()) || (activeRace != oldRace))
+					if((mob.amDestroyed())
+					||(mob.charStats().getMyRace() != myRace)
+					|| (racialEffectsList(mob) != oldReferenceListRef.get()))
 						return true;
 					return false;
 				}
-				public synchronized List<Ability> innerChangeMe(final CameleonList<Ability> me) 
+				public void rebuild(final ChameleonList<Ability> me)
 				{
-					final CameleonList<Ability> newList = mob.charStats().getMyRace().racialEffects(mob);
-					me.signaler = newList.signaler;
-					me.masterCounter = newList.masterCounter;
-					return ((CameleonList)newList).list;
+					if(mob.amDestroyed())
+						oldReferenceListRef=new WeakReference<List<Ability>>(empty);
+					else
+					{
+						final ChameleonList<Ability> newList = mob.charStats().getMyRace().racialEffects(mob);
+						me.changeMeInto(newList);
+					}
 				}
 			});
 		return finalFinalV;
 	}
 	
-	public List<Ability> racialEffectsList(MOB mob)
+	public final List<Ability> racialEffectsList(final MOB mob)
 	{
 		if(racialEffectNames()==null)
 			return empty;
@@ -597,16 +600,15 @@ public class StdRace implements Race
 
 		if(racialEffectMap==null) return empty;
 
-		Integer level=null;
+		final Integer level;
 		if(mob!=null)
 			level=Integer.valueOf(mob.phyStats().level());
 		else
 			level=Integer.valueOf(Integer.MAX_VALUE);
 
-		final List<Ability> finalV;
 		if(racialEffectMap.containsKey(level))
 			return racialEffectMap.get(level); 
-		finalV = new Vector<Ability>();
+		final List<Ability> finalV = new Vector<Ability>();
 		for(int v=0;v<racialEffectLevels().length;v++)
 		{
 			if((racialEffectLevels()[v]<=level.intValue())

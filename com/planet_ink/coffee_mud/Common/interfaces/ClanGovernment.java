@@ -38,7 +38,6 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
  */
 public interface ClanGovernment extends Modifiable, CMCommon
 {
-
 	/**
 	 * Gets the iD.
 	 *
@@ -369,7 +368,7 @@ public interface ClanGovernment extends Modifiable, CMCommon
 	 * @param level clan level
 	 * @return list of abilities
 	 */
-	public List<Ability> getClanLevelEffects(MOB mob, Integer level);
+	public ChameleonList<Ability> getClanLevelEffects(MOB mob, Integer level);
 	
 	/**
 	 * Return the size of the list of effects owned by someone

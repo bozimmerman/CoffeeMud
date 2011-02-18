@@ -89,9 +89,9 @@ public class StdMOB implements MOB
 								scripts		= new SVector(1);
     protected SHashtable<String,Faction.FactionData> 
     							factions	= new SHashtable<String,Faction.FactionData>(1);
-	protected CameleonList<Ability> 
+	protected ChameleonList<Ability> 
 								racialAffects= null;
-	protected CameleonList<Ability> 
+	protected ChameleonList<Ability> 
 								clanAffects	 = null;
 
 	// gained attributes
@@ -3120,17 +3120,23 @@ public class StdMOB implements MOB
 		return A;
 	}
 
-	protected final CameleonList<Ability> racialEffects()
+	protected final ChameleonList<Ability> racialEffects()
 	{
 		if(racialAffects==null)
 			racialAffects=charStats.getMyRace().racialEffects(this);
 		return racialAffects;
 	}
 	
-	protected final CameleonList<Ability> clanEffects()
+	protected final ChameleonList<Ability> clanEffects()
 	{
 		if(clanAffects==null)
-			clanAffects=charStats.getMyRace().racialEffects(this);
+		{
+			final Clan C=getMyClan();
+			if(C==null)
+				clanAffects=CMLib.clans().getDefaultGovernment().getClanLevelEffects(this,null);
+			else
+				clanAffects=C.clanEffects(this);
+		}
 		return clanAffects;
 	}
 	
@@ -3189,7 +3195,7 @@ public class StdMOB implements MOB
 			if(index<abilitees.size() + charStats().getMyRace().numRacialEffects(this))
 				return racialEffects().get(index-affects.size());
 			final Clan C=getMyClan();
-			return (C==null)?null:C.clanAbilities(this).get(index-affects.size()-charStats().getMyRace().numRacialEffects(this));
+			return (C==null)?null:clanEffects().get(index-affects.size()-C.numClanEffects(this));
 		}
 		catch(java.lang.ArrayIndexOutOfBoundsException x){}
 		return null;
@@ -3218,7 +3224,7 @@ public class StdMOB implements MOB
 			new MultiEnumeration(
 					new Enumeration[] {affects.elements(),new IteratorEnumeration(racialEffects().iterator())});
 		if(C!=null)
-			multi.addEnumeration(new IteratorEnumeration(C.clanEffects(this).iterator()));
+			multi.addEnumeration(new IteratorEnumeration(clanEffects().iterator()));
 		return multi;
 	}
 	

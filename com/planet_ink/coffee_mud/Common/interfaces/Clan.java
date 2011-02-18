@@ -175,7 +175,7 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
 	 * @param mob the mob to grant the abilities to
 	 * @return a vector of the Ability objects
 	 */
-	public List<Ability> clanEffects(MOB mob);
+	public ChameleonList<Ability> clanEffects(MOB mob);
 	
 	/**
 	 * Return size of a vector of skills, spells, and other effects granted to the given

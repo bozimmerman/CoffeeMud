@@ -16,47 +16,45 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
-public class CameleonList<K> implements List<K> 
+public class ChameleonList<K> implements List<K> 
 {
-	public volatile List<K> 	list;
-	public volatile int[] 	 	masterCounter = {0};
-	public volatile Signaler<K>signaler;
+	private volatile List<K> 		list;
+	private volatile Signaler<K>	signaler;
 	
 	public static abstract class Signaler<K>
 	{
-		private    volatile int 					counter = 0;
-		protected  volatile WeakReference<List<K>> 	oldList;
+		protected WeakReference<List<K>> 	oldReferenceListRef;
 		
-		public Signaler(List<K> list)
+		public Signaler(final List<K> referenceList)
 		{
-			oldList = new WeakReference<List<K>>(list);
+			oldReferenceListRef = new WeakReference<List<K>>(referenceList);
 		}
 		
-		public abstract boolean isInnerDeprecated();
-		public abstract List<K> innerChangeMe(final CameleonList<K> me);
+		public abstract void rebuild(final ChameleonList<K> me);
 		
-		public boolean isDeprecated(final int myCounter)
-		{ 
-			return (myCounter != counter) || isInnerDeprecated();
-		}
-		public final synchronized List<K> changeMe(final int[] deprecounter, final CameleonList<K> me)
+		public abstract boolean isDeprecated();
+		
+		public final synchronized void possiblyChangeMe(final ChameleonList<K> me)
 		{
-			if(!isDeprecated(deprecounter[0])) return me.list;
-			deprecounter[0]=counter;
-			oldList=new WeakReference<List<K>>(innerChangeMe(me));
-			return oldList.get();
-		}
-		public void deprecate()
-		{
-			counter++;
+			if(!isDeprecated()) return;
+			rebuild(me);
 		}
 	}
 	
-	public CameleonList(List<K> l, final Signaler<K> deprecator)
+	public ChameleonList(final List<K> l, final Signaler<K> signaler)
 	{
 		list=l;
-		this.signaler = deprecator;
+		this.signaler = signaler;
 	}
+	
+	
+	public void changeMeInto(final ChameleonList<K> fromList)
+	{
+		this.list=fromList.list;
+		this.signaler=fromList.signaler;
+	}
+
+	public Signaler<K> getSignaler() { return signaler;}
 	
 	@Override
 	public boolean add(K arg0) {
@@ -85,64 +83,55 @@ public class CameleonList<K> implements List<K>
 
 	@Override
 	public boolean contains(Object arg0) {
-		if(signaler.isDeprecated(masterCounter[0]))
-			list=signaler.changeMe(masterCounter, this);
+		signaler.possiblyChangeMe(this);
 		return list.contains(arg0);
 	}
 
 	@Override
 	public boolean containsAll(Collection<?> arg0) {
-		if(signaler.isDeprecated(masterCounter[0]))
-			list=signaler.changeMe(masterCounter, this);
+		signaler.possiblyChangeMe(this);
 		return list.containsAll(arg0);
 	}
 
 	@Override
 	public K get(int arg0) {
-		if(signaler.isDeprecated(masterCounter[0]))
-			list=signaler.changeMe(masterCounter, this);
+		signaler.possiblyChangeMe(this);
 		return list.get(arg0);
 	}
 
 	@Override
 	public int indexOf(Object arg0) {
-		if(signaler.isDeprecated(masterCounter[0]))
-			list=signaler.changeMe(masterCounter, this);
+		signaler.possiblyChangeMe(this);
 		return list.indexOf(arg0);
 	}
 
 	@Override
 	public boolean isEmpty() {
-		if(signaler.isDeprecated(masterCounter[0]))
-			list=signaler.changeMe(masterCounter, this);
+		signaler.possiblyChangeMe(this);
 		return list.isEmpty();
 	}
 
 	@Override
 	public Iterator<K> iterator() {
-		if(signaler.isDeprecated(masterCounter[0]))
-			list=signaler.changeMe(masterCounter, this);
+		signaler.possiblyChangeMe(this);
 		return new ReadOnlyIterator<K>(list.iterator());
 	}
 
 	@Override
 	public int lastIndexOf(Object arg0) {
-		if(signaler.isDeprecated(masterCounter[0]))
-			list=signaler.changeMe(masterCounter, this);
+		signaler.possiblyChangeMe(this);
 		return list.lastIndexOf(arg0);
 	}
 
 	@Override
 	public ListIterator<K> listIterator() {
-		if(signaler.isDeprecated(masterCounter[0]))
-			list=signaler.changeMe(masterCounter, this);
+		signaler.possiblyChangeMe(this);
 		return new ReadOnlyListIterator<K>(list.listIterator());
 	}
 
 	@Override
 	public ListIterator<K> listIterator(int arg0) {
-		if(signaler.isDeprecated(masterCounter[0]))
-			list=signaler.changeMe(masterCounter, this);
+		signaler.possiblyChangeMe(this);
 		return new ReadOnlyListIterator<K>(list.listIterator(arg0));
 	}
 
@@ -173,29 +162,25 @@ public class CameleonList<K> implements List<K>
 
 	@Override
 	public int size() {
-		if(signaler.isDeprecated(masterCounter[0]))
-			list=signaler.changeMe(masterCounter, this);
+		signaler.possiblyChangeMe(this);
 		return list.size();
 	}
 
 	@Override
 	public List<K> subList(int arg0, int arg1) {
-		if(signaler.isDeprecated(masterCounter[0]))
-			list=signaler.changeMe(masterCounter, this);
+		signaler.possiblyChangeMe(this);
 		return new ReadOnlyList<K>(list.subList(arg0,arg1));
 	}
 
 	@Override
 	public Object[] toArray() {
-		if(signaler.isDeprecated(masterCounter[0]))
-			list=signaler.changeMe(masterCounter, this);
+		signaler.possiblyChangeMe(this);
 		return list.toArray();
 	}
 
 	@Override
 	public <T> T[] toArray(T[] arg0) {
-		if(signaler.isDeprecated(masterCounter[0]))
-			list=signaler.changeMe(masterCounter, this);
+		signaler.possiblyChangeMe(this);
 		return list.toArray(arg0);
 	}
 }

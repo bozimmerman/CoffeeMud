@@ -1432,7 +1432,7 @@ public class DefaultClan implements Clan
 		return govt().getClanLevelEffectsSize(mob, Integer.valueOf(getClanLevel()));
 	}
 	
-	public List<Ability> clanEffects(MOB mob)
+	public ChameleonList<Ability> clanEffects(MOB mob)
 	{
 		return govt().getClanLevelEffects(mob,Integer.valueOf(getClanLevel()));
 	}

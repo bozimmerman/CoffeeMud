@@ -19,8 +19,10 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.DatabaseEngine.PlayerData;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.StdRace;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
+import java.lang.ref.WeakReference;
 import java.util.*;
 
 public class DefaultClanGovernment implements ClanGovernment
@@ -73,7 +75,7 @@ public String 	xpCalculationFormulaStr;
 
 	// derived and internal vars
 protected Map<Integer,List<Ability>> 	   			clanAbilityMap=null;
-protected Map<Integer,ReusableObjectPool<Ability>>  clanEffectMap=null;
+protected Map<Integer,List<Ability>>  				clanEffectMap=null;
 	protected String[] 	clanEffectNames			=null;
 	protected int[] 	clanEffectLevels		=null;
 	protected String[] 	clanEffectParms			=null;
@@ -631,18 +633,18 @@ protected Map<Integer,ReusableObjectPool<Ability>>  clanEffectMap=null;
 		return finalV;
 	}
 
-	protected ReusableObjectPool<Ability> getClanLevelEffectPool(MOB mob, Integer level)
+	protected List<Ability> getClanLevelEffectsList(final MOB mob, final Integer level)
 	{
 		if(clanEffectNames==null)
-			return null;
+			return empty;
 
 		if((clanEffectMap==null)
 		&&(clanEffectNames!=null)
 		&&(clanEffectLevels!=null)
 		&&(clanEffectParms!=null))
-			clanEffectMap=new Hashtable<Integer,ReusableObjectPool<Ability>>();
+			clanEffectMap=new Hashtable<Integer,List<Ability>>();
 
-		if(clanEffectMap==null) return null;
+		if(clanEffectMap==null) return empty;
 		
 		if(clanEffectMap.containsKey(level))
 			return clanEffectMap.get(level); 
@@ -664,29 +666,67 @@ protected Map<Integer,ReusableObjectPool<Ability>>  clanEffectMap=null;
 				}
 			}
 		}
-		final ReusableObjectPool<Ability> pool = new ReusableObjectPool<Ability>(finalV,100); 
-		clanEffectMap.put(level,pool);
-		return pool;
+		clanEffectMap.put(level,finalV);
+		return finalV;
 	}
 	
-	public int getClanLevelEffectsSize(MOB mob, Integer level)
+	public int getClanLevelEffectsSize(final MOB mob, final Integer level)
 	{
-		final ReusableObjectPool<Ability> pool = getClanLevelEffectPool(mob,level);
-		if(pool == null) return 0;
-		return pool.getListSize();
+		return getClanLevelEffectsList(mob, level).size();
 	}
 	
-	public List<Ability> getClanLevelEffects(MOB mob, Integer level)
+	public ChameleonList<Ability> getEmptyClanLevelEffects(final MOB mob)
 	{
-		final ReusableObjectPool<Ability> pool = getClanLevelEffectPool(mob,level);
-		if(pool == null) return empty;
-		final List<Ability> finalV = pool.get();
-		for(Ability A : finalV)
+		return new ChameleonList<Ability>(empty,
+			new ChameleonList.Signaler<Ability>(empty) 
+			{
+				public boolean isDeprecated() { return mob.getMyClan()!=null;}
+				public void rebuild(final ChameleonList<Ability> me)
+				{
+					final Clan C=mob.getMyClan();
+					if(C!=null)
+						me.changeMeInto(C.getGovernment().getClanLevelEffects(mob, Integer.valueOf(C.getClanLevel())));
+				}
+			});
+	}
+	
+	public ChameleonList<Ability> getClanLevelEffects(final MOB mob, final Integer level)
+	{
+		if(level == null) return getEmptyClanLevelEffects(mob);
+		final DefaultClanGovernment myGovt = this;
+		final List<Ability> myList=getClanLevelEffectsList(mob, level);
+		final List<Ability> finalV=new Vector<Ability>(myList.size());
+		for(final Ability A : myList)
 		{
 			A.makeNonUninvokable();
 			A.setSavable(false); // must come AFTER the above
 			A.setAffectedOne(mob);
+			finalV.add(A);
 		}
-		return finalV;
+		final ChameleonList<Ability> finalFinalV = new ChameleonList<Ability>
+			(finalV,
+			new ChameleonList.Signaler<Ability>(myList) 
+			{
+				public boolean isDeprecated()
+				{
+					if(mob.amDestroyed()) 
+						return true;
+					final Clan C = mob.getMyClan();
+					if(C==null) return true;
+					if((C.getGovernment() != myGovt)
+					|| (getClanLevelEffectsList(mob, Integer.valueOf(C.getClanLevel())) != oldReferenceListRef.get()))
+						return true;
+					return false;
+				}
+				public void rebuild(final ChameleonList<Ability> me)
+				{
+					final Clan C=mob.getMyClan();
+					if((mob.amDestroyed())||(C==null))
+						me.changeMeInto(getEmptyClanLevelEffects(mob));
+					else
+						me.changeMeInto(C.getGovernment().getClanLevelEffects(mob, Integer.valueOf(C.getClanLevel())));
+				}
+			});
+		return finalFinalV;
 	}
 }
