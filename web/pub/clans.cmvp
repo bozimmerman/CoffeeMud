@@ -21,6 +21,7 @@
 <TABLE WIDTH=100% BORDER=1>
 <TR><TD WIDTH=100% COLSPAN=2 BGCOLOR=#FFCCFF ALIGN=CENTER><a name="@ClanID@"><H3>@ClanID@</H3></a></TD></TR>
 <TR><TD WIDTH=25% BGCOLOR=#FFCCFF><B>Type</B></TD><TD>@ClanData?type@</TD>
+<TR><TD WIDTH=25% BGCOLOR=#FFCCFF><B>Level</B></TD><TD>@ClanData?level@</TD>
 <TR><TD WIDTH=25% BGCOLOR=#FFCCFF><B>Status</B></TD><TD>@ClanData?status@</TD>
 <TR><TD WIDTH=25% BGCOLOR=#FFCCFF><B>Qualifications</B></TD><TD>@ClanData?acceptance@</TD>
 <TR><TD WIDTH=25% BGCOLOR=#FFCCFF><B>Premise</B></TD><TD>@ClanData?premise@<BR></TD>
@@ -28,11 +29,7 @@
 <TR><TD WIDTH=25% BGCOLOR=#FFCCFF><B>Trophies</B></TD><TD>@ClanData?trophies@</TD>
 <TR><TD WIDTH=25% BGCOLOR=#FFCCFF><B>Officers</B></TD>
 	<TD>
-		@ClanData?memberstart@	@loop@ @Clandata?membernext&clanposfilter=2@ @ClanData?membername@ (@ClanData?memberpos@)<BR> @back@
-		@ClanData?memberstart@	@loop@ @Clandata?membernext&clanposfilter=4@ @ClanData?membername@ (@ClanData?memberpos@)<BR> @back@
-		@ClanData?memberstart@	@loop@ @Clandata?membernext&clanposfilter=8@ @ClanData?membername@ (@ClanData?memberpos@)<BR> @back@
-		@ClanData?memberstart@	@loop@ @Clandata?membernext&clanposfilter=16@ @ClanData?membername@ (@ClanData?memberpos@)<BR> @back@
-		@ClanData?memberstart@	@loop@ @Clandata?membernext&clanposfilter=32@ @ClanData?membername@ (@ClanData?memberpos@)<BR> @back@
+		@ClanData?memberstart@	@loop@ @Clandata?membernext&clanposfilter=HOME_PRIVS@ @ClanData?membername@ (@ClanData?memberpos@)<BR> @back@
 	</TD>
 </TR>
 <TR><TD WIDTH=25% BGCOLOR=#FFCCFF><B>Relations</B></TD>

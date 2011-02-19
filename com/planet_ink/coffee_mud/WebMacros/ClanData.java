@@ -355,16 +355,20 @@ public class ClanData extends StdWebMacro
                     str.append(""+C.getMemberList().size()+", ");
 				if(parms.containsKey("MEMBERNEXT"))
 				{
-					String cmember=httpReq.getRequestParameter("CLANMEMBER");
+					final String cmember=httpReq.getRequestParameter("CLANMEMBER");
 					String lastID="";
 					String posFilter=httpReq.getRequestParameter("CLANPOSFILTER");
                     if(posFilter==null) posFilter=(String)parms.get("CLANPOSFILTER");
 					if(posFilter==null) posFilter="";
-					List<MemberRecord> members=C.getMemberList((posFilter.length()>0)?CMath.s_int(posFilter):-1);
+					final Clan.Function reqFunction = (Clan.Function)CMath.s_valueOf(Clan.Function.values(), posFilter);
+					final List<MemberRecord> members=C.getMemberList();
 					for(MemberRecord member : members)
 					{
-						String name=member.name;
-						if((cmember==null)||((cmember.length()>0)&&(cmember.equals(lastID))&&(!name.equals(lastID))))
+						final String name=member.name;
+						if((reqFunction!=null)&&(C.getAuthority(member.role,reqFunction)==Clan.Authority.CAN_NOT_DO))
+							continue;
+						if((cmember==null)
+						||((cmember.length()>0)&&(cmember.equals(lastID))&&(!name.equals(lastID))))
 						{
 							httpReq.addRequestParameters("CLANMEMBER",name);
 							return "";
