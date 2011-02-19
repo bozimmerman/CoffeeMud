@@ -479,14 +479,6 @@ public class DefaultClan implements Clan
 
     public void destroyClan()
     {
-        List<String> protectedOnes=Resources.getFileLineVector(Resources.getFileResource("protectedplayers.ini",false));
-        if((protectedOnes!=null)&&(protectedOnes.size()>0))
-            for(int b=0;b<protectedOnes.size();b++)
-            {
-                String B=(String)protectedOnes.get(b);
-                if(B.equalsIgnoreCase(clanID()))
-                	return;
-            }
     	List<MemberRecord> members=getMemberList();
         for(MemberRecord member : members)
         {
@@ -662,7 +654,7 @@ public class DefaultClan implements Clan
         {
             msg.append("-----------------------------------------------------------------\n\r");
             msg.append("^xClan Level Benefits:^.^N\n\r");
-    		List<AbilityMapper.AbilityMapping> abilities=CMLib.ableMapper().getUpToLevelListings(govt().ID(),Integer.MAX_VALUE,true,false);
+    		List<AbilityMapper.AbilityMapping> abilities=CMLib.ableMapper().getUpToLevelListings(govt().ID(),Integer.valueOf(getClanLevel()),true,false);
             if(abilities.size()>0)
             {
 	            final List<String> names = new LinkedList<String>();
@@ -992,6 +984,19 @@ public class DefaultClan implements Clan
 			return pos.getName();
     }
 
+    protected boolean isSafeFromPurge()
+    {
+        final List<String> protectedOnes=Resources.getFileLineVector(Resources.getFileResource("protectedplayers.ini",false));
+        if((protectedOnes!=null)&&(protectedOnes.size()>0))
+            for(int b=0;b<protectedOnes.size();b++)
+            {
+                String B=(String)protectedOnes.get(b);
+                if(B.equalsIgnoreCase(clanID()))
+                	return true;
+            }
+        return false;
+    }
+    
     public boolean tick(Tickable ticking, int tickID)
     {
         if(tickID!=Tickable.TICKID_CLAN)
@@ -1014,36 +1019,39 @@ public class DefaultClan implements Clan
             	minimumMembers = govt().getOverrideMinMembers().intValue();
             if(activeMembers<minimumMembers)
             {
-                if(getStatus()==CLANSTATUS_FADING)
+                if(!isSafeFromPurge())
                 {
-                    Log.sysOut("Clans","Clan '"+getName()+" deleted with only "+activeMembers+" having logged on lately.");
-                    destroyClan();
-                    StringBuffer buf=new StringBuffer("");
-                    for(MemberRecord member : members)
-                        buf.append(member.name+" on "+CMLib.time().date2String(member.timestamp)+"  ");
-                    Log.sysOut("Clans","Clan '"+getName()+" had the following membership: "+buf.toString());
-                    return true;
+	                if(getStatus()==CLANSTATUS_FADING)
+	                {
+	                    Log.sysOut("Clans","Clan '"+getName()+" deleted with only "+activeMembers+" having logged on lately.");
+	                    destroyClan();
+	                    StringBuffer buf=new StringBuffer("");
+	                    for(MemberRecord member : members)
+	                        buf.append(member.name+" on "+CMLib.time().date2String(member.timestamp)+"  ");
+	                    Log.sysOut("Clans","Clan '"+getName()+" had the following membership: "+buf.toString());
+	                    return true;
+	                }
+	                setStatus(CLANSTATUS_FADING);
+	                final List<Integer> topRoles=getTopRankedRoles(Function.ASSIGN);
+	                for(MemberRecord member : members)
+	                {
+	                    String name = member.name;
+	                    int role=member.role;
+	                    //long lastLogin=((Long)members.elementAt(j,3)).longValue();
+						if(topRoles.contains(Integer.valueOf(role)))
+						{
+							MOB player=CMLib.players().getLoadPlayer(name);
+							if(player!=null)
+								CMLib.smtp().emailIfPossible("AutoPurge",player,"AutoPurge: "+name(), 
+										""+getGovernmentName()+" "+name()+" is in danger of being deleted if at least "+(minimumMembers-activeMembers)
+										+" members do not log on within 24 hours.");
+						}
+	                }
+	                
+	                Log.sysOut("Clans","Clan '"+getName()+" fading with only "+activeMembers+" having logged on lately.");
+	                clanAnnounce(""+getGovernmentName()+" "+name()+" is in danger of being deleted if more members do not log on within 24 hours.");
+	                update();
                 }
-                setStatus(CLANSTATUS_FADING);
-                final List<Integer> topRoles=getTopRankedRoles(Function.ASSIGN);
-                for(MemberRecord member : members)
-                {
-                    String name = member.name;
-                    int role=member.role;
-                    //long lastLogin=((Long)members.elementAt(j,3)).longValue();
-					if(topRoles.contains(Integer.valueOf(role)))
-					{
-						MOB player=CMLib.players().getLoadPlayer(name);
-						if(player!=null)
-							CMLib.smtp().emailIfPossible("AutoPurge",player,"AutoPurge: "+name(), 
-									""+getGovernmentName()+" "+name()+" is in danger of being deleted if at least "+(minimumMembers-activeMembers)
-									+" members do not log on within 24 hours.");
-					}
-                }
-                
-                Log.sysOut("Clans","Clan '"+getName()+" fading with only "+activeMembers+" having logged on lately.");
-                clanAnnounce(""+getGovernmentName()+" "+name()+" is in danger of being deleted if more members do not log on within 24 hours.");
-                update();
             }
             else
             switch(getStatus())
@@ -1177,13 +1185,16 @@ public class DefaultClan implements Clan
                 
                 if(highMembers.size()==0)
                 {
-                    Log.sysOut("Clans","Clan '"+getName()+" deleted for lack of leadership.");
-                    destroyClan();
-                    StringBuffer buf=new StringBuffer("");
-                    for(MemberRecord member : members)
-                        buf.append(member.name+" on "+CMLib.time().date2String(member.timestamp)+"  ");
-                    Log.sysOut("Clans","Clan '"+getName()+" had the following membership: "+buf.toString());
-                    return true;
+                    if(!isSafeFromPurge())
+                    {
+	                    Log.sysOut("Clans","Clan '"+getName()+" deleted for lack of leadership.");
+	                    destroyClan();
+	                    StringBuffer buf=new StringBuffer("");
+	                    for(MemberRecord member : members)
+	                        buf.append(member.name+" on "+CMLib.time().date2String(member.timestamp)+"  ");
+	                    Log.sysOut("Clans","Clan '"+getName()+" had the following membership: "+buf.toString());
+	                    return true;
+                    }
                 }
             }
 
