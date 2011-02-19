@@ -479,6 +479,14 @@ public class DefaultClan implements Clan
 
     public void destroyClan()
     {
+        List<String> protectedOnes=Resources.getFileLineVector(Resources.getFileResource("protectedplayers.ini",false));
+        if((protectedOnes!=null)&&(protectedOnes.size()>0))
+            for(int b=0;b<protectedOnes.size();b++)
+            {
+                String B=(String)protectedOnes.get(b);
+                if(B.equalsIgnoreCase(clanID()))
+                	return;
+            }
     	List<MemberRecord> members=getMemberList();
         for(MemberRecord member : members)
         {
