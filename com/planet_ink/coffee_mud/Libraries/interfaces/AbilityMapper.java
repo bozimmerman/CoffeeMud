@@ -107,7 +107,7 @@ public interface AbilityMapper extends CMLibrary
     public void addCharAbilityMapping(String ID, int qualLevel, String abilityID, int defaultProficiency, 
                                       int maxProficiency, String defaultParam, boolean autoGain, boolean secret,
                                       List<String> preReqSkillsList, String extraMask, Integer[] costOverrides);
-    public void addRaceAbilityMapping(String ID, int qualLevel, String abilityID, int defaultProficiency, 
+    public void addDynaAbilityMapping(String ID, int qualLevel, String abilityID, int defaultProficiency, 
 			  						  String defaultParam, boolean autoGain, boolean secret);
     public void delCharAbilityMapping(String ID, String abilityID);
     
@@ -134,7 +134,7 @@ public interface AbilityMapper extends CMLibrary
 	public String getCommonExtraMask(Ability A);
 	public String formatPreRequisites(DVector preReqs);
     public int qualifyingClassLevel(MOB studentM, Ability A);
-    public Object lowestQualifyingClassRace(MOB studentM, Ability A);
+    public CMObject lowestQualifyingClassRaceGovt(MOB studentM, Ability A);
     public boolean qualifiesByCurrentClassAndLevel(MOB studentM, Ability A);
     public boolean qualifiesByLevel(MOB studentM, Ability A);
 	public boolean qualifiesByLevel(MOB studentM, String abilityID);

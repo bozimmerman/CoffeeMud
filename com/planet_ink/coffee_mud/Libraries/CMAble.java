@@ -205,7 +205,7 @@ public class CMAble extends StdLibrary implements AbilityMapper
 									  String extraMasks)
 	{ addCharAbilityMapping(ID,qualLevel,abilityID,defaultProficiency,maxProficiency,defaultParam,autoGain,secret,new Vector(),extraMasks);}
 
-	public void addRaceAbilityMapping(String ID,
+	public void addDynaAbilityMapping(String ID,
 									  int qualLevel,
 									  String abilityID,
 									  int defaultProficiency,
@@ -1020,30 +1020,44 @@ public class CMAble extends StdLibrary implements AbilityMapper
 		return names.toString();
 	}
 
-	public DVector getRawPreRequisites(MOB studentM, Ability A)
+	public final List<String> getCurrentlyQualifyingIDs(final MOB studentM, final String AID)
 	{
-		if(studentM==null) return new DVector(2);
-		DVector reqs=null;
+		final List<String> ids=new LinkedList<String>();
 		final CharStats cStats = studentM.charStats();
 		for(int c=cStats.numClasses()-1;c>=0;c--)
 		{
 			CharClass C=cStats.getMyClass(c);
-			int level=getQualifyingLevel(C.ID(),true,A.ID());
+			int qualLevel=getQualifyingLevel(C.ID(),true,AID);
 			int classLevel=studentM.charStats().getClassLevel(C);
-			if((level>=0)&&(classLevel>=level))
-			{
-				reqs=getRawPreRequisites(C.ID(),true,A.ID());
-				if(reqs!=null) return reqs.copyOf();
-			}
+			if((qualLevel>=0)&&(classLevel>=qualLevel))
+				ids.add(C.ID());
 		}
-		int level=getQualifyingLevel(cStats.getMyRace().ID(),false,A.ID());
-		int classLevel=studentM.basePhyStats().level();
-		if((level>=0)&&(classLevel>=level))
+		int qualRacelevel=getQualifyingLevel(cStats.getMyRace().ID(),false,AID);
+		int charLevel=studentM.basePhyStats().level();
+		if((qualRacelevel>=0)&&(charLevel>=qualRacelevel))
+			ids.add(cStats.getMyRace().ID());
+		final Clan clan=studentM.getMyClan();
+		if(clan!=null)
 		{
-			reqs=getRawPreRequisites(cStats.getMyRace().ID(),false,A.ID());
+			int qualClanlevel=getQualifyingLevel(clan.getGovernment().ID(),false,AID);
+			if((qualClanlevel>=0)&&(clan.getClanLevel()>=qualClanlevel))
+				ids.add(clan.getGovernment().ID());
+		}
+		return ids;
+	}
+	
+	public DVector getRawPreRequisites(MOB studentM, Ability A)
+	{
+		if((studentM==null)||(A==null)) return new DVector(2);
+		final String AID=A.ID();
+		final List<String> qualifyingIDs=getCurrentlyQualifyingIDs(studentM,AID);
+		DVector reqs=null;
+		for(final String ID : qualifyingIDs)
+		{
+			reqs=getRawPreRequisites(ID,true,A.ID());
 			if(reqs!=null) return reqs.copyOf();
 		}
-		reqs=getRawPreRequisites(cStats.getCurrentClass().ID(),true,A.ID());
+		reqs=getRawPreRequisites(studentM.charStats().getCurrentClass().ID(),true,A.ID());
 		return (reqs==null)?new DVector(2):reqs.copyOf();
 	}
 
@@ -1066,26 +1080,16 @@ public class CMAble extends StdLibrary implements AbilityMapper
 
 	public String getApplicableMask(MOB studentM, Ability A)
 	{
-		if(studentM==null) return "";
+		if((studentM==null)||(A==null)) return "";
+		final String AID=A.ID();
+		final List<String> qualifyingIDs=getCurrentlyQualifyingIDs(studentM,AID);
 		String mask=null;
-		for(int c=studentM.charStats().numClasses()-1;c>=0;c--)
+		for(final String ID : qualifyingIDs)
 		{
-			CharClass C=studentM.charStats().getMyClass(c);
-			int level=getQualifyingLevel(C.ID(),true,A.ID());
-			int classLevel=studentM.charStats().getClassLevel(C);
-			if((level>=0)&&(classLevel>=level))
-			{
-				mask=getExtraMask(C.ID(),true,A.ID());
-				if(mask!=null) return mask;
-			}
-		}
-		int level=getQualifyingLevel(studentM.charStats().getMyRace().ID(),false,A.ID());
-		int classLevel=studentM.basePhyStats().level();
-		if((level>=0)&&(classLevel>=level))
-		{
-			mask=getExtraMask(studentM.charStats().getMyRace().ID(),false,A.ID());
+			mask=getExtraMask(ID,true,AID);
 			if(mask!=null) return mask;
 		}
+		
 		mask=getExtraMask(studentM.charStats().getCurrentClass().ID(),true,A.ID());
 		return mask==null?"":mask;
 	}
@@ -1109,13 +1113,25 @@ public class CMAble extends StdLibrary implements AbilityMapper
 			}
 		}
 		int raceLevel=getQualifyingLevel(studentM.charStats().getMyRace().ID(),false,A.ID());
-		int classLevel=studentM.basePhyStats().level();
+		int charLevel=studentM.basePhyStats().level();
 		if((raceLevel>=0)
-		&&(classLevel>=raceLevel)
-		&&((classLevel-raceLevel)>greatestDiff))
+		&&(charLevel>=raceLevel)
+		&&((charLevel-raceLevel)>greatestDiff))
 		{
-			greatestDiff=classLevel-raceLevel;
+			greatestDiff=charLevel-raceLevel;
 			theLevel=raceLevel;
+		}
+		final Clan clan = studentM.getMyClan();
+		if(clan != null)
+		{
+			int clanLevel=getQualifyingLevel(clan.getGovernment().ID(),false,A.ID());
+			if((clanLevel>=0)
+			&&(clan.getClanLevel()>=clanLevel)
+			&&((charLevel-clanLevel)>greatestDiff))
+			{
+				greatestDiff=charLevel-clanLevel;
+				theLevel=clanLevel;
+			}
 		}
 		if(theLevel<0)
 			return getQualifyingLevel(studentM.charStats().getCurrentClass().ID(),true,A.ID());
@@ -1140,22 +1156,31 @@ public class CMAble extends StdLibrary implements AbilityMapper
 				theClass=C;
 			}
 		}
-		int level=getQualifyingLevel(studentM.charStats().getMyRace().ID(),false,A.ID());
-		int classLevel=studentM.basePhyStats().level();
-		if((level>=0)
-		&&(classLevel>=level)
-		&&((classLevel-level)>greatestDiff))
-			greatestDiff=classLevel-level;
+		int raceLevel=getQualifyingLevel(studentM.charStats().getMyRace().ID(),false,A.ID());
+		int charLevel=studentM.basePhyStats().level();
+		if((raceLevel>=0)
+		&&(charLevel>=raceLevel)
+		&&((charLevel-raceLevel)>greatestDiff))
+			greatestDiff=charLevel-raceLevel;
+		final Clan clan = studentM.getMyClan();
+		if(clan != null)
+		{
+			int clanLevel=getQualifyingLevel(clan.getGovernment().ID(),false,A.ID());
+			if((clanLevel>=0)
+			&&(clan.getClanLevel()>=clanLevel)
+			&&((charLevel-clanLevel)>greatestDiff))
+				greatestDiff=charLevel-clanLevel;
+		}
 		if(theClass==null)
 			return studentM.charStats().getClassLevel(studentM.charStats().getCurrentClass());
 		return studentM.charStats().getClassLevel(theClass);
 	}
 
-	public Object lowestQualifyingClassRace(MOB studentM, Ability A)
+	public CMObject lowestQualifyingClassRaceGovt(MOB studentM, Ability A)
 	{
 		if(studentM==null) return null;
 		int theLevel=-1;
-		CharClass theClass=null;
+		CMObject theClass=null;
 		for(int c=studentM.charStats().numClasses()-1;c>=0;c--)
 		{
 			CharClass C=studentM.charStats().getMyClass(c);
@@ -1172,11 +1197,18 @@ public class CMAble extends StdLibrary implements AbilityMapper
 		int raceLevel=getQualifyingLevel(studentM.charStats().getMyRace().ID(),false,A.ID());
 		if((raceLevel>=0)
 		&&((theClass==null)||((studentM.basePhyStats().level()>=raceLevel)&&(theLevel>raceLevel))))
-			return studentM.charStats().getMyRace();
+			theClass=studentM.charStats().getMyRace();
+		final Clan clan = studentM.getMyClan();
+		if(clan != null)
+		{
+			int clanLevel=getQualifyingLevel(clan.getGovernment().ID(),false,A.ID());
+			if((clanLevel>=0)&&(clan.getClanLevel()>=clanLevel)&&(theLevel>clanLevel))
+				theClass=clan.getGovernment();
+		}
 		return theClass;
 	}
 
-
+	
 	public boolean qualifiesByCurrentClassAndLevel(MOB studentM, Ability A)
 	{
 		if(studentM==null) return false;
@@ -1188,6 +1220,13 @@ public class CMAble extends StdLibrary implements AbilityMapper
 		level=getQualifyingLevel(studentM.charStats().getMyRace().ID(),false,A.ID());
 		if((level>=0)&&(studentM.phyStats().level()>=level))
 			return true;
+		final Clan clan = studentM.getMyClan();
+		if(clan != null)
+		{
+			level=getQualifyingLevel(clan.getGovernment().ID(),false,A.ID());
+			if((level>=0)&&(clan.getClanLevel()>=level))
+				return true;
+		}
 		return false;
 	}
 	
@@ -1237,8 +1276,8 @@ public class CMAble extends StdLibrary implements AbilityMapper
 		AbilityLimits aL = getCommonSkillLimit(student);
 		CharClass C=student.charStats().getCurrentClass();
 		if(C==null) return aL;
-		DVector culturalAbilitiesDV = student.baseCharStats().getMyRace().culturalAbilities();
 		HashSet culturalAbilities=new HashSet();
+		DVector culturalAbilitiesDV = student.baseCharStats().getMyRace().culturalAbilities();
 		for(int i=0;i<culturalAbilitiesDV.size();i++)
 			culturalAbilities.add(culturalAbilitiesDV.elementAt(i, 1).toString().toLowerCase());
 		for(int a=0;a<student.numLearnedAbilities();a++)
@@ -1273,6 +1312,13 @@ public class CMAble extends StdLibrary implements AbilityMapper
 		int level=getQualifyingLevel(studentM.charStats().getMyRace().ID(),false,abilityID);
 		if((level>=0)&&(studentM.phyStats().level()>=level))
 			return true;
+		final Clan clan = studentM.getMyClan();
+		if(clan != null)
+		{
+			level=getQualifyingLevel(clan.getGovernment().ID(),false,abilityID);
+			if((level>=0)&&(clan.getClanLevel()>=level))
+				return true;
+		}
 		return false;
 	}
 
@@ -1333,35 +1379,52 @@ public class CMAble extends StdLibrary implements AbilityMapper
 		return false;
 	}
 
-	public boolean getSecretSkill(MOB mob, String abilityID)
+	public final List<AbilityMapping> getAllAbilityMappings(final MOB mob, final String abilityID)
 	{
-		boolean secretFound=false;
+		final List<AbilityMapping> list=new LinkedList<AbilityMapping>();
 		for(int c=0;c<mob.charStats().numClasses();c++)
 		{
-			String charClass=mob.charStats().getMyClass(c).ID();
+			final String charClass=mob.charStats().getMyClass(c).ID();
 			if(completeAbleMap.containsKey(charClass))
 			{
-				Map<String,AbilityMapping> ableMap=completeAbleMap.get(charClass);
+				final Map<String,AbilityMapping> ableMap=completeAbleMap.get(charClass);
 				if(ableMap.containsKey(abilityID))
-                {
-					if(!ableMap.get(abilityID).isSecret)
-						return false;
-					secretFound=true;
-                }
+					list.add(ableMap.get(abilityID));
 			}
 		}
 		if(completeAbleMap.containsKey(mob.charStats().getMyRace().ID()))
 		{
-			Map<String,AbilityMapping> ableMap=completeAbleMap.get(mob.charStats().getMyRace().ID());
+			final Map<String,AbilityMapping> ableMap=completeAbleMap.get(mob.charStats().getMyRace().ID());
 			if(ableMap.containsKey(abilityID))
-            {
-				if(!ableMap.get(abilityID).isSecret)
-					return false;
-				secretFound=true;
-            }
+				list.add(ableMap.get(abilityID));
+		}
+		
+		final Clan clan = mob.getMyClan();
+		if(clan!=null)
+		{
+			if(completeAbleMap.containsKey(clan.getGovernment().ID()))
+			{
+				final Map<String,AbilityMapping> ableMap=completeAbleMap.get(clan.getGovernment().ID());
+				if(ableMap.containsKey(abilityID))
+					list.add(ableMap.get(abilityID));
+			}
 		}
 		AbilityMapping AB=getAllAbleMap(abilityID);
-		if(AB!=null) return AB.isSecret;
+		if(AB!=null)
+			list.add(AB);
+		return list;
+	}
+	
+	public boolean getSecretSkill(MOB mob, String abilityID)
+	{
+		boolean secretFound=false;
+		final List<AbilityMapping> mappings=getAllAbilityMappings(mob,abilityID);
+		for(final AbilityMapping ableMap : mappings)
+		{
+			if(!ableMap.isSecret)
+				return false;
+			secretFound=true;
+		}
 		return secretFound;
 	}
 
@@ -1428,25 +1491,12 @@ public class CMAble extends StdLibrary implements AbilityMapper
     public Integer[] getCostOverrides(MOB mob, String abilityID)
     {
     	Integer[] found=null;
-        for(int c=0;c<mob.charStats().numClasses();c++)
-        {
-            String charClass=mob.charStats().getMyClass(c).ID();
-            if(completeAbleMap.containsKey(charClass))
-            {
-            	Map<String,AbilityMapping> ableMap=completeAbleMap.get(charClass);
-                if((ableMap.containsKey(abilityID))&&(found==null))
-                    found=ableMap.get(abilityID).costOverrides;
-            }
-        }
-        if(completeAbleMap.containsKey(mob.charStats().getMyRace().ID()))
-        {
-        	Map<String,AbilityMapping> ableMap=completeAbleMap.get(mob.charStats().getMyRace().ID());
-            if((ableMap.containsKey(abilityID))&&(found==null))
-                found=ableMap.get(abilityID).costOverrides;
-        }
-        AbilityMapping AB=getAllAbleMap(abilityID);
-        if((AB!=null)&&(found==null))
-            return found=AB.costOverrides;
+		final List<AbilityMapping> mappings=getAllAbilityMappings(mob,abilityID);
+		for(final AbilityMapping ableMap : mappings)
+		{
+            found=ableMap.costOverrides;
+            if(found!=null) break;
+		}
         return found;
     }
 

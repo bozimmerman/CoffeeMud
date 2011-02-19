@@ -5360,7 +5360,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
         E.setStat("DISFLAGS",""+flags);
     }
 
-    protected void genRacialAbilities(MOB mob, Race E, int showNumber, int showFlag)
+    protected void genDynamicAbilities(MOB mob, Modifiable E, String typeName, String levelName, int showNumber, int showFlag)
         throws IOException
     {
         if((showFlag>0)&&(showFlag!=showNumber)) return;
@@ -5382,7 +5382,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
             }
             if(parts.toString().endsWith(", "))
             {parts.deleteCharAt(parts.length()-1);parts.deleteCharAt(parts.length()-1);}
-            mob.tell(showNumber+". Racial Abilities: "+parts.toString()+".");
+            mob.tell(showNumber+". "+typeName+" Abilities: "+parts.toString()+".");
             if((showFlag!=showNumber)&&(showFlag>-999)) return;
             String newName=mob.session().prompt("Enter an ability name to add or remove (?)\n\r:","");
             if(newName.equalsIgnoreCase("?"))
@@ -5454,7 +5454,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
             }
         }
     }
-    protected void genRacialEffects(MOB mob, Race E, int showNumber, int showFlag)
+    
+    protected void genDynamicEffects(MOB mob, Modifiable E, String typeName, String levelName, int showNumber, int showFlag)
         throws IOException
     {
         if((showFlag>0)&&(showFlag!=showNumber)) return;
@@ -5476,7 +5477,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
             }
             if(parts.toString().endsWith(", "))
             {parts.deleteCharAt(parts.length()-1);parts.deleteCharAt(parts.length()-1);}
-            mob.tell(showNumber+". Racial Effects: "+parts.toString()+".");
+            mob.tell(showNumber+". "+typeName+" Effects: "+parts.toString()+".");
             if((showFlag!=showNumber)&&(showFlag>-999)) return;
             String newName=mob.session().prompt("Enter an effect name to add or remove\n\r:","");
             if(newName.equalsIgnoreCase("?"))
@@ -5497,7 +5498,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
                     else
                     {
                         StringBuffer str=new StringBuffer(A.ID()+"~");
-                        String level=mob.session().prompt("Enter the level to gain this effect (1): ","1");
+                        String level=mob.session().prompt("Enter the "+levelName+" level to gain this effect (1): ","1");
                         str.append((""+CMath.s_int(level))+"~");
                         String prof=mob.session().prompt("Enter any parameters: ","");
                         str.append(""+prof);
@@ -6086,7 +6087,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
             
             ++showNumber;
             clanGovernmentPositions(mob,me,++showNumber,showFlag);
-            
+            promptStatStr(mob,me,"Use @x1 for the clan level.\n\r"+CMLib.help().getHelpText("FORMULA", mob, true),++showNumber,showFlag,"XP Per Level Formula","XPLEVELFORMULA",true);
             promptStatBool(mob, me,++showNumber, showFlag,"Conquest Enabled", "CONQUESTENABLED");
             if(CMath.s_bool(me.getStat("CONQUESTENABLED")))
             {
@@ -6104,6 +6105,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
             promptStatChoices(mob,me,CMParms.toStringList(Clan.AutoPromoteFlag.values()),++showNumber,showFlag,"Auto-Promotion","AUTOPROMOTEBY",Clan.AutoPromoteFlag.values());
             promptStatChoices(mob,me,CMParms.toStringList(me.getPositions()),++showNumber,showFlag,"Apply Position","AUTOROLE",me.getPositions());
             promptStatChoices(mob,me,CMParms.toStringList(me.getPositions()),++showNumber,showFlag,"Accept Position","ACCEPTPOS",me.getPositions());
+            genDynamicAbilities(mob,me,"Clan","clan",++showNumber,showFlag);
+            genDynamicEffects(mob,me,"Clan","clan",++showNumber,showFlag);
             
             if(showFlag<-900){ ok=true; break;}
             if(showFlag>0){ showFlag=-1; continue;}
@@ -6337,9 +6340,9 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
             genOutfit(mob,me,++showNumber,showFlag);
             genWeapon(mob,me,++showNumber,showFlag);
             genRaceBuddy(mob,me,++showNumber,showFlag,"Weapons Race","WEAPONRACE");
-            genRacialAbilities(mob,me,++showNumber,showFlag);
+            genDynamicAbilities(mob,me,"Racial","char",++showNumber,showFlag);
             genCulturalAbilities(mob,me,++showNumber,showFlag);
-            genRacialEffects(mob,me,++showNumber,showFlag);
+            genDynamicEffects(mob,me,"Racial","char",++showNumber,showFlag);
             if(showFlag<-900){ ok=true; break;}
             if(showFlag>0){ showFlag=-1; continue;}
             showFlag=CMath.s_int(mob.session().prompt("Edit which? ",""));

@@ -157,7 +157,7 @@ public class GrinderRaces
         return classes;
     }
 
-    public static DVector rabilities(ExternalHTTPRequests httpReq)
+    public static void setDynAbilities(Modifiable M, ExternalHTTPRequests httpReq)
     {
         DVector theclasses=new DVector(4);
         if(httpReq.isRequestParameter("RABLES1"))
@@ -180,10 +180,17 @@ public class GrinderRaces
                 behav=httpReq.getRequestParameter("RABLES"+num);
             }
         }
-        return theclasses;
+        M.setStat("NUMRABLE", ""+theclasses.size());
+        for(int i=0;i<theclasses.size();i++)
+        {
+            M.setStat("GETRABLE"+i, (String)theclasses.elementAt(i,1));
+            M.setStat("GETRABLEPROF"+i, (String)theclasses.elementAt(i,2));
+            M.setStat("GETRABLEQUAL"+i, ((String)theclasses.elementAt(i,3)).equalsIgnoreCase("on")?"true":"false");
+            M.setStat("GETRABLELVL"+i, (String)theclasses.elementAt(i,4));
+        }
     }
 
-    public static DVector reffects(ExternalHTTPRequests httpReq)
+    public static void setDynEffects(Modifiable M, ExternalHTTPRequests httpReq)
     {
         DVector theclasses=new DVector(3);
         if(httpReq.isRequestParameter("REFFS1"))
@@ -204,7 +211,13 @@ public class GrinderRaces
                 behav=httpReq.getRequestParameter("REFFS"+num);
             }
         }
-        return theclasses;
+        M.setStat("NUMREFF", ""+theclasses.size());
+        for(int i=0;i<theclasses.size();i++)
+        {
+            M.setStat("GETREFF"+i, (String)theclasses.elementAt(i,1));
+            M.setStat("GETREFFLVL"+i, (String)theclasses.elementAt(i,3));
+            M.setStat("GETREFFPARM"+i, (String)theclasses.elementAt(i,2));
+        }
     }
 
 
@@ -332,24 +345,9 @@ public class GrinderRaces
             R.setStat("WEAPONXML",((Environmental)V.get(0)).text());
         }
         
-        DVector DV=rabilities(httpReq);
-        R.setStat("NUMRABLE", ""+DV.size());
-        for(int i=0;i<DV.size();i++)
-        {
-            R.setStat("GETRABLE"+i, (String)DV.elementAt(i,1));
-            R.setStat("GETRABLEPROF"+i, (String)DV.elementAt(i,2));
-            R.setStat("GETRABLEQUAL"+i, ((String)DV.elementAt(i,3)).equalsIgnoreCase("on")?"true":"false");
-            R.setStat("GETRABLELVL"+i, (String)DV.elementAt(i,4));
-        }
-        
-        DV=reffects(httpReq);
-        R.setStat("NUMREFF", ""+DV.size());
-        for(int i=0;i<DV.size();i++)
-        {
-            R.setStat("GETREFF"+i, (String)DV.elementAt(i,1));
-            R.setStat("GETREFFLVL"+i, (String)DV.elementAt(i,3));
-            R.setStat("GETREFFPARM"+i, (String)DV.elementAt(i,2));
-        }
+        DVector DV;
+        setDynAbilities(R,httpReq);
+        setDynEffects(R,httpReq);
         
         DV=cabilities(httpReq);
         R.setStat("NUMCABLE", ""+DV.size());

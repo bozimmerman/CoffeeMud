@@ -157,7 +157,10 @@ public class GrinderClanGovernments
 				posDexStr=Integer.toString(posDex);
 			}
 			G.setPositions(posList.toArray(new ClanPosition[0]));
+	        GrinderRaces.setDynAbilities(G,httpReq);
+	        GrinderRaces.setDynEffects(G,httpReq);
         }
+        
         return "";
     }
 }

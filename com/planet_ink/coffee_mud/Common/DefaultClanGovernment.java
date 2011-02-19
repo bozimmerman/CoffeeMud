@@ -296,7 +296,7 @@ protected Map<Integer,List<Ability>>  				clanEffectMap=null;
 	private static enum GOVT_STAT_CODES {
 		NAME,AUTOROLE,ACCEPTPOS,SHORTDESC,REQUIREDMASK,ISPUBLIC,ISFAMILYONLY,OVERRIDEMINMEMBERS,
 		CONQUESTENABLED,CONQUESTITEMLOYALTY,CONQUESTDEITYBASIS,MAXVOTEDAYS,VOTEQUORUMPCT,
-		AUTOPROMOTEBY,VOTEFUNCS,LONGDESC,
+		AUTOPROMOTEBY,VOTEFUNCS,LONGDESC,XPLEVELFORMULA,
 		NUMRABLE,GETRABLE,GETRABLEPROF,GETRABLEQUAL,GETRABLELVL,
 		NUMREFF,GETREFF,GETREFFPARM,GETREFFLVL,
 	}
@@ -322,6 +322,7 @@ protected Map<Integer,List<Ability>>  				clanEffectMap=null;
 		case ACCEPTPOS: return (acceptPos < 0 || acceptPos > positions.length) ? "" : positions[acceptPos].getID();
 		case SHORTDESC: return shortDesc;
 		case LONGDESC: return longDesc;
+		case XPLEVELFORMULA: return xpCalculationFormulaStr;
 		case REQUIREDMASK: return requiredMaskStr;
 		case ISPUBLIC: return Boolean.toString(isPublic);
 		case ISFAMILYONLY: return Boolean.toString(isFamilyOnly);
@@ -379,6 +380,7 @@ protected Map<Integer,List<Ability>>  				clanEffectMap=null;
 		case ACCEPTPOS: { ClanPosition P=getPosition(val); if(P!=null) acceptPos=P.getRoleID(); break; }
 		case SHORTDESC: shortDesc=val; break;
 		case LONGDESC: longDesc=val; break;
+		case XPLEVELFORMULA: setXpCalculationFormulaStr(val); break;
 		case REQUIREDMASK: requiredMaskStr=val;break; 
 		case ISPUBLIC: isPublic=CMath.s_bool(val); break;
 		case ISFAMILYONLY: isFamilyOnly=CMath.s_bool(val); break;
@@ -604,7 +606,7 @@ protected Map<Integer,List<Ability>>  				clanEffectMap=null;
 			clanAbilityMap=new Hashtable<Integer,List<Ability>>();
 			for(int i=0;i<clanAbilityNames.length;i++)
 			{
-				CMLib.ableMapper().addRaceAbilityMapping(ID(),
+				CMLib.ableMapper().addDynaAbilityMapping(ID(),
 											 clanAbilityLevels[i],
 											 clanAbilityNames[i],
 											 clanAbilityProficiencies[i],

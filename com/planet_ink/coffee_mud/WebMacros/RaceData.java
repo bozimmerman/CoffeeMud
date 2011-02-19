@@ -349,7 +349,7 @@ public class RaceData extends StdWebMacro
         return str;
     }
 
-    public static StringBuffer rabilities(Race E, ExternalHTTPRequests httpReq, java.util.Map<String,String> parms, int borderSize, String font)
+    public static StringBuffer dynAbilities(List<Ability> ables, String ID, Modifiable obj, ExternalHTTPRequests httpReq, java.util.Map<String,String> parms, int borderSize, String font)
     {
         StringBuffer str=new StringBuffer("");
         DVector theclasses=new DVector(4);
@@ -375,14 +375,17 @@ public class RaceData extends StdWebMacro
         }
         else
         {
-            List<Ability> ables=E.racialAbilities(null);
-            DVector cables=E.culturalAbilities();
+            DVector cables;
+        	if(obj instanceof Race)
+	            cables=((Race)obj).culturalAbilities();
+        	else
+        		cables=new DVector(3);
             for(Ability A : ables)
             {
                 if((A!=null)&&(!cables.contains(A.ID())))
                 {
-                	boolean defaultGain = CMLib.ableMapper().getDefaultGain(E.ID(), false, A.ID());
-                	int qualifyingLevel = CMLib.ableMapper().getQualifyingLevel(E.ID(), false,A.ID()) ;
+                	boolean defaultGain = CMLib.ableMapper().getDefaultGain(ID, false, A.ID());
+                	int qualifyingLevel = CMLib.ableMapper().getQualifyingLevel(ID, false,A.ID()) ;
                     theclasses.addElement(A.ID(),A.proficiency()+"",defaultGain?"":"on",qualifyingLevel+"");
                 }
             }
@@ -434,7 +437,7 @@ public class RaceData extends StdWebMacro
     }
 
 
-    public static StringBuffer reffects(Race E, ExternalHTTPRequests httpReq, java.util.Map<String,String> parms, int borderSize, String font)
+    public static StringBuffer dynEffects(String ID, List<Ability> ables, ExternalHTTPRequests httpReq, java.util.Map<String,String> parms, int borderSize, String font)
     {
         StringBuffer str=new StringBuffer("");
         DVector theclasses=new DVector(3);
@@ -458,12 +461,11 @@ public class RaceData extends StdWebMacro
         }
         else
         {
-            List<Ability> ables=E.racialEffects(null);
             for(Ability A : ables)
             {
                 if(A!=null)
                 {
-                	int qualifyingLevel = CMLib.ableMapper().getQualifyingLevel(E.ID(), false,A.ID()) ;
+                	int qualifyingLevel = CMLib.ableMapper().getQualifyingLevel(ID, false,A.ID()) ;
                     theclasses.addElement(A.ID(),A.text(),qualifyingLevel+"");
                 }
             }
@@ -507,7 +509,6 @@ public class RaceData extends StdWebMacro
         str.append("</TABLE>");
         return str;
     }
-
 
     public static StringBuffer cabilities(Race E, ExternalHTTPRequests httpReq, java.util.Map<String,String> parms, int borderSize, String font)
     {
@@ -775,9 +776,9 @@ public class RaceData extends StdWebMacro
                             str.append(codes.name(b)+", ");
                 }
                 if(parms.containsKey("RABLE"))
-                    str.append(rabilities(R,httpReq,parms,0,(String)parms.get("FONT"))+", ");
+                    str.append(dynAbilities(R.racialAbilities(null),R.ID(),R,httpReq,parms,0,(String)parms.get("FONT"))+", ");
                 if(parms.containsKey("REFFS"))
-                    str.append(reffects(R,httpReq,parms,0,(String)parms.get("FONT"))+", ");
+                    str.append(dynEffects(R.ID(),R.racialEffects(null),httpReq,parms,0,(String)parms.get("FONT"))+", ");
                 if(parms.containsKey("CABLE"))
                     str.append(cabilities(R,httpReq,parms,0,(String)parms.get("FONT"))+", ");
                 if(parms.containsKey("WEARID"))
