@@ -1453,7 +1453,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                     break;
 				case 44: // -Deity
 					{
-						buf.append((skipFirstWord?"W":"Requires w")+"orshipping in the following deity(s): ");
+						buf.append((skipFirstWord?"W":"Requires w")+"orshipping the following deity(s): ");
 						for(int v2=v+1;v2<V.size();v2++)
 						{
 							String str2=(String)V.elementAt(v2);
