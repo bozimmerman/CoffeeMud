@@ -1,6 +1,7 @@
 package com.planet_ink.coffee_mud.Libraries;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.AbilityMapper.AbilityMapping;
 import com.planet_ink.coffee_mud.core.threads.ServiceEngine;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
@@ -576,6 +577,7 @@ public class Clans extends StdLibrary implements ClanManager
     	str.append(indt(1)).append("<AUTOPROMOTEBY>").append(gvt.getAutoPromoteBy().toString()).append("</AUTOPROMOTEBY>\n");
     	str.append(indt(1)).append("<PUBLIC>").append(gvt.isPublic()).append("</PUBLIC>\n");
     	str.append(indt(1)).append("<FAMILYONLY>").append(gvt.isFamilyOnly()).append("</FAMILYONLY>\n");
+    	str.append(indt(1)).append("<XPPERLEVELFORMULA>").append(gvt.getXpCalculationFormulaStr()).append("</XPPERLEVELFORMULA>\n");
     	if(gvt.getOverrideMinMembers() == null)
 	    	str.append(indt(1)).append("<OVERRIDEMINMEMBERS />\n");
     	else
@@ -587,6 +589,34 @@ public class Clans extends StdLibrary implements ClanManager
         	str.append(indt(2)).append("<DEITYBASIS>").append(gvt.isConquestByWorship()).append("</DEITYBASIS>\n");
     	}
     	str.append(indt(1)).append("</CONQUEST>\n");
+    	final Enumeration<AbilityMapping> m= CMLib.ableMapper().getClassAbles(gvt.ID(), false);
+    	if(!m.hasMoreElements())
+        	str.append(indt(1)).append("<ABILITIES />\n");
+    	else
+    	{
+        	str.append(indt(1)).append("<ABILITIES>\n");
+	    	for(;m.hasMoreElements();)
+	    	{
+	    		AbilityMapping map=m.nextElement();
+	        	str.append(indt(2)).append("<ABILITY ID=\""+map.abilityID+"\" PROFF="+map.defaultProficiency+" LEVEL="+map.qualLevel+" QUALIFYONLY="+(!map.autoGain)+" />\n");
+	    	}
+        	str.append(indt(1)).append("</ABILITIES />\n");
+    	}
+    	final List<Ability> effectList = gvt.getClanLevelEffects(null, Integer.MAX_VALUE);
+    	if(effectList.size()==0)
+        	str.append(indt(1)).append("<EFFECTS />\n");
+    	else
+    	{
+        	str.append(indt(1)).append("<EFFECTS>\n");
+	    	for(int a=0;a<effectList.size();a++)
+	    	{
+	    		Ability A=effectList.get(0);
+            	int lvl = CMath.s_int(gvt.getStat("GETREFFLVL"+a));
+	        	str.append(indt(2)).append("<EFFECT ID=\""+A.ID()+"\" LEVEL="+lvl+" PARMS=\""+CMLib.xml().parseOutAngleBrackets(A.text())+"\" />\n");
+	    	}
+        	str.append(indt(1)).append("</EFFECTS />\n");
+    	}
+    	
     	str.append("</CLANTYPE>\n");
     	return str.toString();
     }
@@ -741,6 +771,7 @@ public class Clans extends StdLibrary implements ClanManager
 			Integer overrideMinMembers = null;
 			if((overrideMinMembersStr!=null)&&CMath.isInteger(overrideMinMembersStr))
 				overrideMinMembers=Integer.valueOf(CMath.s_int(overrideMinMembersStr));
+			String xpPerLevelFormulaStr=CMLib.xml().getValFromPieces(clanTypePieceTag.contents, "XPPERLEVELFORMULA");
 			XMLLibrary.XMLpiece conquestTag = CMLib.xml().getPieceFromPieces(clanTypePieceTag.contents, "CONQUEST");
 			boolean conquestEnabled=true;
 			boolean conquestItemLoyalty=true;
@@ -767,9 +798,36 @@ public class Clans extends StdLibrary implements ClanManager
 			G.setConquestByWorship(conquestDeityBasis);
 			G.setShortDesc(shortDesc);
 			G.setLongDesc(longDesc);
+			G.setXpCalculationFormulaStr(xpPerLevelFormulaStr);
 			G.setMaxVoteDays(maxVotingDays);
 			G.setVoteQuorumPct(minVotingPct);
 			G.setDefault(isDefault);
+
+			XMLLibrary.XMLpiece abilitiesTag = CMLib.xml().getPieceFromPieces(clanTypePieceTag.contents, "ABILITYS");
+			if((abilitiesTag!=null)&&(abilitiesTag.contents!=null)&&(abilitiesTag.contents.size()>0))
+			{
+				G.setStat("NUMRABLE", Integer.toString(abilitiesTag.contents.size()));
+				for(int x=0;x<abilitiesTag.contents.size();x++)
+				{
+					XMLLibrary.XMLpiece able = abilitiesTag.contents.get(x);
+					G.setStat("GETRABLE"+x, able.parms.get("ID"));
+					G.setStat("GETRABLEPROF"+x, able.parms.get("PROFF"));
+					G.setStat("GETRABLEQUAL"+x, able.parms.get("QUALIFYONLY"));
+					G.setStat("GETRABLELVL"+x, able.parms.get("LEVEL"));
+				}
+			}
+			XMLLibrary.XMLpiece effectsTag = CMLib.xml().getPieceFromPieces(clanTypePieceTag.contents, "EFFECTS");
+			if((effectsTag!=null)&&(effectsTag.contents!=null)&&(effectsTag.contents.size()>0))
+			{
+				G.setStat("NUMREFF", Integer.toString(effectsTag.contents.size()));
+				for(int x=0;x<effectsTag.contents.size();x++)
+				{
+					XMLLibrary.XMLpiece able = effectsTag.contents.get(x);
+					G.setStat("GETREFF", able.parms.get("ID"));
+					G.setStat("GETREFFPARM", CMLib.xml().restoreAngleBrackets(able.parms.get("PARMS")));
+					G.setStat("GETREFFLVL", able.parms.get("LEVEL"));
+				}
+			}
 			governments.add(G);
     	}
     	ClanGovernment[] govts=new ClanGovernment[governments.size()];

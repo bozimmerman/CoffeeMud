@@ -300,6 +300,7 @@ protected Map<Integer,List<Ability>>  				clanEffectMap=null;
 		NUMRABLE,GETRABLE,GETRABLEPROF,GETRABLEQUAL,GETRABLELVL,
 		NUMREFF,GETREFF,GETREFFPARM,GETREFFLVL,
 	}
+	
 	public String[] getStatCodes() { return CMParms.toStringArray(GOVT_STAT_CODES.values());}
 	public int getSaveStatIndex() { return GOVT_STAT_CODES.values().length;}
 	private GOVT_STAT_CODES getStatIndex(String code) { return (GOVT_STAT_CODES)CMath.s_valueOf(GOVT_STAT_CODES.values(),code); }
@@ -635,7 +636,7 @@ protected Map<Integer,List<Ability>>  				clanEffectMap=null;
 		return finalV;
 	}
 
-	protected List<Ability> getClanLevelEffectsList(final MOB mob, final Integer level)
+	public List<Ability> getClanLevelEffectsList(final MOB mob, final Integer level)
 	{
 		if(clanEffectNames==null)
 			return empty;

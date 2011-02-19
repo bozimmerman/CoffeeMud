@@ -10,7 +10,7 @@
 	<!--
 		function Government(action)
 		{
-			var strFeatures="top=0,left=75,resizeable=no,scrollbars=yes,height=600,width=650,alwaysRaised=yes,dependent=yes";
+			var strFeatures="top=0,left=75,resizeable=no,scrollbars=yes,height=600,width=750,alwaysRaised=yes,dependent=yes";
 			w=window.open("government.cmvp?AUTH=@Authenticate?AUTH@&GOVERNMENT="+action,
 				"Government",strFeatures, false);
 		}
@@ -62,7 +62,7 @@
 	</TR>
 	@back@
 	<TR>
-	<TD COLSPAN=5><a href="javascript:if(document.RESOURCES.NAME.value!='')Government('_NEWONE_&NAME='+document.RESOURCES.NAME.value)"><FONT COLOR=WHITE><B>Create New:</a> <INPUT TYPE=TEXT NAME=NAME SIZE=70></B></FONT></TD>
+	<TD COLSPAN=5><a href="javascript:if(document.RESOURCES.GOVTNAME.value!='')Government('_NEWONE_&NAME='+document.RESOURCES.GOVTNAME.value)"><FONT COLOR=WHITE><B>Create New:</a> <INPUT TYPE=TEXT NAME=GOVTNAME SIZE=70></B></FONT></TD>
 	</TR>
 	</TABLE>
 	<P>

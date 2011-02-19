@@ -404,10 +404,10 @@ public class RaceData extends StdWebMacro
             str.append("<TD WIDTH=25%>");
             str.append(font+"Lvl:</B></FONT> <INPUT TYPE=TEXT NAME=RABLVL"+(i+1)+" VALUE=\""+((String)theclasses.elementAt(i,4))+"\" SIZE=3 MAXLENGTH=3>");
             str.append("</TD>");
-            str.append("<TD WIDTH=10%>");
-            str.append("<INPUT TYPE=TEXT NAME=RABPOF"+(i+1)+" VALUE=\""+((String)theclasses.elementAt(i,2))+"\" SIZE=3 MAXLENGTH=3>"+font+"%</B></I></FONT>");
+            str.append("<TD WIDTH=15%>");
+            str.append(font+"<INPUT TYPE=TEXT NAME=RABPOF"+(i+1)+" VALUE=\""+((String)theclasses.elementAt(i,2))+"\" SIZE=3 MAXLENGTH=3>%</B></I></FONT>");
             str.append("</TD>");
-            str.append("<TD WIDTH=30%>");
+            str.append("<TD WIDTH=25%>");
             str.append("<INPUT TYPE=CHECKBOX NAME=RABQUA"+(i+1)+" "+(((String)theclasses.elementAt(i,3)).equalsIgnoreCase("on")?"CHECKED":"")+">"+font+"Qualify Only</B></FONT></I>");
             str.append("</TD>");
             str.append("</TR>");
@@ -425,10 +425,10 @@ public class RaceData extends StdWebMacro
         str.append("<TD WIDTH=25%>");
         str.append(font+"Lvl:</B></I></FONT> <INPUT TYPE=TEXT NAME=RABLVL"+(theclasses.size()+1)+" VALUE=\"\" SIZE=3 MAXLENGTH=3>");
         str.append("</TD>");
-        str.append("<TD WIDTH=10%>");
-        str.append("<INPUT TYPE=TEXT NAME=RABPOF"+(theclasses.size()+1)+" VALUE=\"\" SIZE=3 MAXLENGTH=3>"+font+"%</B></I></FONT>");
+        str.append("<TD WIDTH=15%>");
+        str.append(font+"<INPUT TYPE=TEXT NAME=RABPOF"+(theclasses.size()+1)+" VALUE=\"\" SIZE=3 MAXLENGTH=3>%</B></I></FONT>");
         str.append("</TD>");
-        str.append("<TD WIDTH=30%>");
+        str.append("<TD WIDTH=25%>");
         str.append("<INPUT TYPE=CHECKBOX NAME=RABQUA"+(theclasses.size()+1)+" >"+font+"Qualify Only</B></I></FONT>");
         str.append("</TD>");
         str.append("</TR>");
@@ -437,7 +437,7 @@ public class RaceData extends StdWebMacro
     }
 
 
-    public static StringBuffer dynEffects(String ID, List<Ability> ables, ExternalHTTPRequests httpReq, java.util.Map<String,String> parms, int borderSize, String font)
+    public static StringBuffer dynEffects(String ID, List<Ability> ables, Modifiable obj, ExternalHTTPRequests httpReq, java.util.Map<String,String> parms, int borderSize, String font)
     {
         StringBuffer str=new StringBuffer("");
         DVector theclasses=new DVector(3);
@@ -461,11 +461,12 @@ public class RaceData extends StdWebMacro
         }
         else
         {
-            for(Ability A : ables)
+            for(int a=0;a<ables.size();a++)
             {
+            	final Ability A=ables.get(a);
                 if(A!=null)
                 {
-                	int qualifyingLevel = CMLib.ableMapper().getQualifyingLevel(ID, false,A.ID()) ;
+                	int qualifyingLevel = CMath.s_int(obj.getStat("GETREFFLVL"+a));
                     theclasses.addElement(A.ID(),A.text(),qualifyingLevel+"");
                 }
             }
@@ -778,7 +779,7 @@ public class RaceData extends StdWebMacro
                 if(parms.containsKey("RABLE"))
                     str.append(dynAbilities(R.racialAbilities(null),R.ID(),R,httpReq,parms,0,(String)parms.get("FONT"))+", ");
                 if(parms.containsKey("REFFS"))
-                    str.append(dynEffects(R.ID(),R.racialEffects(null),httpReq,parms,0,(String)parms.get("FONT"))+", ");
+                    str.append(dynEffects(R.ID(),R.racialEffects(null),R,httpReq,parms,0,(String)parms.get("FONT"))+", ");
                 if(parms.containsKey("CABLE"))
                     str.append(cabilities(R,httpReq,parms,0,(String)parms.get("FONT"))+", ");
                 if(parms.containsKey("WEARID"))
