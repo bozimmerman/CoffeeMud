@@ -132,6 +132,8 @@ public class Hunting extends CommonSkill
 					commonTell(mob,"You need to find the "+foundShortName+" nearby before the trail goes cold!");
 					displayText="You are hunting for "+found.name();
 					verb="hunting for "+found.name();
+					found.basePhyStats().setLevel(mob.basePhyStats().level());
+					found.recoverPhyStats();
 					found.bringToLife(nearByRoom(),true);
 					CMLib.beanCounter().clearZeroMoney(found,null);
 				}

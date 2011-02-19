@@ -130,7 +130,7 @@ public class GreatCat extends StdRace
 				("some "+name().toLowerCase()+" claws",RawMaterial.RESOURCE_BONE));
 				for(int i=0;i<4;i++)
 					resources.addElement(makeResource
-					("a strip of "+name().toLowerCase()+" fur",RawMaterial.RESOURCE_FUR));
+					("a strip of "+name().toLowerCase()+" hide",RawMaterial.RESOURCE_HIDE));
 				resources.addElement(makeResource
 				("a pound of "+name().toLowerCase()+" meat",RawMaterial.RESOURCE_MEAT));
 				resources.addElement(makeResource

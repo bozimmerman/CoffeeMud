@@ -415,7 +415,6 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
 				case RawMaterial.RESOURCE_WOOL:
 					return CMClass.getMOB("Sheep");
 				case RawMaterial.RESOURCE_LEATHER:
-				case RawMaterial.RESOURCE_HIDE:
 					switch(CMLib.dice().roll(1,10,0))
 					{
 					case 1:
@@ -428,6 +427,21 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
 					case 8:
 					case 9:
 					case 10: return CMClass.getMOB("Buck");
+					}
+					break;
+				case RawMaterial.RESOURCE_HIDE:
+					switch(CMLib.dice().roll(1,10,0))
+					{
+					case 1:
+					case 2: return CMClass.getMOB("Gorilla");
+					case 3: return CMClass.getMOB("Lion");
+					case 4: return CMClass.getMOB("Cheetah");
+					case 5:
+					case 6: return CMClass.getMOB("Ape");
+					case 7:
+					case 8: return CMClass.getMOB("Fox");
+					case 9:
+					case 10: return CMClass.getMOB("Monkey");
 					}
 					break;
 				case RawMaterial.RESOURCE_PORK:
