@@ -514,7 +514,7 @@ public class DefaultClan implements Clan
                   +"-----------------------------------------------------------------\n\r"
                   +getPremise()+"\n\r"
                   +"-----------------------------------------------------------------\n\r"
-                  +"^xLevel           :^.^N "+getClanLevel()+((member||sysmsgs)?("   (Next at ^w"+nextLevelXP+"^Nxp)\n\r"):"")
+                  +"^xLevel           :^.^N "+getClanLevel()+((member||sysmsgs)?("                      (Next at ^w"+nextLevelXP+"^Nxp)\n\r"):"")
                   +"^xType            :^.^N "+govt().getName()+"\n\r");
         if(getAcceptanceSettings().length()>0)
         {
