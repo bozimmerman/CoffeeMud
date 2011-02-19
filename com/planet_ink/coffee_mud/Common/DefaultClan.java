@@ -508,11 +508,13 @@ public class DefaultClan implements Clan
         StringBuffer msg=new StringBuffer("");
         boolean member=(mob!=null)&&mob.getClanID().equalsIgnoreCase(clanID())&&(getAuthority(mob.getClanRole(),Function.LIST_MEMBERS)!=Authority.CAN_NOT_DO);
         boolean sysmsgs=(mob!=null)&&CMath.bset(mob.getBitmap(),MOB.ATT_SYSOPMSGS);
+        final LinkedList<CMath.CompiledOperation> form = govt().getXPCalculationFormula();
+        double nextLevelXP = CMath.parseMathExpression(form, new double[]{getClanLevel()}, 0.0);
         msg.append("^x"+getGovernmentName()+" Profile   :^.^N "+clanID()+"\n\r"
                   +"-----------------------------------------------------------------\n\r"
                   +getPremise()+"\n\r"
                   +"-----------------------------------------------------------------\n\r"
-                  +"^xLevel           :^.^N "+getClanLevel()+"\n\r"
+                  +"^xLevel           :^.^N "+getClanLevel()+((member||sysmsgs)?("   (Next at ^w"+nextLevelXP+"^Nxp)\n\r"):"")
                   +"^xType            :^.^N "+govt().getName()+"\n\r");
         if(getAcceptanceSettings().length()>0)
         {
@@ -650,7 +652,7 @@ public class DefaultClan implements Clan
                     msg.append(" Prize: "+CMLib.clans().translatePrize(i)+"\n\r");
                 }
         }
-    	if((mob!=null)&&(getAuthority(mob.getClanRole(),Function.CLAN_SPELLS)!=Clan.Authority.CAN_NOT_DO))
+    	if(((mob!=null)&&(getAuthority(mob.getClanRole(),Function.CLAN_SPELLS)!=Clan.Authority.CAN_NOT_DO))||sysmsgs)
         {
             msg.append("-----------------------------------------------------------------\n\r");
             msg.append("^xClan Level Benefits:^.^N\n\r");
