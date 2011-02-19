@@ -29,7 +29,7 @@
 <TR><TD WIDTH=25% BGCOLOR=#FFCCFF><B>Trophies</B></TD><TD>@ClanData?trophies@</TD>
 <TR><TD WIDTH=25% BGCOLOR=#FFCCFF><B>Officers</B></TD>
 	<TD>
-		@ClanData?memberstart@	@loop@ @Clandata?membernext&clanposfilter=HOME_PRIVS@ @ClanData?membername@ (@ClanData?memberpos@)<BR> @back@
+		@ClanData?memberstart@	@loop@ @Clandata?membernext&clanfuncfilter=HOME_PRIVS@ @ClanData?membername@ (@ClanData?memberpos@)<BR> @back@
 	</TD>
 </TR>
 <TR><TD WIDTH=25% BGCOLOR=#FFCCFF><B>Relations</B></TD>

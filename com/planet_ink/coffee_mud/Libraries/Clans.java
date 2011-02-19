@@ -607,7 +607,7 @@ public class Clans extends StdLibrary implements ClanManager
 	    	}
         	str.append(indt(1)).append("</ABILITIES>\n");
     	}
-    	final List<Ability> effectList = gvt.getClanLevelEffects(null, Integer.MAX_VALUE);
+    	final List<Ability> effectList = gvt.getClanLevelEffects(null, Integer.valueOf(Integer.MAX_VALUE));
     	if(effectList.size()==0)
         	str.append(indt(1)).append("<EFFECTS />\n");
     	else

@@ -357,8 +357,8 @@ public class ClanData extends StdWebMacro
 				{
 					final String cmember=httpReq.getRequestParameter("CLANMEMBER");
 					String lastID="";
-					String posFilter=httpReq.getRequestParameter("CLANPOSFILTER");
-                    if(posFilter==null) posFilter=(String)parms.get("CLANPOSFILTER");
+					String posFilter=httpReq.getRequestParameter("CLANFUNCFILTER");
+                    if(posFilter==null) posFilter=(String)parms.get("CLANFUNCFILTER");
 					if(posFilter==null) posFilter="";
 					final Clan.Function reqFunction = (Clan.Function)CMath.s_valueOf(Clan.Function.values(), posFilter);
 					final List<MemberRecord> members=C.getMemberList();
