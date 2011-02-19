@@ -682,9 +682,10 @@ protected Map<Integer,List<Ability>>  				clanEffectMap=null;
 		return new ChameleonList<Ability>(empty,
 			new ChameleonList.Signaler<Ability>(empty) 
 			{
-				public boolean isDeprecated() { return mob.getMyClan()!=null;}
+				public boolean isDeprecated() { return (mob!=null)&&(mob.getMyClan())!=null;}
 				public void rebuild(final ChameleonList<Ability> me)
 				{
+					if(mob==null) return;
 					final Clan C=mob.getMyClan();
 					if(C!=null)
 						me.changeMeInto(C.getGovernment().getClanLevelEffects(mob, Integer.valueOf(C.getClanLevel())));
@@ -711,7 +712,7 @@ protected Map<Integer,List<Ability>>  				clanEffectMap=null;
 			{
 				public boolean isDeprecated()
 				{
-					if(mob.amDestroyed()) 
+					if((mob==null)||(mob.amDestroyed())) 
 						return true;
 					final Clan C = mob.getMyClan();
 					if(C==null) return true;
@@ -722,8 +723,9 @@ protected Map<Integer,List<Ability>>  				clanEffectMap=null;
 				}
 				public void rebuild(final ChameleonList<Ability> me)
 				{
-					final Clan C=mob.getMyClan();
-					if((mob.amDestroyed())||(C==null))
+					
+					final Clan C=(mob!=null)?mob.getMyClan():null;
+					if((mob==null)||(mob.amDestroyed())||(C==null))
 						me.changeMeInto(getEmptyClanLevelEffects(mob));
 					else
 						me.changeMeInto(C.getGovernment().getClanLevelEffects(mob, Integer.valueOf(C.getClanLevel())));

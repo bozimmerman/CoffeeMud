@@ -567,7 +567,8 @@ public class StdRace implements Race
 			{
 				public boolean isDeprecated()
 				{
-					if((mob.amDestroyed())
+					if((mob==null)
+					||(mob.amDestroyed())
 					||(mob.charStats().getMyRace() != myRace)
 					|| (racialEffectsList(mob) != oldReferenceListRef.get()))
 						return true;
@@ -575,7 +576,7 @@ public class StdRace implements Race
 				}
 				public void rebuild(final ChameleonList<Ability> me)
 				{
-					if(mob.amDestroyed())
+					if((mob==null)||(mob.amDestroyed()))
 						oldReferenceListRef=new WeakReference<List<Ability>>(empty);
 					else
 					{
