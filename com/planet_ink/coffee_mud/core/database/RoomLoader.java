@@ -353,7 +353,7 @@ public class RoomLoader
             			{ /* its all worked out now */}
             			else
             			if(otherA==null)
-            				Log.errOut("RoomLoader","Unknown area for unlinked room #"+nextRoomID);
+            				Log.errOut("RoomLoader","Unknown area for unlinked room #"+nextRoomID+" in "+roomID);
             			else
             			if(((unloadedRooms!=null)&&(unloadedRooms.contains(nextRoomID)))
             			||(CMath.bset(otherA.flags(),Area.FLAG_THIN)))
