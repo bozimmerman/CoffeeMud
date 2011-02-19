@@ -415,32 +415,10 @@ public class DefaultClan implements Clan
             		M.recoverCharStats();
             	}
         	}
-            if(M.fetchAbility("Spell_ClanHome")==null)
-            {
-                M.addAbility(CMClass.findAbility("Spell_ClanHome"));
-                (M.fetchAbility("Spell_ClanHome")).setProficiency(50);
-                did=true;
-            }
-            if(M.fetchAbility("Spell_ClanDonate")==null)
-            {
-                M.addAbility(CMClass.findAbility("Spell_ClanDonate"));
-                (M.fetchAbility("Spell_ClanDonate")).setProficiency(100);
-                did=true;
-            }
         }
-        else
-        {
-            if(M.fetchAbility("Spell_ClanHome")!=null)
-            {
-                did=true;
-                M.delAbility(M.fetchAbility("Spell_ClanHome"));
-            }
-            if(M.fetchAbility("Spell_ClanDonate")!=null)
-            {
-                did=true;
-                M.delAbility(M.fetchAbility("Spell_ClanDonate"));
-            }
-        }
+        M.delAbility(M.fetchAbility("Spell_ClanHome"));
+        M.delAbility(M.fetchAbility("Spell_ClanDonate"));
+        
         if(((M.getClanID().equals(clanID())))
         &&(getAuthority(M.getClanRole(),Function.ORDER_CONQUERED)!=Clan.Authority.CAN_NOT_DO))
         {
@@ -464,7 +442,7 @@ public class DefaultClan implements Clan
             String title="*, "+pos.getName()+" of "+name();
             if((M.getClanRole()==pos.getRoleID())
             &&(M.getClanID().equals(clanID()))
-            &&(getAuthority(M.getClanRole(),Function.CLAN_SPELLS)!=Clan.Authority.CAN_NOT_DO))
+            &&(getAuthority(M.getClanRole(),Function.CLAN_TITLES)!=Clan.Authority.CAN_NOT_DO))
             {
                 if(!M.playerStats().getTitles().contains(title))
                     M.playerStats().getTitles().add(title);
@@ -1422,9 +1400,13 @@ public class DefaultClan implements Clan
             CMLib.commands().postChannel((String)channels.get(i),clanID(),msg,true);
     }
 
+    private static final List<Ability> emptyAbles =new Vector<Ability>(1);
+    
 	public List<Ability> clanAbilities(MOB mob)
 	{
-		return govt().getClanLevelAbilities(Integer.valueOf(getClanLevel()));
+        if(getAuthority(mob.getClanRole(),Function.CLAN_SPELLS)!=Clan.Authority.CAN_NOT_DO)
+			return govt().getClanLevelAbilities(Integer.valueOf(getClanLevel()));
+        return emptyAbles;
 	}
 	
 	public int numClanEffects(MOB mob)

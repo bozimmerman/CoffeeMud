@@ -94,8 +94,30 @@
         <ITEMLOYALTY>true</ITEMLOYALTY>
         <DEITYBASIS>false</DEITYBASIS>
     </CONQUEST>
-    <ABILITIES />
-    <EFFECTS />
+    <ABILITIES>
+        <ABILITY ID="Spell_ClanDonate" PROFF=100 LEVEL=2 QUALIFYONLY=false />
+        <ABILITY ID="Spell_ClanHome" PROFF=100 LEVEL=3 QUALIFYONLY=false />
+        <ABILITY ID="Spell_CEqCold" PROFF=0 LEVEL=4 QUALIFYONLY=true />
+        <ABILITY ID="Spell_CEqGas" PROFF=0 LEVEL=4 QUALIFYONLY=true />
+        <ABILITY ID="Spell_CEqMind" PROFF=0 LEVEL=4 QUALIFYONLY=true />
+        <ABILITY ID="Spell_CEqWater" PROFF=0 LEVEL=4 QUALIFYONLY=true />
+        <ABILITY ID="Spell_CEqAcid" PROFF=0 LEVEL=5 QUALIFYONLY=true />
+        <ABILITY ID="Spell_CEqElectric" PROFF=0 LEVEL=5 QUALIFYONLY=true />
+        <ABILITY ID="Spell_CEqFire" PROFF=0 LEVEL=5 QUALIFYONLY=true />
+        <ABILITY ID="Spell_CEqPoison" PROFF=0 LEVEL=7 QUALIFYONLY=true />
+        <ABILITY ID="Spell_CEqDisease" PROFF=0 LEVEL=9 QUALIFYONLY=true />
+        <ABILITY ID="Spell_CEqParalysis" PROFF=0 LEVEL=10 QUALIFYONLY=true />
+    </ABILITIES>
+    <EFFECTS>
+        <EFFECT ID="Prop_ModFaction" LEVEL=3 PARMS="-:+10%" />
+        <EFFECT ID="Prop_ModExperience" LEVEL=8 PARMS="+10%" />
+        <EFFECT ID="Prop_ModFaction" LEVEL=6 PARMS="+:+5" />
+        <EFFECT ID="Prop_ModFaction" LEVEL=14 PARMS="+:+5" />
+        <EFFECT ID="Prop_ModExperience" LEVEL=16 PARMS="+10%" />
+        <EFFECT ID="Prop_ModExperience" LEVEL=18 PARMS="+10%" />
+        <EFFECT ID="Prop_ModExperience" LEVEL=20 PARMS="+10%" />
+        <EFFECT ID="Prop_ModFaction" LEVEL=12 PARMS="+:+5" />
+    </EFFECTS>
 </CLANTYPE>
 <CLANTYPE TYPEID=1 NAME="Guild">
     <SHORTDESC>ruled by a numerous bosses who assign underlings</SHORTDESC>
@@ -181,12 +203,12 @@
         </POSITION>
     </POSITIONS>
     <VOTING MAXDAYS=24 QUORUMPCT=100>
-        <POWER>TAX</POWER>
-        <POWER>PREMISE</POWER>
-        <POWER>SET_HOME</POWER>
-        <POWER>ASSIGN</POWER>
-        <POWER>SET_DONATE</POWER>
         <POWER>DECLARE</POWER>
+        <POWER>SET_HOME</POWER>
+        <POWER>SET_DONATE</POWER>
+        <POWER>ASSIGN</POWER>
+        <POWER>PREMISE</POWER>
+        <POWER>TAX</POWER>
     </VOTING>
     <AUTOPOSITION>APPLICANT</AUTOPOSITION>
     <ACCEPTPOSITION>MEMBER</ACCEPTPOSITION>
@@ -201,7 +223,10 @@
         <ITEMLOYALTY>true</ITEMLOYALTY>
         <DEITYBASIS>false</DEITYBASIS>
     </CONQUEST>
-    <ABILITIES />
+    <ABILITIES>
+        <ABILITY ID="Spell_ClanDonate" PROFF=0 LEVEL=2 QUALIFYONLY=false />
+        <ABILITY ID="Spell_ClanHome" PROFF=0 LEVEL=4 QUALIFYONLY=false />
+    </ABILITIES>
     <EFFECTS />
 </CLANTYPE>
 <CLANTYPE TYPEID=2 NAME="Union">
@@ -277,15 +302,15 @@
         </POSITION>
     </POSITIONS>
     <VOTING MAXDAYS=48 QUORUMPCT=66>
-        <POWER>TAX</POWER>
-        <POWER>PREMISE</POWER>
-        <POWER>SET_HOME</POWER>
-        <POWER>EXILE</POWER>
-        <POWER>REJECT</POWER>
-        <POWER>ASSIGN</POWER>
-        <POWER>SET_DONATE</POWER>
-        <POWER>ACCEPT</POWER>
         <POWER>DECLARE</POWER>
+        <POWER>SET_HOME</POWER>
+        <POWER>SET_DONATE</POWER>
+        <POWER>EXILE</POWER>
+        <POWER>ACCEPT</POWER>
+        <POWER>ASSIGN</POWER>
+        <POWER>PREMISE</POWER>
+        <POWER>REJECT</POWER>
+        <POWER>TAX</POWER>
     </VOTING>
     <AUTOPOSITION>APPLICANT</AUTOPOSITION>
     <ACCEPTPOSITION>CITIZEN</ACCEPTPOSITION>
@@ -300,7 +325,10 @@
         <ITEMLOYALTY>true</ITEMLOYALTY>
         <DEITYBASIS>false</DEITYBASIS>
     </CONQUEST>
-    <ABILITIES />
+    <ABILITIES>
+        <ABILITY ID="Spell_ClanDonate" PROFF=0 LEVEL=2 QUALIFYONLY=false />
+        <ABILITY ID="Spell_ClanHome" PROFF=0 LEVEL=4 QUALIFYONLY=false />
+    </ABILITIES>
     <EFFECTS />
 </CLANTYPE>
 <CLANTYPE TYPEID=3 NAME="Fellowship">
@@ -381,15 +409,15 @@
         </POSITION>
     </POSITIONS>
     <VOTING MAXDAYS=100 QUORUMPCT=33>
-        <POWER>TAX</POWER>
-        <POWER>PREMISE</POWER>
-        <POWER>SET_HOME</POWER>
-        <POWER>EXILE</POWER>
-        <POWER>REJECT</POWER>
-        <POWER>ASSIGN</POWER>
-        <POWER>SET_DONATE</POWER>
-        <POWER>ACCEPT</POWER>
         <POWER>DECLARE</POWER>
+        <POWER>SET_HOME</POWER>
+        <POWER>SET_DONATE</POWER>
+        <POWER>EXILE</POWER>
+        <POWER>ACCEPT</POWER>
+        <POWER>ASSIGN</POWER>
+        <POWER>PREMISE</POWER>
+        <POWER>REJECT</POWER>
+        <POWER>TAX</POWER>
     </VOTING>
     <AUTOPOSITION>APPLICANT</AUTOPOSITION>
     <ACCEPTPOSITION>CITIZEN</ACCEPTPOSITION>
@@ -404,7 +432,10 @@
         <ITEMLOYALTY>true</ITEMLOYALTY>
         <DEITYBASIS>false</DEITYBASIS>
     </CONQUEST>
-    <ABILITIES />
+    <ABILITIES>
+        <ABILITY ID="Spell_ClanDonate" PROFF=0 LEVEL=2 QUALIFYONLY=false />
+        <ABILITY ID="Spell_ClanHome" PROFF=0 LEVEL=4 QUALIFYONLY=false />
+    </ABILITIES>
     <EFFECTS />
 </CLANTYPE>
 <CLANTYPE TYPEID=4 NAME="Theocracy">
@@ -511,7 +542,10 @@
         <ITEMLOYALTY>false</ITEMLOYALTY>
         <DEITYBASIS>true</DEITYBASIS>
     </CONQUEST>
-    <ABILITIES />
+    <ABILITIES>
+        <ABILITY ID="Spell_ClanDonate" PROFF=0 LEVEL=2 QUALIFYONLY=false />
+        <ABILITY ID="Spell_ClanHome" PROFF=0 LEVEL=4 QUALIFYONLY=false />
+    </ABILITIES>
     <EFFECTS />
 </CLANTYPE>
 <CLANTYPE TYPEID=5 NAME="Family">
@@ -643,7 +677,10 @@
         <ITEMLOYALTY>true</ITEMLOYALTY>
         <DEITYBASIS>false</DEITYBASIS>
     </CONQUEST>
-    <ABILITIES />
+    <ABILITIES>
+        <ABILITY ID="Spell_ClanDonate" PROFF=0 LEVEL=2 QUALIFYONLY=false />
+        <ABILITY ID="Spell_ClanHome" PROFF=0 LEVEL=4 QUALIFYONLY=false />
+    </ABILITIES>
     <EFFECTS />
 </CLANTYPE>
 <CLANTYPE TYPEID=6 NAME="Anarchy">
@@ -690,7 +727,10 @@
         <ITEMLOYALTY>true</ITEMLOYALTY>
         <DEITYBASIS>false</DEITYBASIS>
     </CONQUEST>
-    <ABILITIES />
+    <ABILITIES>
+        <ABILITY ID="Spell_ClanDonate" PROFF=0 LEVEL=2 QUALIFYONLY=false />
+        <ABILITY ID="Spell_ClanHome" PROFF=0 LEVEL=4 QUALIFYONLY=false />
+    </ABILITIES>
     <EFFECTS />
 </CLANTYPE>
 </CLANTYPES>

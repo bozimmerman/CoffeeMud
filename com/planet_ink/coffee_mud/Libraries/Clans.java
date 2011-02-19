@@ -407,14 +407,18 @@ public class Clans extends StdLibrary implements ClanManager
 		P2.setFunctionChart(pows2);
 		P2.setPublic(false);
 		Set<Integer> usedTypeIDs=new HashSet<Integer>();
-		for(ClanGovernment G2 : CMLib.clans().getStockGovernments())
-			usedTypeIDs.add(Integer.valueOf(G2.getID()));
+    	ClanGovernment[] gvts=(ClanGovernment[])Resources.getResource("parsed_clangovernments");
 		int id=0;
-		for(int i=0;i<CMLib.clans().getStockGovernments().length;i++)
-			if(!usedTypeIDs.contains(Integer.valueOf(i)))
-			{
-				id=i; break;
-			}
+    	if(gvts!=null)
+    	{
+			for(ClanGovernment G2 : gvts)
+				usedTypeIDs.add(Integer.valueOf(G2.getID()));
+			for(int i=0;i<gvts.length;i++)
+				if(!usedTypeIDs.contains(Integer.valueOf(i)))
+				{
+					id=i; break;
+				}
+    	}
 		
 		ClanGovernment G=(ClanGovernment)CMClass.getCommon("DefaultClanGovernment");
 		G.setID(id);
@@ -589,6 +593,7 @@ public class Clans extends StdLibrary implements ClanManager
         	str.append(indt(2)).append("<DEITYBASIS>").append(gvt.isConquestByWorship()).append("</DEITYBASIS>\n");
     	}
     	str.append(indt(1)).append("</CONQUEST>\n");
+    	gvt.getClanLevelAbilities(Integer.valueOf(Integer.MAX_VALUE));
     	final Enumeration<AbilityMapping> m= CMLib.ableMapper().getClassAbles(gvt.ID(), false);
     	if(!m.hasMoreElements())
         	str.append(indt(1)).append("<ABILITIES />\n");
@@ -600,7 +605,7 @@ public class Clans extends StdLibrary implements ClanManager
 	    		AbilityMapping map=m.nextElement();
 	        	str.append(indt(2)).append("<ABILITY ID=\""+map.abilityID+"\" PROFF="+map.defaultProficiency+" LEVEL="+map.qualLevel+" QUALIFYONLY="+(!map.autoGain)+" />\n");
 	    	}
-        	str.append(indt(1)).append("</ABILITIES />\n");
+        	str.append(indt(1)).append("</ABILITIES>\n");
     	}
     	final List<Ability> effectList = gvt.getClanLevelEffects(null, Integer.MAX_VALUE);
     	if(effectList.size()==0)
@@ -610,11 +615,11 @@ public class Clans extends StdLibrary implements ClanManager
         	str.append(indt(1)).append("<EFFECTS>\n");
 	    	for(int a=0;a<effectList.size();a++)
 	    	{
-	    		Ability A=effectList.get(0);
+	    		Ability A=effectList.get(a);
             	int lvl = CMath.s_int(gvt.getStat("GETREFFLVL"+a));
 	        	str.append(indt(2)).append("<EFFECT ID=\""+A.ID()+"\" LEVEL="+lvl+" PARMS=\""+CMLib.xml().parseOutAngleBrackets(A.text())+"\" />\n");
 	    	}
-        	str.append(indt(1)).append("</EFFECTS />\n");
+        	str.append(indt(1)).append("</EFFECTS>\n");
     	}
     	
     	str.append("</CLANTYPE>\n");
@@ -823,9 +828,9 @@ public class Clans extends StdLibrary implements ClanManager
 				for(int x=0;x<effectsTag.contents.size();x++)
 				{
 					XMLLibrary.XMLpiece able = effectsTag.contents.get(x);
-					G.setStat("GETREFF", able.parms.get("ID"));
-					G.setStat("GETREFFPARM", CMLib.xml().restoreAngleBrackets(able.parms.get("PARMS")));
-					G.setStat("GETREFFLVL", able.parms.get("LEVEL"));
+					G.setStat("GETREFF"+x, able.parms.get("ID"));
+					G.setStat("GETREFFPARM"+x, CMLib.xml().restoreAngleBrackets(able.parms.get("PARMS")));
+					G.setStat("GETREFFLVL"+x, able.parms.get("LEVEL"));
 				}
 			}
 			governments.add(G);

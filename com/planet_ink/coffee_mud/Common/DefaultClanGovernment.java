@@ -59,8 +59,8 @@ public class DefaultClanGovernment implements ClanGovernment
 	public int		maxVoteDays;
 	/** minimum % of voters who must have voted for a vote to be valid if time expires*/
 	public int		voteQuorumPct;
-/** uncompiled level xp calculation formula */
-public String 	xpCalculationFormulaStr;
+	/** uncompiled level xp calculation formula */
+	public String 	xpCalculationFormulaStr;
 	/**  Whether this is the default government  */
 	public boolean	isDefault 		 = false;
 	/** The list of ClanPosition objects for each holdable position in this government */
@@ -74,8 +74,10 @@ public String 	xpCalculationFormulaStr;
 	public LinkedList<CMath.CompiledOperation> xpCalculationFormula = CMath.compileMathExpression(DEFAULT_XP_FORMULA);
 
 	// derived and internal vars
-protected Map<Integer,List<Ability>> 	   			clanAbilityMap=null;
-protected Map<Integer,List<Ability>>  				clanEffectMap=null;
+	protected Map<Integer,List<Ability>>
+						clanAbilityMap			=null;
+	protected Map<Integer,List<Ability>>
+						clanEffectMap			=null;
 	protected String[] 	clanEffectNames			=null;
 	protected int[] 	clanEffectLevels		=null;
 	protected String[] 	clanEffectParms			=null;
@@ -702,10 +704,11 @@ protected Map<Integer,List<Ability>>  				clanEffectMap=null;
 		final List<Ability> finalV=new Vector<Ability>(myList.size());
 		for(final Ability A : myList)
 		{
-			A.makeNonUninvokable();
-			A.setSavable(false); // must come AFTER the above
-			A.setAffectedOne(mob);
-			finalV.add(A);
+			Ability finalA=(Ability)A.copyOf();
+			finalA.makeNonUninvokable();
+			finalA.setSavable(false); // must come AFTER the above
+			finalA.setAffectedOne(mob);
+			finalV.add(finalA);
 		}
 		final ChameleonList<Ability> finalFinalV;
 		if(mob==null)
