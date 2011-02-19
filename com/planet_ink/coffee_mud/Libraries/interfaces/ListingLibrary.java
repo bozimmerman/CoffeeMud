@@ -50,6 +50,7 @@ public interface ListingLibrary extends CMLibrary
     public StringBuilder reallyList(Enumeration these, Room likeRoom);
     public StringBuilder reallyList(Enumeration these, int ofType, Room likeRoom);
     public StringBuilder reallyList2Cols(Enumeration these, int ofType, Room likeRoom);
-    public StringBuilder fourColumns(Vector reverseList);
-    public StringBuilder fourColumns(Vector reverseList, String tag);
+    public StringBuilder fourColumns(List<String> reverseList);
+    public StringBuilder fourColumns(List<String> reverseList, String tag);
+	public StringBuilder makeColumns(List<String> reverseList, String tag, int numCols);
 }

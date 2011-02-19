@@ -47,7 +47,7 @@ public class Prop_ModFaction extends Property
 
 	public String accountForYourself()
 	{
-		final Faction F=CMLib.factions().getFaction(factionID);
+		final Faction F=(factionID.length()>0)?CMLib.factions().getFaction(factionID):null;
 		String gainOrLoss=(gainonly)?"gained ":lossonly?"lost ":"";
 		final String factionName=
 			(factionID.length()==0)?"any faction": 
@@ -95,9 +95,9 @@ public class Prop_ModFaction extends Property
 			else
 			if(factionID.startsWith("-"))
 			{ lossonly=true; factionID=factionID.substring(1).trim();}
-			s=s.substring(x).trim();
+			s=s.substring(x+1).trim();
 		}
-		operationFormula="AMOUNT "+s;
+		operationFormula="Amount "+s;
 		if(s.startsWith("="))
 			operation = CMath.compileMathExpression(translateNumber(s.substring(1)).trim());
 		else
@@ -115,12 +115,12 @@ public class Prop_ModFaction extends Property
 		else
 		if(s.startsWith("(")&&(s.endsWith(")")))
 		{
-			operationFormula="AMOUNT ="+s;
+			operationFormula="Amount ="+s;
 			operation = CMath.compileMathExpression(s);
 		}
 		else
 			operation = CMath.compileMathExpression(translateNumber(s.trim()));
-		operationFormula=CMStrings.replaceAll(operationFormula, "@x1", "AMOUNT");
+		operationFormula=CMStrings.replaceAll(operationFormula, "@x1", "Amount");
 	}
 	
 	public boolean okMessage(Environmental myHost, CMMsg msg)

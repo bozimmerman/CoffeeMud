@@ -808,7 +808,7 @@ public class Clans extends StdLibrary implements ClanManager
 			G.setVoteQuorumPct(minVotingPct);
 			G.setDefault(isDefault);
 
-			XMLLibrary.XMLpiece abilitiesTag = CMLib.xml().getPieceFromPieces(clanTypePieceTag.contents, "ABILITYS");
+			XMLLibrary.XMLpiece abilitiesTag = CMLib.xml().getPieceFromPieces(clanTypePieceTag.contents, "ABILITIES");
 			if((abilitiesTag!=null)&&(abilitiesTag.contents!=null)&&(abilitiesTag.contents.size()>0))
 			{
 				G.setStat("NUMRABLE", Integer.toString(abilitiesTag.contents.size()));

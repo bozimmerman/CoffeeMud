@@ -73,7 +73,7 @@ public class Prop_ModExperience extends Property
 			mask=CMLib.masking().maskCompile(s.substring(x+1).trim());
 			s=s.substring(0,x).trim();
 		}
-		operationFormula="AMOUNT "+s;
+		operationFormula="Amount "+s;
 		if(s.startsWith("="))
 			operation = CMath.compileMathExpression(translateNumber(s.substring(1)).trim());
 		else
@@ -91,12 +91,12 @@ public class Prop_ModExperience extends Property
 		else
 		if(s.startsWith("(")&&(s.endsWith(")")))
 		{
-			operationFormula="AMOUNT ="+s;
+			operationFormula="Amount ="+s;
 			operation = CMath.compileMathExpression(s);
 		}
 		else
 			operation = CMath.compileMathExpression(translateNumber(s.trim()));
-		operationFormula=CMStrings.replaceAll(operationFormula, "@x1", "AMOUNT");
+		operationFormula=CMStrings.replaceAll(operationFormula, "@x1", "Amount");
 	}
 	
 	public boolean okMessage(Environmental myHost, CMMsg msg)

@@ -418,23 +418,7 @@ public class DefaultClan implements Clan
         }
         M.delAbility(M.fetchAbility("Spell_ClanHome"));
         M.delAbility(M.fetchAbility("Spell_ClanDonate"));
-        
-        if(((M.getClanID().equals(clanID())))
-        &&(getAuthority(M.getClanRole(),Function.ORDER_CONQUERED)!=Clan.Authority.CAN_NOT_DO))
-        {
-            if(M.fetchAbility("Spell_Flagportation")==null)
-            {
-                M.addAbility(CMClass.findAbility("Spell_Flagportation"));
-                (M.fetchAbility("Spell_Flagportation")).setProficiency(100);
-                did=true;
-            }
-        }
-        else
-        if(M.fetchAbility("Spell_Flagportation")!=null)
-        {
-            did=true;
-            M.delAbility(M.fetchAbility("Spell_Flagportation"));
-        }
+        M.delAbility(M.fetchAbility("Spell_Flagportation"));
 
         if(M.playerStats()!=null)
         for(ClanPosition pos : govt().getPositions())
@@ -665,6 +649,27 @@ public class DefaultClan implements Clan
                     }
                     msg.append(" Prize: "+CMLib.clans().translatePrize(i)+"\n\r");
                 }
+        }
+    	if((mob!=null)&&(getAuthority(mob.getClanRole(),Function.CLAN_SPELLS)!=Clan.Authority.CAN_NOT_DO))
+        {
+            msg.append("-----------------------------------------------------------------\n\r");
+            msg.append("^xClan Level Benefits:^.^N\n\r");
+    		List<AbilityMapper.AbilityMapping> abilities=CMLib.ableMapper().getUpToLevelListings(govt().ID(),Integer.MAX_VALUE,true,false);
+            if(abilities.size()>0)
+            {
+	            final List<String> names = new LinkedList<String>();
+	            for(AbilityMapper.AbilityMapping aMap : abilities) 
+	            {
+	            	final Ability A=CMClass.getAbility(aMap.abilityID);
+	            	if(A!=null)
+		            	names.add(A.name()+(aMap.autoGain?"":"(q)"));
+	            }
+	            msg.append(CMLib.lister().makeColumns(names,null,3));
+	            msg.append("\n\r");
+            }
+            final List<Ability> effects = clanEffects(null);
+            for(Ability A : effects)
+	            msg.append(A.accountForYourself()).append("\n\r");
         }
         return msg.toString();
     }
@@ -1404,7 +1409,7 @@ public class DefaultClan implements Clan
     
 	public List<Ability> clanAbilities(MOB mob)
 	{
-        if(getAuthority(mob.getClanRole(),Function.CLAN_SPELLS)!=Clan.Authority.CAN_NOT_DO)
+        if((mob==null)||(getAuthority(mob.getClanRole(),Function.CLAN_SPELLS)!=Clan.Authority.CAN_NOT_DO))
 			return govt().getClanLevelAbilities(Integer.valueOf(getClanLevel()));
         return emptyAbles;
 	}

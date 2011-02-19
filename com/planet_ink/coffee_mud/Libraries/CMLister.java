@@ -425,30 +425,34 @@ public class CMLister extends StdLibrary implements ListingLibrary
 		return lines;
 	}
 	
-	public StringBuilder fourColumns(Vector reverseList)
+	public StringBuilder fourColumns(List<String> reverseList)
 	{ return fourColumns(reverseList,null);}
-	public StringBuilder fourColumns(Vector reverseList, String tag)
+	public StringBuilder fourColumns(List<String> reverseList, String tag)
+	{ return makeColumns(reverseList,tag,4);}
+	public StringBuilder makeColumns(List<String> reverseList, String tag, int numCols)
 	{
 		StringBuilder topicBuffer=new StringBuilder("");
 		int col=0;
 		String s=null;
+		int colSize = 72 / numCols;
 		for(int i=0;i<reverseList.size();i++)
 		{
-			if((++col)>4)
+			if((++col)>numCols)
 			{
 				topicBuffer.append("\n\r");
 				col=1;
 			}
-			s=(String)reverseList.elementAt(i);
+			s=(String)reverseList.get(i);
 		    if((tag!=null)&&(tag.length()>0))
 		        s="^<"+tag+"^>"+s+"^</"+tag+"^>";
-			if(s.length()>18)
+			if(s.length()>colSize)
 			{
-				topicBuffer.append(CMStrings.padRight(s,(18*2)+1)+" ");
+				if(col == numCols) topicBuffer.append("\n\r");
+				topicBuffer.append(CMStrings.padRight(s,(colSize*2)+1)+" ");
 				++col;
 			}
 			else
-				topicBuffer.append(CMStrings.padRight(s,18)+" ");
+				topicBuffer.append(CMStrings.padRight(s,colSize)+" ");
 		}
 		return topicBuffer;
 	}

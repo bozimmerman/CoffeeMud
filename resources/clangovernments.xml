@@ -107,16 +107,17 @@
         <ABILITY ID="Spell_CEqPoison" PROFF=0 LEVEL=7 QUALIFYONLY=true />
         <ABILITY ID="Spell_CEqDisease" PROFF=0 LEVEL=9 QUALIFYONLY=true />
         <ABILITY ID="Spell_CEqParalysis" PROFF=0 LEVEL=10 QUALIFYONLY=true />
+        <ABILITY ID="Spell_Flagportation" PROFF=0 LEVEL=10 QUALIFYONLY=true />
     </ABILITIES>
     <EFFECTS>
-        <EFFECT ID="Prop_ModFaction" LEVEL=3 PARMS="-:+10%" />
+        <EFFECT ID="Prop_ModFaction" LEVEL=3 PARMS="-:+1" />
         <EFFECT ID="Prop_ModExperience" LEVEL=8 PARMS="+10%" />
         <EFFECT ID="Prop_ModFaction" LEVEL=6 PARMS="+:+5" />
+        <EFFECT ID="Prop_ModFaction" LEVEL=12 PARMS="+:+5" />
         <EFFECT ID="Prop_ModFaction" LEVEL=14 PARMS="+:+5" />
         <EFFECT ID="Prop_ModExperience" LEVEL=16 PARMS="+10%" />
         <EFFECT ID="Prop_ModExperience" LEVEL=18 PARMS="+10%" />
         <EFFECT ID="Prop_ModExperience" LEVEL=20 PARMS="+10%" />
-        <EFFECT ID="Prop_ModFaction" LEVEL=12 PARMS="+:+5" />
     </EFFECTS>
 </CLANTYPE>
 <CLANTYPE TYPEID=1 NAME="Guild">
@@ -224,10 +225,30 @@
         <DEITYBASIS>false</DEITYBASIS>
     </CONQUEST>
     <ABILITIES>
-        <ABILITY ID="Spell_ClanDonate" PROFF=0 LEVEL=2 QUALIFYONLY=false />
-        <ABILITY ID="Spell_ClanHome" PROFF=0 LEVEL=4 QUALIFYONLY=false />
+        <ABILITY ID="Spell_ClanDonate" PROFF=100 LEVEL=2 QUALIFYONLY=false />
+        <ABILITY ID="Spell_ClanHome" PROFF=100 LEVEL=3 QUALIFYONLY=false />
+        <ABILITY ID="Spell_CEqCold" PROFF=0 LEVEL=4 QUALIFYONLY=true />
+        <ABILITY ID="Spell_CEqGas" PROFF=0 LEVEL=4 QUALIFYONLY=true />
+        <ABILITY ID="Spell_CEqMind" PROFF=0 LEVEL=4 QUALIFYONLY=true />
+        <ABILITY ID="Spell_CEqWater" PROFF=0 LEVEL=4 QUALIFYONLY=true />
+        <ABILITY ID="Spell_CEqAcid" PROFF=0 LEVEL=5 QUALIFYONLY=true />
+        <ABILITY ID="Spell_CEqElectric" PROFF=0 LEVEL=5 QUALIFYONLY=true />
+        <ABILITY ID="Spell_CEqFire" PROFF=0 LEVEL=5 QUALIFYONLY=true />
+        <ABILITY ID="Spell_CEqPoison" PROFF=0 LEVEL=7 QUALIFYONLY=true />
+        <ABILITY ID="Spell_CEqDisease" PROFF=0 LEVEL=9 QUALIFYONLY=true />
+        <ABILITY ID="Spell_CEqParalysis" PROFF=0 LEVEL=10 QUALIFYONLY=true />
+        <ABILITY ID="Spell_Flagportation" PROFF=0 LEVEL=10 QUALIFYONLY=true />
     </ABILITIES>
-    <EFFECTS />
+    <EFFECTS>
+        <EFFECT ID="Prop_ModFaction" LEVEL=3 PARMS="-:+1" />
+        <EFFECT ID="Prop_ModExperience" LEVEL=8 PARMS="+10%" />
+        <EFFECT ID="Prop_ModFaction" LEVEL=6 PARMS="+:+5" />
+        <EFFECT ID="Prop_ModFaction" LEVEL=12 PARMS="+:+5" />
+        <EFFECT ID="Prop_ModFaction" LEVEL=14 PARMS="+:+5" />
+        <EFFECT ID="Prop_ModExperience" LEVEL=16 PARMS="+10%" />
+        <EFFECT ID="Prop_ModExperience" LEVEL=18 PARMS="+10%" />
+        <EFFECT ID="Prop_ModExperience" LEVEL=20 PARMS="+10%" />
+    </EFFECTS>
 </CLANTYPE>
 <CLANTYPE TYPEID=2 NAME="Union">
     <SHORTDESC>ruled by an elected set of leaders and staff</SHORTDESC>
@@ -326,10 +347,30 @@
         <DEITYBASIS>false</DEITYBASIS>
     </CONQUEST>
     <ABILITIES>
-        <ABILITY ID="Spell_ClanDonate" PROFF=0 LEVEL=2 QUALIFYONLY=false />
-        <ABILITY ID="Spell_ClanHome" PROFF=0 LEVEL=4 QUALIFYONLY=false />
+        <ABILITY ID="Spell_ClanDonate" PROFF=100 LEVEL=2 QUALIFYONLY=false />
+        <ABILITY ID="Spell_ClanHome" PROFF=100 LEVEL=3 QUALIFYONLY=false />
+        <ABILITY ID="Spell_CEqCold" PROFF=0 LEVEL=4 QUALIFYONLY=true />
+        <ABILITY ID="Spell_CEqGas" PROFF=0 LEVEL=4 QUALIFYONLY=true />
+        <ABILITY ID="Spell_CEqMind" PROFF=0 LEVEL=4 QUALIFYONLY=true />
+        <ABILITY ID="Spell_CEqWater" PROFF=0 LEVEL=4 QUALIFYONLY=true />
+        <ABILITY ID="Spell_CEqAcid" PROFF=0 LEVEL=5 QUALIFYONLY=true />
+        <ABILITY ID="Spell_CEqElectric" PROFF=0 LEVEL=5 QUALIFYONLY=true />
+        <ABILITY ID="Spell_CEqFire" PROFF=0 LEVEL=5 QUALIFYONLY=true />
+        <ABILITY ID="Spell_CEqPoison" PROFF=0 LEVEL=7 QUALIFYONLY=true />
+        <ABILITY ID="Spell_CEqDisease" PROFF=0 LEVEL=9 QUALIFYONLY=true />
+        <ABILITY ID="Spell_CEqParalysis" PROFF=0 LEVEL=10 QUALIFYONLY=true />
+        <ABILITY ID="Spell_Flagportation" PROFF=0 LEVEL=10 QUALIFYONLY=true />
     </ABILITIES>
-    <EFFECTS />
+    <EFFECTS>
+        <EFFECT ID="Prop_ModFaction" LEVEL=3 PARMS="-:+1" />
+        <EFFECT ID="Prop_ModExperience" LEVEL=8 PARMS="+10%" />
+        <EFFECT ID="Prop_ModFaction" LEVEL=6 PARMS="+:+5" />
+        <EFFECT ID="Prop_ModFaction" LEVEL=12 PARMS="+:+5" />
+        <EFFECT ID="Prop_ModFaction" LEVEL=14 PARMS="+:+5" />
+        <EFFECT ID="Prop_ModExperience" LEVEL=16 PARMS="+10%" />
+        <EFFECT ID="Prop_ModExperience" LEVEL=18 PARMS="+10%" />
+        <EFFECT ID="Prop_ModExperience" LEVEL=20 PARMS="+10%" />
+    </EFFECTS>
 </CLANTYPE>
 <CLANTYPE TYPEID=3 NAME="Fellowship">
     <SHORTDESC>all decisions and staff are set through the vote</SHORTDESC>
@@ -433,10 +474,30 @@
         <DEITYBASIS>false</DEITYBASIS>
     </CONQUEST>
     <ABILITIES>
-        <ABILITY ID="Spell_ClanDonate" PROFF=0 LEVEL=2 QUALIFYONLY=false />
-        <ABILITY ID="Spell_ClanHome" PROFF=0 LEVEL=4 QUALIFYONLY=false />
+        <ABILITY ID="Spell_ClanDonate" PROFF=100 LEVEL=2 QUALIFYONLY=false />
+        <ABILITY ID="Spell_ClanHome" PROFF=100 LEVEL=3 QUALIFYONLY=false />
+        <ABILITY ID="Spell_CEqCold" PROFF=0 LEVEL=4 QUALIFYONLY=true />
+        <ABILITY ID="Spell_CEqGas" PROFF=0 LEVEL=4 QUALIFYONLY=true />
+        <ABILITY ID="Spell_CEqMind" PROFF=0 LEVEL=4 QUALIFYONLY=true />
+        <ABILITY ID="Spell_CEqWater" PROFF=0 LEVEL=4 QUALIFYONLY=true />
+        <ABILITY ID="Spell_CEqAcid" PROFF=0 LEVEL=5 QUALIFYONLY=true />
+        <ABILITY ID="Spell_CEqElectric" PROFF=0 LEVEL=5 QUALIFYONLY=true />
+        <ABILITY ID="Spell_CEqFire" PROFF=0 LEVEL=5 QUALIFYONLY=true />
+        <ABILITY ID="Spell_CEqPoison" PROFF=0 LEVEL=7 QUALIFYONLY=true />
+        <ABILITY ID="Spell_CEqDisease" PROFF=0 LEVEL=9 QUALIFYONLY=true />
+        <ABILITY ID="Spell_CEqParalysis" PROFF=0 LEVEL=10 QUALIFYONLY=true />
+        <ABILITY ID="Spell_Flagportation" PROFF=0 LEVEL=10 QUALIFYONLY=true />
     </ABILITIES>
-    <EFFECTS />
+    <EFFECTS>
+        <EFFECT ID="Prop_ModFaction" LEVEL=3 PARMS="-:+1" />
+        <EFFECT ID="Prop_ModExperience" LEVEL=8 PARMS="+10%" />
+        <EFFECT ID="Prop_ModFaction" LEVEL=6 PARMS="+:+5" />
+        <EFFECT ID="Prop_ModFaction" LEVEL=12 PARMS="+:+5" />
+        <EFFECT ID="Prop_ModFaction" LEVEL=14 PARMS="+:+5" />
+        <EFFECT ID="Prop_ModExperience" LEVEL=16 PARMS="+10%" />
+        <EFFECT ID="Prop_ModExperience" LEVEL=18 PARMS="+10%" />
+        <EFFECT ID="Prop_ModExperience" LEVEL=20 PARMS="+10%" />
+    </EFFECTS>
 </CLANTYPE>
 <CLANTYPE TYPEID=4 NAME="Theocracy">
     <SHORTDESC>clerics rule, can conquer through conversion</SHORTDESC>
@@ -543,10 +604,30 @@
         <DEITYBASIS>true</DEITYBASIS>
     </CONQUEST>
     <ABILITIES>
-        <ABILITY ID="Spell_ClanDonate" PROFF=0 LEVEL=2 QUALIFYONLY=false />
-        <ABILITY ID="Spell_ClanHome" PROFF=0 LEVEL=4 QUALIFYONLY=false />
+        <ABILITY ID="Spell_ClanDonate" PROFF=100 LEVEL=2 QUALIFYONLY=false />
+        <ABILITY ID="Spell_ClanHome" PROFF=100 LEVEL=3 QUALIFYONLY=false />
+        <ABILITY ID="Spell_CEqCold" PROFF=0 LEVEL=4 QUALIFYONLY=true />
+        <ABILITY ID="Spell_CEqGas" PROFF=0 LEVEL=4 QUALIFYONLY=true />
+        <ABILITY ID="Spell_CEqMind" PROFF=0 LEVEL=4 QUALIFYONLY=true />
+        <ABILITY ID="Spell_CEqWater" PROFF=0 LEVEL=4 QUALIFYONLY=true />
+        <ABILITY ID="Spell_CEqAcid" PROFF=0 LEVEL=5 QUALIFYONLY=true />
+        <ABILITY ID="Spell_CEqElectric" PROFF=0 LEVEL=5 QUALIFYONLY=true />
+        <ABILITY ID="Spell_CEqFire" PROFF=0 LEVEL=5 QUALIFYONLY=true />
+        <ABILITY ID="Spell_CEqPoison" PROFF=0 LEVEL=7 QUALIFYONLY=true />
+        <ABILITY ID="Spell_CEqDisease" PROFF=0 LEVEL=9 QUALIFYONLY=true />
+        <ABILITY ID="Spell_CEqParalysis" PROFF=0 LEVEL=10 QUALIFYONLY=true />
+        <ABILITY ID="Spell_Flagportation" PROFF=0 LEVEL=10 QUALIFYONLY=true />
     </ABILITIES>
-    <EFFECTS />
+    <EFFECTS>
+        <EFFECT ID="Prop_ModFaction" LEVEL=3 PARMS="-:+1" />
+        <EFFECT ID="Prop_ModExperience" LEVEL=8 PARMS="+10%" />
+        <EFFECT ID="Prop_ModFaction" LEVEL=6 PARMS="+:+5" />
+        <EFFECT ID="Prop_ModFaction" LEVEL=12 PARMS="+:+5" />
+        <EFFECT ID="Prop_ModFaction" LEVEL=14 PARMS="+:+5" />
+        <EFFECT ID="Prop_ModExperience" LEVEL=16 PARMS="+10%" />
+        <EFFECT ID="Prop_ModExperience" LEVEL=18 PARMS="+10%" />
+        <EFFECT ID="Prop_ModExperience" LEVEL=20 PARMS="+10%" />
+    </EFFECTS>
 </CLANTYPE>
 <CLANTYPE TYPEID=5 NAME="Family">
     <SHORTDESC>patron/patron rules a private group only family can join</SHORTDESC>
@@ -678,10 +759,30 @@
         <DEITYBASIS>false</DEITYBASIS>
     </CONQUEST>
     <ABILITIES>
-        <ABILITY ID="Spell_ClanDonate" PROFF=0 LEVEL=2 QUALIFYONLY=false />
-        <ABILITY ID="Spell_ClanHome" PROFF=0 LEVEL=4 QUALIFYONLY=false />
+        <ABILITY ID="Spell_ClanDonate" PROFF=100 LEVEL=2 QUALIFYONLY=false />
+        <ABILITY ID="Spell_ClanHome" PROFF=100 LEVEL=3 QUALIFYONLY=false />
+        <ABILITY ID="Spell_CEqCold" PROFF=0 LEVEL=4 QUALIFYONLY=true />
+        <ABILITY ID="Spell_CEqGas" PROFF=0 LEVEL=4 QUALIFYONLY=true />
+        <ABILITY ID="Spell_CEqMind" PROFF=0 LEVEL=4 QUALIFYONLY=true />
+        <ABILITY ID="Spell_CEqWater" PROFF=0 LEVEL=4 QUALIFYONLY=true />
+        <ABILITY ID="Spell_CEqAcid" PROFF=0 LEVEL=5 QUALIFYONLY=true />
+        <ABILITY ID="Spell_CEqElectric" PROFF=0 LEVEL=5 QUALIFYONLY=true />
+        <ABILITY ID="Spell_CEqFire" PROFF=0 LEVEL=5 QUALIFYONLY=true />
+        <ABILITY ID="Spell_CEqPoison" PROFF=0 LEVEL=7 QUALIFYONLY=true />
+        <ABILITY ID="Spell_CEqDisease" PROFF=0 LEVEL=9 QUALIFYONLY=true />
+        <ABILITY ID="Spell_CEqParalysis" PROFF=0 LEVEL=10 QUALIFYONLY=true />
+        <ABILITY ID="Spell_Flagportation" PROFF=0 LEVEL=10 QUALIFYONLY=true />
     </ABILITIES>
-    <EFFECTS />
+    <EFFECTS>
+        <EFFECT ID="Prop_ModFaction" LEVEL=3 PARMS="-:+1" />
+        <EFFECT ID="Prop_ModExperience" LEVEL=8 PARMS="+10%" />
+        <EFFECT ID="Prop_ModFaction" LEVEL=6 PARMS="+:+5" />
+        <EFFECT ID="Prop_ModFaction" LEVEL=12 PARMS="+:+5" />
+        <EFFECT ID="Prop_ModFaction" LEVEL=14 PARMS="+:+5" />
+        <EFFECT ID="Prop_ModExperience" LEVEL=16 PARMS="+10%" />
+        <EFFECT ID="Prop_ModExperience" LEVEL=18 PARMS="+10%" />
+        <EFFECT ID="Prop_ModExperience" LEVEL=20 PARMS="+10%" />
+    </EFFECTS>
 </CLANTYPE>
 <CLANTYPE TYPEID=6 NAME="Anarchy">
     <SHORTDESC>anyone can join, anyone can do anything</SHORTDESC>
@@ -728,9 +829,29 @@
         <DEITYBASIS>false</DEITYBASIS>
     </CONQUEST>
     <ABILITIES>
-        <ABILITY ID="Spell_ClanDonate" PROFF=0 LEVEL=2 QUALIFYONLY=false />
-        <ABILITY ID="Spell_ClanHome" PROFF=0 LEVEL=4 QUALIFYONLY=false />
+        <ABILITY ID="Spell_ClanDonate" PROFF=100 LEVEL=2 QUALIFYONLY=false />
+        <ABILITY ID="Spell_ClanHome" PROFF=100 LEVEL=3 QUALIFYONLY=false />
+        <ABILITY ID="Spell_CEqCold" PROFF=0 LEVEL=4 QUALIFYONLY=true />
+        <ABILITY ID="Spell_CEqGas" PROFF=0 LEVEL=4 QUALIFYONLY=true />
+        <ABILITY ID="Spell_CEqMind" PROFF=0 LEVEL=4 QUALIFYONLY=true />
+        <ABILITY ID="Spell_CEqWater" PROFF=0 LEVEL=4 QUALIFYONLY=true />
+        <ABILITY ID="Spell_CEqAcid" PROFF=0 LEVEL=5 QUALIFYONLY=true />
+        <ABILITY ID="Spell_CEqElectric" PROFF=0 LEVEL=5 QUALIFYONLY=true />
+        <ABILITY ID="Spell_CEqFire" PROFF=0 LEVEL=5 QUALIFYONLY=true />
+        <ABILITY ID="Spell_CEqPoison" PROFF=0 LEVEL=7 QUALIFYONLY=true />
+        <ABILITY ID="Spell_CEqDisease" PROFF=0 LEVEL=9 QUALIFYONLY=true />
+        <ABILITY ID="Spell_CEqParalysis" PROFF=0 LEVEL=10 QUALIFYONLY=true />
+        <ABILITY ID="Spell_Flagportation" PROFF=0 LEVEL=10 QUALIFYONLY=true />
     </ABILITIES>
-    <EFFECTS />
+    <EFFECTS>
+        <EFFECT ID="Prop_ModFaction" LEVEL=3 PARMS="-:+1" />
+        <EFFECT ID="Prop_ModExperience" LEVEL=8 PARMS="+10%" />
+        <EFFECT ID="Prop_ModFaction" LEVEL=6 PARMS="+:+5" />
+        <EFFECT ID="Prop_ModFaction" LEVEL=12 PARMS="+:+5" />
+        <EFFECT ID="Prop_ModFaction" LEVEL=14 PARMS="+:+5" />
+        <EFFECT ID="Prop_ModExperience" LEVEL=16 PARMS="+10%" />
+        <EFFECT ID="Prop_ModExperience" LEVEL=18 PARMS="+10%" />
+        <EFFECT ID="Prop_ModExperience" LEVEL=20 PARMS="+10%" />
+    </EFFECTS>
 </CLANTYPE>
 </CLANTYPES>

@@ -657,6 +657,7 @@ public class DefaultClanGovernment implements ClanGovernment
 		for(int v=0;v<clanEffectLevels.length;v++)
 		{
 			if((clanEffectLevels[v]<=level.intValue())
+			&&(clanEffectLevels[v]<=mob.phyStats().level())
 			&&(clanEffectNames.length>v)
 			&&(clanEffectParms.length>v))
 			{
