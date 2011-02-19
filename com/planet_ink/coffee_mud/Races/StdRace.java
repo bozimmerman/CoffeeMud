@@ -549,7 +549,7 @@ public class StdRace implements Race
 	{
 		return racialEffectsList(mob).size();
 	}
-	
+
 	public ChameleonList<Ability> racialEffects(final MOB mob)
 	{
 		final StdRace myRace = this;
@@ -562,7 +562,19 @@ public class StdRace implements Race
 			A.setAffectedOne(mob);
 			finalV.add(A);
 		}
-		final ChameleonList finalFinalV = new ChameleonList(finalV,
+		final ChameleonList<Ability> finalFinalV;
+		if(mob==null)
+		{
+			finalFinalV = new ChameleonList<Ability>(finalV,
+			new ChameleonList.Signaler<Ability>(myList) 
+			{
+				public boolean isDeprecated() { return false;}
+				public void rebuild(final ChameleonList<Ability> me){}
+			});
+		}
+		else
+		{
+			finalFinalV = new ChameleonList(finalV,
 			new ChameleonList.Signaler<Ability>(myList) 
 			{
 				public boolean isDeprecated()
@@ -585,6 +597,7 @@ public class StdRace implements Race
 					}
 				}
 			});
+		}
 		return finalFinalV;
 	}
 	

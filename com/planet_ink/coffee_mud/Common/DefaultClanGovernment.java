@@ -706,31 +706,43 @@ protected Map<Integer,List<Ability>>  				clanEffectMap=null;
 			A.setAffectedOne(mob);
 			finalV.add(A);
 		}
-		final ChameleonList<Ability> finalFinalV = new ChameleonList<Ability>
-			(finalV,
+		final ChameleonList<Ability> finalFinalV;
+		if(mob==null)
+		{
+			finalFinalV = new ChameleonList<Ability>(finalV,
 			new ChameleonList.Signaler<Ability>(myList) 
 			{
-				public boolean isDeprecated()
-				{
-					if((mob==null)||(mob.amDestroyed())) 
-						return true;
-					final Clan C = mob.getMyClan();
-					if(C==null) return true;
-					if((C.getGovernment() != myGovt)
-					|| (getClanLevelEffectsList(mob, Integer.valueOf(C.getClanLevel())) != oldReferenceListRef.get()))
-						return true;
-					return false;
-				}
-				public void rebuild(final ChameleonList<Ability> me)
-				{
-					
-					final Clan C=(mob!=null)?mob.getMyClan():null;
-					if((mob==null)||(mob.amDestroyed())||(C==null))
-						me.changeMeInto(getEmptyClanLevelEffects(mob));
-					else
-						me.changeMeInto(C.getGovernment().getClanLevelEffects(mob, Integer.valueOf(C.getClanLevel())));
-				}
+				public boolean isDeprecated() { return false;}
+				public void rebuild(final ChameleonList<Ability> me){}
 			});
+		}
+		else
+		{
+			finalFinalV = new ChameleonList<Ability>(finalV,
+				new ChameleonList.Signaler<Ability>(myList) 
+				{
+					public boolean isDeprecated()
+					{
+						if((mob==null)||(mob.amDestroyed())) 
+							return true;
+						final Clan C = mob.getMyClan();
+						if(C==null) return true;
+						if((C.getGovernment() != myGovt)
+						|| (getClanLevelEffectsList(mob, Integer.valueOf(C.getClanLevel())) != oldReferenceListRef.get()))
+							return true;
+						return false;
+					}
+					public void rebuild(final ChameleonList<Ability> me)
+					{
+						
+						final Clan C=(mob!=null)?mob.getMyClan():null;
+						if((mob==null)||(mob.amDestroyed())||(C==null))
+							me.changeMeInto(getEmptyClanLevelEffects(mob));
+						else
+							me.changeMeInto(C.getGovernment().getClanLevelEffects(mob, Integer.valueOf(C.getClanLevel())));
+					}
+				});
+		}
 		return finalFinalV;
 	}
 }
