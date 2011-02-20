@@ -9,6 +9,7 @@ fried rice	FOOD		4	rice	1
 coffee	DRINK		5	coffeebeans	1	water	1										
 cocoa	DRINK		5	cocoa	1	water	1										
 mashed potatoes	FOOD		6	potatoes	1	milk	1	butter	1								
+Draconian Steak	FOOD		7	dragonmeat	1												
 % steak	FOOD		7	meat	1												
 % steak	FOOD		7	beef	1												
 fried %	FOOD		8	poultry	1												
@@ -28,6 +29,8 @@ hot chocolate	DRINK		18	cocoa	1	milk	1
 soap	SOAP		19	ash	1	limes	1	beef	1								
 dolmas	FOOD		20	rice	1	grapes	1										
 kabobs	FOOD		21	peppers	1	meat	-1	fish	1								
+Dragon-On-A-Stick	FOOD		21	peppers	1	dragonmeat	-1	fish	-1	meat	-1					
+Draconian Stew	FOOD		22	dragonmeat	1	greens	-1	carrots	-1	potatoes	-1	corn	-1	tomatoes	-1		
 % stew	FOOD		22	meat	1	greens	-1	carrots	-1	potatoes	-1	corn	-1	tomatoes	-1		
 % stew	FOOD		23	beef	1	greens	-1	carrots	-1	potatoes	-1	corn	-1	tomatoes	-1		
 % stew	FOOD		24	pork	1	greens	-1	carrots	-1	potatoes	-1	corn	-1	tomatoes	-1		
