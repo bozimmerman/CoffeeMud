@@ -782,8 +782,8 @@ public interface RawMaterial extends Item
 	{RESOURCE_CHEESE,		25,	0,	1,	640}, 
 	{RESOURCE_BEANS,		1,	15,	1,	750}, 
     {RESOURCE_CRANBERRIES,  10, 1,  1,  750},
-	{RESOURCE_DRAGONMEAT,	40,	20,	1,	3000}, 
 	{RESOURCE_DRAGONBLOOD,	10,	100,0,	1025},
+	{RESOURCE_DRAGONMEAT,	40,	20,	1,	3000}, 
 	};
 	
 	
