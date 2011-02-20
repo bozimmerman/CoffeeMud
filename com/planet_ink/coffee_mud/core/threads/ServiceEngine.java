@@ -115,10 +115,9 @@ public class ServiceEngine implements ThreadEngine
 
 	public synchronized boolean deleteTick(Tickable E, int tickID)
 	{
-        Iterator<TockClient> set=null;
-		for(Tick almostTock : ticks)
+		for(final Tick almostTock : ticks)
 		{
-			set=almostTock.getTickSet(E,tickID);
+			final Iterator<TockClient> set=almostTock.getTickSet(E,tickID);
 			for(;set.hasNext();)
 				almostTock.delTicker((TockClient)set.next());
 		}
@@ -127,12 +126,10 @@ public class ServiceEngine implements ThreadEngine
 
 	public boolean isTicking(Tickable E, int tickID)
 	{
-        Tick almostTock=null;
-        Iterator<TockClient> set;
-		for(Iterator<Tick> e=tickGroups();e.hasNext();)
+		for(final Iterator<Tick> e=tickGroups();e.hasNext();)
 		{
-			almostTock=e.next();
-			set=almostTock.getTickSet(E,tickID);
+			final Tick almostTock=e.next();
+			final Iterator<TockClient> set=almostTock.getTickSet(E,tickID);
 			if(set.hasNext()) 
 				return true;
 		}
@@ -146,12 +143,10 @@ public class ServiceEngine implements ThreadEngine
 	public void resumeTicking(Tickable E, int tickID){suspendResumeTicking(E,tickID,false);}
 	protected boolean suspendResumeTicking(Tickable E, int tickID, boolean suspend)
 	{
-        Tick almostTock=null;
-        Iterator<TockClient> set=null;
-		for(Iterator<Tick> e=tickGroups();e.hasNext();)
+		for(final Iterator<Tick> e=tickGroups();e.hasNext();)
 		{
-			almostTock=e.next();
-			set=almostTock.getTickSet(E,tickID);
+			final Tick almostTock=e.next();
+			final Iterator<TockClient> set=almostTock.getTickSet(E,tickID);
 			for(;set.hasNext();)
 				((TockClient)set.next()).suspended=suspend;
 		}
@@ -160,12 +155,10 @@ public class ServiceEngine implements ThreadEngine
 	
 	public boolean isSuspended(Tickable E, int tickID)
 	{
-        Tick almostTock=null;
-        Iterator<TockClient> set=null;
-		for(Iterator<Tick> e=tickGroups();e.hasNext();)
+		for(final Iterator<Tick> e=tickGroups();e.hasNext();)
 		{
-			almostTock=e.next();
-			set=almostTock.getTickSet(E,tickID);
+			final Tick almostTock=e.next();
+			final Iterator<TockClient> set=almostTock.getTickSet(E,tickID);
 			if(set.hasNext() && ((TockClient)set.next()).suspended)
 				return true;
 		}

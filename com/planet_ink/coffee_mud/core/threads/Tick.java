@@ -96,7 +96,7 @@ public class Tick extends Thread implements TickableGroup, Cloneable
 	public TockClient fetchTickerByIndex(int i)
 	{
 		int x=0;
-		for(TockClient C : tickers)
+		for(final TockClient C : tickers)
 			if(i==(x++))
 				return C;
 		return null;
@@ -104,9 +104,9 @@ public class Tick extends Thread implements TickableGroup, Cloneable
 	
 	public Iterator<TockClient> tickers(){return tickers.iterator();}
 	public int numTickers(){return tickers.size();}
-	public Iterator<TockClient> getTickSet(Tickable T, int tickID)
+	public Iterator<TockClient> getTickSet(final Tickable T, final int tickID)
 	{
-		LinkedList<TockClient> subSet = new LinkedList<TockClient>();
+		final LinkedList<TockClient> subSet = new LinkedList<TockClient>();
 		if(tickID < 0)
 			subSet.addAll(tickers.subSet(new TockClient(T,0,0), true, new TockClient(T,0,Integer.MAX_VALUE), true));
 		else
@@ -117,10 +117,9 @@ public class Tick extends Thread implements TickableGroup, Cloneable
 	public Iterator<TockClient> getLocalItems(int itemTypes, Room R)
 	{
 		LinkedList<TockClient> localItems=null;
-		TockClient C;
-		for(Iterator<TockClient> e=tickers.iterator();e.hasNext();)
+		for(final Iterator<TockClient> e=tickers.iterator();e.hasNext();)
 		{
-			C=e.next();
+			final TockClient C=e.next();
 			switch(itemTypes)
 			{
 			case 0:
@@ -163,7 +162,7 @@ public class Tick extends Thread implements TickableGroup, Cloneable
 	}
 	
 	
-	public boolean contains(Tickable T, int tickID)
+	public boolean contains(final Tickable T, final int tickID)
 	{
 		if(tickID >= 0)
 			return tickers.contains(new TockClient(T,0,tickID));
@@ -189,7 +188,7 @@ public class Tick extends Thread implements TickableGroup, Cloneable
 
     public String getStatus() 
     {
-    	Tickable lastTicked = lastTicked();
+    	final Tickable lastTicked = lastTicked();
     	if((lastTicked==null)||(myEngine==null))
     		return "Asleep or Shutdown";
     	if(!awake)
@@ -253,10 +252,9 @@ public class Tick extends Thread implements TickableGroup, Cloneable
 				if((CMProps.getBoolVar(CMProps.SYSTEMB_MUDSTARTED))
                 &&(!CMLib.threads().isAllSuspended()))
 				{
-                    TockClient client=null;
 					for(Iterator<TockClient> i=tickers();i.hasNext();)
 					{
-						client=i.next();
+						final TockClient client=i.next();
 						lastClient=client;
 						client.lastStart=System.currentTimeMillis();
 						if(tickTicker(client,CMLib.threads().isAllSuspended()))

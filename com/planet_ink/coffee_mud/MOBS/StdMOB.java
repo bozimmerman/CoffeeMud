@@ -2208,17 +2208,14 @@ public class StdMOB implements MOB
 		return true;
 	}
 
-	public void tell(MOB source, Environmental target, Environmental tool, String msg)
+	public void tell(final MOB source, final Environmental target, final Environmental tool, final String msg)
 	{
-		if((mySession!=null)&&(msg!=null))
-		{
-			Session S=mySession;
-			if(S!=null)
-				S.stdPrintln(source,target,tool,msg);
-		}
+		final Session S=mySession;
+		if((S!=null)&&(msg!=null))
+			S.stdPrintln(source,target,tool,msg);
 	}
 
-	public void tell(String msg)
+	public void tell(final String msg)
 	{
 		tell(this,this,null,msg);
 	}
@@ -2518,7 +2515,7 @@ public class StdMOB implements MOB
 		tickStatus=Tickable.STATUS_START;
 		if(tickID==Tickable.TICKID_MOB)
 		{
-			boolean isMonster=isMonster();
+			final boolean isMonster=isMonster();
 			if(amDead)
 			{
 				boolean isOk=!pleaseDestroy;
@@ -2630,13 +2627,14 @@ public class StdMOB implements MOB
                 while((!amDead())&&dequeCommand())
                 	{}
 
-				if((riding()!=null)&&(CMLib.map().roomLocation(riding())!=location()))
+				final Rideable riding=riding();
+				if((riding!=null)&&(CMLib.map().roomLocation(riding)!=location()))
 					setRiding(null);
 
 				if((!isMonster)&&(soulMate()==null))
 				{
                     CMLib.coffeeTables().bump(this,CoffeeTableRow.STAT_TICKSONLINE);
-                    if(((++tickCounter)*CMProps.getTickMillis())>60000)
+                    if(((++tickCounter)*CMProps.getTickMillis())>120000)
                     {
                         tickCounter=0;
                         if(inventory!=null) inventory.trimToSize();
@@ -2648,52 +2646,44 @@ public class StdMOB implements MOB
 				}
 			}
 
-            Tickable T=null;
-            int c=0;
-            Enumeration e=null;
-            for(e=affects.elements();e.hasMoreElements();c++)
+			tickStatus=Tickable.STATUS_AFFECT;
+            for(final Enumeration<Ability> t=effects();t.hasMoreElements();)
 			{
-				T=(Tickable)e.nextElement();
-				tickStatus=Tickable.STATUS_AFFECT+(c++);
+				final Ability T=t.nextElement();
 				if(!T.tick(ticking,tickID))
-					((Ability)T).unInvoke();
+					T.unInvoke();
 			}
 
             manaConsumeCounter=CMLib.commands().tickManaConsumption(this,manaConsumeCounter);
 
-            c=0;
-            for(e=behaviors.elements();e.hasMoreElements();c++)
-            {
-				T=(Tickable)e.nextElement();
-				tickStatus=Tickable.STATUS_BEHAVIOR+(c++);
+			tickStatus=Tickable.STATUS_BEHAVIOR;
+            for(final Enumeration<Behavior> t=behaviors();t.hasMoreElements();)
+			{
+				final Behavior T=t.nextElement();
 				if(T!=null) T.tick(ticking,tickID);
 			}
 
-            c=0;
-            for(e=scripts.elements();e.hasMoreElements();c++)
-            {
-                T=(Tickable)e.nextElement();
-                tickStatus=Tickable.STATUS_SCRIPT+(c++);
+            tickStatus=Tickable.STATUS_SCRIPT;
+            for(final Enumeration<ScriptingEngine> t=scripts();t.hasMoreElements();)
+			{
+				final ScriptingEngine T=t.nextElement();
                 if(T!=null) T.tick(ticking,tickID);
 
             }
-            e=null;
-            
-            Faction.FactionData factionData=null;
             if(isMonster)
             {
-	            for(e=factions.elements();e.hasMoreElements();)
-	            {
-	                factionData=(Faction.FactionData)e.nextElement();
-	                if(factionData.requiresUpdating())
+                for(final Enumeration<Faction.FactionData> t=factions.elements();t.hasMoreElements();)
+    			{
+    				final Faction.FactionData T=t.nextElement();
+	                if(T.requiresUpdating())
 	                {
-	                	String factionID = factionData.getFaction().factionID();
-	                    Faction F=CMLib.factions().getFaction(factionID);
+	                	final String factionID = T.getFaction().factionID();
+	                    final Faction F=CMLib.factions().getFaction(factionID);
 	                    if(F!=null)
 	                    {
-	                    	int oldValue = factionData.value();
-	                    	F.updateFactionData(this, factionData);
-	                    	factionData.setValue(oldValue);
+	                    	final int oldValue = T.value();
+	                    	F.updateFactionData(this, T);
+	                    	T.setValue(oldValue);
 	                    }
 	                    else
 	                        removeFaction(factionID);
@@ -2701,22 +2691,23 @@ public class StdMOB implements MOB
 	            }
             }
             
-            c=0;
-            for(e=factions.elements();e.hasMoreElements();)
-            {
-                tickStatus=Tickable.STATUS_OTHER+(c++);
-            	((Faction.FactionData)e.nextElement()).tick(ticking, tickID);
+            tickStatus=Tickable.STATUS_OTHER;
+            for(final Enumeration<Faction.FactionData> t=factions.elements();t.hasMoreElements();)
+			{
+				final Faction.FactionData T=t.nextElement();
+            	T.tick(ticking, tickID);
             }
 
-            int num=charStats().numClasses();
+            final CharStats cStats = charStats();
+            final int num=cStats.numClasses();
 			tickStatus=Tickable.STATUS_CLASS;
-			for(c=0;c<num;c++)
-				charStats().getMyClass(c).tick(ticking,tickID);
+			for(int c=0;c<num;c++)
+				cStats.getMyClass(c).tick(ticking,tickID);
 			tickStatus=Tickable.STATUS_RACE;
-			charStats().getMyRace().tick(ticking,tickID);
+			cStats.getMyRace().tick(ticking,tickID);
 			tickStatus=Tickable.STATUS_END;
 			
-			for(Tattoo tattoo: tattoos)
+			for(final Tattoo tattoo: tattoos)
 				if((tattoo!=null)
 				&&(tattoo.tickDown>0))
 				{

@@ -38,9 +38,9 @@ limitations under the License.
 */
 public class CMThreadFactory implements ThreadFactory  
 {
-	private String serverName="";
-	private AtomicInteger counter=new AtomicInteger();
-	private SLinkedList<Thread> active = new SLinkedList<Thread>();
+	private String 						serverName;
+	private final AtomicInteger 		counter		=new AtomicInteger();
+	private final SLinkedList<Thread> 	active 		= new SLinkedList<Thread>();
 	
 	public CMThreadFactory(String serverName)
 	{
@@ -52,7 +52,7 @@ public class CMThreadFactory implements ThreadFactory
 	}
 	public Thread newThread(Runnable r) 
 	{
-		Thread t = new Thread(r,serverName+"#"+counter.addAndGet(1));
+		final Thread t = new Thread(r,serverName+"#"+counter.addAndGet(1));
 		active.add(t);
 	    return t;
 	}
