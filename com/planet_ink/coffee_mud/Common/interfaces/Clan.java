@@ -895,7 +895,7 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
 		/** constant for the clan function of enjoying clan homes. @see Clan#getAuthority(int,Function) */
 		HOME_PRIVS,
 		/** constant for the clan function of enjoying clan homes. @see Clan#getAuthority(int,Function) */
-		CLAN_SPELLS,
+		CLAN_BENEFITS,
 		/** constant for the clan function of enjoying clan homes. @see Clan#getAuthority(int,Function) */
 		CLAN_TITLES,
 	}

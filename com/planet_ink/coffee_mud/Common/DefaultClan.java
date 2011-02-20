@@ -403,7 +403,7 @@ public class DefaultClan implements Clan
         boolean did=false;
         if(M==null) return false;
         if(M.getClanID().equals(clanID())
-        &&(getAuthority(M.getClanRole(),Function.CLAN_SPELLS)!=Clan.Authority.CAN_NOT_DO))
+        &&(getAuthority(M.getClanRole(),Function.CLAN_BENEFITS)!=Clan.Authority.CAN_NOT_DO))
         {
         	if(getClanClassC()!=null)
         	{
@@ -652,7 +652,7 @@ public class DefaultClan implements Clan
                     msg.append(" Prize: "+CMLib.clans().translatePrize(i)+"\n\r");
                 }
         }
-    	if(((mob!=null)&&(getAuthority(mob.getClanRole(),Function.CLAN_SPELLS)!=Clan.Authority.CAN_NOT_DO))||sysmsgs)
+    	if(((mob!=null)&&(getAuthority(mob.getClanRole(),Function.CLAN_BENEFITS)!=Clan.Authority.CAN_NOT_DO))||sysmsgs)
         {
             msg.append("-----------------------------------------------------------------\n\r");
             msg.append("^xClan Level Benefits:^.^N\n\r");
@@ -1430,7 +1430,7 @@ public class DefaultClan implements Clan
     
 	public List<Ability> clanAbilities(MOB mob)
 	{
-        if((mob==null)||(getAuthority(mob.getClanRole(),Function.CLAN_SPELLS)!=Clan.Authority.CAN_NOT_DO))
+        if((mob==null)||(getAuthority(mob.getClanRole(),Function.CLAN_BENEFITS)!=Clan.Authority.CAN_NOT_DO))
 			return govt().getClanLevelAbilities(Integer.valueOf(getClanLevel()));
         return emptyAbles;
 	}
