@@ -211,21 +211,10 @@ public class StdWeapon extends StdItem implements Weapon
 				   &&(CMLib.flags().aliveAwakeMobile(msg.source(),true)))
 				{
 					boolean recover=false;
-
-					for(final Enumeration<Ability> a=effects();a.hasMoreElements();)
+					final MOB mob=msg.source();
+					for(final Enumeration<Item> i=mob.items();i.hasMoreElements();)
 					{
-						final Ability A=a.nextElement();
-						if((A!=null)&&(!A.isSavable())&&(A.invoker()==null))
-						{
-							recover=true;
-							delEffect(A);
-						}
-					}
-
-					MOB mob=msg.source();
-					for(int i=0;i<mob.numItems();i++)
-					{
-						Item I=mob.getItem(i);
+						final Item I=i.nextElement();
 						if((I instanceof Ammunition)
 						&&(I.usesRemaining()>0)
 						&&(I.usesRemaining()<Integer.MAX_VALUE)
@@ -386,9 +375,30 @@ public class StdWeapon extends StdItem implements Weapon
 	}
 	public void setAmmoRemaining(int amount)
 	{
+		final int oldAmount=ammunitionRemaining();
 		if(amount==Integer.MAX_VALUE)
 			amount=20;
 		setUsesRemaining(amount);
+		final ItemPossessor myOwner=owner;
+		if((oldAmount>0)&&(amount==0)&&(myOwner instanceof MOB))
+		{
+			boolean recover=false;
+			for(final Enumeration<Ability> a=effects();a.hasMoreElements();)
+			{
+				final Ability A=a.nextElement();
+				if((A!=null)&&(!A.isSavable())&&(A.invoker()==null))
+				{
+					recover=true;
+					delEffect(A);
+				}
+			}
+			if(recover)
+			{
+				((MOB)myOwner).recoverCharStats();
+				((MOB)myOwner).recoverMaxState();
+				((MOB)myOwner).recoverPhyStats();
+			}
+		}
 	}
 	public int ammunitionCapacity(){return ammoCapacity;}
 	public void setAmmoCapacity(int amount){ammoCapacity=amount;}

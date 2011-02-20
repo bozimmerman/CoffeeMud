@@ -966,7 +966,7 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 						}
 						if(!isFound)
 						{
-							for(String s : mob.curState().getStatCodes())
+							for(final String s : mob.curState().getStatCodes())
 								if(promptSub.startsWith(s))
 								{
 									c+=1+s.length();
@@ -975,7 +975,7 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 									break;
 								}
 							if(!isFound)
-							for(String s : mob.maxState().getStatCodes())
+							for(final String s : mob.maxState().getStatCodes())
 								if(promptSub.startsWith("MAX "+s))
 								{
 									c+=5+s.length();
@@ -984,7 +984,7 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 									break;
 								}
 							if(!isFound)
-							for(String s : mob.baseState().getStatCodes())
+							for(final String s : mob.baseState().getStatCodes())
 								if(promptSub.startsWith("BASE "+s))
 								{
 									c+=6+s.length();
@@ -996,14 +996,19 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 					}
 					break;
                 case 'a': { buf.append(CMLib.factions().getRangePercent(CMLib.factions().AlignID(),mob.fetchFaction(CMLib.factions().AlignID()))+"%"); c++; break; }
-                case 'A': { Faction.FactionRange FR=CMLib.factions().getRange(CMLib.factions().AlignID(),mob.fetchFaction(CMLib.factions().AlignID()));buf.append((FR!=null)?FR.name():""+mob.fetchFaction(CMLib.factions().AlignID())); c++; break;}
+                case 'A': { final Faction.FactionRange FR=CMLib.factions().getRange(CMLib.factions().AlignID(),mob.fetchFaction(CMLib.factions().AlignID()));buf.append((FR!=null)?FR.name():""+mob.fetchFaction(CMLib.factions().AlignID())); c++; break;}
                 case 'B': { buf.append("\n\r"); c++; break;}
                 case 'c': { buf.append(mob.numItems()); c++; break;}
                 case 'C': { buf.append(mob.maxItems()); c++; break;}
-                case 'd': {   MOB victim=mob.getVictim();
+                case 'd': {   final MOB victim=mob.getVictim();
                               if((mob.isInCombat())&&(victim!=null))
                                   buf.append(""+mob.rangeToTarget());
                               c++; break; }
+                case 'D': {   final Item I=mob.fetchWieldedItem();
+                			  if((I instanceof Weapon)&&(((Weapon)I).requiresAmmunition()))
+                				  buf.append(""+((Weapon)I).ammunitionRemaining());
+                			  break;
+                		  }
                 case 'e': {   MOB victim=mob.getVictim();
                               if((mob.isInCombat())&&(victim!=null)&&(CMLib.flags().canBeSeenBy(victim,mob)))
                                   buf.append(victim.displayName(mob));

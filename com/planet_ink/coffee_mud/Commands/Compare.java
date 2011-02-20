@@ -152,6 +152,15 @@ public class Compare extends StdCommand
 
 		}
 		else
+		if((compareThis instanceof Container)&&(toThis instanceof Container)
+		&&(((Container)compareThis).capacity()>0)&&(((Container)toThis).capacity()>0))
+		{
+			if(((Container)compareThis).capacity()>((Container)toThis).capacity())
+				mob.tell(compareThis.name()+" looks like it holds more than "+toThis.name()+".");
+			else
+				mob.tell(compareThis.name()+" looks like it holds less than "+toThis.name()+".");
+		}
+		else
 			mob.tell("You can't compare "+compareThis.name()+" and "+toThis.name()+".");
 		return false;
 	}

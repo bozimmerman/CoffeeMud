@@ -3192,9 +3192,18 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 		Item neww=CMClass.getBasicItem("GenAmmunition");
 		String ammo=ammunitionType;
 		if(ammo.length()==0) return null;
-		ammo=CMLib.english().startWithAorAn(ammo);
-		neww.setName(ammo);
-		neww.setDisplayText(ammo+" sits here.");
+		if(ammo.endsWith("s"))
+			ammo=ammo.substring(0,ammo.length()-1);
+		if(number>1)
+		{
+			neww.setName("several "+CMLib.english().makePlural(ammo));
+			neww.setDisplayText(ammo+" sit here.");
+		}
+		else
+		{
+			neww.setName(CMLib.english().startWithAorAn(ammo));
+			neww.setDisplayText(ammo+" sits here.");
+		}
 		((Ammunition)neww).setAmmunitionType(ammo);
 		neww.setUsesRemaining(number);
 		neww.basePhyStats().setWeight(number);

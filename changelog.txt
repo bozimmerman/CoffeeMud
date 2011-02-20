@@ -2299,3 +2299,4 @@ Special/Reserved Quest called holidays can be added to/modified on an area-by-ar
 30.Clan types (governments) are now configurable with clangovernments.xml, create, modify, destroy, mudgrinder
 31.Racial Effects are now implemented as inexpensively as possible.  See genraces in command line & mudgrinder.
 32.Clans (via their governments) now support custom help entries, clan effects, and clan abilities.
+33.COMPARE command can now be used to compare container capacity
