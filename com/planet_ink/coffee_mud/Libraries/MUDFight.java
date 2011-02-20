@@ -734,7 +734,6 @@ public class MUDFight extends StdLibrary implements CombatLibrary
         return beneficiaries;
     }
 
-
     protected Set<MOB> getCombatDividers(MOB killer, MOB killed, Room deathRoom, Set<MOB> dividers, CharClass combatCharClass)
     {
         Set<MOB> followers=(killer!=null)?killer.getGroupMembers(new SHashSet()):(new SHashSet());
