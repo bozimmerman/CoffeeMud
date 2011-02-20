@@ -46,4 +46,9 @@ public class Prop_Adjuster extends Prop_HaveAdjuster
             return true;
         return false;
     }
+    
+	public String accountForYourself()
+	{
+		return fixAccoutingsWithMask("Effects: "+text());
+	}
 }

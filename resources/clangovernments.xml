@@ -107,17 +107,26 @@
         <ABILITY ID="Spell_CEqPoison" PROFF=0 LEVEL=7 QUALIFYONLY=true />
         <ABILITY ID="Spell_CEqDisease" PROFF=0 LEVEL=9 QUALIFYONLY=true />
         <ABILITY ID="Spell_CEqParalysis" PROFF=0 LEVEL=10 QUALIFYONLY=true />
-        <ABILITY ID="Spell_Flagportation" PROFF=0 LEVEL=10 QUALIFYONLY=true />
+        <ABILITY ID="Spell_Flagportation" PROFF=0 LEVEL=11 QUALIFYONLY=true />
     </ABILITIES>
     <EFFECTS>
         <EFFECT ID="Prop_ModFaction" LEVEL=3 PARMS="-:+1" />
         <EFFECT ID="Prop_ModExperience" LEVEL=8 PARMS="+10%" />
         <EFFECT ID="Prop_ModFaction" LEVEL=6 PARMS="+:+5" />
         <EFFECT ID="Prop_ModFaction" LEVEL=12 PARMS="+:+5" />
-        <EFFECT ID="Prop_ModFaction" LEVEL=14 PARMS="+:+5" />
-        <EFFECT ID="Prop_ModExperience" LEVEL=16 PARMS="+10%" />
-        <EFFECT ID="Prop_ModExperience" LEVEL=18 PARMS="+10%" />
-        <EFFECT ID="Prop_ModExperience" LEVEL=20 PARMS="+10%" />
+        <EFFECT ID="Prop_Adjuster" LEVEL=13 PARMS="hitpoints+1" />
+        <EFFECT ID="Prop_ModExperience" LEVEL=14 PARMS="+10%" />
+        <EFFECT ID="Prop_Adjuster" LEVEL=15 PARMS="movement+1 mana+1" />
+        <EFFECT ID="Prop_Adjuster" LEVEL=16 PARMS="cha+1 hitpoints+2" />
+        <EFFECT ID="Prop_Adjuster" LEVEL=17 PARMS="int+1 movement+2" />
+        <EFFECT ID="Prop_Adjuster" LEVEL=18 PARMS="wis+1 mana+2" />
+        <EFFECT ID="Prop_Adjuster" LEVEL=19 PARMS="con+1 hitpoints+3" />
+        <EFFECT ID="Prop_Adjuster" LEVEL=20 PARMS="str+1 movement+3" />
+        <EFFECT ID="Prop_Adjuster" LEVEL=21 PARMS="dex+1 mana+3" />
+        <EFFECT ID="Prop_Adjuster" LEVEL=22 PARMS="attack+1 hitpoints+4" />
+        <EFFECT ID="Prop_Adjuster" LEVEL=23 PARMS="armor-1 movement+4" />
+        <EFFECT ID="Prop_Adjuster" LEVEL=24 PARMS="attack+1 mana+4" />
+        <EFFECT ID="Prop_Adjuster" LEVEL=25 PARMS="armor-1 hitpoints+5 movement+5 mana+5" />
     </EFFECTS>
 </CLANTYPE>
 <CLANTYPE TYPEID=1 NAME="Guild">
@@ -237,17 +246,26 @@
         <ABILITY ID="Spell_CEqPoison" PROFF=0 LEVEL=7 QUALIFYONLY=true />
         <ABILITY ID="Spell_CEqDisease" PROFF=0 LEVEL=9 QUALIFYONLY=true />
         <ABILITY ID="Spell_CEqParalysis" PROFF=0 LEVEL=10 QUALIFYONLY=true />
-        <ABILITY ID="Spell_Flagportation" PROFF=0 LEVEL=10 QUALIFYONLY=true />
+        <ABILITY ID="Spell_Flagportation" PROFF=0 LEVEL=11 QUALIFYONLY=true />
     </ABILITIES>
     <EFFECTS>
         <EFFECT ID="Prop_ModFaction" LEVEL=3 PARMS="-:+1" />
         <EFFECT ID="Prop_ModExperience" LEVEL=8 PARMS="+10%" />
         <EFFECT ID="Prop_ModFaction" LEVEL=6 PARMS="+:+5" />
         <EFFECT ID="Prop_ModFaction" LEVEL=12 PARMS="+:+5" />
-        <EFFECT ID="Prop_ModFaction" LEVEL=14 PARMS="+:+5" />
-        <EFFECT ID="Prop_ModExperience" LEVEL=16 PARMS="+10%" />
-        <EFFECT ID="Prop_ModExperience" LEVEL=18 PARMS="+10%" />
-        <EFFECT ID="Prop_ModExperience" LEVEL=20 PARMS="+10%" />
+        <EFFECT ID="Prop_Adjuster" LEVEL=13 PARMS="hitpoints+1" />
+        <EFFECT ID="Prop_ModExperience" LEVEL=14 PARMS="+10%" />
+        <EFFECT ID="Prop_Adjuster" LEVEL=15 PARMS="movement+1 mana+1" />
+        <EFFECT ID="Prop_Adjuster" LEVEL=16 PARMS="cha+1 hitpoints+2" />
+        <EFFECT ID="Prop_Adjuster" LEVEL=17 PARMS="int+1 movement+2" />
+        <EFFECT ID="Prop_Adjuster" LEVEL=18 PARMS="wis+1 mana+2" />
+        <EFFECT ID="Prop_Adjuster" LEVEL=19 PARMS="con+1 hitpoints+3" />
+        <EFFECT ID="Prop_Adjuster" LEVEL=20 PARMS="str+1 movement+3" />
+        <EFFECT ID="Prop_Adjuster" LEVEL=21 PARMS="dex+1 mana+3" />
+        <EFFECT ID="Prop_Adjuster" LEVEL=22 PARMS="attack+1 hitpoints+4" />
+        <EFFECT ID="Prop_Adjuster" LEVEL=23 PARMS="armor-1 movement+4" />
+        <EFFECT ID="Prop_Adjuster" LEVEL=24 PARMS="attack+1 mana+4" />
+        <EFFECT ID="Prop_Adjuster" LEVEL=25 PARMS="armor-1 hitpoints+5 movement+5 mana+5" />
     </EFFECTS>
 </CLANTYPE>
 <CLANTYPE TYPEID=2 NAME="Union">
@@ -359,17 +377,26 @@
         <ABILITY ID="Spell_CEqPoison" PROFF=0 LEVEL=7 QUALIFYONLY=true />
         <ABILITY ID="Spell_CEqDisease" PROFF=0 LEVEL=9 QUALIFYONLY=true />
         <ABILITY ID="Spell_CEqParalysis" PROFF=0 LEVEL=10 QUALIFYONLY=true />
-        <ABILITY ID="Spell_Flagportation" PROFF=0 LEVEL=10 QUALIFYONLY=true />
+        <ABILITY ID="Spell_Flagportation" PROFF=0 LEVEL=11 QUALIFYONLY=true />
     </ABILITIES>
     <EFFECTS>
         <EFFECT ID="Prop_ModFaction" LEVEL=3 PARMS="-:+1" />
         <EFFECT ID="Prop_ModExperience" LEVEL=8 PARMS="+10%" />
         <EFFECT ID="Prop_ModFaction" LEVEL=6 PARMS="+:+5" />
         <EFFECT ID="Prop_ModFaction" LEVEL=12 PARMS="+:+5" />
-        <EFFECT ID="Prop_ModFaction" LEVEL=14 PARMS="+:+5" />
-        <EFFECT ID="Prop_ModExperience" LEVEL=16 PARMS="+10%" />
-        <EFFECT ID="Prop_ModExperience" LEVEL=18 PARMS="+10%" />
-        <EFFECT ID="Prop_ModExperience" LEVEL=20 PARMS="+10%" />
+        <EFFECT ID="Prop_Adjuster" LEVEL=13 PARMS="hitpoints+1" />
+        <EFFECT ID="Prop_ModExperience" LEVEL=14 PARMS="+10%" />
+        <EFFECT ID="Prop_Adjuster" LEVEL=15 PARMS="movement+1 mana+1" />
+        <EFFECT ID="Prop_Adjuster" LEVEL=16 PARMS="cha+1 hitpoints+2" />
+        <EFFECT ID="Prop_Adjuster" LEVEL=17 PARMS="int+1 movement+2" />
+        <EFFECT ID="Prop_Adjuster" LEVEL=18 PARMS="wis+1 mana+2" />
+        <EFFECT ID="Prop_Adjuster" LEVEL=19 PARMS="con+1 hitpoints+3" />
+        <EFFECT ID="Prop_Adjuster" LEVEL=20 PARMS="str+1 movement+3" />
+        <EFFECT ID="Prop_Adjuster" LEVEL=21 PARMS="dex+1 mana+3" />
+        <EFFECT ID="Prop_Adjuster" LEVEL=22 PARMS="attack+1 hitpoints+4" />
+        <EFFECT ID="Prop_Adjuster" LEVEL=23 PARMS="armor-1 movement+4" />
+        <EFFECT ID="Prop_Adjuster" LEVEL=24 PARMS="attack+1 mana+4" />
+        <EFFECT ID="Prop_Adjuster" LEVEL=25 PARMS="armor-1 hitpoints+5 movement+5 mana+5" />
     </EFFECTS>
 </CLANTYPE>
 <CLANTYPE TYPEID=3 NAME="Fellowship">
@@ -486,17 +513,26 @@
         <ABILITY ID="Spell_CEqPoison" PROFF=0 LEVEL=7 QUALIFYONLY=true />
         <ABILITY ID="Spell_CEqDisease" PROFF=0 LEVEL=9 QUALIFYONLY=true />
         <ABILITY ID="Spell_CEqParalysis" PROFF=0 LEVEL=10 QUALIFYONLY=true />
-        <ABILITY ID="Spell_Flagportation" PROFF=0 LEVEL=10 QUALIFYONLY=true />
+        <ABILITY ID="Spell_Flagportation" PROFF=0 LEVEL=11 QUALIFYONLY=true />
     </ABILITIES>
     <EFFECTS>
         <EFFECT ID="Prop_ModFaction" LEVEL=3 PARMS="-:+1" />
         <EFFECT ID="Prop_ModExperience" LEVEL=8 PARMS="+10%" />
         <EFFECT ID="Prop_ModFaction" LEVEL=6 PARMS="+:+5" />
         <EFFECT ID="Prop_ModFaction" LEVEL=12 PARMS="+:+5" />
-        <EFFECT ID="Prop_ModFaction" LEVEL=14 PARMS="+:+5" />
-        <EFFECT ID="Prop_ModExperience" LEVEL=16 PARMS="+10%" />
-        <EFFECT ID="Prop_ModExperience" LEVEL=18 PARMS="+10%" />
-        <EFFECT ID="Prop_ModExperience" LEVEL=20 PARMS="+10%" />
+        <EFFECT ID="Prop_Adjuster" LEVEL=13 PARMS="hitpoints+1" />
+        <EFFECT ID="Prop_ModExperience" LEVEL=14 PARMS="+10%" />
+        <EFFECT ID="Prop_Adjuster" LEVEL=15 PARMS="movement+1 mana+1" />
+        <EFFECT ID="Prop_Adjuster" LEVEL=16 PARMS="cha+1 hitpoints+2" />
+        <EFFECT ID="Prop_Adjuster" LEVEL=17 PARMS="int+1 movement+2" />
+        <EFFECT ID="Prop_Adjuster" LEVEL=18 PARMS="wis+1 mana+2" />
+        <EFFECT ID="Prop_Adjuster" LEVEL=19 PARMS="con+1 hitpoints+3" />
+        <EFFECT ID="Prop_Adjuster" LEVEL=20 PARMS="str+1 movement+3" />
+        <EFFECT ID="Prop_Adjuster" LEVEL=21 PARMS="dex+1 mana+3" />
+        <EFFECT ID="Prop_Adjuster" LEVEL=22 PARMS="attack+1 hitpoints+4" />
+        <EFFECT ID="Prop_Adjuster" LEVEL=23 PARMS="armor-1 movement+4" />
+        <EFFECT ID="Prop_Adjuster" LEVEL=24 PARMS="attack+1 mana+4" />
+        <EFFECT ID="Prop_Adjuster" LEVEL=25 PARMS="armor-1 hitpoints+5 movement+5 mana+5" />
     </EFFECTS>
 </CLANTYPE>
 <CLANTYPE TYPEID=4 NAME="Theocracy">
@@ -616,17 +652,26 @@
         <ABILITY ID="Spell_CEqPoison" PROFF=0 LEVEL=7 QUALIFYONLY=true />
         <ABILITY ID="Spell_CEqDisease" PROFF=0 LEVEL=9 QUALIFYONLY=true />
         <ABILITY ID="Spell_CEqParalysis" PROFF=0 LEVEL=10 QUALIFYONLY=true />
-        <ABILITY ID="Spell_Flagportation" PROFF=0 LEVEL=10 QUALIFYONLY=true />
+        <ABILITY ID="Spell_Flagportation" PROFF=0 LEVEL=11 QUALIFYONLY=true />
     </ABILITIES>
     <EFFECTS>
         <EFFECT ID="Prop_ModFaction" LEVEL=3 PARMS="-:+1" />
         <EFFECT ID="Prop_ModExperience" LEVEL=8 PARMS="+10%" />
         <EFFECT ID="Prop_ModFaction" LEVEL=6 PARMS="+:+5" />
         <EFFECT ID="Prop_ModFaction" LEVEL=12 PARMS="+:+5" />
-        <EFFECT ID="Prop_ModFaction" LEVEL=14 PARMS="+:+5" />
-        <EFFECT ID="Prop_ModExperience" LEVEL=16 PARMS="+10%" />
-        <EFFECT ID="Prop_ModExperience" LEVEL=18 PARMS="+10%" />
-        <EFFECT ID="Prop_ModExperience" LEVEL=20 PARMS="+10%" />
+        <EFFECT ID="Prop_Adjuster" LEVEL=13 PARMS="hitpoints+1" />
+        <EFFECT ID="Prop_ModExperience" LEVEL=14 PARMS="+10%" />
+        <EFFECT ID="Prop_Adjuster" LEVEL=15 PARMS="movement+1 mana+1" />
+        <EFFECT ID="Prop_Adjuster" LEVEL=16 PARMS="cha+1 hitpoints+2" />
+        <EFFECT ID="Prop_Adjuster" LEVEL=17 PARMS="int+1 movement+2" />
+        <EFFECT ID="Prop_Adjuster" LEVEL=18 PARMS="wis+1 mana+2" />
+        <EFFECT ID="Prop_Adjuster" LEVEL=19 PARMS="con+1 hitpoints+3" />
+        <EFFECT ID="Prop_Adjuster" LEVEL=20 PARMS="str+1 movement+3" />
+        <EFFECT ID="Prop_Adjuster" LEVEL=21 PARMS="dex+1 mana+3" />
+        <EFFECT ID="Prop_Adjuster" LEVEL=22 PARMS="attack+1 hitpoints+4" />
+        <EFFECT ID="Prop_Adjuster" LEVEL=23 PARMS="armor-1 movement+4" />
+        <EFFECT ID="Prop_Adjuster" LEVEL=24 PARMS="attack+1 mana+4" />
+        <EFFECT ID="Prop_Adjuster" LEVEL=25 PARMS="armor-1 hitpoints+5 movement+5 mana+5" />
     </EFFECTS>
 </CLANTYPE>
 <CLANTYPE TYPEID=5 NAME="Family">
@@ -771,17 +816,26 @@
         <ABILITY ID="Spell_CEqPoison" PROFF=0 LEVEL=7 QUALIFYONLY=true />
         <ABILITY ID="Spell_CEqDisease" PROFF=0 LEVEL=9 QUALIFYONLY=true />
         <ABILITY ID="Spell_CEqParalysis" PROFF=0 LEVEL=10 QUALIFYONLY=true />
-        <ABILITY ID="Spell_Flagportation" PROFF=0 LEVEL=10 QUALIFYONLY=true />
+        <ABILITY ID="Spell_Flagportation" PROFF=0 LEVEL=11 QUALIFYONLY=true />
     </ABILITIES>
     <EFFECTS>
         <EFFECT ID="Prop_ModFaction" LEVEL=3 PARMS="-:+1" />
         <EFFECT ID="Prop_ModExperience" LEVEL=8 PARMS="+10%" />
         <EFFECT ID="Prop_ModFaction" LEVEL=6 PARMS="+:+5" />
         <EFFECT ID="Prop_ModFaction" LEVEL=12 PARMS="+:+5" />
-        <EFFECT ID="Prop_ModFaction" LEVEL=14 PARMS="+:+5" />
-        <EFFECT ID="Prop_ModExperience" LEVEL=16 PARMS="+10%" />
-        <EFFECT ID="Prop_ModExperience" LEVEL=18 PARMS="+10%" />
-        <EFFECT ID="Prop_ModExperience" LEVEL=20 PARMS="+10%" />
+        <EFFECT ID="Prop_Adjuster" LEVEL=13 PARMS="hitpoints+1" />
+        <EFFECT ID="Prop_ModExperience" LEVEL=14 PARMS="+10%" />
+        <EFFECT ID="Prop_Adjuster" LEVEL=15 PARMS="movement+1 mana+1" />
+        <EFFECT ID="Prop_Adjuster" LEVEL=16 PARMS="cha+1 hitpoints+2" />
+        <EFFECT ID="Prop_Adjuster" LEVEL=17 PARMS="int+1 movement+2" />
+        <EFFECT ID="Prop_Adjuster" LEVEL=18 PARMS="wis+1 mana+2" />
+        <EFFECT ID="Prop_Adjuster" LEVEL=19 PARMS="con+1 hitpoints+3" />
+        <EFFECT ID="Prop_Adjuster" LEVEL=20 PARMS="str+1 movement+3" />
+        <EFFECT ID="Prop_Adjuster" LEVEL=21 PARMS="dex+1 mana+3" />
+        <EFFECT ID="Prop_Adjuster" LEVEL=22 PARMS="attack+1 hitpoints+4" />
+        <EFFECT ID="Prop_Adjuster" LEVEL=23 PARMS="armor-1 movement+4" />
+        <EFFECT ID="Prop_Adjuster" LEVEL=24 PARMS="attack+1 mana+4" />
+        <EFFECT ID="Prop_Adjuster" LEVEL=25 PARMS="armor-1 hitpoints+5 movement+5 mana+5" />
     </EFFECTS>
 </CLANTYPE>
 <CLANTYPE TYPEID=6 NAME="Anarchy">
@@ -841,17 +895,26 @@
         <ABILITY ID="Spell_CEqPoison" PROFF=0 LEVEL=7 QUALIFYONLY=true />
         <ABILITY ID="Spell_CEqDisease" PROFF=0 LEVEL=9 QUALIFYONLY=true />
         <ABILITY ID="Spell_CEqParalysis" PROFF=0 LEVEL=10 QUALIFYONLY=true />
-        <ABILITY ID="Spell_Flagportation" PROFF=0 LEVEL=10 QUALIFYONLY=true />
+        <ABILITY ID="Spell_Flagportation" PROFF=0 LEVEL=11 QUALIFYONLY=true />
     </ABILITIES>
     <EFFECTS>
         <EFFECT ID="Prop_ModFaction" LEVEL=3 PARMS="-:+1" />
         <EFFECT ID="Prop_ModExperience" LEVEL=8 PARMS="+10%" />
         <EFFECT ID="Prop_ModFaction" LEVEL=6 PARMS="+:+5" />
         <EFFECT ID="Prop_ModFaction" LEVEL=12 PARMS="+:+5" />
-        <EFFECT ID="Prop_ModFaction" LEVEL=14 PARMS="+:+5" />
-        <EFFECT ID="Prop_ModExperience" LEVEL=16 PARMS="+10%" />
-        <EFFECT ID="Prop_ModExperience" LEVEL=18 PARMS="+10%" />
-        <EFFECT ID="Prop_ModExperience" LEVEL=20 PARMS="+10%" />
+        <EFFECT ID="Prop_Adjuster" LEVEL=13 PARMS="hitpoints+1" />
+        <EFFECT ID="Prop_ModExperience" LEVEL=14 PARMS="+10%" />
+        <EFFECT ID="Prop_Adjuster" LEVEL=15 PARMS="movement+1 mana+1" />
+        <EFFECT ID="Prop_Adjuster" LEVEL=16 PARMS="charisma+1 hitpoints+2" />
+        <EFFECT ID="Prop_Adjuster" LEVEL=17 PARMS="intelligence+1 movement+2" />
+        <EFFECT ID="Prop_Adjuster" LEVEL=18 PARMS="wisdom+1 mana+2" />
+        <EFFECT ID="Prop_Adjuster" LEVEL=19 PARMS="constitution+1 hitpoints+3" />
+        <EFFECT ID="Prop_Adjuster" LEVEL=20 PARMS="strength+1 movement+3" />
+        <EFFECT ID="Prop_Adjuster" LEVEL=21 PARMS="dexterity+1 mana+3" />
+        <EFFECT ID="Prop_Adjuster" LEVEL=22 PARMS="attack+1 hitpoints+4" />
+        <EFFECT ID="Prop_Adjuster" LEVEL=23 PARMS="armor-1 movement+4" />
+        <EFFECT ID="Prop_Adjuster" LEVEL=24 PARMS="attack+1 mana+4" />
+        <EFFECT ID="Prop_Adjuster" LEVEL=25 PARMS="armor-1 hitpoints+5 movement+5 mana+5" />
     </EFFECTS>
 </CLANTYPE>
 </CLANTYPES>

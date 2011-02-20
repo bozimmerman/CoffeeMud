@@ -592,6 +592,55 @@ public class DefaultClanGovernment implements ClanGovernment
 		    	}
 		    	str.append("\n\r").append(lineDraw.toString()).append("\n\r");
 	    	}
+/*
+protected String[] 	clanEffectNames			=null;
+protected int[] 	clanEffectLevels		=null;
+protected String[] 	clanEffectParms			=null;
+protected String[] 	clanAbilityNames		=null;
+protected int[] 	clanAbilityLevels		=null;
+protected int[] 	clanAbilityProficiencies=null;
+protected boolean[] clanAbilityQuals		=null;
+*/
+	    	
+			if((clanAbilityLevels!=null)&&(clanEffectLevels!=null)
+			&&(clanAbilityLevels.length>0)&&(clanEffectLevels.length>0))
+			{
+				str.append("\n\rBenefits per Clan Level:\n\r");
+				int maxLevel=-1;
+				for(int x : clanEffectLevels) if(x>maxLevel) maxLevel=x;
+				for(int x : clanAbilityLevels) if(x>maxLevel) maxLevel=x;
+				for(int l=1;l<=maxLevel;l++)
+				{
+					final List<String> levelBenefits=new LinkedList<String>();
+					for(int x=0;x<clanEffectLevels.length;x++)
+						if(clanEffectLevels[x]==l) 
+						{
+							final Ability A=CMClass.getAbility(clanEffectNames[x]);
+							if(A!=null)
+							{
+								A.setMiscText(clanEffectParms[x]);
+								String desc=A.accountForYourself();
+								if((desc==null)||(desc.length()==0))
+									desc="Members gain the following effect: "+A.name();
+								levelBenefits.add(desc);
+							}
+						}
+					for(int x=0;x<clanAbilityLevels.length;x++)
+						if(clanAbilityLevels[x]==l) 
+						{
+							final Ability A=CMClass.getAbility(clanAbilityNames[x]);
+							if(A!=null)
+							{
+								if(clanAbilityQuals[x])
+									levelBenefits.add("Members qualify for: "+A.name());
+								else
+									levelBenefits.add("Members automatically gain: "+A.name());
+							}
+						}
+					for(final String bene : levelBenefits)
+						str.append("Level "+l+": "+bene+"\n\r");
+				}
+			}
 	    	helpStr=str.toString();
     	}
     	return helpStr;
