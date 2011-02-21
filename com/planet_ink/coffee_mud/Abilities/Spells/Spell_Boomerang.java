@@ -95,6 +95,8 @@ public class Spell_Boomerang extends Spell
 				}
 				else
 				{
+					I.unWear();
+					I.setContainer(null);
 					owner.moveItemTo(I);
 					I.setOwner(owner);
 				}
