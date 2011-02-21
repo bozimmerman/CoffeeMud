@@ -942,21 +942,21 @@ public class DefaultFaction implements Faction, MsgListener
             MOB vic=(MOB)msg.target();
 
             if(experienceFlag.equals("HIGHER"))
-                msg.setValue( (int)Math.round((msg.value()/2.0) +( (msg.value()/2.0) * CMath.div(Math.abs(killer.fetchFaction(ID)-minimum),(maximum - minimum)))));
+                msg.setValue( (int)Math.round((((double)msg.value())*.75) +( (((double)msg.value())*.25) * CMath.div(Math.abs(killer.fetchFaction(ID)-minimum),(maximum - minimum)))));
             else
             if(experienceFlag.equals("LOWER"))
-                msg.setValue( (int)Math.round((msg.value()/2.0) +( (msg.value()/2.0) * CMath.div(Math.abs(maximum-killer.fetchFaction(ID)),(maximum - minimum)))));
+                msg.setValue( (int)Math.round((((double)msg.value())*.75) +( (((double)msg.value())*.25) * CMath.div(Math.abs(maximum-killer.fetchFaction(ID)),(maximum - minimum)))));
             else
             if(vic.fetchFaction(ID)!=Integer.MAX_VALUE)
             {
                 if(experienceFlag.equals("EXTREME"))
-                    msg.setValue( (int)Math.round((msg.value()/2.0) +( (msg.value()/2.0) * CMath.div(Math.abs(vic.fetchFaction(ID) - killer.fetchFaction(ID)),(maximum - minimum)))));
+                    msg.setValue( (int)Math.round((((double)msg.value())*.75) +( (((double)msg.value())*.25) * CMath.div(Math.abs(vic.fetchFaction(ID) - killer.fetchFaction(ID)),(maximum - minimum)))));
                 else
                 if(experienceFlag.equals("FOLLOWHIGHER"))
-                    msg.setValue( (int)Math.round((msg.value()/2.0) +( (msg.value()/2.0) * CMath.div(Math.abs(vic.fetchFaction(ID)-minimum),(maximum - minimum)))));
+                    msg.setValue( (int)Math.round((((double)msg.value())*.75) +( (((double)msg.value())*.25) * CMath.div(Math.abs(vic.fetchFaction(ID)-minimum),(maximum - minimum)))));
                 else
                 if(experienceFlag.equals("FOLLOWLOWER"))
-                    msg.setValue( (int)Math.round((msg.value()/2.0) +( (msg.value()/2.0) * CMath.div(Math.abs(maximum-vic.fetchFaction(ID)),(maximum - minimum)))));
+                    msg.setValue( (int)Math.round((((double)msg.value())*.75) +( (((double)msg.value())*.25) * CMath.div(Math.abs(maximum-vic.fetchFaction(ID)),(maximum - minimum)))));
                 if(msg.value()<=0)
                     msg.setValue(0);
             }

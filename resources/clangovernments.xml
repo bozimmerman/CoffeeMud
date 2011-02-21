@@ -110,10 +110,10 @@
         <ABILITY ID="Spell_Flagportation" PROFF=0 LEVEL=11 QUALIFYONLY=true />
     </ABILITIES>
     <EFFECTS>
-        <EFFECT ID="Prop_ModFaction" LEVEL=3 PARMS="-:+1" />
+        <EFFECT ID="Prop_ModFaction" LEVEL=3 PARMS="-REACTION:+1" />
         <EFFECT ID="Prop_ModExperience" LEVEL=8 PARMS="+10%" />
-        <EFFECT ID="Prop_ModFaction" LEVEL=6 PARMS="+:+5" />
-        <EFFECT ID="Prop_ModFaction" LEVEL=12 PARMS="+:+5" />
+        <EFFECT ID="Prop_ModFaction" LEVEL=6 PARMS="+REACTION:+5" />
+        <EFFECT ID="Prop_ModFaction" LEVEL=12 PARMS="+REACTION:+5" />
         <EFFECT ID="Prop_Adjuster" LEVEL=13 PARMS="hitpoints+1" />
         <EFFECT ID="Prop_ModExperience" LEVEL=14 PARMS="+10%" />
         <EFFECT ID="Prop_Adjuster" LEVEL=15 PARMS="movement+1 mana+1" />
@@ -249,10 +249,10 @@
         <ABILITY ID="Spell_Flagportation" PROFF=0 LEVEL=11 QUALIFYONLY=true />
     </ABILITIES>
     <EFFECTS>
-        <EFFECT ID="Prop_ModFaction" LEVEL=3 PARMS="-:+1" />
+        <EFFECT ID="Prop_ModFaction" LEVEL=3 PARMS="-REACTION:+1" />
         <EFFECT ID="Prop_ModExperience" LEVEL=8 PARMS="+10%" />
-        <EFFECT ID="Prop_ModFaction" LEVEL=6 PARMS="+:+5" />
-        <EFFECT ID="Prop_ModFaction" LEVEL=12 PARMS="+:+5" />
+        <EFFECT ID="Prop_ModFaction" LEVEL=6 PARMS="+REACTION:+5" />
+        <EFFECT ID="Prop_ModFaction" LEVEL=12 PARMS="+REACTION:+5" />
         <EFFECT ID="Prop_Adjuster" LEVEL=13 PARMS="hitpoints+1" />
         <EFFECT ID="Prop_ModExperience" LEVEL=14 PARMS="+10%" />
         <EFFECT ID="Prop_Adjuster" LEVEL=15 PARMS="movement+1 mana+1" />
@@ -380,10 +380,10 @@
         <ABILITY ID="Spell_Flagportation" PROFF=0 LEVEL=11 QUALIFYONLY=true />
     </ABILITIES>
     <EFFECTS>
-        <EFFECT ID="Prop_ModFaction" LEVEL=3 PARMS="-:+1" />
+        <EFFECT ID="Prop_ModFaction" LEVEL=3 PARMS="-REACTION:+1" />
         <EFFECT ID="Prop_ModExperience" LEVEL=8 PARMS="+10%" />
-        <EFFECT ID="Prop_ModFaction" LEVEL=6 PARMS="+:+5" />
-        <EFFECT ID="Prop_ModFaction" LEVEL=12 PARMS="+:+5" />
+        <EFFECT ID="Prop_ModFaction" LEVEL=6 PARMS="+REACTION:+5" />
+        <EFFECT ID="Prop_ModFaction" LEVEL=12 PARMS="+REACTION:+5" />
         <EFFECT ID="Prop_Adjuster" LEVEL=13 PARMS="hitpoints+1" />
         <EFFECT ID="Prop_ModExperience" LEVEL=14 PARMS="+10%" />
         <EFFECT ID="Prop_Adjuster" LEVEL=15 PARMS="movement+1 mana+1" />
@@ -516,10 +516,10 @@
         <ABILITY ID="Spell_Flagportation" PROFF=0 LEVEL=11 QUALIFYONLY=true />
     </ABILITIES>
     <EFFECTS>
-        <EFFECT ID="Prop_ModFaction" LEVEL=3 PARMS="-:+1" />
+        <EFFECT ID="Prop_ModFaction" LEVEL=3 PARMS="-REACTION:+1" />
         <EFFECT ID="Prop_ModExperience" LEVEL=8 PARMS="+10%" />
-        <EFFECT ID="Prop_ModFaction" LEVEL=6 PARMS="+:+5" />
-        <EFFECT ID="Prop_ModFaction" LEVEL=12 PARMS="+:+5" />
+        <EFFECT ID="Prop_ModFaction" LEVEL=6 PARMS="+REACTION:+5" />
+        <EFFECT ID="Prop_ModFaction" LEVEL=12 PARMS="+REACTION:+5" />
         <EFFECT ID="Prop_Adjuster" LEVEL=13 PARMS="hitpoints+1" />
         <EFFECT ID="Prop_ModExperience" LEVEL=14 PARMS="+10%" />
         <EFFECT ID="Prop_Adjuster" LEVEL=15 PARMS="movement+1 mana+1" />
@@ -655,10 +655,10 @@
         <ABILITY ID="Spell_Flagportation" PROFF=0 LEVEL=11 QUALIFYONLY=true />
     </ABILITIES>
     <EFFECTS>
-        <EFFECT ID="Prop_ModFaction" LEVEL=3 PARMS="-:+1" />
+        <EFFECT ID="Prop_ModFaction" LEVEL=3 PARMS="-REACTION:+1" />
         <EFFECT ID="Prop_ModExperience" LEVEL=8 PARMS="+10%" />
-        <EFFECT ID="Prop_ModFaction" LEVEL=6 PARMS="+:+5" />
-        <EFFECT ID="Prop_ModFaction" LEVEL=12 PARMS="+:+5" />
+        <EFFECT ID="Prop_ModFaction" LEVEL=6 PARMS="+REACTION:+5" />
+        <EFFECT ID="Prop_ModFaction" LEVEL=12 PARMS="+REACTION:+5" />
         <EFFECT ID="Prop_Adjuster" LEVEL=13 PARMS="hitpoints+1" />
         <EFFECT ID="Prop_ModExperience" LEVEL=14 PARMS="+10%" />
         <EFFECT ID="Prop_Adjuster" LEVEL=15 PARMS="movement+1 mana+1" />
@@ -819,10 +819,10 @@
         <ABILITY ID="Spell_Flagportation" PROFF=0 LEVEL=11 QUALIFYONLY=true />
     </ABILITIES>
     <EFFECTS>
-        <EFFECT ID="Prop_ModFaction" LEVEL=3 PARMS="-:+1" />
+        <EFFECT ID="Prop_ModFaction" LEVEL=3 PARMS="-REACTION:+1" />
         <EFFECT ID="Prop_ModExperience" LEVEL=8 PARMS="+10%" />
-        <EFFECT ID="Prop_ModFaction" LEVEL=6 PARMS="+:+5" />
-        <EFFECT ID="Prop_ModFaction" LEVEL=12 PARMS="+:+5" />
+        <EFFECT ID="Prop_ModFaction" LEVEL=6 PARMS="+REACTION:+5" />
+        <EFFECT ID="Prop_ModFaction" LEVEL=12 PARMS="+REACTION:+5" />
         <EFFECT ID="Prop_Adjuster" LEVEL=13 PARMS="hitpoints+1" />
         <EFFECT ID="Prop_ModExperience" LEVEL=14 PARMS="+10%" />
         <EFFECT ID="Prop_Adjuster" LEVEL=15 PARMS="movement+1 mana+1" />
@@ -898,10 +898,10 @@
         <ABILITY ID="Spell_Flagportation" PROFF=0 LEVEL=11 QUALIFYONLY=true />
     </ABILITIES>
     <EFFECTS>
-        <EFFECT ID="Prop_ModFaction" LEVEL=3 PARMS="-:+1" />
+        <EFFECT ID="Prop_ModFaction" LEVEL=3 PARMS="-REACTION:+1" />
         <EFFECT ID="Prop_ModExperience" LEVEL=8 PARMS="+10%" />
-        <EFFECT ID="Prop_ModFaction" LEVEL=6 PARMS="+:+5" />
-        <EFFECT ID="Prop_ModFaction" LEVEL=12 PARMS="+:+5" />
+        <EFFECT ID="Prop_ModFaction" LEVEL=6 PARMS="+REACTION:+5" />
+        <EFFECT ID="Prop_ModFaction" LEVEL=12 PARMS="+REACTION:+5" />
         <EFFECT ID="Prop_Adjuster" LEVEL=13 PARMS="hitpoints+1" />
         <EFFECT ID="Prop_ModExperience" LEVEL=14 PARMS="+10%" />
         <EFFECT ID="Prop_Adjuster" LEVEL=15 PARMS="movement+1 mana+1" />

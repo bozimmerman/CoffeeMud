@@ -40,6 +40,7 @@ public class Prop_ModFaction extends Property
 	protected int canAffectCode(){return Ability.CAN_MOBS|Ability.CAN_ITEMS|Ability.CAN_AREAS|Ability.CAN_ROOMS;}
 	protected String operationFormula = "";
 	protected String factionID = "";
+	protected boolean reactions=false;
 	protected boolean gainonly=false;
 	protected boolean lossonly=false;
 	protected LinkedList<CMath.CompiledOperation> operation = null;
@@ -50,11 +51,11 @@ public class Prop_ModFaction extends Property
 		final Faction F=(factionID.length()>0)?CMLib.factions().getFaction(factionID):null;
 		String gainOrLoss=(gainonly)?"gained ":lossonly?"lost ":"";
 		final String factionName=
-			(factionID.length()==0)?"any faction": 
+			(factionID.length()==0)?"any faction":
+				reactions?"certain factions":
 				((F==null)?"some faction":F.name());
-		return "Modifies "+gainOrLoss+"faction with "+factionName+" gained: "+operationFormula;	
+		return "Modifies "+gainOrLoss+"faction with "+factionName+": "+operationFormula;	
 	}
-
 
 	public int translateAmount(int amount, String val)
 	{
@@ -79,6 +80,7 @@ public class Prop_ModFaction extends Property
 		mask=null;
 		gainonly=false;
 		lossonly=false;
+		reactions=false;
 		String s=newText.trim();
 		int x=s.indexOf(';');
 		if(x>=0)
@@ -97,6 +99,12 @@ public class Prop_ModFaction extends Property
 			{ lossonly=true; factionID=factionID.substring(1).trim();}
 			s=s.substring(x+1).trim();
 		}
+		if(factionID.trim().equalsIgnoreCase("REACTION"))
+		{
+			factionID="";
+			reactions=true;
+		}
+		
 		operationFormula="Amount "+s;
 		if(s.startsWith("="))
 			operation = CMath.compileMathExpression(translateNumber(s.substring(1)).trim());
@@ -140,6 +148,12 @@ public class Prop_ModFaction extends Property
 		&&((factionID.length()==0)||(msg.othersMessage().equalsIgnoreCase(factionID)))
 		)
 		{
+			if(reactions)
+			{
+				final Faction F=CMLib.factions().getFaction(msg.othersMessage());
+				if((F==null)||(!F.reactions().hasMoreElements()))
+					return super.okMessage(myHost,msg);
+			}
 			if(mask!=null)
 			{
 				if(affected instanceof Item)
