@@ -6911,12 +6911,38 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
             mob.tell("\n\rThe data entered exceeds the string limit of "+maxLength+" characters.");
     }
 
+    
+    protected MOB possibleCatalogSwap(final MOB editorMOB, final MOB me) throws IOException
+    {
+    	if(!CMLib.flags().isCataloged(me)) 
+    		return me;
+    	final MOB cataM=CMLib.catalog().getCatalogMob(me.Name());
+        if(cataM!=null)
+        {
+        	final Session session = editorMOB.session();
+        	for(final Enumeration<Item> i=cataM.items();i.hasMoreElements();)
+        	{
+        		final Item I=i.nextElement();
+        		if((I!=null)&&(I.basePhyStats().rejuv()>0)&&(I.basePhyStats().rejuv()<Integer.MAX_VALUE)&&(session!=null))
+        		{
+        			if(session.confirm("\n\r**This mob has variable equipment in the catalog, would you like to reset it first (Y/n)? ","Y"))
+        			{
+    					CMLib.coffeeMaker().setPropertiesStr(me, cataM.text(),false);
+    					CMLib.catalog().changeCatalogUsage(me, true);
+    					break;
+        			}
+        		}
+        	}
+        }
+    	return me;
+    }
 
     protected void modifyGenMOB(MOB mob, MOB me)
         throws IOException
     {
         if(mob.isMonster())
             return;
+        possibleCatalogSwap(mob,me);
         boolean ok=false;
         int showFlag=-1;
         if(CMProps.getIntVar(CMProps.SYSTEMI_EDITORTYPE)>0)
@@ -7378,6 +7404,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
         if(!(me instanceof MOB))
             return;
         MOB M=(MOB)me;
+        possibleCatalogSwap(mob,M);
         boolean ok=false;
         int showFlag=-1;
         if(CMProps.getIntVar(CMProps.SYSTEMI_EDITORTYPE)>0)
