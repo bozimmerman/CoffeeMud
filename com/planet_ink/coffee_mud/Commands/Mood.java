@@ -52,7 +52,5 @@ public class Mood extends StdCommand
 			mob.tell("This command is not implemented.");
 		return false;
 	}
-    public double combatActionsCost(MOB mob, List<String> cmds){return 0;}
-    public double actionsCost(MOB mob, List<String> cmds){return 0;}
 	public boolean canBeOrdered(){return true;}
 }

@@ -48,9 +48,9 @@ public class QuestBound implements Ability
 	
 	public boolean canTarget(int can_code){return false;}
 	public boolean canAffect(int can_code){return false;}
-	public double castingTime(MOB mob, List<String> cmds){return 0.0;}
-	public double combatCastingTime(MOB mob, List<String> cmds){return 0.0;}
-	public double checkedCastingTime(MOB mob, List<String> cmds){return 0.0;}
+	public double castingTime(final MOB mob, final List<String> cmds){return 0.0;}
+	public double combatCastingTime(final MOB mob, final List<String> cmds){return 0.0;}
+	public double checkedCastingTime(final MOB mob, final List<String> cmds){return 0.0;}
 	public int abilityCode(){return 0;}
 	public void setAbilityCode(int newCode){}
 	public int getTicksBetweenCasts() { return 0;}

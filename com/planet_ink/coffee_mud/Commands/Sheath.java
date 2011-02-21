@@ -212,7 +212,14 @@ public class Sheath extends StdCommand
 		}
 		return false;
 	}
-    public double actionsCost(MOB mob, List<String> cmds){return 0.5;}
+    public double actionsCost(final MOB mob, final List<String> cmds)
+    {
+		return CMProps.getActionCost(ID(), CMath.div(CMProps.getIntVar(CMProps.SYSTEMI_DEFCMDTIME),200.0));
+    }
+    public double combatActionsCost(MOB mob, List<String> cmds)
+    {
+		return CMProps.getCombatActionCost(ID(), CMath.div(CMProps.getIntVar(CMProps.SYSTEMI_DEFCOMCMDTIME),200.0));
+    }
 	public boolean canBeOrdered(){return true;}
 
 	

@@ -23,7 +23,7 @@
             <POWER>MORGUE</POWER>
             <POWER>LIST_MEMBERS</POWER>
             <POWER>HOME_PRIVS</POWER>
-            <POWER>CLAN_SPELLS</POWER>
+            <POWER>CLAN_BENEFITS</POWER>
             <POWER>CLAN_TITLES</POWER>
         </POSITION>
         <POSITION ID="LIEUTENANT" ROLEID=5 RANK=1 NAME="Lieutenant" PLURAL="Lieutenants" MAX=999999 INNERMASK="" PUBLIC="true">
@@ -36,7 +36,7 @@
             <POWER>MORGUE</POWER>
             <POWER>LIST_MEMBERS</POWER>
             <POWER>HOME_PRIVS</POWER>
-            <POWER>CLAN_SPELLS</POWER>
+            <POWER>CLAN_BENEFITS</POWER>
             <POWER>CLAN_TITLES</POWER>
         </POSITION>
         <POSITION ID="TREASURER" ROLEID=4 RANK=2 NAME="Treasurer" PLURAL="Treasurers" MAX=1 INNERMASK="" PUBLIC="true">
@@ -47,7 +47,7 @@
             <POWER>MORGUE</POWER>
             <POWER>LIST_MEMBERS</POWER>
             <POWER>HOME_PRIVS</POWER>
-            <POWER>CLAN_SPELLS</POWER>
+            <POWER>CLAN_BENEFITS</POWER>
             <POWER>CLAN_TITLES</POWER>
         </POSITION>
         <POSITION ID="ENCHANTER" ROLEID=3 RANK=3 NAME="Enchanter" PLURAL="Enchanters" MAX=1 INNERMASK="" PUBLIC="true">
@@ -57,7 +57,7 @@
             <POWER>MORGUE</POWER>
             <POWER>LIST_MEMBERS</POWER>
             <POWER>HOME_PRIVS</POWER>
-            <POWER>CLAN_SPELLS</POWER>
+            <POWER>CLAN_BENEFITS</POWER>
             <POWER>CLAN_TITLES</POWER>
         </POSITION>
         <POSITION ID="STAFF" ROLEID=2 RANK=4 NAME="Staff" PLURAL="Staff" MAX=999999 INNERMASK="" PUBLIC="true">
@@ -66,7 +66,7 @@
             <POWER>MORGUE</POWER>
             <POWER>LIST_MEMBERS</POWER>
             <POWER>HOME_PRIVS</POWER>
-            <POWER>CLAN_SPELLS</POWER>
+            <POWER>CLAN_BENEFITS</POWER>
             <POWER>CLAN_TITLES</POWER>
         </POSITION>
         <POSITION ID="MEMBER" ROLEID=1 RANK=5 NAME="Member" PLURAL="Members" MAX=999999 INNERMASK="" PUBLIC="false">
@@ -74,7 +74,7 @@
             <POWER>MORGUE</POWER>
             <POWER>LIST_MEMBERS</POWER>
             <POWER>HOME_PRIVS</POWER>
-            <POWER>CLAN_SPELLS</POWER>
+            <POWER>CLAN_BENEFITS</POWER>
             <POWER>CLAN_TITLES</POWER>
         </POSITION>
         <POSITION ID="APPLICANT" ROLEID=0 RANK=6 NAME="Applicant" PLURAL="Applicant" MAX=999999 INNERMASK="" PUBLIC="false">
@@ -149,7 +149,7 @@
             <POWER>MORGUE</POWER>
             <POWER>LIST_MEMBERS</POWER>
             <POWER>HOME_PRIVS</POWER>
-            <POWER>CLAN_SPELLS</POWER>
+            <POWER>CLAN_BENEFITS</POWER>
             <POWER>CLAN_TITLES</POWER>
         </POSITION>
         <POSITION ID="SECRETARY" ROLEID=5 RANK=1 NAME="Secretary" PLURAL="Secretaries" MAX=999999 INNERMASK="" PUBLIC="true">
@@ -164,7 +164,7 @@
             <POWER>MORGUE</POWER>
             <POWER>LIST_MEMBERS</POWER>
             <POWER>HOME_PRIVS</POWER>
-            <POWER>CLAN_SPELLS</POWER>
+            <POWER>CLAN_BENEFITS</POWER>
             <POWER>CLAN_TITLES</POWER>
         </POSITION>
         <POSITION ID="TREASURER" ROLEID=4 RANK=2 NAME="Treasurer" PLURAL="Treasurers" MAX=1 INNERMASK="" PUBLIC="true">
@@ -176,7 +176,7 @@
             <POWER>MORGUE</POWER>
             <POWER>LIST_MEMBERS</POWER>
             <POWER>HOME_PRIVS</POWER>
-            <POWER>CLAN_SPELLS</POWER>
+            <POWER>CLAN_BENEFITS</POWER>
             <POWER>CLAN_TITLES</POWER>
         </POSITION>
         <POSITION ID="ENCHANTER" ROLEID=3 RANK=3 NAME="Enchanter" PLURAL="Enchanters" MAX=1 INNERMASK="" PUBLIC="true">
@@ -187,7 +187,7 @@
             <POWER>MORGUE</POWER>
             <POWER>LIST_MEMBERS</POWER>
             <POWER>HOME_PRIVS</POWER>
-            <POWER>CLAN_SPELLS</POWER>
+            <POWER>CLAN_BENEFITS</POWER>
             <POWER>CLAN_TITLES</POWER>
         </POSITION>
         <POSITION ID="CHIEF" ROLEID=2 RANK=4 NAME="Chief" PLURAL="Chiefs" MAX=999999 INNERMASK="" PUBLIC="true">
@@ -197,7 +197,7 @@
             <POWER>MORGUE</POWER>
             <POWER>LIST_MEMBERS</POWER>
             <POWER>HOME_PRIVS</POWER>
-            <POWER>CLAN_SPELLS</POWER>
+            <POWER>CLAN_BENEFITS</POWER>
             <POWER>CLAN_TITLES</POWER>
         </POSITION>
         <POSITION ID="MEMBER" ROLEID=1 RANK=5 NAME="Member" PLURAL="Members" MAX=999999 INNERMASK="" PUBLIC="false">
@@ -206,7 +206,7 @@
             <POWER>MORGUE</POWER>
             <POWER>LIST_MEMBERS</POWER>
             <POWER>HOME_PRIVS</POWER>
-            <POWER>CLAN_SPELLS</POWER>
+            <POWER>CLAN_BENEFITS</POWER>
             <POWER>CLAN_TITLES</POWER>
         </POSITION>
         <POSITION ID="APPLICANT" ROLEID=0 RANK=6 NAME="Applicant" PLURAL="Applicant" MAX=999999 INNERMASK="" PUBLIC="false">
@@ -280,7 +280,7 @@
             <POWER>MORGUE</POWER>
             <POWER>LIST_MEMBERS</POWER>
             <POWER>HOME_PRIVS</POWER>
-            <POWER>CLAN_SPELLS</POWER>
+            <POWER>CLAN_BENEFITS</POWER>
             <POWER>CLAN_TITLES</POWER>
         </POSITION>
         <POSITION ID="SECRETARY" ROLEID=5 RANK=1 NAME="Secretary" PLURAL="Secretaries" MAX=1 INNERMASK="" PUBLIC="true">
@@ -291,7 +291,7 @@
             <POWER>MORGUE</POWER>
             <POWER>LIST_MEMBERS</POWER>
             <POWER>HOME_PRIVS</POWER>
-            <POWER>CLAN_SPELLS</POWER>
+            <POWER>CLAN_BENEFITS</POWER>
             <POWER>CLAN_TITLES</POWER>
         </POSITION>
         <POSITION ID="TREASURER" ROLEID=4 RANK=2 NAME="Treasurer" PLURAL="Treasurers" MAX=1 INNERMASK="" PUBLIC="true">
@@ -302,7 +302,7 @@
             <POWER>MORGUE</POWER>
             <POWER>LIST_MEMBERS</POWER>
             <POWER>HOME_PRIVS</POWER>
-            <POWER>CLAN_SPELLS</POWER>
+            <POWER>CLAN_BENEFITS</POWER>
             <POWER>CLAN_TITLES</POWER>
         </POSITION>
         <POSITION ID="ENCHANTER" ROLEID=3 RANK=3 NAME="Enchanter" PLURAL="Enchanters" MAX=1 INNERMASK="" PUBLIC="true">
@@ -313,7 +313,7 @@
             <POWER>MORGUE</POWER>
             <POWER>LIST_MEMBERS</POWER>
             <POWER>HOME_PRIVS</POWER>
-            <POWER>CLAN_SPELLS</POWER>
+            <POWER>CLAN_BENEFITS</POWER>
             <POWER>CLAN_TITLES</POWER>
         </POSITION>
         <POSITION ID="SHERIFF" ROLEID=2 RANK=4 NAME="Sheriff" PLURAL="Sheriffs" MAX=999999 INNERMASK="" PUBLIC="true">
@@ -324,7 +324,7 @@
             <POWER>MORGUE</POWER>
             <POWER>LIST_MEMBERS</POWER>
             <POWER>HOME_PRIVS</POWER>
-            <POWER>CLAN_SPELLS</POWER>
+            <POWER>CLAN_BENEFITS</POWER>
             <POWER>CLAN_TITLES</POWER>
         </POSITION>
         <POSITION ID="CITIZEN" ROLEID=1 RANK=5 NAME="Citizen" PLURAL="Citizens" MAX=999999 INNERMASK="" PUBLIC="false">
@@ -334,7 +334,7 @@
             <POWER>MORGUE</POWER>
             <POWER>LIST_MEMBERS</POWER>
             <POWER>HOME_PRIVS</POWER>
-            <POWER>CLAN_SPELLS</POWER>
+            <POWER>CLAN_BENEFITS</POWER>
             <POWER>CLAN_TITLES</POWER>
         </POSITION>
         <POSITION ID="APPLICANT" ROLEID=0 RANK=6 NAME="Applicant" PLURAL="Applicant" MAX=999999 INNERMASK="" PUBLIC="false">
@@ -411,7 +411,7 @@
             <POWER>MORGUE</POWER>
             <POWER>LIST_MEMBERS</POWER>
             <POWER>HOME_PRIVS</POWER>
-            <POWER>CLAN_SPELLS</POWER>
+            <POWER>CLAN_BENEFITS</POWER>
             <POWER>CLAN_TITLES</POWER>
         </POSITION>
         <POSITION ID="MANAGER" ROLEID=5 RANK=1 NAME="Manager" PLURAL="Managers" MAX=999999 INNERMASK="" PUBLIC="true">
@@ -423,7 +423,7 @@
             <POWER>MORGUE</POWER>
             <POWER>LIST_MEMBERS</POWER>
             <POWER>HOME_PRIVS</POWER>
-            <POWER>CLAN_SPELLS</POWER>
+            <POWER>CLAN_BENEFITS</POWER>
             <POWER>CLAN_TITLES</POWER>
         </POSITION>
         <POSITION ID="TREASURER" ROLEID=4 RANK=2 NAME="Treasurer" PLURAL="Treasurers" MAX=999999 INNERMASK="" PUBLIC="true">
@@ -435,7 +435,7 @@
             <POWER>MORGUE</POWER>
             <POWER>LIST_MEMBERS</POWER>
             <POWER>HOME_PRIVS</POWER>
-            <POWER>CLAN_SPELLS</POWER>
+            <POWER>CLAN_BENEFITS</POWER>
             <POWER>CLAN_TITLES</POWER>
         </POSITION>
         <POSITION ID="ENCHANTER" ROLEID=3 RANK=3 NAME="Enchanter" PLURAL="Enchanters" MAX=999999 INNERMASK="" PUBLIC="true">
@@ -447,7 +447,7 @@
             <POWER>MORGUE</POWER>
             <POWER>LIST_MEMBERS</POWER>
             <POWER>HOME_PRIVS</POWER>
-            <POWER>CLAN_SPELLS</POWER>
+            <POWER>CLAN_BENEFITS</POWER>
             <POWER>CLAN_TITLES</POWER>
         </POSITION>
         <POSITION ID="SOLDIER" ROLEID=2 RANK=4 NAME="Soldier" PLURAL="Soldiers" MAX=999999 INNERMASK="" PUBLIC="true">
@@ -459,7 +459,7 @@
             <POWER>MORGUE</POWER>
             <POWER>LIST_MEMBERS</POWER>
             <POWER>HOME_PRIVS</POWER>
-            <POWER>CLAN_SPELLS</POWER>
+            <POWER>CLAN_BENEFITS</POWER>
             <POWER>CLAN_TITLES</POWER>
         </POSITION>
         <POSITION ID="CITIZEN" ROLEID=1 RANK=5 NAME="Citizen" PLURAL="Citizens" MAX=999999 INNERMASK="" PUBLIC="false">
@@ -470,7 +470,7 @@
             <POWER>MORGUE</POWER>
             <POWER>LIST_MEMBERS</POWER>
             <POWER>HOME_PRIVS</POWER>
-            <POWER>CLAN_SPELLS</POWER>
+            <POWER>CLAN_BENEFITS</POWER>
             <POWER>CLAN_TITLES</POWER>
         </POSITION>
         <POSITION ID="APPLICANT" ROLEID=0 RANK=6 NAME="Applicant" PLURAL="Applicant" MAX=999999 INNERMASK="" PUBLIC="false">
@@ -558,7 +558,7 @@
             <POWER>MORGUE</POWER>
             <POWER>LIST_MEMBERS</POWER>
             <POWER>HOME_PRIVS</POWER>
-            <POWER>CLAN_SPELLS</POWER>
+            <POWER>CLAN_BENEFITS</POWER>
             <POWER>CLAN_TITLES</POWER>
         </POSITION>
         <POSITION ID="PRIEST" ROLEID=5 RANK=1 NAME="Priest" PLURAL="Priests" MAX=999999 INNERMASK="-BASECLASS +Cleric -DEITY +@[WORSHIPCHARID]@" PUBLIC="true">
@@ -573,7 +573,7 @@
             <POWER>MORGUE</POWER>
             <POWER>LIST_MEMBERS</POWER>
             <POWER>HOME_PRIVS</POWER>
-            <POWER>CLAN_SPELLS</POWER>
+            <POWER>CLAN_BENEFITS</POWER>
             <POWER>CLAN_TITLES</POWER>
         </POSITION>
         <POSITION ID="TREASURER" ROLEID=4 RANK=2 NAME="Treasurer" PLURAL="Treasurers" MAX=1 INNERMASK=" -DEITY +@[WORSHIPCHARID]@" PUBLIC="true">
@@ -585,7 +585,7 @@
             <POWER>MORGUE</POWER>
             <POWER>LIST_MEMBERS</POWER>
             <POWER>HOME_PRIVS</POWER>
-            <POWER>CLAN_SPELLS</POWER>
+            <POWER>CLAN_BENEFITS</POWER>
             <POWER>CLAN_TITLES</POWER>
         </POSITION>
         <POSITION ID="ENCHANTER" ROLEID=3 RANK=3 NAME="Enchanter" PLURAL="Enchanters" MAX=1 INNERMASK=" -DEITY +@[WORSHIPCHARID]@" PUBLIC="true">
@@ -597,7 +597,7 @@
             <POWER>MORGUE</POWER>
             <POWER>LIST_MEMBERS</POWER>
             <POWER>HOME_PRIVS</POWER>
-            <POWER>CLAN_SPELLS</POWER>
+            <POWER>CLAN_BENEFITS</POWER>
             <POWER>CLAN_TITLES</POWER>
         </POSITION>
         <POSITION ID="CRUSADER" ROLEID=2 RANK=4 NAME="Crusader" PLURAL="Crusaders" MAX=999999 INNERMASK=" -DEITY +@[WORSHIPCHARID]@" PUBLIC="true">
@@ -608,7 +608,7 @@
             <POWER>MORGUE</POWER>
             <POWER>LIST_MEMBERS</POWER>
             <POWER>HOME_PRIVS</POWER>
-            <POWER>CLAN_SPELLS</POWER>
+            <POWER>CLAN_BENEFITS</POWER>
             <POWER>CLAN_TITLES</POWER>
         </POSITION>
         <POSITION ID="BELIEVER" ROLEID=1 RANK=5 NAME="Believer" PLURAL="Believer" MAX=999999 INNERMASK="  -DEITY +@[WORSHIPCHARID]@" PUBLIC="false">
@@ -619,7 +619,7 @@
             <POWER>MORGUE</POWER>
             <POWER>LIST_MEMBERS</POWER>
             <POWER>HOME_PRIVS</POWER>
-            <POWER>CLAN_SPELLS</POWER>
+            <POWER>CLAN_BENEFITS</POWER>
             <POWER>CLAN_TITLES</POWER>
         </POSITION>
         <POSITION ID="APPLICANT" ROLEID=0 RANK=6 NAME="Applicant" PLURAL="Applicant" MAX=999999 INNERMASK="  -DEITY +@[WORSHIPCHARID]@" PUBLIC="false">
@@ -698,7 +698,7 @@
             <POWER>MORGUE</POWER>
             <POWER>LIST_MEMBERS</POWER>
             <POWER>HOME_PRIVS</POWER>
-            <POWER>CLAN_SPELLS</POWER>
+            <POWER>CLAN_BENEFITS</POWER>
             <POWER>CLAN_TITLES</POWER>
         </POSITION>
         <POSITION ID="MATRON" ROLEID=5 RANK=0 NAME="Matron" PLURAL="Matrons" MAX=1 INNERMASK="-MALE -NEUTER" PUBLIC="true">
@@ -721,7 +721,7 @@
             <POWER>MORGUE</POWER>
             <POWER>LIST_MEMBERS</POWER>
             <POWER>HOME_PRIVS</POWER>
-            <POWER>CLAN_SPELLS</POWER>
+            <POWER>CLAN_BENEFITS</POWER>
             <POWER>CLAN_TITLES</POWER>
         </POSITION>
         <POSITION ID="MISTRESS" ROLEID=4 RANK=1 NAME="Mistress" PLURAL="Mistresses" MAX=1 INNERMASK="-MALE -NEUTER" PUBLIC="true">
@@ -737,7 +737,7 @@
             <POWER>MORGUE</POWER>
             <POWER>LIST_MEMBERS</POWER>
             <POWER>HOME_PRIVS</POWER>
-            <POWER>CLAN_SPELLS</POWER>
+            <POWER>CLAN_BENEFITS</POWER>
             <POWER>CLAN_TITLES</POWER>
         </POSITION>
         <POSITION ID="MISTER" ROLEID=3 RANK=1 NAME="Mister" PLURAL="Misters" MAX=999999 INNERMASK="-FEMALE -NEUTER" PUBLIC="true">
@@ -753,7 +753,7 @@
             <POWER>MORGUE</POWER>
             <POWER>LIST_MEMBERS</POWER>
             <POWER>HOME_PRIVS</POWER>
-            <POWER>CLAN_SPELLS</POWER>
+            <POWER>CLAN_BENEFITS</POWER>
             <POWER>CLAN_TITLES</POWER>
         </POSITION>
         <POSITION ID="COUSIN" ROLEID=2 RANK=2 NAME="Cousin" PLURAL="Cousins" MAX=999999 INNERMASK="" PUBLIC="true">
@@ -765,7 +765,7 @@
             <POWER>MORGUE</POWER>
             <POWER>LIST_MEMBERS</POWER>
             <POWER>HOME_PRIVS</POWER>
-            <POWER>CLAN_SPELLS</POWER>
+            <POWER>CLAN_BENEFITS</POWER>
             <POWER>CLAN_TITLES</POWER>
         </POSITION>
         <POSITION ID="CHILD" ROLEID=1 RANK=3 NAME="Child" PLURAL="Children" MAX=999999 INNERMASK="" PUBLIC="true">
@@ -775,7 +775,7 @@
             <POWER>MORGUE</POWER>
             <POWER>LIST_MEMBERS</POWER>
             <POWER>HOME_PRIVS</POWER>
-            <POWER>CLAN_SPELLS</POWER>
+            <POWER>CLAN_BENEFITS</POWER>
             <POWER>CLAN_TITLES</POWER>
         </POSITION>
         <POSITION ID="BLACKSHEEP" ROLEID=0 RANK=4 NAME="Black-Sheep" PLURAL="Black-Sheeps" MAX=999999 INNERMASK="" PUBLIC="true">
@@ -785,7 +785,7 @@
             <POWER>MORGUE</POWER>
             <POWER>LIST_MEMBERS</POWER>
             <POWER>HOME_PRIVS</POWER>
-            <POWER>CLAN_SPELLS</POWER>
+            <POWER>CLAN_BENEFITS</POWER>
             <POWER>CLAN_TITLES</POWER>
         </POSITION>
     </POSITIONS>
@@ -864,7 +864,7 @@
             <POWER>MORGUE</POWER>
             <POWER>LIST_MEMBERS</POWER>
             <POWER>HOME_PRIVS</POWER>
-            <POWER>CLAN_SPELLS</POWER>
+            <POWER>CLAN_BENEFITS</POWER>
             <POWER>CLAN_TITLES</POWER>
         </POSITION>
     </POSITIONS>

@@ -1385,4 +1385,15 @@ public class CMath
      * @return the square root of the given number
      */
     public final static float sqrt(final float d){return (float)Math.sqrt(d);}
+
+    /**
+     * Returns greater of two numbers
+     * @param a first number
+     * @param b second number
+     * @return greater of the two
+     */
+    public final static double greater(final double a, final double b)
+    {
+        return a<b?b:a;
+    }
 }

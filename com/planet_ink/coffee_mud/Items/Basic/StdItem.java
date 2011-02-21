@@ -771,7 +771,26 @@ public class StdItem implements Item
 		case CMMsg.TYP_RELOAD:
 			if((this instanceof Weapon)
 			&&(((Weapon)this).requiresAmmunition()))
+			{
+				if(((Weapon)this).ammunitionRemaining()>=((Weapon)this).ammunitionCapacity())
+				{
+					mob.tell(name()+" is already loaded.");
+					return false;
+				}
 				return true;
+			}
+			break;
+		case CMMsg.TYP_UNLOAD:
+			if((this instanceof Weapon)
+			&&(((Weapon)this).requiresAmmunition()))
+			{
+				if(((Weapon)this).ammunitionRemaining()<=0)
+				{
+					mob.tell(name()+" is not loaded.");
+					return false;
+				}
+				return true;
+			}
 			break;
 		case CMMsg.TYP_HOLD:
 			if((!fitsOn(Wearable.WORN_HELD))||(properWornBitmap==0))

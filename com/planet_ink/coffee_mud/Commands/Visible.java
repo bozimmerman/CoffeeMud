@@ -90,7 +90,7 @@ public class Visible extends StdCommand
             ((Ability)V.get(v)).unInvoke();
         return false;
     }
-    public double actionsCost(MOB mob, List<String> cmds){return CMath.div(CMProps.getIntVar(CMProps.SYSTEMI_DEFCMDTIME),100.0);}
+    public double actionsCost(final MOB mob, final List<String> cmds){return CMProps.getActionCost(ID());}
     public double combatActionsCost(MOB mob, List<String> cmds){return 0.25;}
     public boolean canBeOrdered(){return true;}
     

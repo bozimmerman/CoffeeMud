@@ -41,10 +41,14 @@ public class Run extends Go
 	private final String[] access={"RUN"};
 	public String[] getAccessWords(){return access;}
 	public int energyExpenseFactor(){return 2;}
-	public double actionsCost(MOB mob, List<String> cmds)
-	{
-		return super.actionsCost(mob, cmds) / 4.0;
-	}
+    public double actionsCost(final MOB mob, final List<String> cmds)
+    {
+		return CMProps.getActionCost(ID(), CMath.div(CMProps.getIntVar(CMProps.SYSTEMI_DEFCMDTIME),400.0));
+    }
+    public double combatActionsCost(MOB mob, List<String> cmds)
+    {
+		return CMProps.getCombatActionCost(ID(), CMath.div(CMProps.getIntVar(CMProps.SYSTEMI_DEFCOMCMDTIME),400.0));
+    }
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 	throws java.io.IOException
 	{

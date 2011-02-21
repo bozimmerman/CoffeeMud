@@ -2300,3 +2300,6 @@ Special/Reserved Quest called holidays can be added to/modified on an area-by-ar
 31.Racial Effects are now implemented as inexpensively as possible.  See genraces in command line & mudgrinder.
 32.Clans (via their governments) now support custom help entries, clan effects, and clan abilities.
 33.COMPARE command can now be used to compare container capacity
+34.Can now create exception lists for DEFCMDTIME and DEFABLETIME in coffeemud.ini file/control panel.
+35.Commands LOAD/UNLOAD now can be done manually by players for ranged weapons requiring ammunition.
+

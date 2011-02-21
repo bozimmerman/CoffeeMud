@@ -68,8 +68,14 @@ public class OutFit extends StdCommand
 		mob.tell("\n\rUseful equipment appears mysteriously out of the java plain.");
 		return false;
 	}
-    public double combatActionsCost(MOB mob, List<String> cmds){return CMath.div(CMProps.getIntVar(CMProps.SYSTEMI_DEFCOMCMDTIME),100.0)*4;}
-    public double actionsCost(MOB mob, List<String> cmds){return CMath.div(CMProps.getIntVar(CMProps.SYSTEMI_DEFCMDTIME),100.0)*4;}
+    public double combatActionsCost(final MOB mob, final List<String> cmds)
+    {
+    	return CMProps.getCombatActionCost(ID(),CMath.div(CMProps.getIntVar(CMProps.SYSTEMI_DEFCOMCMDTIME),25.0));
+    }
+    public double actionsCost(MOB mob, List<String> cmds)
+    {
+    	return CMProps.getActionCost(ID(),CMath.div(CMProps.getIntVar(CMProps.SYSTEMI_DEFCMDTIME),25.0));
+    }
 	public boolean canBeOrdered(){return false;}
 
 	

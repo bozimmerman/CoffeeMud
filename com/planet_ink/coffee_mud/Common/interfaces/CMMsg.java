@@ -896,6 +896,8 @@ public interface CMMsg extends CMCommon
     public static final int TYP_BID=98;
     /** MINOR_MASK minor action code type, denoting a auctioneer bid action*/
     public static final int TYP_CLANEVENT=99;
+    /** MINOR_MASK minor action code type, denoting a missile weapon unload action*/
+	public static final int TYP_UNLOAD=100;
 
     /** MINOR_MASK minor action code type, denoting a channel action -- 2000-2047 are channels*/
 	public static final int TYP_CHANNEL=2000; //(2000-2047 are channels)
@@ -1052,7 +1054,7 @@ public interface CMMsg extends CMCommon
     /** combined MAJOR and MINOR codes for useful event message type for a large quiet movement event */
 	public static final int MSG_QUIETMOVEMENT=MASK_HANDS|MASK_MOVE|TYP_QUIETMOVEMENT;
     /** combined MAJOR and MINOR codes for useful event message type for a missile weapon reload event*/
-	public static final int MSG_RELOAD=MASK_HANDS|TYP_QUIETMOVEMENT;
+	public static final int MSG_RELOAD=MASK_HANDS|TYP_RELOAD;
     /** combined MAJOR and MINOR codes for useful event message type for a physical attack event*/
 	public static final int MSG_WEAPONATTACK=MASK_HANDS|MASK_MOVE|MASK_SOUND|MASK_MALICIOUS|TYP_WEAPONATTACK;
     /** combined MAJOR and MINOR codes for useful event message type for a look event*/
@@ -1185,4 +1187,6 @@ public interface CMMsg extends CMCommon
 	public static final int MSG_BID=MSK_HAGGLE|TYP_BID;
     /** combined MAJOR and MINOR codes for useful event message type for a clan event */
 	public static final int MSG_CLANEVENT=MASK_ALWAYS|TYP_CLANEVENT;
+    /** combined MAJOR and MINOR codes for useful event message type for a missile weapon reload event*/
+	public static final int MSG_UNLOAD=MASK_HANDS|TYP_UNLOAD;
 }

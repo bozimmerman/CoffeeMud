@@ -56,7 +56,7 @@ public interface Command extends CMObject
      * @param cmds the parameters to be passed to the command, if any
 	 * @return the number of player free actions required to do this
 	 */
-    public double actionsCost(MOB mob, List<String> cmds);
+    public double actionsCost(final MOB mob, final List<String> cmds);
 	/**
 	 * Returns the number of actions required to completely
 	 * activate this command. A value of 0.0 means perform 
@@ -68,7 +68,7 @@ public interface Command extends CMObject
      * @param cmds the parameters to be passed to the command, if any
 	 * @return the number of player free actions required to do this
 	 */
-    public double combatActionsCost(MOB mob, List<String> cmds);
+    public double combatActionsCost(final MOB mob, final List<String> cmds);
 	/**
 	 * Returns the number of actions required to completely
 	 * activate this command. A value of 0.0 means perform 
@@ -80,7 +80,7 @@ public interface Command extends CMObject
      * @param cmds the parameters to be passed to the command, if any
 	 * @return the number of player free actions required to do this
 	 */
-    public double checkedActionsCost(MOB mob, List<String> cmds);
+    public double checkedActionsCost(final MOB mob, final List<String> cmds);
     /**
      * Whether the a group leader or charmer can order their followers
      * to do this command.

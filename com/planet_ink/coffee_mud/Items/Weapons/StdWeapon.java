@@ -41,6 +41,8 @@ public class StdWeapon extends StdItem implements Weapon
 	protected int minRange=0;
 	protected int maxRange=0;
 	protected int ammoCapacity=0;
+	
+	protected long lastReloadTime=0;
 
 	public StdWeapon()
 	{
@@ -103,14 +105,64 @@ public class StdWeapon extends StdItem implements Weapon
 	{
 		super.executeMsg(myHost,msg);
 
-		if((msg.amITarget(this))
-		&&((msg.targetMinor()==CMMsg.TYP_LOOK)||(msg.targetMinor()==CMMsg.TYP_EXAMINE))
-		&&(CMLib.flags().canBeSeenBy(this,msg.source())))
+		if(msg.amITarget(this))
 		{
-			if(requiresAmmunition())
-				msg.source().tell(ammunitionType()+" remaining: "+ammunitionRemaining()+"/"+ammunitionCapacity()+".");
-			if((subjectToWearAndTear())&&(usesRemaining()<100))
-				msg.source().tell(weaponHealth());
+			switch(msg.targetMinor())
+			{
+			case CMMsg.TYP_LOOK:
+			case CMMsg.TYP_EXAMINE:
+				if(CMLib.flags().canBeSeenBy(this,msg.source()))
+				{
+					if(requiresAmmunition())
+						msg.source().tell(ammunitionType()+" remaining: "+ammunitionRemaining()+"/"+ammunitionCapacity()+".");
+					if((subjectToWearAndTear())&&(usesRemaining()<100))
+						msg.source().tell(weaponHealth());
+				}
+				break;
+			case CMMsg.TYP_RELOAD:
+				if(msg.tool() instanceof Ammunition)
+				{
+					boolean recover=false;
+					final Ammunition I=(Ammunition)msg.tool();
+					int howMuchToTake=ammunitionCapacity();
+					if(I.usesRemaining()<howMuchToTake)
+						howMuchToTake=I.usesRemaining();
+					setAmmoRemaining(howMuchToTake);
+					I.setUsesRemaining(I.usesRemaining()-howMuchToTake);
+					for(final Enumeration<Ability> a=I.effects();a.hasMoreElements();)
+					{
+						Ability A=a.nextElement();
+						if((A!=null)&&(A.isSavable())&&(fetchEffect(A.ID())==null))
+						{
+							A=(Ability)A.copyOf();
+							A.setInvoker(null);
+							A.setSavable(false);
+							addEffect(A);
+							recover=true;
+						}
+					}
+					if(I.usesRemaining()<=0)
+						I.destroy();
+					if(recover) recoverOwner();
+				}
+				break;
+			case CMMsg.TYP_UNLOAD:
+				if(msg.tool() instanceof Ammunition)
+				{
+					final Ammunition ammo=(Ammunition)msg.tool();
+					for(final Enumeration<Ability> a=effects();a.hasMoreElements();)
+					{
+						final Ability A=a.nextElement();
+						if((A!=null)&&(!A.isSavable())&&(A.invoker()==null))
+						{
+							final Ability ammoA=(Ability)A.copyOf();
+							ammo.addNonUninvokableEffect(ammoA);
+						}
+					}
+					setAmmoRemaining(0);
+				}
+				break;
+			}
 		}
 		else
 		if((msg.tool()==this)
@@ -204,62 +256,13 @@ public class StdWeapon extends StdItem implements Weapon
 				setAmmoRemaining(ammunitionCapacity());
 			if(ammunitionRemaining()<=0)
 			{
-				boolean reLoaded=false;
-
 				if((msg.source().isMine(this))
 				   &&(msg.source().location()!=null)
-				   &&(CMLib.flags().aliveAwakeMobile(msg.source(),true)))
+				   &&(CMLib.flags().aliveAwakeMobile(msg.source(),true))
+				   &&(lastReloadTime < (System.currentTimeMillis() - CMProps.getTickMillis())))
 				{
-					boolean recover=false;
-					final MOB mob=msg.source();
-					for(final Enumeration<Item> i=mob.items();i.hasMoreElements();)
-					{
-						final Item I=i.nextElement();
-						if((I instanceof Ammunition)
-						&&(I.usesRemaining()>0)
-						&&(I.usesRemaining()<Integer.MAX_VALUE)
-						&&(I.container()==null)
-						&&(((Ammunition)I).ammunitionType().equalsIgnoreCase(ammunitionType())))
-						{
-							if(mob.location().show(mob,this,I,CMMsg.MSG_RELOAD,"<S-NAME> load(s) <T-NAME> from <O-NAME>."))
-							{
-								int howMuchToTake=ammunitionCapacity();
-								if(I.usesRemaining()<howMuchToTake)
-									howMuchToTake=I.usesRemaining();
-								setAmmoRemaining(howMuchToTake);
-								I.setUsesRemaining(I.usesRemaining()-howMuchToTake);
-								for(final Enumeration<Ability> a=I.effects();a.hasMoreElements();)
-								{
-									Ability A=a.nextElement();
-									if((A!=null)&&(A.isSavable())&&(fetchEffect(A.ID())==null))
-									{
-										A=(Ability)A.copyOf();
-										A.setInvoker(null);
-										A.setSavable(false);
-										addEffect(A);
-										recover=true;
-									}
-								}
-
-								if(I.usesRemaining()<=0) I.destroy();
-								reLoaded=true;
-								break;
-							}
-						}
-					}
-					if(recover)
-					{
-						mob.recoverPhyStats();
-						mob.recoverCharStats();
-						mob.recoverMaxState();
-					}
-				}
-				if(!reLoaded)
-				{
-					setAmmoRemaining(0);
-					msg.source().tell("You have no more "+ammunitionType()+".");
-					CMLib.commands().postRemove(msg.source(),this,false);
-					return false;
+					lastReloadTime=System.currentTimeMillis();
+					msg.source().enqueCommand(CMParms.parse("LOAD ALL \"$"+name()+"$\""), 0, 0);
 				}
 			}
 			else
@@ -380,7 +383,10 @@ public class StdWeapon extends StdItem implements Weapon
 			amount=20;
 		setUsesRemaining(amount);
 		final ItemPossessor myOwner=owner;
-		if((oldAmount>0)&&(amount==0)&&(myOwner instanceof MOB))
+		if((oldAmount>0)
+		&&(amount==0)
+		&&(myOwner instanceof MOB)
+		&&(ammunitionCapacity()>0))
 		{
 			boolean recover=false;
 			for(final Enumeration<Ability> a=effects();a.hasMoreElements();)
@@ -392,12 +398,7 @@ public class StdWeapon extends StdItem implements Weapon
 					delEffect(A);
 				}
 			}
-			if(recover)
-			{
-				((MOB)myOwner).recoverCharStats();
-				((MOB)myOwner).recoverMaxState();
-				((MOB)myOwner).recoverPhyStats();
-			}
+			if(recover) recoverOwner();
 		}
 	}
 	public int ammunitionCapacity(){return ammoCapacity;}
@@ -414,6 +415,20 @@ public class StdWeapon extends StdItem implements Weapon
 			&&(!(this instanceof Wand))
 			&&(usesRemaining()<=1000)
 			&&(usesRemaining()>=0));
+	}
+	
+	public void recoverOwner()
+	{
+		final ItemPossessor myOwner=owner;
+		if(myOwner instanceof MOB)
+		{
+			((MOB)myOwner).recoverCharStats();
+			((MOB)myOwner).recoverMaxState();
+			((MOB)myOwner).recoverPhyStats();
+		}
+		else
+		if(myOwner!=null)
+			myOwner.recoverPhyStats();
 	}
 
 }

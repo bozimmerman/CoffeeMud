@@ -219,7 +219,7 @@ public class Draw extends Get
 		}
 		return false;
 	}
-    public double actionsCost(MOB mob, List<String> cmds){return CMath.div(CMProps.getIntVar(CMProps.SYSTEMI_DEFCMDTIME),100.0);}
+    public double actionsCost(final MOB mob, final List<String> cmds){return CMProps.getActionCost(ID());}
 	public boolean canBeOrdered(){return true;}
 
 	

@@ -185,7 +185,7 @@ public interface Ability extends Environmental
 	 * @param commands the potential command set
 	 * @return the number of player free actions required to do this
 	 */
-	public double castingTime(MOB mob, List<String> commands);
+	public double castingTime(final MOB mob, final List<String> commands);
 	
 	/**
 	 * Returns the number of actions required to completely
@@ -198,7 +198,7 @@ public interface Ability extends Environmental
 	 * @param commands the potential command set
 	 * @return the number of player free actions required to do this
 	 */
-	public double combatCastingTime(MOB mob, List<String> commands);
+	public double combatCastingTime(final MOB mob, final List<String> commands);
 	
 	/**
 	 * Returns the number of actions required to completely
@@ -211,7 +211,7 @@ public interface Ability extends Environmental
 	 * @param commands the potential command set
 	 * @return the number of player free actions required to do this
 	 */
-	public double checkedCastingTime(MOB mob, List<String> commands);
+	public double checkedCastingTime(final MOB mob, final List<String> commands);
 
 	/**
 	 * This method is only called when the mob invoking this skill

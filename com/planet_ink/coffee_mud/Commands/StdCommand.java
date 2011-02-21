@@ -67,9 +67,15 @@ public class StdCommand implements Command
 		return null;
 	}
 	
-    public double actionsCost(MOB mob, List<String> cmds){return 0.0;}
-    public double combatActionsCost(MOB mob, List<String> cmds){return 0.0;}
-    public double checkedActionsCost(MOB mob, List<String> cmds)
+    public double actionsCost(final MOB mob, final List<String> cmds)
+    {
+		return CMProps.getActionCost(ID(), 0.0);
+    }
+    public double combatActionsCost(MOB mob, List<String> cmds)
+    {
+		return CMProps.getCombatActionCost(ID(), 0.0);
+    }
+    public double checkedActionsCost(final MOB mob, final List<String> cmds)
     {
     	if(mob!=null)
     		return mob.isInCombat() ? combatActionsCost(mob,cmds) : actionsCost(mob,cmds);

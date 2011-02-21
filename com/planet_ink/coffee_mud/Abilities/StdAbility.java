@@ -48,9 +48,9 @@ public class StdAbility implements Ability
 	public String[] triggerStrings(){return empty;}
 	public int maxRange(){return adjustedMaxInvokerRange(0);}
 	public int minRange(){return 0;}
-    public double castingTime(MOB mob, List<String> cmds){return CMath.div(CMProps.getIntVar(CMProps.SYSTEMI_DEFABLETIME),100.0);}
-    public double combatCastingTime(MOB mob, List<String> cmds){return CMath.div(CMProps.getIntVar(CMProps.SYSTEMI_DEFCOMABLETIME),100.0);}
-    public double checkedCastingTime(MOB mob, List<String> commands)
+    public double castingTime(final MOB mob, final List<String> cmds){return CMProps.getActionSkillCost(ID());}
+    public double combatCastingTime(final MOB mob, final List<String> cmds){return CMProps.getCombatActionSkillCost(ID());}
+    public double checkedCastingTime(final MOB mob, final List<String> commands)
     {
     	if(mob!=null)
     	{

@@ -675,7 +675,7 @@ public class Clans extends StdLibrary implements ClanManager
 	    	{
 	    		if(piece.tag.equalsIgnoreCase("POWER"))
 	    		{
-	    			Function power = Function.valueOf(piece.value);
+	    			Function power = (Function)CMath.s_valueOf(Clan.Function.values(),piece.value);
 	    			if(power == null)
 	    	    		Log.errOut("Clans","Illegal power found in xml: "+piece.value);
 	    			else
@@ -702,7 +702,7 @@ public class Clans extends StdLibrary implements ClanManager
 	    	    	{
 	    	    		if(powerPiece.tag.equalsIgnoreCase("POWER"))
 	    	    		{
-	    	    			Function power = Function.valueOf(powerPiece.value);
+	    	    			Function power = (Function)CMath.s_valueOf(Clan.Function.values(),powerPiece.value);
 	    	    			if(power == null)
 	    	    	    		Log.errOut("Clans","Illegal power found in xml: "+powerPiece.value);
 	    	    			else

@@ -267,8 +267,6 @@ public class CMProps extends Properties
     protected final List<String>emoteFilter=new Vector<String>();
     protected final List<String>poseFilter=new Vector<String>();
     protected final DVector 	newusersByIP=new DVector(2);
-    protected final DVector 	skillMaxManaExceptions=new DVector(2);
-    protected final DVector 	skillMinManaExceptions=new DVector(2);
     protected String[][] 		statCodeExtensions = null;
     protected int 				pkillLevelDiff=26;
     protected boolean 			loaded=false;
@@ -278,6 +276,12 @@ public class CMProps extends Properties
     protected long 				TICKS_PER_RLHOUR=TICKS_PER_RLMIN * 60;
     protected long 				TICKS_PER_RLDAY=TICKS_PER_RLHOUR * 24;
     protected double 			TIME_TICK_DOUBLE=(double)TIME_TICK;
+    protected final Map<String,Double> 	skillMaxManaExceptions	=new HashMap<String,Double>();
+    protected final Map<String,Double> 	skillMinManaExceptions	=new HashMap<String,Double>();
+    protected final Map<String,Double> 	skillCostExceptions		=new HashMap<String,Double>();
+    protected final Map<String,Double> 	skillComCostExceptions	=new HashMap<String,Double>();
+    protected final Map<String,Double> 	cmdCostExceptions		=new HashMap<String,Double>();
+    protected final Map<String,Double> 	cmdComCostExceptions	=new HashMap<String,Double>();
 
 	public CMProps(InputStream in)
 	{
@@ -517,6 +521,62 @@ public class CMProps extends Properties
 		}
 	}
 	
+    public static final double getActionCost(final String ID, final double defaultValue)
+    {
+    	final Map<String,Double> overrides=p().cmdCostExceptions;
+    	final String uID=ID.toUpperCase();
+    	if(overrides.containsKey(uID))
+    		return overrides.get(uID).doubleValue();
+    	return defaultValue;
+    }
+
+    public static final double getCombatActionCost(final String ID, final double defaultValue)
+    {
+    	final Map<String,Double> overrides=p().cmdComCostExceptions;
+    	final String uID=ID.toUpperCase();
+    	if(overrides.containsKey(uID))
+    		return overrides.get(uID).doubleValue();
+    	return defaultValue;
+    }
+
+    public static final double getActionCost(final String ID)
+    {
+    	return getActionCost(ID,CMath.div(getIntVar(CMProps.SYSTEMI_DEFCMDTIME),100.0));
+    }
+
+    public static final double getCombatActionCost(final String ID)
+    {
+    	return getCombatActionCost(ID,CMath.div(getIntVar(CMProps.SYSTEMI_DEFCOMCMDTIME),100.0));
+    }
+
+    public static final double getActionSkillCost(final String ID, final double defaultValue)
+    {
+    	final Map<String,Double> overrides=p().skillCostExceptions;
+    	final String uID=ID.toUpperCase();
+    	if(overrides.containsKey(uID))
+    		return overrides.get(uID).doubleValue();
+    	return defaultValue;
+    }
+
+    public static final double getCombatActionSkillCost(final String ID, final double defaultValue)
+    {
+    	final Map<String,Double> overrides=p().skillComCostExceptions;
+    	final String uID=ID.toUpperCase();
+    	if(overrides.containsKey(uID))
+    		return overrides.get(uID).doubleValue();
+    	return defaultValue;
+    }
+
+    public static final double getActionSkillCost(final String ID)
+    {
+    	return getActionSkillCost(ID,CMath.div(getIntVar(CMProps.SYSTEMI_DEFABLETIME),100.0));
+    }
+
+    public static final double getCombatActionSkillCost(final String ID)
+    {
+    	return getCombatActionSkillCost(ID,CMath.div(getIntVar(CMProps.SYSTEMI_DEFCOMABLETIME),100.0));
+    }
+
     public static final int getPKillLevelDiff(){return p().pkillLevelDiff;}
 
     public static final String getVar(final int varNum)
@@ -666,33 +726,33 @@ public class CMProps extends Properties
 
     public static final int getMinManaException(final String skillID)
     {
-    	final DVector DV=p().skillMinManaExceptions;
-    	final int x=DV.indexOf(skillID.toUpperCase());
-    	if(x<0) return Integer.MIN_VALUE;
-    	return ((Integer)DV.elementAt(x,2)).intValue();
+    	final Map<String,Double> DV=p().skillMinManaExceptions;
+    	if(DV.containsKey(skillID.toUpperCase()))
+    		return DV.get(skillID.toUpperCase()).intValue();
+    	return Integer.MIN_VALUE;
     }
     public static final int getMaxManaException(final String skillID)
     {
-    	final DVector DV=p().skillMaxManaExceptions;
-    	int x=DV.indexOf(skillID.toUpperCase());
-    	if(x<0) return Integer.MIN_VALUE;
-    	return ((Integer)DV.elementAt(x,2)).intValue();
+    	final Map<String,Double> DV=p().skillMaxManaExceptions;
+    	if(DV.containsKey(skillID.toUpperCase()))
+    		return DV.get(skillID.toUpperCase()).intValue();
+    	return Integer.MIN_VALUE;
     }
 
-    private static final int setExceptionSkillCosts(final String val, final DVector set)
+    private static final double setExceptionCosts(final String val, final Map<String,Double> set)
     {
     	if(val==null) return 0;
     	set.clear();
     	final Vector<String> V=CMParms.parseCommas(val,true);
     	String s=null;
-    	int endVal=0;
+    	double endVal=0;
     	for(int v=0;v<V.size();v++)
     	{
     		s=(String)V.elementAt(v);
-    		if(CMath.isInteger(s)){ endVal=CMath.s_int(s); continue;}
+    		if(CMath.isNumber(s)){ endVal=CMath.s_double(s); continue;}
     		int x=s.indexOf(' ');
-    		if(CMath.isInteger(s.substring(x+1).trim()))
-    			set.addElement(s.substring(0,x).trim().toUpperCase(),Integer.valueOf(CMath.s_int(s.substring(x+1).trim())));
+    		if(CMath.isDouble(s.substring(x+1).trim()))
+    			set.put(s.substring(0,x).trim().toUpperCase(),Double.valueOf(CMath.s_double(s.substring(x+1).trim())));
     	}
     	return endVal;
     }
@@ -917,8 +977,12 @@ public class CMProps extends Properties
         setIntVar(SYSTEMI_MAXSTAT,getStr("MAXSTATS"));
         setIntVar(SYSTEMI_BASEMAXSTAT,getStr("BASEMAXSTAT","18"));
         setIntVar(SYSTEMI_STARTSTAT,getStr("STARTSTAT"));
-        setIntVar(SYSTEMI_MANACOST,CMProps.setExceptionSkillCosts(getStr("MANACOST"),p().skillMaxManaExceptions));
-        setIntVar(SYSTEMI_MANAMINCOST,CMProps.setExceptionSkillCosts(getStr("MANAMINCOST"),p().skillMinManaExceptions));
+        setIntVar(SYSTEMI_DEFCMDTIME,(int)Math.round(CMProps.setExceptionCosts(getStr("DEFCMDTIME"),p().cmdCostExceptions)*100.0));
+        setIntVar(SYSTEMI_DEFCOMCMDTIME,(int)Math.round(CMProps.setExceptionCosts(getStr("DEFCOMCMDTIME"),p().cmdComCostExceptions)*100.0));
+        setIntVar(SYSTEMI_DEFABLETIME,(int)Math.round(CMProps.setExceptionCosts(getStr("DEFABLETIME"),p().skillCostExceptions)*100.0));
+        setIntVar(SYSTEMI_DEFCOMABLETIME,(int)Math.round(CMProps.setExceptionCosts(getStr("DEFCOMABLETIME"),p().skillComCostExceptions)*100.0));
+        setIntVar(SYSTEMI_MANACOST,(int)CMProps.setExceptionCosts(getStr("MANACOST"),p().skillMaxManaExceptions));
+        setIntVar(SYSTEMI_MANAMINCOST,(int)CMProps.setExceptionCosts(getStr("MANAMINCOST"),p().skillMinManaExceptions));
         setIntVar(SYSTEMI_EDITORTYPE,0);
         if(getStr("EDITORTYPE").equalsIgnoreCase("WIZARD")) setIntVar(SYSTEMI_EDITORTYPE,1);
         setIntVar(SYSTEMI_MINCLANMEMBERS,getStr("MINCLANMEMBERS"));
@@ -940,10 +1004,6 @@ public class CMProps extends Properties
         setIntVar(SYSTEMI_MAXCONNSPERACCOUNT,getStr("MAXCONNSPERACCOUNT"));
         setIntVar(SYSTEMI_MAXNEWPERIP,getStr("MAXNEWPERIP"));
         setIntVar(SYSTEMI_JSCRIPTS,getStr("JSCRIPTS"));
-        setIntVar(SYSTEMI_DEFCMDTIME,(int)Math.round(getDouble("DEFCMDTIME")*100.0));
-        setIntVar(SYSTEMI_DEFCOMCMDTIME,(int)Math.round(getDouble("DEFCOMCMDTIME")*100.0));
-        setIntVar(SYSTEMI_DEFABLETIME,(int)Math.round(getDouble("DEFABLETIME")*100.0));
-        setIntVar(SYSTEMI_DEFCOMABLETIME,(int)Math.round(getDouble("DEFCOMABLETIME")*100.0));
         setIntVar(SYSTEMI_RECOVERRATE,getStr("RECOVERRATE"),1);
         setIntVar(SYSTEMI_COMMONACCOUNTSYSTEM,getStr("COMMONACCOUNTSYSTEM"),1);
         setIntVar(SYSTEMI_OBJSPERTHREAD,getStr("OBJSPERTHREAD"));

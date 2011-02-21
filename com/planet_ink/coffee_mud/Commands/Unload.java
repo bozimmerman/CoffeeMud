@@ -54,7 +54,6 @@ public class Unload extends StdCommand
 				mob.tell("Unload what?");
 			return false;
 		}
-		commands.removeElementAt(0);
 		final String str=CMParms.combine(commands,1);
 		if(tryArchon)
 		{
@@ -67,6 +66,7 @@ public class Unload extends StdCommand
 		}
 		if(!tryArchon)
 		{
+			commands.removeElementAt(0);
 			final List<Item> baseItems=CMLib.english().fetchItemList(mob,mob,null,commands,Wearable.FILTER_ANY,false);
 			final List<Weapon> items=new XVector<Weapon>();
 			for(final Iterator<Item> i=baseItems.iterator();i.hasNext();)
@@ -82,27 +82,12 @@ public class Unload extends StdCommand
 				mob.tell("You can't seem to unload that.");
 			else
 			for(final Weapon W : items)
-				if(W.ammunitionRemaining()<=0)
-					mob.tell(W.name()+" is not loaded.");
-				else
-				{
-					Item ammunition=CMLib.coffeeMaker().makeAmmunition(W.ammunitionType(),W.ammunitionRemaining());
-					CMMsg newMsg=CMClass.getMsg(mob,ammunition,W,CMMsg.MSG_GET,"<S-NAME> unload(s) <T-NAME> from <O-NAME>.");
-					if(mob.location().okMessage(mob,newMsg))
-					{
-						mob.location().send(mob,newMsg);
-						for(final Enumeration<Ability> a=W.effects();a.hasMoreElements();)
-						{
-							final Ability A=a.nextElement();
-							if((A!=null)&&(!A.isSavable())&&(A.invoker()==null))
-							{
-								final Ability ammoA=(Ability)A.copyOf();
-								ammunition.addNonUninvokableEffect(ammoA);
-							}
-						}
-						W.setAmmoRemaining(0);
-					}
-				}
+			{
+				Item ammunition=CMLib.coffeeMaker().makeAmmunition(W.ammunitionType(),W.ammunitionRemaining());
+				CMMsg newMsg=CMClass.getMsg(mob,ammunition,W,CMMsg.MSG_UNLOAD,"<S-NAME> unload(s) <T-NAME> from <O-NAME>.");
+				if(mob.location().okMessage(mob,newMsg))
+					mob.location().send(mob,newMsg);
+			}
 		}
 		else
 		{
@@ -323,7 +308,7 @@ public class Unload extends StdCommand
 	}
 	
 	public boolean canBeOrdered(){return true;}
-	public boolean securityCheck(MOB mob){return true;}
-
-	
+	public boolean securityCheck(MOB mob){return super.securityCheck(mob);}
+    public double combatActionsCost(final MOB mob, final List<String> cmds){return CMProps.getCombatActionCost(ID());}
+    public double actionsCost(final MOB mob, final List<String> cmds){return CMProps.getActionCost(ID());}
 }
