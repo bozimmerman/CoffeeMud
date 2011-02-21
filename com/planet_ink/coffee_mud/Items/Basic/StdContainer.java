@@ -341,7 +341,10 @@ public class StdContainer extends StdItem implements Container
 					Item newitem=(Item)msg.tool();
 					newitem.setContainer(this);
 					if(!CMath.bset(msg.targetCode(),CMMsg.MASK_OPTIMIZE))
+					{
 						mob.location().recoverRoomStats();
+						newitem.recoverPhyStats();
+					}
 				}
 				break;
 			case CMMsg.TYP_CLOSE:

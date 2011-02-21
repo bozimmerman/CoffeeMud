@@ -103,6 +103,22 @@ public class Spell_Boomerang extends Spell
 			}
 		}
 	}
+	
+	// this fixes a damn PUT bug
+	public void affectPhyStats(Physical affectedEnv, PhyStats stats)
+	{
+		super.affectPhyStats(affectedEnv, stats);
+		if(affectedEnv instanceof Item)
+		{
+			final Item item = (Item)affectedEnv;
+			if(item.container()!=null)
+			{
+				final Item container = item.ultimateContainer();
+				if((container.amDestroyed())||(container.owner() != item.owner()))
+					item.setContainer(null);
+			}
+		}
+	}
 
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{

@@ -53,11 +53,11 @@ public class Inventory extends StdCommand
 		Vector<Coins> coinsV=null;
 		int insertAt=-1;
 		CMLib.beanCounter().getTotalAbsoluteNativeValue(mob);
-		for(int i=0;i<mob.numItems();i++)
+		for(final Enumeration<Item> i=mob.items();i.hasMoreElements();)
 		{
-			Item thisItem=mob.getItem(i);
-			if((thisItem!=null)
-			&&(thisItem.container()==null)
+			final Item thisItem=i.nextElement();
+			if(thisItem==null) continue;
+			if((thisItem.container()==null)
 			&&(thisItem.amWearingAt(Wearable.IN_INVENTORY)))
 			{
 				if(CMLib.flags().canBeSeenBy(thisItem,seer))
