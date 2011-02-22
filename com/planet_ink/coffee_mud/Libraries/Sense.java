@@ -669,7 +669,7 @@ public class Sense extends StdLibrary implements CMFlagLibrary
             if((!canActAtAll(monster))
             ||(monster.isInCombat())
             ||(monster.amFollowing()!=null)
-            ||(monster.curState().getHitPoints()<((int)Math.round(monster.maxState().getHitPoints()/2.0))))
+            ||(monster.curState().getHitPoints()<monster.maxState().getHitPoints()))
                 return false;
             return true;
         }

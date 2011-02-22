@@ -2539,7 +2539,6 @@ public class StdMOB implements MOB
 						tickStatus=Tickable.STATUS_END;
  						if(soulMate()==null) destroy();
 						isOk=false;
-
 					}
 				}
 				tickStatus=Tickable.STATUS_NOT;

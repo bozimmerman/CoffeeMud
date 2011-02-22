@@ -276,27 +276,28 @@ public class DefaultCharState implements CharState
 
 	public void expendEnergy(MOB mob, CharState maxState, boolean expendMovement)
 	{
-		if(mob.location()!=null)
+		final Room room=mob.location();
+		if(room!=null)
 		{
 			if(expendMovement)
 			{
-				int move=-mob.location().pointsPerMove(mob);
+				int move=-room.pointsPerMove(mob);
 				if(mob.phyStats().weight()>mob.maxCarry())
 					move+=(int)Math.round(CMath.mul(move,10.0*CMath.div(mob.phyStats().weight()-mob.maxCarry(),mob.maxCarry())));
 				adjMovement(move,maxState);
 			}
 			if((!CMLib.flags().isSleeping(mob))
-			&&(!CMSecurity.isAllowed(mob,mob.location(),"IMMORT")))
+			&&(!CMSecurity.isAllowed(mob,room,"IMMORT")))
 			{
 				int factor=mob.baseWeight()/500;
 				if(factor<1) factor=1;
 				if(!CMSecurity.isDisabled("THIRST"))
-					adjThirst(-(mob.location().thirstPerRound(mob)*factor),maxState.maxThirst(mob.baseWeight()));
+					adjThirst(-(room.thirstPerRound(mob)*factor),maxState.maxThirst(mob.baseWeight()));
 				if(!CMSecurity.isDisabled("HUNGER"))
 					adjHunger(-factor,maxState.maxHunger(mob.baseWeight()));
 			}
-			boolean thirsty=(getThirst()<=0);
-			boolean hungry=(getHunger()<=0);
+			final boolean thirsty=(getThirst()<=0);
+			final boolean hungry=(getHunger()<=0);
 			if((hungry||thirsty)&&(!expendMovement))
 			{
 				if(thirsty)ticksThirsty++;
