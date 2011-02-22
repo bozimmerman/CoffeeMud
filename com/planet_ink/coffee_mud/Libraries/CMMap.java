@@ -417,7 +417,7 @@ public class CMMap extends StdLibrary implements WorldMap
         return null;
     }
     
-    public Vector<Room> findRooms(Enumeration rooms, MOB mob, String srchStr, boolean displayOnly, int timePct)
+    public List<Room> findRooms(Enumeration rooms, MOB mob, String srchStr, boolean displayOnly, int timePct)
     { 
     	Vector<Room> roomsV=new Vector<Room>();
 		if((srchStr.charAt(0)=='#')&&(mob!=null)&&(mob.location()!=null))
@@ -507,7 +507,7 @@ public class CMMap extends StdLibrary implements WorldMap
 	    }catch(NoSuchElementException nse){}
     }
 
-    public Vector<MOB> findInhabitants(Enumeration rooms, MOB mob, String srchStr, int timePct)
+    public List<MOB> findInhabitants(Enumeration rooms, MOB mob, String srchStr, int timePct)
     { return findInhabitants(rooms,mob,srchStr,false,timePct);}
     public MOB findFirstInhabitant(Enumeration rooms, MOB mob, String srchStr, int timePct)
     { 
@@ -536,7 +536,7 @@ public class CMMap extends StdLibrary implements WorldMap
     	return found;
     }
     
-    public Vector findInventory(Enumeration rooms, MOB mob, String srchStr, int timePct)
+    public List<Item> findInventory(Enumeration rooms, MOB mob, String srchStr, int timePct)
     { return findInventory(rooms,mob,srchStr,false,timePct);}
     public Item findFirstInventory(Enumeration rooms, MOB mob, String srchStr, int timePct)
     { 
@@ -581,7 +581,7 @@ public class CMMap extends StdLibrary implements WorldMap
 		}
     	return found;
     }
-    public Vector<Environmental> findShopStock(Enumeration rooms, MOB mob, String srchStr, int timePct)
+    public List<Environmental> findShopStock(Enumeration rooms, MOB mob, String srchStr, int timePct)
     { return findShopStock(rooms,mob,srchStr,false,false,timePct);}
     public Environmental findFirstShopStock(Enumeration rooms, MOB mob, String srchStr, int timePct)
     { 
@@ -589,7 +589,7 @@ public class CMMap extends StdLibrary implements WorldMap
     	if(found.size()>0) return (Environmental)found.firstElement();
     	return null;
     }
-    public Vector<Environmental> findShopStockers(Enumeration rooms, MOB mob, String srchStr, int timePct)
+    public List<Environmental> findShopStockers(Enumeration rooms, MOB mob, String srchStr, int timePct)
     { return findShopStock(rooms,mob,srchStr,false,true,timePct);}
     public Environmental findFirstShopStocker(Enumeration rooms, MOB mob, String srchStr, int timePct)
     { 
@@ -747,7 +747,7 @@ public class CMMap extends StdLibrary implements WorldMap
     	return found;
     }
     
-    public Vector findRoomItems(Enumeration rooms, MOB mob, String srchStr, boolean anyItems, int timePct)
+    public List<Item> findRoomItems(Enumeration rooms, MOB mob, String srchStr, boolean anyItems, int timePct)
     { return findRoomItems(rooms,mob,srchStr,anyItems,false,timePct);}
     public Item findFirstRoomItem(Enumeration rooms, MOB mob, String srchStr, boolean anyItems, int timePct)
     { 
@@ -1380,7 +1380,7 @@ public class CMMap extends StdLibrary implements WorldMap
 		return null;
 	}
 	
-	public Vector findWorldRoomsLiberally(MOB mob, String cmd, String srchWhatAERIPMVK, int timePct, int maxSeconds)
+	public List<Room> findWorldRoomsLiberally(MOB mob, String cmd, String srchWhatAERIPMVK, int timePct, int maxSeconds)
 	{ return findWorldRoomsLiberally(mob,cmd,srchWhatAERIPMVK,null,false,timePct,maxSeconds); }
 	
 	public Room findAreaRoomLiberally(MOB mob, Area A,String cmd, String srchWhatAERIPMVK, int timePct)
@@ -1390,7 +1390,7 @@ public class CMMap extends StdLibrary implements WorldMap
 		return null;
 	}
 	
-	public Vector findAreaRoomsLiberally(MOB mob, Area A,String cmd, String srchWhatAERIPMVK, int timePct)
+	public List<Room> findAreaRoomsLiberally(MOB mob, Area A,String cmd, String srchWhatAERIPMVK, int timePct)
 	{ return findWorldRoomsLiberally(mob,cmd,srchWhatAERIPMVK,A,false,timePct,120); }
 	
 	protected Room addWorldRoomsLiberally(Vector rooms, Vector choicesV)

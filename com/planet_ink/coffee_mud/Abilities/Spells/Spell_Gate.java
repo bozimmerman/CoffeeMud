@@ -80,7 +80,7 @@ public class Spell_Gate extends Spell
 			return false;
 		}
 
-		Vector candidates=new Vector();
+		List<MOB> candidates=new Vector();
 		MOB target=null;
 		try{
 			candidates=CMLib.map().findInhabitants(CMLib.map().rooms(), mob, areaName, 10);
@@ -88,7 +88,7 @@ public class Spell_Gate extends Spell
 		Room newRoom=null;
 		if(candidates.size()>0)
 		{
-			target=(MOB)candidates.elementAt(CMLib.dice().roll(1,candidates.size(),-1));
+			target=(MOB)candidates.get(CMLib.dice().roll(1,candidates.size(),-1));
 			newRoom=target.location();
 		}
 

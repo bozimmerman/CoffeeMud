@@ -414,10 +414,9 @@ public class Stat  extends Skills
 		{
 		    try
 		    {
-		    	Vector inhabs=CMLib.map().findInhabitants(CMLib.map().rooms(), mob,MOBname,100);
-				for(Enumeration m=inhabs.elements();m.hasMoreElements();)
+		    	List<MOB> inhabs=CMLib.map().findInhabitants(CMLib.map().rooms(), mob,MOBname,100);
+				for(MOB mob2 : inhabs)
 				{
-					MOB mob2=(MOB)m.nextElement();
 					Room R=mob2.location();
 					if(CMSecurity.isAllowed(mob,R,"STAT"))
 					{

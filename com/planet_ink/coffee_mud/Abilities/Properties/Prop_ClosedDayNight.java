@@ -33,7 +33,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("unchecked")
 public class Prop_ClosedDayNight extends Property
 {
 	public String ID() { return "Prop_ClosedDayNight"; }
@@ -187,14 +186,14 @@ public class Prop_ClosedDayNight extends Property
 			if(R!=null) return R;
 			try
 			{
-		    	Vector rooms=CMLib.map().findRooms(CMLib.map().rooms(), mob, Home,false,10);
+				List<Room> rooms=CMLib.map().findRooms(CMLib.map().rooms(), mob, Home,false,10);
 		    	if(rooms.size()>0) 
-		    		R=(Room)rooms.elementAt(CMLib.dice().roll(1,rooms.size(),-1));
+		    		R=(Room)rooms.get(CMLib.dice().roll(1,rooms.size(),-1));
 		    	else
 		    	{
-			    	Vector inhabs=CMLib.map().findInhabitants(CMLib.map().rooms(), mob, Home, 10);
+		    		List<MOB> inhabs=CMLib.map().findInhabitants(CMLib.map().rooms(), mob, Home, 10);
 			    	if(inhabs.size()>0) 
-			    		R=CMLib.map().roomLocation((MOB)inhabs.elementAt(CMLib.dice().roll(1,inhabs.size(),-1)));
+			    		R=CMLib.map().roomLocation((MOB)inhabs.get(CMLib.dice().roll(1,inhabs.size(),-1)));
 		    	}
 		    }catch(NoSuchElementException e){}
 		}

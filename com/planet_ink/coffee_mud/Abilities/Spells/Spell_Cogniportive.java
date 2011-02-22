@@ -49,13 +49,12 @@ public class Spell_Cogniportive extends Spell
 			return ((Room)((LandTitle)me).getPropertyRooms().get(0)).roomID();
 		// check mobs worn items first!
 		String srchStr="$"+me.Name()+"$";
-    	Vector mobInventory=new Vector(1);
+		List<Item> mobInventory=new Vector(1);
 	    try
 	    {
 	    	mobInventory=CMLib.map().findInventory(CMLib.map().rooms(),null, srchStr, 10);
-			for(Enumeration i=mobInventory.elements();i.hasMoreElements();)
+			for(Item I : mobInventory)
 			{
-				Item I=(Item)i.nextElement();
 				Environmental owner=I.owner();
 				Room room=CMLib.map().roomLocation(owner);
 				if((owner instanceof MOB)
@@ -68,24 +67,24 @@ public class Spell_Cogniportive extends Spell
 	    }catch(NoSuchElementException nse){}
 	    try
 	    {
-	    	Vector all=CMLib.map().findShopStockers(CMLib.map().rooms(), mob, srchStr, 10);
-			for(Enumeration i=all.elements();i.hasMoreElements();)
-			{
-				ShopKeeper S=(ShopKeeper)i.nextElement();
-				Room room=CMLib.map().getStartRoom(S);
-				Environmental E=S.getShop().getStock(me.Name(), null);
-				if((E instanceof Item)
-                &&((beLoose) || me.sameAs(E))
-                &&(CMLib.law().getLandTitle(room)==null))
-					return CMLib.map().getExtendedRoomID(room);
-			}
+	    	List<Environmental> all=CMLib.map().findShopStockers(CMLib.map().rooms(), mob, srchStr, 10);
+			for(Environmental O : all)
+				if(O instanceof ShopKeeper)
+				{
+					final ShopKeeper S=(ShopKeeper)O;
+					Room room=CMLib.map().getStartRoom(S);
+					Environmental E=S.getShop().getStock(me.Name(), null);
+					if((E instanceof Item)
+	                &&((beLoose) || me.sameAs(E))
+	                &&(CMLib.law().getLandTitle(room)==null))
+						return CMLib.map().getExtendedRoomID(room);
+				}
 	    }catch(NoSuchElementException nse){}
 	    try
 	    {
 			// check mobs inventory items third!
-			for(Enumeration i=mobInventory.elements();i.hasMoreElements();)
+			for(Item I : mobInventory)
 			{
-				Item I=(Item)i.nextElement();
 				Environmental owner=I.owner();
 				Room room=CMLib.map().getStartRoom(owner);
 				if((owner instanceof MOB)
@@ -99,10 +98,9 @@ public class Spell_Cogniportive extends Spell
 	    try
 	    {
 			// check room stuff last
-	    	Vector targets=CMLib.map().findRoomItems(CMLib.map().rooms(), mob, me.Name(), false,10);
-			for(Enumeration i=targets.elements();i.hasMoreElements();)
+	    	List<Item> targets=CMLib.map().findRoomItems(CMLib.map().rooms(), mob, me.Name(), false,10);
+			for(Item I : targets)
 			{
-				Item I=(Item)i.nextElement();
 				Room R=CMLib.map().roomLocation(I);
 				if((R!=null)
                 &&((beLoose) || me.sameAs(I))

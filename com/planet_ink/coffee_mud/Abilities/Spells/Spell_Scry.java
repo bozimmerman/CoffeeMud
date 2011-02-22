@@ -128,9 +128,9 @@ public class Spell_Scry extends Spell
 		{
 		    try
 		    {
-		    	Vector targets=CMLib.map().findInhabitants(CMLib.map().rooms(), mob, mobName, 50);
+		    	List<MOB> targets=CMLib.map().findInhabitants(CMLib.map().rooms(), mob, mobName, 50);
 		    	if(targets.size()>0) 
-		    		target=(MOB)targets.elementAt(CMLib.dice().roll(1,targets.size(),-1));
+		    		target=(MOB)targets.get(CMLib.dice().roll(1,targets.size(),-1));
 		    }catch(NoSuchElementException nse){}
 		}
 		if(target instanceof Deity) target=null;

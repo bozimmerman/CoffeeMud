@@ -57,10 +57,9 @@ public class Chant_GroveWalk extends Chant
 		boolean hereok=mob.location().findItem(null,"DruidicMonument")!=null;
 		try
 		{
-			Vector rooms=CMLib.map().findRooms(CMLib.map().rooms(), mob,areaName,true,10);
-			for(Enumeration e=rooms.elements();e.hasMoreElements();)
+			List<Room> rooms=CMLib.map().findRooms(CMLib.map().rooms(), mob,areaName,true,10);
+			for(Room R : rooms)
 			{
-				Room R=(Room)e.nextElement();
 				for(int i=0;i<R.numItems();i++)
 				{
 					Item I=R.getItem(i);

@@ -74,21 +74,21 @@ public interface WorldMap extends CMLibrary, Runnable
     /************************************************************************/
     /**								SEARCH TOOLS 							*/
     /************************************************************************/
-	public Vector<Room> findWorldRoomsLiberally(MOB mob, String cmd, String srchWhatAERIPMVK, int timePct, int maxSeconds);
+	public List<Room> findWorldRoomsLiberally(MOB mob, String cmd, String srchWhatAERIPMVK, int timePct, int maxSeconds);
 	public Room findWorldRoomLiberally(MOB mob, String cmd, String srchWhatAERIPMVK, int timePct, int maxSeconds);
-	public Vector<Room> findAreaRoomsLiberally(MOB mob, Area A, String cmd, String srchWhatAERIPMVK, int timePct);
+	public List<Room> findAreaRoomsLiberally(MOB mob, Area A, String cmd, String srchWhatAERIPMVK, int timePct);
 	public Room findAreaRoomLiberally(MOB mob, Area A, String cmd, String srchWhatAERIPMVK, int timePct);
-    public Vector<Room> findRooms(Enumeration rooms, MOB mob, String srchStr, boolean displayOnly, int timePct);
+    public List<Room> findRooms(Enumeration rooms, MOB mob, String srchStr, boolean displayOnly, int timePct);
     public Room findFirstRoom(Enumeration rooms, MOB mob, String srchStr, boolean displayOnly, int timePct);
     public MOB findFirstInhabitant(Enumeration rooms, MOB mob, String srchStr, int timePct);
-    public Vector<MOB> findInhabitants(Enumeration rooms, MOB mob, String srchStr, int timePct);
-    public Vector<Item> findRoomItems(Enumeration rooms, MOB mob, String srchStr, boolean anyItems, int timePct);
+    public List<MOB> findInhabitants(Enumeration rooms, MOB mob, String srchStr, int timePct);
+    public List<Item> findRoomItems(Enumeration rooms, MOB mob, String srchStr, boolean anyItems, int timePct);
     public Item findFirstRoomItem(Enumeration rooms, MOB mob, String srchStr, boolean anyItems, int timePct);
-    public Vector<Environmental> findShopStock(Enumeration rooms, MOB mob, String srchStr, int timePct);
+    public List<Environmental> findShopStock(Enumeration rooms, MOB mob, String srchStr, int timePct);
     public Environmental findFirstShopStock(Enumeration rooms, MOB mob, String srchStr, int timePct);
-    public Vector<Environmental> findShopStockers(Enumeration rooms, MOB mob, String srchStr, int timePct);
+    public List<Environmental> findShopStockers(Enumeration rooms, MOB mob, String srchStr, int timePct);
     public Environmental findFirstShopStocker(Enumeration rooms, MOB mob, String srchStr, int timePct);
-    public Vector<Item> findInventory(Enumeration rooms, MOB mob, String srchStr, int timePct);
+    public List<Item> findInventory(Enumeration rooms, MOB mob, String srchStr, int timePct);
     public Item findFirstInventory(Enumeration rooms, MOB mob, String srchStr, int timePct);
     
     /************************************************************************/
@@ -193,10 +193,10 @@ public interface WorldMap extends CMLibrary, Runnable
 
 	public static class MapCacheEntry implements CMObject
 	{
-		public final Vector<Room> rooms;
+		public final List<Room> rooms;
 		public final String ID;
 		public volatile long lastAccessed=System.currentTimeMillis();
-		public MapCacheEntry(final String ID, final Vector<Room> rooms) {this.ID=ID; this.rooms=rooms;}
+		public MapCacheEntry(final String ID, final List<Room> rooms) {this.ID=ID; this.rooms=rooms;}
 		public String ID() { return ID;}
 		public CMObject copyOf() { return this;}
 		public void initializeClass() {}

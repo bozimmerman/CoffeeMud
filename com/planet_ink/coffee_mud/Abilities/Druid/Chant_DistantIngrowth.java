@@ -57,10 +57,9 @@ public class Chant_DistantIngrowth extends Chant
 		Room newRoom=null;
 		try
 		{
-			Vector rooms=CMLib.map().findRooms(CMLib.map().rooms(), mob, areaName, true, 10);
-			for(Enumeration r=rooms.elements();r.hasMoreElements();)
+			List<Room> rooms=CMLib.map().findRooms(CMLib.map().rooms(), mob, areaName, true, 10);
+			for(Room R : rooms)
 			{
-				Room R=(Room)r.nextElement();
 				anyRoom=R;
 				if((R.domainType()==Room.DOMAIN_INDOORS_STONE)
 				||(R.domainType()==Room.DOMAIN_INDOORS_WOOD))

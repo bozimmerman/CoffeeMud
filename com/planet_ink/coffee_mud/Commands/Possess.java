@@ -107,16 +107,13 @@ public class Possess extends StdCommand
 		{
 		    try
 		    {
-		    	Vector inhabs=CMLib.map().findInhabitants(CMLib.map().rooms(), mob,MOBname,100);
-				for(Enumeration m=inhabs.elements();m.hasMoreElements();)
-				{
-					MOB mob2=(MOB)m.nextElement();
+		    	List<MOB> inhabs=CMLib.map().findInhabitants(CMLib.map().rooms(), mob,MOBname,100);
+				for(MOB mob2 : inhabs)
 					if((mob2.isMonster())&&(CMSecurity.isAllowed(mob,mob2.location(),"POSSESS")))
 					{
 						target=mob2;
 						break;
 					}
-				}
 		    }catch(NoSuchElementException e){}
 		}
 		if((target==null)||(!target.isMonster())||(!CMLib.flags().isInTheGame(target,true)))
