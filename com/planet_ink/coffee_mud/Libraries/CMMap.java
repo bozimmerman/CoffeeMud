@@ -1454,6 +1454,34 @@ public class CMMap extends StdLibrary implements WorldMap
 												   int maxSeconds)
 	{
 		Room room=null;
+		
+		/*-- world is just too dynamic for this nonsense
+		final STreeVector<MapCacheEntry> trailCache;
+		final String trailKey;
+		if(mob==null)
+		{
+	    	STreeVector<MapCacheEntry> oldTrails=(STreeVector)Resources.getResource("WORLDFIND");
+			trailKey = srchWhatAERIPMVK+"_"+cmd.toUpperCase().trim().replace(' ','_')+((A==null)?"WORLD":(A.Name().toUpperCase().trim().replace(' ','_'))+"_"+(returnFirst?"FIRST":"ALL"));
+	    	if(oldTrails==null)
+	    	{
+	    		oldTrails=new STreeVector<MapCacheEntry>();
+	    		Resources.submitResource("WORLDFIND",oldTrails);
+	    	}
+	    	final MapCacheEntry entry= oldTrails.find(trailKey);
+	    	if(entry!=null)
+	    	{
+	    		entry.lastAccessed=System.currentTimeMillis();
+	    		return entry.rooms;
+	    	}
+	    	trailCache=oldTrails;
+		}
+		else
+		{
+			trailKey=null;
+			trailCache=null;
+		}
+		*/
+		
 		Vector<Room> rooms=(returnFirst)?null:new Vector<Room>();
 		
 		Room curRoom=(mob!=null)?mob.location():null;
@@ -1572,7 +1600,9 @@ public class CMMap extends StdLibrary implements WorldMap
                 }
 			}
 		}
-		return returnResponse(rooms,room);
+		final Vector<Room> responseSet = returnResponse(rooms,room);
+		// if(trailCache!=null) trailCache.add(new MapCacheEntry(trailKey,responseSet)); // -- see above
+		return responseSet;
 	}
 
     protected DVector getAllPlayersHere(Area area, boolean includeLocalFollowers)
@@ -1840,12 +1870,12 @@ public class CMMap extends StdLibrary implements WorldMap
         ||(CMSecurity.isDisabled("MAPTHREAD")))
             return;
         
-        boolean corpsesOnly=CMSecurity.isSaveFlag("ROOMITEMS");
-        boolean noMobs=CMSecurity.isSaveFlag("ROOMMOBS");
+        final boolean corpsesOnly=CMSecurity.isSaveFlag("ROOMITEMS");
+        final boolean noMobs=CMSecurity.isSaveFlag("ROOMMOBS");
         thread.status("expiration sweep");
-        long currentTime=System.currentTimeMillis();
-        boolean debug=CMSecurity.isDebugging("VACUUM");
-        MOB expireM=mobCreated(null);
+        final long currentTime=System.currentTimeMillis();
+        final boolean debug=CMSecurity.isDebugging("VACUUM");
+        final MOB expireM=mobCreated(null);
         try
         {
             Vector stuffToGo=new Vector();

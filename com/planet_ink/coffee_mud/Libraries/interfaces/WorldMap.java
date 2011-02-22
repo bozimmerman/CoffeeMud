@@ -37,7 +37,7 @@ import java.util.*;
 public interface WorldMap extends CMLibrary, Runnable
 {
 	public final static long ROOM_EXPIRATION_MILLIS=2500000;
-    
+	
     /************************************************************************/
     /**							 AREAS		    							*/
     /************************************************************************/
@@ -191,5 +191,17 @@ public interface WorldMap extends CMLibrary, Runnable
     	public String nextElement(){ return hasMoreElements()?(String)roomIDEnumerator.nextElement():null;}
     }
 
-	
+	public static class MapCacheEntry implements CMObject
+	{
+		public final Vector<Room> rooms;
+		public final String ID;
+		public volatile long lastAccessed=System.currentTimeMillis();
+		public MapCacheEntry(final String ID, final Vector<Room> rooms) {this.ID=ID; this.rooms=rooms;}
+		public String ID() { return ID;}
+		public CMObject copyOf() { return this;}
+		public void initializeClass() {}
+		public CMObject newInstance() { return this;}
+		public int compareTo(CMObject o) { return ID.compareTo(o.ID()); }
+	}
+    
 }
