@@ -20,7 +20,7 @@ limitations under the License.
 */
 public class ConvertingIterator<K, L> implements Iterator<L>
 {
-	private Iterator<K> iterer;
+	private final Iterator<K> iterer;
 	private K currObj = null;
 	Converter<K, L> converter;
 

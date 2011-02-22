@@ -22,7 +22,7 @@ limitations under the License.
 */
 public class ReadOnlySortedMap<K,V> implements SortedMap<K,V> 
 {
-	private SortedMap<K,V> map;
+	private final SortedMap<K,V> map;
 	public ReadOnlySortedMap(SortedMap<K,V> s)
 	{
 		map=s;

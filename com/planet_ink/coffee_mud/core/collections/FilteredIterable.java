@@ -19,7 +19,7 @@ limitations under the License.
 */
 public class FilteredIterable<K> implements Iterable<K>
 {
-	private Iterable<K>  iter;
+	private final Iterable<K>  iter;
 	private Filterer<K>  filterer;
 
 	public FilteredIterable(Iterable<K> eset, Filterer<K> fil) 

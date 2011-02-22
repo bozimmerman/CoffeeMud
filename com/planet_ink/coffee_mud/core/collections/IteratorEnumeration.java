@@ -19,7 +19,7 @@ limitations under the License.
 */
 public class IteratorEnumeration<K> implements Enumeration<K>
 {
-	private Iterator<K> i=null;
+	private final Iterator<K> i;
     
     @SuppressWarnings("unchecked")
 	public IteratorEnumeration(Iterator<K> i) 

@@ -35,7 +35,7 @@ public class DVector implements Cloneable, java.io.Serializable
 {
 	public static final long 	serialVersionUID=43353454350L;
 	protected int 				dimensions=1;
-	private SVector<Object[]> 	stuff=new SVector<Object[]>(1);
+	private SVector<Object[]> 	stuff;
 	private final static int 	MAX_SIZE=9;
 	
 	public DVector(int dim)

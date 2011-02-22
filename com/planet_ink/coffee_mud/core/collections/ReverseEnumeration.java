@@ -21,7 +21,7 @@ limitations under the License.
 public class ReverseEnumeration<K> implements Enumeration<K>
 {
 	private int index;
-	private List<K> set;
+	private final List<K> set;
 	public ReverseEnumeration(List<K> eset) 
     {
 		set=eset;

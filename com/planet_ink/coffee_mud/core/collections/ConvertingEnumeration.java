@@ -20,7 +20,7 @@ limitations under the License.
 */
 public class ConvertingEnumeration<K, L> implements Enumeration<L>
 {
-	private Enumeration<K> enumer;
+	private final Enumeration<K> enumer;
 	Converter<K, L> converter;
 
 	public ConvertingEnumeration(Enumeration<K> eset, Converter<K, L> conv) 

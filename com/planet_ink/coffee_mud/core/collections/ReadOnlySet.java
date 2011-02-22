@@ -17,7 +17,7 @@ limitations under the License.
 */
 public class ReadOnlySet<K> implements Set<K> 
 {
-	private Set<K> set;
+	private final Set<K> set;
 	public ReadOnlySet(Set<K> s)
 	{
 		set=s;

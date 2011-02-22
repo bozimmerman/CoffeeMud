@@ -20,7 +20,7 @@ limitations under the License.
 */
 public class MultiIterator<K> implements Iterator<K>
 {
-    Vector<Iterator<K>> iters=new Vector<Iterator<K>>();
+	private final Vector<Iterator<K>> iters=new Vector<Iterator<K>>();
     int dex=0;
     
 	public MultiIterator(Iterator<K>[] esets) 

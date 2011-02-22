@@ -20,7 +20,7 @@ limitations under the License.
 */
 public class FilteredEnumeration<K> implements Enumeration<K>
 {
-	private Enumeration<K>  enumer;
+	private final Enumeration<K>  enumer;
 	private Filterer<K> 	filterer;
 	private K 				nextElement = null;
 	private boolean 		initialized = false;

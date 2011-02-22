@@ -17,7 +17,7 @@ limitations under the License.
 */
 public class ReadOnlySortedSet<K> implements SortedSet<K> 
 {
-	private SortedSet<K> set;
+	private final SortedSet<K> set;
 	public ReadOnlySortedSet(SortedSet<K> s)
 	{
 		set=s;

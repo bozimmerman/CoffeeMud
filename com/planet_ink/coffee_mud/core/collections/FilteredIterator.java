@@ -19,7 +19,7 @@ limitations under the License.
 */
 public class FilteredIterator<K> implements Iterator<K>
 {
-	private Iterator<K>  iter;
+	private final Iterator<K>  iter;
 	private Filterer<K> 	filterer;
 	private K 				nextElement = null;
 	private boolean 		initialized = false;
