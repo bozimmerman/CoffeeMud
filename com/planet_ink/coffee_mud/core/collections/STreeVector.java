@@ -2,6 +2,8 @@ package com.planet_ink.coffee_mud.core.collections;
 import java.io.Serializable;
 import java.util.*;
 
+import com.planet_ink.coffee_mud.core.interfaces.CMObject;
+
 /* 
 Copyright 2000-2011 Bo Zimmerman
 
@@ -23,112 +25,134 @@ limitations under the License.
  * and removes by copying the underlying vector whenever those
  * operations are done.
  */
-public class SVector<T> implements Serializable, Iterable<T>, Collection<T>, List<T>, RandomAccess 
+public class STreeVector<T extends CMObject> implements Serializable, Iterable<T>, Collection<T>, List<T>, RandomAccess 
 {
 	private static final long serialVersionUID = 6687178785122561992L;
 	private volatile Vector<T> V;
+	private final    TreeMap<String,T> S;
 
-	public SVector()
+	public STreeVector()
 	{
 		V=new Vector<T>();
+		S=new TreeMap<String,T>();
 	}
 	
-	public SVector(int size)
+	public STreeVector(int size)
 	{
 		V=new Vector<T>(size);
+		S=new TreeMap<String,T>();
 	}
 	
-	public SVector(List<T> E)
+	public STreeVector(List<T> E)
 	{
 		V=new Vector<T>();
+		S=new TreeMap<String,T>();
 		if(E!=null)
-			this.V.addAll(E);
+			addAll(E);
 	}
 	
-	public SVector(T... E)
+	public STreeVector(T... E)
 	{
 		V=new Vector<T>();
+		S=new TreeMap<String,T>();
 		if(E!=null)
+		{
 			for(T o : E)
-				V.add(o);
+				addBoth(o);
+		}
 	}
 	
-	public SVector(Enumeration<T> E)
+	public STreeVector(Enumeration<T> E)
 	{
 		V=new Vector<T>();
+		S=new TreeMap<String,T>();
 		if(E!=null)
+		{
 			for(;E.hasMoreElements();)
-				V.add(E.nextElement());
+				addBoth(E.nextElement());
+		}
 	}
 	
-	public SVector(Iterator<T> E)
+	public STreeVector(Iterator<T> E)
 	{
 		V=new Vector<T>();
-		if(E!=null)
-			for(;E.hasNext();)
-				V.add(E.next());
+		S=new TreeMap<String,T>();
+		for(;E.hasNext();)
+			addBoth(E.next());
 	}
 	
-	public SVector(Set<T> E)
+	public STreeVector(Set<T> E)
 	{
 		V=new Vector<T>();
-		if(E!=null)
-			for(T o : E)
-				add(o);
+		S=new TreeMap<String,T>();
+		for(T o : E)
+			addBoth(o);
 	}
 	
 	@SuppressWarnings("unchecked")
 	public synchronized void addAll(Enumeration<T> E)
 	{
-		V=(Vector<T>)V.clone();
 		if(E!=null)
+		{
+			V=(Vector<T>)V.clone();
 			for(;E.hasMoreElements();)
-				V.add(E.nextElement());
+				addBoth(E.nextElement());
+		}
 	}
 	
 	@SuppressWarnings("unchecked")
 	public synchronized void addAll(T[] E)
 	{
-		V=(Vector<T>)V.clone();
 		if(E!=null)
+		{
+			V=(Vector<T>)V.clone();
 			for(T e : E)
-				V.add(e);
+				addBoth(e);
+		}
 	}
 	
 	@SuppressWarnings("unchecked")
 	public synchronized void addAll(Iterator<T> E)
 	{
-		V=(Vector<T>)V.clone();
 		if(E!=null)
+		{
+			V=(Vector<T>)V.clone();
 			for(;E.hasNext();)
-				V.add(E.next());
+				addBoth(E.next());
+		}
 	}
 	
 	@SuppressWarnings("unchecked")
 	public synchronized void removeAll(Enumeration<T> E)
 	{
-		V=(Vector<T>)V.clone();
 		if(E!=null)
+		{
+			V=(Vector<T>)V.clone();
 			for(;E.hasMoreElements();)
-				V.remove(E.nextElement());
+				removeBoth(E.nextElement());
+		}
 	}
 	
 	@SuppressWarnings("unchecked")
 	public synchronized void removeAll(Iterator<T> E)
 	{
-		V=(Vector<T>)V.clone();
 		if(E!=null)
+		{
+			V=(Vector<T>)V.clone();
 			for(;E.hasNext();)
-				V.remove(E.next());
+				removeBoth(E.next());
+		}
 	}
 	
 	@SuppressWarnings("unchecked")
 	public synchronized void removeAll(List<T> E)
 	{
-		V=(Vector<T>)V.clone();
 		if(E!=null)
+		{
+			V=(Vector<T>)V.clone();
 			for(T o : E)
-				V.remove(o);
+				removeBoth(o);
+		}
 	}
 	
 	public synchronized int capacity() {
@@ -141,14 +165,17 @@ public class SVector<T> implements Serializable, Iterable<T>, Collection<T>, Lis
 	}
 	
 	@SuppressWarnings("unchecked")
-	public synchronized SVector<T> copyOf() {
-		SVector<T> SV=new SVector<T>();
+	public synchronized STreeVector<T> copyOf() {
+		STreeVector<T> SV=new STreeVector<T>();
 		SV.V=(Vector<T>)V.clone();
+		SV.S.putAll(S);
 		return SV;
 	}
 
 	@Override
 	public synchronized boolean contains(Object o) {
+		if(o instanceof CMObject)
+			return S.containsKey(((CMObject)o).ID().toUpperCase());
 		return V.contains(o);
 	}
 
@@ -221,24 +248,33 @@ public class SVector<T> implements Serializable, Iterable<T>, Collection<T>, Lis
 		return V.lastIndexOf(o);
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public synchronized boolean retainAll(Collection<?> c) {
-		V=(Vector<T>)V.clone();
-		return V.retainAll(c);
+		final int oldSize=size();
+		for(T o : V)
+			if(!c.contains(o))
+				remove(o);
+		return oldSize < size();
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
 	public synchronized T set(int index, T element) {
-		V=(Vector<T>)V.clone();
-		return V.set(index, element);
+		if(element==null) return null;
+		if(!S.containsKey(element.ID().toUpperCase()))
+		{
+			V=(Vector<T>)V.clone();
+			final T oldT = V.set(index,element);
+			if(oldT!=null)
+				S.remove(oldT.ID().toUpperCase());
+			S.put(element.ID().toUpperCase(), element);
+			return oldT;
+		}
+		return null;
 	}
 
-	@SuppressWarnings("unchecked")
 	public synchronized void setElementAt(T obj, int index) {
-		V=(Vector<T>)V.clone();
-		V.setElementAt(obj, index);
+		set(index,obj);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -283,39 +319,70 @@ public class SVector<T> implements Serializable, Iterable<T>, Collection<T>, Lis
 	@Override
 	public synchronized void add(int index, T element) 
 	{
-		V=(Vector<T>)V.clone();
-		V.add(index, element);
+		if(element==null) return;
+		if(!S.containsKey(element.ID().toUpperCase()))
+		{
+			V=(Vector<T>)V.clone();
+			V.add(index, element);
+			S.put(element.ID().toUpperCase(), element);
+		}
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
 	public synchronized boolean add(T e) 
 	{
-		V=(Vector<T>)V.clone();
-		return V.add(e);
+		if(e==null) return false;
+		if(!S.containsKey(e.ID().toUpperCase()))
+		{
+			V=(Vector<T>)V.clone();
+			if(V.add(e))
+				S.put(e.ID().toUpperCase(), e);
+			return true;
+		}
+		return false;
 	}
 
+	private boolean addBoth(T e)
+	{
+		if(S.containsKey(e.ID().toUpperCase()))
+			return false;
+		V.add(e);
+		S.put(e.ID().toUpperCase(), e);
+		return true;
+	}
+	
 	@SuppressWarnings("unchecked")
 	@Override
 	public synchronized boolean addAll(Collection<? extends T> c) 
 	{
 		V=(Vector<T>)V.clone();
-		return V.addAll(c);
+		boolean kaplah=false;
+		for(final Object o : c)
+			if(o instanceof CMObject)
+				kaplah = addBoth((T)o) || kaplah;
+		return kaplah;
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
 	public synchronized boolean addAll(int index, Collection<? extends T> c) 
 	{
-		V=(Vector<T>)V.clone();
-		return V.addAll(index, c);
+		final int oldSize=size();
+		if(index>=size())
+			addAll(c);
+		else
+		{
+			for(Object o : c)
+				if(o instanceof CMObject)
+					insertElementAt((T)o, index++);
+		}
+		return oldSize < size();
 	}
 
-	@SuppressWarnings("unchecked")
 	public synchronized void addElement(T obj) 
 	{
-		V=(Vector<T>)V.clone();
-		V.addElement(obj);
+		add(obj);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -324,29 +391,65 @@ public class SVector<T> implements Serializable, Iterable<T>, Collection<T>, Lis
 	{
 		V=(Vector<T>)V.clone();
 		V.clear();
+		S.clear();
 	}
 
-	@SuppressWarnings("unchecked")
 	public synchronized void insertElementAt(T obj, int index) 
 	{
-		V=(Vector<T>)V.clone();
-		V.insertElementAt(obj, index);
+		if(obj==null) return;
+		if(index>=size())
+			add(obj);
+		else
+		if(!S.containsKey(obj.ID().toUpperCase()))
+		{
+			V.insertElementAt(obj, index);
+			S.put(obj.ID().toUpperCase(), obj);
+		}
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
 	public synchronized boolean remove(Object o) 
 	{
+		if(!(o instanceof CMObject)) return false;
+		final CMObject O=(CMObject)o;
+		final String OID=O.ID().toUpperCase();
+		if(!S.containsKey(OID))
+			return false;
 		V=(Vector<T>)V.clone();
+		S.remove(OID);
 		return V.remove(o);
 	}
 
+	private boolean removeBoth(Object o)
+	{
+		if(!(o instanceof CMObject)) return false;
+		final CMObject O=(CMObject)o;
+		final String OID=O.ID().toUpperCase();
+		if(!S.containsKey(OID)) return false;
+		S.remove(OID);
+		return V.remove(o);
+	}
+	
+	private boolean removeBoth(CMObject o)
+	{
+		final String OID=o.ID().toUpperCase();
+		if(!S.containsKey(OID)) return false;
+		S.remove(OID);
+		return V.remove(o);
+	}
+	
 	@SuppressWarnings("unchecked")
 	@Override
 	public synchronized T remove(int index) 
 	{
 		V=(Vector<T>)V.clone();
-		return V.remove(index);
+		final T O=V.remove(index);
+		if(O==null) return null;
+		final String OID=O.ID().toUpperCase();
+		if(S.containsKey(OID))
+			S.remove(OID);
+		return O;
 	}
 
 	@SuppressWarnings("unchecked")
@@ -354,7 +457,10 @@ public class SVector<T> implements Serializable, Iterable<T>, Collection<T>, Lis
 	public synchronized boolean removeAll(Collection<?> c) 
 	{
 		V=(Vector<T>)V.clone();
-		return V.removeAll(c);
+		boolean kaplah=false;
+		for(Object o : c)
+			kaplah = removeBoth(o) || kaplah;
+		return kaplah;
 	}
 
 	@SuppressWarnings("unchecked")
@@ -362,20 +468,25 @@ public class SVector<T> implements Serializable, Iterable<T>, Collection<T>, Lis
 	{
 		V=(Vector<T>)V.clone();
 		V.removeAllElements();
+		S.clear();
 	}
 
-	@SuppressWarnings("unchecked")
+	public T find(final String key)
+	{
+		if(key==null) return null;
+		return S.get(key.toUpperCase());
+	}
+	
 	public synchronized boolean removeElement(Object obj) 
 	{
-		V=(Vector<T>)V.clone();
-		return V.removeElement(obj);
+		return remove(obj);
 	}
 
 	@SuppressWarnings("unchecked")
 	public synchronized void removeElementAt(int index) 
 	{
 		V=(Vector<T>)V.clone();
-		V.removeElementAt(index);
+		removeBoth(V.get(index));
 	}
 
 	@Override

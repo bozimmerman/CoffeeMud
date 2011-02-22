@@ -77,7 +77,7 @@ public class StdMOB implements MOB
 
 	/* containers of items and attributes*/
 	protected SVector<Item>		inventory	= new SVector<Item>(1);
-	protected SVector<Ability>	abilitees	= new SVector<Ability>(1);
+	protected SVector<Ability>	abilitys	= new SVector<Ability>(1);
 	protected SVector<Ability> 	affects		= new SVector<Ability>(1);
 	protected SVector<Behavior>	behaviors	= new SVector<Behavior>(1);
 	protected SVector<Tattoo>	tattoos		= new SVector<Tattoo>(1);
@@ -318,7 +318,7 @@ public class StdMOB implements MOB
 
 		inventory=new SVector<Item>(1);
 		followers=null;
-		abilitees=new SVector<Ability>(1);
+		abilitys=new SVector<Ability>(1);
 		affects=new SVector<Ability>(1);
 		behaviors=new SVector<Behavior>(1);
 		scripts=new SVector<ScriptingEngine>(1);
@@ -670,7 +670,7 @@ public class StdMOB implements MOB
         cachedImageName=null;
         inventory=new SVector<Item>(1);
         followers=null;
-        abilitees=new SVector<Ability>(1);
+        abilitys=new SVector<Ability>(1);
         affects=new SVector<Ability>(1);
         behaviors=new SVector<Behavior>(1);
         tattoos=new SVector<Tattoo>(1);
@@ -843,7 +843,7 @@ public class StdMOB implements MOB
 		else
 			CMLib.commands().postLook(this,true);
 		inventory.trimToSize();
-		abilitees.trimToSize();
+		abilitys.trimToSize();
 		affects.trimToSize();
 		behaviors.trimToSize();
 	}
@@ -2638,7 +2638,7 @@ public class StdMOB implements MOB
                         tickCounter=0;
                         if(inventory!=null) inventory.trimToSize();
                         if(affects!=null) affects.trimToSize();
-                        if(abilitees!=null) abilitees.trimToSize();
+                        if(abilitys!=null) abilitys.trimToSize();
                         if(followers!=null) followers.trimToSize();
                         CMLib.commands().tickAging(this);
                     }
@@ -3019,15 +3019,15 @@ public class StdMOB implements MOB
 			if((A!=null)&&(A.ID().equals(to.ID())))
 				return;
 		}
-		abilitees.addElement(to);
+		abilitys.addElement(to);
 	}
 	public void delAbility(Ability to)
 	{
-		abilitees.removeElement(to);
+		abilitys.removeElement(to);
 	}
 	public int numLearnedAbilities()
 	{
-		return abilitees.size();
+		return abilitys.size();
 	}
 	
 	public Enumeration<Ability> abilities()
@@ -3035,7 +3035,7 @@ public class StdMOB implements MOB
 		final Clan C=getMyClan();
 		final MultiEnumeration multi =
 			new MultiEnumeration(
-					new Enumeration[] {abilitees.elements(),new IteratorEnumeration(charStats().getMyRace().racialAbilities(this).iterator())});
+					new Enumeration[] {abilitys.elements(),new IteratorEnumeration(charStats().getMyRace().racialAbilities(this).iterator())});
 		if(C!=null)
 			multi.addEnumeration(new IteratorEnumeration(C.clanAbilities(this).iterator()));
 		return multi;
@@ -3044,7 +3044,7 @@ public class StdMOB implements MOB
 	public int numAbilities()
 	{
 		final Clan C=getMyClan();
-		return abilitees.size()
+		return abilitys.size()
 			  +charStats().getMyRace().racialAbilities(this).size()
 			  +((C==null)?0:C.clanAbilities(this).size());
 	}
@@ -3053,13 +3053,13 @@ public class StdMOB implements MOB
 	{
 		try
 		{
-			if(index<abilitees.size())
-				return (Ability)abilitees.elementAt(index);
+			if(index<abilitys.size())
+				return (Ability)abilitys.elementAt(index);
 			final List<Ability> racialAbilities=charStats().getMyRace().racialAbilities(this);
-			if(index<abilitees.size() + racialAbilities.size())
-				return (Ability)charStats().getMyRace().racialAbilities(this).get(index-abilitees.size());
+			if(index<abilitys.size() + racialAbilities.size())
+				return (Ability)charStats().getMyRace().racialAbilities(this).get(index-abilitys.size());
 			final Clan C=getMyClan();
-			return (C==null)?null:C.clanAbilities(this).get(index-abilitees.size()-racialAbilities.size());
+			return (C==null)?null:C.clanAbilities(this).get(index-abilitys.size()-racialAbilities.size());
 		}
 		catch(java.lang.ArrayIndexOutOfBoundsException x){}
 		return null;
@@ -3079,10 +3079,10 @@ public class StdMOB implements MOB
 	{
 		final Clan C=getMyClan();
 		final Race R=charStats().getMyRace();
-		Ability A=(Ability)CMLib.english().fetchEnvironmental(abilitees,ID,true);
+		Ability A=(Ability)CMLib.english().fetchEnvironmental(abilitys,ID,true);
         if(A==null) A=(Ability)CMLib.english().fetchEnvironmental(R.racialAbilities(this),ID,true);
         if((A==null)&&(C!=null)) A=(Ability)CMLib.english().fetchEnvironmental(C.clanAbilities(this),ID,true);
-        if(A==null) A=(Ability)CMLib.english().fetchEnvironmental(abilitees,ID,false);
+        if(A==null) A=(Ability)CMLib.english().fetchEnvironmental(abilitys,ID,false);
 		if(A==null) A=(Ability)CMLib.english().fetchEnvironmental(R.racialAbilities(this),ID,false);
         if((A==null)&&(C!=null)) A=(Ability)CMLib.english().fetchEnvironmental(C.clanAbilities(this),ID,false);
 		if(A==null) A=fetchAbility(ID);
@@ -3161,7 +3161,7 @@ public class StdMOB implements MOB
 		{
 			if(index<affects.size())
 				return affects.elementAt(index);
-			if(index<abilitees.size() + charStats().getMyRace().numRacialEffects(this))
+			if(index<abilitys.size() + charStats().getMyRace().numRacialEffects(this))
 				return racialEffects().get(index-affects.size());
 			final Clan C=getMyClan();
 			return (C==null)?null:clanEffects().get(index-affects.size()-C.numClanEffects(this));
@@ -3639,7 +3639,7 @@ public class StdMOB implements MOB
 		else
 		if(env instanceof Ability)
 		{
-			if(abilitees.contains(env)) 
+			if(abilitys.contains(env)) 
 				return true;
 			if(affects.contains(env)) 
 				return true;
