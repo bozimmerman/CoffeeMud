@@ -1454,37 +1454,14 @@ public class CMMap extends StdLibrary implements WorldMap
 												   int maxSeconds)
 	{
 		Room room=null;
+		// wish this stuff could be cached, even temporarily, however,
+		// far too much of the world is dynamic, and far too many searches
+		// are looking for dynamic things.  the cached results would be useless
+		// as soon as they are put away.
 		
-		/*-- world is just too dynamic for this nonsense
-		final STreeVector<MapCacheEntry> trailCache;
-		final String trailKey;
-		if(mob==null)
-		{
-	    	STreeVector<MapCacheEntry> oldTrails=(STreeVector)Resources.getResource("WORLDFIND");
-			trailKey = srchWhatAERIPMVK+"_"+cmd.toUpperCase().trim().replace(' ','_')+((A==null)?"WORLD":(A.Name().toUpperCase().trim().replace(' ','_'))+"_"+(returnFirst?"FIRST":"ALL"));
-	    	if(oldTrails==null)
-	    	{
-	    		oldTrails=new STreeVector<MapCacheEntry>();
-	    		Resources.submitResource("WORLDFIND",oldTrails);
-	    	}
-	    	final MapCacheEntry entry= oldTrails.find(trailKey);
-	    	if(entry!=null)
-	    	{
-	    		entry.lastAccessed=System.currentTimeMillis();
-	    		return entry.rooms;
-	    	}
-	    	trailCache=oldTrails;
-		}
-		else
-		{
-			trailKey=null;
-			trailCache=null;
-		}
-		*/
+		final Vector<Room> rooms=(returnFirst)?null:new Vector<Room>();
 		
-		Vector<Room> rooms=(returnFirst)?null:new Vector<Room>();
-		
-		Room curRoom=(mob!=null)?mob.location():null;
+		final Room curRoom=(mob!=null)?mob.location():null;
 		
 		boolean searchWeakAreas=false;
 		boolean searchStrictAreas=false;
@@ -1507,10 +1484,10 @@ public class CMMap extends StdLibrary implements WorldMap
 				case 'V': searchInventories=true; break;
 				case 'K': searchStocks=true;      break;
 			}
-		long startTime = System.currentTimeMillis();
+		final long startTime = System.currentTimeMillis();
 		if(searchRooms)
 		{
-			int dirCode=Directions.getGoodDirectionCode(cmd);
+			final int dirCode=Directions.getGoodDirectionCode(cmd);
 			if((dirCode>=0)&&(curRoom!=null))
 				room=addWorldRoomsLiberally(rooms,curRoom.rawDoors()[dirCode]);
 			if(room==null)
@@ -1601,7 +1578,6 @@ public class CMMap extends StdLibrary implements WorldMap
 			}
 		}
 		final Vector<Room> responseSet = returnResponse(rooms,room);
-		// if(trailCache!=null) trailCache.add(new MapCacheEntry(trailKey,responseSet)); // -- see above
 		return responseSet;
 	}
 
