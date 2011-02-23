@@ -286,46 +286,4 @@ public class QuestBound implements Ability
 	public int[] usageCost(MOB mob,boolean ignoreCostOverride){return cost;}
 	
 	public boolean isGeneric(){return false;}
-    
-    public String buildMask(String newText, MaskingLibrary.CompiledZapperMask mask)
-    {
-        int maskindex=newText.toUpperCase().indexOf("MASK=");
-        if(maskindex>0)
-        {
-            String maskStr=newText.substring(maskindex+5).trim();
-            if(maskStr.length()>0)
-        	{
-            	MaskingLibrary.CompiledZapperMask m = CMLib.masking().maskCompile(maskStr);
-            	if(m.entries.length>0)
-            	{
-	        		mask.empty=false;
-	        		for(int b=0;b<mask.flags.length;b++)
-	            		mask.flags[b]=mask.flags[b]|m.flags[b];
-	        		int oldLen=mask.entries.length;
-	        		mask.entries=Arrays.copyOf(mask.entries, mask.entries.length+m.entries.length);
-	        		for(int b=0;b<m.entries.length;b++)
-	        			mask.entries[oldLen+b]=m.entries[b];
-            	}
-        	}
-            newText=newText.substring(0,maskindex).trim();
-        }
-        return newText;
-    }
-
-    public String[] separateMask(String newText)
-    {
-        String[] strs=new String[2];
-        int maskindex=newText.toUpperCase().indexOf("MASK=");
-        if(maskindex>0)
-        {
-            strs[1]=newText.substring(maskindex+5).trim();
-            strs[0]=newText.substring(0,maskindex).trim();
-        }
-        else
-        {
-            strs[0]=newText;
-            strs[1]="";
-        }
-        return strs;
-    }
 }

@@ -41,7 +41,7 @@ public class Prop_HereAdjuster extends Prop_HaveAdjuster
     
 	public String accountForYourself()
 	{
-		return super.fixAccoutingsWithMask("Affects on those here: "+text());
+		return super.fixAccoutingsWithMask("Affects on those here: "+parameters[0],parameters[1]);
 	}
 
     

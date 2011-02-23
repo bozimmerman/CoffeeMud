@@ -45,8 +45,8 @@ public class Prop_HaveAdjuster extends Property
     protected Object[] charStateChanges=null;
     protected Object[] phyStatsChanges=null;
     protected MaskingLibrary.CompiledZapperMask mask=null;
+    protected String[] parameters=new String[]{"",""};
 
-    
     public boolean addIfPlussed(String newText, String parm, int parmCode, Vector addTo)
     {
         int val=CMParms.getParmPlus(newText,parm);
@@ -72,40 +72,43 @@ public class Prop_HaveAdjuster extends Property
         this.charStateChanges=null;
         this.phyStatsChanges=null;
         this.charStatsChanges=null;
-        this.mask=MaskingLibrary.CompiledZapperMask.EMPTY();
-        newText=buildMask(newText,mask);
+        parameters=CMLib.masking().separateMaskStrs(text());
+        if(parameters[1].trim().length()==0)
+        	mask=MaskingLibrary.CompiledZapperMask.EMPTY();
+        else
+        	mask=CMLib.masking().maskCompile(parameters[1]);
         Vector phyStatsV=new Vector();
-        addIfPlussed(newText,"abi",PhyStats.STAT_ABILITY,phyStatsV);
-        addIfPlussed(newText,"arm",PhyStats.STAT_ARMOR,phyStatsV);
-        addIfPlussed(newText,"att",PhyStats.STAT_ATTACK,phyStatsV);
-        addIfPlussed(newText,"dam",PhyStats.STAT_DAMAGE,phyStatsV);
-        addIfPlussed(newText,"dis",PhyStats.STAT_DISPOSITION,phyStatsV);
-        addIfPlussed(newText,"lev",PhyStats.STAT_LEVEL,phyStatsV);
-        addIfPlussed(newText,"rej",PhyStats.STAT_REJUV,phyStatsV);
-        addIfPlussed(newText,"sen",PhyStats.STAT_SENSES,phyStatsV);
-        double dval=CMParms.getParmDoublePlus(newText,"spe");
+        addIfPlussed(parameters[0],"abi",PhyStats.STAT_ABILITY,phyStatsV);
+        addIfPlussed(parameters[0],"arm",PhyStats.STAT_ARMOR,phyStatsV);
+        addIfPlussed(parameters[0],"att",PhyStats.STAT_ATTACK,phyStatsV);
+        addIfPlussed(parameters[0],"dam",PhyStats.STAT_DAMAGE,phyStatsV);
+        addIfPlussed(parameters[0],"dis",PhyStats.STAT_DISPOSITION,phyStatsV);
+        addIfPlussed(parameters[0],"lev",PhyStats.STAT_LEVEL,phyStatsV);
+        addIfPlussed(parameters[0],"rej",PhyStats.STAT_REJUV,phyStatsV);
+        addIfPlussed(parameters[0],"sen",PhyStats.STAT_SENSES,phyStatsV);
+        double dval=CMParms.getParmDoublePlus(parameters[0],"spe");
         if(dval!=0)
         {
             phyStatsV.addElement(Integer.valueOf(PhyStats.NUM_STATS));
             phyStatsV.addElement(Double.valueOf(dval));
         }
-        addIfPlussed(newText,"wei",PhyStats.STAT_WEIGHT,phyStatsV);
-        addIfPlussed(newText,"hei",PhyStats.STAT_HEIGHT,phyStatsV);
+        addIfPlussed(parameters[0],"wei",PhyStats.STAT_WEIGHT,phyStatsV);
+        addIfPlussed(parameters[0],"hei",PhyStats.STAT_HEIGHT,phyStatsV);
 
         Vector charStatsV=new Vector();
-        String val=CMParms.getParmStr(newText,"gen","").toUpperCase();
+        String val=CMParms.getParmStr(parameters[0],"gen","").toUpperCase();
         if((val.length()>0)&&((val.charAt(0)=='M')||(val.charAt(0)=='F')||(val.charAt(0)=='N')))
         {
             charStatsV.addElement(new Character('G'));
             charStatsV.addElement(new Character(val.charAt(0)));
         }
-        val=CMParms.getParmStr(newText,"cla","").toUpperCase();
+        val=CMParms.getParmStr(parameters[0],"cla","").toUpperCase();
         if((val.length()>0)&&(CMClass.findCharClass(val)!=null)&&(!val.equalsIgnoreCase("Archon")))
         {
             charStatsV.addElement(new Character('C'));
             charStatsV.addElement(CMClass.findCharClass(val));
         }
-        val=CMParms.getParmStr(newText,"rac","").toUpperCase();
+        val=CMParms.getParmStr(parameters[0],"rac","").toUpperCase();
         if((val.length()>0)&&(CMClass.getRace(val)!=null))
         {
             charStatsV.addElement(new Character('R'));
@@ -114,20 +117,20 @@ public class Prop_HaveAdjuster extends Property
 		for(int i : CharStats.CODES.BASE())
 		{
 			String name = CMStrings.limit(CharStats.CODES.NAME(i).toLowerCase(),3);
-	        addIfPlussed(newText,name,i,charStatsV);
-	        addIfPlussed(newText,"max"+name,CharStats.CODES.toMAXBASE(i),charStatsV);
+	        addIfPlussed(parameters[0],name,i,charStatsV);
+	        addIfPlussed(parameters[0],"max"+name,CharStats.CODES.toMAXBASE(i),charStatsV);
 		}
 		int[] CMMSGMAP=CharStats.CODES.CMMSGMAP();
 		for(int c : CharStats.CODES.SAVING_THROWS())
             if(CMMSGMAP[c]!=-1)
-                addIfPlussed(newText,"save"+CMStrings.limit(CharStats.CODES.NAME(c).toLowerCase(),3),c,charStatsV);
+                addIfPlussed(parameters[0],"save"+CMStrings.limit(CharStats.CODES.NAME(c).toLowerCase(),3),c,charStatsV);
 
         Vector charStateV=new Vector();
-        addIfPlussed(newText,"hit",CharState.STAT_HITPOINTS,charStateV);
-        addIfPlussed(newText,"hun",CharState.STAT_HUNGER,charStateV);
-        addIfPlussed(newText,"man",CharState.STAT_MANA,charStateV);
-        addIfPlussed(newText,"mov",CharState.STAT_MOVE,charStateV);
-        addIfPlussed(newText,"thi",CharState.STAT_THIRST,charStateV);
+        addIfPlussed(parameters[0],"hit",CharState.STAT_HITPOINTS,charStateV);
+        addIfPlussed(parameters[0],"hun",CharState.STAT_HUNGER,charStateV);
+        addIfPlussed(parameters[0],"man",CharState.STAT_MANA,charStateV);
+        addIfPlussed(parameters[0],"mov",CharState.STAT_MOVE,charStateV);
+        addIfPlussed(parameters[0],"thi",CharState.STAT_THIRST,charStateV);
         
         this.charStateChanges=makeObjectArray(charStateV);
         this.phyStatsChanges=makeObjectArray(phyStatsV);
@@ -229,63 +232,61 @@ public class Prop_HaveAdjuster extends Property
 		super.affectCharState(affectedMOB,affectedState);
 	}
 
-	public String fixAccoutingsWithMask(String id)
+	public static final String fixAccoutingsWithMask(String parameters, final String mask)
 	{
-        String[] strs=separateMask(id);
-        id=strs[0];
-		int x=id.toUpperCase().indexOf("ARM");
-		for(StringBuffer ID=new StringBuffer(id);((x>0)&&(x<id.length()));x++)
-			if(id.charAt(x)=='-')
+		int x=parameters.toUpperCase().indexOf("ARM");
+		for(StringBuffer ID=new StringBuffer(parameters);((x>0)&&(x<parameters.length()));x++)
+			if(parameters.charAt(x)=='-')
 			{
 				ID.setCharAt(x,'+');
-				id=ID.toString();
+				parameters=ID.toString();
 				break;
 			}
 			else
-			if(id.charAt(x)=='+')
+			if(parameters.charAt(x)=='+')
 			{
 				ID.setCharAt(x,'-');
-				id=ID.toString();
+				parameters=ID.toString();
 				break;
 			}
 			else
-			if(Character.isDigit(id.charAt(x)))
+			if(Character.isDigit(parameters.charAt(x)))
 				break;
-		x=id.toUpperCase().indexOf("DIS");
+		x=parameters.toUpperCase().indexOf("DIS");
 		if(x>=0)
 		{
-			long val=CMParms.getParmPlus(id,"dis");
-			int y=id.indexOf(""+val,x);
+			long val=CMParms.getParmPlus(parameters,"dis");
+			int y=parameters.indexOf(""+val,x);
 			if((val!=0)&&(y>x))
 			{
 				StringBuffer middle=new StringBuffer("");
 				for(int num=0;num<PhyStats.IS_VERBS.length;num++)
 					if(CMath.bset(val,CMath.pow(2,num)))
 						middle.append(PhyStats.IS_VERBS[num]+" ");
-				id=id.substring(0,x)+middle.toString().trim()+id.substring(y+((""+val).length()));
+				parameters=parameters.substring(0,x)+middle.toString().trim()+parameters.substring(y+((""+val).length()));
 			}
 		}
-		x=id.toUpperCase().indexOf("SEN");
+		x=parameters.toUpperCase().indexOf("SEN");
 		if(x>=0)
 		{
-			long val=CMParms.getParmPlus(id,"sen");
-			int y=id.indexOf(""+val,x);
+			long val=CMParms.getParmPlus(parameters,"sen");
+			int y=parameters.indexOf(""+val,x);
 			if((val!=0)&&(y>x))
 			{
 				StringBuffer middle=new StringBuffer("");
 				for(int num=0;num<PhyStats.CAN_SEE_VERBS.length;num++)
 					if(CMath.bset(val,CMath.pow(2,num)))
 						middle.append(PhyStats.CAN_SEE_VERBS[num]+" ");
-				id=id.substring(0,x)+middle.toString().trim()+id.substring(y+((""+val).length()));
+				parameters=parameters.substring(0,x)+middle.toString().trim()+parameters.substring(y+((""+val).length()));
 			}
 		}
-        if(strs[1].length()>0)
-            id+="  Restrictions: "+CMLib.masking().maskDesc(strs[1]);
-		return id;
+        if(mask.length()>0)
+            parameters+="  Restrictions: "+CMLib.masking().maskDesc(mask);
+		return parameters;
 	}
 
 	public String accountForYourself()
 	{
-		return fixAccoutingsWithMask("Affects the owner: "+text());
+		return fixAccoutingsWithMask("Affects the owner: "+parameters[0],parameters[1]);
 	}
 }

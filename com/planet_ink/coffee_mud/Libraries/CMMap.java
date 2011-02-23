@@ -360,13 +360,13 @@ public class CMMap extends StdLibrary implements WorldMap
         return true;
     }
 
-	public String getExtendedRoomID(Room R)
+	public String getExtendedRoomID(final Room R)
 	{
 		if(R==null) return "";
 		if(R.roomID().length()>0) return R.roomID();
-		Area A=R.getArea();
+		final Area A=R.getArea();
 		if(A==null) return "";
-		GridLocale GR=R.getGridParent();
+		final GridLocale GR=R.getGridParent();
 		if(GR!=null) return GR.getGridChildCode(R);
 		return R.roomID();
 	}

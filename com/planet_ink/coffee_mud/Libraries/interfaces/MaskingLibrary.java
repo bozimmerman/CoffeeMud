@@ -38,39 +38,38 @@ public interface MaskingLibrary extends CMLibrary
 {
     public Hashtable getMaskCodes();
     public String rawMaskHelp();
-    public String maskHelp(String CR, String word);
-	public Vector getAbilityEduReqs(String text);
-    public String maskDesc(String text);
-	public String maskDesc(String text, boolean skipFirstWord);
-	public CompiledZapperMask maskCompile(String text);
-    public boolean maskCheck(CompiledZapperMask cset, Environmental E, boolean actual);
-    public boolean maskCheck(String text, Environmental E, boolean actual);
-	public boolean maskCheck(CompiledZapperMask cset, PlayerLibrary.ThinPlayer E);
-    public boolean maskCheck(String text, PlayerLibrary.ThinPlayer E);
-    public boolean syntaxCheck(String text, Vector errorSink);
-    public int minMaskLevel(String text, int minMinLevel);
+    public String maskHelp(final String CR, final String word);
+	public Vector getAbilityEduReqs(final String text);
+    public String maskDesc(final String text);
+	public String maskDesc(final String text, final boolean skipFirstWord);
+	public CompiledZapperMask maskCompile(final String text);
+    public boolean maskCheck(final CompiledZapperMask cset, final Environmental E, final boolean actual);
+    public boolean maskCheck(final String text, final Environmental E, final boolean actual);
+	public boolean maskCheck(final CompiledZapperMask cset, final PlayerLibrary.ThinPlayer E);
+    public boolean maskCheck(final String text, final PlayerLibrary.ThinPlayer E);
+    public boolean syntaxCheck(final String text, final Vector errorSink);
+    public int minMaskLevel(final String text, final int minMinLevel);
+    public String[] separateMaskStrs(final String newText);
 
     public static class CompiledZapperMaskEntry
     {
-    	public int maskType;
-    	public Object[] parms;
-    	public CompiledZapperMaskEntry(int type, Object[] parms)
+    	public final int maskType;
+    	public final Object[] parms;
+    	public CompiledZapperMaskEntry(final int type, final Object[] parms)
     	{	maskType=type;this.parms=parms;}
     }
     
     public static class CompiledZapperMask
     {
-    	public boolean[] flags;
-    	public boolean empty=false;
-    	public CompiledZapperMaskEntry[] entries;
-    	public CompiledZapperMask(boolean[] flags, CompiledZapperMaskEntry[] entries)
-    	{	this.flags=flags; this.entries=entries;}
-    	public static CompiledZapperMask EMPTY()
-    	{
-    		CompiledZapperMask e=new CompiledZapperMask(new boolean[2],new CompiledZapperMaskEntry[0]);
-    		e.empty=true;
-    		return e;
-    	}
+    	public final boolean[] flags;
+    	public final boolean empty;
+    	public final CompiledZapperMaskEntry[] entries;
+    	public CompiledZapperMask(final boolean[] flags, final CompiledZapperMaskEntry[] entries)
+    	{	this.flags=flags; this.entries=entries; this.empty=false;}
+    	public CompiledZapperMask(final boolean[] flags, final CompiledZapperMaskEntry[] entries, final boolean empty)
+    	{	this.flags=flags; this.entries=entries; this.empty=empty;}
+    	public static final CompiledZapperMask EMPTY()
+    	{	return new CompiledZapperMask(new boolean[2],new CompiledZapperMaskEntry[0],true); }
     }
     
     public final String DEFAULT_MASK_HELP =

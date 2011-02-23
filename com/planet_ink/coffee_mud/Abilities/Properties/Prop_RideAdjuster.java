@@ -40,7 +40,7 @@ public class Prop_RideAdjuster extends Prop_HaveAdjuster
 
 	public String accountForYourself()
 	{
-		return super.fixAccoutingsWithMask("Affects on the mounted: "+text());
+		return super.fixAccoutingsWithMask("Affects on the mounted: "+parameters[0],parameters[1]);
 	}
 
     public boolean canApply(MOB mob)

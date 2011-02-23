@@ -39,7 +39,7 @@ public class Prop_WearAdjuster extends Prop_HaveAdjuster
 
 	public String accountForYourself()
 	{
-		return super.fixAccoutingsWithMask("Affects on the wearer: "+text());
+		return super.fixAccoutingsWithMask("Affects on the wearer: "+parameters[0],parameters[1]);
 	}
 	
     public boolean checked=false;
