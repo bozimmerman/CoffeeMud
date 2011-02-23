@@ -843,22 +843,13 @@
     <LONGDESC>The most primitive and purely human of social arrangements. Anyone can join, so there is no acceptance or rejection.  Any member can perform any clan function, from moving the clan home to declaring war.</LONGDESC>
     <POSITIONS>
         <POSITION ID="FREEMAN" ROLEID=0 RANK=0 NAME="Freeman" PLURAL="Freemen" MAX=2147483647 INNERMASK="" PUBLIC="true">
-            <POWER>ACCEPT</POWER>
-            <POWER>ASSIGN</POWER>
-            <POWER>EXILE</POWER>
             <POWER>SET_HOME</POWER>
             <POWER>SET_DONATE</POWER>
-            <POWER>REJECT</POWER>
             <POWER>PREMISE</POWER>
             <POWER>PROPERTY_OWNER</POWER>
             <POWER>WITHDRAW</POWER>
-            <POWER>ORDER_UNDERLINGS</POWER>
             <POWER>ORDER_CONQUERED</POWER>
-            <POWER>VOTE_ASSIGN</POWER>
-            <POWER>VOTE_OTHER</POWER>
             <POWER>DEPOSIT_LIST</POWER>
-            <POWER>DECLARE</POWER>
-            <POWER>TAX</POWER>
             <POWER>ENCHANT</POWER>
             <POWER>CHANNEL</POWER>
             <POWER>MORGUE</POWER>
