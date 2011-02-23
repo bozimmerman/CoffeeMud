@@ -1371,15 +1371,15 @@ public class CMMap extends StdLibrary implements WorldMap
 		}
 	}
 
-	public Room findWorldRoomLiberally(MOB mob, String cmd, String srchWhatAERIPMVK, int timePct, int maxSeconds)
+	public Room findWorldRoomLiberally(MOB mob, String cmd, String srchWhatAERIPMVK, int timePct, long maxMillis)
 	{
-		List<Room> rooms=findWorldRoomsLiberally(mob,cmd,srchWhatAERIPMVK,null,true,timePct, maxSeconds);
+		List<Room> rooms=findWorldRoomsLiberally(mob,cmd,srchWhatAERIPMVK,null,true,timePct, maxMillis);
 		if((rooms!=null)&&(rooms.size()!=0)) return (Room)rooms.get(0);
 		return null;
 	}
 	
-	public List<Room> findWorldRoomsLiberally(MOB mob, String cmd, String srchWhatAERIPMVK, int timePct, int maxSeconds)
-	{ return findWorldRoomsLiberally(mob,cmd,srchWhatAERIPMVK,null,false,timePct,maxSeconds); }
+	public List<Room> findWorldRoomsLiberally(MOB mob, String cmd, String srchWhatAERIPMVK, int timePct, long maxMillis)
+	{ return findWorldRoomsLiberally(mob,cmd,srchWhatAERIPMVK,null,false,timePct,maxMillis); }
 	
 	public Room findAreaRoomLiberally(MOB mob, Area A,String cmd, String srchWhatAERIPMVK, int timePct)
 	{
@@ -1437,10 +1437,10 @@ public class CMMap extends StdLibrary implements WorldMap
 		return (Vector<Room>)new XVector(room);
 	}
 	
-	protected boolean enforceTimeLimit(long startTime, int maxSeconds)
+	protected boolean enforceTimeLimit(final long startTime,  final long maxMillis)
 	{
-		if(maxSeconds<=0) return false;
-		return ((System.currentTimeMillis() - startTime) / 1000) > maxSeconds;
+		if(maxMillis<=0) return false;
+		return ((System.currentTimeMillis() - startTime)) > maxMillis;
 	}
 	
 	protected List<Room> findWorldRoomsLiberally(MOB mob, 
@@ -1449,7 +1449,7 @@ public class CMMap extends StdLibrary implements WorldMap
 												 Area A, 
 												 boolean returnFirst, 
 												 int timePct, 
-												 int maxSeconds)
+												 long maxMillis)
 	{
 		Room room=null;
 		// wish this stuff could be cached, even temporarily, however,
@@ -1508,7 +1508,7 @@ public class CMMap extends StdLibrary implements WorldMap
 	                if(M!=null)
 	                	room=addWorldRoomsLiberally(rooms,M.location());
                 }
-                if(enforceTimeLimit(startTime,maxSeconds)) return returnResponse(rooms,room);
+                if(enforceTimeLimit(startTime,maxMillis)) return returnResponse(rooms,room);
                 
                 // search areas strictly
                 if(searchStrictAreas && room==null && (A==null))
@@ -1518,7 +1518,7 @@ public class CMMap extends StdLibrary implements WorldMap
                 		room=addWorldRoomsLiberally(rooms,A);
                 	A=null;
                 }
-                if(enforceTimeLimit(startTime,maxSeconds)) return returnResponse(rooms,room);
+                if(enforceTimeLimit(startTime,maxMillis)) return returnResponse(rooms,room);
                 
 				// no good, so look for room inhabitants
 				if(searchInhabs && room==null)
@@ -1527,7 +1527,7 @@ public class CMMap extends StdLibrary implements WorldMap
 					if(candidates.size()>0)
                 		room=addWorldRoomsLiberally(rooms,candidates);
 				}
-                if(enforceTimeLimit(startTime,maxSeconds)) return returnResponse(rooms,room);
+                if(enforceTimeLimit(startTime,maxMillis)) return returnResponse(rooms,room);
 				
 				// now check room text
 				if(searchRooms && room==null)
@@ -1536,7 +1536,7 @@ public class CMMap extends StdLibrary implements WorldMap
 					if(candidates.size()>0)
                 		room=addWorldRoomsLiberally(rooms,candidates);
 				}
-                if(enforceTimeLimit(startTime,maxSeconds)) return returnResponse(rooms,room);
+                if(enforceTimeLimit(startTime,maxMillis)) return returnResponse(rooms,room);
 				
 				// check floor items
 				if(searchItems && room==null)
@@ -1545,7 +1545,7 @@ public class CMMap extends StdLibrary implements WorldMap
 					if(candidates.size()>0)
                 		room=addWorldRoomsLiberally(rooms,candidates);
 				}
-                if(enforceTimeLimit(startTime,maxSeconds)) return returnResponse(rooms,room);
+                if(enforceTimeLimit(startTime,maxMillis)) return returnResponse(rooms,room);
 				
 				// check inventories
 				if(searchInventories && room==null)
@@ -1554,7 +1554,7 @@ public class CMMap extends StdLibrary implements WorldMap
 					if(candidates.size()>0)
                 		room=addWorldRoomsLiberally(rooms,candidates);
 				}
-                if(enforceTimeLimit(startTime,maxSeconds)) return returnResponse(rooms,room);
+                if(enforceTimeLimit(startTime,maxMillis)) return returnResponse(rooms,room);
 				
 				// check stocks
 				if(searchStocks && room==null)
@@ -1563,7 +1563,7 @@ public class CMMap extends StdLibrary implements WorldMap
 					if(candidates.size()>0)
                 		room=addWorldRoomsLiberally(rooms,candidates);
 				}
-                if(enforceTimeLimit(startTime,maxSeconds)) return returnResponse(rooms,room);
+                if(enforceTimeLimit(startTime,maxMillis)) return returnResponse(rooms,room);
 				
 				// search areas weakly
                 if(searchWeakAreas && room==null && (A==null))

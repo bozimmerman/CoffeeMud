@@ -76,11 +76,13 @@ public class DefaultScriptingEngine implements ScriptingEngine
     protected Environmental lastLoaded=null;
     protected String myScript="";
     protected String defaultQuestName="";
+    protected boolean debugBadScripts=false;
 
     public DefaultScriptingEngine()
     {
         super();
         CMClass.bumpCounter(this,CMClass.OBJECT_COMMON);
+        debugBadScripts=CMSecurity.isDebugging("BADSCRIPTS");
     }
 
     public boolean isSavable(){ return isSavable;}
@@ -637,7 +639,10 @@ public class DefaultScriptingEngine implements ScriptingEngine
     	if((imHere!=null)&&(imHere.getArea()!=null))
     		rooms=CMLib.map().findAreaRoomsLiberally(null, imHere.getArea(), thisName, "RIEPM",100);
     	if(rooms.size()==0)
-    		rooms=CMLib.map().findWorldRoomsLiberally(null,thisName, "RIEPM",100,10);
+    	{
+    		if(debugBadScripts) Log.debugOut("ScriptingEngine","World room search called for: "+thisName);
+    		rooms=CMLib.map().findWorldRoomsLiberally(null,thisName, "RIEPM",100,2000);
+    	}
         if(rooms.size()>0) return (Room)rooms.get(CMLib.dice().roll(1,rooms.size(),-1));
         return room;
     }

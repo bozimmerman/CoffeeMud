@@ -163,7 +163,7 @@ public class Transfer extends At
 		if(cmd.toString().equalsIgnoreCase("here")||cmd.toString().equalsIgnoreCase("."))
 			room=mob.location();
 		else
-			room=CMLib.map().findWorldRoomLiberally(mob,cmd.toString(),"RIPME",100,120);
+			room=CMLib.map().findWorldRoomLiberally(mob,cmd.toString(),"RIPME",100,120000);
 
 		if(room==null)
 		{

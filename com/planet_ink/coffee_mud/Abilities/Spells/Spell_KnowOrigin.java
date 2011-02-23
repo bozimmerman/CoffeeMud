@@ -62,7 +62,7 @@ public class Spell_KnowOrigin extends Spell
 				if(E!=null) return CMLib.map().getStartRoom(E);
 				E=CMLib.map().findFirstInventory(CMLib.map().rooms(), mob, srchStr, 10);
 				if(E!=null) return CMLib.map().getStartRoom(E);
-		    	return CMLib.map().findWorldRoomLiberally(mob,srchStr, "I",10,600);
+		    	return CMLib.map().findWorldRoomLiberally(mob,srchStr, "I",10,600000);
 		    }catch(NoSuchElementException nse){}
 		}
 		return null;
