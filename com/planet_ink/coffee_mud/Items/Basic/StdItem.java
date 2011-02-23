@@ -70,16 +70,13 @@ public class StdItem implements Item
 	public StdItem()
 	{
         super();
-        CMClass.bumpCounter(this,CMClass.OBJECT_ITEM);
+        //CMClass.bumpCounter(this,CMClass.OBJECT_ITEM);//removed for mem & perf
 		basePhyStats().setWeight(1);
 		basePhyStats().setArmor(0);
 		xtraValues=CMProps.getExtraStatCodesHolder(this);
 	}
     protected boolean abilityImbuesMagic(){return true;}
-    protected void finalize()
-    {
-        CMClass.unbumpCounter(this,CMClass.OBJECT_ITEM);
-    }
+    //protected void finalize() { CMClass.unbumpCounter(this,CMClass.OBJECT_ITEM); }//removed for mem & perf
     public void initializeClass(){}
     public boolean isGeneric(){return false;}
 	public String Name(){ return name;}
@@ -186,7 +183,7 @@ public class StdItem implements Item
 		try
 		{
 			StdItem E=(StdItem)this.clone();
-            CMClass.bumpCounter(E,CMClass.OBJECT_ITEM);
+            //CMClass.bumpCounter(E,CMClass.OBJECT_ITEM);//removed for mem & perf
             E.xtraValues=(xtraValues==null)?null:(String[])xtraValues.clone();
 			E.cloneFix(this);
 			CMLib.catalog().newInstance(this);

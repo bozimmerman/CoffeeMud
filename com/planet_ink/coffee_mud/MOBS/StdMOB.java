@@ -290,18 +290,15 @@ public class StdMOB implements MOB
 	public StdMOB()
 	{
         super();
-        CMClass.bumpCounter(this,CMClass.OBJECT_MOB);
+        //CMClass.bumpCounter(this,CMClass.OBJECT_MOB);//removed for mem & perf
 		baseCharStats().setMyRace(CMClass.getRace("Human"));
 		basePhyStats().setLevel(1);
         xtraValues=CMProps.getExtraStatCodesHolder(this);
 	}
 	public long expirationDate(){return expirationDate;}
 	public void setExpirationDate(long time){expirationDate=time;}
-    protected void finalize()
-    {
-        CMClass.unbumpCounter(this,CMClass.OBJECT_MOB);
-    }
-    public boolean amDestroyed(){return amDestroyed;}
+    //protected void finalize() { CMClass.unbumpCounter(this,CMClass.OBJECT_MOB); }//removed for mem & perf
+    public final boolean amDestroyed(){return this.amDestroyed;}
 	protected void cloneFix(MOB M)
 	{
 		if(M==null) return;
@@ -376,7 +373,7 @@ public class StdMOB implements MOB
 		try
 		{
 			StdMOB E=(StdMOB)this.clone();
-            CMClass.bumpCounter(E,CMClass.OBJECT_MOB);
+            //CMClass.bumpCounter(E,CMClass.OBJECT_MOB);//removed for mem & perf
             E.xtraValues=(xtraValues==null)?null:(String[])xtraValues.clone();
 			E.cloneFix(this);
 			CMLib.catalog().newInstance(this);

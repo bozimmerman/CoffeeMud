@@ -1383,9 +1383,9 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
     	rpt.append("\r\n"); rpt.append("HELPFILES");
     	rpt.append("\t"); rpt.append(Integer.toString(CMLib.help().getHelpFile().size()));
     	rpt.append("\r\n"); rpt.append("MOBILES");
-    	rpt.append("\t"); rpt.append(Long.toString(CMClass.numRemainingObjectCounts(CMClass.OBJECT_MOB)-CMClass.numPrototypes(CMClass.OBJECT_MOB)));
+    	rpt.append("\t"); rpt.append(Long.toString(CMClass.numPrototypes(CMClass.OBJECT_MOB)));
     	rpt.append("\r\n"); rpt.append("OBJECTS");
-    	rpt.append("\t"); rpt.append(Long.toString(CMClass.numRemainingObjectCounts(CMClass.OBJECT_ITEM)-CMClass.numPrototypes(CMClass.OBJECTS_ITEMTYPES)));
+    	rpt.append("\t"); rpt.append(Long.toString(CMClass.numPrototypes(CMClass.OBJECTS_ITEMTYPES)));
     	rpt.append("\r\n"); rpt.append("ROOMS");
     	rpt.append("\t"); rpt.append(Long.toString(CMLib.map().numRooms()));
     	rpt.append("\r\n"); rpt.append("CLASSES");

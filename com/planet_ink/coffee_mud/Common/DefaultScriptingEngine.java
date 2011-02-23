@@ -81,7 +81,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
     public DefaultScriptingEngine()
     {
         super();
-        CMClass.bumpCounter(this,CMClass.OBJECT_COMMON);
+        //CMClass.bumpCounter(this,CMClass.OBJECT_COMMON);//removed for mem & perf
         debugBadScripts=CMSecurity.isDebugging("BADSCRIPTS");
     }
 
@@ -220,7 +220,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
         try
         {
             ScriptingEngine S=(ScriptingEngine)this.clone();
-            CMClass.bumpCounter(S,CMClass.OBJECT_COMMON);
+            //CMClass.bumpCounter(S,CMClass.OBJECT_COMMON);//removed for mem & perf
             S.setScript(getScript());
             return S;
         }
@@ -229,7 +229,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
             return new DefaultScriptingEngine();
         }
     }
-    protected void finalize(){CMClass.unbumpCounter(this,CMClass.OBJECT_COMMON);}
+    //protected void finalize(){CMClass.unbumpCounter(this,CMClass.OBJECT_COMMON);}//removed for mem & perf
 
     /**
      * c=clean bit, r=pastbitclean, p=pastbit, s=remaining clean bits, t=trigger

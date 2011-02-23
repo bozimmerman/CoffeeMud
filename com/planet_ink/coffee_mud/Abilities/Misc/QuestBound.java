@@ -120,7 +120,7 @@ public class QuestBound implements Ability
     public void destroy(){amDestroyed=true; affected=null;}
     public boolean amDestroyed(){return amDestroyed;}
 
-    protected void finalize(){ CMClass.unbumpCounter(this,CMClass.OBJECT_ABILITY); }
+    //protected void finalize(){ CMClass.unbumpCounter(this,CMClass.OBJECT_ABILITY); }//removed for mem & perf
 
 	public CMObject newInstance()
 	{
@@ -138,7 +138,7 @@ public class QuestBound implements Ability
     public QuestBound()
     {
         super();
-        CMClass.bumpCounter(this,CMClass.OBJECT_ABILITY);
+        //CMClass.bumpCounter(this,CMClass.OBJECT_ABILITY);//removed for mem & perf
     }
 	public int getSaveStatIndex(){return getStatCodes().length;}
 	private static final String[] CODES={"CLASS","TEXT","KEY"};
@@ -182,7 +182,7 @@ public class QuestBound implements Ability
 		try
 		{
 			QuestBound E=(QuestBound)this.clone();
-            CMClass.bumpCounter(E,CMClass.OBJECT_ABILITY);
+            //CMClass.bumpCounter(E,CMClass.OBJECT_ABILITY);//removed for mem & perf
 			E.cloneFix(this);
 			return E;
 

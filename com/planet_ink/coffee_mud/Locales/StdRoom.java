@@ -69,16 +69,12 @@ public class StdRoom implements Room
 	public StdRoom()
 	{
         super();
-        CMClass.bumpCounter(this,CMClass.OBJECT_LOCALE);
+        //CMClass.bumpCounter(this,CMClass.OBJECT_LOCALE);//removed for mem & perf
         xtraValues=CMProps.getExtraStatCodesHolder(this);
 		basePhyStats.setWeight(2);
 		recoverPhyStats();
 	}
-    protected void finalize(){
-        for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
-            setRawExit(d,null);
-        CMClass.unbumpCounter(this,CMClass.OBJECT_LOCALE);
-    }
+    //protected void finalize(){ CMClass.unbumpCounter(this,CMClass.OBJECT_LOCALE); }//removed for mem & perf
     public void initializeClass(){}
 	public CMObject newInstance()
 	{
@@ -202,7 +198,7 @@ public class StdRoom implements Room
 		try
 		{
 			StdRoom R=(StdRoom)this.clone();
-            CMClass.bumpCounter(R,CMClass.OBJECT_LOCALE);
+            //CMClass.bumpCounter(R,CMClass.OBJECT_LOCALE);//removed for mem & perf
             R.xtraValues=(xtraValues==null)?null:(String[])xtraValues.clone();
 			R.cloneFix(this);
 			return R;

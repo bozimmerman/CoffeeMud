@@ -49,9 +49,8 @@ public class Prop_SpellAdder extends Property
     protected MaskingLibrary.CompiledZapperMask compiledMask=null;
     protected List<Ability> unrevocableSpells = null;
     
-    public void finalize()
+    protected void finalize()
     {
-    	super.finalize();
     	spellV=null;
     	compiledMask=null;
     	unrevocableSpells=null;

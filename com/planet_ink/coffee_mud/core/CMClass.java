@@ -112,12 +112,15 @@ public class CMClass extends ClassLoader
     protected XVector<CMLibrary> 		 libraries=new XVector<CMLibrary>();
     protected Hashtable<String,WebMacro> webMacros=new Hashtable<String,WebMacro>();
     protected Hashtable<String,Command>  commandWords=new Hashtable<String,Command>();
+   
+    protected static final LinkedList<CMMsg>   MSGS_CACHE=new LinkedList<CMMsg>();
+    protected static final int 				   MAX_MSGS=(Runtime.getRuntime().maxMemory()==Integer.MAX_VALUE)?10000:(int)(Runtime.getRuntime().maxMemory()/(long)10000);
     
+    /*
+     * removed to save memory and processing time -- but left for future use
     protected static final long[] OBJECT_CREATIONS=new long[OBJECT_TOTAL];
     protected static final long[] OBJECT_DESTRUCTIONS=new long[OBJECT_TOTAL];
-    
     protected static final Map<CMObject,Object>[] OBJECT_CACHE=new WeakHashMap[OBJECT_TOTAL];
-    protected static final List<CMMsg> MSGS_CACHE=new Vector<CMMsg>();
     protected static final boolean KEEP_OBJECT_CACHE=false;
     
     static
@@ -126,6 +129,7 @@ public class CMClass extends ClassLoader
     		for(int i=0;i<OBJECT_TOTAL;i++)
     			OBJECT_CACHE[i]=new WeakHashMap<CMObject,Object>();
     }
+    */
     
     public static final String[] OBJECT_DESCS=
     {
@@ -157,6 +161,8 @@ public class CMClass extends ClassLoader
         "com.planet_ink.coffee_mud.Libraries.interfaces.CMLibrary",
 	};
     
+    /*
+     * removed to save memory and processing time -- but left for future use
     public final static void bumpCounter(final CMObject O, final int which)
     {
         if(KEEP_OBJECT_CACHE)
@@ -170,6 +176,36 @@ public class CMClass extends ClassLoader
         }
         OBJECT_CREATIONS[which]++;
     }
+    
+    public final static void unbumpCounter(final CMObject O, final int which)
+    {
+        if(KEEP_OBJECT_CACHE)
+        {
+            if(OBJECT_CACHE[which].containsKey(O)) // yes, if its in there, its bad
+            {
+                OBJECT_CACHE[which].remove(O);
+                Log.errOut("bumped!",O.getClass().getName());
+                return;
+            }
+        }
+        OBJECT_DESTRUCTIONS[which]++;
+    }
+    
+    public static final String getCounterReport()
+    {
+        StringBuffer str=new StringBuffer("");
+        for(int i=0;i<OBJECT_TOTAL;i++)
+            if(OBJECT_CREATIONS[i]>0)
+                str.append(CMStrings.padRight(OBJECT_DESCS[i],12)+": Created: "+OBJECT_CREATIONS[i]+", Destroyed: "+OBJECT_DESTRUCTIONS[i]+", Remaining: "+(OBJECT_CREATIONS[i]-OBJECT_DESTRUCTIONS[i])+"\n\r");
+        return str.toString();
+    }
+
+    public static final long numRemainingObjectCounts(final int type)
+    {
+    	return OBJECT_CREATIONS[type] - OBJECT_DESTRUCTIONS[type];
+    }
+    
+    */
 
     public final static boolean isType(final Object O, final int type)
     {
@@ -289,19 +325,6 @@ public class CMClass extends ClassLoader
     	return 0;
     }
     
-    public final static void unbumpCounter(final CMObject O, final int which)
-    {
-        if(KEEP_OBJECT_CACHE)
-        {
-            if(OBJECT_CACHE[which].containsKey(O)) // yes, if its in there, its bad
-            {
-                OBJECT_CACHE[which].remove(O);
-                Log.errOut("bumped!",O.getClass().getName());
-                return;
-            }
-        }
-        OBJECT_DESTRUCTIONS[which]++;
-    }
 	public static final Enumeration<Race> 		races(){return c().races.elements();}
     public static final Enumeration<CMCommon> 	commonObjects(){return c().common.elements();}
 	public static final Enumeration<CharClass> 	charClasses(){return c().charClasses.elements();}
@@ -345,20 +368,6 @@ public class CMClass extends ClassLoader
     public static final Race 		getRace(String calledThis){return (Race)getGlobal(c().races,calledThis);}
 
 
-    public static final String getCounterReport()
-    {
-        StringBuffer str=new StringBuffer("");
-        for(int i=0;i<OBJECT_TOTAL;i++)
-            if(OBJECT_CREATIONS[i]>0)
-                str.append(CMStrings.padRight(OBJECT_DESCS[i],12)+": Created: "+OBJECT_CREATIONS[i]+", Destroyed: "+OBJECT_DESTRUCTIONS[i]+", Remaining: "+(OBJECT_CREATIONS[i]-OBJECT_DESTRUCTIONS[i])+"\n\r");
-        return str.toString();
-    }
-
-    public static final long numRemainingObjectCounts(final int type)
-    {
-    	return OBJECT_CREATIONS[type] - OBJECT_DESTRUCTIONS[type];
-    }
-    
     public static final int numPrototypes(final int[] types)
     {
     	int total=0;
@@ -884,12 +893,12 @@ public class CMClass extends ClassLoader
 
     public static final boolean returnMsg(final CMMsg msg)
     {
-        synchronized(CMClass.MSGS_CACHE)
+        if(MSGS_CACHE.size()<MAX_MSGS)
         {
-            if(MSGS_CACHE.size()<10000)
+            synchronized(CMClass.MSGS_CACHE)
             {
-                MSGS_CACHE.add(msg);
-                return true;
+	            MSGS_CACHE.addLast(msg);
+	            return true;
             }
         }
         return false;
@@ -928,21 +937,17 @@ public class CMClass extends ClassLoader
 
     public final static CMMsg MsgFactory()
     {
-        CMMsg msg=null;
-        synchronized(CMClass.MSGS_CACHE)
-        {
-            if(MSGS_CACHE.size()==0)
-            {
-                if(MSGS_CACHE.size()==0)
-                {
-                    msg=(CMMsg)getCommon("DefaultMessage");
-                    MSGS_CACHE.add(msg);
-                }
-            }
-            msg=MSGS_CACHE.get(0);
-            MSGS_CACHE.remove(0);
-        }
-        return msg;
+    	try
+    	{
+    		synchronized(MSGS_CACHE)
+    		{
+	        	return MSGS_CACHE.removeFirst();
+    		}
+    	}
+    	catch(Exception e)
+    	{
+        	return (CMMsg)getCommon("DefaultMessage");
+    	}
     }
 
     public static final CMMsg getMsg(final MOB source, final int newAllCode, final String allMessage)

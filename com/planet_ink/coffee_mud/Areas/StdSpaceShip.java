@@ -146,10 +146,10 @@ public class StdSpaceShip implements Area, SpaceObject, SpaceShip
 	public StdSpaceShip()
 	{
         super();
-        CMClass.bumpCounter(this,CMClass.OBJECT_AREA);
+        //CMClass.bumpCounter(this,CMClass.OBJECT_AREA);
         xtraValues=CMProps.getExtraStatCodesHolder(this);
 	}
-    protected void finalize(){CMClass.unbumpCounter(this,CMClass.OBJECT_AREA);}
+    //protected void finalize(){CMClass.unbumpCounter(this,CMClass.OBJECT_AREA);}//removed for mem & perf
 	public String name()
 	{
 		if(phyStats().newName()!=null) return phyStats().newName();
@@ -258,7 +258,7 @@ public class StdSpaceShip implements Area, SpaceObject, SpaceShip
 		try
 		{
 			StdSpaceShip E=(StdSpaceShip)this.clone();
-            CMClass.bumpCounter(E,CMClass.OBJECT_AREA);
+            //CMClass.bumpCounter(E,CMClass.OBJECT_AREA);//removed for mem & perf
             E.xtraValues=(xtraValues==null)?null:(String[])xtraValues.clone();
 			E.cloneFix(this);
 			return E;

@@ -1900,7 +1900,7 @@ public class ListCmd extends StdCommand
 		case 45: s.wraplessPrintln(listExpertises()); break;
         case 46: s.wraplessPrintln(CMLib.factions().listFactions()); break;
         case 47: s.wraplessPrintln(listMaterials()); break;
-        case 48: s.println("\n\r^xCounter Report:^.^N\n\r"+CMClass.getCounterReport()); break;
+        case 48: s.println("\n\r^xCounter Report: NO LONGER AVAILABLE^.^N\n\r"); break;//+CMClass.getCounterReport()); break;
         case 49: listPolls(mob,commands); break;
         case 50: s.wraplessPrintln(listContent(mob,commands).toString()); break;
 		case 51: s.wraplessPrintln(roomExpires(mob.location().getArea().getProperMap(),mob.location()).toString()); break;

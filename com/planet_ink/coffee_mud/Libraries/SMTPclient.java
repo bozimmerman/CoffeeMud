@@ -481,7 +481,7 @@ public class SMTPclient extends StdLibrary implements SMTPLibrary, SMTPLibrary.S
 	* 
 	* <br><br><b>Usage:</b>  finalize();
 	*/
-	public void finalize() throws Throwable {
+	protected void finalize() throws Throwable {
         this.close();
         super.finalize();
     }

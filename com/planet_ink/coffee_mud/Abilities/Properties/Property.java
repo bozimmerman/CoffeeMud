@@ -135,7 +135,7 @@ public class Property implements Ability
     public void destroy(){amDestroyed=true; affected=null; miscText=null; }
     public boolean amDestroyed(){return amDestroyed;}
 
-    protected void finalize(){ CMClass.unbumpCounter(this,CMClass.OBJECT_ABILITY); }
+    //protected void finalize(){ CMClass.unbumpCounter(this,CMClass.OBJECT_ABILITY); }//removed for mem & perf
 
 	public CMObject newInstance()
 	{
@@ -153,7 +153,7 @@ public class Property implements Ability
     public Property()
     {
         super();
-        CMClass.bumpCounter(this,CMClass.OBJECT_ABILITY);
+        //CMClass.bumpCounter(this,CMClass.OBJECT_ABILITY);//removed for mem & perf
     }
 	public int getSaveStatIndex(){return getStatCodes().length;}
 	private static final String[] CODES={"CLASS","TEXT"};
@@ -195,7 +195,7 @@ public class Property implements Ability
 		try
 		{
 			Property E=(Property)this.clone();
-            CMClass.bumpCounter(E,CMClass.OBJECT_ABILITY);
+            //CMClass.bumpCounter(E,CMClass.OBJECT_ABILITY);//removed for mem & perf
 			E.cloneFix(this);
 			return E;
 

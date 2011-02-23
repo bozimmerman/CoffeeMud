@@ -62,7 +62,7 @@ public class DefaultMessage implements CMMsg
         }
     }
     
-    public void finalize() throws Throwable
+    protected void finalize() throws Throwable
     {
         targetCode=0;
         sourceCode=0;
