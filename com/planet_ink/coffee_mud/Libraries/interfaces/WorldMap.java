@@ -66,7 +66,7 @@ public interface WorldMap extends CMLibrary, Runnable
     public Enumeration<Room> rooms();
     public Enumeration<Room> roomsFilled();
     public Room getRandomRoom();
-    public void renameRooms(Area A, String oldName, Vector allMyDamnRooms);
+    public void renameRooms(Area A, String oldName, List<Room> allMyDamnRooms);
     public void obliterateRoom(Room deadRoom);
     public Room findConnectingRoom(Room room);
     public int getRoomDir(Room from, Room to);
@@ -78,18 +78,18 @@ public interface WorldMap extends CMLibrary, Runnable
 	public Room findWorldRoomLiberally(MOB mob, String cmd, String srchWhatAERIPMVK, int timePct, int maxSeconds);
 	public List<Room> findAreaRoomsLiberally(MOB mob, Area A, String cmd, String srchWhatAERIPMVK, int timePct);
 	public Room findAreaRoomLiberally(MOB mob, Area A, String cmd, String srchWhatAERIPMVK, int timePct);
-    public List<Room> findRooms(Enumeration rooms, MOB mob, String srchStr, boolean displayOnly, int timePct);
-    public Room findFirstRoom(Enumeration rooms, MOB mob, String srchStr, boolean displayOnly, int timePct);
-    public MOB findFirstInhabitant(Enumeration rooms, MOB mob, String srchStr, int timePct);
-    public List<MOB> findInhabitants(Enumeration rooms, MOB mob, String srchStr, int timePct);
-    public List<Item> findRoomItems(Enumeration rooms, MOB mob, String srchStr, boolean anyItems, int timePct);
-    public Item findFirstRoomItem(Enumeration rooms, MOB mob, String srchStr, boolean anyItems, int timePct);
-    public List<Environmental> findShopStock(Enumeration rooms, MOB mob, String srchStr, int timePct);
-    public Environmental findFirstShopStock(Enumeration rooms, MOB mob, String srchStr, int timePct);
-    public List<Environmental> findShopStockers(Enumeration rooms, MOB mob, String srchStr, int timePct);
-    public Environmental findFirstShopStocker(Enumeration rooms, MOB mob, String srchStr, int timePct);
-    public List<Item> findInventory(Enumeration rooms, MOB mob, String srchStr, int timePct);
-    public Item findFirstInventory(Enumeration rooms, MOB mob, String srchStr, int timePct);
+    public List<Room> findRooms(Enumeration<Room> rooms, MOB mob, String srchStr, boolean displayOnly, int timePct);
+    public Room findFirstRoom(Enumeration<Room> rooms, MOB mob, String srchStr, boolean displayOnly, int timePct);
+    public MOB findFirstInhabitant(Enumeration<Room> rooms, MOB mob, String srchStr, int timePct);
+    public List<MOB> findInhabitants(Enumeration<Room> rooms, MOB mob, String srchStr, int timePct);
+    public List<Item> findRoomItems(Enumeration<Room> rooms, MOB mob, String srchStr, boolean anyItems, int timePct);
+    public Item findFirstRoomItem(Enumeration<Room> rooms, MOB mob, String srchStr, boolean anyItems, int timePct);
+    public List<Environmental> findShopStock(Enumeration<Room> rooms, MOB mob, String srchStr, int timePct);
+    public Environmental findFirstShopStock(Enumeration<Room> rooms, MOB mob, String srchStr, int timePct);
+    public List<Environmental> findShopStockers(Enumeration<Room> rooms, MOB mob, String srchStr, int timePct);
+    public Environmental findFirstShopStocker(Enumeration<Room> rooms, MOB mob, String srchStr, int timePct);
+    public List<Item> findInventory(Enumeration<Room> rooms, MOB mob, String srchStr, int timePct);
+    public Item findFirstInventory(Enumeration<Room> rooms, MOB mob, String srchStr, int timePct);
     
     /************************************************************************/
     /**							 ROOM-AREA-UTILITIES    					*/

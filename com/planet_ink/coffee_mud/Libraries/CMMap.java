@@ -417,7 +417,7 @@ public class CMMap extends StdLibrary implements WorldMap
         return null;
     }
     
-    public List<Room> findRooms(Enumeration rooms, MOB mob, String srchStr, boolean displayOnly, int timePct)
+    public List<Room> findRooms(Enumeration<Room> rooms, MOB mob, String srchStr, boolean displayOnly, int timePct)
     { 
     	Vector<Room> roomsV=new Vector<Room>();
 		if((srchStr.charAt(0)=='#')&&(mob!=null)&&(mob.location()!=null))
@@ -428,7 +428,7 @@ public class CMMap extends StdLibrary implements WorldMap
 		return roomsV;
     }
     
-    public Room findFirstRoom(Enumeration rooms, MOB mob, String srchStr, boolean displayOnly, int timePct)
+    public Room findFirstRoom(Enumeration<Room> rooms, MOB mob, String srchStr, boolean displayOnly, int timePct)
     { 
     	Vector roomsV=new Vector();
 		if((srchStr.charAt(0)=='#')&&(mob!=null)&&(mob.location()!=null))
@@ -441,9 +441,9 @@ public class CMMap extends StdLibrary implements WorldMap
     	return null;
     }
     
-    public Vector<Room> findRooms(Enumeration rooms, MOB mob, String srchStr, boolean displayOnly, boolean returnFirst, int timePct)
+    public List<Room> findRooms(Enumeration<Room> rooms, MOB mob, String srchStr, boolean displayOnly, boolean returnFirst, int timePct)
     {
-    	Vector<Room> foundRooms=new Vector<Room>();
+    	List<Room> foundRooms=new Vector<Room>();
     	Vector completeRooms=new Vector();
 		try { completeRooms=new XVector(rooms); }catch(NoSuchElementException nse){}
 		long delay=Math.round(CMath.s_pct(timePct+"%") * 1000);
@@ -469,7 +469,7 @@ public class CMMap extends StdLibrary implements WorldMap
     	return foundRooms;
     }
     
-    protected void findRoomsByDisplay(MOB mob, Enumeration rooms, Vector foundRooms, String srchStr, boolean returnFirst, long maxTime)
+    protected void findRoomsByDisplay(MOB mob, Enumeration<Room> rooms, List<Room> foundRooms, String srchStr, boolean returnFirst, long maxTime)
     {
     	long startTime=System.currentTimeMillis();
 		try
@@ -481,14 +481,14 @@ public class CMMap extends StdLibrary implements WorldMap
 				Room room=(Room)rooms.nextElement();
 				if((CMLib.english().containsString(CMStrings.removeColors(room.displayText()),srchStr))
 				&&((mob==null)||CMLib.flags().canAccess(mob,room)))
-					foundRooms.addElement(room);
+					foundRooms.add(room);
 				if((useTimer)&&((System.currentTimeMillis()-startTime)>maxTime))
 					return;
 			}
 	    }catch(NoSuchElementException nse){}
     }
 
-    protected void findRoomsByDesc(MOB mob, Enumeration rooms, Vector foundRooms, String srchStr, boolean returnFirst, long maxTime)
+    protected void findRoomsByDesc(MOB mob, Enumeration<Room> rooms, List<Room> foundRooms, String srchStr, boolean returnFirst, long maxTime)
     {
     	long startTime=System.currentTimeMillis();
 		try
@@ -500,22 +500,22 @@ public class CMMap extends StdLibrary implements WorldMap
 				Room room=(Room)rooms.nextElement();
 				if((CMLib.english().containsString(CMStrings.removeColors(room.description()),srchStr))
 				&&((mob==null)||CMLib.flags().canAccess(mob,room)))
-					foundRooms.addElement(room);
+					foundRooms.add(room);
 				if((useTimer)&&((System.currentTimeMillis()-startTime)>maxTime))
 					return;
 			}
 	    }catch(NoSuchElementException nse){}
     }
 
-    public List<MOB> findInhabitants(Enumeration rooms, MOB mob, String srchStr, int timePct)
+    public List<MOB> findInhabitants(Enumeration<Room> rooms, MOB mob, String srchStr, int timePct)
     { return findInhabitants(rooms,mob,srchStr,false,timePct);}
-    public MOB findFirstInhabitant(Enumeration rooms, MOB mob, String srchStr, int timePct)
+    public MOB findFirstInhabitant(Enumeration<Room> rooms, MOB mob, String srchStr, int timePct)
     { 
-    	Vector found=findInhabitants(rooms,mob,srchStr,true,timePct);
-    	if(found.size()>0) return (MOB)found.firstElement();
+    	List<MOB> found=findInhabitants(rooms,mob,srchStr,true,timePct);
+    	if(found.size()>0) return (MOB)found.get(0);
     	return null;
     }
-    public Vector<MOB> findInhabitants(Enumeration rooms, MOB mob, String srchStr, boolean returnFirst, int timePct)
+    public List<MOB> findInhabitants(Enumeration<Room> rooms, MOB mob, String srchStr, boolean returnFirst, int timePct)
     {
     	Vector<MOB> found=new Vector<MOB>();
 		long delay=Math.round(CMath.s_pct(timePct+"%") * 1000);
@@ -540,13 +540,13 @@ public class CMMap extends StdLibrary implements WorldMap
     { return findInventory(rooms,mob,srchStr,false,timePct);}
     public Item findFirstInventory(Enumeration rooms, MOB mob, String srchStr, int timePct)
     { 
-    	Vector found=findInventory(rooms,mob,srchStr,true,timePct);
-    	if(found.size()>0) return (Item)found.firstElement();
+    	List<Item> found=findInventory(rooms,mob,srchStr,true,timePct);
+    	if(found.size()>0) return (Item)found.get(0);
     	return null;
     }
-    public Vector<Item> findInventory(Enumeration rooms, MOB mob, String srchStr, boolean returnFirst, int timePct)
+    public List<Item> findInventory(Enumeration rooms, MOB mob, String srchStr, boolean returnFirst, int timePct)
     {
-    	Vector<Item> found=new Vector<Item>();
+    	List<Item> found=new Vector<Item>();
 		long delay=Math.round(CMath.s_pct(timePct+"%") * 1000);
 		if(delay>1000) delay=1000;
 		boolean useTimer = delay>1;
@@ -585,19 +585,19 @@ public class CMMap extends StdLibrary implements WorldMap
     { return findShopStock(rooms,mob,srchStr,false,false,timePct);}
     public Environmental findFirstShopStock(Enumeration rooms, MOB mob, String srchStr, int timePct)
     { 
-    	Vector found=findShopStock(rooms,mob,srchStr,true,false,timePct);
-    	if(found.size()>0) return (Environmental)found.firstElement();
+    	List<Environmental> found=findShopStock(rooms,mob,srchStr,true,false,timePct);
+    	if(found.size()>0) return (Environmental)found.get(0);
     	return null;
     }
     public List<Environmental> findShopStockers(Enumeration rooms, MOB mob, String srchStr, int timePct)
     { return findShopStock(rooms,mob,srchStr,false,true,timePct);}
     public Environmental findFirstShopStocker(Enumeration rooms, MOB mob, String srchStr, int timePct)
     { 
-    	Vector<Environmental> found=findShopStock(rooms,mob,srchStr,true,true,timePct);
-    	if(found.size()>0) return (Environmental)found.firstElement();
+    	List<Environmental> found=findShopStock(rooms,mob,srchStr,true,true,timePct);
+    	if(found.size()>0) return (Environmental)found.get(0);
     	return null;
     }
-    public Vector<Environmental> findShopStock(Enumeration rooms, MOB mob, String srchStr, boolean returnFirst, boolean returnStockers, int timePct)
+    public List<Environmental> findShopStock(Enumeration rooms, MOB mob, String srchStr, boolean returnFirst, boolean returnStockers, int timePct)
     {
     	XVector<Environmental> found=new XVector<Environmental>();
 		long delay=Math.round(CMath.s_pct(timePct+"%") * 1000);
@@ -749,13 +749,13 @@ public class CMMap extends StdLibrary implements WorldMap
     
     public List<Item> findRoomItems(Enumeration rooms, MOB mob, String srchStr, boolean anyItems, int timePct)
     { return findRoomItems(rooms,mob,srchStr,anyItems,false,timePct);}
-    public Item findFirstRoomItem(Enumeration rooms, MOB mob, String srchStr, boolean anyItems, int timePct)
+    public Item findFirstRoomItem(Enumeration<Room> rooms, MOB mob, String srchStr, boolean anyItems, int timePct)
     { 
-    	Vector<Item> found=findRoomItems(rooms,mob,srchStr,anyItems,true,timePct);
-    	if(found.size()>0) return (Item)found.firstElement();
+    	List<Item> found=findRoomItems(rooms,mob,srchStr,anyItems,true,timePct);
+    	if(found.size()>0) return (Item)found.get(0);
     	return null;
     }
-    public Vector<Item> findRoomItems(Enumeration rooms, MOB mob, String srchStr, boolean anyItems, boolean returnFirst, int timePct)
+    public List<Item> findRoomItems(Enumeration<Room> rooms, MOB mob, String srchStr, boolean anyItems, boolean returnFirst, int timePct)
     {
     	Vector<Item> found=new Vector<Item>();
 		long delay=Math.round(CMath.s_pct(timePct+"%") * 1000);
@@ -959,12 +959,11 @@ public class CMMap extends StdLibrary implements WorldMap
 		return H.iterator();
 	}
 
-	public void renameRooms(Area A, String oldName, Vector allMyDamnRooms)
+	public void renameRooms(Area A, String oldName, List<Room> allMyDamnRooms)
 	{
-		Vector onesToRenumber=new Vector();
-		for(int r=0;r<allMyDamnRooms.size();r++)
+		List<Room> onesToRenumber=new Vector();
+		for(Room R : allMyDamnRooms)
 		{
-			Room R=(Room)allMyDamnRooms.elementAt(r);
 			synchronized(("SYNC"+R.roomID()).intern())
 			{
 				R=getRoom(R);
@@ -981,7 +980,7 @@ public class CMMap extends StdLibrary implements WorldMap
 							CMLib.database().DBReCreate(R,oldID);
 						}
 						else
-							onesToRenumber.addElement(R);
+							onesToRenumber.add(R);
 					}
 					else
 						CMLib.database().DBUpdateRoom(R);
@@ -990,9 +989,8 @@ public class CMMap extends StdLibrary implements WorldMap
 		}
 		if(oldName!=null)
 		{
-			for(int r=0;r<onesToRenumber.size();r++)
+			for(final Room R: onesToRenumber)
 			{
-				Room R=(Room)onesToRenumber.elementAt(r);
 				String oldID=R.roomID();
 				R.setRoomID(A.getNewRoomID(R,-1));
 				CMLib.database().DBReCreate(R,oldID);
@@ -1264,16 +1262,16 @@ public class CMMap extends StdLibrary implements WorldMap
 	public void emptyRoom(Room room, Room bringBackHere)
 	{
 		if(room==null) return;
-		Vector inhabs=new Vector();
+		List<MOB> inhabs=new Vector();
 		MOB M=null;
 		for(int m=0;m<room.numInhabitants();m++)
 		{
 		    M=room.fetchInhabitant(m);
-		    if(M!=null) inhabs.addElement(M);
+		    if(M!=null) inhabs.add(M);
 		}
 		for(int m=0;m<inhabs.size();m++)
 		{
-			M=(MOB)inhabs.elementAt(m);
+			M=(MOB)inhabs.get(m);
 			if(bringBackHere!=null)
 				bringBackHere.bringMobHere(M,false);
 			else
@@ -1375,8 +1373,8 @@ public class CMMap extends StdLibrary implements WorldMap
 
 	public Room findWorldRoomLiberally(MOB mob, String cmd, String srchWhatAERIPMVK, int timePct, int maxSeconds)
 	{
-		Vector rooms=findWorldRoomsLiberally(mob,cmd,srchWhatAERIPMVK,null,true,timePct, maxSeconds);
-		if((rooms!=null)&&(rooms.size()!=0)) return (Room)rooms.firstElement();
+		List<Room> rooms=findWorldRoomsLiberally(mob,cmd,srchWhatAERIPMVK,null,true,timePct, maxSeconds);
+		if((rooms!=null)&&(rooms.size()!=0)) return (Room)rooms.get(0);
 		return null;
 	}
 	
@@ -1385,21 +1383,21 @@ public class CMMap extends StdLibrary implements WorldMap
 	
 	public Room findAreaRoomLiberally(MOB mob, Area A,String cmd, String srchWhatAERIPMVK, int timePct)
 	{
-		Vector rooms=findWorldRoomsLiberally(mob,cmd,srchWhatAERIPMVK,A,true,timePct,120);
-		if((rooms!=null)&&(rooms.size()!=0)) return (Room)rooms.firstElement();
+		List<Room> rooms=findWorldRoomsLiberally(mob,cmd,srchWhatAERIPMVK,A,true,timePct,120);
+		if((rooms!=null)&&(rooms.size()!=0)) return (Room)rooms.get(0);
 		return null;
 	}
 	
 	public List<Room> findAreaRoomsLiberally(MOB mob, Area A,String cmd, String srchWhatAERIPMVK, int timePct)
 	{ return findWorldRoomsLiberally(mob,cmd,srchWhatAERIPMVK,A,false,timePct,120); }
 	
-	protected Room addWorldRoomsLiberally(Vector rooms, Vector choicesV)
+	protected Room addWorldRoomsLiberally(List rooms, List<? extends Environmental> choicesV)
 	{
 		if(choicesV==null) return null;
 		if(rooms!=null)
 		{
-			for(Enumeration choices=choicesV.elements();choices.hasMoreElements();)
-				addWorldRoomsLiberally(rooms,roomLocation((Environmental)choices.nextElement()));
+			for(Environmental E : choicesV)
+				addWorldRoomsLiberally(rooms,roomLocation(E));
 			return null;
 		}
 		else
@@ -1407,18 +1405,18 @@ public class CMMap extends StdLibrary implements WorldMap
 			Room room=null;
 			int tries=0;
             while(((room==null)||(room.roomID().length()==0))&&((++tries)<200))
-                room=roomLocation((Environmental)choicesV.elementAt(CMLib.dice().roll(1,choicesV.size(),-1)));
+                room=roomLocation((Environmental)choicesV.get(CMLib.dice().roll(1,choicesV.size(),-1)));
             return room;
 		}
 	}
 	
-	protected Room addWorldRoomsLiberally(Vector rooms, Room room)
+	protected Room addWorldRoomsLiberally(List rooms, Room room)
 	{
 		if(room==null) return null;
 		if(rooms!=null)
 		{ 
 			if(!rooms.contains(room))
-				rooms.addElement(room);
+				rooms.add(room);
 			return null;
 		}
 		return room;
@@ -1445,13 +1443,13 @@ public class CMMap extends StdLibrary implements WorldMap
 		return ((System.currentTimeMillis() - startTime) / 1000) > maxSeconds;
 	}
 	
-	protected Vector<Room> findWorldRoomsLiberally(MOB mob, 
-												   String cmd, 
-												   String srchWhatAERIPMVK, 
-												   Area A, 
-												   boolean returnFirst, 
-												   int timePct, 
-												   int maxSeconds)
+	protected List<Room> findWorldRoomsLiberally(MOB mob, 
+												 String cmd, 
+												 String srchWhatAERIPMVK, 
+												 Area A, 
+												 boolean returnFirst, 
+												 int timePct, 
+												 int maxSeconds)
 	{
 		Room room=null;
 		// wish this stuff could be cached, even temporarily, however,
@@ -1525,7 +1523,7 @@ public class CMMap extends StdLibrary implements WorldMap
 				// no good, so look for room inhabitants
 				if(searchInhabs && room==null)
 				{
-					Vector candidates=findInhabitants(rightLiberalMap(A), mob, srchStr,returnFirst, timePct);
+					List candidates=findInhabitants(rightLiberalMap(A), mob, srchStr,returnFirst, timePct);
 					if(candidates.size()>0)
                 		room=addWorldRoomsLiberally(rooms,candidates);
 				}
@@ -1534,7 +1532,7 @@ public class CMMap extends StdLibrary implements WorldMap
 				// now check room text
 				if(searchRooms && room==null)
 				{
-					Vector candidates=findRooms(rightLiberalMap(A), mob, srchStr, false,returnFirst, timePct);
+					List<Room> candidates=findRooms(rightLiberalMap(A), mob, srchStr, false,returnFirst, timePct);
 					if(candidates.size()>0)
                 		room=addWorldRoomsLiberally(rooms,candidates);
 				}
@@ -1543,7 +1541,7 @@ public class CMMap extends StdLibrary implements WorldMap
 				// check floor items
 				if(searchItems && room==null)
 				{
-					Vector candidates=findRoomItems(rightLiberalMap(A), mob, srchStr, false,returnFirst,timePct);
+					List<Item> candidates=findRoomItems(rightLiberalMap(A), mob, srchStr, false,returnFirst,timePct);
 					if(candidates.size()>0)
                 		room=addWorldRoomsLiberally(rooms,candidates);
 				}
@@ -1552,7 +1550,7 @@ public class CMMap extends StdLibrary implements WorldMap
 				// check inventories
 				if(searchInventories && room==null)
 				{
-					Vector candidates=findInventory(rightLiberalMap(A), mob, srchStr, returnFirst,timePct);
+					List<Item> candidates=findInventory(rightLiberalMap(A), mob, srchStr, returnFirst,timePct);
 					if(candidates.size()>0)
                 		room=addWorldRoomsLiberally(rooms,candidates);
 				}
@@ -1561,7 +1559,7 @@ public class CMMap extends StdLibrary implements WorldMap
 				// check stocks
 				if(searchStocks && room==null)
 				{
-					Vector candidates=findShopStock(rightLiberalMap(A), mob, srchStr, returnFirst,false,timePct);
+					List<Environmental> candidates=findShopStock(rightLiberalMap(A), mob, srchStr, returnFirst,false,timePct);
 					if(candidates.size()>0)
                 		room=addWorldRoomsLiberally(rooms,candidates);
 				}
@@ -1577,7 +1575,7 @@ public class CMMap extends StdLibrary implements WorldMap
                 }
 			}
 		}
-		final Vector<Room> responseSet = returnResponse(rooms,room);
+		final List<Room> responseSet = returnResponse(rooms,room);
 		return responseSet;
 	}
 
