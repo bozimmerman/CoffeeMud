@@ -34,22 +34,27 @@ public class MultiEnumeration<K> implements Enumeration<K>
         else
         for(Enumeration<K> E : esets)
         	if(E!=null) enums.add(E);
-    	if((enumer==null)&&(dex<enums.size()))
-    		enumer=enums.get(dex);
+		setup();
     }
     
 	public MultiEnumeration(Enumeration<K> eset) 
     {
     	enums.add(eset);
-    	if((enumer==null)&&(dex<enums.size()))
-    		enumer=enums.get(dex);
+		setup();
     }
     
 	public void addEnumeration(Enumeration<K> set)
 	{
 		if(set != null)
 			enums.add(set);
+		setup();
+	}
+	
+	private void setup()
+	{
     	if((enumer==null)&&(dex<enums.size()))
+    		enumer=enums.get(dex);
+    	while((enumer!=null)&&(!enumer.hasMoreElements())&&(++dex<enums.size()))
     		enumer=enums.get(dex);
 	}
 	

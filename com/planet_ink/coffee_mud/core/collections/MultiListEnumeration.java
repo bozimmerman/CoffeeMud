@@ -31,30 +31,30 @@ public class MultiListEnumeration<K> implements Enumeration<K>
     {
         if((esets!=null)&&(esets.length>0))
         	lists.addAll(Arrays.asList(esets));
-		listIter=lists.iterator();
-		if(listIter.hasNext())
-    		iter=listIter.next().iterator();
+		setup();
     }
     
 	public MultiListEnumeration(List<K> eset) 
     {
 		lists.add(eset);
-		listIter=lists.iterator();
-		if(listIter.hasNext())
-    		iter=listIter.next().iterator();
-    	
+		setup();
     }
     
-	public void addEnumeration(List<K> set)
+	private void setup()
 	{
-		if(set != null)
-			lists.add(set);
 		listIter=lists.iterator();
     	if(iter == null)
     	{
     		if(listIter.hasNext())
 	    		iter=listIter.next().iterator();
     	}
+	}
+	
+	public void addEnumeration(List<K> set)
+	{
+		if(set != null)
+			lists.add(set);
+		setup();
 	}
 	
     public boolean hasMoreElements() 
