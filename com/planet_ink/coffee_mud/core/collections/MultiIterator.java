@@ -1,4 +1,5 @@
 package com.planet_ink.coffee_mud.core.collections;
+import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.NoSuchElementException;
@@ -21,7 +22,8 @@ limitations under the License.
 public class MultiIterator<K> implements Iterator<K>
 {
 	private final Vector<Iterator<K>> iters=new Vector<Iterator<K>>();
-    int dex=0;
+    private volatile int dex=0;
+	private volatile Iterator<K> iter=null;
     
 	public MultiIterator(Iterator<K>[] esets) 
     {
@@ -29,7 +31,6 @@ public class MultiIterator<K> implements Iterator<K>
         	return;
         for(Iterator<K> I : esets)
         	iters.add(I);
-        hasNext();
     }
 
 	public MultiIterator()
@@ -40,16 +41,20 @@ public class MultiIterator<K> implements Iterator<K>
 	public void add(Iterator<K> eset)
 	{
 		iters.add(eset);
-		dex=0;
 	}
 	
     public boolean hasNext() 
     { 
-    	while((dex<iters.size())&&(!iters.get(dex).hasNext()))
-    		dex++;
-    	if(dex>=iters.size())
-    		return false;
-    	return true;
+    	if(iter==null)
+    	{
+    		if(dex>=iters.size())
+    			return false;
+    		iter=iters.get(dex);
+    	}
+    	if(iter.hasNext()) return true;
+    	while((!iter.hasNext())&&(dex<iters.size()))
+    		iter=iters.get(++dex);
+    	return iter.hasNext();
     }
     
     public K next() 
