@@ -85,7 +85,7 @@ public class DefaultCharState implements CharState
 	}
 	public long getFatigue(){return Fatigue;}
 	public void setFatigue(long newVal){Fatigue=newVal;}
-	public boolean adjFatigue(long byThisMuch, CharState max)
+	public boolean adjFatigue(final long byThisMuch, final CharState max)
 	{
 		Fatigue+=byThisMuch;
 		if(Fatigue<1)
@@ -274,7 +274,7 @@ public class DefaultCharState implements CharState
 		}
 	}
 
-	public void expendEnergy(MOB mob, CharState maxState, boolean expendMovement)
+	public void expendEnergy(final MOB mob, final CharState maxState, final boolean expendMovement)
 	{
 		final Room room=mob.location();
 		if(room!=null)

@@ -278,7 +278,8 @@ public interface MOB extends Rider, DBIdentifiable, PhysicalAgent, ItemPossessor
     public static final int ATT_AUTORUN=4194304;
 	// maybe 10 more?
 
-	public static final long SHEATH_TIME=3*CMProps.getTickMillis();
+	public static final long START_SHEATH_TIME=3*CMProps.getTickMillis();
+	public static final long END_SHEATH_TIME=6*CMProps.getTickMillis();
 
 	public static final boolean[] AUTOREV={false,
 										   false,

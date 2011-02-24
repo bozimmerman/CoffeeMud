@@ -2587,7 +2587,8 @@ public class StdMOB implements MOB
 				{
 					peaceTime+=CMProps.getTickMillis();
 					if(CMath.bset(getBitmap(),MOB.ATT_AUTODRAW)
-					&&(peaceTime>=SHEATH_TIME)
+					&&(peaceTime>=START_SHEATH_TIME)
+					&&(peaceTime<END_SHEATH_TIME)
 					&&(CMLib.flags().aliveAwakeMobileUnbound(this,true)))
 						CMLib.commands().postSheath(this,true);
 				}

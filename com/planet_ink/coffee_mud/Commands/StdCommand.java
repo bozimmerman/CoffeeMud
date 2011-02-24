@@ -64,7 +64,12 @@ public class StdCommand implements Command
 
 	public Object executeInternal(MOB mob, int metaFlags, Object... args) throws java.io.IOException
 	{
-		return null;
+		// fake it!
+		Vector commands = new Vector();
+		commands.add(getAccessWords()[0]);
+		for(Object o : args)
+			commands.add(o.toString());
+		return Boolean.valueOf(execute(mob,commands,metaFlags));
 	}
 	
     public double actionsCost(final MOB mob, final List<String> cmds)
