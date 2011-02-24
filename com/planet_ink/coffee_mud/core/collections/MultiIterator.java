@@ -31,6 +31,8 @@ public class MultiIterator<K> implements Iterator<K>
         	return;
         for(Iterator<K> I : esets)
         	iters.add(I);
+    	if((iter==null)&&(dex<iters.size()))
+    		iter=iters.get(dex);
     }
 
 	public MultiIterator()
@@ -41,19 +43,15 @@ public class MultiIterator<K> implements Iterator<K>
 	public void add(Iterator<K> eset)
 	{
 		iters.add(eset);
+    	if((iter==null)&&(dex<iters.size()))
+    		iter=iters.get(dex);
 	}
 	
     public boolean hasNext() 
     { 
-    	if(iter==null)
-    	{
-    		if(dex>=iters.size())
-    			return false;
-    		iter=iters.get(dex);
-    	}
     	if(iter.hasNext()) return true;
-    	while((!iter.hasNext())&&(dex<iters.size()))
-    		iter=iters.get(++dex);
+    	while((!iter.hasNext())&&(++dex<iters.size()))
+    		iter=iters.get(dex);
     	return iter.hasNext();
     }
     
