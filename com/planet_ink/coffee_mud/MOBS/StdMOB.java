@@ -3031,11 +3031,11 @@ public class StdMOB implements MOB
 	public Enumeration<Ability> abilities()
 	{
 		final Clan C=getMyClan();
-		final MultiEnumeration multi =
-			new MultiEnumeration(
-					new Enumeration[] {abilitys.elements(),new IteratorEnumeration(charStats().getMyRace().racialAbilities(this).iterator())});
+		final MultiListEnumeration multi =
+			new MultiListEnumeration(
+					new List[] {abilitys,charStats().getMyRace().racialAbilities(this)});
 		if(C!=null)
-			multi.addEnumeration(new IteratorEnumeration(C.clanAbilities(this).iterator()));
+			multi.addEnumeration(C.clanAbilities(this));
 		return multi;
 	}
 	
@@ -3187,11 +3187,11 @@ public class StdMOB implements MOB
 	public Enumeration<Ability> effects()
 	{
 		final Clan C=getMyClan();
-		final MultiEnumeration multi =
-			new MultiEnumeration(
-					new Enumeration[] {affects.elements(),new IteratorEnumeration(racialEffects().iterator())});
+		final MultiListEnumeration multi =
+			new MultiListEnumeration(
+					new List[] {affects,racialEffects()});
 		if(C!=null)
-			multi.addEnumeration(new IteratorEnumeration(clanEffects().iterator()));
+			multi.addEnumeration(clanEffects());
 		return multi;
 	}
 	

@@ -1,4 +1,5 @@
 package com.planet_ink.coffee_mud.core.collections;
+import java.util.Arrays;
 import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -20,51 +21,56 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
-public class MultiEnumeration<K> implements Enumeration<K>
+public class MultiListEnumeration<K> implements Enumeration<K>
 {
-	private final List<Enumeration<K>> enums=new Vector<Enumeration<K>>(3);
-	private volatile int dex=0;
-	private volatile Enumeration<K> enumer=null;
-	
-	@SuppressWarnings("unchecked")
-	public MultiEnumeration(Enumeration<K>[] esets) 
+	private final LinkedList<List<K>> lists=new LinkedList<List<K>>();
+	private volatile Iterator<List<K>> listIter = null; 
+	private volatile Iterator<K> iter = null; 
+    
+	public MultiListEnumeration(List<K>... esets) 
     {
-        if((esets==null)||(esets.length==0))
-        	enums.add((Enumeration<K>)EmptyEnumeration.INSTANCE);
-        else
-        for(Enumeration<K> E : esets)
-        	if(E!=null) enums.add(E);
+        if((esets!=null)&&(esets.length>0))
+        	lists.addAll(Arrays.asList(esets));
     }
     
-	public MultiEnumeration(Enumeration<K> eset) 
+	public MultiListEnumeration(List<K> eset) 
     {
-    	enums.add(eset);
+		lists.add(eset);
     }
     
-	public void addEnumeration(Enumeration<K> set)
+	public void addEnumeration(List<K> set)
 	{
 		if(set != null)
-			enums.add(set);
+		{
+			lists.add(set);
+			listIter=null;
+			iter=null;
+		}
+		
 	}
 	
     public boolean hasMoreElements() 
     { 
-    	if(enumer==null)
+    	if(listIter == null)
+    		listIter=lists.iterator();
+    	if(iter == null)
     	{
-    		if(dex>=enums.size())
+    		if(listIter.hasNext())
+	    		iter=listIter.next().iterator();
+    		else
     			return false;
-    		enumer=enums.get(dex);
     	}
-    	if(enumer.hasMoreElements()) return true;
-    	while((!enumer.hasMoreElements())&&(dex<enums.size()))
-    		enumer=enums.get(++dex);
-    	return enumer.hasMoreElements();
+    	
+    	if(iter.hasNext()) return true;
+    	while((!iter.hasNext())&&(listIter.hasNext()))
+    		iter = listIter.next().iterator();
+    	return iter.hasNext();
     }
     
     public K nextElement() 
     {
     	if(!hasMoreElements())
     		throw new NoSuchElementException();
-    	return enumer.nextElement();
+    	return iter.next();
     }
 }
