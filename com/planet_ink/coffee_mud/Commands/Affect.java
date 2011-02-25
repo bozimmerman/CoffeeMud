@@ -15,6 +15,7 @@ import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 /*
    Copyright 2000-2011 Bo Zimmerman
@@ -34,14 +35,83 @@ import java.util.*;
 @SuppressWarnings("unchecked")
 public class Affect extends StdCommand
 {
-	private final String[] access={"AFFECT","AFF","AF"};
+	private final String[] access={"AFFECTS","AFFECT","AFF","AF"};
 	public String[] getAccessWords(){return access;}
 
+	public String getMOBState(final Session S, final MOB mob)
+	{
+		final StringBuffer msg=new StringBuffer("");
+	    if((mob.playerStats()!=null)&&(mob.soulMate()==null)&&(mob.playerStats().getHygiene()>=PlayerStats.HYGIENE_DELIMIT))
+	    {
+	    	if(CMSecurity.isASysOp(mob)) 
+	    		mob.playerStats().setHygiene(0);
+	    	else
+	    	{
+		        int x=(int)(mob.playerStats().getHygiene()/PlayerStats.HYGIENE_DELIMIT);
+		        if(x<=1) msg.append("^!You could use a bath.^?\n\r"); 
+		        else
+		        if(x<=3) msg.append("^!You could really use a bath.^?\n\r"); 
+		        else
+		        if(x<=7) msg.append("^!You need to bathe, soon.^?\n\r");
+		        else
+		        if(x<15) msg.append("^!You desperately need to bathe.^?\n\r");
+		        else msg.append("^!Your stench is horrendous! Bathe dammit!.^?\n\r");
+	    	}
+	    }
+
+		if(CMLib.flags().isBound(mob))
+			msg.append("^!You are bound.^?\n\r");
+
+		// dont do falling -- the flag doubles for drowning/treading water anyway.
+		//if(CMLib.flags().isFalling(mob))
+		//	msg.append("^!You are falling!!!^?\n\r");
+		//else
+		if(CMLib.flags().isSleeping(mob))
+			msg.append("^!You are sleeping.^?\n\r");
+		else
+		if(CMLib.flags().isSitting(mob))
+			msg.append("^!You are resting.^?\n\r");
+		else
+		if(CMLib.flags().isSwimmingInWater(mob))
+			msg.append("^!You are swimming.^?\n\r");
+		else
+		if(CMLib.flags().isClimbing(mob))
+			msg.append("^!You are climbing.^?\n\r");
+		else
+		if(CMLib.flags().isFlying(mob))
+			msg.append("^!You are flying.^?\n\r");
+		else
+			msg.append("^!You are standing.^?\n\r");
+
+		if(mob.riding()!=null)
+			msg.append("^!You are "+mob.riding().stateString(mob)+" "+mob.riding().name()+".^?\n\r");
+		
+		if(CMath.bset(mob.getBitmap(),MOB.ATT_PLAYERKILL))
+			msg.append("^!Your playerkill flag is on.^?\n\r");
+
+		if(CMLib.flags().isInvisible(mob))
+			msg.append("^!You are invisible.^?\n\r");
+		if(CMLib.flags().isHidden(mob))
+			msg.append("^!You are hidden.^?\n\r");// ("+CMLib.flags().getHideScore(mob)+").^?\n\r");
+		if(CMLib.flags().isSneaking(mob))
+			msg.append("^!You are sneaking.^?\n\r");
+		if(CMath.bset(mob.getBitmap(),MOB.ATT_QUIET))
+			msg.append("^!You are in QUIET mode.^?\n\r");
+		
+		if(mob.curState().getFatigue()>CharState.FATIGUED_MILLIS)
+			msg.append("^!You are fatigued.^?\n\r");
+		if(mob.curState().getHunger()<1)
+			msg.append("^!You are hungry.^?\n\r");
+		if(mob.curState().getThirst()<1)
+			msg.append("^!You are thirsty.^?\n\r");
+		return msg.toString();
+	}
+	
 	public String getAffects(Session S, Physical P, boolean xtra)
 	{
-		StringBuffer msg=new StringBuffer("");
-        int NUM_COLS=xtra?1:2;
-        int COL_LEN=xtra?38:25;
+		final StringBuffer msg=new StringBuffer("");
+        final int NUM_COLS=2;
+        final int COL_LEN=36;
 		int colnum=NUM_COLS;
         MOB mob=(S!=null)?S.mob():null;
 		for(final Enumeration<Ability> a=P.effects();a.hasMoreElements();)
@@ -50,19 +120,14 @@ public class Affect extends StdCommand
 			String disp=A.displayText();
 			if((A!=null)&&(disp.length()>0))
 			{
+                long tr=A.expirationDate();
+                if(A.invoker()!=null) tr=tr-(System.currentTimeMillis()-A.invoker().lastTickedDateTime());
+                if(tr<(Integer.MAX_VALUE/2))
+                	disp+=" ^.^N"+CMLib.time().date2ShortEllapsedTime(tr, TimeUnit.SECONDS);
                 if(xtra)
-                {
-                    disp+="^N: TR=";
-                    long tr=A.expirationDate() / CMProps.getTickMillis();
-                    if(tr>=(Integer.MAX_VALUE/2))
-                        disp+="~";
-                    else
-                        disp+=tr;
-                    
                     disp+=", BY="+((A.invoker()==null)?"N/A":A.invoker().Name());
-                }
                 String[] disps={disp};
-                if(disp.length()>(COL_LEN*NUM_COLS))
+                if(CMStrings.lengthMinusColors(disp)>(COL_LEN*NUM_COLS))
                 {
                     String s=CMLib.coffeeFilter().fullOutFilter(S,mob,null,null,null,disp,true);
                     s=CMStrings.replaceAll(s,"\r","");
@@ -72,11 +137,16 @@ public class Affect extends StdCommand
                         disps[d]=(String)V.elementAt(d);
                     colnum=NUM_COLS;
                 }
-                for(int d=0;d<disps.length;d++) {
+                for(int d=0;d<disps.length;d++) 
+                {
                     disp=disps[d];
-    				if(((++colnum)>NUM_COLS)||(disp.length()>COL_LEN)){ msg.append("\n\r"); colnum=0;}
+    				if(((++colnum)>=NUM_COLS)||(CMStrings.lengthMinusColors(disp)>COL_LEN))
+    				{ 
+    					msg.append("\n\r"); 
+    					colnum=0;
+    				}
     			    msg.append("^S"+CMStrings.padRightPreserve("^<HELPNAME NAME='"+A.Name()+"'^>"+disp+"^</HELPNAME^>",COL_LEN));
-    				if(disp.length()>COL_LEN) colnum=99;
+    				if(CMStrings.lengthMinusColors(disp)>COL_LEN) colnum=99;
                 }
 			}
 		}
@@ -144,7 +214,9 @@ public class Affect extends StdCommand
 		        
 		    }
 			if(S==mob.session())
-				S.colorOnlyPrint(" \n\r^!You are affected by: ^?");
+                S.colorOnlyPrintln("\n\r"+getMOBState(S, mob)+"\n\r");
+			if(S==mob.session())
+				S.colorOnlyPrint("^!You are affected by: ^?");
             String msg=getAffects(S,mob,CMath.bset(mob.getBitmap(),MOB.ATT_SYSOPMSGS));
             if(msg.length()<5)
                 S.colorOnlyPrintln("Nothing!\n\r^N");

@@ -197,69 +197,8 @@ public class Score extends Affect
 		//if(CMLib.flags().canSeeHidden(mob))
 		//	msg.append("Your ^<HELP^>observation score^</HELP^> : ^H"+CMLib.flags().getDetectScore(mob)+"^?.\n\r");
 		msg.append("Wimpy is set to ^!"+mob.getWimpHitPoint()+"^? hit points.\n\r");
-	    if((mob.playerStats()!=null)&&(mob.soulMate()==null)&&(mob.playerStats().getHygiene()>=PlayerStats.HYGIENE_DELIMIT))
-	    {
-	    	if(CMSecurity.isASysOp(mob)) 
-	    		mob.playerStats().setHygiene(0);
-	    	else
-	    	{
-		        int x=(int)(mob.playerStats().getHygiene()/PlayerStats.HYGIENE_DELIMIT);
-		        if(x<=1) msg.append("^!You could use a bath.^?\n\r"); 
-		        else
-		        if(x<=3) msg.append("^!You could really use a bath.^?\n\r"); 
-		        else
-		        if(x<=7) msg.append("^!You need to bathe, soon.^?\n\r");
-		        else
-		        if(x<15) msg.append("^!You desperately need to bathe.^?\n\r");
-		        else msg.append("^!Your stench is horrendous! Bathe dammit!.^?\n\r");
-	    	}
-	    }
-
-		if(CMLib.flags().isBound(mob))
-			msg.append("^!You are bound.^?\n\r");
-
-		// dont do falling -- the flag doubles for drowning/treading water anyway.
-		//if(CMLib.flags().isFalling(mob))
-		//	msg.append("^!You are falling!!!^?\n\r");
-		//else
-		if(CMLib.flags().isSleeping(mob))
-			msg.append("^!You are sleeping.^?\n\r");
-		else
-		if(CMLib.flags().isSitting(mob))
-			msg.append("^!You are resting.^?\n\r");
-		else
-		if(CMLib.flags().isSwimmingInWater(mob))
-			msg.append("^!You are swimming.^?\n\r");
-		else
-		if(CMLib.flags().isClimbing(mob))
-			msg.append("^!You are climbing.^?\n\r");
-		else
-		if(CMLib.flags().isFlying(mob))
-			msg.append("^!You are flying.^?\n\r");
-		else
-			msg.append("^!You are standing.^?\n\r");
-
-		if(mob.riding()!=null)
-			msg.append("^!You are "+mob.riding().stateString(mob)+" "+mob.riding().name()+".^?\n\r");
 		
-		if(CMath.bset(mob.getBitmap(),MOB.ATT_PLAYERKILL))
-			msg.append("^!Your playerkill flag is on.^?\n\r");
-
-		if(CMLib.flags().isInvisible(mob))
-			msg.append("^!You are invisible.^?\n\r");
-		if(CMLib.flags().isHidden(mob))
-			msg.append("^!You are hidden.^?\n\r");// ("+CMLib.flags().getHideScore(mob)+").^?\n\r");
-		if(CMLib.flags().isSneaking(mob))
-			msg.append("^!You are sneaking.^?\n\r");
-		if(CMath.bset(mob.getBitmap(),MOB.ATT_QUIET))
-			msg.append("^!You are in QUIET mode.^?\n\r");
-		
-		if(mob.curState().getFatigue()>CharState.FATIGUED_MILLIS)
-			msg.append("^!You are fatigued.^?\n\r");
-		if(mob.curState().getHunger()<1)
-			msg.append("^!You are hungry.^?\n\r");
-		if(mob.curState().getThirst()<1)
-			msg.append("^!You are thirsty.^?\n\r");
+		msg.append(getMOBState(mob.session(),mob));
 		msg.append(getAffects(mob.session(),mob,false));
 		return msg;
 	}
