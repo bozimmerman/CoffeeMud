@@ -2303,3 +2303,4 @@ Special/Reserved Quest called holidays can be added to/modified on an area-by-ar
 34.Can now create exception lists for DEFCMDTIME and DEFABLETIME in coffeemud.ini file/control panel.
 35.Commands LOAD/UNLOAD now can be done manually by players for ranged weapons requiring ammunition.
 36.Affect now shows disposition, and time remaining on spells.
+37.Gathering skills are a 1/3 more stingy, and Crafting skills sort their lists by level now.
