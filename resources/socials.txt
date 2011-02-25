@@ -510,6 +510,9 @@ ss	RASPBERRY <T-NAME>	You give <T-NAMESELF> the raspberry... and spit all over y
 ss	RASPBERRY SELF	You try to stick your tongue out at yourself... somehow, it isn't the same.				raspberry.wav
 mv	REGAL	You sit up straight.	<S-NAME> sits up straight, lending <S-HIM-HER> a regal appearance.			
 mv	REGAL <T-NAME>	You look regally down your nose at <T-NAME>.	<S-NAME> looks down upon <T-NAME> haughtily.	<S-NAME> looks down upon <T-NAME> haughtily.	They left too quickly, it seems.	
+ss	ROAR	ROOOOOAAAARRRR!!!!	<S-NAME> lets forth a mighty ROAR!			roar.wav
+ss	ROAR <T-NAME>	You roar at <T-NAMESELF>, causing <T-HIM-HER> into cower.	<S-NAME> roars at <T-NAMESELF>, scaring <T-HIM-HER> senseless.	<S-NAME> roars mightily at you.	Roar at whom?	roar.wav
+ss	ROAR SELF	You roar at yourself and feel very smug.	<S-NAME> roars at <S-HIM-HERSELF> and looks very smug.			roar.wav
 ms	ROFL	You roll on the floor, laughing hysterically.	<S-NAME> falls to the ground and rolls around laughing hysterically.	<S-NAME> falls to the ground and rolls around laughing hysterically.		
 ms	ROFL <T-NAME>	You fall to the floor laughing at <T-NAMESELF>'s remark.	<S-NAME> rolls on the floor laughing at <T-NAMESELF>'s antics!	<S-NAME> rolls on the floor laughing at your antics!		
 ov	ROFLMAO	You roll on the floor hysterically laughing your ass off.	<S-NAME> rolls on the floor hysterically laughing <S-HIS-HER> ass off.			
