@@ -45,7 +45,7 @@ public class Prayer_DesecrateLand extends Prayer
 	protected int canTargetCode(){return CAN_ROOMS;}
 	public long flags(){return Ability.FLAG_UNHOLY;}
 
-	public boolean okMessage(Environmental myHost, CMMsg msg)
+	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(affected==null)
 			return super.okMessage(myHost,msg);

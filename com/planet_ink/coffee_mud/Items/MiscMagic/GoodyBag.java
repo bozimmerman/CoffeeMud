@@ -62,7 +62,7 @@ public class GoodyBag extends BagOfEndlessness implements ArchonOnly
 	{
 	}
 
-	public void executeMsg(Environmental myHost, CMMsg msg)
+	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		if((!alreadyFilled)&&(owner()!=null))
 		{

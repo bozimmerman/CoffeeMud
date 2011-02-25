@@ -101,7 +101,7 @@ public class StdWeapon extends StdItem implements Weapon
 			phyStats().setDamage(((int)Math.round(CMath.mul(phyStats().damage(),CMath.div(usesRemaining(),100)))));
 	}
 
-	public void executeMsg(Environmental myHost, CMMsg msg)
+	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);
 
@@ -242,7 +242,7 @@ public class StdWeapon extends StdItem implements Weapon
 			}
 		}
 	}
-	public boolean okMessage(Environmental myHost, CMMsg msg)
+	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(!super.okMessage(myHost,msg))
 			return false;

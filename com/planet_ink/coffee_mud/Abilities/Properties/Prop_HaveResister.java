@@ -218,7 +218,7 @@ public class Prop_HaveResister extends Property
         return false;
     }
 
-	public boolean okMessage(Environmental myHost, CMMsg msg)
+	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
         if((canResist(msg.target()))
         &&(msg.target() instanceof MOB)

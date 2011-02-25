@@ -14,6 +14,7 @@ import com.planet_ink.coffee_mud.Items.Basic.StdItem;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.MOB.Follower;
 import com.planet_ink.coffee_mud.MOBS.interfaces.MOB.Tattoo;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
@@ -1473,7 +1474,7 @@ public class StdMOB implements MOB
         dequeCommand();
 	}
 	
-	public boolean okMessage(Environmental myHost, CMMsg msg)
+	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		final Deity deity = getMyDeity();
 		if((deity!=null)&&(deity!=this)&&(!deity.okMessage(this,msg)))
@@ -1492,28 +1493,28 @@ public class StdMOB implements MOB
 		for(final Enumeration<Ability> a=effects();a.hasMoreElements();)
 		{
 			final Ability A=a.nextElement();
-			if((A!=null)&&(!A.okMessage(this,msg)))
+			if(!A.okMessage(this,msg))
 				return false;
 		}
 
 		for(final Enumeration<Item> i=items();i.hasMoreElements();)
 		{
 			final Item I=i.nextElement();
-            if((I!=null)&&(!I.okMessage(this,msg)))
+            if(!I.okMessage(this,msg))
 				return false;
 		}
 
 		for(final Enumeration<Behavior> b=behaviors();b.hasMoreElements();)
 		{
 			final Behavior B=b.nextElement();
-            if((B!=null)&&(!B.okMessage(this,msg)))
+            if(!B.okMessage(this,msg))
 				return false;
 		}
 
 		for(final Enumeration<ScriptingEngine> s=scripts();s.hasMoreElements();)
 		{
 			final ScriptingEngine S=s.nextElement();
-            if((S!=null)&&(!S.okMessage(this,msg)))
+            if(!S.okMessage(this,msg))
                 return false;
         }
 
@@ -1543,8 +1544,8 @@ public class StdMOB implements MOB
 
 			if(!CMath.bset(msg.sourceMajor(),CMMsg.MASK_ALWAYS))
 			{
-				int srcCode=msg.sourceMajor();
-			    int srcMinor = msg.sourceMinor();
+				final int srcCode=msg.sourceMajor();
+				final int srcMinor=msg.sourceMinor();
 				if(amDead())
 				{
 					tell("You are DEAD!");
@@ -1555,7 +1556,7 @@ public class StdMOB implements MOB
 				{
 					if((msg.target()!=this)&&(msg.target()!=null)&&(msg.target() instanceof MOB))
 					{
-						MOB target=(MOB)msg.target();
+						final MOB target=(MOB)msg.target();
 						if((amFollowing()!=null)&&(target==amFollowing()))
 						{
 							tell("You like "+amFollowing().charStats().himher()+" too much.");
@@ -1775,11 +1776,10 @@ public class StdMOB implements MOB
 					break;
 				case CMMsg.TYP_LEAVE:
 					if((isInCombat())&&(location()!=null)&&(!CMath.bset(msg.sourceMajor(),CMMsg.MASK_MAGIC)))
-						for(int i=0;i<location().numInhabitants();i++)
+						for(final Enumeration<MOB> m=location().inhabitants();m.hasMoreElements();)
 						{
-							MOB M=location().fetchInhabitant(i);
-							if((M!=null)
-							&&(M!=this)
+							MOB M=m.nextElement();
+							if((M!=this)
 							&&(M.getVictim()==this)
 							&&(CMLib.flags().aliveAwakeMobile(M,true))
 							&&(CMLib.flags().canSenseEnteringLeaving(srcM,M)))
@@ -2844,30 +2844,29 @@ public class StdMOB implements MOB
 	{
 		return (followers==null)?0:followers.size();
 	}
-	public int fetchFollowerOrder(MOB thisOne)
+	public Enumeration<Follower> followers() { return (followers==null) ? EmptyEnumeration.INSTANCE : followers.elements(); }
+
+	public int fetchFollowerOrder(final MOB thisOne)
 	{
-		try
+		for(final Enumeration<Follower> f=followers();f.hasMoreElements();)
 		{
-			if(followers==null) 
-				return -1;
-			for(Follower F : followers)
-				if(F.follower==thisOne)
-					return F.marchingOrder;
+			final Follower F=f.nextElement();
+			if(F.follower==thisOne)
+				return F.marchingOrder;
 		}
-		catch(java.lang.ArrayIndexOutOfBoundsException x){}
 		return -1;
 	}
-	public MOB fetchFollower(String named)
+	public MOB fetchFollower(final String named)
 	{
 		if(followers==null) 
 			return null;
-		List<MOB> list = new ConvertingList<Follower,MOB>(followers,Follower.converter);
+		final List<MOB> list = new ConvertingList<Follower,MOB>(followers,Follower.converter);
 		MOB mob=(MOB)CMLib.english().fetchEnvironmental(list,named,true);
 		if(mob==null)
 			mob=(MOB)CMLib.english().fetchEnvironmental(list,named,false);
 		return mob;
 	}
-	public MOB fetchFollower(int index)
+	public MOB fetchFollower(final int index)
 	{
 		try
 		{
@@ -2879,12 +2878,14 @@ public class StdMOB implements MOB
 		return null;
 	}
 	
-	public boolean isFollowedBy(MOB thisOne)
+	public boolean isFollowedBy(final MOB thisOne)
 	{
-		if(followers!=null) 
-			for(Follower F : followers)
-				if(F.follower==thisOne)
-					return true;
+		for(final Enumeration<Follower> f=followers();f.hasMoreElements();)
+		{
+			final Follower F=f.nextElement();
+			if(F.follower==thisOne)
+				return true;
+		}
 		return false;
 	}
 
@@ -2971,13 +2972,15 @@ public class StdMOB implements MOB
 	{
 		if(list==null) return list;
 		if(!list.contains(this)) list.add(this);
-		MOB following = amFollowing();
+		final MOB following = amFollowing();
 		if((following!=null)&&(!list.contains(following)))
 			following.getGroupMembers(list);
-		if(followers!=null)
-			for(Follower F : followers)
-				if((F.follower!=null)&&(!list.contains(F.follower)))
-					F.follower.getGroupMembers(list);
+		for(final Enumeration<Follower> f=followers();f.hasMoreElements();)
+		{
+			final Follower F=f.nextElement();
+			if((F.follower!=null)&&(!list.contains(F.follower)))
+				F.follower.getGroupMembers(list);
+		}
 		return list;
 	}
 
@@ -2989,7 +2992,7 @@ public class StdMOB implements MOB
             return false;
         if(CMLib.utensils().getMobPossessingAnother(this)!=null)
             return false;
-		MOB followed=amFollowing();
+		final MOB followed=amFollowing();
 		if(followed!=null)
 			if(!followed.isMonster())
 				return false;
@@ -3013,7 +3016,7 @@ public class StdMOB implements MOB
 		if(to==null) return;
 		for(int a=0;a<numLearnedAbilities();a++)
 		{
-			Ability A=fetchAbility(a);
+			final Ability A=fetchAbility(a);
 			if((A!=null)&&(A.ID().equals(to.ID())))
 				return;
 		}
@@ -3068,7 +3071,13 @@ public class StdMOB implements MOB
 		for(final Enumeration<Ability> a=abilities();a.hasMoreElements();)
 		{
 			final Ability A=a.nextElement();
-			if((A!=null)&&((A.ID().equalsIgnoreCase(ID))||(A.Name().equalsIgnoreCase(ID))))
+			if(A.ID().equalsIgnoreCase(ID))
+				return A;
+		}
+		for(final Enumeration<Ability> a=abilities();a.hasMoreElements();)
+		{
+			final Ability A=a.nextElement();
+			if(A.Name().equalsIgnoreCase(ID))
 				return A;
 		}
 		return null;
@@ -3169,11 +3178,10 @@ public class StdMOB implements MOB
 	}
 	public Ability fetchEffect(String ID)
 	{
-        Ability A=null;
 		for(final Enumeration<Ability> a = effects();a.hasMoreElements();)
 		{
-			A=a.nextElement();
-			if((A!=null)&&(A.ID().equals(ID)))
+			final Ability A=a.nextElement();
+			if(A.ID().equals(ID))
 				return A;
 		}
 		return null;
@@ -3224,8 +3232,8 @@ public class StdMOB implements MOB
 	}
 	public Behavior fetchBehavior(String ID)
 	{
-		for(Behavior B : behaviors)
-			if((B!=null)&&(B.ID().equalsIgnoreCase(ID)))
+		for(final Behavior B : behaviors)
+			if(B.ID().equalsIgnoreCase(ID))
 				return B;
 		return null;
 	}
@@ -3341,13 +3349,9 @@ public class StdMOB implements MOB
 	public String fetchExpertise(int x){try{return (String)expertises.elementAt(x);}catch(Exception e){} return null;}
 	public String fetchExpertise(String of){
 		try{
-            String X=null;
-			for(int i=0;i<numExpertises();i++)
-            {
-			    X=fetchExpertise(i);
-                if((X!=null)&&(X.equalsIgnoreCase(of)))
+			for(final String X : expertises)
+				if(X.equalsIgnoreCase(of))
                     return X;
-            }
 		}catch(Exception e){}
 		return null;
 	}
@@ -3358,7 +3362,7 @@ public class StdMOB implements MOB
         if(S==null) return;
         if(!scripts.contains(S)) 
         {
-            for(ScriptingEngine S2 : scripts)
+            for(final ScriptingEngine S2 : scripts)
                 if(S2.getScript().equalsIgnoreCase(S.getScript()))
                     return;
 	        scripts.addElement(S);
@@ -3551,13 +3555,13 @@ public class StdMOB implements MOB
 
 	public List<Item> fetchWornItems(long wornCode, short aboveOrAroundLayer, short layerAttributes)
 	{
-		Vector V=new Vector();
-		boolean equalOk=(layerAttributes&Armor.LAYERMASK_MULTIWEAR)>0;
+		final Vector V=new Vector();
+		final boolean equalOk=(layerAttributes&Armor.LAYERMASK_MULTIWEAR)>0;
 		int lay=0;
-		for(int i=0;i<numItems();i++)
+		for(final Enumeration<Item> i=items();i.hasMoreElements();)
 		{
-			Item thisItem=getItem(i);
-			if((thisItem!=null)&&(thisItem.amWearingAt(wornCode)))
+			final Item thisItem=i.nextElement();
+			if(thisItem.amWearingAt(wornCode))
 			{
 				if(thisItem instanceof Armor)
 				{
@@ -3593,10 +3597,10 @@ public class StdMOB implements MOB
     
 	public Item fetchFirstWornItem(long wornCode)
 	{
-		for(int i=0;i<numItems();i++)
+		for(final Enumeration<Item> i=items();i.hasMoreElements();)
 		{
-			Item thisItem=getItem(i);
-			if((thisItem!=null)&&(thisItem.amWearingAt(wornCode)))
+			final Item thisItem=i.nextElement();
+			if(thisItem.amWearingAt(wornCode))
 				return thisItem;
 		}
 		return null;
@@ -3606,13 +3610,13 @@ public class StdMOB implements MOB
 	{
 		if((possibleWeaponIndex>=0)&&(possibleWeaponIndex<numItems()))
 		{
-			Item thisItem=getItem(possibleWeaponIndex);
+			final Item thisItem=getItem(possibleWeaponIndex);
 			if((thisItem!=null)&&(thisItem.amWearingAt(Wearable.WORN_WIELD)))
 				return thisItem;
 		}
 		for(possibleWeaponIndex=0;possibleWeaponIndex<numItems();possibleWeaponIndex++)
 		{
-			Item thisItem=getItem(possibleWeaponIndex);
+			final Item thisItem=getItem(possibleWeaponIndex);
 			if((thisItem!=null)&&(thisItem.amWearingAt(Wearable.WORN_WIELD)))
 				return thisItem;
 		}
@@ -3682,11 +3686,11 @@ public class StdMOB implements MOB
 			nothingDone=true;
 			if(owner instanceof Room)
 			{
-				Room R=(Room)owner;
-				for(int i=0;i<R.numItems();i++)
+				final Room R=(Room)owner;
+				for(final Enumeration<Item> i=R.items();i.hasMoreElements();)
 				{
-					Item thisItem=R.getItem(i);
-					if((thisItem!=null)&&(thisItem.container()==container))
+					final Item thisItem=i.nextElement();
+					if(thisItem.container()==container)
 					{
 						moveItemTo(thisItem);
 						nothingDone=false;
@@ -3697,11 +3701,11 @@ public class StdMOB implements MOB
 			else
 			if(owner instanceof MOB)
 			{
-				MOB M=(MOB)owner;
-				for(int i=0;i<M.numItems();i++)
+				final MOB M=(MOB)owner;
+				for(final Enumeration<Item> i=M.items();i.hasMoreElements();)
 				{
-					Item thisItem=M.getItem(i);
-					if((thisItem!=null)&&(thisItem.container()==container))
+					final Item thisItem=i.nextElement();
+					if(thisItem.container()==container)
 					{
 						moveItemTo(thisItem);
 						nothingDone=false;

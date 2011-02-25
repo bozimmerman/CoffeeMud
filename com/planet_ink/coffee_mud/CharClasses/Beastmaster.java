@@ -204,7 +204,7 @@ public class Beastmaster extends StdCharClass
 		return super.qualifiesForThisClass(mob,quiet);
 	}
 
-	public boolean okMessage(Environmental myHost, CMMsg msg)
+	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(!(myHost instanceof MOB)) return super.okMessage(myHost,msg);
 		MOB myChar=(MOB)myHost;

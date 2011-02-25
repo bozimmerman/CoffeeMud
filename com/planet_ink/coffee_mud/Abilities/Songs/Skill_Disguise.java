@@ -93,7 +93,7 @@ public class Skill_Disguise extends BardSkill
 			affectableStats.setStat(CharStats.STAT_AGE,CMath.s_int(values[8]));
 	}
 
-	public boolean okMessage(Environmental myHost, CMMsg msg)
+	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(!super.okMessage(myHost,msg)) return false;
 		if((myHost==null)||(!(myHost instanceof MOB)))
@@ -117,7 +117,7 @@ public class Skill_Disguise extends BardSkill
 		}
 		return true;
 	}
-	public void executeMsg(Environmental myHost, CMMsg msg)
+	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);
 		if((myHost==null)||(!(myHost instanceof MOB)))

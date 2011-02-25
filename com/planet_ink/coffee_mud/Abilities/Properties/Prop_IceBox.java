@@ -29,7 +29,7 @@ public class Prop_IceBox extends Property
 	public String ID() { return "Prop_IceBox"; }
 	public String name(){ return "Works like an ice box";}
 	protected int canAffectCode(){return Ability.CAN_ITEMS|Ability.CAN_ROOMS;}
-	public boolean okMessage(Environmental myHost, CMMsg msg)
+	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(!super.okMessage(myHost,msg))
 			return false;

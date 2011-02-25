@@ -41,7 +41,7 @@ public class Prop_ReqHeight extends Property
 	public String accountForYourself()
 	{ return "Height limit: "+CMath.s_int(text());	}
 
-	public boolean okMessage(Environmental myHost, CMMsg msg)
+	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if((affected!=null)
 		   &&(msg.target()!=null)

@@ -67,7 +67,7 @@ public class Spell_Geas extends Spell
 		}
 	}
 
-	public void executeMsg(Environmental myHost, CMMsg msg)
+	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		// undo the affects of this spell
 		if((affected==null)||(!(affected instanceof MOB)))

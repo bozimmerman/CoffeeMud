@@ -52,7 +52,7 @@ public class StdJournal extends StdItem
 		recoverPhyStats();
 	}
 
-	public boolean okMessage(Environmental myHost, CMMsg msg)
+	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(msg.amITarget(this))
 		switch(msg.targetMinor())
@@ -75,7 +75,7 @@ public class StdJournal extends StdItem
 		return super.okMessage(myHost,msg);
 	}
 
-	public void executeMsg(Environmental myHost, CMMsg msg)
+	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		MOB mob=msg.source();
 		if(msg.amITarget(this))

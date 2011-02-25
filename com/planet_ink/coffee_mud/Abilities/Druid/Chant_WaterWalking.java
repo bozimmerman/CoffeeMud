@@ -58,7 +58,7 @@ public class Chant_WaterWalking extends Chant
 	}
 
 
-	public boolean okMessage(Environmental myHost, CMMsg msg)
+	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(!super.okMessage(myHost,msg)) return false;
 		if(affected==null) return true;
@@ -101,7 +101,7 @@ public class Chant_WaterWalking extends Chant
 		return true;
 	}
 
-	public void executeMsg(Environmental myHost, CMMsg msg)
+	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);
 		if(triggerNow)triggerNow=false;

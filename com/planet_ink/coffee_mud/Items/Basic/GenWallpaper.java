@@ -207,7 +207,7 @@ public class GenWallpaper implements Item
 	public void setUsesRemaining(int newUses){}
 	public boolean isSavable(){return CMLib.flags().isSavable(this);}
 	public void setSavable(boolean truefalse){ CMLib.flags().setSavable(this, truefalse);}
-	public boolean okMessage(Environmental myHost, CMMsg msg)
+	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		MOB mob=msg.source();
 		if(!msg.amITarget(this))
@@ -248,7 +248,7 @@ public class GenWallpaper implements Item
 		return false;
 	}
 
-	public void executeMsg(Environmental myHost, CMMsg msg)
+	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		if(msg.amITarget(this))
 		switch(msg.targetMinor())

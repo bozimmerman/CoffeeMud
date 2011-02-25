@@ -254,13 +254,13 @@ public class GenCharClass extends StdCharClass
                 return false;
         return super.tick(myChar, tickID);
     }
-    public void executeMsg(Environmental myHost, CMMsg msg)
+    public void executeMsg(final Environmental myHost, final CMMsg msg)
     {
         if(eventBuddy!=null)
             eventBuddy.executeMsg(myHost, msg);
         super.executeMsg(myHost, msg);
     }
-    public boolean okMessage(Environmental myHost, CMMsg msg)
+    public boolean okMessage(final Environmental myHost, final CMMsg msg)
     {
         if((eventBuddy!=null)
         &&(!eventBuddy.okMessage(myHost, msg)))

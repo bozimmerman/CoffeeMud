@@ -47,7 +47,7 @@ public class Thief_SilentGold extends ThiefSkill
 	public String[] triggerStrings(){return triggerStrings;}
 	private CMMsg lastMsg=null;
 
-	public void executeMsg(Environmental myHost, CMMsg msg)
+	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);
 		if((affected!=null)&&(affected instanceof MOB))

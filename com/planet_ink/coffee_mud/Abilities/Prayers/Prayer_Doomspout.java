@@ -111,7 +111,7 @@ public class Prayer_Doomspout extends Prayer implements DiseaseAffect
 			affectableStats.setStat(CharStats.STAT_INTELLIGENCE,3);
 	}
 
-	public void executeMsg(Environmental myHost, CMMsg msg)
+	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 	    super.executeMsg(myHost,msg);
 	    if((affected!=null)

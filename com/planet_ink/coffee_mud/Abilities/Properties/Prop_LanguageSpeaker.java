@@ -130,7 +130,7 @@ public class Prop_LanguageSpeaker extends Property
 		}
 	}
 	
-	public void executeMsg(Environmental myHost, CMMsg msg)
+	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		if(affected!=null)
 			switch(affectedType)

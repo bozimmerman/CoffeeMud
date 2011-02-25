@@ -146,7 +146,7 @@ public class Thief_IdentifyBombs extends ThiefSkill
 		return msg.toString();
 	}
 
-	public void executeMsg(Environmental myHost, CMMsg msg)
+	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);
 		if((affected!=null)

@@ -185,7 +185,7 @@ public class Purist extends Cleric
 	public String getOtherBonusDesc(){return "Receives 1pt/level cold damage reduction.";}
 	public String getOtherLimitsDesc(){return "Always fumbles evil prayers, and fumbles all prayers when alignment is below pure neutral.  Qualifies and receives good prayers, and bonus damage from good spells.  Using non-aligned prayers introduces failure chance.  Vulnerable to fire attacks.";}
 
-	public boolean okMessage(Environmental myHost, CMMsg msg)
+	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(!(myHost instanceof MOB)) return super.okMessage(myHost,msg);
 		MOB myChar=(MOB)myHost;

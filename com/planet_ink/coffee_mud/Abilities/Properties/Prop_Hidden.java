@@ -44,7 +44,7 @@ public class Prop_Hidden extends Property
 	protected int ticksSinceLoss=100;
 	protected boolean unLocatable=false;
 	
-	public void executeMsg(Environmental myHost, CMMsg msg)
+	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		if((affected==null)||(!(affected instanceof MOB)))
 			return;

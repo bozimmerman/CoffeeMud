@@ -46,7 +46,7 @@ public class Jungle extends StdRoom
 	public int domainType(){return Room.DOMAIN_OUTDOORS_JUNGLE;}
 	public int domainConditions(){return Room.CONDITION_HOT;}
 
-	public void executeMsg(Environmental myHost, CMMsg msg)
+	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		if((msg.amITarget(this)||(msg.targetMinor()==CMMsg.TYP_ADVANCE)||(msg.targetMinor()==CMMsg.TYP_RETREAT))
 		   &&(!msg.source().isMonster())

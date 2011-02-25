@@ -48,7 +48,7 @@ public class Prop_RoomWatch extends Property
 		newRooms=null;
 	}
 	
-	public void executeMsg(Environmental myHost, CMMsg msg)
+	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);
 		if(newRooms==null)

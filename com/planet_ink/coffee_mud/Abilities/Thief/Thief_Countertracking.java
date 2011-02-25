@@ -44,7 +44,7 @@ public class Thief_Countertracking extends ThiefSkill
 	public boolean canBeUninvoked(){return false;}
     public int classificationCode() {   return Ability.ACODE_SKILL|Ability.DOMAIN_STEALTHY; }
 
-	public boolean okMessage(Environmental myHost, CMMsg msg)
+	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if((affected==null)||(!(affected instanceof MOB)))
 			return super.okMessage(myHost,msg);

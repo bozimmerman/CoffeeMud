@@ -213,7 +213,7 @@ public class QuestBound implements Ability
 	{}
 	public void affectCharState(MOB affectedMob, CharState affectableMaxState)
 	{}
-	public boolean okMessage(Environmental myHost, CMMsg msg)
+	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if((amDestroyed())||(affected==null)) return true;
 		if((msg.targetMinor()==CMMsg.TYP_SHUTDOWN)
@@ -229,7 +229,7 @@ public class QuestBound implements Ability
 		    resetQuest(msg.targetMinor());
 		return true;
 	}
-    public void executeMsg(Environmental myHost, CMMsg msg)
+    public void executeMsg(final Environmental myHost, final CMMsg msg)
     {
         if((amDestroyed())||(affected==null)) return;
         if((msg.targetMinor()==CMMsg.TYP_SHUTDOWN)

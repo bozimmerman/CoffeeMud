@@ -83,7 +83,7 @@ public class Disease_Gonorrhea extends Disease
 		affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()-5);
 	}
 
-	public boolean okMessage(Environmental myHost, CMMsg msg)
+	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(affected==null) return super.okMessage(myHost,msg);
 		if(affected instanceof MOB)

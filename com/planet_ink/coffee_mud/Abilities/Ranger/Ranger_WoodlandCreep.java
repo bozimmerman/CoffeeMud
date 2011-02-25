@@ -63,7 +63,7 @@ public class Ranger_WoodlandCreep extends StdAbility
         affectableStats.setStat(CharStats.STAT_SAVE_DETECTION,proficiency()+25+bonus+affectableStats.getStat(CharStats.STAT_SAVE_DETECTION));
     }
 
-	public void executeMsg(Environmental myHost, CMMsg msg)
+	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		if((affected==null)||(!(affected instanceof MOB)))
 			return;

@@ -97,7 +97,7 @@ public class Chant_PlantTrap extends Chant implements Trap
         return false;
     }
     
-	public void executeMsg(Environmental myHost, CMMsg msg)
+	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		if(msg.amITarget(affected)&&(msg.targetMinor()==CMMsg.TYP_ENTER)
 		&&(!msg.amISource(invoker))

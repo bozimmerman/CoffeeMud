@@ -170,7 +170,7 @@ public class StdTrap extends StdAbility implements Trap
 		return "`"+invokerName+"` :"+abilityCode()+":"+super.text();
 	}
 	
-	public boolean okMessage(Environmental myHost, CMMsg msg)
+	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if((!disabled())&&(affected instanceof Item))
 		{
@@ -199,7 +199,7 @@ public class StdTrap extends StdAbility implements Trap
 		}
 	}
 
-	public void executeMsg(Environmental myHost, CMMsg msg)
+	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		if(!sprung)
 		if(CMath.bset(canAffectCode(),Ability.CAN_EXITS))

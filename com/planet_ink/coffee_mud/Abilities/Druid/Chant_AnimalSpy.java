@@ -77,7 +77,7 @@ public class Chant_AnimalSpy extends Chant
 		super.unInvoke();
 	}
 
-	public void executeMsg(Environmental myHost, CMMsg msg)
+	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		try
 		{

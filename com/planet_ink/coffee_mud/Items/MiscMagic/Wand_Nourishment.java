@@ -60,7 +60,7 @@ public class Wand_Nourishment extends StdWand
 		secretWord="SHAZAM";
 	}
 
-	public void executeMsg(Environmental myHost, CMMsg msg)
+	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		if(msg.amITarget(this))
 		{

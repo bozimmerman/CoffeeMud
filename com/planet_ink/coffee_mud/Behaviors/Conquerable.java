@@ -674,7 +674,7 @@ public class Conquerable extends Arrest
 		}
 	}
 	
-	public boolean okMessage(Environmental myHost, CMMsg msg)
+	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
         boolean debugging=CMSecurity.isDebugging("CONQUEST");
 		if((msg.targetMinor()==CMMsg.TYP_EXPIRE)
@@ -1047,7 +1047,7 @@ public class Conquerable extends Arrest
 		"War!!!!!"
 	};
 
-	public void executeMsg(Environmental myHost, CMMsg msg)
+	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);
         

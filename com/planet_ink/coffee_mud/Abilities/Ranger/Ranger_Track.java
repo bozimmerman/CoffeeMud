@@ -105,7 +105,7 @@ public class Ranger_Track extends StdAbility
 		return true;
 	}
 
-	public void executeMsg(Environmental myHost, CMMsg msg)
+	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);
 

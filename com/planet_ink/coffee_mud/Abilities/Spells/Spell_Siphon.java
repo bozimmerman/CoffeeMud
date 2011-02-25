@@ -84,7 +84,7 @@ public class Spell_Siphon extends Spell
 		mob.tell("You no longer feel a thirst for the energy of others.");
 	}
 
-	public boolean okMessage(Environmental myHost, CMMsg msg)
+	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if((affected==null)||(!(affected instanceof MOB)))
 			return true;

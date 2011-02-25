@@ -39,7 +39,7 @@ public class Trap_Enter extends Trap_Trap
 	protected int canAffectCode(){return Ability.CAN_EXITS|Ability.CAN_ROOMS;}
 	protected int canTargetCode(){return 0;}
 
-	public boolean okMessage(Environmental myHost, CMMsg msg)
+	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(sprung) return super.okMessage(myHost,msg);
 		if(!super.okMessage(myHost,msg))
@@ -60,7 +60,7 @@ public class Trap_Enter extends Trap_Trap
 		}
 		return true;
 	}
-	public void executeMsg(Environmental myHost, CMMsg msg)
+	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);
 		if(sprung)

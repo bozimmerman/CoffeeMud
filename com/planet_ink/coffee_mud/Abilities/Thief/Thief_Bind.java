@@ -59,7 +59,7 @@ public class Thief_Bind extends ThiefSkill
 		super.affectPhyStats(affected,affectableStats);
 		affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_BOUND);
 	}
-	public boolean okMessage(Environmental myHost, CMMsg msg)
+	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		// when this spell is on a MOBs Affected list,
 		// it should consistantly prevent the mob

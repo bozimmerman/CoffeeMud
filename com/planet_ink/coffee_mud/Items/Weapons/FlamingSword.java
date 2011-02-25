@@ -54,7 +54,7 @@ public class FlamingSword extends Longsword
 	}
 
 
-	public void executeMsg(Environmental myHost, CMMsg msg)
+	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);
 		if((msg.source().location()!=null)

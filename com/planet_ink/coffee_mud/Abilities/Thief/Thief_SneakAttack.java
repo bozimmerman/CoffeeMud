@@ -57,7 +57,7 @@ public class Thief_SneakAttack extends ThiefSkill
 		}
 	}
 
-	public boolean okMessage(Environmental myHost, CMMsg msg)
+	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(!super.okMessage(myHost,msg)) return false;
 		if((affected==null)||((!(affected instanceof MOB)))) return true;

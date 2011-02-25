@@ -63,7 +63,7 @@ public class Chant_CharmAnimal extends Chant
 	}
 
 
-	public void executeMsg(Environmental myHost, CMMsg msg)
+	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);
 		if((affected!=null)
@@ -76,7 +76,7 @@ public class Chant_CharmAnimal extends Chant
 		}
 	}
 	
-	public boolean okMessage(Environmental myHost, CMMsg msg)
+	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if((affected==null)||(!(affected instanceof MOB)))
 			return true;

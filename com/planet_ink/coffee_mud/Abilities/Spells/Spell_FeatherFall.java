@@ -60,7 +60,7 @@ public class Spell_FeatherFall extends Spell
 		return weight;
 	}
 
-	public boolean okMessage(Environmental myHost, CMMsg msg)
+	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if((affected!=null)
 		&&(affected instanceof MOB)

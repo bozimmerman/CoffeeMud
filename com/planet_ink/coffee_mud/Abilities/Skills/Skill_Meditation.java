@@ -62,7 +62,7 @@ public class Skill_Meditation extends StdSkill
 		}
 	}
 
-	public void executeMsg(Environmental myHost, CMMsg msg)
+	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);
 		if((affected==null)||(!(affected instanceof MOB)))

@@ -48,7 +48,7 @@ public class CaveRoom extends StdRoom
 	public int domainConditions(){return Room.CONDITION_NORMAL;}
 
 	public int maxRange(){return 5;}
-	public void executeMsg(Environmental myHost, CMMsg msg)
+	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		if((msg.amITarget(this)||(msg.targetMinor()==CMMsg.TYP_ADVANCE)||(msg.targetMinor()==CMMsg.TYP_RETREAT))
 		   &&(!msg.source().isMonster())

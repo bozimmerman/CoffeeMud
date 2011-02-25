@@ -83,7 +83,7 @@ public class Spell_Breadcrumbs extends Spell
 		return str.toString()+")";
 	}
 
-	public void executeMsg(Environmental myHost, CMMsg msg)
+	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		if((affected==null)||(!(affected instanceof MOB)))
 			return;

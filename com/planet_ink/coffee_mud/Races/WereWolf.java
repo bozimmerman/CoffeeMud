@@ -57,7 +57,7 @@ public class WereWolf extends GiantWolf
 		affectableStats.setRacialStat(CharStats.STAT_DEXTERITY,affectableStats.getStat(CharStats.STAT_DEXTERITY)+3);
 	}
 
-	public void executeMsg(Environmental myHost, CMMsg msg)
+	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		MOB mob=(MOB)myHost;
 		if(msg.amISource(mob)

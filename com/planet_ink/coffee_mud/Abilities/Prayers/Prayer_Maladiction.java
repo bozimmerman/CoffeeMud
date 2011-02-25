@@ -57,7 +57,7 @@ public class Prayer_Maladiction extends Prayer
 			mob.tell("Your maladiction fades.");
 	}
 
-	public boolean okMessage(Environmental myHost, CMMsg msg)
+	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if((msg.sourceMinor()==CMMsg.TYP_EXPCHANGE)
 		&&(msg.source()==affected))

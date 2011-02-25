@@ -37,7 +37,7 @@ public class Prop_MOBEmoter extends Property
 	public String ID(){return "Prop_MOBEmoter";}
 	
 	Behavior emoter=null;
-	public void executeMsg(Environmental myHost, CMMsg msg)
+	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{ 
 	    super.executeMsg(myHost,msg);
 		if(emoter==null) 
@@ -47,7 +47,7 @@ public class Prop_MOBEmoter extends Property
 		}
 		emoter.executeMsg(myHost,msg);
 	}
-	public boolean okMessage(Environmental myHost, CMMsg msg)
+	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{ 
 	    if(!super.okMessage(myHost,msg))
 	        return false;

@@ -61,7 +61,7 @@ public class SoundEcho extends StdAbility
 		return bmob;
 	}
 	
-	public void executeMsg(Environmental myHost, CMMsg msg)
+	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		if((CMath.bset(msg.othersCode(),CMMsg.MASK_SOUND))
 		&&(CMath.bset(msg.sourceCode(),CMMsg.MASK_SOUND))

@@ -48,7 +48,7 @@ public class Thief_Listen extends ThiefSkill
 	protected Room room=null;
 	protected String lastSaid="";
 
-	public void executeMsg(Environmental myHost, CMMsg msg)
+	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);
 		if((affected!=null)

@@ -99,7 +99,7 @@ public class Prop_ModExperience extends Property
 		operationFormula=CMStrings.replaceAll(operationFormula, "@x1", "Amount");
 	}
 	
-	public boolean okMessage(Environmental myHost, CMMsg msg)
+	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if((msg.sourceMinor()==CMMsg.TYP_EXPCHANGE)
 		&&(operation != null)

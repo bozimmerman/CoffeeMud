@@ -49,7 +49,7 @@ public class Paladin_MountedCharge extends StdAbility
 	public int maxRange(){return 99;}
 	public boolean done=false;
 
-	public void executeMsg(Environmental myHost, CMMsg msg)
+	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		if((affected!=null)
 		&&(affected instanceof MOB)

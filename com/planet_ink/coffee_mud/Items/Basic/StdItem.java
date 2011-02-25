@@ -673,7 +673,7 @@ public class StdItem implements Item
 		return true;
 	}
 
-	public boolean okMessage(Environmental myHost, CMMsg msg)
+	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		// the order that these things are checked in should
 		// be holy, and etched in stone.
@@ -1073,7 +1073,7 @@ public class StdItem implements Item
 		return false;
 	}
 
-	public void executeMsg(Environmental myHost, CMMsg msg)
+	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		// the order that these things are checked in should
 		// be holy, and etched in stone.

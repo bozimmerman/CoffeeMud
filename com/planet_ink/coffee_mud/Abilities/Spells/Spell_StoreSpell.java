@@ -115,7 +115,7 @@ public class Spell_StoreSpell extends Spell
 		}
 	}
 
-	public void executeMsg(Environmental myHost, CMMsg msg)
+	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		MOB mob=msg.source();
 

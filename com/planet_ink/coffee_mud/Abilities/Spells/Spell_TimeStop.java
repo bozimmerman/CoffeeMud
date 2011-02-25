@@ -91,7 +91,7 @@ public class Spell_TimeStop extends Spell
 		}
 		super.unInvoke();
 	}
-	public boolean okMessage(Environmental myHost, CMMsg msg)
+	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if((affected!=null)
 		   &&(affected instanceof Room))

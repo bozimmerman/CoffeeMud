@@ -196,7 +196,7 @@ public class StdTitle extends StdItem implements LandTitle
 
 	public void recoverPhyStats(){CMLib.flags().setReadable(this,true); super.recoverPhyStats();}
 
-	public boolean okMessage(Environmental myHost, CMMsg msg)
+	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if((msg.targetMinor()==CMMsg.TYP_WRITE)
 		&&(msg.amITarget(this)))
@@ -280,7 +280,7 @@ public class StdTitle extends StdItem implements LandTitle
 		return super.okMessage(myHost,msg);
 	}
 
-	public void executeMsg(Environmental myHost, CMMsg msg)
+	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
         if((msg.amITarget(this))
         &&(msg.targetMinor()==CMMsg.TYP_READ))

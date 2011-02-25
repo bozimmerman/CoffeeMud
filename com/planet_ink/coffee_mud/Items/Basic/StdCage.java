@@ -74,7 +74,7 @@ public class StdCage extends StdContainer
 		return super.tick(ticking,tickID);
 	}
 	
-	public void executeMsg(Environmental myHost, CMMsg msg)
+	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		if(msg.amITarget(this))
 		{

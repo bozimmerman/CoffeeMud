@@ -39,7 +39,7 @@ public class Prop_UseSpellCast2 extends Prop_UseSpellCast
 	public String name(){ return "Casting spells when used";}
 	protected int canAffectCode(){return Ability.CAN_ITEMS;}
     
-	public void executeMsg(Environmental myHost, CMMsg msg)
+	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		if(processing) return;
 		processing=true;

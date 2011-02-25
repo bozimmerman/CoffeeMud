@@ -164,7 +164,7 @@ public class Arcanist extends Thief
 	{
 		return "Magic resistance, 1%/level.  Huge discounts when buying potions after 5th level.  Ability to memorize spells learned through SpellCraft.";
 	}
-	public boolean okMessage(Environmental myHost, CMMsg msg)
+	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if((myHost==null)
 		||(!(myHost instanceof MOB)))
@@ -209,7 +209,7 @@ public class Arcanist extends Thief
 			mob.delAbility((Ability)otherChoices.elementAt(a));
 	}
 	
-	public void executeMsg(Environmental myHost, CMMsg msg)
+	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);
 		if((myHost==null)||(!(myHost instanceof MOB)))

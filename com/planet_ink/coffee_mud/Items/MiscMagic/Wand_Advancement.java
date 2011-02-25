@@ -62,7 +62,7 @@ public class Wand_Advancement extends StdWand implements ArchonOnly
 	}
 
 
-	public void executeMsg(Environmental myHost, CMMsg msg)
+	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		MOB mob=msg.source();
 		switch(msg.sourceMinor())

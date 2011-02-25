@@ -194,7 +194,7 @@ public class StdRace implements Race
 	{
 
 	}
-	public boolean okMessage(Environmental myHost, CMMsg msg)
+	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(uncharmable()
 		&&(msg.target()==myHost)
@@ -209,7 +209,7 @@ public class StdRace implements Race
 		return true;
 	}
 
-	public void executeMsg(Environmental myHost, CMMsg msg)
+	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		// the sex rules
 		if(!(myHost instanceof MOB)) return;

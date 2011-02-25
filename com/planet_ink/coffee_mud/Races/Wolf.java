@@ -71,7 +71,7 @@ public class Wolf extends StdRace
 		affectableMaxState.setMovement(affectableMaxState.getMovement()+150);
 	}
 
-	public void executeMsg(Environmental myHost, CMMsg msg)
+	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		MOB mob=(MOB)myHost;
 		if(msg.amISource(mob)

@@ -44,13 +44,13 @@ public class Spell_ManaBurn extends Spell
 
 	int curMana=0;
 
-	public boolean okMessage(Environmental myHost, CMMsg msg)
+	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		adjustMana();
 		return super.okMessage(myHost,msg);
 	}
 
-	public void executeMsg(Environmental myHost, CMMsg msg)
+	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		adjustMana();
 		super.executeMsg(myHost,msg);

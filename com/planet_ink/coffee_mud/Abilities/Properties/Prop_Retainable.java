@@ -191,7 +191,7 @@ public class Prop_Retainable extends Property
             CMLib.commands().postSay(me, toMe, "My skills include: " + skills.substring(2) + ".",false,false);
     }
 
-	public void executeMsg(Environmental myHost, CMMsg msg)
+	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);
 		if((affected!=null)&&(affected instanceof MOB))

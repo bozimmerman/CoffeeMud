@@ -89,7 +89,7 @@ public class Chant_LocateAnimals extends Chant
 		return true;
 	}
 
-	public void executeMsg(Environmental myHost, CMMsg msg)
+	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);
 

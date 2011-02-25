@@ -156,7 +156,7 @@ public class StdArmor extends StdContainer implements Armor
 	public final static long strangeDeviations=Wearable.WORN_FLOATING_NEARBY|Wearable.WORN_MOUTH|Wearable.WORN_EYES|Wearable.WORN_EARS|Wearable.WORN_NECK;
 	public final static long deviation20=Wearable.WORN_TORSO|Wearable.WORN_LEGS|Wearable.WORN_WAIST|Wearable.WORN_ARMS|Wearable.WORN_HANDS|Wearable.WORN_FEET;
 
-	public boolean okMessage(Environmental myHost, CMMsg msg)
+	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(!super.okMessage(myHost,msg))
 			return false;
@@ -201,7 +201,7 @@ public class StdArmor extends StdContainer implements Armor
 		}
 		return true;
 	}
-	public void executeMsg(Environmental myHost, CMMsg msg)
+	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);
 		// lets do some damage!

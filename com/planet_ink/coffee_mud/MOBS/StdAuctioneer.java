@@ -170,7 +170,7 @@ public class StdAuctioneer extends StdMOB implements Auctioneer
     }
 
 
-    public boolean okMessage(Environmental myHost, CMMsg msg)
+    public boolean okMessage(final Environmental myHost, final CMMsg msg)
     {
         MOB mob=msg.source();
         if((msg.targetMinor()==CMMsg.TYP_EXPIRE)
@@ -415,7 +415,7 @@ public class StdAuctioneer extends StdMOB implements Auctioneer
         return super.okMessage(myHost,msg);
     }
 
-    public void executeMsg(Environmental myHost, CMMsg msg)
+    public void executeMsg(final Environmental myHost, final CMMsg msg)
     {
         MOB mob=msg.source();
         if(msg.amITarget(this))

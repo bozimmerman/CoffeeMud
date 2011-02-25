@@ -97,7 +97,7 @@ public class Chant_Nectar extends Chant
 		return true;
 	}
 
-	public void executeMsg(Environmental myHost, CMMsg msg)
+	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		if(affected!=null)
 		if(msg.amITarget(affected))

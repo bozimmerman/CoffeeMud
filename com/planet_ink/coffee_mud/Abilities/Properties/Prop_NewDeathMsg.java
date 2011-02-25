@@ -41,7 +41,7 @@ public class Prop_NewDeathMsg extends Property
 	public String accountForYourself()
 	{ return "Changed death msg";	}
 
-	public boolean okMessage(Environmental myHost, CMMsg msg)
+	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if((affected==msg.source())
 		&&(msg.targetMessage()==null)

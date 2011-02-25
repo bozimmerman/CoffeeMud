@@ -264,7 +264,7 @@ public class StdExit implements Exit
 			return openWord()+"ed";
 	}
 	
-	public boolean okMessage(Environmental myHost, CMMsg msg)
+	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
         MsgListener N=null;
         for(int b=0;b<numBehaviors();b++)
@@ -493,7 +493,7 @@ public class StdExit implements Exit
 		return Say;
 	}
 
-	public void executeMsg(Environmental myHost, CMMsg msg)
+	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
         MsgListener N=null;
         for(int b=0;b<numBehaviors();b++)

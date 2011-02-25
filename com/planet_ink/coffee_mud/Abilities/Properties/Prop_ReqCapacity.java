@@ -79,7 +79,7 @@ public class Prop_ReqCapacity extends Property
 		}
 	}
 	
-	public boolean okMessage(Environmental myHost, CMMsg msg)
+	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(affected!=null)
 		switch(msg.targetMinor())

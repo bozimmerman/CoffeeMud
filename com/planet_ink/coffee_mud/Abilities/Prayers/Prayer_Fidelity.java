@@ -56,7 +56,7 @@ public class Prayer_Fidelity extends Prayer
 			mob.tell("Your magical fidelity subsides.");
 	}
 
-	public boolean okMessage(Environmental myHost, CMMsg msg)
+	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(!super.okMessage(myHost,msg)) return false;
 		if(!(affected instanceof MOB)) return true;

@@ -63,7 +63,7 @@ public class Skill_Enslave extends StdSkill
 	    super.setMiscText(txt);
 	}
 	
-	public void executeMsg(Environmental myHost, CMMsg msg)
+	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		// undo the affects of this spell
 		if((affected==null)||(!(affected instanceof MOB)))

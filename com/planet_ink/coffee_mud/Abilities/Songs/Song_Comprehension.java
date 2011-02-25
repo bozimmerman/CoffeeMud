@@ -40,7 +40,7 @@ public class Song_Comprehension extends Song
 	public int abstractQuality(){ return Ability.QUALITY_OK_OTHERS;}
     protected boolean HAS_QUANTITATIVE_ASPECT(){return false;}
 
-	public void executeMsg(Environmental myHost, CMMsg msg)
+	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);
 		if((affected instanceof MOB)

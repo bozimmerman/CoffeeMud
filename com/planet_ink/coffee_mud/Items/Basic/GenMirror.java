@@ -53,7 +53,7 @@ public class GenMirror extends GenItem
 		return "You see yourself in it!";
 	}
 
-	public boolean okMessage(Environmental myHost, CMMsg msg)
+	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if((owner==null)||(!(owner instanceof MOB))||(amWearingAt(Wearable.IN_INVENTORY)))
 			return super.okMessage(myHost,msg);

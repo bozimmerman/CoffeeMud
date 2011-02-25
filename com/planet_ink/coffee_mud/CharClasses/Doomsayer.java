@@ -165,7 +165,7 @@ public class Doomsayer extends Cleric
 	public String getOtherBonusDesc(){return "Receives 1 pt damage reduction/level from fire attacks.";}
 	public String getOtherLimitsDesc(){return "Always fumbles good prayers, and fumbles all prayers when alignment is above 500.  Qualifies and receives evil prayers.  Using non-aligned prayers introduces failure chance.  Vulnerable to cold attacks.";}
 
-	public boolean okMessage(Environmental myHost, CMMsg msg)
+	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(!(myHost instanceof MOB)) return super.okMessage(myHost,msg);
 		MOB myChar=(MOB)myHost;

@@ -81,7 +81,7 @@ public class Trap_BearTrap extends StdTrap
 		return true;
 	}
 
-	public boolean okMessage(Environmental myHost, CMMsg msg)
+	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if((sprung)
 		&&(trapped!=null)

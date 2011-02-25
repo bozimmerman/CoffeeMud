@@ -45,7 +45,7 @@ public class Fighter_Fragmentation extends FighterSkill
 	public boolean isAutoInvoked(){return true;}
 	public boolean canBeUninvoked(){return false;}
 
-	public void executeMsg(Environmental myHost, CMMsg msg)
+	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		if((msg.target() instanceof Weapon)
 		&&(msg.tool()==this))
@@ -53,7 +53,7 @@ public class Fighter_Fragmentation extends FighterSkill
 		super.executeMsg(myHost,msg);
 	}
 
-	public boolean okMessage(Environmental myHost, CMMsg msg)
+	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if((affected instanceof MOB)
 		&&(msg.amISource((MOB)affected))

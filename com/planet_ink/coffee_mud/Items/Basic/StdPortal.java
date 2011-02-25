@@ -75,7 +75,7 @@ public class StdPortal extends StdContainer implements Rideable, Exit
     public short exitUsage(short change){ return 0;}
 	public String displayText(){return displayText;}
 	public boolean amRiding(Rider mob){ return false;}
-	public boolean okMessage(Environmental myHost, CMMsg msg)
+	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(!super.okMessage(myHost,msg))
 			return false;
@@ -141,7 +141,7 @@ public class StdPortal extends StdContainer implements Rideable, Exit
         return R;
     }
     
-	public void executeMsg(Environmental myHost, CMMsg msg)
+	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);
 		switch(msg.targetMinor())

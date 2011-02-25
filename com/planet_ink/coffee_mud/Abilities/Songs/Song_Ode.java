@@ -229,7 +229,7 @@ public class Song_Ode extends Song
 		}
 	}
 
-	public void executeMsg(Environmental myHost, CMMsg msg)
+	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		if((whom!=null)
 		&&(song==null)

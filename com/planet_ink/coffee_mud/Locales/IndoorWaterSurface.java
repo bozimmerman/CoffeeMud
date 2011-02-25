@@ -48,7 +48,7 @@ public class IndoorWaterSurface extends StdRoom implements Drink
 	public void setDecayTime(long time){}
 
 
-	public boolean okMessage(Environmental myHost, CMMsg msg)
+	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		switch(WaterSurface.isOkWaterSurfaceAffect(this,msg))
 		{
@@ -58,7 +58,7 @@ public class IndoorWaterSurface extends StdRoom implements Drink
 		return super.okMessage(myHost,msg);
 	}
 
-	public void executeMsg(Environmental myHost, CMMsg msg)
+	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);
 		UnderWater.sinkAffects(this,msg);

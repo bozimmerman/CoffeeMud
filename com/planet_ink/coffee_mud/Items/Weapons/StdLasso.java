@@ -55,7 +55,7 @@ public class StdLasso extends StdWeapon
 		setRawLogicalAnd(true);
 	}
 
-	public void executeMsg(Environmental myHost, CMMsg msg)
+	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		if((msg.tool()==this)
 		&&(msg.targetMinor()==CMMsg.TYP_WEAPONATTACK)

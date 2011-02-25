@@ -52,7 +52,7 @@ public class BagOfEndlessness extends BagOfHolding
 		recoverPhyStats();
 	}
 
-	public void executeMsg(Environmental myHost, CMMsg msg)
+	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		if(msg.amITarget(this)
 		&&(msg.tool()!=null)

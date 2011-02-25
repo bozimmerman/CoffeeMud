@@ -231,7 +231,7 @@ public class StdScroll extends StdItem implements MiscMagic, Scroll
 	
 	public List<Ability> getSpells(){ return getSpells(this);}
 
-	public void executeMsg(Environmental myHost, CMMsg msg)
+	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		if(msg.amITarget(this))
 		{

@@ -45,7 +45,7 @@ public class Thief_SilentLoot extends ThiefSkill
 	private static final String[] triggerStrings = {"SILENTLOOT"};
 	public String[] triggerStrings(){return triggerStrings;}
 
-	public void executeMsg(Environmental myHost, CMMsg msg)
+	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);
 		if((affected!=null)&&(affected instanceof MOB))

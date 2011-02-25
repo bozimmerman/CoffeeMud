@@ -54,7 +54,7 @@ public class Fighter_Pin extends FighterSkill
 	public int usageType(){return USAGE_MOVEMENT;}
 	protected MOB pairedWith=null;
 
-	public boolean okMessage(Environmental myHost, CMMsg msg)
+	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if((affected==null)||(!(affected instanceof MOB)))
 			return true;

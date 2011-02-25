@@ -85,7 +85,7 @@ public class Prop_LangTranslator extends Property implements Language
     public List<String[]> translationVector(String language) { return new Vector();}
     public String translate(String language, String word) { return word;}
     
-	public void executeMsg(Environmental myHost, CMMsg msg)
+	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);
 		if(msg.tool() instanceof Ability)

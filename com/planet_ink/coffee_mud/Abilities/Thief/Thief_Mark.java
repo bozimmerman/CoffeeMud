@@ -57,7 +57,7 @@ public class Thief_Mark extends ThiefSkill
 		return "";
 	}
 
-	public void executeMsg(Environmental myHost, CMMsg msg)
+	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		if(msg.amISource(mark)&&(msg.sourceMinor()==CMMsg.TYP_DEATH))
 		{

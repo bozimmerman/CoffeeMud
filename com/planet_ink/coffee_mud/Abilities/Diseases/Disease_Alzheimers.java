@@ -52,7 +52,7 @@ public class Disease_Alzheimers extends Disease
 	public int abilityCode(){return 0;}
 	protected int everyTick=0;
 
-	public boolean okMessage(Environmental myHost, CMMsg msg)
+	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if((affected==null)||(!(affected instanceof MOB)))
 			return super.okMessage(myHost,msg);

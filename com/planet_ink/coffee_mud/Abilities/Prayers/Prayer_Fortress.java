@@ -59,7 +59,7 @@ public class Prayer_Fortress extends Prayer
 				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"The unholy fortress around <S-NAME> fades.");
 	}
 
-	public boolean okMessage(Environmental myHost, CMMsg msg)
+	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(!super.okMessage(myHost,msg))
 			return false;

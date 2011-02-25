@@ -47,7 +47,7 @@ public class Prayer_BloodHearth extends Prayer
 	protected int overrideMana(){return Integer.MAX_VALUE;}
 	public long flags(){return Ability.FLAG_UNHOLY;}
 
-	public boolean okMessage(Environmental myHost, CMMsg msg)
+	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if((affected==null)||(!(affected instanceof Room)))
 			return super.okMessage(myHost,msg);

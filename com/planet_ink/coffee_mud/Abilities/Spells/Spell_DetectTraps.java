@@ -124,7 +124,7 @@ public class Spell_DetectTraps extends Spell
 		return msg.toString();
 	}
 
-	public void executeMsg(Environmental myHost, CMMsg msg)
+	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);
 		if((affected!=null)

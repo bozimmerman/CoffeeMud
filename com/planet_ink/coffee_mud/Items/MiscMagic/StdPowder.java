@@ -74,7 +74,7 @@ public class StdPowder extends StdItem implements MagicDust {
 
 
 // That which makes Powders work.  They're an item that when successfully dusted on a target, are 'cast' on the target
-	public void executeMsg(Environmental myHost, CMMsg msg)
+	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
         if(msg.sourceMinor()==CMMsg.TYP_THROW ) 
 		{

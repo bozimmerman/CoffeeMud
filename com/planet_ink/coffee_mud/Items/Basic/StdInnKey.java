@@ -88,7 +88,7 @@ public class StdInnKey extends StdKey implements InnKey
 		}
 	}
 
-	public void executeMsg(Environmental myHost, CMMsg msg)
+	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);
 		if(((msg.targetMinor()==CMMsg.TYP_GIVE)
@@ -102,7 +102,7 @@ public class StdInnKey extends StdKey implements InnKey
 			destroy();
 		}
 	}
-	public boolean okMessage(Environmental myHost, CMMsg msg)
+	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(!super.okMessage(myHost,msg))
 			return false;

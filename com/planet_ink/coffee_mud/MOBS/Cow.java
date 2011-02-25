@@ -62,13 +62,13 @@ public class Cow extends StdMOB implements Drink
 	public long decayTime(){return 0;}
 	public void setDecayTime(long time){}
 
-	public boolean okMessage(Environmental myHost, CMMsg msg)
+	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(msg.amITarget(this)&&(msg.targetMinor()==CMMsg.TYP_DRINK))
 			return true;
 		return super.okMessage(myHost,msg);
 	}
-	public void executeMsg(Environmental myHost, CMMsg msg)
+	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);
 		if(msg.amITarget(this)&&(msg.targetMinor()==CMMsg.TYP_DRINK))

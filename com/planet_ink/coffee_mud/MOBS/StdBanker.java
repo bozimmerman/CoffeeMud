@@ -442,7 +442,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 		return min;
 	}
 
-	public void executeMsg(Environmental myHost, CMMsg msg)
+	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		MOB mob=msg.source();
 		if(msg.amITarget(this))
@@ -722,7 +722,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 		super.executeMsg(myHost,msg);
 	}
 
-	public boolean okMessage(Environmental myHost, CMMsg msg)
+	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		MOB mob=msg.source();
 		if(msg.amITarget(this))

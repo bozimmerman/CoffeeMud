@@ -468,7 +468,7 @@ public class GenAbility extends StdAbility
         return true;
     }
 
-    public void executeMsg(Environmental myHost, CMMsg msg)
+    public void executeMsg(final Environmental myHost, final CMMsg msg)
     {
         ScriptingEngine S=getScripter();
         if(S!=null)
@@ -493,7 +493,7 @@ public class GenAbility extends StdAbility
             ((Ability)V(ID,V_HERE)).affectCharState(affectedMob,affectableMaxState);
     }
 
-    public boolean okMessage(Environmental myHost, CMMsg msg)
+    public boolean okMessage(final Environmental myHost, final CMMsg msg)
     {
         ScriptingEngine S=getScripter();
         if(S!=null)

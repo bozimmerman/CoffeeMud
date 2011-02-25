@@ -687,7 +687,7 @@ public class StdCharClass implements CharClass
 	{
 	}
 
-	public boolean okMessage(Environmental myHost, CMMsg msg)
+	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if((msg.source()==myHost)
 		&&(!msg.source().isMonster()))
@@ -707,7 +707,7 @@ public class StdCharClass implements CharClass
 	}
 
 
-	public void executeMsg(Environmental myHost, CMMsg msg)
+	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 	    if((msg.source()==myHost)
 	    &&(msg.targetMinor()==CMMsg.TYP_WIELD)

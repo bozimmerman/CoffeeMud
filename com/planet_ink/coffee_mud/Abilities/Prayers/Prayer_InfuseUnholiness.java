@@ -69,7 +69,7 @@ public class Prayer_InfuseUnholiness extends Prayer
 
 	}
 
-	public boolean okMessage(Environmental myHost, CMMsg msg)
+	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(serviceRunning==0)
 			return super.okMessage(myHost, msg);

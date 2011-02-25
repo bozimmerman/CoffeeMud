@@ -259,7 +259,7 @@ public class StdDeckOfCards extends StdHandOfCards implements DeckOfCards
     // and if so, whether this object should modify or cancel
     // the event before it takes place.
     // There are two things our deck needs to handle here.
-    public boolean okMessage(Environmental myHost, CMMsg msg)
+    public boolean okMessage(final Environmental myHost, final CMMsg msg)
     {
         // In this case, we use the instance of an event to trigger
         // the initial filling of the deck with cards, since, once

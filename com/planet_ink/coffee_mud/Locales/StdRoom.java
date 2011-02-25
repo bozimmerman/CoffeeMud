@@ -51,15 +51,15 @@ public class StdRoom implements Room
 	public Exit[] 		exits=new Exit[Directions.NUM_DIRECTIONS()];
 	public Room[] 		doors=new Room[Directions.NUM_DIRECTIONS()];
     protected String[] 	xtraValues=null;
+	protected boolean 	mobility=true;
+	protected GridLocale gridParent=null;
+	protected long 		tickStatus=Tickable.STATUS_NOT;
+	protected long 		expirationDate=0;
 	protected SVector<Ability> 			affects=null;
 	protected SVector<Behavior> 		behaviors=null;
     protected SVector<ScriptingEngine>  scripts=null;
 	protected SVector<Item> 			contents=new SVector(1);
 	protected SVector<MOB> 				inhabitants=new SVector(1);
-	protected boolean mobility=true;
-	protected GridLocale gridParent=null;
-	protected long tickStatus=Tickable.STATUS_NOT;
-	protected long expirationDate=0;
 
 	// base move points and thirst points per round
 	protected int myResource=-1;
@@ -163,12 +163,12 @@ public class StdRoom implements Room
 					if((R.getItem(ii)==I2.container())&&(ii<numItems()))
 					{I2.setContainer((Container)getItem(ii)); break;}
 		}
-		for(int m=0;m<R.numInhabitants();m++)
+		for(final Enumeration<MOB> m=R.inhabitants();m.hasMoreElements();)
 		{
-			MOB M2=R.fetchInhabitant(m);
-			if((M2!=null)&&(M2.isSavable()))
+			final MOB M2=m.nextElement();
+			if(M2.isSavable())
 			{
-				MOB M=(MOB)M2.copyOf();
+				final MOB M=(MOB)M2.copyOf();
 				if(M.getStartRoom()==R)
 					M.setStartRoom(this);
 				M.setLocation(this);
@@ -178,19 +178,18 @@ public class StdRoom implements Room
 		for(final Enumeration<Ability> a=R.effects();a.hasMoreElements();)
 		{
 			final Ability A=a.nextElement();
-			if((A!=null)&&(!A.canBeUninvoked()))
+			if(!A.canBeUninvoked())
 				addEffect((Ability)A.copyOf());
 		}
-		for(Enumeration<Behavior> e=R.behaviors();e.hasMoreElements();)
+		for(final Enumeration<Behavior> e=R.behaviors();e.hasMoreElements();)
 		{
 			Behavior B=e.nextElement();
-			if(B!=null)
-				addBehavior((Behavior)B.copyOf());
+			addBehavior((Behavior)B.copyOf());
 		}
-		for(Enumeration<ScriptingEngine> e=R.scripts();e.hasMoreElements();)
+		for(final Enumeration<ScriptingEngine> e=R.scripts();e.hasMoreElements();)
 		{
 			ScriptingEngine SE=e.nextElement();
-            if(SE!=null) addScript((ScriptingEngine)SE.copyOf());
+            addScript((ScriptingEngine)SE.copyOf());
         }
 	}
 	public CMObject copyOf()
@@ -458,14 +457,14 @@ public class StdRoom implements Room
 	
 	protected Vector herbTwistChart(){return null;}
 
-	public boolean okMessage(Environmental myHost, CMMsg msg)
+	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(!getArea().okMessage(this,msg))
 			return false;
 
 		if(msg.amITarget(this))
 		{
-			MOB mob=msg.source();
+			final MOB mob=msg.source();
 			switch(msg.targetMinor())
 			{
 			case CMMsg.TYP_EXPIRE:
@@ -475,7 +474,7 @@ public class StdRoom implements Room
 				if(!CMLib.map().isClearableRoom(this)) return false;
 				for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 				{
-					Room R2=rawDoors()[d];
+					final Room R2=rawDoors()[d];
 					if((R2!=null)&&(!CMLib.map().isClearableRoom(R2)))
 						return false;
 				}
@@ -491,7 +490,8 @@ public class StdRoom implements Room
 					return false;
 				if(!mob.isMonster())
 				{
-					if((mob.location()!=null)&&(mob.location().getArea()!=getArea()))
+					final Room R=mob.location();
+					if((R!=null)&&(R.getArea()!=getArea()))
 						CMLib.factions().updatePlayerFactions(mob,this);
 					giveASky(0);
 				}
@@ -534,43 +534,41 @@ public class StdRoom implements Room
 		if(isInhabitant(msg.source()))
 			if(!msg.source().okMessage(this,msg))
 				return false;
-	    MsgListener N=null;
-		for(int i=0;i<numInhabitants();i++)
+		for(final Enumeration<MOB> m=inhabitants();m.hasMoreElements();)
 		{
-			N=fetchInhabitant(i);
-			if((N!=null)
-			&&(N!=msg.source())
-			&&(!N.okMessage(this,msg)))
+			final MOB M=m.nextElement();
+			if((M!=msg.source())
+			&&(!M.okMessage(this,msg)))
 				return false;
 		}
-		for(int i=0;i<numItems();i++)
+		for(final Enumeration<Item> i=items();i.hasMoreElements();)
 		{
-			N=getItem(i);
-			if((N!=null)&&(!N.okMessage(this,msg)))
+			final Item I=i.nextElement();
+			if(!I.okMessage(this,msg))
 				return false;
 		}
 		for(final Enumeration<Ability> a=effects();a.hasMoreElements();)
 		{
-			N=a.nextElement();
-			if((N!=null)&&(!N.okMessage(this,msg)))
+			final Ability A=a.nextElement();
+			if(!A.okMessage(this,msg))
 				return false;
 		}
-		for(int b=0;b<numBehaviors();b++)
+		for(final Enumeration<Behavior> b=behaviors();b.hasMoreElements();)
 		{
-			N=fetchBehavior(b);
-			if((N!=null)&&(!N.okMessage(this,msg)))
+			final Behavior B=b.nextElement();
+			if(!B.okMessage(this,msg))
 				return false;
 		}
-        for(int s=0;s<numScripts();s++)
+		for(final Enumeration<ScriptingEngine> s=scripts();s.hasMoreElements();)
         {
-            N=fetchScript(s);
-            if((N!=null)&&(!N.okMessage(this,msg)))
+			final ScriptingEngine S=s.nextElement();
+            if(!S.okMessage(this,msg))
                 return false;
         }
 
 		for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 		{
-			Exit thisExit=getRawExit(d);
+			final Exit thisExit=getRawExit(d);
 			if(thisExit!=null)
 				if(!thisExit.okMessage(this,msg))
 					return false;
@@ -578,13 +576,13 @@ public class StdRoom implements Room
 		return true;
 	}
 
-	public void executeMsg(Environmental myHost, CMMsg msg)
+	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		getArea().executeMsg(this,msg);
 
 		if(msg.amITarget(this))
 		{
-			MOB mob=msg.source();
+			final MOB mob=msg.source();
 			switch(msg.targetMinor())
 			{
 			case CMMsg.TYP_LEAVE:
@@ -630,40 +628,35 @@ public class StdRoom implements Room
 				break;
 			}
 		}
-		MsgListener N=null;
-		for(int i=0;i<numItems();i++)
+		for(final Enumeration<Item> i=items();i.hasMoreElements();)
 		{
-			N=getItem(i);
-			if(N!=null)
-				N.executeMsg(this,msg);
+			final Item I=i.nextElement();
+			I.executeMsg(this,msg);
 		}
 
 		for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 		{
-			N=getRawExit(d);
-			if(N!=null)
-				N.executeMsg(this,msg);
+			final Exit E=getRawExit(d);
+			if(E!=null)
+				E.executeMsg(this,msg);
 		}
 
-		for(int b=0;b<numBehaviors();b++)
+		for(final Enumeration<Behavior> b=behaviors();b.hasMoreElements();)
 		{
-			N=fetchBehavior(b);
-			if(N!=null)
-				N.executeMsg(this,msg);
+			final Behavior B=b.nextElement();
+			B.executeMsg(this,msg);
 		}
         
-        for(int s=0;s<numScripts();s++)
+		for(final Enumeration<ScriptingEngine> s=scripts();s.hasMoreElements();)
         {
-            N=fetchScript(s);
-            if(N!=null)
-                N.executeMsg(this,msg);
+			final ScriptingEngine S=s.nextElement();
+            S.executeMsg(this,msg);
         }
         
 		for(final Enumeration<Ability> a=effects();a.hasMoreElements();)
 		{
-			N=a.nextElement();
-			if(N!=null)
-				N.executeMsg(this,msg);
+			final Ability A=a.nextElement();
+			A.executeMsg(this,msg);
 		}
         
 		if(msg.sourceMinor()==CMMsg.TYP_SHUTDOWN)
@@ -710,18 +703,17 @@ public class StdRoom implements Room
 				else
 				if((roomID().length()>0)
 				&&(CMSecurity.isSaveFlag("ROOMMOBS")
-						||CMSecurity.isSaveFlag("ROOMITEMS")
-						||CMSecurity.isSaveFlag("ROOMSHOPS")))
+					||CMSecurity.isSaveFlag("ROOMITEMS")
+					||CMSecurity.isSaveFlag("ROOMSHOPS")))
 				{
-					MOB M=null;
-					Vector shopmobs=new Vector(1);
-					Vector bodies=new Vector(1);
+					final Vector shopmobs=new Vector(1);
+					final Vector bodies=new Vector(1);
 			        if(CMSecurity.isSaveFlag("ROOMMOBS"))
 			        {
-			            for(int m=0;m<numInhabitants();m++)
+			            for(final Enumeration<MOB> m=inhabitants();m.hasMoreElements();)
 			            {
-			                M=fetchInhabitant(m);
-			                if((M!=null)&&(M.isSavable()))
+			                final MOB M=m.nextElement();
+			                if(M.isSavable())
 			                {
 			                    M.setStartRoom(this);
 			                    M.text(); // this permanizes his current state
@@ -732,11 +724,10 @@ public class StdRoom implements Room
 			        else
 			        if(CMSecurity.isSaveFlag("ROOMSHOPS"))
 			        {
-			            for(int m=0;m<numInhabitants();m++)
+			            for(final Enumeration<MOB> m=inhabitants();m.hasMoreElements();)
 			            {
-			                M=fetchInhabitant(m);
-			                if((M!=null)
-			                &&(M.isSavable())
+			                final MOB M=m.nextElement();
+			                if((M.isSavable())
 			                &&(M instanceof ShopKeeper)
 			                &&(M.getStartRoom()==this))
 			                    shopmobs.addElement(M);
@@ -746,9 +737,9 @@ public class StdRoom implements Room
 			        }
 			        if(CMSecurity.isSaveFlag("ROOMITEMS"))
 			        {
-				        for(int i=0;i<numItems();i++)
-				        {
-				            Item I=getItem(i);
+			            for(final Enumeration<Item> i=items();i.hasMoreElements();)
+			            {
+			                final Item I=i.nextElement();
 				            if(I instanceof DeadBody)
 				                bodies.addElement(I);
 				        }
@@ -757,8 +748,8 @@ public class StdRoom implements Room
 			            CMLib.database().DBUpdateItems(this);
 			        }
 				}
-				Area A=getArea();
-				String roomID=roomID();
+				final Area A=getArea();
+				final String roomID=roomID();
 				setGridParent(null);
 				if(!CMProps.getBoolVar(CMProps.SYSTEMB_MUDSHUTTINGDOWN))
 				{
@@ -773,12 +764,12 @@ public class StdRoom implements Room
 
 	public void startItemRejuv()
 	{
-		for(int c=0;c<numItems();c++)
-		{
-			Item item=getItem(c);
-			if((item!=null)&&(item.container()==null))
+        for(final Enumeration<Item> i=items();i.hasMoreElements();)
+        {
+            final Item item=i.nextElement();
+			if(item.container()==null)
 			{
-				ItemTicker I=(ItemTicker)CMClass.getAbility("ItemRejuv");
+				final ItemTicker I=(ItemTicker)CMClass.getAbility("ItemRejuv");
 				I.unloadIfNecessary(item);
 				if((item.phyStats().rejuv()<Integer.MAX_VALUE)
 				&&(item.phyStats().rejuv()>0))
@@ -788,27 +779,23 @@ public class StdRoom implements Room
 	}
     
 	public long getTickStatus(){return tickStatus;}
-	public boolean tick(Tickable ticking, int tickID)
+	public boolean tick(final Tickable ticking, final int tickID)
 	{
 		tickStatus=Tickable.STATUS_START;
 		if(tickID==Tickable.TICKID_ROOM_BEHAVIOR)
 		{
-            Tickable T=null;
             tickStatus=Tickable.STATUS_BEHAVIOR;
 			for(final Enumeration<Behavior> b=behaviors();b.hasMoreElements();)
 			{
-				T=b.nextElement();
-                if(T!=null)
-                    T.tick(ticking,tickID);
+				final Behavior B=b.nextElement();
+                B.tick(ticking,tickID);
             }
-            int numS=numScripts();
-            if((numBehaviors()<=0)&&(numS<=0)) return false;
-            for(int s=0;s<numS;s++)
+            if((numBehaviors()<=0)&&(numScripts()<=0)) return false;
+            tickStatus=Tickable.STATUS_SCRIPT;
+    		for(final Enumeration<ScriptingEngine> s=scripts();s.hasMoreElements();)
             {
-                tickStatus=Tickable.STATUS_SCRIPT+s;
-                T=fetchScript(s);
-                if(T!=null)
-                    T.tick(ticking,tickID);
+    			final ScriptingEngine S=s.nextElement();
+                S.tick(ticking,tickID);
             }
 		}
 		else
@@ -817,9 +804,8 @@ public class StdRoom implements Room
 			for(final Enumeration<Ability> a=effects();a.hasMoreElements();)
 			{
 				final Ability A=a.nextElement();
-				if(A!=null)
-					if(!A.tick(ticking,tickID))
-						A.unInvoke();
+				if(!A.tick(ticking,tickID))
+					A.unInvoke();
 			}
 		}
 		tickStatus=Tickable.STATUS_NOT;
@@ -837,41 +823,43 @@ public class StdRoom implements Room
 	public void recoverPhyStats()
 	{
 		basePhyStats.copyInto(phyStats);
-		Area myArea=getArea();
+		final Area myArea=getArea();
 		if(myArea!=null)
 			myArea.affectPhyStats(this,phyStats());
 
 		for(final Enumeration<Ability> a=effects();a.hasMoreElements();)
 		{
 			final Ability A=a.nextElement();
-			if(A!=null) A.affectPhyStats(this,phyStats);
+			A.affectPhyStats(this,phyStats);
 		}
-		for(Item I : contents) I.affectPhyStats(this,phyStats);
-		for(MOB M : inhabitants) M.affectPhyStats(this,phyStats);
-		
+		for(final Enumeration<Item> i=items();i.hasMoreElements();)
+		{
+			final Item I=i.nextElement();
+			I.affectPhyStats(this,phyStats);
+		}
+		for(final Enumeration<MOB> m=inhabitants();m.hasMoreElements();)
+		{
+			final MOB M=m.nextElement();
+			M.affectPhyStats(this,phyStats);
+		}
 	}
 	public void recoverRoomStats()
 	{
 		recoverPhyStats();
-		for(int m=0;m<numInhabitants();m++)
+		for(final Enumeration<MOB> m=inhabitants();m.hasMoreElements();)
 		{
-			MOB M=fetchInhabitant(m);
-			if(M!=null)
-			{
-				M.recoverCharStats();
-				M.recoverPhyStats();
-				M.recoverMaxState();
-			}
+			final MOB M=m.nextElement();
+			M.recoverCharStats();
+			M.recoverPhyStats();
+			M.recoverMaxState();
 		}
-		for(int d=0;d<exits.length;d++)
+		for(final Exit X : exits)
+			if(X!=null) 
+				X.recoverPhyStats();
+		for(final Enumeration<Item> i=items();i.hasMoreElements();)
 		{
-			Exit X=exits[d];
-			if(X!=null) X.recoverPhyStats();
-		}
-		for(int i=0;i<numItems();i++)
-		{
-			Item I=getItem(i);
-			if(I!=null) I.recoverPhyStats();
+			final Item I=i.nextElement();
+			I.recoverPhyStats();
 		}
 	}
 
@@ -885,14 +873,14 @@ public class StdRoom implements Room
 		getArea().affectPhyStats(affected,affectableStats);
 		//if(phyStats().sensesMask()>0)
 		//	affectableStats.setSensesMask(affectableStats.sensesMask()|phyStats().sensesMask());
-		int disposition=phyStats().disposition()
+		final int disposition=phyStats().disposition()
 			&((Integer.MAX_VALUE-(PhyStats.IS_DARK|PhyStats.IS_LIGHTSOURCE|PhyStats.IS_SLEEPING|PhyStats.IS_HIDDEN)));
 		if(disposition>0)
 			affectableStats.setDisposition(affectableStats.disposition()|disposition);
 		for(final Enumeration<Ability> a=effects();a.hasMoreElements();)
 		{
 			final Ability A=a.nextElement();
-			if((A!=null)&&(A.bubbleAffect()))
+			if(A.bubbleAffect())
 			   A.affectPhyStats(affected,affectableStats);
 		}
 	}
@@ -902,7 +890,7 @@ public class StdRoom implements Room
 		for(final Enumeration<Ability> a=effects();a.hasMoreElements();)
 		{
 			final Ability A=a.nextElement();
-			if((A!=null)&&(A.bubbleAffect()))
+			if(A.bubbleAffect())
 			   A.affectCharStats(affectedMob,affectableStats);
 		}
 	}
@@ -912,7 +900,7 @@ public class StdRoom implements Room
 		for(final Enumeration<Ability> a=effects();a.hasMoreElements();)
 		{
 			final Ability A=a.nextElement();
-			if((A!=null)&&(A.bubbleAffect()))
+			if(A.bubbleAffect())
 			   A.affectCharState(affectedMob,affectableMaxState);
 		}
 	}
@@ -1006,7 +994,7 @@ public class StdRoom implements Room
 	public void bringMobHere(MOB mob, boolean andFollowers)
 	{
 		if(mob==null) return;
-		Room oldRoom=mob.location();
+		final Room oldRoom=mob.location();
 		if(oldRoom!=null)
 			oldRoom.delInhabitant(mob);
 		addInhabitant(mob);
@@ -1014,14 +1002,14 @@ public class StdRoom implements Room
 
 		if((andFollowers)&&(oldRoom!=null))
 		{
-			for(int f=0;f<mob.numFollowers();f++)
+			for(final Enumeration<MOB.Follower> f=mob.followers();f.hasMoreElements();)
 			{
-				MOB fol=mob.fetchFollower(f);
-				if((fol!=null)&&(fol.location()==oldRoom))
-					bringMobHere(fol,true);
+				final MOB folM=f.nextElement().follower;
+				if(folM.location()==oldRoom)
+					bringMobHere(folM,true);
 			}
 		}
-		Rideable RI=mob.riding();
+		final Rideable RI=mob.riding();
 		if((RI!=null)&&(CMLib.map().roomLocation(RI)==oldRoom))
 		{
 			if((RI.isMobileRideBasis())
@@ -1044,10 +1032,9 @@ public class StdRoom implements Room
 		}
 		if((oldRoom!=null)&&(mob instanceof Rideable)&&(oldRoom!=this))
 		{
-			Rider RR=null;
-			for(int r=0;r<((Rideable)mob).numRiders();r++)
+			for(final Iterator<Rider> r=((Rideable)mob).riders();r.hasNext();)
 			{
-				RR=((Rideable)mob).fetchRider(r);
+				final Rider RR=r.next();
 				if(CMLib.map().roomLocation(RR)==oldRoom)
 				{
 					if(((Rideable)mob).isMobileRideBasis())
@@ -1098,7 +1085,7 @@ public class StdRoom implements Room
 		}
 		item.setContainer(null);
 		
-		Rideable RI=item.riding();
+		final Rideable RI=item.riding();
 		if((RI!=null)&&(o instanceof Room)&&(CMLib.map().roomLocation(RI)==o))
 		{
 			if((RI.isMobileRideBasis())
@@ -1216,8 +1203,8 @@ public class StdRoom implements Room
 	{
 		if((Log.debugChannelOn())&&(CMSecurity.isDebugging("MESSAGES")))
 			Log.debugOut("StdRoom",((msg.source()!=null)?msg.source().ID():"null")+":"+msg.sourceCode()+":"+msg.sourceMessage()+"/"+((msg.target()!=null)?msg.target().ID():"null")+":"+msg.targetCode()+":"+msg.targetMessage()+"/"+((msg.tool()!=null)?msg.tool().ID():"null")+"/"+msg.othersCode()+":"+msg.othersMessage());
-		for(MOB otherMOB : inhabitants)
-			if((otherMOB!=null)&&(otherMOB!=source))
+		for(final MOB otherMOB : inhabitants)
+			if(otherMOB!=source)
 				otherMOB.executeMsg(otherMOB,msg);
 		executeMsg(source,msg);
 		CMLib.commands().monitorGlobalMessage(this, msg);
@@ -1385,7 +1372,7 @@ public class StdRoom implements Room
 		return true;
 	}
 
-	public Exit getRawExit(int dir)
+	public Exit getRawExit(final int dir)
 	{
 	    if(dir<exits.length)
 	        return exits[dir];
@@ -1733,9 +1720,10 @@ public class StdRoom implements Room
 		String newThingName=CMLib.lang().preItemParser(thingName);
 		if(newThingName!=null) thingName=newThingName;
 		PhysicalAgent found=null;
-		SVector V=contents.copyOf();
-		for(int e=0;e<exits.length;e++)
-		    if(exits[e]!=null)V.addElement(exits[e]);
+		final SVector V=contents.copyOf();
+		for(final Exit X : exits)
+		    if(X!=null)
+		    	V.addElement(X);
 		V.addAll(inhabitants);
 		found=(PhysicalAgent)CMLib.english().fetchAvailable(V,thingName,goodLocation,Wearable.FILTER_ANY,true);
 		if(found==null) found=(PhysicalAgent)CMLib.english().fetchAvailable(V,thingName,goodLocation,Wearable.FILTER_ANY,false);
@@ -1746,7 +1734,7 @@ public class StdRoom implements Room
 		&&(found.displayText().length()==0)
 		&&(thingName.indexOf('.')<0))
 		{
-			PhysicalAgent visibleItem=fetchFromRoomFavorItems(null,thingName+".2");
+			final PhysicalAgent visibleItem=fetchFromRoomFavorItems(null,thingName+".2");
 			if(visibleItem!=null)
 				found=visibleItem;
 		}
@@ -1764,11 +1752,11 @@ public class StdRoom implements Room
 		String newThingName=CMLib.lang().preItemParser(thingName);
 		if(newThingName!=null) thingName=newThingName;
 		PhysicalAgent found=null;
-		SVector V=inhabitants.copyOf();
+		final SVector V=inhabitants.copyOf();
 		V.addAll(contents);
-		for(int e=0;e<exits.length;e++)
-		    if(exits[e]!=null)
-		    	V.addElement(exits[e]);
+		for(final Exit X : exits)
+		    if(X!=null)
+		    	V.addElement(X);
 		found=(PhysicalAgent)CMLib.english().fetchAvailable(V,thingName,goodLocation,Wearable.FILTER_ANY,true);
 		if(found==null) found=(PhysicalAgent)CMLib.english().fetchAvailable(V,thingName,goodLocation,Wearable.FILTER_ANY,false);
 		if(found==null)
@@ -1792,7 +1780,7 @@ public class StdRoom implements Room
 		PhysicalAgent found=null;
 		String newThingName=CMLib.lang().preItemParser(thingName);
 		if(newThingName!=null) thingName=newThingName;
-		boolean mineOnly=(mob!=null)&&(thingName.toUpperCase().trim().startsWith("MY "));
+		final boolean mineOnly=(mob!=null)&&(thingName.toUpperCase().trim().startsWith("MY "));
 		if(mineOnly) thingName=thingName.trim().substring(3).trim();
 		if((mob!=null)&&(favorItems)&&(wornFilter!=Wearable.FILTER_WORNONLY))
 			found=mob.fetchCarried(goodLocation, thingName);
@@ -1905,7 +1893,7 @@ public class StdRoom implements Room
 		for(final Enumeration<Ability> a=effects();a.hasMoreElements();)
 		{
 			final Ability A=a.nextElement();
-			if((A!=null)&&(A.ID().equals(ID)))
+			if(A.ID().equals(ID))
 			   return A;
 		}
 		return null;
@@ -1917,8 +1905,8 @@ public class StdRoom implements Room
 	{
 		if(to==null) return;
 		if(behaviors==null) behaviors=new SVector(1);
-		for(Behavior B : behaviors)
-			if((B!=null)&&(B.ID().equals(to.ID())))
+		for(final Behavior B : behaviors)
+			if(B.ID().equals(to.ID()))
 			   return;
 		if(behaviors.size()==0)
 			CMLib.threads().startTickDown(this,Tickable.TICKID_ROOM_BEHAVIOR,1);
@@ -1955,8 +1943,8 @@ public class StdRoom implements Room
 	public Behavior fetchBehavior(String ID)
 	{
 		if(behaviors==null) return null;
-		for(Behavior B : behaviors)
-			if((B!=null)&&(B.ID().equalsIgnoreCase(ID)))
+		for(final Behavior B : behaviors)
+			if(B.ID().equalsIgnoreCase(ID))
 				return B;
 		return null;
 	}
@@ -1968,11 +1956,10 @@ public class StdRoom implements Room
         if(S==null) return;
         if(!scripts.contains(S)) 
         {
-            ScriptingEngine S2=null;
-            for(int s=0;s<scripts.size();s++)
+            for(final Enumeration<ScriptingEngine> s2=scripts();s2.hasMoreElements();)
             {
-                S2=(ScriptingEngine)scripts.elementAt(s);
-                if((S2!=null)&&(S2.getScript().equalsIgnoreCase(S.getScript())))
+                final ScriptingEngine S2=s2.nextElement();
+                if(S2.getScript().equalsIgnoreCase(S.getScript()))
                     return;
             }
             if(scripts.size()==0)
@@ -2034,7 +2021,7 @@ public class StdRoom implements Room
     public boolean sameAs(Environmental E)
     {
         if(!(E instanceof StdRoom)) return false;
-        String[] codes=getStatCodes();
+        final String[] codes=getStatCodes();
         for(int i=0;i<codes.length;i++)
             if(!E.getStat(codes[i]).equals(getStat(codes[i])))
                 return false;

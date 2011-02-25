@@ -53,7 +53,7 @@ public class Dance_Square extends Dance
         return super.castingQuality(mob,target);
     }
     
-	public void executeMsg(Environmental myHost, CMMsg msg)
+	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		if(msg.amISource(invoker())
 		&&(affected!=invoker())

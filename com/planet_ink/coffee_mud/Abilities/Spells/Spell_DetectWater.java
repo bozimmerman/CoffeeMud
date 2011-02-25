@@ -225,7 +225,7 @@ public class Spell_DetectWater extends Spell
         return super.castingQuality(mob,target);
     }
     
-	public void executeMsg(Environmental myHost, CMMsg msg)
+	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);
 		if((affected!=null)

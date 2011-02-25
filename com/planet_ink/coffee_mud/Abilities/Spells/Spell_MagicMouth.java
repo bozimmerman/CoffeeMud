@@ -54,7 +54,7 @@ public class Spell_MagicMouth extends Spell
 		unInvoke();
 		return;
 	}
-	public void executeMsg(Environmental myHost, CMMsg msg)
+	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);
 

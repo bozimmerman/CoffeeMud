@@ -47,7 +47,7 @@ public class Paladin_Defend extends StdAbility
 	public boolean fullRound=false;
 	public int usageType(){return USAGE_MOVEMENT;}
 
-	public boolean okMessage(Environmental myHost, CMMsg msg)
+	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if((affected==null)||(!(affected instanceof MOB))||(invoker==null))
 			return true;
@@ -68,7 +68,7 @@ public class Paladin_Defend extends StdAbility
 		return super.okMessage(myHost,msg);
 	}
 
-	public void executeMsg(Environmental myHost, CMMsg msg)
+	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);
 		if((affected==null)||(!(affected instanceof MOB))||(invoker==null))

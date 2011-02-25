@@ -69,7 +69,7 @@ public class Spell_FleshStone extends Spell
 		return super.tick(ticking,tickID);
 	}
 
-	public boolean okMessage(Environmental myHost, CMMsg msg)
+	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(affected instanceof MOB)
 		{

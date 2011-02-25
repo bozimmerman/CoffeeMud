@@ -44,7 +44,7 @@ public class Chant_Drifting extends Chant
 	protected int canAffectCode(){return CAN_MOBS;}
 	public long flags(){return Ability.FLAG_MOVING;}
 
-	public boolean okMessage(Environmental myHost, CMMsg msg)
+	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if((affected==null)||(!(affected instanceof MOB)))
 			return true;

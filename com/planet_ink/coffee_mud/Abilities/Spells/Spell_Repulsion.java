@@ -46,7 +46,7 @@ public class Spell_Repulsion extends Spell
 
 	public int amountRemaining=0;
 
-	public boolean okMessage(Environmental myHost, CMMsg msg)
+	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if((affected==null)||(!(affected instanceof MOB)))
 			return true;

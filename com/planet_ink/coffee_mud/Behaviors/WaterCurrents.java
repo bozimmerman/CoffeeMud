@@ -388,11 +388,11 @@ public class WaterCurrents extends ActiveTicker
 		{}
 		public void affectCharState(MOB affectedMob, CharState affectableMaxState)
 		{}
-		public void executeMsg(Environmental myHost, CMMsg msg)
+		public void executeMsg(final Environmental myHost, final CMMsg msg)
 		{
 			return;
 		}
-		public boolean okMessage(Environmental myHost, CMMsg msg)
+		public boolean okMessage(final Environmental myHost, final CMMsg msg)
 		{
 			return true;
 		}

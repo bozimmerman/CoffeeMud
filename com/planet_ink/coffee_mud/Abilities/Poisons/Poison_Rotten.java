@@ -68,7 +68,7 @@ public class Poison_Rotten extends Poison
 		    return "^G"+affected.name()+" was rotten! <S-NAME> bend(s) over with horrid stomach pains!^?";
 	    return "^G<S-NAME> bend(s) over with horrid stomach pains!^?";
 	}
-	public void executeMsg(Environmental myHost, CMMsg msg)
+	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);
 		if((msg.amITarget(affected))

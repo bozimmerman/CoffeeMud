@@ -87,7 +87,7 @@ public class Wizard extends Mage
         return "Unable to learn spells permanently; can only memorize them.";
     }
 
-    public void executeMsg(Environmental myHost, CMMsg msg)
+    public void executeMsg(final Environmental myHost, final CMMsg msg)
     {
         super.executeMsg(myHost,msg);
         if((myHost==null)||(!(myHost instanceof MOB)))
@@ -145,7 +145,7 @@ public class Wizard extends Mage
         }
     }
 
-    public boolean okMessage(Environmental myHost, CMMsg msg)
+    public boolean okMessage(final Environmental myHost, final CMMsg msg)
     {
         if(!(myHost instanceof MOB))
             return super.okMessage(myHost,msg);

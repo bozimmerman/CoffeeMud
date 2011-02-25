@@ -56,7 +56,7 @@ public class Prayer_Monolith extends Prayer
 	protected int amountRemaining=0;
 	protected Item theWall=null;
 
-	public boolean okMessage(Environmental myHost, CMMsg msg)
+	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if((affected==null)||(!(affected instanceof Item)))
 			return true;

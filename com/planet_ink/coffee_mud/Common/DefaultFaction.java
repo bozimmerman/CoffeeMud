@@ -714,7 +714,7 @@ public class DefaultFaction implements Faction, MsgListener
         return 1.0;
     }
 
-    public void executeMsg(Environmental myHost, CMMsg msg)
+    public void executeMsg(final Environmental myHost, final CMMsg msg)
     {
     	FactionChangeEvent[] events;
         if((msg.sourceMinor()==CMMsg.TYP_DEATH)    // A death occured
@@ -930,7 +930,7 @@ public class DefaultFaction implements Faction, MsgListener
         }
     }
 
-    public boolean okMessage(Environmental myHost, CMMsg msg)
+    public boolean okMessage(final Environmental myHost, final CMMsg msg)
     {
         if((msg.sourceMinor()==CMMsg.TYP_EXPCHANGE)  // Experience is being altered
         &&(msg.target() instanceof MOB)           // because a mob died
@@ -1634,7 +1634,7 @@ public class DefaultFaction implements Faction, MsgListener
 	    	return null;
         }
         
-    	public void executeMsg(Environmental myHost, CMMsg msg)
+    	public void executeMsg(final Environmental myHost, final CMMsg msg)
     	{
     		if(noListeners) return;
 			synchronized(lightPresenceAbilities)
@@ -1724,7 +1724,7 @@ public class DefaultFaction implements Faction, MsgListener
             for(Behavior B : myBehaviors)
                 B.executeMsg(myHost, msg);
     	}
-    	public boolean okMessage(Environmental myHost, CMMsg msg)
+    	public boolean okMessage(final Environmental myHost, final CMMsg msg)
     	{
     		if(noListeners) return true;
             for(Ability A : myEffects)

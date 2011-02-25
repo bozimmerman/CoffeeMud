@@ -46,7 +46,7 @@ public class Thief_Autocaltrops extends ThiefSkill
     public String[] triggerStrings(){return triggerStrings;}
     protected boolean noRepeat=false;
 
-    public void executeMsg(Environmental myHost, CMMsg msg)
+    public void executeMsg(final Environmental myHost, final CMMsg msg)
     {
         super.executeMsg(myHost,msg);
         if((affected instanceof MOB)

@@ -74,7 +74,7 @@ public class StdFood extends StdItem implements Food
 	public long decayTime(){return decayTime;}
 	public void setDecayTime(long time){decayTime=time;}
 	
-	public boolean okMessage(Environmental myHost, CMMsg msg)
+	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(!super.okMessage(myHost,msg))
 			return false;
@@ -101,7 +101,7 @@ public class StdFood extends StdItem implements Food
 		return true;
 	}
 
-	public void executeMsg(Environmental myHost, CMMsg msg)
+	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);
 		if(msg.amITarget(this))

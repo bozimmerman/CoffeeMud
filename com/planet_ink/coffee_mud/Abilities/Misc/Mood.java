@@ -190,7 +190,7 @@ public class Mood extends StdAbility
         return null;
     }
 
-	public boolean okMessage(Environmental myHost, CMMsg msg)
+	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(affected instanceof MOB)
 		{
@@ -648,7 +648,7 @@ public class Mood extends StdAbility
 		}
 		return super.okMessage(myHost,msg);
 	}
-	public void executeMsg(Environmental myHost, CMMsg msg)
+	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		switch(moodCode)
 		{

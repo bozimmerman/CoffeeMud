@@ -58,7 +58,7 @@ public class Prayer_DarkeningAura extends Prayer
 			mob.tell("Your darkening aura fades.");
 	}
 
-	public boolean okMessage(Environmental myHost, CMMsg msg)
+	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(!super.okMessage(myHost, msg)) return true;
 		if(!(myHost instanceof MOB)) return true;

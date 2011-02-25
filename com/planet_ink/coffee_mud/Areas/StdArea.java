@@ -589,7 +589,7 @@ public class StdArea implements Area
 	public int climateType(){return climateID;}
 	public void setClimateType(int newClimateType){	climateID=newClimateType;}
 
-	public boolean okMessage(Environmental myHost, CMMsg msg)
+	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
         MsgListener N=null;
         for(int b=0;b<numBehaviors();b++)
@@ -704,7 +704,7 @@ public class StdArea implements Area
 		return true;
 	}
 
-	public void executeMsg(Environmental myHost, CMMsg msg)
+	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
         MsgListener N=null;
         for(int b=0;b<numBehaviors();b++)

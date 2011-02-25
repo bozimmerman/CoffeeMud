@@ -57,7 +57,7 @@ public class Prop_WeakBridge extends Property
 		ticksDown=CMParms.getParmInt(newText,"down",300);
 	}
 
-	public boolean okMessage(Environmental myHost, CMMsg msg)
+	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if((msg.targetMinor()==CMMsg.TYP_ENTER)
 		&&((msg.amITarget(affected))||(msg.tool()==affected)))
@@ -90,7 +90,7 @@ public class Prop_WeakBridge extends Property
 	}
 
 
-	public void executeMsg(Environmental myHost, CMMsg msg)
+	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		if((msg.targetMinor()==CMMsg.TYP_ENTER)
 		&&((msg.amITarget(affected))||(msg.tool()==affected))

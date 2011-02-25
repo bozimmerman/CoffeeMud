@@ -67,7 +67,7 @@ public class StdSmokable extends StdContainer implements Light
 
 
 
-	public boolean okMessage(Environmental myHost, CMMsg msg)
+	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		MOB mob=msg.source();
 
@@ -189,7 +189,7 @@ public class StdSmokable extends StdContainer implements Light
         }
     }
     
-	public void executeMsg(Environmental myHost, CMMsg msg)
+	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		MOB mob=msg.source();
 		if(mob==null) return;

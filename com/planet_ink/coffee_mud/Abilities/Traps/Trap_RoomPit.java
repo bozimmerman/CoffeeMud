@@ -149,7 +149,7 @@ public class Trap_RoomPit extends StdTrap
 		}
 	}
 
-	public void executeMsg(Environmental myHost, CMMsg msg)
+	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		boolean unSpring=false;
 		if((!sprung)

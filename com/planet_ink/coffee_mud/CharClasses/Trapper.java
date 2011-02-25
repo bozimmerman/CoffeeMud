@@ -135,7 +135,7 @@ public class Trapper extends Thief
         super.executeMsg(host,msg); 
         Druid.doAnimalFollowerLevelingCheck(this,host,msg);
     }
-	public boolean okMessage(Environmental myHost, CMMsg msg)
+	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(!(myHost instanceof MOB)) return super.okMessage(myHost,msg);
 		MOB myChar=(MOB)myHost;

@@ -97,7 +97,7 @@ public class Vine extends StdRace
 		}
 		return naturalWeapon;
 	}
-	public boolean okMessage(Environmental myHost, CMMsg msg)
+	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if((myHost!=null)
 		&&(myHost instanceof MOB)

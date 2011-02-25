@@ -77,7 +77,7 @@ public class Spell_StinkingCloud extends Spell
 		return super.tick(ticking,tickID);
 	}
 
-	public boolean okMessage(Environmental myHost, CMMsg msg)
+	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if((affected!=null)
 		   &&(affected instanceof MOB)
@@ -99,7 +99,7 @@ public class Spell_StinkingCloud extends Spell
 		return super.okMessage(myHost,msg);
 	}
 
-	public void executeMsg(Environmental myHost, CMMsg msg)
+	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		if((affected!=null)
 		&&(affected instanceof MOB)

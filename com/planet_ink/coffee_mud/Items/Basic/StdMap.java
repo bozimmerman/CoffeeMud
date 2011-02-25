@@ -543,7 +543,7 @@ public class StdMap extends StdItem implements com.planet_ink.coffee_mud.Items.i
         }
     }
 
-	public void executeMsg(Environmental myHost, CMMsg msg)
+	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		MOB mob=msg.source();
 		if(!msg.amITarget(this))

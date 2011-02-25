@@ -54,7 +54,7 @@ public class Fighter_ImprovedShieldDefence extends FighterSkill
 		gettingBonus=true;
 		affectableStats.setArmor(affectableStats.armor()-((int)Math.round(CMath.mul(w.phyStats().armor(),(CMath.div(proficiency(),100.0+(5.0*getXLEVELLevel(invoker()))))))));
 	}
-	public void executeMsg(Environmental myHost, CMMsg msg)
+	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);
 

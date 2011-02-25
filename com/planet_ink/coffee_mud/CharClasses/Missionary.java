@@ -177,7 +177,7 @@ public class Missionary extends Cleric
 	public String getOtherBonusDesc(){return "Never fumbles neutral prayers, and receives 1pt/level luck bonus to all saving throws per level.  Receives 1pt/level electricity damage reduction.";}
 	public String getOtherLimitsDesc(){return "Using non-neutral prayers introduces failure chance.  Vulnerable to acid attacks.";}
 
-	public boolean okMessage(Environmental myHost, CMMsg msg)
+	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(!(myHost instanceof MOB)) return super.okMessage(myHost,msg);
 		MOB myChar=(MOB)myHost;

@@ -298,7 +298,7 @@ public class Prop_ClanEquipment extends Property
         super.affectCharStats(affectedMOB,affectedStats);
     }
 
-    public void executeMsg(Environmental myHost, CMMsg msg)
+    public void executeMsg(final Environmental myHost, final CMMsg msg)
     {
         super.executeMsg(myHost,msg);
         if(((System.currentTimeMillis()-LastChecked)>TimeManager.MILI_HOUR)&&(affected!=null))

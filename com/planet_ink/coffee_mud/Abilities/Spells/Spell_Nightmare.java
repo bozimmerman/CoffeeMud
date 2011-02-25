@@ -46,7 +46,7 @@ public class Spell_Nightmare extends Spell
 	public int amountRemaining=0;
 	boolean notAgainThisRound=false;
 
-	public boolean okMessage(Environmental myHost, CMMsg msg)
+	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if((affected==null)||(!(affected instanceof MOB)))
 			return true;

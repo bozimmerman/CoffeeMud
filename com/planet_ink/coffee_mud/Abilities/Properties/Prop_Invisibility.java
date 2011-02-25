@@ -39,7 +39,7 @@ public class Prop_Invisibility extends Property
 	protected int canAffectCode(){return Ability.CAN_MOBS|Ability.CAN_ITEMS|Ability.CAN_EXITS;}
 	protected int ticksSinceLoss=100;
 
-	public void executeMsg(Environmental myHost, CMMsg msg)
+	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);
 		if((affected==null)||(!(affected instanceof MOB)))

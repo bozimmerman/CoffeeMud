@@ -129,7 +129,7 @@ public class Corpse extends GenContainer implements DeadBody
     public void setSavedMOB(MOB mob){savedMOB=mob;}
     public MOB savedMOB(){return savedMOB;}
 
-	public void executeMsg(Environmental myHost, CMMsg msg)
+	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		if((msg.targetMinor()==CMMsg.TYP_SIT)
 		&&(msg.source().Name().equalsIgnoreCase(mobName()))
@@ -150,7 +150,7 @@ public class Corpse extends GenContainer implements DeadBody
 		
 	}
 	
-	public boolean okMessage(Environmental myHost, CMMsg msg)
+	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if((msg.amITarget(this)||(msg.tool()==this))
         &&(playerCorpse())

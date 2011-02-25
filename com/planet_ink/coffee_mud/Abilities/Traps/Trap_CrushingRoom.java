@@ -86,7 +86,7 @@ public class Trap_CrushingRoom extends StdTrap
 		return true;
 	}
 
-	public boolean okMessage(Environmental myHost, CMMsg msg)
+	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if((sprung)
 		&&(affected!=null)

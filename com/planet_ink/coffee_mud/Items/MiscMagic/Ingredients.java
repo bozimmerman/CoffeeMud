@@ -76,7 +76,7 @@ public class Ingredients extends BagOfEndlessness
 		return I;
 	}
 
-	public void executeMsg(Environmental myHost, CMMsg msg)
+	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		if((!alreadyFilled)&&(owner()!=null))
 		{

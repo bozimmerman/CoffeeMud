@@ -359,8 +359,8 @@ public class DefaultSocial implements Social
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)	{}
 	public void affectCharStats(MOB affectedMob, CharStats affectableStats)	{}
 	public void affectCharState(MOB affectedMob, CharState affectableMaxState)	{}
-	public void executeMsg(Environmental myHost, CMMsg msg){}
-	public boolean okMessage(Environmental myHost, CMMsg msg){	return true;}
+	public void executeMsg(final Environmental myHost, final CMMsg msg){}
+	public boolean okMessage(final Environmental myHost, final CMMsg msg){	return true;}
 	public boolean tick(Tickable ticking, int tickID)	{ return true;	}
 	public int maxRange(){return Integer.MAX_VALUE;}
 	public int minRange(){return 0;}

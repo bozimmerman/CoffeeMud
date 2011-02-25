@@ -69,7 +69,7 @@ public class Prop_TicketTaker extends Property
 		return false;
 	}
 
-	public void executeMsg(Environmental myHost, CMMsg msg)
+	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);
 		if(((myHost instanceof Rider)&&(((Rider)myHost).riding()!=null))
@@ -104,7 +104,7 @@ public class Prop_TicketTaker extends Property
 			}
 		}
 	}
-	public boolean okMessage(Environmental myHost, CMMsg msg)
+	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(!super.okMessage(myHost,msg)) return false;
 		if(((myHost instanceof Rider)&&(((Rider)myHost).riding()!=null))

@@ -206,7 +206,7 @@ public class Prop_RoomForSale extends Property implements LandTitle
 		return false;
 	}
 
-	public void executeMsg(Environmental myHost, CMMsg msg)
+	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);
 		if(((msg.sourceMinor()==CMMsg.TYP_SHUTDOWN)
@@ -241,7 +241,7 @@ public class Prop_RoomForSale extends Property implements LandTitle
 		}
 	}
 
-	public boolean okMessage(Environmental myHost, CMMsg msg)
+	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 	    if(!super.okMessage(myHost,msg)) return false;
 		Prop_RoomForSale.robberyCheck(this,msg);

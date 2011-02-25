@@ -44,7 +44,7 @@ public class Specialization_Ranged extends Specialization_Weapon
 		secondWeaponClass=Weapon.CLASS_THROWN;
 	}
 
-	public void executeMsg(Environmental myHost, CMMsg msg)
+	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		if((activated)
 		&&(CMLib.dice().rollPercentage()<25)

@@ -39,7 +39,7 @@ public class Song_Distraction extends Song
 	public String name(){ return "Distraction";}
 	public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
 
-	public boolean okMessage(Environmental myHost, CMMsg msg)
+	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if((affected==null)||(!(affected instanceof MOB)))
 			return true;

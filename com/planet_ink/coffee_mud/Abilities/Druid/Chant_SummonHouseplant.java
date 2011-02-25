@@ -44,7 +44,7 @@ public class Chant_SummonHouseplant extends Chant_SummonPlants
 	protected int canTargetCode(){return 0;}
 	protected boolean processing=false;
 
-	public void executeMsg(Environmental myHost, CMMsg msg)
+	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		if((msg.amITarget(littlePlants))
 		&&(!processing)

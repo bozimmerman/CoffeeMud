@@ -104,7 +104,7 @@ public class Chant_Reincarnation extends Chant
 		return CMLib.flags().isGolem(M);
 	}
 
-	public void executeMsg(Environmental myHost, CMMsg msg)
+	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);
 		// undo the affects of this spell

@@ -49,7 +49,7 @@ public class Fighter_SmokeSignals extends FighterSkill
 	public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 	public String[] triggerStrings(){return triggerStrings;}
 
-	public void executeMsg(Environmental myHost, CMMsg msg)
+	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		if((affected instanceof MOB)
 		&&(!msg.amISource((MOB)affected))

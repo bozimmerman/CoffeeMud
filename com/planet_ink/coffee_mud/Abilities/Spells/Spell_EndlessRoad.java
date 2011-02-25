@@ -55,7 +55,7 @@ public class Spell_EndlessRoad extends Spell
 		CMLib.commands().postStand(mob,true);
 	}
 
-	public boolean okMessage(Environmental myHost, CMMsg msg)
+	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		// undo the affects of this spell
 		if((affected==null)||(!(affected instanceof MOB)))

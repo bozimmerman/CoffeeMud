@@ -55,7 +55,7 @@ public class Spell_Claireaudience extends Spell
 		super.unInvoke();
 
 	}
-	public void executeMsg(Environmental myHost, CMMsg msg)
+	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);
 		if((affected instanceof MOB)

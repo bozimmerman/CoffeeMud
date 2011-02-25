@@ -47,7 +47,7 @@ public class Thief_AutoDetectTraps extends ThiefSkill
     protected boolean noRepeat=false;
     protected String skillName(){return "detect";}
 
-    public void executeMsg(Environmental myHost, CMMsg msg)
+    public void executeMsg(final Environmental myHost, final CMMsg msg)
     {
         super.executeMsg(myHost,msg);
         if((affected instanceof MOB)

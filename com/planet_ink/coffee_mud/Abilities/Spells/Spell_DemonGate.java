@@ -64,7 +64,7 @@ public class Spell_DemonGate extends Spell
 		return super.tick(ticking,tickID);
 	}
 
-	public void executeMsg(Environmental myHost, CMMsg msg)
+	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);
 		if((affected!=null)

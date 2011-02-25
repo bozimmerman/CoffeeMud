@@ -50,7 +50,7 @@ public class PracticePoint extends StdItem implements MiscMagic
     }
 
 
-    public void executeMsg(Environmental myHost, CMMsg msg)
+    public void executeMsg(final Environmental myHost, final CMMsg msg)
     {
         if(msg.amITarget(this))
         {

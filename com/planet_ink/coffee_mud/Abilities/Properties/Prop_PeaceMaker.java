@@ -41,7 +41,7 @@ public class Prop_PeaceMaker extends Property
 	public String accountForYourself()
 	{ return "Peace Maker";	}
 
-	public boolean okMessage(Environmental myHost, CMMsg msg)
+	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if((CMath.bset(msg.sourceCode(),CMMsg.MASK_MALICIOUS))
 		||(CMath.bset(msg.targetCode(),CMMsg.MASK_MALICIOUS))

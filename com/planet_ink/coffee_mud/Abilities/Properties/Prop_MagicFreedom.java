@@ -41,7 +41,7 @@ public class Prop_MagicFreedom extends Property
 	public String accountForYourself()
 	{ return "Anti-Magic Field";	}
 
-	public boolean okMessage(Environmental myHost, CMMsg msg)
+	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(!super.okMessage(myHost,msg))
 			return false;

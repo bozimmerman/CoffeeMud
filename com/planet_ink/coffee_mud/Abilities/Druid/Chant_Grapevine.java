@@ -44,7 +44,7 @@ public class Chant_Grapevine extends Chant
 	protected int canTargetCode(){return 0;}
 	List<Ability> myChants=new Vector<Ability>();
 
-	public void executeMsg(Environmental myHost, CMMsg msg)
+	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);
 		if((affected instanceof Item)

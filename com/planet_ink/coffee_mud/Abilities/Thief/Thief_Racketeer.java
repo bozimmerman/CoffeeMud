@@ -66,7 +66,7 @@ public class Thief_Racketeer extends ThiefSkill
     }
     public Vector mobs=new Vector();
 
-    public boolean okMessage(Environmental myHost, CMMsg msg)
+    public boolean okMessage(final Environmental myHost, final CMMsg msg)
     {
         if(!super.okMessage(myHost,msg))
         {

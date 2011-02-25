@@ -59,7 +59,7 @@ public class Prayer_Tremor extends Prayer
 	}
 
 
-	public boolean okMessage(Environmental myHost, CMMsg msg)
+	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		// undo the affects of this spell
 		if((affected==null)||(!(affected instanceof MOB)))

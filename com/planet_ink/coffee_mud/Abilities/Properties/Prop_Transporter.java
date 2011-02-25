@@ -89,7 +89,7 @@ public class Prop_Transporter extends Property
 		return transCode;
 	}
 
-	public void executeMsg(Environmental myHost, CMMsg msg)
+	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		if((transCode()>=0)
 		   &&((msg.targetMinor()==transCode())||(msg.sourceMinor()==transCode()))

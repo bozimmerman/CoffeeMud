@@ -77,7 +77,7 @@ public class Thief_KillLog extends ThiefSkill
 		return str.toString();
 	}
 
-	public void executeMsg(Environmental myHost, CMMsg msg)
+	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		if((mark!=null)
 		&&msg.amISource(mark)

@@ -47,7 +47,7 @@ public interface MsgListener
      * @param myHost either the initiator of the event, or the host of this object
      * @param msg the CMMsg that needs to be executed
 	 */
-	public void executeMsg(Environmental myHost, CMMsg msg);
+	public void executeMsg(final Environmental myHost, final CMMsg msg);
 
     /**
      * The general message event previewer for the object.  Messages passed herein
@@ -64,6 +64,6 @@ public interface MsgListener
      * @param msg the CMMsg that wants to be executed
      * @return whether this message is allowed to execute
      */
-	public boolean okMessage(Environmental myHost, CMMsg msg);
+	public boolean okMessage(final Environmental myHost, final CMMsg msg);
 
 }

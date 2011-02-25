@@ -523,7 +523,7 @@ public class StdPostman extends StdShopKeeper implements PostOffice
         location().send(this,msg2);
     }
 
-    public void executeMsg(Environmental myHost, CMMsg msg)
+    public void executeMsg(final Environmental myHost, final CMMsg msg)
     {
         MOB mob=msg.source();
         if(msg.amITarget(this))
@@ -839,7 +839,7 @@ public class StdPostman extends StdShopKeeper implements PostOffice
         super.executeMsg(myHost,msg);
     }
 
-    public boolean okMessage(Environmental myHost, CMMsg msg)
+    public boolean okMessage(final Environmental myHost, final CMMsg msg)
     {
         MOB mob=msg.source();
         if((msg.targetMinor()==CMMsg.TYP_EXPIRE)

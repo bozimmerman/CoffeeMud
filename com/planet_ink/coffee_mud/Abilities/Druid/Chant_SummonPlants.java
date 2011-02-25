@@ -73,7 +73,7 @@ public class Chant_SummonPlants extends Chant
 		return super.text();
 	}
 
-	public void executeMsg(Environmental myHost, CMMsg msg)
+	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		if((msg.amITarget(littlePlants))
 		&&(msg.targetMinor()==CMMsg.TYP_GET))

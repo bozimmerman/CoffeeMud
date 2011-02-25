@@ -38,7 +38,7 @@ public class Impassable extends GenExit
 		description="It doesn't look like you can go that way.";
 	}
 	public String ID(){	return "Impassable";}
-	public boolean okMessage(Environmental myHost, CMMsg msg)
+	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(!super.okMessage(myHost,msg))
 			return false;

@@ -56,7 +56,7 @@ public class Chant_RedMoon extends Chant
 		super.unInvoke();
 
 	}
-	public boolean okMessage(Environmental myHost, CMMsg msg)
+	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(!super.okMessage(myHost,msg))
 			return false;

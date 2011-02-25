@@ -69,7 +69,7 @@ public class Prop_ReqNoMOB extends Property
 			return true;
 		return !mob.isMonster();
 	}
-	public boolean okMessage(Environmental myHost, CMMsg msg)
+	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if((affected!=null)
 		&&(msg.target()!=null)

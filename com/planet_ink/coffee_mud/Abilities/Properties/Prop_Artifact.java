@@ -127,7 +127,7 @@ public class Prop_Artifact extends Property
 		super.unInvoke();
 	}
 
-	public boolean okMessage(Environmental myHost, CMMsg msg)
+	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(!(affected instanceof Item)) return false;
 		if((msg.targetMinor()==CMMsg.TYP_EXPIRE)
@@ -194,7 +194,7 @@ public class Prop_Artifact extends Property
 		return super.okMessage(myHost, msg);
 	}
 
-	public void executeMsg(Environmental myHost, CMMsg msg)
+	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);
 		if(!(affected instanceof Item)) return;

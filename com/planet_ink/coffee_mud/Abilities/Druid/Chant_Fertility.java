@@ -55,7 +55,7 @@ public class Chant_Fertility extends Chant
 			mob.tell("Your extreme fertility subsides.");
 	}
 
-	public void executeMsg(Environmental myHost, CMMsg msg)
+	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);
 		// the sex rules

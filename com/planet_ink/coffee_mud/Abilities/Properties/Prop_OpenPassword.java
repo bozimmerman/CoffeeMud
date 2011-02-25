@@ -41,7 +41,7 @@ public class Prop_OpenPassword extends Property
 	public String accountForYourself()
 	{ return "";	}
 
-	public void executeMsg(Environmental myHost, CMMsg msg)
+	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		if((msg.sourceMinor()==CMMsg.TYP_SPEAK)
 		&&(affected!=null)

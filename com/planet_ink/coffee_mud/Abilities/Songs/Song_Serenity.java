@@ -41,7 +41,7 @@ public class Song_Serenity extends Song
 	protected boolean HAS_QUANTITATIVE_ASPECT(){return false;}
 	protected boolean maliciousButNotAggressiveFlag(){return true;}
 
-	public boolean okMessage(Environmental myHost, CMMsg msg)
+	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(affected==null) return super.okMessage(myHost,msg);
 		if(!(affected instanceof MOB)) return super.okMessage(myHost,msg);

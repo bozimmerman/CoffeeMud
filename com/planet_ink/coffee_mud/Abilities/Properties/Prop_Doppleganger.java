@@ -52,7 +52,7 @@ public class Prop_Doppleganger extends Property
         minLevel=CMParms.getParmInt(text,"MIN",Integer.MIN_VALUE);
     }
 
-    public void executeMsg(Environmental myHost, CMMsg msg)
+    public void executeMsg(final Environmental myHost, final CMMsg msg)
     {
     	if((affected instanceof Item)
     	&&(((Item)affected).owner()!=lastOwner)
@@ -86,7 +86,7 @@ public class Prop_Doppleganger extends Property
         return false;
     }
 
-	public boolean okMessage(Environmental myHost, CMMsg msg)
+	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if((affected instanceof MOB)
 		&&(((msg.target() instanceof Room)&&(msg.sourceMinor()==CMMsg.TYP_ENTER))

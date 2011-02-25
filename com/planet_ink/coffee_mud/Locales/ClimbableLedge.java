@@ -37,7 +37,7 @@ import java.util.*;
 public class ClimbableLedge extends ClimbableSurface
 {
 	public String ID(){return "ClimbableLedge";}
-	public boolean okMessage(Environmental myHost, CMMsg msg)
+	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(CMLib.flags().isSleeping(this))
 			return super.okMessage(myHost,msg);

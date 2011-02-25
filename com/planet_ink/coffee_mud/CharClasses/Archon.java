@@ -117,7 +117,7 @@ public class Archon extends StdCharClass
 
     public static final String[] ARCHON_IMMUNITIES={"Spell_Scry","Thief_Listen","Spell_Claireaudience","Spell_Clairevoyance"};
     
-    public boolean okMessage(Environmental myHost, CMMsg msg)
+    public boolean okMessage(final Environmental myHost, final CMMsg msg)
     {
         if((msg.tool() != null)
         &&(msg.target()==myHost)

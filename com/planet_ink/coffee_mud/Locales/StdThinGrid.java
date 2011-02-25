@@ -719,7 +719,7 @@ public class StdThinGrid extends StdRoom implements GridLocale
 		return getMakeGridRoom(x,y);
 	}
 
-	public void executeMsg(Environmental myHost, CMMsg msg)
+	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		if((msg.targetMinor()==CMMsg.TYP_EXPIRE)
 		&&(msg.target() instanceof Room))
@@ -746,7 +746,7 @@ public class StdThinGrid extends StdRoom implements GridLocale
 		super.executeMsg(myHost,msg);
 	}
 
-	public boolean okMessage(Environmental myHost, CMMsg msg)
+	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(!super.okMessage(myHost,msg))
 			return false;

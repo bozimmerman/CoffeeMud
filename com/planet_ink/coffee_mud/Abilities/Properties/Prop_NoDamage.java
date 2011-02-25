@@ -41,7 +41,7 @@ public class Prop_NoDamage extends Property
 	public String accountForYourself()
 	{ return "Harmless";	}
 
-	public boolean okMessage(Environmental myHost, CMMsg msg)
+	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if((msg.targetMinor()==CMMsg.TYP_DAMAGE)
 		&&(affected !=null)

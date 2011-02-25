@@ -73,7 +73,7 @@ public class Thief_Flank extends ThiefSkill
 			unInvoke();
 		return true;
 	}
-	public boolean okMessage(Environmental myHost, CMMsg msg)
+	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if((affected==null)||(!(affected instanceof MOB))||(target==null))
 			return true;

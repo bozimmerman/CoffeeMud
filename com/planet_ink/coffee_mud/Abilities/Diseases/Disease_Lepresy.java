@@ -51,7 +51,7 @@ public class Disease_Lepresy extends Disease
 	public int abilityCode(){return DiseaseAffect.SPREAD_CONSUMPTION;}
 	public int difficultyLevel(){return 4;}
 
-	public boolean okMessage(Environmental myHost, CMMsg msg)
+	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if((affected==null)||(!(affected instanceof MOB)))
 			return super.okMessage(myHost,msg);

@@ -38,7 +38,7 @@ public class Prop_NoPKill extends Property
 	public String name(){ return "No Player Killing";}
 	protected int canAffectCode(){return Ability.CAN_ROOMS|Ability.CAN_AREAS;}
 
-	public boolean okMessage(Environmental myHost, CMMsg msg)
+	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(((CMath.bset(msg.sourceCode(),CMMsg.MASK_MALICIOUS))
 		||(CMath.bset(msg.targetCode(),CMMsg.MASK_MALICIOUS))

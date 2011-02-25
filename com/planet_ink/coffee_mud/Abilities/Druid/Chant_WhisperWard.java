@@ -73,7 +73,7 @@ public class Chant_WhisperWard extends Chant implements Trap
 		unInvoke();
 		return;
 	}
-	public void executeMsg(Environmental myHost, CMMsg msg)
+	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);
 

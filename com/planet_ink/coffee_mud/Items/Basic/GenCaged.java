@@ -80,7 +80,7 @@ public class GenCaged extends GenItem implements CagedAnimal
         super.destroy();
     }
     
-	public void executeMsg(Environmental myHost, CMMsg msg)
+	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		if((msg.amITarget(this)
 			||((msg.tool()==this)&&(msg.target()==container())&&(container()!=null)))

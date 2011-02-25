@@ -62,7 +62,7 @@ public class StdClanContainer extends StdContainer implements ClanItem
 	public String clanID(){return myClan;}
 	public void setClanID(String ID){myClan=ID;}
 
-	public void executeMsg(Environmental myHost, CMMsg msg)
+	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 	    if((System.currentTimeMillis()-lastClanCheck)>TimeManager.MILI_HOUR)
 	    {
@@ -90,7 +90,7 @@ public class StdClanContainer extends StdContainer implements ClanItem
 		if(StdClanItem.stdExecuteMsg(this,msg))
 			super.executeMsg(myHost,msg);
 	}
-	public boolean okMessage(Environmental myHost, CMMsg msg)
+	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(StdClanItem.stdOkMessage(this,msg))
 			return super.okMessage(myHost,msg);

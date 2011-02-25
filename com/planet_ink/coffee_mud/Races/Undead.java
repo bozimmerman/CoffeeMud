@@ -72,7 +72,7 @@ public class Undead extends StdRace
 		affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_SEE_INFRARED);
 	}
 
-	public void executeMsg(Environmental myHost, CMMsg msg)
+	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);
 		if(msg.amITarget(myHost)
@@ -82,7 +82,7 @@ public class Undead extends StdRace
 		    msg.source().tell(name()+" stinks of grime and decay.");
 	}
 	
-	public boolean okMessage(Environmental myHost, CMMsg msg)
+	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if((myHost!=null)&&(myHost instanceof MOB))
 		{

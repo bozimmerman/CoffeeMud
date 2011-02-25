@@ -53,7 +53,7 @@ public class Skill_Imitation extends BardSkill
 	public Hashtable immitations=new Hashtable();
 	public String[] lastOnes=new String[2];
 
-	public void executeMsg(Environmental myHost, CMMsg msg)
+	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);
 		if((myHost==null)||(!(myHost instanceof MOB)))

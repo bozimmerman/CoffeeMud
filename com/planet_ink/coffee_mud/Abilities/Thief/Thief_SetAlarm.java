@@ -68,7 +68,7 @@ public class Thief_SetAlarm extends ThiefSkill implements Trap
 		sprung=true;
 	}
 
-	public void executeMsg(Environmental myHost, CMMsg msg)
+	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		if(sprung){	return;	}
 		super.executeMsg(myHost,msg);

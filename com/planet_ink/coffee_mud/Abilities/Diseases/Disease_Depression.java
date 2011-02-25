@@ -50,7 +50,7 @@ public class Disease_Depression extends Disease
 	protected String DISEASE_AFFECT(){return "<S-NAME> moap(s).";}
 	public int abilityCode(){return 0;}
 
-	public boolean okMessage(Environmental myHost, CMMsg msg)
+	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(!super.okMessage(myHost,msg))
 			return false;

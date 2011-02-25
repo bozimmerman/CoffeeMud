@@ -46,12 +46,12 @@ public class IndoorInTheAir extends StdRoom
 	public int domainType(){return Room.DOMAIN_INDOORS_AIR;}
 	public int domainConditions(){return Room.CONDITION_NORMAL;}
 
-	public boolean okMessage(Environmental myHost, CMMsg msg)
+	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(!super.okMessage(myHost,msg)) return false;
 		return InTheAir.isOkAirAffect(this,msg);
 	}
-	public void executeMsg(Environmental myHost, CMMsg msg)
+	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);
 		InTheAir.airAffects(this,msg);

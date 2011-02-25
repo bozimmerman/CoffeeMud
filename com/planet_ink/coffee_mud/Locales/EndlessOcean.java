@@ -48,12 +48,12 @@ public class EndlessOcean extends StdGrid
 
 	public String getGridChildLocaleID(){return "SaltWaterSurface";}
 	public List<Integer> resourceChoices(){return UnderSaltWater.roomResources;}
-	public void executeMsg(Environmental myHost, CMMsg msg)
+	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);
 		UnderWater.sinkAffects(this,msg);
 	}
-	public boolean okMessage(Environmental myHost, CMMsg msg)
+	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		switch(WaterSurface.isOkWaterSurfaceAffect(this,msg))
 		{

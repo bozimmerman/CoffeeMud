@@ -68,7 +68,7 @@ public class Chant_IllusionaryForest extends Chant
         return super.castingQuality(mob,target);
     }
     
-	public boolean okMessage(Environmental myHost, CMMsg msg)
+	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if((affected!=null)
 		&&(affected instanceof Room)

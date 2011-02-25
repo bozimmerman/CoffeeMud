@@ -84,7 +84,7 @@ public class Fighter_FieldTactics extends FighterSkill
 		return CMLib.flags().isSitting(mob)&&(mob.riding()==null);
 	}
 
-	public boolean okMessage(Environmental myHost, CMMsg msg)
+	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if((affected instanceof MOB)
 		&&(activated)

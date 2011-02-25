@@ -42,7 +42,7 @@ public class GenMobilePortal extends GenPortal implements Rideable, Exit
     
     protected StdPortal myStationaryPortal=null;
     
-    public void executeMsg(Environmental myHost, CMMsg msg)
+    public void executeMsg(final Environmental myHost, final CMMsg msg)
     {
         super.executeMsg(myHost,msg);
         switch(msg.targetMinor())

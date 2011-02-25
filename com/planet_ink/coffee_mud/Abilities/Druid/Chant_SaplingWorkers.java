@@ -65,7 +65,7 @@ public class Chant_SaplingWorkers extends Chant
 		return super.tick(ticking,tickID);
 	}
 
-	public boolean okMessage(Environmental myHost, CMMsg msg)
+	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if((affected!=null)
 		&&(affected instanceof MOB)
@@ -93,7 +93,7 @@ public class Chant_SaplingWorkers extends Chant
 		}
 	}
 
-	public void executeMsg(Environmental myHost, CMMsg msg)
+	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);
 		if((affected!=null)

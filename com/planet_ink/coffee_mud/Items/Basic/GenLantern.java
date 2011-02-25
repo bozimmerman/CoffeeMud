@@ -55,7 +55,7 @@ public class GenLantern extends GenLightSource
 
 	public boolean isGeneric(){return true;}
 
-	public boolean okMessage(Environmental myHost, CMMsg msg)
+	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(msg.amITarget(this))
 		{
@@ -89,7 +89,7 @@ public class GenLantern extends GenLightSource
 		return super.okMessage(myHost,msg);
 	}
 
-	public void executeMsg(Environmental myHost, CMMsg msg)
+	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		if(msg.amITarget(this))
 		{

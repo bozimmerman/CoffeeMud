@@ -37,7 +37,7 @@ public class Prop_ReqPKill extends Property
 	public String ID() { return "Prop_ReqPKill"; }
 	public String name(){ return "Playerkill ONLY Zone";}
 	protected int canAffectCode(){return Ability.CAN_ROOMS|Ability.CAN_AREAS|Ability.CAN_EXITS;}
-	public boolean okMessage(Environmental myHost, CMMsg msg)
+	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if((affected!=null)
 	    &&(msg.target()!=null)

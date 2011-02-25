@@ -139,7 +139,7 @@ public class Prop_ReqLevels extends Property
         }
 		return false;
 	}
-	public boolean okMessage(Environmental myHost, CMMsg msg)
+	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if((affected!=null)
 		&&(msg.target()!=null)

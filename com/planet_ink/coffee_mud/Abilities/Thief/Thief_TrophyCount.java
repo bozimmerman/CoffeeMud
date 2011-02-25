@@ -66,7 +66,7 @@ public class Thief_TrophyCount extends ThiefSkill
 		return str.toString();
 	}
 
-	public void executeMsg(Environmental myHost, CMMsg msg)
+	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		if((msg.sourceMinor()==CMMsg.TYP_DEATH)
 		&&(msg.tool()!=null)

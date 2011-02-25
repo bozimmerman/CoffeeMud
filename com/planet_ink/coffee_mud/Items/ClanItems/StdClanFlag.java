@@ -79,7 +79,7 @@ public class StdClanFlag extends StdItem implements ClanItem
 
     public long expirationDate(){return 0;}
     
-	public void executeMsg(Environmental myHost, CMMsg msg)
+	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 	    if((System.currentTimeMillis()-lastClanCheck)>TimeManager.MILI_HOUR)
 	    {
@@ -134,7 +134,7 @@ public class StdClanFlag extends StdItem implements ClanItem
 			}
 		}
 	}
-	public boolean okMessage(Environmental myHost, CMMsg msg)
+	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if((clanID().length()>0)&&(msg.amITarget(this)))
 		{

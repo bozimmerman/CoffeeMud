@@ -56,7 +56,7 @@ public class StdNet extends StdWeapon
 	}
 
 
-	public void executeMsg(Environmental myHost, CMMsg msg)
+	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		if((msg.tool()==this)
 		&&(msg.targetMinor()==CMMsg.TYP_WEAPONATTACK)

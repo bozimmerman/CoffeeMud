@@ -50,7 +50,7 @@ public class Ranger_Hide extends StdAbility
 	public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
 	protected int bonus=0;
 	
-	public void executeMsg(Environmental myHost, CMMsg msg)
+	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		if((affected==null)||(!(affected instanceof MOB)))
 			return;

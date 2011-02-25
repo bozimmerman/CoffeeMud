@@ -72,7 +72,7 @@ public class Disease_Chlamydia extends Disease
 		affectableState.setMovement(affectableState.getMovement()/2);
 	}
 
-	public boolean okMessage(Environmental myHost, CMMsg msg)
+	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(affected==null) return super.okMessage(myHost,msg);
 		if(affected instanceof MOB)

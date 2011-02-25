@@ -52,7 +52,7 @@ public class MichaelsMithrilChain extends StdArmor
 		material=RawMaterial.RESOURCE_MITHRIL;
 	}
 
-	public boolean okMessage(Environmental myHost, CMMsg msg)
+	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if((msg.target()==null)||(!(msg.target() instanceof MOB)))
 			return true;

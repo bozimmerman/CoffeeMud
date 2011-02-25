@@ -50,7 +50,7 @@ public class Thief_TrapImmunity extends ThiefSkill
 		affectableStats.setStat(CharStats.STAT_SAVE_TRAPS,affectableStats.getStat(CharStats.STAT_SAVE_TRAPS)+(proficiency()/2)+(2*getXLEVELLevel(invoker())));
 	}
 
-	public boolean okMessage(Environmental myHost, CMMsg msg)
+	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if((affected==null)||(!(affected instanceof MOB)))
 		   return super.okMessage(myHost,msg);

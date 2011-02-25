@@ -62,7 +62,7 @@ public class Chant_PeaceMoon extends Chant
 
 	}
 
-	public boolean okMessage(Environmental myHost, CMMsg msg)
+	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(affected instanceof Room)
 		if((CMath.bset(msg.sourceCode(),CMMsg.MASK_MALICIOUS))

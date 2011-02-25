@@ -176,6 +176,7 @@ public interface MOB extends Rider, DBIdentifiable, PhysicalAgent, ItemPossessor
 	public int numFollowers();
 	public int fetchFollowerOrder(MOB thisOne);
 	public boolean isFollowedBy(MOB thisOne);
+	public Enumeration<Follower> followers();
 	public MOB fetchFollower(int index);
 	public MOB fetchFollower(String named);
 	public MOB amFollowing();

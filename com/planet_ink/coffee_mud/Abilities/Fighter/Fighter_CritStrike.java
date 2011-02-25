@@ -44,7 +44,7 @@ public class Fighter_CritStrike extends FighterSkill
 	public boolean canBeUninvoked(){return false;}
     public int classificationCode(){ return Ability.ACODE_SKILL|Ability.DOMAIN_MARTIALLORE;}
 
-	public boolean okMessage(Environmental myHost, CMMsg msg)
+	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(!super.okMessage(myHost,msg))
 			return false;

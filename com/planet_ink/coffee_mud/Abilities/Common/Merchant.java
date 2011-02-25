@@ -210,7 +210,7 @@ public class Merchant extends CommonSkill implements ShopKeeper
         return staticMOB;
     }
 
-	public boolean okMessage(Environmental myHost, CMMsg msg)
+	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
         MOB merchantM=deriveMerchant(msg.source());
 		if(merchantM==null)
@@ -325,7 +325,7 @@ public class Merchant extends CommonSkill implements ShopKeeper
         return false;
     }
 
-	public void executeMsg(Environmental myHost, CMMsg msg)
+	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
         MOB merchantM=deriveMerchant(msg.source());
 		if(merchantM==null)

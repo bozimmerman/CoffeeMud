@@ -114,7 +114,7 @@ public class StdPill extends StdFood implements Pill
 	
 	public List<Ability> getSpells(){ return getSpells(this);}
 
-	public void executeMsg(Environmental myHost, CMMsg msg)
+	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		if(msg.amITarget(this))
 		{

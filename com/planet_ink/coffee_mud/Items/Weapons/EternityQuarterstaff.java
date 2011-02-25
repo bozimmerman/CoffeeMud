@@ -60,7 +60,7 @@ public class EternityQuarterstaff extends Quarterstaff
 
 
 
-	public void executeMsg(Environmental myHost, CMMsg msg)
+	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		MOB mob=msg.source();
 		switch(msg.sourceMinor())

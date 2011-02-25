@@ -61,7 +61,7 @@ public class Dance_Manipuri extends Dance
 			count--;
 		return true;
 	}
-	public boolean okMessage(Environmental myHost, CMMsg msg)
+	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		MOB mob=(MOB)affected;
 		if(((msg.targetCode()&CMMsg.MASK_MALICIOUS)>0)

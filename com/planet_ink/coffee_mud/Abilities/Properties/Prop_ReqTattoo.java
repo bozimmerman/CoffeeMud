@@ -161,7 +161,7 @@ public class Prop_ReqTattoo extends Property
 		return true;
 	}
 	
-	public boolean okMessage(Environmental myHost, CMMsg msg)
+	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if((affected!=null)
 		&&(msg.target()!=null)

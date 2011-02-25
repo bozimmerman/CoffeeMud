@@ -46,7 +46,7 @@ public class Fighter_Roll extends FighterSkill
     public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_EVASIVE;}
 	public boolean doneThisRound=false;
 
-	public boolean okMessage(Environmental myHost, CMMsg msg)
+	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		regain=-1;
 		if(!super.okMessage(myHost,msg))
@@ -81,7 +81,7 @@ public class Fighter_Roll extends FighterSkill
 		return super.tick(ticking,tickID);
 	}
 
-	public void executeMsg(Environmental myHost, CMMsg msg)
+	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);
 

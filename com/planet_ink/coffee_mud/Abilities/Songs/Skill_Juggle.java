@@ -99,7 +99,7 @@ public class Skill_Juggle extends BardSkill
 		return "(Juggling??)";
 	}
 
-	public boolean okMessage(Environmental myHost, CMMsg msg)
+	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(!super.okMessage(myHost,msg))
 			return false;
@@ -245,7 +245,7 @@ public class Skill_Juggle extends BardSkill
 		M.location().recoverRoomStats();
 	}
 
-	public void executeMsg(Environmental myHost, CMMsg msg)
+	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		if(!pause)
 		{

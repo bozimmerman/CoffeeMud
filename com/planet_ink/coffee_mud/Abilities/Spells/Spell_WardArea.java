@@ -68,7 +68,7 @@ public class Spell_WardArea extends Spell implements Trap
 	{beneficialAffect(mob,P,qualifyingClassLevel+trapBonus,0);return (Trap)P.fetchEffect(ID());}
 
 	public boolean sprung(){return sprung;}
-	public boolean okMessage(Environmental myHost, CMMsg msg)
+	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(sprung) return super.okMessage(myHost,msg);
 		if(!super.okMessage(myHost,msg))
@@ -131,7 +131,7 @@ public class Spell_WardArea extends Spell implements Trap
 		sprung=true;
 	}
 
-	public void executeMsg(Environmental myHost, CMMsg msg)
+	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);
 		if(sprung)

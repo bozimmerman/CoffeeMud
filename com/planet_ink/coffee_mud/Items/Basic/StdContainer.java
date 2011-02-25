@@ -67,7 +67,7 @@ public class StdContainer extends StdItem implements Container
 		capacity=newValue;
 	}
 
-	public boolean okMessage(Environmental myHost, CMMsg msg)
+	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(!super.okMessage(myHost,msg))
 			return false;
@@ -327,7 +327,7 @@ public class StdContainer extends StdItem implements Container
 		return super.tick(ticking,tickID);
 	}
 	
-	public void executeMsg(Environmental myHost, CMMsg msg)
+	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		if(msg.amITarget(this))
 		{

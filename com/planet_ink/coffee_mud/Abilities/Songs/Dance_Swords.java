@@ -43,7 +43,7 @@ public class Dance_Swords extends Dance
 	protected String danceOf(){return name()+" Dance";}
 	protected boolean skipStandardDanceInvoke(){return true;}
 
-	public boolean okMessage(Environmental myHost, CMMsg msg)
+	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if((!super.okMessage(myHost,msg))
 		||(affected==null))

@@ -86,7 +86,7 @@ public class Prayer_DrunkenStupor extends Prayer
 		return true;
 	}
 
-	public void executeMsg(Environmental myHost, CMMsg msg)
+	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		Ability A=getInebriation();
 		if(A!=null) A.executeMsg(myHost, msg);
@@ -94,7 +94,7 @@ public class Prayer_DrunkenStupor extends Prayer
 	}
 
 
-	public boolean okMessage(Environmental myHost, CMMsg msg)
+	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(!super.okMessage(myHost,msg))
 			return false;

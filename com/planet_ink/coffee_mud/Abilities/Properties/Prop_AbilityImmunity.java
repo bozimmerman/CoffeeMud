@@ -73,7 +73,7 @@ public class Prop_AbilityImmunity extends Property
 		super.setMiscText(newText);
 	}
 
-	public boolean okMessage(Environmental myHost, CMMsg msg)
+	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if ( (msg.source() != null)
 	    && (msg.target() != null)

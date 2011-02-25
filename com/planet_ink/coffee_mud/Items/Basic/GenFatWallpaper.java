@@ -41,7 +41,7 @@ public class GenFatWallpaper extends GenWallpaper
 	protected long expirationDate=0;
 	public long expirationDate(){return expirationDate;}
 	public void setExpirationDate(long time){expirationDate=time;}
-	public boolean okMessage(Environmental myHost, CMMsg msg)
+	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(msg.amITarget(this)
 		&&((msg.targetMinor()==CMMsg.TYP_EXPIRE)||(msg.targetMinor()==CMMsg.TYP_DEATH)))
@@ -52,7 +52,7 @@ public class GenFatWallpaper extends GenWallpaper
 			return false;
 		return true;
 	}
-	public void executeMsg(Environmental myHost, CMMsg msg)
+	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		if(msg.amITarget(this)
 		&&((msg.targetMinor()==CMMsg.TYP_EXPIRE)||(msg.targetMinor()==CMMsg.TYP_DEATH)))

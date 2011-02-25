@@ -59,7 +59,7 @@ public class Prayer_IceHealing extends Prayer
 			mob.tell("The aura of ice healing around you fades.");
 	}
 
-	public boolean okMessage(Environmental myHost, CMMsg msg)
+	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(!super.okMessage(myHost,msg))
 			return false;

@@ -41,7 +41,7 @@ public class Play_Blues extends Play
 	protected boolean maliciousButNotAggressiveFlag(){return true;}
 	protected String songOf(){return "the "+name();}
 
-	public boolean okMessage(Environmental myHost, CMMsg msg)
+	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(!super.okMessage(myHost,msg)) return false;
 		// the sex rules

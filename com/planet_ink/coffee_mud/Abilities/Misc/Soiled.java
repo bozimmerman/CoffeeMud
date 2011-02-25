@@ -80,7 +80,7 @@ public class Soiled extends StdAbility
 		}
 	}
 
-	public void executeMsg(Environmental myHost, CMMsg msg)
+	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 	    if(((msg.source()==affected)
         ||((affected instanceof Item)

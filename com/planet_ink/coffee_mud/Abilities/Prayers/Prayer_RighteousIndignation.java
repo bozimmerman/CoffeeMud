@@ -57,7 +57,7 @@ public class Prayer_RighteousIndignation extends Prayer
 			mob.tell("Your righteous indignation fades.");
 	}
 
-	public boolean okMessage(Environmental myHost, CMMsg msg)
+	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if((msg.sourceMinor()==CMMsg.TYP_EXPCHANGE)
 		&&(msg.target() instanceof MOB)

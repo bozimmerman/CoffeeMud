@@ -54,7 +54,7 @@ public class Fighter_Charge extends FighterSkill
     
 	public boolean done=false;
 
-	public void executeMsg(Environmental myHost, CMMsg msg)
+	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		if((affected!=null)
 		&&(affected instanceof MOB)

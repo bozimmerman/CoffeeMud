@@ -44,7 +44,7 @@ public class Spell_Alarm extends Spell
     Room myRoomContainer=null;
     boolean waitingForLook=false;
 
-	public void executeMsg(Environmental myHost, CMMsg msg)
+	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);
 

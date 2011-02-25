@@ -65,7 +65,7 @@ public class Chant_Yearning extends Chant
 			mob.tell("Your yearning subsides.");
 	}
 
-	public void executeMsg(Environmental myHost, CMMsg msg)
+	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);
 		// the sex rules

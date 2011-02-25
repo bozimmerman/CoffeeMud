@@ -46,7 +46,7 @@ public class Skill_Songcraft extends BardSkill
 	public String lastID="";
 	public int craftType(){return Ability.ACODE_SONG;}
 
-	public void executeMsg(Environmental myHost, CMMsg msg)
+	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);
 		if((affected==null)||(!(affected instanceof MOB)))

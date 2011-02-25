@@ -50,7 +50,7 @@ public class UnderWaterMaze extends StdMaze
 
 	public String getGridChildLocaleID(){return "UnderWater";}
 
-	public boolean okMessage(Environmental myHost, CMMsg msg)
+	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		switch(UnderWater.isOkUnderWaterAffect(this,msg))
 		{
@@ -59,7 +59,7 @@ public class UnderWaterMaze extends StdMaze
 		}
 		return super.okMessage(myHost,msg);
 	}
-	public void executeMsg(Environmental myHost, CMMsg msg)
+	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);
 		UnderWater.sinkAffects(this,msg);

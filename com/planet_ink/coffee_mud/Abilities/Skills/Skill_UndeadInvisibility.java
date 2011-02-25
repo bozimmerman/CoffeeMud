@@ -44,7 +44,7 @@ public class Skill_UndeadInvisibility extends StdSkill
 	public boolean isAutoInvoked(){return true;}
 	public boolean canBeUninvoked(){return false;}
 
-	public boolean okMessage(Environmental myHost, CMMsg msg)
+	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(((msg.targetCode()&CMMsg.MASK_MALICIOUS)>0)
         &&(!CMath.bset(msg.sourceCode(),CMMsg.MASK_ALWAYS))

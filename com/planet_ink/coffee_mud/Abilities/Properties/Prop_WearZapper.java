@@ -44,7 +44,7 @@ public class Prop_WearZapper extends Prop_HaveZapper
 		return "Wearing restricted as follows: "+CMLib.masking().maskDesc(miscText);
 	}
 
-	public boolean okMessage(Environmental myHost, CMMsg msg)
+	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(affected==null) return false;
 		if(!(affected instanceof Item)) return false;

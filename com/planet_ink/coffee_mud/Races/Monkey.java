@@ -100,7 +100,7 @@ public class Monkey extends StdRace
 			return "^c" + mob.displayName(viewer) + "^c is in perfect health.^N";
 	}
 
-	public void executeMsg(Environmental myHost, CMMsg msg)
+	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);
 		// the sex rules

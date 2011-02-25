@@ -147,7 +147,7 @@ public class Poison extends StdAbility
 		}
 	}
 
-	public void executeMsg(Environmental myHost, CMMsg msg)
+	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		if(affected==null) return;
 		if(affected instanceof Item)

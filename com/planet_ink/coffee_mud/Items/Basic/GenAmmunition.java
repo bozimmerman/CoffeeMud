@@ -70,7 +70,7 @@ public class GenAmmunition extends StdItem implements Ammunition
 		recoverPhyStats();
 	}
 
-	public boolean okMessage(Environmental myHost, CMMsg msg)
+	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		MOB mob=msg.source();
 		if(!msg.amITarget(this))

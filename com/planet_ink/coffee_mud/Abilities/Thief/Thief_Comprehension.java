@@ -73,7 +73,7 @@ public class Thief_Comprehension extends ThiefSkill
 		return true;
 	}
 
-	public void executeMsg(Environmental myHost, CMMsg msg)
+	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);
 		if((affected instanceof MOB)

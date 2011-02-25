@@ -45,7 +45,7 @@ public class Thief_RunningFight extends ThiefSkill
 	protected MOB lastOpponent=null;
     public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_DIRTYFIGHTING;}
 
-	public void executeMsg(Environmental myHost, CMMsg msg)
+	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		if((affected!=null)&&(affected instanceof MOB)&&(lastOpponent!=null))
 		{
@@ -63,7 +63,7 @@ public class Thief_RunningFight extends ThiefSkill
 		super.executeMsg(myHost,msg);
 	}
 
-	public boolean okMessage(Environmental myHost, CMMsg msg)
+	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if((affected==null)||(!(affected instanceof MOB)))
 			return super.okMessage(myHost,msg);

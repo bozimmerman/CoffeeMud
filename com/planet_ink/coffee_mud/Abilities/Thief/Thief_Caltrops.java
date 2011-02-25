@@ -85,7 +85,7 @@ public class Thief_Caltrops extends ThiefSkill implements Trap
         return super.castingQuality(mob,target);
     }
     
-	public boolean okMessage(Environmental myHost, CMMsg msg)
+	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(affected==null) return super.okMessage(myHost,msg);
 		if(!(affected instanceof Room)) return super.okMessage(myHost,msg);

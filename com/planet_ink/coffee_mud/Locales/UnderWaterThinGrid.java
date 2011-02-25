@@ -75,7 +75,7 @@ public class UnderWaterThinGrid extends StdThinGrid
 	}
 	public List<Integer> resourceChoices(){return UnderWater.roomResources;}
 
-	public boolean okMessage(Environmental myHost, CMMsg msg)
+	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		switch(UnderWater.isOkUnderWaterAffect(this,msg))
 		{
@@ -84,7 +84,7 @@ public class UnderWaterThinGrid extends StdThinGrid
 		}
 		return super.okMessage(myHost,msg);
 	}
-	public void executeMsg(Environmental myHost, CMMsg msg)
+	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);
 		UnderWater.sinkAffects(this,msg);

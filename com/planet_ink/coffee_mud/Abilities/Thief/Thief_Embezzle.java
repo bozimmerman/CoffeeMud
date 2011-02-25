@@ -69,7 +69,7 @@ public class Thief_Embezzle extends ThiefSkill
 		return times+1;
 	}
 
-	public boolean okMessage(Environmental myHost, CMMsg msg)
+	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if((msg.amITarget(affected))
 		   &&(mobs.contains(msg.source())))

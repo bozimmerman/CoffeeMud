@@ -50,7 +50,7 @@ public class Spell_WallOfStone extends Spell
 	protected Item theWall=null;
 	protected String deathNotice="";
 
-	public boolean okMessage(Environmental myHost, CMMsg msg)
+	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if((affected==null)||(!(affected instanceof Item)))
 			return true;

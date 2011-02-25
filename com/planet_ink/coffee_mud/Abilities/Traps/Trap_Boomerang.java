@@ -40,7 +40,7 @@ public class Trap_Boomerang extends StdTrap
 	protected int trapLevel(){return 24;}
 	public String requiresToSet(){return "";}
 
-	public void executeMsg(Environmental myHost, CMMsg msg)
+	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		boolean wasSprung = sprung;
 		super.executeMsg(myHost, msg);

@@ -72,7 +72,7 @@ six={"jedanast","delalime","veralim","dvanast","bahone","zahedon","prasad","tren
 		return msg.toUpperCase();
 	}
 
-	public boolean okMessage(Environmental myHost, CMMsg msg)
+	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if((beingSpoken(ID()))
 		&&(affected instanceof MOB)

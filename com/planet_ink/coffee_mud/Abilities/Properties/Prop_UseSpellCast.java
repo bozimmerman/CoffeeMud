@@ -85,7 +85,7 @@ public class Prop_UseSpellCast extends Prop_SpellAdder
     public void affectPhyStats(Physical host, PhyStats affectableStats)
     {}
     
-	public void executeMsg(Environmental myHost, CMMsg msg)
+	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		if(processing) return;
 		processing=true;

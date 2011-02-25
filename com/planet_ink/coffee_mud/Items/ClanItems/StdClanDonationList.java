@@ -56,7 +56,7 @@ public class StdClanDonationList extends StdClanItem
         material=RawMaterial.RESOURCE_PAPER;
     }
     
-    public boolean okMessage(Environmental myHost, CMMsg msg)
+    public boolean okMessage(final Environmental myHost, final CMMsg msg)
     {
         if((((ClanItem)this).clanID().length()>0)
         &&(CMLib.flags().isGettable(this))
@@ -77,7 +77,7 @@ public class StdClanDonationList extends StdClanItem
         return super.okMessage(myHost,msg);
     }
     
-    public void executeMsg(Environmental myHost, CMMsg msg)
+    public void executeMsg(final Environmental myHost, final CMMsg msg)
     {
         if(((ClanItem)this).clanID().length()>0)
         {

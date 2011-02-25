@@ -42,7 +42,7 @@ public class Specialization_Natural extends Specialization_Weapon
 		super();
 		weaponClass=Weapon.CLASS_NATURAL;
 	}
-	public void executeMsg(Environmental myHost, CMMsg msg)
+	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		if((activated)
 		&&(msg.targetMinor()==CMMsg.TYP_WEAPONATTACK)

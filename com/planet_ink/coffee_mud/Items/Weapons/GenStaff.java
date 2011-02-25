@@ -107,7 +107,7 @@ public class GenStaff extends GenWeapon implements Wand
 		StdWand.waveIfAble(mob,afftarget,message,this);
 	}
 
-	public void executeMsg(Environmental myHost, CMMsg msg)
+	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		MOB mob=msg.source();
 		switch(msg.targetMinor())

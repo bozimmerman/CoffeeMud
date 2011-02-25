@@ -60,7 +60,7 @@ public class Spell_SummoningWard extends Spell
 	}
 
 
-	public boolean okMessage(Environmental myHost, CMMsg msg)
+	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(affected==null)
 			return super.okMessage(myHost,msg);
