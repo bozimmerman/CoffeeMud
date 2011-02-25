@@ -1697,7 +1697,7 @@ public class CMMap extends StdLibrary implements WorldMap
 		}
 	}
 	
-	protected void cleanScriptHosts(SLinkedList<LocatedPair> hosts, PhysicalAgent oneToDel, boolean fullCleaning)
+	protected void cleanScriptHosts(final SLinkedList<LocatedPair> hosts, final PhysicalAgent oneToDel, final boolean fullCleaning)
 	{
 		PhysicalAgent PA;
 		for(LocatedPair W : hosts)
@@ -1714,40 +1714,40 @@ public class CMMap extends StdLibrary implements WorldMap
 			}
 	}
 
-	protected boolean isAQualifyingScriptHost(PhysicalAgent host)
+	protected boolean isAQualifyingScriptHost(final PhysicalAgent host)
 	{
 		if(host==null) return false;
-    	for(Enumeration<Behavior> e = host.behaviors();e.hasMoreElements();)
+    	for(final Enumeration<Behavior> e = host.behaviors();e.hasMoreElements();)
     	{
-    		Behavior B=e.nextElement();
+    		final Behavior B=e.nextElement();
     		if((B!=null) && B.isSavable() && (B instanceof ScriptingEngine))
     			return true;
     	}
-    	for(Enumeration<ScriptingEngine> e = host.scripts();e.hasMoreElements();)
+    	for(final Enumeration<ScriptingEngine> e = host.scripts();e.hasMoreElements();)
     	{
-    		ScriptingEngine SE=e.nextElement();
+    		final ScriptingEngine SE=e.nextElement();
     		if((SE!=null) && SE.isSavable() && (SE instanceof ScriptingEngine))
     			return true;
     	}
 		return false;
 	}
 	
-	protected boolean isAScriptHost(Area area, PhysicalAgent host)
+	protected boolean isAScriptHost(final Area area, final PhysicalAgent host)
 	{
 		if(area == null) return false;
 		return isAScriptHost(scriptHostMap.get(area.Name().toUpperCase()), host);
 	}
 	
-	protected boolean isAScriptHost(SLinkedList<LocatedPair> hosts, PhysicalAgent host)
+	protected boolean isAScriptHost(final SLinkedList<LocatedPair> hosts, final PhysicalAgent host)
 	{
 		if((hosts==null)||(host==null)||(hosts.size()==0)) return false;
-		for(LocatedPair W : hosts)
+		for(final LocatedPair W : hosts)
 			if(W.obj()==host)
 				return true;
 		return false;
 	}
 	
-	protected void addScriptHost(Area area, Room room, PhysicalAgent host)
+	protected void addScriptHost(final Area area, final Room room, final PhysicalAgent host)
     {
     	if((area==null) || (host == null))
     		return;
@@ -1771,12 +1771,12 @@ public class CMMap extends StdLibrary implements WorldMap
     	}
     }
 	
-	protected void delScriptHost(Area area, PhysicalAgent oneToDel)
+	protected void delScriptHost(Area area, final PhysicalAgent oneToDel)
     {
     	if(oneToDel == null)
     		return;
     	if(area == null)
-    		for(Area A : areasList)
+    		for(final Area A : areasList)
     			if(isAScriptHost(A,oneToDel))
     			{
     				area = A;
@@ -1786,32 +1786,34 @@ public class CMMap extends StdLibrary implements WorldMap
     		return;
     	synchronized(("SCRIPT_HOST_FOR: "+area.Name().toUpperCase()).intern())
     	{
-    		SLinkedList<LocatedPair> hosts = scriptHostMap.get(area.Name().toUpperCase());
+    		final SLinkedList<LocatedPair> hosts = scriptHostMap.get(area.Name().toUpperCase());
 	    	if(hosts==null) return;
 	    	cleanScriptHosts(hosts, oneToDel, false);
     	}
     }
 	
-    public Enumeration<LocatedPair> scriptHosts(Area area)
+    public Enumeration<LocatedPair> scriptHosts(final Area area)
     {
-    	final Vector<Iterator<LocatedPair>> V = new Vector<Iterator<LocatedPair>>();
+    	final LinkedList<List<LocatedPair>> V = new LinkedList<List<LocatedPair>>();
     	if(area == null)
-    		for(String areaKey : scriptHostMap.keySet())
-    	    	V.add(scriptHostMap.get(areaKey.toUpperCase()).iterator());
+    	{
+    		for(final String areaKey : scriptHostMap.keySet())
+    	    	V.add(scriptHostMap.get(areaKey.toUpperCase()));
+    	}
     	else
     	{
-	    	SLinkedList<LocatedPair> hosts = scriptHostMap.get(area.Name().toUpperCase());
+    		final SLinkedList<LocatedPair> hosts = scriptHostMap.get(area.Name().toUpperCase());
 	    	if(hosts==null) return EmptyEnumeration.INSTANCE;
-	    	V.add(hosts.iterator());
+	    	V.add(hosts);
     	}
     	if(V.size()==0) return EmptyEnumeration.INSTANCE;
-    	final MultiIterator<LocatedPair> me = new MultiIterator<LocatedPair>(V.toArray(new Iterator[0]));
+    	final MultiListEnumeration<LocatedPair> me=new MultiListEnumeration<LocatedPair>(V,true);
     	return new Enumeration<LocatedPair>()
     	{
-			public boolean hasMoreElements() { return me.hasNext();}
+			public boolean hasMoreElements() { return me.hasMoreElements();}
 			public LocatedPair nextElement() {
-				LocatedPair W = me.next();
-				PhysicalAgent E = W.obj();
+				final LocatedPair W = me.nextElement();
+				final PhysicalAgent E = W.obj();
 				if(((E==null) || (E.amDestroyed())) && hasMoreElements())
 					return nextElement();
 				return W;

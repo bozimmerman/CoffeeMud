@@ -18,7 +18,7 @@ limitations under the License.
 public class ReadOnlyCollection<K> implements Collection<K> 
 {
 	private final Collection<K> col;
-	public ReadOnlyCollection(Collection<K> c)
+	public ReadOnlyCollection(final Collection<K> c)
 	{
 		col=c;
 	}

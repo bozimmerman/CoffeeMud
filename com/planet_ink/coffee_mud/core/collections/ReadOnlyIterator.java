@@ -18,7 +18,7 @@ limitations under the License.
 public class ReadOnlyIterator<K> implements Iterator<K>
 {
 	private final Iterator<K> iter;
-	public ReadOnlyIterator(Iterator<K> i)
+	public ReadOnlyIterator(final Iterator<K> i)
 	{
 		iter=i;
 	}

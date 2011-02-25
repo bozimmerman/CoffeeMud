@@ -27,23 +27,31 @@ public class MultiListEnumeration<K> implements Enumeration<K>
 	private volatile Iterator<List<K>> listIter = null; 
 	private volatile Iterator<K> iter = null; 
     
-	public MultiListEnumeration(List<K>... esets) 
+	public MultiListEnumeration(final List<K>... esets) 
     {
         if((esets!=null)&&(esets.length>0))
         	lists.addAll(Arrays.asList(esets));
-		setup();
+		setup(false);
     }
     
-	public MultiListEnumeration(List<K> eset) 
+	public MultiListEnumeration(final List<List<K>> esetss, final boolean diffMethodSignature) 
+    {
+        if((esetss!=null)&&(esetss.size()>0))
+        	lists.addAll(esetss);
+		setup(false);
+    }
+    
+	public MultiListEnumeration(final List<K> eset) 
     {
 		lists.add(eset);
-		setup();
+		setup(false);
     }
     
-	private void setup()
+	private void setup(final boolean startOver)
 	{
-		listIter=lists.iterator();
-    	if(iter == null)
+		if(startOver||(listIter==null))
+			listIter=lists.iterator();
+    	if(startOver||(iter == null))
     	{
     		if(listIter.hasNext())
 	    		iter=listIter.next().iterator();
@@ -54,7 +62,7 @@ public class MultiListEnumeration<K> implements Enumeration<K>
 	{
 		if(set != null)
 			lists.add(set);
-		setup();
+		setup(true);
 	}
 	
     public boolean hasMoreElements() 
