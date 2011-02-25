@@ -1667,7 +1667,7 @@ public class CMMap extends StdLibrary implements WorldMap
 		}
 	}
 	
-	public void registerWorldObjectLoaded(Area area, Room room, CMObject o)
+	public void registerWorldObjectLoaded(Area area, Room room, final CMObject o)
 	{
 		if(o instanceof Deity)
 			addDeity((Deity)o);
@@ -1689,11 +1689,8 @@ public class CMMap extends StdLibrary implements WorldMap
 			if(area == null) area = getStartArea(AE);
 			addScriptHost(area, room, AE);
 			if(o instanceof MOB)
-			{
-				MOB M=(MOB)o;
-				for(int i=0;i<M.numItems();i++)
-					addScriptHost(area, room, M.getItem(i));
-			}
+				for(final Enumeration<Item> i=((MOB)o).items();i.hasMoreElements();)
+					addScriptHost(area, room, i.nextElement());
 		}
 	}
 	
