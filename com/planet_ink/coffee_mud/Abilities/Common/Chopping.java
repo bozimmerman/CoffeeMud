@@ -92,7 +92,7 @@ public class Chopping extends GatheringSkill
 				MOB mob=(MOB)affected;
 				if((found!=null)&&(!aborted))
 				{
-					int amount=CMLib.dice().roll(1,20,10)*(abilityCode());
+					int amount=CMLib.dice().roll(1,7,3)*(abilityCode());
 					String s="s";
 					if(amount==1) s="";
 					mob.location().show(mob,null,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> manage(s) to chop up "+amount+" pound"+s+" of "+foundShortName+".");

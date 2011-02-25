@@ -204,11 +204,11 @@ public class CraftingSkill extends GatheringSkill
         }
     }
     
-	protected Vector loadList(StringBuffer str)
+	protected List<List<String>> loadList(StringBuffer str)
 	{
-		Vector V=new Vector();
+		List<List<String>> V=new Vector<List<String>>();
 		if(str==null) return V;
-		List V2=new Vector();
+		List<String> V2=new Vector<String>();
 		boolean oneComma=false;
 		int start=0;
 		int longestList=0;
@@ -235,7 +235,7 @@ public class CraftingSkill extends GatheringSkill
 					V2.add(str.substring(start,i));
 					if(V2.size()>longestList) longestList=V2.size();
 					if(V2 instanceof Vector) ((Vector)V2).trimToSize();
-					V.addElement(V2);
+					V.add(V2);
 					V2=new Vector();
 				}
 				start=i+1;
@@ -249,11 +249,11 @@ public class CraftingSkill extends GatheringSkill
 		if(V2.size()>1)
 		{
 			if(V2.size()>longestList) longestList=V2.size();
-			V.addElement(V2);
+			V.add(V2);
 		}
 		for(int v=0;v<V.size();v++)
 		{
-			V2=(List)V.elementAt(v);
+			V2=(List)V.get(v);
 			while(V2.size()<longestList)
 				V2.add("");
 		}

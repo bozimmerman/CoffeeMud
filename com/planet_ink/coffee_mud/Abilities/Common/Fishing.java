@@ -81,7 +81,7 @@ public class Fishing extends GatheringSkill
 				MOB mob=(MOB)affected;
 				if((found!=null)&&(!aborted)&&(!helping))
 				{
-					int amount=CMLib.dice().roll(1,5,0)*(abilityCode());
+					int amount=CMLib.dice().roll(1,3,0)*(abilityCode());
 					String s="s";
 					if(amount==1) s="";
 					mob.location().show(mob,null,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> manage(s) to catch "+amount+" pound"+s+" of "+foundShortName+".");

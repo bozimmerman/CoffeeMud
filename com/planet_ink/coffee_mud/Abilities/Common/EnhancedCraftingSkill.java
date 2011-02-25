@@ -244,6 +244,37 @@ public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
         return V;
     }
 
+	protected List<List<String>> loadList(StringBuffer str)
+	{
+		final List<List<String>> lists=super.loadList(str);
+		final List<String> parmNames=CMParms.parseTabs(parametersFormat(), true);
+		int levelParmPos=-1;
+		for(int p=0;p<parmNames.size();p++)
+			if(parmNames.get(p).endsWith("_LEVEL"))
+			{
+				levelParmPos=p;
+				break;
+			}
+		if(levelParmPos<0) return lists;
+		final List<List<String>> sortedLists=new Vector<List<String>>();
+		while(lists.size()>0)
+		{
+			int lowestLevelRecipeIndex=-1;
+			int lowestLevel=Integer.MAX_VALUE;
+			for(int index=0;index<lists.size();index++)
+				if((lists.get(index).size()>levelParmPos)&&(CMath.s_int(lists.get(index).get(levelParmPos))<lowestLevel))
+				{
+					lowestLevelRecipeIndex=index;
+					lowestLevel=CMath.s_int(lists.get(index).get(levelParmPos));
+				}
+			if(lowestLevelRecipeIndex<0)
+				sortedLists.add(lists.remove(0));
+			else
+				sortedLists.add(lists.remove(lowestLevelRecipeIndex));
+		}
+		return sortedLists;
+	}
+	
 	public void enhanceList(MOB mob)
 	{
 		StringBuffer extras=new StringBuffer("");

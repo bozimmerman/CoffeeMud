@@ -80,7 +80,7 @@ public class Farming extends GatheringSkill
 			{
 				if((found!=null)&&(!isaborted))
 				{
-					int amount=CMLib.dice().roll(1,20,0)*(abilityCode());
+					int amount=CMLib.dice().roll(1,7,0)*(abilityCode());
 					String s="s";
 					if(amount==1) s="";
 					room.showHappens(CMMsg.MSG_OK_VISUAL,amount+" pound"+s+" of "+foundShortName+" have grown here.");

@@ -92,7 +92,7 @@ public class Digging extends GatheringSkill
 					if(CMLib.dice().rollPercentage()>90)
 						amount++;
 					if((found.material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_PRECIOUS)
-						amount=CMLib.dice().roll(1,55,0);
+						amount=CMLib.dice().roll(1,15,0);
 					amount=amount*abilityCode();
 					String s="s";
 					if((amount==1)||(foundShortName.endsWith("s"))) s="";
