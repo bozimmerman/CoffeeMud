@@ -241,30 +241,54 @@ public class DefaultSocial implements Social
 		}
 
         String mspFile=((MSPfile!=null)&&(MSPfile.length()>0))?CMProps.msp(MSPfile,10):"";
+        if(end.length()==0) mspFile="";
+        
+        int targetCode=fullCode;
+        int otherCode=fullCode;
+        int srcCode=srcMask|sourceCode();
+        
         String You_see=You_see();
         if((You_see!=null)&&(You_see.trim().length()==0)) 
+        {
             You_see=null;
+            srcCode=CMMsg.NO_EFFECT;
+	    }
+        else
+        	You_see=str+You_see+end+mspFile;
+
         
         String Third_party_sees=Third_party_sees();
         if((Third_party_sees!=null)&&(Third_party_sees.trim().length()==0)) 
+        {
             Third_party_sees=null;
+            otherCode=CMMsg.NO_EFFECT;
+	    }
+        else
+        	Third_party_sees=str+Third_party_sees+end+mspFile;
         
         String Target_sees=Target_sees();
-        if((Target_sees!=null)&&(Target_sees.trim().length()==0)) Target_sees=null;
+        if((Target_sees!=null)&&(Target_sees.trim().length()==0)) 
+        {
+        	Target_sees=null;
+        	targetCode=CMMsg.NO_EFFECT;
+        }
+        else
+        	Target_sees=str+Target_sees+end+mspFile;
         
 		String See_when_no_target=See_when_no_target();
 		if((See_when_no_target!=null)&&(See_when_no_target.trim().length()==0)) 
             See_when_no_target=null;
+        else
+        	See_when_no_target=str+See_when_no_target+end;
         
 		CMMsg msg=null;
-        if(end.length()==0) mspFile="";
 		if(((target==null)&&(targetable(null)))||((target!=null)&&(!targetable(target))))
-			msg=CMClass.getMsg(mob,null,this,srcMask|sourceCode(),str+See_when_no_target+end,CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null);
+			msg=CMClass.getMsg(mob,null,this,srcCode,See_when_no_target,CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null);
 		else
 		if(target==null)
-			msg=CMClass.getMsg(mob,null,this,srcMask|sourceCode(),str+You_see+end+mspFile,CMMsg.NO_EFFECT,null,fullCode,str+Third_party_sees+end+mspFile);
+			msg=CMClass.getMsg(mob,null,this,srcCode,You_see,CMMsg.NO_EFFECT,null,otherCode,Third_party_sees);
 		else
-			msg=CMClass.getMsg(mob,target,this,srcMask|sourceCode(),str+You_see+end+mspFile,fullCode,str+Target_sees+end+mspFile,fullCode,str+Third_party_sees+end+mspFile);
+			msg=CMClass.getMsg(mob,target,this,srcCode,You_see,targetCode,Target_sees,otherCode,Third_party_sees);
 		return msg;
 	}
 
