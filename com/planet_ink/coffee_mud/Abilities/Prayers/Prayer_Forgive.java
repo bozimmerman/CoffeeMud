@@ -73,20 +73,24 @@ public class Prayer_Forgive extends Prayer
 
 		boolean success=proficiencyCheck(mob,0,auto);
 
-		if((success)&&(warrants.size()>0))
+		if(success)
 		{
-			CMMsg msg=CMClass.getMsg(mob,mob.location(),this,verbalCastCode(mob,mob.location(),auto),auto?"":"^S<S-NAME> "+prayForWord(mob)+" to forgive "+name+".^?");
-			if(mob.location().okMessage(mob,msg))
+			if(warrants.size()==0)
+				beneficialWordsFizzle(mob,null,"<S-NAME> "+prayForWord(mob)+" to forgive "+name+" for no reason at all.");
+			else
 			{
-				mob.location().send(mob,msg);
-				for(int i=0;i<warrants.size();i++)
+				CMMsg msg=CMClass.getMsg(mob,mob.location(),this,verbalCastCode(mob,mob.location(),auto),auto?"":"^S<S-NAME> "+prayForWord(mob)+" to forgive "+name+".^?");
+				if(mob.location().okMessage(mob,msg))
 				{
-					LegalWarrant W=(LegalWarrant)warrants.get(i);
-					W.setCrime("pardoned");
-					W.setOffenses(0);
+					mob.location().send(mob,msg);
+					for(int i=0;i<warrants.size();i++)
+					{
+						LegalWarrant W=(LegalWarrant)warrants.get(i);
+						W.setCrime("pardoned");
+						W.setOffenses(0);
+					}
 				}
 			}
-
 		}
 		else
 			beneficialWordsFizzle(mob,null,"<S-NAME> "+prayForWord(mob)+" to forgive "+name+", but nothing happens.");
