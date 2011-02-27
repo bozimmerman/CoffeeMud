@@ -2086,7 +2086,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
         else
         if(E instanceof MOB)
         {
-            if(((MOB)E).isMonster())
+            if(((MOB)E).playerStats()==null)
                 modifyGenMOB(mob,(MOB)E);
             else
                 modifyPlayer(mob,(MOB)E);
