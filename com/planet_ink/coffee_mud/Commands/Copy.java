@@ -102,9 +102,37 @@ public class Copy extends StdCommand
 				E=CMLib.map().getRoom(name);
 				if(E==null)
 				{
-					mob.tell("Room ID '"+name+"' does not exist.");
-					mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
-					return false;
+					if(commands.size()>1)
+					{
+						int subDirCode=Directions.getGoodDirectionCode((String)commands.lastElement());
+						if(subDirCode>=0)
+						{
+							commands.removeElementAt(commands.size()-1);
+							name=CMParms.combine(commands,0);
+							if(name.equalsIgnoreCase("exit"))
+							{
+								E=mob.location().getExitInDir(subDirCode);
+								if(E==null) E=mob.location().getRawExit(subDirCode);
+							}
+							else
+							if(name.equalsIgnoreCase("room"))
+							{
+								E=mob.location().getRoomInDir(subDirCode);
+							}
+							else
+							{
+								mob.tell(""+name+"' should be 'room' or 'exit'.");
+								mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
+								return false;
+							}
+						}
+					}
+					if(E==null)
+					{
+						mob.tell("Room ID '"+name+"' does not exist.  You can also try exit <dir> and room <dir>.");
+						mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
+						return false;
+					}
 				}
 			}
 		}
@@ -256,6 +284,36 @@ public class Copy extends StdCommand
 					else
 						room.showHappens(CMMsg.MSG_OK_ACTION,"Suddenly, "+newRoom.roomTitle(mob)+" falls "+Directions.getInDirectionName(dirCode)+".");
 					room=newRoom;
+	    		}
+			}
+			else
+			if((E instanceof Exit)&&(dirCode>=0))
+			{
+				if(!CMSecurity.isAllowed(mob,mob.location(),"COPYROOMS"))
+				{
+					mob.tell("You are not allowed to copy "+E.name());
+					return false;
+				}
+				Room editRoom=room;
+				if(editRoom.getRawExit(dirCode)==E)
+				{
+					editRoom=room.getRoomInDir(dirCode);
+					dirCode=Directions.getOpDirectionCode(dirCode);
+					if((editRoom==null)||(editRoom.getRoomInDir(dirCode)==null))
+					{
+						mob.tell("No opposite room exists to copy this exit into.");
+						return false;
+					}
+				}
+	    		synchronized(("SYNC"+editRoom.roomID()).intern())
+	    		{
+	    			Exit oldE=editRoom.getRawExit(dirCode);
+	    			if((oldE==null)||(oldE!=E))
+	    			{
+						editRoom.setRawExit(dirCode, E);
+						CMLib.database().DBUpdateExits(editRoom);
+	    			}
+					room.showHappens(CMMsg.MSG_OK_ACTION,"Suddenly, "+E.name()+" falls "+Directions.getInDirectionName(dirCode)+".");
 	    		}
 			}
 			else

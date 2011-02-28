@@ -70,6 +70,7 @@ public interface WorldMap extends CMLibrary, Runnable
     public void obliterateRoom(Room deadRoom);
     public Room findConnectingRoom(Room room);
     public int getRoomDir(Room from, Room to);
+    public int getExitDir(Room from, Exit to);
     
     /************************************************************************/
     /**								SEARCH TOOLS 							*/

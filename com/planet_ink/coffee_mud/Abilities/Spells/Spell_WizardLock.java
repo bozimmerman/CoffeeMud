@@ -54,8 +54,12 @@ public class Spell_WizardLock extends Spell
 		MOB mob=msg.source();
 		if(((!msg.amITarget(affected))&&(msg.tool()!=affected))
 		||(msg.source()==invoker())
-		||(CMLib.law().doesHavePriviledgesHere(mob,msg.source().location()))&&(text().toUpperCase().indexOf("MALICIOUS")<0))
-			return true;
+		||(CMLib.law().doesHavePriviledgesHere(mob,msg.source().location())
+			&&(text().toUpperCase().indexOf("MALICIOUS")<0))
+		||((msg.target() instanceof Exit)
+			&&(CMLib.law().doesHavePriviledgesInThisDirection(mob,msg.source().location(),(Exit)msg.target()))
+			&&(text().toUpperCase().indexOf("MALICIOUS")<0)))
+				return true;
         
 		switch(msg.targetMinor())
 		{

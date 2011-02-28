@@ -178,6 +178,15 @@ public class MUDLaw extends StdLibrary implements LegalLibrary
 		return null;
 	}
 
+	public boolean doesHavePriviledgesInThisDirection(MOB mob, Room room, Exit exit)
+	{
+		final int dirCode=CMLib.map().getExitDir(room,exit);
+		if(dirCode<0) return false;
+		Room otherRoom=room.getRoomInDir(dirCode);
+		if(otherRoom==null) return false;
+		return doesHavePriviledgesHere(mob,otherRoom);
+	}
+	
 	public boolean doesHavePriviledgesHere(MOB mob, Room room)
 	{
 		LandTitle title=getLandTitle(room);
