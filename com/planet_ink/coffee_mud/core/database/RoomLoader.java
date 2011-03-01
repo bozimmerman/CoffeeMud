@@ -954,7 +954,7 @@ public class RoomLoader
 		if((!room.isSavable())||(room.amDestroyed())) return;
 		if(Log.debugChannelOn()&&(CMSecurity.isDebugging("CMROIT")||CMSecurity.isDebugging("DBROOMS")))
 			Log.debugOut("RoomLoader","Start item update for room "+room.roomID());
-		LinkedList<DBPreparedBatchEntry> statements=new LinkedList<DBPreparedBatchEntry>();
+		List<DBPreparedBatchEntry> statements=new Vector<DBPreparedBatchEntry>();
 		statements.add(new DBPreparedBatchEntry("DELETE FROM CMROIT WHERE CMROID='"+room.roomID()+"'"));
 		for(int i=0;i<items.size();i++)
 		{
@@ -979,7 +979,7 @@ public class RoomLoader
 		
 		if(Log.debugChannelOn()&&(CMSecurity.isDebugging("CMROEX")||CMSecurity.isDebugging("DBROOMS")))
 			Log.debugOut("RoomLoader","Starting exit update for room "+room.roomID());
-		LinkedList<DBPreparedBatchEntry> statements=new LinkedList<DBPreparedBatchEntry>();
+		List<DBPreparedBatchEntry> statements=new Vector<DBPreparedBatchEntry>();
 		statements.add(new DBPreparedBatchEntry("DELETE FROM CMROEX WHERE CMROID='"+room.roomID()+"'"));
 		for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 		{
@@ -1116,7 +1116,7 @@ public class RoomLoader
 		if(Log.debugChannelOn()&&(CMSecurity.isDebugging("CMROCH")||CMSecurity.isDebugging("DBROOMS")))
 			Log.debugOut("RoomLoader","Updating mobs for room "+room.roomID());
 		if(mobs==null) mobs=new Vector<MOB>();
-		List<DBPreparedBatchEntry> statements=new LinkedList<DBPreparedBatchEntry>();
+		List<DBPreparedBatchEntry> statements=new Vector<DBPreparedBatchEntry>();
 		statements.add(new DBPreparedBatchEntry("DELETE FROM CMROCH WHERE CMROID='"+room.roomID()+"'"));
 		for(int m=0;m<mobs.size();m++)
 		{

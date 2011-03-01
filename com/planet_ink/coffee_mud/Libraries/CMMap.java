@@ -179,9 +179,12 @@ public class CMMap extends StdLibrary implements WorldMap
         }
         synchronized(V)
         {
-        	for(WeakReference<MsgListener> l : V)
-        		if(l.get()==E)
+        	for(Iterator<WeakReference<MsgListener>> i=V.iterator();i.hasNext();)
+        	{
+        		final WeakReference<MsgListener> W=i.next();
+        		if(W.get()==E)
         			return;
+        	}
             V.add(new WeakReference<MsgListener>(E));
         }
     }
@@ -193,9 +196,12 @@ public class CMMap extends StdLibrary implements WorldMap
         	return;
         synchronized(V)
         {
-        	for(WeakReference<MsgListener> W : V)
+        	for(Iterator<WeakReference<MsgListener>> i=V.iterator();i.hasNext();)
+        	{
+        		final WeakReference<MsgListener> W=i.next();
         		if(W.get()==E)
 		        	V.remove(W);
+        	}
         }
     }
     public MOB deity() 
@@ -1709,7 +1715,9 @@ public class CMMap extends StdLibrary implements WorldMap
 	protected void cleanScriptHosts(final SLinkedList<LocatedPair> hosts, final PhysicalAgent oneToDel, final boolean fullCleaning)
 	{
 		PhysicalAgent PA;
-		for(LocatedPair W : hosts)
+		for(final Iterator<LocatedPair> w=hosts.iterator();w.hasNext();)
+		{
+			final LocatedPair W=w.next();
 			if(W==null)
 				hosts.remove(W);
 			else
@@ -1721,6 +1729,7 @@ public class CMMap extends StdLibrary implements WorldMap
 				||((fullCleaning)&&(!isAQualifyingScriptHost(PA))))
 					hosts.remove(W);
 			}
+		}
 	}
 
 	protected boolean isAQualifyingScriptHost(final PhysicalAgent host)
@@ -1750,9 +1759,12 @@ public class CMMap extends StdLibrary implements WorldMap
 	protected boolean isAScriptHost(final SLinkedList<LocatedPair> hosts, final PhysicalAgent host)
 	{
 		if((hosts==null)||(host==null)||(hosts.size()==0)) return false;
-		for(final LocatedPair W : hosts)
+		for(final Iterator<LocatedPair> w=hosts.iterator();w.hasNext();)
+		{
+			final LocatedPair W=w.next();
 			if(W.obj()==host)
 				return true;
+		}
 		return false;
 	}
 	

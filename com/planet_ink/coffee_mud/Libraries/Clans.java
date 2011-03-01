@@ -284,7 +284,7 @@ public class Clans extends StdLibrary implements ClanManager
                 C.addVote(CV);
                 C.updateVotes();
                 final Clan.Function voteFunctionType = (function == Clan.Function.ASSIGN) ? Clan.Function.VOTE_ASSIGN : Clan.Function.VOTE_OTHER;
-                final List<Integer> votingRoles = new LinkedList<Integer>();
+                final List<Integer> votingRoles = new Vector<Integer>();
                 for(int i=0;i<C.getRolesList().length;i++)
                 	if(C.getAuthority(i, voteFunctionType)==Clan.Authority.CAN_DO)
                 		votingRoles.add(Integer.valueOf(i));
@@ -347,7 +347,7 @@ public class Clans extends StdLibrary implements ClanManager
         			helpG=G;
     	if(helpG==null)
     	{
-    		List<ClanGovernment> gtypes=new LinkedList<ClanGovernment>();
+    		List<ClanGovernment> gtypes=new Vector<ClanGovernment>();
     		String name=null;
         	for(ClanGovernment G : getStockGovernments())
         		for(ClanPosition P : G.getPositions())
@@ -458,7 +458,7 @@ public class Clans extends StdLibrary implements ClanManager
     public ClanGovernment createGovernment(String name)
     {
     	ClanGovernment[] gvts=getStockGovernments();
-    	List<ClanGovernment> govts = new SLinkedList<ClanGovernment>(gvts);
+    	List<ClanGovernment> govts = new SVector<ClanGovernment>(gvts);
     	for(ClanGovernment G : gvts)
     		if(G.getName().equalsIgnoreCase(name))
     			return null;
@@ -481,7 +481,7 @@ public class Clans extends StdLibrary implements ClanManager
     {
     	ClanGovernment[] gvts=getStockGovernments();
     	if(gvts.length==1) return false;
-    	List<ClanGovernment> govts = new SLinkedList<ClanGovernment>(gvts);
+    	List<ClanGovernment> govts = new SVector<ClanGovernment>(gvts);
     	govts.remove(government);
     	if(govts.size()==gvts.length) return false;
     	Resources.submitResource("parsed_clangovernments", govts.toArray(new ClanGovernment[0]));
@@ -648,7 +648,7 @@ public class Clans extends StdLibrary implements ClanManager
         	XMLLibrary.XMLpiece clanType = CMLib.xml().getPieceFromPieces(xmlV, "CLANTYPE");
         	if(clanType != null)
         	{
-        		clanTypes = new LinkedList<XMLLibrary.XMLpiece>();
+        		clanTypes = new SVector<XMLLibrary.XMLpiece>();
         		clanTypes.add(clanType);
         	}
         	else
@@ -658,7 +658,7 @@ public class Clans extends StdLibrary implements ClanManager
         	}
     	}
     	 
-    	List<ClanGovernment> governments=new LinkedList<ClanGovernment>();
+    	List<ClanGovernment> governments=new SVector<ClanGovernment>();
     	for(XMLLibrary.XMLpiece clanTypePieceTag : clanTypes)
     	{
 			final String typeName=clanTypePieceTag.parms.get("NAME");
@@ -683,7 +683,7 @@ public class Clans extends StdLibrary implements ClanManager
 	    		}
 	    	}
 	    	
-	    	final List<ClanPosition> positions=new LinkedList<ClanPosition>();
+	    	final List<ClanPosition> positions=new SVector<ClanPosition>();
 	    	XMLLibrary.XMLpiece positionsTag = CMLib.xml().getPieceFromPieces(clanTypePieceTag.contents, "POSITIONS");
 	    	for(XMLLibrary.XMLpiece posPiece : positionsTag.contents)
 	    	{

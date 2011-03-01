@@ -1286,9 +1286,10 @@ public class StdDeity extends StdMOB implements Deity
                 }
             }
 		}
-        for(MOB M : waitingFor)
+        for(Iterator<MOB> m=waitingFor.iterator();m.hasNext();)
         {
             try{
+            	final MOB M=m.next();
             	waitingFor.remove(M);
                 executeMsg(this,CMClass.getMsg(M,null,null,CMMsg.MSG_OK_VISUAL,null));
             }catch(Exception e){}

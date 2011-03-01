@@ -117,8 +117,9 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
     public void monitorGlobalMessage(Room room, CMMsg msg)
     {
     	MsgMonitor M;
-    	for(WeakReference<MsgMonitor> W : globalMonitors)
+    	for(final Iterator<WeakReference<MsgMonitor>> w=globalMonitors.iterator();w.hasNext();)
     	{
+    		final WeakReference<MsgMonitor> W=w.next();
     		M=W.get();
     		if(M != null)
     			M.monitorMsg(room, msg);
@@ -131,9 +132,12 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
     {
         if(M==null) 
         	return;
-    	for(WeakReference<MsgMonitor> W : globalMonitors)
+    	for(final Iterator<WeakReference<MsgMonitor>> w=globalMonitors.iterator();w.hasNext();)
+    	{
+    		final WeakReference<MsgMonitor> W=w.next();
     		if(W.get()==M)
     			return;
+    	}
     	globalMonitors.add(new WeakReference(M));
     }
     
@@ -141,9 +145,12 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
     {
         if(M==null) 
         	return;
-    	for(WeakReference<MsgMonitor> W : globalMonitors)
+    	for(final Iterator<WeakReference<MsgMonitor>> w=globalMonitors.iterator();w.hasNext();)
+    	{
+    		final WeakReference<MsgMonitor> W=w.next();
     		if(W.get()==M)
     			globalMonitors.remove(W);
+    	}
     }
     
 	public StringBuilder getScore(MOB mob)

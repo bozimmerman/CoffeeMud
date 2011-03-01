@@ -380,8 +380,9 @@ public class RaceData extends StdWebMacro
 	            cables=((Race)obj).culturalAbilities();
         	else
         		cables=new DVector(3);
-            for(Ability A : ables)
+            for(final Iterator<Ability> a=ables.iterator();a.hasNext();)
             {
+            	final Ability A=a.next();
                 if((A!=null)&&(!cables.contains(A.ID())))
                 {
                 	boolean defaultGain = CMLib.ableMapper().getDefaultGain(ID, false, A.ID());

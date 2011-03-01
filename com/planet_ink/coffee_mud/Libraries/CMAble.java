@@ -587,8 +587,11 @@ public class CMAble extends StdLibrary implements AbilityMapper
 				}
 			}
 		}
-		for(AbilityMapping able : eachClassSet)
+		for(final Iterator<AbilityMapping> a=eachClassSet.iterator();a.hasNext();)
+		{
+			final AbilityMapping able=a.next();
 			addClassAbility(able.abilityID, ableMap, able);
+		}
 	}
 	
 	
@@ -1052,8 +1055,9 @@ public class CMAble extends StdLibrary implements AbilityMapper
 		final String AID=A.ID();
 		final List<String> qualifyingIDs=getCurrentlyQualifyingIDs(studentM,AID);
 		DVector reqs=null;
-		for(final String ID : qualifyingIDs)
+		for(final Iterator<String> i=qualifyingIDs.iterator();i.hasNext();)
 		{
+			final String ID=i.next();
 			reqs=getRawPreRequisites(ID,true,A.ID());
 			if(reqs!=null) return reqs.copyOf();
 		}
@@ -1084,8 +1088,9 @@ public class CMAble extends StdLibrary implements AbilityMapper
 		final String AID=A.ID();
 		final List<String> qualifyingIDs=getCurrentlyQualifyingIDs(studentM,AID);
 		String mask=null;
-		for(final String ID : qualifyingIDs)
+		for(final Iterator<String> i=qualifyingIDs.iterator();i.hasNext();)
 		{
+			final String ID=i.next();
 			mask=getExtraMask(ID,true,AID);
 			if(mask!=null) return mask;
 		}
@@ -1419,8 +1424,9 @@ public class CMAble extends StdLibrary implements AbilityMapper
 	{
 		boolean secretFound=false;
 		final List<AbilityMapping> mappings=getAllAbilityMappings(mob,abilityID);
-		for(final AbilityMapping ableMap : mappings)
+		for(final Iterator<AbilityMapping> a=mappings.iterator();a.hasNext();)
 		{
+			final AbilityMapping ableMap=a.next();
 			if(!ableMap.isSecret)
 				return false;
 			secretFound=true;
@@ -1492,8 +1498,9 @@ public class CMAble extends StdLibrary implements AbilityMapper
     {
     	Integer[] found=null;
 		final List<AbilityMapping> mappings=getAllAbilityMappings(mob,abilityID);
-		for(final AbilityMapping ableMap : mappings)
+		for(final Iterator<AbilityMapping> a=mappings.iterator();a.hasNext();)
 		{
+			final AbilityMapping ableMap=a.next();
             found=ableMap.costOverrides;
             if(found!=null) break;
 		}
@@ -1690,7 +1697,7 @@ public class CMAble extends StdLibrary implements AbilityMapper
 		boolean previousValue=true;
 		final int[] amt={0};
 		final List<Object> passes=new Vector<Object>();
-		final List<Object> thisSet=new LinkedList<Object>();
+		final List<Object> thisSet=new Vector<Object>();
 		boolean found=false;
 		AbilityComponent comp = null;
 		Room room = mob.location();

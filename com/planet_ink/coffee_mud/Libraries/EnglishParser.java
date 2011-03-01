@@ -1413,7 +1413,9 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 				else
 				if(srchStr.endsWith("$")) 
 					srchStr=srchStr.substring(0,srchStr.length()-1);
-				for(Environmental E : list)
+				for(final Iterator<? extends Environmental> e=list.iterator();e.hasNext();)
+				{
+					final Environmental E=e.next();
 					if(E!=null)
 						if(E.ID().equalsIgnoreCase(srchStr)
 						   ||E.name().equalsIgnoreCase(srchStr)
@@ -1421,24 +1423,31 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 							if((!allFlag)||((E.displayText()!=null)&&(E.displayText().length()>0)))
 								if((--myOccurrance)<=0)
 									return E;
+				}
 			}
 			else
 			{
 				myOccurrance=flags.occurrance;
-				for(Environmental E : list)
+				for(final Iterator<? extends Environmental> e=list.iterator();e.hasNext();)
+				{
+					final Environmental E=e.next();
 					if((E!=null)
 					   &&(containsString(E.name(),srchStr)||containsString(E.Name(),srchStr))
 					   &&((!allFlag)||((E.displayText()!=null)&&(E.displayText().length()>0))))
 						if((--myOccurrance)<=0)
 							return E;
+				}
 				myOccurrance=flags.occurrance;
-				for(Environmental E : list)
+				for(final Iterator<? extends Environmental> e=list.iterator();e.hasNext();)
+				{
+					final Environmental E=e.next();
 					if((E!=null)
 					&&(!(E instanceof Ability))
 					&&(containsString(E.displayText(),srchStr)
 	                    ||((E instanceof MOB)&&containsString(((MOB)E).genericName(),srchStr))))
 							if((--myOccurrance)<=0)
 								return E;
+				}
 			}
 		}
 		catch(java.lang.ArrayIndexOutOfBoundsException x){}
@@ -1468,7 +1477,9 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 				else
 				if(srchStr.endsWith("$")) 
 					srchStr=srchStr.substring(0,srchStr.length()-1);
-				for(Environmental E : list)
+				for(final Iterator<? extends Environmental> e=list.iterator();e.hasNext();)
+				{
+					final Environmental E=e.next();
 					if(E!=null)
 						if(E.ID().equalsIgnoreCase(srchStr)
 						   ||E.name().equalsIgnoreCase(srchStr)
@@ -1476,26 +1487,33 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 							if((!allFlag)||((E.displayText()!=null)&&(E.displayText().length()>0)))
 								if((--myOccurrance)<=0)
 									matches.addElement(E);
+				}
 			}
 			else
 			{
 				myOccurrance=flags.occurrance;
-				for(Environmental E : list)
+				for(final Iterator<? extends Environmental> e=list.iterator();e.hasNext();)
+				{
+					final Environmental E=e.next();
 					if((E!=null)
 					&&(containsString(E.name(),srchStr)||containsString(E.Name(),srchStr))
 					   &&((!allFlag)||((E.displayText()!=null)&&(E.displayText().length()>0))))
 						if((--myOccurrance)<=0)
 							matches.addElement(E);
+				}
 				if(matches.size()==0)
 				{
 					myOccurrance=flags.occurrance;
-					for(Environmental E : list)
+					for(final Iterator<? extends Environmental> e=list.iterator();e.hasNext();)
+					{
+						final Environmental E=e.next();
 						if((E!=null)
 						&&(!(E instanceof Ability))
 						&&(containsString(E.displayText(),srchStr)
 	                        ||((E instanceof MOB)&&containsString(((MOB)E).genericName(),srchStr))))
 	    						if((--myOccurrance)<=0)
 	    							matches.addElement(E);
+					}
 				}
 			}
 		}
@@ -1527,9 +1545,9 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 			else
 			if(srchStr.endsWith("$")) 
 				srchStr=srchStr.substring(0,srchStr.length()-1);
-			for(String key : list.keySet())
+			for(Iterator<String> k =list.keySet().iterator();k.hasNext();)
 			{
-				E=(Environmental)list.get(key);
+				E=(Environmental)list.get(k.next());
 				if(E!=null)
 					if(E.ID().equalsIgnoreCase(srchStr)
 					||E.Name().equalsIgnoreCase(srchStr)
@@ -1542,9 +1560,9 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 		else
 		{
 			myOccurrance=flags.occurrance;
-			for(String key : list.keySet())
+			for(Iterator<String> k =list.keySet().iterator();k.hasNext();)
 			{
-				E=(Environmental)list.get(key);
+				E=(Environmental)list.get(k.next());
 				if((E!=null)
 				&&(containsString(E.name(),srchStr)||containsString(E.Name(),srchStr))
 				&&((!allFlag)||((E.displayText()!=null)&&(E.displayText().length()>0))))
@@ -1552,9 +1570,9 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 						return E;
 			}
 			myOccurrance=flags.occurrance;
-			for(String key : list.keySet())
+			for(Iterator<String> k =list.keySet().iterator();k.hasNext();)
 			{
-				E=(Environmental)list.get(key);
+				E=(Environmental)list.get(k.next());
 				if(E!=null)
 					if((containsString(E.displayText(),srchStr))
 	                ||((E instanceof MOB)&&containsString(((MOB)E).genericName(),srchStr)))
@@ -1587,8 +1605,9 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 				else
 				if(srchStr.endsWith("$")) 
 					srchStr=srchStr.substring(0,srchStr.length()-1);
-				for(Item I : list)
+				for(final Iterator<Item> i=list.iterator();i.hasNext();)
 				{
+					final Item I=i.next();
 					boolean beingWorn=!I.amWearingAt(Wearable.IN_INVENTORY);
 
 					if((I!=null)
@@ -1608,8 +1627,9 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 		{
 			try
 			{
-				for(Item I : list)
+				for(final Iterator<Item> i=list.iterator();i.hasNext();)
 				{
+					final Item I=i.next();
 					boolean beingWorn=!I.amWearingAt(Wearable.IN_INVENTORY);
 
 					if((I!=null)
@@ -1625,8 +1645,9 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 			myOccurrance=flags.occurrance;
 			try
 			{
-				for(Item I : list)
+				for(final Iterator<Item> i=list.iterator();i.hasNext();)
 				{
+					final Item I=i.next();
 					boolean beingWorn=!I.amWearingAt(Wearable.IN_INVENTORY);
 					if((I!=null)
 					&&(I.container()==goodLocation)
@@ -1664,8 +1685,9 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 				else
 				if(srchStr.endsWith("$")) 
 					srchStr=srchStr.substring(0,srchStr.length()-1);
-				for(Item I : list)
+				for(final Iterator<Item> i=list.iterator();i.hasNext();)
 				{
+					final Item I=i.next();
 					boolean beingWorn=!I.amWearingAt(Wearable.IN_INVENTORY);
 					if((I!=null)
 					&&(I.container()==goodLocation)
@@ -1680,8 +1702,9 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 			}
 			else
 			{
-				for(Item I : list)
+				for(final Iterator<Item> i=list.iterator();i.hasNext();)
 				{
+					final Item I=i.next();
 					boolean beingWorn=!I.amWearingAt(Wearable.IN_INVENTORY);
 					if((I!=null)
 					&&(I.container()==goodLocation)
@@ -1694,8 +1717,9 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 				if(matches.size()==0)
 				{
 					myOccurrance=flags.occurrance;
-					for(Item I : list)
+					for(final Iterator<Item> i=list.iterator();i.hasNext();)
 					{
+						final Item I=i.next();
 						boolean beingWorn=!I.amWearingAt(Wearable.IN_INVENTORY);
 						if((I!=null)
 						&&(I.container()==goodLocation)
@@ -1735,7 +1759,9 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 				else
 				if(srchStr.endsWith("$")) 
 					srchStr=srchStr.substring(0,srchStr.length()-1);
-				for(Environmental E : list)
+				for(final Iterator<? extends Environmental> e=list.iterator();e.hasNext();)
+				{
+					final Environmental E=e.next();
 				    if(E instanceof Item)
 				    {
 						I=(Item)E;
@@ -1757,10 +1783,13 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 							if((!allFlag)||((E.displayText()!=null)&&(E.displayText().length()>0)))
 								if((--myOccurrance)<=0)
 									return E;
+				}
 			}
 			else
 			{
-				for(Environmental E : list)
+				for(final Iterator<? extends Environmental> e=list.iterator();e.hasNext();)
+				{
+					final Environmental E=e.next();
 					if(E instanceof Item)
 					{
 					    I=(Item)E;
@@ -1779,9 +1808,12 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 				    &&((!allFlag)||((E.displayText()!=null)&&(E.displayText().length()>0))))
 						if((--myOccurrance)<=0)
 							return E;
+				}
 
 				myOccurrance=flags.occurrance;
-				for(Environmental E : list)
+				for(final Iterator<? extends Environmental> e=list.iterator();e.hasNext();)
+				{
+					final Environmental E=e.next();
 					if(E instanceof Item)
 					{
 					    I=(Item)E;
@@ -1798,6 +1830,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 	                    ||((E instanceof MOB)&&containsString(((MOB)E).genericName(),srchStr)))
 							if((--myOccurrance)<=0)
 								return E;
+				}
 			}
 		}
 		catch(java.lang.ArrayIndexOutOfBoundsException x){}

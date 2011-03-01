@@ -913,7 +913,9 @@ public class CMath
 	{
         double finalValue=0.0;
         double curValue=0.0;
-    	for(CompiledOperation o : list)
+    	for(final Iterator<CompiledOperation> i=list.iterator();i.hasNext();)
+    	{
+    		final CompiledOperation o=i.next();
     		switch(o.type)
     		{
     			case CompiledOperation.OPERATION_VALUE: 
@@ -938,6 +940,7 @@ public class CMath
     				}
     				break;
     		}
+    	}
     	return finalValue;
 	}
     

@@ -659,7 +659,7 @@ public class DefaultClan implements Clan
     		List<AbilityMapper.AbilityMapping> abilities=CMLib.ableMapper().getUpToLevelListings(govt().ID(),getClanLevel(),true,false);
             if(abilities.size()>0)
             {
-	            final List<String> names = new LinkedList<String>();
+	            final List<String> names = new Vector<String>();
 	            for(AbilityMapper.AbilityMapping aMap : abilities) 
 	            {
 	            	final Ability A=CMClass.getAbility(aMap.abilityID);
