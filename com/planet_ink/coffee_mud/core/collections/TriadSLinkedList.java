@@ -2,6 +2,7 @@ package com.planet_ink.coffee_mud.core.collections;
 import java.util.*;
 
 import com.planet_ink.coffee_mud.Libraries.interfaces.MaskingLibrary;
+import com.planet_ink.coffee_mud.core.Log;
 /*
 Copyright 2000-2011 Bo Zimmerman
 
@@ -58,14 +59,17 @@ public final class TriadSLinkedList<T,K,L> extends SLinkedList<Triad<T,K,L>>
 	}
 	public T getFirst(int index)
 	{
+		Log.errOut("TriadSLinkedList",new Exception());
 		return get(index).first;
 	}
 	public K getSecond(int index)
 	{
+		Log.errOut("TriadSLinkedList",new Exception());
 		return get(index).second;
 	}
 	public L getThird(int index)
 	{
+		Log.errOut("TriadSLinkedList",new Exception());
 		return get(index).third;
 	}
 	public void add(T t, K k, L l)
@@ -112,6 +116,7 @@ public final class TriadSLinkedList<T,K,L> extends SLinkedList<Triad<T,K,L>>
 	public synchronized int indexOfFirst(T t, int index)
 	{
 		try{
+			Log.errOut("TriadSLinkedList",new Exception());
 			for(int i=index;i<size();i++)
 				if((t==null ? get(i).first==null : t.equals(get(i).first))) 
 					return i;
@@ -121,6 +126,7 @@ public final class TriadSLinkedList<T,K,L> extends SLinkedList<Triad<T,K,L>>
 	public synchronized int indexOfSecond(K k, int index)
 	{
 		try{
+			Log.errOut("TriadSLinkedList",new Exception());
 			for(int i=index;i<size();i++)
 				if((k==null ? get(i).second==null : k.equals(get(i).second))) 
 					return i;
@@ -130,6 +136,7 @@ public final class TriadSLinkedList<T,K,L> extends SLinkedList<Triad<T,K,L>>
 	public synchronized int indexOfThird(L l, int index)
 	{
 		try{
+			Log.errOut("TriadSLinkedList",new Exception());
 			for(int i=0;i<size();i++)
 				if((l==null ? get(i).third==null : l.equals(get(i).third))) 
 					return i;

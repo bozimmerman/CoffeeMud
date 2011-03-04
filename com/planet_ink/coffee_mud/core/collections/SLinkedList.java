@@ -3,6 +3,8 @@ package com.planet_ink.coffee_mud.core.collections;
 import java.io.Serializable;
 import java.util.*;
 
+import com.planet_ink.coffee_mud.core.Log;
+
 /*
 Copyright 2000-2011 Bo Zimmerman
 
@@ -186,6 +188,7 @@ public class SLinkedList<K> implements Serializable, Cloneable, Iterable<K>, Col
 
 	@Override
 	public synchronized K get(int arg0) {
+		Log.errOut("SLinkedList",new Exception());
 		return L.get(arg0);
 	}
 
