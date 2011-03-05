@@ -26,17 +26,16 @@ limitations under the License.
  * @author Bo Zimmerman
  *
  */
-@SuppressWarnings("unused")
 public class AutoPlayTester
 {
 	private BufferedReader 		in = null;
 	private BufferedWriter		out = null;
-	private LinkedList<String> 	buffer = new LinkedList<String>();
+	private LinkedList<String> 	inbuffer = new LinkedList<String>();
+	private LinkedList<String> 	outbuffer = new LinkedList<String>();
 	private String 				name="boobie";
 	private String 				host="localhost";
 	private int 				port = 5555;
-	private String				filename="/resources/autoplayer/apprentice.js";
-	private boolean 			mudUsesAccountSystem=false;
+	private String				filename="resources/autoplayer/autoplay.js";
 	
 	public AutoPlayTester(String host, int port, String charName, String script)
 	{
@@ -48,7 +47,6 @@ public class AutoPlayTester
 	
 	public LinkedList<String> bufferFill() throws IOException
 	{
-		LinkedList<String> temp = new LinkedList<String>();
 		int c;
 		StringBuffer buf=new StringBuffer("");
 		int lastc=0;
@@ -62,7 +60,7 @@ public class AutoPlayTester
 					if((c==13 && lastc != 10)
 					||(c==10 && lastc != 13))
 					{
-						temp.add(globalReactionary(buf.toString()));
+						inbuffer.add(globalReactionary(buf.toString()));
 						buf.setLength(0);
 					}
 				}
@@ -76,17 +74,10 @@ public class AutoPlayTester
 			
 		}
 		if(buf.length()>0)
-			temp.add(globalReactionary(buf.toString()));
-		return temp;
+			inbuffer.add(globalReactionary(buf.toString()));
+		return inbuffer;
 	}
 	
-	public void fileBuffer(LinkedList<String> newBuf)
-	{
-		buffer.addAll(newBuf);
-		while(buffer.size() > 1000)
-			buffer.removeFirst();
-	}
-
 	public String globalReactionary(String s)
 	{
 		System.out.println(s);
@@ -98,18 +89,24 @@ public class AutoPlayTester
 		long waitUntil = System.currentTimeMillis() + (60 * 1000);
 		while(System.currentTimeMillis() < waitUntil)
 		{
-			LinkedList<String> readBuf = bufferFill();
-			try
+			bufferFill();
+			if(inbuffer.size()==0)
 			{
-				for(String s : readBuf)
-				{
-					if(Pattern.matches(regEx, s))
-						return s;
-				}
+				try{Thread.sleep(100);}catch(Exception e){}
 			}
-			finally
+			else
 			{
-				fileBuffer(readBuf);
+				String s=inbuffer.removeFirst();
+				outbuffer.add(s);
+				while(outbuffer.size() > 1000)
+					outbuffer.removeFirst();
+				Matcher m=Pattern.compile(regEx).matcher(s);
+				if(m.matches())
+				{
+					if(m.groupCount()>0)
+						return m.group(1);
+					return s;
+				}
 			}
 		}
 		throw new IOException("wait for "+regEx+" timed out.");
@@ -117,7 +114,8 @@ public class AutoPlayTester
 	
 	public void writeln(String s) throws IOException
 	{
-		try{Thread.sleep(1000);}catch(Exception e){}
+		System.out.println(s);
+		try{Thread.sleep(500);}catch(Exception e){}
 		out.write(s+"\n");
 		out.flush();
 	}
@@ -127,12 +125,11 @@ public class AutoPlayTester
 		try
 		{
 			Socket sock=new Socket(host,port);
-			sock.setSoTimeout(1000);
+			sock.setSoTimeout(100);
 			in = new BufferedReader(new InputStreamReader(sock.getInputStream()));
 			out = new BufferedWriter(new OutputStreamWriter(sock.getOutputStream()));
-			String s = waitFor("(?>Name|Account name).*");
-			if(!s.toLowerCase().startsWith("Name"))
-				mudUsesAccountSystem = true;
+			try{Thread.sleep(1000);}catch(Exception e){}
+			return true;
 		}
 		catch(java.io.IOException e)
 		{
@@ -141,8 +138,35 @@ public class AutoPlayTester
 		return false;
 	}
 
+	public String getJavaScript(String filename)
+	{
+		StringBuilder js=new StringBuilder("");
+		try
+		{
+			BufferedReader br=new BufferedReader(new FileReader(filename));
+			String s=br.readLine();
+			while(s!=null)
+			{
+				if(s.trim().startsWith("//include "))
+					js.append(getJavaScript(s.trim().substring(10)));
+				else
+					js.append(s).append("\n");
+				s=br.readLine();
+			}
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+			System.exit(-1);
+		}
+		return js.toString();
+	}
+	
 	public void run()
 	{
+		System.out.println("Executing: "+filename);
+		String js=getJavaScript(filename);
+		
         Context cx = Context.enter();
         try
         {
@@ -150,7 +174,7 @@ public class AutoPlayTester
             cx.initStandardObjects(scope);
             scope.defineFunctionProperties(JScriptEvent.functions, JScriptEvent.class,
                                            ScriptableObject.DONTENUM);
-            cx.evaluateString(scope, "","<cmd>", 1, null);
+            cx.evaluateString(scope, js.toString(),"<cmd>", 1, null);
         }
         catch(Exception e)
         {
@@ -164,9 +188,21 @@ public class AutoPlayTester
         public String getClassName(){ return "JScriptEvent";}
         static final long serialVersionUID=43;
         protected AutoPlayTester testObj;
-        public static final String[] functions={ "tester", "toJavaString", "writeLine"};
+        public static final String[] functions={ "tester", "toJavaString", "writeLine", "login", "stdout", "stderr", "waitFor", "startsWith", "name","rand"};
         public AutoPlayTester tester() { return testObj;}
         public String toJavaString(Object O){return Context.toString(O);}
+        public boolean startsWith(Object O1, Object O2){ try { return toJavaString(O1).startsWith(toJavaString(O2)); } catch(Exception e) {return false; } }
+        public boolean login(){ return testObj.login();}
+        public String name() { return testObj.name;}
+        public void stdout(Object O) { try { System.out.println(toJavaString(O)); } catch(Exception e) { } }
+        public void stderr(Object O) { try { System.err.println(toJavaString(O)); } catch(Exception e) { } }
+        public int rand(int x){ int y=(int)Math.round(Math.floor(Math.random() * (((double)x)-0.001))); return (y>0)?y:-y;}
+        public Object waitFor(Object regexO)
+        {
+        	try {
+	        	return testObj.waitFor(toJavaString(regexO));
+        	} catch(Exception e) { return null; }
+        }
         public boolean writeLine(Object O) 
         {
         	try {
@@ -189,7 +225,6 @@ public class AutoPlayTester
     
 	public static void main(String[] args)
 	{
-		System.out.println("Not yet implemented.");
 		if(args.length<4)
 		{
 			System.out.println("AutoPlayTester");
