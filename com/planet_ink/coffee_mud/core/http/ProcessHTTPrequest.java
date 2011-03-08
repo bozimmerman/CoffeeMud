@@ -409,7 +409,19 @@ public class ProcessHTTPrequest implements CMRunnable, ExternalHTTPRequests
 					try
 					{
 						if(thisParamName.equalsIgnoreCase("RAWTEXT"))
-							thisParamValue=URLDecoder.decode(thisParam.substring(eq+1), "UTF-8");
+						{
+							StringBuffer str=new StringBuffer();
+							char[] cs=URLDecoder.decode(thisParam.substring(eq+1), "UTF-8").toCharArray();
+							for(int c=0;c<cs.length;c++)
+								if((cs[c]=='&')&&(c<cs.length-5)&&(cs[c+1]=='#')&&(cs[c+6]==';'))
+								{
+									int x=Integer.valueOf(new String(cs,c+2,4)).intValue();
+									str.append((char)x);
+									c+=6;
+								}
+								else
+									str.append(cs[c]);
+						}
 						else
 							thisParamValue=preFilter(new StringBuffer(URLDecoder.decode(thisParam.substring(eq+1), "UTF-8")));
 					}
@@ -1155,7 +1167,7 @@ public class ProcessHTTPrequest implements CMRunnable, ExternalHTTPRequests
 			if(contentHeader!=null)
 				sout.writeBytes(contentHeader);
 			else
-				sout.writeBytes("Content-Type: " + mimetype + cr);
+				sout.writeBytes("Content-Type: " + mimetype + "; charset="+CMProps.getVar(CMProps.SYSTEM_CHARSETOUTPUT)+cr);
 			if ((replyData != null))
 			{
 				sout.writeBytes("Content-Length: " + replyData.length);

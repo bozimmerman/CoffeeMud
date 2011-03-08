@@ -211,8 +211,12 @@ public class Authenticate extends StdWebMacro
 				if(acct != null)
 				{
 					MOB highestM = null;
-					if(acct.isPlayer(login))
+					final String playerName=acct.findPlayer(login);
+					if(playerName!=null)
+					{
+						login=playerName;
 						highestM=CMLib.players().getLoadPlayer(login);
+					}
 					else
 					for(Enumeration<MOB> m = acct.getLoadPlayers();m.hasMoreElements();)
 					{

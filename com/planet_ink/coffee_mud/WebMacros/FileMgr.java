@@ -104,7 +104,11 @@ public class FileMgr extends StdWebMacro
 			if(parms.containsKey("DELETE"))
 			{
 				if(F.delete())
+				{
+	                for(final Iterator<String> i=Resources.findResourceKeys(file);i.hasNext();)
+	                	Resources.removeResource(i.next());
 					return "File `"+last+"` was deleted.";
+				}
 				return "File `"+last+"` was NOT deleted. Perhaps it`s read-only?";
 			}
 			else
@@ -119,6 +123,8 @@ public class FileMgr extends StdWebMacro
         				return "File `"+last+"` updated.";
                     return "File `"+last+"` not updated -- error!";
                 }
+                for(final Iterator<String> i=Resources.findResourceKeys(file);i.hasNext();)
+                	Resources.removeResource(i.next());
 				return "File `"+last+"` updated.";
 			}
             else

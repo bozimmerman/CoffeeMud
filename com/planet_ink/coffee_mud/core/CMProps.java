@@ -19,6 +19,7 @@ import java.util.*;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.ByteArrayInputStream;
+import java.io.InputStreamReader;
 
 /*
    Copyright 2000-2011 Bo Zimmerman
@@ -770,7 +771,7 @@ public class CMProps extends Properties
                 if(F.exists())
                 {
                     try{
-                        rawListData.load(new ByteArrayInputStream(F.raw()));
+                        rawListData.load(new InputStreamReader(new ByteArrayInputStream(F.raw()), CMProps.getVar(CMProps.SYSTEM_CHARSETINPUT)));
                     } catch(IOException e){}
                 }
                 Resources.submitResource("PROPS: " + listFileName, rawListData);

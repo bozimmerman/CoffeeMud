@@ -179,11 +179,8 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
         }
 
         for(int c=0;c<login.length();c++)
-        {
-            char C=Character.toUpperCase(login.charAt(c));
-            if(("ABCDEFGHIJKLMNOPQRSTUVWXYZ ").indexOf(C)<0)
+        	if((login.charAt(c)!=' ')&&(!Character.isLetter(login.charAt(c))))
                 return false;
-        }
         for(Enumeration d=CMLib.map().deities();d.hasMoreElements();)
         {
             MOB D=(MOB)d.nextElement();
@@ -589,8 +586,12 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
     		boolean wizi=s.trim().endsWith(" !");
     		if(wizi) s=s.substring(0,s.length()-2).trim();
 			PlayerLibrary.ThinnerPlayer playMe = null;
-			if(acct.isPlayer(s))
+			final String playerName=acct.findPlayer(s);
+			if(playerName!=null)
+			{
+				s=playerName;
 				playMe = CMLib.database().DBUserSearch(s);
+			}
     		if(playMe == null)
     		{
     			session.println("'"+s+"' is an unknown character or command.  Use ? for help.");

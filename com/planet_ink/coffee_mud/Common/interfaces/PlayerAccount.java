@@ -70,11 +70,11 @@ public interface PlayerAccount extends CMCommon, AccountStats, Modifiable
 	public MOB getAccountMob();
 	
 	/**
-	 * Returns whether the name is a player on this account 
-	 * @param name the name to check
-	 * @return true if it exists and false otherwise
+	 * Returns the real name if the player is on this account 
+	 * @param name the name look for check
+	 * @return real name if it exists and null otherwise
 	 */
-	public boolean isPlayer(String name);
+	public String findPlayer(String name);
 	
 	/**
 	 * Returns this accounts name

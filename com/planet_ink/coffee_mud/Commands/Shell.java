@@ -607,24 +607,34 @@ public class Shell extends StdCommand
                 }
                 else
                 {
-                    String option=mob.session().choose("^HMenu ^N(?/A/D/L/I/E/R/S/Q)^H: ^N","ADLIERSQ?","?");
+                	LinkedList<String> paramsOut=new LinkedList<String>();
+                    String option=mob.session().choose("^HMenu ^N(?/A/D/L/I/E/R/S/Q)^H: ^N","ADLIERSQ?","?",-1,paramsOut);
+                    String paramAll=(paramsOut.size()>0)?CMParms.combine(paramsOut,0):null;
+                    String param1=(paramsOut.size()>0)?paramsOut.getFirst():null;
+                    String param2=(paramsOut.size()>1)?CMParms.combine(paramsOut,1):null;
                     switch(option.charAt(0))
                     {
                     case 'S':
-                        if(mob.session().confirm("Save and exit, are you sure (N/y)? ","N"))
+                    	if(((paramAll!=null)&&(paramAll.equalsIgnoreCase("Y")))
+                        ||(mob.session().confirm("Save and exit, are you sure (N/y)? ","N")))
                         {
                             StringBuffer text=new StringBuffer("");
                             for(int i=0;i<vbuf.size();i++)
                                 text.append(((String)vbuf.get(i))+CR);
                             if(file.saveText(text))
+                            {
+            	                for(final Iterator<String> i=Resources.findResourceKeys(file.getName());i.hasNext();)
+            	                	Resources.removeResource(i.next());
                                 mob.tell("File saved.");
+                            }
                             else
                                 mob.tell("^XError: could not save the file!^N^.");
                             return true;
                         }
                         break;
                     case 'Q':
-                        if(mob.session().confirm("Quit without saving (N/y)? ","N"))
+                    	if(((paramAll!=null)&&(paramAll.equalsIgnoreCase("Y")))
+                        ||(mob.session().confirm("Quit without saving (N/y)? ","N")))
                             return true;
                         break;
                     case 'R':
@@ -633,10 +643,14 @@ public class Shell extends StdCommand
                             mob.tell("The file is empty!");
                         else
                         {
-                            String line=mob.session().prompt("Text to search for (case sensitive): ","");
+                            String line=param1;
+                            if(line==null)
+                            	line=mob.session().prompt("Text to search for (case sensitive): ","");
                             if(line.length()>0)
                             {
-                                String str=mob.session().prompt("Text to replace it with: ","");
+                                String str=param2;
+                                if(str==null)
+                                	str=mob.session().prompt("Text to replace it with: ","");
                                 for(int i=0;i<vbuf.size();i++)
                                     vbuf.set(i,CMStrings.replaceAll((String)vbuf.get(i),line,str));
                             }
@@ -651,12 +665,16 @@ public class Shell extends StdCommand
                             mob.tell("The file is empty!");
                         else
                         {
-                            String line=mob.session().prompt("Line to edit (0-"+(vbuf.size()-1)+"): ","");
+                            String line=param1;
+                            if(line==null)
+                            	line=mob.session().prompt("Line to edit (0-"+(vbuf.size()-1)+"): ","");
                             if((CMath.isInteger(line))&&(CMath.s_int(line)>=0)&&(CMath.s_int(line)<(vbuf.size())))
                             {
                                 int ln=CMath.s_int(line);
                                 mob.tell("Current: \n\r"+CMStrings.padRight(""+ln,3)+") "+(String)vbuf.get(ln));
-                                String str=mob.session().prompt("Rewrite: \n\r");
+                                String str=param2;
+                                if(str==null)
+	                                str=mob.session().prompt("Rewrite: \n\r");
                                 if(str.length()==0)
                                     mob.tell("(no change)");
                                 else
@@ -673,7 +691,9 @@ public class Shell extends StdCommand
                             mob.tell("The file is empty!");
                         else
                         {
-                            String line=mob.session().prompt("Line to delete (0-"+(vbuf.size()-1)+"): ","");
+                            String line=paramAll;
+                            if(line==null)
+                            	line=mob.session().prompt("Line to delete (0-"+(vbuf.size()-1)+"): ","");
                             if((CMath.isInteger(line))&&(CMath.s_int(line)>=0)&&(CMath.s_int(line)<(vbuf.size())))
                             {
                                 int ln=CMath.s_int(line);
@@ -703,11 +723,15 @@ public class Shell extends StdCommand
                             mob.tell("The file is empty!");
                         else
                         {
-                            String line=mob.session().prompt("Line to insert before (0-"+(vbuf.size()-1)+"): ","");
+                            String line=param1;
+                            if(line==null)
+                            	line=mob.session().prompt("Line to insert before (0-"+(vbuf.size()-1)+"): ","");
                             if((CMath.isInteger(line))&&(CMath.s_int(line)>=0)&&(CMath.s_int(line)<(vbuf.size())))
                             {
                                 int ln=CMath.s_int(line);
-                                String str=mob.session().prompt("Enter text to insert here.\n\r: ");
+                                String str=param2;
+                                if(str==null)
+                                	str=mob.session().prompt("Enter text to insert here.\n\r: ");
                                 vbuf.add(ln,str);
                             }
                             else

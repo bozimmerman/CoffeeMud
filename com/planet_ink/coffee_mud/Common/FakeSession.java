@@ -1,6 +1,7 @@
 package com.planet_ink.coffee_mud.Common;
 
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.net.Socket;
 import java.util.List;
 import java.util.Vector;
@@ -125,6 +126,8 @@ public class FakeSession implements Session
             return msg.toUpperCase().trim();
         return Default;
     }
+	public String choose(final String Message, final String Choices, final String Default, long maxTime, List<String> paramsOut)
+    throws IOException { return choose(Message,Choices,Default);}
     public String choose(String Message, String Choices, String Default, long maxTime) { return choose(Message,Choices,Default);}
     public String blockingIn() { return readlineContinue();}
     public String readlineContinue() {

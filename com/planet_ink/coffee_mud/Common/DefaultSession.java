@@ -194,9 +194,11 @@ public class DefaultSession extends Thread implements Session
 		}
 		catch(SocketException e)
 		{
+			Log.errOut("Session",e.getMessage());
 		}
 		catch(Exception e)
 		{
+			Log.errOut("Session",e.getMessage());
 		}
         if(preliminaryInput.length()>0)
             fakeInput=preliminaryInput;
@@ -464,7 +466,8 @@ public class DefaultSession extends Thread implements Session
 	public void onlyPrint(String msg){onlyPrint(msg,false);}
 	public void onlyPrint(String msg, boolean noCache)
 	{
-		if((out==null)||(msg==null)) return;
+		if((out==null)||(msg==null)) 
+			return;
 		try
 		{
 			try{
@@ -1239,7 +1242,7 @@ public class DefaultSession extends Thread implements Session
 		return inStr.toString();
 	}
 
-	public boolean confirm(String Message, String Default, long maxTime)
+	public boolean confirm(final String Message, String Default, long maxTime)
 	throws IOException
 	{
         if(Default.toUpperCase().startsWith("T")) Default="Y";
@@ -1248,7 +1251,7 @@ public class DefaultSession extends Thread implements Session
 			return true;
 		return false;
 	}
-	public boolean confirm(String Message, String Default)
+	public boolean confirm(final String Message, String Default)
 	throws IOException
 	{
         if(Default.toUpperCase().startsWith("T")) Default="Y";
@@ -1258,23 +1261,40 @@ public class DefaultSession extends Thread implements Session
 		return false;
 	}
 
-	public String choose(String Message, String Choices, String Default)
+	public String choose(final String Message, final String Choices, String Default)
 	throws IOException
-	{ return choose(Message,Choices,Default,-1);}
+	{ 
+		return choose(Message,Choices,Default,-1,null);
+	}
 
-	public String choose(String Message, String Choices, String Default, long maxTime)
+	public String choose(final String Message, final String Choices, final String Default, long maxTime)
 	throws IOException
 	{
+		return choose(Message,Choices,Default,maxTime,null);
+	}
+	
+	public String choose(final String Message, final String Choices, final String Default, long maxTime, List<String> paramsOut)
+    throws IOException
+	{
 		String YN="";
+		String rest=null;
 		while((YN.equals(""))||(Choices.indexOf(YN)<0)&&(!killFlag))
 		{
 			print(Message);
 			YN=blockingIn(maxTime);
 			if(YN==null){ return Default.toUpperCase(); }
-			YN=YN.trim().toUpperCase();
+			YN=YN.trim();
 			if(YN.equals("")){ return Default.toUpperCase(); }
-			if(YN.length()>1) YN=YN.substring(0,1);
+			if(YN.length()>1)
+			{
+				YN=YN.toUpperCase();
+				if(paramsOut!=null)
+					rest=YN.substring(1).trim();
+				YN=YN.substring(0,1);
+			}
 		}
+		if((rest!=null)&&(paramsOut!=null)&&(rest.length()>0))
+			paramsOut.addAll(CMParms.paramParse(rest));
 		return YN;
 	}
 

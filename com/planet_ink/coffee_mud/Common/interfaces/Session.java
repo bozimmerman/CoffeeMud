@@ -365,7 +365,7 @@ public interface Session extends CMCommon, Modifiable
      * @return the string entered by the user
      * @throws IOException a disconnect or time out
      */
-	public String prompt(String Message, long maxTime)
+	public String prompt(final String Message, long maxTime)
 		throws IOException;
     
     /**
@@ -378,7 +378,7 @@ public interface Session extends CMCommon, Modifiable
      * @return true if they entered Y, false otherwise
      * @throws IOException a disconnect
      */
-	public boolean confirm(String Message, String Default)
+	public boolean confirm(final String Message, final String Default)
 	    throws IOException;
     
     /**
@@ -392,7 +392,7 @@ public interface Session extends CMCommon, Modifiable
      * @return true if they entered Y, false otherwise
      * @throws IOException a disconnect or time out
      */
-	public boolean confirm(String Message, String Default, long maxTime)
+	public boolean confirm(final String Message, final String Default, long maxTime)
 	    throws IOException;
     
     /**
@@ -407,9 +407,26 @@ public interface Session extends CMCommon, Modifiable
      * @return the character entered from the choices
      * @throws IOException a disconnect
      */
-	public String choose(String Message, String Choices, String Default)
+	public String choose(final String Message, final String Choices, final String Default)
 	    throws IOException;
     
+    /**
+     * Prompts the user to enter one character responses from a set of
+     * valid choices.  Repeats the prompt if the user does not enter
+     * a valid choice.  ENTER is a valid choice for Default. Does not time out, 
+     * but may throw an exception on disconnnect.
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Session#choose(String, String, String, long)
+     * @param Message the prompt message to display to the user
+     * @param Choices a list of uppercase characters that may be entered
+     * @param Default the default response if the user just hits enter
+     * @param maxTime max number of milliseconds to wait before timing out
+     * @param paramsOut an empty list to put any extra crap added to the end of the choice.
+     * @return the character entered from the choices
+     * @throws IOException a disconnect
+     */
+	public String choose(final String Message, final String Choices, final String Default, long maxTime, List<String> paramsOut)
+	    throws IOException;
+	
     /**
      * Prompts the user to enter one character responses from a set of
      * valid choices.  Repeats the prompt if the user does not enter
@@ -423,7 +440,7 @@ public interface Session extends CMCommon, Modifiable
      * @return the character entered from the choices
      * @throws IOException a disconnect or time out
      */
-	public String choose(String Message, String Choices, String Default, long maxTime)
+	public String choose(final String Message, final String Choices, final String Default, long maxTime)
 	    throws IOException;
     
     /**

@@ -245,10 +245,13 @@ public class DefaultPlayerAccount implements PlayerAccount
 		thinPlayers.clear();
 	}
 	
-	public boolean isPlayer(String name) 
+	public String findPlayer(String name)
 	{
-		if(name==null) return false;
-		return players.contains(CMStrings.capitalizeAndLower(name));
+		if(name==null) return null;
+		for(final String pName : players)
+			if(pName.equalsIgnoreCase(name))
+				return pName;
+		return null;
 	}
 	
 	public void delPlayer(String name) 

@@ -294,7 +294,7 @@ public class DirtyLanguage extends StdLibrary implements LanguageLibrary
                 }
                 try
                 {
-                    Pattern expPattern=Pattern.compile(expression, Pattern.CASE_INSENSITIVE);
+                    Pattern expPattern=Pattern.compile(expression, Pattern.CASE_INSENSITIVE | Pattern.UNICODE_CASE);
                     if(currentSection!=null)
 	                    currentSection.addElement(cmd,expPattern,replacement);
                 }

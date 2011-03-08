@@ -51,7 +51,6 @@ public class CMFile
     private static final char pathSeparator=File.separatorChar;
     
     private static final String inCharSet = Charset.defaultCharset().name();
-    @SuppressWarnings("unused")
 	private static final String outCharSet = Charset.defaultCharset().name();
     
     private static CMVFSDir[] vfs=new CMVFSDir[256];
@@ -549,11 +548,14 @@ public class CMFile
         BufferedReader reader = null;
         try
         {
+        	String charSet=CMProps.getVar(CMProps.SYSTEM_CHARSETINPUT);
+        	if((charSet==null)||(charSet.length()==0))
+        		charSet=inCharSet;
         	reader=new BufferedReader(
         		   new InputStreamReader(
             	   new FileInputStream(
 		           	getIOReadableLocalPathAndName()
-            ),inCharSet));
+            ),charSet));
             String line="";
             while((line!=null)&&(reader.ready()))
             {
@@ -621,10 +623,13 @@ public class CMFile
         Reader F = null;
         try
         {
+        	String charSet=CMProps.getVar(CMProps.SYSTEM_CHARSETINPUT);
+        	if((charSet==null)||(charSet.length()==0))
+        		charSet=inCharSet;
         	F=new InputStreamReader(
          	  new FileInputStream(
 	           	getIOReadableLocalPathAndName()
-             ),inCharSet);
+             ),charSet);
             char c=' ';
             while(F.ready())
             {
@@ -859,11 +864,14 @@ public class CMFile
             return true;
         }
 
-        FileWriter FW = null;
+        Writer FW = null;
         try
         {
+        	String charSet=CMProps.getVar(CMProps.SYSTEM_CHARSETOUTPUT);
+        	if((charSet==null)||(charSet.length()==0))
+        		charSet=outCharSet;
             File F=new File(getIOReadableLocalPathAndName());
-            FW=new FileWriter(F,append);
+            FW=new OutputStreamWriter(new FileOutputStream(F,append),charSet);
             FW.write(saveBufNormalize(O).toString());
             FW.close();
             vfsBits=CMath.unsetb(vfsBits,CMFile.VFS_MASK_NOREADLOCAL);
