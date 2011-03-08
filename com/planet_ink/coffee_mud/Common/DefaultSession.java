@@ -1287,11 +1287,12 @@ public class DefaultSession extends Thread implements Session
 			if(YN.equals("")){ return Default.toUpperCase(); }
 			if(YN.length()>1)
 			{
-				YN=YN.toUpperCase();
 				if(paramsOut!=null)
 					rest=YN.substring(1).trim();
-				YN=YN.substring(0,1);
+				YN=YN.substring(0,1).toUpperCase();
 			}
+			else
+				YN=YN.toUpperCase();
 		}
 		if((rest!=null)&&(paramsOut!=null)&&(rest.length()>0))
 			paramsOut.addAll(CMParms.paramParse(rest));

@@ -907,9 +907,9 @@ public class MobData extends StdWebMacro
 			str.append("<TR><TD WIDTH=90% ALIGN=CENTER>");
 			str.append("<SELECT ONCHANGE=\"AddItem(this);\" NAME=ITEM"+(classes.size()+1)+">");
 			str.append("<OPTION SELECTED VALUE=\"\">Select a new Item");
-			for(int i=0;i<itemlist.size();i++)
+			for(Iterator<Item> i=itemlist.iterator();i.hasNext();)
 			{
-				Item I=(Item)itemlist.get(i);
+				Item I=i.next();
 				str.append("<OPTION VALUE=\""+I+"\">"+I.Name()+RoomData.getObjIDSuffix(I));
 			}
 			StringBuffer mposs=(StringBuffer)Resources.getResource("MUDGRINDER-MOBPOSS");
