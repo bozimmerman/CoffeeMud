@@ -4278,6 +4278,60 @@ public class DefaultScriptingEngine implements ScriptingEngine
                     returnable=false;
                 break;
             }
+            case 96: // iscontents
+            {
+                if(tlen==1) tt=parseBits(eval,t,"cr"); /* tt[t+0] */
+                String arg1=tt[t+0];
+                Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
+                String arg2=varify(source, target, scripted, monster, primaryItem, secondaryItem, msg, tmp, tt[t+1]);
+                if(E==null)
+                    returnable=false;
+                else
+                if(E instanceof Rideable)
+                {
+                    if(arg2.length()==0)
+                        returnable=((Rideable)E).numRiders()==0;
+                    else
+                        returnable=CMLib.english().fetchEnvironmental(new XVector(((Rideable)E).riders()), arg2, false)!=null;
+                }
+                if(E instanceof Container)
+                {
+                    if(arg2.length()==0)
+                        returnable=((Container)E).getContents().size()==0;
+                    else
+                        returnable=CMLib.english().fetchEnvironmental(((Container)E).getContents(), arg2, false)!=null;
+                }
+                else
+                    returnable=false;
+                break;
+            }
+            case 97: // wornon
+            {
+                if(tlen==1) tt=parseBits(eval,t,"ccr"); /* tt[t+0] */
+                String arg1=tt[t+0];
+                PhysicalAgent E=getArgumentMOB(arg1,source,monster,target,primaryItem,secondaryItem,msg,tmp);
+                String arg2=varify(source, target, scripted, monster, primaryItem, secondaryItem, msg, tmp, tt[t+1]);
+                String arg3=varify(source, target, scripted, monster, primaryItem, secondaryItem, msg, tmp, tt[t+2]);
+                if((arg2.length()==0)||(arg3.length()==0))
+                {
+                    logError(scripted,"WORNON","Syntax",funcParms);
+                    return returnable;
+                }
+                int wornLoc = CMParms.indexOf(Wearable.CODES.NAMESUP(), arg2.toUpperCase().trim());
+                returnable=false;
+                if(wornLoc<0)
+                    logError(scripted,"EVAL","BAD WORNON LOCATION",arg2);
+                else
+                if(E instanceof MOB)
+                {
+                	final List<Item> items=((MOB)E).fetchWornItems(Wearable.CODES.GET(wornLoc),(short)-2048,(short)0);
+                	if((items.size()==0)&&(arg3.length()==0))
+                		returnable=true;
+                	else
+	                	returnable = CMLib.english().fetchEnvironmental(items, arg3, false)!=null;
+                }
+                break;
+            }
             default:
                 logError(scripted,"EVAL","UNKNOWN",CMParms.toStringList(tt));
                 return false;
@@ -5750,6 +5804,41 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 else
                     arg1=CMParms.parse(arg1String.trim()).size();
                 results.append(CMLib.dice().roll(1,arg1,-1));
+                break;
+            }
+            case 96: // iscontents
+            {
+                String arg1=CMParms.cleanBit(funcParms);
+                Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
+                if(E instanceof Rideable)
+                {
+                	for(final Iterator<Rider> r=((Rideable)E).riders();r.hasNext();)
+                		results.append(CMParms.quoteIfNecessary(r.next().name())).append(" ");
+                }
+                if(E instanceof Container)
+                {
+                	for(final Iterator<Item> i=((Container)E).getContents().iterator();i.hasNext();)
+                		results.append(CMParms.quoteIfNecessary(i.next().name())).append(" ");
+                }
+                break;
+            }
+            case 97: // wornon
+            {
+                String arg1=CMParms.getCleanBit(funcParms,0);
+                String arg2=CMParms.getPastBitClean(funcParms,0).toUpperCase();
+                PhysicalAgent E=getArgumentMOB(arg1,source,monster,target,primaryItem,secondaryItem,msg,tmp);
+                int wornLoc=-1;
+                if(arg2.length()>0)
+                    wornLoc = CMParms.indexOf(Wearable.CODES.NAMESUP(), arg2.toUpperCase().trim());
+                if(wornLoc<0)
+                    logError(scripted,"EVAL","BAD WORNON LOCATION",arg2);
+                else
+                if(E instanceof MOB)
+                {
+                	final List<Item> items=((MOB)E).fetchWornItems(Wearable.CODES.GET(wornLoc),(short)-2048,(short)0);
+                	for(Item item : items)
+                		results.append(CMParms.quoteIfNecessary(item.name())).append(" ");
+                }
                 break;
             }
             default:

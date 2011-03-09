@@ -79,6 +79,14 @@ public class CMParms
         return Combined.toString().trim();
     }
     
+    public final static String quoteIfNecessary(final String str)
+    {
+        if(str==null) return str;
+        if(str.indexOf(' ')>=0) 
+        	return "\""+str+"\"";
+        return str;
+    }
+    
     public final static String combineAfterIndexWithQuotes(final Vector<?> commands, final String match)
     {
     	final StringBuffer Combined=new StringBuffer("");

@@ -507,6 +507,8 @@ public interface ScriptingEngine extends CMCommon, Tickable, MsgListener
         "QUESTSCRIPTED", //93
         "QUESTROOM", // 94
         "ISSPEAKING", // 95
+        "ISCONTENT", // 96
+        "WORNON", // 97
     };
     
     /** String list of all valid mobprog commands */

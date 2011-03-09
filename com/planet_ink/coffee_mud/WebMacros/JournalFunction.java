@@ -369,6 +369,8 @@ public class JournalFunction extends StdWebMacro
 	                    {
             				CMLib.journals().clearJournalSummaryStats(journalName);
 		                    CMLib.database().DBDeleteJournal(journalName,entry.key);
+		                    if(journalName.toUpperCase().startsWith("SYSTEM_"))
+		                    	entry.update=System.currentTimeMillis();
 		                    CMLib.database().DBWriteJournal(realName,entry);
 	        				CMLib.journals().clearJournalSummaryStats(realName);
 		        			JournalInfo.clearJournalCache(httpReq, journalName);
