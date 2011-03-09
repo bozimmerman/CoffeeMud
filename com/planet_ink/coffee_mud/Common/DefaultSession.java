@@ -779,8 +779,9 @@ public class DefaultSession extends Thread implements Session
                 if(suboptionData[0] == 0)
                 {
                     terminalType = new String(suboptionData, 1, dataSize - 1);
-                    if((terminalType.equalsIgnoreCase("ZMUD"))
-        			||(terminalType.equalsIgnoreCase("XTERM")))
+                    if(terminalType.equalsIgnoreCase("ZMUD")
+                    ||terminalType.equalsIgnoreCase("CMUD")
+        			||terminalType.equalsIgnoreCase("XTERM"))
         			{
         				if(mightSupportTelnetMode(TELNET_ECHO))
         					telnetSupportSet.remove(Integer.valueOf(TELNET_ECHO));
@@ -950,7 +951,7 @@ public class DefaultSession extends Thread implements Session
 		{
 		    int last=read();
             setClientTelnetMode(last,true);
-            if((terminalType.equalsIgnoreCase("zmud"))&&(last==Session.TELNET_ECHO))
+            if((terminalType.equalsIgnoreCase("zmud")||terminalType.equalsIgnoreCase("cmud"))&&(last==Session.TELNET_ECHO))
                 setClientTelnetMode(Session.TELNET_ECHO,false);
             if(CMSecurity.isDebugging("TELNET")) Log.debugOut("Session","Got DO "+Session.TELNET_DESCS[last]);
             if((last==TELNET_COMPRESS2)&&(serverTelnetMode(last))&&(!terminalType.equals("UNKNOWN")))
@@ -995,7 +996,7 @@ public class DefaultSession extends Thread implements Session
             int last=read();
             if(CMSecurity.isDebugging("TELNET")) Log.debugOut("Session","Got WILL "+Session.TELNET_DESCS[last]);
             setClientTelnetMode(last,true);
-            if((terminalType.equalsIgnoreCase("zmud"))&&(last==Session.TELNET_ECHO))
+            if((terminalType.equalsIgnoreCase("zmud")||terminalType.equalsIgnoreCase("cmud"))&&(last==Session.TELNET_ECHO))
                 setClientTelnetMode(Session.TELNET_ECHO,false);
             if(!mightSupportTelnetMode(last))
                 changeTelnetModeBackwards(last,false);
