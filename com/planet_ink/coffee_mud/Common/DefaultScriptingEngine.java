@@ -4345,7 +4345,6 @@ public class DefaultScriptingEngine implements ScriptingEngine
             logError(scripted,"EVAL","SYNTAX","BAD CONJUCTOR "+tt[t]+": "+CMParms.toStringList(tt));
             return false;
         }
-        
         if((stack.size()!=1)||(!(stack.firstElement() instanceof Boolean)))
         {
             logError(scripted,"EVAL","SYNTAX","Unmatched (: "+CMParms.toStringList(tt));
@@ -8721,7 +8720,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                     if(script2.size()<1) continue;
                     String trigger=((String)script2.elementAt(0,1)).toUpperCase().trim();
                     String[] ttrigger=(String[])script2.elementAt(0,2);
-                    if(getTriggerCode(trigger,ttrigger)==17)
+                    if(getTriggerCode(trigger,ttrigger)==17) // function_prog
                     {
                         String fnamed=CMParms.getCleanBit(trigger,1);
                         if(fnamed.equalsIgnoreCase(named))
