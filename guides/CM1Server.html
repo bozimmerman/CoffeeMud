@@ -28,6 +28,10 @@
 is a control and monitoring service for your mud. &nbsp;It allows
 external applications and tools to access, monitor, and alter your mud
 in a safe, secure, and formalized manner.</p>
+      <p>There frankly isn't much you can do with it now &nbsp;(Well,
+there IS, but it is neither well documented yet, nor is there a proper
+client). &nbsp;However, the intention is for this to act as a build
+port for external tools or even external game clients.</p>
       <h2><a name="security">Security</a></h2>
       <p>The CM1 Server may be
 bound to 127.0.0.1 (localhost) - this means it will not accept external
@@ -45,21 +49,14 @@ of CoffeeMud will run a single CM1Server, determined by&nbsp;the line
 'CoffeeMud.ini', and configured by the ini file defined by
 'CM1CONFIG=/web/cm1.ini'. &nbsp;Either setting can cause the server not
 to start.</p>
-      <p>Normally, CofeeMud's SMTP
-server will send mail directly to the recipients mail servers. If you
-wish to use your own relay server, you should set the SMTPSERVERNAME
-field in your coffeemud.ini file to the address of your relay server.
-Obviously this server and CoffeeMud's can not exist on the same
-machine, as they will be listening on the same ports.</p>
-      <p>INI files for the email
+      <p>The INI fils for the cm1
 server lives in the 'web/' directory off the CoffeeMud root. The file
 is called cm1.ini, and contains the following entries:</p>
       <ul>
         <li> <b>PORT</b>=xx
-: <b>[REQUIRED]</b>
-          <em>(e.g.25)</em>
+: <b>[REQUIRED]</b> <em>(e.g.25)</em>
           <p>Sets the port number
-the server will listen for SMTP requests on; this cannot be the same
+the server will listen for CM1 requests on; this cannot be the same
 port as the main MUD server or web servers. Identical to MUD server
 usage. There is normally no good reason to change from 25, as that is
 what email clients will expect.</p>
