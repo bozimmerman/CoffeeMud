@@ -88,8 +88,13 @@ public class StdItem implements Item
 	}
     public String image()
     {
-        if(cachedImageName==null) 
-        	cachedImageName=CMProps.getDefaultMXPImage(this);
+        if(cachedImageName==null)
+        {
+    		if((rawImageName!=null)&&(rawImageName.length()>0))
+    			cachedImageName=rawImageName;
+    		else
+	        	cachedImageName=CMProps.getDefaultMXPImage(this);
+        }
         return cachedImageName;
     }
     public String rawImage()
@@ -104,7 +109,8 @@ public class StdItem implements Item
         	rawImageName=null;
         else
         	rawImageName=newImage;
-        cachedImageName=null;
+        if((cachedImageName!=null)&&(!cachedImageName.equals(newImage)))
+	        cachedImageName=null;
     }
 	
 	public PhyStats phyStats()

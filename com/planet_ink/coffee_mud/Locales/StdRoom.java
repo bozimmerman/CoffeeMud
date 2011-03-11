@@ -103,8 +103,13 @@ public class StdRoom implements Room
 
     public String image()
     {
-        if(cachedImageName==null) 
-        	cachedImageName=CMProps.getDefaultMXPImage(this);
+        if(cachedImageName==null)
+        {
+    		if((rawImageName!=null)&&(rawImageName.length()>0))
+    			cachedImageName=rawImageName;
+    		else
+	        	cachedImageName=CMProps.getDefaultMXPImage(this);
+        }
         return cachedImageName;
     }
     public String rawImage()
@@ -119,7 +124,8 @@ public class StdRoom implements Room
         	rawImageName=null;
         else
         	rawImageName=newImage;
-        cachedImageName=null;
+        if((cachedImageName!=null)&&(!cachedImageName.equals(newImage)))
+	        cachedImageName=null;
     }
 	
 	public boolean isGeneric(){return false;}

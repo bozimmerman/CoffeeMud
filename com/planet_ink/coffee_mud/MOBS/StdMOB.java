@@ -267,7 +267,12 @@ public class StdMOB implements MOB
 	public String image()
     {
         if(cachedImageName==null)
-        	cachedImageName=CMProps.getDefaultMXPImage(this);
+        {
+    		if((rawImageName!=null)&&(rawImageName.length()>0))
+    			cachedImageName=rawImageName;
+    		else
+	        	cachedImageName=CMProps.getDefaultMXPImage(this);
+        }
         if(!baseCharStats().getMyRace().name().equalsIgnoreCase(charStats().raceName()))
             return CMProps.getDefaultMXPImage(this);
         if(cachedImageName==null) return "";
@@ -285,7 +290,8 @@ public class StdMOB implements MOB
         	rawImageName=null;
         else
         	rawImageName=newImage;
-        cachedImageName=null;
+        if((cachedImageName!=null)&&(!cachedImageName.equals(newImage)))
+	        cachedImageName=null;
     }
 
 	public StdMOB()
