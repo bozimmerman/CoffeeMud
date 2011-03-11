@@ -211,7 +211,8 @@ public class CMProps extends Properties
     public static final int SYSTEMI_WALKCOST=69;
     public static final int SYSTEMI_RUNCOST=70;
     public static final int SYSTEMI_ACCOUNTPURGEDAYS=71;
-    public static final int NUMI_SYSTEM=71;
+    public static final int SYSTEMI_AWARERANGE=72;
+    public static final int NUMI_SYSTEM=73;
 
     public static final int SYSTEMB_MOBCOMPRESS=0;
     public static final int SYSTEMB_ITEMDCOMPRESS=1;
@@ -968,7 +969,6 @@ public class CMProps extends Properties
             }
         }
 
-
         setIntVar(SYSTEMI_MANACONSUMETIME,getStr("MANACONSUMETIME"));
         setIntVar(SYSTEMI_PAGEBREAK,getStr("PAGEBREAK"));
         setIntVar(SYSTEMI_CLANENCHCOST,getStr("CLANENCHCOST"));
@@ -1014,6 +1014,7 @@ public class CMProps extends Properties
         setIntVar(SYSTEMI_MAXLANGUAGES,getStr("MAXLANGUAGES"),3);
         setIntVar(SYSTEMI_WALKCOST,getStr("WALKCOST"),1);
         setIntVar(SYSTEMI_RUNCOST,getStr("RUNCOST"),2);
+        setIntVar(SYSTEMI_AWARERANGE,getStr("AWARERANGE"),0);
 
         V=CMParms.parseCommas(getStr("INJURYSYSTEM"),true);
 

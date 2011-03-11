@@ -67,37 +67,162 @@ public class Skill_RegionalAwareness extends StdSkill
         case Room.DOMAIN_OUTDOORS_HILLS:return 'g';
         case Room.DOMAIN_OUTDOORS_MOUNTAINS:return 'p';
         case Room.DOMAIN_OUTDOORS_SPACEPORT:return 'P';
+		case Room.DOMAIN_INDOORS_STONE:return 'W';
+		case Room.DOMAIN_INDOORS_WOOD:return 'y';
+		case Room.DOMAIN_INDOORS_CAVE:return 'w';
+		case Room.DOMAIN_INDOORS_MAGIC:return 'r';
+		case Room.DOMAIN_INDOORS_UNDERWATER:return 'B';
+		case Room.DOMAIN_INDOORS_AIR:return ' ';
+		case Room.DOMAIN_INDOORS_WATERSURFACE:return 'b';
+		case Room.DOMAIN_INDOORS_METAL:return 'P';
         default: 
             return 'k';
         }
     }
-	public char roomChar(Room room)
+	public char roomChar(Room room, boolean amOutdoors)
 	{
         if(room==null) return ' ';
         if(CMath.bset(room.phyStats().sensesMask(),PhyStats.SENSE_ROOMUNMAPPABLE))
             return ' ';
-		switch(room.domainType())
-		{
-		case Room.DOMAIN_OUTDOORS_CITY:return '=';
-		case Room.DOMAIN_OUTDOORS_WOODS:return 'T';
-		case Room.DOMAIN_OUTDOORS_ROCKS:return ':';
-		case Room.DOMAIN_OUTDOORS_PLAINS:return '_';
-		case Room.DOMAIN_OUTDOORS_UNDERWATER:return '~';
-		case Room.DOMAIN_OUTDOORS_AIR:return ' ';
-		case Room.DOMAIN_OUTDOORS_WATERSURFACE:return '~';
-		case Room.DOMAIN_OUTDOORS_JUNGLE:return 'J';
-		case Room.DOMAIN_OUTDOORS_SWAMP:return 'x';
-		case Room.DOMAIN_OUTDOORS_DESERT:return '.';
-		case Room.DOMAIN_OUTDOORS_HILLS:return 'h';
-		case Room.DOMAIN_OUTDOORS_MOUNTAINS:return 'M';
-		case Room.DOMAIN_OUTDOORS_SPACEPORT:return '@';
-		default: 
-			return '#';
+        if(amOutdoors)
+        {
+			switch(room.domainType())
+			{
+			case Room.DOMAIN_OUTDOORS_CITY:return '=';
+			case Room.DOMAIN_OUTDOORS_WOODS:return 'T';
+			case Room.DOMAIN_OUTDOORS_ROCKS:return ':';
+			case Room.DOMAIN_OUTDOORS_PLAINS:return '_';
+			case Room.DOMAIN_OUTDOORS_UNDERWATER:return '~';
+			case Room.DOMAIN_OUTDOORS_AIR:return ' ';
+			case Room.DOMAIN_OUTDOORS_WATERSURFACE:return '~';
+			case Room.DOMAIN_OUTDOORS_JUNGLE:return 'J';
+			case Room.DOMAIN_OUTDOORS_SWAMP:return 'x';
+			case Room.DOMAIN_OUTDOORS_DESERT:return '.';
+			case Room.DOMAIN_OUTDOORS_HILLS:return 'h';
+			case Room.DOMAIN_OUTDOORS_MOUNTAINS:return 'M';
+			case Room.DOMAIN_OUTDOORS_SPACEPORT:return '@';
+			default: 
+				return '#';
+			}
+        }
+        else
+        {
+			switch(room.domainType())
+			{
+			case Room.DOMAIN_INDOORS_STONE:return 'S';
+			case Room.DOMAIN_INDOORS_WOOD:return 'W';
+			case Room.DOMAIN_INDOORS_CAVE:return 'C';
+			case Room.DOMAIN_INDOORS_MAGIC:return '_';
+			case Room.DOMAIN_INDOORS_UNDERWATER:return '~';
+			case Room.DOMAIN_INDOORS_AIR:return ' ';
+			case Room.DOMAIN_INDOORS_WATERSURFACE:return '~';
+			case Room.DOMAIN_INDOORS_METAL:return 'M';
+			default: 
+				return '.';
+			}
 		}
+	}
+	
+	public String[] getMiniMap(Room room, final int diameter, boolean openOnly)
+	{
+		char[][] map=new char[diameter][diameter];
+		for(int i=0;i<diameter;i++)
+			for(int i2=0;i2<diameter;i2++)
+				map[i][i2]=' ';
+		boolean amIndoors=((room.domainType()&Room.INDOORS)==Room.INDOORS);
+		Room[][] rmap=new Room[diameter][diameter];
+		Vector rooms=new Vector();
+		HashSet closedPaths=new HashSet();
+		TrackingLibrary.TrackingFlags flags;
+		flags = new TrackingLibrary.TrackingFlags()
+					.plus(TrackingLibrary.TrackingFlag.NOEMPTYGRIDS)
+					.plus(TrackingLibrary.TrackingFlag.NOAIR);
+		if(openOnly)
+			flags = flags
+				.plus(TrackingLibrary.TrackingFlag.OPENONLY);
+				
+		CMLib.tracking().getRadiantRooms(room,rooms,flags,null,diameter,null);
+		rmap[diameter/2][diameter/2]=room;
+		map[diameter/2][diameter/2]='*';
+		for(int i=0;i<rooms.size();i++)
+		{
+			Room R=(Room)rooms.elementAt(i);
+			if((closedPaths.contains(R)) 
+			||(R==room))
+				continue;
+			Room parentR=null;
+			int parentDir=-1;
+			int[] xy=null;
+			for(int i2=0;(i2<diameter)&&(parentR==null);i2++)
+				for(int i3=0;(i3<diameter)&&(parentR==null);i3++)
+				{
+					Room R2=rmap[i2][i3];
+					if(R2!=null)
+					for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
+						if((R2.getRoomInDir(d)==R)
+						&&(!closedPaths.contains(R2))
+						&&(R2.getExitInDir(d)!=null))
+						{
+							parentR=R2;
+							parentDir=d;
+							xy=Directions.adjustXYByDirections(i3,i2,d);
+							break;
+						}
+				}
+			if(xy!=null)
+			{
+				if((parentDir<0)
+				||(xy[0]<0)||(xy[0]>=diameter)||(xy[1]<0)||(xy[1]>=diameter)
+				||(map[xy[1]][xy[0]]!=' '))
+					closedPaths.add(R);
+				else
+				{
+					map[xy[1]][xy[0]]=roomChar(R,!amIndoors);
+					rmap[xy[1]][xy[0]]=R;
+				
+					if((R.domainType()&Room.INDOORS)==Room.INDOORS)
+						closedPaths.add(R);
+				}
+			}
+		}
+		final String[] miniMap=new String[diameter];
+		final StringBuffer str=new StringBuffer("");
+        char r=' ';
+        char c=' ';
+		for(int i2=0;i2<diameter;i2++)
+		{
+			str.setLength(0);
+			for(int i3=0;i3<diameter;i3++)
+            {
+                r=map[i2][i3];
+                c=roomColor(rmap[i2][i3]);
+                if(c!=' ')
+					str.append("^"+c+""+r);
+                else
+                    str.append(r);
+            }
+			miniMap[i2]=str.toString();
+		}
+		return miniMap;
 	}
 	
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
+		if(auto && (givenTarget instanceof Room) && (asLevel>0))
+		{
+			final String[] miniMap=getMiniMap((Room)givenTarget, asLevel, false);
+			if(commands!=null)
+			{
+				for(final String s : miniMap)
+					commands.add(s);
+			}
+			else
+			for(final String s : miniMap)
+				if(mob.session()!=null) 
+					mob.session().colorOnlyPrintln(s);
+			return true;
+		}
+		
 		if((!auto)&&((mob.location().domainType()&Room.INDOORS)==Room.INDOORS))
 		{
 			mob.tell("This only works outdoors.");
@@ -117,90 +242,18 @@ public class Skill_RegionalAwareness extends StdSkill
 		boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MSG_LOOK,"<S-NAME> peer(s) at the horizon with a distant expression.");
+			CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MSG_LOOK,auto?"":"<S-NAME> peer(s) at the horizon with a distant expression.");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				
-				int diameter=2+(adjustedLevel(mob,asLevel)/10);
-				char[][] map=new char[diameter][diameter];
-				for(int i=0;i<diameter;i++)
-					for(int i2=0;i2<diameter;i2++)
-						map[i][i2]=' ';
-				Room[][] rmap=new Room[diameter][diameter];
-				Vector rooms=new Vector();
-				HashSet closedPaths=new HashSet();
-				TrackingLibrary.TrackingFlags flags;
-				flags = new TrackingLibrary.TrackingFlags()
-						.plus(TrackingLibrary.TrackingFlag.OPENONLY)
-						.plus(TrackingLibrary.TrackingFlag.NOEMPTYGRIDS)
-						.plus(TrackingLibrary.TrackingFlag.NOAIR);
-				CMLib.tracking().getRadiantRooms(mob.location(),rooms,flags,null,diameter,null);
-				rmap[diameter/2][diameter/2]=mob.location();
-				map[diameter/2][diameter/2]='*';
-				for(int i=0;i<rooms.size();i++)
-				{
-					Room R=(Room)rooms.elementAt(i);
-					if((closedPaths.contains(R)) 
-					||(R==mob.location()))
-						continue;
-					Room parentR=null;
-					int parentDir=-1;
-					int[] xy=null;
-					for(int i2=0;(i2<diameter)&&(parentR==null);i2++)
-						for(int i3=0;(i3<diameter)&&(parentR==null);i3++)
-						{
-							Room R2=rmap[i2][i3];
-							if(R2!=null)
-							for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
-								if((R2.getRoomInDir(d)==R)
-								&&(!closedPaths.contains(R2))
-								&&(R2.getExitInDir(d)!=null))
-								{
-									parentR=R2;
-									parentDir=d;
-									xy=Directions.adjustXYByDirections(i3,i2,d);
-									break;
-								}
-						}
-					if(xy!=null)
-					{
-						if((parentDir<0)
-						||(xy[0]<0)||(xy[0]>=diameter)||(xy[1]<0)||(xy[1]>=diameter)
-						||(map[xy[1]][xy[0]]!=' '))
-							closedPaths.add(R);
-						else
-						{
-							map[xy[1]][xy[0]]=roomChar(R);
-							rmap[xy[1]][xy[0]]=R;
-						
-							if((R.domainType()&Room.INDOORS)==Room.INDOORS)
-								closedPaths.add(R);
-						}
-					}
-				}
-				StringBuffer str=new StringBuffer("");
-                char r=' ';
-                char c=' ';
-				for(int i2=0;i2<diameter;i2++)
-				{
-					for(int i3=0;i3<diameter;i3++)
-                    {
-                        r=map[i2][i3];
-                        c=roomColor(rmap[i2][i3]);
-                        if(c!=' ')
-    						str.append("^"+c+""+r);
-                        else
-                            str.append(r);
-                    }
-					str.append("\n\r");
-				}
-				if(mob.session()!=null) mob.session().colorOnlyPrintln(str.toString());
+				final String[] miniMap=getMiniMap(mob.location(), 2+(adjustedLevel(mob,asLevel)/10), true);
+				for(String s : miniMap)
+					if(mob.session()!=null) 
+						mob.session().colorOnlyPrintln(s+"\n\r");
 			}
 		}
 		else
 			beneficialVisualFizzle(mob,null,"<S-NAME> peer(s) around distantly, looking frustrated.");
 		return success;
 	}
-
 }

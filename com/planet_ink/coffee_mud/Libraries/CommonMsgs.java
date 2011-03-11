@@ -969,7 +969,8 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
     protected void handleBeingRoomLookedAt(CMMsg msg)
     {
         MOB mob=msg.source();
-        if(mob.session()==null) 
+    	final Session sess = mob.session();
+        if(sess==null) 
         	return; // no need for monsters to build all this data
 
         Room room=(Room)msg.target();
@@ -1045,7 +1046,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
                 	roomDesc += getRoomExitsParagraph(mob,room);
                 Say.append("^L^<RDesc^>" + roomDesc+"^</RDesc^>");
                 
-                if((!mob.isMonster())&&(mob.session().clientTelnetMode(Session.TELNET_MXP)))
+                if((!mob.isMonster())&&(sess.clientTelnetMode(Session.TELNET_MXP)))
                     Say.append(CMProps.mxpImage(room," ALIGN=RIGHT H=70 W=70"));
                 if(compress)
                     Say.append("^N  ");
@@ -1087,7 +1088,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
                         if(CMath.bset(mob.getBitmap(),MOB.ATT_SYSOPMSGS))
                             Say.append("^H("+CMClass.classID(mob2)+")^N ");
 
-                        if((!compress)&&(!mob.isMonster())&&(mob.session().clientTelnetMode(Session.TELNET_MXP)))
+                        if((!compress)&&(!mob.isMonster())&&(sess.clientTelnetMode(Session.TELNET_MXP)))
                             Say.append(CMProps.mxpImage(mob2," H=10 W=10",""," "));
                         Say.append("^M^<RMob \""+mob2.name()+"\"^>");
                         if(compress) Say.append(CMLib.flags().colorCodes(mob2,mob)+"^M ");
@@ -1114,6 +1115,19 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
         {
             if(compress) Say.append("\n\r");
             mob.tell(Say.toString());
+            if(CMProps.getIntVar(CMProps.SYSTEMI_AWARERANGE)>0)
+            {
+	        	Ability A=CMClass.getAbility("Skill_RegionalAwareness");
+	        	if(A!=null) 
+	    		{
+    				sess.colorOnlyPrintln("", true);
+    	        	final Vector list=new Vector();
+	    			A.invoke(mob, list, mob.location(), true, CMProps.getIntVar(CMProps.SYSTEMI_AWARERANGE));
+	    			for(Object o : list)
+	    				sess.colorOnlyPrintln((String)o, true);
+    				sess.colorOnlyPrintln("\n\r", true);
+	    		}
+            }
             if(itemsInTheDarkness>0)
                 mob.tell("      ^IThere is something here, but it's too dark to make out.^?\n\r");
             if(mobsInTheDarkness>1)

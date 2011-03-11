@@ -2305,3 +2305,8 @@ Special/Reserved Quest called holidays can be added to/modified on an area-by-ar
 36.Affect now shows disposition, and time remaining on spells.
 37.Gathering skills are a 1/3 more stingy, and Crafting skills sort their lists by level now.
 38.Foreign CharSet localization support (char names, lists.ini (file loading/saving in general), web file editor, misc problems...)
+# Build 5.7.1 Release 3/?/2010
+1. Bug Fix worth mentioning: custom mxp images restored
+2. AutoMapping system available -- see AWARERANGE in INI file and Control Panel
+ 
+

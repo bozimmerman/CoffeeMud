@@ -125,13 +125,13 @@ public class Skill_WildernessLore extends StdSkill
 			switch(mob.location().domainConditions())
 			{
 			case Room.CONDITION_COLD:
-				mob.tell("It is cold here.");
+				mob.tell("It is usually cold here.");
 				break;
 			case Room.CONDITION_HOT:
-				mob.tell("It is warm here.");
+				mob.tell("It is usually warm here.");
 				break;
 			case Room.CONDITION_WET:
-				mob.tell("It is very wet here.");
+				mob.tell("It is usually very wet here.");
 				break;
 			}
 		}
