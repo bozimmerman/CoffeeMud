@@ -84,42 +84,31 @@ public class Skill_RegionalAwareness extends StdSkill
         if(room==null) return ' ';
         if(CMath.bset(room.phyStats().sensesMask(),PhyStats.SENSE_ROOMUNMAPPABLE))
             return ' ';
-        if(amOutdoors)
-        {
-			switch(room.domainType())
-			{
-			case Room.DOMAIN_OUTDOORS_CITY:return '=';
-			case Room.DOMAIN_OUTDOORS_WOODS:return 'T';
-			case Room.DOMAIN_OUTDOORS_ROCKS:return ':';
-			case Room.DOMAIN_OUTDOORS_PLAINS:return '_';
-			case Room.DOMAIN_OUTDOORS_UNDERWATER:return '~';
-			case Room.DOMAIN_OUTDOORS_AIR:return ' ';
-			case Room.DOMAIN_OUTDOORS_WATERSURFACE:return '~';
-			case Room.DOMAIN_OUTDOORS_JUNGLE:return 'J';
-			case Room.DOMAIN_OUTDOORS_SWAMP:return 'x';
-			case Room.DOMAIN_OUTDOORS_DESERT:return '.';
-			case Room.DOMAIN_OUTDOORS_HILLS:return 'h';
-			case Room.DOMAIN_OUTDOORS_MOUNTAINS:return 'M';
-			case Room.DOMAIN_OUTDOORS_SPACEPORT:return '@';
-			default: 
-				return '#';
-			}
-        }
-        else
-        {
-			switch(room.domainType())
-			{
-			case Room.DOMAIN_INDOORS_STONE:return 'S';
-			case Room.DOMAIN_INDOORS_WOOD:return 'W';
-			case Room.DOMAIN_INDOORS_CAVE:return 'C';
-			case Room.DOMAIN_INDOORS_MAGIC:return '_';
-			case Room.DOMAIN_INDOORS_UNDERWATER:return '~';
-			case Room.DOMAIN_INDOORS_AIR:return ' ';
-			case Room.DOMAIN_INDOORS_WATERSURFACE:return '~';
-			case Room.DOMAIN_INDOORS_METAL:return 'M';
-			default: 
-				return '.';
-			}
+		switch(room.domainType())
+		{
+		case Room.DOMAIN_OUTDOORS_CITY:return '=';
+		case Room.DOMAIN_OUTDOORS_WOODS:return 'T';
+		case Room.DOMAIN_OUTDOORS_ROCKS:return ':';
+		case Room.DOMAIN_OUTDOORS_PLAINS:return '_';
+		case Room.DOMAIN_OUTDOORS_UNDERWATER:return '~';
+		case Room.DOMAIN_OUTDOORS_AIR:return ' ';
+		case Room.DOMAIN_OUTDOORS_WATERSURFACE:return '~';
+		case Room.DOMAIN_OUTDOORS_JUNGLE:return 'J';
+		case Room.DOMAIN_OUTDOORS_SWAMP:return 'x';
+		case Room.DOMAIN_OUTDOORS_DESERT:return '.';
+		case Room.DOMAIN_OUTDOORS_HILLS:return 'h';
+		case Room.DOMAIN_OUTDOORS_MOUNTAINS:return 'M';
+		case Room.DOMAIN_OUTDOORS_SPACEPORT:return '@';
+		case Room.DOMAIN_INDOORS_UNDERWATER:return '~';
+		case Room.DOMAIN_INDOORS_AIR:return ' ';
+		case Room.DOMAIN_INDOORS_WATERSURFACE:return '~';
+		case Room.DOMAIN_INDOORS_STONE:
+		case Room.DOMAIN_INDOORS_WOOD:
+		case Room.DOMAIN_INDOORS_CAVE:
+		case Room.DOMAIN_INDOORS_MAGIC:
+		case Room.DOMAIN_INDOORS_METAL:return '#';
+		default: 
+			return '?';
 		}
 	}
 	
