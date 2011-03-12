@@ -997,6 +997,40 @@ public class Destroy extends StdCommand
 			socials(mob,commands);
 		}
 		else
+		if(commandType.equals("DISABLEFLAG"))
+		{
+			if(!CMSecurity.isAllowed(mob,mob.location(),"LISTADMIN")) 
+				return errorOut(mob);
+            String named=CMParms.combine(commands,2);
+            if(!CMSecurity.isDisabled(named.toUpperCase()))
+            {
+            	mob.tell("'"+named+"' is not disabled");
+            	return errorOut(mob);
+            }
+            else
+            {
+            	mob.tell("'"+named+"' is no longer disabled");
+            	CMSecurity.setDisableVar(named.toUpperCase().trim(), false);
+            }
+		}
+		else
+		if(commandType.equals("DEBUGFLAG"))
+		{
+			if(!CMSecurity.isAllowed(mob,mob.location(),"LISTADMIN")) 
+				return errorOut(mob);
+            String named=CMParms.combine(commands,2);
+            if(!CMSecurity.isDebugging(named.toUpperCase()))
+            {
+            	mob.tell("'"+named+"' is not debugging");
+            	return errorOut(mob);
+            }
+            else
+            {
+            	mob.tell("'"+named+"' is no longer debugging");
+            	CMSecurity.setDebugVar(named.toUpperCase().trim(), false);
+            }
+		}
+		else
 		if(commandType.equals("NOPURGE"))
 		{
 			if(!CMSecurity.isAllowed(mob,mob.location(),"NOPURGE")) return errorOut(mob);
@@ -1357,7 +1391,7 @@ public class Destroy extends StdCommand
 					mob.tell(
 						"\n\rYou cannot destroy a '"+commandType+"'. "
 						+"However, you might try an "
-						+"EXIT, ITEM, AREA, USER, MOB, QUEST, FACTION, SESSION, TICKS, THREAD, HOLIDAY, JOURNAL, SOCIAL, CLASS, ABILITY, COMPONENT, RACE, EXPERTISE, TITLE, CLAN, BAN, GOVERNMENT, NOPURGE, BUG, TYPO, IDEA, POLL, or a ROOM.");
+						+"EXIT, ITEM, AREA, USER, MOB, QUEST, FACTION, SESSION, TICKS, THREAD, HOLIDAY, JOURNAL, SOCIAL, CLASS, ABILITY, COMPONENT, RACE, EXPERTISE, TITLE, CLAN, BAN, GOVERNMENT, NOPURGE, BUG, TYPO, IDEA, POLL, DEBUGFLAG, DISABLEFLAG, or a ROOM.");
 				}
 			}
 		}

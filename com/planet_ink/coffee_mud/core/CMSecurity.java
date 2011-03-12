@@ -682,10 +682,12 @@ public class CMSecurity
 		return false;
 	}
 	
-	
+
+	public static Enumeration<String> getDebugEnum() { return new IteratorEnumeration<String>(dbgVars.iterator());}
 	public static final boolean isDebugging(final String key)
 	{ return ((dbgVars.size()>0)&&dbgVars.contains(key))||debuggingEverything;}
 	
+	public static Enumeration<String> getDisablesEnum() { return new IteratorEnumeration<String>(disVars.iterator());}
 	public static final boolean isDisabled(final String key)
 	{ return (disVars.size()>0)&&disVars.contains(key);}
 	
@@ -766,13 +768,22 @@ public class CMSecurity
 			disVars.add((String)V.get(v));
 	}
 	
+	public static final void setDebugVar(final String var, final boolean delete)
+	{
+		if((var!=null)&&(delete)&&(dbgVars.size()>0))
+			dbgVars.remove(var.toUpperCase());
+		else
+		if((var!=null)&&(!delete))
+			dbgVars.add(var.toUpperCase());
+	}
+	
 	public static final void setDisableVar(final String var, final boolean delete)
 	{
 		if((var!=null)&&(delete)&&(disVars.size()>0))
-			disVars.remove(var);
+			disVars.remove(var.toUpperCase());
 		else
 		if((var!=null)&&(!delete))
-			disVars.add(var);
+			disVars.add(var.toUpperCase());
 	}
 	
 	public static final void setSaveFlags(final String flags)

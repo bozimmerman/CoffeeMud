@@ -2308,5 +2308,5 @@ Special/Reserved Quest called holidays can be added to/modified on an area-by-ar
 # Build 5.7.1 Release 3/?/2010
 1. Bug Fix worth mentioning: custom mxp images restored
 2. AutoMapping system available -- see AWARERANGE in INI file and Control Panel
- 
+3. Can now create/destroy/list debugflag and disableflag (same as debug= disable= in coffeemud.ini file -- changes are TEMPORARY!)
 

@@ -845,6 +845,40 @@ public class Create extends StdCommand
 			accounts(mob,commands);
 		}
 		else
+		if(commandType.equals("DISABLEFLAG"))
+		{
+			if(!CMSecurity.isAllowed(mob,mob.location(),"LISTADMIN")) 
+				return errorOut(mob);
+            String named=CMParms.combine(commands,2);
+            if(CMSecurity.isDisabled(named.toUpperCase()))
+            {
+            	mob.tell("'"+named+"' is already disabled");
+            	return errorOut(mob);
+            }
+            else
+            {
+            	mob.tell("'"+named+"' is now disabled");
+            	CMSecurity.setDisableVar(named.toUpperCase().trim(), true);
+            }
+		}
+		else
+		if(commandType.equals("DEBUGFLAG"))
+		{
+			if(!CMSecurity.isAllowed(mob,mob.location(),"LISTADMIN")) 
+				return errorOut(mob);
+            String named=CMParms.combine(commands,2);
+            if(CMSecurity.isDebugging(named.toUpperCase()))
+            {
+            	mob.tell("'"+named+"' is already debugging");
+            	return errorOut(mob);
+            }
+            else
+            {
+            	mob.tell("'"+named+"' is now debugging");
+            	CMSecurity.setDebugVar(named.toUpperCase().trim(), true);
+            }
+		}
+		else
 		if(commandType.equals("SOCIAL"))
 		{
 			if(!CMSecurity.isAllowed(mob,mob.location(),"CMDSOCIALS")) return errorOut(mob);
@@ -1086,10 +1120,10 @@ public class Create extends StdCommand
 						execute(mob,commands,metaFlags);
 					}
 					else
-						mob.tell("\n\rYou cannot create a '"+commandType+"'. However, you might try an EXIT, ITEM, QUEST, FACTION, COMPONENT, GOVERNMENT, HOLIDAY, CLAN, MOB, RACE, ABILITY, CLASS, POLL, USER, or ROOM.");
+						mob.tell("\n\rYou cannot create a '"+commandType+"'. However, you might try an EXIT, ITEM, QUEST, FACTION, COMPONENT, GOVERNMENT, HOLIDAY, CLAN, MOB, RACE, ABILITY, CLASS, POLL, DEBUGFLAG, DISABLEFLAG, USER, or ROOM.");
 				}
 				else
-					mob.tell("\n\rYou cannot create a '"+commandType+"'. However, you might try an EXIT, ITEM, QUEST, FACTION, MOB, COMPONENT, GOVERNMENT, HOLIDAY, CLAN, RACE, ABILITY, CLASS, POLL, USER, or ROOM.");
+					mob.tell("\n\rYou cannot create a '"+commandType+"'. However, you might try an EXIT, ITEM, QUEST, FACTION, MOB, COMPONENT, GOVERNMENT, HOLIDAY, CLAN, RACE, ABILITY, CLASS, POLL, USER, DEBUGFLAG, DISABLEFLAG, ROOM.");
 			}
 		}
 		return false;

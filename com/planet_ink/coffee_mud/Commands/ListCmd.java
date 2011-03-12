@@ -1581,6 +1581,8 @@ public class ListCmd extends StdCommand
 		/*59*/{"ACCOUNTS","CMDPLAYERS","STAT"},
 		/*60*/{"GOVERNMENTS","CMDCLANS"},
 		/*61*/{"CLANS","CMDCLANS"},
+		/*62*/{"DEBUGFLAG","LISTADMIN"},
+		/*63*/{"DISABLEFLAG","LISTADMIN"},
 	};
 
     public StringBuilder listContent(MOB mob, Vector commands)
@@ -1914,6 +1916,8 @@ public class ListCmd extends StdCommand
 		case 59: listAccounts(mob,commands); break;
 		case 60: s.wraplessPrintln(listClanGovernments(mob,commands)); break;
 		case 61: s.wraplessPrintln(listClans(mob,commands)); break;
+		case 62: s.println("\n\r^xDebug Settings: ^?^.^N\n\r"+CMParms.toStringList(new XVector<String>(CMSecurity.getDebugEnum())));
+		case 63: s.println("\n\r^xDisable Settings: ^?^.^N\n\r"+CMParms.toStringList(new XVector<String>(CMSecurity.getDisablesEnum())));
         default:
 			s.println("List?!");
 			break;
