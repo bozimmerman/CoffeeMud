@@ -40,6 +40,48 @@ public class ControlPanel extends StdWebMacro
 	public String runMacro(ExternalHTTPRequests httpReq, String parm)
 	{
 		java.util.Map<String,String> parms=parseParms(parm);
+		
+		String lastDisable=httpReq.getRequestParameter("DISABLEFLAG");
+		if(parms.containsKey("DISABLERESET"))
+		{
+			if(lastDisable!=null) httpReq.removeRequestParameter("DISABLEFLAG");
+			return "";
+		}
+		if(parms.containsKey("DISABLENEXT"))
+		{
+			String lastID="";
+			for(CMSecurity.DisFlag flag : CMSecurity.DisFlag.values())
+			{
+				if((lastDisable==null)||((lastDisable.length()>0)&&(lastDisable.equals(lastID))&&(!flag.toString().equals(lastID))))
+				{
+					httpReq.addRequestParameters("DISABLEFLAG",flag.toString());
+					return "";
+				}
+				lastID=flag.toString();
+			}
+			httpReq.addRequestParameters("DISABLEFLAG","");
+			if(parms.containsKey("EMPTYOK"))
+				return "<!--EMPTY-->";
+			return " @break@";
+			
+		}
+		if(parms.containsKey("DISABLEID"))
+		{
+			if(lastDisable==null)
+				return " @break@";
+			return lastDisable;
+		}
+		if(parms.containsKey("DISABLEDESC"))
+		{
+			if(lastDisable==null)
+				return " @break@";
+			CMSecurity.DisFlag flag = (CMSecurity.DisFlag)CMath.s_valueOf(CMSecurity.DisFlag.values(), lastDisable);
+			if(flag==null)
+				return " @break@";
+			return flag.description();
+		}
+		
+		
 		String query=(String)parms.get("QUERY");
 		if((query==null)||(query.length()==0))
 			return "";
