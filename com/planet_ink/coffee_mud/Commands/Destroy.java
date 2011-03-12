@@ -1010,7 +1010,7 @@ public class Destroy extends StdCommand
             else
             {
             	mob.tell("'"+named+"' is no longer disabled");
-            	CMSecurity.setDisableVar(named.toUpperCase().trim(), false);
+            	CMSecurity.setDisableVar(named.toUpperCase().trim(), true);
             }
             return false;
 		}

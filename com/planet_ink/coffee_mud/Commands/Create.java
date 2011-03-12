@@ -858,7 +858,7 @@ public class Create extends StdCommand
             else
             {
             	mob.tell("'"+named+"' is now disabled");
-            	CMSecurity.setDisableVar(named.toUpperCase().trim(), true);
+            	CMSecurity.setDisableVar(named.toUpperCase().trim(), false);
             }
             return false;
 		}
