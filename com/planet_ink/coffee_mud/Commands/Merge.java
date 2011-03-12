@@ -187,7 +187,7 @@ public class Merge extends StdCommand
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
-		boolean noisy=CMSecurity.isDebugging("MERGE");
+		boolean noisy=CMSecurity.isDebugging(CMSecurity.DbgFlag.MERGE);
 		Vector placesToDo=new Vector();
 		commands.removeElementAt(0);
 		if(commands.size()==0)

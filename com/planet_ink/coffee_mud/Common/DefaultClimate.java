@@ -243,7 +243,7 @@ public class DefaultClimate implements Climate
 
 	public void weatherTick(Area A)
 	{
-		if(CMSecurity.isDisabled("WEATHER"))
+		if(CMSecurity.isDisabled(CMSecurity.DisFlag.WEATHER))
 		{
 			currentWeather = Climate.WEATHER_CLEAR;
 			return;
@@ -326,7 +326,7 @@ public class DefaultClimate implements Climate
 
 			// remember your olde weather
 			int oldWeather=currentWeather;
-			if(!CMSecurity.isDisabled("WEATHERCHANGES"))
+			if(!CMSecurity.isDisabled(CMSecurity.DisFlag.WEATHERCHANGES))
 			{
 				currentWeather=nextWeather;
 				nextWeather=possibleNextWeather;
@@ -371,7 +371,7 @@ public class DefaultClimate implements Climate
 				}
 			}
 
-			if((say!=null)&&!CMSecurity.isDisabled("WEATHERNOTIFIES"))
+			if((say!=null)&&!CMSecurity.isDisabled(CMSecurity.DisFlag.WEATHERNOTIFIES))
 			{
 				for(Enumeration<Room> r=A.getProperMap();r.hasMoreElements();)
 				{

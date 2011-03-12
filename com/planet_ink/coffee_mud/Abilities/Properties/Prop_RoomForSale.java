@@ -389,7 +389,7 @@ public class Prop_RoomForSale extends Property implements LandTitle
 			}
 
 			if((lastNumItems<0)
-            &&(!CMSecurity.isDisabled("PROPERTYOWNERCHECKS"))
+            &&(!CMSecurity.isDisabled(CMSecurity.DisFlag.PROPERTYOWNERCHECKS))
             &&(optPlayerList!=null))
 			{
                 boolean playerExists=(CMLib.players().getPlayer(T.landOwner())!=null);

@@ -41,7 +41,7 @@ public class CoffeeTables extends StdLibrary implements StatisticsLibrary
     
 	public void update()
 	{
-		if(CMSecurity.isDisabled("STATS"))
+		if(CMSecurity.isDisabled(CMSecurity.DisFlag.STATS))
 			return;
 		if(todays!=null)
 			CMLib.database().DBUpdateStat(todays.startTime(),todays.data());
@@ -51,7 +51,7 @@ public class CoffeeTables extends StdLibrary implements StatisticsLibrary
 	{
 		if(!CMProps.getBoolVar(CMProps.SYSTEMB_MUDSTARTED))
 			return;
-		if(CMSecurity.isDisabled("STATS"))
+		if(CMSecurity.isDisabled(CMSecurity.DisFlag.STATS))
 			return;
 		if(todays==null)
 		{
@@ -98,7 +98,7 @@ public class CoffeeTables extends StdLibrary implements StatisticsLibrary
     public boolean activate() {
         if(thread==null)
             thread=new ThreadEngine.SupportThread("THStats"+Thread.currentThread().getThreadGroup().getName().charAt(0), 
-                    MudHost.TIME_SAVETHREAD_SLEEP, this, CMSecurity.isDebugging("SAVETHREAD"));
+                    MudHost.TIME_SAVETHREAD_SLEEP, this, CMSecurity.isDebugging(CMSecurity.DbgFlag.STATSTHREAD), CMSecurity.DisFlag.STATSTHREAD);
         if(!thread.started)
             thread.start();
         return true;
@@ -111,8 +111,8 @@ public class CoffeeTables extends StdLibrary implements StatisticsLibrary
     
     public void run()
     {
-        if((!CMSecurity.isDisabled("SAVETHREAD"))
-        &&(!CMSecurity.isDisabled("STATSTHREAD")))
+        if((!CMSecurity.isDisabled(CMSecurity.DisFlag.SAVETHREAD))
+        &&(!CMSecurity.isDisabled(CMSecurity.DisFlag.STATSTHREAD)))
         {
             CMLib.coffeeTables().bump(null,CoffeeTableRow.STAT_SPECIAL_NUMONLINE);
             CMLib.coffeeTables().update();

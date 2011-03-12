@@ -492,7 +492,7 @@ public class Intermud implements Runnable, Persistent, Serializable
                 return;
             }
             try {
-                if(CMSecurity.isDebugging("I3"))
+                if(CMSecurity.isDebugging(CMSecurity.DbgFlag.I3))
                     Log.sysOut("Intermud","Receiving: "+str);
                 data = (Vector)LPCData.getLPCData(str);
             }
@@ -664,7 +664,7 @@ public class Intermud implements Runnable, Persistent, Serializable
     // Send a formatted mud mode packet to the router
     private void send(String str)
     {
-        if(CMSecurity.isDebugging("I3"))
+        if(CMSecurity.isDebugging(CMSecurity.DbgFlag.I3))
             Log.sysOut("Intermud","Sending: "+str);
         try
         {

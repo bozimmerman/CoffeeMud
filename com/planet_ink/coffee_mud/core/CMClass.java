@@ -545,7 +545,7 @@ public class CMClass extends ClassLoader
 	
 	public static final boolean loadClass(final String classType, final String path, final boolean quiet)
 	{
-        debugging=CMSecurity.isDebugging("CLASSLOADER");
+        debugging=CMSecurity.isDebugging(CMSecurity.DbgFlag.CLASSLOADER);
         final Object set=getClassSet(classType);
 		if(set==null) return false;
 
@@ -1459,7 +1459,7 @@ public class CMClass extends ClassLoader
         try
         {
         	final String prefix="com/planet_ink/coffee_mud/";
-            debugging=CMSecurity.isDebugging("CLASSLOADER");
+            debugging=CMSecurity.isDebugging(CMSecurity.DbgFlag.CLASSLOADER);
             
             c.libraries=loadVectorListToObj(prefix+"Libraries/",page.getStr("LIBRARY"),ancestor("LIBRARY"));
             if(c.libraries.size()==0) return false;

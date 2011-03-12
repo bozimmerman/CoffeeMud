@@ -228,7 +228,7 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 	public void unLevel(MOB mob)
 	{
 		if((mob.basePhyStats().level()<2)
-		||(CMSecurity.isDisabled("LEVELS"))
+		||(CMSecurity.isDisabled(CMSecurity.DisFlag.LEVELS))
 		||(mob.charStats().getCurrentClass().leveless())
 		||(mob.charStats().getMyRace().leveless()))
 		    return;
@@ -332,7 +332,7 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 	public boolean postExperience(MOB mob,MOB victim,String homage,int amount,boolean quiet)
 	{
 		if((mob==null)
-		||(CMSecurity.isDisabled("EXPERIENCE"))
+		||(CMSecurity.isDisabled(CMSecurity.DisFlag.EXPERIENCE))
 		||mob.charStats().getCurrentClass().expless()
 		||mob.charStats().getMyRace().expless())
 	        return false;
@@ -366,7 +366,7 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 
 	public void level(MOB mob)
 	{
-	    if((CMSecurity.isDisabled("LEVELS"))
+	    if((CMSecurity.isDisabled(CMSecurity.DisFlag.LEVELS))
 		||(mob.charStats().getCurrentClass().leveless())
         ||(mob.charStats().isLevelCapped(mob.charStats().getCurrentClass()))
 		||(mob.charStats().getMyRace().leveless()))
@@ -570,7 +570,7 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
     public void handleExperienceChange(CMMsg msg)
     {
         MOB mob=msg.source();
-        if(!CMSecurity.isDisabled("EXPERIENCE")
+        if(!CMSecurity.isDisabled(CMSecurity.DisFlag.EXPERIENCE)
         &&!mob.charStats().getCurrentClass().expless()
         &&!mob.charStats().getMyRace().expless())
         {

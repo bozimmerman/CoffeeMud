@@ -100,7 +100,7 @@ public class SMTPclient extends StdLibrary implements SMTPLibrary, SMTPLibrary.S
 		reply = new BufferedReader(new InputStreamReader(sock.getInputStream()));
 		sock.setSoTimeout(DEFAULT_TIMEOUT);
         send = new PrintWriter( sock.getOutputStream() );
-        boolean debug = CMSecurity.isDebugging("SMTPCLIENT");
+        boolean debug = CMSecurity.isDebugging(CMSecurity.DbgFlag.SMTPCLIENT);
         String rstr = reply.readLine();
         if(debug) Log.debugOut("SMTPclient",rstr);
         if ((rstr==null)||(!rstr.startsWith("220"))) throw new ProtocolException(rstr);
@@ -142,7 +142,7 @@ public class SMTPclient extends StdLibrary implements SMTPLibrary, SMTPLibrary.S
 				reply = new BufferedReader(new InputStreamReader(sock.getInputStream()));
 				sock.setSoTimeout(DEFAULT_TIMEOUT);
 				send = new PrintWriter( sock.getOutputStream() );
-		        boolean debug = CMSecurity.isDebugging("SMTPCLIENT");
+		        boolean debug = CMSecurity.isDebugging(CMSecurity.DbgFlag.SMTPCLIENT);
 		        String rstr = reply.readLine();
 		        if(debug) Log.debugOut("SMTPclient",rstr);
 				if ((rstr==null)||(!rstr.startsWith("220"))) throw new ProtocolException(rstr);
@@ -294,14 +294,14 @@ public class SMTPclient extends StdLibrary implements SMTPLibrary, SMTPLibrary.S
 										 String message)
 		throws IOException
 	{
-    	if(CMSecurity.isDisabled("SMTPCLIENT"))
+    	if(CMSecurity.isDisabled(CMSecurity.DisFlag.SMTPCLIENT))
     	{
     		Log.debugOut("SMTPclient", "Message not sent: "+froaddress+"/"+reply_address+"/"+to_address+"/"+mockto_address+"/"+subject+"/"+message);
     		return;
     	}
     	
 		String rstr;
-		boolean debug = CMSecurity.isDebugging("SMTPCLIENT");
+		boolean debug = CMSecurity.isDebugging(CMSecurity.DbgFlag.SMTPCLIENT);
         StringBuffer fixMsg=new StringBuffer(message);
         for(int f=0;f<fixMsg.length();f++)
         {

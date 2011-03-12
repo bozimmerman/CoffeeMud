@@ -96,7 +96,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
     {
     	try
     	{
-			if((session!=null)&&(!CMSecurity.isDisabled("RETIREREASON")))
+			if((session!=null)&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.RETIREREASON)))
 			{
 				String reason=session.prompt("OK.  Please leave us a short message as to why you are deleting this"
 												  +" character.  Your answers will be kept confidential, "
@@ -216,7 +216,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 
         S.initTelnetMode(mob.getBitmap());
         if((CMath.bset(mob.getBitmap(),MOB.ATT_MXP))
-        &&(!CMSecurity.isDisabled("MXP")))
+        &&(!CMSecurity.isDisabled(CMSecurity.DisFlag.MXP)))
         {
             if(S.clientTelnetMode(Session.TELNET_MXP))
             {
@@ -235,7 +235,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
         }
 
         if((CMath.bset(mob.getBitmap(),MOB.ATT_SOUND))
-        &&(!CMSecurity.isDisabled("MSP")))
+        &&(!CMSecurity.isDisabled(CMSecurity.DisFlag.MSP)))
         {
             if(!S.clientTelnetMode(Session.TELNET_MSP))
                 mob.tell("MSP sounds have been disabled for this session.");
@@ -611,7 +611,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
     				numAccountOnline++;
             if((CMProps.getIntVar(CMProps.SYSTEMI_MAXCONNSPERACCOUNT)>0)
             &&(numAccountOnline>=CMProps.getIntVar(CMProps.SYSTEMI_MAXCONNSPERACCOUNT))
-            &&(!CMSecurity.isDisabled("MAXCONNSPERACCOUNT"))
+            &&(!CMSecurity.isDisabled(CMSecurity.DisFlag.MAXCONNSPERACCOUNT))
             &&(!acct.isSet(PlayerAccount.FLAG_MAXCONNSOVERRIDE)))
             {
                 session.println("You may only have "+CMProps.getIntVar(CMProps.SYSTEMI_MAXCONNSPERACCOUNT)+" of your characters on at one time.");
@@ -829,10 +829,10 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 	            session.setClientTelnetMode(Session.TELNET_ANSI,false);
 	        }
 	        if((session.clientTelnetMode(Session.TELNET_MSP))
-	        &&(!CMSecurity.isDisabled("MSP")))
+	        &&(!CMSecurity.isDisabled(CMSecurity.DisFlag.MSP)))
 	            mob.setBitmap(mob.getBitmap()|MOB.ATT_SOUND);
 	        if((session.clientTelnetMode(Session.TELNET_MXP))
-	        &&(!CMSecurity.isDisabled("MXP")))
+	        &&(!CMSecurity.isDisabled(CMSecurity.DisFlag.MXP)))
 	            mob.setBitmap(mob.getBitmap()|MOB.ATT_MXP);
 	
 	        executeScript(mob,extraScripts.get("ANSI"));
@@ -877,7 +877,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 	        
 	        executeScript(mob,extraScripts.get("THEME"));
 	        
-	        if(!CMSecurity.isDisabled("RACES"))
+	        if(!CMSecurity.isDisabled(CMSecurity.DisFlag.RACES))
 	        {
 	            introText=new CMFile(Resources.buildResourcePath("text")+"races.txt",null,true).text();
 	        	try { introText = CMLib.httpUtils().doVirtualPage(introText);}catch(Exception ex){}
@@ -897,7 +897,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 	        }
 	        listOfRaces.append("]");
 	        Race newRace=null;
-	        if(CMSecurity.isDisabled("RACES"))
+	        if(CMSecurity.isDisabled(CMSecurity.DisFlag.RACES))
 	        {
 	            newRace=CMClass.getRace("PlayerRace");
 	            if(newRace==null)
@@ -988,7 +988,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 	            reRollStats(mob,mob.baseCharStats());
 	            mob.recoverCharStats();
 	            List<CharClass> V=classQualifies(mob,theme);
-	            if((V.size()>0)||CMSecurity.isDisabled("CLASSES"))
+	            if((V.size()>0)||CMSecurity.isDisabled(CMSecurity.DisFlag.CLASSES))
 	            {
 	                StringBuffer classes=new StringBuffer("");
 	                listOfClasses = new StringBuffer("");
@@ -1017,7 +1017,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 	                    		+": "+CMStrings.padRight(Integer.toString(CT.getStat(i)),2)+"/"+(max+CT.getStat(CharStats.CODES.toMAXBASE(i)))+"\n\r");
 	                statstr.append(CMStrings.padRight("TOTAL POINTS",15)+": "+CMProps.getIntVar(CMProps.SYSTEMI_MAXSTAT)+"/"+(CMProps.getIntVar(CMProps.SYSTEMI_BASEMAXSTAT)*6));
 	                session.println(statstr.toString());
-	                if(!CMSecurity.isDisabled("CLASSES")
+	                if(!CMSecurity.isDisabled(CMSecurity.DisFlag.CLASSES)
 	                &&!mob.baseCharStats().getMyRace().classless()
 	                &&((V.size()!=1)||(!CMProps.getVar(CMProps.SYSTEM_MULTICLASS).startsWith("APP-"))))
 	                	session.println("\n\rThis would qualify you for ^H"+classes.toString()+"^N.");
@@ -1028,15 +1028,15 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 	        }
 	        executeScript(mob,extraScripts.get("STATS"));
 	        
-	        if(!CMSecurity.isDisabled("CLASSES")
+	        if(!CMSecurity.isDisabled(CMSecurity.DisFlag.CLASSES)
 	        &&!mob.baseCharStats().getMyRace().classless())
 	            session.println(null,null,null,new CMFile(Resources.buildResourcePath("text")+"classes.txt",null,true).text().toString());
 	
 	        CharClass newClass=null;
 	        List<CharClass> qualClasses=classQualifies(mob,theme);
-	        if(CMSecurity.isDisabled("CLASSES")||mob.baseCharStats().getMyRace().classless())
+	        if(CMSecurity.isDisabled(CMSecurity.DisFlag.CLASSES)||mob.baseCharStats().getMyRace().classless())
 	        {
-	            if(CMSecurity.isDisabled("CLASSES"))
+	            if(CMSecurity.isDisabled(CMSecurity.DisFlag.CLASSES))
 	                newClass=CMClass.getCharClass("PlayerClass");
 	            if((newClass==null)&&(qualClasses.size()>0))
 	                newClass=(CharClass)qualClasses.get(CMLib.dice().roll(1,qualClasses.size(),-1));
@@ -1112,7 +1112,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 	
 	        CMLib.utensils().outfit(mob,mob.baseCharStats().getMyRace().outfit(mob));
 	
-	        if(!CMSecurity.isDisabled("ALLERGIES")) {
+	        if(!CMSecurity.isDisabled(CMSecurity.DisFlag.ALLERGIES)) {
 	            Ability A=CMClass.getAbility("Allergies");
 	            if(A!=null) A.invoke(mob,mob,true,0);
 	        }
@@ -1260,7 +1260,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 
     private boolean loginsDisabled(MOB mob)
     {
-        if((CMSecurity.isDisabled("LOGINS"))&&(!CMSecurity.isASysOp(mob)))
+        if((CMSecurity.isDisabled(CMSecurity.DisFlag.LOGINS))&&(!CMSecurity.isASysOp(mob)))
         {
 			StringBuffer rejectText=Resources.getFileResource("text/nologins.txt",true);
         	try { rejectText = CMLib.httpUtils().doVirtualPage(rejectText);}catch(Exception ex){}
@@ -1391,12 +1391,12 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
     	rpt.append("\t"); rpt.append(Long.toString(CMLib.map().numRooms()));
     	rpt.append("\r\n"); rpt.append("CLASSES");
     	int numClasses = 0;
-        if(!CMSecurity.isDisabled("CLASSES"))
+        if(!CMSecurity.isDisabled(CMSecurity.DisFlag.CLASSES))
         	numClasses=CMLib.login().classQualifies(null, CMProps.getIntVar(CMProps.SYSTEMI_MUDTHEME)&0x07).size();
     	rpt.append("\t"); rpt.append(Long.toString(numClasses));
     	rpt.append("\r\n"); rpt.append("RACES");
     	int numRaces = 0;
-        if(!CMSecurity.isDisabled("RACES"))
+        if(!CMSecurity.isDisabled(CMSecurity.DisFlag.RACES))
         	numRaces=CMLib.login().raceQualifies(null, CMProps.getIntVar(CMProps.SYSTEMI_MUDTHEME)&0x07).size();
     	rpt.append("\t"); rpt.append(Long.toString(numRaces));
     	rpt.append("\r\n"); rpt.append("SKILLS");
@@ -1404,11 +1404,11 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
     	rpt.append("\r\n"); rpt.append("ANSI");
     	rpt.append("\t"); rpt.append((this!=null?"1":"0"));
     	rpt.append("\r\n"); rpt.append("MCCP");
-    	rpt.append("\t"); rpt.append((!CMSecurity.isDisabled("MCCP")?"1":"0"));
+    	rpt.append("\t"); rpt.append((!CMSecurity.isDisabled(CMSecurity.DisFlag.MCCP)?"1":"0"));
     	rpt.append("\r\n"); rpt.append("MSP");
-    	rpt.append("\t"); rpt.append((!CMSecurity.isDisabled("MSP")?"1":"0"));
+    	rpt.append("\t"); rpt.append((!CMSecurity.isDisabled(CMSecurity.DisFlag.MSP)?"1":"0"));
     	rpt.append("\r\n"); rpt.append("MXP");
-    	rpt.append("\t"); rpt.append((!CMSecurity.isDisabled("MXP")?"1":"0"));
+    	rpt.append("\t"); rpt.append((!CMSecurity.isDisabled(CMSecurity.DisFlag.MXP)?"1":"0"));
     	rpt.append("\r\nMSSP-REPLY-END\r\n");
     	return rpt.toString();
     }
@@ -1433,7 +1433,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
         login=login.trim();
         if(login.length()==0) 
         	return LoginResult.NO_LOGIN;
-        if(login.equalsIgnoreCase("MSSP-REQUEST")&&(!CMSecurity.isDisabled("MSSP")))
+        if(login.equalsIgnoreCase("MSSP-REQUEST")&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.MSSP)))
         {
         	session.rawOut(getMSSPPacket());
             session.kill(false,false,false);
@@ -1610,7 +1610,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 
     public boolean newCharactersAllowed(String login, Session session, boolean checkPlayerName)
     {
-        if(CMSecurity.isDisabled("NEWPLAYERS"))
+        if(CMSecurity.isDisabled(CMSecurity.DisFlag.NEWPLAYERS))
         {
             session.print("\n\r'"+CMStrings.capitalizeAndLower(login)+"' is not recognized.\n\r");
             return false;
@@ -1625,7 +1625,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
         }
         else
         if((CMProps.getIntVar(CMProps.SYSTEMI_MUDTHEME)==0)
-        ||(CMSecurity.isDisabled("LOGINS")))
+        ||(CMSecurity.isDisabled(CMSecurity.DisFlag.LOGINS)))
         {
             session.print("\n\r'"+CMStrings.capitalizeAndLower(login)+"' does not exist.\n\rThis server is not accepting new accounts.\n\r\n\r");
             return false;
@@ -1633,7 +1633,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
         else
         if((CMProps.getIntVar(CMProps.SYSTEMI_MAXNEWPERIP)>0)
         &&(CMProps.getCountNewUserByIP(session.getAddress())>=CMProps.getIntVar(CMProps.SYSTEMI_MAXNEWPERIP))
-        &&(!CMSecurity.isDisabled("MAXNEWPERIP")))
+        &&(!CMSecurity.isDisabled(CMSecurity.DisFlag.MAXNEWPERIP)))
         {
             session.println("\n\rThat name is unrecognized.\n\rAlso, the maximum daily new player limit has already been reached for your location.");
             return false;
@@ -1665,7 +1665,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 
         if((CMProps.getIntVar(CMProps.SYSTEMI_MAXCONNSPERIP)>0)
         &&(numAtAddress>=CMProps.getIntVar(CMProps.SYSTEMI_MAXCONNSPERIP))
-        &&(!CMSecurity.isDisabled("MAXCONNSPERIP")))
+        &&(!CMSecurity.isDisabled(CMSecurity.DisFlag.MAXCONNSPERIP)))
         {
             session.println("The maximum player limit has already been reached for your IP address.");
             return LoginResult.NO_LOGIN;

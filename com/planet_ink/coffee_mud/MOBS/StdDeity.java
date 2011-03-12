@@ -866,7 +866,7 @@ public class StdDeity extends StdMOB implements Deity
 					{
 						removePowers(msg.source());
 						msg.source().tell("You feel the wrath of "+name()+"!");
-						if(!CMSecurity.isDisabled("LEVELS"))
+						if(!CMSecurity.isDisabled(CMSecurity.DisFlag.LEVELS))
 							msg.source().charStats().getCurrentClass().unLevel(msg.source());
 					}
 					else

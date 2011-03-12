@@ -367,7 +367,7 @@ public class StdArea implements Area
 
 	public CMObject newInstance()
 	{
-		if(CMSecurity.isDisabled("FATAREAS")
+		if(CMSecurity.isDisabled(CMSecurity.DisFlag.FATAREAS)
 		&&(ID().equals("StdArea")))
 		{
 			Area A=CMClass.getAreaType("StdThinArea");
@@ -749,7 +749,7 @@ public class StdArea implements Area
             if((flag<=Area.STATE_ACTIVE)
             &&((System.currentTimeMillis()-lastPlayerTime)>Area.TIME_PASSIVE_LAPSE))
             {
-                if(CMSecurity.isDisabled("PASSIVEAREAS"))
+                if(CMSecurity.isDisabled(CMSecurity.DisFlag.PASSIVEAREAS))
                     lastPlayerTime=System.currentTimeMillis();
                 else
                     flag=Area.STATE_PASSIVE;
@@ -795,8 +795,8 @@ public class StdArea implements Area
 			if(((C==null)
 			    ||(((C.weatherType((Room)affected)==Climate.WEATHER_BLIZZARD)
 			    		||(C.weatherType((Room)affected)==Climate.WEATHER_DUSTSTORM))
-			    		&&(!CMSecurity.isDisabled("DARKWEATHER")))
-			    ||((getTimeObj().getTODCode()==TimeClock.TIME_NIGHT)&&(!CMSecurity.isDisabled("DARKNIGHTS"))))
+			    		&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.DARKWEATHER)))
+			    ||((getTimeObj().getTODCode()==TimeClock.TIME_NIGHT)&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.DARKNIGHTS))))
 			&&((disposition&PhyStats.IS_LIGHTSOURCE)==0))
 				disposition=disposition|PhyStats.IS_DARK;
 		}

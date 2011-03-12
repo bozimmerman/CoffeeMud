@@ -92,7 +92,7 @@ public class ProcessSMTPrequest implements Runnable
 		DataInputStream sin = null;
 		DataOutputStream sout = null;
 		int failures=0;
-		debug = CMSecurity.isDebugging("SMTPSERVER");
+		debug = CMSecurity.isDebugging(CMSecurity.DbgFlag.SMTPSERVER);
 
 		byte[] replyData = null;
 

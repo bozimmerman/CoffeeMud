@@ -56,7 +56,7 @@ public class Prayer_FeedTheDead extends Prayer
 			}
 			amount=CMath.s_int((String)commands.lastElement());
 			if((amount<=0)||((amount>mob.getExperience())
-			&&(!CMSecurity.isDisabled("EXPERIENCE"))
+			&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.EXPERIENCE))
 			&&!mob.charStats().getCurrentClass().expless()
 			&&!mob.charStats().getMyRace().expless()))
 			{

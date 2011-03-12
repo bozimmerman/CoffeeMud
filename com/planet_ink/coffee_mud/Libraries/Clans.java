@@ -172,7 +172,7 @@ public class Clans extends StdLibrary implements ClanManager
 	}
 	public void addClan(Clan C)
 	{
-		if(!CMSecurity.isDisabled("CLANTICKS"))
+		if(!CMSecurity.isDisabled(CMSecurity.DisFlag.CLANTICKS))
 			CMLib.threads().startTickDown(C,Tickable.TICKID_CLAN,(int)CMProps.getTicksPerDay());
 		all.put(C.clanID().toUpperCase(),C);
 		CMLib.map().sendGlobalMessage(CMLib.map().deity(), CMMsg.TYP_CLANEVENT, 

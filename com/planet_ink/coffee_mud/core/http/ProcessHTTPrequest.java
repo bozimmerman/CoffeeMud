@@ -111,7 +111,7 @@ public class ProcessHTTPrequest implements CMRunnable, ExternalHTTPRequests
         pageGrabber=new FileGrabber(null);
         templateGrabber=new FileGrabber(null);
         processStartTime=System.currentTimeMillis();
-        debugMacros=CMSecurity.isDebugging("HTTPMACROS");
+        debugMacros=CMSecurity.isDebugging(CMSecurity.DbgFlag.HTTPMACROS);
     }
 	public ProcessHTTPrequest(Socket a_sock,
 							  HTTPserver a_webServer,
@@ -128,7 +128,7 @@ public class ProcessHTTPrequest implements CMRunnable, ExternalHTTPRequests
 		webServer = a_webServer;
 		sock = a_sock;
 		isAdminServer = a_isAdminServer;
-        debugMacros=CMSecurity.isDebugging("HTTPMACROS");
+        debugMacros=CMSecurity.isDebugging(CMSecurity.DbgFlag.HTTPMACROS);
 		if(webServer!=null)
 		{
 			pageGrabber=webServer.getPageGrabber();
@@ -210,7 +210,7 @@ public class ProcessHTTPrequest implements CMRunnable, ExternalHTTPRequests
 				case 500: status=S_500; break;
 				case 501: status=S_501; break;
 				}
-				if((err!=200)&&(CMSecurity.isDebugging("HTTPERR")))
+				if((err!=200)&&(CMSecurity.isDebugging(CMSecurity.DbgFlag.HTTPERR)))
 					Log.debugOut("ProcessHTTPRequest",inLine);
 						
 				return false;
@@ -432,9 +432,9 @@ public class ProcessHTTPrequest implements CMRunnable, ExternalHTTPRequests
 					catch(Exception e2)
 					{
 					    if((!Log.isMaskedErrMsg(e2.getMessage()))
-					    ||(CMSecurity.isDebugging("HTTPERR")))
+					    ||(CMSecurity.isDebugging(CMSecurity.DbgFlag.HTTPERR)))
 							Log.errOut(getName(),e2.getMessage());
-					    if(CMSecurity.isDebugging("HTTPERREXT"))
+					    if(CMSecurity.isDebugging(CMSecurity.DbgFlag.HTTPERREXT))
 					    	Log.errOut(getName(),e2);
 					}
 				}
@@ -707,7 +707,7 @@ public class ProcessHTTPrequest implements CMRunnable, ExternalHTTPRequests
     public StringBuffer doVirtualPage(StringBuffer s) throws HTTPRedirectException
     {
         String redirectTo = null;
-        boolean analLogging=CMSecurity.isDebugging("HTTPERREXT");
+        boolean analLogging=CMSecurity.isDebugging(CMSecurity.DbgFlag.HTTPERREXT);
         if((webServer!=null)
         &&(!isAdminServer)
         &&(processStartTime>0)
@@ -910,7 +910,7 @@ public class ProcessHTTPrequest implements CMRunnable, ExternalHTTPRequests
         {
 			String errMsg=e.getMessage()==null?e.toString():e.getMessage();
             if((errMsg!=null)
-            &&((!Log.isMaskedErrMsg(errMsg))||(CMSecurity.isDebugging("HTTPERR"))))
+            &&((!Log.isMaskedErrMsg(errMsg))||(CMSecurity.isDebugging(CMSecurity.DbgFlag.HTTPERR))))
             {
                 Log.errOut(getName(), "Exception in doVirtualPage() - " + errMsg );
                 Log.errOut(getName(),e);
@@ -1189,16 +1189,16 @@ public class ProcessHTTPrequest implements CMRunnable, ExternalHTTPRequests
 			String errMsg=e.getMessage()==null?e.toString():e.getMessage();
 			if((errMsg!=null)
 			&&((!Log.isMaskedErrMsg(errMsg))
-			    ||(CMSecurity.isDebugging("HTTPERR"))))
+			    ||(CMSecurity.isDebugging(CMSecurity.DbgFlag.HTTPERR))))
 			{
 				Log.errOut(getName(),"Exception: " + errMsg );
 				if((!(e instanceof java.net.SocketException))
-			    ||(CMSecurity.isDebugging("HTTPERREXT")))
+			    ||(CMSecurity.isDebugging(CMSecurity.DbgFlag.HTTPERREXT)))
 					Log.errOut(getName(),e);
 			}
 		}
 
-		if((Log.debugChannelOn())&&(CMSecurity.isDebugging("HTTPREQ"))&&(replyData!=null))
+		if((Log.debugChannelOn())&&(CMSecurity.isDebugging(CMSecurity.DbgFlag.HTTPREQ))&&(replyData!=null))
 			Log.debugOut(getName(), sock.getInetAddress().getHostAddress() + ":" + (command==null?"(null)":command + " " + (request==null?"(null)":request)) +
 					":" + status +" ("+replyData.length+")");
 
@@ -1282,11 +1282,11 @@ public class ProcessHTTPrequest implements CMRunnable, ExternalHTTPRequests
 			String errMsg=e.getMessage()==null?e.toString():e.getMessage();
 			if((errMsg!=null)
 			&&((!Log.isMaskedErrMsg(errMsg))
-			    ||(CMSecurity.isDebugging("HTTPERR"))))
+			    ||(CMSecurity.isDebugging(CMSecurity.DbgFlag.HTTPERR))))
 			{
 				Log.errOut(getName(),"Exception: " + errMsg );
 				if((!(e instanceof java.net.SocketException))
-			    ||(CMSecurity.isDebugging("HTTPERREXT")))
+			    ||(CMSecurity.isDebugging(CMSecurity.DbgFlag.HTTPERREXT)))
 					Log.errOut(getName(),e);
 			}
 		}
@@ -1347,9 +1347,9 @@ public class ProcessHTTPrequest implements CMRunnable, ExternalHTTPRequests
 		catch(Exception e)
 		{
             if((!Log.isMaskedErrMsg(e.getMessage()))
-		    ||(CMSecurity.isDebugging("HTTPERR")))
+		    ||(CMSecurity.isDebugging(CMSecurity.DbgFlag.HTTPERR)))
             	Log.errOut(getName(),e.getMessage());
-		    if(CMSecurity.isDebugging("HTTPERREXT"))
+		    if(CMSecurity.isDebugging(CMSecurity.DbgFlag.HTTPERREXT))
 		    	Log.errOut(getName(),e);
 		}
 		if(data.size()==0)
@@ -1427,7 +1427,7 @@ public class ProcessHTTPrequest implements CMRunnable, ExternalHTTPRequests
 			if((inData==null)||(inData.size()==0)||(!(inData.elementAt(0) instanceof String)))
 				return "[400 -- no request received]";
 			String inLine=(String)inData.elementAt(0);
-			if(CMSecurity.isDebugging("HTTPACCESS"))
+			if(CMSecurity.isDebugging(CMSecurity.DbgFlag.HTTPACCESS))
 				Log.debugOut("HTTP", inLine);
 			if((inLine.startsWith("GET")||inLine.startsWith("HEAD")||inLine.equalsIgnoreCase("MUD")))
 				return inLine;
@@ -1534,11 +1534,11 @@ public class ProcessHTTPrequest implements CMRunnable, ExternalHTTPRequests
 			String errMsg=e.getMessage()==null?e.toString():e.getMessage();
 			if((errMsg!=null)
 			&&((!Log.isMaskedErrMsg(errMsg))
-			    ||(CMSecurity.isDebugging("HTTPERR"))))
+			    ||(CMSecurity.isDebugging(CMSecurity.DbgFlag.HTTPERR))))
 			{
 				Log.errOut(getName(),"Exception: " + errMsg );
 				if((!(e instanceof java.net.SocketException))
-			    ||(CMSecurity.isDebugging("HTTPERREXT")))
+			    ||(CMSecurity.isDebugging(CMSecurity.DbgFlag.HTTPERREXT)))
 					Log.errOut(getName(),e);
 			}
 		}

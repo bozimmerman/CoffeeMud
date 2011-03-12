@@ -51,7 +51,7 @@ public class Who extends StdCommand
 	{
 		StringBuffer msg=new StringBuffer("");
 		msg.append("[");
-		if(!CMSecurity.isDisabled("RACES"))
+		if(!CMSecurity.isDisabled(CMSecurity.DisFlag.RACES))
 		{
 		    if(who.charStats().getCurrentClass().raceless())
 				msg.append(CMStrings.padRight(" ",12)+" ");
@@ -61,14 +61,14 @@ public class Who extends StdCommand
 		String levelStr=who.charStats().displayClassLevel(who,true).trim();
 		int x=levelStr.lastIndexOf(' ');
 		if(x>=0) levelStr=levelStr.substring(x).trim();
-		if(!CMSecurity.isDisabled("CLASSES"))
+		if(!CMSecurity.isDisabled(CMSecurity.DisFlag.CLASSES))
 		{
 		    if(who.charStats().getMyRace().classless())
 				msg.append(CMStrings.padRight(" ",12)+" ");
 		    else
 				msg.append(CMStrings.padRight(who.charStats().displayClassName(),12)+" ");
 		}
-		if(!CMSecurity.isDisabled("LEVELS"))
+		if(!CMSecurity.isDisabled(CMSecurity.DisFlag.LEVELS))
 		{
 		    if(who.charStats().getMyRace().leveless()
 		    ||who.charStats().getCurrentClass().leveless())
@@ -129,11 +129,11 @@ public class Who extends StdCommand
 		{
 			StringBuffer head=new StringBuffer("");
 			head.append("^x[");
-			if(!CMSecurity.isDisabled("RACES"))
+			if(!CMSecurity.isDisabled(CMSecurity.DisFlag.RACES))
 				head.append(CMStrings.padRight("Race",12)+" ");
-			if(!CMSecurity.isDisabled("CLASSES"))
+			if(!CMSecurity.isDisabled(CMSecurity.DisFlag.CLASSES))
 				head.append(CMStrings.padRight("Class",12)+" ");
-			if(!CMSecurity.isDisabled("LEVELS"))
+			if(!CMSecurity.isDisabled(CMSecurity.DisFlag.LEVELS))
 				head.append(CMStrings.padRight("Level",7));
 			head.append("] Character name^.^N\n\r");
 			head.append(msg.toString());

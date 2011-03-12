@@ -42,7 +42,7 @@ public class StatLoader
 	}
 	public CoffeeTableRow DBRead(long startTime)
 	{
-		if(Log.debugChannelOn()&&(CMSecurity.isDebugging("CMSTAT")))
+		if(Log.debugChannelOn()&&(CMSecurity.isDebugging(CMSecurity.DbgFlag.CMSTAT)))
 			Log.debugOut("StatLoader","Reading content of Stat  "+CMLib.time().date2String(startTime));
 		DBConnection D=null;
         CoffeeTableRow T=null;
@@ -72,7 +72,7 @@ public class StatLoader
 	
 	public List<CoffeeTableRow> DBReadAfter(long startTime)
 	{
-		if(Log.debugChannelOn()&&(CMSecurity.isDebugging("CMSTAT")))
+		if(Log.debugChannelOn()&&(CMSecurity.isDebugging(CMSecurity.DbgFlag.CMSTAT)))
 			Log.debugOut("StatLoader","Reading content of Stats since "+CMLib.time().date2String(startTime));
 		DBConnection D=null;
         CoffeeTableRow T=null;
@@ -105,7 +105,7 @@ public class StatLoader
 	
 	public void DBDelete(long startTime)
 	{
-		if(Log.debugChannelOn()&&(CMSecurity.isDebugging("CMSTAT")))
+		if(Log.debugChannelOn()&&(CMSecurity.isDebugging(CMSecurity.DbgFlag.CMSTAT)))
 			Log.debugOut("StatLoader","Deleting Stat  "+CMLib.time().date2String(startTime));
 		try
 		{
@@ -118,7 +118,7 @@ public class StatLoader
 	}
 	public void DBUpdate(long startTime, String data)
 	{
-		if(Log.debugChannelOn()&&(CMSecurity.isDebugging("CMSTAT")))
+		if(Log.debugChannelOn()&&(CMSecurity.isDebugging(CMSecurity.DbgFlag.CMSTAT)))
 			Log.debugOut("StatLoader","Updating Stat  "+CMLib.time().date2String(startTime));
 		try
 		{
@@ -131,7 +131,7 @@ public class StatLoader
 	}
 	public void DBCreate(long startTime, long endTime, String data)
 	{
-		if(Log.debugChannelOn()&&(CMSecurity.isDebugging("CMSTAT")))
+		if(Log.debugChannelOn()&&(CMSecurity.isDebugging(CMSecurity.DbgFlag.CMSTAT)))
 			Log.debugOut("StatLoader","Creating Stat  "+CMLib.time().date2String(startTime));
 		DB.updateWithClobs(
 		 "INSERT INTO CMSTAT ("

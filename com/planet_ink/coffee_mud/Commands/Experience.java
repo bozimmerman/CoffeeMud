@@ -39,12 +39,12 @@ public class Experience extends StdCommand
 		if(CMProps.getBoolVar(CMProps.SYSTEMB_ACCOUNTEXPIRATION)&&(mob.playerStats()!=null))
             msg.append("Your account is Registered and Active until: "+CMLib.time().date2String(mob.playerStats().getAccountExpiration())+"!\n\r");
 
-		if((!CMSecurity.isDisabled("EXPERIENCE"))
+		if((!CMSecurity.isDisabled(CMSecurity.DisFlag.EXPERIENCE))
 		&&!mob.charStats().getCurrentClass().expless()
 		&&!mob.charStats().getMyRace().expless())
 		{
 			msg.append("\nYou have scored ^!"+mob.getExperience()+"^? experience points and have been online for ^!"+Math.round(CMath.div(mob.getAgeHours(),60.0))+"^? hours.\n\r");
-			if((!CMSecurity.isDisabled("LEVELS"))
+			if((!CMSecurity.isDisabled(CMSecurity.DisFlag.LEVELS))
 			&&(!mob.charStats().getCurrentClass().leveless())
 			&&(!mob.charStats().getMyRace().leveless()))
 			{

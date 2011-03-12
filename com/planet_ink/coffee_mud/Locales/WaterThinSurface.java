@@ -47,7 +47,7 @@ public class WaterThinSurface extends WaterSurface
 	protected String UnderWaterLocaleID(){return "UnderWaterThinGrid";}
 	public CMObject newInstance()
 	{
-	    if(!CMSecurity.isDisabled("THINGRIDS"))
+	    if(!CMSecurity.isDisabled(CMSecurity.DisFlag.THINGRIDS))
 	        return super.newInstance();
         return new WaterSurface().newInstance();
 	}

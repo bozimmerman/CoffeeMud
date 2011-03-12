@@ -126,7 +126,7 @@ public interface SlaveryLibrary extends CMLibrary
         {
             if(!bothered.contains(me.location()))
                 bothered.addElement(me.location());
-            if(CMSecurity.isDebugging("GEAS"))
+            if(CMSecurity.isDebugging(CMSecurity.DbgFlag.GEAS))
                 Log.debugOut("GEAS","BEINGMOBILE: "+moveCode);
             if(moveCode==0)
             {
@@ -183,7 +183,7 @@ public interface SlaveryLibrary extends CMLibrary
                         CMLib.commands().postSay(me,M,msgOrQ,false,false);
                         bothering=M;
                         mySteps.bothered.addElement(M);
-                        if(CMSecurity.isDebugging("GEAS"))
+                        if(CMSecurity.isDebugging(CMSecurity.DbgFlag.GEAS))
                             Log.debugOut("GEAS","BOTHERING: "+bothering.name());
                         return true;
                     }
@@ -250,12 +250,12 @@ public interface SlaveryLibrary extends CMLibrary
                 return "HOLD";
             }
             String s=(String)cur.get(0);
-            if(CMSecurity.isDebugging("GEAS"))
+            if(CMSecurity.isDebugging(CMSecurity.DbgFlag.GEAS))
                 Log.debugOut("GEAS","STEP-"+s);
             if(s.equalsIgnoreCase("itemfind"))
             {
                 String item=CMParms.combine(cur,1);
-                if(CMSecurity.isDebugging("GEAS"))
+                if(CMSecurity.isDebugging(CMSecurity.DbgFlag.GEAS))
                     Log.debugOut("GEAS","ITEMFIND: "+item);
                 if((CMath.isNumber(item)&&(CMath.s_int(item)>0)))
                 {
@@ -380,7 +380,7 @@ public interface SlaveryLibrary extends CMLibrary
             if(s.equalsIgnoreCase("mobfind"))
             {
                 String name=CMParms.combine(cur,1);
-                if(CMSecurity.isDebugging("GEAS"))
+                if(CMSecurity.isDebugging(CMSecurity.DbgFlag.GEAS))
                     Log.debugOut("GEAS","MOBFIND: "+name);
                 if(name.equalsIgnoreCase("you")) name=me.name();
                 if(name.equalsIgnoreCase("yourself")) name=me.name();
@@ -395,7 +395,7 @@ public interface SlaveryLibrary extends CMLibrary
                 if(M==me) M=R.fetchInhabitant(name+".2");
                 if((M!=null)&&(M!=me)&&(CMLib.flags().canBeSeenBy(M,me)))
                 {
-                    if(CMSecurity.isDebugging("GEAS"))
+                    if(CMSecurity.isDebugging(CMSecurity.DbgFlag.GEAS))
                         Log.debugOut("GEAS","MOBFIND-FOUND: "+name);
                     step=STEP_EVAL;
                     que.remove(0);
@@ -405,7 +405,7 @@ public interface SlaveryLibrary extends CMLibrary
                 // if asked someone something, give them time to respond.
                 if((bothering!=null)&&(step>STEP_EVAL)&&(step<=STEP_INT4)&&(!bothering.isMonster()))
                 {
-                    if(CMSecurity.isDebugging("GEAS"))
+                    if(CMSecurity.isDebugging(CMSecurity.DbgFlag.GEAS))
                         Log.debugOut("GEAS","MOBFIND-RESPONSEWAIT: "+bothering.name());
                     step++;
                     return "HOLD";
@@ -420,7 +420,7 @@ public interface SlaveryLibrary extends CMLibrary
             if(s.toLowerCase().startsWith("find"))
             {
                 String name=CMParms.combine(cur,1);
-                if(CMSecurity.isDebugging("GEAS"))
+                if(CMSecurity.isDebugging(CMSecurity.DbgFlag.GEAS))
                     Log.debugOut("GEAS","FIND: "+name);
                 if(name.equalsIgnoreCase("you")) name=me.name();
                 if(name.equalsIgnoreCase("yourself")) name=me.name();
@@ -486,7 +486,7 @@ public interface SlaveryLibrary extends CMLibrary
             else
             if(s.equalsIgnoreCase("wanderquery"))
             {
-                if(CMSecurity.isDebugging("GEAS"))
+                if(CMSecurity.isDebugging(CMSecurity.DbgFlag.GEAS))
                     Log.debugOut("GEAS","WANDERQUERY: "+CMParms.combine(cur,1));
                 // if asked someone something, give them time to respond.
                 if((bothering!=null)&&(step>STEP_EVAL)&&(step<=STEP_INT4)&&(!bothering.isMonster()))

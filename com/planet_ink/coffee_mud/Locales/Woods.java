@@ -53,7 +53,7 @@ public class Woods extends StdRoom
 	    &&(!msg.source().isMonster())
 	    &&(CMLib.dice().rollPercentage()==1)
 	    &&(CMLib.dice().rollPercentage()==1)
-	    &&(!CMSecurity.isDisabled("AUTODISEASE")))
+	    &&(!CMSecurity.isDisabled(CMSecurity.DisFlag.AUTODISEASE)))
 		{
 			Ability A=CMClass.getAbility("Disease_PoisonIvy");
 			if((A!=null)&&(msg.source().fetchEffect(A.ID())==null))

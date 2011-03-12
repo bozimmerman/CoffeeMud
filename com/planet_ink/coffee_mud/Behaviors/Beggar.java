@@ -56,7 +56,7 @@ public class Beggar extends StdBehavior
 
 		if(tickID!=Tickable.TICKID_MOB) return true;
 		if(!canFreelyBehaveNormal(ticking)) return true;
-		if(CMSecurity.isDisabled("EMOTERS")) return true;
+		if(CMSecurity.isDisabled(CMSecurity.DisFlag.EMOTERS)) return true;
 		tickTock++;
 		if(tickTock<5) return true;
 		tickTock=0;

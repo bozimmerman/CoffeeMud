@@ -163,7 +163,7 @@ public class Undead extends StdRace
 		DeadBody body=super.getCorpseContainer(mob,room);
 		if((body!=null)&&(mob!=null))
 		{
-			if(!CMSecurity.isDisabled("AUTODISEASE"))
+			if(!CMSecurity.isDisabled(CMSecurity.DisFlag.AUTODISEASE))
 			{
 				if((mob.name().toUpperCase().indexOf("DRACULA")>=0)
 				||(mob.name().toUpperCase().indexOf("VAMPIRE")>=0))

@@ -121,7 +121,7 @@ public final class IMC2Driver extends Thread {
 
     final void tracef(int level, String s)
     {
-		if((level<1)||(CMSecurity.isDebugging("IMC2")))
+		if((level<1)||(CMSecurity.isDebugging(CMSecurity.DbgFlag.IMC2)))
 			Log.debugOut("IMC2",level+"/"+s);
     }
 

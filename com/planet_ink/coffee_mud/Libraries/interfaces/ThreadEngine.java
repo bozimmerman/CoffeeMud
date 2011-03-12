@@ -68,12 +68,14 @@ public interface ThreadEngine extends CMLibrary, Runnable
         public String status="";
         public boolean debugging=false;
         public long sleepTime=0;
+        public CMSecurity.DisFlag disableFlag;
         public Runnable engine=null;
         
-        public SupportThread(String name, long sleep, Runnable engine, boolean debugging) {
+        public SupportThread(String name, long sleep, Runnable engine, boolean debugging, CMSecurity.DisFlag disableFlag) {
             this.engine=engine;
             sleepTime=sleep;
             this.debugging=debugging;
+            this.disableFlag=disableFlag;
             setName(name);
             setDaemon(true);
         }
@@ -121,7 +123,7 @@ public interface ThreadEngine extends CMLibrary, Runnable
                     {
                         while(CMLib.threads().isAllSuspended())
                             try{Thread.sleep(2000);}catch(Exception e){}
-                        if(!CMSecurity.isDisabled(getName()))
+                        if(!CMSecurity.isDisabled(disableFlag))
                         {
                             status("checking database health");
                             String ok=CMLib.database().errorStatus();

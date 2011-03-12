@@ -701,7 +701,7 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary, Runnable
     public boolean activate() {
         if(thread==null)
             thread=new ThreadEngine.SupportThread("THCatalog"+Thread.currentThread().getThreadGroup().getName().charAt(0), 
-                    MudHost.TIME_SAVETHREAD_SLEEP, this, CMSecurity.isDebugging("CATALOGTHREAD"));
+                    MudHost.TIME_SAVETHREAD_SLEEP, this, CMSecurity.isDebugging(CMSecurity.DbgFlag.CATALOGTHREAD), CMSecurity.DisFlag.CATALOGTHREAD);
         if(!thread.started)
             thread.start();
         return true;
@@ -726,7 +726,7 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary, Runnable
 
     public void run()
     {
-        if(!CMSecurity.isDisabled("CATALOGTHREAD"))
+        if(!CMSecurity.isDisabled(CMSecurity.DisFlag.CATALOGTHREAD))
         {
             thread.status("checking catalog references.");
             String[] names = getCatalogItemNames();
@@ -769,7 +769,7 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary, Runnable
         public SVector<WeakReference<Physical>> 
         					refs=new SVector<WeakReference<Physical>>(1);
         public boolean noRefs = CMProps.getBoolVar(CMProps.SYSTEMB_CATALOGNOCACHE) 
-        						|| CMSecurity.isDisabled("CATALOGCACHE");
+        						|| CMSecurity.isDisabled(CMSecurity.DisFlag.CATALOGCACHE);
         public MaskingLibrary.CompiledZapperMask 		lmaskV=null;
         
         public CataDataImpl(String catadata)

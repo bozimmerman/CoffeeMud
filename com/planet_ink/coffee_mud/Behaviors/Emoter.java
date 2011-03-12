@@ -266,7 +266,7 @@ public class Emoter extends ActiveTicker
 		parseEmotes();
 		if((canAct(ticking,tickID))
 		&&(emotes.size()>0)
-		&&(!CMSecurity.isDisabled("EMOTERS")))
+		&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.EMOTERS)))
 		{
 			if((expires>0)&&((--expires)==0))
 			{

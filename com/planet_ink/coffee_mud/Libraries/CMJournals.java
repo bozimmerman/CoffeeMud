@@ -355,7 +355,7 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
     public boolean activate() {
         if(thread==null)
             thread=new ThreadEngine.SupportThread("THJournals"+Thread.currentThread().getThreadGroup().getName().charAt(0), 
-                    MudHost.TIME_SAVETHREAD_SLEEP, this, CMSecurity.isDebugging("SAVETHREAD"));
+                    MudHost.TIME_SAVETHREAD_SLEEP, this, CMSecurity.isDebugging(CMSecurity.DbgFlag.JOURNALTHREAD), CMSecurity.DisFlag.JOURNALTHREAD);
         if(!thread.started)
             thread.start();
         return true;
@@ -385,8 +385,8 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
     
     public void run()
     {
-        if((!CMSecurity.isDisabled("SAVETHREAD"))
-        &&(!CMSecurity.isDisabled("JOURNALTHREAD")))
+        if((!CMSecurity.isDisabled(CMSecurity.DisFlag.SAVETHREAD))
+        &&(!CMSecurity.isDisabled(CMSecurity.DisFlag.JOURNALTHREAD)))
         {
             expirationJournalSweep();
         }

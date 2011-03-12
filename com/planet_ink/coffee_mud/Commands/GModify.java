@@ -322,7 +322,7 @@ public class GModify extends StdCommand
     public boolean execute(MOB mob, Vector commands, int metaFlags)
         throws java.io.IOException
     {
-        boolean noisy=CMSecurity.isDebugging("GMODIFY");
+        boolean noisy=CMSecurity.isDebugging(CMSecurity.DbgFlag.GMODIFY);
         Vector placesToDo=new Vector();
         String whole=CMParms.combine(commands,0);
         commands.removeElementAt(0);

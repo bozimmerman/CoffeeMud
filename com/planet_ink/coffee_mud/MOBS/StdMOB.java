@@ -147,7 +147,7 @@ public class StdMOB implements MOB
 	public int getExpNeededDelevel()
 	{
 		if(basePhyStats().level()<=1) return 0;
-		if((CMSecurity.isDisabled("EXPERIENCE"))
+		if((CMSecurity.isDisabled(CMSecurity.DisFlag.EXPERIENCE))
 		||(charStats().getCurrentClass().expless())
 		||(charStats().getMyRace().expless()))
 		    return 0;
@@ -161,7 +161,7 @@ public class StdMOB implements MOB
 		if((CMProps.getIntVar(CMProps.SYSTEMI_LASTPLAYERLEVEL)>0)
 		&&(CMProps.getIntVar(CMProps.SYSTEMI_LASTPLAYERLEVEL)<=basePhyStats().level()))
 			return Integer.MAX_VALUE;
-		if((CMSecurity.isDisabled("EXPERIENCE"))
+		if((CMSecurity.isDisabled(CMSecurity.DisFlag.EXPERIENCE))
 		||(charStats().getCurrentClass().expless())
 		||(charStats().getMyRace().expless()))
 		    return Integer.MAX_VALUE;
@@ -634,7 +634,7 @@ public class StdMOB implements MOB
 	{
         CMLib.map().registerWorldObjectDestroyed(null,getStartRoom(),this);
         try { CMLib.catalog().changeCatalogUsage(this,false);} catch(Throwable t){}
-        if((CMSecurity.isDebugging("MISSINGKIDS"))&&(fetchEffect("Age")!=null)&&CMath.isInteger(fetchEffect("Age").text())&&(CMath.s_long(fetchEffect("Age").text())>Short.MAX_VALUE))
+        if((CMSecurity.isDebugging(CMSecurity.DbgFlag.MISSINGKIDS))&&(fetchEffect("Age")!=null)&&CMath.isInteger(fetchEffect("Age").text())&&(CMath.s_long(fetchEffect("Age").text())>Short.MAX_VALUE))
             Log.debugOut("MISSKIDS",new Exception(Name()+" went missing form "+CMLib.map().getExtendedRoomID(CMLib.map().roomLocation(this))));
         if(soulMate()!=null) dispossess(false);
         final MOB possessor=CMLib.utensils().getMobPossessingAnother(this);
@@ -2200,7 +2200,7 @@ public class StdMOB implements MOB
 			    &&(followers.contains(srcM))
 				&&(CMLib.dice().rollPercentage()==1)
 			    &&(fetchEffect("Disease_Depression")==null)
-			    &&(!CMSecurity.isDisabled("AUTODISEASE")))
+			    &&(!CMSecurity.isDisabled(CMSecurity.DisFlag.AUTODISEASE)))
 				{
 				    Ability A=CMClass.getAbility("Disease_Depression");
 				    if(A!=null) A.invoke(this,this,true,0);
@@ -2610,7 +2610,7 @@ public class StdMOB implements MOB
 				        if((curState().getFatigue()>CharState.FATIGUED_MILLIS)
 						&&(!isMonster)
                      	&&(CMLib.dice().rollPercentage()==1)
-                     	&&(!CMSecurity.isDisabled("AUTODISEASE")))
+                     	&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.AUTODISEASE)))
                      	{
                         	Ability theYawns = CMClass.getAbility("Disease_Yawning");
                         	if(theYawns!=null) theYawns.invoke(this, this, true,0);

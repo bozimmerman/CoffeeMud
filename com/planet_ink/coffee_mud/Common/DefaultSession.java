@@ -124,12 +124,12 @@ public class DefaultSession extends Thread implements Session
 			setClientTelnetMode(TELNET_ANSI,true);
 			setClientTelnetMode(TELNET_TERMTYPE,true);
 			negotiateTelnetMode(rawout,TELNET_TERMTYPE);
-			if(!CMSecurity.isDisabled("MCCP"))
+			if(!CMSecurity.isDisabled(CMSecurity.DisFlag.MCCP))
 			    changeTelnetMode(rawout,TELNET_COMPRESS2,true);
 
-			if(!CMSecurity.isDisabled("MXP"))
+			if(!CMSecurity.isDisabled(CMSecurity.DisFlag.MXP))
 			    changeTelnetMode(rawout,TELNET_MXP,true);
-			if(!CMSecurity.isDisabled("MSP"))
+			if(!CMSecurity.isDisabled(CMSecurity.DisFlag.MSP))
 			    changeTelnetMode(rawout,TELNET_MSP,true);
 			//changeTelnetMode(rawout,TELNET_SUPRESS_GO_AHEAD,true);
 			changeTelnetMode(rawout,TELNET_NAWS,true);
@@ -221,7 +221,7 @@ public class DefaultSession extends Thread implements Session
     private void negotiateTelnetMode(OutputStream out, int optionCode)
     throws IOException
     {
-        if(CMSecurity.isDebugging("TELNET"))
+        if(CMSecurity.isDebugging(CMSecurity.DbgFlag.TELNET))
             Log.debugOut("Session","Sent sub-option: "+Session.TELNET_DESCS[optionCode]);
         if(optionCode==TELNET_TERMTYPE)
         {
@@ -268,7 +268,7 @@ public class DefaultSession extends Thread implements Session
     	byte[] command={(byte)TELNET_IAC,onOff?(byte)TELNET_WILL:(byte)TELNET_WONT,(byte)telnetCode};
     	out.write(command);
         out.flush();
-        if(CMSecurity.isDebugging("TELNET")) Log.debugOut("Session","Sent: "+(onOff?"Will":"Won't")+" "+Session.TELNET_DESCS[telnetCode]);
+        if(CMSecurity.isDebugging(CMSecurity.DbgFlag.TELNET)) Log.debugOut("Session","Sent: "+(onOff?"Will":"Won't")+" "+Session.TELNET_DESCS[telnetCode]);
         setServerTelnetMode(telnetCode,onOff);
     }
     // this is stupid, but a printwriter can not be cast as an outputstream, so this dup was necessary
@@ -277,7 +277,7 @@ public class DefaultSession extends Thread implements Session
     	char[] command={(char)TELNET_IAC,onOff?(char)TELNET_WILL:(char)TELNET_WONT,(char)telnetCode};
     	out.write(command);
         out.flush();
-        if(CMSecurity.isDebugging("TELNET")) Log.debugOut("Session","Sent: "+(onOff?"Will":"Won't")+" "+Session.TELNET_DESCS[telnetCode]);
+        if(CMSecurity.isDebugging(CMSecurity.DbgFlag.TELNET)) Log.debugOut("Session","Sent: "+(onOff?"Will":"Won't")+" "+Session.TELNET_DESCS[telnetCode]);
         setServerTelnetMode(telnetCode,onOff);
     }
     public void changeTelnetModeBackwards(int telnetCode, boolean onOff)
@@ -285,7 +285,7 @@ public class DefaultSession extends Thread implements Session
     	char[] command={(char)TELNET_IAC,onOff?(char)TELNET_DO:(char)TELNET_DONT,(char)telnetCode};
     	out.write(command);
         out.flush();
-        if(CMSecurity.isDebugging("TELNET")) Log.debugOut("Session","Back-Sent: "+(onOff?"Do":"Don't")+" "+Session.TELNET_DESCS[telnetCode]);
+        if(CMSecurity.isDebugging(CMSecurity.DbgFlag.TELNET)) Log.debugOut("Session","Back-Sent: "+(onOff?"Do":"Don't")+" "+Session.TELNET_DESCS[telnetCode]);
         setServerTelnetMode(telnetCode,onOff);
     }
     public void changeTelnetModeBackwards(OutputStream out, int telnetCode, boolean onOff)
@@ -294,7 +294,7 @@ public class DefaultSession extends Thread implements Session
     	byte[] command={(byte)TELNET_IAC,onOff?(byte)TELNET_DO:(byte)TELNET_DONT,(byte)telnetCode};
     	out.write(command);
         out.flush();
-        if(CMSecurity.isDebugging("TELNET")) Log.debugOut("Session","Back-Sent: "+(onOff?"Do":"Don't")+" "+Session.TELNET_DESCS[telnetCode]);
+        if(CMSecurity.isDebugging(CMSecurity.DbgFlag.TELNET)) Log.debugOut("Session","Back-Sent: "+(onOff?"Do":"Don't")+" "+Session.TELNET_DESCS[telnetCode]);
         setServerTelnetMode(telnetCode,onOff);
     }
     public void negotiateTelnetMode(int telnetCode)
@@ -310,7 +310,7 @@ public class DefaultSession extends Thread implements Session
 	    	out.write(command);
         }
         out.flush();
-        if(CMSecurity.isDebugging("TELNET")) Log.debugOut("Session","Negotiate-Sent: "+Session.TELNET_DESCS[telnetCode]);
+        if(CMSecurity.isDebugging(CMSecurity.DbgFlag.TELNET)) Log.debugOut("Session","Negotiate-Sent: "+Session.TELNET_DESCS[telnetCode]);
     }
 
     public void initTelnetMode(int mobbitmap)
@@ -318,10 +318,10 @@ public class DefaultSession extends Thread implements Session
         setServerTelnetMode(TELNET_ANSI,CMath.bset(mobbitmap,MOB.ATT_ANSI));
         setClientTelnetMode(TELNET_ANSI,CMath.bset(mobbitmap,MOB.ATT_ANSI));
         boolean changedSomething=false;
-        boolean mxpSet=(!CMSecurity.isDisabled("MXP"))&&CMath.bset(mobbitmap,MOB.ATT_MXP);
+        boolean mxpSet=(!CMSecurity.isDisabled(CMSecurity.DisFlag.MXP))&&CMath.bset(mobbitmap,MOB.ATT_MXP);
         if(mxpSet!=clientTelnetMode(TELNET_MXP))
         { changeTelnetMode(TELNET_MXP,!clientTelnetMode(TELNET_MXP)); changedSomething=true;}
-        boolean mspSet=(!CMSecurity.isDisabled("MSP"))&&CMath.bset(mobbitmap,MOB.ATT_SOUND);
+        boolean mspSet=(!CMSecurity.isDisabled(CMSecurity.DisFlag.MSP))&&CMath.bset(mobbitmap,MOB.ATT_SOUND);
         if(mspSet!=clientTelnetMode(TELNET_MSP))
         { changeTelnetMode(TELNET_MSP,!clientTelnetMode(TELNET_MSP)); changedSomething=true;}
         try{if(changedSomething) blockingIn(500);}catch(Exception e){}
@@ -774,7 +774,7 @@ public class DefaultSession extends Thread implements Session
         case TELNET_TERMTYPE:
             if(dataSize >= 1)
             {
-                if(CMSecurity.isDebugging("TELNET"))
+                if(CMSecurity.isDebugging(CMSecurity.DbgFlag.TELNET))
                     Log.debugOut("Session","For suboption "+Session.TELNET_DESCS[optionCode]+", got code "+((int)suboptionData[0])+": "+new String(suboptionData, 1, dataSize - 1));
                 if(suboptionData[0] == 0)
                 {
@@ -791,7 +791,7 @@ public class DefaultSession extends Thread implements Session
     				if(terminalType.equalsIgnoreCase("ANSI"))
         			    changeTelnetMode(rawout,TELNET_ECHO,true);
     				else
-    				if(terminalType.toLowerCase().startsWith("mushclient")&&(!CMSecurity.isDisabled("MXP")))
+    				if(terminalType.toLowerCase().startsWith("mushclient")&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.MXP)))
     					negotiateTelnetMode(rawout,TELNET_MXP);
                 }
                 else
@@ -804,7 +804,7 @@ public class DefaultSession extends Thread implements Session
             {
                 terminalWidth = (suboptionData[0] << 8) | suboptionData[1];
                 terminalHeight = (suboptionData[2] << 8) | suboptionData[3];
-                if(CMSecurity.isDebugging("TELNET"))
+                if(CMSecurity.isDebugging(CMSecurity.DbgFlag.TELNET))
                     Log.debugOut("Session","For suboption "+Session.TELNET_DESCS[optionCode]+", got: "+terminalWidth+"x"+terminalHeight);
             }
             break;
@@ -861,7 +861,7 @@ public class DefaultSession extends Thread implements Session
             l=l.substring(tagEnd+1).trim();
             // now we have a tag, and its parameters (space delimited)
             Vector parts=CMParms.parseSpaces(tag,true);
-            if(CMSecurity.isDebugging("TELNET")) Log.debugOut("Session","Got secure MXP tag: "+tag);
+            if(CMSecurity.isDebugging(CMSecurity.DbgFlag.TELNET)) Log.debugOut("Session","Got secure MXP tag: "+tag);
             if(parts.size()>1)
             {
                 tag=(String)parts.firstElement();
@@ -927,7 +927,7 @@ public class DefaultSession extends Thread implements Session
             int subOptionCode = read();
             int numBytes = 0;
             int last = 0;
-            if(CMSecurity.isDebugging("TELNET")) Log.debugOut("Session","Reading sub-option "+subOptionCode);
+            if(CMSecurity.isDebugging(CMSecurity.DbgFlag.TELNET)) Log.debugOut("Session","Reading sub-option "+subOptionCode);
             while(((last = read()) != -1)
             &&(numBytes<subOptionData.length)
             &&(!killFlag))
@@ -953,7 +953,7 @@ public class DefaultSession extends Thread implements Session
             setClientTelnetMode(last,true);
             if((terminalType.equalsIgnoreCase("zmud")||terminalType.equalsIgnoreCase("cmud"))&&(last==Session.TELNET_ECHO))
                 setClientTelnetMode(Session.TELNET_ECHO,false);
-            if(CMSecurity.isDebugging("TELNET")) Log.debugOut("Session","Got DO "+Session.TELNET_DESCS[last]);
+            if(CMSecurity.isDebugging(CMSecurity.DbgFlag.TELNET)) Log.debugOut("Session","Got DO "+Session.TELNET_DESCS[last]);
             if((last==TELNET_COMPRESS2)&&(serverTelnetMode(last))&&(!terminalType.equals("UNKNOWN")))
             {
             	setClientTelnetMode(last,true);
@@ -980,7 +980,7 @@ public class DefaultSession extends Thread implements Session
 		case TELNET_DONT:
 		{
 		    int last=read();
-            if(CMSecurity.isDebugging("TELNET")) Log.debugOut("Session","Got DONT "+Session.TELNET_DESCS[last]);
+            if(CMSecurity.isDebugging(CMSecurity.DbgFlag.TELNET)) Log.debugOut("Session","Got DONT "+Session.TELNET_DESCS[last]);
             setClientTelnetMode(last,false);
             if((last==TELNET_COMPRESS2)&&(serverTelnetMode(last)))
             {
@@ -994,7 +994,7 @@ public class DefaultSession extends Thread implements Session
         case TELNET_WILL:
         {
             int last=read();
-            if(CMSecurity.isDebugging("TELNET")) Log.debugOut("Session","Got WILL "+Session.TELNET_DESCS[last]);
+            if(CMSecurity.isDebugging(CMSecurity.DbgFlag.TELNET)) Log.debugOut("Session","Got WILL "+Session.TELNET_DESCS[last]);
             setClientTelnetMode(last,true);
             if((terminalType.equalsIgnoreCase("zmud")||terminalType.equalsIgnoreCase("cmud"))&&(last==Session.TELNET_ECHO))
                 setClientTelnetMode(Session.TELNET_ECHO,false);
@@ -1010,7 +1010,7 @@ public class DefaultSession extends Thread implements Session
         case TELNET_WONT:
         {
             int last=read();
-            if(CMSecurity.isDebugging("TELNET")) Log.debugOut("Session","Got WONT "+Session.TELNET_DESCS[last]);
+            if(CMSecurity.isDebugging(CMSecurity.DbgFlag.TELNET)) Log.debugOut("Session","Got WONT "+Session.TELNET_DESCS[last]);
             setClientTelnetMode(last,false);
             if((mightSupportTelnetMode(last))&&(serverTelnetMode(last)))
                 changeTelnetModeBackwards(last,false);
@@ -1427,7 +1427,7 @@ public class DefaultSession extends Thread implements Session
             }
             if(inTheGame)
 	            CMLib.database().DBUpdateFollowers(M);
-            if(!CMSecurity.isDisabled("LOGOUTS"))
+            if(!CMSecurity.isDisabled(CMSecurity.DisFlag.LOGOUTS))
 	            M.removeFromGame(true,killSession);
         }
 	}
@@ -1610,7 +1610,7 @@ public class DefaultSession extends Thread implements Session
 								{
 									if((!CMLib.flags().isSleeping(mob))
 									&&(mob().fetchEffect("Disease_Blahs")==null)
-									&&(!CMSecurity.isDisabled("AUTODISEASE")))
+									&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.AUTODISEASE)))
 									{
 										Ability A=CMClass.getAbility("Disease_Blahs");
 										if(A!=null) A.invoke(mob,mob,true,0);
@@ -1618,7 +1618,7 @@ public class DefaultSession extends Thread implements Session
 									else
 									if((CMLib.flags().isSleeping(mob))
 									&&(mob().fetchEffect("Disease_Narcolepsy")==null)
-									&&(!CMSecurity.isDisabled("AUTODISEASE")))
+									&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.AUTODISEASE)))
 									{
 										Ability A=CMClass.getAbility("Disease_Narcolepsy");
 										if(A!=null) A.invoke(mob,mob,true,0);
@@ -1673,7 +1673,7 @@ public class DefaultSession extends Thread implements Session
 
 		if(mob!=null)
 		{
-			if(CMSecurity.isDisabled("LOGOUTS"))
+			if(CMSecurity.isDisabled(CMSecurity.DisFlag.LOGOUTS))
 			{
 				CMLib.commands().postSleep(mob);
 				mob.basePhyStats().setDisposition(mob.basePhyStats().disposition()|PhyStats.IS_SLEEPING);

@@ -53,7 +53,7 @@ public class Polls extends StdLibrary implements PollManager
     
     public synchronized List<Poll> getCache()
     {
-        if(CMSecurity.isDisabled("POLLCACHE")) 
+        if(CMSecurity.isDisabled(CMSecurity.DisFlag.POLLCACHE)) 
             return null;
         if(pollCache==null) 
         {

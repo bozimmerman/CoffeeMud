@@ -442,7 +442,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
         }
         if(protectedOne)
         {
-            if(CMSecurity.isDebugging("AUTOPURGE"))
+            if(CMSecurity.isDebugging(CMSecurity.DbgFlag.AUTOPURGE))
                 Log.debugOut(thread.getName(),name+" is protected from purging.");
         	return true;
         }
@@ -451,7 +451,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
     
     private boolean autoPurge()
     {
-        if(CMSecurity.isDisabled("AUTOPURGE"))
+        if(CMSecurity.isDisabled(CMSecurity.DisFlag.AUTOPURGE))
         	return true;
         
         long[] levels=new long[2001];
@@ -528,7 +528,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
             {
             	if(levels[levels.length-1]==0)
             	{
-                    if(CMSecurity.isDebugging("AUTOPURGE"))
+                    if(CMSecurity.isDebugging(CMSecurity.DbgFlag.AUTOPURGE))
                         Log.debugOut(thread.getName(),name+" last on "+CMLib.time().date2String(userLastLoginDateTime)+".  Nothing will be done about it.");
             		continue;
             	}
@@ -540,7 +540,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
             {
             	if(levels[level]==0)
             	{
-                    if(CMSecurity.isDebugging("AUTOPURGE"))
+                    if(CMSecurity.isDebugging(CMSecurity.DbgFlag.AUTOPURGE))
                         Log.debugOut(thread.getName(),name+" last on "+CMLib.time().date2String(userLastLoginDateTime)+".  Nothing will be done about it.");
             		continue;
             	}
@@ -549,7 +549,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
             }
             else
                 continue;
-            if(CMSecurity.isDebugging("AUTOPURGE"))
+            if(CMSecurity.isDebugging(CMSecurity.DbgFlag.AUTOPURGE))
                 Log.debugOut(thread.getName(),name+" last on "+CMLib.time().date2String(userLastLoginDateTime)+" will be warned on "+CMLib.time().date2String(warnDateTime)+" and purged on "+CMLib.time().date2String(purgeDateTime));
             if((System.currentTimeMillis()>purgeDateTime)||(System.currentTimeMillis()>warnDateTime))
             {
@@ -582,7 +582,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
                     {
                         warnStr.append(M.name()+" "+M.playerStats().getEmail()+" "+System.currentTimeMillis()+"\n");
                         Resources.updateFileResource("::warnedplayers.ini",warnStr);
-                        if(CMSecurity.isDebugging("AUTOPURGE"))
+                        if(CMSecurity.isDebugging(CMSecurity.DbgFlag.AUTOPURGE))
                             Log.debugOut(thread.getName(),name+" is now warned.");
                         warnPrePurge(M,purgeDateTime-System.currentTimeMillis());
                     }
@@ -604,7 +604,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
         }
         
         // accounts!
-        if((!CMSecurity.isDisabled("PURGEACCOUNTS"))&&(CMProps.getIntVar(CMProps.SYSTEMI_ACCOUNTPURGEDAYS)>0))
+        if((!CMSecurity.isDisabled(CMSecurity.DisFlag.PURGEACCOUNTS))&&(CMProps.getIntVar(CMProps.SYSTEMI_ACCOUNTPURGEDAYS)>0))
 			for(final Enumeration<PlayerAccount> pe=CMLib.players().accounts("",null); pe.hasMoreElements();)
 			{
 				PlayerAccount PA=pe.nextElement();
@@ -693,7 +693,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
     public boolean activate() {
         if(thread==null)
             thread=new ThreadEngine.SupportThread("THPlayers"+Thread.currentThread().getThreadGroup().getName().charAt(0), 
-                    MudHost.TIME_SAVETHREAD_SLEEP, this, CMSecurity.isDebugging("SAVETHREAD"));
+                    MudHost.TIME_SAVETHREAD_SLEEP, this, CMSecurity.isDebugging(CMSecurity.DbgFlag.PLAYERTHREAD), CMSecurity.DisFlag.PLAYERTHREAD);
         if(!thread.started)
             thread.start();
         return true;
@@ -716,8 +716,8 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 
     public void run()
     {
-        if((!CMSecurity.isDisabled("SAVETHREAD"))
-        &&(!CMSecurity.isDisabled("PLAYERTHREAD")))
+        if((!CMSecurity.isDisabled(CMSecurity.DisFlag.SAVETHREAD))
+        &&(!CMSecurity.isDisabled(CMSecurity.DisFlag.PLAYERTHREAD)))
         {
             thread.status("checking player titles.");
             for(MOB M : playersList)

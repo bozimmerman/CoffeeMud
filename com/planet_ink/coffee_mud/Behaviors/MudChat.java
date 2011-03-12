@@ -518,7 +518,7 @@ public class MudChat extends StdBehavior implements ChattyBehavior
 		super.executeMsg(affecting,msg);
 
 		if((!canActAtAll(affecting))
-		||(CMSecurity.isDisabled("MUDCHAT")))
+		||(CMSecurity.isDisabled(CMSecurity.DisFlag.MUDCHAT)))
 			return;
 		MOB mob=msg.source();
 		MOB monster=(MOB)affecting;
@@ -642,7 +642,7 @@ public class MudChat extends StdBehavior implements ChattyBehavior
 		super.tick(ticking,tickID);
 		if((tickID==Tickable.TICKID_MOB)
 		&&(ticking instanceof MOB)
-		&&(!CMSecurity.isDisabled("MUDCHAT")))
+		&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.MUDCHAT)))
 		{
 			if(!canActAtAll(ticking))
 			{

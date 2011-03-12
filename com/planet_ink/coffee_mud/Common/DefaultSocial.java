@@ -168,7 +168,7 @@ public class DefaultSocial implements Social
 					&&(mob.charStats().getStat(CharStats.STAT_GENDER)!=('N'))
 					&&(tmob.charStats().getStat(CharStats.STAT_GENDER)!=('N'))
 					&&(mob.charStats().getStat(CharStats.STAT_GENDER)!=tmob.charStats().getStat(CharStats.STAT_GENDER))
-					&&(!CMSecurity.isDisabled("AUTODISEASE")))
+					&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.AUTODISEASE)))
 					{
 						Ability A=CMClass.getAbility("Disease_Smiles");
 						if((A!=null)&&(target.fetchEffect(A.ID())==null))

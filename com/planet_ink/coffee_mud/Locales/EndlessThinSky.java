@@ -61,7 +61,7 @@ public class EndlessThinSky extends StdThinGrid
 
 	public CMObject newInstance()
 	{
-	    if(!CMSecurity.isDisabled("THINGRIDS"))
+	    if(!CMSecurity.isDisabled(CMSecurity.DisFlag.THINGRIDS))
 	        return super.newInstance();
         return new EndlessSky().newInstance();
 	}

@@ -102,7 +102,7 @@ public class MobileGoodGuardian extends Mobile
 		}
         tickStatus=Tickable.STATUS_MISC+120;
 		if((dirCode>=0)
-		&&(!CMSecurity.isDisabled("MOBILITY")))
+		&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.MOBILITY)))
 		{
             tickStatus=Tickable.STATUS_MISC+121;
 			CMLib.tracking().walk(mob,dirCode,false,false);

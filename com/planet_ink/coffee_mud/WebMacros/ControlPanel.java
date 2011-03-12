@@ -48,7 +48,8 @@ public class ControlPanel extends StdWebMacro
 			String field=(String)parms.get("FIELD");
 			if((field==null)||(field.length()==0))
 				return "";
-			if(CMSecurity.isDisabled(field))
+			CMSecurity.DisFlag flag = (CMSecurity.DisFlag)CMath.s_valueOf(CMSecurity.DisFlag.values(), field.toUpperCase().trim());
+			if((flag!=null)&&(CMSecurity.isDisabled(flag)))
 				return " CHECKED ";
 			return "";
 		}

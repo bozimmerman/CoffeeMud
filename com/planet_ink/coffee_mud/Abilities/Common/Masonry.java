@@ -266,14 +266,14 @@ public class Masonry extends CraftingSkill
 										A2.setLandPrice(title.landPrice());
 										R2.addNonUninvokableEffect((Ability)A2);
 									}
-                                    if(CMSecurity.isDebugging("PROPERTY"))
+                                    if(CMSecurity.isDebugging(CMSecurity.DbgFlag.PROPERTY))
                                         Log.debugOut("Masonry",R2.roomID()+" created for water.");
 									CMLib.database().DBCreateRoom(R2);
 									CMLib.database().DBUpdateExits(R2);
 								}
 	
 								R.getArea().fillInAreaRoom(R);
-                                if(CMSecurity.isDebugging("PROPERTY"))
+                                if(CMSecurity.isDebugging(CMSecurity.DbgFlag.PROPERTY))
                                     Log.debugOut("Masonry",R.roomID()+" updated.");
 								CMLib.database().DBUpdateRoom(R);
 								CMLib.database().DBUpdateExits(R);

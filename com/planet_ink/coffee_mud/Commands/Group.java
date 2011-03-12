@@ -44,7 +44,7 @@ public class Group extends StdCommand
 
 		StringBuffer msg=new StringBuffer("");
 		msg.append("[");
-		if(!CMSecurity.isDisabled("RACES"))
+		if(!CMSecurity.isDisabled(CMSecurity.DisFlag.RACES))
 		{
 			if(who.charStats().getCurrentClass().raceless())
 				msg.append(CMStrings.padRight(" ",7)+" ");
@@ -55,14 +55,14 @@ public class Group extends StdCommand
 		String levelStr=who.charStats().displayClassLevel(who,true).trim();
 		int x=levelStr.lastIndexOf(' ');
 		if(x>=0) levelStr=levelStr.substring(x).trim();
-		if(!CMSecurity.isDisabled("CLASSES"))
+		if(!CMSecurity.isDisabled(CMSecurity.DisFlag.CLASSES))
 		{
 			if(who.charStats().getMyRace().classless())
 				msg.append(CMStrings.padRight(" ",7)+" ");
 			else
 				msg.append(CMStrings.padRight(who.charStats().displayClassName(),7)+" ");
 		}
-		if(!CMSecurity.isDisabled("LEVELS"))
+		if(!CMSecurity.isDisabled(CMSecurity.DisFlag.LEVELS))
 		{
 			if(who.charStats().getCurrentClass().leveless()
 			||who.charStats().getMyRace().leveless())

@@ -185,7 +185,7 @@ public class StdArmor extends StdContainer implements Armor
 				else
 				if(wcode==Wearable.WORN_NECK) devianceAllowed=5000;
 			}
-			if((devianceAllowed>0)&&(!CMSecurity.isDisabled("EQUIPSIZE")))
+			if((devianceAllowed>0)&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.EQUIPSIZE)))
 			{
 				if(msg.source().phyStats().height()<(phyStats().height()-devianceAllowed))
 				{
@@ -366,7 +366,7 @@ public class StdArmor extends StdContainer implements Armor
 						&&(CMLib.dice().rollPercentage()==1)
 						&&(CMLib.dice().rollPercentage()==1)
 						&&((msg.value())>10)
-						&&(!CMSecurity.isDisabled("AUTODISEASE")))
+						&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.AUTODISEASE)))
 						{
 							Ability A=CMClass.getAbility("Disease_Tinnitus");
 							if((A!=null)&&(owner().fetchEffect(A.ID())==null))

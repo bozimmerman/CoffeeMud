@@ -65,14 +65,14 @@ public class StdClanFlag extends StdItem implements ClanItem
     
     public void setOwner(ItemPossessor E)
     {
-        if((E==null)&&(super.owner!=null)&&(!amDestroyed())&&(CMSecurity.isDebugging("FLAGWATCHING")))
+        if((E==null)&&(super.owner!=null)&&(!amDestroyed())&&(CMSecurity.isDebugging(CMSecurity.DbgFlag.FLAGWATCHING)))
         { Log.debugOut("FLAGWATCH",name()); Log.debugOut("FLAGWATCH",new Exception(name()+" is being null-ownered."));}
         super.setOwner(E);
     }
 
     public void destroy()
     {
-        if((super.owner!=null)&&(!amDestroyed())&&(CMSecurity.isDebugging("FLAGWATCHING")))
+        if((super.owner!=null)&&(!amDestroyed())&&(CMSecurity.isDebugging(CMSecurity.DbgFlag.FLAGWATCHING)))
         { Log.debugOut("FLAGWATCH",name()); Log.debugOut("FLAGWATCH",new Exception(name()+" is being destroyed."));}
         super.destroy();
     }

@@ -125,7 +125,7 @@ public class Spell_Torture extends Spell
 			}
 	        break;
         case 14:
-			if(!CMSecurity.isDisabled("EXPERIENCE")
+			if(!CMSecurity.isDisabled(CMSecurity.DisFlag.EXPERIENCE)
 			&&!mob.charStats().getCurrentClass().expless()
 			&&!mob.charStats().getMyRace().expless())
 				mob.location().show(mob,null,CMMsg.MSG_SPEAK,

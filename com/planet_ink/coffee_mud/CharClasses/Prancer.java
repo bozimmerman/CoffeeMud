@@ -265,7 +265,7 @@ public class Prancer extends StdCharClass
 
 	public void level(MOB mob, List<String> newAbilityIDs)
 	{
-	    if(CMSecurity.isDisabled("LEVELS"))  return;
+	    if(CMSecurity.isDisabled(CMSecurity.DisFlag.LEVELS))  return;
 	    if((mob.basePhyStats().level() % 3)==0)
 	    {
 			int dexStat=mob.charStats().getStat(CharStats.STAT_DEXTERITY);

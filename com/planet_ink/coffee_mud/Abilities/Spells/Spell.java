@@ -70,7 +70,7 @@ public class Spell extends StdAbility
 				&&(A.abstractQuality()==Ability.QUALITY_MALICIOUS))
 				{
 					num++;
-					if((num>5)&&(!CMSecurity.isDisabled("AUTODISEASE")))
+					if((num>5)&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.AUTODISEASE)))
 					{
 						Ability A2=CMClass.getAbility("Disease_Magepox");
 						if((A2!=null)&&(target.fetchEffect(A2.ID())==null))

@@ -106,7 +106,7 @@ public class Conquerable extends Arrest
             }
             else
             {
-                if(CMSecurity.isDebugging("CONQUEST")) Log.debugOut("Conquest",holdingClan+" has laid waste to "+myArea.name()+".");
+                if(CMSecurity.isDebugging(CMSecurity.DbgFlag.CONQUEST)) Log.debugOut("Conquest",holdingClan+" has laid waste to "+myArea.name()+".");
                 endClanRule();
                 str.append("This area is laid waste by "+holdingClan+".\n\r");
             }
@@ -230,7 +230,7 @@ public class Conquerable extends Arrest
 		if(holdingClan.length()==0)
 			return;
 		if((!CMProps.getBoolVar(CMProps.SYSTEMB_MUDSTARTED))
-		||(CMSecurity.isDisabled("CONQUEST")))
+		||(CMSecurity.isDisabled(CMSecurity.DisFlag.CONQUEST)))
 			return;
 		Clan C=CMLib.clans().getClan(holdingClan);
         String worship=getManadatoryWorshipID();
@@ -281,7 +281,7 @@ public class Conquerable extends Arrest
 			}
 			if(holdingClan.length()>0)
 			{
-	            if(CMSecurity.isDebugging("CONQUEST")) Log.debugOut("Conquest",holdingClan+" has lost control of "+myArea.name()+".");
+	            if(CMSecurity.isDebugging(CMSecurity.DbgFlag.CONQUEST)) Log.debugOut("Conquest",holdingClan+" has lost control of "+myArea.name()+".");
 	            List<String> channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.CONQUESTS);
 	            for(int i=0;i<channels.size();i++)
 	                CMLib.commands().postChannel((String)channels.get(i),"ALL",holdingClan+" has lost control of "+myArea.name()+".",false);
@@ -365,7 +365,7 @@ public class Conquerable extends Arrest
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if((!CMProps.getBoolVar(CMProps.SYSTEMB_MUDSTARTED))
-		||(CMSecurity.isDisabled("CONQUEST")))
+		||(CMSecurity.isDisabled(CMSecurity.DisFlag.CONQUEST)))
 			return true;
 
 		if(!super.tick(ticking,tickID))
@@ -532,7 +532,7 @@ public class Conquerable extends Arrest
 				&&(totalControlPoints>=0)
 				&&(!flagFound(A,holdingClan)))
                 {
-                    if(CMSecurity.isDebugging("CONQUEST")) 
+                    if(CMSecurity.isDebugging(CMSecurity.DbgFlag.CONQUEST)) 
                     	Log.debugOut("Conquest",holdingClan+" has "+totalControlPoints+" points and flag="+flagFound(A,holdingClan));
                     if((prevHoldingClan.length()>0)
                     &&(!holdingClan.equalsIgnoreCase(prevHoldingClan))
@@ -556,7 +556,7 @@ public class Conquerable extends Arrest
                     	if((REVOLTNOW)&&(chance<100))
                     	{
                         	Log.sysOut("Conquerable",A.Name()+" revolted against "+holdingClan+" with "+chance+"% chance");
-                            if(CMSecurity.isDebugging("CONQUEST")) Log.debugOut("Conquest","The inhabitants of "+myArea.name()+" have revolted against "+holdingClan+" with "+chance+"% chance, after "+calcItemControlPoints(myArea)+" item points of "+totalControlPoints+" control points.");
+                            if(CMSecurity.isDebugging(CMSecurity.DbgFlag.CONQUEST)) Log.debugOut("Conquest","The inhabitants of "+myArea.name()+" have revolted against "+holdingClan+" with "+chance+"% chance, after "+calcItemControlPoints(myArea)+" item points of "+totalControlPoints+" control points.");
                             List<String> channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.CONQUESTS);
                             for(int i=0;i<channels.size();i++)
                                 CMLib.commands().postChannel((String)channels.get(i),"ALL","The inhabitants of "+myArea.name()+" have revolted against "+holdingClan+".",false);
@@ -676,11 +676,11 @@ public class Conquerable extends Arrest
 	
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
-        boolean debugging=CMSecurity.isDebugging("CONQUEST");
+        boolean debugging=CMSecurity.isDebugging(CMSecurity.DbgFlag.CONQUEST);
 		if((msg.targetMinor()==CMMsg.TYP_EXPIRE)
 		&&(msg.target() instanceof Room)
 		&&(myArea!=null)
-		&&(!CMSecurity.isDisabled("CONQUEST"))
+		&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.CONQUEST))
 		&&(totalControlPoints>=0)
 		&&((!savedHoldingClan.equals(""))||(!holdingClan.equals(""))))
 		{
@@ -699,7 +699,7 @@ public class Conquerable extends Arrest
 		}
 		if((holdingClan.length()>0)
 		&&(msg.source().getClanID().equals(holdingClan))
-		&&(!CMSecurity.isDisabled("CONQUEST")))
+		&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.CONQUEST)))
 		{
 			if((msg.source().isMonster())
 			&&(msg.target() instanceof MOB)
@@ -768,7 +768,7 @@ public class Conquerable extends Arrest
 		}
 
         if((holdingClan.length()>0)
-        &&(!CMSecurity.isDisabled("CONQUEST")))
+        &&(!CMSecurity.isDisabled(CMSecurity.DisFlag.CONQUEST)))
         {
             if((msg.target() instanceof Room)
             &&(msg.tool() instanceof Ability)
@@ -823,7 +823,7 @@ public class Conquerable extends Arrest
                     return;
                 }
         mob.destroy();
-        if(CMSecurity.isDebugging("CONQUEST")) 
+        if(CMSecurity.isDebugging(CMSecurity.DbgFlag.CONQUEST)) 
             Log.debugOut("Conquest","The inhabitants of "+myArea.name()+" are conquered by "+clanID+", vanquishing '"+holdingClan+"'.");
 		if(holdingClan.length()>0)
 		   endClanRule();
@@ -1017,7 +1017,7 @@ public class Conquerable extends Arrest
 				if(i[0]>=totalControlPoints)
 					declareWinner((String)clanControlPoints.elementAt(index,1));
 			}
-            if(CMSecurity.isDebugging("CONQUEST"))
+            if(CMSecurity.isDebugging(CMSecurity.DbgFlag.CONQUEST))
             {
                 index=clanControlPoints.indexOf(clanID);
                 if(index<0)
@@ -1051,7 +1051,7 @@ public class Conquerable extends Arrest
 	{
 		super.executeMsg(myHost,msg);
         
-        boolean debugging=CMSecurity.isDebugging("CONQUEST");
+        boolean debugging=CMSecurity.isDebugging(CMSecurity.DbgFlag.CONQUEST);
         if((msg.sourceMinor()==CMMsg.TYP_CLANEVENT)
         &&(msg.sourceMessage().startsWith("-")))
         {
@@ -1064,7 +1064,7 @@ public class Conquerable extends Arrest
         else
 		if((myHost instanceof Area)
 		&&(CMProps.getBoolVar(CMProps.SYSTEMB_MUDSTARTED)
-		&&(!CMSecurity.isDisabled("CONQUEST")))
+		&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.CONQUEST)))
 		&&(totalControlPoints>=0))
 		{
 			// first look for kills and follows and register the points
@@ -1219,7 +1219,7 @@ public class Conquerable extends Arrest
 		if(((msg.sourceMinor()==CMMsg.TYP_SHUTDOWN)
 			||(msg.sourceMinor()==CMMsg.TYP_ROOMRESET))
 		&&(myArea!=null)
-		&&(!CMSecurity.isDisabled("CONQUEST")))
+		&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.CONQUEST)))
 		{
 			
 			if(msg.sourceMinor()==CMMsg.TYP_SHUTDOWN)
@@ -1293,7 +1293,7 @@ public class Conquerable extends Arrest
 		Clan C=CMLib.clans().getClan(holdingClan);
 		if(C==null)
         { 
-            if(CMSecurity.isDebugging("CONQUEST")) Log.debugOut("Conquest",holdingClan+" no longer exists.");
+            if(CMSecurity.isDebugging(CMSecurity.DbgFlag.CONQUEST)) Log.debugOut("Conquest",holdingClan+" no longer exists.");
             endClanRule(); 
             return false;
         }
@@ -1306,11 +1306,11 @@ public class Conquerable extends Arrest
 		||(!allowLaw)
 		||(totalControlPoints<0)
 		||(!CMProps.getBoolVar(CMProps.SYSTEMB_MUDSTARTED))
-		||(CMSecurity.isDisabled("ARREST")))
+		||(CMSecurity.isDisabled(CMSecurity.DisFlag.ARREST)))
 			return false;
 		if(flagFound(null,holdingClan))
 			return true;
-        if(CMSecurity.isDebugging("CONQUEST")) 
+        if(CMSecurity.isDebugging(CMSecurity.DbgFlag.CONQUEST)) 
         	Log.debugOut("Conquest",holdingClan+" has "+totalControlPoints+" points and flag="
         		+flagFound(null,holdingClan)+" in law check.");
 		endClanRule();

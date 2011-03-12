@@ -175,7 +175,7 @@ public class Mobile extends ActiveTicker
 		if((canAct(ticking,tickID))
 		&&(ticking instanceof MOB)
 		&&(!((MOB)ticking).isInCombat())
-		&&(!CMSecurity.isDisabled("MOBILITY")))
+		&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.MOBILITY)))
 		{
             tickStatus=Tickable.STATUS_MISC2+2;
 			Vector objections=null;

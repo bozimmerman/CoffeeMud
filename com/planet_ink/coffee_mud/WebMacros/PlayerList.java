@@ -64,7 +64,7 @@ public class PlayerList extends StdWebMacro
 					&& (S.getStatus()==Session.STATUS_OK))
 				{
 					s.append("(");
-					if(!CMSecurity.isDisabled("RACES"))
+					if(!CMSecurity.isDisabled(CMSecurity.DisFlag.RACES))
 					{
 						if(!m.charStats().getCurrentClass().raceless())
 							s.append(m.charStats().raceName());
@@ -72,21 +72,21 @@ public class PlayerList extends StdWebMacro
 					}
 					if ( m.charStats().displayClassName().length() > 0
 					&& ((!m.charStats().displayClassName().equals("MOB"))
-				        ||CMSecurity.isDisabled("CLASSES")
+				        ||CMSecurity.isDisabled(CMSecurity.DisFlag.CLASSES)
 						||m.charStats().getMyRace().classless()))
 					{
-						if((!CMSecurity.isDisabled("CLASSES"))
+						if((!CMSecurity.isDisabled(CMSecurity.DisFlag.CLASSES))
 						&&(!m.charStats().getMyRace().classless())
 						&&(!m.charStats().getMyRace().leveless())
 						&&(!m.charStats().getCurrentClass().leveless())
-						&&(!CMSecurity.isDisabled("LEVELS")))
+						&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.LEVELS)))
 							s.append(m.charStats().displayClassLevel(m,true));
 						else
-						if((!CMSecurity.isDisabled("CLASSES"))
+						if((!CMSecurity.isDisabled(CMSecurity.DisFlag.CLASSES))
 						&&(!m.charStats().getMyRace().classless()))
 						    s.append(""+m.charStats().displayClassName());
 						else
-						if((!CMSecurity.isDisabled("LEVELS"))
+						if((!CMSecurity.isDisabled(CMSecurity.DisFlag.LEVELS))
 						&&(!m.charStats().getMyRace().leveless())
 						&&(!m.charStats().getCurrentClass().leveless()))
 						    s.append(""+m.charStats().getClassLevel(m.charStats().getCurrentClass()));

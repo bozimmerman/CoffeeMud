@@ -1318,7 +1318,7 @@ public class StdAbility implements Ability
 		}
 		if((!student.charStats().getCurrentClass().leveless())
 		&&(!CMLib.ableMapper().qualifiesByLevel(student,this))
-		&&(!CMSecurity.isDisabled("LEVELS")))
+		&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.LEVELS)))
 		{
 			teacher.tell(student.name()+" is not high enough level to learn '"+name()+"'.");
 			student.tell("You are not high enough level to learn '"+name()+"'.");

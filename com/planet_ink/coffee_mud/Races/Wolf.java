@@ -85,7 +85,7 @@ public class Wolf extends StdRace
 		&&(!((MOB)msg.target()).isMonster())
 		&&(CMLib.dice().rollPercentage()==1)
 		&&(((msg.value())>(((MOB)msg.target()).maxState().getHitPoints()/20)))
-		&&(!CMSecurity.isDisabled("AUTODISEASE")))
+		&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.AUTODISEASE)))
 		{
 			Ability A=CMClass.getAbility("Disease_Lycanthropy");
 			if((A!=null)&&(((MOB)msg.target()).fetchEffect(A.ID())==null))

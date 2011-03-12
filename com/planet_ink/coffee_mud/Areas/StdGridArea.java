@@ -42,7 +42,7 @@ public class StdGridArea extends StdArea implements Area, GridZones {
 
 	public CMObject newInstance()
 	{
-		if(CMSecurity.isDisabled("FATAREAS")
+		if(CMSecurity.isDisabled(CMSecurity.DisFlag.FATAREAS)
 		&&(ID().equals("StdGridArea")))
 		{
 			Area A=CMClass.getAreaType("StdThinGridArea");

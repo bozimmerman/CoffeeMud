@@ -1002,11 +1002,8 @@ public class Destroy extends StdCommand
 			if(!CMSecurity.isAllowed(mob,mob.location(),"LISTADMIN")) 
 				return errorOut(mob);
             String named=CMParms.combine(commands,2);
-            if(!CMSecurity.isDisabled(named.toUpperCase()))
-            {
+            if(!CMSecurity.isDisabledSearch(named.toUpperCase()))
             	mob.tell("'"+named+"' is not disabled");
-            	return errorOut(mob);
-            }
             else
             {
             	mob.tell("'"+named+"' is no longer disabled");
@@ -1020,15 +1017,18 @@ public class Destroy extends StdCommand
 			if(!CMSecurity.isAllowed(mob,mob.location(),"LISTADMIN")) 
 				return errorOut(mob);
             String named=CMParms.combine(commands,2);
-            if(!CMSecurity.isDebugging(named.toUpperCase()))
+            CMSecurity.DbgFlag flag = (CMSecurity.DbgFlag)CMath.s_valueOf(CMSecurity.DbgFlag.values(), named.toUpperCase().trim());
+            if(flag==null)
             {
-            	mob.tell("'"+named+"' is not debugging");
-            	return errorOut(mob);
+            	mob.tell("'"+named+"' is not a valid flag.  Try: "+CMParms.toStringList(CMSecurity.DbgFlag.values()));
+            	return false;
             }
+            if(!CMSecurity.isDebugging(flag))
+            	mob.tell("'"+named+"' is not debugging");
             else
             {
             	mob.tell("'"+named+"' is no longer debugging");
-            	CMSecurity.setDebugVar(named.toUpperCase().trim(), true);
+            	CMSecurity.setDebugVar(flag, true);
             }
             return false;
 		}

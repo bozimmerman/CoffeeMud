@@ -1236,7 +1236,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
                             dup.basePhyStats().setHeight(mob.basePhyStats().height());
                             dup.basePhyStats().setWeight(mob.basePhyStats().weight());
                             dup.baseCharStats().setStat(CharStats.STAT_GENDER,mob.baseCharStats().getStat(CharStats.STAT_GENDER));
-                            if(Log.debugChannelOn()&&CMSecurity.isDebugging("EXPORT"))
+                            if(Log.debugChannelOn()&&CMSecurity.isDebugging(CMSecurity.DbgFlag.EXPORT))
                                 logDiff(mob,dup);
                             dup.basePhyStats().setHeight(oldHeight);
                             dup.basePhyStats().setWeight(oldWeight);
@@ -1318,7 +1318,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 					Item dup=(Item)dups.get(v);
 					int oldHeight=item.basePhyStats().height();
 					item.basePhyStats().setHeight(dup.basePhyStats().height());
-					if(Log.debugChannelOn()&&CMSecurity.isDebugging("EXPORT"))
+					if(Log.debugChannelOn()&&CMSecurity.isDebugging(CMSecurity.DbgFlag.EXPORT))
 						logDiff(item,dup);
 					item.basePhyStats().setHeight(oldHeight);
 				}

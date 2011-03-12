@@ -55,7 +55,7 @@ public class CaveRoom extends StdRoom
 		   &&(msg.source().curState().getHitPoints()<msg.source().maxState().getHitPoints())
 		   &&(CMLib.dice().rollPercentage()==1)
 		   &&(CMLib.dice().rollPercentage()==1)
-		   &&(!CMSecurity.isDisabled("AUTODISEASE")))
+		   &&(!CMSecurity.isDisabled(CMSecurity.DisFlag.AUTODISEASE)))
 		{
 			Ability A=CMClass.getAbility("Disease_Syphilis");
 			if((A!=null)&&(msg.source().fetchEffect(A.ID())==null))

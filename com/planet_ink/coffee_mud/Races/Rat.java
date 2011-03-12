@@ -70,7 +70,7 @@ public class Rat extends Rodent
 		Vector<RawMaterial> rsc=new XVector<RawMaterial>(resources);
 		RawMaterial meat=makeResource
 		("some "+name().toLowerCase()+" flesh",RawMaterial.RESOURCE_MEAT);
-		if((CMLib.dice().rollPercentage()<10)&&(!CMSecurity.isDisabled("AUTODISEASE")))
+		if((CMLib.dice().rollPercentage()<10)&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.AUTODISEASE)))
 		{
 			Ability A=CMClass.getAbility("Disease_SARS");
 			if(A!=null)	meat.addNonUninvokableEffect(A);

@@ -72,7 +72,7 @@ public class StdGrid extends StdRoom implements GridLocale
 
 	public CMObject newInstance()
 	{
-		if(CMSecurity.isDisabled("FATGRIDS"))
+		if(CMSecurity.isDisabled(CMSecurity.DisFlag.FATGRIDS))
 		{
 			String name=ID();
 			if(!name.endsWith("Grid")) return super.newInstance(); 

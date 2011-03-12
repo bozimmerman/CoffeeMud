@@ -214,7 +214,7 @@ public class CMAble extends StdLibrary implements AbilityMapper
 									  boolean secret)
 	{ 
 		delCharAbilityMapping(ID,abilityID);
-    	if(CMSecurity.isDisabled("ABILITY_"+ID.toUpperCase())) return;
+    	if(CMSecurity.isAbilityDisabled(ID.toUpperCase())) return;
     	Map<String, AbilityMapping> ableMap=completeAbleMap.get(ID);
 		if(ableMap == null)
 		{
@@ -381,7 +381,7 @@ public class CMAble extends StdLibrary implements AbilityMapper
                                       Integer[] costOverrides)
 	{
 		delCharAbilityMapping(ID,abilityID);
-    	if(CMSecurity.isDisabled("ABILITY_"+ID.toUpperCase())) return;
+    	if(CMSecurity.isAbilityDisabled(ID.toUpperCase())) return;
     	Map<String, AbilityMapping> ableMap=completeAbleMap.get(ID);
 		if(ableMap == null)
 		{
@@ -437,7 +437,7 @@ public class CMAble extends StdLibrary implements AbilityMapper
 
 	public void addClassAbility(String abilityID, Map<String, AbilityMapping> ableMap, AbilityMapping able)
 	{
-    	if(CMSecurity.isDisabled("ABILITY_"+able.abilityID.toUpperCase())) return;
+    	if(CMSecurity.isAbilityDisabled(able.abilityID.toUpperCase())) return;
 		ableMap.put(abilityID,able);
 
 		int qualLevel = able.qualLevel;
@@ -566,7 +566,7 @@ public class CMAble extends StdLibrary implements AbilityMapper
 								lastC=s.charAt(i);
 							}
 						}
-				    	if(CMSecurity.isDisabled("ABILITY_"+abilityID.toUpperCase())) continue;
+				    	if(CMSecurity.isAbilityDisabled(abilityID.toUpperCase())) continue;
 						AbilityMapping able = 
 							makeAbilityMapping(ID,qualLevel,abilityID,CMath.s_int(prof.toString().trim()),100,"",autogain,false,
 									CMParms.parseSpaces(preReqs.toString().trim(), true), mask.toString().trim(),null);

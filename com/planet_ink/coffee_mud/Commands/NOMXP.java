@@ -61,5 +61,5 @@ public class NOMXP extends StdCommand
 	}
 	
 	public boolean canBeOrdered(){return true;}
-	public boolean securityCheck(MOB mob){return super.securityCheck(mob)&&(!CMSecurity.isDisabled("MXP"));}
+	public boolean securityCheck(MOB mob){return super.securityCheck(mob)&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.MXP));}
 }

@@ -598,7 +598,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
                 if((mob.baseCharStats().ageCategory()>=Race.AGE_VENERABLE)
                 &&(CMLib.dice().rollPercentage()==1)
                 &&(CMLib.dice().rollPercentage()==1)
-                &&(!CMSecurity.isDisabled("AUTODISEASE")))
+                &&(!CMSecurity.isDisabled(CMSecurity.DisFlag.AUTODISEASE)))
                 {
                     Ability A=CMClass.getAbility("Disease_Cancer");
                     if((A!=null)&&(mob.fetchEffect(A.ID())==null))
@@ -607,7 +607,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
                 else
                 if((mob.baseCharStats().ageCategory()>=Race.AGE_ANCIENT)
                 &&(CMLib.dice().rollPercentage()==1)
-                &&(!CMSecurity.isDisabled("AUTODISEASE")))
+                &&(!CMSecurity.isDisabled(CMSecurity.DisFlag.AUTODISEASE)))
                 {
                     Ability A=CMClass.getAbility("Disease_Arthritis");
                     if((A!=null)&&(mob.fetchEffect(A.ID())==null))
@@ -616,7 +616,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
                 else
                 if((mob.baseCharStats().ageCategory()>=Race.AGE_ANCIENT)
                 &&(CMLib.dice().rollPercentage()==1)
-                &&(!CMSecurity.isDisabled("AUTODISEASE")))
+                &&(!CMSecurity.isDisabled(CMSecurity.DisFlag.AUTODISEASE)))
                 {
                     Ability A=CMClass.getAbility("Disease_Alzheimers");
                     if((A!=null)&&(mob.fetchEffect(A.ID())==null))
@@ -1357,22 +1357,22 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
             if(!viewedmob.isMonster())
             {
                 String levelStr=null;
-                if((!CMSecurity.isDisabled("CLASSES"))
+                if((!CMSecurity.isDisabled(CMSecurity.DisFlag.CLASSES))
                 &&(!viewedmob.charStats().getMyRace().classless())
                 &&(!viewedmob.charStats().getCurrentClass().leveless())
                 &&(!viewedmob.charStats().getMyRace().leveless())
-                &&(!CMSecurity.isDisabled("LEVELS")))
+                &&(!CMSecurity.isDisabled(CMSecurity.DisFlag.LEVELS)))
                     levelStr=CMLib.english().startWithAorAn(viewedmob.charStats().displayClassLevel(viewedmob,false));
                 else
-                if((!CMSecurity.isDisabled("LEVELS"))
+                if((!CMSecurity.isDisabled(CMSecurity.DisFlag.LEVELS))
                 &&(!viewedmob.charStats().getCurrentClass().leveless())
                 &&(!viewedmob.charStats().getMyRace().leveless()))
                     levelStr="level "+viewedmob.charStats().displayClassLevelOnly(viewedmob);
                 else
-                if((!CMSecurity.isDisabled("CLASSES"))
+                if((!CMSecurity.isDisabled(CMSecurity.DisFlag.CLASSES))
                 &&(!viewedmob.charStats().getMyRace().classless()))
                     levelStr=CMLib.english().startWithAorAn(viewedmob.charStats().displayClassName());
-                if((!CMSecurity.isDisabled("RACES"))
+                if((!CMSecurity.isDisabled(CMSecurity.DisFlag.RACES))
                 &&(!viewedmob.charStats().getCurrentClass().raceless()))
                 {
                     myDescription.append(viewedmob.displayName(viewermob)+" the ");

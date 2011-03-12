@@ -142,7 +142,7 @@ public class Prop_LotsForSale extends Prop_RoomForSale
 						R2.rawDoors()[Directions.getOpDirectionCode(d)]=R;
 						R2.setRawExit(Directions.getOpDirectionCode(d),CMClass.getExit("Open"));
 						updateExits=true;
-						if(CMSecurity.isDebugging("PROPERTY"))
+						if(CMSecurity.isDebugging(CMSecurity.DbgFlag.PROPERTY))
                             Log.debugOut("Lots4Sale",R2.roomID()+" created and put up for sale.");
 						CMLib.database().DBCreateRoom(R2);
 						if(newTitle!=null)

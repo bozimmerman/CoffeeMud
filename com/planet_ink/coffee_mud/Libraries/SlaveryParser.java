@@ -144,7 +144,7 @@ public class SlaveryParser extends StdLibrary implements SlaveryLibrary
                 map.clear();
                 continue;
             }
-            if(CMSecurity.isDebugging("GEAS"))
+            if(CMSecurity.isDebugging(CMSecurity.DbgFlag.GEAS))
                 Log.debugOut("GEAS","POSS-"+pmap[p][1]);
             map.put("INSTR",pmap[p][1]);
             possibilities.addElement(map);
@@ -195,7 +195,7 @@ public class SlaveryParser extends StdLibrary implements SlaveryLibrary
                 poss=findMatch(me,REQ);
             }
         }
-        if(CMSecurity.isDebugging("GEAS"))
+        if(CMSecurity.isDebugging(CMSecurity.DbgFlag.GEAS))
             Log.debugOut("GEAS","POSSTOTAL-"+poss.size());
         geasSteps geasSteps=new geasSteps(you,me);
         if(poss.size()==0)
@@ -211,7 +211,7 @@ public class SlaveryParser extends StdLibrary implements SlaveryLibrary
                 geasStep g=new geasStep(geasSteps);
                 Hashtable map=(Hashtable)poss.elementAt(i);
                 Vector all=CMParms.parseSemicolons((String)map.get("INSTR"),true);
-                if(CMSecurity.isDebugging("GEAS"))
+                if(CMSecurity.isDebugging(CMSecurity.DbgFlag.GEAS))
                     Log.debugOut("GEAS",CMParms.toStringList(all));
                 g.que=new Vector();
                 for(int a=0;a<all.size();a++)

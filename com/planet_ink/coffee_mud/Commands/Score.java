@@ -46,9 +46,9 @@ public class Score extends Affect
 		StringBuilder msg=new StringBuilder("^N");
 
 		int classLevel=mob.charStats().getClassLevel(mob.charStats().getCurrentClass());
-		if((!CMSecurity.isDisabled("CLASSES"))
+		if((!CMSecurity.isDisabled(CMSecurity.DisFlag.CLASSES))
 		&&(!mob.charStats().getMyRace().classless())
-		&&(!CMSecurity.isDisabled("LEVELS"))
+		&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.LEVELS))
 		&&(!mob.charStats().getMyRace().leveless())
 		&&(!mob.charStats().getCurrentClass().leveless()))
 		{
@@ -60,7 +60,7 @@ public class Score extends Affect
 			msg.append("You are ^H"+mob.Name()+"^? the ^H"+levelStr+"^?.\n\r");
 		}
 		else
-		if((!CMSecurity.isDisabled("LEVELS"))
+		if((!CMSecurity.isDisabled(CMSecurity.DisFlag.LEVELS))
 		&&(!mob.charStats().getCurrentClass().leveless())
 		&&(!mob.charStats().getMyRace().leveless()))
 		{
@@ -72,13 +72,13 @@ public class Score extends Affect
 			msg.append("You are ^H"+mob.Name()+"^?^H"+levelStr+"^?.\n\r");
 		}
 		else
-		if((!CMSecurity.isDisabled("CLASSES"))
+		if((!CMSecurity.isDisabled(CMSecurity.DisFlag.CLASSES))
 		&&(!mob.charStats().getMyRace().classless()))
 			msg.append("You are ^H"+mob.Name()+"^? the ^H"+mob.charStats().getCurrentClass().name(mob.charStats().getCurrentClassLevel())+"^?.\n\r");
 		else
 			msg.append("You are ^H"+mob.Name()+"^?.\n\r");
 
-		if((!CMSecurity.isDisabled("CLASSES"))
+		if((!CMSecurity.isDisabled(CMSecurity.DisFlag.CLASSES))
 		&&(classLevel<mob.phyStats().level()))
 		{
 			msg.append("You also have levels in: ");
@@ -110,7 +110,7 @@ public class Score extends Affect
 		if(mob.baseCharStats().getStat(CharStats.STAT_AGE)>0)
 		    msg.append("^!"+mob.baseCharStats().getStat(CharStats.STAT_AGE)+"^? year old ");
 		msg.append("^!"+genderName);
-		if((!CMSecurity.isDisabled("RACES"))
+		if((!CMSecurity.isDisabled(CMSecurity.DisFlag.RACES))
 		&&(!mob.charStats().getCurrentClass().raceless()))
 			msg.append(" "+mob.charStats().getMyRace().name() + "^?");
 		else
@@ -161,11 +161,11 @@ public class Score extends Affect
         else
     		msg.append("You are carrying ^!"+mob.numItems()+"^?/^!"+mob.maxItems()+"^? items weighing ^!"+mob.phyStats().weight()+"^?/^!"+mob.maxCarry()+"^? pounds.\n\r");
 		msg.append("You have ^!"+mob.getPractices()+"^? ^<HELP^>practices^</HELP^>, ^!"+mob.getTrains()+"^? ^<HELP^>training sessions^</HELP^>, and ^!"+mob.getQuestPoint()+"^? ^<HELP^>quest points^</HELP^>.\n\r");
-		if((!CMSecurity.isDisabled("EXPERIENCE"))
+		if((!CMSecurity.isDisabled(CMSecurity.DisFlag.EXPERIENCE))
 		&&!mob.charStats().getCurrentClass().expless()
 		&&!mob.charStats().getMyRace().expless())
 		{
-			if((!CMSecurity.isDisabled("LEVELS"))
+			if((!CMSecurity.isDisabled(CMSecurity.DisFlag.LEVELS))
 			&&(!mob.charStats().getCurrentClass().leveless())
 			&&(!mob.charStats().getMyRace().leveless()))
 			{

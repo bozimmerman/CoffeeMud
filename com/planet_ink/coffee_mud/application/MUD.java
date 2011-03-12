@@ -184,8 +184,8 @@ public class MUD extends Thread implements MudHost
             String dbPass=page.getStr("DBPASS");
             int dbConns=page.getInt("DBCONNECTIONS");
             boolean dbReuse=page.getBoolean("DBREUSE");
-            boolean useQue=!CMSecurity.isDisabled("DBERRORQUE");
-            boolean useQueStart=!CMSecurity.isDisabled("DBERRORQUESTART");
+            boolean useQue=!CMSecurity.isDisabled(CMSecurity.DisFlag.DBERRORQUE);
+            boolean useQueStart=!CMSecurity.isDisabled(CMSecurity.DisFlag.DBERRORQUESTART);
             CMProps.setUpLowVar(CMProps.SYSTEM_MUDSTATUS,"Booting: connecting to database");
 			currentDBconnector=new DBConnector(dbClass,dbService,dbUser,dbPass,dbConns,dbReuse,useQue,useQueStart);
 			currentDBconnector.reconnect();
@@ -432,7 +432,7 @@ public class MUD extends Thread implements MudHost
             long LastConnectionDelay=(5*60*1000);
             boolean anyAtThisAddress=false;
             int maxAtThisAddress=6;
-            if(!CMSecurity.isDisabled("CONNSPAMBLOCK"))
+            if(!CMSecurity.isDisabled(CMSecurity.DisFlag.CONNSPAMBLOCK))
             {
                 try{
                     for(int a=accessed.size()-1;a>=0;a--)

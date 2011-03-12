@@ -56,11 +56,15 @@ cmditems, cmdmobs, cmdrooms, sessions, cmdareas, listadmin, stat
 @SuppressWarnings("unchecked")
 public class CMSecurity
 {
-    protected final long 			 	startTime=System.currentTimeMillis();
-    protected final static Set<String> 	disVars=new HashSet<String>();
-    protected final static Set<String> 	dbgVars=new HashSet<String>();
-    protected final static Set<String> 	saveFlags=new HashSet<String>();
-    protected final Map<String,Set<String>> groups=new Hashtable<String,Set<String>>();
+    protected final long 			 		startTime		=System.currentTimeMillis();
+    protected final static Set<DisFlag> 	disVars			=new HashSet<DisFlag>();
+    protected final static Set<String> 		cmdDisVars		=new HashSet<String>();
+    protected final static Set<String> 		ablDisVars		=new HashSet<String>();
+    protected final static Set<String> 		expDisVars		=new HashSet<String>();
+    protected final static Set<DbgFlag>		dbgVars			=new HashSet<DbgFlag>();
+    protected final static Set<String> 		saveFlags		=new HashSet<String>();
+    protected final Map<String,Set<String>> groups			=new Hashtable<String,Set<String>>();
+    
     protected MaskingLibrary.CompiledZapperMask compiledSysop=null;
     protected static boolean 		debuggingEverything=false;
     private final static CMSecurity[] secs=new CMSecurity[256];
@@ -683,14 +687,6 @@ public class CMSecurity
 	}
 	
 
-	public static Enumeration<String> getDebugEnum() { return new IteratorEnumeration<String>(dbgVars.iterator());}
-	public static final boolean isDebugging(final String key)
-	{ return ((dbgVars.size()>0)&&dbgVars.contains(key))||debuggingEverything;}
-	
-	public static Enumeration<String> getDisablesEnum() { return new IteratorEnumeration<String>(disVars.iterator());}
-	public static final boolean isDisabled(final String key)
-	{ return (disVars.size()>0)&&disVars.contains(key);}
-	
 	public static final boolean isSaveFlag(final String key)
 	{ return (saveFlags.size()>0)&&saveFlags.contains(key);}
     
@@ -751,39 +747,145 @@ public class CMSecurity
         return approver instanceof String;
     }
 	
+	public static Enumeration<DbgFlag> getDebugEnum() { return new IteratorEnumeration<DbgFlag>(dbgVars.iterator());}
+	
+	public static final boolean isDebugging(final DbgFlag key)
+	{ return ((dbgVars.size()>0)&&dbgVars.contains(key))||debuggingEverything;}
+	
+	public static final boolean isDebuggingSearch(final String key)
+	{ 
+		final DbgFlag flag=(DbgFlag)CMath.s_valueOf(DbgFlag.values(),key.toUpperCase().trim());
+		if(flag==null) return false;
+		return isDebugging(flag);
+	}
+	
+	public static final void setDebugVar(final DbgFlag var, final boolean delete)
+	{
+		if((var!=null)&&(delete)&&(dbgVars.size()>0))
+			dbgVars.remove(var);
+		else
+		if((var!=null)&&(!delete))
+			dbgVars.add(var);
+	}
+	
 	public static final void setDebugVars(final String vars)
 	{
 		final List<String> V=CMParms.parseCommas(vars.toUpperCase(),true);
 		dbgVars.clear();
-		for(int v=0;v<V.size();v++)
-			dbgVars.add(((String)V.get(v)).trim());
-		debuggingEverything = dbgVars.contains("EVERYTHING");
+		for(String var : V)
+		{
+			final DbgFlag flag=(DbgFlag)CMath.s_valueOf(DbgFlag.values(),var);
+			if(flag==null)
+				Log.errOut("CMSecurity","Unable DEBUG flag: "+var);
+			else
+				dbgVars.add(flag);
+		}
+		debuggingEverything = dbgVars.contains(DbgFlag.EVERYTHING);
+	}
+	
+	public static Enumeration<DisFlag> getDisablesEnum() { return new IteratorEnumeration<DisFlag>(disVars.iterator());}
+	
+	public static final boolean isDisabled(final DisFlag ID)
+	{ return disVars.contains(ID); }
+	
+	public static final boolean isCommandDisabled(final String ID)
+	{ return cmdDisVars.contains(ID); }
+	
+	public static final boolean isAbilityDisabled(final String ID)
+	{ return ablDisVars.contains(ID); }
+	
+	public static final boolean isExpertiseDisabled(final String ID)
+	{ return expDisVars.contains(ID); }
+	
+	public static final boolean isDisabledSearch(final String anyFlag)
+	{
+		final Set<String> set;
+		String flag = anyFlag.toUpperCase().trim();
+		if(flag.startsWith("ABILITY_")||flag.startsWith("EXPERTISE_")||flag.startsWith("COMMAND_"))
+			flag=flag.substring(flag.indexOf('_')+1);
+		else
+		{
+			DisFlag disFlag = (DisFlag)CMath.s_valueOf(CMSecurity.DisFlag.values(), flag);
+			if(disFlag!=null) return isDisabled(disFlag);
+		}
+		if(CMClass.getCommand(flag)!=null)
+			set=cmdDisVars;
+		else
+		if(CMClass.getAbility(flag)!=null)
+			set=ablDisVars;
+		else
+		if(CMLib.expertises().getDefinition(flag)!=null)
+			set=expDisVars;
+		else
+			return false;
+		return set.contains(flag);
 	}
 	
 	public static final void setDisableVars(final String vars)
 	{
 		final List<String> V=CMParms.parseCommas(vars.toUpperCase(),true);
 		disVars.clear();
-		for(int v=0;v<V.size();v++)
-			disVars.add((String)V.get(v));
+		for(String var : V)
+		{
+			if(var.startsWith("COMMAND_"))
+				cmdDisVars.add(var.substring(8));
+			else
+			if(var.startsWith("ABILITY_"))
+				ablDisVars.add(var.substring(8));
+			else
+			if(var.startsWith("EXPERTISE_"))
+				expDisVars.add(var.substring(10));
+			else
+			{
+				final DisFlag flag=(DisFlag)CMath.s_valueOf(DisFlag.values(), var);
+				if(flag==null)
+					Log.errOut("CMSecurity","Unknown disable flag: "+var);
+				else
+					disVars.add(flag);
+			}
+		}
 	}
 	
-	public static final void setDebugVar(final String var, final boolean delete)
+	public static final boolean setDisableVar(final String anyFlag, final boolean delete)
 	{
-		if((var!=null)&&(delete)&&(dbgVars.size()>0))
-			dbgVars.remove(var.toUpperCase());
+		final Set<String> set;
+		String flag = anyFlag.toUpperCase().trim();
+		if(flag.startsWith("ABILITY_")||flag.startsWith("EXPERTISE_")||flag.startsWith("COMMAND_"))
+			flag=flag.substring(flag.indexOf('_')+1);
 		else
-		if((var!=null)&&(!delete))
-			dbgVars.add(var.toUpperCase());
+		{
+			DisFlag disFlag = (DisFlag)CMath.s_valueOf(CMSecurity.DisFlag.values(), flag);
+			if(disFlag!=null)
+			{
+				setDisableVar(disFlag,delete);
+				return true;
+			}
+		}
+		if(CMClass.getCommand(flag)!=null)
+			set=cmdDisVars;
+		else
+		if(CMClass.getAbility(flag)!=null)
+			set=ablDisVars;
+		else
+		if(CMLib.expertises().getDefinition(flag)!=null)
+			set=expDisVars;
+		else
+			return false;
+		if((flag!=null)&&(delete)&&(set.size()>0))
+			set.remove(flag);
+		else
+		if((flag!=null)&&(!delete))
+			set.add(flag);
+		return true;
 	}
 	
-	public static final void setDisableVar(final String var, final boolean delete)
+	public static final void setDisableVar(final DisFlag flag, final boolean delete)
 	{
-		if((var!=null)&&(delete)&&(disVars.size()>0))
-			disVars.remove(var.toUpperCase());
+		if((flag!=null)&&(delete)&&(disVars.size()>0))
+			disVars.remove(flag);
 		else
-		if((var!=null)&&(!delete))
-			disVars.add(var.toUpperCase());
+		if((flag!=null)&&(!delete))
+			disVars.add(flag);
 	}
 	
 	public static final void setSaveFlags(final String flags)
@@ -880,5 +982,34 @@ public class CMSecurity
         if(banMe.trim().length()>0) str.append(banMe+"\n");
         Resources.updateFileResource("::banned.ini",str);
         return -1;
+    }
+    
+    public static enum DbgFlag
+    {
+    	PROPERTY, ARREST, CONQUEST, MUDPERCOLATOR, GMODIFY, MERGE, BADSCRIPTS, TELNET, CLASSLOADER, DBROOMPOP, DBROOMS, CMROIT, CMROEX, CMROCH, CMAREA, 
+    	CMSTAT, HTTPMACROS, HTTPERR, HTTPERREXT, I3, HTTPACCESS, IMC2, SMTPSERVER, UTILITHREAD, MISSINGKIDS, FLAGWATCHING, CATALOGTHREAD, JOURNALTHREAD, 
+    	MAPTHREAD, VACUUM, AUTOPURGE, PLAYERTHREAD, OUTPUT, EXPORT, STATSTHREAD, GEAS, SMTPCLIENT, MESSAGES, EVERYTHING, CMROOM, HTTPREQ;
+    }
+    
+    public static enum DisFlag
+    {
+    	LEVELS("player leveling"), EXPERIENCE("player XP gains"), PROPERTYOWNERCHECKS("confirm property ownership"), AUTODISEASE("diseases from races, weather, age, etc.."), 
+    	DBERRORQUE("save SQL errors"), DBERRORQUESTART("retry SQL errors on boot"), CONNSPAMBLOCK("connection spam blocker"), FATAREAS("standard non-thin cached areas"), 
+    	PASSIVEAREAS("inactive area sleeping"),	DARKWEATHER("weather causing room darkness"), DARKNIGHTS("time causing room darkness"), ARREST("legal system"), 
+    	EMOTERS("emoter behaviors"), CONQUEST("area clan conquest"), RANDOMITEMS("random item behavior"), MOBILITY("mobile behaviors"), MUDCHAT("MOB chat behavior"), 
+    	RANDOMMONSTERS("random monster behaviors"), RACES("player races"), CLASSES("player classes"), MXP("MXP system"), MSP("MSP system"), QUITREASON("early quitting prompt"), 
+    	CLASSTRAINING("class training"), ROOMVISITS("room visits"), THIRST("player thirst"), HUNGER("player hunger"), WEATHER("area weather"), WEATHERCHANGES("weather changes"), 
+    	WEATHERNOTIFIES("notification of weather changes"), QUESTS("quest system"), SCRIPTABLEDELAY("script event delay"), SCRIPTING("MOBPROG scripting"), 
+    	SCRIPTABLE("MOBProg scripting"), MCCP("MCCP compression"), LOGOUTS("player logouts"), THINAREAS("thin uncached areas"), UTILITHREAD("thread & session monitoring"), 
+    	THREADTHREAD("thread monitoring"), EQUIPSIZE("armor size fitting"), RETIREREASON("early char delete prompt"), MAXCONNSPERACCOUNT("connections per account limit"), 
+    	ALLERGIES("auto player allergies"), LOGINS("non-archin player logins"), NEWPLAYERS("new player creation"), MAXNEWPERIP("new character per ip limit"), 
+    	MAXCONNSPERIP("connections per ip limit"), CLANTICKS("clan ticks/automation"), CATALOGTHREAD("catalog house-cleaning"), 
+    	CATALOGCACHE("catalog instance caching"), SAVETHREAD("Player/Journal/Map/Table maintenance"), JOURNALTHREAD("journal house-cleaning"), MAPTHREAD("map house-cleaning"), 
+    	AUTOPURGE("player purging"), PURGEACCOUNTS("account purging"), PLAYERTHREAD("player maintenance/house cleaning"), MSSP("MSSP protocol support"), 
+    	STATS("statistics system"), STATSTHREAD("statistics auto-saving"), POLLCACHE("player poll caching"), SESSIONTHREAD("session monitoring"), SMTPCLIENT("email client"), 
+    	THINGRIDS("Thin uncached grids"), FATGRIDS("Standard cached grids");
+    	private final String desc;
+    	DisFlag(final String description){this.desc=description;}
+    	public String description() { return desc;}
     }
 }

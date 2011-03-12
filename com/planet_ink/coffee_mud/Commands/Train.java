@@ -114,7 +114,7 @@ public class Train extends StdCommand
         else
             abilityCode=-1;
 		CharClass theClass=null;
-		if((!CMSecurity.isDisabled("CLASSTRAINING"))&&(abilityCode<0))
+		if((!CMSecurity.isDisabled(CMSecurity.DisFlag.CLASSTRAINING))&&(abilityCode<0))
 		{
 			for(Enumeration c=CMClass.charClasses();c.hasMoreElements();)
 			{

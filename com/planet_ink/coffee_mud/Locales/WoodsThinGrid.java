@@ -50,7 +50,7 @@ public class WoodsThinGrid extends StdThinGrid
 	public List<Integer> resourceChoices(){return Woods.roomResources;}
 	public CMObject newInstance()
 	{
-	    if(!CMSecurity.isDisabled("THINGRIDS"))
+	    if(!CMSecurity.isDisabled(CMSecurity.DisFlag.THINGRIDS))
 	        return super.newInstance();
         return new WoodsGrid().newInstance();
 	}

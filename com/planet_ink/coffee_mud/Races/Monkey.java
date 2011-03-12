@@ -112,7 +112,7 @@ public class Monkey extends StdRace
 		&&(msg.tool() instanceof Social)
 		&&(msg.tool().Name().equals("MATE <T-NAME>")
 			||msg.tool().Name().equals("SEX <T-NAME>"))
-		&&(!CMSecurity.isDisabled("AUTODISEASE")))
+		&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.AUTODISEASE)))
 		{
 			Ability A=CMClass.getAbility("Disease_Aids");
 			if(A!=null)

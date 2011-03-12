@@ -47,10 +47,10 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
     {
         ExpertiseLibrary.ExpertiseDefinition def=getDefinition(ID);
     	if(def!=null) return  def;
-    	if(CMSecurity.isDisabled("EXPERTISE_"+ID.toUpperCase())) return null;
-    	if(CMSecurity.isDisabled("EXPERTISE_*")) return null;
+    	if(CMSecurity.isExpertiseDisabled(ID.toUpperCase())) return null;
+    	if(CMSecurity.isExpertiseDisabled("*")) return null;
     	for(int i=1;i<ID.length();i++)
-        	if(CMSecurity.isDisabled("EXPERTISE_"+ID.substring(0,i).toUpperCase()+"*")) 
+        	if(CMSecurity.isExpertiseDisabled(ID.substring(0,i).toUpperCase()+"*")) 
         		return null;
         def=new  ExpertiseLibrary.ExpertiseDefinition();
     	def.ID=ID.toUpperCase();

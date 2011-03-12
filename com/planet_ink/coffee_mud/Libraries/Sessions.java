@@ -117,7 +117,7 @@ public class Sessions extends StdLibrary implements SessionsList
     public boolean activate() {
         if(thread==null)
             thread=new ThreadEngine.SupportThread("THSessions"+Thread.currentThread().getThreadGroup().getName().charAt(0), 
-                    MudHost.TIME_UTILTHREAD_SLEEP, this, CMSecurity.isDebugging("UTILITHREAD"));
+                    MudHost.TIME_UTILTHREAD_SLEEP, this, CMSecurity.isDebugging(CMSecurity.DbgFlag.UTILITHREAD), CMSecurity.DisFlag.SESSIONTHREAD);
         if(!thread.started)
             thread.start();
         return true;
@@ -159,8 +159,8 @@ public class Sessions extends StdLibrary implements SessionsList
     
     public void run()
     {
-        if((CMSecurity.isDisabled("UTILITHREAD"))
-        ||(CMSecurity.isDisabled("SESSIONTHREAD")))
+        if((CMSecurity.isDisabled(CMSecurity.DisFlag.UTILITHREAD))
+        ||(CMSecurity.isDisabled(CMSecurity.DisFlag.SESSIONTHREAD)))
             return;
         thread.status("checking player sessions.");
 		for(Session S : all)

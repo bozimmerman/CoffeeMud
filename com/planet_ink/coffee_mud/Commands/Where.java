@@ -467,7 +467,7 @@ public class Where extends StdCommand
 				}
 			}
 			StringBuffer msg=new StringBuffer("You are currently in: ^H"+mob.location().getArea().name()+"^?\n\r");
-            if((!CMSecurity.isDisabled("ROOMVISITS"))&&(mob.playerStats()!=null))
+            if((!CMSecurity.isDisabled(CMSecurity.DisFlag.ROOMVISITS))&&(mob.playerStats()!=null))
                 msg.append("You have explored "+mob.playerStats().percentVisited(mob,mob.location().getArea())+"% of this area and "+mob.playerStats().percentVisited(mob,null)+"% of the world.\n\r");
 			DVector scores=new DVector(2);
 			for(Enumeration a=CMLib.map().areas();a.hasMoreElements();)

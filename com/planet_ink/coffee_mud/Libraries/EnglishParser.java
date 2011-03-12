@@ -167,12 +167,12 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 		Command C=CMClass.findCommandByTrigger(firstWord,true);
 		if((C!=null)
         &&(C.securityCheck(mob))
-        &&(!CMSecurity.isDisabled("COMMAND_"+CMClass.classID(C).toUpperCase())))
+        &&(!CMSecurity.isCommandDisabled(CMClass.classID(C).toUpperCase())))
             return C;
 
         Ability A=getToEvoke(mob,new XVector(commands));
         if((A!=null)
-        &&(!CMSecurity.isDisabled("ABILITY_"+A.ID().toUpperCase())))
+        &&(!CMSecurity.isAbilityDisabled(A.ID().toUpperCase())))
 			return A;
 
         if(getAnEvokeWord(mob,firstWord)!=null)
@@ -219,7 +219,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
                         Vector commands2=new XVector(commands);
                         commands2.setElementAt(A.triggerStrings()[t],0);
                         Ability A2=getToEvoke(mob,commands2);
-                        if((A2!=null)&&(!CMSecurity.isDisabled("ABILITY_"+A2.ID().toUpperCase())))
+                        if((A2!=null)&&(!CMSecurity.isAbilityDisabled(A2.ID().toUpperCase())))
                         {
                             commands.set(0,A.triggerStrings()[t]);
                             return A;
@@ -231,7 +231,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 		C=CMClass.findCommandByTrigger(firstWord,false);
         if((C!=null)
         &&(C.securityCheck(mob))
-        &&(!CMSecurity.isDisabled("COMMAND_"+CMClass.classID(C).toUpperCase())))
+        &&(!CMSecurity.isCommandDisabled(CMClass.classID(C).toUpperCase())))
             return C;
 
 

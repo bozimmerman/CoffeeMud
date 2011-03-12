@@ -1846,7 +1846,7 @@ public class CMMap extends StdLibrary implements WorldMap
     {
         if(thread==null)
             thread=new ThreadEngine.SupportThread("THMap"+Thread.currentThread().getThreadGroup().getName().charAt(0), 
-                    MudHost.TIME_SAVETHREAD_SLEEP, this, CMSecurity.isDebugging("SAVETHREAD"));
+                    MudHost.TIME_SAVETHREAD_SLEEP, this, CMSecurity.isDebugging(CMSecurity.DbgFlag.MAPTHREAD), CMSecurity.DisFlag.MAPTHREAD);
         if(!thread.started)
             thread.start();
         return true;
@@ -1863,15 +1863,15 @@ public class CMMap extends StdLibrary implements WorldMap
     
     public void run()
     {
-        if((CMSecurity.isDisabled("SAVETHREAD"))
-        ||(CMSecurity.isDisabled("MAPTHREAD")))
+        if((CMSecurity.isDisabled(CMSecurity.DisFlag.SAVETHREAD))
+        ||(CMSecurity.isDisabled(CMSecurity.DisFlag.MAPTHREAD)))
             return;
         
         final boolean corpsesOnly=CMSecurity.isSaveFlag("ROOMITEMS");
         final boolean noMobs=CMSecurity.isSaveFlag("ROOMMOBS");
         thread.status("expiration sweep");
         final long currentTime=System.currentTimeMillis();
-        final boolean debug=CMSecurity.isDebugging("VACUUM");
+        final boolean debug=CMSecurity.isDebugging(CMSecurity.DbgFlag.VACUUM);
         final MOB expireM=mobCreated(null);
         try
         {

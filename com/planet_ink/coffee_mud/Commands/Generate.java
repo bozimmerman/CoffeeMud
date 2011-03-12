@@ -199,7 +199,7 @@ public class Generate extends StdCommand
 	        }
         } catch(CMException cex) {
         	mob.tell("Unable to generate: "+cex.getMessage());
-        	if(CMSecurity.isDebugging("MUDPERCOLATOR"))
+        	if(CMSecurity.isDebugging(CMSecurity.DbgFlag.MUDPERCOLATOR))
 	        	Log.debugOut("Generate",cex);
         	return false;
         }

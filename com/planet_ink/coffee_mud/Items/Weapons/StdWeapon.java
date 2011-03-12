@@ -190,7 +190,7 @@ public class StdWeapon extends StdItem implements Weapon
 				if((!tmob.isMonster())
 				   &&(CMLib.dice().rollPercentage()==1)
 				   &&(CMLib.dice().rollPercentage()>(tmob.charStats().getStat(CharStats.STAT_CONSTITUTION)*4))
-				   &&(!CMSecurity.isDisabled("AUTODISEASE")))
+				   &&(!CMSecurity.isDisabled(CMSecurity.DisFlag.AUTODISEASE)))
 				{
 					Ability A=null;
 					if(subjectToWearAndTear()

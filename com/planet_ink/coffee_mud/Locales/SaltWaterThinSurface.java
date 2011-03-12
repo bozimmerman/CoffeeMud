@@ -47,7 +47,7 @@ public class SaltWaterThinSurface extends SaltWaterSurface
 	protected String UnderWaterLocaleID(){return "UnderSaltWaterThinGrid";}
 	public CMObject newInstance()
 	{
-	    if(!CMSecurity.isDisabled("THINGRIDS"))
+	    if(!CMSecurity.isDisabled(CMSecurity.DisFlag.THINGRIDS))
 	        return super.newInstance();
         return new SaltWaterSurface().newInstance();
 	}

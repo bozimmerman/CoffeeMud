@@ -297,7 +297,7 @@ public class Oracle extends Cleric
 	
 	public void level(MOB mob, List<String> newAbilityIDs)
 	{
-	    if(CMSecurity.isDisabled("LEVELS")) return;
+	    if(CMSecurity.isDisabled(CMSecurity.DisFlag.LEVELS)) return;
 		if((!mob.isMonster())&&(mob.charStats().getClassLevel(this)>=30))
 		{
 			if((newAbilityIDs.size()==0)&&(numNonQualified(mob)>=maxNonQualified(mob)))

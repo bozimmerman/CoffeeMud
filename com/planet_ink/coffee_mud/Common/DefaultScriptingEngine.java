@@ -51,7 +51,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
     protected static final Hashtable signH=new Hashtable();
     
     protected static Hashtable patterns=new Hashtable();
-    protected boolean noDelay=CMSecurity.isDisabled("SCRIPTABLEDELAY");
+    protected boolean noDelay=CMSecurity.isDisabled(CMSecurity.DisFlag.SCRIPTABLEDELAY);
     
     protected String scope="";
 
@@ -82,7 +82,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
     {
         super();
         //CMClass.bumpCounter(this,CMClass.OBJECT_COMMON);//removed for mem & perf
-        debugBadScripts=CMSecurity.isDebugging("BADSCRIPTS");
+        debugBadScripts=CMSecurity.isDebugging(CMSecurity.DbgFlag.BADSCRIPTS);
     }
 
     public boolean isSavable(){ return isSavable;}
@@ -8973,7 +8973,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
     
     protected List<DVector> getScripts()
     {
-        if(CMSecurity.isDisabled("SCRIPTABLE")||CMSecurity.isDisabled("SCRIPTING"))
+        if(CMSecurity.isDisabled(CMSecurity.DisFlag.SCRIPTABLE)||CMSecurity.isDisabled(CMSecurity.DisFlag.SCRIPTING))
             return empty;
         List scripts=(List)Resources.getResource(getScriptResourceKey());
         if(scripts==null)

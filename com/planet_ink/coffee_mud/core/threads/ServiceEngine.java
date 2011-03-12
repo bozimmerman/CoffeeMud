@@ -915,8 +915,8 @@ public class ServiceEngine implements ThreadEngine
         while(isAllSuspended())
             try{Thread.sleep(2000);}catch(Exception e){}
             
-        if((!CMSecurity.isDisabled("UTILITHREAD"))
-        &&(!CMSecurity.isDisabled("THREADTHREAD")))
+        if((!CMSecurity.isDisabled(CMSecurity.DisFlag.UTILITHREAD))
+        &&(!CMSecurity.isDisabled(CMSecurity.DisFlag.THREADTHREAD)))
         {
             checkHealth();
             Resources.removeResource("SYSTEM_HASHED_MASKS");
@@ -926,7 +926,7 @@ public class ServiceEngine implements ThreadEngine
     public boolean activate() {
         if(thread==null)
             thread=new ThreadEngine.SupportThread("THThreads"+Thread.currentThread().getThreadGroup().getName().charAt(0), 
-                    MudHost.TIME_UTILTHREAD_SLEEP, this, CMSecurity.isDebugging("UTILITHREAD"));
+                    MudHost.TIME_UTILTHREAD_SLEEP, this, CMSecurity.isDebugging(CMSecurity.DbgFlag.UTILITHREAD),CMSecurity.DisFlag.UTILITHREAD);
         if(!thread.started)
             thread.start();
         return true;

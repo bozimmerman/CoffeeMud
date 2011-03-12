@@ -714,7 +714,7 @@ public class DefaultPlayerStats implements PlayerStats
     
     public void addRoomVisit(Room R)
     {
-        if((!CMSecurity.isDisabled("ROOMVISITS"))
+        if((!CMSecurity.isDisabled(CMSecurity.DisFlag.ROOMVISITS))
         &&(R!=null)
         &&(!CMath.bset(R.phyStats().sensesMask(),PhyStats.SENSE_ROOMUNEXPLORABLE)))
             roomSet().add(CMLib.map().getExtendedRoomID(R));

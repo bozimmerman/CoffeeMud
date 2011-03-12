@@ -136,7 +136,7 @@ public class WandArchon extends StdWand implements ArchonOnly
 					if((target.charStats().getCurrentClass().leveless())
                     ||(target.charStats().isLevelCapped(target.charStats().getCurrentClass()))
 					||(target.charStats().getMyRace().leveless())
-					||(CMSecurity.isDisabled("LEVELS")))
+					||(CMSecurity.isDisabled(CMSecurity.DisFlag.LEVELS)))
 					    mob.tell("The wand will not work on such as "+target.name()+".");
 					else
 					while(target.basePhyStats().level()<destLevel)
@@ -161,7 +161,7 @@ public class WandArchon extends StdWand implements ArchonOnly
 					if((target.charStats().getCurrentClass().leveless())
                     ||(target.charStats().isLevelCapped(target.charStats().getCurrentClass()))
 					||(target.charStats().getMyRace().leveless())
-					||(CMSecurity.isDisabled("LEVELS")))
+					||(CMSecurity.isDisabled(CMSecurity.DisFlag.LEVELS)))
 					    mob.tell("The wand will not work on such as "+target.name()+".");
 					else
 					for(int i=0;i<num;i++)
@@ -187,7 +187,7 @@ public class WandArchon extends StdWand implements ArchonOnly
 					if((target.charStats().getCurrentClass().leveless())
                     ||(target.charStats().isLevelCapped(target.charStats().getCurrentClass()))
 					||(target.charStats().getMyRace().leveless())
-					||(CMSecurity.isDisabled("LEVELS")))
+					||(CMSecurity.isDisabled(CMSecurity.DisFlag.LEVELS)))
 					    mob.tell("The wand will not work on such as "+target.name()+".");
 					else
 					for(int i=0;i<num;i++)

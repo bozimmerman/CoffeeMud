@@ -1155,7 +1155,7 @@ public class CMProps extends Properties
     // info, and the info provided.
     public static final String msp(final String soundName, final int volume, final int priority)
     {
-        if((soundName==null)||(soundName.length()==0)||CMSecurity.isDisabled("MSP")) return "";
+        if((soundName==null)||(soundName.length()==0)||CMSecurity.isDisabled(CMSecurity.DisFlag.MSP)) return "";
         if(getVar(SYSTEM_MSPPATH).length()>0)
             return " !!SOUND("+soundName+" V="+volume+" P="+priority+" U="+getVar(SYSTEM_MSPPATH)+") ";
         return " !!SOUND("+soundName+" V="+volume+" P="+priority+") ";
@@ -1166,7 +1166,7 @@ public class CMProps extends Properties
         if((fileName==null)||(fileName.trim().length()==0))
             return new String[]{"",""};
         if((getVar(SYSTEM_MXPIMAGEPATH).length()==0)
-        ||(CMSecurity.isDisabled("MXP")))
+        ||(CMSecurity.isDisabled(CMSecurity.DisFlag.MXP)))
             return new String[]{"",""};
         int x=fileName.lastIndexOf('=');
         String preFilename="";
@@ -1189,7 +1189,7 @@ public class CMProps extends Properties
     public static final String mxpImage(final Environmental E, final String parms)
     {
         if((getVar(SYSTEM_MXPIMAGEPATH).length()==0)
-        ||(CMSecurity.isDisabled("MXP")))
+        ||(CMSecurity.isDisabled(CMSecurity.DisFlag.MXP)))
             return "";
         final String image=E.image();
         if(image.length()==0) return "";
@@ -1201,7 +1201,7 @@ public class CMProps extends Properties
     public static final String mxpImage(final Environmental E, final String parms, final String pre, final String post)
     {
         if((getVar(SYSTEM_MXPIMAGEPATH).length()==0)
-        ||(CMSecurity.isDisabled("MXP")))
+        ||(CMSecurity.isDisabled(CMSecurity.DisFlag.MXP)))
             return "";
         final String image=E.image();
         if(image.length()==0) return "";
@@ -1234,7 +1234,7 @@ public class CMProps extends Properties
     public static final String getDefaultMXPImage(final Object O)
     {
         if((getVar(SYSTEM_MXPIMAGEPATH).length()==0)
-        ||(CMSecurity.isDisabled("MXP")))
+        ||(CMSecurity.isDisabled(CMSecurity.DisFlag.MXP)))
             return "";
         Map<String,String> H=(Map)Resources.getResource("PARSED: mxp_images.ini");
         if(H==null)

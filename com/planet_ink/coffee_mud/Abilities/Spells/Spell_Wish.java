@@ -367,7 +367,7 @@ public class Spell_Wish extends Spell
 					int exp=mob.getExperience();
 					//int hp=((MOB)target).curState().getHitPoints();
 					CMLib.combat().postDeath(mob,(MOB)target,null);
-					if((!CMSecurity.isDisabled("EXPERIENCE"))
+					if((!CMSecurity.isDisabled(CMSecurity.DisFlag.EXPERIENCE))
 					&&!mob.charStats().getCurrentClass().expless()
 					&&!mob.charStats().getMyRace().expless()
 					&&(mob.getExperience()>exp))
@@ -593,7 +593,7 @@ public class Spell_Wish extends Spell
 			if((target!=null)
 			&&((myWish.indexOf(" LOWER ")>=0)||(myWish.indexOf(" LOSE ")>=0)||(myWish.indexOf(" GAIN ")>=0)||(myWish.indexOf(" HIGHER ")>=0)||(myWish.indexOf(" WAS ")>=0)||(myWish.indexOf(" WOULD BE ")>=0)||(myWish.indexOf(" WOULD BECOME ")>=0)||(myWish.indexOf(" BECAME ")>=0))
 			&&((myWish.indexOf(" LEVEL ")>=0)||(myWish.indexOf(" LEVELS ")>=0))
-			&&(!CMSecurity.isDisabled("LEVELS")))
+			&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.LEVELS)))
 			{
 				int level=0;
 				if(myWish.indexOf(" LOWER ")>=0)
@@ -1036,7 +1036,7 @@ public class Spell_Wish extends Spell
 					break;
 				}
 				wishDrain(mob,baseLoss,true);
-				if(!CMSecurity.isDisabled("LEVELS"))
+				if(!CMSecurity.isDisabled(CMSecurity.DisFlag.LEVELS))
 				{
 					CMLib.leveler().unLevel(mob);
 					mob.setExperience(CMLib.leveler().getLevelExperience(mob.basePhyStats().level()-1));

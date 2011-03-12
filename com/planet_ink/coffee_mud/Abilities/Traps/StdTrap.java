@@ -276,7 +276,7 @@ public class StdTrap extends StdAbility implements Trap
 		if(mob!=null)
 			if((!maySetTrap(mob,mob.phyStats().level()))
 			&&(!mob.charStats().getCurrentClass().leveless())
-			&&(!CMSecurity.isDisabled("LEVELS")))
+			&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.LEVELS)))
 			{
 				mob.tell("You are not high enough level ("+trapLevel()+") to set that trap.");
 				return false;

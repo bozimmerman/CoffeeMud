@@ -137,11 +137,11 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
         		Exit E2=findExit(piece, defined);
         		if(E2!=null) E=E2;
         		defined.remove("ROOMLINK_DIR");
-        		//if(CMSecurity.isDebugging("MUDPERCOLATOR")) Log.debugOut("MUDPercolator","EXIT:NEW:"+((E==null)?"null":E.ID())+":DIR="+Directions.getDirectionChar(dir).toUpperCase()+":ROOM="+title);
+        		//if(CMSecurity.isDebugging(CMSecurity.DbgFlag.MUDPERCOLATOR")) Log.debugOut("MUDPercolator","EXIT:NEW:"+((E==null)?"null":E.ID())+":DIR="+Directions.getDirectionChar(dir).toUpperCase()+":ROOM="+title);
         	}
         	/*
         	else
-    		if(CMSecurity.isDebugging("MUDPERCOLATOR")&&defined.containsKey("ROOMLINK_"+Directions.getDirectionChar(dir).toUpperCase()))
+    		if(CMSecurity.isDebugging(CMSecurity.DbgFlag.MUDPERCOLATOR")&&defined.containsKey("ROOMLINK_"+Directions.getDirectionChar(dir).toUpperCase()))
     			Log.debugOut("MUDPercolator","EXIT:OLD:"+((E==null)?"null":E.ID())+":DIR="+Directions.getDirectionChar(dir).toUpperCase()+":ROOM="+title);
     		*/
     		R.setRawExit(dir, E);
@@ -361,7 +361,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
         		break;
         	}
         }
-        if(CMSecurity.isDebugging("MUDPERCOLATOR"))
+        if(CMSecurity.isDebugging(CMSecurity.DbgFlag.MUDPERCOLATOR))
         for(int g=0;g<roomGroups.size();g++)
         {
         	Vector<LayoutNode> group=(Vector<LayoutNode>)roomGroups.get(g);
@@ -430,7 +430,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 			}
 			groupDefined.put("ROOMLINK_"+Directions.getDirectionChar(linkDir.intValue()).toUpperCase(),"true");
 		}
-        if(CMSecurity.isDebugging("MUDPERCOLATOR"))
+        if(CMSecurity.isDebugging(CMSecurity.DbgFlag.MUDPERCOLATOR))
         {
         	Log.debugOut("MUDPercolator",A.Name()+": type: "+node.type().toString());
         	StringBuffer defs=new StringBuffer("");
@@ -446,7 +446,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		if(R==null)
 			throw new CMException("Failure to generate room from "+piece.value);
 		R.setRoomID(A.getNewRoomID(null,-1));
-        if(CMSecurity.isDebugging("MUDPERCOLATOR")) Log.debugOut("MUDPercolator","ROOMID: "+R.roomID());
+        if(CMSecurity.isDebugging(CMSecurity.DbgFlag.MUDPERCOLATOR)) Log.debugOut("MUDPercolator","ROOMID: "+R.roomID());
 		R.setArea(A);
 		A.addProperRoom(R);
 		node.setRoom(R);
@@ -468,7 +468,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
         for(int c=0;c<choices.size();c++) {
             XMLLibrary.XMLpiece valPiece = (XMLLibrary.XMLpiece)choices.get(c);
             defineReward(valPiece,null,defined);
-            //if(CMSecurity.isDebugging("MUDPERCOLATOR")) Log.debugOut("MUDPercolator","Found Mob: "+valPiece.value);
+            //if(CMSecurity.isDebugging(CMSecurity.DbgFlag.MUDPERCOLATOR")) Log.debugOut("MUDPercolator","Found Mob: "+valPiece.value);
             MOB M=buildMob(valPiece,defined);
             V.addElement(M);
         }
@@ -533,7 +533,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
         {
         	XMLLibrary.XMLpiece valPiece = (XMLLibrary.XMLpiece)choices.get(c);
             defineReward(valPiece,null,defined);
-            //if(CMSecurity.isDebugging("MUDPERCOLATOR")) Log.debugOut("MUDPercolator","Found Exit: "+valPiece.value);
+            //if(CMSecurity.isDebugging(CMSecurity.DbgFlag.MUDPERCOLATOR")) Log.debugOut("MUDPercolator","Found Exit: "+valPiece.value);
             Exit E=buildExit(valPiece,defined);
             if(E!=null)
             	exitChoices.addElement(E);
@@ -670,7 +670,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
         for(int c=0;c<choices.size();c++)
         {
             XMLLibrary.XMLpiece valPiece = (XMLLibrary.XMLpiece)choices.get(c);
-            //if(CMSecurity.isDebugging("MUDPERCOLATOR")) Log.debugOut("MUDPercolator","Found Exit: "+valPiece.value);
+            //if(CMSecurity.isDebugging(CMSecurity.DbgFlag.MUDPERCOLATOR")) Log.debugOut("MUDPercolator","Found Exit: "+valPiece.value);
             defineReward(valPiece,null,defined);
             Exit E=buildExit(valPiece,defined);
             V.addElement(E);
@@ -726,7 +726,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
         for(int c=0;c<choices.size();c++)
         {
             XMLLibrary.XMLpiece valPiece = (XMLLibrary.XMLpiece)choices.get(c);
-            //if(CMSecurity.isDebugging("MUDPERCOLATOR")) Log.debugOut("MUDPercolator","Found Item: "+valPiece.value);
+            //if(CMSecurity.isDebugging(CMSecurity.DbgFlag.MUDPERCOLATOR")) Log.debugOut("MUDPercolator","Found Item: "+valPiece.value);
             defineReward(valPiece,null,defined);
             try{
 	            V.addAll(buildItem(valPiece,defined));
@@ -746,7 +746,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
         for(int c=0;c<choices.size();c++)
         {
             XMLLibrary.XMLpiece valPiece = (XMLLibrary.XMLpiece)choices.get(c);
-            //if(CMSecurity.isDebugging("MUDPERCOLATOR")) Log.debugOut("MUDPercolator","Found Content: "+valPiece.value);
+            //if(CMSecurity.isDebugging(CMSecurity.DbgFlag.MUDPERCOLATOR")) Log.debugOut("MUDPercolator","Found Content: "+valPiece.value);
             V.addAll(findItems(valPiece,defined));
         }
     	return V;
@@ -1030,7 +1030,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
         			definition=Integer.toString(CMath.s_parseIntExpression(definition));
         		if(defVar.trim().length()>0)
             		defined.put(defVar.toUpperCase().trim(), definition);
-                //if(CMSecurity.isDebugging("MUDPERCOLATOR")) Log.debugOut("MudPercolator","DEFINE:"+defVar.toUpperCase().trim()+"="+definition);
+                //if(CMSecurity.isDebugging(CMSecurity.DbgFlag.MUDPERCOLATOR")) Log.debugOut("MudPercolator","DEFINE:"+defVar.toUpperCase().trim()+"="+definition);
         	}
         }
         if((piece.parent!=null)&&(piece.parent.tag.equalsIgnoreCase(piece.tag)))
@@ -1142,7 +1142,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
         try {
             if(condition == null) return true; 
             boolean test= CMStrings.parseStringExpression(condition,defined, true);
-            //if(CMSecurity.isDebugging("MUDPERCOLATOR")) Log.debugOut("MudPercolator","TEST:"+condition+"="+test);        		
+            //if(CMSecurity.isDebugging(CMSecurity.DbgFlag.MUDPERCOLATOR")) Log.debugOut("MudPercolator","TEST:"+condition+"="+test);        		
             return test;
         } 
         catch(Exception e)
