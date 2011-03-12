@@ -1028,7 +1028,7 @@ public class Destroy extends StdCommand
             else
             {
             	mob.tell("'"+named+"' is no longer debugging");
-            	CMSecurity.setDebugVar(named.toUpperCase().trim(), false);
+            	CMSecurity.setDebugVar(named.toUpperCase().trim(), true);
             }
             return false;
 		}

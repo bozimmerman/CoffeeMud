@@ -876,7 +876,7 @@ public class Create extends StdCommand
             else
             {
             	mob.tell("'"+named+"' is now debugging");
-            	CMSecurity.setDebugVar(named.toUpperCase().trim(), true);
+            	CMSecurity.setDebugVar(named.toUpperCase().trim(), false);
             }
             return false;
 		}
