@@ -66,15 +66,14 @@ public class Prayer_PeaceRitual extends Prayer
 	{
 		if(!super.okMessage(myHost,msg))
 			return false;
-		if(invoker==null) return true;
 		if(affected==null) return true;
 		if(!(affected instanceof MOB)) return true;
 
-		if((msg.target()==invoker)
-		&&(msg.source()!=invoker)
+		if((msg.target()==affected)
+		&&(msg.source()!=affected)
 		&&(CMath.bset(msg.targetCode(),CMMsg.MASK_MALICIOUS)))
 		{
-			msg.source().location().show(invoker,null,CMMsg.MSG_OK_VISUAL,"The peace ritual is disrupted!");
+			msg.source().location().show((MOB)affected,null,CMMsg.MSG_OK_VISUAL,"The peace ritual is disrupted!");
 			clan1="";
 			clan2="";
 			unInvoke();
@@ -83,7 +82,7 @@ public class Prayer_PeaceRitual extends Prayer
 		if(msg.amISource((MOB)affected)
 		&&((msg.targetMinor()==CMMsg.TYP_ENTER)||(msg.targetMinor()==CMMsg.TYP_LEAVE)))
 		{
-			msg.source().location().show(invoker,null,CMMsg.MSG_OK_VISUAL,"The peace ritual is disrupted!");
+			msg.source().location().show((MOB)affected,null,CMMsg.MSG_OK_VISUAL,"The peace ritual is disrupted!");
 			clan1="";
 			clan2="";
 			unInvoke();

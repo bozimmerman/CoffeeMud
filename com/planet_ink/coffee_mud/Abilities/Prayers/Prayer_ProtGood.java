@@ -65,11 +65,10 @@ public class Prayer_ProtGood extends Prayer
 	{
 		if(!super.okMessage(myHost,msg))
 			return false;
-		if(invoker==null) return true;
 		if(affected==null) return true;
 		if(!(affected instanceof MOB)) return true;
 
-		if(msg.target()==invoker)
+		if(msg.target()==affected)
 		{
 			if((CMath.bset(msg.targetCode(),CMMsg.MASK_MALICIOUS))
 			&&(msg.targetMinor()==CMMsg.TYP_CAST_SPELL)
@@ -78,7 +77,7 @@ public class Prayer_ProtGood extends Prayer
 			&&(!CMath.bset(((Ability)msg.tool()).flags(),Ability.FLAG_HOLY))
 			&&(CMath.bset(((Ability)msg.tool()).flags(),Ability.FLAG_UNHOLY)))
 			{
-				msg.source().location().show(invoker,null,CMMsg.MSG_OK_VISUAL,"The unholy field around <S-NAME> protect(s) <S-HIM-HER> from the goodly magic attack of "+msg.source().name()+".");
+				msg.source().location().show((MOB)affected,null,CMMsg.MSG_OK_VISUAL,"The unholy field around <S-NAME> protect(s) <S-HIM-HER> from the goodly magic attack of "+msg.source().name()+".");
 				return false;
 			}
 

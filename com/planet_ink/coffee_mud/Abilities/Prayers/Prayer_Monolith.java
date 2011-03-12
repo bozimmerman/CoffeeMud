@@ -170,19 +170,20 @@ public class Prayer_Monolith extends Prayer
 			&&(theWall.owner() instanceof Room)
 			&&(((Room)theWall.owner()).isContent(theWall)))
 			{
+				MOB actorM=invoker; if(actorM==null) actorM=CMLib.map().deity();
 				switch(wallType)
 				{
 				case TYP_FIRE:
-					((Room)theWall.owner()).show(invoker,null,CMMsg.MSG_OK_VISUAL,"The monolith of fire fades.");
+					((Room)theWall.owner()).show(actorM,null,CMMsg.MSG_OK_VISUAL,"The monolith of fire fades.");
 					break;
 				case TYP_AIR:
-					((Room)theWall.owner()).show(invoker,null,CMMsg.MSG_OK_VISUAL,"The monolith of air dissipates.");
+					((Room)theWall.owner()).show(actorM,null,CMMsg.MSG_OK_VISUAL,"The monolith of air dissipates.");
 					break;
 				case TYP_ICE:
-					((Room)theWall.owner()).show(invoker,null,CMMsg.MSG_OK_VISUAL,"The monolith of ice melts.");
+					((Room)theWall.owner()).show(actorM,null,CMMsg.MSG_OK_VISUAL,"The monolith of ice melts.");
 					break;
 				case TYP_EARTH:
-					((Room)theWall.owner()).show(invoker,null,CMMsg.MSG_OK_VISUAL,"The monolith of stone crumbles.");
+					((Room)theWall.owner()).show(actorM,null,CMMsg.MSG_OK_VISUAL,"The monolith of stone crumbles.");
 					break;
 				}
 				Item wall=theWall;

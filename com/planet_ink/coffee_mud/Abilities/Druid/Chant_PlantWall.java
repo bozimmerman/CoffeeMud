@@ -127,12 +127,12 @@ public class Chant_PlantWall extends Chant
 		if(canBeUninvoked())
 		{
 			if((theWall!=null)
-			&&(invoker!=null)
 			&&(theWall.owner()!=null)
 			&&(theWall.owner() instanceof Room)
 			&&(((Room)theWall.owner()).isContent(theWall)))
 			{
-				((Room)theWall.owner()).show(invoker,null,CMMsg.MSG_OK_VISUAL,deathNotice);
+				final MOB actorM=(invoker!=null)? invoker : CMLib.map().deity();
+				((Room)theWall.owner()).show(actorM,null,CMMsg.MSG_OK_VISUAL,deathNotice);
 				Item wall=theWall;
 				theWall=null;
 				wall.destroy();

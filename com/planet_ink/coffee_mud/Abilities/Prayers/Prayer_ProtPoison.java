@@ -67,17 +67,16 @@ public class Prayer_ProtPoison extends Prayer
 	{
 		if(!super.okMessage(myHost,msg))
 			return false;
-		if(invoker==null) return true;
 		if(affected==null) return true;
 		if(!(affected instanceof MOB)) return true;
 
-		if(msg.target()==invoker)
+		if(msg.target()==affected)
 		{
 			if((msg.tool()!=null)
 			   &&(CMLib.dice().rollPercentage()>50)
 			   &&((msg.targetMinor()==CMMsg.TYP_POISON)))
 			{
-				msg.source().location().show(invoker,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> magically repell(s) the poison.");
+				msg.source().location().show((MOB)affected,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> magically repell(s) the poison.");
 				return false;
 			}
 

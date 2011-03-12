@@ -66,11 +66,10 @@ public class Prayer_ProtEvil extends Prayer
 	{
 		if(!super.okMessage(myHost,msg))
 			return false;
-		if(invoker==null) return true;
 		if(affected==null) return true;
 		if(!(affected instanceof MOB)) return true;
 
-		if((msg.target()==invoker)&&(msg.source()!=invoker))
+		if((msg.target()==affected)&&(msg.source()!=affected))
 		{
 			if((CMath.bset(msg.targetCode(),CMMsg.MASK_MALICIOUS))
 			&&(msg.targetMinor()==CMMsg.TYP_CAST_SPELL)
@@ -79,7 +78,7 @@ public class Prayer_ProtEvil extends Prayer
 			&&(!CMath.bset(((Ability)msg.tool()).flags(),Ability.FLAG_HOLY))
 			&&(CMath.bset(((Ability)msg.tool()).flags(),Ability.FLAG_UNHOLY)))
 			{
-				msg.source().location().show(invoker,null,CMMsg.MSG_OK_VISUAL,"The holy field around <S-NAME> protect(s) <S-HIM-HER> from the evil magic attack of "+msg.source().name()+".");
+				msg.source().location().show((MOB)affected,null,CMMsg.MSG_OK_VISUAL,"The holy field around <S-NAME> protect(s) <S-HIM-HER> from the evil magic attack of "+msg.source().name()+".");
 				return false;
 			}
 
