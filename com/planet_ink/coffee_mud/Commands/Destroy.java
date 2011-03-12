@@ -1012,6 +1012,7 @@ public class Destroy extends StdCommand
             	mob.tell("'"+named+"' is no longer disabled");
             	CMSecurity.setDisableVar(named.toUpperCase().trim(), false);
             }
+            return false;
 		}
 		else
 		if(commandType.equals("DEBUGFLAG"))
@@ -1029,6 +1030,7 @@ public class Destroy extends StdCommand
             	mob.tell("'"+named+"' is no longer debugging");
             	CMSecurity.setDebugVar(named.toUpperCase().trim(), false);
             }
+            return false;
 		}
 		else
 		if(commandType.equals("NOPURGE"))

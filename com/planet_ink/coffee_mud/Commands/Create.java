@@ -860,6 +860,7 @@ public class Create extends StdCommand
             	mob.tell("'"+named+"' is now disabled");
             	CMSecurity.setDisableVar(named.toUpperCase().trim(), true);
             }
+            return false;
 		}
 		else
 		if(commandType.equals("DEBUGFLAG"))
@@ -877,6 +878,7 @@ public class Create extends StdCommand
             	mob.tell("'"+named+"' is now debugging");
             	CMSecurity.setDebugVar(named.toUpperCase().trim(), true);
             }
+            return false;
 		}
 		else
 		if(commandType.equals("SOCIAL"))

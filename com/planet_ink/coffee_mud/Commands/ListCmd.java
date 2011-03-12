@@ -1916,8 +1916,8 @@ public class ListCmd extends StdCommand
 		case 59: listAccounts(mob,commands); break;
 		case 60: s.wraplessPrintln(listClanGovernments(mob,commands)); break;
 		case 61: s.wraplessPrintln(listClans(mob,commands)); break;
-		case 62: s.println("\n\r^xDebug Settings: ^?^.^N\n\r"+CMParms.toStringList(new XVector<String>(CMSecurity.getDebugEnum())));
-		case 63: s.println("\n\r^xDisable Settings: ^?^.^N\n\r"+CMParms.toStringList(new XVector<String>(CMSecurity.getDisablesEnum())));
+		case 62: s.println("\n\r^xDebug Settings: ^?^.^N\n\r"+CMParms.toStringList(new XVector<String>(CMSecurity.getDebugEnum()))+"\n\r"); break;
+		case 63: s.println("\n\r^xDisable Settings: ^?^.^N\n\r"+CMParms.toStringList(new XVector<String>(CMSecurity.getDisablesEnum()))+"\n\r"); break;
         default:
 			s.println("List?!");
 			break;
