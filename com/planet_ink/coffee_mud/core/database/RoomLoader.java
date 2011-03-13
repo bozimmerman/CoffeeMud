@@ -1164,7 +1164,7 @@ public class RoomLoader
 		+"CMAREA='"+room.getArea().Name()+"',"
 		+"CMDESC1='"+room.displayText()+" ',"
 		+"CMDESC2=?,"
-		+"CMROTX=?"
+		+"CMROTX=? "
 		+"WHERE CMROID='"+room.roomID()+"'",
 		new String[]{room.description()+" ",room.text()+" "});
 		if(CMProps.getBoolVar(CMProps.SYSTEMB_ROOMDNOCACHE))
