@@ -204,5 +204,4 @@ public interface WorldMap extends CMLibrary, Runnable
 		public CMObject newInstance() { return this;}
 		public int compareTo(CMObject o) { return ID.compareTo(o.ID()); }
 	}
-    
 }

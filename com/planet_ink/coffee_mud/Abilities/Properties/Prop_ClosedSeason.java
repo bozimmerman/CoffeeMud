@@ -64,27 +64,24 @@ public class Prop_ClosedSeason extends Property
 	{
 		if(A==null) return false;
 		
-		for(int i=0;i<Room.VARIATION_CODES.length;i++)
+		for(final Room.VariationCode code : Room.VariationCode.values())
 		{
-			if(closedV.contains(Room.VARIATION_CODES[i][0]))
-			{
-				int num=CMath.s_int(Room.VARIATION_CODES[i][1].substring(1));
-				switch(Room.VARIATION_CODES[i][1].charAt(0))
+			if(closedV.contains(code.toString()))
+				switch(code.c)
 				{
 				case 'W':
-					if(A.getClimateObj().weatherType(null)==num)
+					if(A.getClimateObj().weatherType(null)==code.num)
 						return true;
 					break;
 				case 'C':
-					if(A.getTimeObj().getTODCode()==num)
+					if(A.getTimeObj().getTODCode()==code.num)
 						return true;
 					break;
 				case 'S':
-					if(A.getTimeObj().getSeasonCode()==num)
+					if(A.getTimeObj().getSeasonCode()==code.num)
 						return true;
 					break;
 				}
-			}
 		}
 		return false;
 	}

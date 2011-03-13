@@ -119,16 +119,16 @@ public class Chant_NaturalCommunion extends Chant
 					CMLib.factions().postFactionChange(mob,this, CMLib.factions().AlignID(), -oneHalfPct);
 				switch(CMLib.dice().roll(1,10,0))
 				{
-				case 0: room.show(mob,null,this,CMMsg.MSG_QUIETMOVEMENT,"<S-NAME> whisper(s) to the plants."); break;
-				case 1: room.show(mob,null,this,CMMsg.MSG_QUIETMOVEMENT,"<S-NAME> learn(s) from the birds."); break;
-				case 2: room.show(mob,null,this,CMMsg.MSG_QUIETMOVEMENT,"<S-NAME> watch(es) the insects."); break;
-				case 3: room.show(mob,null,this,CMMsg.MSG_QUIETMOVEMENT,"<S-NAME> hug(s) the ground."); break;
-				case 4: room.show(mob,null,this,CMMsg.MSG_QUIETMOVEMENT,"<S-NAME> inhale(s) the fresh air."); break;
-				case 5: room.show(mob,null,this,CMMsg.MSG_QUIETMOVEMENT,"<S-NAME> watch(es) the plants grow."); break;
-				case 6: room.show(mob,null,this,CMMsg.MSG_QUIETMOVEMENT,"<S-NAME> become(s) one with life."); break;
-				case 7: room.show(mob,null,this,CMMsg.MSG_QUIETMOVEMENT,"<S-NAME> seek(s) the inner beauty of the natural order."); break;
-				case 8: room.show(mob,null,this,CMMsg.MSG_QUIETMOVEMENT,"<S-NAME> expunge(s) <S-HIS-HER> unnatural thoughts."); break;
-				case 9: room.show(mob,null,this,CMMsg.MSG_QUIETMOVEMENT,"<S-NAME> find(s) clarity in the natural world."); break;
+				case 0: room.show(mob,null,this,CMMsg.MSG_OK_VISUAL,"<S-NAME> empathize(s) with the plants."); break;
+				case 1: room.show(mob,null,this,CMMsg.MSG_OK_VISUAL,"<S-NAME> learn(s) from the birds."); break;
+				case 2: room.show(mob,null,this,CMMsg.MSG_OK_VISUAL,"<S-NAME> watch(es) the insects."); break;
+				case 3: room.show(mob,null,this,CMMsg.MSG_HANDS|CMMsg.MASK_ALWAYS,"<S-NAME> hug(s) the ground."); break;
+				case 4: room.show(mob,null,this,CMMsg.MSG_OK_VISUAL,"<S-NAME> inhale(s) the fresh air."); break;
+				case 5: room.show(mob,null,this,CMMsg.MSG_OK_VISUAL,"<S-NAME> watch(es) the plants grow."); break;
+				case 6: room.show(mob,null,this,CMMsg.MSG_OK_VISUAL,"<S-NAME> become(s) one with life."); break;
+				case 7: room.show(mob,null,this,CMMsg.MSG_OK_VISUAL,"<S-NAME> seek(s) the inner beauty of the natural order."); break;
+				case 8: room.show(mob,null,this,CMMsg.MSG_OK_VISUAL,"<S-NAME> expunge(s) <S-HIS-HER> unnatural thoughts."); break;
+				case 9: room.show(mob,null,this,CMMsg.MSG_OK_VISUAL,"<S-NAME> find(s) clarity in the natural world."); break;
 				}
 			}
 		}

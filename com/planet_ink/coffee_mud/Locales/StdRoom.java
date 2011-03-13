@@ -912,80 +912,57 @@ public class StdRoom implements Room
 	}
 	public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
 
-	protected String parseVariesCodes(MOB mob, String text)
+	protected String parseVariesCodes(final MOB mob, final Area A, final String text)
 	{
-		StringBuffer buf=new StringBuffer("");
-		int x=text.indexOf('<');
-		String elseStr=null;
-		while(x>=0)
+		StringBuilder buf=new StringBuilder("");
+		int aligatorDex=text.indexOf('<');
+		int curDex=0;
+		boolean addMe = true;
+		while(aligatorDex>=0)
 		{
-			buf.append(text.substring(0,x));
-			text=text.substring(x);
-			boolean found=false;
-			for(int i=0;i<VARIATION_CODES.length;i++)
-				if(text.startsWith("<"+VARIATION_CODES[i][0]+">"))
+			for(final VariationCode code : VariationCode.values())
+				if(text.startsWith(code.openTag, aligatorDex))
 				{
-					found=true;
-					int y=text.indexOf("</"+VARIATION_CODES[i][0]+">");
-					String dispute=null;
-					if(y>0)
+					buf.append(text.substring(curDex, aligatorDex));
+					int y=text.indexOf(code.closeTag,aligatorDex+code.openTag.length());
+					if(y<0) 
 					{
-						dispute=text.substring(VARIATION_CODES[i][0].length()+2,y);
-						text=text.substring(y+VARIATION_CODES[i][0].length()+3);
+						curDex = text.length();
+						y=text.length();
 					}
 					else
+						curDex = y+code.closeTag.length();
+					switch(code.c)
 					{
-						dispute=text.substring(VARIATION_CODES[i][0].length()+2);
-						text="";
+					case '\n': addMe = !addMe; break;
+					case '\r': addMe=true; break;
+					case 'W': addMe = A.getClimateObj().weatherType(null)==code.num; break;
+					case 'C': addMe = A.getTimeObj().getTODCode()==code.num; break;
+					case 'S': addMe = A.getTimeObj().getSeasonCode()==code.num; break;
+					case 'M': addMe =  ((mob!=null)&&(CMath.bset(mob.phyStats().disposition(),code.num))); break;
 					}
-					int num=CMath.s_int(VARIATION_CODES[i][1].substring(1));
-					switch(VARIATION_CODES[i][1].charAt(0))
-					{
-					case '\n': elseStr=dispute; break;
-					case '\r': buf.append(parseVariesCodes(mob,dispute)); break;
-					case 'W':
-						if(getArea().getClimateObj().weatherType(null)==num)
-							buf.append(parseVariesCodes(mob,dispute));
-						break;
-					case 'C':
-						if(getArea().getTimeObj().getTODCode()==num)
-							buf.append(parseVariesCodes(mob,dispute));
-						break;
-					case 'S':
-						if(getArea().getTimeObj().getSeasonCode()==num)
-							buf.append(parseVariesCodes(mob,dispute));
-						break;
-					case 'M':
-						if((mob!=null)&&(CMath.bset(mob.phyStats().disposition(),num)))
-							buf.append(parseVariesCodes(mob,dispute));
-						break;
-					}
+					if(addMe)
+						buf.append(parseVariesCodes(mob,A,text.substring(aligatorDex+code.openTag.length(),y)));
+					aligatorDex=curDex-1;
 					break;
 				}
-			if(!found)
-				x=text.indexOf('<',1);
-			else
-				x=text.indexOf('<');
+			if(aligatorDex >= text.length()-1) break;
+			aligatorDex=text.indexOf('<',aligatorDex+1);
 		}
-		if((buf.length()==0)&&(elseStr!=null))
+		if(curDex < text.length())
 		{
-			buf.append(text);
-			buf.append(parseVariesCodes(mob,elseStr));
+			if(text.startsWith("</VARIES>",curDex))
+				buf.append(text.substring(curDex+9));
+			else
+				buf.append(text.substring(curDex));
 		}
-		else
-			buf.append(text);
 		return buf.toString();
 	}
 
 	protected String parseVaries(MOB mob, String text)
 	{
 		if(text.startsWith("<VARIES>"))
-		{
-			int x=text.indexOf("</VARIES>");
-			if(x>=0)
-				return parseVariesCodes(mob,text.substring(8,x))+text.substring(x+9);
-			return parseVariesCodes(mob,text.substring(8));
-		}
+			return parseVariesCodes(mob,getArea(),text.substring(8));
 		return text;
 	}
 
