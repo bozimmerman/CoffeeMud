@@ -87,8 +87,19 @@ public class Channel extends StdCommand
 
 		if(commands.size()==0)
 		{
-			mob.tell(channelName+" what?");
-			return false;
+			int size = CMLib.channels().getChannelQue(channelInt).size(); 
+			if(size>0)
+			{
+				if(size>5) size=5;
+				mob.tell(channelName+" what?  Here's the last "+size+" message(s):\n\r");
+				commands.add("LAST");
+				commands.add(Integer.toString(size));
+			}
+			else
+			{
+				mob.tell(channelName+" what?");
+				return false;
+			}
 		}
 
 		for(int i=0;i<commands.size();i++)
@@ -103,7 +114,7 @@ public class Channel extends StdCommand
 			return false;
 		}
         
-        HashSet<ChannelsLibrary.ChannelFlag> flags=CMLib.channels().getChannelFlags(channelInt);
+		Set<ChannelsLibrary.ChannelFlag> flags=CMLib.channels().getChannelFlags(channelInt);
 		if((mob.getClanID().equalsIgnoreCase("")||(!CMLib.clans().authCheck(mob.getClanID(), mob.getClanRole(), Clan.Function.CHANNEL)))
         &&(flags.contains(ChannelsLibrary.ChannelFlag.CLANONLY)||flags.contains(ChannelsLibrary.ChannelFlag.CLANALLYONLY)))
 		{
@@ -117,7 +128,7 @@ public class Channel extends StdCommand
 		&&(CMath.isNumber((String)commands.lastElement())))
 		{
 			int num=CMath.s_int((String)commands.lastElement());
-			List<CMMsg> que=CMLib.channels().getChannelQue(channelInt);
+			List<ChannelsLibrary.ChannelMsg> que=CMLib.channels().getChannelQue(channelInt);
 			boolean showedAny=false;
 			if(que.size()>0)
 			{
@@ -125,8 +136,16 @@ public class Channel extends StdCommand
 				boolean areareq=flags.contains(ChannelsLibrary.ChannelFlag.SAMEAREA);
 				for(int i=que.size()-num;i<que.size();i++)
 				{
-					CMMsg msg=(CMMsg)que.get(i);
-					showedAny=CMLib.channels().channelTo(mob.session(),areareq,channelInt,msg,msg.source())||showedAny;
+					ChannelsLibrary.ChannelMsg msg=(ChannelsLibrary.ChannelMsg)que.get(i);
+					CMMsg modMsg = (CMMsg)msg.msg.copyOf();
+					final String timeAgo = "^.^N ("+CMLib.time().date2SmartEllapsedTime(Math.round((System.currentTimeMillis()-msg.ts)/1000)*1000,false)+" ago)";
+					if((modMsg.sourceMessage()!=null)&&(modMsg.sourceMessage().length()>0))
+						modMsg.setSourceMessage(modMsg.sourceMessage()+timeAgo);
+					if((modMsg.targetMessage()!=null)&&(modMsg.targetMessage().length()>0))
+						modMsg.setTargetMessage(modMsg.targetMessage()+timeAgo);
+					if((modMsg.othersMessage()!=null)&&(modMsg.othersMessage().length()>0))
+						modMsg.setOthersMessage(modMsg.othersMessage()+timeAgo);
+					showedAny=CMLib.channels().channelTo(mob.session(),areareq,channelInt,modMsg,modMsg.source())||showedAny;
 				}
 			}
 			if(!showedAny)

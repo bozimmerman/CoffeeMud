@@ -125,7 +125,7 @@ public class Affect extends StdCommand
 	                long tr=A.expirationDate();
 	                if(A.invoker()!=null) tr=tr-(System.currentTimeMillis()-A.invoker().lastTickedDateTime());
 	                if(tr<(Integer.MAX_VALUE/2))
-	                	disp+=" ^.^N"+CMLib.time().date2ShortEllapsedTime(tr, TimeUnit.SECONDS);
+	                	disp+=" ^.^N"+CMLib.time().date2EllapsedTime(tr, TimeUnit.SECONDS, true);
 				}
                 if(xtra)
                     disp+=", BY="+((A.invoker()==null)?"N/A":A.invoker().Name());

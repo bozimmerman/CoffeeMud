@@ -1410,7 +1410,7 @@ public class DefaultSession extends Thread implements Session
         LT.start();
 		if(M.playerStats()!=null)
 			M.playerStats().setLastDateTime(System.currentTimeMillis());
-		Log.sysOut("Session","Logout: "+name+" ("+CMLib.time().date2ShortEllapsedTime(System.currentTimeMillis()-userLoginTime)+")");
+		Log.sysOut("Session","Logout: "+name+" ("+CMLib.time().date2SmartEllapsedTime(System.currentTimeMillis()-userLoginTime,true)+")");
 		if(inTheGame)
 			CMLib.database().DBUpdateFollowers(M);
 	}
@@ -1686,7 +1686,7 @@ public class DefaultSession extends Thread implements Session
 				mob=null;
 			}
 		}
-		Log.sysOut("Session","Disconnect: "+getAddress()+" ("+CMLib.time().date2ShortEllapsedTime(getMillisOnline())+")");
+		Log.sysOut("Session","Disconnect: "+getAddress()+" ("+CMLib.time().date2SmartEllapsedTime(getMillisOnline(),true)+")");
 
 		status=Session.STATUS_LOGOUT4;
 		killFlag=true;

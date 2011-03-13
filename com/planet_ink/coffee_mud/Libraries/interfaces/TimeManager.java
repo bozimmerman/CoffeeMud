@@ -236,34 +236,31 @@ public interface TimeManager extends CMLibrary
     /**
      * Converts a given number of milliseconds,
      * into a number of rl years, months, days,
-     * hours, minutes, and seconds.
+     * hours, minutes, and seconds.  If in short form,
+     * returns y, m, d, h, m, and s.
      * 
-     * <br><br><b>Usage:</b> date2LongEllapsedTime(time)
+     * <br><br><b>Usage:</b> date2EllapsedTime(time)
      * @param time The time in miliseconds
+     * @param minUnit The smallest unit to round down to
+     * @param shortest true for short form, false otherwise
      * @return String Formatted ellapsed time
      */
-    public String date2LongEllapsedTime(long time);
+    public String date2EllapsedTime(long time, TimeUnit minUnit, boolean shortest);
+    
     /**
-     * Converts a given number of ms,
-     * into a number of rl y, m, d,
-     * h, m, and s.
+     * Converts a given number of milliseconds,
+     * into a number of rl years, months, days,
+     * hours, minutes, and seconds.  If in short form,
+     * returns y, m, d, h, m, and s.  This method 
+     * will automatically determine the smallest reasonable
+     * unit of time to show.
      * 
-     * <br><br><b>Usage:</b> date2LongEllapsedTime(time)
+     * <br><br><b>Usage:</b> date2SmartEllapsedTime(time)
      * @param time The time in miliseconds
+     * @param shortest true for short form, false otherwise
      * @return String Formatted ellapsed time
      */
-    public String date2ShortEllapsedTime(long time);
-    /**
-     * Converts a given number of ms,
-     * into a number of rl y, m, d,
-     * h, m, and s.
-     * 
-     * <br><br><b>Usage:</b> date2LongEllapsedTime(time)
-     * @param time The time in miliseconds
-     * @param minUnit The smallest unit to return
-     * @return String Formatted ellapsed time
-     */
-    public String date2ShortEllapsedTime(long time, TimeUnit minUnit);
+    public String date2SmartEllapsedTime(long time, boolean shortest);
 
     /**
      * Converts a given date into a string of form:

@@ -11,6 +11,7 @@ import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.ChannelsLibrary.ChannelFlag;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -46,9 +47,9 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
     public Vector<HashSet<ChannelFlag>> channelFlags=new Vector<HashSet<ChannelFlag>>();
 	public Vector ichannelList=new Vector();
 	public Vector imc2channelList=new Vector();
-	public Vector channelQue=new Vector();
-	//public final Vector emptyVector=new Vector(1);
-	public final HashSet<ChannelFlag> emptyFlags=new HashSet<ChannelFlag>(1);
+	public Vector<List<ChannelMsg>> channelQue=new Vector<List<ChannelMsg>>();
+	public final static List<ChannelMsg> emptyQueue=new ReadOnlyList<ChannelMsg>(new Vector(1));
+	public final static Set<ChannelFlag> emptyFlags=new ReadOnlySet<ChannelFlag>(new HashSet(1));
 	
 	public int getNumChannels()
 	{
@@ -63,7 +64,7 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 	}
 
     
-    public HashSet<ChannelFlag> getChannelFlags(int i)
+    public Set<ChannelFlag> getChannelFlags(int i)
     {
         if((i>=0)&&(i<channelFlags.size()))
             return (HashSet<ChannelFlag>)channelFlags.elementAt(i);
@@ -77,11 +78,11 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 		return "";
 	}
 
-	public List<CMMsg> getChannelQue(int i)
+	public List<ChannelMsg> getChannelQue(int i)
 	{
 		if((i>=0)&&(i<channelQue.size()))
 			return (List)channelQue.elementAt(i);
-		return new Vector<CMMsg>();
+		return emptyQueue;
 	}
 	
     public boolean mayReadThisChannel(MOB sender, boolean areaReq, MOB M, int i)
@@ -184,12 +185,12 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 	public void channelQueUp(int i, CMMsg msg)
 	{
         CMLib.map().sendGlobalMessage(msg.source(),CMMsg.TYP_CHANNEL,msg);
-        List<CMMsg> q=getChannelQue(i);
+        List<ChannelMsg> q=getChannelQue(i);
 		synchronized(q)
 		{
 			if(q.size()>=QUEUE_SIZE)
 				q.remove(0);
-			q.add(msg);
+			q.add(new ChannelMsg(msg));
 		}
 	}
 	
@@ -235,7 +236,7 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 		int dex = getChannelIndex(channelName);
 		if(dex >= 0)
 		{
-			HashSet<ChannelFlag> flags = getChannelFlags(dex);
+			Set<ChannelFlag> flags = getChannelFlags(dex);
 			String mask = getChannelMask(dex);
 			if(flags.contains(ChannelFlag.CLANALLYONLY))
 				str.append(" This is a channel for clans and their allies.");
@@ -498,7 +499,7 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
         
         message=CMProps.applyINIFilter(message,CMProps.SYSTEM_CHANNELFILTER);
         
-        HashSet<ChannelFlag> flags=getChannelFlags(channelInt);
+        Set<ChannelFlag> flags=getChannelFlags(channelInt);
         channelName=getChannelName(channelInt);
 
         CMMsg msg=null;

@@ -55,7 +55,7 @@ public class ChannelBackLogNext extends StdWebMacro
 		{
 			if(CMLib.channels().mayReadThisChannel(mob,channelInt,true))
 			{
-				List<CMMsg> que=CMLib.channels().getChannelQue(channelInt);
+				List<ChannelsLibrary.ChannelMsg> que=CMLib.channels().getChannelQue(channelInt);
 				while(true)
 				{
 				    int num=CMath.s_int(last);
@@ -69,7 +69,8 @@ public class ChannelBackLogNext extends StdWebMacro
 						return " @break@";
 					}
 					boolean areareq=CMLib.channels().getChannelFlags(channelInt).contains(ChannelsLibrary.ChannelFlag.SAMEAREA);
-					CMMsg msg=(CMMsg)que.get(num);
+					final ChannelsLibrary.ChannelMsg cmsg =que.get(num); 
+					final CMMsg msg=cmsg.msg;
 					String str=null;
 					if((mob==msg.source())&&(msg.sourceMessage()!=null))
 					    str=msg.sourceMessage();
@@ -82,6 +83,7 @@ public class ChannelBackLogNext extends StdWebMacro
 					else
 					    str="";
 					str=CMStrings.removeColors(str);
+					str += " ("+CMLib.time().date2SmartEllapsedTime(Math.round((System.currentTimeMillis()-cmsg.ts)/1000)*1000,false)+" ago)";
 					if(CMLib.channels().mayReadThisChannel(msg.source(),areareq,mob,channelInt,true))
 						return clearWebMacros(CMLib.coffeeFilter().fullOutFilter(mob.session(),mob,msg.source(),msg.target(),msg.tool(),CMStrings.removeColors(str),false));
 				}

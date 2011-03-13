@@ -354,7 +354,7 @@ public class RoomData extends StdWebMacro
 		if((E.expirationDate() > (System.currentTimeMillis() - TimeManager.MILI_DAY))
 		&&(E.expirationDate() < System.currentTimeMillis()))
 		{
-			String time = CMLib.time().date2ShortEllapsedTime(System.currentTimeMillis() - E.expirationDate(),TimeUnit.MINUTES);
+			String time = CMLib.time().date2EllapsedTime(System.currentTimeMillis() - E.expirationDate(),TimeUnit.MINUTES, true);
 			if(time.length()==0)
 				return " (cached new)";
 			else

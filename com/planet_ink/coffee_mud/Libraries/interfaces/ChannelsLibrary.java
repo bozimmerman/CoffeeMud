@@ -35,9 +35,9 @@ public interface ChannelsLibrary extends CMLibrary
     
     public int getNumChannels();
     public String getChannelMask(int i);
-    public HashSet<ChannelFlag> getChannelFlags(int i);
+    public Set<ChannelFlag> getChannelFlags(int i);
     public String getChannelName(int i);
-    public List<CMMsg> getChannelQue(int i);
+    public List<ChannelMsg> getChannelQue(int i);
     public boolean mayReadThisChannel(MOB sender, boolean areaReq, MOB M, int i);
     public boolean mayReadThisChannel(MOB sender, boolean areaReq, MOB M, int i, boolean offlineOK);
     public boolean mayReadThisChannel(MOB sender, boolean areaReq, Session ses, int i);
@@ -57,6 +57,13 @@ public interface ChannelsLibrary extends CMLibrary
     public int loadChannels(String list, String ilist, String imc2list);
     public boolean channelTo(Session ses, boolean areareq, int channelInt, CMMsg msg, MOB sender);
     public void reallyChannel(MOB mob, String channelName, String message, boolean systemMsg);
+    
+    public static class ChannelMsg
+    {
+    	public final CMMsg msg; 
+    	public long ts;
+    	public ChannelMsg(CMMsg msg){this.msg=msg; ts=System.currentTimeMillis();}
+    }
     
     public static enum ChannelFlag {
         DEFAULT,SAMEAREA,CLANONLY,READONLY,
