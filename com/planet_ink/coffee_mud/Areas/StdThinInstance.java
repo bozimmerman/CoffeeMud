@@ -33,12 +33,13 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("unchecked")
 public class StdThinInstance extends StdThinArea
 {
 	public String ID(){	return "StdThinInstance";}
+	
 	private long flags=Area.FLAG_THIN|Area.FLAG_INSTANCE_PARENT;
 	public long flags(){return flags;}
+	
 	private class ThinInstanceChild
 	{
 		public List<MOB> mobs;
@@ -188,9 +189,9 @@ public class StdThinInstance extends StdThinArea
             						M.setLocation(M.getStartRoom());
             				}
         					MOB mob=CMClass.sampleMOB();
-        					for(Enumeration e=childA.getProperMap();e.hasMoreElements();)
+        					for(Enumeration<Room> e=childA.getProperMap();e.hasMoreElements();)
         					{
-        						Room R=(Room)e.nextElement();
+        						Room R=e.nextElement();
         				    	R.executeMsg(mob,CMClass.getMsg(mob,R,null,CMMsg.MSG_EXPIRE,null));
         					}
         					CMLib.map().delArea(childA);
@@ -260,8 +261,8 @@ public class StdThinInstance extends StdThinArea
         		    newA.blurbFlags=new STreeMap<String,String>();
         			newA.setName((++instanceCounter)+"_"+Name());
         			newA.flags |= Area.FLAG_INSTANCE_CHILD;
-        			for(Enumeration e=getProperRoomnumbers().getRoomIDs();e.hasMoreElements();)
-        				newA.addProperRoomnumber(newA.convertToMyArea((String)e.nextElement()));
+        			for(Enumeration<String> e=getProperRoomnumbers().getRoomIDs();e.hasMoreElements();)
+        				newA.addProperRoomnumber(newA.convertToMyArea(e.nextElement()));
         			redirectA=newA;
         			CMLib.map().addArea(newA);
         			newA.setAreaState(Area.STATE_ACTIVE); // starts ticking
