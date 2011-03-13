@@ -82,7 +82,7 @@ public class BankAccountInfo extends StdWebMacro
 		if((player!=null)&&(player.length()>0))
 		{
 			if(((M==null)||(!M.Name().equalsIgnoreCase(player)))
-			&&(!CMSecurity.isAllowedEverywhere(M,"CMDPLAYERS)")))
+			&&(!CMSecurity.isAllowedEverywhere(M,"CMDPLAYERS")))
 				return "";
 			Clan C=CMLib.clans().getClan(player);
 			if(C!=null)
