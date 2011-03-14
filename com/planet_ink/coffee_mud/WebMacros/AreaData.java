@@ -293,6 +293,8 @@ public class AreaData extends StdWebMacro
 				}
 				if(parms.containsKey("ISGRID"))
 					str.append(""+(A instanceof GridZones));
+				if(parms.containsKey("ISAUTOGEN"))
+					str.append(""+(A instanceof AutoGenArea));
 				if(parms.containsKey("AUTHOR"))
 				{
 					String author=httpReq.getRequestParameter("AUTHOR");
@@ -524,6 +526,61 @@ public class AreaData extends StdWebMacro
                     }
                 }
 
+                if(A instanceof AutoGenArea)
+                {
+                	AutoGenArea AG=(AutoGenArea)A;
+                	
+    				if(parms.containsKey("AGAUTOVAR"))
+    				{
+    					String value=httpReq.getRequestParameter("AGAUTOVAR");
+    					if((value==null)||(value.length()==0))
+    						value=CMParms.toStringEqList(AG.getOtherAutoGenVars());
+    					str.append(value);
+    				}
+    				if(parms.containsKey("AGSIZEFRM"))
+    				{
+    					String value=httpReq.getRequestParameter("AGSIZEFRM");
+    					if((value==null)||(value.length()==0))
+    						value=AG.getAreaSizeFormula();
+    					str.append(value);
+    				}
+    				if(parms.containsKey("AGAGROFRM"))
+    				{
+    					String value=httpReq.getRequestParameter("AGAGROFRM");
+    					if((value==null)||(value.length()==0))
+    						value=AG.getAggroFormula();
+    					str.append(value);
+    				}
+    				if(parms.containsKey("AGLEVLFRM"))
+    				{
+    					String value=httpReq.getRequestParameter("AGLEVLFRM");
+    					if((value==null)||(value.length()==0))
+    						value=AG.getAreaLevelFormula();
+    					str.append(value);
+    				}
+    				if(parms.containsKey("AGXMLPATH"))
+    				{
+    					String value=httpReq.getRequestParameter("AGXMLPATH");
+    					if((value==null)||(value.length()==0))
+    						value=AG.getGeneratorXmlPath();
+    					str.append(value);
+    				}
+    				if(parms.containsKey("AGTYPEIDS"))
+    				{
+    					String value=httpReq.getRequestParameter("AGTYPEIDS");
+    					if((value==null)||(value.length()==0))
+    						value=CMParms.toStringList(AG.getXmlAreaTypeIds());
+    					str.append(value);
+    				}
+    				if(parms.containsKey("AGTHEMIDS"))
+    				{
+    					String value=httpReq.getRequestParameter("AGTHEMIDS");
+    					if((value==null)||(value.length()==0))
+    						value=CMParms.toStringList(AG.getXmlThemeIds());
+    					str.append(value);
+    				}
+                	
+                }
 
 				if(parms.containsKey("SEASON"))
 					str.append(CMStrings.removeColors(TimeClock.SEASON_DESCS[A.getTimeObj().getSeasonCode()])+", ");

@@ -14,6 +14,7 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
+import java.lang.ref.WeakReference;
 import java.util.*;
 
 /* 
@@ -578,6 +579,27 @@ public interface Area extends Economics, PhysicalAgent
      * @return whether the Area named MAY BE designated as a parent of this Area
      */
     public boolean canParent(Area newParent);
+    
+    /**
+     * Class to hold a reference to a child area instance,
+     * and the inhabitants who belong there.
+     * @author Bo Zimmerman
+     */
+	public static class AreaInstanceChild
+	{
+		/** List of players and their pets that belong in this instance */
+		public final List<WeakReference<MOB>> mobs;
+		/** Reference to the actual area where they go. */
+		public final Area A;
+		/** the time the instance was created */
+		public final long creationTime;
+		public AreaInstanceChild(final Area A, final List<WeakReference<MOB>> mobs)
+		{
+			this.A=A;
+			this.mobs=mobs;
+			this.creationTime = System.currentTimeMillis();
+		}
+	}
     
     public final static String[] THEME_DESCS={"FANTASY","TECH","HEROIC","SKILLONLY"};
 	/**	Bitmap flag meaning that the object supports magic.  @see com.planet_ink.coffee_mud.Areas.interfaces.Area#getTechLevel() */

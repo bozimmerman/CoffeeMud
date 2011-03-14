@@ -1334,6 +1334,14 @@ for more organic area designers, however.</td>
 inherets the features of the StdArea and the StdTimeZone.</td>
     </tr>
     <tr>
+      <td>StdAutoGenInstance</td>
+      <td>An area that reads xml files allows it to generate random
+rooms with random mobs and content. &nbsp;When players enter the area,
+they are given a new instance of a generated area that is destroyed
+after they have left. &nbsp;See the GENERATE command for more
+information on random generated areas.</td>
+    </tr>
+    <tr>
       <td>StdSpaceShip</td>
       <td>The space ship is definitely unimplemented at this time.
 Don't bother with it. It lacks many of the features of the other area
@@ -1412,7 +1420,22 @@ are available on the area promptings. Don't worry about these. The
 former is not very important at the moment, and the second is a bit too
 obscure for these lessons. And then there are <span
  style="font-style: italic;">Blurb Flags</span>, which are flags whose
-descriptions can be displayed when one displays the help for the area.</p>
+descriptions can be displayed when one displays the help for the area.
+&nbsp;Lastly, the StdAutoGenInstance areas have several special fields,
+such as <span style="font-style: italic;">Xml File Path</span> to
+designate the file path (from your resources directory) to find the
+room definition xml file, a <span style="font-style: italic;">area
+type list</span> to describe what kinds of random rooms to generate, a<span
+ style="font-style: italic;"> theme list</span> to describe the theme
+of the random rooms, a <span style="font-style: italic;">mob level
+formula</span> to determine the level range of your area, <span
+ style="font-style: italic;">aggro chance formula</span> to determine
+the percentage chance the random mobs are aggressive, and a set of
+miscellaneous <span style="font-style: italic;">variable</span>
+settings. &nbsp;Almost all of these StdAutoGenInstance settings are
+extremely dependent on the particular xml definition file you use, so
+look over /resources/examples/randomdata.xml to read about how to make
+new ones.</p>
 <p>You will also be asked to add any <em>behaviors</em> and <em>effects</em>
 to the area that you wish to. These may seem strange at first, and
 usually you won't add any of these at all. After all, rarely does a

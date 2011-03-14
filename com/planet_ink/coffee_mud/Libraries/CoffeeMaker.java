@@ -229,6 +229,16 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 			if(E instanceof GridZones)
 	            str.append(CMLib.xml().convertXMLtoTag("XGRID",((GridZones)E).xGridSize())
 						  +CMLib.xml().convertXMLtoTag("YGRID",((GridZones)E).yGridSize()));
+			if(E instanceof AutoGenArea)
+			{
+	            str.append(CMLib.xml().convertXMLtoTag("AGXMLPATH",CMLib.xml().parseOutAngleBrackets(((AutoGenArea)E).getGeneratorXmlPath())));
+	            str.append(CMLib.xml().convertXMLtoTag("AGTYPEIDS",CMLib.xml().parseOutAngleBrackets(CMParms.toStringList(((AutoGenArea)E).getXmlAreaTypeIds()))));
+	            str.append(CMLib.xml().convertXMLtoTag("AGTHEMIDS",CMLib.xml().parseOutAngleBrackets(CMParms.toStringList(((AutoGenArea)E).getXmlThemeIds()))));
+	            str.append(CMLib.xml().convertXMLtoTag("AGSIZEFRM",CMLib.xml().parseOutAngleBrackets(((AutoGenArea)E).getAreaSizeFormula())));
+	            str.append(CMLib.xml().convertXMLtoTag("AGLEVLFRM",CMLib.xml().parseOutAngleBrackets(((AutoGenArea)E).getAreaLevelFormula())));
+	            str.append(CMLib.xml().convertXMLtoTag("AGAUTOVAR",CMLib.xml().parseOutAngleBrackets(CMParms.toStringEqList(((AutoGenArea)E).getOtherAutoGenVars()))));
+	            str.append(CMLib.xml().convertXMLtoTag("AGAGROFRM",CMLib.xml().parseOutAngleBrackets(((AutoGenArea)E).getAggroFormula())));
+			}
 		    return str.toString();
 		}
 		else
@@ -1767,6 +1777,16 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 			{
 				((GridZones)E).setXGridSize(CMLib.xml().getIntFromPieces(V,"XGRID"));
 				((GridZones)E).setYGridSize(CMLib.xml().getIntFromPieces(V,"YGRID"));
+			}
+			if(E instanceof AutoGenArea)
+			{
+				((AutoGenArea)E).setGeneratorXmlPath(CMLib.xml().restoreAngleBrackets(CMLib.xml().getValFromPieces(V,"AGXMLPATH")));
+				((AutoGenArea)E).setXmlAreaTypeIds(CMLib.xml().restoreAngleBrackets(CMLib.xml().getValFromPieces(V,"AGTYPEIDS")));
+				((AutoGenArea)E).setXmlThemeIds(CMLib.xml().restoreAngleBrackets(CMLib.xml().getValFromPieces(V,"AGTHEMIDS")));
+				((AutoGenArea)E).setAreaSizeFormula(CMLib.xml().restoreAngleBrackets(CMLib.xml().getValFromPieces(V,"AGSIZEFRM")));
+				((AutoGenArea)E).setAreaLevelFormula(CMLib.xml().restoreAngleBrackets(CMLib.xml().getValFromPieces(V,"AGLEVLFRM")));
+				((AutoGenArea)E).setOtherAutoGenVars(CMLib.xml().restoreAngleBrackets(CMLib.xml().getValFromPieces(V,"AGAUTOVAR")));
+				((AutoGenArea)E).setAggroFormula(CMLib.xml().restoreAngleBrackets(CMLib.xml().getValFromPieces(V,"AGAGROFRM")));
 			}
 			setExtraEnvProperties(E,V);
             setGenScripts((Area)E,V,false);

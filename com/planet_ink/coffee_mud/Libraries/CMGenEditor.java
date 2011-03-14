@@ -7669,6 +7669,16 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
                 genGridLocaleX(mob,(GridZones)myArea,++showNumber,showFlag);
                 genGridLocaleY(mob,(GridZones)myArea,++showNumber,showFlag);
             }
+            if(myArea instanceof AutoGenArea)
+            {
+                promptStatStr(mob,myArea,++showNumber,showFlag,"AutoGen Xml File Path","GENERATIONFILEPATH");
+                promptStatStr(mob,myArea,++showNumber,showFlag,"AutoGen Size Formula","SIZEFORMULA");
+                promptStatStr(mob,myArea,++showNumber,showFlag,"AutoGen Area Type List (comma delim)","AREATYPES");
+                promptStatStr(mob,myArea,++showNumber,showFlag,"AutoGen Area Theme List (comma delim)","AREATHEMES");
+                promptStatStr(mob,myArea,++showNumber,showFlag,"AutoGen Mob Level Formula","LEVELFORMULA");
+                promptStatStr(mob,myArea,++showNumber,showFlag,"AutoGen Mob Aggro Chance Formula","AGGROFORMULA");
+                promptStatStr(mob,myArea,++showNumber,showFlag,"AutoGen Vars (VAR=VAL format)","OTHERVARS");
+            }
             genBehaviors(mob,myArea,++showNumber,showFlag);
             genAffects(mob,myArea,++showNumber,showFlag);
             genImage(mob,myArea,++showNumber,showFlag);

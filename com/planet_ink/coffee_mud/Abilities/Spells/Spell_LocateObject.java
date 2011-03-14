@@ -88,6 +88,8 @@ public class Spell_LocateObject extends Spell
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
+		int maxFound=1+(super.getXLEVELLevel(mob));
+		
 		boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
@@ -96,7 +98,7 @@ public class Spell_LocateObject extends Spell
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				Vector itemsFound=new Vector();
+				List<String> itemsFound=new Vector<String>();
 				HashSet areas=new HashSet();
 				HashSet areasTried=new HashSet();
 				Area A=null;
@@ -131,7 +133,7 @@ public class Spell_LocateObject extends Spell
 					if((item!=null)&&(CMLib.flags().canBeLocated((Item)item)))
 					{
 						String str=item.name()+" is in a place called '"+room.roomTitle(mob)+"'.";
-						itemsFound.addElement(str);
+						itemsFound.add(str);
 					}
 					for(int i=0;i<room.numInhabitants();i++)
 					{
@@ -148,16 +150,21 @@ public class Spell_LocateObject extends Spell
 						&&(((Item)item).phyStats().level()<maxLevel))
 						{
 							String str=item.name()+((!levelAdjust)?"":("("+((Item)item).phyStats().level()+")"))+" is being carried by "+inhab.name()+" in a place called '"+room.roomTitle(mob)+"'.";
-							itemsFound.addElement(str);
+							itemsFound.add(str);
 							break;
 						}
 					}
-					if(itemsFound.size()>0) break;
+					if(itemsFound.size()>=maxFound) break;
 				}
 				if(itemsFound.size()==0)
 					mob.tell("Your magic fails to focus on anything called '"+what+"'.");
 				else
-					mob.tell((String)itemsFound.elementAt(CMLib.dice().roll(1,itemsFound.size(),-1)));
+				{
+					while(itemsFound.size()>maxFound)
+						itemsFound.remove(CMLib.dice().roll(1,itemsFound.size(),-1));
+					for(String found : itemsFound)
+						mob.tell(found);
+				}
 			}
 
 		}

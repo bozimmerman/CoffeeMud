@@ -1023,7 +1023,7 @@ public class RoomLoader
 				{
 					done.add(R.roomID());
 					HashSet<String> oldStrs=new HashSet<String>();
-					for(Iterator<WorldMap.CrossExit> i2=((GridLocale)room).outerExits();i.hasNext();)
+					for(Iterator<WorldMap.CrossExit> i2=((GridLocale)room).outerExits();i2.hasNext();)
 					{
 						WorldMap.CrossExit CE2=i2.next();
 						if((CE2.destRoomID.equals(R.roomID())

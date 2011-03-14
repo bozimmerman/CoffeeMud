@@ -1480,6 +1480,22 @@ public class CMParms
         return s.toString();
     }
 
+    public final static String toStringEqList(final Map<String,?> V)
+    {
+        if((V==null)||(V.size()==0)){
+            return "";
+        }
+        final StringBuffer s=new StringBuffer("");
+        for(String KEY : V.keySet())
+        {
+        	String val = V.get(KEY).toString();
+        	if(val.indexOf(' ')>0)
+        		val="\""+val+"\"";
+            s.append(KEY+"="+val+" ");
+        }
+        return s.toString().trim();
+    }
+
 
     public final static Vector<Object> copyFlattenVector(final List<?> V)
     {

@@ -41,7 +41,9 @@ public interface AreaGenerationLibrary extends CMLibrary
     public String findString(String tagName, XMLLibrary.XMLpiece piece, Hashtable defined) throws CMException;
     public Room buildRoom(XMLLibrary.XMLpiece piece, Hashtable defined, Exit[] exits, int direction) throws CMException;
     public void checkRequirements(XMLLibrary.XMLpiece piece, Hashtable defined) throws CMException;
+    public Map<String,String> getUnfilledRequirements(Hashtable defined, XMLLibrary.XMLpiece piece);
     public Area buildArea(XMLLibrary.XMLpiece piece, Hashtable defined, int direction) throws CMException;
+    public boolean fillInArea(XMLLibrary.XMLpiece piece, Hashtable defined, Area A, int direction) throws CMException;
     public LayoutManager getLayoutManager(String named);
     
     public static interface LayoutManager

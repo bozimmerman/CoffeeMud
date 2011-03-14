@@ -749,7 +749,8 @@ public class StdArea implements Area
             if((flag<=Area.STATE_ACTIVE)
             &&((System.currentTimeMillis()-lastPlayerTime)>Area.TIME_PASSIVE_LAPSE))
             {
-                if(CMSecurity.isDisabled(CMSecurity.DisFlag.PASSIVEAREAS))
+                if(CMSecurity.isDisabled(CMSecurity.DisFlag.PASSIVEAREAS)
+                &&(!CMath.bset(flags(), Area.FLAG_INSTANCE_CHILD)))
                     lastPlayerTime=System.currentTimeMillis();
                 else
                     flag=Area.STATE_PASSIVE;
@@ -1642,23 +1643,23 @@ public class StdArea implements Area
 	}
 
     public int getSaveStatIndex(){return (xtraValues==null)?getStatCodes().length:getStatCodes().length-xtraValues.length;}
-	private static final String[] CODES={"CLASS",
-	    								 "CLIMATE",
-	    								 "DESCRIPTION",
-	    								 "TEXT",
-	    								 "TECHLEVEL",
-                                         "BLURBS",
-                                         "PREJUDICE",
-                                         "BUDGET",
-                                         "DEVALRATE",
-                                         "INVRESETRATE",
-                                         "IGNOREMASK",
-                                         "PRICEMASKS"};
+	protected static final String[] STDAREACODES={"CLASS",
+			    								  "CLIMATE",
+			    								  "DESCRIPTION",
+			    								  "TEXT",
+			    								  "TECHLEVEL",
+		                                          "BLURBS",
+		                                          "PREJUDICE",
+		                                          "BUDGET",
+		                                          "DEVALRATE",
+		                                          "INVRESETRATE",
+		                                          "IGNOREMASK",
+		                                          "PRICEMASKS"};
     private static String[] codes=null;
     public String[] getStatCodes()
     {
         if(codes==null)
-            codes=CMProps.getStatCodesList(CODES,this);
+            codes=CMProps.getStatCodesList(STDAREACODES,this);
         return codes; 
     }
     public boolean isStat(String code){ return CMParms.indexOf(getStatCodes(),code.toUpperCase().trim())>=0;}

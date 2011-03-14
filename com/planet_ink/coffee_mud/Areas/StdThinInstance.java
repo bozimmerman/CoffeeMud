@@ -16,6 +16,7 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
+import java.lang.ref.WeakReference;
 import java.util.*;
 
 /*
@@ -40,21 +41,10 @@ public class StdThinInstance extends StdThinArea
 	private long flags=Area.FLAG_THIN|Area.FLAG_INSTANCE_PARENT;
 	public long flags(){return flags;}
 	
-	private class ThinInstanceChild
-	{
-		public List<MOB> mobs;
-		public StdThinInstance A;
-		public ThinInstanceChild(StdThinInstance A, List<MOB> mobs)
-		{
-			this.A=A;
-			this.mobs=mobs;
-		}
-
-	}
-	
-	private SVector<ThinInstanceChild> instanceChildren = new SVector<ThinInstanceChild>();
+	private SVector<AreaInstanceChild> instanceChildren = new SVector<AreaInstanceChild>();
 	private volatile int instanceCounter=0;
 	private long childCheckDown=CMProps.getMillisPerMudHour()/CMProps.getTickMillis();
+	private WeakReference<Area> parentArea = null;
 	
 	protected String getStrippedRoomID(String roomID)
 	{
@@ -72,6 +62,8 @@ public class StdThinInstance extends StdThinArea
 	
 	protected Area getParentArea()
 	{
+		if((parentArea!=null)&&(parentArea.get()!=null))
+			return parentArea.get();
 		int x=Name().indexOf('_');
 		if(x<0) return null;
 		if(!CMath.isNumber(Name().substring(0,x))) return null;
@@ -80,6 +72,7 @@ public class StdThinInstance extends StdThinArea
 		||(!CMath.bset(parentA.flags(),Area.FLAG_INSTANCE_PARENT))
 		||(CMath.bset(parentA.flags(),Area.FLAG_INSTANCE_CHILD)))
 			return null;
+		parentArea=new WeakReference<Area>(parentA);
 		return parentA;
 	}
 	
@@ -162,15 +155,16 @@ public class StdThinInstance extends StdThinArea
 	    	{
         		for(int i=instanceChildren.size()-1;i>=0;i--) 
         		{
-        			StdThinInstance childA=instanceChildren.elementAt(i).A;
+        			Area childA=instanceChildren.elementAt(i).A;
         			if(childA.getAreaState() > Area.STATE_ACTIVE)
         			{
-        				List<MOB> V=instanceChildren.elementAt(i).mobs;
+        				List<WeakReference<MOB>> V=instanceChildren.elementAt(i).mobs;
         				boolean anyInside=false;
-        				for(int v=0;v<V.size();v++)
+        				for(WeakReference<MOB> wmob : V)
         				{
-        					MOB M=(MOB)V.get(v);
-        					if(CMLib.flags().isInTheGame(M,true)
+        					MOB M=wmob.get();
+        					if((M!=null)
+        					&&CMLib.flags().isInTheGame(M,true)
         					&&(M.location()!=null)
         					&&(M.location().getArea()==childA))
         					{
@@ -181,10 +175,11 @@ public class StdThinInstance extends StdThinArea
         				if(!anyInside)
         				{
         					instanceChildren.remove(i);
-            				for(int v=0;v<V.size();v++)
+            				for(WeakReference<MOB> wmob : V)
             				{
-            					MOB M=(MOB)V.get(v);
-            					if((M.location()!=null)
+            					MOB M=wmob.get();
+            					if((M!=null)
+            					&&(M.location()!=null)
             					&&(M.location().getArea()==this))
             						M.setLocation(M.getStartRoom());
             				}
@@ -221,18 +216,25 @@ public class StdThinInstance extends StdThinArea
         	synchronized(instanceChildren)
         	{
         		int myDex=-1;
-        		for(int i=0;i<instanceChildren.size();i++) {
-        			List<MOB> V=instanceChildren.elementAt(i).mobs;
-        			if(V.contains(msg.source())){  myDex=i; break;}
+        		for(int i=0;i<instanceChildren.size();i++) 
+        		{
+        			List<WeakReference<MOB>> V=instanceChildren.elementAt(i).mobs;
+        			for(Iterator<WeakReference<MOB>> vi = V.iterator();vi.hasNext();)
+        			if(msg.source() == vi.next().get())
+        			{  
+        				myDex=i; break;
+        			}
         		}
         		Set<MOB> grp = msg.source().getGroupMembers(new HashSet<MOB>());
         		for(int i=0;i<instanceChildren.size();i++) {
         			if(i!=myDex)
         			{
-        				List<MOB> V=instanceChildren.elementAt(i).mobs;
+        				List<WeakReference<MOB>> V=instanceChildren.elementAt(i).mobs;
 	        			for(int v=V.size()-1;v>=0;v--)
 	        			{
-	        				MOB M=(MOB)V.get(v);
+	        				final WeakReference<MOB> wmob=V.get(v);
+	        				if(wmob==null) continue;
+	        				final MOB M=wmob.get();
 	        				if(grp.contains(M))
 		        			{
 		        				if(myDex<0)
@@ -245,33 +247,40 @@ public class StdThinInstance extends StdThinArea
 	        					&&(M.location().getArea()!=instanceChildren.elementAt(i).A))
 		        				{
 		        					V.remove(M);
-		        					instanceChildren.get(myDex).mobs.add(M);
+		        					instanceChildren.get(myDex).mobs.add(new WeakReference<MOB>(M));
 		        				}
 		        			}
 	        			}
         			}
         		}
-        		StdThinInstance redirectA = null;
+        		Area redirectA = null;
         		if(myDex<0)
         		{
-        			StdThinInstance newA=(StdThinInstance)this.copyOf();
+        			final StdThinInstance newA=(StdThinInstance)this.copyOf();
         			newA.properRooms=new STreeMap<String, Room>(new Area.RoomIDComparator());
+        			newA.parentArea=null;
         			newA.properRoomIDSet = null;
         			newA.metroRoomIDSet = null;
         		    newA.blurbFlags=new STreeMap<String,String>();
         			newA.setName((++instanceCounter)+"_"+Name());
         			newA.flags |= Area.FLAG_INSTANCE_CHILD;
-        			for(Enumeration<String> e=getProperRoomnumbers().getRoomIDs();e.hasMoreElements();)
+        			for(final Enumeration<String> e=getProperRoomnumbers().getRoomIDs();e.hasMoreElements();)
         				newA.addProperRoomnumber(newA.convertToMyArea(e.nextElement()));
         			redirectA=newA;
         			CMLib.map().addArea(newA);
         			newA.setAreaState(Area.STATE_ACTIVE); // starts ticking
-        			instanceChildren.add(new ThinInstanceChild(redirectA,new SVector<MOB>(msg.source())));
+        			final List<WeakReference<MOB>> newMobList = new SVector<WeakReference<MOB>>(5);
+        			newMobList.add(new WeakReference<MOB>(msg.source()));
+        			final AreaInstanceChild child = new AreaInstanceChild(redirectA,newMobList); 
+        			instanceChildren.add(child);
         		}
         		else
         			redirectA=instanceChildren.get(myDex).A;
-        		Room R=redirectA.getRoom(redirectA.convertToMyArea(CMLib.map().getExtendedRoomID((Room)msg.target())));
-        		if(R!=null) msg.setTarget(R);
+        		if(redirectA instanceof StdThinInstance)
+        		{
+	        		Room R=redirectA.getRoom(((StdThinInstance)redirectA).convertToMyArea(CMLib.map().getExtendedRoomID((Room)msg.target())));
+	        		if(R!=null) msg.setTarget(R);
+        		}
         	}
         }
         return true;

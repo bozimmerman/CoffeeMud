@@ -177,7 +177,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		}
     }
     
-    // vars created: LINK_DIRECTION, AREA_CLASS, AREA_NAME, AREA_DESCRIPTION, AREA_LAYOUT, AREA_SIZE
+    
     public Area buildArea(XMLLibrary.XMLpiece piece, Hashtable defined, int direction) throws CMException
     {
     	defined.put("DIRECTION",Directions.getDirectionName(direction).toLowerCase());
@@ -205,6 +205,14 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 	        A.setDescription(description);
         	defined.put("AREA_DESCRIPTION",description);
         }
+    	if(fillInArea(piece, defined, A, direction))
+    		return A;
+    	throw new CMException("Unable to build area for some reason.");
+    }
+    
+    // vars created: LINK_DIRECTION, AREA_CLASS, AREA_NAME, AREA_DESCRIPTION, AREA_LAYOUT, AREA_SIZE
+    public boolean fillInArea(XMLLibrary.XMLpiece piece, Hashtable defined, Area A, int direction) throws CMException
+    {
         String layoutType = findString("layout",piece,defined);
         if((layoutType==null)||(layoutType.trim().length()==0))
         	throw new CMException("Unable to build area without defined layout");
@@ -412,7 +420,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
         		throw (CMException)t;
         	throw new CMException(t.getMessage());
         }
-        return A;
+        return true;
     }
 
     public void processRoom(Area A, int direction, XMLLibrary.XMLpiece piece, LayoutNode node, Hashtable groupDefined)
@@ -1207,6 +1215,46 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		}
 		return value;
 	}
+    
+    public Map<String,String> getUnfilledRequirements(Hashtable defined, XMLLibrary.XMLpiece piece)
+    {
+    	String requirements = CMLib.xml().getParmValue(piece.parms,"REQUIRES");
+    	Map<String,String> set=new Hashtable<String,String>();
+    	if(requirements==null) return set;
+    	requirements = requirements.trim();
+    	Vector reqs = CMParms.parseCommas(requirements,true);
+    	for(int r=0;r<reqs.size();r++)
+    	{
+    		String reqVariable=(String)reqs.elementAt(r);
+    		if(reqVariable.startsWith("$")) reqVariable=reqVariable.substring(1).trim();
+    		String validValues=null;
+    		int x=reqVariable.indexOf('=');
+    		if(x>=0)
+    		{
+    			validValues=reqVariable.substring(x+1).trim();
+    			reqVariable=reqVariable.substring(0,x).trim();
+    		}
+    		if((!defined.containsKey(reqVariable.toUpperCase()))
+    		||(!checkRequirementsValue(validValues, defined.get(reqVariable.toUpperCase()).toString())))
+    		{
+    			if(validValues==null)
+    				set.put(reqVariable.toUpperCase(), "any");
+    			else
+    			if(validValues.equalsIgnoreCase("integer")||validValues.equalsIgnoreCase("int"))
+    				set.put(reqVariable.toUpperCase(), "int");
+    			else
+    			if(validValues.equalsIgnoreCase("double")||validValues.equalsIgnoreCase("#")||validValues.equalsIgnoreCase("number"))
+    				set.put(reqVariable.toUpperCase(), "double");
+    			else
+    			if(validValues.equalsIgnoreCase("string")||validValues.equalsIgnoreCase("$"))
+    				set.put(reqVariable.toUpperCase(), "string");
+    			else
+    			if(validValues.trim().length()>0)
+    				set.put(reqVariable.toUpperCase(), CMParms.toStringList(CMParms.parseSemicolons(validValues,true)));
+    		}
+    	}
+    	return set;
+    }
     
     protected void checkRequirements(Hashtable defined, String requirements) throws CMException
     {

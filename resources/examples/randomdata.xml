@@ -968,7 +968,7 @@ Optional Objects: "AFFECT","BEHAVIOR"
 				<DESCRIPTION select="any-1">
 					<DESCRIPTION>You feel quite chaotic here.</DESCRIPTION>
 					<DESCRIPTION>This place seems downright crazy. </DESCRIPTION>
-					<DESCRIPTION>This can't be a very serene to be. </DESCRIPTION>
+					<DESCRIPTION>This can't be a very serene place to be. </DESCRIPTION>
 					<DESCRIPTION>You can't imagine a more chaotic spot to be standing in. </DESCRIPTION>
 				</DESCRIPTION>
 				<DESCRIPTION select="any-1">$dungeon_random_blurb</DESCRIPTION>
