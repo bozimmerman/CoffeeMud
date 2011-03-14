@@ -708,6 +708,7 @@ public class StdRoom implements Room
 					gridParent.executeMsg(myHost,msg);
 				else
 				if((roomID().length()>0)
+				&&((getArea()==null)||(!CMath.bset(getArea().flags(), Area.FLAG_INSTANCE_CHILD)))
 				&&(CMSecurity.isSaveFlag("ROOMMOBS")
 					||CMSecurity.isSaveFlag("ROOMITEMS")
 					||CMSecurity.isSaveFlag("ROOMSHOPS")))
