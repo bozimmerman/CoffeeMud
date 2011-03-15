@@ -2313,4 +2313,5 @@ Special/Reserved Quest called holidays can be added to/modified on an area-by-ar
 5. Channel LAST (previous) messages now append an ellapsed time since the message was sent.
 # Build 5.7.2 Release 3/?/2010
 1. New Area Type: StdAutoGenInstance, for creating random area instances based on random area generator
-
+2. Player WHERE now displays a more informative table
+3. AREAS command now has sorting options.

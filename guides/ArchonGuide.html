@@ -1421,21 +1421,30 @@ former is not very important at the moment, and the second is a bit too
 obscure for these lessons. And then there are <span
  style="font-style: italic;">Blurb Flags</span>, which are flags whose
 descriptions can be displayed when one displays the help for the area.
-&nbsp;Lastly, the StdAutoGenInstance areas have several special fields,
+&nbsp;</p>
+<p>One of the special area types is the StdAutoGenInstance, which also
+has several special fields,
 such as <span style="font-style: italic;">Xml File Path</span> to
 designate the file path (from your resources directory) to find the
-room definition xml file, a <span style="font-style: italic;">area
-type list</span> to describe what kinds of random rooms to generate, a<span
- style="font-style: italic;"> theme list</span> to describe the theme
-of the random rooms, a <span style="font-style: italic;">mob level
-formula</span> to determine the level range of your area, <span
- style="font-style: italic;">aggro chance formula</span> to determine
-the percentage chance the random mobs are aggressive, and a set of
+room definition xml file, and a set of
 miscellaneous <span style="font-style: italic;">variable</span>
 settings. &nbsp;Almost all of these StdAutoGenInstance settings are
 extremely dependent on the particular xml definition file you use, so
 look over /resources/examples/randomdata.xml to read about how to make
-new ones.</p>
+new ones. The format of the variable string is VAR=VALUE VAR2="VALUE"
+etc.&nbsp;&nbsp;Some variables that are important to the example
+randomdata file given above include <span style="font-style: italic;">area_ids</span>
+for a comma-delimited list of what kinds of random rooms to generate, a
+comma delimited list of&nbsp;<span style="font-style: italic;">theme</span>&nbsp;names
+that&nbsp;describe the theme
+of the random rooms, a &nbsp;<span style="font-style: italic;">level_range
+</span>formula to determine the level range of your area, an <span
+ style="font-style: italic;">aggrochance </span>formula to determine
+the percentage chance the random mobs are aggressive, and an areasize
+formula to determine the number of rooms in the new area. &nbsp;You may
+insert the string @x1 into your math formulas to substitute the current
+players level, allowing you to have the formula values scale with user
+level. </p>
 <p>You will also be asked to add any <em>behaviors</em> and <em>effects</em>
 to the area that you wish to. These may seem strange at first, and
 usually you won't add any of these at all. After all, rarely does a

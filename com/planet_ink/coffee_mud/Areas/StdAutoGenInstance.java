@@ -47,12 +47,7 @@ public class StdAutoGenInstance extends StdArea implements AutoGenArea
 	protected volatile int instanceCounter=0;
 	protected long childCheckDown=CMProps.getMillisPerMudHour()/CMProps.getTickMillis();
 	protected WeakReference<Area> parentArea = null;
-	protected String levelFormula = "(@x1-3)?(@x1+3)";
-	protected String sizeFormula = "50";
-	protected String aggroFormula = "@x1";
-	protected String filePath = "/resources/examples/randomdata.xml";
-	protected List<String> typeIds = new Vector<String>();
-	protected List<String> themeIds = new Vector<String>();
+	protected String filePath = "examples/randomdata.xml";
 	protected Map<String, String> varMap = new Hashtable<String, String>(1);
 	
 	protected String getStrippedRoomID(String roomID)
@@ -225,10 +220,12 @@ public class StdAutoGenInstance extends StdArea implements AutoGenArea
         	        Hashtable definedIDs = new Hashtable();
         	        CMLib.percolator().buildDefinedIDSet(xmlRoot,definedIDs);
         	        String idName = "";
-        	        List<String> idChoices = getXmlAreaTypeIds();
+        	        List<String> idChoices = new Vector<String>();
+        	        for(String key : getAutoGenVariables().keySet())
+        	        	if(key.equalsIgnoreCase("AREA_ID")||key.equalsIgnoreCase("AREA_IDS")||key.equalsIgnoreCase("AREAID")||key.equalsIgnoreCase("AREAIDS"))
+        	        		idChoices.addAll(CMParms.parseCommas(getAutoGenVariables().get(key),true));
         	        if(idChoices.size()==0)
         	        {
-        	        	idChoices = new Vector<String>();
 	        	        for(Object key : definedIDs.keySet())
 	        	        {
 	        	        	Object val=definedIDs.get(key);
@@ -247,18 +244,18 @@ public class StdAutoGenInstance extends StdArea implements AutoGenArea
         	        	msg.source().tell("The area id '"+idName+"' has not been defined in the data file.");
         	        	return false;
         	        }
-        	        XMLLibrary.XMLpiece piece=(XMLLibrary.XMLpiece)definedIDs.get(idName);
-        	        definedIDs.putAll(getOtherAutoGenVars());
+        	        for(String key : getAutoGenVariables().keySet())
+        	        	if(!(key.equalsIgnoreCase("AREA_ID")||key.equalsIgnoreCase("AREA_IDS")||key.equalsIgnoreCase("AREAID")||key.equalsIgnoreCase("AREAIDS")))
+	        	        	definedIDs.put(key.toUpperCase(),getAutoGenVariables().get(key));
         	        definedIDs.put("AREANAME", Name());
-        	        String sizeFormula=CMStrings.replaceAll(this.getAreaSizeFormula(), "@x1", ""+msg.source().basePhyStats().level());
-        	        definedIDs.put("AREASIZE", sizeFormula);
-        	        String levelFormula=CMStrings.replaceAll(this.getAreaLevelFormula(), "@x1", ""+msg.source().basePhyStats().level());
-        	        definedIDs.put("LEVEL_RANGE", levelFormula);
-        	        String aggroFormula=CMStrings.replaceAll(this.getAggroFormula(), "@x1", ""+msg.source().basePhyStats().level());
-        	        definedIDs.put("AGGROCHANCE", aggroFormula);
-        	        if(getXmlThemeIds().size()>0)
-            	        definedIDs.put("THEME", getXmlThemeIds().get(CMLib.dice().roll(1, getXmlThemeIds().size(), -1)).toUpperCase().trim());
-        	        else
+        	        if(!definedIDs.containsKey("AREASIZE"))
+        	        	definedIDs.put("AREASIZE", "50");
+        	        if(!definedIDs.containsKey("LEVEL_RANGE"))
+        	        	definedIDs.put("LEVEL_RANGE", (msg.source().basePhyStats().level()-3)+"?"+(msg.source().basePhyStats().level()+3));
+        	        if(!definedIDs.containsKey("AGGROCHANCE"))
+        	        	definedIDs.put("AGGROCHANCE", ""+msg.source().basePhyStats().level());
+        	        XMLLibrary.XMLpiece piece=(XMLLibrary.XMLpiece)definedIDs.get(idName);
+        	        if(!definedIDs.containsKey("THEME"))
         	        {
         	            Map<String,String> unfilled = CMLib.percolator().getUnfilledRequirements(definedIDs,piece);
         	            List<String> themes = CMParms.parseCommas(unfilled.get("THEME"), true);
@@ -330,7 +327,7 @@ public class StdAutoGenInstance extends StdArea implements AutoGenArea
         return true;
 	}
 	
-	private final static String[] MYCODES={"GENERATIONFILEPATH","SIZEFORMULA","AREATYPES","LEVELFORMULA","OTHERVARS","AREATHEMES","AGGROFORMULA"};
+	private final static String[] MYCODES={"GENERATIONFILEPATH","OTHERVARS"};
 	public String getStat(String code)
 	{
 		if(CMParms.indexOfIgnoreCase(STDAREACODES, code)>=0)
@@ -339,12 +336,7 @@ public class StdAutoGenInstance extends StdArea implements AutoGenArea
 		switch(getCodeNum(code))
 		{
 		case 0: return this.getGeneratorXmlPath();
-		case 1: return this.getAreaSizeFormula();
-		case 2: return CMParms.toStringList(this.getXmlAreaTypeIds());
-		case 3: return this.getAreaLevelFormula();
-		case 4: return CMParms.toStringEqList(this.getOtherAutoGenVars());
-		case 5: return CMParms.toStringList(this.getXmlThemeIds());
-		case 6: return this.getAggroFormula();
+		case 1: return CMParms.toStringEqList(this.getAutoGenVariables());
         default: break;
         }
 		return "";
@@ -358,12 +350,7 @@ public class StdAutoGenInstance extends StdArea implements AutoGenArea
 		switch(getCodeNum(code))
 		{
 		case 0: setGeneratorXmlPath(val); break;
-		case 1: setAreaSizeFormula(val); break;
-		case 2: setXmlAreaTypeIds(val); break;
-		case 3: setAreaLevelFormula(val); break;
-		case 4: setOtherAutoGenVars(val); break;
-		case 5: setXmlThemeIds(val); break;
-		case 6: setAggroFormula(val); break;
+		case 1: setAutoGenVariables(val); break;
         default: break;
 		}
 	}
@@ -396,21 +383,9 @@ public class StdAutoGenInstance extends StdArea implements AutoGenArea
 		return true;
 	}
 
-	public String getAreaLevelFormula() { return levelFormula;}
-	public String getAreaSizeFormula() { return sizeFormula;}
 	public String getGeneratorXmlPath() { return filePath;}
-	public Map<String, String> getOtherAutoGenVars() { return varMap;}
-	public List<String> getXmlAreaTypeIds() { return typeIds;}
-	public void setAreaLevelFormula(String formula) { levelFormula = formula;}
-	public void setAreaSizeFormula(String formula) { sizeFormula = formula;}
+	public Map<String, String> getAutoGenVariables() { return varMap;}
 	public void setGeneratorXmlPath(String path) { filePath=path;}
-	public void setXmlAreaTypeIds(List<String> list) { typeIds = list;}
-	public void setOtherAutoGenVars(Map<String, String> vars) { varMap = vars;}
-	public void setOtherAutoGenVars(String vars) { setOtherAutoGenVars(CMParms.parseEQParms(vars)); }
-	public void setXmlAreaTypeIds(String commaList) { setXmlAreaTypeIds(CMParms.parseCommas(commaList, true)); }
-	public String getAggroFormula() { return aggroFormula;}
-	public List<String> getXmlThemeIds() { return themeIds;}
-	public void setAggroFormula(String formula) { aggroFormula=formula;}
-	public void setXmlThemeIds(List<String> list) { themeIds=list;}
-	public void setXmlThemeIds(String commaList) { setXmlThemeIds(CMParms.parseCommas(commaList, true)); }
+	public void setAutoGenVariables(Map<String, String> vars) { varMap = vars;}
+	public void setAutoGenVariables(String vars) { setAutoGenVariables(CMParms.parseEQParms(vars)); }
 }

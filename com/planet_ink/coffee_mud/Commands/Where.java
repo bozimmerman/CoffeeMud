@@ -39,8 +39,8 @@ public class Where extends StdCommand
 
 	private final String[] access={"WHERE"};
 	public String[] getAccessWords(){return access;}
-
-    protected void whereAdd(DVector V, String area, int i)
+	
+    protected void whereAdd(DVector V, Area area, int i)
 	{
 		if(V.contains(area)) return;
 
@@ -457,13 +457,13 @@ public class Where extends StdCommand
 						else
 							medianDiff=(int)Math.round(10.0*CMath.div(moblevel,median));
 					}
-					whereAdd(levelsVec,A.name(),medianDiff);
+					whereAdd(levelsVec,A,medianDiff);
 
-					whereAdd(mobsVec,A.name(),A.getAreaIStats()[Area.AREASTAT_POPULATION]);
+					whereAdd(mobsVec,A,A.getAreaIStats()[Area.AREASTAT_POPULATION]);
 
 					int align=A.getAreaIStats()[Area.AREASTAT_MEDALIGN];
 					int alignDiff=((int)Math.abs((double)(alignment-align)));
-					whereAdd(alignVec,A.name(),alignDiff);
+					whereAdd(alignVec,A,alignDiff);
 				}
 			}
 			StringBuffer msg=new StringBuffer("You are currently in: ^H"+mob.location().getArea().name()+"^?\n\r");
@@ -475,28 +475,39 @@ public class Where extends StdCommand
 				Area A=(Area)a.nextElement();
 				if(CMLib.flags().canAccess(mob,A))
 				{
-					int index=levelsVec.indexOf(A.name());
+					int index=levelsVec.indexOf(A);
 					if(index>=0)
 					{
 						Integer I=(Integer)levelsVec.elementAt(index,2);
 						if((I!=null)&&(I.intValue()!=0))
 						{
 							int score=(index+1);
-							index=mobsVec.indexOf(A.name());
+							index=mobsVec.indexOf(A);
 							if(index>=0)
 								score+=(index+1);
 
-							index=alignVec.indexOf(A.name());
+							index=alignVec.indexOf(A);
 							if(index>=0)
 								score+=(index+1);
-							whereAdd(scores,A.name(),score);
+							whereAdd(scores,A,score);
 						}
 					}
 				}
 			}
-			msg.append("\n\r^HThe best areas for you to try appear to be: ^?\n\r");
+			msg.append("\n\r^HThe best areas for you to try appear to be: ^?\n\r\n\r");
+			msg.append("^x"+CMStrings.padRight("Area Name",35)+CMStrings.padRight("Level",6)+CMStrings.padRight("Alignment",20)+CMStrings.padRight("Pop",10)+"^.^?\n\r");
 			for(int i=scores.size()-1;((i>=0)&&(i>=(scores.size()-15)));i--)
-				msg.append(((String)scores.elementAt(i,1))+"\n\r");
+			{
+				Area A=(Area)scores.elementAt(i,1);
+				int lvl=A.getAreaIStats()[Area.AREASTAT_MEDLEVEL];
+				int align=A.getAreaIStats()[Area.AREASTAT_MEDALIGN];
+				
+				msg.append(CMStrings.padRight(A.name(),35))
+				   .append(CMStrings.padRight(Integer.toString(lvl),6))
+				   .append(CMStrings.padRight(CMLib.factions().getRange(CMLib.factions().AlignID(), align).name(),20))
+				   .append(CMStrings.padRight(Integer.toString(A.getAreaIStats()[Area.AREASTAT_POPULATION]),10))
+				   .append("\n\r");
+			}
 			msg.append("\n\r\n\r^HEnter 'HELP (AREA NAME) for more information.^?");
 			if(!mob.isMonster())
 				mob.session().colorOnlyPrintln(msg.toString()+"\n\r");

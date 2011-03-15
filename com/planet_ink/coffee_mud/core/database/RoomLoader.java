@@ -1258,6 +1258,7 @@ public class RoomLoader
 
 	public void DBUpdate(String keyName,Area A)
 	{
+		if((A==null)||(!A.isSavable())) return;
 		if(Log.debugChannelOn()&&(CMSecurity.isDebugging(CMSecurity.DbgFlag.CMAREA)||CMSecurity.isDebugging(CMSecurity.DbgFlag.DBROOMS)))
 			Log.debugOut("RoomLoader","Updating area "+A.name());
 		boolean ignoreType=CMSecurity.isDisabled(CMSecurity.DisFlag.FATAREAS)||CMSecurity.isDisabled(CMSecurity.DisFlag.THINAREAS);
@@ -1329,6 +1330,7 @@ public class RoomLoader
 	public void DBDelete(Area A)
 	{
 		if(A==null) return;
+		if(!A.isSavable()) return;
 		if(Log.debugChannelOn()&&(CMSecurity.isDebugging(CMSecurity.DbgFlag.CMAREA)||CMSecurity.isDebugging(CMSecurity.DbgFlag.DBROOMS)))
 			Log.debugOut("RoomLoader","Destroying area "+A.name());
         A.setAreaState(Area.STATE_STOPPED);

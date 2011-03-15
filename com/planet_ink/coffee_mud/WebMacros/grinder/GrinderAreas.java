@@ -275,29 +275,9 @@ public class GrinderAreas
             if(AGXMLPATH==null)AGXMLPATH="";
             ((AutoGenArea) A).setGeneratorXmlPath(CMLib.coffeeFilter().safetyFilter(AGXMLPATH));
             
-            String AGTYPEIDS=httpReq.getRequestParameter("AGTYPEIDS");
-            if(AGTYPEIDS==null)AGTYPEIDS="";
-            ((AutoGenArea) A).setXmlAreaTypeIds(CMLib.coffeeFilter().safetyFilter(AGTYPEIDS));
-            
-            String AGTHEMIDS=httpReq.getRequestParameter("AGTHEMIDS");
-            if(AGTHEMIDS==null)AGTHEMIDS="";
-            ((AutoGenArea) A).setXmlThemeIds(CMLib.coffeeFilter().safetyFilter(AGTHEMIDS));
-        	
-            String AGSIZEFRM=httpReq.getRequestParameter("AGSIZEFRM");
-            if(AGSIZEFRM==null)AGSIZEFRM="";
-            ((AutoGenArea) A).setAreaSizeFormula(CMLib.coffeeFilter().safetyFilter(AGSIZEFRM));
-            
-            String AGLEVLFRM=httpReq.getRequestParameter("AGLEVLFRM");
-            if(AGLEVLFRM==null)AGLEVLFRM="";
-            ((AutoGenArea) A).setAreaLevelFormula(CMLib.coffeeFilter().safetyFilter(AGLEVLFRM));
-            
             String AGAUTOVAR=httpReq.getRequestParameter("AGAUTOVAR");
             if(AGAUTOVAR==null)AGAUTOVAR="";
-            ((AutoGenArea) A).setOtherAutoGenVars(CMLib.coffeeFilter().safetyFilter(AGAUTOVAR));
-            
-            String AGAGROFRM=httpReq.getRequestParameter("AGAGROFRM");
-            if(AGAGROFRM==null)AGAGROFRM="";
-            ((AutoGenArea) A).setAggroFormula(CMLib.coffeeFilter().safetyFilter(AGAGROFRM));
+            ((AutoGenArea) A).setAutoGenVariables(CMLib.coffeeFilter().safetyFilter(AGAUTOVAR));
         }
         
         // PRICEFACTORS

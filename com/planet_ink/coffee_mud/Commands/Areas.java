@@ -41,21 +41,97 @@ public class Areas extends StdCommand
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
-		StringBuffer msg=new StringBuffer("^HComplete areas list:^?^N\n\r");
 		String expression=null;
+		Enumeration<Area> a=CMLib.map().areas();
+		int addStat=-1;
+		String append="";
+		
+		for(int i=1;i<commands.size();i++)
+		{
+			String s=(String)commands.elementAt(i);
+			if(s.toUpperCase().startsWith("SORT=NA"))
+			{
+				append = " (sorted by name)";
+				commands.remove(i);
+				i--;
+			}
+			else
+			if(s.toUpperCase().startsWith("SORT=REV"))
+			{
+				TreeSet<Area> levelSorted=new TreeSet<Area>(new Comparator<Area>(){
+					public int compare(Area arg0, Area arg1) {
+						return arg1.Name().compareTo(arg0.Name());
+					}
+				});
+				for(;a.hasMoreElements();) levelSorted.add(a.nextElement());
+				a=new IteratorEnumeration<Area>(levelSorted.iterator());
+				append = " (sorted by name, reverse)";
+				commands.remove(i);
+				i--;
+			}
+			else
+			if(s.toUpperCase().startsWith("SORT=LEV"))
+			{
+				TreeSet<Area> levelSorted=new TreeSet<Area>(new Comparator<Area>(){
+					public int compare(Area arg0, Area arg1) {
+						int lvl1=arg0.getAreaIStats()[Area.AREASTAT_MEDLEVEL];
+						int lvl2=arg1.getAreaIStats()[Area.AREASTAT_MEDLEVEL];
+						if(lvl1==lvl2) return 1;
+						return Integer.valueOf(lvl1).compareTo(Integer.valueOf(lvl2));
+					}
+				});
+				for(;a.hasMoreElements();) levelSorted.add(a.nextElement());
+				a=new IteratorEnumeration<Area>(levelSorted.iterator());
+				append = " (sorted by level)";
+				addStat=Area.AREASTAT_MEDLEVEL;
+				commands.remove(i);
+				i--;
+			}
+			else
+			if(s.toUpperCase().startsWith("SORT="))
+			{
+				int statVal=-1;
+				for(int x=0;x<Area.AREASTAT_DESCS.length;x++)
+					if(s.toUpperCase().endsWith("="+Area.AREASTAT_DESCS[x]))
+						statVal=x;
+				if(statVal<0)
+				{
+            		mob.tell("There was an error in your SORT= qualifier: '"+s.substring(5)+"' is unknown.");
+            		return false;
+				}
+				final int sortStat=statVal;
+				TreeSet<Area> levelSorted=new TreeSet<Area>(new Comparator<Area>(){
+					public int compare(Area arg0, Area arg1) {
+						int lvl1=arg0.getAreaIStats()[sortStat];
+						int lvl2=arg1.getAreaIStats()[sortStat];
+						if(lvl1==lvl2) return 1;
+						return Integer.valueOf(lvl1).compareTo(Integer.valueOf(lvl2));
+					}
+				});
+				for(;a.hasMoreElements();) levelSorted.add(a.nextElement());
+				a=new IteratorEnumeration<Area>(levelSorted.iterator());
+				append = " (sorted by "+Area.AREASTAT_DESCS[statVal].toLowerCase()+")";
+				addStat=sortStat;
+				commands.remove(i);
+				i--;
+			}
+		}
+		
+		StringBuffer msg=new StringBuffer("^HComplete areas list"+append+":^?^N\n\r");
 		if(commands.size()>1)
 		{
 			expression=CMParms.combineWithQuotes(commands,1);
-			msg=new StringBuffer("^HFiltered areas list:^?^N\n\r");
+			msg=new StringBuffer("^HFiltered areas list"+append+":^?^N\n\r");
 		}
 		Vector areasVec=new Vector();
         boolean sysop=(mob!=null)&&CMSecurity.isASysOp(mob);
-		for(Enumeration a=CMLib.map().sortedAreas();a.hasMoreElements();)
+		for(;a.hasMoreElements();)
 		{
 			Area A=(Area)a.nextElement();
 			if(CMLib.flags().canAccess(mob,A)&&(!CMath.bset(A.flags(),Area.FLAG_INSTANCE_CHILD)))
             {
-                String name=(!CMLib.flags().isHidden(A))?" "+A.name():"("+A.name()+")";
+				final String levelStr = (addStat>=0?(Integer.toString(A.getAreaIStats()[addStat])+":"):"");
+                String name=levelStr+((!CMLib.flags().isHidden(A))?" "+A.name():"("+A.name()+")");
                 if(sysop)
                 switch(A.getAreaState())
                 {

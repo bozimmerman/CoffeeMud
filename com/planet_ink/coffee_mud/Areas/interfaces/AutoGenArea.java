@@ -41,105 +41,23 @@ public interface AutoGenArea extends Area
 	public void setGeneratorXmlPath(String path);
 	
 	/**
-	 * Get a list of area type ids, for when the xml file contains options 
-	 * @return the list of ids
-	 */
-	public List<String> getXmlAreaTypeIds();
-	
-	/**
-	 * Set a list of area type ids, for when the xml file contains options
-	 * @param list the ids
-	 */
-	public void setXmlAreaTypeIds(List<String> list);
-	
-	/**
-	 * Set a list of area type ids, for when the xml file contains options
-	 * Formula is comma delimited
-	 * @param list the ids
-	 */
-	public void setXmlAreaTypeIds(String commaList);
-	
-	/**
-	 * Get a list of area theme ids, for when the xml file contains options 
-	 * @return the list of ids
-	 */
-	public List<String> getXmlThemeIds();
-	
-	/**
-	 * Set a list of area theme ids, for when the xml file contains options
-	 * @param list the ids
-	 */
-	public void setXmlThemeIds(List<String> list);
-	
-	/**
-	 * Set a list of area theme ids, for when the xml file contains options
-	 * Formula is comma delimited
-	 * @param list the ids
-	 */
-	public void setXmlThemeIds(String commaList);
-	
-	/**
-	 * Get a math formula describing how to set the size of the area
-	 * x1 = level of the first user to enter
-	 * @return the formula 
-	 */
-	public String getAreaSizeFormula();
-	
-	/**
-	 * Set a math formula describing how to set the size of the area
-	 * x1 = level of the first user to enter
-	 * @param formula the size formula
-	 */
-	public void setAreaSizeFormula(String formula);
-	
-	/**
-	 * Get a math formula describing the pct chance that mobs
-	 * are aggressive
-	 * x1 = level of the first user to enter
-	 * @return the formula 
-	 */
-	public String getAggroFormula();
-	
-	/**
-	 * Set a math formula describing the pct chance that mobs
-	 * are aggressive
-	 * x1 = level of the first user to enter
-	 * @param formula the size formula
-	 */
-	public void setAggroFormula(String formula);
-	
-	/**
-	 * Get a math formula describing how to set the mob level for the area
-	 * x1 = level of the first user to enter
-	 * @return the formula
-	 */
-	public String getAreaLevelFormula();
-	
-	/**
-	 * Set a math formula describing how to set the mob level for the area
-	 * x1 = level of the first user to enter
-	 * @param formula the level formula
-	 */
-	public void setAreaLevelFormula(String formula);
-	
-	/**
 	 * Get a miscellaneous, xml-specific set of other vars to set
 	 * when generating a new area
 	 * @return the variable mappings
 	 */
-	public Map<String,String> getOtherAutoGenVars();
+	public Map<String,String> getAutoGenVariables();
 	
 	/**
 	 * Set a miscellaneous, xml-specific set of other vars to set
 	 * when generating a new area
 	 * @param vars the variable mappings
 	 */
-	public void setOtherAutoGenVars(Map<String,String> vars);
+	public void setAutoGenVariables(Map<String,String> vars);
 	
 	/**
 	 * Set a miscellaneous, xml-specific set of other vars to set
 	 * when generating a new area. Format is VAR=VALUE VAR2="VALUE"
 	 * @param vars the variable mappings
 	 */
-	public void setOtherAutoGenVars(String vars);
+	public void setAutoGenVariables(String vars);
 }

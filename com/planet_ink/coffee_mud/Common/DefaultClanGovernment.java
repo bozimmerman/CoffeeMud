@@ -201,6 +201,7 @@ public class DefaultClanGovernment implements ClanGovernment
 		return xpCalculationFormula;
 	}
 	public void setXpCalculationFormulaStr(String newXpCalculationFormula) {
+		if(newXpCalculationFormula==null) newXpCalculationFormula="";
 		xpCalculationFormulaStr = newXpCalculationFormula;
 		if(xpCalculationFormulaStr.trim().length()==0)
 			this.xpCalculationFormula = CMath.compileMathExpression(DEFAULT_XP_FORMULA);

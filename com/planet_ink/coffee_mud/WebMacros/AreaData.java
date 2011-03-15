@@ -534,28 +534,7 @@ public class AreaData extends StdWebMacro
     				{
     					String value=httpReq.getRequestParameter("AGAUTOVAR");
     					if((value==null)||(value.length()==0))
-    						value=CMParms.toStringEqList(AG.getOtherAutoGenVars());
-    					str.append(value);
-    				}
-    				if(parms.containsKey("AGSIZEFRM"))
-    				{
-    					String value=httpReq.getRequestParameter("AGSIZEFRM");
-    					if((value==null)||(value.length()==0))
-    						value=AG.getAreaSizeFormula();
-    					str.append(value);
-    				}
-    				if(parms.containsKey("AGAGROFRM"))
-    				{
-    					String value=httpReq.getRequestParameter("AGAGROFRM");
-    					if((value==null)||(value.length()==0))
-    						value=AG.getAggroFormula();
-    					str.append(value);
-    				}
-    				if(parms.containsKey("AGLEVLFRM"))
-    				{
-    					String value=httpReq.getRequestParameter("AGLEVLFRM");
-    					if((value==null)||(value.length()==0))
-    						value=AG.getAreaLevelFormula();
+    						value=CMParms.toStringEqList(AG.getAutoGenVariables());
     					str.append(value);
     				}
     				if(parms.containsKey("AGXMLPATH"))
@@ -565,21 +544,6 @@ public class AreaData extends StdWebMacro
     						value=AG.getGeneratorXmlPath();
     					str.append(value);
     				}
-    				if(parms.containsKey("AGTYPEIDS"))
-    				{
-    					String value=httpReq.getRequestParameter("AGTYPEIDS");
-    					if((value==null)||(value.length()==0))
-    						value=CMParms.toStringList(AG.getXmlAreaTypeIds());
-    					str.append(value);
-    				}
-    				if(parms.containsKey("AGTHEMIDS"))
-    				{
-    					String value=httpReq.getRequestParameter("AGTHEMIDS");
-    					if((value==null)||(value.length()==0))
-    						value=CMParms.toStringList(AG.getXmlThemeIds());
-    					str.append(value);
-    				}
-                	
                 }
 
 				if(parms.containsKey("SEASON"))
