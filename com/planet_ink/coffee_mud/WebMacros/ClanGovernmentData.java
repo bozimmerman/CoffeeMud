@@ -276,6 +276,12 @@ public class ClanGovernmentData extends StdWebMacro
 					if(old==null) old=Integer.toString(G.getMaxVoteDays());
 					str.append(CMath.s_int(old)+", ");
 				}
+				if(parms.containsKey("XPLEVELFORMULA"))
+				{
+					String old=httpReq.getRequestParameter("XPLEVELFORMULA");
+					if(old==null) old=G.getXpCalculationFormulaStr();
+					str.append(CMath.s_int(old)+", ");
+				}
 				if(parms.containsKey("VOTEQUORUMPCT"))
 				{
 					String old=httpReq.getRequestParameter("VOTEQUORUMPCT");

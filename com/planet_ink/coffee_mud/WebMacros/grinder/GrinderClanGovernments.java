@@ -82,6 +82,8 @@ public class GrinderClanGovernments
             G.setPublic((str==null)?false:str.equalsIgnoreCase("on"));
             str=httpReq.getRequestParameter("ISFAMILYONLY");
             G.setFamilyOnly((str==null)?false:str.equalsIgnoreCase("on"));
+            str=httpReq.getRequestParameter("XPLEVELFORMULA");
+            if(str!=null) G.setXpCalculationFormulaStr(str);
             str=httpReq.getRequestParameter("OVERRIDEMINMEMBERS");
             if(str!=null) G.setOverrideMinMembers((str.trim().length()==0)?null:Integer.valueOf(CMath.s_int(str)));
             str=httpReq.getRequestParameter("CONQUESTENABLED");

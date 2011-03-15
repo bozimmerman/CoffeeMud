@@ -194,7 +194,7 @@ public class DefaultClanGovernment implements ClanGovernment
 		this.voteQuorumPct = voteQuorumPct;
 	}
 	public String getXpCalculationFormulaStr() {
-		return xpCalculationFormulaStr;
+		return xpCalculationFormulaStr==null?"":xpCalculationFormulaStr;
 	}
 	public LinkedList<CMath.CompiledOperation> getXPCalculationFormula()
 	{
@@ -206,7 +206,14 @@ public class DefaultClanGovernment implements ClanGovernment
 		if(xpCalculationFormulaStr.trim().length()==0)
 			this.xpCalculationFormula = CMath.compileMathExpression(DEFAULT_XP_FORMULA);
 		else
+		try
+		{
 			this.xpCalculationFormula = CMath.compileMathExpression(xpCalculationFormulaStr);
+		}
+		catch(Exception e)
+		{
+			Log.errOut("DefaultClanGovernment",e.getMessage());
+		}
 	}
 	public boolean isDefault() {
 		return isDefault;
@@ -326,7 +333,7 @@ public class DefaultClanGovernment implements ClanGovernment
 		case ACCEPTPOS: return (acceptPos < 0 || acceptPos > positions.length) ? "" : positions[acceptPos].getID();
 		case SHORTDESC: return shortDesc;
 		case LONGDESC: return longDesc;
-		case XPLEVELFORMULA: return xpCalculationFormulaStr;
+		case XPLEVELFORMULA: return xpCalculationFormulaStr==null?"":xpCalculationFormulaStr;
 		case REQUIREDMASK: return requiredMaskStr;
 		case ISPUBLIC: return Boolean.toString(isPublic);
 		case ISFAMILYONLY: return Boolean.toString(isFamilyOnly);
