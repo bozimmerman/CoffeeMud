@@ -2315,4 +2315,5 @@ Special/Reserved Quest called holidays can be added to/modified on an area-by-ar
 1. New Area Type: StdAutoGenInstance, for creating random area instances based on random area generator
 2. Player WHERE now displays a more informative table
 3. AREAS command now has sorting options.
-4. LISTS.INI changed to include weather & sun movement.  Each entry can now hold numerous variable entries for variety now! 
+4. LISTS.INI changed to include weather, sun movement, and hit/damage messages.  
+5. Each entry in each list inside LISTS.INI can now hold numerous variable entries for variety now! See the file for examples.

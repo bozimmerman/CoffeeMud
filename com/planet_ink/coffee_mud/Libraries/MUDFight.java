@@ -560,7 +560,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
             // calculate Base Damage (with Strength bonus)
 			String oldHitString="^F^<FIGHT^>"+((weapon!=null)?
 								weapon.hitString(damageInt):
-								standardHitString(Weapon.CLASS_BLUNT,damageInt,item.name()))+"^</FIGHT^>^?";
+								standardHitString(Weapon.TYPE_NATURAL,Weapon.CLASS_BLUNT,damageInt,item.name()))+"^</FIGHT^>^?";
 			CMMsg msg=CMClass.getMsg(source,
 									target,
 									item,
@@ -982,46 +982,52 @@ public class MUDFight extends StdLibrary implements CombatLibrary
                			  	+" ("+prowess+")"));
     }
 
-    public String standardMissString(int weaponType, int weaponClassification, String weaponName, boolean useExtendedMissString)
+    protected int getWeaponAttackIndex(final int weaponType, final int weaponClassification)
     {
-        int dex=3;
         switch(weaponClassification)
         {
-        case Weapon.CLASS_RANGED: dex=0; break;
-        case Weapon.CLASS_THROWN: dex=1; break;
+        case Weapon.CLASS_RANGED: return 0;
+        case Weapon.CLASS_THROWN: return 1;
         default:
             switch(weaponType)
             {
             case Weapon.TYPE_SLASHING:
             case Weapon.TYPE_BASHING:
-                dex=2; break;
+                return 2;
             case Weapon.TYPE_PIERCING:
-                dex=4; break;
+                return 4;
             case Weapon.TYPE_SHOOT:
-                dex=0; break;
+                return 0;
             default:
-                dex=3;
-                break;
+            	return 0;
             }
-            break;
         }
-        if(!useExtendedMissString) return CMProps.getListFileValue(CMProps.SYSTEMLF_MISS_DESCS,dex);
-        return CMStrings.replaceAll(CMProps.getListFileValue(CMProps.SYSTEMLF_WEAPON_MISS_DESCS,dex),"<TOOLNAME>",weaponName)+CMProps.msp("missed.wav",20);
+    }
+    
+    public String standardMissString(final int weaponType, final int weaponClassification, final String weaponName, final boolean useExtendedMissString)
+    {
+    	final int listIndex = getWeaponAttackIndex(weaponType, weaponClassification);
+        if(!useExtendedMissString) return CMProps.getListFileValue(CMProps.SYSTEMLF_MISS_DESCS,listIndex);
+        return CMStrings.replaceAll(CMProps.getListFileValue(CMProps.SYSTEMLF_WEAPON_MISS_DESCS,listIndex),"<TOOLNAME>",weaponName)+CMProps.msp("missed.wav",20);
     }
 
 
-    public String standardHitString(int weaponClass, int damageAmount,  String weaponName)
+    public String standardHitString(final int weaponType, final int weaponClass, final int damageAmount, final String weaponName)
     {
+    	final int listIndex;
         if((weaponName==null)||(weaponName.length()==0))
-            weaponClass=Weapon.CLASS_NATURAL;
+        	listIndex = getWeaponAttackIndex(weaponType, Weapon.CLASS_NATURAL);
+        else
+        	listIndex = getWeaponAttackIndex(weaponType, weaponClass);
+        final StringBuilder str=new StringBuilder(CMStrings.replaceAll(CMProps.getListFileValue(CMProps.SYSTEMLF_WEAPON_HIT_DESCS,listIndex),"<TOOLNAME>",weaponName));
         switch(weaponClass)
         {
         case Weapon.CLASS_RANGED:
-            return "<S-NAME> fire(s) "+weaponName+" at <T-NAMESELF> and <DAMAGE> <T-HIM-HER>."+CMProps.msp("arrow.wav",20);
+            return str.append(CMProps.msp("arrow.wav",20)).toString();
         case Weapon.CLASS_THROWN:
-            return "<S-NAME> throw(s) "+weaponName+" at <T-NAMESELF> and <DAMAGE> <T-HIM-HER>."+CMProps.msp("arrow.wav",20);
+        	return str.append(CMProps.msp("arrow.wav",20)).toString();
         default:
-            return "<S-NAME> <DAMAGE> <T-NAMESELF> with "+weaponName+"."+CMProps.msp("punch"+CMLib.dice().roll(1,7,0)+".wav",20);
+        	return str.append(CMProps.msp("punch"+CMLib.dice().roll(1,7,0)+".wav",20)).toString();
         }
     }
 

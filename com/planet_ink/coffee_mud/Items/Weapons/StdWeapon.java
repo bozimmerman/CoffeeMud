@@ -342,7 +342,7 @@ public class StdWeapon extends StdItem implements Weapon
 	}
 	public String hitString(int damageAmount)
 	{
-		return CMLib.combat().standardHitString(weaponClassification,damageAmount,name());
+		return CMLib.combat().standardHitString(weaponType, weaponClassification,damageAmount,name());
 	}
 	public int minRange()
 	{

@@ -246,20 +246,21 @@ public class CMProps extends Properties
     public static final int SYSTEMLF_TODCHANGE_OUTSIDE=12;
     public static final int SYSTEMLF_TODCHANGE_INSIDE=13;
     public static final int SYSTEMLF_WEATHER_ENDS=14;
-    public static final int SYSTEMLF_WEATHER_CLEAR=15;
-    public static final int SYSTEMLF_WEATHER_CLOUDY=16;
-    public static final int SYSTEMLF_WEATHER_WINDY=17;
-    public static final int SYSTEMLF_WEATHER_RAIN=18;
-    public static final int SYSTEMLF_WEATHER_THUNDERSTORM=19;
-    public static final int SYSTEMLF_WEATHER_SNOW=20;
-    public static final int SYSTEMLF_WEATHER_HAIL=21;
-    public static final int SYSTEMLF_WEATHER_HEAT=22;
-    public static final int SYSTEMLF_WEATHER_SLEET=23;
-    public static final int SYSTEMLF_WEATHER_BLIZZARD=24;
-    public static final int SYSTEMLF_WEATHER_DUST=25;
-    public static final int SYSTEMLF_WEATHER_DROUGHT=26;
-    public static final int SYSTEMLF_WEATHER_COLD=27;
-    public static final int SYSTEMLF_WEATHER_NONE=28;
+    public static final int SYSTEMLF_WEAPON_HIT_DESCS=15;
+    public static final int SYSTEMLF_WEATHER_CLEAR=16; // try to always and forever keep these at the end...
+    public static final int SYSTEMLF_WEATHER_CLOUDY=17;
+    public static final int SYSTEMLF_WEATHER_WINDY=18;
+    public static final int SYSTEMLF_WEATHER_RAIN=19;
+    public static final int SYSTEMLF_WEATHER_THUNDERSTORM=20;
+    public static final int SYSTEMLF_WEATHER_SNOW=21;
+    public static final int SYSTEMLF_WEATHER_HAIL=22;
+    public static final int SYSTEMLF_WEATHER_HEAT=23;
+    public static final int SYSTEMLF_WEATHER_SLEET=24;
+    public static final int SYSTEMLF_WEATHER_BLIZZARD=25;
+    public static final int SYSTEMLF_WEATHER_DUST=26;
+    public static final int SYSTEMLF_WEATHER_DROUGHT=27;
+    public static final int SYSTEMLF_WEATHER_COLD=28;
+    public static final int SYSTEMLF_WEATHER_NONE=29;
     
     public static final String[] SYSTEMLF_KEYS={
                                     "DAMAGE_WORDS_THRESHOLDS",
@@ -277,6 +278,7 @@ public class CMProps extends Properties
                                     "TOD_CHANGE_OUTSIDE",
                                     "TOD_CHANGE_INSIDE",
                                     "WEATHER_ENDS",
+                                    "WEAPON_HIT_DESCS",
                                     "WEATHER_CLEAR",
                                     "WEATHER_CLOUDY",
                                     "WEATHER_WINDY",
