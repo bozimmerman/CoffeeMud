@@ -3350,11 +3350,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
                             else
                             if(M.isSold(ShopKeeper.DEAL_INVENTORYONLY))
                                 ok=true;
-                            if(!ok)
-                            {
-                                mob.tell("The shopkeeper does not sell that.");
-                            }
-                            else
+                            if((ok)||((mob.session()!=null)&&mob.session().confirm("This shopkeeper type does not sell that. Are you sure (y/N)?","N")))
                             {
                                 boolean alreadyHasIt=false;
 
