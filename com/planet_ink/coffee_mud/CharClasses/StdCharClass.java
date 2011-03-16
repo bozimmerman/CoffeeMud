@@ -730,8 +730,7 @@ public class StdCharClass implements CharClass
 			{
 			    if(!CMLib.utensils().armorCheck(msg.source(),(Item)msg.target(),allowedArmorLevel()))
 	    	    {
-	    	    	final String[] choices=CMProps.getSLstFileVar(CMProps.SYSTEMLF_ARMOR_MISFITS);
-	    	    	String choice=choices[CMLib.dice().roll(1,choices.length,-1)];
+	    	    	final String choice=CMProps.getAnyListFileValue(CMProps.SYSTEMLF_ARMOR_MISFITS);
 	    	        msg.addTrailerMsg(CMClass.getMsg(msg.source(),msg.target(),null,CMMsg.TYP_OK_VISUAL,choice,CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null));
 	    	    }
 				break;

@@ -243,6 +243,24 @@ public class CMProps extends Properties
     public static final int SYSTEMLF_EXP_CHART=9;
     public static final int SYSTEMLF_ARMOR_MISFITS=10;
     public static final int SYSTEMLF_MAGIC_WORDS=11;
+    public static final int SYSTEMLF_TODCHANGE_OUTSIDE=12;
+    public static final int SYSTEMLF_TODCHANGE_INSIDE=13;
+    public static final int SYSTEMLF_WEATHER_ENDS=14;
+    public static final int SYSTEMLF_WEATHER_CLEAR=15;
+    public static final int SYSTEMLF_WEATHER_CLOUDY=16;
+    public static final int SYSTEMLF_WEATHER_WINDY=17;
+    public static final int SYSTEMLF_WEATHER_RAIN=18;
+    public static final int SYSTEMLF_WEATHER_THUNDERSTORM=19;
+    public static final int SYSTEMLF_WEATHER_SNOW=20;
+    public static final int SYSTEMLF_WEATHER_HAIL=21;
+    public static final int SYSTEMLF_WEATHER_HEAT=22;
+    public static final int SYSTEMLF_WEATHER_SLEET=23;
+    public static final int SYSTEMLF_WEATHER_BLIZZARD=24;
+    public static final int SYSTEMLF_WEATHER_DUST=25;
+    public static final int SYSTEMLF_WEATHER_DROUGHT=26;
+    public static final int SYSTEMLF_WEATHER_COLD=27;
+    public static final int SYSTEMLF_WEATHER_NONE=28;
+    
     public static final String[] SYSTEMLF_KEYS={
                                     "DAMAGE_WORDS_THRESHOLDS",
                                     "DAMAGE_WORDS",
@@ -255,9 +273,26 @@ public class CMProps extends Properties
                                     "ARMOR_DESCS",
                                     "EXP_CHART",
                                     "ARMOR_MISFITS",
-                                    "MAGIC_WORDS"
+                                    "MAGIC_WORDS",
+                                    "TOD_CHANGE_OUTSIDE",
+                                    "TOD_CHANGE_INSIDE",
+                                    "WEATHER_ENDS",
+                                    "WEATHER_CLEAR",
+                                    "WEATHER_CLOUDY",
+                                    "WEATHER_WINDY",
+                                    "WEATHER_RAIN",
+                                    "WEATHER_THUNDERSTORM",
+                                    "WEATHER_SNOW",
+                                    "WEATHER_HAIL",
+                                    "WEATHER_HEAT_WAVE",
+                                    "WEATHER_SLEET",
+                                    "WEATHER_BLIZZARD",
+                                    "WEATHER_DUSTSTORM",
+                                    "WEATHER_DROUGHT",
+                                    "WEATHER_WINTER_COLD",
+                                    "WEATHER_NONE"
     };
-    public static final int NUMLF_SYSTEM=12;
+    public static final int NUMLF_SYSTEM=SYSTEMLF_KEYS.length;
 
     protected final String[] 	sysVars=new String[NUM_SYSTEM];
     protected final Integer[] 	sysInts=new Integer[NUMI_SYSTEM];
@@ -759,42 +794,47 @@ public class CMProps extends Properties
     	return endVal;
     }
 
-    public static final String getLstFileValue(final String key) 
+    private static final String getRawListFileEntry(final String key) 
     {
         final String listFileName=CMProps.p().getProperty("LISTFILE");
-        synchronized(listFileName.intern())
+        Properties rawListData=(Properties)Resources.getResource("PROPS: " + listFileName);
+        if(rawListData==null)
         {
-            Properties rawListData=(Properties)Resources.getResource("PROPS: " + listFileName);
-            if(rawListData==null)
+            synchronized(listFileName.intern())
             {
-                rawListData=new Properties();
-                final CMFile F=new CMFile(listFileName,null,true);
-                if(F.exists())
+                if(rawListData==null)
                 {
-                    try{
-                        rawListData.load(new InputStreamReader(new ByteArrayInputStream(F.raw()), CMProps.getVar(CMProps.SYSTEM_CHARSETINPUT)));
-                    } catch(IOException e){}
-                }
-                Resources.submitResource("PROPS: " + listFileName, rawListData);
+	                rawListData=new Properties();
+	                final CMFile F=new CMFile(listFileName,null,true);
+	                if(F.exists())
+	                {
+	                    try{
+	                        rawListData.load(new InputStreamReader(new ByteArrayInputStream(F.raw()), CMProps.getVar(CMProps.SYSTEM_CHARSETINPUT)));
+	                    } catch(IOException e){}
+	                }
+	                Resources.submitResource("PROPS: " + listFileName, rawListData);
+	            }
             }
-            return rawListData.getProperty(key);
         }
+        final String val = rawListData.getProperty(key);
+        if(val == null) Log.errOut("CMProps","Unable to load required "+listFileName+" entry: "+key);
+        return val;
     }
 
-    public static final int getILstFileVar(final int var)
+    public static final int getListFileFirstInt(final int var)
     {
         if((var<0)||(var>=NUMLF_SYSTEM)) return -1;
         if(p().sysLstFileLists[var]==null)
-            p().sysLstFileLists[var]=new int[]{(CMath.s_int(getLstFileValue(SYSTEMLF_KEYS[var])))};
+            p().sysLstFileLists[var]=new int[]{(CMath.s_int(getRawListFileEntry(SYSTEMLF_KEYS[var])))};
         return ((int[])p().sysLstFileLists[var])[0];
     }
 
-    public static final int[] getI1LstFileVar(final int var)
+    public static final int[] getListFileIntList(final int var)
     {
         if((var<0)||(var>=NUMLF_SYSTEM)) return new int[0];
         if(p().sysLstFileLists[var]==null)
         {
-        	final Vector<String> V=CMParms.parseCommas(getLstFileValue(SYSTEMLF_KEYS[var]), true);
+        	final Vector<String> V=CMParms.parseCommas(getRawListFileEntry(SYSTEMLF_KEYS[var]), true);
         	final int[] set=new int[V.size()];
             for(int v=0;v<V.size();v++)
                 set[v]=CMath.s_int((String)V.elementAt(v));
@@ -803,28 +843,72 @@ public class CMProps extends Properties
         return ((int[])p().sysLstFileLists[var]);
     }
 
-    public static final String[] getSLstFileVar(final int var)
+    private static final Object[][] getSLstFileVar(final int var)
     {
-        if((var<0)||(var>=NUMLF_SYSTEM)) return new String[0];
-        if(p().sysLstFileLists[var]==null)
-            p().sysLstFileLists[var]=CMParms.toStringArray(CMParms.parseCommas(getLstFileValue(SYSTEMLF_KEYS[var]),true));
-        return (String[])p().sysLstFileLists[var];
-    }
-
-    public static final String[][] getS2LstFileVar(final int var)
-    {
-        if((var<0)||(var>=NUMLF_SYSTEM)) return new String[0][0];
+        if((var<0)||(var>=NUMLF_SYSTEM)) return new Object[0][];
         if(p().sysLstFileLists[var]==null)
         {
-            Vector<String> V=CMParms.parseSemicolons(getLstFileValue(SYSTEMLF_KEYS[var]),true);
-            String[][] set=new String[V.size()][];
-            for(int v=0;v<V.size();v++)
-                set[v]=CMParms.toStringArray(CMParms.parseCommas((String)V.elementAt(v),true));
-            p().sysLstFileLists[var]=set;
+        	final String[] baseArray = CMParms.toStringArray(CMParms.parseCommas(getRawListFileEntry(SYSTEMLF_KEYS[var]),false));
+        	final Object[][] finalArray=new Object[baseArray.length][];
+        	for(int s=0;s<finalArray.length;s++)
+        		if((baseArray[s]==null)||(baseArray[s].length()==0))
+	        		finalArray[s]=new Object[]{""};
+	    		else
+	        		finalArray[s]=CMParms.toStringArray(CMParms.parseAny((String)baseArray[s], '|', false));
+            p().sysLstFileLists[var]=finalArray;
         }
-        return (String[][])p().sysLstFileLists[var];
+        return (Object[][])p().sysLstFileLists[var];
     }
 
+    public static final Object[][][] getListFileGrid(final int var)
+    {
+        if((var<0)||(var>=NUMLF_SYSTEM)) return new String[0][0][];
+        if(p().sysLstFileLists[var]==null)
+        {
+            Vector<String> V=CMParms.parseSemicolons(getRawListFileEntry(SYSTEMLF_KEYS[var]),true);
+            Object[][] subSet=new Object[V.size()][];
+            for(int v=0;v<V.size();v++)
+            	subSet[v]=CMParms.toStringArray(CMParms.parseCommas((String)V.elementAt(v),false));
+            Object[][][] finalSet=new Object[subSet.length][][];
+        	for(int s=0;s<subSet.length;s++)
+        	{
+        		finalSet[s]=new Object[subSet[s].length][];
+            	for(int s1=0;s1<subSet[s].length;s1++)
+            		if((subSet[s][s1]==null)||(((String)subSet[s][s1]).length()==0))
+                		finalSet[s][s1]=new Object[]{""};
+            		else
+            			finalSet[s][s1]=CMParms.toStringArray(CMParms.parseAny((String)subSet[s][s1], '|', false));
+        	}
+            p().sysLstFileLists[var]=finalSet;
+        }
+        return (Object[][][])p().sysLstFileLists[var];
+    }
+
+    public static final String getListFileValue(final int varCode, final int listIndex)
+    {
+    	final Object[] set = getSLstFileVar(varCode)[listIndex];
+    	if(set.length==1) return (String)set[0];
+    	return (String)CMLib.dice().pick(set);
+    }
+    
+    public static final String getListFileValueByHash(final int varCode, final int hash)
+    {
+    	final Object[][] allVars = getSLstFileVar(varCode);
+    	final Object[] set = allVars[hash % allVars.length];
+    	if(set.length==1) return (String)set[0];
+    	return (String)CMLib.dice().pick(set);
+    }
+    
+    public static final int getListFileSize(final int varCode)
+    {
+    	return getSLstFileVar(varCode).length;
+    }
+    
+    public static final String getAnyListFileValue(final int varCode)
+    {
+		return (String)CMLib.dice().doublePick(getSLstFileVar(varCode));
+    }
+    
     public final void resetSystemVars()
     {
         if(CMLib.lang()!=null)

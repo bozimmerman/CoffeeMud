@@ -40,7 +40,6 @@ public class DefaultClimate implements Climate
 	protected int currentWeather=WEATHER_CLEAR;
 	protected int nextWeather=WEATHER_CLEAR;
 	protected int weatherTicker=WEATHER_TICK_DOWN;
-	protected static int windDirection=Directions.NORTH;
 
     public CMObject newInstance(){try{return (CMObject)getClass().newInstance();}catch(Exception e){return new DefaultClimate();}}
     public void initializeClass(){}
@@ -150,7 +149,7 @@ public class DefaultClimate implements Climate
 	public String weatherDescription(Room room)
 	{
 		if(!CMLib.map().hasASky(room))
-			return "^JYou can't tell much about the weather from here.^?";
+			return CMProps.getListFileValue(CMProps.SYSTEMLF_WEATHER_NONE, 0);
 		return getWeatherDescription(room.getArea());
 	}
 	public boolean canSeeTheMoon(Room room, Ability butNotA)
@@ -208,20 +207,8 @@ public class DefaultClimate implements Climate
 	}
 	protected String getWeatherStop(int weatherCode)
 	{
-		switch(weatherCode)
-		{
-		case Climate.WEATHER_HAIL: return "^JThe hailstorm stops.^?";
-		case Climate.WEATHER_CLOUDY: return "^JThe clouds dissipate.^?";
-		case Climate.WEATHER_THUNDERSTORM: return "^JThe thunderstorm stops.^?";
-		case Climate.WEATHER_RAIN: return "^JIt stops raining.^?";
-		case Climate.WEATHER_SNOW: return "^JIt stops snowing.^?";
-		case Climate.WEATHER_WINDY: return "^JThe wind gusts stop.^?";
-		case Climate.WEATHER_WINTER_COLD: return "^JThe cold snap is over.^?";
-		case Climate.WEATHER_HEAT_WAVE: return "^JThe heat wave eases.^?";
-		case Climate.WEATHER_SLEET: return "^JThe sleet stops pouring down.^?";
-		case Climate.WEATHER_DUSTSTORM: return "^JThe dust storm ends.^?";
-		case Climate.WEATHER_DROUGHT: return "^JThe drought is finally over.^?";
-		}
+		if((weatherCode>=0)&&(weatherCode<Climate.NUM_WEATHER))
+			return CMProps.getListFileValue(CMProps.SYSTEMLF_WEATHER_ENDS, weatherCode);
 		return "";
 	}
 
@@ -333,14 +320,6 @@ public class DefaultClimate implements Climate
 			}
 			if(oldWeather!=currentWeather)
 			{
-				switch(CMLib.dice().rollPercentage())
-				{
-				case 1: windDirection=Directions.NORTH; break;
-				case 2: windDirection=Directions.SOUTH; break;
-				case 3: windDirection=Directions.WEST; break;
-				case 4: windDirection=Directions.EAST; break;
-				}
-
 				// 0=say nothing;
 				// 1=say weatherdescription only
 				// 2=say stop word only
@@ -404,152 +383,44 @@ public class DefaultClimate implements Climate
 	protected String theWeatherDescription(Area A, int weather)
 	{
 		StringBuffer desc=new StringBuffer("");
+		if((weather<0)||(weather>=Climate.NUM_WEATHER))
+			return "";
+		final String prefix;
+		//#    NORMAL, WET, COLD (WINTER), HOT (SUMMER), DRY
+		if(((A.climateType()&Area.CLIMASK_COLD)>0)||(A.getTimeObj().getSeasonCode()==TimeClock.SEASON_WINTER))
+			prefix=CMProps.getListFileValue(CMProps.SYSTEMLF_WEATHER_CLEAR + weather, 2);
+		else
+		if(((A.climateType()&Area.CLIMASK_HOT)>0)||(A.getTimeObj().getSeasonCode()==TimeClock.SEASON_SUMMER))
+			prefix=CMProps.getListFileValue(CMProps.SYSTEMLF_WEATHER_CLEAR +weather, 3);
+		else
+		if((A.climateType()&Area.CLIMASK_WET)>0)
+			prefix=CMProps.getListFileValue(CMProps.SYSTEMLF_WEATHER_CLEAR +weather, 1);
+		else
+		if((A.climateType()&Area.CLIMASK_DRY)>0)
+			prefix=CMProps.getListFileValue(CMProps.SYSTEMLF_WEATHER_CLEAR +weather, 4);
+		else
+			prefix=CMProps.getListFileValue(CMProps.SYSTEMLF_WEATHER_CLEAR +weather, 0);
+		final String suffix;
+		if((A.climateType()&Area.CLIMATE_WINDY)>0)
+			suffix=CMProps.getListFileValue(CMProps.SYSTEMLF_WEATHER_CLEAR +weather, 5);
+		else
+			suffix=CMProps.getListFileValue(CMProps.SYSTEMLF_WEATHER_CLEAR +weather, 6);
+		desc.append((suffix.trim().length()>0) ? prefix + " " + suffix : prefix);
 		switch(weather)
 		{
-		case Climate.WEATHER_HAIL:
-			if(((A.climateType()&Area.CLIMASK_COLD)>0)||(A.getTimeObj().getSeasonCode()==TimeClock.SEASON_WINTER))
-				desc.append("Golfball sized clumps of ice ");
-			else
-				desc.append("Light streams of hail ");
-			if((A.climateType()&Area.CLIMATE_WINDY)>0)
-				desc.append("swirl down from above.");
-			else
-				desc.append("fall from the sky.");
-            desc.append(CMProps.msp("hail.wav",10));
-			break;
-		case Climate.WEATHER_HEAT_WAVE:
-			if(((A.climateType()&Area.CLIMASK_COLD)>0)||(A.getTimeObj().getSeasonCode()==TimeClock.SEASON_WINTER))
-				desc.append("It is rather warm.");
-			else
-				desc.append("It is very hot. ");
-			break;
-		case Climate.WEATHER_WINTER_COLD:
-			if(((A.climateType()&Area.CLIMASK_HOT)>0)||(A.getTimeObj().getSeasonCode()==TimeClock.SEASON_SUMMER))
-				desc.append("It is rather cold.");
-			else
-				desc.append("It is very cold. ");
-			break;
-		case Climate.WEATHER_DROUGHT:
-			desc.append("There are horrible drought conditions.");
-			break;
-		case Climate.WEATHER_CLOUDY:
-			if(((A.climateType()&Area.CLIMASK_COLD)>0)||(A.getTimeObj().getSeasonCode()==TimeClock.SEASON_WINTER))
-				desc.append("Grey and gloomy clouds ");
-			else
-			if((A.climateType()&Area.CLIMASK_WET)>0)
-				desc.append("Dark and looming stormclouds ");
-			else
-			if(((A.climateType()&Area.CLIMASK_HOT)>0)||(A.getTimeObj().getSeasonCode()==TimeClock.SEASON_SUMMER))
-				desc.append("Light wisps of cloud ");
-			else
-				desc.append("Fluffy cloudbanks ");
-			if((A.climateType()&Area.CLIMATE_WINDY)>0)
-				desc.append("move across the sky.");
-			else
-				desc.append("obscure the sky.");
-			break;
-		case Climate.WEATHER_THUNDERSTORM:
-			desc.append("A heavy and blusterous rainstorm ");
-			if((A.climateType()&Area.CLIMATE_WINDY)>0)
-				desc.append("swirls all around you.");
-			else
-				desc.append("pours down from above.");
-            desc.append(CMProps.msp("thunderandrain.wav",10));
-			break;
-		case Climate.WEATHER_DUSTSTORM:
-			desc.append("An eye-stinging dust storm ");
-			if((A.climateType()&Area.CLIMATE_WINDY)>0)
-				desc.append("swirls all around you.");
-			else
-				desc.append("blows in from "+Directions.getFromDirectionName(windDirection));
-            desc.append(CMProps.msp("windy.wav",10));
-			break;
-		case Climate.WEATHER_BLIZZARD:
-			desc.append("A thunderous blizzard ");
-			if((A.climateType()&Area.CLIMATE_WINDY)>0)
-				desc.append("swirls all around you.");
-			else
-				desc.append("pours down from above.");
-            desc.append(CMProps.msp("blizzard.wav",10));
-			break;
-		case Climate.WEATHER_CLEAR:
-			if(((A.climateType()&Area.CLIMASK_COLD)>0)||(A.getTimeObj().getSeasonCode()==TimeClock.SEASON_WINTER))
-				desc.append("The weather is cool and clear.");
-			else
-			if(((A.climateType()&Area.CLIMASK_HOT)>0)||(A.getTimeObj().getSeasonCode()==TimeClock.SEASON_SUMMER))
-			{
-				if((A.climateType()&Area.CLIMASK_WET)>0)
-					desc.append("The weather is warm and humid, but clear.");
-				else
-					desc.append("The weather is warm and clear");
-			}
-			else
-				desc.append("The weather is clear.");
-			break;
-		case Climate.WEATHER_RAIN:
-			if(((A.climateType()&Area.CLIMASK_COLD)>0)||(A.getTimeObj().getSeasonCode()==TimeClock.SEASON_WINTER))
-				desc.append("A cold light rain ");
-			else
-			if((A.climateType()&Area.CLIMASK_WET)>0)
-				desc.append("A cool soaking rain ");
-			else
-			if(((A.climateType()&Area.CLIMASK_HOT)>0)||(A.getTimeObj().getSeasonCode()==TimeClock.SEASON_SUMMER))
-				desc.append("A warm rain ");
-			else
-				desc.append("A light rain ");
-			if((A.climateType()&Area.CLIMATE_WINDY)>0)
-				desc.append("swirls down from the sky.");
-			else
-				desc.append("falls from the sky.");
-            desc.append(CMProps.msp("rainlong.wav",10));
-			break;
-		case Climate.WEATHER_SNOW:
-			if(((A.climateType()&Area.CLIMASK_COLD)>0)||(A.getTimeObj().getSeasonCode()==TimeClock.SEASON_WINTER))
-				desc.append("A light snow ");
-			else
-			if((A.climateType()&Area.CLIMASK_WET)>0)
-				desc.append("A slushy snow ");
-			else
-			if(((A.climateType()&Area.CLIMASK_HOT)>0)||(A.getTimeObj().getSeasonCode()==TimeClock.SEASON_SUMMER))
-				desc.append("A freakish snow ");
-			else
-				desc.append("An unseasonable snow ");
-			if((A.climateType()&Area.CLIMATE_WINDY)>0)
-				desc.append("swirls down from the sky.");
-			else
-				desc.append("falls from the sky.");
-			break;
-		case Climate.WEATHER_SLEET:
-			if(((A.climateType()&Area.CLIMASK_COLD)>0)||(A.getTimeObj().getSeasonCode()==TimeClock.SEASON_WINTER))
-				desc.append("A sleet storm ");
-			else
-			if((A.climateType()&Area.CLIMASK_WET)>0)
-				desc.append("A slushy snow ");
-			else
-			if(((A.climateType()&Area.CLIMASK_HOT)>0)||(A.getTimeObj().getSeasonCode()==TimeClock.SEASON_SUMMER))
-				desc.append("A freakish sleet storm ");
-			else
-				desc.append("An unseasonable sleet storm ");
-			if((A.climateType()&Area.CLIMATE_WINDY)>0)
-				desc.append("swirls down from the sky.");
-			else
-				desc.append("falls from the sky.");
-            desc.append(CMProps.msp("rain.wav",10));
-			break;
-		case Climate.WEATHER_WINDY:
-			if(((A.climateType()&Area.CLIMASK_COLD)>0)||(A.getTimeObj().getSeasonCode()==TimeClock.SEASON_WINTER))
-				desc.append("A cold "+(((A.climateType()&Area.CLIMASK_DRY)>0)?"dry ":"")+"wind ");
-			else
-			if((A.climateType()&Area.CLIMASK_WET)>0)
-				desc.append("A forboding gust of wind ");
-			else
-			if(((A.climateType()&Area.CLIMASK_HOT)>0)||(A.getTimeObj().getSeasonCode()==TimeClock.SEASON_SUMMER))
-				desc.append("A hot "+(((A.climateType()&Area.CLIMASK_DRY)>0)?"dry ":"")+"wind ");
-			else
-				desc.append("A light "+(((A.climateType()&Area.CLIMASK_DRY)>0)?"dry ":"")+"wind ");
-			desc.append("blows from "+Directions.getFromDirectionName(windDirection)+".");
-            desc.append(CMProps.msp("wind.wav",10));
-			break;
+		case Climate.WEATHER_HAIL: desc.append(CMProps.msp("hail.wav",10)); break;
+		case Climate.WEATHER_HEAT_WAVE: break;
+		case Climate.WEATHER_WINTER_COLD: break;
+		case Climate.WEATHER_DROUGHT: break;
+		case Climate.WEATHER_CLOUDY: break;
+		case Climate.WEATHER_THUNDERSTORM: break;
+		case Climate.WEATHER_DUSTSTORM: desc.append(CMProps.msp("windy.wav",10)); break;
+		case Climate.WEATHER_BLIZZARD: desc.append(CMProps.msp("blizzard.wav",10)); break;
+		case Climate.WEATHER_CLEAR: break;
+		case Climate.WEATHER_RAIN: desc.append(CMProps.msp("rainlong.wav",10)); break;
+		case Climate.WEATHER_SNOW: break;
+		case Climate.WEATHER_SLEET: desc.append(CMProps.msp("rain.wav",10)); break;
+		case Climate.WEATHER_WINDY: desc.append(CMProps.msp("wind.wav",10)); break;
 		}
 		return "^J"+desc.toString()+"^?";
 	}

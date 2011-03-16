@@ -337,33 +337,15 @@ public class DefaultTimeClock implements TimeClock
 								&&(!CMLib.flags().isSleeping(mob))
 								&&(CMLib.flags().canSee(mob)))
 								{
-									switch(getTODCode())
-									{
-									case TimeClock.TIME_DAWN:
-										mob.tell("^JThe sun begins to rise in the west.^?");
-										break;
-									case TimeClock.TIME_DAY:
-										break;
-										//mob.tell("The sun is now shining brightly."); break;
-									case TimeClock.TIME_DUSK:
-										mob.tell("^JThe sun begins to set in the east.^?"); break;
-									case TimeClock.TIME_NIGHT:
-										mob.tell("^JThe sun has set and darkness again covers the world.^?"); break;
-									}
+									final String message = CMProps.getListFileValue(CMProps.SYSTEMLF_TODCHANGE_OUTSIDE, getTODCode());
+									if(message.trim().length()>0)
+										mob.tell(message);
 								}
 								else
 								{
-									switch(getTODCode())
-									{
-									case TimeClock.TIME_DAWN:
-										mob.tell("It is now daytime."); break;
-									case TimeClock.TIME_DAY: break;
-										//mob.tell("The sun is now shining brightly."); break;
-									case TimeClock.TIME_DUSK: break;
-										//mob.tell("It is almost nighttime."); break;
-									case TimeClock.TIME_NIGHT:
-										mob.tell("It is nighttime."); break;
-									}
+									final String message = CMProps.getListFileValue(CMProps.SYSTEMLF_TODCHANGE_INSIDE, getTODCode());
+									if(message.trim().length()>0)
+										mob.tell(message);
 								}
 							}
 						}

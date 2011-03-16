@@ -84,7 +84,7 @@ public class Prop_ClanEquipment extends Property
     protected String clanType="";
     String lastMessage=null;
     protected CharStats EQadjCharStats=null;
-    protected String secretWord=CMProps.getSLstFileVar(CMProps.SYSTEMLF_MAGIC_WORDS)[CMLib.dice().roll(1,CMProps.getSLstFileVar(CMProps.SYSTEMLF_MAGIC_WORDS).length,0)-1];
+    protected String secretWord=CMProps.getAnyListFileValue(CMProps.SYSTEMLF_MAGIC_WORDS);;
 
     public String accountForYourself()
     {
@@ -226,7 +226,7 @@ public class Prop_ClanEquipment extends Property
         {
             hash=hash*-1;
         }
-        return CMProps.getSLstFileVar(CMProps.SYSTEMLF_MAGIC_WORDS)[hash%CMProps.getSLstFileVar(CMProps.SYSTEMLF_MAGIC_WORDS).length];
+        return CMProps.getListFileValueByHash(CMProps.SYSTEMLF_MAGIC_WORDS,hash);
     }
 
     /*

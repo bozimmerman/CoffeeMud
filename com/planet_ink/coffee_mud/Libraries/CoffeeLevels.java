@@ -357,7 +357,7 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 	public int getLevelExperience(int level)
 	{
 		if(level<0) return 0;
-		int[] levelingChart = CMProps.getI1LstFileVar(CMProps.SYSTEMLF_EXP_CHART);
+		int[] levelingChart = CMProps.getListFileIntList(CMProps.SYSTEMLF_EXP_CHART);
 		if(level<levelingChart.length)
 		    return levelingChart[level];
 		int lastDiff=levelingChart[levelingChart.length-1] - levelingChart[levelingChart.length-2];

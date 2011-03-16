@@ -88,6 +88,26 @@ public class Dice extends StdLibrary implements DiceLibrary
 		int p=(((code-(r<<23))-(d<<15)));
 		return roll(r,d,p);
 	}
+
+	public Object doublePick(Object[][] set)
+	{
+    	if(set.length==0) return null;
+    	final Object[] sset = set[randomizer.nextInt(set.length)];
+    	if(sset.length==0) return null;
+    	return sset[randomizer.nextInt(sset.length)];
+	}
+	
+    public Object pick(Object[] set) 
+    {
+    	if(set.length==0) return null;
+    	return set[randomizer.nextInt(set.length)];
+    }
+    
+    public Object pick(List<? extends Object> set) 
+    {
+    	if(set.size()==0) return null;
+    	return set.get(randomizer.nextInt(set.size()));
+    }
 	
 	public int getHPCode(String str)
 	{
