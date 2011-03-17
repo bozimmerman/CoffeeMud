@@ -84,7 +84,7 @@ public class Prop_ClanEquipment extends Property
     protected String clanType="";
     String lastMessage=null;
     protected CharStats EQadjCharStats=null;
-    protected String secretWord=CMProps.getAnyListFileValue(CMProps.SYSTEMLF_MAGIC_WORDS);;
+    protected String secretWord=CMProps.getAnyListFileValue(CMProps.SYSTEMLF_MAGIC_WORDS);
 
     public String accountForYourself()
     {
