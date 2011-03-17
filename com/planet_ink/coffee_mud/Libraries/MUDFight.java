@@ -999,7 +999,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
             case Weapon.TYPE_SHOOT:
                 return 0;
             default:
-            	return 0;
+            	return 3;
             }
         }
     }
