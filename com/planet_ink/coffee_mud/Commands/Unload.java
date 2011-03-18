@@ -38,7 +38,7 @@ public class Unload extends StdCommand
 
 	private final String[] access={"UNLOAD"};
 	public String[] getAccessWords(){return access;}
-	final String[] ARCHON_LIST={"CLASS", "HELP", "USER", "AREA", "FACTION", "ALL", "[FILENAME]"};
+	final String[] ARCHON_LIST={"CLASS", "HELP", "USER", "AREA", "FACTION", "ALL", "INIFILE", "[FILENAME]"};
 	
 	
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
@@ -142,11 +142,20 @@ public class Unload extends StdCommand
 				mob.tell("No access to help.");
 			}
 			else
+			if(str.equalsIgnoreCase("inifile"))
+			{
+				CMProps.instance().resetSecurityVars();
+				CMProps.instance().resetSystemVars();
+				mob.tell("INI file entries have been unloaded.");
+			}
+			else
 			if((str.equalsIgnoreCase("all"))&&(CMSecurity.isASysOp(mob)))
 			{
 				mob.tell("All soft resources unloaded.");
 	            CMLib.factions().removeFaction(null);
 				Resources.clearResources();
+				CMProps.instance().resetSecurityVars();
+				CMProps.instance().resetSystemVars();
 				CMLib.help().unloadHelpFile(mob);
 				return false;
 			}

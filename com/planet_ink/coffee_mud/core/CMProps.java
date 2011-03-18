@@ -798,15 +798,15 @@ public class CMProps extends Properties
 
     private static final String getRawListFileEntry(final String key) 
     {
-        final String listFileName=CMProps.p().getProperty("LISTFILE");
-        Properties rawListData=(Properties)Resources.getResource("PROPS: " + listFileName);
+        Properties rawListData=(Properties)Resources.getResource("PARSED_LISTFILE");
         if(rawListData==null)
         {
-            synchronized(listFileName.intern())
+            synchronized("PARSED_LISTFILE".intern())
             {
                 if(rawListData==null)
                 {
 	                rawListData=new Properties();
+	                final String listFileName=CMProps.p().getProperty("LISTFILE");
 	                final CMFile F=new CMFile(listFileName,null,true);
 	                if(F.exists())
 	                {
@@ -814,12 +814,15 @@ public class CMProps extends Properties
 	                        rawListData.load(new InputStreamReader(new ByteArrayInputStream(F.raw()), CMProps.getVar(CMProps.SYSTEM_CHARSETINPUT)));
 	                    } catch(IOException e){}
 	                }
-	                Resources.submitResource("PROPS: " + listFileName, rawListData);
+	                Resources.submitResource("PARSED_LISTFILE", rawListData);
+	                final Object[] set=p().sysLstFileLists; 
+	                for(int i=0;i<set.length;i++)
+	                	set[i]=null;
 	            }
             }
         }
         final String val = rawListData.getProperty(key);
-        if(val == null) Log.errOut("CMProps","Unable to load required "+listFileName+" entry: "+key);
+        if(val == null) Log.errOut("CMProps","Unable to load required list file entry: "+key);
         return val;
     }
 

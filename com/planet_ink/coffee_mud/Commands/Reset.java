@@ -322,6 +322,13 @@ public class Reset extends StdCommand
             else
                 mob.tell("Cancelled.");
 		}
+        else
+		if(s.equalsIgnoreCase("INIFILE")||s.equalsIgnoreCase("coffeemud.ini"))
+		{
+			CMProps.instance().resetSecurityVars();
+			CMProps.instance().resetSystemVars();
+            mob.tell("Done.");
+		}
 		else
 		if(s.equalsIgnoreCase("area"))
 		{
