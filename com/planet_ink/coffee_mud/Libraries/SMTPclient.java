@@ -294,6 +294,10 @@ public class SMTPclient extends StdLibrary implements SMTPLibrary, SMTPLibrary.S
 										 String message)
 		throws IOException
 	{
+    	froaddress=froaddress.replace(' ','_');
+    	reply_address=reply_address.replace(' ','_');
+    	to_address=to_address.replace(' ','_');
+    	
     	if(CMSecurity.isDisabled(CMSecurity.DisFlag.SMTPCLIENT))
     	{
     		Log.debugOut("SMTPclient", "Message not sent: "+froaddress+"/"+reply_address+"/"+to_address+"/"+mockto_address+"/"+subject+"/"+message);
