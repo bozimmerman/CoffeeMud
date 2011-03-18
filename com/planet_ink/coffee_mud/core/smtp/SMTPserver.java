@@ -515,8 +515,6 @@ public class SMTPserver extends Thread implements Tickable
 													CMLib.database().DBWriteJournal(journalName,from,to2,subj,s);
 											}
 										}
-										else
-											CMLib.database().DBDeleteJournal(journalName,key);
 									}
 								}
 								if(!keepall)
