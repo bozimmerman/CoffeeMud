@@ -99,7 +99,18 @@ public class FileMgr extends StdWebMacro
 			String filePath=path;
 			if((filePath.length()>2)&&(!filePath.endsWith("/")))
 				filePath+="/";
-            CMFile F=new CMFile(filePath+file,M,false);
+			String prefix="";
+			if(parms.containsKey("VFS")||parms.containsKey("LOCAL")||parms.containsKey("BOTH")) 
+			{
+				if(filePath.startsWith("//")||filePath.startsWith("::"))
+					filePath=filePath.substring(2);
+				if(parms.containsKey("VFS")||parms.containsKey("BOTH"))
+					prefix="::";
+				else
+				if(parms.containsKey("LOCAL"))
+					prefix="//";
+			}
+            CMFile F=new CMFile(prefix+filePath+file,M,false);
             String last=F.getVFSPathAndName();
 			if(parms.containsKey("DELETE"))
 			{
@@ -116,6 +127,44 @@ public class FileMgr extends StdWebMacro
 			{
 				String s=httpReq.getRequestParameter("RAWTEXT");
 				if(s==null) return "File `"+last+"` not updated -- no buffer!";
+				if(parms.containsKey("VFS")||parms.containsKey("LOCAL")||parms.containsKey("BOTH")) 
+				{
+					StringBuilder returnMsg=new StringBuilder("");
+					if(!parms.containsKey("VFS") && !parms.containsKey("BOTH"))
+					{
+	                    CMFile dF=new CMFile("::"+filePath+file,M,false);
+	                    if(dF.canVFSEquiv())
+	                    {
+							if(!dF.deleteVFS())
+			                    returnMsg.append("File `::"+last+"` not deleted -- error!  ");
+							else
+			                    returnMsg.append("File `::"+last+"` successfully deleted");
+	                    }
+					}
+					if(!parms.containsKey("LOCAL") && !parms.containsKey("BOTH"))
+					{
+	                    CMFile dF=new CMFile("//"+filePath+file,M,false);
+	                    if(dF.canLocalEquiv())
+	                    {
+							if(!dF.deleteLocal())
+			                    returnMsg.append("File `//"+last+"` not deleted -- error!  ");
+							else
+			                    returnMsg.append("File `//"+last+"` successfully deleted");
+	                    }
+					}
+	                if((!F.canWrite())
+	                ||(!F.saveText(s)))
+	                    returnMsg.append("File `"+prefix+last+"` not updated -- error!");
+	                if(parms.containsKey("BOTH"))
+	                {
+	                    F=new CMFile("//"+filePath+file,M,false);
+		                if((!F.canWrite())
+		                ||(!F.saveText(s)))
+		                    returnMsg.append("File `//"+last+"` not updated -- error!");
+	                }
+	                if(returnMsg.length()>0) return returnMsg.toString();
+				}
+				else
                 if((!F.canWrite())||(!F.saveText(s)))
                 {
             		F=new CMFile("::"+filePath+file,M,false);
