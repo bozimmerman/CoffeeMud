@@ -254,7 +254,7 @@ public class JournalLoader
 			ResultSet R=D.query(str);
 			int cardinal=0;
 			JournalsLibrary.JournalEntry entry; 
-			while((cardinal < limit) && R.next())
+			while(((cardinal < limit)||(limit==0)) && R.next())
 			{
 				entry = DBReadJournalEntry(R); 
 				if((parent!=null)&&(CMath.bset(entry.attributes,JournalsLibrary.JournalEntry.ATTRIBUTE_STUCKY)))
@@ -262,6 +262,7 @@ public class JournalLoader
 				entry.cardinal = ++cardinal;
 				journal.addElement(entry);
 			}
+			if(CMSecurity.isDebugging(CMSecurity.DbgFlag.CMJRNL)) Log.debugOut("JournalLoader","Query ("+journal.size()+"): "+str);
 			if((journal.size()>0)&&(parent!=null)) // set last entry -- make sure its not stucky
 			{
 				journal.lastElement().isLastEntry=true;
@@ -422,7 +423,9 @@ public class JournalLoader
 		subject = DB.injectionClean(subject);
 		msg = DB.injectionClean(msg);
 		
-		DB.updateWithClobs("UPDATE CMJRNL SET CMSUBJ='"+subject+"', CMMSGT=?, CMATTR="+newAttributes+" WHERE CMJKEY='"+key+"'",msg);
+		String sql="UPDATE CMJRNL SET CMSUBJ=?, CMMSGT=?, CMATTR="+newAttributes+" WHERE CMJKEY='"+key+"'";
+		if(CMSecurity.isDebugging(CMSecurity.DbgFlag.CMJRNL)) Log.debugOut("JournalLoader",sql);
+		DB.updateWithClobs(sql,subject,msg);
 	}
 	
 	public void DBUpdateJournal(String Journal, JournalsLibrary.JournalEntry entry)
@@ -437,41 +440,51 @@ public class JournalLoader
 		entry.subj = DB.injectionClean(entry.subj);
 		entry.to = DB.injectionClean(entry.to);
 		
-		DB.update("UPDATE CMJRNL SET "
-				 +"CMFROM='"+entry.from+"', "
-				 +"CMDATE="+entry.date+" , "
-				 +"CMTONM='"+entry.to+"' "
-				 +"CMSUBJ='"+entry.subj+"' "
-				 +"CMPART='"+entry.parent+"' "
-				 +"CMATTR="+entry.attributes+" "
-				 +"CMDATA='"+entry.data+"' "
-				 +"WHERE CMJRNL='"+Journal+"' AND CMJKEY='"+entry.key+"'");
-		DB.updateWithClobs("UPDATE CMJRNL SET "
-				 +"CMUPTM="+entry.update+", "
-				 +"CMIMGP='"+entry.msgIcon+"', "
-				 +"CMVIEW="+entry.views+", "
-				 +"CMREPL="+entry.replies+", "
-				 +"CMMSGT=? "
-				 +"WHERE CMJRNL='"+Journal+"' AND CMJKEY='"+entry.key+"'",
-				 entry.msg);
+		String sql="UPDATE CMJRNL SET "
+			  +"CMFROM='"+entry.from+"' , "
+			  +"CMDATE='"+entry.date+"' , "
+			  +"CMTONM='"+entry.to+"' , "
+			  +"CMSUBJ=? ,"
+			  +"CMPART='"+entry.parent+"' ,"
+			  +"CMATTR="+entry.attributes+" ,"
+			  +"CMDATA='"+entry.data+"' "
+			  +"WHERE CMJRNL='"+Journal+"' AND CMJKEY='"+entry.key+"'";
+		if(CMSecurity.isDebugging(CMSecurity.DbgFlag.CMJRNL)) Log.debugOut("JournalLoader",sql);
+		DB.updateWithClobs(sql,entry.subj);
+		
+		sql="UPDATE CMJRNL SET "
+			  +"CMUPTM="+entry.update+", "
+			  +"CMIMGP='"+entry.msgIcon+"', "
+			  +"CMVIEW="+entry.views+", "
+			  +"CMREPL="+entry.replies+", "
+			  +"CMMSGT=? "
+			  +"WHERE CMJRNL='"+Journal+"' AND CMJKEY='"+entry.key+"'";
+		if(CMSecurity.isDebugging(CMSecurity.DbgFlag.CMJRNL)) Log.debugOut("JournalLoader",sql);
+		DB.updateWithClobs(sql, entry.msg);
 	}
 	
 	public void DBTouchJournalMessage(String key)
 	{
 		key = DB.injectionClean(key);
-		DB.update("UPDATE CMJRNL SET CMUPTM="+System.currentTimeMillis()+" WHERE CMJKEY='"+key+"'");
+		String sql="UPDATE CMJRNL SET CMUPTM="+System.currentTimeMillis()+" WHERE CMJKEY='"+key+"'";
+		if(CMSecurity.isDebugging(CMSecurity.DbgFlag.CMJRNL)) Log.debugOut("JournalLoader",sql);
+		DB.update(sql);
 	}
 	
 	public void DBUpdateMessageReplies(String key, int numReplies)
 	{
 		key = DB.injectionClean(key);
-		DB.update("UPDATE CMJRNL SET CMUPTM="+System.currentTimeMillis()+", CMREPL="+numReplies+" WHERE CMJKEY='"+key+"'");
+		String sql="UPDATE CMJRNL SET CMUPTM="+System.currentTimeMillis()+", CMREPL="+numReplies+" WHERE CMJKEY='"+key+"'";
+		if(CMSecurity.isDebugging(CMSecurity.DbgFlag.CMJRNL)) Log.debugOut("JournalLoader",sql);
+		DB.update(sql);
 	}
 	
 	public void DBViewJournalMessage(String key, int views)
 	{
 		key = DB.injectionClean(key);
-		DB.update("UPDATE CMJRNL SET CMVIEW="+views+" WHERE CMJKEY='"+key+"'");
+		String sql="UPDATE CMJRNL SET CMVIEW="+views+" WHERE CMJKEY='"+key+"'";
+		if(CMSecurity.isDebugging(CMSecurity.DbgFlag.CMJRNL)) Log.debugOut("JournalLoader",sql);
+		DB.update(sql);
 	}
 	
 	public void DBDeletePlayerData(String name)
@@ -658,14 +671,17 @@ public class JournalLoader
 		if(Journal==null) return;
 		synchronized(Journal.toUpperCase().intern())
 		{
+			String sql;
 			if(key!=null)
 			{
-				DB.update("DELETE FROM CMJRNL WHERE CMJKEY='"+key+"' OR CMPART='"+key+"'");
+				sql="DELETE FROM CMJRNL WHERE CMJKEY='"+key+"' OR CMPART='"+key+"'";
 			}
 			else
 			{
-				DB.update("DELETE FROM CMJRNL WHERE CMJRNL='"+Journal+"'");
+				sql="DELETE FROM CMJRNL WHERE CMJRNL='"+Journal+"'";
 			}
+			if(CMSecurity.isDebugging(CMSecurity.DbgFlag.CMJRNL)) Log.debugOut("JournalLoader",sql);
+			DB.update(sql);
 		}
 	}
 	
@@ -696,30 +712,41 @@ public class JournalLoader
 			 +"^yReply from^N: "+from+"%0D"
 			 +"^yDate/Time ^N: "+CMLib.time().date2String(now)+"%0D"
 			 +message;
-			DB.updateWithClobs("UPDATE CMJRNL SET CMUPTM="+now+", CMMSGT=?, CMREPL="+replies+" WHERE CMJKEY='"+oldkey+"'",message);
+			String sql="UPDATE CMJRNL SET CMUPTM="+now+", CMMSGT=?, CMREPL="+replies+" WHERE CMJKEY='"+oldkey+"'";
+			if(CMSecurity.isDebugging(CMSecurity.DbgFlag.CMJRNL)) Log.debugOut("JournalLoader",sql);
+			DB.updateWithClobs(sql,message);
 		}
 	}
 	
-	public void DBWrite(String Journal,
-						String from, 
-						String to, 
-						String subject,
-						String message)
+	public void DBWrite(String Journal, String from, String to, String subject, String message)
+	{
+		DBWrite(Journal, "", from, to, subject, message);
+	}
+	
+	public void DBWrite(String Journal, String journalSource, String from, String to, String subject, String message)
+	{
+		DBWrite(Journal,journalSource,from,to,"",subject,message);
+	}
+	public void DBWrite(String Journal, String journalSource, String from, String to, String parentKey, String subject, String message)
 	{
 		Journal = DB.injectionClean(Journal);
 		from = DB.injectionClean(from);
 		to = DB.injectionClean(to);
 		subject = DB.injectionClean(subject);
+		parentKey = DB.injectionClean(parentKey);
 		message = DB.injectionClean(message);
+		journalSource = DB.injectionClean(journalSource);
 		
 		JournalsLibrary.JournalEntry entry = new JournalsLibrary.JournalEntry();
 		entry.key=null;
+		entry.data=journalSource;
 		entry.from=from;
 		entry.date=System.currentTimeMillis();
 		entry.to=to;
 		entry.subj=subject;
 		entry.msg=message;
 		entry.update=System.currentTimeMillis();
+		entry.parent=parentKey;
 		DBWrite(Journal, entry);
 	}
 	
@@ -748,38 +775,38 @@ public class JournalLoader
 				entry.date=now;
 			if(entry.update==0)
 				entry.update=now;
-			DB.updateWithClobs(
-			"INSERT INTO CMJRNL ("
-			+"CMJKEY, "
-			+"CMJRNL, "
-			+"CMFROM, "
-			+"CMDATE, "
-			+"CMTONM, "
-			+"CMSUBJ, "
-			+"CMPART, "
-			+"CMATTR, "
-			+"CMDATA, "
-			+"CMUPTM, "
-			+"CMIMGP, "
-			+"CMVIEW, "
-			+"CMREPL, "
-			+"CMMSGT "
-			+") VALUES ('"
-			+entry.key
-			+"','"+Journal
-			+"','"+entry.from
-			+"','"+entry.date
-			+"','"+entry.to
-			+"','"+entry.subj
-			+"','"+entry.parent
-			+"',"+entry.attributes
-			+",'"+entry.data
-			+"',"+entry.update
-			+",'"+entry.msgIcon
-			+"',"+entry.views
-			+","+entry.replies
-			+",?)",
-			entry.msg);
+			String sql = "INSERT INTO CMJRNL ("
+				+"CMJKEY, "
+				+"CMJRNL, "
+				+"CMFROM, "
+				+"CMDATE, "
+				+"CMTONM, "
+				+"CMSUBJ, "
+				+"CMPART, "
+				+"CMATTR, "
+				+"CMDATA, "
+				+"CMUPTM, "
+				+"CMIMGP, "
+				+"CMVIEW, "
+				+"CMREPL, "
+				+"CMMSGT "
+				+") VALUES ('"
+				+entry.key
+				+"','"+Journal
+				+"','"+entry.from
+				+"','"+entry.date
+				+"','"+entry.to
+				+"',?"
+				+",'"+entry.parent
+				+"',"+entry.attributes
+				+",'"+entry.data
+				+"',"+entry.update
+				+",'"+entry.msgIcon
+				+"',"+entry.views
+				+","+entry.replies
+				+",?)";
+			if(CMSecurity.isDebugging(CMSecurity.DbgFlag.CMJRNL)) Log.debugOut("JournalLoader",sql);
+			DB.updateWithClobs(sql , entry.subj, entry.msg);
 			if((entry.parent!=null)&&(entry.parent.length()>0))
 			{
 				// this constitutes a threaded reply -- update the counter

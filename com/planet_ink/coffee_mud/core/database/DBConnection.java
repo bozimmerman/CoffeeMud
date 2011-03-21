@@ -298,6 +298,7 @@ public class DBConnection
 			}
 			catch(SQLException e)
 			{
+				Log.errOut("DBConnection",e.getMessage());
 				sqlserver=false;
 				myConnection=null;
 				failuresInARow++;

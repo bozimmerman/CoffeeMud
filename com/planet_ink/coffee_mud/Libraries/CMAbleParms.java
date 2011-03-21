@@ -676,6 +676,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
             }
             Log.sysOut("CMAbleParms","User: "+mob.Name()+" modified "+(saveToVFS?"VFS":"Local")+" file "+recipeFilename);
             Resources.removeResource("PARSED: "+recipeFilename);
+            Resources.removeMultiLists(recipeFilename);
         }
     }
     

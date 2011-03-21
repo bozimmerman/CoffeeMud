@@ -132,8 +132,7 @@ public class DBConnector
 	public int updateWithClobs(String[] updateStrings, String[][][] values){ return (dbConnections!=null)?dbConnections.updateWithClobs(updateStrings,values):0;}
 	public int updateWithClobs(final List<DBPreparedBatchEntry> entries) { return (dbConnections!=null)?dbConnections.updateWithClobs(entries):0; }
 	public int updateWithClobs(final DBPreparedBatchEntry entry) { return updateWithClobs(entry.sql,entry.clobs); }
-	public int updateWithClobs(final String updateString, final String values) { return updateWithClobs(updateString, new String[][]{{values}}); }
-	public int updateWithClobs(final String updateString, final String[] values) { return updateWithClobs(updateString, new String[][]{values}); }
+	public int updateWithClobs(final String updateString, final String... values) { return updateWithClobs(updateString, new String[][]{values}); }
 	public int updateWithClobs(final String updateString, final String[][] values) { return (dbConnections!=null)?dbConnections.updateWithClobs(updateString, values):0; }
 	
 	public int queryRows(String queryString){ return (dbConnections!=null)?dbConnections.queryRows(queryString):0;}

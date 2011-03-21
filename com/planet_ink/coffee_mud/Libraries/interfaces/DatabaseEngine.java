@@ -118,7 +118,9 @@ public interface DatabaseEngine extends CMLibrary
 	public int DBCountJournal(String Journal, String from, String to);
 	public void DBWriteJournal(String Journal, JournalsLibrary.JournalEntry entry);
 	public void DBWriteJournal(String Journal, String from, String to, String subject, String message);
+	public void DBWriteJournalEmail(String MailBox, String journalSource, String from, String to, String subject, String message);
 	public void DBWriteJournalReply(String Journal, String key, String from, String to, String subject, String message);
+	public void DBWriteJournalChild(String Journal, String journalSource, String from, String to, String parentKey, String subject, String message);
 	public void DBDeleteJournal(String Journal, String msgKeyOrNull);
     public String DBGetRealJournalName(String possibleName);
 	public long[] DBJournalLatestDateNewerThan(String Journal, String to, long olderTime);

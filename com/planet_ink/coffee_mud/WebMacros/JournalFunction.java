@@ -48,6 +48,15 @@ public class JournalFunction extends StdWebMacro
 			if((M==null)||(!CMSecurity.isASysOp(M)))
 			    return " @break@";
 		}
+		if(parms.containsKey("DESTROYFOREVER"))
+		{
+			if((forum==null)||(!forum.authorizationCheck(M, ForumJournalFlags.ADMIN)))
+	            return "Destruction cancelled -- You are not authorized to delete this forum.";
+            if(!CMSecurity.isAllowedEverywhere(M,"JOURNALS"))
+	            return "Destruction cancelled -- You are not authorized.";
+			CMLib.database().DBDeleteJournal(journalName, null);
+			return "Journal "+journalName+" deleted.";
+		}
 		String from="Anonymous";
 		if(M!=null) from=M.Name();
 		if(parms.containsKey("NEWPOST"))
@@ -134,8 +143,8 @@ public class JournalFunction extends StdWebMacro
 			else
 			if(!forum.authorizationCheck(M, ForumJournalFlags.ADMIN))
 				return "Changes not submitted -- Unauthorized.";
-			String longDesc=httpReq.getRequestParameter("LONGDESC");
-			String shortDesc=httpReq.getRequestParameter("SHORTDESC");
+			String longDesc=fixForumString(httpReq.getRequestParameter("LONGDESC"));
+			String shortDesc=fixForumString(httpReq.getRequestParameter("SHORTDESC"));
 			String imgPath=httpReq.getRequestParameter("IMGPATH");
 			JournalsLibrary.JournalSummaryStats stats = CMLib.journals().getJournalStats(journalName);
 			if(stats == null)
@@ -396,4 +405,17 @@ public class JournalFunction extends StdWebMacro
 		}
         return messages.toString();
 	}
+	
+	public String fixForumString(String s)
+	{
+		if(s==null) return "";
+		int x=s.toUpperCase().indexOf("<P>");
+		int y=s.toUpperCase().lastIndexOf("</P>");
+		if((x>=0)&&(y>x))
+		{
+			return s.substring(0,x)+s.substring(x+3,y)+s.substring(y+4);
+		}
+		return s;
+	}
+	
 }

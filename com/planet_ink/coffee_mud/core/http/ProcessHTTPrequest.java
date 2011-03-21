@@ -421,6 +421,7 @@ public class ProcessHTTPrequest implements CMRunnable, ExternalHTTPRequests
 								}
 								else
 									str.append(cs[c]);
+							thisParamValue=str.toString();
 						}
 						else
 							thisParamValue=preFilter(new StringBuffer(URLDecoder.decode(thisParam.substring(eq+1), "UTF-8")));

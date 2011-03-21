@@ -10,6 +10,7 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.JournalsLibrary;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -318,6 +319,7 @@ public class ProcessSMTPrequest implements Runnable
 										String journal=server.getAnEmailJournal((String)to.elementAt(i));
 										if(journal!=null)
 										{
+											String parentKey="";
 											String fdat=finalData.toString().trim();
 											if((subject!=null)
 											&&(!subject.trim().equalsIgnoreCase("subscribe"))
@@ -337,32 +339,46 @@ public class ProcessSMTPrequest implements Runnable
 												}
 												else
 												{
-													Map<String, List<String>> lists=server.getMailingLists(null);
+													Map<String, List<String>> lists=Resources.getCachedMultiLists("mailinglists.txt",true);
 													List<String> mylist=null;
 													if(lists!=null)	mylist=lists.get(journal);
 													if((mylist==null)||(!mylist.contains(from)))
 													{
+														if(debug) Log.debugOut(runnableName,from+" is not in mailing list for journal "+journal);
 														replyData=("552 Mailbox '"+journal+"' only accepts messages from subscribers.  Send an email with 'subscribe' as the subject."+cr).getBytes();
 														break;
+													}
+													JournalsLibrary.ForumJournal forum=CMLib.journals().getForumJournal(journal);
+													if((forum != null)
+													&&(subject.trim().toUpperCase().startsWith("RE:")||subject.trim().toUpperCase().startsWith("RE ")))
+													{
+														String realSubject=subject.substring(3).trim();
+														if(realSubject.toUpperCase().startsWith("["+journal.toUpperCase()+"]"))
+															realSubject=realSubject.substring(journal.length()+2).trim();
+														List<JournalsLibrary.JournalEntry> entries = CMLib.database().DBReadJournalPageMsgs(journal, null, realSubject, 0, 0);
+														for(final JournalsLibrary.JournalEntry entry : entries)
+															if(entry.subj.equalsIgnoreCase(realSubject))
+															{
+																parentKey=entry.key;
+																break;
+															}
 													}
 												}
 											}
 											   
-											if(debug) Log.debugOut(runnableName,"Written: "+server.mailboxName()+"/"+from+"/ALL");
-											CMLib.database().DBWriteJournal(journal,
-																			  from,
-																			  "ALL",
-																			  CMLib.coffeeFilter().fullInFilter(subject,false),
-																			  CMLib.coffeeFilter().fullInFilter(fdat,false));
+											if(debug) Log.debugOut(runnableName,"Written: "+journal+"/"+from+"/ALL");
+											CMLib.database().DBWriteJournalChild(journal, "",from, "ALL", parentKey, 
+													CMLib.coffeeFilter().simpleInFilter(new StringBuffer(subject),false).toString(), 
+													CMLib.coffeeFilter().simpleInFilter(finalData,false).toString());
 										}
 										else
 										{
 											if(debug) Log.debugOut(runnableName,"Written: "+server.mailboxName()+"/"+from+"/"+(String)to.elementAt(i));
 											CMLib.database().DBWriteJournal(server.mailboxName(),
-																			  from,
-																			  (String)to.elementAt(i),
-	                                                                          CMLib.coffeeFilter().fullInFilter(subject,false),
-																			  CMLib.coffeeFilter().fullInFilter(finalData.toString(),false));
+																			from,
+																			(String)to.elementAt(i),
+	                                                                        CMLib.coffeeFilter().simpleInFilter(new StringBuffer(subject),false).toString(),
+																			CMLib.coffeeFilter().simpleInFilter(finalData,false).toString());
 										}
 									}
 								}

@@ -264,6 +264,12 @@ public class DBInterface implements DatabaseEngine
 	public void DBWriteJournal(String Journal, String from, String to, String subject, String message)
 	{JournalLoader.DBWrite(Journal,from,to,subject,message);}
 	
+	public void DBWriteJournalEmail(String MailBox, String journalSource, String from, String to, String subject, String message)
+	{JournalLoader.DBWrite(MailBox,journalSource,from,to,subject,message);}
+	
+	public void DBWriteJournalChild(String Journal, String journalSource, String from, String to, String parentKey, String subject, String message)
+	{JournalLoader.DBWrite(Journal,journalSource,from,to,parentKey,subject,message); }
+	
 	public void DBWrite(String Journal, JournalsLibrary.JournalEntry entry)
 	{JournalLoader.DBWrite(Journal, entry);}
 	

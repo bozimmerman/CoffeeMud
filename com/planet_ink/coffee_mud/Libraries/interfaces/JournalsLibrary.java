@@ -64,7 +64,7 @@ public interface JournalsLibrary extends CMLibrary, Runnable
 		public List<String> stuckyKeys=null;
 	}
 	
-	public static class JournalEntry implements Comparable<JournalEntry>
+	public static class JournalEntry implements Comparable<JournalEntry>, Cloneable
 	{
 		public String key=null;
 		public String from;
@@ -87,6 +87,7 @@ public interface JournalsLibrary extends CMLibrary, Runnable
 			return 0;
 		}
 		public StringBuffer derivedBuildMessage=null;
+		public JournalEntry copyOf() { try{ return (JournalEntry)this.clone(); } catch(Exception e){ return new JournalEntry();} }
 		
 		public final static long ATTRIBUTE_STUCKY=2;
 		public final static long ATTRIBUTE_PROTECTED=1;

@@ -139,7 +139,7 @@ public class Resources
         return "resources/"+path+"/";
     }
 
-    public static final void updateMultiList(final String filename, final Map<String, List<String>> lists)
+    public static final void updateMultiList(String filename, final Map<String, List<String>> lists)
     {
     	final StringBuffer str=new StringBuffer("");
         for(String ml : lists.keySet())
@@ -151,15 +151,60 @@ public class Resources
                 str.append(((String)V.get(v))+"\r\n");
             str.append("\r\n");
         }
-        new CMFile(filename,null,false).saveText(str);
+        String prefix="";
+        if(filename.startsWith("::")||filename.startsWith("//"))
+        {
+        	prefix=filename.substring(0,2);
+        	filename=filename.substring(2);
+        }
+        new CMFile(prefix+buildResourcePath(filename),null,false).saveText(str);
     }
 
-    public static final Map<String, List<String>> getMultiLists(final String filename)
+	public static final boolean removeMultiLists(final String filename)
+    {
+    	final String key = "PARSED_MULTI: "+filename.toUpperCase();
+    	removeResource(key);
+    	return true;
+    }
+	
+    @SuppressWarnings("unchecked")
+	public static final Map<String, List<String>> getCachedMultiLists(final String filename, boolean createIfNot)
+    {
+    	final String key = "PARSED_MULTI: "+filename.toUpperCase();
+		Map<String,List<String>> H=(Map<String,List<String>>)getResource(key);
+		if(H==null)
+		{
+			H=Resources.getMultiLists(filename);
+			if((H==null) && (createIfNot))
+				H=new Hashtable<String,List<String>>();
+			if(H!=null)
+				Resources.submitResource(key,H);
+		}
+		return H;
+    }
+    
+    @SuppressWarnings("unchecked")
+	public static final boolean updateCachedMultiLists(final String filename)
+    {
+    	final String key = "PARSED_MULTI: "+filename.toUpperCase();
+		Map<String,List<String>> H=(Map<String,List<String>>)getResource(key);
+		if(H==null) return false;
+		updateMultiList(filename, H);
+		return true;
+    }
+    
+    public static final Map<String, List<String>> getMultiLists(String filename)
     {
     	final Hashtable<String,List<String>> oldH=new Hashtable<String,List<String>>();
         List<String> V=new Vector<String>();
         try{
-            V=getFileLineVector(new CMFile("resources/"+filename,null,false).text());
+            String prefix="";
+            if(filename.startsWith("::")||filename.startsWith("//"))
+            {
+            	prefix=filename.substring(0,2);
+            	filename=filename.substring(2);
+            }
+            V=getFileLineVector(new CMFile(prefix+"resources/"+filename,null,false).text());
         }catch(Exception e){}
         if((V!=null)&&(V.size()>0))
         {

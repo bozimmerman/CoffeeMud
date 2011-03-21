@@ -156,13 +156,7 @@ public class Foraging extends GatheringSkill
 			&&((found.Name().toUpperCase().endsWith(" HERBS"))
 			   ||(found.Name().equalsIgnoreCase("herbs"))))
 			{
-				Map<String,List<String>> H=(Map<String,List<String>>)Resources.getResource("HERB_LOCALE_MAP");
-				if(H==null)
-				{
-					H=Resources.getMultiLists("skills/herbs.txt");
-					if(H!=null)
-						Resources.submitResource("HERB_LOCALE_MAP",H);
-				}
+				Map<String,List<String>> H=Resources.getCachedMultiLists("skills/herbs.txt",false);
 				if(H!=null)
 				{
 					List<String> V=(List<String>)H.get(mob.location().ID());
