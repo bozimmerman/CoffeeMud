@@ -1661,6 +1661,21 @@ public class StdRoom implements Room
 			if(found==null) found=CMLib.english().fetchAvailableItem(contents,thingName,goodLocation,wornFilter,true);
 			if(found==null)	found=(Exit)CMLib.english().fetchEnvironmental(Arrays.asList(exits),thingName,false);
 			if(found==null) found=CMLib.english().fetchAvailableItem(contents,thingName,goodLocation,wornFilter,false);
+			
+			if((found!=null) // the smurfy well/gate exception
+			&&(found instanceof Item)
+			&&(goodLocation==null)
+			&&(found.displayText().length()==0)
+			&&(thingName.indexOf('.')<0))
+			{
+				PhysicalAgent visibleItem=null;
+				visibleItem=(Exit)CMLib.english().fetchEnvironmental(Arrays.asList(exits),thingName,false);
+				if(visibleItem==null)
+					visibleItem=fetchFromMOBRoomItemExit(null,null,thingName+".2",wornFilter);
+				if(visibleItem!=null)
+					found=visibleItem;
+			}
+			
 			if((found!=null)&&(CMLib.flags().canBeSeenBy(found,mob)))
 				return found;
 			while((found!=null)&&(!CMLib.flags().canBeSeenBy(found,mob)))
@@ -1674,20 +1689,6 @@ public class StdRoom implements Room
 				else
 					found=null;
 			}
-		}
-
-		if((found!=null) // the smurfy well/gate exception
-		&&(found instanceof Item)
-		&&(goodLocation==null)
-		&&(found.displayText().length()==0)
-		&&(thingName.indexOf('.')<0))
-		{
-			PhysicalAgent visibleItem=null;
-			visibleItem=(Exit)CMLib.english().fetchEnvironmental(Arrays.asList(exits),thingName,false);
-			if(visibleItem==null)
-				visibleItem=fetchFromMOBRoomItemExit(null,null,thingName+".2",wornFilter);
-			if(visibleItem!=null)
-				found=visibleItem;
 		}
 		if((mob!=null)&&(found==null)&&(wornFilter!=Wearable.FILTER_UNWORNONLY))
 			found=mob.fetchWornItem(thingName);
