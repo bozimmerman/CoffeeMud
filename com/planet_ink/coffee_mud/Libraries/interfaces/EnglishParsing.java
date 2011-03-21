@@ -53,7 +53,7 @@ public interface EnglishParsing extends CMLibrary
     public void evoke(MOB mob, Vector commands);
     public boolean containsString(String toSrchStr, String srchStr);
     public String bumpDotNumber(String srchStr);
-    public Environmental fetchEnvironmental(Collection<? extends Environmental> list, String srchStr, boolean exactOnly);
+    public Environmental fetchEnvironmental(Iterable<? extends Environmental> list, String srchStr, boolean exactOnly);
     public Environmental fetchEnvironmental(Map<String, ? extends Environmental> list, String srchStr, boolean exactOnly);
 	public List<Environmental> fetchEnvironmentals(List<? extends Environmental> list, String srchStr, boolean exactOnly);
     public Item fetchAvailableItem(List<Item> list, String srchStr, Item goodLocation, int wornFilter, boolean exactOnly);

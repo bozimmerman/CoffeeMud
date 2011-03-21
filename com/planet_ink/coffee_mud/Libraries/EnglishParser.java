@@ -1391,7 +1391,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 		return new FetchFlags(srchStr,occurrance,allFlag);
 	}
 
-	public Environmental fetchEnvironmental(Collection<? extends Environmental> list, String srchStr, boolean exactOnly)
+	public Environmental fetchEnvironmental(Iterable<? extends Environmental> list, String srchStr, boolean exactOnly)
 	{
 		FetchFlags flags=fetchFlags(srchStr);
 		if(flags==null) return null;

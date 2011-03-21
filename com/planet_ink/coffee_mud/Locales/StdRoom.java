@@ -1662,8 +1662,7 @@ public class StdRoom implements Room
 			if(found==null)	found=(Exit)CMLib.english().fetchEnvironmental(Arrays.asList(exits),thingName,false);
 			if(found==null) found=CMLib.english().fetchAvailableItem(contents,thingName,goodLocation,wornFilter,false);
 			
-			if((found!=null) // the smurfy well/gate exception
-			&&(found instanceof Item)
+			if((found instanceof Item)  // the smurfy well/gate exception
 			&&(goodLocation==null)
 			&&(found.displayText().length()==0)
 			&&(thingName.indexOf('.')<0))
