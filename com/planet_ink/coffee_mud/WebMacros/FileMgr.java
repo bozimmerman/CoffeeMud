@@ -130,6 +130,8 @@ public class FileMgr extends StdWebMacro
 				if(parms.containsKey("VFS")||parms.containsKey("LOCAL")||parms.containsKey("BOTH")) 
 				{
 					StringBuilder returnMsg=new StringBuilder("");
+					/*
+					// code for "moving" files between vfs/local
 					if(!parms.containsKey("VFS") && !parms.containsKey("BOTH"))
 					{
 	                    CMFile dF=new CMFile("::"+filePath+file,M,false);
@@ -152,6 +154,7 @@ public class FileMgr extends StdWebMacro
 			                    returnMsg.append("File `//"+last+"` successfully deleted");
 	                    }
 					}
+					*/
 	                if((!F.canWrite())
 	                ||(!F.saveText(s)))
 	                    returnMsg.append("File `"+prefix+last+"` not updated -- error!");
