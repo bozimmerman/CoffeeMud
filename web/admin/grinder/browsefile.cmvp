@@ -8,6 +8,9 @@
  	<link rel="grinder icon" href="/images/grinder.ico" >
 	<script language=JavaScript>
 	<!--
+		var isvfs=@FileInfo?ISVFS@;
+		var islocal=@FileInfo?ISLOCAL@;
+		var isboth=@FileInfo?ISBOTH@;
 		function openUp(named)
 		{
 			var strFeatures="top=200,left=50,scrollbars=yes,resizeable=no,height=400,width=650,alwaysRaised=yes,dependent=yes";
@@ -20,8 +23,22 @@
 				alert('No file name specified!');
 				return;
 			}
+			var newVfs=document.FILEBROWSE.DOVFS.checked;
+			var newLocal=document.FILEBROWSE.DOLOCAL.checked;
+			if(!newVfs && !newLocal)
+			{
+				alert('You must save either to your local filesystem, or to the vfs (database) filesystem.');
+				return;
+			}
 			if(confirm('Save your changes?'))
 			{
+				if(newVfs && newLocal)
+					document.FILEBROWSE.FILESAVETO.value="BOTH";
+				else
+				if(newVfs)
+					document.FILEBROWSE.FILESAVETO.value="VFS";
+				else
+					document.FILEBROWSE.FILESAVETO.value="LOCAL";
 				document.FILEBROWSE.FUNCTION.value='CREATE';
 				document.FILEBROWSE.submit();
 			}
@@ -35,6 +52,7 @@
 <INPUT TYPE=HIDDEN NAME=PATH VALUE="@RequestParameter?PATH@">
 <INPUT TYPE=HIDDEN NAME=RESOURCE VALUE="@RequestParameter?RESOURCE@">
 <INPUT TYPE=HIDDEN NAME=FUNCTION VALUE="">
+<INPUT TYPE=HIDDEN NAME=FILESAVETO VALUE="">
 <INPUT TYPE=HIDDEN NAME=NEW VALUE="">
 <P ALIGN=RIGHT><A href="javascript:openUp('SCRIPTABLE');"><FONT COLOR=PINK><I>scriptable help</I></FONT></A></P>
 <FONT COLOR=YELLOW>File: <B>@RequestParameter?PATH@/
@@ -45,13 +63,20 @@
 @endif@
 </B></FONT><BR>
 @if?!CheckReqParm?RAWTEXT=@
-	@if?CheckReqParm?FUNCTION=CREATE@
-		<FONT COLOR=RED><B>@FileMgr?CREATE@</B></FONT>@if?!CheckReqParm?RESOURCE=@ @ResourceMgr?DELETE@ @endif@
+ 	@if?CheckReqParm?FUNCTION=CREATE@
+		FileMgr?CREATE&@RequestParameter?FILESAVETO@
+		<FONT COLOR=RED><B>@FileMgr?CREATE&@@RequestParameter?FILESAVETO@@ @</B></FONT>@if?!CheckReqParm?RESOURCE=@ @ResourceMgr?DELETE@ @endif@
 	@endif@
 @endif@
 @if?!CheckReqParm?FILE=@<TEXTAREA ROWS=25 COLS=85 NAME=RAWTEXT>@FileInfo?TEXTDATA@</TEXTAREA>
 @else@<TEXTAREA ROWS=25 COLS=85 NAME=RAWTEXT></TEXTAREA>
 @endif@
+<BR><FONT COLOR=WHITE SIZE=-1>
+<INPUT TYPE=CHECKBOX NAME=DOVFS @if?FileInfo?ISVFS@checked@endif@ >Save/Keep VFS
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<INPUT TYPE=CHECKBOX NAME=DOLOCAL @if?FileInfo?ISLOCAL@checked@endif@ >Save/Keep Local
+</FONT>
+<BR>
 <BR>
 <TABLE WIDTH=100% BORDER=0>
 <TR><TD ALIGN=CENTER WIDTH=50%>
@@ -63,6 +88,17 @@
 </TR>
 </TABLE>
 </FORM>
+<SCRIPT>
+<!--
+	function sizing()
+	{
+		document.FILEBROWSE.RAWTEXT.style.width=document.body.clientWidth-47;
+		document.FILEBROWSE.RAWTEXT.style.height=document.body.clientHeight-195;
+	}
+	window.onresize = sizing;
+-->
+</SCRIPT>
+
 </BODY>
 </HTML>
 @endif@

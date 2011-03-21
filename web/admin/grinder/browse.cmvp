@@ -11,7 +11,7 @@
 	<!--
 		function OpenFile(action)
 		{
-			var strFeatures="top=0,left=75,resizeable=no,scrollbars=yes,height=600,width=750,alwaysRaised=yes,dependent=yes";
+			var strFeatures="top=0,left=75,resizable=yes,scrollbars=yes,height=600,width=750,alwaysRaised=yes,dependent=yes";
 			w=window.open("browsefile.cmvp?"+action,"Filer",strFeatures, false);
 		}
 		function NewDir(named)
@@ -109,9 +109,9 @@
 	@if?FileInfo?ISDIRECTORY@
 		<TR><TD COLSPAN=6>
 		<a href="javascript:NewDir('@RequestParameter?FILE@')"  style="text-decoration:none">
-		@if?FileInfo?ISVFS@<I>@endif@ 	@if?FileInfo?ISBOTH@<B>@endif@
+		@if?FileInfo?ISBOTH@<B>@else@ @if?!FileInfo?ISLOCAL@<I>@endif@ @endif@
 		<FONT COLOR=YELLOW>@RequestParameter?FILE@</FONT>
-		@if?FileInfo?ISVFS@</I>@endif@ 	@if?FileInfo?ISBOTH@</B>@endif@
+		@if?FileInfo?ISBOTH@</B>@else@ @if?!FileInfo?ISLOCAL@</I>@endif@ @endif@
 		</a>
 		</TD></TR>
 	@endif@
