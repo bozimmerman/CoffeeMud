@@ -2319,3 +2319,4 @@ Special/Reserved Quest called holidays can be added to/modified on an area-by-ar
 5. Each entry in each list inside LISTS.INI can now hold numerous variable entries for variety now! See the file for examples.
 6. MUDGrinder File Manager now has resizeable text area, and will let you choose which filesystem to save your file to (local/vfs/both)
 7. Forums are now compatible with SMTP mailing lists.. including very simple threading.  If performance is good, why not move Yahoo groups to one?  
+8. When using account system, account creation proceeds directly to new character creation.

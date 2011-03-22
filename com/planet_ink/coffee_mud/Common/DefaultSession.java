@@ -1461,12 +1461,12 @@ public class DefaultSession extends Thread implements Session
 	                CharCreationLibrary.LoginResult loginResult=null;
 	                if(acct==null)
 		                loginResult=CMLib.login().login(this,tries);
-	                if((acct!=null)||(loginResult==LoginResult.ACCOUNT_LOGIN))
+	                if((acct!=null)||(loginResult==LoginResult.ACCOUNT_LOGIN)||(loginResult==LoginResult.ACCOUNT_CREATED))
 	                {
 	                	try
 	                	{
 	                		status=Session.STATUS_ACCOUNTMENU;
-	    	                loginResult=CMLib.login().selectAccountCharacter(acct,this);
+	    	                loginResult=CMLib.login().selectAccountCharacter(acct,this,(loginResult==LoginResult.ACCOUNT_CREATED));
 	                	}
 	                	finally
 	                	{

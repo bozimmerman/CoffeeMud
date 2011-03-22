@@ -333,21 +333,25 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
         return extraScripts;
     }
 
-    public LoginResult selectAccountCharacter(PlayerAccount acct, Session session) throws java.io.IOException
+    public LoginResult selectAccountCharacter(PlayerAccount acct, Session session, boolean newAccount) throws java.io.IOException
     {
     	if((acct==null)||(session==null)||(session.killFlag()))
     		return LoginResult.NO_LOGIN;
         session.setServerTelnetMode(Session.TELNET_ANSI,acct.isSet(PlayerAccount.FLAG_ANSI));
         session.setClientTelnetMode(Session.TELNET_ANSI,acct.isSet(PlayerAccount.FLAG_ANSI));
+        boolean autoCharCreate = newAccount;
     	boolean charSelected = false;
     	boolean showList = acct.isSet(PlayerAccount.FLAG_ACCOUNTMENUSOFF);
-        StringBuffer introText=new CMFile(Resources.buildResourcePath("text")+"selchar.txt",null,true).text();
-    	try { introText = CMLib.httpUtils().doVirtualPage(introText);}catch(Exception ex){}
-        session.println(null,null,null,"\n\r\n\r"+introText.toString());
+    	if(!autoCharCreate)
+    	{
+	        StringBuffer introText=new CMFile(Resources.buildResourcePath("text")+"selchar.txt",null,true).text();
+	    	try { introText = CMLib.httpUtils().doVirtualPage(introText);}catch(Exception ex){}
+	        session.println(null,null,null,"\n\r\n\r"+introText.toString());
+    	}
     	while((!session.killFlag())&&(!charSelected))
     	{
     		StringBuffer buf = new StringBuffer("");
-    		if(showList)
+    		if(showList && (!autoCharCreate))
     		{
     			showList = false;
 	    		buf.append("^X");
@@ -370,7 +374,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 	    		session.println(buf.toString());
     			buf.setLength(0);
     		}
-    		if(!acct.isSet(PlayerAccount.FLAG_ACCOUNTMENUSOFF))
+    		if((!acct.isSet(PlayerAccount.FLAG_ACCOUNTMENUSOFF)) && (!autoCharCreate))
     		{
 	    		buf.append(" ^XAccount Menu^.^N\n\r");
 	    		buf.append(" ^XL^.^w)^Hist characters\n\r");
@@ -388,14 +392,20 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
     		}
     		if(!session.killFlag())
     			session.updateLoopTime();
-    		String s = session.prompt("\n\r^wCommand or Name ^H(?)^w: ^N", CMProps.getMillisPerMudHour());
+    		String s;
+    		if(autoCharCreate)
+    		{
+    			s="NEW";
+    		}
+    		else
+	    		s = session.prompt("\n\r^wCommand or Name ^H(?)^w: ^N", CMProps.getMillisPerMudHour());
     		if(s==null) return LoginResult.NO_LOGIN;
     		if(s.trim().length()==0) continue;
     		if(s.equalsIgnoreCase("?")||(s.equalsIgnoreCase("HELP"))||s.equalsIgnoreCase("H"))
     		{
-    	        introText=new CMFile(Resources.buildResourcePath("help")+"accts.txt",null,true).text();
-    	    	try { introText = CMLib.httpUtils().doVirtualPage(introText);}catch(Exception ex){}
-    	        session.println(null,null,null,"\n\r\n\r"+introText.toString());
+    	        StringBuffer accountHelp=new CMFile(Resources.buildResourcePath("help")+"accts.txt",null,true).text();
+    	    	try { accountHelp = CMLib.httpUtils().doVirtualPage(accountHelp);}catch(Exception ex){}
+    	        session.println(null,null,null,"\n\r\n\r"+accountHelp.toString());
     	        continue;
     		}
     		if(s.equalsIgnoreCase("LIST")||s.equalsIgnoreCase("L"))
@@ -421,7 +431,11 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
     			if(s.length()==0)
     			{
     				s=session.prompt("\n\rPlease enter a name for your character: ","");
-    				if(s.length()==0) continue;
+    				if(s.length()==0)
+    				{
+    	    			autoCharCreate = false;
+    					continue;
+    				}
     			}
                 if((!isOkName(s))
                 ||(CMLib.players().playerExists(s))
@@ -436,6 +450,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
                 	session.println("You may only have "+CMProps.getIntVar(CMProps.SYSTEMI_COMMONACCOUNTSYSTEM)+" characters.  Please retire one to create another.");
                 	continue;
                 }
+    			autoCharCreate = false;
             	if(newCharactersAllowed(s,session,true))
             	{
             		String login=CMStrings.capitalizeAndLower(s);
@@ -702,7 +717,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
         }
         session.setAccount(acct);
         Log.sysOut("FrontDoor","Created account: "+acct.accountName());
-        return LoginResult.ACCOUNT_LOGIN;
+        return LoginResult.ACCOUNT_CREATED;
 	}
 
     public String getEmailAddress(Session session, boolean[] emailConfirmation) throws java.io.IOException

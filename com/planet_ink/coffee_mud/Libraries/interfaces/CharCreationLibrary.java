@@ -45,7 +45,7 @@ public interface CharCreationLibrary extends CMLibrary
     public void notifyFriends(MOB mob, String message);
     public LoginResult createCharacter(PlayerAccount acct, String login, Session session) throws java.io.IOException;
     public LoginResult login(Session session, int attempt) throws java.io.IOException;
-    public LoginResult selectAccountCharacter(PlayerAccount acct, Session session) throws java.io.IOException;
+    public LoginResult selectAccountCharacter(PlayerAccount acct, Session session, boolean create) throws java.io.IOException;
     public void pageRooms(CMProps page, Map<String, String> table, String start);
     public void initStartRooms(CMProps page);
     public void initDeathRooms(CMProps page);
@@ -58,6 +58,6 @@ public interface CharCreationLibrary extends CMLibrary
     
     public enum LoginResult
     {
-    	NO_LOGIN, NORMAL_LOGIN, ACCOUNT_LOGIN, SESSION_SWAP, CCREATION_EXIT
+    	NO_LOGIN, NORMAL_LOGIN, ACCOUNT_LOGIN, SESSION_SWAP, CCREATION_EXIT, ACCOUNT_CREATED
     }
 }
