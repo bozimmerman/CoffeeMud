@@ -379,9 +379,11 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 	    		buf.append(" ^XAccount Menu^.^N\n\r");
 	    		buf.append(" ^XL^.^w)^Hist characters\n\r");
 	    		buf.append(" ^XN^.^w)^Hew character\n\r");
-	    		buf.append(" ^XI^.^w)^Hmport character\n\r");
 	    		if(acct.isSet(PlayerAccount.FLAG_CANEXPORT))
+	    		{
+		    		buf.append(" ^XI^.^w)^Hmport character\n\r");
 		    		buf.append(" ^XE^.^w)^Hxport character\n\r");
+	    		}
 	    		buf.append(" ^XD^.^w)^Helete/Retire character\n\r");
 	    		buf.append(" ^XH^.^w)^Help\n\r");
 	    		buf.append(" ^XM^.^w)^Henu OFF\n\r");
