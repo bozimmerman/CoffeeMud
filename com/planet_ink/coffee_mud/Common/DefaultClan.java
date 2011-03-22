@@ -491,6 +491,7 @@ public class DefaultClan implements Clan
                 CMLib.database().DBUpdateClanMembership(M.Name(), "", 0);
             }
         }
+        CMLib.database().DBDeleteJournal("a Journal of "+getGovernmentName()+" "+getName(), null);
         CMLib.database().DBDeleteClan(this);
         CMLib.clans().removeClan(this);
     }
