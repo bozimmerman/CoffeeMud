@@ -455,7 +455,12 @@ public class SMTPserver extends Thread implements Tickable
 		{
 			String jrnlSubj=msg.subj;
 			if(jrnlSubj.indexOf("["+journalName+"]")<0)
-				jrnlSubj="["+journalName+"] "+msg.subj;
+			{
+				if(msg.subj.startsWith("RE: "))
+					jrnlSubj="RE: ["+journalName+"] "+msg.subj.substring(4);
+				else
+					jrnlSubj="["+journalName+"] "+msg.subj;
+			}
 			Map<String, List<String>> lists=Resources.getCachedMultiLists("mailinglists.txt",true);
 			List<String> mylist=lists.get(journalName);
 			if((mylist!=null)&&(mylist.contains(msg.from)))
