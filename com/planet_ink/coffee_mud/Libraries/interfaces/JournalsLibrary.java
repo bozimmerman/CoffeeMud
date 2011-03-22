@@ -117,6 +117,24 @@ public interface JournalsLibrary extends CMLibrary, Runnable
         CHANNEL,ADDROOM,EXPIRE,ADMINECHO,CONFIRM,SCRIPT;
     }
     
+    public static class SMTPJournal
+    {
+    	public final String  name;
+    	public final boolean forward;
+    	public final boolean subscribeOnly;
+    	public final boolean keepAll;
+    	public final String  criteriaStr;
+    	public final MaskingLibrary.CompiledZapperMask criteria;
+    	public SMTPJournal(String name, boolean forward, boolean subscribeOnly, boolean keepAll, String criteriaStr)
+    	{	
+    		this.name=name; this.forward=forward; this.subscribeOnly=subscribeOnly; this.keepAll=keepAll; this.criteriaStr=criteriaStr;
+	    	if(criteriaStr.trim().length()==0)
+	        	this.criteria=null;
+	    	else
+	    		this.criteria=CMLib.masking().maskCompile(criteriaStr);
+    	}
+    }
+    
     public static class ForumJournal
     {
     	private String name="";

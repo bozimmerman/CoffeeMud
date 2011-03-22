@@ -57,6 +57,15 @@ public class JournalFunction extends StdWebMacro
 			CMLib.database().DBDeleteJournal(journalName, null);
 			return "Journal "+journalName+" deleted.";
 		}
+		if(parms.containsKey("SUBSCRIBE"))
+		{
+			if((forum==null)||(!forum.authorizationCheck(M, ForumJournalFlags.ADMIN)))
+	            return "Subscription cancelled -- You are not authorized to delete this forum.";
+            if(!CMSecurity.isAllowedEverywhere(M,"JOURNALS"))
+	            return "Destruction cancelled -- You are not authorized.";
+			CMLib.database().DBDeleteJournal(journalName, null);
+			return "Journal "+journalName+" deleted.";
+		}
 		String from="Anonymous";
 		if(M!=null) from=M.Name();
 		if(parms.containsKey("NEWPOST"))

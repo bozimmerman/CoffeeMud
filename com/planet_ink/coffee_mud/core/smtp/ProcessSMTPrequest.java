@@ -758,7 +758,7 @@ public class ProcessSMTPrequest implements Runnable
 											if(server.getAnEmailJournal(name)!=null)
 											{
 												boolean jerror=false;
-												if(server.getJournalCriteria(name).length()>0)
+												if(server.getJournalCriteria(name)!=null)
 												{
 													MOB M=CMLib.players().getPlayer(from);
 													if((M==null)

@@ -49,6 +49,33 @@ public class ForumInfo extends StdWebMacro
 		if(journal == null) 
 			return " @break@";
 		
+		if(parms.containsKey("ISSMTPFORWARD"))
+		{
+			@SuppressWarnings("unchecked")
+			TreeMap<String, JournalsLibrary.SMTPJournal> set=(TreeMap<String, JournalsLibrary.SMTPJournal>) Resources.getResource("SYSTEM_SMTP_JOURNALS");
+			final JournalsLibrary.SMTPJournal entry =(set!=null) ? set.get(last.toUpperCase().trim()) : null;
+			final String email=((M!=null) &&(M.playerStats()!=null) && (M.playerStats().getEmail()!=null)) ? M.playerStats().getEmail() : "";
+			return ((entry!=null) && (email.length()>0)) ? Boolean.toString(entry.forward) : "false";
+		}
+		
+		if(parms.containsKey("ISSMTPSUBSCRIBER"))
+		{
+			final Map<String, List<String>> lists=Resources.getCachedMultiLists("mailinglists.txt",true);
+			final List<String> mylist=lists.get(last);
+			return (mylist!=null) ? Boolean.toString(mylist.contains(M.Name())) : "false";
+		}
+		
+		if(parms.containsKey("SMTPADDRESS"))
+		{
+			@SuppressWarnings("unchecked")
+			TreeMap<String, JournalsLibrary.SMTPJournal> set=(TreeMap<String, JournalsLibrary.SMTPJournal>) Resources.getResource("SYSTEM_SMTP_JOURNALS");
+			final JournalsLibrary.SMTPJournal entry =(set!=null) ? set.get(last.toUpperCase().trim()) : null;
+			if((entry!=null)&&(entry.forward))
+			{
+				return entry.name.replace(' ','_')+"@"+CMProps.getVar(CMProps.SYSTEM_MUDDOMAIN);
+			}
+		}
+		
 		if(parms.containsKey("CANADMIN")||parms.containsKey("ISADMIN"))
 			return ""+journal.authorizationCheck(M, ForumJournalFlags.ADMIN);
 		

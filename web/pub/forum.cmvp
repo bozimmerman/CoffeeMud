@@ -76,6 +76,16 @@
 			document.FORUM.submit();
 		
 		}
+		
+		function sayUnsubscribe()
+		{
+			alert('Send an email to @ForumInfo?SMTPADDRESS@ to post.  Unsubscribe with a subject of "unsubscribe".');
+		}
+		
+		function saySubscribe()
+		{
+			alert('To subscribe, send an email to @ForumInfo?SMTPADDRESS@ with a subject of "subscribe".');
+		}
 	//-->
 	</SCRIPT>
 </head>
@@ -105,6 +115,13 @@
 		<INPUT TYPE=SUBMIT VALUE=Login>
 	@else@
 		Logged in as <B>@PlayerData?NAME@</B>
+		@if?ForumInfo?ISSMTPFORWARD@
+			<BR>@if?ForumInfo?ISSMTPSUBSCRIBER@
+				<a href="javascript:sayUnsubscribe();">(subscribed)</a>
+				@else@
+				<a href="javascript:saySubscribe();">(not subscribed)</a>
+				@endif@
+		@endif@
 	@endif@
 	</TD>
 	</TR>

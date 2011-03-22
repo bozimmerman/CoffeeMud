@@ -64,7 +64,6 @@ public class SMTPserver extends Thread implements Tickable
 	public CMProps 		iniPage=null;
 	private boolean 	displayedBlurb=false;
 	private String 		domain="coffeemud";
-	private DVector 	journals=null;
 	private int			maxThreads = 3;
 	private int			threadTimeoutMins = 10;
 	private HashSet<String> 		 oldEmailComplaints=new HashSet<String>();
@@ -141,50 +140,6 @@ public class SMTPserver extends Thread implements Tickable
 
 		CMProps.setBoolVar(CMProps.SYSTEMB_EMAILFORWARDING,CMath.s_bool(page.getStr("FORWARD")));
 
-		String journalStr=page.getStr("JOURNALS");
-		if((journalStr==null)||(journalStr.length()>0))
-		{
-			Vector<String> V=CMParms.parseCommas(journalStr,true);
-			if(V.size()>0)
-			{
-				journals=new DVector(5);
-				for(int v=0;v<V.size();v++)
-				{
-					String s=((String)V.elementAt(v)).trim();
-					String parm="";
-					int x=s.indexOf('(');
-					if((x>0)&&(s.endsWith(")")))
-					{
-						parm=s.substring(x+1,s.length()-1).trim();
-						s=s.substring(0,x).trim();
-					}
-					if(!journals.contains(s))
-					{
-						Vector<String> PV=CMParms.parseSpaces(parm,true);
-						StringBuffer crit=new StringBuffer("");
-						boolean forward=false;
-						boolean subscribeOnly=false;
-						boolean keepAll=false;
-						for(int pv=0;pv<PV.size();pv++)
-						{
-							String ps=(String)PV.elementAt(pv);
-							if(ps.equalsIgnoreCase("forward"))
-								forward=true;
-							else
-							if(ps.equalsIgnoreCase("subscribeonly"))
-								subscribeOnly=true;
-							else
-							if(ps.equalsIgnoreCase("keepall"))
-								keepAll=true;
-							else
-								crit.append(s+" ");
-						}
-						journals.addElement(s,Boolean.valueOf(forward),Boolean.valueOf(subscribeOnly),Boolean.valueOf(keepAll),crit.toString().trim());
-					}
-				}
-			}
-		}
-
 		if (!displayedBlurb)
 		{
 			displayedBlurb = true;
@@ -195,48 +150,96 @@ public class SMTPserver extends Thread implements Tickable
 
 		return true;
 	}
+	
+	public TreeMap<String, JournalsLibrary.SMTPJournal> parseJournalList(String journalStr)
+	{
+		TreeMap<String, JournalsLibrary.SMTPJournal> set=new TreeMap<String, JournalsLibrary.SMTPJournal>(); 
+		if((journalStr==null)||(journalStr.length()>0))
+		{
+			Vector<String> V=CMParms.parseCommas(journalStr,true);
+			if(V.size()>0)
+			{
+				for(int v=0;v<V.size();v++)
+				{
+					String s=((String)V.elementAt(v)).trim();
+					String parm="";
+					int x=s.indexOf('(');
+					if((x>0)&&(s.endsWith(")")))
+					{
+						parm=s.substring(x+1,s.length()-1).trim();
+						s=s.substring(0,x).trim();
+					}
+					Vector<String> PV=CMParms.parseSpaces(parm,true);
+					StringBuffer crit=new StringBuffer("");
+					boolean forward=false;
+					boolean subscribeOnly=false;
+					boolean keepAll=false;
+					for(int pv=0;pv<PV.size();pv++)
+					{
+						String ps=(String)PV.elementAt(pv);
+						if(ps.equalsIgnoreCase("forward"))
+							forward=true;
+						else
+						if(ps.equalsIgnoreCase("subscribeonly"))
+							subscribeOnly=true;
+						else
+						if(ps.equalsIgnoreCase("keepall"))
+							keepAll=true;
+						else
+							crit.append(s+" ");
+					}
+					set.put(s.toUpperCase().trim(), 
+							new JournalsLibrary.SMTPJournal(s, forward, subscribeOnly, keepAll, crit.toString().trim()));
+				}
+			}
+		}
+		return set;
+	}
 
 	public String getAnEmailJournal(String journal)
 	{
-		if(journals==null) return null;
 		journal=CMStrings.replaceAll(journal,"_"," ");
-		for(int i=0;i<journals.size();i++)
-		{
-			if(journal.equalsIgnoreCase((String)journals.elementAt(i,1)))
-				return (String)journals.elementAt(i,1);
-		}
-		return null;
+		final JournalsLibrary.SMTPJournal jrnl=getAJournal(journal);
+		return jrnl != null ? jrnl.name : null;
 	}
-	public int getAJournalIndex(String journal)
+	@SuppressWarnings("unchecked")
+	public TreeMap<String, JournalsLibrary.SMTPJournal> getJournalSets()
 	{
-		if(journals==null) return -1;
-		for(int i=0;i<journals.size();i++)
+		TreeMap<String, JournalsLibrary.SMTPJournal> set=(TreeMap<String, JournalsLibrary.SMTPJournal>)
+															Resources.getResource("SYSTEM_SMTP_JOURNALS");
+		if(set==null)
 		{
-			if(journal.equalsIgnoreCase((String)journals.elementAt(i,1)))
-				return i;
+			set=parseJournalList(page.getStr("JOURNALS"));
+			Resources.submitResource("SYSTEM_SMTP_JOURNALS", set);
 		}
-		return -1;
-		
+		return set;
+	}
+	
+	public JournalsLibrary.SMTPJournal getAJournal(String journal)
+	{
+		TreeMap<String, JournalsLibrary.SMTPJournal> set=getJournalSets();
+		if(set==null) return null;
+		return set.get(journal.toUpperCase().trim());
 	}
 	public boolean isAForwardingJournal(String journal)
 	{
-		int index = getAJournalIndex(journal);
-		return index >=0 ? ((Boolean)journals.elementAt(index,2)).booleanValue() : false;
+		final JournalsLibrary.SMTPJournal jrnl=getAJournal(journal);
+		return jrnl != null ? jrnl.forward : false;
 	}
 	public boolean isASubscribeOnlyJournal(String journal)
 	{
-		int index = getAJournalIndex(journal);
-		return index >=0 ? ((Boolean)journals.elementAt(index,3)).booleanValue() : false;
+		final JournalsLibrary.SMTPJournal jrnl=getAJournal(journal);
+		return jrnl != null ? jrnl.subscribeOnly : false;
 	}
 	public boolean isAKeepAllJournal(String journal)
 	{
-		int index = getAJournalIndex(journal);
-		return index >=0 ? ((Boolean)journals.elementAt(index,4)).booleanValue() : false;
+		final JournalsLibrary.SMTPJournal jrnl=getAJournal(journal);
+		return jrnl != null ? jrnl.keepAll : false;
 	}
-	public String getJournalCriteria(String journal)
+	public MaskingLibrary.CompiledZapperMask getJournalCriteria(String journal)
 	{
-		int index = getAJournalIndex(journal);
-		return index >=0 ? ((String)journals.elementAt(index,5)) :"";
+		final JournalsLibrary.SMTPJournal jrnl=getAJournal(journal);
+		return jrnl != null ? jrnl.criteria : null;
 	}
 
 	protected boolean loadPropPage()
@@ -373,16 +376,17 @@ public class SMTPserver extends Thread implements Tickable
 		{
 			MassMailer massMailer = new MassMailer(page,domain,oldEmailComplaints);
 			
+			TreeMap<String, JournalsLibrary.SMTPJournal> set=getJournalSets();
+			
 			// this is where it should attempt any mail forwarding
 			// remember, a 5 day old private mail message is a goner
 			// remember that new to all messages need to be parsed
 			// for subscribe/unsubscribe and deleted, or then
 			// forwarded to all members private boxes.  Lots of work to do!
-			if(journals!=null)
-			for(int j=0;j<journals.size();j++)
+			for(JournalsLibrary.SMTPJournal smtpJournal : set.values())
 			{
-				final String journalName=(String)journals.elementAt(j,1);
-				if(isAForwardingJournal(journalName))
+				final String journalName=smtpJournal.name;
+				if(smtpJournal.forward)
 				{
 					// Vector mailingList=?
 					final List<JournalsLibrary.JournalEntry> msgs=CMLib.database().DBReadJournalMsgs(journalName);

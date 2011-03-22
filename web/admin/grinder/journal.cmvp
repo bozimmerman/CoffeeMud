@@ -96,6 +96,9 @@
 				@if?CheckReqParm?FUNCTION=EMAIL@
 				<CENTER><FONT COLOR=RED><B>@JournalFunction?EMAIL@</B></FONT></CENTER>
 				@endif@
+				@if?CheckReqParm?FUNCTION=DESTROYFOREVER@
+				<CENTER><FONT COLOR=RED><B>@JournalFunction?DESTROYFOREVER@</B></FONT></CENTER>
+				@endif@
 				@if?CheckReqParm?FUNCTION=EVERYTHING@
 				<CENTER><FONT COLOR=RED><B>@JournalFunction?EVERYTHING@</B></FONT></CENTER>
 				@AddRequestParameter?FUNCTION=SHOWALL@
@@ -283,6 +286,7 @@
 							<INPUT TYPE=BUTTON NAME=ADDNEW VALUE="Compose New Message" ONCLICK="Clicked3('@RequestParameter?JOURNAL@','@RequestParameter?JOURNALMESSAGE@','POSTNEW','');">
 							@if?!CheckReqParm?FUNCTION=SHOWALL@
                                 <INPUT TYPE=BUTTON NAME=SHOWALLBUTT VALUE="Show All Messages" ONCLICK="Clicked3('@RequestParameter?JOURNAL@','','SHOWALL','');">
+                                <INPUT TYPE=BUTTON NAME=DELJOURNAL VALUE="Delete All Messages" ONCLICK="if(window.confirm('Confirm: Delete this journal completely.')) Clicked3('@RequestParameter?JOURNAL@','','DESTROYFOREVER','');">
                             @else@
                                 <HR>
                                 @JournalMessageNext?RESET@
