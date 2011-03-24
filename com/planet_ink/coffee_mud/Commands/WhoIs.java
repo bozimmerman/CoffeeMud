@@ -1,6 +1,7 @@
 package com.planet_ink.coffee_mud.Commands;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.core.intermud.i3.packets.Intermud;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
@@ -49,13 +50,30 @@ public class WhoIs extends Who
 			return false;
 		}
 
-		if(mobName.startsWith("@"))
+		int x=mobName.indexOf("@");
+		if(x>=0)
 		{
 			if((!(CMLib.intermud().i3online()))
 			&&(!CMLib.intermud().imc2online()))
 				mob.tell("Intermud is unavailable.");
 			else
+			if(x==0)
 				CMLib.intermud().i3who(mob,mobName.substring(1));
+			else
+			{
+				String mudName=mobName.substring(x+1);
+				mobName=mobName.substring(0,x);
+				if(Intermud.isAPossibleMUDName(mudName))
+				{
+					mudName=Intermud.translateName(mudName);
+					if(!Intermud.isUp(mudName))
+					{
+						mob.tell(mudName+" is not available.");
+						return false;
+					}
+				}
+				CMLib.intermud().i3finger(mob,mobName,mudName);
+			}
 			return false;
 		}
 

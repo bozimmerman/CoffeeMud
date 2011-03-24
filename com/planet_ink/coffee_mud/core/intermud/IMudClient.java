@@ -466,6 +466,44 @@ public class IMudClient implements I3Interface
 			imc2.imc_send_whois(mob.Name(),mobName,mob.phyStats().level());
 	}
 
+	public void i3pingRouter(MOB mob)
+	{
+		if(mob==null) return;
+		if((!i3online())&&(!imc2online())) return;
+		if(i3online())
+		{
+			PingPacket ck=new PingPacket();
+			try{
+			ck.send();
+			}catch(Exception e){Log.errOut("IMudClient",e);}
+		}
+	}
+	
+	public void i3finger(MOB mob, String mobName, String mudName)
+	{
+		if(mob==null) return;
+		if((!i3online())&&(!imc2online())) return;
+		
+		if((mobName==null)||(mobName.length()==0))
+		{
+			mob.tell("You must specify a name.");
+			return;
+		}
+
+		if(i3online())
+		{
+			FingerRequest ck=new FingerRequest();
+			ck.sender_name=mob.Name();
+			ck.target_name=mobName;
+			ck.target_mud=mudName;
+			try{
+			ck.send();
+			}catch(Exception e){Log.errOut("IMudClient",e);}
+		}
+		//if(imc2online())
+		//	imc2.imc_send_whois(mob.Name(),mobName,mob.phyStats().level());
+	}
+
 	public void i3mudInfo(MOB mob, String parms)
 	{
 		if((mob==null)||(!i3online())) return;

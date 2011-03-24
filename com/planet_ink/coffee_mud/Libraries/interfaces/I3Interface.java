@@ -35,6 +35,8 @@ public interface I3Interface extends CMLibrary
 	public void i3tell(MOB mob, String tellName, String mudName, String message);
 	public void i3channel(MOB mob, String channelName, String message);
 	public void i3locate(MOB mob, String mobName);
+	public void i3finger(MOB mob, String mobName, String mudName);
+	public void i3pingRouter(MOB mob);
 	public void giveI3MudList(MOB mob);
 	public void giveIMC2MudList(MOB mob);
 	public void registerIMC2(Object O);

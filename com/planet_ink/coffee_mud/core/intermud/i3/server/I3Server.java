@@ -105,6 +105,11 @@ public class I3Server {
 	static public void shutdown()
 	{
 		try{
+			try
+			{
+				ShutdownPacket shutdown=new ShutdownPacket();
+				shutdown.send();
+			}catch(Exception e){}
 		thread.shutdown();
 		started=false;
 		CMLib.killThread(thread,500,1);

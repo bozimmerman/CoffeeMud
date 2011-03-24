@@ -58,6 +58,11 @@ public class Packet {
 	final static public int CHAN_LISTEN  = 13;
 	final static public int CHAN_USER_REQ= 14;
 	final static public int CHAN_USER_REP= 15;
+	final static public int SHUTDOWN     = 16;
+    final static public int FINGER_REQUEST=17;
+    final static public int FINGER_REPLY = 18;
+    final static public int ERROR_PACKET = 19;
+    final static public int PING_PACKET  = 20;
 
     public String sender_mud = null;
     public String sender_name = null;

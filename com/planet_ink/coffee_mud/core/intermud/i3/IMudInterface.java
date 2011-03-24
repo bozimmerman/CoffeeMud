@@ -315,6 +315,63 @@ public class IMudInterface implements ImudServices, Serializable
 					smob.tell(fixColors(lk.located_visible_name)+"@"+fixColors(lk.located_mud_name)+" ("+lk.idle_time+"): "+fixColors(lk.status));
 			}
 			break;
+		case Packet.FINGER_REQUEST:
+			{
+				FingerRequest lk=(FingerRequest)packet;
+				Packet pkt;
+				MOB M=CMLib.players().getLoadPlayer(lk.target_name);
+				if(M==null)
+					pkt=new ErrorPacket(lk.sender_name,lk.sender_mud,"unk-user","User "+lk.target_name+" is not known here.","0");
+				else
+				{
+					FingerReply fpkt = new FingerReply(lk.sender_name,lk.sender_mud);
+					pkt=fpkt;
+					fpkt.e_mail="0";
+					Session sess=M.session();
+					if((sess==null)||(!sess.afkFlag()))
+						fpkt.idle_time="-1";
+					else
+						fpkt.idle_time=Long.toString(sess.getIdleMillis()/1000);
+					fpkt.ip_time="0"; // what IS this?
+					fpkt.loginout_time=CMLib.time().date2String(M.playerStats().lastDateTime());
+					fpkt.real_name="0"; // don't even know this
+					if(M.titledName().equals(M.name()))
+						fpkt.title="An ordinary "+M.charStats().displayClassName();
+					else
+						fpkt.title=M.titledName();
+					fpkt.visible_name=M.name();
+					fpkt.extra=M.name()+" is a "+M.charStats().raceName()+" "+M.charStats().displayClassName();
+				}
+				try{
+					pkt.send();
+				}catch(Exception e){Log.errOut("IMudClient",e);}
+			}
+			break;
+		case Packet.FINGER_REPLY:
+		{
+			FingerReply lk=(FingerReply)packet;
+			MOB smob=findSessMob(lk.target_name);
+			if(smob!=null)
+			{
+				StringBuilder response=new StringBuilder("");
+				if((lk.visible_name.length()>0)&&(!lk.visible_name.equals("0")))
+					response.append("^H").append(CMStrings.padRight("Name",10)).append(": ^N").append(lk.visible_name).append("\n\r");
+				if((lk.title.length()>0)&&(!lk.title.equals("0")))
+					response.append("^H").append(CMStrings.padRight("Title",10)).append(": ^N").append(lk.title).append("\n\r");
+				if((lk.real_name.length()>0)&&(!lk.real_name.equals("0")))
+					response.append("^H").append(CMStrings.padRight("Real Name",10)).append(": ^N").append(lk.real_name).append("\n\r");
+				if((lk.e_mail.length()>0)&&(!lk.e_mail.equals("0")))
+					response.append("^H").append(CMStrings.padRight("Email",10)).append(": ^N").append(lk.e_mail).append("\n\r");
+				if((lk.loginout_time.length()>0)&&(!lk.loginout_time.equals("0")))
+					response.append("^H").append(CMStrings.padRight("Logged",10)).append(": ^N").append(lk.loginout_time).append("\n\r");
+				if((lk.ip_time.length()>0)&&(!lk.ip_time.equals("0")))
+					response.append("^H").append(CMStrings.padRight("IP Time",10)).append(": ^N").append(lk.ip_time).append("\n\r");
+				if((lk.extra.length()>0)&&(!lk.extra.equals("0")))
+					response.append("^H").append(CMStrings.padRight("Extra",10)).append(": ^N").append(lk.extra).append("\n\r");
+				smob.tell(response.toString());
+			}
+		}
+		break;
 		case Packet.WHO_REPLY:
 			{
 				WhoPacket wk=(WhoPacket)packet;

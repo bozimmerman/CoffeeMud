@@ -398,6 +398,9 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
     		if(autoCharCreate)
     		{
     			s="NEW";
+    			if((CMLib.players().playerExists(acct.accountName()))
+    			&&(session.confirm("Would you like to import the character '"+acct.accountName()+"' into your account (y/N)?", "Y")))
+                	s="IMPORT "+acct.accountName();
     		}
     		else
 	    		s = session.prompt("\n\r^wCommand or Name ^H(?)^w: ^N", CMProps.getMillisPerMudHour());
@@ -575,7 +578,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
                 }
     			PlayerLibrary.ThinnerPlayer newCharT = CMLib.database().DBUserSearch(s); 
 				String password;
-				password = session.prompt("Enter the password for this character: ");
+				password = session.prompt("Enter the existing password for this character: ");
 				if((password==null)||(password.trim().length()==0))
 					session.println("Aborted.");
 				else
