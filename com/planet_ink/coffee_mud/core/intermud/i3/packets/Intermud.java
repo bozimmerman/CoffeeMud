@@ -285,7 +285,7 @@ public class Intermud implements Runnable, Persistent, Serializable
                              "," + muds.getMudListId() + "," + channels.getChannelListId() + "," + intermud.getMudPort() +
                              ",0,0,\""+intermud.getMudVersion()+"\",\""+intermud.getMudVersion()+"\",\""+intermud.getMudVersion()+"\",\"CoffeeMud\"," +
                              "\""+intermud.getMudState()+"\",\""+CMProps.getVar(CMProps.SYSTEM_ADMINEMAIL).toLowerCase()+"\",([" +
-                             "\"who\":1,\"finger\":1,\"channel\":1,\"tell\":1,\"locate\":1,]),([]),})");
+                             "\"who\":1,\"finger\":1,\"channel\":1,\"tell\":1,\"locate\":1,\"auth\":1,]),([]),})");
                     }
                     catch(java.io.IOException e)
                     {
@@ -339,14 +339,7 @@ public class Intermud implements Runnable, Persistent, Serializable
             final String str=e.getMessage();
 			if(str!=null)
 			{
-				int x=str.indexOf("ping");
-				
-				if((x>0)
-				&&(!Character.isLetter(str.charAt(x-1)))
-				&&(((x+4)==str.length())||(!Character.isLetter(str.charAt(x+4)))))
-					PingPacket.lastPingResponse=System.currentTimeMillis();
-				else
-					Log.errOut("InterMud","276-"+str);
+				Log.errOut("InterMud","276-"+str);
 			}
         }
         else {
@@ -437,14 +430,14 @@ public class Intermud implements Runnable, Persistent, Serializable
 				}
 			}
             
-            if((System.currentTimeMillis()-lastPingTime)>(30 * 60 * 1000))
+            if((System.currentTimeMillis()-lastPingTime)>( 30 * 60 * 1000))
             {
             	lastPingTime=System.currentTimeMillis();
-            	try { new PingPacket().send(); } catch(Exception e) { }
+            	try { new MudAuthRequest(I3Server.getMudName()).send(); } catch(Exception e) { }
             	if(PingPacket.lastPingResponse==0)
             		PingPacket.lastPingResponse=1;
             	else
-            	if((System.currentTimeMillis()-PingPacket.lastPingResponse)>(60000 * 60)) // one hour
+            	if((System.currentTimeMillis()-PingPacket.lastPingResponse)>(60 * 60 * 1000)) // one hour
             	{
             		PingPacket.lastPingResponse=System.currentTimeMillis();
             		Log.errOut("Intermud","No I3 Ping received in "+CMLib.time().date2EllapsedTime(System.currentTimeMillis()-PingPacket.lastPingResponse, TimeUnit.SECONDS, false));
@@ -694,15 +687,22 @@ public class Intermud implements Runnable, Persistent, Serializable
 
                 intermud.receive(p);
             }
+            else if( type.equals("auth-mud-req") ) {
+                MudAuthRequest p = new MudAuthRequest(data);
+
+                intermud.receive(p);
+			}
+            else if( type.equals("auth-mud-reply") ) {
+                MudAuthReply p = new MudAuthReply(data);
+
+                intermud.receive(p);
+            }
             else if( type.equals("error") ) {
                 error(data);
             }
             else if( type.equals("ucache-update") ) {
                 // i have NO idea what to do here
 			}
-            else if (type.startsWith("ping")) {
-				PingPacket.lastPingResponse=System.currentTimeMillis();
-            }
             else {
                 Log.errOut("Intermud","Other packet: " + type);
             }

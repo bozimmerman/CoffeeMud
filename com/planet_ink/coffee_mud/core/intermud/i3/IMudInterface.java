@@ -6,6 +6,7 @@ import com.planet_ink.coffee_mud.core.intermud.i3.net.*;
 import com.planet_ink.coffee_mud.core.intermud.*;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.core.CMSecurity.DbgFlag;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
@@ -348,30 +349,59 @@ public class IMudInterface implements ImudServices, Serializable
 			}
 			break;
 		case Packet.FINGER_REPLY:
-		{
-			FingerReply lk=(FingerReply)packet;
-			MOB smob=findSessMob(lk.target_name);
-			if(smob!=null)
 			{
-				StringBuilder response=new StringBuilder("");
-				if((lk.visible_name.length()>0)&&(!lk.visible_name.equals("0")))
-					response.append("^H").append(CMStrings.padRight("Name",10)).append(": ^N").append(lk.visible_name).append("\n\r");
-				if((lk.title.length()>0)&&(!lk.title.equals("0")))
-					response.append("^H").append(CMStrings.padRight("Title",10)).append(": ^N").append(lk.title).append("\n\r");
-				if((lk.real_name.length()>0)&&(!lk.real_name.equals("0")))
-					response.append("^H").append(CMStrings.padRight("Real Name",10)).append(": ^N").append(lk.real_name).append("\n\r");
-				if((lk.e_mail.length()>0)&&(!lk.e_mail.equals("0")))
-					response.append("^H").append(CMStrings.padRight("Email",10)).append(": ^N").append(lk.e_mail).append("\n\r");
-				if((lk.loginout_time.length()>0)&&(!lk.loginout_time.equals("0")))
-					response.append("^H").append(CMStrings.padRight("Logged",10)).append(": ^N").append(lk.loginout_time).append("\n\r");
-				if((lk.ip_time.length()>0)&&(!lk.ip_time.equals("0")))
-					response.append("^H").append(CMStrings.padRight("IP Time",10)).append(": ^N").append(lk.ip_time).append("\n\r");
-				if((lk.extra.length()>0)&&(!lk.extra.equals("0")))
-					response.append("^H").append(CMStrings.padRight("Extra",10)).append(": ^N").append(lk.extra).append("\n\r");
-				smob.tell(response.toString());
+				FingerReply lk=(FingerReply)packet;
+				MOB smob=findSessMob(lk.target_name);
+				if(smob!=null)
+				{
+					StringBuilder response=new StringBuilder("");
+					if((lk.visible_name.length()>0)&&(!lk.visible_name.equals("0")))
+						response.append("^H").append(CMStrings.padRight("Name",10)).append(": ^N").append(lk.visible_name).append("\n\r");
+					if((lk.title.length()>0)&&(!lk.title.equals("0")))
+						response.append("^H").append(CMStrings.padRight("Title",10)).append(": ^N").append(lk.title).append("\n\r");
+					if((lk.real_name.length()>0)&&(!lk.real_name.equals("0")))
+						response.append("^H").append(CMStrings.padRight("Real Name",10)).append(": ^N").append(lk.real_name).append("\n\r");
+					if((lk.e_mail.length()>0)&&(!lk.e_mail.equals("0")))
+						response.append("^H").append(CMStrings.padRight("Email",10)).append(": ^N").append(lk.e_mail).append("\n\r");
+					if((lk.loginout_time.length()>0)&&(!lk.loginout_time.equals("0")))
+						response.append("^H").append(CMStrings.padRight("Logged",10)).append(": ^N").append(lk.loginout_time).append("\n\r");
+					if((lk.ip_time.length()>0)&&(!lk.ip_time.equals("0")))
+						response.append("^H").append(CMStrings.padRight("IP Time",10)).append(": ^N").append(lk.ip_time).append("\n\r");
+					if((lk.extra.length()>0)&&(!lk.extra.equals("0")))
+						response.append("^H").append(CMStrings.padRight("Extra",10)).append(": ^N").append(lk.extra).append("\n\r");
+					smob.tell(response.toString());
+				}
 			}
-		}
-		break;
+			break;
+		case Packet.MAUTH_REQUEST:
+			{
+				MudAuthRequest lk=(MudAuthRequest)packet;
+				if(lk.sender_mud.equalsIgnoreCase(I3Server.getMudName()))
+				{
+					if(CMSecurity.isDebugging(DbgFlag.I3))
+						Log.debugOut("I3","Received my own mud-auth.");
+				}
+				else
+					Log.sysOut("I3","MUD "+lk.sender_mud+" wants to mud-auth.");
+				MudAuthReply pkt = new MudAuthReply(lk.sender_mud, System.currentTimeMillis());
+				try{
+					pkt.send();
+				}catch(Exception e){Log.errOut("IMudClient",e);}
+			}
+			break;
+		case Packet.MAUTH_REPLY:
+			{
+				MudAuthReply lk=(MudAuthReply)packet;
+				if(lk.sender_mud.equalsIgnoreCase(I3Server.getMudName()))
+				{
+					if(CMSecurity.isDebugging(DbgFlag.I3))
+						Log.debugOut("I3","I replied to my mud-auth.");
+					PingPacket.lastPingResponse=System.currentTimeMillis();
+				}
+				else
+					Log.sysOut("I3","MUD "+lk.sender_mud+" replied to my mud-auth with key "+lk.key+".");
+			}
+			break;
 		case Packet.WHO_REPLY:
 			{
 				WhoPacket wk=(WhoPacket)packet;
