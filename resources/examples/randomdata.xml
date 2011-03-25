@@ -1840,7 +1840,7 @@ TODO: add a pit, a precipice, a fungal room, a crypt w/ sarcophogi
 						<NAME>$mob_name`s gloves</NAME>
 						<DISPLAY>$item_name has been left here"</DISPLAY>
 						<MATERIAL>LEATHER</MATERIAL>
-						<PROPERWORN>LEGS,HELD</PROPERWORN><WORNAND>false</WORNAND>
+						<PROPERWORN>HANDS,HELD</PROPERWORN><WORNAND>false</WORNAND>
 					</ITEM>
 					<ITEM class="GenArmor" LEVEL="$mob_level">
 						<NAME>$mob_name`s belt</NAME>
