@@ -1779,8 +1779,8 @@ TODO: add a pit, a precipice, a fungal room, a crypt w/ sarcophogi
 				<BEHAVIOR class="Mobile" condition="$roomtag_nodetype!='leaf'" parms="" />
 			</BEHAVIOR>
 		</MOB>
-		<MOB class="GenMob" level="$level_range" id="dungeon_prisonguard" race="$_prisoner_races" gender="$anygender">
-			<NAME>(a(n)) $_prisoner_races prison guard</NAME>
+		<MOB class="GenMob" level="$level_range" id="dungeon_prisonguard" race="$_humanoid_races" gender="$anygender">
+			<NAME>(a(n)) $_humanoid_races prison guard</NAME>
 			<DISPLAY select="pick-1">
 				<DISPLAY pickweight="1">$mob_name marches towards you.</DISPLAY>
 				<DISPLAY pickweight="1">$mob_name charges at you.</DISPLAY>
