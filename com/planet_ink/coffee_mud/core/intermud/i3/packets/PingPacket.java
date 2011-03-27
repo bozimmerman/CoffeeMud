@@ -48,7 +48,14 @@ public class PingPacket extends Packet
     {
         super(v);
         type = Packet.PING_PACKET;
-        target_mud=Intermud.getNameServer().name;
+        target_mud=v.elementAt(4).toString();
+    }
+
+    public PingPacket(String mud)
+    {
+        super();
+        type = Packet.PING_PACKET;
+        target_mud=mud;
     }
 
     public void send() throws InvalidPacketException 

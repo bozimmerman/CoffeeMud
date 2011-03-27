@@ -472,7 +472,7 @@ public class IMudClient implements I3Interface
 		if((!i3online())&&(!imc2online())) return;
 		if(i3online())
 		{
-			PingPacket ck=new PingPacket();
+			PingPacket ck=new PingPacket(I3Server.getMudName());
 			try{
 			ck.send();
 			}catch(Exception e){Log.errOut("IMudClient",e);}
@@ -500,8 +500,8 @@ public class IMudClient implements I3Interface
 			ck.send();
 			}catch(Exception e){Log.errOut("IMudClient",e);}
 		}
-		//if(imc2online())
-		//	imc2.imc_send_whois(mob.Name(),mobName,mob.phyStats().level());
+		if(imc2online())
+			imc2.imc_send_whois(mob.Name(),mobName,mob.phyStats().level());
 	}
 
 	public void i3mudInfo(MOB mob, String parms)

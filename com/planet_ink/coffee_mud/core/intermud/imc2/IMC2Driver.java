@@ -5,6 +5,7 @@ import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.Room;
 import com.planet_ink.coffee_mud.MOBS.interfaces.MOB;
 import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.core.CMSecurity.DbgFlag;
 import com.planet_ink.coffee_mud.core.collections.*;
 
 import java.io.*;
@@ -1179,7 +1180,9 @@ public final class IMC2Driver extends Thread {
            text.append(route[i]);
        }
 
-       send_to_player(d.name, text.toString());
+       if(CMSecurity.isDebugging(DbgFlag.IMC2))
+    	   Log.debugOut("IMC2Driver",text.toString());
+       //send_to_player(d.name, text.toString());
    }
 
 
@@ -1523,6 +1526,7 @@ public final class IMC2Driver extends Thread {
         boolean shutdown=false;
         public boolean isShutdown=false;
         int seq = 0;
+        long lastPingReceived=System.currentTimeMillis();
 
         public call_out(IMC2Driver _imc_client) {
 			super("IMC2-call_out");
@@ -1541,8 +1545,15 @@ public final class IMC2Driver extends Thread {
         {
             if (imc_client == null)
                 return;
+            long timeSinceLastPing=System.currentTimeMillis();
             while (!shutdown) 
             {
+            	if((System.currentTimeMillis()-timeSinceLastPing) > (30 * 60 * 1000))
+            	{
+            		imc_client.imc_send_ping("Server01");
+            		timeSinceLastPing=System.currentTimeMillis();
+            		// everything is taken care of from here.  detect disconnect, reconnect -- everything.
+            	}
 //              tracef(1, "call_out: process call outs");
                 imc_client.imc_process_call_outs();
                 imc_client.imc_write_to_socket(out);
@@ -1600,7 +1611,7 @@ public final class IMC2Driver extends Thread {
     }
 
     /* send a ping with a given timestamp */
-    final public void imc_send_ping(String name, String to, int time_s, int time_u) 
+    final public void imc_send_ping(String to) 
 	{
         PACKET out = new PACKET();
 
@@ -1609,11 +1620,8 @@ public final class IMC2Driver extends Thread {
 
         imc_initdata(out);
         out.type = "ping";
-        out.from = name;
+        out.from = "*";
         out.to = "*@" + to;
-        imc_addkeyi(out, "time-s", time_s);
-        imc_addkeyi(out, "time-us", time_u);
-
         imc_send(out);
         out = null;
     }
