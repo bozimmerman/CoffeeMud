@@ -1548,7 +1548,7 @@ public final class IMC2Driver extends Thread {
             long timeSinceLastPing=System.currentTimeMillis();
             while (!shutdown) 
             {
-            	if((System.currentTimeMillis()-timeSinceLastPing) > ( 60 * 1000))
+            	if((System.currentTimeMillis()-timeSinceLastPing) > (30 * 60 * 1000))
             	{
             		imc_client.imc_send_ping("Server01");
             		timeSinceLastPing=System.currentTimeMillis();
