@@ -430,14 +430,14 @@ public class Intermud implements Runnable, Persistent, Serializable
 				}
 			}
             
-            if((System.currentTimeMillis()-lastPingTime)>( 30 * 60 * 1000))
+            if((System.currentTimeMillis()-lastPingTime)>( 60 * 1000))
             {
             	lastPingTime=System.currentTimeMillis();
             	try { new MudAuthRequest(I3Server.getMudName()).send(); } catch(Exception e) { }
             	if(PingPacket.lastPingResponse==0)
             		PingPacket.lastPingResponse=1;
             	else
-            	if((System.currentTimeMillis()-PingPacket.lastPingResponse)>(60 * 60 * 1000)) // one hour
+            	if((System.currentTimeMillis()-PingPacket.lastPingResponse)>(2  * 60 * 1000)) // one hour
             	{
             		PingPacket.lastPingResponse=System.currentTimeMillis();
             		Log.errOut("Intermud","No I3 Ping received in "+CMLib.time().date2EllapsedTime(System.currentTimeMillis()-PingPacket.lastPingResponse, TimeUnit.SECONDS, false));
