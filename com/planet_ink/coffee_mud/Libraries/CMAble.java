@@ -1706,6 +1706,7 @@ public class CMAble extends StdLibrary implements AbilityMapper
 			comp=req.get(i);
 			currentAND=comp.getConnector()==AbilityComponent.CompConnector.AND;
 			if(previousValue&&(!currentAND)) return passes;
+			if((!previousValue)&&currentAND) return null;
 
 			// if they fail the zappermask, its like the req is NOT even there...
 			if((comp.getCompiledMask()!=null)
