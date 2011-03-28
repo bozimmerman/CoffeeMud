@@ -563,13 +563,9 @@ public class Destroy extends StdCommand
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
 			return false;
 		}
-		CMFile F=new CMFile(Resources.makeFileResourceName("skills/components.txt"),null,true);
-        boolean removed=Resources.findRemoveProperty(F, classID);
-		if(removed)
-		{
-			CMLib.ableMapper().getAbilityComponentMap().remove(classID.toUpperCase());
-			mob.location().showHappens(CMMsg.MSG_OK_ACTION,"The complication of skill usage just decreased!");
-		}
+		CMLib.ableMapper().alterAbilityComponentFile(classID,true);
+		CMLib.ableMapper().getAbilityComponentMap().remove(classID.toUpperCase());
+		mob.location().showHappens(CMMsg.MSG_OK_ACTION,"The complication of skill usage just decreased!");
 		return true;
 	}
     

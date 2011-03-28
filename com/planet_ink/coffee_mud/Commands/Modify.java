@@ -1006,46 +1006,7 @@ public class Modify extends StdCommand
             mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
             return;
         }
-        CMFile F=new CMFile(Resources.makeFileResourceName("skills/components.txt"),null,true);
-        StringBuffer text=F.textUnformatted();
-        boolean lastWasCR=true;
-        int delFromHere=-1;
-        String upID=skillID.toUpperCase();
-        for(int t=0;t<text.length();t++)
-        {
-            if(text.charAt(t)=='\n')
-                lastWasCR=true;
-            else
-            if(text.charAt(t)=='\r')
-                lastWasCR=true;
-            else
-            if(Character.isWhitespace(text.charAt(t)))
-                continue;
-            else
-            if((lastWasCR)&&(delFromHere>=0))
-            {
-                text.delete(delFromHere,t);
-                text.insert(delFromHere,parms+'\n');
-                delFromHere=-1;
-                break;
-            }
-            else
-            if((lastWasCR)&&(Character.toUpperCase(text.charAt(t))==upID.charAt(0)))
-            {
-                if((text.substring(t).toUpperCase().startsWith(upID))
-                &&(text.substring(t+upID.length()).trim().startsWith("=")))
-                    delFromHere=t;
-                lastWasCR=false;
-            }
-            else
-                lastWasCR=false;
-        }
-        if(delFromHere>0)
-        {
-            text.delete(delFromHere,text.length());
-            text.append(parms+'\n');
-        }
-        F.saveText(text.toString(),false);
+		CMLib.ableMapper().alterAbilityComponentFile(skillID,false);
         mob.location().showHappens(CMMsg.MSG_OK_ACTION,"The complication of skill usage just increased!");
     }
     

@@ -169,8 +169,9 @@ public interface AbilityMapper extends CMLibrary
     public String getAbilityComponentDesc(MOB mob, List<AbilityComponent> req, int r);
     public List<DVector> getAbilityComponentDecodedDVectors(List<AbilityComponent> req);
     public List<DVector> getAbilityComponentDecodedDVectors(String AID);
-    public void setAbilityComponentCodedFromDecodedDVector(DVector decodedDV, List<AbilityComponent> codedDV, int row);
-    public DVector getAbilityComponentDecodedDVector(List<AbilityComponent> codedDV, int r);
-    public void addBlankAbilityComponent(List<AbilityComponent> codedDV);
+    public void setAbilityComponentCodedFromDecodedDVector(DVector decodedDV, AbilityComponent comp);
+    public DVector getAbilityComponentDecodedDVector(AbilityComponent comp);
+    public AbilityComponent createBlankAbilityComponent();
     public boolean isDomainIncludedInAnyAbility(int domain, int acode);
+    public void alterAbilityComponentFile(String compID, boolean delete);
 }

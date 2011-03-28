@@ -1743,11 +1743,10 @@ public class CMAble extends StdLibrary implements AbilityMapper
 
     public List<AbilityComponent> getAbilityComponentDVector(String AID){ return (List<AbilityComponent>)getAbilityComponentMap().get(AID.toUpperCase().trim());}
     public List<DVector> getAbilityComponentDecodedDVectors(String AID){ return getAbilityComponentDecodedDVectors(getAbilityComponentDVector(AID));}
-    public DVector getAbilityComponentDecodedDVector(List<AbilityComponent> codedDV, int r)
+    public DVector getAbilityComponentDecodedDVector(AbilityComponent comp)
     {
         DVector curr=new DVector(2);
         String itemDesc=null;
-        AbilityComponent comp = codedDV.get(r);
         curr.addElement("ANDOR",comp.getConnector()==AbilityComponent.CompConnector.AND?"&&":"||");
         if(comp.getLocation()==AbilityComponent.CompLocation.HELD)
         	curr.addElement("DISPOSITION","held");
@@ -1782,12 +1781,11 @@ public class CMAble extends StdLibrary implements AbilityMapper
         return curr;
     }
 
-    public void setAbilityComponentCodedFromDecodedDVector(DVector decodedDV, List<AbilityComponent> codedDV, int row)
+    public void setAbilityComponentCodedFromDecodedDVector(DVector decodedDV, AbilityComponent comp)
     {
         String[] s=new String[6];
         for(int i=0;i<6;i++)
             s[i]=(String)decodedDV.elementAt(i,2);
-        AbilityComponent comp = codedDV.get(row);
         if(s[0].equalsIgnoreCase("||"))
             comp.setConnector(AbilityComponent.CompConnector.OR);
         else
@@ -1828,15 +1826,12 @@ public class CMAble extends StdLibrary implements AbilityMapper
     {
         if(req==null) return null;
         List<DVector> V=new Vector<DVector>();
-        for(int r=0;r<req.size();r++)
-        {
-            DVector curr=getAbilityComponentDecodedDVector(req,r);
-            V.add(curr);
-        }
+        for(AbilityComponent comp : req)
+            V.add(getAbilityComponentDecodedDVector(comp));
         return V;
     }
 
-    public void addBlankAbilityComponent(List<AbilityComponent> codedDV)
+    public AbilityComponent createBlankAbilityComponent()
     {
     	AbilityComponent comp = (AbilityComponent)CMClass.getCommon("DefaultAbilityComponent");
     	comp.setConnector(AbilityComponent.CompConnector.AND);
@@ -1845,7 +1840,7 @@ public class CMAble extends StdLibrary implements AbilityMapper
     	comp.setAmount(1);
     	comp.setType(AbilityComponent.CompType.STRING, "resource-material-item name");
     	comp.setMask("");
-        codedDV.add(comp);
+        return comp;
     }
 
     public String getAbilityComponentCodedString(String AID)
@@ -2102,5 +2097,66 @@ public class CMAble extends StdLibrary implements AbilityMapper
             }
         }
         return value;
+	}
+	
+	public void alterAbilityComponentFile(String compID, boolean delete)
+	{
+		CMFile F=new CMFile(Resources.makeFileResourceName("skills/components.txt"),null,true);
+		if(delete)
+		{
+	        Resources.findRemoveProperty(F, compID);
+	        return;
+		}
+        String parms=CMLib.ableMapper().getAbilityComponentCodedString(compID);
+        StringBuffer text=F.textUnformatted();
+        boolean lastWasCR=true;
+        boolean addIt=true;
+        int delFromHere=-1;
+        String upID=compID.toUpperCase();
+        for(int t=0;t<text.length();t++)
+        {
+            if(text.charAt(t)=='\n')
+                lastWasCR=true;
+            else
+            if(text.charAt(t)=='\r')
+                lastWasCR=true;
+            else
+            if(Character.isWhitespace(text.charAt(t)))
+                continue;
+            else
+            if((lastWasCR)&&(delFromHere>=0))
+            {
+                text.delete(delFromHere,t);
+                text.insert(delFromHere,parms+'\n');
+                delFromHere=-1;
+                addIt=false;
+                break;
+            }
+            else
+            if((lastWasCR)&&(Character.toUpperCase(text.charAt(t))==upID.charAt(0)))
+            {
+                if((text.substring(t).toUpperCase().startsWith(upID))
+                &&(text.substring(t+upID.length()).trim().startsWith("=")))
+                {
+	                addIt=false;
+                    delFromHere=t;
+                }
+                lastWasCR=false;
+            }
+            else
+                lastWasCR=false;
+        }
+        if(delFromHere>0)
+        {
+            text.delete(delFromHere,text.length());
+            text.append(parms+'\n');
+        }
+        if(addIt)
+        {
+        	if(!lastWasCR)
+	            text.append('\n');
+            text.append(parms+'\n');
+        }
+        F.saveText(text.toString(),false);
 	}
 }

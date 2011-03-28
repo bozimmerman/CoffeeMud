@@ -813,7 +813,17 @@ public class CraftingSkill extends GatheringSkill
 	{
 		if(autoGenerate>0) return new LinkedList<Object>();
 		
-    	final List<AbilityComponent> componentsRequirements=(Vector<AbilityComponent>)CMLib.ableMapper().getAbilityComponentMap().get(componentID.toUpperCase());
+		final List<AbilityComponent> componentsRequirements;
+		if(componentID.trim().startsWith("("))
+		{
+			Map<String, List<AbilityComponent>> H=new TreeMap<String, List<AbilityComponent>>();
+			String error=CMLib.ableMapper().addAbilityComponent("ID="+componentID, H);
+			if(error!=null)
+				Log.errOut(ID(),"Error parsing custom component: "+componentID);
+			componentsRequirements=H.get("ID");
+		}
+		else
+    		componentsRequirements=(Vector<AbilityComponent>)CMLib.ableMapper().getAbilityComponentMap().get(componentID.toUpperCase());
         if(componentsRequirements!=null)
         {
         	List<Object> components=CMLib.ableMapper().componentCheck(mob,componentsRequirements);
@@ -841,7 +851,17 @@ public class CraftingSkill extends GatheringSkill
 		}
 		else
 		{
-	    	final List<AbilityComponent> componentsRequirements=(Vector<AbilityComponent>)CMLib.ableMapper().getAbilityComponentMap().get(woodStr.toUpperCase().trim());
+			final List<AbilityComponent> componentsRequirements;
+			if(woodStr.trim().startsWith("("))
+			{
+				Map<String, List<AbilityComponent>> H=new TreeMap<String, List<AbilityComponent>>();
+				String error=CMLib.ableMapper().addAbilityComponent("ID="+woodStr, H);
+				if(error!=null)
+					return "Error parsing custom component: "+woodStr;
+				componentsRequirements=H.get("ID");
+			}
+			else
+				componentsRequirements=(Vector<AbilityComponent>)CMLib.ableMapper().getAbilityComponentMap().get(woodStr.toUpperCase().trim());
 	        if(componentsRequirements!=null)
 	        {
 	        	return CMLib.ableMapper().getAbilityComponentDesc(mob, woodStr.toUpperCase().trim());

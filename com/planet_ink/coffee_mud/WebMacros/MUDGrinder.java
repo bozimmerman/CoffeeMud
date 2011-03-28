@@ -205,6 +205,36 @@ public class MUDGrinder extends StdWebMacro
             return "@break@";
         }
         else
+        if(parms.containsKey("DELCOMPONENT"))
+        {
+			MOB mob = Authenticate.getAuthenticatedMob(httpReq);
+            if(mob==null) return "@break@";
+            String last=httpReq.getRequestParameter("COMPONENT");
+            if(last==null) return "@break@";
+            if(last.length()==0) return "@break@";
+            List<AbilityComponent> list = CMLib.ableMapper().getAbilityComponentDVector(last);
+            if(list==null) return "@break@";
+			if(!CMSecurity.isAllowedEverywhere(mob,"COMPONENTS")) return "@break@";
+			CMLib.ableMapper().getAbilityComponentMap().remove(last.toUpperCase().trim());
+			CMLib.ableMapper().alterAbilityComponentFile(last, true);
+            Log.sysOut("Grinder",mob.Name()+" destroyed component "+last);
+            return "The component "+last+" has been successfully destroyed.";
+        }
+        else
+        if(parms.containsKey("EDITCOMPONENT"))
+        {
+			MOB mob = Authenticate.getAuthenticatedMob(httpReq);
+            if(mob==null) return "@break@";
+            String last=httpReq.getRequestParameter("COMPONENT");
+            if(last==null) return "@break@";
+            if(last.length()==0) return "@break@";
+            if(!CMSecurity.isAllowedEverywhere(mob,"COMPONENTS")) return "@break@";
+            String err=new GrinderComponent().runMacro(httpReq,parm);
+            if(err.length()>0) return err;
+            Log.sysOut("Grinder",mob.Name()+" modified component "+last);
+            return "The component "+last+" has been successfully modified.";
+        }
+        else
         if(parms.containsKey("DELCLAN"))
         {
 			MOB mob = Authenticate.getAuthenticatedMob(httpReq);

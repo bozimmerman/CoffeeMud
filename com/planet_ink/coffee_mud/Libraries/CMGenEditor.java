@@ -6212,10 +6212,10 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
         return true;
     }
 
-    protected boolean modifyComponent(MOB mob, List<AbilityComponent> components, int componentIndex)
+    protected boolean modifyComponent(MOB mob, AbilityComponent comp)
     throws IOException
     {
-        DVector decoded=CMLib.ableMapper().getAbilityComponentDecodedDVector(components,componentIndex);
+        DVector decoded=CMLib.ableMapper().getAbilityComponentDecodedDVector(comp);
         if(mob.isMonster()) return true;
         boolean ok=false;
         int showFlag=-1;
@@ -6242,7 +6242,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
                 ok=true;
             }
         }
-        CMLib.ableMapper().setAbilityComponentCodedFromDecodedDVector(decoded,components,componentIndex);
+        CMLib.ableMapper().setAbilityComponentCodedFromDecodedDVector(decoded,comp);
         return true;
     }
 
@@ -6266,7 +6266,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
                     if((showFlag>0)&&(showFlag!=showNumber)) continue;
                     mob.tell(showNumber+": '"+CMLib.ableMapper().getAbilityComponentDesc(null,codedDV,v)+"'.");
                     if((showFlag!=showNumber)&&(showFlag>-999)) continue;
-                    if(!modifyComponent(mob,codedDV,v))
+                    if(!modifyComponent(mob,codedDV.get(v)))
                     {
                         codedDV.remove(v);
                         v--;
@@ -6278,13 +6278,18 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
                 mob.tell(showNumber+". Add new component requirement.");
                 if((showFlag==showNumber)||(showFlag<=-999))
                 {
-                    CMLib.ableMapper().addBlankAbilityComponent(codedDV);
-                    boolean success=modifyComponent(mob,codedDV,codedDV.size()-1);
+                	AbilityComponent comp = CMLib.ableMapper().createBlankAbilityComponent();
+                    boolean success=modifyComponent(mob,comp);
                     if(!success)
-                        codedDV.remove(codedDV.size()-1);
+                    {
+                    	// do nothing
+                    }
                     else
-                    if(showFlag<=-999)
-                        continue;
+                    {
+                        codedDV.add(comp);
+	                    if(showFlag<=-999)
+	                        continue;
+                    }
                 }
                 break;
             }

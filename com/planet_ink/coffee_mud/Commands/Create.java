@@ -539,7 +539,7 @@ public class Create extends StdCommand
 		}
 		Vector<AbilityComponent> DV=new Vector<AbilityComponent>();
         CMLib.ableMapper().getAbilityComponentMap().put(skillID.toUpperCase().trim(),DV);
-        CMLib.ableMapper().addBlankAbilityComponent(DV);
+        DV.add(CMLib.ableMapper().createBlankAbilityComponent());
         CMLib.genEd().modifyComponents(mob,skillID);
         String parms=CMLib.ableMapper().getAbilityComponentCodedString(skillID);
 		String error=CMLib.ableMapper().addAbilityComponent(parms,CMLib.ableMapper().getAbilityComponentMap());
@@ -549,18 +549,7 @@ public class Create extends StdCommand
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
 			return;
 		}
-		CMFile F=new CMFile(Resources.makeFileResourceName("skills/components.txt"),null,true);
-        StringBuffer crtestbuf=F.textUnformatted();
-        boolean addCR=false;
-        for(int c=crtestbuf.length()-1;c>=0;c--)
-            if((crtestbuf.charAt(c)=='\n')||(crtestbuf.charAt(c)=='\r'))
-                break;
-            else
-            if(Character.isWhitespace(crtestbuf.charAt(c)))
-                continue;
-            else
-            { addCR=true; break;}
-		F.saveText((addCR?"\n":"")+parms,true);
+		CMLib.ableMapper().alterAbilityComponentFile(skillID,false);
 		mob.location().showHappens(CMMsg.MSG_OK_ACTION,"The complication of skill usage just increased!");
 	}
     
