@@ -63,6 +63,7 @@ public class ComponentPieceData extends StdWebMacro
 			{
 				String type=httpReq.getRequestParameter(fixedCompID+"_PIECE_TYPE_"+last);
 				String strType=httpReq.getRequestParameter(fixedCompID+"_PIECE_STRING_"+last);
+				if(strType==null) strType="item name";
 				AbilityComponent.CompType C=(AbilityComponent.CompType)CMath.s_valueOf(AbilityComponent.CompType.values(), type);
 				if((C==null)||(C==AbilityComponent.CompType.STRING))
 				{
@@ -98,7 +99,11 @@ public class ComponentPieceData extends StdWebMacro
 				}
 			}
 			if(parms.containsKey("AMOUNT")||parms.containsKey("AMOUNTEDIT"))
-				str.append(httpReq.getRequestParameter(fixedCompID+"_PIECE_AMOUNT_"+last));
+			{
+				String s=httpReq.getRequestParameter(fixedCompID+"_PIECE_AMOUNT_"+last);
+				if(s==null) s="1";
+				str.append(s);
+			}
 			if(parms.containsKey("CONSUMED"))
 			{
 				String consumed=httpReq.getRequestParameter(fixedCompID+"_PIECE_CONSUMED_"+last);
