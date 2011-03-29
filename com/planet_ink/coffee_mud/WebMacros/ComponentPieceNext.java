@@ -52,7 +52,10 @@ public class ComponentPieceNext extends StdWebMacro
 	            for(AbilityComponent A : set)
 	            {
 	            	httpReq.addRequestParameters(fixedCompID+"_PIECE_MASK_"+index, A.getMaskStr());
-	            	httpReq.addRequestParameters(fixedCompID+"_PIECE_STRING_"+index, A.getStringType());
+	            	if(A.getType()==AbilityComponent.CompType.STRING)
+		            	httpReq.addRequestParameters(fixedCompID+"_PIECE_STRING_"+index, A.getStringType());
+	            	else
+		            	httpReq.addRequestParameters(fixedCompID+"_PIECE_STRING_"+index, Long.toString(A.getLongType()));
 	            	httpReq.addRequestParameters(fixedCompID+"_PIECE_AMOUNT_"+index, Integer.toString(A.getAmount()));
 	            	httpReq.addRequestParameters(fixedCompID+"_PIECE_CONNECTOR_"+index, A.getConnector().toString());
 	            	httpReq.addRequestParameters(fixedCompID+"_PIECE_LOCATION_"+index, A.getLocation().toString());

@@ -59,7 +59,10 @@ public class GrinderComponent
             	{
             		AbilityComponent able=(AbilityComponent)CMClass.getCommon("DefaultAbilityComponent");
             		able.setAmount(CMath.s_int(amt));
-            		able.setConnector(AbilityComponent.CompConnector.valueOf(conn));
+            		if(posDex==1)
+	            		able.setConnector(AbilityComponent.CompConnector.AND);
+            		else
+	            		able.setConnector(AbilityComponent.CompConnector.valueOf(conn));
             		able.setConsumed((consumed!=null)&&(consumed.equalsIgnoreCase("on")||consumed.equalsIgnoreCase("checked")));
             		able.setLocation(AbilityComponent.CompLocation.valueOf(loc));
             		able.setMask(mask);

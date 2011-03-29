@@ -1,0 +1,146 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+@if?!Authenticate@ @AddFile?/grinder/failedlogin.cmvp@ @else@
+@if?!CheckAuthCode?AUTH_COMPONENTS=true@ @AddFile?/grinder/nopriv.cmvp@ @else@
+<META HTTP-EQUIV="Pragma" CONTENT="no-cache">
+<html>
+<head>
+    <link rel="grinder icon" href="/images/grinder.ico" >
+    <title>@ComponentID@ Component Information</title>
+    <script language=JavaScript>
+    <!--
+        function openUp(named)
+        {
+            var strFeatures="top=200,left=50,scrollbars=yes,resizeable=no,height=400,width=650,alwaysRaised=yes,dependent=yes";
+            var w2=window.open("/ahelp.cmvp?HELPTOPIC="+named,"Help",strFeatures,false);
+        }
+        function Delete()
+        {
+            if(confirm('Delete this component definition?! Confirm!'))
+            {
+                if(confirm('Press OK to Delete this component definition!'))
+                {
+                    document.RESOURCES.action='componentdo.cmvp';
+                    document.RESOURCES.FUNCTION.value='DELCOMPONENT';
+                    document.RESOURCES.COMPONENT.value='@ComponentID@';
+                    document.RESOURCES.submit();
+                }
+            }
+        }
+        function EditDone()
+        {
+            if(confirm('Submit your changes to this component?'))
+            {
+                document.RESOURCES.action='componentdo.cmvp';
+                document.RESOURCES.FUNCTION.value='EDITCOMPONENT';
+                document.RESOURCES.COMPONENT.value='@ComponentID@';
+                document.RESOURCES.submit();
+            }
+        }
+        function ReShow()
+        {
+            document.RESOURCES.FUNCTION.value='';
+            document.RESOURCES.COMPONENT.value='@ComponentID@';
+            document.RESOURCES.action='/grinder/component.cmvp';
+            document.RESOURCES.submit();
+        }
+        function EditAffect(ME)
+        {
+            if(ME.selectedIndex==0)
+                ReShow();
+        }
+        function AddAffect(ME)
+        {
+            if(ME.selectedIndex>0)
+                ReShow();
+        }
+        function Cancel()
+        {
+            window.close();
+        }
+        function OpenUp(file,named)
+        {
+            var strFeatures="top=200,left=50,scrollbars=yes,resizeable=no,height=400,width=650,alwaysRaised=yes,dependent=yes";
+            w=window.open("/"+file+"?HELPTOPIC="+named,
+                        "Help",strFeatures, false);
+        }
+    //-->
+    </script>
+</head>
+<body BGCOLOR=BLACK>
+<FORM NAME=RESOURCES TARGET=_top METHOD=POST ACTION="component.cmvp">
+<INPUT TYPE=HIDDEN NAME=AUTH VALUE="@Authenticate?AUTH@">
+<INPUT TYPE=HIDDEN NAME=FUNCTION VALUE="">
+<INPUT TYPE=HIDDEN NAME=COMPONENT VALUE="@ComponentID@">
+<CENTER><FONT COLOR=WHITE>@ComponentID@ Component Information</FONT></CENTER>
+<P>
+@ComponentPieceNext?RESET@
+@loop@
+    @ComponentPieceNext@
+    @if?CheckReqParm?COMPONENTPIECE=1@ 
+        <INPUT TYPE=HIDDEN NAME="@ComponentID@_PIECE_CONNECTOR_@ComponentPieceID@" VALUE="AND">
+    @else@
+        <P>
+        <CENTER>
+        <SELECT NAME="@ComponentID@_PIECE_CONNECTOR_@ComponentPieceID@"  ONCHANGE="ReShow()">
+        @ComponentPieceData?CONNECTOREDIT@
+        </SELECT>
+        </CENTER>
+        </P>
+        <P>
+    @endif@
+    <TABLE WIDTH=100% BORDER=1 CELLSPACING=0 CELLPADDING=0>
+        <TR>
+            <TD WIDTH=25%><FONT COLOR=YELLOW>Amount: </FONT></TD>
+            <TD WIDTH=75%><INPUT TYPE=TEXT SIZE=10 NAME="@ComponentID@_PIECE_AMOUNT_@ComponentPieceID@" VALUE="@ComponentPieceData?AMOUNTEDIT@"></TD>
+        </TR>
+        <TR>
+            <TD WIDTH=25%><FONT COLOR=YELLOW>Required Type: </FONT></TD>
+            <TD WIDTH=75%>
+                <SELECT NAME="@ComponentID@_PIECE_TYPE_@ComponentPieceID@" ONCHANGE="ReShow()">
+                @ComponentPieceData?TYPEEDIT@
+                </SELECT>
+            </TD>
+        </TR>
+        <TR>
+            <TD WIDTH=25%><FONT COLOR=YELLOW>Required Item: </FONT></TD>
+            <TD WIDTH=75%>
+            @ComponentPieceData?STRINGEDIT@
+            <INPUT TYPE=CHECKBOX NAME="@ComponentID@_PIECE_CONSUMED_@ComponentPieceID@" @ComponentPieceData?CONSUMEDEDIT@><FONT COLOR=WHITE SIZE=-1>Consumed</FONT>
+            </TD>
+        </TR>
+        <TR>
+            <TD WIDTH=25%><FONT COLOR=YELLOW>Location: </FONT></TD>
+            <TD WIDTH=75%>
+                <SELECT NAME="@ComponentID@_PIECE_LOCATION_@ComponentPieceID@">
+                @ComponentPieceData?LOCATIONEDIT@
+                </SELECT>
+            </TD>
+        </TR>
+        <TR>
+            <TD WIDTH=25%><FONT COLOR=YELLOW>Zapper Mask: </FONT><A HREF="javascript:openUp('ZAPPERMASKS')"><FONT COLOR=WHITE>?</FONT></a></TD>
+            <TD WIDTH=75%><INPUT TYPE=TEXT SIZE=60 NAME=@ComponentID@_PIECE_MASK_@ComponentPieceID@ VALUE="@ComponentPieceData?MASKEDIT@"></TD>
+        </TR>
+    </TABLE>
+    @AddRequestParameter?LAST=@@RequestParameter?COMPONENTPIECE@@ @
+@back@
+@AddRequestParameter?LAST=++@
+<CENTER>
+<SELECT NAME="@ComponentID@_PIECE_CONNECTOR_@RequestParameter?LAST@"  ONCHANGE="ReShow()">
+<OPTION VALUE="">Pick one to add
+<OPTION VALUE="AND">And
+<OPTION VALUE="OR">Or
+</SELECT>
+</CENTER>
+<BR>
+<TABLE WIDTH=100% BORDER=0>
+<TR>
+    <TD ALIGN=CENTER><INPUT TYPE=BUTTON NAME=FINISHED VALUE="Finished" ONCLICK="EditDone();"></TD>
+    <TD ALIGN=CENTER><INPUT TYPE=BUTTON NAME=DELETE VALUE="Delete" ONCLICK="Delete();"></TD>
+    <TD ALIGN=CENTER><INPUT TYPE=BUTTON NAME=CANCEL VALUE="Cancel" ONCLICK="Cancel();"></TD>
+</TR>
+</TABLE>
+</FORM>
+</BODY>
+</HTML>
+@endif@
+@endif@

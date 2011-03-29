@@ -450,7 +450,7 @@
 			<TEXTAREA COLS=80 ROWS=2 NAME=ICHANNELS>@INIValue?MASK=ICHANNELS&VALUE@</TEXTAREA>
 			<BR>
 			<FONT COLOR=WHITE>@INIValue?MASK=ICHANNELS&INIHELP@
-			<P><A HREF="javascript:openUp('ZAPPERMASKS')">Click here for ZAPPERMASK help</a>
+			<P><A HREF="javascript:openUp2('ZAPPERMASKS')">Click here for ZAPPERMASK help</a>
 			</TD></TR>
 		</TABLE>
 		<HR>
@@ -490,7 +490,7 @@
 			<TEXTAREA COLS=80 ROWS=2 NAME=IMC2CHANNELS>@INIValue?MASK=IMC2CHANNELS&VALUE@</TEXTAREA>
 			<BR>
 			<FONT COLOR=WHITE>@INIValue?MASK=IMC2CHANNELS&INIHELP@
-			<P><A HREF="javascript:openUp('ZAPPERMASKS')">Click here for ZAPPERMASKS help</a>
+			<P><A HREF="javascript:openUp2('ZAPPERMASKS')">Click here for ZAPPERMASKS help</a>
 			</TD></TR>
 		</TABLE>
 		<HR>
@@ -499,7 +499,7 @@
 		<P>
 		<FONT COLOR=WHITE>@INIValue?MASK=COMMANDJOURNALS&INIHELP@</FONT>
 		<P>
-		<A HREF="javascript:openUp('ZAPPERMASKS')">Click here for ZAPPERMASKS help</a>
+		<A HREF="javascript:openUp2('ZAPPERMASKS')">Click here for ZAPPERMASKS help</a>
 		<P>
 		<HR>
 		<FONT SIZE=5 COLOR=WHITE><B>Forum Journals:</B></FONT><BR>
@@ -507,7 +507,7 @@
 		<P>
 		<FONT COLOR=WHITE>@INIValue?MASK=FORUMJOURNALS&INIHELP@</FONT>
 		<P>
-		<A HREF="javascript:openUp('ZAPPERMASKS')">Click here for ZAPPERMASKS help</a>
+		<A HREF="javascript:openUp2('ZAPPERMASKS')">Click here for ZAPPERMASKS help</a>
 		<P>
 	@endif@
 	@if?CheckReqParm?INIPAGE=ABILITIES@

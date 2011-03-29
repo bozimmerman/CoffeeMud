@@ -47,7 +47,7 @@ public class ComponentPieceData extends StdWebMacro
 		{
 	        String fixedCompID=compID.replace(' ','_').toUpperCase();
 			StringBuilder str=new StringBuilder("");
-			if(parms.containsKey("MASK"))
+			if(parms.containsKey("MASK")||parms.containsKey("MASKEDIT"))
 				str.append(httpReq.getRequestParameter(fixedCompID+"_PIECE_MASK_"+last));
 			if(parms.containsKey("STRING"))
 			{
@@ -97,7 +97,7 @@ public class ComponentPieceData extends StdWebMacro
 					str.append("</SELECT>");
 				}
 			}
-			if(parms.containsKey("AMOUNT"))
+			if(parms.containsKey("AMOUNT")||parms.containsKey("AMOUNTEDIT"))
 				str.append(httpReq.getRequestParameter(fixedCompID+"_PIECE_AMOUNT_"+last));
 			if(parms.containsKey("CONSUMED"))
 			{
