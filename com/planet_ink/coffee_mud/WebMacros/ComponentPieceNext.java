@@ -64,6 +64,16 @@ public class ComponentPieceNext extends StdWebMacro
 	            	index++;
 	            }
         	}
+        	else
+        	{
+            	httpReq.addRequestParameters(fixedCompID+"_PIECE_MASK_1", "");
+            	httpReq.addRequestParameters(fixedCompID+"_PIECE_STRING_1", "item name");
+            	httpReq.addRequestParameters(fixedCompID+"_PIECE_AMOUNT_1", "1");
+            	httpReq.addRequestParameters(fixedCompID+"_PIECE_CONNECTOR_1", "AND");
+            	httpReq.addRequestParameters(fixedCompID+"_PIECE_LOCATION_1", "INVENTORY");
+            	httpReq.addRequestParameters(fixedCompID+"_PIECE_TYPE_1", "STRING");
+            	httpReq.addRequestParameters(fixedCompID+"_PIECE_CONSUMED_1", "on");
+        	}
         }
         else
         {

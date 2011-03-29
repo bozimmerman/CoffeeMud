@@ -105,10 +105,14 @@
     	<A href="javascript:Clicked('players.cmvp')"><FONT COLOR=WHITE>Player Manager</FONT></a>
     	<BR>
     	@endif@
-    	@if?CheckAuthCode?AUTH_CMDQUESTS=true@
-    	<A href="javascript:Clicked('quests.cmvp')"><FONT COLOR=WHITE>Quests Manager</FONT></a>
-    	<BR>
-    	@endif@
+        @if?CheckAuthCode?AUTH_CMDCLANS=true@
+        <A href="javascript:Clicked('clans.cmvp')"><FONT COLOR=WHITE>Clan Manager</FONT></a>
+        <BR>
+        @endif@
+        @if?CheckAuthCode?AUTH_CMDCLANS=true@
+        <A href="javascript:Clicked('governments.cmvp')"><FONT COLOR=WHITE>Clan Governments</FONT></a>
+        <BR>
+        @endif@
         @if?CheckAuthCode?AUTH_POLLS=true@
         <A href="javascript:Clicked('polls.cmvp')"><FONT COLOR=WHITE>Polls Manager</FONT></a>
         <BR>
@@ -144,6 +148,14 @@
         <A href="javascript:Clicked('recipes.cmvp')"><FONT COLOR=WHITE>Skill Recipes</FONT></a>
         <BR>
         @endif@
+        @if?CheckAuthCode?AUTH_COMPONENTS=true@
+        <A href="javascript:Clicked('components.cmvp')"><FONT COLOR=WHITE>Skill Components</FONT></a>
+        <BR>
+        @endif@
+    	@if?CheckAuthCode?AUTH_CMDQUESTS=true@
+    	<A href="javascript:Clicked('quests.cmvp')"><FONT COLOR=WHITE>Quests Manager</FONT></a>
+    	<BR>
+    	@endif@
     	@if?CheckAuthCode?AUTH_CMDQUESTS=true@
     	<A href="javascript:Clicked('holidays.cmvp')"><FONT COLOR=WHITE>Holidays</FONT></a>
     	<BR>
@@ -154,10 +166,6 @@
     	@endif@
         @if?CheckAuthCode?AUTH_CMDSOCIALS=true@
         <A href="javascript:Clicked('socials.cmvp')"><FONT COLOR=WHITE>Socials</FONT></a>
-        <BR>
-        @endif@
-        @if?CheckAuthCode?AUTH_CMDCLANS=true@
-        <A href="javascript:Clicked('clans.cmvp')"><FONT COLOR=WHITE>Clans</FONT></a>
         <BR>
         @endif@
         @if?CheckAuthCode?AUTH_CMDFACTIONS=true@

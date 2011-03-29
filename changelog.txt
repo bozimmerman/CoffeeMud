@@ -2311,7 +2311,7 @@ Special/Reserved Quest called holidays can be added to/modified on an area-by-ar
 3. Can now create/destroy/list debugflag and disableflag (same as debug= disable= in coffeemud.ini file -- changes are TEMPORARY!)
 4. Channel Commands by themselves now automatically show last X messages where X<=5
 5. Channel LAST (previous) messages now append an ellapsed time since the message was sent.
-# Build 5.7.2 Release 3/?/2010
+# Build 5.7.2 Release 3/31/2010
 1. New Area Type: StdAutoGenInstance, for creating random area instances based on random area generator
 2. Player WHERE now displays a more informative table
 3. AREAS command now has sorting options.
@@ -2321,3 +2321,5 @@ Special/Reserved Quest called holidays can be added to/modified on an area-by-ar
 7. Forums are now compatible with SMTP mailing lists.. including very simple threading.  If performance is good, why not move Yahoo groups to one?  
 8. When using account system, account creation proceeds directly to new character creation.
 9. I3/Intermud3 now supports finger (through WHOIS), and will auto-restart if pinging the router is no longer responsive after an hour.
+10.MUDGrinder now has a Ability Components editor
+

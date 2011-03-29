@@ -221,7 +221,7 @@ public class MUDGrinder extends StdWebMacro
             return "The component "+last+" has been successfully destroyed.";
         }
         else
-        if(parms.containsKey("EDITCOMPONENT"))
+        if(parms.containsKey("EDITCOMPONENT")||parms.containsKey("ADDCOMPONENT"))
         {
 			MOB mob = Authenticate.getAuthenticatedMob(httpReq);
             if(mob==null) return "@break@";

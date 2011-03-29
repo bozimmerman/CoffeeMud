@@ -1,0 +1,31 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<META HTTP-EQUIV="Pragma" CONTENT="no-cache">
+@if?!Authenticate@ @AddFile?/grinder/failedlogin.cmvp@ @else@
+@if?!CheckAuthCode?AUTH_COMPONENTS=true@ @AddFile?/grinder/nopriv.cmvp@ @else@
+<html>
+<head>
+ 	<link rel="grinder icon" href="/images/grinder.ico" >
+</head>
+<body BGCOLOR=BLACK>
+@if?CheckReqParm?FUNCTION=DELCOMPONENT@ 
+<SCRIPT LANGUAGE=JavaScript>
+<!--
+	window.alert('@MUDGrinder?DELCOMPONENT@');
+    opener.Refresh();
+	window.close();
+//-->
+</SCRIPT>
+@endif@
+@if?CheckReqParm?FUNCTION=EDITCOMPONENT@ 
+<SCRIPT LANGUAGE=JavaScript>
+<!--
+	window.alert('@MUDGrinder?EDITCOMPONENT@');
+    opener.Refresh();
+	window.close();
+//-->
+</SCRIPT>
+@endif@
+</BODY>
+</HTML>
+@endif@
+@endif@
