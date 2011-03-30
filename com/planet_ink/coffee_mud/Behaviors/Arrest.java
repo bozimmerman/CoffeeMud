@@ -2656,7 +2656,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 					{
 						unCuff(W.criminal());
 						Ability A=CMClass.getAbility("Prisoner");
-						if(A!=null)A.startTickDown(officer,W.criminal(),W.jailTime());
+						if(A!=null)A.startTickDown(officer,W.criminal(),W.jailTime()+5);
 						W.criminal().recoverPhyStats();
 						W.criminal().recoverCharStats();
 						dismissOfficer(officer);
@@ -2723,7 +2723,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
                     {
                         unCuff(W.criminal());
                         Ability A=CMClass.getAbility("Prisoner");
-                        if(A!=null)A.startTickDown(officer,W.criminal(),W.jailTime());
+                        if(A!=null)A.startTickDown(officer,W.criminal(),W.jailTime()+5);
                         W.criminal().recoverPhyStats();
                         W.criminal().recoverCharStats();
                         dismissOfficer(officer);

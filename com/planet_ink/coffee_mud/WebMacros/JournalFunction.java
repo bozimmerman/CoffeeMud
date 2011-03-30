@@ -50,7 +50,7 @@ public class JournalFunction extends StdWebMacro
 		}
 		if(parms.containsKey("DESTROYFOREVER"))
 		{
-			if((forum==null)||(!forum.authorizationCheck(M, ForumJournalFlags.ADMIN)))
+			if((forum!=null)&&(!forum.authorizationCheck(M, ForumJournalFlags.ADMIN)))
 	            return "Destruction cancelled -- You are not authorized to delete this forum.";
             if(!CMSecurity.isAllowedEverywhere(M,"JOURNALS"))
 	            return "Destruction cancelled -- You are not authorized.";
