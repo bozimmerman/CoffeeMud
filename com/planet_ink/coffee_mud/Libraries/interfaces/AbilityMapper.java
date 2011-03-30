@@ -171,6 +171,7 @@ public interface AbilityMapper extends CMLibrary
     public List<DVector> getAbilityComponentDecodedDVectors(String AID);
     public void setAbilityComponentCodedFromDecodedDVector(DVector decodedDV, AbilityComponent comp);
     public DVector getAbilityComponentDecodedDVector(AbilityComponent comp);
+    public String getAbilityComponentCodedString(List<AbilityComponent> comps);
     public AbilityComponent createBlankAbilityComponent();
     public boolean isDomainIncludedInAnyAbility(int domain, int acode);
     public void alterAbilityComponentFile(String compID, boolean delete);

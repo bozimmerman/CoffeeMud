@@ -1843,10 +1843,14 @@ public class CMAble extends StdLibrary implements AbilityMapper
         return comp;
     }
 
-    public String getAbilityComponentCodedString(String AID)
+    public String getAbilityComponentCodedString(List<AbilityComponent> comps)
     {
-        StringBuffer buf=new StringBuffer("");
-        List<DVector> comps=getAbilityComponentDecodedDVectors(AID);
+    	return getAbilityComponentCodedStringFromDVectors(getAbilityComponentDecodedDVectors(comps));
+    }
+    
+    protected String getAbilityComponentCodedStringFromDVectors(List<DVector> comps)
+    {
+        StringBuilder buf=new StringBuilder("");
         DVector curr=null;
         for(int c=0;c<comps.size();c++)
         {
@@ -1864,6 +1868,14 @@ public class CMAble extends StdLibrary implements AbilityMapper
             buf.append((String)curr.elementAt(5,2));
             buf.append(")");
         }
+    	return buf.toString();
+    }
+    
+    public String getAbilityComponentCodedString(String AID)
+    {
+        StringBuffer buf=new StringBuffer("");
+        List<DVector> comps=getAbilityComponentDecodedDVectors(AID);
+        buf.append(getAbilityComponentCodedStringFromDVectors(comps));
         return AID+"="+buf.toString();
     }
 

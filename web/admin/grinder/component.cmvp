@@ -105,7 +105,7 @@
             <TD WIDTH=25%><FONT COLOR=YELLOW>Required Item: </FONT></TD>
             <TD WIDTH=75%>
             @ComponentPieceData?STRINGEDIT@
-            <INPUT TYPE=CHECKBOX NAME="@ComponentID@_PIECE_CONSUMED_@ComponentPieceID@" @ComponentPieceData?CONSUMEDEDIT@><FONT COLOR=WHITE SIZE=-1>Consumed</FONT>
+            <INPUT TYPE=CHECKBOX NAME="@ComponentID@_PIECE_CONSUMED_@ComponentPieceID@" @ComponentPieceData?CONSUMEDEDIT@><FONT COLOR=WHITE SIZE=-1>Cns</FONT>
             </TD>
         </TR>
         <TR>

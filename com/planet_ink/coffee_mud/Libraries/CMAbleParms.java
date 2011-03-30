@@ -719,9 +719,38 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
                         if(httpReq.isRequestParameter(fieldName+"_WHICH"))
                         {
                             String which=httpReq.getRequestParameter(fieldName+"_WHICH");
-                            if(which.trim().length()>0)
+                            if((which.trim().length()==0)||(which.trim().equalsIgnoreCase("AMOUNT")))
+                                return httpReq.getRequestParameter(fieldName+"_AMOUNT");
+                            if(which.trim().equalsIgnoreCase("COMPONENT"))
                                 return httpReq.getRequestParameter(fieldName+"_COMPONENT");
-                            return httpReq.getRequestParameter(fieldName+"_AMOUNT");
+                            int x=1;
+                            List<AbilityComponent> comps=new Vector<AbilityComponent>();
+                            while(httpReq.isRequestParameter(fieldName+"_CUST_TYPE_"+x))
+                            {
+                            	String connector=httpReq.getRequestParameter(fieldName+"_CUST_CONN_"+x);
+                            	String amt=httpReq.getRequestParameter(fieldName+"_CUST_AMT_"+x);
+                            	String strVal=httpReq.getRequestParameter(fieldName+"_CUST_STR_"+x);
+                            	String loc=httpReq.getRequestParameter(fieldName+"_CUST_LOC_"+x);
+                            	String typ=httpReq.getRequestParameter(fieldName+"_CUST_TYPE_"+x);
+                            	String con=httpReq.getRequestParameter(fieldName+"_CUST_CON_"+x);
+                            	if(connector==null) connector="AND";
+                            	if(connector.equalsIgnoreCase("DEL")||(connector.length()==0)){x++; continue;}
+                            	try
+                            	{
+	                            	AbilityComponent able=CMLib.ableMapper().createBlankAbilityComponent();
+	                            	able.setConnector(AbilityComponent.CompConnector.valueOf(connector));
+	                            	able.setAmount(CMath.s_int(amt));
+	                            	able.setMask("");
+	                            	able.setConsumed((con!=null) && con.equalsIgnoreCase("on"));
+	                            	able.setLocation(AbilityComponent.CompLocation.valueOf(loc));
+	                            	able.setType(AbilityComponent.CompType.valueOf(typ), strVal);
+	                            	comps.add(able);
+                            	}
+                            	catch(Exception e){}
+                            	x++;
+                            }
+                            if(comps.size()>0)
+	                            return CMLib.ableMapper().getAbilityComponentCodedString(comps);
                         }
                         return oldVal;
                     }
@@ -730,29 +759,120 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
                         if(value.endsWith("$")) 
                             value = value.substring(0,oldVal.length()-1);
                         value = value.trim();
-                        boolean comp=(value.trim().length()==0)||(CMLib.ableMapper().getAbilityComponentMap().containsKey(value.toUpperCase().trim()));
+                        String curWhich=httpReq.getRequestParameter(fieldName+"_WHICH");
+                        int type=0;
+                        if("COMPONENT".equalsIgnoreCase(curWhich)) type=1;
+                        else if("EMBEDDED".equalsIgnoreCase(curWhich)) type=2;
+                        else if("AMOUNT".equalsIgnoreCase(curWhich)) type=0;
+                        else if(CMLib.ableMapper().getAbilityComponentMap().containsKey(value.toUpperCase().trim())) type=1;
+                        else if(value.startsWith("(")) type=2;
+                        else type=0;
+                        
+                        List<AbilityComponent> comps=null;
+                        if(type==2)
+                        {
+                        	Hashtable<String,List<AbilityComponent>> H=new Hashtable<String,List<AbilityComponent>>();
+                        	String s="ID="+value;
+                        	CMLib.ableMapper().addAbilityComponent(s, H);
+                        	comps=H.get("ID");
+                        }
+                    	if(comps==null) comps=new ArrayList<AbilityComponent>(1);
+                        	
                         StringBuffer str = new StringBuffer("<FONT SIZE=-1>");
-                        str.append("\n\rAmount: <INPUT TYPE=RADIO NAME="+fieldName+"_WHICH ");
-                        if(!comp) str.append("CHECKED ");
-                        str.append("VALUE=\"\">");
-                        str.append("\n\r<INPUT TYPE=TEXT SIZE=3 NAME="+fieldName+"_AMOUNT VALUE=\""+(comp?"":value)+"\"  ONKEYDOWN=\"document.RESOURCES."+fieldName+"_WHICH[0].checked=true;\">");
-                        str.append("&nbsp;&nbsp;&nbsp;Alt. Component:");
-                        str.append("\n\r<INPUT TYPE=RADIO NAME="+fieldName+"_WHICH ");
-                        if(comp) str.append("CHECKED ");
-                        str.append("VALUE=\"COMPONENT\">");
+                        str.append("<INPUT TYPE=RADIO NAME="+fieldName+"_WHICH "+(type==0?"CHECKED ":"")+"VALUE=\"AMOUNT\">");
+                        str.append("\n\rAmount: <INPUT TYPE=TEXT SIZE=3 NAME="+fieldName+"_AMOUNT VALUE=\""+(type!=0?"":value)+"\"  ONKEYDOWN=\"document.RESOURCES."+fieldName+"_WHICH[0].checked=true;\">");
+                        str.append("\n\r<BR>");
+                        str.append("<INPUT TYPE=RADIO NAME="+fieldName+"_WHICH "+(type==1?"CHECKED ":"")+"VALUE=\"COMPONENT\">");
+                        str.append("\n\rSkill Components:");
                         str.append("\n\r<SELECT NAME="+fieldName+"_COMPONENT ONCHANGE=\"document.RESOURCES."+fieldName+"_WHICH[1].checked=true;\">");
                         str.append("<OPTION VALUE=\"0\"");
-                        if((!comp)||(value.length()==0)||(value.equalsIgnoreCase("0")))
+                        if((type!=1)||(value.length()==0)||(value.equalsIgnoreCase("0")))
                             str.append(" SELECTED");
                         str.append(">&nbsp;");
                         for(String S : CMLib.ableMapper().getAbilityComponentMap().keySet())
                         {
                             str.append("<OPTION VALUE=\""+S+"\"");
-                            if(comp&&(value.equalsIgnoreCase(S)))
+                            if((type==1)&&(value.equalsIgnoreCase(S)))
                                 str.append(" SELECTED");
                             str.append(">"+S);
                         }
-                        str.append("</SELECT></FONT>");
+                        str.append("</SELECT>");
+                        str.append("\n\r<BR>");
+                        str.append("<INPUT TYPE=RADIO NAME="+fieldName+"_WHICH "+(type==2?"CHECKED ":"")+"VALUE=\"EMBEDDED\">");
+                        str.append("\n\rCustom:");
+                        str.append("\n\r<BR>");
+                        AbilityComponent comp;
+                        for(int i=0;i<=comps.size();i++)
+                        {
+                        	comp=(i<comps.size())?comps.get(i):null;
+                        	if(i>0)
+                        	{
+    	                        str.append("\n\r<SELECT NAME="+fieldName+"_CUST_CONN_"+(i+1)+" ONCHANGE=\"document.RESOURCES."+fieldName+"_WHICH[2].checked=true;\">");
+	        					if(comp!=null)
+	            					str.append("<OPTION VALUE=\"DEL\">DEL");
+	            				else
+	            				if(type==2)
+	            					str.append("<OPTION VALUE=\"\" SELECTED>");
+	        					for(AbilityComponent.CompConnector conector : AbilityComponent.CompConnector.values())
+	        					{
+	        						str.append("<OPTION VALUE=\""+conector.toString()+"\" ");
+	        						if((type==2)&&(comp!=null)&&(conector==comp.getConnector()))
+	        							str.append("SELECTED ");
+	        						str.append(">"+CMStrings.capitalizeAndLower(conector.toString()));
+	        					}
+    	                        str.append("</SELECT>");
+                        	}
+	                        str.append("\n\rAmt: <INPUT TYPE=TEXT SIZE=2 NAME="+fieldName+"_CUST_AMT_"+(i+1)+" VALUE=\""+(((type!=2)||(comp==null))?"":comp.getAmount())+"\"  ONKEYDOWN=\"document.RESOURCES."+fieldName+"_WHICH[2].checked=true;\">");
+	                        str.append("\n\r<SELECT NAME="+fieldName+"_CUST_TYPE_"+(i+1)+" ONCHANGE=\"document.RESOURCES."+fieldName+"_WHICH[2].checked=true; ReShow();\">");
+	                        AbilityComponent.CompType compType=(comp!=null)?comp.getType():AbilityComponent.CompType.STRING;
+	        				for(AbilityComponent.CompType conn : AbilityComponent.CompType.values())
+	        				{
+	        					str.append("<OPTION VALUE=\""+conn.toString()+"\" ");
+	        					if(conn==compType) str.append("SELECTED ");
+	        					str.append(">"+CMStrings.capitalizeAndLower(conn.toString()));
+	        				}
+	                        str.append("</SELECT>");
+	                        if(compType==AbilityComponent.CompType.STRING)
+		                        str.append("\n\r<INPUT TYPE=TEXT SIZE=10 NAME="+fieldName+"_CUST_STR_"+(i+1)+" VALUE=\""+(((type!=2)||(comp==null))?"":comp.getStringType())+"\"  ONKEYDOWN=\"document.RESOURCES."+fieldName+"_WHICH[2].checked=true;\">");
+	                        else
+	                        {
+	                            str.append("\n\r<SELECT NAME="+fieldName+"_CUST_STR_"+(i+1)+" ONCHANGE=\"document.RESOURCES."+fieldName+"_WHICH[2].checked=true;\">");
+	                            if(compType==AbilityComponent.CompType.MATERIAL)
+	        						for(int x=0;x<RawMaterial.MATERIAL_CODES.length;x++)
+	        						{
+	        							str.append("<OPTION VALUE="+RawMaterial.MATERIAL_CODES[x]);
+	        							if((type==2)&&(comp!=null)&&(RawMaterial.MATERIAL_CODES[x]==comp.getLongType())) 
+	        								str.append(" SELECTED");
+	        							str.append(">"+RawMaterial.MATERIAL_DESCS[x]);
+	        						}
+	                            else
+	                            if(compType==AbilityComponent.CompType.RESOURCE)
+	        						for(int x=0;x<RawMaterial.CODES.TOTAL();x++)
+	        						{
+	        							str.append("<OPTION VALUE="+RawMaterial.CODES.GET(x));
+	        							if((type==2)&&(comp!=null)&&(RawMaterial.CODES.GET(x)==comp.getLongType())) 
+	        								str.append(" SELECTED");
+	        							str.append(">"+RawMaterial.CODES.NAME(x));
+	        						}
+	                            str.append("</SELECT>");
+	                        }
+	                        str.append("\n\r<SELECT NAME="+fieldName+"_CUST_LOC_"+(i+1)+" ONCHANGE=\"document.RESOURCES."+fieldName+"_WHICH[2].checked=true;\">");
+	        				for(AbilityComponent.CompLocation conn : AbilityComponent.CompLocation.values())
+	        				{
+	        					str.append("<OPTION VALUE=\""+conn.toString()+"\" ");
+	        					if((type==2)&&(comp!=null)&&(conn==comp.getLocation())) 
+	        						str.append("SELECTED ");
+	        					str.append(">"+CMStrings.capitalizeAndLower(conn.toString()));
+	        				}
+	                        str.append("</SELECT>");
+	                        str.append("\n\rConsumed:<INPUT TYPE=CHECKBOX NAME="+fieldName+"_CUST_CON_"+(i+1)+" "+((type!=2)||(comp==null)||(!comp.isConsumed())?"":"CHECKED")+"  ONCLICK=\"document.RESOURCES."+fieldName+"_WHICH[2].checked=true;\">");
+	                        if(i<comps.size()) 
+	                        	str.append("\n\r<BR>\n\r");
+	                        else
+	                        	str.append("\n\r<a href=\"javascript:ReShow();\">&lt;*&gt;</a>\n\r");
+                        }
+                        str.append("<BR>");
+                        str.append("</FONT>");
                         return str.toString();
                     }
                     public String[] fakeUserInput(String oldVal) { return  new String[]{oldVal}; }
