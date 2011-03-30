@@ -137,6 +137,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
             doneRaces.add(R.ID());
             if((CMProps.isTheme(R.availabilityCode()))
             &&(!CMath.bset(R.availabilityCode(),Area.THEME_SKILLONLYMASK))
+            &&((!CMSecurity.isDisabled(CMSecurity.DisFlag.STDRACES))||(R.isGeneric()))
             &&(CMath.bset(R.availabilityCode(),theme)))
             	qualRaces.add(R);
         }

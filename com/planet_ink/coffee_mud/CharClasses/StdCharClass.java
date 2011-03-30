@@ -121,6 +121,8 @@ public class StdCharClass implements CharClass
 
 	public boolean qualifiesForThisClass(MOB mob, boolean quiet)
 	{
+		if(CMSecurity.isDisabled(CMSecurity.DisFlag.STDCLASSES) && (!isGeneric()))
+			return false;
         if(mob == null)
         {
             if((CMProps.getVar(CMProps.SYSTEM_MULTICLASS).startsWith("SUB"))

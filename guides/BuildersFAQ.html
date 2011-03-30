@@ -1,16 +1,13 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head>
+<html xmlns="http://www.w3.org/1999/xhtml"><head>
   <meta name="generator" content="HTML Tidy, see www.w3.org" />
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-  <title>Builders FAQ</title>
-  <link rel="StyleSheet" href="style.css" type="text/css" media="screen" />
-<!-- Modified by Josh Mueller, 2006-05-05, fix valiadation problems, add index, hyperlink questions, remove duplicates, and fix spelling errors -->
-</head>
+  
+  <title>Builders FAQ</title><link rel="StyleSheet" href="style.css" type="text/css" media="screen" /><!-- Modified by Josh Mueller, 2006-05-05, fix valiadation problems, add index, hyperlink questions, remove duplicates, and fix spelling errors --></head>
+
 <body>
 <center>
-<table style="width: 1018px; height: 6401px;" border="1"
- bordercolor="gray" cellpadding="10" cellspacing="0">
+<table style="width: 1018px; height: 6401px;" border="1" bordercolor="gray" cellpadding="10" cellspacing="0">
   <tbody>
     <tr>
       <td colspan="2" align="left" bgcolor="#dfdfdf" width="100%">
@@ -70,7 +67,8 @@ CoffeeMud?</a></li>
         <li><a href="#q22">How do I make a Levelless AND Experience
 Pointless version of CoffeeMud?</a></li>
         <li><a href="#q23">How do I make a Raceless version of
-CoffeeMud?</a></li>
+CoffeeMud?</a></li><li><a href="#stddelete">How do I delete all the stock classes or races and make my own?</a></li>
+
         <li><a href="#q24">How do I make an item that never loses
 Condition?</a></li>
         <li><a href="#q25">How can I make food that doesn't rot?</a></li>
@@ -246,8 +244,7 @@ talk/answer
 questions?</a></h3>
       <p>Luckily, a great document
 has already been provided for the
-useful things which can be accomplished with the MudChat behavior. <a
- href="MudChat.html">Here it is.</a></p>
+useful things which can be accomplished with the MudChat behavior. <a href="MudChat.html">Here it is.</a></p>
       <h3><a name="q11" id="q11">How do player Tattoos work?</a></h3>
       <p>Tattoo's are intended to
 act as miscellaneous flags which
@@ -377,7 +374,29 @@ also be designated as being "raceless" through either coding custom
 classes , or through the GenCharClass creation process. See
 StdCharClass.java for how to code the raceless() flag in java. See the
 section on GenCharClasses above for information on how to do it through
-that interface.</p>
+that interface.<br />
+      <br />
+</p>
+      <h3><a name="stddelete" id="q23">How do delete all the stock class or races and make my own?</a></h3>
+
+      
+      <p>The CoffeeMud.ini file
+has a parameter called DISABLE. If
+STDRACES and/or STDCLASSES is added to the disable parameter, then
+CoffeeMud will not allow players to create characters using any of the
+Java-coded races and/or classes. You can also just go into the
+com/planet_ink/coffee_mud/CharClasses or
+com/planet_ink/coffee_mud/Races directory and delete the Fighter.*
+files or Dwarf.* files as well. Whichever way you choose to go, you'll
+need some races and/or classes to replace the ones you are leaving out.
+&nbsp;You can do this through the MUDGrinder or the command line.
+&nbsp;Check the Builders Guide for information on generic Classes, and
+the Archon's Guide for information on generic Races. &nbsp;If you use
+the DISABLE flag route, remember that it will also keep players from
+choosing any of your own Java-coded classes or races as well. &nbsp;If
+you need to add these back in, consider converting them to "generic"
+versions from the MUDGrinder or command line.&nbsp;</p>
+
       <h3><a name="q24" id="q24">How do I make an item that
 never loses
 Condition?</a></h3>
@@ -519,5 +538,4 @@ available, or available only from skills.</p>
   </tbody>
 </table>
 </center>
-</body>
-</html>
+</body></html>

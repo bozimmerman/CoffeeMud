@@ -2322,4 +2322,5 @@ Special/Reserved Quest called holidays can be added to/modified on an area-by-ar
 8. When using account system, account creation proceeds directly to new character creation.
 9. I3/Intermud3 now supports finger (through WHOIS), and will auto-restart if pinging the router is no longer responsive after an hour.
 10.MUDGrinder now has a Ability Components editor
-
+11.Can now delete a journal entirely from the MUDGrinder; also Clan Journals should clear out correctly when Clans are deleted.
+12.Can now DISABLE the Java-coded races or classes from the DISABLE entry in the INI file.  Quick way to drop the stock classes or races!
