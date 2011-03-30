@@ -716,10 +716,10 @@ public class DefaultClan implements Clan
 		StringBuffer mask=new StringBuffer(oldMask.trim());
 		if(mask.length()==0) return "";
 		MOB M=getResponsibleMember();
-		int x=mask.indexOf("@[");
+		int x=mask.indexOf("%[");
 		while(x>=0)
 		{
-			int y=mask.indexOf("]@",x+1);
+			int y=mask.indexOf("]%",x+1);
 			if(y>x)
 			{
 				String tag=mask.substring(x+2,y);
@@ -743,7 +743,7 @@ public class DefaultClan implements Clan
 			}
 			if(x>=mask.length()-1)
 				break;
-			x=mask.indexOf("@[",x+1);
+			x=mask.indexOf("%[",x+1);
 		}
 		return mask.toString();
 	}
