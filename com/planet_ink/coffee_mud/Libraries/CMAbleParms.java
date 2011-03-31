@@ -1307,7 +1307,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
                     }
                     public String defaultValue(){ return "";}
                 },
-                new AbilityParmEditorImpl("FOOD_DRINK","Type",PARMTYPE_CHOICES) {
+                new AbilityParmEditorImpl("FOOD_DRINK","ETyp",PARMTYPE_CHOICES) {
                     public void createChoices() { createChoices(new String[]{"","FOOD","DRINK","SOAP","GenPerfume"});}
                     public String defaultValue(){ return "";}
                 },
@@ -1316,7 +1316,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
                     public int appliesToClass(Object o) { return (o instanceof Perfume)?5:-1;}
                     public String defaultValue(){ return "";}
                 },
-                new AbilityParmEditorImpl("RESOURCE_OR_KEYWORD","Resource",PARMTYPE_SPECIAL) {
+                new AbilityParmEditorImpl("RESOURCE_OR_KEYWORD","Resc/Itm",PARMTYPE_SPECIAL) {
                     public void createChoices() {}
                     public boolean confirmValue(String oldVal) { return true;}
                     public String webValue(ExternalHTTPRequests httpReq, java.util.Map<String,String> parms, String oldVal, String fieldName) {
