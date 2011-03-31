@@ -882,13 +882,22 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
                         String str = oldVal;
                         while(!mob.session().killFlag())
                         {
-                            str=CMLib.genEd().prompt(mob,oldVal,showNumber[0],showFlag,prompt(),true,CMParms.toStringList(CMLib.ableMapper().getAbilityComponentMap().keySet())).trim();
+                        	String help="<AMOUNT>"
+                        		+"\n\rSkill Component: "+CMParms.toStringList(CMLib.ableMapper().getAbilityComponentMap().keySet())
+                        		+"\n\rCustom Component: ([DISPOSITION]:[FATE]:[AMOUNT]:[COMPONENT ID]:[MASK]) && ...";
+                            str=CMLib.genEd().prompt(mob,oldVal,showNumber[0],showFlag,prompt(),true,help).trim();
                             if(str.equals(oldVal)) return oldVal;
                             if(CMath.isInteger(str)) 
                             	return Integer.toString(CMath.s_int(str));
                             if(CMLib.ableMapper().getAbilityComponentMap().containsKey(str.toUpperCase().trim()))
                             	return str.toUpperCase().trim();
-                            mob.session().println("'"+str+"' is not an amount of material, or a component key.  Please use ? for help.");
+                            String error=null;
+                            if(str.trim().startsWith("("))
+                            {
+	                            error=CMLib.ableMapper().addAbilityComponent("ID="+str, new Hashtable<String,List<AbilityComponent>>());
+	                            if(error==null) return str;
+                            }
+                            mob.session().println("'"+str+"' is not an amount of material, a component key, or custom component list"+(error==null?"":"("+error+")")+".  Please use ? for help.");
                         }
                         return str;
                     }
