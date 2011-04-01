@@ -221,7 +221,7 @@ top.term.allwindows[top.term.currentWindow]=this;
 </SCRIPT>
 <applet
     code="com.planet_ink.siplet.applet.Siplet"
-    archive="/siplet/jzlib.jar,/siplet/siplet.jar"
+    archive="/siplet/siplet.jar"
     codebase="siplet.jar"
     width="0"
     height="0"
