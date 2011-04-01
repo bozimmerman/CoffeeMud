@@ -119,6 +119,8 @@ com.planet_ink.coffee_mud.core.exceptions \
 com.planet_ink.coffee_mud.core.http \
 com.planet_ink.coffee_mud.core.interfaces \
 com.planet_ink.coffee_mud.core.intermud \
+com.planet_ink.coffee_mud.core.intermud.cm1 \
+com.planet_ink.coffee_mud.core.intermud.cm1.commands \
 com.planet_ink.coffee_mud.core.intermud.imc2 \
 com.planet_ink.coffee_mud.core.intermud.i3 \
 com.planet_ink.coffee_mud.core.intermud.i3.net \
@@ -525,6 +527,7 @@ com.planet_ink.coffee_mud.Behaviors.interfaces : $(call PACKAGE_OBJS,com.planet_
 com.planet_ink.coffee_mud.CharClasses.interfaces : $(call PACKAGE_OBJS,com.planet_ink.coffee_mud.CharClasses.interfaces)
 com.planet_ink.coffee_mud.Commands.interfaces : $(call PACKAGE_OBJS,com.planet_ink.coffee_mud.Commands.interfaces)
 com.planet_ink.coffee_mud.Common.interfaces : $(call PACKAGE_OBJS,com.planet_ink.coffee_mud.Common.interfaces)
+com.planet_ink.coffee_mud.core.collections : $(call PACKAGE_OBJS,com.planet_ink.coffee_mud.core.collections)
 com.planet_ink.coffee_mud.core.database : $(call PACKAGE_OBJS,com.planet_ink.coffee_mud.core.database)
 com.planet_ink.coffee_mud.core.exceptions : $(call PACKAGE_OBJS,com.planet_ink.coffee_mud.core.exceptions)
 com.planet_ink.coffee_mud.core.http : $(call PACKAGE_OBJS,com.planet_ink.coffee_mud.core.http)
@@ -532,11 +535,14 @@ com.planet_ink.coffee_mud.core.interfaces : $(call PACKAGE_OBJS,com.planet_ink.c
 com.planet_ink.coffee_mud.core.intermud : $(call PACKAGE_OBJS,com.planet_ink.coffee_mud.core.intermud)
 com.planet_ink.coffee_mud.core.smtp : $(call PACKAGE_OBJS,com.planet_ink.coffee_mud.core.smtp)
 com.planet_ink.coffee_mud.core.threads : $(call PACKAGE_OBJS,com.planet_ink.coffee_mud.core.threads)
+com.planet_ink.coffee_mud.core.intermud.cm1 : $(call PACKAGE_OBJS,com.planet_ink.coffee_mud.core.intermud.cm1)
+com.planet_ink.coffee_mud.core.intermud.cm1.commands : $(call PACKAGE_OBJS,com.planet_ink.coffee_mud.core.intermud.cm1.commands)
 com.planet_ink.coffee_mud.core.intermud.imc2 : $(call PACKAGE_OBJS,com.planet_ink.coffee_mud.core.intermud.imc2)
-com.planet_ink.coffee_mud.core.intermud.net : $(call PACKAGE_OBJS,com.planet_ink.coffee_mud.core.intermud.net)
-com.planet_ink.coffee_mud.core.intermud.packets : $(call PACKAGE_OBJS,com.planet_ink.coffee_mud.core.intermud.packets)
-com.planet_ink.coffee_mud.core.intermud.persist : $(call PACKAGE_OBJS,com.planet_ink.coffee_mud.core.intermud.persist)
-com.planet_ink.coffee_mud.core.intermud.server : $(call PACKAGE_OBJS,com.planet_ink.coffee_mud.core.intermud.server)
+com.planet_ink.coffee_mud.core.intermud.i3 : $(call PACKAGE_OBJS,com.planet_ink.coffee_mud.core.intermud.i3)
+com.planet_ink.coffee_mud.core.intermud.i3.net : $(call PACKAGE_OBJS,com.planet_ink.coffee_mud.core.intermud.i3.net)
+com.planet_ink.coffee_mud.core.intermud.i3.packets : $(call PACKAGE_OBJS,com.planet_ink.coffee_mud.core.intermud.i3.packets)
+com.planet_ink.coffee_mud.core.intermud.i3.persist : $(call PACKAGE_OBJS,com.planet_ink.coffee_mud.core.intermud.i3.persist)
+com.planet_ink.coffee_mud.core.intermud.i3.server : $(call PACKAGE_OBJS,com.planet_ink.coffee_mud.core.intermud.i3.server)
 com.planet_ink.coffee_mud.Exits.interfaces : $(call PACKAGE_OBJS,com.planet_ink.coffee_mud.Exits.interfaces)
 com.planet_ink.coffee_mud.Items.Armor : $(call PACKAGE_OBJS,com.planet_ink.coffee_mud.Items.Armor)
 com.planet_ink.coffee_mud.Items.Basic : $(call PACKAGE_OBJS,com.planet_ink.coffee_mud.Items.Basic)
