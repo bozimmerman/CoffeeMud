@@ -2324,4 +2324,5 @@ Special/Reserved Quest called holidays can be added to/modified on an area-by-ar
 10.MUDGrinder now has a Ability Components editor
 11.Can now delete a journal entirely from the MUDGrinder; also Clan Journals should clear out correctly when Clans are deleted.
 12.Can now DISABLE the Java-coded races or classes from the DISABLE entry in the INI file.  Quick way to drop the stock classes or races!
-13.TODO: Document Skill Components editor, Skill Recipe components, do Command Line Skill Recipe Components w/ AHELP entry.
+13.Skill Recipes now have components, on MUDGrinder and Command Line
+

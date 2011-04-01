@@ -822,7 +822,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 	        					}
     	                        str.append("</SELECT>");
                         	}
-	                        str.append("\n\rAmt: <INPUT TYPE=TEXT SIZE=2 NAME="+fieldName+"_CUST_AMT_"+(i+1)+" VALUE=\""+(((type!=2)||(comp==null))?"":comp.getAmount())+"\"  ONKEYDOWN=\"document.RESOURCES."+fieldName+"_WHICH[2].checked=true;\">");
+	                        str.append("\n\rAmt: <INPUT TYPE=TEXT SIZE=2 NAME="+fieldName+"_CUST_AMT_"+(i+1)+" VALUE=\""+(((type!=2)||(comp==null))?"":Integer.toString(comp.getAmount()))+"\"  ONKEYDOWN=\"document.RESOURCES."+fieldName+"_WHICH[2].checked=true;\">");
 	                        str.append("\n\r<SELECT NAME="+fieldName+"_CUST_TYPE_"+(i+1)+" ONCHANGE=\"document.RESOURCES."+fieldName+"_WHICH[2].checked=true; ReShow();\">");
 	                        AbilityComponent.CompType compType=(comp!=null)?comp.getType():AbilityComponent.CompType.STRING;
 	        				for(AbilityComponent.CompType conn : AbilityComponent.CompType.values())
