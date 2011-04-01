@@ -831,10 +831,13 @@ public class CraftingSkill extends GatheringSkill
             {
             	return components;
             }
+    		StringBuffer buf=new StringBuffer("");
+    		for(int r=0;r<componentsRequirements.size();r++)
+    			buf.append(CMLib.ableMapper().getAbilityComponentDesc(mob,componentsRequirements,r));
             mob.tell("You lack the necessary materials to "
                     +doingWhat.toLowerCase()
                     +", the requirements are: "
-                    +CMLib.ableMapper().getAbilityComponentDesc(mob,componentID)+".");
+                    +buf.toString()+".");
             return null;
         }
         return new LinkedList<Object>();
