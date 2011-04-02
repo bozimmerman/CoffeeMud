@@ -741,7 +741,7 @@ public class StdArea implements Area
 
 	public boolean tick(Tickable ticking, int tickID)
 	{
-		if(flag>=Area.STATE_STOPPED)
+		if((flag>=Area.STATE_STOPPED)||(amDestroyed()))
             return false;
 		tickStatus=Tickable.STATUS_START;
 		if(tickID==Tickable.TICKID_AREA)
