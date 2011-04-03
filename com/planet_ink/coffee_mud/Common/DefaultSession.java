@@ -351,7 +351,7 @@ public class DefaultSession extends Thread implements Session
 	public void setAccount(PlayerAccount account){acct=account;}
 	public int getWrap()
 	{
-		if(terminalWidth>5) return terminalWidth;
+		if(terminalWidth>5) return terminalWidth-2;
 		return ((mob!=null)&&(mob.playerStats()!=null))?mob.playerStats().getWrap():78;
 	}
 	public int getPageBreak()
