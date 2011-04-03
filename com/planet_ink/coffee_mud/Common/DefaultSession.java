@@ -351,7 +351,7 @@ public class DefaultSession extends Thread implements Session
 	public void setAccount(PlayerAccount account){acct=account;}
 	public int getWrap()
 	{
-		if(terminalWidth>5) return terminalWidth-2;
+		if(terminalWidth>5) return terminalWidth;
 		return ((mob!=null)&&(mob.playerStats()!=null))?mob.playerStats().getWrap():78;
 	}
 	public int getPageBreak()
@@ -816,7 +816,7 @@ public class DefaultSession extends Thread implements Session
         case TELNET_NAWS:
             if (dataSize == 4)  // It should always be 4.
             {
-                terminalWidth = (suboptionData[0] << 8) | suboptionData[1];
+                terminalWidth = ((suboptionData[0] << 8) | suboptionData[1])-2;
                 terminalHeight = (suboptionData[2] << 8) | suboptionData[3];
                 if(CMSecurity.isDebugging(CMSecurity.DbgFlag.TELNET))
                     Log.debugOut("Session","For suboption "+Session.TELNET_DESCS[optionCode]+", got: "+terminalWidth+"x"+terminalHeight);
