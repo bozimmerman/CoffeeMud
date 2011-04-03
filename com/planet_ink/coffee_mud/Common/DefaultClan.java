@@ -618,6 +618,7 @@ public class DefaultClan implements Clan
             msg.append("^xClan Controlled Areas (% revolt):^.^N\n\r");
             Collections.sort(control);
             int col=0;
+            final int COL_LEN=ListingLibrary.ColFixer.fixColWidth(25.0,mob);
             for(int i=0;i<control.size();i++)
             {
                 if((++col)>3)
@@ -632,7 +633,7 @@ public class DefaultClan implements Clan
                 	Area legalA=CMLib.law().getLegalObject(A);
                 	int pctRevolt=0;
                 	if((B!=null)&&(legalA!=null)) pctRevolt=B.revoltChance();
-	                msg.append("^c"+CMStrings.padRight(A.name()+"^N ("+pctRevolt+"%)",25)+"^N");
+	                msg.append("^c"+CMStrings.padRight(A.name()+"^N ("+pctRevolt+"%)",COL_LEN)+"^N");
                 }
             }
             msg.append("\n\r");
@@ -667,7 +668,7 @@ public class DefaultClan implements Clan
 	            	if(A!=null)
 		            	names.add(A.name()+(aMap.autoGain?"":"(q)"));
 	            }
-	            msg.append(CMLib.lister().makeColumns(names,null,3));
+	            msg.append(CMLib.lister().makeColumns(mob,names,null,3));
 	            msg.append("\n\r");
             }
             final List<Ability> effects = clanEffects(null);

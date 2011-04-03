@@ -58,7 +58,7 @@ public class ATopics extends StdCommand
 
 			Collections.sort(reverseList);
 			topicBuffer=new StringBuffer("Help topics: \n\r\n\r");
-			topicBuffer.append(CMLib.lister().fourColumns(reverseList,"HELP"));
+			topicBuffer.append(CMLib.lister().fourColumns(mob,reverseList,"HELP"));
 			topicBuffer=new StringBuffer(topicBuffer.toString().replace('_',' '));
 			Resources.submitResource(resName,topicBuffer);
 		}

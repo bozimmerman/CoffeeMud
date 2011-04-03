@@ -41,28 +41,30 @@ public class ListCmd extends StdCommand
 	public String[] getAccessWords(){return access;}
 
 
-	public StringBuilder roomDetails(Vector these, Room likeRoom)
-	{return roomDetails(these.elements(),likeRoom);}
+	public StringBuilder roomDetails(Session viewerS, Vector these, Room likeRoom)
+	{return roomDetails(viewerS,these.elements(),likeRoom);}
 
-	public StringBuilder roomDetails(Enumeration these, Room likeRoom)
+	public StringBuilder roomDetails(Session viewerS, Enumeration these, Room likeRoom)
 	{
 		StringBuilder lines=new StringBuilder("");
 		if(!these.hasMoreElements()) return lines;
 		if(likeRoom==null) return lines;
         Room thisThang=null;
         String thisOne=null;
+        final int COL_LEN1=ListingLibrary.ColFixer.fixColWidth(31.0,viewerS);
+        final int COL_LEN2=ListingLibrary.ColFixer.fixColWidth(43.0,viewerS);
         for(Enumeration r=these;r.hasMoreElements();)
         {
             thisThang=(Room)r.nextElement();
             thisOne=thisThang.roomID();
 			if((thisOne.length()>0)&&(thisThang.getArea().Name().equals(likeRoom.getArea().Name())))
-				lines.append(CMStrings.padRightPreserve("^<LSTROOMID^>"+thisOne+"^</LSTROOMID^>",30)+": "+CMStrings.limit(thisThang.displayText(),43)+"\n\r");
+				lines.append(CMStrings.padRightPreserve("^<LSTROOMID^>"+thisOne+"^</LSTROOMID^>",COL_LEN1)+": "+CMStrings.limit(thisThang.displayText(),COL_LEN2)+"\n\r");
 		}
 		lines.append("\n\r");
 		return lines;
 	}
 
-	public StringBuilder roomExpires(Enumeration these, Room likeRoom)
+	public StringBuilder roomExpires(Session viewerS, Enumeration these, Room likeRoom)
 	{
 		StringBuilder lines=new StringBuilder("The time is: "+CMLib.time().date2String(System.currentTimeMillis())+"\n\r\n\r");
 		if(!these.hasMoreElements()) return lines;
@@ -86,7 +88,7 @@ public class ListCmd extends StdCommand
 		lines.append("\n\r");
 		return lines;
 	}
-    public StringBuilder roomPropertyDetails(Enumeration these, Room likeRoom)
+    public StringBuilder roomPropertyDetails(Session viewerS, Enumeration these, Room likeRoom)
     {
         StringBuilder lines=new StringBuilder("");
         if(!these.hasMoreElements()) return lines;
@@ -108,9 +110,9 @@ public class ListCmd extends StdCommand
         lines.append("\n\r");
         return lines;
     }
-	public StringBuilder roomTypes(Vector these, Room likeRoom)
-	{return roomTypes(these.elements(),likeRoom);}
-	public StringBuilder roomTypes(Enumeration these, Room likeRoom)
+	public StringBuilder roomTypes(Session viewerS, Vector these, Room likeRoom)
+	{return roomTypes(viewerS, these.elements(),likeRoom);}
+	public StringBuilder roomTypes(Session viewerS, Enumeration these, Room likeRoom)
 	{
 		StringBuilder lines=new StringBuilder("");
 		if(!these.hasMoreElements()) return lines;
@@ -128,12 +130,14 @@ public class ListCmd extends StdCommand
 		return lines;
 	}
 
-	public StringBuilder roomResources(Vector these, Room likeRoom)
-	{return roomResources(these.elements(),likeRoom);}
-	public StringBuilder roomResources(Enumeration these, Room likeRoom)
+	public StringBuilder roomResources(Session viewerS, Vector these, Room likeRoom)
+	{return roomResources(viewerS, these.elements(),likeRoom);}
+	public StringBuilder roomResources(Session viewerS, Enumeration these, Room likeRoom)
 	{
-		StringBuilder lines=new StringBuilder(CMStrings.padRight("Room ID#",30)+"| "
-										   +CMStrings.padRight("Room Type",15)+"| "
+        final int COL_LEN1=ListingLibrary.ColFixer.fixColWidth(30.0,viewerS);
+        final int COL_LEN2=ListingLibrary.ColFixer.fixColWidth(15.0,viewerS);
+		StringBuilder lines=new StringBuilder(CMStrings.padRight("Room ID#",COL_LEN1)+"| "
+										   +CMStrings.padRight("Room Type",COL_LEN2)+"| "
 										   +"Resource\n\r");
 		if(!these.hasMoreElements()) return lines;
 		if(likeRoom==null) return lines;
@@ -145,8 +149,8 @@ public class ListCmd extends StdCommand
             thisOne=thisThang.roomID();
 			if((thisOne.length()>0)&&(thisThang.getArea().Name().equals(likeRoom.getArea().Name())))
 			{
-				lines.append(CMStrings.padRight(thisOne,30)+": ");
-				lines.append(CMStrings.padRight(thisThang.ID(),15)+": ");
+				lines.append(CMStrings.padRight(thisOne,COL_LEN1)+": ");
+				lines.append(CMStrings.padRight(thisThang.ID(),COL_LEN2)+": ");
 				String thisRsc="-";
 				if(thisThang.myResource()>=0)
 					thisRsc=RawMaterial.CODES.NAME(thisThang.myResource());
@@ -157,10 +161,12 @@ public class ListCmd extends StdCommand
 		return lines;
 	}
 
-	public StringBuilder areaConquests(Enumeration these)
+	public StringBuilder areaConquests(Session viewerS, Enumeration these)
 	{
-		StringBuilder lines=new StringBuilder(CMStrings.padRight("Area",26)+"| "
-										   +CMStrings.padRight("Clan",40)+"| "
+        final int COL_LEN1=ListingLibrary.ColFixer.fixColWidth(26.0,viewerS);
+        final int COL_LEN2=ListingLibrary.ColFixer.fixColWidth(40.0,viewerS);
+		StringBuilder lines=new StringBuilder(CMStrings.padRight("Area",COL_LEN1)+"| "
+										   +CMStrings.padRight("Clan",COL_LEN2)+"| "
 										   +"Controlled\n\r");
 		if(!these.hasMoreElements()) return lines;
         Area thisThang=null;
@@ -171,7 +177,7 @@ public class ListCmd extends StdCommand
             thisOne=thisThang.name();
 			if(thisOne.length()>0)
 			{
-				lines.append(CMStrings.padRight(thisOne,26)+": ");
+				lines.append(CMStrings.padRight(thisOne,COL_LEN1)+": ");
 				String controller="The Archons";
 				String fully="";
 				LegalBehavior law=CMLib.law().getLegalBehavior(thisThang);
@@ -180,7 +186,7 @@ public class ListCmd extends StdCommand
 					controller=law.rulingOrganization();
 					fully=""+((controller.length()>0)&&law.isFullyControlled());
 				}
-				lines.append(CMStrings.padRight(controller,40)+": ");
+				lines.append(CMStrings.padRight(controller,COL_LEN2)+": ");
 				lines.append(fully+"\n\r");
 			}
 		}
@@ -188,7 +194,7 @@ public class ListCmd extends StdCommand
 		return lines;
 	}
 
-	public void dumpThreadGroup(StringBuilder lines,ThreadGroup tGroup, boolean ignoreZeroTickThreads)
+	public void dumpThreadGroup(Session viewerS, StringBuilder lines,ThreadGroup tGroup, boolean ignoreZeroTickThreads)
 	{
 		int ac = tGroup.activeCount();
 		int agc = tGroup.activeGroupCount();
@@ -247,14 +253,14 @@ public class ListCmd extends StdCommand
 			for (int i = 0; i<agc; ++i)
 			{
 				if (tgArray[i] != null)
-					dumpThreadGroup(lines,tgArray[i],ignoreZeroTickThreads);
+					dumpThreadGroup(viewerS,lines,tgArray[i],ignoreZeroTickThreads);
 			}
 			lines.append("}\n\r");
 		}
 	}
 
 
-	public StringBuilder listThreads(MOB mob, boolean ignoreZeroTickThreads)
+	public StringBuilder listThreads(Session viewerS, MOB mob, boolean ignoreZeroTickThreads)
 	{
 		StringBuilder lines=new StringBuilder("^xStatus|Name                 ^.^?\n\r");
 		try
@@ -263,7 +269,7 @@ public class ListCmd extends StdCommand
 			while (topTG != null && topTG.getParent() != null)
 				topTG = topTG.getParent();
 			if (topTG != null)
-				dumpThreadGroup(lines,topTG,ignoreZeroTickThreads);
+				dumpThreadGroup(viewerS,lines,topTG,ignoreZeroTickThreads);
 
 		}
 		catch (Exception e)
@@ -319,7 +325,7 @@ public class ListCmd extends StdCommand
 		}
 	}
 	
-	public StringBuilder listScripts(MOB mob, Vector cmds)
+	public StringBuilder listScripts(Session viewerS, MOB mob, Vector cmds)
 	{
 		if(cmds.size()==0) return new StringBuilder("");
 		cmds.removeElementAt(0);
@@ -379,9 +385,11 @@ public class ListCmd extends StdCommand
 		StringBuilder lines=new StringBuilder("");
 		if(rest.equalsIgnoreCase("COUNT"))
 		{
+	        final int COL_LEN1=ListingLibrary.ColFixer.fixColWidth(50.0,viewerS);
+	        final int COL_LEN2=ListingLibrary.ColFixer.fixColWidth(5.0,viewerS);
 			lines=new StringBuilder("^x")
-			.append(CMStrings.padRight("Script File",50))
-			.append(CMStrings.padRight("Usage",5))
+			.append(CMStrings.padRight("Script File",COL_LEN1))
+			.append(CMStrings.padRight("Usage",COL_LEN2))
 			.append("^.^N\n\r");
 			scriptTree.sortBy(1);
 			if(scriptTree.size()>0)
@@ -397,25 +405,28 @@ public class ListCmd extends StdCommand
 						counter++;
 					else
 					{
-						lines.append(CMStrings.padRight(lastOne,50));
-						lines.append(CMStrings.padRight(""+counter,5));
+						lines.append(CMStrings.padRight(lastOne,COL_LEN1));
+						lines.append(CMStrings.padRight(""+counter,COL_LEN2));
 						lines.append("^.^N\n\r");
 						counter=1;
 						lastOne=scriptFilename;
 					}
 				}
-				lines.append(CMStrings.padRight(lastOne,30));
-				lines.append(CMStrings.padRight(""+counter,5));
+				lines.append(CMStrings.padRight(lastOne,COL_LEN1));
+				lines.append(CMStrings.padRight(""+counter,COL_LEN2));
 				lines.append("\n\r");
 			}
 		} 
 		else
 		if(rest.equalsIgnoreCase("DETAILS"))
 		{
+	        final int COL_LEN1=ListingLibrary.ColFixer.fixColWidth(30.0,viewerS);
+	        final int COL_LEN2=ListingLibrary.ColFixer.fixColWidth(20.0,viewerS);
+	        final int COL_LEN3=ListingLibrary.ColFixer.fixColWidth(25.0,viewerS);
 			lines=new StringBuilder("^x")
-			.append(CMStrings.padRight("Script File",30))
-			.append(CMStrings.padRight("Host",20))
-			.append(CMStrings.padRight("Location",25))
+			.append(CMStrings.padRight("Script File",COL_LEN1))
+			.append(CMStrings.padRight("Host",COL_LEN2))
+			.append(CMStrings.padRight("Location",COL_LEN3))
 			.append("^.^N\n\r");
 			scriptTree.sortBy(1);
 			if(scriptTree.size()>0)
@@ -425,9 +436,9 @@ public class ListCmd extends StdCommand
 					String scriptFilename=(String)scriptTree.elementAt(d,1);
 					Environmental host=(Environmental)scriptTree.elementAt(d,2);
 					Room room=(Room)scriptTree.elementAt(d,3);
-					lines.append(CMStrings.padRight(scriptFilename,30));
-					lines.append(CMStrings.padRight(host.Name(),20));
-					lines.append(CMStrings.padRight(CMLib.map().getExtendedRoomID(room),20));
+					lines.append(CMStrings.padRight(scriptFilename,COL_LEN1));
+					lines.append(CMStrings.padRight(host.Name(),COL_LEN2));
+					lines.append(CMStrings.padRight(CMLib.map().getExtendedRoomID(room),COL_LEN3));
 					lines.append("^.^N\n\r");
 				}
 			}
@@ -461,7 +472,7 @@ public class ListCmd extends StdCommand
 		return lines;
 	}
 
-	public StringBuilder listLinkages(MOB mob)
+	public StringBuilder listLinkages(Session viewerS, MOB mob)
 	{
 	    Faction useFaction=null;
 	    for(Enumeration<Faction> e=CMLib.factions().factions();e.hasMoreElements();)
@@ -646,7 +657,7 @@ public class ListCmd extends StdCommand
 	}
 
 
-	public StringBuilder journalList(String partialjournal)
+	public StringBuilder journalList(Session viewerS, String partialjournal)
 	{
 		StringBuilder buf=new StringBuilder("");
         String journal=null;
@@ -658,22 +669,24 @@ public class ListCmd extends StdCommand
         }
         if(journal==null) return buf;
         List<JournalsLibrary.JournalEntry> V=CMLib.database().DBReadJournalMsgs("SYSTEM_"+journal+"S");
+        final int COL_LEN1=ListingLibrary.ColFixer.fixColWidth(3.0,viewerS);
+        final int COL_LEN2=ListingLibrary.ColFixer.fixColWidth(10.0,viewerS);
 		if(V!=null)
 		{
-			buf.append("\n\r^x"+CMStrings.padRight("#",5)+CMStrings.padRight("From",10)+" Entry^.^N\n\r");
+			buf.append("\n\r^x"+CMStrings.padRight("#",COL_LEN1+2)+CMStrings.padRight("From",COL_LEN2)+" Entry^.^N\n\r");
 			buf.append("---------------------------------------------\n\r");
 			for(int j=0;j<V.size();j++)
 			{
 				JournalsLibrary.JournalEntry entry=(JournalsLibrary.JournalEntry)V.get(j);
 				String from=entry.from;
 				String message=entry.msg;
-				buf.append(CMStrings.padRight((j+1)+"",3)+") "+CMStrings.padRight(from,10)+" "+message+"\n\r");
+				buf.append(CMStrings.padRight((j+1)+"",COL_LEN1)+") "+CMStrings.padRight(from,COL_LEN2)+" "+message+"\n\r");
 			}
 		}
 		return buf;
 	}
 
-	public StringBuilder listReports(MOB mob)
+	public StringBuilder listReports(Session viewerS, MOB mob)
 	{
 		mob.tell("\n\r^xCoffeeMud System Report:^.^N");
 		try
@@ -737,7 +750,7 @@ public class ListCmd extends StdCommand
 		return buf;
 	}
 	
-	public void listUsers(MOB mob, Vector commands)
+	public void listUsers(Session viewerS, MOB mob, Vector commands)
 	{
 		if(commands.size()==0) return;
 		commands.removeElementAt(0);
@@ -752,16 +765,23 @@ public class ListCmd extends StdCommand
 				return;
 			}
 		}
+        final int COL_LEN1=ListingLibrary.ColFixer.fixColWidth(8.0,viewerS);
+        final int COL_LEN2=ListingLibrary.ColFixer.fixColWidth(10.0,viewerS);
+        final int COL_LEN3=ListingLibrary.ColFixer.fixColWidth(4.0,viewerS);
+        final int COL_LEN4=ListingLibrary.ColFixer.fixColWidth(5.0,viewerS);
+        final int COL_LEN5=ListingLibrary.ColFixer.fixColWidth(23.0,viewerS);
+        final int COL_LEN6=ListingLibrary.ColFixer.fixColWidth(18.0,viewerS);
+        final int COL_LEN7=ListingLibrary.ColFixer.fixColWidth(15.0,viewerS);
 		StringBuilder head=new StringBuilder("");
 		head.append("[");
-		head.append(CMStrings.padRight("Race",8)+" ");
-		head.append(CMStrings.padRight("Class",10)+" ");
-		head.append(CMStrings.padRight("Lvl",4)+" ");
-		head.append(CMStrings.padRight("Hours",5)+" ");
+		head.append(CMStrings.padRight("Race",COL_LEN1)+" ");
+		head.append(CMStrings.padRight("Class",COL_LEN2)+" ");
+		head.append(CMStrings.padRight("Lvl",COL_LEN3)+" ");
+		head.append(CMStrings.padRight("Hours",COL_LEN4)+" ");
 		switch(sortBy){
-		case 6: head.append(CMStrings.padRight("E-Mail",23)+" "); break;
-		case 7: head.append(CMStrings.padRight("IP Address",23)+" "); break;
-		default: head.append(CMStrings.padRight("Last",18)+" "); break;
+		case 6: head.append(CMStrings.padRight("E-Mail",COL_LEN5)+" "); break;
+		case 7: head.append(CMStrings.padRight("IP Address",COL_LEN5)+" "); break;
+		default: head.append(CMStrings.padRight("Last",COL_LEN6)+" "); break;
 		}
 
 		head.append("] Character name\n\r");
@@ -809,23 +829,23 @@ public class ListCmd extends StdCommand
 			PlayerLibrary.ThinPlayer U=allUsers.get(u);
 
 			head.append("[");
-			head.append(CMStrings.padRight(U.race,8)+" ");
-			head.append(CMStrings.padRight(U.charClass,10)+" ");
-			head.append(CMStrings.padRight(""+U.level,4)+" ");
+			head.append(CMStrings.padRight(U.race,COL_LEN1)+" ");
+			head.append(CMStrings.padRight(U.charClass,COL_LEN2)+" ");
+			head.append(CMStrings.padRight(""+U.level,COL_LEN3)+" ");
 			long age=Math.round(CMath.div(CMath.s_long(""+U.age),60.0));
-			head.append(CMStrings.padRight(""+age,5)+" ");
+			head.append(CMStrings.padRight(""+age,COL_LEN4)+" ");
 			switch(showBy){
-			case 6: head.append(CMStrings.padRight(U.email,23)+" "); break;
-			case 7: head.append(CMStrings.padRight(U.ip,23)+" "); break;
-			default: head.append(CMStrings.padRight(CMLib.time().date2String(U.last),18)+" "); break;
+			case 6: head.append(CMStrings.padRight(U.email,COL_LEN5)+" "); break;
+			case 7: head.append(CMStrings.padRight(U.ip,COL_LEN5)+" "); break;
+			default: head.append(CMStrings.padRight(CMLib.time().date2String(U.last),COL_LEN6)+" "); break;
 			}
-			head.append("] "+CMStrings.padRight("^<LSTUSER^>"+U.name+"^</LSTUSER^>",15));
+			head.append("] "+CMStrings.padRight("^<LSTUSER^>"+U.name+"^</LSTUSER^>",COL_LEN7));
 			head.append("\n\r");
 		}
 		mob.tell(head.toString());
 	}
 
-	public void listAccounts(MOB mob, Vector commands)
+	public void listAccounts(Session viewerS, MOB mob, Vector commands)
 	{
 		if(commands.size()==0) return;
 		commands.removeElementAt(0);
@@ -840,14 +860,17 @@ public class ListCmd extends StdCommand
 				return;
 			}
 		}
+        final int COL_LEN1=ListingLibrary.ColFixer.fixColWidth(10.0,viewerS);
+        final int COL_LEN2=ListingLibrary.ColFixer.fixColWidth(18.0,viewerS);
+        final int COL_LEN3=ListingLibrary.ColFixer.fixColWidth(23.0,viewerS);
 		StringBuilder head=new StringBuilder("");
 		head.append("^X");
 		head.append("[");
-		head.append(CMStrings.padRight("Account",10)+" ");
-		head.append(CMStrings.padRight("Last",18)+" ");
+		head.append(CMStrings.padRight("Account",COL_LEN1)+" ");
+		head.append(CMStrings.padRight("Last",COL_LEN2)+" ");
 		switch(sortBy){
-			default : head.append(CMStrings.padRight("E-Mail",23)+" "); break;
-			case 7: head.append(CMStrings.padRight("IP Address",23)+" "); break;
+			default : head.append(CMStrings.padRight("E-Mail",COL_LEN3)+" "); break;
+			case 7: head.append(CMStrings.padRight("IP Address",COL_LEN3)+" "); break;
 		}
 
 		head.append("] Characters^.^N\n\r");
@@ -910,8 +933,8 @@ public class ListCmd extends StdCommand
 			PlayerAccount U=allAccounts.get(u);
 			StringBuilder line=new StringBuilder("");
 			line.append("[");
-			line.append(CMStrings.padRight(U.accountName(),10)+" ");
-			line.append(CMStrings.padRight(CMLib.time().date2String(U.lastDateTime()),18)+" ");
+			line.append(CMStrings.padRight(U.accountName(),COL_LEN1)+" ");
+			line.append(CMStrings.padRight(CMLib.time().date2String(U.lastDateTime()),COL_LEN2)+" ");
 			String players = CMParms.toStringList(U.getPlayers());
 			Vector<String> pListsV = new Vector<String>();
 			while(players.length()>0)
@@ -927,8 +950,8 @@ public class ListCmd extends StdCommand
 				if(players.startsWith(",")) players=players.substring(1).trim();
 			}
 			switch(showBy){
-			default: line.append(CMStrings.padRight(U.getEmail(),23)+" "); break;
-			case 7: line.append(CMStrings.padRight(U.lastIP(),23)+" "); break;
+			default: line.append(CMStrings.padRight(U.getEmail(),COL_LEN3)+" "); break;
+			case 7: line.append(CMStrings.padRight(U.lastIP(),COL_LEN3)+" "); break;
 			}
 			line.append("] ");
 			int len = line.length();
@@ -949,11 +972,12 @@ public class ListCmd extends StdCommand
 		mob.tell(head.toString());
 	}
 
-	public StringBuilder listRaces(Enumeration these, boolean shortList)
+	public StringBuilder listRaces(Session viewerS, Enumeration these, boolean shortList)
 	{
 		StringBuilder lines=new StringBuilder("");
 		if(!these.hasMoreElements()) return lines;
 		int column=0;
+        final int COL_LEN=ListingLibrary.ColFixer.fixColWidth(25.0,viewerS);
         if(shortList)
         {
             Vector raceNames=new Vector();
@@ -972,18 +996,19 @@ public class ListCmd extends StdCommand
 			}
 			lines.append(CMStrings.padRight(thisThang.ID()
                                         +(thisThang.isGeneric()?"*":"")
-                                        +" ("+thisThang.racialCategory()+")",25));
+                                        +" ("+thisThang.racialCategory()+")",COL_LEN));
 		}
 		lines.append("\n\r");
 		return lines;
 	}
-    public StringBuilder listRaceCats(Enumeration these, boolean shortList)
+    public StringBuilder listRaceCats(Session viewerS, Enumeration these, boolean shortList)
     {
         StringBuilder lines=new StringBuilder("");
         if(!these.hasMoreElements()) return lines;
         int column=0;
         Vector raceCats=new Vector();
         Race R=null;
+        final int COL_LEN=ListingLibrary.ColFixer.fixColWidth(25.0,viewerS);
         for(Enumeration e=these;e.hasMoreElements();)
         {
             R=(Race)e.nextElement();
@@ -1007,13 +1032,13 @@ public class ListCmd extends StdCommand
                 lines.append("\n\r");
                 column=1;
             }
-            lines.append(CMStrings.padRight(raceCat,25));
+            lines.append(CMStrings.padRight(raceCat,COL_LEN));
         }
         lines.append("\n\r");
         return lines;
     }
 
-	public StringBuilder listQuests()
+	public StringBuilder listQuests(Session viewerS)
 	{
 		StringBuilder buf=new StringBuilder("");
 		if(CMLib.quests().numQuests()==0)
@@ -1021,13 +1046,15 @@ public class ListCmd extends StdCommand
 		else
 		{
 			buf.append("\n\r^xQuest Report:^.^N\n\r");
-			buf.append("\n\r^x"+CMStrings.padRight("#",5)+CMStrings.padRight("Name",30)+" Status^.^N\n\r");
+	        final int COL_LEN1=ListingLibrary.ColFixer.fixColWidth(5.0,viewerS);
+	        final int COL_LEN2=ListingLibrary.ColFixer.fixColWidth(30.0,viewerS);
+			buf.append("\n\r^x"+CMStrings.padRight("#",COL_LEN1)+CMStrings.padRight("Name",COL_LEN2)+" Status^.^N\n\r");
 			for(int i=0;i<CMLib.quests().numQuests();i++)
 			{
 				Quest Q=CMLib.quests().fetchQuest(i);
 				if(Q!=null)
 				{
-					buf.append(CMStrings.padRight(""+(i+1),5)+CMStrings.padRight("^<LSTQUEST^>"+Q.name()+"^</LSTQUEST^>",30)+" ");
+					buf.append(CMStrings.padRight(""+(i+1),COL_LEN1)+CMStrings.padRight("^<LSTQUEST^>"+Q.name()+"^</LSTQUEST^>",COL_LEN2)+" ");
 					if(Q.running())
 					{
 					    String minsLeft="("+Q.minsRemaining()+" mins left)";
@@ -1065,7 +1092,7 @@ public class ListCmd extends StdCommand
 		return buf;
 	}
 
-    public StringBuilder listJournals()
+    public StringBuilder listJournals(Session viewerS)
     {
         StringBuilder buf=new StringBuilder("");
         List<String> journals=CMLib.database().DBReadJournals();
@@ -1074,20 +1101,22 @@ public class ListCmd extends StdCommand
             buf.append("No journals exits.");
         else
         {
+	        final int COL_LEN1=ListingLibrary.ColFixer.fixColWidth(5.0,viewerS);
+	        final int COL_LEN2=ListingLibrary.ColFixer.fixColWidth(30.0,viewerS);
             buf.append("\n\r^xJournals List:^.^N\n\r");
-            buf.append("\n\r^x"+CMStrings.padRight("#",5)+CMStrings.padRight("Name",30)+" Messages^.^N\n\r");
+            buf.append("\n\r^x"+CMStrings.padRight("#",COL_LEN1)+CMStrings.padRight("Name",COL_LEN2)+" Messages^.^N\n\r");
             for(int i=0;i<journals.size();i++)
             {
                 String journal=(String)journals.get(i);
                 int messages=CMLib.database().DBCountJournal(journal,null,null);
-                buf.append(CMStrings.padRight(""+(i+1),5)+CMStrings.padRight(journal,30)+" "+messages);
+                buf.append(CMStrings.padRight(""+(i+1),COL_LEN1)+CMStrings.padRight(journal,COL_LEN2)+" "+messages);
                 buf.append("^N\n\r");
             }
         }
         return buf;
     }
 
-	public StringBuilder listTicks(String whichTickTock)
+	public StringBuilder listTicks(Session viewerS, String whichTickTock)
 	{
 		StringBuilder msg=new StringBuilder("\n\r");
 		boolean activeOnly=false;
@@ -1097,9 +1126,13 @@ public class ListCmd extends StdCommand
 		    activeOnly=true;
 		    whichTickTock="";
 		}
+        final int COL_LEN1=ListingLibrary.ColFixer.fixColWidth(4.0,viewerS);
+        final int COL_LEN2=ListingLibrary.ColFixer.fixColWidth(20.0,viewerS);
+        final int COL_LEN3=ListingLibrary.ColFixer.fixColWidth(3.0,viewerS);
+        final int COL_LEN4=ListingLibrary.ColFixer.fixColWidth(8.0,viewerS);
 		if(!activeOnly)
-			msg.append(CMStrings.padRight("Grp",4)+CMStrings.padRight("Client",20)+" "+CMStrings.padRight("ID",3)+CMStrings.padRight("Status",8));
-		msg.append(CMStrings.padRight("Grp",4)+CMStrings.padRight("Client",20)+" "+CMStrings.padRight("ID",3)+CMStrings.padRight("Status",8)+"\n\r");
+			msg.append(CMStrings.padRight("Grp",COL_LEN1)+CMStrings.padRight("Client",COL_LEN2)+" "+CMStrings.padRight("ID",COL_LEN3)+CMStrings.padRight("Status",COL_LEN4));
+		msg.append(CMStrings.padRight("Grp",COL_LEN1)+CMStrings.padRight("Client",COL_LEN2)+" "+CMStrings.padRight("ID",COL_LEN3)+CMStrings.padRight("Status",COL_LEN4)+"\n\r");
 		int col=0;
 		int numGroups=CMath.s_int(CMLib.threads().tickInfo("tickGroupSize"));
 		int whichTick=-1;
@@ -1132,10 +1165,10 @@ public class ListCmd extends StdCommand
 							msg.append("\n\r");
 							col=1;
 						}
-                        chunk=CMStrings.padRight(""+v,4)
-                           +CMStrings.padRight(name,22)
-                           +" "+CMStrings.padRight(id+"",3)
-                           +CMStrings.padRight((activeOnly?(status+(suspended?"*":"")):status+(suspended?"*":"")),8);
+                        chunk=CMStrings.padRight(""+v,COL_LEN1)
+                           +CMStrings.padRight(name,COL_LEN2)
+                           +" "+CMStrings.padRight(id+"",COL_LEN3)
+                           +CMStrings.padRight((activeOnly?(status+(suspended?"*":"")):status+(suspended?"*":"")),COL_LEN4);
 						msg.append(chunk);
 					}
 				}
@@ -1144,13 +1177,14 @@ public class ListCmd extends StdCommand
 		return msg;
 	}
 
-	public StringBuilder listSubOps(MOB mob)
+	public StringBuilder listSubOps(Session viewerS)
 	{
 		StringBuilder msg=new StringBuilder("");
+        final int COL_LEN=ListingLibrary.ColFixer.fixColWidth(25.0,viewerS);
 		for(Enumeration a=CMLib.map().sortedAreas();a.hasMoreElements();)
 		{
 			Area A=(Area)a.nextElement();
-			msg.append(CMStrings.padRight(A.Name(),25)+": ");
+			msg.append(CMStrings.padRight(A.Name(),COL_LEN)+": ");
 			if(A.getSubOpList().length()==0)
 				msg.append("No Area staff defined.\n\r");
 			else
@@ -1159,7 +1193,7 @@ public class ListCmd extends StdCommand
 		return msg;
 	}
 
-	protected String reallyFindOneWays(MOB mob, Vector commands)
+	protected String reallyFindOneWays(Session viewerS, Vector commands)
 	{
 		StringBuilder str=new StringBuilder("");
 		try
@@ -1183,7 +1217,7 @@ public class ListCmd extends StdCommand
 	}
 
 
-	protected String unlinkedExits(MOB mob, Vector commands)
+	protected String unlinkedExits(Session viewerS, Vector commands)
 	{
 		StringBuilder str=new StringBuilder("");
 		try
@@ -1240,7 +1274,7 @@ public class ListCmd extends StdCommand
 			return str.toString();
 		}
 		Enumeration<String> keys=new IteratorEnumeration<String>(Resources.findResourceKeys(parm));
-		return CMLib.lister().reallyList2Cols(keys,-1,null).toString();
+		return CMLib.lister().reallyList2Cols(mob,keys,-1,null).toString();
 	}
 
 	public String listHelpFileRequests(MOB mob, String rest)
@@ -1341,26 +1375,33 @@ public class ListCmd extends StdCommand
     {
         return CMParms.toStringList(RawMaterial.MATERIAL_DESCS);
     }
-	public String listEnvResources(boolean shortList)
+	public String listEnvResources(Session viewerS, boolean shortList)
 	{
         if(shortList)
             return CMParms.toStringList(RawMaterial.CODES.NAMES());
 		StringBuilder str=new StringBuilder("");
-        for(String S : RawMaterial.CODES.NAMES())
-            str.append(CMStrings.padRight(CMStrings.capitalizeAndLower(S.toLowerCase()),16));
-		str.append(CMStrings.padRight("Resource",15)+" ");
-		str.append(CMStrings.padRight("Material",10)+" ");
-		str.append(CMStrings.padRight("Val",3)+" ");
-		str.append(CMStrings.padRight("Freq",4)+" ");
-		str.append(CMStrings.padRight("Str",3)+" ");
+        //for(String S : RawMaterial.CODES.NAMES())
+        //    str.append(CMStrings.padRight(CMStrings.capitalizeAndLower(S.toLowerCase()),16));
+        final int COL_LEN1=ListingLibrary.ColFixer.fixColWidth(15.0,viewerS);
+        final int COL_LEN2=ListingLibrary.ColFixer.fixColWidth(10.0,viewerS);
+        final int COL_LEN3=ListingLibrary.ColFixer.fixColWidth(3.0,viewerS);
+        final int COL_LEN4=ListingLibrary.ColFixer.fixColWidth(4.0,viewerS);
+        final int COL_LEN5=ListingLibrary.ColFixer.fixColWidth(3.0,viewerS);
+        final int COL_LEN6=ListingLibrary.ColFixer.fixColWidth(36.0,viewerS);
+        final int COL_LEN7=COL_LEN1+1+COL_LEN2+1+COL_LEN3+1+COL_LEN4+1+COL_LEN5+1;
+		str.append(CMStrings.padRight("Resource",COL_LEN1)+" ");
+		str.append(CMStrings.padRight("Material",COL_LEN2)+" ");
+		str.append(CMStrings.padRight("Val",COL_LEN3)+" ");
+		str.append(CMStrings.padRight("Freq",COL_LEN4)+" ");
+		str.append(CMStrings.padRight("Str",COL_LEN5)+" ");
 		str.append("Locales\n\r");
 		for(int i : RawMaterial.CODES.ALL())
 		{
-			str.append(CMStrings.padRight(CMStrings.capitalizeAndLower(RawMaterial.CODES.NAME(i).toLowerCase()),16));
-			str.append(CMStrings.padRight(CMStrings.capitalizeAndLower(RawMaterial.MATERIAL_DESCS[(i&RawMaterial.MATERIAL_MASK)>>8].toLowerCase()),11));
-			str.append(CMStrings.padRight(""+RawMaterial.CODES.VALUE(i),4));
-			str.append(CMStrings.padRight(""+RawMaterial.CODES.FREQUENCY(i),5));
-			str.append(CMStrings.padRight(""+RawMaterial.CODES.HARDNESS(i),4));
+			str.append(CMStrings.padRight(CMStrings.capitalizeAndLower(RawMaterial.CODES.NAME(i).toLowerCase()),COL_LEN1+1));
+			str.append(CMStrings.padRight(CMStrings.capitalizeAndLower(RawMaterial.MATERIAL_DESCS[(i&RawMaterial.MATERIAL_MASK)>>8].toLowerCase()),COL_LEN2+1));
+			str.append(CMStrings.padRight(""+RawMaterial.CODES.VALUE(i),COL_LEN3+1));
+			str.append(CMStrings.padRight(""+RawMaterial.CODES.FREQUENCY(i),COL_LEN4+1));
+			str.append(CMStrings.padRight(""+RawMaterial.CODES.HARDNESS(i),COL_LEN5+1));
 			StringBuilder locales=new StringBuilder("");
 			for(Enumeration e=CMClass.locales();e.hasMoreElements();)
 			{
@@ -1369,10 +1410,10 @@ public class ListCmd extends StdCommand
 					if((R.resourceChoices()!=null)&&(R.resourceChoices().contains(Integer.valueOf(i))))
 						locales.append(R.ID()+" ");
 			}
-			while(locales.length()>36)
+			while(locales.length()>COL_LEN6)
 			{
-				str.append(locales.toString().substring(0,36)+"\n\r"+CMStrings.padRight(" ",40));
-				locales=new StringBuilder(locales.toString().substring(36));
+				str.append(locales.toString().substring(0,COL_LEN6)+"\n\r"+CMStrings.padRight(" ",COL_LEN7));
+				locales=new StringBuilder(locales.toString().substring(COL_LEN6));
 			}
 			str.append(locales.toString());
 			str.append("\n\r");
@@ -1450,7 +1491,7 @@ public class ListCmd extends StdCommand
 		return -1;
 	}
 
-    public String listComponents()
+    public String listComponents(Session viewerS)
     {
         StringBuilder buf=new StringBuilder("^xAll Defined Spells and required components: ^N\n\r");
         for(String ID : CMLib.ableMapper().getAbilityComponentMap().keySet())
@@ -1463,19 +1504,20 @@ public class ListCmd extends StdCommand
         return buf.toString();
     }
 
-    public String listExpertises()
+    public String listExpertises(Session viewerS)
     {
         StringBuilder buf=new StringBuilder("^xAll Defined Expertise Codes: ^N\n\r");
+        final int COL_LEN=ListingLibrary.ColFixer.fixColWidth(20.0,viewerS);
         for(Enumeration e=CMLib.expertises().definitions();e.hasMoreElements();)
         {
             ExpertiseLibrary.ExpertiseDefinition def=(ExpertiseLibrary.ExpertiseDefinition)e.nextElement();
-            buf.append(CMStrings.padRight("^Z"+def.ID,20)+"^?: "+CMStrings.padRight(def.name,20)+": "+CMLib.masking().maskDesc(def.allRequirements())+"\n\r");
+            buf.append(CMStrings.padRight("^Z"+def.ID,COL_LEN)+"^?: "+CMStrings.padRight(def.name,COL_LEN)+": "+CMLib.masking().maskDesc(def.allRequirements())+"\n\r");
         }
         if(buf.length()==0) return "None defined.";
         return buf.toString();
     }
 
-    public String listTitles()
+    public String listTitles(Session viewerS)
     {
         StringBuilder buf=new StringBuilder("^xAll Defined Auto-Titles: ^N\n\r");
         for(Enumeration e=CMLib.titles().autoTitles();e.hasMoreElements();)
@@ -1488,19 +1530,20 @@ public class ListCmd extends StdCommand
         return buf.toString();
     }
 
-    public String listClanGovernments(MOB mob,List commands)
+    public String listClanGovernments(Session viewerS, List commands)
     {
         StringBuilder buf=new StringBuilder("^xAll Clan Governments: ^N\n\r");
         int glen=0;
     	for(ClanGovernment G : CMLib.clans().getStockGovernments())
     		if(G.getName().length()>glen)
     			glen=G.getName().length();
+        final int SCREEN_LEN=ListingLibrary.ColFixer.fixColWidth(78.0,viewerS);
     	for(ClanGovernment G : CMLib.clans().getStockGovernments())
-            buf.append(CMStrings.padRight(G.getName(),glen)+": "+CMStrings.limit(G.getShortDesc(),78-glen-2)+"\n\r");
+            buf.append(CMStrings.padRight(G.getName(),glen)+": "+CMStrings.limit(G.getShortDesc(),SCREEN_LEN-glen-2)+"\n\r");
     	return buf.toString();
     }
     
-    public String listClans(MOB mob,List commands)
+    public String listClans(Session viewerS, List commands)
     {
         StringBuilder buf=new StringBuilder("^xAll Clans: ^N\n\r");
         int clen=0;
@@ -1510,81 +1553,15 @@ public class ListCmd extends StdCommand
     		if(C.clanID().length()>clen)
     			clen=C.clanID().length();
     	}
+        final int SCREEN_LEN=ListingLibrary.ColFixer.fixColWidth(78.0,viewerS);
     	for(Enumeration<Clan> c=CMLib.clans().clans();c.hasMoreElements();)
     	{
     		Clan C=c.nextElement();
-            buf.append(CMStrings.padRight(C.clanID(),clen)+": "+CMStrings.limit(C.getMemberList().size()+" members",78-clen-2)+"\n\r");
+            buf.append(CMStrings.padRight(C.clanID(),clen)+": "+CMStrings.limit(C.getMemberList().size()+" members",SCREEN_LEN-clen-2)+"\n\r");
     	}
     	return buf.toString();
     }
     
-	public final static String[][] SECURITY_LISTMAP={
-		/*00*/{"UNLINKEDEXITS","CMDEXITS","CMDROOMS","CMDAREAS"},
-		/*01*/{"ITEMS","CMDITEMS"},
-		/*02*/{"ARMOR","CMDITEMS"},
-		/*03*/{"ENVRESOURCES","CMDITEMS","CMDROOMS","CMDAREAS"},
-		/*04*/{"WEAPONS","CMDITEMS"},
-		/*05*/{"MOBS","CMDMOBS"},
-		/*06*/{"ROOMS","CMDMOBS","CMDITEMS","CMDROOMS","CMDAREAS","CMDEXITS","CMDRACES","CMDCLASSES"},
-		/*07*/{"AREA","CMDMOBS","CMDITEMS","CMDROOMS","CMDAREAS","CMDEXITS","CMDRACES","CMDCLASSES"},
-		/*08*/{"LOCALES","CMDROOMS"},
-		/*09*/{"BEHAVIORS","CMDMOBS","CMDITEMS","CMDROOMS","CMDAREAS","CMDEXITS","CMDRACES","CMDCLASSES"},
-		/*10*/{"EXITS","CMDEXITS"},
-		/*11*/{"RACES","CMDRACES","CMDMOBS","CMDITEMS","CMDROOMS","CMDAREAS","CMDEXITS"},
-		/*12*/{"CLASSES","CMDMOBS","CMDITEMS","CMDROOMS","CMDAREAS","CMDEXITS","CMDCLASSES"},
-		/*13*/{"STAFF","CMDAREAS"},
-		/*14*/{"SPELLS","CMDMOBS","CMDITEMS","CMDROOMS","CMDAREAS","CMDEXITS","CMDRACES","CMDCLASSES","CMDABILITIES"},
-		/*15*/{"SONGS","CMDMOBS","CMDITEMS","CMDROOMS","CMDAREAS","CMDEXITS","CMDRACES","CMDCLASSES","CMDABILITIES"},
-		/*16*/{"PRAYERS","CMDMOBS","CMDITEMS","CMDROOMS","CMDAREAS","CMDEXITS","CMDRACES","CMDCLASSES","CMDABILITIES"},
-		/*17*/{"PROPERTIES","CMDMOBS","CMDITEMS","CMDROOMS","CMDAREAS","CMDEXITS","CMDRACES","CMDCLASSES","CMDABILITIES"},
-		/*18*/{"THIEFSKILLS","CMDMOBS","CMDITEMS","CMDROOMS","CMDAREAS","CMDEXITS","CMDRACES","CMDCLASSES","CMDABILITIES"},
-		/*19*/{"COMMON","CMDMOBS","CMDITEMS","CMDROOMS","CMDAREAS","CMDEXITS","CMDRACES","CMDCLASSES","CMDABILITIES"},
-		/*20*/{"JOURNALS","JOURNALS"},
-		/*21*/{"SKILLS","CMDMOBS","CMDITEMS","CMDROOMS","CMDAREAS","CMDEXITS","CMDRACES","CMDCLASSES","CMDABILITIES"},
-		/*22*/{"QUESTS","CMDQUESTS"},
-		/*23*/{"DISEASES","CMDMOBS","CMDITEMS","CMDROOMS","CMDAREAS","CMDEXITS","CMDRACES","CMDCLASSES","CMDABILITIES"},
-		/*24*/{"POISONS","CMDMOBS","CMDITEMS","CMDROOMS","CMDAREAS","CMDEXITS","CMDRACES","CMDCLASSES","CMDABILITIES"},
-		/*25*/{"TICKS","LISTADMIN"},
-		/*26*/{"MAGIC","CMDITEMS"},
-		/*27*/{"TECH","CMDITEMS"},
-		/*28*/{"CLANITEMS","CMDITEMS","CMDCLANS"},
-		/*29*/{"COMMANDJOURNAL",""}, // blank, but used!
-        /*30*/{"REALESTATE","CMDMOBS","CMDITEMS","CMDROOMS","CMDAREAS","CMDEXITS","CMDRACES","CMDCLASSES"},
-		/*31*/{"NOPURGE","NOPURGE"},
-		/*32*/{"BANNED","BAN"},
-        /*33*/{"RACECATS","CMDRACES","CMDMOBS","CMDITEMS","CMDROOMS","CMDAREAS","CMDEXITS"},
-		/*34*/{"LOG","LISTADMIN"},
-		/*35*/{"USERS","CMDPLAYERS","STAT"},
-		/*36*/{"LINKAGES","CMDAREAS"},
-		/*37*/{"REPORTS","LISTADMIN"},
-		/*38*/{"THREADS","LISTADMIN"},
-		/*39*/{"RESOURCES","LOADUNLOAD"},
-		/*40*/{"ONEWAYDOORS","CMDEXITS","CMDROOMS","CMDAREAS"},
-		/*41*/{"CHANTS","CMDMOBS","CMDITEMS","CMDROOMS","CMDAREAS","CMDEXITS","CMDRACES","CMDCLASSES","CMDABILITIES"},
-		/*42*/{"POWERS","CMDMOBS","CMDITEMS","CMDROOMS","CMDAREAS","CMDEXITS","CMDRACES","CMDCLASSES","CMDABILITIES"},
-		/*43*/{"SUPERPOWERS","CMDMOBS","CMDITEMS","CMDROOMS","CMDAREAS","CMDEXITS","CMDRACES","CMDCLASSES","CMDABILITIES"},
-		/*44*/{"COMPONENTS","LISTADMIN","COMPONENTS"},
-        /*45*/{"EXPERTISES","LISTADMIN","EXPERTISES"},
-        /*46*/{"FACTIONS","LISTADMIN","CMDFACTIONS"},
-        /*47*/{"MATERIALS","CMDITEMS","CMDROOMS","CMDAREAS"},
-        /*48*/{"OBJCOUNTERS","LISTADMIN"},
-        /*49*/{"POLLS","POLLS","LISTADMIN"},
-        /*50*/{"CONTENTS","CMDROOMS","CMDITEMS","CMDMOBS","CMDAREAS"},
-		/*51*/{"EXPIRES","CMDMOBS","CMDITEMS","CMDROOMS","CMDAREAS","CMDEXITS","CMDRACES","CMDCLASSES"},
-        /*52*/{"TITLES","LISTADMIN","TITLES"},
-		/*53*/{"AREARESOURCES","CMDMOBS","CMDITEMS","CMDROOMS","CMDAREAS","CMDEXITS","CMDRACES","CMDCLASSES"},
-		/*54*/{"CONQUERED","CMDMOBS","CMDITEMS","CMDROOMS","CMDAREAS","CMDEXITS","CMDRACES","CMDCLASSES"},
-        /*55*/{"HOLIDAYS","LISTADMIN","CMDMOBS","CMDITEMS","CMDROOMS","CMDAREAS","CMDEXITS","CMDRACES","CMDCLASSES"},
-        /*56*/{"RECIPES","LISTADMIN","CMDRECIPES"},
-        /*57*/{"HELPFILEREQUESTS","LISTADMIN"},
-		/*58*/{"SCRIPTS","CMDMOBS","CMDITEMS","CMDROOMS","CMDAREAS","CMDEXITS","CMDRACES","CMDCLASSES"},
-		/*59*/{"ACCOUNTS","CMDPLAYERS","STAT"},
-		/*60*/{"GOVERNMENTS","CMDCLANS"},
-		/*61*/{"CLANS","CMDCLANS"},
-		/*62*/{"DEBUGFLAG","LISTADMIN"},
-		/*63*/{"DISABLEFLAG","LISTADMIN"},
-	};
-
     public StringBuilder listContent(MOB mob, Vector commands)
     {
         commands.removeElementAt(0);
@@ -1613,6 +1590,9 @@ public class ListCmd extends StdCommand
         Room R=null;
         Room TR=null;
         Map<String,Room> set=null;
+        final int SCREEN_LEN1=ListingLibrary.ColFixer.fixColWidth(15.0,mob);
+        final int SCREEN_LEN2=ListingLibrary.ColFixer.fixColWidth(35.0,mob);
+        final int SCREEN_LEN3=ListingLibrary.ColFixer.fixColWidth(3.0,mob);
         for(;roomsToDo.hasMoreElements();)
         {
             R=(Room)roomsToDo.nextElement();
@@ -1629,17 +1609,17 @@ public class ListCmd extends StdCommand
                 {
                     MOB M=TR.fetchInhabitant(m);
                     if(M==null) continue;
-                    buf.append("^M"+CMStrings.padRight(M.ID(),15)+": "+CMStrings.padRight(M.displayText(),35)+": "
-                    			+CMStrings.padRight(M.phyStats().level()+"",3)+": "
+                    buf.append("^M"+CMStrings.padRight(M.ID(),SCREEN_LEN1)+": "+CMStrings.padRight(M.displayText(),SCREEN_LEN2)+": "
+                    			+CMStrings.padRight(M.phyStats().level()+"",SCREEN_LEN3)+": "
                     			+CMLib.flags().getAlignmentName(M)
 		                		+"^N\n\r");
                     for(int i=0;i<M.numItems();i++)
                     {
                         Item I=M.getItem(i);
                         if(I!=null)
-                            buf.append("    ^I"+CMStrings.padRight(I.ID(),15)
-                            		+": "+CMStrings.padRight((I.displayText().length()>0?I.displayText():I.Name()),35)+": "
-                        			+CMStrings.padRight(I.phyStats().level()+"",3)+": "
+                            buf.append("    ^I"+CMStrings.padRight(I.ID(),SCREEN_LEN1)
+                            		+": "+CMStrings.padRight((I.displayText().length()>0?I.displayText():I.Name()),SCREEN_LEN2)+": "
+                        			+CMStrings.padRight(I.phyStats().level()+"",SCREEN_LEN3)+": "
                             		+"^N"+((I.container()!=null)?I.Name():"")+"\n\r");
                     }
                 }
@@ -1647,9 +1627,9 @@ public class ListCmd extends StdCommand
                 {
                     Item I=TR.getItem(i);
                     if(I!=null)
-                        buf.append("^I"+CMStrings.padRight(I.ID(),15)+": "
-                        		+CMStrings.padRight((I.displayText().length()>0?I.displayText():I.Name()),35)+": "
-                    			+CMStrings.padRight(I.phyStats().level()+"",3)+": "
+                        buf.append("^I"+CMStrings.padRight(I.ID(),SCREEN_LEN1)+": "
+                        		+CMStrings.padRight((I.displayText().length()>0?I.displayText():I.Name()),SCREEN_LEN2)+": "
+                    			+CMStrings.padRight(I.phyStats().level()+"",SCREEN_LEN3)+": "
                         		+"^N"+((I.container()!=null)?I.Name():"")+"\n\r");
                 }
                 TR.destroy();
@@ -1682,20 +1662,6 @@ public class ListCmd extends StdCommand
         }
     }
 
-    public boolean pause(Session sess) {
-    	if((sess==null)||(sess.killFlag())) return false;
-    	sess.out("<pause - enter>".toCharArray());
-		try{ 
-			String s=sess.blockingIn(); 
-			if(s!=null)
-			{
-				s=s.toLowerCase();
-				if(s.startsWith("qu")||s.startsWith("ex")||s.equals("x"))
-					return false;
-			}
-		}catch(Exception e){return false;}
-    	return !sess.killFlag();
-    }
     public void listLog(MOB mob, Vector commands)
     {
     	int pageBreak=((mob.playerStats()!=null)?mob.playerStats().getPageBreak():0);
@@ -1797,7 +1763,90 @@ public class ListCmd extends StdCommand
     	}
     	log.close();
     }
+    
+	public final static String[][] SECURITY_LISTMAP={
+		/*00*/{"UNLINKEDEXITS","CMDEXITS","CMDROOMS","CMDAREAS"},
+		/*01*/{"ITEMS","CMDITEMS"},
+		/*02*/{"ARMOR","CMDITEMS"},
+		/*03*/{"ENVRESOURCES","CMDITEMS","CMDROOMS","CMDAREAS"},
+		/*04*/{"WEAPONS","CMDITEMS"},
+		/*05*/{"MOBS","CMDMOBS"},
+		/*06*/{"ROOMS","CMDMOBS","CMDITEMS","CMDROOMS","CMDAREAS","CMDEXITS","CMDRACES","CMDCLASSES"},
+		/*07*/{"AREA","CMDMOBS","CMDITEMS","CMDROOMS","CMDAREAS","CMDEXITS","CMDRACES","CMDCLASSES"},
+		/*08*/{"LOCALES","CMDROOMS"},
+		/*09*/{"BEHAVIORS","CMDMOBS","CMDITEMS","CMDROOMS","CMDAREAS","CMDEXITS","CMDRACES","CMDCLASSES"},
+		/*10*/{"EXITS","CMDEXITS"},
+		/*11*/{"RACES","CMDRACES","CMDMOBS","CMDITEMS","CMDROOMS","CMDAREAS","CMDEXITS"},
+		/*12*/{"CLASSES","CMDMOBS","CMDITEMS","CMDROOMS","CMDAREAS","CMDEXITS","CMDCLASSES"},
+		/*13*/{"STAFF","CMDAREAS"},
+		/*14*/{"SPELLS","CMDMOBS","CMDITEMS","CMDROOMS","CMDAREAS","CMDEXITS","CMDRACES","CMDCLASSES","CMDABILITIES"},
+		/*15*/{"SONGS","CMDMOBS","CMDITEMS","CMDROOMS","CMDAREAS","CMDEXITS","CMDRACES","CMDCLASSES","CMDABILITIES"},
+		/*16*/{"PRAYERS","CMDMOBS","CMDITEMS","CMDROOMS","CMDAREAS","CMDEXITS","CMDRACES","CMDCLASSES","CMDABILITIES"},
+		/*17*/{"PROPERTIES","CMDMOBS","CMDITEMS","CMDROOMS","CMDAREAS","CMDEXITS","CMDRACES","CMDCLASSES","CMDABILITIES"},
+		/*18*/{"THIEFSKILLS","CMDMOBS","CMDITEMS","CMDROOMS","CMDAREAS","CMDEXITS","CMDRACES","CMDCLASSES","CMDABILITIES"},
+		/*19*/{"COMMON","CMDMOBS","CMDITEMS","CMDROOMS","CMDAREAS","CMDEXITS","CMDRACES","CMDCLASSES","CMDABILITIES"},
+		/*20*/{"JOURNALS","JOURNALS"},
+		/*21*/{"SKILLS","CMDMOBS","CMDITEMS","CMDROOMS","CMDAREAS","CMDEXITS","CMDRACES","CMDCLASSES","CMDABILITIES"},
+		/*22*/{"QUESTS","CMDQUESTS"},
+		/*23*/{"DISEASES","CMDMOBS","CMDITEMS","CMDROOMS","CMDAREAS","CMDEXITS","CMDRACES","CMDCLASSES","CMDABILITIES"},
+		/*24*/{"POISONS","CMDMOBS","CMDITEMS","CMDROOMS","CMDAREAS","CMDEXITS","CMDRACES","CMDCLASSES","CMDABILITIES"},
+		/*25*/{"TICKS","LISTADMIN"},
+		/*26*/{"MAGIC","CMDITEMS"},
+		/*27*/{"TECH","CMDITEMS"},
+		/*28*/{"CLANITEMS","CMDITEMS","CMDCLANS"},
+		/*29*/{"COMMANDJOURNAL",""}, // blank, but used!
+        /*30*/{"REALESTATE","CMDMOBS","CMDITEMS","CMDROOMS","CMDAREAS","CMDEXITS","CMDRACES","CMDCLASSES"},
+		/*31*/{"NOPURGE","NOPURGE"},
+		/*32*/{"BANNED","BAN"},
+        /*33*/{"RACECATS","CMDRACES","CMDMOBS","CMDITEMS","CMDROOMS","CMDAREAS","CMDEXITS"},
+		/*34*/{"LOG","LISTADMIN"},
+		/*35*/{"USERS","CMDPLAYERS","STAT"},
+		/*36*/{"LINKAGES","CMDAREAS"},
+		/*37*/{"REPORTS","LISTADMIN"},
+		/*38*/{"THREADS","LISTADMIN"},
+		/*39*/{"RESOURCES","LOADUNLOAD"},
+		/*40*/{"ONEWAYDOORS","CMDEXITS","CMDROOMS","CMDAREAS"},
+		/*41*/{"CHANTS","CMDMOBS","CMDITEMS","CMDROOMS","CMDAREAS","CMDEXITS","CMDRACES","CMDCLASSES","CMDABILITIES"},
+		/*42*/{"POWERS","CMDMOBS","CMDITEMS","CMDROOMS","CMDAREAS","CMDEXITS","CMDRACES","CMDCLASSES","CMDABILITIES"},
+		/*43*/{"SUPERPOWERS","CMDMOBS","CMDITEMS","CMDROOMS","CMDAREAS","CMDEXITS","CMDRACES","CMDCLASSES","CMDABILITIES"},
+		/*44*/{"COMPONENTS","LISTADMIN","COMPONENTS"},
+        /*45*/{"EXPERTISES","LISTADMIN","EXPERTISES"},
+        /*46*/{"FACTIONS","LISTADMIN","CMDFACTIONS"},
+        /*47*/{"MATERIALS","CMDITEMS","CMDROOMS","CMDAREAS"},
+        /*48*/{"OBJCOUNTERS","LISTADMIN"},
+        /*49*/{"POLLS","POLLS","LISTADMIN"},
+        /*50*/{"CONTENTS","CMDROOMS","CMDITEMS","CMDMOBS","CMDAREAS"},
+		/*51*/{"EXPIRES","CMDMOBS","CMDITEMS","CMDROOMS","CMDAREAS","CMDEXITS","CMDRACES","CMDCLASSES"},
+        /*52*/{"TITLES","LISTADMIN","TITLES"},
+		/*53*/{"AREARESOURCES","CMDMOBS","CMDITEMS","CMDROOMS","CMDAREAS","CMDEXITS","CMDRACES","CMDCLASSES"},
+		/*54*/{"CONQUERED","CMDMOBS","CMDITEMS","CMDROOMS","CMDAREAS","CMDEXITS","CMDRACES","CMDCLASSES"},
+        /*55*/{"HOLIDAYS","LISTADMIN","CMDMOBS","CMDITEMS","CMDROOMS","CMDAREAS","CMDEXITS","CMDRACES","CMDCLASSES"},
+        /*56*/{"RECIPES","LISTADMIN","CMDRECIPES"},
+        /*57*/{"HELPFILEREQUESTS","LISTADMIN"},
+		/*58*/{"SCRIPTS","CMDMOBS","CMDITEMS","CMDROOMS","CMDAREAS","CMDEXITS","CMDRACES","CMDCLASSES"},
+		/*59*/{"ACCOUNTS","CMDPLAYERS","STAT"},
+		/*60*/{"GOVERNMENTS","CMDCLANS"},
+		/*61*/{"CLANS","CMDCLANS"},
+		/*62*/{"DEBUGFLAG","LISTADMIN"},
+		/*63*/{"DISABLEFLAG","LISTADMIN"},
+	};
 
+    public boolean pause(Session sess) 
+    {
+    	if((sess==null)||(sess.killFlag())) return false;
+    	sess.out("<pause - enter>".toCharArray());
+		try{ 
+			String s=sess.blockingIn(); 
+			if(s!=null)
+			{
+				s=s.toLowerCase();
+				if(s.startsWith("qu")||s.startsWith("ex")||s.equals("x"))
+					return false;
+			}
+		}catch(Exception e){return false;}
+    	return !sess.killFlag();
+    }
+    
 	public void archonlist(MOB mob, Vector commands)
 	{
 		if(commands.size()==0)
@@ -1836,37 +1885,37 @@ public class ListCmd extends StdCommand
 		}
 		switch(code)
 		{
-		case 0:	s.wraplessPrintln(unlinkedExits(mob,commands)); break;
-		case 1: s.wraplessPrintln(CMLib.lister().reallyList(CMClass.basicItems()).toString()); break;
-		case 2: s.wraplessPrintln(CMLib.lister().reallyList(CMClass.armor()).toString()); break;
-		case 3: s.wraplessPrintln(listEnvResources(rest.equalsIgnoreCase("SHORT"))); break;
-		case 4: s.wraplessPrintln(CMLib.lister().reallyList(CMClass.weapons()).toString()); break;
-		case 5: s.wraplessPrintln(CMLib.lister().reallyList(CMClass.mobTypes()).toString()); break;
-		case 6: s.wraplessPrintln(roomDetails(mob.location().getArea().getMetroMap(),mob.location()).toString()); break;
-		case 7: s.wraplessPrintln(roomTypes(mob.location().getArea().getMetroMap(),mob.location()).toString()); break;
-		case 8: s.wraplessPrintln(CMLib.lister().reallyList(CMClass.locales()).toString()); break;
-		case 9: s.wraplessPrintln(CMLib.lister().reallyList(CMClass.behaviors()).toString()); break;
-		case 10: s.wraplessPrintln(CMLib.lister().reallyList(CMClass.exits()).toString()); break;
-		case 11: s.wraplessPrintln(listRaces(CMClass.races(),rest.equalsIgnoreCase("SHORT")).toString()); break;
-		case 12: s.wraplessPrintln(CMLib.lister().reallyList(CMClass.charClasses()).toString()); break;
-		case 13: s.wraplessPrintln(listSubOps(mob).toString()); break;
-		case 14: s.wraplessPrintln(CMLib.lister().reallyList(CMClass.abilities(),Ability.ACODE_SPELL).toString()); break;
-		case 15: s.wraplessPrintln(CMLib.lister().reallyList(CMClass.abilities(),Ability.ACODE_SONG).toString()); break;
-		case 16: s.wraplessPrintln(CMLib.lister().reallyList(CMClass.abilities(),Ability.ACODE_PRAYER).toString()); break;
-		case 17: s.wraplessPrintln(CMLib.lister().reallyList(CMClass.abilities(),Ability.ACODE_PROPERTY).toString()); break;
-		case 18: s.wraplessPrintln(CMLib.lister().reallyList(CMClass.abilities(),Ability.ACODE_THIEF_SKILL).toString()); break;
-		case 19: s.wraplessPrintln(CMLib.lister().reallyList(CMClass.abilities(),Ability.ACODE_COMMON_SKILL).toString()); break;
-		case 20: s.println(listJournals().toString()); break;
-		case 21: s.wraplessPrintln(CMLib.lister().reallyList(CMClass.abilities(),Ability.ACODE_SKILL).toString()); break;
-		case 22: s.println(listQuests().toString()); break;
-		case 23: s.wraplessPrintln(CMLib.lister().reallyList(CMClass.abilities(),Ability.ACODE_DISEASE).toString()); break;
-		case 24: s.wraplessPrintln(CMLib.lister().reallyList(CMClass.abilities(),Ability.ACODE_POISON).toString()); break;
-		case 25: s.println(listTicks(CMParms.combine(commands,1)).toString()); break;
-		case 26: s.wraplessPrintln(CMLib.lister().reallyList(CMClass.miscMagic()).toString()); break;
-		case 27: s.wraplessPrintln(CMLib.lister().reallyList(CMClass.miscTech()).toString()); break;
-		case 28: s.wraplessPrintln(CMLib.lister().reallyList(CMClass.clanItems()).toString()); break;
-		case 29: s.println(journalList(listWord).toString()); break;
-        case 30: s.wraplessPrintln(roomPropertyDetails(mob.location().getArea().getMetroMap(),mob.location()).toString()); break;
+		case 0:	s.wraplessPrintln(unlinkedExits(mob.session(),commands)); break;
+		case 1: s.wraplessPrintln(CMLib.lister().reallyList(mob,CMClass.basicItems()).toString()); break;
+		case 2: s.wraplessPrintln(CMLib.lister().reallyList(mob,CMClass.armor()).toString()); break;
+		case 3: s.wraplessPrintln(listEnvResources(mob.session(),rest.equalsIgnoreCase("SHORT"))); break;
+		case 4: s.wraplessPrintln(CMLib.lister().reallyList(mob,CMClass.weapons()).toString()); break;
+		case 5: s.wraplessPrintln(CMLib.lister().reallyList(mob,CMClass.mobTypes()).toString()); break;
+		case 6: s.wraplessPrintln(roomDetails(mob.session(),mob.location().getArea().getMetroMap(),mob.location()).toString()); break;
+		case 7: s.wraplessPrintln(roomTypes(mob.session(),mob.location().getArea().getMetroMap(),mob.location()).toString()); break;
+		case 8: s.wraplessPrintln(CMLib.lister().reallyList(mob,CMClass.locales()).toString()); break;
+		case 9: s.wraplessPrintln(CMLib.lister().reallyList(mob,CMClass.behaviors()).toString()); break;
+		case 10: s.wraplessPrintln(CMLib.lister().reallyList(mob,CMClass.exits()).toString()); break;
+		case 11: s.wraplessPrintln(listRaces(s,CMClass.races(),rest.equalsIgnoreCase("SHORT")).toString()); break;
+		case 12: s.wraplessPrintln(CMLib.lister().reallyList(mob,CMClass.charClasses()).toString()); break;
+		case 13: s.wraplessPrintln(listSubOps(mob.session()).toString()); break;
+		case 14: s.wraplessPrintln(CMLib.lister().reallyList(mob,CMClass.abilities(),Ability.ACODE_SPELL).toString()); break;
+		case 15: s.wraplessPrintln(CMLib.lister().reallyList(mob,CMClass.abilities(),Ability.ACODE_SONG).toString()); break;
+		case 16: s.wraplessPrintln(CMLib.lister().reallyList(mob,CMClass.abilities(),Ability.ACODE_PRAYER).toString()); break;
+		case 17: s.wraplessPrintln(CMLib.lister().reallyList(mob,CMClass.abilities(),Ability.ACODE_PROPERTY).toString()); break;
+		case 18: s.wraplessPrintln(CMLib.lister().reallyList(mob,CMClass.abilities(),Ability.ACODE_THIEF_SKILL).toString()); break;
+		case 19: s.wraplessPrintln(CMLib.lister().reallyList(mob,CMClass.abilities(),Ability.ACODE_COMMON_SKILL).toString()); break;
+		case 20: s.println(listJournals(mob.session()).toString()); break;
+		case 21: s.wraplessPrintln(CMLib.lister().reallyList(mob,CMClass.abilities(),Ability.ACODE_SKILL).toString()); break;
+		case 22: s.println(listQuests(mob.session()).toString()); break;
+		case 23: s.wraplessPrintln(CMLib.lister().reallyList(mob,CMClass.abilities(),Ability.ACODE_DISEASE).toString()); break;
+		case 24: s.wraplessPrintln(CMLib.lister().reallyList(mob,CMClass.abilities(),Ability.ACODE_POISON).toString()); break;
+		case 25: s.println(listTicks(mob.session(),CMParms.combine(commands,1)).toString()); break;
+		case 26: s.wraplessPrintln(CMLib.lister().reallyList(mob,CMClass.miscMagic()).toString()); break;
+		case 27: s.wraplessPrintln(CMLib.lister().reallyList(mob,CMClass.miscTech()).toString()); break;
+		case 28: s.wraplessPrintln(CMLib.lister().reallyList(mob,CMClass.clanItems()).toString()); break;
+		case 29: s.println(journalList(mob.session(),listWord).toString()); break;
+        case 30: s.wraplessPrintln(roomPropertyDetails(mob.session(),mob.location().getArea().getMetroMap(),mob.location()).toString()); break;
 		case 31:
 		{
 			StringBuilder str=new StringBuilder("\n\rProtected players:\n\r");
@@ -1887,35 +1936,35 @@ public class ListCmd extends StdCommand
 			s.wraplessPrintln(str.toString());
 			break;
 		}
-        case 33: s.wraplessPrintln(listRaceCats(CMClass.races(),rest.equalsIgnoreCase("SHORT")).toString()); break;
+        case 33: s.wraplessPrintln(listRaceCats(s,CMClass.races(),rest.equalsIgnoreCase("SHORT")).toString()); break;
 		case 34: listLog(mob,commands); break;
-		case 35: listUsers(mob,commands); break;
-		case 36: s.println(listLinkages(mob).toString()); break;
-		case 37: s.println(listReports(mob).toString()); break;
-		case 38: s.println(listThreads(mob,CMParms.combine(commands,1).equalsIgnoreCase("SHORT")).toString()); break;
+		case 35: listUsers(mob.session(),mob,commands); break;
+		case 36: s.println(listLinkages(mob.session(),mob).toString()); break;
+		case 37: s.println(listReports(mob.session(),mob).toString()); break;
+		case 38: s.println(listThreads(mob.session(),mob,CMParms.combine(commands,1).equalsIgnoreCase("SHORT")).toString()); break;
 		case 39: s.println(listResources(mob,CMParms.combine(commands,1))); break;
-		case 40: s.wraplessPrintln(reallyFindOneWays(mob,commands)); break;
-		case 41: s.wraplessPrintln(CMLib.lister().reallyList(CMClass.abilities(),Ability.ACODE_CHANT).toString()); break;
+		case 40: s.wraplessPrintln(reallyFindOneWays(mob.session(),commands)); break;
+		case 41: s.wraplessPrintln(CMLib.lister().reallyList(mob,CMClass.abilities(),Ability.ACODE_CHANT).toString()); break;
 		case 42:
-		case 43: s.wraplessPrintln(CMLib.lister().reallyList(CMClass.abilities(),Ability.ACODE_SUPERPOWER).toString()); break;
-		case 44: s.wraplessPrintln(listComponents()); break;
-		case 45: s.wraplessPrintln(listExpertises()); break;
+		case 43: s.wraplessPrintln(CMLib.lister().reallyList(mob,CMClass.abilities(),Ability.ACODE_SUPERPOWER).toString()); break;
+		case 44: s.wraplessPrintln(listComponents(mob.session())); break;
+		case 45: s.wraplessPrintln(listExpertises(mob.session())); break;
         case 46: s.wraplessPrintln(CMLib.factions().listFactions()); break;
         case 47: s.wraplessPrintln(listMaterials()); break;
         case 48: s.println("\n\r^xCounter Report: NO LONGER AVAILABLE^.^N\n\r"); break;//+CMClass.getCounterReport()); break;
         case 49: listPolls(mob,commands); break;
         case 50: s.wraplessPrintln(listContent(mob,commands).toString()); break;
-		case 51: s.wraplessPrintln(roomExpires(mob.location().getArea().getProperMap(),mob.location()).toString()); break;
-        case 52: s.wraplessPrintln(listTitles()); break;
-		case 53: s.wraplessPrintln(roomResources(mob.location().getArea().getMetroMap(),mob.location()).toString()); break;
-		case 54: s.wraplessPrintln(areaConquests(CMLib.map().sortedAreas()).toString()); break;
+		case 51: s.wraplessPrintln(roomExpires(mob.session(),mob.location().getArea().getProperMap(),mob.location()).toString()); break;
+        case 52: s.wraplessPrintln(listTitles(mob.session())); break;
+		case 53: s.wraplessPrintln(roomResources(mob.session(),mob.location().getArea().getMetroMap(),mob.location()).toString()); break;
+		case 54: s.wraplessPrintln(areaConquests(mob.session(),CMLib.map().sortedAreas()).toString()); break;
         case 55: s.wraplessPrintln(CMLib.quests().listHolidays(mob.location().getArea(),CMParms.combine(commands,1))); break;
         case 56: s.wraplessPrintln(listRecipes(mob,CMParms.combine(commands,1))); break;
         case 57: s.wraplessPrint(listHelpFileRequests(mob,CMParms.combine(commands,1))); break;
-        case 58: s.wraplessPrintln(listScripts(mob,commands).toString()); break;
-		case 59: listAccounts(mob,commands); break;
-		case 60: s.wraplessPrintln(listClanGovernments(mob,commands)); break;
-		case 61: s.wraplessPrintln(listClans(mob,commands)); break;
+        case 58: s.wraplessPrintln(listScripts(mob.session(),mob,commands).toString()); break;
+		case 59: listAccounts(mob.session(),mob,commands); break;
+		case 60: s.wraplessPrintln(listClanGovernments(mob.session(),commands)); break;
+		case 61: s.wraplessPrintln(listClans(mob.session(),commands)); break;
 		case 62: s.println("\n\r^xDebug Settings: ^?^.^N\n\r"+CMParms.toStringList(new XVector<CMSecurity.DbgFlag>(CMSecurity.getDebugEnum()))+"\n\r"); break;
 		case 63: s.println("\n\r^xDisable Settings: ^?^.^N\n\r"+CMParms.toStringList(new XVector<CMSecurity.DisFlag>(CMSecurity.getDisablesEnum()))+"\n\r"); break;
         default:

@@ -33,24 +33,43 @@ import java.util.*;
 public interface ListingLibrary extends CMLibrary
 {
 
-    public String itemSeenString(MOB viewer, Environmental item, boolean useName, boolean longLook, boolean sysMsgs);
-    public int getReps(Environmental item, List<? extends Environmental> theRest, MOB mob, boolean useName, boolean longLook);
+    public String itemSeenString(MOB viewerM, Environmental item, boolean useName, boolean longLook, boolean sysMsgs);
+    public int getReps(MOB viewerM, Environmental item, List<? extends Environmental> theRest, boolean useName, boolean longLook);
     public void appendReps(int reps, StringBuilder say, boolean compress);
-    public StringBuilder lister(MOB mob, Vector things, boolean useName, String tag, String tagParm, boolean longLook, boolean compress);
-    public StringBuilder reallyList(Hashtable these, int ofType);
-    public StringBuilder reallyList(Hashtable these);
-    public StringBuilder reallyList(Hashtable these, Room likeRoom);
-    public StringBuilder reallyList(Vector these, int ofType);
-    public StringBuilder reallyList(Enumeration these, int ofType);
-    public StringBuilder reallyList(Vector these);
-    public StringBuilder reallyList(Enumeration these);
-    public StringBuilder reallyList(Vector these, Room likeRoom);
-    public StringBuilder reallyList(Hashtable these, int ofType, Room likeRoom);
-    public StringBuilder reallyList(Vector these, int ofType, Room likeRoom);
-    public StringBuilder reallyList(Enumeration these, Room likeRoom);
-    public StringBuilder reallyList(Enumeration these, int ofType, Room likeRoom);
-    public StringBuilder reallyList2Cols(Enumeration these, int ofType, Room likeRoom);
-    public StringBuilder fourColumns(List<String> reverseList);
-    public StringBuilder fourColumns(List<String> reverseList, String tag);
-	public StringBuilder makeColumns(List<String> reverseList, String tag, int numCols);
+    public StringBuilder lister(MOB viewerM, List<Item> items, boolean useName, String tag, String tagParm, boolean longLook, boolean compress);
+    public StringBuilder reallyList(MOB viewerM, Map<String,? extends Object> these, int ofType);
+    public StringBuilder reallyList(MOB viewerM, Map<String,? extends Object> these);
+    public StringBuilder reallyList(MOB viewerM, Map<String,? extends Object> these, Room likeRoom);
+    public StringBuilder reallyList(MOB viewerM, Vector these, int ofType);
+    public StringBuilder reallyList(MOB viewerM, Enumeration these, int ofType);
+    public StringBuilder reallyList(MOB viewerM, Vector these);
+    public StringBuilder reallyList(MOB viewerM, Enumeration these);
+    public StringBuilder reallyList(MOB viewerM, Vector these, Room likeRoom);
+    public StringBuilder reallyList(MOB viewerM, Map<String,? extends Object> these, int ofType, Room likeRoom);
+    public StringBuilder reallyList(MOB viewerM, Vector these, int ofType, Room likeRoom);
+    public StringBuilder reallyList(MOB viewerM, Enumeration these, Room likeRoom);
+    public StringBuilder reallyList(MOB viewerM, Enumeration these, int ofType, Room likeRoom);
+    public StringBuilder reallyList2Cols(MOB viewerM, Enumeration these, int ofType, Room likeRoom);
+    public StringBuilder fourColumns(MOB viewerM, List<String> reverseList);
+    public StringBuilder fourColumns(MOB viewerM, List<String> reverseList, String tag);
+	public StringBuilder makeColumns(MOB viewerM, List<String> reverseList, String tag, int numCols);
+	
+	public static class ColFixer
+	{
+		public static final int fixColWidth(final double colWidth, final MOB mob)
+		{
+			return fixColWidth(colWidth,mob.session());
+		}
+		
+		public static final int fixColWidth(final double colWidth, final Session session)
+		{
+			final double totalWidth=(session==null)?78.0:(double)session.getWrap();
+			return (int)Math.round((colWidth/78.0)*totalWidth);
+		}
+		
+		public static final int fixColWidth(final double colWidth, final double totalWidth)
+		{
+			return (int)Math.round((colWidth/78.0)*totalWidth);
+		}
+	}
 }

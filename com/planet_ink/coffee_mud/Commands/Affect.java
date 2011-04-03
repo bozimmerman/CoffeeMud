@@ -10,6 +10,7 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -111,7 +112,7 @@ public class Affect extends StdCommand
 	{
 		final StringBuffer msg=new StringBuffer("");
         final int NUM_COLS=2;
-        final int COL_LEN=36;
+        final int COL_LEN=ListingLibrary.ColFixer.fixColWidth(36.0,S);
 		int colnum=NUM_COLS;
         MOB mob=(S!=null)?S.mob():null;
 		for(final Enumeration<Ability> a=P.effects();a.hasMoreElements();)

@@ -440,7 +440,7 @@ public class Stat  extends Skills
 			Vector V=new Vector();
 			int mask=Ability.ALL_ACODES;
 			V.addElement(Integer.valueOf(ableTypes));
-			str=getAbilities(target,V,mask,false,-1);
+			str=getAbilities(mob,target,V,mask,false,-1);
 		}
 		else
 		if(ableTypes==ABLETYPE_EQUIPMENT)

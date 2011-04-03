@@ -10,6 +10,7 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.ListingLibrary;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -46,6 +47,7 @@ public class Channels extends StdCommand
 		StringBuffer buf=new StringBuffer("Available channels: \n\r");
 		int col=0;
 		String[] names=CMLib.channels().getChannelNames();
+        final int COL_LEN=ListingLibrary.ColFixer.fixColWidth(24.0,mob);
 		for(int x=0;x<names.length;x++)
 			if(CMLib.masking().maskCheck(CMLib.channels().getChannelMask(x),mob,true))
 			{
@@ -56,7 +58,7 @@ public class Channels extends StdCommand
 				}
 				String channelName=names[x];
 				boolean onoff=CMath.isSet(pstats.getChannelMask(),x);
-				buf.append(CMStrings.padRight("^<CHANNELS '"+(onoff?"":"NO")+"'^>"+channelName+"^</CHANNELS^>"+(onoff?" (OFF)":""),24));
+				buf.append(CMStrings.padRight("^<CHANNELS '"+(onoff?"":"NO")+"'^>"+channelName+"^</CHANNELS^>"+(onoff?" (OFF)":""),COL_LEN));
 			}
 		if(names.length==0)
 			buf.append("None!");

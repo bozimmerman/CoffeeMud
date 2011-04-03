@@ -937,7 +937,7 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 		}
 		if(matches.size()==0)
 		    return new StringBuilder("");
-		return CMLib.lister().fourColumns(matches);
+		return CMLib.lister().fourColumns(forMOB,matches);
 	}
 	
 	public Properties getArcHelpFile()

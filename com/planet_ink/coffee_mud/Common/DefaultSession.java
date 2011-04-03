@@ -77,8 +77,8 @@ public class DefaultSession extends Thread implements Session
 	protected boolean[]      serverTelnetCodes=new boolean[256];
 	protected boolean[]      clientTelnetCodes=new boolean[256];
     protected String 	     terminalType="UNKNOWN";
-    protected int 		     terminalWidth = 80;
-    protected int 		     terminalHeight = 25;
+    protected int 		     terminalWidth = -1;
+    protected int 		     terminalHeight = -1;
     protected long 		     writeStartTime=0;
     protected boolean 	     bNextByteIs255=false;
     protected boolean 	     connectionComplete=false;
@@ -349,8 +349,22 @@ public class DefaultSession extends Thread implements Session
 		mob=newmob;
 	}
 	public void setAccount(PlayerAccount account){acct=account;}
-	public int getWrap(){return ((mob!=null)&&(mob.playerStats()!=null))?mob.playerStats().getWrap():78;}
-	public int getPageBreak(){return ((mob!=null)&&(mob.playerStats()!=null))?mob.playerStats().getPageBreak():-1;}
+	public int getWrap()
+	{
+		if(terminalWidth>5) return terminalWidth;
+		return ((mob!=null)&&(mob.playerStats()!=null))?mob.playerStats().getWrap():78;
+	}
+	public int getPageBreak()
+	{
+		if(((mob!=null)&&(mob.playerStats()!=null)))
+		{
+			final int pageBreak=mob.playerStats().getPageBreak();
+			if(pageBreak <= 0) return pageBreak;
+			if(terminalHeight>3) return terminalHeight;
+			return pageBreak;
+		}
+		return -1;
+	}
 	public boolean killFlag(){return killFlag;}
 	public void setKillFlag(boolean truefalse){killFlag=truefalse;}
 	public List<String> previousCMD(){return previousCmd;}

@@ -10,6 +10,7 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.ListingLibrary;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -125,6 +126,7 @@ public class Areas extends StdCommand
 		}
 		Vector areasVec=new Vector();
         boolean sysop=(mob!=null)&&CMSecurity.isASysOp(mob);
+        final int colWidth=ListingLibrary.ColFixer.fixColWidth(22.0,mob);
 		for(;a.hasMoreElements();)
 		{
 			Area A=(Area)a.nextElement();
@@ -169,7 +171,7 @@ public class Areas extends StdCommand
 				msg.append("\n\r");
 				col=1;
 			}
-			msg.append(CMStrings.padRight((String)areasVec.elementAt(i),22)+"^N");
+			msg.append(CMStrings.padRight((String)areasVec.elementAt(i),colWidth)+"^N");
 		}
 		msg.append("\n\r\n\r^HEnter 'HELP (AREA NAME) for more information.^?");
 		if((mob!=null)&&(!mob.isMonster()))

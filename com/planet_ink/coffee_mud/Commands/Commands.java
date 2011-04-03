@@ -10,6 +10,7 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.ListingLibrary;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -71,11 +72,12 @@ public class Commands extends StdCommand
 				}
 			}
 			Collections.sort(commandSet);
+	        final int COL_LEN=ListingLibrary.ColFixer.fixColWidth(19.0,mob);
 			for(Iterator i=commandSet.iterator();i.hasNext();)
 			{
 			    String s=(String)i.next();
 				if(++col>3){ commandList.append("\n\r"); col=0;}
-				commandList.append(CMStrings.padRight("^<HELP^>"+s+"^</HELP^>",19));
+				commandList.append(CMStrings.padRight("^<HELP^>"+s+"^</HELP^>",COL_LEN));
 			}
 			commandList.append("\n\r\n\rEnter HELP 'COMMAND' for more information on these commands.\n\r");
 			mob.session().colorOnlyPrintln("^HComplete commands list:^?\n\r"+commandList.toString(),false);

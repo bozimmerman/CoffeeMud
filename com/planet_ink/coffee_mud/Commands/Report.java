@@ -94,11 +94,11 @@ public class Report extends Skills
                 V.addElement(Integer.valueOf(Ability.ACODE_SUPERPOWER));
                 V.addElement(Integer.valueOf(Ability.ACODE_CHANT));
                 V.addElement(Integer.valueOf(Ability.ACODE_SONG));
-                say.append("\n\r^NMy skills:^? "+getAbilities(mob,V,Ability.ALL_ACODES,false,level));
+                say.append("\n\r^NMy skills:^? "+getAbilities(null,mob,V,Ability.ALL_ACODES,false,level));
             }
             else
             if("SPELLS".startsWith(s))
-                say.append("\n\r^NMy spells:^? "+getAbilities(mob,Ability.ACODE_SPELL,-1,false,level));
+                say.append("\n\r^NMy spells:^? "+getAbilities(null,mob,Ability.ACODE_SPELL,-1,false,level));
             else
 			if("SKILLS".startsWith(s))
 			{
@@ -106,20 +106,20 @@ public class Report extends Skills
 				V.addElement(Integer.valueOf(Ability.ACODE_THIEF_SKILL));
 				V.addElement(Integer.valueOf(Ability.ACODE_SKILL));
 				V.addElement(Integer.valueOf(Ability.ACODE_COMMON_SKILL));
-				say.append("\n\r^NMy skills:^? "+getAbilities(mob,V,Ability.ALL_ACODES,false,level));
+				say.append("\n\r^NMy skills:^? "+getAbilities(null,mob,V,Ability.ALL_ACODES,false,level));
 			}
             else
 			if("PRAYERS".startsWith(s))
-				say.append("\n\r^NMy prayers:^? "+getAbilities(mob,Ability.ACODE_PRAYER,-1,false,level));
+				say.append("\n\r^NMy prayers:^? "+getAbilities(null,mob,Ability.ACODE_PRAYER,-1,false,level));
             else
 			if(("POWERS".startsWith(s))||("SUPER POWERS".startsWith(s)))
-				say.append("\n\r^NMy super powers:^? "+getAbilities(mob,Ability.ACODE_SUPERPOWER,-1,false,level));
+				say.append("\n\r^NMy super powers:^? "+getAbilities(null,mob,Ability.ACODE_SUPERPOWER,-1,false,level));
             else
 			if("CHANTS".startsWith(s))
-				say.append("\n\r^NMy chants:^? "+getAbilities(mob,Ability.ACODE_CHANT,-1,false,level));
+				say.append("\n\r^NMy chants:^? "+getAbilities(null,mob,Ability.ACODE_CHANT,-1,false,level));
             else
 			if("SONGS".startsWith(s))
-				say.append("\n\r^NMy songs:^? "+getAbilities(mob,Ability.ACODE_SONG,-1,false,level));
+				say.append("\n\r^NMy songs:^? "+getAbilities(null,mob,Ability.ACODE_SONG,-1,false,level));
             
             
             if(say.length()==0)

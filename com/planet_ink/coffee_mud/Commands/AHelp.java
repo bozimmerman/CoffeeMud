@@ -69,7 +69,7 @@ public class AHelp extends StdCommand
 					if(V.size()>0)
 					{
 					    theRest.append("\n\rProperties:\n\r");
-						theRest.append(CMLib.lister().fourColumns(V));
+						theRest.append(CMLib.lister().fourColumns(mob,V));
 					}
 
 					V.clear();
@@ -82,7 +82,7 @@ public class AHelp extends StdCommand
 					if(V.size()>0)
 					{
 					    theRest.append("\n\rDiseases:\n\r");
-						theRest.append(CMLib.lister().fourColumns(V));
+						theRest.append(CMLib.lister().fourColumns(mob,V));
 					}
 
 					V.clear();
@@ -95,7 +95,7 @@ public class AHelp extends StdCommand
 					if(V.size()>0)
 					{
 					    theRest.append("\n\rPoisons:\n\r");
-						theRest.append(CMLib.lister().fourColumns(V));
+						theRest.append(CMLib.lister().fourColumns(mob,V));
 					}
 
 					V.clear();
@@ -108,7 +108,7 @@ public class AHelp extends StdCommand
 					if(V.size()>0)
 					{
 					    theRest.append("\n\rSuper Powers:\n\r");
-						theRest.append(CMLib.lister().fourColumns(V));
+						theRest.append(CMLib.lister().fourColumns(mob,V));
 					}
 
 					V.clear();
@@ -120,7 +120,7 @@ public class AHelp extends StdCommand
 					if(V.size()>0)
 					{
 					    theRest.append("\n\r\n\rBehaviors:\n\r");
-						theRest.append(CMLib.lister().fourColumns(V));
+						theRest.append(CMLib.lister().fourColumns(mob,V));
 					}
 					Resources.submitResource("arc_help.therest",theRest);
 				}

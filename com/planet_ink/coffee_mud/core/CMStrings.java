@@ -1063,4 +1063,5 @@ public class CMStrings
 		if (value == null) throw new Exception("Parse error on following statement: " + expression);
 		return value.booleanValue();
 	}
+	
 }

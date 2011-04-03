@@ -10,6 +10,7 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.ListingLibrary;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -131,7 +132,7 @@ public class Skills extends StdCommand
     }
     
     
-    protected StringBuilder getAbilities(MOB able, int ofType, int ofDomain, boolean addQualLine, int maxLevel)
+    protected StringBuilder getAbilities(MOB viewerM, MOB ableM, int ofType, int ofDomain, boolean addQualLine, int maxLevel)
     {
         Vector V=new Vector();
         int mask=Ability.ALL_ACODES;
@@ -141,11 +142,14 @@ public class Skills extends StdCommand
             ofType=ofType|ofDomain;
         }
         V.addElement(Integer.valueOf(ofType));
-        return getAbilities(able,V,mask,addQualLine,maxLevel);
+        return getAbilities(viewerM,ableM,V,mask,addQualLine,maxLevel);
     }
     
-    protected StringBuilder getAbilities(MOB ableM, Vector ofTypes, int mask, boolean addQualLine, int maxLevel)
+    protected StringBuilder getAbilities(MOB viewerM, MOB ableM, Vector ofTypes, int mask, boolean addQualLine, int maxLevel)
     {
+        final int COL_LEN1=ListingLibrary.ColFixer.fixColWidth(3.0,viewerM);
+        final int COL_LEN2=ListingLibrary.ColFixer.fixColWidth(18.0,viewerM);
+        final int COL_LEN3=ListingLibrary.ColFixer.fixColWidth(19.0,viewerM);
         int highestLevel=0;
         int lowestLevel=ableM.phyStats().level()+1;
         StringBuilder msg=new StringBuilder("");
@@ -182,7 +186,9 @@ public class Skills extends StdCommand
                         thisLine.append("\n\r");
                         col=1;
                     }
-                    thisLine.append("^N[^H"+CMStrings.padRight(Integer.toString(A.proficiency()),3)+"%^?]^N "+CMStrings.padRight("^<HELP^>"+A.name()+"^</HELP^>",(col==3)?18:19));
+                    thisLine.append("^N[^H"+CMStrings.padRight(Integer.toString(A.proficiency()),COL_LEN1)
+                    				+"%^?]^N "
+                    				+CMStrings.padRight("^<HELP^>"+A.name()+"^</HELP^>",(col==3)?COL_LEN2:COL_LEN3));
                 }
             }
             if(thisLine.length()>0)
@@ -221,7 +227,7 @@ public class Skills extends StdCommand
                 V.setElementAt(Integer.valueOf(((Integer)V.elementAt(v)).intValue()+domain[0]),v);
         }
         if((domain[0]>=0)||(qual.length()==0))
-            msg.append("\n\r^HYour "+domainName[0].replace('_',' ')+"skills:^? "+getAbilities(mob,V,mask,true,level[0]));
+            msg.append("\n\r^HYour "+domainName[0].replace('_',' ')+"skills:^? "+getAbilities(mob,mob,V,mask,true,level[0]));
 		if(!mob.isMonster())
 			mob.session().wraplessPrintln(msg.toString());
 		return false;

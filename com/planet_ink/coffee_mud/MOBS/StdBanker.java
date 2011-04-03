@@ -641,6 +641,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 							}
 						}
 
+			        final int COL_LEN=ListingLibrary.ColFixer.fixColWidth(34.0,mob);
 					StringBuffer str=new StringBuffer("");
 					str.append("\n\rAccount balance at '"+bankChain()+"'.\n\r");
 					String c="^x[Item                              ] ";
@@ -654,7 +655,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 						{
 							otherThanCoins=true;
 							String col=null;
-							col="["+CMStrings.padRight(I.name(),34)+"] ";
+							col="["+CMStrings.padRight(I.name(),COL_LEN)+"] ";
 							if((++colNum)>2)
 							{
 								str.append("\n\r");

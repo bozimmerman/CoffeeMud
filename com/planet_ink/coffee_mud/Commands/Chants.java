@@ -51,7 +51,7 @@ public class Chants extends Skills
         domainName[0]="";
         level[0]=-1;
         parseDomainInfo(mob,commands,new XVector(Integer.valueOf(Ability.ACODE_CHANT)),level,domain,domainName);
-        msg.append("\n\r^HYour "+domainName[0].replace('_',' ')+"chants:^? "+getAbilities(mob,Ability.ACODE_CHANT,domain[0],true,level[0]));
+        msg.append("\n\r^HYour "+domainName[0].replace('_',' ')+"chants:^? "+getAbilities(mob,mob,Ability.ACODE_CHANT,domain[0],true,level[0]));
 		if(!mob.isMonster())
 			mob.session().wraplessPrintln(msg.toString());
 		return false;

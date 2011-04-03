@@ -11,6 +11,7 @@ import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.ExpertiseLibrary;
+import com.planet_ink.coffee_mud.Libraries.interfaces.ListingLibrary;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -45,7 +46,7 @@ public class Expertises extends StdCommand
 		StringBuffer msg=new StringBuffer("");
 		msg.append("\n\r^HYour expertises:^? \n\r");
 		int col=0;
-        int colWidth=25;
+        final int COL_LEN=ListingLibrary.ColFixer.fixColWidth(25.0,mob);
         XVector<String> expers=new XVector<String>();
 		for(Enumeration<String> e=mob.uniqueExpertises();e.hasMoreElements();)
 		{
@@ -60,22 +61,22 @@ public class Expertises extends StdCommand
 		for(String expName : expers)
 		{
             if(expName.startsWith("?"))
-                msg.append(CMStrings.padRight(expName,colWidth));
+                msg.append(CMStrings.padRight(expName,COL_LEN));
             else
-            if(expName.length()>=colWidth)
+            if(expName.length()>=COL_LEN)
             {
             	if(col>=2)
             	{
 	                msg.append("\n\r");
 	                col=0;
             	}
-    			msg.append(CMStrings.padRightPreserve("^<HELP^>"+expName+"^</HELP^>",colWidth));
-                int spaces=(colWidth*2)-expName.length();
+    			msg.append(CMStrings.padRightPreserve("^<HELP^>"+expName+"^</HELP^>",COL_LEN));
+                int spaces=(COL_LEN*2)-expName.length();
                 for(int i=0;i<spaces;i++) msg.append(" ");
                 col++;
             }
             else
-                msg.append(CMStrings.padRight("^<HELP^>"+expName+"^</HELP^>",colWidth));
+                msg.append(CMStrings.padRight("^<HELP^>"+expName+"^</HELP^>",COL_LEN));
 			if((++col)>=3)
 			{
 				msg.append("\n\r");

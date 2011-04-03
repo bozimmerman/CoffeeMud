@@ -509,7 +509,10 @@ public class ServiceEngine implements ThreadEngine
 			if(grpstart<0) return"";
 			int group=CMath.s_int(which.substring(grpstart));
 			if((group>=0)&&(group<ticks.size()))
-				return ""+((Tick)ticks.get(group)).numTickers();
+			{
+				List<Tick> enumeratedTicks=new XVector<Tick>(ticks);
+				return ""+((Tick)enumeratedTicks.get(group)).numTickers();
+			}
 			return "";
 		}
 		int group=-1;
@@ -522,7 +525,9 @@ public class ServiceEngine implements ThreadEngine
 		}
 
 		if((group<0)||(client<0)||(group>=ticks.size())) return "";
-		Tick almostTock=(Tick)ticks.get(group);
+		List<Tick> enumeratedTicks=new XVector<Tick>(ticks);
+		if((group<0)||(client<0)||(group>=enumeratedTicks.size())) return "";
+		Tick almostTock=(Tick)enumeratedTicks.get(group);
 		
 		if(client>=almostTock.numTickers()) return "";
 		TockClient C=almostTock.fetchTickerByIndex(client);

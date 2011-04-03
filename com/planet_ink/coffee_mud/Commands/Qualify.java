@@ -40,7 +40,8 @@ public class Qualify  extends Skills
 	private final String[] access={"QUALIFY","QUAL"};
 	public String[] getAccessWords(){return access;}
 
-	public StringBuffer getQualifiedAbilities(MOB able, 
+	public StringBuffer getQualifiedAbilities(MOB viewerM,
+											  MOB ableM, 
                                               int ofType, 
                                               int ofDomain, 
                                               String prefix,
@@ -54,10 +55,11 @@ public class Qualify  extends Skills
 			ofType=ofType|ofDomain;
 		}
 		V.add(Integer.valueOf(ofType));
-		return getQualifiedAbilities(able,V,mask,prefix,shortOnly);
+		return getQualifiedAbilities(viewerM,ableM,V,mask,prefix,shortOnly);
 	}
 
-	public StringBuffer getQualifiedAbilities(MOB ableM,
+	public StringBuffer getQualifiedAbilities(MOB viewerM,
+											  MOB ableM,
 											  HashSet<Integer> ofTypes,
 											  int mask,
 											  String prefix,
@@ -79,6 +81,10 @@ public class Qualify  extends Skills
 				highestLevel=level;
 		}
 		int col=0;
+        final int COL_LEN1=ListingLibrary.ColFixer.fixColWidth(3.0,viewerM);
+        final int COL_LEN2=ListingLibrary.ColFixer.fixColWidth(19.0,viewerM);
+        final int COL_LEN3=ListingLibrary.ColFixer.fixColWidth(12.0,viewerM);
+        final int COL_LEN4=ListingLibrary.ColFixer.fixColWidth(13.0,viewerM);
 		for(int l=0;l<=highestLevel;l++)
 		{
 			StringBuffer thisLine=new StringBuffer("");
@@ -97,9 +103,9 @@ public class Qualify  extends Skills
 						thisLine.append("\n\r");
 						col=1;
 					}
-					thisLine.append("^N[^H"+CMStrings.padRight(""+l,3)+"^?] "
-					+CMStrings.padRight("^<HELP^>"+A.name()+"^</HELP^>",19)+" "
-					+CMStrings.padRight(A.requirements(),(col==2)?12:13));
+					thisLine.append("^N[^H"+CMStrings.padRight(""+l,COL_LEN1)+"^?] "
+					+CMStrings.padRight("^<HELP^>"+A.name()+"^</HELP^>",COL_LEN2)+" "
+					+CMStrings.padRight(A.requirements(),(col==2)?COL_LEN3:COL_LEN4));
 				}
 			}
 			if(thisLine.length()>0)
@@ -124,23 +130,23 @@ public class Qualify  extends Skills
         boolean shortOnly=false;
         boolean showAll=qual.length()==0;
 		if(showAll||("SKILLS".startsWith(qual)))
-			msg.append(getQualifiedAbilities(mob,Ability.ACODE_SKILL,-1,"\n\r^HGeneral Skills:^? ",shortOnly));
+			msg.append(getQualifiedAbilities(mob,mob,Ability.ACODE_SKILL,-1,"\n\r^HGeneral Skills:^? ",shortOnly));
 		if(showAll||("COMMON SKILLS").startsWith(qual))
-			msg.append(getQualifiedAbilities(mob,Ability.ACODE_COMMON_SKILL,-1,"\n\r^HCommon Skills:^? ",shortOnly));
+			msg.append(getQualifiedAbilities(mob,mob,Ability.ACODE_COMMON_SKILL,-1,"\n\r^HCommon Skills:^? ",shortOnly));
 		if(showAll||("THIEVES SKILLS".startsWith(qual))||"THIEF SKILLS".startsWith(qual))
-			msg.append(getQualifiedAbilities(mob,Ability.ACODE_THIEF_SKILL,-1,"\n\r^HThief Skills:^? ",shortOnly));
+			msg.append(getQualifiedAbilities(mob,mob,Ability.ACODE_THIEF_SKILL,-1,"\n\r^HThief Skills:^? ",shortOnly));
 		if(showAll||"SPELLS".startsWith(qual)||"MAGE SPELLS".startsWith(qual))
-			msg.append(getQualifiedAbilities(mob,Ability.ACODE_SPELL,-1,"\n\r^HSpells:^? ",shortOnly));
+			msg.append(getQualifiedAbilities(mob,mob,Ability.ACODE_SPELL,-1,"\n\r^HSpells:^? ",shortOnly));
 		if(showAll||"PRAYERS".startsWith(qual)||"CLERICAL PRAYERS".startsWith(qual))
-			msg.append(getQualifiedAbilities(mob,Ability.ACODE_PRAYER,-1,"\n\r^HPrayers:^? ",shortOnly));
+			msg.append(getQualifiedAbilities(mob,mob,Ability.ACODE_PRAYER,-1,"\n\r^HPrayers:^? ",shortOnly));
 		if(showAll||"POWERS".startsWith(qual)||"SUPER POWERS".startsWith(qual))
-			msg.append(getQualifiedAbilities(mob,Ability.ACODE_SUPERPOWER,-1,"\n\r^HSuper Powers:^? ",shortOnly));
+			msg.append(getQualifiedAbilities(mob,mob,Ability.ACODE_SUPERPOWER,-1,"\n\r^HSuper Powers:^? ",shortOnly));
 		if(showAll||"CHANTS".startsWith(qual)||"DRUID CHANTS".startsWith(qual))
-			msg.append(getQualifiedAbilities(mob,Ability.ACODE_CHANT,-1,"\n\r^HDruidic Chants:^? ",shortOnly));
+			msg.append(getQualifiedAbilities(mob,mob,Ability.ACODE_CHANT,-1,"\n\r^HDruidic Chants:^? ",shortOnly));
 		if(showAll||"SONGS".startsWith(qual)||"BARD SONGS".startsWith(qual))
-			msg.append(getQualifiedAbilities(mob,Ability.ACODE_SONG,-1,"\n\r^HSongs:^? ",shortOnly));
+			msg.append(getQualifiedAbilities(mob,mob,Ability.ACODE_SONG,-1,"\n\r^HSongs:^? ",shortOnly));
 		if(showAll||"LANGUAGES".startsWith(qual)||"LANGS".startsWith(qual))
-			msg.append(getQualifiedAbilities(mob,Ability.ACODE_LANGUAGE,-1,"\n\r^HLanguages:^? ",shortOnly));
+			msg.append(getQualifiedAbilities(mob,mob,Ability.ACODE_LANGUAGE,-1,"\n\r^HLanguages:^? ",shortOnly));
 		int domain=-1;
 		String domainName="";
 		if(!showAll)
@@ -155,10 +161,14 @@ public class Qualify  extends Skills
 			if(domain>0)
 			{
 				domainName=CMStrings.capitalizeAndLower(Ability.DOMAIN_DESCS[domain>>5]);
-				msg.append(getQualifiedAbilities(mob,Ability.ACODE_SPELL,domain,"\n\r^H"+domainName+" spells:^? ",shortOnly));
+				msg.append(getQualifiedAbilities(mob,mob,Ability.ACODE_SPELL,domain,"\n\r^H"+domainName+" spells:^? ",shortOnly));
 			}
 		}
 		boolean classesFound=false;
+        final int COL_LEN1=ListingLibrary.ColFixer.fixColWidth(3.0,mob);
+        final int COL_LEN2=ListingLibrary.ColFixer.fixColWidth(19.0,mob);
+        final int COL_LEN3=ListingLibrary.ColFixer.fixColWidth(12.0,mob);
+        final int COL_LEN4=ListingLibrary.ColFixer.fixColWidth(13.0,mob);
 		if((mob!=null)
 		&&(showAll||("CLASSES".startsWith(qual))))
 		{
@@ -176,9 +186,9 @@ public class Qualify  extends Skills
 						thisLine.append("\n\r");
 						col=1;
 					}
-					thisLine.append("^N[^H"+CMStrings.padRight(""+1,3)+"^?] "
-					+CMStrings.padRight("^<HELP^>"+C.name()+"^</HELP^>",19)+" "
-					+CMStrings.padRight("1 train",(col==2)?12:13));
+					thisLine.append("^N[^H"+CMStrings.padRight(""+1,COL_LEN1)+"^?] "
+					+CMStrings.padRight("^<HELP^>"+C.name()+"^</HELP^>",COL_LEN2)+" "
+					+CMStrings.padRight("1 train",(col==2)?COL_LEN3:COL_LEN4));
 				}
 				if(thisLine.length()>0)
 				{
@@ -207,24 +217,24 @@ public class Qualify  extends Skills
 					msg.append("\n\r^HExpertises:^?\n\r");
 					ExpertiseLibrary.ExpertiseDefinition def=null;
 					int col=0;
-			        int colWidth=25;
+			        final int COL_LEN=ListingLibrary.ColFixer.fixColWidth(25.0,mob);
 					for(int e=0;e<V.size();e++)
 					{
 						def=(ExpertiseLibrary.ExpertiseDefinition)V.elementAt(e);
-			            if(def.name.length()>=colWidth)
+			            if(def.name.length()>=COL_LEN)
 			            {
 			            	if(col>=2)
 			            	{
 				                msg.append("\n\r");
 				                col=0;
 			            	}
-			    			msg.append(CMStrings.padRightPreserve("^<HELP^>"+def.name+"^</HELP^>",colWidth));
-			                int spaces=(colWidth*2)-def.name.length();
+			    			msg.append(CMStrings.padRightPreserve("^<HELP^>"+def.name+"^</HELP^>",COL_LEN));
+			                int spaces=(COL_LEN*2)-def.name.length();
 			                for(int i=0;i<spaces;i++) msg.append(" ");
 			                col++;
 			            }
 			            else
-			                msg.append(CMStrings.padRight("^<HELP^>"+def.name+"^</HELP^>",colWidth));
+			                msg.append(CMStrings.padRight("^<HELP^>"+def.name+"^</HELP^>",COL_LEN));
 						if((++col)>=3)
 						{
 							msg.append("\n\r");
@@ -239,24 +249,25 @@ public class Qualify  extends Skills
 					ExpertiseLibrary.ExpertiseDefinition def=null;
 	                String req=null;
 	                String prefix=null;
+	                final int COL_LEN=ListingLibrary.ColFixer.fixColWidth(30.0,mob);
 					for(int v=0;v<V.size();v++)
 					{
 						def=(ExpertiseLibrary.ExpertiseDefinition)V.elementAt(v);
 	                    req=CMLib.masking().maskDesc(def.finalRequirements(),true);
 	                    prefix="^<HELP^>"+def.name+"^</HELP^>";
 	                    if(req.length()<=46)
-	                        msg2.append(CMStrings.padRight(prefix,30)+req+"\n\r");
+	                        msg2.append(CMStrings.padRight(prefix,COL_LEN)+req+"\n\r");
 	                    else
 	                    while(req.length()>0)
 	                    {
 	                        int x=req.indexOf(".  ");
 	                        if(x<0)
 	                        {
-	                            msg2.append(CMStrings.padRight(prefix,30)+req+"\n\r");
+	                            msg2.append(CMStrings.padRight(prefix,COL_LEN)+req+"\n\r");
 	                            req="";
 	                            break;
 	                        }
-	                        msg2.append(CMStrings.padRight(prefix,30)+req.substring(0,x+1)+"\n\r");
+	                        msg2.append(CMStrings.padRight(prefix,COL_LEN)+req.substring(0,x+1)+"\n\r");
 	                        prefix=" ";
 	                        req=req.substring(x+1).trim();
 	                    }

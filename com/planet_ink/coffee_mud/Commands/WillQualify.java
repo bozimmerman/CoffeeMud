@@ -44,7 +44,8 @@ public class WillQualify  extends Skills
 	private final String[] access={"WILLQUALIFY"};
 	public String[] getAccessWords(){return access;}
 
-	public StringBuffer getQualifiedAbilities(MOB ableM, 
+	public StringBuffer getQualifiedAbilities(MOB viewerM,
+											  MOB ableM, 
 											  String classID,
 	                                          int maxLevel, 
 	                                          String prefix,
@@ -53,6 +54,10 @@ public class WillQualify  extends Skills
 		int highestLevel = maxLevel;
 		StringBuffer msg = new StringBuffer("");
 		int col = 0;
+        final int COL_LEN1=ListingLibrary.ColFixer.fixColWidth(3.0,viewerM);
+        final int COL_LEN2=ListingLibrary.ColFixer.fixColWidth(19.0,viewerM);
+        final int COL_LEN3=ListingLibrary.ColFixer.fixColWidth(12.0,viewerM);
+        final int COL_LEN4=ListingLibrary.ColFixer.fixColWidth(13.0,viewerM);
         List<AbilityMapper.QualifyingID> DV=CMLib.ableMapper().getClassAllowsList(classID);
 		for (int l = 0; l <= highestLevel; l++) 
 		{
@@ -74,9 +79,9 @@ public class WillQualify  extends Skills
 						    thisLine.append("\n\r");
 						    col = 1;
 						}
-    					thisLine.append("^N[^H" + CMStrings.padRight("" + l, 3) + "^?] "
-    					        + CMStrings.padRight("^<HELP^>"+A.name()+"^</HELP^>", 19) + " "
-    					        + CMStrings.padRight(A.requirements()+(cimable.autoGain?" *":""), (col == 2) ? 12 : 13));
+    					thisLine.append("^N[^H" + CMStrings.padRight("" + l, COL_LEN1) + "^?] "
+    					        + CMStrings.padRight("^<HELP^>"+A.name()+"^</HELP^>", COL_LEN2) + " "
+    					        + CMStrings.padRight(A.requirements()+(cimable.autoGain?" *":""), (col == 2) ? COL_LEN3 : COL_LEN4));
 					}
 				}
 			}
@@ -180,7 +185,7 @@ public class WillQualify  extends Skills
 		}
 		
 		msg.append("At level "+level+" of class '"+C.name()+"', you could qualify for:\n\r");
-		msg.append(getQualifiedAbilities(mob,C.ID(),level,"",types));
+		msg.append(getQualifiedAbilities(mob,mob,C.ID(),level,"",types));
 		if(!mob.isMonster())
 		    mob.session().wraplessPrintln(msg.toString());
 		return false;

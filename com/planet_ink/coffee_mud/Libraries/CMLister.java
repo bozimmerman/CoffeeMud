@@ -37,7 +37,7 @@ import java.util.*;
 public class CMLister extends StdLibrary implements ListingLibrary
 {
     public String ID(){return "CMLister";}
-    public String itemSeenString(MOB viewer, 
+    public String itemSeenString(MOB viewerM, 
                                  Environmental item, 
                                  boolean useName, 
                                  boolean longLook,
@@ -53,7 +53,7 @@ public class CMLister extends StdLibrary implements ListingLibrary
             return CMStrings.capitalizeFirstLetter(item.name()+" is here.")+(sysmsgs?" ("+item.ID()+")":"");
         else
         if(item instanceof MOB)
-            return CMStrings.capitalizeFirstLetter(((MOB)item).displayText(viewer))+(sysmsgs?" ("+item.ID()+")":"");
+            return CMStrings.capitalizeFirstLetter(((MOB)item).displayText(viewerM))+(sysmsgs?" ("+item.ID()+")":"");
         else
         if(item.displayText().length()>0)
             return CMStrings.capitalizeFirstLetter(item.displayText())+(sysmsgs?" ("+item.ID()+")":"");
@@ -61,13 +61,13 @@ public class CMLister extends StdLibrary implements ListingLibrary
             return CMStrings.capitalizeFirstLetter(item.name())+(sysmsgs?" ("+item.ID()+")":"");
     }
     
-    public int getReps(Environmental item, 
+    public int getReps(MOB viewerM, 
+            		   Environmental item, 
                        List<? extends Environmental> theRest, 
-                       MOB mob, 
                        boolean useName, 
                        boolean longLook)
     {
-        String str=itemSeenString(mob,item,useName,longLook,false);
+        String str=itemSeenString(viewerM,item,useName,longLook,false);
         String str2=null;
         int reps=0;
         int here=0;
@@ -75,14 +75,14 @@ public class CMLister extends StdLibrary implements ListingLibrary
         while(here<theRest.size())
         {
             item2=(Environmental)theRest.get(here);
-            str2=itemSeenString(mob,item2,useName,longLook,false);
+            str2=itemSeenString(viewerM,item2,useName,longLook,false);
             if(str2.length()==0)
                 theRest.remove(item2);
             else
             if((str.equals(str2))
             &&(item instanceof Physical)
             &&(item2 instanceof Physical)
-            &&(CMLib.flags().seenTheSameWay(mob,(Physical)item,(Physical)item2)))
+            &&(CMLib.flags().seenTheSameWay(viewerM,(Physical)item,(Physical)item2)))
             {
                 reps++;
                 theRest.remove(item2);
@@ -110,7 +110,7 @@ public class CMLister extends StdLibrary implements ListingLibrary
             say.append(" ("+CMStrings.padLeftPreserve(""+(reps+1),2)+") ");
     }
     
-    public String summarizeTheRest(MOB mob, Vector things, boolean compress) 
+    public String summarizeTheRest(MOB viewerM, List<Item> things, boolean compress) 
     {
         Vector restV=new Vector();
         Item I=null;
@@ -118,8 +118,8 @@ public class CMLister extends StdLibrary implements ListingLibrary
         boolean otherItemsHere=false;
         for(int v=0;v<things.size();v++)
         {
-            I=(Item)things.elementAt(v);
-            if(CMLib.flags().canBeSeenBy(I,mob)&&(I.displayText().length()>0))
+            I=(Item)things.get(v);
+            if(CMLib.flags().canBeSeenBy(I,viewerM)&&(I.displayText().length()>0))
             {
                 name=CMLib.materials().genericType(I).toLowerCase();
                 if(name.startsWith("item"))
@@ -146,32 +146,32 @@ public class CMLister extends StdLibrary implements ListingLibrary
         return "^IThere are also "+theRest.toString()+" items here.^N"+(compress?"":"\n\r");
     }
     
-    public StringBuilder lister(MOB mob, 
-                               Vector things,
-                               boolean useName, 
-                               String tag,
-                               String tagParm,
-                               boolean longLook,
-                               boolean compress)
+    public StringBuilder lister(MOB viewerM, 
+                                List<Item> items,
+                                boolean useName, 
+                                String tag,
+                                String tagParm,
+                                boolean longLook,
+                                boolean compress)
 	{
 	    boolean nameTagParm=((tagParm!=null)&&(tagParm.indexOf('*')>=0));
 		StringBuilder say=new StringBuilder("");
         Environmental item=null;
-        boolean sysmsgs=(mob!=null)?CMath.bset(mob.getBitmap(),MOB.ATT_SYSOPMSGS):false;
+        boolean sysmsgs=(viewerM!=null)?CMath.bset(viewerM.getBitmap(),MOB.ATT_SYSOPMSGS):false;
         int numShown=0;
         int maxToShow=CMProps.getIntVar(CMProps.SYSTEMI_MAXITEMSHOWN);
-		while(things.size()>0)
+		while(items.size()>0)
 		{
             if((maxToShow>0)&&(!longLook)&&(!sysmsgs)&&(!useName)&&(numShown>=maxToShow))
             {
-                say.append(summarizeTheRest(mob,things,compress));
-                things.clear();
+                say.append(summarizeTheRest(viewerM,items,compress));
+                items.clear();
                 break;
             }
-			item=(Environmental)things.elementAt(0);
-            things.removeElement(item);
-            int reps=getReps(item,things,mob,useName,longLook);
-			if(CMLib.flags().canBeSeenBy(item,mob)
+			item=items.get(0);
+            items.remove(item);
+            int reps=getReps(viewerM,item,items,useName,longLook);
+			if(CMLib.flags().canBeSeenBy(item,viewerM)
 			&&((item.displayText().length()>0)
 			    ||sysmsgs
 				||useName))
@@ -180,7 +180,7 @@ public class CMLister extends StdLibrary implements ListingLibrary
                 appendReps(reps,say,compress);
 				if(sysmsgs)
 					say.append("^H("+CMClass.classID(item)+")^N ");
-                if((!compress)&&(mob!=null)&&(!mob.isMonster())&&(mob.session().clientTelnetMode(Session.TELNET_MXP)))
+                if((!compress)&&(viewerM!=null)&&(!viewerM.isMonster())&&(viewerM.session().clientTelnetMode(Session.TELNET_MXP)))
                     say.append(CMProps.mxpImage(item," H=10 W=10",""," "));
 				say.append("^I");
 				
@@ -192,12 +192,12 @@ public class CMLister extends StdLibrary implements ListingLibrary
 				        say.append("^<"+tag+tagParm+"^>");
 				}
                 if((compress)&&(item instanceof Physical)) 
-                	say.append(CMLib.flags().colorCodes((Physical)item,mob)+"^I");
-                say.append(itemSeenString(mob,item,useName,longLook,sysmsgs));
+                	say.append(CMLib.flags().colorCodes((Physical)item,viewerM)+"^I");
+                say.append(itemSeenString(viewerM,item,useName,longLook,sysmsgs));
 				if(tag!=null)
 				    say.append("^</"+tag+"^>");
 				if((!compress)&&(item instanceof Physical)) 
-                    say.append(CMLib.flags().colorCodes((Physical)item,mob)+"^N\n\r");
+                    say.append(CMLib.flags().colorCodes((Physical)item,viewerM)+"^N\n\r");
                 else 
                     say.append("^N");
                 
@@ -206,7 +206,7 @@ public class CMLister extends StdLibrary implements ListingLibrary
                 &&(((Container)item).container()==null)
                 &&(((Container)item).isOpen())
                 &&(!((Container)item).hasALid())
-                &&(!CMLib.flags().canBarelyBeSeenBy(item,mob)))
+                &&(!CMLib.flags().canBarelyBeSeenBy(item,viewerM)))
                 {
                 	List<Item> V=new Vector<Item>();
                 	V.addAll(((Container)item).getContents());
@@ -216,21 +216,21 @@ public class CMLister extends StdLibrary implements ListingLibrary
                     {
                         item2=(Item)V.get(0);
                         V.remove(0);
-                        int reps2=getReps(item2,V,mob,useName,false);
-                        if(CMLib.flags().canBeSeenBy(item2,mob)
+                        int reps2=getReps(viewerM,item2,V,useName,false);
+                        if(CMLib.flags().canBeSeenBy(item2,viewerM)
                         &&((item2.displayText().length()>0)
                             ||sysmsgs
                             ||(useName)))
                         {
                             if(!compress) say.append("      ");
                             appendReps(reps2,say,compress);
-                            if((!compress)&&(mob!=null)&&(!mob.isMonster())&&(mob.session().clientTelnetMode(Session.TELNET_MXP)))
+                            if((!compress)&&(viewerM!=null)&&(!viewerM.isMonster())&&(viewerM.session().clientTelnetMode(Session.TELNET_MXP)))
                                 say.append(CMProps.mxpImage(item," H=10 W=10",""," "));
                             say.append("^I");
-                            if(compress)say.append(CMLib.flags().colorCodes(item2,mob)+"^I");
-                            say.append(CMStrings.endWithAPeriod(itemSeenString(mob,item2,useName,longLook,sysmsgs)));
+                            if(compress)say.append(CMLib.flags().colorCodes(item2,viewerM)+"^I");
+                            say.append(CMStrings.endWithAPeriod(itemSeenString(viewerM,item2,useName,longLook,sysmsgs)));
                             if(!compress) 
-                                say.append(CMLib.flags().colorCodes(item2,mob)+"^N\n\r");
+                                say.append(CMLib.flags().colorCodes(item2,viewerM)+"^N\n\r");
                             else
                                 say.append("^N");
                         }
@@ -242,47 +242,47 @@ public class CMLister extends StdLibrary implements ListingLibrary
 		return say;
 	}
 	
-	public StringBuilder reallyList(Hashtable these, int ofType)
+	public StringBuilder reallyList(MOB viewerM, Map<String,? extends Object> these, int ofType)
 	{
-		return reallyList(these,ofType,null);
+		return reallyList(viewerM,these,ofType,null);
 	}
-	public StringBuilder reallyList(Hashtable these)
+	public StringBuilder reallyList(MOB viewerM, Map<String,? extends Object> these)
 	{
-		return reallyList(these,-1,null);
+		return reallyList(viewerM,these,-1,null);
 	}
-	public StringBuilder reallyList(Hashtable these, Room likeRoom)
+	public StringBuilder reallyList(MOB viewerM, Map<String,? extends Object> these, Room likeRoom)
 	{
-		return reallyList(these,-1,likeRoom);
+		return reallyList(viewerM,these,-1,likeRoom);
 	}
-	public StringBuilder reallyList(Vector these, int ofType)
+	public StringBuilder reallyList(MOB viewerM, Vector these, int ofType)
 	{
-		return reallyList(these.elements(),ofType,null);
+		return reallyList(viewerM,these.elements(),ofType,null);
 	}
-	public StringBuilder reallyList(Enumeration these, int ofType)
+	public StringBuilder reallyList(MOB viewerM, Enumeration these, int ofType)
 	{
-		return reallyList(these,ofType,null);
+		return reallyList(viewerM,these,ofType,null);
 	}
-	public StringBuilder reallyList(Vector these)
+	public StringBuilder reallyList(MOB viewerM, Vector these)
 	{
-		return reallyList(these.elements(),-1,null);
+		return reallyList(viewerM,these.elements(),-1,null);
 	}
-	public StringBuilder reallyList(Enumeration these)
+	public StringBuilder reallyList(MOB viewerM, Enumeration these)
 	{
-		return reallyList(these,-1,null);
+		return reallyList(viewerM,these,-1,null);
 	}
-	public StringBuilder reallyList(Vector these, Room likeRoom)
+	public StringBuilder reallyList(MOB viewerM, Vector these, Room likeRoom)
 	{
-		return reallyList(these.elements(),-1,likeRoom);
+		return reallyList(viewerM,these.elements(),-1,likeRoom);
 	}
-	public StringBuilder reallyList(Hashtable these, int ofType, Room likeRoom)
+	public StringBuilder reallyList(MOB viewerM, Map<String,? extends Object> these, int ofType, Room likeRoom)
 	{
 		StringBuilder lines=new StringBuilder("");
 		if(these.size()==0) return lines;
 		int column=0;
-		for(Enumeration e=these.keys();e.hasMoreElements();)
+		int COL_LEN=ListingLibrary.ColFixer.fixColWidth(24.0, viewerM);
+		for(String key : these.keySet())
 		{
-			String thisOne=(String)e.nextElement();
-			Object thisThang=these.get(thisOne);
+			Object thisThang=these.get(key);
 			String list=null;
 			if(thisThang instanceof String)
 				list=(String)thisThang;
@@ -317,22 +317,23 @@ public class CMLister extends StdLibrary implements ListingLibrary
 					lines.append("\n\r");
 					column=1;
 				}
-				lines.append(CMStrings.padRight(list,24)+" ");
+				lines.append(CMStrings.padRight(list,COL_LEN)+" ");
 			}
 		}
 		lines.append("\n\r");
 		return lines;
 	}
 
-	public StringBuilder reallyList(Vector these, int ofType, Room likeRoom)
-	{ return reallyList(these.elements(),ofType,likeRoom);}
-	public StringBuilder reallyList(Enumeration these, Room likeRoom)
-	{ return reallyList(these,-1,likeRoom);}
-	public StringBuilder reallyList(Enumeration these, int ofType, Room likeRoom)
+	public StringBuilder reallyList(MOB viewerM, Vector these, int ofType, Room likeRoom)
+	{ return reallyList(viewerM,these.elements(),ofType,likeRoom);}
+	public StringBuilder reallyList(MOB viewerM, Enumeration these, Room likeRoom)
+	{ return reallyList(viewerM,these,-1,likeRoom);}
+	public StringBuilder reallyList(MOB viewerM, Enumeration these, int ofType, Room likeRoom)
 	{
 		StringBuilder lines=new StringBuilder("");
 		if(!these.hasMoreElements()) return lines;
 		int column=0;
+		int COL_LEN=ListingLibrary.ColFixer.fixColWidth(24.0, viewerM);
 		for(Enumeration e=these;e.hasMoreElements();)
 		{
 			Object thisThang=e.nextElement();
@@ -370,17 +371,18 @@ public class CMLister extends StdLibrary implements ListingLibrary
 					lines.append("\n\r");
 					column=1;
 				}
-				lines.append(CMStrings.padRight(list,24)+" ");
+				lines.append(CMStrings.padRight(list,COL_LEN)+" ");
 			}
 		}
 		lines.append("\n\r");
 		return lines;
 	}
-	public StringBuilder reallyList2Cols(Enumeration these, int ofType, Room likeRoom)
+	public StringBuilder reallyList2Cols(MOB viewerM, Enumeration these, int ofType, Room likeRoom)
 	{
 		StringBuilder lines=new StringBuilder("");
 		if(!these.hasMoreElements()) return lines;
 		int column=0;
+		int COL_LEN=ListingLibrary.ColFixer.fixColWidth(37.0, viewerM);
 		for(Enumeration e=these;e.hasMoreElements();)
 		{
 			Object thisThang=e.nextElement();
@@ -418,23 +420,23 @@ public class CMLister extends StdLibrary implements ListingLibrary
 					lines.append("\n\r");
 					column=1;
 				}
-				lines.append(CMStrings.padRight(list,37)+" ");
+				lines.append(CMStrings.padRight(list,COL_LEN)+" ");
 			}
 		}
 		lines.append("\n\r");
 		return lines;
 	}
 	
-	public StringBuilder fourColumns(List<String> reverseList)
-	{ return fourColumns(reverseList,null);}
-	public StringBuilder fourColumns(List<String> reverseList, String tag)
-	{ return makeColumns(reverseList,tag,4);}
-	public StringBuilder makeColumns(List<String> reverseList, String tag, int numCols)
+	public StringBuilder fourColumns(MOB viewerM, List<String> reverseList)
+	{ return fourColumns(viewerM,reverseList,null);}
+	public StringBuilder fourColumns(MOB viewerM, List<String> reverseList, String tag)
+	{ return makeColumns(viewerM,reverseList,tag,4);}
+	public StringBuilder makeColumns(MOB viewerM, List<String> reverseList, String tag, int numCols)
 	{
 		StringBuilder topicBuffer=new StringBuilder("");
 		int col=0;
 		String s=null;
-		int colSize = 72 / numCols;
+		int colSize = ListingLibrary.ColFixer.fixColWidth(72.0,viewerM) / numCols;
 		for(int i=0;i<reverseList.size();i++)
 		{
 			if((++col)>numCols)
