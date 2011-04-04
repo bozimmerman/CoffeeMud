@@ -152,6 +152,7 @@ public class Socials extends StdLibrary implements SocialsList
             Resources.submitResource("PARSED: "+filename,soc);
             List<String> V=Resources.getFileLineVector(new CMFile(filename,null,true).text());
             putSocialsInHash(soc,V);
+            unloadDerivedResources();
         }
         return soc;
     }
@@ -171,7 +172,6 @@ public class Socials extends StdLibrary implements SocialsList
         if(V2==null) {
             V2=new Vector<Social>(4);
             H.put(name,V2);
-            unloadDerivedResources();
         }
         for(int v=0;v<V2.size();v++)
             if(((Social)V2.get(v)).Name().equalsIgnoreCase(S.Name()))
@@ -202,7 +202,11 @@ public class Socials extends StdLibrary implements SocialsList
                 break;
             }
 	}
-    public void addSocial(Social S){ put(S.name(),S);}
+    public void addSocial(Social S)
+    { 
+    	put(S.name(),S);
+        unloadDerivedResources();
+    }
     
     public int numSocialSets() {return getSocialHash().size();}
 

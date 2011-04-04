@@ -128,7 +128,6 @@ public class Prop_Socials extends Property
 		if((msg.targetMinor()==CMMsg.TYP_HUH)
 		&&(socials.size()>0)
 		&&(msg.targetMessage()!=null)
-		&&(msg.target() != null)
 		&&((mask==null)||(CMLib.masking().maskCheck(mask, msg.source(), true)))
 		&&((!(affected instanceof Item))
 			||((msg.source()==((Item)affected).owner())

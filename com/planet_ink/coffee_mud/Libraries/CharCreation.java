@@ -602,6 +602,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 	    				session.println(M.name()+" has been imported into your account.");
     				}
     			}
+				autoCharCreate=false;
     			continue;
     		}
     		boolean wizi=s.trim().endsWith(" !");
