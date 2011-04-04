@@ -2327,5 +2327,5 @@ Special/Reserved Quest called holidays can be added to/modified on an area-by-ar
 13.Skill Recipes now have components, on MUDGrinder and Command Line
 # Build 5.7.? Release ?/??/2011
 1. NAWS fully implemented now.. most charts and lists will now resize themselves to fit.  LINEWRAP now applies mostly to defaults.
-
+2. New Property: Prop_Socials -- for making socials contextually available (with items, in rooms, etc)
 

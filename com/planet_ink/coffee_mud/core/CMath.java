@@ -1114,6 +1114,7 @@ public class CMath
      */
     public final static boolean s_bool(final String BOOL)
     {
+    	if(BOOL==null) return false;
         return Boolean.valueOf(BOOL).booleanValue();
     }
 
