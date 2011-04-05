@@ -1480,6 +1480,19 @@ public class CMParms
         return s.toString();
     }
 
+    public final static Map<String,String> parseEQStringList(final String s)
+    {
+    	Hashtable<String,String> h=new Hashtable<String,String>();
+    	String[] allWords = s.split("/");
+    	for(final String word : allWords)
+    	{
+    		String[] set=word.split("=");
+    		if(set.length==2)
+	    		h.put(set[0].toUpperCase().trim(), set[1]);
+    	}
+    	return h;
+    }
+    
     public final static String toStringEqList(final Map<String,?> V)
     {
         if((V==null)||(V.size()==0)){
