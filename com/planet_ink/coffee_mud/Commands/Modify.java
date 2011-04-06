@@ -965,10 +965,66 @@ public class Modify extends StdCommand
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
 			return false;
 		}
+		if(A instanceof Language)
+		{
+			mob.tell("'"+A.ID()+"' is a language.  Try MODIFY LANGUAGE.");
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
+			return false;
+		}
+		if(A instanceof ItemCraftor)
+		{
+			mob.tell("'"+A.ID()+"' is a crafting skill.  Try MODIFY CRAFTINGSKILL (coming soon).");
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
+			return false;
+		}
 		mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> wave(s) <S-HIS-HER> hands around all "+A.name()+"s.");
         CMLib.genEd().modifyGenAbility(mob,A);
 		CMLib.database().DBDeleteAbility(A.ID());
-		CMLib.database().DBCreateAbility(A.ID(),A.getStat("ALLXML"));
+		CMLib.database().DBCreateAbility(A.ID(),"GenAbility",A.getStat("ALLXML"));
+		mob.location().showHappens(CMMsg.MSG_OK_ACTION,A.name()+"'s everywhere shake under the transforming power!");
+		return true;
+	}
+
+	public boolean languages(MOB mob, Vector commands)
+	throws IOException
+	{
+		if(commands.size()<3)
+		{
+			mob.tell("You have failed to specify the proper fields.\n\rThe format is MODIFY LANGUAGE [SKILL ID]\n\r");
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
+			return false;
+		}
+	
+		String classID=CMParms.combine(commands,2);
+		Ability A=CMClass.getAbility(classID);
+		if(A==null)
+		{
+			mob.tell("'"+classID+"' is an invalid ability id.");
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
+			return false;
+		}
+		if(!(A.isGeneric()))
+		{
+			mob.tell("'"+A.ID()+"' is not generic, and may not be modified.");
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
+			return false;
+		}
+		if(A instanceof ItemCraftor)
+		{
+			mob.tell("'"+A.ID()+"' is a crafting skill.  Try MODIFY CRAFTINGSKILL (coming soon).");
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
+			return false;
+		}
+		if(!(A instanceof Language))
+		{
+			mob.tell("'"+A.ID()+"' is not a language.  Try MODIFY ABILITY.");
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
+			return false;
+		}
+		mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> wave(s) <S-HIS-HER> hands around all "+A.name()+"s.");
+        CMLib.genEd().modifyGenLanguage(mob,(Language)A);
+		CMLib.database().DBDeleteAbility(A.ID());
+		CMLib.database().DBCreateAbility(A.ID(),"GenLanguage",A.getStat("ALLXML"));
 		mob.location().showHappens(CMMsg.MSG_OK_ACTION,A.name()+"'s everywhere shake under the transforming power!");
 		return true;
 	}
@@ -1320,6 +1376,12 @@ public class Modify extends StdCommand
 			abilities(mob,commands);
 		}
 		else
+		if(commandType.equals("LANGUAGE"))
+		{
+			if(!CMSecurity.isAllowed(mob,mob.location(),"CMDABILITIES")) return errorOut(mob);
+			languages(mob,commands);
+		}
+		else
 		if(commandType.equals("AREA"))
 		{
 			if(!CMSecurity.isAllowed(mob,mob.location(),"CMDAREAS")) return errorOut(mob);
@@ -1666,7 +1728,7 @@ public class Modify extends StdCommand
 				execute(mob,commands,metaFlags);
 			}
 			else
-				mob.tell("\n\rYou cannot modify a '"+commandType+"'. However, you might try an ITEM, RACE, CLASS, ABILITY, AREA, EXIT, COMPONENT, RECIPE, EXPERTISE, TITLE, QUEST, MOB, USER, HOLIDAY, GOVERNMENT, JSCRIPT, FACTION, SOCIAL, CLAN, POLL, or ROOM.");
+				mob.tell("\n\rYou cannot modify a '"+commandType+"'. However, you might try an ITEM, RACE, CLASS, ABILITY, LANGUAGE, AREA, EXIT, COMPONENT, RECIPE, EXPERTISE, TITLE, QUEST, MOB, USER, HOLIDAY, GOVERNMENT, JSCRIPT, FACTION, SOCIAL, CLAN, POLL, or ROOM.");
 		}
 		return false;
 	}

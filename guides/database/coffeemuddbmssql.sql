@@ -233,7 +233,8 @@ CREATE TABLE CMCCAC (
 
 CREATE TABLE CMGAAC (
 	CMGAID nvarchar (50) ,
-	CMGAAT ntext NULL ,
+	CMGAAT ntext NULL , 
+	CMGACL nvarchar (50) NULL ,
 	PRIMARY KEY (CMGAID)
 );
 

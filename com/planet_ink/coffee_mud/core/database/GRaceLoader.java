@@ -71,7 +71,8 @@ public class GRaceLoader
             {
             	DatabaseEngine.AckRecord ack=new DatabaseEngine.AckRecord(
             			DBConnections.getRes(R,"CMRCID"),
-            			DBConnections.getRes(R,"CMRDAT"));
+            			DBConnections.getRes(R,"CMRDAT"),
+            			"GenRace");
                 rows.add(ack);
             }
         }

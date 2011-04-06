@@ -156,7 +156,7 @@ public interface DatabaseEngine extends CMLibrary
 	public void DBCreateClass(String classID,String data);
 	public List<AckRecord> DBReadAbilities();
 	public void DBDeleteAbility(String classID);
-	public void DBCreateAbility(String classID,String data);
+	public void DBCreateAbility(String classID, String typeClass, String data);
 	public Object DBReadStat(long startTime);
 	public void DBDeleteStat(long startTime);
 	public void DBCreateStat(long startTime,long endTime,String data);
@@ -200,7 +200,14 @@ public interface DatabaseEngine extends CMLibrary
     {
     	public String ID="";
     	public String data="";
-    	public AckRecord(String id, String dataStr){ ID=id; data=dataStr;}
+    	public String typeClass="GenAbility";
+    	public AckRecord(String id, String dataStr, String type)
+    	{ 
+    		ID=id; 
+    		data=dataStr; 
+    		if((type!=null)&&(type.length()>0)) 
+    			typeClass=type; 
+    	}
     }
     
 }

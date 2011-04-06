@@ -6128,7 +6128,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
             int showNumber=0;
             // id is bad to change.. make them delete it.
             //genText(mob,me,null,++showNumber,showFlag,"Enter the class","CLASS");
-            promptStatStr(mob,me,null,++showNumber,showFlag,"Enter an ability name to add or remove","NAME",false);
+            promptStatStr(mob,me,null,++showNumber,showFlag,"Ability/Skill name","NAME",false);
             promptStatStr(mob,me,CMParms.toStringList(Ability.ACODE_DESCS)+","+CMParms.toStringList(Ability.DOMAIN_DESCS),++showNumber,showFlag,"Type, Domain","CLASSIFICATION",false);
             promptStatStr(mob,me,null,++showNumber,showFlag,"Command Words (comma sep)","TRIGSTR",false);
             promptStatStr(mob,me,CMParms.toStringList(Ability.RANGE_CHOICES),++showNumber,showFlag,"Minimum Range","MINRANGE",false);
@@ -6157,6 +6157,72 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
             promptStatStr(mob,me,"The parameters for this field are LIKE the parameters for this property:\n\r\n\r"+
                     CMLib.help().getHelpText("Prop_HereSpellCast",mob,true).toString(),++showNumber,showFlag,"Extra castings","POSTCASTABILITY",true);
             promptStatStr(mob,me,"Enter a damage or healing formula. Use +-*/()?. @x1=caster level, @x2=target level.  Formula evaluates >0 for damage, <0 for healing. Requires Can Target!",++showNumber,showFlag,"Damage/Healing Formula","POSTCASTDAMAGE",true);
+            promptStatStr(mob,me,null,++showNumber,showFlag,"Help Text","HELP",true);
+
+            if(showFlag<-900){ ok=true; break;}
+            if(showFlag>0){ showFlag=-1; continue;}
+            showFlag=CMath.s_int(mob.session().prompt("Edit which? ",""));
+            if(showFlag<=0)
+            {
+                showFlag=-1;
+                ok=true;
+            }
+        }
+    }
+
+    public void modifyGenLanguage(MOB mob, Language me) throws IOException
+    {
+        if(mob.isMonster())
+            return;
+        boolean ok=false;
+        int showFlag=-1;
+        if(CMProps.getIntVar(CMProps.SYSTEMI_EDITORTYPE)>0)
+            showFlag=-999;
+        while((mob.session()!=null)&&(!mob.session().killFlag())&&(!ok))
+        {
+            int showNumber=0;
+            // id is bad to change.. make them delete it.
+            //genText(mob,me,null,++showNumber,showFlag,"Enter the class","CLASS");
+            promptStatStr(mob,me,null,++showNumber,showFlag,"Language name","NAME",false);
+            for(int i=0;i<=me.translationVector(me.ID()).size();i++)
+                promptStatStr(mob,me,null,++showNumber,showFlag,(i+1)+"letter words","WORDS"+(i+1),i==me.translationVector(me.ID()).size());
+            if((showFlag<=0)||(showFlag==showNumber))
+            {
+	            mob.tell(showNumber+". Hashed words: "+me.getStat("HASHEDWORDS"));
+	            if((showFlag==showNumber)||(showFlag<=-999))
+	            {
+		        	String promptStr="Enter a word definition to add or remove\n\r:";
+		            while((mob.session()!=null)&&(!mob.session().killFlag()))
+		            {
+		                String word=mob.session().prompt(promptStr,"");
+		                if(word.trim().length()==0)
+		                {
+		                	break;
+		                }
+		                int x=word.indexOf("=");
+		                String val=null;
+		                if(x<0)
+		                {
+		                	val=word.substring(x+1);
+		                	word=word.substring(0,x);
+		                }
+		                if((val==null)&&(!me.translationHash(me.ID()).containsKey(word.toUpperCase().trim())))
+		                	mob.tell("You can not remove "+word+", it is not on the current list.");
+		                else
+		                if(me.translationHash(me.ID()).containsKey(word.toUpperCase().trim()))
+		                {
+		                	me.translationHash(me.ID()).remove(word.toUpperCase().trim());
+		                	mob.tell("Word '"+word+"' removed.");
+		                }
+		                else
+		                {
+		                	me.translationHash(me.ID()).put(word.toUpperCase().trim(),val);
+		                	mob.tell("Word '"+word+"' added.");
+		                }
+		            }
+	            }
+            }
+            promptStatStr(mob,me,null,++showNumber,showFlag,"Help Text","HELP",true);
 
             if(showFlag<-900){ ok=true; break;}
             if(showFlag>0){ showFlag=-1; continue;}

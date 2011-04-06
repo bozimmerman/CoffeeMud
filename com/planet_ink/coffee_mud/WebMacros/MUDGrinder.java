@@ -705,10 +705,14 @@ public class MUDGrinder extends StdWebMacro
             boolean create=false;
             if((A!=null)&&(!A.isGeneric()))
                 return " @break@";
+            String type="GenAbility";
+            int code=CMath.s_int(httpReq.getRequestParameter("CLASSIFICATION_ACODE"));
+            if(code==Ability.ACODE_LANGUAGE) type="GenLanguage";
+            if(code==Ability.ACODE_COMMON_SKILL) type="GenCraftSkill";
             if(A==null) {
                 create=true;
                 if(A!=null) oldA=A;
-                A=(Ability)CMClass.getAbility("GenAbility").copyOf();
+                A=(Ability)CMClass.getAbility(type).copyOf();
                 A.setStat("CLASS",last);
             }
             if(A==null) return " @break@";
@@ -717,13 +721,13 @@ public class MUDGrinder extends StdWebMacro
             if(!create)
             {
                 CMLib.database().DBDeleteAbility(A.ID());
-                CMLib.database().DBCreateAbility(A.ID(),A.getStat("ALLXML"));
-                Log.sysOut("Grinder",mob.name()+" modified ability "+A.ID());
+                CMLib.database().DBCreateAbility(A.ID(),type,A.getStat("ALLXML"));
+                Log.sysOut("Grinder",mob.name()+" modified ability "+A.ID()+" ("+type+")");
                 return "Ability "+A.ID()+" modified.";
             }
-            CMLib.database().DBCreateAbility(A.ID(),A.getStat("ALLXML"));
-            Log.sysOut("Grinder",mob.name()+" created ability "+A.ID());
-            return "Ability "+A.ID()+" created.";
+            CMLib.database().DBCreateAbility(A.ID(),type,A.getStat("ALLXML"));
+            Log.sysOut("Grinder",mob.name()+" created ability "+A.ID()+" ("+type+")");
+            return type+" "+A.ID()+" created.";
         }
 		else
 		if(parms.containsKey("EDITITEM"))

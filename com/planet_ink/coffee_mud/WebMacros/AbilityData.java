@@ -59,6 +59,7 @@ public class AbilityData extends StdWebMacro
         if(last==null) return " @break@";
         Ability A=null;
         String newAbilityID=httpReq.getRequestParameter("NEWABILITY");
+        String newLanguageID=httpReq.getRequestParameter("NEWLANGUAGE");
         if(A==null)
             A=(Ability)httpReq.getRequestObjects().get("ABILITY-"+last);
         if((A==null)
@@ -70,6 +71,16 @@ public class AbilityData extends StdWebMacro
             A.setStat("CLASS9",newAbilityID);
             last=newAbilityID;
             httpReq.addRequestParameters("ABILITY",newAbilityID);
+        }
+        if((A==null)
+        &&(newLanguageID!=null)
+        &&(newLanguageID.length()>0)
+        &&(CMClass.getAbility(newLanguageID)==null))
+        {
+            A=(Ability)CMClass.getAbility("GenLanguage").copyOf();
+            A.setStat("CLASS9",newLanguageID);
+            last=newLanguageID;
+            httpReq.addRequestParameters("ABILITY",newLanguageID);
         }
         if(last.length()>0)
         {
@@ -84,6 +95,16 @@ public class AbilityData extends StdWebMacro
                 {
                     Ability A2=CMClass.getAbility(A.ID());
                     return ""+((A2!=null)&&(A2.isGeneric()));
+                }
+                if(parms.containsKey("ISLANGUAGE"))
+                {
+                    Ability A2=CMClass.getAbility(A.ID());
+                    return Boolean.toString(A2 instanceof Language);
+                }
+                if(parms.containsKey("ISCRAFTSKILL"))
+                {
+                    Ability A2=CMClass.getAbility(A.ID());
+                    return Boolean.toString(A2 instanceof Language);
                 }
                 if(parms.containsKey("NAME"))
                 {
@@ -103,7 +124,21 @@ public class AbilityData extends StdWebMacro
                     String old=httpReq.getRequestParameter("CLASSIFICATION_ACODE");
                     if(old==null) old=""+(A.classificationCode()&Ability.ALL_ACODES);
                     for(int i=0;i<Ability.ACODE_DESCS.length;i++)
-                        str.append("<OPTION VALUE=\""+i+"\""+((CMath.s_int(old)==i)?" SELECTED":"")+">"+CMStrings.capitalizeAndLower(Ability.ACODE_DESCS[i]));
+                    {
+                    	if(A instanceof ItemCraftor)
+                    	{
+                    		if(i==Ability.ACODE_COMMON_SKILL)
+    	                        str.append("<OPTION VALUE=\""+i+"\""+((CMath.s_int(old)==i)?" SELECTED":"")+">"+CMStrings.capitalizeAndLower(Ability.ACODE_DESCS[i]));
+                    	}
+                    	else
+                    	if(A instanceof Language)
+                    	{
+                    		if(i==Ability.ACODE_LANGUAGE)
+    	                        str.append("<OPTION VALUE=\""+i+"\""+((CMath.s_int(old)==i)?" SELECTED":"")+">"+CMStrings.capitalizeAndLower(Ability.ACODE_DESCS[i]));
+                    	}
+                    	else
+	                        str.append("<OPTION VALUE=\""+i+"\""+((CMath.s_int(old)==i)?" SELECTED":"")+">"+CMStrings.capitalizeAndLower(Ability.ACODE_DESCS[i]));
+                    }
                     str.append(", ");
                 }
                 if(parms.containsKey("CLASSIFICATION_DOMAIN"))

@@ -944,7 +944,7 @@ public class Destroy extends StdCommand
 			classes(mob,commands);
 		}
 		else
-		if(commandType.equals("ABILITY"))
+		if(commandType.equals("ABILITY")||commandType.equals("LANGUAGE")||commandType.equals("CRAFTSKILL"))
 		{
 			if(!CMSecurity.isAllowed(mob,mob.location(),"CMDABILITIES")) return errorOut(mob);
 			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"^S<S-NAME> wave(s) <S-HIS-HER> arms...^?");
@@ -1389,7 +1389,7 @@ public class Destroy extends StdCommand
 					mob.tell(
 						"\n\rYou cannot destroy a '"+commandType+"'. "
 						+"However, you might try an "
-						+"EXIT, ITEM, AREA, USER, MOB, QUEST, FACTION, SESSION, TICKS, THREAD, HOLIDAY, JOURNAL, SOCIAL, CLASS, ABILITY, COMPONENT, RACE, EXPERTISE, TITLE, CLAN, BAN, GOVERNMENT, NOPURGE, BUG, TYPO, IDEA, POLL, DEBUGFLAG, DISABLEFLAG, or a ROOM.");
+						+"EXIT, ITEM, AREA, USER, MOB, QUEST, FACTION, SESSION, TICKS, THREAD, HOLIDAY, JOURNAL, SOCIAL, CLASS, ABILITY, LANGUAGE, COMPONENT, RACE, EXPERTISE, TITLE, CLAN, BAN, GOVERNMENT, NOPURGE, BUG, TYPO, IDEA, POLL, DEBUGFLAG, DISABLEFLAG, or a ROOM.");
 				}
 			}
 		}

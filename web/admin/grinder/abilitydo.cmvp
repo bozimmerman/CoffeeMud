@@ -31,7 +31,11 @@
     @if?CheckReqParm?NEWABILITYID=@
         document.location.href='ability.cmvp?AUTH=@Authenticate?AUTH@&ABILITY=@AbilityID@';
     @else@
-        document.location.href='ability.cmvp?AUTH=@Authenticate?AUTH@&ABILITY=@RequestParameterEncoded?NEWABILITYID@&NEWABILITY=@RequestParameterEncoded?NEWABILITYID@';
+    	var atype='NEWABILITY';
+    	@if?AbilityData?ISLANGUAGE@
+	    	atype='NEWLANGUAGE';
+    	@endif@
+        document.location.href='ability.cmvp?AUTH=@Authenticate?AUTH@&ABILITY=@RequestParameterEncoded?NEWABILITYID@&'+atype+'=@RequestParameterEncoded?NEWABILITYID@';
     @endif@
 @endif@
 //-->

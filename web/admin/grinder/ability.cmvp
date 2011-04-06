@@ -106,6 +106,7 @@
 <INPUT TYPE=HIDDEN NAME=FUNCTION VALUE="">
 <INPUT TYPE=HIDDEN NAME=ABILITY VALUE="@RequestParameter?ABILITY@">
 <INPUT TYPE=HIDDEN NAME=NEWABILITY VALUE="@RequestParameter?NEWABILITY@">
+<INPUT TYPE=HIDDEN NAME=NEWLANGUAGE VALUE="@RequestParameter?NEWLANGUAGE@">
 <CENTER>
 @if?CheckReqParm?ABILITY=@
     Select a ability above to view/edit.
@@ -304,9 +305,9 @@
 <TR>
     @if?!CheckReqParm?ABILITY=@
         @if?AbilityData?ISNEWABILITY@
-        <TD ALIGN=CENTER><INPUT TYPE=BUTTON NAME=FINISHED VALUE="Create" ONCLICK="EditDone();"></TD>
+	        <TD ALIGN=CENTER><INPUT TYPE=BUTTON NAME=FINISHED VALUE="Create" ONCLICK="EditDone();"></TD>
         @else@
-        <TD ALIGN=CENTER><INPUT TYPE=BUTTON NAME=FINISHED VALUE="Modify" ONCLICK="EditDone();"></TD>
+	        <TD ALIGN=CENTER><INPUT TYPE=BUTTON NAME=FINISHED VALUE="Modify" ONCLICK="EditDone();"></TD>
         @endif@
         @if?AbilityData?ISGENERIC@
             <TD ALIGN=CENTER><INPUT TYPE=BUTTON NAME=DELETE VALUE="Delete" ONCLICK="Delete();"></TD>

@@ -52,7 +52,7 @@ public class GAbilityLoader
             D=DB.DBFetch();
             ResultSet R=D.query("SELECT * FROM CMGAAC");
             while(R.next())
-            	rows.addElement(new DatabaseEngine.AckRecord(DBConnections.getRes(R,"CMGAID"), DBConnections.getRes(R,"CMGAAT")));
+            	rows.addElement(new DatabaseEngine.AckRecord(DBConnections.getRes(R,"CMGAID"), DBConnections.getRes(R,"CMGAAT"), DBConnections.getRes(R,"CMGACL")));
         }
         catch(Exception sqle)
         {
@@ -65,15 +65,17 @@ public class GAbilityLoader
         // log comment
         return rows;
     }
-    public void DBCreateAbility(String classID, String data)
+    public void DBCreateAbility(String classID, String typeClass, String data)
     {
         DB.updateWithClobs(
          "INSERT INTO CMGAAC ("
          +"CMGAID, "
-         +"CMGAAT "
+         +"CMGAAT, "
+         +"CMGACL "
          +") values ("
          +"'"+classID+"',"
-         +"?"
+         +"?,"
+         +"'"+typeClass+"'"
          +")", 
          data+" ");
     }

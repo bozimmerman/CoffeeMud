@@ -1640,16 +1640,16 @@ public class CMClass extends ClassLoader
                     
                     c.abilities.sort();
 
-                    CMProps.setUpLowVar(CMProps.SYSTEM_MUDSTATUS,"Booting: reading genAbilities");
+                    CMProps.setUpLowVar(CMProps.SYSTEM_MUDSTATUS,"Booting: reading genAbilities, genLanguages");
                     final List<DatabaseEngine.AckRecord> genAbilities=CMLib.database().DBReadAbilities();
                     if(genAbilities.size()>0)
                     {
                         int loaded=0;
-                        for(int r=0;r<genAbilities.size();r++)
+                        for(DatabaseEngine.AckRecord rec : genAbilities)
                         {
                             Ability A=(Ability)(CMClass.getAbility("GenAbility").copyOf());
-                            A.setStat("ALLXML",genAbilities.get(r).data);
-                            if(!A.ID().equals("GenAbility"))
+                            A.setStat("ALLXML",rec.data);
+                            if((!A.ID().equals("GenAbility"))&&(!A.ID().equals("GenLanguage")))
                             {
                                 c.abilities.addElement(A);
                                 loaded++;

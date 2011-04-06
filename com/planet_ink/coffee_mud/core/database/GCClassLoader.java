@@ -56,7 +56,8 @@ public class GCClassLoader
             {
             	DatabaseEngine.AckRecord ack = new DatabaseEngine.AckRecord(
                 	DBConnections.getRes(R,"CMCCID"),
-                DBConnections.getRes(R,"CMCDAT"));
+	                DBConnections.getRes(R,"CMCDAT"),
+	                "GenCharClass");
                 rows.addElement(ack);
             }
         }

@@ -426,8 +426,8 @@ public class DBInterface implements DatabaseEngine
 	public void DBDeleteAbility(String classID)
 	{ GAbilityLoader.DBDeleteAbility(classID);}
 	
-	public void DBCreateAbility(String classID,String data)
-	{ GAbilityLoader.DBCreateAbility(classID,data);}
+	public void DBCreateAbility(String classID, String typeClass, String data)
+	{ GAbilityLoader.DBCreateAbility(classID, typeClass, data);}
 	
 	public void DBReadArtifacts()
 	{ DataLoader.DBReadArtifacts();}

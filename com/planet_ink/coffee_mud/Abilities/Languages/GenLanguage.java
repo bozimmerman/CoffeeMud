@@ -133,12 +133,21 @@ public class GenLanguage extends StdLanguage
     @SuppressWarnings("unchecked")
 	public String getStat(String code)
     {
+        int num=0;
+        int numDex=code.length();
+        while((numDex>0)&&(Character.isDigit(code.charAt(numDex-1)))) numDex--;
+        if(numDex<code.length())
+        {
+            num=CMath.s_int(code.substring(numDex));
+            code=code.substring(0,numDex);
+        }
         switch(getCodeNum(code))
         {
         case 0: return ID();
         case 1: return text();
         case 2: return (String)V(ID,V_NAME);
-        case 3:{
+        case 3: if(num==0)
+        		{
 		    		List<String[]> words=(List<String[]>)V(ID,V_WSETS);
 		    		StringBuilder str=new StringBuilder("");
 		    		for(String[] wset : words)
@@ -148,6 +157,11 @@ public class GenLanguage extends StdLanguage
 		    		}
 	        		return str.toString();
 		       }
+        	   else
+        	   if(num<=((List<String[]>)V(ID,V_WSETS)).size())
+        		   return CMParms.toStringList(((List<String[]>)V(ID,V_WSETS)).get(num-1));
+        	   else
+        		   return "";
         case 4:	return CMParms.toStringList((Map<String,String>)V(ID,V_HSETS));
         case 5: return (String)V(ID,V_HELP);
         default:
@@ -157,7 +171,8 @@ public class GenLanguage extends StdLanguage
         return "";
     }
     
-    public void setStat(String code, String val)
+    @SuppressWarnings("unchecked")
+	public void setStat(String code, String val)
     {
         int num=0;
         int numDex=code.length();
@@ -185,21 +200,31 @@ public class GenLanguage extends StdLanguage
     	break;
         case 1: setMiscText(val); break;
         case 2: SV(ID,V_NAME,val);
-                if(ID.equalsIgnoreCase("GenAbility"))
+                if(ID.equalsIgnoreCase("GenLanguage"))
                     break;
                 break;
-        case 3:{
+        case 3: if(num==0)
+        		{
         			String[] allSets=val.split("/");
         			List<String[]> wordSets=new Vector<String[]>();
         			for(final String wordList : allSets)
         				wordSets.add(CMParms.parseCommas(wordList,true).toArray(new String[0]));
-        			SV(ID,V_WSETS,allSets); 
-        			break;
+        			SV(ID,V_WSETS,allSets);
 		       }
+        	   else
+        	   if((num==((List<String[]>)V(ID,V_WSETS)).size())&&(val.length()==0))
+        		   ((List<String[]>)V(ID,V_WSETS)).remove(num-1);
+        	   else
+        	   if(num<=((List<String[]>)V(ID,V_WSETS)).size())
+        		   ((List<String[]>)V(ID,V_WSETS)).add(num-1, CMParms.parseCommas(val,true).toArray(new String[0]));
+        	   else
+        	   if((num==((List<String[]>)V(ID,V_WSETS)).size()+1)&&(val.length()>0))
+        		   ((List<String[]>)V(ID,V_WSETS)).add(CMParms.parseCommas(val,true).toArray(new String[0]));
+        	   break;
 		case 4:	SV(ID,V_HSETS,CMParms.parseEQStringList(val)); break;
         case 5: SV(ID,V_HELP,val); break;
         default:
-        	if(code.equalsIgnoreCase("allxml")&&ID.equalsIgnoreCase("GenAbility")) parseAllXML(val);
+        	if(code.equalsIgnoreCase("allxml")&&ID.equalsIgnoreCase("GenLanguage")) parseAllXML(val);
         	break;
         }
     }
