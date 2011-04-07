@@ -1640,7 +1640,7 @@ public class CMClass extends ClassLoader
                     
                     c.abilities.sort();
 
-                    CMProps.setUpLowVar(CMProps.SYSTEM_MUDSTATUS,"Booting: reading genAbilities, genLanguages");
+                    CMProps.setUpLowVar(CMProps.SYSTEM_MUDSTATUS,"Booting: reading generic abilities");
                     final List<DatabaseEngine.AckRecord> genAbilities=CMLib.database().DBReadAbilities();
                     if(genAbilities.size()>0)
                     {

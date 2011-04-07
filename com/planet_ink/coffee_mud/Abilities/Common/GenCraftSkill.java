@@ -17,6 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 
 import java.util.*;
+import java.util.regex.Pattern;
 
 
 /*
@@ -312,6 +313,20 @@ public class GenCraftSkill extends EnhancedCraftingSkill implements ItemCraftor
 		super.unInvoke();
 	}
 
+	protected boolean couldIHaveProducedThis(MOB mob, Item I)
+	{
+		if(I==null) return false;
+		final List<List<String>> recipes=addRecipes(mob,loadRecipes());
+		for(final List<String> recipe : recipes)
+		{
+			String finalName=recipe.get(RCP_FINALNAME);
+			finalName=CMStrings.replaceAll(finalName, "%", ".*").toLowerCase();
+			if(Pattern.matches(finalName, I.Name().toLowerCase()))
+				return true;
+		}
+		return false;
+	}
+	
 	public boolean supportsMending(Environmental I){ return canMend(null,I,true);}
 	protected boolean canMend(MOB mob, Environmental E, boolean quiet)
 	{

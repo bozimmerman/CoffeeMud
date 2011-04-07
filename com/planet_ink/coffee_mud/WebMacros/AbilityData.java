@@ -62,6 +62,7 @@ public class AbilityData extends StdWebMacro
         Ability A=null;
         String newAbilityID=httpReq.getRequestParameter("NEWABILITY");
         String newLanguageID=httpReq.getRequestParameter("NEWLANGUAGE");
+        String newCraftSkillID=httpReq.getRequestParameter("NEWCRAFTSKILL");
         if(A==null)
             A=(Ability)httpReq.getRequestObjects().get("ABILITY-"+last);
         if((A==null)
@@ -83,6 +84,16 @@ public class AbilityData extends StdWebMacro
             A.setStat("CLASS9",newLanguageID);
             last=newLanguageID;
             httpReq.addRequestParameters("ABILITY",newLanguageID);
+        }
+        if((A==null)
+        &&(newCraftSkillID!=null)
+        &&(newCraftSkillID.length()>0)
+        &&(CMClass.getAbility(newCraftSkillID)==null))
+        {
+            A=(Ability)CMClass.getAbility("GenCraftSkill").copyOf();
+            A.setStat("CLASS9",newCraftSkillID);
+            last=newCraftSkillID;
+            httpReq.addRequestParameters("ABILITY",newCraftSkillID);
         }
         if(last.length()>0)
         {

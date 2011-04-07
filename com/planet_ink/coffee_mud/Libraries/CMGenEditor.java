@@ -6238,6 +6238,33 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
         }
     }
 
+    public void modifyGenCraftSkill(MOB mob, Ability me) throws IOException
+    {
+        if(mob.isMonster())
+            return;
+        boolean ok=false;
+        int showFlag=-1;
+        if(CMProps.getIntVar(CMProps.SYSTEMI_EDITORTYPE)>0)
+            showFlag=-999;
+        while((mob.session()!=null)&&(!mob.session().killFlag())&&(!ok))
+        {
+            int showNumber=0;
+            // id is bad to change.. make them delete it.
+            //genText(mob,me,null,++showNumber,showFlag,"Enter the class","CLASS");
+            promptStatStr(mob,me,null,++showNumber,showFlag,"Skill name","NAME",false);
+            promptStatStr(mob,me,null,++showNumber,showFlag,"Help Text","HELP",true);
+
+            if(showFlag<-900){ ok=true; break;}
+            if(showFlag>0){ showFlag=-1; continue;}
+            showFlag=CMath.s_int(mob.session().prompt("Edit which? ",""));
+            if(showFlag<=0)
+            {
+                showFlag=-1;
+                ok=true;
+            }
+        }
+    }
+
     protected boolean genText(MOB mob, DVector set, String[] choices, String help, int showNumber, int showFlag, String FieldDisp, String Field)
     throws IOException
     {

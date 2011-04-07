@@ -63,7 +63,7 @@
     @AbilityNext?RESET@
     @loop@
     @AbilityNext?ALL&GENERIC@
-        @if?CheckReqParm?ABILITY=GenAbility&||ABILITY=GenLanguage@
+        @if?CheckReqParm?ABILITY=GenAbility&||ABILITY=GenLanguage&||ABILITY=GenCraftSkill@
         @else@
             <TR>
             <TD><a href="javascript:Ability('@AbilityID@','')"><FONT COLOR=WHITE><B>@AbilityID@</B></FONT></a></TD>

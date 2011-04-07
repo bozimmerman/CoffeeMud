@@ -43,6 +43,7 @@ public class CommonSkill extends StdAbility
 	private static final String[] triggerStrings = empty;
 	public String[] triggerStrings(){return triggerStrings;}
     public String supportedResourceString(){return "";}
+    public static final Map<String,Integer[]> resourcesMap=new Hashtable<String,Integer[]>();
 
 	public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 	protected String displayText="(Doing something productive)";
@@ -298,6 +299,54 @@ public class CommonSkill extends StdAbility
 		return false;
 	}
 
+	public Integer[] supportedResourcesMap()
+	{
+		String rscs=supportedResourceString().toUpperCase();
+		if(resourcesMap.containsKey(rscs))
+		{
+			return resourcesMap.get(rscs);
+		}
+		else
+		{
+			final List<String> set=CMParms.parseAny(supportedResourceString(),"|",true);
+			final List<Integer> finalSet=new ArrayList<Integer>();
+			for(int i=0;i<set.size();i++)
+			{
+				int x=-1;
+				for(int j=0;j<RawMaterial.MATERIAL_DESCS.length;j++)
+					if(RawMaterial.MATERIAL_DESCS[j].equalsIgnoreCase(set.get(j)))
+					{ 
+						x=RawMaterial.MATERIAL_CODES[j];
+						break;
+					}
+				if(x<0)
+					x=RawMaterial.CODES.FIND_IgnoreCase(set.get(i));
+				if(x>=0)
+					finalSet.add(Integer.valueOf(x));
+			}
+			final Integer[] finalArray=finalSet.toArray(new Integer[0]);
+			resourcesMap.put(rscs, finalArray);
+			return finalArray;
+		}
+	}
+	
+	public boolean isMadeOfSupportedResource(Item I)
+	{
+		if(I==null) return false;
+		for(Integer R : supportedResourcesMap())
+		{
+			if((R.intValue() & RawMaterial.MATERIAL_MASK)==0)
+			{
+				if((I.material()& RawMaterial.MATERIAL_MASK)==R.intValue())
+					return true;
+			}
+			else
+			if(I.material()==R.intValue())
+				return true;
+		}
+		return false;
+	}
+	
 	public boolean canBeLearnedBy(MOB teacherM, MOB studentM)
 	{
 		if(!super.canBeLearnedBy(teacherM,studentM))
