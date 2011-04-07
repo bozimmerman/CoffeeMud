@@ -52,7 +52,7 @@ public class GenLanguage extends StdLanguage
         O[V_NAME]="a language";
         O[V_WSETS]=new Vector<String[]>();
         O[V_HSETS]=new Hashtable<String,String>();
-        O[V_HELP]="<ABILITY>This ability is not yet documented.";
+        O[V_HELP]="<ABILITY>This language is not yet documented.";
         return O;
     }
     
