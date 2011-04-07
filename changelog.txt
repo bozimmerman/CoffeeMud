@@ -2326,6 +2326,9 @@ Special/Reserved Quest called holidays can be added to/modified on an area-by-ar
 12.Can now DISABLE the Java-coded races or classes from the DISABLE entry in the INI file.  Quick way to drop the stock classes or races!
 13.Skill Recipes now have components, on MUDGrinder and Command Line
 # Build 5.7.? Release ?/??/2011
-1. NAWS fully implemented now.. most charts and lists will now resize themselves to fit.  LINEWRAP now applies mostly to defaults.
-2. New Property: Prop_Socials -- for making socials contextually available (with items, in rooms, etc)
+1. **** Database Schema Changes Were Made **** Make sure you follow the Installation Guide to upgrade your database. 
+2. NAWS fully implemented now.. most charts and lists will now resize themselves to fit.  LINEWRAP now applies mostly to defaults.
+3. New Property: Prop_Socials -- for making socials contextually available (with items, in rooms, etc)
+4. Generic Languages can now be created online and within the MUDGrinder.  
+
 

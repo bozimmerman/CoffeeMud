@@ -152,6 +152,38 @@ public class GrinderAbilities {
                 V.addElement(httpReq.getRequestParameter("POSTCASTABILITY"+id));
         } 
         A.setStat("POSTCASTABILITY",CMParms.toSemicolonList(V));
+        if(A instanceof Language)
+        {
+        	((Language)A).translationVector(A.ID()).clear();
+    		if(httpReq.isRequestParameter("WORDLIST1"))
+    		{
+        		int x=1;
+        		while(httpReq.isRequestParameter("WORDLIST"+x))
+        		{
+                	((Language)A).translationVector(A.ID())
+        			.add(CMParms.parseCommas(httpReq.getRequestParameter("WORDLIST"+x), true).toArray(new String[0]));
+        			x++;
+        		}
+    		}
+    		for(int i=((Language)A).translationVector(A.ID()).size()-1;i>=0;i--)
+    			if(((Language)A).translationVector(A.ID()).get(i).length==0)
+    				((Language)A).translationVector(A.ID()).remove(i);
+    			else
+    				break;
+        	((Language)A).translationHash(A.ID()).clear();
+    		if(httpReq.isRequestParameter("HASHWORD1"))
+    		{
+        		int x=1;
+        		while(httpReq.isRequestParameter("HASHWORD"+x))
+        		{
+        			String word=httpReq.getRequestParameter("HASHWORD"+x).toUpperCase().trim();
+        			String def=httpReq.getRequestParameter("HASHWORDDEF"+x);
+        			if((def!=null)&&(def.length()>0)&&(word.length()>0))
+        	        	((Language)A).translationHash(A.ID()).put(word,def);
+        			x++;
+        		}
+    		}
+        }
         return "";
     }
 }

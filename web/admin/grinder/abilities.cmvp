@@ -63,7 +63,8 @@
     @AbilityNext?RESET@
     @loop@
     @AbilityNext?ALL&GENERIC@
-        @if?!CheckReqParm?ABILITY=GenAbility@
+        @if?CheckReqParm?ABILITY=GenAbility&||ABILITY=GenLanguage@
+        @else@
             <TR>
             <TD><a href="javascript:Ability('@AbilityID@','')"><FONT COLOR=WHITE><B>@AbilityID@</B></FONT></a></TD>
             <TD><FONT COLOR=WHITE><B>@AbilityName@</B></FONT></a></TD>
@@ -76,10 +77,10 @@
        @endif@
     @back@
     <TR>
-    <TD COLSPAN=4><a href="javascript:if(document.RESOURCES.NEWABILITY.value!='')Ability(document.RESOURCES.NEWABILITY.value,'&NEWABILITY='+document.RESOURCES.NEWABILITY.value)"><FONT COLOR=WHITE><B>Create new Ability/Skill:</a> <INPUT TYPE=TEXT NAME=NEWABILITY SIZE=70 ONCHANGE="document.RESOURCES.NEWLANGUAGE.value='';"></B></FONT></TD>
+    <TD COLSPAN=4><a href="javascript:if(document.RESOURCES.NEWABILITY.value!='')Ability(document.RESOURCES.NEWABILITY.value,'&NEWABILITY='+document.RESOURCES.NEWABILITY.value)"><FONT COLOR=WHITE><B>Create new Ability/Skill:</a> <INPUT TYPE=TEXT NAME=NEWABILITY SIZE=20 ONCHANGE="document.RESOURCES.NEWLANGUAGE.value='';"></B></FONT></TD>
     </TR>
     <TR>
-    <TD COLSPAN=4><a href="javascript:if(document.RESOURCES.NEWLANGUAGE.value!='')Ability(document.RESOURCES.NEWLANGUAGE.value,'&NEWLANGUAGE='+document.RESOURCES.NEWLANGUAGE.value)"><FONT COLOR=WHITE><B>Create new Language:</a> <INPUT TYPE=TEXT NAME=NEWLANGUAGE SIZE=70 ONCHANGE="document.RESOURCES.NEWABILITY.value='';"></B></FONT></TD>
+    <TD COLSPAN=4><a href="javascript:if(document.RESOURCES.NEWLANGUAGE.value!='')Ability(document.RESOURCES.NEWLANGUAGE.value,'&NEWLANGUAGE='+document.RESOURCES.NEWLANGUAGE.value)"><FONT COLOR=WHITE><B>Create new Language:</a> <INPUT TYPE=TEXT NAME=NEWLANGUAGE SIZE=20 ONCHANGE="document.RESOURCES.NEWABILITY.value='';"></B></FONT></TD>
     </TR>
     </TABLE>
     <P>

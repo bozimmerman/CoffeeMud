@@ -1,11 +1,7 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html><head>
   <meta name="generator" content="HTML Tidy, see www.w3.org">
-  <title></title>
-
-
-</head>
-
+  <title></title></head>
 <body>
 <center>
 <table border="1" bordercolor="gray" cellpadding="10" cellspacing="0" width="90%">
@@ -20,7 +16,8 @@
 <ul>
 <li>Introduction</li>
 <li><a href="#cmfs">CoffeeMud File System</a></li>
-<li><a href="#ables">Abilities</a></li>
+<li><a href="#ables">Abilities</a></li><li><a href="#lang">Languages</a></li>
+
 <li><a href="#comps">Components</a></li>
 <li><a href="#recipes">Recipes</a></li>
 <li><a href="#classes">Classes</a></li>
@@ -460,11 +457,98 @@ Use +-*/()?. @x1=caster level, @x2=target level.&nbsp; Formula
 evaluates &gt;0 for damage, &lt;0 for healing. Requires Can Target
 above! &nbsp;See help on MATH_FORMULA for more information on how to
 use this formula field.</td>
-</tr>
+</tr><tr>
+            <td>Help Text</td>
+            <td>always starting with the string &lt;ABILITY&gt;, this is the entry players will see when they enter HELP ABILITYNAME.</td>
+          </tr>
+
 </tbody>
 </table>
+      <br>
+      <br>
+      <br>
+      <strong><a name="lang"><font color="blue" size="5">Languages</font></a></strong>
+      <p>Although below the consideration of the mighty archons, a
+language is a series of noises or scribblings that mortals use to
+communicate their ideas with each other. &nbsp;Like Skills and Spells
+above, Languages can be created by the Archons, and then assigned to
+races, or allow them to be trained by players.</p>
+      <p>By default, CoffeeMud comes with several interesting languages
+that players can speak using the SPEAK command. &nbsp;However,
+CoffeeMud also allows you to define languages outside of the
+java-realm. This can be done from the command line using the CREATE
+command. If you want to create a new language called Boopsia, for
+instance,
+you might enter:</p>
+
+      <p><strong>CREATE LANGUAGE Lang_Boopsia</strong></p>
+
+      <p>And it would be done. The "Lang_Boopsia" is the abilities
+Ability ID. The fact that it starts with "Lang_" is merely for
+descriptive purposes, and is not required. &nbsp; Most languages do not, for some unknown reason.</p>
+
+      <p>Whenever creating or modifying a new language, the Archon is
+presented with a menu of selections and options available to customize
+the class. Here is a description of those options:</p>
+
+      <table style="width: 100%;" bgcolor="yellow" border="1" cellpadding="1" cellspacing="1" width="100%">
+
+<tbody>
+<tr>
+<td width="25%"><strong>Property</strong></td>
+<td width="75%"><strong>Description</strong></td>
+</tr>
+<tr>
+<td><em>Name</em></td>
+<td>the name of the language. Make this anything you like,
+but uniqueness is important for making help file entries.</td>
+</tr>
+<tr>
+<td><em>X Letter Words</em></td>
+<td>languages work by replacing the players native language words with
+words from these lists which are similar in length. &nbsp;Since most
+english words are under 10 letters, you would normally not need more
+than 10 word lists. &nbsp;These lists are a comma delimited set of
+words in the New language that are used to replace english words of
+similar length.</td>
+</tr>
+<tr>
+<td><em>Hashed / Replacement Words</em></td>
+<td>If you would actually like to have some direct word translations,
+here is where you would put them. &nbsp;For example, to have the word
+"CAT" always translated to "DIABLO" in your new language, you would
+define that fact here</td>
+</tr><tr>
+<td>Help Text</td>
+<td>always starting with the string &lt;ABILITY&gt;, this is the entry players will see when they enter HELP ABILITYNAME.</td></tr>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</tbody>
+      </table>
+
 <br>
-<strong><a name="comps"><font color="blue" size="5">Components (for Skills, Spells, etc..)</font></a></strong>
+      <strong><a name="comps"><font color="blue" size="5">Components (for Skills, Spells, etc..)</font></a></strong>
 <p>A Component in this context
 refers to an item or items that a player must have or have access to in
 order to use a particular skill, cast a particular spell, prayer, song,

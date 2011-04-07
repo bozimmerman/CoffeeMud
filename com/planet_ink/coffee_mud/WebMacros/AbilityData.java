@@ -13,6 +13,8 @@ import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
+import com.planet_ink.coffee_mud.WebMacros.AreaScriptNext.AreaScriptInstance;
+
 import java.util.*;
 
 
@@ -98,13 +100,11 @@ public class AbilityData extends StdWebMacro
                 }
                 if(parms.containsKey("ISLANGUAGE"))
                 {
-                    Ability A2=CMClass.getAbility(A.ID());
-                    return Boolean.toString(A2 instanceof Language);
+                    return Boolean.toString(A instanceof Language);
                 }
                 if(parms.containsKey("ISCRAFTSKILL"))
                 {
-                    Ability A2=CMClass.getAbility(A.ID());
-                    return Boolean.toString(A2 instanceof Language);
+                    return Boolean.toString(A instanceof Language);
                 }
                 if(parms.containsKey("NAME"))
                 {
@@ -118,6 +118,138 @@ public class AbilityData extends StdWebMacro
                     if(old==null) old=A.getStat("HELP");
                     str.append(old+", ");
                 }
+                
+                if(A instanceof Language)
+                {
+                	if(parms.containsKey("WORDLISTS"))
+                	{
+                		List<String[]> wordLists=((Language)A).translationVector(A.ID());
+                		if(httpReq.isRequestParameter("WORDLIST1"))
+                		{
+                			wordLists=new Vector<String[]>();
+	                		int x=1;
+	                		while(httpReq.isRequestParameter("WORDLIST"+x))
+	                		{
+	                			wordLists.add(CMParms.parseCommas(httpReq.getRequestParameter("WORDLIST"+x), true).toArray(new String[0]));
+	                			x++;
+	                		}
+                		}
+                		else
+                		{
+	                		for(int i=wordLists.size()-1;i>=0;i--)
+	                			httpReq.addRequestParameters("WORDLIST"+(i+1), CMParms.toStringList(wordLists.get(i)));
+                			httpReq.removeRequestParameter("WORDLIST"+(wordLists.size()+1));
+                		}
+                		
+                		for(int i=wordLists.size()-1;i>=0;i--)
+                			if(wordLists.get(i).length==0)
+                				wordLists.remove(i);
+                			else
+                				break;
+                		
+                		if(parms.containsKey("RESET"))
+                		{
+                			httpReq.removeRequestParameter("WORDLISTNUM");
+                			httpReq.removeRequestParameter("WORDLISTNEXT");
+            				return "";
+                		}
+                		else
+                		if(parms.containsKey("NEXT"))
+                		{
+                			String lastID="";
+                			String lastNum = httpReq.getRequestParameter("WORDLISTNUM");
+                			String nextName = "WORDLIST1";
+	                		for(int i=0;i<wordLists.size();i++)
+                			{
+	                			String thisName="WORDLIST"+Integer.toString(i+1);
+	                			nextName="WORDLIST"+Integer.toString(i+2);
+                				if((lastNum==null)||((lastNum.length()>0)&&(lastNum.equals(lastID))&&(!thisName.equals(lastID))))
+                				{
+                					httpReq.addRequestParameters("WORDLISTNUM",thisName);
+                					last=thisName;
+                					return "";
+                				}
+                				lastID=thisName;
+                			}
+                			httpReq.addRequestParameters("WORDLISTNUM","");
+        					httpReq.addRequestParameters("WORDLISTNEXT",nextName);
+                			if(parms.containsKey("EMPTYOK"))
+                				return "<!--EMPTY-->";
+                			return " @break@";
+                		}
+                	}
+                	
+                	if(parms.containsKey("HASHWORDS"))
+                	{
+                		Map<String,String> hashWords=((Language)A).translationHash(A.ID());
+                		if(httpReq.isRequestParameter("HASHWORD1"))
+                		{
+                			hashWords=new Hashtable<String,String>();
+	                		int x=1;
+	                		while(httpReq.isRequestParameter("HASHWORD"+x))
+	                		{
+	                			String word=httpReq.getRequestParameter("HASHWORD"+x).toUpperCase().trim();
+	                			String def=httpReq.getRequestParameter("HASHWORDDEF"+x);
+	                			if((def!=null)&&(def.length()>0)&&(word.length()>0))
+		                			hashWords.put(word,def);
+	                			x++;
+	                		}
+                		}
+                		else
+                		{
+                			int x=1;
+	                		for(String key : hashWords.keySet()) 
+	                		{
+	                			httpReq.addRequestParameters("HASHWORD"+x, key);
+	                			httpReq.addRequestParameters("HASHWORDDEF"+x, hashWords.get(key));
+	                			x++;
+	                		}
+                			httpReq.removeRequestParameter("HASHWORD"+x);
+                			httpReq.removeRequestParameter("HASHWORDDEF"+x);
+                		}
+                		
+                		if(parms.containsKey("RESET"))
+                		{
+                			httpReq.removeRequestParameter("HASHWORDNUM");
+                			httpReq.removeRequestParameter("HASHWORDDEFNUM");
+                			httpReq.removeRequestParameter("HASHWORDNEXT");
+                			httpReq.removeRequestParameter("HASHWORDDEFNEXT");
+            				return "";
+                		}
+                		else
+                		if(parms.containsKey("NEXT"))
+                		{
+                			String lastID="";
+                			String lastNum = httpReq.getRequestParameter("HASHWORDNUM");
+                			String nextName = "HASHWORD1";
+                			String nextDefName = "HASHWORDDEF1";
+	                		for(int i=1;i<=hashWords.keySet().size();i++) 
+                			{
+	                			String thisName="HASHWORD"+Integer.toString(i);
+	                			String thisDefName="HASHWORDDEF"+Integer.toString(i);
+	                			nextName="HASHWORD"+Integer.toString(i+1);
+	                			nextDefName="HASHWORDDEF"+Integer.toString(i+1);
+                				if((lastNum==null)||((lastNum.length()>0)&&(lastNum.equals(lastID))&&(!thisName.equals(lastID))))
+                				{
+                					httpReq.addRequestParameters("HASHWORDNUM",thisName);
+                					httpReq.addRequestParameters("HASHWORDDEFNUM",thisDefName);
+                					last=thisName;
+                					return "";
+                				}
+                				lastID=thisName;
+                				i++;
+                			}
+                			httpReq.addRequestParameters("HASHWORDNUM","");
+                			httpReq.addRequestParameters("HASHWORDDEFNUM","");
+        					httpReq.addRequestParameters("HASHWORDNEXT",nextName);
+        					httpReq.addRequestParameters("HASHWORDDEFNEXT",nextDefName);
+                			if(parms.containsKey("EMPTYOK"))
+                				return "<!--EMPTY-->";
+                			return " @break@";
+                		}
+                	}
+                }
+                
                 // here starts CLASSIFICATION
                 if(parms.containsKey("CLASSIFICATION_ACODE"))
                 {

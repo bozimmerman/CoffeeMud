@@ -120,179 +120,221 @@
             <TD><FONT COLOR=YELLOW>Name: </FONT></TD>
             <TD><INPUT TYPE=TEXT SIZE=30 MAXLENGTH=100 NAME=NAME VALUE="@AbilityData?NAME@"></TD>
         </TR>
-        <TR>
-            <TD><FONT COLOR=YELLOW>Type: </FONT></TD>
-            <TD>
-                <SELECT NAME=CLASSIFICATION_ACODE>@AbilityData?CLASSIFICATION_ACODE@</SELECT>
-            </TD>
-        </TR>
-        <TR>
-            <TD><FONT COLOR=YELLOW>Domain: </FONT></TD>
-            <TD>
-                <SELECT NAME=CLASSIFICATION_DOMAIN>@AbilityData?CLASSIFICATION_DOMAIN@</SELECT>
-            </TD>
-        </TR>
-        <TR>
-            <TD>
-                <FONT COLOR=YELLOW>Command Words: </FONT><BR>
-            </TD>
-            <TD>
-                <INPUT TYPE=TEXT SIZE=30 MAXLENGTH=100 NAME=TRIGSTR VALUE="@AbilityData?TRIGSTR@">
-            </TD>
-        </TR>
-        <TR>
-            <TD><FONT COLOR=YELLOW>Minimum Range: </FONT></TD>
-            <TD>
-                <SELECT NAME=MINRANGE>@AbilityData?MINRANGE@</SELECT>
-            </TD>
-        </TR>
-        <TR>
-            <TD><FONT COLOR=YELLOW>Maximum Range: </FONT></TD>
-            <TD>
-                <SELECT NAME=MAXRANGE>@AbilityData?MAXRANGE@</SELECT>
-            </TD>
-        </TR>
-        <TR>
-            <TD><FONT COLOR=YELLOW>Affect String: </FONT></TD>
-            <TD>
-                <INPUT TYPE=TEXT SIZE=60 MAXLENGTH=100 NAME=DISPLAY VALUE="@AbilityData?DISPLAY@">
-            </TD>
-        </TR>
-        <TR>
-            <TD>
-                <FONT COLOR=YELLOW>Is Auto-Invoking: </FONT><BR>
-            </TD>
-            <TD>
-                <INPUT TYPE=CHECKBOX NAME=TRIGSTR @AbilityData?AUTOINVOKE@>
-            </TD>
-        </TR>
-        <TR>
-            <TD><FONT COLOR=YELLOW>Skill Flags: </FONT></TD>
-            <TD>
-                <SELECT NAME=ABILITY_FLAGS MULTIPLE>@AbilityData?ABILITY_FLAGS@</SELECT>
-            </TD>
-        </TR>
-        <TR>
-            <TD><FONT COLOR=YELLOW>Override Cost: </FONT></TD>
-            <TD>
-                <SELECT NAME=OVERRIDEMANA>@AbilityData?OVERRIDEMANA@</SELECT>
-                <INPUT TYPE=TEXT SIZE=3 MAXLENGTH=5 NAME=OVERRIDEMANA VALUE="@AbilityData?CUSTOMOVERRIDEMANA@">
-            </TD>
-        </TR>
-        <TR>
-            <TD><FONT COLOR=YELLOW>Cost Type: </FONT></TD>
-            <TD>
-                <SELECT NAME=USAGEMASK MULTIPLE>@AbilityData?USAGEMASK@</SELECT>
-            </TD>
-        </TR>
-        <TR>
-            <TD><FONT COLOR=YELLOW>Ticks Between Casts: </FONT></TD>
-            <TD>
-                <INPUT TYPE=TEXT SIZE=10 MAXLENGTH=20 NAME=TICKSBETWEENCASTS VALUE="@AbilityData?TICKSBETWEENCASTS@">
-            </TD>
-        </TR>
-        <TR>
-            <TD><FONT COLOR=YELLOW>Can Affect: </FONT></TD>
-            <TD>
-                <SELECT NAME=CANAFFECTMASK MULTIPLE>@AbilityData?CANAFFECTMASK@</SELECT>
-            </TD>
-        </TR>
-        <TR>
-            <TD><FONT COLOR=YELLOW>Can Target: </FONT></TD>
-            <TD>
-                <SELECT NAME=CANTARGETMASK MULTIPLE>@AbilityData?CANTARGETMASK@</SELECT>
-            </TD>
-        </TR>
-        <TR>
-            <TD><FONT COLOR=YELLOW>Quality Code: </FONT></TD>
-            <TD>
-                <SELECT NAME=VQUALITY>@AbilityData?VQUALITY@</SELECT>
-            </TD>
-        </TR>
-        <TR>
-            <TD>
-                <FONT COLOR=YELLOW>Affect Adjustments: </FONT>
-                <A HREF="javascript:OpenUp('ahelp.cmvp','PROP_HEREADJUSTER')"><FONT COLOR=WHITE><I>?</I></FONT></a>
-            </TD>
-            <TD>
-                <INPUT TYPE=TEXT SIZE=80 MAXLENGTH=255 NAME=HERESTATS VALUE="@AbilityData?HERESTATS@">
-            </TD>
-        </TR>
-        <TR>
-            <TD>
-                <FONT COLOR=YELLOW>Caster Mask: </FONT>
-                <A HREF="javascript:OpenUp('ahelp.cmvp','MASKS')"><FONT COLOR=WHITE><I>?</I></FONT></a>
-            </TD>
-            <TD>
-                <INPUT TYPE=TEXT SIZE=60 MAXLENGTH=255 NAME=CASTMASK VALUE="@AbilityData?CASTMASK@">
-            </TD>
-        </TR>
-        <TR>
-            <TD>
-                <FONT COLOR=YELLOW>Scriptable Parm: </FONT>
-                <A HREF="javascript:OpenUp('ahelp.cmvp','SCRIPTABLE')"><FONT COLOR=WHITE><I>?</I></FONT></a>
-            </TD>
-            <TD>
-                <TEXTAREA ROWS=10 COLS=55 NAME=SCRIPT>@AbilityData?SCRIPT@</TEXTAREA>
-            </TD>
-        </TR>
-        <TR>
-            <TD>
-                <FONT COLOR=YELLOW>Target Mask: </FONT>
-                <A HREF="javascript:OpenUp('ahelp.cmvp','MASKS')"><FONT COLOR=WHITE><I>?</I></FONT></a>
-            </TD>
-            <TD>
-                <INPUT TYPE=TEXT SIZE=60 MAXLENGTH=255 NAME=TARGETMASK VALUE="@AbilityData?TARGETMASK@">
-            </TD>
-        </TR>
-        <TR>
-            <TD><FONT COLOR=YELLOW>Fizzle Message: </FONT></TD>
-            <TD>
-                <INPUT TYPE=TEXT SIZE=80 MAXLENGTH=255 NAME=FIZZLEMSG VALUE="@AbilityData?FIZZLEMSG@">
-            </TD>
-        </TR>
-        <TR>
-            <TD><FONT COLOR=YELLOW>Auto-Cast Message: </FONT></TD>
-            <TD>
-                <INPUT TYPE=TEXT SIZE=80 MAXLENGTH=255 NAME=AUTOCASTMSG VALUE="@AbilityData?AUTOCASTMSG@">
-            </TD>
-        </TR>
-        <TR>
-            <TD><FONT COLOR=YELLOW>Normal-Cast Message: </FONT></TD>
-            <TD>
-                <INPUT TYPE=TEXT SIZE=80 MAXLENGTH=255 NAME=CASTMSG VALUE="@AbilityData?CASTMSG@">
-            </TD>
-        </TR>
-        <TR>
-            <TD><FONT COLOR=YELLOW>Post-Cast Message: </FONT></TD>
-            <TD>
-                <INPUT TYPE=TEXT SIZE=80 MAXLENGTH=255 NAME=POSTCASTMSG VALUE="@AbilityData?POSTCASTMSG@">
-            </TD>
-        </TR>
-        <TR>
-            <TD><FONT COLOR=YELLOW>Attack Type: </FONT></TD>
-            <TD>
-                <SELECT NAME=ATTACKCODE>@AbilityData?ATTACKCODE@</SELECT>
-            </TD>
-        </TR>
-        <TR>
-            <TD><FONT COLOR=YELLOW>Silent Affects: </FONT></TD>
-            <TD>
-                <SELECT NAME=POSTCASTAFFECT MULTIPLE>@AbilityData?POSTCASTAFFECT@</SELECT>
-            </TD>
-        </TR>
-        <TR>
-            <TD><FONT COLOR=YELLOW>Extra Castings: </FONT></TD>
-            <TD>
-                <SELECT NAME=POSTCASTABILITY MULTIPLE>@AbilityData?POSTCASTABILITY@</SELECT>
-            </TD>
-        </TR>
-        <TR>
-            <TD><FONT COLOR=YELLOW>Damage/Healing Formula: </FONT></TD>
-            <TD>
-                <INPUT TYPE=TEXT SIZE=40 MAXLENGTH=255 NAME=POSTCASTDAMAGE VALUE="@AbilityData?POSTCASTDAMAGE@">
-            </TD>
-        </TR>
+        @if?AbilityData?ISLANGUAGE@
+            @AbilityData?WORDLISTS&RESET@
+            @AddRequestParameter?WLCOUNTER=0@
+            @loop@
+                @AddRequestParameter?WLCOUNTER=++@
+                @AbilityData?WORDLISTS&NEXT@
+                <TR>
+                    <TD><FONT COLOR=YELLOW>@RequestParameter?WLCOUNTER@ letter words:<BR><FONT SIZE=-1>(comma delimited)</FONT></FONT></TD>
+                    <TD><INPUT TYPE=TEXT SIZE=60 NAME=@RequestParameter?WORDLISTNUM@ VALUE="@RequestParameter?@@RequestParameter?WORDLISTNUM@@ @"></TD>
+                </TR>
+            @back@
+                <TR>
+                    <TD><FONT COLOR=YELLOW>@RequestParameter?WLCOUNTER@ letter words<BR><FONT SIZE=-1>(comma delimited)</FONT>: </FONT></TD>
+                    <TD><INPUT TYPE=TEXT SIZE=60 NAME=@RequestParameter?WORDLISTNEXT@ VALUE=""></TD>
+                </TR>
+                <TR>
+                    <TD></TD>
+                    <TD>
+                        <A HREF="JavaScript:ReShow();"><FONT COLOR=WHITE SIZE=-1>Add more word lists</FONT></A>
+                        <INPUT TYPE=HIDDEN NAME=CLASSIFICATION_ACODE VALUE=7>
+                    </TD>
+                </TR>
+            <TR>
+                <TD><FONT COLOR=YELLOW>Word replacements: </FONT></TD><TD>
+                @AbilityData?HASHWORDS&RESET@
+                @loop@
+                    @AbilityData?HASHWORDS&NEXT@
+                    <INPUT TYPE=TEXT SIZE=10 NAME=@RequestParameter?HASHWORDNUM@ VALUE="@RequestParameter?@@RequestParameter?HASHWORDNUM@@ @">
+                    <FONT SIZE=-1 COLOR=WHITE>is translated to</FONT>
+                    <INPUT TYPE=TEXT SIZE=20 NAME=@RequestParameter?HASHWORDDEFNUM@ VALUE="@RequestParameter?@@RequestParameter?HASHWORDDEFNUM@@ @">
+                    <BR>
+                @back@
+                <INPUT TYPE=TEXT SIZE=10 NAME=@RequestParameter?HASHWORDNEXT@ VALUE="">
+                <FONT SIZE=-1 COLOR=WHITE>is translated to</FONT>
+                <INPUT TYPE=TEXT SIZE=10 NAME=@RequestParameter?HASHWORDDEFNEXT@ VALUE="">
+                </TD></TR>
+                <TR>
+                    <TD></TD>
+                    <TD><A HREF="JavaScript:ReShow();"><FONT COLOR=WHITE SIZE=-1>Add another word replacement</FONT></A></TD>
+                </TR>
+        @else@
+            <TR>
+                <TD><FONT COLOR=YELLOW>Type: </FONT></TD>
+                <TD>
+                    <SELECT NAME=CLASSIFICATION_ACODE>@AbilityData?CLASSIFICATION_ACODE@</SELECT>
+                </TD>
+            </TR>
+            <TR>
+                <TD><FONT COLOR=YELLOW>Domain: </FONT></TD>
+                <TD>
+                    <SELECT NAME=CLASSIFICATION_DOMAIN>@AbilityData?CLASSIFICATION_DOMAIN@</SELECT>
+                </TD>
+            </TR>
+            <TR>
+                <TD>
+                    <FONT COLOR=YELLOW>Command Words: </FONT><BR>
+                </TD>
+                <TD>
+                    <INPUT TYPE=TEXT SIZE=30 MAXLENGTH=100 NAME=TRIGSTR VALUE="@AbilityData?TRIGSTR@">
+                </TD>
+            </TR>
+            <TR>
+                <TD><FONT COLOR=YELLOW>Minimum Range: </FONT></TD>
+                <TD>
+                    <SELECT NAME=MINRANGE>@AbilityData?MINRANGE@</SELECT>
+                </TD>
+            </TR>
+            <TR>
+                <TD><FONT COLOR=YELLOW>Maximum Range: </FONT></TD>
+                <TD>
+                    <SELECT NAME=MAXRANGE>@AbilityData?MAXRANGE@</SELECT>
+                </TD>
+            </TR>
+            <TR>
+                <TD><FONT COLOR=YELLOW>Affect String: </FONT></TD>
+                <TD>
+                    <INPUT TYPE=TEXT SIZE=60 MAXLENGTH=100 NAME=DISPLAY VALUE="@AbilityData?DISPLAY@">
+                </TD>
+            </TR>
+            <TR>
+                <TD>
+                    <FONT COLOR=YELLOW>Is Auto-Invoking: </FONT><BR>
+                </TD>
+                <TD>
+                    <INPUT TYPE=CHECKBOX NAME=TRIGSTR @AbilityData?AUTOINVOKE@>
+                </TD>
+            </TR>
+            <TR>
+                <TD><FONT COLOR=YELLOW>Skill Flags: </FONT></TD>
+                <TD>
+                    <SELECT NAME=ABILITY_FLAGS MULTIPLE>@AbilityData?ABILITY_FLAGS@</SELECT>
+                </TD>
+            </TR>
+            <TR>
+                <TD><FONT COLOR=YELLOW>Override Cost: </FONT></TD>
+                <TD>
+                    <SELECT NAME=OVERRIDEMANA>@AbilityData?OVERRIDEMANA@</SELECT>
+                    <INPUT TYPE=TEXT SIZE=3 MAXLENGTH=5 NAME=OVERRIDEMANA VALUE="@AbilityData?CUSTOMOVERRIDEMANA@">
+                </TD>
+            </TR>
+            <TR>
+                <TD><FONT COLOR=YELLOW>Cost Type: </FONT></TD>
+                <TD>
+                    <SELECT NAME=USAGEMASK MULTIPLE>@AbilityData?USAGEMASK@</SELECT>
+                </TD>
+            </TR>
+            <TR>
+                <TD><FONT COLOR=YELLOW>Ticks Between Casts: </FONT></TD>
+                <TD>
+                    <INPUT TYPE=TEXT SIZE=10 MAXLENGTH=20 NAME=TICKSBETWEENCASTS VALUE="@AbilityData?TICKSBETWEENCASTS@">
+                </TD>
+            </TR>
+            <TR>
+                <TD><FONT COLOR=YELLOW>Can Affect: </FONT></TD>
+                <TD>
+                    <SELECT NAME=CANAFFECTMASK MULTIPLE>@AbilityData?CANAFFECTMASK@</SELECT>
+                </TD>
+            </TR>
+            <TR>
+                <TD><FONT COLOR=YELLOW>Can Target: </FONT></TD>
+                <TD>
+                    <SELECT NAME=CANTARGETMASK MULTIPLE>@AbilityData?CANTARGETMASK@</SELECT>
+                </TD>
+            </TR>
+            <TR>
+                <TD><FONT COLOR=YELLOW>Quality Code: </FONT></TD>
+                <TD>
+                    <SELECT NAME=VQUALITY>@AbilityData?VQUALITY@</SELECT>
+                </TD>
+            </TR>
+            <TR>
+                <TD>
+                    <FONT COLOR=YELLOW>Affect Adjustments: </FONT>
+                    <A HREF="javascript:OpenUp('ahelp.cmvp','PROP_HEREADJUSTER')"><FONT COLOR=WHITE><I>?</I></FONT></a>
+                </TD>
+                <TD>
+                    <INPUT TYPE=TEXT SIZE=80 MAXLENGTH=255 NAME=HERESTATS VALUE="@AbilityData?HERESTATS@">
+                </TD>
+            </TR>
+            <TR>
+                <TD>
+                    <FONT COLOR=YELLOW>Caster Mask: </FONT>
+                    <A HREF="javascript:OpenUp('ahelp.cmvp','MASKS')"><FONT COLOR=WHITE><I>?</I></FONT></a>
+                </TD>
+                <TD>
+                    <INPUT TYPE=TEXT SIZE=60 MAXLENGTH=255 NAME=CASTMASK VALUE="@AbilityData?CASTMASK@">
+                </TD>
+            </TR>
+            <TR>
+                <TD>
+                    <FONT COLOR=YELLOW>Scriptable Parm: </FONT>
+                    <A HREF="javascript:OpenUp('ahelp.cmvp','SCRIPTABLE')"><FONT COLOR=WHITE><I>?</I></FONT></a>
+                </TD>
+                <TD>
+                    <TEXTAREA ROWS=10 COLS=55 NAME=SCRIPT>@AbilityData?SCRIPT@</TEXTAREA>
+                </TD>
+            </TR>
+            <TR>
+                <TD>
+                    <FONT COLOR=YELLOW>Target Mask: </FONT>
+                    <A HREF="javascript:OpenUp('ahelp.cmvp','MASKS')"><FONT COLOR=WHITE><I>?</I></FONT></a>
+                </TD>
+                <TD>
+                    <INPUT TYPE=TEXT SIZE=60 MAXLENGTH=255 NAME=TARGETMASK VALUE="@AbilityData?TARGETMASK@">
+                </TD>
+            </TR>
+            <TR>
+                <TD><FONT COLOR=YELLOW>Fizzle Message: </FONT></TD>
+                <TD>
+                    <INPUT TYPE=TEXT SIZE=80 MAXLENGTH=255 NAME=FIZZLEMSG VALUE="@AbilityData?FIZZLEMSG@">
+                </TD>
+            </TR>
+            <TR>
+                <TD><FONT COLOR=YELLOW>Auto-Cast Message: </FONT></TD>
+                <TD>
+                    <INPUT TYPE=TEXT SIZE=80 MAXLENGTH=255 NAME=AUTOCASTMSG VALUE="@AbilityData?AUTOCASTMSG@">
+                </TD>
+            </TR>
+            <TR>
+                <TD><FONT COLOR=YELLOW>Normal-Cast Message: </FONT></TD>
+                <TD>
+                    <INPUT TYPE=TEXT SIZE=80 MAXLENGTH=255 NAME=CASTMSG VALUE="@AbilityData?CASTMSG@">
+                </TD>
+            </TR>
+            <TR>
+                <TD><FONT COLOR=YELLOW>Post-Cast Message: </FONT></TD>
+                <TD>
+                    <INPUT TYPE=TEXT SIZE=80 MAXLENGTH=255 NAME=POSTCASTMSG VALUE="@AbilityData?POSTCASTMSG@">
+                </TD>
+            </TR>
+            <TR>
+                <TD><FONT COLOR=YELLOW>Attack Type: </FONT></TD>
+                <TD>
+                    <SELECT NAME=ATTACKCODE>@AbilityData?ATTACKCODE@</SELECT>
+                </TD>
+            </TR>
+            <TR>
+                <TD><FONT COLOR=YELLOW>Silent Affects: </FONT></TD>
+                <TD>
+                    <SELECT NAME=POSTCASTAFFECT MULTIPLE>@AbilityData?POSTCASTAFFECT@</SELECT>
+                </TD>
+            </TR>
+            <TR>
+                <TD><FONT COLOR=YELLOW>Extra Castings: </FONT></TD>
+                <TD>
+                    <SELECT NAME=POSTCASTABILITY MULTIPLE>@AbilityData?POSTCASTABILITY@</SELECT>
+                </TD>
+            </TR>
+            <TR>
+                <TD><FONT COLOR=YELLOW>Damage/Healing Formula: </FONT></TD>
+                <TD>
+                    <INPUT TYPE=TEXT SIZE=40 MAXLENGTH=255 NAME=POSTCASTDAMAGE VALUE="@AbilityData?POSTCASTDAMAGE@">
+                </TD>
+            </TR>
+        @endif@
         <TR>
             <TD><FONT COLOR=YELLOW>Help Entry: </FONT></TD>
             <TD><TEXTAREA ROWS=10 COLS=55 NAME=GENHELP>@AbilityData?GENHELP@</TEXTAREA></TD>

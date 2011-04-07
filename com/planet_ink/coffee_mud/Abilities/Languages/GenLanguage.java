@@ -209,14 +209,14 @@ public class GenLanguage extends StdLanguage
         			List<String[]> wordSets=new Vector<String[]>();
         			for(final String wordList : allSets)
         				wordSets.add(CMParms.parseCommas(wordList,true).toArray(new String[0]));
-        			SV(ID,V_WSETS,allSets);
+        			SV(ID,V_WSETS,wordSets);
 		       }
         	   else
         	   if((num==((List<String[]>)V(ID,V_WSETS)).size())&&(val.length()==0))
         		   ((List<String[]>)V(ID,V_WSETS)).remove(num-1);
         	   else
         	   if(num<=((List<String[]>)V(ID,V_WSETS)).size())
-        		   ((List<String[]>)V(ID,V_WSETS)).add(num-1, CMParms.parseCommas(val,true).toArray(new String[0]));
+        		   ((List<String[]>)V(ID,V_WSETS)).set(num-1, CMParms.parseCommas(val,true).toArray(new String[0]));
         	   else
         	   if((num==((List<String[]>)V(ID,V_WSETS)).size()+1)&&(val.length()>0))
         		   ((List<String[]>)V(ID,V_WSETS)).add(CMParms.parseCommas(val,true).toArray(new String[0]));

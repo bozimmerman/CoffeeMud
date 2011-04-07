@@ -1647,9 +1647,12 @@ public class CMClass extends ClassLoader
                         int loaded=0;
                         for(DatabaseEngine.AckRecord rec : genAbilities)
                         {
-                            Ability A=(Ability)(CMClass.getAbility("GenAbility").copyOf());
+                        	String type=rec.typeClass;
+                        	if((type==null)||(type.trim().length()==0))
+                        		type="GenAbility";
+                            Ability A=(Ability)(CMClass.getAbility(type).copyOf());
                             A.setStat("ALLXML",rec.data);
-                            if((!A.ID().equals("GenAbility"))&&(!A.ID().equals("GenLanguage")))
+                            if((!A.ID().equals("GenAbility"))&&(!A.ID().equals(type)))
                             {
                                 c.abilities.addElement(A);
                                 loaded++;

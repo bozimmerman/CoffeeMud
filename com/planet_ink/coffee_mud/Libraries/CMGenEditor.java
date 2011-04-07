@@ -6185,7 +6185,10 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
             //genText(mob,me,null,++showNumber,showFlag,"Enter the class","CLASS");
             promptStatStr(mob,me,null,++showNumber,showFlag,"Language name","NAME",false);
             for(int i=0;i<=me.translationVector(me.ID()).size();i++)
-                promptStatStr(mob,me,null,++showNumber,showFlag,(i+1)+"letter words","WORDS"+(i+1),i==me.translationVector(me.ID()).size());
+            {
+                promptStatStr(mob,me,null,++showNumber,showFlag,(i+1)+" letter words","WORDS"+(i+1),true);
+            }
+            ++showNumber;
             if((showFlag<=0)||(showFlag==showNumber))
             {
 	            mob.tell(showNumber+". Hashed words: "+me.getStat("HASHEDWORDS"));
@@ -6201,7 +6204,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		                }
 		                int x=word.indexOf("=");
 		                String val=null;
-		                if(x<0)
+		                if(x>0)
 		                {
 		                	val=word.substring(x+1);
 		                	word=word.substring(0,x);
