@@ -95,6 +95,15 @@ public class GrinderAbilities {
         } 
         A.setStat("USAGEMASK",CMParms.toStringList(V));
         V.clear();
+        if(httpReq.isRequestParameter("MATLIST"))
+        {
+            String id="";
+            int num=0;
+            for(;httpReq.isRequestParameter("MATLIST"+id);id=""+(++num))
+                V.addElement(httpReq.getRequestParameter("MATLIST"+id));
+        } 
+        A.setStat("MATLIST",CMParms.toStringList(V));
+        V.clear();
         if(httpReq.isRequestParameter("CANAFFECTMASK"))
         {
             String id="";
@@ -112,6 +121,18 @@ public class GrinderAbilities {
                 V.addElement(httpReq.getRequestParameter("CANTARGETMASK"+id));
         } 
         A.setStat("CANTARGETMASK",CMParms.toStringList(V));
+        old=httpReq.getRequestParameter("CANMEND");
+        A.setStat("CANMEND",(old==null)?"false":Boolean.toString(old.equalsIgnoreCase("on")));
+        old=httpReq.getRequestParameter("CANREFIT");
+        A.setStat("CANREFIT",(old==null)?"false":Boolean.toString(old.equalsIgnoreCase("on")));
+        old=httpReq.getRequestParameter("CANBUNDLE");
+        A.setStat("CANBUNDLE",(old==null)?"false":Boolean.toString(old.equalsIgnoreCase("on")));
+        old=httpReq.getRequestParameter("SOUND");
+        A.setStat("SOUND",(old==null)?"":old);
+        old=httpReq.getRequestParameter("VERB");
+        A.setStat("VERB",(old==null)?"":old);
+        old=httpReq.getRequestParameter("FILENAME");
+        A.setStat("FILENAME",(old==null)?"":old);
         old=httpReq.getRequestParameter("QUALITY");
         A.setStat("QUALITY",(old==null)?"":old);
         old=httpReq.getRequestParameter("HERESTATS");

@@ -475,6 +475,24 @@ public class AbilityData extends StdWebMacro
                     if(old==null) old=A.getStat("CASTMSG");
                     str.append(old+", ");
                 }
+                if(parms.containsKey("FILENAME"))
+                {
+                    String old=httpReq.getRequestParameter("FILENAME");
+                    if(old==null) old=A.getStat("FILENAME");
+                    str.append(old+", ");
+                }
+                if(parms.containsKey("VERB"))
+                {
+                    String old=httpReq.getRequestParameter("VERB");
+                    if(old==null) old=A.getStat("VERB");
+                    str.append(old+", ");
+                }
+                if(parms.containsKey("SOUND"))
+                {
+                    String old=httpReq.getRequestParameter("SOUND");
+                    if(old==null) old=A.getStat("SOUND");
+                    str.append(old+", ");
+                }
                 if(parms.containsKey("POSTCASTMSG"))
                 {
                     String old=httpReq.getRequestParameter("POSTCASTMSG");
@@ -761,17 +779,6 @@ public class AbilityData extends StdWebMacro
 						if(!defaultGain)
 							str.append("(Qualify), ");
 					}
-				}
-				
-				if(str.length()==0)
-				{
-					for(String key : parms.keySet())
-						if(A.isStat(key.toUpperCase().trim()))
-						{
-		                    String old=httpReq.getRequestParameter(key.toUpperCase().trim());
-		                    if(old==null) old=A.getStat(key.toUpperCase().trim());
-		                    str.append(old).append(", ");
-						}
 				}
 				String strstr=str.toString();
 				if(strstr.endsWith(", "))
