@@ -16,7 +16,8 @@
 <ul>
 <li>Introduction</li>
 <li><a href="#cmfs">CoffeeMud File System</a></li>
-<li><a href="#ables">Abilities</a></li><li><a href="#lang">Languages</a></li>
+<li><a href="#ables">Abilities</a></li><li><a href="#lang">Languages</a></li><li><a href="#craftskills">CraftSkills</a></li>
+
 
 <li><a href="#comps">Components</a></li>
 <li><a href="#recipes">Recipes</a></li>
@@ -458,7 +459,7 @@ evaluates &gt;0 for damage, &lt;0 for healing. Requires Can Target
 above! &nbsp;See help on MATH_FORMULA for more information on how to
 use this formula field.</td>
 </tr><tr>
-            <td>Help Text</td>
+            <td><i>Help Text</i></td>
             <td>always starting with the string &lt;ABILITY&gt;, this is the entry players will see when they enter HELP ABILITYNAME.</td>
           </tr>
 
@@ -519,7 +520,7 @@ here is where you would put them. &nbsp;For example, to have the word
 "CAT" always translated to "DIABLO" in your new language, you would
 define that fact here</td>
 </tr><tr>
-<td>Help Text</td>
+<td><i>Help Text</i></td>
 <td>always starting with the string &lt;ABILITY&gt;, this is the entry players will see when they enter HELP ABILITYNAME.</td></tr>
 
 
@@ -547,6 +548,124 @@ define that fact here</td>
 </tbody>
       </table>
 
+      <br>
+      <br>
+      <br>
+
+      <strong><a name="craftskills"><font color="blue" size="5">Craft Skills</font></a></strong>
+      
+      <p>Crafting Skills are skills that players use to take raw
+resources and turn them into useful things, like swords, armor, bags,
+bowls, and so forth. &nbsp;These are skills like Cobbling, Carpentry,
+Weaponsmithing, etc.&nbsp;</p>
+
+      
+      <p>Although CoffeeMud includes a wide variety of configurable crafting
+skills, it is not beyond the realm of possibility that you may want to
+add onto them. &nbsp;Therefore,
+CoffeeMud also allows you to define crafting skills outside of the
+java-realm. This can be done from the command line using the CREATE
+command. If you want to create a new craft skill called Mixologist, for
+instance,
+you might enter:</p>
+
+
+      
+      <p><strong>CREATE CRAFTSKILL Common_Mixologist</strong></p>
+
+
+      
+      <p>And it would be done. The "Common_Mixologist" is the abilities
+Ability ID. The fact that it starts with "Common_" is merely for
+descriptive purposes, and is not required. &nbsp; Most existing crafting skills do not, for some unknown reason.</p>
+
+
+      
+      <p>Whenever creating or modifying a new skill, the Archon is
+presented with a menu of selections and options available to customize
+the class. Here is a description of those options:</p>
+
+
+      
+
+
+
+      <strong></strong>
+      <table style="width: 100%;" bgcolor="yellow" border="1" cellpadding="1" cellspacing="1" width="100%">
+<tbody><tr><td width="25%"><strong>Property</strong></td>
+<td width="75%"><strong>Description</strong></td>
+</tr>
+<tr>
+<td><em>Name</em></td>
+<td>the name of the skill. Make this anything you like,
+but uniqueness is important for making help file entries.</td>
+</tr>
+          <tr>
+<td><em>Command Words</em></td><td>the command invocation word. This need not
+be unique to your skill! Use commas to seperate different invocation words.</td></tr>
+
+<tr>
+<td><em>Skill Verb</em></td>
+<td>a descriptive verb shown when the player is doing this skill, such as mixing, crafting, carving, hitting...</td>
+</tr><tr>
+            <td><i>Recipe Filename</i></td>
+            <td>the name of the recipe file, which will be found in /resources/skills/</td>
+          </tr>
+          <tr>
+            <td><i>Raw Materials</i></td>
+            <td>if this skill supports making items out of a raw
+material (as opposed to making items out of other items), then here is
+where you would specify which raw material or resource types are used
+to make them. &nbsp;If nothing is specified here, then the skill can
+only be used to make items from other items.</td>
+          </tr>
+          <tr>
+            <td><i>Can Mend</i></td>
+            <td>does this skill support mending the things it makes?</td>
+          </tr>
+          <tr>
+            <td><i>Can Refit</i></td>
+            <td>does this skill support refitting the wearables it makes?</td>
+          </tr>
+          <tr>
+            <td><i>Can Bundle</i></td>
+            <td>does this skill support bundling the raw materials you make things from with this skill?</td>
+          </tr>
+          <tr>
+            <td><i>MSP file</i></td>
+            <td>the name of the sound file from /web/pub/sounds that should be played when the player does this skill.</td>
+          </tr>
+<tr>
+<td><i>Help Text</i></td>
+<td>always starting with the string &lt;ABILITY&gt;, this is the entry players will see when they enter HELP ABILITYNAME.</td></tr>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</tbody>
+      
+      </table>
+
+      <br>
 <br>
       <strong><a name="comps"><font color="blue" size="5">Components (for Skills, Spells, etc..)</font></a></strong>
 <p>A Component in this context

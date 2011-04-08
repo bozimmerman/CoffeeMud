@@ -15,7 +15,7 @@
 	            var recipeid=document.RESOURCES.ABILITY.value+'&ABILITYRECIPEROW='+rownum;
 	            if(rownum<0)
 	            {
-	            	if(document.RESOURCES.NEWCLASSFIELD.value != '')
+	            	if((document.RESOURCES.NEWCLASSFIELD) && (document.RESOURCES.NEWCLASSFIELD.value != ''))
 	            		recipeid +='&CLASSFIELD='+document.RESOURCES.NEWCLASSFIELD.value;
 	            	else
 	            		recipeid +='&CLASSFIELD='+document.RESOURCES.NEWCLASSFIELD1.value;
@@ -60,6 +60,10 @@
         <TABLE WIDTH=50% BORDER=1>
         <TR><TD BGCOLOR=WHITE ALIGN=CENTER><FONT COLOR=BLACK SIZE=-1><B>Menu</B></FONT></TD></TR>
         <TR><TD><a href="javascript:Clicked('/grinder/loggedin.cmvp');"><FONT COLOR=WHITE SIZE=-1><B>MUDGrinder Menu</B></FONT></A></TD></TR>
+        <TR><TD><a href="javascript:Clicked('/grinder/abilities.cmvp');"><FONT COLOR=WHITE SIZE=-1><B>Abilities Manager</B></FONT></A></TD></TR>
+        @if?CheckAuthCode?AUTH_CMDCOMPONENTS=true@
+          <TR><TD><a href="javascript:Clicked('/grinder/components.cmvp');"><FONT COLOR=WHITE SIZE=-1><B>Skill Components</B></FONT></A></TD></TR>
+        @endif@
         <TR><TD><a href="javascript:Refresh();"><FONT COLOR=WHITE SIZE=-1><B>Refresh Page</B></FONT></A></TD></TR>
         </TABLE>
     </TD>
@@ -72,7 +76,7 @@
 	<FONT COLOR=YELLOW><B>Common Skill:
 	<SELECT NAME=ABILITY ONCHANGE="Refresh();">
 	<OPTION @if?CheckReqParm?THISABILITY=@SELECTED@endif@ VALUE="">Select a skill
-	@AbilityNext?RESET@	@loop@ @AbilityNext?PARMSEDITABLE@ <OPTION VALUE=@AbilityID@ @if?CheckReqParm?THISABILITY=@@AbilityID@@ @SELECTED@endif@>@AbilityName@ @back@
+	@AbilityNext?RESET@	@loop@ @AbilityNext?PARMSEDITABLE&UNQUALIFIEDOK@ <OPTION VALUE=@AbilityID@ @if?CheckReqParm?THISABILITY=@@AbilityID@@ @SELECTED@endif@>@AbilityName@ @back@
 	</SELECT></B></FONT>
 	<CENTER>
 	@AddRequestParameter?ABILITY=@@RequestParameter?THISABILITY@@ @

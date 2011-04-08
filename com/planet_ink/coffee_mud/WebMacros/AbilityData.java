@@ -115,7 +115,7 @@ public class AbilityData extends StdWebMacro
                 }
                 if(parms.containsKey("ISCRAFTSKILL"))
                 {
-                    return Boolean.toString(A instanceof Language);
+                    return Boolean.toString(A instanceof ItemCraftor);
                 }
                 if(parms.containsKey("NAME"))
                 {
@@ -514,7 +514,7 @@ public class AbilityData extends StdWebMacro
                     	old=A.getStat("CANMEND");
                     else
                     	old=old.equalsIgnoreCase("on")?"true":"false";
-                    str.append(old.equalsIgnoreCase("true")?"on":"");
+                    str.append(old.equalsIgnoreCase("true")?"checked":"");
                 }
                 if(parms.containsKey("CANREFIT"))
                 {
@@ -523,7 +523,7 @@ public class AbilityData extends StdWebMacro
                     	old=A.getStat("CANREFIT");
                     else
                     	old=old.equalsIgnoreCase("on")?"true":"false";
-                    str.append(old.equalsIgnoreCase("true")?"on":"");
+                    str.append(old.equalsIgnoreCase("true")?"checked":"");
                 }
                 if(parms.containsKey("CANBUNDLE"))
                 {
@@ -532,7 +532,7 @@ public class AbilityData extends StdWebMacro
                     	old=A.getStat("CANBUNDLE");
                     else
                     	old=old.equalsIgnoreCase("on")?"true":"false";
-                    str.append(old.equalsIgnoreCase("true")?"on":"");
+                    str.append(old.equalsIgnoreCase("true")?"checked":"");
                 }
                 
                 if(parms.containsKey("MATLIST"))

@@ -498,6 +498,9 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
                     }
             }
         }
+        for(int i=0;i<headers.length;i++)
+        	if(headers[i]==null)
+        		headers[i]="*Add*";
         int currLenTotal = 0;
         for(int l=0;l<lengths.length;l++)
             currLenTotal+=lengths[l];
@@ -1749,7 +1752,12 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
                 for(int c=0;c<columns().size();c++)
                     if(columns().elementAt(c) instanceof List)
                         editRow.addElement(columns().elementAt(c),"");
-                classFieldIndex = CMAbleParms.getClassFieldIndex(editRow);
+                if(editRow.size()==0)
+                {
+                	//classFieldIndex = CMAbleParms.getClassFieldIndex(dataRow);
+                }
+                else
+	                classFieldIndex = CMAbleParms.getClassFieldIndex(editRow);
                 fixDataColumns(dataRows);
             } catch(CMException e) {
                 parseError = e.getMessage();

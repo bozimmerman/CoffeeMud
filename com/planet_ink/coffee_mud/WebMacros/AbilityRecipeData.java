@@ -141,7 +141,17 @@ public class AbilityRecipeData extends StdWebMacro
                 if(parms.containsKey("ADDROW"))
                 {
                     AbilityParameters.AbilityParmEditor classFieldEditor = null;
-                    int cfIndex = recipeData.getClassFieldIndex(); 
+                    int cfIndex = recipeData.getClassFieldIndex();
+                    if(recipeData.dataRows().size()==0)
+                    {
+                        DVector editRow = new DVector(2);
+                        for(int c=0;c<recipeData.columns().size();c++)
+                            if(recipeData.columns().elementAt(c) instanceof List)
+                                editRow.addElement(recipeData.columns().elementAt(c),"");
+                    	List<String> o=(List)editRow.elementAt(cfIndex,1);
+                        classFieldEditor = (AbilityParameters.AbilityParmEditor)CMLib.ableParms().getEditors().get(o.get(0).toString());
+                    }
+                    else
                     for(int row=0;row<recipeData.dataRows().size();row++)
                     {
                         if(cfIndex>=0)

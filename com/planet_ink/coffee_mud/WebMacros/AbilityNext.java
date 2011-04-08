@@ -66,6 +66,7 @@ public class AbilityNext extends StdWebMacro
         String className=httpReq.getRequestParameter("CLASS");
         boolean genericOnly =parms.containsKey("GENERIC");
         boolean parmsEditable=parms.containsKey("PARMSEDITABLE");
+        boolean unqualifiedOK=parms.containsKey("UNQUALIFIEDOK");
         String levelName=httpReq.getRequestParameter("LEVEL");
         boolean notFlag =parms.containsKey("NOT"); 
         boolean allFlag =parms.containsKey("ALL");
@@ -89,7 +90,7 @@ public class AbilityNext extends StdWebMacro
 			if((className!=null)&&(className.length()>0))
 			{
 				int level=CMLib.ableMapper().getQualifyingLevel(className,true,A.ID());
-				if(level<0)
+				if((level<0)&&(!unqualifiedOK))
 					okToShow=false;
 				else
 				if(CMLib.ableMapper().getSecretSkill(className,false,A.ID()))
@@ -107,7 +108,7 @@ public class AbilityNext extends StdWebMacro
 			if(!allFlag)
 			{
 				int level=CMLib.ableMapper().getQualifyingLevel("Archon",true,A.ID());
-				if(level<0)
+				if((level<0)&&(!unqualifiedOK))
 					okToShow=false;
 				else
 				if(CMLib.ableMapper().getAllSecretSkill(A.ID()))

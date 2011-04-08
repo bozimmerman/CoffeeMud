@@ -166,6 +166,7 @@
             <TR>
                 <TD>
                     <FONT COLOR=YELLOW>Skill Verb: </FONT><BR>
+                    <INPUT TYPE=HIDDEN NAME=CLASSIFICATION_ACODE VALUE=9>
                 </TD>
                 <TD>
                     <INPUT TYPE=TEXT SIZE=10 MAXLENGTH=20 NAME=VERB VALUE="@AbilityData?VERB@">

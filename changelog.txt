@@ -2330,5 +2330,6 @@ Special/Reserved Quest called holidays can be added to/modified on an area-by-ar
 2. NAWS fully implemented now.. most charts and lists will now resize themselves to fit.  LINEWRAP now applies mostly to defaults.
 3. New Property: Prop_Socials -- for making socials contextually available (with items, in rooms, etc)
 4. Generic Languages can now be created online and within the MUDGrinder.  
+5. Generic Crafting Skills can now be created online and within the MUDGrinder.  
 
 
