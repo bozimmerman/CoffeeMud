@@ -476,115 +476,32 @@ public class CMAble extends StdLibrary implements AbilityMapper
 
 	public synchronized void handleEachAndClassAbility(Map<String, AbilityMapping> ableMap, String ID)
 	{
+		
 		if(eachClassSet == null)
 		{
 			eachClassSet = new SLinkedList<AbilityMapping>();
-			CMFile f = new CMFile(Resources.makeFileResourceName("skills/allqualifylist.txt"),null,false);
-			if(f.exists() && f.canRead())
+			Map<String,Map<String,AbilityMapping>> allQualMap=getAllQualifiesMap(null);
+			Map<String,AbilityMapping> eachMap=allQualMap.get("EACH");
+			Map<String,AbilityMapping> allAllMap=allQualMap.get("ALL");
+			for(AbilityMapping mapped : eachMap.values())
 			{
-				List<String> list = Resources.getFileLineVector(f.text());
-				boolean eachMode = false;
-				for(String s : list)
+		    	if(CMSecurity.isAbilityDisabled(mapped.abilityID.toUpperCase())) continue;
+		    	AbilityMapping able = mapped.copyOf();
+		    	able.ID = ID;
+				eachClassSet.add(able);
+			}
+			for(AbilityMapping mapped : allAllMap.values())
+			{
+		    	if(CMSecurity.isAbilityDisabled(mapped.abilityID.toUpperCase())) continue;
+		    	AbilityMapping able = mapped.copyOf();
+				able.ID="All";
+		    	Map<String, AbilityMapping> allMap=completeAbleMap.get("All");
+				if(allMap == null)
 				{
-					s=s.trim();
-					if(s.equalsIgnoreCase("[EACH]"))
-						eachMode=true;
-					else
-					if(s.equalsIgnoreCase("[ALL]"))
-						eachMode=false;
-					else
-					if(s.startsWith("#")||s.length()==0)
-						continue;
-					else
-					{
-						int x=s.indexOf(' ');
-						if(x<0) continue;
-						String lvlStr = s.substring(0,x).trim();
-						if(!CMath.isInteger(lvlStr))
-							continue;
-						s=s.substring(x+1).trim();
-						int qualLevel=CMath.s_int(lvlStr);
-						x=s.indexOf(' ');
-						String abilityID;
-						StringBuilder mask=new StringBuilder("");
-						StringBuilder preReqs=new StringBuilder("");
-						StringBuilder prof=new StringBuilder("");
-						boolean autogain=false;
-						if(x<0)
-							abilityID=s;
-						else
-						{
-							abilityID=s.substring(0,x).trim();
-							s=s.substring(x+1).trim();
-							String us=s.toUpperCase();
-							int lastC=' ';
-							StringBuilder cur=null;
-							for(int i=0;i<s.length();i++)
-							{
-								if((lastC==' ')&&(Character.isLetter(us.charAt(i))))
-								{
-									String ss=us.substring(i);
-									if(ss.startsWith("MASK="))
-									{
-										cur=mask;
-										i+=4;
-									}
-									else
-									if(ss.startsWith("PROF="))
-									{
-										cur=prof;
-										i+=4;
-									}
-									else
-									if(ss.startsWith("REQUIRES="))
-									{
-										cur=preReqs;
-										i+=8;
-									}
-									else
-									if(ss.startsWith("AUTOGAIN "))
-									{
-										cur=null;
-										autogain=true;
-										i+=8;
-									}
-									else
-									if(ss.startsWith("AUTOGAIN") 
-									&& (ss.length()==8))
-									{
-										cur=null;
-										autogain=true;
-										break;
-									}
-									else
-									if(cur!=null)
-										cur.append(s.charAt(i));
-								}
-								else
-								if(cur!=null)
-									cur.append(s.charAt(i));
-								lastC=s.charAt(i);
-							}
-						}
-				    	if(CMSecurity.isAbilityDisabled(abilityID.toUpperCase())) continue;
-						AbilityMapping able = 
-							makeAbilityMapping(ID,qualLevel,abilityID,CMath.s_int(prof.toString().trim()),100,"",autogain,false,
-									CMParms.parseSpaces(preReqs.toString().trim(), true), mask.toString().trim(),null);
-						if(eachMode)
-							eachClassSet.add(able);
-						else
-						{
-							able.ID="All";
-					    	Map<String, AbilityMapping> allMap=completeAbleMap.get("All");
-							if(allMap == null)
-							{
-								allMap=new SHashtable<String,AbilityMapping>();
-								completeAbleMap.put("All",allMap);
-							}
-							addClassAbility(able.abilityID, allMap, able);
-						}
-					}
+					allMap=new SHashtable<String,AbilityMapping>();
+					completeAbleMap.put("All",allMap);
 				}
+				addClassAbility(able.abilityID, allMap, able);
 			}
 		}
 		for(final Iterator<AbilityMapping> a=eachClassSet.iterator();a.hasNext();)
@@ -2170,5 +2087,176 @@ public class CMAble extends StdLibrary implements AbilityMapper
             text.append(parms+'\n');
         }
         F.saveText(text.toString(),false);
+	}
+	
+	public Map<String, Map<String,AbilityMapping>> getAllQualifiesMap(final Map<String,Object> cache)
+	{
+		Map<String, Map<String,AbilityMapping>> bothMaps;
+		if(cache!=null)
+		{
+			bothMaps=(Map)Resources.getResource("ALLQUALIFIES_MAP");
+			if(bothMaps!=null) return bothMaps;
+		}
+		
+		bothMaps=new TreeMap<String,Map<String,AbilityMapping>>();
+		bothMaps.put("ALL", new TreeMap<String,AbilityMapping>());
+		bothMaps.put("EACH", new TreeMap<String,AbilityMapping>());
+		CMFile f = new CMFile(Resources.makeFileResourceName("skills/allqualifylist.txt"),null,false);
+		if(f.exists() && f.canRead())
+		{
+			List<String> list = Resources.getFileLineVector(f.text());
+			boolean eachMode = false;
+			for(String s : list)
+			{
+				s=s.trim();
+				if(s.equalsIgnoreCase("[EACH]"))
+					eachMode=true;
+				else
+				if(s.equalsIgnoreCase("[ALL]"))
+					eachMode=false;
+				else
+				if(s.startsWith("#")||s.length()==0)
+					continue;
+				else
+				{
+					int x=s.indexOf(' ');
+					if(x<0) continue;
+					String lvlStr = s.substring(0,x).trim();
+					if(!CMath.isInteger(lvlStr))
+						continue;
+					s=s.substring(x+1).trim();
+					int qualLevel=CMath.s_int(lvlStr);
+					x=s.indexOf(' ');
+					String abilityID;
+					StringBuilder mask=new StringBuilder("");
+					StringBuilder preReqs=new StringBuilder("");
+					StringBuilder prof=new StringBuilder("");
+					boolean autogain=false;
+					if(x<0)
+						abilityID=s;
+					else
+					{
+						abilityID=s.substring(0,x).trim();
+						s=s.substring(x+1).trim();
+						String us=s.toUpperCase();
+						int lastC=' ';
+						StringBuilder cur=null;
+						for(int i=0;i<s.length();i++)
+						{
+							if((lastC==' ')&&(Character.isLetter(us.charAt(i))))
+							{
+								String ss=us.substring(i);
+								if(ss.startsWith("MASK="))
+								{
+									cur=mask;
+									i+=4;
+								}
+								else
+								if(ss.startsWith("PROF="))
+								{
+									cur=prof;
+									i+=4;
+								}
+								else
+								if(ss.startsWith("REQUIRES="))
+								{
+									cur=preReqs;
+									i+=8;
+								}
+								else
+								if(ss.startsWith("AUTOGAIN "))
+								{
+									cur=null;
+									autogain=true;
+									i+=8;
+								}
+								else
+								if(ss.startsWith("AUTOGAIN") 
+								&& (ss.length()==8))
+								{
+									cur=null;
+									autogain=true;
+									break;
+								}
+								else
+								if(cur!=null)
+									cur.append(s.charAt(i));
+							}
+							else
+							if(cur!=null)
+								cur.append(s.charAt(i));
+							lastC=s.charAt(i);
+						}
+					}
+					AbilityMapping able = 
+						makeAbilityMapping(abilityID,qualLevel,abilityID,CMath.s_int(prof.toString().trim()),100,"",autogain,false,
+								CMParms.parseSpaces(preReqs.toString().trim(), true), mask.toString().trim(),null);
+					if(eachMode)
+					{
+				    	Map<String, AbilityMapping> map=bothMaps.get("EACH");
+						map.put(abilityID.toUpperCase().trim(),able);
+					}
+					else
+					{
+				    	Map<String, AbilityMapping> map=bothMaps.get("ALL");
+						map.put(abilityID.toUpperCase().trim(),able);
+					}
+				}
+			}
+		}
+		if(cache!=null)
+			cache.put("ALLQUALIFIES_MAP",bothMaps);
+		return bothMaps;
+	}
+	
+	public void alterAbilityComponentFile(Map<String, Map<String,AbilityMapping>> newMap)
+	{
+		CMFile f = new CMFile(Resources.makeFileResourceName("skills/allqualifylist.txt"),null,false);
+		List<String> set=new Vector<String>(0);
+		if(f.exists() && f.canRead())
+		{
+			set=Resources.getFileLineVector(f.text());
+		}
+		StringBuilder str=new StringBuilder("");
+		for(String line : set)
+		{
+			if(line.toUpperCase().startsWith("[ALL]")||line.toUpperCase().startsWith("[EACH]"))
+			{
+				str.append("\n\n");
+				break;
+			}
+		}
+		str.append("[ALL]").append("\n");
+		Map<String,AbilityMapping> map=newMap.get("ALL");
+		if(map!=null)
+		{
+			TreeMap<Integer,List<AbilityMapping>> sortedMap=new TreeMap<Integer,List<AbilityMapping>>();
+			for(AbilityMapping mapped : map.values())
+			{
+				List<AbilityMapping> subMap=sortedMap.get(Integer.valueOf(mapped.qualLevel));
+				if(subMap==null)
+				{
+					subMap=new LinkedList<AbilityMapping>();
+					sortedMap.put(Integer.valueOf(mapped.qualLevel), subMap);
+				}
+				subMap.add(mapped);
+			}
+			for(Integer LEVEL : sortedMap.keySet())
+			{
+				List<AbilityMapping> subMap=sortedMap.get(LEVEL);
+				for(AbilityMapping mapped : subMap)
+				{
+					str.append(LEVEL.toString()).append(" ");
+					str.append(mapped.abilityID).append(" ");
+					if(mapped.autoGain) str.append("AUTOGAIN ");
+					if((mapped.extraMask!=null)&&(mapped.extraMask.length()>0))
+						 str.append("MASK=").append(mapped.extraMask).append(" ");
+					
+				}
+				str.append("\n");
+			}
+			
+		}
+        f.saveText(str.toString(),false);
 	}
 }

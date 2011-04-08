@@ -60,7 +60,7 @@ public interface AbilityMapper extends CMLibrary
     	public int specificSkillLimit;
     }
     
-    public static class AbilityMapping
+    public static class AbilityMapping implements Cloneable
     {
     	public static final int COST_PRAC=0;
     	public static final int COST_TRAIN=1;
@@ -80,6 +80,15 @@ public interface AbilityMapper extends CMLibrary
         public String originalSkillPreReqList="";
         public Integer[] costOverrides=new Integer[COST_NUM];
         public AbilityMapping(String id){ ID=id;}
+        public AbilityMapping copyOf()
+        {
+        	try { 
+        		AbilityMapping A=(AbilityMapping)this.clone();
+        		A.skillPreReqs = skillPreReqs.copyOf();
+        		A.costOverrides = costOverrides.clone();
+        		return A;
+        	}catch(Exception e) { return this;}
+        }
     }
     
     public void addCharAbilityMapping(String ID, int qualLevel, String abilityID, boolean autoGain);
