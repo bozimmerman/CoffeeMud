@@ -54,7 +54,8 @@ public class GenCraftSkill extends EnhancedCraftingSkill implements ItemCraftor
     private static final int V_CNMN=6;//B
     private static final int V_CNRF=7;//B
     private static final int V_CNBN=8;//B
-    private static final int NUM_VS=9;//S
+    private static final int V_SOND=9;//S
+    private static final int NUM_VS=10;//S
     
     public String parametersFormat(){ return 
         "ITEM_NAME\tITEM_LEVEL\tBUILD_TIME_TICKS\tMATERIALS_REQUIRED\t"
@@ -65,7 +66,7 @@ public class GenCraftSkill extends EnhancedCraftingSkill implements ItemCraftor
 	protected static final int RCP_FINALNAME=0;
 	protected static final int RCP_LEVEL=1;
 	protected static final int RCP_TICKS=2;
-	protected static final int RCP_WOOD=3;
+	protected static final int RCP_AMOUNTMATS=3;
 	protected static final int RCP_VALUE=4;
 	protected static final int RCP_CLASSTYPE=5;
 	protected static final int RCP_MISCTYPE=6;
@@ -88,6 +89,7 @@ public class GenCraftSkill extends EnhancedCraftingSkill implements ItemCraftor
         O[V_CNMN]=Boolean.valueOf(true);
         O[V_CNRF]=Boolean.valueOf(true);
         O[V_CNBN]=Boolean.valueOf(true);
+        O[V_SOND]="sawing.wav";
         return O;
     }
     
@@ -151,6 +153,14 @@ public class GenCraftSkill extends EnhancedCraftingSkill implements ItemCraftor
                                          "TEXT",//1
                                          "NAME",//2S
                                          "HELP",//27I
+                                         "TRIGSTR",//4S[]
+                                         "FILENAME",//2S
+                                         "MATLIST",//2S
+                                         "VERB",//2S
+                                         "CANMEND",//2S
+                                         "CANREFIT",//2S
+                                         "CANBUNDLE",//2S
+                                         "SOUND",//2S
                                         };
     public String[] getStatCodes(){return CODES;}
     protected int getCodeNum(String code){
@@ -159,9 +169,9 @@ public class GenCraftSkill extends EnhancedCraftingSkill implements ItemCraftor
         return -1;
     }
     
-    @SuppressWarnings("unchecked")
 	public String getStat(String code)
     {
+        /*
         int num=0;
         int numDex=code.length();
         while((numDex>0)&&(Character.isDigit(code.charAt(numDex-1)))) numDex--;
@@ -170,12 +180,21 @@ public class GenCraftSkill extends EnhancedCraftingSkill implements ItemCraftor
             num=CMath.s_int(code.substring(numDex));
             code=code.substring(0,numDex);
         }
+        */
         switch(getCodeNum(code))
         {
         case 0: return ID();
         case 1: return text();
         case 2: return (String)V(ID,V_NAME);
         case 3: return (String)V(ID,V_HELP);
+        case 4: return CMParms.toStringList((String[])V(ID,V_TRIG));
+        case 5: return (String)V(ID,V_FNAM);
+        case 6: return ((String)V(ID,V_RSCS)).replace('|',',');
+        case 7: return (String)V(ID,V_VERB);
+        case 8: return Boolean.toString(((Boolean)V(ID,V_CNMN)).booleanValue());
+        case 9: return Boolean.toString(((Boolean)V(ID,V_CNRF)).booleanValue());
+        case 10: return Boolean.toString(((Boolean)V(ID,V_CNBN)).booleanValue());
+        case 11: return (String)V(ID,V_SOND);
         default:
         	if(code.equalsIgnoreCase("allxml")) return getAllXML();
         	break;
@@ -183,7 +202,6 @@ public class GenCraftSkill extends EnhancedCraftingSkill implements ItemCraftor
         return "";
     }
     
-    @SuppressWarnings("unchecked")
 	public void setStat(String code, String val)
     {
         int num=0;
@@ -216,6 +234,14 @@ public class GenCraftSkill extends EnhancedCraftingSkill implements ItemCraftor
                     break;
                 break;
         case 3: SV(ID,V_HELP,val); break;
+        case 4: SV(ID,V_TRIG,CMParms.parseCommas(val,true).toArray(new String[0])); break;
+        case 5: SV(ID,V_FNAM,val); break;
+        case 6: SV(ID,V_RSCS,val.toUpperCase().replace(',','|')); break;
+        case 7: SV(ID,V_VERB,val); break;
+        case 8: SV(ID,V_CNMN,Boolean.valueOf(CMath.s_bool(val))); break;
+        case 9: SV(ID,V_CNRF,Boolean.valueOf(CMath.s_bool(val))); break;
+        case 10: SV(ID,V_CNBN,Boolean.valueOf(CMath.s_bool(val))); break;
+        case 11: SV(ID,V_SOND,val); break;
         default:
         	if(code.equalsIgnoreCase("allxml")&&ID.equalsIgnoreCase("GenCraftSkill")) parseAllXML(val);
         	break;
@@ -331,13 +357,19 @@ public class GenCraftSkill extends EnhancedCraftingSkill implements ItemCraftor
 	protected boolean canMend(MOB mob, Environmental E, boolean quiet)
 	{
 		Boolean canMendB=(Boolean)V(ID,V_CNMN);
-		if(!canMendB) return false;
-		if(!super.canMend(mob,E,quiet)) return false;
+		if(!canMendB.booleanValue()) 
+			return false;
+		if(!super.canMend(mob,E,quiet)) 
+			return false;
 		Item IE=(Item)E;
-		if((IE.material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_WOODEN)
+		if(couldIHaveProducedThis(mob, IE))
+			return true;
+		if(!super.isMadeOfSupportedResource(IE))
 		{
 			if(!quiet)
-				commonTell(mob,"That's not made of wood.  That can't be mended.");
+			{
+				commonTell(mob,"That can't be mended with this skill.");
+			}
 			return false;
 		}
 		return true;
@@ -400,8 +432,8 @@ public class GenCraftSkill extends EnhancedCraftingSkill implements ItemCraftor
 				{
 					String item=replacePercent((String)V.get(RCP_FINALNAME),"");
 					int level=CMath.s_int((String)V.get(RCP_LEVEL));
-					String wood=getComponentDescription(mob,V,RCP_WOOD);
-					if(wood.length()>5)
+					String mats=getComponentDescription(mob,V,RCP_AMOUNTMATS);
+					if(mats.length()>5)
 					{
 						if(toggler>1) buf.append("\n\r");
 						toggler=toggleTop;
@@ -409,7 +441,7 @@ public class GenCraftSkill extends EnhancedCraftingSkill implements ItemCraftor
 					if((level<=xlevel(mob))
 					&&((mask==null)||(mask.length()==0)||mask.equalsIgnoreCase("all")||CMLib.english().containsString(item,mask)))
 					{
-						buf.append(CMStrings.padRight(item,29)+" "+CMStrings.padRight(""+level,3)+" "+CMStrings.padRightPreserve(""+wood,4)+((toggler!=toggleTop)?" ":"\n\r"));
+						buf.append(CMStrings.padRight(item,29)+" "+CMStrings.padRight(""+level,3)+" "+CMStrings.padRightPreserve(""+mats,4)+((toggler!=toggleTop)?" ":"\n\r"));
 						if(++toggler>toggleTop) toggler=1;
 					}
 				}
@@ -448,9 +480,9 @@ public class GenCraftSkill extends EnhancedCraftingSkill implements ItemCraftor
 			Vector newCommands=CMParms.parse(CMParms.combine(commands,1));
 			building=getTarget(mob,mob.location(),givenTarget,newCommands,Wearable.FILTER_UNWORNONLY);
 			if(building==null) return false;
-			if((building.material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_WOODEN)
+			if((!this.couldIHaveProducedThis(mob, building))&&(!super.isMadeOfSupportedResource(building)))
 			{
-				commonTell(mob,"That's not made of wood.  That can't be refitted.");
+				commonTell(mob,"That's can't be refitted with this skill.");
 				return false;
 			}
 			if(!(building instanceof Armor))
@@ -506,29 +538,31 @@ public class GenCraftSkill extends EnhancedCraftingSkill implements ItemCraftor
 				return false;
 			}
 			
-			final String woodRequiredStr = (String)foundRecipe.get(RCP_WOOD);
-			final List<Object> componentsFoundList=getAbilityComponents(mob, woodRequiredStr, "make "+CMLib.english().startWithAorAn(recipeName), autoGenerate);
+			final String requiredMats = (String)foundRecipe.get(RCP_AMOUNTMATS);
+			final List<Object> componentsFoundList=getAbilityComponents(mob, requiredMats, "make "+CMLib.english().startWithAorAn(recipeName), autoGenerate);
 			if(componentsFoundList==null) return false;
-			int woodRequired=CMath.s_int(woodRequiredStr);
-	        woodRequired=adjustWoodRequired(woodRequired,mob);
+			int numRequired=CMath.isInteger(requiredMats)?CMath.s_int(requiredMats):0;
+	        numRequired=adjustWoodRequired(numRequired,mob);
 	        
-			if(amount>woodRequired) woodRequired=amount;
+			if(amount>numRequired) numRequired=amount;
 			String misctype=(String)foundRecipe.get(RCP_MISCTYPE);
-			int[] pm={RawMaterial.MATERIAL_WOODEN};
+			Integer[] ipm=super.supportedResourcesMap();
+			int[] pm=new int[ipm.length];
+			for(int i=0;i<ipm.length;i++) pm[i]=ipm[i].intValue();
             bundling=misctype.equalsIgnoreCase("BUNDLE");
 			int[][] data=fetchFoundResourceData(mob,
-												woodRequired,"wood",pm,
+												numRequired,"material",pm,
 												0,null,null,
 												bundling,
 												autoGenerate,
 												enhancedTypes);
 			if(data==null) return false;
 			fixDataForComponents(data,componentsFoundList);
-			woodRequired=data[0][FOUND_AMT];
+			numRequired=data[0][FOUND_AMT];
 			if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 				return false;
 			int lostValue=autoGenerate>0?0:
-                CMLib.materials().destroyResources(mob.location(),woodRequired,data[0][FOUND_CODE],0,null)
+                CMLib.materials().destroyResources(mob.location(),numRequired,data[0][FOUND_CODE],0,null)
                 +CMLib.ableMapper().destroyAbilityComponents(componentsFoundList);
 			building=CMClass.getItem((String)foundRecipe.get(RCP_CLASSTYPE));
 			if(building==null)
@@ -539,17 +573,17 @@ public class GenCraftSkill extends EnhancedCraftingSkill implements ItemCraftor
 			duration=getDuration(CMath.s_int((String)foundRecipe.get(RCP_TICKS)),mob,CMath.s_int((String)foundRecipe.get(RCP_LEVEL)),4);
 			String itemName=replacePercent((String)foundRecipe.get(RCP_FINALNAME),RawMaterial.CODES.NAME(data[0][FOUND_CODE])).toLowerCase();
 			if(bundling)
-				itemName="a "+woodRequired+"# "+itemName;
+				itemName="a "+numRequired+"# "+itemName;
 			else
 				itemName=CMLib.english().startWithAorAn(itemName);
 			building.setName(itemName);
 			startStr="<S-NAME> start(s) "+verbing+" "+building.name()+".";
 			displayText="You are "+verbing+" "+building.name();
-            playSound="sawing.wav";
+            playSound=(String)V(ID,V_SOND);
 			verb=verbing+" "+building.name();
 			building.setDisplayText(itemName+" lies here");
 			building.setDescription(itemName+". ");
-			building.basePhyStats().setWeight(woodRequired);
+			building.basePhyStats().setWeight(numRequired);
 			building.setBaseValue(CMath.s_int((String)foundRecipe.get(RCP_VALUE)));
 			building.setMaterial(data[0][FOUND_CODE]);
 			int hardness=RawMaterial.CODES.HARDNESS(data[0][FOUND_CODE])-3;
@@ -568,7 +602,7 @@ public class GenCraftSkill extends EnhancedCraftingSkill implements ItemCraftor
 			{
 				if(capacity>0)
 				{
-					((Container)building).setCapacity(capacity+woodRequired);
+					((Container)building).setCapacity(capacity+numRequired);
 					((Container)building).setContainTypes(canContain);
 				}
 				if(misctype.equalsIgnoreCase("LID"))

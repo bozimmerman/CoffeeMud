@@ -489,6 +489,53 @@ public class AbilityData extends StdWebMacro
                         str.append("<OPTION VALUE=\""+i+"\""+((CMath.s_int(old)==i)?" SELECTED":"")+">"+CMStrings.capitalizeAndLower(CMMsg.TYPE_DESCS[i]));
                     str.append(", ");
                 }
+                if(parms.containsKey("CANMEND"))
+                {
+                    String old=httpReq.getRequestParameter("CANMEND");
+                    if(old==null) 
+                    	old=A.getStat("CANMEND");
+                    else
+                    	old=old.equalsIgnoreCase("on")?"true":"false";
+                    str.append(old.equalsIgnoreCase("true")?"on":"");
+                }
+                if(parms.containsKey("CANREFIT"))
+                {
+                    String old=httpReq.getRequestParameter("CANREFIT");
+                    if(old==null) 
+                    	old=A.getStat("CANREFIT");
+                    else
+                    	old=old.equalsIgnoreCase("on")?"true":"false";
+                    str.append(old.equalsIgnoreCase("true")?"on":"");
+                }
+                if(parms.containsKey("CANBUNDLE"))
+                {
+                    String old=httpReq.getRequestParameter("CANBUNDLE");
+                    if(old==null) 
+                    	old=A.getStat("CANBUNDLE");
+                    else
+                    	old=old.equalsIgnoreCase("on")?"true":"false";
+                    str.append(old.equalsIgnoreCase("true")?"on":"");
+                }
+                
+                if(parms.containsKey("MATLIST"))
+                {
+                    Vector<String> list=new Vector<String>();
+                    if(httpReq.isRequestParameter("MATLIST"))
+                    {
+                        String id="";
+                        int num=0;
+                        for(;httpReq.isRequestParameter("MATLIST"+id);id=""+(++num))
+                            list.addElement(httpReq.getRequestParameter("MATLIST"+id).toUpperCase().trim());
+                    } 
+                    else 
+                        list=CMParms.parseCommas(A.getStat("MATLIST"),true);
+                    for(int i=0;i<RawMaterial.MATERIAL_DESCS.length;i++)
+                        str.append("<OPTION VALUE=\""+RawMaterial.MATERIAL_DESCS[i]+"\""+(list.contains(RawMaterial.MATERIAL_DESCS[i])?" SELECTED":"")+">"+CMStrings.capitalizeAndLower(RawMaterial.MATERIAL_DESCS[i]));
+                    for(int i=0;i<RawMaterial.CODES.NAMES().length;i++)
+                        str.append("<OPTION VALUE=\""+RawMaterial.CODES.NAMES()[i]+"\""+(list.contains(RawMaterial.CODES.NAMES()[i])?" SELECTED":"")+">"+CMStrings.capitalizeAndLower(RawMaterial.CODES.NAMES()[i]));
+                    str.append(", ");
+                }
+                
                 if(parms.containsKey("POSTCASTAFFECT"))
                 {
                     Vector<String> list=new Vector<String>();
@@ -542,6 +589,8 @@ public class AbilityData extends StdWebMacro
                     if(old==null) old=A.getStat("POSTCASTDAMAGE");
                     str.append(old+", ");
                 }
+                
+                
                 
                 /*********************************************************************************/
                 /*********************************************************************************/
@@ -712,6 +761,17 @@ public class AbilityData extends StdWebMacro
 						if(!defaultGain)
 							str.append("(Qualify), ");
 					}
+				}
+				
+				if(str.length()==0)
+				{
+					for(String key : parms.keySet())
+						if(A.isStat(key.toUpperCase().trim()))
+						{
+		                    String old=httpReq.getRequestParameter(key.toUpperCase().trim());
+		                    if(old==null) old=A.getStat(key.toUpperCase().trim());
+		                    str.append(old).append(", ");
+						}
 				}
 				String strstr=str.toString();
 				if(strstr.endsWith(", "))

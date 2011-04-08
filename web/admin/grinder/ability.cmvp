@@ -107,6 +107,7 @@
 <INPUT TYPE=HIDDEN NAME=ABILITY VALUE="@RequestParameter?ABILITY@">
 <INPUT TYPE=HIDDEN NAME=NEWABILITY VALUE="@RequestParameter?NEWABILITY@">
 <INPUT TYPE=HIDDEN NAME=NEWLANGUAGE VALUE="@RequestParameter?NEWLANGUAGE@">
+<INPUT TYPE=HIDDEN NAME=NEWCRAFTSKILL VALUE="@RequestParameter?NEWCRAFTSKILL@">
 <CENTER>
 @if?CheckReqParm?ABILITY=@
     Select a ability above to view/edit.
@@ -160,6 +161,70 @@
                     <TD></TD>
                     <TD><A HREF="JavaScript:ReShow();"><FONT COLOR=WHITE SIZE=-1>Add another word replacement</FONT></A></TD>
                 </TR>
+        @else@
+        @if?AbilityData?ISCRAFTSKILL@
+            <TR>
+                <TD>
+                    <FONT COLOR=YELLOW>Skill Verb: </FONT><BR>
+                </TD>
+                <TD>
+                    <INPUT TYPE=TEXT SIZE=10 MAXLENGTH=20 NAME=VERB VALUE="@AbilityData?VERB@">
+                </TD>
+            </TR>
+            <TR>
+                <TD>
+                    <FONT COLOR=YELLOW>Command Words: </FONT><BR>
+                </TD>
+                <TD>
+                    <INPUT TYPE=TEXT SIZE=30 MAXLENGTH=100 NAME=TRIGSTR VALUE="@AbilityData?TRIGSTR@">
+                </TD>
+            </TR>
+            <TR>
+                <TD>
+                    <FONT COLOR=YELLOW>Allowed to Mend: </FONT><BR>
+                </TD>
+                <TD>
+                    <INPUT TYPE=CHECKBOX NAME=CANMEND @AbilityData?CANMEND@>
+                </TD>
+            </TR>
+            <TR>
+                <TD>
+                    <FONT COLOR=YELLOW>Allowed to Refit: </FONT><BR>
+                </TD>
+                <TD>
+                    <INPUT TYPE=CHECKBOX NAME=CANREFIT @AbilityData?CANREFIT@>
+                </TD>
+            </TR>
+            <TR>
+                <TD>
+                    <FONT COLOR=YELLOW>Allowed to Bundle: </FONT><BR>
+                </TD>
+                <TD>
+                    <INPUT TYPE=CHECKBOX NAME=CANBUNDLE @AbilityData?CANBUNDLE@>
+                </TD>
+            </TR>
+            <TR>
+                <TD><FONT COLOR=YELLOW>Raw Resources / Material Types: </FONT></TD>
+                <TD>
+                    <SELECT NAME=MATLIST MULTIPLE>@AbilityData?MATLIST@</SELECT>
+                </TD>
+            </TR>
+            <TR>
+                <TD>
+                    <FONT COLOR=YELLOW>Recipes Filename: </FONT><BR>
+                </TD>
+                <TD>
+                    <INPUT TYPE=TEXT SIZE=30 MAXLENGTH=100 NAME=FILENAME VALUE="@AbilityData?FILENAME@">
+                </TD>
+            </TR>
+            <TR>
+                <TD>
+                    <FONT COLOR=YELLOW>MSP Sound Filename: </FONT><BR>
+                </TD>
+                <TD>
+                    <INPUT TYPE=TEXT SIZE=30 MAXLENGTH=100 NAME=SOUND VALUE="@AbilityData?SOUND@">
+                </TD>
+            </TR>
         @else@
             <TR>
                 <TD><FONT COLOR=YELLOW>Type: </FONT></TD>
@@ -334,6 +399,7 @@
                     <INPUT TYPE=TEXT SIZE=40 MAXLENGTH=255 NAME=POSTCASTDAMAGE VALUE="@AbilityData?POSTCASTDAMAGE@">
                 </TD>
             </TR>
+        @endif@
         @endif@
         <TR>
             <TD><FONT COLOR=YELLOW>Help Entry: </FONT></TD>

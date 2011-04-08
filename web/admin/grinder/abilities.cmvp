@@ -77,10 +77,13 @@
        @endif@
     @back@
     <TR>
-    <TD COLSPAN=4><a href="javascript:if(document.RESOURCES.NEWABILITY.value!='')Ability(document.RESOURCES.NEWABILITY.value,'&NEWABILITY='+document.RESOURCES.NEWABILITY.value)"><FONT COLOR=WHITE><B>Create new Ability/Skill:</a> <INPUT TYPE=TEXT NAME=NEWABILITY SIZE=20 ONCHANGE="document.RESOURCES.NEWLANGUAGE.value='';"></B></FONT></TD>
+    <TD COLSPAN=4><a href="javascript:if(document.RESOURCES.NEWABILITY.value!='')Ability(document.RESOURCES.NEWABILITY.value,'&NEWABILITY='+document.RESOURCES.NEWABILITY.value)"><FONT COLOR=WHITE><B>Create new Ability/Skill:</a> <INPUT TYPE=TEXT NAME=NEWABILITY SIZE=20 ONCHANGE="document.RESOURCES.NEWLANGUAGE.value='';document.RESOURCES.NEWCRAFTSKILL.value='';"></B></FONT></TD>
     </TR>
     <TR>
-    <TD COLSPAN=4><a href="javascript:if(document.RESOURCES.NEWLANGUAGE.value!='')Ability(document.RESOURCES.NEWLANGUAGE.value,'&NEWLANGUAGE='+document.RESOURCES.NEWLANGUAGE.value)"><FONT COLOR=WHITE><B>Create new Language:</a> <INPUT TYPE=TEXT NAME=NEWLANGUAGE SIZE=20 ONCHANGE="document.RESOURCES.NEWABILITY.value='';"></B></FONT></TD>
+    <TD COLSPAN=4><a href="javascript:if(document.RESOURCES.NEWLANGUAGE.value!='')Ability(document.RESOURCES.NEWLANGUAGE.value,'&NEWLANGUAGE='+document.RESOURCES.NEWLANGUAGE.value)"><FONT COLOR=WHITE><B>Create new Language:</a> <INPUT TYPE=TEXT NAME=NEWLANGUAGE SIZE=20 ONCHANGE="document.RESOURCES.NEWABILITY.value='';document.RESOURCES.NEWCRAFTSKILL.value='';"></B></FONT></TD>
+    </TR>
+    <TR>
+    <TD COLSPAN=4><a href="javascript:if(document.RESOURCES.NEWCRAFTSKILL.value!='')Ability(document.RESOURCES.NEWCRAFTSKILL.value,'&NEWCRAFTSKILL='+document.RESOURCES.NEWCRAFTSKILL.value)"><FONT COLOR=WHITE><B>Create new Crafting Skill:</a> <INPUT TYPE=TEXT NAME=NEWCRAFTSKILL SIZE=20 ONCHANGE="document.RESOURCES.NEWABILITY.value='';document.RESOURCES.NEWLANGUAGE.value='';"></B></FONT></TD>
     </TR>
     </TABLE>
     <P>

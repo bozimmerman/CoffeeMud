@@ -6252,6 +6252,57 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
             // id is bad to change.. make them delete it.
             //genText(mob,me,null,++showNumber,showFlag,"Enter the class","CLASS");
             promptStatStr(mob,me,null,++showNumber,showFlag,"Skill name","NAME",false);
+            promptStatStr(mob,me,null,++showNumber,showFlag,"Skill verb","VERB",false);
+            promptStatStr(mob,me,null,++showNumber,showFlag,"Command Words (comma sep)","TRIGSTR",false);
+            promptStatStr(mob,me,null,++showNumber,showFlag,"Recipe filename","FILENAME",false);
+            ++showNumber;
+            if((showFlag<=0)||(showFlag==showNumber))
+            {
+	            mob.tell(showNumber+". Raw materials: "+me.getStat("MATLIST"));
+	            if((showFlag==showNumber)||(showFlag<=-999))
+	            {
+		        	String promptStr="Enter a material or resource to add or remove (?)\n\r:";
+		            while((mob.session()!=null)&&(!mob.session().killFlag()))
+		            {
+		                String word=mob.session().prompt(promptStr,"");
+		                if(word.trim().length()==0)
+		                {
+		                	break;
+		                }
+		                if(word.equalsIgnoreCase("?"))
+		                {
+		                	StringBuilder str=new StringBuilder(CMParms.toStringList(RawMaterial.MATERIAL_DESCS));
+		                	str.append(", ").append(CMParms.toStringList(RawMaterial.CODES.NAMES()));
+		                	mob.tell(str.toString());
+		                	continue;
+		                }
+		                List<String> curSet=CMParms.parseCommas(me.getStat("MATLIST").toUpperCase(),true);
+		                if(curSet.contains(word.toUpperCase().trim()))
+		                {
+		                	curSet.remove(word.toUpperCase().trim());
+		                	me.setStat("MATLIST", CMParms.toStringList(curSet.toArray(new String[0])));
+		                	mob.tell("Resource or Material '"+word+"' removed.");
+		                }
+		                else
+		                if(CMParms.containsIgnoreCase(RawMaterial.MATERIAL_DESCS, word)
+		                ||CMParms.containsIgnoreCase(RawMaterial.CODES.NAMES(), word))
+		                {
+		                	curSet.add(word.toUpperCase().trim());
+		                	me.setStat("MATLIST", CMParms.toStringList(curSet.toArray(new String[0])));
+		                	if(CMParms.containsIgnoreCase(RawMaterial.MATERIAL_DESCS, word))
+			                	mob.tell("Material type '"+word+"' added.");
+		                	else
+			                	mob.tell("Raw resource '"+word+"' added.");
+		                }
+		                else
+		                	mob.tell("'"+word+"' is not a material or resource.  Try ?");
+		            }
+	            }
+            }
+            promptStatBool(mob,me,null,++showNumber,showFlag,"Can mend","CANMEND");
+            promptStatBool(mob,me,null,++showNumber,showFlag,"Can refit","CANREFIT");
+            promptStatBool(mob,me,null,++showNumber,showFlag,"Can bundle","CANBUNDLE");
+            promptStatStr(mob,me,null,++showNumber,showFlag,"MSP file","SOUND",false);
             promptStatStr(mob,me,null,++showNumber,showFlag,"Help Text","HELP",true);
 
             if(showFlag<-900){ ok=true; break;}
