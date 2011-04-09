@@ -485,7 +485,6 @@ public class CMAble extends StdLibrary implements AbilityMapper
 			{
 		    	if(CMSecurity.isAbilityDisabled(mapped.abilityID.toUpperCase())) continue;
 		    	AbilityMapping able = mapped.copyOf();
-		    	able.ID = ID;
 				eachClassSet.add(able);
 			}
 			for(AbilityMapping mapped : allAllMap.values())
@@ -505,7 +504,8 @@ public class CMAble extends StdLibrary implements AbilityMapper
 		}
 		for(final Iterator<AbilityMapping> a=eachClassSet.iterator();a.hasNext();)
 		{
-			final AbilityMapping able=a.next();
+			final AbilityMapping able=a.next().copyOf();
+	    	able.ID = ID;
 			able.allQualifyFlag=true;
 			addClassAbility(able.abilityID, ableMap, able);
 		}
@@ -2240,9 +2240,49 @@ public class CMAble extends StdLibrary implements AbilityMapper
 		}
 		return str.toString();
 	}
-	
-	public void saveAllQualifysFile(Map<String, Map<String,AbilityMapping>> newMap)
+
+	protected void undoAllQualifysList()
 	{
+		for(String abilityID : reverseAbilityMap.keySet())
+		{
+			Map<String, AbilityMapping> revT = reverseAbilityMap.get(abilityID);
+			LinkedList<String> deleteThese=new LinkedList<String>();
+			for(String ID : revT.keySet())
+			{
+				final AbilityMapping able = revT.get(ID);
+				if(able.allQualifyFlag)
+					deleteThese.add(ID);
+			}
+			for(String ID : deleteThese)
+				revT.remove(ID);
+		}
+		
+		for(String ID : completeAbleMap.keySet())
+		{
+			Map<String, AbilityMapping> ableMap = completeAbleMap.get(ID);
+			LinkedList<String> deleteThese=new LinkedList<String>();
+			for(String abilityID : ableMap.keySet())
+			{
+				final AbilityMapping able = ableMap.get(abilityID);
+				if(able.allQualifyFlag)
+					deleteThese.add(abilityID);
+			}
+			for(String abilityID : deleteThese)
+				ableMap.remove(abilityID);
+		}
+	}
+	
+	public synchronized void saveAllQualifysFile(Map<String, Map<String,AbilityMapping>> newMap)
+	{
+		// undo and then reapply the all qualifys list
+		undoAllQualifysList();
+		eachClassSet=null;
+		for(String ID : completeAbleMap.keySet())
+			if((!ID.equalsIgnoreCase("All"))
+			&&(!ID.equalsIgnoreCase("Archon")))
+				handleEachAndClassAbility(completeAbleMap.get(ID), newMap, ID);
+
+		// now just save it
 		CMFile f = new CMFile(Resources.makeFileResourceName("skills/allqualifylist.txt"),null,false);
 		List<String> set=new Vector<String>(0);
 		if(f.exists() && f.canRead())

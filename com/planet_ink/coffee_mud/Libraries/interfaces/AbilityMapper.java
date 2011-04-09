@@ -185,4 +185,6 @@ public interface AbilityMapper extends CMLibrary
     public AbilityComponent createBlankAbilityComponent();
     public boolean isDomainIncludedInAnyAbility(int domain, int acode);
     public void alterAbilityComponentFile(String compID, boolean delete);
+	public void saveAllQualifysFile(Map<String, Map<String,AbilityMapping>> newMap);
+	public Map<String, Map<String,AbilityMapping>> getAllQualifiesMap(final Map<String,Object> cache);
 }
