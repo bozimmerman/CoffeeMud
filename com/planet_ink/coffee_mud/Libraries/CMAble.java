@@ -387,7 +387,7 @@ public class CMAble extends StdLibrary implements AbilityMapper
 		{
 			ableMap=new SHashtable<String,AbilityMapping>();
 			completeAbleMap.put(ID,ableMap);
-			handleEachAndClassAbility(ableMap, ID);
+			handleEachAndClassAbility(ableMap, getAllQualifiesMap(null), ID);
 		}
 		AbilityMapping able = makeAbilityMapping(ID,qualLevel,abilityID,defaultProficiency,maxProficiency,defaultParam,autoGain,secret,preReqSkillsList,extraMask,costOverrides);
 		addClassAbility(abilityID,ableMap,able);
@@ -474,13 +474,11 @@ public class CMAble extends StdLibrary implements AbilityMapper
 	}
 	
 
-	public synchronized void handleEachAndClassAbility(Map<String, AbilityMapping> ableMap, String ID)
+	public synchronized void handleEachAndClassAbility(Map<String, AbilityMapping> ableMap, Map<String,Map<String,AbilityMapping>> allQualMap, String ID)
 	{
-		
 		if(eachClassSet == null)
 		{
 			eachClassSet = new SLinkedList<AbilityMapping>();
-			Map<String,Map<String,AbilityMapping>> allQualMap=getAllQualifiesMap(null);
 			Map<String,AbilityMapping> eachMap=allQualMap.get("EACH");
 			Map<String,AbilityMapping> allAllMap=allQualMap.get("ALL");
 			for(AbilityMapping mapped : eachMap.values())
@@ -501,12 +499,14 @@ public class CMAble extends StdLibrary implements AbilityMapper
 					allMap=new SHashtable<String,AbilityMapping>();
 					completeAbleMap.put("All",allMap);
 				}
+				able.allQualifyFlag=true;
 				addClassAbility(able.abilityID, allMap, able);
 			}
 		}
 		for(final Iterator<AbilityMapping> a=eachClassSet.iterator();a.hasNext();)
 		{
 			final AbilityMapping able=a.next();
+			able.allQualifyFlag=true;
 			addClassAbility(able.abilityID, ableMap, able);
 		}
 	}
@@ -2208,8 +2208,40 @@ public class CMAble extends StdLibrary implements AbilityMapper
 			cache.put("ALLQUALIFIES_MAP",bothMaps);
 		return bothMaps;
 	}
+
+	public String buildAllQualifysSection(Map<String,AbilityMapping> map)
+	{
+		TreeMap<Integer,List<AbilityMapping>> sortedMap=new TreeMap<Integer,List<AbilityMapping>>();
+		for(AbilityMapping mapped : map.values())
+		{
+			List<AbilityMapping> subMap=sortedMap.get(Integer.valueOf(mapped.qualLevel));
+			if(subMap==null)
+			{
+				subMap=new LinkedList<AbilityMapping>();
+				sortedMap.put(Integer.valueOf(mapped.qualLevel), subMap);
+			}
+			subMap.add(mapped);
+		}
+		StringBuilder str=new StringBuilder("");
+		for(Integer LEVEL : sortedMap.keySet())
+		{
+			List<AbilityMapping> subMap=sortedMap.get(LEVEL);
+			for(AbilityMapping mapped : subMap)
+			{
+				str.append(LEVEL.toString()).append(" ");
+				str.append(mapped.abilityID).append(" ");
+				if(mapped.autoGain) str.append("AUTOGAIN ");
+				if((mapped.extraMask!=null)&&(mapped.extraMask.length()>0))
+					 str.append("MASK=").append(mapped.extraMask).append(" ");
+				if((mapped.originalSkillPreReqList!=null)&&(mapped.originalSkillPreReqList.trim().length()>0))
+					str.append("REQUIRES=").append(CMParms.combineWith(CMParms.parseCommas(mapped.originalSkillPreReqList,true), ' ')).append(" ");
+			}
+			str.append("\n");
+		}
+		return str.toString();
+	}
 	
-	public void alterAbilityComponentFile(Map<String, Map<String,AbilityMapping>> newMap)
+	public void saveAllQualifysFile(Map<String, Map<String,AbilityMapping>> newMap)
 	{
 		CMFile f = new CMFile(Resources.makeFileResourceName("skills/allqualifylist.txt"),null,false);
 		List<String> set=new Vector<String>(0);
@@ -2226,37 +2258,13 @@ public class CMAble extends StdLibrary implements AbilityMapper
 				break;
 			}
 		}
+		Map<String,AbilityMapping> map;
 		str.append("[ALL]").append("\n");
-		Map<String,AbilityMapping> map=newMap.get("ALL");
-		if(map!=null)
-		{
-			TreeMap<Integer,List<AbilityMapping>> sortedMap=new TreeMap<Integer,List<AbilityMapping>>();
-			for(AbilityMapping mapped : map.values())
-			{
-				List<AbilityMapping> subMap=sortedMap.get(Integer.valueOf(mapped.qualLevel));
-				if(subMap==null)
-				{
-					subMap=new LinkedList<AbilityMapping>();
-					sortedMap.put(Integer.valueOf(mapped.qualLevel), subMap);
-				}
-				subMap.add(mapped);
-			}
-			for(Integer LEVEL : sortedMap.keySet())
-			{
-				List<AbilityMapping> subMap=sortedMap.get(LEVEL);
-				for(AbilityMapping mapped : subMap)
-				{
-					str.append(LEVEL.toString()).append(" ");
-					str.append(mapped.abilityID).append(" ");
-					if(mapped.autoGain) str.append("AUTOGAIN ");
-					if((mapped.extraMask!=null)&&(mapped.extraMask.length()>0))
-						 str.append("MASK=").append(mapped.extraMask).append(" ");
-					
-				}
-				str.append("\n");
-			}
-			
-		}
+		map=newMap.get("ALL");
+		if(map!=null) str.append(buildAllQualifysSection(map));
+		str.append("[EACH]").append("\n");
+		map=newMap.get("EACH");
+		if(map!=null) str.append(buildAllQualifysSection(map));
         f.saveText(str.toString(),false);
 	}
 }

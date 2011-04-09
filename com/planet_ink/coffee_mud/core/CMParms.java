@@ -63,6 +63,15 @@ public class CMParms
         return combined.toString().trim();
     }
 
+    public final static String combineWith(final List<?> commands, final char withChar)
+    {
+    	final StringBuilder combined=new StringBuilder("");
+        if(commands!=null)
+        for(int commandIndex=0;commandIndex<commands.size();commandIndex++)
+        	combined.append(commands.get(commandIndex).toString()+withChar);
+        return combined.toString().trim();
+    }
+
     public final static String combineWithQuotes(final List<?> commands, final int startAt, final int endAt)
     {
     	final StringBuffer Combined=new StringBuffer("");

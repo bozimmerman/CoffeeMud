@@ -79,6 +79,7 @@ public interface AbilityMapper extends CMLibrary
         public String extraMask="";
         public String originalSkillPreReqList="";
         public Integer[] costOverrides=new Integer[COST_NUM];
+        public boolean allQualifyFlag=false;
         public AbilityMapping(String id){ ID=id;}
         public AbilityMapping copyOf()
         {
