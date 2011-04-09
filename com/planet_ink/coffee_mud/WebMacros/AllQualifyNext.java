@@ -15,8 +15,6 @@ import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
-
-
 /* 
    Copyright 2000-2011 Bo Zimmerman
 
@@ -32,7 +30,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class ComponentData extends StdWebMacro
+public class AllQualifyNext extends StdWebMacro
 {
     public String name(){return this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);}
     public boolean isAdminMacro()   {return true;}
@@ -40,15 +38,33 @@ public class ComponentData extends StdWebMacro
     public String runMacro(ExternalHTTPRequests httpReq, String parm)
     {
         java.util.Map<String,String> parms=parseParms(parm);
-        String last=httpReq.getRequestParameter("COMPONENT");
-        StringBuilder str=new StringBuilder("");
-        if(parms.containsKey("DESC"))
-        {
-        	str.append(CMLib.ableMapper().getAbilityComponentDesc(null, last));
+        String last=httpReq.getRequestParameter("ALLQUALID");
+        if(parms.containsKey("RESET"))
+        {   
+            if(last!=null) httpReq.removeRequestParameter("ALLQUALID");
+            return "";
         }
-		String strstr=str.toString();
-		if(strstr.endsWith(", "))
-			strstr=strstr.substring(0,strstr.length()-2);
-        return clearWebMacros(strstr);
+        String which=parms.get("WHICH");
+        if((which==null)||(which.length()==0)) which="ALL";
+        Map<String,Map<String,AbilityMapper.AbilityMapping>> allQualMap=CMLib.ableMapper().getAllQualifiesMap(httpReq.getRequestObjects());
+        Map<String,AbilityMapper.AbilityMapping> map=allQualMap.get(which.toUpperCase().trim());
+        if(map==null) return " @break@";
+        
+        String lastID="";
+        String abilityID;
+        for(Iterator<String> i=map.keySet().iterator();i.hasNext();)
+        {
+        	abilityID=(String)i.next();
+            if((last==null)||((last.length()>0)&&(last.equals(lastID))&&(!abilityID.equalsIgnoreCase(lastID))))
+            {
+                httpReq.addRequestParameters("ALLQUALID",abilityID);
+                return "";
+            }
+            lastID=abilityID;
+        }
+        httpReq.addRequestParameters("ALLQUALID","");
+        if(parms.containsKey("EMPTYOK"))
+            return "<!--EMPTY-->";
+        return " @break@";
     }
 }
