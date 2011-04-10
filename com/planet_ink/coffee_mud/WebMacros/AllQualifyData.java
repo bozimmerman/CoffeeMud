@@ -48,7 +48,6 @@ public class AllQualifyData extends StdWebMacro
         Map<String,AbilityMapper.AbilityMapping> map=allQualMap.get(which.toUpperCase().trim());
         if(map==null) return "";
         
-        
         AbilityMapper.AbilityMapping mapped=map.get(last);
         if(mapped==null)
         {
@@ -91,14 +90,40 @@ public class AllQualifyData extends StdWebMacro
         
         if(parms.containsKey("REQUIRES"))
         {
-        	String s=httpReq.getRequestParameter("AUTOGAIN");
-        	if(s==null) s=mapped.autoGain?"on":"";
-        	str.append(s.equalsIgnoreCase("on")?"true":"false").append(", ");
+        	if(!httpReq.isRequestParameter("REQABLE1"))
+        	{
+        		int pnum=1;
+        		for(String s : CMParms.parseCommas(mapped.originalSkillPreReqList,true))
+        		{
+        			String ableID=s;
+        			String lvl="";
+        			int x=s.indexOf('(');
+        			if(s.endsWith(")")&&(x>1))
+        			{
+        				ableID=s.substring(0,x);
+        				lvl=s.substring(x+1,s.length()-1).trim();
+        			}
+        			Ability A=CMClass.getAbility(ableID);
+        			if(A!=null)
+        			{
+	        			httpReq.addRequestParameters("REQABLE"+pnum, ableID);
+	        			httpReq.addRequestParameters("REQLEVEL"+pnum, lvl);
+	        			pnum++;
+        			}
+        		}
+        	}
+        	if(parms.containsKey("RESET"))
+        	{
+        		httpReq.removeRequestParameter("REQUIRESNUM");
+        		return "";
+        	}
+        	if(parms.containsKey("NEXT"))
+        	{
+	        	//String lastR=httpReq.getRequestParameter("REQUIRESNUM");
+	        	
+        	}
+        	
         }
-        
-		if((mapped.originalSkillPreReqList!=null)&&(mapped.originalSkillPreReqList.trim().length()>0))
-			str.append("REQUIRES=").append(CMParms.combineWith(CMParms.parseCommas(mapped.originalSkillPreReqList,true), ' ')).append(" ");
-
         
 		String strstr=str.toString();
 		if(strstr.endsWith(", "))
