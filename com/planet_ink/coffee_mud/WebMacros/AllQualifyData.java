@@ -111,16 +111,49 @@ public class AllQualifyData extends StdWebMacro
 	        			pnum++;
         			}
         		}
+    			httpReq.addRequestParameters("REQABLE"+pnum, "");
+    			httpReq.addRequestParameters("REQLEVEL"+pnum, "");
         	}
         	if(parms.containsKey("RESET"))
         	{
         		httpReq.removeRequestParameter("REQUIRESNUM");
+        		httpReq.removeRequestParameter("REQUIRESNAME1");
+        		httpReq.removeRequestParameter("REQUIRESNAME2");
         		return "";
         	}
         	if(parms.containsKey("NEXT"))
         	{
-	        	//String lastR=httpReq.getRequestParameter("REQUIRESNUM");
-	        	
+	        	String lastR=httpReq.getRequestParameter("REQUIRESNUM");
+	        	String lastID="";
+	        	int curChkNum=1;
+	        	int curWriteNum=1;
+	        	while(httpReq.isRequestParameter("REQABLE"+curChkNum))
+	        	{
+	        		String curVal=httpReq.getRequestParameter("REQABLE"+curChkNum);
+	        		if(curVal.equals("DEL")||curVal.equals("DELETE")||curVal.trim().length()==0)
+	        		{
+	        			curChkNum++;
+	        			continue;
+	        		}
+	        		String thisName=Integer.toString(curChkNum);
+					if((lastR==null)||((lastR.length()>0)&&(last.equals(lastID))&&(!thisName.equals(lastID))))
+					{
+    					httpReq.addRequestParameters("REQUIRESNUM",thisName);
+    					last=thisName;
+    	        		httpReq.addRequestParameters("REQUIRESNAME1","REQABLE"+curWriteNum);
+    	        		httpReq.addRequestParameters("REQUIRESNAME2","REQLEVEL"+curWriteNum);
+    					return "";
+    				}
+					curChkNum++;
+					curWriteNum++;
+    				lastID=thisName;
+	        	}
+    			httpReq.addRequestParameters("REQUIRESNUM","");
+        		httpReq.addRequestParameters("REQUIRESNAME1","REQABLE"+curWriteNum);
+        		httpReq.addRequestParameters("REQUIRESNAME2","REQLEVEL"+curWriteNum);
+    			if(parms.containsKey("EMPTYOK"))
+    				return "<!--EMPTY-->";
+    			return " @break@";
         	}
         	
         }
