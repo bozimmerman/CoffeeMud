@@ -41,8 +41,9 @@ public class AllQualifyData extends StdWebMacro
     {
         java.util.Map<String,String> parms=parseParms(parm);
         String last=httpReq.getRequestParameter("ALLQUALID");
-        
-        String which=parms.get("WHICH");
+        String which=httpReq.getRequestParameter("ALLQUALWHICH");
+        if(parms.containsKey("WHICH"))
+        	which=parms.get("WHICH");	
         if((which==null)||(which.length()==0)) which="ALL";
         Map<String,Map<String,AbilityMapper.AbilityMapping>> allQualMap=CMLib.ableMapper().getAllQualifiesMap(httpReq.getRequestObjects());
         Map<String,AbilityMapper.AbilityMapping> map=allQualMap.get(which.toUpperCase().trim());
@@ -72,6 +73,16 @@ public class AllQualifyData extends StdWebMacro
         	else
         		lvl=Integer.toString(CMath.s_int(lvl));
         	str.append(lvl).append(", ");
+        }
+        
+        if(parms.containsKey("PROF"))
+        {
+        	String prof=httpReq.getRequestParameter("PROF");
+        	if(prof==null) 
+        		prof=Integer.toString(mapped.defaultProficiency);
+        	else
+        		prof=Integer.toString(CMath.s_int(prof));
+        	str.append(prof).append(", ");
         }
         
         if(parms.containsKey("MASK"))

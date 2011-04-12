@@ -5,7 +5,7 @@
 <html>
 <head>
     <link rel="grinder icon" href="/images/grinder.ico" >
-    <title>Clan Components List</title>
+    <title>Skill Components List</title>
     <script language=JavaScript>
     <!--
         function Component(action)
@@ -39,6 +39,7 @@
         <TR><TD><a href="javascript:Clicked('/grinder/loggedin.cmvp');"><FONT COLOR=WHITE SIZE=-1><B>MUDGrinder Menu</B></FONT></A></TD></TR>
         <TR><TD><a href="javascript:Clicked('/grinder/abilities.cmvp');"><FONT COLOR=WHITE SIZE=-1><B>Ability Manager</B></FONT></A></TD></TR>
         <TR><TD><a href="javascript:Clicked('/grinder/recipes.cmvp');"><FONT COLOR=WHITE SIZE=-1><B>Skill Recipes</B></FONT></A></TD></TR>
+        <TR><TD><a href="javascript:Clicked('/grinder/allqualifys.cmvp');"><FONT COLOR=WHITE SIZE=-1><B>All-Qualifies List</B></FONT></A></TD></TR>
         <TR><TD><a href="javascript:Refresh();"><FONT COLOR=WHITE SIZE=-1><B>Refresh Page</B></FONT></A></TD></TR>
         </TABLE>
     </TD>
@@ -52,18 +53,18 @@
     <TR><TD WIDTH=100% COLSPAN=6 BGCOLOR=WHITE ALIGN=CENTER><FONT COLOR=BLACK><H2>CoffeeMud @MudServerVersion@ Skill Components</H2></FONT></TD></TR>
     <TR>
     <TD WIDTH=25%><B><FONT COLOR=YELLOW>Skill</FONT></b></TD>
-    <TD WIDTH=75%><B><FONT COLOR=YELLOW>Description</FONT></b></TD>
+    <TD WIDTH=75% COLSPAN=5><B><FONT COLOR=YELLOW>Description</FONT></b></TD>
     </TR>
     @ComponentNext?RESET@
     @loop@
     @ComponentNext@
     <TR>
     <TD><a href="javascript:Component('@ComponentID@')"><FONT COLOR=WHITE>@ComponentID@</FONT></a></TD>
-    <TD><FONT COLOR=WHITE>@ComponentData?DESC@</FONT></TD>
+    <TD COLSPAN=5><FONT COLOR=WHITE>@ComponentData?DESC@</FONT></TD>
     </TR>
     @back@
     <TR>
-        <TD COLSPAN=5>
+        <TD COLSPAN=6>
                 <a href="javascript:Component(document.RESOURCES.NEW.options[document.RESOURCES.NEW.selectedIndex].value)">
                 <FONT COLOR=WHITE><B>Create New:</a>
                 <SELECT NAME=NEW>

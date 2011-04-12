@@ -1,0 +1,122 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+@if?!Authenticate@ @AddFile?/grinder/failedlogin.cmvp@ @else@
+@if?!CheckAuthCode?AUTH_CMDABILITIES=true@ @AddFile?/grinder/nopriv.cmvp@ @else@
+<META HTTP-EQUIV="Pragma" CONTENT="no-cache">
+<html>
+<head>
+    <link rel="grinder icon" href="/images/grinder.ico" >
+    <title>@RequestParameter?ALLQUALID@ All Qualify Information</title>
+    <script language=JavaScript>
+    <!--
+        function openUp(named)
+        {
+            var strFeatures="top=200,left=50,scrollbars=yes,resizeable=no,height=400,width=650,alwaysRaised=yes,dependent=yes";
+            var w2=window.open("/ahelp.cmvp?HELPTOPIC="+named,"Help",strFeatures,false);
+        }
+        function Delete()
+        {
+            if(confirm('Delete this All Qualify definition?! Confirm!'))
+            {
+                if(confirm('Press OK to Delete this All Qualify definition!'))
+                {
+                    document.RESOURCES.action='allqualifydo.cmvp';
+                    document.RESOURCES.FUNCTION.value='DELALLQUALIFY';
+                    document.RESOURCES.submit();
+                }
+            }
+        }
+        function EditDone()
+        {
+            if(confirm('Submit your changes to this All Qualify item?'))
+            {
+                document.RESOURCES.action='allqualifydo.cmvp';
+                document.RESOURCES.FUNCTION.value='EDITALLQUALIFY';
+                document.RESOURCES.submit();
+            }
+        }
+        function ReShow()
+        {
+            document.RESOURCES.FUNCTION.value='';
+            document.RESOURCES.action='/grinder/allqualify.cmvp';
+            document.RESOURCES.submit();
+        }
+        function EditAffect(ME)
+        {
+            if(ME.selectedIndex==0)
+                ReShow();
+        }
+        function AddAffect(ME)
+        {
+            if(ME.selectedIndex>0)
+                ReShow();
+        }
+        function Cancel()
+        {
+            window.close();
+        }
+        function OpenUp(file,named)
+        {
+            var strFeatures="top=200,left=50,scrollbars=yes,resizeable=no,height=400,width=650,alwaysRaised=yes,dependent=yes";
+            w=window.open("/"+file+"?HELPTOPIC="+named,
+                        "Help",strFeatures, false);
+        }
+    //-->
+    </script>
+</head>
+<body BGCOLOR=BLACK>
+<FORM NAME=RESOURCES TARGET=_top METHOD=POST ACTION="component.cmvp">
+<INPUT TYPE=HIDDEN NAME=AUTH VALUE="@Authenticate?AUTH@">
+<INPUT TYPE=HIDDEN NAME=FUNCTION VALUE="">
+<INPUT TYPE=HIDDEN NAME=ALLQUALID VALUE="@RequestParameter?ALLQUALID@">
+<INPUT TYPE=HIDDEN NAME=ALLQUALWHICH VALUE="@RequestParameter?ALLQUALWHICH@">
+<CENTER><FONT COLOR=WHITE>@RequestParameter?ALLQUALID@ All Qualify Information</FONT></CENTER>
+<P>
+<TABLE WIDTH=100% BORDER=1 CELLSPACING=0 CELLPADDING=0>
+    <TR>
+        <TD WIDTH=25%><FONT COLOR=YELLOW>Skill: </FONT></TD>
+        <TD WIDTH=75%><FONT COLOR=WHITE>@AllQualifyData?NAME@ (@RequestParameter?ALLQUALWHICH@)</TD>
+    </TR>
+    <TR>
+        <TD WIDTH=25%><FONT COLOR=YELLOW>Level: </FONT></TD>
+        <TD WIDTH=75%><INPUT TYPE=TEXT SIZE=5 NAME=LEVEL VALUE="@AllQualifyData?LEVEL@"></TD>
+    </TR>
+    <TR>
+        <TD WIDTH=25%><FONT COLOR=YELLOW>Default Proficiency: </FONT></TD>
+        <TD WIDTH=75%><INPUT TYPE=TEXT SIZE=5 NAME=PROF VALUE="@AllQualifyData?PROF@"></TD>
+    </TR>
+    <TR>
+        <TD WIDTH=25%><FONT COLOR=YELLOW>Zapper Mask: </FONT><A HREF="javascript:openUp('ZAPPERMASKS')"><FONT COLOR=WHITE>?</FONT></a></TD>
+        <TD WIDTH=75%><INPUT TYPE=TEXT SIZE=60 NAME=MASK VALUE="@AllQualifyData?MASK@"></TD>
+    </TR>
+    <TR>
+        <TD WIDTH=25%><FONT COLOR=YELLOW>Auto-Gained: </FONT></TD>
+        <TD WIDTH=75%>
+        <INPUT TYPE=CHECKBOX NAME="AUTOGAIN" @AllQualifyData?AUTOGAIN@>
+        </TD>
+    </TR>
+    <TR>
+        <TD WIDTH=25%><FONT COLOR=YELLOW>Required Skills: </FONT></TD>
+        <TD WIDTH=75%>
+            <TABLE WIDTH=100% BORDER=1>
+                @AllQualifyData?REQUIRES&RESET@
+                @AllQualifyData?REQUIRES&NEXT@
+                <SELECT NAME="@ComponentID@_PIECE_LOCATION_@ComponentPieceID@">
+                @ComponentPieceData?LOCATIONEDIT@
+                </SELECT>
+            </TABLE>
+        </TD>
+    </TR>
+</TABLE>
+<BR>
+<TABLE WIDTH=100% BORDER=0>
+<TR>
+    <TD ALIGN=CENTER><INPUT TYPE=BUTTON NAME=FINISHED VALUE="Finished" ONCLICK="EditDone();"></TD>
+    <TD ALIGN=CENTER><INPUT TYPE=BUTTON NAME=DELETE VALUE="Delete" ONCLICK="Delete();"></TD>
+    <TD ALIGN=CENTER><INPUT TYPE=BUTTON NAME=CANCEL VALUE="Cancel" ONCLICK="Cancel();"></TD>
+</TR>
+</TABLE>
+</FORM>
+</BODY>
+</HTML>
+@endif@
+@endif@

@@ -2230,6 +2230,7 @@ public class CMAble extends StdLibrary implements AbilityMapper
 			{
 				str.append(LEVEL.toString()).append(" ");
 				str.append(mapped.abilityID).append(" ");
+				if(mapped.defaultProficiency>0) str.append("PROF="+mapped.defaultProficiency+" ");
 				if(mapped.autoGain) str.append("AUTOGAIN ");
 				if((mapped.extraMask!=null)&&(mapped.extraMask.length()>0))
 					 str.append("MASK=").append(mapped.extraMask).append(" ");
