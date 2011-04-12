@@ -98,11 +98,32 @@
         <TD WIDTH=25%><FONT COLOR=YELLOW>Required Skills: </FONT></TD>
         <TD WIDTH=75%>
             <TABLE WIDTH=100% BORDER=1>
+                <TD WIDTH=75%><FONT COLOR=YELLOW>Skill ID</FONT></TD>
+                <TD WIDTH=25%><FONT COLOR=YELLOW>Req Prof</FONT></TD>
                 @AllQualifyData?REQUIRES&RESET@
-                @AllQualifyData?REQUIRES&NEXT@
-                <SELECT NAME="@ComponentID@_PIECE_LOCATION_@ComponentPieceID@">
-                @ComponentPieceData?LOCATIONEDIT@
-                </SELECT>
+                @loop@
+                    @AllQualifyData?REQUIRES&NEXT@
+                    <TR>
+                        <TD>
+                            <SELECT NAME="@RequestParameter?REQUIRESNAME1@" ONCHANGE='ReShow()'>
+                            @AllQualifyData?REQUIRES&ABLEEDIT@
+                            </SELECT>
+                        </TD>
+                        <TD>
+                            <INPUT TYPE=TEXT SIZE=5 NAME="@RequestParameter?REQUIRESNAME2@" VALUE="@RequestParameter?@@RequestParameter?REQUIRESNAME2@@ @">
+                        </TD>
+                    </TR>
+                 @back@
+                 <TR>
+                     <TD>
+                         <SELECT NAME="@RequestParameter?REQUIRESNAME1@" ONCHANGE='ReShow()'>
+                         @AllQualifyData?REQUIRES&ABLEEDIT@
+                         </SELECT>
+                     </TD>
+                     <TD>
+                         <INPUT TYPE=TEXT SIZE=5 NAME="@RequestParameter?REQUIRESNAME2@" VALUE="@RequestParameter?@@RequestParameter?REQUIRESNAME2@@ @">
+                     </TD>
+                 </TR>
             </TABLE>
         </TD>
     </TR>

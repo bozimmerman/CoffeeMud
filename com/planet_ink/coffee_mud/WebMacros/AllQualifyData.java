@@ -125,6 +125,26 @@ public class AllQualifyData extends StdWebMacro
     			httpReq.addRequestParameters("REQABLE"+pnum, "");
     			httpReq.addRequestParameters("REQLEVEL"+pnum, "");
         	}
+        	else
+        	{
+	        	int curChkNum=1;
+	        	int curWriteNum=1;
+	        	while(httpReq.isRequestParameter("REQABLE"+curChkNum))
+	        	{
+	        		String curVal=httpReq.getRequestParameter("REQABLE"+curChkNum);
+	        		if(curVal.equals("DEL")||curVal.equals("DELETE")||curVal.trim().length()==0)
+	        		{
+	        			curChkNum++;
+	        			continue;
+	        		}
+	    			httpReq.addRequestParameters("REQABLE"+curWriteNum, curVal);
+	    			httpReq.addRequestParameters("REQLEVEL"+curWriteNum, httpReq.getRequestParameter("REQLEVEL"+curChkNum));
+					curChkNum++;
+					curWriteNum++;
+	        	}
+    			httpReq.removeRequestParameter("REQABLE"+curWriteNum);
+    			httpReq.removeRequestParameter("REQLEVEL"+curWriteNum);
+        	}
         	if(parms.containsKey("RESET"))
         	{
         		httpReq.removeRequestParameter("REQUIRESNUM");
@@ -140,17 +160,11 @@ public class AllQualifyData extends StdWebMacro
 	        	int curWriteNum=1;
 	        	while(httpReq.isRequestParameter("REQABLE"+curChkNum))
 	        	{
-	        		String curVal=httpReq.getRequestParameter("REQABLE"+curChkNum);
-	        		if(curVal.equals("DEL")||curVal.equals("DELETE")||curVal.trim().length()==0)
-	        		{
-	        			curChkNum++;
-	        			continue;
-	        		}
 	        		String thisName=Integer.toString(curChkNum);
-					if((lastR==null)||((lastR.length()>0)&&(last.equals(lastID))&&(!thisName.equals(lastID))))
+					if((lastR==null)||((lastR.length()>0)&&(lastR.equals(lastID))&&(!thisName.equals(lastID))))
 					{
     					httpReq.addRequestParameters("REQUIRESNUM",thisName);
-    					last=thisName;
+    					lastR=thisName;
     	        		httpReq.addRequestParameters("REQUIRESNAME1","REQABLE"+curWriteNum);
     	        		httpReq.addRequestParameters("REQUIRESNAME2","REQLEVEL"+curWriteNum);
     					return "";
@@ -165,6 +179,28 @@ public class AllQualifyData extends StdWebMacro
     			if(parms.containsKey("EMPTYOK"))
     				return "<!--EMPTY-->";
     			return " @break@";
+        	}
+        	if(parms.containsKey("ABLEEDIT"))
+        	{
+	        	String lastR=httpReq.getRequestParameter("REQUIRESNUM");
+    			String ableID=httpReq.getRequestParameter("REQABLE"+lastR);
+    			if((ableID!=null)&&(ableID.length()>0))
+    			{
+					str.append("<OPTION VALUE=\"DEL\">Delete!");
+    				final Ability A=CMClass.getAbility(ableID);
+    				if(A!=null)
+	    				str.append("<OPTION VALUE=\""+A.ID()+"\" SELECTED>"+A.ID());
+    			}
+    			else
+    			{
+    				str.append("<OPTION VALUE=\"\">Add New");
+	    			for(Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
+	    			{
+	    				final Ability A=a.nextElement();
+	    				str.append("<OPTION VALUE=\""+A.ID()+"\">"+A.ID());
+	    			}
+    			}
+    			str.append(", ");
         	}
         	
         }
