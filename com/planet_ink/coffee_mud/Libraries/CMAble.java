@@ -2243,8 +2243,9 @@ public class CMAble extends StdLibrary implements AbilityMapper
 					 str.append("MASK=").append(mapped.extraMask).append(" ");
 				if((mapped.originalSkillPreReqList!=null)&&(mapped.originalSkillPreReqList.trim().length()>0))
 					str.append("REQUIRES=").append(CMParms.combineWith(CMParms.parseCommas(mapped.originalSkillPreReqList,true), ' ')).append(" ");
+				str.append("\n\r");
 			}
-			str.append("\n");
+			str.append("\n\r");
 		}
 		return str.toString();
 	}
@@ -2302,16 +2303,19 @@ public class CMAble extends StdLibrary implements AbilityMapper
 		{
 			if(line.toUpperCase().startsWith("[ALL]")||line.toUpperCase().startsWith("[EACH]"))
 			{
-				str.append("\n\n");
+				str.append("\n\r\n\r");
 				break;
 			}
+			else
+			if(line.length()>0)
+				str.append(line).append("\n\r");
 		}
 		Map<String,AbilityMapping> map;
-		str.append("[ALL]").append("\n");
-		map=newMap.get("ALL");
-		if(map!=null) str.append(buildAllQualifysSection(map));
-		str.append("[EACH]").append("\n");
+		str.append("[EACH]").append("\n\r");
 		map=newMap.get("EACH");
+		if(map!=null) str.append(buildAllQualifysSection(map));
+		str.append("[ALL]").append("\n\r");
+		map=newMap.get("ALL");
 		if(map!=null) str.append(buildAllQualifysSection(map));
         f.saveText(str.toString(),false);
 	}
