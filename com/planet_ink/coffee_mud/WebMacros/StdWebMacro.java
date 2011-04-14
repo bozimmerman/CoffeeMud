@@ -314,34 +314,43 @@ public class StdWebMacro implements WebMacro
 		return new StringBuilder("");
 	}
 	
-	protected DVector parseOrderedParms(String parm)
+	protected PairSVector<String,String> parseOrderedParms(String parm)
 	{
-		DVector requestParms=new DVector(2);
+		PairSVector<String,String> requestParms=new PairSVector<String,String>();
 		if((parm!=null)&&(parm.length()>0))
 		{
-			while(parm.length()>0)
+			int lastDex=0;
+			CharSequence varSeq=null;
+			for(int i=0;i<parm.length();i++)
 			{
-				int x=parm.indexOf('&');
-				String req=null;
-				if(x>=0)
+				switch(parm.charAt(i))
 				{
-					req=parm.substring(0,x);
-					parm=parm.substring(x+1);
-				}
-				else
+				case '&':
 				{
-					req=parm;
-					parm="";
-				}
-				if(req!=null)
-				{
-					x=req.indexOf('=');
-					if(x>=0)
-						requestParms.addElement(req.substring(0,x).trim().toUpperCase(),req.substring(x+1).trim());
+					if(varSeq==null)
+						requestParms.add(parm.substring(lastDex,i).toUpperCase().trim(),parm.substring(lastDex,i).trim());
 					else
-						requestParms.addElement(req.trim().toUpperCase(),req.trim());
+						requestParms.add(varSeq.toString().trim().toUpperCase(),parm.substring(lastDex,i).trim());
+					lastDex=i+1;
+					varSeq=null;
+					break;
+				}
+				case '=':
+				{
+					if(varSeq==null)
+					{
+						varSeq=parm.subSequence(lastDex,i);
+						lastDex=i+1;
+					}
+					break;
+				}
 				}
 			}
+			final int i=parm.length();
+			if(varSeq==null)
+				requestParms.add(parm.substring(lastDex,i).trim().toUpperCase(),parm.substring(lastDex,i).trim());
+			else
+				requestParms.add(varSeq.toString().trim().toUpperCase(),parm.substring(lastDex,i).trim());
 		}
 		return requestParms;
 	}
@@ -438,33 +447,10 @@ public class StdWebMacro implements WebMacro
 	
 	protected java.util.Map<String,String> parseParms(String parm)
 	{
-		Hashtable<String,String> requestParms=new Hashtable<String,String>();
-		if((parm!=null)&&(parm.length()>0))
-		{
-			while(parm.length()>0)
-			{
-				int x=parm.indexOf('&');
-				String req=null;
-				if(x>=0)
-				{
-					req=parm.substring(0,x);
-					parm=parm.substring(x+1);
-				}
-				else
-				{
-					req=parm;
-					parm="";
-				}
-				if(req!=null)
-				{
-					x=req.indexOf('=');
-					if(x>=0)
-						requestParms.put(req.substring(0,x).trim().toUpperCase(),req.substring(x+1).trim());
-					else
-						requestParms.put(req.trim().toUpperCase(),req.trim());
-				}
-			}
-		}
+		final Hashtable<String,String> requestParms=new Hashtable<String,String>();
+		final PairSVector<String,String> requestParsed = parseOrderedParms(parm);
+		for(final Pair<String,String> P : requestParsed)
+			requestParms.put(P.first,P.second);
 		return requestParms;
 	}
 }

@@ -187,4 +187,6 @@ public interface AbilityMapper extends CMLibrary
     public void alterAbilityComponentFile(String compID, boolean delete);
 	public void saveAllQualifysFile(Map<String, Map<String,AbilityMapping>> newMap);
 	public Map<String, Map<String,AbilityMapping>> getAllQualifiesMap(final Map<String,Object> cache);
+	public AbilityMapping makeAbilityMapping(String ID, int qualLevel, String abilityID, int defaultProficiency, int maxProficiency, String defaultParam, boolean autoGain,
+			 boolean secret, List<String> preReqSkillsList, String extraMask, Integer[] costOverrides);
 }

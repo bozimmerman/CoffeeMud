@@ -43,7 +43,7 @@ public class CoffeeTableRows extends StdWebMacro
 	{
 		if(parm.length()==0) parm="DATERANGE&LOGINS&MOSTONLINE&AVERAGEONLINE&TOTALHOURS&NEWPLAYERS&DEATHS&PKDEATHS&CLASSCHANGES&PURGES&MARRIAGES&BIRTHS&DIVORCES";
 		java.util.Map<String,String> parms=parseParms(parm);
-		DVector orderedParms=parseOrderedParms(parm);
+		PairSVector<String,String> orderedParms=parseOrderedParms(parm);
 		String header=(String)parms.get("HEADER");
 		if(header==null) header="";
 		String footer=(String)parms.get("FOOTER");
@@ -131,9 +131,9 @@ public class CoffeeTableRows extends StdWebMacro
                 table.append("<TR>");
                 for(int i=0;i<orderedParms.size();i++)
                 {
-                    String key=(String)orderedParms.elementAt(i,1);
+                    String key=orderedParms.getFirst(i);
                     if(key.equals("COLSPAN"))
-                        colspan=" COLSPAN="+orderedParms.elementAt(i,2);
+                        colspan=" COLSPAN="+orderedParms.getSecond(i);
                     else
                     if(key.equalsIgnoreCase("NEXTSKILLID"))
                     {
@@ -205,9 +205,9 @@ public class CoffeeTableRows extends StdWebMacro
                 table.append("<TR>");
                 for(int i=0;i<orderedParms.size();i++)
                 {
-                    String key=(String)orderedParms.elementAt(i,1);
+                    String key=orderedParms.getFirst(i);
                     if(key.equals("COLSPAN"))
-                        colspan=" COLSPAN="+orderedParms.elementAt(i,2);
+                        colspan=" COLSPAN="+orderedParms.getSecond(i);
                     else if(key.equalsIgnoreCase("QUESTNAME")) table.append("<TD"+colspan+">"+header+Q.name()+footer+"</TD>");
                     else if(key.equalsIgnoreCase("DATERANGE")) table.append("<TD"+colspan+">"+header+CMLib.time().date2DateString(curTime+1)+" - "+CMLib.time().date2DateString(lastCur-1)+footer+"</TD>");
     				else if(key.equalsIgnoreCase("DATESTART")) table.append("<TD"+colspan+">"+header+CMLib.time().date2DateString(curTime+1)+footer+"</TD>");
@@ -267,8 +267,8 @@ public class CoffeeTableRows extends StdWebMacro
 			table.append("<TR>");
 			for(int i=0;i<orderedParms.size();i++)
 			{
-				String key=(String)orderedParms.elementAt(i,1);
-                if(key.equals("COLSPAN")) colspan=" COLSPAN="+orderedParms.elementAt(i,2);
+				String key=orderedParms.getFirst(i);
+                if(key.equals("COLSPAN")) colspan=" COLSPAN="+orderedParms.getSecond(i);
                 else if(key.equalsIgnoreCase("DATERANGE")) table.append("<TD"+colspan+">"+header+CMLib.time().date2DateString(curTime+1)+" - "+CMLib.time().date2DateString(lastCur-1)+footer+"</TD>");
 				else if(key.equalsIgnoreCase("DATESTART")) table.append("<TD"+colspan+">"+header+CMLib.time().date2DateString(curTime+1)+footer+"</TD>");
 				else if(key.equalsIgnoreCase("DATEEND")) table.append("<TD"+colspan+">"+header+CMLib.time().date2DateString(lastCur)+footer+"</TD>");

@@ -2089,6 +2089,82 @@ public class CMAble extends StdLibrary implements AbilityMapper
         F.saveText(text.toString(),false);
 	}
 	
+	public AbilityMapping makeAllQualifyMapping(String s)
+	{
+		int x=s.indexOf(' ');
+		if(x<0) return null;
+		String lvlStr = s.substring(0,x).trim();
+		if(!CMath.isInteger(lvlStr))
+			return null;
+		s=s.substring(x+1).trim();
+		int qualLevel=CMath.s_int(lvlStr);
+		x=s.indexOf(' ');
+		String abilityID;
+		StringBuilder mask=new StringBuilder("");
+		StringBuilder preReqs=new StringBuilder("");
+		StringBuilder prof=new StringBuilder("");
+		boolean autogain=false;
+		if(x<0)
+			abilityID=s;
+		else
+		{
+			abilityID=s.substring(0,x).trim();
+			s=s.substring(x+1).trim();
+			String us=s.toUpperCase();
+			int lastC=' ';
+			StringBuilder cur=null;
+			for(int i=0;i<s.length();i++)
+			{
+				if((lastC==' ')&&(Character.isLetter(us.charAt(i))))
+				{
+					String ss=us.substring(i);
+					if(ss.startsWith("MASK="))
+					{
+						cur=mask;
+						i+=4;
+					}
+					else
+					if(ss.startsWith("PROF="))
+					{
+						cur=prof;
+						i+=4;
+					}
+					else
+					if(ss.startsWith("REQUIRES="))
+					{
+						cur=preReqs;
+						i+=8;
+					}
+					else
+					if(ss.startsWith("AUTOGAIN "))
+					{
+						cur=null;
+						autogain=true;
+						i+=8;
+					}
+					else
+					if(ss.startsWith("AUTOGAIN") 
+					&& (ss.length()==8))
+					{
+						cur=null;
+						autogain=true;
+						break;
+					}
+					else
+					if(cur!=null)
+						cur.append(s.charAt(i));
+				}
+				else
+				if(cur!=null)
+					cur.append(s.charAt(i));
+				lastC=s.charAt(i);
+			}
+		}
+		return
+			makeAbilityMapping(abilityID,qualLevel,abilityID,CMath.s_int(prof.toString().trim()),100,"",autogain,false,
+					CMParms.parseSpaces(preReqs.toString().trim(), true), mask.toString().trim(),null);
+	}
+	
 	public Map<String, Map<String,AbilityMapping>> getAllQualifiesMap(final Map<String,Object> cache)
 	{
 		Map<String, Map<String,AbilityMapping>> bothMaps;
@@ -2119,87 +2195,18 @@ public class CMAble extends StdLibrary implements AbilityMapper
 					continue;
 				else
 				{
-					int x=s.indexOf(' ');
-					if(x<0) continue;
-					String lvlStr = s.substring(0,x).trim();
-					if(!CMath.isInteger(lvlStr))
+					AbilityMapping able=makeAllQualifyMapping(s);
+					if(able==null)
 						continue;
-					s=s.substring(x+1).trim();
-					int qualLevel=CMath.s_int(lvlStr);
-					x=s.indexOf(' ');
-					String abilityID;
-					StringBuilder mask=new StringBuilder("");
-					StringBuilder preReqs=new StringBuilder("");
-					StringBuilder prof=new StringBuilder("");
-					boolean autogain=false;
-					if(x<0)
-						abilityID=s;
-					else
-					{
-						abilityID=s.substring(0,x).trim();
-						s=s.substring(x+1).trim();
-						String us=s.toUpperCase();
-						int lastC=' ';
-						StringBuilder cur=null;
-						for(int i=0;i<s.length();i++)
-						{
-							if((lastC==' ')&&(Character.isLetter(us.charAt(i))))
-							{
-								String ss=us.substring(i);
-								if(ss.startsWith("MASK="))
-								{
-									cur=mask;
-									i+=4;
-								}
-								else
-								if(ss.startsWith("PROF="))
-								{
-									cur=prof;
-									i+=4;
-								}
-								else
-								if(ss.startsWith("REQUIRES="))
-								{
-									cur=preReqs;
-									i+=8;
-								}
-								else
-								if(ss.startsWith("AUTOGAIN "))
-								{
-									cur=null;
-									autogain=true;
-									i+=8;
-								}
-								else
-								if(ss.startsWith("AUTOGAIN") 
-								&& (ss.length()==8))
-								{
-									cur=null;
-									autogain=true;
-									break;
-								}
-								else
-								if(cur!=null)
-									cur.append(s.charAt(i));
-							}
-							else
-							if(cur!=null)
-								cur.append(s.charAt(i));
-							lastC=s.charAt(i);
-						}
-					}
-					AbilityMapping able = 
-						makeAbilityMapping(abilityID,qualLevel,abilityID,CMath.s_int(prof.toString().trim()),100,"",autogain,false,
-								CMParms.parseSpaces(preReqs.toString().trim(), true), mask.toString().trim(),null);
 					if(eachMode)
 					{
 				    	Map<String, AbilityMapping> map=bothMaps.get("EACH");
-						map.put(abilityID.toUpperCase().trim(),able);
+						map.put(able.abilityID.toUpperCase().trim(),able);
 					}
 					else
 					{
 				    	Map<String, AbilityMapping> map=bothMaps.get("ALL");
-						map.put(abilityID.toUpperCase().trim(),able);
+						map.put(able.abilityID.toUpperCase().trim(),able);
 					}
 				}
 			}
