@@ -235,6 +235,42 @@ public class MUDGrinder extends StdWebMacro
             return "The component "+last+" has been successfully modified.";
         }
         else
+        if(parms.containsKey("DELALLQUALIFY"))
+        {
+			MOB mob = Authenticate.getAuthenticatedMob(httpReq);
+            if(mob==null) return "@break@";
+            String last=httpReq.getRequestParameter("ALLQUALID");
+            if(last==null) return "@break@";
+            if(last.length()==0) return "@break@";
+			if(!CMSecurity.isAllowedEverywhere(mob,"ABILITIES")) return "@break@";
+	        String which=httpReq.getRequestParameter("ALLQUALWHICH");
+	        if(parms.containsKey("WHICH"))
+	        	which=parms.get("WHICH");	
+	        if((which==null)||(which.length()==0))
+	        	return " @break@";
+	        Map<String,Map<String,AbilityMapper.AbilityMapping>> allQualMap=CMLib.ableMapper().getAllQualifiesMap(httpReq.getRequestObjects());
+	        Map<String,AbilityMapper.AbilityMapping> map=allQualMap.get(which.toUpperCase().trim());
+	        if(map==null) return " @break@";
+			map.remove(last.toUpperCase().trim());
+			CMLib.ableMapper().saveAllQualifysFile(allQualMap);
+            Log.sysOut("Grinder",mob.Name()+" destroyed all qualify ability "+last);
+            return "The all qualify ability "+last+" has been successfully destroyed.";
+        }
+        else
+        if(parms.containsKey("EDITALLQUALIFY")||parms.containsKey("ADDALLQUALIFY"))
+        {
+			MOB mob = Authenticate.getAuthenticatedMob(httpReq);
+            if(mob==null) return "@break@";
+            String last=httpReq.getRequestParameter("ALLQUALID");
+            if(last==null) return "@break@";
+            if(last.length()==0) return "@break@";
+			if(!CMSecurity.isAllowedEverywhere(mob,"ABILITIES")) return "@break@";
+            String err=new GrinderAllQualifys().editAllQualify(httpReq, parms);
+            if(err.length()>0) return err;
+            Log.sysOut("Grinder",mob.Name()+" modified all qualify ability "+last);
+            return "The all qualify ability "+last+" has been successfully modified.";
+        }
+        else
         if(parms.containsKey("DELCLAN"))
         {
 			MOB mob = Authenticate.getAuthenticatedMob(httpReq);

@@ -39,9 +39,8 @@ public class GrinderAllQualifys
 {
     public String name()    {return this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);}
 
-    public String runMacro(ExternalHTTPRequests httpReq, String parm)
+    public String editAllQualify(ExternalHTTPRequests httpReq, java.util.Map<String,String> parms)
     {
-        java.util.Map<String,String> parms=parseParms(parm);
         String last=httpReq.getRequestParameter("ALLQUALID");
         if((last==null)||(last.length()==0))
         	return " @break@";
@@ -95,45 +94,4 @@ public class GrinderAllQualifys
 		CMLib.ableMapper().saveAllQualifysFile(allQualMap);
         return "";
     }
-    
-	protected java.util.Map<String,String> parseParms(String parm)
-	{
-		Hashtable<String,String> requestParms=new Hashtable<String,String>();
-		if((parm!=null)&&(parm.length()>0))
-		{
-			int lastDex=0;
-			CharSequence varSeq=null;
-			for(int i=0;i<parm.length();i++)
-			{
-				switch(parm.charAt(i))
-				{
-				case '&':
-				{
-					if(varSeq==null)
-						requestParms.put(parm.substring(lastDex,i).toUpperCase().trim(),parm.substring(lastDex,i).trim());
-					else
-						requestParms.put(varSeq.toString().toUpperCase(),parm.substring(lastDex,i));
-					lastDex=i+1;
-					varSeq=null;
-					break;
-				}
-				case '=':
-				{
-					if(varSeq==null)
-					{
-						varSeq=parm.subSequence(lastDex,i);
-						lastDex=i+1;
-					}
-					break;
-				}
-				}
-			}
-			final int i=parm.length();
-			if(varSeq==null)
-				requestParms.put(parm.substring(lastDex,i).toUpperCase().trim(),parm.substring(lastDex,i).trim());
-			else
-				requestParms.put(varSeq.toString().toUpperCase(),parm.substring(lastDex,i));
-		}
-		return requestParms;
-	}
 }
