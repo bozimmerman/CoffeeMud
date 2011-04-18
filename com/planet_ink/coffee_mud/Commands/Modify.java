@@ -10,6 +10,7 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.AbilityMapper;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -909,6 +910,46 @@ public class Modify extends StdCommand
 		return true;
 	}
 
+	public void allQualify(MOB mob, Vector commands)
+	throws IOException
+	{
+		if(commands.size()<4)
+		{
+			mob.tell("You have failed to specify the proper fields.\n\rThe format is MODIFY ALLQUALIFY EACH/ALL [SKILL ID]\n\r");
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
+			return;
+		}
+		String eachOrAll=(String)commands.get(2);
+		if((!eachOrAll.equalsIgnoreCase("each"))&&(!eachOrAll.equalsIgnoreCase("all")))
+		{
+			mob.tell("You have failed to specify the proper fields.\n\rThe format is MODIFY ALLQUALIFY EACH/ALL [SKILL ID]\n\r");
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
+			return;
+		}	
+		String classD=CMParms.combine(commands,3);
+		Ability A=CMClass.getAbility(classD);
+		if(A==null)
+		{
+			mob.tell("Ability with the ID '"+classD+"' does not exist! Try LIST ABILITIES.");
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
+			return;
+		}
+		Map<String,Map<String,AbilityMapper.AbilityMapping>> map=CMLib.ableMapper().getAllQualifiesMap(null);
+		Map<String,AbilityMapper.AbilityMapping> subMap=map.get(eachOrAll.toUpperCase().trim());
+		if(!subMap.containsKey(classD.toUpperCase().trim()))
+		{
+			mob.tell("All-Qualify entry ("+eachOrAll+") ID '"+A.ID()+"' does not exist!  Try CREATE, or LIST ALLQUALIFYS.");
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
+			return;
+		}
+        AbilityMapper.AbilityMapping mapped = CMLib.genEd().modifyAllQualifyEntry(mob,eachOrAll.toUpperCase().trim(),A);
+		map=CMLib.ableMapper().getAllQualifiesMap(null);
+		subMap=map.get(eachOrAll.toUpperCase().trim());
+		subMap.put(A.ID().toUpperCase().trim(), mapped);
+		CMLib.ableMapper().saveAllQualifysFile(map);
+		mob.location().showHappens(CMMsg.MSG_OK_ACTION,"The skill of the world just changed!");
+	}
+
 	public boolean classes(MOB mob, Vector commands)
 		throws IOException
 	{
@@ -1432,6 +1473,12 @@ public class Modify extends StdCommand
 			craftSkills(mob,commands);
 		}
 		else
+		if(commandType.equals("ALLQUALIFY"))
+		{
+			if(!CMSecurity.isAllowed(mob,mob.location(),"CMDABILITIES")) return errorOut(mob);
+			allQualify(mob,commands);
+		}
+		else
 		if(commandType.equals("AREA"))
 		{
 			if(!CMSecurity.isAllowed(mob,mob.location(),"CMDAREAS")) return errorOut(mob);
@@ -1778,7 +1825,7 @@ public class Modify extends StdCommand
 				execute(mob,commands,metaFlags);
 			}
 			else
-				mob.tell("\n\rYou cannot modify a '"+commandType+"'. However, you might try an ITEM, RACE, CLASS, ABILITY, LANGUAGE, CRAFTSKILL, AREA, EXIT, COMPONENT, RECIPE, EXPERTISE, TITLE, QUEST, MOB, USER, HOLIDAY, GOVERNMENT, JSCRIPT, FACTION, SOCIAL, CLAN, POLL, or ROOM.");
+				mob.tell("\n\rYou cannot modify a '"+commandType+"'. However, you might try an ITEM, RACE, CLASS, ABILITY, LANGUAGE, CRAFTSKILL, ALLQUALIFY, AREA, EXIT, COMPONENT, RECIPE, EXPERTISE, TITLE, QUEST, MOB, USER, HOLIDAY, GOVERNMENT, JSCRIPT, FACTION, SOCIAL, CLAN, POLL, or ROOM.");
 		}
 		return false;
 	}

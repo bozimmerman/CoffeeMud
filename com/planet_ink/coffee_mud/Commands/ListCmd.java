@@ -40,6 +40,47 @@ public class ListCmd extends StdCommand
 	private final String[] access={"LIST"};
 	public String[] getAccessWords(){return access;}
 
+	public StringBuilder listAllQualifies(Session viewerS, Vector cmds)
+	{
+		StringBuilder str=new StringBuilder("");
+		Map<String,Map<String,AbilityMapper.AbilityMapping>> map=CMLib.ableMapper().getAllQualifiesMap(null);
+		str.append("<<EACH CLASS>>\n\r");
+		Map<String,AbilityMapper.AbilityMapping> subMap=map.get("EACH");
+		str.append(CMStrings.padRight("Skill ID", ListingLibrary.ColFixer.fixColWidth(20.0,viewerS)));
+		str.append(CMStrings.padRight("Lvl", ListingLibrary.ColFixer.fixColWidth(4.0,viewerS)));
+		str.append(CMStrings.padRight("Gain", ListingLibrary.ColFixer.fixColWidth(5.0,viewerS)));
+		str.append(CMStrings.padRight("Prof", ListingLibrary.ColFixer.fixColWidth(5.0,viewerS)));
+		str.append(CMStrings.padRight("Mask", ListingLibrary.ColFixer.fixColWidth(40.0,viewerS)));
+		str.append("\n\r");
+		for(AbilityMapper.AbilityMapping mapped : subMap.values())
+		{
+			str.append(CMStrings.padRight(mapped.abilityID, ListingLibrary.ColFixer.fixColWidth(20.0,viewerS)));
+			str.append(CMStrings.padRight(""+mapped.qualLevel, ListingLibrary.ColFixer.fixColWidth(4.0,viewerS)));
+			str.append(CMStrings.padRight(mapped.autoGain?"yes":"no", ListingLibrary.ColFixer.fixColWidth(5.0,viewerS)));
+			str.append(CMStrings.padRight(""+mapped.defaultProficiency, ListingLibrary.ColFixer.fixColWidth(5.0,viewerS)));
+			str.append(CMStrings.padRight(mapped.extraMask, ListingLibrary.ColFixer.fixColWidth(40.0,viewerS)));
+			str.append("\n\r");
+		}
+		str.append("\n\r");
+		str.append("<<ALL CLASSES>>\n\r");
+		subMap=map.get("ALL");
+		str.append(CMStrings.padRight("Skill ID", ListingLibrary.ColFixer.fixColWidth(20.0,viewerS)));
+		str.append(CMStrings.padRight("Lvl", ListingLibrary.ColFixer.fixColWidth(4.0,viewerS)));
+		str.append(CMStrings.padRight("Gain", ListingLibrary.ColFixer.fixColWidth(5.0,viewerS)));
+		str.append(CMStrings.padRight("Prof", ListingLibrary.ColFixer.fixColWidth(5.0,viewerS)));
+		str.append(CMStrings.padRight("Mask", ListingLibrary.ColFixer.fixColWidth(40.0,viewerS)));
+		str.append("\n\r");
+		for(AbilityMapper.AbilityMapping mapped : subMap.values())
+		{
+			str.append(CMStrings.padRight(mapped.abilityID, ListingLibrary.ColFixer.fixColWidth(20.0,viewerS)));
+			str.append(CMStrings.padRight(""+mapped.qualLevel, ListingLibrary.ColFixer.fixColWidth(4.0,viewerS)));
+			str.append(CMStrings.padRight(mapped.autoGain?"yes":"no", ListingLibrary.ColFixer.fixColWidth(5.0,viewerS)));
+			str.append(CMStrings.padRight(""+mapped.defaultProficiency, ListingLibrary.ColFixer.fixColWidth(5.0,viewerS)));
+			str.append(CMStrings.padRight(mapped.extraMask, ListingLibrary.ColFixer.fixColWidth(40.0,viewerS)));
+			str.append("\n\r");
+		}
+		return str;
+	}
 
 	public StringBuilder roomDetails(Session viewerS, Vector these, Room likeRoom)
 	{return roomDetails(viewerS,these.elements(),likeRoom);}
@@ -1829,6 +1870,7 @@ public class ListCmd extends StdCommand
 		/*61*/{"CLANS","CMDCLANS"},
 		/*62*/{"DEBUGFLAG","LISTADMIN"},
 		/*63*/{"DISABLEFLAG","LISTADMIN"},
+		/*64*/{"ALLQUALIFYS","CMDABILITIES","LISTADMIN"}
 	};
 
     public boolean pause(Session sess) 
@@ -1967,6 +2009,7 @@ public class ListCmd extends StdCommand
 		case 61: s.wraplessPrintln(listClans(mob.session(),commands)); break;
 		case 62: s.println("\n\r^xDebug Settings: ^?^.^N\n\r"+CMParms.toStringList(new XVector<CMSecurity.DbgFlag>(CMSecurity.getDebugEnum()))+"\n\r"); break;
 		case 63: s.println("\n\r^xDisable Settings: ^?^.^N\n\r"+CMParms.toStringList(new XVector<CMSecurity.DisFlag>(CMSecurity.getDisablesEnum()))+"\n\r"); break;
+		case 65: s.wraplessPrintln(listAllQualifies(mob.session(),commands).toString()); break;
         default:
 			s.println("List?!");
 			break;

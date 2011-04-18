@@ -7846,4 +7846,40 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
             }
         }
     }
+    
+	@Override
+	public AbilityMapper.AbilityMapping modifyAllQualifyEntry(MOB mob, String eachOrAll, Ability me) throws IOException 
+	{
+        int showFlag=-1;
+        if(CMProps.getIntVar(CMProps.SYSTEMI_EDITORTYPE)>0)
+            showFlag=-999;
+		Map<String,Map<String,AbilityMapper.AbilityMapping>> map=CMLib.ableMapper().getAllQualifiesMap(null);
+		Map<String,AbilityMapper.AbilityMapping> subMap=map.get(eachOrAll.toUpperCase().trim());
+		AbilityMapper.AbilityMapping mapped = subMap.get(me.ID().toUpperCase());
+		if(mapped==null)
+			mapped=CMLib.ableMapper().makeAbilityMapping(me.ID(),1,me.ID(),0,100,"",true,false, new Vector(),"",null);
+        boolean ok=false;
+        while(!ok)
+        {
+            int showNumber=0;
+            mob.tell("* Ability Mapping for "+me.ID());
+            mapped.qualLevel=prompt(mob,mapped.qualLevel,++showNumber,showFlag,"Qualifying Level: ");
+            mapped.autoGain=prompt(mob,mapped.autoGain,++showNumber,showFlag,"Auto-Gained: ");
+            mapped.defaultProficiency=prompt(mob,mapped.qualLevel,++showNumber,showFlag,"Def. Proficiency: ");
+            mapped.extraMask=prompt(mob,mapped.extraMask,++showNumber,showFlag,"Qualifying Mask (?): ", true, CMLib.masking().maskHelp("\n\r", "disallow"));
+            mapped.originalSkillPreReqList=prompt(mob,mapped.extraMask,++showNumber,showFlag,"Required Skills (?): ", true, "Space delimited list of Ability IDs.  " +
+            		"Put a required proficiency level in parenthesis after the Ability ID if desired.  " +
+            		"For example: Skill_Write Skill_Trip Skill_Dirt(25) Hunting");
+            if(showFlag<-900){ ok=true; break;}
+            if(showFlag>0){ showFlag=-1; continue;}
+            showFlag=CMath.s_int(mob.session().prompt("Edit which? ",""));
+            if(showFlag<=0)
+            {
+                showFlag=-1;
+                ok=true;
+            }
+        }
+        return CMLib.ableMapper().makeAbilityMapping(mapped.abilityID,mapped.qualLevel,mapped.abilityID,mapped.defaultProficiency,100,"",mapped.autoGain,false,
+    		     CMParms.parseSpaces(mapped.originalSkillPreReqList.trim(), true), mapped.extraMask,null);
+	}
 }

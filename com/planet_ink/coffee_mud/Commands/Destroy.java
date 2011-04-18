@@ -767,7 +767,36 @@ public class Destroy extends StdCommand
 		return false;
 	}
 
-	
+	public void allQualify(MOB mob, Vector commands)
+	throws IOException
+	{
+		if(commands.size()<4)
+		{
+			mob.tell("You have failed to specify the proper fields.\n\rThe format is MODIFY ALLQUALIFY EACH/ALL [SKILL ID]\n\r");
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
+			return;
+		}
+		String eachOrAll=(String)commands.get(2);
+		if((!eachOrAll.equalsIgnoreCase("each"))&&(!eachOrAll.equalsIgnoreCase("all")))
+		{
+			mob.tell("You have failed to specify the proper fields.\n\rThe format is MODIFY ALLQUALIFY EACH/ALL [SKILL ID]\n\r");
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
+			return;
+		}	
+		String classD=CMParms.combine(commands,3);
+		Map<String,Map<String,AbilityMapper.AbilityMapping>> map=CMLib.ableMapper().getAllQualifiesMap(null);
+		Map<String,AbilityMapper.AbilityMapping> subMap=map.get(eachOrAll.toUpperCase().trim());
+		if(!subMap.containsKey(classD.toUpperCase().trim()))
+		{
+			mob.tell("All-Qualify entry ("+eachOrAll+") ID '"+classD+"' does not exist! Try LIST ALLQUALIFYS");
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
+			return;
+		}
+		subMap.remove(classD.toUpperCase().trim());
+        CMLib.ableMapper().saveAllQualifysFile(map);
+		mob.location().showHappens(CMMsg.MSG_OK_ACTION,"The skill of the world just decreased!");
+	}
+
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
@@ -949,6 +978,13 @@ public class Destroy extends StdCommand
 			if(!CMSecurity.isAllowed(mob,mob.location(),"CMDABILITIES")) return errorOut(mob);
 			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"^S<S-NAME> wave(s) <S-HIS-HER> arms...^?");
 			abilities(mob,commands);
+		}
+		else
+		if(commandType.equals("ALLQUALIFY"))
+		{
+			if(!CMSecurity.isAllowed(mob,mob.location(),"CMDABILITIES")) return errorOut(mob);
+			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"^S<S-NAME> wave(s) <S-HIS-HER> arms...^?");
+			allQualify(mob,commands);
 		}
 		else
 		if(commandType.equals("COMPONENT"))

@@ -48,6 +48,7 @@ public interface GenericEditor extends CMLibrary
     public void modifyGenRace(MOB mob, Race me) throws IOException;
     public void modifyPlayer(MOB mob, MOB me) throws IOException;
     public void modifyGovernment(MOB mob, ClanGovernment me) throws IOException;
+    public AbilityMapper.AbilityMapping modifyAllQualifyEntry(MOB mob, String eachOrAll, Ability me) throws IOException;
     
     public Room changeRoomType(Room R, Room newRoom);
     public void spells(MOB mob, List<Ability> V, int showNumber, int showFlag, boolean inParms) throws IOException;

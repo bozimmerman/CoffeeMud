@@ -10,6 +10,7 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.AbilityMapper;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -733,7 +734,46 @@ public class Create extends StdCommand
 		mob.location().showHappens(CMMsg.MSG_OK_ACTION,"The skill of the world just increased!");
 	}
 
-	
+	public void allQualify(MOB mob, Vector commands)
+	throws IOException
+	{
+		if(commands.size()<4)
+		{
+			mob.tell("You have failed to specify the proper fields.\n\rThe format is CREATE ALLQUALIFY EACH/ALL [SKILL ID]\n\r");
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
+			return;
+		}
+		String eachOrAll=(String)commands.get(2);
+		if((!eachOrAll.equalsIgnoreCase("each"))&&(!eachOrAll.equalsIgnoreCase("all")))
+		{
+			mob.tell("You have failed to specify the proper fields.\n\rThe format is CREATE ALLQUALIFY EACH/ALL [SKILL ID]\n\r");
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
+			return;
+		}	
+		String classD=CMParms.combine(commands,3);
+		Ability A=CMClass.getAbility(classD);
+		if(A==null)
+		{
+			mob.tell("Ability with the ID '"+classD+"' does not exist! Try LIST ABILITIES.");
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
+			return;
+		}
+		Map<String,Map<String,AbilityMapper.AbilityMapping>> map=CMLib.ableMapper().getAllQualifiesMap(null);
+		Map<String,AbilityMapper.AbilityMapping> subMap=map.get(eachOrAll.toUpperCase().trim());
+		if(subMap.containsKey(classD.toUpperCase().trim()))
+		{
+			mob.tell("All-Qualify entry ("+eachOrAll+") ID '"+A.ID()+"' already exists.  Try DESTROY or MODIFY.");
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
+			return;
+		}
+        AbilityMapper.AbilityMapping mapped = CMLib.genEd().modifyAllQualifyEntry(mob,eachOrAll.toUpperCase().trim(),A);
+		map=CMLib.ableMapper().getAllQualifiesMap(null);
+		subMap=map.get(eachOrAll.toUpperCase().trim());
+		subMap.put(A.ID().toUpperCase().trim(), mapped);
+		CMLib.ableMapper().saveAllQualifysFile(map);
+		mob.location().showHappens(CMMsg.MSG_OK_ACTION,"The skill of the world just increased!");
+	}
+
 	public void classes(MOB mob, Vector commands)
 		throws IOException
 	{
@@ -858,6 +898,13 @@ public class Create extends StdCommand
 			if(!CMSecurity.isAllowed(mob,mob.location(),"CMDABILITIES")) return errorOut(mob);
 			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"^S<S-NAME> wave(s) <S-HIS-HER> arms...^?");
 			craftSkills(mob,commands);
+		}
+		else
+		if(commandType.equals("ALLQUALIFY"))
+		{
+			if(!CMSecurity.isAllowed(mob,mob.location(),"CMDABILITIES")) return errorOut(mob);
+			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"^S<S-NAME> wave(s) <S-HIS-HER> arms...^?");
+			allQualify(mob,commands);
 		}
 		else
 		if(commandType.equals("COMPONENT"))
@@ -1187,10 +1234,10 @@ public class Create extends StdCommand
 						execute(mob,commands,metaFlags);
 					}
 					else
-						mob.tell("\n\rYou cannot create a '"+commandType+"'. However, you might try an EXIT, ITEM, QUEST, FACTION, COMPONENT, GOVERNMENT, HOLIDAY, CLAN, MOB, RACE, ABILITY, LANGUAGE, CRAFTSKILL, CLASS, POLL, DEBUGFLAG, DISABLEFLAG, USER, or ROOM.");
+						mob.tell("\n\rYou cannot create a '"+commandType+"'. However, you might try an EXIT, ITEM, QUEST, FACTION, COMPONENT, GOVERNMENT, HOLIDAY, CLAN, MOB, RACE, ABILITY, LANGUAGE, CRAFTSKILL, ALLQUALIFY, CLASS, POLL, DEBUGFLAG, DISABLEFLAG, USER, or ROOM.");
 				}
 				else
-					mob.tell("\n\rYou cannot create a '"+commandType+"'. However, you might try an EXIT, ITEM, QUEST, FACTION, MOB, COMPONENT, GOVERNMENT, HOLIDAY, CLAN, RACE, ABILITY, LANGUAGE, CRAFTSKILL, CLASS, POLL, USER, DEBUGFLAG, DISABLEFLAG, ROOM.");
+					mob.tell("\n\rYou cannot create a '"+commandType+"'. However, you might try an EXIT, ITEM, QUEST, FACTION, MOB, COMPONENT, GOVERNMENT, HOLIDAY, CLAN, RACE, ABILITY, LANGUAGE, CRAFTSKILL, ALLQUALIFY, CLASS, POLL, USER, DEBUGFLAG, DISABLEFLAG, ROOM.");
 			}
 		}
 		return false;

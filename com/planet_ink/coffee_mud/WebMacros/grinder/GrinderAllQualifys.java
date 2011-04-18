@@ -88,8 +88,8 @@ public class GrinderAllQualifys
     		}
 			curChkNum++;
     	}
-    	newMap=CMLib.ableMapper(). makeAbilityMapping(newMap.abilityID,newMap.qualLevel,newMap.abilityID,newMap.defaultProficiency,100,"",newMap.autoGain,false,
-													  CMParms.parseSpaces(preReqs.toString().trim(), true), newMap.extraMask,null);
+    	newMap=CMLib.ableMapper().makeAbilityMapping(newMap.abilityID,newMap.qualLevel,newMap.abilityID,newMap.defaultProficiency,100,"",newMap.autoGain,false,
+									     		     CMParms.parseSpaces(preReqs.toString().trim(), true), newMap.extraMask,null);
 		map.put(last.toUpperCase().trim(),newMap);
 		CMLib.ableMapper().saveAllQualifysFile(allQualMap);
         return "";
