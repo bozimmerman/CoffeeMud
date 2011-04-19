@@ -7865,9 +7865,9 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
             mob.tell("* Ability Mapping for "+me.ID());
             mapped.qualLevel=prompt(mob,mapped.qualLevel,++showNumber,showFlag,"Qualifying Level: ");
             mapped.autoGain=prompt(mob,mapped.autoGain,++showNumber,showFlag,"Auto-Gained: ");
-            mapped.defaultProficiency=prompt(mob,mapped.qualLevel,++showNumber,showFlag,"Def. Proficiency: ");
+            mapped.defaultProficiency=prompt(mob,mapped.defaultProficiency,++showNumber,showFlag,"Def. Proficiency: ");
             mapped.extraMask=prompt(mob,mapped.extraMask,++showNumber,showFlag,"Qualifying Mask (?): ", true, CMLib.masking().maskHelp("\n\r", "disallow"));
-            mapped.originalSkillPreReqList=prompt(mob,mapped.extraMask,++showNumber,showFlag,"Required Skills (?): ", true, "Space delimited list of Ability IDs.  " +
+            mapped.originalSkillPreReqList=prompt(mob,mapped.originalSkillPreReqList,++showNumber,showFlag,"Required Skills (?): ", true, "Space delimited list of Ability IDs.  " +
             		"Put a required proficiency level in parenthesis after the Ability ID if desired.  " +
             		"For example: Skill_Write Skill_Trip Skill_Dirt(25) Hunting");
             if(showFlag<-900){ ok=true; break;}

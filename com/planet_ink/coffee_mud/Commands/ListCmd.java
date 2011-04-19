@@ -2009,9 +2009,9 @@ public class ListCmd extends StdCommand
 		case 61: s.wraplessPrintln(listClans(mob.session(),commands)); break;
 		case 62: s.println("\n\r^xDebug Settings: ^?^.^N\n\r"+CMParms.toStringList(new XVector<CMSecurity.DbgFlag>(CMSecurity.getDebugEnum()))+"\n\r"); break;
 		case 63: s.println("\n\r^xDisable Settings: ^?^.^N\n\r"+CMParms.toStringList(new XVector<CMSecurity.DisFlag>(CMSecurity.getDisablesEnum()))+"\n\r"); break;
-		case 65: s.wraplessPrintln(listAllQualifies(mob.session(),commands).toString()); break;
+		case 64: s.wraplessPrintln(listAllQualifies(mob.session(),commands).toString()); break;
         default:
-			s.println("List?!");
+			s.println("List broke?!");
 			break;
 		}
 	}

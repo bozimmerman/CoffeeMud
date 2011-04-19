@@ -19,7 +19,8 @@
 <li><a href="#ables">Abilities</a></li><li><a href="#lang">Languages</a></li><li><a href="#craftskills">CraftSkills</a></li>
 
 
-<li><a href="#comps">Components</a></li>
+<li><a href="#comps">Components</a></li><li><a href="#allqualifys">All-Qualifys</a></li>
+
 <li><a href="#recipes">Recipes</a></li>
 <li><a href="#classes">Classes</a></li>
 <li><a href="#factions">Factions</a></li>
@@ -745,6 +746,75 @@ item names. Use ? for a list of resources.</p>
 <p>If you no longer want a skill to require a component, you can always just obliterate it with the DESTROY command:</p>
 <p><b>DESTROY COMPONENT Skill_Sleep</b></p>
 <p>Of course, all this can also be done from the MUDGrinder Components editor.</p>
+      <p><br>
+
+      <strong><a name="allqualifys"><font color="blue"><font size="5">All-Qualify Skills/Spells/etc..</font></font></a></strong>
+      </p>
+      <p>An All-Qualify skill is one that is accessible to all of your
+character classes. &nbsp;They are divided into two catagories: skills
+that are qualified by All classes, and skills that are qualified by
+Each and Every class. &nbsp;The distinction is an subtle one; skills
+qualified for by All classes are not considered to belong to any
+particular class, and will be listed and processed different in the
+muds user interface in various ways. &nbsp;A skill qualified for by
+each and every class belongs to each class, and is processed exactly
+like any other class skill.</p>
+
+      <p>From the command line, all-qualify entries can be created using the CREATE command:</p>
+
+      <p><b>CREATE ALLQUALIFY EACH Skill_Sleep</b></p>
+
+      <p>You can also modify the&nbsp;all-qualify entries by using the MODIFY command:</p>
+
+      <p><b>MODIFY&nbsp;</b><b>ALLQUALIFY ALL</b><b> Skill_Sleep</b></p>
+
+      <p>Where ALL would be either EACH or ALL; where Skill_Sleep would
+be the full ABILITY ID of the skill you want to add or modify&nbsp;all-qualify entries for. &nbsp;Use can use LIST ABILITIES to see all the
+ability ids in your mud, or LIST ALLQUALIFYS to view the existing entries. &nbsp;</p>
+
+      <p>Either way, you are then
+presented with a wizard menu&nbsp;:</p>
+
+      <table style="width: 100%;" bgcolor="yellow" border="1" cellpadding="1" cellspacing="1" width="100%">
+
+<tbody><tr><td width="25%"><strong>Property</strong></td>
+<td width="75%"><strong>Description</strong></td>
+</tr>
+<tr>
+<td><em>Qualifying Level</em></td>
+<td>which class level is the skill gained or qualified for</td>
+</tr>
+<tr>
+<td><em>Auto-Gained</em></td>
+<td>true if the skills is automatically gained, and false if it is merely qualified for (and must be gained at cost)</td>
+</tr>
+<tr>
+<td><em>Default Proficiency</em></td>
+<td>the proficiency that a player automatically has in this skill when they gain it, either automatically, or after training<br>
+</td>
+</tr>
+<tr>
+<td><em>Qualifying Mask</em></td>
+<td>a zapper mask filtering what sorts of players can gain this skill. &nbsp;See HELP ZAPPERMASK for more info.</td>
+</tr>
+<tr>
+<td><em>Required Skills</em></td>
+<td>
+<p>a list of other skills that must be known before this one can be
+gained. &nbsp;You can also specify a minimum proficiency to gain the
+skill. &nbsp;In the command line, this is a space-delimited list.</p>
+</td>
+</tr>
+
+</tbody>
+      </table>
+
+      <p>If you no longer want a skill to be all qualified, you can always just obliterate it with the DESTROY command:</p>
+
+      <p><b>DESTROY&nbsp;</b><b>ALLQUALIFY EACH</b><b> Skill_Sleep</b></p>
+
+      <p>Of course, all this can also be done from the MUDGrinder All-Qualifys list editor.</p>
+
 <strong><a name="recipes"><font color="blue" size="5">Recipes (for Common Skills)</font></a></strong>
 <p>Recipes are the wonderful
 things that players can create from their Common Skills, specifically
