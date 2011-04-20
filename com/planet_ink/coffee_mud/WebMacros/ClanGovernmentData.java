@@ -188,6 +188,7 @@ public class ClanGovernmentData extends StdWebMacro
 							}
 							lastPos=(""+p);
 						}
+						httpReq.addRequestParameters("LASTGOVTPOSITION",""+posList.size());
 						httpReq.addRequestParameters("GOVTPOSITION","");
 						if(parms.containsKey("EMPTYOK"))
 							return "<!--EMPTY-->";
