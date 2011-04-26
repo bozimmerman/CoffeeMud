@@ -299,9 +299,8 @@ public class RaceData extends StdWebMacro
         str.append("<TR><TD WIDTH=90%>");
         str.append("<SELECT ONCHANGE=\"AddItem(this);\" NAME="+c+"ITEM"+(numItems+1)+">");
         if(!one) str.append("<OPTION SELECTED VALUE=\"\">Select a new Item");
-        for(int i=0;i<itemlist.size();i++)
+        for(Item I : itemlist)
         {
-            Item I=(Item)itemlist.get(i);
             if(one&&(classes.contains(I)))
             {
                 if(items.contains(I))
