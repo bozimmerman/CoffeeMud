@@ -53,7 +53,10 @@ public class Spell_BigMouth extends Spell
 		&&(msg.target() instanceof Physical)
 		&&(Stomach()!=null))
 		{
-			if(((Physical)msg.target()).phyStats().weight()<(mob.phyStats().weight()/3))
+			CMMsg maliciousNessMsg=CMClass.getMsg(msg.source(), msg.target(), CMMsg.MSG_OK_ACTION | CMMsg.MASK_MALICIOUS, null);
+			if((((Physical)msg.target()).phyStats().weight()<(mob.phyStats().weight()/3))
+			&&(mob.location()!=null)
+			&&(mob.location().okMessage(myHost, maliciousNessMsg)))
 			{
 				if((Stomach()!=null)&&(Stomach().numInhabitants()>(CMLib.ableMapper().qualifyingClassLevel(mob,this)-CMLib.ableMapper().qualifyingLevel(mob,this))))
 				{
@@ -85,9 +88,9 @@ public class Spell_BigMouth extends Spell
 				}
 
 				msg.modify(msg.source(),msg.target(),msg.tool(),
-						  msg.sourceCode()|CMMsg.MASK_ALWAYS,msg.sourceMessage(),
-						  CMMsg.MSG_NOISYMOVEMENT,msg.targetMessage(),
-						  msg.othersCode()|CMMsg.MASK_ALWAYS,msg.othersMessage());
+						  msg.sourceCode()|CMMsg.MASK_ALWAYS|CMMsg.MASK_MALICIOUS,msg.sourceMessage(),
+						  CMMsg.MSG_NOISYMOVEMENT|CMMsg.MASK_MALICIOUS,msg.targetMessage(),
+						  msg.othersCode()|CMMsg.MASK_ALWAYS|CMMsg.MASK_MALICIOUS,msg.othersMessage());
 			}
 			else
 			{
@@ -114,19 +117,16 @@ public class Spell_BigMouth extends Spell
 		&&(Stomach()!=null)
 		&&(((Physical)msg.target()).phyStats().weight()<(mob.phyStats().weight()/2)))
 		{
-			if(mob.location().show(msg.source(), msg.target(), CMMsg.MSG_OK_ACTION | CMMsg.MASK_MALICIOUS, null))
+			if(msg.target() instanceof MOB)
 			{
-				if(msg.target() instanceof MOB)
-				{
-					MOB TastyMorsel=(MOB)msg.target();
-					Stomach().bringMobHere(TastyMorsel,false);
-					CMMsg enterMsg=CMClass.getMsg(TastyMorsel,Stomach(),null,CMMsg.MSG_ENTER,"<S-NAME> <S-IS-ARE> swallowed whole by "+mob.name()+"!",CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,"<S-NAME> slide(s) down the gullet into the stomach!");
-					Stomach().send(TastyMorsel,enterMsg);
-				}
-				if((msg.target() instanceof Item)
-				&&(!(msg.target() instanceof Food)))
-					Stomach().moveItemTo((Item)msg.target(),ItemPossessor.Expire.Monster_EQ);
+				MOB TastyMorsel=(MOB)msg.target();
+				Stomach().bringMobHere(TastyMorsel,false);
+				CMMsg enterMsg=CMClass.getMsg(TastyMorsel,Stomach(),null,CMMsg.MSG_ENTER,"<S-NAME> <S-IS-ARE> swallowed whole by "+mob.name()+"!",CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,"<S-NAME> slide(s) down the gullet into the stomach!");
+				Stomach().send(TastyMorsel,enterMsg);
 			}
+			if((msg.target() instanceof Item)
+			&&(!(msg.target() instanceof Food)))
+				Stomach().moveItemTo((Item)msg.target(),ItemPossessor.Expire.Monster_EQ);
 		}
 		if((msg.amISource(mob))
 		&&((msg.sourceMinor()==CMMsg.TYP_QUIT)||(msg.sourceMinor()==CMMsg.TYP_DEATH)))
