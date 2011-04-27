@@ -114,16 +114,19 @@ public class Spell_BigMouth extends Spell
 		&&(Stomach()!=null)
 		&&(((Physical)msg.target()).phyStats().weight()<(mob.phyStats().weight()/2)))
 		{
-			if(msg.target() instanceof MOB)
+			if(mob.location().show(msg.source(), msg.target(), CMMsg.MSG_OK_ACTION | CMMsg.MASK_MALICIOUS, null))
 			{
-				MOB TastyMorsel=(MOB)msg.target();
-				Stomach().bringMobHere(TastyMorsel,false);
-				CMMsg enterMsg=CMClass.getMsg(TastyMorsel,Stomach(),null,CMMsg.MSG_ENTER,"<S-NAME> <S-IS-ARE> swallowed whole by "+mob.name()+"!",CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,"<S-NAME> slide(s) down the gullet into the stomach!");
-				Stomach().send(TastyMorsel,enterMsg);
+				if(msg.target() instanceof MOB)
+				{
+					MOB TastyMorsel=(MOB)msg.target();
+					Stomach().bringMobHere(TastyMorsel,false);
+					CMMsg enterMsg=CMClass.getMsg(TastyMorsel,Stomach(),null,CMMsg.MSG_ENTER,"<S-NAME> <S-IS-ARE> swallowed whole by "+mob.name()+"!",CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,"<S-NAME> slide(s) down the gullet into the stomach!");
+					Stomach().send(TastyMorsel,enterMsg);
+				}
+				if((msg.target() instanceof Item)
+				&&(!(msg.target() instanceof Food)))
+					Stomach().moveItemTo((Item)msg.target(),ItemPossessor.Expire.Monster_EQ);
 			}
-			if((msg.target() instanceof Item)
-			&&(!(msg.target() instanceof Food)))
-				Stomach().moveItemTo((Item)msg.target(),ItemPossessor.Expire.Monster_EQ);
 		}
 		if((msg.amISource(mob))
 		&&((msg.sourceMinor()==CMMsg.TYP_QUIT)||(msg.sourceMinor()==CMMsg.TYP_DEATH)))
@@ -139,6 +142,7 @@ public class Spell_BigMouth extends Spell
 		Room R=null;
 		if(affected instanceof MOB)
 			R=((MOB)affected).location();
+		if(R==null)R=CMLib.map().roomLocation(invoker());
 		if(R==null)R=CMLib.map().roomLocation(affected);
 		if(R!=null) lastKnownRoom=R;
 		return lastKnownRoom;

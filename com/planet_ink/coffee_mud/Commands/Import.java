@@ -2287,13 +2287,6 @@ public class Import extends StdCommand
 				if(M.basePhyStats().level()==0)
 					M.basePhyStats().setLevel(1);
 				int baseHP=11;
-				if(circleFormat)
-					baseHP=getDRoll(CMParms.getCleanBit(codeStr2,2));
-				else
-					baseHP=getDRoll(CMParms.getCleanBit(codeStr2,3));
-				baseHP=baseHP-10;
-				baseHP=baseHP-((int)Math.round(CMath.mul(M.basePhyStats().level()*M.basePhyStats().level(),0.85)));
-				baseHP=baseHP/M.basePhyStats().level();
 				M.basePhyStats().setAbility(baseHP);
 
 				if(circleFormat)
