@@ -215,8 +215,9 @@ public class DrowWizard extends DrowElf
         Ability prayer = null;
         if(CMLib.dice().rollPercentage() < 70)
         {
+        	int tries=10;
             prayer = fetchAbility(CMLib.dice().roll(1,numLearnedAbilities(),-1));
-            while((prayer==null)||(this.basePhyStats().level() < CMLib.ableMapper().lowestQualifyingLevel(prayer.ID())))
+            while(((--tries)>0)&&((prayer==null)||(this.basePhyStats().level() < CMLib.ableMapper().lowestQualifyingLevel(prayer.ID()))))
 	            prayer = fetchAbility(CMLib.dice().roll(1,numLearnedAbilities(),-1));
         }
         else

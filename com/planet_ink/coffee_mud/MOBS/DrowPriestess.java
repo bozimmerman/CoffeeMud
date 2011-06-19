@@ -213,10 +213,11 @@ public class DrowPriestess extends DrowElf
     public boolean castSpell()
     {
 	    Ability prayer = null;
+	    int tries = 10;
         if(CMLib.dice().rollPercentage() < 70)
         {
             prayer = fetchAbility(CMLib.dice().roll(1,numLearnedAbilities(),-1));
-            while((prayer==null)||(this.basePhyStats().level() < CMLib.ableMapper().lowestQualifyingLevel(prayer.ID())))
+            while(((--tries)>0)&&((prayer==null)||(this.basePhyStats().level() < CMLib.ableMapper().lowestQualifyingLevel(prayer.ID()))))
 				prayer = fetchAbility(CMLib.dice().roll(1,numLearnedAbilities(),-1));
         }
         else
