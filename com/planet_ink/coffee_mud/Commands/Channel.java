@@ -134,11 +134,20 @@ public class Channel extends StdCommand
 			{
 				if(num>que.size()) num=que.size();
 				boolean areareq=flags.contains(ChannelsLibrary.ChannelFlag.SAMEAREA);
+				long elapsedTime=0;
+				long now=System.currentTimeMillis();
 				for(int i=que.size()-num;i<que.size();i++)
 				{
 					ChannelsLibrary.ChannelMsg msg=(ChannelsLibrary.ChannelMsg)que.get(i);
 					CMMsg modMsg = (CMMsg)msg.msg.copyOf();
-					final String timeAgo = "^.^N ("+CMLib.time().date2SmartEllapsedTime(Math.round((System.currentTimeMillis()-msg.ts)/1000)*1000,false)+" ago)";
+					elapsedTime=now-msg.ts;
+					elapsedTime=Math.round(elapsedTime/1000L)*1000L;
+					if(elapsedTime<0)
+					{
+						Log.errOut("Channel","Wierd elapsed time: now="+now+", then="+msg.ts);
+						elapsedTime=0;
+					}
+					final String timeAgo = "^.^N ("+CMLib.time().date2SmartEllapsedTime(elapsedTime,false)+" ago)";
 					if((modMsg.sourceMessage()!=null)&&(modMsg.sourceMessage().length()>0))
 						modMsg.setSourceMessage(modMsg.sourceMessage()+timeAgo);
 					if((modMsg.targetMessage()!=null)&&(modMsg.targetMessage().length()>0))
