@@ -696,7 +696,7 @@ public class Import extends StdCommand
 
     protected static long getBitMask(String str, int which)
 	{
-		String s=CMParms.getCleanBit(str,which);
+		String s=CMParms.getCleanBit(str,which).trim();
 		if(s.length()==0)
 			return 0;
 		int x=s.indexOf('|');
@@ -1638,7 +1638,7 @@ public class Import extends StdCommand
     protected static void readBlocks(
     					   List<String> buf,
     					   List<String> areaData,
-						   List<String> roomData,
+						   List<List<String>> roomData,
 						   List<String> mobData,
 						   List<String> resetData,
 						   List<String> objectData,
@@ -1650,7 +1650,7 @@ public class Import extends StdCommand
 	{
 		Vector helpsToEat=new Vector();
 
-		List<String> wasUsingThisOne=null;
+		List wasUsingThisOne=null;
 		List<String> useThisOne=null;
 		while(buf.size()>0)
 		{
@@ -1715,7 +1715,7 @@ public class Import extends StdCommand
 				if(s.startsWith("ROOM"))
 				{
 					wasUsingThisOne=roomData;
-					useThisOne=roomData;
+					useThisOne=new Vector<String>();
 				}
 				else
 				if(s.startsWith("RESETS"))
@@ -1745,7 +1745,7 @@ public class Import extends StdCommand
 				if((importNumber(s)>0)&&(wasUsingThisOne!=null))
 				{
 					List<String> V=new Vector();
-					wasUsingThisOne.addAll(V);
+					wasUsingThisOne.add(V);
 					useThisOne=V;
 				}
 				else
@@ -2283,7 +2283,7 @@ public class Import extends StdCommand
 			int sexCode=1;
 			if(CMParms.numBits(codeStr2)>=4)
 			{
-				M.basePhyStats().setLevel(CMath.s_int(CMParms.getCleanBit(codeStr2,0)));
+				M.basePhyStats().setLevel(CMath.s_int(CMParms.getCleanBit(codeStr2,0).trim()));
 				if(M.basePhyStats().level()==0)
 					M.basePhyStats().setLevel(1);
 				int baseHP=11;
@@ -2291,22 +2291,22 @@ public class Import extends StdCommand
 
 				if(circleFormat)
 				{
-					if(CMath.isNumber(CMParms.getCleanBit(codeStr4,2)))
-						sexCode=CMath.s_int(CMParms.getCleanBit(codeStr4,2));
+					if(CMath.isNumber(CMParms.getCleanBit(codeStr4,2).trim()))
+						sexCode=CMath.s_int(CMParms.getCleanBit(codeStr4,2).trim());
 					else
-					if(CMParms.getCleanBit(codeStr4,2).toUpperCase().equals("MALE"))
+					if(CMParms.getCleanBit(codeStr4,2).trim().toUpperCase().equals("MALE"))
 						sexCode=1;
 					else
-					if(CMParms.getCleanBit(codeStr4,2).toUpperCase().equals("FEMALE"))
+					if(CMParms.getCleanBit(codeStr4,2).trim().toUpperCase().equals("FEMALE"))
 						sexCode=2;
 					else
-					if(CMParms.getCleanBit(codeStr4,2).toUpperCase().equals("EITHER"))
+					if(CMParms.getCleanBit(codeStr4,2).trim().toUpperCase().equals("EITHER"))
 						sexCode=(CMLib.dice().rollPercentage()>50)?1:2;
 					else
 						sexCode=3;
 
-					if(CMath.isNumber(CMParms.getCleanBit(codeStr4,0)))
-						positionCode=CMath.s_int(CMParms.getCleanBit(codeStr4,2));
+					if(CMath.isNumber(CMParms.getCleanBit(codeStr4,0).trim()))
+						positionCode=CMath.s_int(CMParms.getCleanBit(codeStr4,2).trim());
 					else
 					if(CMParms.getCleanBit(codeStr4,0).trim().startsWith("STAND"))
 						positionCode=8;
@@ -2320,8 +2320,8 @@ public class Import extends StdCommand
 				}
 				else
 				{
-					positionCode=CMath.s_int(CMParms.getCleanBit(codeStr4,0));
-					sexCode=CMath.s_int(CMParms.getCleanBit(codeStr4,2));
+					positionCode=CMath.s_int(CMParms.getCleanBit(codeStr4,0).trim());
+					sexCode=CMath.s_int(CMParms.getCleanBit(codeStr4,2).trim());
 				}
 				if(CMLib.dice().rollPercentage()>75)
 					M.addBehavior(CMClass.getBehavior("MudChat"));
@@ -2329,7 +2329,7 @@ public class Import extends StdCommand
 			else
 			{
 				M.basePhyStats().setAbility(11);
-				int baseLevel=CMath.s_int(CMParms.getCleanBit(codeStr2,0));
+				int baseLevel=CMath.s_int(CMParms.getCleanBit(codeStr2,0).trim());
 				while(baseLevel>25)
 					baseLevel=(int)Math.round(CMath.div(baseLevel,2.0));
 			}
@@ -2343,7 +2343,7 @@ public class Import extends StdCommand
 			M.basePhyStats().setAttackAdjustment(CMLib.leveler().getLevelAttack(M));
 			M.basePhyStats().setDamage(CMLib.leveler().getLevelMOBDamage(M));
 			if(circleFormat)
-				M.setMoney(CMath.s_int(CMParms.getCleanBit(codeStr4,3)));
+				M.setMoney(CMath.s_int(CMParms.getCleanBit(codeStr4,3).trim()));
 			else
 				M.setMoney(CMLib.dice().roll(1,M.basePhyStats().level(),0)+CMLib.dice().roll(1,10,0));
 			M.basePhyStats().setWeight(50);
@@ -2376,7 +2376,7 @@ public class Import extends StdCommand
 				long off=getBitMask(codeStr3,0);
 				long imm=getBitMask(codeStr3,1);
 				long res=getBitMask(codeStr3,2);
-				int size=CMath.s_int(CMParms.getCleanBit(codeStr5,2));
+				int size=CMath.s_int(CMParms.getCleanBit(codeStr5,2).trim());
 				switch(size)
 				{
 				case 0: M.basePhyStats().setWeight(1); break;
@@ -3384,12 +3384,12 @@ public class Import extends StdCommand
 			}
 			if(CMParms.numBits(codeStr3)>2)
 			{
-				I.basePhyStats().setLevel(CMath.s_int(CMParms.getCleanBit(codeStr3,0)));
-				I.basePhyStats().setWeight(CMath.s_int(CMParms.getCleanBit(codeStr3,1)) / 10);
+				I.basePhyStats().setLevel(CMath.s_int(CMParms.getCleanBit(codeStr3,0).trim()));
+				I.basePhyStats().setWeight(CMath.s_int(CMParms.getCleanBit(codeStr3,1).trim()) / 10);
 				if(I.basePhyStats().weight()<1) I.basePhyStats().setWeight(1);
 				if(I instanceof Rideable)
-					I.basePhyStats().setWeight(CMath.s_int(CMParms.getCleanBit(codeStr3,1)) * 10);
-				I.setBaseValue(CMath.s_int(CMParms.getCleanBit(codeStr3,2)));
+					I.basePhyStats().setWeight(CMath.s_int(CMParms.getCleanBit(codeStr3,1).trim()) * 10);
+				I.setBaseValue(CMath.s_int(CMParms.getCleanBit(codeStr3,2).trim()));
 			}
 			else
 			{
@@ -3588,8 +3588,8 @@ public class Import extends StdCommand
 						returnAnError(session,"Malformed 'A' code for item "+objectID+", "+I.Name()+": "+codesLine+", area="+areaName,compileErrors,commands);
 					else
 					{
-						int num=CMath.s_int(CMParms.getCleanBit(codesLine,0));
-						int val=CMath.s_int(CMParms.getCleanBit(codesLine,1));
+						int num=CMath.s_int(CMParms.getCleanBit(codesLine,0).trim());
+						int val=CMath.s_int(CMParms.getCleanBit(codesLine,1).trim());
 						switch(num)
 						{
 						case 1:
@@ -4621,7 +4621,12 @@ public class Import extends StdCommand
 			{
 				List<String> roomV=null;
 				if(roomData.elementAt(r) instanceof List)
+				{
 					roomV=(List)roomData.elementAt(r);
+					if((roomV.size()==1)
+					&&(roomV.get(1).toUpperCase().trim().startsWith("#ROOM")))
+						continue;
+				}
 				else
 				if(roomData.elementAt(r) instanceof String)
 				{
@@ -5056,9 +5061,9 @@ public class Import extends StdCommand
 							returnAnError(session,"Room: "+R.roomID()+", Redundant exit codeStr "+nextLine+"/"+codeStr+", dircode="+dirCode+".  Aborting exit, area="+areaName,compileErrors,commands);
 							continue;
 						}
-						int exitFlag=( CMath.s_int(CMParms.getCleanBit(codeStr,0)) & 31);
-						int doorState=CMath.s_int(CMParms.getCleanBit(codeStr,1));
-						int linkRoomID=CMath.s_int(CMParms.getCleanBit(codeStr,2));
+						int exitFlag=( CMath.s_int(CMParms.getCleanBit(codeStr,0).trim()) & 31);
+						int doorState=CMath.s_int(CMParms.getCleanBit(codeStr,1).trim());
+						int linkRoomID=CMath.s_int(CMParms.getCleanBit(codeStr,2).trim());
 						if(CMParms.numBits(codeStr)==11) // wierd circle format
 						{ /* all is well */}
 						else
@@ -5257,8 +5262,8 @@ public class Import extends StdCommand
 				else
 				if(s.startsWith("M "))
 				{
-					String mobID=CMParms.getCleanBit(s,2);
-					String roomID=CMParms.getCleanBit(s,4);
+					String mobID=CMParms.getCleanBit(s,2).trim();
+					String roomID=CMParms.getCleanBit(s,4).trim();
 					R=CMLib.map().getRoom(doneRooms,areaName,roomID);
 					if(R==null)
 					{
@@ -5293,7 +5298,7 @@ public class Import extends StdCommand
 					}
 					else
 					{
-						String itemID=CMParms.getCleanBit(s,2);
+						String itemID=CMParms.getCleanBit(s,2).trim();
 						Item I=getItem("#"+itemID,session,areaName,CMParms.copyFlattenVector(objectData),CMParms.copyFlattenVector(objProgData),doneItems,doneRooms,compileErrors,commands);
 						if(I==null)
 						{
@@ -5306,7 +5311,7 @@ public class Import extends StdCommand
 							I.recoverPhyStats();
 							if(M instanceof ShopKeeper)
 							{
-								int num=CMath.s_int(CMParms.getCleanBit(s,3));
+								int num=CMath.s_int(CMParms.getCleanBit(s,3).trim());
 								if(num<0) num=100;
 								((ShopKeeper)M).getShop().addStoreInventory(I,num,-1);
 								if((I instanceof Light)&&(!((ShopKeeper)M).getShop().doIHaveThisInStock("OilFlask",null)))
@@ -5356,8 +5361,8 @@ public class Import extends StdCommand
 				else
 				if(s.startsWith("EC "))
 				{
-					String roomID=CMParms.getCleanBit(s,1);
-					String mobID=CMParms.getCleanBit(s,2);
+					String roomID=CMParms.getCleanBit(s,1).trim();
+					String mobID=CMParms.getCleanBit(s,2).trim();
 					int x=roomID.lastIndexOf('#');
 					if(x>=0) roomID=roomID.substring(x);
 					Room R2=CMLib.map().getRoom(doneRooms,areaName,roomID);
@@ -5373,7 +5378,7 @@ public class Import extends StdCommand
 					}
 					else
 					{
-						String itemID=CMParms.getCleanBit(s,5);
+						String itemID=CMParms.getCleanBit(s,5).trim();
 						Item I=getItem("#"+itemID,session,areaName,CMParms.copyFlattenVector(objectData),CMParms.copyFlattenVector(objProgData),doneItems,doneRooms,compileErrors,commands);
 						if(I==null)
 						{
@@ -5407,7 +5412,7 @@ public class Import extends StdCommand
 					}
 					else
 					{
-						String itemID=CMParms.getCleanBit(s,2);
+						String itemID=CMParms.getCleanBit(s,2).trim();
 						Item I=getItem("#"+itemID,session,areaName,CMParms.copyFlattenVector(objectData),CMParms.copyFlattenVector(objProgData),doneItems,doneRooms,compileErrors,commands);
 						if(I==null)
 						{
@@ -5438,8 +5443,8 @@ public class Import extends StdCommand
 				else
 				if(s.startsWith("O "))
 				{
-					String itemID=CMParms.getCleanBit(s,2);
-					String roomID=CMParms.getCleanBit(s,4);
+					String itemID=CMParms.getCleanBit(s,2).trim();
+					String roomID=CMParms.getCleanBit(s,4).trim();
 					R=CMLib.map().getRoom(doneRooms,areaName,roomID);
 					if(R==null)
 					{
@@ -5476,8 +5481,8 @@ public class Import extends StdCommand
 				else
 				if(s.startsWith("P "))
 				{
-					String itemID=CMParms.getCleanBit(s,2);
-					String containerID=CMParms.getCleanBit(s,4);
+					String itemID=CMParms.getCleanBit(s,2).trim();
+					String containerID=CMParms.getCleanBit(s,4).trim();
 					Item I=getItem("#"+itemID,session,areaName,CMParms.copyFlattenVector(objectData),CMParms.copyFlattenVector(objProgData),doneItems,doneRooms,compileErrors,commands);
 					Container C=(Container)containerHash.get(containerID);
 					if(I==null)
@@ -5527,7 +5532,7 @@ public class Import extends StdCommand
 				else
 				if(s.startsWith("D "))
 				{
-					String roomID=CMParms.getCleanBit(s,2);
+					String roomID=CMParms.getCleanBit(s,2).trim();
 					int dirCode=(int)getBitMask(s,3);
 					R=CMLib.map().getRoom(doneRooms,areaName,roomID);
 					if(R==null)

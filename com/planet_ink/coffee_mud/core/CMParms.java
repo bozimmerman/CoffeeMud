@@ -452,7 +452,7 @@ public class CMParms
                 }
                 break;
             default:
-                if(cs[c]==q)
+                if((cs[c]==q)||(q==' ' && cs[c]=='\t'))
                 {
                     if((q!=' ')
                     &&(c<cs.length-1)
