@@ -114,7 +114,8 @@ public class MUDGrinder extends StdWebMacro
 			MOB mob = Authenticate.getAuthenticatedMob(httpReq);
 			if(mob==null) return "@break@";
 			Area pickedA=getLoggedArea(httpReq,mob);
-			return GrinderAreas.getAreaList(pickedA,mob);
+			boolean noInstances=parms.containsKey("NOINSTANCE");
+			return GrinderAreas.getAreaList(pickedA,mob,noInstances);
 		}
 		else
 		if(parms.containsKey("DELAREA"))

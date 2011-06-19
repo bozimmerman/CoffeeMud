@@ -34,7 +34,7 @@ import java.util.*;
 @SuppressWarnings("unchecked")
 public class GrinderAreas
 {
-	public static String getAreaList(Area pickedA, MOB mob)
+	public static String getAreaList(Area pickedA, MOB mob, boolean noInstances)
 	{
 		StringBuffer AreaList=new StringBuffer("");
 		boolean anywhere=(CMSecurity.isAllowedAnywhere(mob,"CMDROOMS")||CMSecurity.isAllowedAnywhere(mob,"CMDAREAS"));
@@ -42,7 +42,8 @@ public class GrinderAreas
 		for(Enumeration a=CMLib.map().sortedAreas();a.hasMoreElements();)
 		{
 			Area A=(Area)a.nextElement();
-			if(everywhere||(A.amISubOp(mob.Name())&&anywhere))
+			if((everywhere||(A.amISubOp(mob.Name())&&anywhere))
+		    &&((!noInstances)||(CMath.bset(A.flags(), Area.FLAG_INSTANCE_CHILD))))
 				if((pickedA!=null)&&(pickedA==A))
 					AreaList.append("<OPTION SELECTED VALUE=\""+A.Name()+"\">"+A.name());
 				else
