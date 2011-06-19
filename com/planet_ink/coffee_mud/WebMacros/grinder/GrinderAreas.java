@@ -43,7 +43,7 @@ public class GrinderAreas
 		{
 			Area A=(Area)a.nextElement();
 			if((everywhere||(A.amISubOp(mob.Name())&&anywhere))
-		    &&((!noInstances)||(CMath.bset(A.flags(), Area.FLAG_INSTANCE_CHILD))))
+		    &&((!noInstances)||(!CMath.bset(A.flags(), Area.FLAG_INSTANCE_CHILD))))
 				if((pickedA!=null)&&(pickedA==A))
 					AreaList.append("<OPTION SELECTED VALUE=\""+A.Name()+"\">"+A.name());
 				else
