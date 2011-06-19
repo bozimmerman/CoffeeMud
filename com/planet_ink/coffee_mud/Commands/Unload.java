@@ -84,7 +84,7 @@ public class Unload extends StdCommand
 			for(final Weapon W : items)
 			{
 				Item ammunition=CMLib.coffeeMaker().makeAmmunition(W.ammunitionType(),W.ammunitionRemaining());
-				CMMsg newMsg=CMClass.getMsg(mob,ammunition,W,CMMsg.MSG_UNLOAD,"<S-NAME> unload(s) <T-NAME> from <O-NAME>.");
+				CMMsg newMsg=CMClass.getMsg(mob,W,ammunition,CMMsg.MSG_UNLOAD,"<S-NAME> unload(s) <O-NAME> from <T-NAME>.");
 				if(mob.location().okMessage(mob,newMsg))
 					mob.location().send(mob,newMsg);
 			}

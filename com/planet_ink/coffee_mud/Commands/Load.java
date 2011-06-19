@@ -107,7 +107,7 @@ public class Load extends StdCommand
 				mob.tell("You can't seem to use that as ammunition.");
 			else
 			{
-				commands.removeElementAt(1);
+				commands.removeElementAt(0);
 				final List<Item> baseItems=CMLib.english().fetchItemList(mob,mob,null,commands,Wearable.FILTER_ANY,false);
 				final List<Weapon> items=new XVector<Weapon>();
 				for(final Iterator<Item> i=baseItems.iterator();i.hasNext();)
