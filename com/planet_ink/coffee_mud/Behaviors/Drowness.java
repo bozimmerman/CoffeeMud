@@ -173,7 +173,7 @@ public class Drowness extends StdBehavior
         Weapon secondWeapon = null;
 
         int weaponry = CMLib.dice().roll(1,4,0);
-		if(mob.numItems()==0)
+		if(mob.fetchWieldedItem()==null)
         switch(weaponry)
         {
             case 1:
