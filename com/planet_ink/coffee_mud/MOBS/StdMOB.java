@@ -2277,6 +2277,7 @@ public class StdMOB implements MOB
 			{
                 CMLib.combat().establishRange(this,(MOB)msg.target(),msg.tool());
                 if((msg.tool() instanceof Weapon)
+                ||(msg.sourceMinor()==CMMsg.TYP_WEAPONATTACK)
 				||(!CMLib.flags().aliveAwakeMobileUnbound((MOB)msg.target(),true)))
                 {
 					setVictim((MOB)msg.target());
