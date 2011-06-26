@@ -177,7 +177,7 @@ public class Prayer_UnholyArmament extends Prayer
 			Ability A=CMClass.getAbility("Prop_HaveZapper");
 			if(A!=null)
 			{
-				A.setMiscText("-GOOD -NEUTRAL -NAMES \"+"+mob.Name()+"\"");
+				A.setMiscText("ACTUAL -GOOD -NEUTRAL -NAMES \"+"+mob.Name()+"\"");
 				I.addNonUninvokableEffect(A);
 			}
 			A=CMClass.getAbility("Prop_ScrapExplode");

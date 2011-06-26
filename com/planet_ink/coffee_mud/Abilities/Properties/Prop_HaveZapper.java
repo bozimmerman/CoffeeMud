@@ -38,7 +38,15 @@ public class Prop_HaveZapper extends Property
 	public String ID() { return "Prop_HaveZapper"; }
 	public String name(){ return "Restrictions to ownership";}
 	protected int canAffectCode(){return Ability.CAN_ITEMS;}
+	
+	protected boolean actual=false;
 
+	public void setMiscText(String text)
+	{
+		super.setMiscText(text);
+		actual=(text.toUpperCase()+" ").startsWith("ACTUAL ");
+	}
+	
 	public String accountForYourself()
 	{
 		return "Ownership restricted as follows: "+CMLib.masking().maskDesc(text());
@@ -86,7 +94,7 @@ public class Prop_HaveZapper extends Property
 		case CMMsg.TYP_WIELD:
 			break;
 		case CMMsg.TYP_GET:
-			if((!CMLib.masking().maskCheck(text(),mob,false))&&(didHappen(100)))
+			if((!CMLib.masking().maskCheck(text(),mob,actual))&&(didHappen(100)))
 			{
 				mob.location().show(mob,null,affected,CMMsg.MSG_OK_ACTION,CMParms.getParmStr(text(),"MESSAGE","<O-NAME> flashes and flies out of <S-HIS-HER> hands!"));
 				return false;
@@ -94,7 +102,7 @@ public class Prop_HaveZapper extends Property
 			break;
 		case CMMsg.TYP_EAT:
 		case CMMsg.TYP_DRINK:
-			if((!CMLib.masking().maskCheck(text(),mob,false))&&(didHappen(100)))
+			if((!CMLib.masking().maskCheck(text(),mob,actual))&&(didHappen(100)))
 			{
 				mob.location().show(mob,null,affected,CMMsg.MSG_OK_ACTION,CMParms.getParmStr(text(),"MESSAGE","<O-NAME> flashes and falls out <S-HIS-HER> mouth!"));
 				return false;

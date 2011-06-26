@@ -249,6 +249,7 @@ public class Spell_Wish extends Spell
 				   &&(!(foundThang instanceof ArchonOnly)))
 				{
 					Item newItem=(Item)foundThang.copyOf();
+					experienceRequired+=newItem.value();
 					newItem.setContainer(null);
 					newItem.wearAt(0);
 					mob.location().addItem(newItem,ItemPossessor.Expire.Player_Drop);
@@ -462,6 +463,7 @@ public class Spell_Wish extends Spell
 				if(newRoom!=null)
 				{
 					bringThangHere(mob,newRoom,target);
+					newRoom.show(mob, null, CMMsg.MSG_OK_VISUAL, "<S-NAME> appears!");
 					wishDrain(mob,baseLoss,false);
 					return true;
 				}
@@ -763,7 +765,7 @@ public class Spell_Wish extends Spell
 			||(myWish.indexOf(" BE A")>=0)
 			||(myWish.indexOf(" WAS A")>=0)
 			||(myWish.indexOf(" TRANSFORM")>=0))
-			&&((myWish.indexOf(" MALE ")>=0)
+			&&((myWish.indexOf(" FEMALE ")>=0)
 			||(myWish.indexOf(" WOMAN ")>=0)
 			||(myWish.indexOf(" GIRL ")>=0)))
 			{

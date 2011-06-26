@@ -468,8 +468,9 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 			else
 			if(reach>basereach)
 				basereach=reach;
-			int damage=((level-1)/((reach/weight)+2) + (weight-baseattack)/5 -reach)*(((hands*2)+1)/2);
-			int cost=2*((weight*materialvalue)+((2*damage)+baseattack+(reach*10))*damage)/(hands+1);
+			
+			int damage=(int)Math.round((((double)level-1.0)/(((double)reach/(double)weight)+2.0) + ((double)weight-(double)baseattack)/5.0 -(double)reach)*((((double)hands*2.0)+1.0)/2.0));
+			int cost=(int)Math.round(2.0*(((double)weight*(double)materialvalue)+((2.0*(double)damage)+(double)baseattack+((double)reach*10.0))*(double)damage)/((double)hands+1.0));
 
 			if(basematerial==RawMaterial.MATERIAL_METAL)
 			{
@@ -677,7 +678,7 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 				}
 			}
 			int cost=(int)Math.round(((pts*pts) + (double)materialvalue)
-									 * ( weightpts / 2));
+									 * ( (double)weightpts / 2.0));
 			int armor=(int)Math.round(totalpts);
 			switch(material)
 			{

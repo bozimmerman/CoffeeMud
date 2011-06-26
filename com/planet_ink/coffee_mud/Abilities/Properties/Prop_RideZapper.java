@@ -37,6 +37,13 @@ public class Prop_RideZapper extends Prop_HaveZapper
 	public String ID() { return "Prop_RideZapper"; }
 	public String name(){ return "Restrictions to riding";}
 	protected int canAffectCode(){return Ability.CAN_ITEMS|Ability.CAN_MOBS;}
+	protected boolean actual=false;
+
+	public void setMiscText(String text)
+	{
+		super.setMiscText(text);
+		actual=(text.toUpperCase()+" ").startsWith("ACTUAL ");
+	}
 
 	public String accountForYourself()
 	{
@@ -58,7 +65,7 @@ public class Prop_RideZapper extends Prop_HaveZapper
 		case CMMsg.TYP_SLEEP:
 		case CMMsg.TYP_MOUNT:
 		case CMMsg.TYP_ENTER:
-			if((!CMLib.masking().maskCheck(text(),mob,false))&&(didHappen(100)))
+			if((!CMLib.masking().maskCheck(text(),mob,actual))&&(didHappen(100)))
 			{
 				mob.location().show(mob,null,affected,CMMsg.MSG_OK_VISUAL,CMParms.getParmStr(text(),"MESSAGE","<O-NAME> zaps <S-NAME>, making <S-HIM-HER> jump up!"));
 				return false;
