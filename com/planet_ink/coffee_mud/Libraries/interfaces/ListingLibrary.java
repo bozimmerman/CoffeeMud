@@ -58,7 +58,7 @@ public interface ListingLibrary extends CMLibrary
 	{
 		public static final int fixColWidth(final double colWidth, final MOB mob)
 		{
-			return fixColWidth(colWidth,mob.session());
+			return fixColWidth(colWidth,(mob==null)?null:mob.session());
 		}
 		
 		public static final int fixColWidth(final double colWidth, final Session session)
