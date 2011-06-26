@@ -1643,7 +1643,7 @@ public class ListCmd extends StdCommand
                 buf.append("'"+CMLib.map().getExtendedRoomID(R)+"' could not be read from the database!\n\r");
             else
             {
-                TR=(Room)set.entrySet().iterator().next();
+                TR=set.entrySet().iterator().next().getValue();
                 CMLib.database().DBReadContent(TR,set,false);
                 buf.append("\n\r^NRoomID: "+CMLib.map().getExtendedRoomID(TR)+"\n\r");
                 for(int m=0;m<TR.numInhabitants();m++)
