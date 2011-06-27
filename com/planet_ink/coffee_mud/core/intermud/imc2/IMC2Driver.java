@@ -1429,7 +1429,7 @@ public final class IMC2Driver extends Thread {
 			&&(errMsg.toUpperCase().indexOf("CONNECTION")>=0))
 			{
 				imc_active = IA_NONE;
-				tracef(0, "Waiting 20 seconds and try to reconnect.");
+				tracef(1, "Waiting 20 seconds and try to reconnect.");
 				try 
 				{
 				    sleep(20000);
@@ -1459,9 +1459,9 @@ public final class IMC2Driver extends Thread {
             this_imcmud.outbuf = "";
         }
         catch (Exception e) {
-            tracef(0, "write socket error: " + e.toString());
+            tracef(1, "write socket error: " + e.toString());
             imc_active = IA_NONE;
-            tracef(0, "Waiting 20 seconds and try to reconnect.");
+            tracef(1, "Waiting 20 seconds and try to reconnect.");
             try {
                 sleep(20000);
             }
