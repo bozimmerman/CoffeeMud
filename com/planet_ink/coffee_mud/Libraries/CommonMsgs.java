@@ -50,6 +50,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
     
     protected String unknownCommand(){return "Huh?";}
     protected String unknownInvoke(){return "You don't know how to @x1 that.";}
+	protected Ability awarenessA=null;
     
 	public boolean handleUnknownCommand(MOB mob, List<String> command)
 	{
@@ -1117,12 +1118,13 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
             mob.tell(Say.toString());
             if(CMProps.getIntVar(CMProps.SYSTEMI_AWARERANGE)>0)
             {
-	        	Ability A=CMClass.getAbility("Skill_RegionalAwareness");
-	        	if(A!=null) 
+            	if(awarenessA==null)
+            		awarenessA=CMClass.getAbility("Skill_RegionalAwareness");
+	        	if(awarenessA!=null) 
 	    		{
     				sess.colorOnlyPrintln("", true);
     	        	final Vector list=new Vector();
-	    			A.invoke(mob, list, mob.location(), true, CMProps.getIntVar(CMProps.SYSTEMI_AWARERANGE));
+    	        	awarenessA.invoke(mob, list, mob.location(), true, CMProps.getIntVar(CMProps.SYSTEMI_AWARERANGE));
 	    			for(Object o : list)
 	    				sess.colorOnlyPrintln((String)o, true);
     				sess.colorOnlyPrintln("\n\r", true);
