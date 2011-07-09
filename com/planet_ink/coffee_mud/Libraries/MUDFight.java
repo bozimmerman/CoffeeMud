@@ -287,11 +287,8 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 				CMMsg.MSG_OK_VISUAL,"^f^*^<FIGHT^>!!!!!!!!!!!!!!YOU ARE DEAD!!!!!!!!!!!!!!^</FIGHT^>^?^.\n\r"+msp,
 				CMMsg.MSG_OK_VISUAL,null,
 				CMMsg.MSG_DEATH,"^F^<FIGHT^><S-NAME> is DEAD!!!^</FIGHT^>^?\n\r"+msp);
-		CMMsg msg2=CMClass.getMsg(deadM,null,killerM,
-			CMMsg.MSG_DEATH,null,
-			CMMsg.MSG_DEATH,null,
-			CMMsg.MSG_DEATH,null);
-		CMLib.map().sendGlobalMessage(deadM,CMMsg.TYP_DEATH, msg2);
+		CMLib.map().sendGlobalMessage(deadM,CMMsg.TYP_DEATH, CMClass.getMsg(deadM,null,killerM, CMMsg.TYP_DEATH,null, CMMsg.TYP_DEATH,null, CMMsg.TYP_DEATH,null));
+		CMMsg msg2=CMClass.getMsg(deadM,null,killerM, CMMsg.MSG_DEATH,null, CMMsg.MSG_DEATH,null, CMMsg.MSG_DEATH,null);
 		if(addHere!=null)
 		{
 			if(deathRoom.okMessage(deadM,msg2))

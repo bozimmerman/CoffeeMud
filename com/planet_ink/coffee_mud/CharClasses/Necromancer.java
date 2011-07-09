@@ -46,7 +46,6 @@ public class Necromancer extends Cleric
 	protected HashSet disallowedWeaponClasses(MOB mob){return disallowedWeapons;}
 	protected int alwaysFlunksThisQuality(){return 1000;}
 	protected boolean registeredAsListener=false;
-	protected WeakReference<CMMsg> lastDeath=null;
 
 	public Necromancer()
 	{
@@ -205,17 +204,15 @@ public class Necromancer extends Cleric
 			super.executeMsg(myHost,msg);
 		} 
 		else
-		if((msg.sourceMinor()==CMMsg.TYP_DEATH)&&(msg.othersMinor()==CMMsg.TYP_DEATH))
+		if((msg.sourceCode()==CMMsg.TYP_DEATH)&&(msg.othersCode()==CMMsg.TYP_DEATH))
 		{
 			MOB aChar=(MOB)myHost;
 			super.executeMsg(myHost,msg);
 			MOB M=null;
 			Room myRoom=aChar.location();
 			if((myRoom!=null)
-			&&(myRoom.getArea()!=null)
-			&&((lastDeath==null)||(lastDeath.get()!=msg)))
+			&&(myRoom.getArea()!=null))
 			{
-				lastDeath=new WeakReference(msg);
 				for(Session S : CMLib.sessions().localOnlineIterable())
 				{
 					M=S.mob();
