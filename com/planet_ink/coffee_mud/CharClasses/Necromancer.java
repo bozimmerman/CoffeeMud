@@ -14,6 +14,7 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
+import java.lang.ref.WeakReference;
 import java.util.*;
 
 
@@ -45,6 +46,7 @@ public class Necromancer extends Cleric
 	protected HashSet disallowedWeaponClasses(MOB mob){return disallowedWeapons;}
 	protected int alwaysFlunksThisQuality(){return 1000;}
 	protected boolean registeredAsListener=false;
+	protected WeakReference<CMMsg> lastDeath=null;
 
 	public Necromancer()
 	{
@@ -208,23 +210,28 @@ public class Necromancer extends Cleric
 			MOB aChar=(MOB)myHost;
 			super.executeMsg(myHost,msg);
 			MOB M=null;
-			Room deathRoom=aChar.location();
-			if((deathRoom!=null)&&(deathRoom.getArea()!=null))
-			for(Session S : CMLib.sessions().localOnlineIterable())
+			Room myRoom=aChar.location();
+			if((myRoom!=null)
+			&&(myRoom.getArea()!=null)
+			&&((lastDeath==null)||(lastDeath.get()!=msg)))
 			{
-				M=S.mob();
-				if((M!=null)
-				&&(M.baseCharStats().getCurrentClass()==this)
-				&&(aChar!=M)
-				&&(M.baseCharStats().getClassLevel(this)>14)
-				&&(CMLib.flags().isInTheGame(M,true))
-				&&(!CMath.bset(M.getBitmap(),MOB.ATT_QUIET)))
+				lastDeath=new WeakReference(msg);
+				for(Session S : CMLib.sessions().localOnlineIterable())
 				{
-					if(!aChar.isMonster())
-						M.tell("^RYou just felt the death of "+aChar.Name()+".^N");
-					else
-					if((M.location()!=deathRoom)&&(deathRoom.getArea().Name().equals(M.location().getArea().Name())))
-						M.tell("^RYou just felt the death of "+aChar.Name()+" somewhere nearby.^N");
+					M=S.mob();
+					if((M!=null)
+					&&(M.baseCharStats().getCurrentClass()==this)
+					&&(aChar!=M)
+					&&(M.baseCharStats().getClassLevel(this)>14)
+					&&(CMLib.flags().isInTheGame(M,true))
+					&&(!CMath.bset(M.getBitmap(),MOB.ATT_QUIET)))
+					{
+						if(!aChar.isMonster())
+							M.tell("^RYou just felt the death of "+aChar.Name()+".^N");
+						else
+						if((M.location()!=myRoom)&&(myRoom.getArea().Name().equals(M.location().getArea().Name())))
+							M.tell("^RYou just felt the death of "+aChar.Name()+" somewhere nearby.^N");
+					}
 				}
 			}
 		}
