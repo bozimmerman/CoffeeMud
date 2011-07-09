@@ -382,10 +382,10 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
         prejudiceFactor*=itemPriceFactor(product,loc,shop.finalItemPricingAdjustments(),false);
         val.absoluteGoldPrice=CMath.mul(prejudiceFactor,val.absoluteGoldPrice);
 
-        // the price is 200% at 0 charisma, and 100% at 30
+        // the price is 200% at 0 charisma, and 100% at 35
         val.absoluteGoldPrice=val.absoluteGoldPrice
                              +val.absoluteGoldPrice
-                             -CMath.mul(val.absoluteGoldPrice,CMath.div(buyer.charStats().getStat(CharStats.STAT_CHARISMA),30.0));
+                             -CMath.mul(val.absoluteGoldPrice,CMath.div(buyer.charStats().getStat(CharStats.STAT_CHARISMA),35.0));
         if(includeSalesTax)
         {
             double salesTax=getSalesTax(seller.getStartRoom(),seller);
@@ -463,13 +463,12 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
         prejudiceFactor*=itemPriceFactor(product,loc,shop.finalItemPricingAdjustments(),true);
         val.absoluteGoldPrice=CMath.mul(prejudiceFactor,val.absoluteGoldPrice);
 
-        // gets the shopkeeper a deal on junk.  Pays 5% at 3 charisma, and 50% at 30
-        double buyPrice=CMath.div(CMath.mul(val.absoluteGoldPrice,buyer.charStats().getStat(CharStats.STAT_CHARISMA)),60.0);
+        // gets the shopkeeper a deal on junk.  Pays 5% at 3 charisma, and 50% at 35
+        double buyPrice=CMath.div(CMath.mul(val.absoluteGoldPrice,buyer.charStats().getStat(CharStats.STAT_CHARISMA)),70.0);
         if(!(product instanceof Ability))
             buyPrice=CMath.mul(buyPrice,1.0-devalue(shop,product));
 
 
-        // the price is 200% at 0 charisma, and 100% at 30
         double sellPrice=sellingPrice(seller,buyer,product,shop,false).absoluteGoldPrice;
 
         if(buyPrice>sellPrice)
