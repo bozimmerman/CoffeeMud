@@ -128,7 +128,8 @@ public class Order extends StdCommand
 			O=CMLib.english().findCommand(target,(Vector)commands.clone());
 			if(!CMSecurity.isAllowed(mob,mob.location(),"ORDER"))
 			{
-				if((O instanceof Command)&&(!((Command)O).canBeOrdered()))
+				if((O instanceof Command)
+				&&((!((Command)O).canBeOrdered())||(!((Command)O).securityCheck(mob))))
 				{
 					mob.tell("You can't order "+target.name()+" to '"+order+"'.");
 					continue;

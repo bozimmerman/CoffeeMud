@@ -75,6 +75,28 @@ public class Spell_Command extends Spell
 			return false;
 		}
 
+        CMObject O=CMLib.english().findCommand(target,(Vector)commands.clone());
+        if(O instanceof Command)
+        {
+            if((!((Command)O).canBeOrdered())||(!((Command)O).securityCheck(mob))||(((Command)O).ID().equals("Sleep")))
+            {
+                mob.tell("You can't command someone to doing that.");
+                return false;
+            }
+        }
+		else
+		{
+			if(O instanceof Ability)
+				O=CMLib.english().getToEvoke(target,(Vector)commands.clone());
+			if(O instanceof Ability)
+			{
+				if(CMath.bset(((Ability)O).flags(),Ability.FLAG_NOORDERING))
+				{
+					mob.tell("You can't command "+target.name()+" to do that.");
+					return false;
+				}
+			}
+		}
 
 		// the invoke method for spells receives as
 		// parameters the invoker, and the REMAINING

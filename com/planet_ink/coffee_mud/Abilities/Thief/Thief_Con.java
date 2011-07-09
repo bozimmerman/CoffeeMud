@@ -125,6 +125,19 @@ public class Thief_Con extends ThiefSkill
                 return false;
             }
         }
+		else
+		{
+			if(O instanceof Ability)
+				O=CMLib.english().getToEvoke(target,commands);
+			if(O instanceof Ability)
+			{
+				if(CMath.bset(((Ability)O).flags(),Ability.FLAG_NOORDERING))
+				{
+					mob.tell("You can't con "+target.name()+" to do that.");
+					return false;
+				}
+			}
+		}
         return true;
     }
     

@@ -81,6 +81,19 @@ public class Thief_Bribe extends ThiefSkill
 				return false;
 			}
 		}
+		else
+		{
+			if(O instanceof Ability)
+				O=CMLib.english().getToEvoke(target,(Vector)commands.clone());
+			if(O instanceof Ability)
+			{
+				if(CMath.bset(((Ability)O).flags(),Ability.FLAG_NOORDERING))
+				{
+					mob.tell("You can't bribe "+target.name()+" to do that.");
+					return false;
+				}
+			}
+		}
 
 		if(((String)commands.elementAt(0)).toUpperCase().startsWith("FOL"))
 		{

@@ -41,7 +41,7 @@ public class Charlatan extends StdCharClass
 	public String baseClass(){return "Bard";}
 	public int getBonusPracLevel(){return 1;}
 	public int getBonusAttackLevel(){return 0;}
-	public int getAttackAttribute(){return CharStats.STAT_DEXTERITY;}
+	public int getAttackAttribute(){return CharStats.STAT_CHARISMA;}
 	public int getLevelsPerBonusDamage(){ return 10;}
 	public int getHPDivisor(){return 3;}
 	public int getHPDice(){return 2;}

@@ -246,10 +246,13 @@ public class Spell_Wish extends Spell
 				}
 				else
 				if((foundThang instanceof Item)
-				   &&(!(foundThang instanceof ArchonOnly)))
+				   &&(!(foundThang instanceof ArchonOnly))
+				   &&(!CMath.bset(foundThang.phyStats().sensesMask(), PhyStats.SENSE_ITEMNOWISH)))
 				{
 					Item newItem=(Item)foundThang.copyOf();
 					experienceRequired+=newItem.value();
+					if(experienceRequired>mob.getExpPrevLevel())
+						
 					newItem.setContainer(null);
 					newItem.wearAt(0);
 					mob.location().addItem(newItem,ItemPossessor.Expire.Player_Drop);

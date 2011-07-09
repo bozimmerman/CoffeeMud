@@ -671,7 +671,7 @@ public class GModify extends StdCommand
         return false;
     }
     
-    public boolean canBeOrdered(){return true;}
+    public boolean canBeOrdered(){return false;}
     public boolean securityCheck(MOB mob){return CMSecurity.isAllowedAnywhere(mob,"GMODIFY");}
 
     
