@@ -384,6 +384,8 @@ public class GModify extends StdCommand
             commands.removeElementAt(0);
             placesToDo=new Vector();
         }
+        else
+            placesToDo.addElement(mob.location());
         DVector changes=new DVector(5);
         DVector onfields=new DVector(5);
         DVector use=null;

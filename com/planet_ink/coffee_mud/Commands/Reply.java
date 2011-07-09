@@ -76,8 +76,13 @@ public class Reply extends StdCommand
 			CMLib.commands().postSay(mob,pstats.replyTo(),CMParms.combine(commands,1),false,false);
 			break;
 		case PlayerStats.REPLY_TELL:
+		{
+			Session S=pstats.replyTo().session();
+	        if(S!=null) S.snoopSuspension(1);
 			CMLib.commands().postSay(mob,pstats.replyTo(),CMParms.combine(commands,1),true,true);
+	        if(S!=null) S.snoopSuspension(-11);
 			break;
+		}
 		case PlayerStats.REPLY_YELL:
 			{
 				Command C=CMClass.getCommand("Say");

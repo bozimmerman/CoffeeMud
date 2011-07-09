@@ -384,6 +384,13 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 			return false;
 		if(heard==null)
 			return false;
+		if((!isSeen(heard))&&(isCloaked(heard)&&(hearer!=null)))
+		{
+			if((!(heard instanceof MOB))
+			||(heard.phyStats().level()>hearer.phyStats().level())
+			||(!CMSecurity.isASysOp(hearer)))
+				return false;
+		}		
 		if(!canHear(hearer))
 			return false;
 		if(isSneaking(heard)&&(!canSeeSneakers(hearer)))

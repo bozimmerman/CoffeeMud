@@ -365,7 +365,7 @@ public class Pregnancy extends StdAbility
 			return false;
 		boolean success=proficiencyCheck(mob,0,auto);
 		long start=System.currentTimeMillis();
-		Race R=mob.charStats().getMyRace();
+		Race R=target.charStats().getMyRace();
 		long tickspermudmonth=CMProps.getIntVar(CMProps.SYSTEMI_TICKSPERMUDDAY);
 		tickspermudmonth=tickspermudmonth*CMLib.time().globalClock().getDaysInMonth();
 		int birthmonths=(int)Math.round(CMath.mul((R.getAgingChart()[1]-R.getAgingChart()[0])*CMLib.time().globalClock().getMonthsInYear(),0.75));

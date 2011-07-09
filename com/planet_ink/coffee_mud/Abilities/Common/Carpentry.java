@@ -385,6 +385,11 @@ public class Carpentry extends EnhancedCraftingSkill implements ItemCraftor
 			if(building instanceof Rideable)
 			{
 			    setRideBasis((Rideable)building,misctype);
+			    if(capacity==0)
+				    ((Rideable)building).setRiderCapacity(1);
+			    else
+			    if(capacity<5)
+				    ((Rideable)building).setRiderCapacity(capacity);
 			}
 			if(building instanceof Weapon)
 			{

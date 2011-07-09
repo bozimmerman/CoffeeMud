@@ -74,8 +74,8 @@ public class Prayer_ProtGood extends Prayer
 			&&(msg.targetMinor()==CMMsg.TYP_CAST_SPELL)
 			&&(msg.tool()!=null)
 			&&(msg.tool() instanceof Ability)
-			&&(!CMath.bset(((Ability)msg.tool()).flags(),Ability.FLAG_HOLY))
-			&&(CMath.bset(((Ability)msg.tool()).flags(),Ability.FLAG_UNHOLY)))
+			&&(CMath.bset(((Ability)msg.tool()).flags(),Ability.FLAG_HOLY))
+			&&(!CMath.bset(((Ability)msg.tool()).flags(),Ability.FLAG_UNHOLY)))
 			{
 				msg.source().location().show((MOB)affected,null,CMMsg.MSG_OK_VISUAL,"The unholy field around <S-NAME> protect(s) <S-HIM-HER> from the goodly magic attack of "+msg.source().name()+".");
 				return false;

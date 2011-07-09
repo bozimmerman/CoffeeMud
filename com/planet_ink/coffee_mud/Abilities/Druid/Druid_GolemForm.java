@@ -70,7 +70,7 @@ public class Druid_GolemForm extends StdAbility
 	private static String[] races={
 	"MetalGolem",
 	"StoneGolem",
-	"MetaleGolem",
+	"MetalGolem",
 	"StoneGolem",
 	"MetalGolem"
 	};
@@ -289,12 +289,12 @@ public class Druid_GolemForm extends StdAbility
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
+				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> take(s) on "+raceName.toLowerCase()+" form.");
 				raceName=getRaceName(classLevel);
 				newRace=getRace(classLevel);
 				raceLevel=getRaceLevel(classLevel);
 				beneficialAffect(mob,mob,asLevel,Integer.MAX_VALUE);
 				raceName=CMStrings.capitalizeAndLower(CMLib.english().startWithAorAn(raceName.toLowerCase()));
-				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> take(s) on "+raceName.toLowerCase()+" form.");
 				CMLib.utensils().confirmWearability(mob);
 			}
 		}

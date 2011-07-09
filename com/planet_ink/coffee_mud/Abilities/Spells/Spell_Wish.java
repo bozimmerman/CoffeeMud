@@ -798,7 +798,7 @@ public class Spell_Wish extends Spell
 						mob.setExperience(CMLib.leveler().getLevelExperience(mob.basePhyStats().level()-1));
 					}
 					wishDrain(mob,baseLoss,true);
-					int oldCat=mob.baseCharStats().ageCategory();
+					int oldCat=((MOB)target).baseCharStats().ageCategory();
 					((MOB)target).baseCharStats().setMyRace(R);
 					((MOB)target).baseCharStats().getMyRace().startRacing(((MOB)target),true);
 					((MOB)target).baseCharStats().getMyRace().setHeightWeight(((MOB)target).basePhyStats(),(char)((MOB)target).baseCharStats().getStat(CharStats.STAT_GENDER));
