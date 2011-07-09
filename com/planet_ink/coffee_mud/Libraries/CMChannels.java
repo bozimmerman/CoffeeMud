@@ -42,12 +42,13 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 	public int numChannelsLoaded=0;
 	public int numIChannelsLoaded=0;
 	public int numImc2ChannelsLoaded=0;
-	public Vector channelNames=new Vector();
-	public Vector channelMasks=new Vector();
-    public Vector<HashSet<ChannelFlag>> channelFlags=new Vector<HashSet<ChannelFlag>>();
-	public Vector ichannelList=new Vector();
-	public Vector imc2channelList=new Vector();
-	public Vector<List<ChannelMsg>> channelQue=new Vector<List<ChannelMsg>>();
+	public List<String> channelNames=new Vector<String>();
+	public List<String> channelColorOverrides=new Vector<String>();
+	public List<String> channelMasks=new Vector<String>();
+    public List<HashSet<ChannelFlag>> channelFlags=new Vector<HashSet<ChannelFlag>>();
+	public List<String> ichannelList=new Vector<String>();
+	public List<String> imc2channelList=new Vector<String>();
+	public List<List<ChannelMsg>> channelQue=new Vector<List<ChannelMsg>>();
 	public final static List<ChannelMsg> emptyQueue=new ReadOnlyList<ChannelMsg>(new Vector(1));
 	public final static Set<ChannelFlag> emptyFlags=new ReadOnlySet<ChannelFlag>(new HashSet(1));
 	
@@ -59,7 +60,14 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 	public String getChannelMask(int i)
 	{
 		if((i>=0)&&(i<channelMasks.size()))
-			return (String)channelMasks.elementAt(i);
+			return channelMasks.get(i);
+		return "";
+	}
+
+	public String getChannelColorOverride(int i)
+	{
+		if((i>=0)&&(i<channelColorOverrides.size()))
+			return channelColorOverrides.get(i);
 		return "";
 	}
 
@@ -67,21 +75,21 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
     public Set<ChannelFlag> getChannelFlags(int i)
     {
         if((i>=0)&&(i<channelFlags.size()))
-            return (HashSet<ChannelFlag>)channelFlags.elementAt(i);
+            return channelFlags.get(i);
         return emptyFlags;
     }
 
 	public String getChannelName(int i)
 	{
 		if((i>=0)&&(i<channelNames.size()))
-			return (String)channelNames.elementAt(i);
+			return channelNames.get(i);
 		return "";
 	}
 
 	public List<ChannelMsg> getChannelQue(int i)
 	{
 		if((i>=0)&&(i<channelQue.size()))
-			return (List)channelQue.elementAt(i);
+			return channelQue.get(i);
 		return emptyQueue;
 	}
 	
@@ -198,7 +206,7 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 	{
         channelName=channelName.toUpperCase();
 		for(int c=0;c<channelNames.size();c++)
-			if(((String)channelNames.elementAt(c)).startsWith(channelName))
+			if((channelNames.get(c)).startsWith(channelName))
 				return c;
 		return -1;
 	}
@@ -207,7 +215,7 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 	{
         channelName=channelName.toUpperCase();
 		for(int c=0;c<channelNames.size();c++)
-			if(((String)channelNames.elementAt(c)).startsWith(channelName))
+			if((channelNames.get(c)).startsWith(channelName))
 				return 1<<c;
 		return -1;
 	}
@@ -216,17 +224,17 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 	{
         channelName=channelName.toUpperCase();
 		for(int c=0;c<channelNames.size();c++)
-			if(((String)channelNames.elementAt(c)).startsWith(channelName))
-				return ((String)channelNames.elementAt(c)).toUpperCase();
+			if((channelNames.get(c)).startsWith(channelName))
+				return (channelNames.get(c)).toUpperCase();
 		return "";
 	}
 
 	public List<String> getFlaggedChannelNames(ChannelFlag flag)
 	{
-        Vector channels=new Vector();
+        List<String> channels=new Vector();
 		for(int c=0;c<channelNames.size();c++)
-			if(((HashSet<ChannelFlag>)channelFlags.elementAt(c)).contains(flag))
-                channels.addElement(((String)channelNames.elementAt(c)).toUpperCase());
+			if(channelFlags.get(c).contains(flag))
+                channels.add(channelNames.get(c).toUpperCase());
 		return channels;
 	}
 	
@@ -259,6 +267,7 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
         numImc2ChannelsLoaded=0;
         channelNames=new Vector();
         channelMasks=new Vector();
+    	channelColorOverrides=new Vector<String>();
         channelFlags=new Vector<HashSet<ChannelFlag>>();
         ichannelList=new Vector();
         imc2channelList=new Vector();
@@ -273,20 +282,22 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 
 	public String[][] imc2ChannelsArray()
 	{
-		String[][] array=new String[numImc2ChannelsLoaded][4];
+		String[][] array=new String[numImc2ChannelsLoaded][5];
 		int num=0;
 		for(int i=0;i<channelNames.size();i++)
 		{
-			String name=(String)channelNames.elementAt(i);
-			String mask=(String)channelMasks.elementAt(i);
-			HashSet<ChannelFlag> flags=channelFlags.elementAt(i);
-			String iname=(String)imc2channelList.elementAt(i);
+			String name=channelNames.get(i);
+			String mask=channelMasks.get(i);
+			String colorOverride=channelColorOverrides.get(i);
+			HashSet<ChannelFlag> flags=channelFlags.get(i);
+			String iname=imc2channelList.get(i);
 			if((iname!=null)&&(iname.trim().length()>0))
 			{
 				array[num][0]=iname.trim();
 				array[num][1]=name.trim();
 				array[num][2]=mask;
                 array[num][3]=CMParms.combine(flags);
+                array[num][4]=colorOverride;
 				num++;
 			}
 		}
@@ -294,20 +305,22 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 	}
 	public String[][] iChannelsArray()
 	{
-		String[][] array=new String[numIChannelsLoaded][4];
+		String[][] array=new String[numIChannelsLoaded][5];
 		int num=0;
 		for(int i=0;i<channelNames.size();i++)
 		{
-			String name=(String)channelNames.elementAt(i);
-			String mask=(String)channelMasks.elementAt(i);
-			String iname=(String)ichannelList.elementAt(i);
-			HashSet<ChannelFlag> flags=channelFlags.elementAt(i);
+			String name=channelNames.get(i);
+			String mask=channelMasks.get(i);
+			String colorOverride=channelColorOverrides.get(i);
+			String iname=ichannelList.get(i);
+			HashSet<ChannelFlag> flags=channelFlags.get(i);
 			if((iname!=null)&&(iname.trim().length()>0))
 			{
 				array[num][0]=iname.trim();
 				array[num][1]=name.trim();
 				array[num][2]=mask;
                 array[num][3]=CMParms.combine(flags);
+				array[num][4]=colorOverride;
 				num++;
 			}
 		}
@@ -347,7 +360,7 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 		    mySession.startBeingSnoopedBy((Session)invalid.get(s));
 	}
 
-    public String parseOutFlags(String mask, HashSet<ChannelFlag> flags)
+    public String parseOutFlags(String mask, HashSet<ChannelFlag> flags, String[] colorOverride)
     {
         Vector<String> V=CMParms.parse(mask);
         for(int v=V.size()-1;v>=0;v--)
@@ -357,6 +370,18 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
             {
                 V.removeElementAt(v);
                 flags.add(ChannelFlag.valueOf(s));
+            }
+            else
+            {
+	            int colorNum=CMParms.indexOf(ColorLibrary.COLOR_ALLCOLORNAMES, s);
+	            if(colorNum>=0)
+	            {
+	                V.removeElementAt(v);
+	                if(s.startsWith("BG"))
+		                colorOverride[0]=colorOverride[0]+ColorLibrary.COLOR_ALLCOLORS[colorNum];
+	                else
+		                colorOverride[0]=ColorLibrary.COLOR_ALLCOLORS[colorNum]+ColorLibrary.COLOR_ALLCOLORS[colorNum]+colorOverride[0];
+	            }
             }
         }
         return CMParms.combine(V,0);
@@ -385,16 +410,21 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 			HashSet<ChannelFlag> flags=new HashSet<ChannelFlag>();
 			if(x>0)
 			{
-				channelMasks.addElement(parseOutFlags(item.substring(x+1).trim(),flags));
+				String[] colorOverride=new String[]{""};
+				channelMasks.add(parseOutFlags(item.substring(x+1).trim(),flags,colorOverride));
+				channelColorOverrides.add(colorOverride[0]);
 				item=item.substring(0,x);
 			}
 			else
-				channelMasks.addElement("");
-			ichannelList.addElement("");
-			imc2channelList.addElement("");
-			channelNames.addElement(item.toUpperCase().trim());
-            channelFlags.addElement(flags);
-			channelQue.addElement(new Vector());
+			{
+				channelMasks.add("");
+				channelColorOverrides.add("");
+			}
+			ichannelList.add("");
+			imc2channelList.add("");
+			channelNames.add(item.toUpperCase().trim());
+            channelFlags.add(flags);
+			channelQue.add(new Vector());
 		}
 		while(ilist.length()>0)
 		{
@@ -419,13 +449,15 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 			String lvl=item.substring(y1+1,y2).trim();
 			String ichan=item.substring(y2+1).trim();
 			item=item.substring(0,y1);
-			channelNames.addElement(item.toUpperCase().trim());
-			channelQue.addElement(new Vector());
+			channelNames.add(item.toUpperCase().trim());
+			channelQue.add(new Vector());
 			HashSet<ChannelFlag> flags=new HashSet<ChannelFlag>();
-			channelMasks.addElement(parseOutFlags(lvl,flags));
-            channelFlags.addElement(flags);
-			imc2channelList.addElement("");
-			ichannelList.addElement(ichan);
+			String[] colorOverride=new String[]{""};
+			channelMasks.add(parseOutFlags(lvl,flags,colorOverride));
+			channelColorOverrides.add(colorOverride[0]);
+            channelFlags.add(flags);
+			imc2channelList.add("");
+			ichannelList.add(ichan);
 		}
 		while(imc2list.length()>0)
 		{
@@ -450,22 +482,28 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 			String lvl=item.substring(y1+1,y2).trim();
 			String ichan=item.substring(y2+1).trim();
 			item=item.substring(0,y1);
-			channelNames.addElement(item.toUpperCase().trim());
-			channelQue.addElement(new Vector());
+			channelNames.add(item.toUpperCase().trim());
+			channelQue.add(new Vector());
 			HashSet<ChannelFlag> flags=new HashSet<ChannelFlag>();
-            channelMasks.addElement(parseOutFlags(lvl,flags));
-            channelFlags.addElement(flags);
-			imc2channelList.addElement(ichan);
-			ichannelList.addElement("");
+			String[] colorOverride=new String[]{""};
+			channelMasks.add(parseOutFlags(lvl,flags,colorOverride));
+			channelColorOverrides.add(colorOverride[0]);
+            channelFlags.add(flags);
+			imc2channelList.add(ichan);
+			ichannelList.add("");
 		}
 
-		channelNames.addElement("AUCTION");
-		channelQue.addElement(new Vector());
-		channelMasks.addElement("");
-        channelFlags.addElement(new HashSet<ChannelFlag>());
-		ichannelList.addElement("");
-		imc2channelList.addElement("");
-		numChannelsLoaded++;
+		if(!CMSecurity.isDisabled(CMSecurity.DisFlag.CHANNELAUCTION))
+		{
+			channelNames.add("AUCTION");
+			channelQue.add(new Vector());
+			channelMasks.add("");
+	        channelFlags.add(new HashSet<ChannelFlag>());
+	        channelColorOverrides.add("");
+			ichannelList.add("");
+			imc2channelList.add("");
+			numChannelsLoaded++;
+		}
 
 		numChannelsLoaded++;
 		return numChannelsLoaded;
@@ -501,6 +539,9 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
         
         Set<ChannelFlag> flags=getChannelFlags(channelInt);
         channelName=getChannelName(channelInt);
+        String channelColor=getChannelColorOverride(channelInt);
+        if(channelColor.length()==0)
+        	channelColor="^Q";
 
         CMMsg msg=null;
         if(systemMsg)
@@ -508,7 +549,7 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
             String str="["+channelName+"] '"+message+"'^</CHANNEL^>^?^.";
             if((!mob.name().startsWith("^"))||(mob.name().length()>2))
                 str="<S-NAME> "+str;
-            msg=CMClass.getMsg(mob,null,null,CMMsg.MASK_CHANNEL|CMMsg.MASK_ALWAYS|CMMsg.MSG_SPEAK,"^Q^<CHANNEL \""+channelName+"\"^>"+str,CMMsg.NO_EFFECT,null,CMMsg.MASK_CHANNEL|(CMMsg.TYP_CHANNEL+channelInt),"^Q^<CHANNEL \""+channelName+"\"^>"+str);
+            msg=CMClass.getMsg(mob,null,null,CMMsg.MASK_CHANNEL|CMMsg.MASK_ALWAYS|CMMsg.MSG_SPEAK,channelColor+"^<CHANNEL \""+channelName+"\"^>"+str,CMMsg.NO_EFFECT,null,CMMsg.MASK_CHANNEL|(CMMsg.TYP_CHANNEL+channelInt),channelColor+"^<CHANNEL \""+channelName+"\"^>"+str);
         }
         else
         if(message.startsWith(",")
@@ -531,11 +572,11 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
                     msgstr=" "+msgstr.trim();
                 String srcstr="^<CHANNEL \""+channelName+"\"^>["+channelName+"] "+mob.name()+msgstr+"^</CHANNEL^>^N^.";
                 String reststr="^<CHANNEL \""+channelName+"\"^>["+channelName+"] <S-NAME>"+msgstr+"^</CHANNEL^>^N^.";
-                msg=CMClass.getMsg(mob,null,null,CMMsg.MASK_CHANNEL|CMMsg.MASK_ALWAYS|CMMsg.MSG_SPEAK,"^Q"+srcstr,CMMsg.NO_EFFECT,null,CMMsg.MASK_CHANNEL|(CMMsg.TYP_CHANNEL+channelInt),"^Q"+reststr);
+                msg=CMClass.getMsg(mob,null,null,CMMsg.MASK_CHANNEL|CMMsg.MASK_ALWAYS|CMMsg.MSG_SPEAK,channelColor+""+srcstr,CMMsg.NO_EFFECT,null,CMMsg.MASK_CHANNEL|(CMMsg.TYP_CHANNEL+channelInt),channelColor+reststr);
             }
         }
         else
-            msg=CMClass.getMsg(mob,null,null,CMMsg.MASK_CHANNEL|CMMsg.MASK_ALWAYS|CMMsg.MSG_SPEAK,"^Q^<CHANNEL \""+channelName+"\"^>You "+channelName+" '"+message+"'^</CHANNEL^>^N^.",CMMsg.NO_EFFECT,null,CMMsg.MASK_CHANNEL|(CMMsg.TYP_CHANNEL+channelInt),"^Q^<CHANNEL \""+channelName+"\"^><S-NAME> "+channelName+"S '"+message+"'^</CHANNEL^>^N^.");
+            msg=CMClass.getMsg(mob,null,null,CMMsg.MASK_CHANNEL|CMMsg.MASK_ALWAYS|CMMsg.MSG_SPEAK,channelColor+"^<CHANNEL \""+channelName+"\"^>You "+channelName+" '"+message+"'^</CHANNEL^>^N^.",CMMsg.NO_EFFECT,null,CMMsg.MASK_CHANNEL|(CMMsg.TYP_CHANNEL+channelInt),channelColor+"^<CHANNEL \""+channelName+"\"^><S-NAME> "+channelName+"S '"+message+"'^</CHANNEL^>^N^.");
         CMLib.commands().monitorGlobalMessage(mob.location(), msg);
         if((mob.location()!=null)
         &&((!mob.location().isInhabitant(mob))||(mob.location().okMessage(mob,msg))))

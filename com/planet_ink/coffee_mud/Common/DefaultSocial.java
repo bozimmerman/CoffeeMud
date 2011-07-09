@@ -186,7 +186,10 @@ public class DefaultSocial implements Social
 								Vector commands,
 								boolean makeTarget)
 	{
-		String str=makeTarget?"":"^Q^<CHANNEL \""+channelName+"\"^>["+channelName+"] ";
+        String channelColor=CMLib.channels().getChannelColorOverride(channelInt);
+        if(channelColor.length()==0)
+        	channelColor="^Q";
+		String str=makeTarget?"":(channelColor+"^<CHANNEL \""+channelName+"\"^>["+channelName+"] ");
 		String end=makeTarget?"":"^</CHANNEL^>^N^.";
 		return makeMessage(mob,str,end,CMMsg.MASK_CHANNEL,CMMsg.MASK_CHANNEL|(CMMsg.TYP_CHANNEL+channelInt),commands,channelName,makeTarget);
 	}

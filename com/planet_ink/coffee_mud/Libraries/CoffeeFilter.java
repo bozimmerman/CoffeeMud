@@ -216,6 +216,25 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 				{
 					len++;
 					loop++;
+	                if(loop<buf.length())
+	                {
+	                    char c=buf.charAt(loop);
+	                    if((c=='<')||(c=='&'))
+	                    {
+							len++;
+							loop++;
+	                        while(loop<(buf.length()-1))
+	                        {
+	                            if(((c=='<')&&((buf.charAt(loop)!='^')||(buf.charAt(loop+1)!='>')))
+	                            ||((c=='&')&&(buf.charAt(loop)!=';')))
+	                            {
+	    							len++;
+	    							loop++;
+	                            }
+	                        }
+							len++;
+	                    }
+	                }
 					break;
 				}
 				default:

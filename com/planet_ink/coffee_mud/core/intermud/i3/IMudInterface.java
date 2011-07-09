@@ -226,6 +226,9 @@ public class IMudInterface implements ImudServices, Serializable
 					return;
 				int channelInt=CMLib.channels().getChannelIndex(channelName);
 				if(channelInt<0) return;
+		        String channelColor=CMLib.channels().getChannelColorOverride(channelInt);
+		        if(channelColor.length()==0)
+		        	channelColor="^Q";
 				ck.message=fixColors(CMProps.applyINIFilter(ck.message,CMProps.SYSTEM_CHANNELFILTER));
 				if(ck.message_target!=null)
 				    ck.message_target=fixColors(CMProps.applyINIFilter(ck.message_target,CMProps.SYSTEM_CHANNELFILTER));
@@ -249,8 +252,8 @@ public class IMudInterface implements ImudServices, Serializable
 					msgs=CMProps.applyINIFilter(msgs,CMProps.SYSTEM_EMOTEFILTER);
 					String targmsgs=socialFixIn(ck.message_target);
 					targmsgs=CMProps.applyINIFilter(targmsgs,CMProps.SYSTEM_EMOTEFILTER);
-					String str="^Q^<CHANNEL \""+channelName+"\"^>["+channelName+"] "+msgs+"^</CHANNEL^>^N^.";
-					String str2="^Q^<CHANNEL \""+channelName+"\"^>["+channelName+"] "+targmsgs+"^</CHANNEL^>^N^.";
+					String str=channelColor+"^<CHANNEL \""+channelName+"\"^>["+channelName+"] "+msgs+"^</CHANNEL^>^N^.";
+					String str2=channelColor+"^<CHANNEL \""+channelName+"\"^>["+channelName+"] "+targmsgs+"^</CHANNEL^>^N^.";
 					msg=CMClass.getMsg(mob,targetMOB,null,CMMsg.NO_EFFECT,null,CMMsg.MASK_CHANNEL|(CMMsg.TYP_CHANNEL+channelInt),str2,CMMsg.MASK_CHANNEL|(CMMsg.TYP_CHANNEL+channelInt),str);
 				}
 				else
@@ -258,12 +261,12 @@ public class IMudInterface implements ImudServices, Serializable
 				{
 					String msgs=socialFixIn(ck.message);
 					msgs=CMProps.applyINIFilter(msgs,CMProps.SYSTEM_EMOTEFILTER);
-					String str="^Q^<CHANNEL \""+channelName+"\"^>["+channelName+"] "+msgs+"^</CHANNEL^>^N^.";
+					String str=channelColor+"^<CHANNEL \""+channelName+"\"^>["+channelName+"] "+msgs+"^</CHANNEL^>^N^.";
 					msg=CMClass.getMsg(mob,null,null,CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null,CMMsg.MASK_CHANNEL|(CMMsg.TYP_CHANNEL+channelInt),str);
 				}
 				else
 				{
-					String str="^Q^<CHANNEL \""+channelName+"\"^>"+mob.name()+" "+channelName+"(S) '"+ck.message+"'^</CHANNEL^>^N^.";
+					String str=channelColor+"^<CHANNEL \""+channelName+"\"^>"+mob.name()+" "+channelName+"(S) '"+ck.message+"'^</CHANNEL^>^N^.";
 					msg=CMClass.getMsg(mob,null,null,CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null,CMMsg.MASK_CHANNEL|(CMMsg.TYP_CHANNEL+channelInt),str);
 				}
 		        CMLib.commands().monitorGlobalMessage(mob.location(), msg);

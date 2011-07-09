@@ -37,6 +37,7 @@ public interface ChannelsLibrary extends CMLibrary
     public String getChannelMask(int i);
     public Set<ChannelFlag> getChannelFlags(int i);
     public String getChannelName(int i);
+	public String getChannelColorOverride(int i);
     public List<ChannelMsg> getChannelQue(int i);
     public boolean mayReadThisChannel(MOB sender, boolean areaReq, MOB M, int i);
     public boolean mayReadThisChannel(MOB sender, boolean areaReq, MOB M, int i, boolean offlineOK);
@@ -53,7 +54,6 @@ public interface ChannelsLibrary extends CMLibrary
     public String[] getChannelNames();
     public List<Session> clearInvalidSnoopers(Session mySession, int channelCode);
     public void restoreInvalidSnoopers(Session mySession, List<Session> invalid);
-    public String parseOutFlags(String mask, HashSet<ChannelFlag> flags);
     public int loadChannels(String list, String ilist, String imc2list);
     public boolean channelTo(Session ses, boolean areareq, int channelInt, CMMsg msg, MOB sender);
     public void reallyChannel(MOB mob, String channelName, String message, boolean systemMsg);
