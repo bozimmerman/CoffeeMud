@@ -128,6 +128,15 @@ public class DefaultRoomnumberSet implements RoomnumberSet
     	return total;
     }
     
+    public boolean isEmpty()
+    {
+    	if(!root.isEmpty())
+	    	for(CMIntegerGrouper CMI : root.values())
+	    		if((CMI!=null)&&(!CMI.isEmpty()))
+	    			return false;
+    	return true;
+    }
+    
     public int roomCount(String areaName)
     {
         int x=areaName.indexOf('#');

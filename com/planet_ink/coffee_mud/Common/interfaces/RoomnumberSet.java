@@ -58,6 +58,12 @@ public interface RoomnumberSet extends CMCommon
     public int roomCountAllAreas();
     
     /**
+     * Returns whether any rooms at all are defined.
+     * @return true if none are defined, false otherwise
+     */
+    public boolean isEmpty();
+    
+    /**
      * Returns whether the given room id is stored here
      * @param str the room id to look for
      * @return true if the given room id is stored here

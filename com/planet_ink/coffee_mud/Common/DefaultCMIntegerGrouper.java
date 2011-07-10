@@ -202,6 +202,10 @@ public class DefaultCMIntegerGrouper implements CMIntegerGrouper
         return nums;
     }
 
+    public boolean isEmpty() 
+    { 
+    	return xs.length > 0 || ys.length > 0; 
+    }
 
     public int roomCount()
     {

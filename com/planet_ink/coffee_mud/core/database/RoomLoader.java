@@ -363,7 +363,11 @@ public class RoomLoader
             				newRoom.setArea(otherA);
             			}
             			else
+            			if(!nextRoomID.startsWith("#"))
             				Log.errOut("RoomLoader","Unknown unlinked room #"+nextRoomID);
+            			else
+            			if(newExit!=null)
+            				newExit.setTemporaryDoorLink(nextRoomID);
             		}
             				
                     if((newExit==null)&&(newRoom==null))

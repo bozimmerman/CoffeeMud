@@ -96,6 +96,11 @@ public interface CMIntegerGrouper extends CMCommon
      */
     public int roomCount();
     /**
+     * Returns whether any rooms are defined herein
+     * @return true if no rooms are defined, false otherwise.
+     */
+    public boolean isEmpty();
+    /**
      * Removes the room number
      * @param x the coded digit pair to remove.
      * @return the integrouper with the pair removed

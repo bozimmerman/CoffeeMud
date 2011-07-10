@@ -3325,6 +3325,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                             if((lastKnownLocation!=null)&&(lastKnownLocation.getArea().Name().equals(A.Name())))
                                 R=lastKnownLocation;
                             else
+                            if(!A.isProperlyEmpty())
                                 R=A.getRandomProperRoom();
                         }
                     }
@@ -3336,6 +3337,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                             if((lastKnownLocation!=null)&&(lastKnownLocation.getArea().Name().equals(A.Name())))
                                 R=lastKnownLocation;
                             else
+                            if(!A.isProperlyEmpty())
                                 R=A.getRandomProperRoom();
                         }
                     }

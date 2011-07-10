@@ -782,29 +782,6 @@ public class CMMap extends StdLibrary implements WorldMap
     	return found;
     }
     
-	public Room getRoom(java.util.Map<String, Room> hashedRoomSet, String areaName, String calledThis)
-	{
-		if(calledThis.startsWith("#"))
-		{
-			if(hashedRoomSet.containsKey(calledThis.substring(1)))
-				return (Room)hashedRoomSet.get(calledThis.substring(1));
-		}
-		else
-		if(calledThis.startsWith(areaName+"#"))
-		{
-			if(hashedRoomSet.containsKey(calledThis.substring(areaName.length()+1)))
-				return (Room)hashedRoomSet.get(calledThis.substring(areaName.length()+1));
-		}
-		else
-		{
-			if(hashedRoomSet.containsKey(calledThis))
-				return (Room)hashedRoomSet.get(calledThis);
-		}
-		Room R=getRoom(calledThis);
-		if(R!=null) return R;
-		return getRoom(areaName+"#"+calledThis);
-	}
-
     public Room getRoom(Room room)
     {
     	if(room==null)
@@ -1211,7 +1188,7 @@ public class CMMap extends StdLibrary implements WorldMap
 	public Room roomLocation(Environmental E)
 	{
 		if(E==null) return null;
-		if(E instanceof Area)
+		if((E instanceof Area)&&(!((Area)E).isProperlyEmpty()))
 			return ((Area)E).getRandomProperRoom();
 		else
 		if(E instanceof Room)
@@ -1252,7 +1229,8 @@ public class CMMap extends StdLibrary implements WorldMap
         }
         if(E instanceof Ability)
             return getStartRoom(((Ability)E).affecting());
-        if(E instanceof Area) return ((Area)E).getRandomProperRoom();
+        if((E instanceof Area)&&(!((Area)E).isProperlyEmpty())) 
+        	return ((Area)E).getRandomProperRoom();
         if(E instanceof Room) return (Room)E;
         return roomLocation(E);
     }
@@ -1441,7 +1419,11 @@ public class CMMap extends StdLibrary implements WorldMap
 	}
 	
 	protected Room addWorldRoomsLiberally(Vector rooms, Area area)
-	{ return addWorldRoomsLiberally(rooms,area.getRandomProperRoom()); }
+	{
+		if((area==null)||(area.isProperlyEmpty()))
+			return null;
+		return addWorldRoomsLiberally(rooms,area.getRandomProperRoom()); 
+	}
 	
 	protected Enumeration<Room> rightLiberalMap(Area A) {
 		if(A==null) return roomsFilled();

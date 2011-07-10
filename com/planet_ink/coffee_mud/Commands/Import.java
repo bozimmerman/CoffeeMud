@@ -327,7 +327,48 @@ public class Import extends StdCommand
 		return CMStrings.removeColors(CMLib.coffeeFilter().safetyFilter(areaName));
 	}
 	
-	protected static void processRoomRelinks(Vector reLinkTable, String areaName, Hashtable hashedRoomSet)
+	protected static Room getRoom(java.util.Map<String, Room> hashedRoomSet, String areaName, String calledThis)
+	{
+		if(calledThis.startsWith("#"))
+		{
+			while(calledThis.startsWith("#0")&&(calledThis.length()>2))
+				calledThis="#"+calledThis.substring(2);
+			if(hashedRoomSet.containsKey(areaName+calledThis))
+				return (Room)hashedRoomSet.get(areaName+calledThis);
+			for(String key : hashedRoomSet.keySet())
+				if(key.endsWith(calledThis))
+					return hashedRoomSet.get(key);
+		}
+		else
+		if(calledThis.startsWith(areaName+"#"))
+		{
+			while(calledThis.startsWith(areaName+"#0")&&(calledThis.length()>(areaName.length()+2)))
+				calledThis=areaName+"#"+calledThis.substring(areaName.length()+2);
+			if(hashedRoomSet.containsKey(calledThis))
+				return (Room)hashedRoomSet.get(calledThis);
+		}
+		while(calledThis.startsWith("0")&&(calledThis.length()>1))
+			calledThis=calledThis.substring(1);
+		if(hashedRoomSet.containsKey(calledThis))
+			return (Room)hashedRoomSet.get(calledThis);
+		for(String key : hashedRoomSet.keySet())
+			if(key.endsWith("#"+calledThis))
+				return hashedRoomSet.get(key);
+		return null;
+	}
+	protected static Room getRoom(java.util.Map<String, Room> areaHashedRoomSet, java.util.Map<String, Room> hashedRoomSet, String areaName, String calledThis)
+	{
+		Room R=null;
+		if(areaHashedRoomSet!=null)
+			R=getRoom(areaHashedRoomSet,areaName,calledThis);
+		if(R!=null) return R;
+		R=getRoom(hashedRoomSet,areaName,calledThis);
+		if(R!=null) return R;
+		return CMLib.map().getRoom(areaName+"#"+calledThis);
+	}
+
+	
+	protected static void processRoomRelinks(Vector reLinkTable, String areaName, Hashtable areaHashedRoomSet, Hashtable hashedRoomSet)
 	{
 		// try to re-link olde room links
 		if(reLinkTable!=null)
@@ -344,8 +385,8 @@ public class Import extends StdCommand
 	    		{
 					int direction=CMath.s_int(link.substring(s1+1,s2));
 					String destRoomID=link.substring(s2+1);
-					Room sourceRoom=CMLib.map().getRoom(hashedRoomSet,areaName,sourceRoomID);
-					Room destRoom=CMLib.map().getRoom(hashedRoomSet,areaName,destRoomID);
+					Room sourceRoom=getRoom(areaHashedRoomSet,hashedRoomSet,areaName,sourceRoomID);
+					Room destRoom=getRoom(areaHashedRoomSet,hashedRoomSet,areaName,destRoomID);
 					if((sourceRoom==null)||(destRoom==null))
 						Log.errOut("Import","Relink error: "+sourceRoomID+"="+sourceRoom+"/"+destRoomID+"="+destRoom);
 					else
@@ -2730,6 +2771,27 @@ public class Import extends StdCommand
 					if(special.equals("SPEC_THIEF"))
 						M.addBehavior(CMClass.getBehavior("Thiefness"));
 					else
+					if(special.equals("SPEC_SNAKE_CHARM"))
+					{
+						Log.errOut("IMPORT","Unsupported spec: "+special);
+					}
+					else
+					if(special.equals("SPEC_TEACHER"))
+					{
+						M.addBehavior(CMClass.getBehavior("MOBTeacher"));
+						//Log.errOut("IMPORT","Unsupported spec: "+special);
+					}
+					else
+					if(special.equals("SPEC_BUDDHA"))
+					{
+						Log.errOut("IMPORT","Unsupported spec: "+special);
+					}
+					else
+					if(special.equals("SPEC_DEATH_RAIN"))
+					{
+						Log.errOut("IMPORT","Unsupported spec: "+special);
+					}
+					else
 					if(special.equals("SPEC_HEALER"))
 						M.addBehavior(CMClass.getBehavior("Healer"));
 					else
@@ -2946,14 +3008,14 @@ public class Import extends StdCommand
 	}
 
 	private static Item getItem(String OfThisID,
-						 Session session,
-						 String areaName,
-						 Vector objectData,
-						 Vector objProgData,
-						 Hashtable doneItems,
-						 Hashtable doneRooms,
-						 boolean compileErrors,
-						 Vector commands)
+								Session session,
+								String areaName,
+								Vector objectData,
+								Vector objProgData,
+								Hashtable doneItems,
+								Hashtable doneRooms,
+								boolean compileErrors,
+								Vector commands)
 	{
 		if(OfThisID.startsWith("#"))
 		{
@@ -3289,7 +3351,7 @@ public class Import extends StdCommand
 			case 97: I=CMClass.getBasicItem("GenPortal");
 					 if((str4.length()>0)&&(!str4.equals("0")))
 					 {
-						 Room R=CMLib.map().getRoom(doneRooms,areaName,str4);
+						 Room R=getRoom(doneRooms,doneRooms,areaName,str4);
 						 if(R!=null) 
 							 I.setReadableText(R.roomID());
 						 else
@@ -4001,9 +4063,9 @@ public class Import extends StdCommand
 			}
 		}
 
-		Vector mobData=new Vector();
-		Vector objectData=new Vector();
-
+		Vector mobData=new Vector(); // outside the for loop -- why?
+		Vector objectData=new Vector(); // outside the for loop -- why?
+		
 		multiArea=commands.size()>1;
 		for(int areaFile=0;areaFile<commands.size();areaFile++)
 		{
@@ -4428,9 +4490,9 @@ public class Import extends StdCommand
 
 					if((S1.You_see()==null)||(!S1.You_see().equals(str)))
 					{
-						if((changing)&&(session!=null))
-							session.rawPrint("Change '"+S1.name()+"' from '"+S1.You_see()+"', you see, to: '"+str+"'");
-						if((!changing)||((session!=null)&&session.confirm("?","Y")))
+						if((changing)&&prompt&&(session!=null))
+							session.rawPrint("Change Social '"+S1.name()+"' from '"+S1.You_see()+"', you see, to: '"+str+"'");
+						if((!changing)||((session!=null)&&prompt&&session.confirm("?","Y")))
 							S1.setYou_see(str);
 					}
 
@@ -4439,9 +4501,9 @@ public class Import extends StdCommand
 
 					if((S1.Third_party_sees()==null)||(!S1.Third_party_sees().equals(str)))
 					{
-						if((changing)&&(session!=null))
-							session.rawPrint("Change '"+S1.name()+"' from '"+S1.Third_party_sees()+"', others see, to: '"+str+"'");
-						if((!changing)||((session!=null)&&(session.confirm("?","Y"))))
+						if((changing)&&prompt&&(session!=null))
+							session.rawPrint("Change Social '"+S1.name()+"' from '"+S1.Third_party_sees()+"', others see, to: '"+str+"'");
+						if((!changing)||((session!=null)&&prompt&&(session.confirm("?","Y"))))
 							S1.setThird_party_sees(str);
 					}
 
@@ -4458,9 +4520,9 @@ public class Import extends StdCommand
 
 					if((S2.You_see()==null)||(!S2.You_see().equals(str)))
 					{
-						if((changing)&&(session!=null))
-							session.rawPrint("Change '"+S2.name()+"' from '"+S2.You_see()+"', you see, to: '"+str+"'");
-						if((!changing)||((session!=null)&&session.confirm("?","Y")))
+						if((changing)&&prompt&&(session!=null))
+							session.rawPrint("Change Social '"+S2.name()+"' from '"+S2.You_see()+"', you see, to: '"+str+"'");
+						if((!changing)||((session!=null)&&prompt&&session.confirm("?","Y")))
 							S2.setYou_see(str);
 					}
 
@@ -4469,9 +4531,9 @@ public class Import extends StdCommand
 
 					if((S2.Third_party_sees()==null)||(!S2.Third_party_sees().equals(str)))
 					{
-						if((session!=null)&&changing)
-							session.rawPrint("Change '"+S2.name()+"', others see from '"+S2.Third_party_sees()+"', to: '"+str+"'");
-						if((!changing)||((session!=null)&&session.confirm("?","Y")))
+						if((session!=null)&&prompt&&changing)
+							session.rawPrint("Change Social '"+S2.name()+"', others see from '"+S2.Third_party_sees()+"', to: '"+str+"'");
+						if((!changing)||((session!=null)&&prompt&&session.confirm("?","Y")))
 							S2.setThird_party_sees(str);
 					}
 
@@ -4480,9 +4542,9 @@ public class Import extends StdCommand
 
 					if((S2.Target_sees()==null)||(!S2.Target_sees().equals(str)))
 					{
-						if((session!=null)&&changing)
-							session.rawPrint("Change '"+S2.name()+"', target sees from '"+S2.Target_sees()+"', to: '"+str+"'");
-						if((!changing)||((session!=null)&&session.confirm("?","Y")))
+						if((session!=null)&&prompt&&changing)
+							session.rawPrint("Change Social '"+S2.name()+"', target sees from '"+S2.Target_sees()+"', to: '"+str+"'");
+						if((!changing)||((session!=null)&&prompt&&session.confirm("?","Y")))
 							S2.setTarget_sees(str);
 					}
 
@@ -4491,9 +4553,9 @@ public class Import extends StdCommand
 
 					if((S2.See_when_no_target()==null)||(!S2.See_when_no_target().equals(str)))
 					{
-						if((session!=null)&&changing)
-							session.rawPrint("Change '"+S2.name()+"', no target sees from '"+S2.See_when_no_target()+"', to: '"+str+"'");
-						if((!changing)||((session!=null)&&session.confirm("?","Y")))
+						if((session!=null)&&prompt&&changing)
+							session.rawPrint("Change Social '"+S2.name()+"', no target sees from '"+S2.See_when_no_target()+"', to: '"+str+"'");
+						if((!changing)||((session!=null)&&prompt&&session.confirm("?","Y")))
 							S2.setSee_when_no_target(str);
 					}
 
@@ -4510,9 +4572,9 @@ public class Import extends StdCommand
 
 					if((S3.You_see()==null)||(!S3.You_see().equals(str)))
 					{
-						if((session!=null)&&changing)
-							session.rawPrint("Change '"+S3.name()+"', you see from '"+S3.You_see()+"', to: '"+str+"''");
-						if((!changing)||((session!=null)&&session.confirm("?","Y")))
+						if((session!=null)&&prompt&&changing)
+							session.rawPrint("Change Social '"+S3.name()+"', you see from '"+S3.You_see()+"', to: '"+str+"''");
+						if((!changing)||((session!=null)&&prompt&&session.confirm("?","Y")))
 							S3.setYou_see(str);
 					}
 
@@ -4521,9 +4583,9 @@ public class Import extends StdCommand
 
 					if((S3.Third_party_sees()==null)||(!S3.Third_party_sees().equals(str)))
 					{
-						if((session!=null)&&changing)
-							session.rawPrint("Change '"+S3.name()+"', others see from '"+S3.Third_party_sees()+"', to: '"+str+"'");
-						if((!changing)||((session!=null)&&session.confirm("?","Y")))
+						if((session!=null)&&prompt&&changing)
+							session.rawPrint("Change Social '"+S3.name()+"', others see from '"+S3.Third_party_sees()+"', to: '"+str+"'");
+						if((!changing)||((session!=null)&&prompt&&session.confirm("?","Y")))
 							S3.setThird_party_sees(str);
 					}
 
@@ -4574,6 +4636,7 @@ public class Import extends StdCommand
 		if((areaName.toUpperCase().startsWith(areaAuthor.toUpperCase()+" "))
 		&&(areaName.substring(areaAuthor.length()+1).trim().length()>0))
 			areaName=areaName.substring(areaAuthor.length()+1).trim();
+		if(areaName.endsWith("~")) areaName=areaName.substring(0,areaName.length()-1);
 
 		try
 		{
@@ -4601,14 +4664,26 @@ public class Import extends StdCommand
 				{
 					reLinkTable=new Vector();
 					if(!temporarilyDeleteArea(mob,reLinkTable,areaName))
+					{
+						if(multiArea)
+							continue;
 						return false;
+					}
 				}
 				else
+				{
+					if(multiArea)
+						continue;
 					return false;
+				}
 			}
 			else
 			if((prompt)&&((session!=null)&&(!session.confirm("Found area: \""+areaName+"\", is this ok?","Y"))))
+			{
+				if(multiArea)
+					continue;
 				return false;
+			}
 
 			if(session!=null) session.println("Loading and Linking Rooms...");
 			Log.sysOut("Import",mob.Name()+" imported "+areaName+" from "+areaFileName);
@@ -4616,6 +4691,7 @@ public class Import extends StdCommand
 			// build first room structures, leaving rest for later.
 			Room lastRoom=null;
 			Hashtable petShops=new Hashtable();
+			Hashtable<String,Room> areaRooms=new Hashtable<String,Room>();
 
 			for(int r=0;r<roomData.size();r++)
 			{
@@ -4656,6 +4732,9 @@ public class Import extends StdCommand
 				Room R=CMClass.getLocale("StdRoom");
 				String plainRoomID=eatNextLine(roomV);
 				R.setRoomID(plainRoomID);
+				
+				//if(CMSecurity.isDebugging(CMSecurity.DbgFlag.IMPORT))
+				//	Log.debugOut("IMPORT","Found: "+plainRoomID+" ("+areaName+")");
 
 				if((roomV.size()>2)
 				&&(((String)roomV.get(0)).trim().equals("~"))
@@ -4671,7 +4750,9 @@ public class Import extends StdCommand
 					R.setDisplayText(CMLib.coffeeFilter().safetyFilter(eatLineSquiggle(roomV)));
 					R.setDescription(CMLib.coffeeFilter().safetyFilter(eatLineSquiggle(roomV)));
 				}
-				if(R.expirationDate()!=0) R.setExpirationDate(R.expirationDate()+(360000));
+				if(R.expirationDate()!=0) 
+					R.setExpirationDate(R.expirationDate()+(360000));
+				
 				String codeLine=eatNextLine(roomV);
 				if((!R.roomID().startsWith("#"))
 				||(R.displayText().length()==0)
@@ -4962,13 +5043,27 @@ public class Import extends StdCommand
 				roomV.add(0,R.roomID());
 				newRooms.addElement(R);
 				if(plainRoomID.startsWith("#"))
-					doneRooms.put(plainRoomID.substring(1),R);
+				{
+					while(plainRoomID.startsWith("#0")&&(plainRoomID.length()>2))
+						plainRoomID="#"+plainRoomID.substring(2);
+					doneRooms.put(areaName+plainRoomID,R);
+					areaRooms.put(areaName+plainRoomID,R);
+				}
 				else
-					doneRooms.put(plainRoomID.substring(1),R);
+				{
+					if(CMSecurity.isDebugging(CMSecurity.DbgFlag.IMPORT))
+						Log.debugOut("Non-# room ID: "+plainRoomID);
+					while(plainRoomID.startsWith("0")&&(plainRoomID.length()>1))
+						plainRoomID=plainRoomID.substring(1);
+					doneRooms.put(areaName+"#"+plainRoomID,R);
+					areaRooms.put(areaName+"#"+plainRoomID,R);
+				}
 
 				lastRoom=R;
 			}
 
+			if(CMSecurity.isDebugging(CMSecurity.DbgFlag.IMPORT))
+				Log.debugOut("IMPORT","Pass 2: exits, mobs, object");
 			// begin second pass through rooms
 			// handle exits, mobs, objects, etc.
 			for(int r=0;r<roomData.size();r++)
@@ -4979,7 +5074,7 @@ public class Import extends StdCommand
 				else
 					continue;
 				String roomID=eatLine(roomV);
-				Room R=CMLib.map().getRoom(doneRooms,areaName,roomID);
+				Room R=getRoom(areaRooms,doneRooms,areaName,roomID);
 				if(R==null)
 				{
 					Log.errOut("Import","Unhashed room "+roomID+"! Aborting!");
@@ -5073,7 +5168,7 @@ public class Import extends StdCommand
 							continue;
 						}
 						Exit X=CMClass.getExit("GenExit");
-						Room linkRoom=CMLib.map().getRoom(doneRooms,areaName,""+linkRoomID);
+						Room linkRoom=getRoom(areaRooms,doneRooms,areaName,""+linkRoomID);
 						if(linkRoomID>=0)
 						{
 							boolean hasDoor=false;
@@ -5264,7 +5359,7 @@ public class Import extends StdCommand
 				{
 					String mobID=CMParms.getCleanBit(s,2).trim();
 					String roomID=CMParms.getCleanBit(s,4).trim();
-					R=CMLib.map().getRoom(doneRooms,areaName,roomID);
+					R=getRoom(areaRooms,doneRooms,areaName,roomID);
 					if(R==null)
 					{
 						if(multiArea)
@@ -5365,7 +5460,7 @@ public class Import extends StdCommand
 					String mobID=CMParms.getCleanBit(s,2).trim();
 					int x=roomID.lastIndexOf('#');
 					if(x>=0) roomID=roomID.substring(x);
-					Room R2=CMLib.map().getRoom(doneRooms,areaName,roomID);
+					Room R2=getRoom(areaRooms,doneRooms,areaName,roomID);
 					MOB M2=null;
 					if(R2!=null)
 						M2=R2.fetchInhabitant(mobID);
@@ -5445,7 +5540,7 @@ public class Import extends StdCommand
 				{
 					String itemID=CMParms.getCleanBit(s,2).trim();
 					String roomID=CMParms.getCleanBit(s,4).trim();
-					R=CMLib.map().getRoom(doneRooms,areaName,roomID);
+					R=getRoom(areaRooms,doneRooms,areaName,roomID);
 					if(R==null)
 					{
 						if(multiArea) nextResetData.addElement(s);
@@ -5534,7 +5629,7 @@ public class Import extends StdCommand
 				{
 					String roomID=CMParms.getCleanBit(s,2).trim();
 					int dirCode=(int)getBitMask(s,3);
-					R=CMLib.map().getRoom(doneRooms,areaName,roomID);
+					R=getRoom(areaRooms,doneRooms,areaName,roomID);
 					if(R==null)
 					{
 						if(multiArea) nextResetData.addElement(s);
@@ -5697,7 +5792,7 @@ public class Import extends StdCommand
 			}
 			if(session!=null) session.print("\n\rResets...");
 
-			processRoomRelinks(reLinkTable,areaName,doneRooms);
+			processRoomRelinks(reLinkTable,areaName,areaRooms,doneRooms);
 			
 			if(newRooms.size()==0)
 				if(session!=null) session.println("\nDone? No Room!\n\r");
@@ -5775,7 +5870,7 @@ public class Import extends StdCommand
 				else
 					continue;
 
-				Room R1=CMLib.map().getRoom(doneRooms,"NOAREA",roomID);
+				Room R1=getRoom(doneRooms,doneRooms,"NOAREA",roomID);
 				if(R1!=null)
 				{
 					int dir=CMath.s_int(dirID);
@@ -5786,7 +5881,7 @@ public class Import extends StdCommand
 						RR=R1.rawDoors()[dir];
 						RE=R1.getRawExit(dir);
 					}
-					Room TR=CMLib.map().getRoom(doneRooms,"NOAREA",dcode);
+					Room TR=getRoom(doneRooms,doneRooms,"NOAREA",dcode);
 					if((RR==null)&&(TR==null))
 						returnAnError(session,"Room "+R1.roomID()+" links to unknown room "+dcode+" in direction "+Directions.getDirectionName(dir)+".",compileErrors,commands);
 					else

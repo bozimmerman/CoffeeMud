@@ -275,6 +275,11 @@ public interface Area extends Economics, PhysicalAgent
 	 */
 	public Enumeration<Room> getCompleteMap();
 	/**
+	 * Returns whether this area has any proper rooms at all, even if uncached.
+	 * @return true if there are no proper rooms, false otherwise
+	 */
+	public boolean isProperlyEmpty();
+	/**
 	 * Returns a RoomnumberSet for all rooms that properly belong to this area, including
 	 * those not yet loaded.
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.RoomnumberSet

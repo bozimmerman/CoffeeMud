@@ -867,6 +867,7 @@ public class StdSpaceShip implements Area, SpaceObject, SpaceShip
 			return R;
 		}
 	}
+	public boolean isProperlyEmpty(){ return getProperRoomnumbers().isEmpty(); }
 	public void setProperRoomnumbers(RoomnumberSet set){ properRoomIDSet=set;}
 	public RoomnumberSet getMetroRoomnumbers(){return getProperRoomnumbers();}
 	public Enumeration<Room> getMetroMap(){return getProperMap();}
