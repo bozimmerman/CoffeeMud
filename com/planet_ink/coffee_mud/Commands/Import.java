@@ -2773,18 +2773,19 @@ public class Import extends StdCommand
 					else
 					if(special.equals("SPEC_SNAKE_CHARM"))
 					{
+						// ends combat, and makes people give him their weapons
 						Log.errOut("IMPORT","Unsupported spec: "+special);
 					}
 					else
 					if(special.equals("SPEC_TEACHER"))
 					{
 						M.addBehavior(CMClass.getBehavior("MOBTeacher"));
-						//Log.errOut("IMPORT","Unsupported spec: "+special);
 					}
 					else
 					if(special.equals("SPEC_BUDDHA"))
 					{
-						Log.errOut("IMPORT","Unsupported spec: "+special);
+						M.addBehavior(CMClass.getBehavior("Clericness"));
+						M.addAbility(CMClass.getAbility("Dragonbreath"));
 					}
 					else
 					if(special.equals("SPEC_DEATH_RAIN"))
