@@ -289,8 +289,24 @@ public class Import extends StdCommand
 				lineAfter=(String)V.get(2);
 				if(lineAfter.indexOf('~')<0)
 					return "";
-				lineAfter=lineAfter.substring(0,lineAfter.length()-1);
-				areaName=lineAfter.trim();
+				lineAfter=lineAfter.substring(0,lineAfter.length()-1).trim();
+				if(lineAfter.length()>0)
+					areaName=lineAfter.trim();
+				else
+				if(V.size()>3)
+				{
+					lineAfter=(String)V.get(3);
+					if(lineAfter.indexOf('~')<0)
+						return "";
+					if(lineAfter.endsWith("~")) 
+						lineAfter=lineAfter.substring(0,lineAfter.length()-1);
+					int x=lineAfter.indexOf('}');
+					if(x>0) lineAfter=lineAfter.substring(x+1).trim();
+					if(CMParms.numBits(lineAfter)>1)
+						areaName=CMParms.getPastBit(lineAfter,0);
+					else
+						areaName=lineAfter;
+				}
 			}
 			else
 				areaName=lineAfter.trim();
@@ -796,6 +812,7 @@ public class Import extends StdCommand
 				s+="%0D";
 			else
 				s+=" "+l;
+			if(V.size()==0) break;
 		}
 		s=trimSpacesOnly(s);
 
@@ -1279,7 +1296,7 @@ public class Import extends StdCommand
 			if(word.startsWith("ENERGY CONTAINMENT")) i=247;
 			else
 			{
-				Log.sysOut("Unknown spell: "+word);
+				Log.sysOut("Import","Unknown spell: "+word);
 				return "";
 			}
 		}
@@ -1698,10 +1715,23 @@ public class Import extends StdCommand
 			String s=((String)buf.get(0)).toUpperCase().trim();
 			if(s.startsWith("#")&&((String)buf.get(0)).startsWith(" "))
 				s=((String)buf.get(0)).toUpperCase();
+			
+			if((useThisOne==areaData)&&(s.length()==0))
+			{
+				buf.remove(0);
+				continue;
+			}
+			
 			boolean okString=true;
 			if(s.startsWith("#"))
 			{
 				s=s.substring(1).trim();
+				if((useThisOne==areaData)&&(CMath.isInteger(s)))
+				{
+					wasUsingThisOne=mobData;
+					useThisOne=mobData;
+				}
+				
 				if((s.startsWith("AREA"))
 				||(s.startsWith("AUTHOR")))
 				{
@@ -1720,7 +1750,8 @@ public class Import extends StdCommand
 				}
 				else
 				if((s.startsWith("OBJECT"))
-				||(s.startsWith("OBJOLD")))
+				||(s.startsWith("OBJOLD"))
+				||(s.startsWith("OBJ24B3")))
 				{
 					wasUsingThisOne=objectData;
 					useThisOne=objectData;
@@ -2680,6 +2711,11 @@ public class Import extends StdCommand
 									returnAnError(session,"Unknown MobPrg: "+mobprg,compileErrors,commands);
 								else
 								{
+									if(buf.indexOf("\n")>0)
+										buf=new StringBuffer(CMStrings.replaceAll(buf.toString(),"\r",""));
+									else
+									if(buf.indexOf("\r")>0)
+										buf=new StringBuffer(CMStrings.replaceAll(buf.toString(),"\n",""));
 									List<String> V=Resources.getFileLineVector(buf);
 									while(V.size()>0)
 									{
@@ -2994,7 +3030,7 @@ public class Import extends StdCommand
 						returnAnError(session,"Unknown mob special: "+special,compileErrors,commands);
 				}
 				else
-				if((s.startsWith("#SPE"))||(s.startsWith("S"))||(s.startsWith("*")||(s.startsWith("#$"))))
+				if((s.startsWith("#SPE"))||(s.startsWith("S"))||(s.startsWith("*")||(s.startsWith("#$"))||(s.startsWith("R "))))
 				{
 				}
 				else
@@ -3041,6 +3077,97 @@ public class Import extends StdCommand
 		return null;
 	}
 
+    private static void applyItemApplyCode(String codesLine, Item I, Environmental adjuster, Environmental caster, Environmental resister)
+    {
+		int num=CMath.s_int(CMParms.getCleanBit(codesLine,0).trim());
+		int val=CMath.s_int(CMParms.getCleanBit(codesLine,1).trim());
+		switch(num)
+		{
+		case 1:
+			adjuster.setMiscText(adjuster.text()+" str"+((val>=0)?("+"+val):(""+val)));
+			break;
+		case 2:
+			adjuster.setMiscText(adjuster.text()+" dex"+((val>=0)?("+"+val):(""+val)));
+			break;
+		case 3:
+			adjuster.setMiscText(adjuster.text()+" int"+((val>=0)?("+"+val):(""+val)));
+			break;
+		case 4:
+			adjuster.setMiscText(adjuster.text()+" wis"+((val>=0)?("+"+val):(""+val)));
+			break;
+		case 5:
+			adjuster.setMiscText(adjuster.text()+" con"+((val>=0)?("+"+val):(""+val)));
+			break;
+		case 6:
+			// coffeemud don't play with sex
+			break;
+		case 7:
+			adjuster.setMiscText(adjuster.text()+" cha"+((val>=0)?("+"+val):(""+val)));
+			break;
+		case 8: 	break;
+		case 9: 	break;
+		case 10: 	break;
+		case 11: 	break;
+		case 12:
+			adjuster.setMiscText(adjuster.text()+" mana"+((val>=0)?("+"+val):(""+val)));
+			break;
+		case 13:
+			adjuster.setMiscText(adjuster.text()+" hit"+((val>=0)?("+"+val):(""+val)));
+			break;
+		case 14:
+			adjuster.setMiscText(adjuster.text()+" move"+((val>=0)?("+"+val):(""+val)));
+			break;
+		case 15: 	break;
+		case 16: 	break;
+		case 17:
+			if((val>0)&&(I instanceof Armor))
+				I.basePhyStats().setArmor(I.basePhyStats().armor()+(val*5));
+			else
+				adjuster.setMiscText(adjuster.text()+" armor"+((val>=0)?("+"+(val*5)):(""+(val*5))));
+			break;
+		case 18:
+			if((val>0)&&(I instanceof Weapon))
+				I.basePhyStats().setAttackAdjustment(I.basePhyStats().attackAdjustment()+(val*5));
+			else
+				adjuster.setMiscText(adjuster.text()+" attack"+((val>=0)?("+"+(val*5)):(""+(val*5))));
+			break;
+		case 19:
+			if((val>0)&&(I instanceof Weapon))
+				I.basePhyStats().setDamage(I.basePhyStats().damage()+val);
+			else
+				adjuster.setMiscText(adjuster.text()+" damage"+((val>=0)?("+"+(val)):(""+(val))));
+			break;
+		case 20: // spells, but with a numeric value.. ?!?!
+			break;
+		case 21: 	break;
+		case 22: 	break;
+		case 23: 	break;
+		case 24:
+			resister.setMiscText(resister.text()+" magic "+((-val)*2)+"%");
+			break;
+		case 25:
+			// i have no idea what a power up is
+			break;
+		case 30:
+			switch(val)
+			{
+			case 6:
+				caster.setMiscText(caster.text()+("Prayer_Curse")+";");
+				break;
+			case 9:
+				caster.setMiscText(caster.text()+("Poison")+";");
+				break;
+			case 10:
+				caster.setMiscText(caster.text()+("Prayer_Plague")+";");
+				break;
+			case 11:
+				caster.setMiscText(caster.text()+("Spell_Blindness")+";");
+				break;
+			}
+			break;
+		}
+    }
+    
 	private static Item getItem(String OfThisID,
 								Session session,
 								String areaName,
@@ -3696,95 +3823,7 @@ public class Import extends StdCommand
 					if(CMParms.numBits(codesLine)!=2)
 						returnAnError(session,"Malformed 'A' code for item "+objectID+", "+I.Name()+": "+codesLine+", area="+areaName,compileErrors,commands);
 					else
-					{
-						int num=CMath.s_int(CMParms.getCleanBit(codesLine,0).trim());
-						int val=CMath.s_int(CMParms.getCleanBit(codesLine,1).trim());
-						switch(num)
-						{
-						case 1:
-							adjuster.setMiscText(adjuster.text()+" str"+((val>=0)?("+"+val):(""+val)));
-							break;
-						case 2:
-							adjuster.setMiscText(adjuster.text()+" dex"+((val>=0)?("+"+val):(""+val)));
-							break;
-						case 3:
-							adjuster.setMiscText(adjuster.text()+" int"+((val>=0)?("+"+val):(""+val)));
-							break;
-						case 4:
-							adjuster.setMiscText(adjuster.text()+" wis"+((val>=0)?("+"+val):(""+val)));
-							break;
-						case 5:
-							adjuster.setMiscText(adjuster.text()+" con"+((val>=0)?("+"+val):(""+val)));
-							break;
-						case 6:
-							// coffeemud don't play with sex
-							break;
-						case 7:
-							adjuster.setMiscText(adjuster.text()+" cha"+((val>=0)?("+"+val):(""+val)));
-							break;
-						case 8: 	break;
-						case 9: 	break;
-						case 10: 	break;
-						case 11: 	break;
-						case 12:
-							adjuster.setMiscText(adjuster.text()+" mana"+((val>=0)?("+"+val):(""+val)));
-							break;
-						case 13:
-							adjuster.setMiscText(adjuster.text()+" hit"+((val>=0)?("+"+val):(""+val)));
-							break;
-						case 14:
-							adjuster.setMiscText(adjuster.text()+" move"+((val>=0)?("+"+val):(""+val)));
-							break;
-						case 15: 	break;
-						case 16: 	break;
-						case 17:
-							if((val>0)&&(I instanceof Armor))
-								I.basePhyStats().setArmor(I.basePhyStats().armor()+(val*5));
-							else
-								adjuster.setMiscText(adjuster.text()+" armor"+((val>=0)?("+"+(val*5)):(""+(val*5))));
-							break;
-						case 18:
-							if((val>0)&&(I instanceof Weapon))
-								I.basePhyStats().setAttackAdjustment(I.basePhyStats().attackAdjustment()+(val*5));
-							else
-								adjuster.setMiscText(adjuster.text()+" attack"+((val>=0)?("+"+(val*5)):(""+(val*5))));
-							break;
-						case 19:
-							if((val>0)&&(I instanceof Weapon))
-								I.basePhyStats().setDamage(I.basePhyStats().damage()+val);
-							else
-								adjuster.setMiscText(adjuster.text()+" damage"+((val>=0)?("+"+(val)):(""+(val))));
-							break;
-						case 20: // spells, but with a numeric value.. ?!?!
-							break;
-						case 21: 	break;
-						case 22: 	break;
-						case 23: 	break;
-						case 24:
-							resister.setMiscText(resister.text()+" magic "+((-val)*2)+"%");
-							break;
-						case 25:
-							// i have no idea what a power up is
-							break;
-						case 30:
-							switch(val)
-							{
-							case 6:
-								caster.setMiscText(caster.text()+("Prayer_Curse")+";");
-								break;
-							case 9:
-								caster.setMiscText(caster.text()+("Poison")+";");
-								break;
-							case 10:
-								caster.setMiscText(caster.text()+("Prayer_Plague")+";");
-								break;
-							case 11:
-								caster.setMiscText(caster.text()+("Spell_Blindness")+";");
-								break;
-							}
-							break;
-						}
-					}
+						applyItemApplyCode(codesLine,I, adjuster, caster, resister);
 				}
 				else
 				if(codeLine.equals("F"))
@@ -3992,6 +4031,36 @@ public class Import extends StdCommand
 					eatNextLine(objV);
 				}
 				else
+				if(codeLine.equals("EXTRA"))
+				{
+					eatNextLine(objV); // extra
+					eatLineSquiggle(objV); // key word
+					String desc=CMLib.coffeeFilter().safetyFilter(eatLineSquiggle(objV)); // description
+					I.setDescription(I.description()+desc);
+					if(I.ID().equals("GenReadable"))
+						I.setReadableText(fixReadableContent(I.description()));
+				}
+				else
+				if(codeLine.equals("APPLY"))
+				{
+					eatNextLine(objV); // apply
+					String codesLine = eatNextLine(objV);
+					if(CMParms.numBits(codesLine)!=2)
+						returnAnError(session,"Malformed 'A' code for item "+objectID+", "+I.Name()+": "+codesLine+", area="+areaName,compileErrors,commands);
+					else
+						applyItemApplyCode(codesLine,I, adjuster, caster, resister);
+				}
+				else
+				if(codeLine.startsWith("A "))
+				{
+					eatNextLine(objV); // apply
+					String codesLine = codeLine.substring(2).trim();
+					if(CMParms.numBits(codesLine)!=2)
+						returnAnError(session,"Malformed 'A' code for item "+objectID+", "+I.Name()+": "+codesLine+", area="+areaName,compileErrors,commands);
+					else
+						applyItemApplyCode(codesLine,I, adjuster, caster, resister);
+				}
+				else
 				{
 					eatNextLine(objV);
 					returnAnError(session,"Unknown code for item "+objectID+", "+I.Name()+": "+codeLine+", area="+areaName,compileErrors,commands);
@@ -4021,6 +4090,165 @@ public class Import extends StdCommand
 		return null;
 	}
 
+	public static Room applyRoomCodeBits(Room R, Room lastRoom, Map<Room,Room> petShops, long codeBits, boolean circleFormat)
+	{
+		Ability prop_RoomCapacity=CMClass.getAbility("Prop_ReqCapacity");
+		Ability prop_RoomLevels=CMClass.getAbility("Prop_ReqLevels");
+
+		if(CMath.isSet(codeBits,21)) // underwater room
+			R=changeRoomClass(R,"UnderWater");
+		
+		if(CMath.isSet(codeBits,3)) // indoors
+			R=changeRoomClass(R,"StoneRoom");
+		
+		if(CMath.isSet(codeBits,0)) // dark room
+			R.addNonUninvokableEffect(CMClass.getAbility("Prop_RoomDark"));
+
+		//if(CMath.isSet(codeBits,1)) //BANKS are forked up in the ROM files, who knows WHAT this is...
+		// circlemud says this is a death trap -- well, homie dont play dat either
+		
+		if(CMath.isSet(codeBits,2)) // no mobs room
+			R.addNonUninvokableEffect(CMClass.getAbility("Prop_ReqNoMOB"));
+		
+		// 3 is a room type change, so above
+
+		if(circleFormat)
+		{
+			if(CMath.isSet(codeBits,4)) // circle says no violence
+				R.addNonUninvokableEffect(CMClass.getAbility("Prop_Peacemaker"));
+			
+			if(CMath.isSet(codeBits,5)) // circle says quiet
+				R.addNonUninvokableEffect(CMClass.getAbility("Prop_NoChannel"));
+			
+			//if(CMath.isSet(codeBits,6)) // circle says no tracking
+			
+			if(CMath.isSet(codeBits,7)) // circle says no magic
+				R.addNonUninvokableEffect(CMClass.getAbility("Prop_MagicFreedom"));
+			
+			if(CMath.isSet(codeBits,8)) // solitaire room
+			{
+				prop_RoomCapacity.setMiscText("1");
+				if(R.fetchEffect(prop_RoomCapacity.ID())==null)
+					R.addNonUninvokableEffect(prop_RoomCapacity);
+			}
+			
+			if(CMath.isSet(codeBits,9)) // no teleport in
+				R.addNonUninvokableEffect(CMClass.getAbility("Prop_NoTeleport"));
+			
+			if(CMath.isSet(codeBits,10))
+			{
+				prop_RoomLevels.setMiscText("SYSOP");
+				if(R.fetchEffect(prop_RoomLevels.ID())==null)
+					R.addNonUninvokableEffect(prop_RoomLevels);
+			}
+			// 11 is a house
+			// 12 is a savable house
+			// 13 is an atrium
+			// 14 is an olc
+			// 15 is an marked
+			
+			if(CMath.isSet(codeBits,16))
+				R.addNonUninvokableEffect(CMClass.getAbility("Prop_reqPKill"));
+			
+			if(CMath.isSet(codeBits,17))
+				R.addNonUninvokableEffect(CMClass.getAbility("Prop_NoRecall"));
+
+			// 18 = guarded
+			// 19 pulse damage
+			// 20 no ooc
+			// 21 can fish
+			// 22 can fish
+			// 23 nodig
+			// 24 nobury
+			// 25 twnhs
+			// 26 customhs
+			// 27 requires vehicle
+			// 28 below ground
+			// 29 rooms moves with random currents?!
+			// 30 timed death trap
+			// 31 word map style maps here
+			// 32 mining
+			// 33 mining+10
+			// 34 mining+25
+			// 35 healing/xp bonus
+		}
+		else
+		{
+			if(CMath.isSet(codeBits,4)) // no summon out room
+				R.addNonUninvokableEffect(CMClass.getAbility("Prop_NoSummon"));
+			
+			if(CMath.isSet(codeBits,9)) // two people only room
+			{
+				prop_RoomCapacity.setMiscText("2");
+				if(R.fetchEffect(prop_RoomCapacity.ID())==null)
+					R.addNonUninvokableEffect(prop_RoomCapacity);
+			}
+			if(CMath.isSet(codeBits,10)) // no fighting
+				R.addNonUninvokableEffect(CMClass.getAbility("Prop_PeaceMaker"));
+
+			if(CMath.isSet(codeBits,11)) // solitaire room
+			{
+				prop_RoomCapacity.setMiscText("1");
+				if(R.fetchEffect(prop_RoomCapacity.ID())==null)
+					R.addNonUninvokableEffect(prop_RoomCapacity);
+			}
+			if(CMath.isSet(codeBits,12))
+				petShops.put(R,R);
+			else
+			if((lastRoom!=null)&&(petShops.get(lastRoom)!=null)&&(petShops.get(lastRoom)==lastRoom))
+			{
+				petShops.remove(lastRoom);
+				petShops.put(R,lastRoom); // now ready to plop stuff!
+			}
+
+			if(CMath.isSet(codeBits,13))
+				R.addNonUninvokableEffect(CMClass.getAbility("Prop_NoRecall"));
+
+			if(CMath.isSet(codeBits,14))
+			{
+				prop_RoomLevels.setMiscText("SYSOP");
+				if(R.fetchEffect(prop_RoomLevels.ID())==null)
+					R.addNonUninvokableEffect(prop_RoomLevels);
+			}
+			if(CMath.isSet(codeBits,15))
+			{
+				prop_RoomLevels.setMiscText(">=93");
+				if(R.fetchEffect(prop_RoomLevels.ID())==null)
+					R.addNonUninvokableEffect(prop_RoomLevels);
+			}
+			if(CMath.isSet(codeBits,16))
+			{
+				prop_RoomLevels.setMiscText(">=91");
+				if(R.fetchEffect(prop_RoomLevels.ID())==null)
+					R.addNonUninvokableEffect(prop_RoomLevels);
+			}
+			if(CMath.isSet(codeBits,17))
+			{
+				prop_RoomLevels.setMiscText("<=5");
+				if(R.fetchEffect(prop_RoomLevels.ID())==null)
+					R.addNonUninvokableEffect(prop_RoomLevels);
+			}
+
+			if(CMath.isSet(codeBits,18))
+			{
+				R.addNonUninvokableEffect(CMClass.getAbility("Prop_NoSummon"));
+				R.addNonUninvokableEffect(CMClass.getAbility("Prop_NoCharm"));
+			}
+
+			if(CMath.isSet(codeBits,19))
+				R.addNonUninvokableEffect(CMClass.getAbility("Prop_reqPKill"));
+
+			if(CMath.isSet(codeBits,20))
+				R.addNonUninvokableEffect(CMClass.getAbility("Prop_NoTeleportOut"));
+
+			// if(CMath.isSet(codeBits,23)) No "dirt" in CoffeeMud, so this doesn't matter
+
+			if(CMath.isSet(codeBits,24))
+				R.addNonUninvokableEffect(CMClass.getAbility("Prop_NoChannel"));
+		}
+		return R;
+	}
+	
 	public static boolean isBadID(String id)
 	{
 		for(int i=0;i<id.length();i++)
@@ -4522,6 +4750,7 @@ public class Import extends StdCommand
 
 		// sort the data into general blocks, and identify area
 		if(session!=null) session.println("\n\rSorting data from file '"+areaFileName+"'...");
+		Log.sysOut("Import","Importing data from file '"+areaFileName+"'");
 		readBlocks(V,areaData,roomData,mobData,resetData,objectData,mobProgData,objProgData,shopData,specialData,socialData);
 		boolean didSocials=false;
 		try
@@ -4957,161 +5186,7 @@ public class Import extends StdCommand
 
 				}
 
-				Ability prop_RoomCapacity=CMClass.getAbility("Prop_ReqCapacity");
-				Ability prop_RoomLevels=CMClass.getAbility("Prop_ReqLevels");
-
-
-				if(CMath.isSet(codeBits,21)) // underwater room
-					R=changeRoomClass(R,"UnderWater");
-				
-				if(CMath.isSet(codeBits,3)) // indoors
-					R=changeRoomClass(R,"StoneRoom");
-				
-				if(CMath.isSet(codeBits,0)) // dark room
-					R.addNonUninvokableEffect(CMClass.getAbility("Prop_RoomDark"));
-
-				//if(CMath.isSet(codeBits,1)) //BANKS are forked up in the ROM files, who knows WHAT this is...
-				// circlemud says this is a death trap -- well, homie dont play dat either
-				
-				if(CMath.isSet(codeBits,2)) // no mobs room
-					R.addNonUninvokableEffect(CMClass.getAbility("Prop_ReqNoMOB"));
-				
-				// 3 is a room type change, so above
-
-				if(circleFormat)
-				{
-					if(CMath.isSet(codeBits,4)) // circle says no violence
-						R.addNonUninvokableEffect(CMClass.getAbility("Prop_Peacemaker"));
-					
-					if(CMath.isSet(codeBits,5)) // circle says quiet
-						R.addNonUninvokableEffect(CMClass.getAbility("Prop_NoChannel"));
-					
-					//if(CMath.isSet(codeBits,6)) // circle says no tracking
-					
-					if(CMath.isSet(codeBits,7)) // circle says no magic
-						R.addNonUninvokableEffect(CMClass.getAbility("Prop_MagicFreedom"));
-					
-					if(CMath.isSet(codeBits,8)) // solitaire room
-					{
-						prop_RoomCapacity.setMiscText("1");
-						if(R.fetchEffect(prop_RoomCapacity.ID())==null)
-							R.addNonUninvokableEffect(prop_RoomCapacity);
-					}
-					
-					if(CMath.isSet(codeBits,9)) // no teleport in
-						R.addNonUninvokableEffect(CMClass.getAbility("Prop_NoTeleport"));
-					
-					if(CMath.isSet(codeBits,10))
-					{
-						prop_RoomLevels.setMiscText("SYSOP");
-						if(R.fetchEffect(prop_RoomLevels.ID())==null)
-							R.addNonUninvokableEffect(prop_RoomLevels);
-					}
-					// 11 is a house
-					// 12 is a savable house
-					// 13 is an atrium
-					// 14 is an olc
-					// 15 is an marked
-					
-					if(CMath.isSet(codeBits,16))
-						R.addNonUninvokableEffect(CMClass.getAbility("Prop_reqPKill"));
-					
-					if(CMath.isSet(codeBits,17))
-						R.addNonUninvokableEffect(CMClass.getAbility("Prop_NoRecall"));
-	
-					// 18 = guarded
-					// 19 pulse damage
-					// 20 no ooc
-					// 21 can fish
-					// 22 can fish
-					// 23 nodig
-					// 24 nobury
-					// 25 twnhs
-					// 26 customhs
-					// 27 requires vehicle
-					// 28 below ground
-					// 29 rooms moves with random currents?!
-					// 30 timed death trap
-					// 31 word map style maps here
-					// 32 mining
-					// 33 mining+10
-					// 34 mining+25
-					// 35 healing/xp bonus
-				}
-				else
-				{
-					if(CMath.isSet(codeBits,4)) // no summon out room
-						R.addNonUninvokableEffect(CMClass.getAbility("Prop_NoSummon"));
-					
-					if(CMath.isSet(codeBits,9)) // two people only room
-					{
-						prop_RoomCapacity.setMiscText("2");
-						if(R.fetchEffect(prop_RoomCapacity.ID())==null)
-							R.addNonUninvokableEffect(prop_RoomCapacity);
-					}
-					if(CMath.isSet(codeBits,10)) // no fighting
-						R.addNonUninvokableEffect(CMClass.getAbility("Prop_PeaceMaker"));
-	
-					if(CMath.isSet(codeBits,11)) // solitaire room
-					{
-						prop_RoomCapacity.setMiscText("1");
-						if(R.fetchEffect(prop_RoomCapacity.ID())==null)
-							R.addNonUninvokableEffect(prop_RoomCapacity);
-					}
-					if(CMath.isSet(codeBits,12))
-						petShops.put(R,R);
-					else
-					if((lastRoom!=null)&&(petShops.get(lastRoom)!=null)&&(petShops.get(lastRoom)==lastRoom))
-					{
-						petShops.remove(lastRoom);
-						petShops.put(R,lastRoom); // now ready to plop stuff!
-					}
-	
-					if(CMath.isSet(codeBits,13))
-						R.addNonUninvokableEffect(CMClass.getAbility("Prop_NoRecall"));
-	
-					if(CMath.isSet(codeBits,14))
-					{
-						prop_RoomLevels.setMiscText("SYSOP");
-						if(R.fetchEffect(prop_RoomLevels.ID())==null)
-							R.addNonUninvokableEffect(prop_RoomLevels);
-					}
-					if(CMath.isSet(codeBits,15))
-					{
-						prop_RoomLevels.setMiscText(">=93");
-						if(R.fetchEffect(prop_RoomLevels.ID())==null)
-							R.addNonUninvokableEffect(prop_RoomLevels);
-					}
-					if(CMath.isSet(codeBits,16))
-					{
-						prop_RoomLevels.setMiscText(">=91");
-						if(R.fetchEffect(prop_RoomLevels.ID())==null)
-							R.addNonUninvokableEffect(prop_RoomLevels);
-					}
-					if(CMath.isSet(codeBits,17))
-					{
-						prop_RoomLevels.setMiscText("<=5");
-						if(R.fetchEffect(prop_RoomLevels.ID())==null)
-							R.addNonUninvokableEffect(prop_RoomLevels);
-					}
-	
-					if(CMath.isSet(codeBits,18))
-					{
-						R.addNonUninvokableEffect(CMClass.getAbility("Prop_NoSummon"));
-						R.addNonUninvokableEffect(CMClass.getAbility("Prop_NoCharm"));
-					}
-	
-					if(CMath.isSet(codeBits,19))
-						R.addNonUninvokableEffect(CMClass.getAbility("Prop_reqPKill"));
-	
-					if(CMath.isSet(codeBits,20))
-						R.addNonUninvokableEffect(CMClass.getAbility("Prop_NoTeleportOut"));
-	
-					// if(CMath.isSet(codeBits,23)) No "dirt" in CoffeeMud, so this doesn't matter
-	
-					if(CMath.isSet(codeBits,24))
-						R.addNonUninvokableEffect(CMClass.getAbility("Prop_NoChannel"));
-				}
+				R=applyRoomCodeBits(R,lastRoom,petShops,codeBits,circleFormat);
 
 				roomV.add(0,R.roomID());
 				newRooms.addElement(R);
@@ -5228,6 +5303,18 @@ public class Import extends StdCommand
 						{
 							returnAnError(session,"Room: "+R.roomID()+", Redundant exit codeStr "+nextLine+"/"+codeStr+", dircode="+dirCode+".  Aborting exit, area="+areaName,compileErrors,commands);
 							continue;
+						}
+						if(codeStr.length()==0)
+						{
+							String nextStr=nextLine(roomV);
+							if((CMParms.numBits(nextStr)==3)&&(CMath.isInteger(CMParms.getCleanBit(nextStr,0))))
+								codeStr=eatLine(roomV);
+						}
+						if((CMParms.numBits(codeStr)==1)&&(CMath.isInteger(codeStr.trim())))
+						{
+							String nextStr=nextLine(roomV);
+							if((CMParms.numBits(nextStr)==2)&&(CMath.isInteger(CMParms.getCleanBit(nextStr,0))))
+								codeStr+=" "+eatLine(roomV);
 						}
 						int exitFlag=( CMath.s_int(CMParms.getCleanBit(codeStr,0).trim()) & 31);
 						int doorState=CMath.s_int(CMParms.getCleanBit(codeStr,1).trim());
@@ -5363,6 +5450,16 @@ public class Import extends StdCommand
 					{
 						// mana heal rate
 						// not important enough to generate an error from
+					}
+					else
+					if(nextLine.toUpperCase().startsWith("C"))
+					{
+						if(!nextLine.endsWith("~"))
+							nextLine+= eatLineSquiggle(roomV);
+						if(nextLine.startsWith("C ")) nextLine=nextLine.substring(2).trim();
+						if(nextLine.endsWith("~")) nextLine=nextLine.substring(0,nextLine.length()-1);
+						long codeBits=getBitMask(nextLine,0);
+						R=applyRoomCodeBits(R,lastRoom,petShops,codeBits,true);
 					}
 					else
 					if(nextLine.toUpperCase().startsWith("H"))
