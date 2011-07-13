@@ -228,12 +228,12 @@ public class Modify extends StdCommand
 		if(commands.size()==2)
 		{
 			Room oldRoom=(Room)mob.location().copyOf();
-            CMLib.genEd().modifyRoom(mob,mob.location());
-			if((!oldRoom.sameAs(mob.location()))&&(!mob.location().amDestroyed()))
+            Room newRoom=CMLib.genEd().modifyRoom(mob,mob.location());
+			if((!oldRoom.sameAs(newRoom))&&(!newRoom.amDestroyed()))
 			{
-				CMLib.database().DBUpdateRoom(mob.location());
-				mob.location().showHappens(CMMsg.MSG_OK_ACTION,"There is something different about this place...\n\r");
-				Log.sysOut("Rooms",mob.Name()+" modified room "+mob.location().roomID()+".");
+				CMLib.database().DBUpdateRoom(newRoom);
+				newRoom.showHappens(CMMsg.MSG_OK_ACTION,"There is something different about this place...\n\r");
+				Log.sysOut("Rooms",mob.Name()+" modified room "+newRoom.roomID()+".");
 			}
 			oldRoom.destroy();
 			return;

@@ -256,14 +256,19 @@ public class StdWeapon extends StdItem implements Weapon
 				setAmmoRemaining(ammunitionCapacity());
 			if(ammunitionRemaining()<=0)
 			{
+				msg.source().tell("Your "+name()+" is out of "+ammunitionType()+".");
 				if((msg.source().isMine(this))
 				   &&(msg.source().location()!=null)
 				   &&(CMLib.flags().aliveAwakeMobile(msg.source(),true))
 				   &&(lastReloadTime < (System.currentTimeMillis() - CMProps.getTickMillis())))
 				{
 					lastReloadTime=System.currentTimeMillis();
-					msg.source().enqueCommand(CMParms.parse("LOAD ALL \"$"+name()+"$\""), 0, 0);
+					if((!msg.source().isMonster())||inventoryAmmoCheck(msg.source()))
+						msg.source().enqueCommand(CMParms.parse("LOAD ALL \"$"+name()+"$\""), 0, 0);
+					else
+						msg.source().enqueCommand(CMParms.parse("REMOVE \"$"+name()+"$\""), 0, 0);
 				}
+				return false;
 			}
 			else
 				setUsesRemaining(usesRemaining()-1);
@@ -271,6 +276,18 @@ public class StdWeapon extends StdItem implements Weapon
 		return true;
 	}
 
+	public boolean inventoryAmmoCheck(MOB M)
+	{
+		if(M==null) return false;
+		for(Enumeration<Item> i=M.items();i.hasMoreElements();)
+		{
+			final Item I=i.nextElement();
+			if((I!=null)&&(I instanceof Ammunition)&&(((Ammunition)I).ammunitionType().equalsIgnoreCase(ammunitionType())))
+				return true;
+		}
+		return false;
+	}
+	
 	public void setUsesRemaining(int newUses)
 	{
 		if(newUses==Integer.MAX_VALUE)

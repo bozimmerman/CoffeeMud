@@ -7661,7 +7661,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
             mob.tell("\n\rThe data entered exceeds the string limit of "+maxLength+" characters.");
     }
     
-    public void modifyRoom(MOB mob, Room R) throws IOException
+    public Room modifyRoom(MOB mob, Room R) throws IOException
     {
         int showFlag=-1;
         if(CMProps.getIntVar(CMProps.SYSTEMI_EDITORTYPE)>0)
@@ -7670,7 +7670,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
         while(!ok)
         {
             int showNumber=0;
-            genRoomType(mob,R,++showNumber,showFlag);
+            R=genRoomType(mob,R,++showNumber,showFlag);
             genDisplayText(mob,R,++showNumber,showFlag);
             genDescription(mob,R,++showNumber,showFlag);
             if(R instanceof GridZones)
@@ -7692,6 +7692,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
                 ok=true;
             }
         }
+        return R;
     }
     
     protected void genAccountExpiration(MOB mob, AccountStats A, int showNumber, int showFlag) throws IOException
