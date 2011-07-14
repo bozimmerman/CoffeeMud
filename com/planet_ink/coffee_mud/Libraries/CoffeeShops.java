@@ -747,7 +747,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
                 }
             }
 
-            String c="^x["+CMStrings.padRight("Cost",4+csize)+"] "+CMStrings.padRight("Product",totalWidth-csize);
+            String c="^x["+CMStrings.padRight("Cost",4+csize)+"] "+CMStrings.padRight("Product",Math.max(totalWidth-csize,5));
             str.append(c+((totalCols>1)?c:"")+"^.^N^<!ENTITY shopkeeper \""+seller.name()+"\"^>\n\r");
             int colNum=0;
             int rowNum=0;
@@ -758,12 +758,12 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
                 price=sellingPrice(seller,buyer,E,shop,true);
                 col=null;
                 if(price.questPointPrice>0)
-                    col=CMStrings.padRight("["+price.questPointPrice+"qp",5+csize)+"] ^<SHOP^>"+CMStrings.padRight(E.name(),"^</SHOP^>",totalWidth-csize);
+                    col=CMStrings.padRight("["+price.questPointPrice+"qp",5+csize)+"] ^<SHOP^>"+CMStrings.padRight(E.name(),"^</SHOP^>",Math.max(totalWidth-csize,5));
                 else
                 if(price.experiencePrice>0)
-                    col=CMStrings.padRight("["+price.experiencePrice+"xp",5+csize)+"] ^<SHOP^>"+CMStrings.padRight(E.name(),"^</SHOP^>",totalWidth-csize);
+                    col=CMStrings.padRight("["+price.experiencePrice+"xp",5+csize)+"] ^<SHOP^>"+CMStrings.padRight(E.name(),"^</SHOP^>",Math.max(totalWidth-csize,5));
                 else
-                    col=CMStrings.padRight("["+CMLib.beanCounter().abbreviatedPrice(seller,price.absoluteGoldPrice),5+csize)+"] ^<SHOP^>"+CMStrings.padRight(E.name(),"^</SHOP^>",totalWidth-csize);
+                    col=CMStrings.padRight("["+CMLib.beanCounter().abbreviatedPrice(seller,price.absoluteGoldPrice),5+csize)+"] ^<SHOP^>"+CMStrings.padRight(E.name(),"^</SHOP^>",Math.max(totalWidth-csize,5));
                 if((++colNum)>totalCols)
                 {
                     str.append("\n\r");
