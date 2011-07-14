@@ -2325,7 +2325,7 @@ Special/Reserved Quest called holidays can be added to/modified on an area-by-ar
 11.Can now delete a journal entirely from the MUDGrinder; also Clan Journals should clear out correctly when Clans are deleted.
 12.Can now DISABLE the Java-coded races or classes from the DISABLE entry in the INI file.  Quick way to drop the stock classes or races!
 13.Skill Recipes now have components, on MUDGrinder and Command Line
-# Build 5.7.? Release ?/??/2011
+# Build 5.7.3 Release 7/14/2011
 1. **** Database Schema Changes Were Made **** Make sure you follow the Installation Guide to upgrade your database. 
 2. NAWS fully implemented now.. most charts and lists will now resize themselves to fit.  LINEWRAP now applies mostly to defaults.
 3. New Property: Prop_Socials -- for making socials contextually available (with items, in rooms, etc)
@@ -2333,3 +2333,4 @@ Special/Reserved Quest called holidays can be added to/modified on an area-by-ar
 5. Generic Crafting Skills can now be created online and within the MUDGrinder. See Builders Guide.  
 6. All-Qualifys list can now be modified from MUDGrinder and Command Line. See Builders Guide.
 7. Channels definition in coffeemud.ini file can now include override color codes for each channel.
+8. Numerous random bugs fixed, with special thanks to frugality200
