@@ -155,7 +155,7 @@ public class GrinderPlayers extends GrinderMobs
 			case 11: M.basePhyStats().setAttackAdjustment(CMath.s_int(old)); break;
 			case 12: M.basePhyStats().setArmor(CMath.s_int(old)); break;
 			case 13: M.basePhyStats().setDamage(CMath.s_int(old)); break;
-			case 14: M.setAgeHours(CMath.s_long(old)); break;
+			case 14: M.setAgeHours(CMath.s_long(old)*60L); break;
 			case 15: M.setPractices(CMath.s_int(old)); break;
 			case 16: M.setExperience(CMath.s_int(old)); break;
 			case 17: break; // dont set exp/level
