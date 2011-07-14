@@ -430,6 +430,10 @@
 			
 			<li> <a href="#I3_LIST">I3_LIST</a>
 			
+			<li> <a href="#I3_LOCATE">I3_LOCATE</a>
+			
+			<li> <a href="#I3_WHOIS">I3_WHOIS</a>
+			
 			<li> <a href="#IDEA">IDEA</a>
 			
 			<li> <a href="#IDLE">IDLE</a>
@@ -505,8 +509,6 @@
 			<li> <a href="#LOCAL_CURRENCY">LOCAL_CURRENCY</a>
 			
 			<li> <a href="#LOCAL_MONEY">LOCAL_MONEY</a>
-			
-			<li> <a href="#LOCATE">LOCATE</a>
 			
 			<li> <a href="#LOCK">LOCK</a>
 			
@@ -955,22 +957,22 @@
 			
 			<p>
 			<a name="AREAS"><B>AREAS</B></a>
-			<pre>Command : AREAS<BR>Usage   : AREAS ([FILTER EXPRESSION])<BR>Example : areas<BR>Example : areas $population > 10 or ($avg_level &lt; 5 and $avg_level > 2)<BR>Example : areas $med_alignment >= 7500<BR>Short(s): <BR>This command will list all the areas in the known world of the game. <BR><BR>You can also filter the list by entering a expression that tests various<BR>statistics about the area in order to help find the one you want.  You can use any<BR>normal mathematical calculation and comparisons >, &lt;, >=, =, !=, &lt;>, &lt;=,<BR>and can combine expressions using "and" or "or".  Use parenthesis to affect the<BR>order of evaulation.  Most importantly, you can test any of the following variables<BR>about the areas: $POPULATION, $MIN_LEVEL, $MAX_LEVEL, $AVG_LEVEL, $MED_LEVEL,<BR>$AVG_ALIGNMENT, $MED_ALIGNMENT, $TOTAL_LEVELS, $TOTAL_INTELLIGENT_LEVELS,<BR>$VISITABLE_ROOMS<BR><BR>You may also enter HELP [AREA NAME] to get more help on the areas you see<BR>listed with this command.</pre>
+			<pre>Command : AREAS<BR>Usage   : AREAS ([FILTER EXPRESSION]) (SORT=[SORTTYPE])<BR>Example : areas<BR>Example : areas $population > 10 or ($avg_level &lt; 5 and $avg_level > 2)<BR>Example : areas $med_alignment >= 7500<BR>Example : areas $med_alignment >= 7500 sort=med_level<BR>Short(s): <BR>This command will list all the areas in the known world of the game. <BR><BR>You can also filter the list by entering a expression that tests various<BR>statistics about the area in order to help find the one you want.  You can use any<BR>normal mathematical calculation and comparisons >, &lt;, >=, =, !=, &lt;>, &lt;=,<BR>and can combine expressions using "and" or "or".  Use parenthesis to affect the<BR>order of evaulation.  Most importantly, you can test any of the following variables<BR>about the areas: $POPULATION, $MIN_LEVEL, $MAX_LEVEL, $AVG_LEVEL, $MED_LEVEL,<BR>$AVG_ALIGNMENT, $MED_ALIGNMENT, $TOTAL_LEVELS, $TOTAL_INTELLIGENT_LEVELS,<BR>$VISITABLE_ROOMS<BR>You can sort the list by the same variables that can be filtered, which will<BR>cause the display to show the value of that stat alongside the area name.<BR><BR>You may also enter HELP [AREA NAME] to get more help on the areas you see<BR>listed with this command.</pre>
 			</P>
 			
 			<p>
 			<a name="AREA_COINS"><B>AREA_COINS</B></a>
-			<pre><BR>World Currencies    :<BR>Currency            :Copper<BR>copper bit(s) (cc)  : (exchange rate is 1.0 of base)<BR>silver bit(s) (sc)  : Equal to 10 copper bits.<BR>gold bit(s) (gc)    : Equal to 100 copper bits.<BR>platinum bit(s) (pc): Equal to 500 copper bits.<BR><BR>Currency            :default<BR>gold coin(s)        : (exchange rate is 1.0 of base)<BR>golden note(s)      : Equal to 100 gold coins.<BR>whole note(s)       : Equal to 10000 gold coins.<BR>Archon note(s)      : Equal to 1000000 gold coins.<BR></pre>
+			<pre><BR>World Currencies    :<BR>Currency            :default<BR>gold coin(s)        : (exchange rate is 1.0 of base)<BR>golden note(s)      : Equal to 100 gold coins.<BR>whole note(s)       : Equal to 10000 gold coins.<BR>Archon note(s)      : Equal to 1000000 gold coins.<BR></pre>
 			</P>
 			
 			<p>
 			<a name="AREA_CURRENCY"><B>AREA_CURRENCY</B></a>
-			<pre><BR>World Currencies    :<BR>Currency            :Copper<BR>copper bit(s) (cc)  : (exchange rate is 1.0 of base)<BR>silver bit(s) (sc)  : Equal to 10 copper bits.<BR>gold bit(s) (gc)    : Equal to 100 copper bits.<BR>platinum bit(s) (pc): Equal to 500 copper bits.<BR><BR>Currency            :default<BR>gold coin(s)        : (exchange rate is 1.0 of base)<BR>golden note(s)      : Equal to 100 gold coins.<BR>whole note(s)       : Equal to 10000 gold coins.<BR>Archon note(s)      : Equal to 1000000 gold coins.<BR></pre>
+			<pre><BR>World Currencies    :<BR>Currency            :default<BR>gold coin(s)        : (exchange rate is 1.0 of base)<BR>golden note(s)      : Equal to 100 gold coins.<BR>whole note(s)       : Equal to 10000 gold coins.<BR>Archon note(s)      : Equal to 1000000 gold coins.<BR></pre>
 			</P>
 			
 			<p>
 			<a name="AREA_MONEY"><B>AREA_MONEY</B></a>
-			<pre><BR>World Currencies    :<BR>Currency            :Copper<BR>copper bit(s) (cc)  : (exchange rate is 1.0 of base)<BR>silver bit(s) (sc)  : Equal to 10 copper bits.<BR>gold bit(s) (gc)    : Equal to 100 copper bits.<BR>platinum bit(s) (pc): Equal to 500 copper bits.<BR><BR>Currency            :default<BR>gold coin(s)        : (exchange rate is 1.0 of base)<BR>golden note(s)      : Equal to 100 gold coins.<BR>whole note(s)       : Equal to 10000 gold coins.<BR>Archon note(s)      : Equal to 1000000 gold coins.<BR></pre>
+			<pre><BR>World Currencies    :<BR>Currency            :default<BR>gold coin(s)        : (exchange rate is 1.0 of base)<BR>golden note(s)      : Equal to 100 gold coins.<BR>whole note(s)       : Equal to 10000 gold coins.<BR>Archon note(s)      : Equal to 1000000 gold coins.<BR></pre>
 			</P>
 			
 			<p>
@@ -1220,7 +1222,7 @@
 			
 			<p>
 			<a name="CHARLATAN"><B>CHARLATAN</B></a>
-			<pre><FONT COLOR=CYAN>Char Class: </I></U></BLINK></B></FONT>Charlatan <FONT COLOR=CYAN>(</I></U></BLINK></B></FONT>Bard<FONT COLOR=CYAN>)</I></U></BLINK></B></FONT><BR><FONT COLOR=CYAN>Max-Stats :</I></U></BLINK></B></FONT> Charisma (22), Wisdom (22), Others (18)<BR><FONT COLOR=CYAN>Qualifiers:</I></U></BLINK></B></FONT> Charisma 9+, Wisdom 9+<BR><FONT COLOR=CYAN>Prime Stat: </I></U></BLINK></B></FONT>Dexterity                  <FONT COLOR=CYAN>Attack Pts: </I></U></BLINK></B></FONT>+(Dex/18) per level<BR><FONT COLOR=CYAN>Practices : </I></U></BLINK></B></FONT>5 +(Wisdom/6)+1 per level  <FONT COLOR=CYAN>Trains    : </I></U></BLINK></B></FONT>3 +1 per level<BR><FONT COLOR=CYAN>Hit Points: </I></U></BLINK></B></FONT>20 +(Con/3)+2d6 per level  <FONT COLOR=CYAN>Mana      : </I></U></BLINK></B></FONT>100 +(Int/3)+1d6 per<BR>level<BR><FONT COLOR=CYAN>Movement  : </I></U></BLINK></B></FONT>100 +(Str/18)X10 per level <FONT COLOR=CYAN>Damage Pts: </I></U></BLINK></B></FONT>+1 damage per 10<BR>level(s)<BR><FONT COLOR=CYAN>Weapons   : </I></U></BLINK></B></FONT>Must use swords, daggers, natural, or ranged weapons.<BR><FONT COLOR=CYAN>Armor     : </I></U></BLINK></B></FONT>Must wear non-metal armor.<BR><FONT COLOR=CYAN>Bonuses   :</I></U></BLINK></B></FONT> Receives 2% resistance per level to mind affects, 4% resistance<BR>            per level to divination spells.  Non-class skills become cheaper<BR>            at 30th level.  Gains a random non-class skill or spell every<BR>            other level! Receives exploration and pub-finding experience<BR>            based on danger level.<BR><FONT COLOR=CYAN>Limits    :</I></U></BLINK></B></FONT> <BR><FONT COLOR=CYAN>Desc.     : </I></U></BLINK></B></FONT><BR>The Charlatan is the master of deception and disguise.  Grouped with the Bards<BR>because of his natural acting ability, as well as his highly social nature, the<BR>Charlatan can be quite antisocial if he chooses, and extremely annoying to other<BR>players almost without trying.  <BR><BR>How to play: The Charlatan is also a natural spy in muds with numerous players,<BR>and has an extremely wide assortment of skills.  More than any other class, the<BR>Charlatan can taste the powers of all other classes, sometimes with real skill, and<BR>sometimes only in seeming.  For this reason, the Charlatan is ideal for those who<BR>want a taste of all classes, or at least to seem like he is.  He is a natural group<BR>member, being able to fit almost any role by using his varied skills, or by<BR>tricking his group members into thinking he belongs in the role they require.</pre>
+			<pre><FONT COLOR=CYAN>Char Class: </I></U></BLINK></B></FONT>Charlatan <FONT COLOR=CYAN>(</I></U></BLINK></B></FONT>Bard<FONT COLOR=CYAN>)</I></U></BLINK></B></FONT><BR><FONT COLOR=CYAN>Max-Stats :</I></U></BLINK></B></FONT> Charisma (22), Wisdom (22), Others (18)<BR><FONT COLOR=CYAN>Qualifiers:</I></U></BLINK></B></FONT> Charisma 9+, Wisdom 9+<BR><FONT COLOR=CYAN>Prime Stat: </I></U></BLINK></B></FONT>Charisma                   <FONT COLOR=CYAN>Attack Pts: </I></U></BLINK></B></FONT>+(Cha/18) per level<BR><FONT COLOR=CYAN>Practices : </I></U></BLINK></B></FONT>5 +(Wisdom/6)+1 per level  <FONT COLOR=CYAN>Trains    : </I></U></BLINK></B></FONT>3 +1 per level<BR><FONT COLOR=CYAN>Hit Points: </I></U></BLINK></B></FONT>20 +(Con/3)+2d6 per level  <FONT COLOR=CYAN>Mana      : </I></U></BLINK></B></FONT>100 +(Int/3)+1d6 per<BR>level<BR><FONT COLOR=CYAN>Movement  : </I></U></BLINK></B></FONT>100 +(Str/18)X10 per level <FONT COLOR=CYAN>Damage Pts: </I></U></BLINK></B></FONT>+1 damage per 10<BR>level(s)<BR><FONT COLOR=CYAN>Weapons   : </I></U></BLINK></B></FONT>Must use swords, daggers, natural, or ranged weapons.<BR><FONT COLOR=CYAN>Armor     : </I></U></BLINK></B></FONT>Must wear non-metal armor.<BR><FONT COLOR=CYAN>Bonuses   :</I></U></BLINK></B></FONT> Receives 2% resistance per level to mind affects, 4% resistance<BR>            per level to divination spells.  Non-class skills become cheaper<BR>            at 30th level.  Gains a random non-class skill or spell every<BR>            other level! Receives exploration and pub-finding experience<BR>            based on danger level.<BR><FONT COLOR=CYAN>Limits    :</I></U></BLINK></B></FONT> <BR><FONT COLOR=CYAN>Desc.     : </I></U></BLINK></B></FONT><BR>The Charlatan is the master of deception and disguise.  Grouped with the Bards<BR>because of his natural acting ability, as well as his highly social nature, the<BR>Charlatan can be quite antisocial if he chooses, and extremely annoying to other<BR>players almost without trying.  <BR><BR>How to play: The Charlatan is also a natural spy in muds with numerous players,<BR>and has an extremely wide assortment of skills.  More than any other class, the<BR>Charlatan can taste the powers of all other classes, sometimes with real skill, and<BR>sometimes only in seeming.  For this reason, the Charlatan is ideal for those who<BR>want a taste of all classes, or at least to seem like he is.  He is a natural group<BR>member, being able to fit almost any role by using his varied skills, or by<BR>tricking his group members into thinking he belongs in the role they require.</pre>
 			</P>
 			
 			<p>
@@ -1380,7 +1382,7 @@
 			
 			<p>
 			<a name="COINS"><B>COINS</B></a>
-			<pre><BR>World Currencies    :<BR>Currency            :Copper<BR>copper bit(s) (cc)  : (exchange rate is 1.0 of base)<BR>silver bit(s) (sc)  : Equal to 10 copper bits.<BR>gold bit(s) (gc)    : Equal to 100 copper bits.<BR>platinum bit(s) (pc): Equal to 500 copper bits.<BR><BR>Currency            :default<BR>gold coin(s)        : (exchange rate is 1.0 of base)<BR>golden note(s)      : Equal to 100 gold coins.<BR>whole note(s)       : Equal to 10000 gold coins.<BR>Archon note(s)      : Equal to 1000000 gold coins.<BR></pre>
+			<pre><BR>World Currencies    :<BR>Currency            :default<BR>gold coin(s)        : (exchange rate is 1.0 of base)<BR>golden note(s)      : Equal to 100 gold coins.<BR>whole note(s)       : Equal to 10000 gold coins.<BR>Archon note(s)      : Equal to 1000000 gold coins.<BR></pre>
 			</P>
 			
 			<p>
@@ -1470,12 +1472,12 @@
 			
 			<p>
 			<a name="CURRENCIES"><B>CURRENCIES</B></a>
-			<pre><BR>World Currencies    :<BR>Currency            :Copper<BR>copper bit(s) (cc)  : (exchange rate is 1.0 of base)<BR>silver bit(s) (sc)  : Equal to 10 copper bits.<BR>gold bit(s) (gc)    : Equal to 100 copper bits.<BR>platinum bit(s) (pc): Equal to 500 copper bits.<BR><BR>Currency            :default<BR>gold coin(s)        : (exchange rate is 1.0 of base)<BR>golden note(s)      : Equal to 100 gold coins.<BR>whole note(s)       : Equal to 10000 gold coins.<BR>Archon note(s)      : Equal to 1000000 gold coins.<BR></pre>
+			<pre><BR>World Currencies    :<BR>Currency            :default<BR>gold coin(s)        : (exchange rate is 1.0 of base)<BR>golden note(s)      : Equal to 100 gold coins.<BR>whole note(s)       : Equal to 10000 gold coins.<BR>Archon note(s)      : Equal to 1000000 gold coins.<BR></pre>
 			</P>
 			
 			<p>
 			<a name="CURRENCY"><B>CURRENCY</B></a>
-			<pre><BR>World Currencies    :<BR>Currency            :Copper<BR>copper bit(s) (cc)  : (exchange rate is 1.0 of base)<BR>silver bit(s) (sc)  : Equal to 10 copper bits.<BR>gold bit(s) (gc)    : Equal to 100 copper bits.<BR>platinum bit(s) (pc): Equal to 500 copper bits.<BR><BR>Currency            :default<BR>gold coin(s)        : (exchange rate is 1.0 of base)<BR>golden note(s)      : Equal to 100 gold coins.<BR>whole note(s)       : Equal to 10000 gold coins.<BR>Archon note(s)      : Equal to 1000000 gold coins.<BR></pre>
+			<pre><BR>World Currencies    :<BR>Currency            :default<BR>gold coin(s)        : (exchange rate is 1.0 of base)<BR>golden note(s)      : Equal to 100 gold coins.<BR>whole note(s)       : Equal to 10000 gold coins.<BR>Archon note(s)      : Equal to 1000000 gold coins.<BR></pre>
 			</P>
 			
 			<p>
@@ -1505,21 +1507,7 @@
 			
 			<p>
 			<a name="DELVER"><B>DELVER</B></a>
-			<pre><FONT COLOR=CYAN>Char Class: </I></U></BLINK></B></FONT>Delver <FONT COLOR=CYAN>(</I></U></BLINK></B></FONT>Druid<FONT COLOR=CYAN>)</I></U></BLINK></B></FONT><BR><FONT COLOR=CYAN>Max-Stats :</I></U></BLINK></B></FONT> Others (18)<BR><FONT COLOR=CYAN>Qualifiers:</I></U></BLINK></B></FONT> Requires a base strength of at least 9.  Requires a base<BR>            constitution of at least 9.  <BR><FONT COLOR=CYAN>Prime Stat: </I></U></BLINK></B></FONT>Constitution               <FONT COLOR=CYAN>Attack Pts: </I></U></BLINK></B></FONT>+(Con/18) per level<BR><FONT COLOR=CYAN>Practices : </I></U></BLINK></B></FONT>5 +(Wisdom/6)+2 per level  <FONT COLOR=CYAN>Trains    : </I></U></BLINK></B></FONT>3 +1 per level<BR><FONT COLOR=CYAN>Hit Points: </I></U></BLINK></B></FONT>20 +(Con/2)+2d6 per level  <FONT COLOR=CYAN>Mana      : </I></U></BLINK></B></FONT>100 +(Int/4)+1d4 per<BR>level<BR><FONT COLOR=CYAN>Movement  : </I></U></BLINK></B></FONT>100 +(Str/18)X10 per level <FONT COLOR=CYAN>Damage Pts: </I></U></BLINK></B></FONT>+1 damage per 30<BR>level(s)<BR><FONT COLOR=CYAN>Weapons   : </I></U></BLINK></B></FONT>Requires using weapons made of the following materials: Unknown<BR>Rock Metal Mithril Precious Glass .<BR><FONT COLOR=CYAN>Armor     : </I></U></BLINK></B></FONT>Must wear stone, crystal, or metal armor.<BR><FONT COLOR=CYAN>Bonuses   :</I></U></BLINK></B></FONT> Can create a druidic connection with an area.  Benefits from<BR>            freeing animals from cities.<BR><FONT COLOR=CYAN>Limits    :</I></U></BLINK></B></FONT> Must remain Neutral to avoid skill and chant failure chances.<BR><FONT COLOR=CYAN>Desc.     : </I></U></BLINK></B></FONT><BR><FONT COLOR=CYAN>Char Class: </I></U></BLINK></B></FONT>Delver <FONT COLOR=CYAN>(</I></U></BLINK></B></FONT>Druid<FONT COLOR=CYAN>)</I></U></BLINK></B></FONT><BR>
-<FONT COLOR=CYAN>Max-Stats :</I></U></BLINK></B></FONT> Strength (22), Constitution (22), Others (18)<BR>
-<FONT COLOR=CYAN>Qualifiers:</I></U></BLINK></B></FONT> Constitution 9+, Strength 9+<BR>
-<FONT COLOR=CYAN>Prime Stat: </I></U></BLINK></B></FONT>Constitution               <FONT COLOR=CYAN>Attack Pts: </I></U></BLINK></B></FONT>+(Con/18) per level<BR>
-<FONT COLOR=CYAN>Practices : </I></U></BLINK></B></FONT>5 +(Wisdom/6)+2 per level  <FONT COLOR=CYAN>Trains    : </I></U></BLINK></B></FONT>3 +1 per level<BR>
-<FONT COLOR=CYAN>Hit Points: </I></U></BLINK></B></FONT>20 +(Con/2)+2d6 per level  <FONT COLOR=CYAN>Mana      : </I></U></BLINK></B></FONT>100 +(Int/4)+1d4 per<BR>level<BR>
-<FONT COLOR=CYAN>Movement  : </I></U></BLINK></B></FONT>100 +(Str/18)X10 per level <FONT COLOR=CYAN>Damage Pts: </I></U></BLINK></B></FONT>+1 damage per 30<BR>level(s)<BR>
-<FONT COLOR=CYAN>Weapons   : </I></U></BLINK></B></FONT>Must use stone, crystal, metal, or glass weapons.<BR>
-<FONT COLOR=CYAN>Armor     : </I></U></BLINK></B></FONT>Must wear stone, crystal, or metal armor.<BR>
-<FONT COLOR=CYAN>Bonuses   :</I></U></BLINK></B></FONT> Can create a druidic connection with an area.  Benefits from<BR>
-            freeing animals from cities.<BR>
-<FONT COLOR=CYAN>Limits    :</I></U></BLINK></B></FONT> Must remain Neutral to avoid skill and chant failure chances.<BR>
-<FONT COLOR=CYAN>Desc.     : </I></U></BLINK></B></FONT><BR>
-The Delver is a stolid druid of caves and the underdark, being the guardian of<BR>the rocks and stone and the cold caverns of the deep.  The Delver is unconcerned<BR>with plants or the sky or the doings of the weather, or any of the creatures that<BR>live upon it, relying rather on the solid earth to draw his power from.  For this<BR>reason, the Delver is particularly at home among the rocks, and is able to call<BR>upon them to aid him at need. <BR><BR>
-How to play: The Delver requires little in the way of precasting or planning,<BR>so long as he stays in cave or rocky environments.  He is able to instantly call<BR>upon the rocks and stones to help him in combat, and is friend to golems and stone<BR>creatures.  For this reason, the Delver is better able to fit into groups who wish<BR>to adventure in the mountains and the underground, and can be a valuable leader<BR>when its time to enter the deep dark.</pre>
+			<pre><FONT COLOR=CYAN>Char Class: </I></U></BLINK></B></FONT>Delver <FONT COLOR=CYAN>(</I></U></BLINK></B></FONT>Druid<FONT COLOR=CYAN>)</I></U></BLINK></B></FONT><BR><FONT COLOR=CYAN>Max-Stats :</I></U></BLINK></B></FONT> Strength (22), Constitution (22), Others (18)<BR><FONT COLOR=CYAN>Qualifiers:</I></U></BLINK></B></FONT> Constitution 9+, Strength 9+<BR><FONT COLOR=CYAN>Prime Stat: </I></U></BLINK></B></FONT>Constitution               <FONT COLOR=CYAN>Attack Pts: </I></U></BLINK></B></FONT>+(Con/18) per level<BR><FONT COLOR=CYAN>Practices : </I></U></BLINK></B></FONT>5 +(Wisdom/6)+2 per level  <FONT COLOR=CYAN>Trains    : </I></U></BLINK></B></FONT>3 +1 per level<BR><FONT COLOR=CYAN>Hit Points: </I></U></BLINK></B></FONT>20 +(Con/2)+2d6 per level  <FONT COLOR=CYAN>Mana      : </I></U></BLINK></B></FONT>100 +(Int/4)+1d4 per<BR>level<BR><FONT COLOR=CYAN>Movement  : </I></U></BLINK></B></FONT>100 +(Str/18)X10 per level <FONT COLOR=CYAN>Damage Pts: </I></U></BLINK></B></FONT>+1 damage per 30<BR>level(s)<BR><FONT COLOR=CYAN>Weapons   : </I></U></BLINK></B></FONT>Must use stone, crystal, metal, or glass weapons.<BR><FONT COLOR=CYAN>Armor     : </I></U></BLINK></B></FONT>Must wear stone, crystal, or metal armor.<BR><FONT COLOR=CYAN>Bonuses   :</I></U></BLINK></B></FONT> Can create a druidic connection with an area.  Benefits from<BR>            freeing animals from cities.<BR><FONT COLOR=CYAN>Limits    :</I></U></BLINK></B></FONT> Must remain Neutral to avoid skill and chant failure chances.<BR><FONT COLOR=CYAN>Desc.     : </I></U></BLINK></B></FONT><BR>The Delver is a stolid druid of caves and the underdark, being the guardian of<BR>the rocks and stone and the cold caverns of the deep.  The Delver is unconcerned<BR>with plants or the sky or the doings of the weather, or any of the creatures that<BR>live upon it, relying rather on the solid earth to draw his power from.  For this<BR>reason, the Delver is particularly at home among the rocks, and is able to call<BR>upon them to aid him at need. <BR><BR>How to play: The Delver requires little in the way of precasting or planning,<BR>so long as he stays in cave or rocky environments.  He is able to instantly call<BR>upon the rocks and stones to help him in combat, and is friend to golems and stone<BR>creatures.  For this reason, the Delver is better able to fit into groups who wish<BR>to adventure in the mountains and the underground, and can be a valuable leader<BR>when its time to enter the deep dark.</pre>
 			</P>
 			
 			<p>
@@ -1929,7 +1917,7 @@ How to play: The Delver requires little in the way of precasting or planning,<BR
 			
 			<p>
 			<a name="I3"><B>I3</B></a>
-			<pre>This refers to the InterMud3 system, which may or may not be available on your<BR>system.  Enter I3 by itself for a list of available commands.  For more help, enter<BR>HELP I3 LIST or HELP I3 INFO.</pre>
+			<pre>This refers to the InterMud3 system, which may or may not be available on your<BR>system.  Enter I3 by itself for a list of available commands.  For more help, enter<BR>HELP I3 LIST, HELP I3 LOCATE, HELP I3 WHOIS, or HELP I3 INFO.</pre>
 			</P>
 			
 			<p>
@@ -1940,6 +1928,16 @@ How to play: The Delver requires little in the way of precasting or planning,<BR
 			<p>
 			<a name="I3_LIST"><B>I3_LIST</B></a>
 			<pre>Command : I3 LIST<BR>Usage   : I3 LIST<BR>Example : i3 list<BR>Short(s): <BR>Lists all the muds available on the InterMud3 channels.</pre>
+			</P>
+			
+			<p>
+			<a name="I3_LOCATE"><B>I3_LOCATE</B></a>
+			<pre>Command : I3 LOCATE<BR>Usage   : I3 LOCATE [NAME]<BR>Example : i3 locate bob<BR>Short(s): <BR>Sends a player locate message to the InterMud3 router, which will hopefully<BR>respond some day with the name of a mud where a player of the given name is<BR>located.</pre>
+			</P>
+			
+			<p>
+			<a name="I3_WHOIS"><B>I3_WHOIS</B></a>
+			<pre>Command : WHOIS<BR>Usage   : WHOIS [NAME]@[MUD NAME]<BR>Usage   : WHOIS @[MUD NAME]<BR>Example : whois bob@coffeemud<BR>Example : whois @coffeemud<BR>Short(s): <BR>If the InterMud network is enabled on your mud, this command can be used to<BR>retreive a list of players at the given mud, and to retrieve more information about<BR>a particular player on a mud.  Use I3 LIST to see a list of all InterMud3 muds, or<BR>IMC2 LIST to see a list of IMC2 muds.</pre>
 			</P>
 			
 			<p>
@@ -2119,22 +2117,17 @@ How to play: The Delver requires little in the way of precasting or planning,<BR
 			
 			<p>
 			<a name="LOCAL_COINS"><B>LOCAL_COINS</B></a>
-			<pre><BR>World Currencies    :<BR>Currency            :Copper<BR>copper bit(s) (cc)  : (exchange rate is 1.0 of base)<BR>silver bit(s) (sc)  : Equal to 10 copper bits.<BR>gold bit(s) (gc)    : Equal to 100 copper bits.<BR>platinum bit(s) (pc): Equal to 500 copper bits.<BR><BR>Currency            :default<BR>gold coin(s)        : (exchange rate is 1.0 of base)<BR>golden note(s)      : Equal to 100 gold coins.<BR>whole note(s)       : Equal to 10000 gold coins.<BR>Archon note(s)      : Equal to 1000000 gold coins.<BR></pre>
+			<pre><BR>World Currencies    :<BR>Currency            :default<BR>gold coin(s)        : (exchange rate is 1.0 of base)<BR>golden note(s)      : Equal to 100 gold coins.<BR>whole note(s)       : Equal to 10000 gold coins.<BR>Archon note(s)      : Equal to 1000000 gold coins.<BR></pre>
 			</P>
 			
 			<p>
 			<a name="LOCAL_CURRENCY"><B>LOCAL_CURRENCY</B></a>
-			<pre><BR>World Currencies    :<BR>Currency            :Copper<BR>copper bit(s) (cc)  : (exchange rate is 1.0 of base)<BR>silver bit(s) (sc)  : Equal to 10 copper bits.<BR>gold bit(s) (gc)    : Equal to 100 copper bits.<BR>platinum bit(s) (pc): Equal to 500 copper bits.<BR><BR>Currency            :default<BR>gold coin(s)        : (exchange rate is 1.0 of base)<BR>golden note(s)      : Equal to 100 gold coins.<BR>whole note(s)       : Equal to 10000 gold coins.<BR>Archon note(s)      : Equal to 1000000 gold coins.<BR></pre>
+			<pre><BR>World Currencies    :<BR>Currency            :default<BR>gold coin(s)        : (exchange rate is 1.0 of base)<BR>golden note(s)      : Equal to 100 gold coins.<BR>whole note(s)       : Equal to 10000 gold coins.<BR>Archon note(s)      : Equal to 1000000 gold coins.<BR></pre>
 			</P>
 			
 			<p>
 			<a name="LOCAL_MONEY"><B>LOCAL_MONEY</B></a>
-			<pre><BR>World Currencies    :<BR>Currency            :Copper<BR>copper bit(s) (cc)  : (exchange rate is 1.0 of base)<BR>silver bit(s) (sc)  : Equal to 10 copper bits.<BR>gold bit(s) (gc)    : Equal to 100 copper bits.<BR>platinum bit(s) (pc): Equal to 500 copper bits.<BR><BR>Currency            :default<BR>gold coin(s)        : (exchange rate is 1.0 of base)<BR>golden note(s)      : Equal to 100 gold coins.<BR>whole note(s)       : Equal to 10000 gold coins.<BR>Archon note(s)      : Equal to 1000000 gold coins.<BR></pre>
-			</P>
-			
-			<p>
-			<a name="LOCATE"><B>LOCATE</B></a>
-			<pre>Command : LOCATE<BR>Usage   : LOCATE [PLAYER NAME]<BR>Example : locate bob<BR>Short(s): <BR>Attempts to locate a specific player on the InterMud3 network.</pre>
+			<pre><BR>World Currencies    :<BR>Currency            :default<BR>gold coin(s)        : (exchange rate is 1.0 of base)<BR>golden note(s)      : Equal to 100 gold coins.<BR>whole note(s)       : Equal to 10000 gold coins.<BR>Archon note(s)      : Equal to 1000000 gold coins.<BR></pre>
 			</P>
 			
 			<p>
@@ -2184,12 +2177,12 @@ How to play: The Delver requires little in the way of precasting or planning,<BR
 			
 			<p>
 			<a name="MONEY"><B>MONEY</B></a>
-			<pre><BR>World Currencies    :<BR>Currency            :Copper<BR>copper bit(s) (cc)  : (exchange rate is 1.0 of base)<BR>silver bit(s) (sc)  : Equal to 10 copper bits.<BR>gold bit(s) (gc)    : Equal to 100 copper bits.<BR>platinum bit(s) (pc): Equal to 500 copper bits.<BR><BR>Currency            :default<BR>gold coin(s)        : (exchange rate is 1.0 of base)<BR>golden note(s)      : Equal to 100 gold coins.<BR>whole note(s)       : Equal to 10000 gold coins.<BR>Archon note(s)      : Equal to 1000000 gold coins.<BR></pre>
+			<pre><BR>World Currencies    :<BR>Currency            :default<BR>gold coin(s)        : (exchange rate is 1.0 of base)<BR>golden note(s)      : Equal to 100 gold coins.<BR>whole note(s)       : Equal to 10000 gold coins.<BR>Archon note(s)      : Equal to 1000000 gold coins.<BR></pre>
 			</P>
 			
 			<p>
 			<a name="MONIES"><B>MONIES</B></a>
-			<pre><BR>World Currencies    :<BR>Currency            :Copper<BR>copper bit(s) (cc)  : (exchange rate is 1.0 of base)<BR>silver bit(s) (sc)  : Equal to 10 copper bits.<BR>gold bit(s) (gc)    : Equal to 100 copper bits.<BR>platinum bit(s) (pc): Equal to 500 copper bits.<BR><BR>Currency            :default<BR>gold coin(s)        : (exchange rate is 1.0 of base)<BR>golden note(s)      : Equal to 100 gold coins.<BR>whole note(s)       : Equal to 10000 gold coins.<BR>Archon note(s)      : Equal to 1000000 gold coins.<BR></pre>
+			<pre><BR>World Currencies    :<BR>Currency            :default<BR>gold coin(s)        : (exchange rate is 1.0 of base)<BR>golden note(s)      : Equal to 100 gold coins.<BR>whole note(s)       : Equal to 10000 gold coins.<BR>Archon note(s)      : Equal to 1000000 gold coins.<BR></pre>
 			</P>
 			
 			<p>
@@ -2439,7 +2432,7 @@ How to play: The Delver requires little in the way of precasting or planning,<BR
 			
 			<p>
 			<a name="PROMPT"><B>PROMPT</B></a>
-			<pre>Command : PROMPT<BR>Usage   : PROMPT ([NEW PROMPT STRING])<BR>Example : prompt ^N^h%hhp ^m%mm ^v%vmv^N><BR>Example : prompt default<BR>Short(s): <BR>Display or change your prompt string.  Typing PROMPT DEFAULT will reset your<BR>prompt to the default setting.<BR>Valid embedded codes for custom prompts include:<BR>%h :  Display your current hits        %H :  Display your maximum hits<BR>%m :  Display your current mana        %M :  Display your maximum mana<BR>%v :  Display your current moves       %V :  Display your maximum moves<BR>%x :  Display your current experience  %X :  Display your needed experience<BR>%g :  Display the value of your money  %G :  Display amount/name of money<BR>%a :  Display alignment in numbers     %A :  Display your alignment as text<BR>%w :  Display your weight encumbrance  %W :  Display max carryable weight<BR>%c :  Display item encumbrance         %C :  Display max carryable items<BR>%e :  Display person under attack      %E :  Display attacked persons state<BR>%t :  Display the time of day          %T :  Display the hour of the day<BR>%Kh:  Display the tanks current hits   %KH:  Display the tanks maximum hits<BR>%Km:  Display the tanks current mana   %KM:  Display the tanks maximum mana<BR>%Kv:  Display the tanks current moves  %KV:  Display the tanks maximum moves<BR>%Ke:  Display the tanks name           %KE:  Display the tanks health<BR>%I :  Display hidden/invis. status     %@ :  Display the weather here<BR>%d :  Display the range to your victim %D :  Display ammo remaining<BR>%B :  Go to a new line                 %z :  Display current area name<BR>%r :  Display name of the room         %R :  Display room number (ADMIN ONLY)<BR><BR>COLORS:<BR>^h :  Standard hit point color        ^m :  Standard mana color<BR>^v :  Standard movement color         ^N :  Normal color<BR>^w :  White                           ^W :  Grey<BR>^g :  Light green                     ^G :  Dark Green<BR>^b :  Light blue                      ^B :  Dark Blue<BR>^r :  Light red                       ^R :  Maroon<BR>^y :  Yellow                          ^Y :  Dark yellow<BR>^c :  Cyan                            ^C :  Dark Cyan<BR>^p :  Light purple                    ^P :  Dark Purple<BR>^? :  Previous color/End color<BR><BR>MISC:<BR>%-STAT NAME : Replace STAT NAME is one of the following: <BR>STRENGTH, INTELLIGENCE, WISDOM, etc..<BR>MAX STRENGTH, MAX INTELLIGENCE, MAX WISDOM, etc..<BR>BASE STRENGTH, BASE INTELLIGENCE, BASE WISDOM, etc..<BR>ATTACK, ARMOR, WEIGHT, HEIGHT, LEVEL<BR>HITS, MANA, MOVE, HUNGER, THIRST, FATIGUE<BR>HEAD, NECK, TORSO, ARMS, LEFT WRIST, WIELD, EYES, etc..<BR>-----</pre>
+			<pre>Command : PROMPT<BR>Usage   : PROMPT ([NEW PROMPT STRING])<BR>Example : prompt ^N^h%hhp ^m%mm ^v%vmv^N><BR>Example : prompt default<BR>Short(s): <BR>Display or change your prompt string.  Typing PROMPT DEFAULT will reset your<BR>prompt to the default setting.  You can enter PROMPT ^N to effectively turn "off"<BR>your prompt. <BR>Valid embedded codes for custom prompts include:<BR>%h :  Display your current hits        %H :  Display your maximum hits<BR>%m :  Display your current mana        %M :  Display your maximum mana<BR>%v :  Display your current moves       %V :  Display your maximum moves<BR>%x :  Display your current experience  %X :  Display your needed experience<BR>%g :  Display the value of your money  %G :  Display amount/name of money<BR>%a :  Display alignment in numbers     %A :  Display your alignment as text<BR>%w :  Display your weight encumbrance  %W :  Display max carryable weight<BR>%c :  Display item encumbrance         %C :  Display max carryable items<BR>%e :  Display person under attack      %E :  Display attacked persons state<BR>%t :  Display the time of day          %T :  Display the hour of the day<BR>%Kh:  Display the tanks current hits   %KH:  Display the tanks maximum hits<BR>%Km:  Display the tanks current mana   %KM:  Display the tanks maximum mana<BR>%Kv:  Display the tanks current moves  %KV:  Display the tanks maximum moves<BR>%Ke:  Display the tanks name           %KE:  Display the tanks health<BR>%I :  Display hidden/invis. status     %@ :  Display the weather here<BR>%d :  Display the range to your victim %D :  Display ammo remaining<BR>%B :  Go to a new line                 %z :  Display current area name<BR>%r :  Display name of the room         %R :  Display room number (ADMIN ONLY)<BR><BR>COLORS:<BR>^h :  Standard hit point color        ^m :  Standard mana color<BR>^v :  Standard movement color         ^N :  Normal color<BR>^w :  White                           ^W :  Grey<BR>^g :  Light green                     ^G :  Dark Green<BR>^b :  Light blue                      ^B :  Dark Blue<BR>^r :  Light red                       ^R :  Maroon<BR>^y :  Yellow                          ^Y :  Dark yellow<BR>^c :  Cyan                            ^C :  Dark Cyan<BR>^p :  Light purple                    ^P :  Dark Purple<BR>^? :  Previous color/End color<BR><BR>MISC:<BR>%-STAT NAME : Replace STAT NAME is one of the following: <BR>STRENGTH, INTELLIGENCE, WISDOM, etc..<BR>MAX STRENGTH, MAX INTELLIGENCE, MAX WISDOM, etc..<BR>BASE STRENGTH, BASE INTELLIGENCE, BASE WISDOM, etc..<BR>ATTACK, ARMOR, WEIGHT, HEIGHT, LEVEL<BR>HITS, MANA, MOVE, HUNGER, THIRST, FATIGUE<BR>HEAD, NECK, TORSO, ARMS, LEFT WRIST, WIELD, EYES, etc..<BR>-----</pre>
 			</P>
 			
 			<p>
@@ -3004,7 +2997,7 @@ How to play: The Delver requires little in the way of precasting or planning,<BR
 			
 			<p>
 			<a name="WHOIS"><B>WHOIS</B></a>
-			<pre>Command : WHOIS<BR>Usage   : WHOIS [MOB NAME]<BR>Example : whois Horice<BR>Short(s): <BR>Provides some basic information about the specified character name, assuming<BR>they are online, regardless of where they are located.  </pre>
+			<pre>Command : WHOIS<BR>Usage   : WHOIS [MOB NAME]<BR>Example : whois Horice<BR>Short(s): <BR>Provides some basic information about the specified character name, assuming<BR>they are online, regardless of where they are located.  See also I3_WHOIS for<BR>information on using the WHOIS command across the intermud network.</pre>
 			</P>
 			
 			<p>
@@ -3044,22 +3037,22 @@ How to play: The Delver requires little in the way of precasting or planning,<BR
 			
 			<p>
 			<a name="WORLD_CURRENCIES"><B>WORLD_CURRENCIES</B></a>
-			<pre><BR>World Currencies    :<BR>Currency            :Copper<BR>copper bit(s) (cc)  : (exchange rate is 1.0 of base)<BR>silver bit(s) (sc)  : Equal to 10 copper bits.<BR>gold bit(s) (gc)    : Equal to 100 copper bits.<BR>platinum bit(s) (pc): Equal to 500 copper bits.<BR><BR>Currency            :default<BR>gold coin(s)        : (exchange rate is 1.0 of base)<BR>golden note(s)      : Equal to 100 gold coins.<BR>whole note(s)       : Equal to 10000 gold coins.<BR>Archon note(s)      : Equal to 1000000 gold coins.<BR></pre>
+			<pre><BR>World Currencies    :<BR>Currency            :default<BR>gold coin(s)        : (exchange rate is 1.0 of base)<BR>golden note(s)      : Equal to 100 gold coins.<BR>whole note(s)       : Equal to 10000 gold coins.<BR>Archon note(s)      : Equal to 1000000 gold coins.<BR></pre>
 			</P>
 			
 			<p>
 			<a name="WORLD_CURRENCY"><B>WORLD_CURRENCY</B></a>
-			<pre><BR>World Currencies    :<BR>Currency            :Copper<BR>copper bit(s) (cc)  : (exchange rate is 1.0 of base)<BR>silver bit(s) (sc)  : Equal to 10 copper bits.<BR>gold bit(s) (gc)    : Equal to 100 copper bits.<BR>platinum bit(s) (pc): Equal to 500 copper bits.<BR><BR>Currency            :default<BR>gold coin(s)        : (exchange rate is 1.0 of base)<BR>golden note(s)      : Equal to 100 gold coins.<BR>whole note(s)       : Equal to 10000 gold coins.<BR>Archon note(s)      : Equal to 1000000 gold coins.<BR></pre>
+			<pre><BR>World Currencies    :<BR>Currency            :default<BR>gold coin(s)        : (exchange rate is 1.0 of base)<BR>golden note(s)      : Equal to 100 gold coins.<BR>whole note(s)       : Equal to 10000 gold coins.<BR>Archon note(s)      : Equal to 1000000 gold coins.<BR></pre>
 			</P>
 			
 			<p>
 			<a name="WORLD_MONEY"><B>WORLD_MONEY</B></a>
-			<pre><BR>World Currencies    :<BR>Currency            :Copper<BR>copper bit(s) (cc)  : (exchange rate is 1.0 of base)<BR>silver bit(s) (sc)  : Equal to 10 copper bits.<BR>gold bit(s) (gc)    : Equal to 100 copper bits.<BR>platinum bit(s) (pc): Equal to 500 copper bits.<BR><BR>Currency            :default<BR>gold coin(s)        : (exchange rate is 1.0 of base)<BR>golden note(s)      : Equal to 100 gold coins.<BR>whole note(s)       : Equal to 10000 gold coins.<BR>Archon note(s)      : Equal to 1000000 gold coins.<BR></pre>
+			<pre><BR>World Currencies    :<BR>Currency            :default<BR>gold coin(s)        : (exchange rate is 1.0 of base)<BR>golden note(s)      : Equal to 100 gold coins.<BR>whole note(s)       : Equal to 10000 gold coins.<BR>Archon note(s)      : Equal to 1000000 gold coins.<BR></pre>
 			</P>
 			
 			<p>
 			<a name="WORLD_MONIES"><B>WORLD_MONIES</B></a>
-			<pre><BR>World Currencies    :<BR>Currency            :Copper<BR>copper bit(s) (cc)  : (exchange rate is 1.0 of base)<BR>silver bit(s) (sc)  : Equal to 10 copper bits.<BR>gold bit(s) (gc)    : Equal to 100 copper bits.<BR>platinum bit(s) (pc): Equal to 500 copper bits.<BR><BR>Currency            :default<BR>gold coin(s)        : (exchange rate is 1.0 of base)<BR>golden note(s)      : Equal to 100 gold coins.<BR>whole note(s)       : Equal to 10000 gold coins.<BR>Archon note(s)      : Equal to 1000000 gold coins.<BR></pre>
+			<pre><BR>World Currencies    :<BR>Currency            :default<BR>gold coin(s)        : (exchange rate is 1.0 of base)<BR>golden note(s)      : Equal to 100 gold coins.<BR>whole note(s)       : Equal to 10000 gold coins.<BR>Archon note(s)      : Equal to 1000000 gold coins.<BR></pre>
 			</P>
 			
 			<p>
