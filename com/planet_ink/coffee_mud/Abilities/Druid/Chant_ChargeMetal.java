@@ -82,7 +82,8 @@ public class Chant_ChargeMetal extends Chant
 
 		MOB mob=(MOB)I.owner();
 		if((!msg.amITarget(mob))
-		&&(msg.targetMinor()==CMMsg.TYP_ELECTRIC))
+		&&((msg.targetMinor()==CMMsg.TYP_ELECTRIC)
+			||((msg.sourceMinor()==CMMsg.TYP_ELECTRIC)&&(msg.targetMinor()==CMMsg.TYP_DAMAGE))))
 		{
 			msg.source().location().show(mob,null,I,CMMsg.MSG_OK_VISUAL,"<O-NAME> attracts a charge to <S-NAME>!");
 			msg.modify(msg.source(),
