@@ -82,6 +82,7 @@ public class Chant_ChargeMetal extends Chant
 
 		MOB mob=(MOB)I.owner();
 		if((!msg.amITarget(mob))
+		&&(msg.tool()!=null)
 		&&((msg.targetMinor()==CMMsg.TYP_ELECTRIC)
 			||((msg.sourceMinor()==CMMsg.TYP_ELECTRIC)&&(msg.targetMinor()==CMMsg.TYP_DAMAGE))))
 		{
