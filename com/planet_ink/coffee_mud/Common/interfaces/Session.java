@@ -50,14 +50,6 @@ public interface Session extends CMCommon, Modifiable
     public void initializeSession(Socket s, String introTextStr);
     
     /**
-     * There is no interface for Thread, so since DefaultSession
-     * implements thread, and this fact needs to be externatized,
-     * the thread start method is hereby externalized.  Not 
-     * required for most sessions, only for those acting as Threads.
-     */
-    public void start();
-    
-    /**
      * Returns a list of telnet coded strings indexed by coffeemud
      * color code.  May be from the standard list, or read from 
      * player records for a customized list.
@@ -734,6 +726,13 @@ public interface Session extends CMCommon, Modifiable
      * @see com.planet_ink.coffee_mud.Common.interfaces.Session#lastLoopTime()
      */
 	public void updateLoopTime();
+	
+	/**
+	 * Whether this session is currently actively interacting with the user in 
+	 * some way -- whether this session currently has "thread time".
+	 * @return true if its active and running, false otherwise
+	 */
+	public boolean isRunning();
 	
     /**
      * Returns a Vector of the last several message strings received by this user.

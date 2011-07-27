@@ -26,6 +26,8 @@ public class Sessions extends StdLibrary implements SessionsList
 {
     public String ID(){return "Sessions";}
     private ThreadEngine.SupportThread thread=null;
+    private volatile long lastSweepTime = System.currentTimeMillis(); 
+    
     public SLinkedList<Session> all=new SLinkedList<Session>();
     private final static Filterer<Session> localOnlineFilter=new Filterer<Session>(){
 		public boolean passesFilter(Session obj) { 
@@ -159,9 +161,14 @@ public class Sessions extends StdLibrary implements SessionsList
     
     public void run()
     {
-        if((CMSecurity.isDisabled(CMSecurity.DisFlag.UTILITHREAD))
+		//for(Session S : all)
+			//if(!S.isRunning()) CMLib.threads().
+		
+    	if(((lastSweepTime - System.currentTimeMillis()) < MudHost.TIME_UTILTHREAD_SLEEP)
+        ||(CMSecurity.isDisabled(CMSecurity.DisFlag.UTILITHREAD))
         ||(CMSecurity.isDisabled(CMSecurity.DisFlag.SESSIONTHREAD)))
             return;
+    	lastSweepTime = System.currentTimeMillis();
         thread.status("checking player sessions.");
 		for(Session S : all)
         {
