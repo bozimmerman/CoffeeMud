@@ -267,7 +267,7 @@ public class CraftingSkill extends GatheringSkill
         {
             StringBuffer str=new CMFile(Resources.buildResourcePath("skills")+filename,null,true).text();
             V=loadList(str);
-            if(V.size()==0)
+            if((V.size()==0)&&(!ID().equals("GenCraftSkill")))
                 Log.errOut(ID(),"Recipes not found!");
             Resources.submitResource("PARSED: "+filename,V);
         }
