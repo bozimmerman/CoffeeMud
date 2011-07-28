@@ -41,7 +41,7 @@ import java.net.*;
 @SuppressWarnings("unchecked")
 public class DefaultSession implements Session
 {
-    protected static final int 		SOTIMEOUT		= 10;
+    protected static final int 		SOTIMEOUT		= 300;
     private final HashSet 			telnetSupportSet= new HashSet();
     private static final HashSet 	mxpSupportSet	= new HashSet();
     private static final Hashtable  mxpVersionInfo	= new Hashtable();
@@ -1215,6 +1215,8 @@ public class DefaultSession implements Session
 			&&((maxTime<=0)||((System.currentTimeMillis()-start)<maxTime)))
 			    if(nonBlockingIn(true)==0)
 			        break;
+			    else
+			    	CMLib.s_sleep(100);
 			suspendCommandLine=false;
 			if((maxTime>0)&&((System.currentTimeMillis()-start)>=maxTime))
 				throw new java.io.InterruptedIOException("Timed Out.");
