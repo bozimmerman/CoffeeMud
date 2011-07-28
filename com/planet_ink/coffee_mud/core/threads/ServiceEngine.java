@@ -60,15 +60,6 @@ public class ServiceEngine implements ThreadEngine
 		threadPool = new CMThreadPoolExecutor(sessionThreadGroupName,0, maxThreads, 5, TimeUnit.MINUTES, 60, 1);
 		threadPool.allowCoreThreadTimeOut(true);
 		threadPool.setThreadFactory(new CMThreadFactory(sessionThreadGroupName));
-		threadPool.setRejectedExecutionHandler(new RejectedExecutionHandler(){
-			public void rejectedExecution(Runnable arg0, ThreadPoolExecutor arg1) {
-				synchronized(threadPool.getQueue())
-				{
-					if(!threadPool.isShutdown())
-						threadPool.getQueue().add(arg0);
-				}
-			}
-		});
     }
     public CMObject copyOf(){try{return (CMObject)this.clone();}catch(Exception e){return newInstance();}}
     public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
@@ -87,7 +78,14 @@ public class ServiceEngine implements ThreadEngine
     
 	public void executeRunnable(Runnable R)
 	{
-		threadPool.execute(R);
+		try
+		{
+			threadPool.execute(R);
+		}
+		catch(Exception e)
+		{
+			Log.errOut("ServiceEngine",e.getMessage());
+		}
 	}
 	
 	public int getMaxObjectsPerThread()
