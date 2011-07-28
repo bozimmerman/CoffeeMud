@@ -55,7 +55,7 @@ public class ServiceEngine implements ThreadEngine
 		final int maxThreads = CMProps.getIntVar(CMProps.SYSTEMI_SESSIONTHREADS);
 		final int queueSize = CMProps.getIntVar(CMProps.SYSTEMI_SESSIONQUEUESIZE);
 		final String sessionThreadGroupName="Sess"+Thread.currentThread().getThreadGroup().getName().charAt(0);
-		threadPool = new CMThreadPoolExecutor(sessionThreadGroupName,0, maxThreads, 30, TimeUnit.MINUTES, 30, queueSize);
+		threadPool = new CMThreadPoolExecutor(sessionThreadGroupName,0, maxThreads, 30, TimeUnit.MINUTES, 60, queueSize);
 		threadPool.setThreadFactory(new CMThreadFactory(sessionThreadGroupName));
     }
     public CMObject copyOf(){try{return (CMObject)this.clone();}catch(Exception e){return newInstance();}}
