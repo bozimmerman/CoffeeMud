@@ -1,5 +1,6 @@
 package com.planet_ink.coffee_mud.Common;
 import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.threads.CMRunnable;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
@@ -39,7 +40,7 @@ import java.net.*;
    limitations under the License.
 */
 @SuppressWarnings("unchecked")
-public class DefaultSession implements Session
+public class DefaultSession implements Session, CMRunnable
 {
     protected static final int 		SOTIMEOUT		= 300;
     private final HashSet 			telnetSupportSet= new HashSet();
@@ -92,6 +93,7 @@ public class DefaultSession implements Session
     protected long lastLoopTop=System.currentTimeMillis();
     protected long userLoginTime=System.currentTimeMillis();
     protected long onlineTime=System.currentTimeMillis();
+    protected long activeMillis=0;
     protected long lastPKFight=0;
     protected long lastNPCFight=0;
     protected long lastBlahCheck=0;
@@ -1427,9 +1429,7 @@ public class DefaultSession implements Session
         CMLib.login().notifyFriends(M,"^X"+M.Name()+" has logged off.^.^?");
             
 		// the player quit message!
-        LoginLogoutThread LT=new LoginLogoutThread(M,CMMsg.MSG_QUIT);
-        LT.initialize();
-        LT.start();
+        CMLib.threads().executeRunnable(new LoginLogoutThread(M,CMMsg.MSG_QUIT));
 		if(M.playerStats()!=null)
 			M.playerStats().setLastDateTime(System.currentTimeMillis());
 		Log.sysOut("Session","Logout: "+name+" ("+CMLib.time().date2SmartEllapsedTime(System.currentTimeMillis()-userLoginTime,true)+")");
@@ -1480,7 +1480,7 @@ public class DefaultSession implements Session
 			}
 			thread=Thread.currentThread();
 		}
-		
+		activeMillis=System.currentTimeMillis();
 		try
 		{
 			if(killFlag)
@@ -1523,9 +1523,10 @@ public class DefaultSession implements Session
 			{
 				thread=null;
 			}
+			activeMillis=0;
 		}
 	}
-	
+
 	public void login()
 	{
 		try
@@ -1812,7 +1813,13 @@ public class DefaultSession implements Session
 		}
 	}
 	
-    public static class LoginLogoutThread extends Thread implements Tickable
+	public long activeTimeMillis() 
+	{
+		if(activeMillis==0) return 0;
+		return System.currentTimeMillis()-activeMillis;
+	}
+	
+    public static class LoginLogoutThread implements CMRunnable, Tickable
     {
         public String name(){return (theMOB==null)?"Dead LLThread":"LLThread for "+theMOB.Name();}
         public boolean tick(Tickable ticking, int tickID){return false;}
@@ -1825,6 +1832,7 @@ public class DefaultSession implements Session
         private MOB theMOB=null;
         private int msgCode=-1;
         private HashSet skipRooms=new HashSet();
+        private long activeMillis=0;
         private LoginLogoutThread(){}
         public LoginLogoutThread(MOB mob, int msgC)
         {
@@ -1864,6 +1872,7 @@ public class DefaultSession implements Session
 
         public void run()
         {
+        	activeMillis=System.currentTimeMillis();
             if((!CMProps.getBoolVar(CMProps.SYSTEMB_MUDSHUTTINGDOWN))
             &&(CMProps.getBoolVar(CMProps.SYSTEMB_MUDSTARTED)))
             {
@@ -1880,6 +1889,9 @@ public class DefaultSession implements Session
                 theMOB=null;
             }
         }
+		public long activeTimeMillis() {
+			return (activeMillis>0)?System.currentTimeMillis()-activeMillis:0;
+		}
     }
 
 	private static enum SESS_STAT_CODES {PREVCMD,ISAFK,AFKMESSAGE,ADDRESS,IDLETIME,
@@ -1934,4 +1946,5 @@ public class DefaultSession implements Session
 		default: Log.errOut("Session","setStat:Unhandled:"+stat.toString()); break;
 		}
 	}
+	
 }
