@@ -53,7 +53,7 @@ public class FakeSession implements Session
     }
     public boolean isLockedUpWriting(){return false;}
     public void initializeClass(){}
-    public void start(){}
+    public void run(){}
     public boolean isRunning() { return false;}
 	public void logout(boolean b1){}
     public String getTerminalType(){ return "Fake";}

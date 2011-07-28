@@ -50,8 +50,6 @@ public class CM1Server extends Thread
 						handlers = new SHashtable<SocketChannel,RequestHandler>();
 	private String		iniFile;
 	private CMProps 	page;
-	private CMThreadPoolExecutor 
-						threadPool;
 	
 	
 	
@@ -66,9 +64,6 @@ public class CM1Server extends Thread
 		setName(name);
 		port=serverPort;
 		shutdownRequested = false;
-		int maxThreads = page.getInt("MAXTHREADS");
-		int queueSize = page.getInt("QUEUESIZE");
-		threadPool = new CMThreadPoolExecutor(name,0, maxThreads, 30, TimeUnit.SECONDS, 30, queueSize);
 	}
 	
 	public String getINIFilename() { return iniFile;}
@@ -93,7 +88,6 @@ public class CM1Server extends Thread
 		{
 			try
 			{
-				threadPool.setThreadFactory(new CMThreadFactory(name));
 				servChan = ServerSocketChannel.open();
 				ServerSocket serverSocket = servChan.socket();
 				servSelector = Selector.open();
@@ -136,7 +130,7 @@ public class CM1Server extends Thread
 						      {
 						    	  RequestHandler handler = (RequestHandler)key.attachment();
 						    	  if((!handler.isRunning())&&(!handler.needsClosing()))
-							  		  threadPool.execute(handler);
+							  		  CMLib.threads().executeRunnable(handler);
 						      }
 					      }
 					      finally
@@ -177,7 +171,6 @@ public class CM1Server extends Thread
 					}
 					catch(Exception e){}
 				handlers.clear();
-				threadPool.shutdown();
 				Log.sysOut("CM1Server","Shutdown complete");
 			}
 		}
@@ -187,7 +180,6 @@ public class CM1Server extends Thread
 	public void shutdown()
 	{
 		shutdownRequested = true;
-		threadPool.shutdown();
 		long time = System.currentTimeMillis();
 		while((System.currentTimeMillis()-time<30000) && (!isShutdown))
 		{

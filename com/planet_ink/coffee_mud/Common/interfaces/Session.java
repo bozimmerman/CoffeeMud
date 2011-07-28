@@ -38,7 +38,7 @@ import java.net.SocketException;
  * object to a MOB is the only difference between an NPC MOB and a player MOB.
  * This object handles input, output, and related processes.
  */
-public interface Session extends CMCommon, Modifiable
+public interface Session extends CMCommon, Modifiable, Runnable
 {
     
     /**

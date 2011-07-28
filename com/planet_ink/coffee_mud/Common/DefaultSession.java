@@ -39,7 +39,7 @@ import java.net.*;
    limitations under the License.
 */
 @SuppressWarnings("unchecked")
-public class DefaultSession implements Runnable, Session
+public class DefaultSession implements Session
 {
     protected static final int 		SOTIMEOUT		= 10;
     private final HashSet 			telnetSupportSet= new HashSet();
@@ -106,9 +106,11 @@ public class DefaultSession implements Runnable, Session
 	public boolean isFake() { return false;}
     public CMObject copyOf(){ try{ Object O=this.clone(); return (CMObject)O;}catch(Exception e){return newInstance();} }
     public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
+    public char threadGroupChar = '\0';
 
     public DefaultSession()
     {
+    	threadGroupChar=Thread.currentThread().getThreadGroup().getName().charAt(0);
         ++sessionCounter;
     }
 
@@ -191,6 +193,7 @@ public class DefaultSession implements Runnable, Session
             }
             preliminaryRead(100);
             connectionComplete=true;
+            status=Session.STATUS_LOGIN;
 		}
 		catch(SocketException e)
 		{
@@ -1478,6 +1481,9 @@ public class DefaultSession implements Runnable, Session
 		
 		try
 		{
+			if(killFlag)
+				logoutFinal();
+			else
 			switch(status)
 			{
 			case Session.STATUS_IDLE:

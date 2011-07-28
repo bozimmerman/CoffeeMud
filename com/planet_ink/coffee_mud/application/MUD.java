@@ -416,7 +416,7 @@ public class MUD extends Thread implements MudHost
 	@Override
 	public void acceptConnection(Socket sock) throws SocketException, IOException 
 	{
-// TODO: create connectionacceptor and spawn the damn thread
+		CMLib.threads().executeRunnable(new ConnectionAcceptor(sock));
 	}
 	
 	private class ConnectionAcceptor implements Runnable

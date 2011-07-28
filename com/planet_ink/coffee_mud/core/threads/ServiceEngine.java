@@ -17,6 +17,7 @@ import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 
@@ -44,20 +45,39 @@ public class ServiceEngine implements ThreadEngine
 	protected SLinkedList<Tick> 		ticks=new SLinkedList<Tick>();
     private boolean 					isSuspended=false;
     private int 						max_objects_per_thread=0;
+	private CMThreadPoolExecutor		threadPool;
 	
     public String ID(){return "ServiceEngine";}
     public CMObject newInstance(){try{return (CMObject)getClass().newInstance();}catch(Exception e){return new ServiceEngine();}}
-    public void initializeClass(){}
+    
+    public void initializeClass() 
+    {
+		final int maxThreads = CMProps.getIntVar(CMProps.SYSTEMI_SESSIONTHREADS);
+		final int queueSize = CMProps.getIntVar(CMProps.SYSTEMI_SESSIONQUEUESIZE);
+		final String sessionThreadGroupName="Sess"+Thread.currentThread().getThreadGroup().getName().charAt(0);
+		threadPool = new CMThreadPoolExecutor(sessionThreadGroupName,0, maxThreads, 30, TimeUnit.MINUTES, 30, queueSize);
+		threadPool.setThreadFactory(new CMThreadFactory(sessionThreadGroupName));
+    }
     public CMObject copyOf(){try{return (CMObject)this.clone();}catch(Exception e){return newInstance();}}
     public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
     public void propertiesLoaded(){}
     public ThreadEngine.SupportThread getSupportThread() { return thread;}
+    
+    public ServiceEngine() 
+    { 
+    	initializeClass();
+    }
     
 	public Iterator<Tick> tickGroups()
 	{
 		return ticks.iterator();
 	}
     
+	public void executeRunnable(Runnable R)
+	{
+		threadPool.execute(R);
+	}
+	
 	public int getMaxObjectsPerThread()
 	{
 		if(max_objects_per_thread>0) return max_objects_per_thread;
@@ -621,6 +641,7 @@ public class ServiceEngine implements ThreadEngine
 		CMProps.setUpAllLowVar(CMProps.SYSTEM_MUDSTATUS,"Shutting down...shutting down Service Engine: "+ID()+": saving time objects");
         for(int t=0;t<timeObjects.size();t++)
             ((TimeClock)timeObjects.elementAt(t)).save();
+		threadPool.shutdown();
 		Log.sysOut("ServiceEngine","Shutdown complete.");
         return true;
     }

@@ -119,7 +119,7 @@ public class Sessions extends StdLibrary implements SessionsList
     public boolean activate() {
         if(thread==null)
             thread=new ThreadEngine.SupportThread("THSessions"+Thread.currentThread().getThreadGroup().getName().charAt(0), 
-                    MudHost.TIME_UTILTHREAD_SLEEP, this, CMSecurity.isDebugging(CMSecurity.DbgFlag.UTILITHREAD), CMSecurity.DisFlag.SESSIONTHREAD);
+                    100, this, CMSecurity.isDebugging(CMSecurity.DbgFlag.UTILITHREAD), CMSecurity.DisFlag.SESSIONTHREAD);
         if(!thread.started)
             thread.start();
         return true;
@@ -161,8 +161,9 @@ public class Sessions extends StdLibrary implements SessionsList
     
     public void run()
     {
-		//for(Session S : all)
-			//if(!S.isRunning()) CMLib.threads().
+		for(Session S : all)
+			if(!S.isRunning()) 
+				CMLib.threads().executeRunnable(S);
 		
     	if(((lastSweepTime - System.currentTimeMillis()) < MudHost.TIME_UTILTHREAD_SLEEP)
         ||(CMSecurity.isDisabled(CMSecurity.DisFlag.UTILITHREAD))

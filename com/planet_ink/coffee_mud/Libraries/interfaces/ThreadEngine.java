@@ -57,6 +57,7 @@ public interface ThreadEngine extends CMLibrary, Runnable
     public String getTickStatusSummary(Tickable obj);
     public String getServiceThreadSummary(Thread T);
     public List<Tickable> getNamedTickingObjects(String name);
+	public void executeRunnable(Runnable R);
     
     public class SupportThread extends Thread {
         public boolean started=false;
