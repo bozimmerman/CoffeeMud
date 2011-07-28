@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.Enumeration;
 import java.util.LinkedList;
 import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.SynchronousQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
@@ -40,7 +41,7 @@ public class CMThreadPoolExecutor extends ThreadPoolExecutor
 								long keepAliveTime, TimeUnit unit, 
 								long timeoutMins, int queueSize) 
 	{
-		super(corePoolSize, maximumPoolSize, keepAliveTime, unit, new UniqueEntryBlockingQueue<Runnable>(queueSize));
+		super(corePoolSize, maximumPoolSize, keepAliveTime, unit, new SynchronousQueue<Runnable>());
 		timeoutMillis=timeoutMins * 60 * 1000;
 		threadFactory=new CMThreadFactory(poolName);
 		setThreadFactory(threadFactory);

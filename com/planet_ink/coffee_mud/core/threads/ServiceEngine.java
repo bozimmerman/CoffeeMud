@@ -17,6 +17,8 @@ import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
+import java.util.concurrent.RejectedExecutionHandler;
+import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
@@ -55,8 +57,18 @@ public class ServiceEngine implements ThreadEngine
 		final int maxThreads = CMProps.getIntVar(CMProps.SYSTEMI_SESSIONTHREADS);
 		final int queueSize = CMProps.getIntVar(CMProps.SYSTEMI_SESSIONQUEUESIZE);
 		final String sessionThreadGroupName="Sess"+Thread.currentThread().getThreadGroup().getName().charAt(0);
-		threadPool = new CMThreadPoolExecutor(sessionThreadGroupName,0, maxThreads, 30, TimeUnit.MINUTES, 60, queueSize);
+		threadPool = new CMThreadPoolExecutor(sessionThreadGroupName,0, maxThreads, 5, TimeUnit.MINUTES, 60, 1);
+		threadPool.allowCoreThreadTimeOut(true);
 		threadPool.setThreadFactory(new CMThreadFactory(sessionThreadGroupName));
+		threadPool.setRejectedExecutionHandler(new RejectedExecutionHandler(){
+			public void rejectedExecution(Runnable arg0, ThreadPoolExecutor arg1) {
+				synchronized(threadPool.getQueue())
+				{
+					if(!threadPool.isShutdown())
+						threadPool.getQueue().add(arg0);
+				}
+			}
+		});
     }
     public CMObject copyOf(){try{return (CMObject)this.clone();}catch(Exception e){return newInstance();}}
     public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
