@@ -981,10 +981,12 @@ public interface Session extends CMCommon, Modifiable
 	public static final int STATUS_LOGOUT12=17;
     /** Status value constant possibly returned by getStatus method */
 	public static final int STATUS_LOGOUTFINAL=18;
+    /** Status value constant possibly returned by getStatus method */
+	public static final int STATUS_IDLE=19;
     /** Status strings indexed by the various STATUS_ constants.  Descriptive strings */
 	public static final String[] STATUS_STR={"OPEN","LOGIN-S","ACCOUNTMENU","LOGIN-1","LOGIN-2",
 											"LOGOUT-S","LOGOUT-1","LOGOUT-2","LOGOUT-3",
 											"LOGOUT-4","LOGOUT-5","LOGOUT-6","LOGOUT-7",
 											"LOGOUT-8","LOGOUT-9","LOGOUT-10","LOGOUT-11",
-											"LOGOUT-12","CLOSED"};
+											"LOGOUT-12","CLOSED","IDLE"};
 }

@@ -41,7 +41,7 @@ import java.net.*;
 @SuppressWarnings("unchecked")
 public class DefaultSession implements Runnable, Session
 {
-    protected static final int 		SOTIMEOUT		= 300;
+    protected static final int 		SOTIMEOUT		= 10;
     private final HashSet 			telnetSupportSet= new HashSet();
     private static final HashSet 	mxpSupportSet	= new HashSet();
     private static final Hashtable  mxpVersionInfo	= new Hashtable();
@@ -1057,11 +1057,6 @@ public class DefaultSession implements Runnable, Session
             fakeInput=null;
         }
         if(in.ready()) return in.read();
-        int times=sock.getSoTimeout()/100;
-        for(int i=0;i<times && !killFlag;i++) {
-            if((in!=null)&&(in.ready())) return in.read();
-            try { Thread.sleep(100); } catch(Exception e){ break; }
-        }
         throw new java.io.InterruptedIOException(".");
     }
 
@@ -1485,6 +1480,8 @@ public class DefaultSession implements Runnable, Session
 		{
 			switch(status)
 			{
+			case Session.STATUS_IDLE:
+				break;
 			case Session.STATUS_OK:
 				mainLoop();
 				break;
@@ -1652,7 +1649,7 @@ public class DefaultSession implements Runnable, Session
 			if(suspendCommandLine)
 			{
 				input=null;
-				try{Thread.sleep(100);}catch(Exception e){}
+				return;
 			}
 			else
 				input=readlineContinue();
