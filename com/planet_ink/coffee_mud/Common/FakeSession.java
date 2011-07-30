@@ -195,4 +195,5 @@ public class FakeSession implements Session
 	public String[] getStatCodes() { return new String[0];}
 	public boolean isStat(String code) { return false;}
 	public void setStat(String code, String val){}
+	public long activeTimeMillis() { return 0;}
 }

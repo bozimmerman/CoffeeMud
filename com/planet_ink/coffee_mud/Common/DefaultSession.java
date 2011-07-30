@@ -40,7 +40,7 @@ import java.net.*;
    limitations under the License.
 */
 @SuppressWarnings("unchecked")
-public class DefaultSession implements Session, CMRunnable
+public class DefaultSession implements Session
 {
     protected static final int 		SOTIMEOUT		= 300;
     private final HashSet 			telnetSupportSet= new HashSet();
@@ -476,6 +476,11 @@ public class DefaultSession implements Session, CMRunnable
                 kill(true,true,true);
                 synchronized(this)
                 {
+                	if(thread==Thread.currentThread())
+                	{
+                		killFlag=true;
+                	}
+                	else
 	                if(thread!=null) 
 	                	CMLib.killThread(thread,500,1);
                 }
@@ -1213,12 +1218,20 @@ public class DefaultSession implements Session, CMRunnable
 		try
 		{
 			suspendCommandLine=true;
+			long lastPing=System.currentTimeMillis();
 			while((!killFlag)
 			&&((maxTime<=0)||((System.currentTimeMillis()-start)<maxTime)))
 			    if(nonBlockingIn(true)==0)
 			        break;
 			    else
+			    {
+			    	if((System.currentTimeMillis()-lastPing)>5000)
+			    	{
+			    		out('\0');
+			    		lastPing=System.currentTimeMillis();
+			    	}
 			    	CMLib.s_sleep(100);
+			    }
 			suspendCommandLine=false;
 			if((maxTime>0)&&((System.currentTimeMillis()-start)>=maxTime))
 				throw new java.io.InterruptedIOException("Timed Out.");
@@ -1335,8 +1348,16 @@ public class DefaultSession implements Session, CMRunnable
         status=Session.STATUS_LOGOUT5;
         synchronized(this)
         {
-	        if(killThread && (thread!=null)) 
-	        	CMLib.killThread(thread,1000,1);
+	        if(killThread)
+	        {
+            	if(thread==Thread.currentThread())
+            	{
+            		killFlag=true;
+            	}
+            	else
+	        	if(thread!=null) 
+		        	CMLib.killThread(thread,1000,1);
+	        }
         }
 	}
 

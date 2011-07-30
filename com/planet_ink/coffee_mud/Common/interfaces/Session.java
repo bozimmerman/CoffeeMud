@@ -1,5 +1,6 @@
 package com.planet_ink.coffee_mud.Common.interfaces;
 import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.threads.CMRunnable;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
@@ -38,7 +39,7 @@ import java.net.SocketException;
  * object to a MOB is the only difference between an NPC MOB and a player MOB.
  * This object handles input, output, and related processes.
  */
-public interface Session extends CMCommon, Modifiable, Runnable
+public interface Session extends CMCommon, Modifiable, CMRunnable
 {
     
     /**

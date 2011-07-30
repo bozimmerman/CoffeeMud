@@ -52,6 +52,30 @@ public class CMThreadPoolExecutor extends ThreadPoolExecutor
 		this.queueSize=queueSize;
 	}
 
+	protected boolean unWait(boolean thread)
+	{
+    	if(waitingQueue.size()>0)
+    	{
+    		final CMRunnable runner;
+			synchronized(waitingQueue)
+			{
+		    	if(waitingQueue.size()>0)
+					runner=waitingQueue.removeFirst();
+		    	else
+		    		runner=null;
+			}
+			if(runner!=null)
+			{
+				if(thread)
+					new Thread(){public void run(){CMLib.s_sleep(1);execute(runner);}}.start();
+				else
+					execute(runner);
+				return true;
+			}
+    	}
+    	return false;
+	}
+	
     protected void beforeExecute(Thread t, Runnable r) 
     { 
     	synchronized(active)
@@ -68,17 +92,7 @@ public class CMThreadPoolExecutor extends ThreadPoolExecutor
 	    	if(r instanceof CMRunnable)
 	    		active.removeSecond((CMRunnable)r);
     	}
-    	if(waitingQueue.size()>0)
-    	{
-    		CMRunnable runner=null;
-			synchronized(waitingQueue)
-			{
-		    	if(waitingQueue.size()>0)
-					runner=waitingQueue.removeFirst();
-			}
-			if(runner!=null)
-				execute(runner);
-    	}
+    	unWait(true);
     }
 
     public void execute(Runnable r)
@@ -97,14 +111,18 @@ public class CMThreadPoolExecutor extends ThreadPoolExecutor
 				synchronized(waitingQueue)
 				{
 					if(waitingQueue.contains(r))
+					{
 						return;
+					}
 					if(waitingQueue.size() < queueSize)
+					{
 						waitingQueue.addLast((CMRunnable)r);
+					}
 					else
-			    		Log.errOut("CMThreadPoolExecutor","Thread not executed due to: "+e.getMessage());
+			    		Log.errOut("CMThreadPoolExecutor","Thread not executed: queue full!");
 				}
     		}
-    		Log.errOut("CMThreadPoolExecutor",e.getMessage());
+    		Log.errOut("CMThreadPoolExecutor","Thread rejected.");
     	}
     }
     
@@ -122,17 +140,20 @@ public class CMThreadPoolExecutor extends ThreadPoolExecutor
 	    			Pair<Thread,CMRunnable> p=e.nextElement();
 	    			if(p.second.activeTimeMillis() > timeoutMillis)
 	    			{
-	    				if(timedOut.size() > maxToKill)
+	    				if(timedOut.size() >= maxToKill)
 	    				{
 	    					CMRunnable leastWorstOffender=null;
 	    					for(CMRunnable r : timedOut)
 	    						if((leastWorstOffender != null)
 	    						&&(r.activeTimeMillis() < leastWorstOffender.activeTimeMillis()))
 	    							leastWorstOffender=r;
-	    					if(p.second.activeTimeMillis() < leastWorstOffender.activeTimeMillis())
-	    						continue;
-	    					else
-	    						timedOut.remove(leastWorstOffender);
+	    					if(leastWorstOffender!=null)
+	    					{
+		    					if(p.second.activeTimeMillis() < leastWorstOffender.activeTimeMillis())
+		    						continue;
+		    					else
+		    						timedOut.remove(leastWorstOffender);
+	    					}
 	    				}
 		    			timedOut.add(p.second);
 		    			killedOut.add(p.first);

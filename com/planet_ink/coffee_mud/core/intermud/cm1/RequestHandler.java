@@ -1,5 +1,6 @@
 package com.planet_ink.coffee_mud.core.intermud.cm1;
 import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.threads.CMRunnable;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
@@ -37,7 +38,7 @@ import java.util.concurrent.atomic.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class RequestHandler implements Runnable
+public class RequestHandler implements CMRunnable
 {
 	private static AtomicInteger counter = new AtomicInteger();
 	private final String 		 runnableName;
@@ -55,6 +56,9 @@ public class RequestHandler implements Runnable
 	private static final long 	 MAXIMUM_BYTES=1024 * 1024 * 2;
 	private static final byte[][]DEFAULT_MARK_BLOCKS = {{'\n','\r'},{'\r','\n'},{'\n'},{'\r'}};
 	private static final char[]  DEFAULT_CRLF = {'\n','\r'};
+	private long				 startTime = 0;
+	
+	public long activeTimeMillis() { return (startTime>0)?System.currentTimeMillis()-startTime:0;}
 	
 	public RequestHandler(SocketChannel chan, int maxIdleMillis) throws IOException
 	{
@@ -111,6 +115,7 @@ public class RequestHandler implements Runnable
 	public void run()
 	{
 		isRunning=true;
+		startTime=System.currentTimeMillis();
 		synchronized(this)
 		{
 			try
@@ -202,6 +207,7 @@ public class RequestHandler implements Runnable
 			{
 				idleTime=System.currentTimeMillis();
 				isRunning=false;
+				startTime=0;
 			}
 		}
 	}
