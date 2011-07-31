@@ -106,14 +106,10 @@ public class Sessions extends StdLibrary implements SessionsList
     {
         if(S==null) return;
         S.kill(true,true,false);
-        try{Thread.sleep(1000);}catch(Exception e){}
-        int tries=100;
-        while((S.getStatus()!=Session.STATUS_LOGOUTFINAL)
-        &&((--tries)>=0))
-        {
-            S.kill(true,true,true);
-            try{Thread.sleep(100);}catch(Exception e){}
-        }
+        if(!S.isRunning()) return;
+        CMLib.s_sleep(1000);
+        S.kill(true,true,true);
+        if(!S.isRunning()) return;
         remove(S);
     }
     public boolean activate() {
@@ -121,7 +117,10 @@ public class Sessions extends StdLibrary implements SessionsList
             thread=new ThreadEngine.SupportThread("THSessions"+Thread.currentThread().getThreadGroup().getName().charAt(0), 
                     100, this, CMSecurity.isDebugging(CMSecurity.DbgFlag.UTILITHREAD), CMSecurity.DisFlag.SESSIONTHREAD);
         if(!thread.started)
+        {
+            thread.status("sleeping");
             thread.start();
+        }
         return true;
     }
     
@@ -161,9 +160,17 @@ public class Sessions extends StdLibrary implements SessionsList
     
     public void run()
     {
-		for(Session S : all)
-			if(!S.isRunning()) 
-				CMLib.threads().executeRunnable(S);
+    	final int numThreads=all.size();
+    	if(numThreads>0)
+    	{
+	    	final long sleepTime = (90 / numThreads)+1;
+			for(Session S : all)
+				if(!S.isRunning()) 
+				{
+					CMLib.s_sleep(sleepTime);
+					CMLib.threads().executeRunnable(S);
+				}
+    	}
 		
     	if(((lastSweepTime - System.currentTimeMillis()) < MudHost.TIME_UTILTHREAD_SLEEP)
         ||(CMSecurity.isDisabled(CMSecurity.DisFlag.UTILITHREAD))

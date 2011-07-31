@@ -18,6 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InterruptedIOException;
 import java.io.PrintWriter;
 import java.util.*;
 
@@ -1447,9 +1448,9 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
         
         String login;
         if(CMProps.getIntVar(CMProps.SYSTEMI_COMMONACCOUNTSYSTEM)>1)
-        	login=session.prompt("\n\raccount name: ");
+        	login=session.prompt("\n\raccount name: ",5 * 60 * 1000);
         else
-        	login=session.prompt("\n\rname: ");
+        	login=session.prompt("\n\rname: ",5 * 60 * 1000);
         if(login==null) 
         	return LoginResult.NO_LOGIN;
         login=login.trim();
@@ -1491,7 +1492,15 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
             		||(player.accountName.trim().length()==0)))
 	            {
 		            session.print("password for "+player.name+": ");
-		            String password=session.blockingIn();
+		            String password;
+		            try
+		            {
+			            password=session.blockingIn(120000);
+		            }
+		            catch(InterruptedIOException ioe)
+		            {
+		            	return LoginResult.NO_LOGIN;
+		            }
 		            boolean done = true;
 		            if(password.equalsIgnoreCase(player.password))
 		            {
@@ -1540,7 +1549,15 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
                 pendingLogins.put(login.toUpperCase(),Long.valueOf(System.currentTimeMillis()));
                 
 	            session.print("password: ");
-	            String password=session.blockingIn();
+	            String password;
+	            try
+	            {
+		            password=session.blockingIn(120000);
+	            }
+	            catch(InterruptedIOException ioe)
+	            {
+	            	return LoginResult.NO_LOGIN;
+	            }
 	            if(password.equalsIgnoreCase(player.password))
 	            {
 	

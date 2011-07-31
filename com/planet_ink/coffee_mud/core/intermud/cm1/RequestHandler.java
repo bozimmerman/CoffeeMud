@@ -48,7 +48,7 @@ public class RequestHandler implements CMRunnable
 	private final SocketChannel  chan;
 	private String				 user = null;
 	private PhysicalAgent		 target = null;
-	private List<ByteBuffer>	 workingBuffers = new SLinkedList<ByteBuffer>();
+	private SLinkedList<ByteBuffer>workingBuffers = new SLinkedList<ByteBuffer>();
 	private Map<String,Object> 	 dependents = new STreeMap<String,Object>();
 	private byte[][]			 markBlocks = DEFAULT_MARK_BLOCKS;
 	private long				 MAX_IDLE_MILLIS = 10 * 60 * 1000;
@@ -122,7 +122,7 @@ public class RequestHandler implements CMRunnable
 			{
 	    		ByteBuffer buffer = null;
 	    		if(workingBuffers.size()>0)
-	    			buffer=workingBuffers.get(workingBuffers.size()-1);
+	    			buffer=workingBuffers.getLast();
 	    		if((buffer==null)||(buffer.capacity()==buffer.limit()))
 	    			buffer = ByteBuffer.allocate(BUFFER_SIZE);
 	    		else

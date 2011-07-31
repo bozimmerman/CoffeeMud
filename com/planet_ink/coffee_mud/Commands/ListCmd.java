@@ -1878,7 +1878,7 @@ public class ListCmd extends StdCommand
     	if((sess==null)||(sess.killFlag())) return false;
     	sess.out("<pause - enter>".toCharArray());
 		try{ 
-			String s=sess.blockingIn(); 
+			String s=sess.blockingIn(10 * 60 * 1000); 
 			if(s!=null)
 			{
 				s=s.toLowerCase();

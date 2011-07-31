@@ -541,10 +541,11 @@ public interface Session extends CMCommon, Modifiable, CMRunnable
     /**
      * Blocks the current thread until the user attached to this session
      * hits ENTER, returning the characters they enter.  Completely filtered input.
+     * @param timeoutMillis milliseconds before InterruptedIOException thrown
      * @return the string entered by the user
      * @throws IOException any exception generated during input
      */
-	public String blockingIn()
+	public String blockingIn(long timeoutMillis)
 		throws IOException;
     
     /**

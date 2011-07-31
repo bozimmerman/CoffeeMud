@@ -130,7 +130,7 @@ public class FakeSession implements Session
 	public String choose(final String Message, final String Choices, final String Default, long maxTime, List<String> paramsOut)
     throws IOException { return choose(Message,Choices,Default);}
     public String choose(String Message, String Choices, String Default, long maxTime) { return choose(Message,Choices,Default);}
-    public String blockingIn() { return readlineContinue();}
+    public String blockingIn(long timeoutMillis) { return readlineContinue();}
     public String readlineContinue() {
         synchronized(inputV) {
             if(inputV.size()==0) return "";

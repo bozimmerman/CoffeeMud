@@ -212,8 +212,8 @@ public class CMProps extends Properties
     public static final int SYSTEMI_RUNCOST=70;
     public static final int SYSTEMI_ACCOUNTPURGEDAYS=71;
     public static final int SYSTEMI_AWARERANGE=72;
-    public static final int SYSTEMI_SESSIONTHREADS=73;
-    public static final int SYSTEMI_SESSIONQUEUESIZE=74;
+    public static final int SYSTEMI_MINSESSIONTHREADS=73;
+    public static final int SYSTEMI_MAXSESSIONTHREADS=74;
     public static final int NUMI_SYSTEM=75;
 
     public static final int SYSTEMB_MOBCOMPRESS=0;
@@ -1106,8 +1106,8 @@ public class CMProps extends Properties
         setIntVar(SYSTEMI_WALKCOST,getStr("WALKCOST"),1);
         setIntVar(SYSTEMI_RUNCOST,getStr("RUNCOST"),2);
         setIntVar(SYSTEMI_AWARERANGE,getStr("AWARERANGE"),0);
-        setIntVar(SYSTEMI_SESSIONTHREADS,getStr("SESSIONTHREADS"),10);
-        setIntVar(SYSTEMI_SESSIONQUEUESIZE,getStr("SESSIONQUEUESIZE"),1024);
+        setIntVar(SYSTEMI_MINSESSIONTHREADS,getStr("MINSESSIONTHREADS"),5);
+        setIntVar(SYSTEMI_MAXSESSIONTHREADS,getStr("MAXSESSIONTHREADS"),100);
 
         V=CMParms.parseCommas(getStr("INJURYSYSTEM"),true);
 

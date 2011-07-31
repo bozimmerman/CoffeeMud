@@ -549,7 +549,7 @@ public class DefaultSession implements Session
 							last=i+1;
 							out("<pause - enter>".toCharArray());
 							try{ 
-								String s=blockingIn(); 
+								String s=blockingIn(-1); 
 								if(s!=null)
 								{
 									s=s.toLowerCase();
