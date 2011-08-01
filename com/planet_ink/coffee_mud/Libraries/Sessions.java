@@ -160,16 +160,25 @@ public class Sessions extends StdLibrary implements SessionsList
     
     public void run()
     {
-    	final int numThreads=all.size();
-    	if(numThreads>0)
+    	final double numThreads=(double)all.size();
+    	if(numThreads>0.0)
     	{
-	    	final long sleepTime = (90 / numThreads)+1;
-			for(Session S : all)
-				if(!S.isRunning()) 
-				{
-					CMLib.s_sleep(sleepTime);
-					CMLib.threads().executeRunnable(S);
-				}
+    		final double milliSleep = 10.0 / numThreads;
+    		final long millis=Math.round(milliSleep);
+    		final int nanos=(int)Math.round((milliSleep - (double)millis) * 100000.0);
+    		try
+    		{
+				for(Session S : all)
+					if(!S.isRunning()) 
+					{
+						CMLib.threads().executeRunnable(S);
+						Thread.sleep(millis, nanos);
+					}
+    		}
+    		catch(InterruptedException ioe)
+    		{
+    			
+    		}
     	}
 		
     	if(((lastSweepTime - System.currentTimeMillis()) < MudHost.TIME_UTILTHREAD_SLEEP)
