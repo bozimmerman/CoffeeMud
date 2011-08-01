@@ -164,8 +164,9 @@ public class Sessions extends StdLibrary implements SessionsList
     	if(numThreads>0.0)
     	{
     		final double milliSleep = 10.0 / numThreads;
-    		final long millis=Math.round(milliSleep);
-    		final int nanos=(int)Math.round((milliSleep - (double)millis) * 100000.0);
+    		final double floorMilliSleep = Math.floor(milliSleep);
+    		final long millis=Math.round(floorMilliSleep);
+    		final int nanos=(int)Math.round((milliSleep - floorMilliSleep) * 100000.0);
     		try
     		{
 				for(Session S : all)

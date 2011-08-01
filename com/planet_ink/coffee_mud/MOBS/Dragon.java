@@ -41,6 +41,8 @@ public class Dragon extends StdMOB
 
 	protected int birthColor=0;
 	protected int birthAge=0;
+	
+	protected Ability dragonbreath = null;
 
 
 	// ===== Defined Values for Dragon Ages
@@ -397,7 +399,8 @@ public class Dragon extends StdMOB
 					int damage=((short)Math.round(CMath.div(CMath.mul(Math.random(),7*DragonAge()),2.0)));
 					if(Message.value()<=0)
 						damage=((short)Math.round(Math.random()*7)*DragonAge());
-					CMLib.combat().postDamage(this,target,null,damage,CMMsg.MASK_ALWAYS|AffectCode,WeaponType,"The blast <DAMAGE> <T-NAME>.");
+					if(dragonbreath==null) dragonbreath=CMClass.getAbility("Dragonbreath");
+					CMLib.combat().postDamage(this,target,dragonbreath,damage,CMMsg.MASK_ALWAYS|AffectCode,WeaponType,"The blast <DAMAGE> <T-NAME>.");
 				}
 			}
 		}
