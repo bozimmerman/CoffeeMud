@@ -77,6 +77,7 @@ public class SipletInterface extends StdWebMacro
 			if(url!=null)
 			{
 				sip.init();
+				sip.setFeatures(true, true, false);
 				success=sip.connectToURL(url, port);
 				if(success)
 				{

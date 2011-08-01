@@ -103,6 +103,9 @@ public class TelnetFilter
     public void setMXPSupport(boolean truefalse){MXPsupport=truefalse;}
     public boolean MCCPsupport(){return MCCPsupport;}
     public void setMCCPSupport(boolean truefalse){MCCPsupport=truefalse;}
+    public void setNeverMXPSupport(boolean truefalse){neverSupportMXP=truefalse;}
+    public void setNeverMSPSupport(boolean truefalse){neverSupportMSP=truefalse;}
+    public void setNeverMCCPSupport(boolean truefalse){neverSupportMCCP=truefalse;}
     
     public boolean isUIonHold(){return MXPsupport()&&mxpModule.isUIonHold();}
     private String blinkOff(){ if(blinkOn){blinkOn=false; return "</BLINK>";}return ""; }

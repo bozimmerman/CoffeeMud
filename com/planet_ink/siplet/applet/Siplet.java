@@ -42,6 +42,13 @@ public class Siplet extends Applet
     protected int sillyCounter=0;
 
 
+    public void setFeatures(boolean mxp, boolean msp, boolean mccp)
+    {
+    	Telnet.setNeverMCCPSupport(!mccp);
+    	Telnet.setNeverMXPSupport(!mxp);
+    	Telnet.setNeverMSPSupport(!msp);
+    }
+    
     public void init()
     {
         buffer = new StringBuffer();
