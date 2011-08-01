@@ -102,6 +102,8 @@ public class DefaultSession implements Session
     protected long lastKeystroke=0;
     protected long promptLastShown=0;
 
+    private static final String TIMEOUT_MSG="Timed Out.";
+    
     public String ID(){return "DefaultSession";}
     public CMObject newInstance(){try{return (CMObject)getClass().newInstance();}catch(Exception e){return new DefaultSession();}}
     public void initializeClass(){}
@@ -1089,7 +1091,7 @@ public class DefaultSession implements Session
             }
             suspendCommandLine=false;
             if((maxWait>0)&&((System.currentTimeMillis()-start)>=maxWait))
-                throw new java.io.InterruptedIOException("Timed Out.");
+                throw new java.io.InterruptedIOException(TIMEOUT_MSG);
         }
         catch(java.io.IOException e) { }
         return '\0';
@@ -1234,7 +1236,7 @@ public class DefaultSession implements Session
 			    }
 			suspendCommandLine=false;
 			if((maxTime>0)&&((System.currentTimeMillis()-start)>=maxTime))
-				throw new java.io.InterruptedIOException("Timed Out.");
+				throw new java.io.InterruptedIOException(TIMEOUT_MSG);
 
 			StringBuffer inStr=CMLib.coffeeFilter().simpleInFilter(input,CMSecurity.isAllowed(mob,(mob!=null)?mob.location():null,"MXPTAGS"));
 			input=new StringBuffer("");
