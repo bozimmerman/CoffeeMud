@@ -108,6 +108,7 @@ function addToWindow(s)
 	    	top.bar.lightgreenColor(mynum);
     }
 }
+
 function goOffline()
 {
 	if(theapplet!=null) 
@@ -133,7 +134,7 @@ function displayData()
 	    	var tk=theapplet+";";
 	    	var x=txt.indexOf(tk);
 	    	if(x<0)
-	    		goOffLine();
+	    		goOffline();
 	    	else
 	    	{
 	    		var data=txt.substr(0,x);
@@ -158,7 +159,7 @@ function displayData()
 function sendData(me)
 {
 	var s=encodeURIComponent(''+me);
-	new xmlhttpPost().exec('SENDDATA&TOKEN='+theapplet+'&DATA'+s,function(success,txt){
+	new xmlhttpPost().exec('SENDDATA&TOKEN='+theapplet+'&DATA='+s,function(success,txt){
 	    if(!success)
 	    	goOffline();
     });

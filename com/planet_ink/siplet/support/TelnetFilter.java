@@ -334,6 +334,9 @@ public class TelnetFilter
         {
             switch(buf.charAt(i))
             {
+            case 0:
+            	buf.delete(i,i+1);
+            	break;
             case IAC_:
                 {
                     if(debugTelnetCodes) System.out.println("Got IAC in "+i+"/"+buf.length());
