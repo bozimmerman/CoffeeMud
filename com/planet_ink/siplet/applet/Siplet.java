@@ -54,12 +54,12 @@ public class Siplet extends Applet
 
     public void start()
     {
-    	System.out.println("starting siplet "+VERSION_MAJOR+"."+VERSION_MINOR+" ");
+    	if(debugDataOut) System.out.println("starting siplet "+VERSION_MAJOR+"."+VERSION_MINOR+" ");
     }
 
     public void stop()
     {
-    	System.out.println("!stopped siplet!");
+    	if(debugDataOut) System.out.println("!stopped siplet!");
     }
 
     public void destroy()
@@ -70,7 +70,7 @@ public class Siplet extends Applet
 
     public void addItem(String newWord)
     {
-        System.out.println(newWord);
+    	if(debugDataOut) System.out.println(newWord);
         buffer.append(newWord);
         repaint();
     }
@@ -91,7 +91,7 @@ public class Siplet extends Applet
         {
             lastURL=url;
             lastPort=port;
-            System.out.println("connecting to "+url+":"+port+" ");
+            if(debugDataOut) System.out.println("connecting to "+url+":"+port+" ");
             sock=new Socket(InetAddress.getByName(url),port);
             Thread.sleep(100);
             rawin=sock.getInputStream();
