@@ -2335,5 +2335,5 @@ Special/Reserved Quest called holidays can be added to/modified on an area-by-ar
 7. Channels definition in coffeemud.ini file can now include override color codes for each channel.
 8. Numerous random bugs fixed, with special thanks to frugality200
 # Build 5.7.? Release ?/??/2011
-1. New coffeemud.ini entries: SESSIONTHREADS, SESSIONQUEUESIZE for managing player I/O thread usage.
+1. New coffeemud.ini entries: MINSESSIONTHREADS, MAXSESSIONTHREADS for managing player I/O thread usage.
 
