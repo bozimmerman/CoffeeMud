@@ -38,13 +38,15 @@ xmlhttpPost.prototype.exec = function(querystring,callbackFunc)
         	var txt=self.xmlHttpReq.responseText;
         	var x=txt.indexOf(';');
         	var success=false;
+            if(xmlHttpReq > 299)
+              alert(xmlHttpReq,txt);
         	if(x>0)
         	{
         		success=txt.substr(0,x);
         		txt=txt.substr(x+1);
     		}
         	if(callbackFunc)
-	            callbackFunc(success,txt);
+	            callbackFunc(success,self.xmlHttpReq.status,txt);
         }
     }
     self.xmlHttpReq.send(querystring);
@@ -52,12 +54,12 @@ xmlhttpPost.prototype.exec = function(querystring,callbackFunc)
 
 function closeWindow()
 {
-	new xmlhttpPost().exec('DISCONNECT&TOKEN='+theapplet,function(success,txt){});
+	new xmlhttpPost().exec('DISCONNECT&TOKEN='+theapplet,function(success,status,txt){});
     top.document.location.href='/index.cmvp';
 }
 function reconnect()
 {
-	new xmlhttpPost().exec('DISCONNECT&TOKEN='+theapplet,function(success,txt){
+	new xmlhttpPost().exec('DISCONNECT&TOKEN='+theapplet,function(success,status,txt){
 	    setTimeout('connect("@MudInfo?DOMAIN@",@MudInfo?PORT@);',500);
 	});
 }
@@ -112,7 +114,7 @@ function addToWindow(s)
 function goOffline()
 {
 	if(theapplet!=null) 
-		new xmlhttpPost().exec('DISCONNECT&TOKEN='+theapplet,function(success,txt){});
+		new xmlhttpPost().exec('DISCONNECT&TOKEN='+theapplet,function(success,status,txt){});
 	theapplet=null;
     var thespan=top.term.document.getElementById(myname+'bar');
     thespan.style.backgroundColor='red'
@@ -126,7 +128,7 @@ function displayData()
 {
 	if(theapplet==null) 
 		return;
-	new xmlhttpPost().exec('POLL&TOKEN='+theapplet,function(success,txt){
+	new xmlhttpPost().exec('POLL&TOKEN='+theapplet,function(success,status,txt){
 	    if(!success)
 	    	goOffline();
 	    else
@@ -159,7 +161,7 @@ function displayData()
 function sendData(me)
 {
 	var s=encodeURIComponent(''+me);
-	new xmlhttpPost().exec('SENDDATA&TOKEN='+theapplet+'&DATA='+s,function(success,txt){
+	new xmlhttpPost().exec('SENDDATA&TOKEN='+theapplet+'&DATA='+s,function(success,status,txt){
 	    if(!success)
 	    	goOffline();
     });
@@ -242,7 +244,7 @@ function connect(url,port,tries)
     //window.onerror=new Function('NoJava();');
     var safeurl=encodeURIComponent(url);
     var safeport=encodeURIComponent(port);
-	new xmlhttpPost().exec('CONNECT&URL='+safeurl+'&PORT='+safeport,function(success,txt){
+	new xmlhttpPost().exec('CONNECT&URL='+safeurl+'&PORT='+safeport,function(success,status,txt){
 	    var s='';
 	    var connectWorked = success;
 	    var x=txt.indexOf(';');

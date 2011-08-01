@@ -115,6 +115,32 @@ public class Siplet extends Applet
         }
         return true;
     }
+    public boolean connectToURL(String url, int port, Socket sock)
+    {
+        connected=false;
+        if(this.sock!=null)
+        	disconnectFromURL();
+        try
+        {
+            lastURL=url;
+            lastPort=port;
+            if(debugDataOut) System.out.println("internal connect to "+url+":"+port+" ");
+            this.sock=sock;
+            rawin=sock.getInputStream();
+            in=new BufferedReader[1];
+            in[0]=new BufferedReader(new InputStreamReader(sock.getInputStream(),"iso-8859-1"));
+            out=new DataOutputStream(sock.getOutputStream());
+            Telnet=new TelnetFilter(this);
+            connected=true;
+        }
+        catch(Exception e)
+        {
+        	e.printStackTrace(System.out);
+            return false;
+        }
+        return true;
+    }
+    
     public void disconnectFromURL()
     {
         connected=false;

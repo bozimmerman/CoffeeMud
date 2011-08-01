@@ -61,4 +61,5 @@ public interface ExternalHTTPRequests extends CMLibrary
 	public InetAddress getServerAddress();
 	public String getPageContent(String filename);
 	public Map<String, Object> getRequestObjects();
+	public InetAddress getHTTPclientInetAddress();
 }

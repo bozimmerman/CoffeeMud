@@ -14,6 +14,15 @@ import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.PipedInputStream;
+import java.io.PipedOutputStream;
+import java.net.InetAddress;
+import java.net.Socket;
+import java.nio.channels.Pipe;
 import java.util.*;
 
 import com.planet_ink.coffee_mud.core.exceptions.HTTPServerException;
@@ -41,6 +50,7 @@ public class SipletInterface extends StdWebMacro
     public boolean isAWebPath(){return true;}
     public static final SHashtable<String,Pair<long[],Siplet>> siplets = new SHashtable<String,Pair<long[],Siplet>>(); 
 	public static final LinkedList<String> removables=new LinkedList<String>();
+	public static final Object sipletConnectSync = new Object();
     
     public void cleanOutTrash()
     {
@@ -64,6 +74,36 @@ public class SipletInterface extends StdWebMacro
 		}
     }
     
+    private class PipeSocket extends Socket
+    {
+    	private boolean isClosed = false;
+    	private PipedInputStream inStream = new PipedInputStream();
+    	private PipedOutputStream outStream= new PipedOutputStream();
+    	private InetAddress	addr=null;
+    	public PipeSocket(InetAddress addr, PipeSocket pipeLocal) throws IOException
+    	{
+    		this.addr=addr;
+    		if(pipeLocal!=null)
+    		{
+    			pipeLocal.inStream.connect(outStream);
+    			pipeLocal.outStream.connect(inStream);
+    		}
+    	}
+    	public void shutdownInput() throws IOException  { inStream.close(); isClosed=true; }
+    	public void shutdownOutput() throws IOException { outStream.close(); isClosed=true; }
+    	public boolean isConnected() { return !isClosed; }
+        public boolean isClosed() { return isClosed; }
+        public synchronized void close() throws IOException 
+        {
+        	inStream.close();
+        	outStream.close();
+            isClosed = true;
+        }
+        public InputStream getInputStream() throws IOException { return inStream; }
+        public OutputStream getOutputStream() throws IOException { return outStream; }
+        public InetAddress getInetAddress() { return addr; }
+    }
+    
     public String runMacro(ExternalHTTPRequests httpReq, String parm) throws HTTPServerException
     {
 		cleanOutTrash();
@@ -78,7 +118,24 @@ public class SipletInterface extends StdWebMacro
 			{
 				sip.init();
 				sip.setFeatures(true, true, false);
-				success=sip.connectToURL(url, port);
+				synchronized(sipletConnectSync)
+				{
+					for(MudHost h : CMLib.hosts())
+						if(h.getPort()==port)
+						{
+							try
+							{
+								PipeSocket lsock=new PipeSocket(httpReq.getHTTPclientInetAddress(),null);
+								PipeSocket rsock=new PipeSocket(httpReq.getHTTPclientInetAddress(),lsock);
+								success=sip.connectToURL(url, port,lsock);
+								h.acceptConnection(rsock);
+							}
+							catch(IOException e)
+							{
+								success=false;
+							}
+						}
+				}
 				if(success)
 				{
 					synchronized(siplets)

@@ -1243,9 +1243,17 @@ public class ProcessHTTPrequest implements CMRunnable, ExternalHTTPRequests
 	}
 	public String getHTTPclientIP()
 	{
-		if (sock != null)
-			return sock.getInetAddress().getHostAddress();
+		InetAddress ip=getHTTPclientInetAddress();
+		if (ip != null)
+			return ip.getHostAddress();
 		return "[NOT CONNECTED]";
+	}
+	
+	public InetAddress getHTTPclientInetAddress()
+	{
+		if (sock != null)
+			return sock.getInetAddress();
+		return null;
 	}
 
 	// gets the InetAddress of the server this request connected to;
