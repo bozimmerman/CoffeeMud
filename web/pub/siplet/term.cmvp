@@ -16,17 +16,50 @@ var limit=50000;
 var halflimit=limit/2;
 var tenthlimit=limit/10;
 
+function xmlhttpPost()
+{
+    var self = this;
+}
+xmlhttpPost.prototype.exec = function(querystring,callbackFunc)
+{
+    var xmlHttpReq = false;
+    // Mozilla/Safari
+    if (window.XMLHttpRequest) {
+        self.xmlHttpReq = new XMLHttpRequest();
+    }
+    // IE
+    else if (window.ActiveXObject) {
+        self.xmlHttpReq = new ActiveXObject("Microsoft.XMLHTTP");
+    }
+    self.xmlHttpReq.open('POST', '/pub/SipletInterface', true);
+    self.xmlHttpReq.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+    self.xmlHttpReq.onreadystatechange = function() {
+        if (self.xmlHttpReq.readyState == 4) {
+        	var txt=self.xmlHttpReq.responseText;
+        	var x=txt.indexOf(';');
+        	var success=false;
+        	if(x>0)
+        	{
+        		success=txt.substr(0,x);
+        		txt=txt.substr(x+1);
+    		}
+        	if(callbackFunc)
+	            callbackFunc(success,txt);
+        }
+    }
+    self.xmlHttpReq.send(querystring);
+}
+
 function closeWindow()
 {
-    //var theapplet=document.getElementById("Siplet");
-    theapplet.disconnectFromURL();
+	new xmlhttpPost().exec('DISCONNECT&TOKEN='+theapplet,function(success,txt){});
     top.document.location.href='/index.cmvp';
 }
 function reconnect()
 {
-    //var theapplet=document.getElementById("Siplet");
-    theapplet.disconnectFromURL();
-    setTimeout('connect("@MudInfo?DOMAIN@",@MudInfo?PORT@);',500);
+	new xmlhttpPost().exec('DISCONNECT&TOKEN='+theapplet,function(success,txt){
+	    setTimeout('connect("@MudInfo?DOMAIN@",@MudInfo?PORT@);',500);
+	});
 }
 
 function addToWindow(s)
@@ -75,37 +108,60 @@ function addToWindow(s)
 	    	top.bar.lightgreenColor(mynum);
     }
 }
+function goOffline()
+{
+	if(theapplet!=null) 
+		new xmlhttpPost().exec('DISCONNECT&TOKEN='+theapplet,function(success,txt){});
+	theapplet=null;
+    var thespan=top.term.document.getElementById(myname+'bar');
+    thespan.style.backgroundColor='red'
+    thespan=top.term.document.getElementById(myname+'namer');
+    thespan.style.backgroundColor='red'
+    top.bar.redColor(mynum);
+    //alert('Lost connection.'); // red is enough
+}
+
 function displayData()
 {
-    //var theapplet=document.getElementById("Siplet");
-    if(!theapplet.isConnectedToURL())
-    {
-        var thespan=top.term.document.getElementById(myname+'bar');
-        thespan.style.backgroundColor='red'
-        thespan=top.term.document.getElementById(myname+'namer');
-        thespan.style.backgroundColor='red'
-        top.bar.redColor(mynum);
-        //alert('Lost connection.'); // red is enough
-    }
-    else
-    {
-        theapplet.readURLData();
-        var t=theapplet.getURLData();
-        var s="";
-        s=s+t;
-        addToWindow(s);
-        t=theapplet.getJScriptCommands();
-        s="";
-        s=s+t;
-        if(s.length>0) eval(s);
-        setTimeout('displayData();',100);
-    }
+	if(theapplet==null) 
+		return;
+	new xmlhttpPost().exec('POLL&TOKEN='+theapplet,function(success,txt){
+	    if(!success)
+	    	goOffline();
+	    else
+	    {
+	    	var tk=theapplet+";";
+	    	var x=txt.indexOf(tk);
+	    	if(x<0)
+	    		goOffLine();
+	    	else
+	    	{
+	    		var data=txt.substr(0,x);
+		        var s="";
+		        s=s+data;
+		        addToWindow(s);
+		        
+	    		txt=txt.substr(x+tk.length);
+		    	x=txt.indexOf(tk);
+		    	if(x>0)
+		    	{
+	    			data=txt.substr(0,x);
+			        s="";
+			        s=s+t;
+			        if(s.length>0) eval(s);
+		        }
+		        setTimeout('displayData();',250);
+	        }
+	    }
+    });
 }
 function sendData(me)
 {
-    //var theapplet=document.getElementById("Siplet");
-	var s=''+me;
-    theapplet.sendData(s);
+	var s=encodeURIComponent(''+me);
+	new xmlhttpPost().exec('SENDDATA&TOKEN='+theapplet+'&DATA'+s,function(success,txt){
+	    if(!success)
+	    	goOffline();
+    });
 }
 
 function createGauge(entity,caption,color,value,max)
@@ -179,31 +235,51 @@ function NoJava()
     var thespan=document.getElementById("DISPLAYSPAN");
     thespan.innerHTML='<P><BR><FONT COLOR=RED SIZE=4>It does not appear that your browser has the proper version of the Java Runtime Environment installed.  Please visit <a href=http://java.sun.com>java.sun.com</a> to download the JRE.  Then restart your browser and try this page again.  If problems persist, make sure your browser has the <I>Allow Applet Installation</I> and <I>Allow Scripting</I> features enabled.</FONT><P>';
 }
-function connect(url,port)
+
+function connect(url,port,tries)
 {
-    //var theapplet=document.getElementById("Siplet");
-    window.onerror=new Function('NoJava();');
-    var s=theapplet.info();
-    window.onerror=null;
-    var thespan=top.term.document.getElementById(myname+'namer');
-    thespan.innerHTML=s
-    gauges=new Array(0);
-    var connectWorked = theapplet.connectToURL(url,port); 
-    if(!connectWorked)
-    {
-        connectWorked = theapplet.connectToURL(url,@WebServerPort?CURRENT@); 
-        if(connectWorked) sendData('MUD\n\n\r\r');
-    }
-    if(!connectWorked)
-        alert('Could not connect.');
-    else
-    {
-        thespan.style.backgroundColor='green'
-        thespan=top.term.document.getElementById(myname+'bar');
-        thespan.style.backgroundColor='green'
-        top.bar.greenColor(mynum);
-        setTimeout('displayData(); top.entry.boxFocus();',100);
-    }
+    //window.onerror=new Function('NoJava();');
+    var safeurl=encodeURIComponent(url);
+    var safeport=encodeURIComponent(port);
+	new xmlhttpPost().exec('CONNECT&URL='+safeurl+'&PORT='+safeport,function(success,txt){
+	    var s='';
+	    var connectWorked = success;
+	    var x=txt.indexOf(';');
+	    if(x<0)
+	    	connectWorked=false;
+	    else
+	    {
+	    	theapplet=txt.substr(0,x);
+		    top.term.allapplets[top.term.currentWindow] = theapplet;
+	    	txt=txt.substr(x+1);
+	    	var tk=theapplet+";";
+	    	var x=txt.indexOf(tk);
+	    	if(x<0)
+		    	connectWorked=false;
+	    	else
+	    		s=txt.substr(0,x);
+	    }
+	    //window.onerror=null;
+	    var thespan=top.term.document.getElementById(myname+'namer');
+	    thespan.innerHTML=s
+	    gauges=new Array(0);
+	    if((!connectWorked)&&((!tries)||(tries<2)))
+	    {
+	    	if(!tries) tries=0;
+	        connect(url,port,tries+1);
+	        return;
+	    }
+	    if(!connectWorked)
+	        alert('Could not connect.');
+	    else
+	    {
+	        thespan.style.backgroundColor='green'
+	        thespan=top.term.document.getElementById(myname+'bar');
+	        thespan.style.backgroundColor='green'
+	        top.bar.greenColor(mynum);
+	        setTimeout('displayData(); top.entry.boxFocus();',250);
+	    }
+    });
 }
 function addToPrompt(x,att)
 {
@@ -219,22 +295,11 @@ function goDefault(x)
 }
 top.term.allwindows[top.term.currentWindow]=this;
 </SCRIPT>
-<applet
-    code="com.planet_ink.siplet.applet.Siplet"
-    archive="/siplet/siplet.jar"
-    codebase="siplet.jar"
-    width="0"
-    height="0"
-    name="Siplet"
-    id="Siplet"
-    mayscript="TRUE">
-</applet><BR>
+<BR>
 <DIV ID=DISPLAYSPAN NAME=DISPLAYSPAN>
 </DIV>
 <DIV ID=NODISPLAY NAME=NODISPLAY></DIV>
 <script language=JavaScript>
-    theapplet=document.getElementById("Siplet").create();
-    top.term.allapplets[top.term.currentWindow] = theapplet;
     setTimeout('connect("@MudInfo?DOMAIN@",@MudInfo?PORT@);',500);
 //-->
 </script>
