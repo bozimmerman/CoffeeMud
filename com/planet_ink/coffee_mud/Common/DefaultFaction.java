@@ -1571,8 +1571,8 @@ public class DefaultFaction implements Faction, MsgListener
 	        			}
 	        			//noReactions=currentReactionSets.size()==0;
 	        		}
-	                noListeners=(myEffects.length==0) && (currentReactionSets.size()==0);
-	                noTickers=(myBehaviors.length==0) && ((currentReactionSets.size()==0)||(!useLightReactions()));
+	                noListeners=(myEffects.length==0) && (myBehaviors.length==0) && (currentReactionSets.size()==0);
+	                noTickers=(myBehaviors.length==0) && (myEffects.length==0) &&((currentReactionSets.size()==0)||(!useLightReactions()));
         		}
         	}
         }
@@ -1596,8 +1596,8 @@ public class DefaultFaction implements Faction, MsgListener
         {
             this.myEffects=listeners.toArray(new Ability[0]);
             this.myBehaviors=tickers.toArray(new Behavior[0]);
-            noListeners=(listeners.size()==0) && (currentReactionSets.size()==0);
-            noTickers=(tickers.size()==0) && ((currentReactionSets.size()==0)||(!useLightReactions()));
+            noListeners=(listeners.size()==0) && (tickers.size()==0) && (currentReactionSets.size()==0);
+            noTickers=(listeners.size()==0) && (tickers.size()==0) && ((currentReactionSets.size()==0)||(!useLightReactions()));
             noStatAffectors=(listeners.size()==0);
             isReset = false;
         }
