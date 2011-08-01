@@ -2979,7 +2979,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                     num=lastKnownLocation.numInhabitants();
                     if(signH.containsKey(tt[t+1]))
                     {
-                        String name=tt[t+0];
+                        String name=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+0]);
                         startbit++;
                         if(!name.equalsIgnoreCase("*"))
                         {
