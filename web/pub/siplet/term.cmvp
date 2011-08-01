@@ -148,7 +148,7 @@ function displayData()
 		    	{
 	    			data=txt.substr(0,x);
 			        s="";
-			        s=s+t;
+			        s=s+data;
 			        if(s.length>0) eval(s);
 		        }
 		        setTimeout('displayData();',250);
