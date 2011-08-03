@@ -214,7 +214,8 @@ public class CMProps extends Properties
     public static final int SYSTEMI_AWARERANGE=72;
     public static final int SYSTEMI_MINSESSIONTHREADS=73;
     public static final int SYSTEMI_MAXSESSIONTHREADS=74;
-    public static final int NUMI_SYSTEM=75;
+    public static final int SYSTEMI_DUELTICKDOWN=75;
+    public static final int NUMI_SYSTEM=76;
 
     public static final int SYSTEMB_MOBCOMPRESS=0;
     public static final int SYSTEMB_ITEMDCOMPRESS=1;
@@ -1108,6 +1109,7 @@ public class CMProps extends Properties
         setIntVar(SYSTEMI_AWARERANGE,getStr("AWARERANGE"),0);
         setIntVar(SYSTEMI_MINSESSIONTHREADS,getStr("MINSESSIONTHREADS"),5);
         setIntVar(SYSTEMI_MAXSESSIONTHREADS,getStr("MAXSESSIONTHREADS"),100);
+        setIntVar(SYSTEMI_DUELTICKDOWN,getStr("DUELTICKDOWN"),5);
 
         V=CMParms.parseCommas(getStr("INJURYSYSTEM"),true);
 

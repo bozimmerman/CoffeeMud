@@ -894,10 +894,12 @@ public interface CMMsg extends CMCommon
     public static final int TYP_LIFE=97;
     /** MINOR_MASK minor action code type, denoting a auctioneer bid action*/
     public static final int TYP_BID=98;
-    /** MINOR_MASK minor action code type, denoting a auctioneer bid action*/
+    /** MINOR_MASK minor action code type, denoting a clan event*/
     public static final int TYP_CLANEVENT=99;
     /** MINOR_MASK minor action code type, denoting a missile weapon unload action*/
 	public static final int TYP_UNLOAD=100;
+    /** MINOR_MASK minor action code type, denoting a challenge to the duel*/
+	public static final int TYP_DUELCHALLENGE=101;
 
     /** MINOR_MASK minor action code type, denoting a channel action -- 2000-2047 are channels*/
 	public static final int TYP_CHANNEL=2000; //(2000-2047 are channels)
@@ -922,7 +924,7 @@ public interface CMMsg extends CMCommon
         "TELL", "SITMOVE", "KNOCK", "PRACTICE", "TEACH", "REMOVE", "EXPCHANGE", 
         "DAMAGE", "HEALING", "ROOMRESET", "RELOAD", "SNIFF", "ACTIVATE", "DEACTIVATE", 
         "FACTIONCHANGE", "LOGIN", "LEVEL", "EXAMINE", "ORDER","EXPIRE","BORROW","HUH",
-        "LIFE","BID","CLANEVENT"
+        "LIFE","BID","CLANEVENT","UNLOAD","DUELCHALLENGE"
     };
     
     /** Index string descriptions of all the MAJOR_MASK code MAKS_s */
@@ -1189,4 +1191,6 @@ public interface CMMsg extends CMCommon
 	public static final int MSG_CLANEVENT=MASK_ALWAYS|TYP_CLANEVENT;
     /** combined MAJOR and MINOR codes for useful event message type for a missile weapon reload event*/
 	public static final int MSG_UNLOAD=MASK_HANDS|TYP_UNLOAD;
+    /** combined MAJOR and MINOR codes for useful event message type for a duel challenge*/
+	public static final int MSG_DUELCHALLENGE=MASK_SOUND|MASK_MOUTH|TYP_DUELCHALLENGE;
 }
