@@ -236,7 +236,7 @@ public class SipletInterface extends StdWebMacro
 					}
 				}
 			}
-			return Boolean.toString(success)+token+';';
+			return Boolean.toString(success)+';';
 		}
 		else
 		if(httpReq.isRequestParameter("POLL"))

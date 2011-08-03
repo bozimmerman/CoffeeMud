@@ -46,7 +46,6 @@ xmlhttpPost.prototype.exec = function(querystring,callbackFunc,tries)
             		return;
         		}
             	else
-            	if(tries>3)
 	               	success=false;
             }
             else
@@ -171,8 +170,8 @@ function sendData(me)
 {
 	var s=encodeURIComponent(''+me);
 	new xmlhttpPost().exec('SENDDATA&TOKEN='+theapplet+'&DATA='+s,function(success,status,txt){
-	    if(!success)
-	    	goOffline();
+		if(!success)
+			goOffline();
     });
 }
 

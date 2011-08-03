@@ -1507,9 +1507,8 @@ public class DefaultSession implements Session
 		activeMillis=System.currentTimeMillis();
 		try
 		{
-			if(killFlag)
-				logoutFinal();
-			else
+			if(killFlag) 
+				status=Session.STATUS_LOGOUT;
 			switch(status)
 			{
 			case Session.STATUS_IDLE:
@@ -1537,8 +1536,13 @@ public class DefaultSession implements Session
 			case Session.STATUS_LOGOUT11:
 			case Session.STATUS_LOGOUT12:
 			case Session.STATUS_LOGOUTFINAL:
+			{
+				final MOB M=mob();
+				if(M!=null)
+					Log.sysOut("Session","Disconnect: "+M.Name());
 				logoutFinal();
 				break;
+			}
 			}
 		}
 		finally
