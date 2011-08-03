@@ -25,6 +25,13 @@
 		obj.style.backgroundColor='red';
 		currColors[wnum]='r';
 	}
+	function yellowStatus(wnum){yellowColor(wnum);}
+	function yellowColor(wnum)
+	{
+		var obj = document.getElementById('BAR'+wnum);
+		obj.style.backgroundColor='yellow';
+		currColors[wnum]='y';
+	}
 	function blackStatus(wnum){blackColor(wnum);}
 	function blackColor(wnum)
 	{

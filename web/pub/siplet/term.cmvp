@@ -11,10 +11,29 @@ var myname='dwindow'+top.term.currentWindow;
 var mydivname='ewindow'+top.term.currentWindow;
 var gauges=new Array();
 var theapplet = null;
+var lastReceived = new Date().getTime();
 
 var limit=50000;
 var halflimit=limit/2;
 var tenthlimit=limit/10;
+
+function connectChecker()
+{
+	if(theapplet!=null)
+	{
+		var ellapsed=new Date().getTime() - lastReceived;
+		if(ellapsed>1800)
+		{
+	    	goGreen();
+	        setTimeout(displayData,250);
+        }
+	    else
+	    if(ellapsed>500)
+	    	goCaution();
+	}
+	setTimeout(connectChecker,100);
+}
+setTimeout(connectChecker,100);
 
 function xmlhttpPost()
 {
@@ -50,9 +69,22 @@ xmlhttpPost.prototype.exec = function(querystring,callbackFunc,tries)
             }
             else
         	{
-        		success=txt.substr(0,x);
+        		var s=txt.substr(0,x);
+        		if((s!='true')&&(s!='false'))
+        		{
+	            	if((!tries)||(tries<4))
+	            	{
+	            		setTimeout(function(){new xmlhttpPost().exec(querystring,callbackFunc,(tries)?(tries+1):0); },250);
+	            		return;
+	        		}
+	            	else
+		               	success=false;
+        		}
+        		else
+	        		success=(s=='true');
         		txt=txt.substr(x+1);
     		}
+    		
         	if(callbackFunc)
 	            callbackFunc(success,self.xmlHttpReq.status,txt);
         }
@@ -119,6 +151,24 @@ function addToWindow(s)
     }
 }
 
+function goCaution()
+{
+    var thespan=top.term.document.getElementById(myname+'namer');
+    thespan.style.backgroundColor='yellow'
+    thespan=top.term.document.getElementById(myname+'bar');
+    thespan.style.backgroundColor='yellow'
+    top.bar.yellowColor(mynum);
+}
+
+function goGreen()
+{
+    var thespan=top.term.document.getElementById(myname+'namer');
+    thespan.style.backgroundColor='green'
+    thespan=top.term.document.getElementById(myname+'bar');
+    thespan.style.backgroundColor='green'
+    top.bar.greenColor(mynum);
+}
+
 function goOffline()
 {
 	if(theapplet!=null) 
@@ -161,13 +211,16 @@ function displayData()
 			        s=s+data;
 			        if(s.length>0) eval(s);
 		        }
-		        setTimeout('displayData();',250);
+		        lastReceived = new Date().getTime();
+		        setTimeout(displayData,250);
 	        }
 	    }
     });
 }
 function sendData(me)
 {
+	if(theapplet==null)
+		return;
 	var s=encodeURIComponent(''+me);
 	new xmlhttpPost().exec('SENDDATA&TOKEN='+theapplet+'&DATA='+s,function(success,status,txt){
 		if(!success)
@@ -203,6 +256,7 @@ function removeGauge(entity)
     }
     modifyGauge(entity,-1,-1);
 }
+
 function modifyGauge(entity,value,max)
 {
     var div=top.term.document.getElementById(myname+'extracontent');
@@ -284,10 +338,8 @@ function connect(url,port,tries)
 	        alert('Could not connect.');
 	    else
 	    {
-	        thespan.style.backgroundColor='green'
-	        thespan=top.term.document.getElementById(myname+'bar');
-	        thespan.style.backgroundColor='green'
-	        top.bar.greenColor(mynum);
+	    	goGreen();
+	    	lastReceived = new Date().getTime();
 	        setTimeout('displayData(); top.entry.boxFocus();',250);
 	    }
     });
