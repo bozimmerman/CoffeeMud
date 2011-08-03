@@ -1537,9 +1537,6 @@ public class DefaultSession implements Session
 			case Session.STATUS_LOGOUT12:
 			case Session.STATUS_LOGOUTFINAL:
 			{
-				final MOB M=mob();
-				if(M!=null)
-					Log.sysOut("Session","Disconnect: "+M.Name());
 				logoutFinal();
 				break;
 			}
@@ -1639,19 +1636,22 @@ public class DefaultSession implements Session
 
 	public void logoutFinal()
 	{
+		final MOB M=mob();
+		if(M!=null)
+			Log.sysOut("Session","Disconnect: "+M.Name());
 		previousCmd.clear(); // will let system know you are back in login menu
-		if(mob!=null)
+		if(M!=null)
 		{
 			if(CMSecurity.isDisabled(CMSecurity.DisFlag.LOGOUTS))
 			{
-				CMLib.commands().postSleep(mob);
-				mob.basePhyStats().setDisposition(mob.basePhyStats().disposition()|PhyStats.IS_SLEEPING);
-				mob.phyStats().setDisposition(mob.phyStats().disposition()|PhyStats.IS_SLEEPING);
+				CMLib.commands().postSleep(M);
+				M.basePhyStats().setDisposition(mob.basePhyStats().disposition()|PhyStats.IS_SLEEPING);
+				M.phyStats().setDisposition(mob.phyStats().disposition()|PhyStats.IS_SLEEPING);
 			}
 			else
 			{
-				mob.removeFromGame(true,true);
-				mob.setSession(null);
+				M.removeFromGame(true,true);
+				M.setSession(null);
 				mob=null;
 			}
 		}
