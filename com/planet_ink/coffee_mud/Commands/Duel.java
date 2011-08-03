@@ -76,12 +76,12 @@ public class Duel extends StdCommand
 				mob.addTattoo(new Tattoo("IDUEL",duelTicks));
 				target.addTattoo(new Tattoo("UDUEL",duelTicks));
 				long time = CMProps.getTickMillis() * (long)duelTicks;
-				mob.location().show(mob, target, CMMsg.MSG_DUELCHALLENGE, "^X<S-NAME> has challenged <T-NAME> to a duel, which <T-HE-SHE> <T-HAS-HAVE> "+(time/1000)+" seconds to consider.^.^N");
+				mob.location().show(mob, target, CMMsg.MSG_DUELCHALLENGE, "^X<S-NAME> <S-HAS-HAVE> challenged <T-NAME> to a duel, which <T-HE-SHE> <T-HAS-HAVE> "+(time/1000)+" seconds to consider.^.^N");
 				target.tell("^NEnter ^HDUEL "+mob.name()+"^N to accept this challenge and begin fighting.");
 				return true;
 			}
 			else
-			if((uiT != null)&&(iiT != null))
+			if((uiT != null)&&(iuT != null))
 			{
 				target.tell(mob,target,null,"^X<T-NAME> HAS ACCEPTED YOUR CHALLENGE!^.^N");
 	            Item weapon=mob.fetchWieldedItem();
@@ -114,7 +114,10 @@ public class Duel extends StdCommand
 			else
 			if(uuT!=null)
 			{
-				mob.tell(mob,target,null,"<T-NAME> is considering a response to a previous challenger and cannot be challenged at this time.");
+				if(uiT!=null)
+					mob.tell(mob,target,null,"<T-NAME> is considering a response to your previous challenger and cannot be challenged at this time.");
+				else
+					mob.tell(mob,target,null,"<T-NAME> is considering a response to a previous challenger and cannot be challenged at this time.");
 				return false;
 			}
 			else
