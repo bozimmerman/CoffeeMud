@@ -1711,7 +1711,7 @@ public class ListCmd extends StdCommand
         {
             Log.LogReader log=Log.instance().getLogReader();
         	String line=log.nextLine();
-        	while((line!=null)&&(mob.session()!=null)&&(!mob.session().killFlag()))
+        	while((line!=null)&&(mob.session()!=null)&&(!mob.session().isStopped()))
         	{
         		mob.session().rawPrintln(line);
         		if((pageBreak>0)&&(lineNum>=pageBreak))
@@ -1787,7 +1787,7 @@ public class ListCmd extends StdCommand
     	String line=log.nextLine();
     	lineNum=0;
     	int shownLineNum=0;
-    	while((line!=null)&&(mob.session()!=null)&&(!mob.session().killFlag()))
+    	while((line!=null)&&(mob.session()!=null)&&(!mob.session().isStopped()))
     	{
     		if((lineNum>start)&&(lineNum<=end))
     		{
@@ -1875,7 +1875,7 @@ public class ListCmd extends StdCommand
 
     public boolean pause(Session sess) 
     {
-    	if((sess==null)||(sess.killFlag())) return false;
+    	if((sess==null)||(sess.isStopped())) return false;
     	sess.out("<pause - enter>".toCharArray());
 		try{ 
 			String s=sess.blockingIn(10 * 60 * 1000); 
@@ -1886,7 +1886,7 @@ public class ListCmd extends StdCommand
 					return false;
 			}
 		}catch(Exception e){return false;}
-    	return !sess.killFlag();
+    	return !sess.isStopped();
     }
     
 	public void archonlist(MOB mob, Vector commands)

@@ -64,7 +64,7 @@ public class Title extends StdCommand
 		        menu.append(CMStrings.padRight(""+(i+1),2)+": "+CMStrings.replaceAll(title,"*",mob.Name())+"\n\r");
 	    }
 	    int selection=1;
-	    while((mob.session()!=null)&&(!mob.session().killFlag()))
+	    while((mob.session()!=null)&&(!mob.session().isStopped()))
 	    {
 		    mob.tell(menu.toString());
 	        String which=mob.session().prompt("Enter a selection: ",""+selection);

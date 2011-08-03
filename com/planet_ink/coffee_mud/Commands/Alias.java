@@ -42,7 +42,7 @@ public class Alias extends StdCommand
         if((mob.playerStats()==null)||(mob.session()==null))
             return false;
         PlayerStats ps=mob.playerStats();
-        while((mob.session()!=null)&&(!mob.session().killFlag()))
+        while((mob.session()!=null)&&(!mob.session().isStopped()))
         {
             StringBuffer menu=new StringBuffer("^xAlias definitions:^.^?\n\r");
             String[] aliasNames=ps.getAliasNames();

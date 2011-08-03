@@ -31,7 +31,7 @@ public class Sessions extends StdLibrary implements SessionsList
     public SLinkedList<Session> all=new SLinkedList<Session>();
     private final static Filterer<Session> localOnlineFilter=new Filterer<Session>(){
 		public boolean passesFilter(Session obj) { 
-			if((obj!=null) && (!obj.killFlag()) && (obj.getStatus()==Session.STATUS_OK))
+			if((obj!=null) && (!obj.isStopped()) && (obj.getStatus()==Session.STATUS_OK))
 			{
 				MOB M=obj.mob();
 				return ((M!=null)&&M.amActive()&&(CMLib.flags().isInTheGame(M,true)));
@@ -105,10 +105,10 @@ public class Sessions extends StdLibrary implements SessionsList
     public void stopSessionAtAllCosts(Session S)
     {
         if(S==null) return;
-        S.kill(true,true,false);
+        S.stopSession(true,true,false);
         if(!S.isRunning()) return;
         CMLib.s_sleep(1000);
-        S.kill(true,true,true);
+        S.stopSession(true,true,true);
         if(!S.isRunning()) return;
         remove(S);
     }

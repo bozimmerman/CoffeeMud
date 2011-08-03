@@ -483,21 +483,21 @@ public interface Session extends CMCommon, Modifiable, CMRunnable
 	public int snoopSuspension(int change);
     
     /**
-     * Force the current player to logoff.
+     * Force the current player to logoff, end the session, and/or kill the thread.
      * @param removeMOB true to remove the mob from the game
      * @param dropSession true to force closed sockets, and removed session
      * @param killThread true to force a thread death, and false to be more lenient
-     * @see com.planet_ink.coffee_mud.Common.interfaces.Session#killFlag()
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Session#isStopped()
      */
-	public void kill(boolean removeMOB, boolean dropSession, boolean killThread);
+	public void stopSession(boolean removeMOB, boolean dropSession, boolean killThread);
     
     /**
      * Returns whether this session is done, or slated to be done.
      * @see com.planet_ink.coffee_mud.Common.interfaces.Session#logout(boolean)
-     * @see com.planet_ink.coffee_mud.Common.interfaces.Session#killFlag()
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Session#isStopped()
      * @return true if this session needs to go, false otherwise
      */
-	public boolean killFlag();
+	public boolean isStopped();
     
 	/**
 	 * Allows the user to select a different character, taking them back to the login

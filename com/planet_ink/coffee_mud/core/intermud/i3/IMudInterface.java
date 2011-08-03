@@ -506,7 +506,7 @@ public class IMudInterface implements ImudServices, Serializable
 					MOB smob=S.mob();
 					if((smob!=null)&&(smob.soulMate()!=null))
 						smob=smob.soulMate();
-					if((!S.killFlag())&&(smob!=null)
+					if((!S.isStopped())&&(smob!=null)
 					&&(!smob.amDead())
 					&&(CMLib.flags().isInTheGame(smob,true))
 					&&(!CMLib.flags().isCloaked(smob)))

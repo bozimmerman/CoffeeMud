@@ -566,7 +566,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
             Log.errOut("CMAbleParms","File: "+recipeFilename+": "+recipe.parseError());
             return;
         }
-        while((mob.session()!=null)&&(!mob.session().killFlag()))
+        while((mob.session()!=null)&&(!mob.session().isStopped()))
         {
             StringBuffer list=getRecipeList(recipe);
             mob.tell(list.toString());
@@ -632,7 +632,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
                 }
             }
         }
-        if((mob.session()!=null)&&(!mob.session().killFlag()))
+        if((mob.session()!=null)&&(!mob.session().isStopped()))
         {
             String prompt="Save to V)FS, F)ilesystem, or C)ancel (" + (recipe.wasVFS()?"V/f/c":"v/F/c")+"): ";
             String choice=mob.session().choose(prompt,"VFC",recipe.wasVFS()?"V":"F");
@@ -883,7 +883,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
                     {
                         ++showNumber[0];
                         String str = oldVal;
-                        while(!mob.session().killFlag())
+                        while(!mob.session().isStopped())
                         {
                         	String help="<AMOUNT>"
                         		+"\n\rSkill Component: "+CMParms.toStringList(CMLib.ableMapper().getAbilityComponentMap().keySet())
@@ -1365,7 +1365,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
                         ++showNumber[0];
                         boolean proceed = true;
                         String str = oldVal;
-                        while(proceed&&(!mob.session().killFlag()))
+                        while(proceed&&(!mob.session().isStopped()))
                         {
                             proceed = false;
                             str=CMLib.genEd().prompt(mob,oldVal,showNumber[0],showFlag,prompt(),true,CMParms.toStringList(RawMaterial.CODES.NAMES())).trim();
@@ -1376,7 +1376,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
                             if(str.equals(oldVal)) return oldVal;
                             if(str.length()==0) return "";
                             boolean isResource = CMParms.contains(RawMaterial.CODES.NAMES(),str);
-                            if((!isResource)&&(mob.session()!=null)&&(!mob.session().killFlag()))
+                            if((!isResource)&&(mob.session()!=null)&&(!mob.session().isStopped()))
                                 if(!mob.session().confirm("You`ve entered a non-resource item keyword '"+str+"', ok (Y/n)?","Y"))
                                     proceed = true;
                         }
@@ -1423,7 +1423,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
                         boolean proceed = true;
                         String str = oldVal;
                         String orig = oldVal;
-                        while(proceed&&(!mob.session().killFlag()))
+                        while(proceed&&(!mob.session().isStopped()))
                         {
                             proceed = false;
                             if(oldVal.trim().endsWith("$")) oldVal=oldVal.trim().substring(0,oldVal.trim().length()-1);
@@ -1435,7 +1435,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
                             if(str.equals(orig)) return orig;
                             if(str.length()==0) return "";
                             boolean isResource = CMParms.contains(RawMaterial.CODES.NAMES(),str);
-                            if((!isResource)&&(mob.session()!=null)&&(!mob.session().killFlag()))
+                            if((!isResource)&&(mob.session()!=null)&&(!mob.session().isStopped()))
                             {
                                 if(!mob.session().confirm("You`ve entered a non-resource item keyword '"+str+"', ok (Y/n)?","Y"))
                                     proceed = true;
@@ -1558,7 +1558,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
                         if((showFlag>0)&&(showFlag!=showNumber[0])) return oldVal;
                         String behave="NO";
                         String newVal = oldVal;
-                        while((mob.session()!=null)&&(!mob.session().killFlag())&&(behave.length()>0))
+                        while((mob.session()!=null)&&(!mob.session().isStopped())&&(behave.length()>0))
                         {
                             mob.tell(showNumber+". "+prompt()+": '"+newVal+"'.");
                             if((showFlag!=showNumber[0])&&(showFlag>-999)) return newVal;
@@ -1915,7 +1915,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
             {
                 ++showNumber[0];
                 boolean proceed = true;
-                while(proceed&&(!mob.session().killFlag())) {
+                while(proceed&&(!mob.session().isStopped())) {
                     str = CMLib.genEd().prompt(mob,oldVal,showNumber[0],showFlag,prompt(),emptyOK).trim();
                     if((!spaceOK) && (str.indexOf(' ') >= 0))
                         mob.tell("Spaces are not allowed here.");

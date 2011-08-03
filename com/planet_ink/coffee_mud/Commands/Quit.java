@@ -82,7 +82,7 @@ public class Quit extends StdCommand
 	                if((R!=null)&&(R.okMessage(mob,msg))) 
 	                {
 	                    CMLib.map().sendGlobalMessage(mob,CMMsg.TYP_QUIT, msg);
-	                    session.kill(false,false, false);
+	                    session.stopSession(false,false, false);
 	                    CMLib.commands().monitorGlobalMessage(R, msg);
 	                }
 				}
@@ -90,7 +90,7 @@ public class Quit extends StdCommand
 			catch(Exception e)
 			{
 				if(mob.session()!=null)
-					mob.session().kill(false,false,false);
+					mob.session().stopSession(false,false,false);
 			}
 		}
 		return false;

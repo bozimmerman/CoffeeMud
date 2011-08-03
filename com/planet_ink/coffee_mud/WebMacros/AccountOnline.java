@@ -95,7 +95,7 @@ public class AccountOnline extends StdWebMacro
     				{
                         if(canBoot&&(parms.containsKey("BOOT")))
     					{
-    						onlineM.session().kill(false,false,false);
+    						onlineM.session().stopSession(false,false,false);
     						return "false";
     					}
     					return "true";

@@ -154,7 +154,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
            delPlayer(deadMOB);
         }
 	    for(Session S : CMLib.sessions().allIterable())
-            if((!S.killFlag())&&(S.mob()!=null)&&(S.mob().Name().equals(deadMOB.Name())))
+            if((!S.isStopped())&&(S.mob()!=null)&&(S.mob().Name().equals(deadMOB.Name())))
                deadMOB=S.mob();
         CMMsg msg=CMClass.getMsg(deadMOB,null,CMMsg.MSG_RETIRE,(quiet)?null:"A horrible death cry is heard throughout the land.");
         Room deadLoc=deadMOB.location();
@@ -196,7 +196,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 
         CMLib.database().DBDeleteMOB(deadMOB);
         if(deadMOB.session()!=null)
-            deadMOB.session().kill(false,false,false);
+            deadMOB.session().stopSession(false,false,false);
         Log.sysOut("Scoring",deadMOB.name()+" has been deleted.");
         deadMOB.destroy();
     }

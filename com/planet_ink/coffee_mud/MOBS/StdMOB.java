@@ -639,7 +639,7 @@ public class StdMOB implements MOB
         if(soulMate()!=null) dispossess(false);
         final MOB possessor=CMLib.utensils().getMobPossessingAnother(this);
         if(possessor!=null) possessor.dispossess(false);
-        if(session()!=null){ session().kill(false,false,false); try{Thread.sleep(1000);}catch(Exception e){}}
+        if(session()!=null){ session().stopSession(false,false,false); try{Thread.sleep(1000);}catch(Exception e){}}
 		removeFromGame(session()!=null,true);
 		while(numBehaviors()>0)
 			delBehavior(fetchBehavior(0));
@@ -729,7 +729,7 @@ public class StdMOB implements MOB
 				}
 			}
             if(killSession&&(session()!=null))
-    			session().kill(false,false,false);
+    			session().stopSession(false,false,false);
 		}
 		setRiding(null);
 	}
@@ -1289,7 +1289,7 @@ public class StdMOB implements MOB
     public int commandQueSize(){return commandQue.size();}
 	public boolean dequeCommand()
 	{
-        while((!pleaseDestroy)&&((session()==null)||(!session().killFlag())))
+        while((!pleaseDestroy)&&((session()==null)||(!session().isStopped())))
         {
         	QMCommand doCommand=null;
             synchronized(commandQue)

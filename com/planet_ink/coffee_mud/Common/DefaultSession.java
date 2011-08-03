@@ -372,7 +372,7 @@ public class DefaultSession implements Session
 		}
 		return -1;
 	}
-	public boolean killFlag(){return killFlag;}
+	public boolean isStopped(){return killFlag;}
 	public void setKillFlag(boolean truefalse){killFlag=truefalse;}
 	public List<String> previousCMD(){return previousCmd;}
 	public void startBeingSnoopedBy(Session S)
@@ -461,7 +461,7 @@ public class DefaultSession implements Session
     				writeStartTime=System.currentTimeMillis();
     				out.write(c);
     				if(out.checkError())
-                        kill(true,true,true);
+                        stopSession(true,true,true);
         		}
         		finally
         		{
@@ -474,8 +474,7 @@ public class DefaultSession implements Session
     		{
                 final String name=(mob!=null)?mob.Name():getAddress();
                 Log.errOut("DefaultSession","Kicked out "+name+" due to write-lock ("+out.getClass().getName()+".");
-                kill(true,true,true);
-                kill(true,true,true);
+                stopSession(true,true,true);
                 synchronized(this)
                 {
                 	if(thread==Thread.currentThread())
@@ -1336,18 +1335,18 @@ public class DefaultSession implements Session
 	}
 
 	
-	public void kill(boolean removeMOB, boolean dropSession, boolean killThread)
+	public void stopSession(boolean removeMOB, boolean dropSession, boolean killThread)
 	{
 		killFlag=true;
-		if(removeMOB)
-			removeMOBFromGame(false);
-        if(dropSession) {
-            status=Session.STATUS_LOGOUT3;
-            CMLib.sessions().remove(this);
-            status=Session.STATUS_LOGOUT4;
-            closeSocks();
-		}
         status=Session.STATUS_LOGOUT5;
+		if(removeMOB)
+        {
+			removeMOBFromGame(false);
+        }
+        if(dropSession) 
+        {
+            logoutFinal();
+		}
         synchronized(this)
         {
 	        if(killThread)
@@ -1358,7 +1357,9 @@ public class DefaultSession implements Session
             	}
             	else
 	        	if(thread!=null) 
+            	{
 		        	CMLib.killThread(thread,1000,1);
+    	        }
 	        }
         }
 	}
@@ -1480,7 +1481,7 @@ public class DefaultSession implements Session
 	public void logout(boolean removeMOB)
 	{
 		if((mob==null)||(mob.playerStats()==null))
-			kill(false,false,false);
+			stopSession(false,false,false);
 		else
 		{
 			preLogout(mob);
@@ -1779,7 +1780,7 @@ public class DefaultSession implements Session
 						setAfkFlag(true);
 				}
 				else
-				if((getIdleMillis()>=10800000)&&(!killFlag()))
+				if((getIdleMillis()>=10800000)&&(!isStopped()))
 				{
 					if((!CMLib.flags().isSleeping(mob))
 					&&(mob().fetchEffect("Disease_Blahs")==null)

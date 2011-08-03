@@ -58,7 +58,7 @@ public class ClanWho extends Who
 				mob2=mob2.soulMate();
 
 			if((mob2!=null)
-			&&(!S.killFlag())
+			&&(!S.isStopped())
 			&&((((mob2.phyStats().disposition()&PhyStats.IS_CLOAKED)==0)
 					||((CMSecurity.isAllowedAnywhere(mob,"CLOAK")||CMSecurity.isAllowedAnywhere(mob,"WIZINV"))&&(mob.phyStats().level()>=mob2.phyStats().level()))))
 			&&(mob2.getClanID().equals(mob.getClanID()))

@@ -349,12 +349,12 @@ public class Socials extends StdLibrary implements SocialsList
             ||(!mob.session().confirm("The social '"+name+"' does not exist.  Create it (y/N)? ","N"))))
             return false;
         boolean resaveSocials=true;
-        while((resaveSocials)&&(mob.session()!=null)&&(!mob.session().killFlag()))
+        while((resaveSocials)&&(mob.session()!=null)&&(!mob.session().isStopped()))
         {
             resaveSocials=false;
             Social soc=null;
             boolean pickNewSocial=true;
-            while((pickNewSocial)&&(mob.session()!=null)&&(!mob.session().killFlag()))
+            while((pickNewSocial)&&(mob.session()!=null)&&(!mob.session().isStopped()))
             {
                 pickNewSocial=false;
                 StringBuffer str=new StringBuffer("\n\rSelect a target:\n\r");
@@ -418,7 +418,7 @@ public class Socials extends StdLibrary implements SocialsList
                 if(newOne.length()==0)
                 {
                 	newOne="?";
-	                while((newOne.equals("?"))&&(!mob.session().killFlag()))
+	                while((newOne.equals("?"))&&(!mob.session().isStopped()))
 	                {
 	                    newOne=mob.session().prompt("\n\rNew target (?): ","").toUpperCase().trim();
 	                    if(newOne.equals("?"))

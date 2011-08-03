@@ -20,7 +20,7 @@ function xmlhttpPost()
 {
     var self = this;
 }
-xmlhttpPost.prototype.exec = function(querystring,callbackFunc)
+xmlhttpPost.prototype.exec = function(querystring,callbackFunc,tries)
 {
     var xmlHttpReq = false;
     // Mozilla/Safari
@@ -38,9 +38,18 @@ xmlhttpPost.prototype.exec = function(querystring,callbackFunc)
         	var txt=self.xmlHttpReq.responseText;
         	var x=txt.indexOf(';');
         	var success=false;
-            if(xmlHttpReq > 299)
-              alert(xmlHttpReq,txt);
-        	if(x>0)
+            if((xmlHttpReq.status > 299)||(x<=0))
+            {
+            	if((!tries)||(tries<4))
+            	{
+            		setTimeout(function(){new xmlhttpPost().exec(querystring,callbackFunc,tries+1); },250);
+            		return;
+        		}
+            	else
+            	if(tries>3)
+	               	success=false;
+            }
+            else
         	{
         		success=txt.substr(0,x);
         		txt=txt.substr(x+1);

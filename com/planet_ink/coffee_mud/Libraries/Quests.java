@@ -231,7 +231,7 @@ public class Quests extends StdLibrary implements QuestManager
     {
         int index=sets.indexOf(var);
         String oldVal=index>=0?(String)sets.elementAt(index,2):"";
-        while((mob.session()!=null)&&(!mob.session().killFlag()))
+        while((mob.session()!=null)&&(!mob.session().isStopped()))
         {
             String newVAL=CMLib.genEd().prompt(mob,oldVal,showNumber,showFlag,prompt,emptyOK);
             if(newVAL.equals("?"))
@@ -523,7 +523,7 @@ public class Quests extends StdLibrary implements QuestManager
         if(CMProps.getIntVar(CMProps.SYSTEMI_EDITORTYPE)>0)
             showFlag=-999;
         try{
-            while((mob.session()!=null)&&(!mob.session().killFlag())&&(!ok))
+            while((mob.session()!=null)&&(!mob.session().isStopped())&&(!ok))
             {
                 int showNumber=0;
                 promptText(mob,settings,"NAME",++showNumber,showFlag,"Holiday Name","It's, well, a name.",false);
@@ -787,7 +787,7 @@ public class Quests extends StdLibrary implements QuestManager
             if((showFlag<=-999)||(showFlag==showNumber))
             {
                 String newVal="?";
-                while(newVal.equals("?")&&((mob.session()!=null)&&(!mob.session().killFlag())))
+                while(newVal.equals("?")&&((mob.session()!=null)&&(!mob.session().isStopped())))
                 {
                     newVal=CMLib.genEd().prompt(mob,TYPES[typeIndex],showNumber,showFlag,"Schedule type",CMParms.toStringList(TYPES));
                     if(CMParms.indexOf(TYPES,newVal.toUpperCase().trim())<0)
@@ -845,7 +845,7 @@ public class Quests extends StdLibrary implements QuestManager
             if((showFlag>0)&&(showFlag!=showNumber)){ if(b<behaviors.size()) showNumber++; continue;}
             if(b==behaviors.size())
             {
-                if((mob.session()!=null)&&(!mob.session().killFlag()))
+                if((mob.session()!=null)&&(!mob.session().isStopped()))
                 {
                     if(((showFlag<=-999)&&CMLib.genEd().prompt(mob,false,showNumber,showFlag,"Add new mob behavior"))
                     ||(showNumber==showFlag))
@@ -903,7 +903,7 @@ public class Quests extends StdLibrary implements QuestManager
             if((showFlag>0)&&(showFlag!=showNumber)){ if(p<properties.size()) showNumber++; continue;}
             if(p==properties.size())
             {
-                if((mob.session()!=null)&&(!mob.session().killFlag()))
+                if((mob.session()!=null)&&(!mob.session().isStopped()))
                 {
                     if(((showFlag<=-999)&&CMLib.genEd().prompt(mob,false,showNumber,showFlag,"Add new mob property"))
                     ||(showNumber==showFlag))
@@ -978,7 +978,7 @@ public class Quests extends StdLibrary implements QuestManager
             if((showFlag>0)&&(showFlag!=showNumber)){ if(v<priceV.size())showNumber++; continue;}
             if(v==priceV.size())
             {
-                if((mob.session()!=null)&&(!mob.session().killFlag()))
+                if((mob.session()!=null)&&(!mob.session().isStopped()))
                 {
                     if(((showFlag<=-999)&&CMLib.genEd().prompt(mob,false,showNumber,showFlag,"Add new price factor"))
                     ||(showNumber==showFlag))
@@ -1093,7 +1093,7 @@ public class Quests extends StdLibrary implements QuestManager
             if((showFlag>0)&&(showFlag!=showNumber)){ if(v<mudChatV.size())showNumber++; continue;}
             if(v==mudChatV.size())
             {
-                if((mob.session()!=null)&&(!mob.session().killFlag()))
+                if((mob.session()!=null)&&(!mob.session().isStopped()))
                 {
                     if(((showFlag<=-999)&&CMLib.genEd().prompt(mob,false,showNumber,showFlag,"Add new mud chat"))
                     ||(showNumber==showFlag))
@@ -1128,7 +1128,7 @@ public class Quests extends StdLibrary implements QuestManager
                 {
                     if(v1==V.size())
                     {
-                        if((mob.session()!=null)&&(!mob.session().killFlag())
+                        if((mob.session()!=null)&&(!mob.session().isStopped())
                         &&(mob.session().confirm("Add another thing to say (y/N)","NO")))
                         {
                             V.add("9say this");
@@ -1138,7 +1138,7 @@ public class Quests extends StdLibrary implements QuestManager
                     }
                     s=(String)V.get(v1);
                     String newStr="?";
-                    while((newStr.equals("?"))&&(mob.session()!=null)&&(!mob.session().killFlag()))
+                    while((newStr.equals("?"))&&(mob.session()!=null)&&(!mob.session().isStopped()))
                     {
                         newStr=mob.session().prompt("Enter  # Weight + thing to say (?) '"+s+"'\n\r: ",s);
                         if(newStr.equals("?"))
@@ -1574,7 +1574,7 @@ public class Quests extends StdLibrary implements QuestManager
                 return null;
             }
             int questIndex=-1;
-            while((questIndex<0)&&(mob.session()!=null)&&(!mob.session().killFlag()))
+            while((questIndex<0)&&(mob.session()!=null)&&(!mob.session().isStopped()))
             {
                 String choice=mob.session().prompt("Select a quest template (?): ","");
                 if(choice.equals("?"))
@@ -1599,7 +1599,7 @@ public class Quests extends StdLibrary implements QuestManager
                         mob.tell("'"+choice+"' is not a valid quest name, use ? for a list, or select from the following: "+list.toString().substring(0,list.length()-2));
                 }
             }
-            if((mob.session()==null)||(mob.session().killFlag())||(questIndex<0))
+            if((mob.session()==null)||(mob.session().isStopped())||(questIndex<0))
                 return null;
             DVector qFDV=getQuestTemplate(mob,(String)questTemplates.elementAt(questIndex,3));
             if((qFDV==null)||(qFDV.size()==0)) return null;
@@ -1616,7 +1616,7 @@ public class Quests extends StdLibrary implements QuestManager
                 mob.tell("^N"+pageInstructions);
                 boolean ok=false;
                 int showFlag=-999;
-                while((mob.session()!=null)&&(!mob.session().killFlag())&&(!ok))
+                while((mob.session()!=null)&&(!mob.session().isStopped())&&(!ok))
                 {
                     int showNumber=0;
                     String lastLabel=null;
@@ -1812,7 +1812,7 @@ public class Quests extends StdLibrary implements QuestManager
                         // all done
                     }
                 }
-                if((mob.session()==null)||(mob.session().killFlag()))
+                if((mob.session()==null)||(mob.session().isStopped()))
                     return null;
             }
             String name="";
@@ -1832,7 +1832,7 @@ public class Quests extends StdLibrary implements QuestManager
                 }
             }
             script=CMStrings.replaceAll(script,"$#AUTHOR",mob.Name());
-            if((mob.session()!=null)&&(!mob.session().killFlag())
+            if((mob.session()!=null)&&(!mob.session().isStopped())
             &&(mob.session().confirm("Create the new quest: "+name+" (y/N)? ","N")))
             {
                 Quest Q=(Quest)CMClass.getCommon("DefaultQuest");

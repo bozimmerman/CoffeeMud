@@ -134,7 +134,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
         String newName="?";
     	String promptStr="Enter a value to add/remove"+(help!=null?" (?)":"")+"\n\r:";
     	String oldOldVal=oldVal;
-        while((mob.session()!=null)&&(!mob.session().killFlag()))
+        while((mob.session()!=null)&&(!mob.session().isStopped()))
         {
             newName=mob.session().prompt(promptStr,"");
             if(newName.equals("?")&&(help!=null))
@@ -224,7 +224,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
         if((showFlag!=showNumber)&&(showFlag>-999)) return oldVal;
         String newName="?";
     	String promptStr="Enter a new value "+(emptyOK?"(or NULL)":"")+(help!=null?" (?)":"")+"\n\r:";
-        while(newName.equals("?")&&(mob.session()!=null)&&(!mob.session().killFlag()))
+        while(newName.equals("?")&&(mob.session()!=null)&&(!mob.session().isStopped()))
         {
             newName=mob.session().prompt(promptStr,"");
             if(newName.equals("?")&&(help!=null))
@@ -267,7 +267,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
         mob.tell(showNumber+". "+FieldDisp+": '"+oldVal+"'.");
         if((showFlag!=showNumber)&&(showFlag>-999)) return oldVal;
         String newName="?";
-        while(newName.equals("?")&&(mob.session()!=null)&&(!mob.session().killFlag()))
+        while(newName.equals("?")&&(mob.session()!=null)&&(!mob.session().isStopped()))
         {
             newName=mob.session().prompt("Enter true or false"+(help!=null?" (?)":"")+":","");
             if(newName.equals("?")&&(help!=null))
@@ -292,7 +292,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
         mob.tell(showNumber+". "+FieldDisp+": '"+oldVal+"'.");
         if((showFlag!=showNumber)&&(showFlag>-999)) return oldVal;
         String newName="?";
-        while(newName.equals("?")&&(mob.session()!=null)&&(!mob.session().killFlag()))
+        while(newName.equals("?")&&(mob.session()!=null)&&(!mob.session().isStopped()))
         {
             newName=mob.session().prompt("Enter a new value"+(help!=null?" (?)":"")+":","");
             if(newName.equals("?")&&(help!=null))
@@ -314,7 +314,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
         mob.tell(showNumber+". "+FieldDisp+": '"+oldVal+"'.");
         if((showFlag!=showNumber)&&(showFlag>-999)) return oldVal;
         String newName="?";
-        while(newName.equals("?")&&(mob.session()!=null)&&(!mob.session().killFlag()))
+        while(newName.equals("?")&&(mob.session()!=null)&&(!mob.session().isStopped()))
         {
             newName=mob.session().prompt("Enter a new value"+(help!=null?" (?)":"")+":","");
             if(newName.equals("?")&&(help!=null))
@@ -336,7 +336,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
         mob.tell(showNumber+". "+FieldDisp+": '"+oldVal+"'.");
         if((showFlag!=showNumber)&&(showFlag>-999)) return oldVal;
         String newName="?";
-        while(newName.equals("?")&&(mob.session()!=null)&&(!mob.session().killFlag()))
+        while(newName.equals("?")&&(mob.session()!=null)&&(!mob.session().isStopped()))
         {
             newName=mob.session().prompt("Enter a new value"+(help!=null?" (?)":"")+":","");
             if(newName.equals("?")&&(help!=null))
@@ -374,7 +374,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
         if((showFlag!=showNumber)&&(showFlag>-999)) return oldVal;
         String newVal=oldVal;
         String thisVal="?";
-        while(thisVal.equals("?")&&(mob.session()!=null)&&(!mob.session().killFlag()))
+        while(thisVal.equals("?")&&(mob.session()!=null)&&(!mob.session().isStopped()))
         {
             thisVal=mob.session().prompt("Enter a new choice to add/remove (?):","").trim();
             if(thisVal.equals("?"))
@@ -452,7 +452,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
         mob.tell(showNumber+". "+FieldDisp+": '"+oldShowVal+"'.");
         if((showFlag!=showNumber)&&(showFlag>-999)) return oldVal;
         String newVal="?";
-        while(newVal.equals("?")&&(mob.session()!=null)&&(!mob.session().killFlag()))
+        while(newVal.equals("?")&&(mob.session()!=null)&&(!mob.session().isStopped()))
         {
             newVal=mob.session().prompt("Enter a new choice (? or NULL):","").trim();
             if(newVal.equals("?"))
@@ -629,7 +629,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
         mob.tell(showNumber+". Panel Type: '"+componentType+"'.");
         if((showFlag!=showNumber)&&(showFlag>-999)) return;
         boolean continueThis=true;
-        while((mob.session()!=null)&&(!mob.session().killFlag())&&(continueThis))
+        while((mob.session()!=null)&&(!mob.session().isStopped())&&(continueThis))
         {
             continueThis=false;
             String newName=mob.session().prompt("Enter a new one (?)\n\r:","");
@@ -707,7 +707,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
         if(TC==CMLib.time().globalClock()) return;
         if((showFlag!=showNumber)&&(showFlag>-999)) return;
         String newName="";
-        while((mob.session()!=null)&&(!mob.session().killFlag())&&(newName.length()==0))
+        while((mob.session()!=null)&&(!mob.session().isStopped())&&(newName.length()==0))
         {
             report=new StringBuffer("\n\rCalendar/Clock settings:\n\r");
             report.append("1. "+TC.getHoursInDay()+" hours per day\n\r");
@@ -1041,7 +1041,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
         mob.tell(showNumber+". Type: '"+CMClass.classID(R)+"'");
         if((showFlag!=showNumber)&&(showFlag>-999)) return R;
         String newName="";
-        while((mob.session()!=null)&&(!mob.session().killFlag())&&(newName.length()==0))
+        while((mob.session()!=null)&&(!mob.session().isStopped())&&(newName.length()==0))
         {
             newName=mob.session().prompt("Enter a new one (?)\n\r:","");
             if(newName.trim().equals("?"))
@@ -1186,7 +1186,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
     {
         if((showFlag>0)&&(showFlag!=showNumber)) return;
         String str="Q";
-        while((mob.session()!=null)&&(!mob.session().killFlag())&&(str.length()>0))
+        while((mob.session()!=null)&&(!mob.session().isStopped())&&(str.length()>0))
         {
             mob.tell(showNumber+". Area staff names: "+A.getSubOpList());
             if((showFlag!=showNumber)&&(showFlag>-999)) return;
@@ -1215,7 +1215,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
     {
         if((showFlag>0)&&(showFlag!=showNumber)) return;
         String newArea="Q";
-        while((mob.session()!=null)&&(!mob.session().killFlag())&&(newArea.length()>0))
+        while((mob.session()!=null)&&(!mob.session().isStopped())&&(newArea.length()>0))
         {
             mob.tell(showNumber+". Parent Areas: "+A.getParentsList());
             if((showFlag!=showNumber)&&(showFlag>-999)) return;
@@ -1258,7 +1258,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
     {
         if((showFlag>0)&&(showFlag!=showNumber)) return;
         String newArea="Q";
-        while((mob.session()!=null)&&(!mob.session().killFlag())&&(newArea.length()>0))
+        while((mob.session()!=null)&&(!mob.session().isStopped())&&(newArea.length()>0))
         {
             mob.tell(showNumber+". Area Children: "+A.getChildrenList());
             if((showFlag!=showNumber)&&(showFlag>-999)) return;
@@ -1398,7 +1398,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
          ||(E instanceof DoorKey))
         {
             boolean ok=false;
-            while((mob.session()!=null)&&(!mob.session().killFlag())&&(!ok))
+            while((mob.session()!=null)&&(!mob.session().isStopped())&&(!ok))
             {
                 if(CMClass.classID(E).endsWith("SuperPill"))
                 {
@@ -1512,7 +1512,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
             mob.session().println(showNumber+". Current liquid type: "+RawMaterial.CODES.NAME(((Drink)E).liquidType()));
             if((showFlag!=showNumber)&&(showFlag>-999)) return;
             boolean q=false;
-            while((mob.session()!=null)&&(!mob.session().killFlag())&&(!q))
+            while((mob.session()!=null)&&(!mob.session().isStopped())&&(!q))
             {
                 String newType=mob.session().prompt("Enter a new type (?)\n\r:",RawMaterial.CODES.NAME(((Drink)E).liquidType()));
                 if(newType.equals("?"))
@@ -1547,7 +1547,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
         mob.tell(showNumber+". "+prompt+": "+E.getCommonSkillID()+".");
         mob.tell(CMStrings.padRight(" ",(""+showNumber).length()+2+prompt.length())+": "+CMStrings.replaceAll(E.getRecipeCodeLine(),"\t",",")+".");
         if((showFlag!=showNumber)&&(showFlag>-999)) return;
-        while(!mob.session().killFlag())
+        while(!mob.session().isStopped())
         {
             String newName=mob.session().prompt("Enter new skill id (?)\n\r:","");
             if(newName.equalsIgnoreCase("?"))
@@ -1595,7 +1595,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
             ((Potion)I).setDrunk(false);
 
         String c="Q";
-        while((mob.session()!=null)&&(!mob.session().killFlag())&&(!c.equals("\n")))
+        while((mob.session()!=null)&&(!mob.session().isStopped())&&(!c.equals("\n")))
         {
             mob.session().println(showNumber+". A) Is Gettable   : "+(!CMath.bset(I.basePhyStats().sensesMask(),PhyStats.SENSE_ITEMNOTGET)));
             mob.session().println("    B) Is Droppable  : "+(!CMath.bset(I.basePhyStats().sensesMask(),PhyStats.SENSE_ITEMNODROP)));
@@ -1672,7 +1672,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
             return;
         }
         String c="Q";
-        while((mob.session()!=null)&&(!mob.session().killFlag())&&(!c.equals("\n")))
+        while((mob.session()!=null)&&(!mob.session().isStopped())&&(!c.equals("\n")))
         {
             char letter='A';
             String letters="";
@@ -1746,7 +1746,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
     {
         if((showFlag>0)&&(showFlag!=showNumber)) return;
         String c="Q";
-        while((mob.session()!=null)&&(!mob.session().killFlag())&&(!c.equals("\n")))
+        while((mob.session()!=null)&&(!mob.session().isStopped())&&(!c.equals("\n")))
         {
             mob.session().println(""+showNumber+". Climate:");
             mob.session().println("    R) Wet and Rainy    : "+((A.climateType()&Area.CLIMASK_WET)>0));
@@ -1772,7 +1772,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
     {
         String c="Q";
         String commandStr="ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890!@#$%&*()=+-[]|{}_?,.;:~";
-        while((mob.session()!=null)&&(!mob.session().killFlag())&&(!c.equals("\n")))
+        while((mob.session()!=null)&&(!mob.session().isStopped())&&(!c.equals("\n")))
         {
             for(int i : CharStats.CODES.ALL())
                 if(i!=CharStats.STAT_GENDER)
@@ -1806,7 +1806,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
         }
         String c="Q";
         String commandStr="ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890!@#$%^&*()=+-";
-        while((mob.session()!=null)&&(!mob.session().killFlag())&&(!c.equals("\n")))
+        while((mob.session()!=null)&&(!mob.session().isStopped())&&(!c.equals("\n")))
         {
             for(int i : CharStats.CODES.ALL())
                 if(i!=CharStats.STAT_GENDER)
@@ -1868,7 +1868,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
             return;
         }
         String c="Q";
-        while((mob.session()!=null)&&(!mob.session().killFlag())&&(!c.equals("\n")))
+        while((mob.session()!=null)&&(!mob.session().isStopped())&&(!c.equals("\n")))
         {
             char letter='A';
             String letters="";
@@ -1978,7 +1978,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
             return;
         }
         String change="NO";
-        while((mob.session()!=null)&&(!mob.session().killFlag())&&(change.length()>0))
+        while((mob.session()!=null)&&(!mob.session().isStopped())&&(change.length()>0))
         {
             mob.tell("\n\rCan only contain: "+makeContainerTypes(E));
             change=mob.session().prompt("Enter a type to add/remove (?)\n\r:","");
@@ -2073,58 +2073,66 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
     public void genMiscSet(MOB mob, Environmental E)
         throws IOException
     {
-        if(CMLib.flags().isCataloged(E))
-        {
-            if(CMLib.catalog().isCatalogObj(E.Name()))
-                mob.tell("*** This object is Cataloged **\n\r");
-            else
-                mob.tell("*** This object WAS cataloged and is still tied **\n\r");
-        }
-
-        if(E instanceof ShopKeeper)
-            modifyGenShopkeeper(mob,(ShopKeeper)E);
-        else
-        if(E instanceof MOB)
-        {
-            if(((MOB)E).playerStats()==null)
-                modifyGenMOB(mob,(MOB)E);
-            else
-                modifyPlayer(mob,(MOB)E);
-        }
-        else
-        if((E instanceof Exit)&&(!(E instanceof Item)))
-            modifyGenExit(mob,(Exit)E);
-        else
-        if(E instanceof com.planet_ink.coffee_mud.Items.interfaces.RoomMap)
-            modifyGenMap(mob,(com.planet_ink.coffee_mud.Items.interfaces.RoomMap)E);
-        else
-        if(E instanceof Armor)
-            modifyGenArmor(mob,(Armor)E);
-        else
-        if(E instanceof MusicalInstrument)
-            modifyGenInstrument(mob,(MusicalInstrument)E);
-        else
-        if(E instanceof Food)
-            modifyGenFood(mob,(Food)E);
-        else
-        if((E instanceof Drink)&&(E instanceof Item))
-            modifyGenDrink(mob,(Drink)E);
-        else
-        if(E instanceof Weapon)
-            modifyGenWeapon(mob,(Weapon)E);
-        else
-        if(E instanceof Container)
-            modifyGenContainer(mob,(Container)E);
-        else
-        if(E instanceof Item)
-        {
-            if(E.ID().equals("GenWallpaper"))
-                modifyGenWallpaper(mob,(Item)E);
-            else
-                modifyGenItem(mob,(Item)E);
-        }
-        if(E instanceof Physical)
-        	catalogCheckUpdate(mob, (Physical)E);
+    	try
+    	{
+    		if(E!=mob) CMLib.threads().suspendTicking(E, -1);
+	        if(CMLib.flags().isCataloged(E))
+	        {
+	            if(CMLib.catalog().isCatalogObj(E.Name()))
+	                mob.tell("*** This object is Cataloged **\n\r");
+	            else
+	                mob.tell("*** This object WAS cataloged and is still tied **\n\r");
+	        }
+	
+	        if(E instanceof ShopKeeper)
+	            modifyGenShopkeeper(mob,(ShopKeeper)E);
+	        else
+	        if(E instanceof MOB)
+	        {
+	            if(((MOB)E).playerStats()==null)
+	                modifyGenMOB(mob,(MOB)E);
+	            else
+	                modifyPlayer(mob,(MOB)E);
+	        }
+	        else
+	        if((E instanceof Exit)&&(!(E instanceof Item)))
+	            modifyGenExit(mob,(Exit)E);
+	        else
+	        if(E instanceof com.planet_ink.coffee_mud.Items.interfaces.RoomMap)
+	            modifyGenMap(mob,(com.planet_ink.coffee_mud.Items.interfaces.RoomMap)E);
+	        else
+	        if(E instanceof Armor)
+	            modifyGenArmor(mob,(Armor)E);
+	        else
+	        if(E instanceof MusicalInstrument)
+	            modifyGenInstrument(mob,(MusicalInstrument)E);
+	        else
+	        if(E instanceof Food)
+	            modifyGenFood(mob,(Food)E);
+	        else
+	        if((E instanceof Drink)&&(E instanceof Item))
+	            modifyGenDrink(mob,(Drink)E);
+	        else
+	        if(E instanceof Weapon)
+	            modifyGenWeapon(mob,(Weapon)E);
+	        else
+	        if(E instanceof Container)
+	            modifyGenContainer(mob,(Container)E);
+	        else
+	        if(E instanceof Item)
+	        {
+	            if(E.ID().equals("GenWallpaper"))
+	                modifyGenWallpaper(mob,(Item)E);
+	            else
+	                modifyGenItem(mob,(Item)E);
+	        }
+	        if(E instanceof Physical)
+	        	catalogCheckUpdate(mob, (Physical)E);
+    	}
+    	finally
+    	{
+    		if(E!=mob) CMLib.threads().resumeTicking(E, -1);
+    	}
     }
 
     public void genMiscText(MOB mob, Environmental E, int showNumber, int showFlag)
@@ -2143,7 +2151,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
         mob.tell(showNumber+". Land plot ID: '"+L.landPropertyID()+"'.");
         if((showFlag!=showNumber)&&(showFlag>-999)) return;
         String newText="?!?!";
-        while((mob.session()!=null)&&(!mob.session().killFlag())
+        while((mob.session()!=null)&&(!mob.session().isStopped())
             &&((newText.length()>0)&&(CMLib.map().getRoom(newText)==null)))
         {
             newText=mob.session().prompt("New Property ID:","");
@@ -2169,7 +2177,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
         mob.tell(showNumber+". Money data: '"+I.getNumberOfCoins()+" x "+CMLib.beanCounter().getDenominationName(I.getCurrency(),I.getDenomination())+"'.");
         if((showFlag!=showNumber)&&(showFlag>-999)) return;
         boolean gocontinue=true;
-        while((mob.session()!=null)&&(!mob.session().killFlag())&&(gocontinue))
+        while((mob.session()!=null)&&(!mob.session().isStopped())&&(gocontinue))
         {
             gocontinue=false;
             String oldCurrency=I.getCurrency();
@@ -2199,7 +2207,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
                 I.setCurrency(oldCurrency.toUpperCase().trim());
         }
         gocontinue=true;
-        while((mob.session()!=null)&&(!mob.session().killFlag())&&(gocontinue))
+        while((mob.session()!=null)&&(!mob.session().isStopped())&&(gocontinue))
         {
             gocontinue=false;
             String newDenom=mob.session().prompt("Enter denomination (?):",""+I.getDenomination()).trim().toUpperCase();
@@ -2232,7 +2240,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
             else
                 I.setDenomination(CMath.s_double(newDenom));
         }
-        if((mob.session()!=null)&&(!mob.session().killFlag()))
+        if((mob.session()!=null)&&(!mob.session().isStopped()))
             I.setNumberOfCoins(CMath.s_int(mob.session().prompt("Enter stack size\n\r:",""+I.getNumberOfCoins())));
     }
 
@@ -2262,7 +2270,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
             mob.tell("(no change)");
         String clanType=ClanItem.CI_DESC[I.ciType()];
         String s="?";
-        while((mob.session()!=null)&&(!mob.session().killFlag())&&(s.equals("?")))
+        while((mob.session()!=null)&&(!mob.session().isStopped())&&(s.equals("?")))
         {
             s=mob.session().prompt("Enter a new type (?)\n\r:",clanType);
             if(s.equalsIgnoreCase("?"))
@@ -2305,13 +2313,13 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
         String multiWearStr=multiWearBool?" (multi)":"";
         mob.tell(showNumber+". Layer: '"+clothingLayer[0]+"'"+seeThroughStr+""+multiWearStr+".");
         if((showFlag!=showNumber)&&(showFlag>-999)) return;
-        if((mob.session()!=null)&&(!mob.session().killFlag()))
+        if((mob.session()!=null)&&(!mob.session().isStopped()))
             clothingLayer[0] = CMath.s_short(mob.session().prompt("Enter a new layer\n\r:",""+clothingLayer[0]));
         boolean newSeeThrough=seeThroughBool;
-        if((mob.session()!=null)&&(!mob.session().killFlag()))
+        if((mob.session()!=null)&&(!mob.session().isStopped()))
             newSeeThrough=mob.session().confirm("Is see-through (Y/N)? ",""+seeThroughBool);
         boolean multiWear=multiWearBool;
-        if((mob.session()!=null)&&(!mob.session().killFlag()))
+        if((mob.session()!=null)&&(!mob.session().isStopped()))
             multiWear=mob.session().confirm("Is multi-wear (Y/N)? ",""+multiWearBool);
         layerAtt[0] = (short)0;
         layerAtt[0] = (short)(layerAtt[0]|(newSeeThrough?Armor.LAYERMASK_SEETHROUGH:0));
@@ -2436,7 +2444,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
         if((showFlag!=showNumber)&&(showFlag>-999)) return;
         boolean q=false;
         String sel="NSPBFMR";
-        while((mob.session()!=null)&&(!mob.session().killFlag())&&(!q))
+        while((mob.session()!=null)&&(!mob.session().isStopped())&&(!q))
         {
             String newType=mob.session().choose("Enter a new value\n\r:",sel+"?","");
             if(newType.equals("?"))
@@ -2466,7 +2474,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
         mob.tell(showNumber+". Theme setting: '"+Area.THEME_PHRASE[A.getTechLevel()]+"'.");
         if((showFlag!=showNumber)&&(showFlag>-999)) return;
         boolean q=false;
-        while((mob.session()!=null)&&(!mob.session().killFlag())&&(!q))
+        while((mob.session()!=null)&&(!mob.session().isStopped())&&(!q))
         {
             String newType=mob.session().prompt("Enter a new level (?)\n\r",Area.THEME_PHRASE[A.getTechLevel()]);
             if(newType.equals("?"))
@@ -2503,7 +2511,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
         mob.tell(showNumber+". Material Type: '"+RawMaterial.CODES.NAME(E.material())+"'.");
         if((showFlag!=showNumber)&&(showFlag>-999)) return;
         boolean q=false;
-        while((mob.session()!=null)&&(!mob.session().killFlag())&&(!q))
+        while((mob.session()!=null)&&(!mob.session().isStopped())&&(!q))
         {
             String newType=mob.session().prompt("Enter a new material (?)\n\r:",RawMaterial.CODES.NAME(E.material()));
             if(newType.equals("?"))
@@ -2533,7 +2541,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
         mob.tell(showNumber+". Instrument Type: '"+MusicalInstrument.TYPE_DESC[E.instrumentType()]+"'.");
         if((showFlag!=showNumber)&&(showFlag>-999)) return;
         boolean q=false;
-        while((mob.session()!=null)&&(!mob.session().killFlag())&&(!q))
+        while((mob.session()!=null)&&(!mob.session().isStopped())&&(!q))
         {
             String newType=mob.session().prompt("Enter a new type (?)\n\r:",MusicalInstrument.TYPE_DESC[E.instrumentType()]);
             if(newType.equals("?"))
@@ -2600,7 +2608,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
     {
         if((showFlag>0)&&(showFlag!=showNumber)) return;
         String newFact="Q";
-        while((mob.session()!=null)&&(!mob.session().killFlag())&&(newFact.length()>0))
+        while((mob.session()!=null)&&(!mob.session().isStopped())&&(newFact.length()>0))
         {
             mob.tell(showNumber+". Factions: "+E.getFactionListing());
             if((showFlag!=showNumber)&&(showFlag>-999)) return;
@@ -2675,7 +2683,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
         if((showFlag!=showNumber)&&(showFlag>-999)) return;
         boolean q=false;
         String sel=("ABEFHKPRSDTN");
-        while((mob.session()!=null)&&(!mob.session().killFlag())&&(!q))
+        while((mob.session()!=null)&&(!mob.session().isStopped())&&(!q))
         {
             String newType=mob.session().choose("Enter a new value (?)\n\r:",sel+"?","");
             if(newType.equals("?"))
@@ -2712,7 +2720,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
     {
         if((showFlag>0)&&(showFlag!=showNumber)) return;
         String raceID="begin!";
-        while((mob.session()!=null)&&(!mob.session().killFlag())&&(raceID.length()>0))
+        while((mob.session()!=null)&&(!mob.session().isStopped())&&(raceID.length()>0))
         {
             mob.tell(showNumber+". Race: '"+M.baseCharStats().getMyRace().ID()+"'.");
             if((showFlag!=showNumber)&&(showFlag>-999)) return;
@@ -2742,7 +2750,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
     {
         if((showFlag>0)&&(showFlag!=showNumber)) return;
         String classID="begin!";
-        while((mob.session()!=null)&&(!mob.session().killFlag())&&(classID.length()>0))
+        while((mob.session()!=null)&&(!mob.session().isStopped())&&(classID.length()>0))
         {
             StringBuffer str=new StringBuffer("");
             for(int c=0;c<M.baseCharStats().numClasses();c++)
@@ -2835,7 +2843,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
     {
         if((showFlag>0)&&(showFlag!=showNumber)) return;
         String behave="NO";
-        while((mob.session()!=null)&&(!mob.session().killFlag())&&(behave.length()>0))
+        while((mob.session()!=null)&&(!mob.session().isStopped())&&(behave.length()>0))
         {
             String tattoostr="";
             for(Enumeration<MOB.Tattoo> e=M.tattoos();e.hasMoreElements();)
@@ -2873,7 +2881,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
         if((showFlag>0)&&(showFlag!=showNumber)) return;
         if(M.playerStats()==null) return;
         String behave="NO";
-        while((mob.session()!=null)&&(!mob.session().killFlag())&&(behave.length()>0))
+        while((mob.session()!=null)&&(!mob.session().isStopped())&&(behave.length()>0))
         {
             String behaviorstr="";
             for(int b=0;b<M.playerStats().getTitles().size();b++)
@@ -2921,7 +2929,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
     {
         if((showFlag>0)&&(showFlag!=showNumber)) return;
         String behave="NO";
-        while((mob.session()!=null)&&(!mob.session().killFlag())&&(behave.length()>0))
+        while((mob.session()!=null)&&(!mob.session().isStopped())&&(behave.length()>0))
         {
             String behaviorstr="";
             for(int b=0;b<M.numExpertises();b++)
@@ -2961,7 +2969,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
         PlayerStats P=M.playerStats();
         if(P==null) return;
         String behave="NO";
-        while((mob.session()!=null)&&(!mob.session().killFlag())&&(behave.length()>0))
+        while((mob.session()!=null)&&(!mob.session().isStopped())&&(behave.length()>0))
         {
             String behaviorstr="";
             for(int b=0;b<P.getSecurityGroups().size();b++)
@@ -3005,7 +3013,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
     {
         if((showFlag>0)&&(showFlag!=showNumber)) return;
         String behave="NO";
-        while((mob.session()!=null)&&(!mob.session().killFlag())&&(behave.length()>0))
+        while((mob.session()!=null)&&(!mob.session().isStopped())&&(behave.length()>0))
         {
             String behaviorstr="";
 			for(Enumeration<Behavior> e=P.behaviors();e.hasMoreElements();)
@@ -3091,7 +3099,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
     {
         if((showFlag>0)&&(showFlag!=showNumber)) return;
         String behave="NO";
-        while((mob.session()!=null)&&(!mob.session().killFlag())&&(behave.length()>0))
+        while((mob.session()!=null)&&(!mob.session().isStopped())&&(behave.length()>0))
         {
             String affectstr="";
             for(int b=0;b<P.numEffects();b++)
@@ -3196,7 +3204,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
     {
         if((showFlag>0)&&(showFlag!=showNumber)) return;
         long oldMask=M.getWhatIsSoldMask();
-        while((mob.session()!=null)&&(!mob.session().killFlag()))
+        while((mob.session()!=null)&&(!mob.session().isStopped()))
         {
 	        mob.tell(showNumber+". Shopkeeper type: '"+M.storeKeeperString()+"'.");
 	        if((showFlag!=showNumber)&&(showFlag>-999)) return;
@@ -3400,7 +3408,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
             return;
         }
         String behave="NO";
-        while((mob.session()!=null)&&(!mob.session().killFlag())&&(behave.length()>0))
+        while((mob.session()!=null)&&(!mob.session().isStopped())&&(behave.length()>0))
         {
             mob.tell(header+"\n\r");
             for(int p=0;p<prics.length;p++)
@@ -3467,7 +3475,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
             return;
         }
         String behave="NO";
-        while((mob.session()!=null)&&(!mob.session().killFlag())&&(behave.length()>0))
+        while((mob.session()!=null)&&(!mob.session().isStopped())&&(behave.length()>0))
         {
             mob.tell(header+"\n\r");
             for(Enumeration<String> f = A.areaBlurbFlags();f.hasMoreElements();)
@@ -3516,7 +3524,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
     {
         if((showFlag>0)&&(showFlag!=showNumber)) return;
         String behave="NO";
-        while((mob.session()!=null)&&(!mob.session().killFlag())&&(behave.length()>0))
+        while((mob.session()!=null)&&(!mob.session().isStopped())&&(behave.length()>0))
         {
             String abilitiestr="";
             for(int a=0;a<M.numLearnedAbilities();a++)
@@ -3586,7 +3594,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
     {
         if((showFlag>0)&&(showFlag!=showNumber)) return;
         String behave="NO";
-        while((mob.session()!=null)&&(!mob.session().killFlag())&&(behave.length()>0))
+        while((mob.session()!=null)&&(!mob.session().isStopped())&&(behave.length()>0))
         {
             String affectstr="";
             for(int b=0;b<V.size();b++)
@@ -3663,7 +3671,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
         String behave="NO";
         List<MemberRecord> members=E.getMemberList();
         List<MemberRecord> membersCopy=new XVector<MemberRecord>(members);
-        while((mob.session()!=null)&&(!mob.session().killFlag())&&(behave.length()>0))
+        while((mob.session()!=null)&&(!mob.session().isStopped())&&(behave.length()>0))
         {
             String memberStr="";
             for(Clan.MemberRecord member : members)
@@ -3705,7 +3713,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
                         }
 
                         int newRole=-1;
-                        while((mob.session()!=null)&&(!mob.session().killFlag())&&(newRole<0))
+                        while((mob.session()!=null)&&(!mob.session().isStopped())&&(newRole<0))
                         {
                             String newRoleStr=mob.session().prompt("Enter this members role (?) '"+E.getRoleName(members.get(index).role,true,false)+"': ","");
                             StringBuffer roles=new StringBuffer();
@@ -3805,7 +3813,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
     {
         if((showFlag>0)&&(showFlag!=showNumber)) return;
         String behave="NO";
-        while((mob.session()!=null)&&(!mob.session().killFlag())&&(behave.length()>0))
+        while((mob.session()!=null)&&(!mob.session().isStopped())&&(behave.length()>0))
         {
             String abilitiestr="";
             for(int a=0;a<E.numBlessings();a++)
@@ -3874,7 +3882,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
     {
         if((showFlag>0)&&(showFlag!=showNumber)) return;
         String behave="NO";
-        while((mob.session()!=null)&&(!mob.session().killFlag())&&(behave.length()>0))
+        while((mob.session()!=null)&&(!mob.session().isStopped())&&(behave.length()>0))
         {
             String abilitiestr="";
             for(int a=0;a<E.numCurses();a++)
@@ -3943,7 +3951,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
     {
         if((showFlag>0)&&(showFlag!=showNumber)) return;
         String behave="NO";
-        while((mob.session()!=null)&&(!mob.session().killFlag())&&(behave.length()>0))
+        while((mob.session()!=null)&&(!mob.session().isStopped())&&(behave.length()>0))
         {
             String abilitiestr="";
             for(int a=0;a<E.numPowers();a++)
@@ -4048,7 +4056,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
             return;
         }
         int codeVal=-1;
-        while((mob.session()!=null)&&(!mob.session().killFlag())&&(codeVal!=0))
+        while((mob.session()!=null)&&(!mob.session().isStopped())&&(codeVal!=0))
         {
             mob.tell("Wearing parameters\n\r0: Done");
             if(!logicalAnd[0])
@@ -4141,7 +4149,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
         mob.tell(showNumber+". "+FieldDisp+": '"+CMLib.masking().maskDesc(E.getStat(Field))+"'.");
         if((showFlag!=showNumber)&&(showFlag>-999)) return;
         String newName="?";
-        while((mob.session()!=null)&&(!mob.session().killFlag())&&(newName.equals("?")))
+        while((mob.session()!=null)&&(!mob.session().isStopped())&&(newName.equals("?")))
         {
             newName=mob.session().prompt("Enter a new mask (?)\n\r:","");
             if(newName.equals("?"))
@@ -4168,7 +4176,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
         if((showFlag!=showNumber)&&(showFlag>-999)) return;
         String newName="?";
         boolean setChanged=false;
-        while((mob.session()!=null)&&(!mob.session().killFlag())&&(newName.equals("?")))
+        while((mob.session()!=null)&&(!mob.session().isStopped())&&(newName.equals("?")))
         {
             newName=mob.session().prompt("Enter a weapon class to add/remove (?)\n\r:","");
             if(newName.equals("?"))
@@ -4224,7 +4232,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
         if((showFlag!=showNumber)&&(showFlag>-999)) return;
         String newName="?";
         boolean setChanged=false;
-        while((mob.session()!=null)&&(!mob.session().killFlag())&&(newName.equals("?")))
+        while((mob.session()!=null)&&(!mob.session().isStopped())&&(newName.equals("?")))
         {
             newName=mob.session().prompt("Enter a material type to add/remove to requirements (?)\n\r:","");
             if(newName.equals("?"))
@@ -4273,7 +4281,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
         if((showFlag>0)&&(showFlag!=showNumber)) return;
         int flags=CMath.s_int(E.getStat("DISFLAGS"));
         String newName="?";
-        while((mob.session()!=null)&&(!mob.session().killFlag())&&(newName.equals("?")))
+        while((mob.session()!=null)&&(!mob.session().isStopped())&&(newName.equals("?")))
         {
             StringBuffer disabled=new StringBuffer("");
             for(int i=0;i<Race.GENFLAG_DESCS.length;i++)
@@ -4316,7 +4324,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
         int flags=CMath.s_int(E.getStat("WEAR"));
         String newName="?";
 		Wearable.CODES codes = Wearable.CODES.instance();
-        while((mob.session()!=null)&&(!mob.session().killFlag())&&(newName.equals("?")))
+        while((mob.session()!=null)&&(!mob.session().isStopped())&&(newName.equals("?")))
         {
             StringBuffer wearable=new StringBuffer("");
             for(int i=1;i<codes.total();i++)
@@ -4363,7 +4371,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
         mob.tell(showNumber+". Availability: '"+Area.THEME_PHRASE_EXT[CMath.s_int(E.getStat("AVAIL"))]+"'.");
         if((showFlag!=showNumber)&&(showFlag>-999)) return;
         String newName="?";
-        while((mob.session()!=null)&&(!mob.session().killFlag())&&(newName.equals("?")))
+        while((mob.session()!=null)&&(!mob.session().isStopped())&&(newName.equals("?")))
         {
             newName=mob.session().prompt("Enter a new value (?)\n\r:","");
             if(newName.length()==0)
@@ -4391,7 +4399,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
         mob.tell(showNumber+". Availability: '"+Area.THEME_PHRASE_EXT[CMath.s_int(E.getStat("PLAYER"))]+"'.");
         if((showFlag!=showNumber)&&(showFlag>-999)) return;
         String newName="?";
-        while((mob.session()!=null)&&(!mob.session().killFlag())&&(newName.equals("?")))
+        while((mob.session()!=null)&&(!mob.session().isStopped())&&(newName.equals("?")))
         {
             newName=mob.session().prompt("Enter a new value (?)\n\r:","");
             if(newName.length()==0)
@@ -4580,7 +4588,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
         mob.tell(showNumber+". PhysStat Adjustments: "+parts.toString()+".");
         if((showFlag!=showNumber)&&(showFlag>-999)) return;
         boolean done=false;
-        while((!done)&&(mob.session()!=null)&&(!mob.session().killFlag()))
+        while((!done)&&(mob.session()!=null)&&(!mob.session().isStopped()))
         {
             String newName=mob.session().prompt("Enter a stat name\n\r:","");
             if(newName.length()>0)
@@ -4661,7 +4669,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
         mob.tell(showNumber+". "+prompt+": "+parts.toString()+".");
         if((showFlag!=showNumber)&&(showFlag>-999)) return;
         boolean done=false;
-        while((!done)&&(mob.session()!=null)&&(!mob.session().killFlag()))
+        while((!done)&&(mob.session()!=null)&&(!mob.session().isStopped()))
         {
             String newName=mob.session().prompt("Enter a stat name\n\r:","");
             if(newName.length()>0)
@@ -4718,7 +4726,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
         mob.tell(showNumber+". "+FieldName+": "+parts.toString()+".");
         if((showFlag!=showNumber)&&(showFlag>-999)) return;
         boolean done=false;
-        while((!done)&&(mob.session()!=null)&&(!mob.session().killFlag()))
+        while((!done)&&(mob.session()!=null)&&(!mob.session().isStopped()))
         {
             String newName=mob.session().prompt("Enter a stat name\n\r:","");
             if(newName.length()>0)
@@ -4783,7 +4791,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
         mob.tell(showNumber+". PhysStat Adjustments: "+parts.toString()+".");
         if((showFlag!=showNumber)&&(showFlag>-999)) return;
         boolean done=false;
-        while((!done)&&(mob.session()!=null)&&(!mob.session().killFlag()))
+        while((!done)&&(mob.session()!=null)&&(!mob.session().isStopped()))
         {
             String newName=mob.session().prompt("Enter a stat name\n\r:","");
             if(newName.length()>0)
@@ -4864,7 +4872,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
         mob.tell(showNumber+". "+prompt+": "+parts.toString()+".");
         if((showFlag!=showNumber)&&(showFlag>-999)) return;
         boolean done=false;
-        while((!done)&&(mob.session()!=null)&&(!mob.session().killFlag()))
+        while((!done)&&(mob.session()!=null)&&(!mob.session().isStopped()))
         {
             String newName=mob.session().prompt("Enter a stat name\n\r:","");
             if(newName.length()>0)
@@ -4921,7 +4929,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
         mob.tell(showNumber+". "+FieldName+": "+parts.toString()+".");
         if((showFlag!=showNumber)&&(showFlag>-999)) return;
         boolean done=false;
-        while((!done)&&(mob.session()!=null)&&(!mob.session().killFlag()))
+        while((!done)&&(mob.session()!=null)&&(!mob.session().isStopped()))
         {
             String newName=mob.session().prompt("Enter a stat name\n\r:","");
             if(newName.length()>0)
@@ -4969,7 +4977,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
         throws IOException
     {
         if((showFlag>0)&&(showFlag!=showNumber)) return;
-        while((mob.session()!=null)&&(!mob.session().killFlag())&&(true))
+        while((mob.session()!=null)&&(!mob.session().isStopped())&&(true))
         {
             StringBuffer parts=new StringBuffer("");
             int numResources=CMath.s_int(E.getStat("NUMRSC"));
@@ -5084,7 +5092,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
         throws IOException
     {
         if((showFlag>0)&&(showFlag!=showNumber)) return;
-        while((mob.session()!=null)&&(!mob.session().killFlag())&&(true))
+        while((mob.session()!=null)&&(!mob.session().isStopped())&&(true))
         {
             StringBuffer parts=new StringBuffer("");
             int numResources=CMath.s_int(E.getStat("NUMOFT"));
@@ -5156,7 +5164,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
         throws IOException
     {
         if((showFlag>0)&&(showFlag!=showNumber)) return;
-        while((mob.session()!=null)&&(!mob.session().killFlag())&&(true))
+        while((mob.session()!=null)&&(!mob.session().isStopped())&&(true))
         {
             StringBuffer parts=new StringBuffer("");
             int numResources=CMath.s_int(E.getStat("NUMOFT"));
@@ -5280,7 +5288,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 
         mob.tell(showNumber+". Aging Chart: "+CMParms.toStringList(E.getAgingChart())+".");
         if((showFlag!=showNumber)&&(showFlag>-999)) return;
-        while((mob.session()!=null)&&(!mob.session().killFlag())&&(true))
+        while((mob.session()!=null)&&(!mob.session().isStopped())&&(true))
         {
             String newName=mob.session().prompt("Enter a comma-delimited list of 9 numbers, running from infant -> ancient\n\r:","");
             if(newName.length()==0)
@@ -5360,7 +5368,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
         throws IOException
     {
         if((showFlag>0)&&(showFlag!=showNumber)) return;
-        while((mob.session()!=null)&&(!mob.session().killFlag())&&(true))
+        while((mob.session()!=null)&&(!mob.session().isStopped())&&(true))
         {
             StringBuffer parts=new StringBuffer("");
             int numResources=CMath.s_int(E.getStat("NUMRABLE"));
@@ -5455,7 +5463,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
         throws IOException
     {
         if((showFlag>0)&&(showFlag!=showNumber)) return;
-        while((mob.session()!=null)&&(!mob.session().killFlag())&&(true))
+        while((mob.session()!=null)&&(!mob.session().isStopped())&&(true))
         {
             StringBuffer parts=new StringBuffer("");
             int numResources=CMath.s_int(E.getStat("NUMREFF"));
@@ -5625,7 +5633,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
             mob.tell(showNumber+". Class Abilities: [...].");
             return;
         }
-        while((mob.session()!=null)&&(!mob.session().killFlag())&&(true))
+        while((mob.session()!=null)&&(!mob.session().isStopped())&&(true))
         {
             StringBuffer parts=new StringBuffer("");
             int numAbles=CMath.s_int(E.getStat("NUMCABLE"));
@@ -5787,7 +5795,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
         throws IOException
     {
         if((showFlag>0)&&(showFlag!=showNumber)) return;
-        while((mob.session()!=null)&&(!mob.session().killFlag())&&(true))
+        while((mob.session()!=null)&&(!mob.session().isStopped())&&(true))
         {
             StringBuffer parts=new StringBuffer("");
             int numResources=CMath.s_int(E.getStat("NUMCABLE"));
@@ -5873,7 +5881,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
         int showFlag=-1;
         if(CMProps.getIntVar(CMProps.SYSTEMI_EDITORTYPE)>0)
             showFlag=-999;
-        while((mob.session()!=null)&&(!mob.session().killFlag())&&(!ok))
+        while((mob.session()!=null)&&(!mob.session().isStopped())&&(!ok))
         {
             int showNumber=0;
 
@@ -5886,7 +5894,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
             {
                 promptStatStr(mob,me,++showNumber,showFlag,"Class Name #"+i+": ","NAME"+i);
                 if(i>0)
-                while(!mob.session().killFlag())
+                while(!mob.session().isStopped())
                 {
                     int oldNameLevel=CMath.s_int(me.getStat("NAMELEVEL"+i));
                     promptStatInt(mob,me,++showNumber,showFlag,"Class Name #"+i+" class level: ","NAMELEVEL"+i);
@@ -5948,7 +5956,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
             for(int i=0;i<numGroups;i++)
             {
                 promptStatStr(mob,me,++showNumber,showFlag,"Security Codes in Set #"+i,"SSET"+i);
-                while(!mob.session().killFlag())
+                while(!mob.session().isStopped())
                 {
                     int oldGroupLevel=CMath.s_int(me.getStat("SSETLEVEL"+i));
                     promptStatInt(mob,me,++showNumber,showFlag,"Class Level for Security Set #"+i+": ","SSETLEVEL"+i);
@@ -5986,7 +5994,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
         int showFlag=-1;
         if(CMProps.getIntVar(CMProps.SYSTEMI_EDITORTYPE)>0)
             showFlag=-999;
-        while((mob.session()!=null)&&(!mob.session().killFlag())&&(!ok))
+        while((mob.session()!=null)&&(!mob.session().isStopped())&&(!ok))
         {
             int showNumber=0;
             promptStatStr(mob,me,null,++showNumber,showFlag,"Simple ID","ID",false);
@@ -6018,7 +6026,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
         mob.tell(showNumber+". Positions: "+list);
         if((showFlag!=showNumber)&&(showFlag>-999)) return;
     	String promptStr="Enter a position ID to edit/remove or ADD\n\r:";
-        while((mob.session()!=null)&&(!mob.session().killFlag()))
+        while((mob.session()!=null)&&(!mob.session().isStopped()))
         {
             String word=mob.session().prompt(promptStr,"");
             if(word.trim().length()==0)
@@ -6068,7 +6076,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
         int showFlag=-1;
         if(CMProps.getIntVar(CMProps.SYSTEMI_EDITORTYPE)>0)
             showFlag=-999;
-        while((mob.session()!=null)&&(!mob.session().killFlag())&&(!ok))
+        while((mob.session()!=null)&&(!mob.session().isStopped())&&(!ok))
         {
             int showNumber=0;
             promptStatStr(mob,me,null,++showNumber,showFlag,"Type Name","NAME",false);
@@ -6123,7 +6131,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
         int showFlag=-1;
         if(CMProps.getIntVar(CMProps.SYSTEMI_EDITORTYPE)>0)
             showFlag=-999;
-        while((mob.session()!=null)&&(!mob.session().killFlag())&&(!ok))
+        while((mob.session()!=null)&&(!mob.session().isStopped())&&(!ok))
         {
             int showNumber=0;
             // id is bad to change.. make them delete it.
@@ -6178,7 +6186,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
         int showFlag=-1;
         if(CMProps.getIntVar(CMProps.SYSTEMI_EDITORTYPE)>0)
             showFlag=-999;
-        while((mob.session()!=null)&&(!mob.session().killFlag())&&(!ok))
+        while((mob.session()!=null)&&(!mob.session().isStopped())&&(!ok))
         {
             int showNumber=0;
             // id is bad to change.. make them delete it.
@@ -6195,7 +6203,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 	            if((showFlag==showNumber)||(showFlag<=-999))
 	            {
 		        	String promptStr="Enter a word definition to add or remove\n\r:";
-		            while((mob.session()!=null)&&(!mob.session().killFlag()))
+		            while((mob.session()!=null)&&(!mob.session().isStopped()))
 		            {
 		                String word=mob.session().prompt(promptStr,"");
 		                if(word.trim().length()==0)
@@ -6246,7 +6254,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
         int showFlag=-1;
         if(CMProps.getIntVar(CMProps.SYSTEMI_EDITORTYPE)>0)
             showFlag=-999;
-        while((mob.session()!=null)&&(!mob.session().killFlag())&&(!ok))
+        while((mob.session()!=null)&&(!mob.session().isStopped())&&(!ok))
         {
             int showNumber=0;
             // id is bad to change.. make them delete it.
@@ -6262,7 +6270,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 	            if((showFlag==showNumber)||(showFlag<=-999))
 	            {
 		        	String promptStr="Enter a material or resource to add or remove (?)\n\r:";
-		            while((mob.session()!=null)&&(!mob.session().killFlag()))
+		            while((mob.session()!=null)&&(!mob.session().isStopped()))
 		            {
 		                String word=mob.session().prompt(promptStr,"");
 		                if(word.trim().length()==0)
@@ -6331,7 +6339,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
         }
         if((newName.equalsIgnoreCase("?"))&&(help!=null))
         {
-            if((mob.session()==null)||(mob.session().killFlag()))
+            if((mob.session()==null)||(mob.session().isStopped()))
                 return false;
             mob.tell(help);
             return genText(mob,set,choices,help,showNumber,showFlag,FieldDisp,Field);
@@ -6350,7 +6358,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
         }
         if(!found)
         {
-            if((mob.session()==null)||(mob.session().killFlag()))
+            if((mob.session()==null)||(mob.session().isStopped()))
                 return false;
             mob.tell(help);
             return genText(mob,set,choices,help,showNumber,showFlag,FieldDisp,Field);
@@ -6370,7 +6378,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
             showFlag=-999;
         String choices="Your choices are: ";
         String allComponents=CMParms.toStringList(RawMaterial.MATERIAL_DESCS)+","+CMParms.toStringList(RawMaterial.CODES.NAMES());
-        while((mob.session()!=null)&&(!mob.session().killFlag())&&(!ok))
+        while((mob.session()!=null)&&(!mob.session().isStopped())&&(!ok))
         {
             int showNumber=0;
             genText(mob,decoded,(new String[]{"&&","||","X"}),choices+" &&, ||, X",++showNumber,showFlag,"Conjunction (X Deletes) (?)","ANDOR");
@@ -6403,11 +6411,11 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
             showFlag=-999;
         List<AbilityComponent> codedDV=CMLib.ableMapper().getAbilityComponentDVector(componentID);
         if(codedDV!=null)
-        while((mob.session()!=null)&&(!mob.session().killFlag())&&(!ok))
+        while((mob.session()!=null)&&(!mob.session().isStopped())&&(!ok))
         {
             int showNumber=0;
             for(int v=0;v<codedDV.size();v++)
-                if((mob.session()!=null)&&(!mob.session().killFlag()))
+                if((mob.session()!=null)&&(!mob.session().isStopped()))
                 {
                     showNumber++;
                     if((showFlag>0)&&(showFlag!=showNumber)) continue;
@@ -6419,7 +6427,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
                         v--;
                     }
                 }
-            while((mob.session()!=null)&&(!mob.session().killFlag()))
+            while((mob.session()!=null)&&(!mob.session().isStopped()))
             {
                 showNumber++;
                 mob.tell(showNumber+". Add new component requirement.");
@@ -6459,7 +6467,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
         int showFlag=-1;
         if(CMProps.getIntVar(CMProps.SYSTEMI_EDITORTYPE)>0)
             showFlag=-999;
-        while((mob.session()!=null)&&(!mob.session().killFlag())&&(!ok))
+        while((mob.session()!=null)&&(!mob.session().isStopped())&&(!ok))
         {
             int showNumber=0;
             promptStatStr(mob,me,++showNumber,showFlag,"Name","NAME");
@@ -6509,7 +6517,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
         int showFlag=-1;
         if(CMProps.getIntVar(CMProps.SYSTEMI_EDITORTYPE)>0)
             showFlag=-999;
-        while((mob.session()!=null)&&(!mob.session().killFlag())&&(!ok))
+        while((mob.session()!=null)&&(!mob.session().isStopped())&&(!ok))
         {
             if(mob.isMonster()) return;
             int showNumber=0;
@@ -6574,7 +6582,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
         int showFlag=-1;
         if(CMProps.getIntVar(CMProps.SYSTEMI_EDITORTYPE)>0)
             showFlag=-999;
-        while((mob.session()!=null)&&(!mob.session().killFlag())&&(!ok))
+        while((mob.session()!=null)&&(!mob.session().isStopped())&&(!ok))
         {
             int showNumber=0;
             genName(mob,me,++showNumber,showFlag);
@@ -6617,7 +6625,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
     {
         if((showFlag>0)&&(showFlag!=showNumber)) return;
         String behave="NO";
-        while((mob.session()!=null)&&(!mob.session().killFlag())&&(behave.length()>0))
+        while((mob.session()!=null)&&(!mob.session().isStopped())&&(behave.length()>0))
         {
             String behaviorstr="";
             int b=1;
@@ -6658,7 +6666,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
         int showFlag=-1;
         if(CMProps.getIntVar(CMProps.SYSTEMI_EDITORTYPE)>0)
             showFlag=-999;
-        while((mob.session()!=null)&&(!mob.session().killFlag())&&(!ok))
+        while((mob.session()!=null)&&(!mob.session().isStopped())&&(!ok))
         {
             int showNumber=0;
             genName(mob,me,++showNumber,showFlag);
@@ -6709,7 +6717,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
         int showFlag=-1;
         if(CMProps.getIntVar(CMProps.SYSTEMI_EDITORTYPE)>0)
             showFlag=-999;
-        while((mob.session()!=null)&&(!mob.session().killFlag())&&(!ok))
+        while((mob.session()!=null)&&(!mob.session().isStopped())&&(!ok))
         {
             int showNumber=0;
             genName(mob,me,++showNumber,showFlag);
@@ -6742,7 +6750,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
         int showFlag=-1;
         if(CMProps.getIntVar(CMProps.SYSTEMI_EDITORTYPE)>0)
             showFlag=-999;
-        while((mob.session()!=null)&&(!mob.session().killFlag())&&(!ok))
+        while((mob.session()!=null)&&(!mob.session().isStopped())&&(!ok))
         {
             int showNumber=0;
             genName(mob,me,++showNumber,showFlag);
@@ -6786,7 +6794,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
         int showFlag=-1;
         if(CMProps.getIntVar(CMProps.SYSTEMI_EDITORTYPE)>0)
             showFlag=-999;
-        while((mob.session()!=null)&&(!mob.session().killFlag())&&(!ok))
+        while((mob.session()!=null)&&(!mob.session().isStopped())&&(!ok))
         {
             int showNumber=0;
             genName(mob,me,++showNumber,showFlag);
@@ -6853,7 +6861,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
         int showFlag=-1;
         if(CMProps.getIntVar(CMProps.SYSTEMI_EDITORTYPE)>0)
             showFlag=-999;
-        while((mob.session()!=null)&&(!mob.session().killFlag())&&(!ok))
+        while((mob.session()!=null)&&(!mob.session().isStopped())&&(!ok))
         {
             int showNumber=0;
             genName(mob,me,++showNumber,showFlag);
@@ -6918,7 +6926,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
         int showFlag=-1;
         if(CMProps.getIntVar(CMProps.SYSTEMI_EDITORTYPE)>0)
             showFlag=-999;
-        while((mob.session()!=null)&&(!mob.session().killFlag())&&(!ok))
+        while((mob.session()!=null)&&(!mob.session().isStopped())&&(!ok))
         {
             int showNumber=0;
             genName(mob,me,++showNumber,showFlag);
@@ -6977,7 +6985,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
         int showFlag=-1;
         if(CMProps.getIntVar(CMProps.SYSTEMI_EDITORTYPE)>0)
             showFlag=-999;
-        while((mob.session()!=null)&&(!mob.session().killFlag())&&(!ok))
+        while((mob.session()!=null)&&(!mob.session().isStopped())&&(!ok))
         {
             int showNumber=0;
             genName(mob,me,++showNumber,showFlag);
@@ -7023,7 +7031,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
         int showFlag=-1;
         if(CMProps.getIntVar(CMProps.SYSTEMI_EDITORTYPE)>0)
             showFlag=-999;
-        while((mob.session()!=null)&&(!mob.session().killFlag())&&(!ok))
+        while((mob.session()!=null)&&(!mob.session().isStopped())&&(!ok))
         {
             int showNumber=0;
             genName(mob,me,++showNumber,showFlag);
@@ -7095,7 +7103,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
         int showFlag=-1;
         if(CMProps.getIntVar(CMProps.SYSTEMI_EDITORTYPE)>0)
             showFlag=-999;
-        while((mob.session()!=null)&&(!mob.session().killFlag())&&(!ok))
+        while((mob.session()!=null)&&(!mob.session().isStopped())&&(!ok))
         {
             int showNumber=0;
             genName(mob,me,++showNumber,showFlag);
@@ -7184,7 +7192,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
         if(CMProps.getIntVar(CMProps.SYSTEMI_EDITORTYPE)>0)
             showFlag=-999;
         String oldName=me.Name();
-        while((mob.session()!=null)&&(!mob.session().killFlag())&&(!ok))
+        while((mob.session()!=null)&&(!mob.session().isStopped())&&(!ok))
         {
             int showNumber=0;
             genName(mob,me,++showNumber,showFlag);
@@ -7194,7 +7202,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
             (!newName.equals(oldName))
             &&(CMLib.players().playerExists(newName))
             &&(mob.session()!=null)
-            &&(!mob.session().killFlag()))
+            &&(!mob.session().isStopped()))
             {
                 mob.tell("The name given cannot be chosen, as it is already being used.");
                 genName(mob,me,showNumber,showFlag);
@@ -7208,7 +7216,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
             	String oldAccountName = ((me.playerStats()!=null)&&(me.playerStats().getAccount()!=null))?me.playerStats().getAccount().accountName():"";
             	String accountName =CMStrings.capitalizeAndLower(prompt(mob,oldAccountName,++showNumber,showFlag,"Account",true,false,null));
 	            while((!accountName.equals(oldAccountName))&&(CMLib.players().getLoadAccount(accountName)==null)
-	            &&(mob.session()!=null)&&(!mob.session().killFlag()))
+	            &&(mob.session()!=null)&&(!mob.session().isStopped()))
 	            {
 	                mob.tell("The account can not be used, as it does not exist.");
 	                accountName =CMStrings.capitalizeAndLower(prompt(mob,oldAccountName,showNumber,showFlag,"Account",true,false,null));
@@ -7339,7 +7347,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
         if((showFlag>0)&&(showFlag!=showNumber)) return;
         mob.tell(showNumber+". Government type: '"+C.getGovernmentName()+"'.");
         if((showFlag!=showNumber)&&(showFlag>-999)) return;
-        while((mob.session()!=null)&&(!mob.session().killFlag()))
+        while((mob.session()!=null)&&(!mob.session().isStopped()))
         {
             String newName=mob.session().prompt("Enter a new one (?)\n\r:","");
             if(newName.trim().length()==0)
@@ -7401,7 +7409,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
         if((showFlag>0)&&(showFlag!=showNumber)) return;
         mob.tell(showNumber+". Apply Role: '"+C.getRoleName(C.getAutoPosition(),true,false)+"'.");
         if((showFlag!=showNumber)&&(showFlag>-999)) return;
-        while((mob.session()!=null)&&(!mob.session().killFlag()))
+        while((mob.session()!=null)&&(!mob.session().isStopped()))
         {
             String newName=mob.session().prompt("Enter a new one (?)\n\r:","");
             if(newName.trim().length()==0)
@@ -7437,7 +7445,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
         String clasName=(CC==null)?"NONE":CC.name();
         mob.tell(showNumber+". Clan Auto-Class: '"+clasName+"'.");
         if((showFlag!=showNumber)&&(showFlag>-999)) return;
-        while((mob.session()!=null)&&(!mob.session().killFlag()))
+        while((mob.session()!=null)&&(!mob.session().isStopped()))
         {
             String newName=mob.session().prompt("Enter a new one (?)\n\r:","");
             if(newName.trim().equalsIgnoreCase("none"))
@@ -7477,7 +7485,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
         if((showFlag>0)&&(showFlag!=showNumber)) return oldRoomID;
         mob.tell(showNumber+CMStrings.replaceAll(promptCode,"@x1",oldRoomID));
         if((showFlag!=showNumber)&&(showFlag>-999)) return oldRoomID;
-        while((mob.session()!=null)&&(!mob.session().killFlag()))
+        while((mob.session()!=null)&&(!mob.session().isStopped()))
         {
             String newName=mob.session().prompt("Enter a new one (null)\n\r:","");
             if(newName.trim().equalsIgnoreCase("null"))
@@ -7509,7 +7517,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
         if(CMProps.getIntVar(CMProps.SYSTEMI_EDITORTYPE)>0)
             showFlag=-999;
         String oldName=C.ID();
-        while((mob.session()!=null)&&(!mob.session().killFlag())&&(!ok))
+        while((mob.session()!=null)&&(!mob.session().isStopped())&&(!ok))
         {
             mob.tell("*. Name: '"+C.name()+"'.");
             int showNumber=0;
@@ -7557,7 +7565,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
         int showFlag=-1;
         if(CMProps.getIntVar(CMProps.SYSTEMI_EDITORTYPE)>0)
             showFlag=-999;
-        while((mob.session()!=null)&&(!mob.session().killFlag())&&(!ok))
+        while((mob.session()!=null)&&(!mob.session().isStopped())&&(!ok))
         {
             int showNumber=0;
             genName(mob,me,++showNumber,showFlag);
@@ -7719,7 +7727,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
             String acctName=CMStrings.capitalizeAndLower(prompt(mob,A.accountName(),++showNumber,showFlag,"Name",true,false,null));
             while((!acctName.equals(A.accountName()))
             &&(CMLib.players().getLoadAccount(acctName)!=null)
-            &&(mob.session()!=null)&&(!mob.session().killFlag()))
+            &&(mob.session()!=null)&&(!mob.session().isStopped()))
             {
                 mob.tell("The name given cannot be chosen, as it is already being used.");
                 acctName=CMStrings.capitalizeAndLower(prompt(mob,acctName,showNumber,showFlag,"Name",true,false,null));

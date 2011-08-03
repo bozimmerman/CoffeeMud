@@ -147,8 +147,8 @@ public class FakeSession implements Session
     
     @SuppressWarnings("unchecked")
 	public void cmdExit(MOB mob, Vector commands) throws Exception {}
-    public void kill(boolean t1, boolean t2, boolean t3){}
-    public boolean killFlag(){return false;}
+    public void stopSession(boolean t1, boolean t2, boolean t3){}
+    public boolean isStopped(){return false;}
     
     public boolean afkFlag(){return false;}
     public void setAfkFlag(boolean truefalse){}

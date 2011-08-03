@@ -59,7 +59,7 @@ public class Email extends StdCommand
             {
             	String journalName=CMProps.getVar(CMProps.SYSTEM_MAILBOX);
                 List<JournalsLibrary.JournalEntry> msgs=CMLib.database().DBReadJournalMsgs(journalName);
-                while((mob.session()!=null)&&(!mob.session().killFlag()))
+                while((mob.session()!=null)&&(!mob.session().isStopped()))
                 {
                     Vector mymsgs=new Vector();
                     StringBuffer messages=new StringBuffer("^X"+CMStrings.padCenter(mob.Name()+"'s MailBox",48)+"^?^.\n\r");
@@ -98,13 +98,13 @@ public class Email extends StdCommand
                         if(S!=null) S.snoopSuspension(-1);
                     }
                     String s=mob.session().prompt("Enter a message #","");
-                    if((!CMath.isInteger(s))||(mob.session().killFlag()))
+                    if((!CMath.isInteger(s))||(mob.session().isStopped()))
                         return false;
                     int num=CMath.s_int(s);
                     if((num<=0)||(num>mymsgs.size()))
                         mob.tell("That is not a valid number.");
                     else
-                    while((mob.session()!=null)&&(!mob.session().killFlag()))
+                    while((mob.session()!=null)&&(!mob.session().isStopped()))
                     {
                     	JournalsLibrary.JournalEntry thismsg=(JournalsLibrary.JournalEntry)mymsgs.elementAt(num-1);
                         String key=thismsg.key;
@@ -247,7 +247,7 @@ public class Email extends StdCommand
             if(mob.session()!=null)
             {
                 try{Thread.sleep(1000);}catch(Exception e){}
-                mob.session().kill(false,false,false);
+                mob.session().stopSession(false,false,false);
             }
         }
 		return true;

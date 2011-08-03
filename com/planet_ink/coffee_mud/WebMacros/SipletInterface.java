@@ -48,38 +48,27 @@ public class SipletInterface extends StdWebMacro
     public String name()    {return this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);}
 
     public boolean isAWebPath(){return true;}
-    public static final SHashtable<String,Pair<long[],Siplet>> siplets = new SHashtable<String,Pair<long[],Siplet>>(); 
-	public static final LinkedList<String> removables=new LinkedList<String>();
-	public static final Object sipletConnectSync = new Object();
     
-    public void cleanOutTrash()
-    {
-		synchronized(siplets)
-		{
-			for(final String key : siplets.keySet())
-			{
-				Pair<long[],Siplet> p = siplets.get(key);
-				if((p!=null)&&((System.currentTimeMillis()-p.first[0])>(2 * 60 * 1000)))
-				{
-					p.second.disconnectFromURL();
-					removables.addLast(key);
-				}
-			}
-			if(removables.size()>0)
-			{
-				for(final String remme : removables)
-					siplets.remove(remme);
-				removables.clear();
-			}
-		}
-    }
+	public static final LinkedList<String> removables		 = new LinkedList<String>();
+	public static final Object 			   sipletConnectSync = new Object();
+	public static volatile boolean 		   initialized		 = false;
+    public static final SHashtable<String,SipletSession> 	 siplets 	= new SHashtable<String,SipletSession>(); 
+    
+	private class SipletSession
+	{
+		public long 		lastTouched = System.currentTimeMillis();
+		public Siplet 		siplet		= null;
+		public String       response	= "";
+		public SipletSession(Siplet sip) { siplet=sip;}
+	}
     
     private class PipeSocket extends Socket
     {
-    	private boolean isClosed = false;
-    	private PipedInputStream inStream = new PipedInputStream();
-    	private PipedOutputStream outStream= new PipedOutputStream();
-    	private InetAddress	addr=null;
+    	private boolean 			isClosed = false;
+    	private PipedInputStream 	inStream = new PipedInputStream();
+    	private PipedOutputStream 	outStream= new PipedOutputStream();
+    	private InetAddress			addr=null;
+    	private PipeSocket 			friendPipe=null;
     	public PipeSocket(InetAddress addr, PipeSocket pipeLocal) throws IOException
     	{
     		this.addr=addr;
@@ -87,16 +76,31 @@ public class SipletInterface extends StdWebMacro
     		{
     			pipeLocal.inStream.connect(outStream);
     			pipeLocal.outStream.connect(inStream);
+    			friendPipe=pipeLocal;
+    			pipeLocal=friendPipe;
     		}
     	}
-    	public void shutdownInput() throws IOException  { inStream.close(); isClosed=true; }
-    	public void shutdownOutput() throws IOException { outStream.close(); isClosed=true; }
+    	public void shutdownInput() throws IOException  
+    	{ 
+    		inStream.close(); 
+    		isClosed=true; 
+    	}
+    	public void shutdownOutput() throws IOException 
+    	{ 
+    		outStream.close(); 
+    		isClosed=true; 
+    	}
     	public boolean isConnected() { return !isClosed; }
         public boolean isClosed() { return isClosed; }
         public synchronized void close() throws IOException 
         {
         	inStream.close();
         	outStream.close();
+        	if(friendPipe!=null)
+        	{
+        		friendPipe.shutdownInput();
+        		friendPipe.shutdownOutput();
+        	}
             isClosed = true;
         }
         public InputStream getInputStream() throws IOException { return inStream; }
@@ -106,7 +110,47 @@ public class SipletInterface extends StdWebMacro
     
     public String runMacro(ExternalHTTPRequests httpReq, String parm) throws HTTPServerException
     {
-		cleanOutTrash();
+    	if(!CMProps.getBoolVar(CMProps.SYSTEMB_MUDSTARTED))
+    		return "false;";
+    	if(!initialized)
+    	{
+    		initialized=true;
+    		CMLib.threads().startTickDown(new Tickable(){
+    			private long tickStatus=Tickable.STATUS_NOT;
+				public long getTickStatus() { return tickStatus;}
+				public String name() { return "SipletInterface";}
+				public boolean tick(Tickable ticking, int tickID) 
+				{
+					tickStatus=Tickable.STATUS_ALIVE;
+					synchronized(siplets)
+					{
+						for(final String key : siplets.keySet())
+						{
+							SipletSession p = siplets.get(key);
+							if((p!=null)&&((System.currentTimeMillis()-p.lastTouched)>(2 * 60 * 1000)))
+							{
+								p.siplet.disconnectFromURL();
+								removables.addLast(key);
+							}
+						}
+						if(removables.size()>0)
+						{
+							for(final String remme : removables)
+								siplets.remove(remme);
+							removables.clear();
+						}
+					}
+					tickStatus=Tickable.STATUS_NOT;
+					return true;
+				}
+				public String ID() { return "SipletInterface";}
+				public CMObject copyOf() { return this;}
+				public void initializeClass() {}
+				public CMObject newInstance() { return this;}
+				public int compareTo(CMObject o) { return o==this?0:1;}
+    		}, Tickable.TICKID_MISCELLANEOUS, 10);
+    	}
+    	
 		if(httpReq.isRequestParameter("CONNECT"))
 		{
 			String url=httpReq.getRequestParameter("URL");
@@ -150,7 +194,7 @@ public class SipletInterface extends StdWebMacro
 							if(httpReq.isRequestParameter(hex))
 								tokenNum=0;
 						}
-						siplets.put(hex, new Pair<long[],Siplet>(new long[]{System.currentTimeMillis()},sip));
+						siplets.put(hex, new SipletSession(sip));
 					}
 				}
 			}
@@ -163,11 +207,11 @@ public class SipletInterface extends StdWebMacro
 			boolean success = false;
 			if(token != null)
 			{
-				Pair<long[],Siplet> p = siplets.get(token);
+				SipletSession p = siplets.get(token);
 				if(p!=null)
 				{
 					siplets.remove(token);
-					p.second.disconnectFromURL();
+					p.siplet.disconnectFromURL();
 					success=true;
 				}
 			}
@@ -180,15 +224,15 @@ public class SipletInterface extends StdWebMacro
 			boolean success = false;
 			if(token != null)
 			{
-				Pair<long[],Siplet> p = siplets.get(token);
+				SipletSession p = siplets.get(token);
 				if(p!=null)
 				{
 					String data=httpReq.getRequestParameter("DATA");
 					if(data!=null)
 					{
-						p.first[0]=System.currentTimeMillis();
-						p.second.sendData(data);
-						success=p.second.isConnectedToURL();
+						p.lastTouched=System.currentTimeMillis();
+						p.siplet.sendData(data);
+						success=p.siplet.isConnectedToURL();
 					}
 				}
 			}
@@ -197,26 +241,30 @@ public class SipletInterface extends StdWebMacro
 		else
 		if(httpReq.isRequestParameter("POLL"))
 		{
-			String token=httpReq.getRequestParameter("TOKEN");
-			boolean success = false;
-			String data="";
-			String jscript="";
+			final String token=httpReq.getRequestParameter("TOKEN");
 			if(token != null)
 			{
-				Pair<long[],Siplet> p = siplets.get(token);
+				final SipletSession p = siplets.get(token);
 				if(p!=null)
 				{
-					if(p.second.isConnectedToURL())
+					if(p.siplet.isConnectedToURL())
 					{
-						p.first[0]=System.currentTimeMillis();
-						p.second.readURLData();
-						data = p.second.getURLData();
-						jscript = p.second.getJScriptCommands();
-						success=p.second.isConnectedToURL();
+						if(httpReq.isRequestParameter("LAST"))
+							return p.response;
+						else
+						{
+							p.lastTouched=System.currentTimeMillis();
+							p.siplet.readURLData();
+							final String data = p.siplet.getURLData();
+							final String jscript = p.siplet.getJScriptCommands();
+							final boolean success=p.siplet.isConnectedToURL();
+							p.response=Boolean.toString(success)+';'+data+token+';'+jscript+token+';';
+							return p.response;
+						}
 					}
 				}
 			}
-			return Boolean.toString(success)+';'+data+token+';'+jscript+token+';';
+			return "false;;;";
 		}
         return "false;";
     }

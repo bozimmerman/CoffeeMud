@@ -83,7 +83,7 @@ public class ClanCreate extends StdCommand
 								int newRoleID=-1;
 								Clan newClan=(Clan)CMClass.getCommon("DefaultClan");
 								newClan.setName(doubleCheck);
-								while((govtType==-1)&&(!mob.session().killFlag()))
+								while((govtType==-1)&&(!mob.session().isStopped()))
 								{
 									StringBuilder promptmsg=new StringBuilder("Now enter a political style for this clan. Choices are:\n\r");
 									{

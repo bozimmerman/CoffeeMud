@@ -277,7 +277,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
         if(expiration<=System.currentTimeMillis())
         {
             session.println("\n\r"+CMProps.getVar(CMProps.SYSTEM_EXPCONTACTLINE)+"\n\r\n\r");
-            session.kill(false,false,false);
+            session.stopSession(false,false,false);
             return true;
         }
         return false;
@@ -337,7 +337,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 
     public LoginResult selectAccountCharacter(PlayerAccount acct, Session session, boolean newAccount) throws java.io.IOException
     {
-    	if((acct==null)||(session==null)||(session.killFlag()))
+    	if((acct==null)||(session==null)||(session.isStopped()))
     		return LoginResult.NO_LOGIN;
         session.setServerTelnetMode(Session.TELNET_ANSI,acct.isSet(PlayerAccount.FLAG_ANSI));
         session.setClientTelnetMode(Session.TELNET_ANSI,acct.isSet(PlayerAccount.FLAG_ANSI));
@@ -350,7 +350,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 	    	try { introText = CMLib.httpUtils().doVirtualPage(introText);}catch(Exception ex){}
 	        session.println(null,null,null,"\n\r\n\r"+introText.toString());
     	}
-    	while((!session.killFlag())&&(!charSelected))
+    	while((!session.isStopped())&&(!charSelected))
     	{
     		StringBuffer buf = new StringBuffer("");
     		if(showList && (!autoCharCreate))
@@ -394,7 +394,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 	    		session.println(buf.toString());
     			buf.setLength(0);
     		}
-    		if(!session.killFlag())
+    		if(!session.isStopped())
     			session.updateLoopTime();
     		String s;
     		if(autoCharCreate)
@@ -424,7 +424,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
     		{
     			if(session.confirm("Quit -- are you sure (y/N)?", "N"))
 				{
-    				session.kill(false,false,false);
+    				session.stopSession(false,false,false);
     	            return LoginResult.NO_LOGIN;
 				}
     			continue;
@@ -463,7 +463,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
             		String login=CMStrings.capitalizeAndLower(s);
 	                if(session.confirm("Create a new character called '"+login+"' (y/N)?", "N"))
 	                {
-	            		if(!session.killFlag())
+	            		if(!session.isStopped())
 	            			session.updateLoopTime();
 	                	if(createCharacter(acct, login, session) == LoginResult.CCREATION_EXIT)
 		            		return LoginResult.CCREATION_EXIT;
@@ -674,7 +674,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 				 &&(CMProps.getVar(CMProps.SYSTEM_MAILBOX).length()>0));
         String password = "";
         if(!emailPassword)
-	        while((password.length()==0)&&(!session.killFlag()))
+	        while((password.length()==0)&&(!session.isStopped()))
 	        {
 	            password=session.prompt("\n\rEnter an account password\n\r: ","");
 	            if(password.length()==0)
@@ -711,7 +711,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
                       "Your password for "+acct.accountName()+" is: "+acct.password()+"\n\rYou can login by pointing your mud client at "+CMProps.getVar(CMProps.SYSTEM_MUDDOMAIN)+" port(s):"+CMProps.getVar(CMProps.SYSTEM_MUDPORTS)+".\n\rAfter creating a character, you may use the PASSWORD command to change it once you are online.");
             session.println("Your account has been created.  You will receive an email with your password shortly.");
             try{Thread.sleep(2000);}catch(Exception e){}
-            session.kill(false,false,false);
+            session.stopSession(false,false,false);
             Log.sysOut("FrontDoor","Created account: "+acct.accountName());
             session.setAccount(null);
             return LoginResult.NO_LOGIN;
@@ -741,7 +741,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
         StringBuffer emailIntro=new CMFile(Resources.buildResourcePath("text")+"email.txt",null,true).text();
     	try { emailIntro = CMLib.httpUtils().doVirtualPage(emailIntro);}catch(Exception ex){}
     	session.println(null,null,null,emailIntro.toString());
-        while(!session.killFlag())
+        while(!session.isStopped())
         {
             String newEmail=session.prompt("\n\rEnter your e-mail address: ");
             if((emailReq||emailPassword) 
@@ -784,7 +784,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 
         String password=(acct!=null)?acct.password():"";
         if((!emailPassword)&&(password.length()==0))
-	        while((password.length()==0)&&(!session.killFlag()))
+	        while((password.length()==0)&&(!session.isStopped()))
 	        {
 	            password=session.prompt("\n\rEnter a password: ","");
 	            if(password.length()==0)
@@ -823,7 +823,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 	        {
 	            session.println("\n\rYou are unwelcome.  No one likes you here. Go away.\n\r\n\r");
 	            if(mob==session.mob())
-		        	session.kill(false,false,false);
+		        	session.stopSession(false,false,false);
 	            throw new Exception("");
 	        }
 	        mob.playerStats().setAccount(acct);
@@ -881,7 +881,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 	                    choices="F";
 	                    selections="/F";
 	                }
-	                while((theme<0)&&(!session.killFlag()))
+	                while((theme<0)&&(!session.isStopped()))
 	                {
 	                    introText=new CMFile(Resources.buildResourcePath("text")+"themes.txt",null,true).text();
 	                	try { introText = CMLib.httpUtils().doVirtualPage(introText);}catch(Exception ex){}
@@ -1184,7 +1184,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 	                {
 	                    String alignment="";
 	                    while((!namedChoices.contains(alignment))
-	                    &&(!session.killFlag()))
+	                    &&(!session.isStopped()))
 	                    {
 	                        alignment=session.prompt(menu.toString().substring(0,menu.length()-2)+".\n\r: ","").toUpperCase();
 	                        if(!namedChoices.contains(alignment))
@@ -1196,7 +1196,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 	                                if(((String)namedChoices.elementAt(i)).indexOf(alignment.toUpperCase())>=0)
 	                                { alignment=(String)namedChoices.elementAt(i); break;}
 	                    }
-	                    if(!session.killFlag())
+	                    if(!session.isStopped())
 	                    {
 	                        int valueIndex=namedChoices.indexOf(alignment);
 	                        if(valueIndex>=0)
@@ -1217,7 +1217,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 	    	try { introText = CMLib.httpUtils().doVirtualPage(introText);}catch(Exception ex){}
 	        session.println(null,null,null,"\n\r\n\r"+introText.toString());
 	        session.prompt("");
-	        if(!session.killFlag())
+	        if(!session.isStopped())
 	        {
 	            if(emailPassword)
 	            {
@@ -1234,7 +1234,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 	                session.println("Your character has been created.  You will receive an email with your password shortly.");
 	                try{Thread.sleep(2000);}catch(Exception e){}
 	                if(mob==session.mob())
-		                session.kill(false,false,false);
+		                session.stopSession(false,false,false);
 	            }
 	            else
 	            {
@@ -1290,7 +1290,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 			if((rejectText!=null)&&(rejectText.length()>0))
 				mob.session().println(rejectText.toString());
 			try{Thread.sleep(1000);}catch(Exception e){}
-            mob.session().kill(false,false,false);
+            mob.session().stopSession(false,false,false);
             return true;
         }
         return false;
@@ -1301,13 +1301,13 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
         if(CMSecurity.isBanned(login))
         {
             session.println("\n\rYou are unwelcome.  No one likes you here. Go away.\n\r\n\r");
-            session.kill(false,false,false);
+            session.stopSession(false,false,false);
             return LoginResult.NO_LOGIN;
         }
         if((player.email!=null)&&CMSecurity.isBanned(player.email))
         {
             session.println("\n\rYou are unwelcome.  No one likes you here. Go away.\n\r\n\r");
-            session.kill(false,false,false);
+            session.stopSession(false,false,false);
             return LoginResult.NO_LOGIN;
         }
 	    for(Session S : CMLib.sessions().allIterable())
@@ -1324,7 +1324,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
                 session.setMob(M);
                 M.setSession(session);
                 S.setMob(null);
-                S.kill(false,false,false);
+                S.stopSession(false,false,false);
                 Log.sysOut("FrontDoor","Session swap for "+session.mob().Name()+".");
                 reloadTerminal(session.mob());
                 session.mob().bringToLife(oldRoom,false);
@@ -1459,7 +1459,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
         if(login.equalsIgnoreCase("MSSP-REQUEST")&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.MSSP)))
         {
         	session.rawOut(getMSSPPacket());
-            session.kill(false,false,false);
+            session.stopSession(false,false,false);
         	return LoginResult.NO_LOGIN;
         }
         	
@@ -1583,7 +1583,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 	            {
 	                Log.sysOut("FrontDoor","Failed login: "+player.name);
 	                session.println("\n\rInvalid password.\n\r");
-	                if((!session.killFlag())
+	                if((!session.isStopped())
 	                &&(player.email.length()>0)
 	                &&(player.email.indexOf('@')>0)
 	                &&(attempt>2)
@@ -1600,7 +1600,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 	                            session.println("Email sent.\n\r");
 	                        else
 	                            session.println("Error sending email.\n\r");
-	                        session.kill(false,false,false);
+	                        session.stopSession(false,false,false);
 	                    }
 	                }
 	                return LoginResult.NO_LOGIN;
@@ -1790,7 +1790,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 	        {
 	            if(!C.execute(mob,null,0))
 	            {
-	    	        session.kill(false,false,false);
+	    	        session.stopSession(false,false,false);
 	                return LoginResult.NO_LOGIN;
 	            }
 	        }
@@ -1799,7 +1799,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 	    if((pstats.getEmail()!=null)&&CMSecurity.isBanned(pstats.getEmail()))
 	    {
 	        session.println("\n\rYou are unwelcome.  No one likes you here. Go away.\n\r\n\r");
-	        session.kill(false,false,false);
+	        session.stopSession(false,false,false);
 	        return LoginResult.NO_LOGIN;
 	    }
         if((session!=null)&&(mob.playerStats()!=null))

@@ -169,7 +169,7 @@ public class Polls extends StdLibrary implements PollManager
             
             mob.tell(present.toString());
             int choice=-1;
-            while((choice<0)&&(mob.session()!=null)&&(!mob.session().killFlag()))
+            while((choice<0)&&(mob.session()!=null)&&(!mob.session().isStopped()))
             {
                 
                 String s=mob.session().prompt("Please make your selection (1-"+P.getOptions().size()+"): ");
@@ -245,7 +245,7 @@ public class Polls extends StdLibrary implements PollManager
                 P.getOptions().remove(del.elementAt(i));
             
             Poll.PollOption PO=null;
-            while(!mob.session().killFlag())
+            while(!mob.session().isStopped())
             {
                 PO=new Poll.PollOption(
                         CMLib.genEd().prompt(mob,"",++showNumber,showFlag,"New Vote Option",true)

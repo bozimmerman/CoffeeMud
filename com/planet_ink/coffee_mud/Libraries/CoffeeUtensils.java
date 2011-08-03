@@ -819,7 +819,7 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 		if(rejuvedMOB!=null) // doing this here is helpful -- it can trigger a socket error.
 			rejuvedMOB.tell("You are being resurrected.");
 		
-		if((rejuvedMOB!=null)&&(rejuvedMOB.session()!=null)&&(!rejuvedMOB.session().killFlag()))
+		if((rejuvedMOB!=null)&&(rejuvedMOB.session()!=null)&&(!rejuvedMOB.session().isStopped()))
 		{
 			if(rejuvedMOB.location()!=corpseRoom)
 			{

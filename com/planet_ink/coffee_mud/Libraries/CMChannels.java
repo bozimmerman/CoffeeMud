@@ -160,7 +160,7 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
         }
 		
 		Room R=M.location();
-		if((!ses.killFlag())
+		if((!ses.isStopped())
 		&&(R!=null)
 		&&(!M.playerStats().getIgnored().contains(senderName))
 		&&(CMLib.masking().maskCheck(getChannelMask(i),M,true))

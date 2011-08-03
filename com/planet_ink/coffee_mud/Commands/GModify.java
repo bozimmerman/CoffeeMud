@@ -91,9 +91,9 @@ public class GModify extends StdCommand
                                     DVector onfields,
                                     boolean noisy)
     {
-        if((mob.session()==null)||(mob.session().killFlag()))
+        if((mob.session()==null)||(mob.session().isStopped()))
         	return false;
-        try{Thread.sleep(1);}catch(Exception e){mob.session().kill(false,false,false);return false;}
+        try{Thread.sleep(1);}catch(Exception e){mob.session().stopSession(false,false,false);return false;}
         boolean didAnything=false;
         if(noisy) gmodifydebugtell(mob,E.name()+"/"+CMClass.classID(E));
         String field=null;
@@ -601,7 +601,7 @@ public class GModify extends StdCommand
 	    	synchronized(("SYNC"+R.roomID()).intern())
 	    	{
 	    		R=CMLib.map().getRoom(R);
-	            if((mob.session()==null)||(mob.session().killFlag())||(R.getArea()==null))
+	            if((mob.session()==null)||(mob.session().isStopped())||(R.getArea()==null))
 	            	return false;
 	            Area A=R.getArea();
 	            int oldFlag=A.getAreaState();

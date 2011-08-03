@@ -447,7 +447,7 @@ public class Factions extends StdLibrary implements FactionManager
             Faction[] Fs;
 		    for(Session S : CMLib.sessions().allIterable())
 		    {
-		        mob=(!S.killFlag())?S.mob():null;
+		        mob=(!S.isStopped())?S.mob():null;
 		        R=(mob==null)?null:mob.location();
 		        if(R!=null)
 		        {
@@ -577,7 +577,7 @@ public class Factions extends StdLibrary implements FactionManager
         int showFlag=-1;
         if(CMProps.getIntVar(CMProps.SYSTEMI_EDITORTYPE)>0)
             showFlag=-999;
-        while((mob.session()!=null)&&(!mob.session().killFlag())&&(!ok))
+        while((mob.session()!=null)&&(!mob.session().isStopped())&&(!ok))
         {
             int showNumber=0;
             // name
@@ -587,7 +587,7 @@ public class Factions extends StdLibrary implements FactionManager
             ++showNumber;
             if(!me.ranges().hasMoreElements())
                 me.addRange("0;100;Sample Range;SAMPLE;");
-            while((mob.session()!=null)&&(!mob.session().killFlag())&&(!((showFlag>0)&&(showFlag!=showNumber))))
+            while((mob.session()!=null)&&(!mob.session().isStopped())&&(!((showFlag>0)&&(showFlag!=showNumber))))
             {
                 StringBuffer list=new StringBuffer(showNumber+". Faction Division/Ranges List:\n\r");
                 list.append(CMStrings.padRight("   Code",16)+CMStrings.padRight("Name",21)+CMStrings.padRight("Min",11)+CMStrings.padRight("Max",11)+CMStrings.padRight("Align",6)+"\n\r");
@@ -696,7 +696,7 @@ public class Factions extends StdLibrary implements FactionManager
             if(!me.defaults().hasMoreElements())
                 me.setDefaults(new XVector("0"));
             ++showNumber;
-            while(error&&(mob.session()!=null)&&(!mob.session().killFlag()))
+            while(error&&(mob.session()!=null)&&(!mob.session().isStopped()))
             {
                 error=false;
                 String newDefaults=CMLib.genEd().prompt(mob,CMParms.toSemicolonList(me.defaults()),showNumber,showFlag,"Other default values with zapper masks (semicolon delimited).\n\r    ");
@@ -723,7 +723,7 @@ public class Factions extends StdLibrary implements FactionManager
             // experience flag
             boolean error2=true;
             ++showNumber;
-            while(error2&&(mob.session()!=null)&&(!mob.session().killFlag())&&(!((showFlag>0)&&(showFlag!=showNumber))))
+            while(error2&&(mob.session()!=null)&&(!mob.session().isStopped())&&(!((showFlag>0)&&(showFlag!=showNumber))))
             {
                 error2=false;
                 StringBuffer nextPrompt=new StringBuffer("\n\r");
@@ -754,7 +754,7 @@ public class Factions extends StdLibrary implements FactionManager
 
             // factors by mask
             ++showNumber;
-            while((mob.session()!=null)&&(!mob.session().killFlag())&&(!((showFlag>0)&&(showFlag!=showNumber))))
+            while((mob.session()!=null)&&(!mob.session().isStopped())&&(!((showFlag>0)&&(showFlag!=showNumber))))
             {
                 StringBuffer list=new StringBuffer(showNumber+". Faction change adjustment Factors with Zapper Masks:\n\r");
                 list.append("    #) "+CMStrings.padRight("Zapper Mask",31)+CMStrings.padRight("Gain",6)+CMStrings.padRight("Loss",6)+"\n\r");
@@ -815,7 +815,7 @@ public class Factions extends StdLibrary implements FactionManager
 
             // relations between factions
             ++showNumber;
-            while((mob.session()!=null)&&(!mob.session().killFlag())&&(!((showFlag>0)&&(showFlag!=showNumber))))
+            while((mob.session()!=null)&&(!mob.session().isStopped())&&(!((showFlag>0)&&(showFlag!=showNumber))))
             {
                 StringBuffer list=new StringBuffer(showNumber+". Cross-Faction Relations:\n\r");
                 list.append("    Faction"+CMStrings.padRight("",25)+"Percentage change\n\r");
@@ -877,7 +877,7 @@ public class Factions extends StdLibrary implements FactionManager
 
             // faction change triggers
             ++showNumber;
-            while((mob.session()!=null)&&(!mob.session().killFlag())&&(!((showFlag>0)&&(showFlag!=showNumber))))
+            while((mob.session()!=null)&&(!mob.session().isStopped())&&(!((showFlag>0)&&(showFlag!=showNumber))))
             {
                 StringBuffer list=new StringBuffer(showNumber+". Faction Change Triggers:\n\r");
                 list.append("    "+CMStrings.padRight("Type",15)
@@ -1002,7 +1002,7 @@ public class Factions extends StdLibrary implements FactionManager
 
             // Ability allowances
             ++showNumber;
-            while((mob.session()!=null)&&(!mob.session().killFlag())&&(!((showFlag>0)&&(showFlag!=showNumber))))
+            while((mob.session()!=null)&&(!mob.session().isStopped())&&(!((showFlag>0)&&(showFlag!=showNumber))))
             {
                 if((showFlag>0)&&(showFlag!=showNumber)) break;
                 StringBuffer list=new StringBuffer(showNumber+". Ability allowances:\n\r");
@@ -1062,7 +1062,7 @@ public class Factions extends StdLibrary implements FactionManager
                 if(CA!=null)
                 {
                     boolean cont=false;
-                    while((!cont)&&(!mob.session().killFlag()))
+                    while((!cont)&&(!mob.session().isStopped()))
                     {
                         String newFlags=mob.session().prompt("Ability determinate masks or ? ("+CA.abilityFlags()+"): "+CA.abilityFlags(),CA.abilityFlags());
                         if(newFlags.equalsIgnoreCase("?"))
@@ -1115,7 +1115,7 @@ public class Factions extends StdLibrary implements FactionManager
 
             // Affects/Behaviors
             ++showNumber;
-            while((mob.session()!=null)&&(!mob.session().killFlag())&&(!((showFlag>0)&&(showFlag!=showNumber))))
+            while((mob.session()!=null)&&(!mob.session().isStopped())&&(!((showFlag>0)&&(showFlag!=showNumber))))
             {
                 if((showFlag>0)&&(showFlag!=showNumber)) break;
                 StringBuffer list=new StringBuffer(showNumber+". Effects/Behaviors:\n\r");
@@ -1164,7 +1164,7 @@ public class Factions extends StdLibrary implements FactionManager
                 else
                 {
                     boolean cont=true;
-                    while((cont)&&(!mob.session().killFlag()))
+                    while((cont)&&(!mob.session().isStopped()))
                     {
                         cont=false;
                         ID=mob.session().prompt("Enter a new Ability or Behavior ID or ?: ");
@@ -1207,7 +1207,7 @@ public class Factions extends StdLibrary implements FactionManager
                     String[] oldData=me.getAffectBehav(ID);
                     String[] newData=new String[2];
                     boolean cont=true;
-                    while((cont)&&(!mob.session().killFlag()))
+                    while((cont)&&(!mob.session().isStopped()))
                     {
                         cont=false;
                         String mask=mob.session().prompt("Enter a new Zapper Mask or ? ("+oldData[1]+")\n\r: ",oldData[1]);
@@ -1222,7 +1222,7 @@ public class Factions extends StdLibrary implements FactionManager
                     }
                     
                     cont=true;
-                    while((cont)&&(!mob.session().killFlag()))
+                    while((cont)&&(!mob.session().isStopped()))
                     {
                         cont=false;
                         String parms=mob.session().prompt("Enter new "+type+" parameters for "+ID+" or ? ("+oldData[0]+")\n\r: ",oldData[0]);
@@ -1250,7 +1250,7 @@ public class Factions extends StdLibrary implements FactionManager
 
             // Reaction Command/Affects/Behaviors
             ++showNumber;
-            while((mob.session()!=null)&&(!mob.session().killFlag())&&(!((showFlag>0)&&(showFlag!=showNumber))))
+            while((mob.session()!=null)&&(!mob.session().isStopped())&&(!((showFlag>0)&&(showFlag!=showNumber))))
             {
                 if((showFlag>0)&&(showFlag!=showNumber)) break;
                 StringBuffer list=new StringBuffer(showNumber+". Reaction Commands/Effects/Behaviors:\n\r");
@@ -1312,7 +1312,7 @@ public class Factions extends StdLibrary implements FactionManager
                 boolean cont=true;
                 
                 cont=true;
-                while((cont)&&(!mob.session().killFlag()))
+                while((cont)&&(!mob.session().isStopped()))
                 {
                     cont=false;
                     
@@ -1344,7 +1344,7 @@ public class Factions extends StdLibrary implements FactionManager
                 }
                 
                 cont = true;
-                while((cont)&&(!mob.session().killFlag()))
+                while((cont)&&(!mob.session().isStopped()))
                 {
                     cont=false;
                     
@@ -1360,7 +1360,7 @@ public class Factions extends StdLibrary implements FactionManager
                 }
                 
                 cont=true;
-                while((cont)&&(!mob.session().killFlag()))
+                while((cont)&&(!mob.session().isStopped()))
                 {
                     cont=false;
 	                String ID=mob.session().prompt("Enter a new Ability, Behavior, or Command ID ("+oldData[2]+")\n\r: ",oldData[2]);
@@ -1387,7 +1387,7 @@ public class Factions extends StdLibrary implements FactionManager
                 }
                 
                 cont=true;
-                while((cont)&&(!mob.session().killFlag()))
+                while((cont)&&(!mob.session().isStopped()))
                 {
                     cont=false;
                     String parms=mob.session().prompt("Enter new "+type+" parameters for "+newData[2]+" or ? ("+oldData[3]+")\n\r: ",oldData[3]);

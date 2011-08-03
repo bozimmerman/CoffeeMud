@@ -225,7 +225,7 @@ public class CommandJournal extends StdCommand
         &&(!transfer(mob,journal.JOURNAL_NAME(),journal.NAME().toLowerCase()+"s",commands,journal.NAME())))
         {
 	        String msgString=CMParms.combine(commands,1);
-	        if((mob.session()!=null)&&(!mob.session().killFlag()))
+	        if((mob.session()!=null)&&(!mob.session().isStopped()))
 	        	msgString=CMLib.journals().getScriptValue(mob,journal.NAME(),msgString);
 	        if(msgString.trim().length()>0)
 	        {

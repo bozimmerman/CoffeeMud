@@ -594,7 +594,7 @@ public class Shell extends StdCommand
                 "^XQ)^.^Wuit without saving";
             mob.tell("^HCoffeeMud Message Maker^N");
             boolean menuMode=true;
-            while((mob.session()!=null)&&(!mob.session().killFlag()))
+            while((mob.session()!=null)&&(!mob.session().isStopped()))
             {
                 mob.session().setAfkFlag(false);
                 if(!menuMode)

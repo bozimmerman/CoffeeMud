@@ -830,7 +830,7 @@ public class MUD extends Thread implements MudHost
     			else
     			{
     				CMProps.setUpAllLowVar(CMProps.SYSTEM_MUDSTATUS,"Shutting down...Stopping session "+S2.getAddress());
-    				S2.kill(true,true,true);
+    				S2.stopSession(true,true,true);
     				CMProps.setUpAllLowVar(CMProps.SYSTEM_MUDSTATUS,"Shutting down...Done stopping session "+S2.getAddress());
     			}
     			if(S!=null)S.print(".");
@@ -915,7 +915,7 @@ public class MUD extends Thread implements MudHost
         CMLib.threads().resumeAll();
 		if(!keepItDown)
 			if(S!=null)S.println("Restarting...");
-        if(S!=null)S.kill(true,true,false);
+        if(S!=null)S.stopSession(true,true,false);
 		try{Thread.sleep(500);}catch(Exception i){}
 		System.gc();
 		System.runFinalization();
