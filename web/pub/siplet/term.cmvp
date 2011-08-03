@@ -42,7 +42,7 @@ xmlhttpPost.prototype.exec = function(querystring,callbackFunc,tries)
             {
             	if((!tries)||(tries<4))
             	{
-            		setTimeout(function(){new xmlhttpPost().exec(querystring,callbackFunc,tries+1); },250);
+            		setTimeout(function(){new xmlhttpPost().exec(querystring,callbackFunc,(tries)?(tries+1):0); },250);
             		return;
         		}
             	else
