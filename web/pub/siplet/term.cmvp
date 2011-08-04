@@ -14,6 +14,7 @@ var theapplet = null;
 var lastReceived = new Date().getTime();
 
 var limit=50000;
+var pingDelay=1000;
 var halflimit=limit/2;
 var tenthlimit=limit/10;
 
@@ -24,7 +25,7 @@ function connectChecker()
 		var ellapsed=new Date().getTime() - lastReceived;
 		if(ellapsed>1800)
 		{
-	        setTimeout(displayData,250);
+	        setTimeout(displayData,pingDelay);
         }
 	    else
 	    if(ellapsed>500)
@@ -51,7 +52,7 @@ xmlhttpPost.prototype.exec = function(querystring,callbackFunc,tries)
     else if (window.ActiveXObject) {
         self.xmlHttpReq = new ActiveXObject("Microsoft.XMLHTTP");
     }
-    self.xmlHttpReq.open('POST', '/pub/SipletInterface', true);
+    self.xmlHttpReq.open('POST', '/pub/SipletInterface', false);
     self.xmlHttpReq.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
     self.xmlHttpReq.onreadystatechange = function() {
         if (self.xmlHttpReq.readyState == 4) {
@@ -62,7 +63,7 @@ xmlhttpPost.prototype.exec = function(querystring,callbackFunc,tries)
             {
             	if((!tries)||(tries<4))
             	{
-            		setTimeout(function(){new xmlhttpPost().exec(querystring,callbackFunc,(tries)?(tries+1):0); },250);
+            		setTimeout(function(){new xmlhttpPost().exec(querystring,callbackFunc,(tries)?(tries+1):0); },pingDelay);
             		return;
         		}
             	else
@@ -75,7 +76,7 @@ xmlhttpPost.prototype.exec = function(querystring,callbackFunc,tries)
         		{
 	            	if((!tries)||(tries<4))
 	            	{
-	            		setTimeout(function(){new xmlhttpPost().exec(querystring,callbackFunc,(tries)?(tries+1):0); },250);
+	            		setTimeout(function(){new xmlhttpPost().exec(querystring,callbackFunc,(tries)?(tries+1):0); },pingDelay);
 	            		return;
 	        		}
 	            	else
@@ -213,7 +214,7 @@ function displayData()
 			        if(s.length>0) eval(s);
 		        }
 		        lastReceived = new Date().getTime();
-		        setTimeout(displayData,250);
+		        setTimeout(displayData,pingDelay);
 	        }
 	    }
     });
@@ -341,7 +342,7 @@ function connect(url,port,tries)
 	    {
 	    	goGreen();
 	    	lastReceived = new Date().getTime();
-	        setTimeout('displayData(); top.entry.boxFocus();',250);
+	        setTimeout('displayData(); top.entry.boxFocus();',pingDelay);
 	    }
     });
 }
