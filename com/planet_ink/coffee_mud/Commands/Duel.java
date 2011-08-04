@@ -62,6 +62,9 @@ public class Duel extends StdCommand
 			}
 		}
 		
+		if(mob==target)
+			mob.tell("You may not duel yourself.");
+		else
 		if((mob.isMonster()))
 			mob.tell("You are not allowed to duel "+target.name()+".");
 		else
@@ -123,7 +126,9 @@ public class Duel extends StdCommand
 			else
 			if((iuT!=null)||(iiT!=null))
 			{
-				mob.tell(mob,target,null,"Your previous challenge has not yet expired.  Please wait "+(iuT.tickDown*4)+" seconds longer and try again.");
+				int duelTicks=CMProps.getIntVar(CMProps.SYSTEMI_DUELTICKDOWN);
+				long time = CMProps.getTickMillis() * (long)duelTicks;
+				mob.tell(mob,target,null,"Your previous challenge has not yet expired.  Please wait "+(time/1000)+" seconds longer and try again.");
 				return false;
 			}
         }

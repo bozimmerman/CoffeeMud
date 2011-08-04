@@ -39,11 +39,13 @@ public class Dueler extends StdAbility
     public String ID() { return "Dueler"; }
     public String name(){ return "Dueler";}
     protected Dueler otherDueler = null;
+    protected MOB otherDuelPartner=null;
     protected long lastTimeISawYou=System.currentTimeMillis();
     protected boolean oldPVPStatus = false;
     protected CharState oldCurState = null;
     protected List<Ability> oldEffects = new LinkedList<Ability>();
     protected Hashtable<Item,Item> oldEq = new Hashtable<Item,Item>();
+    protected int autoWimp=0;
     
     public String displayText()
     { 
@@ -82,7 +84,8 @@ public class Dueler extends StdAbility
 	    	}
 	    	for(Ability A : cleanOut)
     		{
-    			A.unInvoke();
+    			if(!(A instanceof Dueler)) 
+    				A.unInvoke();
     			mob.delEffect(A);
     			A.destroy();
     		}
@@ -95,17 +98,38 @@ public class Dueler extends StdAbility
 	    		if(I.usesRemaining() < copyI.usesRemaining())
 	    			I.setUsesRemaining(copyI.usesRemaining());
 	    	}
+	    	mob.setWimpHitPoint(autoWimp);
 	        mob.recoverCharStats();
 	        mob.recoverMaxState();
 	        mob.recoverPhyStats();
 			mob.makePeace();
+        	clearAnyLegalIssues(mob);
         }
     	oldEffects.clear();
     	oldEq.clear();
     	oldCurState=null;
+    	otherDuelPartner=null;
         super.unInvoke();
     }
 
+    public void clearAnyLegalIssues(MOB mob)
+    {
+		LegalBehavior B=CMLib.law().getLegalBehavior(mob.location());
+		if(B!=null)
+		{
+			Area A=CMLib.law().getLegalObject(mob.location());
+			List<LegalWarrant> V=B.getWarrantsOf(A, mob);
+			for(LegalWarrant W : V)
+				if(W.victim()==otherDuelPartner)
+				{
+					W.setLastOffense(0); // will cause the warrant to be dismissed and filed
+					W.setArrestingOfficer(A, null);
+					W.setCrime("pardoned");
+					W.setOffenses(0);
+				}
+		}
+    }
+    
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(!super.okMessage(myHost,msg))
@@ -114,14 +138,16 @@ public class Dueler extends StdAbility
 		if((msg.sourceMinor()==CMMsg.TYP_DEATH)
 		&&(msg.source()==affecting()))
 		{
-			MOB source=null;
-			if((msg.tool()!=null)&&(msg.tool() instanceof MOB))
-				source=(MOB)msg.tool();
 			MOB target=msg.source();
 			Room deathRoom=target.location();
-			deathRoom.show(source,source,CMMsg.MSG_OK_VISUAL,msg.sourceMessage());
+			String msp=CMProps.msp("death"+CMLib.dice().roll(1,7,0)+".wav",50);
+			CMMsg msg2=CMClass.getMsg(target,null,otherDuelPartner,
+					CMMsg.MSG_OK_VISUAL,"^f^*^<FIGHT^>!!!!!!!!!!!!!!YOU ARE DEFEATED!!!!!!!!!!!!!!^</FIGHT^>^?^.\n\r"+msp,
+					CMMsg.MSG_OK_VISUAL,null,
+					CMMsg.MSG_OK_VISUAL,"^F^<FIGHT^><S-NAME> is DEFEATED!!!^</FIGHT^>^?\n\r"+msp);
+			deathRoom.send(target, msg2);
 			target.makePeace();
-			source.makePeace();
+			//source.makePeace();
 			unInvoke();
 			return false;
 		}
@@ -135,6 +161,7 @@ public class Dueler extends StdAbility
         if((ticking instanceof MOB)&&(tickID==Tickable.TICKID_MOB))
         {
         	MOB mob=(MOB)ticking;
+        	mob.setWimpHitPoint(0);
         	final Dueler tDuel=otherDueler;
         	if((tDuel==null)
         	||(tDuel.amDestroyed)
@@ -156,6 +183,7 @@ public class Dueler extends StdAbility
             	if((System.currentTimeMillis()-lastTimeISawYou)>30000)
             		unInvoke();
         	}
+        	clearAnyLegalIssues(mob);
         }
         return true;
     }
@@ -163,10 +191,13 @@ public class Dueler extends StdAbility
     public void init(MOB mob)
     {
     	oldPVPStatus=CMath.bset(mob.getBitmap(), MOB.ATT_PLAYERKILL);
+    	mob.setBitmap(mob.getBitmap()|MOB.ATT_PLAYERKILL);
     	oldCurState=(CharState)mob.curState().copyOf();
     	oldEffects.clear();
     	for(Enumeration<Ability> a=mob.personalEffects();a.hasMoreElements();)
     		oldEffects.add(a.nextElement());
+    	autoWimp=mob.getWimpHitPoint();
+    	mob.setWimpHitPoint(0);
     	for(Enumeration<Item> i=mob.items();i.hasMoreElements();)
     	{
     		Item I=i.nextElement();
@@ -181,7 +212,7 @@ public class Dueler extends StdAbility
     	if(target==null) target=mob;
     	if(!(target instanceof MOB)) return false;
     	if(((MOB)target).location()==null) return false;
-    	if(((MOB)target).location().show(mob,(MOB)target,this,CMMsg.MSG_OK_VISUAL,"^R<S-NAME> and <T-NAME> start(s) dueling <T-NAME>!^?"))
+    	if(((MOB)target).location().show(mob,(MOB)target,this,CMMsg.MSG_OK_VISUAL,"^R<S-NAME> and <T-NAME> start(s) dueling!^?"))
     	{
     		MOB tmob = (MOB)target;
     		Dueler A;
@@ -193,7 +224,9 @@ public class Dueler extends StdAbility
     		A=(Dueler)newInstance();
     		tA=(Dueler)newInstance();
     		A.otherDueler=tA;
+    		A.otherDuelPartner=tmob;
     		tA.otherDueler=A;
+    		tA.otherDuelPartner=mob;
     		A.init(mob);
     		tA.init(tmob);
     		mob.setVictim(tmob);

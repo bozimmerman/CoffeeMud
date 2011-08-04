@@ -24,12 +24,13 @@ function connectChecker()
 		var ellapsed=new Date().getTime() - lastReceived;
 		if(ellapsed>1800)
 		{
-	    	goGreen();
 	        setTimeout(displayData,250);
         }
 	    else
 	    if(ellapsed>500)
-	    	goCaution();
+	    {
+	    	//goCaution();
+    	}
 	}
 	setTimeout(connectChecker,100);
 }
