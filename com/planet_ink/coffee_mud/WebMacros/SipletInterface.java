@@ -94,7 +94,6 @@ public class SipletInterface extends StdWebMacro
         public boolean isClosed() { return isClosed; }
         public synchronized void close() throws IOException 
         {
-        	Log.debugOut("Siplet",new Exception()); //TODO: remove this
         	inStream.close();
         	outStream.close();
         	if(friendPipe!=null)
