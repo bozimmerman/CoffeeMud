@@ -36,48 +36,74 @@ public class Enter extends Go
 {
 	public Enter(){}
 
-	private final String[] access={"ENTER","EN"};
+	private final String[] access={"ENTER","EN","="};
 	public String[] getAccessWords(){return access;}
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
+		boolean consoleMode=((mob.riding() instanceof ShipComponent.ShipPanel)&&(((ShipComponent.ShipPanel)mob.riding()).panelType()==ShipComponent.ShipPanel.COMPONENT_PANEL_COMPUTER));
 		if(commands.size()<=1)
 		{
-			mob.tell("Enter what or where? Try EXITS.");
+			if(consoleMode)
+				mob.tell("Enter what into this console?  Have you read the screen?");
+			else
+				mob.tell("Enter what or where? Try LOOK or EXITS.");
 			return false;
 		}
-		String enterWhat=CMParms.combine(commands,1).toUpperCase();
-		int dir=Directions.getGoodDirectionCode(enterWhat);
-		if(dir<0)
+		Environmental enterThis=(consoleMode)?mob.riding():null;
+		if(commands.size()>1)
 		{
-			Environmental getThis=mob.location().fetchFromRoomFavorItems(null,enterWhat);
-			if(getThis!=null)
+			String enterWhere=(String)commands.lastElement();
+			Environmental tryThis=mob.location().fetchFromRoomFavorItems(null,enterWhere);
+			if((tryThis instanceof ShipComponent.ShipPanel)&&(((ShipComponent.ShipPanel)tryThis).panelType()==ShipComponent.ShipPanel.COMPONENT_PANEL_COMPUTER))
 			{
-				if(getThis instanceof Rideable)
-				{
-					Command C=CMClass.getCommand("Sit");
-					if(C!=null) return C.execute(mob,commands,metaFlags);
-				}
-				else
-				if((getThis instanceof DeadBody)
-				&&(mob.phyStats().height()<=0)
-				&&(mob.phyStats().weight()<=0))
-				{
-					String mountStr="<S-NAME> enter(s) <T-NAME>.";
-					CMMsg msg=CMClass.getMsg(mob,getThis,null,CMMsg.MSG_SIT,mountStr);
-					if(mob.location().okMessage(mob,msg))
-						mob.location().send(mob,msg);
-					return true;
-				}
-			}
-			dir=CMLib.tracking().findExitDir(mob,mob.location(),enterWhat);
-			if(dir<0)
-			{
-				mob.tell("You don't see '"+enterWhat.toLowerCase()+"' here.");
-				return false;
+				enterThis=tryThis;
+				commands.removeElementAt(commands.size()-1);
 			}
 		}
-		CMLib.tracking().walk(mob,dir,false,false,false);
+		String enterWhat=CMParms.combine(commands,1);
+		if(consoleMode)
+		{
+			String enterStr="^W<S-NAME> enter(s) '"+enterWhat+"' into <T-NAME>.^?";
+			CMMsg msg=CMClass.getMsg(mob,enterThis,null,CMMsg.MSG_WRITE,enterStr,CMMsg.MSG_WRITE,enterWhat,CMMsg.MSG_WRITE,null);
+			if(mob.location().okMessage(mob,msg))
+				mob.location().send(mob,msg);
+			return true;
+		}
+		else
+		{
+			int dir=Directions.getGoodDirectionCode(enterWhat.toUpperCase());
+			if(dir<0)
+			{
+				enterThis=mob.location().fetchFromRoomFavorItems(null,enterWhat.toUpperCase());
+				if(enterThis!=null)
+				{
+					if(enterThis instanceof Rideable)
+					{
+						Command C=CMClass.getCommand("Sit");
+						if(C!=null) return C.execute(mob,commands,metaFlags);
+					}
+					else
+					if((enterThis instanceof DeadBody)
+					&&(mob.phyStats().height()<=0)
+					&&(mob.phyStats().weight()<=0))
+					{
+						String enterStr="<S-NAME> enter(s) <T-NAME>.";
+						CMMsg msg=CMClass.getMsg(mob,enterThis,null,CMMsg.MSG_SIT,enterStr);
+						if(mob.location().okMessage(mob,msg))
+							mob.location().send(mob,msg);
+						return true;
+					}
+				}
+				dir=CMLib.tracking().findExitDir(mob,mob.location(),enterWhat);
+				if(dir<0)
+				{
+					mob.tell("You don't see '"+enterWhat.toLowerCase()+"' here.");
+					return false;
+				}
+			}
+			CMLib.tracking().walk(mob,dir,false,false,false);
+		}
 		return false;
 	}
 	public boolean canBeOrdered(){return true;}
