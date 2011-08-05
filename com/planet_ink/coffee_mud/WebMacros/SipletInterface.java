@@ -161,7 +161,6 @@ public class SipletInterface extends StdWebMacro
 			if(url!=null)
 			{
 				sip.init();
-				sip.setFeatures(true, true, false);
 				synchronized(sipletConnectSync)
 				{
 					for(MudHost h : CMLib.hosts())
@@ -172,6 +171,7 @@ public class SipletInterface extends StdWebMacro
 								PipeSocket lsock=new PipeSocket(httpReq.getHTTPclientInetAddress(),null);
 								PipeSocket rsock=new PipeSocket(httpReq.getHTTPclientInetAddress(),lsock);
 								success=sip.connectToURL(url, port,lsock);
+								sip.setFeatures(true, true, false);
 								h.acceptConnection(rsock);
 							}
 							catch(IOException e)
