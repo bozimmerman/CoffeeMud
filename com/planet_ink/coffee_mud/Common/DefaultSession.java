@@ -1407,12 +1407,15 @@ public class DefaultSession implements Session
                 if(sock!=null) sock.close();
 				status=Session.STATUS_LOGOUT11;
 			}
-			in=null;
-			out=null;
-			sock=null;
 		}
 		catch(IOException e)
 		{
+		}
+		finally
+		{
+			in=null;
+			out=null;
+			sock=null;
 		}
 	}
 
@@ -1655,16 +1658,27 @@ public class DefaultSession implements Session
 				mob=null;
 			}
 		}
-		if(sock!=null)
-			Log.sysOut("Session","Disconnect: "+getAddress()+" ("+CMLib.time().date2SmartEllapsedTime(getMillisOnline(),true)+")");
+		
 		status=Session.STATUS_LOGOUT4;
 		killFlag=true;
 		waiting=false;
 		needPrompt=false;
 		acct=null;
 		snoops.clear();
+		
+		final Socket sockSync=sock;
+		if(sockSync !=null)
+		{
+			synchronized(sockSync)
+			{
+				if(sock!=null)
+				{
+					Log.sysOut("Session","Disconnect: "+getAddress()+" ("+CMLib.time().date2SmartEllapsedTime(getMillisOnline(),true)+")");
+					closeSocks();
+				}
+			}
+		}
 
-		closeSocks();
 
 		status=Session.STATUS_LOGOUT5;
 		CMLib.sessions().remove(this);
