@@ -14,28 +14,26 @@ var theapplet = null;
 var lastReceived = new Date().getTime();
 
 var limit=50000;
-var pingDelay=1000;
+var pingDelay=1500;
 var halflimit=limit/2;
 var tenthlimit=limit/10;
+var errorState=false;
 
 function connectChecker()
 {
-	if(theapplet!=null)
+	if((theapplet!=null)&&(!errorState))
 	{
 		var ellapsed=new Date().getTime() - lastReceived;
-		if(ellapsed>1800)
+		if(ellapsed>30000)
 		{
 	        setTimeout(displayData,pingDelay);
         }
-	    else
-	    if(ellapsed>500)
-	    {
-	    	//goCaution();
-    	}
 	}
-	setTimeout(connectChecker,100);
+	else
+		lastReceived = new Date().getTime()
+	setTimeout(connectChecker,10001);
 }
-setTimeout(connectChecker,100);
+setTimeout(connectChecker,10001);
 
 function xmlhttpPost()
 {
@@ -43,6 +41,8 @@ function xmlhttpPost()
 }
 xmlhttpPost.prototype.exec = function(querystring,callbackFunc,tries)
 {
+	if(tries===undefined)
+		tries=0;
     var xmlHttpReq = false;
     // Mozilla/Safari
     if (window.XMLHttpRequest) {
@@ -55,38 +55,51 @@ xmlhttpPost.prototype.exec = function(querystring,callbackFunc,tries)
     self.xmlHttpReq.open('POST', '/pub/SipletInterface', false);
     self.xmlHttpReq.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
     self.xmlHttpReq.onreadystatechange = function() {
-        if (self.xmlHttpReq.readyState == 4) {
+    
+	    if (self.xmlHttpReq.readyState == 4) {
         	var txt=self.xmlHttpReq.responseText;
         	var x=txt.indexOf(';');
         	var success=false;
-            if((xmlHttpReq.status > 299)||(x<=0))
+            if((self.xmlHttpReq.status > 299)||(self.xmlHttpReq.status < 200)||(x<=0))
             {
-            	if((!tries)||(tries<4))
+            	if(tries<3)
             	{
-            		setTimeout(function(){new xmlhttpPost().exec(querystring,callbackFunc,(tries)?(tries+1):0); },pingDelay);
+            		if(tries==0) goCaution();
+					errorState=true;
+				    var retries=tries+1;
+            		setTimeout(function() { new xmlhttpPost().exec(querystring,callbackFunc,retries); } ,pingDelay);
             		return;
         		}
             	else
+            	{
 	               	success=false;
+               	}
             }
             else
         	{
         		var s=txt.substr(0,x);
         		if((s!='true')&&(s!='false'))
         		{
-	            	if((!tries)||(tries<4))
+				    var retries=tries+1;
+	            	if(tries<3)
 	            	{
-	            		setTimeout(function(){new xmlhttpPost().exec(querystring,callbackFunc,(tries)?(tries+1):0); },pingDelay);
+	            		if(tries==0) goCaution();
+						errorState=true;
+	            		setTimeout(function(){new xmlhttpPost().exec(querystring,callbackFunc,retries); },pingDelay);
 	            		return;
 	        		}
 	            	else
+	            	{
 		               	success=false;
+	               	}
         		}
         		else
 	        		success=(s=='true');
         		txt=txt.substr(x+1);
     		}
-    		
+    		if((errorState)&&(success))
+        		goGreen();
+			errorState=false;
         	if(callbackFunc)
 	            callbackFunc(success,self.xmlHttpReq.status,txt);
         }
@@ -96,14 +109,21 @@ xmlhttpPost.prototype.exec = function(querystring,callbackFunc,tries)
 
 function closeWindow()
 {
-	new xmlhttpPost().exec('DISCONNECT&TOKEN='+theapplet,function(success,status,txt){});
+	new xmlhttpPost().exec('DISCONNECT&TOKEN='+theapplet,function(success,status,txt){},5);
     top.document.location.href='/index.cmvp';
 }
 function reconnect()
 {
-	new xmlhttpPost().exec('DISCONNECT&TOKEN='+theapplet,function(success,status,txt){
-	    setTimeout('connect("@MudInfo?DOMAIN@",@MudInfo?PORT@);',500);
-	});
+	if(theapplet!=null)
+	{
+		new xmlhttpPost().exec('DISCONNECT&TOKEN='+theapplet,function(success,status,txt){
+			theapplet=null;
+			goRed();
+		    setTimeout('connect("@MudInfo?DOMAIN@",@MudInfo?PORT@);',500);
+		},5);
+	}
+	else
+	    connect("@MudInfo?DOMAIN@",@MudInfo?PORT@);
 }
 
 function addToWindow(s)
@@ -171,16 +191,22 @@ function goGreen()
     top.bar.greenColor(mynum);
 }
 
-function goOffline()
+function goRed()
 {
-	if(theapplet!=null) 
-		new xmlhttpPost().exec('DISCONNECT&TOKEN='+theapplet,function(success,status,txt){});
-	theapplet=null;
     var thespan=top.term.document.getElementById(myname+'bar');
     thespan.style.backgroundColor='red'
     thespan=top.term.document.getElementById(myname+'namer');
     thespan.style.backgroundColor='red'
     top.bar.redColor(mynum);
+}
+
+function goOffline()
+{
+	var token=theapplet;
+	theapplet=null;
+	goRed();
+	if(token!=null) 
+		new xmlhttpPost().exec('DISCONNECT&TOKEN='+token,function(success,status,txt){errorState=false;},5);
     //alert('Lost connection.'); // red is enough
 }
 
@@ -305,6 +331,8 @@ function NoJava()
 
 function connect(url,port,tries)
 {
+	errorState=false;
+	goCaution();
     //window.onerror=new Function('NoJava();');
     var safeurl=encodeURIComponent(url);
     var safeport=encodeURIComponent(port);
@@ -330,14 +358,10 @@ function connect(url,port,tries)
 	    var thespan=top.term.document.getElementById(myname+'namer');
 	    thespan.innerHTML=s
 	    gauges=new Array(0);
-	    if((!connectWorked)&&((!tries)||(tries<2)))
-	    {
-	    	if(!tries) tries=0;
-	        connect(url,port,tries+1);
-	        return;
-	    }
 	    if(!connectWorked)
-	        alert('Could not connect.');
+	    {
+			goRed();
+        }
 	    else
 	    {
 	    	goGreen();
@@ -358,6 +382,7 @@ function goDefault(x)
 {
 	top.term.front('dwindow'+x,x);
 }
+
 top.term.allwindows[top.term.currentWindow]=this;
 </SCRIPT>
 <BR>
