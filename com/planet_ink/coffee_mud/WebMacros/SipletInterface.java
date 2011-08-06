@@ -264,7 +264,7 @@ public class SipletInterface extends StdWebMacro
 					}
 				}
 			}
-			return "false;;;";
+			return "false;"+token+";"+token+";";
 		}
         return "false;";
     }
