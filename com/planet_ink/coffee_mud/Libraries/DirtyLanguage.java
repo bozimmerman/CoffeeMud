@@ -263,7 +263,7 @@ public class DirtyLanguage extends StdLibrary implements LanguageLibrary
                 if(regend<0){ Log.errOut("Scripts","Syntax error in '"+filename+"', line "+(v+1)); continue;}
                 String replacement=unFilterString(s.substring(regstart+1,regend));
                 if(currentSection!=null)
-	                currentSection.addElement(cmd,expression,replacement);
+	                currentSection.addElement(cmd,expression.toLowerCase(),replacement);
                 currentSectionReplaceStrs.put(expression.toLowerCase(),replacement);
             }
             else
@@ -316,26 +316,37 @@ public class DirtyLanguage extends StdLibrary implements LanguageLibrary
         parserSections.put("WHOLEFILE",wholeFile);
         return parserSections;
     }
-    
+
+    protected final String getLanguageTranslatorKey()
+    {
+    	return "TRANSLATION_"+language.toUpperCase()+"_"+country.toUpperCase();
+    }
+	
+    protected final String getLanguageParserKey()
+    {
+    	return "PARSER_"+language.toUpperCase()+"_"+country.toUpperCase();
+    }
 	
     public DVector getLanguageParser(String parser)
     {
-        Hashtable parserSections=(Hashtable)Resources.getResource("PARSER_"+language.toUpperCase()+"_"+country.toUpperCase());
+    	final String parserKey=getLanguageParserKey();
+        Hashtable parserSections=(Hashtable)Resources.getResource(parserKey);
     	if(parserSections==null)
         {
             parserSections=loadFileSections("resources/parser_"+language.toUpperCase()+"_"+country.toUpperCase()+".properties");
-            Resources.submitResource("PARSER_"+language.toUpperCase()+"_"+country.toUpperCase(),parserSections);
+            Resources.submitResource(parserKey,parserSections);
         }
     	return (DVector)parserSections.get(parser);
     }
 	
     public DVector getLanguageTranslator(String parser)
     {
-        Hashtable translationSections=(Hashtable)Resources.getResource("TRANSLATION_"+language.toUpperCase()+"_"+country.toUpperCase());
+    	final String translatorKey=getLanguageTranslatorKey();
+        Hashtable translationSections=(Hashtable)Resources.getResource(translatorKey);
         if(translationSections==null)
         {
             translationSections=loadFileSections("resources/translation_"+language.toUpperCase()+"_"+country.toUpperCase()+".properties");
-            Resources.submitResource("TRANSLATION_"+language.toUpperCase()+"_"+country.toUpperCase(),translationSections);
+            Resources.submitResource(translatorKey,translationSections);
         }
         return (DVector)translationSections.get(parser);
     }
@@ -343,8 +354,10 @@ public class DirtyLanguage extends StdLibrary implements LanguageLibrary
 	
 	public void clear()
 	{
-        Resources.removeResource("TRANSLATION_"+language.toUpperCase()+"_"+country.toUpperCase());
-        Resources.removeResource("PARSER_"+language.toUpperCase()+"_"+country.toUpperCase());
+    	final String translatorKey=getLanguageTranslatorKey();
+    	final String parserKey=getLanguageParserKey();
+        Resources.removeResource(translatorKey);
+        Resources.removeResource(parserKey);
 	}
 	
     public boolean insertExpansion(List<String> MORE_CMDS, String str, int m, int strLen, boolean nothingDone)

@@ -674,14 +674,14 @@ public class CMProps extends Properties
     {
         if((varNum<0)||(varNum>=NUMI_SYSTEM)) return ;
         if(val==null) val="0";
-        p().sysInts[varNum]=Integer.valueOf(CMath.s_int(val));
+        p().sysInts[varNum]=Integer.valueOf(CMath.s_int(val.trim()));
     }
 
     public static final void setIntVar(final int varNum, String val, final int defaultValue)
     {
         if((varNum<0)||(varNum>=NUMI_SYSTEM)) return ;
         if((val==null)||(val.length()==0)) val=""+defaultValue;
-        p().sysInts[varNum]=Integer.valueOf(CMath.s_int(val));
+        p().sysInts[varNum]=Integer.valueOf(CMath.s_int(val.trim()));
     }
 
     public static final void setListVar(final int varNum, String[] var)
