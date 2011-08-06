@@ -1655,8 +1655,8 @@ public class DefaultSession implements Session
 				mob=null;
 			}
 		}
-		Log.sysOut("Session","Disconnect: "+getAddress()+" ("+CMLib.time().date2SmartEllapsedTime(getMillisOnline(),true)+")");
-
+		if(sock!=null)
+			Log.sysOut("Session","Disconnect: "+getAddress()+" ("+CMLib.time().date2SmartEllapsedTime(getMillisOnline(),true)+")");
 		status=Session.STATUS_LOGOUT4;
 		killFlag=true;
 		waiting=false;
@@ -1665,7 +1665,6 @@ public class DefaultSession implements Session
 		snoops.clear();
 
 		closeSocks();
-
 
 		status=Session.STATUS_LOGOUT5;
 		CMLib.sessions().remove(this);

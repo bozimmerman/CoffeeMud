@@ -21,6 +21,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -60,8 +61,10 @@ public class IMudPeer implements PersistentPeer
 		if(myobj instanceof Intermud)
 		{
 			try{
+                CMFile F=new CMFile("resources/ppeer."+myID,null,false);
+                if(!F.exists()) return;
                 
-				ObjectInputStream in=new ObjectInputStream(new ByteArrayInputStream(new CMFile("resources/ppeer."+myID,null,false).raw()));
+				ObjectInputStream in=new ObjectInputStream(new ByteArrayInputStream(F.raw()));
 				Object newobj;
 				newobj=in.readObject();
 				if(newobj instanceof Integer)
@@ -79,8 +82,9 @@ public class IMudPeer implements PersistentPeer
 				if(newobj instanceof List)
 				((Intermud)myobj).name_servers=(List)newobj;
 			}
-			catch(Exception e){
-				//Log.errOut("IMudPeer",e.getMessage());
+			catch(Exception e)
+			{
+				Log.errOut("IMudPeer",e.getMessage());
 			}
 		}
 		isRestoring=false;
@@ -96,7 +100,8 @@ public class IMudPeer implements PersistentPeer
 	{
 		if(myobj instanceof Intermud)
 		{
-			try{
+			try
+			{
                 ByteArrayOutputStream bout=new ByteArrayOutputStream();
 				ObjectOutputStream out=new ObjectOutputStream(bout);
 				out.writeObject(Integer.valueOf(((Intermud)myobj).password));
@@ -110,8 +115,9 @@ public class IMudPeer implements PersistentPeer
                 out.close();
                 bout.close();
 			}
-			catch(Exception e){
-				//Log.errOut("IMudPeer",e.getMessage());
+			catch(Exception e)
+			{
+				Log.errOut("IMudPeer",e.getMessage());
 			}
 		}
 	}
