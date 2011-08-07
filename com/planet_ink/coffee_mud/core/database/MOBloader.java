@@ -186,15 +186,32 @@ public class MOBloader
                 else
                 {
                     itemNums.put(itemNum,newItem);
-                    newItem.setMiscText(DBConnections.getResQuietly(R,"CMITTX"));
-                    String loc=DBConnections.getResQuietly(R,"CMITLO");
-                    int roomX=loc.indexOf(";~;");
-                    String roomID="";
-                    if(roomX>=0)
+                    boolean addToMOB=true;
+                    String text=DBConnections.getResQuietly(R,"CMITTX");
+                    if(text.startsWith("<ROOM"))
                     {
-	                    roomID=loc.substring(roomX+3);
-                    	loc=loc.substring(0,roomX);
+                        int roomX=text.indexOf("/>");
+                        if(roomX>=0)
+                        {
+                        	String roomXML=text.substring(0,roomX+2);
+    	                    text=text.substring(roomX+2);
+    	                    List<XMLLibrary.XMLpiece> xml=CMLib.xml().parseAllXML(roomXML);
+    	                    if((xml!=null)&&(xml.size()>0))
+    	                    {
+	    	                    final String roomID=xml.get(0).parms.get("ID");
+		                    	final long expirationDate=CMath.s_long(xml.get(0).parms.get("EXPIRE"));
+		                        final Room itemR=CMLib.map().getRoom(roomID);
+		                        if(itemR!=null)
+		                        {
+		                        	itemR.addItem(newItem);
+		                        	newItem.setExpirationDate(expirationDate);
+		                        	addToMOB=false;
+		                        }
+    	                    }
+                        }
                     }
+                    newItem.setMiscText(text);
+                    String loc=DBConnections.getResQuietly(R,"CMITLO");
                     if(loc.length()>0)
                     {
                         Item container=(Item)itemNums.get(loc);
@@ -203,24 +220,16 @@ public class MOBloader
                         else
                             itemLocs.put(newItem,loc);
                     }
-                    if(roomID.length()>0)
-                    {
-                        Room itemR=CMLib.map().getRoom(roomID);
-                        if(itemR!=null)
-                        	itemR.addItem(newItem, ItemPossessor.Expire.Never);
-                        else
-                        	roomID="";
-                    }
                     newItem.wearAt((int)DBConnections.getLongRes(R,"CMITWO"));
                     newItem.setUsesRemaining((int)DBConnections.getLongRes(R,"CMITUR"));
                     newItem.basePhyStats().setLevel((int)DBConnections.getLongRes(R,"CMITLV"));
                     newItem.basePhyStats().setAbility((int)DBConnections.getLongRes(R,"CMITAB"));
                     newItem.basePhyStats().setHeight((int)DBConnections.getLongRes(R,"CMHEIT"));
                     newItem.recoverPhyStats();
-                    if(roomID.length()>0)
-                    	mob.playerStats().getExtItems().addItem(newItem);
-                    else
+                    if(addToMOB)
 	                    mob.addItem(newItem);
+                    else
+                    	mob.playerStats().getExtItems().addItem(newItem);
                 }
             }
             for(Enumeration<Item> e=itemLocs.keys();e.hasMoreElements();)
@@ -849,15 +858,13 @@ public class MOBloader
                 				 pfxml,mob.baseCharStats().getNonBaseStatsAsString(),cleanXML.toString(),mob.description()}});
     }
 
-    protected String getDBItemUpdateString(final MOB mob, final Item thisItem, final String roomContainer)
+    protected String getDBItemUpdateString(final MOB mob, final Item thisItem)
     {
     	CMLib.catalog().updateCatalogIntegrity(thisItem);
-    	String container=((thisItem.container()!=null)?(""+thisItem.container()):"")
-    					+((roomContainer.length()>0)?(";~;"+roomContainer):"");
+    	String container=((thisItem.container()!=null)?(""+thisItem.container()):"");
         return "INSERT INTO CMCHIT (CMUSERID, CMITNM, CMITID, CMITTX, CMITLO, CMITWO, "
         +"CMITUR, CMITLV, CMITAB, CMHEIT"
-        +") values ('"+mob.Name()+"','"+(thisItem)+"','"+thisItem.ID()+"',?,'"
-        +container+"',"+thisItem.rawWornCode()+","
+        +") values ('"+mob.Name()+"','"+(thisItem)+"','"+thisItem.ID()+"',?,'"+container+"',"+thisItem.rawWornCode()+","
         +thisItem.usesRemaining()+","+thisItem.basePhyStats().level()+","+thisItem.basePhyStats().ability()+","
         +thisItem.basePhyStats().height()+")";
     }
@@ -872,7 +879,7 @@ public class MOBloader
             if((thisItem!=null)&&(!done.contains(""+thisItem))&&(thisItem.isSavable()))
             {
             	CMLib.catalog().updateCatalogIntegrity(thisItem);
-            	final String str=getDBItemUpdateString(mob,thisItem,"");
+            	final String str=getDBItemUpdateString(mob,thisItem);
                 strings.add(new DBPreparedBatchEntry(str,thisItem.text()+" "));
                 done.add(""+thisItem);
             }
@@ -910,8 +917,9 @@ public class MOBloader
                 {
                 	CMLib.catalog().updateCatalogIntegrity(thisItem);
 	            	final Item cont=thisItem.ultimateContainer();
-                	final String str=getDBItemUpdateString(mob,thisItem,CMLib.map().getExtendedRoomID((Room)cont.owner()));
-                    strings.add(new DBPreparedBatchEntry(str,thisItem.text()+" "));
+                	final String str=getDBItemUpdateString(mob,thisItem);
+                	final String text="<ROOM ID=\""+CMLib.map().getExtendedRoomID((Room)cont.owner())+"\" EXPIRE="+thisItem.expirationDate()+" />"+thisItem.text();
+                    strings.add(new DBPreparedBatchEntry(str,text));
                     done.add(""+thisItem);
                 }
         	}

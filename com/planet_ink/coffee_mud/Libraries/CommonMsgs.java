@@ -17,6 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 import java.io.IOException;
 import java.lang.ref.WeakReference;
 
@@ -803,14 +804,19 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 
         StringBuilder buf=new StringBuilder("");
         if(CMath.bset(mob.getBitmap(),MOB.ATT_SYSOPMSGS))
-            buf.append(item.ID()+"\n\rRejuv :"+item.basePhyStats().rejuv()
-		                    +"\n\rType  :"+item.ID()
-                            +"\n\rUses  :"+item.usesRemaining()
-                            +"\n\rHeight:"+item.basePhyStats().height()
-                            +"\n\rAbilty:"+item.basePhyStats().ability()
-                            +"\n\rLevel :"+item.basePhyStats().level()
-                            +"\n\rTime  : "+dispossessionTimeLeftString(item)
-                            +"\n\rMisc  :'"+item.text());
+        {
+        	String dispTime=dispossessionTimeLeftString(item);
+        	if(CMath.isInteger(dispTime))
+        		dispTime=CMLib.time().date2EllapsedTime(CMath.s_long(dispTime), TimeUnit.MINUTES, false);
+            buf.append(item.ID()+"\n\rRejuv : "+item.basePhyStats().rejuv()
+		                    +"\n\rType  : "+item.ID()
+                            +"\n\rUses  : "+item.usesRemaining()
+                            +"\n\rHeight: "+item.basePhyStats().height()
+                            +"\n\rAbilty: "+item.basePhyStats().ability()
+                            +"\n\rLevel : "+item.basePhyStats().level()
+                            +"\n\rTime  : "+dispTime
+                            +"\n\rMisc  : "+item.text().length()+"\n\r"+item.text());
+        }
         if(item.description().length()==0)
             buf.append("You don't see anything special about "+item.name());
         else
