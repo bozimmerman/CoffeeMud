@@ -880,9 +880,9 @@ public class MOBloader
         final PlayerStats pStats=mob.playerStats();
         if(pStats !=null)
         {
-        	ItemCollection coll=pStats.getExtItems();
-        	List<Item> finalCollection=new LinkedList<Item>();
-        	List<Item> extraItems=new LinkedList<Item>();
+        	final ItemCollection coll=pStats.getExtItems();
+        	final List<Item> finalCollection=new LinkedList<Item>();
+        	final List<Item> extraItems=new LinkedList<Item>();
         	for(int i=coll.numItems()-1;i>=0;i--)
         	{
             	final Item thisItem=coll.getItem(i);
@@ -893,7 +893,7 @@ public class MOBloader
 	            		finalCollection.add(thisItem);
                 }
         	}
-        	for(Item thisItem : finalCollection)
+        	for(final Item thisItem : finalCollection)
         	{
                 if(thisItem instanceof Container)
                 {
@@ -904,7 +904,7 @@ public class MOBloader
                 }
         	}
         	finalCollection.addAll(extraItems);
-        	for(Item thisItem : finalCollection)
+        	for(final Item thisItem : finalCollection)
         	{
                 if(!done.contains(""+thisItem))
                 {
