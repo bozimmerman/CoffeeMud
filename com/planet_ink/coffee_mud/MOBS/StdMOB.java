@@ -2540,6 +2540,8 @@ public class StdMOB implements MOB
 							tickStatus=Tickable.STATUS_REBIRTH;
 							cloneFix(CMClass.staticMOB(ID()));
 							bringToLife(CMLib.map().getStartRoom(this),true);
+							if((lastTickedDateTime<0)&&location().getMobility()&&(location().getArea().getAreaState()<Area.STATE_FROZEN))
+								lastTickedDateTime=CMLib.utensils().processVariableEquipment(this);
 							location().showOthers(this,null,CMMsg.MSG_OK_ACTION,"<S-NAME> appears!");
 						}
 					}
