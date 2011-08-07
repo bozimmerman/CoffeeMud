@@ -46,7 +46,7 @@ limitations under the License.
  * finders and various accessors.  Also, the copyOf method
  * does a deep copy.
  */
-public class DefaultItemCollection implements ItemCollection
+public class DefaultItemCollection implements ItemCollection, CMCommon
 {
 	private SVector<Item> contents = new SVector<Item>(0);
 	

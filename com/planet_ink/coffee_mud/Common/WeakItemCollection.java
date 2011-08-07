@@ -47,7 +47,7 @@ limitations under the License.
  * does a deep copy.  Also, this is a weak item collection,
  * so as items get destroyed, they disappear from here.
  */
-public class WeakItemCollection implements ItemCollection
+public class WeakItemCollection implements ItemCollection, CMCommon
 {
 	private SVector<WeakReference<Item>> innerContents=new SVector<WeakReference<Item>>(0); 
 	private ConvertingList<WeakReference<Item>,Item> contents 

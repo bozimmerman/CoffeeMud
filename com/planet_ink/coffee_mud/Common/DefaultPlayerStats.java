@@ -197,6 +197,7 @@ public class DefaultPlayerStats implements PlayerStats
             O.titles=titles.copyOf();
             O.alias=alias.copyOf();
             O.xtraValues=(xtraValues==null)?null:(String[])xtraValues.clone();
+            O.extItems=(ItemCollection)extItems.copyOf();
             return O;
         }
         catch(CloneNotSupportedException e)

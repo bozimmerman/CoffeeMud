@@ -192,8 +192,8 @@ public class MOBloader
                     String roomID="";
                     if(roomX>=0)
                     {
-                    	loc=loc.substring(0,roomX);
 	                    roomID=loc.substring(roomX+3);
+                    	loc=loc.substring(0,roomX);
                     }
                     if(loc.length()>0)
                     {
