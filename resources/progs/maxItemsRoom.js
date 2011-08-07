@@ -23,7 +23,7 @@ for(e=CMLib.map().rooms();e.hasMoreElements();)
 			AR[i]=R.roomID();
 		}
 		else
-		if(AI[i]<numI)
+		if((AI[i]<numI)&&((smallest<0)||(AI[i]<AI[smallest])))
 			smallest=i;
 			
 	   	if(smallest>=0)

@@ -2341,3 +2341,4 @@ Special/Reserved Quest called holidays can be added to/modified on an area-by-ar
 4. New Command: DUEL -- for safe, healthy, player PVP duels, even on non-pvp or optional pvp systems.
 5. Immunities property supports legal immunity now
 6. Player corpses are now saved across reboots (if they haven't decayed)
+7. Rhino has been upgraded to 1.7R3
