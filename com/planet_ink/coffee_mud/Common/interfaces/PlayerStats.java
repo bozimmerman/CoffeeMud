@@ -634,6 +634,18 @@ public interface PlayerStats extends CMCommon, Modifiable, AccountStats
      */
     public void setAccount(PlayerAccount account);
     
+	/**
+     * Gets external items belonging to this player, which should be destroyed with the
+     * player, but can still be transient.  These are items like player corpses, buried
+     * items, perhaps artifacts, or ships, vehicles, children, etc.
+     * 
+     * @see com.planet_ink.coffee_mud.core.interfaces.ItemCollection
+     * @see com.planet_ink.coffee_mud.Items.interfaces.Item
+     * 
+	 * @return an item collection
+	 */
+    public ItemCollection getExtItems();
+    
     /**
      * Whether this object instance is functionally identical to the object passed in.  Works by repeatedly
      * calling getStat on both objects and comparing the values.

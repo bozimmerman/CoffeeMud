@@ -188,6 +188,13 @@ public class MOBloader
                     itemNums.put(itemNum,newItem);
                     newItem.setMiscText(DBConnections.getResQuietly(R,"CMITTX"));
                     String loc=DBConnections.getResQuietly(R,"CMITLO");
+                    int roomX=loc.indexOf(";~;");
+                    String roomID="";
+                    if(roomX>=0)
+                    {
+                    	loc=loc.substring(0,roomX);
+	                    roomID=loc.substring(roomX+3);
+                    }
                     if(loc.length()>0)
                     {
                         Item container=(Item)itemNums.get(loc);
@@ -196,13 +203,24 @@ public class MOBloader
                         else
                             itemLocs.put(newItem,loc);
                     }
+                    if(roomID.length()>0)
+                    {
+                        Room itemR=CMLib.map().getRoom(roomID);
+                        if(itemR!=null)
+                        	itemR.addItem(newItem, ItemPossessor.Expire.Never);
+                        else
+                        	roomID="";
+                    }
                     newItem.wearAt((int)DBConnections.getLongRes(R,"CMITWO"));
                     newItem.setUsesRemaining((int)DBConnections.getLongRes(R,"CMITUR"));
                     newItem.basePhyStats().setLevel((int)DBConnections.getLongRes(R,"CMITLV"));
                     newItem.basePhyStats().setAbility((int)DBConnections.getLongRes(R,"CMITAB"));
                     newItem.basePhyStats().setHeight((int)DBConnections.getLongRes(R,"CMHEIT"));
                     newItem.recoverPhyStats();
-                    mob.addItem(newItem);
+                    if(roomID.length()>0)
+                    	mob.playerStats().getExtItems().addItem(newItem);
+                    else
+	                    mob.addItem(newItem);
                 }
             }
             for(Enumeration<Item> e=itemLocs.keys();e.hasMoreElements();)
@@ -831,25 +849,53 @@ public class MOBloader
                 				 pfxml,mob.baseCharStats().getNonBaseStatsAsString(),cleanXML.toString(),mob.description()}});
     }
 
+    protected String getDBItemUpdateString(final MOB mob, final Item thisItem, final String roomContainer)
+    {
+    	CMLib.catalog().updateCatalogIntegrity(thisItem);
+    	String container=((thisItem.container()!=null)?(""+thisItem.container()):"")
+    					+((roomContainer.length()>0)?(";~;"+roomContainer):"");
+        return "INSERT INTO CMCHIT (CMUSERID, CMITNM, CMITID, CMITTX, CMITLO, CMITWO, "
+        +"CMITUR, CMITLV, CMITAB, CMHEIT"
+        +") values ('"+mob.Name()+"','"+(thisItem)+"','"+thisItem.ID()+"',?,'"
+        +container+"',"+thisItem.rawWornCode()+","
+        +thisItem.usesRemaining()+","+thisItem.basePhyStats().level()+","+thisItem.basePhyStats().ability()+","
+        +thisItem.basePhyStats().height()+")";
+    }
+    
     private List<DBPreparedBatchEntry> getDBItemUpdateStrings(MOB mob)
     {
         HashSet<String> done=new HashSet<String>();
         List<DBPreparedBatchEntry> strings=new LinkedList<DBPreparedBatchEntry>();
         for(int i=0;i<mob.numItems();i++)
         {
-            Item thisItem=mob.getItem(i);
+        	final Item thisItem=mob.getItem(i);
             if((thisItem!=null)&&(!done.contains(""+thisItem))&&(thisItem.isSavable()))
             {
             	CMLib.catalog().updateCatalogIntegrity(thisItem);
-                String str="INSERT INTO CMCHIT (CMUSERID, CMITNM, CMITID, CMITTX, CMITLO, CMITWO, "
-                +"CMITUR, CMITLV, CMITAB, CMHEIT"
-                +") values ('"+mob.Name()+"','"+(thisItem)+"','"+thisItem.ID()+"',?,'"
-                +((thisItem.container()!=null)?(""+thisItem.container()):"")+"',"+thisItem.rawWornCode()+","
-                +thisItem.usesRemaining()+","+thisItem.basePhyStats().level()+","+thisItem.basePhyStats().ability()+","
-                +thisItem.basePhyStats().height()+")";
+            	final String str=getDBItemUpdateString(mob,thisItem,"");
                 strings.add(new DBPreparedBatchEntry(str,thisItem.text()+" "));
                 done.add(""+thisItem);
             }
+        }
+        final PlayerStats pStats=mob.playerStats();
+        if(pStats !=null)
+        {
+        	ItemCollection coll=pStats.getExtItems();
+        	for(int i=0;i<coll.numItems();i++)
+        	{
+            	final Item thisItem=coll.getItem(i);
+                if(thisItem!=null)
+                {
+	            	final Item cont=thisItem.ultimateContainer();
+	                if((!done.contains(""+thisItem)) &&(cont.owner() instanceof Room))
+	                {
+	                	CMLib.catalog().updateCatalogIntegrity(thisItem);
+	                	final String str=getDBItemUpdateString(mob,thisItem,CMLib.map().getExtendedRoomID((Room)cont.owner()));
+	                    strings.add(new DBPreparedBatchEntry(str,thisItem.text()+" "));
+	                    done.add(""+thisItem);
+	                }
+                }
+        	}
         }
         return strings;
     }

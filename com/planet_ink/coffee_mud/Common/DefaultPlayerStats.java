@@ -72,15 +72,18 @@ public class DefaultPlayerStats implements PlayerStats
     protected STreeMap<String,String> alias=new STreeMap<String,String>();
     
 	
-	protected SVector<String> securityGroups=new SVector<String>();
-    protected long accountExpiration=0;
-    protected RoomnumberSet visitedRoomSet=null;
-    protected DVector levelInfo=new DVector(3);
-    protected SHashSet<String> introductions=new SHashSet<String>();
+	protected SVector<String> 	securityGroups=new SVector<String>();
+    protected long 				accountExpiration=0;
+    protected RoomnumberSet 	visitedRoomSet=null;
+    protected DVector 			levelInfo=new DVector(3);
+    protected SHashSet<String> 	introductions=new SHashSet<String>();
+    protected ItemCollection	extItems;
 
-    public DefaultPlayerStats() {
+    public DefaultPlayerStats() 
+    {
         super();
         xtraValues=CMProps.getExtraStatCodesHolder(this);
+        extItems=(ItemCollection)CMClass.getCommon("DefaultItemCollection");
     }
     
 	protected static String[] CODES={"CLASS","FRIENDS","IGNORE","TITLES",
@@ -821,6 +824,7 @@ public class DefaultPlayerStats implements PlayerStats
     
     public PlayerAccount getAccount() { return account;}
     public void setAccount(PlayerAccount account) { this.account = account;}
+	public ItemCollection getExtItems() { return extItems; }
     
     public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
 }
