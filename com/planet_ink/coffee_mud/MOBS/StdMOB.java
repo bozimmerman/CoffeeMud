@@ -1027,7 +1027,11 @@ public class StdMOB implements MOB
 		if(location()!=null) location().delInhabitant(this);
 		DeadBody Body=null;
 		if(createBody)
+		{
 			Body=charStats().getMyRace().getCorpseContainer(this,deathRoom);
+			if((Body!=null)&&(playerStats()!=null))
+				playerStats().getExtItems().addItem(Body);
+		}
 		amDead=true;
 		makePeace();
 		setRiding(null);

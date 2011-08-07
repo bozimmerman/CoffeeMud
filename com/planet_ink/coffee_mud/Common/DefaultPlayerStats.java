@@ -83,7 +83,7 @@ public class DefaultPlayerStats implements PlayerStats
     {
         super();
         xtraValues=CMProps.getExtraStatCodesHolder(this);
-        extItems=(ItemCollection)CMClass.getCommon("DefaultItemCollection");
+        extItems=(ItemCollection)CMClass.getCommon("WeakItemCollection");
     }
     
 	protected static String[] CODES={"CLASS","FRIENDS","IGNORE","TITLES",

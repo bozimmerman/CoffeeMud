@@ -881,19 +881,38 @@ public class MOBloader
         if(pStats !=null)
         {
         	ItemCollection coll=pStats.getExtItems();
-        	for(int i=0;i<coll.numItems();i++)
+        	List<Item> finalCollection=new LinkedList<Item>();
+        	List<Item> extraItems=new LinkedList<Item>();
+        	for(int i=coll.numItems()-1;i>=0;i--)
         	{
             	final Item thisItem=coll.getItem(i);
                 if(thisItem!=null)
                 {
 	            	final Item cont=thisItem.ultimateContainer();
-	                if((!done.contains(""+thisItem)) &&(cont.owner() instanceof Room))
-	                {
-	                	CMLib.catalog().updateCatalogIntegrity(thisItem);
-	                	final String str=getDBItemUpdateString(mob,thisItem,CMLib.map().getExtendedRoomID((Room)cont.owner()));
-	                    strings.add(new DBPreparedBatchEntry(str,thisItem.text()+" "));
-	                    done.add(""+thisItem);
-	                }
+	            	if(cont.owner() instanceof Room)
+	            		finalCollection.add(thisItem);
+                }
+        	}
+        	for(Item thisItem : finalCollection)
+        	{
+                if(thisItem instanceof Container)
+                {
+                	List<Item> contents=((Container)thisItem).getContents();
+                	for(Item I : contents)
+                		if(!finalCollection.contains(I))
+                			extraItems.add(I);
+                }
+        	}
+        	finalCollection.addAll(extraItems);
+        	for(Item thisItem : finalCollection)
+        	{
+                if(!done.contains(""+thisItem))
+                {
+                	CMLib.catalog().updateCatalogIntegrity(thisItem);
+	            	final Item cont=thisItem.ultimateContainer();
+                	final String str=getDBItemUpdateString(mob,thisItem,CMLib.map().getExtendedRoomID((Room)cont.owner()));
+                    strings.add(new DBPreparedBatchEntry(str,thisItem.text()+" "));
+                    done.add(""+thisItem);
                 }
         	}
         }

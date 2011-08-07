@@ -44,41 +44,52 @@ limitations under the License.
 /**
  * Abstract collection of item objects, complete with some 
  * finders and various accessors.  Also, the copyOf method
- * does a deep copy.
+ * does a deep copy.  Also, this is a weak item collection,
+ * so as items get destroyed, they disappear from here.
  */
-public class DefaultItemCollection implements ItemCollection
+public class WeakItemCollection implements ItemCollection
 {
-	private SVector<Item> contents = new SVector<Item>(0);
-	
-	public String ID() { return "DefaultItemCollection"; }
+	private SVector<WeakReference<Item>> innerContents=new SVector<WeakReference<Item>>(0); 
+	private ConvertingList<WeakReference<Item>,Item> contents 
+				= new ConvertingList<WeakReference<Item>,Item>(innerContents,
+						new Converter<WeakReference<Item>,Item>(){
+					public Item convert(WeakReference<Item> obj) { return obj.get();}
+				});
+	public String ID() { return "WeakItemCollection"; }
 	
 	public CMObject copyOf() 
 	{
-		DefaultItemCollection c=(DefaultItemCollection)newInstance();
+		WeakItemCollection c=(WeakItemCollection)newInstance();
 		for(int i=0;i<contents.size();i++)
 		{
 			Item I=contents.get(i);
-			Item I2=(Item)I.copyOf();
-			I2.setOwner(I.owner());
-			c.contents.add(I2);
+			if(I!=null)
+			{
+				Item I2=(Item)I.copyOf();
+				I2.setOwner(I.owner());
+				c.innerContents.add(new WeakReference<Item>(I2));
+			}
 		}
 		for(int i=0;i<contents.size();i++)
 		{
 			Item I=contents.get(i);
 			Item I2=c.contents.get(i);
-			if(I.container() != null)
-				for(int i2=0;i2<contents.size();i2++)
-					if(I.container() == contents.get(i2))
-					{
-						I2.setContainer((Container)c.contents.get(i2));
-						break;
-					}
+			if((I!=null)&&(I2!=null))
+			{
+				if(I.container() != null)
+					for(int i2=0;i2<contents.size();i2++)
+						if(I.container() == contents.get(i2))
+						{
+							I2.setContainer((Container)c.contents.get(i2));
+							break;
+						}
+			}
 		}
 		return c;
 	}
 	
 	public void initializeClass() {}
-	public CMObject newInstance() { return new DefaultItemCollection(); }
+	public CMObject newInstance() { return new WeakItemCollection(); }
 	public int compareTo(CMObject o) { return o==this?0:1; }
 	
 	public Item findItem(String itemID)
@@ -87,7 +98,7 @@ public class DefaultItemCollection implements ItemCollection
 		if(item==null) item=(Item)CMLib.english().fetchEnvironmental(contents,itemID,false);
 		return item;
 	}
-	public Enumeration<Item> items() { return contents.elements();}
+	public Enumeration<Item> items() { return new IteratorEnumeration<Item>(contents.iterator()); }
 	
 	public Item findItem(Item goodLocation, String itemID)
 	{
@@ -115,12 +126,23 @@ public class DefaultItemCollection implements ItemCollection
 	
 	public void addItem(Item item)
 	{
-		contents.addElement(item);
+		innerContents.addElement(new WeakReference<Item>(item));
 	}
 	
 	public void delItem(Item item)
 	{
-		contents.removeElement(item);
+		for(int i=contents.size()-1;i>=0;i--)
+		{
+			Item I=getItem(i);
+			if(I==item)
+			{
+				innerContents.remove(i);
+				break;
+			}
+			else
+			if(I==null)
+				try { innerContents.remove(i); }catch(java.lang.ArrayIndexOutOfBoundsException x){}
+		}
 	}
 	
 	public int numItems()
@@ -130,14 +152,26 @@ public class DefaultItemCollection implements ItemCollection
 	
 	public boolean isContent(Item item)
 	{
-		return contents.contains(item);
+		for(int i=contents.size()-1;i>=0;i--)
+		{
+			Item I=getItem(i);
+			if(I==item) 
+				return true;
+			if(I==null) 
+				try { innerContents.remove(i); }catch(java.lang.ArrayIndexOutOfBoundsException x){}
+		}
+		return false;
 	}
 	
 	public Item getItem(int i)
 	{
 		try
 		{
-            return contents.elementAt(i);
+			Item I=contents.get(i);
+			if(I==null) 
+				innerContents.remove(i);
+			else
+				return I;
 		}
 		catch(java.lang.ArrayIndexOutOfBoundsException x){}
 		return null;
