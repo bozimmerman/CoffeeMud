@@ -64,7 +64,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
     public String rawMaskHelp(){return DEFAULT_MASK_HELP;}
 
     
-	protected CompiledZapperMask preCompiled(final String str)
+	public CompiledZapperMask getPreCompiledMask(final String str)
     {
         Hashtable<String,CompiledZapperMask> H=(Hashtable<String,CompiledZapperMask>)Resources.getResource("SYSTEM_HASHED_MASKS");
         if(H==null)
@@ -2166,7 +2166,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
     public int minMaskLevel(final String text, final int minMinLevel)
     {
         int level=minMinLevel;
-        final CompiledZapperMask cset=preCompiled(text);
+        final CompiledZapperMask cset=getPreCompiledMask(text);
         for(final CompiledZapperMaskEntry entry : cset.entries)
         {
             switch(entry.maskType)
@@ -3198,7 +3198,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 		return base;
 	}
 
-	public boolean maskCheck(final String text, final Environmental E, final boolean actual){ return maskCheck(preCompiled(text),E,actual);}
+	public boolean maskCheck(final String text, final Environmental E, final boolean actual){ return maskCheck(getPreCompiledMask(text),E,actual);}
 	public boolean maskCheck(final CompiledZapperMask cset, final Environmental E, final boolean actual)
 	{
 		if(E==null) return true;
@@ -4217,7 +4217,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 		return true;
 	}
 
-    public boolean maskCheck(final String text, final PlayerLibrary.ThinPlayer E){ return maskCheck(preCompiled(text),E);}
+    public boolean maskCheck(final String text, final PlayerLibrary.ThinPlayer E){ return maskCheck(getPreCompiledMask(text),E);}
 	public boolean maskCheck(final CompiledZapperMask cset, final PlayerLibrary.ThinPlayer E)
 	{
 		if(E==null) return true;

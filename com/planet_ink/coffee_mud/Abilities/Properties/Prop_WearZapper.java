@@ -38,13 +38,6 @@ public class Prop_WearZapper extends Prop_HaveZapper
 	public String ID() { return "Prop_WearZapper"; }
 	public String name(){ return "Restrictions to wielding/wearing/holding";}
 	protected int canAffectCode(){return Ability.CAN_ITEMS;}
-	protected boolean actual=false;
-
-	public void setMiscText(String text)
-	{
-		super.setMiscText(text);
-		actual=(text.toUpperCase()+" ").startsWith("ACTUAL ");
-	}
 
 	public String accountForYourself()
 	{
@@ -65,23 +58,23 @@ public class Prop_WearZapper extends Prop_HaveZapper
 		switch(msg.targetMinor())
 		{
 		case CMMsg.TYP_HOLD:
-			if((!CMLib.masking().maskCheck(text(),mob,actual))&&(didHappen(100)))
+			if((!CMLib.masking().maskCheck(text(),mob,actual))&&(CMLib.dice().rollPercentage()<=percent))
 			{
-				mob.location().show(mob,null,myItem,CMMsg.MSG_OK_VISUAL,CMParms.getParmStr(text(),"MESSAGE","<O-NAME> flashes and falls out of <S-HIS-HER> hands!"));
+				mob.location().show(mob,null,myItem,CMMsg.MSG_OK_VISUAL,msgStr);
 				return false;
 			}
 			break;
 		case CMMsg.TYP_WEAR:
-			if((!CMLib.masking().maskCheck(text(),mob,actual))&&(didHappen(100)))
+			if((!CMLib.masking().maskCheck(text(),mob,actual))&&(CMLib.dice().rollPercentage()<=percent))
 			{
-				mob.location().show(mob,null,myItem,CMMsg.MSG_OK_VISUAL,CMParms.getParmStr(text(),"MESSAGE","<O-NAME> flashes and falls out of <S-HIS-HER> hands!"));
+				mob.location().show(mob,null,myItem,CMMsg.MSG_OK_VISUAL,msgStr);
 				return false;
 			}
 			break;
 		case CMMsg.TYP_WIELD:
-			if((!CMLib.masking().maskCheck(text(),mob,actual))&&(didHappen(100)))
+			if((!CMLib.masking().maskCheck(text(),mob,actual))&&(CMLib.dice().rollPercentage()<=percent))
 			{
-				mob.location().show(mob,null,myItem,CMMsg.MSG_OK_VISUAL,CMParms.getParmStr(text(),"MESSAGE","<O-NAME> flashes and falls out of <S-HIS-HER> hands!"));
+				mob.location().show(mob,null,myItem,CMMsg.MSG_OK_VISUAL,msgStr);
 				return false;
 			}
 			break;

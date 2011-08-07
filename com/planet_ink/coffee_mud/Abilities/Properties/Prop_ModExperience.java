@@ -70,7 +70,7 @@ public class Prop_ModExperience extends Property
 		int x=s.indexOf(';');
 		if(x>=0)
 		{
-			mask=CMLib.masking().maskCompile(s.substring(x+1).trim());
+			mask=CMLib.masking().getPreCompiledMask(s.substring(x+1).trim());
 			s=s.substring(0,x).trim();
 		}
 		operationFormula="Amount "+s;

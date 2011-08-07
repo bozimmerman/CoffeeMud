@@ -59,7 +59,7 @@ public class Prop_LanguageSpeaker extends Property
 		int x=txt.indexOf(';');
 		mobMask=null;
 		if((x>=0)&&(txt.substring(x+1).trim().length()>0))
-			mobMask=CMLib.masking().maskCompile(txt.substring(x+1).trim());
+			mobMask=CMLib.masking().getPreCompiledMask(txt.substring(x+1).trim());
 		lang=null;
 		super.setMiscText(txt);
 	}

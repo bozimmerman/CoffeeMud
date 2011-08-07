@@ -82,7 +82,7 @@ public class Prop_SpellAdder extends Property
         lastMOB=null;
         String maskString=getMaskString(newText);
         if(maskString.length()>0)
-        	compiledMask=CMLib.masking().maskCompile(maskString);
+        	compiledMask=CMLib.masking().getPreCompiledMask(maskString);
 	}
     
 	public List<Ability> getMySpellsV()

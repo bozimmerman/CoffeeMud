@@ -76,7 +76,7 @@ public class Prop_HaveAdjuster extends Property
         if(parameters[1].trim().length()==0)
         	mask=MaskingLibrary.CompiledZapperMask.EMPTY();
         else
-        	mask=CMLib.masking().maskCompile(parameters[1]);
+        	mask=CMLib.masking().getPreCompiledMask(parameters[1]);
         Vector phyStatsV=new Vector();
         addIfPlussed(parameters[0],"abi",PhyStats.STAT_ABILITY,phyStatsV);
         addIfPlussed(parameters[0],"arm",PhyStats.STAT_ARMOR,phyStatsV);

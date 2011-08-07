@@ -73,6 +73,7 @@ public interface CombatLibrary extends CMLibrary
     public void handleBeingDamaged(CMMsg msg);
     public void handleBeingAssaulted(CMMsg msg);
     public void handleDeath(CMMsg msg);
+    public void doDeathPostProcessing(CMMsg msg);
     public void handleObserveDeath(MOB observer, MOB fighting, CMMsg msg);
     public boolean isKnockedOutUponDeath(MOB mob, MOB fighting);
     public boolean handleConsequences(MOB mob, MOB fighting, String[] commands, int[] lostExperience, String message);

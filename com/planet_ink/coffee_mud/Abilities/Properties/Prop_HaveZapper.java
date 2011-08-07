@@ -10,6 +10,7 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -40,11 +41,36 @@ public class Prop_HaveZapper extends Property
 	protected int canAffectCode(){return Ability.CAN_ITEMS;}
 	
 	protected boolean actual=false;
+	protected int percent=100;
+	protected String msgStr="";
+	protected MaskingLibrary.CompiledZapperMask mask=null;
+	
+	protected String defaultMessage() { return "<O-NAME> flashes and flies out of <S-HIS-HER> hands!";}
+
 
 	public void setMiscText(String text)
 	{
 		super.setMiscText(text);
 		actual=(text.toUpperCase()+" ").startsWith("ACTUAL ");
+		if(actual) text=text.substring(7);
+		percent=100;
+        int x=text.indexOf('%');
+        if(x>0)
+        {
+	        int mul=1;
+	        int tot=0;
+	        while((--x)>=0)
+	        {
+	            if(Character.isDigit(text.charAt(x)))
+	                tot+=CMath.s_int(""+text.charAt(x))*mul;
+	            else
+	                x=-1;
+	            mul=mul*10;
+	        }
+	        percent=tot;
+        }
+		msgStr=CMParms.getParmStr(text,"MESSAGE",defaultMessage());
+		mask=CMLib.masking().getPreCompiledMask(text);
 	}
 	
 	public String accountForYourself()
@@ -52,30 +78,6 @@ public class Prop_HaveZapper extends Property
 		return "Ownership restricted as follows: "+CMLib.masking().maskDesc(text());
 	}
 
-    public boolean didHappen(int defaultPct)
-    {
-        int x=text().indexOf('%');
-        if(x<0)
-        {
-            if(CMLib.dice().rollPercentage()<=defaultPct)
-                return true;
-            return false;
-        }
-        int mul=1;
-        int tot=0;
-        while((--x)>=0)
-        {
-            if(Character.isDigit(text().charAt(x)))
-                tot+=CMath.s_int(""+text().charAt(x))*mul;
-            else
-                x=-1;
-            mul=mul*10;
-        }
-        if(CMLib.dice().rollPercentage()<=tot)
-            return true;
-        return false;
-    }
-    
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(affected==null) return false;
@@ -85,32 +87,32 @@ public class Prop_HaveZapper extends Property
 			return true;
 
 		if(msg.amITarget(affected))
-		switch(msg.targetMinor())
-		{
-		case CMMsg.TYP_HOLD:
-			break;
-		case CMMsg.TYP_WEAR:
-			break;
-		case CMMsg.TYP_WIELD:
-			break;
-		case CMMsg.TYP_GET:
-			if((!CMLib.masking().maskCheck(text(),mob,actual))&&(didHappen(100)))
+			switch(msg.targetMinor())
 			{
-				mob.location().show(mob,null,affected,CMMsg.MSG_OK_ACTION,CMParms.getParmStr(text(),"MESSAGE","<O-NAME> flashes and flies out of <S-HIS-HER> hands!"));
-				return false;
+			case CMMsg.TYP_HOLD:
+				break;
+			case CMMsg.TYP_WEAR:
+				break;
+			case CMMsg.TYP_WIELD:
+				break;
+			case CMMsg.TYP_GET:
+				if((!CMLib.masking().maskCheck(mask,mob,actual))&&(CMLib.dice().rollPercentage()<=percent))
+				{
+					mob.location().show(mob,null,affected,CMMsg.MSG_OK_ACTION,msgStr);
+					return false;
+				}
+				break;
+			case CMMsg.TYP_EAT:
+			case CMMsg.TYP_DRINK:
+				if((!CMLib.masking().maskCheck(mask,mob,actual))&&(CMLib.dice().rollPercentage()<=percent))
+				{
+					mob.location().show(mob,null,affected,CMMsg.MSG_OK_ACTION,msgStr);
+					return false;
+				}
+				break;
+			default:
+				break;
 			}
-			break;
-		case CMMsg.TYP_EAT:
-		case CMMsg.TYP_DRINK:
-			if((!CMLib.masking().maskCheck(text(),mob,actual))&&(didHappen(100)))
-			{
-				mob.location().show(mob,null,affected,CMMsg.MSG_OK_ACTION,CMParms.getParmStr(text(),"MESSAGE","<O-NAME> flashes and falls out <S-HIS-HER> mouth!"));
-				return false;
-			}
-			break;
-		default:
-			break;
-		}
 		return true;
 	}
 }

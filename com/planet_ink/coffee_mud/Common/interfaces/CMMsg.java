@@ -671,7 +671,7 @@ public interface CMMsg extends CMCommon
 	/** Mask to remove the MAJOR_MASK from the source, target, or others code, leaving only TYPE */
 	public static final int MINOR_MASK=2047;
     /** Mask to remove the TYPE CODE from the source, target, or others code, leaving only MASK bits */
-	public static final int MAJOR_MASK=4192256;
+	public static final int MAJOR_MASK=2147482624;
 
 	// masks for all messages
 	/** MAJOR_MASK bit denoting a source, target, or others code does small hand movements */
@@ -696,6 +696,8 @@ public interface CMMsg extends CMCommon
 	public static final int MASK_CHANNEL=1048576;  // for channel messages
     /** MAJOR_MASK bit denoting an event that will be repeated, in order to optimize execution */
 	public static final int MASK_OPTIMIZE=2097152; // to optimize a repeated msg
+    /** MAJOR_MASK bit denoting an event that is for system processing, and not observable */
+	public static final int MASK_CNTRLMSG=4194304; // to optimize a repeated msg
 
 	// minor messages
 	/** MINOR_MASK minor action code type, denoting a general area event */
@@ -900,6 +902,8 @@ public interface CMMsg extends CMCommon
 	public static final int TYP_UNLOAD=100;
     /** MINOR_MASK minor action code type, denoting a challenge to the duel*/
 	public static final int TYP_DUELCHALLENGE=101;
+    /** MINOR_MASK minor action code type, denoting a legal matter*/
+	public static final int TYP_LEGALWARRANT=102;
 
     /** MINOR_MASK minor action code type, denoting a channel action -- 2000-2047 are channels*/
 	public static final int TYP_CHANNEL=2000; //(2000-2047 are channels)
@@ -924,7 +928,7 @@ public interface CMMsg extends CMCommon
         "TELL", "SITMOVE", "KNOCK", "PRACTICE", "TEACH", "REMOVE", "EXPCHANGE", 
         "DAMAGE", "HEALING", "ROOMRESET", "RELOAD", "SNIFF", "ACTIVATE", "DEACTIVATE", 
         "FACTIONCHANGE", "LOGIN", "LEVEL", "EXAMINE", "ORDER","EXPIRE","BORROW","HUH",
-        "LIFE","BID","CLANEVENT","UNLOAD","DUELCHALLENGE"
+        "LIFE","BID","CLANEVENT","UNLOAD","DUELCHALLENGE","LEGALWARRANT"
     };
     
     /** Index string descriptions of all the MAJOR_MASK code MAKS_s */
@@ -1193,4 +1197,6 @@ public interface CMMsg extends CMCommon
 	public static final int MSG_UNLOAD=MASK_HANDS|TYP_UNLOAD;
     /** combined MAJOR and MINOR codes for useful event message type for a duel challenge*/
 	public static final int MSG_DUELCHALLENGE=MASK_SOUND|MASK_MOUTH|TYP_DUELCHALLENGE;
+    /** combined MAJOR and MINOR codes for useful event message type for a duel challenge*/
+	public static final int MSG_LEGALWARRANT=MASK_CNTRLMSG|TYP_LEGALWARRANT;
 }

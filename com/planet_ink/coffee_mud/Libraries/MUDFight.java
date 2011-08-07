@@ -1166,8 +1166,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 
     public void handleDeath(CMMsg msg)
     {
-        MOB deadmob=msg.source();
-
+        final MOB deadmob=msg.source();
         if(!deadmob.amDead())
         {
             if((!deadmob.isMonster())&&(deadmob.soulMate()==null))
@@ -1189,41 +1188,54 @@ public class MUDFight extends StdLibrary implements CombatLibrary
             if(msg.tool() instanceof MOB)
             {
                 MOB killer=(MOB)msg.tool();
-                if(Log.killsChannelOn())
-                {
-                	Item KI=killer.fetchWieldedItem();
-                	Item DI=deadmob.fetchWieldedItem();
-                	String room=CMLib.map().getExtendedRoomID((killer.location()!=null)?killer.location():deadmob.location());
-                	Log.killsOut("KILL",room+":"+killer.Name()+":"+killer.phyStats().getCombatStats()+":"+killer.curState().getCombatStats()+":"+((KI==null)?"null":KI.name())+":"+deadmob.Name()+":"+deadmob.phyStats().getCombatStats()+":"+deadmob.curState().getCombatStats()+":"+((DI==null)?"null":DI.name()));
-                }
-                if(Log.combatChannelOn())
-                {
-                	Item DI=deadmob.fetchWieldedItem();
-                	Item KI=killer.fetchWieldedItem();
-                	Log.combatOut("KILL",killer.Name()+":"+killer.phyStats().getCombatStats()+":"+killer.curState().getCombatStats()+":"+((KI==null)?"null":KI.name())+":"+deadmob.Name()+":"+deadmob.phyStats().getCombatStats()+":"+deadmob.curState().getCombatStats()+":"+((DI==null)?"null":DI.name()));
-                }
+                doDeathPostProcessing(msg);
                 justDie(killer,deadmob);
-                if((!deadmob.isMonster())&&(deadmob.soulMate()==null)&&(killer!=deadmob)&&(!killer.isMonster()))
-                {
-                    CMLib.coffeeTables().bump(deadmob,CoffeeTableRow.STAT_PKDEATHS);
-	                if((deadmob.getClanID().length()>0)
-	                &&(killer.getClanID().length()>0)
-	                &&(!deadmob.getClanID().equals(killer.getClanID()))
-	                &&(deadmob.session()!=null)
-	                &&(killer.session()!=null)
-	                &&(!deadmob.session().getAddress().equalsIgnoreCase(killer.session().getAddress())))
-	                {
-	                    Clan C=killer.getMyClan();
-	                    if(C!=null) C.recordClanKill();
-	                }
-                }
             }
             else
                 justDie(null,deadmob);
             deadmob.tell(deadmob,msg.target(),msg.tool(),msg.sourceMessage());
-            if(deadmob.riding()!=null) deadmob.riding().delRider(deadmob);
+            if(deadmob.riding()!=null) 
+            	deadmob.riding().delRider(deadmob);
             if(CMLib.flags().isCataloged(deadmob))
     	        CMLib.catalog().bumpDeathPickup(deadmob);
+        }
+    }
+    
+    public void doDeathPostProcessing(CMMsg msg)
+    {
+        final MOB deadmob=msg.source();
+        if(msg.tool() instanceof MOB)
+        {
+            MOB killer=(MOB)msg.tool();
+            if(Log.killsChannelOn())
+            {
+            	Item KI=killer.fetchWieldedItem();
+            	Item DI=deadmob.fetchWieldedItem();
+            	String room=CMLib.map().getExtendedRoomID((killer.location()!=null)?killer.location():deadmob.location());
+            	Log.killsOut("KILL",room+":"+killer.Name()+":"+killer.phyStats().getCombatStats()+":"+killer.curState().getCombatStats()+":"+((KI==null)?"null":KI.name())+":"+deadmob.Name()+":"+deadmob.phyStats().getCombatStats()+":"+deadmob.curState().getCombatStats()+":"+((DI==null)?"null":DI.name()));
+            }
+            if(Log.combatChannelOn())
+            {
+            	Item DI=deadmob.fetchWieldedItem();
+            	Item KI=killer.fetchWieldedItem();
+            	Log.combatOut("KILL",killer.Name()+":"+killer.phyStats().getCombatStats()+":"+killer.curState().getCombatStats()+":"+((KI==null)?"null":KI.name())+":"+deadmob.Name()+":"+deadmob.phyStats().getCombatStats()+":"+deadmob.curState().getCombatStats()+":"+((DI==null)?"null":DI.name()));
+            }
+	        if((deadmob!=null)&&(killer!=null)
+	        &&(!deadmob.isMonster())&&(deadmob.soulMate()==null)
+	        &&(killer!=deadmob)&&(!killer.isMonster()))
+	        {
+	            CMLib.coffeeTables().bump(deadmob,CoffeeTableRow.STAT_PKDEATHS);
+	            if((deadmob.getClanID().length()>0)
+	            &&(killer.getClanID().length()>0)
+	            &&(!deadmob.getClanID().equals(killer.getClanID()))
+	            &&(deadmob.session()!=null)
+	            &&(killer.session()!=null)
+	            &&(!deadmob.session().getAddress().equalsIgnoreCase(killer.session().getAddress())))
+	            {
+	                Clan C=killer.getMyClan();
+	                if(C!=null) C.recordClanKill();
+	            }
+	        }
         }
     }
 

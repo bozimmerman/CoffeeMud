@@ -45,7 +45,6 @@ public class Prayer_DeathsDoor extends Prayer
 	protected int canAffectCode(){return Ability.CAN_MOBS;}
 	protected int canTargetCode(){return Ability.CAN_MOBS;}
 
-
 	public boolean okMessage(Environmental host, CMMsg msg)
 	{
 		if((affected!=null)&&(affected instanceof MOB))
@@ -55,6 +54,8 @@ public class Prayer_DeathsDoor extends Prayer
 			&&(msg.sourceMinor()==CMMsg.TYP_DEATH)
 			&&(mob.getStartRoom()!=null))
 			{
+				if(mob.fetchAbility("Dueling")!=null)
+					return super.okMessage(host,msg);
 				mob.resetToMaxState();
 				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> <S-IS-ARE> pulled back from death's door!");
 				mob.getStartRoom().bringMobHere(mob,false);

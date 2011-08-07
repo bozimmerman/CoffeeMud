@@ -103,7 +103,9 @@ public class Dueler extends StdAbility
 	        mob.recoverMaxState();
 	        mob.recoverPhyStats();
 			mob.makePeace();
-        	clearAnyLegalIssues(mob);
+			Ability A=CMClass.getAbility("Immunities");
+			if(A!=null)
+				A.invoke(mob, new XVector("LEGAL","TICKS=1"), mob, true, 0);
         }
     	oldEffects.clear();
     	oldEq.clear();
@@ -112,24 +114,6 @@ public class Dueler extends StdAbility
         super.unInvoke();
     }
 
-    public void clearAnyLegalIssues(MOB mob)
-    {
-		LegalBehavior B=CMLib.law().getLegalBehavior(mob.location());
-		if(B!=null)
-		{
-			Area A=CMLib.law().getLegalObject(mob.location());
-			List<LegalWarrant> V=B.getWarrantsOf(A, mob);
-			for(LegalWarrant W : V)
-				if(W.victim()==otherDuelPartner)
-				{
-					W.setLastOffense(0); // will cause the warrant to be dismissed and filed
-					W.setArrestingOfficer(A, null);
-					W.setCrime("pardoned");
-					W.setOffenses(0);
-				}
-		}
-    }
-    
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(!super.okMessage(myHost,msg))
@@ -146,11 +130,17 @@ public class Dueler extends StdAbility
 					CMMsg.MSG_OK_VISUAL,null,
 					CMMsg.MSG_OK_VISUAL,"^F^<FIGHT^><S-NAME> is DEFEATED!!!^</FIGHT^>^?\n\r"+msp);
 			deathRoom.send(target, msg2);
+			CMLib.combat().doDeathPostProcessing(msg);
 			target.makePeace();
 			//source.makePeace();
 			unInvoke();
 			return false;
 		}
+		else
+		if((msg.target()==affecting())
+		&&(msg.targetMinor()==CMMsg.TYP_LEGALWARRANT)
+		&&(msg.tool()==otherDuelPartner))
+			return false;
 		return true;
 	}
 	
@@ -183,7 +173,6 @@ public class Dueler extends StdAbility
             	if((System.currentTimeMillis()-lastTimeISawYou)>30000)
             		unInvoke();
         	}
-        	clearAnyLegalIssues(mob);
         }
         return true;
     }

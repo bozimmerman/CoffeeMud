@@ -2343,7 +2343,8 @@ public class StdMOB implements MOB
 				break;
 			default:
 				// you pretty much always know what you are doing, if you can do it.
-				tell(srcM,msg.target(),msg.tool(),msg.sourceMessage());
+				if(!CMath.bset(msg.sourceCode(),CMMsg.MASK_CNTRLMSG))
+					tell(srcM,msg.target(),msg.tool(),msg.sourceMessage());
 				break;
 			}
 		}
@@ -2466,8 +2467,9 @@ public class StdMOB implements MOB
 			}
 			else
 			if(((CMath.bset(othersMajor,CMMsg.MASK_EYES))
-			||(CMath.bset(othersMajor,CMMsg.MASK_HANDS))
-			||(CMath.bset(othersMajor,CMMsg.MASK_ALWAYS)))
+				||(CMath.bset(othersMajor,CMMsg.MASK_HANDS))
+				||(CMath.bset(othersMajor,CMMsg.MASK_ALWAYS)))
+			&&(!CMath.bset(msg.othersCode(),CMMsg.MASK_CNTRLMSG))
 			&&((!asleep)&&(canseesrc)))
 			{
 				tell(srcM,msg.target(),msg.tool(),msg.othersMessage());

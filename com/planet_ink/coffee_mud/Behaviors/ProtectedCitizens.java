@@ -76,7 +76,7 @@ public class ProtectedCitizens extends ActiveTicker
 		char c=';';
 		int x=s.indexOf(c);
 		if(x<0){ citizenZapper=MaskingLibrary.CompiledZapperMask.EMPTY(); return citizenZapper;}
-		citizenZapper=CMLib.masking().maskCompile(s.substring(0,x));
+		citizenZapper=CMLib.masking().getPreCompiledMask(s.substring(0,x));
 		return citizenZapper;
 	}
 
@@ -91,7 +91,7 @@ public class ProtectedCitizens extends ActiveTicker
 		s=s.substring(x+1).trim();
 		x=s.indexOf(c);
 		if(x<0){ helperZapper=MaskingLibrary.CompiledZapperMask.EMPTY(); return helperZapper;}
-		helperZapper=CMLib.masking().maskCompile(s.substring(0,x));
+		helperZapper=CMLib.masking().getPreCompiledMask(s.substring(0,x));
 		return helperZapper;
 	}
     

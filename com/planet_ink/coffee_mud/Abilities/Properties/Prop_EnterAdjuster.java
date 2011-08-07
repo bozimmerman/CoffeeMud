@@ -48,7 +48,7 @@ public class Prop_EnterAdjuster extends Property
         if(parameters[1].trim().length()==0)
         	mask=MaskingLibrary.CompiledZapperMask.EMPTY();
         else
-        	mask=CMLib.masking().maskCompile(parameters[1]);
+        	mask=CMLib.masking().getPreCompiledMask(parameters[1]);
     }
     
 	public String accountForYourself()

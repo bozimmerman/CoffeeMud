@@ -66,7 +66,7 @@ public class Prop_Socials extends Property
 			}
 			if(maskStr.length()>0)
 			{
-				mask=CMLib.masking().maskCompile(maskStr);
+				mask=CMLib.masking().getPreCompiledMask(maskStr);
 				forgive=true;
 			}
 			if(wornonly.length()>0)

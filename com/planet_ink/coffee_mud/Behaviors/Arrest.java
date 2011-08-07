@@ -65,6 +65,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
                 }
         return false;
     }
+    
     public boolean arrest(Area myArea, MOB officer, MOB accused)
     {
         if(!theLawIsEnabled()) return false;
@@ -79,12 +80,15 @@ public class Arrest extends StdBehavior implements LegalBehavior
         }
         return false;
     }
+    
     public int revoltChance(){return 0;}
+    
     public Law legalInfo(Area myArea)
     {
         if(!theLawIsEnabled()) return null;
         return getLaws(myArea,false);
     }
+    
     public boolean isElligibleOfficer(Area myArea, MOB mob)
     {
         if(!theLawIsEnabled()) return false;
@@ -96,12 +100,14 @@ public class Arrest extends StdBehavior implements LegalBehavior
             return true;
         return false;
     }
+    
     public boolean hasWarrant(Area myArea, MOB accused)
     {
         if(!theLawIsEnabled()) return false;
         Law laws=getLaws(myArea,false);
         return (laws!=null)?((laws.getWarrant(accused,0))!=null):false;
     }
+    
     public boolean isAnyOfficer(Area myArea, MOB mob)
     {
         if(!theLawIsEnabled()) return false;
@@ -113,6 +119,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
             return true;
         return false;
     }
+    
     public boolean isJudge(Area myArea, MOB mob)
     {
         if(!theLawIsEnabled()) return false;
@@ -124,6 +131,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
             return true;
         return false;
     }
+    
     public void modifyAssessedFines(double d, MOB mob)
     {
         Double D=(Double)finesAssessed.get(mob);
@@ -193,6 +201,15 @@ public class Arrest extends StdBehavior implements LegalBehavior
         if(!theLawIsEnabled()) return false;
         if((laws!=null)&&(!laws.warrants().contains(W)))
         {
+			final Room R=CMLib.map().roomLocation(W.criminal());
+			if(R!=null)
+			{
+				CMMsg msg=CMClass.getMsg(W.witness(), W.criminal(), W.victim(), CMMsg.MASK_ALWAYS|CMMsg.MSG_LEGALWARRANT, CMMsg.MSG_LEGALWARRANT, CMMsg.MSG_LEGALWARRANT, W.crime());
+				if(R.okMessage(W.criminal(),msg))
+					R.send(W.criminal(), msg);
+				else
+					return false;
+			}
             laws.warrants().add(W);
         	if(W.criminal()!=null)
         	{
@@ -204,12 +221,14 @@ public class Arrest extends StdBehavior implements LegalBehavior
         }
         return false;
     }
+    
     public boolean addWarrant(Area myArea, LegalWarrant W)
     {
         if(!theLawIsEnabled()) return false;
         Law laws=getLaws(myArea,false);
         return addWarrant(laws,W);
     }
+    
     public boolean addWarrant(Area myArea, MOB accused, MOB victim, String crimeLocs, String crimeFlags, String crime, String sentence, String warnMsg)
     {
         if(!theLawIsEnabled()) return false;
@@ -218,6 +237,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
             return fillOutWarrant(accused,laws,myArea,victim,crimeLocs,crimeFlags,crime,sentence,warnMsg);
         return false;
     }
+    
     public boolean deleteWarrant(Area myArea, LegalWarrant W)
     {
         if(!theLawIsEnabled()) return false;
@@ -229,6 +249,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
         }
         return false;
     }
+    
     public boolean aquit(Area myArea, MOB accused, String[] acquittableLaws)
     {
         if(!theLawIsEnabled()) return false;
@@ -1425,11 +1446,12 @@ public class Arrest extends StdBehavior implements LegalBehavior
 		{
 			if(CMSecurity.isDebugging(CMSecurity.DbgFlag.ARREST)) 
 			    Log.debugOut("ARREST", mob.name()+", data: "+crimeLocs+"->"+crimeFlags+"->"+crime+"->"+sentence+"* Warrant filled out.");
-			addWarrant(laws,W);
+			if(!addWarrant(laws,W))
+				return false;
 		}
 		else
-			if(CMSecurity.isDebugging(CMSecurity.DbgFlag.ARREST)) 
-			    Log.debugOut("ARREST", mob.name()+", data: "+crimeLocs+"->"+crimeFlags+"->"+crime+"->"+sentence+"* Warrant fails the is a crime check.");
+		if(CMSecurity.isDebugging(CMSecurity.DbgFlag.ARREST)) 
+		    Log.debugOut("ARREST", mob.name()+", data: "+crimeLocs+"->"+crimeFlags+"->"+crime+"->"+sentence+"* Warrant fails the is a crime check.");
 		return true;
 	}
 
@@ -1819,7 +1841,6 @@ public class Arrest extends StdBehavior implements LegalBehavior
 			}
 		}
 	}
-
 
 	public void haveMobReactToLaw(MOB mob, MOB officer)
 	{
