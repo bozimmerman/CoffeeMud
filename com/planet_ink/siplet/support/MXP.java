@@ -1099,7 +1099,7 @@ public class MXP
         boolean convertIt=false;
         int oldI=i;
         StringBuffer content=new StringBuffer("");
-        if((buf.charAt(i+1)=='#')&&(Character.isDigit(buf.charAt(i+2))))
+        if((i<buf.length()-3)&&(buf.charAt(i+1)=='#')&&(Character.isDigit(buf.charAt(i+2))))
         {
             i++; // skip to the hash, the next line will skip to the digit
             while((++i)<buf.length())
