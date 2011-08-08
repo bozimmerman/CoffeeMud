@@ -33,37 +33,23 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class StdContainer extends StdItem implements Container
+public class StdLocker extends StdContainer
 {
-	public String ID(){	return "StdContainer";}
-	protected boolean isLocked=false;
-	protected boolean hasALock=false;
-	protected boolean isOpen=true;
-	protected boolean hasALid=false;
-	protected int capacity=0;
-	protected long containType=0;
+	public String ID(){	return "StdLocker";}
+	
+	protected boolean[] isLocks={false};
+	protected boolean[] isOpens={true};
 
-	public StdContainer()
+	public StdLocker()
 	{
 		super();
-		setName("a container");
-		setDisplayText("a nondescript container sits here.");
-		setDescription("I`ll bet you could put stuff in it!");
+		setName("a row of lockers");
+		setDisplayText("a row of lockers are here.");
+		setDescription("I`ll bet you could put stuff in one of them!");
 		capacity=25;
 		baseGoldValue=10;
 		recoverPhyStats();
-		material=RawMaterial.RESOURCE_COTTON;
-	}
-
-
-
-	public int capacity()
-	{
-		return capacity;
-	}
-	public void setCapacity(int newValue)
-	{
-		capacity=newValue;
+		material=RawMaterial.RESOURCE_IRON;
 	}
 
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
@@ -399,159 +385,12 @@ public class StdContainer extends StdItem implements Container
 		super.executeMsg(myHost,msg);
 	}
 
-	public long containTypes(){return containType;}
-	public void setContainTypes(long containTypes){containType=containTypes;}
-	public boolean canContain(Environmental E)
-	{
-		if (!(E instanceof Item)) return false;
-		if(containType==0) return true;
-		for(int i=0;i<Container.CONTAIN_DESCS.length;i++)
-			if(CMath.isSet((int)containType,i))
-				switch((int)CMath.pow(2,i))
-				{
-				case CONTAIN_LIQUID:
-					if((((Item)E).material()&RawMaterial.MATERIAL_LIQUID)>0)
-						return true;
-					break;
-				case CONTAIN_COINS:
-					if(E instanceof Coins)
-						return true;
-					break;
-				case CONTAIN_SWORDS:
-					if((E instanceof Weapon)
-					&&(((Weapon)E).weaponClassification()==Weapon.CLASS_SWORD))
-						return true;
-					break;
-				case CONTAIN_DAGGERS:
-					if((E instanceof Weapon)
-					&&(((Weapon)E).weaponClassification()==Weapon.CLASS_DAGGER))
-						return true;
-					break;
-				case CONTAIN_KEYS:
-					if(E instanceof DoorKey)
-						return true;
-					break;
-				case CONTAIN_DRINKABLES:
-					if((E instanceof Drink)&&(E instanceof Item))
-						return true;
-					break;
-				case CONTAIN_CLOTHES:
-					if((E instanceof Armor)
-					&&(((Armor)E).fitsOn(Wearable.WORN_ABOUT_BODY)
-					   ||((Armor)E).fitsOn(Wearable.WORN_ARMS)
-					   ||((Armor)E).fitsOn(Wearable.WORN_LEGS)
-					   ||((Armor)E).fitsOn(Wearable.WORN_HEAD)
-					   ||((Armor)E).fitsOn(Wearable.WORN_TORSO)
-					   ||((Armor)E).fitsOn(Wearable.WORN_WAIST)))
-						return true;
-					break;
-				case CONTAIN_FOOTWEAR:
-					if((E instanceof Armor)
-					&&(((Armor)E).fitsOn(Wearable.WORN_FEET)))
-						return true;
-					break;
-				case CONTAIN_OTHERWEAPONS:
-					if((E instanceof Weapon)
-					&&(((Weapon)E).weaponClassification()!=Weapon.CLASS_SWORD)
-					&&(((Weapon)E).weaponClassification()!=Weapon.CLASS_DAGGER))
-						return true;
-					break;
-				case CONTAIN_ONEHANDWEAPONS:
-					if((E instanceof Weapon)
-					&&(((Weapon)E).rawLogicalAnd()==false))
-						return true;
-					break;
-				case CONTAIN_BODIES:
-					if(E instanceof DeadBody)
-						return true;
-					break;
-				case CONTAIN_SMOKEABLES:
-					if(E instanceof Item)
-					{
-						if((((Item)E).material()==RawMaterial.RESOURCE_PIPEWEED)
-						||(((Item)E).material()==RawMaterial.RESOURCE_HERBS))
-							return true;
-					}
-					break;
-				case CONTAIN_CAGED:
-					if(E instanceof CagedAnimal)
-						return true;
-					break;
-				case CONTAIN_READABLES:
-					if((E instanceof Item)
-					&&(((Item)E).isReadable()))
-						return true;
-					break;
-				case CONTAIN_SCROLLS:
-					if(E instanceof Scroll)
-						return true;
-					break;
-				case CONTAIN_SSCOMPONENTS:
-					if(E instanceof ShipComponent)
-						return true;
-					break;
-				}
-		return false;
-	}
-
-
-
-
-	public boolean isLocked(){return isLocked;}
-	public boolean hasALock(){return hasALock;}
-	public boolean isOpen(){return isOpen;}
-	public boolean hasALid(){return hasALid;}
 	public void setLidsNLocks(boolean newHasALid, boolean newIsOpen, boolean newHasALock, boolean newIsLocked)
 	{
-		hasALid=newHasALid;
-		isOpen=newIsOpen;
-		hasALock=newHasALock;
-		isLocked=newIsLocked;
-	}
-
-	public void setMiscText(String newMiscText)
-	{
-		miscText=newMiscText;
-		if(!isGeneric()) setKeyName(miscText);
-	}
-	public String keyName()
-	{
-		return miscText;
-	}
-	public void setKeyName(String newKeyName)
-	{
-		miscText=newKeyName;
-	}
-	public void emptyPlease()
-	{
-		List<Item> V=getContents();
-		for(int v=0;v<V.size();v++)
-		{
-			Item I=(Item)V.get(v);
-			I.setContainer(null);
-		}
-	}
-	public boolean isInside(Item I)
-	{
-		if(I.container()==null) return false;
-		if(I.container()==this) return true;
-		return isInside(I.container());
-	}
-	
-	public ReadOnlyList<Item> getContents()
-	{
-		List<Item> V=new Vector<Item>();
-		if(owner()!=null)
-		{
-			Item I;
-			for(Enumeration<Item> e = owner().items(); e.hasMoreElements();)
-			{
-				I=e.nextElement();
-				if(I==null) continue;
-				if(isInside(I))
-					V.add(I);
-			}
-		}
-		return new ReadOnlyList<Item>(V);
+		super.setLidsNLocks(newHasALid, newIsOpen, newHasALock, newIsLocked);
+		for(int i=0;i<isOpens.length;i++)
+			isOpens[i]=newIsOpen;
+		for(int i=0;i<isLocks.length;i++)
+			isLocks[i]=newIsLocked;
 	}
 }

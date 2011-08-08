@@ -59,8 +59,9 @@ public class Open extends StdCommand
 			mob.tell("You don't see '"+whatToOpen+"' here.");
 			return false;
 		}
-		String openWord=(!(openThis instanceof Exit))?"open":((Exit)openThis).openWord();
-		CMMsg msg=CMClass.getMsg(mob,openThis,null,CMMsg.MSG_OPEN,("<S-NAME> "+openWord+"(s) <T-NAMESELF>.")+CMProps.msp("dooropen.wav",10));
+		final String openWord=(!(openThis instanceof Exit))?"open":((Exit)openThis).openWord();
+		final String openMsg=("<S-NAME> "+openWord+"(s) <T-NAMESELF>.")+CMProps.msp("dooropen.wav",10);
+		CMMsg msg=CMClass.getMsg(mob,openThis,null,CMMsg.MSG_OPEN,openMsg,whatToOpen,openMsg);
 		if(openThis instanceof Exit)
 		{
 			boolean open=((Exit)openThis).isOpen();
