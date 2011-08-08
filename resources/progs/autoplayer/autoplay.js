@@ -16,7 +16,7 @@ writeLine(name());
 if(mudUsesAccountSystem)
 {
 	s = waitFor("(?>Is this a new account you would like to create \\(y/N\\)\\?|Password).*");
-	stderr("Account System Not Supported Yet!");
+	//stderr("Account System Not Supported Yet!");
 	if(startsWith(s.toLowerCase(),"password"))
 	{
 		writeLine(name());
@@ -26,16 +26,14 @@ if(mudUsesAccountSystem)
 		writeLine("Y");
 		s = waitFor("(?>Do you want ANSI colors \\(Y/n\\)\\?).*");
 		writeLine("N");
-		s = waitFor("(?>Enter an account password:).*");
+		s = waitFor("(?>Enter an account password).*");
 		writeLine(name());
-		s = waitFor("(?>Enter your e-mail address:).*");
+		s = waitFor("(?>Enter your e-mail address).*");
 		writeLine("someone@nowhere.com");
-		s = waitFor("(?>Please enter a name for your character:).*");
+		s = waitFor("(?>Please enter a name for your character).*");
 		writeLine(name());
 		s = waitFor("(?>Create a new character called).*");
 		writeLine("Y");
-		s = waitFor("(?>Enter your e-mail address:).*");
-		writeLine("someone@nowhere.com");
 		finishCreateCharacter();
 		
 	}
@@ -68,6 +66,7 @@ function finishCreateCharacter()
 {
 	var s;
 	s = waitFor("(?>Please choose from the following races).*");
+	
 	s = waitFor(".*\\[(.*)\\].*");
 	var races=splittrimnoempty(s,', ');
 	var race=races[rand(races.length)];
@@ -84,7 +83,8 @@ function finishCreateCharacter()
 	//s = waitFor(".*This would qualify you for (.*)\\..*");
 	s = waitFor(".*re\\-roll \\(y/N\\)\\?.*");
 	writeLine("N");
-	s = waitFor(".*\\[(.*)\\].*");
+	s = waitFor("(?>Please choose from the following Classes).*");
+	s = waitForMultiLine(".*\\[(.*)\\].*");
 	var cclasses=splittrimnoempty(s,', ');
 	var cclass=cclasses[rand(cclasses.length)];
 	if(startsWith(cclass,"or "))

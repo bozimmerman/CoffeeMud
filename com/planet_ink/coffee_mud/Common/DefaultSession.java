@@ -1616,6 +1616,7 @@ public class DefaultSession implements Session
 					mob=null;
 	    		status=Session.STATUS_LOGIN;
 			}
+    		status=Session.STATUS_LOGOUT;
 		}
 		catch(SocketException e)
 		{

@@ -112,6 +112,38 @@ public class AutoPlayTester
 		throw new IOException("wait for "+regEx+" timed out.");
 	}
 	
+	public String waitForMultiLine(String regEx) throws IOException
+	{
+		long waitUntil = System.currentTimeMillis() + (60 * 1000);
+		StringBuilder buildUp=new StringBuilder("");
+		while(System.currentTimeMillis() < waitUntil)
+		{
+			bufferFill();
+			if(inbuffer.size()==0)
+			{
+				try{Thread.sleep(100);}catch(Exception e){}
+			}
+			else
+			{
+				String s=inbuffer.removeFirst();
+				outbuffer.add(s);
+				if(buildUp.length()>0)
+					buildUp.append(" ");
+				buildUp.append(s);
+				while(outbuffer.size() > 1000)
+					outbuffer.removeFirst();
+				Matcher m=Pattern.compile(regEx).matcher(buildUp.toString());
+				if(m.matches())
+				{
+					if(m.groupCount()>0)
+						return m.group(1);
+					return s;
+				}
+			}
+		}
+		throw new IOException("wait for "+regEx+" timed out.");
+	}
+	
 	public void writeln(String s) throws IOException
 	{
 		System.out.println(s);
@@ -188,19 +220,28 @@ public class AutoPlayTester
         public String getClassName(){ return "JScriptEvent";}
         static final long serialVersionUID=43;
         protected AutoPlayTester testObj;
-        public static final String[] functions={ "tester", "toJavaString", "writeLine", "login", "stdout", "stderr", "waitFor", "startsWith", "name","rand"};
+        public static final String[] functions={ "tester", "toJavaString", "writeLine", "login", "stdout", 
+        										 "stderr", "waitFor", "waitForMultiLine", "startsWith", 
+        										 "name","rand","sleep"};
         public AutoPlayTester tester() { return testObj;}
         public String toJavaString(Object O){return Context.toString(O);}
         public boolean startsWith(Object O1, Object O2){ try { return toJavaString(O1).startsWith(toJavaString(O2)); } catch(Exception e) {return false; } }
         public boolean login(){ return testObj.login();}
         public String name() { return testObj.name;}
         public void stdout(Object O) { try { System.out.println(toJavaString(O)); } catch(Exception e) { } }
+        public void sleep(Object O) { try { Thread.sleep(Long.valueOf(toJavaString(O)).longValue()); } catch(Exception e) { } }
         public void stderr(Object O) { try { System.err.println(toJavaString(O)); } catch(Exception e) { } }
         public int rand(int x){ int y=(int)Math.round(Math.floor(Math.random() * (((double)x)-0.001))); return (y>0)?y:-y;}
         public Object waitFor(Object regexO)
         {
         	try {
 	        	return testObj.waitFor(toJavaString(regexO));
+        	} catch(Exception e) { return null; }
+        }
+        public Object waitForMultiLine(Object regexO)
+        {
+        	try {
+	        	return testObj.waitForMultiLine(toJavaString(regexO));
         	} catch(Exception e) { return null; }
         }
         public boolean writeLine(Object O) 
