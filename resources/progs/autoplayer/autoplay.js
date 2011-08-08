@@ -1,4 +1,5 @@
-//include resources/progs/autoplayer/stringfuncs.js
+//include resources/progs/autoplayer/inc_stringfuncs.js
+//include resources/progs/autoplayer/inc_levelup.js
 
 var promptMarker=".*<(\\d+)Hp (\\d+)m (\\d+)mv>.*";
 var hitpoints=20;
