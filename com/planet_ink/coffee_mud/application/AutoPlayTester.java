@@ -84,38 +84,11 @@ public class AutoPlayTester
 		return s;
 	}
 	
-	public String waitFor(String regEx) throws IOException
-	{
-		long waitUntil = System.currentTimeMillis() + (60 * 1000);
-		while(System.currentTimeMillis() < waitUntil)
-		{
-			bufferFill();
-			if(inbuffer.size()==0)
-			{
-				try{Thread.sleep(100);}catch(Exception e){}
-			}
-			else
-			{
-				String s=inbuffer.removeFirst();
-				outbuffer.add(s);
-				while(outbuffer.size() > 1000)
-					outbuffer.removeFirst();
-				Matcher m=Pattern.compile(regEx).matcher(s);
-				if(m.matches())
-				{
-					if(m.groupCount()>0)
-						return m.group(1);
-					return s;
-				}
-			}
-		}
-		throw new IOException("wait for "+regEx+" timed out.");
-	}
-	
-	public String waitForMultiLine(String regEx) throws IOException
+	public String[] waitFor(String regEx, int num) throws IOException
 	{
 		long waitUntil = System.currentTimeMillis() + (60 * 1000);
 		StringBuilder buildUp=new StringBuilder("");
+		Pattern p=Pattern.compile(regEx);
 		while(System.currentTimeMillis() < waitUntil)
 		{
 			bufferFill();
@@ -132,12 +105,19 @@ public class AutoPlayTester
 				buildUp.append(s);
 				while(outbuffer.size() > 1000)
 					outbuffer.removeFirst();
-				Matcher m=Pattern.compile(regEx).matcher(buildUp.toString());
+				Matcher m=p.matcher(s);
+				if(!m.matches())
+					m=p.matcher(buildUp.toString());
 				if(m.matches())
 				{
-					if(m.groupCount()>0)
-						return m.group(1);
-					return s;
+					if(m.groupCount()>=num)
+					{
+						String[] set=new String[num];
+						for(int i=0;i<num;i++)
+							set[i]=m.group(i+1);
+						return set;
+					}
+					return new String[]{s};
 				}
 			}
 		}
@@ -221,7 +201,7 @@ public class AutoPlayTester
         static final long serialVersionUID=43;
         protected AutoPlayTester testObj;
         public static final String[] functions={ "tester", "toJavaString", "writeLine", "login", "stdout", 
-        										 "stderr", "waitFor", "waitForMultiLine", "startsWith", 
+        										 "stderr", "waitFor", "waitForMultiMatch", "startsWith", 
         										 "name","rand","sleep"};
         public AutoPlayTester tester() { return testObj;}
         public String toJavaString(Object O){return Context.toString(O);}
@@ -235,13 +215,13 @@ public class AutoPlayTester
         public Object waitFor(Object regexO)
         {
         	try {
-	        	return testObj.waitFor(toJavaString(regexO));
+	        	return testObj.waitFor(toJavaString(regexO),1)[0];
         	} catch(Exception e) { return null; }
         }
-        public Object waitForMultiLine(Object regexO)
+        public Object waitForMultiMatch(Object regexO, Object numMatches)
         {
         	try {
-	        	return testObj.waitForMultiLine(toJavaString(regexO));
+	        	return testObj.waitFor(toJavaString(regexO),Integer.parseInt(toJavaString(numMatches)));
         	} catch(Exception e) { return null; }
         }
         public boolean writeLine(Object O) 

@@ -1,5 +1,10 @@
 //include resources/progs/autoplayer/stringfuncs.js
 
+var promptMarker=".*<(\\d+)Hp (\\d+)m (\\d+)mv>.*";
+var hitpoints=20;
+var mana=100;
+var move=100;
+
 var s;
 var mudUsesAccountSystem = false;
 if(!login())
@@ -20,6 +25,9 @@ if(mudUsesAccountSystem)
 	if(startsWith(s.toLowerCase(),"password"))
 	{
 		writeLine(name());
+		s = waitFor("(?>Command or Name ).*");
+		writeLine(name());
+		waitForPrompt();
 	}
 	else
 	{
@@ -44,6 +52,7 @@ else
 	if(startsWith(s.toLowerCase(),"password"))
 	{
 		writeLine(name());
+		waitForPrompt();
 	}
 	else
 	{
@@ -55,12 +64,16 @@ else
 		s = waitFor("(?>Do you want ANSI colors \\(Y/n\\)\\?).*");
 		writeLine("N");
 		finishCreateCharacter();
-		//writeLine("");
-		
-		s = waitFor("(?>something).*");
 	}
 }
 
+function waitForPrompt()
+{
+	var s=waitForMultiMatch(promptMarker,3);
+	hitpoints=s[0];
+	mana=s[1];
+	move=s[2];
+}
 
 function finishCreateCharacter()
 {
@@ -84,7 +97,7 @@ function finishCreateCharacter()
 	s = waitFor(".*re\\-roll \\(y/N\\)\\?.*");
 	writeLine("N");
 	s = waitFor("(?>Please choose from the following Classes).*");
-	s = waitForMultiLine(".*\\[(.*)\\].*");
+	s = waitFor(".*\\[(.*)\\].*");
 	var cclasses=splittrimnoempty(s,', ');
 	var cclass=cclasses[rand(cclasses.length)];
 	if(startsWith(cclass,"or "))
@@ -99,4 +112,6 @@ function finishCreateCharacter()
 		achoice=achoice.substr(3);
 	writeLine(achoice);
 	waitFor(".*Press >>ENTER<< to Begin!.*");
+	writeLine("");
+	waitForPrompt();
 }
