@@ -58,7 +58,10 @@ public class Chant_PlantMaze extends Chant
 
     public boolean okMessage(Environmental host, CMMsg msg)
     {
-        if((msg.sourceMinor()==CMMsg.TYP_QUIT)
+        if(((msg.sourceMinor()==CMMsg.TYP_QUIT)
+	        ||(msg.sourceMinor()==CMMsg.TYP_SHUTDOWN)
+			||((msg.targetMinor()==CMMsg.TYP_EXPIRE)&&(msg.target()==oldRoom))
+			||(msg.sourceMinor()==CMMsg.TYP_ROOMRESET))
         &&(msg.source().location()!=null)
         &&(msg.source().location().getGridParent()==affected))
         {

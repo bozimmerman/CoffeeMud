@@ -47,6 +47,18 @@ public class Spell_Shelter extends Spell
 
 	public Room previousLocation=null;
 	public Room shelter=null;
+	
+	public Room getPreviousLocation(MOB mob)
+	{
+		if(previousLocation==null)
+		{
+			if(text().length()>0)
+				previousLocation=CMLib.map().getRoom(text());
+			while((previousLocation==null)||(!CMLib.flags().canAccess(mob, previousLocation)))
+				previousLocation=CMLib.map().getRandomRoom();
+		}
+		return previousLocation;
+	}
 
 	public void unInvoke()
 	{
@@ -57,6 +69,8 @@ public class Spell_Shelter extends Spell
 		if(canBeUninvoked())
 		{
 			int i=0;
+			if(shelter==null)
+				shelter=mob.location();
 			while(i<shelter.numInhabitants())
 			{
 				mob=shelter.fetchInhabitant(0);
@@ -64,8 +78,8 @@ public class Spell_Shelter extends Spell
 				mob.tell("You return to your previous location.");
 
 				CMMsg enterMsg=CMClass.getMsg(mob,previousLocation,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,"<S-NAME> appears out of nowhere!");
-				previousLocation.bringMobHere(mob,false);
-				previousLocation.send(mob,enterMsg);
+				getPreviousLocation(mob).bringMobHere(mob,false);
+				getPreviousLocation(mob).send(mob,enterMsg);
 				CMLib.commands().postLook(mob,true);
 			}
 			shelter=null;
@@ -76,12 +90,14 @@ public class Spell_Shelter extends Spell
 
     public boolean okMessage(Environmental host, CMMsg msg)
     {
-        if((msg.sourceMinor()==CMMsg.TYP_QUIT)
+        if(((msg.sourceMinor()==CMMsg.TYP_QUIT)
+	        ||(msg.sourceMinor()==CMMsg.TYP_SHUTDOWN)
+			||((msg.targetMinor()==CMMsg.TYP_EXPIRE)&&(msg.target()==shelter))
+			||(msg.sourceMinor()==CMMsg.TYP_ROOMRESET))
         &&(shelter!=null)
         &&(shelter.isInhabitant(msg.source())))
         {
-            if(previousLocation!=null)
-                previousLocation.bringMobHere(msg.source(),false);
+        	getPreviousLocation(msg.source()).bringMobHere(msg.source(),false);
             unInvoke();
         }
         return super.okMessage(host,msg);
@@ -113,6 +129,7 @@ public class Spell_Shelter extends Spell
 				shelter=CMClass.getLocale("MagicShelter");
 				Room newRoom=shelter;
 				shelter.setArea(mob.location().getArea());
+				miscText=CMLib.map().getExtendedRoomID(mob.location());
 				for(Iterator f=h.iterator();f.hasNext();)
 				{
 					MOB follower=(MOB)f.next();
