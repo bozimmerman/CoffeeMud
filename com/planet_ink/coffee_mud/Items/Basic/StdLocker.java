@@ -37,9 +37,6 @@ public class StdLocker extends StdContainer
 {
 	public String ID(){	return "StdLocker";}
 	
-	protected boolean[] isLocks={false};
-	protected boolean[] isOpens={true};
-
 	public StdLocker()
 	{
 		super();
@@ -383,14 +380,5 @@ public class StdLocker extends StdContainer
 			}
 		}
 		super.executeMsg(myHost,msg);
-	}
-
-	public void setLidsNLocks(boolean newHasALid, boolean newIsOpen, boolean newHasALock, boolean newIsLocked)
-	{
-		super.setLidsNLocks(newHasALid, newIsOpen, newHasALock, newIsLocked);
-		for(int i=0;i<isOpens.length;i++)
-			isOpens[i]=newIsOpen;
-		for(int i=0;i<isLocks.length;i++)
-			isLocks[i]=newIsLocked;
 	}
 }
