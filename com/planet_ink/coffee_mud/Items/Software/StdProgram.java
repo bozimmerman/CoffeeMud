@@ -35,6 +35,9 @@ import java.util.*;
 public class StdProgram extends StdItem implements Software
 {
 	public String ID(){	return "StdProgram";}
+	
+	public String parentMenu = "";
+	
 	public StdProgram()
 	{
 		super();
@@ -46,5 +49,9 @@ public class StdProgram extends StdItem implements Software
 		baseGoldValue=1000;
 		recoverPhyStats();
 	}
+	
+	public String getParentMenu() { return parentMenu; }
+	
+	
 }
 

@@ -29,7 +29,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public interface Electronics extends Item
+public interface Electronics extends Item, Technical
 {
 	public int fuelType();
 	public void setFuelType(int resource);
