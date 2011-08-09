@@ -87,7 +87,6 @@ public class Spell_Shelter extends Spell
         return super.okMessage(host,msg);
     }
     
-    
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
@@ -100,39 +99,41 @@ public class Spell_Shelter extends Spell
 		}
 
 		boolean success=proficiencyCheck(mob,0,auto);
-
-		CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?"":"^S<S-NAME> wave(s) <S-HIS-HER> arms, speak(s), and suddenly vanish(es)!^?");
-		if(mob.location().okMessage(mob,msg))
+		if(success)
 		{
-			mob.location().send(mob,msg);
-			Set<MOB> h=properTargets(mob,givenTarget,false);
-			if(h==null) return false;
-
-			Room thisRoom=mob.location();
-			previousLocation=thisRoom;
-			shelter=CMClass.getLocale("MagicShelter");
-			Room newRoom=shelter;
-			shelter.setArea(mob.location().getArea());
-			for(Iterator f=h.iterator();f.hasNext();)
+			CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?"":"^S<S-NAME> wave(s) <S-HIS-HER> arms, speak(s), and suddenly vanish(es)!^?");
+			if(mob.location().okMessage(mob,msg))
 			{
-				MOB follower=(MOB)f.next();
-				CMMsg enterMsg=CMClass.getMsg(follower,newRoom,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,"<S-NAME> appears out of nowhere.");
-				CMMsg leaveMsg=CMClass.getMsg(follower,thisRoom,this,verbalCastCode(mob,newRoom,auto),"<S-NAME> disappear(s) into oblivion.");
-				if(thisRoom.okMessage(follower,leaveMsg)&&newRoom.okMessage(follower,enterMsg))
+				mob.location().send(mob,msg);
+				Set<MOB> h=properTargets(mob,givenTarget,false);
+				if(h==null) return false;
+	
+				Room thisRoom=mob.location();
+				previousLocation=thisRoom;
+				shelter=CMClass.getLocale("MagicShelter");
+				Room newRoom=shelter;
+				shelter.setArea(mob.location().getArea());
+				for(Iterator f=h.iterator();f.hasNext();)
 				{
-					if(follower.isInCombat())
+					MOB follower=(MOB)f.next();
+					CMMsg enterMsg=CMClass.getMsg(follower,newRoom,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,"<S-NAME> appears out of nowhere.");
+					CMMsg leaveMsg=CMClass.getMsg(follower,thisRoom,this,verbalCastCode(mob,newRoom,auto),"<S-NAME> disappear(s) into oblivion.");
+					if(thisRoom.okMessage(follower,leaveMsg)&&newRoom.okMessage(follower,enterMsg))
 					{
-						CMLib.commands().postFlee(follower,("NOWHERE"));
-						follower.makePeace();
+						if(follower.isInCombat())
+						{
+							CMLib.commands().postFlee(follower,("NOWHERE"));
+							follower.makePeace();
+						}
+						thisRoom.send(follower,leaveMsg);
+						newRoom.bringMobHere(follower,false);
+	                    thisRoom.delInhabitant(follower);
+						newRoom.send(follower,enterMsg);
+						follower.tell("\n\r\n\r");
+						CMLib.commands().postLook(follower,true);
+						if(follower==mob)
+							beneficialAffect(mob,mob,asLevel,999999);
 					}
-					thisRoom.send(follower,leaveMsg);
-					newRoom.bringMobHere(follower,false);
-                    thisRoom.delInhabitant(follower);
-					newRoom.send(follower,enterMsg);
-					follower.tell("\n\r\n\r");
-					CMLib.commands().postLook(follower,true);
-					if(follower==mob)
-						beneficialAffect(mob,mob,asLevel,999999);
 				}
 			}
 		}

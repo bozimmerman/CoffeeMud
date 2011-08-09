@@ -41,6 +41,8 @@ public class Spell_Forget extends Spell
 	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	protected int canAffectCode(){return CAN_MOBS;}
 	public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_ENCHANTMENT;}
+	public HashSet<Ability> forgotten=new HashSet<Ability>();
+	public HashSet<Ability> remember=new HashSet<Ability>();
 
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
@@ -48,20 +50,28 @@ public class Spell_Forget extends Spell
 			return true;
 
 		MOB mob=(MOB)affected;
-
-		// when this spell is on a MOBs Affected list,
-		// it should consistantly prevent the mob
-		// from trying to do ANYTHING except sleep
 		if((msg.amISource(mob))
-		&&(msg.tool()!=null)
-		&&(msg.tool() instanceof Ability)
-		&&(mob.fetchAbility(msg.tool().ID())==msg.tool())
-		&&(CMLib.dice().rollPercentage()>(mob.charStats().getSave(CharStats.STAT_SAVE_MIND)+10)))
+		&&(msg.tool() instanceof Ability))
 		{
-			mob.tell("You can't remember "+msg.tool().name()+"!");
-			return false;
+			if(remember.contains(msg.tool()))
+				return true;
+			if(forgotten.contains(msg.tool()))
+			{
+				mob.tell("You still can't remember "+msg.tool().name()+"!");
+				return false;
+			}
+			if(mob.fetchAbility(msg.tool().ID())==msg.tool())
+			{
+				if(CMLib.dice().rollPercentage()>(mob.charStats().getSave(CharStats.STAT_SAVE_MIND)+10))
+				{
+					forgotten.add((Ability)msg.tool());
+					mob.tell("You can't remember "+msg.tool().name()+"!");
+					return false;
+				}
+				else
+					remember.add((Ability)msg.tool());
+			}
 		}
-
 		return super.okMessage(myHost,msg);
 	}
 
