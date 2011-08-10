@@ -49,27 +49,37 @@ public class Disease_Migraines extends Disease
 	protected String DISEASE_AFFECT(){return "";}
 	public int abilityCode(){return 0;}
 	public int difficultyLevel(){return 4;}
+	public HashSet<Ability> forgotten=new HashSet<Ability>();
+	public HashSet<Ability> remember=new HashSet<Ability>();
 
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if((affected==null)||(!(affected instanceof MOB)))
-			return super.okMessage(myHost,msg);
+			return true;
 
 		MOB mob=(MOB)affected;
-
-		// when this spell is on a MOBs Affected list,
-		// it should consistantly prevent the mob
-		// from trying to do ANYTHING except sleep
 		if((msg.amISource(mob))
-		&&(msg.tool()!=null)
-		&&(msg.tool() instanceof Ability)
-		&&(mob.fetchAbility(msg.tool().ID())==msg.tool())
-		&&(CMLib.dice().rollPercentage()>(mob.charStats().getSave(CharStats.STAT_SAVE_MIND)+25)))
+		&&(msg.tool() instanceof Ability))
 		{
-			mob.tell("Your headaches make you forget "+msg.tool().name()+"!");
-			return false;
+			if(remember.contains(msg.tool()))
+				return true;
+			if(forgotten.contains(msg.tool()))
+			{
+				mob.tell("Your headaches make you forget "+msg.tool().name()+"!");
+				return false;
+			}
+			if(mob.fetchAbility(msg.tool().ID())==msg.tool())
+			{
+				if(CMLib.dice().rollPercentage()>(mob.charStats().getSave(CharStats.STAT_SAVE_MIND)+25))
+				{
+					forgotten.add((Ability)msg.tool());
+					mob.tell("Your headaches make you forget "+msg.tool().name()+"!");
+					return false;
+				}
+				else
+					remember.add((Ability)msg.tool());
+			}
 		}
-
 		return super.okMessage(myHost,msg);
 	}
 
