@@ -57,7 +57,7 @@ import com.planet_ink.coffee_mud.core.exceptions.HTTPServerException;
  public class ImageVerificationImage extends StdWebMacro
  {
     private String value;
-    private static Object sync=new Object();
+    public  static Object sync=new Object();
     private static Random rand=new Random();
  
     public boolean isAWebPath(){return true;}
@@ -91,12 +91,35 @@ import com.planet_ink.coffee_mud.core.exceptions.HTTPServerException;
     	 ByteArrayOutputStream bout=new ByteArrayOutputStream();
     	 try
     	 {
-	    	 ImageVerificationImage img=new ImageVerificationImage(bout);
 	    	 synchronized(sync)
 	    	 {
+	    		 String oldKey=null;
+	    		 boolean imageRequest=httpReq.isRequestParameter("IMAGE");
+	    		 if(httpReq.getRequestObjects().containsKey("LASTGENERATEDIMAGEVERIFICATIONIMAGEKEY"))
+	    			 oldKey=((StringBuilder)httpReq.getRequestObjects().get("LASTGENERATEDIMAGEVERIFICATIONIMAGEKEY")).toString();
 		    	 SLinkedList<Pair<String,String>> cache = getVerifyCache();
-	    		 String key=Long.toHexString(Math.round(Math.abs(rand.nextDouble() * ((double)Long.MAX_VALUE/2.0))));
-	    		 cache.addLast(new Pair<String,String>(key,img.getVerificationValue()));
+		    	 String key;
+		    	 ImageVerificationImage img;
+		    	 if(oldKey!=null)
+		    	 {
+		    		 key=oldKey;
+		    		 String value=null;
+		    		 for(Pair<String,String> p : cache)
+		    			 if(p.first.equalsIgnoreCase(oldKey))
+		    				 value=p.second;
+			    	 img=new ImageVerificationImage(value,bout);
+		    	 }
+		    	 else
+		    	 {
+		    		 key=Long.toHexString(Math.round(Math.abs(rand.nextDouble() * ((double)Long.MAX_VALUE/2.0))));
+			    	 img=new ImageVerificationImage(null,bout);
+		    		 cache.addLast(new Pair<String,String>(key,img.getVerificationValue()));
+		    	 }
+		    	 if(!imageRequest)
+		    	 {
+		    		 bout.reset();
+		    		 bout.write(key.getBytes());
+		    	 }
 	    		 httpReq.addRequestParameters("IMGVERKEY", key);
 	    	 }
     	 }
@@ -111,12 +134,12 @@ import com.planet_ink.coffee_mud.core.exceptions.HTTPServerException;
          return "[Unimplemented string method!]";
      }
      
-     public ImageVerificationImage (OutputStream out) throws IOException
+     public ImageVerificationImage (String oldValue, OutputStream out) throws IOException
      {
-         this(50,120,out);
+         this(25,120,oldValue,out);
      }
      
-     public ImageVerificationImage (int height, int width, OutputStream out) throws IOException
+     public ImageVerificationImage (int height, int width, String oldValue, OutputStream out) throws IOException
      {
          BufferedImage bimage = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
          Random rand=new Random(System.currentTimeMillis());
@@ -128,9 +151,12 @@ import com.planet_ink.coffee_mud.core.exceptions.HTTPServerException;
          g.setColor(color.darker());
          g.fillRect(0, 0, width, height);
          // set the font
-         g.setFont(new Font("arial",Font.BOLD,36));
+         g.setFont(new Font("arial",Font.BOLD,24));
          // generate a random value
-         this.value = UUID.randomUUID().toString().replace("-","").substring(0,5);
+         if(oldValue!=null)
+	         this.value = oldValue;
+         else
+	         this.value = UUID.randomUUID().toString().replace("-","").substring(0,5);
          int w = (g.getFontMetrics()).stringWidth(value);
          int d = (g.getFontMetrics()).getDescent();
          int a = (g.getFontMetrics()).getMaxAscent();
@@ -164,7 +190,7 @@ import com.planet_ink.coffee_mud.core.exceptions.HTTPServerException;
              // apply a random radian either left or right (left is half since it's too far back)
              int rotate = rand.nextInt(20);
              fontAT.rotate(rand.nextBoolean() ? Math.toRadians(rotate) : -Math.toRadians(rotate/2));
-             Font fx = new Font("arial", Font.BOLD, 36).deriveFont(fontAT);
+             Font fx = new Font("arial", Font.BOLD, 24).deriveFont(fontAT);
              g.setFont(fx);
              String ch = String.valueOf(value.charAt(c));
              int ht = rand.nextInt(3);
