@@ -55,8 +55,6 @@ public class StdContainer extends StdItem implements Container
 		material=RawMaterial.RESOURCE_COTTON;
 	}
 
-
-
 	public int capacity()
 	{
 		return capacity;
@@ -400,7 +398,9 @@ public class StdContainer extends StdItem implements Container
 	}
 
 	public long containTypes(){return containType;}
+
 	public void setContainTypes(long containTypes){containType=containTypes;}
+
 	public boolean canContain(Environmental E)
 	{
 		if (!(E instanceof Item)) return false;
@@ -501,6 +501,7 @@ public class StdContainer extends StdItem implements Container
 	public boolean hasALock(){return hasALock;}
 	public boolean isOpen(){return isOpen;}
 	public boolean hasALid(){return hasALid;}
+
 	public void setLidsNLocks(boolean newHasALid, boolean newIsOpen, boolean newHasALock, boolean newIsLocked)
 	{
 		hasALid=newHasALid;
