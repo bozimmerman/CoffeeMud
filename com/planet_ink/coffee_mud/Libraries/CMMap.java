@@ -425,7 +425,7 @@ public class CMMap extends StdLibrary implements WorldMap
     
     public List<Room> findRooms(Enumeration<Room> rooms, MOB mob, String srchStr, boolean displayOnly, int timePct)
     { 
-    	Vector<Room> roomsV=new Vector<Room>();
+    	final Vector<Room> roomsV=new Vector<Room>();
 		if((srchStr.charAt(0)=='#')&&(mob!=null)&&(mob.location()!=null))
 			addWorldRoomsLiberally(roomsV,getRoom(mob.location().getArea().Name()+srchStr));
 		else
@@ -436,7 +436,7 @@ public class CMMap extends StdLibrary implements WorldMap
     
     public Room findFirstRoom(Enumeration<Room> rooms, MOB mob, String srchStr, boolean displayOnly, int timePct)
     { 
-    	Vector roomsV=new Vector();
+    	final Vector roomsV=new Vector();
 		if((srchStr.charAt(0)=='#')&&(mob!=null)&&(mob.location()!=null))
 			addWorldRoomsLiberally(roomsV,getRoom(mob.location().getArea().Name()+srchStr));
 		else
@@ -449,7 +449,7 @@ public class CMMap extends StdLibrary implements WorldMap
     
     public List<Room> findRooms(Enumeration<Room> rooms, MOB mob, String srchStr, boolean displayOnly, boolean returnFirst, int timePct)
     {
-    	List<Room> foundRooms=new Vector<Room>();
+    	final List<Room> foundRooms=new Vector<Room>();
     	Vector completeRooms=new Vector();
 		try { completeRooms=new XVector(rooms); }catch(NoSuchElementException nse){}
 		long delay=Math.round(CMath.s_pct(timePct+"%") * 1000);
@@ -481,10 +481,11 @@ public class CMMap extends StdLibrary implements WorldMap
 		try
 		{
 			srchStr=srchStr.toUpperCase();
-			boolean useTimer=maxTime>1;
+			final boolean useTimer=maxTime>1;
+			Room room;
 			for(;rooms.hasMoreElements();)
 			{
-				Room room=(Room)rooms.nextElement();
+				room=(Room)rooms.nextElement();
 				if((CMLib.english().containsString(CMStrings.removeColors(room.displayText()),srchStr))
 				&&((mob==null)||CMLib.flags().canAccess(mob,room)))
 					foundRooms.add(room);
@@ -517,21 +518,23 @@ public class CMMap extends StdLibrary implements WorldMap
     { return findInhabitants(rooms,mob,srchStr,false,timePct);}
     public MOB findFirstInhabitant(Enumeration<Room> rooms, MOB mob, String srchStr, int timePct)
     { 
-    	List<MOB> found=findInhabitants(rooms,mob,srchStr,true,timePct);
+    	final List<MOB> found=findInhabitants(rooms,mob,srchStr,true,timePct);
     	if(found.size()>0) return (MOB)found.get(0);
     	return null;
     }
     public List<MOB> findInhabitants(Enumeration<Room> rooms, MOB mob, String srchStr, boolean returnFirst, int timePct)
     {
-    	Vector<MOB> found=new Vector<MOB>();
+    	final Vector<MOB> found=new Vector<MOB>();
 		long delay=Math.round(CMath.s_pct(timePct+"%") * 1000);
 		if(delay>1000) delay=1000;
-		boolean useTimer = delay>1;
+		final boolean useTimer = delay>1;
+		final boolean allRoomsAllowed=(mob==null);
 		long startTime=System.currentTimeMillis();
+		Room room;
 		for(;rooms.hasMoreElements();)
 		{
-			Room room=(Room)rooms.nextElement();
-			if((room != null) && ((mob==null)||CMLib.flags().canAccess(mob,room)))
+			room=(Room)rooms.nextElement();
+			if((room != null) && (allRoomsAllowed || CMLib.flags().canAccess(mob,room)))
 			{
 				found.addAll(room.fetchInhabitants(srchStr));
 		    	if((returnFirst)&&(found.size()>0)) return found;
@@ -546,18 +549,19 @@ public class CMMap extends StdLibrary implements WorldMap
     { return findInventory(rooms,mob,srchStr,false,timePct);}
     public Item findFirstInventory(Enumeration rooms, MOB mob, String srchStr, int timePct)
     { 
-    	List<Item> found=findInventory(rooms,mob,srchStr,true,timePct);
+    	final List<Item> found=findInventory(rooms,mob,srchStr,true,timePct);
     	if(found.size()>0) return (Item)found.get(0);
     	return null;
     }
     public List<Item> findInventory(Enumeration rooms, MOB mob, String srchStr, boolean returnFirst, int timePct)
     {
-    	List<Item> found=new Vector<Item>();
+    	final List<Item> found=new Vector<Item>();
 		long delay=Math.round(CMath.s_pct(timePct+"%") * 1000);
 		if(delay>1000) delay=1000;
-		boolean useTimer = delay>1;
+		final boolean useTimer = delay>1;
 		long startTime=System.currentTimeMillis();
-		MOB M=null;
+		MOB M;
+		Room room;
 		if(rooms==null)
 		{
 			for(Enumeration e=CMLib.players().players();e.hasMoreElements();)
@@ -571,7 +575,7 @@ public class CMMap extends StdLibrary implements WorldMap
 		else
 		for(;rooms.hasMoreElements();)
 		{
-			Room room=(Room)rooms.nextElement();
+			room=(Room)rooms.nextElement();
 			if((room != null) && ((mob==null)||CMLib.flags().canAccess(mob,room)))
 			{
 				for(int m=0;m<room.numInhabitants();m++)
@@ -591,7 +595,7 @@ public class CMMap extends StdLibrary implements WorldMap
     { return findShopStock(rooms,mob,srchStr,false,false,timePct);}
     public Environmental findFirstShopStock(Enumeration rooms, MOB mob, String srchStr, int timePct)
     { 
-    	List<Environmental> found=findShopStock(rooms,mob,srchStr,true,false,timePct);
+    	final List<Environmental> found=findShopStock(rooms,mob,srchStr,true,false,timePct);
     	if(found.size()>0) return (Environmental)found.get(0);
     	return null;
     }
@@ -599,22 +603,23 @@ public class CMMap extends StdLibrary implements WorldMap
     { return findShopStock(rooms,mob,srchStr,false,true,timePct);}
     public Environmental findFirstShopStocker(Enumeration rooms, MOB mob, String srchStr, int timePct)
     { 
-    	List<Environmental> found=findShopStock(rooms,mob,srchStr,true,true,timePct);
+    	final List<Environmental> found=findShopStock(rooms,mob,srchStr,true,true,timePct);
     	if(found.size()>0) return (Environmental)found.get(0);
     	return null;
     }
     public List<Environmental> findShopStock(Enumeration rooms, MOB mob, String srchStr, boolean returnFirst, boolean returnStockers, int timePct)
     {
-    	XVector<Environmental> found=new XVector<Environmental>();
+    	final XVector<Environmental> found=new XVector<Environmental>();
 		long delay=Math.round(CMath.s_pct(timePct+"%") * 1000);
 		if(delay>1000) delay=1000;
-		boolean useTimer = delay>1;
+		final boolean useTimer = delay>1;
 		long startTime=System.currentTimeMillis();
 		MOB M=null;
 		Item I=null;
-		HashSet stocks=new HashSet(1);
-		HashSet areas=new HashSet();
+		final HashSet stocks=new HashSet(1);
+		final HashSet areas=new HashSet();
 		ShopKeeper SK=null;
+		final boolean allRoomsAllowed=(mob==null);
 		if(rooms==null)
 		{
 			for(Enumeration e=CMLib.players().players();e.hasMoreElements();)
@@ -667,7 +672,7 @@ public class CMMap extends StdLibrary implements WorldMap
 		for(;rooms.hasMoreElements();)
 		{
 			Room room=(Room)rooms.nextElement();
-			if((room != null) && ((mob==null)||CMLib.flags().canAccess(mob,room)))
+			if((room != null) && (allRoomsAllowed||CMLib.flags().canAccess(mob,room)))
 			{
 				if(!areas.contains(room.getArea()))
 					areas.add(room.getArea());
@@ -763,15 +768,17 @@ public class CMMap extends StdLibrary implements WorldMap
     }
     public List<Item> findRoomItems(Enumeration<Room> rooms, MOB mob, String srchStr, boolean anyItems, boolean returnFirst, int timePct)
     {
-    	Vector<Item> found=new Vector<Item>();
+    	final Vector<Item> found=new Vector<Item>();
 		long delay=Math.round(CMath.s_pct(timePct+"%") * 1000);
 		if(delay>1000) delay=1000;
-		boolean useTimer = delay>1;
+		final boolean useTimer = delay>1;
 		long startTime=System.currentTimeMillis();
+		final boolean allRoomsAllowed=(mob==null);
+		Room room;
 		for(;rooms.hasMoreElements();)
 		{
-			Room room=(Room)rooms.nextElement();
-			if((room != null) && ((mob==null)||CMLib.flags().canAccess(mob,room)))
+			room=(Room)rooms.nextElement();
+			if((room != null) && (allRoomsAllowed||CMLib.flags().canAccess(mob,room)))
 			{
 				found.addAll(anyItems?room.findItems(srchStr):room.findItems(null,srchStr));
 		    	if((returnFirst)&&(found.size()>0)) return found;
