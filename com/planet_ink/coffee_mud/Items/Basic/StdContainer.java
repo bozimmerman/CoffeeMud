@@ -539,6 +539,41 @@ public class StdContainer extends StdItem implements Container
 		return isInside(I.container());
 	}
 	
+    @Override
+    public int numberOfItems()
+    {
+        return getContents().size()+1;
+    }
+    
+    @Override
+    public int recursiveWeight()
+    {
+        int weight=phyStats().weight();
+        if(owner()==null) return weight;
+        if(owner() instanceof MOB)
+        {
+            MOB M=(MOB)owner();
+            for(int i=0;i<M.numItems();i++)
+            {
+                Item thisItem=M.getItem(i);
+                if((thisItem!=null)&&(thisItem.container()==this))
+                    weight+=thisItem.recursiveWeight();
+            }
+        }
+        else
+        if(owner() instanceof Room)
+        {
+            Room R=(Room)owner();
+            for(int i=0;i<R.numItems();i++)
+            {
+                Item thisItem=R.getItem(i);
+                if((thisItem!=null)&&(thisItem.container()==this))
+                    weight+=thisItem.recursiveWeight();
+            }
+        }
+        return weight;
+    }
+    
 	public ReadOnlyList<Item> getContents()
 	{
 		List<Item> V=new Vector<Item>();

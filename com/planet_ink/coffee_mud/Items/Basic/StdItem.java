@@ -578,9 +578,7 @@ public class StdItem implements Item
 	}
     public int numberOfItems()
     {
-        if(!(this instanceof Container))
-            return 1;
-        return ((Container)this).getContents().size()+1;
+        return 1;
     }
 	public int usesRemaining()
 	{
@@ -1158,33 +1156,7 @@ public class StdItem implements Item
 
     public int recursiveWeight()
     {
-        int weight=phyStats().weight();
-        if(this instanceof Container)
-        {
-            if(owner()==null) return weight;
-            if(owner() instanceof MOB)
-            {
-                MOB M=(MOB)owner();
-                for(int i=0;i<M.numItems();i++)
-                {
-                    Item thisItem=M.getItem(i);
-                    if((thisItem!=null)&&(thisItem.container()==this))
-                        weight+=thisItem.recursiveWeight();
-                }
-            }
-            else
-            if(owner() instanceof Room)
-            {
-                Room R=(Room)owner();
-                for(int i=0;i<R.numItems();i++)
-                {
-                    Item thisItem=R.getItem(i);
-                    if((thisItem!=null)&&(thisItem.container()==this))
-                        weight+=thisItem.recursiveWeight();
-                }
-            }
-        }
-        return weight;
+        return phyStats().weight();
     }
     
 	public void stopTicking(){destroyed=true;CMLib.threads().deleteTick(this,-1);}
