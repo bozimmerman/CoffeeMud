@@ -1,0 +1,50 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<html>
+<head>
+	<link rel="coffeemud icon" href="images/coffeemud.ico" >
+	<!-- tell spiders to sod off -->
+	<meta name="ROBOTS" content="NOINDEX, NOFOLLOW">
+	<link rel="STYLESHEET" TYPE="TEXT/CSS" HREF="coffeemud.css">
+	<title>Player Access Login</title>
+	<script language=JavaScript>
+	<!--
+		function Clicked(action)
+		{
+			document.ACCESS.action=action;
+			document.ACCESS.submit();
+		}
+		function Register()
+		{
+			document.ACCESS.LASTPAGE.value='access.cmvp';
+			Clicked('register.cmvp');
+		}
+	//-->
+	</SCRIPT>
+</head>
+
+<body BGCOLOR=WHITE>
+	<CENTER>
+	<h2>Player Account Creation</H2>
+	<br>
+	<a href="/"><FONT COLOR=BLUE>Back to public pages</FONT></A><br>
+	<br><INPUT TYPE=HIDDEN NAME=LASTPAGE VALUE="">
+	<FORM NAME=LOGIN METHOD=POST ACTION=registerdo.cmvp TARGET=_top>
+	Please create your new @MudInfo?NAME@ account here.<BR>
+	If you already have a player account, click the Back link above and enter your credentials.<P>
+	<TABLE WIDTH=300 BORDER=1>
+	<TR><TD WIDTH=300 COLSPAN=2 ALIGN=CENTER BGCOLOR=WHITE><FONT COLOR=BLACK><B>Create New Account</B></FONT></TD></TR>
+	<TR><TD WIDTH=100><FONT COLOR=BLACK>Account Name:</FONT></TD><TD WIDTH=300><INPUT TYPE=TEXT SIZE=10 NAME=ACCOUNTNAME></TD></TR>
+	<TR><TD><FONT COLOR=BLACK>Password:</FONT></TD><TD><INPUT TYPE=PASSWORD SIZE=15 NAME=PASSWORD></TD></TR>
+	<TR><TD><FONT COLOR=BLACK>Password Again:</FONT></TD><TD><INPUT TYPE=PASSWORD SIZE=15 NAME=PASSWORDAGAIN></TD></TR>
+	<TR><TD><IMG SRC="/ImageVerificationImage"></TD>
+		<TD><INPUT TYPE=HIDDEN SIZE=15 NAME=VERIFYKEY VALUE="@RequestParameter?IMGVERKEY@"><INPUT TYPE=TEXT SIZE=15 NAME=VERIFY></TD>
+	</TR>
+	<TR><TD COLSPAN=2 WIDTH=200 ALIGN=CENTER>
+		<INPUT TYPE=SUBMIT NAME=LOGIN VALUE=Create>
+	</TD></TR>
+	</TABLE>
+	</CENTER>
+	</FORM>
+</body>
+</html>

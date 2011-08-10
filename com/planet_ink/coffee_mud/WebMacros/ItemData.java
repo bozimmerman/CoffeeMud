@@ -131,7 +131,7 @@ public class ItemData extends StdWebMacro
                     if(R!=null)
     					M=RoomData.getMOBFromCode(R,mobNum);
                     else
-                        M=RoomData.getMOBFromCode(RoomData.mobs,mobNum);
+                        M=RoomData.getMOBFromCode(RoomData.getMOBCache(),mobNum);
 					if(M==null)
 					{
 						StringBuffer str=new StringBuffer("No MOB?!");
@@ -201,7 +201,7 @@ public class ItemData extends StdWebMacro
 					if(itemCode.equals("NEW"))
 						I=CMClass.getItem("GenItem");
 					else
-						I=RoomData.getItemFromAnywhere(RoomData.items,itemCode);
+						I=RoomData.getItemFromAnywhere(RoomData.getItemCache(),itemCode);
 					if(I!=null)
 						httpReq.getRequestObjects().put(itemCode,I);
 				}

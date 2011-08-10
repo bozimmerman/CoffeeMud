@@ -37,8 +37,28 @@ import java.util.concurrent.TimeUnit;
 public class RoomData extends StdWebMacro
 {
 	public String name()	{return this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);}
-	public static List<MOB> mobs=new SLinkedList<MOB>();
-	public static List<Item> items=new SLinkedList<Item>();
+	
+	public static List<MOB> getMOBCache()
+	{
+		List<MOB> mobSet=(List<MOB>)Resources.getResource("SYSTEM_WEB_MOB_CACHE");
+		if(mobSet==null)
+		{
+			mobSet=new SLinkedList<MOB>();
+			Resources.submitResource("SYSTEM_WEB_MOB_CACHE", mobSet);
+		}
+		return mobSet;
+	}
+	
+	public static List<Item> getItemCache()
+	{
+		List<Item> itemSet=(List<Item>)Resources.getResource("SYSTEM_WEB_ITEM_CACHE");
+		if(itemSet==null)
+		{
+			itemSet=new SLinkedList<Item>();
+			Resources.submitResource("SYSTEM_WEB_ITEM_CACHE", itemSet);
+		}
+		return itemSet;
+	}
 
 	public static String getItemCode(Room R, Item I)
 	{
@@ -112,7 +132,7 @@ public class RoomData extends StdWebMacro
 
 	public static Item getItemFromCode(MOB M, String code)
 	{
-        if(M==null) return getItemFromCode(items,code);
+        if(M==null) return getItemFromCode(getItemCache(),code);
 		for(int i=0;i<M.numItems();i++)
 			if(getItemCode(M,M.getItem(i)).equals(code))
 				return M.getItem(i);
@@ -125,7 +145,7 @@ public class RoomData extends StdWebMacro
 
 	public static Item getItemFromCode(Room R, String code)
 	{
-        if(R==null) return getItemFromCode(items,code);
+        if(R==null) return getItemFromCode(getItemCache(),code);
 		for(int i=0;i<R.numItems();i++)
 			if(getItemCode(R,R.getItem(i)).equals(code))
 				return R.getItem(i);
@@ -158,7 +178,7 @@ public class RoomData extends StdWebMacro
 
 	public static MOB getMOBFromCode(Room R, String code)
 	{
-        if(R==null) return getMOBFromCode(mobs,code);
+        if(R==null) return getMOBFromCode(getMOBCache(),code);
 		for(int i=0;i<R.numInhabitants();i++)
 			if(getMOBCode(R,R.fetchInhabitant(i)).equals(code))
 				return R.fetchInhabitant(i);
@@ -251,7 +271,7 @@ public class RoomData extends StdWebMacro
         else
 		if(MATCHING.indexOf('@')>0)
 		{
-			for(Iterator<Item> i=items.iterator(); i.hasNext();)
+			for(Iterator<Item> i=getItemCache().iterator(); i.hasNext();)
 			{
 				Item I2=i.next();
 				if(MATCHING.equals(""+I2))
@@ -269,7 +289,7 @@ public class RoomData extends StdWebMacro
     public static MOB getReferenceMOB(MOB M)
     {
         if(M==null) return null;
-		for(Iterator<MOB> m=mobs.iterator(); m.hasNext();)
+		for(Iterator<MOB> m=getMOBCache().iterator(); m.hasNext();)
 		{
 			MOB M2=m.next();
             if(M.sameAs(M2)) return M2;
@@ -280,7 +300,7 @@ public class RoomData extends StdWebMacro
     public static Item getReferenceItem(Item I)
     {
         if(I==null) return null;
-		for(Iterator<Item> i=items.iterator(); i.hasNext();)
+		for(Iterator<Item> i=getItemCache().iterator(); i.hasNext();)
 		{
 			Item I2=i.next();
             if(I.sameAs(I2)) return I2;
@@ -299,7 +319,7 @@ public class RoomData extends StdWebMacro
 				{
 					MOB M3=(MOB)M.copyOf();
 					M3.setExpirationDate(System.currentTimeMillis());
-					mobs.add(M3);
+					getMOBCache().add(M3);
 					for(int i3=0;i3<M3.numItems();i3++)
 					{
 						Item I3=M3.getItem(i3);
@@ -308,7 +328,7 @@ public class RoomData extends StdWebMacro
 				}
 			}
 		}
-		return mobs;
+		return getMOBCache();
 	}
 
 	public static boolean isAllNum(String str)
@@ -329,7 +349,7 @@ public class RoomData extends StdWebMacro
 			if(I.isGeneric())
 			{
 				boolean found=false;
-				for(Iterator<Item> i2=items.iterator(); i2.hasNext();)
+				for(Iterator<Item> i2=getItemCache().iterator(); i2.hasNext();)
 				{
 					Item I2=i2.next();
 					if(I.sameAs(I2))
@@ -341,12 +361,12 @@ public class RoomData extends StdWebMacro
                     I2.setContainer(null);
                     I2.wearAt(Wearable.IN_INVENTORY);
 					I2.setExpirationDate(System.currentTimeMillis());
-					items.add(I2);
+					getItemCache().add(I2);
 					I2.stopTicking();
 				}
 			}
 		}
-		return items;
+		return getItemCache();
 	}
 	
 	public static final String getObjIDSuffix(Environmental E)
@@ -462,7 +482,7 @@ public class RoomData extends StdWebMacro
 				List moblist=null;
 				if(httpReq.isRequestParameter("MOB1"))
 				{
-					moblist=mobs;
+					moblist=getMOBCache();
 					for(int i=1;;i++)
 					{
 						String MATCHING=httpReq.getRequestParameter("MOB"+i);
@@ -577,7 +597,7 @@ public class RoomData extends StdWebMacro
 				List<Item> itemlist=null;
 				if(httpReq.isRequestParameter("ITEM1"))
 				{
-					itemlist=items;
+					itemlist=getItemCache();
 					Vector cstrings=new Vector();
 					for(int i=1;;i++)
 					{

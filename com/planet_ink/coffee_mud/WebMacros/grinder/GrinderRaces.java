@@ -136,7 +136,7 @@ public class GrinderRaces
         List<Item> itemlist=null;
         if(httpReq.isRequestParameter(c+"ITEM1"))
         {
-            itemlist=RoomData.items;
+            itemlist=RoomData.getItemCache();
             for(int i=1;;i++)
             {
                 String MATCHING=httpReq.getRequestParameter(c+"ITEM"+i);

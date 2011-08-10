@@ -22,6 +22,11 @@
 			document.FORUM.JOURNALMESSAGE.value=msg;
 			document.FORUM.submit();
 		}
+		function Register()
+		{
+			document.ACCESS.LASTPAGE.value='forums.cmvp';
+			Clicked('register.cmvp');
+		}
 	//-->
 	</SCRIPT>
 </head>
@@ -45,6 +50,10 @@
 		Login<INPUT TYPE=TEXT SIZE=10 VALUE="" NAME=LOGIN>&nbsp;
 		Password<INPUT TYPE=PASSWORD NAME=PASSWORD SIZE=10 VALUE="">
 		<INPUT TYPE=SUBMIT VALUE=Login>
+		@if?IsAccountSystem@
+		<INPUT TYPE=HIDDEN NAME=LASTPAGE VALUE="">
+		<!--<INPUT TYPE=BUTTON VALUE=Register ONCLICK="Register()">-->
+		@endif@
 	@else@
 		Logged in as <B>@PlayerData?NAME@</B>
 	@endif@

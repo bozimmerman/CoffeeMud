@@ -721,7 +721,7 @@ public class GrinderMobs
 						if(MATCHING.indexOf('@')>0)
 						{
 							Environmental O=null;
-							for(Iterator<MOB> m=RoomData.mobs.iterator(); m.hasNext();)
+							for(Iterator<MOB> m=RoomData.getMOBCache().iterator(); m.hasNext();)
 							{
 								MOB M2=m.next();
 								if(MATCHING.equals(""+M2))
@@ -809,7 +809,7 @@ public class GrinderMobs
 			    {
     				RoomData.contributeMOBs(new XVector(M));
                     MOB M2=RoomData.getReferenceMOB(M);
-    				newMobCode=RoomData.getMOBCode(RoomData.mobs,M2);
+    				newMobCode=RoomData.getMOBCode(RoomData.getMOBCache(),M2);
 			    }
 			}
 			else

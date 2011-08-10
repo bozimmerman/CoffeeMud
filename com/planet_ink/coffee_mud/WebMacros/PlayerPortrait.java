@@ -74,11 +74,6 @@ public class PlayerPortrait extends StdWebMacro
     
     public String runMacro(ExternalHTTPRequests httpReq, String parm) throws HTTPServerException
     {
-		java.util.Map<String,String> parms=parseParms(parm);
-		if(parms.containsKey("CONNECT"))
-		{
-			
-		}
         return "[Unimplemented string method!]";
     }
 }

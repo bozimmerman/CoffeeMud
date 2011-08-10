@@ -679,7 +679,7 @@ public class MobData extends StdWebMacro
 					if(MATCHING.indexOf('@')>0)
 					{
 						Environmental O=null;
-						for(Iterator<MOB> m=RoomData.mobs.iterator(); m.hasNext();)
+						for(Iterator<MOB> m=RoomData.getMOBCache().iterator(); m.hasNext();)
 						{
 							MOB M2=m.next();
 							if(MATCHING.equals(""+M2))
@@ -752,10 +752,10 @@ public class MobData extends StdWebMacro
                 if(CMLib.flags().isCataloged(O))
                     str.append("<OPTION SELECTED VALUE=\"CATALOG-"+O.Name()+"\">"+O.Name()+" (Cataloged)");
                 else
-				if(RoomData.items.contains(O))
+				if(RoomData.getItemCache().contains(O))
 					str.append("<OPTION SELECTED VALUE=\""+O+"\">"+O.Name()+RoomData.getObjIDSuffix(O));
 				else
-				if(RoomData.mobs.contains(O))
+				if(RoomData.getMOBCache().contains(O))
 					str.append("<OPTION SELECTED VALUE=\""+O+"\">"+O.Name()+RoomData.getObjIDSuffix(O));
 				else
 					str.append("<OPTION SELECTED VALUE=\""+O.ID()+"\">"+O.Name()+" ("+O.ID()+")");
@@ -770,12 +770,12 @@ public class MobData extends StdWebMacro
 			str.append("<TR><TD WIDTH=50%>");
 			str.append("<SELECT ONCHANGE=\"AddAffect(this);\" NAME=SHP"+(theclasses.size()+1)+">");
 			str.append("<OPTION SELECTED VALUE=\"\">Select an item");
-			for(Iterator<Item> i=RoomData.items.iterator(); i.hasNext();)
+			for(Iterator<Item> i=RoomData.getItemCache().iterator(); i.hasNext();)
 			{
 				Item I=i.next();
 				str.append("<OPTION VALUE=\""+I+"\">"+I.Name()+RoomData.getObjIDSuffix(I));
 			}
-			for(Iterator<MOB> m=RoomData.mobs.iterator(); m.hasNext();)
+			for(Iterator<MOB> m=RoomData.getMOBCache().iterator(); m.hasNext();)
 			{
 				MOB M=m.next();
 				str.append("<OPTION VALUE=\""+M+"\">"+M.Name()+RoomData.getObjIDSuffix(M));
@@ -832,7 +832,7 @@ public class MobData extends StdWebMacro
                         M.addItem(oldM.getItem(i));
 
                 containers=new Vector();
-				itemlist=RoomData.items;
+				itemlist=RoomData.getItemCache();
 				Vector cstrings=new Vector();
 				for(int i=1;;i++)
 				{
@@ -994,7 +994,7 @@ public class MobData extends StdWebMacro
 				if(R!=null)
 					M=RoomData.getMOBFromCode(R,mobCode);
 				else
-					M=RoomData.getMOBFromCode(RoomData.mobs,mobCode);
+					M=RoomData.getMOBFromCode(RoomData.getMOBCache(),mobCode);
 				if((M==null)||(!M.isSavable()))
 				{
 					StringBuffer str=new StringBuffer("No MOB?!");

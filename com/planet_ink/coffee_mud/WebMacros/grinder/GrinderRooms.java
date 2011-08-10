@@ -213,7 +213,7 @@ public class GrinderRooms
 					else
 					if(MATCHING.indexOf('@')>0)
 					{
-						for(Iterator<MOB> m=RoomData.mobs.iterator(); m.hasNext();)
+						for(Iterator<MOB> m=RoomData.getMOBCache().iterator(); m.hasNext();)
 						{
 							MOB M2=m.next();
 							if(MATCHING.equals(""+M2))

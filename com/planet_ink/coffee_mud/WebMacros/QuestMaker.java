@@ -745,8 +745,8 @@ public class QuestMaker extends StdWebMacro
                         		val="";
                         		for(int v1=0;v1<V.size();v1++)
                         		{
-                                    Item I=RoomData.getItemFromCode(RoomData.items,(String)V.elementAt(v1));
-                                    if(I==null) I=RoomData.getItemFromAnywhere(RoomData.items,(String)V.elementAt(v1));
+                                    Item I=RoomData.getItemFromCode(RoomData.getItemCache(),(String)V.elementAt(v1));
+                                    if(I==null) I=RoomData.getItemFromAnywhere(RoomData.getItemCache(),(String)V.elementAt(v1));
                                     if(I==null) I=RoomData.getItemFromCatalog((String)V.elementAt(v1));
                                     if(I!=null)
                                         val+=CMLib.coffeeMaker().getItemXML(I).toString();
@@ -760,7 +760,7 @@ public class QuestMaker extends StdWebMacro
                         		val="";
                         		for(int v1=0;v1<V.size();v1++)
                         		{
-                                    MOB M2=RoomData.getMOBFromCode(RoomData.mobs,(String)V.elementAt(v1));
+                                    MOB M2=RoomData.getMOBFromCode(RoomData.getMOBCache(),(String)V.elementAt(v1));
                                     if(M2==null) M2=RoomData.getMOBFromCatalog((String)V.elementAt(v1));
                                     if(M2!=null)
                                         val+=CMLib.coffeeMaker().getMobXML(M2).toString();
