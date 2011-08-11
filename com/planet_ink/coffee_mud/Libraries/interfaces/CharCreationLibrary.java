@@ -47,6 +47,7 @@ public interface CharCreationLibrary extends CMLibrary
     public LoginResult createCharacter(PlayerAccount acct, String login, Session session) throws java.io.IOException;
     public LoginResult loginSystem(Session session, LoginSession loginObj) throws java.io.IOException;
     public LoginResult doAccountMenu(PlayerAccount acct, Session session, boolean create) throws java.io.IOException;
+	public NewCharNameCheckResult newCharNameCheck(String login, String ipAddress, boolean checkPlayerName);
     public void pageRooms(CMProps page, Map<String, String> table, String start);
     public void initStartRooms(CMProps page);
     public void initDeathRooms(CMProps page);
@@ -69,6 +70,8 @@ public interface CharCreationLibrary extends CMLibrary
         public int			 attempt   =0;
         public PlayerLibrary.ThinnerPlayer player = null;
     }
+    
+    public enum NewCharNameCheckResult { OK, NO_NEW_PLAYERS, NO_NEW_LOGINS, BAD_USED_NAME, CREATE_LIMIT_REACHED }
     
     public final static String DEFAULT_BADNAMES = " LIST DELETE QUIT NEW HERE YOU SHIT FUCK CUNT ALL FAGGOT ASSHOLE ARSEHOLE PUSSY COCK SLUT BITCH DAMN CRAP GOD JESUS CHRIST NOBODY SOMEBODY MESSIAH ADMIN SYSOP ";
     

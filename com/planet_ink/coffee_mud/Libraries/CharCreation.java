@@ -1725,39 +1725,49 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
     	return LoginResult.NO_LOGIN;
     }
 
-	
-	
-    public boolean newCharactersAllowed(String login, Session session, boolean checkPlayerName)
-    {
+	public NewCharNameCheckResult newCharNameCheck(String login, String ipAddress, boolean checkPlayerName)
+	{
         if(CMSecurity.isDisabled(CMSecurity.DisFlag.NEWPLAYERS))
-        {
-            session.print("\n\r'"+CMStrings.capitalizeAndLower(login)+"' is not recognized.\n\r");
-            return false;
-        }
+            return NewCharNameCheckResult.NO_NEW_PLAYERS;
         else
         if((!isOkName(login))
         || (checkPlayerName && CMLib.players().playerExists(login))
         || (!checkPlayerName && CMLib.players().accountExists(login)))
-        {
-            session.println("\n\r'"+CMStrings.capitalizeAndLower(login)+"' is not recognized.\n\rThat name is also not available for new players.\n\r  Choose another name (no spaces allowed)!\n\r");
-            return false;
-        }
+            return NewCharNameCheckResult.BAD_USED_NAME;
         else
         if((CMProps.getIntVar(CMProps.SYSTEMI_MUDTHEME)==0)
         ||(CMSecurity.isDisabled(CMSecurity.DisFlag.LOGINS)))
-        {
-            session.print("\n\r'"+CMStrings.capitalizeAndLower(login)+"' does not exist.\n\rThis server is not accepting new accounts.\n\r\n\r");
-            return false;
-        }
+            return NewCharNameCheckResult.NO_NEW_LOGINS;
         else
         if((CMProps.getIntVar(CMProps.SYSTEMI_MAXNEWPERIP)>0)
-        &&(CMProps.getCountNewUserByIP(session.getAddress())>=CMProps.getIntVar(CMProps.SYSTEMI_MAXNEWPERIP))
+        &&(CMProps.getCountNewUserByIP(ipAddress)>=CMProps.getIntVar(CMProps.SYSTEMI_MAXNEWPERIP))
         &&(!CMSecurity.isDisabled(CMSecurity.DisFlag.MAXNEWPERIP)))
-        {
+            return NewCharNameCheckResult.CREATE_LIMIT_REACHED;
+        return NewCharNameCheckResult.OK;
+	}
+	
+    public boolean newCharactersAllowed(String login, Session session, boolean checkPlayerName)
+    {
+    	switch(newCharNameCheck(login,session.getAddress(),checkPlayerName))
+    	{
+    	case NO_NEW_PLAYERS:
+            session.print("\n\r'"+CMStrings.capitalizeAndLower(login)+"' is not recognized.\n\r");
+            return false;
+    	case BAD_USED_NAME:
+            session.println("\n\r'"+CMStrings.capitalizeAndLower(login)+"' is not recognized.\n\rThat name is also not available for new players.\n\r  Choose another name (no spaces allowed)!\n\r");
+            return false;
+    	case NO_NEW_LOGINS:
+            session.print("\n\r'"+CMStrings.capitalizeAndLower(login)+"' does not exist.\n\rThis server is not accepting new accounts.\n\r\n\r");
+            return false;
+    	case CREATE_LIMIT_REACHED:
             session.println("\n\rThat name is unrecognized.\n\rAlso, the maximum daily new player limit has already been reached for your location.");
             return false;
-        }
-        return true;
+        default:
+            session.print("\n\r'"+CMStrings.capitalizeAndLower(login)+"' is not recognized.\n\r");
+            return false;
+    	case OK:
+            return true;
+    	}
     }
 
     public void setGlobalBitmaps(MOB mob)
