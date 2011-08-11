@@ -85,6 +85,8 @@ public class DefaultSession implements Session
     protected boolean 	     bNextByteIs255=false;
     protected boolean 	     connectionComplete=false;
     protected ReentrantLock  writeLock = new ReentrantLock(true);
+    protected CharCreationLibrary.LoginSession 
+    						 loginSession = null;
 
     protected int  currentColor='N';
     protected int  lastColor=-1;
@@ -1496,6 +1498,30 @@ public class DefaultSession implements Session
 
 	public boolean isRunning() { return thread!=null;}
 	
+	public boolean isPendingLogin(final CharCreationLibrary.LoginSession loginObj)
+	{
+		switch(status)
+		{
+			case Session.STATUS_LOGIN:
+			case Session.STATUS_ACCOUNTMENU:
+			case Session.STATUS_LOGIN1:
+			case Session.STATUS_LOGIN2:
+				break;
+			default:
+				return false;
+		}
+		if(loginObj==null)
+			return true;
+		if(loginSession==null)
+			return false;
+		final String otherLogin=loginObj.login;
+		final String myLogin=loginSession.login;
+		if((otherLogin==null)||(myLogin==null))
+			return false;
+		return otherLogin.equalsIgnoreCase(myLogin);
+	}
+	
+	
 	public void run()
 	{
 		synchronized(this)
@@ -1523,7 +1549,7 @@ public class DefaultSession implements Session
 			case Session.STATUS_ACCOUNTMENU:
 			case Session.STATUS_LOGIN1:
 			case Session.STATUS_LOGIN2:
-				login();
+				loginSystem();
 				break;
 			case Session.STATUS_LOGOUT:
 			case Session.STATUS_LOGOUT1:
@@ -1555,34 +1581,49 @@ public class DefaultSession implements Session
 		}
 	}
 
-	public void login()
+	public void loginSystem()
 	{
 		try
 		{
-			int tries=0;
-			while((!killFlag)&&((++tries)<5))
+			if(loginSession==null)
+				loginSession=new CharCreationLibrary.LoginSession();
+			else
+			{
+				
+				loginSession.lastInput=readlineContinue();
+				if(loginSession.lastInput==null)
+					return;
+			}
+			if(!killFlag)
 			{
 				status=Session.STATUS_LOGIN;
 				mob=null;
                 CharCreationLibrary.LoginResult loginResult=null;
                 if(acct==null)
-	                loginResult=CMLib.login().login(this,tries);
+                {
+	                loginResult=CMLib.login().loginSystem(this,loginSession);
+	                if(loginResult==CharCreationLibrary.LoginResult.INPUT_REQUIRED)
+	                {
+	    				status=Session.STATUS_LOGIN;
+	                	return;
+	                }
+                }
                 if((acct!=null)||(loginResult==LoginResult.ACCOUNT_LOGIN)||(loginResult==LoginResult.ACCOUNT_CREATED))
                 {
                 	try
                 	{
                 		status=Session.STATUS_ACCOUNTMENU;
-    	                loginResult=CMLib.login().selectAccountCharacter(acct,this,(loginResult==LoginResult.ACCOUNT_CREATED));
+    	                loginResult=CMLib.login().doAccountMenu(acct,this,(loginResult==LoginResult.ACCOUNT_CREATED));
                 	}
                 	finally
                 	{
                 		status=Session.STATUS_LOGIN;
                 	}
                 }
-				if(loginResult != CharCreationLibrary.LoginResult.NO_LOGIN)
+				if(loginResult != LoginResult.NO_LOGIN)
 				{
 					status=Session.STATUS_LOGIN2;
-					tries=0;
+					loginSession=null;
 					if((mob!=null)&&(mob.playerStats()!=null))
 						acct=mob.playerStats().getAccount();
 					if((!killFlag)&&(mob!=null))
@@ -1613,8 +1654,15 @@ public class DefaultSession implements Session
 					}
 				}
 				else
+				{
 					mob=null;
+				}
 	    		status=Session.STATUS_LOGIN;
+	    		return;
+			}
+			else
+			{
+				loginSession=null;
 			}
     		status=Session.STATUS_LOGOUT;
 		}

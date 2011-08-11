@@ -42,7 +42,6 @@ import java.util.*;
 public class CharCreation extends StdLibrary implements CharCreationLibrary
 {
     public String ID(){return "CharCreation";}
-    public Hashtable<String,Long> pendingLogins=new Hashtable<String,Long>();
     public Hashtable startRooms=new Hashtable();
     public Hashtable deathRooms=new Hashtable();
     public Hashtable bodyRooms=new Hashtable();
@@ -335,7 +334,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
         return extraScripts;
     }
 
-    public LoginResult selectAccountCharacter(PlayerAccount acct, Session session, boolean newAccount) throws java.io.IOException
+    public LoginResult doAccountMenu(PlayerAccount acct, Session session, boolean newAccount) throws java.io.IOException
     {
     	if((acct==null)||(session==null)||(session.isStopped()))
     		return LoginResult.NO_LOGIN;
@@ -1436,217 +1435,298 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
     	return rpt.toString();
     }
     
-    public LoginResult login(Session session, int attempt)
-        throws java.io.IOException
-    {
+	public LoginResult loginSystem(Session session, LoginSession loginObj) throws IOException 
+	{
         if(session==null) 
         	return LoginResult.NO_LOGIN;
-
-        boolean wizi=false;
-
-        session.setAccount(null);
-        
-        String login;
-        if(CMProps.getIntVar(CMProps.SYSTEMI_COMMONACCOUNTSYSTEM)>1)
-        	login=session.prompt("\n\raccount name: ",5 * 60 * 1000);
-        else
-        	login=session.prompt("\n\rname: ",5 * 60 * 1000);
-        if(login==null) 
-        	return LoginResult.NO_LOGIN;
-        login=login.trim();
-        if(login.length()==0) 
-        	return LoginResult.NO_LOGIN;
-        if(login.equalsIgnoreCase("MSSP-REQUEST")&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.MSSP)))
-        {
-        	session.rawOut(getMSSPPacket());
-            session.stopSession(false,false,false);
-        	return LoginResult.NO_LOGIN;
-        }
-        	
-        if(login.endsWith(" !"))
-        {
-            login=login.substring(0,login.length()-2);
-            login=login.trim();
-            wizi=true;
-        }
-        login = CMStrings.capitalizeAndLower(login);
-        PlayerAccount acct = null;
-        PlayerLibrary.ThinnerPlayer player = null;
-        if(CMProps.getIntVar(CMProps.SYSTEMI_COMMONACCOUNTSYSTEM)>1)
-        {
-        	acct = CMLib.players().getLoadAccount(login);
-        	if(acct!=null)
-        	{
-        		player=new PlayerLibrary.ThinnerPlayer();
-        		player.name=acct.accountName();
-        		player.accountName=acct.accountName();
-        		player.email=acct.getEmail();
-        		player.expiration=acct.getAccountExpiration();
-        		player.password=acct.password();
-        	}
-        	else
-        	{
-	            player=CMLib.database().DBUserSearch(login);
-	            if((player != null)
-	            &&((player.accountName==null)
-            		||(player.accountName.trim().length()==0)))
+        if(loginObj==null)
+        	loginObj=new LoginSession();
+    	while((session!=null)&&(!session.isStopped()))
+    	{
+	        switch(loginObj.state)
+	        {
+	        case START:
+	        {
+	        	loginObj.wizi=false;
+	            session.setAccount(null);
+	            loginObj.attempt++;
+	            if(loginObj.attempt>=4)
 	            {
-		            session.print("password for "+player.name+": ");
-		            String password;
-		            try
-		            {
-			            password=session.blockingIn(120000);
-		            }
-		            catch(InterruptedIOException ioe)
-		            {
-		            	return LoginResult.NO_LOGIN;
-		            }
-		            boolean done = true;
-		            if(password.equalsIgnoreCase(player.password))
-		            {
-		            	session.println("\n\rThis mud is now using an account system.  "
-		            			+"Please create a new account and use the IMPORT command to add your character(s) to your account.");
-		            	done = !session.confirm("Would you like to create your new master account and call it '"+player.name+"' (y/N)? ", "N");
-		            }
-		            player = null;
-		            if(done)
-		            	return LoginResult.NO_LOGIN;
+	                session.stopSession(false,false,false);
+					loginObj.state=LoginState.START;
+	            	return LoginResult.NO_LOGIN;
+	            }
+	            if(CMProps.getIntVar(CMProps.SYSTEMI_COMMONACCOUNTSYSTEM)>1)
+	            	session.print("\n\raccount name: ");
+	            else
+	            	session.print("\n\rname: ");
+	            loginObj.state=LoginState.LOGIN_NAME;
+	            return LoginResult.INPUT_REQUIRED;
+	        }
+	        case LOGIN_NAME:
+        	{
+	            loginObj.login=loginObj.lastInput;
+	            if(loginObj.login==null)
+	            {
+		        	loginObj.state=LoginState.START;
+	            	break;
+	            }
+	            loginObj.login=loginObj.login.trim();
+	            if(loginObj.login.length()==0)
+	            {
+		        	loginObj.state=LoginState.START;
+	            	break;
+	            }
+	            if(loginObj.login.equalsIgnoreCase("MSSP-REQUEST")&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.MSSP)))
+	            {
+	            	session.rawOut(getMSSPPacket());
+	                session.stopSession(false,false,false);
+					loginObj.state=LoginState.START;
+	            	return LoginResult.NO_LOGIN;
+	            }
+	            if(loginObj.login.endsWith(" !"))
+	            {
+	            	loginObj.login=loginObj.login.substring(0,loginObj.login.length()-2);
+	            	loginObj.login=loginObj.login.trim();
+	            	loginObj.wizi=true;
+	            }
+	            loginObj.login = CMStrings.capitalizeAndLower(loginObj.login);
+	            if(CMProps.getIntVar(CMProps.SYSTEMI_COMMONACCOUNTSYSTEM)>1)
+	            {
+	            	loginObj.acct = CMLib.players().getLoadAccount(loginObj.login);
+	            	if(loginObj.acct!=null)
+	            	{
+	            		loginObj.player=new PlayerLibrary.ThinnerPlayer();
+	            		loginObj.player.name=loginObj.acct.accountName();
+	            		loginObj.player.accountName=loginObj.acct.accountName();
+	            		loginObj.player.email=loginObj.acct.getEmail();
+	            		loginObj.player.expiration=loginObj.acct.getAccountExpiration();
+	            		loginObj.player.password=loginObj.acct.password();
+	            	}
+	            	else
+	            	{
+	            		loginObj.player=CMLib.database().DBUserSearch(loginObj.login);
+	    	            if((loginObj.player != null)
+	    	            &&((loginObj.player.accountName==null)
+	                		||(loginObj.player.accountName.trim().length()==0)))
+	    	            {
+	    	            	session.print("password for "+loginObj.player.name+": ");
+	    	            	loginObj.state=LoginState.ACCT_CHAR_PWORD;
+	    		            return LoginResult.INPUT_REQUIRED;
+	    	            }
+	    	            else
+	    	            if(loginObj.player!=null)
+	    	            {
+	    	                session.println("\n\rAccount '"+CMStrings.capitalizeAndLower(loginObj.login)+"' does not exist.");
+	    	                loginObj.player=null;
+	    		        	loginObj.state=LoginState.START;
+	    		        	break;
+	    	            }
+	            	}
 	            }
 	            else
-	            if(player!=null)
 	            {
-	                session.println("\n\rAccount '"+CMStrings.capitalizeAndLower(login)+"' does not exist.");
-	            	player=null;
-	            	return LoginResult.NO_LOGIN;
+	            	MOB mob=CMLib.players().getPlayer(loginObj.login);
+	            	if((mob!=null)&&(mob.playerStats()!=null))
+	            	{
+	            		loginObj.player=new PlayerLibrary.ThinnerPlayer();
+	            		loginObj.player.name=mob.Name();
+	            		loginObj.player.email=mob.playerStats().getEmail();
+	            		loginObj.player.expiration=mob.playerStats().getAccountExpiration();
+	            		loginObj.player.password=mob.playerStats().password();
+	            		loginObj.player.loadedMOB=mob;
+	            	}
+	    	        else
+	    	        	loginObj.player=CMLib.database().DBUserSearch(loginObj.login);
 	            }
+	            loginObj.state=LoginState.PLAYER_PASS_START;
+	            break;
         	}
-        }
-        else
-        {
-        	MOB mob=CMLib.players().getPlayer(login);
-        	if((mob!=null)&&(mob.playerStats()!=null))
+	        case ACCT_CHAR_PWORD:
         	{
-        		player=new PlayerLibrary.ThinnerPlayer();
-        		player.name=mob.Name();
-        		player.email=mob.playerStats().getEmail();
-        		player.expiration=mob.playerStats().getAccountExpiration();
-        		player.password=mob.playerStats().password();
-        		player.loadedMOB=mob;
+            	loginObj.password=loginObj.lastInput;
+	            if(loginObj.password.equalsIgnoreCase(loginObj.player.password))
+	            {
+	            	session.println("\n\rThis mud is now using an account system.  "
+	            			+"Please create a new account and use the IMPORT command to add your character(s) to your account.");
+	            	session.print("Would you like to create your new master account and call it '"+loginObj.player.name+"' (y/N)? ");
+	            	loginObj.state=LoginState.ACCT_CONVERT_CONFIRM;
+		            return LoginResult.INPUT_REQUIRED;
+	            }
+	        	loginObj.state=LoginState.START;
+	        	break;
         	}
-	        else
-	            player=CMLib.database().DBUserSearch(login);
-        }
-        if(player!=null)
-        {
-            try
-            {
-                Long L=(Long)pendingLogins.get(login.toUpperCase());
-                if((L!=null)&&((System.currentTimeMillis()-L.longValue())<(10*60*1000)))
+	        case ACCT_CONVERT_CONFIRM:
+	        {
+	        	LoginResult result=LoginResult.NO_LOGIN;
+	        	if(loginObj.lastInput.toUpperCase().startsWith("Y"))
+	        	{
+                	loginObj.acct = (PlayerAccount)CMClass.getCommon("DefaultPlayerAccount");
+                	//loginObj.state=LoginState.CREATE_ACCOUNT_START;
+                	result=createAccount(loginObj.acct,loginObj.login,session);
+	        	}
+	        	if(result==LoginResult.NO_LOGIN)
+	        	{
+		        	loginObj.state=LoginState.START;
+		        	break;
+	        	}
+	        	return result;
+        	}
+	        case PLAYER_PASS_START:
+        	{
+                if(loginObj.player==null)
                 {
-                    session.println("A previous login is still pending.  Please be patient.");
-                    return LoginResult.NO_LOGIN;
+                	if(newCharactersAllowed(loginObj.login,session,!(CMProps.getIntVar(CMProps.SYSTEMI_COMMONACCOUNTSYSTEM)>1)))
+                	{
+        	            if(CMProps.getIntVar(CMProps.SYSTEMI_COMMONACCOUNTSYSTEM)>1)
+        	            {
+        	            	session.print("\n\r'"+CMStrings.capitalizeAndLower(loginObj.login)+"' does not exist.\n\rIs this a new account you would like to create (y/N)?");
+    	                	loginObj.state=LoginState.CREATE_ACCOUNT_CONFIRM;
+    	                	return LoginResult.INPUT_REQUIRED;
+        	            }
+        	            else
+        	            {
+        	            	session.print("\n\r'"+CMStrings.capitalizeAndLower(loginObj.login)+"' does not exist.\n\rIs this a new character you would like to create (y/N)?");
+    	                	loginObj.state=LoginState.CREATE_CHAR_CONFIRM;
+    	                	return LoginResult.INPUT_REQUIRED;
+        	            }
+                	}
+		        	loginObj.state=LoginState.START;
+		        	break;
                 }
-                pendingLogins.put(login.toUpperCase(),Long.valueOf(System.currentTimeMillis()));
-                
-	            session.print("password: ");
-	            String password;
-	            try
+                else
+                {
+                	for(Session otherSess : CMLib.sessions().allIterable())
+                		if((otherSess!=session)&&(otherSess.isPendingLogin(loginObj)))
+                		{
+	                        session.println("A previous login is still pending.  Please be patient.");
+	                        session.stopSession(false, false, false);
+	    					loginObj.state=LoginState.START;
+	                        return LoginResult.NO_LOGIN;
+	                    }
+    	            session.print("password: ");
+                	loginObj.state=LoginState.PLAYER_PASS_RECEIVED;
+                	return LoginResult.INPUT_REQUIRED;
+                }
+        	}
+	        case CREATE_ACCOUNT_CONFIRM:
+	        {
+	        	LoginResult result=LoginResult.NO_LOGIN;
+	        	if(loginObj.lastInput.toUpperCase().startsWith("Y"))
+	        	{
+                	loginObj.acct = (PlayerAccount)CMClass.getCommon("DefaultPlayerAccount");
+                	//loginObj.state=LoginState.CREATE_ACCOUNT_START;
+                	result=createAccount(loginObj.acct,loginObj.login,session);
+	        	}
+	        	if(result==LoginResult.NO_LOGIN)
+	        	{
+		        	loginObj.state=LoginState.START;
+		        	break;
+	        	}
+                return result;
+	        }
+	        case CREATE_CHAR_CONFIRM:
+	        {
+	        	LoginResult result=LoginResult.NO_LOGIN;
+	        	if(loginObj.lastInput.toUpperCase().startsWith("Y"))
+	        	{
+	            	//loginObj.state=LoginState.CREATE_CHAR_START;
+	            	if(createCharacter(loginObj.acct,loginObj.login,session)==LoginResult.CCREATION_EXIT)
+	            		result = LoginResult.NORMAL_LOGIN;
+	        	}
+	        	if(result==LoginResult.NO_LOGIN)
+	        	{
+		        	loginObj.state=LoginState.START;
+		        	break;
+	        	}
+                return result;
+	        }
+	        case PLAYER_PASS_RECEIVED:
+        	{
+        		loginObj.password=loginObj.lastInput;
+	            if(loginObj.password.equalsIgnoreCase(loginObj.player.password))
 	            {
-		            password=session.blockingIn(120000);
-	            }
-	            catch(InterruptedIOException ioe)
-	            {
-	            	return LoginResult.NO_LOGIN;
-	            }
-	            if(password.equalsIgnoreCase(player.password))
-	            {
-	
-	            	LoginResult prelimResults = prelimChecks(session,login,player);
+	            	LoginResult prelimResults = prelimChecks(session,loginObj.login,loginObj.player);
 	            	if(prelimResults!=null)
+	            	{
+	    	        	if(prelimResults==LoginResult.NO_LOGIN)
+	    	        	{
+	    		        	loginObj.state=LoginState.START;
+	    		        	break;
+	    	        	}
 	            		return prelimResults;
+	            	}
 	            	
-	                if(acct!=null)
+	                if(loginObj.acct!=null)
 	                {
-		                if(isExpired(acct,session,player.expiration)) 
+		                if(isExpired(loginObj.acct,session,loginObj.player.expiration)) 
 		                	return LoginResult.NO_LOGIN;
-		                session.setAccount(acct);
+		                session.setAccount(loginObj.acct);
 		                return LoginResult.ACCOUNT_LOGIN;
 	                }
 	                else
 	                {
-		                LoginResult completeResult=completeCharacterLogin(session,login, wizi);
+		                LoginResult completeResult=completeCharacterLogin(session,loginObj.login, loginObj.wizi);
 		                if(completeResult == LoginResult.NO_LOGIN)
-		                	return completeResult;
+		                {
+				        	loginObj.state=LoginState.START;
+		                	break;
+		                }
 	                }
 	            }
 	            else
 	            {
-	                Log.sysOut("FrontDoor","Failed login: "+player.name);
+	                Log.sysOut("FrontDoor","Failed login: "+loginObj.player.name);
 	                session.println("\n\rInvalid password.\n\r");
 	                if((!session.isStopped())
-	                &&(player.email.length()>0)
-	                &&(player.email.indexOf('@')>0)
-	                &&(attempt>2)
+	                &&(loginObj.player.email.length()>0)
+	                &&(loginObj.player.email.indexOf('@')>0)
+	                &&(loginObj.attempt>2)
 	                &&(CMProps.getVar(CMProps.SYSTEM_MUDDOMAIN).length()>0))
 	                {
-	                    if(session.confirm("Would you like you have your password e-mailed to you (y/N)? ","N"))
-	                    {
-	                        if(CMLib.smtp().emailIfPossible(CMProps.getVar(CMProps.SYSTEM_SMTPSERVERNAME),
-	                                                   "passwords@"+CMProps.getVar(CMProps.SYSTEM_MUDDOMAIN).toLowerCase(),
-	                                                   "noreply@"+CMProps.getVar(CMProps.SYSTEM_MUDDOMAIN).toLowerCase(),
-	                                                   player.email,
-	                                                   "Password for "+player.name,
-	                                                   "Your password for "+player.name+" at "+CMProps.getVar(CMProps.SYSTEM_MUDDOMAIN)+" is: '"+player.password+"'."))
-	                            session.println("Email sent.\n\r");
-	                        else
-	                            session.println("Error sending email.\n\r");
-	                        session.stopSession(false,false,false);
-	                    }
+	                    session.print("Would you like you have your password e-mailed to you (y/N)? ");
+	                    loginObj.state=LoginState.CONFIRM_EMAIL_PASSWORD;
+	                    return LoginResult.INPUT_REQUIRED;
 	                }
-	                return LoginResult.NO_LOGIN;
+		        	loginObj.state=LoginState.START;
+                	break;
 	            }
-            }
-            finally
-            {
-            	if(login!=null) pendingLogins.remove(login.toUpperCase().trim());
-            	if(acct!=null) pendingLogins.remove(acct.accountName().toUpperCase().trim());
-            	if(player!=null)
-            	{
-	            	pendingLogins.remove(player.name.toUpperCase().trim());
-	            	if(player.accountName!=null) pendingLogins.remove(player.accountName.toUpperCase().trim());
-	            	if((player.loadedMOB!=null)&&(player.loadedMOB.playerStats()!=null)&&(player.loadedMOB.playerStats().getAccount()!=null))
-	            		pendingLogins.remove(player.loadedMOB.playerStats().getAccount().accountName().toUpperCase().trim());
-            	}
-            }
-        }
-        else
-        {
-        	if(newCharactersAllowed(login,session,!(CMProps.getIntVar(CMProps.SYSTEMI_COMMONACCOUNTSYSTEM)>1)))
-        	{
-	            if(CMProps.getIntVar(CMProps.SYSTEMI_COMMONACCOUNTSYSTEM)>1)
-	            {
-	                if(session.confirm("\n\r'"+CMStrings.capitalizeAndLower(login)+"' does not exist.\n\rIs this a new account you would like to create (y/N)?","N"))
-	                {
-	                	acct = (PlayerAccount)CMClass.getCommon("DefaultPlayerAccount");
-	                	return createAccount(acct,login,session);
-	                }
-	            }
-	            else
-	            if(session.confirm("\n\r'"+CMStrings.capitalizeAndLower(login)+"' does not exist.\n\rIs this a new character you would like to create (y/N)?","N"))
-	            {
-	            	LoginResult result = LoginResult.NO_LOGIN;
-	            	if(createCharacter(acct,login,session)==LoginResult.CCREATION_EXIT)
-	            		result = LoginResult.NORMAL_LOGIN;
-	                return result;
-	            }
+	            if(session!=null)
+	                session.println("\n\r");
+	            return LoginResult.NORMAL_LOGIN;
         	}
-            return LoginResult.NO_LOGIN;
-        }
-        if(session!=null)
-            session.println("\n\r");
-        return LoginResult.NORMAL_LOGIN;
+	        case CONFIRM_EMAIL_PASSWORD:
+	        {
+	        	if(loginObj.lastInput.toUpperCase().startsWith("Y"))
+	        	{
+	                if(CMLib.smtp().emailIfPossible(CMProps.getVar(CMProps.SYSTEM_SMTPSERVERNAME),
+	                    "passwords@"+CMProps.getVar(CMProps.SYSTEM_MUDDOMAIN).toLowerCase(),
+	                    "noreply@"+CMProps.getVar(CMProps.SYSTEM_MUDDOMAIN).toLowerCase(),
+	                    loginObj.player.email,
+	                    "Password for "+loginObj.player.name,
+	                    "Your password for "+loginObj.player.name+" at "+CMProps.getVar(CMProps.SYSTEM_MUDDOMAIN)+" is: '"+loginObj.player.password+"'."))
+						session.println("Email sent.\n\r");
+					else
+						session.println("Error sending email.\n\r");
+					session.stopSession(false,false,false);
+					loginObj.state=LoginState.START;
+					return LoginResult.NO_LOGIN;
+	        	}
+	        	loginObj.state=LoginState.START;
+            	break;
+	        }
+	        default:
+	        	loginObj.state=LoginState.START;
+            	break;
+	        }
+    	}
+        if(loginObj!=null)
+	    	loginObj.state=LoginState.START;
+    	return LoginResult.NO_LOGIN;
     }
 
+	
+	
     public boolean newCharactersAllowed(String login, Session session, boolean checkPlayerName)
     {
         if(CMSecurity.isDisabled(CMSecurity.DisFlag.NEWPLAYERS))

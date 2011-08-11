@@ -11,6 +11,7 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.CharCreationLibrary;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -177,6 +178,16 @@ public interface Session extends CMCommon, Modifiable, CMRunnable
 	 * @return true if this session is not a connection
 	 */
 	public boolean isFake();
+	
+	/**
+	 * Returns whether this session is engaged in a login/account
+	 * menu transaction.  If a loginsession is passed it, it will
+	 * return true only if the two sessions are engaging the
+	 * same login name.
+	 * @param loginObj another login session to potentially match
+	 * @return true if it is pending, false otherwise
+	 */
+	public boolean isPendingLogin(final CharCreationLibrary.LoginSession loginObj);
 	
     /**
      * Medium-level text output method.  Does full

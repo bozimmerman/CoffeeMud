@@ -8,6 +8,7 @@ import java.util.Vector;
 
 import com.planet_ink.coffee_mud.Common.interfaces.PlayerAccount;
 import com.planet_ink.coffee_mud.Common.interfaces.Session;
+import com.planet_ink.coffee_mud.Libraries.interfaces.CharCreationLibrary;
 import com.planet_ink.coffee_mud.MOBS.interfaces.MOB;
 import com.planet_ink.coffee_mud.core.CMClass;
 import com.planet_ink.coffee_mud.core.CMFile;
@@ -55,6 +56,7 @@ public class FakeSession implements Session
     public void initializeClass(){}
     public void run(){}
     public boolean isRunning() { return false;}
+	public boolean isPendingLogin(final CharCreationLibrary.LoginSession loginObj){return false;}
 	public void logout(boolean b1){}
     public String getTerminalType(){ return "Fake";}
     public void negotiateTelnetMode(int code){}

@@ -14,6 +14,7 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
+import java.io.IOException;
 import java.util.*;
 /* 
    Copyright 2000-2011 Bo Zimmerman
@@ -44,8 +45,8 @@ public interface CharCreationLibrary extends CMLibrary
     public boolean getRetireReason(final String mobName, final Session session);
     public void notifyFriends(MOB mob, String message);
     public LoginResult createCharacter(PlayerAccount acct, String login, Session session) throws java.io.IOException;
-    public LoginResult login(Session session, int attempt) throws java.io.IOException;
-    public LoginResult selectAccountCharacter(PlayerAccount acct, Session session, boolean create) throws java.io.IOException;
+    public LoginResult loginSystem(Session session, LoginSession loginObj) throws java.io.IOException;
+    public LoginResult doAccountMenu(PlayerAccount acct, Session session, boolean create) throws java.io.IOException;
     public void pageRooms(CMProps page, Map<String, String> table, String start);
     public void initStartRooms(CMProps page);
     public void initDeathRooms(CMProps page);
@@ -54,10 +55,25 @@ public interface CharCreationLibrary extends CMLibrary
     public Room getDefaultDeathRoom(MOB mob);
     public Room getDefaultBodyRoom(MOB mob);
     
+    public enum LoginState { START, LOGIN_NAME, ACCT_CHAR_PWORD, PLAYER_PASS_START, CREATE_ACCOUNT_CONFIRM, CREATE_CHAR_CONFIRM, 
+    						 PLAYER_PASS_RECEIVED, CONFIRM_EMAIL_PASSWORD, ACCT_CONVERT_CONFIRM}
+    
+    public static class LoginSession
+    {
+        public boolean 		 wizi	   =false;
+        public LoginState 	 state	   =LoginState.START;
+        public String 		 login	   =null;
+        public PlayerAccount acct 	   =null;
+        public String 		 lastInput =null;
+        public String 		 password  =null;
+        public int			 attempt   =0;
+        public PlayerLibrary.ThinnerPlayer player = null;
+    }
+    
     public final static String DEFAULT_BADNAMES = " LIST DELETE QUIT NEW HERE YOU SHIT FUCK CUNT ALL FAGGOT ASSHOLE ARSEHOLE PUSSY COCK SLUT BITCH DAMN CRAP GOD JESUS CHRIST NOBODY SOMEBODY MESSIAH ADMIN SYSOP ";
     
     public enum LoginResult
     {
-    	NO_LOGIN, NORMAL_LOGIN, ACCOUNT_LOGIN, SESSION_SWAP, CCREATION_EXIT, ACCOUNT_CREATED
+    	NO_LOGIN, NORMAL_LOGIN, ACCOUNT_LOGIN, SESSION_SWAP, CCREATION_EXIT, ACCOUNT_CREATED, INPUT_REQUIRED
     }
 }
