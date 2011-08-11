@@ -46,7 +46,7 @@
 			<INPUT TYPE=SUBMIT NAME=LOGIN VALUE=Login>
 			@if?IsAccountSystem@
 				<INPUT TYPE=HIDDEN NAME=LASTPAGE VALUE="">
-				<!--<INPUT TYPE=BUTTON VALUE=Register ONCLICK="Register()">-->
+				<INPUT TYPE=BUTTON VALUE=Register ONCLICK="Register()">
 			@endif@
 		</TD></TR>
 		</TABLE>

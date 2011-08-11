@@ -23,6 +23,7 @@ import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 import java.util.UUID;
@@ -63,18 +64,39 @@ import com.planet_ink.coffee_mud.core.exceptions.HTTPServerException;
     public boolean isAWebPath(){return true;}
     public boolean preferBinary(){return true;}
     public ImageVerificationImage (){}
-     
+    
+    public static class ImgCacheEntry
+    {
+    	public String key;
+    	public String value;
+    	public long createdTimeMillis=System.currentTimeMillis();
+    	public String ip;
+    }
+    
  	@SuppressWarnings("unchecked")
-	public static SLinkedList<Pair<String,String>> getVerifyCache()
+	public static SLinkedList<ImgCacheEntry> getVerifyCache()
 	{
- 		SLinkedList<Pair<String,String>> verSet=(SLinkedList<Pair<String,String>>)Resources.getResource("SYSTEM_WEB_IMGVER_CACHE");
+ 		SLinkedList<ImgCacheEntry> verSet=(SLinkedList<ImgCacheEntry>)Resources.getResource("SYSTEM_WEB_IMGVER_CACHE");
 		if(verSet==null)
 		{
-			verSet=new SLinkedList<Pair<String,String>>();
+			verSet=new SLinkedList<ImgCacheEntry>();
 			Resources.submitResource("SYSTEM_WEB_IMGVER_CACHE", verSet);
 		}
-		while(verSet.size()>100)
-			verSet.removeFirst();
+		try
+		{
+			while(verSet.size()>1000)
+				verSet.removeFirst();
+			for(Iterator<ImgCacheEntry> i=verSet.iterator();i.hasNext();)
+			{
+				ImgCacheEntry I=i.next();
+				if((System.currentTimeMillis()-I.createdTimeMillis)>(20 * 60 * 60 * 1000))
+					i.remove();
+			}
+		}
+		catch(Exception e)
+		{
+			
+		}
 		return verSet;
 	}
  	
@@ -93,27 +115,34 @@ import com.planet_ink.coffee_mud.core.exceptions.HTTPServerException;
     	 {
 	    	 synchronized(sync)
 	    	 {
-	    		 String oldKey=null;
 	    		 boolean imageRequest=httpReq.isRequestParameter("IMAGE");
-	    		 if(httpReq.getRequestObjects().containsKey("LASTGENERATEDIMAGEVERIFICATIONIMAGEKEY"))
-	    			 oldKey=((StringBuilder)httpReq.getRequestObjects().get("LASTGENERATEDIMAGEVERIFICATIONIMAGEKEY")).toString();
-		    	 SLinkedList<Pair<String,String>> cache = getVerifyCache();
-		    	 String key;
-		    	 ImageVerificationImage img;
-		    	 if(oldKey!=null)
+		    	 SLinkedList<ImgCacheEntry> cache = getVerifyCache();
+		    	 String value=null;
+		    	 String key=null;
+	    		 final String hisIp=httpReq.getHTTPclientIP();
+		    	 if(imageRequest)
 		    	 {
-		    		 key=oldKey;
-		    		 String value=null;
-		    		 for(Pair<String,String> p : cache)
-		    			 if(p.first.equalsIgnoreCase(oldKey))
-		    				 value=p.second;
-			    	 img=new ImageVerificationImage(value,bout);
+		 		   	for(Iterator<ImageVerificationImage.ImgCacheEntry> p =cache.descendingIterator();p.hasNext();)
+				   	{
+				   		 ImageVerificationImage.ImgCacheEntry entry=p.next();
+		    			 if(entry.ip.equalsIgnoreCase(hisIp))
+		    			 {
+		    				 value=entry.value;
+		    				 key=entry.key;
+		    				 break;
+		    			 }
+				   	}
 		    	 }
-		    	 else
-		    	 {
+		    	 ImageVerificationImage  img=new ImageVerificationImage(value,bout);
+		    	 if(key==null)
 		    		 key=Long.toHexString(Math.round(Math.abs(rand.nextDouble() * ((double)Long.MAX_VALUE/2.0))));
-			    	 img=new ImageVerificationImage(null,bout);
-		    		 cache.addLast(new Pair<String,String>(key,img.getVerificationValue()));
+		    	 if(value==null)
+		    	 {
+		    		 ImgCacheEntry entry=new ImgCacheEntry();
+		    		 entry.ip=hisIp;
+		    		 entry.key=key;
+		    		 entry.value=img.getVerificationValue();
+		    		 cache.addLast(entry);
 		    	 }
 		    	 if(!imageRequest)
 		    	 {
@@ -123,7 +152,8 @@ import com.planet_ink.coffee_mud.core.exceptions.HTTPServerException;
 	    		 httpReq.addRequestParameters("IMGVERKEY", key);
 	    	 }
     	 }
-    	 catch(IOException ioe) {
+    	 catch(IOException ioe) 
+    	 {
     		 Log.errOut("ImgVerWM",ioe);
     	 }
          return bout.toByteArray();
@@ -136,7 +166,7 @@ import com.planet_ink.coffee_mud.core.exceptions.HTTPServerException;
      
      public ImageVerificationImage (String oldValue, OutputStream out) throws IOException
      {
-         this(25,120,oldValue,out);
+         this(34,120,oldValue,out);
      }
      
      public ImageVerificationImage (int height, int width, String oldValue, OutputStream out) throws IOException

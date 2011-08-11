@@ -10,9 +10,12 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
+
+import java.net.URLEncoder;
 import java.util.*;
 /* 
    Copyright 2000-2011 Bo Zimmerman
@@ -33,6 +36,13 @@ public class AccountCreate extends StdWebMacro
 {
 	public String name()	{return this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);}
 
+	private enum AccountCreateErrors 
+	{
+		NO_NAME, NO_PASSWORD, NO_PASSWORDAGAIN, BAD_PASSWORDMATCH, NO_VERIFYKEY, NO_VERIFY,
+		BAD_EMAILADDRESS, BAD_VERIFY
+	}
+	// OK, NO_NEW_PLAYERS, NO_NEW_LOGINS, BAD_USED_NAME, CREATE_LIMIT_REACHED
+	
 	public String runMacro(ExternalHTTPRequests httpReq, String parm)
 	{
         boolean emailPassword=((CMProps.getVar(CMProps.SYSTEM_EMAILREQ).toUpperCase().startsWith("PASS"))
@@ -48,7 +58,7 @@ public class AccountCreate extends StdWebMacro
         	return " @break@";
         
 		String name=httpReq.getRequestParameter("ACCOUNTNAME");
-		if((name==null)||(name.length()==0)) return "NO_NAME";
+		if((name==null)||(name.length()==0)) return AccountCreateErrors.NO_NAME.toString();
 		String password;
 		if(emailPassword)
 		{
@@ -59,16 +69,16 @@ public class AccountCreate extends StdWebMacro
 		else
 		{
 			password=httpReq.getRequestParameter("PASSWORD");
-			if((password==null)||(password.length()==0)) return "NO_PASSWORD";
+			if((password==null)||(password.length()==0)) return AccountCreateErrors.NO_PASSWORD.toString();
 			String passwordagain=httpReq.getRequestParameter("PASSWORDAGAIN");
-			if((passwordagain==null)||(passwordagain.length()==0)) return "NO_PASSWORDAGAIN";
+			if((passwordagain==null)||(passwordagain.length()==0)) return AccountCreateErrors.NO_PASSWORDAGAIN.toString();
 			if(!password.equalsIgnoreCase(passwordagain))
-				return "BAD_PASSWORDMATCH";
+				return AccountCreateErrors.BAD_PASSWORDMATCH.toString();
 		}
 		String verifykey=httpReq.getRequestParameter("VERIFYKEY");
-		if((verifykey==null)||(verifykey.length()==0)) return "NO_VERIFYKEY";
+		if((verifykey==null)||(verifykey.length()==0)) return AccountCreateErrors.NO_VERIFYKEY.toString();
 		String verify=httpReq.getRequestParameter("VERIFY");
-		if((verify==null)||(verify.length()==0)) return "NO_VERIFY";
+		if((verify==null)||(verify.length()==0)) return AccountCreateErrors.NO_VERIFY.toString();
 		String emailAddress="";
         if(!emailDisabled)
         {
@@ -77,24 +87,27 @@ public class AccountCreate extends StdWebMacro
             if(emailReq)
             {
         		if((emailAddress==null)||(emailAddress.length()==0)||!CMLib.smtp().isValidEmailAddress(emailAddress)) 
-        			return "BAD_EMAILADDRESS";
+        			return AccountCreateErrors.BAD_EMAILADDRESS.toString();
             }
         }
 		synchronized(ImageVerificationImage.sync)
 		{
-		   	SLinkedList<Pair<String,String>> cache = ImageVerificationImage.getVerifyCache();
+		   	SLinkedList<ImageVerificationImage.ImgCacheEntry> cache = ImageVerificationImage.getVerifyCache();
 		   	boolean found=false;
-		   	for(Pair<String,String> p : cache)
+	   		final String hisIp=httpReq.getHTTPclientIP();
+		   	for(Iterator<ImageVerificationImage.ImgCacheEntry> p =cache.descendingIterator();p.hasNext();)
 		   	{
-		   		if(p.first.equalsIgnoreCase(verifykey))
+		   		ImageVerificationImage.ImgCacheEntry entry=p.next();
+		   		if((entry.key.equalsIgnoreCase(verifykey))
+		   		&&(entry.ip.equals(hisIp)))
 		   		{
 		   			found=true;
-		   			if(!p.second.equalsIgnoreCase(verify))
-		   				return "BAD_VERIFY";
+		   			if(!entry.value.equalsIgnoreCase(verify))
+		   				return AccountCreateErrors.BAD_VERIFY.toString();
 		   		}
 		   	}
 		   	if(!found)
-		   		return "NO_VERIFYKEY";
+		   		return AccountCreateErrors.NO_VERIFYKEY.toString();
 		}
 		name = CMStrings.capitalizeAndLower(name);
 		CharCreationLibrary.NewCharNameCheckResult checkResult=CMLib.login().newCharNameCheck(name, httpReq.getHTTPclientIP(), false);
@@ -117,6 +130,18 @@ public class AccountCreate extends StdWebMacro
                     acct.accountName(),
                     "Password for "+acct.accountName(),
                     "Your password for "+acct.accountName()+" is: "+acct.password()+"\n\rYou can login by pointing your mud client at "+CMProps.getVar(CMProps.SYSTEM_MUDDOMAIN)+" port(s):"+CMProps.getVar(CMProps.SYSTEM_MUDPORTS)+".\n\rAfter creating a character, you may use the PASSWORD command to change it once you are online.");
+        }
+        if(parms.containsKey("LOGIN"))
+        {
+			httpReq.addRequestParameters("PLAYER",name);
+    		if(Authenticate.authenticated(httpReq,name,password))
+    		    try
+			    {
+        			httpReq.addRequestParameters("AUTH", URLEncoder.encode(Authenticate.Encrypt(Authenticate.getLogin(httpReq))+"-"+Authenticate.Encrypt(Authenticate.getPassword(httpReq)),"UTF-8"));
+			    }
+			    catch(Exception u)
+			    {
+			    }
         }
 		return "";
 	}
