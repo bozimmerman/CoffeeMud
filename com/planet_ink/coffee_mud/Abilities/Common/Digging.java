@@ -37,7 +37,7 @@ public class Digging extends GatheringSkill
 {
 	public String ID() { return "Digging"; }
 	public String name(){ return "Gem Digging";}
-	private static final String[] triggerStrings = {"DIG","DIGGING"};
+	private static final String[] triggerStrings = {"GDIG","GDIGGING","GEMDIGGING"};
 	public String[] triggerStrings(){return triggerStrings;}
 	public int classificationCode(){return Ability.ACODE_COMMON_SKILL|Ability.DOMAIN_GATHERINGSKILL;}
 	protected boolean allowedWhileMounted(){return false;}
@@ -48,7 +48,7 @@ public class Digging extends GatheringSkill
 	public Digging()
 	{
 		super();
-		displayText="You are digging...";
+		displayText="You are digging for gems...";
 		verb="digging";
 	}
 
@@ -131,7 +131,7 @@ public class Digging extends GatheringSkill
 		&&(!confirmPossibleMaterialLocation(RawMaterial.RESOURCE_SAND,mob.location()))
 		&&(!confirmPossibleMaterialLocation(RawMaterial.RESOURCE_STONE,mob.location())))
 		{
-			commonTell(mob,"You don't think this is a good place to dig.");
+			commonTell(mob,"You don't think this is a good place to dig for gems.");
 			return false;
 		}
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
@@ -150,7 +150,7 @@ public class Digging extends GatheringSkill
 		}
 		
 		int duration=getDuration(60,mob,1,15);
-		CMMsg msg=CMClass.getMsg(mob,found,this,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> start(s) digging.");
+		CMMsg msg=CMClass.getMsg(mob,found,this,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> start(s) digging for gems.");
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);
