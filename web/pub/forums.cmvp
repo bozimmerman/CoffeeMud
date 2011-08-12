@@ -51,8 +51,8 @@
 		Password<INPUT TYPE=PASSWORD NAME=PASSWORD SIZE=10 VALUE="">
 		<INPUT TYPE=SUBMIT VALUE=Login>
 		@if?IsAccountSystem@
-		<INPUT TYPE=HIDDEN NAME=LASTPAGE VALUE="">
-		<INPUT TYPE=BUTTON VALUE=Register ONCLICK="Register()">
+			<INPUT TYPE=HIDDEN NAME=LASTPAGE VALUE="">
+			<INPUT TYPE=BUTTON VALUE=Register ONCLICK="Register()">
 		@endif@
 	@else@
 		Logged in as <B>@PlayerData?NAME@</B>
