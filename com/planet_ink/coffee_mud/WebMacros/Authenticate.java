@@ -55,6 +55,12 @@ public class Authenticate extends StdWebMacro
 		String login=getLogin(httpReq);
 		if((parms!=null)&&(parms.containsKey("SETPLAYER")))
 			httpReq.addRequestParameters("PLAYER",login);
+		if((parms!=null)&&(parms.containsKey("SETACCOUNT"))&&(CMProps.getIntVar(CMProps.SYSTEMI_COMMONACCOUNTSYSTEM)>0))
+		{
+			MOB mob=getAuthenticatedMob(httpReq);
+			if((mob!=null)&&(mob.playerStats()!=null)&&(mob.playerStats().getAccount()!=null))
+				httpReq.addRequestParameters("ACCOUNT",mob.playerStats().getAccount().accountName());
+		}
 		if(authenticated(httpReq,login,getPassword(httpReq)))
 			return "true";
 		return "false";

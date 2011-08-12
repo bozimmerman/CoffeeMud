@@ -24,8 +24,25 @@
 <body BGCOLOR=WHITE>
 <FORM NAME=RESOURCES TARGET=_top METHOD=POST ACTION="player.cmvp">
 <INPUT TYPE=HIDDEN NAME=AUTH VALUE="@Authenticate?AUTH@">
-<INPUT TYPE=HIDDEN NAME=AUTHPLAYER VALUE="@Authenticate?SETPLAYER">
-<INPUT TYPE=HIDDEN NAME=PLAYER VALUE="@PlayerData?NAME">
+@if?CheckReqParm?PLAYER=@
+<INPUT TYPE=HIDDEN NAME=AUTHPLAYER VALUE="@Authenticate?SETPLAYER@">
+@endif@
+@if?IsAccountSystem@
+<INPUT TYPE=HIDDEN NAME=AUTHACCOUNT VALUE="@Authenticate?SETACCOUNT@">
+<CENTER>
+@AddRequestParameter?OLDPLAYER=@@RequestParameter?PLAYER@@ @
+<SELECT NAME=PLAYER ONCHANGE="Clicked('stats.cmvp');">
+@AccountPlayerNext?RESET@
+@loop@
+@AccountPlayerNext@
+<OPTION VALUE="@RequestParameter?PLAYER@"  @if?CheckReqParm?PLAYER=@@RequestParameter?OLDPLAYER@@ @SELECTED@endif@ >@RequestParameter?PLAYER@
+@back@
+@AddRequestParameter?PLAYER=@@RequestParameter?OLDPLAYER@@ @
+</SELECT>
+@AddRequestParameter?OLDPLAYER=@@RequestParameter?PLAYER@@ @
+@else@
+    <INPUT TYPE=HIDDEN NAME=PLAYER VALUE="@PlayerData?NAME">
+@endif@
 <INPUT TYPE=HIDDEN NAME=FUNCTION VALUE="">
 	<TABLE WIDTH=100% BORDER=0>
 	<TD WIDTH=80%><BR></TD>
