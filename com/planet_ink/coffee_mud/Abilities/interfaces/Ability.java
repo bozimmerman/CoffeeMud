@@ -180,7 +180,7 @@ public interface Ability extends Environmental
 	 * instantly.  This method only applies when the invoker
 	 * is not in combat.
 	 * @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#combatCastingTime(MOB, List)
-	 * @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#checkedCastingTime(MOB, List)
+	 * @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#checkedCastingCost(MOB, List)
 	 * @param mob the potential caster
 	 * @param commands the potential command set
 	 * @return the number of player free actions required to do this
@@ -193,7 +193,7 @@ public interface Ability extends Environmental
 	 * instantly.  This method only applies when the invoker
 	 * is in combat.
 	 * @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#castingTime(MOB, List)
-	 * @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#checkedCastingTime(MOB, List)
+	 * @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#checkedCastingCost(MOB, List)
 	 * @param mob the potential caster
 	 * @param commands the potential command set
 	 * @return the number of player free actions required to do this
@@ -211,7 +211,7 @@ public interface Ability extends Environmental
 	 * @param commands the potential command set
 	 * @return the number of player free actions required to do this
 	 */
-	public double checkedCastingTime(final MOB mob, final List<String> commands);
+	public double checkedCastingCost(final MOB mob, final List<String> commands);
 
 	/**
 	 * This method is only called when the mob invoking this skill

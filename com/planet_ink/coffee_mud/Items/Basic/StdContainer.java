@@ -128,7 +128,10 @@ public class StdContainer extends StdItem implements Container
 						else
 						if((recursiveWeight()+newitem.phyStats().weight())>capacity)
 						{
-							mob.tell(name()+" is full.");
+							if(getContents().size()==0)
+								mob.tell(name()+" is too small.");
+							else
+								mob.tell(name()+" is full.");
 							return false;
 						}
 						if((!msg.source().isMine(this))&&(msg.source().isMine(newitem)))

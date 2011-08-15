@@ -50,7 +50,7 @@ public class StdAbility implements Ability
 	public int minRange(){return 0;}
     public double castingTime(final MOB mob, final List<String> cmds){return CMProps.getActionSkillCost(ID());}
     public double combatCastingTime(final MOB mob, final List<String> cmds){return CMProps.getCombatActionSkillCost(ID());}
-    public double checkedCastingTime(final MOB mob, final List<String> commands)
+    public double checkedCastingCost(final MOB mob, final List<String> commands)
     {
     	if(mob!=null)
     	{

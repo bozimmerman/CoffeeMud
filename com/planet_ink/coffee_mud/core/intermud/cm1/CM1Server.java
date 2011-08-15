@@ -183,7 +183,6 @@ public class CM1Server extends Thread
 		long time = System.currentTimeMillis();
 		while((System.currentTimeMillis()-time<30000) && (!isShutdown))
 		{
-			this.interrupt();
 			try {Thread.sleep(1000);}catch(Exception e){}
 			if(servSelector != null)
 				try {servSelector.close();}catch(Exception e){}
@@ -191,6 +190,7 @@ public class CM1Server extends Thread
 			if((servChan != null)&&(!isShutdown))
 				try {servChan.close();}catch(Exception e){}
 			try {Thread.sleep(1000);}catch(Exception e){}
+			this.interrupt();
 		}
 	}
 }

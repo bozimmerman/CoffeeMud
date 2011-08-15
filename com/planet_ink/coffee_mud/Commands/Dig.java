@@ -38,55 +38,92 @@ public class Dig extends StdCommand
 
 	private final String[] access={"DIG"};
 	public String[] getAccessWords(){return access;}
-	
-	private static Ability getDiggingAction()
+
+	public int getDiggingDepth(Item item)
 	{
-		Ability A=CMClass.getAbility("GatheringSkill");
-		return null;
+		if(item==null) return 1;
+		switch(item.material()&RawMaterial.MATERIAL_MASK)
+		{
+		case RawMaterial.MATERIAL_METAL:
+		case RawMaterial.MATERIAL_MITHRIL:
+		case RawMaterial.MATERIAL_WOODEN:
+			if(item.Name().toLowerCase().indexOf("shovel")>=0)
+				return 5+item.phyStats().weight();
+			return 1+(item.phyStats().weight()/5);
+		case RawMaterial.MATERIAL_PLASTIC:
+		case RawMaterial.MATERIAL_ROCK:
+		case RawMaterial.MATERIAL_GLASS:
+			if(item.Name().toLowerCase().indexOf("shovel")>=0)
+				return 14+item.phyStats().weight();
+			return 1+(item.phyStats().weight()/7);
+		default:
+			return 1;
+		}
 	}
 	
+	public boolean isOccupiedWithOtherWork(MOB mob)
+	{
+		if(mob==null) return false;
+		for(Enumeration<Ability> a=mob.effects();a.hasMoreElements();)
+		{
+			Ability A=a.nextElement();
+			if((A!=null)
+			&&(!A.isAutoInvoked())
+			&&((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_COMMON_SKILL))
+				return true;
+		}
+		return false;
+	}
+	
+    public boolean preExecute(MOB mob, Vector commands, int metaFlags, int secondsElapsed, double actionsRemaining)
+    throws java.io.IOException
+	{
+    	if(secondsElapsed==0)
+    	{
+    		if(isOccupiedWithOtherWork(mob))
+    		{
+    			mob.tell("You are too busy to dig right now.");
+    			return false;
+    		}
+    		
+	    	String msgStr="<S-NAME> start(s) digging a hole with <O-NAME>.";
+	    	Item I=mob.fetchWieldedItem();
+	    	if(I==null)  I=mob.myNaturalWeapon();
+			CMMsg msg=CMClass.getMsg(mob,mob.location(),I,CMMsg.MSG_DIG,msgStr);
+			msg.setValue(1);
+			if(mob.location().okMessage(mob,msg))
+				mob.location().send(mob,msg);
+			else
+				return false;
+    	}
+    	else
+    	if((secondsElapsed % 8)==0)
+    	{
+	    	String msgStr="<S-NAME> continue(s) digging a hole with <O-NAME>.";
+	    	Item I=mob.fetchWieldedItem();
+	    	if(I==null)  I=mob.myNaturalWeapon();
+			CMMsg msg=CMClass.getMsg(mob,mob.location(),I,CMMsg.MSG_DIG,msgStr);
+			msg.setValue(getDiggingDepth(I));
+			if(mob.location().okMessage(mob,msg))
+				mob.location().send(mob,msg);
+			else
+				return false;
+    	}
+	    return true;
+	}
+    
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
-		if(CMLib.flags().isSitting(mob))
-		{
-			mob.tell("You are already sitting!");
-			return false;
-		}
-		if(commands.size()<=1)
-		{
-			CMMsg msg=CMClass.getMsg(mob,null,null,CMMsg.MSG_SIT,"<S-NAME> sit(s) down and take(s) a rest.");
-			if(mob.location().okMessage(mob,msg))
-				mob.location().send(mob,msg);
-			return false;
-		}
-		String possibleRideable=CMParms.combine(commands,1);
-		Environmental E=null;
-		if(possibleRideable.length()>0)
-		{
-			E=mob.location().fetchFromRoomFavorItems(null,possibleRideable);
-			if((E==null)||(!CMLib.flags().canBeSeenBy(E,mob)))
-			{
-				mob.tell("You don't see '"+possibleRideable+"' here.");
-				return false;
-			}
-			if(E instanceof MOB)
-			{
-				Command C=CMClass.getCommand("Mount");
-				if(C!=null) return C.execute(mob,commands,metaFlags);
-			}
-		}
-		String mountStr=null;
-		if(E instanceof Rideable)
-			mountStr="<S-NAME> "+((Rideable)E).mountString(CMMsg.TYP_SIT,mob)+" <T-NAME>.";
-		else
-			mountStr="<S-NAME> sit(s) on <T-NAME>.";
-		CMMsg msg=CMClass.getMsg(mob,E,null,CMMsg.MSG_SIT,mountStr);
+		CMMsg msg=CMClass.getMsg(mob,null,null,CMMsg.MSG_OK_ACTION,"<S-NAME> stop(s) digging.");
 		if(mob.location().okMessage(mob,msg))
 			mob.location().send(mob,msg);
 		return false;
 	}
-    public double combatActionsCost(final MOB mob, final List<String> cmds){return CMProps.getCombatActionCost(ID());}
-    public double actionsCost(final MOB mob, final List<String> cmds){return CMProps.getActionCost(ID());}
+    public double combatActionsCost(final MOB mob, final List<String> cmds){return 30.0 * mob.phyStats().speed();}
+    public double actionsCost(final MOB mob, final List<String> cmds)
+    {
+    	return 10.0 * mob.phyStats().speed();
+    }
 	public boolean canBeOrdered(){return true;}
 }

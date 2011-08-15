@@ -246,7 +246,8 @@ public interface MOB extends Rider, DBIdentifiable, PhysicalAgent, ItemPossessor
 	public static class QMCommand
 	{
 		public Object 	commandObj = null;
-		public double 	tickDelay = 0.0;
+		public double 	actionDelay = 0.0;
+		public long 	execTime = 0;
 		public long 	nextCheck=System.currentTimeMillis()-1;
 		public int 		seconds=-1;
 		public int		metaFlags=0;

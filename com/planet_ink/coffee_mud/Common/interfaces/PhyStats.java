@@ -46,7 +46,7 @@ public interface PhyStats extends CMCommon, Modifiable
     /**
      * Returns a bitmask for sense related flags of mobs (CAN_ constants), or 
      * miscellaneous runtime flags for items and other Physicals (SENSE_ constants). 
-     * @see com.planet_ink.coffee_mud.Common.interfaces.PhyStats#SENSE_ITEMNEVERSAVED
+     * @see com.planet_ink.coffee_mud.Common.interfaces.PhyStats#SENSE_ITEMNOREMOVE
      * @see com.planet_ink.coffee_mud.Common.interfaces.PhyStats#CAN_NOT_SEE
      * @see com.planet_ink.coffee_mud.Common.interfaces.PhyStats#setSensesMask(int)
      * @return a bitmask made up of SENSE_ constants or CAN_ constants
@@ -57,7 +57,7 @@ public interface PhyStats extends CMCommon, Modifiable
     /**
      * Sets a bitmask for sense related flags of mobs (CAN_ constants), or 
      * miscellaneous runtime flags for items and other Physicals (SENSE_ constants). 
-     * @see com.planet_ink.coffee_mud.Common.interfaces.PhyStats#SENSE_ITEMNEVERSAVED
+     * @see com.planet_ink.coffee_mud.Common.interfaces.PhyStats#SENSE_ITEMNOREMOVE
      * @see com.planet_ink.coffee_mud.Common.interfaces.PhyStats#CAN_NOT_SEE
      * @see com.planet_ink.coffee_mud.Common.interfaces.PhyStats#setSensesMask(int)
      * @param newMask a bitmask made up of SENSE_ constants or CAN_ constants
@@ -355,7 +355,7 @@ public interface PhyStats extends CMCommon, Modifiable
     /** a bit setting, as from sensesMask(), flagging this item/room as having unseeable contents */
 	public final static int SENSE_CONTENTSUNSEEN=128;
     /** a bit setting, as from sensesMask(), flagging this item/room as never being savable */
-	public final static int SENSE_ITEMNEVERSAVED=256;
+	//public final static int SENSE_ITEMNEVERSAVED=256;
     /** a bit setting, as from sensesMask(), flagging this item/room as being unexplorable */
 	public final static int SENSE_ROOMUNEXPLORABLE=512;
     /** a bit setting, as from sensesMask(), flagging this item/room as not allowing movement */

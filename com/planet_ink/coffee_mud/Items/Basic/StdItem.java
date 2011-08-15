@@ -589,7 +589,15 @@ public class StdItem implements Item
 		myUses=newUses;
 	}
 
-	public boolean isSavable(){return CMLib.flags().isSavable(this);}
+	public boolean isSavable()
+	{
+		if(!CMLib.flags().isSavable(this))
+			return false;
+		if(container()!=null)
+			return container().isSavable();
+		return true;
+	}
+	
 	public void setSavable(boolean truefalse){ CMLib.flags().setSavable(this, truefalse);}
 
 	protected boolean canWearComplete(MOB mob, long wearWhere)

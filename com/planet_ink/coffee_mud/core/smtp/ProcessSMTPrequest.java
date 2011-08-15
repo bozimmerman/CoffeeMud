@@ -86,7 +86,145 @@ public class ProcessSMTPrequest implements Runnable
 		}
 		return null;
 	}
-	
+
+	public void cleanHtml(String journal, StringBuffer finalData)
+	{
+		// the input MUST be html -- text that only might be need not apply
+		JournalsLibrary.ForumJournal forum=CMLib.journals().getForumJournal(journal);
+		if(forum!=null)
+		{
+			int start=-1;
+			int state=0;
+			char c=' ';
+			char lastC=' ';
+			for(int i=0;i<finalData.length();i++)
+			{
+				c=Character.toUpperCase(finalData.charAt(i));
+				if(Character.isWhitespace(c))
+					continue;
+				else
+				if(c=='<')
+				{
+					start=i;
+					state=0;
+				}
+				else
+				if(start<0)
+					continue;
+				else
+				switch(state)
+				{
+				case 0:
+					switch(c) {
+					case '/': state=1; break;
+					case 'H': state=2; break;
+					case 'B': state=3; break;
+					default: start=-1; break;
+					} break;
+				case 1:
+					switch(c) {
+					case 'H': state=2; break;
+					case 'B': state=3; break;
+					default: start=-1; break;
+					} break;
+				case 2:
+					switch(c) {
+					case 'T': if(lastC!='H') state=-1; break;
+					case 'M': if(lastC!='T') state=-1; break;
+					case 'L': if(lastC!='M') state=-1; else state=4; break;
+					default: start=-1; break;
+					} break;
+				case 3:
+					switch(c) {
+					case 'O': if(lastC!='\0') state=-1; break;
+					case 'D': if(lastC!='O') state=-1; break;
+					case 'Y': if(lastC!='D') state=-1; else state=4; break;
+					default: start=-1; break;
+					} break;
+				case 4:
+					if(c=='>')
+					{
+						finalData.delete(start, i+1);
+						start=-1;
+						i=start-1;
+					}
+					break;
+				}
+				lastC=c;
+			}
+		}
+		else
+		{
+			Stack<Pair<String,Integer>> tagStack=new Stack<Pair<String,Integer>>();
+			String[] badBlockTags=new String[]{"STYLE","SCRIPT","HEAD"};
+			int start=-1;
+			int state=0;
+			char c;
+			char lastC=' ';
+			for(int i=0;i<finalData.length();i++)
+			{
+				c=Character.toUpperCase(finalData.charAt(i));
+				if(c=='<')
+				{
+					start=i;
+					state=0;
+				}
+				else
+				if(start<0)
+					continue;
+				else
+				switch(state)
+				{
+				case 0:
+					switch(c) {
+					case '/': state=1; break;
+					case 'H': state=2; break;
+					case 'B': state=3; break;
+					default: start=-1; break;
+					} break;
+				case 1:
+					switch(c) {
+					case 'H': state=2; break;
+					case 'B': state=3; break;
+					default: start=-1; break;
+					} break;
+				case 2:
+					switch(c) {
+					case 'T': if(lastC!='H') state=-1; break;
+					case 'M': if(lastC!='T') state=-1; break;
+					case 'L': if(lastC!='M') state=-1; else state=4; break;
+					default: start=-1; break;
+					} break;
+				case 3:
+					switch(c) {
+					case 'O': if(lastC!='\0') state=-1; break;
+					case 'D': if(lastC!='O') state=-1; break;
+					case 'Y': if(lastC!='D') state=-1; else state=4; break;
+					default: start=-1; break;
+					} break;
+				case 4:
+					if(Character.isWhitespace(c))
+						state=5;
+					else
+					if(c!='>')
+					{
+						start=-1;
+						break;
+					}
+					//$FALL-THROUGH$
+				case 5:
+					if(c=='>')
+					{
+						finalData.delete(start, i+1);
+						start=-1;
+						i=start-1;
+					}
+					break;
+				}
+				lastC=c;
+			}
+		}
+	}
 	
 	public void run()
 	{
@@ -155,6 +293,7 @@ public class ProcessSMTPrequest implements Runnable
 							replyData=("250 Message accepted for delivery."+cr).getBytes();
 							boolean startBuffering=false;
 							StringBuffer finalData=new StringBuffer("");
+							char bodyType='t'; // h=html, t=text
 							String subject=null;
 	                        String boundry=null;
 	                        // -1=waitForHeaderDone, 
@@ -276,8 +415,16 @@ public class ProcessSMTPrequest implements Runnable
 	                                        }
 	                                    }
 	                                    else
+	    								if(s2u.substring(14).trim().startsWith("TEXT/HTML"))
+	    								{
+		                                    if(boundryState==2)
+		                                        boundryState=-1;
+		                                    bodyType='h';
+	    								}
+	                                    else
 	    								if(!s2u.substring(14).trim().startsWith("TEXT/PLAIN"))
 	    								{
+		                                    bodyType='t';
 	                                        if(boundryState==2)
 	                                            boundryState=0;
 	                                        else
@@ -367,6 +514,7 @@ public class ProcessSMTPrequest implements Runnable
 											}
 											   
 											if(debug) Log.debugOut(runnableName,"Written: "+journal+"/"+from+"/ALL");
+											if(bodyType=='h') cleanHtml(journal, finalData);
 											CMLib.database().DBWriteJournalChild(journal, "",from, "ALL", parentKey, 
 													CMLib.coffeeFilter().simpleInFilter(new StringBuffer(subject),false).toString(), 
 													CMLib.coffeeFilter().simpleInFilter(finalData,false).toString());
@@ -374,6 +522,7 @@ public class ProcessSMTPrequest implements Runnable
 										else
 										{
 											if(debug) Log.debugOut(runnableName,"Written: "+server.mailboxName()+"/"+from+"/"+(String)to.elementAt(i));
+											if(bodyType=='h') cleanHtml(journal, finalData);
 											CMLib.database().DBWriteJournal(server.mailboxName(),
 																			from,
 																			(String)to.elementAt(i),

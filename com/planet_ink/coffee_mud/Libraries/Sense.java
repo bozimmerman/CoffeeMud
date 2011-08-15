@@ -42,7 +42,15 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 	public boolean canSee(MOB M)
 	{ return (M!=null)&&(!isSleeping(M))&&((M.phyStats().sensesMask()&PhyStats.CAN_NOT_SEE)==0); }
 	public boolean canBeLocated(Physical P)
-	{ return (P!=null)&&(!isSleeping(P))&&((P.phyStats().sensesMask()&PhyStats.SENSE_UNLOCATABLE)==0); }
+	{ 
+		if ( (P!=null)&&(!isSleeping(P))&&((P.phyStats().sensesMask()&PhyStats.SENSE_UNLOCATABLE)==0) )
+		{
+			if((P instanceof Item)&&(((Item)P).container()!=null))
+				return canBeLocated(((Item)P).container());
+			return true;
+		}
+		return false;
+	}
 	public boolean canSeeHidden(MOB M)
 	{ return (M!=null)&&((M.phyStats().sensesMask()&PhyStats.CAN_SEE_HIDDEN)==PhyStats.CAN_SEE_HIDDEN); }
 	public boolean canSeeInvisible(MOB M)
@@ -92,7 +100,15 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 	public boolean hasSeenContents(Physical P)
 	{ return (P!=null)&&((P.phyStats().sensesMask()&PhyStats.SENSE_CONTENTSUNSEEN)==0); }
     public boolean isSavable(Physical P)
-    { return (P==null)||((P.phyStats().disposition()&PhyStats.IS_UNSAVABLE)==0); }
+    { 
+    	if((P==null)||((P.phyStats().disposition()&PhyStats.IS_UNSAVABLE)==0))
+		{
+			if((P instanceof Item)&&(((Item)P).container()!=null))
+				return isSavable(((Item)P).container());
+			return true;
+		}
+		return false;
+    }
 	public void setSavable(Physical P, boolean truefalse)
 	{
 		if(P==null) return;

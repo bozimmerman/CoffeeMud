@@ -463,6 +463,23 @@ public class SMTPserver extends Thread implements Tickable
 			}
 			else
 				jrnlSubj=msg.subj;
+			String jrnlMessage=msg.msg;
+			if(jrnlMessage.startsWith("<HTML><BODY>"))
+			{
+				
+			}
+			else
+			{
+				if(jrnlMessage.indexOf("<HTML>")>0)
+				{
+					jrnlMessage=CMStrings.replaceAll(jrnlMessage,"<HTML>","");
+					jrnlMessage=CMStrings.replaceAll(jrnlMessage,"</HTML>","");
+					jrnlMessage=CMStrings.replaceAll(jrnlMessage,"<BODY>","");
+					jrnlMessage=CMStrings.replaceAll(jrnlMessage,"</BODY>","");
+				}
+				else
+				jrnlMessage="<HTML><BODY>"+jrnlMessage+"</BODY></HTML>";
+			}
 			Map<String, List<String>> lists=Resources.getCachedMultiLists("mailinglists.txt",true);
 			List<String> mylist=lists.get(journalName);
 			if((mylist!=null)&&(mylist.contains(msg.from)))
@@ -472,7 +489,7 @@ public class SMTPserver extends Thread implements Tickable
 					String to2=(String)mylist.get(i);
 					if(CMProps.getBoolVar(CMProps.SYSTEMB_EMAILFORWARDING))
 					{
-						CMLib.database().DBWriteJournalEmail(mailboxName(),journalName,msg.from,to2,jrnlSubj,msg.msg);
+						CMLib.database().DBWriteJournalEmail(mailboxName(),journalName,msg.from,to2,jrnlSubj,jrnlMessage);
 					}
 				}
 			}

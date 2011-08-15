@@ -815,6 +815,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
                             +"\n\rAbilty: "+item.basePhyStats().ability()
                             +"\n\rLevel : "+item.basePhyStats().level()
                             +"\n\rTime  : "+dispTime
+                            +((item instanceof Container)?("\n\rCapac.: "+((Container)item).capacity()):"")
                             +"\n\rMisc  : "+item.text().length()+"\n\r"+item.text());
         }
         if(item.description().length()==0)

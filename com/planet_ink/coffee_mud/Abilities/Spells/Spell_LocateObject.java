@@ -130,7 +130,8 @@ public class Spell_LocateObject extends Spell
 					if(!CMLib.flags().canAccess(mob,room)) continue;
 
 					item=room.findItem(null,what);
-					if((item!=null)&&(CMLib.flags().canBeLocated((Item)item)))
+					if((item!=null)
+					&&(CMLib.flags().canBeLocated((Item)item)))
 					{
 						String str=item.name()+" is in a place called '"+room.roomTitle(mob)+"'.";
 						itemsFound.add(str);
@@ -145,7 +146,7 @@ public class Spell_LocateObject extends Spell
 						if((item==null)&&(SK!=null))
 							item=SK.getShop().getStock(what,mob);
 						if((item instanceof Item)
-						&&((CMLib.flags().canBeLocated((Item)item)))
+						&&(CMLib.flags().canBeLocated((Item)item))
 						&&(((Item)item).phyStats().level()>minLevel)
 						&&(((Item)item).phyStats().level()<maxLevel))
 						{

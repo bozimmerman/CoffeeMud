@@ -1300,11 +1300,11 @@ public class StdMOB implements MOB
             {
                 if(commandQue.size()==0) return false;
                 QMCommand cmd=commandQue.getFirst();
-                double diff=actions()-cmd.tickDelay;
+                double diff=actions()-cmd.actionDelay;
 				if(diff>=0.0)
                 {
 					final long nextTime=lastCommandTime
-                                 +Math.round(cmd.tickDelay
+                                 +Math.round(cmd.actionDelay
                                              /phyStats().speed()
                                              *CMProps.getTickMillisD());
                     if((System.currentTimeMillis()<nextTime)&&(session()!=null))
@@ -1324,7 +1324,7 @@ public class StdMOB implements MOB
 	                {
 	                	final QMCommand cmd = commandQue.getFirst();
 	                	final Object O=cmd.commandObj;
-	                	cmd.tickDelay = calculateTickDelay(O,cmd.commandVector,0.0);
+	                	cmd.actionDelay = calculateActionDelay(O,cmd.commandVector,0.0);
 	                }
 	                else
 	                	return false;
@@ -1342,7 +1342,7 @@ public class StdMOB implements MOB
             }
             if(cmd != null)
             {
-                double diff=actions()-cmd.tickDelay;
+                double diff=actions()-cmd.actionDelay;
                 final Object O=cmd.commandObj;
                 final Vector commands=new XVector(cmd.commandVector);
                 cmd.nextCheck=cmd.nextCheck+1000;
@@ -1419,7 +1419,7 @@ public class StdMOB implements MOB
 		}
 	}
 
-    protected double calculateTickDelay(Object command, List<String> commands, double tickDelay)
+    protected double calculateActionDelay(Object command, List<String> commands, double tickDelay)
     {
         if(tickDelay<=0.0)
         {
@@ -1428,7 +1428,7 @@ public class StdMOB implements MOB
                 tickDelay=((Command)command).checkedActionsCost(this, commands);
             else
             if(command instanceof Ability)
-            	tickDelay = ((Ability)command).checkedCastingTime(this,commands);
+            	tickDelay = ((Ability)command).checkedCastingCost(this,commands);
             else
                 tickDelay=1.0;
         }
@@ -1440,7 +1440,7 @@ public class StdMOB implements MOB
         if(commands==null) return;
         final CMObject O=CMLib.english().findCommand(this,commands);
         if(O==null){ CMLib.commands().handleUnknownCommand(this,commands); return;}
-        tickDelay=calculateTickDelay(O,commands,tickDelay);
+        tickDelay=calculateActionDelay(O,commands,tickDelay);
         if(tickDelay<0.0) return;
         if(tickDelay==0.0)
             doCommand(O,commands,metaFlags);
@@ -1450,9 +1450,10 @@ public class StdMOB implements MOB
         	final QMCommand cmd = new QMCommand();
         	cmd.nextCheck=System.currentTimeMillis()-1;
         	cmd.seconds=-1;
-        	cmd.tickDelay=tickDelay;
+        	cmd.actionDelay=tickDelay;
         	cmd.metaFlags=metaFlags;
         	cmd.commandObj=O;
+        	cmd.execTime=0;
         	cmd.commandVector=commands;
             commandQue.addFirst(cmd);
         }
@@ -1464,7 +1465,7 @@ public class StdMOB implements MOB
 		if(commands==null) return;
 		final CMObject O=CMLib.english().findCommand(this,commands);
         if(O==null){ CMLib.commands().handleUnknownCommand(this,commands); return;}
-        tickDelay=calculateTickDelay(O,commands,tickDelay);
+        tickDelay=calculateActionDelay(O,commands,tickDelay);
         if(tickDelay<0.0) return;
         if(tickDelay==0.0)
             doCommand(commands,metaFlags);
@@ -1474,8 +1475,9 @@ public class StdMOB implements MOB
         	final QMCommand cmd = new QMCommand();
         	cmd.nextCheck=System.currentTimeMillis()-1;
         	cmd.seconds=-1;
-        	cmd.tickDelay=tickDelay;
+        	cmd.actionDelay=tickDelay;
         	cmd.metaFlags=metaFlags;
+        	cmd.execTime=0;
         	cmd.commandObj=O;
         	cmd.commandVector=commands;
             commandQue.addLast(cmd);
@@ -1664,7 +1666,7 @@ public class StdMOB implements MOB
 					&&(msg.targetCode()!=CMMsg.MSG_OK_VISUAL)
 					&&((msg.sourceMessage()!=null)||(msg.othersMessage()!=null))
 					&&((!CMLib.utensils().reachableItem(this,msg.target()))
-					||(!CMLib.utensils().reachableItem(this,msg.tool()))))
+						||(!CMLib.utensils().reachableItem(this,msg.tool()))))
 					{
 						tell("You need to stand up!");
 						return false;

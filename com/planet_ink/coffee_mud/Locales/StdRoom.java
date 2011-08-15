@@ -524,6 +524,31 @@ public class StdRoom implements Room
                 break;
 			case CMMsg.TYP_SPEAK:
 				break;
+			case CMMsg.TYP_DIG:
+				if(CMLib.map().getExtendedRoomID(this).length()==0)
+				{
+					mob.tell("You can't really dig here.");
+					return false;
+				}
+				switch(this.domainType())
+				{
+				case Room.DOMAIN_OUTDOORS_DESERT:
+				case Room.DOMAIN_OUTDOORS_HILLS:
+				case Room.DOMAIN_OUTDOORS_JUNGLE:
+				case Room.DOMAIN_OUTDOORS_PLAINS:
+				case Room.DOMAIN_OUTDOORS_SWAMP:
+				case Room.DOMAIN_OUTDOORS_WOODS:
+					break;
+				case Room.DOMAIN_OUTDOORS_WATERSURFACE:
+				case Room.DOMAIN_OUTDOORS_UNDERWATER:
+					if(getRoomInDir(Directions.DOWN)==null)
+						break;
+				//$FALL-THROUGH$
+				default:
+					mob.tell("You can't really dig here.");
+					return false;
+				}
+				break;
 			default:
 				if(((CMath.bset(msg.targetMajor(),CMMsg.MASK_HANDS))||(CMath.bset(msg.targetMajor(),CMMsg.MASK_MOUTH)))
                 &&(msg.targetMinor()!=CMMsg.TYP_THROW))
@@ -627,6 +652,10 @@ public class StdRoom implements Room
 				break;
 			case CMMsg.TYP_AREAAFFECT:
 				// obsolete with the area objects
+				break;
+			case CMMsg.TYP_DIG:
+				if(findItem("HoleInTheGround")==null)
+					addItem(CMClass.getBasicItem("HoleInTheGround"));
 				break;
 			default:
 				break;
