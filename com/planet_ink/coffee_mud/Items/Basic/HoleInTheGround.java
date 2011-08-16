@@ -71,6 +71,11 @@ public class HoleInTheGround extends StdContainer
 						destroy();
 						return true;
 					}
+					else
+					{
+						basePhyStats().setDisposition(basePhyStats().disposition()|PhyStats.IS_HIDDEN);
+						recoverPhyStats();
+					}
 				}
 				break;
 			case CMMsg.TYP_EXPIRE:
@@ -115,6 +120,7 @@ public class HoleInTheGround extends StdContainer
 				if(CMath.bset(basePhyStats().disposition(), PhyStats.IS_NOT_SEEN))
 				{
 					basePhyStats().setDisposition(CMath.unsetb(basePhyStats().disposition(), PhyStats.IS_NOT_SEEN));
+					basePhyStats().setDisposition(CMath.unsetb(basePhyStats().disposition(), PhyStats.IS_HIDDEN));
 					recoverPhyStats();
 				}
 				setCapacity(capacity()+msg.value());

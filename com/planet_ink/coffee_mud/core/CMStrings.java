@@ -1,4 +1,5 @@
 package com.planet_ink.coffee_mud.core;
+
 import java.util.*;
 
 /* 
@@ -449,6 +450,325 @@ public class CMStrings
         return size;
     }
     
+	public static void convertHtmlToText(final StringBuffer finalData)
+	{
+		final class TagStacker 
+		{
+			private Stack<Object[]> tagStack=new Stack<Object[]>();
+			public void push(String tag, int index)
+			{
+				tagStack.push(new Object[]{tag,Integer.valueOf(index)});
+			}
+			@SuppressWarnings("unchecked")
+			public int pop(String tag)
+			{
+				if(tagStack.size()==0) return -1;
+				Stack<Object[]> backup=(Stack<Object[]>)tagStack.clone();
+				Object[] top;
+				do
+				{
+					top=tagStack.pop();
+				}
+				while((!((String)top[0]).equals(tag))&&(!tagStack.isEmpty()));
+				if(!((String)top[0]).equals(tag))
+				{
+					tagStack=backup;
+					return -1;
+				}
+				return ((Integer)top[1]).intValue();
+			}
+		}
+		TagStacker stack=new TagStacker();
+		final String[] badBlockTags=new String[]{"STYLE","SCRIPT","HEAD"};
+		final String[][] xlateTags=new String[][]{ 
+				{"P","\n\r"}, {"BR","\n\r"}, {"DIV","\n\r"}, {"HR","\r\n-----------------------------------------------------------------------------\n\r"}
+		};
+		int start=-1;
+		int state=0;
+		char c;
+		boolean incomment=false;
+		String tag=null;
+		for(int i=0;i<finalData.length();i++)
+		{
+			c=finalData.charAt(i);
+			if(incomment)
+			{
+				if((c=='-')
+				&&(i<finalData.length()-2)
+				&&(finalData.charAt(i+1)=='-')
+				&&(finalData.charAt(i+2)=='>'))
+				{
+					int x=stack.pop("<!--");
+					if(x>=0)
+					{
+						finalData.delete(x,i+3);
+						i=x-1;
+					}
+					else
+					{
+						finalData.delete(i, i+3);
+						i=i-3;
+					}
+					incomment=false;
+				}
+			}
+			else
+			if(c=='<')
+			{
+				start=i;
+				state=0;
+			}
+			else
+			if(c=='&')
+			{
+				start=i;
+				state=5;
+			}
+			else
+			if(start<0)
+			{
+				if((c=='\n')||(c=='\r'))
+				{
+					if((i>0)&&(i<finalData.length()-2))
+					{
+						char n=finalData.charAt(i+1);
+						char p=finalData.charAt(i-1);
+						if((n=='\n')||(n=='\r')&&(n!=c))
+						{
+							finalData.deleteCharAt(i+1);
+							n=finalData.charAt(i+1);
+						}
+						if((Character.isLetterOrDigit(n)||((".?,;\"'!@#$%^*()_-+={}[]:").indexOf(n)>=0))
+						&&(Character.isLetterOrDigit(p)||((".?,;\"'!@#$%^*()_-+={}[]:".indexOf(p)>=0))))
+							finalData.setCharAt(i,' ');
+						else
+						{
+							finalData.delete(i,i+1);
+							i--;
+						}
+					}
+				}
+				continue;
+			}
+			else
+			switch(state)
+			{
+			case 0:
+				switch(c) {
+				case ' ': case '\t': case '<': case '>': start=0; break;
+				case '/': state=2; break;
+				case '!':
+				{
+					if((i<finalData.length()-2)
+					&&(finalData.charAt(i+1)=='-')
+					&&(finalData.charAt(i+2)=='-'))
+					{
+						stack.push("<!--",start);
+						i+=2;
+						incomment=true;
+					}
+					break;
+				}
+				default:
+					if(Character.isLetter(c))
+						state=1; 
+					else
+						start=-1;
+					break;
+				} break;
+			case 1: // eval start tag
+				if(c=='>')
+				{
+					tag=finalData.substring(start+1,i).toUpperCase();
+					stack.push(tag,start);
+					state=3;
+					i--;
+				}
+				else
+				if(Character.isWhitespace(c)||(c=='/')||(c==':'))
+				{
+					if(start==i-1)
+						start=-1;
+					else
+					{
+						tag=finalData.substring(start+1,i).toUpperCase();
+						state=3;
+					}
+				}
+				else
+				if((i-start)>20)
+					start=-1;
+				break;
+			case 2: // eval end tag
+				if(c=='>')
+				{
+					state=4;
+					tag=finalData.substring(start+2,i).toUpperCase();
+					i--;
+				}
+				else
+				if(Character.isWhitespace(c))
+				{
+					if(start==i-1)
+						start=-1;
+					else
+					if(state==2)
+					{
+						state=4;
+						tag=finalData.substring(start+2,i).toUpperCase();
+					}
+				}
+				else
+				if((i-start)>20)
+					start=-1;
+				break;
+			case 3: // end start tag
+				if(tag==null)
+					start=-1;
+				else
+				if(c=='>')
+				{
+					finalData.delete(start, i+1);
+					for(String[] xset : xlateTags)
+						if(xset[0].equals(tag))
+						{
+							finalData.insert(start, xset[1]);
+							start=start+xset[1].length()-1;
+							break;
+						}
+					i=start-1;
+					start=-1;
+					tag=null;
+				}
+				break;
+			case 4: // end end tag
+				if(tag==null)
+					start=-1;
+				else
+				if(c=='>')
+				{
+					if(CMStrings.contains(badBlockTags, tag))
+					{
+						int x=stack.pop(tag);
+						if(x>=0) start=x;
+					}
+					finalData.delete(start, i+1);
+					i=start-1;
+					start=-1;
+					tag=null;
+				}
+				break;
+			case 5: // during & thing
+				if(c==';') // the end
+				{
+					final String code=finalData.substring(start+1,i).toLowerCase();
+					finalData.delete(start, i+1);
+					if(code.equals("nbsp")) finalData.insert(start,' ');
+					else if(code.equals("amp")) finalData.insert(start,'&');
+					else if(code.equals("lt")) finalData.insert(start,'<');
+					else if(code.equals("gt")) finalData.insert(start,'>');
+					else if(code.equals("quot")) finalData.insert(start,'"');
+					i=start-1;
+					start=-1;
+				}
+				else
+				if((!Character.isLetter(c))||((i-start)>10))
+					start=-1;
+				break;
+			}
+		}
+	}
+	
+	public static void stripHeadHtmlTags(final StringBuffer finalData)
+	{
+		int start=-1;
+		int state=0;
+		char c=' ';
+		char lastC=' ';
+		int headStart=-1;
+		boolean closeFlag=false;
+		for(int i=0;i<finalData.length();i++)
+		{
+			c=Character.toUpperCase(finalData.charAt(i));
+			if(Character.isWhitespace(c))
+				continue;
+			else
+			if(c=='<')
+			{
+				start=i;
+				state=0;
+				closeFlag=false;
+			}
+			else
+			if(start<0)
+				continue;
+			else
+			switch(state)
+			{
+			case 0:
+				switch(c) {
+				case '/': state=1; closeFlag=true; break;
+				case 'H': state=2; break;
+				case 'B': state=3; break;
+				default: start=-1; break;
+				} break;
+			case 1:
+				switch(c) {
+				case 'H': state=2; break;
+				case 'B': state=3; break;
+				default: start=-1; break;
+				} break;
+			case 2:
+				switch(c) {
+				case 'E': if(lastC!='H') state=-1; else state=5; break;
+				case 'T': if(lastC!='H') state=-1; break;
+				case 'M': if(lastC!='T') state=-1; break;
+				case 'L': if(lastC!='M') state=-1; else state=4; break;
+				default: start=-1; break;
+				} break;
+			case 3:
+				switch(c) {
+				case 'O': if(lastC!='B') state=-1; break;
+				case 'D': if(lastC!='O') state=-1; break;
+				case 'Y': if(lastC!='D') state=-1; else state=4; break;
+				default: start=-1; break;
+				} break;
+			case 4:
+				if(c=='>')
+				{
+					finalData.delete(start, i+1);
+					i=start-1;
+					start=-1;
+				}
+				break;
+			case 5:
+				switch(c) {
+				case 'A': if(lastC!='E') state=-1; break;
+				case 'D': if(lastC!='A') state=-1; else state=6; break;
+				default: start=-1; break;
+				} break;
+			case 6:
+				if(c=='>')
+				{
+					if(!closeFlag)
+					{
+						finalData.delete(start, i+1);
+						headStart=start;
+					}
+					else
+					{
+						finalData.delete(headStart, i+1);
+						start=headStart;
+					}
+					i=start-1;
+					start=-1;
+				}
+				break;
+			}
+			lastC=c;
+		}
+	}
+
     public final static Hashtable<Object,Integer> makeNumericHash(final Object[] obj)
     {
     	Hashtable<Object,Integer> H=new Hashtable<Object,Integer>();
