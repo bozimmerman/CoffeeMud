@@ -1,5 +1,6 @@
 package com.planet_ink.coffee_mud.Abilities.Prayers;
 import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.interfaces.ItemPossessor.Expire;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
@@ -63,6 +64,12 @@ public class Prayer_Bury extends Prayer
 			mob.tell("You are not allowed to bury a players corpse.");
 			return false;
 		}
+		Item hole=mob.location().findItem("HoleInTheGround");
+		if((hole!=null)&&(!hole.text().equalsIgnoreCase(mob.Name())))
+		{
+			mob.tell("This chant will not work on desecrated ground.");
+			return false;
+		}
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
@@ -88,7 +95,19 @@ public class Prayer_Bury extends Prayer
                     if(exp>0.0)
     					CMLib.leveler().postExperience(mob,null,null,(int)Math.round(exp)+super.getXPCOSTLevel(mob),false);
 				}
-                target.destroy();
+				if(hole==null)
+				{
+					CMMsg holeMsg=CMClass.getMsg(mob, mob.location(),null,CMMsg.MSG_DIG|CMMsg.MASK_ALWAYS, null);
+					mob.location().send(mob,holeMsg);
+					hole=mob.location().findItem("HoleInTheGround");
+				}
+				hole.basePhyStats().setDisposition(hole.basePhyStats().disposition()|PhyStats.IS_HIDDEN);
+				hole.recoverPhyStats();
+				if(!mob.location().isContent(target))
+					mob.location().moveItemTo(hole, Expire.Player_Drop);
+				else
+					target.setContainer((Container)hole);
+				CMLib.flags().setGettable(target,false);
 				mob.location().recoverRoomStats();
 			}
 		}

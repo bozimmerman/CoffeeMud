@@ -1,5 +1,6 @@
 package com.planet_ink.coffee_mud.Abilities.Druid;
 import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.interfaces.ItemPossessor.Expire;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
@@ -74,6 +75,12 @@ public class Chant_Bury extends Chant
 			mob.tell("This chant does not work here.");
 			return false;
 		}
+		Item hole=mob.location().findItem("HoleInTheGround");
+		if((hole!=null)&&(!hole.text().equalsIgnoreCase(mob.Name())))
+		{
+			mob.tell("This chant will not work on desecrated ground.");
+			return false;
+		}
 		Item target=null;
 		if((commands.size()==0)&&(!auto)&&(givenTarget==null))
 			target=getBody(mob.location());
@@ -111,7 +118,19 @@ public class Chant_Bury extends Chant
 				mob.location().send(mob,msg);
 				if(CMLib.flags().isNeutral(mob))
                     mob.curState().adjMana(3*target.phyStats().level()*super.getXLEVELLevel(mob),mob.maxState());
-                target.destroy();
+				if(hole==null)
+				{
+					CMMsg holeMsg=CMClass.getMsg(mob, mob.location(),null,CMMsg.MSG_DIG|CMMsg.MASK_ALWAYS, null);
+					mob.location().send(mob,holeMsg);
+					hole=mob.location().findItem("HoleInTheGround");
+				}
+				hole.basePhyStats().setDisposition(hole.basePhyStats().disposition()|PhyStats.IS_HIDDEN);
+				hole.recoverPhyStats();
+				if(!mob.location().isContent(target))
+					mob.location().moveItemTo(hole, Expire.Player_Drop);
+				else
+					target.setContainer((Container)hole);
+				CMLib.flags().setGettable(target,false);
 				mob.location().recoverRoomStats();
 			}
 		}

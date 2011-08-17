@@ -104,6 +104,11 @@ public class HoleInTheGround extends StdContainer
 						return false;
 					}
 				}
+				if((msg.tool()!=null)&&(msg.tool() instanceof ClanItem))
+				{
+					msg.source().tell("Go may not bury a clan item.");
+					return false;
+				}
 				break;
 			}
 		}
