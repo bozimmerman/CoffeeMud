@@ -48,6 +48,19 @@ public class Fill extends StdCommand
 			return false;
 		}
 		commands.removeElementAt(0);
+		final String testFill=CMParms.combine(commands,0);
+		Environmental fillThisItem=mob.location().fetchFromRoomFavorItems(null,testFill);
+		if((fillThisItem instanceof Container)
+		&&(!CMLib.flags().isGettable((Container)fillThisItem))
+		&&(((Container)fillThisItem).material()==RawMaterial.RESOURCE_DUST))
+		{
+			final String fillMsg="<S-NAME> fill(s) in <T-NAMESELF>.";
+			CMMsg msg=CMClass.getMsg(mob,fillThisItem,null,CMMsg.MSG_CLOSE,fillMsg,testFill,fillMsg);
+			if(mob.location().okMessage(msg.source(),msg))
+				mob.location().send(msg.source(),msg);
+			return false;
+		}
+		
 		if((commands.size()<2)&&(!(mob.location() instanceof Drink)))
 		{
 			mob.tell("From what should I fill the "+(String)commands.elementAt(0)+"?");

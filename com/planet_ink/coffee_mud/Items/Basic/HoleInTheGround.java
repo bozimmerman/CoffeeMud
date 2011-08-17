@@ -117,7 +117,8 @@ public class HoleInTheGround extends StdContainer
 			switch(msg.targetMinor())
 			{
 			case CMMsg.TYP_DIG:
-				if(CMath.bset(basePhyStats().disposition(), PhyStats.IS_NOT_SEEN))
+				if(CMath.bset(basePhyStats().disposition(), PhyStats.IS_NOT_SEEN)
+				||CMath.bset(basePhyStats().disposition(), PhyStats.IS_HIDDEN))
 				{
 					basePhyStats().setDisposition(CMath.unsetb(basePhyStats().disposition(), PhyStats.IS_NOT_SEEN));
 					basePhyStats().setDisposition(CMath.unsetb(basePhyStats().disposition(), PhyStats.IS_HIDDEN));
