@@ -51,6 +51,7 @@ public class Abjurer extends SpecialistMage
 		CMLib.ableMapper().addCharAbilityMapping(ID(),19,"Spell_ResistSlashing",25,true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),20,"Spell_PrayerShield",25,true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),22,"Spell_ResistIndignities",25,true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),23,"Spell_KineticBubble",25,true);
         CMLib.ableMapper().addCharAbilityMapping(ID(),25,"Spell_MajManaShield",25,true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),30,"Spell_AchillesArmor",25,true);
 	}

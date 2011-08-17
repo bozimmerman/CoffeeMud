@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/*
+/* 
    Copyright 2000-2011 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -33,16 +33,15 @@ import java.util.*;
    limitations under the License.
 */
 @SuppressWarnings("unchecked")
-public class Spell_Flameshield extends Spell
+public class Spell_KineticBubble extends Spell
 {
-	public String ID() { return "Spell_Flameshield"; }
-	public String name(){return "Flameshield";}
-	public String displayText(){return "(Flameshield)";}
-	public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
+	public String ID() { return "Spell_KineticBubble"; }
+	public String name(){return "Kinetic Bubble";}
+	public String displayText(){return "(Kinetic Bubble)";}
+	public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_SELF;}
 	protected int canAffectCode(){return CAN_MOBS;}
-	public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_EVOCATION;}
-	public long flags(){return Ability.FLAG_HEATING|Ability.FLAG_FIREBASED;}
-
+	public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_ABJURATION;}
+	protected int kickBack=0;
 
 	public void unInvoke()
 	{
@@ -50,12 +49,11 @@ public class Spell_Flameshield extends Spell
 		if((affected==null)||(!(affected instanceof MOB)))
 			return;
 		MOB mob=(MOB)affected;
-
-		super.unInvoke();
-
 		if(canBeUninvoked())
 			if((mob.location()!=null)&&(!mob.amDead()))
-				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-YOUPOSS> flame shield vanishes in a puff of smoke.");
+				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-YOUPOSS> Kinetic Bubble pops.");
+
+		super.unInvoke();
 	}
 
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
@@ -69,26 +67,23 @@ public class Spell_Flameshield extends Spell
 		MOB source=msg.source();
 		if(source.location()==null) return;
 
-
 		if(msg.amITarget(mob))
 		{
-			if(CMath.bset(msg.targetCode(),CMMsg.MASK_HANDS)
-			   &&(msg.targetMessage()!=null)
-			   &&(msg.source().rangeToTarget()==0)
-			   &&(msg.targetMessage().length()>0))
+			if((msg.targetMinor()==CMMsg.TYP_DAMAGE)
+			&&(mob.rangeToTarget()==0)
+			&&(msg.source()!=mob)
+			&&(msg.tool()!=null)
+			&&(msg.tool() instanceof Weapon))
 			{
-				if((CMLib.dice().rollPercentage()>(source.charStats().getStat(CharStats.STAT_DEXTERITY)*3)))
+				CMMsg msg2=CMClass.getMsg(mob,source,this,verbalCastCode(mob,source,true),null);
+				if(source.location().okMessage(mob,msg2))
 				{
-					CMMsg msg2=CMClass.getMsg(mob,source,this,verbalCastCode(mob,source,true),null);
-					if(source.location().okMessage(mob,msg2))
+					source.location().send(mob,msg2);
+					if(invoker==null) invoker=source;
+					if((msg2.value()<=0)&&(msg.value()>1))
 					{
-						source.location().send(mob,msg2);
-						if(invoker==null) invoker=source;
-						if(msg2.value()<=0)
-						{
-							int damage = CMLib.dice().roll(1,(int)Math.round((invoker.phyStats().level()+super.getXLEVELLevel(invoker())+(2.0*super.getX1Level(invoker())))/4.0),1);
-							CMLib.combat().postDamage(mob,source,this,damage,CMMsg.MASK_ALWAYS|CMMsg.TYP_FIRE,Weapon.TYPE_BURNING,"The flame shield around <S-NAME> flares and <DAMAGES> <T-NAME>!");
-						}
+						int damage = CMLib.dice().roll( 1, (getXLEVELLevel(mob) + msg.value()) / 2 , 0 );
+						CMLib.combat().postDamage(mob,source,this,damage,CMMsg.MASK_ALWAYS|CMMsg.TYP_CAST_SPELL,Weapon.TYPE_BURSTING,"The bubble around <S-NAME> <DAMAGES> <T-NAME>!");
 					}
 				}
 			}
@@ -97,43 +92,28 @@ public class Spell_Flameshield extends Spell
 		return;
 	}
 
-	public void affectPhyStats(Physical affected, PhyStats affectableStats)
-	{
-		super.affectPhyStats(affected,affectableStats);
-		if(affected==null) return;
-		if(!(affected instanceof MOB)) return;
-		affectableStats.setArmor(affectableStats.armor()-5-getXLEVELLevel(invoker()));
-        affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_LIGHTSOURCE);
-	}
-
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		MOB target=this.getTarget(mob,commands,givenTarget);
+		MOB target=getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		boolean success=proficiencyCheck(mob,0,auto);
-
 		if(success)
 		{
-			// it worked, so build a copy of this ability,
-			// and add it to the affects list of the
-			// affected MOB.  Then tell everyone else
-			// what happened.
-			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),((auto?"^S":"^S<S-NAME> incant(s) and wave(s) <S-HIS-HER> arms.  ")+"A field of flames erupt(s) around <T-NAME>!^?")+CMProps.msp("fireball.wav",10));
+			CMMsg msg=CMClass.getMsg(mob,target,this,somanticCastCode(mob,target,auto),auto?"<T-NAME> <T-IS-ARE> surrounded by a Kinetic Bubble!":"^S<S-NAME> invoke(s) a Kinetic Bubble around <T-NAMESELF>!^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
+				kickBack=0;
 				beneficialAffect(mob,target,asLevel,0);
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,target,"<S-NAME> incant(s) and wave(s) <S-HIS-HER> arms, but only sparks emerge.");
+			beneficialWordsFizzle(mob,target,"<S-NAME> attempt(s) to invoke a Kinetic Bubble, but fail(s).");
 
-
-		// return whether it worked
 		return success;
 	}
 }
