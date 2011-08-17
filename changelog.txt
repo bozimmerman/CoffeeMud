@@ -106,6 +106,20 @@ Sap skill for thieves to knock someone out who can't see them.
 Binding skill for thieves to bind someone who is asleep (knocked out).
 MUDGrinder web service
 # Build 3.8.0.0 - Released Feb 20, 2003
+   1. Memory optomization of the classes (especially Abilities). CoffeeMud memory usage cut almost in half!
+   2. A global News feature was added. Need to add instructions about that though -- basically, you just create a Journal (GenJournal item) and name it "CoffeeMud News". Writing on it will cause new messages
+      to appear automatically for the players.
+   3. InterMud3 support is pretty new, though that might have made 3.0...
+   4. Player homes are now supported, through a new ShopKeeper type called LANDSELLER. Rooms in the same area as the shopkeeper with the Prop_RoomForSale or Prop_LotsForSale property will be available for
+      purchase.
+   5. Construction, Masonry, and LockSmith common skills were created to support player homes.
+   6. Hireling Behavior created to support hiring people to follow you and obey ORDERs. HIRE and FIRE commands created to support this.
+   7. PROMPT and COLORSET commands created to allow players to change their prompts and to personalize the color scheme! Beware! This added two new fields to the CMCHAR table!
+   8. SHEATH and DRAW commands created to support a new property of containers: contain type. Containers may contain anything that will fit in them by default, but with this new property, containers can
+      restrict what they can contain.
+   9. AUTODRAW command created to support the above.
+   10. Armor now extends Container, allowing armor to be a sheath.
+   11. Numerous unremembered bug fixes. :)
 # Build 3.8.5.0 - Released Feb 24, 2003
    1.  Added I3STATE INI file entry to get a more accurate display of your muds status on the I3 mud list.
    2. Added VIEW command for shopkeepers.
