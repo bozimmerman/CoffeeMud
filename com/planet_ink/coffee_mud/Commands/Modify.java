@@ -1315,7 +1315,7 @@ public class Modify extends StdCommand
 				mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,modMOB.name()+" shakes under the transforming power.");
 			}
 		}
-		else
+        else
 		if(command.equals("ABILITY"))
 		{
 			int newAbility=CMath.s_int(restStr);
@@ -1602,6 +1602,22 @@ public class Modify extends StdCommand
             CMLib.quests().modifyHoliday(mob,num);
             Log.sysOut("CreateEdit",mob.Name()+" modified Holiday "+name+".");
         }
+		else
+		if(commandType.equals("NEWS"))
+		{
+			if(!CMSecurity.isAllowed(mob,mob.location(),"JOURNALS")) return errorOut(mob);
+			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"^S<S-NAME> wave(s) <S-HIS-HER> arms...^?");
+	    	Item I=CMClass.getItem("StdJournal");
+	    	I.setName("CoffeeMud News");
+			I.setDescription("Enter `LIST NEWS [NUMBER]` to read an entry.%0D%0AEnter CREATE NEWS to add new entries. ");
+			CMMsg newMsg=CMClass.getMsg(mob,I,null,CMMsg.MSG_WRITE|CMMsg.MASK_ALWAYS,null,CMMsg.MSG_WRITE|CMMsg.MASK_ALWAYS,CMParms.combine(commands,2),CMMsg.MSG_WRITE|CMMsg.MASK_ALWAYS,null);
+			if(mob.location().okMessage(mob,newMsg)&&I.okMessage(mob, newMsg))
+			{
+				mob.location().send(mob,newMsg);
+				I.executeMsg(mob,newMsg);
+				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"^SThe world is now more informed!^?");
+			}
+		}
         else
 		if(commandType.equals("QUEST"))
 		{
@@ -1825,13 +1841,11 @@ public class Modify extends StdCommand
 				execute(mob,commands,metaFlags);
 			}
 			else
-				mob.tell("\n\rYou cannot modify a '"+commandType+"'. However, you might try an ITEM, RACE, CLASS, ABILITY, LANGUAGE, CRAFTSKILL, ALLQUALIFY, AREA, EXIT, COMPONENT, RECIPE, EXPERTISE, TITLE, QUEST, MOB, USER, HOLIDAY, GOVERNMENT, JSCRIPT, FACTION, SOCIAL, CLAN, POLL, or ROOM.");
+				mob.tell("\n\rYou cannot modify a '"+commandType+"'. However, you might try an ITEM, RACE, CLASS, ABILITY, LANGUAGE, CRAFTSKILL, ALLQUALIFY, AREA, EXIT, COMPONENT, RECIPE, EXPERTISE, TITLE, QUEST, MOB, USER, HOLIDAY, GOVERNMENT, JSCRIPT, FACTION, SOCIAL, CLAN, POLL, NEWS, or ROOM.");
 		}
 		return false;
 	}
 	
 	public boolean canBeOrdered(){return true;}
 	public boolean securityCheck(MOB mob){return CMSecurity.isAllowedStartsWith(mob,mob.location(),"CMD");}
-
-	
 }

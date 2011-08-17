@@ -1066,6 +1066,22 @@ public class Create extends StdCommand
 			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"^S<S-NAME> wave(s) <S-HIS-HER> arms...^?");
 			players(mob,commands);
 		}
+        else
+		if(commandType.equals("NEWS"))
+		{
+			if(!CMSecurity.isAllowed(mob,mob.location(),"JOURNALS")) return errorOut(mob);
+			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"^S<S-NAME> wave(s) <S-HIS-HER> arms...^?");
+	    	Item I=CMClass.getItem("StdJournal");
+	    	I.setName("CoffeeMud News");
+			I.setDescription("Enter `LIST NEWS [NUMBER]` to read an entry.%0D%0AEnter CREATE NEWS to add new entries. ");
+			CMMsg newMsg=CMClass.getMsg(mob,I,null,CMMsg.MSG_WRITE|CMMsg.MASK_ALWAYS,null,CMMsg.MSG_WRITE|CMMsg.MASK_ALWAYS,CMParms.combine(commands,2),CMMsg.MSG_WRITE|CMMsg.MASK_ALWAYS,null);
+			if(mob.location().okMessage(mob,newMsg)&&I.okMessage(mob, newMsg))
+			{
+				mob.location().send(mob,newMsg);
+				I.executeMsg(mob,newMsg);
+				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"^SThe world is now more informed!^?");
+			}
+		}
 		else
 		if(commandType.equals("MOB"))
 		{
@@ -1234,10 +1250,10 @@ public class Create extends StdCommand
 						execute(mob,commands,metaFlags);
 					}
 					else
-						mob.tell("\n\rYou cannot create a '"+commandType+"'. However, you might try an EXIT, ITEM, QUEST, FACTION, COMPONENT, GOVERNMENT, HOLIDAY, CLAN, MOB, RACE, ABILITY, LANGUAGE, CRAFTSKILL, ALLQUALIFY, CLASS, POLL, DEBUGFLAG, DISABLEFLAG, USER, or ROOM.");
+						mob.tell("\n\rYou cannot create a '"+commandType+"'. However, you might try an EXIT, ITEM, QUEST, FACTION, COMPONENT, GOVERNMENT, HOLIDAY, CLAN, MOB, RACE, ABILITY, LANGUAGE, CRAFTSKILL, ALLQUALIFY, CLASS, POLL, DEBUGFLAG, DISABLEFLAG, NEWS, USER, or ROOM.");
 				}
 				else
-					mob.tell("\n\rYou cannot create a '"+commandType+"'. However, you might try an EXIT, ITEM, QUEST, FACTION, MOB, COMPONENT, GOVERNMENT, HOLIDAY, CLAN, RACE, ABILITY, LANGUAGE, CRAFTSKILL, ALLQUALIFY, CLASS, POLL, USER, DEBUGFLAG, DISABLEFLAG, ROOM.");
+					mob.tell("\n\rYou cannot create a '"+commandType+"'. However, you might try an EXIT, ITEM, QUEST, FACTION, MOB, COMPONENT, GOVERNMENT, HOLIDAY, CLAN, RACE, ABILITY, LANGUAGE, CRAFTSKILL, ALLQUALIFY, CLASS, POLL, USER, DEBUGFLAG, NEWS, DISABLEFLAG, ROOM.");
 			}
 		}
 		return false;

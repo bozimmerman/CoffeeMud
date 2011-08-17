@@ -1870,7 +1870,8 @@ public class ListCmd extends StdCommand
 		/*61*/{"CLANS","CMDCLANS"},
 		/*62*/{"DEBUGFLAG","LISTADMIN"},
 		/*63*/{"DISABLEFLAG","LISTADMIN"},
-		/*64*/{"ALLQUALIFYS","CMDABILITIES","LISTADMIN"}
+		/*64*/{"ALLQUALIFYS","CMDABILITIES","LISTADMIN"},
+		/*65*/{"NEWS","LISTADMIN","JOURNALS"},
 	};
 
     public boolean pause(Session sess) 
@@ -1887,6 +1888,20 @@ public class ListCmd extends StdCommand
 			}
 		}catch(Exception e){return false;}
     	return !sess.isStopped();
+    }
+
+    public void listNews(MOB mob, Vector commands)
+    {
+    	final String theRest=CMParms.combine(commands,1);
+    	Item I=CMClass.getItem("StdJournal");
+    	I.setName("CoffeeMud News");
+		I.setDescription("Enter `LIST NEWS [NUMBER]` to read an entry.%0D%0AEnter CREATE NEWS to add new entries. ");
+		CMMsg newMsg=CMClass.getMsg(mob,I,null,CMMsg.MSG_READ|CMMsg.MASK_ALWAYS,null,CMMsg.MSG_READ|CMMsg.MASK_ALWAYS,theRest,CMMsg.MSG_READ|CMMsg.MASK_ALWAYS,null);
+		if(mob.location().okMessage(mob,newMsg)&&(I.okMessage(mob, newMsg)))
+		{
+			mob.location().send(mob,newMsg);
+			I.executeMsg(mob,newMsg);
+		}
     }
     
 	public void archonlist(MOB mob, Vector commands)
@@ -2010,6 +2025,7 @@ public class ListCmd extends StdCommand
 		case 62: s.println("\n\r^xDebug Settings: ^?^.^N\n\r"+CMParms.toStringList(new XVector<CMSecurity.DbgFlag>(CMSecurity.getDebugEnum()))+"\n\r"); break;
 		case 63: s.println("\n\r^xDisable Settings: ^?^.^N\n\r"+CMParms.toStringList(new XVector<CMSecurity.DisFlag>(CMSecurity.getDisablesEnum()))+"\n\r"); break;
 		case 64: s.wraplessPrintln(listAllQualifies(mob.session(),commands).toString()); break;
+		case 65: listNews(mob,commands); break;
         default:
 			s.println("List broke?!");
 			break;

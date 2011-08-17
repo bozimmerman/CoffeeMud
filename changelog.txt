@@ -2359,4 +2359,4 @@ Special/Reserved Quest called holidays can be added to/modified on an area-by-ar
 # Build 5.7.5 Release ?/??/2011
 1. CoffeeMud now supports html emails, after a fashion
 2. New command: DIG, for digging holes and putting stuff in them.  Gem Digging now uses GDIG as its command word.
-
+3. You can now manage MOTD/NEWS using LIST NEWS and CREATE/MODIFY NEWS
