@@ -171,7 +171,7 @@ public class SipletInterface extends StdWebMacro
 								PipeSocket lsock=new PipeSocket(httpReq.getHTTPclientInetAddress(),null);
 								PipeSocket rsock=new PipeSocket(httpReq.getHTTPclientInetAddress(),lsock);
 								success=sip.connectToURL(url, port,lsock);
-								sip.setFeatures(true, true, false);
+								sip.setFeatures(true, false, false);
 								h.acceptConnection(rsock);
 							}
 							catch(IOException e)
