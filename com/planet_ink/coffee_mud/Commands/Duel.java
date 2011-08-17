@@ -86,7 +86,7 @@ public class Duel extends StdCommand
 			else
 			if((uiT != null)&&(iuT != null))
 			{
-				target.tell(mob,target,null,"^X<T-NAME> HAS ACCEPTED YOUR CHALLENGE!^.^N");
+				target.tell(mob,target,null,"^X<T-NAME> <T-HAS-HAVE> ACCEPTED <T-YOU-YOUR> CHALLENGE!^.^N");
 	            Item weapon=mob.fetchWieldedItem();
 	            if(weapon==null)
 	            {
