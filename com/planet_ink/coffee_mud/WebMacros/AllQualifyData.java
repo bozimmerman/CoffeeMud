@@ -197,6 +197,8 @@ public class AllQualifyData extends StdWebMacro
 	    			for(Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
 	    			{
 	    				final Ability A=a.nextElement();
+	    				if((A.classificationCode()&Ability.ALL_DOMAINS)==Ability.DOMAIN_ARCHON)
+	    					continue;
 	    				str.append("<OPTION VALUE=\""+A.ID()+"\">"+A.ID());
 	    			}
     			}

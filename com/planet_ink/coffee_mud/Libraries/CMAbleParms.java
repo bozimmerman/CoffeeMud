@@ -1194,6 +1194,8 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
                         for(Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
                         {
                             Ability A=(Ability)a.nextElement();
+            				if((A.classificationCode()&Ability.ALL_DOMAINS)==Ability.DOMAIN_ARCHON)
+            					continue;
                             String cnam=A.ID();
                             str.append("<OPTION VALUE=\""+cnam+"\">"+cnam);
                         }

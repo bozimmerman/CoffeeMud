@@ -300,6 +300,8 @@ public class QuestMaker extends StdWebMacro
         			for(Enumeration<Ability> e=CMClass.abilities();e.hasMoreElements();)
         			{
         				A=(Ability)e.nextElement();
+        				if(((A.classificationCode()&Ability.ALL_DOMAINS)==Ability.DOMAIN_ARCHON)&&(!CMSecurity.isASysOp(M)))
+        					continue;
             			list.append("<OPTION VALUE=\""+A.ID()+"\" ");
         				if(oldValue.equals(A.ID())) list.append("SELECTED");
         				list.append(">");

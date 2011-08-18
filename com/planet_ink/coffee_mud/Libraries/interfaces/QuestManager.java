@@ -290,6 +290,8 @@ public interface QuestManager extends CMLibrary
             }
             Ability A=CMClass.getAbility((String)str);
             if(A==null) A=CMClass.findAbility((String)str);
+			if((A.classificationCode()&Ability.ALL_DOMAINS)==Ability.DOMAIN_ARCHON)
+				A=null;
             if(A==null)
                 throw new CMException("Invalid ability id, choose from the following: "+list.toString()); 
             return A.ID();

@@ -64,7 +64,7 @@ public class CharClassData extends StdWebMacro
     }
 
 
-    public static StringBuffer cabilities(CharClass E, ExternalHTTPRequests httpReq, java.util.Map<String,String> parms, int borderSize, String font)
+    public static StringBuffer cabilities(MOB mob, CharClass E, ExternalHTTPRequests httpReq, java.util.Map<String,String> parms, int borderSize, String font)
     {
         StringBuffer str=new StringBuffer("");
         DVector theclasses=new DVector(9);
@@ -209,6 +209,8 @@ public class CharClassData extends StdWebMacro
         for(Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
         {
             Ability A=(Ability)a.nextElement();
+			if(((A.classificationCode()&Ability.ALL_DOMAINS)==Ability.DOMAIN_ARCHON)&&(!CMSecurity.isASysOp(mob)))
+				continue;
             String ID=A.ID();
             if(!used.contains(ID))
                 str.append("<OPTION VALUE=\""+ID+"\">"+A.Name());
@@ -242,7 +244,7 @@ public class CharClassData extends StdWebMacro
 	public String runMacro(ExternalHTTPRequests httpReq, String parm)
 	{
 		java.util.Map<String,String> parms=parseParms(parm);
-
+		MOB mob=Authenticate.getAuthenticatedMob(httpReq);
         String replaceCommand=httpReq.getRequestParameter("REPLACE");
         if((replaceCommand != null)
         && (replaceCommand.length()>0)
@@ -836,7 +838,7 @@ public class CharClassData extends StdWebMacro
                     str.append(classDropDown(old));
                 }
                 if(parms.containsKey("CABILITIES"))
-                    str.append(cabilities(C,httpReq,parms,1,"<FONT SIZE=-1 COLOR=WHITE>"));
+                    str.append(cabilities(mob,C,httpReq,parms,1,"<FONT SIZE=-1 COLOR=WHITE>"));
                 /******************************************************/
                 // Here begins the displayable only fields.
                 /******************************************************/

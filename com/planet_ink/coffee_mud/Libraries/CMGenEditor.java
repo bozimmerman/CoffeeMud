@@ -3563,6 +3563,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
                     else
                     {
                         chosenOne=CMClass.getAbility(behave);
+        				if(((chosenOne.classificationCode()&Ability.ALL_DOMAINS)==Ability.DOMAIN_ARCHON)&&(!CMSecurity.isASysOp(mob)))
+        					chosenOne=null;
                         if(chosenOne!=null)
                         {
                             boolean alreadyHasIt=(M.fetchAbility(chosenOne.ID())!=null);
@@ -3636,6 +3638,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
                     else
                     {
                         chosenOne=CMClass.getAbility(behave);
+        				if(((chosenOne.classificationCode()&Ability.ALL_DOMAINS)==Ability.DOMAIN_ARCHON)&&(!CMSecurity.isASysOp(mob)))
+        					chosenOne=null;
                         if(chosenOne!=null)
                         {
                             if(inParms)

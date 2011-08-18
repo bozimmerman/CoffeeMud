@@ -417,7 +417,10 @@ public class RaceData extends StdWebMacro
         str.append("<OPTION SELECTED VALUE=\"\">Select an Ability");
         for(Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
         {
-            String cnam=((Ability)a.nextElement()).ID();
+        	Ability A=(Ability)a.nextElement();
+            String cnam=A.ID();
+			if((A.classificationCode()&Ability.ALL_DOMAINS)==Ability.DOMAIN_ARCHON)
+				continue;
             str.append("<OPTION VALUE=\""+cnam+"\">"+cnam);
         }
         str.append("</SELECT>");

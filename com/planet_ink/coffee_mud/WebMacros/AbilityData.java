@@ -44,6 +44,7 @@ public class AbilityData extends StdWebMacro
 	public String runMacro(ExternalHTTPRequests httpReq, String parm)
 	{
         java.util.Map<String,String> parms=parseParms(parm);
+        MOB mob=Authenticate.getAuthenticatedMob(httpReq);
         
         String replaceCommand=httpReq.getRequestParameter("REPLACE");
         if((replaceCommand != null) 
@@ -569,6 +570,8 @@ public class AbilityData extends StdWebMacro
                     for(Enumeration<Ability> e=CMClass.abilities();e.hasMoreElements();)
                     {
                         Ability A2=(Ability)e.nextElement();
+        				if(((A2.classificationCode()&Ability.ALL_DOMAINS)==Ability.DOMAIN_ARCHON)&&(!CMSecurity.isASysOp(mob)))
+        					continue;
                         String AID=A2.ID();
                         String ANAME=A2.name();
                         str.append("<OPTION VALUE=\""+AID+"\""+(list.contains(AID.toUpperCase())?" SELECTED":"")+">"+ANAME);
@@ -590,6 +593,8 @@ public class AbilityData extends StdWebMacro
                     for(Enumeration<Ability> e=CMClass.abilities();e.hasMoreElements();)
                     {
                         Ability A2=(Ability)e.nextElement();
+        				if(((A.classificationCode()&Ability.ALL_DOMAINS)==Ability.DOMAIN_ARCHON)&&(!CMSecurity.isASysOp(mob)))
+        					continue;
                         String AID=A2.ID();
                         String ANAME=A2.name();
                         str.append("<OPTION VALUE=\""+AID+"\""+(list.contains(AID.toUpperCase())?" SELECTED":"")+">"+ANAME);

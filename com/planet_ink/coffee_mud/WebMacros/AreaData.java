@@ -180,7 +180,8 @@ public class AreaData extends StdWebMacro
 			for(Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
 			{
 				Ability A=(Ability)a.nextElement();
-				if((!A.canAffect(P))||(alreadyHave.contains(A.ID().toLowerCase())))
+				if(((!A.canAffect(P))||(alreadyHave.contains(A.ID().toLowerCase())))
+				||((A.classificationCode()&Ability.ALL_DOMAINS)==Ability.DOMAIN_ARCHON))
 					continue;
 				str.append("<OPTION VALUE=\""+A.ID()+"\">"+A.ID());
 			}
