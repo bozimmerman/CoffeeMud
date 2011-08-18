@@ -49,6 +49,7 @@ public class Mountains extends StdRoom
 	public static final Integer[] resourceList={
 		Integer.valueOf(RawMaterial.RESOURCE_STONE),
 		Integer.valueOf(RawMaterial.RESOURCE_IRON),
+		Integer.valueOf(RawMaterial.RESOURCE_ALABASTER),
 		Integer.valueOf(RawMaterial.RESOURCE_LEAD),
 		Integer.valueOf(RawMaterial.RESOURCE_SILVER),
 		Integer.valueOf(RawMaterial.RESOURCE_COPPER),

@@ -68,9 +68,12 @@ public class CaveRoom extends StdRoom
 		Integer.valueOf(RawMaterial.RESOURCE_OBSIDIAN),
 		Integer.valueOf(RawMaterial.RESOURCE_MARBLE),
 		Integer.valueOf(RawMaterial.RESOURCE_STONE),
+		Integer.valueOf(RawMaterial.RESOURCE_ALABASTER),
 		Integer.valueOf(RawMaterial.RESOURCE_IRON),
 		Integer.valueOf(RawMaterial.RESOURCE_LEAD),
 		Integer.valueOf(RawMaterial.RESOURCE_GOLD),
+		Integer.valueOf(RawMaterial.RESOURCE_WHITE_GOLD),
+		Integer.valueOf(RawMaterial.RESOURCE_CHROMIUM),
 		Integer.valueOf(RawMaterial.RESOURCE_SILVER),
 		Integer.valueOf(RawMaterial.RESOURCE_ZINC),
 		Integer.valueOf(RawMaterial.RESOURCE_COPPER),
@@ -87,6 +90,11 @@ public class CaveRoom extends StdRoom
 		Integer.valueOf(RawMaterial.RESOURCE_GEM),
 		Integer.valueOf(RawMaterial.RESOURCE_SCALES),
 		Integer.valueOf(RawMaterial.RESOURCE_CRYSTAL),
+		Integer.valueOf(RawMaterial.RESOURCE_RUBY),
+		Integer.valueOf(RawMaterial.RESOURCE_EMERALD),
+		Integer.valueOf(RawMaterial.RESOURCE_SAPPHIRE),
+		Integer.valueOf(RawMaterial.RESOURCE_AGATE),
+		Integer.valueOf(RawMaterial.RESOURCE_CITRINE),
 		Integer.valueOf(RawMaterial.RESOURCE_PLATINUM)};
 	public static final Vector roomResources=new Vector(Arrays.asList(resourceList));
 	public List<Integer> resourceChoices(){return CaveRoom.roomResources;}

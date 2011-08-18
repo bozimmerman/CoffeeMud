@@ -73,6 +73,7 @@ public class Swamp extends StdRoom
 		Integer.valueOf(RawMaterial.RESOURCE_COAL),
 		Integer.valueOf(RawMaterial.RESOURCE_PIPEWEED),
 		Integer.valueOf(RawMaterial.RESOURCE_BAMBOO),
+		Integer.valueOf(RawMaterial.RESOURCE_REED),
 		Integer.valueOf(RawMaterial.RESOURCE_SUGAR),
 		Integer.valueOf(RawMaterial.RESOURCE_CLAY),
 	};

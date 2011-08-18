@@ -272,7 +272,17 @@ public interface RawMaterial extends Item
     public final static int RESOURCE_CRANBERRIES=MATERIAL_VEGETATION|164;
     public final static int RESOURCE_DRAGONBLOOD=MATERIAL_LIQUID|165;
     public final static int RESOURCE_DRAGONMEAT=MATERIAL_FLESH|166;
-	public final static int RESOURCE_MASK=255;	
+    public final static int RESOURCE_RUBY=MATERIAL_PRECIOUS|167;
+    public final static int RESOURCE_EMERALD=MATERIAL_PRECIOUS|168;
+    public final static int RESOURCE_SAPPHIRE=MATERIAL_PRECIOUS|169;
+    public final static int RESOURCE_AGATE=MATERIAL_PRECIOUS|170;
+    public final static int RESOURCE_CITRINE=MATERIAL_PRECIOUS|171;
+    public final static int RESOURCE_REED=MATERIAL_WOODEN|172;
+    public final static int RESOURCE_ALABASTER=MATERIAL_ROCK|173;
+    public final static int RESOURCE_CHROMIUM=MATERIAL_METAL|174;
+    public final static int RESOURCE_WHITE_GOLD=MATERIAL_METAL|175;
+    public final static int RESOURCE_DRAGONSCALES=MATERIAL_METAL|176;
+    public final static int RESOURCE_MASK=255;
 
 	
 	public final static String[] DEFAULT_RESOURCE_DESCS={
@@ -443,6 +453,16 @@ public interface RawMaterial extends Item
     "CRANBERRIES", // 164
     "DRAGONBLOOD", // 165
     "DRAGONMEAT", // 166
+    "RUBY",// 167
+    "EMERALD",// 168
+    "SAPPHIRE",// 169
+    "AGATE",// 170
+    "CITRINE",// 171
+    "REED",// 172
+    "ALABASTER",// 173
+    "CHROMIUM",// 174
+    "WHITE_GOLD",// 175
+    "DRAGONSCALES",// 176
 	};
 	
 	public final static String[] DEFAULT_RESOURCE_EFFECTS={
@@ -613,6 +633,16 @@ public interface RawMaterial extends Item
     "", // 164
 	"Prop_UseSpellCast2(Prayer_MinorInfusion)", //165
 	"", //166
+    "",// 167
+    "",// 168
+    "",// 169
+    "",// 170
+    "",// 171
+    "",// 172
+    "",// 173
+    "",// 174
+    "",// 175
+    "",// 176
 	};
 		
 	public final static int[][] DEFAULT_RESOURCE_DATA={ 
@@ -784,8 +814,17 @@ public interface RawMaterial extends Item
     {RESOURCE_CRANBERRIES,  10, 1,  1,  750},
 	{RESOURCE_DRAGONBLOOD,	10,	100,0,	1025},
 	{RESOURCE_DRAGONMEAT,	40,	20,	1,	3000}, 
+	{RESOURCE_RUBY,			300,1,	3,	3500}, 
+	{RESOURCE_EMERALD,		200,1,	3,	3500}, 
+	{RESOURCE_SAPPHIRE,  	180,1,	3,	3500}, 
+	{RESOURCE_AGATE,		100,1,	3,	3500}, 
+	{RESOURCE_CITRINE,		100,1,	3,	3500}, 
+	{RESOURCE_REED,			1,	50,	3,	830}, 
+	{RESOURCE_ALABASTER,	5,	10,	4,	1550}, 
+	{RESOURCE_CHROMIUM,		80,	1,	6,	1550},
+	{RESOURCE_WHITE_GOLD,	150,1,	5,	1450},
+	{RESOURCE_DRAGONSCALES,	50, 1,	6,	800},
 	};
-	
 	
 	public static final int[] DEFAULT_FISHES={
 	RESOURCE_FISH,
@@ -976,6 +1015,16 @@ public interface RawMaterial extends Item
         "sweet berry",//RESOURCE_CRANERRIES  
 		"mild salty",//RESOURCE_DRAGONBLOOD
 		"mild salty",//RESOURCE_DRAGONMEAT
+		"",//RESOURCE_RUBY 
+		"",//RESOURCE_EMERALD 
+		"",//RESOURCE_SAPPHIRE 
+		"",//RESOURCE_AGATE 
+		"",//RESOURCE_CITRINE 
+		"",//RESOURCE_REED 
+		"",//RESOURCE_ALABASTER 
+		"",//RESOURCE_CHROMIUM
+		"",//RESOURCE_WHITE_GOLD
+		"",//RESOURCE_DRAGONSCALES
 		};
     
     /**
