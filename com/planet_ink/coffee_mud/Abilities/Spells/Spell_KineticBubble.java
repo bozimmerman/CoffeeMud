@@ -80,9 +80,9 @@ public class Spell_KineticBubble extends Spell
 				{
 					source.location().send(mob,msg2);
 					if(invoker==null) invoker=source;
-					if((msg2.value()<=0)&&(msg.value()>1))
+					if((msg2.value()<=0)&&(msg.value()>3))
 					{
-						int damage = CMLib.dice().roll( 1, (getXLEVELLevel(mob) + msg.value()) / 2 , 0 );
+						int damage = CMLib.dice().roll( 1, (getXLEVELLevel(mob) + msg.value()) / 4 , 0 );
 						CMLib.combat().postDamage(mob,source,this,damage,CMMsg.MASK_ALWAYS|CMMsg.TYP_CAST_SPELL,Weapon.TYPE_BURSTING,"The bubble around <S-NAME> <DAMAGES> <T-NAME>!");
 					}
 				}
