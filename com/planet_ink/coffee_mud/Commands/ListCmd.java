@@ -1871,7 +1871,7 @@ public class ListCmd extends StdCommand
 		/*62*/{"DEBUGFLAG","LISTADMIN"},
 		/*63*/{"DISABLEFLAG","LISTADMIN"},
 		/*64*/{"ALLQUALIFYS","CMDABILITIES","LISTADMIN"},
-		/*65*/{"NEWS","LISTADMIN","JOURNALS"},
+		/*65*/{"NEWS","LISTADMIN","JOURNALS","NEWS"},
 	};
 
     public boolean pause(Session sess) 
@@ -1894,7 +1894,7 @@ public class ListCmd extends StdCommand
     {
     	final String theRest=CMParms.combine(commands,1);
     	Item I=CMClass.getItem("StdJournal");
-    	I.setName("CoffeeMud News");
+    	I.setName("SYSTEM_NEWS");
 		I.setDescription("Enter `LIST NEWS [NUMBER]` to read an entry.%0D%0AEnter CREATE NEWS to add new entries. ");
 		CMMsg newMsg=CMClass.getMsg(mob,I,null,CMMsg.MSG_READ|CMMsg.MASK_ALWAYS,null,CMMsg.MSG_READ|CMMsg.MASK_ALWAYS,theRest,CMMsg.MSG_READ|CMMsg.MASK_ALWAYS,null);
 		if(mob.location().okMessage(mob,newMsg)&&(I.okMessage(mob, newMsg)))

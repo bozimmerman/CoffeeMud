@@ -53,6 +53,8 @@ public class JournalNext extends StdWebMacro
 		if(journals==null)
 		{
 			List<String> rawJournals=CMLib.database().DBReadJournals();
+			if(!rawJournals.contains("SYSTEM_NEWS"))
+				rawJournals.add("SYSTEM_NEWS");
 			for(Enumeration e=CMLib.journals().commandJournals();e.hasMoreElements();)
 			{
 				CommandJournal CJ=(CommandJournal)e.nextElement();

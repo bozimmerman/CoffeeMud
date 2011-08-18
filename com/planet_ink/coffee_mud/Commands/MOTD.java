@@ -70,7 +70,9 @@ public class MOTD extends StdCommand
 				    buf.append(msg+"\n\r--------------------------------------\n\r");
 				}
 		
-				List<JournalsLibrary.JournalEntry> journal=CMLib.database().DBReadJournalMsgs("CoffeeMud News");
+				List<JournalsLibrary.JournalEntry> journal=new LinkedList<JournalsLibrary.JournalEntry>();
+				journal.addAll(CMLib.database().DBReadJournalMsgs("CoffeeMud News")); // deprecated
+				journal.addAll(CMLib.database().DBReadJournalMsgs("SYSTEM_NEWS"));
 				for(int which=0;which<journal.size();which++)
 				{
 					JournalsLibrary.JournalEntry entry=(JournalsLibrary.JournalEntry)journal.get(which);

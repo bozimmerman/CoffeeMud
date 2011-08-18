@@ -1605,10 +1605,13 @@ public class Modify extends StdCommand
 		else
 		if(commandType.equals("NEWS"))
 		{
-			if(!CMSecurity.isAllowed(mob,mob.location(),"JOURNALS")) return errorOut(mob);
+			if((!CMSecurity.isAllowed(mob,mob.location(),"JOURNALS"))
+			&&(!CMSecurity.isAllowed(mob,mob.location(),"NEWS")))
+				return errorOut(mob);
+			
 			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"^S<S-NAME> wave(s) <S-HIS-HER> arms...^?");
 	    	Item I=CMClass.getItem("StdJournal");
-	    	I.setName("CoffeeMud News");
+	    	I.setName("SYSTEM_NEWS");
 			I.setDescription("Enter `LIST NEWS [NUMBER]` to read an entry.%0D%0AEnter CREATE NEWS to add new entries. ");
 			CMMsg newMsg=CMClass.getMsg(mob,I,null,CMMsg.MSG_WRITE|CMMsg.MASK_ALWAYS,null,CMMsg.MSG_WRITE|CMMsg.MASK_ALWAYS,CMParms.combine(commands,2),CMMsg.MSG_WRITE|CMMsg.MASK_ALWAYS,null);
 			if(mob.location().okMessage(mob,newMsg)&&I.okMessage(mob, newMsg))
