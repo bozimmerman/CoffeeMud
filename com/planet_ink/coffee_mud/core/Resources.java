@@ -186,7 +186,11 @@ public class Resources
     @SuppressWarnings("unchecked")
 	public static final boolean updateCachedMultiLists(final String filename)
     {
-    	final String key = "PARSED_MULTI: "+filename.toUpperCase();
+        final String key;
+        if(filename.startsWith("::")||filename.startsWith("//"))
+        	key = "PARSED_MULTI: "+filename.substring(2).toUpperCase();
+        else
+        	key = "PARSED_MULTI: "+filename.toUpperCase();
 		Map<String,List<String>> H=(Map<String,List<String>>)getResource(key);
 		if(H==null) return false;
 		updateMultiList(filename, H);
