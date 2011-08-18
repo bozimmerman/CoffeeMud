@@ -159,6 +159,9 @@ public class HoleInTheGround extends StdContainer
 							setMiscText(mob.Name());
 						if(!pstats.getExtItems().isContent(this))
 							pstats.getExtItems().addItem(this);
+						if(msg.tool() instanceof Decayable)
+							((Decayable)msg.tool()).setDecayTime(((Decayable)msg.tool()).decayTime()/2);
+						((Item)msg.tool()).setExpirationDate(0);
 					}
 				}
 				break;
