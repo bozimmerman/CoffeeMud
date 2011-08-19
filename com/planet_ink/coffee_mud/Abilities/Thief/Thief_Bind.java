@@ -74,9 +74,9 @@ public class Thief_Bind extends ThiefSkill
 			&&(affected instanceof Room))
 				return true;
 			else
-			if((!CMath.bset(msg.sourceMajor(),CMMsg.MASK_ALWAYS))
-			&&((CMath.bset(msg.sourceMajor(),CMMsg.MASK_HANDS))
-			||(CMath.bset(msg.sourceMajor(),CMMsg.MASK_MOVE))))
+			if((!msg.sourceMajor(CMMsg.MASK_ALWAYS))
+			&&((msg.sourceMajor(CMMsg.MASK_HANDS))
+			||(msg.sourceMajor(CMMsg.MASK_MOVE))))
 			{
 				if(canBeUninvoked())
 				{

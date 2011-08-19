@@ -145,12 +145,12 @@ public class StdClanDonationList extends StdClanItem
             else
             if((msg.targetMinor()==CMMsg.TYP_GET)
             &&(msg.target() instanceof Item)
-	        &&(!CMath.bset(msg.targetMajor(), CMMsg.MASK_INTERMSG)))
+	        &&(!msg.targetMajor(CMMsg.MASK_INTERMSG)))
                 CMLib.database().DBCreateData(clanID(),"DONATIONS",System.currentTimeMillis()+"/"+msg.source().name()+"/"+Math.random(),msg.source().name()+" gets "+msg.target().name()+" at "+msg.source().location().getArea().getTimeObj().getShortTimeDescription()+".");
             else
             if((msg.targetMinor()==CMMsg.TYP_DROP)
             &&(msg.target() instanceof Item)
-	        &&(!CMath.bset(msg.targetMajor(), CMMsg.MASK_INTERMSG)))
+	        &&(!msg.targetMajor(CMMsg.MASK_INTERMSG)))
                 CMLib.database().DBCreateData(clanID(),"DONATIONS",System.currentTimeMillis()+"/"+msg.source().name()+"/"+Math.random(),msg.source().name()+" drops "+msg.target().name()+" at "+msg.source().location().getArea().getTimeObj().getShortTimeDescription()+".");
         }
         super.executeMsg(myHost,msg);

@@ -173,7 +173,7 @@ public class Prop_RoomForSale extends Property implements LandTitle
 			if((msg.target() instanceof Item)
 			&&(((Item)msg.target()).owner() ==msg.source().location())
             &&((!(msg.tool() instanceof Item))||(msg.source().isMine(msg.tool())))
-			&&(!CMath.bset(msg.sourceMajor(),CMMsg.MASK_ALWAYS))
+			&&(!msg.sourceMajor(CMMsg.MASK_ALWAYS))
 			&&(A.landOwner().length()>0)
 			&&(msg.source().location()!=null)
 		    &&(msg.othersMessage()!=null)

@@ -76,7 +76,7 @@ public class Song extends StdAbility
 		{
 			if((msg.sourceMinor()==CMMsg.TYP_SPEAK)
 			&&(!(msg.tool() instanceof Song))
-			&&(!CMath.bset(msg.sourceMajor(),CMMsg.MASK_CHANNEL)))
+			&&(!msg.sourceMajor(CMMsg.MASK_CHANNEL)))
 			{
 				if(msg.source().location()!=null)
 					msg.source().location().show(msg.source(),null,CMMsg.MSG_NOISE,"<S-NAME> stop(s) singing.");

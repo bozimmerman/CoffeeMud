@@ -147,12 +147,12 @@ public class InTheAir extends StdRoom
 			return true;
 		if((msg.sourceMinor()==CMMsg.TYP_SIT)
 		&&(!(msg.target() instanceof Exit))
-		&&(!CMath.bset(msg.sourceMajor(),CMMsg.MASK_ALWAYS)))
+		&&(!msg.sourceMajor(CMMsg.MASK_ALWAYS)))
 		{
 		    msg.source().tell("You can't sit here.");
 		    return false;
 		}
-		if((msg.sourceMinor()==CMMsg.TYP_SLEEP)&&(!CMath.bset(msg.sourceMajor(),CMMsg.MASK_ALWAYS)))
+		if((msg.sourceMinor()==CMMsg.TYP_SLEEP)&&(!msg.sourceMajor(CMMsg.MASK_ALWAYS)))
 		{
 		    msg.source().tell("You can't sleep here.");
 		    return false;

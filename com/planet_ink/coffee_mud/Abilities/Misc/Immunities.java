@@ -98,7 +98,7 @@ public class Immunities extends StdAbility
 			String immunityName="certain";
 			if(msg.tool()!=null)
 				immunityName=msg.tool().name();
-			if(!CMath.bset(msg.sourceMajor()|msg.targetMajor(), CMMsg.MASK_CNTRLMSG))
+			if(!msg.sourceMajor(CMMsg.MASK_CNTRLMSG) && !msg.targetMajor(CMMsg.MASK_CNTRLMSG))
 			{
 				if(mob!=msg.source())
 					mob.location().show(mob,msg.source(),CMMsg.MSG_OK_VISUAL,"<S-NAME> seem(s) immune to "+immunityName+" attacks from <T-NAME>.");

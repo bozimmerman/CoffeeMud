@@ -112,7 +112,7 @@ public class Prop_ReqCapacity extends Property
 			if((msg.target() instanceof Item)
 			&&(msg.source()!=null)
 			&&(msg.source().location()!=null)
-	        &&(!CMath.bset(msg.targetMajor(), CMMsg.MASK_INTERMSG)))
+	        &&(!msg.targetMajor(CMMsg.MASK_INTERMSG)))
 			{
 				Item targetI=(Item)msg.target();
                 Room R=null;

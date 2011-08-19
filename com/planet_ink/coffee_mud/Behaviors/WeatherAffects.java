@@ -153,7 +153,7 @@ public class WeatherAffects extends PuddleMaker
             }
 		}
         // then try to handle slippage in wet weather
-        if(((CMath.bset(msg.sourceMajor(),CMMsg.MASK_MOVE)))&&(R!=null))
+        if(((msg.sourceMajor(CMMsg.MASK_MOVE)))&&(R!=null))
         {
             String what=null;
             switch(weather)

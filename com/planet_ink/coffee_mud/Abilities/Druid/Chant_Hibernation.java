@@ -85,7 +85,7 @@ public class Chant_Hibernation extends Chant
 		MOB mob=(MOB)affected;
 
 		if((msg.amISource(mob)
-		&&(!CMath.bset(msg.sourceMajor(),CMMsg.MASK_ALWAYS))
+		&&(!msg.sourceMajor(CMMsg.MASK_ALWAYS))
 		&&(!CMath.bset(msg.sourceCode(),CMMsg.MASK_CHANNEL))
 		&&(msg.sourceMajor()>0)))
 		{

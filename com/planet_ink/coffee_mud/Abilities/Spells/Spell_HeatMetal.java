@@ -54,7 +54,7 @@ public class Spell_HeatMetal extends Spell
 		if(!(affected instanceof Item)) return true;
 		if(!msg.amITarget(affected)) return true;
 
-		if(CMath.bset(msg.targetMajor(),CMMsg.MASK_HANDS))
+		if(msg.targetMajor(CMMsg.MASK_HANDS))
 		{
 			msg.source().tell(affected.name()+" is too hot!");
 			return false;

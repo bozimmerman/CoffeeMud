@@ -345,7 +345,7 @@ public class Prop_ClanEquipment extends Property
         {
             if((CMLib.dice().rollPercentage()>32+msg.source().charStats().getStat(CharStats.STAT_DEXTERITY))&&(msg.source().rangeToTarget()==0)
                     &&((lastMessage==null)||(lastMessage.indexOf("The magic around")<0))
-                    &&((CMath.bset(msg.targetMajor(),CMMsg.MASK_HANDS))||(CMath.bset(msg.targetMajor(),CMMsg.MASK_MOVE))))
+                    &&((msg.targetMajor(CMMsg.MASK_HANDS))||(msg.targetMajor(CMMsg.MASK_MOVE))))
             {
                 CMMsg msg2=CMClass.getMsg(mob,source,this,CMMsg.MSG_CAST_ATTACK_VERBAL_SPELL,null);
                 if((source!=null)&&(source.location().okMessage(source,msg2)))

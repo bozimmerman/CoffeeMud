@@ -62,9 +62,9 @@ public class Chant_CaveIn extends Chant
 			MOB mob=(MOB)affected;
 			if(msg.sourceMinor()==CMMsg.TYP_STAND)
 				return false;
-			if((!CMath.bset(msg.sourceMajor(),CMMsg.MASK_ALWAYS))
-			&&((CMath.bset(msg.sourceMajor(),CMMsg.MASK_HANDS))
-			||(CMath.bset(msg.sourceMajor(),CMMsg.MASK_MOVE))))
+			if((!msg.sourceMajor(CMMsg.MASK_ALWAYS))
+			&&((msg.sourceMajor(CMMsg.MASK_HANDS))
+			||(msg.sourceMajor(CMMsg.MASK_MOVE))))
 			{
 				mob.location().show(mob,null,null,CMMsg.MSG_OK_ACTION,"<S-NAME> struggle(s) to get out from under the rocks.");
 				amountRemaining-=(mob.charStats().getStat(CharStats.STAT_STRENGTH)*4);

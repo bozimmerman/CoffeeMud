@@ -285,7 +285,7 @@ public class Nanny extends StdBehavior
             ||(targMinor==CMMsg.TYP_PUSH)
             ||(targMinor==CMMsg.TYP_CAST_SPELL))
         &&(msg.target() instanceof Item)
-        &&(!CMath.bset(msg.targetMajor(), CMMsg.MASK_INTERMSG))
+        &&(!msg.targetMajor(CMMsg.MASK_INTERMSG))
         &&(getDroppedOffObjIfAny((Item)msg.target()))!=null)
         {
         	PhysicalAgent obj=getDroppedOffObjIfAny((Item)msg.target());

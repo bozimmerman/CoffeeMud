@@ -908,7 +908,7 @@ public class StdItem implements Item
 			if((msg.tool()==null)||(msg.tool() instanceof MOB))
 			{
 				if((!CMLib.flags().canBeSeenBy(this,mob))
-				&&((msg.sourceMajor()&CMMsg.MASK_ALWAYS)==0)
+				&&(!msg.sourceMajor(CMMsg.MASK_ALWAYS))
 				&&(amWearingAt(Wearable.IN_INVENTORY)))
 				{
 					mob.tell("You can't see that.");
@@ -967,7 +967,7 @@ public class StdItem implements Item
 			if((msg.tool()==null)||(msg.tool() instanceof MOB))
 			{
 				if((!CMLib.flags().canBeSeenBy(this,mob))
-				   &&((msg.sourceMajor()&CMMsg.MASK_ALWAYS)==0)
+				   &&(!msg.sourceMajor(CMMsg.MASK_ALWAYS))
 				   &&(amWearingAt(Wearable.IN_INVENTORY)))
 				{
 					mob.tell("You can't see that.");

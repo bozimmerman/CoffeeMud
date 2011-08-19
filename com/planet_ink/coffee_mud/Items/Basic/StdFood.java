@@ -84,7 +84,7 @@ public class StdFood extends StdItem implements Food
 			switch(msg.targetMinor())
 			{
 			case CMMsg.TYP_EAT:
-				if((!CMath.bset(msg.targetMajor(),CMMsg.MASK_HANDS))
+				if((!msg.targetMajor(CMMsg.MASK_HANDS))
 				||(mob.isMine(this))
 				||(!CMLib.flags().isGettable(this)))
 				{

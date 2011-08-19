@@ -56,7 +56,7 @@ public class Thief_Espionage extends ThiefSkill
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);
-		if((CMath.bset(msg.othersMajor(),CMMsg.MASK_CHANNEL)))
+		if((msg.othersMajor(CMMsg.MASK_CHANNEL)))
 		{
 	        int channelInt=msg.othersMinor()-CMMsg.TYP_CHANNEL;
 			boolean areareq=CMLib.channels().getChannelFlags(channelInt).contains(ChannelsLibrary.ChannelFlag.SAMEAREA);

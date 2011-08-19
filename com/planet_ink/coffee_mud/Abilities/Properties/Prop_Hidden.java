@@ -54,12 +54,12 @@ public class Prop_Hidden extends Property
 		if(msg.amISource(mob))
 		{
 
-			if(((!CMath.bset(msg.sourceMajor(),CMMsg.MASK_SOUND)
+			if(((!msg.sourceMajor(CMMsg.MASK_SOUND)
 				 ||(msg.sourceMinor()==CMMsg.TYP_SPEAK)
 				 ||(msg.sourceMinor()==CMMsg.TYP_ENTER)
 				 ||(msg.sourceMinor()==CMMsg.TYP_LEAVE)
 				 ||(msg.sourceMinor()==CMMsg.TYP_RECALL)))
-			 &&(!CMath.bset(msg.sourceMajor(),CMMsg.MASK_ALWAYS))
+			 &&(!msg.sourceMajor(CMMsg.MASK_ALWAYS))
 			 &&(msg.sourceMinor()!=CMMsg.TYP_LOOK)
              &&(msg.sourceMinor()!=CMMsg.TYP_EXAMINE)
 			 &&(msg.sourceMajor()>0))

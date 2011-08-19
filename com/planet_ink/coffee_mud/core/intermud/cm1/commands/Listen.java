@@ -117,7 +117,7 @@ public class Listen extends CM1Command
 			switch(crit.statType)
 			{
 			case CHANNEL: 
-				return (CMath.bset(msg.othersMajor(), CMMsg.MASK_CHANNEL)) 
+				return (msg.othersMajor(CMMsg.MASK_CHANNEL)) 
 					&& (crit.parmInt==(msg.othersMinor()-CMMsg.TYP_CHANNEL));
 			case LOGINS: return (msg.othersMinor()==CMMsg.TYP_LOGIN)||(msg.othersMinor()==CMMsg.TYP_QUIT);
 			case MOB: return msg.source()==crit.obj;
@@ -132,9 +132,9 @@ public class Listen extends CM1Command
 			case SOURCECODE: return msg.sourceMinor()==crit.parmInt;
 			case TARGETCODE: return msg.targetMinor()==crit.parmInt;
 			case OTHERSCODE: return msg.othersMinor()==crit.parmInt;
-			case SOURCEMASK: return CMath.bset(msg.sourceMajor(), crit.parmInt);
-			case TARGETMASK: return CMath.bset(msg.targetMinor(), crit.parmInt);
-			case OTHERSMASK: return CMath.bset(msg.othersMinor(), crit.parmInt);
+			case SOURCEMASK: return msg.sourceMajor(crit.parmInt);
+			case TARGETMASK: return msg.targetMajor(crit.parmInt);
+			case OTHERSMASK: return msg.othersMajor(crit.parmInt);
 			}
 			return false;
 		}

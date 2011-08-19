@@ -1215,7 +1215,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
     	
     public void handleHygenicMessage(final CMMsg msg, final int minHygeine, final long adjHygiene)
     {
-        if((CMath.bset(msg.sourceMajor(),CMMsg.MASK_MOVE)
+        if((msg.sourceMajor(CMMsg.MASK_MOVE)
         ||((msg.tool() instanceof Social)
             &&((msg.tool().Name().toUpperCase().startsWith("BATHE"))
             ||(msg.tool().Name().toUpperCase().startsWith("WASH"))))))
@@ -1571,7 +1571,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
         }
         item.unWear();
         item.setContainer(null);
-        if(!CMath.bset(msg.targetMajor(), CMMsg.MASK_INTERMSG))
+        if(!msg.targetMajor(CMMsg.MASK_INTERMSG))
         {
             if(item instanceof Coins)
             	((Coins)item).putCoinsBack();

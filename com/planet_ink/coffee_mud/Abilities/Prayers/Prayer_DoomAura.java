@@ -74,8 +74,8 @@ public class Prayer_DoomAura extends Prayer
 			&&(msg.source().rangeToTarget()==0)
 			&&((lastMessage==null)||(!lastMessage.startsWith("The aura of doom around")))
 			&&(CMLib.dice().rollPercentage() <= 33)
-			&&((CMath.bset(msg.targetMajor(),CMMsg.MASK_HANDS))
-			   ||(CMath.bset(msg.targetMajor(),CMMsg.MASK_MOVE))))
+			&&((msg.targetMajor(CMMsg.MASK_HANDS))
+			   ||(msg.targetMajor(CMMsg.MASK_MOVE))))
 			{
 				MOB meM=(MOB)msg.target();
 				int damage = CMLib.dice().roll(3,(int)Math.round(adjustedLevel(meM,0)/5.0),5);

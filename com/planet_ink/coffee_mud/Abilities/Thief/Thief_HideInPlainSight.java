@@ -70,7 +70,7 @@ public class Thief_HideInPlainSight extends ThiefSkill
         {
             if(msg.source()==affected)
             {
-                if(!CMath.bset(msg.othersMajor(),CMMsg.MASK_SOUND))
+                if(!msg.othersMajor(CMMsg.MASK_SOUND))
                     msg.setOthersMessage(null);
                 else
                 if((msg.sourceMinor()!=CMMsg.TYP_SPEAK)

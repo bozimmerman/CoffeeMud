@@ -147,8 +147,8 @@ public class Allergies extends StdAbility
 		    else
 		    if((msg.target()==affected)
 		    &&(raceAllergies.contains(msg.source().charStats().getMyRace()))
-			&&((CMath.bset(msg.targetMajor(),CMMsg.MASK_HANDS))
-			   ||(CMath.bset(msg.targetMajor(),CMMsg.MASK_MOVE)))
+			&&((msg.targetMajor(CMMsg.MASK_HANDS))
+			   ||(msg.targetMajor(CMMsg.MASK_MOVE)))
 		    &&(((MOB)affected).location()!=null)
 		    &&(((MOB)affected).location().isInhabitant(msg.source()))
 		    &&((msg.tool()==null)||((!msg.tool().ID().equals("Poison_Hives"))&&(!msg.tool().ID().equals("Poison_Heartstopper")))))

@@ -150,7 +150,7 @@ public class StdContainer extends StdItem implements Container
 					{
 						if((!(CMLib.flags().canBeSeenBy(newitem,mob)||(newitem instanceof Light)))
 						&&(amWearingAt(Wearable.IN_INVENTORY))
-						&&((msg.sourceMajor()&CMMsg.MASK_ALWAYS)==0))
+						&&(!msg.sourceMajor(CMMsg.MASK_ALWAYS)))
 						{
 							mob.tell(mob,newitem,this,"You can't see <T-NAME> in <O-NAME>.");
 							return false;
@@ -212,7 +212,7 @@ public class StdContainer extends StdItem implements Container
 					if(newitem.container()==this)
 					{
 						if((!CMLib.flags().canBeSeenBy(newitem,mob))
-						&&((msg.sourceMajor()&CMMsg.MASK_ALWAYS)==0))
+						&&(!msg.sourceMajor(CMMsg.MASK_ALWAYS)))
 						{
 							mob.tell("You can't see that.");
 							return false;

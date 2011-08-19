@@ -134,7 +134,7 @@ public class Decay extends ActiveTicker
 			else
 			if(affecting instanceof MOB)
 			{
-				if(((msg.targetMajor()&CMMsg.MASK_MALICIOUS)>0)
+				if((msg.targetMajor(CMMsg.MASK_MALICIOUS))
 				&&(!msg.source().isMonster())
 				&&(CMLib.masking().maskCheck(getParms(),msg.source(),true)))
 					activated=true;

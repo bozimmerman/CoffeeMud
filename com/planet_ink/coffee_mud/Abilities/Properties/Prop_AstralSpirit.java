@@ -75,7 +75,7 @@ public class Prop_AstralSpirit extends Property
 			return true;
 		MOB mob=(MOB)affected;
 
-		if((msg.amISource(mob))&&(!CMath.bset(msg.sourceMajor(),CMMsg.MASK_ALWAYS)))
+		if((msg.amISource(mob))&&(!msg.sourceMajor(CMMsg.MASK_ALWAYS)))
 		{
 			if((msg.targetMinor()==CMMsg.TYP_SIT)&&(msg.target() instanceof DeadBody))
 			{
@@ -96,10 +96,10 @@ public class Prop_AstralSpirit extends Property
 				return false;
 			}
 			else
-			if((CMath.bset(msg.sourceMajor(),CMMsg.MASK_HANDS))
-			||(CMath.bset(msg.sourceMajor(),CMMsg.MASK_MOUTH)))
+			if((msg.sourceMajor(CMMsg.MASK_HANDS))
+			||(msg.sourceMajor(CMMsg.MASK_MOUTH)))
 			{
-				if(CMath.bset(msg.sourceMajor(),CMMsg.MASK_SOUND))
+				if(msg.sourceMajor(CMMsg.MASK_SOUND))
 					mob.tell("You are unable to make sounds in this incorporeal form.");
 				else
 					mob.tell("You are unable to do that this incorporeal form.");
@@ -109,7 +109,7 @@ public class Prop_AstralSpirit extends Property
 		}
 		else
 		if((msg.amITarget(mob))&&(!msg.amISource(mob))
-		   &&(!CMath.bset(msg.targetMajor(),CMMsg.MASK_ALWAYS)))
+		   &&(!msg.targetMajor(CMMsg.MASK_ALWAYS)))
 		{
 			mob.tell(mob.name()+" doesn't seem to be here.");
 			return false;

@@ -69,9 +69,9 @@ public class Chant_Tangle extends Chant
 		// from trying to do ANYTHING except sleep
 		if(msg.amISource(mob))
 		{
-			if((!CMath.bset(msg.sourceMajor(),CMMsg.MASK_ALWAYS))
-			&&((CMath.bset(msg.sourceMajor(),CMMsg.MASK_HANDS))
-			||(CMath.bset(msg.sourceMajor(),CMMsg.MASK_MOVE))))
+			if((!msg.sourceMajor(CMMsg.MASK_ALWAYS))
+			&&((msg.sourceMajor(CMMsg.MASK_HANDS))
+			||(msg.sourceMajor(CMMsg.MASK_MOVE))))
 			{
 				mob.location().show(mob,null,thePlants,CMMsg.MSG_OK_ACTION,"<S-NAME> struggle(s) against <O-NAME>.");
 				amountRemaining-=(mob.charStats().getStat(CharStats.STAT_STRENGTH)*4);

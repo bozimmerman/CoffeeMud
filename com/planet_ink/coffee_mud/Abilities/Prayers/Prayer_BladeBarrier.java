@@ -73,8 +73,8 @@ public class Prayer_BladeBarrier extends Prayer
 			if((CMLib.dice().rollPercentage()>60+msg.source().charStats().getStat(CharStats.STAT_DEXTERITY))
 			&&(msg.source().rangeToTarget()==0)
 			&&((lastMessage==null)||(!lastMessage.startsWith("The blade barrier around")))
-			&&((CMath.bset(msg.targetMajor(),CMMsg.MASK_HANDS))
-			   ||(CMath.bset(msg.targetMajor(),CMMsg.MASK_MOVE))))
+			&&((msg.targetMajor(CMMsg.MASK_HANDS))
+			   ||(msg.targetMajor(CMMsg.MASK_MOVE))))
 			{
 				MOB meM=(MOB)msg.target();
 				int damage = CMLib.dice().roll(1,(int)Math.round(adjustedLevel(meM,0)/5.0),1);

@@ -225,7 +225,7 @@ public class Falling extends StdAbility
 					unInvoke();
 					return true;
 				}
-				if(CMath.bset(msg.targetMajor(),CMMsg.MASK_MOVE))
+				if(msg.targetMajor(CMMsg.MASK_MOVE))
 				{
 					msg.source().tell("You are too busy falling to do that right now.");
 					return false;

@@ -54,9 +54,9 @@ public class Skill_Puppeteer extends BardSkill
 		// it should consistantly prevent the mob
 		// from trying to do ANYTHING except sleep
 		if((msg.amISource(invoker()))
-		&&(!CMath.bset(msg.sourceMajor(),CMMsg.MASK_ALWAYS))
-		&&((CMath.bset(msg.sourceMajor(),CMMsg.MASK_HANDS))
-		||(CMath.bset(msg.sourceMajor(),CMMsg.MASK_MOVE)))
+		&&(!msg.sourceMajor(CMMsg.MASK_ALWAYS))
+		&&((msg.sourceMajor(CMMsg.MASK_HANDS))
+		||(msg.sourceMajor(CMMsg.MASK_MOVE)))
 		&&(msg.targetMinor()!=CMMsg.TYP_SPEAK)
 	    &&(msg.targetMinor()==CMMsg.TYP_ORDER)
 		&&(msg.targetMinor()!=CMMsg.TYP_PANIC)
@@ -67,8 +67,8 @@ public class Skill_Puppeteer extends BardSkill
 		{
 		    if((!msg.source().isInCombat())&&(msg.target() instanceof MOB))
 		    {
-			    if((CMath.isSet(msg.sourceMajor(),CMMsg.MASK_MALICIOUS))
-			    ||(CMath.isSet(msg.targetMajor(),CMMsg.MASK_MALICIOUS)))
+			    if((msg.sourceMajor(CMMsg.MASK_MALICIOUS))
+			    ||(msg.targetMajor(CMMsg.MASK_MALICIOUS)))
 			        msg.source().setVictim((MOB)msg.target());
 		    }
 			invoker().location().show(invoker(),puppet,CMMsg.MSG_OK_ACTION,"<S-NAME> animate(s) <T-NAMESELF>.");

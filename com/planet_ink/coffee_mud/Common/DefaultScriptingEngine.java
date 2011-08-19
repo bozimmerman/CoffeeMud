@@ -9213,7 +9213,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
             case 3: // speech_prog
                 if(((msg.sourceMinor()==CMMsg.TYP_SPEAK)||(msg.targetMinor()==CMMsg.TYP_SPEAK))&&canTrigger(3)
                 &&(!msg.amISource(monster))
-                &&(!CMath.bset(msg.othersMajor(),CMMsg.MASK_CHANNEL))
+                &&(!msg.othersMajor(CMMsg.MASK_CHANNEL))
                 &&(((msg.othersMessage()!=null)&&((msg.tool()==null)||(!(msg.tool() instanceof Ability))||((((Ability)msg.tool()).classificationCode()&Ability.ALL_ACODES)!=Ability.ACODE_LANGUAGE)))
                    ||((msg.target()==monster)&&(msg.targetMessage()!=null)&&(msg.tool()==null)))
                 &&(isFreeToBeTriggered(monster)||(!(affecting instanceof MOB))))
@@ -9806,7 +9806,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                     registeredSpecialEvents.add(Integer.valueOf(CMMsg.TYP_CHANNEL));
                 }
                 if(!msg.amISource(monster)
-                &&(CMath.bset(msg.othersMajor(),CMMsg.MASK_CHANNEL))
+                &&(msg.othersMajor(CMMsg.MASK_CHANNEL))
                 &&canTrigger(33))
                 {
                     if(t==null) t=parseBits(script,0,"CCT");

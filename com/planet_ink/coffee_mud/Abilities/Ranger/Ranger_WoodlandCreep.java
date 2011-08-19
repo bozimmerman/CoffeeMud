@@ -79,7 +79,7 @@ public class Ranger_WoodlandCreep extends StdAbility
 			mob.recoverPhyStats();
 		}
 		if((msg.source()==affected)
-		&&(CMath.bset(msg.sourceMajor(),CMMsg.MASK_MALICIOUS))
+		&&(msg.sourceMajor(CMMsg.MASK_MALICIOUS))
 		&&(msg.source().isInCombat())
 		&&(msg.source().rangeToTarget()<=0))
 		{

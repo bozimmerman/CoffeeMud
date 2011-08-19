@@ -66,7 +66,7 @@ public class Prayer_GuardianHearth extends Prayer
 		||(prots.contains(Integer.valueOf(msg.sourceMinor())))
 		||(prots.contains(Integer.valueOf(msg.targetMinor()))))
 		   &&(msg.target() instanceof MOB)
-		   &&((msg.source()!=msg.target())||(CMath.bset(msg.sourceMajor(),CMMsg.MASK_ALWAYS))))
+		   &&((msg.source()!=msg.target())||(msg.sourceMajor(CMMsg.MASK_ALWAYS))))
 		{
 			Set<MOB> H=((MOB)msg.target()).getGroupMembers(new HashSet<MOB>());
 			for(Iterator e=H.iterator();e.hasNext();)

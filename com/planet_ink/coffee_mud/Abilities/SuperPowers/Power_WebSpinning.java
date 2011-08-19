@@ -63,9 +63,9 @@ public class Power_WebSpinning extends SuperPower
 			// from trying to do ANYTHING except sleep
 			if(msg.amISource(mob))
 			{
-				if((!CMath.bset(msg.sourceMajor(),CMMsg.MASK_ALWAYS))
-				&&((CMath.bset(msg.sourceMajor(),CMMsg.MASK_HANDS))
-				||(CMath.bset(msg.sourceMajor(),CMMsg.MASK_MOVE))))
+				if((!msg.sourceMajor(CMMsg.MASK_ALWAYS))
+				&&((msg.sourceMajor(CMMsg.MASK_HANDS))
+				||(msg.sourceMajor(CMMsg.MASK_MOVE))))
 				{
 					if(mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> struggle(s) against the web."))
 					{

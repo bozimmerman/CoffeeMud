@@ -118,7 +118,7 @@ public class InstantDeath extends ActiveTicker
 		{
 			if(affecting instanceof MOB)
 			{
-				if(((msg.targetMajor()&CMMsg.MASK_MALICIOUS)>0)
+				if((msg.targetMajor(CMMsg.MASK_MALICIOUS))
 				&&(!msg.source().isMonster()))
 					activated=true;
 			}

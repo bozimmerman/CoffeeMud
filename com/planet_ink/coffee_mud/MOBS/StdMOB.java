@@ -1553,7 +1553,7 @@ public class StdMOB implements MOB
 				return false;
 			}
 
-			if(!CMath.bset(msg.sourceMajor(),CMMsg.MASK_ALWAYS))
+			if(!msg.sourceMajor(CMMsg.MASK_ALWAYS))
 			{
 				final int srcCode=msg.sourceMajor();
 				final int srcMinor=msg.sourceMinor();
@@ -1786,7 +1786,7 @@ public class StdMOB implements MOB
 					}
 					break;
 				case CMMsg.TYP_LEAVE:
-					if((isInCombat())&&(location()!=null)&&(!CMath.bset(msg.sourceMajor(),CMMsg.MASK_MAGIC)))
+					if((isInCombat())&&(location()!=null)&&(!msg.sourceMajor(CMMsg.MASK_MAGIC)))
 						for(final Enumeration<MOB> m=location().inhabitants();m.hasMoreElements();)
 						{
 							MOB M=m.nextElement();
@@ -1813,7 +1813,7 @@ public class StdMOB implements MOB
 				case CMMsg.TYP_SELL:
 				case CMMsg.TYP_VIEW:
 				case CMMsg.TYP_READ:
-					if(isInCombat()&&(!CMath.bset(msg.sourceMajor(),CMMsg.MASK_MAGIC)))
+					if(isInCombat()&&(!msg.sourceMajor(CMMsg.MASK_MAGIC)))
 					{
 						tell("Not while you are fighting!");
 						return false;
@@ -2011,7 +2011,7 @@ public class StdMOB implements MOB
                     Log.combatOut(srcM.Name()+":"+Name()+":"+CMMsg.TYPE_DESCS[msg.targetMinor()]+":"+((msg.tool()!=null)?msg.tool().Name():"null"));
 
 				if((msg.amISource(this))
-				&&(!CMath.bset(msg.sourceMajor(),CMMsg.MASK_ALWAYS))
+				&&(!msg.sourceMajor(CMMsg.MASK_ALWAYS))
 				&&((msg.tool()==null)||(!(msg.tool() instanceof Ability))||(!((Ability)msg.tool()).isNowAnAutoEffect())))
 				{
 					srcM.tell("You like yourself too much.");
@@ -2357,7 +2357,7 @@ public class StdMOB implements MOB
 		else
 		if((msg.targetCode()!=CMMsg.NO_EFFECT)&&(msg.amITarget(this)))
 		{
-			int targetMajor=msg.targetMajor();
+			final int targetMajor=msg.targetMajor();
             switch(msg.targetMinor())
             {
             case CMMsg.TYP_HEALING:
@@ -2435,8 +2435,8 @@ public class StdMOB implements MOB
 		&&(!msg.amISource(this))
 		&&(!msg.amITarget(this)))
 		{
-			int othersMajor=msg.othersMajor();
-			int othersMinor=msg.othersMinor();
+			final int othersMajor=msg.othersMajor();
+			final int othersMinor=msg.othersMinor();
 
 			if(CMath.bset(msg.othersCode(),CMMsg.MASK_MALICIOUS)
 			&&(msg.target() instanceof MOB)

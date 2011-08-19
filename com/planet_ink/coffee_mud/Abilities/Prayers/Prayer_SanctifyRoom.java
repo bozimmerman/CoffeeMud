@@ -87,7 +87,7 @@ public class Prayer_SanctifyRoom extends Prayer
             ||(targMinor==CMMsg.TYP_PUSH)
             ||(targMinor==CMMsg.TYP_CAST_SPELL))
         &&(msg.target() instanceof Item)
-        &&(!CMath.bset(msg.targetMajor(), CMMsg.MASK_INTERMSG))
+        &&(!msg.targetMajor(CMMsg.MASK_INTERMSG))
         &&(!msg.source().isMine(msg.target()))
         &&((!(msg.tool() instanceof Item))
             ||(!msg.source().isMine(msg.tool()))))

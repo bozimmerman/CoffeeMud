@@ -254,7 +254,7 @@ public class Poison_Alcohol extends Poison
 				}
 			}
 			else
-			if((!CMath.bset(msg.targetMajor(),CMMsg.MASK_ALWAYS))
+			if((!msg.targetMajor(CMMsg.MASK_ALWAYS))
 			&&(CMLib.dice().rollPercentage()<(drunkness*20))
 			&&(msg.targetMajor()>0))
 			{

@@ -77,7 +77,7 @@ public class Chant_EelShock extends Chant
 		// it should consistantly prevent the mob
 		// from trying to do ANYTHING except sleep
 		if((msg.amISource(mob))
-		&&(!CMath.bset(msg.sourceMajor(),CMMsg.MASK_ALWAYS))
+		&&(!msg.sourceMajor(CMMsg.MASK_ALWAYS))
 		&&(msg.sourceMajor()>0))
 		{
 			mob.tell("You are stunned.");

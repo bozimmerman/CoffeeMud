@@ -253,7 +253,7 @@ public class CombatAbilities extends StdBehavior
 				}
 				else
 				if((msg.sourceMinor()==CMMsg.TYP_CAST_SPELL)
-				&&(!CMath.bset(msg.sourceMajor(),CMMsg.MASK_ALWAYS))
+				&&(!msg.sourceMajor(CMMsg.MASK_ALWAYS))
 				&&(msg.source()!=host)
 				&&(msg.tool() instanceof Ability)
 				&&((((Ability)msg.tool()).classificationCode()&Ability.ALL_ACODES)!=Ability.ACODE_SONG)

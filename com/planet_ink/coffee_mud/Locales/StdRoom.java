@@ -550,7 +550,7 @@ public class StdRoom implements Room
 				}
 				break;
 			default:
-				if(((CMath.bset(msg.targetMajor(),CMMsg.MASK_HANDS))||(CMath.bset(msg.targetMajor(),CMMsg.MASK_MOUTH)))
+				if(((msg.targetMajor(CMMsg.MASK_HANDS))||(msg.targetMajor(CMMsg.MASK_MOUTH)))
                 &&(msg.targetMinor()!=CMMsg.TYP_THROW))
 				{
 					mob.tell("You can't do that here.");

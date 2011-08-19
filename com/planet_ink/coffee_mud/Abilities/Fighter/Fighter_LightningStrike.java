@@ -57,12 +57,12 @@ public class Fighter_LightningStrike extends FighterSkill
 		// when this spell is on a MOBs Affected list,
 		// it should consistantly prevent the mob
 		// from trying to do ANYTHING except sleep
-		if((msg.amISource(mob))&&(!CMath.bset(msg.sourceMajor(),CMMsg.MASK_ALWAYS)))
+		if((msg.amISource(mob))&&(!msg.sourceMajor(CMMsg.MASK_ALWAYS)))
 		{
-			if((CMath.bset(msg.sourceMajor(),CMMsg.MASK_EYES))
-			||(CMath.bset(msg.sourceMajor(),CMMsg.MASK_HANDS))
-			||(CMath.bset(msg.sourceMajor(),CMMsg.MASK_MOUTH))
-			||(CMath.bset(msg.sourceMajor(),CMMsg.MASK_MOVE)))
+			if((msg.sourceMajor(CMMsg.MASK_EYES))
+			||(msg.sourceMajor(CMMsg.MASK_HANDS))
+			||(msg.sourceMajor(CMMsg.MASK_MOUTH))
+			||(msg.sourceMajor(CMMsg.MASK_MOVE)))
 			{
 				if(msg.sourceMessage()!=null)
 					mob.tell("You are way too drowsy.");

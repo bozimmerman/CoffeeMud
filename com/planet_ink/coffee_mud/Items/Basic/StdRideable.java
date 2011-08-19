@@ -582,7 +582,7 @@ public class StdRideable extends StdContainer implements Rideable
 			}
 		    return super.okMessage(myHost,msg);
 		}
-		if((CMath.bset(msg.sourceMajor(),CMMsg.MASK_HANDS))
+		if((msg.sourceMajor(CMMsg.MASK_HANDS))
 		&&(amRiding(msg.source()))
 		&&((msg.sourceMessage()!=null)||(msg.othersMessage()!=null))
 		&&(msg.target()!=this)

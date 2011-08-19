@@ -80,7 +80,7 @@ public class Prayer_AuraDivineEdict extends Prayer
 		else
 		if((msg.source()==invoker())
 		&&(msg.targetMinor()==CMMsg.TYP_SPEAK)
-		&&(!CMath.bset(msg.sourceMajor(), CMMsg.MASK_ALWAYS))
+		&&(!msg.sourceMajor(CMMsg.MASK_ALWAYS))
 		&&(msg.target() instanceof MOB)
 		&&(((MOB)msg.target()).phyStats().level()<invoker().phyStats().level()+(super.getXLEVELLevel(invoker())*2))
 		&&(msg.sourceMessage()!=null)

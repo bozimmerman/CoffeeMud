@@ -220,14 +220,17 @@ public class DefaultMessage implements CMMsg
 	public Environmental tool() { return myTool; }
     public void setTool(Environmental E){myTool=E;}
 	public int targetMajor() { return targetCode&CMMsg.MAJOR_MASK; }
+	public int sourceMajor() { return sourceCode&CMMsg.MAJOR_MASK;}
+	public int othersMajor() { return othersCode&CMMsg.MAJOR_MASK; }
+	public boolean targetMajor(final int bitMask) { return (targetCode&bitMask)==bitMask; }
 	public int targetMinor() { return targetCode&CMMsg.MINOR_MASK; }
 	public int targetCode() { return targetCode; }
 	public String targetMessage() { return targetMsg;}
 	public int sourceCode() { return sourceCode; }
-	public int sourceMajor() { return sourceCode&CMMsg.MAJOR_MASK;}
+	public boolean sourceMajor(final int bitMask) { return (sourceCode&bitMask)==bitMask; }
 	public int sourceMinor() { return sourceCode&CMMsg.MINOR_MASK;}
 	public String sourceMessage() { return sourceMsg;}
-	public int othersMajor() { return othersCode&CMMsg.MAJOR_MASK; }
+	public boolean othersMajor(final int bitMask) { return (othersCode&bitMask)==bitMask; }
 	public int othersMinor() { return othersCode&CMMsg.MINOR_MASK; }
 	public int othersCode() {  return othersCode; }
 	public String othersMessage() { return othersMsg; }

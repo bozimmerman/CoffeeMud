@@ -56,7 +56,7 @@ public class Archon_Hush extends ArchonSkill
 
 
 		if(((msg.sourceMinor()==CMMsg.TYP_TELL)
-			||((msg.othersMajor()&CMMsg.MASK_CHANNEL)>0))
+			||(msg.othersMajor(CMMsg.MASK_CHANNEL)))
 		&&((msg.source()==affected)
 			||((msg.source().location()==CMLib.map().roomLocation(affected))
 				&&(msg.source().isMonster())

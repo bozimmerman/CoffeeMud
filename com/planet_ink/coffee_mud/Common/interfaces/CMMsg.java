@@ -116,9 +116,19 @@ public interface CMMsg extends CMCommon
 	public int targetMajor();
 	
     /**
+     * Returns whether high order bitmask for the target code is set
+     * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#targetCode()
+     * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#targetMinor()
+     * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#MASK_MAGIC
+     * @param bitMask the bitmask to check for
+     * @return true if high order bitmask for the target code is set
+     */
+	public boolean targetMajor(int bitMask);
+	
+    /**
      * Returns low order action type integer for the target code
      * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#targetCode()
-     * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#targetMajor()
+     * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#targetMajor(int)
      * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#TYP_CAST_SPELL
      * @return low order action type integer for the target code
      */
@@ -130,7 +140,7 @@ public interface CMMsg extends CMCommon
 	 * action. 
      * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#target()
      * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#targetMessage()
-     * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#targetMajor()
+     * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#targetMajor(int)
      * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#targetMinor()
      * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#MASK_MAGIC
      * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#TYP_CAST_SPELL
@@ -146,7 +156,7 @@ public interface CMMsg extends CMCommon
      * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#target()
      * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#targetMessage()
      * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#targetCode()
-     * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#targetMajor()
+     * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#targetMajor(int)
      * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#targetMinor()
      * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#MASK_MAGIC
      * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#TYP_CAST_SPELL
@@ -224,9 +234,19 @@ public interface CMMsg extends CMCommon
 	public int sourceMajor();
 	
     /**
+     * Returns whether high order bitmask for the source code is set
+     * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#sourceCode()
+     * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#sourceMinor()
+     * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#MASK_MAGIC
+     * @param bitMask the bitmask to check for
+     * @return true if high order bitmask for the source code is set
+     */
+	public boolean sourceMajor(int bitMask);
+	
+    /**
      * Returns low order action type integer for the target code
      * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#targetCode()
-     * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#targetMajor()
+     * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#targetMajor(int)
      * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#TYP_CAST_SPELL
      * @return low order action type integer for the target code
      */
@@ -238,7 +258,7 @@ public interface CMMsg extends CMCommon
      * action. 
      * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#source()
      * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#sourceMessage()
-     * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#sourceMajor()
+     * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#sourceMajor(int)
      * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#sourceMinor()
      * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#MASK_MAGIC
      * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#TYP_CAST_SPELL
@@ -294,7 +314,7 @@ public interface CMMsg extends CMCommon
      * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#source()
      * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#sourceMessage()
      * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#sourceCode()
-     * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#sourceMajor()
+     * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#sourceMajor(int)
      * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#sourceMinor()
      * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#MASK_MAGIC
      * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#TYP_CAST_SPELL
@@ -333,10 +353,21 @@ public interface CMMsg extends CMCommon
 	public int othersMajor();
 	
     /**
+     * Returns whether high order bitmask for the others code is set
+     * (Others are everyone not source, not target)
+     * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#othersCode()
+     * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#othersMinor()
+     * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#MASK_MAGIC
+     * @param bitMask the bitmask to check for
+     * @return true if high order bitmask for the others code is set
+     */
+	public boolean othersMajor(int bitMask);
+	
+    /**
      * Returns low order action type integer for the others code
      * (Others are everyone not source, not target)
      * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#othersCode()
-     * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#othersMajor()
+     * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#othersMajor(int)
      * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#TYP_CAST_SPELL
      * @return low order action type integer for the others code
      */
@@ -347,7 +378,7 @@ public interface CMMsg extends CMCommon
      * about how this event affects or is perceived by the others of the
      * action.  (Others are everyone not source, not target)
      * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#othersMessage()
-     * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#othersMajor()
+     * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#othersMajor(int)
      * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#othersMinor()
      * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#MASK_MAGIC
      * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#TYP_CAST_SPELL
@@ -383,7 +414,7 @@ public interface CMMsg extends CMCommon
      * action.  (Others are everyone not source, not target)
      * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#othersMessage()
      * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#othersCode()
-     * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#othersMajor()
+     * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#othersMajor(int)
      * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#othersMinor()
      * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#MASK_MAGIC
      * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#TYP_CAST_SPELL
