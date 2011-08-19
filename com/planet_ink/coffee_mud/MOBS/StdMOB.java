@@ -2158,12 +2158,12 @@ public class StdMOB implements MOB
 					return false;
 				}
 				int GC=msg.targetCode()&CMMsg.MASK_ALWAYS;
-				CMMsg msg2=CMClass.getMsg(srcM,msg.tool(),null,CMMsg.MSG_DROP,null,CMMsg.MSG_DROP,"GIVE",CMMsg.MSG_DROP,null);
+				CMMsg msg2=CMClass.getMsg(srcM,msg.tool(),null,CMMsg.MSG_DROP|CMMsg.MASK_INTERMSG,null,CMMsg.MSG_DROP|CMMsg.MASK_INTERMSG,null,CMMsg.MSG_DROP|CMMsg.MASK_INTERMSG,null);
 				if(!location().okMessage(srcM,msg2))
 					return false;
 				if((msg.target()!=null)&&(msg.target() instanceof MOB))
 				{
-					msg2=CMClass.getMsg((MOB)msg.target(),msg.tool(),null,GC|CMMsg.MSG_GET,null,GC|CMMsg.MSG_GET,"GIVE",GC|CMMsg.MSG_GET,null);
+					msg2=CMClass.getMsg((MOB)msg.target(),msg.tool(),null,GC|CMMsg.MSG_GET|CMMsg.MASK_INTERMSG,null,GC|CMMsg.MSG_GET|CMMsg.MASK_INTERMSG,null,GC|CMMsg.MSG_GET|CMMsg.MASK_INTERMSG,null);
 					if(!location().okMessage(msg.target(),msg2))
 					{
 						srcM.tell(msg.target().name()+" cannot seem to accept "+msg.tool().name()+".");

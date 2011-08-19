@@ -1441,9 +1441,9 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
         MOB giveemob=(MOB)msg.target();
         if(giveemob.location()!=null)
         {
-            CMMsg msg2=CMClass.getMsg(givermob,msg.tool(),null,CMMsg.MSG_DROP,null,CMMsg.MSG_DROP,"GIVE",CMMsg.MSG_DROP,null);
+            CMMsg msg2=CMClass.getMsg(givermob,msg.tool(),null,CMMsg.MSG_DROP|CMMsg.MASK_INTERMSG,null,CMMsg.MSG_DROP|CMMsg.MASK_INTERMSG,null,CMMsg.MSG_DROP|CMMsg.MASK_INTERMSG,null);
             giveemob.location().send(givermob,msg2);
-            msg2=CMClass.getMsg((MOB)msg.target(),msg.tool(),null,CMMsg.MSG_GET,null,CMMsg.MSG_GET,"GIVE",CMMsg.MSG_GET,null);
+            msg2=CMClass.getMsg((MOB)msg.target(),msg.tool(),null,CMMsg.MSG_GET|CMMsg.MASK_INTERMSG,null,CMMsg.MSG_GET|CMMsg.MASK_INTERMSG,null,CMMsg.MSG_GET|CMMsg.MASK_INTERMSG,null);
             giveemob.location().send(giveemob,msg2);
         }
     }
@@ -1571,7 +1571,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
         }
         item.unWear();
         item.setContainer(null);
-        if((msg.targetMessage()==null)||(!msg.targetMessage().equals("GIVE")))
+        if(!CMath.bset(msg.targetMajor(), CMMsg.MASK_INTERMSG))
         {
             if(item instanceof Coins)
             	((Coins)item).putCoinsBack();

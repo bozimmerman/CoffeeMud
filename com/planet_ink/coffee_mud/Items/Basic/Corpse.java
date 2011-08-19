@@ -172,7 +172,7 @@ public class Corpse extends GenContainer implements DeadBody
 					&&(!msg.tool().ID().equalsIgnoreCase("Prayer_PreserveBody"))
 					&&(!msg.tool().ID().equalsIgnoreCase("Song_Rebirth"))))
 			&&(CMProps.getVar(CMProps.SYSTEM_CORPSEGUARD).length()>0)
-	        &&((msg.targetMessage()==null)||(!msg.targetMessage().equalsIgnoreCase("GIVE"))))
+	        &&(!CMath.bset(msg.targetMajor(), CMMsg.MASK_INTERMSG)))
 	        {
 	            if(CMSecurity.isAllowed(msg.source(),msg.source().location(),"CMDITEMS"))
 	                return true;

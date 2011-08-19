@@ -304,7 +304,7 @@ public class PokerDealer extends StdBehavior
         if((msg.targetMinor()==CMMsg.TYP_GET)
         &&(msg.source().location()==CMLib.map().roomLocation(host))
         &&(msg.target() instanceof Coins)
-        &&((msg.targetMessage()==null)||(!msg.targetMessage().equalsIgnoreCase("GIVE")))
+        &&(!CMath.bset(msg.targetMajor(), CMMsg.MASK_INTERMSG))
         &&(msg.source().location().isContent((Coins)msg.target())))
         {
             msg.source().tell("No touching the pot!");
@@ -317,9 +317,8 @@ public class PokerDealer extends StdBehavior
         if((msg.targetMinor()==CMMsg.TYP_DROP)
         &&(msg.source().location()==CMLib.map().roomLocation(host))
         &&(msg.target() instanceof Coins)
-        &&((msg.targetMessage()==null)||(!msg.targetMessage().equalsIgnoreCase("GIVE"))))
+        &&(!CMath.bset(msg.targetMajor(), CMMsg.MASK_INTERMSG)))
         {
-            
             Double inPot=pot.contains(msg.source())?(Double)pot.elementAt(pot.indexOf(msg.source()),2):null;
             String currency=CMLib.beanCounter().getCurrency(host);
             MOB playerDroppingMoney=msg.source();
@@ -544,7 +543,7 @@ public class PokerDealer extends StdBehavior
         if((msg.targetMinor()==CMMsg.TYP_DROP)
         &&(msg.source().location()==CMLib.map().roomLocation(host))
         &&(msg.target() instanceof Coins)
-        &&((msg.targetMessage()==null)||(!msg.targetMessage().equalsIgnoreCase("GIVE"))))
+        &&(!CMath.bset(msg.targetMajor(), CMMsg.MASK_INTERMSG)))
         {
             double value=((Coins)msg.target()).getTotalValue();
             MOB playerDroppingMoney=msg.source();
