@@ -384,7 +384,7 @@ public class ProcessSMTPrequest implements Runnable
 												}
 											}
 											   
-											if(debug) Log.debugOut(runnableName,"Written: "+journal+"/"+from+"/ALL");
+											if(debug) Log.debugOut(runnableName,"Written: "+journal+"/"+from+"/ALL/"+bodyType);
 											if(bodyType=='h') cleanHtml(journal, finalData);
 											CMLib.database().DBWriteJournalChild(journal, "",from, "ALL", parentKey, 
 													CMLib.coffeeFilter().simpleInFilter(new StringBuffer(subject),false).toString(), 
@@ -392,7 +392,7 @@ public class ProcessSMTPrequest implements Runnable
 										}
 										else
 										{
-											if(debug) Log.debugOut(runnableName,"Written: "+server.mailboxName()+"/"+from+"/"+(String)to.elementAt(i));
+											if(debug) Log.debugOut(runnableName,"Written: "+server.mailboxName()+"/"+from+"/"+(String)to.elementAt(i)+"/"+bodyType);
 											if(bodyType=='h') cleanHtml(journal, finalData);
 											CMLib.database().DBWriteJournal(server.mailboxName(),
 																			from,

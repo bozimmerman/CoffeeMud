@@ -438,7 +438,7 @@ public class SMTPserver extends Thread implements Tickable
 			lastAllProcessing=System.currentTimeMillis();
 			if(updatedMailingLists)
 			{
-				Resources.updateCachedMultiLists("::mailinglists.txt");
+				Resources.updateCachedMultiLists("mailinglists.txt");
 				updatedMailingLists=false;
 			}
 			new Thread(massMailer).start();
