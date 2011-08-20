@@ -171,6 +171,11 @@ public class Spell_Meld extends Spell
 			return false;
 		}
 
+		if(itemOne==itemTwo)
+		{
+			mob.tell("You can't meld something to itself.");
+			return false;
+		}
 
 		// the invoke method for spells receives as
 		// parameters the invoker, and the REMAINING
@@ -188,10 +193,12 @@ public class Spell_Meld extends Spell
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,itemOne,auto),"^S<S-NAME> meld(s) "+itemOne.name()+" and "+itemTwo.name()+".^?");
-			if(mob.location().okMessage(mob,msg))
+			CMMsg msg=CMClass.getMsg(mob,itemOne,this,verbalCastCode(mob,itemOne,auto),"^S<S-NAME> meld(s) "+itemOne.name()+" and "+itemTwo.name()+".^?");
+			CMMsg msg2=CMClass.getMsg(mob,itemTwo,this,verbalCastCode(mob,itemOne,auto),null);
+			if(mob.location().okMessage(mob,msg)&&mob.location().okMessage(mob,msg2))
 			{
 				mob.location().send(mob,msg);
+				mob.location().send(mob,msg2);
 
 				String itemOneName=itemOne.Name();
 				String itemTwoName=itemTwo.Name();
@@ -285,6 +292,14 @@ public class Spell_Meld extends Spell
 					gc.basePhyStats().setWeight(itemOne.basePhyStats().weight()+itemTwo.basePhyStats().weight());
 					gc.basePhyStats().setAttackAdjustment((itemOne.basePhyStats().attackAdjustment()+itemTwo.basePhyStats().attackAdjustment())/2);
 					gc.basePhyStats().setDamage((itemOne.basePhyStats().damage()+itemTwo.basePhyStats().damage())/2);
+					if(itemOne instanceof Weapon)
+						gc.setAmmoCapacity(((Weapon)itemOne).ammunitionCapacity());
+					if(itemTwo instanceof Weapon)
+						gc.setAmmoCapacity(((Weapon)itemTwo).ammunitionCapacity() + gc.ammunitionCapacity());
+					if((itemOne instanceof Weapon)&&(((Weapon)itemOne).ammunitionType().length()>0))
+						gc.setAmmunitionType(((Weapon)itemOne).ammunitionType());
+					if((itemTwo instanceof Weapon)&&(((Weapon)itemTwo).ammunitionType().length()>0))
+						gc.setAmmunitionType(((Weapon)itemTwo).ammunitionType());
 					if(itemOne instanceof Weapon)
 						gc.setWeaponType(((Weapon)itemOne).weaponType());
 					else

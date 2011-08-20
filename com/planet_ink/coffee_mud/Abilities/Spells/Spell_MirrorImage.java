@@ -64,8 +64,11 @@ public class Spell_MirrorImage extends Spell
 				unInvoke();
 				return true;
 			}
-			int numberOfTargets = numberOfImages + 1;
-			if(randomizer.nextInt() % numberOfTargets == 0)
+			int intAdjustment = (mob.charStats().getMaxStat(CharStats.STAT_INTELLIGENCE) - mob.charStats().getStat(CharStats.STAT_INTELLIGENCE))/2;
+			if(intAdjustment < 1) intAdjustment = 1;
+			
+			int numberOfTargets = numberOfImages + intAdjustment;
+			if(randomizer.nextInt() % numberOfTargets < intAdjustment)
 			{
 				if(mob.location().show(mob,msg.source(),CMMsg.MSG_NOISYMOVEMENT,"<T-NAME> attack(s) a mirrored image!"))
 					numberOfImages--;
@@ -137,7 +140,6 @@ public class Spell_MirrorImage extends Spell
 		affectableStats.setArmor(affectableStats.armor() - 5-getXLEVELLevel(invoker()));
 	}
 
-
 	public void unInvoke()
 	{
 		// undo the affects of this spell
@@ -151,8 +153,6 @@ public class Spell_MirrorImage extends Spell
 		if(canBeUninvoked())
 			mob.tell("Your mirror images fade away.");
 	}
-
-
 
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
