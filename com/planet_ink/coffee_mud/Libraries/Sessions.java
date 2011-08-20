@@ -106,13 +106,17 @@ public class Sessions extends StdLibrary implements SessionsList
     {
         if(S==null) return;
         S.stopSession(true,true,false);
-        if(!S.isRunning()) return;
-        CMLib.s_sleep(1000);
-        S.stopSession(true,true,true);
-        if(!S.isRunning()) return;
-        remove(S);
+    	if(all.contains(S))
+	    	S.run();
+    	if(all.contains(S))
+    	{
+	        S.stopSession(true,true,true);
+	        remove(S);
+    	}
     }
-    public boolean activate() {
+    
+    public boolean activate() 
+    {
         if(thread==null)
             thread=new ThreadEngine.SupportThread("THSessions"+Thread.currentThread().getThreadGroup().getName().charAt(0), 
                     100, this, CMSecurity.isDebugging(CMSecurity.DbgFlag.UTILITHREAD), CMSecurity.DisFlag.SESSIONTHREAD);
@@ -124,7 +128,8 @@ public class Sessions extends StdLibrary implements SessionsList
         return true;
     }
     
-    public boolean shutdown() {
+    public boolean shutdown() 
+    {
         thread.shutdown();
         return true;
     }
@@ -182,7 +187,7 @@ public class Sessions extends StdLibrary implements SessionsList
     		}
     	}
 		
-    	if(((lastSweepTime - System.currentTimeMillis()) < MudHost.TIME_UTILTHREAD_SLEEP)
+    	if(((System.currentTimeMillis() - lastSweepTime) < MudHost.TIME_UTILTHREAD_SLEEP)
         ||(CMSecurity.isDisabled(CMSecurity.DisFlag.UTILITHREAD))
         ||(CMSecurity.isDisabled(CMSecurity.DisFlag.SESSIONTHREAD)))
             return;

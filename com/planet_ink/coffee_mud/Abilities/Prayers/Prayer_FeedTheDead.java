@@ -72,6 +72,11 @@ public class Prayer_FeedTheDead extends Prayer
 			mob.tell("Only the undead may be fed in this way.");
 			return false;
 		}
+		if(!target.isMonster())
+		{
+			mob.tell("That creature cannot be fed.");
+			return false;
+		}
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
