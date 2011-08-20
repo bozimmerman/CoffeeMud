@@ -107,11 +107,13 @@ public class Sessions extends StdLibrary implements SessionsList
         if(S==null) return;
         S.stopSession(true,true,false);
     	if(all.contains(S))
-	    	S.run();
-    	if(all.contains(S))
     	{
-	        S.stopSession(true,true,true);
-	        remove(S);
+	    	S.run();
+	    	if(all.contains(S))
+	    	{
+		        S.stopSession(true,true,true);
+		        remove(S);
+	    	}
     	}
     }
     
