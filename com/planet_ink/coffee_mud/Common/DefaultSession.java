@@ -494,6 +494,31 @@ public class DefaultSession implements Session
 	
     public void out(String c){ if(c!=null) out(c.toCharArray());}
     public void out(char c){ char[] cs={c}; out(cs);}
+    public void snoopSupportPrint(final String msg, final boolean noCache)
+    {
+		try{
+			if((snoops.size()>0)&&(snoopSuspensionStack<=0))
+            {
+				String msgColored;
+				String preFix=CMLib.coffeeFilter().colorOnlyFilter("^Z"+((mob==null)?"?":mob.Name())+":^N ",this);
+				final int crCheck=msg.indexOf('\n');
+				if((crCheck>=0)&&(crCheck<msg.length()-2))
+				{
+					StringBuffer buf=new StringBuffer(msg);
+					for(int i=buf.length()-1;i>=0;i--)
+						if((buf.charAt(i)=='\n')&&(i<buf.length()-2)&&(buf.charAt(i+1)=='\r'))
+							buf.insert(i+2, preFix);
+					msgColored=buf.toString();
+				}
+				else
+					msgColored=msg;
+				for(int s=0;s<snoops.size();s++)
+					((Session)snoops.get(s)).onlyPrint(preFix+msgColored,noCache);
+            }
+		}catch(IndexOutOfBoundsException x){}
+		
+    }
+    
 	public void onlyPrint(String msg){onlyPrint(msg,false);}
 	public void onlyPrint(String msg, boolean noCache)
 	{
@@ -501,27 +526,7 @@ public class DefaultSession implements Session
 			return;
 		try
 		{
-			try{
-				if((snoops.size()>0)&&(snoopSuspensionStack<=0))
-                {
-					String msgColored;
-					String preFix=CMLib.coffeeFilter().colorOnlyFilter("^Z"+((mob==null)?"?":mob.Name())+":^N ",this);
-					final int crCheck=msg.indexOf('\n');
-					if((crCheck>=0)&&(crCheck<msg.length()-2))
-					{
-						StringBuffer buf=new StringBuffer(msg);
-						for(int i=buf.length()-1;i>=0;i--)
-							if((buf.charAt(i)=='\n')&&(i<buf.length()-2)&&(buf.charAt(i+1)=='\r'))
-								buf.insert(i+2, preFix);
-						msgColored=buf.toString();
-					}
-					else
-						msgColored=msg;
-					for(int s=0;s<snoops.size();s++)
-						((Session)snoops.get(s)).onlyPrint(preFix+msgColored,noCache);
-                }
-			}catch(IndexOutOfBoundsException x){}
-
+			snoopSupportPrint(msg,noCache);
             String newMsg=CMLib.lang().finalTranslation(msg);
             if(newMsg!=null) msg=newMsg;
 
@@ -1254,7 +1259,9 @@ public class DefaultSession implements Session
 			StringBuffer inStr=CMLib.coffeeFilter().simpleInFilter(input,CMSecurity.isAllowed(mob,(mob!=null)?mob.location():null,"MXPTAGS"));
 			input=new StringBuffer("");
 			if(inStr==null) return null;
-			return inStr.toString();
+			final String str=inStr.toString();
+        	snoopSupportPrint(str+"\n\r",true);
+			return str;
 		}
 		finally
 		{
@@ -1288,7 +1295,9 @@ public class DefaultSession implements Session
 		StringBuffer inStr=CMLib.coffeeFilter().simpleInFilter(input,CMSecurity.isAllowed(mob,(mob!=null)?mob.location():null,"MXPTAGS"));
 		input=new StringBuffer("");
 		if(inStr==null) return null;
-		return inStr.toString();
+		final String str=inStr.toString();
+    	snoopSupportPrint(str+"\n\r",true);
+		return str;
 	}
 
 	public boolean confirm(final String Message, String Default, long maxTime)
@@ -1800,13 +1809,6 @@ public class DefaultSession implements Session
 	                    CMDS=(List)ALL_CMDS.elementAt(v);
 						setPreviousCmd(CMDS);
 						milliTotal+=(lastStop-lastStart);
-	
-						if(snoops.size()>0)
-	                    {
-	                        String msgColored=CMStrings.replaceAll(input,"\n\r",CMLib.coffeeFilter().colorOnlyFilter("\n\r^Z"+((mob==null)?"?":mob.Name())+":^N ",this));
-							for(int s=0;s<snoops.size();s++)
-								((Session)snoops.get(s)).rawPrintln(msgColored);
-	                    }
 	
 						lastStart=System.currentTimeMillis();
 	                    if(echoOn) rawPrintln(CMParms.combineWithQuotes(CMDS,0));
