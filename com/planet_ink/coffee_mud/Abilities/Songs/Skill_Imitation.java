@@ -50,7 +50,7 @@ public class Skill_Imitation extends BardSkill
 	public int craftType(){return Ability.ACODE_SPELL;}
 	public int usageType(){return USAGE_MOVEMENT;}
 
-	public Hashtable immitations=new Hashtable();
+	public STreeMap<String,String> immitations=new STreeMap<String,String>();
 	public String[] lastOnes=new String[2];
 
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
@@ -97,9 +97,8 @@ public class Skill_Imitation extends BardSkill
 		String cmd=(commands.size()>0)?CMParms.combine(commands,0).toUpperCase():"";
 		StringBuffer str=new StringBuffer("");
 		String found=null;
-		for(Enumeration e=immitations.keys();e.hasMoreElements();)
+		for(String key : immitations.keySet())
 		{
-			String key=(String)e.nextElement();
 			if((cmd.length()>0)&&(key.toUpperCase().startsWith(cmd)))
 				found=key;
 			str.append(key+" ");

@@ -504,9 +504,21 @@ public class DefaultSession implements Session
 			try{
 				if((snoops.size()>0)&&(snoopSuspensionStack<=0))
                 {
-                    String msgColored=CMStrings.replaceAll(msg,"\n\r",CMLib.coffeeFilter().colorOnlyFilter("\n\r^Z"+((mob==null)?"?":mob.Name())+":^N ",this));
+					String msgColored;
+					String preFix=CMLib.coffeeFilter().colorOnlyFilter("^Z"+((mob==null)?"?":mob.Name())+":^N ",this);
+					final int crCheck=msg.indexOf('\n');
+					if((crCheck>=0)&&(crCheck<msg.length()-2))
+					{
+						StringBuffer buf=new StringBuffer(msg);
+						for(int i=buf.length()-1;i>=0;i--)
+							if((buf.charAt(i)=='\n')&&(i<buf.length()-2)&&(buf.charAt(i+1)=='\r'))
+								buf.insert(i+2, preFix);
+						msgColored=buf.toString();
+					}
+					else
+						msgColored=msg;
 					for(int s=0;s<snoops.size();s++)
-						((Session)snoops.get(s)).onlyPrint(msgColored,noCache);
+						((Session)snoops.get(s)).onlyPrint(preFix+msgColored,noCache);
                 }
 			}catch(IndexOutOfBoundsException x){}
 
