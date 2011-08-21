@@ -481,9 +481,11 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 
 		if(E instanceof MOB)
 		{
-			text.append(CMLib.xml().convertXMLtoTag("MONEY",CMLib.beanCounter().getMoney((MOB)E)));
+			final int money = CMLib.beanCounter().getMoney((MOB)E);
+			text.append(CMLib.xml().convertXMLtoTag("MONEY",money));
             text.append(CMLib.xml().convertXMLtoTag("VARMONEY",""+((MOB)E).getMoneyVariation()));
 			CMLib.beanCounter().clearInventoryMoney((MOB)E,null);
+			((MOB)E).setMoney(money);
 			text.append(CMLib.xml().convertXMLtoTag("CLAN",((MOB)E).getClanID()));
 			text.append(CMLib.xml().convertXMLtoTag("GENDER",""+(char)((MOB)E).baseCharStats().getStat(CharStats.STAT_GENDER)));
 			text.append(CMLib.xml().convertXMLtoTag("MRACE",""+((MOB)E).baseCharStats().getMyRace().ID()));
