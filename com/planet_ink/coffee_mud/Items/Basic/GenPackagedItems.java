@@ -61,6 +61,8 @@ public class GenPackagedItems extends GenItem implements PackagedItems
     public boolean packageMe(Item I, int number)
     {
         if(I==null) return false;
+        if(!CMLib.utensils().disInvokeEffects(I))
+        	return false;
         name=CMLib.english().cleanArticles(I.Name());
         displayText="";
         setDescription("The contents of the package appears as follows:\n\r"+I.description());

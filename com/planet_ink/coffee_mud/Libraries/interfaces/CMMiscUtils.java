@@ -71,4 +71,6 @@ public interface CMMiscUtils extends CMLibrary
     
     public void swapRaces(Race newR, Race oldR);
     public void reloadCharClasses(CharClass oldC);
+    
+	public boolean disInvokeEffects(Environmental E);
 }

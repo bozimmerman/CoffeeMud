@@ -494,9 +494,15 @@ public class StdBanker extends StdShopKeeper implements Banker
 					}
 					else
 					{
-						addDepositInventory(msg.source(),(Item)msg.tool());
-					    CMLib.commands().postSay(this,mob,"Thank you, "+msg.tool().name()+" is safe with us.",true,false);
-						((Item)msg.tool()).destroy();
+				        if(CMLib.utensils().disInvokeEffects((Item)msg.tool()))
+				        {
+							Item item =(Item)msg.tool().copyOf();
+							addDepositInventory(msg.source(),item);
+						    CMLib.commands().postSay(this,mob,"Thank you, "+item.name()+" is safe with us.",true,false);
+							((Item)msg.tool()).destroy();
+				        }
+				        else
+						    CMLib.commands().postSay(this,mob,"Whoops! Where'd it go?",true,false);
 					}
 				}
 				return;

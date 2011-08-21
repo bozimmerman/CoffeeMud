@@ -175,38 +175,47 @@ public class DefaultCoffeeShop implements CoffeeShop
         if(number<0) number=1;
         if((isSold(ShopKeeper.DEAL_INVENTORYONLY))&&(!inEnumerableInventory(thisThang)))
         {
-        	Environmental E=(Environmental)thisThang.copyOf();
-        	CMLib.threads().deleteTick(E,-1);
-            enumerableInventory.addElement(E);
+	        if(CMLib.utensils().disInvokeEffects(thisThang))
+	        {
+	        	Environmental E=(Environmental)thisThang.copyOf();
+	        	CMLib.threads().deleteTick(E,-1);
+	            enumerableInventory.addElement(E);
+	        }
         }
         Environmental originalUncopiedThang=thisThang;
         if(thisThang instanceof InnKey)
         {
             Environmental copy=null;
-            for(int v=0;v<number;v++)
-            {
-                copy=(Environmental)thisThang.copyOf();
-                ((InnKey)copy).hangOnRack(shopKeeper());
-            	CMLib.threads().deleteTick(copy,-1);
-                storeInventory.add(new ShelfProduct(copy,1,-1));
-            }
+	        if(CMLib.utensils().disInvokeEffects(thisThang))
+	        {
+	            for(int v=0;v<number;v++)
+	            {
+	                copy=(Environmental)thisThang.copyOf();
+	                ((InnKey)copy).hangOnRack(shopKeeper());
+	            	CMLib.threads().deleteTick(copy,-1);
+	                storeInventory.add(new ShelfProduct(copy,1,-1));
+	            }
+	        }
         }
         else
         {
             Environmental copy=null;
-            thisThang=(Environmental)thisThang.copyOf();
-        	CMLib.threads().deleteTick(thisThang,-1);
-            for(ShelfProduct SP : storeInventory)
-            {
-                copy=(Environmental)SP.product;
-                if(copy.Name().equals(thisThang.Name()))
-                {
-                	SP.number+=number;
-                    if(price>0) SP.price=price;
-                    return copy;
-                }
-            }
-            storeInventory.add(new ShelfProduct(thisThang,number,price));
+	        if(CMLib.utensils().disInvokeEffects(thisThang))
+	        {
+	            thisThang=(Environmental)thisThang.copyOf();
+	        	CMLib.threads().deleteTick(thisThang,-1);
+	            for(ShelfProduct SP : storeInventory)
+	            {
+	                copy=(Environmental)SP.product;
+	                if(copy.Name().equals(thisThang.Name()))
+	                {
+	                	SP.number+=number;
+	                    if(price>0) SP.price=price;
+	                    return copy;
+	                }
+	            }
+	            storeInventory.add(new ShelfProduct(thisThang,number,price));
+	        }
         }
         if(originalUncopiedThang instanceof Item)
             ((Item)originalUncopiedThang).destroy();

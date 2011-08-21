@@ -38,32 +38,56 @@ public class Spell_FakeWeapon extends Spell
 	public String name(){return "Fake Weapon";}
 	protected int canAffectCode(){return CAN_ITEMS;}
 	protected int canTargetCode(){return 0;}
-	protected Item myItem=null;
 	public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_ILLUSION;}
     public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
 
 	public void unInvoke()
 	{
-		if(myItem==null) return;
+		Item item=null;
+		if(affected instanceof Item)
+			item=(Item)affected;
 		super.unInvoke();
-		if(canBeUninvoked())
-		{
-			Item item=myItem;
-			myItem=null;
+		if(item != null)
 			item.destroy();
-		}
 	}
 
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
-		if((affected!=null)
-		&&(affected instanceof Item)
-		&&(msg.tool()==affected)
-		&&(msg.targetMinor()==CMMsg.TYP_DAMAGE))
-			msg.setValue(0);
+		if((affected!=null)&&(affected instanceof Item))
+		{
+			if((msg.tool()==affected)
+			&&(msg.targetMinor()==CMMsg.TYP_DAMAGE))
+				msg.setValue(0);
+			else
+			if((msg.target()!=null)
+			&&((msg.target()==affected)
+				||(msg.target()==((Item)affected).container())
+				||(msg.target()==((Item)affected).ultimateContainer())))
+			{
+				if(((CMath.bset(msg.sourceCode(),CMMsg.MASK_MAGIC))
+				||(CMath.bset(msg.targetCode(),CMMsg.MASK_MAGIC))
+				||(CMath.bset(msg.othersCode(),CMMsg.MASK_MAGIC))))
+				{
+					Room room=null;
+					if((msg.source()!=null)
+					&&(msg.source().location()!=null))
+						room=msg.source().location();
+					if(room==null) room=CMLib.map().roomLocation(affected);
+					if(room!=null)
+						room.showHappens(CMMsg.MSG_OK_VISUAL,"Magic energy fizzles around "+affected.Name()+" and is absorbed into the air.");
+					return false;
+				}
+				else
+				if(msg.tool() instanceof Ability)
+				{
+					msg.source().tell("That doesn't appear to work on "+affected.name());
+					return false;
+				}
+			}
+		}
 		return super.okMessage(myHost,msg);
-
 	}
+
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		String weaponName=CMParms.combine(commands,0);
@@ -90,8 +114,8 @@ public class Spell_FakeWeapon extends Spell
 			{
 				mob.location().send(mob,msg);
 				Weapon weapon=(Weapon)CMClass.getItem("GenWeapon");
-				weapon.basePhyStats().setAttackAdjustment(100);
-				weapon.basePhyStats().setDamage(75);
+				weapon.basePhyStats().setAttackAdjustment(100 +(10 * super.getXLEVELLevel(mob)));
+				weapon.basePhyStats().setDamage(75+(3 * super.getXLEVELLevel(mob)));
 				weapon.basePhyStats().setDisposition(weapon.basePhyStats().disposition()|PhyStats.IS_BONUS);
 				weapon.setMaterial(RawMaterial.RESOURCE_COTTON);
 				switch(choice)
@@ -151,7 +175,6 @@ public class Spell_FakeWeapon extends Spell
 				weapon.recoverPhyStats();
 				mob.addItem(weapon);
 				mob.location().show(mob,null,weapon,CMMsg.MSG_OK_ACTION,"Suddenly, <S-NAME> own(s) <O-NAME>!");
-				myItem=weapon;
 				beneficialAffect(mob,weapon,asLevel,0);
 			}
 		}

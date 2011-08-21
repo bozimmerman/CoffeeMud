@@ -111,12 +111,14 @@ public class Package extends StdCommand
         {
             mob.location().send(mob,msg);
             thePackage.setName(name);
-            thePackage.packageMe(getThis,V.size());
-            for(int i=0;i<V.size();i++)
-                ((Item)V.elementAt(i)).destroy();
-            mob.location().addItem(thePackage,ItemPossessor.Expire.Player_Drop);
-            mob.location().recoverRoomStats();
-            mob.location().recoverRoomStats();
+            if(thePackage.packageMe(getThis,V.size()))
+            {
+	            for(int i=0;i<V.size();i++)
+	                ((Item)V.elementAt(i)).destroy();
+	            mob.location().addItem(thePackage,ItemPossessor.Expire.Player_Drop);
+	            mob.location().recoverRoomStats();
+	            mob.location().recoverRoomStats();
+            }
         }
         return false;
     }

@@ -34,7 +34,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("unchecked")
 public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 {
     public String ID(){return "CoffeeUtensils";}
@@ -298,6 +297,28 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 			altMsg=CMClass.getMsg(msg.source(),pair,msg.tool(),msg.sourceCode(),null,msg.targetCode(),null,msg.othersCode(),null);
 			pair.executeMsg(msg.source(),altMsg);
 		}
+	}
+	
+	public boolean disInvokeEffects(Environmental E)
+	{
+		if(E==null) return false;
+		if(E instanceof Affectable)
+		{
+			Affectable aE=(Affectable)E;
+			LinkedList<Ability> affects=new LinkedList<Ability>();
+			for(int a=aE.numEffects()-1;a>=0;a--) // personal affects
+			{
+				Ability A=aE.fetchEffect(a);
+				if(A!=null)
+					affects.add(A);
+			}
+			for(Ability A : affects)
+			{
+				if(A.canBeUninvoked() && (!A.isAutoInvoked()))
+					A.unInvoke();
+			}
+		}
+		return !E.amDestroyed();
 	}
 
 	public int processVariableEquipment(MOB mob)
@@ -565,20 +586,20 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
             return new XVector<DeadBody>((DeadBody)E);
         if(E instanceof Container)
         {
-            Vector Bs=new Vector();
+            Vector<DeadBody> Bs=new Vector<DeadBody>();
             List<Item> V=((Container)E).getContents();
             for(int v=0;v<V.size();v++)
                 Bs.addAll(getDeadBodies((Environmental)V.get(v)));
             return Bs;
         }
-        return new Vector();
+        return new Vector<DeadBody>();
     }
     
     
     public DVector parseLootPolicyFor(MOB mob)
     {
         if(mob==null) return new DVector(3);
-        Vector lootPolicy=(!mob.isMonster())?new Vector():CMParms.parseCommas(CMProps.getVar(CMProps.SYSTEM_ITEMLOOTPOLICY),true);
+        Vector<String> lootPolicy=(!mob.isMonster())?new Vector<String>():CMParms.parseCommas(CMProps.getVar(CMProps.SYSTEM_ITEMLOOTPOLICY),true);
         DVector policies=new DVector(3);
         for(int p=0;p<lootPolicy.size();p++)
         {
@@ -593,7 +614,7 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
             }
             else
                 compiledMask=MaskingLibrary.CompiledZapperMask.EMPTY();
-            Vector parsed=CMParms.parse(s);
+            Vector<String> parsed=CMParms.parse(s);
             int pct=100;
             for(int x=0;x<parsed.size();x++)
                 if(CMath.isInteger((String)parsed.elementAt(x)))
@@ -748,7 +769,7 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
     
     public void reloadCharClasses(CharClass oldC)
     {
-        for(Enumeration e=CMLib.map().rooms();e.hasMoreElements();)
+        for(Enumeration<Room> e=CMLib.map().rooms();e.hasMoreElements();)
         {
             Room room=(Room)e.nextElement();
             for(int i=0;i<room.numInhabitants();i++)
@@ -768,9 +789,9 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
                         break;
                     }
             }
-            for(e=CMLib.players().players();e.hasMoreElements();)
+            for(Enumeration<MOB> e2=CMLib.players().players();e2.hasMoreElements();)
             {
-                MOB M=(MOB)e.nextElement();
+                MOB M=(MOB)e2.nextElement();
                 for(int c=0;c<M.baseCharStats().numClasses();c++)
                     if(M.baseCharStats().getMyClass(c)==oldC)
                     {
@@ -789,7 +810,7 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
     
     public void swapRaces(Race newR, Race oldR)
     {
-        for(Enumeration e=CMLib.map().rooms();e.hasMoreElements();)
+        for(Enumeration<Room> e=CMLib.map().rooms();e.hasMoreElements();)
         {
             Room room=(Room)e.nextElement();
             for(int i=0;i<room.numInhabitants();i++)
@@ -801,9 +822,9 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
                 if(M.charStats().getMyRace()==oldR)
                     M.charStats().setMyRace(newR);
             }
-            for(e=CMLib.players().players();e.hasMoreElements();)
+            for(Enumeration<MOB> e2=CMLib.players().players();e2.hasMoreElements();)
             {
-                MOB M=(MOB)e.nextElement();
+                MOB M=(MOB)e2.nextElement();
                 if(M.baseCharStats().getMyRace()==oldR)
                     M.baseCharStats().setMyRace(newR);
                 if(M.charStats().getMyRace()==oldR)
@@ -852,7 +873,7 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
             rejuvedMOB.phyStats().setDisposition(CMath.unsetb(rejuvedMOB.basePhyStats().disposition(),PhyStats.IS_SITTING));
 			rejuvedMOB.location().show(rejuvedMOB,null,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> get(s) up!");
 			corpseRoom.recoverRoomStats();
-			Vector whatsToDo=CMParms.parse(CMProps.getVar(CMProps.SYSTEM_PLAYERDEATH));
+			Vector<String> whatsToDo=CMParms.parse(CMProps.getVar(CMProps.SYSTEM_PLAYERDEATH));
 			for(int w=0;w<whatsToDo.size();w++)
 			{
 				String whatToDo=(String)whatsToDo.elementAt(w);
