@@ -153,7 +153,8 @@ public class CMSecurity
 	public static final boolean isASysOp(final MOB mob)
 	{
 		return CMLib.masking().maskCheck(i().compiledSysop,mob,true)
-				||((mob.soulMate()!=null)
+				||((mob!=null)
+					&&(mob.soulMate()!=null)
 					&&(CMath.bset(mob.soulMate().getBitmap(),MOB.ATT_SYSOPMSGS))
 					&&(isASysOp(mob.soulMate())));
 	}
