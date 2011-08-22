@@ -68,7 +68,7 @@ public class Spell_MirrorImage extends Spell
 			if(intAdjustment < 1) intAdjustment = 1;
 			
 			int numberOfTargets = numberOfImages + intAdjustment;
-			if(randomizer.nextInt() % numberOfTargets < intAdjustment)
+			if(randomizer.nextInt() % numberOfTargets >= intAdjustment)
 			{
 				if(mob.location().show(mob,msg.source(),CMMsg.MSG_NOISYMOVEMENT,"<T-NAME> attack(s) a mirrored image!"))
 					numberOfImages--;
