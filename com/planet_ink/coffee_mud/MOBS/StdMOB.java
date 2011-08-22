@@ -330,7 +330,7 @@ public class StdMOB implements MOB
 		for(int i=0;i<M.numItems();i++)
 		{
 			I=M.getItem(i);
-			if(I!=null)
+			if((I!=null)&&(!CMath.bset(I.basePhyStats().sensesMask(), PhyStats.SENSE_ITEMNOCOPY)))
 				addItem((Item)I.copyOf());
 		}
 		Item I2=null;
