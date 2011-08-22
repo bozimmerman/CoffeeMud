@@ -152,7 +152,6 @@ public class Spell_FakeArmor extends Spell
 				armor.setDisplayText(armor.name()+" sits here");
 				armor.setDescription("looks like your size!");
 				armor.basePhyStats().setWeight(0);
-				armor.basePhyStats().setSensesMask(armor.basePhyStats().sensesMask()|PhyStats.SENSE_ITEMNOCOPY);
 				armor.recoverPhyStats();
 				armor.setBaseValue(0);
 				mob.addItem(armor);

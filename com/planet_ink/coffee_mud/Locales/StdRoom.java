@@ -1620,9 +1620,12 @@ public class StdRoom implements Room
 	
 	public void addItem(Item item)
 	{
-		item.setOwner(this);
-		contents.addElement(item);
-		item.recoverPhyStats();
+		if((item!=null)&&(!item.amDestroyed()))
+		{
+			item.setOwner(this);
+			contents.addElement(item);
+			item.recoverPhyStats();
+		}
 	}
 	public void delItem(Item item)
 	{

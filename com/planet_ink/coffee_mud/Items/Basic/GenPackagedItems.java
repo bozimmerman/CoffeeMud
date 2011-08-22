@@ -60,8 +60,9 @@ public class GenPackagedItems extends GenItem implements PackagedItems
     public void setReadableText(String text){readableText=(text.trim().length()==0)?null:CMLib.encoder().compressString(text);}
     public boolean packageMe(Item I, int number)
     {
-        if(I==null) return false;
-        if(!CMLib.utensils().disInvokeEffects(I))
+        if((I==null)
+        ||(!CMLib.utensils().disInvokeEffects(I))
+        ||(I.amDestroyed())) 
         	return false;
         name=CMLib.english().cleanArticles(I.Name());
         displayText="";

@@ -126,7 +126,8 @@ public class WeakItemCollection implements ItemCollection, CMCommon
 	
 	public void addItem(Item item)
 	{
-		innerContents.addElement(new WeakReference<Item>(item));
+		if((item!=null)&&(!item.amDestroyed()))
+			innerContents.addElement(new WeakReference<Item>(item));
 	}
 	
 	public void delItem(Item item)

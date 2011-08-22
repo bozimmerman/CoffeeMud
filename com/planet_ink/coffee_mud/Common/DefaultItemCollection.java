@@ -115,7 +115,8 @@ public class DefaultItemCollection implements ItemCollection, CMCommon
 	
 	public void addItem(Item item)
 	{
-		contents.addElement(item);
+		if((item!=null)&&(!item.amDestroyed()))
+			contents.addElement(item);
 	}
 	
 	public void delItem(Item item)

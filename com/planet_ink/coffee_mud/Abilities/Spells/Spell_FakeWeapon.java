@@ -172,7 +172,6 @@ public class Spell_FakeWeapon extends Spell
 				}
 				weapon.basePhyStats().setWeight(0);
 				weapon.setBaseValue(0);
-				weapon.basePhyStats().setSensesMask(weapon.basePhyStats().sensesMask()|PhyStats.SENSE_ITEMNOCOPY);
 				weapon.recoverPhyStats();
 				mob.addItem(weapon);
 				mob.location().show(mob,null,weapon,CMMsg.MSG_OK_ACTION,"Suddenly, <S-NAME> own(s) <O-NAME>!");

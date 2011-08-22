@@ -175,10 +175,10 @@ public class DefaultCoffeeShop implements CoffeeShop
         if(number<0) number=1;
         if((isSold(ShopKeeper.DEAL_INVENTORYONLY))&&(!inEnumerableInventory(thisThang)))
         {
-	        if(CMLib.utensils().disInvokeEffects(thisThang))
+        	Environmental E=(Environmental)thisThang.copyOf();
+        	CMLib.threads().deleteTick(E,-1);
+	        if(!E.amDestroyed())
 	        {
-	        	Environmental E=(Environmental)thisThang.copyOf();
-	        	CMLib.threads().deleteTick(E,-1);
 	            enumerableInventory.addElement(E);
 	        }
         }
@@ -186,24 +186,24 @@ public class DefaultCoffeeShop implements CoffeeShop
         if(thisThang instanceof InnKey)
         {
             Environmental copy=null;
-	        if(CMLib.utensils().disInvokeEffects(thisThang))
-	        {
-	            for(int v=0;v<number;v++)
-	            {
-	                copy=(Environmental)thisThang.copyOf();
+            for(int v=0;v<number;v++)
+            {
+                copy=(Environmental)thisThang.copyOf();
+            	CMLib.threads().deleteTick(copy,-1);
+    	        if(!copy.amDestroyed())
+    	        {
 	                ((InnKey)copy).hangOnRack(shopKeeper());
-	            	CMLib.threads().deleteTick(copy,-1);
 	                storeInventory.add(new ShelfProduct(copy,1,-1));
-	            }
-	        }
+    	        }
+            }
         }
         else
         {
             Environmental copy=null;
-	        if(CMLib.utensils().disInvokeEffects(thisThang))
+            thisThang=(Environmental)thisThang.copyOf();
+        	CMLib.threads().deleteTick(thisThang,-1);
+	        if(!thisThang.amDestroyed())
 	        {
-	            thisThang=(Environmental)thisThang.copyOf();
-	        	CMLib.threads().deleteTick(thisThang,-1);
 	            for(ShelfProduct SP : storeInventory)
 	            {
 	                copy=(Environmental)SP.product;

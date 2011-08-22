@@ -330,7 +330,7 @@ public class StdMOB implements MOB
 		for(int i=0;i<M.numItems();i++)
 		{
 			I=M.getItem(i);
-			if((I!=null)&&(!CMath.bset(I.basePhyStats().sensesMask(), PhyStats.SENSE_ITEMNOCOPY)))
+			if(I!=null)
 				addItem((Item)I.copyOf());
 		}
 		Item I2=null;
@@ -357,8 +357,16 @@ public class StdMOB implements MOB
 		for(final Enumeration<Ability> a=M.personalEffects();a.hasMoreElements();)
 		{
 			A=a.nextElement();
-			if((A!=null)&&(!A.canBeUninvoked()))
-				addEffect((Ability)A.copyOf());
+			if(A!=null)
+			{
+				A=(Ability)A.copyOf();
+				addEffect(A);
+				if(A.canBeUninvoked())
+				{
+					A.unInvoke();
+					delEffect(A);
+				}
+			}
 		}
 		for(final Enumeration<Behavior> e=M.behaviors();e.hasMoreElements();)
 		{
@@ -2756,9 +2764,12 @@ public class StdMOB implements MOB
 
 	public void addItem(Item item)
 	{
-		item.setOwner(this);
-		inventory.addElement(item);
-		item.recoverPhyStats();
+		if((item!=null)&&(!item.amDestroyed()))
+		{
+			item.setOwner(this);
+			inventory.addElement(item);
+			item.recoverPhyStats();
+		}
 	}
 	public void addItem(Item item, ItemPossessor.Expire expire) { addItem(item);}
 	

@@ -177,11 +177,20 @@ public class StdItem implements Item
             if(SE!=null) addScript((ScriptingEngine)SE.copyOf());
         }
 
+		Ability A;
 		for(final Enumeration<Ability> a=I.effects();a.hasMoreElements();)
 		{
-			final Ability A=a.nextElement();
-			if((A!=null)&&(!A.canBeUninvoked())&&(!A.ID().equals("ItemRejuv")))
-				addEffect((Ability)A.copyOf());
+			A=a.nextElement();
+			if((A!=null)&&(!A.ID().equals("ItemRejuv")))
+			{
+				A=(Ability)A.copyOf();
+				addEffect(A);
+				if(A.canBeUninvoked())
+				{
+					A.unInvoke();
+					delEffect(A);
+				}
+			}
 		}
 	}
 	public CMObject copyOf()
