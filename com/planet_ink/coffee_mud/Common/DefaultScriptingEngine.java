@@ -2836,7 +2836,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
             {
                 if(tlen==1) tt=parseBits(eval,t,"cr"); /* tt[t+0] */
                 String arg1=tt[t+0];
-                String arg2=tt[t+1];
+                String arg2=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+1]);
                 Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
                 if(E==null)
                     returnable=false;
