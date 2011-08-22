@@ -41,54 +41,6 @@ public class Spell_Disenchant extends Spell
 	public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_EVOCATION;	}
     public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
 
-	public static int disenchantItem(Item target)
-	{
-		int level=target.basePhyStats().level();
-		boolean doneSomething=false;
-		if(target instanceof Wand)
-		{
-			Ability A=((Wand)target).getSpell();
-			if(A!=null)
-				level=level-CMLib.ableMapper().lowestQualifyingLevel(A.ID())+2;
-			((Wand)target).setSpell(null);
-			((Wand)target).setUsesRemaining(0);
-			doneSomething=true;
-		}
-		else
-		if(target instanceof SpellHolder)
-		{
-			((SpellHolder)target).setSpellList("");
-			doneSomething=true;
-		}
-		else
-		if((target.phyStats().ability()>0)
-		&&(!(target instanceof Coins)))
-		{
-			level=level-(target.basePhyStats().ability()*3);
-			target.basePhyStats().setAbility(0);
-			doneSomething=true;
-		}
-
-		Vector affects=new Vector();
-		for(final Enumeration<Ability> a=target.effects();a.hasMoreElements();)
-		{
-			final Ability A=a.nextElement();
-			if(A!=null)
-				affects.addElement(A);
-		}
-		for(int a=0;a<affects.size();a++)
-		{
-			Ability A=(Ability)affects.elementAt(a);
-			A.unInvoke();
-			level=level-1;
-			target.delEffect(A);
-			doneSomething=true;
-		}
-		if(doneSomething) return level;
-		return -999;
-	}
-
-
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		Item target=getTarget(mob,mob.location(),givenTarget,commands,Wearable.FILTER_ANY);
@@ -105,7 +57,10 @@ public class Spell_Disenchant extends Spell
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				int level=disenchantItem(target);
+				int level=CMLib.utensils().disenchantItem(target);
+				if(target.amDestroyed())
+					mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,"<T-NAME> fades away!");
+				else
 				if(level>-999)
 				{
 					mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,"<T-NAME> fades and becomes dull!");

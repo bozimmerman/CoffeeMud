@@ -73,4 +73,5 @@ public interface CMMiscUtils extends CMLibrary
     public void reloadCharClasses(CharClass oldC);
     
 	public boolean disInvokeEffects(Environmental E);
+	public int disenchantItem(Item target);
 }

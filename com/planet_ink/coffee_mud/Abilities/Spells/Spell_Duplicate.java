@@ -89,24 +89,29 @@ public class Spell_Duplicate extends Spell
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,target.name()+" blurs and divides into two!");
 				Item newTarget=(Item)target.copyOf();
-				Spell_Disenchant.disenchantItem(newTarget);
-				newTarget.recoverPhyStats();
-				if(target.owner() instanceof MOB)
-					((MOB)target.owner()).addItem(newTarget);
+				mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,target.name()+" blurs and divides into two!");
+				CMLib.utensils().disenchantItem(newTarget);
+				if(newTarget.amDestroyed())
+					mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,"<T-NAME> fades away!");
 				else
-				if(target.owner() instanceof Room)
-					((Room)target.owner()).addItem(newTarget,ItemPossessor.Expire.Player_Drop);
-				else
-					mob.addItem(newTarget);
-				if(newTarget instanceof Coins)
-					((Coins)newTarget).putCoinsBack();
-				else
-				if(newTarget instanceof RawMaterial)
-					((RawMaterial)newTarget).rebundle();
-				target.recoverPhyStats();
-				mob.recoverPhyStats();
+				{
+					newTarget.recoverPhyStats();
+					if(target.owner() instanceof MOB)
+						((MOB)target.owner()).addItem(newTarget);
+					else
+					if(target.owner() instanceof Room)
+						((Room)target.owner()).addItem(newTarget,ItemPossessor.Expire.Player_Drop);
+					else
+						mob.addItem(newTarget);
+					if(newTarget instanceof Coins)
+						((Coins)newTarget).putCoinsBack();
+					else
+					if(newTarget instanceof RawMaterial)
+						((RawMaterial)newTarget).rebundle();
+					target.recoverPhyStats();
+					mob.recoverPhyStats();
+				}
 			}
 
 		}

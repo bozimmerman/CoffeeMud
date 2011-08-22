@@ -299,6 +299,54 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 		}
 	}
 	
+	public int disenchantItem(Item target)
+	{
+		int level=target.basePhyStats().level();
+		boolean doneSomething=false;
+		if(target instanceof Wand)
+		{
+			Ability A=((Wand)target).getSpell();
+			if(A!=null)
+				level=level-CMLib.ableMapper().lowestQualifyingLevel(A.ID())+2;
+			((Wand)target).setSpell(null);
+			((Wand)target).setUsesRemaining(0);
+			doneSomething=true;
+		}
+		else
+		if(target instanceof SpellHolder)
+		{
+			((SpellHolder)target).setSpellList("");
+			doneSomething=true;
+		}
+		else
+		if((target.phyStats().ability()>0)
+		&&(!(target instanceof Coins)))
+		{
+			level=level-(target.basePhyStats().ability()*3);
+			target.basePhyStats().setAbility(0);
+			doneSomething=true;
+		}
+
+		LinkedList<Ability> affects=new LinkedList<Ability>();
+		for(final Enumeration<Ability> a=target.effects();a.hasMoreElements();)
+		{
+			final Ability A=a.nextElement();
+			if(A!=null)
+				affects.add(A);
+		}
+		for(Ability A : affects)
+		{
+			A.unInvoke();
+			level=level-1;
+			target.delEffect(A);
+			doneSomething=true;
+		}
+		if(target.amDestroyed())
+			return 0;
+		if(doneSomething) return level;
+		return -999;
+	}
+
 	public boolean disInvokeEffects(Environmental E)
 	{
 		if(E==null) return false;
