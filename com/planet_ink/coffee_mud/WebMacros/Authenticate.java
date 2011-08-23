@@ -118,12 +118,37 @@ public class Authenticate extends StdWebMacro
 
     protected static String Encrypt(String ENCRYPTME)
 	{
-    	return B64Encoder.B64encodeBytes(EnDeCrypt(ENCRYPTME.getBytes()),B64Encoder.DONT_BREAK_LINES);
+    	try
+    	{
+	    	final byte[] buf=B64Encoder.B64encodeBytes(EnDeCrypt(ENCRYPTME.getBytes()),B64Encoder.DONT_BREAK_LINES).getBytes();
+	    	final StringBuilder s=new StringBuilder("");
+	    	for(byte b : buf)
+	    	{
+	    		String s2=Integer.toHexString(b);
+	    		while(s2.length()<2)s2="0"+s2;
+	    		s.append(s2);
+	    	}
+	    	return s.toString();
+    	}
+    	catch(Exception e)
+    	{
+    		return "";
+    	}
 	}
     
     protected static String Decrypt(String DECRYPTME)
 	{
-    	return new String(EnDeCrypt(B64Encoder.B64decode(DECRYPTME)));
+    	try
+    	{
+	    	byte[] buf=new byte[DECRYPTME.length()/2];
+	    	for(int i=0;i<DECRYPTME.length();i+=2)
+	    		buf[i/2]=(byte)(Integer.parseInt(DECRYPTME.substring(i,i+2),16) & 0xff);
+	    	return new String(EnDeCrypt(B64Encoder.B64decode(new String(buf))));
+    	}
+    	catch(Exception e)
+    	{
+    		return "";
+    	}
 	}
 
 	public static boolean authenticated(ExternalHTTPRequests httpReq, String login, String password)
