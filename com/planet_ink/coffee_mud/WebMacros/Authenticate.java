@@ -14,6 +14,7 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
+import java.lang.reflect.Method;
 import java.net.*;
 
 
@@ -66,35 +67,64 @@ public class Authenticate extends StdWebMacro
 		return "false";
 	}
 	
-    protected static final char[] ABCs="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890".toCharArray();
-    protected static final char[] FILTER;
-    protected static final int[] ABCDEXs;
-    static 
+    protected static byte[] FILTER=null;
+    public static byte[] getFilter()
     {
-    	// this is coffeemud's unsophisticated rot(mac address) encryption system.
-    	char[] filterc = "wrinkletellmetrueisthereanythingasnastyasyouwellmaybesothenumber7470issprettybad".toCharArray(); 
-    	try
+    	if(FILTER==null)
     	{
-    		NetworkInterface ni = NetworkInterface.getByInetAddress(InetAddress.getLocalHost());
-    		byte[] mac = ni.getHardwareAddress();
-    		if(mac != null)
-    		{
-    			int i=0;
-    			while(i<filterc.length)
-    			{
-    				filterc[i]=ABCs[Math.abs(mac[i % mac.length]) % ABCs.length];
-    				i++;
-    			}
-    		}
-    	} catch(Exception e) {
-    		Log.errOut("Authenticate",e);
+        	// this is coffeemud's unsophisticated xor(mac address) encryption system.
+    		byte[] filterc = new String("wrinkletellmetrueisthereanythingasnastyasyouwellmaybesothenumber7470issprettybad").getBytes(); 
+    		FILTER=new byte[256];
+        	try
+        	{
+    			for(int i=0;i<256;i++)
+    				FILTER[i]=filterc[i % filterc.length];
+    			String domain=CMProps.getVar(CMProps.SYSTEM_MUDDOMAIN);
+    			if(domain.length()>0)
+        			for(int i=0;i<256;i++)
+        				FILTER[i]^=domain.charAt(i % domain.length());
+    			String name=CMProps.getVar(CMProps.SYSTEM_MUDNAME);
+    			if(name.length()>0)
+        			for(int i=0;i<256;i++)
+        				FILTER[i]^=name.charAt(i % name.length());
+    			String email=CMProps.getVar(CMProps.SYSTEM_ADMINEMAIL);
+    			if(email.length()>0)
+        			for(int i=0;i<256;i++)
+        				FILTER[i]^=email.charAt(i % email.length());
+        		NetworkInterface ni = NetworkInterface.getByInetAddress(InetAddress.getLocalHost());
+        		byte[] mac = ni.getHardwareAddress();
+        		if(mac != null)
+        		{
+        			for(int i=0;i<256;i++)
+        				FILTER[i]^=Math.abs(mac[i % mac.length]);
+        		}
+        	} catch(Exception e) {
+        		e.printStackTrace();
+        	}
     	}
-    	FILTER=filterc;
-    	int[] abcdex=new int[256];
-    	for(int i=0;i<ABCs.length;i++)
-    		abcdex[ABCs[i]]=i+1;
-    	ABCDEXs=abcdex;
+    	return FILTER;
     }
+    
+    protected static byte[] EnDeCrypt(byte[] bytes)
+	{
+    	byte[] FILTER=getFilter();
+        for ( int i = 0, j = 0; i < bytes.length; i++, j++ ) 
+        {
+           if ( j >= FILTER.length ) j = 0;
+           bytes[i]=(byte)((bytes[i] ^ FILTER[j]) & 0xff); 
+        }
+        return bytes;
+	}
+
+    protected static String Encrypt(String ENCRYPTME)
+	{
+    	return B64Encoder.B64encodeBytes(EnDeCrypt(ENCRYPTME.getBytes()),B64Encoder.DONT_BREAK_LINES);
+	}
+    
+    protected static String Decrypt(String DECRYPTME)
+	{
+    	return new String(EnDeCrypt(B64Encoder.B64decode(DECRYPTME)));
+	}
 
 	public static boolean authenticated(ExternalHTTPRequests httpReq, String login, String password)
 	{
@@ -115,52 +145,6 @@ public class Authenticate extends StdWebMacro
 		}
 			
 		return false;
-	}
-
-    protected static String Encrypt(String ENCRYPTME)
-	{
-    	char[] INTOME=new char[ENCRYPTME.length()];
-    	char[] ENCRYPTMEC = ENCRYPTME.toCharArray(); 
-		for(int i=0; i<ENCRYPTMEC.length;i++)
-		{
-			char c = ENCRYPTMEC[i];
-			INTOME[i]=c;
-			int dex = ABCDEXs[c]-1; 
-			if (dex>=0)
-			{
-				for(int f=i;f<FILTER.length;f+=ENCRYPTMEC.length)
-				{
-					dex = dex + ABCDEXs[FILTER[f]];
-					if (dex>=ABCs.length)
-						dex = dex-ABCs.length;
-					INTOME[i]=ABCs[dex];
-				}
-			}
-		}
-		return new String(INTOME);
-	}
-
-    protected static String Decrypt(String DECRYPTME)
-	{
-    	char[] INTOME=new char[DECRYPTME.length()];
-    	char[] DECRYPTMEC = DECRYPTME.toCharArray(); 
-		for(int i=0; i<DECRYPTMEC.length;i++)
-		{
-			char c = DECRYPTMEC[i];
-			INTOME[i]=c;
-			int dex = ABCDEXs[c]-1; 
-			if (dex >=0)
-			{
-				for(int f=i;f<FILTER.length;f+=DECRYPTMEC.length)
-				{
-					dex = dex - ABCDEXs[FILTER[f]];
-					if (dex<0)
-						dex = dex+ABCs.length;
-					INTOME[i]=ABCs[dex];
-				}
-			}
-		}
-		return new String(INTOME);
 	}
 
     public static MOB getAuthenticatedMob(ExternalHTTPRequests httpReq)
