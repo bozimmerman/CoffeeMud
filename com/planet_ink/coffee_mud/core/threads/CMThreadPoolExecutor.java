@@ -39,6 +39,7 @@ public class CMThreadPoolExecutor extends ThreadPoolExecutor
 	protected long 				timeoutMillis;
 	protected CMThreadFactory 	threadFactory;
 	protected int 			   	queueSize = 0;
+	protected String		   	poolName = "Pool";
 	
 	public CMThreadPoolExecutor(String poolName,
 								int corePoolSize, int maximumPoolSize,
@@ -47,6 +48,7 @@ public class CMThreadPoolExecutor extends ThreadPoolExecutor
 	{
 		super(corePoolSize, maximumPoolSize, keepAliveTime, unit, new SynchronousQueue<Runnable>());
 		timeoutMillis=timeoutMins * 60 * 1000;
+		this.poolName=poolName;
 		threadFactory=new CMThreadFactory(poolName);
 		setThreadFactory(threadFactory);
 		this.queueSize=queueSize;
@@ -107,7 +109,7 @@ public class CMThreadPoolExecutor extends ThreadPoolExecutor
     		{
 	    		Collection<CMRunnable> runsKilled = getTimeoutOutRuns(1);
 	    		for(CMRunnable runnable : runsKilled)
-		    		Log.errOut("CMThreadPoolExecutor","Old(er) Runnable killed: "+runnable.toString());
+		    		Log.errOut("Pool_"+poolName,"Old(er) Runnable killed: "+runnable.toString());
 				synchronized(waitingQueue)
 				{
 					if(waitingQueue.contains(r))
@@ -117,12 +119,13 @@ public class CMThreadPoolExecutor extends ThreadPoolExecutor
 					if(waitingQueue.size() < queueSize)
 					{
 						waitingQueue.addLast((CMRunnable)r);
+						return;
 					}
 					else
-			    		Log.errOut("CMThreadPoolExecutor","Thread not executed: queue full!");
+			    		Log.errOut("Pool_"+poolName,"Thread not executed: queue full!");
 				}
     		}
-    		Log.errOut("CMThreadPoolExecutor","Thread rejected.");
+    		Log.errOut("Pool_"+poolName,"Thread rejected.");
     	}
     }
     
