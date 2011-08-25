@@ -86,6 +86,8 @@ public final class IMC2Driver extends Thread {
 
     public String imc_name = "";
     public short imc_log_on;
+    
+    private long reconnectBackoffTime = 20000;
 
     /* refresh timeout */
     final static int  IMC_TIMEOUT = 650;
@@ -293,7 +295,7 @@ public final class IMC2Driver extends Thread {
 
         imc_write_to_socket(out);
         imc_read_from_socket(in);
-
+        reconnectBackoffTime=20000;
         return true;
     }
 
@@ -1432,10 +1434,11 @@ public final class IMC2Driver extends Thread {
 			&&(errMsg.toUpperCase().indexOf("CONNECTION")>=0))
 			{
 				imc_active = IA_NONE;
-				tracef(1, "Waiting 20 seconds and try to reconnect.");
+				tracef(1, "Waiting "+(reconnectBackoffTime/1000)+" seconds and try to reconnect.");
 				try 
 				{
-				    sleep(20000);
+				    sleep(reconnectBackoffTime);
+				    reconnectBackoffTime=reconnectBackoffTime*2;
 				}
 				catch (Exception ex) {}
 				this.imc_startup(true,
@@ -1464,9 +1467,10 @@ public final class IMC2Driver extends Thread {
         catch (Exception e) {
             tracef(1, "write socket error: " + e.toString());
             imc_active = IA_NONE;
-            tracef(1, "Waiting 20 seconds and try to reconnect.");
+            tracef(1, "Waiting "+(reconnectBackoffTime/1000)+" seconds and try to reconnect.");
             try {
-                sleep(20000);
+                sleep(reconnectBackoffTime);
+			    reconnectBackoffTime=reconnectBackoffTime*2;
             }
             catch (Exception ex) {}
             this.imc_startup(true,
