@@ -204,7 +204,10 @@ public class Arrest extends StdBehavior implements LegalBehavior
 			final Room R=CMLib.map().roomLocation(W.criminal());
 			if(R!=null)
 			{
-				CMMsg msg=CMClass.getMsg(W.witness(), W.criminal(), W.victim(), CMMsg.MASK_ALWAYS|CMMsg.MSG_LEGALWARRANT, CMMsg.MSG_LEGALWARRANT, CMMsg.MSG_LEGALWARRANT, W.crime());
+				MOB accuser=W.witness();
+				if(accuser==null) accuser=W.victim();
+				if(accuser==null) accuser=W.criminal();
+				CMMsg msg=CMClass.getMsg(accuser, W.criminal(), W.victim(), CMMsg.MASK_ALWAYS|CMMsg.MSG_LEGALWARRANT, CMMsg.MSG_LEGALWARRANT, CMMsg.MSG_LEGALWARRANT, W.crime());
 				if(R.okMessage(W.criminal(),msg))
 					R.send(W.criminal(), msg);
 				else
