@@ -1999,7 +1999,7 @@ public class StdRoom implements Room
     public ScriptingEngine fetchScript(int x){try{return (ScriptingEngine)scripts.elementAt(x);}catch(Exception e){} return null;}
     
     public int getSaveStatIndex(){return (xtraValues==null)?getStatCodes().length:getStatCodes().length-xtraValues.length;}
-	protected static final String[] STDCODES={"CLASS","DISPLAY","DESCRIPTION","TEXT"};
+	protected static final String[] STDCODES={"CLASS","DISPLAY","DESCRIPTION","TEXT","AFFBEHAV"};
     private static String[] codes=null;
     public String[] getStatCodes()
     {
@@ -2016,6 +2016,7 @@ public class StdRoom implements Room
 		case 1: return displayText();
 		case 2: return description();
 		case 3: return text();
+		case 4: return CMLib.coffeeMaker().getExtraEnvPropertiesStr(this);
         default: return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
 		}
 	}
@@ -2027,6 +2028,21 @@ public class StdRoom implements Room
 		case 1: setDisplayText(val); break;
 		case 2: setDescription(val); break;
 		case 3: setMiscText(val); break;
+		case 4:
+		{
+			while(numEffects()>0)
+			{
+				Ability A=fetchEffect(0);
+				if(A!=null){ A.unInvoke(); delEffect(A);}
+			}
+			while(numBehaviors()>0)
+			{
+				Behavior B=fetchBehavior(0);
+				if(B!=null) delBehavior(B);
+			}
+			CMLib.coffeeMaker().setExtraEnvProperties(this,CMLib.xml().parseAllXML(val));
+			break;
+		}
         default:
             CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code, val);
             break;

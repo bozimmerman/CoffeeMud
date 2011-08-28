@@ -783,4 +783,34 @@ public class StdThinGrid extends StdRoom implements GridLocale
 		}
 		return true;
 	}
+	
+	private final static String[] MYCODES={"XSIZE","YSIZE"};
+	public String getStat(String code)
+	{
+		switch(getStdGridCodeNum(code))
+		{
+		case 0: return Integer.toString(xGridSize());
+		case 1: return Integer.toString(yGridSize());
+        default: return super.getStat(code);
+        }
+	}
+	public void setStat(String code, String val)
+	{
+		switch(getStdGridCodeNum(code))
+		{
+		case 0: setXGridSize(CMath.s_parseIntExpression(val)); break;
+		case 1: setYGridSize(CMath.s_parseIntExpression(val)); break;
+        default: super.setStat(code, val); break;
+		}
+	}
+	protected int getStdGridCodeNum(String code){
+		for(int i=0;i<MYCODES.length;i++)
+			if(code.equalsIgnoreCase(MYCODES[i])) return i;
+		return -1;
+	}
+	private static String[] codes=null;
+	public String[] getStatCodes() 
+	{ 
+		return (codes != null) ? codes : (codes =  CMProps.getStatCodesList(CMParms.appendToArray(STDCODES, MYCODES),this));
+	}
 }

@@ -304,11 +304,11 @@ public class GModify extends StdCommand
         return didAnything;
     }
     
-    public void sortEnumeratedList(Enumeration e, Vector allKnownFields, StringBuffer allFieldsMsg)
+    public void sortEnumeratedList(Enumeration<? extends Environmental> e, Vector<String> allKnownFields, StringBuffer allFieldsMsg)
     {
         for(;e.hasMoreElements();)
         {
-            Environmental E=(Environmental)e.nextElement();
+            Environmental E=e.nextElement();
             String[] fields=E.getStatCodes();
             for(int x=0;x<fields.length;x++)
                 if(!allKnownFields.contains(fields[x]))
@@ -398,6 +398,7 @@ public class GModify extends StdCommand
         sortEnumeratedList(CMClass.clanItems(),allKnownFields,allFieldsMsg);
         sortEnumeratedList(CMClass.miscMagic(),allKnownFields,allFieldsMsg);
         sortEnumeratedList(CMClass.miscTech(),allKnownFields,allFieldsMsg);
+        sortEnumeratedList(CMClass.locales(),allKnownFields,allFieldsMsg);
 
         allKnownFields.addElement("REJUV");
         allFieldsMsg.append("REJUV ");
@@ -618,6 +619,9 @@ public class GModify extends StdCommand
 	            if(R==null) continue;
 	            boolean savemobs=false;
 	            boolean saveitems=false;
+	            boolean saveroom=false;
+                if(tryModfy(mob,R,R,changes,onfields,noisy))
+                	saveroom=true;
 	            for(int i=0;i<R.numItems();i++)
 	            {
 	                Item I=R.getItem(i);
@@ -653,12 +657,23 @@ public class GModify extends StdCommand
 		                }
 	                }
 	            }
+	            if(saveroom) CMLib.database().DBUpdateRoom(R);
 	            if(saveitems) CMLib.database().DBUpdateItems(R);
 	            if(savemobs) CMLib.database().DBUpdateMOBs(R);
 	            if((mob.session()!=null)&&(changes.size()>0)) 
 	                mob.session().rawPrint(".");
 	            A.setAreaState(oldFlag);
 	            if(changes.size()==0) R.destroy();
+	            if(saveroom)
+	            {
+	            	Room realR=CMLib.map().getRoom(R);
+	            	if(realR!=null)
+	            	{
+		            	realR.clearSky();
+		            	if(R instanceof GridLocale)
+		            		((GridLocale)R).clearGrid(realR);
+	            	}
+	            }
 	    	}
         }
 
