@@ -37,6 +37,7 @@ import java.util.concurrent.TimeUnit;
 public class RoomData extends StdWebMacro
 {
 	public String name()	{return this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);}
+	static final String[][] STAT_CHECKS={{"DISPLAY","NAME"},{"CLASS","CLASSES"},{"DESCRIPTION","DESCRIPTION"},{"XSIZE","XGRID"},{"YSIZE","XGRID"},{"IMAGE","IMAGE"}};
 	
 	public static List<MOB> getMOBCache()
 	{
@@ -385,6 +386,167 @@ public class RoomData extends StdWebMacro
 	}
 
 
+	public static Pair<String,String>[] makeMergableRoomFields(Room R, Vector<String> multiRoomList)
+	{
+		List<Pair<String,String>> fixtures=new Vector<Pair<String,String>>();
+		R=(Room)R.copyOf();
+		Vector<MOB> inhabs=new Vector<MOB>();
+		for(Enumeration<MOB> a =R.inhabitants();a.hasMoreElements();)
+		{
+			final MOB M=a.nextElement();
+			if(M!=null)
+			{
+            	CMLib.catalog().updateCatalogIntegrity(M);
+				inhabs.add(M);
+			}
+		}
+		Vector<Item> items=new Vector<Item>();
+		for(Enumeration<Item> a =R.items();a.hasMoreElements();)
+		{
+			final Item I=a.nextElement();
+			if(I!=null)
+			{
+            	CMLib.catalog().updateCatalogIntegrity(I);
+				items.add(I);
+			}
+		}
+		Vector<Ability> affects=new Vector<Ability>();
+		for(Enumeration<Ability> a =R.effects();a.hasMoreElements();)
+		{
+			final Ability A=a.nextElement();
+			if(A!=null) affects.add(A);
+		}
+		Vector<Behavior> behavs=new Vector<Behavior>();
+		for(Enumeration<Behavior> b=R.behaviors();b.hasMoreElements();)
+		{
+			final Behavior B=b.nextElement();
+			if(B!=null) behavs.add(B);
+		}
+		for(String roomID : multiRoomList)
+			if(!roomID.equalsIgnoreCase(R.roomID()))
+			{
+				Room R2=CMLib.map().getRoom(roomID);
+				if(R2!=null)
+				{
+					CMLib.map().resetRoom(R2);
+					for(final String[] set : STAT_CHECKS)
+						if(!R.getStat(set[0]).equalsIgnoreCase(R2.getStat(set[0])))
+							fixtures.add(new Pair<String,String>(set[1], ""));
+					for(Iterator<Ability> a=affects.iterator();a.hasNext();)
+					{
+						final Ability A=a.next();
+						if((R2.fetchEffect(A.ID())==null)
+						||(!R2.fetchEffect(A.ID()).text().equalsIgnoreCase(A.text())))
+							a.remove();
+					}
+					for(Iterator<Behavior> b=behavs.iterator();b.hasNext();)
+					{
+						final Behavior B=b.next();
+						if((R2.fetchBehavior(B.ID())==null)
+						||(!R2.fetchBehavior(B.ID()).getParms().equalsIgnoreCase(B.getParms())))
+							b.remove();
+					}
+					for(Iterator<MOB> m=inhabs.iterator();m.hasNext();)
+					{
+						MOB M=m.next();
+						boolean found=false;
+	                    if((M!=null)&&(M.isSavable()))
+	                    {
+	                		for(Enumeration<MOB> m2 =R2.inhabitants();m2.hasMoreElements();)
+	                		{
+	                			final MOB M2=m2.nextElement();
+	                			if(M2!=null)
+			                    {
+			                    	CMLib.catalog().updateCatalogIntegrity(M2);
+			                    	if((M2.isSavable())&&(M2.sameAs(M)))
+			                    	{
+			                    		found=true;
+			                    		break;
+			                    	}
+			                    }
+							}
+	                    }
+						if((M!=null)&&(!found))
+							m.remove();
+					}
+					for(Iterator<Item> i=items.iterator();i.hasNext();)
+					{
+						final Item I=i.next();
+						boolean found=false;
+	                    if((I!=null)&&(I.isSavable()))
+	                    {
+	    					for(Enumeration<Item> i2 =R2.items();i2.hasMoreElements();)
+	    					{
+	    						final Item I2=i2.nextElement();
+			                    if(I2!=null)
+			                    {
+			                    	CMLib.catalog().updateCatalogIntegrity(I2);
+			                    	if((I2.isSavable())&&(I2.sameAs(I)))
+			                    	{
+			                    		found=true;
+			                    		break;
+			                    	}
+			                    }
+							}
+	                    }
+						if((I!=null)&&(!found))
+							i.remove();
+					}
+				}
+			}
+		List<Item> itemCache=contributeItems(items);
+		for(int i=0;i<items.size();i++)
+		{
+			Item I=items.get(i);
+			String code=getAppropriateCode(I,R,items,itemCache);
+			fixtures.add(new Pair<String,String>("ITEM"+(i+1), code));
+			fixtures.add(new Pair<String,String>("ITEMWORN"+(i+1),""));
+			fixtures.add(new Pair<String,String>("ITEMCONT"+(i+1),(I.container()==null)?"":""+(Object)I.container()));
+		}
+		if(items.size()==0)
+			fixtures.add(new Pair<String,String>("ITEM1",""));
+		else
+			fixtures.add(new Pair<String,String>("ITEM"+(items.size()+1),null));
+		List<MOB> mobCache=contributeMOBs(inhabs);
+		for(int m=0;m<inhabs.size();m++)
+		{
+			MOB M=inhabs.get(m);
+    		String code=getAppropriateCode(M,R,inhabs,mobCache);
+    		fixtures.add(new Pair<String,String>("MOB"+(m+1),code));
+		}
+		if(inhabs.size()==0)
+			fixtures.add(new Pair<String,String>("MOB1",""));
+		else
+			fixtures.add(new Pair<String,String>("MOB"+(inhabs.size()+1),null));
+		for(int a=0;a<affects.size();a++)
+		{
+			final Ability A=affects.get(a);
+			fixtures.add(new Pair<String,String>("AFFECT"+(a+1),A.ID()));
+			fixtures.add(new Pair<String,String>("ADATA"+(a+1),A.text()));
+		}
+		if(affects.size()==0)
+		{
+			fixtures.add(new Pair<String,String>("AFFECT1",""));
+			fixtures.add(new Pair<String,String>("ADATA1",""));
+		}
+		else
+			fixtures.add(new Pair<String,String>("AFFECT"+(affects.size()+1),null));
+		for(int b=0;b<behavs.size();b++)
+		{
+			final Behavior B=behavs.get(b);
+			fixtures.add(new Pair<String,String>("BEHAV"+(b+1),B.ID()));
+			fixtures.add(new Pair<String,String>("BDATA"+(b+1),B.getParms()));
+		}
+		if(behavs.size()==0)
+		{
+			fixtures.add(new Pair<String,String>("BEHAV1",""));
+			fixtures.add(new Pair<String,String>("BDATA1",""));
+		}
+		else
+			fixtures.add(new Pair<String,String>("BEHAV"+(behavs.size()+1),null));
+		return fixtures.toArray(new Pair[0]);
+	}
+	
 	public String runMacro(ExternalHTTPRequests httpReq, String parm)
 	{
 		java.util.Map<String,String> parms=parseParms(parm);
@@ -395,6 +557,9 @@ public class RoomData extends StdWebMacro
 		if(!CMProps.getBoolVar(CMProps.SYSTEMB_MUDSTARTED))
 			return CMProps.getVar(CMProps.SYSTEM_MUDSTATUS);
 
+		String multiFlagStr=httpReq.getRequestParameter("MULTIROOMFLAG");
+		boolean multiFlag=(multiFlagStr!=null)&& multiFlagStr.equalsIgnoreCase("on");
+		Vector<String> multiRoomList=CMParms.parseSemicolons(httpReq.getRequestParameter("MULTIROOMLIST"),false);
 		Room R=(Room)httpReq.getRequestObjects().get(last);
 		if(R==null)
 		{
@@ -402,6 +567,21 @@ public class RoomData extends StdWebMacro
 			if(R==null)
 				return "No Room?!";
 			CMLib.map().resetRoom(R);
+			if(multiFlag 
+			&&(multiRoomList.size()>1)
+			&&(httpReq.getRequestParameter("MOB1")==null)
+			&&(httpReq.getRequestParameter("ITEM1")==null))
+			{
+				Pair<String,String> pairs[]=makeMergableRoomFields(R,multiRoomList);
+				if(pairs!=null)
+					for(final Pair<String,String> p : pairs)
+					{
+						if(p.second==null)
+							httpReq.removeRequestParameter(p.first);
+						else
+							httpReq.addRequestParameters(p.first,p.second);
+					}
+			}
 			httpReq.getRequestObjects().put(last,R);
 		}
     	synchronized(("SYNC"+R.roomID()).intern())
@@ -412,14 +592,14 @@ public class RoomData extends StdWebMacro
 			if(parms.containsKey("NAME"))
 			{
 				String name=httpReq.getRequestParameter("NAME");
-				if((name==null)||(name.length()==0))
+				if((name==null)||((name.length()==0)&&(!multiFlag)))
 					name=R.displayText();
 				str.append(name);
 			}
 			if(parms.containsKey("CLASSES"))
 			{
 				String className=httpReq.getRequestParameter("CLASSES");
-				if((className==null)||(className.length()==0))
+				if((className==null)||((className.length()==0)&&(!multiFlag)))
 					className=CMClass.classID(R);
 				Object[] sorted=(Object[])Resources.getResource("MUDGRINDER-LOCALES");
 				if(sorted==null)
@@ -429,6 +609,13 @@ public class RoomData extends StdWebMacro
 						sortMe.addElement(CMClass.classID(l.nextElement()));
 					sorted=(new TreeSet(sortMe)).toArray();
 					Resources.submitResource("MUDGRINDER-LOCALES",sorted);
+				}
+				if(multiFlag)
+				{
+					str.append("<OPTION VALUE=\"\"");
+					if(className.length()==0)
+						str.append(" SELECTED");
+					str.append(">&nbsp;&nbsp;");
 				}
 				for(int r=0;r<sorted.length;r++)
 				{
@@ -445,28 +632,28 @@ public class RoomData extends StdWebMacro
 			if(parms.containsKey("IMAGE"))
 			{
 				String name=httpReq.getRequestParameter("IMAGE");
-				if((name==null)||(name.length()==0))
+				if((name==null)||((name.length()==0)&&(!multiFlag)))
 					name=R.rawImage();
 				str.append(name);
 			}
 			if(parms.containsKey("DESCRIPTION"))
 			{
 				String desc=httpReq.getRequestParameter("DESCRIPTION");
-				if((desc==null)||(desc.length()==0))
+				if((desc==null)||((desc.length()==0)&&(!multiFlag)))
 					desc=R.description();
 				str.append(desc);
 			}
 			if((parms.containsKey("XGRID"))&&(R instanceof GridLocale))
 			{
 				String size=httpReq.getRequestParameter("XGRID");
-				if((size==null)||(size.length()==0))
+				if((size==null)||((size.length()==0)&&(!multiFlag)))
 					size=((GridLocale)R).xGridSize()+"";
 				str.append(size);
 			}
 			if((parms.containsKey("YGRID"))&&(R instanceof GridLocale))
 			{
 				String size=httpReq.getRequestParameter("YGRID");
-				if((size==null)||(size.length()==0))
+				if((size==null)||((size.length()==0)&&(!multiFlag)))
 					size=((GridLocale)R).yGridSize()+"";
 				str.append(size);
 			}

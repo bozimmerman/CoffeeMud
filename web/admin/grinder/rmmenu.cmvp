@@ -31,6 +31,10 @@
 <INPUT TYPE=HIDDEN NAME=LINKSTO VALUE="@RequestParameter?LINKSTO@">
 <INPUT TYPE=HIDDEN NAME=OLDROOM VALUE="@RequestParameter?OLDROOM@">
 <INPUT TYPE=HIDDEN NAME=OLDLINK VALUE="@RequestParameter?OLDLINK@">
+<INPUT TYPE=HIDDEN NAME=MULTIROOMFLAG VALUE="@RequestParameter?MULTIROOMFLAG@">
+<INPUT TYPE=HIDDEN NAME=MULTIROOMLIST VALUE="@RequestParameter?MULTIROOMLIST@">
+<TABLE WIDTH=100% BORDER=0 CELLPADDING=0 CELLSPACING=0>
+<TR><TD WIDTH=65% ALIGN=LEFT>
 <IMG SRC="/grinder/images/grinder.gif" WIDTH=80 HEIGHT=80 ALT="" ALIGN=LEFT BORDER="0">
 <B>Room: @RequestParameter?ROOM@ (@RoomName@)</B>
 <BR>
@@ -38,6 +42,30 @@
 <INPUT TYPE=BUTTON NAME=DELROOM VALUE="Delete Room" ONCLICK="if(confirm('Are you sure you want to delete this room?'))Clicked('/grinder/deleteroom.cmvp');">
 <INPUT TYPE=BUTTON NAME=RESETROOM VALUE="Reset Room" ONCLICK="Clicked('/grinder/resetroom.cmvp');">
 <INPUT TYPE=BUTTON NAME=CANCEL VALUE="Cancel" ONCLICK="Clicked('/grinder/modarea.cmvp');">
+</TD><TD ALIGN=RIGHT VALIGN=TOP>
+	<FONT COLOR=YELLOW><B>@if?CheckReqParm?MULTIROOMFLAG=on@Multiple Rooms Selected@endif@</B></FONT>
+	<BR>
+	<TEXTAREA NAME="MULTISHOW" SIZE=50 WRAP style="background-color:black;border:0;color:white;font-size:9;text-align:right" ROWS=4></TEXTAREA>
+</TD></TR></TABLE>
+<SCRIPT LANGUAGE=JavaScript>
+<!--
+	var rooms=document.AREAEDIT.MULTIROOMLIST.value;
+	var outer=rooms.indexOf(';');
+	while(outer>=0)
+	{
+		if(outer>0)
+		{
+			var roomid=rooms.substr(0,outer);
+			var inner=roomid.indexOf('#');
+			if(inner>0)
+				roomid=roomid.substr(inner);
+			document.AREAEDIT.MULTISHOW.value=document.AREAEDIT.MULTISHOW.value+' '+roomid;
+		}
+		rooms=rooms.substr(outer+1);
+		outer=rooms.indexOf(';');
+	}
+//-->
+</SCRIPT>
 </FORM>
 </BODY>
 </HTML>

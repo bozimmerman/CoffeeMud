@@ -11,8 +11,17 @@
 	<title>CoffeeMud MUDGrinder</title>
 	<SCRIPT LANGUAGE="JavaScript">
 	<!--
+		var shiftDown=true;
 		function RC(room)
 		{
+			document.SELECTAREA.MULTIROOMFLAG.value=shiftDown?"on":"";
+			if(shiftDown)
+			{
+				if(document.SELECTAREA.MULTIROOMLIST.value.indexOf(room+';')<0)
+					document.SELECTAREA.MULTIROOMLIST.value=document.SELECTAREA.MULTIROOMLIST.value+room+';';
+			}
+			else
+				document.SELECTAREA.MULTIROOMLIST.value='';
 			Clicked('rmmenu.cmvp','',room,'');
 		}
 		function EC(dir,room)
@@ -34,61 +43,95 @@
 			document.SELECTAREA.submit();
 		}
 
-function showSelected() {
-	showDiv(document.all.layerSelect.value);
-}
+		function mouseDown(e) 
+		{
+			var ctrlPressed=0;
+			var altPressed=0;
+			var shiftPressed=0;
 
-function showDiv(pass) { 
-  var divs = document.getElementsByTagName('div'); 
-  for(i=0;i<divs.length;i++){ 
-    if((divs[i].id.match(pass))||(divs[i].id.match('layersMenu'))){//if they are 'see' divs 
-      if (document.getElementById) // DOM3 = IE5, NS6 
-        divs[i].style.visibility="visible";// show/hide 
-      else 
-        if (document.layers) // Netscape 4 
-          document.layers[divs[i]].display = 'visible'; 
-        else // IE 4 
-          document.all.divs[i].visibility = 'visible'; 
-    } else { 
-      if (document.getElementById) 
-        divs[i].style.visibility="hidden"; 
-      else 
-        if (document.layers) // Netscape 4 
-          document.divs[i].visibility = 'hidden'; 
-        else // IE 4 
-          document.all.divs[i].visibility = 'hidden'; 
-    } 
-  } 
-} 
+			if (parseInt(navigator.appVersion)>3) 
+			{
+				var evt = navigator.appName=="Netscape" ? e:event;
+				if (navigator.appName=="Netscape" && parseInt(navigator.appVersion)==4) 
+				{
+					var mString =(e.modifiers+32).toString(2).substring(3,6);
+				    shiftDown=(mString.charAt(0)=="1");
+				}
+  				else 
+  				{
+					shiftDown=evt.shiftKey;
+				}
+			 }
+ 			 return true;
+		 }
+		 
+		 if (parseInt(navigator.appVersion)>3) 
+		 {
+		 	document.onmousedown = mouseDown;
+		 	if (navigator.appName=="Netscape") 
+		  		document.captureEvents(Event.MOUSEDOWN);
+		 }
+		 
+		function showSelected() 
+		{
+			showDiv(document.all.layerSelect.value);
+		}
 
-function setVariables() {
-  if (navigator.appName == "Netscape") {
-    v=".top=";
-    w=".left=";
-    dS="document.";
-    sD="";
-    x="window.pageXOffset";
-    y="window.pageYOffset";
-  }
-  else {
-    v=".pixelTop=";
-    w=".pixelLeft=";
-    dS="";
-    sD=".style";
-    x="document.body.scrollLeft";
-    y="document.body.scrollTop";
-   }
-}
-function preloadImages() {}
+		function showDiv(pass) 
+		{
+		  var divs = document.getElementsByTagName('div'); 
+		  for(i=0;i<divs.length;i++){ 
+		    if((divs[i].id.match(pass))||(divs[i].id.match('layersMenu'))){//if they are 'see' divs 
+		      if (document.getElementById) // DOM3 = IE5, NS6 
+		        divs[i].style.visibility="visible";// show/hide 
+		      else 
+		        if (document.layers) // Netscape 4 
+		          document.layers[divs[i]].display = 'visible'; 
+		        else // IE 4 
+		          document.all.divs[i].visibility = 'visible'; 
+		    } else { 
+		      if (document.getElementById) 
+		        divs[i].style.visibility="hidden"; 
+		      else 
+		        if (document.layers) // Netscape 4 
+		          document.divs[i].visibility = 'hidden'; 
+		        else // IE 4 
+		          document.all.divs[i].visibility = 'hidden'; 
+		    } 
+		  } 
+		} 
 
-function checkLocation() {
-  object="layersMenu";
-  yy=eval(y);
-  xx=eval(x);
-  eval(dS+object+sD+v+yy);
-  eval(dS+object+sD+w+xx);
-  setTimeout("checkLocation()",10);
-}
+		function setVariables() 
+		{
+		  if (navigator.appName == "Netscape") {
+		    v=".top=";
+		    w=".left=";
+		    dS="document.";
+		    sD="";
+		    x="window.pageXOffset";
+		    y="window.pageYOffset";
+		  }
+		  else {
+		    v=".pixelTop=";
+		    w=".pixelLeft=";
+		    dS="";
+		    sD=".style";
+		    x="document.body.scrollLeft";
+		    y="document.body.scrollTop";
+		   }
+		}
+		
+		function preloadImages() {}
+		
+		function checkLocation() 
+		{
+		  object="layersMenu";
+		  yy=eval(y);
+		  xx=eval(x);
+		  eval(dS+object+sD+v+yy);
+		  eval(dS+object+sD+w+xx);
+		  setTimeout("checkLocation()",10);
+		}
 @if?AreaData?ISGRID@
 	document.onclick=cellclick
 	
@@ -151,6 +194,8 @@ function checkLocation() {
 <INPUT TYPE=HIDDEN NAME=LINKSTO VALUE="">
 <INPUT TYPE=HIDDEN NAME=OLDROOM VALUE="">
 <INPUT TYPE=HIDDEN NAME=OLDLINK VALUE="">
+<INPUT TYPE=HIDDEN NAME=MULTIROOMFLAG VALUE="">
+<INPUT TYPE=HIDDEN NAME=MULTIROOMLIST VALUE="">
 @MUDGrinder?AREATHUMBNAIL@
 </FORM>
 

@@ -11,8 +11,17 @@
  	<link rel="grinder icon" href="/images/grinder.ico" >
 	<SCRIPT LANGUAGE="JavaScript">
 	<!--
+		var shiftDown=true;
 		function RC(room)
 		{
+			document.SELECTAREA.MULTIROOMFLAG.value=shiftDown?"on":"";
+			if(shiftDown)
+			{
+				if(document.SELECTAREA.MULTIROOMLIST.value.indexOf(room+';')<0)
+					document.SELECTAREA.MULTIROOMLIST.value=document.SELECTAREA.MULTIROOMLIST.value+room+';';
+			}
+			else
+				document.SELECTAREA.MULTIROOMLIST.value='';
 			Clicked('rmmenu.cmvp','',room,'');
 		}
 		function EC(dir,room)
@@ -33,153 +42,188 @@
 			document.SELECTAREA.action='/grinder/'+action;
 			document.SELECTAREA.submit();
 		}
+
+		function mouseDown(e) 
+		{
+			var ctrlPressed=0;
+			var altPressed=0;
+			var shiftPressed=0;
+
+			if (parseInt(navigator.appVersion)>3) 
+			{
+				var evt = navigator.appName=="Netscape" ? e:event;
+				if (navigator.appName=="Netscape" && parseInt(navigator.appVersion)==4) 
+				{
+					var mString =(e.modifiers+32).toString(2).substring(3,6);
+				    shiftDown=(mString.charAt(0)=="1");
+				}
+  				else 
+  				{
+					shiftDown=evt.shiftKey;
+				}
+			 }
+ 			 return true;
+		 }
+		 
+		 if (parseInt(navigator.appVersion)>3) 
+		 {
+		 	document.onmousedown = mouseDown;
+		 	if (navigator.appName=="Netscape") 
+		  		document.captureEvents(Event.MOUSEDOWN);
+		 }
 		
-function preloadImages() {
-var image1 = new Image();
-image1.src = 'images\DD.gif';
-var image2 = new Image();
-image2.src = 'images\DDR.gif';
-var image3 = new Image();
-image3.src = 'images\DE.gif';
-var image4 = new Image();
-image4.src = 'images\DER.gif';
-var image5 = new Image();
-image5.src = 'images\DN.gif';
-var image6 = new Image();
-image6.src = 'images\DNR.gif';
-var image7 = new Image();
-image7.src = 'images\DS.gif';
-var image8 = new Image();
-image8.src = 'images\DSR.gif';
-var image9 = new Image();
-image9.src = 'images\DU.gif';
-var image10 = new Image();
-image10.src = 'images\DUR.gif';
-var image11 = new Image();
-image11.src = 'images\DW.gif';
-var image12 = new Image();
-image12.src = 'images\DWR.gif';
-var image13 = new Image();
-image13.src = 'images\ED.gif';
-var image14 = new Image();
-image14.src = 'images\EE.gif';
-var image15 = new Image();
-image15.src = 'images\EN.gif';
-var image16 = new Image();
-image16.src = 'images\ES.gif';
-var image17 = new Image();
-image17.src = 'images\EU.gif';
-var image18 = new Image();
-image18.src = 'images\EW.gif';
-var image19 = new Image();
-image19.src = 'images\OD.gif';
-var image20 = new Image();
-image20.src = 'images\ODR.gif';
-var image21 = new Image();
-image21.src = 'images\OE.gif';
-var image22 = new Image();
-image22.src = 'images\OER.gif';
-var image23 = new Image();
-image23.src = 'images\ON.gif';
-var image24 = new Image();
-image24.src = 'images\ONR.gif';
-var image25 = new Image();
-image25.src = 'images\OS.gif';
-var image26 = new Image();
-image26.src = 'images\OSR.gif';
-var image27 = new Image();
-image27.src = 'images\OU.gif';
-var image28 = new Image();
-image28.src = 'images\OUR.gif';
-var image29 = new Image();
-image29.src = 'images\OW.gif';
-var image30 = new Image();
-image30.src = 'images\OWR.gif';
-var image31 = new Image();
-image31.src = 'images\UD.gif';
-var image32 = new Image();
-image32.src = 'images\UDR.gif';
-var image33 = new Image();
-image33.src = 'images\UE.gif';
-var image34 = new Image();
-image34.src = 'images\UER.gif';
-var image35 = new Image();
-image35.src = 'images\UN.gif';
-var image36 = new Image();
-image36.src = 'images\UNR.gif';
-var image37 = new Image();
-image37.src = 'images\US.gif';
-var image38 = new Image();
-image38.src = 'images\USR.gif';
-var image39 = new Image();
-image39.src = 'images\UU.gif';
-var image40 = new Image();
-image40.src = 'images\UUR.gif';
-var image41 = new Image();
-image41.src = 'images\UW.gif';
-var image42 = new Image();
-image42.src = 'images\UWR.gif';
+		 function preloadImages() 
+		 {
+			var image1 = new Image();
+			image1.src = 'images\DD.gif';
+			var image2 = new Image();
+			image2.src = 'images\DDR.gif';
+			var image3 = new Image();
+			image3.src = 'images\DE.gif';
+			var image4 = new Image();
+			image4.src = 'images\DER.gif';
+			var image5 = new Image();
+			image5.src = 'images\DN.gif';
+			var image6 = new Image();
+			image6.src = 'images\DNR.gif';
+			var image7 = new Image();
+			image7.src = 'images\DS.gif';
+			var image8 = new Image();
+			image8.src = 'images\DSR.gif';
+			var image9 = new Image();
+			image9.src = 'images\DU.gif';
+			var image10 = new Image();
+			image10.src = 'images\DUR.gif';
+			var image11 = new Image();
+			image11.src = 'images\DW.gif';
+			var image12 = new Image();
+			image12.src = 'images\DWR.gif';
+			var image13 = new Image();
+			image13.src = 'images\ED.gif';
+			var image14 = new Image();
+			image14.src = 'images\EE.gif';
+			var image15 = new Image();
+			image15.src = 'images\EN.gif';
+			var image16 = new Image();
+			image16.src = 'images\ES.gif';
+			var image17 = new Image();
+			image17.src = 'images\EU.gif';
+			var image18 = new Image();
+			image18.src = 'images\EW.gif';
+			var image19 = new Image();
+			image19.src = 'images\OD.gif';
+			var image20 = new Image();
+			image20.src = 'images\ODR.gif';
+			var image21 = new Image();
+			image21.src = 'images\OE.gif';
+			var image22 = new Image();
+			image22.src = 'images\OER.gif';
+			var image23 = new Image();
+			image23.src = 'images\ON.gif';
+			var image24 = new Image();
+			image24.src = 'images\ONR.gif';
+			var image25 = new Image();
+			image25.src = 'images\OS.gif';
+			var image26 = new Image();
+			image26.src = 'images\OSR.gif';
+			var image27 = new Image();
+			image27.src = 'images\OU.gif';
+			var image28 = new Image();
+			image28.src = 'images\OUR.gif';
+			var image29 = new Image();
+			image29.src = 'images\OW.gif';
+			var image30 = new Image();
+			image30.src = 'images\OWR.gif';
+			var image31 = new Image();
+			image31.src = 'images\UD.gif';
+			var image32 = new Image();
+			image32.src = 'images\UDR.gif';
+			var image33 = new Image();
+			image33.src = 'images\UE.gif';
+			var image34 = new Image();
+			image34.src = 'images\UER.gif';
+			var image35 = new Image();
+			image35.src = 'images\UN.gif';
+			var image36 = new Image();
+			image36.src = 'images\UNR.gif';
+			var image37 = new Image();
+			image37.src = 'images\US.gif';
+			var image38 = new Image();
+			image38.src = 'images\USR.gif';
+			var image39 = new Image();
+			image39.src = 'images\UU.gif';
+			var image40 = new Image();
+			image40.src = 'images\UUR.gif';
+			var image41 = new Image();
+			image41.src = 'images\UW.gif';
+			var image42 = new Image();
+			image42.src = 'images\UWR.gif';
+		}
 
-}
+		function showSelected() 
+		{
+			showDiv(document.all.layerSelect.value);
+		}
 
-function showSelected() {
-	showDiv(document.all.layerSelect.value);
-}
+		function showDiv(pass) 
+		{ 
+		  document.SELECTAREA.MAPLEVEL.value=pass;
+		  var divs = document.getElementsByTagName('div'); 
+		  for(i=0;i<divs.length;i++)
+		  { 
+		    if((divs[i].id.match(pass))||(divs[i].id.match('layersMenu')))
+		    {//if they are 'see' divs 
+		      if (document.getElementById) // DOM3 = IE5, NS6 
+		        divs[i].style.visibility="visible";// show/hide 
+		      else 
+		        if (document.layers) // Netscape 4 
+		          document.layers[divs[i]].display = 'visible'; 
+		        else // IE 4 
+		          document.all.divs[i].visibility = 'visible'; 
+		    } else { 
+		      if (document.getElementById) 
+		        divs[i].style.visibility="hidden"; 
+		      else 
+		        if (document.layers) // Netscape 4 
+		          document.divs[i].visibility = 'hidden'; 
+		        else // IE 4 
+		          document.all.divs[i].visibility = 'hidden'; 
+		    } 
+		  } 
+		} 
 
-function showDiv(pass) { 
-  document.SELECTAREA.MAPLEVEL.value=pass;
-  var divs = document.getElementsByTagName('div'); 
-  for(i=0;i<divs.length;i++){ 
-    if((divs[i].id.match(pass))||(divs[i].id.match('layersMenu'))){//if they are 'see' divs 
-      if (document.getElementById) // DOM3 = IE5, NS6 
-        divs[i].style.visibility="visible";// show/hide 
-      else 
-        if (document.layers) // Netscape 4 
-          document.layers[divs[i]].display = 'visible'; 
-        else // IE 4 
-          document.all.divs[i].visibility = 'visible'; 
-    } else { 
-      if (document.getElementById) 
-        divs[i].style.visibility="hidden"; 
-      else 
-        if (document.layers) // Netscape 4 
-          document.divs[i].visibility = 'hidden'; 
-        else // IE 4 
-          document.all.divs[i].visibility = 'hidden'; 
-    } 
-  } 
-} 
+		function setVariables() {
+		  if (navigator.appName == "Netscape") {
+		    v=".top=";
+		    w=".left=";
+		    dS="document.";
+		    sD="";
+		    x="window.pageXOffset";
+		    y="window.pageYOffset";
+		  }
+		  else {
+		    v=".pixelTop=";
+		    w=".pixelLeft=";
+		    dS="";
+		    sD=".style";
+		    x="document.body.scrollLeft";
+		    y="document.body.scrollTop";
+		   }
+		}
+		
+		function checkLocation() 
+		{
+		  object="layersMenu";
+		  yy=eval(y);
+		  xx=eval(x);
+		  if (navigator.appName != "Netscape") 
+		  {
+			  eval(dS+object+sD+v+yy);
+			  eval(dS+object+sD+w+xx);
+		  }
+		  setTimeout("checkLocation()",10);
+		}
 
-function setVariables() {
-  if (navigator.appName == "Netscape") {
-    v=".top=";
-    w=".left=";
-    dS="document.";
-    sD="";
-    x="window.pageXOffset";
-    y="window.pageYOffset";
-  }
-  else {
-    v=".pixelTop=";
-    w=".pixelLeft=";
-    dS="";
-    sD=".style";
-    x="document.body.scrollLeft";
-    y="document.body.scrollTop";
-   }
-}
-
-function checkLocation() {
-  object="layersMenu";
-  yy=eval(y);
-  xx=eval(x);
-  if (navigator.appName != "Netscape") 
-  {
-	  eval(dS+object+sD+v+yy);
-	  eval(dS+object+sD+w+xx);
-  }
-  setTimeout("checkLocation()",10);
-}
 @if?AreaData?ISGRID@
 	document.onclick=cellclick
 	
@@ -254,6 +298,8 @@ function checkLocation() {
 <INPUT TYPE=HIDDEN NAME=LINKSTO VALUE="">
 <INPUT TYPE=HIDDEN NAME=OLDROOM VALUE="">
 <INPUT TYPE=HIDDEN NAME=OLDLINK VALUE="">
+<INPUT TYPE=HIDDEN NAME=MULTIROOMFLAG VALUE="">
+<INPUT TYPE=HIDDEN NAME=MULTIROOMLIST VALUE="">
 @MUDGrinder?AREAMAP@
 </FORM>
 
