@@ -510,7 +510,24 @@ public class MUDGrinder extends StdWebMacro
 			if(mob==null) return "@break@";
 			Room R=CMLib.map().getRoom(httpReq.getRequestParameter("ROOM"));
 			if(R==null) return "@break@";
-			String errMsg=GrinderRooms.editRoom(httpReq,parms,mob,R);
+			final String multiFlagStr=httpReq.getRequestParameter("MULTIROOMFLAG");
+			final boolean multiFlag=(multiFlagStr!=null)&& multiFlagStr.equalsIgnoreCase("on");
+			final Vector<String> multiRoomList=CMParms.parseSemicolons(httpReq.getRequestParameter("MULTIROOMLIST"),false);
+			String errMsg;
+			if((multiFlag)&&(multiRoomList.size()>0))
+			{
+				errMsg="";
+				Pair<String,String> setPairs[]=RoomData.makeMergableRoomFields(R, multiRoomList);
+				for(final String id : multiRoomList)
+				{
+					R=CMLib.map().getRoom(id);
+					if(R==null) return "@break@";
+					ExternalHTTPRequests mergeReq=RoomData.mergeRoomFields(httpReq, setPairs, R);
+					errMsg+=GrinderRooms.editRoom(mergeReq,parms,mob,R);
+				}
+			}
+			else
+				errMsg=GrinderRooms.editRoom(httpReq,parms,mob,R);
 			httpReq.addRequestParameters("ERRMSG",errMsg);
 		}
         else
@@ -805,17 +822,38 @@ public class MUDGrinder extends StdWebMacro
 		{
 			MOB mob = Authenticate.getAuthenticatedMob(httpReq);
 			if(mob==null) return "@break@";
-			Room R=CMLib.map().getRoom(httpReq.getRequestParameter("ROOM"));
-			if(R==null) return "@break@";
-			for(int d=0;d<R.rawDoors().length;d++)
-				if(R.rawDoors()[d]!=null)
+			final String multiFlagStr=httpReq.getRequestParameter("MULTIROOMFLAG");
+			final boolean multiFlag=(multiFlagStr!=null)&& multiFlagStr.equalsIgnoreCase("on");
+			final Vector<String> multiRoomList=CMParms.parseSemicolons(httpReq.getRequestParameter("MULTIROOMLIST"),false);
+			List<Room> rooms = new LinkedList<Room>();
+			if((multiFlag)&&(multiRoomList.size()>0))
+			{
+				for(final String id : multiRoomList)
 				{
-					httpReq.addRequestParameters("ROOM",R.rawDoors()[d].roomID());
-					httpReq.addRequestParameters("LINK","");
-					break;
+					Room R=CMLib.map().getRoom(id);
+					if(R==null) return "@break@";
+					rooms.add(R);
 				}
-			Log.sysOut("Grinder",mob.Name()+" deleted room "+R.roomID());
-			String errMsg=GrinderRooms.delRoom(R);
+			}
+			else
+			{
+				Room R=CMLib.map().getRoom(httpReq.getRequestParameter("ROOM"));
+				if(R==null) return "@break@";
+				rooms.add(R);
+			}
+			String errMsg="";
+			for(final Room R : rooms)
+			{
+				for(int d=0;d<R.rawDoors().length;d++)
+					if(R.rawDoors()[d]!=null)
+					{
+						httpReq.addRequestParameters("ROOM",R.rawDoors()[d].roomID());
+						httpReq.addRequestParameters("LINK","");
+						break;
+					}
+				Log.sysOut("Grinder",mob.Name()+" deleted room "+R.roomID());
+				errMsg+=GrinderRooms.delRoom(R)+" ";
+			}
 			httpReq.addRequestParameters("ERRMSG",errMsg);
 		}
 		else
@@ -823,10 +861,32 @@ public class MUDGrinder extends StdWebMacro
 		{
 			MOB mob = Authenticate.getAuthenticatedMob(httpReq);
 			if(mob==null) return "@break@";
-			Room R=CMLib.map().getRoom(httpReq.getRequestParameter("ROOM"));
-			if(R==null) return "@break@";
-			CMLib.map().resetRoom(R,true);
-			httpReq.addRequestParameters("ERRMSG","Room "+R.roomID()+" reset.");
+			final String multiFlagStr=httpReq.getRequestParameter("MULTIROOMFLAG");
+			final boolean multiFlag=(multiFlagStr!=null)&& multiFlagStr.equalsIgnoreCase("on");
+			final Vector<String> multiRoomList=CMParms.parseSemicolons(httpReq.getRequestParameter("MULTIROOMLIST"),false);
+			List<Room> rooms = new LinkedList<Room>();
+			if((multiFlag)&&(multiRoomList.size()>0))
+			{
+				for(final String id : multiRoomList)
+				{
+					Room R=CMLib.map().getRoom(id);
+					if(R==null) return "@break@";
+					rooms.add(R);
+				}
+			}
+			else
+			{
+				Room R=CMLib.map().getRoom(httpReq.getRequestParameter("ROOM"));
+				if(R==null) return "@break@";
+				rooms.add(R);
+			}
+			String errMsg="";
+			for(final Room R : rooms)
+			{
+				CMLib.map().resetRoom(R,true);
+				errMsg+="Room "+R.roomID()+" reset.  ";
+			}
+			httpReq.addRequestParameters("ERRMSG",errMsg);
 		}
 		else
 		if(parms.containsKey("ADDROOM"))

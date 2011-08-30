@@ -2,17 +2,22 @@ package com.planet_ink.coffee_mud.WebMacros;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
+import com.planet_ink.coffee_mud.core.exceptions.HTTPRedirectException;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
 import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.ThreadEngine.SupportThread;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
+import com.planet_ink.coffee_mud.WebMacros.grinder.GrinderRooms;
+
+import java.net.InetAddress;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
@@ -545,6 +550,50 @@ public class RoomData extends StdWebMacro
 		else
 			fixtures.add(new Pair<String,String>("BEHAV"+(behavs.size()+1),null));
 		return fixtures.toArray(new Pair[0]);
+	}
+	
+	public static ExternalHTTPRequests mergeRoomFields(final ExternalHTTPRequests httpReq, Pair<String,String> setPairs[], Room R)
+	{
+		ExternalHTTPRequests mergeReq=new ExternalHTTPRequests()
+		{
+			Hashtable<String,String> params=new Hashtable<String,String>();
+			public void addRequestParameters(String key, String value) { params.put(key.toUpperCase(), value); }
+			public byte[] doVirtualPage(byte[] data) throws HTTPRedirectException {	return httpReq.doVirtualPage(data); }
+			public String doVirtualPage(String s) throws HTTPRedirectException { return httpReq.doVirtualPage(s); }
+			public StringBuffer doVirtualPage(StringBuffer s) throws HTTPRedirectException { return httpReq.doVirtualPage(s); }
+			public List<String> getAllRequestParameterKeys(String keyMask) { return httpReq.getAllRequestParameterKeys(keyMask); }
+			public String getHTTPclientIP() { return httpReq.getHTTPclientIP(); }
+			public InetAddress getHTTPclientInetAddress() { return httpReq.getHTTPclientInetAddress(); }
+			public String getHTTPstatus() { return httpReq.getHTTPstatus(); }
+			public String getHTTPstatusInfo() { return httpReq.getHTTPstatusInfo(); }
+			public MudHost getMUD() { return httpReq.getMUD(); }
+			public String getMimeType(String aExtension) { return httpReq.getMimeType(aExtension); }
+			public String getPageContent(String filename) { return httpReq.getPageContent(filename); }
+			public String getRequestEncodedParameters() { return httpReq.getRequestEncodedParameters(); }
+			public Map<String, Object> getRequestObjects() { return httpReq.getRequestObjects(); }
+			public String getRequestParameter(String key) { return params.get(key.toUpperCase()); }
+			public InetAddress getServerAddress() { return httpReq.getServerAddress(); }
+			public String getServerVersionString() { return httpReq.getServerVersionString(); }
+			public Map<String, String> getVirtualDirectories() { return httpReq.getVirtualDirectories(); }
+			public String getWebServerPartialName() { return httpReq.getWebServerPartialName(); }
+			public int getWebServerPort() { return httpReq.getWebServerPort(); }
+			public String getWebServerPortStr() { return httpReq.getWebServerPortStr(); }
+			public CMFile grabFile(String filename) { return httpReq.grabFile(filename); }
+			public boolean isRequestParameter(String key) { return params.contains(key.toUpperCase()); }
+			public void removeRequestParameter(String key) { params.remove(key.toUpperCase()); }
+			public boolean activate() { return httpReq.activate(); }
+			public SupportThread getSupportThread() { return httpReq.getSupportThread(); }
+			public void propertiesLoaded() { httpReq.propertiesLoaded(); }
+			public boolean shutdown() { return httpReq.shutdown(); }
+			public String ID() { return httpReq.ID(); }
+			public CMObject copyOf() { return this; }
+			public void initializeClass() { }
+			public CMObject newInstance() { return this; }
+			public int compareTo(CMObject arg0) { return (arg0==this)?0:1; }
+		};
+		
+		
+		return mergeReq;
 	}
 	
 	public String runMacro(ExternalHTTPRequests httpReq, String parm)
