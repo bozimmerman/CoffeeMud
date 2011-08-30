@@ -621,6 +621,18 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
         	if(R!=null)
                 R.setHeightWeight(M.basePhyStats(),(char)M.baseCharStats().getStat(CharStats.STAT_GENDER));
         }
+        
+        List<XMLLibrary.XMLpiece> choices = getAllChoices("FACTION", piece, defined, true);
+        if((choices!=null)&&(choices.size()>0)) 
+        {
+            for(int c=0;c<choices.size();c++)
+            {
+                XMLLibrary.XMLpiece valPiece = (XMLLibrary.XMLpiece)choices.get(c);
+                String f = CMLib.xml().getParmValue(valPiece.parms,"ID");
+                String v = CMLib.xml().getParmValue(valPiece.parms,"VALUE");
+                M.addFaction(f, Integer.parseInt(v));
+            }
+        }
         String[] ignoreStats={"CLASS","NAME","LEVEL","GENDER"};
         fillOutStats(M,ignoreStats,"MOB_",piece,defined);
         M.recoverCharStats();
