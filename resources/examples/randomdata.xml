@@ -179,7 +179,7 @@ word catalog in order to select a mob from your catalog, in which case "name" al
 a required detail.
 
 Optional Objects: (See below for details on these object tag types and their details) 
-"MOB","ITEM","AFFECT", "ABILITY", "BEHAVIOR", "EXIT"
+"MOB","ITEM","AFFECT", "ABILITY", "BEHAVIOR", "EXIT", "FACTION"
 
 Optional details: (See Archon's Guide)
 "RACE","LEVEL","NAME","DISPLAY","DESCRIPTION","MONEY","ALIGNMENT", "DISPOSITION","SENSES",
@@ -220,6 +220,10 @@ A pure container tag that contains one or more ITEM tags, as above.
 Exit tags:
 Required detail: "class"
 Optional Objects: "AFFECT","BEHAVIOR"
+
+----------------------------------------
+Faction tags:
+Required details: "id" "value"
 
 -->
 <AREADATA>
