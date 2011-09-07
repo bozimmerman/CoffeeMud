@@ -390,43 +390,207 @@ public class RoomData extends StdWebMacro
 			return " ("+E.ID()+")";
 	}
 
+	private static class RoomStuff
+	{
+		public Vector<MOB> inhabs=new Vector<MOB>();
+		public Vector<Item> items=new Vector<Item>();
+		public Vector<Ability> affects=new Vector<Ability>();
+		public Vector<Behavior> behavs=new Vector<Behavior>();
+		public Room room;
+		public RoomStuff()
+		{
+			room=null;
+		}
+		
+		public RoomStuff(Room R)
+		{
+			this.room=R;
+			for(Enumeration<MOB> a =R.inhabitants();a.hasMoreElements();)
+			{
+				final MOB M=a.nextElement();
+				if(M!=null)
+				{
+	            	CMLib.catalog().updateCatalogIntegrity(M);
+					inhabs.add(M);
+				}
+			}
+			for(Enumeration<Item> a =R.items();a.hasMoreElements();)
+			{
+				final Item I=a.nextElement();
+				if(I!=null)
+				{
+	            	CMLib.catalog().updateCatalogIntegrity(I);
+					items.add(I);
+				}
+			}
+			for(Enumeration<Ability> a =R.effects();a.hasMoreElements();)
+			{
+				final Ability A=a.nextElement();
+				if(A!=null) affects.add(A);
+			}
+			for(Enumeration<Behavior> b=R.behaviors();b.hasMoreElements();)
+			{
+				final Behavior B=b.nextElement();
+				if(B!=null) behavs.add(B);
+			}
+		}
+	}
 
+	public static int getNumFromWordNum(final String var)
+	{
+		int x=0;
+		int l=var.length()-1;
+		while((l>=0)&&(Character.isDigit(var.charAt(l))))
+		{
+			x=(x*10)+(var.charAt(l)-'0');
+			l--;
+		}
+		return x;
+	}
+	
+	public static Pair<String,String> findPair(final List<Pair<String,String>> fixtures, final String varStart, final String value)
+	{
+		Pair<String,String> p;
+		for(int x=1; (p=getPair(fixtures,varStart+x))!=null;x++)
+			if(p.second.equalsIgnoreCase(value))
+				return p;
+		return null;
+	}
+	
+	public static Pair<String,String> getPair(final List<Pair<String,String>> fixtures, final String var)
+	{
+		for(final Pair<String,String> p : fixtures)
+			if(p.first.equalsIgnoreCase(var))
+				return p;
+		return null;
+	}
+	
+	public static String getPairValue(final List<Pair<String,String>> fixtures, final String var)
+	{
+		Pair<String,String> p = getPair(fixtures,var);
+		if(p==null) return null;
+		return p.second;
+	}
+
+	public static List<Pair<String,String>> toPairs(final Map<String,String> map)
+	{
+		final LinkedList<Pair<String,String>> pairList=new LinkedList<Pair<String,String>>();
+		for(final String key : map.keySet())
+			pairList.add(new Pair(key,map.get(key)));
+		return pairList;
+			
+	}
+	
+	public RoomStuff makeRoomStuff(final Room R, final List<Pair<String,String>> fixtures)
+	{
+		final RoomStuff stuff=new RoomStuff();
+		stuff.room=R;
+		int x=1;
+		String s=getPairValue(fixtures, "ITEM"+x);
+		while(s!=null)
+		{
+			if(s.length()>0)
+			{
+				Item I=getItemFromCode(R, s);
+				stuff.items.add(I);
+			}
+			x++;
+			s=getPairValue(fixtures, "ITEM"+x);
+		}
+		s=getPairValue(fixtures, "MOB"+x);
+		while(s!=null)
+		{
+			if(s.length()>0)
+			{
+				MOB M=getMOBFromCode(R, s);
+				stuff.inhabs.add(M);
+			}
+			x++;
+			s=getPairValue(fixtures, "MOB"+x);
+		}
+		s=getPairValue(fixtures, "AFFECT"+x);
+		while(s!=null)
+		{
+			if(s.length()>0)
+			{
+				Ability A=CMClass.getAbility(s);
+				A.setMiscText(getPairValue(fixtures, "ADATA"+x));
+				stuff.affects.add(A);
+			}
+			x++;
+			s=getPairValue(fixtures, "AFFECT"+x);
+		}
+		s=getPairValue(fixtures, "BEHAV"+x);
+		while(s!=null)
+		{
+			if(s.length()>0)
+			{
+				Behavior B=CMClass.getBehavior(s);
+				B.setParms(getPairValue(fixtures, "BDATA"+x));
+				stuff.behavs.add(B);
+			}
+			x++;
+			s=getPairValue(fixtures, "BEHAV"+x);
+		}
+		return stuff;
+	}
+	
+	public static Pair<String,String>[] makePairs(final RoomStuff stuff, final List<Pair<String,String>> fixtures)
+	{
+		List<Item> itemCache=contributeItems(stuff.items);
+		for(int i=0;i<stuff.items.size();i++)
+		{
+			Item I=stuff.items.get(i);
+			String code=getAppropriateCode(I,stuff.room,stuff.items,itemCache);
+			fixtures.add(new Pair<String,String>("ITEM"+(i+1), code));
+			fixtures.add(new Pair<String,String>("ITEMWORN"+(i+1),""));
+			fixtures.add(new Pair<String,String>("ITEMCONT"+(i+1),(I.container()==null)?"":""+(Object)I.container()));
+		}
+		if(stuff.items.size()==0)
+			fixtures.add(new Pair<String,String>("ITEM1",""));
+		fixtures.add(new Pair<String,String>("ITEM"+(stuff.items.size()+1),null));
+		List<MOB> mobCache=contributeMOBs(stuff.inhabs);
+		for(int m=0;m<stuff.inhabs.size();m++)
+		{
+			MOB M=stuff.inhabs.get(m);
+    		String code=getAppropriateCode(M,stuff.room,stuff.inhabs,mobCache);
+    		fixtures.add(new Pair<String,String>("MOB"+(m+1),code));
+		}
+		if(stuff.inhabs.size()==0)
+			fixtures.add(new Pair<String,String>("MOB1",""));
+		fixtures.add(new Pair<String,String>("MOB"+(stuff.inhabs.size()+1),null));
+		for(int a=0;a<stuff.affects.size();a++)
+		{
+			final Ability A=stuff.affects.get(a);
+			fixtures.add(new Pair<String,String>("AFFECT"+(a+1),A.ID()));
+			fixtures.add(new Pair<String,String>("ADATA"+(a+1),A.text()));
+		}
+		if(stuff.affects.size()==0)
+		{
+			fixtures.add(new Pair<String,String>("AFFECT1",""));
+			fixtures.add(new Pair<String,String>("ADATA1",""));
+		}
+		fixtures.add(new Pair<String,String>("AFFECT"+(stuff.affects.size()+1),null));
+		for(int b=0;b<stuff.behavs.size();b++)
+		{
+			final Behavior B=stuff.behavs.get(b);
+			fixtures.add(new Pair<String,String>("BEHAV"+(b+1),B.ID()));
+			fixtures.add(new Pair<String,String>("BDATA"+(b+1),B.getParms()));
+		}
+		if(stuff.behavs.size()==0)
+		{
+			fixtures.add(new Pair<String,String>("BEHAV1",""));
+			fixtures.add(new Pair<String,String>("BDATA1",""));
+		}
+		fixtures.add(new Pair<String,String>("BEHAV"+(stuff.behavs.size()+1),null));
+		return fixtures.toArray(new Pair[0]);
+	}
+	
 	public static Pair<String,String>[] makeMergableRoomFields(Room R, Vector<String> multiRoomList)
 	{
 		List<Pair<String,String>> fixtures=new Vector<Pair<String,String>>();
 		R=(Room)R.copyOf();
-		Vector<MOB> inhabs=new Vector<MOB>();
-		for(Enumeration<MOB> a =R.inhabitants();a.hasMoreElements();)
-		{
-			final MOB M=a.nextElement();
-			if(M!=null)
-			{
-            	CMLib.catalog().updateCatalogIntegrity(M);
-				inhabs.add(M);
-			}
-		}
-		Vector<Item> items=new Vector<Item>();
-		for(Enumeration<Item> a =R.items();a.hasMoreElements();)
-		{
-			final Item I=a.nextElement();
-			if(I!=null)
-			{
-            	CMLib.catalog().updateCatalogIntegrity(I);
-				items.add(I);
-			}
-		}
-		Vector<Ability> affects=new Vector<Ability>();
-		for(Enumeration<Ability> a =R.effects();a.hasMoreElements();)
-		{
-			final Ability A=a.nextElement();
-			if(A!=null) affects.add(A);
-		}
-		Vector<Behavior> behavs=new Vector<Behavior>();
-		for(Enumeration<Behavior> b=R.behaviors();b.hasMoreElements();)
-		{
-			final Behavior B=b.nextElement();
-			if(B!=null) behavs.add(B);
-		}
+		RoomStuff stuff=new RoomStuff(R);
 		for(String roomID : multiRoomList)
 			if(!roomID.equalsIgnoreCase(R.roomID()))
 			{
@@ -437,21 +601,21 @@ public class RoomData extends StdWebMacro
 					for(final String[] set : STAT_CHECKS)
 						if(!R.getStat(set[0]).equalsIgnoreCase(R2.getStat(set[0])))
 							fixtures.add(new Pair<String,String>(set[1], ""));
-					for(Iterator<Ability> a=affects.iterator();a.hasNext();)
+					for(Iterator<Ability> a=stuff.affects.iterator();a.hasNext();)
 					{
 						final Ability A=a.next();
 						if((R2.fetchEffect(A.ID())==null)
 						||(!R2.fetchEffect(A.ID()).text().equalsIgnoreCase(A.text())))
 							a.remove();
 					}
-					for(Iterator<Behavior> b=behavs.iterator();b.hasNext();)
+					for(Iterator<Behavior> b=stuff.behavs.iterator();b.hasNext();)
 					{
 						final Behavior B=b.next();
 						if((R2.fetchBehavior(B.ID())==null)
 						||(!R2.fetchBehavior(B.ID()).getParms().equalsIgnoreCase(B.getParms())))
 							b.remove();
 					}
-					for(Iterator<MOB> m=inhabs.iterator();m.hasNext();)
+					for(Iterator<MOB> m=stuff.inhabs.iterator();m.hasNext();)
 					{
 						MOB M=m.next();
 						boolean found=false;
@@ -474,7 +638,7 @@ public class RoomData extends StdWebMacro
 						if((M!=null)&&(!found))
 							m.remove();
 					}
-					for(Iterator<Item> i=items.iterator();i.hasNext();)
+					for(Iterator<Item> i=stuff.items.iterator();i.hasNext();)
 					{
 						final Item I=i.next();
 						boolean found=false;
@@ -499,64 +663,85 @@ public class RoomData extends StdWebMacro
 					}
 				}
 			}
-		List<Item> itemCache=contributeItems(items);
-		for(int i=0;i<items.size();i++)
-		{
-			Item I=items.get(i);
-			String code=getAppropriateCode(I,R,items,itemCache);
-			fixtures.add(new Pair<String,String>("ITEM"+(i+1), code));
-			fixtures.add(new Pair<String,String>("ITEMWORN"+(i+1),""));
-			fixtures.add(new Pair<String,String>("ITEMCONT"+(i+1),(I.container()==null)?"":""+(Object)I.container()));
-		}
-		if(items.size()==0)
-			fixtures.add(new Pair<String,String>("ITEM1",""));
-		else
-			fixtures.add(new Pair<String,String>("ITEM"+(items.size()+1),null));
-		List<MOB> mobCache=contributeMOBs(inhabs);
-		for(int m=0;m<inhabs.size();m++)
-		{
-			MOB M=inhabs.get(m);
-    		String code=getAppropriateCode(M,R,inhabs,mobCache);
-    		fixtures.add(new Pair<String,String>("MOB"+(m+1),code));
-		}
-		if(inhabs.size()==0)
-			fixtures.add(new Pair<String,String>("MOB1",""));
-		else
-			fixtures.add(new Pair<String,String>("MOB"+(inhabs.size()+1),null));
-		for(int a=0;a<affects.size();a++)
-		{
-			final Ability A=affects.get(a);
-			fixtures.add(new Pair<String,String>("AFFECT"+(a+1),A.ID()));
-			fixtures.add(new Pair<String,String>("ADATA"+(a+1),A.text()));
-		}
-		if(affects.size()==0)
-		{
-			fixtures.add(new Pair<String,String>("AFFECT1",""));
-			fixtures.add(new Pair<String,String>("ADATA1",""));
-		}
-		else
-			fixtures.add(new Pair<String,String>("AFFECT"+(affects.size()+1),null));
-		for(int b=0;b<behavs.size();b++)
-		{
-			final Behavior B=behavs.get(b);
-			fixtures.add(new Pair<String,String>("BEHAV"+(b+1),B.ID()));
-			fixtures.add(new Pair<String,String>("BDATA"+(b+1),B.getParms()));
-		}
-		if(behavs.size()==0)
-		{
-			fixtures.add(new Pair<String,String>("BEHAV1",""));
-			fixtures.add(new Pair<String,String>("BDATA1",""));
-		}
-		else
-			fixtures.add(new Pair<String,String>("BEHAV"+(behavs.size()+1),null));
-		return fixtures.toArray(new Pair[0]);
+		return makePairs(stuff,fixtures);
+	}
+
+	public static void mergeRoomField(final List<Pair<String,String>> activePairsList,
+									  final List<Pair<String,String>> setPairsList,
+									  final List<Pair<String,String>> mergePairs,
+									  final String[] vars)
+	{
+		for(Pair<String,String> p : setPairsList)
+			if(p.first.startsWith(vars[0]))
+			{
+				final Pair<String,String> mP=findPair(mergePairs,vars[0],p.second);
+				boolean found=true;
+				if(mP==null)
+					found=false;
+				else
+				{
+					for(int i=1;i<vars.length;i++)
+					{
+						final String setAData=getPairValue(setPairsList,vars[i]+getNumFromWordNum(p.first));
+						final String mergeAData=getPairValue(mergePairs,vars[i]+getNumFromWordNum(mP.first));
+						if(!setAData.equalsIgnoreCase(mergeAData))
+							found=false;
+					}
+				}
+				if(found)
+				{
+					final Pair<String,String> p2=findPair(activePairsList,vars[0],p.second);
+					if(p2!=null) p2.second=""; // effectively erases it.
+				}
+			}
+		for(Pair<String,String> p : mergePairs)
+			if(p.first.startsWith(vars[0]))
+			{
+				final Pair<String,String> mP=findPair(setPairsList,vars[0],p.second);
+				boolean found=true;
+				if(mP==null)
+					found=false;
+				else
+				{
+					for(int i=1;i<vars.length;i++)
+					{
+						final String setAData=getPairValue(setPairsList,vars[i]+getNumFromWordNum(p.first));
+						final String mergeAData=getPairValue(mergePairs,vars[i]+getNumFromWordNum(mP.first));
+						if(!setAData.equalsIgnoreCase(mergeAData))
+							found=false;
+					}
+				}
+				if(!found)
+				{
+					Pair<String,String> p2=findPair(activePairsList,vars[0],"");
+					if(p2!=null) // fill in an empty spot!
+					{
+						p2.second=p.second;
+						for(int i=1;i<vars.length;i++)
+						{
+							p2=getPair(activePairsList,vars[i]+getNumFromWordNum(p.first));
+							p2.second=getPairValue(setPairsList,vars[i]+getNumFromWordNum(p.first));
+						}
+					}
+					else
+					{
+						int x=1;
+						for(;getPair(activePairsList,vars[0]+x)!=null;x++)
+							x++;
+						activePairsList.add(new Pair(vars[0]+x,p.second));
+						for(int i=1;i<vars.length;i++)
+							activePairsList.add(new Pair(vars[i]+x,getPairValue(setPairsList,vars[i]+getNumFromWordNum(p.first))));
+					}
+				}
+			}
 	}
 	
 	public static ExternalHTTPRequests mergeRoomFields(final ExternalHTTPRequests httpReq, Pair<String,String> setPairs[], Room R)
 	{
+		final Hashtable<String,String> mergeParams=new Hashtable<String,String>();
 		ExternalHTTPRequests mergeReq=new ExternalHTTPRequests()
 		{
-			Hashtable<String,String> params=new Hashtable<String,String>();
+			public final Hashtable<String,String> params=mergeParams;
 			public void addRequestParameters(String key, String value) { params.put(key.toUpperCase(), value); }
 			public byte[] doVirtualPage(byte[] data) throws HTTPRedirectException {	return httpReq.doVirtualPage(data); }
 			public String doVirtualPage(String s) throws HTTPRedirectException { return httpReq.doVirtualPage(s); }
@@ -591,8 +776,24 @@ public class RoomData extends StdWebMacro
 			public CMObject newInstance() { return this; }
 			public int compareTo(CMObject arg0) { return (arg0==this)?0:1; }
 		};
-		
-		
+		for(String key : httpReq.getAllRequestParameterKeys("*"))
+			mergeReq.addRequestParameters(key, httpReq.getRequestParameter(key));
+		for(String[] pair : STAT_CHECKS)
+			if(mergeReq.isRequestParameter(pair[1]) && (mergeReq.getRequestParameter(pair[1]).length()==0))
+				mergeReq.addRequestParameters(pair[1], R.getStat(pair[0]));
+		CMLib.map().resetRoom(R);
+		R=(Room)R.copyOf();
+		RoomStuff stuff=new RoomStuff(R);
+		Pair<String,String>[] activePairs = makePairs(stuff,new Vector<Pair<String,String>>());
+		List<Pair<String,String>> mergePairs = toPairs(mergeParams);
+		List<Pair<String,String>> setPairsList=Arrays.asList(setPairs);
+		List<Pair<String,String>> activePairsList=new XVector(Arrays.asList(activePairs));
+		RoomData.mergeRoomField(activePairsList,setPairsList,mergePairs,new String[]{"AFFECT","ADATA"});
+		RoomData.mergeRoomField(activePairsList,setPairsList,mergePairs,new String[]{"BEHAV","BDATA"});
+		RoomData.mergeRoomField(activePairsList,setPairsList,mergePairs,new String[]{"MOB"});
+		RoomData.mergeRoomField(activePairsList,setPairsList,mergePairs,new String[]{"ITEM","ITEMWORN","ITEMCONT"});
+		for(final Pair<String,String> p : activePairsList)
+			mergeParams.put(p.first, p.second);
 		return mergeReq;
 	}
 	
