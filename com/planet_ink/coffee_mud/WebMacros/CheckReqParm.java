@@ -42,6 +42,7 @@ public class CheckReqParm extends StdWebMacro
 		boolean finalCondition=false;
 		for(String key : parms.keySet())
 		{
+			if(key.length()==0) continue;
 			String equals=(String)parms.get(key);
 			boolean not=false;
 			boolean thisCondition=true;

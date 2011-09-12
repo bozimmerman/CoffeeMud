@@ -164,13 +164,13 @@ public class Channel extends StdCommand
 			}
 		}
 		else
-        if(flags.contains("READONLY"))
+        if(flags.contains(ChannelsLibrary.ChannelFlag.READONLY))
         {
             mob.tell("This channel is read-only.");
             return false;
         }
         else
-        if(flags.contains("PLAYERREADONLY")&&(!mob.isMonster()))
+        if(flags.contains(ChannelsLibrary.ChannelFlag.PLAYERREADONLY)&&(!mob.isMonster()))
         {
             mob.tell("This channel is read-only.");
             return false;

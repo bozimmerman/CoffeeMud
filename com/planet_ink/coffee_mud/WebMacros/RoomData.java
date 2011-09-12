@@ -396,15 +396,12 @@ public class RoomData extends StdWebMacro
 		public Vector<Item> items=new Vector<Item>();
 		public Vector<Ability> affects=new Vector<Ability>();
 		public Vector<Behavior> behavs=new Vector<Behavior>();
-		public Room room;
 		public RoomStuff()
 		{
-			room=null;
 		}
 		
 		public RoomStuff(Room R)
 		{
-			this.room=R;
 			for(Enumeration<MOB> a =R.inhabitants();a.hasMoreElements();)
 			{
 				final MOB M=a.nextElement();
@@ -452,7 +449,7 @@ public class RoomData extends StdWebMacro
 	{
 		Pair<String,String> p;
 		for(int x=1; (p=getPair(fixtures,varStart+x))!=null;x++)
-			if(p.second.equalsIgnoreCase(value))
+			if((p.second==value)||((p.second!=null)&&(p.second.equalsIgnoreCase(value))))
 				return p;
 		return null;
 	}
@@ -484,7 +481,6 @@ public class RoomData extends StdWebMacro
 	public RoomStuff makeRoomStuff(final Room R, final List<Pair<String,String>> fixtures)
 	{
 		final RoomStuff stuff=new RoomStuff();
-		stuff.room=R;
 		int x=1;
 		String s=getPairValue(fixtures, "ITEM"+x);
 		while(s!=null)
@@ -537,11 +533,12 @@ public class RoomData extends StdWebMacro
 	
 	public static Pair<String,String>[] makePairs(final RoomStuff stuff, final List<Pair<String,String>> fixtures)
 	{
-		List<Item> itemCache=contributeItems(stuff.items);
+		contributeItems(stuff.items);
 		for(int i=0;i<stuff.items.size();i++)
 		{
 			Item I=stuff.items.get(i);
-			String code=getAppropriateCode(I,stuff.room,stuff.items,itemCache);
+			Item I2=RoomData.getReferenceItem(I);
+			String code=""+I2;
 			fixtures.add(new Pair<String,String>("ITEM"+(i+1), code));
 			fixtures.add(new Pair<String,String>("ITEMWORN"+(i+1),""));
 			fixtures.add(new Pair<String,String>("ITEMCONT"+(i+1),(I.container()==null)?"":""+(Object)I.container()));
@@ -549,11 +546,12 @@ public class RoomData extends StdWebMacro
 		if(stuff.items.size()==0)
 			fixtures.add(new Pair<String,String>("ITEM1",""));
 		fixtures.add(new Pair<String,String>("ITEM"+(stuff.items.size()+1),null));
-		List<MOB> mobCache=contributeMOBs(stuff.inhabs);
+		contributeMOBs(stuff.inhabs);
 		for(int m=0;m<stuff.inhabs.size();m++)
 		{
 			MOB M=stuff.inhabs.get(m);
-    		String code=getAppropriateCode(M,stuff.room,stuff.inhabs,mobCache);
+			MOB M2=RoomData.getReferenceMOB(M);
+    		String code=""+M2;
     		fixtures.add(new Pair<String,String>("MOB"+(m+1),code));
 		}
 		if(stuff.inhabs.size()==0)
@@ -672,8 +670,9 @@ public class RoomData extends StdWebMacro
 									  final String[] vars)
 	{
 		for(Pair<String,String> p : setPairsList)
-			if(p.first.startsWith(vars[0]))
+			if(p.first.startsWith(vars[0]) && (p.first.length()>vars[0].length()) && Character.isDigit(p.first.charAt(vars[0].length())))
 			{
+				if(p.second==null) continue;
 				final Pair<String,String> mP=findPair(mergePairs,vars[0],p.second);
 				boolean found=true;
 				if(mP==null)
@@ -684,30 +683,35 @@ public class RoomData extends StdWebMacro
 					{
 						final String setAData=getPairValue(setPairsList,vars[i]+getNumFromWordNum(p.first));
 						final String mergeAData=getPairValue(mergePairs,vars[i]+getNumFromWordNum(mP.first));
-						if(!setAData.equalsIgnoreCase(mergeAData))
+						if(((setAData!=null)&&(mergeAData==null))
+						||((setAData==null)&&(mergeAData!=null))
+						||((setAData!=null)&&(mergeAData!=null)&&(!setAData.equalsIgnoreCase(mergeAData))))
 							found=false;
 					}
 				}
-				if(found)
+				if(!found)
 				{
 					final Pair<String,String> p2=findPair(activePairsList,vars[0],p.second);
 					if(p2!=null) p2.second=""; // effectively erases it.
 				}
 			}
 		for(Pair<String,String> p : mergePairs)
-			if(p.first.startsWith(vars[0]))
+			if(p.first.startsWith(vars[0]) && (p.first.length()>vars[0].length()) && Character.isDigit(p.first.charAt(vars[0].length())))
 			{
-				final Pair<String,String> mP=findPair(setPairsList,vars[0],p.second);
+				if((p.second==null)||(p.second.length()==0)) continue;
+				final Pair<String,String> sP=findPair(setPairsList,vars[0],p.second);
 				boolean found=true;
-				if(mP==null)
+				if(sP==null)
 					found=false;
 				else
 				{
 					for(int i=1;i<vars.length;i++)
 					{
-						final String setAData=getPairValue(setPairsList,vars[i]+getNumFromWordNum(p.first));
-						final String mergeAData=getPairValue(mergePairs,vars[i]+getNumFromWordNum(mP.first));
-						if(!setAData.equalsIgnoreCase(mergeAData))
+						final String setAData=getPairValue(setPairsList,vars[i]+getNumFromWordNum(sP.first));
+						final String mergeAData=getPairValue(mergePairs,vars[i]+getNumFromWordNum(p.first));
+						if(((setAData!=null)&&(mergeAData==null))
+						||((setAData==null)&&(mergeAData!=null))
+						||((setAData!=null)&&(mergeAData!=null)&&(!setAData.equalsIgnoreCase(mergeAData))))
 							found=false;
 					}
 				}
@@ -720,7 +724,7 @@ public class RoomData extends StdWebMacro
 						for(int i=1;i<vars.length;i++)
 						{
 							p2=getPair(activePairsList,vars[i]+getNumFromWordNum(p.first));
-							p2.second=getPairValue(setPairsList,vars[i]+getNumFromWordNum(p.first));
+							p2.second=getPairValue(mergePairs,vars[i]+getNumFromWordNum(p.first));
 						}
 					}
 					else
@@ -730,7 +734,7 @@ public class RoomData extends StdWebMacro
 							x++;
 						activePairsList.add(new Pair(vars[0]+x,p.second));
 						for(int i=1;i<vars.length;i++)
-							activePairsList.add(new Pair(vars[i]+x,getPairValue(setPairsList,vars[i]+getNumFromWordNum(p.first))));
+							activePairsList.add(new Pair(vars[i]+x,getPairValue(mergePairs,vars[i]+getNumFromWordNum(p.first))));
 					}
 				}
 			}
@@ -776,7 +780,7 @@ public class RoomData extends StdWebMacro
 			public CMObject newInstance() { return this; }
 			public int compareTo(CMObject arg0) { return (arg0==this)?0:1; }
 		};
-		for(String key : httpReq.getAllRequestParameterKeys("*"))
+		for(String key : httpReq.getAllRequestParameterKeys(".*"))
 			mergeReq.addRequestParameters(key, httpReq.getRequestParameter(key));
 		for(String[] pair : STAT_CHECKS)
 			if(mergeReq.isRequestParameter(pair[1]) && (mergeReq.getRequestParameter(pair[1]).length()==0))
@@ -793,7 +797,12 @@ public class RoomData extends StdWebMacro
 		RoomData.mergeRoomField(activePairsList,setPairsList,mergePairs,new String[]{"MOB"});
 		RoomData.mergeRoomField(activePairsList,setPairsList,mergePairs,new String[]{"ITEM","ITEMWORN","ITEMCONT"});
 		for(final Pair<String,String> p : activePairsList)
-			mergeParams.put(p.first, p.second);
+		{
+			if(p.second==null)
+				mergeParams.remove(p.first);
+			else
+				mergeParams.put(p.first, p.second);
+		}
 		return mergeReq;
 	}
 	

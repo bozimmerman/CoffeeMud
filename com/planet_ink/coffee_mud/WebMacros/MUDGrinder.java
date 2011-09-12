@@ -520,6 +520,7 @@ public class MUDGrinder extends StdWebMacro
 				Pair<String,String> setPairs[]=RoomData.makeMergableRoomFields(R, multiRoomList);
 				for(final String id : multiRoomList)
 				{
+					if(id.length()==0) continue;
 					R=CMLib.map().getRoom(id);
 					if(R==null) return "@break@";
 					ExternalHTTPRequests mergeReq=RoomData.mergeRoomFields(httpReq, setPairs, R);
@@ -830,6 +831,7 @@ public class MUDGrinder extends StdWebMacro
 			{
 				for(final String id : multiRoomList)
 				{
+					if(id.length()==0) continue;
 					Room R=CMLib.map().getRoom(id);
 					if(R==null) return "@break@";
 					rooms.add(R);
@@ -869,6 +871,7 @@ public class MUDGrinder extends StdWebMacro
 			{
 				for(final String id : multiRoomList)
 				{
+					if(id.length()==0) continue;
 					Room R=CMLib.map().getRoom(id);
 					if(R==null) return "@break@";
 					rooms.add(R);
