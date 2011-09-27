@@ -245,15 +245,15 @@ public class RoomData extends StdWebMacro
 
     public static String getAppropriateCode(Environmental E, Environmental RorM, List classes, List list)
     {
-        if(((RorM instanceof Room)&&(((Room)RorM).isHere(E)))
-        ||((RorM instanceof MOB)&&(((MOB)RorM).isMine(E))))
-            return (E instanceof Item)?getItemCode(classes,(Item)E):getMOBCode(classes,(MOB)E);
+        if(CMLib.flags().isCataloged(E))
+            return "CATALOG-"+E.Name();
         else
         if(list.contains(E))
             return ""+E;
         else
-        if(CMLib.flags().isCataloged(E))
-            return "CATALOG-"+E.Name();
+        if(((RorM instanceof Room)&&(((Room)RorM).isHere(E)))
+        ||((RorM instanceof MOB)&&(((MOB)RorM).isMine(E))))
+            return (E instanceof Item)?getItemCode(classes,(Item)E):getMOBCode(classes,(MOB)E);
         return E.ID();
     }
 
@@ -454,6 +454,16 @@ public class RoomData extends StdWebMacro
 		return null;
 	}
 	
+	public static List<Pair<String,String>> findPairs(final List<Pair<String,String>> fixtures, final String varStart, final String value)
+	{
+		List<Pair<String,String>> pairs=new LinkedList<Pair<String,String>>();
+		Pair<String,String> p;
+		for(int x=1; (p=getPair(fixtures,varStart+x))!=null;x++)
+			if((p.second==value)||((p.second!=null)&&(p.second.equalsIgnoreCase(value))))
+				pairs.add(p);
+		return pairs;
+	}
+	
 	public static Pair<String,String> getPair(final List<Pair<String,String>> fixtures, final String var)
 	{
 		for(final Pair<String,String> p : fixtures)
@@ -613,6 +623,7 @@ public class RoomData extends StdWebMacro
 						||(!R2.fetchBehavior(B.ID()).getParms().equalsIgnoreCase(B.getParms())))
 							b.remove();
 					}
+					HashSet<MOB> checkedMobs=new HashSet();
 					for(Iterator<MOB> m=stuff.inhabs.iterator();m.hasNext();)
 					{
 						MOB M=m.next();
@@ -624,18 +635,23 @@ public class RoomData extends StdWebMacro
 	                			final MOB M2=m2.nextElement();
 	                			if(M2!=null)
 			                    {
-			                    	CMLib.catalog().updateCatalogIntegrity(M2);
-			                    	if((M2.isSavable())&&(M2.sameAs(M)))
-			                    	{
-			                    		found=true;
-			                    		break;
-			                    	}
+	                				if(!checkedMobs.contains(M2))
+	                				{
+				                    	CMLib.catalog().updateCatalogIntegrity(M2);
+				                    	if((M2.isSavable())&&(M2.sameAs(M)))
+				                    	{
+				                    		found=true;
+					                    	checkedMobs.add(M2);
+				                    		break;
+				                    	}
+	                				}
 			                    }
 							}
 	                    }
 						if((M!=null)&&(!found))
 							m.remove();
 					}
+					HashSet<Item> checkedItems=new HashSet();
 					for(Iterator<Item> i=stuff.items.iterator();i.hasNext();)
 					{
 						final Item I=i.next();
@@ -647,12 +663,16 @@ public class RoomData extends StdWebMacro
 	    						final Item I2=i2.nextElement();
 			                    if(I2!=null)
 			                    {
-			                    	CMLib.catalog().updateCatalogIntegrity(I2);
-			                    	if((I2.isSavable())&&(I2.sameAs(I)))
-			                    	{
-			                    		found=true;
-			                    		break;
-			                    	}
+	                				if(!checkedItems.contains(I2))
+	                				{
+				                    	CMLib.catalog().updateCatalogIntegrity(I2);
+				                    	if((I2.isSavable())&&(I2.sameAs(I)))
+				                    	{
+				                    		found=true;
+					                    	checkedItems.add(I2);
+				                    		break;
+				                    	}
+	                				}
 			                    }
 							}
 	                    }
@@ -669,50 +689,76 @@ public class RoomData extends StdWebMacro
 									  final List<Pair<String,String>> mergePairs,
 									  final String[] vars)
 	{
+		HashSet<Pair<String,String>> foundMergePairs=new HashSet<Pair<String,String>>();
+		HashSet<Pair<String,String>> foundSetPairs=new HashSet<Pair<String,String>>();
+		HashSet<Pair<String,String>> foundActivePairs=new HashSet<Pair<String,String>>();
 		for(Pair<String,String> p : setPairsList)
 			if(p.first.startsWith(vars[0]) && (p.first.length()>vars[0].length()) && Character.isDigit(p.first.charAt(vars[0].length())))
 			{
 				if(p.second==null) continue;
-				final Pair<String,String> mP=findPair(mergePairs,vars[0],p.second);
-				boolean found=true;
-				if(mP==null)
-					found=false;
-				else
+				final List<Pair<String,String>> mPs=findPairs(mergePairs,vars[0],p.second);
+				boolean found=false;
+				for(Pair<String,String> mP : mPs)
 				{
 					for(int i=1;i<vars.length;i++)
 					{
-						final String setAData=getPairValue(setPairsList,vars[i]+getNumFromWordNum(p.first));
-						final String mergeAData=getPairValue(mergePairs,vars[i]+getNumFromWordNum(mP.first));
-						if(((setAData!=null)&&(mergeAData==null))
-						||((setAData==null)&&(mergeAData!=null))
-						||((setAData!=null)&&(mergeAData!=null)&&(!setAData.equalsIgnoreCase(mergeAData))))
-							found=false;
+						if(!foundMergePairs.contains(mP))
+						{
+							final String setAData=getPairValue(setPairsList,vars[i]+getNumFromWordNum(p.first));
+							final String mergeAData=getPairValue(mergePairs,vars[i]+getNumFromWordNum(mP.first));
+							if(((setAData==null)&&(mergeAData==null))
+							||((setAData!=null)&&(mergeAData!=null)&&(setAData.equalsIgnoreCase(mergeAData))))
+							{
+								found=true;
+								foundMergePairs.add(mP);
+								break;
+							}
+						}
+					}
+					if(found)
+					{
+						break;
 					}
 				}
 				if(!found)
 				{
-					final Pair<String,String> p2=findPair(activePairsList,vars[0],p.second);
-					if(p2!=null) p2.second=""; // effectively erases it.
+					final List<Pair<String,String>> mP2s=findPairs(activePairsList,vars[0],p.second);
+					for(Pair<String,String> p2 : mP2s)
+					{
+						if(!foundActivePairs.contains(p2))
+						{
+							foundActivePairs.add(p2);
+							p2.second=""; // effectively erases it.
+						}
+					}
 				}
 			}
 		for(Pair<String,String> p : mergePairs)
-			if(p.first.startsWith(vars[0]) && (p.first.length()>vars[0].length()) && Character.isDigit(p.first.charAt(vars[0].length())))
+			if((!foundMergePairs.contains(p)) && p.first.startsWith(vars[0]) && (p.first.length()>vars[0].length()) && Character.isDigit(p.first.charAt(vars[0].length())))
 			{
 				if((p.second==null)||(p.second.length()==0)) continue;
-				final Pair<String,String> sP=findPair(setPairsList,vars[0],p.second);
-				boolean found=true;
-				if(sP==null)
-					found=false;
-				else
+				final List<Pair<String,String>> sPs=findPairs(setPairsList,vars[0],p.second);
+				boolean found=false;
+				for(Pair<String,String> sP : sPs)
 				{
 					for(int i=1;i<vars.length;i++)
 					{
-						final String setAData=getPairValue(setPairsList,vars[i]+getNumFromWordNum(sP.first));
-						final String mergeAData=getPairValue(mergePairs,vars[i]+getNumFromWordNum(p.first));
-						if(((setAData!=null)&&(mergeAData==null))
-						||((setAData==null)&&(mergeAData!=null))
-						||((setAData!=null)&&(mergeAData!=null)&&(!setAData.equalsIgnoreCase(mergeAData))))
-							found=false;
+						if(!foundSetPairs.contains(sP))
+						{
+							final String setAData=getPairValue(setPairsList,vars[i]+getNumFromWordNum(sP.first));
+							final String mergeAData=getPairValue(mergePairs,vars[i]+getNumFromWordNum(p.first));
+							if(((setAData==null)&&(mergeAData==null))
+							||((setAData!=null)&&(mergeAData!=null)&&(!setAData.equalsIgnoreCase(mergeAData))))
+							{
+								found=true;
+								foundSetPairs.add(sP);
+								break;
+							}
+						}
+					}
+					if(found)
+					{
+						break;
 					}
 				}
 				if(!found)
@@ -768,7 +814,7 @@ public class RoomData extends StdWebMacro
 			public int getWebServerPort() { return httpReq.getWebServerPort(); }
 			public String getWebServerPortStr() { return httpReq.getWebServerPortStr(); }
 			public CMFile grabFile(String filename) { return httpReq.grabFile(filename); }
-			public boolean isRequestParameter(String key) { return params.contains(key.toUpperCase()); }
+			public boolean isRequestParameter(String key) { return params.containsKey(key.toUpperCase()); }
 			public void removeRequestParameter(String key) { params.remove(key.toUpperCase()); }
 			public boolean activate() { return httpReq.activate(); }
 			public SupportThread getSupportThread() { return httpReq.getSupportThread(); }
@@ -820,6 +866,7 @@ public class RoomData extends StdWebMacro
 		boolean multiFlag=(multiFlagStr!=null)&& multiFlagStr.equalsIgnoreCase("on");
 		Vector<String> multiRoomList=CMParms.parseSemicolons(httpReq.getRequestParameter("MULTIROOMLIST"),false);
 		Room R=(Room)httpReq.getRequestObjects().get(last);
+		boolean useRoomItems=true;
 		if(R==null)
 		{
 			R=CMLib.map().getRoom(last);
@@ -840,6 +887,7 @@ public class RoomData extends StdWebMacro
 						else
 							httpReq.addRequestParameters(p.first,p.second);
 					}
+				useRoomItems=false;
 			}
 			httpReq.getRequestObjects().put(last,R);
 		}
@@ -994,7 +1042,7 @@ public class RoomData extends StdWebMacro
 					str.append("<TD WIDTH=90%>");
 					str.append("<SELECT ONCHANGE=\"DelMOB(this);\" NAME=MOB"+(i+1)+">");
 					str.append("<OPTION VALUE=\"\">Delete!");
-					String code=getAppropriateCode(M,R,classes,moblist);
+					String code=getAppropriateCode(M,R,useRoomItems?classes:new Vector<MOB>(),moblist);
 					str.append("<OPTION SELECTED VALUE=\""+code+"\">"+M.Name()+" ("+M.ID()+")");
 					str.append("</SELECT>");
 					str.append("</TD>");
@@ -1093,7 +1141,7 @@ public class RoomData extends StdWebMacro
 					str.append("<TD WIDTH=90%>");
 					str.append("<SELECT ONCHANGE=\"DelItem(this);\" NAME=ITEM"+(i+1)+">");
 					str.append("<OPTION VALUE=\"\">Delete!");
-					String code=getAppropriateCode(I,R,classes,itemlist);
+					String code=getAppropriateCode(I,R,useRoomItems?classes:new Vector<Item>(),itemlist);
 					str.append("<OPTION SELECTED VALUE=\""+code+"\">"+I.Name()+" ("+I.ID()+")");
 					str.append("</SELECT><BR>");
 					str.append("<FONT COLOR=WHITE SIZE=-1>");

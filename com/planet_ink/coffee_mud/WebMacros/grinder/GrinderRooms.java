@@ -64,6 +64,10 @@ public class GrinderRooms
 		boolean redoAllMyDamnRooms=false;
 		Room oldR=R;
 
+List<String> keys = httpReq.getAllRequestParameterKeys(".*");
+for(String k : keys)
+	System.out.println(CMStrings.padRight(k,10)+"="+httpReq.getRequestParameter(k));
+		
 		// class!
 		String className=httpReq.getRequestParameter("CLASSES");
 		if((className==null)||(className.length()==0))
