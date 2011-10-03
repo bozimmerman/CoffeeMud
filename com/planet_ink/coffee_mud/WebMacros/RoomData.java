@@ -551,7 +551,10 @@ public class RoomData extends StdWebMacro
 			String code=""+I2;
 			fixtures.add(new Pair<String,String>("ITEM"+(i+1), code));
 			fixtures.add(new Pair<String,String>("ITEMWORN"+(i+1),""));
-			fixtures.add(new Pair<String,String>("ITEMCONT"+(i+1),(I.container()==null)?"":""+(Object)I.container()));
+			String containerName="";
+			if(I.container()!=null)
+	            containerName=CMLib.english().getContextName(stuff.items,I.container());
+			fixtures.add(new Pair<String,String>("ITEMCONT"+(i+1),containerName));
 		}
 		if(stuff.items.size()==0)
 			fixtures.add(new Pair<String,String>("ITEM1",""));
