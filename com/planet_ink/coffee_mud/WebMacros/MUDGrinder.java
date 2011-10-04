@@ -857,6 +857,9 @@ public class MUDGrinder extends StdWebMacro
 				errMsg+=GrinderRooms.delRoom(R)+" ";
 			}
 			httpReq.addRequestParameters("ERRMSG",errMsg);
+			httpReq.removeRequestParameter("ROOM");
+			httpReq.removeRequestParameter("MULTIROOMLIST");
+			httpReq.removeRequestParameter("MULTIROOMFLAG");
 		}
 		else
 		if(parms.containsKey("RESETROOM"))

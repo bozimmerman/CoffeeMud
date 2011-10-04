@@ -4,7 +4,19 @@
 @if?!CheckAuthCode?ANYMODAREAS=true@ @AddFile?/grinder/nopriv.cmvp@ @else@
 
 @MUDGrinder?DELROOM@
-@if?!CheckReqParm?ERRMSG=@ @AddFile?/grinder/loggedin.cmvp@ @else@ @AddFile?/grinder/modarea.cmvp@ @endif@
+
+@if?!CheckReqParm?ERRMSG=@
+<SCRIPT LANGUAGE="JavaScript">
+<!--
+	var msg='@RequestParameter?ERRMSG@';
+	msg=msg.trim();
+	if(msg.length()>0)
+		alert(msg);
+//-->
+</SCRIPT>
+@endif@
+
+@AddFile?/grinder/modarea.cmvp@
 
 @endif@ 
 @endif@ 

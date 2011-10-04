@@ -687,33 +687,33 @@ public class RoomData extends StdWebMacro
 		return makePairs(stuff,fixtures);
 	}
 
-	public static void mergeRoomField(final List<Pair<String,String>> activePairsList,
-									  final List<Pair<String,String>> setPairsList,
-									  final List<Pair<String,String>> mergePairs,
+	public static void mergeRoomField(final List<Pair<String,String>> currentRoomPairsList,
+									  final List<Pair<String,String>> commonRoomsPairsList,
+									  final List<Pair<String,String>> submittedRoomPairsList,
 									  final String[] vars)
 	{
-		HashSet<Pair<String,String>> foundMergePairs=new HashSet<Pair<String,String>>();
-		HashSet<Pair<String,String>> foundSetPairs=new HashSet<Pair<String,String>>();
-		HashSet<Pair<String,String>> foundActivePairs=new HashSet<Pair<String,String>>();
-		for(Pair<String,String> p : setPairsList)
+		HashSet<Pair<String,String>> foundSubmittedRoomPairsList=new HashSet<Pair<String,String>>();
+		HashSet<Pair<String,String>> foundCommonRoomsPairsList=new HashSet<Pair<String,String>>();
+		HashSet<Pair<String,String>> foundCurrentRoomPairsList=new HashSet<Pair<String,String>>();
+		for(Pair<String,String> p : commonRoomsPairsList)
 			if(p.first.startsWith(vars[0]) && (p.first.length()>vars[0].length()) && Character.isDigit(p.first.charAt(vars[0].length())))
 			{
 				if(p.second==null) continue;
-				final List<Pair<String,String>> mPs=findPairs(mergePairs,vars[0],p.second);
+				final List<Pair<String,String>> mPs=findPairs(submittedRoomPairsList,vars[0],p.second);
 				boolean found=false;
 				for(Pair<String,String> mP : mPs)
 				{
 					for(int i=1;i<vars.length;i++)
 					{
-						if(!foundMergePairs.contains(mP))
+						if(!foundSubmittedRoomPairsList.contains(mP))
 						{
-							final String setAData=getPairValue(setPairsList,vars[i]+getNumFromWordNum(p.first));
-							final String mergeAData=getPairValue(mergePairs,vars[i]+getNumFromWordNum(mP.first));
+							final String setAData=getPairValue(commonRoomsPairsList,vars[i]+getNumFromWordNum(p.first));
+							final String mergeAData=getPairValue(submittedRoomPairsList,vars[i]+getNumFromWordNum(mP.first));
 							if(((setAData==null)&&(mergeAData==null))
 							||((setAData!=null)&&(mergeAData!=null)&&(setAData.equalsIgnoreCase(mergeAData))))
 							{
 								found=true;
-								foundMergePairs.add(mP);
+								foundSubmittedRoomPairsList.add(mP);
 								break;
 							}
 						}
@@ -723,38 +723,56 @@ public class RoomData extends StdWebMacro
 						break;
 					}
 				}
+				Pair<String,String> foundActiveP=null;
+				final List<Pair<String,String>> mP2s=findPairs(currentRoomPairsList,vars[0],p.second);
+				for(Pair<String,String> p2 : mP2s)
+				{
+					for(int i=1;i<vars.length;i++)
+					{
+						if(!foundCurrentRoomPairsList.contains(p2))
+						{
+							final String setAData=getPairValue(commonRoomsPairsList,vars[i]+getNumFromWordNum(p.first));
+							final String activeAData=getPairValue(currentRoomPairsList,vars[i]+getNumFromWordNum(p2.first));
+							if(((setAData==null)&&(activeAData==null))
+							||((setAData!=null)&&(activeAData!=null)&&(setAData.equalsIgnoreCase(activeAData))))
+							{
+								foundActiveP=p2;
+								break;
+							}
+						}
+					}
+					if(foundActiveP!=null)
+						break;
+				}
+				if(foundActiveP!=null)
+					foundCurrentRoomPairsList.add(foundActiveP);
 				if(!found)
 				{
-					final List<Pair<String,String>> mP2s=findPairs(activePairsList,vars[0],p.second);
-					for(Pair<String,String> p2 : mP2s)
+					if(foundActiveP!=null)
 					{
-						if(!foundActivePairs.contains(p2))
-						{
-							foundActivePairs.add(p2);
-							p2.second=""; // effectively erases it.
-						}
+						foundActiveP.second=""; // effectively erases it.
 					}
 				}
 			}
-		for(Pair<String,String> p : mergePairs)
-			if((!foundMergePairs.contains(p)) && p.first.startsWith(vars[0]) && (p.first.length()>vars[0].length()) && Character.isDigit(p.first.charAt(vars[0].length())))
+		for(Pair<String,String> p : submittedRoomPairsList)
+			if((!foundSubmittedRoomPairsList.contains(p)) && p.first.startsWith(vars[0]) && (p.first.length()>vars[0].length()) && Character.isDigit(p.first.charAt(vars[0].length())))
 			{
 				if((p.second==null)||(p.second.length()==0)) continue;
-				final List<Pair<String,String>> sPs=findPairs(setPairsList,vars[0],p.second);
+				final List<Pair<String,String>> sPs=findPairs(commonRoomsPairsList,vars[0],p.second);
 				boolean found=false;
 				for(Pair<String,String> sP : sPs)
 				{
 					for(int i=1;i<vars.length;i++)
 					{
-						if(!foundSetPairs.contains(sP))
+						if(!foundCommonRoomsPairsList.contains(sP))
 						{
-							final String setAData=getPairValue(setPairsList,vars[i]+getNumFromWordNum(sP.first));
-							final String mergeAData=getPairValue(mergePairs,vars[i]+getNumFromWordNum(p.first));
+							final String setAData=getPairValue(commonRoomsPairsList,vars[i]+getNumFromWordNum(sP.first));
+							final String mergeAData=getPairValue(submittedRoomPairsList,vars[i]+getNumFromWordNum(p.first));
 							if(((setAData==null)&&(mergeAData==null))
 							||((setAData!=null)&&(mergeAData!=null)&&(!setAData.equalsIgnoreCase(mergeAData))))
 							{
 								found=true;
-								foundSetPairs.add(sP);
+								foundCommonRoomsPairsList.add(sP);
 								break;
 							}
 						}
@@ -766,25 +784,12 @@ public class RoomData extends StdWebMacro
 				}
 				if(!found)
 				{
-					Pair<String,String> p2=findPair(activePairsList,vars[0],"");
-					if(p2!=null) // fill in an empty spot!
-					{
-						p2.second=p.second;
-						for(int i=1;i<vars.length;i++)
-						{
-							p2=getPair(activePairsList,vars[i]+getNumFromWordNum(p.first));
-							p2.second=getPairValue(mergePairs,vars[i]+getNumFromWordNum(p.first));
-						}
-					}
-					else
-					{
-						int x=1;
-						for(;getPair(activePairsList,vars[0]+x)!=null;x++)
-							x++;
-						activePairsList.add(new Pair(vars[0]+x,p.second));
-						for(int i=1;i<vars.length;i++)
-							activePairsList.add(new Pair(vars[i]+x,getPairValue(mergePairs,vars[i]+getNumFromWordNum(p.first))));
-					}
+					int x=1;
+					for(;getPair(currentRoomPairsList,vars[0]+x)!=null;x++)
+						x++;
+					currentRoomPairsList.add(new Pair(vars[0]+x,p.second));
+					for(int i=1;i<vars.length;i++)
+						currentRoomPairsList.add(new Pair(vars[i]+x,getPairValue(submittedRoomPairsList,vars[i]+getNumFromWordNum(p.first))));
 				}
 			}
 	}
@@ -838,14 +843,14 @@ public class RoomData extends StdWebMacro
 		R=(Room)R.copyOf();
 		RoomStuff stuff=new RoomStuff(R);
 		Pair<String,String>[] activePairs = makePairs(stuff,new Vector<Pair<String,String>>());
-		List<Pair<String,String>> mergePairs = toPairs(mergeParams);
-		List<Pair<String,String>> setPairsList=Arrays.asList(setPairs);
-		List<Pair<String,String>> activePairsList=new XVector(Arrays.asList(activePairs));
-		RoomData.mergeRoomField(activePairsList,setPairsList,mergePairs,new String[]{"AFFECT","ADATA"});
-		RoomData.mergeRoomField(activePairsList,setPairsList,mergePairs,new String[]{"BEHAV","BDATA"});
-		RoomData.mergeRoomField(activePairsList,setPairsList,mergePairs,new String[]{"MOB"});
-		RoomData.mergeRoomField(activePairsList,setPairsList,mergePairs,new String[]{"ITEM","ITEMWORN","ITEMCONT"});
-		for(final Pair<String,String> p : activePairsList)
+		List<Pair<String,String>> submittedRoomPairsList = toPairs(mergeParams);
+		List<Pair<String,String>> commonRoomsPairsList=Arrays.asList(setPairs);
+		List<Pair<String,String>> currentRoomPairsList=new XVector(Arrays.asList(activePairs));
+		RoomData.mergeRoomField(currentRoomPairsList,commonRoomsPairsList,submittedRoomPairsList,new String[]{"AFFECT","ADATA"});
+		RoomData.mergeRoomField(currentRoomPairsList,commonRoomsPairsList,submittedRoomPairsList,new String[]{"BEHAV","BDATA"});
+		RoomData.mergeRoomField(currentRoomPairsList,commonRoomsPairsList,submittedRoomPairsList,new String[]{"MOB"});
+		RoomData.mergeRoomField(currentRoomPairsList,commonRoomsPairsList,submittedRoomPairsList,new String[]{"ITEM","ITEMWORN","ITEMCONT"});
+		for(final Pair<String,String> p : currentRoomPairsList)
 		{
 			if(p.second==null)
 				mergeParams.remove(p.first);

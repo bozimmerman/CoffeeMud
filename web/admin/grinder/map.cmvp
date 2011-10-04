@@ -55,11 +55,11 @@
 				if (navigator.appName=="Netscape" && parseInt(navigator.appVersion)==4) 
 				{
 					var mString =(e.modifiers+32).toString(2).substring(3,6);
-				    shiftDown=(mString.charAt(0)=="1");
+				    shiftDown=(mString.charAt(1)=="1");
 				}
   				else 
   				{
-					shiftDown=evt.shiftKey;
+					shiftDown=evt.ctrlKey;
 				}
 			 }
  			 return true;
