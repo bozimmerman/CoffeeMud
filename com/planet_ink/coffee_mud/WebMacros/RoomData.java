@@ -696,6 +696,7 @@ public class RoomData extends StdWebMacro
 		HashSet<Pair<String,String>> foundCommonRoomsPairsList=new HashSet<Pair<String,String>>();
 		HashSet<Pair<String,String>> foundCurrentRoomPairsList=new HashSet<Pair<String,String>>();
 		for(Pair<String,String> p : commonRoomsPairsList)
+		{
 			if(p.first.startsWith(vars[0]) && (p.first.length()>vars[0].length()) && Character.isDigit(p.first.charAt(vars[0].length())))
 			{
 				if(p.second==null) continue;
@@ -703,9 +704,16 @@ public class RoomData extends StdWebMacro
 				boolean found=false;
 				for(Pair<String,String> mP : mPs)
 				{
-					for(int i=1;i<vars.length;i++)
+					if(!foundSubmittedRoomPairsList.contains(mP))
 					{
-						if(!foundSubmittedRoomPairsList.contains(mP))
+						if(vars.length==1)
+						{
+							found=true;
+							foundSubmittedRoomPairsList.add(mP);
+							break;
+						}
+						else
+						for(int i=1;i<vars.length;i++)
 						{
 							final String setAData=getPairValue(commonRoomsPairsList,vars[i]+getNumFromWordNum(p.first));
 							final String mergeAData=getPairValue(submittedRoomPairsList,vars[i]+getNumFromWordNum(mP.first));
@@ -727,9 +735,15 @@ public class RoomData extends StdWebMacro
 				final List<Pair<String,String>> mP2s=findPairs(currentRoomPairsList,vars[0],p.second);
 				for(Pair<String,String> p2 : mP2s)
 				{
-					for(int i=1;i<vars.length;i++)
+					if(!foundCurrentRoomPairsList.contains(p2))
 					{
-						if(!foundCurrentRoomPairsList.contains(p2))
+						if(vars.length==1)
+						{
+							foundActiveP=p2;
+							break;
+						}
+						else
+						for(int i=1;i<vars.length;i++)
 						{
 							final String setAData=getPairValue(commonRoomsPairsList,vars[i]+getNumFromWordNum(p.first));
 							final String activeAData=getPairValue(currentRoomPairsList,vars[i]+getNumFromWordNum(p2.first));
@@ -754,7 +768,9 @@ public class RoomData extends StdWebMacro
 					}
 				}
 			}
+		}
 		for(Pair<String,String> p : submittedRoomPairsList)
+		{
 			if((!foundSubmittedRoomPairsList.contains(p)) && p.first.startsWith(vars[0]) && (p.first.length()>vars[0].length()) && Character.isDigit(p.first.charAt(vars[0].length())))
 			{
 				if((p.second==null)||(p.second.length()==0)) continue;
@@ -762,9 +778,16 @@ public class RoomData extends StdWebMacro
 				boolean found=false;
 				for(Pair<String,String> sP : sPs)
 				{
-					for(int i=1;i<vars.length;i++)
+					if(!foundCommonRoomsPairsList.contains(sP))
 					{
-						if(!foundCommonRoomsPairsList.contains(sP))
+						if(vars.length==1)
+						{
+							found=true;
+							foundCommonRoomsPairsList.add(sP);
+							break;
+						}
+						else
+						for(int i=1;i<vars.length;i++)
 						{
 							final String setAData=getPairValue(commonRoomsPairsList,vars[i]+getNumFromWordNum(sP.first));
 							final String mergeAData=getPairValue(submittedRoomPairsList,vars[i]+getNumFromWordNum(p.first));
@@ -785,13 +808,16 @@ public class RoomData extends StdWebMacro
 				if(!found)
 				{
 					int x=1;
-					for(;getPair(currentRoomPairsList,vars[0]+x)!=null;x++)
-						x++;
+					for(;getPair(currentRoomPairsList,vars[0]+x)!=null;x++){}
+					x--;
 					currentRoomPairsList.add(new Pair(vars[0]+x,p.second));
 					for(int i=1;i<vars.length;i++)
+					{
 						currentRoomPairsList.add(new Pair(vars[i]+x,getPairValue(submittedRoomPairsList,vars[i]+getNumFromWordNum(p.first))));
+					}
 				}
 			}
+		}
 	}
 	
 	public static ExternalHTTPRequests mergeRoomFields(final ExternalHTTPRequests httpReq, Pair<String,String> setPairs[], Room R)
