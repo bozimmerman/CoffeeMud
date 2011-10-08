@@ -693,7 +693,6 @@ public class RoomData extends StdWebMacro
 									  final String[] vars)
 	{
 		HashSet<Pair<String,String>> foundSubmittedRoomPairsList=new HashSet<Pair<String,String>>();
-		HashSet<Pair<String,String>> foundCommonRoomsPairsList=new HashSet<Pair<String,String>>();
 		HashSet<Pair<String,String>> foundCurrentRoomPairsList=new HashSet<Pair<String,String>>();
 		for(Pair<String,String> p : commonRoomsPairsList)
 		{
@@ -774,28 +773,28 @@ public class RoomData extends StdWebMacro
 			if((!foundSubmittedRoomPairsList.contains(p)) && p.first.startsWith(vars[0]) && (p.first.length()>vars[0].length()) && Character.isDigit(p.first.charAt(vars[0].length())))
 			{
 				if((p.second==null)||(p.second.length()==0)) continue;
-				final List<Pair<String,String>> sPs=findPairs(commonRoomsPairsList,vars[0],p.second);
+				final List<Pair<String,String>> sPs=findPairs(currentRoomPairsList,vars[0],p.second);
 				boolean found=false;
 				for(Pair<String,String> sP : sPs)
 				{
-					if(!foundCommonRoomsPairsList.contains(sP))
+					if(!foundCurrentRoomPairsList.contains(sP))
 					{
 						if(vars.length==1)
 						{
 							found=true;
-							foundCommonRoomsPairsList.add(sP);
+							foundCurrentRoomPairsList.add(sP);
 							break;
 						}
 						else
 						for(int i=1;i<vars.length;i++)
 						{
-							final String setAData=getPairValue(commonRoomsPairsList,vars[i]+getNumFromWordNum(sP.first));
+							final String setAData=getPairValue(currentRoomPairsList,vars[i]+getNumFromWordNum(sP.first));
 							final String mergeAData=getPairValue(submittedRoomPairsList,vars[i]+getNumFromWordNum(p.first));
 							if(((setAData==null)&&(mergeAData==null))
 							||((setAData!=null)&&(mergeAData!=null)&&(!setAData.equalsIgnoreCase(mergeAData))))
 							{
 								found=true;
-								foundCommonRoomsPairsList.add(sP);
+								foundCurrentRoomPairsList.add(sP);
 								break;
 							}
 						}
@@ -807,13 +806,30 @@ public class RoomData extends StdWebMacro
 				}
 				if(!found)
 				{
-					int x=1;
-					for(;getPair(currentRoomPairsList,vars[0]+x)!=null;x++){}
-					x--;
-					currentRoomPairsList.add(new Pair(vars[0]+x,p.second));
-					for(int i=1;i<vars.length;i++)
+					for(int x=1;;x++)
 					{
-						currentRoomPairsList.add(new Pair(vars[i]+x,getPairValue(submittedRoomPairsList,vars[i]+getNumFromWordNum(p.first))));
+						Pair<String,String> editablePairHead=getPair(currentRoomPairsList,vars[0]+x);
+						if(editablePairHead==null)
+						{
+							currentRoomPairsList.add(new Pair(vars[0]+x,p.second));
+							for(int i=1;i<vars.length;i++)
+								currentRoomPairsList.add(new Pair(vars[i]+x,getPairValue(submittedRoomPairsList,vars[i]+getNumFromWordNum(p.first))));
+							break;
+						}
+						else
+						if((editablePairHead.second==null)||(editablePairHead.second.trim().length()==0))
+						{
+							editablePairHead.second=p.second;
+							for(int i=1;i<vars.length;i++)
+							{
+								Pair<String,String> editableField=getPair(currentRoomPairsList,vars[0]+x);
+								if(editableField==null)
+									currentRoomPairsList.add(new Pair(vars[i]+x,getPairValue(submittedRoomPairsList,vars[i]+getNumFromWordNum(p.first))));
+								else
+									editableField.second=getPairValue(submittedRoomPairsList,vars[i]+getNumFromWordNum(p.first));
+							}
+							break;
+						}
 					}
 				}
 			}
