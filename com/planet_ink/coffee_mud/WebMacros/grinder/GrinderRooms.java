@@ -63,7 +63,7 @@ public class GrinderRooms
 		if(R==null) return "Old Room not defined!";
 		boolean redoAllMyDamnRooms=false;
 		Room oldR=R;
-
+		
 		// class!
 		String className=httpReq.getRequestParameter("CLASSES");
 		if((className==null)||(className.length()==0))

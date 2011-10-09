@@ -483,7 +483,7 @@ public class RoomData extends StdWebMacro
 	{
 		final LinkedList<Pair<String,String>> pairList=new LinkedList<Pair<String,String>>();
 		for(final String key : map.keySet())
-			pairList.add(new Pair(key,map.get(key)));
+			pairList.add(new Pair(key.trim(),map.get(key)));
 		return pairList;
 			
 	}
@@ -556,8 +556,6 @@ public class RoomData extends StdWebMacro
 	            containerName=CMLib.english().getContextName(stuff.items,I.container());
 			fixtures.add(new Pair<String,String>("ITEMCONT"+(i+1),containerName));
 		}
-		if(stuff.items.size()==0)
-			fixtures.add(new Pair<String,String>("ITEM1",""));
 		fixtures.add(new Pair<String,String>("ITEM"+(stuff.items.size()+1),null));
 		contributeMOBs(stuff.inhabs);
 		for(int m=0;m<stuff.inhabs.size();m++)
@@ -567,8 +565,6 @@ public class RoomData extends StdWebMacro
     		String code=""+M2;
     		fixtures.add(new Pair<String,String>("MOB"+(m+1),code));
 		}
-		if(stuff.inhabs.size()==0)
-			fixtures.add(new Pair<String,String>("MOB1",""));
 		fixtures.add(new Pair<String,String>("MOB"+(stuff.inhabs.size()+1),null));
 		for(int a=0;a<stuff.affects.size();a++)
 		{
@@ -576,24 +572,16 @@ public class RoomData extends StdWebMacro
 			fixtures.add(new Pair<String,String>("AFFECT"+(a+1),A.ID()));
 			fixtures.add(new Pair<String,String>("ADATA"+(a+1),A.text()));
 		}
-		if(stuff.affects.size()==0)
-		{
-			fixtures.add(new Pair<String,String>("AFFECT1",""));
-			fixtures.add(new Pair<String,String>("ADATA1",""));
-		}
 		fixtures.add(new Pair<String,String>("AFFECT"+(stuff.affects.size()+1),null));
+		fixtures.add(new Pair<String,String>("ADATA"+(stuff.affects.size()+1),null));
 		for(int b=0;b<stuff.behavs.size();b++)
 		{
 			final Behavior B=stuff.behavs.get(b);
 			fixtures.add(new Pair<String,String>("BEHAV"+(b+1),B.ID()));
 			fixtures.add(new Pair<String,String>("BDATA"+(b+1),B.getParms()));
 		}
-		if(stuff.behavs.size()==0)
-		{
-			fixtures.add(new Pair<String,String>("BEHAV1",""));
-			fixtures.add(new Pair<String,String>("BDATA1",""));
-		}
 		fixtures.add(new Pair<String,String>("BEHAV"+(stuff.behavs.size()+1),null));
+		fixtures.add(new Pair<String,String>("BDATA"+(stuff.behavs.size()+1),null));
 		return fixtures.toArray(new Pair[0]);
 	}
 	
@@ -611,7 +599,7 @@ public class RoomData extends StdWebMacro
 					CMLib.map().resetRoom(R2);
 					for(final String[] set : STAT_CHECKS)
 						if(!R.getStat(set[0]).equalsIgnoreCase(R2.getStat(set[0])))
-							fixtures.add(new Pair<String,String>(set[1], ""));
+							fixtures.add(new Pair<String,String>(set[1].trim(), ""));
 					for(Iterator<Ability> a=stuff.affects.iterator();a.hasNext();)
 					{
 						final Ability A=a.next();
@@ -822,7 +810,7 @@ public class RoomData extends StdWebMacro
 							editablePairHead.second=p.second;
 							for(int i=1;i<vars.length;i++)
 							{
-								Pair<String,String> editableField=getPair(currentRoomPairsList,vars[0]+x);
+								Pair<String,String> editableField=getPair(currentRoomPairsList,vars[i]+x);
 								if(editableField==null)
 									currentRoomPairsList.add(new Pair(vars[i]+x,getPairValue(submittedRoomPairsList,vars[i]+getNumFromWordNum(p.first))));
 								else
@@ -877,7 +865,7 @@ public class RoomData extends StdWebMacro
 			public int compareTo(CMObject arg0) { return (arg0==this)?0:1; }
 		};
 		for(String key : httpReq.getAllRequestParameterKeys(".*"))
-			mergeReq.addRequestParameters(key, httpReq.getRequestParameter(key));
+			mergeReq.addRequestParameters(key.trim(), httpReq.getRequestParameter(key));
 		for(String[] pair : STAT_CHECKS)
 			if(mergeReq.isRequestParameter(pair[1]) && (mergeReq.getRequestParameter(pair[1]).length()==0))
 				mergeReq.addRequestParameters(pair[1], R.getStat(pair[0]));
@@ -899,6 +887,10 @@ public class RoomData extends StdWebMacro
 			else
 				mergeParams.put(p.first, p.second);
 		}
+		if(!mergeParams.containsKey("AFFECT1")) mergeParams.put("AFFECT1", "");
+		if(!mergeParams.containsKey("BEHAV1")) mergeParams.put("BEHAV1", "");
+		if(!mergeParams.containsKey("MOB1")) mergeParams.put("MOB1", "");
+		if(!mergeParams.containsKey("ITEM1")) mergeParams.put("ITEM1", "");
 		return mergeReq;
 	}
 	
