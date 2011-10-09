@@ -1739,6 +1739,11 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
         {
             this.recipeFilename = recipeFilename;
             this.recipeFormat = recipeFormat;
+            if(recipeFilename.trim().length()==0)
+            {
+                parseError = "No file";
+                return;
+            }
             CMFile F = new CMFile(Resources.buildResourcePath("skills")+recipeFilename,null,true);
             wasVFS=F.isVFSFile();
             StringBuffer str=F.text();

@@ -83,7 +83,7 @@ public class GenCraftSkill extends EnhancedCraftingSkill implements ItemCraftor
         O[V_NAME]="Crafting Skill";
         O[V_TRIG]=new String[]{"CRAFT"};
         O[V_HELP]="<ABILITY>This skill is not yet documented.";
-        O[V_FNAM]="craftingskill.txt";
+        O[V_FNAM]="";
         O[V_RSCS]="WOODEN";
         O[V_VERB]="crafting";
         O[V_CNMN]=Boolean.valueOf(true);
@@ -288,7 +288,11 @@ public class GenCraftSkill extends EnhancedCraftingSkill implements ItemCraftor
 		return super.tick(ticking,tickID);
 	}
 
-    protected List<List<String>> loadRecipes(){return super.loadRecipes(parametersFile());}
+    protected List<List<String>> loadRecipes(){
+    	if(parametersFile().length()==0)
+    		return new Vector<List<String>>();
+    	return super.loadRecipes(parametersFile());
+    }
 
 	public void unInvoke()
 	{
