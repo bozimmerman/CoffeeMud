@@ -1837,6 +1837,12 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
             	Log.errOut("CharCreation",login+" does not exist ("+(session!=null)+")! FAIL!");
             	return LoginResult.NO_LOGIN;
         	}
+        	if(mob.playerStats()==null)
+        	{
+            	Log.errOut("CharCreation",login+" is not a player! FAIL!");
+            	session.println("Error occurred trying to login as this player. Please contact your technical support.");
+            	return LoginResult.NO_LOGIN;
+        	}
         	mob.setSession(session);
         	session.setMob(mob);
             if(isExpired(mob.playerStats().getAccount(),session,mob.playerStats().getAccountExpiration())) 

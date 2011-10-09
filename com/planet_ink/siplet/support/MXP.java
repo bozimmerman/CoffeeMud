@@ -506,10 +506,17 @@ public class MXP
 			}
             if(E.needsText())
             {
-                text=buf.substring(E.getBufInsert(),oldI);
-                text=Util.stripBadHTMLTags(Util.replaceAll(text,"&nbsp;"," "));
-                oldI=E.getBufInsert();
-                if(tagDebug){System.out.println("/TAG/END/text="+substr(text,0,100)); System.out.flush();}
+            	if((E.getBufInsert()<0)||(oldI<E.getBufInsert()))
+            	{
+            		// wish i could log
+            	}
+            	else
+            	{
+	                text=buf.substring(E.getBufInsert(),oldI);
+	                text=Util.stripBadHTMLTags(Util.replaceAll(text,"&nbsp;"," "));
+	                oldI=E.getBufInsert();
+	                if(tagDebug){System.out.println("/TAG/END/text="+substr(text,0,100)); System.out.flush();}
+            	}
             }
             else
             if(E.isHTML())

@@ -84,7 +84,8 @@ public class ServiceEngine implements ThreadEngine
 		}
 		catch(Exception e)
 		{
-			Log.errOut("ServiceEngine",e.getMessage());
+			Log.errOut("ServiceEngine","ExecRun: "+e.getMessage());
+			Log.debugOut("ServiceEngine",e);
 		}
 	}
 	
