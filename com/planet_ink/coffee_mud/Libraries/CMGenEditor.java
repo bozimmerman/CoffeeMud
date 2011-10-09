@@ -7268,7 +7268,6 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
             genDamage(mob,me,++showNumber,showFlag);
             genArmor(mob,me,++showNumber,showFlag);
             genHitPoints(mob,me,++showNumber,showFlag);
-            genMoney(mob,me,++showNumber,showFlag);
             me.setTrains(prompt(mob,me.getTrains(),++showNumber,showFlag,"Training Points"));
             me.setPractices(prompt(mob,me.getPractices(),++showNumber,showFlag,"Practice Points"));
             me.setQuestPoint(prompt(mob,me.getQuestPoint(),++showNumber,showFlag,"Quest Points"));
