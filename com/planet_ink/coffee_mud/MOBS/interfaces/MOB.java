@@ -40,6 +40,8 @@ import java.util.Vector;
 @SuppressWarnings("unchecked")
 public interface MOB extends Rider, DBIdentifiable, PhysicalAgent, ItemPossessor
 {
+	public static long AGE_MILLIS_THRESHOLD = 120000;
+	
 	public int getBitmap();
 	public void setBitmap(int bitmap);
 	public String titledName();
@@ -100,7 +102,7 @@ public interface MOB extends Rider, DBIdentifiable, PhysicalAgent, ItemPossessor
     public void dispossess(boolean giveMsg);
 
 	// gained attributes
-	public long getAgeHours();
+	public long getAgeMinutes();
 	public int getPractices();
 	public int getExperience();
 	public int getExpNextLevel();
@@ -110,7 +112,7 @@ public interface MOB extends Rider, DBIdentifiable, PhysicalAgent, ItemPossessor
 	public int getTrains();
 	public int getMoney();
 	public double getMoneyVariation();
-	public void setAgeHours(long newVal);
+	public void setAgeMinutes(long newVal);
 	public void setExperience(int newVal);
 	public void setExpNextLevel(int newVal);
 	public void setPractices(int newVal);

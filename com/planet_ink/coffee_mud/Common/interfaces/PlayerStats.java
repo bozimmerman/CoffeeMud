@@ -400,7 +400,7 @@ public interface PlayerStats extends CMCommon, Modifiable, AccountStats
 	 * birthday based on the number of hours they've played.
 	 * 
      * @see com.planet_ink.coffee_mud.Common.interfaces.PlayerStats#getBirthday()
-     * @see com.planet_ink.coffee_mud.MOBS.interfaces.MOB#getAgeHours()
+     * @see com.planet_ink.coffee_mud.MOBS.interfaces.MOB#getAgeMinutes()
      * @see com.planet_ink.coffee_mud.Races.interfaces.Race
 	 * 
 	 * @param ageHours the number of hours the player played

@@ -43,7 +43,7 @@ public class Experience extends StdCommand
 		&&!mob.charStats().getCurrentClass().expless()
 		&&!mob.charStats().getMyRace().expless())
 		{
-			msg.append("\nYou have scored ^!"+mob.getExperience()+"^? experience points and have been online for ^!"+Math.round(CMath.div(mob.getAgeHours(),60.0))+"^? hours.\n\r");
+			msg.append("\nYou have scored ^!"+mob.getExperience()+"^? experience points and have been online for ^!"+Math.round(CMath.div(mob.getAgeMinutes(),60.0))+"^? hours.\n\r");
 			if((!CMSecurity.isDisabled(CMSecurity.DisFlag.LEVELS))
 			&&(!mob.charStats().getCurrentClass().leveless())
 			&&(!mob.charStats().getMyRace().leveless()))

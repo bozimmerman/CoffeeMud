@@ -65,7 +65,7 @@ public class Quit extends StdCommand
                 mob.tell("You must wait a few more minutes before you are allowed to quit.");
                 return false;
             }
-            if((session!=null)&&(mob.getAgeHours()<=0)&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.QUITREASON)))
+            if((session!=null)&&(mob.getAgeMinutes()<=0)&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.QUITREASON)))
             {
         		String reason=session.prompt("Since your character is brand new, please leave a short"
         				 						  +" message as to why you are leaving so soon."

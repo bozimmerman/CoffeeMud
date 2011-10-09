@@ -180,7 +180,7 @@ public class Score extends Affect
 			else
 				msg.append("You have scored ^!"+mob.getExperience()+"^? ^<HELP^>experience points^</HELP^>.\n\r");
 		}
-		msg.append("You have been online for ^!"+Math.round(CMath.div(mob.getAgeHours(),60.0))+"^? hours.\n\r");
+		msg.append("You have been online for ^!"+Math.round(CMath.div(mob.getAgeMinutes(),60.0))+"^? hours.\n\r");
 		for(Enumeration e=mob.fetchFactions();e.hasMoreElements();)
 		{
 		    String factionID=(String)e.nextElement();

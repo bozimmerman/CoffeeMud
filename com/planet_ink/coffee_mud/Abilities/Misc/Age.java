@@ -289,7 +289,7 @@ public class Age extends StdAbility
 						liege=CMLib.players().getLoadPlayer(babe.getLiegeID());
 					if(liege==null) liege=babe.amFollowing();
 					MOB newMan=CMClass.getMOB("StdMOB");
-					newMan.setAgeHours(babe.getAgeHours());
+					newMan.setAgeMinutes(babe.getAgeMinutes());
 					newMan.setBaseCharStats(babe.baseCharStats());
 					newMan.setBasePhyStats(babe.basePhyStats());
 					if(liege!=null)	newMan.copyFactions(liege);

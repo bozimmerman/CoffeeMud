@@ -99,7 +99,7 @@ public class StdMOB implements MOB
 	protected int 		experience=0;
 	protected int 		practices=0;
 	protected int 		trains=0;
-	protected long 		ageHours=0;
+	protected long 		ageMinutes=0;
 	protected int 		money=0;
 	protected double 	moneyVariation=0.0;
 	protected int 		attributesBitmap=MOB.ATT_NOTEACH;
@@ -134,7 +134,7 @@ public class StdMOB implements MOB
 
     public long lastTickedDateTime(){return lastTickedDateTime;}
     public void flagVariableEq(){lastTickedDateTime=-3;}
-    public long getAgeHours(){return ageHours;}
+    public long getAgeMinutes(){return ageMinutes;}
 	public int getPractices(){return practices;}
 	public int getExperience(){return experience;}
 	public int getExpNextLevel(){return CMLib.leveler().getLevelExperience(basePhyStats().level());}
@@ -174,7 +174,7 @@ public class StdMOB implements MOB
 	public int getMoney(){return money;}
     public double getMoneyVariation() { return moneyVariation;}
 	public int getBitmap(){return attributesBitmap;}
-	public void setAgeHours(long newVal){ ageHours=newVal;}
+	public void setAgeMinutes(long newVal){ ageMinutes=newVal;}
 	public void setExperience(int newVal){ experience=newVal; }
 	public void setExpNextLevel(int newVal){}
 	public void setPractices(int newVal){ practices=newVal;}
@@ -2655,14 +2655,14 @@ public class StdMOB implements MOB
 				if((!isMonster)&&(soulMate()==null))
 				{
                     CMLib.coffeeTables().bump(this,CoffeeTableRow.STAT_TICKSONLINE);
-                    if(((++tickCounter)*CMProps.getTickMillis())>120000)
+                    if(((++tickCounter)*CMProps.getTickMillis())>=AGE_MILLIS_THRESHOLD)
                     {
                         tickCounter=0;
                         if(inventory!=null) inventory.trimToSize();
                         if(affects!=null) affects.trimToSize();
                         if(abilitys!=null) abilitys.trimToSize();
                         if(followers!=null) followers.trimToSize();
-                        CMLib.commands().tickAging(this);
+                        CMLib.commands().tickAging(this, AGE_MILLIS_THRESHOLD);
                     }
 				}
 			}

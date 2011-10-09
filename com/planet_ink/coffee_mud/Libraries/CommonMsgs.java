@@ -560,16 +560,16 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
         return manaConsumeCounter;
     }
 
-    public void tickAging(MOB mob)
+    public void tickAging(MOB mob, long millisSinceLast)
     {
     	if(mob==null) return;
-        mob.setAgeHours(mob.getAgeHours()+1); // this is really minutes
+        mob.setAgeMinutes(mob.getAgeMinutes()+(millisSinceLast / 60000)); // this is really minutes
     	final PlayerStats stats = mob.playerStats();
     	if(stats==null) return;
     	final int[] birthDay = stats.getBirthday();
         if((mob.baseCharStats().getStat(CharStats.STAT_AGE)>0)
         &&(birthDay!=null)
-        &&((mob.getAgeHours()%20)==0))
+        &&((mob.getAgeMinutes()%20)==0))
         {
         	final TimeClock clock = CMLib.time().globalClock();
         	final int currYear=clock.getYear();

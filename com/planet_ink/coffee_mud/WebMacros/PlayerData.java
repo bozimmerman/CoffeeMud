@@ -147,7 +147,7 @@ public class PlayerData extends StdWebMacro
 		case 11: str.append(CMStrings.capitalizeAndLower(CMLib.combat().fightingProwessStr(M))+", "); break;
 		case 12: str.append(CMStrings.capitalizeAndLower(CMLib.combat().armorStr(M))+", "); break;
 		case 13: str.append(CMLib.combat().adjustedDamage(M,null,null)+", "); break;
-		case 14: str.append(Math.round(CMath.div(M.getAgeHours(),60.0))+", "); break;
+		case 14: str.append(Math.round(CMath.div(M.getAgeMinutes(),60.0))+", "); break;
 		case 15: str.append(M.getPractices()+", "); break;
 		case 16: str.append(M.getExperience()+", "); break;
 		case 17: if(M.getExpNeededLevel()==Integer.MAX_VALUE)

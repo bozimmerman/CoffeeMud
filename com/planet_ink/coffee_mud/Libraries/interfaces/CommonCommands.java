@@ -34,7 +34,7 @@ import java.util.*;
 @SuppressWarnings("unchecked")
 public interface CommonCommands extends CMLibrary
 {
-    public void tickAging(MOB mob);
+    public void tickAging(MOB mob, long millisSinceLast);
     public int tickManaConsumption(MOB mob, int manaConsumeCounter);
     public void delGlobalMonitor(MsgMonitor M);
     public void monitorGlobalMessage(Room room, CMMsg msg);

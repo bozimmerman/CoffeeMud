@@ -121,7 +121,7 @@ public class Chant_SpeedAging extends Chant
 					MOB M=(MOB)target;
 					mob.location().show(M,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> age(s) a bit.");
 					if(M.baseCharStats().getStat(CharStats.STAT_AGE)<=0)
-						M.setAgeHours(M.getAgeHours()+(M.getAgeHours()/10));
+						M.setAgeMinutes(M.getAgeMinutes()+(M.getAgeMinutes()/10));
 					else
 					if((M.playerStats()!=null) && (M.playerStats().getBirthday()!=null))
 					{

@@ -2662,7 +2662,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 		str.append(CMLib.xml().convertXMLtoTag("WORS",mob.getWorshipCharID()));
 		str.append(CMLib.xml().convertXMLtoTag("PRAC",mob.getPractices()));
 		str.append(CMLib.xml().convertXMLtoTag("TRAI",mob.getTrains()));
-		str.append(CMLib.xml().convertXMLtoTag("AGEH",mob.getAgeHours()));
+		str.append(CMLib.xml().convertXMLtoTag("AGEH",mob.getAgeMinutes()));
 		str.append(CMLib.xml().convertXMLtoTag("GOLD",mob.getMoney()));
 		str.append(CMLib.xml().convertXMLtoTag("WIMP",mob.getWimpHitPoint()));
 		str.append(CMLib.xml().convertXMLtoTag("QUES",mob.getQuestPoint()));
@@ -2762,7 +2762,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 			mob.setWorshipCharID(CMLib.xml().getValFromPieces(mblk.contents,"WORS"));
 			mob.setPractices(CMLib.xml().getIntFromPieces(mblk.contents,"PRAC"));
 			mob.setTrains(CMLib.xml().getIntFromPieces(mblk.contents,"TRAI"));
-			mob.setAgeHours(CMLib.xml().getIntFromPieces(mblk.contents,"AGEH"));
+			mob.setAgeMinutes(CMLib.xml().getIntFromPieces(mblk.contents,"AGEH"));
 			mob.setWimpHitPoint(CMLib.xml().getIntFromPieces(mblk.contents,"WIMP"));
 			mob.setQuestPoint(CMLib.xml().getIntFromPieces(mblk.contents,"QUES"));
 			String roomID=CMLib.xml().getValFromPieces(mblk.contents,"ROID");

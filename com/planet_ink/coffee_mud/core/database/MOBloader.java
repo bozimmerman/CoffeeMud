@@ -84,7 +84,7 @@ public class MOBloader
                 mob.setWorshipCharID(DBConnections.getRes(R,"CMWORS"));
                 mob.setPractices(CMath.s_int(DBConnections.getRes(R,"CMPRAC")));
                 mob.setTrains(CMath.s_int(DBConnections.getRes(R,"CMTRAI")));
-                mob.setAgeHours(CMath.s_long(DBConnections.getRes(R,"CMAGEH")));
+                mob.setAgeMinutes(CMath.s_long(DBConnections.getRes(R,"CMAGEH")));
                 mob.setMoney(CMath.s_int(DBConnections.getRes(R,"CMGOLD")));
                 mob.setWimpHitPoint(CMath.s_int(DBConnections.getRes(R,"CMWIMP")));
                 mob.setQuestPoint(CMath.s_int(DBConnections.getRes(R,"CMQUES")));
@@ -132,7 +132,7 @@ public class MOBloader
                     mob.addExpertise((String)V9.get(v));
                 if(pstats.getBirthday()==null)
                     stats.setStat(CharStats.STAT_AGE,
-                        pstats.initializeBirthday((int)Math.round(CMath.div(mob.getAgeHours(),60.0)),stats.getMyRace()));
+                        pstats.initializeBirthday((int)Math.round(CMath.div(mob.getAgeMinutes(),60.0)),stats.getMyRace()));
                 mob.setImage(CMLib.xml().returnXMLValue(buf,"IMG"));
                 List<XMLLibrary.XMLpiece> CleanXML=CMLib.xml().parseAllXML(DBConnections.getRes(R,"CMMXML"));
                 R.close();
@@ -829,7 +829,7 @@ public class MOBloader
                 +", CMWORS='"+mob.getWorshipCharID()+"'"
                 +", CMPRAC="+mob.getPractices()
                 +", CMTRAI="+mob.getTrains()
-                +", CMAGEH="+mob.getAgeHours()
+                +", CMAGEH="+mob.getAgeMinutes()
                 +", CMGOLD="+mob.getMoney()
                 +", CMWIMP="+mob.getWimpHitPoint()
                 +", CMQUES="+mob.getQuestPoint()

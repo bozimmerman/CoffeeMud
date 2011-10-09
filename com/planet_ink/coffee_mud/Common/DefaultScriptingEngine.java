@@ -9953,7 +9953,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
     	            backupMOB.setName(ticking.name());
     	            backupMOB.setDisplayText(ticking.name()+" is here.");
                     backupMOB.setDescription("");
-                    backupMOB.setAgeHours(-1);
+                    backupMOB.setAgeMinutes(-1);
                     mob=backupMOB;
                     if(backupMOB.location()!=lastKnownLocation)
                         backupMOB.setLocation(lastKnownLocation);
@@ -9961,7 +9961,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
             }
             else
             {
-                backupMOB.setAgeHours(-1);
+                backupMOB.setAgeMinutes(-1);
                 mob=backupMOB;
                 if(backupMOB.location()!=lastKnownLocation)
                 {
