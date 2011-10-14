@@ -261,23 +261,26 @@ public class Arrest extends StdBehavior implements LegalBehavior
         {
             boolean debugging=CMSecurity.isDebugging(CMSecurity.DbgFlag.ARREST);
             String[] info=null;
-            for(int v=0;v<acquittableLaws.length;v++)
+            if(acquittableLaws!=null)
             {
-                String brokenLaw=acquittableLaws[v];
-                if((laws.basicCrimes().containsKey(brokenLaw))&&(laws.basicCrimes().get(brokenLaw) instanceof String[]))
-                {   info=(String[])laws.basicCrimes().get(brokenLaw);   break; }
-                else
-                if((laws.taxLaws().containsKey(brokenLaw))&&(laws.taxLaws().get(brokenLaw) instanceof String[]))
-                {   info=(String[])laws.taxLaws().get(brokenLaw);   break; }
-                else
-                if((laws.abilityCrimes().containsKey(brokenLaw))&&(laws.abilityCrimes().get(brokenLaw) instanceof String[]))
-                {   info=(String[])laws.abilityCrimes().get(brokenLaw);   break; }
-            }
-            if(info==null) return false;
+	            for(int v=0;v<acquittableLaws.length;v++)
+	            {
+	                String brokenLaw=acquittableLaws[v];
+	                if((laws.basicCrimes().containsKey(brokenLaw))&&(laws.basicCrimes().get(brokenLaw) instanceof String[]))
+	                {   info=(String[])laws.basicCrimes().get(brokenLaw);   break; }
+	                else
+	                if((laws.taxLaws().containsKey(brokenLaw))&&(laws.taxLaws().get(brokenLaw) instanceof String[]))
+	                {   info=(String[])laws.taxLaws().get(brokenLaw);   break; }
+	                else
+	                if((laws.abilityCrimes().containsKey(brokenLaw))&&(laws.abilityCrimes().get(brokenLaw) instanceof String[]))
+	                {   info=(String[])laws.abilityCrimes().get(brokenLaw);   break; }
+	            }
+	            if(info==null) return false;
+        	}
 			for(LegalWarrant W : laws.warrants())
                 if((isStillACrime(W,debugging))
                 &&(W.criminal()==accused)
-                &&(W.crime().equalsIgnoreCase(info[Law.BIT_CRIMENAME])))
+                &&((info==null)||(W.crime().equalsIgnoreCase(info[Law.BIT_CRIMENAME]))))
                 {
                     laws.warrants().remove(W);
                     return true;
@@ -285,6 +288,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
         }
         return false;
     }
+    
     public boolean isJailRoom(Area myArea, List<Room> jails)
     {
         if(!theLawIsEnabled()) return false;
