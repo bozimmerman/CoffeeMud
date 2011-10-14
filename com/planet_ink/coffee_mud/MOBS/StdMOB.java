@@ -309,15 +309,19 @@ public class StdMOB implements MOB
 	protected void cloneFix(MOB M)
 	{
 		if(M==null) return;
+		if(!isGeneric())
+			basePhyStats.copyInto(phyStats);
+		else
+		{
+			basePhyStats=(PhyStats)M.basePhyStats().copyOf();
+			phyStats=(PhyStats)M.phyStats().copyOf();
+		}
 		affects=new SVector(1);
-		basePhyStats=(PhyStats)M.basePhyStats().copyOf();
-		phyStats=(PhyStats)M.phyStats().copyOf();
 		baseCharStats=(CharStats)M.baseCharStats().copyOf();
 		charStats=(CharStats)M.charStats().copyOf();
 		baseState=(CharState)M.baseState().copyOf();
 		curState=(CharState)M.curState().copyOf();
 		maxState=(CharState)M.maxState().copyOf();
-
 		pleaseDestroy=false;
 
 		inventory=new SVector<Item>(1);
@@ -831,7 +835,9 @@ public class StdMOB implements MOB
 
 		location().recoverRoomStats();
 		if((!isGeneric())&&(resetStats))
+		{
 			resetToMaxState();
+		}
 
         if(location()==null)
         {

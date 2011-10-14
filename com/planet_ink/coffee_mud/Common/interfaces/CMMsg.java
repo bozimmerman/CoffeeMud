@@ -939,6 +939,8 @@ public interface CMMsg extends CMCommon
 	public static final int TYP_LEGALWARRANT=102;
 	/** MINOR_MASK minor action code type, denoting the digging a hole action */
 	public static final int TYP_DIG=103;
+	/** MINOR_MASK minor action code type, denoting a skill possibly invoked */
+	public static final int TYP_PREINVOKE=104;
 
     /** MINOR_MASK minor action code type, denoting a channel action -- 2000-2047 are channels*/
 	public static final int TYP_CHANNEL=2000; //(2000-2047 are channels)
@@ -963,7 +965,8 @@ public interface CMMsg extends CMCommon
         "TELL", "SITMOVE", "KNOCK", "PRACTICE", "TEACH", "REMOVE", "EXPCHANGE", 
         "DAMAGE", "HEALING", "ROOMRESET", "RELOAD", "SNIFF", "ACTIVATE", "DEACTIVATE", 
         "FACTIONCHANGE", "LOGIN", "LEVEL", "EXAMINE", "ORDER","EXPIRE","BORROW","HUH",
-        "LIFE","BID","CLANEVENT","UNLOAD","DUELCHALLENGE","LEGALWARRANT","DIG"
+        "LIFE", "BID", "CLANEVENT", "UNLOAD", "DUELCHALLENGE", "LEGALWARRANT", "DIG", 
+        "PREINVOKE"
     };
     
     /** Index string descriptions of all the MAJOR_MASK code MAKS_s */
@@ -1237,4 +1240,6 @@ public interface CMMsg extends CMCommon
 	public static final int MSG_LEGALWARRANT=MASK_CNTRLMSG|TYP_LEGALWARRANT;
     /** combined MAJOR and MINOR codes for useful event message type for a physical digging action*/
 	public static final int MSG_DIG=MASK_HANDS|MASK_MOVE|MASK_SOUND|TYP_DIG;
+    /** combined MAJOR and MINOR codes for useful event message type for a possibly invoked skill*/
+	public static final int MSG_PREINVOKE=MASK_ALWAYS|TYP_PREINVOKE;
 }

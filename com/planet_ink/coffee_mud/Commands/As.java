@@ -92,6 +92,16 @@ public class As extends StdCommand
                 return false;
             }
         }
+        if(M==mob)
+        {
+    		if(((String)commands.firstElement()).equalsIgnoreCase("here")
+			   ||((String)commands.firstElement()).equalsIgnoreCase("."))
+			{
+				commands.removeElementAt(0);
+			}
+    		M.doCommand(commands,metaFlags|Command.METAFLAG_AS);
+    		return false;
+        }
 		Session hisSession=M.session();
 		Room oldRoom=M.location();
 		boolean inside=(oldRoom!=null)?oldRoom.isInhabitant(M):false;

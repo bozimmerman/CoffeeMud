@@ -991,6 +991,10 @@ public class StdAbility implements Ability
             mob.curState().adjMovement(-consumed[1],mob.maxState());
             mob.curState().adjHitPoints(-consumed[2],mob.maxState());
 			helpProficiency(mob);
+            CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MSG_PREINVOKE, null);
+            if(!mob.okMessage(mob, msg))
+            	return false;
+        	mob.executeMsg(mob, msg);
 		}
 		else
 			isAnAutoEffect=true;

@@ -15,6 +15,7 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
+import java.lang.ref.WeakReference;
 import java.util.*;
 
 
@@ -50,6 +51,7 @@ public class Charlatan extends StdCharClass
 	public int allowedWeaponLevel(){return CharClass.WEAPONS_THIEFLIKE;}
 	private HashSet disallowedWeapons=buildDisallowedWeaponClasses();
 	protected HashSet disallowedWeaponClasses(MOB mob){return disallowedWeapons;}
+	protected volatile WeakReference<Ability> invokable=new WeakReference(null);
 
 	public Charlatan()
 	{
@@ -190,47 +192,61 @@ public class Charlatan extends StdCharClass
 
     public void executeMsg(Environmental host, CMMsg msg)
     {
+		if(host instanceof MOB)
+		{
+			MOB myChar=(MOB)host;
+			if(msg.amISource(myChar)
+			&&(msg.tool() instanceof Ability)
+			&&(!myChar.isMonster())
+			&&(msg.sourceMinor()==CMMsg.TYP_PREINVOKE)
+			&&(myChar.isMine(msg.tool()))
+			&&(myChar.charStats().getClassLevel(this)>=30)
+			&&(CMLib.ableMapper().getQualifyingLevel(ID(),true,msg.tool().ID())<1))
+				invokable=new WeakReference((Ability)msg.tool());
+		}
         super.executeMsg(host,msg);
         Bard.visitationBonusMessage(host,msg);
     }
+    
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(!(myHost instanceof MOB)) return super.okMessage(myHost,msg);
 		MOB myChar=(MOB)myHost;
-		if(msg.amISource(myChar)&&(!myChar.isMonster()))
+		if(msg.tool() instanceof Ability)
 		{
-			if((msg.tool()!=null)
-			&&(msg.tool() instanceof Ability)
-			&&(myChar.isMine(msg.tool()))
-			&&(myChar.charStats().getClassLevel(this)>=30)
-			&&(CMLib.ableMapper().getQualifyingLevel(ID(),true,msg.tool().ID())<1))
+			if(msg.amISource(myChar)
+			&&(!myChar.isMonster())
+			&&(msg.sourceMinor()!=CMMsg.TYP_PREINVOKE))
 			{
-				Ability A=((Ability)msg.tool());
-				if(CMath.bset(A.usageType(),Ability.USAGE_MANA))
-					myChar.curState().adjMana(A.usageCost(myChar,false)[Ability.USAGEINDEX_MANA]/4,myChar.maxState());
-				if(CMath.bset(A.usageType(),Ability.USAGE_MOVEMENT))
-					myChar.curState().adjMovement(A.usageCost(myChar,false)[Ability.USAGEINDEX_MOVEMENT]/4,myChar.maxState());
-				if(CMath.bset(A.usageType(),Ability.USAGE_HITPOINTS))
-					myChar.curState().adjMovement(A.usageCost(myChar,false)[Ability.USAGEINDEX_HITPOINTS]/4,myChar.maxState());
+				final WeakReference<Ability> curRef=invokable;
+				if((curRef!=null)
+				&&(msg.tool()==curRef.get()))
+				{
+					curRef.clear();
+					Ability A=((Ability)msg.tool());
+					if(CMath.bset(A.usageType(),Ability.USAGE_MANA))
+						myChar.curState().adjMana(A.usageCost(myChar,false)[Ability.USAGEINDEX_MANA]/4,myChar.maxState());
+					if(CMath.bset(A.usageType(),Ability.USAGE_MOVEMENT))
+						myChar.curState().adjMovement(A.usageCost(myChar,false)[Ability.USAGEINDEX_MOVEMENT]/4,myChar.maxState());
+					if(CMath.bset(A.usageType(),Ability.USAGE_HITPOINTS))
+						myChar.curState().adjHitPoints(A.usageCost(myChar,false)[Ability.USAGEINDEX_HITPOINTS]/4,myChar.maxState());
+				}
 			}
-		}
-		else
-		if(msg.amITarget(myChar))
-		{
-			if((msg.tool()!=null)
-			   &&(msg.tool() instanceof Ability)
-			   &&((((Ability)msg.tool()).classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_SPELL)
-			   &&((((Ability)msg.tool()).classificationCode()&Ability.ALL_DOMAINS)==Ability.DOMAIN_DIVINATION)
-			   &&(CMLib.dice().roll(1,100,0)<(myChar.charStats().getClassLevel(this)*4)))
+			else
+			if(msg.amITarget(myChar))
 			{
-				myChar.location().show(msg.source(),myChar,CMMsg.MSG_OK_ACTION,"<T-NAME> fool(s) <S-NAMESELF>, causing <S-HIM-HER> to fizzle "+msg.tool().name()+".");
-				return false;
+				if(((((Ability)msg.tool()).classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_SPELL)
+			    &&((((Ability)msg.tool()).classificationCode()&Ability.ALL_DOMAINS)==Ability.DOMAIN_DIVINATION)
+			    &&(CMLib.dice().roll(1,100,0)<(myChar.charStats().getClassLevel(this)*4)))
+				{
+					myChar.location().show(msg.source(),myChar,CMMsg.MSG_OK_ACTION,"<T-NAME> fool(s) <S-NAMESELF>, causing <S-HIM-HER> to fizzle "+msg.tool().name()+".");
+					return false;
+				}
 			}
 		}
 		return super.okMessage(myHost,msg);
 	}
 
-	
 	public void grantAbilities(MOB mob, boolean isBorrowedClass)
 	{
 		super.grantAbilities(mob,isBorrowedClass);
