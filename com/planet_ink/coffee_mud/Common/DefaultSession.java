@@ -170,7 +170,7 @@ public class DefaultSession implements Session
 				try{Thread.sleep(50);}catch(Exception e){}
 			}
 			if(clientTelnetMode(Session.TELNET_MXP))
-				print("\n\033[6z\n^<SUPPORT IMAGE IMAGE.URL^>\n");
+				print("\n\033[6z\n\033[6z^<SUPPORT IMAGE IMAGE.URL^>\n");
 			preliminaryRead(500);
 			if(introTextStr!=null)
                 print(introTextStr);
