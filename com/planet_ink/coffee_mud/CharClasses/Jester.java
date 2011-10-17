@@ -117,7 +117,8 @@ public class Jester extends StdCharClass
 		CMLib.ableMapper().addCharAbilityMapping(ID(),12,"Song_Seeing",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),13,"Skill_Trip",false);
-
+		CMLib.ableMapper().addCharAbilityMapping(ID(),13,"Skill_CenterOfAttention",false);
+		
 		CMLib.ableMapper().addCharAbilityMapping(ID(),14,"Dance_Stop",100,true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),14,"Dance_Clog",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),14,"Fighter_CriticalShot",false);

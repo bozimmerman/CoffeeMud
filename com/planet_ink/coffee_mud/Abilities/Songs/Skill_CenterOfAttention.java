@@ -38,7 +38,7 @@ public class Skill_CenterOfAttention extends BardSkill
 {
 	public String ID() { return "Skill_CenterOfAttention"; }
 	public String name(){ return "Center of Attention";}
-	public String displayText(){ return "(Performing)";}
+	public String displayText(){ return "(Watching "+(invoker()==null?"a crazy bard":invoker().name())+")";}
 	protected int canAffectCode(){return CAN_MOBS;}
 	protected int canTargetCode(){return CAN_MOBS;}
 	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
@@ -51,7 +51,13 @@ public class Skill_CenterOfAttention extends BardSkill
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
-		affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_NOT_MOVE);
+		if(affected instanceof MOB)
+		{
+			if(CMLib.flags().canBeSeenBy(invoker(), (MOB)affected))
+				affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_NOT_MOVE);
+			else
+				unInvoke();
+		}
 	}
 
 	public int castingQuality(MOB mob, Physical target)
@@ -91,27 +97,35 @@ public class Skill_CenterOfAttention extends BardSkill
 		boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_JUSTICE|(auto?CMMsg.MASK_ALWAYS:0),auto?"":"<S-NAME> begin(s) flailing about while making loud silly noises.");
+			CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_JUSTICE|(auto?CMMsg.MASK_ALWAYS:0),
+										auto?"":"<S-NAME> begin(s) flailing about while making loud silly noises.");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				for(Iterator e=h.iterator();e.hasNext();)
 				{
 					MOB target=(MOB)e.next();
-					int levelDiff=target.phyStats().level()-(((2*getXLEVELLevel(mob))+mob.phyStats().level()));
-					if(levelDiff>0)
-						levelDiff=levelDiff*5;
-					else
-						levelDiff=0;
-					msg=CMClass.getMsg(mob,target,this,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_MIND|(auto?CMMsg.MASK_ALWAYS:0),auto?"<T-NAME> trip(s)!":"^F^<FIGHT^><S-NAME> trip(s) <T-NAMESELF>!^</FIGHT^>^?");
-					if(mob.location().okMessage(mob,msg))
+					if(CMLib.flags().canBeSeenBy(mob, target))
 					{
-						mob.location().send(mob,msg);
-						maliciousAffect(mob,target,asLevel,2,-1);
-						target.location().show(target,mob,CMMsg.MSG_OK_ACTION,"<S-NAME> watch(es) <T-NAME> with an amused expression.");
+						int levelDiff=target.phyStats().level()-(((2*getXLEVELLevel(mob))+mob.phyStats().level()));
+						if(levelDiff>0)
+							levelDiff=levelDiff*5;
+						else
+							levelDiff=0;
+						CMMsg msg2=CMClass.getMsg(mob,target,this,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_MIND|(auto?CMMsg.MASK_ALWAYS:0),null);
+						if(mob.location().okMessage(mob,msg2))
+						{
+							mob.location().send(mob,msg2);
+							if((msg.value()<=0)&&(msg2.value()<=0))
+							{
+								maliciousAffect(mob,target,asLevel,2,-1);
+								target.location().show(target,mob,CMMsg.MSG_OK_ACTION,"<S-NAME> begin(s) watching <T-NAME> with an amused expression.");
+							}
+						}
 					}
 				}
 			}
+			setTimeOfNextCast(mob);
 		}
 		else
 			return maliciousFizzle(mob,null,"<S-NAME> attempt(s) to become the center of attention, but fail(s).");
