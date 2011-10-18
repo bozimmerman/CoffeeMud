@@ -115,12 +115,12 @@ public class Skill_Satire extends BardSkill
 
 		if(!success)
 		{
-			beneficialWordsFizzle(mob,target,"<S-NAME> attempt(s) to mock <T-NAMESELF>, but <S-IS-ARE> not funny.");
+			beneficialWordsFizzle(mob,target,"<S-NAME> attempt(s) to mock <T-NAME>, but <S-IS-ARE> not funny.");
 			if(CMLib.dice().rollPercentage()>mob.charStats().getStat(CharStats.STAT_CHARISMA))
 				criminalFail(B,A2,mob,target);
 			return false;
 		}
-		CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSK_CAST_VERBAL|CMMsg.TYP_JUSTICE,"<S-NAME> mock(s) <T-NAMESELF>.");
+		CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSK_CAST_VERBAL|CMMsg.TYP_JUSTICE,"<S-NAME> mock(s) <T-NAME>.");
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);

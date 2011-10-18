@@ -46,7 +46,7 @@ public class Skill_CenterOfAttention extends BardSkill
 	public String[] triggerStrings(){return triggerStrings;}
     public int classificationCode(){ return Ability.ACODE_SKILL|Ability.DOMAIN_FOOLISHNESS;}
 	public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
-	public int getTicksBetweenCasts() { return 70;}
+	public int getTicksBetweenCasts() { return (int)(CMProps.getMillisPerMudHour() / CMProps.getTickMillis() / (long)2); }
 
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
@@ -55,9 +55,51 @@ public class Skill_CenterOfAttention extends BardSkill
 		{
 			if(CMLib.flags().canBeSeenBy(invoker(), (MOB)affected))
 				affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_NOT_MOVE);
-			else
-				unInvoke();
 		}
+	}
+	
+	public boolean tick(Tickable ticking, int tickID)
+	{
+		if(!super.tick(ticking, tickID))
+			return false;
+		if(affected instanceof MOB)
+		{
+			final MOB mob=(MOB)affected;
+			if((!CMLib.flags().canBeSeenBy(invoker(), mob))
+			||((invoker()!=null)&&(mob.location()!=invoker().location())))
+				unInvoke();
+			String verbStr;
+			String targetStr;
+			switch(CMLib.dice().roll(1, 10, 0))
+			{
+			case 1: verbStr="<S-IS-ARE> entranced by"; break;
+			case 2: verbStr="remain(s) captivated by"; break;
+			case 3: verbStr="<S-IS-ARE> captivated by"; break;
+			case 4: verbStr="remain(s) entranced by"; break;
+			case 5: verbStr="can't stop watching"; break;
+			case 6: verbStr="stare(s) amazed at"; break;
+			case 7: verbStr="<S-IS-ARE> hypnotized by"; break;
+			case 8: verbStr="remain(s) enthralled by"; break;
+			case 9: verbStr="<S-IS-ARE> delighted by"; break;
+			default: verbStr="remain(s) enchanted by"; break;
+			}
+			switch(CMLib.dice().roll(1, 10, 0))
+			{
+			case 1: targetStr="<T-YOUPOSS> performance"; break;
+			case 2: targetStr="<T-YOUPOSS> antics"; break;
+			case 3: targetStr="<T-YOUPOSS> flailing about"; break;
+			case 4: targetStr="<T-YOUPOSS> drama"; break;
+			case 5: targetStr="<T-YOUPOSS> show"; break;
+			case 6: targetStr="the ongoing spectacle"; break;
+			case 7: targetStr="<T-YOUPOSS> comedy"; break;
+			case 8: targetStr="<T-YOUPOSS> tomfoolery"; break;
+			case 9: targetStr="<T-YOUPOSS> escapades"; break;
+			default: targetStr="<T-YOUPOSS> stunts"; break;
+			}
+			mob.location().show(mob, invoker(), CMMsg.MSG_OK_VISUAL, "<S-NAME> "+verbStr+" "+targetStr+".");
+		}
+		
+		return true;
 	}
 
 	public int castingQuality(MOB mob, Physical target)
@@ -118,7 +160,7 @@ public class Skill_CenterOfAttention extends BardSkill
 							mob.location().send(mob,msg2);
 							if((msg.value()<=0)&&(msg2.value()<=0))
 							{
-								maliciousAffect(mob,target,asLevel,2,-1);
+								maliciousAffect(mob,target,asLevel,3,-1);
 								target.location().show(target,mob,CMMsg.MSG_OK_ACTION,"<S-NAME> begin(s) watching <T-NAME> with an amused expression.");
 							}
 						}
