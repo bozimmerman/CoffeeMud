@@ -49,13 +49,12 @@ public class Fighter_ImprovedThrowing extends FighterSkill
 		if((affected instanceof MOB)
 		&&(msg.amISource((MOB)affected))
 		&&(msg.targetMinor()==CMMsg.TYP_DAMAGE)
-		&&(msg.tool()!=null)
 		&&(msg.tool() instanceof Weapon)
 		&&(msg.value()>0)
 		&&(((Weapon)msg.tool()).weaponClassification()==Weapon.CLASS_THROWN))
 		{
 			if(CMLib.dice().rollPercentage()<25) helpProficiency((MOB)affected);
-			msg.setValue(msg.value()+(int)Math.round(CMath.mul(msg.value(),CMath.div(proficiency(),100.0+(5.0*getXLEVELLevel(invoker()))))));
+			msg.setValue(msg.value()+(int)Math.round(CMath.mul(msg.value(),CMath.div(proficiency(),100.0-(10.0*getXLEVELLevel(invoker()))))));
 		}
 		return super.okMessage(myHost,msg);
 	}
@@ -67,8 +66,7 @@ public class Fighter_ImprovedThrowing extends FighterSkill
 		if(affected instanceof MOB)
 		{
 			Item myWeapon=((MOB)affected).fetchWieldedItem();
-			if((myWeapon!=null)
-			&&(myWeapon instanceof Weapon)
+			if((myWeapon instanceof Weapon)
 			&&(((Weapon)myWeapon).weaponClassification()==Weapon.CLASS_THROWN))
 				affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()+(int)Math.round((15.0+(float)getXLEVELLevel(invoker()))*(CMath.div(proficiency(),100.0))));
 		}

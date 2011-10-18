@@ -58,7 +58,6 @@ public class Fighter_Fragmentation extends FighterSkill
 		if((affected instanceof MOB)
 		&&(msg.amISource((MOB)affected))
 		&&(msg.targetMinor()==CMMsg.TYP_DAMAGE)
-		&&(msg.tool()!=null)
 		&&(msg.tool() instanceof Weapon)
 		&&(msg.value()>0)
 		&&(msg.target() instanceof MOB)
@@ -68,7 +67,7 @@ public class Fighter_Fragmentation extends FighterSkill
             CMMsg msg2=CMClass.getMsg((MOB)msg.target(),msg.tool(),this,CMMsg.MSG_OK_VISUAL,"^F^<FIGHT^><T-NAME> fragment(s) in <S-NAME>!^</FIGHT^>^?");
             CMLib.color().fixSourceFightColor(msg2);
 			msg.addTrailerMsg(msg2);
-			msg.setValue(msg.value()+(2*(int)Math.round(CMath.mul(msg.value(),CMath.div(proficiency(),100.0+(5.0*getXLEVELLevel(invoker())))))));
+			msg.setValue(msg.value()+(int)Math.round(CMath.mul(3.0 * msg.value(),CMath.div(proficiency(),100.0-(10.0*getXLEVELLevel(invoker()))))));
 		}
 
 		return super.okMessage(myHost,msg);

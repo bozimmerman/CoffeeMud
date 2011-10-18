@@ -96,7 +96,7 @@ public class Fighter_FieldTactics extends FighterSkill
 		&&(msg.value()>0))
 		{
 			if(CMLib.dice().rollPercentage()<5) helpProficiency((MOB)affected);
-			msg.setValue(msg.value()+(int)Math.round(CMath.mul(msg.value(),CMath.div(proficiency(),400.0-(10.0*getXLEVELLevel(msg.source()))))));
+			msg.setValue(msg.value()+(int)Math.round(CMath.mul(msg.value(),CMath.div(proficiency(),400.0-(20.0*getXLEVELLevel(msg.source()))))));
 		}
 		else
 		if((hidden)&&(!hiding(affected)))
