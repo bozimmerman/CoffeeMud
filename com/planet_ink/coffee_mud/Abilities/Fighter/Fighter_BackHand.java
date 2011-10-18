@@ -44,6 +44,7 @@ public class Fighter_BackHand extends FighterSkill
     public int classificationCode(){ return Ability.ACODE_SKILL|Ability.DOMAIN_PUNCHING;}
 	public boolean isAutoInvoked(){return true;}
 	public boolean canBeUninvoked(){return false;}
+	protected Weapon naturalWeapon=null;
 
 	public boolean tick(Tickable ticking, int tickID)
 	{
@@ -78,18 +79,39 @@ public class Fighter_BackHand extends FighterSkill
 				}
 				if(elligibleTarget!=null)
 				{
-					Weapon naturalWeapon=CMClass.getWeapon("GenWeapon");
-					naturalWeapon.setName("a back hand");
-                    naturalWeapon.basePhyStats().setDamage(5+getXLEVELLevel(mob));
-					naturalWeapon.setWeaponType(Weapon.TYPE_BASHING);
-					naturalWeapon.recoverPhyStats();
-					CMLib.combat().postAttack(mob,elligibleTarget,naturalWeapon);
+					if((naturalWeapon==null)
+					||(naturalWeapon.amDestroyed()))
+					{
+						naturalWeapon=CMClass.getWeapon("GenWeapon");
+						naturalWeapon.setName("a back hand");
+	                    naturalWeapon.basePhyStats().setDamage(5);
+						naturalWeapon.setWeaponType(Weapon.TYPE_BASHING);
+						naturalWeapon.recoverPhyStats();
+						CMLib.combat().postAttack(mob,elligibleTarget,naturalWeapon);
+					}
 				}
 			}
 		}
 		return true;
 	}
 
+	public boolean okMessage(final Environmental myHost, final CMMsg msg)
+	{
+		if(!super.okMessage(myHost,msg))
+			return false;
+
+		if((affected==null)||(!(affected instanceof MOB)))
+			return true;
+
+		MOB mob=(MOB)affected;
+		if(msg.amISource(mob)
+		&&(msg.targetMinor()==CMMsg.TYP_DAMAGE)
+		&&(msg.tool() instanceof Weapon)
+		&&(msg.tool()==naturalWeapon))
+			msg.setValue(msg.value()+naturalWeapon.basePhyStats().damage()+super.getXLEVELLevel(mob));
+		return true;
+	}
+	
 	public boolean anyWeapons(MOB mob)
 	{
 		for(int i=0;i<mob.numItems();i++)

@@ -59,17 +59,20 @@ public class Prop_CombatAdjuster extends Property
 		{
 			// used to have this as rollhp( but that made hp change every damn time!
 			maxState.setHitPoints((int)Math.round(CMath.mul(maxState.getHitPoints(),alladj[3])));
-			if(mob.curState().getHitPoints()>maxState.getHitPoints()) mob.curState().setHitPoints(mob.maxState().getHitPoints());
+			if(mob.curState().getHitPoints()>maxState.getHitPoints()) 
+				mob.curState().setHitPoints(mob.maxState().getHitPoints());
 		}
 		if(alladj[4]!=1.0)
 		{
 			maxState.setMana((int)Math.round(CMath.mul(maxState.getMana(),alladj[4])));
-			if(mob.curState().getMana()>maxState.getMana()) mob.curState().setMana(mob.maxState().getMana());
+			if(mob.curState().getMana()>maxState.getMana()) 
+				mob.curState().setMana(mob.maxState().getMana());
 		}
 		if(alladj[5]!=1.0)
 		{
 			maxState.setMovement((int)Math.round(CMath.mul(maxState.getMovement(),alladj[5])));
-			if(mob.curState().getMovement()>maxState.getMovement()) mob.curState().setMovement(mob.maxState().getMovement());
+			if(mob.curState().getMovement()>maxState.getMovement()) 
+				mob.curState().setMovement(mob.maxState().getMovement());
 		}
 	}
 	public void setMiscText(String newMiscText)

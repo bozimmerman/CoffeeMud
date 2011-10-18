@@ -42,6 +42,7 @@ public class Power_OctoArms extends SuperPower
 	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	public boolean isAutoInvoked(){return true;}
 	public boolean canBeUninvoked(){return false;}
+	protected Weapon naturalWeapon=null;
 
 	public boolean tick(Tickable ticking, int tickID)
 	{
@@ -59,18 +60,40 @@ public class Power_OctoArms extends SuperPower
 				if(CMLib.dice().rollPercentage()>95)
 					helpProficiency(mob);
 				int arms=mob.charStats().getBodyPart(Race.BODY_ARM)-2;
-				Weapon naturalWeapon=CMClass.getWeapon("GenWeapon");
-				naturalWeapon.setName("a huge snaking arm");
-				naturalWeapon.setWeaponType(Weapon.TYPE_BASHING);
-				naturalWeapon.setMaterial(RawMaterial.RESOURCE_STEEL);
-				naturalWeapon.basePhyStats().setDamage(mob.basePhyStats().damage());
-				naturalWeapon.recoverPhyStats();
-				for(int i=0;i<arms;i++)
-					CMLib.combat().postAttack(mob,mob.getVictim(),naturalWeapon);
+				if((naturalWeapon==null)
+				||(naturalWeapon.amDestroyed()))
+				{
+					naturalWeapon=CMClass.getWeapon("GenWeapon");
+					naturalWeapon.setName("a huge snaking arm");
+					naturalWeapon.setWeaponType(Weapon.TYPE_BASHING);
+					naturalWeapon.setMaterial(RawMaterial.RESOURCE_STEEL);
+					naturalWeapon.basePhyStats().setDamage(mob.basePhyStats().damage());
+					naturalWeapon.recoverPhyStats();
+					for(int i=0;i<arms;i++)
+						CMLib.combat().postAttack(mob,mob.getVictim(),naturalWeapon);
+				}
 			}
 		}
 		return true;
 	}
+	
+	public boolean okMessage(final Environmental myHost, final CMMsg msg)
+	{
+		if(!super.okMessage(myHost,msg))
+			return false;
+
+		if((affected==null)||(!(affected instanceof MOB)))
+			return true;
+
+		MOB mob=(MOB)affected;
+		if(msg.amISource(mob)
+		&&(msg.targetMinor()==CMMsg.TYP_DAMAGE)
+		&&(msg.tool() instanceof Weapon)
+		&&(msg.tool()==naturalWeapon))
+			msg.setValue(msg.value()+naturalWeapon.basePhyStats().damage());
+		return true;
+	}
+	
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{
 		super.affectCharStats(affected,affectableStats);

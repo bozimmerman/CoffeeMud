@@ -43,6 +43,7 @@ public class Fighter_KnifeHand extends FighterSkill
     public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_PUNCHING;}
 	public boolean isAutoInvoked(){return true;}
 	public boolean canBeUninvoked(){return false;}
+	protected Weapon naturalWeapon=null;
 
 	public boolean tick(Tickable ticking, int tickID)
 	{
@@ -61,17 +62,38 @@ public class Fighter_KnifeHand extends FighterSkill
 			{
 				if(CMLib.dice().rollPercentage()>95)
 					helpProficiency(mob);
-				Weapon naturalWeapon=CMClass.getWeapon("GenWeapon");
-				naturalWeapon.setName("a knife hand");
-				naturalWeapon.setWeaponType(Weapon.TYPE_PIERCING);
-                naturalWeapon.basePhyStats().setDamage(5+getXLEVELLevel(mob));
-				naturalWeapon.recoverPhyStats();
-				CMLib.combat().postAttack(mob,mob.getVictim(),naturalWeapon);
+				if((naturalWeapon==null)
+				||(naturalWeapon.amDestroyed()))
+				{
+					naturalWeapon=CMClass.getWeapon("GenWeapon");
+					naturalWeapon.setName("a knife hand");
+					naturalWeapon.setWeaponType(Weapon.TYPE_PIERCING);
+	                naturalWeapon.basePhyStats().setDamage(7);
+					naturalWeapon.recoverPhyStats();
+					CMLib.combat().postAttack(mob,mob.getVictim(),naturalWeapon);
+				}
 			}
 		}
 		return true;
 	}
 
+	public boolean okMessage(final Environmental myHost, final CMMsg msg)
+	{
+		if(!super.okMessage(myHost,msg))
+			return false;
+
+		if((affected==null)||(!(affected instanceof MOB)))
+			return true;
+
+		MOB mob=(MOB)affected;
+		if(msg.amISource(mob)
+		&&(msg.targetMinor()==CMMsg.TYP_DAMAGE)
+		&&(msg.tool() instanceof Weapon)
+		&&(msg.tool()==naturalWeapon))
+			msg.setValue(msg.value()+naturalWeapon.basePhyStats().damage()+super.getXLEVELLevel(mob));
+		return true;
+	}
+	
 	public boolean anyWeapons(MOB mob)
 	{
 		for(int i=0;i<mob.numItems();i++)
