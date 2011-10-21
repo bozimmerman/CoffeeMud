@@ -56,7 +56,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
         for(int v=0;v<V.length-1;v++)
         {
         	if(v>0) s.append(", ");
-        	s.append(V[0]);
+        	s.append(V[v]);
         }
         s.append(" and ");
         s.append(V[V.length-1]);

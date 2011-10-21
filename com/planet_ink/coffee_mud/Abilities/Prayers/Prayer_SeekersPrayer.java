@@ -77,7 +77,11 @@ public class Prayer_SeekersPrayer extends Prayer
 				{
 					final Quest Q = q.nextElement();
 					final MOB M=Q.getQuestMob(1);
-					if( Q.name().equalsIgnoreCase("holidays") || !Q.running() || (M==null) || (!CMLib.flags().isInTheGame(M,true)))
+					if( Q.name().equalsIgnoreCase("holidays") 
+					|| !Q.running() 
+					|| (M==null) 
+					|| (!CMLib.flags().isInTheGame(M,true))
+					|| (!CMLib.flags().canAccess(mob, M.location())) )
 					{
 						continue;
 					}

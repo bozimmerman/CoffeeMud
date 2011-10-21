@@ -2343,4 +2343,4 @@ Special/Reserved Quest called holidays can be added to/modified on an area-by-ar
 6. GMODIFY can now alter room/locale-type objects as well (global room title changes anyone?)
 7. MUDGrinder supports editing/deleting multiple rooms using cntrl-click.
 8. New Jester skills: Satire, Quick Change, Center of Attention
-9. New Oracle Prayers: Divine Guidance, Prophecy, Seekers Prayer
+9. New Oracle Prayers: Divine Guidance, Prophecy, Seekers Prayer, Soul Peering, Lower Law

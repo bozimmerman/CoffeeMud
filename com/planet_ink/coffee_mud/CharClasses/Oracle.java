@@ -78,7 +78,7 @@ public class Oracle extends Cleric
 		CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Skill_ControlUndead",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Prayer_CureDeafness",true);
-		CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Prayer_Prophecy",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Prayer_SoulPeering",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),6,"Prayer_CureSerious",true,CMParms.parseSemicolons("Prayer_CureLight",true));
 		CMLib.ableMapper().addCharAbilityMapping(ID(),6,"Prayer_SenseDisease",false);
@@ -86,8 +86,8 @@ public class Oracle extends Cleric
 		CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Prayer_Bless",true);
         CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Prayer_CureFatigue",false);
 
-		CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Prayer_SeekersPrayer",false);
         CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Prayer_MinorInfusion",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Spell_LocateObject",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),9,"Prayer_DivineGuidance",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),9,"Skill_WildernessLore",false);
@@ -109,17 +109,17 @@ public class Oracle extends Cleric
 		CMLib.ableMapper().addCharAbilityMapping(ID(),14,"Prayer_CureCritical",false,CMParms.parseSemicolons("Prayer_CureSerious",true));
 		CMLib.ableMapper().addCharAbilityMapping(ID(),14,"Prayer_SenseProfessions",true);
 
-		CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Spell_KnowValue",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Prayer_LowerLaw",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Prayer_HolyAura",false,CMParms.parseSemicolons("Prayer_Bless",true));
 
-		CMLib.ableMapper().addCharAbilityMapping(ID(),16,"Spell_LocateObject",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),16,"Prayer_Prophecy",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),16,"Prayer_SenseSkills",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Skill_AttackHalf",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Prayer_Blindsight",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Prayer_CureBlindness",true);
 
-		CMLib.ableMapper().addCharAbilityMapping(ID(),18,"Spell_SeeAura",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),18,"Prayer_SeekersPrayer",false);
         CMLib.ableMapper().addCharAbilityMapping(ID(),18,"Prayer_InfuseHoliness",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),19,"Prayer_Godstrike",true);
