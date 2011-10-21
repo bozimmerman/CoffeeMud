@@ -47,7 +47,7 @@ public class HolidayData extends StdWebMacro
         {
             int index=CMLib.quests().getHolidayIndex(last);
             exists = index>=0;
-            List encodedData=(List)httpReq.getRequestObjects().get("HOLIDAY_"+last.toUpperCase().trim());
+            QuestManager.RawHolidayData encodedData=(QuestManager.RawHolidayData)httpReq.getRequestObjects().get("HOLIDAY_"+last.toUpperCase().trim());
             if(encodedData==null)
             {
             	List<String> steps=null;
@@ -69,10 +69,10 @@ public class HolidayData extends StdWebMacro
             }
             if(encodedData!=null)
             {
-                DVector settings=(DVector)encodedData.get(0);
-                DVector behaviors=(DVector)encodedData.get(1);
-                DVector properties=(DVector)encodedData.get(2);
-                DVector stats=(DVector)encodedData.get(3);
+                DVector settings=encodedData.settings;
+                DVector behaviors=encodedData.behaviors;
+                DVector properties=encodedData.properties;
+                DVector stats=encodedData.stats;
                 //List stepV=(List)encodedData.elementAt(4);
                 //int pricingMobIndex=((Integer)encodedData.elementAt(5)).intValue();
 

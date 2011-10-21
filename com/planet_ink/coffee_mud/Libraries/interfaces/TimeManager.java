@@ -311,6 +311,14 @@ public interface TimeManager extends CMLibrary
     public boolean isTickExpression(String val);
     
     /**
+     * Returns the most local clock for the given object.
+     * @param P an item, room, mob, whatever.
+     * @see com.planet_ink.coffee_mud.Common.interfaces.TimeClock
+     * @return the local clock
+     */
+    public TimeClock localClock(Physical P);
+    
+    /**
      * Returns the mud wide global time clock
      * object as defined by the coffeemud.ini
      * file.

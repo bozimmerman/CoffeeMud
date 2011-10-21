@@ -36,6 +36,7 @@ public interface QuestManager extends CMLibrary
 {
     public Quest objectInUse(Environmental E);
     public int numQuests();
+    public Enumeration<Quest> enumQuests();
     public Quest fetchQuest(int i);
     public Quest fetchQuest(String qname);
     public Quest findQuest(String qname);
@@ -50,11 +51,11 @@ public interface QuestManager extends CMLibrary
     public String listHolidays(Area A, String otherParms);
     public String deleteHoliday(int holidayNumber);
     public void modifyHoliday(MOB mob, int holidayNumber);
-    public String alterHoliday(String oldName, Vector newData);
+    public String alterHoliday(String oldName, RawHolidayData newData);
     public String createHoliday(String named, String areaName, boolean save);
     public StringBuffer getDefaultHoliData(String named, String area);
     public Object getHolidayFile();
-    public Vector getEncodedHolidayData(String dataFromStepsFile);
+    public RawHolidayData getEncodedHolidayData(String dataFromStepsFile);
     public List<List<String>> breakOutMudChatVs(String MUDCHAT, DVector behaviors);
     public String breakOutMaskString(String s, Vector p);
     
@@ -62,6 +63,16 @@ public interface QuestManager extends CMLibrary
     public Quest questMaker(MOB mob);
     public Vector<Quest> getPlayerPersistantQuests(MOB player);
 
+    public class RawHolidayData
+    {
+        public DVector settings=new DVector(3);
+        public DVector behaviors=new DVector(3);
+        public DVector properties=new DVector(3);
+        public DVector stats=new DVector(3);
+        public List<String> stepV=new Vector<String>();
+        public Integer pricingMobIndex=Integer.valueOf(0);
+    }
+    
     public final static int QM_COMMAND_$TITLE=0;
     public final static int QM_COMMAND_$LABEL=1;
     public final static int QM_COMMAND_$EXPRESSION=2;

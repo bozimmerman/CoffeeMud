@@ -1,16 +1,24 @@
 package com.planet_ink.coffee_mud.Libraries;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.util.Calendar;
-import java.util.TimeZone;
-import java.util.concurrent.TimeUnit;
-
-import com.planet_ink.coffee_mud.Common.interfaces.*;
-import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
-import com.planet_ink.coffee_mud.core.interfaces.*;
-
+import com.planet_ink.coffee_mud.core.exceptions.CMException;
+import com.planet_ink.coffee_mud.core.exceptions.CoffeeMudException;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+import java.text.*;
+import java.util.*;
+import java.util.concurrent.*;
 
 /*
    Copyright 2000-2011 Bo Zimmerman
@@ -694,5 +702,18 @@ public class CoffeeTime extends StdLibrary implements TimeManager
         double multiPlier=getTickExpressionMultiPlier(val.substring(x+1));
         if(multiPlier==0.0) return CMath.s_parseIntExpression(val);
         return (int)Math.round(CMath.mul(multiPlier,CMath.s_parseIntExpression(val.substring(0,x).trim())));
+    }
+    
+    public TimeClock localClock(Physical P)
+    {
+    	if(P instanceof Area)
+    		return ((Area)P).getTimeObj();
+    	if(P instanceof Room)
+    		return localClock(((Room)P).getArea());
+    	if(P instanceof Item)
+    		return localClock(((Item)P).owner());
+    	if(P instanceof MOB)
+    		return localClock(((MOB)P).location());
+    	return globalClock();
     }
 }

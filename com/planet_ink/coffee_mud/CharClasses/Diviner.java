@@ -52,4 +52,18 @@ public class Diviner extends SpecialistMage
 		CMLib.ableMapper().addCharAbilityMapping(ID(),25,"Spell_TrueSight",25,true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),30,"Spell_FutureDeath",25,true);
 	}
+    
+// possibilities:
+//CMLib.ableMapper().addCharAbilityMapping(ID(),0,"Spell_SolveMaze",25,true); // get directions to the exit of a maze you are in
+//CMLib.ableMapper().addCharAbilityMapping(ID(),0,"Spell_CommuneWithNature",25,true); // get speculate info + all possible resources + animal mobs + terrain types
+//CMLib.ableMapper().addCharAbilityMapping(ID(),0,"Spell_HearThoughts",25,true); // 8 nearest mobs thoughts -- mostly from behaviors, class, racial, intelligence
+//CMLib.ableMapper().addCharAbilityMapping(ID(),0,"Spell_PryingEye",25,true); // give a floating eye creature directions, it follows them and comes back, replaying what it saw on command.
+//CMLib.ableMapper().addCharAbilityMapping(ID(),0,"Spell_GroupStatus",25,true); // casts on whole group, reports to caster any change in status (on ground, seriously hurt, dead, etc..)
+//CMLib.ableMapper().addCharAbilityMapping(ID(),0,"Spell_SpyingStone",25,true); // casts on stone, left at location.  Caster can go back and see everything it saw.
+//CMLib.ableMapper().addCharAbilityMapping(ID(),0,"Spell_FindDirections",25,true); // can find way to an area -- consider doing pre-built maps.
+    
+    
+
+    
+    
 }

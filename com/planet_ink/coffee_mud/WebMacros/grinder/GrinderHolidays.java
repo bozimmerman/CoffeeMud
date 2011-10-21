@@ -69,7 +69,7 @@ public class GrinderHolidays {
                 return "Error creating holiday file.";
         }
         List<String> steps=null;
-        Vector encodedData = null;
+        QuestManager.RawHolidayData encodedData = null;
         Object resp=CMLib.quests().getHolidayFile();
         if(resp instanceof List)
             steps=(List<String>)resp;
@@ -77,13 +77,13 @@ public class GrinderHolidays {
         if(resp instanceof String)
             return (String)resp;
         if(steps!=null)
-            encodedData=CMLib.quests().getEncodedHolidayData((String)steps.get(index));
+            encodedData=CMLib.quests().getEncodedHolidayData(steps.get(index));
         if(encodedData==null)
             return "Error reading holiday data (code: "+((resp instanceof List)?"T":"F")+":"+((steps==null)?"F":"T")+":"+((encodedData==null)?"F":"T")+")";
-        DVector settings=(DVector)encodedData.elementAt(0);
-        DVector behaviors=(DVector)encodedData.elementAt(1);
-        DVector properties=(DVector)encodedData.elementAt(2);
-        DVector stats=(DVector)encodedData.elementAt(3);
+        DVector settings=encodedData.settings;
+        DVector behaviors=encodedData.behaviors;
+        DVector properties=encodedData.properties;
+        DVector stats=encodedData.stats;
         //List stepV=(List)encodedData.elementAt(4);
         //int pricingMobIndex=((Integer)encodedData.elementAt(5)).intValue();
 

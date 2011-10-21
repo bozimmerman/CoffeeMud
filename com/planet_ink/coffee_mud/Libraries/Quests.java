@@ -42,7 +42,7 @@ public class Quests extends StdLibrary implements QuestManager
     public String ID(){return "Quests";}
     protected String holidayFilename="quests/holidays/holidays.quest";
     protected String holidayDefinition="LOAD="+holidayFilename;
-    protected Vector quests=new Vector();
+    protected SVector quests=new SVector();
     
     public Quest objectInUse(Environmental E)
     {
@@ -126,6 +126,11 @@ public class Quests extends StdLibrary implements QuestManager
         CMLib.database().DBUpdateQuests(quests);
     }
 
+    public Enumeration<Quest> enumQuests()
+    {
+    	return quests.elements();
+    }
+    
     public Object getHolidayFile()
     {
         Quest Q=fetchQuest("holidays");
@@ -418,16 +423,16 @@ public class Quests extends StdLibrary implements QuestManager
         return -1;
     }
     
-    public int startLineIndex(Vector V, String start)
+    public int startLineIndex(List<String> V, String start)
     {
         start=start.toUpperCase().trim();
         for(int v=0;v<V.size();v++)
-            if(((String)V.elementAt(v)).toUpperCase().trim().startsWith(start))
+            if(V.get(v).toUpperCase().trim().startsWith(start))
                 return v;
         return -1;
     }
     
-    public Vector getEncodedHolidayData(String dataFromStepsFile)
+    public RawHolidayData getEncodedHolidayData(String dataFromStepsFile)
     {
     	List<String> stepV=Resources.getFileLineVector(new StringBuffer(dataFromStepsFile));
         for(int v=0;v<stepV.size();v++)
@@ -436,12 +441,12 @@ public class Quests extends StdLibrary implements QuestManager
         DVector behaviors=new DVector(3);
         DVector properties=new DVector(3);
         DVector stats=new DVector(3);
-        Vector encodedData=new Vector();
-        encodedData.addElement(settings);
-        encodedData.addElement(behaviors);
-        encodedData.addElement(properties);
-        encodedData.addElement(stats);
-        encodedData.addElement(stepV);
+        RawHolidayData encodedData=new RawHolidayData();
+        encodedData.settings=settings;
+        encodedData.behaviors=behaviors;
+        encodedData.properties=properties;
+        encodedData.stats=stats;
+        encodedData.stepV=stepV;
         Vector lineV=null;
         String line=null;
         String var=null;
@@ -490,7 +495,7 @@ public class Quests extends StdLibrary implements QuestManager
                 }
             }
         }
-        encodedData.addElement(Integer.valueOf(pricingMobIndex));
+        encodedData.pricingMobIndex=Integer.valueOf(pricingMobIndex);
         return encodedData;
     }
     
@@ -508,11 +513,11 @@ public class Quests extends StdLibrary implements QuestManager
         { mob.tell(holidayNumber+" does not exist as a holiday -- enter LIST HOLIDAYS."); return;}
 
         String step=(String)steps.get(holidayNumber);
-        Vector encodedData=getEncodedHolidayData(step);
-        DVector settings=(DVector)encodedData.elementAt(0);
-        DVector behaviors=(DVector)encodedData.elementAt(1);
-        DVector properties=(DVector)encodedData.elementAt(2);
-        DVector stats=(DVector)encodedData.elementAt(3);
+        RawHolidayData encodedData=getEncodedHolidayData(step);
+        DVector settings=encodedData.settings;
+        DVector behaviors=encodedData.behaviors;
+        DVector properties=encodedData.properties;
+        DVector stats=encodedData.stats;
         
         int oldNameIndex=settings.indexOf("NAME");
         if((mob.isMonster())||(oldNameIndex<0)) 
@@ -558,14 +563,14 @@ public class Quests extends StdLibrary implements QuestManager
         }
     }
 
-    public String alterHoliday(String oldName, Vector newData)
+    public String alterHoliday(String oldName, RawHolidayData newData)
     {
-        DVector settings=(DVector)newData.elementAt(0);
-        DVector behaviors=(DVector)newData.elementAt(1);
-        DVector properties=(DVector)newData.elementAt(2);
-        DVector stats=(DVector)newData.elementAt(3);
+        DVector settings=newData.settings;
+        DVector behaviors=newData.behaviors;
+        DVector properties=newData.properties;
+        DVector stats=newData.stats;
         //List stepV=(List)data.elementAt(4);
-        int pricingMobIndex=((Integer)newData.elementAt(5)).intValue();
+        int pricingMobIndex=newData.pricingMobIndex.intValue();
         
         int holidayNumber=getHolidayIndex(oldName);
         Object resp=getHolidayFile();
@@ -577,8 +582,8 @@ public class Quests extends StdLibrary implements QuestManager
             return "Unknown error.";
         
         String step = null;
-        Vector stepV = null;
-        Vector encodedData = null;
+        List<String> stepV = null;
+        RawHolidayData encodedData = null;
         StringBuffer buf=new StringBuffer("");
         for(int v=0;v<steps.size();v++)
         {
@@ -586,14 +591,14 @@ public class Quests extends StdLibrary implements QuestManager
             if(v==holidayNumber)
             {
                 encodedData=getEncodedHolidayData(step);
-                DVector oldBehaviors=((DVector)encodedData.elementAt(1)).copyOf();
-                DVector oldProperties=((DVector)encodedData.elementAt(2)).copyOf();
-                stepV=(Vector)encodedData.elementAt(4);
+                DVector oldBehaviors=encodedData.behaviors.copyOf();
+                DVector oldProperties=encodedData.properties.copyOf();
+                stepV=encodedData.stepV;
                 
                 int index=startLineIndex(stepV,"SET NAME");
-                stepV.setElementAt("SET NAME "+(String)settings.elementAt(settings.indexOf("NAME"),2),index);
+                stepV.set(index,"SET NAME "+(String)settings.elementAt(settings.indexOf("NAME"),2));
                 index=startLineIndex(stepV,"SET DURATION");
-                stepV.setElementAt("SET DURATION "+(String)settings.elementAt(settings.indexOf("DURATION"),2),index);
+                stepV.set(index,"SET DURATION "+(String)settings.elementAt(settings.indexOf("DURATION"),2));
                 int intervalLine=startLineIndex(stepV,"SET MUDDAY");
                 if(intervalLine<0) intervalLine=startLineIndex(stepV,"SET DATE");
                 if(intervalLine<0) intervalLine=startLineIndex(stepV,"SET WAIT");
@@ -601,26 +606,26 @@ public class Quests extends StdLibrary implements QuestManager
                 int dateIndex=settings.indexOf("DATE");
                 int waitIndex=settings.indexOf("WAIT");
                 if(mudDayIndex>=0)
-                    stepV.setElementAt("SET MUDDAY "+((String)settings.elementAt(mudDayIndex,2)),intervalLine);
+                    stepV.set(intervalLine,"SET MUDDAY "+((String)settings.elementAt(mudDayIndex,2)));
                 else
                 if(dateIndex>=0)
-                    stepV.setElementAt("SET DATE "+((String)settings.elementAt(dateIndex,2)),intervalLine);
+                    stepV.set(intervalLine,"SET DATE "+((String)settings.elementAt(dateIndex,2)));
                 else
-                    stepV.setElementAt("SET WAIT "+((String)settings.elementAt(waitIndex,2)),intervalLine);
+                    stepV.set(intervalLine,"SET WAIT "+((String)settings.elementAt(waitIndex,2)));
                 
                 index=settings.indexOf("AREAGROUP");
                 if(index>=0)
                 {
                     index=startLineIndex(stepV,"SET AREAGROUP");
                     if(index>=0)
-                        stepV.setElementAt("SET AREAGROUP "+settings.elementAt(settings.indexOf("AREAGROUP"),2),index);
+                        stepV.set(index,"SET AREAGROUP "+settings.elementAt(settings.indexOf("AREAGROUP"),2));
                 }
                 
                 index=settings.indexOf("MOBGROUP");
                 if(index>=0)
                 {
                     index=startLineIndex(stepV,"SET MOBGROUP");
-                    stepV.setElementAt("SET MOBGROUP RESELECT MASK="+settings.elementAt(settings.indexOf("MOBGROUP"),2),index);
+                    stepV.set(index,"SET MOBGROUP RESELECT MASK="+settings.elementAt(settings.indexOf("MOBGROUP"),2));
                 }
                 if((pricingMobIndex>0)&&(stats.indexOf("PRICEMASKS")>=0))
                 {
@@ -629,14 +634,14 @@ public class Quests extends StdLibrary implements QuestManager
                     if(s.trim().length()==0)
                     {
                         if(index>=0)
-                            stepV.removeElementAt(index);
+                            stepV.remove(index);
                     }
                     else
                     {
                         if(index>=0)
-                            stepV.setElementAt("GIVE STAT PRICEMASKS "+s,index);
+                            stepV.set(index,"GIVE STAT PRICEMASKS "+s);
                         else
-                            stepV.insertElementAt("GIVE STAT PRICEMASKS "+s,pricingMobIndex+1);
+                            stepV.add(pricingMobIndex+1,"GIVE STAT PRICEMASKS "+s);
                     }
                 }
                 int mobGroupIndex=startLineIndex(stepV,"SET MOBGROUP");
@@ -648,14 +653,14 @@ public class Quests extends StdLibrary implements QuestManager
                     if(s.trim().length()==0)
                     {
                         if(index>=0)
-                            stepV.removeElementAt(index);
+                            stepV.remove(index);
                     }
                     else
                     {
                         if(index>=0)
-                            stepV.setElementAt("GIVE BEHAVIOR AGGRESSIVE "+s,index);
+                            stepV.set(index,"GIVE BEHAVIOR AGGRESSIVE "+s);
                         else
-                            stepV.insertElementAt("GIVE BEHAVIOR AGGRESSIVE "+s,mobGroupIndex+1);
+                            stepV.add(mobGroupIndex+1,"GIVE BEHAVIOR AGGRESSIVE "+s);
                     }
                 }
                 
@@ -668,14 +673,14 @@ public class Quests extends StdLibrary implements QuestManager
                     if(s.trim().length()<2)
                     {
                         if(index>=0)
-                            stepV.removeElementAt(index);
+                            stepV.remove(index);
                     }
                     else
                     {
                         if(index>=0)
-                            stepV.setElementAt("GIVE BEHAVIOR MUDCHAT "+s,index);
+                            stepV.set(index,"GIVE BEHAVIOR MUDCHAT "+s);
                         else
-                            stepV.insertElementAt("GIVE BEHAVIOR MUDCHAT "+s,mobGroupIndex+1);
+                            stepV.add(mobGroupIndex+1,"GIVE BEHAVIOR MUDCHAT "+s);
                     }
                 }
                 
@@ -688,14 +693,14 @@ public class Quests extends StdLibrary implements QuestManager
                     if(s.trim().length()==0)
                     {
                         if(index>=0)
-                            stepV.removeElementAt(index);
+                            stepV.remove(index);
                     }
                     else
                     {
                         if(index>=0)
-                            stepV.setElementAt("GIVE AFFECT MOOD "+s,index);
+                            stepV.set(index,"GIVE AFFECT MOOD "+s);
                         else
-                            stepV.insertElementAt("GIVE AFFECT MOOD "+s,mobGroupIndex+1);
+                            stepV.add(mobGroupIndex+1,"GIVE AFFECT MOOD "+s);
                     }
                 }
                 
@@ -706,7 +711,7 @@ public class Quests extends StdLibrary implements QuestManager
                     if(properties.indexOf(prop)<0)
                     {
                         index=startLineIndex(stepV,"GIVE AFFECT "+prop);
-                        if(index>=0) stepV.removeElementAt(index);
+                        if(index>=0) stepV.remove(index);
                     }
                 }
                 // look for newly missing stuff
@@ -716,7 +721,7 @@ public class Quests extends StdLibrary implements QuestManager
                     if(behaviors.indexOf(behav)<0)
                     {
                         index=startLineIndex(stepV,"GIVE BEHAVIOR "+behav);
-                        if(index>=0) stepV.removeElementAt(index);
+                        if(index>=0) stepV.remove(index);
                     }
                 }
                 // now changed/added stuff
@@ -727,9 +732,9 @@ public class Quests extends StdLibrary implements QuestManager
                     mobGroupIndex=startLineIndex(stepV,"SET MOBGROUP");
                     index=startLineIndex(stepV,"GIVE AFFECT "+prop);
                     if(index>=0) 
-                        stepV.setElementAt("GIVE AFFECT "+prop.toUpperCase().trim()+" "+(properties.elementAt(p,2)),index);
+                        stepV.set(index,"GIVE AFFECT "+prop.toUpperCase().trim()+" "+(properties.elementAt(p,2)));
                     else
-                        stepV.insertElementAt("GIVE AFFECT "+prop.toUpperCase().trim()+" "+(properties.elementAt(p,2)),mobGroupIndex+1);
+                        stepV.add(mobGroupIndex+1,"GIVE AFFECT "+prop.toUpperCase().trim()+" "+(properties.elementAt(p,2)));
                 }
                 // now changed/added stuff
                 for(int p=0;p<behaviors.size();p++)
@@ -739,15 +744,15 @@ public class Quests extends StdLibrary implements QuestManager
                     mobGroupIndex=startLineIndex(stepV,"SET MOBGROUP");
                     index=startLineIndex(stepV,"GIVE BEHAVIOR "+behav);
                     if(index>=0) 
-                        stepV.setElementAt("GIVE BEHAVIOR "+behav.toUpperCase().trim()+" "+(behaviors.elementAt(p,2)),index);
+                        stepV.set(index,"GIVE BEHAVIOR "+behav.toUpperCase().trim()+" "+(behaviors.elementAt(p,2)));
                     else
-                        stepV.insertElementAt("GIVE BEHAVIOR "+behav.toUpperCase().trim()+" "+(behaviors.elementAt(p,2)),mobGroupIndex+1);
+                        stepV.add(mobGroupIndex+1,"GIVE BEHAVIOR "+behav.toUpperCase().trim()+" "+(behaviors.elementAt(p,2)));
                 }
                 
                 for(int v1=0;v1<stepV.size();v1++)
                 {
-                    if(((String)stepV.elementAt(v1)).trim().length()>0)
-                        buf.append(CMStrings.replaceAll((((String)stepV.elementAt(v1))+"\n\r"),";","\\;"));
+                    if(stepV.get(v1).trim().length()>0)
+                        buf.append(CMStrings.replaceAll((stepV.get(v1)+"\n\r"),";","\\;"));
                 }
                 buf.append("\n\r");
             }
