@@ -172,7 +172,7 @@ public class Chant_PlantSelf extends Chant
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			CMMsg msg=CMClass.getMsg(mob,null,this,somanticCastCode(mob,null,auto),"<S-NAME> plant(s) <S-HIM-HERSELF> in the earth while chanting softly...");
+			CMMsg msg=CMClass.getMsg(mob,null,this,somanticCastCode(mob,null,auto),"^S<S-NAME> plant(s) <S-HIM-HERSELF> in the earth while chanting softly...^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

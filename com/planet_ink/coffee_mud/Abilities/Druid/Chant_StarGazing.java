@@ -166,7 +166,7 @@ public class Chant_StarGazing extends Chant
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			CMMsg msg=CMClass.getMsg(mob,null,this,somanticCastCode(mob,null,auto),"<S-NAME> begin(s) to gaze at the stars...");
+			CMMsg msg=CMClass.getMsg(mob,null,this,somanticCastCode(mob,null,auto),"^S<S-NAME> begin(s) to gaze at the stars...^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

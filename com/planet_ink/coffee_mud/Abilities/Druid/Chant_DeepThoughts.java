@@ -156,7 +156,7 @@ public class Chant_DeepThoughts extends Chant
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			CMMsg msg=CMClass.getMsg(mob,null,this,somanticCastCode(mob,null,auto),"<S-NAME> grow(s) very still and begin(s) to think deep thoughts...");
+			CMMsg msg=CMClass.getMsg(mob,null,this,somanticCastCode(mob,null,auto),"^S<S-NAME> grow(s) very still and begin(s) to think deep thoughts...^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

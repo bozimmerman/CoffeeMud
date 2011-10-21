@@ -171,7 +171,7 @@ public class Chant_NaturalCommunion extends Chant
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			CMMsg msg=CMClass.getMsg(mob,null,this,somanticCastCode(mob,null,auto),"<S-NAME> begin(s) to commune with nature...");
+			CMMsg msg=CMClass.getMsg(mob,null,this,somanticCastCode(mob,null,auto),"^S<S-NAME> begin(s) to commune with nature...^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
