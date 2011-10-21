@@ -134,13 +134,13 @@ public class Oracle extends Cleric
 		CMLib.ableMapper().addCharAbilityMapping(ID(),22,"Prayer_SenseSpells",true);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),23,"Prayer_MassHeal",false,CMParms.parseSemicolons("Prayer_Heal",true));
-		CMLib.ableMapper().addCharAbilityMapping(ID(),23,"Skill_AboveTheLaw",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),25,"Prayer_DivinePerspective",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),24,"Prayer_HolyWord",false,CMParms.parseSemicolons("Prayer_HolyAura",true));
 		CMLib.ableMapper().addCharAbilityMapping(ID(),24,"Prayer_SensePrayers",true);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),25,"Prayer_Resurrect",false);
-		CMLib.ableMapper().addCharAbilityMapping(ID(),25,"Prayer_DivinePerspective",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),23,"Skill_AboveTheLaw",false);
 	}
 
 	public int availabilityCode(){return Area.THEME_FANTASY;}
