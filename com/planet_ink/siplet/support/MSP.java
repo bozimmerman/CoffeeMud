@@ -3,6 +3,8 @@ import java.applet.*;
 import java.net.*;
 import java.util.*;
 
+import com.planet_ink.siplet.applet.Siplet;
+
 /*
 Copyright 2000-2011 Bo Zimmerman
 
@@ -44,7 +46,7 @@ public class MSP
         return s.trim();
     }
 
-    public int process(StringBuffer buf, int i, Applet applet)
+    public int process(StringBuffer buf, int i, Siplet applet)
     {
         int oldI=i;
         if(i+12>=buf.length()) return -2;

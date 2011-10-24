@@ -21,7 +21,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
-public class Siplet extends Applet
+public class Siplet
 {
     public final static boolean debugDataOut=false;
     
@@ -79,13 +79,14 @@ public class Siplet extends Applet
     {
     	if(debugDataOut) System.out.println(newWord);
         buffer.append(newWord);
-        repaint();
+        //repaint();
     }
 
     public void paint(Graphics g)
     {
-        g.drawRect(0, 0, getSize().width - 1, getSize().height - 1);
-        g.drawString(buffer.toString(), 5, 15);
+    	// uncomment if we go back to being an applet
+        //g.drawRect(0, 0, getSize().width - 1, getSize().height - 1);
+        //g.drawString(buffer.toString(), 5, 15);
     }
 
     public boolean connectToURL(){ return connectToURL(lastURL,lastPort);}

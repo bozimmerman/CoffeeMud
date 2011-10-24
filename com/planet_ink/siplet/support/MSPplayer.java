@@ -31,9 +31,10 @@ public class MSPplayer extends Thread
     public String url=null;
     public boolean playing=false;
     public boolean orderedStopped=false;
-    private Applet applet=null;
+    @SuppressWarnings("unused")
+	private Siplet applet=null;
     
-    public MSPplayer(Applet theApplet)
+    public MSPplayer(Siplet theApplet)
     {
         super();
         applet=theApplet;
@@ -55,6 +56,8 @@ public class MSPplayer extends Thread
     {
         playing=true;
         orderedStopped=false;
+    	// restore this when we go back to being an applet
+    	/*
         try
         {
             if(clip==null)
@@ -71,6 +74,7 @@ public class MSPplayer extends Thread
             playing=false;
             return;
         }
+        */
         if(clip!=null)
         {
             // dunno how to set volume, but that should go here.
