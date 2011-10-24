@@ -69,6 +69,11 @@ public class Conquerable extends Arrest
     protected int fightDown=0;
     protected static final int FIGHTFREQ=2;
 
+	public String accountForYourself()
+	{ 
+		return "conquerability";
+	}
+
     public String rulingOrganization()
     {
         return holdingClan;

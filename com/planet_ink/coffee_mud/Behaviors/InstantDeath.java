@@ -45,7 +45,10 @@ public class InstantDeath extends ActiveTicker
 
 	boolean activated=false;
 
-
+	public String accountForYourself()
+	{ 
+		return "instant indescriminate killing";
+	}
 
 	public void killEveryoneHere(MOB spareMe, Room R)
 	{

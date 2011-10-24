@@ -51,6 +51,11 @@ public class Arrest extends StdBehavior implements LegalBehavior
     protected Hashtable finesAssessed=new Hashtable();
     public boolean isFullyControlled(){return true;}
 
+	public String accountForYourself()
+	{ 
+		return "legaliness";
+	}
+
     public boolean frame(Area myArea, MOB accused, MOB framed)
     {
         if(!theLawIsEnabled()) return false;

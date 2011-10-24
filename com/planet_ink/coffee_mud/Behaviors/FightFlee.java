@@ -43,6 +43,10 @@ public class FightFlee extends ActiveTicker
 		tickReset();
 	}
 
+	public String accountForYourself()
+	{ 
+		return "cowardly fighting and fleeing";
+	}
 
 	public boolean tick(Tickable ticking, int tickID)
 	{

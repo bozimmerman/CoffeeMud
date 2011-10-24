@@ -50,8 +50,11 @@ public class BribeGateGuard extends StdBehavior
 		return "BribeGateGuard";
 	}
 
-
-
+	public String accountForYourself()
+	{ 
+		return "corruptable gate guarding";
+	}
+	
 	protected double price()
 	{
 		return (double)getVal(getParms(), "price", 5);

@@ -46,6 +46,11 @@ public class Hireling extends StdBehavior
 	protected int minutes=30;
 	protected String zapperMask=null;
 
+	public String accountForYourself()
+	{ 
+		return "availability for hiring";
+	}
+
 	public void setPrice(String s)
 	{
 		price=100.0;

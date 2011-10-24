@@ -38,6 +38,14 @@ public class FaithHelper extends StdBehavior
 
 	protected boolean mobKiller=false;
 
+	public String accountForYourself()
+	{ 
+		if(parms.length()>0)
+			return "aggression to worshipper of "+parms;
+		else
+			return "aggression to worshippers";
+	}
+
 	public void startBehavior(PhysicalAgent forMe)
 	{
 		super.startBehavior(forMe);

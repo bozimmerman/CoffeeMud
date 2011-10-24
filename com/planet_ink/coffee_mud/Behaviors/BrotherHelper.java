@@ -40,6 +40,11 @@ public class BrotherHelper extends StdBehavior
 	protected boolean nameOnly = true;
 	protected int num=-1;
 	
+	public String accountForYourself()
+	{ 
+		return "neighbor protecting";
+	}
+	
 	public void setParms(String parms)
 	{
 	    super.setParms(parms);

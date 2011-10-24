@@ -36,6 +36,10 @@ public class Fighterness extends CombatAbilities
 {
 	public String ID(){return "Fighterness";}
 
+	public String accountForYourself()
+	{ 
+		return "fighterliness";
+	}
 
 	public void startBehavior(PhysicalAgent forMe)
 	{

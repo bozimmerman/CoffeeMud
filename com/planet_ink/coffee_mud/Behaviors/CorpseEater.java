@@ -44,6 +44,11 @@ public class CorpseEater extends ActiveTicker
 		tickReset();
 	}
 
+	public String accountForYourself()
+	{ 
+		return "corpse eating";
+	}
+	
     public void setParms(String newParms) 
 	{
         super.setParms(newParms);

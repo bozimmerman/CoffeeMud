@@ -42,6 +42,7 @@ public class StdBehavior implements Behavior
 	public boolean grantsAggressivenessTo(MOB M){return false;}
 	public long getTickStatus(){return Tickable.STATUS_NOT;}
     public void initializeClass(){}
+	public String accountForYourself(){ return "";}
     protected boolean isSavableBehavior=true;
 
     public StdBehavior()

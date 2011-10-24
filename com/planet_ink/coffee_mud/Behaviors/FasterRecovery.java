@@ -37,6 +37,12 @@ public class FasterRecovery extends StdBehavior
 {
 	public String ID(){return "FasterRecovery";}
 	protected int canImproveCode(){return Behavior.CAN_ROOMS|Behavior.CAN_AREAS|Behavior.CAN_ITEMS;}
+	
+	public String accountForYourself()
+	{ 
+		return "faster recovering";
+	}
+
 	public static int getVal(String text, String key, int defaultValue)
 	{
 		text=text.toUpperCase();

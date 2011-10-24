@@ -40,6 +40,11 @@ public class DelayedTransporter extends ActiveTicker
 	protected Vector destRoomNames=new Vector();
 	protected int canImproveCode(){return Behavior.CAN_ITEMS|Behavior.CAN_MOBS|Behavior.CAN_ROOMS;}
 
+	public String accountForYourself()
+	{ 
+		return "away whisking";
+	}
+
 	public DelayedTransporter()
 	{
         super();

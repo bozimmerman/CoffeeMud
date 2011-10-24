@@ -207,6 +207,19 @@ public class CMClass extends ClassLoader
     
     */
 
+    public  final static boolean exists (String className)
+    {
+	    try 
+	    {
+		    Class.forName (className);
+		    return true;
+	    }
+	    catch (ClassNotFoundException exception) 
+	    {
+		    return false;
+	    }
+    }
+    
     public final static boolean isType(final Object O, final int type)
     {
         switch(type)

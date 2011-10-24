@@ -38,6 +38,11 @@ public class GoodGuardian extends StdBehavior
 
     protected long deepBreath=System.currentTimeMillis();
 
+	public String accountForYourself()
+	{ 
+		return "protective against agression, evilness, or thieflyness";
+	}
+
 	public static MOB anyPeaceToMake(Room room, MOB observer)
 	{
 		if(room==null) return null;

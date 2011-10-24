@@ -36,6 +36,10 @@ public class Clericness extends CombatAbilities
 {
 	public String ID(){return "Clericness";}
 
+	public String accountForYourself()
+	{ 
+		return "clericliness";
+	}
 
 	boolean confirmedSetup=false;
 

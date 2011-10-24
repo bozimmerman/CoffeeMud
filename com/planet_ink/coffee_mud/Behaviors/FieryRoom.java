@@ -49,6 +49,11 @@ public class FieryRoom
         minTicks = 5; maxTicks = 10; chance = 100;
         tickReset();
     }
+    
+	public String accountForYourself()
+	{ 
+		return "on fire";
+	}
 
     public void setParms(String newParms) {
         super.setParms(newParms);

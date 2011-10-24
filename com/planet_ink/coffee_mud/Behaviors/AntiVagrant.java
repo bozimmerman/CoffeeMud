@@ -48,6 +48,10 @@ public class AntiVagrant extends ActiveTicker
 		tickReset();
 	}
 
+	public String accountForYourself()
+	{ 
+		return "vagrant disliking";
+	}
 
 	public void setParms(String parms)
 	{

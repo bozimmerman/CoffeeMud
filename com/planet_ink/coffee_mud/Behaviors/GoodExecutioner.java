@@ -50,6 +50,10 @@ public class GoodExecutioner  extends StdBehavior
         doPlayers=V.contains("PLAYERS")||V.contains("PLAYER");
     }
 
+	public String accountForYourself()
+	{ 
+		return "aggression to evilness and thieves";
+	}
 
 	public boolean grantsAggressivenessTo(MOB M)
 	{

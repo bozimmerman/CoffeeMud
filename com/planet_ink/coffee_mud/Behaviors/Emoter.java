@@ -71,6 +71,11 @@ public class Emoter extends ActiveTicker
 	protected static enum EMOTE_TYPE { EMOTE_VISUAL, EMOTE_SOUND, EMOTE_SMELL, EMOTE_SOCIAL }
 	protected EMOTE_TYPE emoteType=EMOTE_TYPE.EMOTE_VISUAL;
 
+	public String accountForYourself()
+	{ 
+		return "emoting";
+	}
+
     protected boolean setEmoteType(String str)
     {
         str=str.toUpperCase().trim();

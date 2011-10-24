@@ -46,7 +46,10 @@ public class Decay extends ActiveTicker
 	boolean activated=false;
 	protected String answer=" vanishes!";
 
-
+	public String accountForYourself()
+	{ 
+		return "decaying over time";
+	}
 
 	public void setParms(String newParms)
 	{

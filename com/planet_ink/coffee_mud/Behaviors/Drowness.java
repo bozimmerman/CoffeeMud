@@ -36,6 +36,10 @@ public class Drowness extends StdBehavior
 {
 	public String ID(){return "Drowness";}
 
+	public String accountForYourself()
+	{ 
+		return "drowly";
+	}
 
 	boolean confirmedSetup=false;
 	public int darkDown=4;

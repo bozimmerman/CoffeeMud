@@ -1597,7 +1597,7 @@ public class StdAbility implements Ability
 	public boolean isGeneric(){return false;}
 
 	public int getSaveStatIndex(){return getStatCodes().length;}
-	private static final String[] CODES={"CLASS","TEXT"};
+	private static final String[] CODES={"CLASS","TEXT","TICKDOWN"};
 	public String[] getStatCodes(){return CODES;}
     public boolean isStat(String code){ return CMParms.indexOf(getStatCodes(),code.toUpperCase().trim())>=0;}
 	protected int getCodeNum(String code){
@@ -1610,6 +1610,7 @@ public class StdAbility implements Ability
 		{
 		case 0: return ID();
 		case 1: return text();
+		case 2: return Integer.toString(tickDown);
 		}
 		return "";
 	}
@@ -1619,6 +1620,7 @@ public class StdAbility implements Ability
 		{
 		case 0: return;
 		case 1: setMiscText(val); break;
+		case 2: tickDown=CMath.s_int(val); break;
 		}
 	}
     public boolean sameAs(Environmental E)

@@ -37,6 +37,10 @@ public class Guard extends StdBehavior
 	public String ID(){return "Guard";}
 	public long flags(){return Behavior.FLAG_POTENTIALLYAGGRESSIVE;}
 
+	public String accountForYourself()
+	{ 
+		return "protective of particular friends";
+	}
 
 	public void executeMsg(Environmental affecting, CMMsg msg)
 	{

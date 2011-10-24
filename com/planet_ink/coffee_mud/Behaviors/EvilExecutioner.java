@@ -49,6 +49,11 @@ public class EvilExecutioner  extends StdBehavior
         doPlayers=V.contains("PLAYERS")||V.contains("PLAYER");
     }
 
+	public String accountForYourself()
+	{ 
+		return "aggression to goodness and paladins";
+	}
+
     public boolean grantsAggressivenessTo(MOB M)
     {
         if(M==null) return false;

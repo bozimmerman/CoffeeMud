@@ -66,6 +66,11 @@ public class CombatAbilities extends StdBehavior
 		"ONLYALWAYS"
 	};
 
+	public String accountForYourself()
+	{ 
+		return "skillful ability using";
+	}
+
 	protected void makeClass(MOB mob, String theParms, String defaultClassName)
 	{
 	    CharClass C=null;

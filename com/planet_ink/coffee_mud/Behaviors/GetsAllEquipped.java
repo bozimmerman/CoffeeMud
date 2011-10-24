@@ -46,6 +46,11 @@ public class GetsAllEquipped extends ActiveTicker
 
 	protected boolean DoneEquipping=false;
 
+	public String accountForYourself()
+	{ 
+		return "equipping";
+	}
+
 	public void executeMsg(Environmental host, CMMsg msg)
     {
 	    super.executeMsg(host,msg);

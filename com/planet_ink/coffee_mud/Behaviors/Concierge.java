@@ -43,6 +43,11 @@ public class Concierge extends StdBehavior
 	public DVector thingsToSay=new DVector(2);
 	double basePrice=0.0;
 	
+	public String accountForYourself()
+	{ 
+		return "direction giving and selling";
+	}
+	
 	public void setParms(String newParm)
 	{
 	    super.setParms(newParm);

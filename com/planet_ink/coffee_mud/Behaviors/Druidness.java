@@ -38,6 +38,11 @@ public class Druidness extends CombatAbilities
 
 	boolean confirmedSetup=false;
 
+	public String accountForYourself()
+	{ 
+		return "druidly";
+	}
+
 	public void startBehavior(PhysicalAgent forMe)
 	{
 		super.startBehavior(forMe);

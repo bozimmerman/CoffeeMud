@@ -36,7 +36,10 @@ public class Bardness extends CombatAbilities
 {
 	public String ID(){return "Bardness";}
 
-
+	public String accountForYourself()
+	{ 
+		return "bardliness";
+	}
 	
 	public void startBehavior(PhysicalAgent forMe)
 	{

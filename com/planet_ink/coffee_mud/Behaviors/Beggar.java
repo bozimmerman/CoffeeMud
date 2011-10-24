@@ -39,7 +39,11 @@ public class Beggar extends StdBehavior
 	Vector mobsHitUp=new Vector();
 	int tickTock=0;
 
-
+	public String accountForYourself()
+	{ 
+		return "vagrant-like begging";
+	}
+	
 	public void executeMsg(Environmental oking, CMMsg msg)
 	{
 		super.executeMsg(oking,msg);

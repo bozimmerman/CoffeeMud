@@ -37,6 +37,11 @@ public class AlignHelper extends StdBehavior
 {
 	public String ID(){return "AlignHelper";}
 
+	public String accountForYourself()
+	{ 
+		return "same-aligned protecting";
+	}
+	
 	public void executeMsg(Environmental affecting, CMMsg msg)
 	{
 		super.executeMsg(affecting,msg);

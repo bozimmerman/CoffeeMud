@@ -43,6 +43,11 @@ public class DoorwayGuardian extends StdBehavior
 	private String message=DEFAULT_MESSAGE;
 	Vector<Integer> dirs=new Vector<Integer>();
 
+	public String accountForYourself()
+	{ 
+		return "doorway guarding";
+	}
+	
 	public void setParms(String parms)
 	{
 		super.setParms(parms);

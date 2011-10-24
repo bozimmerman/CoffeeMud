@@ -42,6 +42,8 @@ public class Follower extends ActiveTicker
 	protected Room lastRoom=null;
 	protected MOB lastOwner=null;
 
+	int direction=-1;
+
 	public Follower()
 	{
         super();
@@ -61,8 +63,10 @@ public class Follower extends ActiveTicker
 		inventory=V.contains("INVENTORY")||V.contains("INV");
     }
 
-
-	int direction=-1;
+	public String accountForYourself()
+	{ 
+		return "natural friendly following";
+	}
 
 	public void executeMsg(Environmental affecting, CMMsg msg)
 	{

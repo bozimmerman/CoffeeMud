@@ -36,9 +36,14 @@ public class GoldLooter extends StdBehavior
 {
 	public String ID(){return "GoldLooter";}
 
-
 	int tickTocker=1;
 	int tickTock=0;
+	
+	public String accountForYourself()
+	{ 
+		return "gold looting";
+	}
+
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		super.tick(ticking,tickID);

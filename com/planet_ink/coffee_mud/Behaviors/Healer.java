@@ -55,7 +55,10 @@ public class Healer extends ActiveTicker
 		}
 	}
 
-
+	public String accountForYourself()
+	{ 
+		return "benevolent healing";
+	}
 
 	public boolean tick(Tickable ticking, int tickID)
 	{

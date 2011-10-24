@@ -47,6 +47,11 @@ public class Scavenger extends ActiveTicker
 		tickReset();
 	}
 
+	public String accountForYourself()
+	{ 
+		return "refuse scavenging";
+	}
+
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		super.tick(ticking,tickID);

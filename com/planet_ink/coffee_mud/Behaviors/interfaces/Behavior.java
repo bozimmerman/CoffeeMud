@@ -140,6 +140,13 @@ public interface Behavior extends Tickable, MsgListener, Contingent, Modifiable
 	public long flags();
 
 	/**
+	 * Returns a string describing what this behavior does.  Mostly for 
+	 * thought and behavior reading systems.
+	 * @return a string describing what this behavior does.
+	 */
+	public String accountForYourself();
+	
+	/**
 	 * Returns the result of a very specific test, namely whether this
 	 * behavior would be the direct cause of a malicious act against
 	 * the given MOB object.

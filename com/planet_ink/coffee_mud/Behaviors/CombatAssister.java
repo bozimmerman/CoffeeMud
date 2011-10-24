@@ -36,6 +36,14 @@ public class CombatAssister extends StdBehavior
 {
 	public String ID(){return "CombatAssister";}
 
+	public String accountForYourself()
+	{ 
+		if(getParms().length()>0)
+			return "protecting of "+CMLib.masking().maskDesc(getParms(),true);
+		else
+			return "protecting of others";
+	}
+
 	public void executeMsg(Environmental affecting, CMMsg msg)
 	{
 		super.executeMsg(affecting,msg);

@@ -36,11 +36,15 @@ public class GateGuard extends StdBehavior
 {
 	public String ID(){return "GateGuard";}
 
-
 	protected int noticeTock=4;
 	protected boolean heardKnock=false;
 	protected boolean keepLocked=false;
 	protected boolean allnight=false;
+
+	public String accountForYourself()
+	{ 
+		return "gate guarding";
+	}
 
 	public void setParms(String parm)
 	{
