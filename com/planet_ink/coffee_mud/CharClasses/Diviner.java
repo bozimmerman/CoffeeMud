@@ -43,11 +43,15 @@ public class Diviner extends SpecialistMage
         CMLib.ableMapper().addCharAbilityMapping(ID(),4,"Skill_Spellcraft",false);
         
         
-        CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Spell_AnalyzeDweomer",25,true);
+        /*MOD*/CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Spell_AnalyzeDweomer",25,true);
         /*NEW*/CMLib.ableMapper().addCharAbilityMapping(ID(),3,"Spell_SolveMaze",25,true);
+        /*NEW*/CMLib.ableMapper().addCharAbilityMapping(ID(),4,"Spell_GroupStatus",25,true);
         /*NEW*/CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Spell_DetectWeaknesses",25,true);
+        /*NEW*/CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Spell_Telepathy",25,true);
         /*NEW*/CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Spell_NaturalCommunion",25,true);
         CMLib.ableMapper().addCharAbilityMapping(ID(),10,"Spell_DetectTraps",25,true);
+        /*NEW*/CMLib.ableMapper().addCharAbilityMapping(ID(),12,"Spell_SpyingStone",25,true);
+        /*NEW*/CMLib.ableMapper().addCharAbilityMapping(ID(),14,"Spell_HearThoughts",25,"",true,false,CMParms.parseSemicolons("Spell_Telepathy",true),"");
         CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Spell_KnowOrigin",25,true);
         CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Spell_DetectScrying",25,true);
         /*NEW*/CMLib.ableMapper().addCharAbilityMapping(ID(),18,"Spell_SpottersOrders",25,"",true,false,CMParms.parseSemicolons("Spell_DetectWeaknesses",true),"");
@@ -55,19 +59,15 @@ public class Diviner extends SpecialistMage
         /*NEW*/CMLib.ableMapper().addCharAbilityMapping(ID(),20,"Spell_FindDirections",25,true);
         CMLib.ableMapper().addCharAbilityMapping(ID(),21,"Spell_KnowPain",25,true);
         CMLib.ableMapper().addCharAbilityMapping(ID(),22,"Spell_KnowBliss",25,true);
+        /*NEW*/CMLib.ableMapper().addCharAbilityMapping(ID(),23,"Spell_DeathWarning",25,true);
         CMLib.ableMapper().addCharAbilityMapping(ID(),24,"Spell_DetectAmbush",25,true);
         CMLib.ableMapper().addCharAbilityMapping(ID(),25,"Spell_TrueSight",25,true);
         CMLib.ableMapper().addCharAbilityMapping(ID(),30,"Spell_FutureDeath",25,true);
     }
 
 // possibilities:
-//CMLib.ableMapper().addCharAbilityMapping(ID(),0,"Spell_Telepathy",25,true); // target mobs thoughts -- mostly from behaviors, class, racial, intelligence
-//CMLib.ableMapper().addCharAbilityMapping(ID(),0,"Spell_HearThoughts",25,true); // 8 nearest mobs thoughts -- mostly from behaviors, class, racial, intelligence
-//CMLib.ableMapper().addCharAbilityMapping(ID(),0,"Spell_PryingEye",25,true); // give a floating eye creature directions, it follows them and comes back, replaying what it saw on command.
-//CMLib.ableMapper().addCharAbilityMapping(ID(),0,"Spell_GroupStatus",25,true); // casts on whole group, reports to caster any change in status (on ground, seriously hurt, dead, etc..)
-//CMLib.ableMapper().addCharAbilityMapping(ID(),0,"Spell_SpyingStone",25,true); // casts on stone, left at location.  Caster can go back and see everything it saw.
+//CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Spell_PryingEye",25,true); // give a floating eye creature directions, it follows them and comes back, replaying what it saw on command.
 //CMLib.ableMapper().addCharAbilityMapping(ID(),0,"Spell_DiviningEye",25,true); // Allows the Diviner to use the Prying Eye to cast other divination spells on other targets 
-//CMLib.ableMapper().addCharAbilityMapping(ID(),0,"Spell_DeathWarning",25,true); // Receive a warning before you die, and specify what you will do -- including flee.
 //CMLib.ableMapper().addCharAbilityMapping(ID(),0,"Spell_ArmsLength",25,true); // Keeps you at range from your opponent during combat. (lasts 3 rounds)
 //CMLib.ableMapper().addCharAbilityMapping(ID(),0,"Spell_CombatForsight",25,true); // Specify what you will do and it will simulate combat for you (will loop macro)
 }

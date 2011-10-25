@@ -133,6 +133,7 @@ public class Spell_SpottersOrders extends Spell
 								((Spell_DetectWeaknesses)P.second).spottedM=spottedM;
 							}
 							P.second.setStat("TICKDOWN", Integer.toString(tickDown));
+							P.second.setInvoker(mob);
 							P.first.addEffect(P.second);
 							P.second.tick(P.first, Tickable.TICKID_MOB);
 							P.first.recoverPhyStats();

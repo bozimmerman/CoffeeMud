@@ -122,6 +122,14 @@ public class Spell_AnalyzeDweomer extends Spell
 						str.append("It has a maximum range of "+w.maxRange()+".  ");
 				}
 				str.append("It is made of "+RawMaterial.CODES.NAME(target.material()).toLowerCase()+".  ");
+	            Command C=CMClass.getCommand("Affect");
+	            try
+	            {
+	            	String affectStr=C.executeInternal(mob,0).toString();
+	            	if(affectStr.length()<5)
+	            		str.append("It is affected by: "+affectStr);
+	            }
+	            catch(Exception e){}
 				if(mob.isMonster())
 					CMLib.commands().postSay(mob,null,str.toString().trim(),false,false);
 				else

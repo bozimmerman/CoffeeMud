@@ -162,30 +162,6 @@ public class Affect extends StdCommand
 		throws java.io.IOException
 	{
 		Session S=mob.session();
-		if((commands!=null)&&(commands.size()>0)&&(!(commands.firstElement() instanceof String)))
-		{
-			if(commands.firstElement() instanceof MOB)
-				S=((MOB)commands.firstElement()).session();
-			else
-			if(commands.firstElement() instanceof StringBuffer)
-			{
-				((StringBuffer)commands.firstElement()).append(getAffects(S,mob,false));
-				return false;
-			}
-			else
-			if(commands.firstElement() instanceof List)
-			{
-				((List)commands.firstElement()).add(getAffects(S,mob,false));
-				return false;
-			}
-			else
-			{
-				commands.clear();
-				commands.addElement(getAffects(S,mob,false));
-				return false;
-			}
-		}
-
 		if(S!=null)
 		{
 		    if(CMSecurity.isAllowed(mob, mob.location(),"CMDMOBS"))
@@ -232,5 +208,20 @@ public class Affect extends StdCommand
 	
 	public boolean canBeOrdered(){return true;}
 
-	
+	public Object executeInternal(MOB mob, int metaFlags, Object... args) throws java.io.IOException
+	{
+		if(args.length==0) return null;
+		Physical target=mob;
+		Session S=(mob!=null)?mob.session():null;
+		for(Object o : args)
+		{
+			if(o instanceof Physical)
+			{
+				if(o instanceof MOB)
+					S=((MOB)o).session();
+				target=(Physical)o;
+			}
+		}
+		return getAffects(S,target,false);
+	}
 }

@@ -499,7 +499,6 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 					break;
 				case '!':
 					if((loop<buf.length()-10)
-					&&(S!=null)
 					&&(buf.charAt(loop+1)=='!')
 					&&((buf.substring(loop+2,loop+7).equalsIgnoreCase("sound"))
 					   ||(buf.substring(loop+2,loop+7).equalsIgnoreCase("music"))))
@@ -508,7 +507,8 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 						int y=buf.indexOf(")",loop+7);
 						if((x>=0)&&(y>=x))
 						{
-							if((S.clientTelnetMode(Session.TELNET_MSP))
+							if((S!=null)
+							&&(S.clientTelnetMode(Session.TELNET_MSP))
 							&&((source==null)
 							   ||(source==mob)
 							   ||(CMLib.flags().canBeHeardSpeakingBy(source,mob))))
@@ -703,7 +703,9 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
                                         if(!firstSdone) doSagain=true;
                                     }
 									else
-									if(((!CMLib.flags().canSee(mob))||(!CMLib.flags().canBeSeenBy(regarding,mob)))&&(regarding.Name().trim().length()>0))
+									if((mob!=null)
+									&&((!CMLib.flags().canSee(mob))||(!CMLib.flags().canBeSeenBy(regarding,mob)))
+									&&(regarding.Name().trim().length()>0))
 										replacement=((regarding instanceof MOB)?"someone":"something");
                                     else
                                     if(regarding instanceof MOB)
@@ -723,7 +725,9 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
                                         if(!firstSdone) doSagain=true;
                                     }
                                     else
-                                    if(((!CMLib.flags().canSee(mob))||(!CMLib.flags().canBeSeenBy(regarding,mob)))&&(regarding.Name().trim().length()>0))
+                                    if((mob!=null)
+        							&&((!CMLib.flags().canSee(mob))||(!CMLib.flags().canBeSeenBy(regarding,mob)))
+                                    &&(regarding.Name().trim().length()>0))
                                         replacement=((regarding instanceof MOB)?"someone":"something");
                                     else
                                     if(regarding instanceof MOB)
@@ -746,7 +750,9 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
                                         if(!firstSdone) doSagain=true;
                                     }
 									else
-									if(((!CMLib.flags().canSee(mob))||(!CMLib.flags().canBeSeenBy(regarding,mob)))&&(regarding.Name().trim().length()>0))
+									if((mob!=null)
+									&&((!CMLib.flags().canSee(mob))||(!CMLib.flags().canBeSeenBy(regarding,mob)))
+									&&(regarding.Name().trim().length()>0))
 										replacement=((regarding instanceof MOB)?"someone":"something");
 									else
 									if(source==target)
@@ -766,7 +772,9 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 									if(mob==regarding)
 										replacement="your";
 									else
-									if(((!CMLib.flags().canSee(mob))||(!CMLib.flags().canBeSeenBy(regarding,mob)))&&(regarding.Name().trim().length()>0))
+									if((mob!=null)
+									&&((!CMLib.flags().canSee(mob))||(!CMLib.flags().canBeSeenBy(regarding,mob)))
+									&&(regarding.Name().trim().length()>0))
 										replacement=((regarding instanceof MOB)?"someone's":"something's");
 									else
                                     if(regarding instanceof MOB)
