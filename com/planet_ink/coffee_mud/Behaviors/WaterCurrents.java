@@ -47,7 +47,10 @@ public class WaterCurrents extends ActiveTicker
 		tickReset();
 	}
 
-
+	public String accountForYourself()
+	{ 
+		return "water current moving";
+	}
 
 	public void setParms(String newParms)
 	{

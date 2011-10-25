@@ -36,6 +36,11 @@ public class MOBHelper extends StdBehavior
 {
 	public String ID(){return "MOBHelper";}
 
+	public String accountForYourself()
+	{ 
+		return "friend protecting";
+	}
+	
 	public void executeMsg(Environmental affecting, CMMsg msg)
 	{
 		super.executeMsg(affecting,msg);

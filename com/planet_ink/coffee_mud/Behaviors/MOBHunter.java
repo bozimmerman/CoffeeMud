@@ -47,13 +47,20 @@ public class MOBHunter extends ActiveTicker
 	protected boolean debug=false;
 	int radius=20;
 
+	public String accountForYourself()
+	{ 
+		if(getParms().length()>0)
+			return "hunters of  "+CMLib.masking().maskDesc(getParms());
+		else
+			return "creature hunting";
+	}
+	
 	public MOBHunter()
 	{
 		super();
 		minTicks=600; maxTicks=1200; chance=100; radius=15;
 		tickReset();
 	}
-
 
 	protected boolean isHunting(MOB mob)
 	{

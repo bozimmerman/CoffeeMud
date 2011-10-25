@@ -76,7 +76,10 @@ public class MovingRoom extends ActiveTicker
 		tickReset();
 	}
 
-
+	public String accountForYourself()
+	{ 
+		return "rail mobility";
+	}
 
 	public void setParms(String newParms)
 	{

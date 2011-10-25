@@ -36,6 +36,11 @@ public class ObjectGuardian extends StdBehavior
 {
 	public String ID(){return "ObjectGuardian";}
 
+	public String accountForYourself()
+	{ 
+		return "valuable object guarding";
+	}
+
 	public boolean okMessage(Environmental oking, CMMsg msg)
 	{
 		if(!super.okMessage(oking,msg)) return false;

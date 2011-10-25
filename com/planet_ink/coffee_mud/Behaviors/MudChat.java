@@ -37,7 +37,6 @@ public class MudChat extends StdBehavior implements ChattyBehavior
 {
 	public String ID(){return "MudChat";}
 
-
 	//----------------------------------------------
 	// format: first group is general mob (no other
 	// fit found).  All groups are chat groups.
@@ -63,6 +62,14 @@ public class MudChat extends StdBehavior implements ChattyBehavior
 	// run through the standard command processor,
 	// on tick or more.
 	protected final static int RESPONSE_DELAY=2;
+
+	public String accountForYourself()
+	{ 
+		if(lastThingSaid!=null)
+			return "chattiness \""+lastThingSaid+"\"";
+		else
+			return "chattiness";
+	}
 
     public void setParms(String newParms)
     {

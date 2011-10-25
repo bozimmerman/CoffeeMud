@@ -41,6 +41,11 @@ public class ScriptableEverymob extends StdBehavior implements ScriptingEngine
     private boolean started=false;
     private Scriptable sampleB=null;
 
+	public String accountForYourself()
+	{ 
+		return "complex triggered behaving";
+	}
+
     private void giveUpTheScript(Area metroA, MOB M)
     {
         if((M==null)

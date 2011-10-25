@@ -36,6 +36,11 @@ public class MobileGoodGuardian extends Mobile
 {
 	public String ID(){return "MobileGoodGuardian";}
 
+	public String accountForYourself()
+	{ 
+		return "wandering protectiveness against aggression, evilness, or thieflyness";
+	}
+
 	public boolean tick(Tickable ticking, int tickID)
 	{
         tickStatus=Tickable.STATUS_MISC+0;

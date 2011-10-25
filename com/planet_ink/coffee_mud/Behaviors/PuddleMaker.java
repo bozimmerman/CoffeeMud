@@ -38,6 +38,11 @@ public class PuddleMaker extends StdBehavior
 	protected int canImproveCode(){return Behavior.CAN_ROOMS|Behavior.CAN_AREAS;}
     protected int lastWeather=-1;
 
+	public String accountForYourself()
+	{ 
+		return "puddle making";
+	}
+    
 	public boolean coldWetWeather(int weather)
 	{
 		switch(weather)

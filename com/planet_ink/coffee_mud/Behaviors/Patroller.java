@@ -50,6 +50,11 @@ public class Patroller extends ActiveTicker
 
 	protected volatile int rideCheckCt = 0;
 	
+	public String accountForYourself()
+	{ 
+		return "regular patrolling";
+	}
+
 	public Patroller()
 	{
 		super();

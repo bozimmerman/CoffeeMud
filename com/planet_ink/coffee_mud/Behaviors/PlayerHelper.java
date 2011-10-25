@@ -36,6 +36,11 @@ public class PlayerHelper extends StdBehavior
 {
 	public String ID(){return "PlayerHelper";}
 
+	public String accountForYourself()
+	{ 
+		return "protectiveness of heroes";
+	}
+
 	public void executeMsg(Environmental affecting, CMMsg msg)
 	{
 		super.executeMsg(affecting,msg);

@@ -58,6 +58,11 @@ public class Nanny extends StdBehavior
     // and get added to official drop-offs.
     protected List<DropOff> associations=new SVector<DropOff>();
     
+	public String accountForYourself()
+	{ 
+		return "caretaking and babysitting for a fee";
+	}
+
     private static class DropOff
     {
     	public MOB mommyM;

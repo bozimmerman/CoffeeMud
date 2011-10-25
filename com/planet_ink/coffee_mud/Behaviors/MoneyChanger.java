@@ -39,6 +39,11 @@ public class MoneyChanger extends StdBehavior
 	public Hashtable rates=new Hashtable();
 	public double cut=0.05;
 
+	public String accountForYourself()
+	{ 
+		return "money changing for a fee";
+	}
+	
 	public void startBehavior(PhysicalAgent forMe)
 	{
 		if(forMe==null) return;

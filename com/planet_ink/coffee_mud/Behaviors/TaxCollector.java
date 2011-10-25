@@ -48,6 +48,11 @@ public class TaxCollector extends StdBehavior
 	protected String treasuryRoomID=null;
 	protected Container treasuryContainer=null;
 
+	public String accountForYourself()
+	{ 
+		return "tax collecting";
+	}
+	
 	public void setParms(String newParms)
 	{
 		super.setParms(newParms);

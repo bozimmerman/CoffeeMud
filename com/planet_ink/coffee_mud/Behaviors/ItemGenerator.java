@@ -49,6 +49,11 @@ public class ItemGenerator extends ActiveTicker
 	protected boolean favorMobs=false;
 	protected Vector restrictedLocales=null;
 	
+	public String accountForYourself()
+	{ 
+		return "item generating";
+	}
+
 	private static class GeneratedItemSet extends Vector<Item>
 	{
 		private static final long serialVersionUID = -4240751718776459599L;

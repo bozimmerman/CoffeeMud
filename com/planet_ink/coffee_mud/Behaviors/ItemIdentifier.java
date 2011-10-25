@@ -38,6 +38,11 @@ public class ItemIdentifier extends StdBehavior
 	
 	private LinkedList<CMath.CompiledOperation> costFormula = null;
 	
+	public String accountForYourself()
+	{ 
+		return "item identifying for a price";
+	}
+
 	protected double cost(Item item)
 	{
 		if(costFormula != null)

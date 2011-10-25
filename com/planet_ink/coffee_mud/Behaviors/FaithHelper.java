@@ -41,9 +41,9 @@ public class FaithHelper extends StdBehavior
 	public String accountForYourself()
 	{ 
 		if(parms.length()>0)
-			return "aggression to worshipper of "+parms;
+			return "worshippers of "+parms+" protecting";
 		else
-			return "aggression to worshippers";
+			return "worshipper protecting";
 	}
 
 	public void startBehavior(PhysicalAgent forMe)

@@ -40,7 +40,10 @@ public class ResetWhole extends StdBehavior
 
 	protected long lastAccess=-1;
 
-
+	public String accountForYourself()
+	{ 
+		return "periodic resetting";
+	}
 
 	public void executeMsg(Environmental E, CMMsg msg)
 	{

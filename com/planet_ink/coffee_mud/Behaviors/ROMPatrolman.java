@@ -38,6 +38,10 @@ public class ROMPatrolman extends StdBehavior
 	public String ID(){return "ROMPatrolman";}
 	int tickTock=0;
 
+	public String accountForYourself()
+	{ 
+		return "gang member passifying";
+	}
 
 	public static void keepPeace(MOB observer)
 	{

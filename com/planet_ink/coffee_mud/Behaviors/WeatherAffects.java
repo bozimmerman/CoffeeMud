@@ -69,6 +69,11 @@ public class WeatherAffects extends PuddleMaker
 	
 	public int pct(){return puddlepct;} // for puddles only
 	
+	public String accountForYourself()
+	{ 
+		return "weather effect causing";
+	}
+
 	public void setParms(String newParms)
 	{
 		parms=newParms;

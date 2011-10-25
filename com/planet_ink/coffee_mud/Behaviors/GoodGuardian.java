@@ -40,7 +40,7 @@ public class GoodGuardian extends StdBehavior
 
 	public String accountForYourself()
 	{ 
-		return "protective against agression, evilness, or thieflyness";
+		return "protective against aggression, evilness, or thieflyness";
 	}
 
 	public static MOB anyPeaceToMake(Room room, MOB observer)

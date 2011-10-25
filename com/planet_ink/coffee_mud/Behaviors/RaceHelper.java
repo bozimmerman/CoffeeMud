@@ -36,6 +36,11 @@ public class RaceHelper extends StdBehavior
 {
 	public String ID(){return "RaceHelper";}
 
+	public String accountForYourself()
+	{ 
+		return "same-race protecting";
+	}
+	
 	public void executeMsg(Environmental affecting, CMMsg msg)
 	{
 		super.executeMsg(affecting,msg);

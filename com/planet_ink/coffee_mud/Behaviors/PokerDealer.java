@@ -118,6 +118,10 @@ public class PokerDealer extends StdBehavior
         "Draw Poker",
     };
 
+	public String accountForYourself()
+	{ 
+		return "poker dealing";
+	}
     
     // this method allows permanent parameters
     // to be set on the behavior.  It will handle

@@ -54,9 +54,9 @@ public class Aggressive extends StdBehavior
 	public String accountForYourself()
 	{ 
 		if(getParms().trim().length()>0)
-			return "agression against "+CMLib.masking().maskDesc(getParms(),true).toLowerCase();
+			return "aggression against "+CMLib.masking().maskDesc(getParms(),true).toLowerCase();
 		else
-			return "agressiveness";
+			return "aggressiveness";
 	}
 	
 	public void setParms(String newParms)

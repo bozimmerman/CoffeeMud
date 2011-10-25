@@ -49,6 +49,11 @@ public class TargetPlayer extends ActiveTicker
 		tickReset();
 	}
 
+	public String accountForYourself()
+	{ 
+		return "hero targeting";
+	}
+
 	public boolean tick(Tickable ticking, int tickID) 
 	{
 		if(canAct(ticking,tickID))

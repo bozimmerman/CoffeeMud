@@ -36,8 +36,13 @@ public class ROMGangMember extends StdBehavior
 {
 	public String ID(){return "ROMGangMember";}
 
-
 	int tickTock=5;
+	
+	public String accountForYourself()
+	{ 
+		return "gang membership";
+	}
+	
 	public void pickAFight(MOB observer)
 	{
 		if(!canFreelyBehaveNormal(observer)) return;

@@ -45,6 +45,14 @@ public class VeryAggressive extends Aggressive
 	    tickDown = 0;
 	}
 
+	public String accountForYourself()
+	{ 
+		if(getParms().trim().length()>0)
+			return "surprising aggression against "+CMLib.masking().maskDesc(getParms(),true).toLowerCase();
+		else
+			return "surprising aggressiveness";
+	}
+	
 	public void setParms(String newParms)
 	{
 		super.setParms(newParms);

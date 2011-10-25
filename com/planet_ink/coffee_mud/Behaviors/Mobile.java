@@ -38,6 +38,7 @@ public class Mobile extends ActiveTicker
 	public String ID(){return "Mobile";}
 	protected int canImproveCode(){return Behavior.CAN_MOBS;}
 	public long flags(){return Behavior.FLAG_MOBILITY;}
+	
 	protected boolean wander=false;
 	protected boolean dooropen=false;
 	protected int leash=0;
@@ -45,6 +46,12 @@ public class Mobile extends ActiveTicker
 	protected Vector restrictedLocales=null;
     protected long[] altStatusTaker=null;
     protected long tickStatus=Tickable.STATUS_NOT;
+    
+	public String accountForYourself()
+	{ 
+		return "wandering";
+	}
+	
     public long getTickStatus()
     {
         long[] o=altStatusTaker;

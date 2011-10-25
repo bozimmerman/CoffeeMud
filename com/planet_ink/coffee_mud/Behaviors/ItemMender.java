@@ -39,6 +39,11 @@ public class ItemMender extends StdBehavior
 
 	private LinkedList<CMath.CompiledOperation> costFormula = null;
 	
+	public String accountForYourself()
+	{ 
+		return "item mending for a price";
+	}
+
 	protected double cost(Item item)
 	{
 		if(costFormula != null)

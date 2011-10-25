@@ -40,12 +40,19 @@ public class Wimpy extends StdBehavior
 	protected int tickDown=0;
 	protected boolean veryWimpy=false;
 
-
 	public boolean grantsAggressivenessTo(MOB M)
 	{
 		return false;
 	}
 
+	public String accountForYourself()
+	{ 
+		if(getParms().trim().length()>0)
+			return "wimpy fear of "+CMLib.masking().maskDesc(getParms(),true).toLowerCase();
+		else
+			return "wimpy fear of combat";
+	}
+	
 	public void setParms(String newParms)
 	{
 		super.setParms(newParms);

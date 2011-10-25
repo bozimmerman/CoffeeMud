@@ -43,6 +43,11 @@ public class MOBEater extends ActiveTicker
 	protected int chanceToEat = 5;
     protected int pctAcidHp = 50;
 
+	public String accountForYourself()
+	{ 
+		return "creature eating";
+	}
+
 	public MOBEater()
 	{
         super();

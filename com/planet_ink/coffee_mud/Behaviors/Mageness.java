@@ -36,6 +36,10 @@ public class Mageness extends CombatAbilities
 {
 	public String ID(){return "Mageness";}
 
+	public String accountForYourself()
+	{ 
+		return "magliness";
+	}
 
 	protected void getSomeMoreMageAbilities(MOB mob)
 	{

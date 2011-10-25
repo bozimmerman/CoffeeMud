@@ -41,6 +41,12 @@ public class ResourceOverride extends StdBehavior
 	private int tickDown=1;
 	private Vector rscs=new Vector();
 	private Vector roomTypes=new Vector();
+	
+	public String accountForYourself()
+	{ 
+		return "resource overriding";
+	}
+	
 	public void setParms(String newStr)
 	{
 		super.setParms(newStr);

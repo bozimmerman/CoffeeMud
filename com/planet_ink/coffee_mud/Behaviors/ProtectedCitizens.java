@@ -58,6 +58,11 @@ public class ProtectedCitizens extends ActiveTicker
 		tickReset();
 	}
 
+	public String accountForYourself()
+	{ 
+		return "whiney citizen";
+	}
+    
 	public void setParms(String parms)
 	{
 		super.setParms(parms);

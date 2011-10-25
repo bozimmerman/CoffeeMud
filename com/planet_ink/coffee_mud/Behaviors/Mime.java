@@ -34,8 +34,17 @@ import java.util.*;
 */
 public class Mime extends ActiveTicker
 {
+	protected boolean disabled=false;
+	protected CMMsg lastMsg=null;
+
 	public String ID(){return "Mime";}
 	public long flags(){return Behavior.FLAG_MOBILITY;}
+	
+	public String accountForYourself()
+	{ 
+		return "miming";
+	}
+
 	public Mime()
 	{
 		super();
@@ -46,9 +55,6 @@ public class Mime extends ActiveTicker
 										  |Behavior.CAN_EXITS
 										  |Behavior.CAN_ITEMS
 									      |Behavior.CAN_ROOMS;}
-	protected boolean disabled=false;
-	protected CMMsg lastMsg=null;
-
 	public void executeMsg(Environmental affecting, CMMsg msg)
 	{
 		super.executeMsg(affecting,msg);

@@ -39,6 +39,10 @@ public class Thiefness extends CombatAbilities
 	public long flags(){return Behavior.FLAG_TROUBLEMAKING;}
 	protected int tickDown=0;
 
+	public String accountForYourself()
+	{ 
+		return "thiefliness";
+	}
 
 	public void startBehavior(PhysicalAgent forMe)
 	{

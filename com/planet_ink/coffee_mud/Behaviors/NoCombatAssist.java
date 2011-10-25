@@ -36,9 +36,14 @@ public class NoCombatAssist extends StdBehavior
 {
 	public String ID(){return "NoCombatAssist";}
 
-
 	int tickTocker=1;
 	int tickTock=0;
+	
+	public String accountForYourself()
+	{ 
+		return "unhelpful passiveness";
+	}
+
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		super.tick(ticking,tickID);

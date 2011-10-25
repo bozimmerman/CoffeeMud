@@ -46,6 +46,11 @@ public class RandomItems extends ActiveTicker
 	protected Vector restrictedLocales=null;
 	protected boolean alreadyTriedLoad=false;
 
+	public String accountForYourself()
+	{ 
+		return "random item generating";
+	}
+	
 	public List<String> externalFiles()
 	{
         Vector xmlfiles=new Vector();

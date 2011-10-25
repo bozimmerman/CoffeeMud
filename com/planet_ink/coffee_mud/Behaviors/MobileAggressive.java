@@ -48,6 +48,14 @@ public class MobileAggressive extends Mobile
 	    tickDown = 0;
 	}
 
+	public String accountForYourself()
+	{ 
+		if(getParms().trim().length()>0)
+			return "wandering aggression against "+CMLib.masking().maskDesc(getParms(),true).toLowerCase();
+		else
+			return "wandering aggressiveness";
+	}
+	
 	public void setParms(String newParms)
 	{
 		super.setParms(newParms);

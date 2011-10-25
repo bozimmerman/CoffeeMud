@@ -43,6 +43,11 @@ public class MOBTeacher extends CombatAbilities
 	protected boolean noExpertises=false; // doubles as a "done ticking" flag
 	protected int tickDownToKnowledge=4;
 
+	public String accountForYourself()
+	{ 
+		return "skill teaching";
+	}
+	
 	public void startBehavior(PhysicalAgent forMe)
 	{
 		if(forMe instanceof MOB)

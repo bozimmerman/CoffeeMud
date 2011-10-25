@@ -45,11 +45,20 @@ public class WimpyAggressive extends Aggressive
 	    tickDown = 0;
 	}
 
+	public String accountForYourself()
+	{ 
+		if(getParms().trim().length()>0)
+			return "wimpy aggression against "+CMLib.masking().maskDesc(getParms(),true).toLowerCase();
+		else
+			return "wimpy aggressiveness";
+	}
+	
 	public boolean grantsAggressivenessTo(MOB M)
 	{
 		return ((M!=null)&&(CMLib.flags().isSleeping(M)))&&
 			CMLib.masking().maskCheck(getParms(),M,false);
 	}
+	
 	public void setParms(String newParms)
 	{
 		super.setParms(newParms);
@@ -57,7 +66,7 @@ public class WimpyAggressive extends Aggressive
 		tickDown=tickWait;
 	}
 
-	public static void pickAWimpyFight(MOB observer, boolean mobKiller, boolean misBehave, String attackMsg)
+	public static void pickAWimpyFight(MOB observer, boolean mobKiller, boolean misBehave, String attackMsg, String zapStr)
 	{
 		if(!canFreelyBehaveNormal(observer)) return;
 		Room R=observer.location();
@@ -65,7 +74,10 @@ public class WimpyAggressive extends Aggressive
 		for(int i=0;i<R.numInhabitants();i++)
 		{
 			MOB mob=R.fetchInhabitant(i);
-			if((mob!=null)&&(mob!=observer)&&(CMLib.flags().isSleeping(mob)))
+			if((mob!=null)
+			&&(mob!=observer)
+			&&(CMLib.flags().isSleeping(mob))
+			&&(CMLib.masking().maskCheck(zapStr,observer,false)))
 			{
 				startFight(observer,mob,mobKiller,misBehave,attackMsg);
 				if(observer.isInCombat()) break;
@@ -73,21 +85,22 @@ public class WimpyAggressive extends Aggressive
 		}
 	}
 
-	public static void tickWimpyAggressively(Tickable ticking, boolean mobKiller, boolean misBehave, int tickID, String attackMsg)
+	public static void tickWimpyAggressively(Tickable ticking, boolean mobKiller, boolean misBehave, int tickID, String attackMsg, String zapStr)
 	{
 		if(tickID!=Tickable.TICKID_MOB) return;
 		if(ticking==null) return;
 		if(!(ticking instanceof MOB)) return;
 
-		pickAWimpyFight((MOB)ticking,mobKiller,misBehave,attackMsg);
+		pickAWimpyFight((MOB)ticking,mobKiller,misBehave,attackMsg,zapStr);
 	}
+	
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(tickID!=Tickable.TICKID_MOB) return true;
 		if((--tickDown)<0)
 		{
 			tickDown=tickWait;
-			tickWimpyAggressively(ticking,mobkill,misbehave,tickID,attackMessage);
+			tickWimpyAggressively(ticking,mobkill,misbehave,tickID,attackMessage,getParms());
 		}
 		return true;
 	}

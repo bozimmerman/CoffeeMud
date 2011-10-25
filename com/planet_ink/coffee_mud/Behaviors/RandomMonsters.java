@@ -45,6 +45,11 @@ public class RandomMonsters extends ActiveTicker
 	protected Vector restrictedLocales=null;
 	protected boolean alreadyTriedLoad=false;
 
+	public String accountForYourself()
+	{ 
+		return "random monster generating";
+	}
+	
 	public List<String> externalFiles()
 	{
         Vector xmlfiles=new Vector();

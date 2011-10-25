@@ -60,6 +60,10 @@ public class RandomTraps extends ActiveTicker
 		tickReset();
 	}
 
+	public String accountForYourself()
+	{ 
+		return "random trapping";
+	}
 
 	public void setParms(String newParms)
 	{

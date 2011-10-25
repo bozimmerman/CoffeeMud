@@ -39,6 +39,11 @@ public class ItemRefitter extends StdBehavior
 
 	private LinkedList<CMath.CompiledOperation> costFormula = null;
 	
+	public String accountForYourself()
+	{ 
+		return "item refitting for a price";
+	}
+
 	protected double cost(Item item)
 	{
 		if(costFormula != null)

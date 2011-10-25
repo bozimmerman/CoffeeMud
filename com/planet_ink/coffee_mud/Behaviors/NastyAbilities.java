@@ -46,6 +46,11 @@ public class NastyAbilities extends ActiveTicker
 		tickReset();
 	}
 
+	public String accountForYourself()
+	{ 
+		return "random malicious skill using";
+	}
+
 	public void setParms(String newParms)
 	{
 		super.setParms(newParms);

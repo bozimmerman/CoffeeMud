@@ -51,6 +51,11 @@ public class MOBReSave extends ActiveTicker
 		tickReset();
 	}
 
+	public String accountForYourself()
+	{ 
+		return "persisting";
+	}
+	
 	public void setParms(String newParms)
 	{
 		super.setParms(newParms);

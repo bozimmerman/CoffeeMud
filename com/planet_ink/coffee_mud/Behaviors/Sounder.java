@@ -55,6 +55,10 @@ public class Sounder extends StdBehavior
 		tickReset();
 	}
 
+	public String accountForYourself()
+	{ 
+		return "triggered emoting";
+	}
 
 	protected void tickReset()
 	{

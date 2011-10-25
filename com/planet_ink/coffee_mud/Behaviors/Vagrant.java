@@ -39,6 +39,10 @@ public class Vagrant extends StdBehavior
 	protected int sleepForTicks=0;
 	protected int wakeForTicks=0;
 
+	public String accountForYourself()
+	{ 
+		return "vagrant sleepiness";
+	}
 
 	public boolean okMessage(Environmental oking, CMMsg msg)
 	{

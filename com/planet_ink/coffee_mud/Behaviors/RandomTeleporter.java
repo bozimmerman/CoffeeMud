@@ -49,6 +49,10 @@ public class RandomTeleporter extends ActiveTicker
 		tickReset();
 	}
 
+	public String accountForYourself()
+	{ 
+		return "random teleporting";
+	}
 
 	public boolean okRoomForMe(Room currentRoom, Room newRoom)
 	{

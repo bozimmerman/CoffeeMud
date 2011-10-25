@@ -37,6 +37,7 @@ public class NiceAbilities extends ActiveTicker
 {
 	public String ID(){return "NiceAbilities";}
 	protected int canImproveCode(){return Behavior.CAN_MOBS;}
+	
 	public NiceAbilities()
 	{
         super();
@@ -44,7 +45,10 @@ public class NiceAbilities extends ActiveTicker
 		tickReset();
 	}
 
-
+	public String accountForYourself()
+	{ 
+		return "random benevolent skill using";
+	}
 
 	public boolean tick(Tickable ticking, int tickID)
 	{
