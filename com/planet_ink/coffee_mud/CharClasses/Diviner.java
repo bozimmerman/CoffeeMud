@@ -50,9 +50,11 @@ public class Diviner extends SpecialistMage
         /*NEW*/CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Spell_Telepathy",25,true);
         /*NEW*/CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Spell_NaturalCommunion",25,true);
         CMLib.ableMapper().addCharAbilityMapping(ID(),10,"Spell_DetectTraps",25,true);
+        /*NEW*/CMLib.ableMapper().addCharAbilityMapping(ID(),11,"Spell_ArmsLength",25,true);
         /*NEW*/CMLib.ableMapper().addCharAbilityMapping(ID(),12,"Spell_SpyingStone",25,true);
         /*NEW*/CMLib.ableMapper().addCharAbilityMapping(ID(),14,"Spell_HearThoughts",25,"",true,false,CMParms.parseSemicolons("Spell_Telepathy",true),"");
         CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Spell_KnowOrigin",25,true);
+        /*NEW*/CMLib.ableMapper().addCharAbilityMapping(ID(),16,"Spell_KnowFate",25,true);
         CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Spell_DetectScrying",25,true);
         /*NEW*/CMLib.ableMapper().addCharAbilityMapping(ID(),18,"Spell_SpottersOrders",25,"",true,false,CMParms.parseSemicolons("Spell_DetectWeaknesses",true),"");
         CMLib.ableMapper().addCharAbilityMapping(ID(),19,"Spell_Breadcrumbs",25,true);
@@ -68,6 +70,4 @@ public class Diviner extends SpecialistMage
 // possibilities:
 //CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Spell_PryingEye",25,true); // give a floating eye creature directions, it follows them and comes back, replaying what it saw on command.
 //CMLib.ableMapper().addCharAbilityMapping(ID(),0,"Spell_DiviningEye",25,true); // Allows the Diviner to use the Prying Eye to cast other divination spells on other targets 
-//CMLib.ableMapper().addCharAbilityMapping(ID(),0,"Spell_ArmsLength",25,true); // Keeps you at range from your opponent during combat. (lasts 3 rounds)
-//CMLib.ableMapper().addCharAbilityMapping(ID(),0,"Spell_CombatForsight",25,true); // Specify what you will do and it will simulate combat for you (will loop macro)
 }

@@ -34,15 +34,14 @@ import java.util.*;
    limitations under the License.
 */
 @SuppressWarnings("unchecked")
-public class Spell_DeathWarning extends Spell
+public class Spell_ArmsLength extends Spell
 {
-	public String ID() { return "Spell_DeathWarning"; }
-	public String name(){return "Death Warning";}
-	public String displayText(){return "(Death Warning)";}
+	public String ID() { return "Spell_ArmsLength"; }
+	public String name(){return "Arms Length";}
+	public String displayText(){return "(Arms Length)";}
 	public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_SELF;}
 	protected int canAffectCode(){return CAN_MOBS;}
 	public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_DIVINATION;}
-	protected Vector commands=new XVector("FLEE");
 	
 	public void unInvoke()
 	{
@@ -53,25 +52,34 @@ public class Spell_DeathWarning extends Spell
 		super.unInvoke();
 		if(canBeUninvoked())
 			if((mob.location()!=null)&&(!mob.amDead()))
-				mob.tell(mob,null,null,"<S-YOUPOSS> death warning magic fades.");
+				mob.tell(mob,null,null,"<S-YOUPOSS> arms length magic fades.");
 	}
 
+  public int castingQuality(MOB mob, Physical target)
+  {
+      if(mob!=null)
+      {
+          if((!mob.isInCombat())||(mob.rangeToTarget()==0))
+              return Ability.QUALITY_INDIFFERENT;
+      }
+      return super.castingQuality(mob,target);
+  }
+  
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(!super.okMessage(myHost, msg))
 			return false;
 		if((affected instanceof MOB)
-		&&(msg.amISource((MOB)affected))
-		&&(msg.sourceMinor()==CMMsg.TYP_DEATH))
+		&&(msg.target()==affected)
+		&&(msg.sourceMinor()==CMMsg.TYP_ADVANCE))
 		{
-			MOB mob=(MOB)affected;
-			Room room=mob.location();
-			mob.tell("^SYou receive a warning of your impending death!!^N");
-			mob.doCommand(commands,0);
-			if(mob.location()!=room)
+			final MOB mob=(MOB)affected;
+			if((mob.getVictim()==msg.source())
+			&&(mob.location()!=null))
 			{
-				mob.makePeace();
-				return false;
+        CMMsg msg2=CMClass.getMsg(mob,mob.getVictim(),CMMsg.MSG_RETREAT,"<S-NAME> predict(s) <T-YOUPOSS> advance and retreat(s).");
+        if(mob.location().okMessage(mob,msg2))
+        	mob.location().send(mob,msg2);
 			}
 		}
 		return true;
@@ -84,21 +92,10 @@ public class Spell_DeathWarning extends Spell
 			target=(MOB)givenTarget;
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			mob.tell(target,null,null,"<S-NAME> already <S-HAS-HAVE> a death's warning.");
+			mob.tell(target,null,null,"<S-NAME> already <S-IS-ARE> keeping enemies at arms length.");
 			return false;
 		}
 
-		if(commands.size()==0)
-		{
-			if(mob.isMonster())
-				commands.add("FLEE");
-			else
-			{
-				mob.tell("You need to specify what you want to do should the warning arrives!");
-				return false;
-			}
-		}
-		
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
@@ -106,17 +103,18 @@ public class Spell_DeathWarning extends Spell
 
 		if(success)
 		{
-			CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,target,auto),auto?"<T-NAME> begin(s) listening for a death's warning!":"^S<S-NAME> incant(s) coldly, and begin(s) listening for death's warning!^?");
+			CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,target,auto),auto?"<T-NAME> begin(s) keeping <T-HIS-HER> enemies at arms length!":"^S<S-NAME> incant(s) distantly!^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				beneficialAffect(mob,target,asLevel,0);
-				Spell_DeathWarning A=(Spell_DeathWarning)target.fetchEffect(ID());
-				if(A!=null) A.commands=commands;
+				int ticks=3 + Math.round(super.getXLEVELLevel(mob)/3);
+				if(!mob.isInCombat())
+					ticks++;
+				beneficialAffect(mob,target,asLevel,3);
 			}
 		}
 		else
-			beneficialVisualFizzle(mob,null,"<S-NAME> incant(s) coldly and listen(s), but the spell fizzles.");
+			beneficialVisualFizzle(mob,null,"<S-NAME> incant(s) distantly, but the spell fizzles.");
 
 		return success;
 	}

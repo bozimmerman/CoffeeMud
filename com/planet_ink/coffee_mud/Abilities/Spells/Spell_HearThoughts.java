@@ -51,7 +51,6 @@ public class Spell_HearThoughts extends Spell
 
 		if(success)
 		{
-			invoker=mob;
 			CMMsg msg=CMClass.getMsg(mob,null,this,somanticCastCode(mob,null,auto),auto?"":"^S<S-NAME> concentrate(s) and listen(s) carefully!^?");
 			if(mob.location().okMessage(mob,msg))
 			{
