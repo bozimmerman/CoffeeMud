@@ -41,18 +41,19 @@ public class Spell_PryingEye extends Spell
 	public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
 	protected int canAffectCode(){return Ability.CAN_MOBS;}
 	public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_DIVINATION;}
-
 	protected List<Integer> dirs=new LinkedList<Integer>();
 	
-	public long flags(){return Ability.FLAG_SUMMONING;}
-
 	public void unInvoke()
 	{
 		MOB mob=(MOB)affected;
+		MOB invoker=invoker();
+		if(invoker!=null)
+			invoker.delEffect(this);
 		super.unInvoke();
 		if((canBeUninvoked())&&(mob!=null))
 		{
-			if(mob.amDead()) mob.setLocation(null);
+			if(mob.amDead()) 
+				mob.setLocation(null);
 			mob.destroy();
 		}
 	}
@@ -66,7 +67,8 @@ public class Spell_PryingEye extends Spell
 		&&(msg.sourceMinor()==CMMsg.TYP_QUIT))
 		{
 			unInvoke();
-			if(msg.source().playerStats()!=null) msg.source().playerStats().setLastUpdated(0);
+			if(msg.source().playerStats()!=null) 
+				msg.source().playerStats().setLastUpdated(0);
 		}
 	}
 
@@ -86,6 +88,11 @@ public class Spell_PryingEye extends Spell
 			{
 				int dir=dirs.remove(0).intValue();
 				CMLib.tracking().walk(mob, dir, false, false);
+				if(dirs.size()==0)
+				{
+					invoker().tell("\n\r^SThe eye has reached it's destination and will soon dissipate.^N^?");
+					super.tickDown=6;
+				}
 			}
 		}
 		else
@@ -98,6 +105,7 @@ public class Spell_PryingEye extends Spell
 		if(commands.size()==0)
 		{
 			mob.tell("You must specify directions for the eye to follow.");
+			return false;
 		}
 		
 		List<Integer> directions=new LinkedList<Integer>();
@@ -115,6 +123,13 @@ public class Spell_PryingEye extends Spell
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
+		Ability otherA=mob.fetchEffect(ID());
+		if(otherA!=null)
+		{
+			otherA.unInvoke();
+			mob.delEffect(otherA);
+		}
+		
 		boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
@@ -127,6 +142,7 @@ public class Spell_PryingEye extends Spell
 				MOB eyeM=CMClass.getMOB("StdMOB");
 				eyeM.basePhyStats().setLevel(1);
 				eyeM.basePhyStats().setDisposition(eyeM.basePhyStats().disposition() | PhyStats.IS_FLYING);
+				eyeM.basePhyStats().setSensesMask(eyeM.basePhyStats().sensesMask() | PhyStats.CAN_NOT_HEAR);
 				eyeM.setName("a floating eye");
 				eyeM.setDisplayText("a single eye floats around here");
 	            CMLib.factions().setAlignment(eyeM,Faction.ALIGN_NEUTRAL);
@@ -159,7 +175,11 @@ public class Spell_PryingEye extends Spell
 				if(A==null)
 					eyeM.destroy();
 				else
+				{
+					mob.addEffect(A);
+					A.setAffectedOne(eyeM);
 					A.dirs=directions;
+				}
 			}
 		}
 		else
