@@ -37,7 +37,7 @@ public class Spell_GroupStatus extends Spell
 {
 	public String ID() { return "Spell_GroupStatus"; }
 	public String name(){return "Group Status";}
-	public String displayText(){return "";}
+	public String displayText(){return "(Group Status)";}
 	public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
 	protected int canAffectCode(){return CAN_MOBS;}
 	public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_DIVINATION;}
@@ -57,6 +57,7 @@ public class Spell_GroupStatus extends Spell
 			{
 				if(groupMembers==null)
 				{
+					groupMembers=new SLinkedList<Pair<MOB,Ability>>();
 					Set<MOB> grp=mob.getGroupMembers(new TreeSet<MOB>());
 					for(MOB M : grp)
 					{
@@ -117,16 +118,20 @@ public class Spell_GroupStatus extends Spell
 		return true;
 	}
 
-	public void executeMsg(final Environmental myHost, final CMMsg msg)
+	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if((affected instanceof MOB)
 		&&(msg.amISource((MOB)affected))
 		&&(msg.sourceMinor()==CMMsg.TYP_DEATH)
 		&&(affected != invoker()))
 		{
-			invoker().tell(affected.Name()+" is now dead.");
+			if(!reporteds.contains("DEATH"))
+			{
+				invoker().tell(affected.Name()+" is dying.");
+				reporteds.add("DEATH");
+			}
 		}
-		super.executeMsg(myHost,msg);
+		return super.okMessage(myHost,msg);
 	}
 
 	public void unInvoke()
@@ -156,7 +161,7 @@ public class Spell_GroupStatus extends Spell
 			target=(MOB)givenTarget;
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			mob.tell(target,null,null,"<S-NAME> <S-IS-ARE> already knowledgable about <S-HIS-HER> target.");
+			mob.tell(target,null,null,"<S-NAME> <S-IS-ARE> already knowledgable about <S-HIS-HER> group.");
 			return false;
 		}
 		
