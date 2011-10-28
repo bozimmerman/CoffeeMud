@@ -34,11 +34,11 @@ import java.util.*;
 */
 
 @SuppressWarnings("unchecked")
-public class Chant_NaturalCommunion extends Chant
+public class Chant_NaturalBalance extends Chant
 {
-	public String ID() { return "Chant_NaturalCommunion"; }
-	public String name(){ return "Natural Communion";}
-	public String displayText(){return "(Communing with Nature)";}
+	public String ID() { return "Chant_NaturalBalance"; }
+	public String name(){ return "Natural Balance";}
+	public String displayText(){return "(Communing with the Natural Balance)";}
     public int abstractQuality(){ return Ability.QUALITY_OK_SELF;}
 	public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_ENDURING;}
 	protected int canAffectCode(){return Ability.CAN_MOBS;}
@@ -58,7 +58,7 @@ public class Chant_NaturalCommunion extends Chant
 				if(mob.location()!=null)
 					mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> end(s) <S-HIS-HER> natural communion.");
 				else
-					mob.tell("Your communion with nature ends.");
+					mob.tell("Your communion with natural balance ends.");
 			}
 		}
 	}
@@ -171,7 +171,7 @@ public class Chant_NaturalCommunion extends Chant
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			CMMsg msg=CMClass.getMsg(mob,null,this,somanticCastCode(mob,null,auto),"^S<S-NAME> begin(s) to commune with nature...^?");
+			CMMsg msg=CMClass.getMsg(mob,null,this,somanticCastCode(mob,null,auto),"^S<S-NAME> begin(s) to commune with the natural balance...^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
