@@ -81,7 +81,7 @@ public class Spell_Telepathy extends Spell
 					case 3: prefix="You detect thoughts of "; break;
 					default: prefix="You can see thoughts of "; break;
 					}
-					thoughts.append(prefix).append(accounting).append("  ");
+					thoughts.append(prefix).append(accounting).append(".  ");
 				}
 				String adjective="";
 				if(target.charStats().getStat(CharStats.STAT_INTELLIGENCE)>=18)
@@ -90,16 +90,36 @@ public class Spell_Telepathy extends Spell
 				if(target.charStats().getStat(CharStats.STAT_INTELLIGENCE)>=13)
 					adjective+="very intelligent, ";
 				else
-				if(target.charStats().getStat(CharStats.STAT_INTELLIGENCE)>=10)
+				if(target.charStats().getStat(CharStats.STAT_INTELLIGENCE)>10)
 					adjective+="intelligent, ";
+				else
+				if(target.charStats().getStat(CharStats.STAT_INTELLIGENCE)<=3)
+					adjective+="instinctual, ";
+				else
+				if(target.charStats().getStat(CharStats.STAT_INTELLIGENCE)<7)
+					adjective+="stupid, ";
+				else
+				if(target.charStats().getStat(CharStats.STAT_INTELLIGENCE)<10)
+					adjective+="slow thinking, ";
+				
 				if(target.charStats().getStat(CharStats.STAT_WISDOM)>=18)
 					adjective+="incredibly wise, ";
 				else
 				if(target.charStats().getStat(CharStats.STAT_WISDOM)>=13)
 					adjective+="very wise, ";
 				else
-				if(target.charStats().getStat(CharStats.STAT_WISDOM)>=10)
+				if(target.charStats().getStat(CharStats.STAT_WISDOM)>10)
 					adjective+="wise, ";
+				else
+				if(target.charStats().getStat(CharStats.STAT_WISDOM)<=3)
+					adjective+="extremely naieve, ";
+				else
+				if(target.charStats().getStat(CharStats.STAT_WISDOM)<7)
+					adjective+="naieve, ";
+				else
+				if(target.charStats().getStat(CharStats.STAT_WISDOM)<10)
+					adjective+="unwise, ";
+				
 				mob.tell(target.Name()+" is a "+adjective+target.charStats().getMyRace().name()+" "+target.charStats().getCurrentClass().name()+".");
 				if(thoughts.length()==0)
 					mob.tell("You don't detect any other thoughts.");

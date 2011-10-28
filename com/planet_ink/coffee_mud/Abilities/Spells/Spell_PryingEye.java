@@ -54,6 +54,9 @@ public class Spell_PryingEye extends Spell
 		{
 			if(mob.amDead()) 
 				mob.setLocation(null);
+			mob.setSession(null);
+			if(invoker!=null)
+				invoker.tell("The prying eye has closed.");
 			mob.destroy();
 		}
 	}
@@ -79,19 +82,22 @@ public class Spell_PryingEye extends Spell
 		if(ticking instanceof MOB)
 		{
 			MOB mob=(MOB)ticking;
-			if((invoker()!=null)&&(!CMLib.flags().isInTheGame(invoker(), true)))
+			if(mob != invoker())
 			{
-				unInvoke();
-				return false;
-			}
-			if(dirs.size()>0)
-			{
-				int dir=dirs.remove(0).intValue();
-				CMLib.tracking().walk(mob, dir, false, false);
-				if(dirs.size()==0)
+				if((invoker()!=null)&&(!CMLib.flags().isInTheGame(invoker(), true)))
 				{
-					invoker().tell("\n\r^SThe eye has reached it's destination and will soon dissipate.^N^?");
-					super.tickDown=6;
+					unInvoke();
+					return false;
+				}
+				if(dirs.size()>0)
+				{
+					int dir=dirs.remove(0).intValue();
+					CMLib.tracking().walk(mob, dir, false, false);
+					if(dirs.size()==0)
+					{
+						invoker().tell("\n\r^SThe eye has reached its destination and will soon close.^N^?");
+						super.tickDown=6;
+					}
 				}
 			}
 		}

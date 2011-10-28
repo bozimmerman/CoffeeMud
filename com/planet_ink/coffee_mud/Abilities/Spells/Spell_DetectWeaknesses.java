@@ -37,7 +37,10 @@ public class Spell_DetectWeaknesses extends Spell
 {
 	public String ID() { return "Spell_DetectWeaknesses"; }
 	public String name(){return "Detect Weaknesses";}
-	public String displayText(){return "(Know weaknesses of "+text()+")";}
+	public String displayText()
+	{
+		return "(Know weaknesses of "+text()+")";
+	}
 	public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_SELF;}
 	protected int canAffectCode(){return CAN_MOBS;}
 	public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_DIVINATION;}
@@ -122,7 +125,7 @@ public class Spell_DetectWeaknesses extends Spell
 		super.unInvoke();
 		if(canBeUninvoked())
 			if((mob.location()!=null)&&(!mob.amDead()))
-				mob.tell(mob,null,null,"<S-YOUPOSS> knowledge of "+text()+" dissipates.");
+				mob.tell(mob,null,null,"<S-YOUPOSS> knowledge of "+text()+" fades.");
 	}
 
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)

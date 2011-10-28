@@ -102,6 +102,7 @@ public class Spell_SpottersOrders extends Spell
 			if(groupMembers==null)
 			{
 				Set<MOB> grp=mob.getGroupMembers(new TreeSet<MOB>());
+				groupMembers=new LinkedList<Triad<MOB,Ability,long[]>>();
 				for(MOB M : grp)
 				{
 					long[] time=new long[]{System.currentTimeMillis()-1};
@@ -127,16 +128,16 @@ public class Spell_SpottersOrders extends Spell
 						P.second=CMClass.getAbility("Spell_DetectWeaknesses");
 						if(P.second!=null)
 						{
-							P.second.setName(text());
+							P.second.setMiscText(text());
 							if(P.second instanceof Spell_DetectWeaknesses)
-							{
 								((Spell_DetectWeaknesses)P.second).spottedM=spottedM;
-							}
 							P.second.setStat("TICKDOWN", Integer.toString(tickDown));
 							P.second.setInvoker(mob);
 							P.first.addEffect(P.second);
 							P.second.tick(P.first, Tickable.TICKID_MOB);
 							P.first.recoverPhyStats();
+							if((invoker()!=null)&&(invoker()!=P.first))
+								P.first.tell("You can sense the shared thoughts of "+invoker().Name()+".");
 						}
 					}
 				}
@@ -206,7 +207,7 @@ public class Spell_SpottersOrders extends Spell
 				mob.location().send(mob,msg);
 				if(beneficialAffect(mob,target,asLevel,0))
 				{
-					Spell_DetectWeaknesses A=(Spell_DetectWeaknesses)target.fetchEffect(ID());
+					Spell_SpottersOrders A=(Spell_SpottersOrders)target.fetchEffect(ID());
 					MOB victim=target.getVictim();
 					if(A!=null)
 					{

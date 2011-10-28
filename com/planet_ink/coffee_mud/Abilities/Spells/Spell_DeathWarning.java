@@ -73,6 +73,7 @@ public class Spell_DeathWarning extends Spell
 				mob.makePeace();
 				return false;
 			}
+			unInvoke();
 		}
 		return true;
 	}

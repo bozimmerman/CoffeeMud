@@ -84,29 +84,19 @@ public class Spell_DiviningEye extends Spell
 			final Room room=mob.location();
 			if(room.okMessage(mob,msg))
 			{
+				final MOB eyeM=(MOB)pryingEyeA.affecting();
 				room.send(mob,msg);
-				final String myName=mob.Name();
 				try
 				{
-					final MOB eyeM=(MOB)pryingEyeA.affecting();
 					final Room eyeRoom=eyeM.location();
 					if(eyeRoom!=null)
 					{
-						mob.setName(eyeM.Name());
-						room.delInhabitant(mob);
-						mob.setLocation(eyeRoom);
-						A.invoke(mob, commands, null, false, 0);
+						eyeM.addAbility(A);
+						A.invoke(eyeM, commands, null, false, 0);
 					}
 				}
 				finally
 				{
-					mob.setName(myName);
-					if(mob.location()!=room)
-					{
-						mob.location().delInhabitant(mob);
-						room.addInhabitant(mob);
-						mob.setLocation(room);
-					}
 				}
 			}
 		}
