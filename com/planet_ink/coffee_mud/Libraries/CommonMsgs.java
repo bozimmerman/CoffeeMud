@@ -1222,8 +1222,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
     	    {
     	    	final MOB mob=msg.source();
     		    if((mob.playerStats()!=null)
-    		    &&(mob.soulMate()==null)
-			    &&(!CMLib.flags().isFlying(mob)))
+    		    &&(mob.soulMate()==null))
     		    {
     			    if(mob.playerStats().getHygiene()>adjHygiene)
     			    {
