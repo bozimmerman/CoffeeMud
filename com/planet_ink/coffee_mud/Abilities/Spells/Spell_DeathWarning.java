@@ -65,6 +65,8 @@ public class Spell_DeathWarning extends Spell
 		&&(msg.sourceMinor()==CMMsg.TYP_DEATH))
 		{
 			MOB mob=(MOB)affected;
+			int hitPoints=mob.curState().getHitPoints();
+			mob.curState().setHitPoints(1);
 			Room room=mob.location();
 			mob.tell("^SYou receive a warning of your impending death!!^N");
 			mob.doCommand(commands,0);
@@ -73,6 +75,8 @@ public class Spell_DeathWarning extends Spell
 				mob.makePeace();
 				return false;
 			}
+			else
+				mob.curState().setHitPoints(hitPoints);
 			unInvoke();
 		}
 		return true;
