@@ -64,8 +64,11 @@ public class Spell_NaturalCommunion extends Spell
 			Physical found=CMLib.materials().makeResource(room.myResource(),Integer.toString(room.domainType()),false,null);
 			if(found!=null)
 			{
-				if(!stuff.contains(found.name()))
-					stuff.add(found.name());
+				String name=found.name();
+				if(name.startsWith("a pound of "))
+					name=name.substring(11);
+				if(!stuff.contains(name))
+					stuff.add(name);
 				found.destroy();
 			}
 		}
