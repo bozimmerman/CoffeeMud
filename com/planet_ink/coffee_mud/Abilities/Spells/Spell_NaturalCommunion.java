@@ -64,17 +64,19 @@ public class Spell_NaturalCommunion extends Spell
 			Physical found=CMLib.materials().makeResource(room.myResource(),Integer.toString(room.domainType()),false,null);
 			if(found!=null)
 			{
-				String name=found.name();
-				if(name.startsWith("a pound of "))
-					name=name.substring(11);
+				final String name;
+				if(found instanceof RawMaterial)
+					name=RawMaterial.CODES.NAME(((RawMaterial) found).material()).toLowerCase();
+				else
+					name=found.name();
 				if(!stuff.contains(name))
 					stuff.add(name);
 				found.destroy();
 			}
 		}
-		for(Enumeration<MOB> m = room.inhabitants(); m.hasMoreElements(); )
+		for(final Enumeration<MOB> m = room.inhabitants(); m.hasMoreElements(); )
 		{
-			MOB M=m.nextElement();
+			final MOB M=m.nextElement();
 			if((CMLib.flags().isVegetable(M))&&(!stuff.contains(M.name())))
 				stuff.add(M.name());
 			else
