@@ -1,13 +1,13 @@
-% Cup	1	10	8	1	GenDrink		5		1	
+% Cup	1	10	BANDAGING	1	GenDrink		5		1	
 % Bowl	1	10	8	1	GenContainer		5		1	
 % Toy	1	10	5	1	GenItem					
 Puppet	1	10	5	1	GenItem					
 Marionette	1	10	5	1	GenItem					
 % Chopsticks	1	5	1	1	GenItem					
 % Mug	1	10	8	1	GenDrink		5		1	
-% Plate	1	10	8	1	GenContainer		5		0	
+% Plate	1	10	8	1	GenContainer		5		4097	
 % Pitcher	1	15	15	1	GenDrink		15		1	
-% Barrel	1	30	30	5	GenDrink		50		0	
+% Barrel	1	30	30	5	GenDrink		50		5	
 % Wheel	1	20	10	1	GenItem					
 % Bucket	1	20	20	5	GenDrink		15		0	
 % Plaque	1	20	5	20	GenItem					
@@ -15,12 +15,12 @@ Marionette	1	10	5	1	GenItem
 Small % Table	1	15	30	15	GenRideable	TABLE	20		0	
 Small % Desk	1	15	30	15	GenRideable	TABLE	20		0	
 Small % Stool	1	15	10	3	GenChair	CHAIR	1		0	
-Small % Chair	1	15	15	5	GenChair	CHAIR	1		0	
+Small % Chair	1	15	15	5	GenChair	CHAIR	1		5	
 % Podium	1	15	15	5	GenRideable	TABLE	1		0	
 Small % Bench	1	20	20	10	GenChair	CHAIR	2		0	
 Small % Bed	1	25	30	15	GenBed	BED	1		0	
 Small % Box	1	15	15	5	GenContainer		25		0	
-% Club	2	15	10	200	GenWeapon	BLUNT	1	6	-20	
+% Club	2	15	10	200	GenWeapon	BLUNT	1	5	-20	
 % Mace	3	20	20	528	GenWeapon	BLUNT	1	5	0	
 % Bookshelf	3	30	10	15	GenContainer		10		384	
 % Scroll Case	3	30	10	10	GenContainer		3		256	
@@ -35,9 +35,9 @@ Small % Shield	3	30	15	5	GenShield	HELD	1	6	0
 % Table	6	30	60	20	GenRideable	TABLE	50		0	
 % Coffin	6	40	50	35	GenContainer		500		64	Prop_NoPurge
 % Potion Rack	6	30	30	8	GenContainer		100		2048	Prop_NoPurge
-% Desk	6	30	60	20	GenRideable	TABLE	50		0	
+% Desk	6	30	60	20	GenRideable	TABLE	50		8193	
 % Stool	6	30	20	6	GenChair	CHAIR	1		0	
-% Chair	6	30	30	10	GenChair	CHAIR	5		0	
+% Chair	6	30	30	10	GenChair	CHAIR	5		5	
 % Bench	6	40	40	15	GenChair	CHAIR	10		0	
 % Bed	6	50	60	20	GenBed	BED	2		0	
 Small % Chest	6	50	20	20	GenContainer	LOCK	25		0	
@@ -79,8 +79,3 @@ Ornate % Quarterstaff	55	180	150	1376	GenWeapon	STAFF	2	55	0
 The % Club	64	150	200	1300	GenWeapon	BLUNT	1	40	-20	
 The % Mace	70	180	240	4000	GenWeapon	BLUNT	1	35	0	
 The % Quarterstaff	80	270	300	2700	GenWeapon	STAFF	2	80	0	
-% Shiv	3	15	15	250	GenWeapon	DAGGER	1	6	0	
-% Stake	18	20	40	300	GenWeapon	DAGGER	1	14	0	
-% Cermonial Dagger	28	20	80	350	GenWeapon	DAGGER	1	16	10	
-The Mighty % Shiv	45	30	100	500	GenWeapon	DAGGER	1	20	10	
-The Mighty % Dagger	75	40	120	1200	GenWeapon	DAGGER	1	36	10	

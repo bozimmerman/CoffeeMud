@@ -1956,15 +1956,17 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
                 return (webValue == null)?oldVal:webValue;
             case PARMTYPE_MULTICHOICES:
             {
-                if(webValue == null) return oldVal;
+                if(webValue == null) 
+                	return oldVal;
                 String id="";
-                int num=0;
-                for(;httpReq.isRequestParameter(fieldName+id);id=""+(++num))
+                long num=0;
+                int index=0;
+                for(;httpReq.isRequestParameter(fieldName+id);id=""+(++index))
                 {
                     String newVal = httpReq.getRequestParameter(fieldName+id); 
-                    if(CMath.s_int(newVal)<=0)
+                    if(CMath.s_long(newVal)<=0)
                         return newVal;
-                    num |= CMath.s_int(newVal);
+                    num |= CMath.s_long(newVal);
                 }
                 return ""+num;
             }
