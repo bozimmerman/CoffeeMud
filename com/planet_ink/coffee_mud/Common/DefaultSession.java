@@ -103,6 +103,7 @@ public class DefaultSession implements Session
     protected long tickTotal=0;
     protected long lastKeystroke=0;
     protected long promptLastShown=0;
+	protected long lastPing=System.currentTimeMillis();
 
     private static final String TIMEOUT_MSG="Timed Out.";
     
@@ -1238,7 +1239,6 @@ public class DefaultSession implements Session
 		try
 		{
 			suspendCommandLine=true;
-			long lastPing=System.currentTimeMillis();
 			while((!killFlag)
 			&&((maxTime<=0)||((System.currentTimeMillis()-start)<maxTime)))
 			    if(nonBlockingIn(true)==0)
@@ -1283,6 +1283,11 @@ public class DefaultSession implements Session
 		int code=-1;
 		while(!killFlag)
 		{
+			if(sock.isClosed() || (!sock.isConnected()))
+			{
+				killFlag=true;
+				return null;
+			}
 		    code=nonBlockingIn(true);
 		    if(code==1)
 		        continue;
@@ -1368,6 +1373,7 @@ public class DefaultSession implements Session
         }
         if(dropSession) 
         {
+			preLogout(mob);
             logoutFinal();
 		}
         synchronized(this)
@@ -1587,6 +1593,7 @@ public class DefaultSession implements Session
 			case Session.STATUS_LOGOUT12:
 			case Session.STATUS_LOGOUTFINAL:
 			{
+				preLogout(mob);
 				logoutFinal();
 				break;
 			}
@@ -1773,7 +1780,15 @@ public class DefaultSession implements Session
 			}
 			else
 				input=readlineContinue();
-			if(input!=null)
+			if(input==null)
+			{
+		    	if((System.currentTimeMillis()-lastPing)>5000)
+		    	{
+		    		out('\0');
+		    		lastPing=System.currentTimeMillis();
+		    	}
+			}
+			else
 			{
 				lastKeystroke=System.currentTimeMillis();
 				if(input.trim().length()>0)
