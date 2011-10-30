@@ -221,7 +221,8 @@ public class StdDrink extends StdContainer implements Drink,Item
 				else
 				if(full)
 					mob.tell("You have drunk all you can.");
-				if(disappearsAfterDrinking)
+				if(disappearsAfterDrinking
+				||((this instanceof RawMaterial)&&(amountOfLiquidRemaining<=0)))
 					destroy();
 				break;
 			case CMMsg.TYP_FILL:

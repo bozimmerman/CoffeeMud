@@ -43,7 +43,7 @@ public class GenLiquidResource extends GenDrink implements RawMaterial, Drink
 		setDisplayText("a puddle of resource sits here.");
 		setDescription("");
 		setMaterial(RawMaterial.RESOURCE_FRESHWATER);
-		disappearsAfterDrinking=true;
+		disappearsAfterDrinking=false;
 		basePhyStats().setWeight(0);
 		setCapacity(0);
 		recoverPhyStats();
@@ -59,16 +59,19 @@ public class GenLiquidResource extends GenDrink implements RawMaterial, Drink
 	public void executeMsg(Environmental host, CMMsg msg)
 	{
         super.executeMsg(host,msg);
-        if(rot==null){
+        if(rot==null)
+        {
         	rot=CMClass.getAbility("Prayer_Rot");
         	if(rot==null) return;
         	rot.setAffectedOne(null);
         }
         rot.executeMsg(this,msg);
 	}
+
 	public boolean okMessage(Environmental host, CMMsg msg)
 	{
-        if(rot==null){
+        if(rot==null)
+        {
         	rot=CMClass.getAbility("Prayer_Rot");
         	if(rot==null) return true;
         	rot.setAffectedOne(null);
@@ -77,6 +80,7 @@ public class GenLiquidResource extends GenDrink implements RawMaterial, Drink
         	return false;
         return super.okMessage(host,msg);
 	}
+
 	protected String domainSource=null;
 	public String domainSource(){return domainSource;}
 	public void setDomainSource(String src){domainSource=src;}

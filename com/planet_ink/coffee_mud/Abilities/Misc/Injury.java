@@ -129,7 +129,8 @@ public class Injury extends StdAbility
         return buf.toString();
 	}
 	
-	public void setMiscText(String txt) {
+	public void setMiscText(String txt) 
+	{
 	    injuries=new Vector[Race.BODY_PARTS];
 	    Vector sets=CMParms.parseSemicolons(txt,true);
 	    for(int s=0;s<sets.size();s++)
@@ -223,7 +224,8 @@ public class Injury extends StdAbility
 	    return super.tick(ticking,tickID);
 	}
 	
-	public static String[][] TRANSLATE={
+	public static String[][] TRANSLATE=
+	{
 	    {"<T-HIM-HER>","<T-HIS-HER>"},
 	    {"<T-NAME>","<T-YOUPOSS>"},
 	    {"<T-NAMESELF>","<T-YOUPOSS>"}
