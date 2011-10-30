@@ -241,7 +241,7 @@ public class Torturesmithing extends CraftingSkill implements ItemCraftor
 				((Container)building).setKeyName(Double.toString(Math.random()));
 			}
 			else
-				((Container)building).setContainTypes(CMath.s_long(misctype));
+				((Container)building).setContainTypes(getContainerType(misctype));
 		}
 		if(building instanceof Rideable)
 		{

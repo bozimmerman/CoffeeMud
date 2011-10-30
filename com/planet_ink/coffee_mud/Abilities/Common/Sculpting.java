@@ -293,7 +293,7 @@ public class Sculpting extends EnhancedCraftingSkill implements ItemCraftor, Men
 			String spell=(foundRecipe.size()>RCP_SPELL)?((String)foundRecipe.get(RCP_SPELL)).trim():"";
 			addSpells(building,spell);
 			int capacity=CMath.s_int((String)foundRecipe.get(RCP_CAPACITY));
-			int canContain=CMath.s_int((String)foundRecipe.get(RCP_CONTAINMASK));
+			long canContain=getContainerType((String)foundRecipe.get(RCP_CONTAINMASK));
 			key=null;
 			if((misctype.equalsIgnoreCase("statue"))&&((!mob.isMonster())||(rest.length()>0)))
 			{

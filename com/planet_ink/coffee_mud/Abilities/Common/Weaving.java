@@ -369,7 +369,7 @@ public class Weaving extends EnhancedCraftingSkill implements ItemCraftor, Mendi
 			building.basePhyStats().setLevel(CMath.s_int((String)foundRecipe.get(RCP_LEVEL)));
 			building.setSecretIdentity("This is the work of "+mob.Name()+".");
 			int capacity=CMath.s_int((String)foundRecipe.get(RCP_CAPACITY));
-			int canContain=CMath.s_int((String)foundRecipe.get(RCP_CONTAINMASK));
+			long canContain=getContainerType((String)foundRecipe.get(RCP_CONTAINMASK));
 			int armordmg=CMath.s_int((String)foundRecipe.get(RCP_ARMORDMG));
 			if(bundling)
 			{

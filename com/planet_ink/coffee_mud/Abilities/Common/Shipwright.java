@@ -287,7 +287,7 @@ public class Shipwright extends CraftingSkill implements ItemCraftor, MendingSki
 			building.setMaterial(data[0][FOUND_CODE]);
 			building.basePhyStats().setLevel(CMath.s_int((String)foundRecipe.get(RCP_LEVEL)));
 			building.setSecretIdentity("This is the work of "+mob.Name()+".");
-			int canContain=CMath.s_int((String)foundRecipe.get(RCP_CONTAINMASK));
+			long canContain=getContainerType((String)foundRecipe.get(RCP_CONTAINMASK));
 			String capacity=(String)foundRecipe.get(RCP_CAPACITY);
 			String spell=(foundRecipe.size()>RCP_SPELL)?((String)foundRecipe.get(RCP_SPELL)).trim():"";
 			if(bundling) building.setBaseValue(lostValue);

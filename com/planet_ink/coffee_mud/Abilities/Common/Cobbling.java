@@ -336,7 +336,7 @@ public class Cobbling extends EnhancedCraftingSkill implements ItemCraftor, Mend
 			building.basePhyStats().setLevel(CMath.s_int((String)foundRecipe.get(RCP_LEVEL))+(hardness*3));
 			if(building.basePhyStats().level()<1) building.basePhyStats().setLevel(1);
 			int capacity=CMath.s_int((String)foundRecipe.get(RCP_CAPACITY));
-			int canContain=CMath.s_int((String)foundRecipe.get(RCP_CONTAINMASK));
+			long canContain=getContainerType((String)foundRecipe.get(RCP_CONTAINMASK));
 			int armordmg=CMath.s_int((String)foundRecipe.get(RCP_ARMORDMG));
 			building.setSecretIdentity("This is the work of "+mob.Name()+".");
 			String spell=(foundRecipe.size()>RCP_SPELL)?((String)foundRecipe.get(RCP_SPELL)).trim():"";

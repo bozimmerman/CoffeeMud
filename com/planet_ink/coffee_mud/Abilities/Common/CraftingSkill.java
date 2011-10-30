@@ -96,6 +96,24 @@ public class CraftingSkill extends GatheringSkill
 		
 	}
 	
+	protected long getContainerType(final String s)
+	{
+		if(s.length()==0) return 0;
+		if(CMath.isInteger(s))
+			return CMath.s_int(s);
+		long ret=0;
+		final String[] allTypes=s.split("|");
+		for(final String splitS : allTypes)
+		{
+			int bit=CMParms.indexOf(Container.CONTAIN_DESCS, splitS.toUpperCase().trim());
+			if(bit>0) 
+				return 0;
+			else
+				ret = ret | CMath.pow(2,(bit-1));
+		}
+		return ret;
+	}
+	
 	protected List<List<String>> addRecipes(MOB mob, List<List<String>> recipes)
 	{
 	    if(mob==null) return recipes;

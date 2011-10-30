@@ -341,7 +341,7 @@ public class Carpentry extends EnhancedCraftingSkill implements ItemCraftor
 			if(building.basePhyStats().level()<1) building.basePhyStats().setLevel(1);
 			building.setSecretIdentity("This is the work of "+mob.Name()+".");
 			int capacity=CMath.s_int((String)foundRecipe.get(RCP_CAPACITY));
-			int canContain=CMath.s_int((String)foundRecipe.get(RCP_CONTAINMASK));
+			long canContain=getContainerType((String)foundRecipe.get(RCP_CONTAINMASK));
 			int armordmg=CMath.s_int((String)foundRecipe.get(RCP_ARMORDMG));
 			if(bundling) building.setBaseValue(lostValue);
 			String spell=(foundRecipe.size()>RCP_SPELL)?((String)foundRecipe.get(RCP_SPELL)).trim():"";
@@ -400,7 +400,7 @@ public class Carpentry extends EnhancedCraftingSkill implements ItemCraftor
 				((Weapon)building).setRawProperLocationBitmap(Wearable.WORN_WIELD|Wearable.WORN_HELD);
 				((Weapon)building).setRawLogicalAnd((capacity>1));
                 if(!(building instanceof Container))
-                    building.basePhyStats().setAttackAdjustment(building.basePhyStats().attackAdjustment()+canContain);
+                    building.basePhyStats().setAttackAdjustment(building.basePhyStats().attackAdjustment()+(int)canContain);
 			}
 			if(building instanceof Armor)
 			{
