@@ -92,11 +92,11 @@ public class Poison_Alcohol extends Poison
 
     protected boolean catchIt(MOB mob, Physical target)
     {
-        if(!super.catchIt(mob,target))
-            return false;
-        if(!(affected instanceof Drink)) return true;
+        boolean caughtIt=super.catchIt(mob,target);
+        if(!(affected instanceof Drink)) 
+        	return caughtIt;
         if(CMLib.dice().roll(1,1000,0)>(alchoholContribution()*alchoholContribution()*alchoholContribution()))
-            return true;
+            return caughtIt;
         if((target!=null)&&(target instanceof MOB)&&(target.fetchEffect(ID())==null))
         {
             MOB targetMOB=(MOB)target;
@@ -107,7 +107,7 @@ public class Poison_Alcohol extends Poison
                 if(A!=null) A.invoke(targetMOB,affected,true,0);
             }
         }
-        return true;
+        return caughtIt;
     }
 	public boolean tick(Tickable ticking, int tickID)
 	{
