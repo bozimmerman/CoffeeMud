@@ -2162,7 +2162,7 @@ public class StdMOB implements MOB
 				||(CMSecurity.isAllowed(this,location(),"CMDMOBS")&&(isMonster()))
 				||(CMSecurity.isAllowed(this,location(),"CMDROOMS")&&(isMonster())))
 					return true;
-				if(getWearPositions(Wearable.WORN_ARMS)==0)
+				if((getWearPositions(Wearable.WORN_ARMS)==0)&&(!CMath.bset(msg.targetCode(),CMMsg.MASK_ALWAYS)))
 				{
 					srcM.tell(name()+" is unable to accept that from you.");
 					return false;
