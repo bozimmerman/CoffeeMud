@@ -87,6 +87,7 @@ public interface MOB extends Rider, DBIdentifiable, PhysicalAgent, ItemPossessor
 	public void enqueCommand(List<String> commands, int metaFlags, double tickDelay);
     public void prequeCommand(Vector commands, int metaFlags, double tickDelay);
 	public boolean dequeCommand();
+	public void clearCommandQueue();
     public int commandQueSize();
 	public void doCommand(List commands, int metaFlags);
     public double actions();

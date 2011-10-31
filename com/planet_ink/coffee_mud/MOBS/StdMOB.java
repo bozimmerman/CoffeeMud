@@ -1305,6 +1305,7 @@ public class StdMOB implements MOB
     public double actions(){return freeActions;}
     public void setActions(double remain){freeActions=remain;}
     public int commandQueSize(){return commandQue.size();}
+	public void clearCommandQueue() { commandQue.clear();}
 	public boolean dequeCommand()
 	{
         while((!pleaseDestroy)&&((session()==null)||(!session().isStopped())))

@@ -44,6 +44,12 @@ public class Commands extends StdCommand
 	{
 		if(!mob.isMonster())
 		{
+			if ((commands!=null) && (commands.size()>0) && ("CLEAR".startsWith(commands.get(0).toString().toUpperCase())))
+			{
+				mob.clearCommandQueue();
+				mob.tell("Command queue cleared.");
+				return false;
+			}
 			StringBuffer commandList=new StringBuffer("");
 			Vector commandSet=new Vector();
 			int col=0;
@@ -86,6 +92,4 @@ public class Commands extends StdCommand
 	}
 	
 	public boolean canBeOrdered(){return true;}
-
-	
 }

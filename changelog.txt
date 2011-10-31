@@ -2346,3 +2346,4 @@ Special/Reserved Quest called holidays can be added to/modified on an area-by-ar
 9. New Oracle Prayers: Divine Guidance, Prophecy, Seekers Prayer, Soul Peering, Lower Law, Omnipresence, Above the Law
 10.New Diviner Spells: Solve Maze, Group Status, Detect Weaknesses, Prying Eye, Telepathy, Natural Communion, Arms Length
    Spying Stone, Hear Thoughts, Know Fate, Divining Eye, Spotters Orders, Find Directions, Death Warning
+11.Players can now use COMMANDS CLEAR to clear out their personal command queue.
