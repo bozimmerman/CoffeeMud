@@ -103,7 +103,7 @@ public class DefaultSession implements Session
     protected long tickTotal=0;
     protected long lastKeystroke=0;
     protected long promptLastShown=0;
-	protected long lastPing=System.currentTimeMillis();
+	protected volatile long lastPing=System.currentTimeMillis();
 
     private static final String TIMEOUT_MSG="Timed Out.";
     
@@ -244,6 +244,7 @@ public class DefaultSession implements Session
 	        out.write(stream);
         }
         out.flush();
+        lastPing=System.currentTimeMillis();
     }
 
     private boolean mightSupportTelnetMode(int telnetCode)
@@ -280,6 +281,7 @@ public class DefaultSession implements Session
         out.flush();
         if(CMSecurity.isDebugging(CMSecurity.DbgFlag.TELNET)) Log.debugOut("Session","Sent: "+(onOff?"Will":"Won't")+" "+Session.TELNET_DESCS[telnetCode]);
         setServerTelnetMode(telnetCode,onOff);
+        lastPing=System.currentTimeMillis();
     }
     // this is stupid, but a printwriter can not be cast as an outputstream, so this dup was necessary
     public void changeTelnetMode(int telnetCode, boolean onOff) 
@@ -289,6 +291,7 @@ public class DefaultSession implements Session
         out.flush();
         if(CMSecurity.isDebugging(CMSecurity.DbgFlag.TELNET)) Log.debugOut("Session","Sent: "+(onOff?"Will":"Won't")+" "+Session.TELNET_DESCS[telnetCode]);
         setServerTelnetMode(telnetCode,onOff);
+        lastPing=System.currentTimeMillis();
     }
     public void changeTelnetModeBackwards(int telnetCode, boolean onOff)
     {
@@ -297,6 +300,7 @@ public class DefaultSession implements Session
         out.flush();
         if(CMSecurity.isDebugging(CMSecurity.DbgFlag.TELNET)) Log.debugOut("Session","Back-Sent: "+(onOff?"Do":"Don't")+" "+Session.TELNET_DESCS[telnetCode]);
         setServerTelnetMode(telnetCode,onOff);
+        lastPing=System.currentTimeMillis();
     }
     public void changeTelnetModeBackwards(OutputStream out, int telnetCode, boolean onOff)
     throws IOException
@@ -306,6 +310,7 @@ public class DefaultSession implements Session
         out.flush();
         if(CMSecurity.isDebugging(CMSecurity.DbgFlag.TELNET)) Log.debugOut("Session","Back-Sent: "+(onOff?"Do":"Don't")+" "+Session.TELNET_DESCS[telnetCode]);
         setServerTelnetMode(telnetCode,onOff);
+        lastPing=System.currentTimeMillis();
     }
     public void negotiateTelnetMode(int telnetCode)
     {
@@ -320,6 +325,7 @@ public class DefaultSession implements Session
 	    	out.write(command);
         }
         out.flush();
+        lastPing=System.currentTimeMillis();
         if(CMSecurity.isDebugging(CMSecurity.DbgFlag.TELNET)) Log.debugOut("Session","Negotiate-Sent: "+Session.TELNET_DESCS[telnetCode]);
     }
 
@@ -468,6 +474,7 @@ public class DefaultSession implements Session
         		}
         		finally
         		{
+        	        lastPing=System.currentTimeMillis();
 					writeStartTime=0;
 					writeLock.unlock();
         		}
@@ -1246,10 +1253,7 @@ public class DefaultSession implements Session
 			    else
 			    {
 			    	if((System.currentTimeMillis()-lastPing)>5000)
-			    	{
 			    		out('\0');
-			    		lastPing=System.currentTimeMillis();
-			    	}
 			    	CMLib.s_sleep(100);
 			    }
 			suspendCommandLine=false;
@@ -1429,6 +1433,7 @@ public class DefaultSession implements Session
 						out.flush();
 					} catch(Throwable t){}
 					out.close();
+			        lastPing=System.currentTimeMillis();
 				}
 				status=Session.STATUS_LOGOUT9;
 				if(sock!=null) sock.shutdownOutput();
@@ -1783,10 +1788,7 @@ public class DefaultSession implements Session
 			if(input==null)
 			{
 		    	if((System.currentTimeMillis()-lastPing)>5000)
-		    	{
 		    		out('\0');
-		    		lastPing=System.currentTimeMillis();
-		    	}
 			}
 			else
 			{
