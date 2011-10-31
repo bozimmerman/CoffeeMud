@@ -43,6 +43,7 @@ import java.net.*;
 public class DefaultSession implements Session
 {
     protected static final int 		SOTIMEOUT		= 300;
+    protected static final int 		PINGTIMEOUT		= 5000;
     private final HashSet 			telnetSupportSet= new HashSet();
     private static final HashSet 	mxpSupportSet	= new HashSet();
     private static final Hashtable  mxpVersionInfo	= new Hashtable();
@@ -1252,7 +1253,7 @@ public class DefaultSession implements Session
 			        break;
 			    else
 			    {
-			    	if((System.currentTimeMillis()-lastPing)>5000)
+			    	if((System.currentTimeMillis()-lastPing)>PINGTIMEOUT)
 			    		out('\0');
 			    	CMLib.s_sleep(100);
 			    }
@@ -1787,7 +1788,7 @@ public class DefaultSession implements Session
 				input=readlineContinue();
 			if(input==null)
 			{
-		    	if((System.currentTimeMillis()-lastPing)>5000)
+		    	if((System.currentTimeMillis()-lastPing)>PINGTIMEOUT)
 		    		out('\0');
 			}
 			else
