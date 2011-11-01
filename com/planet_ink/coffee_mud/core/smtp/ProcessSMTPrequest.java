@@ -99,51 +99,71 @@ public class ProcessSMTPrequest implements Runnable
 	
 	public void run()
 	{
-		DataInputStream sin = null;
-		DataOutputStream sout = null;
+		BufferedReader sin = null;
+		PrintWriter sout = null;
 		int failures=0;
 		debug = CMSecurity.isDebugging(CMSecurity.DbgFlag.SMTPSERVER);
 
 		byte[] replyData = null;
+		byte[] lastReplyData = null;
 
 		try
 		{
-			sout = new DataOutputStream(sock.getOutputStream());
-			sin=new DataInputStream(sock.getInputStream());
-			sout.write(("220 ESMTP "+server.domainName()+" "+SMTPserver.ServerVersionString+"; "+CMLib.time().date2String(System.currentTimeMillis())+cr).getBytes());
+			sock.setSoTimeout(100);
+			sout=new PrintWriter(new BufferedWriter(new OutputStreamWriter(sock.getOutputStream(),"US-ASCII")));
+			sin=new BufferedReader(new InputStreamReader(sock.getInputStream(),"US-ASCII"));
+			sout.write("220 ESMTP "+server.domainName()+" "+SMTPserver.ServerVersionString+"; "+CMLib.time().date2String(System.currentTimeMillis())+cr);
+			sout.flush();
 			boolean quitFlag=false;
 			boolean dataMode=false;
+			LinkedList<String> cmdQueue=new LinkedList<String>();
+			LinkedList<byte[]> respQueue=new LinkedList<byte[]>();
+			long timeSinceLastChar=System.currentTimeMillis();
 			while(!quitFlag)
 			{
-				sock.setSoTimeout(5*60*1000);
-				String s=null;
 				char lastc=(char)-1;
 				char c=(char)-1;
 				StringBuffer input=new StringBuffer("");
 				while(!quitFlag)
 				{
 					lastc=c;
-					c=(char)sin.read();
+					try
+					{
+						c=(char)sin.read();
+					}
+					catch(java.net.SocketTimeoutException ioe)
+					{
+						final long ellapsed = System.currentTimeMillis()-timeSinceLastChar; 
+						if(ellapsed > (10 * 1000))
+							throw ioe;
+						else
+							break;
+					}
 					if(c<0)	throw new IOException("reset by peer");
+					timeSinceLastChar=System.currentTimeMillis();
 					if((lastc==cr.charAt(0))&&(c==cr.charAt(1)))
-					{	s=input.substring(0,input.length()-1); break;}
+					{	
+						cmdQueue.add(input.substring(0,input.length()-1));
+						input.setLength(0);
+						continue;
+					}
 					input.append(c);
 					if(input.length()>server.getMaxMsgSize())
 					{
 						if(debug) Log.debugOut(runnableName,"552 String exceeds size limit.");
-						replyData=("552 String exceeds size limit. You are very bad!"+cr).getBytes();
 						//Log.errOut("SMTPR","Long request from "+sock.getInetAddress());
-						sout.write(replyData);
+						sout.write("552 String exceeds size limit. You are very bad!"+cr);
 						sout.flush();
 						quitFlag=true;
-						s="";
+						input.setLength(0);
 					}
 				}
-				if(s!=null)
+				while(cmdQueue.size()>0)
 				{
-					String cmd=s.toUpperCase();
+					final String s=cmdQueue.removeFirst();
 					String parm="";
 					int cmdindex=s.indexOf(' ');
+					String cmd=s.toUpperCase();
 					if(cmdindex>0)
 					{
 						cmd=s.substring(0,cmdindex).toUpperCase();
@@ -167,6 +187,8 @@ public class ProcessSMTPrequest implements Runnable
 							char bodyType='t'; // h=html, t=text
 							String subject=null;
 	                        String boundry=null;
+	                        Map<Character,StringBuffer> dataBlocks=new Hashtable<Character,StringBuffer>();
+	                        
 	                        // -1=waitForHeaderDone, 
 	                        // 0=waitForFirstHeaderDone, 
 	                        // 1=waitForBoundry, 
@@ -183,7 +205,15 @@ public class ProcessSMTPrequest implements Runnable
 									if(debug) Log.debugOut(runnableName,"Header State="+boundryState+", "+s2);
 									
 									if((startBuffering)&&(boundry!=null)&&(s2.indexOf(boundry)>=0))
-	                                    break; // we're done with a multipart!
+									{
+										if(debug) Log.debugOut(runnableName,"Multipart boundary "+boundry+" completed.");
+										if(finalData.length()>0)
+											dataBlocks.put(Character.valueOf(bodyType), finalData);
+										finalData=new StringBuffer("");
+                                        boundryState=-1;
+                                        startBuffering=false;
+                                        continue;
+									}
 	                                else
 	                                if(startBuffering)
 	                                {
@@ -232,6 +262,7 @@ public class ProcessSMTPrequest implements Runnable
 	                                else
 	                                if(boundryState==1)
 	                                {
+										if(debug) Log.debugOut(runnableName,"Boundary "+boundry+" spotted -- state is now 2.");
 	                                    if(s2.indexOf(boundry)>=0)
 	                                        boundryState=2;
 	                                    continue;
@@ -321,7 +352,22 @@ public class ProcessSMTPrequest implements Runnable
 									if(subject==null) subject="";
 								}
 								
-								if((finalData.length()>0) && (subject!=null))
+								if(dataBlocks.containsKey(Character.valueOf('h')))
+								{
+									bodyType='h';
+									finalData=dataBlocks.get(Character.valueOf('h'));
+								}
+								else
+								if(finalData.toString().trim().length()==0)
+								{
+									if(dataBlocks.size()>0)
+									{
+										bodyType=dataBlocks.keySet().iterator().next().charValue();
+										finalData=dataBlocks.get(Character.valueOf(bodyType));
+									}
+								}
+								
+								if((finalData.toString().trim().length()>0) && (subject!=null))
 								{
 									if(subject.toUpperCase().startsWith("MOTD")
 									||subject.toUpperCase().startsWith("MOTM")
@@ -385,7 +431,9 @@ public class ProcessSMTPrequest implements Runnable
 											}
 											   
 											if(debug) Log.debugOut(runnableName,"Written: "+journal+"/"+from+"/ALL/"+bodyType);
-											if(bodyType=='h') cleanHtml(journal, finalData);
+											StringBuffer finalFinalData=new StringBuffer(finalData);
+											if(bodyType=='h')
+												cleanHtml(journal, finalFinalData);
 											CMLib.database().DBWriteJournalChild(journal, "",from, "ALL", parentKey, 
 													CMLib.coffeeFilter().simpleInFilter(new StringBuffer(subject),false).toString(), 
 													CMLib.coffeeFilter().simpleInFilter(finalData,false).toString());
@@ -393,17 +441,28 @@ public class ProcessSMTPrequest implements Runnable
 										else
 										{
 											if(debug) Log.debugOut(runnableName,"Written: "+server.mailboxName()+"/"+from+"/"+(String)to.elementAt(i)+"/"+bodyType);
-											if(bodyType=='h') cleanHtml(journal, finalData);
+											StringBuffer finalFinalData=new StringBuffer(finalData);
+											if(bodyType=='h')
+												cleanHtml(journal, finalFinalData);
 											CMLib.database().DBWriteJournal(server.mailboxName(),
 																			from,
 																			(String)to.elementAt(i),
 	                                                                        CMLib.coffeeFilter().simpleInFilter(new StringBuffer(subject),false).toString(),
-																			CMLib.coffeeFilter().simpleInFilter(finalData,false).toString());
+																			CMLib.coffeeFilter().simpleInFilter(finalFinalData,false).toString());
 										}
 									}
 								}
 							}
 						}
+					}
+					else
+					if(cmd.equals("RSET"))
+					{
+						replyData=("250 Reset state"+cr).getBytes();
+						dataMode=false;
+						from=null;
+						to=null;
+						data=null;
 					}
 					else
 					if(dataMode)
@@ -585,10 +644,9 @@ public class ProcessSMTPrequest implements Runnable
 							{
 								replyData=(new String(replyData)
 										  +"250-8BITMIME"+cr
-										  +"250-SIZE 2000"+cr
+										  +"250-SIZE "+server.getMaxMsgSize()+cr
 										  +"250-DSN"+cr
 										  +"250-ONEX"+cr
-										  +"250-XUSR"+cr
 										  +"250 HELP"+cr).getBytes();
 							}
 						}
@@ -677,14 +735,6 @@ public class ProcessSMTPrequest implements Runnable
 							replyData=("354 Enter mail, end with \".\" on a line by itself"+cr).getBytes();
 							dataMode=true;
 						}
-					}
-					else
-					if(cmd.equals("RSET"))
-					{
-						replyData=("250 Reset state"+cr).getBytes();
-						from=null;
-						to=null;
-						data=null;
 					}
 					else
 					if(cmd.equals("QUIT"))
@@ -814,16 +864,23 @@ public class ProcessSMTPrequest implements Runnable
 						}
 					}
 					else
-						replyData=("500 Command Unrecognized: \""+cmd+"\""+cr).getBytes();
+						replyData=lastReplyData;//("500 Command Unrecognized: \""+cmd+"\""+cr).getBytes();
 					
 					
 					if ((replyData != null))
 					{
-						if(debug) Log.debugOut(runnableName,"Reply: "+CMStrings.replaceAll(new String(replyData),cr,""));
-						// must insert a blank line before message body
-						sout.write(replyData);
-						sout.flush();
+						respQueue.add(replyData);
 						replyData=null;
+						if(cmdQueue.size()==0)
+						{
+							// we should be looping through these .. why does ZD act so wierd?!
+							byte [] resp=respQueue.getLast();
+							if(debug) Log.debugOut(runnableName,"Reply: "+CMStrings.replaceAll(new String(resp),cr,"\\r\\n"));
+							// must insert a blank line before message body
+							sout.write(new String(resp));
+							sout.flush();
+							respQueue.clear();
+						}
 					}
 				}
 			}
@@ -834,7 +891,7 @@ public class ProcessSMTPrequest implements Runnable
 			{
 				if (sout != null)
 				{
-					sout.write(("421 You're taking too long.  I'm outa here."+cr).getBytes());
+					sout.write("421 You're taking too long.  I'm outa here."+cr);
 					sout.flush();
 				}
 			}

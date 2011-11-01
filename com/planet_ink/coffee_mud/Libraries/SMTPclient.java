@@ -96,6 +96,12 @@ public class SMTPclient extends StdLibrary implements SMTPLibrary, SMTPLibrary.S
     public SMTPclient( String SMTPServerInfo, int port) throws UnknownHostException,IOException 
     {
     	auth = new SMTPHostAuth(SMTPServerInfo);
+    	int portIndex=auth.host.lastIndexOf(':');
+    	if(portIndex>0)
+    	{
+    		port=CMath.s_int(auth.host.substring(portIndex+1));
+    		auth.host=auth.host.substring(0,portIndex);
+    	}
         sock = new Socket( auth.getHost(), port );
 		reply = new BufferedReader(new InputStreamReader(sock.getInputStream()));
 		sock.setSoTimeout(DEFAULT_TIMEOUT);
