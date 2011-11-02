@@ -53,7 +53,7 @@ public class MXP extends StdCommand
                 	mob.session().negotiateTelnetMode(Session.TELNET_MXP);
                 for(int i=0;((i<5)&&(!mob.session().clientTelnetMode(Session.TELNET_MXP)));i++)
                 {
-                    try{mob.session().prompt("",100);}catch(Exception e){}
+                    try{mob.session().prompt("",250);}catch(Exception e){}
                 }
                 if(mob.session().clientTelnetMode(Session.TELNET_MXP))
                 {

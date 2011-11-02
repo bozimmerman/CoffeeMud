@@ -175,14 +175,14 @@ public class DefaultSession implements Session
 			{
 			    out.flush();
 				rawout.flush();
-				preliminaryRead(250);
+				preliminaryRead(500);
 			}
 			if(clientTelnetMode(Session.TELNET_MXP))
 			{
 				print("\n\033[6z\n\033[6z^<SUPPORT IMAGE IMAGE.URL^>\n");
 			    out.flush();
 				rawout.flush();
-				preliminaryRead(500);
+				preliminaryRead(1000);
 			}
 			preliminaryRead(500);
 			if(introTextStr!=null)
