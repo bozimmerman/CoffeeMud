@@ -171,8 +171,19 @@ public class DefaultSession implements Session
 				out = new PrintWriter(new OutputStreamWriter(zOut,CMProps.getVar(CMProps.SYSTEM_CHARSETOUTPUT)));
 				try{Thread.sleep(50);}catch(Exception e){}
 			}
+			else
+			{
+			    out.flush();
+				rawout.flush();
+				preliminaryRead(250);
+			}
 			if(clientTelnetMode(Session.TELNET_MXP))
+			{
 				print("\n\033[6z\n\033[6z^<SUPPORT IMAGE IMAGE.URL^>\n");
+			    out.flush();
+				rawout.flush();
+				preliminaryRead(500);
+			}
 			preliminaryRead(500);
 			if(introTextStr!=null)
                 print(introTextStr);

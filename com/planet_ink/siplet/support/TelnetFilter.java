@@ -642,7 +642,7 @@ public class TelnetFilter
             if(debugChars) System.out.println(">"+buf.charAt(i));
             if(comment)
             {
-                if(buf.substring(i,i+3).equals("-->"))
+                if(((i+3)<buf.length()) && buf.substring(i,i+3).equals("-->"))
                 {
                     comment=false;
                     i+=3;

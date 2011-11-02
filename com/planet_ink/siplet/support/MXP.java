@@ -257,12 +257,15 @@ public class MXP
 
     public int escapeTranslate(String escapeString, StringBuffer buf, int i)
     {
-        if(escapeString.endsWith("z"))
+        if(escapeString.endsWith("z")||escapeString.endsWith("Z"))
         {
             buf.delete(i,i+escapeString.length()+2);
             int code=Util.s0_int(escapeString.substring(0,escapeString.length()-1));
             if(code<20)
-                return setModeAndExecute(code,buf,i);
+            {
+                setModeAndExecute(code,buf,i);
+                return -1;
+            }
             else
             if(code<100)
             {
