@@ -31,41 +31,42 @@ public class MSPplayer extends Thread
     public String url=null;
     public boolean playing=false;
     public boolean orderedStopped=false;
-    @SuppressWarnings("unused")
-	private Siplet applet=null;
+    public String tag="soundplayer";
+	private Object applet=null;
     
-    public MSPplayer(Siplet theApplet)
+    public MSPplayer(Object theApplet)
     {
         super();
         applet=theApplet;
     }
     
-    public void stopPlaying()
+    public String stopPlaying(String playerName, boolean useExternal)
     {
         if(playing)
         {
             orderedStopped=true;
+            if(useExternal)
+            	return "StopSound('"+key+"','"+playerName+"');\n\r";
             if(clip!=null) clip.stop();
             try{Thread.sleep(50);}catch(Exception e){}
             if(playing)
                 interrupt();
         }
+        return "";
     }
     
     public void run()
     {
         playing=true;
         orderedStopped=false;
-    	// restore this when we go back to being an applet
-    	/*
         try
         {
-            if(clip==null)
+            if((clip !=null ) && (applet instanceof Applet))
             {
                 if(url==null)
-                    clip=applet.getAudioClip(applet.getCodeBase(),key);
+                    clip=((Applet)applet).getAudioClip(((Applet)applet).getCodeBase(),key);
                 else
-                    clip=applet.getAudioClip(new URL(url+key));
+                    clip=((Applet)applet).getAudioClip(new URL(url+key));
             }
         }
         catch(MalformedURLException m)
@@ -74,7 +75,6 @@ public class MSPplayer extends Thread
             playing=false;
             return;
         }
-        */
         if(clip!=null)
         {
             // dunno how to set volume, but that should go here.
@@ -86,9 +86,18 @@ public class MSPplayer extends Thread
         }
         playing=false;
     }
-    public void startPlaying()
+    public String startPlaying(String playerName, boolean useExternal)
     {
-        this.start();
+    	if(useExternal)
+    	{
+    		this.run();
+        	return "PlaySound('"+key+"','"+playerName+"','"+url+"',"+repeats+","+volume+","+priority+");\n\r";
+    	}
+    	else
+    	{
+	        this.start();
+	        return "";
+    	}
     }
     
 }

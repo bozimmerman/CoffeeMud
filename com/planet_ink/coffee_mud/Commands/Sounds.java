@@ -57,7 +57,7 @@ public class Sounds extends StdCommand
             	session.changeTelnetMode(Session.TELNET_MSP,true);
                 for(int i=0;((i<5)&&(!session.clientTelnetMode(Session.TELNET_MSP)));i++)
                 {
-                    try{mob.session().prompt("",100);}catch(Exception e){}
+                    try{mob.session().prompt("",500);}catch(Exception e){}
                 }
                 if(session.clientTelnetMode(Session.TELNET_MSP))
                 {

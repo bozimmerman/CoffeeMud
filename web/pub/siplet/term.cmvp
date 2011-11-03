@@ -210,6 +210,47 @@ function goOffline()
     //alert('Lost connection.'); // red is enough
 }
 
+function BoxFocus()
+{
+    top.entry.boxFocus();
+}
+
+var sounders=[];
+var soundDates=[];
+var soundPriorities=[];
+function PlaySound(key,playerName,url,repeats,volume,priority)
+{
+    var theplayer = sounders[playerName];  
+    if(!theplayer)
+    {
+    	theplayer=document.createElement('audio');
+    	if(!theplayer) return;
+    	sounders[playerName]=theplayer;
+    	soundDates[playerName]=new Date();
+    	soundPriorities[playerName]=priority;
+ 	}
+ 	else
+ 	{
+ 		var now=new Date();
+ 		var ellapsed=Math.abs(now.getTime() - soundDates[playerName].getTime());
+ 		if((ellapsed < 1500) && (priority <= soundPriorities[playerName]))
+	 		return;
+ 	}
+ 	theplayer.pause();
+	theplayer.setAttribute('volume', volume);
+	theplayer.setAttribute('hidden', true);
+	theplayer.setAttribute('src', url+key);
+	theplayer.play();
+}
+
+function StopSound(key,playerName)
+{
+    var theplayer=document.getElementById(playerName);
+    theplayer.src='';
+    theplayer.Play();
+    theplayer.innerHTML='';
+}
+
 function displayData()
 {
 	if(theapplet==null) 
@@ -237,7 +278,8 @@ function displayData()
 	    			data=txt.substr(0,x);
 			        s="";
 			        s=s+data;
-			        if(s.length>0) eval(s);
+			        if(s.length>0)
+						eval(s);
 		        }
 		        lastReceived = new Date().getTime();
 		        setTimeout(displayData,pingDelay);
@@ -389,6 +431,8 @@ top.term.allwindows[top.term.currentWindow]=this;
 <DIV ID=DISPLAYSPAN NAME=DISPLAYSPAN>
 </DIV>
 <DIV ID=NODISPLAY NAME=NODISPLAY></DIV>
+<SPAN ID=musicplayer NAME=musicplayer style="display:none"></SPAN>
+<SPAN ID=soundplayer NAME=soundplayer style="display:none"></SPAN>
 <script language=JavaScript>
     setTimeout('connect("@MudInfo?DOMAIN@",@MudInfo?PORT@);',500);
 //-->

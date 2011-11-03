@@ -3,6 +3,7 @@ import java.io.*;
 import java.util.*;
 import com.jcraft.jzlib.*;
 import com.planet_ink.siplet.applet.Siplet;
+import com.planet_ink.siplet.applet.Siplet.MSPStatus;
 
 /* 
 Copyright 2000-2011 Bo Zimmerman
@@ -44,7 +45,7 @@ public class TelnetFilter
     protected static final char MCCP_COMPRESS = 85;
     protected static final char MCCP_COMPRESS2 = 86;
     protected static final char TELOPT_NEWENVIRONMENT = 39;
-
+    
     private static String defaultBackground="black";
     private static String defaultForeground="white";
     private static String[] colorCodes1={ // 30-37
@@ -66,22 +67,22 @@ public class TelnetFilter
             "cyan", // light cyan
             "white" }; // white
     
-    protected String lastBackground=null;
-    protected String lastForeground=null;
+    protected String  lastBackground=null;
+    protected String  lastForeground=null;
     protected boolean blinkOn=false;
     protected boolean fontOn=false;
     protected boolean boldOn=false;
     protected boolean underlineOn=false;
     protected boolean italicsOn=false;
-    private Siplet codeBase=null;
+    private Siplet    codeBase=null;
     protected boolean comment=false;
 
-    protected boolean neverSupportMSP=false;
-    protected boolean neverSupportMXP=false;
-    protected boolean neverSupportMCCP=false;
-    protected boolean MSPsupport=false;
-    protected boolean MXPsupport=false;
-    protected boolean MCCPsupport=false;
+    protected MSPStatus neverSupportMSP=MSPStatus.Internal;
+    protected boolean   neverSupportMXP=false;
+    protected boolean   neverSupportMCCP=false;
+    protected boolean   MSPsupport=false;
+    protected boolean   MXPsupport=false;
+    protected boolean   MCCPsupport=false;
     
     private MSP mspModule=new MSP();
     private MXP mxpModule=new MXP();
@@ -96,7 +97,11 @@ public class TelnetFilter
     public static String getSipletVersion(){ return Siplet.VERSION_MAJOR+"."+Siplet.VERSION_MINOR;}
     
     public String getEnquedResponses(){return MXPsupport()?mxpModule.getAnyResponses():"";}
-    public String getEnquedJScript(){return (mxpModule!=null)?mxpModule.getAnyJScript():"";}
+    public String getEnquedJScript()
+    {
+    	return ((mxpModule!=null)?mxpModule.getAnyJScript():"")
+    		  +((mspModule!=null)?mspModule.getAnyJScript():"");
+    }
     public boolean MSPsupport(){return MSPsupport;}
     public void setMSPSupport(boolean truefalse){MSPsupport=truefalse;}
     public boolean MXPsupport(){return MXPsupport;}
@@ -104,7 +109,7 @@ public class TelnetFilter
     public boolean MCCPsupport(){return MCCPsupport;}
     public void setMCCPSupport(boolean truefalse){MCCPsupport=truefalse;}
     public void setNeverMXPSupport(boolean truefalse){neverSupportMXP=truefalse;}
-    public void setNeverMSPSupport(boolean truefalse){neverSupportMSP=truefalse;}
+    public void setNeverMSPSupport(MSPStatus status){neverSupportMSP=status;}
     public void setNeverMCCPSupport(boolean truefalse){neverSupportMCCP=truefalse;}
     
     public boolean isUIonHold(){return MXPsupport()&&mxpModule.isUIonHold();}
@@ -426,7 +431,7 @@ public class TelnetFilter
                         if(buf.charAt(i)==IAC_MSP)
                         {
                             if(debugTelnetCodes) System.out.println("Got WILL MSP!");
-                            if(neverSupportMSP)
+                            if(neverSupportMSP==MSPStatus.Disabled)
                             {
                                 if(MSPsupport())
                                 {
@@ -536,7 +541,7 @@ public class TelnetFilter
                         if(buf.charAt(i)==IAC_MSP)
                         {
                             if(debugTelnetCodes) System.out.println("Got DO MSP!");
-                            if(neverSupportMSP)
+                            if(neverSupportMSP==MSPStatus.Disabled)
                             {
                                 if(MSPsupport())
                                 {
@@ -666,7 +671,7 @@ public class TelnetFilter
                 {
                     if(MSPsupport())
                     {
-                        int endl=mspModule.process(buf,i,codeBase);
+                        int endl=mspModule.process(buf,i,codeBase,neverSupportMSP==MSPStatus.External);
                         if(endl==-1)
                             i--;
                         else

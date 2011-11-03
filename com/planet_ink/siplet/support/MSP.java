@@ -33,6 +33,18 @@ public class MSP
     private String defPath=null;
     private MSPplayer musicClip = null;
     private MSPplayer soundClip = null;
+    private StringBuffer jscriptBuffer=new StringBuffer("");
+
+    public String getAnyJScript()
+    {
+        synchronized(jscriptBuffer)
+        {
+            if(jscriptBuffer.length()==0) return "";
+            String s=jscriptBuffer.toString();
+            jscriptBuffer.setLength(0);
+            return s;
+        }
+    }
 
     public String trimQuotes(String s)
     {
@@ -46,7 +58,7 @@ public class MSP
         return s.trim();
     }
 
-    public int process(StringBuffer buf, int i, Siplet applet)
+    public int process(StringBuffer buf, int i, Siplet applet, boolean useExternal)
     {
         int oldI=i;
         if(i+12>=buf.length()) return -2;
@@ -98,9 +110,13 @@ public class MSP
         if(((String)parts.firstElement()).equalsIgnoreCase("off"))
         {
             if(tag.equals("MUSIC")&&(musicClip!=null))
-                musicClip.stopPlaying();
+            {
+                jscriptBuffer.append(musicClip.stopPlaying("musicplayer",useExternal));
+            }
             if(tag.equals("SOUND")&&(soundClip!=null))
-                soundClip.stopPlaying();
+            {
+            	jscriptBuffer.append(soundClip.stopPlaying("soundplayer",useExternal));
+            }
             for(int v=1;v<parts.size();v++)
             {
                 String s=((String)parts.elementAt(v)).toUpperCase();
@@ -152,7 +168,7 @@ public class MSP
         }
         if(currentClip!=null)
         {
-            currentClip.stopPlaying();
+        	jscriptBuffer.append(currentClip.stopPlaying(currentClip.tag.equals("MUSIC")?"musicplayer":"soundplayer",useExternal));
             if(tag.equals("MUSIC"))
                 musicClip=null;
             else
@@ -164,6 +180,7 @@ public class MSP
         if(currentClip==null)
         {
             currentClip=newOne;
+            currentClip.tag=tag;
             cache.put(newOne.key,currentClip);
         }
         else
@@ -174,7 +191,7 @@ public class MSP
             if(newOne.continueValue!=1) currentClip.continueValue=newOne.continueValue;
             if( !newOne.url.equals( defaultUrl ) ) currentClip.url=newOne.url;
         }
-        currentClip.startPlaying();
+        jscriptBuffer.append(currentClip.startPlaying(tag.equals("MUSIC")?"musicplayer":"soundplayer",useExternal));
         if(tag.equals("MUSIC"))
             musicClip=currentClip;
         else

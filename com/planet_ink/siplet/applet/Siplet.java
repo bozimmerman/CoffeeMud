@@ -41,12 +41,13 @@ public class Siplet
     protected StringBuffer buffer;
     protected int sillyCounter=0;
 
+    public enum MSPStatus { Disabled, Internal, External }
 
-    public void setFeatures(boolean mxp, boolean msp, boolean mccp)
+    public void setFeatures(boolean mxp, MSPStatus msp, boolean mccp)
     {
     	Telnet.setNeverMCCPSupport(!mccp);
     	Telnet.setNeverMXPSupport(!mxp);
-    	Telnet.setNeverMSPSupport(!msp);
+    	Telnet.setNeverMSPSupport(msp);
     }
     
     public void init()
@@ -193,7 +194,9 @@ public class Siplet
         }
     }
     public String getJScriptCommands()
-    { return Telnet.getEnquedJScript();}
+    { 
+    	return Telnet.getEnquedJScript();
+    }
 
     public String getURLData()
     {
