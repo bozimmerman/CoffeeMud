@@ -96,8 +96,6 @@ public class Injury extends StdAbility
 	protected int canTargetCode(){return CAN_MOBS;}
 	public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 	public boolean putInCommandlist(){return false;}
-	private static final String[] triggerStrings = {"INJURE"};
-	public String[] triggerStrings(){return triggerStrings;}
 	public boolean canBeUninvoked(){return true;}
 	public int classificationCode(){return Ability.ACODE_PROPERTY;}
 	public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
@@ -111,7 +109,8 @@ public class Injury extends StdAbility
 	        ((MOB)E).tell("Your injuries are healed.");
 	}
 	
-	public String text() {
+	public String text() 
+	{
 	    Vector V=null;
         Object[] O=null;
 	    StringBuffer buf=new StringBuffer("");
@@ -131,25 +130,85 @@ public class Injury extends StdAbility
 	
 	public void setMiscText(String txt) 
 	{
-	    injuries=new Vector[Race.BODY_PARTS];
-	    Vector sets=CMParms.parseSemicolons(txt,true);
-	    for(int s=0;s<sets.size();s++)
-	    {
-	        String set=(String)sets.elementAt(s);
-	        Vector<String> V=CMParms.parseAny(set,':',false);
-	        if(V.size()==3)
-	        {
-	            int part=CMath.s_int((String)V.firstElement());
-	            if((part>=0)&&(part<Race.BODY_PARTS))
-	            {
-    	            String msg=(String)V.elementAt(1);
-    	            int hurt=CMath.s_int((String)V.lastElement());
-    	            if(injuries[part]==null)
-    	                injuries[part] = new Vector();
-    	            injuries[part].addElement(new Object[]{msg,Integer.valueOf(hurt)});
-	            }
-	        }
-	    }
+		if(txt.startsWith("+"))
+		{
+			if(affected instanceof MOB)
+			{
+				MOB mob=(MOB)affected;
+				txt=txt.substring(1);
+				int x=txt.indexOf('=');
+				if(x<0) 
+					return;
+				String chosenName=txt.substring(0,x);
+				String amount=txt.substring(x+1);
+		        Amputation A=(Amputation)mob.fetchEffect("Amputation");
+		        if(A==null) A=new Amputation();
+		        List<String> remains=A.remainingLimbNameSet(mob);
+		        if(mob.charStats().getBodyPart(Race.BODY_HEAD)>0)
+			        remains.add("head");
+		        if(mob.charStats().getBodyPart(Race.BODY_TORSO)>0)
+			        remains.add("torso");
+				int chosenOne=remains.indexOf(chosenName);
+				if(chosenOne<0)
+					return;
+				if(injuries==null)
+				    injuries=new Vector[Race.BODY_PARTS];
+				int bodyLoc=-1;
+				for(int i=0;i<Race.BODY_PARTS;i++)
+					if((" "+((String)remains.get(chosenOne)).toUpperCase()).endsWith(" "+Race.BODYPARTSTR[i]))
+				    { bodyLoc=i; break;}
+				if(bodyLoc>=0)
+				{
+				    Vector bodyVec=injuries[bodyLoc];
+				    if(bodyVec==null){ injuries[bodyLoc]=new Vector(); bodyVec=injuries[bodyLoc];}
+				    int whichInjury=-1;
+				    for(int i=0;i<bodyVec.size();i++)
+				    {
+				        Object[] O=(Object[])bodyVec.elementAt(i);
+				        if(((String)O[0]).equalsIgnoreCase((String)remains.get(chosenOne)))
+				        { whichInjury=i; break;}
+				    }
+                    Object[] O=null;
+				    if(whichInjury<0)
+				    {
+				        O=new Object[2];
+				        O[0]=((String)remains.get(chosenOne)).toLowerCase();
+				        O[1]=Integer.valueOf(0);
+				        bodyVec.addElement(O);
+                        whichInjury=bodyVec.size()-1;
+				    }
+			        O=(Object[])bodyVec.elementAt(whichInjury);
+			        O[1]=Integer.valueOf(((Integer)O[1]).intValue()+CMath.s_int(amount));
+			        if(((Integer)O[1]).intValue()>100)
+			            O[1]=Integer.valueOf(100);
+				}
+			}
+		}
+		else
+		if(txt.indexOf('/')>0)
+			super.setMiscText(txt);
+		else
+		{
+		    injuries=new Vector[Race.BODY_PARTS];
+		    Vector sets=CMParms.parseSemicolons(txt,true);
+		    for(int s=0;s<sets.size();s++)
+		    {
+		        String set=(String)sets.elementAt(s);
+		        Vector<String> V=CMParms.parseAny(set,':',false);
+		        if(V.size()==3)
+		        {
+		            int part=CMath.s_int((String)V.firstElement());
+		            if((part>=0)&&(part<Race.BODY_PARTS))
+		            {
+	    	            String msg=(String)V.elementAt(1);
+	    	            int hurt=CMath.s_int((String)V.lastElement());
+	    	            if(injuries[part]==null)
+	    	                injuries[part] = new Vector();
+	    	            injuries[part].addElement(new Object[]{msg,Integer.valueOf(hurt)});
+		            }
+		        }
+		    }
+		}
         if(affected instanceof MOB)
         {
             MOB mob=(MOB)affected;
@@ -256,7 +315,7 @@ public class Injury extends StdAbility
 	    &&(msg.target() instanceof MOB)
 	    &&(msg.targetMessage()!=null)
         &&(msg.targetMessage().indexOf("<DAMAGE>")>=0)
-        &&(text().startsWith(msg.source().Name()+"/")
+        &&(super.miscText.startsWith(msg.source().Name()+"/")
 	       ||((CMProps.getIntVar(CMProps.SYSTEMI_INJPCTHP)>=(int)Math.round(CMath.div(((MOB)msg.target()).curState().getHitPoints(),((MOB)msg.target()).maxState().getHitPoints())*100.0))
 	        &&(CMLib.dice().rollPercentage()<=CMProps.getIntVar(CMProps.SYSTEMI_INJPCTCHANCE)))))
 	    {
@@ -297,11 +356,11 @@ public class Injury extends StdAbility
 					&&(remains.contains(lastLoc)))
 						chosenOne=remains.indexOf(lastLoc);
 					else
-					if((text().startsWith(msg.source().Name()+"/"))
-					&&(remains.contains(text().substring(msg.source().Name().length()+1))))
+					if((super.miscText.startsWith(msg.source().Name()+"/"))
+					&&(remains.contains(super.miscText.substring(msg.source().Name().length()+1))))
 					{
-						chosenOne=remains.indexOf(text().substring(msg.source().Name().length()+1));
-						setMiscText("");
+						chosenOne=remains.indexOf(super.miscText.substring(msg.source().Name().length()+1));
+						super.miscText="";
 					}
 					else
 					for(int i=0;i<chances.length;i++)
@@ -396,6 +455,7 @@ public class Injury extends StdAbility
 		{
 		    if(givenTarget.fetchEffect(ID())!=null)
 		        return false;
+		    super.tickDown=2;
 		    Ability A=(Ability)copyOf();
 		    A.startTickDown(mob,givenTarget,Integer.MAX_VALUE/2);
 		    if((commands!=null)&&(commands.size()>0)&&(commands.firstElement() instanceof CMMsg))
