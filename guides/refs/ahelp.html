@@ -108,6 +108,8 @@
 			
 			<li> <a href="#IMPORT">IMPORT</a>
 			
+			<li> <a href="#INJURE">INJURE</a>
+			
 			<li> <a href="#JRUN">JRUN</a>
 			
 			<li> <a href="#LINK">LINK</a>
@@ -131,6 +133,8 @@
 			<li> <a href="#MPRUN">MPRUN</a>
 			
 			<li> <a href="#MULTIWATCH">MULTIWATCH</a>
+			
+			<li> <a href="#NEWS">NEWS</a>
 			
 			<li> <a href="#NOPURGE">NOPURGE</a>
 			
@@ -333,7 +337,7 @@
 			
 			<p>
 			<a name="CREATE"><B>CREATE</B></a>
-			<pre>Command : CREATE<BR>Usage   : CREATE [ITEM TYPE] ... <BR>Example : create room e StdRoom<BR>Example : create item Longsword<BR>Example : create item Longsword@room<BR>Example : create item Longsword@an orc<BR>Example : create StdExit east<BR>Short(s): <BR>A command for the creation of items, mobs, quests, rooms, polls, exits,<BR>classes, races, etc. Enter CREATE for more information on command usage on items,<BR>mobs, components, and exits. Use AHELP QUESTS for more information on creating<BR>quests.  </pre>
+			<pre>Command : CREATE<BR>Usage   : CREATE [ITEM TYPE] ... <BR>Example : create room e StdRoom<BR>Example : create item Longsword<BR>Example : create item Longsword@room<BR>Example : create item Longsword@an orc<BR>Example : create StdExit east<BR>Example : create news<BR>Short(s): <BR>A command for the creation of items, mobs, quests, rooms, polls, exits,<BR>classes, races, etc. Enter CREATE for more information on command usage on items,<BR>mobs, components, and exits. Use AHELP QUESTS for more information on creating<BR>quests.  </pre>
 			</P>
 			
 			<p>
@@ -452,6 +456,11 @@
 			</P>
 			
 			<p>
+			<a name="INJURE"><B>INJURE</B></a>
+			<pre><BR>Skill    : Injure<BR>Domain   : Archon<BR>Use Cost : Movement (50) <BR>Quality  : Malicious<BR>Targets  : Creatures <BR>Range    : Touch - Range 1<BR>Commands : INJURE<BR>Usage    : INJURE [PLAYER NAME] [body part]<BR>Example  : injure gunther left hand<BR>From anywhere on the map, the player with this skill can cause the target to<BR>have one of their body parts instantly injured by 20%.</pre>
+			</P>
+			
+			<p>
 			<a name="JRUN"><B>JRUN</B></a>
 			<pre>Command  : JRUN<BR>Usage    : JRUN [FILENAME] [PARM1] ... <BR>Example  : jrun resources/myscript.js parm1 parm2<BR>Short(s) : <BR>Runs the given file as Javascript.  See the Programming Guide for more<BR>information on how to write Javascript for CoffeeMud.</pre>
 			</P>
@@ -463,7 +472,7 @@
 			
 			<p>
 			<a name="LIST"><B>LIST</B></a>
-			<pre>Command : LIST<BR>Usage   : LIST ([SHOPKEEPER])<BR>Example : list<BR>Example : list quests<BR>Example : list reports<BR>Example : list log last 10<BR>Short(s): <BR>The normal player version of this command will display the items which a<BR>particular shopkeeper MOB may be selling, along with the prices being offered to<BR>your characters. <BR><BR>The Admin version can also be qualified with UNLINKEDEXITS, ITEMS, ARMOR,<BR>ENVRESOURCES, WEAPONS, MOBS, ROOMS, AREA, LOCALES, BEHAVIORS, EXITS, RACES,<BR>CLASSES, STAFF, SPELLS, SONGS, PRAYERS, PROPERTIES, THIEFSKILLS, COMMON, JOURNALS,<BR>SKILLS, QUESTS, DISEASES, POISONS, TICKS, MAGIC, TECH, CLANITEMS, COMMANDJOURNAL,<BR>TITLES, NOPURGE, BANNED, RACECATS, LOG, USERS, LINKAGES, REPORTS, THREADS,<BR>RESOURCES, ONEWAYDOORS, CHANTS, POWERS, SUPERPOWERS, CLANS, GOVERNMENTS, FACTIONS,<BR>MATERIALS, OBJCOUNTERS, POLLS, CONTENTS, BUGS, TYPOS, IDEAS, TASKS, or ASSISTS.<BR>depending upon the listers security.</pre>
+			<pre>Command : LIST<BR>Usage   : LIST ([SHOPKEEPER])<BR>Example : list<BR>Example : list quests<BR>Example : list reports<BR>Example : list newss<BR>Example : list log last 10<BR>Short(s): <BR>The normal player version of this command will display the items which a<BR>particular shopkeeper MOB may be selling, along with the prices being offered to<BR>your characters. <BR><BR>The Admin version can also be qualified with UNLINKEDEXITS, ITEMS, ARMOR,<BR>ENVRESOURCES, WEAPONS, MOBS, ROOMS, AREA, LOCALES, BEHAVIORS, EXITS, RACES,<BR>CLASSES, STAFF, SPELLS, SONGS, PRAYERS, PROPERTIES, THIEFSKILLS, COMMON, JOURNALS,<BR>SKILLS, QUESTS, DISEASES, POISONS, TICKS, MAGIC, TECH, CLANITEMS, COMMANDJOURNAL,<BR>TITLES, NOPURGE, BANNED, RACECATS, LOG, USERS, LINKAGES, REPORTS, THREADS,<BR>RESOURCES, ONEWAYDOORS, CHANTS, POWERS, SUPERPOWERS, CLANS, GOVERNMENTS, FACTIONS,<BR>MATERIALS, OBJCOUNTERS, POLLS, CONTENTS, BUGS, TYPOS, IDEAS, TASKS, NEWS, or<BR>ASSISTS. depending upon the listers security.</pre>
 			</P>
 			
 			<p>
@@ -488,7 +497,7 @@
 			
 			<p>
 			<a name="MESSAGE_TYPES"><B>MESSAGE_TYPES</B></a>
-			<pre>The following are valid message codes in CoffeeMud.  They are usable as such in<BR>Scriptable for the EXECMSG_PROG and CNCLMSG_PROG triggers:<BR><BR>"AREAAFFECT", "PUSH", "PULL", "RECALL", "OPEN", "CLOSE", "PUT", "GET",<BR>"UNLOCK", "LOCK", "WIELD", "GIVE", "BUY", "SELL", "DROP", "WEAR", "FILL",<BR>"DELICATE_HANDS_ACT", "VALUE", "HOLD", "NOISYMOVEMENT", "QUIETMOVEMENT",<BR>"WEAPONATTACK", "LOOK", "READ", "NOISE", "SPEAK", "CAST_SPELL","LIST", "EAT",<BR>"ENTER", "FOLLOW", "LEAVE", "SLEEP", "SIT", "STAND", "FLEE", "NOFOLLOW", "WRITE",<BR>"FIRE", "COLD", "WATER", "GAS", "MIND", "GENERAL", "JUSTICE", "ACID", "ELECTRIC",<BR>"POISON", "UNDEAD", "MOUNT", "DISMOUNT", "OK_ACTION", "OK_VISUAL", "DRINK",<BR>"HANDS", "PARALYZE", "WAND_USE", "SERVE", "REBUKE", "ADVANCE", "DISEASE", "DEATH",<BR>"DEPOSIT", "WITHDRAW", "EMOTE", "QUIT", "SHUTDOWN", "VIEW", "RETIRE",<BR>"RETREAT","PANIC", "THROW", "EXTINGUISH", "TELL", "SITMOVE", "KNOCK", "PRACTICE",<BR>"TEACH", "REMOVE", "EXPCHANGE", "DAMAGE", "HEALING", "ROOMRESET", "RELOAD",<BR>"SNIFF", "ACTIVATE", "DEACTIVATE", "FACTIONCHANGE", "LOGIN", "LEVEL", "EXAMINE",<BR>"BORROW", "HUH", "LIFE","BID","CLANEVENT","UNLOAD","DUELCHALLENGE","LEGALWARRANT".<BR><BR>And here are some general message code types that may also be used:<BR>"TO<BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR>EYES","MOUTH","SOUND","GENERAL","MAGIC","DELICATE","MALICIOUS","CHANNEL","OPTIMIZE"</pre>
+			<pre>The following are valid message codes in CoffeeMud.  They are usable as such in<BR>Scriptable for the EXECMSG_PROG and CNCLMSG_PROG triggers:<BR><BR>"AREAAFFECT", "PUSH", "PULL", "RECALL", "OPEN", "CLOSE", "PUT", "GET",<BR>"UNLOCK", "LOCK", "WIELD", "GIVE", "BUY", "SELL", "DROP", "WEAR", "FILL",<BR>"DELICATE_HANDS_ACT", "VALUE", "HOLD", "NOISYMOVEMENT", "QUIETMOVEMENT",<BR>"WEAPONATTACK", "LOOK", "READ", "NOISE", "SPEAK", "CAST_SPELL","LIST", "EAT",<BR>"ENTER", "FOLLOW", "LEAVE", "SLEEP", "SIT", "STAND", "FLEE", "NOFOLLOW", "WRITE",<BR>"FIRE", "COLD", "WATER", "GAS", "MIND", "GENERAL", "JUSTICE", "ACID", "ELECTRIC",<BR>"POISON", "UNDEAD", "MOUNT", "DISMOUNT", "OK_ACTION", "OK_VISUAL", "DRINK",<BR>"HANDS", "PARALYZE", "WAND_USE", "SERVE", "REBUKE", "ADVANCE", "DISEASE", "DEATH",<BR>"DEPOSIT", "WITHDRAW", "EMOTE", "QUIT", "SHUTDOWN", "VIEW", "RETIRE",<BR>"RETREAT","PANIC", "THROW", "EXTINGUISH", "TELL", "SITMOVE", "KNOCK", "PRACTICE",<BR>"TEACH", "REMOVE", "EXPCHANGE", "DAMAGE", "HEALING", "ROOMRESET", "RELOAD",<BR>"SNIFF", "ACTIVATE", "DEACTIVATE", "FACTIONCHANGE", "LOGIN", "LEVEL", "EXAMINE",<BR>"BORROW", "HUH", "LIFE","BID","CLANEVENT","UNLOAD","DUELCHALLENGE","LEGALWARRANT".<BR><BR>And here are some general message code types that may also be used:<BR>"TO<BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR>H","SOUND","GENERAL","MAGIC","DELICATE","MALICIOUS","CHANNEL","OPTIMIZE","INTERMSG"</pre>
 			</P>
 			
 			<p>
@@ -498,7 +507,7 @@
 			
 			<p>
 			<a name="MODIFY"><B>MODIFY</B></a>
-			<pre>Command : MODIFY<BR>Usage   : MODIFY [ITEM TYPE] ... <BR>Example : modify room name The Grassy Knole<BR>Example : modify mob orc<BR>Example : modify item longsword<BR>Example : modify item "longsword@an orc"<BR>Example : modify jscript<BR>Short(s): <BR>A command for the modification of items, mobs, users, quests, rooms, polls,<BR>classes, races, and exits. Enter MODIFY for more information on command usage.</pre>
+			<pre>Command : MODIFY<BR>Usage   : MODIFY [ITEM TYPE] ... <BR>Example : modify room name The Grassy Knole<BR>Example : modify mob orc<BR>Example : modify item longsword<BR>Example : modify item "longsword@an orc"<BR>Example : modify jscript<BR>Example : modify news<BR>Short(s): <BR>A command for the modification of items, mobs, users, quests, rooms, polls,<BR>classes, races, news, and exits. Enter MODIFY for more information on command<BR>usage.</pre>
 			</P>
 			
 			<p>
@@ -509,6 +518,11 @@
 			<p>
 			<a name="MULTIWATCH"><B>MULTIWATCH</B></a>
 			<pre>Ability    : Multiwatch<BR>Usage      : MULTIWATCH (AUTO/STOP/ADD [NAME] ... [NAME])<BR>Example    : multiwatch add playerone playertwo<BR>Example    : multiwatch auto<BR>Example    : multiwatch stop<BR>Description: <BR>This is an archon skill to assist in determining if a set of players who are<BR>connected from the same ip address are the same person.  It does this by tracking<BR>certain pieces of data which together may be taken as rather circumstantial<BR>evidence of someone multiplaying.  The definition of the numbers are as follows:<BR>SYNC - The number of commands entered by more than one member of an IP group<BR>within a single 4 second period. <BR>SPEECH - This refers to SAY commands, broken into three sections.  The first<BR>number represents the number of SAY commands done in the same room with a player<BR>who has the same IP address.  The second number represents the number of SAY<BR>commands directed at another player.  The last number is the number of SAY commands<BR>total.<BR>SOCIALS - These are also divided into three numbers where, again, the first is<BR>the number of socials in the same room with a player with the same IP, the second<BR>being socials directed at another player, and the last being the number of total<BR>socials.<BR>CMD - The number of commands entered which are different than the previous<BR>command entered.<BR>ORDER - The number of times one of the players in the group gave an ORDER to<BR>another player in the group.  A sure sign indeed.</pre>
+			</P>
+			
+			<p>
+			<a name="NEWS"><B>NEWS</B></a>
+			<pre>The channel where logon news is shown.  Try LIST NEWS and MODIFY NEWS.</pre>
 			</P>
 			
 			<p>
