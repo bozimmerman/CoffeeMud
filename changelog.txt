@@ -2334,7 +2334,7 @@ Special/Reserved Quest called holidays can be added to/modified on an area-by-ar
 5. Immunities property supports legal immunity now
 6. Player corpses are now saved across reboots (if they haven't decayed)
 7. Rhino has been upgraded to 1.7R3
-# Build 5.7.5 Release ?/??/2011
+# Build 5.7.5 Release 11/05/2011
 1. CoffeeMud now supports html emails, after a fashion
 2. New command: DIG, for digging holes and putting stuff in them.  Gem Digging now uses GDIG as its command word.
 3. You can now manage MOTD/NEWS using LIST NEWS and CREATE/MODIFY NEWS.  New News is now in journal SYSTEM_NEWS
