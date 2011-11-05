@@ -382,7 +382,7 @@ public class CMFile
         if((demandLocal)&&(!allowedToWriteLocal))  vfsBits=vfsBits|CMFile.VFS_MASK_NOWRITEVFS;
 
         if((!demandVFS)
-        &&(demandLocal||(!allowedToReadVFS)))
+        &&(demandLocal||((!allowedToReadVFS) && (allowedToWriteLocal))))
             vfsBits=vfsBits|CMFile.VFS_MASK_ISLOCAL;
     }
 
