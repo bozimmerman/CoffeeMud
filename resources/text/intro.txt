@@ -1,12 +1,3 @@
-
-     CCC   OO   FFFF  FFFF  EEEE  EEEE  M   M  U  U  DDD
-    C     O  O  F     F     E     E     MM MM  U  U  D  D
-    C     O  O  FFF   FFF   EEE   EEE   M M M  U  U  D  D
-    C     O  O  F     F     E     E     M   M  U  U  D  D
-     CCC   OO   F     F     EEEE  EEEE  M   M   UU   DDD    v5.7
-
-                (C) 2000-2011 Bo Zimmerman
-
                         (
                           )     (
                    ___...(-------)-....___
@@ -14,13 +5,13 @@
          .-'``'|-._             )         _.-|
         /  .--.|   `""---...........---""`   |
        /  /    |                             |
-       |  |    |                             |
+       |  |    | @MudInfo?NAME@
         \  \   |                             |
-         `\ `\ |                             |
-           `\ `|                             |
-           _/ /\                             /
-          (__/  \                           /
-       _..---""` \                         /`""---.._
+         `\ `\ | Powered By CoffeeMud v5.7   |                         
+           `\ `| (C) 2000-2011 Bo Zimmerman  |
+           _/ /\ www.coffeemud.org           /
+          (__/  \  This file is:            /
+       _..---""` \ resources/text/intro.txt/`""---.._
     .-'           \                       /          '-.
    :               `-.__             __.-'              :
    :                  ) ""---...---"" (                 :
@@ -29,5 +20,9 @@
        '._     """----.....______.....----"""     _.'
           `""--..,,_____            _____,,..--""`
                         `"""----"""`
-                        
+
 Welcome to @MudInfo?NAME@
+ 
+
+
+ 
