@@ -968,6 +968,7 @@ public class StdRoom implements Room
 					case 'C': addMe = A.getTimeObj().getTODCode()==code.num; break;
 					case 'S': addMe = A.getTimeObj().getSeasonCode()==code.num; break;
 					case 'M': addMe =  ((mob!=null)&&(CMath.bset(mob.phyStats().disposition(),code.num))); break;
+					case 'V': addMe =  ((mob!=null)&&(mob.playerStats()!=null)&&(mob.playerStats().hasVisited(this))); break;
 					}
 					if(addMe)
 						buf.append(parseVariesCodes(mob,A,text.substring(aligatorDex+code.openTag.length(),y)));

@@ -41,7 +41,8 @@ public class Enter extends Go
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
-		boolean consoleMode=((mob.riding() instanceof ShipComponent.ShipPanel)&&(((ShipComponent.ShipPanel)mob.riding()).panelType()==ShipComponent.ShipPanel.COMPONENT_PANEL_COMPUTER));
+		boolean consoleMode=((mob.riding() instanceof ShipComponent.ShipPanel)
+				&&(((ShipComponent.ShipPanel)mob.riding()).panelType()==ShipComponent.ShipPanel.COMPONENT_PANEL_COMPUTER));
 		if(commands.size()<=1)
 		{
 			if(consoleMode)

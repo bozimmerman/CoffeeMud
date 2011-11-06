@@ -131,6 +131,7 @@ public interface Room extends PhysicalAgent, ItemPossessor
 		CLIMBING('M',PhyStats.IS_CLIMBING),
 		INVISIBLE('M',PhyStats.IS_INVISIBLE),
 		HIDDEN('M',PhyStats.IS_HIDDEN),
+		VISITED('V',-1),
 		ELSE('\n',-1),
 		VARIES('\r',-1)
 		;
