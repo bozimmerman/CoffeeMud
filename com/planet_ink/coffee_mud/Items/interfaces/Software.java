@@ -32,7 +32,8 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 public interface Software extends Item, Technical
 {
 	public String getParentMenu();
-	
-	
+	public String getInternalName();
+	public String getActivationString();
+	public String getActivationDescription();
 }
 

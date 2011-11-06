@@ -52,6 +52,7 @@ public class StdProgram extends StdItem implements Software
 	
 	public String getParentMenu() { return parentMenu; }
 	
-	
+	public String getActivationString(){ return "";}
+	public String getActivationDescription() { return "";}
+	public String getInternalName() { return "";}
 }
-

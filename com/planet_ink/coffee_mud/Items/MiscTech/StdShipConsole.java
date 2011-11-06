@@ -46,6 +46,7 @@ public class StdShipConsole extends StdRideable
 		containType=Container.CONTAIN_SSCOMPONENTS;
 		rideBasis=Rideable.RIDEABLE_TABLE;
 		riderCapacity=1;
+		basePhyStats.setSensesMask(basePhyStats.sensesMask()|PhyStats.SENSE_ITEMREADABLE);
 		setLidsNLocks(true,true,false,false);
 		capacity=500;
 		material=RawMaterial.RESOURCE_STEEL;
@@ -66,11 +67,45 @@ public class StdShipConsole extends StdRideable
 	public int panelType(){return panelType;}
 	public void setPanelType(int type){panelType=type;}
 	
+	protected long lastSoftwareCheck=0;
+	protected List<Software> software=null;
+	
+	protected String currentMenu="";
+	
 	public boolean canContain(Environmental E)
 	{
 		return E instanceof Software;
 	}
 
+	public String readableText()
+	{
+		final StringBuilder str=new StringBuilder(super.readableText());
+		if(str.length()>0) str.append("\n\r");
+        if(!activated())
+            str.append("The screen is blank.  Try ACTIVATEing it first.");
+        else
+        {
+	        if((software==null)||(System.currentTimeMillis()-lastSoftwareCheck)>(60*1000))
+	        {
+	        	final List<Item> list=getContents();
+	        	final LinkedList<Software> softwareList=new LinkedList<Software>();
+	        	for(Item I : list)
+	        		if(I instanceof Software)
+	        			softwareList.add((Software)I);
+	        	lastSoftwareCheck=System.currentTimeMillis();
+	        	software=softwareList;
+	        }
+	        for(final Software S : software)
+	        	if(S.getInternalName().equals(currentMenu))
+	        		str.append(S.readableText());
+	        	else
+	        	if(S.getParentMenu().equals(currentMenu))
+	        		str.append(S.getActivationString()).append(": ").append(S.getActivationDescription()).append("\n\r");
+        }
+        
+		return str.toString();
+	}
+	
 	public boolean okMessage(Environmental host, CMMsg msg)
 	{
 	    if(msg.amITarget(this))
@@ -97,23 +132,17 @@ public class StdShipConsole extends StdRideable
 	    }
 	    return super.okMessage(host,msg);
 	}
+
 	public void executeMsg(Environmental host, CMMsg msg)
 	{
 	    if(msg.amITarget(this))
 	    {
 	        switch(msg.targetMinor())
 	        {
-	        case CMMsg.TYP_READ:
-		    {
-		        if(!activated())
-		        {
-		            msg.source().tell("The screen is blank.  Try ACTIVATEing it first.");
-		        }
-		        else
-		        {
-		        }
-		        return;
-		    }
+	        case CMMsg.TYP_GET:
+	        case CMMsg.TYP_PUT:
+	        	lastSoftwareCheck=0;
+	        	break;
 	        case CMMsg.TYP_ACTIVATE:
 	            if(!activated())
 	            {
