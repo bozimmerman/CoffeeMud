@@ -51,7 +51,7 @@ public interface EnglishParsing extends CMLibrary
     public Ability getToEvoke(MOB mob, List<String> commands);
     public boolean preEvoke(MOB mob, List<String> commands, int secondsElapsed, double actionsRemaining);
     public void evoke(MOB mob, Vector commands);
-    public boolean containsString(String toSrchStr, String srchStr);
+    public boolean containsString(final String toSrchStr, final String srchStr);
     public String bumpDotNumber(String srchStr);
     public Environmental fetchEnvironmental(Iterable<? extends Environmental> list, String srchStr, boolean exactOnly);
     public Environmental fetchEnvironmental(Map<String, ? extends Environmental> list, String srchStr, boolean exactOnly);

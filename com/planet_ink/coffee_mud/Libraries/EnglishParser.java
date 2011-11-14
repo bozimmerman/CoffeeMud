@@ -555,7 +555,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
         return false;
     }
     
-	public boolean containsString(String toSrchStr, String srchStr)
+	public boolean containsString(final String toSrchStr, final String srchStr)
 	{
 	    if((toSrchStr==null)||(srchStr==null)) return false;
 	    if((toSrchStr.length()==0)&&(srchStr.length()>0)) return false;

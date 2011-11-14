@@ -1082,7 +1082,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
                         }
                         for(int n=0;n<names.size();n++)
                         {
-                            String localeName=((String)names.elementAt(n)).toUpperCase();
+                            final String localeName=((String)names.elementAt(n)).toUpperCase();
                             try
                             {
                                 Enumeration e=null;
@@ -1097,7 +1097,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
                                                 ||localeName.equalsIgnoreCase("all"));
                                 for(;e.hasMoreElements();)
                                 {
-                                    Room R2=(Room)e.nextElement();
+                                	final Room R2=(Room)e.nextElement();
                                     if(addAll||CMClass.classID(R2).toUpperCase().indexOf(localeName)>=0)
                                         choices.add(R2);
                                     else
@@ -1209,10 +1209,10 @@ public class DefaultQuest implements Quest, Tickable, CMObject
                         }
                         for(int n=0;n<names.size();n++)
                         {
-                            String localeName=((String)names.elementAt(n)).toUpperCase();
+                            final String localeName=((String)names.elementAt(n)).toUpperCase();
                             try
                             {
-                                Enumeration e=null;
+                                final Enumeration e;
                                 if(useThese!=null)
                                 	e=new IteratorEnumeration<Room>(useThese.iterator());
                                 else
@@ -1224,9 +1224,9 @@ public class DefaultQuest implements Quest, Tickable, CMObject
                                              ||localeName.equalsIgnoreCase("all");
                                 for(;e.hasMoreElements();)
                                 {
-                                    Room R2=(Room)e.nextElement();
-                                    String display=R2.displayText().toUpperCase();
-                                    String desc=R2.description().toUpperCase();
+                                    final Room R2=(Room)e.nextElement();
+                                    final String display=R2.displayText().toUpperCase();
+                                    final String desc=R2.description().toUpperCase();
                                     if((mask!=null)&&(!CMLib.masking().maskCheck(mask,R2,true)))
                                         continue;
                                     if(addAll)
@@ -1241,7 +1241,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
                                         choices0.add(R2);
                                     }
                                     else
-                                    if(display.equalsIgnoreCase(localeName))
+                                    if(display.equals(localeName))
                                     {
                                         if((choices==null)||(choices==choices2)||(choices==choices3))
                                             choices=choices1;
