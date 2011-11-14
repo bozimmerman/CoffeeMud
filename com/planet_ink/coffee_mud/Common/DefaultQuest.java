@@ -253,6 +253,32 @@ public class DefaultQuest implements Quest, Tickable, CMObject
     	}
     }
 
+    private Enumeration<Room> getAppropriateRoomSet(QuestState q)
+    {
+        if(q.roomGroup!=null)
+            return new IteratorEnumeration(q.roomGroup.iterator());
+        else
+        if(q.area!=null)
+            return q.area.getMetroMap();
+        return CMLib.map().rooms();
+    }
+
+    private final Iterable<Room> buildAppropriateRoomIterable(final QuestState q, final Iterable useThese)
+    {
+        final Enumeration<Room> e;
+        if(useThese!=null)
+        	e=new IteratorEnumeration<Room>(useThese.iterator());
+        else
+        if(q.area!=null)
+        	e=q.area.getMetroMap();
+        else
+        	e=CMLib.map().rooms();
+        final LinkedList<Room> list=new LinkedList<Room>();
+        for(;e.hasMoreElements();)
+        	list.add(e.nextElement());
+        return list;
+    }
+    
     private List sortSelect(Environmental E, String str,
 				    		List choices,
 				    		List choices0,
@@ -366,16 +392,6 @@ public class DefaultQuest implements Quest, Tickable, CMObject
     {
     	if(!quietFlag) Log.errOut("Quest",msg);
         q.error=true;
-    }
-
-    private Enumeration<Room> getAppropriateRoomSet(QuestState q)
-    {
-        if(q.roomGroup!=null)
-            return new IteratorEnumeration(q.roomGroup.iterator());
-        else
-        if(q.area!=null)
-            return q.area.getMetroMap();
-        return CMLib.map().rooms();
     }
 
     private void sizeDownTo(List V, int num)
@@ -1080,24 +1096,18 @@ public class DefaultQuest implements Quest, Tickable, CMObject
             						.plus(TrackingLibrary.TrackingFlag.AREAONLY);
                         	useThese=CMLib.tracking().getRadiantRooms(q.room,flags,range);
                         }
+                        final Iterable<Room> list=buildAppropriateRoomIterable(q,useThese);
                         for(int n=0;n<names.size();n++)
                         {
                             final String localeName=((String)names.elementAt(n)).toUpperCase();
                             try
                             {
-                                Enumeration e=null;
-                                if(useThese!=null)
-                                	e=new IteratorEnumeration<Room>(useThese.iterator());
-                                else
-                                if(q.area!=null)
-                                	e=q.area.getMetroMap();
-                                else
-                                	e=CMLib.map().rooms();
+                                final Iterator<Room> e=list.iterator();
                                 boolean addAll=(localeName.equalsIgnoreCase("any")
                                                 ||localeName.equalsIgnoreCase("all"));
-                                for(;e.hasMoreElements();)
+                                for(;e.hasNext();)
                                 {
-                                	final Room R2=(Room)e.nextElement();
+                                	final Room R2=(Room)e.next();
                                     if(addAll||CMClass.classID(R2).toUpperCase().indexOf(localeName)>=0)
                                         choices.add(R2);
                                     else
@@ -1207,24 +1217,18 @@ public class DefaultQuest implements Quest, Tickable, CMObject
             						.plus(TrackingLibrary.TrackingFlag.AREAONLY);
                         	useThese=CMLib.tracking().getRadiantRooms(q.room,flags,range);
                         }
+                        final Iterable<Room> list=buildAppropriateRoomIterable(q,useThese);
                         for(int n=0;n<names.size();n++)
                         {
                             final String localeName=((String)names.elementAt(n)).toUpperCase();
                             try
                             {
-                                final Enumeration e;
-                                if(useThese!=null)
-                                	e=new IteratorEnumeration<Room>(useThese.iterator());
-                                else
-                                if(q.area!=null)
-                                	e=q.area.getMetroMap();
-                                else
-                                	e=CMLib.map().rooms();
+                                final Iterator<Room> e=list.iterator();
                                 boolean addAll=localeName.equalsIgnoreCase("any")
                                              ||localeName.equalsIgnoreCase("all");
-                                for(;e.hasMoreElements();)
+                                for(;e.hasNext();)
                                 {
-                                    final Room R2=(Room)e.nextElement();
+                                    final Room R2=(Room)e.next();
                                     final String display=R2.displayText().toUpperCase();
                                     final String desc=R2.description().toUpperCase();
                                     if((mask!=null)&&(!CMLib.masking().maskCheck(mask,R2,true)))
