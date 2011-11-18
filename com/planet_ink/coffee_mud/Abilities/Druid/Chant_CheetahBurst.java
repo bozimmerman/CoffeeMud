@@ -42,18 +42,18 @@ public class Chant_CheetahBurst extends Chant
     public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_SHAPE_SHIFTING;}
 	public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_SELF;}
 	protected int canAffectCode(){return CAN_MOBS;}
+	protected int cheetahTick=3;
 
 	public Chant_CheetahBurst()
 	{
 	    super();
-
-	    tickDown = 3;
+	    cheetahTick = 3;
 	}
 
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
-		if(tickDown==1)
+		if(cheetahTick==1)
 			affectableStats.setSpeed(affectableStats.speed() + 3.0+CMath.mul(0.1,getXLEVELLevel(invoker())));
 	}
 
@@ -76,13 +76,13 @@ public class Chant_CheetahBurst extends Chant
 		if((affected==null)||(!(affected instanceof MOB)))
 			return true;
 		MOB mob=(MOB)affected;
-		if((--tickDown)==0)
+		if((--cheetahTick)==0)
 		{
 			mob.recoverPhyStats();
-			tickDown=3;
+			cheetahTick=3;
 		}
 		else
-		if(tickDown==1)
+		if(cheetahTick==1)
 			mob.recoverPhyStats();
 		mob.curState().adjMovement(mob.charStats().getStat(CharStats.STAT_STRENGTH)/5,mob.maxState());
 		return true;
@@ -124,6 +124,8 @@ public class Chant_CheetahBurst extends Chant
 				{
 					target.location().show(target,null,CMMsg.MSG_OK_ACTION,"<S-NAME> gain(s) cheetah-like reflexes!");
 					beneficialAffect(mob,target,asLevel,0);
+					Chant_CheetahBurst A=(Chant_CheetahBurst)target.fetchEffect(ID());
+					if(A!=null) A.cheetahTick=3;
 				}
 			}
 		}

@@ -96,8 +96,6 @@ public class Spell_MassDisintegrate extends Spell
 						{
 							if(target.curState().getHitPoints()>0)
 								CMLib.combat().postDamage(mob,target,this,target.curState().getHitPoints()*100,CMMsg.MASK_ALWAYS|CMMsg.TYP_CAST_SPELL,Weapon.TYPE_BURSTING,("^SThe spell <DAMAGE> <T-NAME>!^?")+CMProps.msp("spelldam2.wav",40));
-							if(!target.amDead())
-								return false;
 						}
 					}
 				}
@@ -111,9 +109,8 @@ public class Spell_MassDisintegrate extends Spell
                 {
 					List<DeadBody> DBs=CMLib.utensils().getDeadBodies(I);
                     boolean ok=true;
-                    for(int v=0;v<DBs.size();v++)
+                    for(DeadBody DB : DBs)
                     {
-                        DeadBody DB=(DeadBody)DBs.get(v);
                         if(DB.playerCorpse()
                         &&(!((DeadBody)I).mobName().equals(mob.Name())))
                             ok=false;

@@ -1423,7 +1423,7 @@ public interface RawMaterial extends Item
 			descs[descs.length-1]=name;
 			
 			smells=Arrays.copyOf(smells, smells.length+1);
-			smells[smells.length-1]=name;
+			smells[smells.length-1]=smell;
 			
 			effects=Arrays.copyOf(effects, effects.length+1);
 			effects[effects.length-1]=abilityID;
