@@ -149,12 +149,15 @@ public class Dragonbreath extends StdAbility
 				strikeType=CMMsg.TYP_ACID;
 				break;
 		case 'g':
-				puffPhrase="<S-NAME> puff(s) gas harmlessly from <S-HIS-HER> mouth.";
-				autoPhrase="A cloud of deadly gas descends!";
-				stuffWord="gas";
-				castPhrase="<S-NAME> blow(s) deadly gas from <S-HIS-HER> mouth!";
-				WeaponType=Weapon.TYPE_GASSING;
-				strikeType=CMMsg.TYP_GAS;
+				if(CMLib.dice().rollPercentage()>50)
+				{
+					puffPhrase="<S-NAME> puff(s) gas harmlessly from <S-HIS-HER> mouth.";
+					autoPhrase="A cloud of deadly gas descends!";
+					stuffWord="gas";
+					castPhrase="<S-NAME> blow(s) deadly gas from <S-HIS-HER> mouth!";
+					WeaponType=Weapon.TYPE_GASSING;
+					strikeType=CMMsg.TYP_GAS;
+				}
 				break;
 
 		}

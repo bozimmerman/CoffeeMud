@@ -73,10 +73,12 @@ public class Prayer_Poison extends Prayer
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto)|CMMsg.MASK_MALICIOUS,auto?"":"^S<S-NAME> inflict(s) an unholy poison upon <T-NAMESELF>.^?");
-			if(mob.location().okMessage(mob,msg))
+			CMMsg msg2=CMClass.getMsg(mob,target,this,CMMsg.MASK_MALICIOUS|CMMsg.TYP_POISON,null);
+			if(mob.location().okMessage(mob,msg) && mob.location().okMessage(mob,msg2))
 			{
 				mob.location().send(mob,msg);
-				if(msg.value()<=0)
+				mob.location().send(mob,msg2);
+				if((msg.value()<=0)&&(msg2.value()<=0))
 				{
 					Ability A=CMClass.getAbility("Poison");
 					A.invoke(mob,target,true,asLevel);

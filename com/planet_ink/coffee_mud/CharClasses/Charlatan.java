@@ -262,7 +262,8 @@ public class Charlatan extends StdCharClass
 			{
 				Ability A=mob.fetchAbility(a);
 				if((CMLib.ableMapper().qualifyingLevel(mob,A)<=0)
-				&&((CMLib.ableMapper().lowestQualifyingLevel(A.ID())==classLevel)||(CMLib.ableMapper().lowestQualifyingLevel(A.ID())==classLevel-1)))
+				&&((CMLib.ableMapper().lowestQualifyingLevel(A.ID())==classLevel)
+				  ||(CMLib.ableMapper().lowestQualifyingLevel(A.ID())==classLevel-1)))
 					return;
 			}
 			// now only give one, for current level, respecting alignment!

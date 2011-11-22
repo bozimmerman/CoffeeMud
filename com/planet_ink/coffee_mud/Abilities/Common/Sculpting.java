@@ -305,7 +305,7 @@ public class Sculpting extends EnhancedCraftingSkill implements ItemCraftor, Men
 					try
 					{
 						of=mob.session().prompt("What is this a statue of?","");
-						if(of.trim().length()==0)
+						if((of.trim().length()==0)||(of.indexOf('<')>=0))
 							return false;
 					}
 					catch(java.io.IOException x)

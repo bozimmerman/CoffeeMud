@@ -69,7 +69,7 @@ public class Play_Blues extends Play
 	{
 		if(!super.tick(ticking,tickID))
 			return false;
-		if((affected!=null)&&(affected instanceof MOB))
+		if((affected!=null)&&(affected instanceof MOB)&&(affected!=invoker()))
 		{
 			MOB mob=(MOB)affected;
 			mob.curState().adjHunger(-2,mob.maxState().maxHunger(mob.baseWeight()));
@@ -84,7 +84,8 @@ public class Play_Blues extends Play
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
-		if(invoker==null) return;
+		if((invoker==null)||(invoker==affected))
+			return;
 		affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()
 											-((invoker().charStats().getStat(CharStats.STAT_CHARISMA)/4)
 													+(adjustedLevel(invoker(),0))));
@@ -92,7 +93,7 @@ public class Play_Blues extends Play
 	public void affectCharStats(MOB mob, CharStats stats)
 	{
 		super.affectCharStats(mob,stats);
-		if(invoker()!=null)
+		if((invoker()!=null)&&(invoker()!=mob))
 			stats.setStat(CharStats.STAT_SAVE_JUSTICE,stats.getStat(CharStats.STAT_SAVE_JUSTICE)-(invoker().charStats().getStat(CharStats.STAT_CHARISMA)+getXLEVELLevel(invoker())));
 	}
 }

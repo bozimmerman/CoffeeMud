@@ -473,7 +473,7 @@ public class JewelMaking extends EnhancedCraftingSkill implements ItemCraftor, M
 				try
 				{
 					of=mob.session().prompt("What is this item a representation of?","");
-					if(of.trim().length()==0)
+					if((of.trim().length()==0)||(of.indexOf('<')>=0))
 						return false;
 				}
 				catch(java.io.IOException x)

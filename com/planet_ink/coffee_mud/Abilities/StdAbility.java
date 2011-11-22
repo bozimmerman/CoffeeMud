@@ -1539,9 +1539,13 @@ public class StdAbility implements Ability
 			if(yourAbility.proficiency()<prof75)
 			{
 				student.setPractices(student.getPractices()-practicesToPractice(student));
-				yourAbility.setProficiency(yourAbility.proficiency()+(int)Math.round(25.0*(CMath.div(teacher.charStats().getStat(CharStats.STAT_WISDOM)+student.charStats().getStat(CharStats.STAT_INTELLIGENCE),36.0))));
-				if(yourAbility.proficiency()>prof75)
-					yourAbility.setProficiency(prof75);
+				int newProf = yourAbility.proficiency()+(int)Math.round(25.0*(CMath.div(teacher.charStats().getStat(CharStats.STAT_WISDOM)+student.charStats().getStat(CharStats.STAT_INTELLIGENCE),36.0)));
+				if(newProf > prof75) newProf=prof75;
+				yourAbility.setProficiency(newProf);
+				Ability yourEffect=student.fetchEffect(ID());
+				if((yourEffect!=null)
+				&&((yourEffect.isNowAnAutoEffect())||(yourEffect.invoker()==student)))
+					yourEffect.setProficiency(yourAbility.proficiency());
 			}
 		}
 	}

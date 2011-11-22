@@ -94,34 +94,38 @@ public class Goblin extends StdMOB
 
 		Weapon m=null;
 		Armor c=null;
-		if (goblinType > 0   && goblinType <=  99)
+		if (goblinType >= 0   && goblinType <=  99)
 		{
 			username="a nasty Goblin";
 			setDescription("He\\`s dirty, cranky, and very smelly.");
 			setDisplayText("A nasty goblin marches around.");
 			m=CMClass.getWeapon("Mace");
 		}
-		if (goblinType > 100 && goblinType <= 199)
+		else
+		if (goblinType >= 100 && goblinType <= 199)
 		{
 			username="a Goblin";
 			setDescription("He\\`s smelly and has red skin.");
 			setDisplayText("A nasty goblin scuttles about.");
 			m=CMClass.getWeapon("Mace");
 		}
-		if (goblinType > 200 && goblinType <= 299)
+		else
+		if (goblinType >= 200 && goblinType <= 299)
 		{
 			username="an ugly Goblin";
 			setDescription("He\\`s dirty, cranky, and very smelly.");
 			setDisplayText("A nasty goblin scurries nearby.");
 			m=CMClass.getWeapon("Mace");
 		}
-		if (goblinType > 300 && goblinType <= 399)
+		else
+		if (goblinType >= 300 && goblinType <= 399)
 		{
 			username="a Goblin female";
 			setDescription("She\\`s ugly and very smelly.");
 			setDisplayText("A female goblin sits nearby.");
 		}
-		if (goblinType > 400 && goblinType <= 499)
+		else
+		if (goblinType >= 400 && goblinType <= 499)
 		{
 			username="a mean Goblin";
 			setDescription("He appears to be bigger...and smellier than most goblins.");
@@ -129,35 +133,39 @@ public class Goblin extends StdMOB
 			m=CMClass.getWeapon("Shortsword");
 			c = CMClass.getArmor("ChainMailArmor");
 		}
-		if (goblinType > 500 && goblinType <= 599)
+		else
+		if (goblinType >= 500 && goblinType <= 599)
 		{
 			username="a smelly Goblin";
 			setDescription("He\\`s dirty, cranky, and very smelly.");
 			setDisplayText("A nasty goblin sits nearby.");
 			m=CMClass.getWeapon("Mace");
 		}
-		if (goblinType > 600 && goblinType <= 699)
+		else
+		if (goblinType >= 600 && goblinType <= 699)
 		{
 			username="a Goblin";
 			setDescription("He\\`s dirty, cranky, and very smelly.");
 			setDisplayText("A very smelly goblin stands near you.");
 			m=CMClass.getWeapon("Mace");
 		}
-		if (goblinType > 700 && goblinType <= 799)
+		else
+		if (goblinType >= 700 && goblinType <= 799)
 		{
 			username="a Goblin";
 			setDescription("He\\`s dirty, cranky, and very smelly.");
 			setDisplayText("A nasty goblin glares are you with lemon colored eyes.");
 			m=CMClass.getWeapon("Mace");
 		}
-		if (goblinType > 800 && goblinType <= 899)
+		else
+		if (goblinType >= 800 && goblinType <= 899)
 		{
 			username="a Goblin";
 			setDescription("He\\`s dirty, cranky, and very smelly.");
 			setDisplayText("A goblin stares are you with red eyes.");
 			m=CMClass.getWeapon("Mace");
 		}
-		if (goblinType > 900 && goblinType <= 999)
+		else
 		{
 			username="an armed Goblin";
 			setDescription("He\\`s wielding a sword.");

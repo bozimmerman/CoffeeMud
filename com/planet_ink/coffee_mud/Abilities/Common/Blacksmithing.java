@@ -244,7 +244,7 @@ public class Blacksmithing extends EnhancedCraftingSkill implements ItemCraftor
 			try
 			{
 				String of=mob.session().prompt("What is this a statue of?","");
-				if(of.trim().length()==0)
+				if((of.trim().length()==0)||(of.indexOf('<')>=0))
 					return false;
 				building.setName(itemName+" of "+of.trim());
 				building.setDisplayText(itemName+" of "+of.trim()+" is here");

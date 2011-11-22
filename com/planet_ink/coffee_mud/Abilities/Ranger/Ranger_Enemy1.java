@@ -110,6 +110,18 @@ public class Ranger_Enemy1 extends StdAbility
 			affectableStats.setDamage(affectableStats.damage()+(int)Math.round(damBonus));
 		}
 	}
+	
+	public boolean okMessage(final Environmental myHost, final CMMsg msg)
+	{
+		if((msg.targetMinor()==CMMsg.TYP_DAMAGE)
+		&&(msg.source()==affected)
+		&&(msg.target() instanceof MOB)
+		&&(((MOB)msg.target()).charStats().getMyRace().racialCategory().equals(text()))
+		&&(CMLib.dice().roll(1, 10, 0)==1))
+			helpProficiency(msg.source());
+		return super.okMessage(myHost, msg);
+	}
+	
 	public boolean autoInvocation(MOB mob)
 	{
 		if(mob.charStats().getCurrentClass().ID().equals("Archon"))

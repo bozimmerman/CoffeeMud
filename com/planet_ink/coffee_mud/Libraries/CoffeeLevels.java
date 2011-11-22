@@ -286,7 +286,7 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 
 	public void loseExperience(MOB mob, int amount)
 	{
-		if((mob==null)||(mob.playerStats()==null)||(mob.soulMate()!=null)) 
+		if((mob==null)||(mob.soulMate()!=null)) 
 			return;
 		if(Log.combatChannelOn())
 		{
@@ -294,7 +294,7 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
         	String mobName=mob.Name();
 	    	Log.killsOut("-EXP",room+":"+mobName+":"+amount);
 		}
-        if((mob.getLiegeID().length()>0)&&(amount>2))
+        if((mob.getLiegeID().length()>0)&&(amount>2)&&(!mob.isMonster()))
         {
 			MOB sire=CMLib.players().getPlayer(mob.getLiegeID());
 			if((sire!=null)&&(CMLib.flags().isInTheGame(sire,true)))
@@ -305,7 +305,7 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 					sire.tell("^N^!You lose ^H"+sireShare+"^N^! experience points from "+mob.Name()+".^N");
             }
         }
-        if((mob.getClanID().length()>0)&&(amount>2))
+        if((mob.getClanID().length()>0)&&(amount>2)&&(!mob.isMonster()))
         {
             Clan C=mob.getMyClan();
             if((C!=null)&&(C.getTaxes()>0.0))

@@ -924,7 +924,9 @@ public class StdItem implements Item
 					return false;
 				}
 				if((mob.phyStats().level()<phyStats().level()-(10+(mob.phyStats().level()/5)))
-				&&(!(mob instanceof ShopKeeper)))
+				&&(!(mob instanceof ShopKeeper))
+				&&(!mob.charStats().getMyRace().leveless())
+				&&(!mob.charStats().getCurrentClass().leveless()))
 				{
 					mob.tell(name()+" is too powerful to endure possessing it.");
 					return false;

@@ -278,6 +278,7 @@ public class Sense extends StdLibrary implements CMFlagLibrary
         List<Behavior> V=CMLib.flags().flaggedBehaviors(M,Behavior.FLAG_POTENTIALLYAGGRESSIVE);
         return ((V==null)||(V.size()==0))? false:true;
     }
+
     public boolean isAggressiveTo(MOB M, MOB toM)
     {
         if((M==null)||(toM==null)) return false;

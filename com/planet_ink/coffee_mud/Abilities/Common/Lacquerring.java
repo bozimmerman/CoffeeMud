@@ -148,7 +148,7 @@ public class Lacquerring extends CommonSkill
 			darkFlag=true;
 			writing=writing.substring(5).trim();
 		}
-		if(" white green blue red yellow cyan purple ".indexOf(" "+writing.trim()+" ")<0)
+		if((" white green blue red yellow cyan purple ".indexOf(" "+writing.trim()+" ")<0)||(writing.trim().indexOf(' ')>=0))
 		{
 			commonTell(mob,"You can't lacquer anything '"+writing+"'.  Try white, green, blue, red, yellow, cyan, or purple. You can also prefix the colors with the word 'dark'.");
 			return false;

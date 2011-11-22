@@ -41,7 +41,7 @@ public class Prayer_InfuseUnholiness extends Prayer
 	public String displayText(){return "(Infused Unholiness)";}
 	public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_EVANGELISM;}
 	public long flags(){return Ability.FLAG_UNHOLY;}
-	public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
+	public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
 	protected int canAffectCode(){return Ability.CAN_MOBS|Ability.CAN_ITEMS|Ability.CAN_ROOMS|Ability.CAN_EXITS;}
 	protected int canTargetCode(){return Ability.CAN_MOBS|Ability.CAN_ITEMS|Ability.CAN_ROOMS|Ability.CAN_EXITS;}
     protected int serviceRunning=0;

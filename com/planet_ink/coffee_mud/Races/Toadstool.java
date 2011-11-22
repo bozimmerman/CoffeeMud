@@ -116,16 +116,9 @@ public class Toadstool extends StdRace
 		{
 			if(resources.size()==0)
 			{
-				resources.addElement(makeResource
-				("a "+name().toLowerCase()+" voice box",RawMaterial.RESOURCE_MEAT));
-				resources.addElement(makeResource
-				("some "+name().toLowerCase()+" feathers",RawMaterial.RESOURCE_FEATHERS));
-				resources.addElement(makeResource
-				("some "+name().toLowerCase()+" meat",RawMaterial.RESOURCE_POULTRY));
-				resources.addElement(makeResource
-				("some "+name().toLowerCase()+" blood",RawMaterial.RESOURCE_BLOOD));
-				resources.addElement(makeResource
-				("a pile of "+name().toLowerCase()+" bones",RawMaterial.RESOURCE_BONE));
+				for(int i=0;i<5;i++)
+					resources.addElement(makeResource
+					("some "+name().toLowerCase()+" flesh",RawMaterial.RESOURCE_MUSHROOMS));
 			}
 		}
 		return resources;

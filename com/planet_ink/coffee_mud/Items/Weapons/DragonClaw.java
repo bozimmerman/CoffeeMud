@@ -37,9 +37,9 @@ public class DragonClaw extends Natural
 	{
 		super();
 
-		setName("a vicious dragons claw.");
-		setDisplayText("a Dragons Claw");
-		setDescription("the claw of a dragon");
+		setName("a vicious dragons claw");
+		setDisplayText("the clas of a dragon sits is here.");
+		setDescription("No doubt about it, this was the claw of a dragon.");
 		basePhyStats().setAbility(0);
 		basePhyStats().setLevel(0);
 		basePhyStats.setWeight(7);

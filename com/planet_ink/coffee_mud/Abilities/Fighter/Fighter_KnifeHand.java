@@ -70,8 +70,8 @@ public class Fighter_KnifeHand extends FighterSkill
 					naturalWeapon.setWeaponType(Weapon.TYPE_PIERCING);
 	                naturalWeapon.basePhyStats().setDamage(7);
 					naturalWeapon.recoverPhyStats();
-					CMLib.combat().postAttack(mob,mob.getVictim(),naturalWeapon);
 				}
+				CMLib.combat().postAttack(mob,mob.getVictim(),naturalWeapon);
 			}
 		}
 		return true;

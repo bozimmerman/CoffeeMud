@@ -135,7 +135,7 @@ public class Spell_DetectWeaknesses extends Spell
 			target=(MOB)givenTarget;
 		if(!target.isInCombat())
 		{
-			mob.tell(target,null,null,"<T-NAME> <T-IS-ARE> not in combat.");
+			mob.tell(target,null,null,"<S-NAME> <S-IS-ARE> not in combat.");
 			return false;
 		}
 

@@ -239,11 +239,11 @@ public class Oracle extends Cleric
 						{
 						  int lql=CMLib.ableMapper().lowestQualifyingLevel(A.ID());
 						  if((lql<25)
-						      &&(lql>0)
-						      &&(!CMLib.ableMapper().getSecretSkill(C.ID(),true,A.ID()))
-						      &&(CMLib.ableMapper().getQualifyingLevel(ID(),true,A.ID())<0)
-						      &&(CMLib.ableMapper().availableToTheme(A.ID(),Area.THEME_FANTASY,true))
-						      &&(CMLib.ableMapper().qualifiesByAnyCharClass(A.ID()))
+					      &&(lql>0)
+					      &&(!CMLib.ableMapper().getSecretSkill(C.ID(),true,A.ID()))
+					      &&(CMLib.ableMapper().getQualifyingLevel(ID(),true,A.ID())<0)
+					      &&(CMLib.ableMapper().availableToTheme(A.ID(),Area.THEME_FANTASY,true))
+					      &&(CMLib.ableMapper().qualifiesByAnyCharClass(A.ID()))
                           &&(A.isAutoInvoked()||((A.triggerStrings()!=null)&&(A.triggerStrings().length>0)))
                           &&(mob.fetchAbility(A.ID())==null))
 						  {

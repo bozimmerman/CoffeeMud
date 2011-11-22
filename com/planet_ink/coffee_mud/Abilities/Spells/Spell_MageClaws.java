@@ -41,6 +41,7 @@ public class Spell_MageClaws extends Spell
 	public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
 	protected int canAffectCode(){return CAN_MOBS;}
 	public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_TRANSMUTATION;	}
+	protected Weapon naturalWeapon=null;
 
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
@@ -53,18 +54,28 @@ public class Spell_MageClaws extends Spell
 		&&(msg.targetMinor()==CMMsg.TYP_WEAPONATTACK)
 		&&(msg.tool()==null))
 		{
-			Weapon w=(Weapon)CMClass.getItem("GenWeapon");
-			w.setName("a pair of jagged claws");
-			w.setWeaponType(Weapon.TYPE_SLASHING);
-			w.setWeaponClassification(Weapon.CLASS_NATURAL);
-			w.basePhyStats().setDamage(15);
-			w.basePhyStats().setAttackAdjustment(20);
-			w.recoverPhyStats();
-			msg.modify(msg.source(),msg.target(),w,msg.sourceCode(),msg.sourceMessage(),msg.targetCode(),msg.targetMessage(),msg.othersCode(),msg.othersMessage());
+			if((naturalWeapon==null)
+			||(naturalWeapon.amDestroyed()))
+			{
+				naturalWeapon=(Weapon)CMClass.getItem("GenWeapon");
+				naturalWeapon.setName("a pair of jagged claws");
+				naturalWeapon.setWeaponType(Weapon.TYPE_SLASHING);
+				naturalWeapon.setWeaponClassification(Weapon.CLASS_NATURAL);
+				naturalWeapon.basePhyStats().setDamage(15);
+				naturalWeapon.basePhyStats().setAttackAdjustment(20);
+				naturalWeapon.recoverPhyStats();
+			}
+			msg.modify(msg.source(),msg.target(),naturalWeapon,msg.sourceCode(),msg.sourceMessage(),msg.targetCode(),msg.targetMessage(),msg.othersCode(),msg.othersMessage());
 		}
+		else
+		if(msg.amISource(mob)
+		&&(msg.targetMinor()==CMMsg.TYP_DAMAGE)
+		&&(msg.tool() instanceof Weapon)
+		&&(msg.tool()==naturalWeapon))
+			msg.setValue(msg.value()+naturalWeapon.basePhyStats().damage()+super.getXLEVELLevel(mob));
 		return super.okMessage(myHost,msg);
 	}
-
+	
 	public void unInvoke()
 	{
 		// undo the affects of this spell

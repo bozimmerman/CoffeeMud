@@ -87,6 +87,7 @@ public class Prayer_UnholyArmament extends Prayer
 					mob.tell("The gods can see that you are already armed.");
 				return false;
 			}
+			int numThatsOk=1;
 			if(pos==Wearable.WORN_WIELD)
 			{
 				I=CMClass.getWeapon("GenWeapon");
@@ -145,6 +146,7 @@ public class Prayer_UnholyArmament extends Prayer
 				if((pos==Wearable.WORN_LEFT_WRIST)
 				||(pos==Wearable.WORN_RIGHT_WRIST))
 				{
+					numThatsOk=2;
 					I.setName("an unholy vambrace");
 					I.setDisplayText("a wicked looking spiked vambrace sit here.");
 					I.setDescription("Whatever made this twisted black metal couldn`t have been good.");
@@ -184,8 +186,8 @@ public class Prayer_UnholyArmament extends Prayer
 			if(A!=null)
 				I.addNonUninvokableEffect(A);
 			I.recoverPhyStats();
-			if((mob.findItem(null,"$"+I.name()+"$")!=null)
-			||(mob.location().findItem(null,"$"+I.name()+"$")!=null))
+			int numFound=mob.findItems(null,"$"+I.name()+"$").size() + mob.location().findItems(null,"$"+I.name()+"$").size();
+			if(numFound>=numThatsOk)
 			{
 				i++;
 				I=null;

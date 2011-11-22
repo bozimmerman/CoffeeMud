@@ -254,9 +254,9 @@ public class Skill_Disguise extends BardSkill
 		}
 		case 5: // name
 		{
-			if(how.indexOf(' ')>=0)
+			if((how.indexOf(' ')>=0)||(how.indexOf('<')>=0))
 			{
-				mob.tell("Your disguise name may not have a space in it.");
+				mob.tell("Your disguise name may not have a space in it, or illegal characters.");
 				return false;
 			}
 			else

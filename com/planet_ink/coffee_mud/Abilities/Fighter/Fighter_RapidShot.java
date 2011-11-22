@@ -59,11 +59,11 @@ public class Fighter_RapidShot extends FighterSkill
 			&&(w instanceof Weapon)
 			&&(((Weapon)w).weaponClassification()==Weapon.CLASS_RANGED)
 			&&(((Weapon)w).ammunitionType().length()>0)
-			&&((mob.rangeToTarget()>0)||((w.phyStats().sensesMask()&PhyStats.SENSE_ITEMNOMINRANGE)==PhyStats.SENSE_ITEMNOMINRANGE))
+			&&((mob.rangeToTarget()>=w.minRange())||((w.phyStats().sensesMask()&PhyStats.SENSE_ITEMNOMINRANGE)==PhyStats.SENSE_ITEMNOMINRANGE))
 			&&((mob.fetchAbility(ID())==null)||proficiencyCheck(null,0,false)))
 			{
 				helpProficiency(mob);
-				for(int i=0;i<(adjustedLevel(mob,0)/7);i++)
+				for(int i=0;i<(adjustedLevel(mob,0)/10);i++)
 					CMLib.combat().postAttack(mob,mob.getVictim(),w);
 			}
 		}

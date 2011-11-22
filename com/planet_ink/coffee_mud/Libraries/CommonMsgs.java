@@ -996,7 +996,20 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
             {
                 if(room.getArea()!=null)
                     Say.append("^!Area  :^N "+room.getArea().Name()+"\n\r");
-                Say.append("^!RoomID:^N "+CMLib.map().getExtendedRoomID(room)+"  ^!("+room.ID()+")^N\n\r");
+                final String rscName=RawMaterial.CODES.NAME(room.myResource());
+                final String domType;
+                final StringBuilder domCond=new StringBuilder("");
+        		if((room.domainType()&Room.INDOORS)==0)
+        			domType=Room.outdoorDomainDescs[room.domainType()];
+        		else
+        			domType=Room.indoorDomainDescs[CMath.unsetb(room.domainType(),Room.INDOORS)];
+    			switch(room.domainConditions())
+    			{
+    			case Room.CONDITION_COLD: domCond.append(" cold"); break;
+    			case Room.CONDITION_HOT: domCond.append(" hot"); break;
+    			case Room.CONDITION_WET: domCond.append(" wet"); break;
+    			}
+                Say.append("^!RoomID:^N "+CMLib.map().getExtendedRoomID(room)+"\n\r^!"+room.ID()+"^N: "+domType+" "+domCond.toString()+" <"+rscName+"> "+room.basePhyStats().weight()+"mv \n\r");
             }
         }
         if(CMLib.flags().canBeSeenBy(room,mob))

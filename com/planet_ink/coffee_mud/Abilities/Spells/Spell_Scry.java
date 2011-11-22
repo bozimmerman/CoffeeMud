@@ -172,6 +172,8 @@ public class Spell_Scry extends Spell
 				scries.addElement(target,mob);
 				beneficialAffect(mob,target,asLevel,0);
 			}
+			else
+				mob.tell("You attempt to invoke scrying, but fizzle the spell.");
 
 		}
 		else

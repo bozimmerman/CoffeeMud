@@ -122,9 +122,10 @@ public class Fighter_PointBlank extends FighterSkill
 			{
 				if((CMLib.dice().rollPercentage()<10)&&(mob.isInCombat())&&(mob.rangeToTarget() > 0))
 					helpProficiency(mob);
-				if(!qualifiedWeapons.contains(w))
+				if(w.fetchEffect(ID())==null)
 				{
-					qualifiedWeapons.add((Weapon)w);
+					if(!qualifiedWeapons.contains(w))
+						qualifiedWeapons.add((Weapon)w);
 					Ability A=(Ability)this.copyOf();
 					A.setSavable(false);
 					w.addEffect(A);

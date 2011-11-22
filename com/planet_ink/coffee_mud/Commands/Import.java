@@ -2126,6 +2126,20 @@ public class Import extends StdCommand
 			{
 				String raceName=eatLineSquiggle(objV);
 				R=CMClass.getRace(raceName);
+				if(R==null)
+					R=CMClass.findRace(raceName);
+				if(R==null)
+					for(Enumeration<Race> r=CMClass.races();r.hasMoreElements();)
+					{
+						Race R2=r.nextElement();
+						if((R2.name().toLowerCase().startsWith(raceName.toLowerCase()))
+						||(R2.name().toLowerCase().endsWith(raceName.toLowerCase()))
+						||(R2.name().toLowerCase().indexOf(raceName.toLowerCase()))>=0)
+						{
+							R=R2;
+							break;
+						}
+					}
 				circleFormat=true;
 			}
 			if(R==null)

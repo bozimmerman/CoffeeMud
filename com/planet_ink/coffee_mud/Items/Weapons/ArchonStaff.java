@@ -173,12 +173,16 @@ public class ArchonStaff extends Staff implements Wand, MiscMagic, ArchonOnly
                         ||(target.charStats().getMyRace().expless()))
                             CMLib.leveler().unLevel(target);
                         else
-                            CMLib.leveler().postExperience(target,null,null,target.getExpNeededLevel()*-1,false);
+                        {
+                        	int xpLevelBelow=CMLib.leveler().getLevelExperience(target.basePhyStats().level()-2);
+                        	int levelDown=(target.getExperience()-xpLevelBelow)+1;
+                            CMLib.leveler().postExperience(target,null,null,-levelDown,false);
+                        }
                     }
                     return;
                 }
 				else
-				if(message.toUpperCase().indexOf("RESTORE")>0)
+				if(message.toUpperCase().indexOf("RESTORE")>=0)
 				{
                     if(!safetyCheck(mob,message)) return;
 					mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,this.name()+" glows brightly at <T-NAME>.");
@@ -196,7 +200,7 @@ public class ArchonStaff extends Staff implements Wand, MiscMagic, ArchonOnly
 					return;
 				}
                 else
-                if(message.toUpperCase().indexOf("REFRESH")>0)
+                if(message.toUpperCase().indexOf("REFRESH")>=0)
                 {
                     if(!safetyCheck(mob,message)) return;
                     mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,this.name()+" glows brightly at <T-NAME>.");
@@ -207,7 +211,7 @@ public class ArchonStaff extends Staff implements Wand, MiscMagic, ArchonOnly
                     return;
                 }
 				else
-				if(message.toUpperCase().indexOf("BURN")>0)
+				if(message.toUpperCase().indexOf("BURN")>=0)
 				{
                     if(!safetyCheck(mob,message)) return;
 					mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,this.name()+" wielded by <S-NAME> shoots forth magical green flames at <T-NAME>.");

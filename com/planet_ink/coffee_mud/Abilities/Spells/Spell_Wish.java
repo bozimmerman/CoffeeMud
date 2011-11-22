@@ -63,17 +63,19 @@ public class Spell_Wish extends Spell
 		{
 			mob.location().show((MOB)target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> teleport(s) to "+here.displayText()+".");
 			here.bringMobHere((MOB)target,false);
+			if(here.isInhabitant((MOB)target))
+				here.show((MOB)target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> appear(s) out of nowhere.");
 		}
 		else
 		if(target instanceof Item)
 		{
 			Item item=(Item)target;
-			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,target.name()+" is teleport to "+here.displayText()+"!");
+			mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,"<T-NAME> is teleported to "+here.displayText()+"!");
 			item.unWear();
 			item.setContainer(null);
 			item.removeFromOwnerContainer();
 			here.addItem(item,ItemPossessor.Expire.Player_Drop);
-			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,target.name()+" appears out of the java plain!");
+			mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,"<T-NAME> appears out of the java plain!");
 		}
 	}
 
@@ -81,6 +83,8 @@ public class Spell_Wish extends Spell
 	{
 		if(mob==null) return;
         expLoss=getXPCOSTAdjustment(mob,expLoss);
+        if(expLoss > mob.getExperience())
+        	expLoss=mob.getExperience();
 		CMLib.leveler().postExperience(mob,null,null,-expLoss,false);
 		if(conLoss)
 		{
@@ -197,16 +201,26 @@ public class Spell_Wish extends Spell
 				Coins newItem=(Coins)CMClass.getItem("StdCoins");
 				newItem.setCurrency(CMLib.english().matchAnyCurrencySet(CMParms.combine(goldCheck,1)));
 				newItem.setDenomination(CMLib.english().matchAnyDenomination(newItem.getCurrency(),CMParms.combine(goldCheck,1)));
-				newItem.setNumberOfCoins(CMath.s_long((String)goldCheck.firstElement()));
+				long goldCoins=CMath.s_long((String)goldCheck.firstElement());
+				newItem.setNumberOfCoins(goldCoins);
+				int experienceRequired=Math.max((int)Math.round(CMath.div(newItem.getTotalValue(),10.0)),0);
+				while((experienceRequired > mob.getExperience())
+				&& (experienceRequired > 0)
+				&& (newItem.getNumberOfCoins() > 1))
+				{
+					final int difference=experienceRequired-mob.getExperience();
+					final double diffPct=CMath.div(difference, experienceRequired);
+					long numCoinsToLose=Math.round(CMath.mul(diffPct, newItem.getNumberOfCoins()));
+					if(numCoinsToLose<1) numCoinsToLose=1;
+					newItem.setNumberOfCoins(newItem.getNumberOfCoins()-numCoinsToLose);
+					experienceRequired=Math.max((int)Math.round(CMath.div(newItem.getTotalValue(),10.0)),0);
+				}
 				newItem.setContainer(null);
 				newItem.wearAt(0);
 				newItem.recoverPhyStats();
 				mob.location().addItem(newItem,ItemPossessor.Expire.Player_Drop);
 				mob.location().showHappens(CMMsg.MSG_OK_ACTION,"Suddenly, "+newItem.name()+" drops from the sky.");
 				mob.location().recoverRoomStats();
-				int experienceRequired=(int)Math.round(CMath.div(newItem.getTotalValue(),10.0));
-				if(experienceRequired<=0)
-					experienceRequired=0;
 				wishDrain(mob,(baseLoss+experienceRequired),false);
 				return true;
 			}
@@ -226,6 +240,10 @@ public class Spell_Wish extends Spell
 					if(O instanceof Physical)
 						foundThang=maybeAdd(((Physical)O),thangsFound,foundThang);
 		    }catch(NoSuchElementException nse){}
+
+			if(foundThang instanceof PackagedItems)
+				foundThang = ((PackagedItems)foundThang).getItem();
+
 			if((thangsFound.size()>0)&&(foundThang!=null))
 			{
 				// yea, we get to DO something!
@@ -243,10 +261,15 @@ public class Spell_Wish extends Spell
 					newMOB.location().showOthers(newMOB,null,CMMsg.MSG_OK_ACTION,"<S-NAME> appears!");
 					mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,"Suddenly, "+newMOB.name()+" instantiates from the Java plain.");
 					newMOB.setFollowing(mob);
+					if(experienceRequired<=0)
+						experienceRequired=0;
+					wishDrain(mob,(baseLoss+experienceRequired),false);
+					return true;
 				}
 				else
 				if((foundThang instanceof Item)
 				   &&(!(foundThang instanceof ArchonOnly))
+				   &&(!(foundThang instanceof ClanItem))
 				   &&(!CMath.bset(foundThang.phyStats().sensesMask(), PhyStats.SENSE_ITEMNOWISH)))
 				{
 					Item newItem=(Item)foundThang.copyOf();
@@ -258,11 +281,11 @@ public class Spell_Wish extends Spell
 					mob.location().addItem(newItem,ItemPossessor.Expire.Player_Drop);
 					mob.location().showHappens(CMMsg.MSG_OK_ACTION,"Suddenly, "+newItem.name()+" drops from the sky.");
 					mob.location().recoverRoomStats();
+					if(experienceRequired<=0)
+						experienceRequired=0;
+					wishDrain(mob,(baseLoss+experienceRequired),false);
+					return true;
 				}
-				if(experienceRequired<=0)
-					experienceRequired=0;
-				wishDrain(mob,(baseLoss+experienceRequired),false);
-				return true;
 			}
 
 			// anything else may refer to another person or item
@@ -300,7 +323,11 @@ public class Spell_Wish extends Spell
 				myWish=" "+CMParms.combine(wishV,0).toUpperCase().trim()+" ";
 			}
 
-            if(target instanceof ArchonOnly)
+			if(target instanceof PackagedItems)
+				target = ((PackagedItems)target).getItem();
+
+            if((target instanceof ArchonOnly)
+            ||(target instanceof ClanItem))
                 target=null;
             
 			if((target!=null)
@@ -368,19 +395,15 @@ public class Spell_Wish extends Spell
 				else
 				if(target instanceof MOB)
 				{
-					int exp=mob.getExperience();
-					//int hp=((MOB)target).curState().getHitPoints();
+					final int exp=mob.getExperience();
 					CMLib.combat().postDeath(mob,(MOB)target,null);
 					if((!CMSecurity.isDisabled(CMSecurity.DisFlag.EXPERIENCE))
 					&&!mob.charStats().getCurrentClass().expless()
 					&&!mob.charStats().getMyRace().expless()
 					&&(mob.getExperience()>exp))
-					{
 						baseLoss=mob.getExperience()-exp;
-						mob.setExperience(exp);
-					}
 				}
-				wishDrain(mob,baseLoss,false);
+				wishDrain(mob,baseLoss*2,false);
 				return true;
 			}
 
@@ -439,13 +462,26 @@ public class Spell_Wish extends Spell
 			String[] redundantEnds2={"IMMEDIATELY","PLEASE","NOW","AT ONCE"};
 			boolean validStart=false;
 			i=0;
-			while(i<redundantStarts2.length){
+			while(i<redundantStarts2.length)
+			{
 				if(locationWish.startsWith(" "+redundantStarts2[i]+" "))
-				{	validStart=true; locationWish=locationWish.substring(1+redundantStarts2[i].length()); i=-1;}i++;}
+				{	
+					validStart=true; 
+					locationWish=locationWish.substring(1+redundantStarts2[i].length()); 
+					i=-1;
+				}
+				i++;
+			}
 			i=0;
-			while(i<redundantEnds2.length){
+			while(i<redundantEnds2.length)
+			{
 				if(locationWish.endsWith(" "+redundantEnds2[i]+" "))
-				{	locationWish=locationWish.substring(0,locationWish.length()-(1+redundantEnds2[i].length())); i=-1;}i++;}
+				{	
+					locationWish=locationWish.substring(0,locationWish.length()-(1+redundantEnds2[i].length())); 
+					i=-1;
+				}
+				i++;
+			}
 
 			// a wish for teleportation
 			if(validStart)
@@ -484,7 +520,7 @@ public class Spell_Wish extends Spell
 				{
 					mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,target.name()+" is healthier!");
 					tm.curState().setHitPoints(tm.maxState().getHitPoints());
-					wishDrain(mob,baseLoss,true);
+					wishDrain(mob,baseLoss,false);
 					return true;
 				}
 				else
@@ -500,7 +536,7 @@ public class Spell_Wish extends Spell
 				{
 					mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,target.name()+" has more mana!");
 					tm.curState().setMana(tm.maxState().getMana());
-					wishDrain(mob,baseLoss,true);
+					wishDrain(mob,baseLoss,false);
 					return true;
 				}
 				else
@@ -516,7 +552,7 @@ public class Spell_Wish extends Spell
 				{
 					mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,target.name()+" has more move points!");
 					tm.curState().setMovement(tm.maxState().getMovement());
-					wishDrain(mob,baseLoss,true);
+					wishDrain(mob,baseLoss,false);
 					return true;
 				}
 				else
@@ -588,6 +624,8 @@ public class Spell_Wish extends Spell
 				int amount=25;
 				if((x>=0)&&(CMath.isNumber(wsh.substring(x).trim())))
 				   amount=CMath.s_int(wsh.substring(x).trim());
+				if((amount*4)>mob.getExperience())
+					amount=mob.getExperience()/4;
 				CMLib.leveler().postExperience(mob,null,null,-(amount*4),false);
 				mob.tell("Your wish has drained you of "+(amount*4)+" experience points.");
 				CMLib.leveler().postExperience((MOB)target,null,null,amount,false);
@@ -789,7 +827,10 @@ public class Spell_Wish extends Spell
 			||(myWish.indexOf(" TRANSFORM")>=0)))
 			{
 				Race R=CMClass.findRace((String)wishV.lastElement());
-				if(R!=null)
+				if((R!=null)
+				&& (CMath.bset(R.availabilityCode(),Area.THEME_FANTASY))
+				&&(!R.ID().equalsIgnoreCase("StdRace"))
+				&&(!R.ID().equalsIgnoreCase("Unique")))
 				{
 					if(!((MOB)target).isMonster())
 					{
@@ -904,6 +945,8 @@ public class Spell_Wish extends Spell
 						A.setProficiency(100);
 						A.autoInvocation(tm);
 						mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,target.name()+" now knows "+A.name()+"!");
+						Ability A2=tm.fetchEffect(A.ID());
+						if(A2!=null) A2.setProficiency(100);
 						return true;
 					}
 				}

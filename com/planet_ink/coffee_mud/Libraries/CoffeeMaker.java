@@ -3048,6 +3048,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 	}
 	public void setPhyStats(PhyStats E, String props)
 	{
+		if(props.length()==0) return;
 		double[] nums=new double[11];
 		int x=0;
 		int lastBar=0;

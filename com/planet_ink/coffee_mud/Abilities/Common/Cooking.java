@@ -509,8 +509,9 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 		if(CMClass.getItem(foodType)!=null)
 		{
 			building=CMClass.getItem(foodType);
-			building.setName(((messedUp)?"ruined ":"")+finalDishName);
-			building.setDisplayText("some "+((messedUp)?"ruined ":"")+finalDishName+" has been left here");
+			final String ruinWord=(building instanceof Drink)?"spoiled ":"burnt ";
+			building.setName(((messedUp)?ruinWord:"")+finalDishName);
+			building.setDisplayText("some "+((messedUp)?ruinWord:"")+finalDishName+" has been left here");
 			if(building instanceof Drink)
 			{
 				Drink drink=(Drink)building;
@@ -551,8 +552,9 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 				if(code>=0)
 					building.setMaterial(code);
 			}
-			building.setName(((messedUp)?"ruined ":"")+finalDishName);
-			building.setDisplayText("some "+((messedUp)?"ruined ":"")+finalDishName+" has been left here");
+			final String ruinWord=(building instanceof Drink)?"spoiled ":"burnt ";
+			building.setName(((messedUp)?ruinWord:"")+finalDishName);
+			building.setDisplayText("some "+((messedUp)?ruinWord:"")+finalDishName+" has been left here");
 			building.basePhyStats().setWeight(building.basePhyStats().weight()/finalAmount);
             playSound=defaultFoodSound;
 		}

@@ -197,7 +197,11 @@ public class WandArchon extends StdWand implements ArchonOnly
 						||(target.charStats().getMyRace().expless()))
 							CMLib.leveler().unLevel(target);
 						else
-							CMLib.leveler().postExperience(target,null,null,target.getExpNeededLevel()*-1,false);
+						{
+                        	int xpLevelBelow=CMLib.leveler().getLevelExperience(target.basePhyStats().level()-2);
+                        	int levelDown=(target.getExperience()-xpLevelBelow)+1;
+                            CMLib.leveler().postExperience(target,null,null,-levelDown,false);
+						}
 					}
 					return;
 				}

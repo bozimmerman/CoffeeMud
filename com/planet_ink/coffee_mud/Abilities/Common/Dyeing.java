@@ -165,7 +165,7 @@ public class Dyeing extends CommonSkill
 			lightFlag=true;
 			writing=writing.substring(6).trim();
 		}
-		if(" white green blue red yellow cyan purple ".indexOf(" "+writing.trim()+" ")<0)
+		if((" white green blue red yellow cyan purple ".indexOf(" "+writing.trim()+" ")<0)||(writing.trim().indexOf(' ')>=0))
 		{
 			commonTell(mob,"You can't dye anything '"+writing+"'.  Try white, green, blue, red, yellow, cyan, or purple. You can also prefix the colors with the word 'dark', 'light', or 'bright'.");
 			return false;

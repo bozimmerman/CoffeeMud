@@ -147,10 +147,9 @@ public class Chant_SpeedAging extends Chant
 				{
 					long start=CMath.s_long(A.text());
 					long age=System.currentTimeMillis()-start;
-					age=age+(age/10);
 					if(age<(CMProps.getIntVar(CMProps.SYSTEMI_TICKSPERMUDDAY)*CMProps.getTickMillis()))
 						age=(CMProps.getIntVar(CMProps.SYSTEMI_TICKSPERMUDDAY)*CMProps.getTickMillis());
-					A.setMiscText(""+(start-age));
+					A.setMiscText(""+(start-(age/10)));
 					if(target instanceof MOB)
 						mob.location().show((MOB)target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> age(s) a bit.");
 					else
