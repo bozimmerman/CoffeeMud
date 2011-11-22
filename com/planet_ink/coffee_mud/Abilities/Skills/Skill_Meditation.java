@@ -97,7 +97,10 @@ public class Skill_Meditation extends StdSkill
 		if((mob.curState().getHunger()<=0)
 		||(mob.curState().getThirst()<=0))
 		{
-			mob.tell("Your stomach growls!");
+			if(mob.curState().getThirst()<=0)
+				mob.tell("Your mouth is dry!");
+			else
+				mob.tell("Your stomach growls!");
 			unInvoke();
 			return false;
 		}
