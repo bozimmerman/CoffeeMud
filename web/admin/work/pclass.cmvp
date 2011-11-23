@@ -15,7 +15,7 @@
 			@BaseCharClassNext?RESET@
 			@loop@
 				@BaseCharClassNext@
-				<LI><B>@BaseCharClassName@s: </B>
+				<LI><B>@BaseCharClassName?PLURAL@: </B>
 				<ul>
 					@CharClassNext?RESET@
 					@loop@

@@ -48,9 +48,9 @@ public class BaseCharClassName extends StdWebMacro
 			if(C!=null)
 			{
 				if(parms.containsKey("PLURAL"))
-	                return clearWebMacros(C.name());
-				else
 	                return clearWebMacros(CMLib.english().makePlural(C.name()));
+				else
+	                return clearWebMacros(C.name());
 			}
 			for(Enumeration e=CMClass.charClasses();e.hasMoreElements();)
 			{

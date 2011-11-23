@@ -23,7 +23,7 @@
 <UL>
 @loop@
 @BaseCharClassNext@
-<LI><H2>@BaseCharClassName@s: </h2>
+<LI><H2>@BaseCharClassName?PLURAL@: </h2>
 	@CharClassNext?RESET@
 	<UL>
 	@loop@
