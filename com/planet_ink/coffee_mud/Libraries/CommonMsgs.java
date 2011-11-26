@@ -996,7 +996,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
             {
                 if(room.getArea()!=null)
                     Say.append("^!Area  :^N "+room.getArea().Name()+"\n\r");
-                final String rscName=RawMaterial.CODES.NAME(room.myResource());
+                final String rscName=room.myResource()>=0?RawMaterial.CODES.NAME(room.myResource()):"";
                 final String domType;
                 final StringBuilder domCond=new StringBuilder("");
         		if((room.domainType()&Room.INDOORS)==0)
