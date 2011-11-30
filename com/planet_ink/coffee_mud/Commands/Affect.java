@@ -210,7 +210,6 @@ public class Affect extends StdCommand
 
 	public Object executeInternal(MOB mob, int metaFlags, Object... args) throws java.io.IOException
 	{
-		if(args.length==0) return null;
 		Physical target=mob;
 		Session S=(mob!=null)?mob.session():null;
 		for(Object o : args)

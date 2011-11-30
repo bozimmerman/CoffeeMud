@@ -125,7 +125,7 @@ public class Spell_AnalyzeDweomer extends Spell
 	            Command C=CMClass.getCommand("Affect");
 	            try
 	            {
-	            	String affectStr=C.executeInternal(mob,0).toString();
+	            	String affectStr=C.executeInternal(mob,0,target).toString();
 	            	if(affectStr.length()<5)
 	            		str.append("It is affected by: "+affectStr);
 	            }

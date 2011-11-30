@@ -68,7 +68,7 @@ public class Report extends Skills
                 
                 StringBuffer aff=new StringBuffer("\n\r^!I am affected by:^? ");
                 Command C=CMClass.getCommand("Affect");
-                if(C!=null) aff.append(C.executeInternal(mob,metaFlags).toString());
+                if(C!=null) aff.append(C.executeInternal(mob,metaFlags,mob).toString());
                 say.append(aff.toString());
             }
 			if("STATS".startsWith(s)||(s.equalsIgnoreCase("ALL")))
