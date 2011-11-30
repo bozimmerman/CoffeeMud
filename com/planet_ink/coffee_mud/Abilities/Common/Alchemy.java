@@ -42,10 +42,9 @@ public class Alchemy extends CraftingSkill implements ItemCraftor
 	public String name(){ return "Alchemy";}
 	private static final String[] triggerStrings = {"BREW","ALCHEMY"};
 	public String[] triggerStrings(){return triggerStrings;}
-	protected int iniTrainsRequired(){return CMProps.getIntVar(CMProps.SYSTEMI_SKILLTRAINCOST);}
-	protected int iniPracticesRequired(){return CMProps.getIntVar(CMProps.SYSTEMI_SKILLPRACCOST);}
     public String supportedResourceString(){return "MISC";}
     public String parametersFormat(){ return "SPELL_ID\tRESOURCE_NAME";}
+	protected Pair<String,Ability.CostType> getRawTrainingCost() { return CMProps.getSkillTrainCostFormula(ID()); }
 
 	String oldName="";
     protected Ability theSpell=null;

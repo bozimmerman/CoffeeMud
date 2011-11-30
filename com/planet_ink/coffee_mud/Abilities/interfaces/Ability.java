@@ -153,18 +153,11 @@ public interface Ability extends Environmental
 	public boolean putInCommandlist();
 
 	/**
-	 * Returns practices required to learn this skill
-	 * @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#trainsRequired(MOB)
-	 * @return number of practices to learn this skill
+	 * Returns cost of training up this skill, for the given user.
+	 * @param mob the potential caster
+	 * @return a pair, with the number of the cost type, and the cost type
 	 */
-	public int practicesRequired(MOB mob);
-	
-	/**
-	 * Returns trains required to learn this skill
-	 * @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#practicesRequired(MOB)
-	 * @return number of trains to learn this skill
-	 */
-	public int trainsRequired(MOB mob);
+	public Pair<Double,Ability.CostType> getTrainingCost(MOB mob);
 	
 	/**
 	 * A set of the command strings the user types to access
@@ -467,9 +460,10 @@ public interface Ability extends Environmental
 	/**
 	 * Returns a string describing the requirements and qualifications that
 	 * are required to learn this skill.
+	 * @param mob the mob whose requirements must be tested
 	 * @return a description of the learning requirements of this skill.
 	 */
-	public String requirements();
+	public String requirements(MOB mob);
 
 	/**
 	 * Returns whether, when used as a skill, this ability can target itself
@@ -893,6 +887,8 @@ public interface Ability extends Environmental
     /** constant mask for the flags() method designating that this ability is an intoxicating effect @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#flags() */
     public static final int FLAG_INTOXICATING=262144;
 	
+    /** Enumeration of the types of costs of gaining this ability */
+    public enum	CostType { TRAIN, PRACTICE, XP, GOLD }
 
 	/** array of string describtions for the FLAG_* constants, indexed by their values */
 	public static final String[] FLAG_DESCS={

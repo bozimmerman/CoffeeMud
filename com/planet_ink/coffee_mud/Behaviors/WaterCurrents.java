@@ -234,8 +234,8 @@ public class WaterCurrents extends ActiveTicker
 		public void setAbilityCode(int newCode){}
 		public int adjustedLevel(MOB mob, int asLevel){return -1;}
 		public boolean bubbleAffect(){return false;}
-	    public int practicesRequired(MOB mob){return 0;}
-	    public int trainsRequired(MOB mob){return 0;}
+		public Pair<Double,Ability.CostType> getTrainingCost(MOB mob)
+		{ return new Pair<Double,Ability.CostType>(Double.valueOf(1.0),Ability.CostType.TRAIN);}
 		public long flags(){return Ability.FLAG_TRANSPORTING;}
 		public long getTickStatus(){return Tickable.STATUS_NOT;}
 		public int usageType(){return 0;}
@@ -368,7 +368,7 @@ public class WaterCurrents extends ActiveTicker
 		public String miscTextFormat(){return CMParms.FORMAT_UNDEFINED;}
 		public boolean appropriateToMyFactions(MOB mob){return true;}
 		public String accountForYourself(){return "";}
-		public String requirements(){return "";}
+		public String requirements(MOB mob){return "";}
 
 		public boolean canAffect(Physical P)
 		{

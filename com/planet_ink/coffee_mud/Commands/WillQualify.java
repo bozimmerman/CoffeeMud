@@ -81,7 +81,7 @@ public class WillQualify  extends Skills
 						}
     					thisLine.append("^N[^H" + CMStrings.padRight("" + l, COL_LEN1) + "^?] "
     					        + CMStrings.padRight("^<HELP^>"+A.name()+"^</HELP^>", COL_LEN2) + " "
-    					        + CMStrings.padRight(A.requirements()+(cimable.autoGain?" *":""), (col == 2) ? COL_LEN3 : COL_LEN4));
+    					        + CMStrings.padRight(A.requirements(viewerM)+(cimable.autoGain?" *":""), (col == 2) ? COL_LEN3 : COL_LEN4));
 					}
 				}
 			}

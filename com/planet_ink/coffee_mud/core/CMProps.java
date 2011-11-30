@@ -4,6 +4,7 @@ import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.Ability.CostType;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
 import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
@@ -73,9 +74,9 @@ public class CMProps extends Properties
     public static final int SYSTEM_ESC9=15;
     public static final int SYSTEM_MSPPATH=16;
     public static final int SYSTEM_BADNAMES=17;
-    //public static final int SYSTEM_CLANVOTEO=18;
-    //public static final int SYSTEM_CLANVOTER=19;
-    //public static final int SYSTEM_CLANVOTED=20;
+    public static final int SYSTEM_SKILLCOST=18;
+    public static final int SYSTEM_COMMONCOST=19;
+    public static final int SYSTEM_LANGCOST=20;
     public static final int SYSTEM_AUTOPURGE=21;
     public static final int SYSTEM_MUDNAME=22;
     public static final int SYSTEM_MUDVER=23;
@@ -147,12 +148,12 @@ public class CMProps extends Properties
     public static final int SYSTEMI_DAYSCLANDEATH=5;
     public static final int SYSTEMI_MINCLANLEVEL=6;
     public static final int SYSTEMI_MANACOST=7;
-    public static final int SYSTEMI_COMMONTRAINCOST=8;
-    public static final int SYSTEMI_LANGTRAINCOST=9;
-    public static final int SYSTEMI_SKILLTRAINCOST=10;
-    public static final int SYSTEMI_COMMONPRACCOST=11;
-    public static final int SYSTEMI_LANGPRACCOST=12;
-    public static final int SYSTEMI_SKILLPRACCOST=13;
+    //public static final int SYSTEMI_COMMONTRAINCOST=8;
+    //public static final int SYSTEMI_LANGTRAINCOST=9;
+    //public static final int SYSTEMI_SKILLTRAINCOST=10;
+    //public static final int SYSTEMI_COMMONPRACCOST=11;
+    //public static final int SYSTEMI_LANGPRACCOST=12;
+    //public static final int SYSTEMI_SKILLPRACCOST=13;
     public static final int SYSTEMI_CLANCOST=14;
     public static final int SYSTEMI_PAGEBREAK=15;
     public static final int SYSTEMI_FOLLOWLEVELDIFF=16;
@@ -318,12 +319,15 @@ public class CMProps extends Properties
     protected long 				TICKS_PER_RLHOUR=TICKS_PER_RLMIN * 60;
     protected long 				TICKS_PER_RLDAY=TICKS_PER_RLHOUR * 24;
     protected double 			TIME_TICK_DOUBLE=(double)TIME_TICK;
-    protected final Map<String,Double> 	skillMaxManaExceptions	=new HashMap<String,Double>();
-    protected final Map<String,Double> 	skillMinManaExceptions	=new HashMap<String,Double>();
-    protected final Map<String,Double> 	skillCostExceptions		=new HashMap<String,Double>();
-    protected final Map<String,Double> 	skillComCostExceptions	=new HashMap<String,Double>();
-    protected final Map<String,Double> 	cmdCostExceptions		=new HashMap<String,Double>();
-    protected final Map<String,Double> 	cmdComCostExceptions	=new HashMap<String,Double>();
+    protected final Map<String,Double> 	skillMaxManaExceptions		=new HashMap<String,Double>();
+    protected final Map<String,Double> 	skillMinManaExceptions		=new HashMap<String,Double>();
+    protected final Map<String,Double> 	skillActionCostExceptions	=new HashMap<String,Double>();
+    protected final Map<String,Double> 	skillComActionCostExceptions=new HashMap<String,Double>();
+    protected final Map<String,Double> 	cmdActionCostExceptions		=new HashMap<String,Double>();
+    protected final Map<String,Double> 	cmdComActionCostExceptions	=new HashMap<String,Double>();
+    protected final Map<String,Pair<String,CostType>> 	commonCost  =new HashMap<String,Pair<String,CostType>>();
+    protected final Map<String,Pair<String,CostType>> 	skillsCost  =new HashMap<String,Pair<String,CostType>>();
+    protected final Map<String,Pair<String,CostType>> 	languageCost=new HashMap<String,Pair<String,CostType>>();
 
 	public CMProps(InputStream in)
 	{
@@ -565,7 +569,7 @@ public class CMProps extends Properties
 	
     public static final double getActionCost(final String ID, final double defaultValue)
     {
-    	final Map<String,Double> overrides=p().cmdCostExceptions;
+    	final Map<String,Double> overrides=p().cmdActionCostExceptions;
     	final String uID=ID.toUpperCase();
     	if(overrides.containsKey(uID))
     		return overrides.get(uID).doubleValue();
@@ -574,7 +578,7 @@ public class CMProps extends Properties
 
     public static final double getCombatActionCost(final String ID, final double defaultValue)
     {
-    	final Map<String,Double> overrides=p().cmdComCostExceptions;
+    	final Map<String,Double> overrides=p().cmdComActionCostExceptions;
     	final String uID=ID.toUpperCase();
     	if(overrides.containsKey(uID))
     		return overrides.get(uID).doubleValue();
@@ -593,7 +597,7 @@ public class CMProps extends Properties
 
     public static final double getActionSkillCost(final String ID, final double defaultValue)
     {
-    	final Map<String,Double> overrides=p().skillCostExceptions;
+    	final Map<String,Double> overrides=p().skillActionCostExceptions;
     	final String uID=ID.toUpperCase();
     	if(overrides.containsKey(uID))
     		return overrides.get(uID).doubleValue();
@@ -602,7 +606,7 @@ public class CMProps extends Properties
 
     public static final double getCombatActionSkillCost(final String ID, final double defaultValue)
     {
-    	final Map<String,Double> overrides=p().skillComCostExceptions;
+    	final Map<String,Double> overrides=p().skillComActionCostExceptions;
     	final String uID=ID.toUpperCase();
     	if(overrides.containsKey(uID))
     		return overrides.get(uID).doubleValue();
@@ -731,8 +735,12 @@ public class CMProps extends Properties
             break;
         }
     }
+    
     public static final void setUpLowVar(final int varNum, final String val)
-    { setUpLowVar(p(),varNum,val); }
+    { 
+    	setUpLowVar(p(),varNum,val); 
+    }
+    
     public static final void setUpAllLowVar(final int varNum, final String val)
     { 
         for(int p=0;p<props.length;p++)
@@ -740,6 +748,81 @@ public class CMProps extends Properties
                setUpLowVar(props[p],varNum,val);
     }
 
+    public static final void setUpCosts(final String fieldName, final Map<String,Pair<String,CostType>> map, final Vector<String> fields)
+    {
+    	final double[] doubleChecker=new double[10];
+    	for(String field : fields)
+    	{
+    		field=field.trim();
+    		if(field.length()==0) continue;
+    		final int typeIndex=field.lastIndexOf(' ');
+    		if(typeIndex<0)
+    		{
+    			Log.errOut("CMProps","Error parsing coffeemud.ini field "+fieldName+", value: "+field);
+    			continue;
+    		}
+			final String type=field.substring(typeIndex+1).toUpperCase().trim();
+			String formula=field.substring(0,typeIndex).trim();
+			CostType costType=(CostType)CMath.s_valueOf(CostType.values(), type);
+			if(costType==null)
+			{
+    			Log.errOut("CMProps","Error parsing coffeemud.ini field '"+fieldName+"', invalid type: "+type);
+    			Log.errOut("CMProps","Valid values include "+CMParms.toStringList(CostType.values()));
+    			continue;
+			}
+			String keyField="";
+			if(!CMath.isMathExpression(formula, doubleChecker))
+			{
+				final int skillIndex=formula.indexOf(' ');
+				if(skillIndex<0)
+				{
+	    			Log.errOut("CMProps","Error parsing coffeemud.ini field "+fieldName+", invalid formula: "+formula);
+	    			continue;
+				}
+				keyField=formula.substring(0,skillIndex).toUpperCase().trim();
+				formula=formula.substring(skillIndex+1).trim();
+				if(!CMath.isMathExpression(formula, doubleChecker))
+				{
+	    			Log.errOut("CMProps","Error parsing coffeemud.ini field "+fieldName+", invalid formula: "+formula);
+	    			continue;
+				}
+			}
+			if(map.containsKey(keyField))
+			{
+    			Log.errOut("CMProps","Error parsing coffeemud.ini '"+fieldName+"' has duplicate key:"+((keyField.length()==0)?"<EMPTY>":keyField));
+    			continue;
+			}
+			map.put(keyField.toUpperCase(), new Pair<String,CostType>(formula,costType));
+    	}
+    }
+
+    public static final Pair<String,CostType> getSkillTrainCostFormula(final String id)
+    { 
+    	final CMProps p=p();
+    	Pair<String,CostType> pair=p.skillsCost.get(id.toUpperCase());
+    	if(pair==null) pair=p.skillsCost.get("");
+    	if(pair==null) pair=new Pair<String,CostType>("1",CostType.TRAIN);
+    	return pair;
+    }
+    
+    public static final Pair<String,CostType> getCommonTrainCostFormula(final String id)
+    { 
+    	final CMProps p=p();
+    	Pair<String,CostType> pair=p.commonCost.get(id.toUpperCase());
+    	if(pair==null) pair=p.commonCost.get("");
+    	if(pair==null) pair=new Pair<String,CostType>("1",CostType.TRAIN);
+    	return pair;
+    }
+    
+    public static final Pair<String,CostType> getLangTrainCostFormula(final String id)
+    { 
+    	final CMProps p=p();
+    	Pair<String,CostType> pair=p.languageCost.get(id.toUpperCase());
+    	if(pair==null) pair=p.languageCost.get("");
+    	if(pair==null) pair=new Pair<String,CostType>("1",CostType.TRAIN);
+    	return pair;
+    }
+    
     public static final int getCountNewUserByIP(final String address)
     {
     	int count=0;
@@ -1004,6 +1087,9 @@ public class CMProps extends Properties
         setUpLowVar(SYSTEM_CHARCREATIONSCRIPTS,getStr("CHARCREATIONSCRIPTS"));
         setUpLowVar(SYSTEM_CHARSETINPUT,getStr("CHARSETINPUT","iso-8859-1"));
         setUpLowVar(SYSTEM_CHARSETOUTPUT,getStr("CHARSETOUTPUT","iso-8859-1"));
+        setUpCosts("COMMONCOST",commonCost,CMParms.parseCommas(getStr("COMMONCOST","(@x1*50) XP"),true));
+        setUpCosts("SKILLCOST",skillsCost,CMParms.parseCommas(getStr("SKILLCOST","1 TRAIN"),true));
+        setUpCosts("LANGCOST",languageCost,CMParms.parseCommas(getStr("LANGCOST","3 PRACTICES"),true));
 
         if(CMLib.color()!=null) CMLib.color().clearLookups();
         if(getStr("MANACONSUMEAMT").trim().equalsIgnoreCase("LEVEL"))
@@ -1070,10 +1156,10 @@ public class CMProps extends Properties
         setIntVar(SYSTEMI_MAXSTAT,getStr("MAXSTATS"));
         setIntVar(SYSTEMI_BASEMAXSTAT,getStr("BASEMAXSTAT","18"));
         setIntVar(SYSTEMI_STARTSTAT,getStr("STARTSTAT"));
-        setIntVar(SYSTEMI_DEFCMDTIME,(int)Math.round(CMProps.setExceptionCosts(getStr("DEFCMDTIME"),p().cmdCostExceptions)*100.0));
-        setIntVar(SYSTEMI_DEFCOMCMDTIME,(int)Math.round(CMProps.setExceptionCosts(getStr("DEFCOMCMDTIME"),p().cmdComCostExceptions)*100.0));
-        setIntVar(SYSTEMI_DEFABLETIME,(int)Math.round(CMProps.setExceptionCosts(getStr("DEFABLETIME"),p().skillCostExceptions)*100.0));
-        setIntVar(SYSTEMI_DEFCOMABLETIME,(int)Math.round(CMProps.setExceptionCosts(getStr("DEFCOMABLETIME"),p().skillComCostExceptions)*100.0));
+        setIntVar(SYSTEMI_DEFCMDTIME,(int)Math.round(CMProps.setExceptionCosts(getStr("DEFCMDTIME"),p().cmdActionCostExceptions)*100.0));
+        setIntVar(SYSTEMI_DEFCOMCMDTIME,(int)Math.round(CMProps.setExceptionCosts(getStr("DEFCOMCMDTIME"),p().cmdComActionCostExceptions)*100.0));
+        setIntVar(SYSTEMI_DEFABLETIME,(int)Math.round(CMProps.setExceptionCosts(getStr("DEFABLETIME"),p().skillActionCostExceptions)*100.0));
+        setIntVar(SYSTEMI_DEFCOMABLETIME,(int)Math.round(CMProps.setExceptionCosts(getStr("DEFCOMABLETIME"),p().skillComActionCostExceptions)*100.0));
         setIntVar(SYSTEMI_MANACOST,(int)CMProps.setExceptionCosts(getStr("MANACOST"),p().skillMaxManaExceptions));
         setIntVar(SYSTEMI_MANAMINCOST,(int)CMProps.setExceptionCosts(getStr("MANAMINCOST"),p().skillMinManaExceptions));
         setIntVar(SYSTEMI_EDITORTYPE,0);
@@ -1083,12 +1169,6 @@ public class CMProps extends Properties
         setIntVar(SYSTEMI_CLANCOST,getStr("CLANCOST"));
         setIntVar(SYSTEMI_DAYSCLANDEATH,getStr("DAYSCLANDEATH"));
         setIntVar(SYSTEMI_MINCLANLEVEL,getStr("MINCLANLEVEL"));
-        setIntVar(SYSTEMI_SKILLPRACCOST,getStr("SKILLPRACCOST"));
-        setIntVar(SYSTEMI_SKILLTRAINCOST,getStr("SKILLTRAINCOST"));
-        setIntVar(SYSTEMI_COMMONPRACCOST,getStr("COMMONPRACCOST"));
-        setIntVar(SYSTEMI_COMMONTRAINCOST,getStr("COMMONTRAINCOST"));
-        setIntVar(SYSTEMI_LANGPRACCOST,getStr("LANGPRACCOST"));
-        setIntVar(SYSTEMI_LANGTRAINCOST,getStr("LANGTRAINCOST"));
         setIntVar(SYSTEMI_LASTPLAYERLEVEL,getStr("LASTPLAYERLEVEL"));
         setIntVar(SYSTEMI_JOURNALLIMIT,getStr("JOURNALLIMIT"));
         setIntVar(SYSTEMI_MUDTHEME,getStr("MUDTHEME"));

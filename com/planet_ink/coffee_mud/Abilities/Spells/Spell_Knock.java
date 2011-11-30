@@ -102,9 +102,7 @@ public class Spell_Knock extends Spell
 
 		int levelDiff=openThis.phyStats().level()-(mob.phyStats().level()+(2*super.getXLEVELLevel(mob)));
 		if(levelDiff<0) levelDiff=0;
-		// the only level protection of knock is this, so don't let auto override
-		boolean success=proficiencyCheck(mob,-(levelDiff*25),false);
-
+		boolean success=proficiencyCheck(mob,-(levelDiff*25),auto);
 		if(!success)
 			beneficialWordsFizzle(mob,openThis,auto?"Nothing happens to "+openThis.name()+".":"<S-NAME> point(s) at "+openThis.name()+" and shout(s) incoherently, but nothing happens.");
 		else

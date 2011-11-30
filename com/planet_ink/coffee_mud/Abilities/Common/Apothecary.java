@@ -44,8 +44,7 @@ public class Apothecary extends Cooking
 	public String cookWordShort(){return "mix";}
 	public String cookWord(){return "mixing";}
 	public boolean honorHerbs(){return false;}
-	protected int iniTrainsRequired(){return CMProps.getIntVar(CMProps.SYSTEMI_SKILLTRAINCOST);}
-	protected int iniPracticesRequired(){return CMProps.getIntVar(CMProps.SYSTEMI_SKILLPRACCOST);}
+	protected Pair<String,Ability.CostType> getRawTrainingCost() { return CMProps.getSkillTrainCostFormula(ID()); }
 
     public String parametersFile(){ return "poisons.txt";}
     protected List<List<String>> loadRecipes(){return super.loadRecipes(parametersFile());}

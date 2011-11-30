@@ -49,8 +49,7 @@ public class CommonSkill extends StdAbility
 	protected String displayText="(Doing something productive)";
 	public String displayText(){return displayText;}
 
-	protected int iniTrainsRequired(){return CMProps.getIntVar(CMProps.SYSTEMI_COMMONTRAINCOST);}
-	protected int iniPracticesRequired(){return CMProps.getIntVar(CMProps.SYSTEMI_COMMONPRACCOST);}
+	protected Pair<String,Ability.CostType> getRawTrainingCost() { return CMProps.getCommonTrainCostFormula(ID()); }
 	protected int iniPracticesToPractice(){return 1;}
 
 	protected boolean allowedWhileMounted(){return true;}

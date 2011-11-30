@@ -67,28 +67,41 @@ public class StdAbility implements Ability
 	public int getTicksBetweenCasts() { return 0;}
 	public long getTimeOfNextCast(){ return 0;}
 	public void setTimeOfNextCast(long absoluteTime){}
-	protected int iniTrainsRequired(){return CMProps.getIntVar(CMProps.SYSTEMI_SKILLTRAINCOST);}
-	protected int iniPracticesRequired(){return CMProps.getIntVar(CMProps.SYSTEMI_SKILLPRACCOST);}
-	public int trainsRequired(MOB mob)
+	protected Pair<String,Ability.CostType> getRawTrainingCost() { return CMProps.getSkillTrainCostFormula(ID()); }
+
+	public Pair<Double,Ability.CostType> getTrainingCost(MOB mob)
 	{
+		int qualifyingLevel;
+		int playerLevel=1;
 		if(mob!=null)
 		{
-			Integer[] O=CMLib.ableMapper().getCostOverrides(mob,ID());
-			if((O!=null)&&(O[AbilityMapper.AbilityMapping.COST_TRAIN]!=null))
-				return O[AbilityMapper.AbilityMapping.COST_TRAIN].intValue();
+			final Integer[] O=CMLib.ableMapper().getCostOverrides(mob,ID());
+			if(O!=null)
+			{
+				Integer val=O[AbilityMapper.AbilityMapping.COST_TRAIN];
+				if(val!=null)
+					return new Pair<Double,Ability.CostType>(Double.valueOf(val.intValue()),Ability.CostType.TRAIN);
+				val=O[AbilityMapper.AbilityMapping.COST_PRAC];
+				if(val!=null)
+					return new Pair<Double,Ability.CostType>(Double.valueOf(val.intValue()),Ability.CostType.PRACTICE);
+			}
+			qualifyingLevel=CMLib.ableMapper().qualifyingLevel(mob, this);
+			playerLevel=mob.basePhyStats().level();
 		}
-		return iniTrainsRequired();
-	}
-	public int practicesRequired(MOB mob)
-	{
-		if(mob!=null)
+		else
 		{
-			Integer[] O=CMLib.ableMapper().getCostOverrides(mob,ID());
-			if((O!=null)&&(O[AbilityMapper.AbilityMapping.COST_PRAC]!=null))
-				return O[AbilityMapper.AbilityMapping.COST_PRAC].intValue();
+			qualifyingLevel=CMLib.ableMapper().lowestQualifyingLevel(ID());
+			playerLevel=1;
 		}
-		return iniPracticesRequired();
+		if(qualifyingLevel<=0) qualifyingLevel=1;
+		final Pair<String,Ability.CostType> rawCost=getRawTrainingCost();
+		if(rawCost==null)
+			return new Pair<Double,Ability.CostType>(Double.valueOf(1.0),Ability.CostType.TRAIN);
+		final double[] vars=new double[]{ qualifyingLevel,playerLevel};
+		final double value=CMath.parseMathExpression(rawCost.first,vars);
+		return new Pair<Double,Ability.CostType>(Double.valueOf(value),rawCost.second);
 	}
+	
 	public int practicesToPractice(MOB mob)
 	{
 		if(mob!=null)
@@ -1272,38 +1285,52 @@ public class StdAbility implements Ability
 	}
 
 
-	public String requirements()
+	public String requirements(MOB mob)
 	{
-		String returnable="";
-		if(iniTrainsRequired()==1)
-			returnable="1 train";
-		else
-		if(iniTrainsRequired()>1)
-			returnable=iniTrainsRequired()+" trains";
-		if((returnable.length()>0)&&(iniPracticesRequired()>0))
-			returnable+=", ";
-		if(iniPracticesRequired()==1)
-			returnable+="1 practice";
-		else
-		if(iniPracticesRequired()>1)
-			returnable+=iniPracticesRequired()+" practices";
-		if(returnable.length()==0)
-			return "free!";
-		return returnable;
+		final Pair<Double,Ability.CostType> cost=getTrainingCost(mob);
+		switch(cost.second)
+		{
+		case XP: return cost.first.intValue()+" XP";
+		case GOLD:
+			if(mob==null)
+				return CMLib.beanCounter().abbreviatedPrice("", cost.first.doubleValue());
+			else
+				return CMLib.beanCounter().abbreviatedPrice(mob, cost.first.doubleValue());
+		default: return cost.first.intValue()+" "
+					   +((cost.first.intValue()==1)
+							   ?cost.second.name().toLowerCase()
+							   :CMLib.english().makePlural(cost.second.name().toLowerCase()));
+		}
+	}
+	
+	protected boolean meetsCostRequirements(MOB student)
+	{
+		final Pair<Double,Ability.CostType> cost=getTrainingCost(student);
+		switch(cost.second)
+		{
+		case XP: return student.getExperience() >= cost.first.intValue();
+		case GOLD: return CMLib.beanCounter().getTotalAbsoluteValue(student,CMLib.beanCounter().getCurrency(student)) >= cost.first.doubleValue();
+		case TRAIN: return student.getTrains() >= cost.first.intValue();
+		case PRACTICE: return student.getPractices() >= cost.first.intValue();
+		}
+		return false;
 	}
 
 	public boolean canBeLearnedBy(MOB teacher, MOB student)
 	{
-		if((practicesRequired(student)>0)&&(student.getPractices()<practicesRequired(student)))
+		if(!meetsCostRequirements(student))
 		{
-			teacher.tell(student.name()+" does not have enough practice points to learn '"+name()+"'.");
-			student.tell("You do not have enough practice points.");
-			return false;
-		}
-		if((trainsRequired(student)>0)&&(student.getTrains()<trainsRequired(student)))
-		{
-			teacher.tell(student.name()+" does not have enough training sessions to learn '"+name()+"'.");
-			student.tell("You do not have enough training sessions.");
+			final Pair<Double,Ability.CostType> cost=getTrainingCost(student);
+			String ofWhat;
+			switch(cost.second)
+			{
+			case XP: ofWhat="xp"; break;
+			case GOLD: ofWhat=CMLib.beanCounter().getDenominationName(CMLib.beanCounter().getCurrency(student), cost.first.doubleValue()); break;
+			case PRACTICE: ofWhat="practice points"; break;
+			default: ofWhat=CMLib.english().makePlural(cost.second.name().toLowerCase()); break;
+			}
+			teacher.tell(student.name()+" does not have enough "+ofWhat+" to learn '"+name()+"'.");
+			student.tell("You do not have enough "+ofWhat+".");
 			return false;
 		}
 		if((CMath.bset(student.getBitmap(),MOB.ATT_NOTEACH))
@@ -1503,14 +1530,26 @@ public class StdAbility implements Ability
 
 	public void teach(MOB teacher, MOB student)
 	{
-		if((practicesRequired(student)>0)&&(student.getPractices()<practicesRequired(student)))
-			return;
-		if((trainsRequired(student)>0)&&(student.getTrains()<trainsRequired(student)))
+		if(!meetsCostRequirements(student))
 			return;
 		if(student.fetchAbility(ID())==null)
 		{
-			student.setPractices(student.getPractices()-practicesRequired(student));
-			student.setTrains(student.getTrains()-trainsRequired(student));
+			final Pair<Double,Ability.CostType> cost=getTrainingCost(student);
+			switch(cost.second)
+			{
+			case XP:
+				CMLib.leveler().postExperience(student, null, "", cost.first.intValue(), true);
+				break;
+			case GOLD:
+				CMLib.beanCounter().subtractMoney(student, cost.first.doubleValue());
+				break;
+			case TRAIN:
+				student.setTrains(student.getTrains()-cost.first.intValue());
+				break;
+			case PRACTICE:
+				student.setPractices(student.getPractices()-cost.first.intValue());
+				break;
+			}
 			Ability newAbility=(Ability)newInstance();
 			int prof75=(int)Math.round(CMath.mul(CMLib.ableMapper().getMaxProficiency(student,true,newAbility.ID()), .75));
 			newAbility.setProficiency((int)Math.round(CMath.mul(proficiency(),((CMath.div(teacher.charStats().getStat(CharStats.STAT_WISDOM)+student.charStats().getStat(CharStats.STAT_INTELLIGENCE),100.0))))));

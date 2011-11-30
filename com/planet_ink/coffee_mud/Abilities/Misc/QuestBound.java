@@ -60,8 +60,8 @@ public class QuestBound implements Ability
 	public long getTickStatus(){return Tickable.STATUS_NOT;}
 	public int usageType(){return 0;}
     public void initializeClass(){}
-    public int practicesRequired(MOB mob){return 0;}
-    public int trainsRequired(MOB mob){return 0;}
+	public Pair<Double,Ability.CostType> getTrainingCost(MOB mob)
+	{ return new Pair<Double,Ability.CostType>(Double.valueOf(1.0),Ability.CostType.TRAIN);}
 
 	public void setName(String newName){}
 	public void setDescription(String newDescription){}
@@ -201,7 +201,7 @@ public class QuestBound implements Ability
 	public String miscTextFormat(){return CMParms.FORMAT_UNDEFINED;}
 	public boolean appropriateToMyFactions(MOB mob){return true;}
 	public String accountForYourself(){return "";}
-	public String requirements(){return "";}
+	public String requirements(MOB mob){return "";}
 
 	public boolean canAffect(Physical P){ return false;}
 	public boolean canTarget(Physical P)

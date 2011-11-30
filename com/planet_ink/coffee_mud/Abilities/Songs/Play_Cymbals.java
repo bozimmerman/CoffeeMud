@@ -31,7 +31,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("unchecked")
 public class Play_Cymbals extends Play_Instrument
 {
 	public String ID() { return "Play_Cymbals"; }
@@ -51,50 +50,62 @@ public class Play_Cymbals extends Play_Instrument
 	{
 		if(getSpell()!=null)
 		{
-			if((mob==invoker())&&(mob.location()!=null))
+			Room R=mob.location();
+			if(R!=null)
 			{
-				for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
+				List<Physical> knockables=new LinkedList<Physical>();
+				int dirCode=-1;
+				if(mob==invoker())
 				{
-					Exit e=mob.location().getExitInDir(d);
-					if((e!=null)&&(e.hasADoor())&&(e.hasALock())&&(e.isLocked()))
+					for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 					{
-						Vector chcommands=new Vector();
-						chcommands.addElement(Directions.getDirectionName(d));
-						getSpell().invoke(invoker(),chcommands,null,true,0);
+						Exit e=R.getExitInDir(d);
+						if((e!=null)&&(e.hasADoor())&&(e.hasALock())&&(e.isLocked()))
+						{
+							knockables.add(e);
+							dirCode=d;
+						}
+					}
+					for(int i=0;i<R.numItems();i++)
+					{
+						Item I=R.getItem(i);
+						if((I!=null)&&(I instanceof Container)&&(I.container()==null))
+						{
+							Container C=(Container)I;
+							if(C.hasALid()&&C.hasALock()&&C.isLocked())
+								knockables.add(C);
+						}
 					}
 				}
-				for(int i=0;i<mob.location().numItems();i++)
+				for(int i=0;i<mob.numItems();i++)
 				{
-					Item I=mob.location().getItem(i);
+					Item I=mob.getItem(i);
 					if((I!=null)&&(I instanceof Container)&&(I.container()==null))
 					{
 						Container C=(Container)I;
 						if(C.hasALid()&&C.hasALock()&&C.isLocked())
-						{
-							Vector chcommands=new Vector();
-							chcommands.addElement(C.name());
-							getSpell().invoke(invoker(),chcommands,C,true,0);
-						}
+							knockables.add(C);
 					}
 				}
-			}
-			for(int i=0;i<mob.numItems();i++)
-			{
-				Item I=mob.getItem(i);
-				if((I!=null)&&(I instanceof Container)&&(I.container()==null))
+				for(Physical P : knockables)
 				{
-					Container C=(Container)I;
-					if(C.hasALid()&&C.hasALock()&&C.isLocked())
+					int levelDiff=P.phyStats().level()-(mob.phyStats().level()+(2*super.getXLEVELLevel(mob)));
+					if(levelDiff<0) levelDiff=0;
+					if(proficiencyCheck(mob,-(levelDiff*25),true))
 					{
-						Vector chcommands=new Vector();
-						chcommands.addElement(C.name());
-						getSpell().invoke(mob,chcommands,C,true,0);
+						CMMsg msg=CMClass.getMsg(mob,P,this,CMMsg.MSG_CAST_VERBAL_SPELL,P.name()+" begin(s) to glow!");
+						if(R.okMessage(mob,msg))
+						{
+							R.send(mob,msg);
+							msg=CMClass.getMsg(mob,P,null,CMMsg.MSG_UNLOCK,null);
+							CMLib.utensils().roomAffectFully(msg,R,dirCode);
+							msg=CMClass.getMsg(mob,P,null,CMMsg.MSG_OPEN,"<T-NAME> opens.");
+							CMLib.utensils().roomAffectFully(msg,R,dirCode);
+						}
 					}
 				}
 			}
 		}
 	}
 	protected int canAffectCode(){return 0;}
-
-
 }
