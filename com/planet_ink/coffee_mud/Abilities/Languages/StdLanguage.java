@@ -12,6 +12,7 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -48,7 +49,7 @@ public class StdLanguage extends StdAbility implements Language
 	protected int canTargetCode(){return 0;}
 	public boolean isAutoInvoked(){return true;}
 	public boolean canBeUninvoked(){return false;}
-	protected Pair<String,Ability.CostType> getRawTrainingCost() { return CMProps.getLangTrainCostFormula(ID()); }
+	protected ExpertiseLibrary.SkillCostDefinition getRawTrainingCost() { return CMProps.getLangTrainCostFormula(ID()); }
 	public int classificationCode(){return Ability.ACODE_LANGUAGE;}
 
 	private static Hashtable emptyHash=new Hashtable();

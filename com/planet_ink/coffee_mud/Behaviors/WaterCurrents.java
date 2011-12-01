@@ -11,6 +11,7 @@ import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.Basic.StdItem;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -234,8 +235,8 @@ public class WaterCurrents extends ActiveTicker
 		public void setAbilityCode(int newCode){}
 		public int adjustedLevel(MOB mob, int asLevel){return -1;}
 		public boolean bubbleAffect(){return false;}
-		public Pair<Double,Ability.CostType> getTrainingCost(MOB mob)
-		{ return new Pair<Double,Ability.CostType>(Double.valueOf(1.0),Ability.CostType.TRAIN);}
+		public ExpertiseLibrary.SkillCost getTrainingCost(MOB mob)
+		{ return new ExpertiseLibrary.SkillCost(ExpertiseLibrary.CostType.TRAIN, Double.valueOf(1.0));}
 		public long flags(){return Ability.FLAG_TRANSPORTING;}
 		public long getTickStatus(){return Tickable.STATUS_NOT;}
 		public int usageType(){return 0;}

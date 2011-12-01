@@ -124,20 +124,14 @@ public class Teach extends StdCommand
                     mob.tell(student.name()+" does not yet fully qualify for the expertise '"+theExpertise.name+"'.\n\rQualifications:"+CMLib.masking().maskDesc(theExpertise.finalRequirements()));
                     return false;
                 }
-                if(((theExpertise.trainCost>0)&&(student.getTrains()<theExpertise.trainCost))
-                ||((theExpertise.practiceCost>0)&&(student.getPractices()<theExpertise.practiceCost))
-                ||((theExpertise.expCost>0)&&(student.getExperience()<theExpertise.expCost))
-                ||((theExpertise.qpCost>0)&&(student.getQuestPoint()<theExpertise.qpCost)))
+                if(!theExpertise.meetsCostRequirements(student))
                 {
                     mob.tell("Training for that expertise requires "+theExpertise.costDescription()+".");
                     return false;
                 }
                 if(!tryTeach(mob,student,theExpertise.name))
                     return false;
-                student.setPractices(student.getPractices()-theExpertise.practiceCost);
-                student.setTrains(student.getTrains()-theExpertise.trainCost);
-                student.setExperience(student.getExperience()-theExpertise.expCost);
-                student.setQuestPoint(student.getQuestPoint()-theExpertise.qpCost);
+                theExpertise.spendCostRequirements(student);
                 student.addExpertise(theExpertise.ID);
                 return true;
             }

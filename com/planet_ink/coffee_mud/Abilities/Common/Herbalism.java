@@ -43,7 +43,7 @@ public class Herbalism extends CraftingSkill implements ItemCraftor
 	public String name(){ return "Herbalism";}
 	private static final String[] triggerStrings = {"HERBALISM","HERBREW","HBREW"};
 	public String[] triggerStrings(){return triggerStrings;}
-	protected Pair<String,Ability.CostType> getRawTrainingCost() { return CMProps.getSkillTrainCostFormula(ID()); }
+	protected ExpertiseLibrary.SkillCostDefinition getRawTrainingCost() { return CMProps.getSkillTrainCostFormula(ID()); }
     public String parametersFormat(){ return 
         "SPELL_ID\tITEM_LEVEL\t"
         +"RESOURCE_NAME_OR_HERB_NAME\t"

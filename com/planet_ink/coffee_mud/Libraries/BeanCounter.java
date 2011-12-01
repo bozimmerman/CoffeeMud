@@ -341,6 +341,11 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 	    return "Equal to "+getDenominationName(currency,low,Math.round(Math.floor(denomination/low)))+".";
 	}
 
+	public String getDenominationName(final MOB mob, double denomination)
+	{
+		return getDenominationName(getCurrency(mob), denomination);
+	}
+	
 	public String getDenominationName(String currency, double denomination)
 	{
 		MoneyDenomination[] DV=getCurrencySet(currency);

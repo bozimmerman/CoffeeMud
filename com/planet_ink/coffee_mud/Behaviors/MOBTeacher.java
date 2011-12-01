@@ -390,10 +390,7 @@ public class MOBTeacher extends CombatAbilities
                             CMLib.commands().postSay(monster,student,"I'm sorry, you do not yet fully qualify for the expertise '"+theExpertise.name+"'.\n\rRequirements: "+CMLib.masking().maskDesc(theExpertise.allRequirements()),true,false);
                             return;
                         }
-                        if(((theExpertise.trainCost>0)&&(student.getTrains()<theExpertise.trainCost))
-                        ||((theExpertise.practiceCost>0)&&(student.getPractices()<theExpertise.practiceCost))
-                        ||((theExpertise.expCost>0)&&(student.getExperience()<theExpertise.expCost))
-                        ||((theExpertise.qpCost>0)&&(student.getQuestPoint()<theExpertise.qpCost)))
+                        if(!theExpertise.meetsCostRequirements(student))
                         {
                             monster.tell("Training for that expertise requires "+theExpertise.costDescription()+".");
                             CMLib.commands().postSay(monster,student,"I'm sorry, but to learn the expertise '"+theExpertise.name+"' requires: "+theExpertise.costDescription(),true,false);
@@ -401,10 +398,7 @@ public class MOBTeacher extends CombatAbilities
                         }
                         if(!tryTeach(monster,student,theExpertise.name))
                             return ;
-                        student.setPractices(student.getPractices()-theExpertise.practiceCost);
-                        student.setTrains(student.getTrains()-theExpertise.trainCost);
-                        student.setExperience(student.getExperience()-theExpertise.expCost);
-                        student.setQuestPoint(student.getQuestPoint()-theExpertise.qpCost);
+                        theExpertise.spendCostRequirements(student);
                         student.addExpertise(theExpertise.ID);
                     }
                     else

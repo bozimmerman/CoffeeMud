@@ -11,7 +11,7 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
-import com.planet_ink.coffee_mud.Libraries.interfaces.AbilityMapper;
+import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -49,7 +49,7 @@ public class CommonSkill extends StdAbility
 	protected String displayText="(Doing something productive)";
 	public String displayText(){return displayText;}
 
-	protected Pair<String,Ability.CostType> getRawTrainingCost() { return CMProps.getCommonTrainCostFormula(ID()); }
+	protected ExpertiseLibrary.SkillCostDefinition getRawTrainingCost() { return CMProps.getCommonTrainCostFormula(ID()); }
 	protected int iniPracticesToPractice(){return 1;}
 
 	protected boolean allowedWhileMounted(){return true;}

@@ -4,7 +4,6 @@ import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
-import com.planet_ink.coffee_mud.Abilities.interfaces.Ability.CostType;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
 import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
@@ -12,6 +11,7 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -325,9 +325,9 @@ public class CMProps extends Properties
     protected final Map<String,Double> 	skillComActionCostExceptions=new HashMap<String,Double>();
     protected final Map<String,Double> 	cmdActionCostExceptions		=new HashMap<String,Double>();
     protected final Map<String,Double> 	cmdComActionCostExceptions	=new HashMap<String,Double>();
-    protected final Map<String,Pair<String,CostType>> 	commonCost  =new HashMap<String,Pair<String,CostType>>();
-    protected final Map<String,Pair<String,CostType>> 	skillsCost  =new HashMap<String,Pair<String,CostType>>();
-    protected final Map<String,Pair<String,CostType>> 	languageCost=new HashMap<String,Pair<String,CostType>>();
+    protected final Map<String,ExpertiseLibrary.SkillCostDefinition> commonCost  =new HashMap<String,ExpertiseLibrary.SkillCostDefinition>();
+    protected final Map<String,ExpertiseLibrary.SkillCostDefinition> skillsCost  =new HashMap<String,ExpertiseLibrary.SkillCostDefinition>();
+    protected final Map<String,ExpertiseLibrary.SkillCostDefinition> languageCost=new HashMap<String,ExpertiseLibrary.SkillCostDefinition>();
 
 	public CMProps(InputStream in)
 	{
@@ -748,7 +748,7 @@ public class CMProps extends Properties
                setUpLowVar(props[p],varNum,val);
     }
 
-    public static final void setUpCosts(final String fieldName, final Map<String,Pair<String,CostType>> map, final Vector<String> fields)
+    public static final void setUpCosts(final String fieldName, final Map<String,ExpertiseLibrary.SkillCostDefinition> map, final Vector<String> fields)
     {
     	final double[] doubleChecker=new double[10];
     	for(String field : fields)
@@ -763,11 +763,11 @@ public class CMProps extends Properties
     		}
 			final String type=field.substring(typeIndex+1).toUpperCase().trim();
 			String formula=field.substring(0,typeIndex).trim();
-			CostType costType=(CostType)CMath.s_valueOf(CostType.values(), type);
+			ExpertiseLibrary.CostType costType=(ExpertiseLibrary.CostType)CMath.s_valueOf(ExpertiseLibrary.CostType.values(), type);
 			if(costType==null)
 			{
     			Log.errOut("CMProps","Error parsing coffeemud.ini field '"+fieldName+"', invalid type: "+type);
-    			Log.errOut("CMProps","Valid values include "+CMParms.toStringList(CostType.values()));
+    			Log.errOut("CMProps","Valid values include "+CMParms.toStringList(ExpertiseLibrary.CostType.values()));
     			continue;
 			}
 			String keyField="";
@@ -792,34 +792,34 @@ public class CMProps extends Properties
     			Log.errOut("CMProps","Error parsing coffeemud.ini '"+fieldName+"' has duplicate key:"+((keyField.length()==0)?"<EMPTY>":keyField));
     			continue;
 			}
-			map.put(keyField.toUpperCase(), new Pair<String,CostType>(formula,costType));
+			map.put(keyField.toUpperCase(), new ExpertiseLibrary.SkillCostDefinition(costType,formula));
     	}
     }
 
-    public static final Pair<String,CostType> getSkillTrainCostFormula(final String id)
+    public static final ExpertiseLibrary.SkillCostDefinition getSkillTrainCostFormula(final String id)
     { 
     	final CMProps p=p();
-    	Pair<String,CostType> pair=p.skillsCost.get(id.toUpperCase());
+    	ExpertiseLibrary.SkillCostDefinition pair=p.skillsCost.get(id.toUpperCase());
     	if(pair==null) pair=p.skillsCost.get("");
-    	if(pair==null) pair=new Pair<String,CostType>("1",CostType.TRAIN);
+    	if(pair==null) pair=new ExpertiseLibrary.SkillCostDefinition(ExpertiseLibrary.CostType.TRAIN, "1");
     	return pair;
     }
     
-    public static final Pair<String,CostType> getCommonTrainCostFormula(final String id)
+    public static final ExpertiseLibrary.SkillCostDefinition getCommonTrainCostFormula(final String id)
     { 
     	final CMProps p=p();
-    	Pair<String,CostType> pair=p.commonCost.get(id.toUpperCase());
+    	ExpertiseLibrary.SkillCostDefinition pair=p.commonCost.get(id.toUpperCase());
     	if(pair==null) pair=p.commonCost.get("");
-    	if(pair==null) pair=new Pair<String,CostType>("1",CostType.TRAIN);
+    	if(pair==null) pair=new ExpertiseLibrary.SkillCostDefinition(ExpertiseLibrary.CostType.TRAIN, "1");
     	return pair;
     }
     
-    public static final Pair<String,CostType> getLangTrainCostFormula(final String id)
+    public static final ExpertiseLibrary.SkillCostDefinition getLangTrainCostFormula(final String id)
     { 
     	final CMProps p=p();
-    	Pair<String,CostType> pair=p.languageCost.get(id.toUpperCase());
+    	ExpertiseLibrary.SkillCostDefinition pair=p.languageCost.get(id.toUpperCase());
     	if(pair==null) pair=p.languageCost.get("");
-    	if(pair==null) pair=new Pair<String,CostType>("1",CostType.TRAIN);
+    	if(pair==null) pair=new ExpertiseLibrary.SkillCostDefinition(ExpertiseLibrary.CostType.TRAIN, "1");
     	return pair;
     }
     
@@ -1087,7 +1087,7 @@ public class CMProps extends Properties
         setUpLowVar(SYSTEM_CHARCREATIONSCRIPTS,getStr("CHARCREATIONSCRIPTS"));
         setUpLowVar(SYSTEM_CHARSETINPUT,getStr("CHARSETINPUT","iso-8859-1"));
         setUpLowVar(SYSTEM_CHARSETOUTPUT,getStr("CHARSETOUTPUT","iso-8859-1"));
-        setUpCosts("COMMONCOST",commonCost,CMParms.parseCommas(getStr("COMMONCOST","(@x1*50) XP"),true));
+        setUpCosts("COMMONCOST",commonCost,CMParms.parseCommas(getStr("COMMONCOST","1 TRAIN"),true));
         setUpCosts("SKILLCOST",skillsCost,CMParms.parseCommas(getStr("SKILLCOST","1 TRAIN"),true));
         setUpCosts("LANGCOST",languageCost,CMParms.parseCommas(getStr("LANGCOST","3 PRACTICES"),true));
 

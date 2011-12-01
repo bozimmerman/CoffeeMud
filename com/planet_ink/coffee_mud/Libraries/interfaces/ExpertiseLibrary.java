@@ -85,7 +85,8 @@ public interface ExpertiseLibrary extends CMLibrary
             }
             return this.compiledFinalMask;
         }
-        public String allRequirements(){
+        public String allRequirements()
+        {
 			String req=uncompiledListMask;
 			if(req==null) req=""; else req=req.trim();
 			if((uncompiledFinalMask!=null)&&(uncompiledFinalMask.length()>0))
@@ -94,7 +95,8 @@ public interface ExpertiseLibrary extends CMLibrary
         }
         public String listRequirements(){return uncompiledListMask;}
         public String finalRequirements(){return uncompiledFinalMask;}
-        public void addListMask(String mask){
+        public void addListMask(String mask)
+        {
         	if((mask==null)||(mask.length()==0)) return;
         	if(uncompiledListMask==null)
 	        	uncompiledListMask=mask;
@@ -102,7 +104,8 @@ public interface ExpertiseLibrary extends CMLibrary
 	        	uncompiledListMask+=mask;
             compiledListMask=null;
         }
-        public void addFinalMask(String mask){ 
+        public void addFinalMask(String mask)
+        { 
         	if((mask==null)||(mask.length()==0)) return;
         	if(uncompiledFinalMask==null)
 	        	uncompiledFinalMask=mask;
@@ -112,23 +115,150 @@ public interface ExpertiseLibrary extends CMLibrary
         	CMLib.ableMapper().addPreRequisites(ID,new Vector(),uncompiledFinalMask.trim());
         }
         
-        public int practiceCost=0;
-        public int trainCost=0;
-        public int expCost=0;
-        public int qpCost=0;
-        public int timeCost=0;
-        public String costDescription(){
-        	StringBuffer cost=new StringBuffer("");
-        	if(practiceCost>0) cost.append(practiceCost+" practice"+((practiceCost>1)?"s":"")+", ");
-        	if(trainCost>0) cost.append(trainCost+" train"+((trainCost>1)?"s":"")+", ");
-        	if(expCost>0) cost.append(expCost+" experience point"+((expCost>1)?"s":"")+", ");
-        	if(qpCost>0) cost.append(qpCost+" quest point"+((qpCost>1)?"s":"")+", ");
-        	if(cost.length()==0) return "";
-        	return cost.substring(0,cost.length()-2);
+        private List<SkillCost> costs=new LinkedList<SkillCost>();
+        public void addCost(CostType type, Double value)
+        {
+        	costs.add(new SkillCost(type,value));
+        }
+        public String costDescription()
+        {
+        	StringBuffer costStr=new StringBuffer("");
+        	for(SkillCost cost : costs)
+        		costStr.append(cost.requirements(null)).append(", ");
+        	if(costStr.length()==0) return "";
+        	return costStr.substring(0,costStr.length()-2);
+        }
+        public boolean meetsCostRequirements(MOB mob)
+        {
+        	for(SkillCost cost : costs)
+        		if(!cost.doesMeetCostRequirements(mob))
+        			return false;
+        	return true;
+        }
+        public void spendCostRequirements(MOB mob)
+        {
+        	for(SkillCost cost : costs)
+        		cost.spendSkillCost(mob);
         }
     }
     
-    public ExpertiseDefinition addDefinition(String ID, String name, String listMask, String finalMask, int practices, int trains, int qpCost, int expCost, int timeCost);
+    /** Enumeration of the types of costs of gaining this ability */
+    public enum	CostType
+    {
+    	TRAIN, 
+    	PRACTICE, 
+    	XP, 
+    	GOLD, 
+    	QP;
+    }
+
+    /**
+     * Class for the definition of the cost of a skill
+     * @author Bo Zimmerman
+     */
+    public class SkillCostDefinition
+    {
+    	public final CostType type;
+    	public final String costDefinition;
+    	
+    	public SkillCostDefinition(final CostType type, final String costDefinition)
+    	{
+    		this.type=type;
+    		this.costDefinition=costDefinition;
+    	}
+    }
+    
+    /**
+     * Class for the cost of a skill, or similar things perhaps
+     * @author Bo Zimmerman
+     */
+    public class SkillCost
+    {
+    	public final Double   value;
+    	public final CostType costType;
+
+    	public SkillCost(final CostType costType, final Double value)
+    	{
+    		this.value=value;
+    		this.costType=costType;
+    	}
+    	
+    	/**
+    	 * Returns a simple description of the Type of 
+    	 * this cost.  A MOB and sample value is required for
+    	 * money currencies.
+    	 * @param mob MOB, for GOLD type currency eval 
+    	 * @return the type of currency
+    	 */
+    	public String costType(final MOB mob)
+    	{
+			final String ofWhat;
+			switch(costType)
+			{
+			case XP: ofWhat="experience points"; break;
+			case GOLD: ofWhat=CMLib.beanCounter().getDenominationName(mob, value.doubleValue()); break;
+			case PRACTICE: ofWhat="practice points"; break;
+			case QP: ofWhat="quest points"; break;
+			default: ofWhat=CMLib.english().makePlural(costType.name().toLowerCase()); break;
+			}
+			return ofWhat;
+    	}
+    	
+    	public String requirements(final MOB mob)
+    	{
+    		switch(costType)
+    		{
+    		case XP: return value.intValue()+" XP";
+    		case QP: return value.intValue()+" quest pts";
+    		case GOLD:
+    			if(mob==null)
+    				return CMLib.beanCounter().abbreviatedPrice("", value.doubleValue());
+    			else
+    				return CMLib.beanCounter().abbreviatedPrice(mob, value.doubleValue());
+    		default: return value.intValue()+" "
+    					   +((value.intValue()==1)
+    							   ?costType.name().toLowerCase()
+    							   :CMLib.english().makePlural(costType.name().toLowerCase()));
+    		}
+    	}
+    	
+    	/**
+    	 * Returns whether the given mob meets the given cost requirements.
+    	 * @param student the student to check
+    	 * @return true if it meets, false otherwise
+    	 */
+        public boolean doesMeetCostRequirements(final MOB student)
+        {
+    		switch(costType)
+    		{
+    		case XP: return student.getExperience() >= value.intValue();
+    		case GOLD: return CMLib.beanCounter().getTotalAbsoluteNativeValue(student) >= value.doubleValue();
+    		case TRAIN: return student.getTrains() >= value.intValue();
+    		case PRACTICE: return student.getPractices() >= value.intValue();
+    		case QP: return student.getQuestPoint() >= value.intValue();
+    		}
+    		return false;
+        }
+
+    	/**
+    	 * Expends the given cost upon the given student
+    	 * @param student the student to check
+    	 * @return true if it meets, false otherwise
+    	 */
+        public void spendSkillCost(final MOB student)
+        {
+    		switch(costType)
+    		{
+    		case XP:       CMLib.leveler().postExperience(student, null, "", value.intValue(), true); break;
+    		case GOLD:     CMLib.beanCounter().subtractMoney(student, value.doubleValue()); break;
+    		case TRAIN:    student.setTrains(student.getTrains()-value.intValue()); break;
+    		case PRACTICE: student.setPractices(student.getPractices()-value.intValue()); break;
+    		case QP:       student.setQuestPoint(student.getQuestPoint()-value.intValue()); break;
+    		}
+        }
+    }
+
+    public ExpertiseDefinition addDefinition(String ID, String name, String listMask, String finalMask, String[] costs);
     public void delDefinition(String ID);
     public ExpertiseDefinition getDefinition(String ID);
     public ExpertiseDefinition findDefinition(String ID, boolean exactOnly);

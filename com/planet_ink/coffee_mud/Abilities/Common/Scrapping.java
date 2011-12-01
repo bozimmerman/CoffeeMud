@@ -10,6 +10,7 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -40,7 +41,7 @@ public class Scrapping extends CommonSkill
 	public String name(){ return "Scrapping";}
 	private static final String[] triggerStrings = {"SCRAP","SCRAPPING"};
 	public String[] triggerStrings(){return triggerStrings;}
-	protected Pair<String,Ability.CostType> getRawTrainingCost() { return CMProps.getSkillTrainCostFormula(ID()); }
+	protected ExpertiseLibrary.SkillCostDefinition getRawTrainingCost() { return CMProps.getSkillTrainCostFormula(ID()); }
     public int classificationCode() {   return Ability.ACODE_COMMON_SKILL|Ability.DOMAIN_NATURELORE; }
 
 	protected Item found=null;

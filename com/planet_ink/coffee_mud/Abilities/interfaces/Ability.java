@@ -10,6 +10,7 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.ExpertiseLibrary;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -157,7 +158,7 @@ public interface Ability extends Environmental
 	 * @param mob the potential caster
 	 * @return a pair, with the number of the cost type, and the cost type
 	 */
-	public Pair<Double,Ability.CostType> getTrainingCost(MOB mob);
+	public ExpertiseLibrary.SkillCost getTrainingCost(MOB mob);
 	
 	/**
 	 * A set of the command strings the user types to access
@@ -887,9 +888,6 @@ public interface Ability extends Environmental
     /** constant mask for the flags() method designating that this ability is an intoxicating effect @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#flags() */
     public static final int FLAG_INTOXICATING=262144;
 	
-    /** Enumeration of the types of costs of gaining this ability */
-    public enum	CostType { TRAIN, PRACTICE, XP, GOLD }
-
 	/** array of string describtions for the FLAG_* constants, indexed by their values */
 	public static final String[] FLAG_DESCS={
 	    "BINDING",

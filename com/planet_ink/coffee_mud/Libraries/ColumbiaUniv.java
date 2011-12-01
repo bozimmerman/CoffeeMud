@@ -43,7 +43,7 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
     protected Properties helpMap=new Properties();
     protected DVector rawDefinitions=new DVector(7);
 
-    public ExpertiseLibrary.ExpertiseDefinition addDefinition(String ID, String name, String listMask, String finalMask, int practices, int trains, int qpCost, int expCost, int timeCost)
+    public ExpertiseLibrary.ExpertiseDefinition addDefinition(String ID, String name, String listMask, String finalMask, String[] costs)
     {
         ExpertiseLibrary.ExpertiseDefinition def=getDefinition(ID);
     	if(def!=null) return  def;
@@ -57,11 +57,16 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
     	def.name=name;
     	def.addListMask(listMask);
     	def.addFinalMask(finalMask);
-    	def.practiceCost=practices;
-    	def.trainCost=trains;
-    	def.qpCost=qpCost;
-    	def.expCost=expCost;
-    	def.timeCost=timeCost;
+    	int practices=CMath.s_int(costs[0]);
+    	int trains=CMath.s_int(costs[1]);
+    	int qpCost=CMath.s_int(costs[2]);
+    	int expCost=CMath.s_int(costs[3]);
+    	//int timeCost=CMath.s_int(costs[0]);
+    	if(practices>0) def.addCost(CostType.PRACTICE, Double.valueOf(practices));
+    	if(trains>0) def.addCost(CostType.TRAIN, Double.valueOf(trains));
+    	if(qpCost>0) def.addCost(CostType.QP, Double.valueOf(qpCost));
+    	if(expCost>0) def.addCost(CostType.XP, Double.valueOf(expCost));
+    	//if(timeCost>0) def.addCost(CostType.PRACTICE, Double.valueOf(practices));
     	completeEduMap.put(def.ID,def);
         return def;
     }
@@ -202,7 +207,7 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
         HashSet flags=new HashSet();
         String s=null;
         String skillMask=null;
-        int[] costs=new int[5];
+        String[] costs=new String[5];
         String WKID=null;
         String name,WKname=null;
         String listMask,WKlistMask=null;
@@ -285,7 +290,7 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
         listMask=skillMask+" "+((String)parts.elementAt(4));
         finalMask=(((String)parts.elementAt(5)));
         for(int i=6;i<11;i++)
-            costs[i-6]=CMath.s_int((String)parts.elementAt(i));
+            costs[i-6]=(String)parts.elementAt(i);
         didOne=false;
         for(int u=0;u<completeUsageMap.length;u++)
             didOne=didOne||flags.contains(ExpertiseLibrary.XFLAG_CODES[u]);
@@ -310,7 +315,7 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
             }
             WKlistMask=expertMath(WKlistMask,l);
             WKfinalMask=expertMath(WKfinalMask,l);
-            def=addDefinition(WKID,WKname,WKlistMask,WKfinalMask,costs[0],costs[1],costs[2],costs[3],costs[4]);
+            def=addDefinition(WKID,WKname,WKlistMask,WKfinalMask,costs);
             if(def!=null){
                 def.compiledFinalMask();
                 def.compiledListMask();
@@ -343,5 +348,4 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
                 ID=WKID;
         }
     }
-    
 }

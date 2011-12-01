@@ -42,7 +42,7 @@ public class ScrollScribing extends CraftingSkill implements ItemCraftor
 	public String name(){ return "Scroll Scribing";}
 	private static final String[] triggerStrings = {"ENSCRIBE","SCROLLSCRIBE","SCROLLSCRIBING"};
 	public String[] triggerStrings(){return triggerStrings;}
-	protected Pair<String,Ability.CostType> getRawTrainingCost() { return CMProps.getSkillTrainCostFormula(ID()); }
+	protected ExpertiseLibrary.SkillCostDefinition getRawTrainingCost() { return CMProps.getSkillTrainCostFormula(ID()); }
     public String supportedResourceString(){return "MISC";}
     public String parametersFormat(){ return "SPELL_ID\tRESOURCE_NAME";}
 

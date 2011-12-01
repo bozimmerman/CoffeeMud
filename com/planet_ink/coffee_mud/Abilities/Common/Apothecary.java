@@ -11,6 +11,7 @@ import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
@@ -44,7 +45,7 @@ public class Apothecary extends Cooking
 	public String cookWordShort(){return "mix";}
 	public String cookWord(){return "mixing";}
 	public boolean honorHerbs(){return false;}
-	protected Pair<String,Ability.CostType> getRawTrainingCost() { return CMProps.getSkillTrainCostFormula(ID()); }
+	protected ExpertiseLibrary.SkillCostDefinition getRawTrainingCost() { return CMProps.getSkillTrainCostFormula(ID()); }
 
     public String parametersFile(){ return "poisons.txt";}
     protected List<List<String>> loadRecipes(){return super.loadRecipes(parametersFile());}

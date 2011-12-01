@@ -52,6 +52,7 @@ public interface MoneyLibrary extends CMLibrary
 	public int getDenominationIndex(String currency, double value);
     public String getConvertableDescription(String currency, double denomination);
     public String getDenominationName(String currency, double denomination);
+	public String getDenominationName(final MOB mob, double denomination);
     public String nameCurrencyShort(MOB mob, double absoluteValue);
     public String nameCurrencyShort(MOB mob, int absoluteValue);
     public String nameCurrencyShort(String currency, double absoluteValue);
