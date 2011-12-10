@@ -350,23 +350,25 @@ public class Spell_Meld extends Spell
 					{
 						final Ability A=a.nextElement();
 						if((A!=null)&&(melded.fetchEffect(A.ID())==null))
-							melded.addEffect(A);
+							melded.addEffect((Ability)A.copyOf());
 					}
 					for(final Enumeration<Ability> a=itemTwo.effects();a.hasMoreElements();)
 					{
 						final Ability A=a.nextElement();
 						if((A!=null)&&(melded.fetchEffect(A.ID())==null))
-							melded.addEffect(A);
+							melded.addEffect((Ability)A.copyOf());
 					}
 					for(Enumeration<Behavior> e=itemOne.behaviors();e.hasMoreElements();)
 					{
 						Behavior B=e.nextElement();
-						if(B!=null)	melded.addBehavior(B);
+						if(B!=null)	
+							melded.addBehavior((Behavior)B.copyOf());
 					}
 					for(Enumeration<Behavior> e=itemTwo.behaviors();e.hasMoreElements();)
 					{
 						Behavior B=e.nextElement();
-						if(B!=null)	melded.addBehavior(B);
+						if(B!=null)	
+							melded.addBehavior((Behavior)B.copyOf());
 					}
 					melded.recoverPhyStats();
 				}

@@ -46,8 +46,8 @@ public class Prop_WearZapper extends Prop_HaveZapper
 
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
-		if(affected==null) return false;
-		if(!(affected instanceof Item)) return false;
+		if(affected==null) return super.okMessage(myHost, msg);
+		if(!(affected instanceof Item)) return super.okMessage(myHost, msg);
 		Item myItem=(Item)affected;
 
 		MOB mob=msg.source();
