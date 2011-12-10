@@ -197,6 +197,50 @@ public class Backend
 	   }
    }
 
+
+   /**
+    * 
+    * @param fakeTable
+    * @param columns
+    * @param sqlValues
+    * @return
+    * @throws java.sql.SQLException
+    */
+   public void dupKeyCheck(final String tableName, final String[] doCols, final String[] sqlValues) throws java.sql.SQLException
+   {
+ 	    final FakeTable fakeTable=(FakeTable)fakeTables.get(tableName);
+         if (fakeTable==null) throw new java.sql.SQLException("unknown table "+tableName);
+		final List<Backend.FakeCondition> conditions=new ArrayList<Backend.FakeCondition>(2);
+		for(int i=0;i<doCols.length;i++)
+		{
+			final int id=fakeTable.findColumn(doCols[i]);
+			if (id<0) continue;
+			final FakeColumn col = fakeTable.columns[id];
+			if(col.keyNumber >= 0)
+			{
+				final Backend.FakeCondition condition = buildFakeCondition(fakeTable.name, col.name, "=", sqlValues[i], false);
+				condition.connector = Backend.ConnectorType.AND;
+				conditions.add(condition);
+			}
+		}
+		if(conditions.size()==0) return;
+		FakeConditionResponder responder = new FakeConditionResponder()
+		{
+			public void callBack(ComparableValue[] values, RecordInfo info) throws Exception 
+			{
+				throw new java.sql.SQLException("duplicate key error");
+			}
+		};
+		try
+		{
+			fakeTable.recordIterator(conditions,responder);
+		}
+		catch(Exception e)
+		{
+			throw new java.sql.SQLException(e.getMessage());
+		}
+   }
+   
 	protected static class IndexedRowMapComparator implements Comparator
 	{
 		private int index;
@@ -295,6 +339,7 @@ public class Backend
    protected static class FakeTable 
    {
 	  private File             				fileName;
+	  private String						name;
       private RandomAccessFile 				file;
       private int             				fileSize;
       private byte[]           				fileBuffer;
@@ -303,8 +348,9 @@ public class Backend
       private int[]            				columnIndexesOfIndexed;
       private IndexedRowMap				 	rowRecords				= new IndexedRowMap();
 
-      FakeTable(File name) 
+      FakeTable(String tableName, File name) 
       { 
+    	  this.name=tableName;
     	  fileName=name; 
       }
 
@@ -601,7 +647,7 @@ public class Backend
          System.arraycopy(fileBuffer,0,newBuffer,0,fileBuffer.length);
          fileBuffer=newBuffer;
       }
-
+      
       /**
        * 
        * @param prevRecord
@@ -952,7 +998,7 @@ public class Backend
             columns.add(info);
          }
 
-         FakeTable fakeTable=new FakeTable(new File(basePath,"fakedb.data."+fakeTableName));
+         FakeTable fakeTable=new FakeTable(fakeTableName, new File(basePath,"fakedb.data."+fakeTableName));
          fakeTable.columns=new FakeColumn[columns.size()];
          fakeTable.columnHash = new Hashtable<String,Integer>();
          int index=0;
@@ -1193,6 +1239,7 @@ public class Backend
 	  
 	  final FakeTable fakeTable=(FakeTable)fakeTables.get(tableName);
       if (fakeTable==null) throw new java.sql.SQLException("unknown table "+tableName);
+      
 
       final ComparableValue[] values=new ComparableValue[fakeTable.columns.length];
       for (int index=0;index<columns.length;index++) 

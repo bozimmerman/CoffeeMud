@@ -2351,4 +2351,4 @@ Special/Reserved Quest called holidays can be added to/modified on an area-by-ar
 13.New Archon skill: Injure -- for creating instant injuries (useful for testing, or a nasty punishment).
 # Build 5.7.6 Release ??/??/2011
 1. New coffeemud.ini entries: COMMONCOST, SKILLCOST, LANGCOST.  Old entries, COMMONTRAINCOST, etc.. RETIRED.
-2.   
+2. (Internal) fakedb now supports dup key detection for insert statements, DBUpgrade now more forgiving of dup keys.

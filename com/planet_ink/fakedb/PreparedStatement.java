@@ -112,8 +112,12 @@ public class PreparedStatement extends Statement implements java.sql.PreparedSta
 			connection.getBackend().deleteRecord((Backend.ImplDeleteStatement)stmt);
 			return true;
 		case INSERT:
-			connection.getBackend().insertValues((Backend.ImplInsertStatement)stmt);
+		{
+			final Backend.ImplInsertStatement istmt=(Backend.ImplInsertStatement)stmt;
+        	connection.getBackend().dupKeyCheck(istmt.tableName, istmt.columns, istmt.sqlValues);
+			connection.getBackend().insertValues(istmt);
 			return true;
+		}
 		}
 		return false;
 	}
@@ -138,8 +142,12 @@ public class PreparedStatement extends Statement implements java.sql.PreparedSta
 			connection.getBackend().deleteRecord((Backend.ImplDeleteStatement)stmt);
 			return 0;
 		case INSERT:
-			connection.getBackend().insertValues((Backend.ImplInsertStatement)stmt);
+		{
+			final Backend.ImplInsertStatement istmt=(Backend.ImplInsertStatement)stmt;
+        	connection.getBackend().dupKeyCheck(istmt.tableName, istmt.columns, istmt.sqlValues);
+			connection.getBackend().insertValues(istmt);
 			return 0;
+		}
 		}
 		return -1;
 	}

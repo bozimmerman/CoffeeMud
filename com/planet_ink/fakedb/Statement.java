@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.planet_ink.fakedb.Backend.ComparableValue;
+import com.planet_ink.fakedb.Backend.FakeTable;
 
 /* 
    Copyright 2001 Thomas Neumann
@@ -533,13 +534,22 @@ public class Statement implements java.sql.Statement
        sql=split(sql,token);
        String tableName=token[0];
        sql=split(sql,token);
-       if (!token[0].equalsIgnoreCase("where")) 
-       	throw new java.sql.SQLException("no other where clause");
-       sql=skipWS(sql);
-       List<Backend.FakeCondition> conditions = new ArrayList<Backend.FakeCondition>();
-       sql=parseWhereClause(tableName, sql, conditions);
-       if(conditions.size()==0)
-    	   throw new java.sql.SQLException("no more where clause!");
+       List<Backend.FakeCondition> conditions;
+       if (token[0].equalsIgnoreCase("where"))
+       {
+	       sql=skipWS(sql);
+	       conditions = new ArrayList<Backend.FakeCondition>();
+	       sql=parseWhereClause(tableName, sql, conditions);
+	       if(conditions.size()==0)
+	    	   throw new java.sql.SQLException("no more where clause!");
+       }
+       else
+       if(token.length>0)
+       {
+    	   conditions=new ArrayList<Backend.FakeCondition>();
+       }
+       else
+           throw new java.sql.SQLException("no other where clause");
        return new Backend.ImplDeleteStatement(tableName, conditions);
    }
    
@@ -560,6 +570,7 @@ public class Statement implements java.sql.Statement
          if (token[0].equalsIgnoreCase("insert")) 
          {
         	Backend.ImplInsertStatement stmt = parseInsert(sql, token);
+        	connection.getBackend().dupKeyCheck(stmt.tableName, stmt.columns, stmt.sqlValues);
             connection.getBackend().insertValues(stmt);
          } 
          else 

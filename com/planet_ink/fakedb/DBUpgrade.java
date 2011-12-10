@@ -687,7 +687,7 @@ public class DBUpgrade
 						if(R!=null) R.close();
 						myStatement.close();
 						if(found)
-							p("X");
+							p("\n** Duplicate key detected -- no worries, just skipping this row\n");
 						else
 							throw sqle;
 					}
