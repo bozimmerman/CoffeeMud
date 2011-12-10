@@ -33,6 +33,25 @@ public class DBUpgrade
 	{
 		if(out!=null) out.print(str);
 	}
+	
+	public static String fieldValue(final String field, int oldIndex, List<String> row)
+	{
+		if(field.startsWith("#"))
+		{
+			if(oldIndex>=0)
+				return (String)row.get(oldIndex);
+			else
+				return "0";
+		}
+		else
+		{
+			if(oldIndex>=0)
+				return "'"+((String)row.get(oldIndex))+"'";
+			else
+				return "''";
+		}
+	}
+	
 	public static void main(String a[]) throws IOException
 	{
 		pl("Welcome to the CoffeeMud Database Upgrade Tool!");
@@ -501,24 +520,49 @@ public class DBUpgrade
 			{
 				Class.forName(dclass);
 				java.sql.Connection myConnection=DriverManager.getConnection(dservice,dlogin,dpassword);
-				java.sql.Statement myStatement=myConnection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
-				java.sql.ResultSet R=myStatement.executeQuery("SELECT * FROM CMROOM");
-				if(R!=null){
-					tested=true;
-					if(R.next())
+				for(Enumeration e=newTables.keys();e.hasMoreElements();)
+				{
+					boolean doThisTable=true;
+					while(doThisTable)
 					{
-						pl("Argh! There is data in your destination database!");
-						pl("Go empty all the tables and run this again!");
-						return;
+						doThisTable=false;
+						boolean deleteAllData=false;
+						String table=(String)e.nextElement();
+						java.sql.Statement myStatement=myConnection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+						java.sql.ResultSet R=myStatement.executeQuery("SELECT * FROM "+table);
+						if(R!=null){
+							tested=true;
+							if(R.next())
+							{
+								pl("Argh! There is data in your destination database table: "+table+"");
+								pl("Enter Y if you want me to delete the data.  Enter N to exit this program and do it yourself.");
+								p(":");
+								String ans=in.readLine();
+								if((ans!=null)&&(ans.trim().toUpperCase().startsWith("Y")))
+									deleteAllData=true;
+								else
+								{
+									pl("Go empty all the tables and run this again!");
+									return;
+								}
+							}
+							R.close();
+						}
+						myStatement.close();
+						if(deleteAllData)
+						{
+							myStatement=myConnection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+							myStatement.execute("DELETE FROM "+table);
+							myStatement.close();
+							doThisTable=true;
+						}
 					}
-					R.close();
-					myStatement.close();
-					myConnection.close();
 				}
+				myConnection.close();
 			}
 			catch(Exception ce)
 			{
-				pl("That information just did not work for me.");
+				pl("Could not connect to your destination database.  Not so good.");
 				pl(ce.getMessage());
 			}
 		}
@@ -562,7 +606,7 @@ public class DBUpgrade
 		}
 		catch(Exception ce)
 		{
-			pl("\n\nOops.. something bad happened!");
+			pl("\n\nOops.. failed to read your old data!");
 			pl(ce.getMessage());
 			pl("Fix it and run this again!");
 			return;
@@ -598,51 +642,62 @@ public class DBUpgrade
 					matrix[i]=oldIndex;
 				}
 				
+				int successes=0;
 				for(int r=0;r<rows.size();r++)
 				{
 					List row=(List)rows.get(r);
-					java.sql.Statement myStatement=myConnection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
-					StringBuffer str=new StringBuffer("INSERT INTO "+table+" (");
-					for(int i=0;i<nfields.size();i++)
-						str.append(((String)nfields.get(i)).substring(1)+",");
-					if(nfields.size()>0)
-						str.setCharAt(str.length()-1,' ');
-					str.append(") VALUES (");
-					for(int i=0;i<nfields.size();i++)
+					try
 					{
-						String field=(String)nfields.get(i);
-						int oldIndex=matrix[i];
-						String value=null;
-						if(field.startsWith("#"))
+						java.sql.Statement myStatement=myConnection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+						StringBuffer str=new StringBuffer("INSERT INTO "+table+" (");
+						for(int i=0;i<nfields.size();i++)
+							str.append(((String)nfields.get(i)).substring(1)+",");
+						if(nfields.size()>0)
+							str.setCharAt(str.length()-1,' ');
+						str.append(") VALUES (");
+						for(int i=0;i<nfields.size();i++)
 						{
-							if(oldIndex>=0)
-								value=(String)row.get(oldIndex);
-							else
-								value="0";
+							String field=(String)nfields.get(i);
+							int oldIndex=matrix[i];
+							String value=fieldValue(field,oldIndex,row);
+							str.append(value+",");
 						}
+						if(nfields.size()>0)
+							str.setCharAt(str.length()-1,')');
 						else
-						{
-							if(oldIndex>=0)
-								value="'"+((String)row.get(oldIndex))+"'";
-							else
-								value="''";
-						}
-						str.append(value+",");
+							str.append(")");
+						myStatement.executeUpdate(str.toString());
+						if(debug) p(".");
+						myStatement.close();
+						successes++;
 					}
-					if(nfields.size()>0)
-						str.setCharAt(str.length()-1,')');
-					else
-						str.append(")");
-					myStatement.executeUpdate(str.toString());
-					if(debug) p(".");
-					myStatement.close();
+					catch(SQLException sqle)
+					{
+						StringBuffer str=new StringBuffer("SELECT * FROM "+table+" WHERE ");
+						for(int i=0;i<2 && i<nfields.size();i++)
+						{
+							final String field=((String)nfields.get(i)).substring(1);
+							str.append((i>0)?" and ":"").append(field).append("=");
+							int oldIndex=matrix[i];
+							str.append(fieldValue(field,oldIndex,row));
+						}
+						java.sql.Statement myStatement=myConnection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+						java.sql.ResultSet R=myStatement.executeQuery(str.toString());
+						final boolean found=((R!=null)&&(R.next()));
+						if(R!=null) R.close();
+						myStatement.close();
+						if(found)
+							p("X");
+						else
+							throw sqle;
+					}
 				}
 				p(" ");
 			}
 		}
 		catch(Exception ce)
 		{
-			pl("\n\nOops.. something bad happened!");
+			pl("\n\nOops.. something bad happened writing to your target database!");
 			pl(ce.getMessage());
 			pl("Probably out of luck -- was a good try though!");
 			return;
