@@ -1089,7 +1089,7 @@ public class CMProps extends Properties
         setUpLowVar(SYSTEM_CHARSETOUTPUT,getStr("CHARSETOUTPUT","iso-8859-1"));
         setUpCosts("COMMONCOST",commonCost,CMParms.parseCommas(getStr("COMMONCOST","1 TRAIN"),true));
         setUpCosts("SKILLCOST",skillsCost,CMParms.parseCommas(getStr("SKILLCOST","1 TRAIN"),true));
-        setUpCosts("LANGCOST",languageCost,CMParms.parseCommas(getStr("LANGCOST","3 PRACTICES"),true));
+        setUpCosts("LANGCOST",languageCost,CMParms.parseCommas(getStr("LANGCOST","3 PRACTICE"),true));
 
         if(CMLib.color()!=null) CMLib.color().clearLookups();
         if(getStr("MANACONSUMEAMT").trim().equalsIgnoreCase("LEVEL"))
