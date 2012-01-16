@@ -50,7 +50,8 @@ public class CombatAbilities extends StdBehavior
 	protected String lastSpell=null;
 	protected StringBuffer record=null;
 	protected int physicalDamageTaken=0;
-
+	protected InternalWeaponSet weaponSet=new InternalWeaponSet();
+	
 	public final static int COMBAT_RANDOM=0;
 	public final static int COMBAT_DEFENSIVE=1;
 	public final static int COMBAT_OFFENSIVE=2;
@@ -65,6 +66,13 @@ public class CombatAbilities extends StdBehavior
 		"MIXEDDEFENSIVE",
 		"ONLYALWAYS"
 	};
+	
+	private static class InternalWeaponSet
+	{
+        public Item wand=null;
+        public Item offHandWand=null;
+        public Item weapon=null;
+	}
 
 	public String accountForYourself()
 	{ 
@@ -498,7 +506,7 @@ public class CombatAbilities extends StdBehavior
 			Log.errOut("CombatAbilities",ticking.name()+" wants to fight?!");
 			return true;
 		}
-		MOB mob=(MOB)ticking;
+		final MOB mob=(MOB)ticking;
 
 		if(!canActAtAll(mob)) 
 		    return true;
@@ -529,7 +537,7 @@ public class CombatAbilities extends StdBehavior
 		if(!isRightCombatAbilities(mob))
 			return true;
 
-        Room R=mob.location();
+        final Room R=mob.location();
         if((lastSpell!=null)&&(lastSpell.length()>0))
             lastSpell="";
         
@@ -544,65 +552,82 @@ public class CombatAbilities extends StdBehavior
                 wandUse.setInvoker(mob);
             }
         }
-        Item myWand=null;
-        Item backupWand=null;
-        Item wieldMe=null;
-        Item wieldedItem=null;
-        Item I=null;
-        int rtt=mob.rangeToTarget();
-        for(int i=0;i<mob.numItems();i++)
-        {
-            I=mob.getItem(i);
-            if(I instanceof Wand)
-            {
-                if(!I.amWearingAt(Wearable.IN_INVENTORY))
-                    myWand=I;
-                else
-                    backupWand=I;
-            }
-            if(I instanceof Weapon)
-            {
-                if((((Weapon)I).minRange()>rtt)
-                ||(((Weapon)I).maxRange()<rtt))
-                {
-                    if(I.amWearingAt(Wearable.WORN_WIELD))
-                        wieldedItem=I;
-                    else
-                    if((wieldMe==null)||(I.amWearingAt(Wearable.WORN_HELD)))
-                        wieldMe=I;
-                }
-            }
-        }
         
-        // first look for an appropriate weapon to weild
-        if((wieldedItem==null)&&((--chkDown)<=0))
+        boolean rebuildSet=false;
+        final int rtt=mob.rangeToTarget();
+        if((weaponSet.weapon==null)||(weaponSet.weapon.owner()!=mob)
+        ||(weaponSet.weapon.amDestroyed())
+        ||(weaponSet.weapon.amWearingAt(Wearable.IN_INVENTORY))
+        ||(weaponSet.weapon.minRange()>rtt)
+        ||(weaponSet.weapon.maxRange()<rtt))
+        	rebuildSet=true;
+        if((weaponSet.wand!=null)
+        &&((weaponSet.wand.owner()!=mob)||(weaponSet.wand.amDestroyed())||(weaponSet.wand.amWearingAt(Wearable.IN_INVENTORY))))
+        	rebuildSet=true;
+        if((weaponSet.offHandWand!=null)
+        &&((weaponSet.offHandWand.owner()!=mob)||(weaponSet.offHandWand.amDestroyed())||(!weaponSet.offHandWand.amWearingAt(Wearable.IN_INVENTORY))))
+        	rebuildSet=true;
+        if(rebuildSet)
         {
-            if((wieldMe==null)&&(R!=null))
-            {
-                Vector choices=new Vector(1);
-                for(int r=0;r<R.numItems();r++)
-                {
-                    I=R.getItem(r);
-                    if((!(I instanceof Weapon))
-                    ||(((Weapon)I).minRange()>rtt)
-                    ||(((Weapon)I).maxRange()<rtt)
-                    ||(I.container()!=null)
-                    ||(!CMLib.flags().isGettable(I))
-                    ||(I.phyStats().level()>mob.phyStats().level()))
-                        continue;
-                    choices.addElement(I);
-                }
-                I=(choices.size()==0)?null:(Item)choices.elementAt(CMLib.dice().roll(1,choices.size(),-1));
-                if(I!=null)
-                {
-                    CMLib.commands().forceStandardCommand(mob,"GET",new XVector("GET",I.Name()));
-                    if(mob.isMine(I))
-                        wieldMe=I;
-                }
-            }
-            if(wieldMe!=null)
-                CMLib.commands().forceStandardCommand(mob,"WIELD",new XVector("WIELD",wieldMe.Name()));
-            chkDown=5;
+        	weaponSet.weapon=null;
+        	weaponSet.wand=null;
+        	weaponSet.offHandWand=null;
+        	Item newWeapon=null;
+	        for(final Enumeration<Item> i=mob.items();i.hasMoreElements();)
+	        {
+	            final Item I=i.nextElement();
+	            if(I instanceof Wand)
+	            {
+	                if(!I.amWearingAt(Wearable.IN_INVENTORY))
+	                    weaponSet.wand=I;
+	                else
+	                	weaponSet.offHandWand=I;
+	            }
+	            if(I instanceof Weapon)
+	            {
+	                if((((Weapon)I).minRange()<=rtt)&&(((Weapon)I).maxRange()>=rtt))
+	                {
+	                    if(I.amWearingAt(Wearable.WORN_WIELD))
+	                    	weaponSet.weapon=I;
+	                    else
+	                    if(((newWeapon==null)&&(weaponSet.weapon==null))
+	                    ||(I.amWearingAt(Wearable.WORN_HELD)))
+	                    	newWeapon=I;
+	                }
+	            }
+	        }
+	        // first look for an appropriate weapon to weild
+	        if((weaponSet.weapon==null)&&((--chkDown)<=0))
+	        {
+	            if((newWeapon==null)&&(R!=null))
+	            {
+	                final Vector choices=new Vector(1);
+	                for(final Enumeration<Item> i=R.items();i.hasMoreElements();)
+	                {
+	                    final Item I=i.nextElement();
+	                    if((!(I instanceof Weapon))
+	                    ||(((Weapon)I).minRange()>rtt)
+	                    ||(((Weapon)I).maxRange()<rtt)
+	                    ||(I.container()!=null)
+	                    ||(!CMLib.flags().isGettable(I))
+	                    ||(I.phyStats().level()>mob.phyStats().level()))
+	                        continue;
+	                    choices.addElement(I);
+	                }
+	                final Item I=(choices.size()==0)?null:(Item)choices.elementAt(CMLib.dice().roll(1,choices.size(),-1));
+	                if(I!=null)
+	                {
+	                    CMLib.commands().forceStandardCommand(mob,"GET",new XVector("GET",I.Name()));
+	                    if(mob.isMine(I))
+	                    	newWeapon=I;
+	                }
+	            }
+	            if(newWeapon!=null)
+	            {
+	                CMLib.commands().forceStandardCommand(mob,"WIELD",new XVector("WIELD",newWeapon.Name()));
+	            }
+	            chkDown=5;
+	        }
         }
         
         // next deal with aggro changes
@@ -617,7 +642,7 @@ public class CombatAbilities extends StdBehavior
 				if(aggro.containsKey(victim))
 					vicAmt = aggro.get(victim)[0];
 				int[] amt = null;
-				for(MOB M : aggro.keySet())
+				for(final MOB M : aggro.keySet())
 				{
 					amt = aggro.get(M);
 					if((amt[0]>winAmt)
@@ -642,7 +667,7 @@ public class CombatAbilities extends StdBehavior
 		}
 		if(victim==null) return true;
 		
-		MOB leader=mob.amFollowing();
+		final MOB leader=mob.amFollowing();
 		
 		boolean skillUsed=false;
 		try {
@@ -655,22 +680,22 @@ public class CombatAbilities extends StdBehavior
         &&(wandUseCheck[1])
 		&&(victim.location()!=null)
 		&&(!victim.amDead())
-		&&((myWand!=null)||(backupWand!=null)))
+		&&((weaponSet.wand!=null)||(weaponSet.offHandWand!=null)))
 		{
-			if((myWand==null)&&(backupWand!=null)&&(backupWand.canWear(mob,Wearable.WORN_HELD)))
+			if((weaponSet.wand==null)&&(weaponSet.offHandWand!=null)&&(weaponSet.offHandWand.canWear(mob,Wearable.WORN_HELD)))
 			{
 				Vector V=new Vector();
 				V.addElement("hold");
-				V.addElement(backupWand.name());
+				V.addElement(weaponSet.offHandWand.name());
 				mob.doCommand(V,Command.METAFLAG_FORCED);
 			}
 			else
-			if(myWand!=null)
+			if(weaponSet.wand!=null)
 			{
-				A=((Wand)myWand).getSpell();
-                MOB target=null;
+				A=((Wand)weaponSet.wand).getSpell();
 				if(A!=null)
 				{
+	                final MOB target;
                     if(A.castingQuality(mob,mob)==Ability.QUALITY_BENEFICIAL_SELF)
                         target=mob;
                     else
@@ -679,14 +704,16 @@ public class CombatAbilities extends StdBehavior
                     else
                     if(((mob!=leader)&&(leader!=null))&&(A.castingQuality(mob,leader)==Ability.QUALITY_BENEFICIAL_OTHERS))
                         target=((leader==null)||(mob.location()!=leader.location()))?mob:leader;
-				}
-				if(target!=null)
-				{
-					Vector V=new Vector();
-					V.addElement("sayto");
-					V.addElement(target.name());
-					V.addElement(((Wand)myWand).magicWord());
-					mob.doCommand(V,Command.METAFLAG_FORCED);
+                    else
+                    	target=null;
+    				if(target!=null)
+    				{
+    					Vector V=new Vector();
+    					V.addElement("sayto");
+    					V.addElement(target.name());
+    					V.addElement(((Wand)weaponSet.wand).magicWord());
+    					mob.doCommand(V,Command.METAFLAG_FORCED);
+    				}
 				}
 			}
 		}
