@@ -37,60 +37,61 @@ import java.util.*;
 public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
 {
     public String ID(){return "ColumbiaUniv";}
-								
-	protected SHashtable<String,ExpertiseLibrary.ExpertiseDefinition> completeEduMap=new SHashtable<String,ExpertiseLibrary.ExpertiseDefinition>();
+
+    protected SHashtable<String,ExpertiseLibrary.ExpertiseDefinition> completeEduMap=new SHashtable<String,ExpertiseLibrary.ExpertiseDefinition>();
     protected Hashtable[] completeUsageMap=new Hashtable[ExpertiseLibrary.NUM_XFLAGS];
     protected Properties helpMap=new Properties();
     protected DVector rawDefinitions=new DVector(7);
 
-    public ExpertiseLibrary.ExpertiseDefinition addDefinition(String ID, String name, String listMask, String finalMask, String[] costs)
+    public ExpertiseLibrary.ExpertiseDefinition addDefinition(String ID, String name, String baseName, String listMask, String finalMask, String[] costs)
     {
         ExpertiseLibrary.ExpertiseDefinition def=getDefinition(ID);
-    	if(def!=null) return  def;
-    	if(CMSecurity.isExpertiseDisabled(ID.toUpperCase())) return null;
-    	if(CMSecurity.isExpertiseDisabled("*")) return null;
-    	for(int i=1;i<ID.length();i++)
-        	if(CMSecurity.isExpertiseDisabled(ID.substring(0,i).toUpperCase()+"*")) 
-        		return null;
+        if(def!=null) return  def;
+        if(CMSecurity.isExpertiseDisabled(ID.toUpperCase())) return null;
+        if(CMSecurity.isExpertiseDisabled("*")) return null;
+        for(int i=1;i<ID.length();i++)
+            if(CMSecurity.isExpertiseDisabled(ID.substring(0,i).toUpperCase()+"*")) 
+                return null;
         def=new  ExpertiseLibrary.ExpertiseDefinition();
-    	def.ID=ID.toUpperCase();
-    	def.name=name;
-    	def.addListMask(listMask);
-    	def.addFinalMask(finalMask);
-    	int practices=CMath.s_int(costs[0]);
-    	int trains=CMath.s_int(costs[1]);
-    	int qpCost=CMath.s_int(costs[2]);
-    	int expCost=CMath.s_int(costs[3]);
-    	//int timeCost=CMath.s_int(costs[0]);
-    	if(practices>0) def.addCost(CostType.PRACTICE, Double.valueOf(practices));
-    	if(trains>0) def.addCost(CostType.TRAIN, Double.valueOf(trains));
-    	if(qpCost>0) def.addCost(CostType.QP, Double.valueOf(qpCost));
-    	if(expCost>0) def.addCost(CostType.XP, Double.valueOf(expCost));
-    	//if(timeCost>0) def.addCost(CostType.PRACTICE, Double.valueOf(practices));
-    	completeEduMap.put(def.ID,def);
+        def.ID=ID.toUpperCase();
+        def.name=name;
+        def.baseName=baseName;
+        def.addListMask(listMask);
+        def.addFinalMask(finalMask);
+        int practices=CMath.s_int(costs[0]);
+        int trains=CMath.s_int(costs[1]);
+        int qpCost=CMath.s_int(costs[2]);
+        int expCost=CMath.s_int(costs[3]);
+        //int timeCost=CMath.s_int(costs[0]);
+        if(practices>0) def.addCost(CostType.PRACTICE, Double.valueOf(practices));
+        if(trains>0) def.addCost(CostType.TRAIN, Double.valueOf(trains));
+        if(qpCost>0) def.addCost(CostType.QP, Double.valueOf(qpCost));
+        if(expCost>0) def.addCost(CostType.XP, Double.valueOf(expCost));
+        //if(timeCost>0) def.addCost(CostType.PRACTICE, Double.valueOf(practices));
+        completeEduMap.put(def.ID,def);
         return def;
     }
     public String getExpertiseHelp(String ID, boolean exact)
     {
-    	if(ID==null) return null;
-    	ID=ID.toUpperCase();
-    	if(exact) return helpMap.getProperty(ID);
-    	for(Enumeration<Object> e = helpMap.keys();e.hasMoreElements();)
-    	{
-    		String key = e.nextElement().toString();
-    		if(key.startsWith(ID)) return helpMap.getProperty(key);
-    	}
-    	for(Enumeration<Object> e = helpMap.keys();e.hasMoreElements();)
-    	{
-    		String key = e.nextElement().toString();
-    		if(CMLib.english().containsString(key, ID)) return helpMap.getProperty(key);
-    	}
-    	return null;
+        if(ID==null) return null;
+        ID=ID.toUpperCase();
+        if(exact) return helpMap.getProperty(ID);
+        for(Enumeration<Object> e = helpMap.keys();e.hasMoreElements();)
+        {
+            String key = e.nextElement().toString();
+            if(key.startsWith(ID)) return helpMap.getProperty(key);
+        }
+        for(Enumeration<Object> e = helpMap.keys();e.hasMoreElements();)
+        {
+            String key = e.nextElement().toString();
+            if(CMLib.english().containsString(key, ID)) return helpMap.getProperty(key);
+        }
+        return null;
     }
     
     public void delDefinition(String ID)
     {
-    	completeEduMap.remove(ID);
+        completeEduMap.remove(ID);
     }
     public Enumeration<ExpertiseDefinition> definitions(){ return completeEduMap.elements();}
     public ExpertiseDefinition getDefinition(String ID){ return (ID==null)?null:(ExpertiseDefinition)completeEduMap.get(ID.trim().toUpperCase());}
@@ -117,30 +118,30 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
         return null;
     }
     
-    public Vector myQualifiedExpertises(MOB mob)
+    public List<ExpertiseDefinition> myQualifiedExpertises(MOB mob)
     {
-    	ExpertiseDefinition D=null;
-    	Vector V=new Vector();
-    	for(Enumeration e=definitions();e.hasMoreElements();)
-    	{
-    		D=(ExpertiseDefinition)e.nextElement();
-    		if(((D.compiledFinalMask()==null)||(CMLib.masking().maskCheck(D.compiledFinalMask(),mob,true)))
-    		&&((D.compiledListMask()==null)||(CMLib.masking().maskCheck(D.compiledListMask(),mob,true))))
-    			V.addElement(D);
-    	}
-    	return V;
+        ExpertiseDefinition D=null;
+        List<ExpertiseDefinition> V=new Vector();
+        for(Enumeration e=definitions();e.hasMoreElements();)
+        {
+            D=(ExpertiseDefinition)e.nextElement();
+            if(((D.compiledFinalMask()==null)||(CMLib.masking().maskCheck(D.compiledFinalMask(),mob,true)))
+            &&((D.compiledListMask()==null)||(CMLib.masking().maskCheck(D.compiledListMask(),mob,true))))
+                V.add(D);
+        }
+        return V;
     }
-    public Vector myListableExpertises(MOB mob)
+    public List<ExpertiseDefinition> myListableExpertises(MOB mob)
     {
-    	ExpertiseDefinition D=null;
-    	Vector V=new Vector();
-    	for(Enumeration e=definitions();e.hasMoreElements();)
-    	{
-    		D=(ExpertiseDefinition)e.nextElement();
-    		if((D.compiledListMask()==null)||(CMLib.masking().maskCheck(D.compiledListMask(),mob,true)))
-    			V.addElement(D);
-    	}
-    	return V;
+        ExpertiseDefinition D=null;
+        List<ExpertiseDefinition> V=new Vector();
+        for(Enumeration e=definitions();e.hasMoreElements();)
+        {
+            D=(ExpertiseDefinition)e.nextElement();
+            if((D.compiledListMask()==null)||(CMLib.masking().maskCheck(D.compiledListMask(),mob,true)))
+                V.add(D);
+        }
+        return V;
     }
     public int numExpertises(){return completeEduMap.size();}
     
@@ -175,23 +176,38 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
         return level;
     }
 
-    public Vector getStageCodes(String expertiseCode)
+    public List<String> getStageCodes(String baseExpertiseCode)
     {
         String key=null;
-        Vector codes=new Vector();
-        if(expertiseCode==null) return codes;
-        expertiseCode=expertiseCode.toUpperCase();
+        List<String> codes=new Vector();
+        if(baseExpertiseCode==null) return codes;
+        baseExpertiseCode=baseExpertiseCode.toUpperCase();
         for(Enumeration e=completeEduMap.keys();e.hasMoreElements();)
         {
             key=(String)e.nextElement();
-            if(key.startsWith(expertiseCode)
-            &&(CMath.isInteger(key.substring(expertiseCode.length()))||CMath.isRomanNumeral(key.substring(expertiseCode.length()))))
-                codes.addElement(key);
+            if(key.startsWith(baseExpertiseCode)
+            &&(CMath.isInteger(key.substring(baseExpertiseCode.length()))||CMath.isRomanNumeral(key.substring(baseExpertiseCode.length()))))
+                codes.add(key);
         }
         return codes;
     }
-    public int getStages(String expertiseCode){return getStageCodes(expertiseCode).size();}
-    
+
+    public int getStages(String baseExpertiseCode){return getStageCodes(baseExpertiseCode).size();}
+
+    public String getGuessedBaseExpertiseName(final String expertiseCode)
+    {
+        int lastBadChar=expertiseCode.length()-1;
+        while( (lastBadChar>=0)
+        &&(CMath.isInteger(expertiseCode.substring(lastBadChar))||CMath.isRomanNumeral(expertiseCode.substring(lastBadChar))))
+            lastBadChar--;
+        if(lastBadChar<expertiseCode.length()-1)
+            return expertiseCode.substring(0,lastBadChar+1);
+        return expertiseCode;
+    }
+    public List<String> getPeerStageCodes(final String expertiseCode)
+    {
+        return getStageCodes(getGuessedBaseExpertiseName(expertiseCode));
+    }
     public String getApplicableExpertise(String ID, int code)
     {
         return (String)completeUsageMap[code].get(ID);
@@ -240,10 +256,10 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
             }
             else
             {
-                Vector stages=getStageCodes(ID);
+                List<String> stages=getStageCodes(ID);
                 if((stages==null)||(stages.size()==0))
                     return "Error: Expertise not yet defined: "+ID+"="+row;
-                def=getDefinition((String)stages.elementAt(0));
+                def=getDefinition(stages.get(0));
                 if(def!=null)
                 {
                     WKID=def.name.toUpperCase().replace(' ','_');
@@ -259,7 +275,7 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
                 if(addIfPossible)
                 for(int s1=0;s1<stages.size();s1++)
                 {
-                    def=getDefinition((String)stages.elementAt(s1));
+                    def=getDefinition(stages.get(s1));
                     if(def==null) continue;
                     WKID=def.name.toUpperCase().replace(' ','_');
                     if(!helpMap.containsKey(WKID)) helpMap.put(WKID,row);
@@ -297,28 +313,31 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
         if(!didOne)
             return "Error: No flags ("+((String)parts.elementAt(2)).toUpperCase()+") were set: "+ID+"="+row;
         if(addIfPossible)
-        for(int l=1;l<=levels;l++)
         {
-            WKID=CMStrings.replaceAll(ID,"@X1",""+l);
-            WKID=CMStrings.replaceAll(WKID,"@X2",""+CMath.convertToRoman(l));
-            WKname=CMStrings.replaceAll(name,"@x1",""+l);
-            WKname=CMStrings.replaceAll(WKname,"@x2",""+CMath.convertToRoman(l));
-            WKlistMask=CMStrings.replaceAll(listMask,"@x1",""+l);
-            WKlistMask=CMStrings.replaceAll(WKlistMask,"@x2",""+CMath.convertToRoman(l));
-            WKfinalMask=CMStrings.replaceAll(finalMask,"@x1",""+l);
-            WKfinalMask=CMStrings.replaceAll(WKfinalMask,"@x2",""+CMath.convertToRoman(l));
-            if((l>1)&&(listMask.toUpperCase().indexOf("-EXPERT")<0))
+            String baseName=CMStrings.replaceAll(CMStrings.replaceAll(ID,"@X2",""),"@X1","").toUpperCase();
+            for(int l=1;l<=levels;l++)
             {
-                s=CMStrings.replaceAll(ID,"@X1",""+(l-1));
-                s=CMStrings.replaceAll(s,"@X2",""+CMath.convertToRoman(l-1));
-                WKlistMask="-EXPERTISE \"+"+s+"\" "+WKlistMask;
-            }
-            WKlistMask=expertMath(WKlistMask,l);
-            WKfinalMask=expertMath(WKfinalMask,l);
-            def=addDefinition(WKID,WKname,WKlistMask,WKfinalMask,costs);
-            if(def!=null){
-                def.compiledFinalMask();
-                def.compiledListMask();
+                WKID=CMStrings.replaceAll(ID,"@X1",""+l);
+                WKID=CMStrings.replaceAll(WKID,"@X2",""+CMath.convertToRoman(l));
+                WKname=CMStrings.replaceAll(name,"@x1",""+l);
+                WKname=CMStrings.replaceAll(WKname,"@x2",""+CMath.convertToRoman(l));
+                WKlistMask=CMStrings.replaceAll(listMask,"@x1",""+l);
+                WKlistMask=CMStrings.replaceAll(WKlistMask,"@x2",""+CMath.convertToRoman(l));
+                WKfinalMask=CMStrings.replaceAll(finalMask,"@x1",""+l);
+                WKfinalMask=CMStrings.replaceAll(WKfinalMask,"@x2",""+CMath.convertToRoman(l));
+                if((l>1)&&(listMask.toUpperCase().indexOf("-EXPERT")<0))
+                {
+                    s=CMStrings.replaceAll(ID,"@X1",""+(l-1));
+                    s=CMStrings.replaceAll(s,"@X2",""+CMath.convertToRoman(l-1));
+                    WKlistMask="-EXPERTISE \"+"+s+"\" "+WKlistMask;
+                }
+                WKlistMask=expertMath(WKlistMask,l);
+                WKfinalMask=expertMath(WKfinalMask,l);
+                def=addDefinition(WKID,WKname,baseName,WKlistMask,WKfinalMask,costs);
+                if(def!=null){
+                    def.compiledFinalMask();
+                    def.compiledListMask();
+                }
             }
         }
         ID=CMStrings.replaceAll(ID,"@X1","");

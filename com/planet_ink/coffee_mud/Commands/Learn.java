@@ -11,6 +11,7 @@ import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.ExpertiseLibrary;
+import com.planet_ink.coffee_mud.Libraries.interfaces.ExpertiseLibrary.ExpertiseDefinition;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -86,10 +87,10 @@ public class Learn extends StdCommand
 			return true;
 		}
         ExpertiseLibrary.ExpertiseDefinition theExpertise=null;
-        Vector V2=CMLib.expertises().myListableExpertises(mob);
-        for(Enumeration e=V2.elements();e.hasMoreElements();)
+        List<ExpertiseDefinition> V2=CMLib.expertises().myListableExpertises(mob);
+        for(Iterator<ExpertiseDefinition> i=V2.iterator();i.hasNext();)
         {
-            ExpertiseLibrary.ExpertiseDefinition def=(ExpertiseLibrary.ExpertiseDefinition)e.nextElement();
+            ExpertiseLibrary.ExpertiseDefinition def=i.next();
             if((def.name.equalsIgnoreCase(what)
             ||def.name.equalsIgnoreCase(what))
             ||(def.name.toLowerCase().startsWith((what).toLowerCase())
@@ -98,9 +99,9 @@ public class Learn extends StdCommand
             { theExpertise=def; break;}
         }
         if(theExpertise==null)
-        for(Enumeration e=CMLib.expertises().definitions();e.hasMoreElements();)
+        for(Enumeration<ExpertiseDefinition> e=CMLib.expertises().definitions();e.hasMoreElements();)
         {
-            ExpertiseLibrary.ExpertiseDefinition def=(ExpertiseLibrary.ExpertiseDefinition)e.nextElement();
+            ExpertiseLibrary.ExpertiseDefinition def=e.nextElement();
             if(def.name.equalsIgnoreCase(what))
             { theExpertise=def; break;}
         }

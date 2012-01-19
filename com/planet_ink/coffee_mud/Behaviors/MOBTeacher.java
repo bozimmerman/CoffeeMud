@@ -12,6 +12,7 @@ import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.ExpertiseLibrary.ExpertiseDefinition;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
@@ -41,7 +42,9 @@ public class MOBTeacher extends CombatAbilities
     protected boolean teachEverything=true;
     protected boolean noCommon=false;
     protected boolean noExpertises=false; // doubles as a "done ticking" flag
+    protected boolean noHLExpertises=false;
     protected int tickDownToKnowledge=4;
+    protected List<ExpertiseDefinition> trainableExpertises=null;
 
     public String accountForYourself()
     { 
@@ -125,6 +128,7 @@ public class MOBTeacher extends CombatAbilities
                     if(mob.fetchExpertise(def.ID)==null)
                         mob.addExpertise(def.ID);
                 }
+                trainableExpertises=null;
             }
             else
             {
@@ -138,17 +142,19 @@ public class MOBTeacher extends CombatAbilities
                 while(someNew)
                 {
                     someNew=false;
-                    Vector V=CMLib.expertises().myQualifiedExpertises(mob);
+                    List<ExpertiseDefinition> V=CMLib.expertises().myQualifiedExpertises(mob);
                     ExpertiseLibrary.ExpertiseDefinition def=null;
                     for(int v=0;v<V.size();v++)
                     {
-                        def=(ExpertiseLibrary.ExpertiseDefinition)V.elementAt(v);
+                        def=V.get(v);
                         if(mob.fetchExpertise(def.ID)==null)
                         {
                             mob.addExpertise(def.ID);
                             someNew=true;
                         }
                     }
+                    if(someNew)
+                        trainableExpertises=null;
                 }
                 mob.setBaseCharStats(oldBase);
                 mob.recoverCharStats();
@@ -216,6 +222,11 @@ public class MOBTeacher extends CombatAbilities
                 noExpertises=true;
                 V.removeElementAt(v);
             }
+            if(s.equalsIgnoreCase("NOHLEXPS")||s.equalsIgnoreCase("NOHLEXP"))
+            {
+                noHLExpertises=true;
+                V.removeElementAt(v);
+            }
         }
 
         if(V!=null)
@@ -276,6 +287,7 @@ public class MOBTeacher extends CombatAbilities
         noCommon=false;
         noExpertises=false;
         tickDownToKnowledge=4;
+        trainableExpertises=null;
         ensureCharClass();
     }
 
@@ -360,18 +372,47 @@ public class MOBTeacher extends CombatAbilities
                 if(myAbility==null)
                 {
                     ExpertiseLibrary.ExpertiseDefinition theExpertise=null;
-                    Vector V=CMLib.expertises().myListableExpertises(monster);
-                    for(int v=0;v<V.size();v++)
+                    if(trainableExpertises==null)
                     {
-                        ExpertiseLibrary.ExpertiseDefinition def=(ExpertiseLibrary.ExpertiseDefinition)V.elementAt(v);
+                        trainableExpertises=new LinkedList<ExpertiseLibrary.ExpertiseDefinition>();
+                        trainableExpertises.addAll(CMLib.expertises().myListableExpertises(monster));
+                        for(int exi=0;exi<monster.numExpertises();exi++)
+                        {
+                            final String experID=monster.fetchExpertise(exi);
+                            if(experID!=null)
+                            {
+                                ExpertiseLibrary.ExpertiseDefinition def=CMLib.expertises().getDefinition(experID);
+                                if((def != null) && (!trainableExpertises.contains(def))) 
+                                    trainableExpertises.add(def);
+                            }
+                        }
+                        HashSet<String> allExperParentsIDs=new HashSet();
+                        for(int v=0;v<trainableExpertises.size();v++)
+                        {
+                            ExpertiseLibrary.ExpertiseDefinition def=trainableExpertises.get(v);
+                            if(!allExperParentsIDs.contains(def.baseName))
+                                allExperParentsIDs.add(def.baseName);
+                        }
+                        for(String experParentID : allExperParentsIDs)
+                        {
+                            List<String> childrenIDs=CMLib.expertises().getStageCodes(experParentID);
+                            for(String experID : childrenIDs)
+                            {
+                              ExpertiseLibrary.ExpertiseDefinition def=CMLib.expertises().getDefinition(experID);
+                              if((def != null) && (!trainableExpertises.contains(def))) 
+                                  trainableExpertises.add(def);
+                            }
+                        }
+                    }
+                    for(ExpertiseLibrary.ExpertiseDefinition def : trainableExpertises)
+                    {
                         if((def.name.equalsIgnoreCase(s))
                         &&(theExpertise==null))
                             theExpertise=def;
                     }
                     if(theExpertise==null)
-                    for(int v=0;v<V.size();v++)
+                    for(ExpertiseLibrary.ExpertiseDefinition def : trainableExpertises)
                     {
-                        ExpertiseLibrary.ExpertiseDefinition def=(ExpertiseLibrary.ExpertiseDefinition)V.elementAt(v);
                         if((CMLib.english().containsString(def.name,s)
                         &&(theExpertise==null)))
                             theExpertise=def;
