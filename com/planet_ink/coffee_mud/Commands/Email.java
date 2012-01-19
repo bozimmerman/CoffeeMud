@@ -37,17 +37,17 @@ import java.util.*;
 @SuppressWarnings("unchecked")
 public class Email extends StdCommand
 {
-	public Email(){}
+    public Email(){}
 
-	private final String[] access={"EMAIL"};
-	public String[] getAccessWords(){return access;}
+    private final String[] access={"EMAIL"};
+    public String[] getAccessWords(){return access;}
 
-	public boolean execute(MOB mob, Vector commands, int metaFlags)
-		throws java.io.IOException
-	{
-		if(mob.session()==null)	return true;
-		PlayerStats pstats=mob.playerStats();
-		if(pstats==null) return true;
+    public boolean execute(MOB mob, Vector commands, int metaFlags)
+        throws java.io.IOException
+    {
+        if(mob.session()==null)    return true;
+        PlayerStats pstats=mob.playerStats();
+        if(pstats==null) return true;
 
         if((commands!=null)
         &&(commands.size()>1)
@@ -57,7 +57,7 @@ public class Email extends StdCommand
             String name=CMParms.combine(commands,1);
             if(name.equalsIgnoreCase("BOX"))
             {
-            	String journalName=CMProps.getVar(CMProps.SYSTEM_MAILBOX);
+                String journalName=CMProps.getVar(CMProps.SYSTEM_MAILBOX);
                 List<JournalsLibrary.JournalEntry> msgs=CMLib.database().DBReadJournalMsgs(journalName);
                 while((mob.session()!=null)&&(!mob.session().isStopped()))
                 {
@@ -66,7 +66,7 @@ public class Email extends StdCommand
                     messages.append("^X### "+CMStrings.padRight("From",15)+" "+CMStrings.padRight("Date",20)+" Subject^?^.\n\r");
                     for(int num=0;num<msgs.size();num++)
                     {
-                    	JournalsLibrary.JournalEntry thismsg=msgs.get(num);
+                        JournalsLibrary.JournalEntry thismsg=msgs.get(num);
                         String to=(String)thismsg.to;
                         if(to.equalsIgnoreCase("ALL")
                         ||to.equalsIgnoreCase(mob.Name())
@@ -97,6 +97,7 @@ public class Email extends StdCommand
                     } finally {
                         if(S!=null) S.snoopSuspension(-1);
                     }
+                    if(mob.session()==null) continue;
                     String s=mob.session().prompt("Enter a message #","");
                     if((!CMath.isInteger(s))||(mob.session().isStopped()))
                         return false;
@@ -106,7 +107,7 @@ public class Email extends StdCommand
                     else
                     while((mob.session()!=null)&&(!mob.session().isStopped()))
                     {
-                    	JournalsLibrary.JournalEntry thismsg=(JournalsLibrary.JournalEntry)mymsgs.elementAt(num-1);
+                        JournalsLibrary.JournalEntry thismsg=(JournalsLibrary.JournalEntry)mymsgs.elementAt(num-1);
                         String key=thismsg.key;
                         String from=thismsg.from;
                         String date=CMLib.time().date2String(thismsg.date);
@@ -125,6 +126,7 @@ public class Email extends StdCommand
                         } finally {
                             if(S!=null) S.snoopSuspension(-1);
                         }
+                        if(mob.session()==null) continue;
                         s=mob.session().choose("Would you like to D)elete, H)old, or R)eply (D/H/R)? ","DHR","H");
                         if(s.equalsIgnoreCase("H"))
                             break;
@@ -176,57 +178,60 @@ public class Email extends StdCommand
                         return false;
                     }
                 }
+                if(mob.session()==null) return false;
                 String subject=mob.session().prompt("Email Subject: ","").trim();
                 if(subject.length()==0)
                 {
                     mob.tell("Aborted");
                     return false;
                 }
+                if(mob.session()==null) return false;
                 String message=mob.session().prompt("Enter your message\n\r: ","").trim();
                 if(message.trim().length()==0)
                 {
                     mob.tell("Aborted");
                     return false;
                 }
+                if(mob.session()==null) return false;
                 message+="\n\r\n\rThis message was sent through the "+CMProps.getVar(CMProps.SYSTEM_MUDNAME)+" mail server at "+CMProps.getVar(CMProps.SYSTEM_MUDDOMAIN)+", port"+CMProps.getVar(CMProps.SYSTEM_MUDPORTS)+".  Please contact the administrators regarding any abuse of this system.\n\r";
                 CMLib.database().DBWriteJournal(CMProps.getVar(CMProps.SYSTEM_MAILBOX), mob.Name(), M.Name(), subject, message);
                 mob.tell("Your email has been sent.");
                 return true;
             }
         }
-		if((pstats.getEmail()==null)||(pstats.getEmail().length()==0))
-		{
-	        if(CMProps.getVar(CMProps.SYSTEM_EMAILREQ).toUpperCase().startsWith("DISABLED"))
-	        {
-				if(commands!=null)
-					mob.session().println("\n\rAn email address is not required by this system.");
-				return true;
-	        }
-			mob.session().println("\n\rYou have no email address on file for this character.");
-		}
-		else
-		{
-			if(commands==null) return true;
-			String change=mob.session().prompt("You currently have '"+pstats.getEmail()+"' set as the email address for this character.\n\rChange it (y/N)?","N");
-			if(change.toUpperCase().startsWith("N")) return false;
-		}
+        if((pstats.getEmail()==null)||(pstats.getEmail().length()==0))
+        {
+            if(CMProps.getVar(CMProps.SYSTEM_EMAILREQ).toUpperCase().startsWith("DISABLED"))
+            {
+                if(commands!=null)
+                    mob.session().println("\n\rAn email address is not required by this system.");
+                return true;
+            }
+            mob.session().println("\n\rYou have no email address on file for this character.");
+        }
+        else
+        {
+            if(commands==null) return true;
+            String change=mob.session().prompt("You currently have '"+pstats.getEmail()+"' set as the email address for this character.\n\rChange it (y/N)?","N");
+            if(change.toUpperCase().startsWith("N")) return false;
+        }
         if((CMProps.getVar(CMProps.SYSTEM_EMAILREQ).toUpperCase().startsWith("PASS"))
         &&(commands!=null)
         &&(CMProps.getVar(CMProps.SYSTEM_MAILBOX).length()>0))
             mob.session().println("\n\r** Changing your email address will cause you to be logged off, and a new password to be generated and emailed to the new address. **\n\r");
-		String newEmail=mob.session().prompt("New E-mail Address:");
-		if(newEmail==null) return false;
-		newEmail=newEmail.trim();
-		if(!CMProps.getVar(CMProps.SYSTEM_EMAILREQ).toUpperCase().startsWith("OPTION"))
-		{
-			if(newEmail.length()<6) return false;
-			if(newEmail.indexOf('@')<0) return false;
-			String confirmEmail=mob.session().prompt("Confirm that '"+newEmail+"' is correct by re-entering.\n\rRe-enter:");
-			if(confirmEmail==null) return false;
-			confirmEmail=confirmEmail.trim();
-			if(confirmEmail.length()==0) return false;
-			if(!(newEmail.equalsIgnoreCase(confirmEmail))) return false;
-		}
+        String newEmail=mob.session().prompt("New E-mail Address:");
+        if(newEmail==null) return false;
+        newEmail=newEmail.trim();
+        if(!CMProps.getVar(CMProps.SYSTEM_EMAILREQ).toUpperCase().startsWith("OPTION"))
+        {
+            if(newEmail.length()<6) return false;
+            if(newEmail.indexOf('@')<0) return false;
+            String confirmEmail=mob.session().prompt("Confirm that '"+newEmail+"' is correct by re-entering.\n\rRe-enter:");
+            if(confirmEmail==null) return false;
+            confirmEmail=confirmEmail.trim();
+            if(confirmEmail.length()==0) return false;
+            if(!(newEmail.equalsIgnoreCase(confirmEmail))) return false;
+        }
         pstats.setEmail(newEmail);
         CMLib.database().DBUpdateEmail(mob);
         if((commands!=null)
@@ -250,10 +255,10 @@ public class Email extends StdCommand
                 mob.session().stopSession(false,false,false);
             }
         }
-		return true;
-	}
-	
-	public boolean canBeOrdered(){return false;}
+        return true;
+    }
+    
+    public boolean canBeOrdered(){return false;}
 
-	
+    
 }

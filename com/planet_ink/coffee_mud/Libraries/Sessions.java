@@ -222,7 +222,7 @@ public class Sessions extends StdLibrary implements SessionsList
                     {
                         String roomID=S.mob()!=null?CMLib.map().getExtendedRoomID(S.mob().location()):"";
                         if((S.previousCMD()==null)||(S.previousCMD().size()==0)||(S.getStatus()==Session.STATUS_LOGIN)||(S.getStatus()==Session.STATUS_ACCOUNTMENU))
-                            Log.errOut(thread.getName(),"Kicking out: "+((S.mob()==null)?"Unknown":S.mob().Name())+" who has spent "+time+" millis out-game.");
+                            Log.sysOut(thread.getName(),"Kicking out: "+((S.mob()==null)?"Unknown":S.mob().Name())+" who has spent "+time+" millis out-game.");
                         else
                         {
                             Log.errOut(thread.getName(),"KILLING DEAD Session: "+((S.mob()==null)?"Unknown":S.mob().Name())+" ("+roomID+"), out for "+time);
@@ -263,7 +263,7 @@ public class Sessions extends StdLibrary implements SessionsList
                 {
                     String roomID=S.mob()!=null?CMLib.map().getExtendedRoomID(S.mob().location()):"";
                     if(S.getStatus()==Session.STATUS_LOGIN)
-                        Log.errOut(thread.getName(),"Kicking out login session after "+time+" millis.");
+                        Log.sysOut(thread.getName(),"Kicking out login session after "+time+" millis.");
                     else
                     {
 	                    Log.errOut(thread.getName(),"KILLING DEAD Session: "+((S.mob()==null)?"Unknown":S.mob().Name())+" ("+roomID+"), out for "+time);
