@@ -2,6 +2,7 @@ package com.planet_ink.coffee_mud.Commands;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
+import com.planet_ink.coffee_mud.core.exceptions.CMException;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
 import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
@@ -782,6 +783,38 @@ public class Modify extends StdCommand
             }
         }
     }
+
+    public void updateChangedExit(MOB mob, Room baseRoom, Exit thisExit, Exit prevExit)
+    {
+    	thisExit.recoverPhyStats();
+		CMLib.database().DBUpdateExits(baseRoom);
+		try
+		{
+			for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
+			{
+				Room room=(Room)r.nextElement();
+	    		synchronized(("SYNC"+room.roomID()).intern())
+	    		{
+	    			room=CMLib.map().getRoom(room);
+					for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
+					{
+						Exit exit=room.getRawExit(d);
+						if((exit!=null)&&(exit==thisExit))
+						{
+							CMLib.database().DBUpdateExits(room);
+							room.getArea().fillInAreaRoom(room);
+							break;
+						}
+					}
+	    		}
+			}
+	    }catch(NoSuchElementException e){}
+		if(!prevExit.sameAs(thisExit))
+			Log.sysOut("CreateEdit",mob.Name()+" modified exit "+thisExit.ID()+".");
+		prevExit.destroy();
+		mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,thisExit.name()+" shake(s) under the transforming power.");
+		baseRoom.getArea().fillInAreaRoom(baseRoom);
+    }
     
 	public void exits(MOB mob, Vector commands)
 		throws IOException
@@ -815,14 +848,14 @@ public class Modify extends StdCommand
 			return;
 		}
 		mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> wave(s) <S-HIS-HER> hands around to the "+Directions.getInDirectionName(direction)+".");
-
+		Exit copyExit=(Exit)thisExit.copyOf();
 		if(thisExit.isGeneric() && (commands.size()<5))
 		{
             CMLib.genEd().modifyGenExit(mob,thisExit);
 			return;
 		}
 		
-		if(commands.size()<6)
+		if(commands.size()<5)
 		{
 			mob.tell("You have failed to specify the proper fields.\n\rThe format is MODIFY EXIT [DIRECTION] (TEXT, ?) (VALUE)\n\r");
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
@@ -854,28 +887,7 @@ public class Modify extends StdCommand
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
 			return;
 		}
-		
-		try
-		{
-			for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
-			{
-				Room room=(Room)r.nextElement();
-				for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
-				{
-					Exit exit=room.getRawExit(d);
-					if((exit!=null)&&(exit==thisExit))
-					{
-						CMLib.database().DBUpdateExits(room);
-						room.getArea().fillInAreaRoom(room);
-						break;
-					}
-				}
-			}
-	    }catch(NoSuchElementException e){}
-		
-		mob.location().getArea().fillInAreaRoom(mob.location());
-		mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,thisExit.name()+" shake(s) under the transforming power.");
-		Log.sysOut("Exits",mob.location().roomID()+" exits changed by "+mob.Name()+".");
+		updateChangedExit(mob,mob.location(),thisExit,copyExit);
 	}
 
 	public boolean races(MOB mob, Vector commands)
@@ -1628,6 +1640,22 @@ public class Modify extends StdCommand
             quests(mob,commands);
 		}
         else
+		if(commandType.equals("SQL"))
+		{
+			if(!CMSecurity.isASysOp(mob)) return errorOut(mob);
+            try
+            {
+            	String sql=CMParms.combine(commands,2);
+            	mob.tell("SQL Statement: "+sql);
+            	int resp=CMLib.database().DBRawExecute(sql.replace('`','\''));
+                mob.tell("Command completed. Response code: "+resp);
+            }
+            catch(Exception e)
+            {
+            	mob.tell("SQL Error: "+e.getMessage());
+            }
+		}
+        else
 		if(commandType.equals("GOVERNMENT"))
 		{
 			if(!CMSecurity.isAllowed(mob,mob.location(),"CMDCLANS")) return errorOut(mob);
@@ -1805,31 +1833,7 @@ public class Modify extends StdCommand
 					mob.location().showOthers(mob,thang,CMMsg.MSG_OK_ACTION,"<S-NAME> wave(s) <S-HIS-HER> hands around <T-NAMESELF>.");
 					Exit copyExit=(Exit)thang.copyOf();
                     CMLib.genEd().genMiscText(mob,thang,1,1);
-                    ((Exit)thang).recoverPhyStats();
-					try
-					{
-						for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
-						{
-							Room room=(Room)r.nextElement();
-				    		synchronized(("SYNC"+room.roomID()).intern())
-				    		{
-				    			room=CMLib.map().getRoom(room);
-								for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
-								{
-									Exit exit=room.getRawExit(d);
-									if((exit!=null)&&(exit==thang))
-									{
-										CMLib.database().DBUpdateExits(room);
-										break;
-									}
-								}
-				    		}
-						}
-				    }catch(NoSuchElementException e){}
-					mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,thang.name()+" shake(s) under the transforming power.");
-					if(!copyExit.sameAs(thang))
-						Log.sysOut("CreateEdit",mob.Name()+" modified exit "+thang.ID()+".");
-					copyExit.destroy();
+                    updateChangedExit(mob, mob.location(), (Exit)thang, copyExit);
 				}
 				else
 				{

@@ -1903,6 +1903,24 @@ public class ListCmd extends StdCommand
 			I.executeMsg(mob,newMsg);
 		}
     }
+
+    public void listSql(MOB mob, String rest)
+    {
+    	mob.tell("SQL Query: "+rest);
+    	try
+    	{
+	    	List<String[]> rows=CMLib.database().DBRawQuery(rest.replace('`','\''));
+	    	StringBuilder report=new StringBuilder("");
+	    	for(final String[] row : rows)
+	    		report.append(CMParms.toStringList(row)).append("\n\r");
+	    	if(mob.session()==null) return;
+	    	mob.session().rawPrint(report.toString());
+    	}
+    	catch(Exception e)
+    	{
+    		mob.tell("SQL Query Error: "+e.getMessage());
+    	}
+    }
     
 	public void archonlist(MOB mob, Vector commands)
 	{
@@ -1917,7 +1935,11 @@ public class ListCmd extends StdCommand
 
 		String listWord=((String)commands.firstElement()).toUpperCase();
         String rest=(commands.size()>1)?rest=CMParms.combine(commands,1):"";
-		int code=getMyCmdCode(mob, listWord);
+		int code;
+		if(listWord.equalsIgnoreCase("sql")&&CMSecurity.isASysOp(mob))
+			code=999;
+		else
+			code=getMyCmdCode(mob, listWord);
 		if((code<0)||(listWord.length()==0))
 		{
 			Vector V=getMyCmdWords(mob);
@@ -2026,6 +2048,7 @@ public class ListCmd extends StdCommand
 		case 63: s.println("\n\r^xDisable Settings: ^?^.^N\n\r"+CMParms.toStringList(new XVector<CMSecurity.DisFlag>(CMSecurity.getDisablesEnum()))+"\n\r"); break;
 		case 64: s.wraplessPrintln(listAllQualifies(mob.session(),commands).toString()); break;
 		case 65: listNews(mob,commands); break;
+		case 999: listSql(mob,rest); break;
         default:
 			s.println("List broke?!");
 			break;

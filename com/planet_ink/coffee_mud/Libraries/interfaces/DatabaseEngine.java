@@ -2,6 +2,7 @@ package com.planet_ink.coffee_mud.Libraries.interfaces;
 import com.planet_ink.coffee_mud.core.CMFile.CMVFSFile;
 import com.planet_ink.coffee_mud.core.database.DBConnections;
 import com.planet_ink.coffee_mud.core.database.DBConnector;
+import com.planet_ink.coffee_mud.core.exceptions.CMException;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
@@ -173,6 +174,8 @@ public interface DatabaseEngine extends CMLibrary
     public void DBCreateVFSFile(String filename, int bits, String creator, Object data);
     public void DBDeleteVFSFile(String filename);
     public MOB.Tattoo parseTattoo(String tattoo);
+    public int DBRawExecute(String sql) throws CMException;
+    public List<String[]> DBRawQuery(String sql) throws CMException;
     
     public static class PlayerData
     {

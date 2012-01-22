@@ -4,6 +4,7 @@ import com.planet_ink.coffee_mud.core.http.ProcessHTTPrequest;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
+import com.planet_ink.coffee_mud.core.exceptions.CMException;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
 import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
@@ -18,8 +19,10 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
+import java.sql.*;
 import java.util.*;
 import java.io.IOException;
+
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.DatabaseEngine.AckRecord;
 import com.planet_ink.coffee_mud.Libraries.interfaces.DatabaseEngine.PlayerData;
@@ -474,4 +477,67 @@ public class DBInterface implements DatabaseEngine
     { VFSLoader.DBCreate(filename,bits,creator,data);}
     public void DBDeleteVFSFile(String filename)
     { VFSLoader.DBDelete(filename);}
+    
+    public int DBRawExecute(String sql) throws CMException
+    {
+		DBConnection DBToUse=null;
+    	try
+    	{
+    		DBToUse=DB.DBFetch();
+			return DBToUse.update(sql,0);
+    	}
+    	catch(Exception e)
+    	{
+    		if(e!=null) throw new CMException(e.getMessage());
+    		throw new CMException("Unknown error");
+    	}
+    	finally
+    	{
+    		if(DBToUse!=null)
+    			DB.DBDone(DBToUse);
+    	}
+    }
+    
+    public List<String[]> DBRawQuery(String sql) throws CMException
+    {
+		DBConnection DBToUse=null;
+		List<String[]> results=new LinkedList<String[]>();
+    	try
+    	{
+    		DBToUse=DB.DBFetch();
+    		ResultSet R=DBToUse.query(sql);
+    		while(R.next())
+    		{
+    			List<String> row=new LinkedList<String>();
+    			try
+    			{
+    				for(int i=1;;i++)
+    				{
+    					Object o=R.getObject(i);
+    					if(o==null)
+    						row.add("null");
+    					else
+    						row.add(o.toString());
+    				}
+    			}
+    			catch(Exception e)
+    			{
+    				
+    			}
+    			results.add(row.toArray(new String[0]));
+    		}
+    	}
+    	catch(Exception e)
+    	{
+    		if(e!=null) throw new CMException(e.getMessage());
+    		throw new CMException("Unknown error");
+    	}
+    	finally
+    	{
+    		if(DBToUse!=null)
+    			DB.DBDone(DBToUse);
+    	}
+    	return results;
+    }
+    
 }
