@@ -148,6 +148,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 
     public void obliteratePlayer(MOB deadMOB, boolean quiet)
     {
+    	if(deadMOB==null) return;
         if(getPlayer(deadMOB.Name())!=null)
         {
            deadMOB=getPlayer(deadMOB.Name());

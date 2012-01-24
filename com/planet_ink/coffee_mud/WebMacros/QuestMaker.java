@@ -65,9 +65,9 @@ public class QuestMaker extends StdWebMacro
     {
         StringBuffer list=new StringBuffer("");
         if(oldItem==null) oldItem=RoomData.getItemFromCatalog(oldValue);
-        for(int o=0;o<itemList.size();o++)
+        for(Iterator<Item> i=itemList.iterator();i.hasNext();)
         {
-            Item I=(Item)itemList.get(o);
+            Item I=i.next();
             list.append("<OPTION VALUE=\""+RoomData.getItemCode(itemList, I)+"\" ");
             if((oldItem!=null)&&(oldItem.sameAs(I)))
                 list.append("SELECTED");
@@ -118,9 +118,9 @@ public class QuestMaker extends StdWebMacro
     {
         StringBuffer list=new StringBuffer("");
         if(oldMob==null) oldMob=RoomData.getMOBFromCatalog(oldValue);
-        for(int o=0;o<mobList.size();o++)
+        for(Iterator<MOB> m=mobList.iterator();m.hasNext();)
         {
-            MOB M2=(MOB)mobList.get(o);
+            MOB M2=m.next();
             list.append("<OPTION VALUE=\""+RoomData.getMOBCode(mobList, M2)+"\" ");
             if((oldMob!=null)&&(oldMob.sameAs(M2)))
                 list.append("SELECTED");
