@@ -101,6 +101,7 @@ public class Skill_Enslave extends StdSkill
 					        if(V.contains("STOP")||V.contains("CANCEL"))
 					        {
 					            CMLib.commands().postSay(mob,msg.source(),"Yes master.",false,false);
+					            STEPS=null;
 					            return;
 					        }
 					    }
@@ -261,24 +262,24 @@ public class Skill_Enslave extends StdSkill
 	            if(myMaster==null) myMaster=CMLib.players().getPlayer(text());
 	            if(myMaster!=null) mob.setClanID(myMaster.getClanID());
 			}
+			if((STEPS==null)||(STEPS.size()==0)||(STEPS.done))
+			{
+				if(mob.isInCombat())
+					return true; // let them finish fighting.
+				if((STEPS!=null)&&((STEPS.size()==0)||(STEPS.done)))
+					mob.tell("You have completed your masters task.");
+				else
+					mob.tell("You have been released from your masters task.");
+				if((mob.isMonster())
+				&&(!mob.amDead())
+				&&(mob.location()!=null)
+				&&(mob.location()!=mob.getStartRoom()))
+					CMLib.tracking().wanderAway(mob,true,true);
+				unInvoke();
+				return !canBeUninvoked();
+			}
 		    if(STEPS!=null)
 		    {
-				if((STEPS==null)||(STEPS.size()==0)||(STEPS.done))
-				{
-					if(mob.isInCombat())
-						return true; // let them finish fighting.
-					if((STEPS!=null)&&((STEPS.size()==0)||(STEPS.done)))
-						mob.tell("You have completed your masters task.");
-					else
-						mob.tell("You have been released from your masters task.");
-					if((mob.isMonster())
-					&&(!mob.amDead())
-					&&(mob.location()!=null)
-					&&(mob.location()!=mob.getStartRoom()))
-						CMLib.tracking().wanderAway(mob,true,true);
-					unInvoke();
-					return !canBeUninvoked();
-				}
 			    STEPS.step();
 		    }
 		}
