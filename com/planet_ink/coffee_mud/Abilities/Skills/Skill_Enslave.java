@@ -308,7 +308,7 @@ public class Skill_Enslave extends StdSkill
             return false;
         }
         
-        if((!CMLib.flags().isBoundOrHeld(target))&&(target.fetchEffect(ID())==null))
+        if((!CMLib.flags().isBoundOrHeld(target))&&(target.fetchEffect(ID())==null)&&(!CMSecurity.isAllowed(mob,target.location(), "CMDMOBS")))
         {
             mob.tell(target.name()+" must be bound first.");
             return false;
