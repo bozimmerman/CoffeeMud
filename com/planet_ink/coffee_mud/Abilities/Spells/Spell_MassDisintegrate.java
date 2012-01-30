@@ -76,7 +76,7 @@ public class Spell_MassDisintegrate extends Spell
 		if(levelDiff<0) levelDiff=0;
 		
 		boolean success=false;
-		success=proficiencyCheck(mob,-(avgLevel*25),auto);
+		success=proficiencyCheck(mob,-(levelDiff*25),auto);
 
 		if(success)
 		{
