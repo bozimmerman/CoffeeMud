@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2012 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -31,41 +31,33 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("unchecked")
-public class Config extends StdCommand
-{
-	public Config(){}
 
-	private final String[] access={"CONFIG","AUTO"};
+@SuppressWarnings("unchecked")
+public class AutoMap extends StdCommand
+{
+	public AutoMap(){}
+
+	private final String[] access={"AUTOMAP"};
 	public String[] getAccessWords(){return access;}
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
-		StringBuffer msg=new StringBuffer("^HYour configuration flags:^?\n\r");
-		for(int i=0;i<MOB.AUTODESC.length;i++)
+		if(!CMath.bset(mob.getBitmap(),MOB.ATT_AUTOMAP))
 		{
-            if((MOB.AUTODESC[i].equalsIgnoreCase("SYSMSGS"))&&(!(CMSecurity.isAllowed(mob,mob.location(),"SYSMSGS"))))
-                continue;
-            if((MOB.AUTODESC[i].equalsIgnoreCase("AUTOMAP"))&&(CMProps.getIntVar(CMProps.SYSTEMI_AWARERANGE)<=0))
-              continue;
-			
-			msg.append(CMStrings.padRight(MOB.AUTODESC[i],15)+": ");
-			boolean set=CMath.isSet(mob.getBitmap(),i);
-			if(MOB.AUTOREV[i]) set=!set;
-			msg.append(set?"ON":"OFF");
-			msg.append("\n\r");
+			mob.setBitmap(CMath.setb(mob.getBitmap(),MOB.ATT_AUTOMAP));
+			mob.tell("Automap has been turned off.");
 		}
-	    String wrap=(mob.playerStats().getWrap()!=0)?(""+mob.playerStats().getWrap()):"Disabled";
-		msg.append(CMStrings.padRight("LINEWRAP",15)+": "+wrap);
-		msg.append("\n\r");
-	    String pageBreak=(mob.playerStats().getPageBreak()!=0)?(""+mob.playerStats().getPageBreak()):"Disabled";
-		msg.append(CMStrings.padRight("PAGEBREAK",15)+": "+pageBreak);
-		msg.append("\n\r");
-		mob.tell(msg.toString());
+		else
+		{
+			mob.setBitmap(CMath.unsetb(mob.getBitmap(),MOB.ATT_AUTOMAP));
+			mob.tell("Automap has been turned on.");
+		}
 		return false;
 	}
 	
 	public boolean canBeOrdered(){return true;}
+	public boolean securityCheck(MOB mob){return CMProps.getIntVar(CMProps.SYSTEMI_AWARERANGE)>0;}
 
 	
 }
+

@@ -2352,3 +2352,4 @@ Special/Reserved Quest called holidays can be added to/modified on an area-by-ar
 # Build 5.7.6 Release ??/??/2011
 1. New coffeemud.ini entries: COMMONCOST, SKILLCOST, LANGCOST.  Old entries, COMMONTRAINCOST, etc.. RETIRED.
 2. (Internal) fakedb now supports dup key detection for insert statements, DBUpgrade now more forgiving of dup keys.
+3. New command: AUTOMAP, for toggling AWARERANGE

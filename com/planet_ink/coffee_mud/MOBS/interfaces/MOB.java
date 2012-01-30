@@ -281,7 +281,9 @@ public interface MOB extends Rider, DBIdentifiable, PhysicalAgent, ItemPossessor
     public static final int ATT_MXP=1048576;
     public static final int ATT_COMPRESS=2097152;
     public static final int ATT_AUTORUN=4194304;
-	// maybe 10 more?
+    public static final int ATT_AUTOMAP=8388608;
+	// maybe 9 more?
+
 
 	public static final long START_SHEATH_TIME=3*CMProps.getTickMillis();
 	public static final long END_SHEATH_TIME=6*CMProps.getTickMillis();
@@ -308,7 +310,8 @@ public interface MOB extends Rider, DBIdentifiable, PhysicalAgent, ItemPossessor
 										   false,
                                            false,
 										   false,
-										   false};
+										   false,
+										   true};
 	public static final String[] AUTODESC={"AUTOGOLD",
 										   "AUTOLOOT",
 										   "AUTOEXITS",
@@ -331,6 +334,7 @@ public interface MOB extends Rider, DBIdentifiable, PhysicalAgent, ItemPossessor
 										   "QUIET",
 										   "MXP",
                                            "COMPRESSED",
-                                           "AUTORUN"};
+                                           "AUTORUN",
+                                           "AUTOMAP"};
 
 }

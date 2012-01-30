@@ -1136,7 +1136,8 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
         {
             if(compress) Say.append("\n\r");
             mob.tell(Say.toString());
-            if(CMProps.getIntVar(CMProps.SYSTEMI_AWARERANGE)>0)
+            if((CMProps.getIntVar(CMProps.SYSTEMI_AWARERANGE)>0)
+            &&(!CMath.bset(mob.getBitmap(), MOB.ATT_AUTOMAP)))
             {
             	if(awarenessA==null)
             		awarenessA=CMClass.getAbility("Skill_RegionalAwareness");
