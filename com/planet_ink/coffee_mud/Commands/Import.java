@@ -816,6 +816,11 @@ public class Import extends StdCommand
 		}
 		s=trimSpacesOnly(s);
 
+		if(s.startsWith("~") && (s.length()>2) && (s.charAt(1)=='#') && (V.size()>0))
+		{
+			V.add(0,s.substring(1));
+			s="~";
+		}
 		if(s.endsWith("~"))
 			s=s.substring(0,s.length()-1);
 
@@ -5341,6 +5346,9 @@ public class Import extends StdCommand
 						int linkRoomID=CMath.s_int(CMParms.getCleanBit(codeStr,2).trim());
 						if(CMParms.numBits(codeStr)==11) // wierd circle format
 						{ /* all is well */}
+						else
+						if(CMParms.numBits(codeStr)==4)
+						{ /* all is still well -- from the wld format I guess. */ }
 						else
 						if(CMParms.numBits(codeStr)!=3)
 						{
