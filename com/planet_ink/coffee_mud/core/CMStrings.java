@@ -1383,5 +1383,24 @@ public class CMStrings
 		if (value == null) throw new Exception("Parse error on following statement: " + expression);
 		return value.booleanValue();
 	}
-	
+
+	public final static String determineEOLN(final CharSequence str)
+	{
+		if(str!=null) 
+		for(int i=0;i<str.length();i++)
+			if(str.charAt(i)=='\n')
+			{
+				if((i<str.length()-1)&&(str.charAt(i+1)=='\r'))
+					return "\n\r";
+				return "\n";
+			}
+			else
+			if(str.charAt(i)=='\r')
+			{
+				if((i<str.length()-1)&&(str.charAt(i+1)=='\n'))
+					return "\r\n";
+				return "\r";
+			}
+		return ""+((char)0x0a);
+	}
 }

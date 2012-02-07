@@ -1731,7 +1731,9 @@ public class Import extends StdCommand
 			if(s.startsWith("#"))
 			{
 				s=s.substring(1).trim();
-				if((useThisOne==areaData)&&(CMath.isInteger(s)))
+				if(s.equals("QQ00")) 
+					System.out.println("stop!");
+				if((useThisOne==areaData)&&(s.length()>0)&&(CMath.isInteger(s)||Character.isDigit(s.charAt(s.length()-1))))
 				{
 					wasUsingThisOne=mobData;
 					useThisOne=mobData;
@@ -4383,6 +4385,7 @@ public class Import extends StdCommand
 		Vector objectData=new Vector(); // outside the for loop -- why?
 		
 		multiArea=commands.size()>1;
+		HashSet<String> baseFilesAlreadyDone=new HashSet<String>();
 		for(int areaFile=0;areaFile<commands.size();areaFile++)
 		{
 		Vector areaData=new Vector();
@@ -4407,9 +4410,67 @@ public class Import extends StdCommand
 		else
 		{
 			areaFileName=(String)commands.elementAt(areaFile);
+			int x=areaFileName.lastIndexOf('.');
+			final String ext=(x>0)?areaFileName.toLowerCase().substring(x+1):"";
 			// read in the .are file
-			CF=new CMFile(areaFileName,mob,true);
-			buf=CF.text();
+			
+			if(ext.equals("zon")
+			|| ext.endsWith("wld")
+			|| ext.endsWith("obj")
+			|| ext.endsWith("mob")
+			|| ext.endsWith("doc"))
+			{
+				final String baseAreaFileName=areaFileName.substring(0,x);
+				if(baseFilesAlreadyDone.contains(baseAreaFileName.toLowerCase()))
+					continue;
+				baseFilesAlreadyDone.add(baseAreaFileName.toLowerCase());
+				areaFileName=baseAreaFileName+".zon";
+				CF=new CMFile(areaFileName,mob,true);
+				buf=CF.text();
+				final StringBuffer finalBuf=new StringBuffer("");
+				String eoln=CMStrings.determineEOLN(buf);
+				String resetsStr="";
+				if((buf!=null)&&(buf.length()>0))
+				{
+					int wldDivDex=buf.indexOf(eoln+eoln);
+					if(wldDivDex<0)
+						return returnAnError(session,"Malformed Zone at: '"+areaFileName+"'!",compileErrors,commands);
+					int startDex=0;
+					if(buf.charAt(0)=='#')
+						startDex=buf.indexOf(eoln)+eoln.length();
+					finalBuf.append("#AREA").append(eoln).append(buf.substring(startDex,wldDivDex)).append(eoln).append(eoln);
+					resetsStr="#RESETS"+eoln+buf.substring(wldDivDex+(eoln.length()*2))+eoln+eoln;
+					areaFileName=baseAreaFileName+".wld";
+					CF=new CMFile(areaFileName,mob,true);
+					buf=CF.text();
+				}
+				if((buf!=null)&&(buf.length()>0))
+				{
+					finalBuf.append("#ROOMS").append(eoln).append(buf.toString()).append(eoln).append(eoln);
+					areaFileName=baseAreaFileName+".mob";
+					CF=new CMFile(areaFileName,mob,true);
+					buf=CF.text();
+				}
+				if((buf!=null)&&(buf.length()>0))
+				{
+					finalBuf.append("#MOBILES").append(eoln).append(buf.toString()).append(eoln).append(eoln);
+					areaFileName=baseAreaFileName+".obj";
+					CF=new CMFile(areaFileName,mob,true);
+					buf=CF.text();
+				}
+				if((buf!=null)&&(buf.length()>0))
+				{
+					finalBuf.append("#OBJECTS").append(eoln).append(buf.toString()).append(eoln).append(eoln);
+					finalBuf.append(resetsStr);
+					areaFileName=baseAreaFileName+".zon";
+				}
+				buf=finalBuf;
+			}
+			else
+			{
+				CF=new CMFile(areaFileName,mob,true);
+				buf=CF.text();
+			}
 			if((buf==null)||(buf.length()==0))
 				return returnAnError(session,"File not found at: '"+areaFileName+"'!",compileErrors,commands);
 		}
