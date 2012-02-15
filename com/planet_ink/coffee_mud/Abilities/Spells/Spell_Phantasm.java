@@ -125,8 +125,18 @@ public class Spell_Phantasm extends Spell
 		if(mob.isMonster())
 		{
 		    Race R=CMClass.randomRace();
+		    for(int i=0;i<10;i++)
+		    {
+			    if((R!=null)
+				&&(CMProps.isTheme(R.availabilityCode()))
+				&&(CMath.bset(R.availabilityCode(),Area.THEME_SKILLONLYMASK)))
+			    	break;
+			    R=CMClass.randomRace();
+		    }
 		    if(R!=null)
+		    {
 		        type=R.name();
+		    }
 		    else
 		        return false;
 		}
@@ -140,7 +150,9 @@ public class Spell_Phantasm extends Spell
     		type=CMStrings.capitalizeAndLower(CMParms.combine(commands,0));
 		}
         Race R=CMClass.getRace(type);
-        if(R==null)
+        if((R==null)
+		||(!CMProps.isTheme(R.availabilityCode()))
+		||(!CMath.bset(R.availabilityCode(),Area.THEME_SKILLONLYMASK)))
         {
             mob.tell("You don't know how to create a phantasm of a '"+type+"'.");
             return false;
