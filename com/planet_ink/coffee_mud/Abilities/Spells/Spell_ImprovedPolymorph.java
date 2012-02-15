@@ -116,7 +116,17 @@ public class Spell_ImprovedPolymorph extends Spell
 		if((R==null)&&(!auto))
 		{
 		    if(mob.isMonster())
+		    {
 		        R=CMClass.randomRace();
+			    for(int i=0;i<10;i++)
+			    {
+				    if((R!=null)
+					&&(CMProps.isTheme(R.availabilityCode()))
+					&&(CMath.bset(R.availabilityCode(),Area.THEME_SKILLONLYMASK)))
+				    	break;
+				    R=CMClass.randomRace();
+			    }
+		    }
 		    else
 		    {
     			mob.tell("You can't turn "+target.name()+" into a '"+race+"'!");
@@ -125,7 +135,17 @@ public class Spell_ImprovedPolymorph extends Spell
 		}
 		else
 		if(R==null)
+		{
 			R=CMClass.randomRace();
+		    for(int i=0;i<10;i++)
+		    {
+			    if((R!=null)
+				&&(CMProps.isTheme(R.availabilityCode()))
+				&&(CMath.bset(R.availabilityCode(),Area.THEME_SKILLONLYMASK)))
+			    	break;
+			    R=CMClass.randomRace();
+		    }
+		}
 
 		if(target.baseCharStats().getMyRace() != target.charStats().getMyRace())
 		{

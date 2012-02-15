@@ -119,6 +119,7 @@ public class Chant_Reincarnation extends Chant
 			||(isGolem(newRace))
 			||(!newRace.fertile())
 			||(!CMath.bset(newRace.availabilityCode(),Area.THEME_FANTASY))
+			||(!CMath.bset(newRace.availabilityCode(),Area.THEME_SKILLONLYMASK))
 			||(newRace.ID().equals("StdRace")))
 				newRace=CMClass.randomRace();
 			if(newRace!=null)
