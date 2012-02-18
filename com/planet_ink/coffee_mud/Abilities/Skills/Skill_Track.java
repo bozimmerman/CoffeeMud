@@ -13,6 +13,7 @@ import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.TrackingLibrary;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.MOB.Follower;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
@@ -128,26 +129,43 @@ public class Skill_Track extends StdSkill
 							int dir=nextDirection;
 							nextDirection=-2;
 							CMLib.tracking().walk(mob,dir,false,false);
-							if((reclose)&&(mob.location()==nextRoom))
+							if(mob.location()==nextRoom)
 							{
-								Exit opExit=nextRoom.getExitInDir(opDirection);
-								if((opExit!=null)
-								&&(opExit.hasADoor())
-								&&(opExit.isOpen()))
+								// backup follower mover for handcuffed followers
+								final LinkedList<MOB> reMoveV=new LinkedList<MOB>();
+								for(Enumeration<Follower> e=mob.followers(); e.hasMoreElements();)
 								{
-									CMMsg msg=CMClass.getMsg(mob,opExit,null,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_OK_VISUAL,null);
-									if(nextRoom.okMessage(mob,msg))
+									Follower F=e.nextElement();
+									if((F.follower != null)
+									&&(F.follower != mob)
+									&&(F.follower.location()==oldRoom)
+									&&(F.follower.location()!=nextRoom))
+										reMoveV.add(F.follower);
+								}
+								for(MOB M : reMoveV)
+									if(CMLib.flags().isBoundOrHeld(M))
+										CMLib.tracking().walk(M,dir,false,false);
+								if(reclose)
+								{
+									Exit opExit=nextRoom.getExitInDir(opDirection);
+									if((opExit!=null)
+									&&(opExit.hasADoor())
+									&&(opExit.isOpen()))
 									{
-										msg=CMClass.getMsg(mob,opExit,null,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_CLOSE,CMMsg.MSG_OK_VISUAL,"<S-NAME> "+nextExit.closeWord()+"(s) <T-NAMESELF>.");
-										CMLib.utensils().roomAffectFully(msg,nextRoom,opDirection);
-									}
-									if((opExit.hasALock())&&(relock))
-									{
-										msg=CMClass.getMsg(mob,opExit,null,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_OK_VISUAL,null);
+										CMMsg msg=CMClass.getMsg(mob,opExit,null,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_OK_VISUAL,null);
 										if(nextRoom.okMessage(mob,msg))
 										{
-											msg=CMClass.getMsg(mob,opExit,null,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_LOCK,CMMsg.MSG_OK_VISUAL,"<S-NAME> lock(s) <T-NAMESELF>.");
+											msg=CMClass.getMsg(mob,opExit,null,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_CLOSE,CMMsg.MSG_OK_VISUAL,"<S-NAME> "+nextExit.closeWord()+"(s) <T-NAMESELF>.");
 											CMLib.utensils().roomAffectFully(msg,nextRoom,opDirection);
+										}
+										if((opExit.hasALock())&&(relock))
+										{
+											msg=CMClass.getMsg(mob,opExit,null,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_OK_VISUAL,null);
+											if(nextRoom.okMessage(mob,msg))
+											{
+												msg=CMClass.getMsg(mob,opExit,null,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_LOCK,CMMsg.MSG_OK_VISUAL,"<S-NAME> lock(s) <T-NAMESELF>.");
+												CMLib.utensils().roomAffectFully(msg,nextRoom,opDirection);
+											}
 										}
 									}
 								}
