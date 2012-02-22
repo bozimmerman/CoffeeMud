@@ -254,14 +254,15 @@ public class Hireling extends StdBehavior
 		&&(!msg.amISource(observer))
 		&&(!msg.source().isMonster()))
 		{
-			if(((msg.sourceMessage().toUpperCase().indexOf(" HIRE")>0)
-				||(msg.sourceMessage().toUpperCase().indexOf("'HIRE")>0)
-				||(msg.sourceMessage().toUpperCase().indexOf("WORK")>0)
-				||(msg.sourceMessage().toUpperCase().indexOf("AVAILABLE")>0))
+			final String upperSrcMsg=msg.sourceMessage() == null ? "" : msg.sourceMessage().toUpperCase(); 
+			if(((upperSrcMsg.indexOf(" HIRE")>0)
+				||(upperSrcMsg.indexOf("'HIRE")>0)
+				||(upperSrcMsg.indexOf("WORK")>0)
+				||(upperSrcMsg.indexOf("AVAILABLE")>0))
 			&&(onTheJobUntil==0))
 				CMLib.commands().postSay(observer,null,"I'm for hire.  Just give me "+CMLib.beanCounter().nameCurrencyShort(observer,price())+" and I'll work for you for "+gamehours()+" \"hours\".",false,false);
 			else
-			if(((msg.sourceMessage().toUpperCase().indexOf(" FIRED")>0))
+			if(((upperSrcMsg.indexOf(" FIRED")>0))
 			&&((workingFor!=null)&&(msg.source().Name().equals(workingFor)))
 			&&(msg.amITarget(observer))
 			&&(onTheJobUntil!=0))
@@ -270,12 +271,12 @@ public class Hireling extends StdBehavior
 				allDone(observer);
 			}
 			else
-			if(((msg.sourceMessage().toUpperCase().indexOf(" SKILLS") > 0)))
+			if(((upperSrcMsg.indexOf(" SKILLS") > 0)))
 			{
 				StringBuffer skills = new StringBuffer("");
-		        for(Enumeration<Ability> a=observer.abilities();a.hasMoreElements();)
+		        for(final Enumeration<Ability> a=observer.abilities();a.hasMoreElements();)
 		        {
-		            Ability A=a.nextElement();
+		            final Ability A=a.nextElement();
 		            if(A!=null)
 		            {
 						if(A.proficiency() == 0)

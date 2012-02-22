@@ -902,7 +902,11 @@ public class ProcessSMTPrequest implements Runnable
 		}
 		catch (Exception e)
 		{
-			Log.errOut(runnableName,"Exception: " + e.getMessage() );
+			final StringBuilder msg = new StringBuilder(e.getMessage());
+			StackTraceElement[] ts = e.getStackTrace();
+			for(StackTraceElement t : ts)
+				msg.append(" ").append(t.getFileName()).append("(").append(t.getLineNumber()).append(")");
+			Log.errOut(runnableName,"Exception: " + msg.toString() );
 		}
 		
 		try

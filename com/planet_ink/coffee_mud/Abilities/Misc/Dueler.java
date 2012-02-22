@@ -61,51 +61,54 @@ public class Dueler extends StdAbility
         if(affected instanceof MOB)
         {
 	        MOB mob=(MOB)affected;
-	        Dueler oDA=otherDueler;
-	        if(oDA!=null)
+	        if(mob != null)
 	        {
-	        	otherDueler=null;
-	        	oDA.otherDueler=null;
-	        	oDA.unInvoke();
+		        Dueler oDA=otherDueler;
+		        if(oDA!=null)
+		        {
+		        	otherDueler=null;
+		        	oDA.otherDueler=null;
+		        	oDA.unInvoke();
+		        }
+		        if((canBeUninvoked())
+		        &&(!mob.amDead())
+		        &&(CMLib.flags().isInTheGame(mob,true)))
+		        	mob.tell("Your duel has ended.");
+		        if(!oldPVPStatus) 
+		        	mob.setBitmap(CMath.unsetb(mob.getBitmap(), MOB.ATT_PLAYERKILL));
+		        oldCurState.copyInto(mob.curState());
+		        LinkedList<Ability> cleanOut=new LinkedList<Ability>();
+		    	for(Enumeration<Ability> a=mob.effects();a.hasMoreElements();)
+		    	{
+		    		final Ability A=a.nextElement();
+		    		if(!oldEffects.contains(A))
+		    			cleanOut.add(A);
+		    	}
+		    	for(Ability A : cleanOut)
+	    		{
+	    			if(!(A instanceof Dueler)) 
+	    				A.unInvoke();
+	    			mob.delEffect(A);
+	    			A.destroy();
+	    		}
+		    	for(Item I : oldEq.keySet())
+		    	{
+		    		Item copyI=oldEq.get(I);
+		    		if(I.amDestroyed())
+		    			mob.addItem(copyI);
+		    		else
+		    		if(I.usesRemaining() < copyI.usesRemaining())
+		    			I.setUsesRemaining(copyI.usesRemaining());
+		    	}
+		    	mob.setWimpHitPoint(autoWimp);
+		        mob.recoverCharStats();
+		        mob.recoverMaxState();
+		        mob.recoverPhyStats();
+				mob.makePeace();
+				Ability A=CMClass.getAbility("Immunities");
+				if(A!=null)
+					A.invoke(mob, new XVector("LEGAL","TICKS=1"), mob, true, 0);
 	        }
-	        if((canBeUninvoked())
-	        &&(!((MOB)affected).amDead())
-	        &&(CMLib.flags().isInTheGame(affected,true)))
-	        	((MOB)affected).tell("Your duel has ended.");
-	        if(!oldPVPStatus) 
-	        	mob.setBitmap(CMath.unsetb(mob.getBitmap(), MOB.ATT_PLAYERKILL));
-	        oldCurState.copyInto(mob.curState());
-	        LinkedList<Ability> cleanOut=new LinkedList<Ability>();
-	    	for(Enumeration<Ability> a=mob.effects();a.hasMoreElements();)
-	    	{
-	    		final Ability A=a.nextElement();
-	    		if(!oldEffects.contains(A))
-	    			cleanOut.add(A);
-	    	}
-	    	for(Ability A : cleanOut)
-    		{
-    			if(!(A instanceof Dueler)) 
-    				A.unInvoke();
-    			mob.delEffect(A);
-    			A.destroy();
-    		}
-	    	for(Item I : oldEq.keySet())
-	    	{
-	    		Item copyI=oldEq.get(I);
-	    		if(I.amDestroyed())
-	    			mob.addItem(copyI);
-	    		else
-	    		if(I.usesRemaining() < copyI.usesRemaining())
-	    			I.setUsesRemaining(copyI.usesRemaining());
-	    	}
-	    	mob.setWimpHitPoint(autoWimp);
-	        mob.recoverCharStats();
-	        mob.recoverMaxState();
-	        mob.recoverPhyStats();
-			mob.makePeace();
-			Ability A=CMClass.getAbility("Immunities");
-			if(A!=null)
-				A.invoke(mob, new XVector("LEGAL","TICKS=1"), mob, true, 0);
         }
     	oldEffects.clear();
     	oldEq.clear();

@@ -748,7 +748,7 @@ public class MOBloader
     public void DBUpdatePassword(String name, String password)
     {
     	name=CMStrings.capitalizeAndLower(name);
-        DB.update("UPDATE CMCHAR SET CMPASS='"+password+"' WHERE CMUSERID='"+name+"'");
+        DB.update("UPDATE CMCHAR SET CMPASS='"+password+"' WHERE CMUSERID='"+name.replace('\'', 'n')+"'");
     }
 
     private String getPlayerStatsXML(MOB mob)
@@ -1209,7 +1209,7 @@ public class MOBloader
         	// certainly by amateurs is the answer. That, and fakedb 
         	// doesn't understand 'LIKE'
             D=DB.DBFetch();
-            ResultSet R=D.query("SELECT * FROM CMACCT WHERE CMANAM='"+CMStrings.capitalizeAndLower(Login)+"'");
+            ResultSet R=D.query("SELECT * FROM CMACCT WHERE CMANAM='"+CMStrings.capitalizeAndLower(Login).replace('\'', 'n')+"'");
             if(R!=null) while(R.next())
             {
                 String username=DB.getRes(R,"CMANAM");
@@ -1275,7 +1275,7 @@ public class MOBloader
         	// certainly by amateurs is the answer. That, and fakedb 
         	// doesn't understand 'LIKE'
             D=DB.DBFetch();
-            ResultSet R=D.query("SELECT * FROM CMCHAR WHERE CMUSERID='"+CMStrings.capitalizeAndLower(Login)+"'");
+            ResultSet R=D.query("SELECT * FROM CMCHAR WHERE CMUSERID='"+CMStrings.capitalizeAndLower(Login).replace('\'', 'n')+"'");
             if(R!=null) while(R.next())
             {
                 String username=DB.getRes(R,"CMUSERID");
@@ -1335,7 +1335,7 @@ public class MOBloader
         try
         {
             D=DB.DBFetch();
-            ResultSet R=D.query("SELECT * FROM CMCHAR WHERE CMUSERID='"+name+"'");
+            ResultSet R=D.query("SELECT * FROM CMCHAR WHERE CMUSERID='"+name.replace('\'', 'n')+"'");
             if(R!=null) while(R.next())
             {
                 // String username=DB.getRes(R,"CMUSERID");

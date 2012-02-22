@@ -77,11 +77,13 @@ public class GoodGuardian extends StdBehavior
 
 		if(victim!=null)
 		{
+			final MOB victimVictim=victim.getVictim();
 			if((!BrotherHelper.isBrother(victim,observer,false))
+			&&(victimVictim!=null)
             &&(!victim.amDead())
             &&(victim.isInCombat())
-            &&(!victim.getVictim().amDead())
-            &&(victim.getVictim().isInCombat()))
+            &&(!victimVictim.amDead())
+            &&(victimVictim.isInCombat()))
 			{
 				Aggressive.startFight(observer,victim,true,false,"PROTECT THE INNOCENT!");
 			}
@@ -93,8 +95,8 @@ public class GoodGuardian extends StdBehavior
 			{
 				MOB inhab=room.fetchInhabitant(i);
 				if((inhab!=null)
-				   &&(inhab.isInCombat())
-				   &&(inhab.getVictim().isInCombat())
+			    &&(inhab.isInCombat())
+			    &&(inhab.getVictim().isInCombat())
 				&&((observer.phyStats().level()>(inhab.phyStats().level()+5))))
 				{
 					String msg="<S-NAME> stop(s) <T-NAME> from fighting with "+inhab.getVictim().name();

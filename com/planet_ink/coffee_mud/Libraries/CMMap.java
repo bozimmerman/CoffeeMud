@@ -450,8 +450,16 @@ public class CMMap extends StdLibrary implements WorldMap
     public List<Room> findRooms(Enumeration<Room> rooms, MOB mob, String srchStr, boolean displayOnly, boolean returnFirst, int timePct)
     {
     	final List<Room> foundRooms=new Vector<Room>();
-    	Vector completeRooms=new Vector();
-		try { completeRooms=new XVector(rooms); }catch(NoSuchElementException nse){}
+    	Vector completeRooms=null;
+		try 
+		{ 
+			completeRooms=new XVector(rooms); 
+		}
+		catch(Exception nse)
+		{
+			Log.errOut("CMMap",nse);
+			completeRooms=new Vector();	
+		}
 		long delay=Math.round(CMath.s_pct(timePct+"%") * 1000);
 		
 		Enumeration enumSet;

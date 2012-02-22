@@ -40,12 +40,14 @@ public class MobileAggressive extends Mobile
 	protected boolean mobkill=false;
 	protected boolean misbehave=false;
 	protected String attackMsg=null;
-
+	protected int aggressiveTickDown=0;
+	
 	public MobileAggressive()
 	{
 	    super();
 
 	    tickDown = 0;
+	    aggressiveTickDown = 0;
 	}
 
 	public String accountForYourself()
@@ -62,6 +64,7 @@ public class MobileAggressive extends Mobile
 		tickWait=CMParms.getParmInt(newParms,"delay",0);
 		attackMsg=CMParms.getParmStr(newParms,"MESSAGE",null);
 		tickDown=tickWait;
+		aggressiveTickDown=tickWait;
 		Vector<String> V=CMParms.parse(newParms.toUpperCase());
 		mobkill=V.contains("MOBKILL");
 		misbehave=V.contains("MISBEHAVE");
@@ -82,9 +85,9 @@ public class MobileAggressive extends Mobile
             tickStatus=Tickable.STATUS_NOT;
             return true;
         }
-		if((--tickDown)<0)
+		if((--aggressiveTickDown)<0)
 		{
-			tickDown=tickWait;
+			aggressiveTickDown=tickWait;
             tickStatus=Tickable.STATUS_MISC+2;
 			Aggressive.tickAggressively(ticking,tickID,mobkill,misbehave,getParms(),attackMsg);
             tickStatus=Tickable.STATUS_MISC+3;
