@@ -60,6 +60,26 @@ public class Drop extends StdCommand
 		return false;
 	}
 
+	/**
+	 * This method actually performs the drop, when the given parsed
+	 * set of command-line words.  
+	 * 
+	 * The commands list is almost always the
+	 * set of strings, starting with the access word that triggered the
+	 * command.  This command does have a custom API however, that allows an Item, 
+	 * and two Boolean objects to be substitued for the normal command strings.
+	 * 
+	 * This method is not allowed to be called until the player or mob has 
+	 * satisfied the actionsCost requirements and the securityCheck
+	 * @see com.planet_ink.coffee_mud.Commands.interfaces.Command#actionsCost(MOB, List)
+	 * @see com.planet_ink.coffee_mud.Commands.interfaces.Command#securityCheck(MOB)
+	 * 
+	 * @param mob the mob or player issueing the command
+	 * @param commands usually the command words and parameters; a set of strings
+     * @param metaFlags flags denoting how the command is being executed
+	 * @return whether the command was successfully executed.  true if it was successfully dropped, false otherwise
+	 * @throws java.io.IOException usually means the player has dropped carrier
+	 */
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
