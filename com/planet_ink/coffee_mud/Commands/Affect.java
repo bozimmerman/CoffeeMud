@@ -108,7 +108,7 @@ public class Affect extends StdCommand
 		return msg.toString();
 	}
 	
-	public String getAffects(Session S, Physical P, boolean xtra)
+	public String getAffects(Session S, Physical P, boolean xtra, boolean autosAlso)
 	{
 		final StringBuffer msg=new StringBuffer("");
         final int NUM_COLS=2;
@@ -119,6 +119,8 @@ public class Affect extends StdCommand
 		{
 			final Ability A=a.nextElement();
 			String disp=A.displayText();
+			if(autosAlso && disp.length()==0)
+				disp=A.ID()+"+"+A.proficiency();
 			if((A!=null)&&(disp.length()>0))
 			{
 				if(disp.startsWith("(")&&disp.endsWith(")"))
@@ -183,7 +185,7 @@ public class Affect extends StdCommand
 	                {
 	                    if(S==mob.session())
 	                        S.colorOnlyPrint(" \n\r^!"+P.name()+" is affected by: ^?");
-	                    String msg=getAffects(S,P,true);
+	                    String msg=getAffects(S,P,true,CMath.bset(mob.getBitmap(),MOB.ATT_SYSOPMSGS));
 	                    if(msg.length()<5)
 	                        S.colorOnlyPrintln("Nothing!\n\r^N");
 	                    else
@@ -197,7 +199,7 @@ public class Affect extends StdCommand
                 S.colorOnlyPrintln("\n\r"+getMOBState(S, mob)+"\n\r");
 			if(S==mob.session())
 				S.colorOnlyPrint("^!You are affected by: ^?");
-            String msg=getAffects(S,mob,CMath.bset(mob.getBitmap(),MOB.ATT_SYSOPMSGS));
+            String msg=getAffects(S,mob,CMath.bset(mob.getBitmap(),MOB.ATT_SYSOPMSGS),CMath.bset(mob.getBitmap(),MOB.ATT_SYSOPMSGS));
             if(msg.length()<5)
                 S.colorOnlyPrintln("Nothing!\n\r^N");
             else
@@ -221,6 +223,6 @@ public class Affect extends StdCommand
 				target=(Physical)o;
 			}
 		}
-		return getAffects(S,target,false);
+		return getAffects(S,target,false,false);
 	}
 }

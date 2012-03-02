@@ -75,6 +75,7 @@ public interface AbilityMapper extends CMLibrary
         public int maxProficiency=100;
         public String defaultParm="";
         public boolean isSecret=false;
+        public boolean isAllQualified=false;
         public DVector skillPreReqs=new DVector(2);
         public String extraMask="";
         public String originalSkillPreReqList="";
@@ -149,6 +150,7 @@ public interface AbilityMapper extends CMLibrary
     public boolean qualifiesByLevel(MOB studentM, Ability A);
 	public boolean qualifiesByLevel(MOB studentM, String abilityID);
     public boolean getDefaultGain(String ID, boolean checkAll, String abilityID);
+    public boolean getAllQualified(String ID, boolean checkAll, String abilityID);
     public AbilityMapping getAllAbleMap(String abilityID);
     public AbilityMapping getAbleMap(String ID, String abilityID);
     public boolean getSecretSkill(String ID, boolean checkAll, String abilityID);
@@ -188,5 +190,5 @@ public interface AbilityMapper extends CMLibrary
 	public void saveAllQualifysFile(Map<String, Map<String,AbilityMapping>> newMap);
 	public Map<String, Map<String,AbilityMapping>> getAllQualifiesMap(final Map<String,Object> cache);
 	public AbilityMapping makeAbilityMapping(String ID, int qualLevel, String abilityID, int defaultProficiency, int maxProficiency, String defaultParam, boolean autoGain,
-			 boolean secret, List<String> preReqSkillsList, String extraMask, Integer[] costOverrides);
+			 boolean secret, boolean isAllQualified, List<String> preReqSkillsList, String extraMask, Integer[] costOverrides);
 }

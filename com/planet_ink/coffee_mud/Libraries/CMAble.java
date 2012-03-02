@@ -221,7 +221,7 @@ public class CMAble extends StdLibrary implements AbilityMapper
 			ableMap=new SHashtable<String,AbilityMapping>();
 			completeAbleMap.put(ID,ableMap);
 		}
-		AbilityMapping able = makeAbilityMapping(ID,qualLevel,abilityID,defaultProficiency,100,defaultParam,autoGain,secret, new Vector(),"",null);
+		AbilityMapping able = makeAbilityMapping(ID,qualLevel,abilityID,defaultProficiency,100,defaultParam,autoGain,secret, false,new Vector(),"",null);
 		addClassAbility(abilityID,ableMap,able);
 	}
 
@@ -389,7 +389,7 @@ public class CMAble extends StdLibrary implements AbilityMapper
 			completeAbleMap.put(ID,ableMap);
 			handleEachAndClassAbility(ableMap, getAllQualifiesMap(null), ID);
 		}
-		AbilityMapping able = makeAbilityMapping(ID,qualLevel,abilityID,defaultProficiency,maxProficiency,defaultParam,autoGain,secret,preReqSkillsList,extraMask,costOverrides);
+		AbilityMapping able = makeAbilityMapping(ID,qualLevel,abilityID,defaultProficiency,maxProficiency,defaultParam,autoGain,secret,false,preReqSkillsList,extraMask,costOverrides);
 		addClassAbility(abilityID,ableMap,able);
 	}
 
@@ -401,6 +401,7 @@ public class CMAble extends StdLibrary implements AbilityMapper
 											 String defaultParam,
 											 boolean autoGain,
 											 boolean secret,
+											 boolean isAllQualified,
 											 List<String> preReqSkillsList,
 											 String extraMask,
 								             Integer[] costOverrides)
@@ -410,6 +411,7 @@ public class CMAble extends StdLibrary implements AbilityMapper
 		able.qualLevel=qualLevel;
 		able.autoGain=autoGain;
 		able.isSecret=secret;
+		able.isAllQualified=isAllQualified;
 		able.defaultParm=defaultParam==null?"":defaultParam;
 		able.defaultProficiency=defaultProficiency;
 		able.maxProficiency=maxProficiency;
@@ -1257,6 +1259,23 @@ public class CMAble extends StdLibrary implements AbilityMapper
 			Map<String,AbilityMapping> ableMap=completeAbleMap.get("All");
 			if(ableMap.containsKey(abilityID))
 				return ableMap.get(abilityID).autoGain;
+		}
+		return false;
+	}
+
+	public boolean getAllQualified(String ID, boolean checkAll, String abilityID)
+	{
+		if(completeAbleMap.containsKey(ID))
+		{
+			Map<String,AbilityMapping> ableMap=completeAbleMap.get(ID);
+			if(ableMap.containsKey(abilityID))
+				return ableMap.get(abilityID).isAllQualified;
+		}
+		if((checkAll)&&(completeAbleMap.containsKey("All")))
+		{
+			Map<String,AbilityMapping> ableMap=completeAbleMap.get("All");
+			if(ableMap.containsKey(abilityID))
+				return ableMap.get(abilityID).isAllQualified;
 		}
 		return false;
 	}
@@ -2162,7 +2181,7 @@ public class CMAble extends StdLibrary implements AbilityMapper
 		}
 		return
 			makeAbilityMapping(abilityID,qualLevel,abilityID,CMath.s_int(prof.toString().trim()),100,"",autogain,false,
-					CMParms.parseSpaces(preReqs.toString().trim(), true), mask.toString().trim(),null);
+					true,CMParms.parseSpaces(preReqs.toString().trim(), true), mask.toString().trim(),null);
 	}
 	
 	public Map<String, Map<String,AbilityMapping>> getAllQualifiesMap(final Map<String,Object> cache)

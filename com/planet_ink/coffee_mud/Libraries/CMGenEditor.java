@@ -7869,7 +7869,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		Map<String,AbilityMapper.AbilityMapping> subMap=map.get(eachOrAll.toUpperCase().trim());
 		AbilityMapper.AbilityMapping mapped = subMap.get(me.ID().toUpperCase());
 		if(mapped==null)
-			mapped=CMLib.ableMapper().makeAbilityMapping(me.ID(),1,me.ID(),0,100,"",true,false, new Vector(),"",null);
+			mapped=CMLib.ableMapper().makeAbilityMapping(me.ID(),1,me.ID(),0,100,"",true,false, true,new Vector(),"",null);
         boolean ok=false;
         while(!ok)
         {
@@ -7891,7 +7891,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
                 ok=true;
             }
         }
-        return CMLib.ableMapper().makeAbilityMapping(mapped.abilityID,mapped.qualLevel,mapped.abilityID,mapped.defaultProficiency,100,"",mapped.autoGain,false,
+        return CMLib.ableMapper().makeAbilityMapping(mapped.abilityID,mapped.qualLevel,mapped.abilityID,mapped.defaultProficiency,100,"",mapped.autoGain,false,true,
     		     CMParms.parseSpaces(mapped.originalSkillPreReqList.trim(), true), mapped.extraMask,null);
 	}
 }

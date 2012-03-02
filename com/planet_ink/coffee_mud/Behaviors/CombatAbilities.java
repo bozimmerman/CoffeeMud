@@ -144,7 +144,8 @@ public class CombatAbilities extends StdBehavior
 			if(A!=null)
 			{
 				int proficiency=CMLib.ableMapper().getMaxProficiency(mob,true,A.ID())/2;
-				if(A.proficiency()<proficiency)	A.setProficiency(proficiency);
+				if(A.proficiency()<proficiency)	
+					A.setProficiency(proficiency);
 				oldAbilities.addElement(A);
 			}
 		}
@@ -161,7 +162,19 @@ public class CombatAbilities extends StdBehavior
 					a=a-1;
 				}
 				else
-					newOne.setProficiency(CMLib.ableMapper().getMaxProficiency(newOne.ID()));
+				{
+					final int newProf = CMLib.ableMapper().getMaxProficiency(newOne.ID());
+					if(newOne.proficiency()<newProf)
+					{
+						newOne.setProficiency(newProf);
+						if(newOne.isAutoInvoked())
+						{
+							Ability newAffect=mob.fetchEffect(newOne.ID());
+							if(newAffect!=null)
+								newAffect.setProficiency(newProf);
+						}
+					}
+				}
 			}
 		}
 	}
