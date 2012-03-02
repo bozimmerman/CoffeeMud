@@ -237,6 +237,7 @@ public class Modify extends StdCommand
 				Log.sysOut("Rooms",mob.Name()+" modified room "+newRoom.roomID()+".");
 			}
 			oldRoom.destroy();
+			newRoom.getArea().fillInAreaRoom(newRoom);
 			return;
 		}
 		if(commands.size()<3) { flunkRoomCmd(mob); return;}
