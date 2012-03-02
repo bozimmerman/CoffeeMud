@@ -91,6 +91,17 @@ public class SlaveryParser extends StdLibrary implements SlaveryLibrary
                             ri++;
                         }
                         break;
+                    case 'd':
+                    	if(Directions.getGoodDirectionCode(req[ri])<0)
+                    		reject=true;
+                    	else
+                    	{
+                            map.put("%d",req[ri]);
+                            reject=false;
+                            ci++;
+                            ri++;
+                    	}
+                    	break;
                     case 'm':
                     case 'g':
                     case '*':

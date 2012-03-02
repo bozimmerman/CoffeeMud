@@ -146,6 +146,7 @@ public class Spell_Geas extends Spell
 				STEPS=CMLib.slavery().processRequest(mob,target,CMParms.combine(commands,0));
 				if((STEPS==null)||(STEPS.size()==0))
 				{
+					STEPS=null;
 					target.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> look(s) confused.");
 					return false;
 				}

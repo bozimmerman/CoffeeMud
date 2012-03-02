@@ -571,6 +571,7 @@ public interface SlaveryLibrary extends CMLibrary
         //%s social name
         //%k skill command word
         //%r room name
+        //%d a direction
         // * match anything
         public static final String[][] pmap={
             // below is killing
@@ -634,6 +635,9 @@ public interface SlaveryLibrary extends CMLibrary
             {"stuff yourself with %i","itemfind %i;eat %i"},
             {"drink %i","itemfind %i;drink %i"},
             // below are gos, and find someone (and report back where), take me to, show me
+            {"go %d","%d;"},
+            {"walk %d","%d;"},
+            {"move %d","%d;"},
             {"go to %r","find %r;sit"},
             {"report to %r","find %r;sit"},
             {"walk to %r","find %r;sit"},
@@ -678,6 +682,8 @@ public interface SlaveryLibrary extends CMLibrary
             {"who %*","say You want me to answer who? I don't know who!"},
             {"when %*","say You want me to answer when? I don't know when!"},
             {"what %*","say You want me to answer what? I don't know what!"},
-            {"why %*","say You want me to answer why? I don't know why!"}
+            {"why %*","say You want me to answer why? I don't know why!"},
+            // other miscellaneous commands
+            {"%k *","%k *"}
         };
 }

@@ -146,7 +146,10 @@ public class Skill_Enslave extends StdSkill
                             if((STEPS!=null)&&(STEPS.size()>0))
                                 CMLib.commands().postSay(mob,msg.source(),"Yes master.",false,false);
                             else
+                            {
+                                STEPS=null;
                                 CMLib.commands().postSay(mob,msg.source(),"Huh? Wuh?",false,false);
+                            }
                         }
                     }
                 }
@@ -276,6 +279,7 @@ public class Skill_Enslave extends StdSkill
                 &&(mob.location()!=mob.getStartRoom()))
                     CMLib.tracking().wanderAway(mob,true,true);
                 unInvoke();
+                STEPS=null;
                 return !canBeUninvoked();
             }
             if(STEPS!=null)
