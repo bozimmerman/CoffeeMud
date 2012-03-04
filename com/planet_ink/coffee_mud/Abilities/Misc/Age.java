@@ -351,7 +351,12 @@ public class Age extends StdAbility
 					newMan.playerStats().setLastUpdated(System.currentTimeMillis());
 					newMan.playerStats().setLastDateTime(System.currentTimeMillis());
 					if(newMan.playerStats().getBirthday()==null)
-					    newMan.baseCharStats().setStat(CharStats.STAT_AGE,newMan.playerStats().initializeBirthday(ellapsed*15,newMan.baseCharStats().getMyRace()));
+					{
+						int newAge=newMan.playerStats().initializeBirthday(ellapsed*15,newMan.baseCharStats().getMyRace());
+						if((newAge<0)||(newAge>newMan.baseCharStats().getMyRace().getAgingChart()[Race.AGE_MIDDLEAGED]))
+							newAge=newMan.baseCharStats().getMyRace().getAgingChart()[Race.AGE_MIDDLEAGED];
+					    newMan.baseCharStats().setStat(CharStats.STAT_AGE,newAge);
+					}
 					newMan.baseCharStats().setStat(CharStats.STAT_AGE,ellapsed);
 					newMan.baseState().setHitPoints(CMProps.getIntVar(CMProps.SYSTEMI_STARTHP));
 					newMan.baseState().setMana(CMProps.getIntVar(CMProps.SYSTEMI_STARTMANA));
