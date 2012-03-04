@@ -362,7 +362,7 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 
     public String parseOutFlags(String mask, HashSet<ChannelFlag> flags, String[] colorOverride)
     {
-        Vector<String> V=CMParms.parse(mask);
+        Vector<String> V=CMParms.parseSpaces(mask,true);
         for(int v=V.size()-1;v>=0;v--)
         {
             String s=((String)V.elementAt(v)).toUpperCase();
@@ -384,7 +384,10 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 	            }
             }
         }
-        return CMParms.combine(V,0);
+        final StringBuilder str=new StringBuilder();
+        for(final String s : V)
+        	str.append(s).append(" ");
+        return str.toString().trim();
     }
     
 	public int loadChannels(String list, String ilist, String imc2list)
