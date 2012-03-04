@@ -335,23 +335,25 @@ public class Druid extends StdCharClass
     
     public static void doAnimalFollowerLevelingCheck(CharClass C, Environmental host, CMMsg msg)
     {
-        if((msg.source()!=host)
-        &&(msg.sourceMessage()==null)
+        if((msg.sourceMessage()==null)
         &&(msg.sourceMinor()==CMMsg.TYP_LEVEL)
-        &&(msg.source().isMonster())
-        &&((msg.source().amFollowing()==host)||(msg.source().amUltimatelyFollowing()==host))
-        &&(host instanceof MOB)
-        &&(((MOB)host).charStats().getCurrentClass().ID().equals(C.ID()))
-        &&(CMLib.flags().isAnimalIntelligence(msg.source())
-          ||msg.source().charStats().getMyRace().racialCategory().equalsIgnoreCase("Vegetation")
-          ||msg.source().charStats().getMyRace().racialCategory().equalsIgnoreCase("Stone Golem")))
+        &&(msg.source().isMonster()))
         {
-            int xp=msg.source().phyStats().level()*5;
-            if(xp>0)
-            {
-                ((MOB)host).tell("Your stewardship has benefitted "+msg.source().name()+".");
-                CMLib.leveler().postExperience((MOB)host,null,null,xp,false);
-            }
+        	final MOB druidM=msg.source().amUltimatelyFollowing();
+	        if((druidM!=null)
+	        &&(!druidM.isMonster())
+	        &&(druidM.charStats().getCurrentClass().ID().equals(C.ID()))
+	        &&(CMLib.flags().isAnimalIntelligence(msg.source())
+	          ||msg.source().charStats().getMyRace().racialCategory().equalsIgnoreCase("Vegetation")
+	          ||msg.source().charStats().getMyRace().racialCategory().equalsIgnoreCase("Stone Golem")))
+	        {
+	            int xp=msg.source().phyStats().level()*5;
+	            if(xp>0)
+	            {
+	                druidM.tell("Your stewardship has benefitted "+msg.source().name()+".");
+	                CMLib.leveler().postExperience(druidM,null,null,xp,false);
+	            }
+	        }
         }
     }
     
