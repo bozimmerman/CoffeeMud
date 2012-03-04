@@ -1022,7 +1022,7 @@ public class DefaultSession implements Session
             if((terminalType.equalsIgnoreCase("zmud")||terminalType.equalsIgnoreCase("cmud"))&&(last==Session.TELNET_ECHO))
                 setClientTelnetMode(Session.TELNET_ECHO,false);
             if(CMSecurity.isDebugging(CMSecurity.DbgFlag.TELNET)) Log.debugOut("Session","Got DO "+Session.TELNET_DESCS[last]);
-            if((last==TELNET_COMPRESS2)&&(serverTelnetMode(last))&&(!terminalType.equals("UNKNOWN")))
+            if((last==TELNET_COMPRESS2)&&(serverTelnetMode(last)))
             {
                 setClientTelnetMode(last,true);
                 if(connectionComplete)
