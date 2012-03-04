@@ -90,6 +90,13 @@ public class LockSmith extends CraftingSkill
 		if((affected!=null)&&(affected instanceof MOB)&&(tickID==Tickable.TICKID_MOB))
 		{
 			MOB mob=(MOB)affected;
+			if((workingOn instanceof Container) && (mob.location()!=CMLib.map().roomLocation(workingOn)))
+			{
+				commonTell(mob,"You've stopped "+verb+".");
+				building=null;
+				unInvoke();
+				return super.tick(ticking, tickID);
+			}
 			if(tickDown==6)
 			{
 				if(building==null) building=getBuilding(workingOn);
