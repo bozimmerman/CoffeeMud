@@ -44,6 +44,7 @@ public class Play_Dirge extends Play
 	protected boolean skipStandardSongTick(){return true;}
 	protected String songOf(){return "a "+name();}
     protected boolean HAS_QUANTITATIVE_ASPECT(){return false;}
+	protected boolean skipStandardSongInvoke(){return true;}
 
     public int castingQuality(MOB mob, Physical target)
     {

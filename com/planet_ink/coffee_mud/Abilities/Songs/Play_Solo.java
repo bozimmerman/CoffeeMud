@@ -42,6 +42,7 @@ public class Play_Solo extends Play
 	protected boolean persistantSong(){return false;}
 	protected boolean skipStandardSongTick(){return true;}
 	protected String songOf(){return "a "+name();}
+	protected boolean skipStandardSongInvoke(){return true;}
 
 	public boolean okMessage(Environmental E, CMMsg msg)
 	{

@@ -41,6 +41,7 @@ public class Play_Reveille extends Play
 	public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
 	protected int canAffectCode(){return 0;}
 	protected boolean skipStandardSongTick(){return true;}
+	protected boolean skipStandardSongInvoke(){return true;}
 
     public int castingQuality(MOB mob, Physical target)
     {
