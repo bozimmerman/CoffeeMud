@@ -78,7 +78,8 @@ public class Spell_Shrink extends Spell
 		int str=affectableStats.getStat(CharStats.STAT_STRENGTH);
 		int dex=affectableStats.getStat(CharStats.STAT_DEXTERITY);
 		affectableStats.setStat(CharStats.STAT_STRENGTH,(str/10)+1);
-		affectableStats.setStat(CharStats.STAT_DEXTERITY,(dex*2)+1);
+		if(dex <= (affected.baseCharStats().getStat(CharStats.STAT_DEXTERITY)+5))
+			affectableStats.setStat(CharStats.STAT_DEXTERITY,dex+5);
 	}
 
 	public void affectPhyStats(Physical host, PhyStats affectedStats)
