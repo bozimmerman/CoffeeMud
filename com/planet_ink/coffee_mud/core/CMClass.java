@@ -44,6 +44,7 @@ import org.mozilla.javascript.optimizer.*;
 public class CMClass extends ClassLoader
 {
 	protected static boolean debugging=false;
+	protected static volatile long lastUpdateTime=System.currentTimeMillis();
     protected static final Map<String,Class<?>> classes=new Hashtable<String,Class<?>>();
     
     private static CMClass[] clss=new CMClass[256];
@@ -360,25 +361,25 @@ public class CMClass extends ClassLoader
 	public static final Race 		randomRace(){return (Race)c().races.elementAt((int)Math.round(Math.floor(Math.random()*((double)c().races.size()))));}
 	public static final CharClass 	randomCharClass(){return (CharClass)c().charClasses.elementAt((int)Math.round(Math.floor(Math.random()*((double)c().charClasses.size()))));}
 	public static final Ability 	randomAbility(){ return (Ability)c().abilities.elementAt((int)Math.round(Math.floor(Math.random()*((double)c().abilities.size()))));}
-    public static final Room 		getLocale(String calledThis){ return (Room)getNewGlobal(c().locales,calledThis); }
-    public static final CMLibrary 	getLibrary(String calledThis) { return (CMLibrary)getGlobal(c().libraries,calledThis); }
+    public static final Room 		getLocale(final String calledThis){ return (Room)getNewGlobal(c().locales,calledThis); }
+    public static final CMLibrary 	getLibrary(final String calledThis) { return (CMLibrary)getGlobal(c().libraries,calledThis); }
     public static final Area 		anyOldArea(){return (Area)c().areaTypes.elementAt(0);}
-    public static final Area 		getAreaType(String calledThis) { return (Area)getNewGlobal(c().areaTypes,calledThis); }
-    public static final Exit 		getExit(String calledThis) { return (Exit)getNewGlobal(c().exits,calledThis);}
-    public static final MOB 		getMOB(String calledThis) { return (MOB)getNewGlobal(c().MOBs,calledThis); }
-    public static final Weapon 		getWeapon(String calledThis) { return (Weapon)getNewGlobal(c().weapons,calledThis); }
-    public static final ClanItem 	getClanItem(String calledThis) { return (ClanItem)getNewGlobal(c().clanItems,calledThis); }
-    public static final Item 		getMiscMagic(String calledThis) { return (Item)getNewGlobal(c().miscMagic,calledThis); }
-    public static final Item 		getMiscTech(String calledThis) { return (Item)getNewGlobal(c().miscTech,calledThis);}
-    public static final Armor 		getArmor(String calledThis) { return (Armor)getNewGlobal(c().armor,calledThis); }
-    public static final Item 		getBasicItem(String calledThis) { return (Item)getNewGlobal(c().items,calledThis); }
-    public static final Behavior 	getBehavior(String calledThis) { return (Behavior)getNewGlobal(c().behaviors,calledThis); }
-    public static final Ability 	getAbility(String calledThis) { return (Ability)getNewGlobal(c().abilities,calledThis); }
-    public static final CharClass 	getCharClass(String calledThis){ return (CharClass)getGlobal(c().charClasses,calledThis);}
-    public static final CMCommon 	getCommon(String calledThis){return (CMCommon)getNewGlobal(c().common,calledThis);}
-    public static final Command 	getCommand(String word){return (Command)getGlobal(c().commands,word);}
-    public static final WebMacro 	getWebMacro(String macroName){return (WebMacro)c().webMacros.get(macroName);}
-    public static final Race 		getRace(String calledThis){return (Race)getGlobal(c().races,calledThis);}
+    public static final Area 		getAreaType(final String calledThis) { return (Area)getNewGlobal(c().areaTypes,calledThis); }
+    public static final Exit 		getExit(final String calledThis) { return (Exit)getNewGlobal(c().exits,calledThis);}
+    public static final MOB 		getMOB(final String calledThis) { return (MOB)getNewGlobal(c().MOBs,calledThis); }
+    public static final Weapon 		getWeapon(final String calledThis) { return (Weapon)getNewGlobal(c().weapons,calledThis); }
+    public static final ClanItem 	getClanItem(final String calledThis) { return (ClanItem)getNewGlobal(c().clanItems,calledThis); }
+    public static final Item 		getMiscMagic(final String calledThis) { return (Item)getNewGlobal(c().miscMagic,calledThis); }
+    public static final Item 		getMiscTech(final String calledThis) { return (Item)getNewGlobal(c().miscTech,calledThis);}
+    public static final Armor 		getArmor(final String calledThis) { return (Armor)getNewGlobal(c().armor,calledThis); }
+    public static final Item 		getBasicItem(final String calledThis) { return (Item)getNewGlobal(c().items,calledThis); }
+    public static final Behavior 	getBehavior(final String calledThis) { return (Behavior)getNewGlobal(c().behaviors,calledThis); }
+    public static final Ability 	getAbility(final String calledThis) { return (Ability)getNewGlobal(c().abilities,calledThis); }
+    public static final CharClass 	getCharClass(final String calledThis){ return (CharClass)getGlobal(c().charClasses,calledThis);}
+    public static final CMCommon 	getCommon(final String calledThis){return (CMCommon)getNewGlobal(c().common,calledThis);}
+    public static final Command 	getCommand(final String word){return (Command)getGlobal(c().commands,word);}
+    public static final WebMacro 	getWebMacro(final String macroName){return (WebMacro)c().webMacros.get(macroName);}
+    public static final Race 		getRace(final String calledThis){return (Race)getGlobal(c().races,calledThis);}
 
 
     public static final int numPrototypes(final int[] types)
@@ -389,7 +390,7 @@ public class CMClass extends ClassLoader
     	return total;
     }
 
-	public static final void addAllItemClassNames(final Vector<String> V, final boolean NonArchon, 
+	public static final void addAllItemClassNames(final List<String> V, final boolean NonArchon, 
 												  final boolean NonGeneric, final boolean NonStandard)
 	{
 		V.addAll(getAllItemClassNames(basicItems(),NonArchon,NonGeneric,NonStandard));
@@ -427,12 +428,14 @@ public class CMClass extends ClassLoader
 	}
 
     protected static Item sampleItem=null;
-	public static final Item sampleItem(){
+	public static final Item sampleItem()
+	{
 		if((sampleItem==null)&&(c().items.size()>0))
 			sampleItem= (Item)((Item)c().items.firstElement()).copyOf();
 		return sampleItem;
 	}
-    public static final Item sampleItem(final String itemID){
+    public static final Item sampleItem(final String itemID)
+    {
         Item thisItem=(Item)getNewGlobal(c().items,itemID);
         if(thisItem==null) thisItem=(Item)getGlobal(c().armor,itemID);
         if(thisItem==null) thisItem=(Item)getGlobal(c().weapons,itemID);
@@ -459,8 +462,7 @@ public class CMClass extends ClassLoader
 		return sampleMOB;
 	}
 
-	public static final Command findCommandByTrigger(final String word,
-											   		 final boolean exactOnly)
+	public static final Command findCommandByTrigger(final String word, final boolean exactOnly)
 	{
 		Command C=(Command)c().commandWords.get(word.trim().toUpperCase());
 		if((exactOnly)||(C!=null)) return C;
@@ -475,7 +477,8 @@ public class CMClass extends ClassLoader
 		return null;
 	}
 
-    protected final int totalLocalClasses(){
+    protected final int totalLocalClasses()
+    {
         return races.size()+charClasses.size()+MOBs.size()+abilities.size()+locales.size()+exits.size()
               +items.size()+behaviors.size()+weapons.size()+armor.size()+miscMagic.size()+clanItems.size()
               +miscTech.size()+areaTypes.size()+common.size()+libraries.size()+commands.size()
@@ -490,6 +493,7 @@ public class CMClass extends ClassLoader
             classes.remove(O.getClass().getName());
         final Object set=getClassSet(type);
 		if(set==null) return false;
+        CMClass.lastUpdateTime=System.currentTimeMillis();
 		if(set instanceof List)
 		{
 			((List)set).remove(O);
@@ -513,6 +517,7 @@ public class CMClass extends ClassLoader
 	{
 		final Object set=getClassSet(type);
 		if(set==null) return false;
+        CMClass.lastUpdateTime=System.currentTimeMillis();
 		if(set instanceof List)
 		{
 			((List)set).add(O);
@@ -561,6 +566,7 @@ public class CMClass extends ClassLoader
         debugging=CMSecurity.isDebugging(CMSecurity.DbgFlag.CLASSLOADER);
         final Object set=getClassSet(classType);
 		if(set==null) return false;
+        CMClass.lastUpdateTime=System.currentTimeMillis();
 
 		if(!loadListToObj(set,path,OBJECT_ANCESTORS[classCode(classType)],quiet))
             return false;
@@ -1827,8 +1833,11 @@ public class CMClass extends ClassLoader
         }
         if(tCode==MudHost.MAIN_HOST)
             classLoaderSync[0]=true;
+        CMClass.lastUpdateTime=System.currentTimeMillis();
         return true;
     }
+	
+	public static long getLastClassUpdatedTime(){ return lastUpdateTime; }
     
     protected static final class JScriptLib extends ScriptableObject
     {

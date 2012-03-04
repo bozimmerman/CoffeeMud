@@ -73,6 +73,64 @@ public interface MaskingLibrary extends CMLibrary
     	{	return new CompiledZapperMask(new boolean[2],new CompiledZapperMaskEntry[0],true); }
     }
     
+    public static class SavedClass
+    {
+    	public final CharClass C;
+    	public final String name;
+    	public final String upperName;
+    	public final String baseClass;
+    	public final String upperBaseClass;
+    	public final String nameStart;
+    	public final String plusNameStart;
+    	public final String minusNameStart;
+    	public final String baseClassStart;
+    	public final String plusBaseClassStart;
+    	public final String minusBaseClassStart;
+    	public SavedClass(final CharClass charClass, final int startChars)
+    	{
+    		C=charClass;
+    		name=charClass.name();
+    		upperName=name.toUpperCase();
+    		nameStart=CMStrings.safeLeft(name.toUpperCase(),startChars);
+    		plusNameStart="+"+nameStart;
+    		minusNameStart="-"+nameStart;
+    		baseClass=charClass.baseClass();
+    		upperBaseClass=baseClass.toUpperCase();
+    		baseClassStart=CMStrings.safeLeft(baseClass.toUpperCase(),startChars);
+    		plusBaseClassStart="+"+baseClassStart;
+    		minusBaseClassStart="-"+baseClassStart;
+    	}
+    }
+    
+    public static class SavedRace
+    {
+    	public final Race R;
+    	public final String name;
+    	public final String upperName;
+    	public final String racialCategory;
+    	public final String upperCatName;
+    	public final String nameStart;
+    	public final String plusNameStart;
+    	public final String minusNameStart;
+    	public final String catNameStart;
+    	public final String plusCatNameStart;
+    	public final String minusCatNameStart;
+    	public SavedRace(final Race race, final int startChars)
+    	{
+    		R=race;
+    		name=race.name();
+    		upperName=name.toUpperCase();
+    		nameStart=CMStrings.safeLeft(name.toUpperCase(),startChars);
+    		plusNameStart="+"+nameStart;
+    		minusNameStart="-"+nameStart;
+    		racialCategory=race.racialCategory();
+    		upperCatName=racialCategory.toUpperCase();
+    		catNameStart=CMStrings.safeLeft(racialCategory.toUpperCase(),startChars);
+    		plusCatNameStart="+"+catNameStart;
+    		minusCatNameStart="-"+catNameStart;
+    	}
+    }
+    
     public final String DEFAULT_MASK_HELP =
         "+SYSOP (allow archons to bypass the rules)  <BR>"
         +"-SYSOP (always <WORD> archons)  <BR>"

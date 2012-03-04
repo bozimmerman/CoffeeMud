@@ -801,6 +801,12 @@ public class CMStrings
             return colorPrefix+removeColors(thisStr).substring(0,thisMuch);
         return SPACES.substring(0,thisMuch-lenMinusColors)+colorPrefix+thisStr;
     }
+    public final static String safeLeft(final String thisStr, final int thisMuch)
+    {
+    	if(thisStr.length()<=thisMuch)
+    		return thisStr;
+    	return thisStr.substring(0,thisMuch);
+    }
     public final static String padRight(final String thisStr, final int thisMuch)
     {
     	final int lenMinusColors=lengthMinusColors(thisStr);
