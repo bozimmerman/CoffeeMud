@@ -91,7 +91,7 @@ public class Play_Symphony extends Play
 			if(ilvl<=15)
 			{
 				toDoCode=CODE_UPDAMAGEPER3;
-				toDoString=""+Weapon.TYPE_STRIKING;
+				toDoString=""+CMMsg.TYP_ELECTRIC;
 			}
 			else
 			if(ilvl<=18)
@@ -103,7 +103,7 @@ public class Play_Symphony extends Play
 			if(ilvl<=21)
 			{
 				toDoCode=CODE_DOWNDAMAGEPER5;
-				toDoString=""+Weapon.TYPE_STRIKING;
+				toDoString=""+CMMsg.TYP_ELECTRIC;
 			}
 			else
 			{
@@ -242,7 +242,7 @@ public class Play_Symphony extends Play
 			if(ilvl<=5)
 			{
 				toDoCode=CODE_UPDAMAGEPER5;
-				toDoString=""+Weapon.TYPE_BURNING;
+				toDoString=""+CMMsg.TYP_FIRE;
 			}
 			else
 			if(ilvl<=6)
@@ -271,7 +271,7 @@ public class Play_Symphony extends Play
 			else
 			{
 				toDoCode=CODE_UPDAMAGEPER3;
-				toDoString=""+CharStats.STAT_SAVE_FIRE;
+				toDoString=""+CMMsg.TYP_FIRE;
 			}
 			break;
 		}
@@ -326,7 +326,7 @@ public class Play_Symphony extends Play
 			if(ilvl<=9)
 			{
 				toDoCode=CODE_UPDAMAGEPER3;
-				toDoString=""+Weapon.TYPE_MELTING;
+				toDoString=""+CMMsg.TYP_ACID;
 			}
 			else
 			if(ilvl<=12)
@@ -523,7 +523,7 @@ public class Play_Symphony extends Play
 			else
 			{
 				toDoCode=CODE_UPDAMAGEPER3;
-				toDoString=""+Weapon.TYPE_FROSTING;
+				toDoString=""+CMMsg.TYP_COLD;
 			}
 			break;
 		}
@@ -678,12 +678,14 @@ public class Play_Symphony extends Play
 		if((affected==null)||(!(affected instanceof MOB)))
 		   return true;
 		int per=-1;
+		int addedLevel=0;
 		switch(toDoCode)
 		{
 		case CODE_CASTMALICIOUSSPELLPER10:
 			if(!((MOB)affected).isInCombat())
 				return true;
 			per=10;
+			addedLevel=10;
 			break;
 		case CODE_CASTFRIENDLYSPELLPER2:
 			per=2;
@@ -693,9 +695,11 @@ public class Play_Symphony extends Play
 			break;
 		case CODE_CASTFRIENDLYSPELLPER10:
 			per=10;
+			addedLevel=10;
 			break;
 		case CODE_CASTFRIENDLYSPELLPER20:
 			per=20;
+			addedLevel=20;
 			break;
 		case CODE_UPMOVEMENT:
 			((MOB)affected).curState().adjMovement(1,((MOB)affected).maxState());
@@ -730,7 +734,7 @@ public class Play_Symphony extends Play
 			return true;
 		}
 		if((per>0)
-		&&(CMLib.dice().rollPercentage()<(adjustedLevel(invoker(),0)/per)))
+		&&(CMLib.dice().rollPercentage()<((addedLevel+adjustedLevel(invoker(),0))/per)))
 		switch(toDoCode)
 		{
 		case CODE_CASTMALICIOUSSPELLPER10:
