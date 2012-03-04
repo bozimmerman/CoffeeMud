@@ -262,6 +262,13 @@ public class LockSmith extends CraftingSkill
     			else
     				woodRequired=3;
             }
+            if((((Container)workingOn).owner() instanceof Room)
+			&&(!CMLib.flags().isGettable((Container)workingOn))
+			&&(!CMLib.law().doesHavePriviledgesHere(mob,mob.location())))
+			{
+				commonTell(mob,"You'll need the permission of the owner of this place to do that.");
+				return false;
+			}
 		}
 		else
 		{
@@ -314,10 +321,7 @@ public class LockSmith extends CraftingSkill
 		building.setDescription(itemName+". ");
 		building.basePhyStats().setWeight(woodRequired);
 		building.setBaseValue(1);
-		if(keyFlag)
-			building.basePhyStats().setLevel(1);
-		else
-			building.basePhyStats().setLevel(workingOn.phyStats().level());
+		building.basePhyStats().setLevel(1);
 		building.setSecretIdentity("This is the work of "+mob.Name()+".");
 		building.recoverPhyStats();
 		building.text();
