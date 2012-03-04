@@ -903,7 +903,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 				break;
                 case 83: // -skills
                     {
-                        buf.append((skipFirstWord?"O":"Requires o")+"ne of the following skill"+(multipleQuals(V,v,"+")?"s":"")+": ");
+                        buf.append((skipFirstWord?"O":"Requires o")+"ne of the following skills: ");
 						for(int v2=v+1;v2<V.size();v2++)
 						{
 							String str2=(String)V.elementAt(v2);
