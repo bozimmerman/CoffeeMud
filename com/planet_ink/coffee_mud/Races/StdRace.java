@@ -433,27 +433,34 @@ public class StdRace implements Race
 	{
 		if(room==null) room=mob.location();
 
-		DeadBody Body=(DeadBody)CMClass.getItem("Corpse");
+		DeadBody bodyI=(DeadBody)CMClass.getItem("Corpse");
         if((mob.amFollowing()!=null)
         &&(mob.isMonster())
         &&((!mob.amFollowing().isMonster())||(!mob.amUltimatelyFollowing().isMonster())))
-            Body.setSavedMOB((MOB)mob.copyOf());
-		Body.setCharStats((CharStats)mob.baseCharStats().copyOf());
-		Body.basePhyStats().setLevel(mob.basePhyStats().level());
-		Body.basePhyStats().setWeight(mob.basePhyStats().weight());
-		Body.setPlayerCorpse(!mob.isMonster());
-        Body.setTimeOfDeath(System.currentTimeMillis());
-		Body.setMobPKFlag(CMath.bset(mob.getBitmap(),MOB.ATT_PLAYERKILL));
-		Body.setName("the body of "+mob.Name().replace('\'','`'));
-		Body.setMobName(mob.Name().replace('\'','`'));
-		Body.setMobDescription(mob.description().replace('\'','`'));
-		Body.setDisplayText("the body of "+mob.Name().replace('\'','`')+" lies here.");
-		Ability AGE=mob.fetchEffect("Age");
-		if(AGE!=null) Body.addNonUninvokableEffect(AGE);
+            bodyI.setSavedMOB((MOB)mob.copyOf());
+		bodyI.setCharStats((CharStats)mob.baseCharStats().copyOf());
+		bodyI.basePhyStats().setLevel(mob.basePhyStats().level());
+		bodyI.basePhyStats().setWeight(mob.basePhyStats().weight());
+		bodyI.setPlayerCorpse(!mob.isMonster());
+        bodyI.setTimeOfDeath(System.currentTimeMillis());
+		bodyI.setMobPKFlag(CMath.bset(mob.getBitmap(),MOB.ATT_PLAYERKILL));
+		bodyI.setName("the body of "+mob.Name().replace('\'','`'));
+		bodyI.setMobName(mob.Name().replace('\'','`'));
+		bodyI.setMobDescription(mob.description().replace('\'','`'));
+		bodyI.setDisplayText("the body of "+mob.Name().replace('\'','`')+" lies here.");
+		Ability ageA=mob.fetchEffect("Age");
+		if(ageA!=null) bodyI.addNonUninvokableEffect(ageA);
 		if(room!=null)
-			room.addItem(Body,mob.isMonster()?ItemPossessor.Expire.Monster_Body:ItemPossessor.Expire.Player_Body);
-		Body.setDestroyAfterLooting(destroyBodyAfterUse());
-		Body.recoverPhyStats();
+		{
+			final ItemPossessor.Expire expireCode;
+			if(mob.isMonster() && (mob.playerStats()==null))
+				expireCode=ItemPossessor.Expire.Monster_Body;
+			else
+				expireCode=ItemPossessor.Expire.Player_Body;
+			room.addItem(bodyI,expireCode);
+		}
+		bodyI.setDestroyAfterLooting(destroyBodyAfterUse());
+		bodyI.recoverPhyStats();
 		for(final Enumeration<Ability> a=mob.effects();a.hasMoreElements();)
 		{
 			final Ability A=a.nextElement();
@@ -461,7 +468,7 @@ public class StdRace implements Race
 			{
 				if((CMath.bset(((DiseaseAffect)A).abilityCode(),DiseaseAffect.SPREAD_CONSUMPTION))
 				||(CMath.bset(((DiseaseAffect)A).abilityCode(),DiseaseAffect.SPREAD_CONTACT)))
-					Body.addNonUninvokableEffect((Ability)A.copyOf());
+					bodyI.addNonUninvokableEffect((Ability)A.copyOf());
 			}
 		}
 
@@ -500,7 +507,7 @@ public class StdRace implements Race
 					mob.delItem(thisItem);
 				thisItem.unWear();
 				if(thisItem.container()==null)
-					thisItem.setContainer(Body);
+					thisItem.setContainer(bodyI);
 				if(room!=null)
 					room.addItem(thisItem);
 				items.addElement(thisItem);
@@ -517,7 +524,7 @@ public class StdRace implements Race
 		{
 		    dropItem.unWear();
             if(dropItem.container()==null)
-                dropItem.setContainer(Body);
+                dropItem.setContainer(bodyI);
             if(room!=null)
                 room.addItem(dropItem);
             items.addElement(dropItem);
@@ -537,12 +544,12 @@ public class StdRace implements Race
 				if(I!=null)
 				{
 					I=(Item)I.copyOf();
-					I.setContainer(Body);
+					I.setContainer(bodyI);
 					if(room!=null)
 						room.addItem(I,ItemPossessor.Expire.Monster_EQ);
 				}
 		}
-		return Body;
+		return bodyI;
 	}
 
 	public int numRacialEffects(MOB mob)
