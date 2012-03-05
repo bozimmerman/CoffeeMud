@@ -2240,6 +2240,8 @@ public class StdMOB implements MOB
 
 	public void tell(final String msg)
 	{
+		if(!isMonster() && msg.indexOf(" North")>=0)
+			System.out.println("!");
 		tell(this,this,null,msg);
 	}
 

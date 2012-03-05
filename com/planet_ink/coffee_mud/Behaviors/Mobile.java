@@ -33,7 +33,7 @@ import java.util.*;
    limitations under the License.
 */
 @SuppressWarnings("unchecked")
-public class Mobile extends ActiveTicker
+public class Mobile extends ActiveTicker implements MobileBehavior
 {
 	public String ID(){return "Mobile";}
 	protected int canImproveCode(){return Behavior.CAN_MOBS;}
@@ -46,6 +46,7 @@ public class Mobile extends ActiveTicker
 	protected Vector restrictedLocales=null;
     protected long[] altStatusTaker=null;
     protected long tickStatus=Tickable.STATUS_NOT;
+    protected int ticksSuspended=0;
     
 	public String accountForYourself()
 	{ 
@@ -179,6 +180,11 @@ public class Mobile extends ActiveTicker
         tickStatus=Tickable.STATUS_MISC2+0;
 		super.tick(ticking,tickID);
         tickStatus=Tickable.STATUS_MISC2+1;
+        if(ticksSuspended>0)
+        {
+        	ticksSuspended--;
+        	return true;
+        }
 		if((canAct(ticking,tickID))
 		&&(ticking instanceof MOB)
 		&&(!((MOB)ticking).isInCombat())
@@ -231,4 +237,6 @@ public class Mobile extends ActiveTicker
         tickStatus=Tickable.STATUS_NOT;
 		return true;
 	}
+	@Override
+	public void suspendMobility(int numTicks) { ticksSuspended=numTicks;}
 }

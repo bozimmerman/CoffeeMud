@@ -1995,11 +1995,20 @@ public class Arrest extends StdBehavior implements LegalBehavior
     
 	protected void processWarrant(Area myArea, Law laws, LegalWarrant W, boolean debugging)
 	{
+		MOB officer=W.arrestingOfficer();
+		if((officer!=null) && (W.state()!=Law.STATE_SEEKING))
+		{
+			for(int b=0;b<officer.numBehaviors();b++)
+			{
+				final Behavior B=officer.fetchBehavior(b);
+				if(B instanceof MobileBehavior)
+					((MobileBehavior)B).suspendMobility(1);
+			}
+		}
 		switch(W.state())
 		{
 		case Law.STATE_SEEKING:
 			{
-				MOB officer=W.arrestingOfficer();
 				if((officer==null)||(!W.criminal().location().isInhabitant(officer)))
 				   officer=null;
 				if(officer==null)
@@ -2085,7 +2094,6 @@ public class Arrest extends StdBehavior implements LegalBehavior
 			break;
 		case Law.STATE_ARRESTING:
 			{
-				MOB officer=W.arrestingOfficer();
 				W.setTravelAttemptTime(0);
 				if((officer!=null)
 				&&(W.criminal().location()!=null)
@@ -2139,7 +2147,6 @@ public class Arrest extends StdBehavior implements LegalBehavior
 			break;
 		case Law.STATE_SUBDUEING:
 			{
-				MOB officer=W.arrestingOfficer();
 				if((officer!=null)
 				&&(W.criminal().location()!=null)
 				&&(W.criminal().location().isInhabitant(officer))
@@ -2244,8 +2251,6 @@ public class Arrest extends StdBehavior implements LegalBehavior
 			break;
 		case Law.STATE_MOVING:
 			{
-				MOB officer=W.arrestingOfficer();
-
 				if((officer!=null)
 				&&(W.criminal().location().isInhabitant(officer))
 				&&(!W.criminal().amDead())
@@ -2295,7 +2300,6 @@ public class Arrest extends StdBehavior implements LegalBehavior
 			break;
 		case Law.STATE_REPORTING:
 			{
-				MOB officer=W.arrestingOfficer();
 				if((officer!=null)
 				&&(W.criminal().location().isInhabitant(officer))
 				&&(!W.criminal().amDead())
@@ -2320,6 +2324,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 					else
 					if(CMLib.flags().aliveAwakeMobile(judge,true))
 					{
+                        CMLib.tracking().stopTracking(officer);
 						W.setTravelAttemptTime(0);
 						String sirmaam="Sir";
 						if(Character.toString((char)judge.charStats().getStat(CharStats.STAT_GENDER)).equalsIgnoreCase("F"))
@@ -2367,7 +2372,6 @@ public class Arrest extends StdBehavior implements LegalBehavior
 			break;
 		case Law.STATE_WAITING:
 			{
-				MOB officer=W.arrestingOfficer();
 				if((officer!=null)
 				&&(!W.criminal().amDead())
 				&&(W.criminal().location().isInhabitant(officer))
@@ -2429,7 +2433,6 @@ public class Arrest extends StdBehavior implements LegalBehavior
 		case Law.STATE_PAROLING:
 			{
 				W.setTravelAttemptTime(0);
-				MOB officer=W.arrestingOfficer();
 				if((officer!=null)
 				&&(!W.criminal().amDead())
 				&&(W.criminal().location().isInhabitant(officer))
@@ -2481,7 +2484,6 @@ public class Arrest extends StdBehavior implements LegalBehavior
 			break;
 		case Law.STATE_JAILING:
 			{
-				MOB officer=W.arrestingOfficer();
 				if((officer!=null)
 				&&(!W.criminal().amDead())
 				&&(W.criminal().location().isInhabitant(officer))
@@ -2553,7 +2555,6 @@ public class Arrest extends StdBehavior implements LegalBehavior
 			break;
             case Law.STATE_DETAINING:
             {
-                MOB officer=W.arrestingOfficer();
                 if((officer!=null)
                 &&(!W.criminal().amDead())
                 &&(W.criminal().location().isInhabitant(officer))
@@ -2630,7 +2631,6 @@ public class Arrest extends StdBehavior implements LegalBehavior
             break;
 		case Law.STATE_EXECUTING:
 			{
-				MOB officer=W.arrestingOfficer();
 				if((officer!=null)
 				&&(CMLib.flags().isInTheGame(W.criminal(),true))
 				&&(!W.criminal().amDead())
@@ -2693,7 +2693,6 @@ public class Arrest extends StdBehavior implements LegalBehavior
 			break;
 		case Law.STATE_MOVING2:
 			{
-				MOB officer=W.arrestingOfficer();
 				if((officer!=null)
 				&&(!W.criminal().amDead())
 				&&(W.criminal().location().isInhabitant(officer))
@@ -2761,7 +2760,6 @@ public class Arrest extends StdBehavior implements LegalBehavior
 			break;
             case Law.STATE_MOVING3:
             {
-                MOB officer=W.arrestingOfficer();
                 if((officer!=null)
                 &&(!W.criminal().amDead())
                 &&(W.criminal().location().isInhabitant(officer))
@@ -2845,7 +2843,6 @@ public class Arrest extends StdBehavior implements LegalBehavior
                     else
 					if(W.criminal().location()==W.jail())
 					{
-						MOB officer=W.arrestingOfficer();
 						if((officer==null)
 						||(!CMLib.flags().aliveAwakeMobile(officer,true))
 						||(W.criminal().amDead())
@@ -2892,7 +2889,6 @@ public class Arrest extends StdBehavior implements LegalBehavior
 					else
 					if(W.releaseRoom()!=null)
 					{
-						MOB officer=W.arrestingOfficer();
 						if(W.criminal().location()==W.releaseRoom())
 						{
 							fileAllWarrants(laws,W,W.criminal());
