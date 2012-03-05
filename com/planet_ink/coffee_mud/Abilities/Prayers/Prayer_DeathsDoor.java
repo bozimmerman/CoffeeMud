@@ -49,22 +49,26 @@ public class Prayer_DeathsDoor extends Prayer
 	{
 		if((affected!=null)&&(affected instanceof MOB))
 		{
-			MOB mob=(MOB)affected;
+			final MOB mob=(MOB)affected;
+			final Room startRoom=mob.getStartRoom();
 			if(msg.amISource(mob)
 			&&(msg.sourceMinor()==CMMsg.TYP_DEATH)
-			&&(mob.getStartRoom()!=null))
+			&&(startRoom!=null))
 			{
 				if(mob.fetchAbility("Dueling")!=null)
 					return super.okMessage(host,msg);
+				final Room oldRoom=mob.location();
 				mob.resetToMaxState();
-				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> <S-IS-ARE> pulled back from death's door!");
-				mob.getStartRoom().bringMobHere(mob,false);
+				oldRoom.show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> <S-IS-ARE> pulled back from death's door!");
+				startRoom.bringMobHere(mob,false);
 				unInvoke();
 				for(int a=mob.numEffects()-1;a>=0;a--) // personal effects
 				{
 					Ability A=mob.fetchEffect(a);
 					if(A!=null) A.unInvoke();
 				}
+				if((oldRoom!=startRoom) && oldRoom.isInhabitant(mob) && startRoom.isInhabitant(mob))
+					oldRoom.delInhabitant(mob); // hopefully unnecessary
 				return false;
 			}
 		}
