@@ -1172,18 +1172,25 @@ public class MUDFight extends StdLibrary implements CombatLibrary
             if((!deadmob.isMonster())&&(deadmob.soulMate()==null))
             {
                 CMLib.coffeeTables().bump(deadmob,CoffeeTableRow.STAT_DEATHS);
+                final PlayerStats playerStats=deadmob.playerStats();
+                if(playerStats!=null)
+                	playerStats.setHygiene(0);
                 List<String> channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.DETAILEDDEATHS);
                 List<String> channels2=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.DEATHS);
                 if(!CMLib.flags().isCloaked(deadmob))
                 for(int i=0;i<channels.size();i++)
-                if((msg.tool()!=null)&&(msg.tool() instanceof MOB))
-                    CMLib.commands().postChannel((String)channels.get(i),deadmob.getClanID(),deadmob.Name()+" was just killed in "+CMLib.map().getExtendedRoomID(deadmob.location())+" by "+msg.tool().Name()+".",true);
-                else
-                    CMLib.commands().postChannel((String)channels.get(i),deadmob.getClanID(),deadmob.Name()+" has just died at "+CMLib.map().getExtendedRoomID(deadmob.location()),true);
+                {
+	                if((msg.tool()!=null)&&(msg.tool() instanceof MOB))
+	                    CMLib.commands().postChannel((String)channels.get(i),deadmob.getClanID(),deadmob.Name()+" was just killed in "+CMLib.map().getExtendedRoomID(deadmob.location())+" by "+msg.tool().Name()+".",true);
+	                else
+	                    CMLib.commands().postChannel((String)channels.get(i),deadmob.getClanID(),deadmob.Name()+" has just died at "+CMLib.map().getExtendedRoomID(deadmob.location()),true);
+                }
                 if(!CMLib.flags().isCloaked(deadmob))
-                for(int i=0;i<channels2.size();i++)
-                    if((msg.tool()!=null)&&(msg.tool() instanceof MOB))
-                        CMLib.commands().postChannel((String)channels2.get(i),deadmob.getClanID(),deadmob.Name()+" was just killed.",true);
+                {
+	                for(int i=0;i<channels2.size();i++)
+	                    if((msg.tool()!=null)&&(msg.tool() instanceof MOB))
+	                        CMLib.commands().postChannel((String)channels2.get(i),deadmob.getClanID(),deadmob.Name()+" was just killed.",true);
+                }
             }
             if(msg.tool() instanceof MOB)
             {
