@@ -87,8 +87,15 @@ public class Spell_SummonEnemy extends Spell
 				MOB target = determineMonster(mob, mob.phyStats().level());
 				if(target!=null)
 				{
-					beneficialAffect(mob,target,asLevel,0);
-					target.setVictim(mob);
+					CMMsg msg2=CMClass.getMsg(mob,target,this,verbalCastCode(mob,null,auto)|CMMsg.MASK_MALICIOUS,null);
+					if(mob.location().okMessage(mob, msg2))
+					{
+						mob.location().send(mob, msg2);
+						beneficialAffect(mob,target,asLevel,0);
+						target.setVictim(mob);
+					}
+					else
+						CMLib.tracking().wanderAway(target, false, true);
 				}
 				else
 					mob.tell("Your equal could not be summoned.");
