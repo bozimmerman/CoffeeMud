@@ -91,6 +91,13 @@ public class StdWebMacro implements WebMacro
                             i+=code.length()-1;
                         }
                     }
+                    else
+                    if(c=='?')
+                    {
+                        s.delete(i,i+2);
+                        s.insert(i,"</FONT>");
+                        i+=7;
+                    }
                 }
                 break;
 	        }

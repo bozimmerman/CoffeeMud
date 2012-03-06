@@ -196,6 +196,8 @@ public class ClanData extends StdWebMacro
 			Clan C=CMLib.clans().getClan(last);
 			if(C!=null)
 			{
+				final boolean webify=parms.containsKey("WEBCOLOR");
+				final boolean decolor=parms.containsKey("NOCOLOR");
 				StringBuffer str=new StringBuffer("");
 				if(parms.containsKey("PREMISE"))
                 {
@@ -439,10 +441,13 @@ public class ClanData extends StdWebMacro
                 }
                 str.append(ClanData.members(C,httpReq,parms,0));
                 str.append(ClanData.relations(C,httpReq,parms,0));
-				String strstr=str.toString();
-				if(strstr.endsWith(", "))
-					strstr=strstr.substring(0,strstr.length()-2);
-                return clearWebMacros(strstr);
+				if(str.toString().endsWith(", "))
+					str=new StringBuffer(str.substring(0,str.length()-2));
+				if(webify)
+					str=colorwebifyOnly(str);
+				if(decolor)
+					str=new StringBuffer(CMStrings.removeColors(str.toString()));
+                return clearWebMacros(str.toString());
 			}
 		}
 		return "";

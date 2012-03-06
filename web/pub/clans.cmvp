@@ -12,19 +12,19 @@
 <UL>
 @loop@
 @ClanNext@
-<LI><A href="#@ClanID@">@ClanID@</A>
+<LI><A href="#@ClanID@">@ClanID?NOCOLOR@</A>
 @back@
 </UL><P>
 @ClanNext?reset@
 @loop@
 @ClanNext@
 <TABLE WIDTH=100% BORDER=1>
-<TR><TD WIDTH=100% COLSPAN=2 BGCOLOR=#FFCCFF ALIGN=CENTER><a name="@ClanID@"><H3>@ClanID@</H3></a></TD></TR>
+<TR><TD WIDTH=100% COLSPAN=2 BGCOLOR=#FFCCFF ALIGN=CENTER><a name="@ClanID?WEBCOLOR@"><H3>@ClanID?NOCOLOR@</H3></a></TD></TR>
 <TR><TD WIDTH=25% BGCOLOR=#FFCCFF><B>Type</B></TD><TD>@ClanData?type@</TD>
 <TR><TD WIDTH=25% BGCOLOR=#FFCCFF><B>Level</B></TD><TD>@ClanData?level@</TD>
 <TR><TD WIDTH=25% BGCOLOR=#FFCCFF><B>Status</B></TD><TD>@ClanData?status@</TD>
 <TR><TD WIDTH=25% BGCOLOR=#FFCCFF><B>Qualifications</B></TD><TD>@ClanData?acceptance@</TD>
-<TR><TD WIDTH=25% BGCOLOR=#FFCCFF><B>Premise</B></TD><TD>@ClanData?premise@<BR></TD>
+<TR><TD WIDTH=25% BGCOLOR=#FFCCFF><B>Premise</B></TD><TD>@ClanData?premise&NOCOLOR@<BR></TD>
 <TR><TD WIDTH=25% BGCOLOR=#FFCCFF><B>Tax Rate</B></TD><TD>@ClanData?tax@</TD>
 <TR><TD WIDTH=25% BGCOLOR=#FFCCFF><B>Trophies</B></TD><TD>@ClanData?trophies@</TD>
 <TR><TD WIDTH=25% BGCOLOR=#FFCCFF><B>Officers</B></TD>

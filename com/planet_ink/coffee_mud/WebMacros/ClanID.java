@@ -38,13 +38,23 @@ public class ClanID extends StdWebMacro
 
 	public String runMacro(ExternalHTTPRequests httpReq, String parm)
 	{
-		String last=httpReq.getRequestParameter("CLAN");
+		final String last=httpReq.getRequestParameter("CLAN");
+		final java.util.Map<String,String> parms=parseParms(parm);
 		if(last==null) return " @break@";
 		if(last.length()>0)
 		{
-			Clan C=CMLib.clans().getClan(last);
+			final boolean webify=parms.containsKey("WEBCOLOR");
+			final boolean decolor=parms.containsKey("NOCOLOR");
+			final Clan C=CMLib.clans().getClan(last);
 			if(C!=null)
-                return clearWebMacros(C.clanID());
+			{
+				StringBuffer clanId=new StringBuffer(C.clanID());
+				if(webify)
+					clanId=super.colorwebifyOnly(clanId);
+				if(decolor)
+					clanId=new StringBuffer(CMStrings.removeColors(clanId.toString()));
+                return clearWebMacros(clanId.toString());
+			}
 		}
 		return "";
 	}
