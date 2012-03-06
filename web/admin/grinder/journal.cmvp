@@ -85,7 +85,7 @@
 		@loop@
 			@JournalNext@
 		    <TR><TD WIDTH=30% VALIGN=TOP>
-			<a name="@JournalName@" href="javascript:Clicked1('@JournalName@')"><FONT COLOR=YELLOW>@JournalName@</FONT></a>
+			<a name="@JournalName@" href="javascript:Clicked1('@JournalName@')"><FONT COLOR=YELLOW>@JournalName?NOCOLOR@</FONT></a>
 			@if?CheckReqParm?JOURNAL=@@RequestParameter?OLDJOURNAL@@ @
 				@if?CheckReqParm?FUNCTION=DELETE@
 				<CENTER><FONT COLOR=RED><B>@JournalFunction?DELETE@</B></FONT></CENTER>
@@ -263,7 +263,7 @@
 								@JournalNext?RESET@
 								@loop@
 									@JournalNext@
-									<OPTION VALUE="@JournalName@">@JournalName@
+									<OPTION VALUE="@JournalName@">@JournalName?NOCOLOR@
 								@back@
 								</SELECT>
 								@AddRequestParameter?JOURNAL=@@RequestParameter?THISJOURNAL@@ @
@@ -332,7 +332,7 @@
                                         @JournalNext?RESET@
                                         @loop@
                                             @JournalNext@
-                                            <OPTION VALUE="@JournalName@">@JournalName@
+                                            <OPTION VALUE="@JournalName@">@JournalName?NOCOLOR@
                                         @back@
                                         </SELECT>
                                         @AddRequestParameter?JOURNAL=@@RequestParameter?THISJOURNAL@@ @

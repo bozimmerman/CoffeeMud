@@ -117,7 +117,7 @@
 		@endif@
 		</TD>
 		<TD ALIGN=CENTER>&nbsp;@if?!Authenticate@&nbsp;&nbsp;<FONT COLOR=LIGHTBLUE SIZE=-1><B>*** Posting Anonymously ***</B></FONT>@endif@</TD>
-		<TD AlIGN=RIGHT><FONT COLOR=WHITE SIZE=-1><B>Forum : @JournalName@</B></FONT></TD>
+		<TD AlIGN=RIGHT><FONT COLOR=WHITE SIZE=-1><B>Forum : @JournalName?NOCOLOR@</B></FONT></TD>
 		</TR></TABLE>
 	</TD>
 </TR>

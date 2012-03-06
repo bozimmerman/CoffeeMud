@@ -74,7 +74,7 @@
 	<TR>
 	<TD WIDTH=40px VALIGN=CENTER ALIGN=CENTER BGCOLOR=LIGHTGREY><IMG WIDTH=30 HEIGHT=30 SRC=@ForumInfo?IMAGEPATH@></TD>
 	<TD BGCOLOR=LIGHTGREY>
-		<a href="javascript:DoForum('@JournalName@');"><B><FONT COLOR=BLACK>@JournalName@</FONT></B></a><BR>
+		<a href="javascript:DoForum('@JournalName@');"><B><FONT COLOR=BLACK>@JournalName?NOCOLOR@</FONT></B></a><BR>
 		<FONT COLOR=BLACK SIZE=-1>@ForumInfo?SHORTDESC@</FONT>
 		</TD>
 	<TD VALIGN=CENTER ALIGN=LEFT BGCOLOR=LIGHTBLUE>

@@ -137,7 +137,7 @@
 <CENTER><FONT COLOR=RED><B>@JournalFunction?NEWPOST@</B></FONT></CENTER>
 @endif@
 <TABLE WIDTH=100% BORDER=1 CELLSPACING=0 CELLPADDING=0 BGCOLOR=LIGHTGREY>
-<TR BGCOLOR=BLACK><TD COLSPAN=6>&nbsp;<FONT COLOR=WHITE SIZE=-1><B>Forum : @JournalName@</B></FONT>&nbsp;</TD></TR>
+<TR BGCOLOR=BLACK><TD COLSPAN=6>&nbsp;<FONT COLOR=WHITE SIZE=-1><B>Forum : @JournalName?NOCOLOR@</B></FONT>&nbsp;</TD></TR>
 <TR><TD><FONT COLOR=BLACK SIZE=-1>@ForumInfo?LONGDESC@</TD></TR>
 </TABLE>
 <TABLE WIDTH=100% BORDER=0 CELLSPACING=1 CELLPADDING=1>
@@ -187,9 +187,9 @@
 <TR BGCOLOR=BLACK>
 	<TD COLSPAN=6>
 	@if?CheckReqParm?!DBSEARCH=@
-		&nbsp;<FONT COLOR=WHITE SIZE=-1><B>Search Results in Forum : @JournalName@</B></FONT>&nbsp;
+		&nbsp;<FONT COLOR=WHITE SIZE=-1><B>Search Results in Forum : @JournalName?NOCOLOR@</B></FONT>&nbsp;
 	@else@
-		&nbsp;<FONT COLOR=WHITE SIZE=-1><B>Threads in Forum : @JournalName@</B></FONT>&nbsp;
+		&nbsp;<FONT COLOR=WHITE SIZE=-1><B>Threads in Forum : @JournalName?NOCOLOR@</B></FONT>&nbsp;
 	@endif@
 	</TD>
 </TR>

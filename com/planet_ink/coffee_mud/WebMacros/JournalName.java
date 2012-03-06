@@ -38,8 +38,20 @@ public class JournalName extends StdWebMacro
 
 	public String runMacro(ExternalHTTPRequests httpReq, String parm)
 	{
-		String last=httpReq.getRequestParameter("JOURNAL");
+		final String last=httpReq.getRequestParameter("JOURNAL");
+		final java.util.Map<String,String> parms=parseParms(parm);
 		if(last==null) return " @break@";
-        return clearWebMacros(last);
+		if(last.length()>0)
+		{
+			final boolean webify=parms.containsKey("WEBCOLOR");
+			final boolean decolor=parms.containsKey("NOCOLOR");
+			StringBuffer lastBuf=new StringBuffer(last);
+			if(webify)
+				lastBuf=super.colorwebifyOnly(lastBuf);
+			if(decolor)
+				lastBuf=new StringBuffer(CMStrings.removeColors(lastBuf.toString()));
+            return clearWebMacros(lastBuf.toString());
+		}
+		return "";
 	}
 }
