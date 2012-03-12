@@ -583,7 +583,8 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 								buf.setCharAt(loop+1,(char)10);
 							else
 								buf.deleteCharAt(loop+1);
-							loop--; // force a retry of this char
+							if(buf.charAt(loop)=='\033')
+								loop--; // force a retry of this char
 						}
 					}
 					break;
@@ -939,7 +940,8 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 								loop++;
 								loopc=buf.charAt(loop);
 							}
-							len++; // and one more for the 'm'.
+							if(buf.charAt(loop)=='\033')
+								loop--; // force a retry of this char
 						}
 						break;
 					case '^':
