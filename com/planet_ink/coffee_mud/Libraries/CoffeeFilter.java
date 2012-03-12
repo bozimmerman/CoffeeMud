@@ -170,6 +170,7 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 								buf.setCharAt(loop+1,(char)10);
 							else
 								buf.deleteCharAt(loop+1);
+							loop--; // force a retry of this char
 						}
 					}
 					break;
@@ -204,10 +205,12 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 				case '\033': // skip escapes
 					if((loop < buf.length()-1) && (buf.charAt(loop+1)=='['))
 					{
-						while((len < buf.length()-1) && (buf.charAt(loop)!='m'))
+						char loopc=buf.charAt(loop);
+						while( (loop < buf.length()-1) && (loopc!='m') )
 						{
 							len++;
 							loop++;
+							loopc=buf.charAt(loop);
 						}
 						len++; // and one more for the 'm'.
 					}
@@ -580,6 +583,7 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 								buf.setCharAt(loop+1,(char)10);
 							else
 								buf.deleteCharAt(loop+1);
+							loop--; // force a retry of this char
 						}
 					}
 					break;
@@ -928,10 +932,12 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 					case '\033': // skip escapes
 						if((loop < buf.length()-1) && (buf.charAt(loop+1)=='['))
 						{
-							while((len < buf.length()-1) && (buf.charAt(loop)!='m'))
+							char loopc=buf.charAt(loop);
+							while( (loop < buf.length()-1) && (loopc!='m') )
 							{
 								len++;
 								loop++;
+								loopc=buf.charAt(loop);
 							}
 							len++; // and one more for the 'm'.
 						}
