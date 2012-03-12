@@ -179,7 +179,7 @@ public class DefaultSession implements Session
             }
             if(clientTelnetMode(Session.TELNET_MXP))
             {
-                print("\n\033[6z\n\033[6z^<SUPPORT IMAGE IMAGE.URL^>\n");
+            	rawOut("\n\033[6z\n\033[6z<SUPPORT IMAGE IMAGE.URL>\n");
                 out.flush();
                 rawout.flush();
                 preliminaryRead(1000);
