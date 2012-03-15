@@ -1038,8 +1038,10 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
                                 x=roomDesc.toUpperCase().indexOf(word);
                                 while(x>=0)
                                 {
-                                    if(((x<=0)||((!Character.isLetterOrDigit(roomDesc.charAt(x-1)))&&(roomDesc.charAt(x-1)!='>')))
-                                    &&(((x+word.length())>=(roomDesc.length()-1))||((!Character.isLetterOrDigit(roomDesc.charAt((x+word.length()))))&&(roomDesc.charAt(x+word.length())!='^'))))
+                                    if(((x<=0)
+                                        ||((!Character.isLetterOrDigit(roomDesc.charAt(x-1)))&&(roomDesc.charAt(x-1)!='>')))
+                                    &&(((x+word.length())>=(roomDesc.length()-1))
+                                        ||((!Character.isLetterOrDigit(roomDesc.charAt((x+word.length()))))&&(roomDesc.charAt(x+word.length())!='^'))))
                                     {
                                         int brackCheck=roomDesc.substring(x).indexOf("^>");
                                         int brackCheck2=roomDesc.substring(x).indexOf("^<");

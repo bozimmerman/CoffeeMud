@@ -258,6 +258,7 @@ public class CMColor extends StdLibrary implements ColorLibrary
 			clookup['"']="\"";				// mxp escape
 			clookup['>']=">";				// mxp escape
 			clookup['&']="&";				// mxp escape
+			clookup['~']=null;				// ** special background color code
 			clookup['@']=null;				// ** special 256 color code
 			for(int i=0;i<COLOR_ALLNORMALCOLORCODELETTERS.length;i++)
 			    clookup[COLOR_ALLNORMALCOLORCODELETTERS[i].charAt(0)]=COLOR_ALLCOLORS[i];

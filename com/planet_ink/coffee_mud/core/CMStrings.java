@@ -54,7 +54,7 @@ public class CMStrings
         if((str==null)||(str.length()==0)) return str;
         int x=str.length()-1;
         while((x>=0)
-        &&((Character.isWhitespace(str.charAt(x)))
+        &&((Character.isWhitespace(str.charAt(x))) // possible #~ color concerns, but normally catches ^? at the end.
             ||((x>0)&&((str.charAt(x)!='^')&&(str.charAt(x-1)=='^')&&((--x)>=0))))) 
                 x--;
         if(x<0) return str;
@@ -231,7 +231,17 @@ public class CMStrings
         for(;i<c.length;i++)
         {
             if(c[i]=='^')
+            {
                 i++;
+                if(i<c.length)
+                {
+                    if(c[i]=='~')
+                      i++;
+                    else
+                    if(c[i]=='#')
+                      i+=3;
+                }
+            }
             else
             if(Character.isLetter(c[i]))
                 break;
@@ -253,7 +263,17 @@ public class CMStrings
         int i=0;
         for(;i<c.length;i++)
             if(c[i]=='^')
+            {
                 i++;
+                if(i<c.length)
+                {
+                    if(c[i]=='~')
+                      i++;
+                    else
+                    if(c[i]=='#')
+                      i+=3;
+                }
+            }
             else
             if(Character.isLetter(c[i]))
                 break;
@@ -364,6 +384,17 @@ public class CMStrings
                 {
                     int tagStart=i;
                     char c=str.charAt(i+1);
+                    if((c=='~')&&(i+3<=str.length()))
+                    {
+                      str.delete(i,i+3); 
+                      i--;
+                    }
+                    else
+                    if((c=='#')&&(i+5<=str.length()))
+                    {
+                      str.delete(i,i+5);
+                      i--;
+                    }
                     if((c=='<')||(c=='&'))
                     {
                         i+=2;
@@ -422,26 +453,34 @@ public class CMStrings
                 if((i+1)<thisStr.length())
                 {
                     int tagStart=i;
-                    char c=thisStr.charAt(i);
+                    final char c=thisStr.charAt(i);
+                    if(c=='~')
+                        i++;
+                    else
+                    if(c=='#')
+                        i+=3;
+                    else
                     if((c=='<')||(c=='&'))
-	                    while(i<(thisStr.length()-1))
-	                    {
-	                        if(((c=='<')&&((thisStr.charAt(i)!='^')||(thisStr.charAt(i+1)!='>')))
-	                        ||((c=='&')&&(thisStr.charAt(i)!=';')))
-	                        {
-	                            i++;
-	                            if(i>=(thisStr.length()-1))
-	                            {
-	                                i=tagStart+1;
-	                                break;
-	                            }
-	                        }
-	                        else
-	                        {
-	                            i++;
-	                            break;
-	                        }
-	                    }
+                    {
+                        while(i<(thisStr.length()-1))
+                        {
+                            if(((c=='<')&&((thisStr.charAt(i)!='^')||(thisStr.charAt(i+1)!='>')))
+                            ||((c=='&')&&(thisStr.charAt(i)!=';')))
+                            {
+                                i++;
+                                if(i>=(thisStr.length()-1))
+                                {
+                                    i=tagStart+1;
+                                    break;
+                                }
+                            }
+                            else
+                            {
+                                i++;
+                                break;
+                            }
+                        }
+                    }
                 }
             }
             else

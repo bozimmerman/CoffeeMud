@@ -70,8 +70,8 @@ public final class IMC2Driver extends Thread {
     imc_statistics imc_stats = new imc_statistics();
     public int imc_active; /* Connection state */
     long HeartBeat = 0; // elapsed heartbeats
-	call_out c_thread=null;
-	call_in c_thread2=null;
+    call_out c_thread=null;
+    call_in c_thread2=null;
 
     Hashtable muds = new Hashtable();
     Hashtable channels = new Hashtable();
@@ -79,7 +79,7 @@ public final class IMC2Driver extends Thread {
     Hashtable replies = new Hashtable();
     
     public Hashtable chan_conf = new Hashtable();
-	public Hashtable chan_mask = new Hashtable();
+    public Hashtable chan_mask = new Hashtable();
 
     BufferedReader in;
     DataOutputStream out;
@@ -124,130 +124,130 @@ public final class IMC2Driver extends Thread {
 
     final void tracef(int level, String s)
     {
-		if((level<1)||(CMSecurity.isDebugging(CMSecurity.DbgFlag.IMC2)))
-			Log.debugOut("IMC2",level+"/"+s);
+        if((level<1)||(CMSecurity.isDebugging(CMSecurity.DbgFlag.IMC2)))
+            Log.debugOut("IMC2",level+"/"+s);
     }
 
     final void send_to_player(String name, String text)
     {
-		if(name.equalsIgnoreCase("all"))
-		{
-		    for(Session S : CMLib.sessions().localOnlineIterable())
-				S.println(text);
-		}
-		else
-		{
-			MOB M=CMLib.players().getPlayer(name);
-			if(M!=null) M.tell(text);
-		}
+        if(name.equalsIgnoreCase("all"))
+        {
+            for(Session S : CMLib.sessions().localOnlineIterable())
+                S.println(text);
+        }
+        else
+        {
+            MOB M=CMLib.players().getPlayer(name);
+            if(M!=null) M.tell(text);
+        }
     }
-	
+    
     public void ev_request_keepalive(Object param)
     {
         imc_request_keepalive();
         //imc_register_call_out(25, "ev_keepalive", null);
     }
-	
-	final public String[][] buildChannelMap(String s)
-	{
-		
-		Vector V=CMParms.parseCommas(s,true);
-		Vector finalV=new Vector();
-		for(int v=0;v<V.size();v++)
-		{
-			String s2=(String)V.elementAt(v);
-			Vector V2=CMParms.parse(s2);
-			String[] bit=new String[3];
-			bit[0]="";
-			bit[1]="";
-			bit[2]="";
-			if(V2.size()<1) continue;
-			bit[0]=(String)V2.elementAt(0);
-			if(V2.size()==1)
-				bit[2]=(String)V2.elementAt(0);
-			else
-			{
-				bit[2]=(String)V2.lastElement();
-				if(V2.size()>2)
-					bit[1]=CMParms.combine(V2,1,V.size()-1);
-			}
-			
-			finalV.addElement(bit);
-		}
-		String[][] finalS=new String[finalV.size()][3];
-		for(int i=0;i<finalV.size();i++)
-			finalS[i]=(String[])finalV.elementAt(i);
-		return finalS;
-	}
-	
-	final public String[][] buildChannelMap()
-	{
-		String[][] map=new String[chan_conf.size()][3];
-		int dex=0;
-		for(Enumeration e=chan_conf.keys();e.hasMoreElements();)
-		{
-			map[dex][0]=(String)e.nextElement();
-			map[dex][1]=(String)chan_mask.get(map[dex][0]);
-			map[dex][2]=(String)chan_conf.get(map[dex][0]);
-		}
-		return map;
-	}
+    
+    final public String[][] buildChannelMap(String s)
+    {
+        
+        Vector V=CMParms.parseCommas(s,true);
+        Vector finalV=new Vector();
+        for(int v=0;v<V.size();v++)
+        {
+            String s2=(String)V.elementAt(v);
+            Vector V2=CMParms.parse(s2);
+            String[] bit=new String[3];
+            bit[0]="";
+            bit[1]="";
+            bit[2]="";
+            if(V2.size()<1) continue;
+            bit[0]=(String)V2.elementAt(0);
+            if(V2.size()==1)
+                bit[2]=(String)V2.elementAt(0);
+            else
+            {
+                bit[2]=(String)V2.lastElement();
+                if(V2.size()>2)
+                    bit[1]=CMParms.combine(V2,1,V.size()-1);
+            }
+            
+            finalV.addElement(bit);
+        }
+        String[][] finalS=new String[finalV.size()][3];
+        for(int i=0;i<finalV.size();i++)
+            finalS[i]=(String[])finalV.elementAt(i);
+        return finalS;
+    }
+    
+    final public String[][] buildChannelMap()
+    {
+        String[][] map=new String[chan_conf.size()][3];
+        int dex=0;
+        for(Enumeration e=chan_conf.keys();e.hasMoreElements();)
+        {
+            map[dex][0]=(String)e.nextElement();
+            map[dex][1]=(String)chan_mask.get(map[dex][0]);
+            map[dex][2]=(String)chan_conf.get(map[dex][0]);
+        }
+        return map;
+    }
 
-	final public static String[] explodeNicely(String s)
-	{
-	      return explodeNicely(s, " ");
-	}
+    final public static String[] explodeNicely(String s)
+    {
+          return explodeNicely(s, " ");
+    }
 
-	public void shutdown()
-	{
-	    shutdown=true;
-		try{
-		if(c_thread!=null)
-			c_thread.shutdown();
-		}catch(Exception e){}
-		try{
-		if(c_thread2!=null)
-			c_thread2.shutdown();
-		}catch(Exception e){}
-		CMLib.killThread(this,500,1);
-		
-		int i=0;
-		while (((++i)<60)&&((!c_thread.isShutdown)||(!c_thread2.isShutdown)||(!isShutdown)))
-			try { sleep(1000);	}
-			catch (Exception ex) {}
-	}
-	
-	final public static String[] explodeNicely(String s, String separator)
-	{
-	    StringTokenizer st = new StringTokenizer(s, separator);
+    public void shutdown()
+    {
+        shutdown=true;
+        try{
+        if(c_thread!=null)
+            c_thread.shutdown();
+        }catch(Exception e){}
+        try{
+        if(c_thread2!=null)
+            c_thread2.shutdown();
+        }catch(Exception e){}
+        CMLib.killThread(this,500,1);
+        
+        int i=0;
+        while (((++i)<60)&&((!c_thread.isShutdown)||(!c_thread2.isShutdown)||(!isShutdown)))
+            try { sleep(1000);    }
+            catch (Exception ex) {}
+    }
+    
+    final public static String[] explodeNicely(String s, String separator)
+    {
+        StringTokenizer st = new StringTokenizer(s, separator);
 
-	    int n = st.countTokens();
-	    if(n==0)
-	    {
-	        String array[] = new String[1];
-	        array[0] = s;
-	        return array;
-	    }
+        int n = st.countTokens();
+        if(n==0)
+        {
+            String array[] = new String[1];
+            array[0] = s;
+            return array;
+        }
 
-	    String array[]  = new String[n];
+        String array[]  = new String[n];
 
-	    int i = 0;
-	    while(st.hasMoreTokens())
-	    {
-	        array[i] = st.nextToken();
-	            i++;
-	    }
+        int i = 0;
+        while(st.hasMoreTokens())
+        {
+            array[i] = st.nextToken();
+                i++;
+        }
 
-	    return array;
-	}
-	
+        return array;
+    }
+    
     /* put a line onto descriptors output buffer */
     final void do_imcsend( String line )
     {
-		if(line.endsWith("\n\r"))
-			this_imcmud.outbuf = line;
-		else
-			this_imcmud.outbuf = line+"\n\r";
+        if(line.endsWith("\n\r"))
+            this_imcmud.outbuf = line;
+        else
+            this_imcmud.outbuf = line+"\n\r";
     }
 
     /* connect to hub */
@@ -262,7 +262,7 @@ public final class IMC2Driver extends Thread {
         tracef(8, "Connecting to " + this_imcmud.hubname);
 
         try {
-        	setName("IMC2Client:"+this_imcmud.host+"@"+this_imcmud.port);
+            setName("IMC2Client:"+this_imcmud.host+"@"+this_imcmud.port);
             sa = new Socket(this_imcmud.host, this_imcmud.port);
         } catch (Exception e) {
             tracef(0, "Error connecting to " + this_imcmud.host + ":" +
@@ -324,7 +324,7 @@ public final class IMC2Driver extends Thread {
         imc_register_call_out(5, "ev_keepalive", null);
 
         imc_register_call_out(6, "ev_request_keepalive", null);
-		
+        
         return true;
     }
 
@@ -344,15 +344,15 @@ public final class IMC2Driver extends Thread {
 
 
     final public boolean imc_startup( boolean force, 
-									  String loginName,
-									  String host,
-									  String email,
-									  String web,
-									  String hub,
-									  int port,
-									  String passclient,
-									  String passsrvr,
-									  String[][] channelMap)
+                                      String loginName,
+                                      String host,
+                                      String email,
+                                      String web,
+                                      String hub,
+                                      int port,
+                                      String passclient,
+                                      String passsrvr,
+                                      String[][] channelMap)
     {
        if( imc_active != IA_NONE )
        {
@@ -366,26 +366,26 @@ public final class IMC2Driver extends Thread {
 
         for(int i=0;i<channelMap.length;i++)
             if((channelMap[i][0]!=null)&&(channelMap[i][1]!=null)&&(channelMap[i][2]!=null))
-			{
-				chan_mask.put(channelMap[i][0],channelMap[i][1]);
-				chan_conf.put(channelMap[i][0],channelMap[i][2]);
-			}
-		
-		imc_name=loginName;
-		imc_log_on=1; // logging?
-		this_imcmud.autoconnect=true; 
-		imc_siteinfo.name=CMProps.getVar(CMProps.SYSTEM_MUDNAME);
-		imc_siteinfo.host=host;
-		imc_siteinfo.port=CMath.s_int((String)CMParms.parse(CMProps.getVar(CMProps.SYSTEM_MUDPORTS)).elementAt(0));
-		imc_siteinfo.email=email;
-		imc_siteinfo.base="CoffeeMud v"+CMProps.getVar(CMProps.SYSTEM_MUDVER);
-		imc_siteinfo.details="Custom Java-based Mud";
-		imc_siteinfo.www=web;
-		this_imcmud.hubname=hub;
-		this_imcmud.host=hub;
-		this_imcmud.port=port;
-		this_imcmud.clientpw=passclient;
-		this_imcmud.serverpw=passsrvr;
+            {
+                chan_mask.put(channelMap[i][0],channelMap[i][1]);
+                chan_conf.put(channelMap[i][0],channelMap[i][2]);
+            }
+        
+        imc_name=loginName;
+        imc_log_on=1; // logging?
+        this_imcmud.autoconnect=true; 
+        imc_siteinfo.name=CMProps.getVar(CMProps.SYSTEM_MUDNAME);
+        imc_siteinfo.host=host;
+        imc_siteinfo.port=CMath.s_int((String)CMParms.parse(CMProps.getVar(CMProps.SYSTEM_MUDPORTS)).elementAt(0));
+        imc_siteinfo.email=email;
+        imc_siteinfo.base="CoffeeMud v"+CMProps.getVar(CMProps.SYSTEM_MUDVER);
+        imc_siteinfo.details="Custom Java-based Mud";
+        imc_siteinfo.www=web;
+        this_imcmud.hubname=hub;
+        this_imcmud.host=hub;
+        this_imcmud.port=port;
+        this_imcmud.clientpw=passclient;
+        this_imcmud.serverpw=passsrvr;
        if( !this_imcmud.autoconnect && !force )
        {
             tracef(8,  "IMC2 data loaded. Autoconnect not set. "+
@@ -398,11 +398,11 @@ public final class IMC2Driver extends Thread {
        if( imc_active == IA_CONFIG2 && ( this_imcmud.autoconnect || force ) )
        {
           if( imc_startup_network() )
-		  {
-				ev_imc_firstrefresh();
-				return true;
-		  }
-		  imc_active = IA_NONE;
+          {
+                ev_imc_firstrefresh();
+                return true;
+          }
+          imc_active = IA_NONE;
        }
        return false;
     }
@@ -410,61 +410,61 @@ public final class IMC2Driver extends Thread {
     final String normal2(String data)
     {
         data = CMStrings.replaceAll(data, "\\\"", "\"");
-		StringBuffer str=new StringBuffer(data);
-		for(int i=0;i<str.length()-1;i++)
-		{
-			if(str.charAt(i)=='~')
-			switch(str.charAt(i+1))
-			{
-				case 'R':
-				case 'r':
-				case 'y':
-				case 'Y':
-				case 'g':
-				case 'G':
-				case 'b':
-				case 'B':
-				case 'w':
-				case 'W':
-				case 'c':
-				case 'C': str.setCharAt(i,'^'); break;
-				case 'm': str.setCharAt(i,'^'); str.setCharAt(i+1,'p'); break;
-				case 'M': str.setCharAt(i,'^'); str.setCharAt(i+1,'P'); break;
-				case 'p': str.setCharAt(i,'^'); str.setCharAt(i+1,'p'); break;
-				case 'P': str.setCharAt(i,'^'); str.setCharAt(i+1,'P'); break;
-				case 'z': str.setCharAt(i,'^'); str.setCharAt(i+1,'R'); break;
-				case 'x':
-				case 'u':
-				case 'v':
-				case 'i':
-				case '$':
-				case 's':
-				case 'Z':
-				case 'X': 
-				case 'D': str.setCharAt(i,'^'); str.setCharAt(i+1,'W'); break;
-				case 'd': str.setCharAt(i,'^'); str.setCharAt(i+1,'w'); break;
-				case '!': str.setCharAt(i,'^'); str.setCharAt(i+1,'.'); break;
-				case 'L': str.setCharAt(i,'^'); str.setCharAt(i+1,'!'); break;
-			}
-			else
-			if(str.charAt(i)=='^')
-			switch(str.charAt(i+1))
-			{
-			case 'O': str.setCharAt(i+1,'y'); break;
-			}
-			else
-			if(str.charAt(i)=='&')
-			switch(str.charAt(i+1))
-			{
-			case 'D': str.setCharAt(i,'^'); str.setCharAt(i+1,'!'); break;
-			}
-		}
+        StringBuffer str=new StringBuffer(data);
+        for(int i=0;i<str.length()-1;i++)
+        {
+            if(str.charAt(i)=='~')
+            switch(str.charAt(i+1))
+            {
+                case 'R':
+                case 'r':
+                case 'y':
+                case 'Y':
+                case 'g':
+                case 'G':
+                case 'b':
+                case 'B':
+                case 'w':
+                case 'W':
+                case 'c':
+                case 'C': str.setCharAt(i,'^'); break;
+                case 'm': str.setCharAt(i,'^'); str.setCharAt(i+1,'p'); break;
+                case 'M': str.setCharAt(i,'^'); str.setCharAt(i+1,'P'); break;
+                case 'p': str.setCharAt(i,'^'); str.setCharAt(i+1,'p'); break;
+                case 'P': str.setCharAt(i,'^'); str.setCharAt(i+1,'P'); break;
+                case 'z': str.setCharAt(i,'^'); str.setCharAt(i+1,'R'); break;
+                case 'x':
+                case 'u':
+                case 'v':
+                case 'i':
+                case '$':
+                case 's':
+                case 'Z':
+                case 'X': 
+                case 'D': str.setCharAt(i,'^'); str.setCharAt(i+1,'W'); break;
+                case 'd': str.setCharAt(i,'^'); str.setCharAt(i+1,'w'); break;
+                case '!': str.setCharAt(i,'^'); str.setCharAt(i+1,'.'); break;
+                case 'L': str.setCharAt(i,'^'); str.setCharAt(i+1,'!'); break;
+            }
+            else
+            if(str.charAt(i)=='^')
+            switch(str.charAt(i+1))
+            {
+            case 'O': str.setCharAt(i+1,'y'); break;
+            }
+            else
+            if(str.charAt(i)=='&')
+            switch(str.charAt(i+1))
+            {
+            case 'D': str.setCharAt(i,'^'); str.setCharAt(i+1,'!'); break;
+            }
+        }
         return str.toString();
     }
 
     /* printkeys: print key-value pairs, escaping values */
     final String printkeys(PACKET data) 
-	{
+    {
         String buf;
         int i;
 
@@ -497,15 +497,15 @@ public final class IMC2Driver extends Thread {
     }
     final public String do_imcinfo()
     {
-		String host=CMProps.getVar(CMProps.SYSTEM_MUDDOMAIN).toLowerCase();
+        String host=CMProps.getVar(CMProps.SYSTEM_MUDDOMAIN).toLowerCase();
         return "IMC Statistics:\\n\\r\\n"+
-			"Site Name           :"+imc_siteinfo.name+"\\n\\r"+
-			"Site Host           :"+((host.length()>0)?host:sa.getLocalAddress().getHostName())+"\\n\\r"+
-			"Site Port           :"+imc_siteinfo.port+"\\n\\r"+
-			((imc_siteinfo.www.length()>0)?"Web Address         :"+imc_siteinfo.www+"\\n\\r":"")+
-			((imc_siteinfo.www.length()>0)?"Email               :"+imc_siteinfo.email+"\\n\\r":"")+
-			"Codebase            :"+imc_siteinfo.base+"\\n\\r"+
-			"IMC Version         :"+IMC_VERSIONID+"\\n\\r";
+            "Site Name           :"+imc_siteinfo.name+"\\n\\r"+
+            "Site Host           :"+((host.length()>0)?host:sa.getLocalAddress().getHostName())+"\\n\\r"+
+            "Site Port           :"+imc_siteinfo.port+"\\n\\r"+
+            ((imc_siteinfo.www.length()>0)?"Web Address         :"+imc_siteinfo.www+"\\n\\r":"")+
+            ((imc_siteinfo.www.length()>0)?"Email               :"+imc_siteinfo.email+"\\n\\r":"")+
+            "Codebase            :"+imc_siteinfo.base+"\\n\\r"+
+            "IMC Version         :"+IMC_VERSIONID+"\\n\\r";
     }
 
     final PACKET interpret2(String argument )
@@ -518,27 +518,27 @@ public final class IMC2Driver extends Thread {
         StringTokenizer st = new StringTokenizer(argument, " ");
         if(st.countTokens() < 5)
         {
-        	if(st.countTokens() == 4)
-        	{
+            if(st.countTokens() == 4)
+            {
                 String tmp = st.nextToken();
-        		if(tmp.equalsIgnoreCase("autosetup"))
-        		{
-        			// who cares what the server says.
-        			/*
-        			String serverName = st.nextToken();
-        			if(st.nextToken().equalsIgnoreCase("accept"))
-        			{
-        				String networkName = st.nextToken();
-        			}
-        			*/
-        		}
-        	}
-        	else
-        	{
-	            tracef(0, "interpret: bad packet received, discarding");
-	            tracef(0, "interpret: argument was '"+argument+"'");
-	            imc_stats.sequence_drops++;
-        	}
+                if(tmp.equalsIgnoreCase("autosetup"))
+                {
+                    // who cares what the server says.
+                    /*
+                    String serverName = st.nextToken();
+                    if(st.nextToken().equalsIgnoreCase("accept"))
+                    {
+                        String networkName = st.nextToken();
+                    }
+                    */
+                }
+            }
+            else
+            {
+                tracef(0, "interpret: bad packet received, discarding");
+                tracef(0, "interpret: argument was '"+argument+"'");
+                imc_stats.sequence_drops++;
+            }
             return null;
         }
 
@@ -597,9 +597,9 @@ public final class IMC2Driver extends Thread {
                         keys="";
                     else
                     if(p+2>=keys.length())
-	                    keys = keys.substring(p+1, keys.length());
+                        keys = keys.substring(p+1, keys.length());
                     else
-	                    keys = keys.substring(p+2, keys.length());
+                        keys = keys.substring(p+2, keys.length());
                 }
                 else
                 {
@@ -810,9 +810,9 @@ public final class IMC2Driver extends Thread {
         //    return; /* don't let them do this */
 
         imc_initdata(out);
-		
-		out.from = from;
-		
+        
+        out.from = from;
+        
         out.to = to+"@*";
         out.type = "whois";
 
@@ -909,67 +909,75 @@ public final class IMC2Driver extends Thread {
         }
     }
 
-	final public static String toIMCColours(String res)
-	{
-	    // ANSI color macros
+    final public static String toIMCColours(String res)
+    {
+        // ANSI color macros
         res = CMStrings.replaceAll(res, "\"", "\\\"");
-		StringBuffer str=new StringBuffer(res);
-		for(int i=0;i<str.length()-1;i++)
-		{
-			if(str.charAt(i)=='`')
-				str.setCharAt(i,'\'');
-			else
-			if(str.charAt(i)=='^')
-			switch(str.charAt(i+1))
-			{
-				case 'R':
-				case 'r':
-				case 'y':
-				case 'Y':
-				case 'g':
-				case 'G':
-				case 'b':
-				case 'B':
-				case 'w':
-				case 'W':
-				case 'c':
-				case 'C': str.setCharAt(i,'~'); break;
-				case 'm': str.setCharAt(i,'~'); str.setCharAt(i+1,'p'); break;
-				case 'M': str.setCharAt(i,'~'); str.setCharAt(i+1,'P'); break;
-				case 'p': str.setCharAt(i,'~'); str.setCharAt(i+1,'m'); break;
-				case 'P': str.setCharAt(i,'~'); str.setCharAt(i+1,'M'); break;
-				case '?': 
-				case '.': str.setCharAt(i,'~'); str.setCharAt(i+1,'!'); break;
-				case '!': str.setCharAt(i,'~'); str.setCharAt(i+1,'L'); break;
-				case '*': str.setCharAt(i,'~'); str.setCharAt(i+1,'$'); break;
-				case '/': str.setCharAt(i,'~'); str.setCharAt(i+1,'s'); break;
-				case '_': str.setCharAt(i,'~'); str.setCharAt(i+1,'u'); break;
-				case '^': str.setCharAt(i,'^'); str.deleteCharAt(i+1); break;
-				default:
-					str.setCharAt(i,'~'); str.setCharAt(i+1,'c'); 
-					break;
-			}
-		}
-	    return str.toString();
-	}
+        StringBuffer str=new StringBuffer(res);
+        for(int i=0;i<str.length()-1;i++)
+        {
+            if(str.charAt(i)=='`')
+                str.setCharAt(i,'\'');
+            else
+            if(str.charAt(i)=='^')
+            switch(str.charAt(i+1))
+            {
+                case '~':
+                  if(i<str.length()-2)
+                      str.delete(i,i+3);
+                  break;
+                case '#':
+                  if(i<str.length()-4)
+                      str.delete(i,i+5);
+                  break;
+                case 'R':
+                case 'r':
+                case 'y':
+                case 'Y':
+                case 'g':
+                case 'G':
+                case 'b':
+                case 'B':
+                case 'w':
+                case 'W':
+                case 'c':
+                case 'C': str.setCharAt(i,'~'); break;
+                case 'm': str.setCharAt(i,'~'); str.setCharAt(i+1,'p'); break;
+                case 'M': str.setCharAt(i,'~'); str.setCharAt(i+1,'P'); break;
+                case 'p': str.setCharAt(i,'~'); str.setCharAt(i+1,'m'); break;
+                case 'P': str.setCharAt(i,'~'); str.setCharAt(i+1,'M'); break;
+                case '?': 
+                case '.': str.setCharAt(i,'~'); str.setCharAt(i+1,'!'); break;
+                case '!': str.setCharAt(i,'~'); str.setCharAt(i+1,'L'); break;
+                case '*': str.setCharAt(i,'~'); str.setCharAt(i+1,'$'); break;
+                case '/': str.setCharAt(i,'~'); str.setCharAt(i+1,'s'); break;
+                case '_': str.setCharAt(i,'~'); str.setCharAt(i+1,'u'); break;
+                case '^': str.setCharAt(i,'^'); str.deleteCharAt(i+1); break;
+                default:
+                    str.setCharAt(i,'~'); str.setCharAt(i+1,'c'); 
+                    break;
+            }
+        }
+        return str.toString();
+    }
 
 
-	final String update_wholist()
-	{
-		StringBuffer str=new StringBuffer("Players on "+CMProps.getVar(CMProps.SYSTEM_MUDNAME)+":\\n\\r");
-		Command C=CMClass.getCommand("Who");
-		if(C!=null)
-		{
-			String msg=null;
-			try{msg=(String)C.executeInternal(null,0);}catch(Exception e){}
-			if(msg!=null)
-			{
-				msg=CMStrings.replaceAll(msg,"\n\r","\\n\\r");
-				return str.toString()+msg;
-			}
-		}
-		return "Unavailable";
-	}
+    final String update_wholist()
+    {
+        StringBuffer str=new StringBuffer("Players on "+CMProps.getVar(CMProps.SYSTEM_MUDNAME)+":\\n\\r");
+        Command C=CMClass.getCommand("Who");
+        if(C!=null)
+        {
+            String msg=null;
+            try{msg=(String)C.executeInternal(null,0);}catch(Exception e){}
+            if(msg!=null)
+            {
+                msg=CMStrings.replaceAll(msg,"\n\r","\\n\\r");
+                return str.toString()+msg;
+            }
+        }
+        return "Unavailable";
+    }
 
     final String who_help()
     {
@@ -1018,10 +1026,10 @@ public final class IMC2Driver extends Thread {
         out.to = sender;
         out.type = "whois-reply";
 
-		MOB M=CMLib.players().getPlayer(from.name);
-		if(M==null) return;
+        MOB M=CMLib.players().getPlayer(from.name);
+        if(M==null) return;
         imc_addkey(out, "text", "imcpfind "+from.name+"@"+imc_name
-						+" is "+(CMLib.flags().isInTheGame(M,false) ? "online":"offline")+ ".");
+                        +" is "+(CMLib.flags().isInTheGame(M,false) ? "online":"offline")+ ".");
 
         imc_send(out);
     }
@@ -1045,29 +1053,29 @@ public final class IMC2Driver extends Thread {
 
     final void imc_recv_tell(imc_char_data d, String from, String text)
     {
-		MOB mob=CMClass.getMOB("StdMOB");
-		mob.setName(from);
-		mob.setLocation(CMClass.getLocale("StdRoom"));
-		MOB smob=CMLib.sessions().findPlayerOnline(d.name,true);
-		if(smob!=null)
-			CMLib.commands().postSay(mob,smob,text,true,true);
+        MOB mob=CMClass.getMOB("StdMOB");
+        mob.setName(from);
+        mob.setLocation(CMClass.getLocale("StdRoom"));
+        MOB smob=CMLib.sessions().findPlayerOnline(d.name,true);
+        if(smob!=null)
+            CMLib.commands().postSay(mob,smob,text,true,true);
         Room R=mob.location();
         mob.destroy();
         if(R!=null) R.destroy();
     }
 
-	public REMOTEINFO getIMC2Mud(String named)
-	{
-		Hashtable l=query_muds();
-		if(l.containsKey(named)) return (REMOTEINFO)l.get(named);
-		for(Enumeration e=l.elements();e.hasMoreElements();)
-		{
-			REMOTEINFO m=(REMOTEINFO)e.nextElement();
-			if(m.name.equalsIgnoreCase(named))
-				return m;
-		}
-		return null;
-	}
+    public REMOTEINFO getIMC2Mud(String named)
+    {
+        Hashtable l=query_muds();
+        if(l.containsKey(named)) return (REMOTEINFO)l.get(named);
+        for(Enumeration e=l.elements();e.hasMoreElements();)
+        {
+            REMOTEINFO m=(REMOTEINFO)e.nextElement();
+            if(m.name.equalsIgnoreCase(named))
+                return m;
+        }
+        return null;
+    }
 
     final void imc_recv_chat(imc_char_data d, String from, String channel, String text, int emote)
     {
@@ -1076,43 +1084,43 @@ public final class IMC2Driver extends Thread {
             channel = st.nextToken();
             channel = st.nextToken();
         }
-		else
-		if(st.countTokens()> 0)
-			channel=st.nextToken();
+        else
+        if(st.countTokens()> 0)
+            channel=st.nextToken();
 
-		String channelName=channel;
-		CMMsg msg=null;
-		if(from.toUpperCase().endsWith(imc_name.toUpperCase()))
-		   return;
-		if(channelName.length()==0)
-			return;
-		channelName=read_channel_name(channelName);
-		if(channelName.length()==0) return;
-		int channelInt=CMLib.channels().getChannelIndex(channelName);
-		if(channelInt<0) return;
+        String channelName=channel;
+        CMMsg msg=null;
+        if(from.toUpperCase().endsWith(imc_name.toUpperCase()))
+           return;
+        if(channelName.length()==0)
+            return;
+        channelName=read_channel_name(channelName);
+        if(channelName.length()==0) return;
+        int channelInt=CMLib.channels().getChannelIndex(channelName);
+        if(channelInt<0) return;
         String channelColor=CMLib.channels().getChannelColorOverride(channelInt);
         if(channelColor.length()==0)
-        	channelColor="^Q";
+            channelColor="^Q";
         MOB mob=CMClass.getMOB("StdMOB");
         mob.setName(from);
         mob.setLocation(CMClass.getLocale("StdRoom"));
-		String str=channelColor+"^<CHANNEL \""+channelName+"\"^>"+mob.name()+" "+channelName+"(S) '"+text+"'^</CHANNEL^>^N^.";
-		if(emote>0) 
-		{
-			if(emote==1)
-				str=channelColor+"^<CHANNEL \""+channelName+"\"^>["+channelName+"] "+from+" "+text+"^</CHANNEL^>^N^.";
-			else
-				str=channelColor+"^<CHANNEL \""+channelName+"\"^>["+channelName+"] "+text+"^</CHANNEL^>^N^.";
-		}
-				
-		msg=CMClass.getMsg(mob,null,null,CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null,CMMsg.MASK_CHANNEL|(CMMsg.TYP_CHANNEL+channelInt),str);
+        String str=channelColor+"^<CHANNEL \""+channelName+"\"^>"+mob.name()+" "+channelName+"(S) '"+text+"'^</CHANNEL^>^N^.";
+        if(emote>0) 
+        {
+            if(emote==1)
+                str=channelColor+"^<CHANNEL \""+channelName+"\"^>["+channelName+"] "+from+" "+text+"^</CHANNEL^>^N^.";
+            else
+                str=channelColor+"^<CHANNEL \""+channelName+"\"^>["+channelName+"] "+text+"^</CHANNEL^>^N^.";
+        }
+                
+        msg=CMClass.getMsg(mob,null,null,CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null,CMMsg.MASK_CHANNEL|(CMMsg.TYP_CHANNEL+channelInt),str);
 
-		CMLib.channels().channelQueUp(channelInt,msg);
-	    for(Session S : CMLib.sessions().localOnlineIterable())
-			if((CMLib.channels().mayReadThisChannel(mob,false,S,channelInt))
+        CMLib.channels().channelQueUp(channelInt,msg);
+        for(Session S : CMLib.sessions().localOnlineIterable())
+            if((CMLib.channels().mayReadThisChannel(mob,false,S,channelInt))
             &&(S.mob().location()!=null)
-			&&(S.mob().location().okMessage(S.mob(),msg)))
-				S.mob().executeMsg(S.mob(),msg);
+            &&(S.mob().location().okMessage(S.mob(),msg)))
+                S.mob().executeMsg(S.mob(),msg);
 
         LinkedList l = (LinkedList) chanhist.get(channel);
         if(l == null)
@@ -1160,9 +1168,9 @@ public final class IMC2Driver extends Thread {
     final void imc_recv_whois_reply(imc_char_data d, String to, String text)
     {
         text = CMStrings.replaceAll(text, "\\n\\r", "\n\r");
-		send_to_player(d.name, "\n\r"+to+": "+text+"^.^?");
+        send_to_player(d.name, "\n\r"+to+": "+text+"^.^?");
     }
-	
+    
     final void imc_recv_ping_reply(imc_char_data d, String from, String path)
     {
        String route[] = explodeNicely(path, "!");
@@ -1186,40 +1194,40 @@ public final class IMC2Driver extends Thread {
        }
 
        if(CMSecurity.isDebugging(DbgFlag.IMC2))
-    	   Log.debugOut("IMC2Driver",text.toString());
+           Log.debugOut("IMC2Driver",text.toString());
        //send_to_player(d.name, text.toString());
    }
 
 
     final String read_channel_name(String channame)
     {
-		if(channame==null) return "";
-		channame=channame.toUpperCase();
-		for(Enumeration e=chan_conf.keys();e.hasMoreElements();)
-		{
-			String key=(String)e.nextElement();
-			String val=((String)chan_conf.get(key)).toUpperCase();
-			if(val.equals(channame))
-				return key;
-			if(val.endsWith(":"+channame))
-				return key;
-			if(channame.endsWith(":"+val))
-				return key;
-		}
+        if(channame==null) return "";
+        channame=channame.toUpperCase();
+        for(Enumeration e=chan_conf.keys();e.hasMoreElements();)
+        {
+            String key=(String)e.nextElement();
+            String val=((String)chan_conf.get(key)).toUpperCase();
+            if(val.equals(channame))
+                return key;
+            if(val.endsWith(":"+channame))
+                return key;
+            if(channame.endsWith(":"+val))
+                return key;
+        }
         return "";
     }
-	
-	public IMC_CHANNEL getAnIMC2Channel(String name)
-	{
-		name=name.toUpperCase();
-		for(Enumeration e=channels.elements();e.hasMoreElements();)
-		{
-			IMC_CHANNEL c=(IMC_CHANNEL)e.nextElement();
-			if(read_channel_name(c.name).equalsIgnoreCase(name))
-				return c;
-		}
-		return null;
-	}
+    
+    public IMC_CHANNEL getAnIMC2Channel(String name)
+    {
+        name=name.toUpperCase();
+        for(Enumeration e=channels.elements();e.hasMoreElements();)
+        {
+            IMC_CHANNEL c=(IMC_CHANNEL)e.nextElement();
+            if(read_channel_name(c.name).equalsIgnoreCase(name))
+                return c;
+        }
+        return null;
+    }
 
     final void imc_recv_update(String from, String chan, String owner,
                          String operators, String policy, String invited,
@@ -1291,7 +1299,7 @@ public final class IMC2Driver extends Thread {
 
 
     final public Hashtable query_channels() 
-	{
+    {
         return channels;
     }
 
@@ -1311,13 +1319,13 @@ public final class IMC2Driver extends Thread {
 
         String to_mud = imc_mudof(d.name);
         if (!to_mud.equalsIgnoreCase(imc_name) && !to_mud.equals("*")) 
-		{
+        {
             tracef(8, "Message was for "+to_mud+", not "+imc_name+" -- rejecting!");
             return;
         }
 
         d.name = imc_playerof(d.name);
-		tracef(8, "Received message was sent to " + d.name+", "+p.type+", "+CMParms.toStringList(p.value));
+        tracef(8, "Received message was sent to " + d.name+", "+p.type+", "+CMParms.toStringList(p.value));
 
         if (p.type.equals("who")) {
             tracef(8, "Who request received from " + p.i.from);
@@ -1353,7 +1361,7 @@ public final class IMC2Driver extends Thread {
             tracef(8, "Who-Is reply received from " + p.i.from);
             imc_recv_whois_reply(d, p.i.from, imc_getkey(p, "text", ""));
         }
-		
+        
         if (p.type.equals("ping-reply")) {
             tracef(8, "Ping-reply reply received from " + p.i.from);
             imc_recv_ping_reply(d, p.i.from, imc_getkey(p, "path", ""));
@@ -1396,23 +1404,23 @@ public final class IMC2Driver extends Thread {
         String pwd = st.nextToken();
 
         if (pwd.equals(this_imcmud.serverpw))
-		{
+        {
             tracef(8, "Password OK.");
-			return true;
-		}
+            return true;
+        }
         tracef(0, "Password incorrect.");
-		return false;
+        return false;
     }
 
     final public void imc_read_from_socket(BufferedReader in) {
         try {
             if ((in!=null)&&(in.ready()))
-			{
+            {
                 String s = in.readLine();
                 if (s == null) return;
 
                 if (s.length() > 0) 
-				{
+                {
                     tracef(8, "imc: received '" + s + "'");
                     if (s.startsWith("PW "))
                         check_password(s);
@@ -1424,34 +1432,34 @@ public final class IMC2Driver extends Thread {
             }
         }
         catch (Exception e) 
-		{
-			String errMsg=e.getMessage()==null?e.toString():e.getMessage();
+        {
+            String errMsg=e.getMessage()==null?e.toString():e.getMessage();
             if((errMsg==null)
             ||(errMsg.toUpperCase().indexOf("TIMED OUT")<0))
-				Log.errOut("IMC2Driver", "read: "+errMsg);
+                Log.errOut("IMC2Driver", "read: "+errMsg);
             if((errMsg!=null)
             &&(!shutdown)
-			&&(errMsg.toUpperCase().indexOf("CONNECTION")>=0))
-			{
-				imc_active = IA_NONE;
-				tracef(1, "Waiting "+(reconnectBackoffTime/1000)+" seconds and try to reconnect.");
-				try 
-				{
-				    sleep(reconnectBackoffTime);
-				    reconnectBackoffTime=reconnectBackoffTime*2;
-				}
-				catch (Exception ex) {}
-				this.imc_startup(true,
-								 imc_name,
-								 imc_siteinfo.host,
-								 imc_siteinfo.email,
-								 imc_siteinfo.www,
-								 this_imcmud.hubname,
-								 this_imcmud.port,
-								 this_imcmud.clientpw,
-								 this_imcmud.serverpw,
-								 buildChannelMap());
-			}
+            &&(errMsg.toUpperCase().indexOf("CONNECTION")>=0))
+            {
+                imc_active = IA_NONE;
+                tracef(1, "Waiting "+(reconnectBackoffTime/1000)+" seconds and try to reconnect.");
+                try 
+                {
+                    sleep(reconnectBackoffTime);
+                    reconnectBackoffTime=reconnectBackoffTime*2;
+                }
+                catch (Exception ex) {}
+                this.imc_startup(true,
+                                 imc_name,
+                                 imc_siteinfo.host,
+                                 imc_siteinfo.email,
+                                 imc_siteinfo.www,
+                                 this_imcmud.hubname,
+                                 this_imcmud.port,
+                                 this_imcmud.clientpw,
+                                 this_imcmud.serverpw,
+                                 buildChannelMap());
+            }
         }
     }
 
@@ -1470,19 +1478,19 @@ public final class IMC2Driver extends Thread {
             tracef(1, "Waiting "+(reconnectBackoffTime/1000)+" seconds and try to reconnect.");
             try {
                 sleep(reconnectBackoffTime);
-			    reconnectBackoffTime=reconnectBackoffTime*2;
+                reconnectBackoffTime=reconnectBackoffTime*2;
             }
             catch (Exception ex) {}
             this.imc_startup(true,
-							 imc_name,
-							 imc_siteinfo.host,
-							 imc_siteinfo.email,
-							 imc_siteinfo.www,
-							 this_imcmud.hubname,
-							 this_imcmud.port,
-							 this_imcmud.clientpw,
-							 this_imcmud.serverpw,
-							 buildChannelMap());
+                             imc_name,
+                             imc_siteinfo.host,
+                             imc_siteinfo.email,
+                             imc_siteinfo.www,
+                             this_imcmud.hubname,
+                             this_imcmud.port,
+                             this_imcmud.clientpw,
+                             this_imcmud.serverpw,
+                             buildChannelMap());
         }
     }
 
@@ -1508,7 +1516,7 @@ public final class IMC2Driver extends Thread {
         imc_send(out);
     }
 
-	
+    
     /* send a keepalive to everyone */
     final public void imc_request_keepalive() {
         PACKET out = new PACKET();
@@ -1536,18 +1544,18 @@ public final class IMC2Driver extends Thread {
         long lastPingReceived=System.currentTimeMillis();
 
         public call_out(IMC2Driver _imc_client) {
-			super("IMC2-call_out");
-			setName("IMC2-call_out");
+            super("IMC2-call_out");
+            setName("IMC2-call_out");
             imc_client = _imc_client;
             setDaemon(true);
         }
 
-		public void shutdown()
-		{
-		    shutdown=true;
-		    interrupt();
-		}
-		
+        public void shutdown()
+        {
+            shutdown=true;
+            interrupt();
+        }
+        
         final public void run() 
         {
             if (imc_client == null)
@@ -1555,12 +1563,12 @@ public final class IMC2Driver extends Thread {
             long timeSinceLastPing=System.currentTimeMillis();
             while (!shutdown) 
             {
-            	if((System.currentTimeMillis()-timeSinceLastPing) > (30 * 60 * 1000))
-            	{
-            		imc_client.imc_send_ping("Server01");
-            		timeSinceLastPing=System.currentTimeMillis();
-            		// everything is taken care of from here.  detect disconnect, reconnect -- everything.
-            	}
+                if((System.currentTimeMillis()-timeSinceLastPing) > (30 * 60 * 1000))
+                {
+                    imc_client.imc_send_ping("Server01");
+                    timeSinceLastPing=System.currentTimeMillis();
+                    // everything is taken care of from here.  detect disconnect, reconnect -- everything.
+                }
 //              tracef(1, "call_out: process call outs");
                 imc_client.imc_process_call_outs();
                 imc_client.imc_write_to_socket(out);
@@ -1587,17 +1595,17 @@ public final class IMC2Driver extends Thread {
         public boolean isShutdown=false;
 
         public call_in(IMC2Driver _imc_client) {
-			super("IMC2-call_in");
-			setName("IMC2-call_in");
+            super("IMC2-call_in");
+            setName("IMC2-call_in");
             imc_client = _imc_client;
             setDaemon(true);
         }
 
-		public void shutdown()
-		{
-		    shutdown=true;
-		    interrupt();
-		}
+        public void shutdown()
+        {
+            shutdown=true;
+            interrupt();
+        }
         
         final public void run() 
         {
@@ -1619,7 +1627,7 @@ public final class IMC2Driver extends Thread {
 
     /* send a ping with a given timestamp */
     final public void imc_send_ping(String to) 
-	{
+    {
         PACKET out = new PACKET();
 
         if (imc_active < IA_UP)
@@ -1652,14 +1660,14 @@ public final class IMC2Driver extends Thread {
     }
 
     final public void imc_send_who(String name, String mudname, String type, int level, int invis) 
-	{
+    {
         imc_char_data test = new imc_char_data();
         test.name = name;
         test.level = level;
         test.invis = invis;
         imc_send_who(test, "@" + mudname, type);
     }
-	
+    
     final public String imc_send_tell(String from, String to, String text, int level,
                                 int invis) {
         imc_char_data chr = new imc_char_data();
@@ -1739,10 +1747,10 @@ public final class IMC2Driver extends Thread {
 
     /* send a tell to a remote player */
     final String imc_send_chat(imc_char_data from, 
-            					String to, 
-            					String argument,
-            					int isreply, 
-            					int emote) {
+                                String to, 
+                                String argument,
+                                int isreply, 
+                                int emote) {
         PACKET out = new PACKET();
 
         if (imc_active < IA_UP)
@@ -1792,18 +1800,18 @@ public final class IMC2Driver extends Thread {
         imc_read_from_socket(in);
         HeartBeat = 0;
 
-		if(c_thread2==null)
-		{
-			c_thread2 = new call_in(this);
-			c_thread2.start();
-		}
-		if(c_thread==null)
-		{
-			c_thread = new call_out(this);
-			c_thread.start();
-		}
-		Log.sysOut("IMC2","(c) 1996-2002/Java port by Istvan David");
-		Log.sysOut("IMC2","Client connected to "+this_imcmud.host.trim());
+        if(c_thread2==null)
+        {
+            c_thread2 = new call_in(this);
+            c_thread2.start();
+        }
+        if(c_thread==null)
+        {
+            c_thread = new call_out(this);
+            c_thread.start();
+        }
+        Log.sysOut("IMC2","(c) 1996-2002/Java port by Istvan David");
+        Log.sysOut("IMC2","Client connected to "+this_imcmud.host.trim());
 
         while (!shutdown) {
             HeartBeat++;

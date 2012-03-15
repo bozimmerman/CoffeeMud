@@ -788,6 +788,7 @@ public class DefaultSession implements Session
 
     public String makeEscape(int c)
     {
+        //TODO: handle ~ and _ here
         switch(c)
         {
             case '>':

@@ -1288,7 +1288,7 @@ public class CMProps extends Properties
         int fpIndex=0;
         for(final String filterStr : filter)
         {
-        	if(filterStr.length()==0) continue;
+            if(filterStr.length()==0) continue;
             fdex=upp.indexOf(filterStr);
             int ctr=0;
             while((fdex>=0)&&((++ctr)<999))

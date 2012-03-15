@@ -167,6 +167,7 @@ public interface ColorLibrary extends CMLibrary
     public static final char COLORCODE_HIGHLIGHT='H';
     public static final char COLORCODE_UNEXPDIRECTION='U';
     public static final char COLORCODE_UNEXPDOORDESC='u';
+    
     public static final char[] COLORCODE_ALLCODES={
         COLORCODE_YOU_FIGHT,COLORCODE_FIGHT_YOU,COLORCODE_FIGHT,COLORCODE_SPELL,
         COLORCODE_EMOTE,COLORCODE_TALK,COLORCODE_TELL,COLORCODE_CHANNEL,
@@ -186,6 +187,9 @@ public interface ColorLibrary extends CMLibrary
         "HIGHLIGHT","UNEXPDIRECTION","UNEXPDOORDESC","WEATHER"
     };
 
+    public static final char COLORCODE_BACKGROUND='~';
+    public static final char COLORCODE_ANSI256='@';
+    
     public static final String COLOR_FR0G3B5="\033[38;5;"+(16+(0*36)+(3*6)+5)+"m";
     public static final String COLOR_BR0G3B5="\033[48;5;"+(16+(0*36)+(3*6)+5)+"m";
     
