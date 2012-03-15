@@ -1100,15 +1100,15 @@ public class DefaultScriptingEngine implements ScriptingEngine
         return ret.toString();
     }
 
-    protected String varify(MOB source,
-                            Environmental target,
-                            PhysicalAgent scripted,
-                            MOB monster,
-                            Item primaryItem,
-                            Item secondaryItem,
-                            String msg,
-                            Object[] tmp,
-                            String varifyable)
+    public String varify(MOB source,
+                         Environmental target,
+                         PhysicalAgent scripted,
+                         MOB monster,
+                         Item primaryItem,
+                         Item secondaryItem,
+                         String msg,
+                         Object[] tmp,
+                         String varifyable)
     {
         int t=varifyable.indexOf('$');
         if((monster!=null)&&(monster.location()!=null))

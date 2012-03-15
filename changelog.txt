@@ -2354,3 +2354,4 @@ Special/Reserved Quest called holidays can be added to/modified on an area-by-ar
 2. (Internal) fakedb now supports dup key detection for insert statements, DBUpgrade now more forgiving of dup keys.
 3. New command: AUTOMAP, for toggling AWARERANGE
 4. Import command now supports at least one type of .wld/.zon/.mob/.obj format areas.
+5. StdAuthGenInstance - Can now insert scriptable variables into autogen variable definitions. 

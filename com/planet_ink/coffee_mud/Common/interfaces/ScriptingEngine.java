@@ -77,6 +77,32 @@ public interface ScriptingEngine extends CMCommon, Tickable, MsgListener
                           Object[] tmp);
     
     /**
+     * Uses this scripting engines variable parsing system to replace
+     * any script variables $XXXX with their script determined values.
+     * This is a powerful mechanism for getting at the script functions
+     * in order to access stat data about specific objects, do math, etc.
+     *  
+     * @param source the source of the event
+     * @param target the target of the event
+     * @param scripted the object that is scripted
+     * @param monster a mob representation of the scripted object
+     * @param primaryItem an item involved in the event
+     * @param secondaryItem a second item involved in the event
+     * @param msg a string message associated with the event
+     * @param tmp miscellaneous local variables
+     * @param varifyable the string to parse
+     * @return N/A
+     */
+    public String varify(MOB source,
+                         Environmental target,
+                         PhysicalAgent scripted,
+                         MOB monster,
+                         Item primaryItem,
+                         Item secondaryItem,
+                         String msg,
+                         Object[] tmp,
+                         String varifyable);
+    /**
      * Forces any queued event responses to be immediately
      * executed.
      */
