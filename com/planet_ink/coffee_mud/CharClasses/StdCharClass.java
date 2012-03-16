@@ -72,7 +72,7 @@ public class StdCharClass implements CharClass
 	public int maxCraftingSkills() { return CMProps.getIntVar(CMProps.SYSTEMI_MAXCRAFTINGSKILLS); }
 	public int maxCommonSkills() { return CMProps.getIntVar(CMProps.SYSTEMI_MAXCOMMONSKILLS); }
 	public int maxLanguages() { return CMProps.getIntVar(CMProps.SYSTEMI_MAXLANGUAGES); }
-    private static final Vector empty=new Vector();
+    private static final Vector empty=new ReadOnlyVector();
     public List<String> getSecurityGroups(int classLevel){return empty;}
     public CMObject newInstance(){return this;}
     protected String[] names=null;

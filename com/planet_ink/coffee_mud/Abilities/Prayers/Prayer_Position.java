@@ -90,7 +90,7 @@ public class Prayer_Position extends Prayer
 				return "No trail was found?!";
 		}
 		Vector theDirTrail=new Vector();
-		Vector empty=new Vector();
+		Vector empty=new ReadOnlyVector();
 		for(int s=trailV.size()-1;s>=1;s--)
 		{
 			Room R=(Room)trailV.elementAt(s);

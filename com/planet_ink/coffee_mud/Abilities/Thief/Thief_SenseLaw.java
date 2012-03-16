@@ -44,7 +44,7 @@ public class Thief_SenseLaw extends ThiefSkill
 	public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
 	public boolean isAutoInvoked(){return true;}
 	public boolean canBeUninvoked(){return false;}
-	public static final Vector empty=new Vector();
+	public static final Vector empty=new ReadOnlyVector();
 	protected Room oldroom=null;
 	protected String lastReport="";
     public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_STREETSMARTS;}

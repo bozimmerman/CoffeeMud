@@ -1107,7 +1107,7 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 				return "You can't get there from here.";
 		}
 		List<String> theDirTrail=new Vector<String>();
-		List<Room> empty=new Vector<Room>();
+		List<Room> empty=new ReadOnlyVector<Room>();
 		for(int s=trailV.size()-1;s>=1;s--)
 		{
 			Room R=trailV.get(s);

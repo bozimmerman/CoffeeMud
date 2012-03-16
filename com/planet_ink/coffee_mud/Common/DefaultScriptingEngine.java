@@ -8963,7 +8963,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
         return null;
     }
 
-    protected static final Vector empty=new Vector();
+    protected static final Vector empty=new ReadOnlyVector();
 
     public String getScriptResourceKey()
     {

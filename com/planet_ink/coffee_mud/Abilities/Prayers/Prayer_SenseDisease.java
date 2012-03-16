@@ -71,7 +71,7 @@ public class Prayer_SenseDisease extends Prayer
 		}
 		return null;
 	}
-	private static final Vector empty=new Vector();
+	private static final Vector empty=new ReadOnlyVector();
 	public Vector diseased(MOB mob, Room R)
 	{
 		if(R==null) return empty;
