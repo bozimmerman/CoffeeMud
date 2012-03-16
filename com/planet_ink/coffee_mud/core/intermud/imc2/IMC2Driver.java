@@ -2,6 +2,7 @@ package com.planet_ink.coffee_mud.core.intermud.imc2;
 
 import com.planet_ink.coffee_mud.Commands.interfaces.Command;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.ColorLibrary;
 import com.planet_ink.coffee_mud.Locales.interfaces.Room;
 import com.planet_ink.coffee_mud.MOBS.interfaces.MOB;
 import com.planet_ink.coffee_mud.core.*;
@@ -922,11 +923,11 @@ public final class IMC2Driver extends Thread {
             if(str.charAt(i)=='^')
             switch(str.charAt(i+1))
             {
-                case '~':
+                case ColorLibrary.COLORCODE_BACKGROUND:
                   if(i<str.length()-2)
                       str.delete(i,i+3);
                   break;
-                case '#':
+                case ColorLibrary.COLORCODE_ANSI256:
                   if(i<str.length()-4)
                       str.delete(i,i+5);
                   break;

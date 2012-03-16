@@ -188,7 +188,7 @@ public interface ColorLibrary extends CMLibrary
     };
 
     public static final char COLORCODE_BACKGROUND='~';
-    public static final char COLORCODE_ANSI256='@';
+    public static final char COLORCODE_ANSI256='#';
     
     public static final String COLOR_FR0G3B5="\033[38;5;"+(16+(0*36)+(3*6)+5)+"m";
     public static final String COLOR_BR0G3B5="\033[48;5;"+(16+(0*36)+(3*6)+5)+"m";

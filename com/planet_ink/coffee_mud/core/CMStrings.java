@@ -2,6 +2,8 @@ package com.planet_ink.coffee_mud.core;
 
 import java.util.*;
 
+import com.planet_ink.coffee_mud.Libraries.interfaces.ColorLibrary;
+
 /* 
    Copyright 2000-2012 Bo Zimmerman
 
@@ -235,10 +237,10 @@ public class CMStrings
                 i++;
                 if(i<c.length)
                 {
-                    if(c[i]=='~')
+                    if(c[i]==ColorLibrary.COLORCODE_BACKGROUND)
                       i++;
                     else
-                    if(c[i]=='#')
+                    if(c[i]==ColorLibrary.COLORCODE_ANSI256)
                       i+=3;
                 }
             }
@@ -267,10 +269,10 @@ public class CMStrings
                 i++;
                 if(i<c.length)
                 {
-                    if(c[i]=='~')
+                    if(c[i]==ColorLibrary.COLORCODE_BACKGROUND)
                       i++;
                     else
-                    if(c[i]=='#')
+                    if(c[i]==ColorLibrary.COLORCODE_ANSI256)
                       i+=3;
                 }
             }
@@ -384,13 +386,13 @@ public class CMStrings
                 {
                     int tagStart=i;
                     char c=str.charAt(i+1);
-                    if((c=='~')&&(i+3<=str.length()))
+                    if((c==ColorLibrary.COLORCODE_BACKGROUND)&&(i+3<=str.length()))
                     {
                       str.delete(i,i+3); 
                       i--;
                     }
                     else
-                    if((c=='#')&&(i+5<=str.length()))
+                    if((c==ColorLibrary.COLORCODE_ANSI256)&&(i+5<=str.length()))
                     {
                       str.delete(i,i+5);
                       i--;
@@ -454,10 +456,10 @@ public class CMStrings
                 {
                     int tagStart=i;
                     final char c=thisStr.charAt(i);
-                    if(c=='~')
+                    if(c==ColorLibrary.COLORCODE_BACKGROUND)
                         i++;
                     else
-                    if(c=='#')
+                    if(c==ColorLibrary.COLORCODE_ANSI256)
                         i+=3;
                     else
                     if((c=='<')||(c=='&'))

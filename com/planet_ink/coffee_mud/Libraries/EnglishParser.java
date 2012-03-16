@@ -595,11 +595,11 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
                     if(tos<toSrchC.length)
                         switch(toSrchC[tos])
                         {
-                        case '~':
+                        case ColorLibrary.COLORCODE_BACKGROUND:
                             if(tos < toSrchC.length-1)
                                 tos+=2;
                             break;
-                        case '#':
+                        case ColorLibrary.COLORCODE_ANSI256:
                           if(tos < toSrchC.length-4)
                               tos+=4;
                           break;
@@ -623,11 +623,11 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
                   if(tos<srchC.length)
                       switch(srchC[x])
                       {
-                      case '~':
+                      case ColorLibrary.COLORCODE_BACKGROUND:
                           if(x < srchC.length-1)
                               x+=2;
                           break;
-                      case '#':
+                      case ColorLibrary.COLORCODE_ANSI256:
                         if(x < srchC.length-4)
                             x+=4;
                         break;

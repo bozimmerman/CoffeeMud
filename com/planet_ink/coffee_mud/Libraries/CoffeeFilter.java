@@ -224,14 +224,14 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
                         final char c=buf.charAt(loop);
                         switch(c)
                         {
-                        case '~':
+                        case ColorLibrary.COLORCODE_BACKGROUND:
                             if(loop+1<buf.length())
                             {
                                 len++;
                                 loop++;
                             }
                             break;
-                        case '#':
+                        case ColorLibrary.COLORCODE_ANSI256:
                           if(loop+3<buf.length())
                           {
                               len+=3;

@@ -10,6 +10,7 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.ColorLibrary;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -101,8 +102,8 @@ public class Dyeing extends CommonSkill
                     {
                         if((desc.charAt(x)=='^')
                         &&(desc.charAt(x+1)!='?')
-                        &&(desc.charAt(x+1)!='~')
-                        &&(desc.charAt(x+1)!='#'))
+                        &&(desc.charAt(x+1)!=ColorLibrary.COLORCODE_BACKGROUND)
+                        &&(desc.charAt(x+1)!=ColorLibrary.COLORCODE_ANSI256))
                             desc.setCharAt(x+1,writing.charAt(0));
                     }
                     String d=desc.toString();
