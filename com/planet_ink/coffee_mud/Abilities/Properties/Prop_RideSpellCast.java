@@ -36,9 +36,9 @@ import java.util.*;
 @SuppressWarnings("unchecked")
 public class Prop_RideSpellCast extends Prop_HaveSpellCast
 {
-	public String ID() { return "Prop_RideSpellCast"; }
-	public String name(){ return "Casting spells when ridden";}
-	protected int canAffectCode(){return Ability.CAN_ITEMS|Ability.CAN_MOBS;}
+    public String ID() { return "Prop_RideSpellCast"; }
+    public String name(){ return "Casting spells when ridden";}
+    protected int canAffectCode(){return Ability.CAN_ITEMS|Ability.CAN_MOBS;}
     protected Vector lastRiders=new Vector();
     public String accountForYourself()
     { return spellAccountingsWithMask("Casts "," on those mounted.");}
@@ -49,37 +49,37 @@ public class Prop_RideSpellCast extends Prop_HaveSpellCast
         lastRiders=new Vector();
     }
     
-	public void affectPhyStats(Physical host, PhyStats affectableStats)
-	{
-		if(processing) return;
-		processing=true;
-		if(affected instanceof Rideable)
-		{
-			Rideable RI=(Rideable)affected;
-			for(int r=0;r<RI.numRiders();r++)
-			{
-				Rider R=RI.fetchRider(r);
-				if(R instanceof MOB)
-				{
-					MOB M=(MOB)R;
-					if((!lastRiders.contains(M))&&(RI.amRiding(M)))
+    public void affectPhyStats(Physical host, PhyStats affectableStats)
+    {
+        if(processing) return;
+        processing=true;
+        if(affected instanceof Rideable)
+        {
+            Rideable RI=(Rideable)affected;
+            for(int r=0;r<RI.numRiders();r++)
+            {
+                Rider R=RI.fetchRider(r);
+                if(R instanceof MOB)
+                {
+                    MOB M=(MOB)R;
+                    if((!lastRiders.contains(M))&&(RI.amRiding(M)))
                     {
-						if(addMeIfNeccessary(M,M,true,0))
+                        if(addMeIfNeccessary(M,M,true,0))
                             lastRiders.addElement(M);
                     }
-				}
-			}
-			for(int i=lastRiders.size()-1;i>=0;i--)
-			{
-				MOB M=(MOB)lastRiders.elementAt(i);
-				if(!RI.amRiding(M))
+                }
+            }
+            for(int i=lastRiders.size()-1;i>=0;i--)
+            {
+                MOB M=(MOB)lastRiders.elementAt(i);
+                if(!RI.amRiding(M))
                 {
-					removeMyAffectsFrom(M);
+                    removeMyAffectsFrom(M);
                     while(lastRiders.contains(M))
                         lastRiders.removeElement(M);
                 }
-			}
-		}
-		processing=false;
-	}
+            }
+        }
+        processing=false;
+    }
 }

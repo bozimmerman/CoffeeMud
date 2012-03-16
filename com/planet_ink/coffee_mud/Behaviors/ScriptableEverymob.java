@@ -41,10 +41,10 @@ public class ScriptableEverymob extends StdBehavior implements ScriptingEngine
     private boolean started=false;
     private Scriptable sampleB=null;
 
-	public String accountForYourself()
-	{ 
-		return "complex triggered behaving";
-	}
+    public String accountForYourself()
+    { 
+        return "complex triggered behaving";
+    }
 
     private void giveUpTheScript(Area metroA, MOB M)
     {
@@ -85,30 +85,30 @@ public class ScriptableEverymob extends StdBehavior implements ScriptingEngine
     
     private void giveEveryoneTheScript(Environmental forMe)
     {
-    	if((CMProps.getBoolVar(CMProps.SYSTEMB_MUDSTARTED))
-    	&&(!started))
-    	{
-	    	started = true;
-	        Enumeration rooms=determineRooms(forMe);
-	        Area A=determineArea(forMe);
-	        if((A!=null)&&(rooms!=null))
-	        {
-	            Room R=null;
-	            for(;rooms.hasMoreElements();)
-	            {
-	                R=(Room)rooms.nextElement();
-	                for(int m=0;m<R.numInhabitants();m++)
-	                    giveUpTheScript(A,R.fetchInhabitant(m));
-	            }
-	        }
-    	}
+        if((CMProps.getBoolVar(CMProps.SYSTEMB_MUDSTARTED))
+        &&(!started))
+        {
+            started = true;
+            Enumeration rooms=determineRooms(forMe);
+            Area A=determineArea(forMe);
+            if((A!=null)&&(rooms!=null))
+            {
+                Room R=null;
+                for(;rooms.hasMoreElements();)
+                {
+                    R=(Room)rooms.nextElement();
+                    for(int m=0;m<R.numInhabitants();m++)
+                        giveUpTheScript(A,R.fetchInhabitant(m));
+                }
+            }
+        }
     }
     
     public boolean tick(Tickable ticking, int tickID)
     {
-    	if((!started)&&(ticking instanceof Environmental))
-    		giveEveryoneTheScript((Environmental)ticking);
-    	return super.tick(ticking, tickID);
+        if((!started)&&(ticking instanceof Environmental))
+            giveEveryoneTheScript((Environmental)ticking);
+        return super.tick(ticking, tickID);
     }
     
     public void startBehavior(PhysicalAgent forMe)
@@ -123,61 +123,67 @@ public class ScriptableEverymob extends StdBehavior implements ScriptingEngine
             giveUpTheScript(determineArea(host),msg.source());
         super.executeMsg(host,msg);
     }
-	public String defaultQuestName() {
-		return (sampleB==null)?"":sampleB.defaultQuestName();
-	}
-	public void dequeResponses() {
-		if(sampleB!=null) sampleB.dequeResponses();
-	}
-	public List<String> externalFiles(){return (sampleB==null)?null:sampleB.externalFiles();}
-	public boolean endQuest(PhysicalAgent hostObj, MOB mob, String quest) {
-		return (sampleB==null)?false:sampleB.endQuest(hostObj, mob, quest);
-	}
-	public boolean eval(PhysicalAgent scripted, MOB source,
-			Environmental target, MOB monster, Item primaryItem,
-			Item secondaryItem, String msg, Object[] tmp, String[][] eval,
-			int startEval) {
-		return (sampleB==null)?false:sampleB.eval(scripted, source, target, monster, primaryItem, secondaryItem, msg, tmp, eval, startEval);
-	}
-	public String execute(PhysicalAgent scripted, MOB source,
-			Environmental target, MOB monster, Item primaryItem,
-			Item secondaryItem, DVector script, String msg, Object[] tmp) {
-		return (sampleB==null)?"":sampleB.execute(scripted, source, target, monster, primaryItem, secondaryItem, script, msg, tmp);
-	}
-	public String getLocalVarXML() {
-		return (sampleB==null)?"":sampleB.getLocalVarXML();
-	}
-	public MOB getMakeMOB(Tickable ticking) {
-		return (sampleB==null)?null:sampleB.getMakeMOB(ticking);
-	}
-	public String getScript() {
-		return (sampleB==null)?"":sampleB.getScript();
-	}
-	public String getScriptResourceKey() {
-		return (sampleB==null)?"":sampleB.getScriptResourceKey();
-	}
-	public String getVar(String context, String variable) {
-		return (sampleB==null)?"":sampleB.getVar(context, variable);
-	}
-	public String getVarScope() {
-		return (sampleB==null)?"":sampleB.getVarScope();
-	}
-	public boolean isVar(String context, String variable) {
-		return (sampleB==null)?false:sampleB.isVar(context, variable);
-	}
-	public String[] parseEval(String evaluable) throws ScriptParseException {
-		return (sampleB==null)?new String[0]:sampleB.parseEval(evaluable);
-	}
-	public void setLocalVarXML(String xml) {
-		if(sampleB!=null) sampleB.setLocalVarXML(xml);
-	}
-	public void setScript(String newParms) {
-		if(sampleB!=null) sampleB.setScript(newParms);
-	}
-	public void setVar(String context, String variable, String value) {
-		if(sampleB!=null) sampleB.setVar(context, variable, value);
-	}
-	public void setVarScope(String scope) {
-		if(sampleB!=null) sampleB.setVarScope(scope);
-	}
+    public String defaultQuestName() {
+        return (sampleB==null)?"":sampleB.defaultQuestName();
+    }
+    public void dequeResponses() {
+        if(sampleB!=null) sampleB.dequeResponses();
+    }
+    public List<String> externalFiles(){return (sampleB==null)?null:sampleB.externalFiles();}
+    public boolean endQuest(PhysicalAgent hostObj, MOB mob, String quest) {
+        return (sampleB==null)?false:sampleB.endQuest(hostObj, mob, quest);
+    }
+    public boolean eval(PhysicalAgent scripted, MOB source,
+            Environmental target, MOB monster, Item primaryItem,
+            Item secondaryItem, String msg, Object[] tmp, String[][] eval,
+            int startEval) {
+        return (sampleB==null)?false:sampleB.eval(scripted, source, target, monster, primaryItem, secondaryItem, msg, tmp, eval, startEval);
+    }
+    public String execute(PhysicalAgent scripted, MOB source,
+            Environmental target, MOB monster, Item primaryItem,
+            Item secondaryItem, DVector script, String msg, Object[] tmp) {
+        return (sampleB==null)?"":sampleB.execute(scripted, source, target, monster, primaryItem, secondaryItem, script, msg, tmp);
+    }
+    public String getLocalVarXML() {
+        return (sampleB==null)?"":sampleB.getLocalVarXML();
+    }
+    public MOB getMakeMOB(Tickable ticking) {
+        return (sampleB==null)?null:sampleB.getMakeMOB(ticking);
+    }
+    public String getScript() {
+        return (sampleB==null)?"":sampleB.getScript();
+    }
+    public String getScriptResourceKey() {
+        return (sampleB==null)?"":sampleB.getScriptResourceKey();
+    }
+    public String getVar(String context, String variable) {
+        return (sampleB==null)?"":sampleB.getVar(context, variable);
+    }
+    public String getVarScope() {
+        return (sampleB==null)?"":sampleB.getVarScope();
+    }
+    public boolean isVar(String context, String variable) {
+        return (sampleB==null)?false:sampleB.isVar(context, variable);
+    }
+    public String[] parseEval(String evaluable) throws ScriptParseException {
+        return (sampleB==null)?new String[0]:sampleB.parseEval(evaluable);
+    }
+    public void setLocalVarXML(String xml) {
+        if(sampleB!=null) sampleB.setLocalVarXML(xml);
+    }
+    public void setScript(String newParms) {
+        if(sampleB!=null) sampleB.setScript(newParms);
+    }
+    public void setVar(String context, String variable, String value) {
+        if(sampleB!=null) sampleB.setVar(context, variable, value);
+    }
+    public void setVarScope(String scope) {
+        if(sampleB!=null) sampleB.setVarScope(scope);
+    }
+    public String varify(MOB source, Environmental target,
+        PhysicalAgent scripted, MOB monster, Item primaryItem,
+        Item secondaryItem, String msg, Object[] tmp, String varifyable) 
+    {
+        return (sampleB==null)?"":sampleB.varify(source, target, scripted, monster, primaryItem, secondaryItem, msg, tmp, varifyable);
+    }
 }

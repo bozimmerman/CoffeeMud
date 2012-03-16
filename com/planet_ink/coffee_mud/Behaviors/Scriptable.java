@@ -44,10 +44,10 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
         return engine;
     }
 
-	public String accountForYourself()
-	{ 
-		return "complex triggered behaving";
-	}
+    public String accountForYourself()
+    { 
+        return "complex triggered behaving";
+    }
 
     public long getTickStatus()
     {
@@ -74,7 +74,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
     }
     public String getScriptResourceKey()
     {
-    	return engine().getScriptResourceKey();
+        return engine().getScriptResourceKey();
     }
 
     public String getParms() { return engine().getScript();}
@@ -103,7 +103,6 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
         if(engine().getVarScope().length()>0)
             engine().setLocalVarXML(xml);
     }
-
 
     public boolean eval(PhysicalAgent scripted,
                         MOB source,
@@ -158,4 +157,11 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
     }
 
     public void dequeResponses() { engine().dequeResponses();}
+
+    public String varify(MOB source, Environmental target,
+        PhysicalAgent scripted, MOB monster, Item primaryItem,
+        Item secondaryItem, String msg, Object[] tmp, String varifyable) 
+    {
+        return engine().varify(source, target, scripted, monster, primaryItem, secondaryItem, msg, tmp, varifyable);
+    }
 }

@@ -35,10 +35,10 @@ import java.util.*;
 */
 public class Prop_HaveSpellCast extends Prop_SpellAdder
 {
-	public String ID() { return "Prop_HaveSpellCast"; }
-	public String name(){ return "Casting spells when owned";}
-	protected int canAffectCode(){return Ability.CAN_ITEMS;}
-	protected Item myItem=null;
+    public String ID() { return "Prop_HaveSpellCast"; }
+    public String name(){ return "Casting spells when owned";}
+    protected int canAffectCode(){return Ability.CAN_ITEMS;}
+    protected Item myItem=null;
     
     public String accountForYourself()
     { return spellAccountingsWithMask("Casts "," on the owner.");}
@@ -57,24 +57,24 @@ public class Prop_HaveSpellCast extends Prop_SpellAdder
     public void executeMsg(Environmental host, CMMsg msg)
     {}
     
-	public void affectPhyStats(Physical host, PhyStats affectableStats)
-	{
-		if(processing) return;
-		processing=true;
-		if(host instanceof Item)
-		{
-			myItem=(Item)host;
+    public void affectPhyStats(Physical host, PhyStats affectableStats)
+    {
+        if(processing) return;
+        processing=true;
+        if(host instanceof Item)
+        {
+            myItem=(Item)host;
 
-			if((lastMOB instanceof MOB)
-			&&((myItem.owner()!=lastMOB)||(myItem.amDestroyed()))
-			&&(((MOB)lastMOB).location()!=null))
+            if((lastMOB instanceof MOB)
+            &&((myItem.owner()!=lastMOB)||(myItem.amDestroyed()))
+            &&(((MOB)lastMOB).location()!=null))
                 removeMyAffectsFromLastMOB();
-			
-			if((lastMOB==null)
-			&&(myItem.owner() instanceof MOB)
+            
+            if((lastMOB==null)
+            &&(myItem.owner() instanceof MOB)
             &&(((MOB)myItem.owner()).location()!=null))
-				addMeIfNeccessary(myItem.owner(),myItem.owner(),true,0);
-		}
-		processing=false;
-	}
+                addMeIfNeccessary(myItem.owner(),myItem.owner(),true,0);
+        }
+        processing=false;
+    }
 }

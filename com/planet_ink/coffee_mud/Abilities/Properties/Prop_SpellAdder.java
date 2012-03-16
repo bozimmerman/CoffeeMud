@@ -37,32 +37,32 @@ import java.util.*;
 @SuppressWarnings("unchecked")
 public class Prop_SpellAdder extends Property
 {
-	public String ID() { return "Prop_SpellAdder"; }
-	public String name(){ return "Casting spells on oneself";}
-	protected int canAffectCode(){return Ability.CAN_ITEMS|Ability.CAN_ROOMS|Ability.CAN_AREAS|Ability.CAN_MOBS;}
+    public String ID() { return "Prop_SpellAdder"; }
+    public String name(){ return "Casting spells on oneself";}
+    protected int canAffectCode(){return Ability.CAN_ITEMS|Ability.CAN_ROOMS|Ability.CAN_AREAS|Ability.CAN_MOBS;}
     protected Physical lastMOB=null;
     protected MOB invokerMOB=null;
     protected boolean processing=false;
     protected boolean uninvocable=true;
     protected int level=-1;
-	protected List<Ability> spellV=null;
+    protected List<Ability> spellV=null;
     protected MaskingLibrary.CompiledZapperMask compiledMask=null;
     protected List<Ability> unrevocableSpells = null;
     
     protected void finalize()
     {
-    	spellV=null;
-    	compiledMask=null;
-    	unrevocableSpells=null;
-    	if((invokerMOB!=null)&&(invokerMOB.Name().equals("invoker")))
-    		invokerMOB.destroy();
+        spellV=null;
+        compiledMask=null;
+        unrevocableSpells=null;
+        if((invokerMOB!=null)&&(invokerMOB.Name().equals("invoker")))
+            invokerMOB.destroy();
     }
     
     public String getMaskString(String newText)
     {
         int maskindex=newText.toUpperCase().indexOf("MASK=");
         if(maskindex>0)
-        	return newText.substring(maskindex+5).trim();
+            return newText.substring(maskindex+5).trim();
         return "";
     }
     
@@ -70,129 +70,129 @@ public class Prop_SpellAdder extends Property
     {
         int maskindex=newText.toUpperCase().indexOf("MASK=");
         if(maskindex>0)
-        	return newText.substring(0,maskindex).trim();
+            return newText.substring(0,maskindex).trim();
         return newText;
     }
     
- 	public void setMiscText(String newText)
-	{
-		super.setMiscText(newText);
-		spellV=null;
-		compiledMask=null;
+     public void setMiscText(String newText)
+    {
+        super.setMiscText(newText);
+        spellV=null;
+        compiledMask=null;
         lastMOB=null;
         String maskString=getMaskString(newText);
         if(maskString.length()>0)
-        	compiledMask=CMLib.masking().getPreCompiledMask(maskString);
-	}
+            compiledMask=CMLib.masking().getPreCompiledMask(maskString);
+    }
     
-	public List<Ability> getMySpellsV()
-	{
+    public List<Ability> getMySpellsV()
+    {
         if(spellV!=null) return spellV;
-		spellV=new Vector();
-		String names=getParmString(text());
-		Vector set=CMParms.parseSemicolons(names,true);
-		String thisOne=null;
-		for(int s=0;s<set.size();s++)
-		{
-			thisOne=(String)set.elementAt(s);
-			if(thisOne.equalsIgnoreCase("NOUNINVOKE"))
-			{
-				this.uninvocable=false;
-				continue;
-			}
-			if(thisOne.toUpperCase().startsWith("LEVEL"))
-			{
-				level=CMParms.getParmInt(thisOne,"LEVEL",-1);
-				if(level>=0)
-					continue;
-			}
-			int pctDex=thisOne.indexOf("% ");
-			if((pctDex>0) && (thisOne.substring(pctDex+1).trim().length()>0))
-				thisOne=thisOne.substring(pctDex+1).trim();
-			String parm="";
-			if(thisOne.endsWith(")"))
-			{
-				int x=thisOne.indexOf('(');
-				if(x>0)
-				{
-					parm=thisOne.substring(x+1,thisOne.length()-1);
-					thisOne=thisOne.substring(0,x).trim();
-				}
-			}
+        spellV=new Vector();
+        String names=getParmString(text());
+        Vector set=CMParms.parseSemicolons(names,true);
+        String thisOne=null;
+        for(int s=0;s<set.size();s++)
+        {
+            thisOne=(String)set.elementAt(s);
+            if(thisOne.equalsIgnoreCase("NOUNINVOKE"))
+            {
+                this.uninvocable=false;
+                continue;
+            }
+            if(thisOne.toUpperCase().startsWith("LEVEL"))
+            {
+                level=CMParms.getParmInt(thisOne,"LEVEL",-1);
+                if(level>=0)
+                    continue;
+            }
+            int pctDex=thisOne.indexOf("% ");
+            if((pctDex>0) && (thisOne.substring(pctDex+1).trim().length()>0))
+                thisOne=thisOne.substring(pctDex+1).trim();
+            String parm="";
+            if(thisOne.endsWith(")"))
+            {
+                int x=thisOne.indexOf('(');
+                if(x>0)
+                {
+                    parm=thisOne.substring(x+1,thisOne.length()-1);
+                    thisOne=thisOne.substring(0,x).trim();
+                }
+            }
 
-			Ability A=CMClass.getAbility(thisOne);
-			if((A!=null)&&((A.classificationCode()&Ability.ALL_DOMAINS)!=Ability.DOMAIN_ARCHON))
-			{
-				A=(Ability)A.copyOf();
-				A.setMiscText(parm);
+            Ability A=CMClass.getAbility(thisOne);
+            if((A!=null)&&((A.classificationCode()&Ability.ALL_DOMAINS)!=Ability.DOMAIN_ARCHON))
+            {
+                A=(Ability)A.copyOf();
+                A.setMiscText(parm);
                 spellV.add(A);
-			}
-		}
-		return spellV;
-	}
+            }
+        }
+        return spellV;
+    }
 
-	public boolean didHappen(int defaultPct)
-	{
-		String parmString=getParmString(text());
-		int x=parmString.indexOf('%');
-		if(x<0)
-		{
-			if(CMLib.dice().rollPercentage()<=defaultPct)
-				return true;
-			return false;
-		}
-		int mul=1;
-		int tot=0;
-		while((--x)>=0)
-		{
-			if(Character.isDigit(parmString.charAt(x)))
-				tot+=CMath.s_int(""+parmString.charAt(x))*mul;
-			else
-				x=-1;
-			mul=mul*10;
-		}
-		if(CMLib.dice().rollPercentage()<=tot)
-			return true;
-		return false;
-	}
+    public boolean didHappen(int defaultPct)
+    {
+        String parmString=getParmString(text());
+        int x=parmString.indexOf('%');
+        if(x<0)
+        {
+            if(CMLib.dice().rollPercentage()<=defaultPct)
+                return true;
+            return false;
+        }
+        int mul=1;
+        int tot=0;
+        while((--x)>=0)
+        {
+            if(Character.isDigit(parmString.charAt(x)))
+                tot+=CMath.s_int(""+parmString.charAt(x))*mul;
+            else
+                x=-1;
+            mul=mul*10;
+        }
+        if(CMLib.dice().rollPercentage()<=tot)
+            return true;
+        return false;
+    }
     
-	public Map<String, String> makeMySpellsH(List<Ability> V)
-	{
-		Hashtable<String, String> spellH=new Hashtable<String, String>();
-		for(int v=0;v<V.size();v++)
+    public Map<String, String> makeMySpellsH(List<Ability> V)
+    {
+        Hashtable<String, String> spellH=new Hashtable<String, String>();
+        for(int v=0;v<V.size();v++)
             spellH.put(((Ability)V.get(v)).ID(),((Ability)V.get(v)).ID());
-		return spellH;
-	}
+        return spellH;
+    }
 
 
-	public MOB getBestInvokerMOB(Environmental target)
-	{
-		if(target instanceof MOB)
-			return (MOB)target;
-		if((target instanceof Item)&&(((Item)target).owner()!=null)&&(((Item)target).owner() instanceof MOB))
-			return (MOB)((Item)target).owner();
-		return null;
-	}
-	
-	public MOB getInvokerMOB(Environmental source, Environmental target)
-	{
-		MOB mob=getBestInvokerMOB(affected);
-		if(mob==null) mob=getBestInvokerMOB(source);
-		if(mob==null) mob=getBestInvokerMOB(target);
-		if(mob==null) mob=invokerMOB;
-		if(mob==null)
-		{
-	        Room R=CMLib.map().roomLocation(target);
-	        if(R==null) R=CMLib.map().roomLocation(target);
-	        if(R==null) R=CMLib.map().getRandomRoom();
-	        mob=CMLib.map().mobCreated(R);
-	        mob.setName("invoker");
-	        mob.basePhyStats().setLevel(affected.phyStats().level());
-	        mob.phyStats().setLevel(affected.phyStats().level());
-		}
-		invokerMOB=mob;
-		return invokerMOB;
-	}
+    public MOB getBestInvokerMOB(Environmental target)
+    {
+        if(target instanceof MOB)
+            return (MOB)target;
+        if((target instanceof Item)&&(((Item)target).owner()!=null)&&(((Item)target).owner() instanceof MOB))
+            return (MOB)((Item)target).owner();
+        return null;
+    }
+    
+    public MOB getInvokerMOB(Environmental source, Environmental target)
+    {
+        MOB mob=getBestInvokerMOB(affected);
+        if(mob==null) mob=getBestInvokerMOB(source);
+        if(mob==null) mob=getBestInvokerMOB(target);
+        if(mob==null) mob=invokerMOB;
+        if(mob==null)
+        {
+            Room R=CMLib.map().roomLocation(target);
+            if(R==null) R=CMLib.map().roomLocation(target);
+            if(R==null) R=CMLib.map().getRandomRoom();
+            mob=CMLib.map().mobCreated(R);
+            mob.setName("invoker");
+            mob.basePhyStats().setLevel(affected.phyStats().level());
+            mob.phyStats().setLevel(affected.phyStats().level());
+        }
+        invokerMOB=mob;
+        return invokerMOB;
+    }
 
     public List convertToV2(List<Ability> spellsV, Physical target)
     {
@@ -227,44 +227,44 @@ public class Prop_SpellAdder extends Property
         return VTOO;
     }
     
-	public boolean addMeIfNeccessary(PhysicalAgent source, Physical target, boolean makeLongLasting, int asLevel)
-	{
-		List<Ability> V=getMySpellsV();
+    public boolean addMeIfNeccessary(PhysicalAgent source, Physical target, boolean makeLongLasting, int asLevel)
+    {
+        List<Ability> V=getMySpellsV();
         if((target==null)
         ||(V.size()==0)
         ||((compiledMask!=null)
             &&(!CMLib.masking().maskCheck(compiledMask,target,true))))
                 return false;
-		List VTOO=convertToV2(V,target);
+        List VTOO=convertToV2(V,target);
         if(VTOO.size()==0) return false;
-		MOB qualMOB=getInvokerMOB(source,target);
-		for(int v=0;v<VTOO.size();v+=2)
-		{
-			Ability A=(Ability)VTOO.get(v);
+        MOB qualMOB=getInvokerMOB(source,target);
+        for(int v=0;v<VTOO.size();v+=2)
+        {
+            Ability A=(Ability)VTOO.get(v);
             Vector V2=(Vector)VTOO.get(v+1);
             if(level >= 0)
-            	asLevel = level;
+                asLevel = level;
             else
             if(asLevel <=0)
-            	asLevel = (affected!=null)?affected.phyStats().level():0;
-			A.invoke(qualMOB,V2,target,true,asLevel);
-			Ability EA=target.fetchEffect(A.ID());
+                asLevel = (affected!=null)?affected.phyStats().level():0;
+            A.invoke(qualMOB,V2,target,true,asLevel);
+            Ability EA=target.fetchEffect(A.ID());
             lastMOB=target;
             // this needs to go here because otherwise it makes non-item-invoked spells long lasting,
             // which means they dont go away when item is removed.
-			if((EA!=null)&&(makeLongLasting))
-			{
-				EA.makeLongLasting();
-				if(!uninvocable) {
-					EA.makeNonUninvokable();
-					if(unrevocableSpells == null)
-						unrevocableSpells = new Vector();
-					unrevocableSpells.add(EA);
-				}
-			}
-		}
+            if((EA!=null)&&(makeLongLasting))
+            {
+                EA.makeLongLasting();
+                if(!uninvocable) {
+                    EA.makeNonUninvokable();
+                    if(unrevocableSpells == null)
+                        unrevocableSpells = new Vector();
+                    unrevocableSpells.add(EA);
+                }
+            }
+        }
         return true;
-	}
+    }
 
     public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
     {
@@ -274,7 +274,7 @@ public class Prop_SpellAdder extends Property
             addMeIfNeccessary(mob,givenTarget,false,asLevel);
         else
         {
-        	List<Ability> V=getMySpellsV();
+            List<Ability> V=getMySpellsV();
             commands.clear();
             commands.addAll(convertToV2(V,null));
         }
@@ -292,84 +292,84 @@ public class Prop_SpellAdder extends Property
     
     public void setAffectedOne(Physical P) 
     {
-    	super.setAffectedOne(P);
-    	if(P == null)
-    	{
-    		removeMyAffectsFromLastMOB();
-    		finalize();
-    	}
+        super.setAffectedOne(P);
+        if(P == null)
+        {
+            removeMyAffectsFromLastMOB();
+            finalize();
+        }
     }
     
-	public void removeMyAffectsFrom(Physical P)
-	{
+    public void removeMyAffectsFrom(Physical P)
+    {
         if(P==null)return;
         
-		int x=0;
-		Vector eff=new Vector();
-		Ability thisAffect=null;
-		for(x=0;x<P.numEffects();x++) // personal
-		{
-			thisAffect=P.fetchEffect(x);
-			if(thisAffect!=null)
-				eff.addElement(thisAffect);
-		}
-		if(eff.size()>0)
-		{
-			Map<String,String> h=makeMySpellsH(getMySpellsV());
-			if(unrevocableSpells != null)
-			{
-				for(int v=unrevocableSpells.size()-1;v>=0;v--)
-				{
-					thisAffect = (Ability)unrevocableSpells.get(v);
-					if(h.containsKey(thisAffect.ID()))
-						P.delEffect(thisAffect);
-				}
-			}
-			else
-			for(x=0;x<eff.size();x++)
-			{
-				thisAffect=(Ability)eff.elementAt(x);
-				String ID=(String)h.get(thisAffect.ID());
-				if((ID!=null)
-	            &&(thisAffect.invoker()==getInvokerMOB(P,P))) {
-					thisAffect.unInvoke();
-					if((!uninvocable)&&(!thisAffect.canBeUninvoked()))
-						P.delEffect(thisAffect);
-				}
-			}
-			unrevocableSpells = null;
-		}
-	}
+        int x=0;
+        Vector eff=new Vector();
+        Ability thisAffect=null;
+        for(x=0;x<P.numEffects();x++) // personal
+        {
+            thisAffect=P.fetchEffect(x);
+            if(thisAffect!=null)
+                eff.addElement(thisAffect);
+        }
+        if(eff.size()>0)
+        {
+            Map<String,String> h=makeMySpellsH(getMySpellsV());
+            if(unrevocableSpells != null)
+            {
+                for(int v=unrevocableSpells.size()-1;v>=0;v--)
+                {
+                    thisAffect = (Ability)unrevocableSpells.get(v);
+                    if(h.containsKey(thisAffect.ID()))
+                        P.delEffect(thisAffect);
+                }
+            }
+            else
+            for(x=0;x<eff.size();x++)
+            {
+                thisAffect=(Ability)eff.elementAt(x);
+                String ID=(String)h.get(thisAffect.ID());
+                if((ID!=null)
+                &&(thisAffect.invoker()==getInvokerMOB(P,P))) {
+                    thisAffect.unInvoke();
+                    if((!uninvocable)&&(!thisAffect.canBeUninvoked()))
+                        P.delEffect(thisAffect);
+                }
+            }
+            unrevocableSpells = null;
+        }
+    }
 
-	public void executeMsg(Environmental host, CMMsg msg)
-	{
-		if((affected instanceof Room)||(affected instanceof Area))
-		{
-			if((msg.targetMinor()==CMMsg.TYP_LEAVE)
-			||(msg.sourceMinor()==CMMsg.TYP_RECALL))
-				removeMyAffectsFrom(msg.source());
-			if(msg.targetMinor()==CMMsg.TYP_ENTER)
-				addMeIfNeccessary(msg.source(),msg.source(),true,0);
-		}
-		super.executeMsg(host,msg);
-	}
+    public void executeMsg(Environmental host, CMMsg msg)
+    {
+        if((affected instanceof Room)||(affected instanceof Area))
+        {
+            if((msg.targetMinor()==CMMsg.TYP_LEAVE)
+            ||(msg.sourceMinor()==CMMsg.TYP_RECALL))
+                removeMyAffectsFrom(msg.source());
+            if(msg.targetMinor()==CMMsg.TYP_ENTER)
+                addMeIfNeccessary(msg.source(),msg.source(),true,0);
+        }
+        super.executeMsg(host,msg);
+    }
 
-	public void affectPhyStats(Physical host, PhyStats affectableStats)
-	{
-		if(processing) return;
-		if((affected instanceof MOB)
-		   ||(affected instanceof Item))
-		{
-			processing=true;
-			if((lastMOB!=null)
-			 &&(host!=lastMOB))
-				removeMyAffectsFrom(lastMOB);
+    public void affectPhyStats(Physical host, PhyStats affectableStats)
+    {
+        if(processing) return;
+        if((affected instanceof MOB)
+           ||(affected instanceof Item))
+        {
+            processing=true;
+            if((lastMOB!=null)
+             &&(host!=lastMOB))
+                removeMyAffectsFrom(lastMOB);
 
-			if((lastMOB==null)&&(host instanceof PhysicalAgent))
-				addMeIfNeccessary((PhysicalAgent)host,(Physical)host,true,0);
-			processing=false;
-		}
-	}
+            if((lastMOB==null)&&(host instanceof PhysicalAgent))
+                addMeIfNeccessary((PhysicalAgent)host,(Physical)host,true,0);
+            processing=false;
+        }
+    }
     
     public String spellAccountingsWithMask(String pre, String post)
     {
