@@ -75,7 +75,7 @@ public class StdWebMacro implements WebMacro
               if(i<(s.length()-1))
               {
                   final char c=s.charAt(i+1);
-                  //TODO: handle ~ and _ here
+                  //TODO: handle ~ and # here?
                   String code=lookup[c];
                   if(code!=null)
                   {
