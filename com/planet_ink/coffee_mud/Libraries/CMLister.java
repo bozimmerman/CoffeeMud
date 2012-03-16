@@ -62,7 +62,7 @@ public class CMLister extends StdLibrary implements ListingLibrary
     }
     
     public int getReps(MOB viewerM, 
-            		   Environmental item, 
+                       Environmental item, 
                        List<? extends Environmental> theRest, 
                        boolean useName, 
                        boolean longLook)
@@ -125,11 +125,11 @@ public class CMLister extends StdLibrary implements ListingLibrary
                 if(name.startsWith("item"))
                 {
                     if(!otherItemsHere)
-                    	otherItemsHere=true;
+                        otherItemsHere=true;
                 }
                 else
                 if(!restV.contains(name))
-                	restV.addElement(name);
+                    restV.addElement(name);
             }
         }
         if((restV.size()==0)&&(!otherItemsHere)) return "";
@@ -153,50 +153,50 @@ public class CMLister extends StdLibrary implements ListingLibrary
                                 String tagParm,
                                 boolean longLook,
                                 boolean compress)
-	{
-	    boolean nameTagParm=((tagParm!=null)&&(tagParm.indexOf('*')>=0));
-		StringBuilder say=new StringBuilder("");
+    {
+        boolean nameTagParm=((tagParm!=null)&&(tagParm.indexOf('*')>=0));
+        StringBuilder say=new StringBuilder("");
         Environmental item=null;
         boolean sysmsgs=(viewerM!=null)?CMath.bset(viewerM.getBitmap(),MOB.ATT_SYSOPMSGS):false;
         int numShown=0;
         int maxToShow=CMProps.getIntVar(CMProps.SYSTEMI_MAXITEMSHOWN);
-		while(items.size()>0)
-		{
+        while(items.size()>0)
+        {
             if((maxToShow>0)&&(!longLook)&&(!sysmsgs)&&(!useName)&&(numShown>=maxToShow))
             {
                 say.append(summarizeTheRest(viewerM,items,compress));
                 items.clear();
                 break;
             }
-			item=items.get(0);
+            item=items.get(0);
             items.remove(item);
             int reps=getReps(viewerM,item,items,useName,longLook);
-			if(CMLib.flags().canBeSeenBy(item,viewerM)
-			&&((item.displayText().length()>0)
-			    ||sysmsgs
-				||useName))
-			{
+            if(CMLib.flags().canBeSeenBy(item,viewerM)
+            &&((item.displayText().length()>0)
+                ||sysmsgs
+                ||useName))
+            {
                 numShown++;
                 appendReps(reps,say,compress);
-				if(sysmsgs)
-					say.append("^H("+CMClass.classID(item)+")^N ");
+                if(sysmsgs)
+                    say.append("^H("+CMClass.classID(item)+")^N ");
                 if((!compress)&&(viewerM!=null)&&(!viewerM.isMonster())&&(viewerM.session().clientTelnetMode(Session.TELNET_MXP)))
                     say.append(CMProps.mxpImage(item," H=10 W=10",""," "));
-				say.append("^I");
-				
-				if(tag!=null)
-				{
-				    if(nameTagParm)
-					    say.append("^<"+tag+CMStrings.replaceAll(tagParm,"*",item.name())+"^>");
-				    else
-				        say.append("^<"+tag+tagParm+"^>");
-				}
+                say.append("^I");
+                
+                if(tag!=null)
+                {
+                    if(nameTagParm)
+                        say.append("^<"+tag+CMStrings.replaceAll(tagParm,"*",CMStrings.removeColors(item.name()))+"^>");
+                    else
+                        say.append("^<"+tag+tagParm+"^>");
+                }
                 if((compress)&&(item instanceof Physical)) 
-                	say.append(CMLib.flags().colorCodes((Physical)item,viewerM)+"^I");
+                    say.append(CMLib.flags().colorCodes((Physical)item,viewerM)+"^I");
                 say.append(itemSeenString(viewerM,item,useName,longLook,sysmsgs));
-				if(tag!=null)
-				    say.append("^</"+tag+"^>");
-				if((!compress)&&(item instanceof Physical)) 
+                if(tag!=null)
+                    say.append("^</"+tag+"^>");
+                if((!compress)&&(item instanceof Physical)) 
                     say.append(CMLib.flags().colorCodes((Physical)item,viewerM)+"^N\n\r");
                 else 
                     say.append("^N");
@@ -208,8 +208,8 @@ public class CMLister extends StdLibrary implements ListingLibrary
                 &&(!((Container)item).hasALid())
                 &&(!CMLib.flags().canBarelyBeSeenBy(item,viewerM)))
                 {
-                	List<Item> V=new Vector<Item>();
-                	V.addAll(((Container)item).getContents());
+                    List<Item> V=new Vector<Item>();
+                    V.addAll(((Container)item).getContents());
                     Item item2=null;
                     if(compress&&V.size()>0) say.append("{");
                     while(V.size()>0)
@@ -237,113 +237,113 @@ public class CMLister extends StdLibrary implements ListingLibrary
                         if(compress&&(V.size()==0)) say.append("} ");
                     }
                 }
-			}
-		}
-		return say;
-	}
-	
-	public StringBuilder reallyList(MOB viewerM, Map<String,? extends Object> these, int ofType)
-	{
-		return reallyList(viewerM,these,ofType,null);
-	}
-	public StringBuilder reallyList(MOB viewerM, Map<String,? extends Object> these)
-	{
-		return reallyList(viewerM,these,-1,null);
-	}
-	public StringBuilder reallyList(MOB viewerM, Map<String,? extends Object> these, Room likeRoom)
-	{
-		return reallyList(viewerM,these,-1,likeRoom);
-	}
-	public StringBuilder reallyList(MOB viewerM, Vector these, int ofType)
-	{
-		return reallyList(viewerM,these.elements(),ofType,null);
-	}
-	public StringBuilder reallyList(MOB viewerM, Enumeration these, int ofType)
-	{
-		return reallyList(viewerM,these,ofType,null);
-	}
-	public StringBuilder reallyList(MOB viewerM, Vector these)
-	{
-		return reallyList(viewerM,these.elements(),-1,null);
-	}
-	public StringBuilder reallyList(MOB viewerM, Enumeration these)
-	{
-		return reallyList(viewerM,these,-1,null);
-	}
-	public StringBuilder reallyList(MOB viewerM, Vector these, Room likeRoom)
-	{
-		return reallyList(viewerM,these.elements(),-1,likeRoom);
-	}
-	public StringBuilder reallyList(MOB viewerM, Map<String,? extends Object> these, int ofType, Room likeRoom)
-	{
-		StringBuilder lines=new StringBuilder("");
-		if(these.size()==0) return lines;
-		int column=0;
-		int COL_LEN=ListingLibrary.ColFixer.fixColWidth(24.0, viewerM);
-		for(String key : these.keySet())
-		{
-			Object thisThang=these.get(key);
-			String list=null;
-			if(thisThang instanceof String)
-				list=(String)thisThang;
-			else
-			if(thisThang instanceof Ability)
-				list=((Ability)thisThang).ID()+(((Ability)thisThang).isGeneric()?"*":"");
-			else
+            }
+        }
+        return say;
+    }
+    
+    public StringBuilder reallyList(MOB viewerM, Map<String,? extends Object> these, int ofType)
+    {
+        return reallyList(viewerM,these,ofType,null);
+    }
+    public StringBuilder reallyList(MOB viewerM, Map<String,? extends Object> these)
+    {
+        return reallyList(viewerM,these,-1,null);
+    }
+    public StringBuilder reallyList(MOB viewerM, Map<String,? extends Object> these, Room likeRoom)
+    {
+        return reallyList(viewerM,these,-1,likeRoom);
+    }
+    public StringBuilder reallyList(MOB viewerM, Vector these, int ofType)
+    {
+        return reallyList(viewerM,these.elements(),ofType,null);
+    }
+    public StringBuilder reallyList(MOB viewerM, Enumeration these, int ofType)
+    {
+        return reallyList(viewerM,these,ofType,null);
+    }
+    public StringBuilder reallyList(MOB viewerM, Vector these)
+    {
+        return reallyList(viewerM,these.elements(),-1,null);
+    }
+    public StringBuilder reallyList(MOB viewerM, Enumeration these)
+    {
+        return reallyList(viewerM,these,-1,null);
+    }
+    public StringBuilder reallyList(MOB viewerM, Vector these, Room likeRoom)
+    {
+        return reallyList(viewerM,these.elements(),-1,likeRoom);
+    }
+    public StringBuilder reallyList(MOB viewerM, Map<String,? extends Object> these, int ofType, Room likeRoom)
+    {
+        StringBuilder lines=new StringBuilder("");
+        if(these.size()==0) return lines;
+        int column=0;
+        int COL_LEN=ListingLibrary.ColFixer.fixColWidth(24.0, viewerM);
+        for(String key : these.keySet())
+        {
+            Object thisThang=these.get(key);
+            String list=null;
+            if(thisThang instanceof String)
+                list=(String)thisThang;
+            else
+            if(thisThang instanceof Ability)
+                list=((Ability)thisThang).ID()+(((Ability)thisThang).isGeneric()?"*":"");
+            else
             if(thisThang instanceof CharClass)
                 list=((CharClass)thisThang).ID()+(((CharClass)thisThang).isGeneric()?"*":"");
             else
             if(thisThang instanceof Race)
                 list=((Race)thisThang).ID()+(((Race)thisThang).isGeneric()?"*":"");
             else
-				list=CMClass.classID(thisThang);
-			if(ofType>=0)
-			{
-				if((thisThang!=null)&&(thisThang instanceof Ability))
-				{
-					if((((Ability)thisThang).classificationCode()&Ability.ALL_ACODES)!=ofType)
-						list=null;
-				}
-			}
-			if((likeRoom!=null)&&(thisThang instanceof Room))
-			{
-				if((((Room)thisThang).roomID().length()>0)&&(!((Room)thisThang).getArea().Name().equals(likeRoom.getArea().Name())))
-				   list=null;
-			}
-			if(list!=null)
-			{
-				if(++column>3)
-				{
-					lines.append("\n\r");
-					column=1;
-				}
-				lines.append(CMStrings.padRight(list,COL_LEN)+" ");
-			}
-		}
-		lines.append("\n\r");
-		return lines;
-	}
+                list=CMClass.classID(thisThang);
+            if(ofType>=0)
+            {
+                if((thisThang!=null)&&(thisThang instanceof Ability))
+                {
+                    if((((Ability)thisThang).classificationCode()&Ability.ALL_ACODES)!=ofType)
+                        list=null;
+                }
+            }
+            if((likeRoom!=null)&&(thisThang instanceof Room))
+            {
+                if((((Room)thisThang).roomID().length()>0)&&(!((Room)thisThang).getArea().Name().equals(likeRoom.getArea().Name())))
+                   list=null;
+            }
+            if(list!=null)
+            {
+                if(++column>3)
+                {
+                    lines.append("\n\r");
+                    column=1;
+                }
+                lines.append(CMStrings.padRight(list,COL_LEN)+" ");
+            }
+        }
+        lines.append("\n\r");
+        return lines;
+    }
 
-	public StringBuilder reallyList(MOB viewerM, Vector these, int ofType, Room likeRoom)
-	{ return reallyList(viewerM,these.elements(),ofType,likeRoom);}
-	public StringBuilder reallyList(MOB viewerM, Enumeration these, Room likeRoom)
-	{ return reallyList(viewerM,these,-1,likeRoom);}
-	public StringBuilder reallyList(MOB viewerM, Enumeration these, int ofType, Room likeRoom)
-	{
-		StringBuilder lines=new StringBuilder("");
-		if(!these.hasMoreElements()) return lines;
-		int column=0;
-		int COL_LEN=ListingLibrary.ColFixer.fixColWidth(24.0, viewerM);
-		for(Enumeration e=these;e.hasMoreElements();)
-		{
-			Object thisThang=e.nextElement();
-			String list=null;
-			if(thisThang instanceof String)
-				list=(String)thisThang;
+    public StringBuilder reallyList(MOB viewerM, Vector these, int ofType, Room likeRoom)
+    { return reallyList(viewerM,these.elements(),ofType,likeRoom);}
+    public StringBuilder reallyList(MOB viewerM, Enumeration these, Room likeRoom)
+    { return reallyList(viewerM,these,-1,likeRoom);}
+    public StringBuilder reallyList(MOB viewerM, Enumeration these, int ofType, Room likeRoom)
+    {
+        StringBuilder lines=new StringBuilder("");
+        if(!these.hasMoreElements()) return lines;
+        int column=0;
+        int COL_LEN=ListingLibrary.ColFixer.fixColWidth(24.0, viewerM);
+        for(Enumeration e=these;e.hasMoreElements();)
+        {
+            Object thisThang=e.nextElement();
+            String list=null;
+            if(thisThang instanceof String)
+                list=(String)thisThang;
             else
-			if(thisThang instanceof Ability)
-				list=((Ability)thisThang).ID()+(((Ability)thisThang).isGeneric()?"*":"");
-			else
+            if(thisThang instanceof Ability)
+                list=((Ability)thisThang).ID()+(((Ability)thisThang).isGeneric()?"*":"");
+            else
             if(thisThang instanceof CharClass)
                 list=((CharClass)thisThang).ID()+(((CharClass)thisThang).isGeneric()?"*":"");
             else
@@ -351,48 +351,48 @@ public class CMLister extends StdLibrary implements ListingLibrary
                 list=((Race)thisThang).ID()+(((Race)thisThang).isGeneric()?"*":"");
             else
                 list=CMClass.classID(thisThang);
-			if(ofType>=0)
-			{
-				if((thisThang!=null)&&(thisThang instanceof Ability))
-				{
-					if((((Ability)thisThang).classificationCode()&Ability.ALL_ACODES)!=ofType)
-						list=null;
-				}
-			}
-			if((likeRoom!=null)&&(thisThang instanceof Room))
-			{
-				if((((Room)thisThang).roomID().length()>0)&&(!((Room)thisThang).getArea().Name().equals(likeRoom.getArea().Name())))
-				   list=null;
-			}
-			if(list!=null)
-			{
-				if(++column>3)
-				{
-					lines.append("\n\r");
-					column=1;
-				}
-				lines.append(CMStrings.padRight(list,COL_LEN)+" ");
-			}
-		}
-		lines.append("\n\r");
-		return lines;
-	}
-	public StringBuilder reallyList2Cols(MOB viewerM, Enumeration these, int ofType, Room likeRoom)
-	{
-		StringBuilder lines=new StringBuilder("");
-		if(!these.hasMoreElements()) return lines;
-		int column=0;
-		int COL_LEN=ListingLibrary.ColFixer.fixColWidth(37.0, viewerM);
-		for(Enumeration e=these;e.hasMoreElements();)
-		{
-			Object thisThang=e.nextElement();
-			String list=null;
-			if(thisThang instanceof String)
-				list=(String)thisThang;
+            if(ofType>=0)
+            {
+                if((thisThang!=null)&&(thisThang instanceof Ability))
+                {
+                    if((((Ability)thisThang).classificationCode()&Ability.ALL_ACODES)!=ofType)
+                        list=null;
+                }
+            }
+            if((likeRoom!=null)&&(thisThang instanceof Room))
+            {
+                if((((Room)thisThang).roomID().length()>0)&&(!((Room)thisThang).getArea().Name().equals(likeRoom.getArea().Name())))
+                   list=null;
+            }
+            if(list!=null)
+            {
+                if(++column>3)
+                {
+                    lines.append("\n\r");
+                    column=1;
+                }
+                lines.append(CMStrings.padRight(list,COL_LEN)+" ");
+            }
+        }
+        lines.append("\n\r");
+        return lines;
+    }
+    public StringBuilder reallyList2Cols(MOB viewerM, Enumeration these, int ofType, Room likeRoom)
+    {
+        StringBuilder lines=new StringBuilder("");
+        if(!these.hasMoreElements()) return lines;
+        int column=0;
+        int COL_LEN=ListingLibrary.ColFixer.fixColWidth(37.0, viewerM);
+        for(Enumeration e=these;e.hasMoreElements();)
+        {
+            Object thisThang=e.nextElement();
+            String list=null;
+            if(thisThang instanceof String)
+                list=(String)thisThang;
             else
-			if(thisThang instanceof Ability)
-				list=((Ability)thisThang).ID()+(((Ability)thisThang).isGeneric()?"*":"");
-			else
+            if(thisThang instanceof Ability)
+                list=((Ability)thisThang).ID()+(((Ability)thisThang).isGeneric()?"*":"");
+            else
             if(thisThang instanceof CharClass)
                 list=((CharClass)thisThang).ID()+(((CharClass)thisThang).isGeneric()?"*":"");
             else
@@ -400,62 +400,62 @@ public class CMLister extends StdLibrary implements ListingLibrary
                 list=((Race)thisThang).ID()+(((Race)thisThang).isGeneric()?"*":"");
             else
                 list=CMClass.classID(thisThang);
-			if(ofType>=0)
-			{
-				if((thisThang!=null)&&(thisThang instanceof Ability))
-				{
-					if((((Ability)thisThang).classificationCode()&Ability.ALL_ACODES)!=ofType)
-						list=null;
-				}
-			}
-			if((likeRoom!=null)&&(thisThang instanceof Room))
-			{
-				if((((Room)thisThang).roomID().length()>0)&&(!((Room)thisThang).getArea().Name().equals(likeRoom.getArea().Name())))
-				   list=null;
-			}
-			if(list!=null)
-			{
-				if(++column>2)
-				{
-					lines.append("\n\r");
-					column=1;
-				}
-				lines.append(CMStrings.padRight(list,COL_LEN)+" ");
-			}
-		}
-		lines.append("\n\r");
-		return lines;
-	}
-	
-	public StringBuilder fourColumns(MOB viewerM, List<String> reverseList)
-	{ return fourColumns(viewerM,reverseList,null);}
-	public StringBuilder fourColumns(MOB viewerM, List<String> reverseList, String tag)
-	{ return makeColumns(viewerM,reverseList,tag,4);}
-	public StringBuilder makeColumns(MOB viewerM, List<String> reverseList, String tag, int numCols)
-	{
-		StringBuilder topicBuffer=new StringBuilder("");
-		int col=0;
-		String s=null;
-		int colSize = ListingLibrary.ColFixer.fixColWidth(72.0,viewerM) / numCols;
-		for(int i=0;i<reverseList.size();i++)
-		{
-			if((++col)>numCols)
-			{
-				topicBuffer.append("\n\r");
-				col=1;
-			}
-			s=(String)reverseList.get(i);
-		    if((tag!=null)&&(tag.length()>0))
-		        s="^<"+tag+"^>"+s+"^</"+tag+"^>";
-			if(s.length()>colSize)
-			{
-				if(col == numCols) topicBuffer.append("\n\r");
-				topicBuffer.append(CMStrings.padRight(s,(colSize*2)+1)+" ");
-				++col;
-			}
-			else
-				topicBuffer.append(CMStrings.padRight(s,colSize)+" ");
-		}
-		return topicBuffer;
-	}
+            if(ofType>=0)
+            {
+                if((thisThang!=null)&&(thisThang instanceof Ability))
+                {
+                    if((((Ability)thisThang).classificationCode()&Ability.ALL_ACODES)!=ofType)
+                        list=null;
+                }
+            }
+            if((likeRoom!=null)&&(thisThang instanceof Room))
+            {
+                if((((Room)thisThang).roomID().length()>0)&&(!((Room)thisThang).getArea().Name().equals(likeRoom.getArea().Name())))
+                   list=null;
+            }
+            if(list!=null)
+            {
+                if(++column>2)
+                {
+                    lines.append("\n\r");
+                    column=1;
+                }
+                lines.append(CMStrings.padRight(list,COL_LEN)+" ");
+            }
+        }
+        lines.append("\n\r");
+        return lines;
+    }
+    
+    public StringBuilder fourColumns(MOB viewerM, List<String> reverseList)
+    { return fourColumns(viewerM,reverseList,null);}
+    public StringBuilder fourColumns(MOB viewerM, List<String> reverseList, String tag)
+    { return makeColumns(viewerM,reverseList,tag,4);}
+    public StringBuilder makeColumns(MOB viewerM, List<String> reverseList, String tag, int numCols)
+    {
+        StringBuilder topicBuffer=new StringBuilder("");
+        int col=0;
+        String s=null;
+        int colSize = ListingLibrary.ColFixer.fixColWidth(72.0,viewerM) / numCols;
+        for(int i=0;i<reverseList.size();i++)
+        {
+            if((++col)>numCols)
+            {
+                topicBuffer.append("\n\r");
+                col=1;
+            }
+            s=(String)reverseList.get(i);
+            if((tag!=null)&&(tag.length()>0))
+                s="^<"+tag+"^>"+s+"^</"+tag+"^>";
+            if(s.length()>colSize)
+            {
+                if(col == numCols) topicBuffer.append("\n\r");
+                topicBuffer.append(CMStrings.padRight(s,(colSize*2)+1)+" ");
+                ++col;
+            }
+            else
+                topicBuffer.append(CMStrings.padRight(s,colSize)+" ");
+        }
+        return topicBuffer;
+    }
 }

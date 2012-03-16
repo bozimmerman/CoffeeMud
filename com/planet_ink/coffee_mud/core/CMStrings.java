@@ -37,18 +37,18 @@ public class CMStrings
     
     public final static boolean isUpperCase(final String str) 
     {
-    	for(int c=0;c<str.length();c++)
-    		if(!Character.isUpperCase(str.charAt(c)))
-    			return false;
-    	return true;
+        for(int c=0;c<str.length();c++)
+            if(!Character.isUpperCase(str.charAt(c)))
+                return false;
+        return true;
     }
     
     public final static boolean isLowerCase(final String str) 
     {
-    	for(int c=0;c<str.length();c++)
-    		if(!Character.isLowerCase(str.charAt(c)))
-    			return false;
-    	return true;
+        for(int c=0;c<str.length();c++)
+            if(!Character.isLowerCase(str.charAt(c)))
+                return false;
+        return true;
     }
     
     public final static String endWithAPeriod(final String str)
@@ -61,39 +61,39 @@ public class CMStrings
                 x--;
         if(x<0) return str;
         if((str.charAt(x)=='.')||(str.charAt(x)=='!')||(str.charAt(x)=='?')) 
-        	return str.trim()+" ";
+            return str.trim()+" ";
         return str.substring(0,x+1)+". "+str.substring(x+1).trim();
     }
     
     public final static String bytesToStr(final byte[] b)
     { 
-    	if(b==null) 
-    		return "";
-    	try
-    	{
-    		return new String(b,CMProps.getVar(CMProps.SYSTEM_CHARSETINPUT));
-    	}
-    	catch(Exception e)
-    	{
-    		return new String(b);
-    	}
+        if(b==null) 
+            return "";
+        try
+        {
+            return new String(b,CMProps.getVar(CMProps.SYSTEM_CHARSETINPUT));
+        }
+        catch(Exception e)
+        {
+            return new String(b);
+        }
     }
     
     public final static byte[] strToBytes(final String str)
     { 
-    	try
-    	{ 
-    		return str.getBytes(CMProps.getVar(CMProps.SYSTEM_CHARSETINPUT));
-    	}
-    	catch(Exception e)
-    	{
-    		return str.getBytes();
-    	}
+        try
+        { 
+            return str.getBytes(CMProps.getVar(CMProps.SYSTEM_CHARSETINPUT));
+        }
+        catch(Exception e)
+        {
+            return str.getBytes();
+        }
     }
     
     public final static boolean isVowel(final char c)
     { 
-    	return (("aeiou").indexOf(Character.toLowerCase(c))>=0);
+        return (("aeiou").indexOf(Character.toLowerCase(c))>=0);
     }
     
     public final static String replaceAllofAny(final String str, final char[] theseChars, final char with)
@@ -105,11 +105,11 @@ public class CMStrings
             return str;
         final char[] newChars = str.toCharArray();
         for(int i=str.length()-1;i>=0;i--)
-        	if(contains(theseChars,str.charAt(i)))
-	        {
-	        	newChars[i]=with;
-	        }
-    	return new String(newChars);
+            if(contains(theseChars,str.charAt(i)))
+            {
+                newChars[i]=with;
+            }
+        return new String(newChars);
     }
     
     public final static String deleteAllofAny(final String str, final char[] theseChars)
@@ -121,11 +121,11 @@ public class CMStrings
             return str;
         final StringBuilder buf=new StringBuilder(str);
         for(int i=buf.length()-1;i>=0;i--)
-        	if(contains(theseChars,buf.charAt(i)))
-	        {
-    			buf.deleteCharAt(i);
-	        }
-    	return buf.toString();
+            if(contains(theseChars,buf.charAt(i)))
+            {
+                buf.deleteCharAt(i);
+            }
+        return buf.toString();
     }
     
     public final static String replaceAll(String str, final String thisStr, final String withThisStr)
@@ -159,16 +159,16 @@ public class CMStrings
                 if((str.substring(i).toLowerCase().startsWith(thisStr.toLowerCase()))
                 &&((str.length()==i+thisStr.length())||(!Character.isLetter(str.charAt(i+thisStr.length())))))
                 {
-                	String oldWord=str.substring(i,i+thisStr.length());
-                	if(oldWord.toUpperCase().equals(oldWord)) 
+                    String oldWord=str.substring(i,i+thisStr.length());
+                    if(oldWord.toUpperCase().equals(oldWord)) 
                         str=str.substring(0,i)+uppercaseWithThisStr+str.substring(i+thisStr.length());
-                	else
-                	if(oldWord.toLowerCase().equals(oldWord))
+                    else
+                    if(oldWord.toLowerCase().equals(oldWord))
                         str=str.substring(0,i)+uppercaseWithThisStr.toLowerCase()+str.substring(i+thisStr.length());
-                	else
-                	if((oldWord.length()>0)&&(Character.isUpperCase(oldWord.charAt(0)))) 
+                    else
+                    if((oldWord.length()>0)&&(Character.isUpperCase(oldWord.charAt(0)))) 
                         str=str.substring(0,i)+uppercaseWithThisStr.charAt(0)+uppercaseWithThisStr.substring(1).toLowerCase()+str.substring(i+thisStr.length());
-                	else
+                    else
                         str=str.substring(0,i)+uppercaseWithThisStr.toLowerCase()+str.substring(i+thisStr.length());
                 }
         }
@@ -191,17 +191,17 @@ public class CMStrings
                 if((str.substring(i).toLowerCase().startsWith(thisStr.toLowerCase()))
                 &&((str.length()==i+thisStr.length())||(!Character.isLetter(str.charAt(i+thisStr.length())))))
                 {
-                	String oldWord=str.substring(i,i+thisStr.length());
-                	if(oldWord.toUpperCase().equals(oldWord)) 
+                    String oldWord=str.substring(i,i+thisStr.length());
+                    if(oldWord.toUpperCase().equals(oldWord)) 
                         return str.substring(0,i)+uppercaseWithThisStr+str.substring(i+thisStr.length());
-                	else
-                	if(oldWord.toLowerCase().equals(oldWord))
-                		return str.substring(0,i)+uppercaseWithThisStr.toLowerCase()+str.substring(i+thisStr.length());
-                	else
-                	if((oldWord.length()>0)&&(Character.isUpperCase(oldWord.charAt(0)))) 
-                		return str.substring(0,i)+uppercaseWithThisStr.charAt(0)+uppercaseWithThisStr.substring(1).toLowerCase()+str.substring(i+thisStr.length());
-                	else
-                		return str.substring(0,i)+uppercaseWithThisStr.toLowerCase()+str.substring(i+thisStr.length());
+                    else
+                    if(oldWord.toLowerCase().equals(oldWord))
+                        return str.substring(0,i)+uppercaseWithThisStr.toLowerCase()+str.substring(i+thisStr.length());
+                    else
+                    if((oldWord.length()>0)&&(Character.isUpperCase(oldWord.charAt(0)))) 
+                        return str.substring(0,i)+uppercaseWithThisStr.charAt(0)+uppercaseWithThisStr.substring(1).toLowerCase()+str.substring(i+thisStr.length());
+                    else
+                        return str.substring(0,i)+uppercaseWithThisStr.toLowerCase()+str.substring(i+thisStr.length());
                 }
         }
         return str;
@@ -237,11 +237,32 @@ public class CMStrings
                 i++;
                 if(i<c.length)
                 {
-                    if(c[i]==ColorLibrary.COLORCODE_BACKGROUND)
-                      i++;
-                    else
-                    if(c[i]==ColorLibrary.COLORCODE_ANSI256)
-                      i+=3;
+                  switch(c[i])
+                  {
+                  case ColorLibrary.COLORCODE_ANSI256: i+=3; break;
+                  case ColorLibrary.COLORCODE_BACKGROUND: i++; break;
+                  case '<':
+                    while(i<c.length-1)
+                    {
+                        if((c[i]!='^')||(c[i+1]!='>'))
+                            i++;
+                        else
+                        {
+                            i++;
+                            break;
+                        }
+                    }
+                    break;
+                  case '&':
+                    while(i<c.length)
+                    {
+                        if(c[i]!=';')
+                            i++;
+                        else
+                            break;
+                    }
+                    break;
+                  }
                 }
             }
             else
@@ -260,7 +281,7 @@ public class CMStrings
     public final static String capitalizeFirstLetter(final String name)
     {
         if((name==null)||(name.length()==0)) 
-        	return "";
+            return "";
         char[] c=name.toCharArray();
         int i=0;
         for(;i<c.length;i++)
@@ -269,11 +290,32 @@ public class CMStrings
                 i++;
                 if(i<c.length)
                 {
-                    if(c[i]==ColorLibrary.COLORCODE_BACKGROUND)
-                      i++;
-                    else
-                    if(c[i]==ColorLibrary.COLORCODE_ANSI256)
-                      i+=3;
+                    switch(c[i])
+                    {
+                    case ColorLibrary.COLORCODE_ANSI256: i+=3; break;
+                    case ColorLibrary.COLORCODE_BACKGROUND: i++; break;
+                    case '<':
+                      while(i<c.length-1)
+                      {
+                          if((c[i]!='^')||(c[i+1]!='>'))
+                              i++;
+                          else
+                          {
+                              i++;
+                              break;
+                          }
+                      }
+                      break;
+                    case '&':
+                      while(i<c.length)
+                      {
+                          if(c[i]!=';')
+                              i++;
+                          else
+                              break;
+                      }
+                      break;
+                    }
                 }
             }
             else
@@ -313,11 +355,11 @@ public class CMStrings
 
     public final static boolean containsIgnoreCase(final String[] strs, final String str)
     {
-    	if((str==null)||(strs==null)) return false;
-    	for(int s=0;s<strs.length;s++)
-    		if(strs[s].equalsIgnoreCase(str))
-    			return true;
-    	return false;
+        if((str==null)||(strs==null)) return false;
+        for(int s=0;s<strs.length;s++)
+            if(strs[s].equalsIgnoreCase(str))
+                return true;
+        return false;
     }
     
     public final static boolean compareStringArrays(final String[] A1, final String[] A2)
@@ -340,28 +382,28 @@ public class CMStrings
     
     public final static boolean contains(final String[] strs, final String str)
     {
-    	if((str==null)||(strs==null)) return false;
-    	for(int s=0;s<strs.length;s++)
-    		if(strs[s].equals(str))
-    			return true;
-    	return false;
+        if((str==null)||(strs==null)) return false;
+        for(int s=0;s<strs.length;s++)
+            if(strs[s].equals(str))
+                return true;
+        return false;
     }
     
     public final static boolean contains(final char[] anycs, final char c)
     {
-    	for(char c1 : anycs)
-    		if(c1==c)
-    			return true;
-    	return false;
+        for(char c1 : anycs)
+            if(c1==c)
+                return true;
+        return false;
     }
     
     public final static boolean containsAny(final String str, final char[] anycs)
     {
-    	if((str==null)||(anycs==null)) return false;
-    	for(int i=0;i<str.length();i++)
-    		if(contains(anycs,str.charAt(i)))
-    			return true;
-    	return false;
+        if((str==null)||(anycs==null)) return false;
+        for(int i=0;i<str.length();i++)
+            if(contains(anycs,str.charAt(i)))
+                return true;
+        return false;
     }
     
     public final static String removeColors(final String s)
@@ -386,24 +428,28 @@ public class CMStrings
                 {
                     int tagStart=i;
                     char c=str.charAt(i+1);
-                    if((c==ColorLibrary.COLORCODE_BACKGROUND)&&(i+3<=str.length()))
+                    switch(c)
                     {
-                      str.delete(i,i+3); 
-                      i--;
-                    }
-                    else
-                    if((c==ColorLibrary.COLORCODE_ANSI256)&&(i+5<=str.length()))
-                    {
-                      str.delete(i,i+5);
-                      i--;
-                    }
-                    if((c=='<')||(c=='&'))
+                    case ColorLibrary.COLORCODE_BACKGROUND:
+                        if(i+3<=str.length())
+                        {
+                            str.delete(i,i+3);
+                            i--;
+                        }
+                        break;
+                    case ColorLibrary.COLORCODE_ANSI256:
+                        if(i+5<=str.length())
+                        {
+                            str.delete(i,i+5);
+                            i--;
+                        }
+                        break;
+                    case '<':
                     {
                         i+=2;
                         while(i<(str.length()-1))
                         {
-                            if(((c=='<')&&((str.charAt(i)!='^')||(str.charAt(i+1)!='>')))
-                            ||((c=='&')&&(str.charAt(i)!=';')))
+                            if((str.charAt(i)!='^')||(str.charAt(i+1)!='>'))
                             {
                                 i++;
                                 if(i>=(str.length()-1))
@@ -416,19 +462,44 @@ public class CMStrings
                             }
                             else
                             {
-                                if(c=='<')
-                                    str.delete(tagStart,i+2);
-                                else
-                                    str.delete(tagStart,i+1);
+                                str.delete(tagStart,i+2);
                                 i=tagStart-1;
                                 break;
                             }
                         }
+                        break;
                     }
-                    else
+                    case '&':
+                    {
+                        i+=2;
+                        while(i<(str.length()-1))
+                        {
+                            if(str.charAt(i)!=';')
+                            {
+                                i++;
+                                if(i>=(str.length()-1))
+                                {
+                                    i=tagStart;
+                                    str.delete(i,i+2); 
+                                    i--;
+                                    break;
+                                }
+                            }
+                            else
+                            {
+                                str.delete(tagStart,i+1);
+                                i=tagStart-1;
+                                break;
+                            }
+                        }
+                        break;
+                    }
+                    default:
                     {
                         str.delete(i,i+2); 
                         i--;
+                    }
+                    break;
                     }
                 }
                 else
@@ -445,7 +516,7 @@ public class CMStrings
     public final static int lengthMinusColors(final String thisStr)
     {
         if(thisStr==null) 
-        	return 0;
+            return 0;
         int size=0;
         for(int i=0;i<thisStr.length();i++)
         {
@@ -455,19 +526,36 @@ public class CMStrings
                 if((i+1)<thisStr.length())
                 {
                     int tagStart=i;
-                    final char c=thisStr.charAt(i);
-                    if(c==ColorLibrary.COLORCODE_BACKGROUND)
-                        i++;
-                    else
-                    if(c==ColorLibrary.COLORCODE_ANSI256)
-                        i+=3;
-                    else
-                    if((c=='<')||(c=='&'))
+                    switch(thisStr.charAt(i))
+                    {
+                    case ColorLibrary.COLORCODE_BACKGROUND: i++; break;
+                    case ColorLibrary.COLORCODE_ANSI256: i+=3; break;
+                    case '<':
+                    {
+                      while(i<(thisStr.length()-1))
+                      {
+                          if((thisStr.charAt(i)!='^')||(thisStr.charAt(i+1)!='>'))
+                          {
+                              i++;
+                              if(i>=(thisStr.length()-1))
+                              {
+                                  i=tagStart+1;
+                                  break;
+                              }
+                          }
+                          else
+                          {
+                              i++;
+                              break;
+                          }
+                      }
+                      break;
+                    }
+                    case '&':
                     {
                         while(i<(thisStr.length()-1))
                         {
-                            if(((c=='<')&&((thisStr.charAt(i)!='^')||(thisStr.charAt(i+1)!='>')))
-                            ||((c=='&')&&(thisStr.charAt(i)!=';')))
+                            if(thisStr.charAt(i)!=';')
                             {
                                 i++;
                                 if(i>=(thisStr.length()-1))
@@ -482,6 +570,8 @@ public class CMStrings
                                 break;
                             }
                         }
+                        break;
+                    }
                     }
                 }
             }
@@ -491,336 +581,336 @@ public class CMStrings
         return size;
     }
     
-	public static void convertHtmlToText(final StringBuffer finalData)
-	{
-		final class TagStacker 
-		{
-			private Stack<Object[]> tagStack=new Stack<Object[]>();
-			public void push(String tag, int index)
-			{
-				tagStack.push(new Object[]{tag,Integer.valueOf(index)});
-			}
-			@SuppressWarnings("unchecked")
-			public int pop(String tag)
-			{
-				if(tagStack.size()==0) return -1;
-				Stack<Object[]> backup=(Stack<Object[]>)tagStack.clone();
-				Object[] top;
-				do
-				{
-					top=tagStack.pop();
-				}
-				while((!((String)top[0]).equals(tag))&&(!tagStack.isEmpty()));
-				if(!((String)top[0]).equals(tag))
-				{
-					tagStack=backup;
-					return -1;
-				}
-				return ((Integer)top[1]).intValue();
-			}
-		}
-		TagStacker stack=new TagStacker();
-		final String[] badBlockTags=new String[]{"STYLE","SCRIPT","HEAD"};
-		final String[][] xlateTags=new String[][]{ 
-				{"P","\n\r"}, {"BR","\n\r"}, {"DIV","\n\r"}, {"HR","\r\n-----------------------------------------------------------------------------\n\r"}
-		};
-		int start=-1;
-		int state=0;
-		char c;
-		boolean incomment=false;
-		String tag=null;
-		for(int i=0;i<finalData.length();i++)
-		{
-			c=finalData.charAt(i);
-			if(incomment)
-			{
-				if((c=='-')
-				&&(i<finalData.length()-2)
-				&&(finalData.charAt(i+1)=='-')
-				&&(finalData.charAt(i+2)=='>'))
-				{
-					int x=stack.pop("<!--");
-					if(x>=0)
-					{
-						finalData.delete(x,i+3);
-						i=x-1;
-					}
-					else
-					{
-						finalData.delete(i, i+3);
-						i=i-3;
-					}
-					incomment=false;
-				}
-			}
-			else
-			if(c=='<')
-			{
-				start=i;
-				state=0;
-			}
-			else
-			if(c=='&')
-			{
-				start=i;
-				state=5;
-			}
-			else
-			if(start<0)
-			{
-				if((c=='\n')||(c=='\r'))
-				{
-					if((i>0)&&(i<finalData.length()-2))
-					{
-						char n=finalData.charAt(i+1);
-						char p=finalData.charAt(i-1);
-						if((n=='\n')||(n=='\r')&&(n!=c))
-						{
-							finalData.deleteCharAt(i+1);
-							n=finalData.charAt(i+1);
-						}
-						if((Character.isLetterOrDigit(n)||((".?,;\"'!@#$%^*()_-+={}[]:").indexOf(n)>=0))
-						&&(Character.isLetterOrDigit(p)||((".?,;\"'!@#$%^*()_-+={}[]:".indexOf(p)>=0))))
-							finalData.setCharAt(i,' ');
-						else
-						{
-							finalData.delete(i,i+1);
-							i--;
-						}
-					}
-				}
-				continue;
-			}
-			else
-			switch(state)
-			{
-			case 0:
-				switch(c) {
-				case ' ': case '\t': case '<': case '>': start=0; break;
-				case '/': state=2; break;
-				case '!':
-				{
-					if((i<finalData.length()-2)
-					&&(finalData.charAt(i+1)=='-')
-					&&(finalData.charAt(i+2)=='-'))
-					{
-						stack.push("<!--",start);
-						i+=2;
-						incomment=true;
-					}
-					break;
-				}
-				default:
-					if(Character.isLetter(c))
-						state=1; 
-					else
-						start=-1;
-					break;
-				} break;
-			case 1: // eval start tag
-				if(c=='>')
-				{
-					tag=finalData.substring(start+1,i).toUpperCase();
-					stack.push(tag,start);
-					state=3;
-					i--;
-				}
-				else
-				if(Character.isWhitespace(c)||(c=='/')||(c==':'))
-				{
-					if(start==i-1)
-						start=-1;
-					else
-					{
-						tag=finalData.substring(start+1,i).toUpperCase();
-						state=3;
-					}
-				}
-				else
-				if((i-start)>20)
-					start=-1;
-				break;
-			case 2: // eval end tag
-				if(c=='>')
-				{
-					state=4;
-					tag=finalData.substring(start+2,i).toUpperCase();
-					i--;
-				}
-				else
-				if(Character.isWhitespace(c))
-				{
-					if(start==i-1)
-						start=-1;
-					else
-					if(state==2)
-					{
-						state=4;
-						tag=finalData.substring(start+2,i).toUpperCase();
-					}
-				}
-				else
-				if((i-start)>20)
-					start=-1;
-				break;
-			case 3: // end start tag
-				if(tag==null)
-					start=-1;
-				else
-				if(c=='>')
-				{
-					finalData.delete(start, i+1);
-					for(String[] xset : xlateTags)
-						if(xset[0].equals(tag))
-						{
-							finalData.insert(start, xset[1]);
-							start=start+xset[1].length()-1;
-							break;
-						}
-					i=start-1;
-					start=-1;
-					tag=null;
-				}
-				break;
-			case 4: // end end tag
-				if(tag==null)
-					start=-1;
-				else
-				if(c=='>')
-				{
-					if(CMStrings.contains(badBlockTags, tag))
-					{
-						int x=stack.pop(tag);
-						if(x>=0) start=x;
-					}
-					finalData.delete(start, i+1);
-					i=start-1;
-					start=-1;
-					tag=null;
-				}
-				break;
-			case 5: // during & thing
-				if(c==';') // the end
-				{
-					final String code=finalData.substring(start+1,i).toLowerCase();
-					finalData.delete(start, i+1);
-					if(code.equals("nbsp")) finalData.insert(start,' ');
-					else if(code.equals("amp")) finalData.insert(start,'&');
-					else if(code.equals("lt")) finalData.insert(start,'<');
-					else if(code.equals("gt")) finalData.insert(start,'>');
-					else if(code.equals("quot")) finalData.insert(start,'"');
-					i=start-1;
-					start=-1;
-				}
-				else
-				if((!Character.isLetter(c))||((i-start)>10))
-					start=-1;
-				break;
-			}
-		}
-	}
-	
-	public static void stripHeadHtmlTags(final StringBuffer finalData)
-	{
-		int start=-1;
-		int state=0;
-		char c=' ';
-		char lastC=' ';
-		int headStart=-1;
-		boolean closeFlag=false;
-		for(int i=0;i<finalData.length();i++)
-		{
-			c=Character.toUpperCase(finalData.charAt(i));
-			if(Character.isWhitespace(c))
-				continue;
-			else
-			if(c=='<')
-			{
-				start=i;
-				state=0;
-				closeFlag=false;
-			}
-			else
-			if(start<0)
-				continue;
-			else
-			switch(state)
-			{
-			case 0:
-				switch(c) {
-				case '/': state=1; closeFlag=true; break;
-				case 'H': state=2; break;
-				case 'B': state=3; break;
-				default: start=-1; break;
-				} break;
-			case 1:
-				switch(c) {
-				case 'H': state=2; break;
-				case 'B': state=3; break;
-				default: start=-1; break;
-				} break;
-			case 2:
-				switch(c) {
-				case 'E': if(lastC!='H') state=-1; else state=5; break;
-				case 'T': if(lastC!='H') state=-1; break;
-				case 'M': if(lastC!='T') state=-1; break;
-				case 'L': if(lastC!='M') state=-1; else state=4; break;
-				default: start=-1; break;
-				} break;
-			case 3:
-				switch(c) {
-				case 'O': if(lastC!='B') state=-1; break;
-				case 'D': if(lastC!='O') state=-1; break;
-				case 'Y': if(lastC!='D') state=-1; else state=4; break;
-				default: start=-1; break;
-				} break;
-			case 4:
-				if(c=='>')
-				{
-					finalData.delete(start, i+1);
-					i=start-1;
-					start=-1;
-				}
-				break;
-			case 5:
-				switch(c) {
-				case 'A': if(lastC!='E') state=-1; break;
-				case 'D': if(lastC!='A') state=-1; else state=6; break;
-				default: start=-1; break;
-				} break;
-			case 6:
-				if(c=='>')
-				{
-					if(!closeFlag)
-					{
-						finalData.delete(start, i+1);
-						headStart=start;
-					}
-					else
-					{
-						finalData.delete(headStart, i+1);
-						start=headStart;
-					}
-					i=start-1;
-					start=-1;
-				}
-				break;
-			}
-			lastC=c;
-		}
-	}
+    public static void convertHtmlToText(final StringBuffer finalData)
+    {
+        final class TagStacker 
+        {
+            private Stack<Object[]> tagStack=new Stack<Object[]>();
+            public void push(String tag, int index)
+            {
+                tagStack.push(new Object[]{tag,Integer.valueOf(index)});
+            }
+            @SuppressWarnings("unchecked")
+            public int pop(String tag)
+            {
+                if(tagStack.size()==0) return -1;
+                Stack<Object[]> backup=(Stack<Object[]>)tagStack.clone();
+                Object[] top;
+                do
+                {
+                    top=tagStack.pop();
+                }
+                while((!((String)top[0]).equals(tag))&&(!tagStack.isEmpty()));
+                if(!((String)top[0]).equals(tag))
+                {
+                    tagStack=backup;
+                    return -1;
+                }
+                return ((Integer)top[1]).intValue();
+            }
+        }
+        TagStacker stack=new TagStacker();
+        final String[] badBlockTags=new String[]{"STYLE","SCRIPT","HEAD"};
+        final String[][] xlateTags=new String[][]{ 
+                {"P","\n\r"}, {"BR","\n\r"}, {"DIV","\n\r"}, {"HR","\r\n-----------------------------------------------------------------------------\n\r"}
+        };
+        int start=-1;
+        int state=0;
+        char c;
+        boolean incomment=false;
+        String tag=null;
+        for(int i=0;i<finalData.length();i++)
+        {
+            c=finalData.charAt(i);
+            if(incomment)
+            {
+                if((c=='-')
+                &&(i<finalData.length()-2)
+                &&(finalData.charAt(i+1)=='-')
+                &&(finalData.charAt(i+2)=='>'))
+                {
+                    int x=stack.pop("<!--");
+                    if(x>=0)
+                    {
+                        finalData.delete(x,i+3);
+                        i=x-1;
+                    }
+                    else
+                    {
+                        finalData.delete(i, i+3);
+                        i=i-3;
+                    }
+                    incomment=false;
+                }
+            }
+            else
+            if(c=='<')
+            {
+                start=i;
+                state=0;
+            }
+            else
+            if(c=='&')
+            {
+                start=i;
+                state=5;
+            }
+            else
+            if(start<0)
+            {
+                if((c=='\n')||(c=='\r'))
+                {
+                    if((i>0)&&(i<finalData.length()-2))
+                    {
+                        char n=finalData.charAt(i+1);
+                        char p=finalData.charAt(i-1);
+                        if((n=='\n')||(n=='\r')&&(n!=c))
+                        {
+                            finalData.deleteCharAt(i+1);
+                            n=finalData.charAt(i+1);
+                        }
+                        if((Character.isLetterOrDigit(n)||((".?,;\"'!@#$%^*()_-+={}[]:").indexOf(n)>=0))
+                        &&(Character.isLetterOrDigit(p)||((".?,;\"'!@#$%^*()_-+={}[]:".indexOf(p)>=0))))
+                            finalData.setCharAt(i,' ');
+                        else
+                        {
+                            finalData.delete(i,i+1);
+                            i--;
+                        }
+                    }
+                }
+                continue;
+            }
+            else
+            switch(state)
+            {
+            case 0:
+                switch(c) {
+                case ' ': case '\t': case '<': case '>': start=0; break;
+                case '/': state=2; break;
+                case '!':
+                {
+                    if((i<finalData.length()-2)
+                    &&(finalData.charAt(i+1)=='-')
+                    &&(finalData.charAt(i+2)=='-'))
+                    {
+                        stack.push("<!--",start);
+                        i+=2;
+                        incomment=true;
+                    }
+                    break;
+                }
+                default:
+                    if(Character.isLetter(c))
+                        state=1; 
+                    else
+                        start=-1;
+                    break;
+                } break;
+            case 1: // eval start tag
+                if(c=='>')
+                {
+                    tag=finalData.substring(start+1,i).toUpperCase();
+                    stack.push(tag,start);
+                    state=3;
+                    i--;
+                }
+                else
+                if(Character.isWhitespace(c)||(c=='/')||(c==':'))
+                {
+                    if(start==i-1)
+                        start=-1;
+                    else
+                    {
+                        tag=finalData.substring(start+1,i).toUpperCase();
+                        state=3;
+                    }
+                }
+                else
+                if((i-start)>20)
+                    start=-1;
+                break;
+            case 2: // eval end tag
+                if(c=='>')
+                {
+                    state=4;
+                    tag=finalData.substring(start+2,i).toUpperCase();
+                    i--;
+                }
+                else
+                if(Character.isWhitespace(c))
+                {
+                    if(start==i-1)
+                        start=-1;
+                    else
+                    if(state==2)
+                    {
+                        state=4;
+                        tag=finalData.substring(start+2,i).toUpperCase();
+                    }
+                }
+                else
+                if((i-start)>20)
+                    start=-1;
+                break;
+            case 3: // end start tag
+                if(tag==null)
+                    start=-1;
+                else
+                if(c=='>')
+                {
+                    finalData.delete(start, i+1);
+                    for(String[] xset : xlateTags)
+                        if(xset[0].equals(tag))
+                        {
+                            finalData.insert(start, xset[1]);
+                            start=start+xset[1].length()-1;
+                            break;
+                        }
+                    i=start-1;
+                    start=-1;
+                    tag=null;
+                }
+                break;
+            case 4: // end end tag
+                if(tag==null)
+                    start=-1;
+                else
+                if(c=='>')
+                {
+                    if(CMStrings.contains(badBlockTags, tag))
+                    {
+                        int x=stack.pop(tag);
+                        if(x>=0) start=x;
+                    }
+                    finalData.delete(start, i+1);
+                    i=start-1;
+                    start=-1;
+                    tag=null;
+                }
+                break;
+            case 5: // during & thing
+                if(c==';') // the end
+                {
+                    final String code=finalData.substring(start+1,i).toLowerCase();
+                    finalData.delete(start, i+1);
+                    if(code.equals("nbsp")) finalData.insert(start,' ');
+                    else if(code.equals("amp")) finalData.insert(start,'&');
+                    else if(code.equals("lt")) finalData.insert(start,'<');
+                    else if(code.equals("gt")) finalData.insert(start,'>');
+                    else if(code.equals("quot")) finalData.insert(start,'"');
+                    i=start-1;
+                    start=-1;
+                }
+                else
+                if((!Character.isLetter(c))||((i-start)>10))
+                    start=-1;
+                break;
+            }
+        }
+    }
+    
+    public static void stripHeadHtmlTags(final StringBuffer finalData)
+    {
+        int start=-1;
+        int state=0;
+        char c=' ';
+        char lastC=' ';
+        int headStart=-1;
+        boolean closeFlag=false;
+        for(int i=0;i<finalData.length();i++)
+        {
+            c=Character.toUpperCase(finalData.charAt(i));
+            if(Character.isWhitespace(c))
+                continue;
+            else
+            if(c=='<')
+            {
+                start=i;
+                state=0;
+                closeFlag=false;
+            }
+            else
+            if(start<0)
+                continue;
+            else
+            switch(state)
+            {
+            case 0:
+                switch(c) {
+                case '/': state=1; closeFlag=true; break;
+                case 'H': state=2; break;
+                case 'B': state=3; break;
+                default: start=-1; break;
+                } break;
+            case 1:
+                switch(c) {
+                case 'H': state=2; break;
+                case 'B': state=3; break;
+                default: start=-1; break;
+                } break;
+            case 2:
+                switch(c) {
+                case 'E': if(lastC!='H') state=-1; else state=5; break;
+                case 'T': if(lastC!='H') state=-1; break;
+                case 'M': if(lastC!='T') state=-1; break;
+                case 'L': if(lastC!='M') state=-1; else state=4; break;
+                default: start=-1; break;
+                } break;
+            case 3:
+                switch(c) {
+                case 'O': if(lastC!='B') state=-1; break;
+                case 'D': if(lastC!='O') state=-1; break;
+                case 'Y': if(lastC!='D') state=-1; else state=4; break;
+                default: start=-1; break;
+                } break;
+            case 4:
+                if(c=='>')
+                {
+                    finalData.delete(start, i+1);
+                    i=start-1;
+                    start=-1;
+                }
+                break;
+            case 5:
+                switch(c) {
+                case 'A': if(lastC!='E') state=-1; break;
+                case 'D': if(lastC!='A') state=-1; else state=6; break;
+                default: start=-1; break;
+                } break;
+            case 6:
+                if(c=='>')
+                {
+                    if(!closeFlag)
+                    {
+                        finalData.delete(start, i+1);
+                        headStart=start;
+                    }
+                    else
+                    {
+                        finalData.delete(headStart, i+1);
+                        start=headStart;
+                    }
+                    i=start-1;
+                    start=-1;
+                }
+                break;
+            }
+            lastC=c;
+        }
+    }
 
     public final static Hashtable<Object,Integer> makeNumericHash(final Object[] obj)
     {
-    	Hashtable<Object,Integer> H=new Hashtable<Object,Integer>();
-    	for(int i=0;i<obj.length;i++)
-    		H.put(obj[i],Integer.valueOf(i));
-    	return H;
+        Hashtable<Object,Integer> H=new Hashtable<Object,Integer>();
+        for(int i=0;i<obj.length;i++)
+            H.put(obj[i],Integer.valueOf(i));
+        return H;
     }
     
     public final static String padCenter(final String thisStr, final int thisMuch)
     {
-    	final int lenMinusColors=lengthMinusColors(thisStr);
+        final int lenMinusColors=lengthMinusColors(thisStr);
         if(lenMinusColors>thisMuch)
             return removeColors(thisStr).substring(0,thisMuch);
         final int size=(thisMuch-lenMinusColors)/2;
@@ -830,27 +920,27 @@ public class CMStrings
     }
     public final static String padLeft(final String thisStr, final int thisMuch)
     {
-    	final int lenMinusColors=lengthMinusColors(thisStr);
+        final int lenMinusColors=lengthMinusColors(thisStr);
         if(lenMinusColors>thisMuch)
             return removeColors(thisStr).substring(0,thisMuch);
         return SPACES.substring(0,thisMuch-lenMinusColors)+thisStr;
     }
     public final static String padLeft(final String thisStr, final String colorPrefix, final int thisMuch)
     {
-    	final int lenMinusColors=lengthMinusColors(thisStr);
+        final int lenMinusColors=lengthMinusColors(thisStr);
         if(lenMinusColors>thisMuch)
             return colorPrefix+removeColors(thisStr).substring(0,thisMuch);
         return SPACES.substring(0,thisMuch-lenMinusColors)+colorPrefix+thisStr;
     }
     public final static String safeLeft(final String thisStr, final int thisMuch)
     {
-    	if(thisStr.length()<=thisMuch)
-    		return thisStr;
-    	return thisStr.substring(0,thisMuch);
+        if(thisStr.length()<=thisMuch)
+            return thisStr;
+        return thisStr.substring(0,thisMuch);
     }
     public final static String padRight(final String thisStr, final int thisMuch)
     {
-    	final int lenMinusColors=lengthMinusColors(thisStr);
+        final int lenMinusColors=lengthMinusColors(thisStr);
         if(lenMinusColors>thisMuch)
             return removeColors(thisStr).substring(0,thisMuch);
         if(thisMuch-lenMinusColors >= SPACES.length())
@@ -859,14 +949,14 @@ public class CMStrings
     }
     public final static String limit(final String thisStr, final int thisMuch)
     {
-    	final int lenMinusColors=lengthMinusColors(thisStr);
+        final int lenMinusColors=lengthMinusColors(thisStr);
         if(lenMinusColors>thisMuch)
             return removeColors(thisStr).substring(0,thisMuch);
         return thisStr;
     }
     public final static String padRight(final String thisStr, final String colorSuffix, final int thisMuch)
     {
-    	final int lenMinusColors=lengthMinusColors(thisStr);
+        final int lenMinusColors=lengthMinusColors(thisStr);
         if(lenMinusColors>thisMuch)
             return removeColors(thisStr).substring(0,thisMuch)+colorSuffix;
         if(thisMuch-lenMinusColors >= SPACES.length())
@@ -875,7 +965,7 @@ public class CMStrings
     }
     public final static String padRightPreserve(final String thisStr, final int thisMuch)
     {
-    	final int lenMinusColors=lengthMinusColors(thisStr);
+        final int lenMinusColors=lengthMinusColors(thisStr);
         if(lenMinusColors>thisMuch)
             return removeColors(thisStr);
         if(thisMuch-lenMinusColors >= SPACES.length())
@@ -884,7 +974,7 @@ public class CMStrings
     }
     public final static String centerPreserve(final String thisStr, final int thisMuch)
     {
-    	final int lenMinusColors=lengthMinusColors(thisStr);
+        final int lenMinusColors=lengthMinusColors(thisStr);
         if(lenMinusColors>thisMuch)
             return removeColors(thisStr);
         final int left=(thisMuch-lenMinusColors)/2;
@@ -895,7 +985,7 @@ public class CMStrings
     }
     public final static String padLeftPreserve(final String thisStr, final int thisMuch)
     {
-    	final int lenMinusColors=lengthMinusColors(thisStr);
+        final int lenMinusColors=lengthMinusColors(thisStr);
         if(lenMinusColors>thisMuch)
             return removeColors(thisStr);
         return SPACES.substring(0,thisMuch-lenMinusColors)+thisStr;
@@ -908,546 +998,546 @@ public class CMStrings
         return str.toLowerCase();
     }
 
-	// states: 0 = done after this one,-1 = done a char ago,-2 = eat & same state,-99 = error,
-	// chars: 254 = digit, 253 = letter, 252 = digitNO0, 255=eof
-	private static final int[][]	STRING_EXP_SM	= { { -1 }, // 0 == done after this one, 1 == real first state
-			{ ' ', -2, '=', 2, '>', 4, '<', 5, '!', 2, '(', 0, ')', 0, '\"', 3, '+', 0, '-', 0, '*', 0, '/', 0, '&', 6, '?',0, '|', 7, '\'', 8, '`', 9, '$', 10, 253, 12, 252, 13, '0', 15, 255, 255, -99 }, // 1
-			{ '=', 0, -1 }, // 2 -- starts with =
-			{ '\"', 0, 255, -99, 3 }, // 3 -- starts with "
-			{ '=', 0, '>', 0, -1 }, // 4 -- starts with <
-			{ '=', 0, '<', 0, -1 }, // 5 -- starts with >
-			{ '&', 0, -1 }, // 6 -- starts with &
-			{ '|', 0, -1 }, // 7 -- starts with |
-			{ '\'', 0, 255, -99, 8 }, // 8 -- starts with '
-			{ '`', 0, 255, -99, 9 }, // 9 -- starts with `
-			{ 253, 11, '_', 11, -99 }, // 10 == starts with $
-			{ 253, 11, 254, 11, '_', 11, 255, -1, -1 }, // 11=starts $Letter
-			{ 253, 12, 255, -1, -1 },				// 12=starts with letter
-			{ 254, 13, '.', 14, -1}, // 13=starts with a digit
-			{ 254, 14, '.', -99, -1}, // 14=continues a digit
-			{ 254, -99, '.', 14, -1} // 15=starts with a 0
-	};
+    // states: 0 = done after this one,-1 = done a char ago,-2 = eat & same state,-99 = error,
+    // chars: 254 = digit, 253 = letter, 252 = digitNO0, 255=eof
+    private static final int[][]    STRING_EXP_SM    = { { -1 }, // 0 == done after this one, 1 == real first state
+            { ' ', -2, '=', 2, '>', 4, '<', 5, '!', 2, '(', 0, ')', 0, '\"', 3, '+', 0, '-', 0, '*', 0, '/', 0, '&', 6, '?',0, '|', 7, '\'', 8, '`', 9, '$', 10, 253, 12, 252, 13, '0', 15, 255, 255, -99 }, // 1
+            { '=', 0, -1 }, // 2 -- starts with =
+            { '\"', 0, 255, -99, 3 }, // 3 -- starts with "
+            { '=', 0, '>', 0, -1 }, // 4 -- starts with <
+            { '=', 0, '<', 0, -1 }, // 5 -- starts with >
+            { '&', 0, -1 }, // 6 -- starts with &
+            { '|', 0, -1 }, // 7 -- starts with |
+            { '\'', 0, 255, -99, 8 }, // 8 -- starts with '
+            { '`', 0, 255, -99, 9 }, // 9 -- starts with `
+            { 253, 11, '_', 11, -99 }, // 10 == starts with $
+            { 253, 11, 254, 11, '_', 11, 255, -1, -1 }, // 11=starts $Letter
+            { 253, 12, 255, -1, -1 },                // 12=starts with letter
+            { 254, 13, '.', 14, -1}, // 13=starts with a digit
+            { 254, 14, '.', -99, -1}, // 14=continues a digit
+            { 254, -99, '.', 14, -1} // 15=starts with a 0
+    };
 
-	private static class StringExpToken
-	{
-		public int		type	= -1;
-		public String	value	= "";
-		public double 	numValue  = 0.0;
+    private static class StringExpToken
+    {
+        public int        type    = -1;
+        public String    value    = "";
+        public double     numValue  = 0.0;
 
-		public final static StringExpToken token(final int type, final String value) throws Exception
-		{
-			final StringExpToken token = new StringExpToken();
-			token.type = type;
-			token.value = value;
-			if((value.length()>0)&&(Character.isDigit(value.charAt(0))))
-				token.numValue = Double.parseDouble(value);
-			return token;
-		}
-		private StringExpToken() { }
-	}
+        public final static StringExpToken token(final int type, final String value) throws Exception
+        {
+            final StringExpToken token = new StringExpToken();
+            token.type = type;
+            token.value = value;
+            if((value.length()>0)&&(Character.isDigit(value.charAt(0))))
+                token.numValue = Double.parseDouble(value);
+            return token;
+        }
+        private StringExpToken() { }
+    }
 
-	private static StringExpToken nextToken(final List<StringExpToken> tokens, final int[] index) {
-		if(index[0]>=tokens.size()) return null;
-		return (StringExpToken)tokens.get(index[0]++);
-	}
-	
-	private static final int	STRING_EXP_TOKEN_EVALUATOR	= 1;
-	private static final int	STRING_EXP_TOKEN_OPENPAREN	= 2;
-	private static final int	STRING_EXP_TOKEN_CLOSEPAREN	= 3;
-	private static final int	STRING_EXP_TOKEN_WORD		= 4;
-	private static final int	STRING_EXP_TOKEN_STRCONST	= 5;
-	private static final int	STRING_EXP_TOKEN_COMBINER	= 6;
-	private static final int	STRING_EXP_TOKEN_NOT		= 7;
-	private static final int	STRING_EXP_TOKEN_NUMCONST	= 8;
-	private static final int	STRING_EXP_TOKEN_UKNCONST	= 9;
+    private static StringExpToken nextToken(final List<StringExpToken> tokens, final int[] index) {
+        if(index[0]>=tokens.size()) return null;
+        return (StringExpToken)tokens.get(index[0]++);
+    }
+    
+    private static final int    STRING_EXP_TOKEN_EVALUATOR    = 1;
+    private static final int    STRING_EXP_TOKEN_OPENPAREN    = 2;
+    private static final int    STRING_EXP_TOKEN_CLOSEPAREN    = 3;
+    private static final int    STRING_EXP_TOKEN_WORD        = 4;
+    private static final int    STRING_EXP_TOKEN_STRCONST    = 5;
+    private static final int    STRING_EXP_TOKEN_COMBINER    = 6;
+    private static final int    STRING_EXP_TOKEN_NOT        = 7;
+    private static final int    STRING_EXP_TOKEN_NUMCONST    = 8;
+    private static final int    STRING_EXP_TOKEN_UKNCONST    = 9;
 
-	private static StringExpToken makeTokenType(String token, final Map<String,Object> variables, final boolean emptyVars) throws Exception
-	{
-		if ((token == null)||(token.length()==0))
-			return null;
-		if (token.startsWith("\""))
-			return StringExpToken.token(STRING_EXP_TOKEN_STRCONST, token.substring(1, token.length() - 1));
-		if (token.startsWith("\'"))
-			return StringExpToken.token(STRING_EXP_TOKEN_STRCONST, token.substring(1, token.length() - 1));
-		if (token.startsWith("`"))
-			return StringExpToken.token(STRING_EXP_TOKEN_STRCONST, token.substring(1, token.length() - 1));
-		if (token.equals("("))
-			return StringExpToken.token(STRING_EXP_TOKEN_OPENPAREN, token);
-		if (token.equals(")"))
-			return StringExpToken.token(STRING_EXP_TOKEN_CLOSEPAREN, token);
-		if (token.equalsIgnoreCase("IN"))
-			return StringExpToken.token(STRING_EXP_TOKEN_EVALUATOR, token);
-		if (token.equals("+")||token.equals("-")||token.equals("*")||token.equals("/")||token.equals("?"))
-			return StringExpToken.token(STRING_EXP_TOKEN_COMBINER, token);
-		if (token.equals("!")||token.equalsIgnoreCase("NOT"))
-			return StringExpToken.token(STRING_EXP_TOKEN_NOT, token);
-		if(Character.isDigit(token.charAt(0)))
-			return StringExpToken.token(STRING_EXP_TOKEN_NUMCONST, token);
-		if (token.startsWith("$"))
-		{
-			token = token.substring(1);
-			Object value = variables.get(token);
-			if(!(value instanceof String))
-				value = variables.get(token.toUpperCase().trim());
-			if((value == null)&&(emptyVars))
-				value="";
-			else
-			if(!(value instanceof String))
-				throw new Exception("Undefined variable found: $" + token);
-			if((value.toString().length()>0)&&(!CMath.isNumber(value.toString())))
-				return StringExpToken.token(STRING_EXP_TOKEN_STRCONST, value.toString());
-			return StringExpToken.token(STRING_EXP_TOKEN_UKNCONST, value.toString());
-		}
-		if ((token.charAt(0) == '_') || (Character.isLetterOrDigit(token.charAt(0))) || (token.charAt(0) == '|') || (token.charAt(0) == '&'))
-			return StringExpToken.token(STRING_EXP_TOKEN_WORD, token);
-		return StringExpToken.token(STRING_EXP_TOKEN_EVALUATOR, token);
-	}
+    private static StringExpToken makeTokenType(String token, final Map<String,Object> variables, final boolean emptyVars) throws Exception
+    {
+        if ((token == null)||(token.length()==0))
+            return null;
+        if (token.startsWith("\""))
+            return StringExpToken.token(STRING_EXP_TOKEN_STRCONST, token.substring(1, token.length() - 1));
+        if (token.startsWith("\'"))
+            return StringExpToken.token(STRING_EXP_TOKEN_STRCONST, token.substring(1, token.length() - 1));
+        if (token.startsWith("`"))
+            return StringExpToken.token(STRING_EXP_TOKEN_STRCONST, token.substring(1, token.length() - 1));
+        if (token.equals("("))
+            return StringExpToken.token(STRING_EXP_TOKEN_OPENPAREN, token);
+        if (token.equals(")"))
+            return StringExpToken.token(STRING_EXP_TOKEN_CLOSEPAREN, token);
+        if (token.equalsIgnoreCase("IN"))
+            return StringExpToken.token(STRING_EXP_TOKEN_EVALUATOR, token);
+        if (token.equals("+")||token.equals("-")||token.equals("*")||token.equals("/")||token.equals("?"))
+            return StringExpToken.token(STRING_EXP_TOKEN_COMBINER, token);
+        if (token.equals("!")||token.equalsIgnoreCase("NOT"))
+            return StringExpToken.token(STRING_EXP_TOKEN_NOT, token);
+        if(Character.isDigit(token.charAt(0)))
+            return StringExpToken.token(STRING_EXP_TOKEN_NUMCONST, token);
+        if (token.startsWith("$"))
+        {
+            token = token.substring(1);
+            Object value = variables.get(token);
+            if(!(value instanceof String))
+                value = variables.get(token.toUpperCase().trim());
+            if((value == null)&&(emptyVars))
+                value="";
+            else
+            if(!(value instanceof String))
+                throw new Exception("Undefined variable found: $" + token);
+            if((value.toString().length()>0)&&(!CMath.isNumber(value.toString())))
+                return StringExpToken.token(STRING_EXP_TOKEN_STRCONST, value.toString());
+            return StringExpToken.token(STRING_EXP_TOKEN_UKNCONST, value.toString());
+        }
+        if ((token.charAt(0) == '_') || (Character.isLetterOrDigit(token.charAt(0))) || (token.charAt(0) == '|') || (token.charAt(0) == '&'))
+            return StringExpToken.token(STRING_EXP_TOKEN_WORD, token);
+        return StringExpToken.token(STRING_EXP_TOKEN_EVALUATOR, token);
+    }
 
-	private static StringExpToken nextStringToken(final String expression, final int[] index, final Map<String,Object> variables, final boolean emptyVars) throws Exception
-	{
-		int[] stateBlock = STRING_EXP_SM[1];
-		final StringBuffer token = new StringBuffer("");
-		while (index[0] < expression.length())
-		{
-			char c = expression.charAt(index[0]);
-			int nextState = stateBlock[stateBlock.length - 1];
-			boolean match = false;
-			for (int x = 0; x < stateBlock.length - 1; x += 2)
-			{
-				switch (stateBlock[x])
-				{
-					case 254:
-						match = Character.isDigit(c);
-						break;
-					case 252:
-						match = Character.isDigit(c)&&(c!='0');
-						break;
-					case 253:
-						match = Character.isLetter(c);
-						break;
-					case 255:
-						break; // nope, not yet
-					default:
-						match = (c == stateBlock[x]);
-						break;
-				}
-				if (match)
-				{
-					nextState = stateBlock[x + 1];
-					break;
-				}
-			}
-			switch (nextState)
-			{
-				case 255:
-					return null;
-				case -99:
-					throw new Exception("Illegal character in expression: " + c);
-				case -2:
-					index[0]++;
-					break;
-				case -1:
-					return makeTokenType(token.toString(), variables, emptyVars);
-				case 0:
-				{
-					token.append(c);
-					index[0]++;
-					return makeTokenType(token.toString(), variables, emptyVars);
-				}
-				default:
-				{
-					token.append(c);
-					index[0]++;
-					stateBlock = STRING_EXP_SM[nextState];
-					break;
-				}
-			}
-		}
-		int finalState = stateBlock[stateBlock.length - 1];
-		for (int x = 0; x < stateBlock.length - 1; x += 2)
-			if (stateBlock[x] == 255)
-			{
-				finalState = stateBlock[x + 1];
-				break;
-			}
-		switch (finalState)
-		{
-			case -99:
-				throw new Exception("Expression ended prematurely");
-			case -1:
-			case 0:
-				return makeTokenType(token.toString(), variables, emptyVars);
-			default:
-				return null;
-		}
-	}
+    private static StringExpToken nextStringToken(final String expression, final int[] index, final Map<String,Object> variables, final boolean emptyVars) throws Exception
+    {
+        int[] stateBlock = STRING_EXP_SM[1];
+        final StringBuffer token = new StringBuffer("");
+        while (index[0] < expression.length())
+        {
+            char c = expression.charAt(index[0]);
+            int nextState = stateBlock[stateBlock.length - 1];
+            boolean match = false;
+            for (int x = 0; x < stateBlock.length - 1; x += 2)
+            {
+                switch (stateBlock[x])
+                {
+                    case 254:
+                        match = Character.isDigit(c);
+                        break;
+                    case 252:
+                        match = Character.isDigit(c)&&(c!='0');
+                        break;
+                    case 253:
+                        match = Character.isLetter(c);
+                        break;
+                    case 255:
+                        break; // nope, not yet
+                    default:
+                        match = (c == stateBlock[x]);
+                        break;
+                }
+                if (match)
+                {
+                    nextState = stateBlock[x + 1];
+                    break;
+                }
+            }
+            switch (nextState)
+            {
+                case 255:
+                    return null;
+                case -99:
+                    throw new Exception("Illegal character in expression: " + c);
+                case -2:
+                    index[0]++;
+                    break;
+                case -1:
+                    return makeTokenType(token.toString(), variables, emptyVars);
+                case 0:
+                {
+                    token.append(c);
+                    index[0]++;
+                    return makeTokenType(token.toString(), variables, emptyVars);
+                }
+                default:
+                {
+                    token.append(c);
+                    index[0]++;
+                    stateBlock = STRING_EXP_SM[nextState];
+                    break;
+                }
+            }
+        }
+        int finalState = stateBlock[stateBlock.length - 1];
+        for (int x = 0; x < stateBlock.length - 1; x += 2)
+            if (stateBlock[x] == 255)
+            {
+                finalState = stateBlock[x + 1];
+                break;
+            }
+        switch (finalState)
+        {
+            case -99:
+                throw new Exception("Expression ended prematurely");
+            case -1:
+            case 0:
+                return makeTokenType(token.toString(), variables, emptyVars);
+            default:
+                return null;
+        }
+    }
 
-	/*
-	 * case STRING_EXP_TOKEN_EVALUATOR: case STRING_EXP_TOKEN_OPENPAREN: case STRING_EXP_TOKEN_CLOSEPAREN: case STRING_EXP_TOKEN_WORD: case
-	 * STRING_EXP_TOKEN_CONST: case STRING_EXP_TOKEN_COMBINER:
-	 */
-	public final static String matchSimpleConst(final List<StringExpToken> tokens, final int[] index, final Map<String,Object> variables) throws Exception
-	{
-		final int[] i = (int[]) index.clone();
-		StringExpToken token = nextToken(tokens, i);
-		if (token == null)
-			return null;
-		if((token.type != STRING_EXP_TOKEN_STRCONST)
-		&& (token.type != STRING_EXP_TOKEN_UKNCONST))
-			return null;
-		index[0] = i[0];
-		return token.value;
-	}
+    /*
+     * case STRING_EXP_TOKEN_EVALUATOR: case STRING_EXP_TOKEN_OPENPAREN: case STRING_EXP_TOKEN_CLOSEPAREN: case STRING_EXP_TOKEN_WORD: case
+     * STRING_EXP_TOKEN_CONST: case STRING_EXP_TOKEN_COMBINER:
+     */
+    public final static String matchSimpleConst(final List<StringExpToken> tokens, final int[] index, final Map<String,Object> variables) throws Exception
+    {
+        final int[] i = (int[]) index.clone();
+        StringExpToken token = nextToken(tokens, i);
+        if (token == null)
+            return null;
+        if((token.type != STRING_EXP_TOKEN_STRCONST)
+        && (token.type != STRING_EXP_TOKEN_UKNCONST))
+            return null;
+        index[0] = i[0];
+        return token.value;
+    }
 
-	public final static Double matchSimpleNumber(final List<StringExpToken> tokens, final int[] index, final Map<String,Object> variables) throws Exception
-	{
-		final int[] i = (int[]) index.clone();
-		final StringExpToken token = nextToken(tokens, i);
-		if (token == null)
-			return null;
-		if((token.type != STRING_EXP_TOKEN_NUMCONST)
-		&& (token.type != STRING_EXP_TOKEN_UKNCONST))
-			return null;
-		index[0] = i[0];
-		return Double.valueOf(token.numValue);
-	}
-	
-	public final static String matchCombinedString(final List<StringExpToken> tokens, final int[] index, final Map<String,Object> variables) throws Exception
-	{
-		int[] i = (int[]) index.clone();
-		StringExpToken token = nextToken(tokens, i);
-		if (token == null)
-			return null;
-		if (token.type == STRING_EXP_TOKEN_OPENPAREN)
-		{
-			final String testInside = matchCombinedString(tokens, i, variables);
-			if (testInside != null)
-			{
-				token = nextToken(tokens, i);
-				if (token.type != STRING_EXP_TOKEN_CLOSEPAREN)
-					return null;
-				index[0] = i[0];
-				return testInside;
-			}
-		}
-		i = (int[]) index.clone();
-		final String leftValue = matchSimpleConst(tokens, i, variables);
-		if (leftValue == null)
-			return null;
-		final int[] i2 = (int[]) i.clone();
-		token = nextToken(tokens, i2);
-		if ((token == null) || (token.type != STRING_EXP_TOKEN_COMBINER))
-		{
-			index[0] = i[0];
-			return leftValue;
-		}
-		if(!token.value.equals("+")) 
-			throw new Exception("Can't combine a string using '"+token.value+"'");
-		i[0] = i2[0];
-		final String rightValue = matchCombinedString(tokens, i, variables);
-		if (rightValue == null)
-			return null;
-		index[0] = i[0];
-		return leftValue + rightValue;
-	}
+    public final static Double matchSimpleNumber(final List<StringExpToken> tokens, final int[] index, final Map<String,Object> variables) throws Exception
+    {
+        final int[] i = (int[]) index.clone();
+        final StringExpToken token = nextToken(tokens, i);
+        if (token == null)
+            return null;
+        if((token.type != STRING_EXP_TOKEN_NUMCONST)
+        && (token.type != STRING_EXP_TOKEN_UKNCONST))
+            return null;
+        index[0] = i[0];
+        return Double.valueOf(token.numValue);
+    }
+    
+    public final static String matchCombinedString(final List<StringExpToken> tokens, final int[] index, final Map<String,Object> variables) throws Exception
+    {
+        int[] i = (int[]) index.clone();
+        StringExpToken token = nextToken(tokens, i);
+        if (token == null)
+            return null;
+        if (token.type == STRING_EXP_TOKEN_OPENPAREN)
+        {
+            final String testInside = matchCombinedString(tokens, i, variables);
+            if (testInside != null)
+            {
+                token = nextToken(tokens, i);
+                if (token.type != STRING_EXP_TOKEN_CLOSEPAREN)
+                    return null;
+                index[0] = i[0];
+                return testInside;
+            }
+        }
+        i = (int[]) index.clone();
+        final String leftValue = matchSimpleConst(tokens, i, variables);
+        if (leftValue == null)
+            return null;
+        final int[] i2 = (int[]) i.clone();
+        token = nextToken(tokens, i2);
+        if ((token == null) || (token.type != STRING_EXP_TOKEN_COMBINER))
+        {
+            index[0] = i[0];
+            return leftValue;
+        }
+        if(!token.value.equals("+")) 
+            throw new Exception("Can't combine a string using '"+token.value+"'");
+        i[0] = i2[0];
+        final String rightValue = matchCombinedString(tokens, i, variables);
+        if (rightValue == null)
+            return null;
+        index[0] = i[0];
+        return leftValue + rightValue;
+    }
 
-	public final static Double matchCombinedNum(final List<StringExpToken> tokens, final int[] index, final Map<String,Object> variables) throws Exception
-	{
-		int[] i = (int[]) index.clone();
-		StringExpToken token = nextToken(tokens, i);
-		if (token == null)
-			return null;
-		if (token.type == STRING_EXP_TOKEN_OPENPAREN)
-		{
-			final Double testInside = matchCombinedNum(tokens, i, variables);
-			if (testInside != null)
-			{
-				token = nextToken(tokens, i);
-				if (token.type != STRING_EXP_TOKEN_CLOSEPAREN)
-					return null;
-				index[0] = i[0];
-				return testInside;
-			}
-		}
-		i = (int[]) index.clone();
-		final Double leftValue = matchSimpleNumber(tokens, i, variables);
-		if (leftValue == null)
-			return null;
-		final int[] i2 = (int[]) i.clone();
-		token = nextToken(tokens, i2);
-		if ((token == null) || (token.type != STRING_EXP_TOKEN_COMBINER))
-		{
-			index[0] = i[0];
-			return leftValue;
-		}
-		i[0] = i2[0];
-		final Double rightValue = matchCombinedNum(tokens, i, variables);
-		if (rightValue == null)
-			return null;
-		index[0] = i[0];
-		if(token.value.equals("+"))
-		{
-			index[0] = i[0];
-			return Double.valueOf(leftValue.doubleValue() + rightValue.doubleValue());
-		}
-		else
-		if(token.value.equals("-")) 
-		{
-			index[0] = i[0];
-			return Double.valueOf(leftValue.doubleValue() - rightValue.doubleValue());
-		}
-		else
-		if(token.value.equals("*")) 
-		{
-			index[0] = i[0];
-			return Double.valueOf(leftValue.doubleValue() * rightValue.doubleValue());
-		}
-		else
-		if(token.value.equals("/")) 
-		{
-			index[0] = i[0];
-			return Double.valueOf(leftValue.doubleValue() / rightValue.doubleValue());
-		}
-		else
-		if(token.value.equals("?")) 
-		{
-			index[0] = i[0];
-			return Double.valueOf(Math.round((Math.random() * (rightValue.doubleValue()-leftValue.doubleValue())) + leftValue.doubleValue())) ;
-		}
-		else
-			throw new Exception("Unknown math combiner "+token.value);
-	}
-	
-	public final static Boolean matchStringEvaluation(final List<StringExpToken> tokens, final int[] index, final Map<String,Object> variables) throws Exception
-	{
-		int[] i = (int[]) index.clone();
-		StringExpToken token = nextToken(tokens, i);
-		if (token == null)
-			return null;
-		if(token.type == STRING_EXP_TOKEN_NOT)
-		{
-			final Boolean testInside = matchExpression(tokens, i, variables);
-			if (testInside != null)
-			{
-				index[0] = i[0];
-				return new Boolean(!testInside.booleanValue());
-			}
-		}
-		else
-		if (token.type == STRING_EXP_TOKEN_OPENPAREN)
-		{
-			final Boolean testInside = matchStringEvaluation(tokens, i, variables);
-			if (testInside != null)
-			{
-				token = nextToken(tokens, i);
-				if (token.type != STRING_EXP_TOKEN_CLOSEPAREN)
-					return null;
-				index[0] = i[0];
-				return testInside;
-			}
-		}
-		i = (int[]) index.clone();
-		final String leftValue = matchCombinedString(tokens, i, variables);
-		if (leftValue == null)
-			return null;
-		token = nextToken(tokens, i);
-		if (token == null)
-			return null;
-		if (token.type != STRING_EXP_TOKEN_EVALUATOR)
-			return null;
-		final String rightValue = matchCombinedString(tokens, i, variables);
-		if (rightValue == null)
-			return null;
-		final int compare = leftValue.compareToIgnoreCase(rightValue);
-		final Boolean result;
-		if (token.value.equals(">"))
-			result = new Boolean(compare > 0);
-		else if (token.value.equals(">="))
-			result = new Boolean(compare >= 0);
-		else if (token.value.equals("<"))
-			result = new Boolean(compare < 0);
-		else if (token.value.equals("<="))
-			result = new Boolean(compare <= 0);
-		else if (token.value.equals("="))
-			result = new Boolean(compare == 0);
-		else if (token.value.equals("!="))
-			result = new Boolean(compare != 0);
-		else if (token.value.equals("<>"))
-			result = new Boolean(compare != 0);
-		else if (token.value.equals("><"))
-			result = new Boolean(compare != 0);
-		else
-		if (token.value.equalsIgnoreCase("IN"))
-			result = new Boolean(rightValue.toUpperCase().indexOf(leftValue.toUpperCase())>=0);
-		else
-			return null;
-		index[0] = i[0];
-		return result;
-	}
+    public final static Double matchCombinedNum(final List<StringExpToken> tokens, final int[] index, final Map<String,Object> variables) throws Exception
+    {
+        int[] i = (int[]) index.clone();
+        StringExpToken token = nextToken(tokens, i);
+        if (token == null)
+            return null;
+        if (token.type == STRING_EXP_TOKEN_OPENPAREN)
+        {
+            final Double testInside = matchCombinedNum(tokens, i, variables);
+            if (testInside != null)
+            {
+                token = nextToken(tokens, i);
+                if (token.type != STRING_EXP_TOKEN_CLOSEPAREN)
+                    return null;
+                index[0] = i[0];
+                return testInside;
+            }
+        }
+        i = (int[]) index.clone();
+        final Double leftValue = matchSimpleNumber(tokens, i, variables);
+        if (leftValue == null)
+            return null;
+        final int[] i2 = (int[]) i.clone();
+        token = nextToken(tokens, i2);
+        if ((token == null) || (token.type != STRING_EXP_TOKEN_COMBINER))
+        {
+            index[0] = i[0];
+            return leftValue;
+        }
+        i[0] = i2[0];
+        final Double rightValue = matchCombinedNum(tokens, i, variables);
+        if (rightValue == null)
+            return null;
+        index[0] = i[0];
+        if(token.value.equals("+"))
+        {
+            index[0] = i[0];
+            return Double.valueOf(leftValue.doubleValue() + rightValue.doubleValue());
+        }
+        else
+        if(token.value.equals("-")) 
+        {
+            index[0] = i[0];
+            return Double.valueOf(leftValue.doubleValue() - rightValue.doubleValue());
+        }
+        else
+        if(token.value.equals("*")) 
+        {
+            index[0] = i[0];
+            return Double.valueOf(leftValue.doubleValue() * rightValue.doubleValue());
+        }
+        else
+        if(token.value.equals("/")) 
+        {
+            index[0] = i[0];
+            return Double.valueOf(leftValue.doubleValue() / rightValue.doubleValue());
+        }
+        else
+        if(token.value.equals("?")) 
+        {
+            index[0] = i[0];
+            return Double.valueOf(Math.round((Math.random() * (rightValue.doubleValue()-leftValue.doubleValue())) + leftValue.doubleValue())) ;
+        }
+        else
+            throw new Exception("Unknown math combiner "+token.value);
+    }
+    
+    public final static Boolean matchStringEvaluation(final List<StringExpToken> tokens, final int[] index, final Map<String,Object> variables) throws Exception
+    {
+        int[] i = (int[]) index.clone();
+        StringExpToken token = nextToken(tokens, i);
+        if (token == null)
+            return null;
+        if(token.type == STRING_EXP_TOKEN_NOT)
+        {
+            final Boolean testInside = matchExpression(tokens, i, variables);
+            if (testInside != null)
+            {
+                index[0] = i[0];
+                return new Boolean(!testInside.booleanValue());
+            }
+        }
+        else
+        if (token.type == STRING_EXP_TOKEN_OPENPAREN)
+        {
+            final Boolean testInside = matchStringEvaluation(tokens, i, variables);
+            if (testInside != null)
+            {
+                token = nextToken(tokens, i);
+                if (token.type != STRING_EXP_TOKEN_CLOSEPAREN)
+                    return null;
+                index[0] = i[0];
+                return testInside;
+            }
+        }
+        i = (int[]) index.clone();
+        final String leftValue = matchCombinedString(tokens, i, variables);
+        if (leftValue == null)
+            return null;
+        token = nextToken(tokens, i);
+        if (token == null)
+            return null;
+        if (token.type != STRING_EXP_TOKEN_EVALUATOR)
+            return null;
+        final String rightValue = matchCombinedString(tokens, i, variables);
+        if (rightValue == null)
+            return null;
+        final int compare = leftValue.compareToIgnoreCase(rightValue);
+        final Boolean result;
+        if (token.value.equals(">"))
+            result = new Boolean(compare > 0);
+        else if (token.value.equals(">="))
+            result = new Boolean(compare >= 0);
+        else if (token.value.equals("<"))
+            result = new Boolean(compare < 0);
+        else if (token.value.equals("<="))
+            result = new Boolean(compare <= 0);
+        else if (token.value.equals("="))
+            result = new Boolean(compare == 0);
+        else if (token.value.equals("!="))
+            result = new Boolean(compare != 0);
+        else if (token.value.equals("<>"))
+            result = new Boolean(compare != 0);
+        else if (token.value.equals("><"))
+            result = new Boolean(compare != 0);
+        else
+        if (token.value.equalsIgnoreCase("IN"))
+            result = new Boolean(rightValue.toUpperCase().indexOf(leftValue.toUpperCase())>=0);
+        else
+            return null;
+        index[0] = i[0];
+        return result;
+    }
 
-	public final static Boolean matchNumEvaluation(final List<StringExpToken> tokens, final int[] index, final Map<String,Object> variables) throws Exception
-	{
-		int[] i = (int[]) index.clone();
-		StringExpToken token = nextToken(tokens, i);
-		if (token == null)
-			return null;
-		if(token.type == STRING_EXP_TOKEN_NOT)
-		{
-			final Boolean testInside = matchExpression(tokens, i, variables);
-			if (testInside != null)
-			{
-				index[0] = i[0];
-				return new Boolean(!testInside.booleanValue());
-			}
-		}
-		else
-		if (token.type == STRING_EXP_TOKEN_OPENPAREN)
-		{
-			final Boolean testInside = matchNumEvaluation(tokens, i, variables);
-			if (testInside != null)
-			{
-				token = nextToken(tokens, i);
-				if (token.type != STRING_EXP_TOKEN_CLOSEPAREN)
-					return null;
-				index[0] = i[0];
-				return testInside;
-			}
-		}
-		i = (int[]) index.clone();
-		final Double leftValue = matchCombinedNum(tokens, i, variables);
-		if (leftValue == null)
-			return null;
-		token = nextToken(tokens, i);
-		if (token == null)
-			return null;
-		if (token.type != STRING_EXP_TOKEN_EVALUATOR)
-			return null;
-		final Double rightValue = matchCombinedNum(tokens, i, variables);
-		if (rightValue == null)
-			return null;
-		final Boolean result;
-		if (token.value.equals(">"))
-			result = new Boolean(leftValue.doubleValue() > rightValue.doubleValue());
-		else if (token.value.equals(">="))
-			result = new Boolean(leftValue.doubleValue() >= rightValue.doubleValue());
-		else if (token.value.equals("<"))
-			result = new Boolean(leftValue.doubleValue() < rightValue.doubleValue());
-		else if (token.value.equals("<="))
-			result = new Boolean(leftValue.doubleValue() <= rightValue.doubleValue());
-		else if (token.value.equals("="))
-			result = new Boolean(leftValue.doubleValue() == rightValue.doubleValue());
-		else if (token.value.equals("!="))
-			result = new Boolean(leftValue.doubleValue() != rightValue.doubleValue());
-		else if (token.value.equals("<>"))
-			result = new Boolean(leftValue.doubleValue() != rightValue.doubleValue());
-		else if (token.value.equals("><"))
-			result = new Boolean(leftValue.doubleValue() != rightValue.doubleValue());
-		else
-		if (token.value.equalsIgnoreCase("IN"))
-			throw new Exception("Can't use IN operator on numbers.");
-		else
-			return null;
-		index[0] = i[0];
-		return result;
-	}
-	
-	public final static Boolean matchExpression(final List<StringExpToken> tokens, final int[] index, final Map<String,Object> variables) throws Exception
-	{
-		int[] i = (int[]) index.clone();
-		StringExpToken token = nextToken(tokens, i);
-		if (token == null)
-			return null;
-		Boolean leftExpression = null;
-		if(token.type == STRING_EXP_TOKEN_NOT)
-		{
-			final Boolean testInside = matchExpression(tokens, i, variables);
-			if (testInside != null)
-			{
-				index[0] = i[0];
-				leftExpression = new Boolean(!testInside.booleanValue());
-			}
-		}
-		else
-		if (token.type == STRING_EXP_TOKEN_OPENPAREN)
-		{
-			final Boolean testInside = matchExpression(tokens, i, variables);
-			if (testInside != null)
-			{
-				token = nextToken(tokens, i);
-				if (token.type != STRING_EXP_TOKEN_CLOSEPAREN)
-					return null;
-				index[0] = i[0];
-				leftExpression = testInside;
-			}
-		}
-		if(leftExpression == null)
-		{
-			i = (int[]) index.clone();
-			leftExpression = matchStringEvaluation(tokens, i, variables);
-			if(leftExpression == null) leftExpression = matchNumEvaluation(tokens, i, variables);
-		}
-		if (leftExpression == null) return null;
-		final int[] i2 = (int[]) i.clone();
-		token = nextToken(tokens, i2);
-		if ((token == null) || (token.type != STRING_EXP_TOKEN_WORD))
-		{
-			index[0] = i[0];
-			return leftExpression;
-		}
-		i[0] = i2[0];
-		final Boolean rightExpression = matchExpression(tokens, i, variables);
-		if (rightExpression == null)
-			return null;
-		final Boolean result;
-		if (token.value.equalsIgnoreCase("AND"))
-			result = new Boolean(leftExpression.booleanValue() && rightExpression.booleanValue());
-		else if (token.value.startsWith("&"))
-			result = new Boolean(leftExpression.booleanValue() && rightExpression.booleanValue());
-		else if (token.value.startsWith("|"))
-			result = new Boolean(leftExpression.booleanValue() || rightExpression.booleanValue());
-		else if (token.value.equalsIgnoreCase("OR"))
-			result = new Boolean(leftExpression.booleanValue() || rightExpression.booleanValue());
-		else if (token.value.equalsIgnoreCase("XOR"))
-			result = new Boolean(leftExpression.booleanValue() != rightExpression.booleanValue());
-		else
-			throw new Exception("Parse Exception: Illegal expression evaluation combiner: " + token.value);
-		index[0] = i[0];
-		return result;
-	}
+    public final static Boolean matchNumEvaluation(final List<StringExpToken> tokens, final int[] index, final Map<String,Object> variables) throws Exception
+    {
+        int[] i = (int[]) index.clone();
+        StringExpToken token = nextToken(tokens, i);
+        if (token == null)
+            return null;
+        if(token.type == STRING_EXP_TOKEN_NOT)
+        {
+            final Boolean testInside = matchExpression(tokens, i, variables);
+            if (testInside != null)
+            {
+                index[0] = i[0];
+                return new Boolean(!testInside.booleanValue());
+            }
+        }
+        else
+        if (token.type == STRING_EXP_TOKEN_OPENPAREN)
+        {
+            final Boolean testInside = matchNumEvaluation(tokens, i, variables);
+            if (testInside != null)
+            {
+                token = nextToken(tokens, i);
+                if (token.type != STRING_EXP_TOKEN_CLOSEPAREN)
+                    return null;
+                index[0] = i[0];
+                return testInside;
+            }
+        }
+        i = (int[]) index.clone();
+        final Double leftValue = matchCombinedNum(tokens, i, variables);
+        if (leftValue == null)
+            return null;
+        token = nextToken(tokens, i);
+        if (token == null)
+            return null;
+        if (token.type != STRING_EXP_TOKEN_EVALUATOR)
+            return null;
+        final Double rightValue = matchCombinedNum(tokens, i, variables);
+        if (rightValue == null)
+            return null;
+        final Boolean result;
+        if (token.value.equals(">"))
+            result = new Boolean(leftValue.doubleValue() > rightValue.doubleValue());
+        else if (token.value.equals(">="))
+            result = new Boolean(leftValue.doubleValue() >= rightValue.doubleValue());
+        else if (token.value.equals("<"))
+            result = new Boolean(leftValue.doubleValue() < rightValue.doubleValue());
+        else if (token.value.equals("<="))
+            result = new Boolean(leftValue.doubleValue() <= rightValue.doubleValue());
+        else if (token.value.equals("="))
+            result = new Boolean(leftValue.doubleValue() == rightValue.doubleValue());
+        else if (token.value.equals("!="))
+            result = new Boolean(leftValue.doubleValue() != rightValue.doubleValue());
+        else if (token.value.equals("<>"))
+            result = new Boolean(leftValue.doubleValue() != rightValue.doubleValue());
+        else if (token.value.equals("><"))
+            result = new Boolean(leftValue.doubleValue() != rightValue.doubleValue());
+        else
+        if (token.value.equalsIgnoreCase("IN"))
+            throw new Exception("Can't use IN operator on numbers.");
+        else
+            return null;
+        index[0] = i[0];
+        return result;
+    }
+    
+    public final static Boolean matchExpression(final List<StringExpToken> tokens, final int[] index, final Map<String,Object> variables) throws Exception
+    {
+        int[] i = (int[]) index.clone();
+        StringExpToken token = nextToken(tokens, i);
+        if (token == null)
+            return null;
+        Boolean leftExpression = null;
+        if(token.type == STRING_EXP_TOKEN_NOT)
+        {
+            final Boolean testInside = matchExpression(tokens, i, variables);
+            if (testInside != null)
+            {
+                index[0] = i[0];
+                leftExpression = new Boolean(!testInside.booleanValue());
+            }
+        }
+        else
+        if (token.type == STRING_EXP_TOKEN_OPENPAREN)
+        {
+            final Boolean testInside = matchExpression(tokens, i, variables);
+            if (testInside != null)
+            {
+                token = nextToken(tokens, i);
+                if (token.type != STRING_EXP_TOKEN_CLOSEPAREN)
+                    return null;
+                index[0] = i[0];
+                leftExpression = testInside;
+            }
+        }
+        if(leftExpression == null)
+        {
+            i = (int[]) index.clone();
+            leftExpression = matchStringEvaluation(tokens, i, variables);
+            if(leftExpression == null) leftExpression = matchNumEvaluation(tokens, i, variables);
+        }
+        if (leftExpression == null) return null;
+        final int[] i2 = (int[]) i.clone();
+        token = nextToken(tokens, i2);
+        if ((token == null) || (token.type != STRING_EXP_TOKEN_WORD))
+        {
+            index[0] = i[0];
+            return leftExpression;
+        }
+        i[0] = i2[0];
+        final Boolean rightExpression = matchExpression(tokens, i, variables);
+        if (rightExpression == null)
+            return null;
+        final Boolean result;
+        if (token.value.equalsIgnoreCase("AND"))
+            result = new Boolean(leftExpression.booleanValue() && rightExpression.booleanValue());
+        else if (token.value.startsWith("&"))
+            result = new Boolean(leftExpression.booleanValue() && rightExpression.booleanValue());
+        else if (token.value.startsWith("|"))
+            result = new Boolean(leftExpression.booleanValue() || rightExpression.booleanValue());
+        else if (token.value.equalsIgnoreCase("OR"))
+            result = new Boolean(leftExpression.booleanValue() || rightExpression.booleanValue());
+        else if (token.value.equalsIgnoreCase("XOR"))
+            result = new Boolean(leftExpression.booleanValue() != rightExpression.booleanValue());
+        else
+            throw new Exception("Parse Exception: Illegal expression evaluation combiner: " + token.value);
+        index[0] = i[0];
+        return result;
+    }
 
-	public final static boolean parseStringExpression(final String expression, final Map<String,Object> variables, final boolean emptyVarsOK) throws Exception
-	{
-		final Vector<StringExpToken> tokens = new Vector<StringExpToken>();
-		int[] i = { 0 };
-		StringExpToken token = nextStringToken(expression,i,variables, emptyVarsOK);
-		while(token != null) {
-			tokens.addElement(token);
-			token = nextStringToken(expression,i,variables, emptyVarsOK);
-		}
-		if(tokens.size()==0) return true;
-		i = new int[]{ 0 };
-		final Boolean value = matchExpression(tokens, i, variables);
-		if (value == null) throw new Exception("Parse error on following statement: " + expression);
-		return value.booleanValue();
-	}
+    public final static boolean parseStringExpression(final String expression, final Map<String,Object> variables, final boolean emptyVarsOK) throws Exception
+    {
+        final Vector<StringExpToken> tokens = new Vector<StringExpToken>();
+        int[] i = { 0 };
+        StringExpToken token = nextStringToken(expression,i,variables, emptyVarsOK);
+        while(token != null) {
+            tokens.addElement(token);
+            token = nextStringToken(expression,i,variables, emptyVarsOK);
+        }
+        if(tokens.size()==0) return true;
+        i = new int[]{ 0 };
+        final Boolean value = matchExpression(tokens, i, variables);
+        if (value == null) throw new Exception("Parse error on following statement: " + expression);
+        return value.booleanValue();
+    }
 
-	public final static String determineEOLN(final CharSequence str)
-	{
-		if(str!=null) 
-		for(int i=0;i<str.length();i++)
-			if(str.charAt(i)=='\n')
-			{
-				if((i<str.length()-1)&&(str.charAt(i+1)=='\r'))
-					return "\n\r";
-				return "\n";
-			}
-			else
-			if(str.charAt(i)=='\r')
-			{
-				if((i<str.length()-1)&&(str.charAt(i+1)=='\n'))
-					return "\r\n";
-				return "\r";
-			}
-		return ""+((char)0x0a);
-	}
+    public final static String determineEOLN(final CharSequence str)
+    {
+        if(str!=null) 
+        for(int i=0;i<str.length();i++)
+            if(str.charAt(i)=='\n')
+            {
+                if((i<str.length()-1)&&(str.charAt(i+1)=='\r'))
+                    return "\n\r";
+                return "\n";
+            }
+            else
+            if(str.charAt(i)=='\r')
+            {
+                if((i<str.length()-1)&&(str.charAt(i+1)=='\n'))
+                    return "\r\n";
+                return "\r";
+            }
+        return ""+((char)0x0a);
+    }
 }

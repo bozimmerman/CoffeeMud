@@ -474,7 +474,7 @@ public class StdJournal extends StdItem
 					    continue;
 					else
 					    selection.append(" ");
-					selection.append("^<JRNL \""+name()+"\"^>"+CMStrings.padRight((j+1)+"",4)+"^</JRNL^>) "
+					selection.append("^<JRNL \""+CMStrings.removeColors(name())+"\"^>"+CMStrings.padRight((j+1)+"",4)+"^</JRNL^>) "
 								   +((shortFormat)?"":""
 								   +CMStrings.padRight(from,10)+" "
 								   +CMStrings.padRight(to,10)+" ")
@@ -538,7 +538,7 @@ public class StdJournal extends StdItem
 			catch(HTTPRedirectException e){}
 
 			if((allMine)||(to.equals("ALL")))
-				buf.append("\n\r^<JRNL \""+name()+"\"^>"+CMStrings.padRight((which+1)+"",3)+"^</JRNL^>)\n\r"
+				buf.append("\n\r^<JRNL \""+CMStrings.removeColors(name())+"\"^>"+CMStrings.padRight((which+1)+"",3)+"^</JRNL^>)\n\r"
 						   +"FROM: "+from
 						   +"\n\rTO  : "+to
 						   +"\n\rDATE: "+CMLib.time().date2String(date)

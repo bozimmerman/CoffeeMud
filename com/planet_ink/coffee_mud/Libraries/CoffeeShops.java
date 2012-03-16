@@ -748,7 +748,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
             }
 
             String c="^x["+CMStrings.padRight("Cost",4+csize)+"] "+CMStrings.padRight("Product",Math.max(totalWidth-csize,5));
-            str.append(c+((totalCols>1)?c:"")+"^.^N^<!ENTITY shopkeeper \""+seller.name()+"\"^>\n\r");
+            str.append(c+((totalCols>1)?c:"")+"^.^N^<!ENTITY shopkeeper \""+CMStrings.removeColors(seller.name())+"\"^>^.^N\n\r");
             int colNum=0;
             int rowNum=0;
             String col=null;
