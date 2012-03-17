@@ -252,6 +252,7 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
                                 }
                             }
                             len++;
+                            break;
                         }
                         default: break;
                         }

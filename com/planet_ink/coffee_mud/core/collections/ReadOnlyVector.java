@@ -54,27 +54,27 @@ public final class ReadOnlyVector<T> extends Vector<T>
       }
       
     @Override
-    public boolean add(T t) { return false; }
+    public synchronized boolean add(T t) { return false; }
     @Override
-    public void addElement(T t){}
+    public synchronized void addElement(T t){}
     @Override
-    public void removeElementAt(int index){}
+    public synchronized void removeElementAt(int index){}
     @Override
-    public boolean removeElement(Object obj){ return false;}
+    public synchronized boolean removeElement(Object obj){ return false;}
     @Override
     public boolean remove(Object o) { return false; }
     @Override
     public void add(int index, T element) {}
     @Override
-    public T remove(int index) { return null; }
+    public synchronized T remove(int index) { return null; }
     @Override
     public void clear() {}
     @Override
-    public boolean removeAll(Collection<?> c) { return false;}
+    public synchronized boolean removeAll(Collection<?> c) { return false;}
     @Override
-    public void insertElementAt(T obj, int index) {}
+    public synchronized void insertElementAt(T obj, int index) {}
     @Override
-    public boolean addAll(Collection<? extends T> c) { return false;}
+    public synchronized boolean addAll(Collection<? extends T> c) { return false;}
     @Override
-    public boolean addAll(int index, Collection<? extends T> c) { return false; }
+    public synchronized boolean addAll(int index, Collection<? extends T> c) { return false; }
 }
