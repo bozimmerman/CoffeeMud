@@ -57,22 +57,25 @@ public class FlamingSword extends Longsword
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);
-		if((msg.source().location()!=null)
-		&&(msg.targetMinor()==CMMsg.TYP_DAMAGE)
+		if((msg.targetMinor()==CMMsg.TYP_DAMAGE)
 		&&((msg.value())>0)
 		&&(msg.tool()==this)
 		&&(msg.target() instanceof MOB)
-		&&(!((MOB)msg.target()).amDead()))
+		&&(!((MOB)msg.target()).amDead())
+		&&(msg.source()==owner()))
 		{
-			CMMsg msg2=CMClass.getMsg(msg.source(),msg.target(),new FlamingSword(),CMMsg.MSG_OK_ACTION,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_FIRE,CMMsg.MSG_NOISYMOVEMENT,null);
-			if(msg.source().location().okMessage(msg.source(),msg2))
+			final Room room=msg.source().location();
+			CMMsg msg2=CMClass.getMsg(msg.source(),msg.target(),this,
+					CMMsg.MSG_OK_ACTION,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_FIRE,CMMsg.MSG_NOISYMOVEMENT,null);
+			if((room!=null) && (room.okMessage(msg.source(),msg2)))
 			{
-				msg.source().location().send(msg.source(), msg2);
+				room.send(msg.source(), msg2);
 				if(msg2.value()<=0)
 				{
 					int flameDamage = (int) Math.round( Math.random() * 6 );
 					flameDamage *= basePhyStats().level();
-					CMLib.combat().postDamage(msg.source(),(MOB)msg.target(),null,flameDamage,CMMsg.TYP_FIRE,Weapon.TYPE_BURNING,name()+" <DAMAGE> <T-NAME>!");
+					CMLib.combat().postDamage(msg.source(),(MOB)msg.target(),null,flameDamage,
+							CMMsg.TYP_FIRE,Weapon.TYPE_BURNING,name()+" <DAMAGE> <T-NAME>!");
 				}
 			}
 		}
