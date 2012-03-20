@@ -78,7 +78,7 @@ public class Spell_Ensnare extends Spell
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
-		affectableStats.setDisposition((int)(affectableStats.disposition()&(PhyStats.ALLMASK-PhyStats.IS_FLYING)));
+		affectableStats.setDisposition(affectableStats.disposition()&(~(PhyStats.IS_FLYING)));
 	}
 	public void unInvoke()
 	{

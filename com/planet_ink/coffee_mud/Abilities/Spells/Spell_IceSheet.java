@@ -80,7 +80,7 @@ public class Spell_IceSheet extends Spell
 					&&(CMLib.dice().rollPercentage()>((msg.source().charStats().getStat(CharStats.STAT_DEXTERITY)*3)+25)))
 					{
 						int oldDisposition=mob.basePhyStats().disposition();
-						oldDisposition=oldDisposition&(Integer.MAX_VALUE-PhyStats.IS_SLEEPING-PhyStats.IS_SNEAKING-PhyStats.IS_SITTING);
+						oldDisposition=oldDisposition&(~(PhyStats.IS_SLEEPING|PhyStats.IS_SNEAKING|PhyStats.IS_SITTING));
 						mob.basePhyStats().setDisposition(oldDisposition|PhyStats.IS_SITTING);
 						mob.recoverPhyStats();
 						mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> slip(s) on the ice.");

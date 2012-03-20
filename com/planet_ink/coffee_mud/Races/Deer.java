@@ -41,7 +41,7 @@ public class Deer extends StdRace
 	public int heightVariance(){return 6;}
 	public int lightestWeight(){return 150;}
 	public int weightVariance(){return 50;}
-	public long forbiddenWornBits(){return Integer.MAX_VALUE-Wearable.WORN_FEET-Wearable.WORN_NECK-Wearable.WORN_EARS-Wearable.WORN_EYES;}
+	public long forbiddenWornBits(){return ~(Wearable.WORN_FEET|Wearable.WORN_NECK|Wearable.WORN_EARS|Wearable.WORN_EYES);}
 	public String racialCategory(){return "Equine";}
 
 	//                                an ey ea he ne ar ha to le fo no gi mo wa ta wi

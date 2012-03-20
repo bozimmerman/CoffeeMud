@@ -908,7 +908,7 @@ public class StdRoom implements Room
 		//if(phyStats().sensesMask()>0)
 		//	affectableStats.setSensesMask(affectableStats.sensesMask()|phyStats().sensesMask());
 		final int disposition=phyStats().disposition()
-			&((Integer.MAX_VALUE-(PhyStats.IS_DARK|PhyStats.IS_LIGHTSOURCE|PhyStats.IS_SLEEPING|PhyStats.IS_HIDDEN)));
+			&((~(PhyStats.IS_DARK|PhyStats.IS_LIGHTSOURCE|PhyStats.IS_SLEEPING|PhyStats.IS_HIDDEN)));
 		if(disposition>0)
 			affectableStats.setDisposition(affectableStats.disposition()|disposition);
 		for(final Enumeration<Ability> a=effects();a.hasMoreElements();)

@@ -477,7 +477,7 @@ public class StdSpaceShip implements Area, SpaceObject, SpaceShip
 		if(phyStats().sensesMask()>0)
 			affectableStats.setSensesMask(affectableStats.sensesMask()|phyStats().sensesMask());
 		int disposition=phyStats().disposition()
-			&((Integer.MAX_VALUE-(PhyStats.IS_SLEEPING|PhyStats.IS_HIDDEN)));
+			&((~(PhyStats.IS_SLEEPING|PhyStats.IS_HIDDEN)));
 		if(disposition>0)
 			affectableStats.setDisposition(affectableStats.disposition()|disposition);
 		affectableStats.setWeight(affectableStats.weight()+phyStats().weight());

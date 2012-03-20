@@ -41,7 +41,7 @@ public class Pig extends StdRace
 	public int heightVariance(){return 12;}
 	public int lightestWeight(){return 100;}
 	public int weightVariance(){return 60;}
-	public long forbiddenWornBits(){return Integer.MAX_VALUE-Wearable.WORN_HEAD-Wearable.WORN_EARS-Wearable.WORN_EYES;}
+	public long forbiddenWornBits(){return ~(Wearable.WORN_HEAD|Wearable.WORN_EARS|Wearable.WORN_EYES);}
 	public String racialCategory(){return "Porcine";}
 
 	//                                an ey ea he ne ar ha to le fo no gi mo wa ta wi

@@ -785,10 +785,10 @@ public class StdArea implements Area
 
     public void affectPhyStats(Physical affected, PhyStats affectableStats)
     {
-        int senses=phyStats.sensesMask()&(Integer.MAX_VALUE-(PhyStats.SENSE_UNLOCATABLE|PhyStats.CAN_NOT_SEE));
+        int senses=phyStats.sensesMask()&(~(PhyStats.SENSE_UNLOCATABLE|PhyStats.CAN_NOT_SEE));
         if(senses>0) affectableStats.setSensesMask(affectableStats.sensesMask()|senses);
         int disposition=phyStats().disposition()
-            &((Integer.MAX_VALUE-(PhyStats.IS_SLEEPING|PhyStats.IS_HIDDEN)));
+            &((~(PhyStats.IS_SLEEPING|PhyStats.IS_HIDDEN)));
         if((affected instanceof Room)
         &&(CMLib.map().hasASky((Room)affected)))
         {

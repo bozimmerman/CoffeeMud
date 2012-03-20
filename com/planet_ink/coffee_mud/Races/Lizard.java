@@ -41,7 +41,7 @@ public class Lizard extends StdRace
 	public int heightVariance(){return 3;}
 	public int lightestWeight(){return 5;}
 	public int weightVariance(){return 15;}
-	public long forbiddenWornBits(){return Integer.MAX_VALUE-Wearable.WORN_EYES;}
+	public long forbiddenWornBits(){return ~(Wearable.WORN_EYES);}
 	public String racialCategory(){return "Reptile";}
 	private String[]culturalAbilityNames={"Draconic"};
 	private int[]culturalAbilityProficiencies={75};

@@ -186,7 +186,7 @@ public class WeatherAffects extends PuddleMaker
 	        &&(CMLib.dice().rollPercentage()>((msg.source().charStats().getStat(CharStats.STAT_DEXTERITY)*3)+25)))
             {
                 int oldDisposition=msg.source().basePhyStats().disposition();
-                oldDisposition=oldDisposition&(Integer.MAX_VALUE-PhyStats.IS_SLEEPING-PhyStats.IS_SNEAKING-PhyStats.IS_SITTING);
+                oldDisposition=oldDisposition&(~(PhyStats.IS_SLEEPING|PhyStats.IS_SNEAKING|PhyStats.IS_SITTING));
                 msg.source().basePhyStats().setDisposition(oldDisposition|PhyStats.IS_SITTING);
                 msg.source().recoverPhyStats();
                 R.show(msg.source(),null,CMMsg.MSG_OK_ACTION,"^W<S-NAME> slip(s) on the "+what+" ground.^?");

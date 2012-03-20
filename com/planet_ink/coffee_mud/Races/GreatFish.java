@@ -41,7 +41,7 @@ public class GreatFish extends GiantFish
 	public int heightVariance(){return 10;}
 	public int lightestWeight(){return 55;}
 	public int weightVariance(){return 15;}
-	public long forbiddenWornBits(){return Integer.MAX_VALUE-Wearable.WORN_EYES;}
+	public long forbiddenWornBits(){return ~(Wearable.WORN_EYES);}
 	public String racialCategory(){return "Amphibian";}
 	protected static Vector<RawMaterial> resources=new Vector<RawMaterial>();
 	private String[]racialAbilityNames={"Skill_Swim"};

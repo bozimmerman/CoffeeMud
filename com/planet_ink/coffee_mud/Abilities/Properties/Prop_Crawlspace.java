@@ -71,7 +71,7 @@ public class Prop_Crawlspace extends Property
 					{
 			            MOB mob=msg.source();
 			            int oldDisposition = mob.basePhyStats().disposition();
-			            oldDisposition=oldDisposition&(Integer.MAX_VALUE-PhyStats.IS_SLEEPING-PhyStats.IS_SNEAKING-PhyStats.IS_SITTING);
+			            oldDisposition=oldDisposition&(~(PhyStats.IS_SLEEPING|PhyStats.IS_SNEAKING|PhyStats.IS_SITTING));
 			            mob.basePhyStats().setDisposition(oldDisposition|PhyStats.IS_SITTING);
 			            mob.recoverPhyStats();
 			            mob.recoverCharStats();

@@ -42,7 +42,7 @@ public class Raven extends StdRace
 	public int heightVariance(){return 5;}
 	public int lightestWeight(){return 2;}
 	public int weightVariance(){return 5;}
-	public long forbiddenWornBits(){return Integer.MAX_VALUE-Wearable.WORN_HEAD-Wearable.WORN_EYES;}
+	public long forbiddenWornBits(){return ~(Wearable.WORN_HEAD|Wearable.WORN_EYES);}
 	public String racialCategory(){return "Avian";}
 	private String[]racialAbilityNames={"WingFlying"};
 	private int[]racialAbilityLevels={1};

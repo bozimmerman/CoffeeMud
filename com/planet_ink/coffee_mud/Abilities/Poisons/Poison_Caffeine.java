@@ -58,7 +58,7 @@ public class Poison_Caffeine extends Poison {
 	    super.affectPhyStats(affected,affectableStats);
 		affectableStats.setSpeed(affectableStats.speed() + 0.25);
 	    int oldDisposition=affectableStats.disposition();
-	    oldDisposition=oldDisposition&(Integer.MAX_VALUE-PhyStats.IS_SLEEPING-PhyStats.IS_SNEAKING-PhyStats.IS_SITTING);
+	    oldDisposition=oldDisposition&(~(PhyStats.IS_SLEEPING|PhyStats.IS_SNEAKING|PhyStats.IS_SITTING));
 	    affectableStats.setDisposition(oldDisposition);
 	}
 
