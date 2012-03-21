@@ -283,7 +283,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 	                    budgetRemaining=budgetRemaining-Math.round(paid);
 						if(mySession!=null)
 							mySession.stdPrintln(msg.source(),msg.target(),msg.tool(),msg.targetMessage());
-						if(!CMath.bset(msg.targetCode(),CMMsg.MASK_OPTIMIZE))
+						if(!CMath.bset(msg.targetMajor(),CMMsg.MASK_OPTIMIZE))
 							mob.location().recoverRoomStats();
 	                    if(isGeneric()) text();
 					}
@@ -337,7 +337,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 	
 						if(mySession!=null)
 							mySession.stdPrintln(msg.source(),msg.target(),msg.tool(),msg.targetMessage());
-						if(!CMath.bset(msg.targetCode(),CMMsg.MASK_OPTIMIZE))
+						if(!CMath.bset(msg.targetMajor(),CMMsg.MASK_OPTIMIZE))
 							mob.location().recoverRoomStats();
 					}
 	            }

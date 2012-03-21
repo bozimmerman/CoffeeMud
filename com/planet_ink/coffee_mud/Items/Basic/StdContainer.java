@@ -342,7 +342,7 @@ public class StdContainer extends StdItem implements Container
 				{
 					Item newitem=(Item)msg.tool();
 					newitem.setContainer(this);
-					if(!CMath.bset(msg.targetCode(),CMMsg.MASK_OPTIMIZE))
+					if(!CMath.bset(msg.targetMajor(),CMMsg.MASK_OPTIMIZE))
 					{
 						mob.location().recoverRoomStats();
 						newitem.recoverPhyStats();
@@ -391,7 +391,7 @@ public class StdContainer extends StdItem implements Container
 			if(R!=null)
 			{
 				CMLib.utensils().recursiveDropMOB(msg.source(),R,this,this instanceof DeadBody);
-				if(!CMath.bset(msg.sourceCode(),CMMsg.MASK_OPTIMIZE))
+				if(!CMath.bset(msg.sourceMajor(),CMMsg.MASK_OPTIMIZE))
 				{
 					msg.source().location().recoverRoomStats();
 					if(msg.source().location()!=R)

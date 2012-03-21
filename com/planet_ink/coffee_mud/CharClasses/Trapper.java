@@ -142,7 +142,7 @@ public class Trapper extends Thief
 		if(msg.amISource(myChar)
 		&&(!myChar.isMonster())
 		&&(msg.tool() instanceof Ability)
-		&&(!CMath.bset(msg.sourceCode(),CMMsg.MASK_ALWAYS))
+		&&(!CMath.bset(msg.sourceMajor(),CMMsg.MASK_ALWAYS))
 		&&(myChar.location()!=null)
 		&&(myChar.isMine(msg.tool())))
 		{

@@ -270,7 +270,7 @@ public class StdLanguage extends StdAbility implements Language
 			&&(msg.tool()==null)
 			&&((msg.sourceMinor()==CMMsg.TYP_SPEAK)
 			   ||(msg.sourceMinor()==CMMsg.TYP_TELL)
-			   ||(CMath.bset(msg.sourceCode(),CMMsg.MASK_CHANNEL))))
+			   ||(CMath.bset(msg.sourceMajor(),CMMsg.MASK_CHANNEL))))
 			{
                 String str=CMStrings.getSayFromMessage(msg.othersMessage());
 				if(str==null) str=CMStrings.getSayFromMessage(msg.targetMessage());
@@ -454,7 +454,7 @@ public class StdLanguage extends StdAbility implements Language
 
 	protected boolean translateChannelMessage(CMMsg msg, String sourceWords)
 	{
-		if(CMath.bset(msg.sourceCode(),CMMsg.MASK_CHANNEL))
+		if(CMath.bset(msg.sourceMajor(),CMMsg.MASK_CHANNEL))
 		{
 			msg.addTrailerMsg(CMClass.getMsg(msg.source(),null,null,CMMsg.NO_EFFECT,CMMsg.NO_EFFECT,msg.othersCode(),CMStrings.substituteSayInMessage(msg.othersMessage(),sourceWords)+" (translated from "+name()+")"));
 			return true;
@@ -470,7 +470,7 @@ public class StdLanguage extends StdAbility implements Language
 		&&(!msg.amISource((MOB)affected))
 		&&((msg.sourceMinor()==CMMsg.TYP_SPEAK)
 		   ||(msg.sourceMinor()==CMMsg.TYP_TELL)
-		   ||(CMath.bset(msg.sourceCode(),CMMsg.MASK_CHANNEL)))
+		   ||(CMath.bset(msg.sourceMajor(),CMMsg.MASK_CHANNEL)))
 		&&(msg.tool() !=null)
 		&&(msg.sourceMessage()!=null)
 		&&(msg.tool() instanceof Language)

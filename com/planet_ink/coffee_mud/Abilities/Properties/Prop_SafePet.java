@@ -46,12 +46,12 @@ public class Prop_SafePet extends Property
 	{
 		if(affected instanceof MOB)
 		{
-			if(CMath.bset(msg.targetCode(),CMMsg.MASK_MALICIOUS))
+			if(CMath.bset(msg.targetMajor(),CMMsg.MASK_MALICIOUS))
 			{
 		        if((msg.amITarget(affected))
 		        &&(!disabled))
 				{
-		            if(!CMath.bset(msg.sourceCode(),CMMsg.MASK_ALWAYS))
+		            if(!CMath.bset(msg.sourceMajor(),CMMsg.MASK_ALWAYS))
 		    			msg.source().tell("Ah, leave "+affected.name()+" alone.");
 		            ((MOB)affected).makePeace();
 					return false;
@@ -65,9 +65,9 @@ public class Prop_SafePet extends Property
 				disabled=false;
 		}
 		else
-		if(CMath.bset(msg.targetCode(),CMMsg.MASK_MALICIOUS) && msg.amITarget(affected))
+		if(CMath.bset(msg.targetMajor(),CMMsg.MASK_MALICIOUS) && msg.amITarget(affected))
 		{
-            if(!CMath.bset(msg.sourceCode(),CMMsg.MASK_ALWAYS))
+            if(!CMath.bset(msg.sourceMajor(),CMMsg.MASK_ALWAYS))
     			msg.source().tell("Ah, leave "+affected.name()+" alone.");
 			return false;
 		}

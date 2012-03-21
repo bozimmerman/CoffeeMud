@@ -63,8 +63,8 @@ public class SoundEcho extends StdAbility
 	
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
-		if((CMath.bset(msg.othersCode(),CMMsg.MASK_SOUND))
-		&&(CMath.bset(msg.sourceCode(),CMMsg.MASK_SOUND))
+		if((CMath.bset(msg.othersMajor(),CMMsg.MASK_SOUND))
+		&&(CMath.bset(msg.sourceMajor(),CMMsg.MASK_SOUND))
 		&&(msg.othersMessage()!=null)
 		&&(msg.othersMessage().indexOf("You hear an echo: ")<0)
 		&&(msg.source().location()!=null))

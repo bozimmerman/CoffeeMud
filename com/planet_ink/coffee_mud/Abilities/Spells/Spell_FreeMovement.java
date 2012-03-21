@@ -63,7 +63,7 @@ public class Spell_FreeMovement extends Spell
 
 		MOB mob=(MOB)affected;
 		if((msg.amITarget(mob))
-		&&(CMath.bset(msg.targetCode(),CMMsg.MASK_MALICIOUS))
+		&&(CMath.bset(msg.targetMajor(),CMMsg.MASK_MALICIOUS))
 		&&(msg.tool()!=null)
 		&&(msg.tool() instanceof Ability)
 		&&(!mob.amDead()))

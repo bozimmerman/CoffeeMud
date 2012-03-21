@@ -60,7 +60,7 @@ public class Spell_WallOfDarkness extends Spell
 		&&(mob.getVictim()==invoker)
 		&&(mob.rangeToTarget()>=1)
 		&&(msg.amITarget(invoker))
-		&&((msg.targetCode()&CMMsg.MASK_MALICIOUS)>0))
+		&&((msg.targetMajor()&CMMsg.MASK_MALICIOUS)>0))
 		{
 			if((msg.tool()!=null)&&(msg.tool() instanceof Ability))
 			{

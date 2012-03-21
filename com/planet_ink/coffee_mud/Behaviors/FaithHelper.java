@@ -66,7 +66,7 @@ public class FaithHelper extends StdBehavior
 
 		if((target==null)||(observer==null)) return;
 		if((source!=observer)
-		&&(CMath.bset(msg.targetCode(),CMMsg.MASK_MALICIOUS))
+		&&(CMath.bset(msg.targetMajor(),CMMsg.MASK_MALICIOUS))
 		&&(!observer.isInCombat())
 		&&(target!=observer)
 		&&(source!=target)

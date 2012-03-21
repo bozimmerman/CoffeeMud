@@ -78,7 +78,7 @@ public class Chant_SongWard extends Chant
 
 		MOB mob=(MOB)affected;
 		if((msg.amITarget(mob))
-		&&(CMath.bset(msg.targetCode(),CMMsg.MASK_MALICIOUS))
+		&&(CMath.bset(msg.targetMajor(),CMMsg.MASK_MALICIOUS))
 		&&(msg.targetMinor()==CMMsg.TYP_CAST_SPELL)
 		&&(msg.tool()!=null)
 		&&(msg.tool() instanceof Ability)

@@ -85,7 +85,7 @@ public class ClimbableSurface extends StdRoom
 			return true;
 
 		if(msg.amITarget(this)
-		&&(CMath.bset(msg.targetCode(),CMMsg.MASK_MOVE))
+		&&(CMath.bset(msg.targetMajor(),CMMsg.MASK_MOVE))
 		&&(!CMLib.flags().isFalling(msg.source()))
 		&&(msg.sourceMinor()!=CMMsg.TYP_RECALL)
 		&&((msg.targetMinor()==CMMsg.TYP_ENTER)||(!(msg.tool() instanceof Ability))||(!CMath.bset(((Ability)msg.tool()).flags(),Ability.FLAG_TRANSPORTING)))
@@ -126,7 +126,7 @@ public class ClimbableSurface extends StdRoom
 			InTheAir.makeFall((Item)msg.target(),this,0);
 		else
 		if(msg.amITarget(this)
-		&&(CMath.bset(msg.targetCode(),CMMsg.MASK_MOVE))
+		&&(CMath.bset(msg.targetMajor(),CMMsg.MASK_MOVE))
 		&&(!CMLib.flags().isFalling(msg.source())))
 		{
 			MOB mob=msg.source();

@@ -74,7 +74,7 @@ public class Prayer_InfuseBalance extends Prayer
 	{
 		if(serviceRunning==0)
 			return super.okMessage(myHost, msg);
-		if(((msg.targetCode() & CMMsg.MASK_MALICIOUS)==CMMsg.MASK_MALICIOUS)
+		if(((msg.targetMajor() & CMMsg.MASK_MALICIOUS)==CMMsg.MASK_MALICIOUS)
 		&&(msg.target() instanceof MOB))
 		{
 			if(msg.source().getWorshipCharID().equalsIgnoreCase(((MOB)msg.target()).getWorshipCharID()))

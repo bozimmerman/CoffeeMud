@@ -46,7 +46,7 @@ public class Prop_Invisibility extends Property
 			return;
 		MOB mob=(MOB)affected;
 
-		if((msg.amISource(mob))&&(CMath.bset(msg.sourceCode(),CMMsg.MASK_MALICIOUS)))
+		if((msg.amISource(mob))&&(CMath.bset(msg.sourceMajor(),CMMsg.MASK_MALICIOUS)))
 		{
 			ticksSinceLoss=0;
 			mob.recoverPhyStats();

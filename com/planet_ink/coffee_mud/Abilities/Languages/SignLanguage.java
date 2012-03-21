@@ -165,7 +165,7 @@ public class SignLanguage extends StdLanguage
 
 	protected boolean translateChannelMessage(CMMsg msg, String sourceWords)
 	{
-		if(CMath.bset(msg.sourceCode(),CMMsg.MASK_CHANNEL)&&(msg.othersMessage()!=null))
+		if(CMath.bset(msg.sourceMajor(),CMMsg.MASK_CHANNEL)&&(msg.othersMessage()!=null))
 		{
 			String otherMes=msg.othersMessage();
 			if((otherMes.lastIndexOf('\'')==otherMes.indexOf('\'')))

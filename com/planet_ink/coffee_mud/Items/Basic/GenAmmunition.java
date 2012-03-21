@@ -76,7 +76,7 @@ public class GenAmmunition extends StdItem implements Ammunition
 		if(!msg.amITarget(this))
 			return super.okMessage(myHost,msg);
 		else
-		if(msg.targetCode()==CMMsg.NO_EFFECT)
+		if(msg.targetMinor()==CMMsg.NO_EFFECT)
 			return super.okMessage(myHost,msg);
 		else
 		switch(msg.targetMinor())

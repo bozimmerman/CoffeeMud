@@ -53,7 +53,7 @@ public class Guard extends StdBehavior
 		if((source!=observer)
 		&&(source!=target)
 		&&(target instanceof MOB)
-		&&(CMath.bset(msg.targetCode(),CMMsg.MASK_MALICIOUS))
+		&&(CMath.bset(msg.targetMajor(),CMMsg.MASK_MALICIOUS))
 		&&((getParms().trim().length()==0)||(getParms().equalsIgnoreCase(target.Name())))
 		&&(!observer.isInCombat())
 		&&(CMLib.flags().canBeSeenBy(source,observer))

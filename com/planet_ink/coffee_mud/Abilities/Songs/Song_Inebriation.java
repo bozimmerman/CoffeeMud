@@ -109,7 +109,7 @@ public class Song_Inebriation extends Song
 		&&(msg.tool()==null)
 		&&((msg.sourceMinor()==CMMsg.TYP_SPEAK)
 		   ||(msg.sourceMinor()==CMMsg.TYP_TELL)
-		   ||(CMath.bset(msg.sourceCode(),CMMsg.MASK_CHANNEL))))
+		   ||(CMath.bset(msg.sourceMajor(),CMMsg.MASK_CHANNEL))))
 		{
 			Ability A=CMClass.getAbility("Drunken");
 			if(A!=null)

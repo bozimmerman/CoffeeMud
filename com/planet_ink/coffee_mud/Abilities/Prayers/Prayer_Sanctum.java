@@ -85,9 +85,9 @@ public class Prayer_Sanctum extends Prayer
 			msg.source().tell("You feel your muscles unwilling to cooperate.");
 			return false;
 		}
-		if((CMath.bset(msg.sourceCode(),CMMsg.MASK_MALICIOUS))
-		||(CMath.bset(msg.targetCode(),CMMsg.MASK_MALICIOUS))
-		||(CMath.bset(msg.othersCode(),CMMsg.MASK_MALICIOUS)))
+		if((CMath.bset(msg.sourceMajor(),CMMsg.MASK_MALICIOUS))
+		||(CMath.bset(msg.targetMajor(),CMMsg.MASK_MALICIOUS))
+		||(CMath.bset(msg.othersMajor(),CMMsg.MASK_MALICIOUS)))
 		{
 			if((msg.source()!=null)
 			&&(msg.target()!=null)

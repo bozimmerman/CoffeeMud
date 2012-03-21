@@ -119,7 +119,7 @@ public class Undead extends StdRace
 			}
 			else
 			if((msg.amITarget(mob))
-			&&(CMath.bset(msg.targetCode(),CMMsg.MASK_MALICIOUS)
+			&&(CMath.bset(msg.targetMajor(),CMMsg.MASK_MALICIOUS)
 				||(msg.targetMinor()==CMMsg.TYP_DAMAGE))
 			&&((msg.targetMinor()==CMMsg.TYP_DISEASE)
 				||(msg.targetMinor()==CMMsg.TYP_GAS)

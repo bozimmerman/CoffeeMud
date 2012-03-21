@@ -61,9 +61,9 @@ public class Chant_Rockfeet extends Chant
 	{
 		super.executeMsg(host,msg);
 		if((msg.source()==affected)
-		&&(CMath.bset(msg.sourceCode(),CMMsg.MASK_HANDS)
-		   ||CMath.bset(msg.sourceCode(),CMMsg.MASK_MOVE))
-		&&(!CMath.bset(msg.sourceCode(),CMMsg.MASK_ALWAYS)))
+		&&(CMath.bset(msg.sourceMajor(),CMMsg.MASK_HANDS)
+		   ||CMath.bset(msg.sourceMajor(),CMMsg.MASK_MOVE))
+		&&(!CMath.bset(msg.sourceMajor(),CMMsg.MASK_ALWAYS)))
 		{
 			if(CMLib.dice().rollPercentage()>(msg.source().charStats().getStat(CharStats.STAT_STRENGTH)*3))
 			{

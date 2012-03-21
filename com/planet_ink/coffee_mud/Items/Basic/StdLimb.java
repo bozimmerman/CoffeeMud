@@ -65,7 +65,7 @@ public class StdLimb extends StdItem
 			return false;
 		if((msg.target()==this)
 		&&(msg.targetMinor()==CMMsg.TYP_REMOVE)
-		&&(!CMath.bset(msg.sourceCode(),CMMsg.MASK_ALWAYS))
+		&&(!CMath.bset(msg.sourceMajor(),CMMsg.MASK_ALWAYS))
 		&&(owner() instanceof MOB))
 		{
 			MOB mob=(MOB)owner();

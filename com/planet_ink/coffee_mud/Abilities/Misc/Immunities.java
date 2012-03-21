@@ -93,7 +93,7 @@ public class Immunities extends StdAbility
 		&&(!mob.amDead())
 		&&(immunes.contains(Integer.valueOf(msg.targetMinor()))
 			|| immunes.contains(Integer.valueOf(msg.sourceMinor())))
-		&&(CMath.bset(msg.targetCode(),CMMsg.MASK_MALICIOUS)||(msg.targetMinor()==CMMsg.TYP_DAMAGE)||(msg.targetMinor()==CMMsg.TYP_LEGALWARRANT)))
+		&&(CMath.bset(msg.targetMajor(),CMMsg.MASK_MALICIOUS)||(msg.targetMinor()==CMMsg.TYP_DAMAGE)||(msg.targetMinor()==CMMsg.TYP_LEGALWARRANT)))
 		{
 			String immunityName="certain";
 			if(msg.tool()!=null)

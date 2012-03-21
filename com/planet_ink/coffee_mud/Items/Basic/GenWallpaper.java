@@ -213,10 +213,10 @@ public class GenWallpaper implements Item
 		if(!msg.amITarget(this))
 			return true;
 		else
-		if(msg.targetCode()==CMMsg.NO_EFFECT)
+		if(msg.targetMinor()==CMMsg.NO_EFFECT)
 			return true;
 		else
-		if(CMath.bset(msg.targetCode(),CMMsg.MASK_MAGIC))
+		if(CMath.bset(msg.targetMajor(),CMMsg.MASK_MAGIC))
 		{
 			mob.tell("Please don't do that.");
 			return false;

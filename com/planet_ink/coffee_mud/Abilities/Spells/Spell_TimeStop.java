@@ -110,17 +110,17 @@ public class Spell_TimeStop extends Spell
 				if((msg.source() == invoker)
 				&&(msg.target() != invoker)
 				&&(msg.target() instanceof MOB)
-			    &&((CMath.bset(msg.sourceCode(),CMMsg.MASK_MALICIOUS))
-			    ||(CMath.bset(msg.targetCode(),CMMsg.MASK_MALICIOUS))
-			    ||(CMath.bset(msg.targetCode(),CMMsg.MASK_MALICIOUS))))
+			    &&((CMath.bset(msg.sourceMajor(),CMMsg.MASK_MALICIOUS))
+			    ||(CMath.bset(msg.targetMajor(),CMMsg.MASK_MALICIOUS))
+			    ||(CMath.bset(msg.targetMajor(),CMMsg.MASK_MALICIOUS))))
 				{
 					if(invoker.getVictim()==null)
 						invoker.setVictim((MOB)msg.target());
 				}
 				else
 				if((msg.source()!=invoker)
-				   &&(!CMath.bset(msg.sourceCode(),CMMsg.MASK_ALWAYS))
-				   &&(!CMath.bset(msg.targetCode(),CMMsg.MASK_ALWAYS)))
+				   &&(!CMath.bset(msg.sourceMajor(),CMMsg.MASK_ALWAYS))
+				   &&(!CMath.bset(msg.targetMajor(),CMMsg.MASK_ALWAYS)))
 				{
 					msg.source().tell("Time is stopped. Nothing just happened.  You didn't do that.");
 					return false;

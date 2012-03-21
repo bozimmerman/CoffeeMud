@@ -708,7 +708,7 @@ public class Conquerable extends Arrest
 		{
 			if((msg.source().isMonster())
 			&&(msg.target() instanceof MOB)
-			&&(CMath.bset(msg.targetCode(),CMMsg.MASK_MALICIOUS))
+			&&(CMath.bset(msg.targetMajor(),CMMsg.MASK_MALICIOUS))
 			&&(!((MOB)msg.target()).isInCombat())
 			&&(msg.source().getVictim()!=msg.target())
 			&&(((MOB)msg.target()).getClanID().equals(holdingClan))
@@ -760,7 +760,7 @@ public class Conquerable extends Arrest
 		&&(msg.source().getClanID().length()>0)
 		&&(msg.target() instanceof MOB)
 		&&(((MOB)msg.target()).amFollowing()==msg.source())
-		&&(CMath.bset(msg.targetCode(),CMMsg.MASK_MALICIOUS))
+		&&(CMath.bset(msg.targetMajor(),CMMsg.MASK_MALICIOUS))
 		&&(!((MOB)msg.target()).isInCombat())
 		&&(msg.source().getVictim()!=msg.target())
 		&&(((MOB)msg.target()).getClanID().equals(holdingClan))

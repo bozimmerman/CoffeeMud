@@ -241,7 +241,7 @@ public class Poison_Alcohol extends Poison
 			&&(drunkness>=5)
 			&&((msg.sourceMinor()==CMMsg.TYP_SPEAK)
 			   ||(msg.sourceMinor()==CMMsg.TYP_TELL)
-			   ||(CMath.bset(msg.sourceCode(),CMMsg.MASK_CHANNEL))))
+			   ||(CMath.bset(msg.sourceMajor(),CMMsg.MASK_CHANNEL))))
 			{
 				Ability A=CMClass.getAbility("Drunken");
 				if(A!=null)

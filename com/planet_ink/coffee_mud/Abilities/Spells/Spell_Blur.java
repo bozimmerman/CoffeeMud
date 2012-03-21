@@ -53,7 +53,7 @@ public class Spell_Blur extends Spell
 		&&(mob!=msg.source())
 		&&(!mob.amDead())
 		&&(!msg.source().amDead())
-		&&(CMath.bset(msg.targetCode(),CMMsg.MASK_MALICIOUS))
+		&&(CMath.bset(msg.targetMajor(),CMMsg.MASK_MALICIOUS))
 		&&(msg.targetMinor()==CMMsg.TYP_CAST_SPELL)
 		&&(invoker!=null)
 		&&(msg.tool() instanceof Ability))

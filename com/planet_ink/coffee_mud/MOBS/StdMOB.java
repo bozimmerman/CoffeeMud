@@ -1666,7 +1666,7 @@ public class StdMOB implements MOB
                     if((!CMLib.flags().canBeSeenBy(msg.target(),this))
                     &&(!(isMine(msg.target())&&(msg.target() instanceof Item)))
                     &&(!((isInCombat())&&(msg.target()==victim)))
-                    &&(CMath.bset(msg.targetCode(),CMMsg.MASK_HANDS)))
+                    &&(CMath.bset(msg.targetMajor(),CMMsg.MASK_HANDS)))
                     {
                         srcM.tell("You don't see '"+msg.target().name()+"' here.");
                         return false;
@@ -1678,7 +1678,7 @@ public class StdMOB implements MOB
                     &&(msg.sourceMinor()!=CMMsg.TYP_SITMOVE)
                     &&(msg.sourceMinor()!=CMMsg.TYP_BUY)
                     &&(msg.sourceMinor()!=CMMsg.TYP_BID)
-                    &&(msg.targetCode()!=CMMsg.MSG_OK_VISUAL)
+                    &&(msg.targetMinor()!=CMMsg.TYP_OK_VISUAL)
                     &&((msg.sourceMessage()!=null)||(msg.othersMessage()!=null))
                     &&((!CMLib.utensils().reachableItem(this,msg.target()))
                         ||(!CMLib.utensils().reachableItem(this,msg.tool()))))
@@ -1928,7 +1928,7 @@ public class StdMOB implements MOB
         &&(msg.amISource(this))
         &&(msg.target()!=null)
         &&(msg.target()!=this)
-        &&(!CMath.bset(msg.sourceCode(),CMMsg.MASK_ALWAYS))
+        &&(!CMath.bset(msg.sourceMajor(),CMMsg.MASK_ALWAYS))
         &&(msg.target() instanceof MOB)
         &&(location()!=null)
         &&(location()==((MOB)msg.target()).location()))
@@ -2016,11 +2016,11 @@ public class StdMOB implements MOB
             }
         }
 
-        if((msg.targetCode()!=CMMsg.NO_EFFECT)&&(msg.amITarget(this)))
+        if((msg.targetMinor()!=CMMsg.NO_EFFECT)&&(msg.amITarget(this)))
         {
             if((amDead())||(location()==null))
                 return false;
-            if(CMath.bset(msg.targetCode(),CMMsg.MASK_MALICIOUS))
+            if(CMath.bset(msg.targetMajor(),CMMsg.MASK_MALICIOUS))
             {
                 if(Log.combatChannelOn())
                     Log.combatOut(srcM.Name()+":"+Name()+":"+CMMsg.TYPE_DESCS[msg.targetMinor()]+":"+((msg.tool()!=null)?msg.tool().Name():"null"));
@@ -2162,17 +2162,17 @@ public class StdMOB implements MOB
                 ||(CMSecurity.isAllowed(this,location(),"CMDMOBS")&&(isMonster()))
                 ||(CMSecurity.isAllowed(this,location(),"CMDROOMS")&&(isMonster())))
                     return true;
-                if((getWearPositions(Wearable.WORN_ARMS)==0)&&(!CMath.bset(msg.targetCode(),CMMsg.MASK_ALWAYS)))
+                if((getWearPositions(Wearable.WORN_ARMS)==0)&&(!CMath.bset(msg.targetMajor(),CMMsg.MASK_ALWAYS)))
                 {
                     srcM.tell(name()+" is unable to accept that from you.");
                     return false;
                 }
-                if((!CMLib.flags().canBeSeenBy((Item)msg.tool(),this))&&(!CMath.bset(msg.targetCode(),CMMsg.MASK_ALWAYS)))
+                if((!CMLib.flags().canBeSeenBy((Item)msg.tool(),this))&&(!CMath.bset(msg.targetMajor(),CMMsg.MASK_ALWAYS)))
                 {
                     srcM.tell(name()+" can't see what you are giving.");
                     return false;
                 }
-                int GC=msg.targetCode()&CMMsg.MASK_ALWAYS;
+                final int GC=msg.targetMajor()&CMMsg.MASK_ALWAYS;
                 CMMsg msg2=CMClass.getMsg(srcM,msg.tool(),null,CMMsg.MSG_DROP|CMMsg.MASK_INTERMSG,null,CMMsg.MSG_DROP|CMMsg.MASK_INTERMSG,null,CMMsg.MSG_DROP|CMMsg.MASK_INTERMSG,null);
                 if(!location().okMessage(srcM,msg2))
                     return false;
@@ -2290,10 +2290,10 @@ public class StdMOB implements MOB
         // now go on to source activities
         if((msg.sourceCode()!=CMMsg.NO_EFFECT)&&(msg.amISource(this)))
         {
-            if((CMath.bset(msg.sourceCode(),CMMsg.MASK_MALICIOUS))
+            if((CMath.bset(msg.sourceMajor(),CMMsg.MASK_MALICIOUS))
             &&(msg.target() instanceof MOB)
             &&(getVictim()!=msg.target())
-            &&((!CMath.bset(msg.sourceCode(),CMMsg.MASK_ALWAYS))
+            &&((!CMath.bset(msg.sourceMajor(),CMMsg.MASK_ALWAYS))
                 ||(!(msg.tool() instanceof DiseaseAffect))))
             {
                 CMLib.combat().establishRange(this,(MOB)msg.target(),msg.tool());
@@ -2364,13 +2364,13 @@ public class StdMOB implements MOB
                 break;
             default:
                 // you pretty much always know what you are doing, if you can do it.
-                if(!CMath.bset(msg.sourceCode(),CMMsg.MASK_CNTRLMSG))
+                if(!CMath.bset(msg.sourceMajor(),CMMsg.MASK_CNTRLMSG))
                     tell(srcM,msg.target(),msg.tool(),msg.sourceMessage());
                 break;
             }
         }
         else
-        if((msg.targetCode()!=CMMsg.NO_EFFECT)&&(msg.amITarget(this)))
+        if((msg.targetMinor()!=CMMsg.NO_EFFECT)&&(msg.amITarget(this)))
         {
             final int targetMajor=msg.targetMajor();
             switch(msg.targetMinor())
@@ -2398,12 +2398,12 @@ public class StdMOB implements MOB
                     CMLib.commands().handleIntroductions(srcM,this,msg.targetMessage());
                 break;
             default:
-                if((CMath.bset(msg.targetCode(),CMMsg.MASK_MALICIOUS))&&(!amDead))
+                if((CMath.bset(msg.targetMajor(),CMMsg.MASK_MALICIOUS))&&(!amDead))
                     CMLib.combat().handleBeingAssaulted(msg);
                 else
                 if(CMath.bset(targetMajor,CMMsg.MASK_CHANNEL))
                 {
-                    int channelCode=((msg.targetCode()-CMMsg.MASK_CHANNEL)-CMMsg.TYP_CHANNEL);
+                    int channelCode=msg.targetMinor()-CMMsg.TYP_CHANNEL;
                     if((playerStats()!=null)
                     &&(!CMath.bset(getBitmap(),MOB.ATT_QUIET))
                     &&(!CMath.isSet(playerStats().getChannelMask(),channelCode)))
@@ -2435,7 +2435,7 @@ public class StdMOB implements MOB
             &&((!asleep)&&(canseesrc)))
                 tell(srcM,msg.target(),msg.tool(),msg.targetMessage());
             else
-            if(CMath.bset(msg.targetCode(),CMMsg.MASK_MALICIOUS))
+            if(CMath.bset(msg.targetMajor(),CMMsg.MASK_MALICIOUS))
                 tell(srcM,msg.target(),msg.tool(),msg.targetMessage());
             else
             if(((CMath.bset(targetMajor,CMMsg.MASK_HANDS))
@@ -2453,9 +2453,9 @@ public class StdMOB implements MOB
             final int othersMajor=msg.othersMajor();
             final int othersMinor=msg.othersMinor();
 
-            if(CMath.bset(msg.othersCode(),CMMsg.MASK_MALICIOUS)
+            if(CMath.bset(msg.othersMajor(),CMMsg.MASK_MALICIOUS)
             &&(msg.target() instanceof MOB)
-            &&((!CMath.bset(msg.sourceCode(),CMMsg.MASK_ALWAYS))
+            &&((!CMath.bset(msg.sourceMajor(),CMMsg.MASK_ALWAYS))
                 ||(!(msg.tool() instanceof DiseaseAffect))))
                 CMLib.combat().makeFollowersFight(this,(MOB)msg.target(),srcM);
 
@@ -2490,7 +2490,7 @@ public class StdMOB implements MOB
             if(((CMath.bset(othersMajor,CMMsg.MASK_EYES))
                 ||(CMath.bset(othersMajor,CMMsg.MASK_HANDS))
                 ||(CMath.bset(othersMajor,CMMsg.MASK_ALWAYS)))
-            &&(!CMath.bset(msg.othersCode(),CMMsg.MASK_CNTRLMSG))
+            &&(!CMath.bset(msg.othersMajor(),CMMsg.MASK_CNTRLMSG))
             &&((!asleep)&&(canseesrc)))
             {
                 tell(srcM,msg.target(),msg.tool(),msg.othersMessage());

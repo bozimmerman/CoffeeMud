@@ -110,7 +110,7 @@ public class Chant_AnimalSpy extends Chant
 			&&(!disable)
 			&&(msg.sourceMinor()==CMMsg.TYP_SPEAK)
 			&&(msg.sourceMessage()!=null)
-			&&((msg.sourceCode()&CMMsg.MASK_MAGIC)==0))
+			&&((msg.sourceMajor()&CMMsg.MASK_MAGIC)==0))
 			{
 				int start=msg.sourceMessage().indexOf("\'");
 				int end=msg.sourceMessage().lastIndexOf("\'");

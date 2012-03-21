@@ -743,10 +743,10 @@ public class StdItem implements Item
 		if(!msg.amITarget(this))
 			return true;
 		else
-		if(msg.targetCode()==CMMsg.NO_EFFECT)
+		if(msg.targetMinor()==CMMsg.NO_EFFECT)
 			return true;
 		else
-		if((CMath.bset(msg.targetCode(),CMMsg.MASK_MAGIC))
+		if((CMath.bset(msg.targetMajor(),CMMsg.MASK_MAGIC))
 		&&(!CMLib.flags().isGettable(this))
 		&&((displayText().length()==0)
 		   ||((msg.tool()!=null)
@@ -1132,7 +1132,7 @@ public class StdItem implements Item
 				mob.delItem(this);
 				if(!R.isContent(this))
 					R.addItem(this,ItemPossessor.Expire.Player_Drop);
-				if(!CMath.bset(msg.sourceCode(),CMMsg.MASK_OPTIMIZE))
+				if(!CMath.bset(msg.sourceMajor(),CMMsg.MASK_OPTIMIZE))
 				{
 					R.recoverRoomStats();
 					if(mob.location()!=R)

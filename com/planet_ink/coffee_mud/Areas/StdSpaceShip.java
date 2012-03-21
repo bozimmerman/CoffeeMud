@@ -320,9 +320,9 @@ public class StdSpaceShip implements Area, SpaceObject, SpaceShip
 			||(msg.sourceMinor()==CMMsg.TYP_FLEE))
 				return false;
 		}
-		if((CMath.bset(msg.sourceCode(),CMMsg.MASK_MAGIC))
-		||(CMath.bset(msg.targetCode(),CMMsg.MASK_MAGIC))
-		||(CMath.bset(msg.othersCode(),CMMsg.MASK_MAGIC)))
+		if((CMath.bset(msg.sourceMajor(),CMMsg.MASK_MAGIC))
+		||(CMath.bset(msg.targetMajor(),CMMsg.MASK_MAGIC))
+		||(CMath.bset(msg.othersMajor(),CMMsg.MASK_MAGIC)))
 		{
 			Room room=null;
 			if((msg.target()!=null)

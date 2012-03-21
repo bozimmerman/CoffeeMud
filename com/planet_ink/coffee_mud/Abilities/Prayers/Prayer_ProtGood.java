@@ -70,7 +70,7 @@ public class Prayer_ProtGood extends Prayer
 
 		if(msg.target()==affected)
 		{
-			if((CMath.bset(msg.targetCode(),CMMsg.MASK_MALICIOUS))
+			if((CMath.bset(msg.targetMajor(),CMMsg.MASK_MALICIOUS))
 			&&(msg.targetMinor()==CMMsg.TYP_CAST_SPELL)
 			&&(msg.tool()!=null)
 			&&(msg.tool() instanceof Ability)

@@ -52,9 +52,9 @@ public class Chant_CharmArea extends Chant
 			msg.source().tell("You really don't feel like leaving this place.  It is just too beautiful.");
 			return false;
 		}
-		if((CMath.bset(msg.sourceCode(),CMMsg.MASK_MALICIOUS))
-		||(CMath.bset(msg.targetCode(),CMMsg.MASK_MALICIOUS))
-		||(CMath.bset(msg.othersCode(),CMMsg.MASK_MALICIOUS)))
+		if((CMath.bset(msg.sourceMajor(),CMMsg.MASK_MALICIOUS))
+		||(CMath.bset(msg.targetMajor(),CMMsg.MASK_MALICIOUS))
+		||(CMath.bset(msg.othersMajor(),CMMsg.MASK_MALICIOUS)))
 		{
 			if((msg.source()!=null)
 			   &&(msg.target()!=null)

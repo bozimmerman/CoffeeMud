@@ -69,7 +69,7 @@ public class Spell_AlternateReality extends Spell
 
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
-		if(((msg.targetCode()&CMMsg.MASK_MALICIOUS)>0)
+		if(((msg.targetMajor()&CMMsg.MASK_MALICIOUS)>0)
 		&&((msg.amISource((MOB)affected)))
 		&&(msg.target()!=null)
 		&&(invoker()!=null))

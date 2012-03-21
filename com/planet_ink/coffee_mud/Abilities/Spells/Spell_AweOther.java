@@ -45,8 +45,8 @@ public class Spell_AweOther extends Spell
 
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
-		if(((msg.targetCode()&CMMsg.MASK_MALICIOUS)>0)
-        &&(!CMath.bset(msg.sourceCode(),CMMsg.MASK_ALWAYS))
+		if(((msg.targetMajor()&CMMsg.MASK_MALICIOUS)>0)
+        &&(!CMath.bset(msg.sourceMajor(),CMMsg.MASK_ALWAYS))
 		&&(msg.target()!=null)
 		&&(msg.target().Name().equalsIgnoreCase(text())))
 		{

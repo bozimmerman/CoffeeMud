@@ -90,10 +90,10 @@ public class Spell_MirrorImage extends Spell
 		if(msg.amISource(mob))
 		{
 			if((
-				(CMath.bset(msg.othersCode(),CMMsg.MASK_EYES))
-				||(CMath.bset(msg.othersCode(),CMMsg.MASK_MOVE))
-				||(CMath.bset(msg.othersCode(),CMMsg.MASK_MOUTH))
-				||(CMath.bset(msg.othersCode(),CMMsg.MASK_HANDS)))
+				(CMath.bset(msg.othersMajor(),CMMsg.MASK_EYES))
+				||(CMath.bset(msg.othersMajor(),CMMsg.MASK_MOVE))
+				||(CMath.bset(msg.othersMajor(),CMMsg.MASK_MOUTH))
+				||(CMath.bset(msg.othersMajor(),CMMsg.MASK_HANDS)))
 			&&(msg.othersMessage()!=null)
 			&&(msg.targetMinor()!=CMMsg.TYP_DAMAGE)
 			&&(msg.othersMessage().length()>0))

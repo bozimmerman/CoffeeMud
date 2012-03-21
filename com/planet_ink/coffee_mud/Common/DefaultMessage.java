@@ -37,18 +37,21 @@ public class DefaultMessage implements CMMsg
     public void initializeClass(){}
     public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
     
-	protected int 			targetCode=0;
-	protected int 			sourceCode=0;
-	protected int 			othersCode=0;
-	protected String 		targetMsg=null;
-	protected String 		othersMsg=null;
-	protected String 		sourceMsg=null;
-	protected MOB 			myAgent=null;
-	protected Environmental myTarget=null;
-	protected Environmental myTool=null;
-	protected int 			value=0;
-	protected SLinkedList<CMMsg>
-							trailMsgs=null;
+    protected int           targetMajorMask=0;
+    protected int           sourceMajorMask=0;
+    protected int           othersMajorMask=0;
+    protected int           targetMinorType=0;
+    protected int           sourceMinorType=0;
+    protected int           othersMinorType=0;
+    protected String        targetMsg=null;
+    protected String        othersMsg=null;
+    protected String        sourceMsg=null;
+    protected MOB           myAgent=null;
+    protected Environmental myTarget=null;
+    protected Environmental myTool=null;
+    protected int           value=0;
+    protected SLinkedList<CMMsg>
+                            trailMsgs=null;
 
     public CMObject copyOf()
     {
@@ -64,9 +67,12 @@ public class DefaultMessage implements CMMsg
     
     protected void finalize() throws Throwable
     {
-        targetCode=0;
-        sourceCode=0;
-        othersCode=0;
+        targetMajorMask=0;
+        sourceMajorMask=0;
+        othersMajorMask=0;
+        targetMinorType=0;
+        sourceMinorType=0;
+        othersMinorType=0;
         targetMsg=null;
         othersMsg=null;
         sourceMsg=null;
@@ -79,175 +85,212 @@ public class DefaultMessage implements CMMsg
             super.finalize();
     }
     
-	public void modify(MOB source, Environmental target, int newAllCode, String allMessage)
-	{
-		myAgent=source;
-		myTarget=target;
-		myTool=null;
-		sourceMsg=allMessage;
-		targetMsg=allMessage;
-		targetCode=newAllCode;
-		sourceCode=newAllCode;
-		othersCode=newAllCode;
-		othersMsg=allMessage;
-	}
+    public void modify(final MOB source, final Environmental target, final int newAllCode, final String allMessage)
+    {
+        myAgent=source;
+        myTarget=target;
+        myTool=null;
+        sourceMsg=allMessage;
+        targetMsg=allMessage;
+        targetMajorMask=newAllCode&CMMsg.MAJOR_MASK;
+        sourceMajorMask=targetMajorMask;
+        othersMajorMask=targetMajorMask;
+        targetMinorType=newAllCode&CMMsg.MINOR_MASK;
+        sourceMinorType=targetMinorType;
+        othersMinorType=targetMinorType;
+        othersMsg=allMessage;
+    }
     
-    public void modify(MOB source, int newAllCode, String allMessage)
+    public void modify(final MOB source, final int newAllCode, final String allMessage)
     {
         myAgent=source;
         myTarget=null;
         myTool=null;
         sourceMsg=allMessage;
         targetMsg=allMessage;
-        targetCode=newAllCode;
-        sourceCode=newAllCode;
-        othersCode=newAllCode;
+        targetMajorMask=newAllCode&CMMsg.MAJOR_MASK;
+        sourceMajorMask=targetMajorMask;
+        othersMajorMask=targetMajorMask;
+        targetMinorType=newAllCode&CMMsg.MINOR_MASK;
+        sourceMinorType=targetMinorType;
+        othersMinorType=targetMinorType;
         othersMsg=allMessage;
     }
     
-    public void modify(MOB source, int newAllCode, String allMessage, int newValue)
+    public void modify(final MOB source, final int newAllCode, final String allMessage, final int newValue)
     {
          myAgent=source;
          myTarget=null;
          myTool=null;
          sourceMsg=allMessage;
          targetMsg=allMessage;
-         targetCode=newAllCode;
-         sourceCode=newAllCode;
-         othersCode=newAllCode;
+         targetMajorMask=newAllCode&CMMsg.MAJOR_MASK;
+         sourceMajorMask=targetMajorMask;
+         othersMajorMask=targetMajorMask;
+         targetMinorType=newAllCode&CMMsg.MINOR_MASK;
+         sourceMinorType=targetMinorType;
+         othersMinorType=targetMinorType;
          othersMsg=allMessage;
          value=newValue;
     }
     
-    public void modify(MOB source, Environmental target, Environmental tool, int newAllCode, String allMessage)
-	{
-		myAgent=source;
-		myTarget=target;
-		myTool=tool;
-		sourceMsg=allMessage;
-		targetMsg=allMessage;
-		targetCode=newAllCode;
-		sourceCode=newAllCode;
-		othersCode=newAllCode;
-		othersMsg=allMessage;
-	}
+    public void modify(final MOB source, final Environmental target, final Environmental tool, 
+                       final int newAllCode, final String allMessage)
+    {
+        myAgent=source;
+        myTarget=target;
+        myTool=tool;
+        sourceMsg=allMessage;
+        targetMsg=allMessage;
+        targetMajorMask=newAllCode&CMMsg.MAJOR_MASK;
+        sourceMajorMask=targetMajorMask;
+        othersMajorMask=targetMajorMask;
+        targetMinorType=newAllCode&CMMsg.MINOR_MASK;
+        sourceMinorType=targetMinorType;
+        othersMinorType=targetMinorType;
+        othersMsg=allMessage;
+    }
 
-    public void modify(MOB source,
-    				   Environmental target,
-    				   Environmental tool,
-    				   int newAllCode,
-    				   String sourceMessage,
-    				   String targetMessage,
-    				   String othersMessage)
-	{
-		myAgent=source;
-		myTarget=target;
-		myTool=tool;
-		sourceMsg=sourceMessage;
-		targetMsg=targetMessage;
-		targetCode=newAllCode;
-		sourceCode=newAllCode;
-		othersCode=newAllCode;
-		othersMsg=othersMessage;
-	}
+    public void modify(final MOB source,
+                       final Environmental target,
+                       final Environmental tool,
+                       final int newAllCode,
+                       final String sourceMessage,
+                       final String targetMessage,
+                       final String othersMessage)
+    {
+        myAgent=source;
+        myTarget=target;
+        myTool=tool;
+        sourceMsg=sourceMessage;
+        targetMsg=targetMessage;
+        targetMajorMask=newAllCode&CMMsg.MAJOR_MASK;
+        sourceMajorMask=targetMajorMask;
+        othersMajorMask=targetMajorMask;
+        targetMinorType=newAllCode&CMMsg.MINOR_MASK;
+        sourceMinorType=targetMinorType;
+        othersMinorType=targetMinorType;
+        othersMsg=othersMessage;
+    }
 
-    public void setSourceCode(int code){sourceCode=code;}
-    public void setTargetCode(int code){targetCode=code;}
-    public void setOthersCode(int code){othersCode=code;}
-    public void setSourceMessage(String str){sourceMsg=str;}
-    public void setTargetMessage(String str){targetMsg=str;}
-    public void setOthersMessage(String str){othersMsg=str;}
+    public void setSourceCode(final int code)
+    {
+        sourceMajorMask=code&CMMsg.MAJOR_MASK;
+        sourceMinorType=code&CMMsg.MINOR_MASK;
+    }
+    public void setTargetCode(final int code)
+    {
+        targetMajorMask=code&CMMsg.MAJOR_MASK;
+        targetMinorType=code&CMMsg.MINOR_MASK;
+    }
+    public void setOthersCode(final int code)
+    {
+        othersMajorMask=code&CMMsg.MAJOR_MASK;
+        othersMinorType=code&CMMsg.MINOR_MASK;
+    }
+    public void setSourceMessage(final String str){sourceMsg=str;}
+    public void setTargetMessage(final String str){targetMsg=str;}
+    public void setOthersMessage(final String str){othersMsg=str;}
 
-	public int value(){return value;}
-	public void setValue(int amount)
+    public int value(){return value;}
+    public void setValue(final int amount)
     {
         value=amount;
     }
-	
-	public List<CMMsg> trailerMsgs()
-	{
-		return trailMsgs;
-	}
-	
-	public void addTrailerMsg(CMMsg msg)
-	{
-		if(trailMsgs==null) trailMsgs=new SLinkedList<CMMsg>();
-		trailMsgs.add(msg);
-	}
-
-	public void modify(MOB source,
-						Environmental target,
-						Environmental tool,
-						int newSourceCode,
-						String sourceMessage,
-						int newTargetCode,
-						String targetMessage,
-						int newOthersCode,
-						String othersMessage)
-	{
-		myAgent=source;
-		myTarget=target;
-		myTool=tool;
-		sourceMsg=sourceMessage;
-		targetMsg=targetMessage;
-		targetCode=newTargetCode;
-		sourceCode=newSourceCode;
-		othersCode=newOthersCode;
-		othersMsg=othersMessage;
-	}
-    public void modify(MOB source,
-    				   Environmental target,
-    				   Environmental tool,
-    				   int newSourceCode,
-    				   int newTargetCode,
-    				   int newOthersCode,
-    				   String allMessage)
-	{
-		myAgent=source;
-		myTarget=target;
-		myTool=tool;
-		targetMsg=allMessage;
-		sourceMsg=allMessage;
-		targetCode=newTargetCode;
-		sourceCode=newSourceCode;
-		othersCode=newOthersCode;
-		othersMsg=allMessage;
-	}
-	public MOB source(){ return myAgent; }
-    public void setSource(MOB mob){myAgent=mob;}
-	public Environmental target() { return myTarget; }
-    public void setTarget(Environmental E){myTarget=E;}
-	public Environmental tool() { return myTool; }
-    public void setTool(Environmental E){myTool=E;}
-	public int targetMajor() { return targetCode&CMMsg.MAJOR_MASK; }
-	public int sourceMajor() { return sourceCode&CMMsg.MAJOR_MASK;}
-	public int othersMajor() { return othersCode&CMMsg.MAJOR_MASK; }
-	public boolean targetMajor(final int bitMask) { return (targetCode&bitMask)==bitMask; }
-	public int targetMinor() { return targetCode&CMMsg.MINOR_MASK; }
-	public int targetCode() { return targetCode; }
-	public String targetMessage() { return targetMsg;}
-	public int sourceCode() { return sourceCode; }
-	public boolean sourceMajor(final int bitMask) { return (sourceCode&bitMask)==bitMask; }
-	public int sourceMinor() { return sourceCode&CMMsg.MINOR_MASK;}
-	public String sourceMessage() { return sourceMsg;}
-	public boolean othersMajor(final int bitMask) { return (othersCode&bitMask)==bitMask; }
-	public int othersMinor() { return othersCode&CMMsg.MINOR_MASK; }
-	public int othersCode() {  return othersCode; }
-	public String othersMessage() { return othersMsg; }
-	public boolean amITarget(Environmental thisOne){ return ((thisOne!=null)&&(thisOne==target()));}
-	public boolean amISource(MOB thisOne){return ((thisOne!=null)&&(thisOne==source()));}
-    public boolean isTarget(Environmental E){return amITarget(E);}
-    public boolean isTarget(int codeOrMask){return matches(targetCode,codeOrMask);}
-    public boolean isTarget(String codeOrMaskDesc){return matches(targetCode,codeOrMaskDesc);}
-    public boolean isSource(Environmental E){return (E instanceof MOB)?amISource((MOB)E):false;}
-    public boolean isSource(int codeOrMask){return matches(sourceCode,codeOrMask);}
-    public boolean isSource(String codeOrMaskDesc){return matches(sourceCode,codeOrMaskDesc);}
-    public boolean isOthers(Environmental E){return (!isTarget(E))&&(!isSource(E));}
-    public boolean isOthers(int codeOrMask){return matches(othersCode,codeOrMask);}
-    public boolean isOthers(String codeOrMaskDesc){return matches(othersCode,codeOrMaskDesc);}
     
-    protected static boolean matches(int code1, int code2){return ((code1&CMMsg.MINOR_MASK)==code2)||((code1&CMMsg.MAJOR_MASK)==code2);}
-    protected static boolean matches(int code1, String code2)
+    public List<CMMsg> trailerMsgs()
+    {
+        return trailMsgs;
+    }
+    
+    public void addTrailerMsg(final CMMsg msg)
+    {
+        if(trailMsgs==null) trailMsgs=new SLinkedList<CMMsg>();
+        trailMsgs.add(msg);
+    }
+
+    public void modify(final MOB source,
+                       final Environmental target,
+                       final Environmental tool,
+                       final int newSourceCode,
+                       final String sourceMessage,
+                       final int newTargetCode,
+                       final String targetMessage,
+                       final int newOthersCode,
+                       final String othersMessage)
+    {
+        myAgent=source;
+        myTarget=target;
+        myTool=tool;
+        sourceMsg=sourceMessage;
+        targetMsg=targetMessage;
+        targetMajorMask=newTargetCode&CMMsg.MAJOR_MASK;
+        sourceMajorMask=newSourceCode&CMMsg.MAJOR_MASK;
+        othersMajorMask=newOthersCode&CMMsg.MAJOR_MASK;
+        targetMinorType=newTargetCode&CMMsg.MINOR_MASK;
+        sourceMinorType=newSourceCode&CMMsg.MINOR_MASK;
+        othersMinorType=newOthersCode&CMMsg.MINOR_MASK;
+        othersMsg=othersMessage;
+    }
+    public void modify(final MOB source,
+                       final Environmental target,
+                       final Environmental tool,
+                       final int newSourceCode,
+                       final int newTargetCode,
+                       final int newOthersCode,
+                       final String allMessage)
+    {
+        myAgent=source;
+        myTarget=target;
+        myTool=tool;
+        targetMsg=allMessage;
+        sourceMsg=allMessage;
+        targetMajorMask=newTargetCode&CMMsg.MAJOR_MASK;
+        sourceMajorMask=newSourceCode&CMMsg.MAJOR_MASK;
+        othersMajorMask=newOthersCode&CMMsg.MAJOR_MASK;
+        targetMinorType=newTargetCode&CMMsg.MINOR_MASK;
+        sourceMinorType=newSourceCode&CMMsg.MINOR_MASK;
+        othersMinorType=newOthersCode&CMMsg.MINOR_MASK;
+        othersMsg=allMessage;
+    }
+    public final MOB source(){ return myAgent; }
+    public final void setSource(final MOB mob){myAgent=mob;}
+    public final Environmental target() { return myTarget; }
+    public final void setTarget(final Environmental E){myTarget=E;}
+    public final Environmental tool() { return myTool; }
+    public final void setTool(final Environmental E){myTool=E;}
+    public final int targetMajor() { return targetMajorMask; }
+    public final int sourceMajor() { return sourceMajorMask;}
+    public final int othersMajor() { return othersMajorMask; }
+    public final boolean targetMajor(final int bitMask) { return (targetMajorMask&bitMask)==bitMask; }
+    public final int targetMinor() { return targetMinorType; }
+    public final int targetCode() { return targetMajorMask | targetMinorType; }
+    public final String targetMessage() { return targetMsg;}
+    public final int sourceCode() { return sourceMajorMask | sourceMinorType; }
+    public final boolean sourceMajor(final int bitMask) { return (sourceMajorMask&bitMask)==bitMask; }
+    public final int sourceMinor() { return sourceMinorType;}
+    public final String sourceMessage() { return sourceMsg;}
+    public final boolean othersMajor(final int bitMask) { return (othersMajorMask&bitMask)==bitMask; }
+    public final int othersMinor() { return othersMinorType; }
+    public final int othersCode() {  return othersMajorMask | othersMinorType; }
+    public final String othersMessage() { return othersMsg; }
+    public final boolean amITarget(final Environmental thisOne){ return ((thisOne!=null)&&(thisOne==target()));}
+    public final boolean amISource(final MOB thisOne){return ((thisOne!=null)&&(thisOne==source()));}
+    public final boolean isTarget(final Environmental E){return amITarget(E);}
+    public final boolean isTarget(final int codeOrMask){return matches(targetMajorMask, targetMinorType,codeOrMask);}
+    public final boolean isTarget(final String codeOrMaskDesc){return matches(targetMajorMask, targetMinorType,codeOrMaskDesc);}
+    public final boolean isSource(final Environmental E){return (E instanceof MOB)?amISource((MOB)E):false;}
+    public final boolean isSource(final int codeOrMask){return matches(sourceMajorMask, sourceMinorType, codeOrMask);}
+    public final boolean isSource(final String codeOrMaskDesc){return matches(sourceMajorMask, sourceMinorType,codeOrMaskDesc);}
+    public final boolean isOthers(final Environmental E){return (!isTarget(E))&&(!isSource(E));}
+    public final boolean isOthers(final int codeOrMask){return matches(othersMajorMask, othersMinorType, codeOrMask);}
+    public final boolean isOthers(final String codeOrMaskDesc){return matches(othersMajorMask, othersMinorType, codeOrMaskDesc);}
+    
+    protected static final boolean matches(final int major, final int minor, final int code)
+    {
+        return (major == code) || (minor == code);
+    }
+    protected static final boolean matches(final int major, final int minor, String code2)
     {
         Integer I=Desc.getMSGTYPE_DESCS().get(code2.toUpperCase());
         if(I==null)
@@ -278,7 +321,7 @@ public class DefaultMessage implements CMMsg
                 { I=(Integer)MISC_DESCS[i][1]; break;}
             if(I==null) return false;
         }
-        return matches(code1,I.intValue());
+        return matches(major, minor, I.intValue());
     }
     
 }

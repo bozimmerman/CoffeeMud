@@ -94,8 +94,8 @@ public class Spell_Timeport extends Spell
 		    }
 		    else
 			if(msg.amISource((MOB)affected))
-				if((!CMath.bset(msg.sourceCode(),CMMsg.MASK_ALWAYS))
-				&&(!CMath.bset(msg.targetCode(),CMMsg.MASK_ALWAYS)))
+				if((!CMath.bset(msg.sourceMajor(),CMMsg.MASK_ALWAYS))
+				&&(!CMath.bset(msg.targetMajor(),CMMsg.MASK_ALWAYS)))
 				{
 					msg.source().tell("Nothing just happened.  You are time travelling, and can't do that.");
 					return false;

@@ -53,7 +53,7 @@ public class MOBHelper extends StdBehavior
 		&&(victim!=monster)
 		&&(attacker!=victim)
 		&&(!monster.isInCombat())
-		&&(CMath.bset(msg.targetCode(),CMMsg.MASK_MALICIOUS))
+		&&(CMath.bset(msg.targetMajor(),CMMsg.MASK_MALICIOUS))
 		&&(CMLib.flags().canBeSeenBy(attacker,monster))
 		&&(CMLib.flags().canBeSeenBy(victim,monster))
 		&&(victim.isMonster()))

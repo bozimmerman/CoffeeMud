@@ -1300,7 +1300,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
         if((!target.isInCombat())
         &&(target.location()!=null)
         &&(target.location().isInhabitant(attacker))
-        &&((!CMath.bset(msg.sourceCode(),CMMsg.MASK_ALWAYS))
+        &&((!CMath.bset(msg.sourceMajor(),CMMsg.MASK_ALWAYS))
             ||(!(msg.tool() instanceof DiseaseAffect))))
         {
             establishRange(target,attacker,msg.tool());

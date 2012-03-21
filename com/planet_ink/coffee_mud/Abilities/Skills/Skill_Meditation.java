@@ -70,10 +70,10 @@ public class Skill_Meditation extends StdSkill
 		MOB mob=(MOB)affected;
 
 		if((msg.amISource(mob))
-		&&(!CMath.bset(msg.sourceCode(),CMMsg.MASK_CHANNEL))
-		&&((CMath.bset(msg.sourceCode(),CMMsg.MASK_MOVE))||(CMath.bset(msg.sourceCode(),CMMsg.MASK_HANDS))||(CMath.bset(msg.sourceCode(),CMMsg.MASK_MOUTH))))
+		&&(!CMath.bset(msg.sourceMajor(),CMMsg.MASK_CHANNEL))
+		&&((CMath.bset(msg.sourceMajor(),CMMsg.MASK_MOVE))||(CMath.bset(msg.sourceMajor(),CMMsg.MASK_HANDS))||(CMath.bset(msg.sourceMajor(),CMMsg.MASK_MOUTH))))
 			unInvoke();
-		if(CMath.bset(msg.othersCode(),CMMsg.MASK_SOUND)
+		if(CMath.bset(msg.othersMajor(),CMMsg.MASK_SOUND)
 		   &&(CMLib.flags().canBeHeardMovingBy(msg.source(),mob)))
 		{
 			if(!msg.amISource(mob))

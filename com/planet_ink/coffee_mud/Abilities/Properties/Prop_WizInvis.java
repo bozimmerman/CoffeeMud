@@ -127,7 +127,7 @@ public class Prop_WizInvis extends Property
 
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
-		if((CMath.bset(msg.targetCode(),CMMsg.MASK_MALICIOUS)&&(msg.amITarget(affected))&&(affected!=null)&&(!disabled)))
+		if((CMath.bset(msg.targetMajor(),CMMsg.MASK_MALICIOUS)&&(msg.amITarget(affected))&&(affected!=null)&&(!disabled)))
 		{
 			if(msg.source()!=msg.target())
 			{
@@ -140,7 +140,7 @@ public class Prop_WizInvis extends Property
 		else
 		if((affected!=null)&&(affected instanceof MOB))
 		{
-			if((CMath.bset(msg.targetCode(),CMMsg.MASK_MALICIOUS))&&(msg.amISource((MOB)affected)))
+			if((CMath.bset(msg.targetMajor(),CMMsg.MASK_MALICIOUS))&&(msg.amISource((MOB)affected)))
 				disabled=true;
 			else
 			if((msg.amISource((MOB)affected))

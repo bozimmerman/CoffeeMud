@@ -226,7 +226,7 @@ public class LightSource extends StdItem implements Light
 			&&(msg.source()!=null))
 			{
 				msg.source().recoverPhyStats();
-				if(!CMath.bset(msg.sourceCode(),CMMsg.MASK_OPTIMIZE))
+				if(!CMath.bset(msg.sourceMajor(),CMMsg.MASK_OPTIMIZE))
 				{
 					if(msg.source().location()!=null)
 						msg.source().location().recoverRoomStats();
@@ -245,7 +245,7 @@ public class LightSource extends StdItem implements Light
 				case CMMsg.TYP_REMOVE:
 					if(msg.source()!=null)
 					{
-						if(!CMath.bset(msg.targetCode(),CMMsg.MASK_OPTIMIZE))
+						if(!CMath.bset(msg.targetMajor(),CMMsg.MASK_OPTIMIZE))
 						{
 							msg.source().recoverPhyStats();
 							if(msg.source().location()!=null)

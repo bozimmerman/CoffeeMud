@@ -616,20 +616,20 @@ public class StdRoom implements Room
 			{
 			case CMMsg.TYP_LEAVE:
 			{
-				if(!CMath.bset(msg.targetCode(),CMMsg.MASK_OPTIMIZE))
+				if(!CMath.bset(msg.targetMajor(),CMMsg.MASK_OPTIMIZE))
 					recoverRoomStats();
 				break;
 			}
 			case CMMsg.TYP_FLEE:
 			{
-				if(!CMath.bset(msg.targetCode(),CMMsg.MASK_OPTIMIZE))
+				if(!CMath.bset(msg.targetMajor(),CMMsg.MASK_OPTIMIZE))
 					recoverRoomStats();
 				break;
 			}
 			case CMMsg.TYP_ENTER:
 			case CMMsg.TYP_RECALL:
 			{
-				if(!CMath.bset(msg.targetCode(),CMMsg.MASK_OPTIMIZE))
+				if(!CMath.bset(msg.targetMajor(),CMMsg.MASK_OPTIMIZE))
 					recoverRoomStats();
                 if(msg.source().playerStats()!=null)
                 {

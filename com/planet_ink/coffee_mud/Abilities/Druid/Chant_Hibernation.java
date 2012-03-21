@@ -72,8 +72,8 @@ public class Chant_Hibernation extends Chant
 		MOB mob=(MOB)affected;
 
 		if((msg.amISource(mob))
-		&&(!CMath.bset(msg.sourceCode(),CMMsg.MASK_CHANNEL))
-		&&((CMath.bset(msg.sourceCode(),CMMsg.MASK_MOVE))||(CMath.bset(msg.sourceCode(),CMMsg.MASK_HANDS))||(CMath.bset(msg.sourceCode(),CMMsg.MASK_MOUTH))))
+		&&(!CMath.bset(msg.sourceMajor(),CMMsg.MASK_CHANNEL))
+		&&((CMath.bset(msg.sourceMajor(),CMMsg.MASK_MOVE))||(CMath.bset(msg.sourceMajor(),CMMsg.MASK_HANDS))||(CMath.bset(msg.sourceMajor(),CMMsg.MASK_MOUTH))))
 			unInvoke();
 		return;
 	}
@@ -86,7 +86,7 @@ public class Chant_Hibernation extends Chant
 
 		if((msg.amISource(mob)
 		&&(!msg.sourceMajor(CMMsg.MASK_ALWAYS))
-		&&(!CMath.bset(msg.sourceCode(),CMMsg.MASK_CHANNEL))
+		&&(!CMath.bset(msg.sourceMajor(),CMMsg.MASK_CHANNEL))
 		&&(msg.sourceMajor()>0)))
 		{
 			if(roundsHibernating<10)

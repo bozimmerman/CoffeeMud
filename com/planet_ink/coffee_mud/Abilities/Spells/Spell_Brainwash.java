@@ -51,7 +51,7 @@ public class Spell_Brainwash extends Spell
 		&&(msg.tool()==null)
 		&&((msg.sourceMinor()==CMMsg.TYP_SPEAK)
 		   ||(msg.sourceMinor()==CMMsg.TYP_TELL)
-		   ||(CMath.bset(msg.sourceCode(),CMMsg.MASK_CHANNEL))))
+		   ||(CMath.bset(msg.sourceMajor(),CMMsg.MASK_CHANNEL))))
 		{
 			String str=CMStrings.getSayFromMessage(msg.othersMessage());
 			if(str==null) str=CMStrings.getSayFromMessage(msg.targetMessage());

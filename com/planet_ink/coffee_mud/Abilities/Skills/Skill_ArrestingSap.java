@@ -77,11 +77,11 @@ public class Skill_ArrestingSap extends StdSkill
 		{
 			if((msg.source()==affected)&&(msg.sourceMinor()==CMMsg.TYP_DEATH))
 				return false;
-			if((CMath.bset(msg.targetCode(),CMMsg.MASK_MALICIOUS)
+			if((CMath.bset(msg.targetMajor(),CMMsg.MASK_MALICIOUS)
 	        &&(msg.target()==affected)
 	        &&(affected instanceof MOB)))
 			{
-	            if((!CMath.bset(msg.sourceCode(),CMMsg.MASK_ALWAYS))&&(affected!=msg.source()))
+	            if((!CMath.bset(msg.sourceMajor(),CMMsg.MASK_ALWAYS))&&(affected!=msg.source()))
 	    			msg.source().tell((MOB)affected,null,null,"<S-NAME> is already out!");
 	            makeMyPeace((MOB)affected);
 				return false;

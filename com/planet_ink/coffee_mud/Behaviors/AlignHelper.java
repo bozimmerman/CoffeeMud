@@ -53,7 +53,7 @@ public class AlignHelper extends StdBehavior
 		if((source!=observer)
 		&&(target!=observer)
 		&&(source!=target)
-		&&(CMath.bset(msg.targetCode(),CMMsg.MASK_MALICIOUS))
+		&&(CMath.bset(msg.targetMajor(),CMMsg.MASK_MALICIOUS))
 		&&(!observer.isInCombat())
 		&&(CMLib.flags().canBeSeenBy(source,observer))
 		&&(CMLib.flags().canBeSeenBy(target,observer))

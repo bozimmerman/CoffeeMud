@@ -45,7 +45,7 @@ public class Song_Serenity extends Song
 	{
 		if(affected==null) return super.okMessage(myHost,msg);
 		if(!(affected instanceof MOB)) return super.okMessage(myHost,msg);
-		if((CMath.bset(msg.targetCode(),CMMsg.MASK_MALICIOUS))
+		if((CMath.bset(msg.targetMajor(),CMMsg.MASK_MALICIOUS))
 		&&(CMLib.flags().canBeHeardSpeakingBy(invoker,msg.source()))
 	    &&(msg.target()!=null))
 		{

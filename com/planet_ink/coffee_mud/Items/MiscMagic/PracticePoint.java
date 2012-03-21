@@ -66,7 +66,7 @@ public class PracticePoint extends StdItem implements MiscMagic
                 if(!mob.isMine(this))
                     mob.setPractices(mob.getPractices()+1);
                 unWear();
-                if(!CMath.bset(msg.targetCode(),CMMsg.MASK_OPTIMIZE))
+                if(!CMath.bset(msg.targetMajor(),CMMsg.MASK_OPTIMIZE))
                     mob.location().recoverRoomStats();
                 return;
             }

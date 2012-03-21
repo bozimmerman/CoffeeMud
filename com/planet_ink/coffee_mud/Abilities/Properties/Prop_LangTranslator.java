@@ -99,15 +99,15 @@ public class Prop_LangTranslator extends Property implements Language
 					return;
 			}
 			if((msg.tool().ID().equals("Fighter_SmokeSignals"))
-			&&(msg.sourceCode()==CMMsg.NO_EFFECT)
-			&&(msg.targetCode()==CMMsg.NO_EFFECT)
+			&&(msg.sourceMinor()==CMMsg.NO_EFFECT)
+			&&(msg.targetMinor()==CMMsg.NO_EFFECT)
 			&&(msg.othersMessage()!=null))
 				CMLib.commands().postSay(msg.source(),null,"The smoke signals seem to say '"+msg.othersMessage()+"'.",false,false);
 			else
 			if(((msg.sourceMinor()==CMMsg.TYP_SPEAK)
 			   ||(msg.sourceMinor()==CMMsg.TYP_TELL)
 			   ||(msg.sourceMinor()==CMMsg.TYP_ORDER)
-			   ||(CMath.bset(msg.sourceCode(),CMMsg.MASK_CHANNEL)))
+			   ||(CMath.bset(msg.sourceMajor(),CMMsg.MASK_CHANNEL)))
 			&&(msg.sourceMessage()!=null)
 			&&((((Ability)msg.tool()).classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_LANGUAGE))
 			{
@@ -118,7 +118,7 @@ public class Prop_LangTranslator extends Property implements Language
 				    String sourceName = affected.name();
 				    if(msg.target() instanceof MOB)
 				        target=(MOB)msg.target();
-					if(CMath.bset(msg.sourceCode(),CMMsg.MASK_CHANNEL))
+					if(CMath.bset(msg.sourceMajor(),CMMsg.MASK_CHANNEL))
 						msg.addTrailerMsg(CMClass.getMsg(msg.source(),null,null,CMMsg.MSG_NOISE|CMMsg.MASK_ALWAYS,sourceName+" say(s) '"+msg.source().name()+" said \""+str+"\" in "+msg.tool().name()+"'"));
 					else
 					if((target==null)&&(msg.targetMessage()!=null))

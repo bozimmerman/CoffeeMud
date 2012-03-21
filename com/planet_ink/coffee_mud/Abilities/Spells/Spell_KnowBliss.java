@@ -94,7 +94,7 @@ public class Spell_KnowBliss extends Spell
 			return super.okMessage(myHost,msg);
 		MOB mob=(MOB)affected;
 		if(msg.amISource(mob)
-		&&(msg.targetCode()&CMMsg.MASK_MALICIOUS)>0)
+		&&(msg.targetMajor()&CMMsg.MASK_MALICIOUS)>0)
 		{
 			mob.tell("Nah, you feel too happy to do that.");
 			mob.setVictim(null);

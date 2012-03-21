@@ -148,7 +148,7 @@ public class Disease extends StdAbility implements DiseaseAffect
 			if((CMath.bset(abilityCode(),DiseaseAffect.SPREAD_CONTACT))
 			&&(msg.amISource(mob)||msg.amITarget(mob))
 			&&(msg.target() instanceof MOB)
-			&&(CMath.bset(msg.targetCode(),CMMsg.MASK_MOVE)||CMath.bset(msg.targetCode(),CMMsg.MASK_HANDS))
+			&&(CMath.bset(msg.targetMajor(),CMMsg.MASK_MOVE)||CMath.bset(msg.targetMajor(),CMMsg.MASK_HANDS))
 			&&((msg.tool()==null)
 				||(msg.tool()!=null)
 					&&(msg.tool() instanceof Weapon)

@@ -289,7 +289,7 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 		if(pair!=null)
 		{
 			CMMsg altMsg=null;
-			if((msg.targetCode()==CMMsg.MSG_OPEN)&&(pair.isLocked()))
+			if((msg.targetMinor()==CMMsg.TYP_OPEN)&&(pair.isLocked()))
 			{
 				altMsg=CMClass.getMsg(msg.source(),pair,msg.tool(),CMMsg.MSG_UNLOCK,null,CMMsg.MSG_UNLOCK,null,CMMsg.MSG_UNLOCK,null);
 				pair.executeMsg(msg.source(),altMsg);

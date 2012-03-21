@@ -71,7 +71,7 @@ public class Prayer_PeaceRitual extends Prayer
 
 		if((msg.target()==affected)
 		&&(msg.source()!=affected)
-		&&(CMath.bset(msg.targetCode(),CMMsg.MASK_MALICIOUS)))
+		&&(CMath.bset(msg.targetMajor(),CMMsg.MASK_MALICIOUS)))
 		{
 			msg.source().location().show((MOB)affected,null,CMMsg.MSG_OK_VISUAL,"The peace ritual is disrupted!");
 			clan1="";

@@ -340,7 +340,7 @@ public class Drowness extends StdBehavior
 		boolean retval = super.okMessage(oking, msg);
 		MOB mob=(MOB)oking;
 		if((msg.amITarget(mob))
-		&&(CMath.bset(msg.targetCode(),CMMsg.MASK_MALICIOUS))
+		&&(CMath.bset(msg.targetMajor(),CMMsg.MASK_MALICIOUS))
 		&&(msg.targetMinor()==CMMsg.TYP_CAST_SPELL))
 		{
             if(CMLib.dice().rollPercentage() <= magicResistance)

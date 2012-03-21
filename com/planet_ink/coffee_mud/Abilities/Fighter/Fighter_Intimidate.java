@@ -48,8 +48,8 @@ public class Fighter_Intimidate extends FighterSkill
 
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
-		if(((msg.targetCode()&CMMsg.MASK_MALICIOUS)>0)
-        &&(!CMath.bset(msg.sourceCode(),CMMsg.MASK_ALWAYS))
+		if(((msg.targetMajor()&CMMsg.MASK_MALICIOUS)>0)
+        &&(!CMath.bset(msg.sourceMajor(),CMMsg.MASK_ALWAYS))
 		&&((msg.amITarget(affected))))
 		{
 			MOB target=(MOB)msg.target();

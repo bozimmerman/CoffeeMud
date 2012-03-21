@@ -311,8 +311,8 @@ public class Nanny extends StdBehavior
         	return false;
         }
         else
-        if((CMath.bset(msg.sourceCode(),CMMsg.MASK_MALICIOUS)
-        	||CMath.bset(msg.targetCode(),CMMsg.MASK_MALICIOUS))
+        if((CMath.bset(msg.sourceMajor(),CMMsg.MASK_MALICIOUS)
+        	||CMath.bset(msg.targetMajor(),CMMsg.MASK_MALICIOUS))
         &&(msg.target() instanceof PhysicalAgent)
         &&((getDroppedOffObjIfAny((PhysicalAgent)msg.target())!=null)
         		||(msg.target()==host)

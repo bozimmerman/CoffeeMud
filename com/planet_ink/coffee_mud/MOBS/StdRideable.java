@@ -439,7 +439,7 @@ public class StdRideable extends StdMOB implements Rideable
 			msg.source().tell("You cannot do that while "+stateString(msg.source())+" "+name()+".");
 			return false;
 		}
-		if(CMath.bset(msg.targetCode(),CMMsg.MASK_MALICIOUS))
+		if(CMath.bset(msg.targetMajor(),CMMsg.MASK_MALICIOUS))
 		{
 			if((msg.amITarget(this))
 			   &&((msg.source().riding()==this)
@@ -485,7 +485,7 @@ public class StdRideable extends StdMOB implements Rideable
 			   &&(msg.tool() instanceof Rider))
 			{
 				((Rider)msg.tool()).setRiding(null);
-				if(!CMath.bset(msg.targetCode(),CMMsg.MASK_OPTIMIZE))
+				if(!CMath.bset(msg.targetMajor(),CMMsg.MASK_OPTIMIZE))
 					if(msg.source().location()!=null)
 						msg.source().location().recoverRoomStats();
 			}
@@ -493,7 +493,7 @@ public class StdRideable extends StdMOB implements Rideable
 			if(amRiding(msg.source()))
 			{
 				msg.source().setRiding(null);
-				if(!CMath.bset(msg.targetCode(),CMMsg.MASK_OPTIMIZE))
+				if(!CMath.bset(msg.targetMajor(),CMMsg.MASK_OPTIMIZE))
 					if(msg.source().location()!=null)
 						msg.source().location().recoverRoomStats();
 			}
@@ -505,7 +505,7 @@ public class StdRideable extends StdMOB implements Rideable
 				   &&(msg.tool() instanceof Rider))
 				{
 					((Rider)msg.tool()).setRiding(this);
-					if(!CMath.bset(msg.targetCode(),CMMsg.MASK_OPTIMIZE))
+					if(!CMath.bset(msg.targetMajor(),CMMsg.MASK_OPTIMIZE))
 						if(msg.source().location()!=null)
 							msg.source().location().recoverRoomStats();
 				}
@@ -513,7 +513,7 @@ public class StdRideable extends StdMOB implements Rideable
 				if(!amRiding(msg.source()))
 				{
 					msg.source().setRiding(this);
-					if(!CMath.bset(msg.targetCode(),CMMsg.MASK_OPTIMIZE))
+					if(!CMath.bset(msg.targetMajor(),CMMsg.MASK_OPTIMIZE))
 						if(msg.source().location()!=null)
 							msg.source().location().recoverRoomStats();
 				}
@@ -528,7 +528,7 @@ public class StdRideable extends StdMOB implements Rideable
 			if(amRiding(msg.source()))
 			{
 			   msg.source().setRiding(null);
-				if(!CMath.bset(msg.targetCode(),CMMsg.MASK_OPTIMIZE))
+				if(!CMath.bset(msg.targetMajor(),CMMsg.MASK_OPTIMIZE))
 					if(msg.source().location()!=null)
 						msg.source().location().recoverRoomStats();
 			}

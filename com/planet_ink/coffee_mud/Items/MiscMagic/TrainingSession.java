@@ -65,7 +65,7 @@ public class TrainingSession extends StdItem implements MiscMagic
                 unWear();
                 if(!mob.isMine(this))
                     mob.setTrains(mob.getTrains()+1);
-                if(!CMath.bset(msg.targetCode(),CMMsg.MASK_OPTIMIZE))
+                if(!CMath.bset(msg.targetMajor(),CMMsg.MASK_OPTIMIZE))
                     mob.location().recoverRoomStats();
                 destroy();
                 return;

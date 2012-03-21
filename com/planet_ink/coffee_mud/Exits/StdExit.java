@@ -296,7 +296,7 @@ public class StdExit implements Exit
 		if((!msg.amITarget(this))&&(msg.tool()!=this))
 			return true;
 		else
-		if(msg.targetCode()==CMMsg.NO_EFFECT)
+		if(msg.targetMinor()==CMMsg.NO_EFFECT)
 			return true;
 		else
 		switch(msg.targetMinor())

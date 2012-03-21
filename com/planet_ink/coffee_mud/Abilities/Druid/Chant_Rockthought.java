@@ -50,7 +50,7 @@ public class Chant_Rockthought extends Chant
 		if((affected instanceof MOB)
 		&&(stubb==null)
 		&&(msg.amISource((MOB)affected))
-		&&(!CMath.bset(msg.sourceCode(),CMMsg.MASK_ALWAYS)
+		&&(!CMath.bset(msg.sourceMajor(),CMMsg.MASK_ALWAYS)
 		&&(msg.othersCode()!=CMMsg.NO_EFFECT)
 		&&(msg.othersMessage()!=null)
 		&&(msg.othersMessage().length()>0)))

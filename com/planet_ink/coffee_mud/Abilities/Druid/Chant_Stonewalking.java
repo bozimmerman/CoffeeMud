@@ -51,7 +51,7 @@ public class Chant_Stonewalking extends Chant
 		MOB mob=(MOB)affected;
 
 		if(msg.amISource(mob)
-		&&((CMath.bset(msg.sourceCode(),CMMsg.MASK_MALICIOUS))
+		&&((CMath.bset(msg.sourceMajor(),CMMsg.MASK_MALICIOUS))
 		   ||((msg.sourceMinor()==CMMsg.TYP_GET)&&((msg.target()==null)||(!mob.isMine(msg.target()))))))
 			unInvoke();
 		return;

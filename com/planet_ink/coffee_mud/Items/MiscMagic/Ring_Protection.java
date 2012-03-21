@@ -211,7 +211,7 @@ public class Ring_Protection extends Ring_Ornamental implements MiscMagic
 		if(mob!=this.owner()) return;
 
 		if((msg.targetMinor()==correctTargetMinor())
-		&&(CMath.bset(msg.targetCode(),CMMsg.MASK_MALICIOUS))
+		&&(CMath.bset(msg.targetMajor(),CMMsg.MASK_MALICIOUS))
 		&&(!this.amWearingAt(Wearable.IN_INVENTORY))
 		&&(mob.isMine(this))
 		&&(rollChance()))

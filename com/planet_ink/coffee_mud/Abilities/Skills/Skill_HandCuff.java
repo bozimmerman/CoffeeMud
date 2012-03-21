@@ -120,7 +120,7 @@ public class Skill_HandCuff extends StdSkill
 			}
 		}
 		else
-		if(((msg.targetCode()&CMMsg.MASK_MALICIOUS)>0)
+		if(((msg.targetMajor()&CMMsg.MASK_MALICIOUS)>0)
 		&&(msg.amITarget(affected))
 		&&(!mob.isInCombat())
 		&&(mob.amFollowing()!=null)

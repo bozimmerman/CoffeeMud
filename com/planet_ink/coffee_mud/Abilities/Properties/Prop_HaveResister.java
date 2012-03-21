@@ -166,7 +166,7 @@ public class Prop_HaveResister extends Property
 
 	public boolean isOk(CMMsg msg, Ability me, MOB mob, String maskString)
 	{
-		if(CMath.bset(msg.targetCode(),CMMsg.MASK_MAGIC))
+		if(CMath.bset(msg.targetMajor(),CMMsg.MASK_MAGIC))
 		{
 			if(msg.tool() instanceof Ability)
 			{
@@ -181,7 +181,7 @@ public class Prop_HaveResister extends Property
 					}
 				}
 				else
-				if(!CMath.bset(msg.targetCode(),CMMsg.MASK_MALICIOUS))
+				if(!CMath.bset(msg.targetMajor(),CMMsg.MASK_MALICIOUS))
 					return true;
 				else
 				if(((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_PRAYER)

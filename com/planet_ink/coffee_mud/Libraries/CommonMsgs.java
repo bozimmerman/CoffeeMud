@@ -1527,7 +1527,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
             {
                 item.setContainer(null);
                 mob.moveItemTo(item);
-                if(!CMath.bset(msg.targetCode(),CMMsg.MASK_OPTIMIZE))
+                if(!CMath.bset(msg.targetMajor(),CMMsg.MASK_OPTIMIZE))
                     mob.location().recoverRoomStats();
                 else
                     mob.phyStats().setWeight(mob.phyStats().weight()+item.recursiveWeight());
@@ -1536,7 +1536,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
             {
                 item.setContainer(null);
                 item.unWear();
-                if(!CMath.bset(msg.targetCode(),CMMsg.MASK_OPTIMIZE))
+                if(!CMath.bset(msg.targetMajor(),CMMsg.MASK_OPTIMIZE))
                     mob.location().recoverRoomStats();
             }
         }
@@ -1550,11 +1550,11 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
             if(!mob.isMine(item))
             {
                 mob.addItem(item);
-                if(CMath.bset(msg.targetCode(),CMMsg.MASK_OPTIMIZE))
+                if(CMath.bset(msg.targetMajor(),CMMsg.MASK_OPTIMIZE))
                     mob.phyStats().setWeight(mob.phyStats().weight()+item.phyStats().weight());
             }
             item.unWear();
-            if(!CMath.bset(msg.targetCode(),CMMsg.MASK_OPTIMIZE))
+            if(!CMath.bset(msg.targetMajor(),CMMsg.MASK_OPTIMIZE))
                 mob.location().recoverRoomStats();
             if(item instanceof Coins)
                 ((Coins)item).putCoinsBack();
@@ -1573,7 +1573,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
         {
             item.setContainer(null);
             CMLib.utensils().recursiveDropMOB(mob,mob.location(),item,item instanceof DeadBody);
-            if(!CMath.bset(msg.targetCode(),CMMsg.MASK_OPTIMIZE))
+            if(!CMath.bset(msg.targetMajor(),CMMsg.MASK_OPTIMIZE))
                 mob.location().recoverRoomStats();
         }
         if(mob.isMine(item))
@@ -1581,7 +1581,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
             mob.delItem(item);
             if(!mob.location().isContent(item))
                 mob.location().addItem(item,ItemPossessor.Expire.Player_Drop);
-            if(!CMath.bset(msg.targetCode(),CMMsg.MASK_OPTIMIZE))
+            if(!CMath.bset(msg.targetMajor(),CMMsg.MASK_OPTIMIZE))
                 mob.location().recoverRoomStats();
         }
         item.unWear();
@@ -1605,7 +1605,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
             return;
         }
         item.unWear();
-        if(!CMath.bset(msg.targetCode(),CMMsg.MASK_OPTIMIZE))
+        if(!CMath.bset(msg.targetMajor(),CMMsg.MASK_OPTIMIZE))
             mob.location().recoverRoomStats();
     }
     public void handleBeingWorn(CMMsg msg)

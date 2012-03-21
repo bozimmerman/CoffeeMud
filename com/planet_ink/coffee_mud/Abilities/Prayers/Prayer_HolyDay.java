@@ -90,9 +90,9 @@ public class Prayer_HolyDay extends Prayer
 			return false;
 		}
 		else
-		if(((CMath.bset(msg.sourceCode(),CMMsg.MASK_MALICIOUS))
-			||(CMath.bset(msg.targetCode(),CMMsg.MASK_MALICIOUS))
-			||(CMath.bset(msg.othersCode(),CMMsg.MASK_MALICIOUS)))
+		if(((CMath.bset(msg.sourceMajor(),CMMsg.MASK_MALICIOUS))
+			||(CMath.bset(msg.targetMajor(),CMMsg.MASK_MALICIOUS))
+			||(CMath.bset(msg.othersMajor(),CMMsg.MASK_MALICIOUS)))
 		&&(msg.source().getClanID().length()>0))
 		{
             LegalBehavior B=null;

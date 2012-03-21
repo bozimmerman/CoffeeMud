@@ -61,7 +61,7 @@ public class Spell_WallOfForce extends Spell
 		&&(mob.rangeToTarget()>=1)
 		&&(msg.target()!=null)
 		&&(msg.target() instanceof MOB)
-		&&((msg.targetCode()&CMMsg.MASK_MALICIOUS)>0))
+		&&((msg.targetMajor()&CMMsg.MASK_MALICIOUS)>0))
 		{
 			if(((msg.tool()!=null)
 				&&(msg.tool() instanceof Ability))

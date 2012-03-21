@@ -199,7 +199,7 @@ public class Mood extends StdAbility
 			&&(msg.tool()==null)
 			&&((msg.sourceMinor()==CMMsg.TYP_SPEAK)
 			   ||(msg.sourceMinor()==CMMsg.TYP_TELL)
-			   ||(CMath.bset(msg.sourceCode(),CMMsg.MASK_CHANNEL)))
+			   ||(CMath.bset(msg.sourceMajor(),CMMsg.MASK_CHANNEL)))
             &&(moodCode>=0))
 			{
                 String str=CMStrings.getSayFromMessage(msg.othersMessage());
@@ -207,7 +207,7 @@ public class Mood extends StdAbility
 				if(str!=null)
 				{
                     MOB M=target(msg.source(),msg.target());
-					if(CMath.bset(msg.sourceCode(),CMMsg.MASK_CHANNEL))
+					if(CMath.bset(msg.sourceMajor(),CMMsg.MASK_CHANNEL))
 					{
 						final String[] tags={"<S-NAME>","You"};
 						String tag=null;

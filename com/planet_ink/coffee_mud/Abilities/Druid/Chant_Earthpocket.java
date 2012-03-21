@@ -70,10 +70,10 @@ public class Chant_Earthpocket extends Chant
 	{
 		if((msg.source()!=affected)
 		&&((msg.target()==pocket)||(msg.tool()==pocket))
-		&&(CMath.bset(msg.sourceCode(),CMMsg.MASK_HANDS)
-		   ||CMath.bset(msg.sourceCode(),CMMsg.MASK_MOVE)
-		   ||CMath.bset(msg.sourceCode(),CMMsg.MASK_DELICATE)
-		   ||CMath.bset(msg.sourceCode(),CMMsg.MASK_MOUTH)))
+		&&(CMath.bset(msg.sourceMajor(),CMMsg.MASK_HANDS)
+		   ||CMath.bset(msg.sourceMajor(),CMMsg.MASK_MOVE)
+		   ||CMath.bset(msg.sourceMajor(),CMMsg.MASK_DELICATE)
+		   ||CMath.bset(msg.sourceMajor(),CMMsg.MASK_MOUTH)))
 		{
 			msg.source().tell("The dark pocket draws away from you, preventing your action.");
 			return false;

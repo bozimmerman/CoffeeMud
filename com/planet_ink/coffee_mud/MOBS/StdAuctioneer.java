@@ -490,7 +490,7 @@ public class StdAuctioneer extends StdMOB implements Auctioneer
 				                CMLib.commands().postSay(this,mob,"Congratulations!",true,false);
                             CMLib.coffeeShops().returnMoney(mob,data.currency,data.highBid-data.bid);
                             CMLib.coffeeShops().purchaseItems(data.auctioningI,new XVector(data.auctioningI),this,mob);
-    						if(!CMath.bset(msg.targetCode(),CMMsg.MASK_OPTIMIZE))
+    						if(!CMath.bset(msg.targetMajor(),CMMsg.MASK_OPTIMIZE))
     							mob.location().recoverRoomStats();
 					    	CMLib.database().DBDeleteJournal(auctionHouse(),data.auctionDBKey);
 						}

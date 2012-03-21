@@ -87,11 +87,11 @@ public class Chant_CharmAnimal extends Chant
 		// it should consistantly prevent the mob
 		// from trying to do ANYTHING except sleep
 		if((msg.amITarget(mob))
-		&&(CMath.bset(msg.targetCode(),CMMsg.MASK_MALICIOUS))
+		&&(CMath.bset(msg.targetMajor(),CMMsg.MASK_MALICIOUS))
 		&&(msg.source()==mob.amFollowing()))
 				unInvoke();
 		if((msg.amISource(mob))
-		&&(CMath.bset(msg.targetCode(),CMMsg.MASK_MALICIOUS))
+		&&(CMath.bset(msg.targetMajor(),CMMsg.MASK_MALICIOUS))
 		&&(msg.target()==mob.amFollowing()))
 		{
 			mob.tell("You like "+mob.amFollowing().charStats().himher()+" too much.");

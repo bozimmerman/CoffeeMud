@@ -87,12 +87,12 @@ public class Skill_ControlUndead extends StdSkill
         // it should consistantly prevent the mob
         // from trying to do ANYTHING except sleep
         if((msg.amITarget(mob))
-        &&(CMath.bset(msg.targetCode(),CMMsg.MASK_MALICIOUS))
+        &&(CMath.bset(msg.targetMajor(),CMMsg.MASK_MALICIOUS))
         &&(msg.amISource(mob.amFollowing())))
             unInvoke();
         else
         if((msg.amISource(mob))
-        &&(CMath.bset(msg.targetCode(),CMMsg.MASK_MALICIOUS))
+        &&(CMath.bset(msg.targetMajor(),CMMsg.MASK_MALICIOUS))
         &&(msg.amITarget(mob.amFollowing())))
         {
             if((!invoker().isInCombat())&&(msg.source().getVictim()!=invoker()))

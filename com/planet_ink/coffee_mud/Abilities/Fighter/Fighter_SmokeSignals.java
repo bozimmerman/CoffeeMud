@@ -55,8 +55,8 @@ public class Fighter_SmokeSignals extends FighterSkill
 		&&(!msg.amISource((MOB)affected))
 		&&(msg.tool() instanceof Ability)
 		&&(msg.tool().ID().equals("Fighter_SmokeSignals"))
-		&&(msg.sourceCode()==CMMsg.NO_EFFECT)
-		&&(msg.targetCode()==CMMsg.NO_EFFECT)
+		&&(msg.sourceMinor()==CMMsg.NO_EFFECT)
+		&&(msg.targetMinor()==CMMsg.NO_EFFECT)
 		&&(msg.targetMessage()!=null)
 		&&(msg.othersMessage()!=null))
 			msg.addTrailerMsg(CMClass.getMsg((MOB)affected,null,null,CMMsg.MSG_OK_VISUAL,"The smoke signals seem to say '"+msg.targetMessage()+"'.",CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null));
