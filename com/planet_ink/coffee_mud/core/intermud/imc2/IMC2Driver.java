@@ -927,7 +927,8 @@ public final class IMC2Driver extends Thread {
                   if(i<str.length()-2)
                       str.delete(i,i+3);
                   break;
-                case ColorLibrary.COLORCODE_ANSI256:
+                case ColorLibrary.COLORCODE_FANSI256:
+                case ColorLibrary.COLORCODE_BANSI256:
                   if(i<str.length()-4)
                       str.delete(i,i+5);
                   break;

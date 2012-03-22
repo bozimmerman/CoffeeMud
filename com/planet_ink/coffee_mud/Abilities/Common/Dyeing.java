@@ -103,7 +103,8 @@ public class Dyeing extends CommonSkill
                         if((desc.charAt(x)=='^')
                         &&(desc.charAt(x+1)!='?')
                         &&(desc.charAt(x+1)!=ColorLibrary.COLORCODE_BACKGROUND)
-                        &&(desc.charAt(x+1)!=ColorLibrary.COLORCODE_ANSI256))
+                        &&(desc.charAt(x+1)!=ColorLibrary.COLORCODE_FANSI256)
+                        &&(desc.charAt(x+1)!=ColorLibrary.COLORCODE_BANSI256))
                             desc.setCharAt(x+1,writing.charAt(0));
                     }
                     String d=desc.toString();

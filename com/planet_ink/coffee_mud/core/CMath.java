@@ -529,6 +529,23 @@ public class CMath
         if(!ts.endsWith("%")) return false;
         return CMath.isNumber(ts.substring(0,ts.length()-1));
     }
+
+    /**
+     * Converts a single hex digit to an int
+     * @param c the hex digit, maybe
+     * @return the int representation
+     */
+    public final static int hexDigit(final char c)
+    {
+    	if(c<'0') return -1;
+    	if(c<'9') return c-'0';
+    	if(c<'A') return -1;
+    	if(c<'G') return (c-'A')+10;
+    	if(c<'a') return -1;
+    	if(c<'f') return (c-'a')+10;
+    	return -1;
+    }
+    
     /**
      * Converts the given string to a floating
      * point number, 1>=N>=0, representing 

@@ -560,6 +560,50 @@ system strings. For instance:</p>
             <td>Dark Purple</td>
           </tr>
           <tr>
+            <td><code>^~w</code> </td>
+            <td>White Background</td>
+          </tr>
+          <tr>
+            <td><code>^~g</code> </td>
+            <td>Green Background</td>
+          </tr>
+          <tr>
+            <td><code>^~b</code> </td>
+            <td>Blue Background</td>
+          </tr>
+          <tr>
+            <td><code>^~r</code> </td>
+            <td>Red Background</td>
+          </tr>
+          <tr>
+            <td><code>^~y</code> </td>
+            <td>Yellow Background</td>
+          </tr>
+          <tr>
+            <td><code>^~c</code> </td>
+            <td>Cyan Background</td>
+          </tr>
+          <tr>
+            <td><code>^~p</code> </td>
+            <td>Purple Background</td>
+          </tr>
+          <tr>
+            <td><code>^#xxx</code> </td>
+            <td>256 color foreground x=0-5</td>
+          </tr>
+          <tr>
+            <td><code>^##xx</code> </td>
+            <td>256 color foreground xx=hex 00-ff</td>
+          </tr>
+          <tr>
+            <td><code>^|xxx</code> </td>
+            <td>256 color background x=0-5</td>
+          </tr>
+          <tr>
+            <td><code>^||xx</code> </td>
+            <td>256 color background xx=hex 00-ff</td>
+          </tr>
+          <tr>
             <td><code>^&lt;</code> </td>
             <td>&lt; character. Used for MXP tags only.</td>
           </tr>
@@ -574,8 +618,10 @@ system strings. For instance:</p>
         </tbody>
       </table>
       <p>As you might have guessed, it is preferred that the system
-colors (the last 16 codes) be used sparingly, in favor of the more
-customizable codes above.</p>
+colors (the last codes) be used sparingly, in favor of the more
+customizable codes above. Also, be sure to always put foreground 
+color codes before background color codes.  Foreground color codes always "reset" the
+default background color.</p>
       <img src="images/mozilla.jpg" alt="Mozilla Javascript" />
       <h2><a name="javascript" id="javascript">JavaScripting:</a></h2>
       <p>JavaScript is an interpreted scripting language which is used

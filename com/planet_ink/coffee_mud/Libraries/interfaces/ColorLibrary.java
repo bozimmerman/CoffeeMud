@@ -61,7 +61,7 @@ public interface ColorLibrary extends CMLibrary
     public static final String COLOR_BGPURPLE="\033[45m";
     public static final String COLOR_BGBLACK="\033[40m";
     public static final String COLOR_BGDEFAULT="\033[49m";
-    
+
     public static final String HTTAG_WHITE="<FONT COLOR=WHITE";
     public static final String HTTAG_LIGHTGREEN="<FONT COLOR=LIGHTGREEN";
     public static final String HTTAG_LIGHTBLUE="<FONT COLOR=BLUE";
@@ -128,6 +128,25 @@ public interface ColorLibrary extends CMLibrary
         "BGDEFAULT"
     };
     
+    public static final Map<String,String> MAP_COLOR_TO_BGCOLOR=new SHashtable<String,String>(new Object[][]{
+    	{   COLOR_WHITE, COLOR_BGWHITE},
+    	{   COLOR_LIGHTGREEN, COLOR_BGGREEN},
+    	{   COLOR_LIGHTBLUE, COLOR_BGBLUE},
+    	{   COLOR_LIGHTRED, COLOR_BGRED},
+    	{   COLOR_YELLOW, COLOR_BGYELLOW},
+    	{   COLOR_LIGHTCYAN, COLOR_BGCYAN},
+    	{   COLOR_LIGHTPURPLE, COLOR_BGPURPLE},
+    	{   COLOR_GREY, COLOR_BGWHITE},
+    	{   COLOR_GREEN, COLOR_BGGREEN},
+    	{   COLOR_BLUE, COLOR_BGBLUE},
+    	{   COLOR_RED, COLOR_BGRED},
+    	{   COLOR_BROWN, COLOR_BGYELLOW},
+    	{   COLOR_CYAN, COLOR_BGCYAN},
+    	{   COLOR_PURPLE, COLOR_BGPURPLE},
+    	{   COLOR_DARKGREY, COLOR_BGDEFAULT},
+    	{   COLOR_BLACK, COLOR_BGBLACK}
+    });
+
     public static final String[] COLOR_ALLNORMALCOLORCODELETTERS={
         "w","g","b","r",
         "y","c","p","W",
@@ -188,10 +207,50 @@ public interface ColorLibrary extends CMLibrary
     };
 
     public static final char COLORCODE_BACKGROUND='~';
-    public static final char COLORCODE_ANSI256='#';
+    public static final char COLORCODE_FANSI256='#';
+    public static final char COLORCODE_BANSI256='|';
     
     public static final String COLOR_FR0G3B5="\033[38;5;"+(16+(0*36)+(3*6)+5)+"m";
     public static final String COLOR_BR0G3B5="\033[48;5;"+(16+(0*36)+(3*6)+5)+"m";
+    
+    public static class ColorState
+    {
+    	public final char foregroundCode;
+    	public final char backgroundCode;
+    	private final static Map<Integer,ColorState> cache=new SHashtable<Integer,ColorState>();
+    	
+    	public ColorState(final char fg, final char bg) 
+    	{ 
+    		foregroundCode=fg; 
+    		backgroundCode=bg; 
+    	}
+    	
+    	@Override
+    	public boolean equals(Object cs)
+    	{
+    		if(!(cs instanceof ColorState))
+				return false;
+    		return (((ColorState)cs).foregroundCode == foregroundCode) 
+    		    && (((ColorState)cs).backgroundCode == backgroundCode);
+    	}
+
+		@Override
+		public int hashCode() 
+		{
+			return (backgroundCode * 65536) + foregroundCode;
+		}
+		
+		public static final ColorState valueOf(final char fg, final char bg)
+		{
+			final Integer keyI=Integer.valueOf((bg * 65536) + fg);
+			if(cache.containsKey(keyI))
+				return cache.get(keyI);
+			final ColorState newColorState = new ColorState(fg,bg);
+			cache.put(keyI,newColorState);
+			return newColorState;
+		}
+    }
+    public static final ColorState COLORSTATE_NORMAL=ColorState.valueOf('N','.');
     
     public void clearLookups();
     public int translateSingleCMCodeToANSIOffSet(String code);

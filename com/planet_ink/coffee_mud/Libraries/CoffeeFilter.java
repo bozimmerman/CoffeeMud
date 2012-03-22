@@ -3,6 +3,7 @@ import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.ColorLibrary.ColorState;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
 import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
@@ -231,7 +232,8 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
                                 loop++;
                             }
                             break;
-                        case ColorLibrary.COLORCODE_ANSI256:
+                        case ColorLibrary.COLORCODE_FANSI256:
+                        case ColorLibrary.COLORCODE_BANSI256:
                           if(loop+3<buf.length())
                           {
                               len+=3;
@@ -296,7 +298,255 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
             buf.setCharAt(firstAlpha,Character.toUpperCase(buf.charAt(firstAlpha)));
         return buf.toString().split("\n\r");
     }
-    
+
+	protected int convertEscape(final Session S, final StringBuffer str, final int index) 
+	{
+		int enDex = index + 1;
+		final char c = str.charAt(enDex);
+		switch (c) 
+		{
+		case '?':
+		{
+            if((S!=null)&&(S.clientTelnetMode(Session.TELNET_ANSI)))
+			{
+            	final ColorState lastColor=S.lastColor(null);
+	        	final String[] clookup = S.clookup();
+				String escapeSequence;
+				if(lastColor.foregroundCode < 256)
+					escapeSequence=clookup[lastColor.foregroundCode];
+				else
+					escapeSequence="\033[38;5;"+(lastColor.foregroundCode & 0xff)+"m";
+	        	if(lastColor.backgroundCode=='.')
+					escapeSequence=ColorLibrary.COLOR_NONE+escapeSequence;
+	        	else
+	        	{
+	        		String bgEscapeSequence;
+					if(lastColor.backgroundCode < 256)
+					{
+						bgEscapeSequence=clookup[lastColor.backgroundCode];
+						if(bgEscapeSequence==null)
+							bgEscapeSequence=ColorLibrary.COLOR_BGBLACK;
+						else
+		        		if(ColorLibrary.MAP_COLOR_TO_BGCOLOR.containsKey(bgEscapeSequence))
+		        			bgEscapeSequence=ColorLibrary.MAP_COLOR_TO_BGCOLOR.get(bgEscapeSequence);
+					}
+					else
+						bgEscapeSequence="\033[48;5;"+(lastColor.backgroundCode & 0xff)+"m";
+	        		escapeSequence+=bgEscapeSequence;
+	        	}
+	        	S.lastColor(S.currentColor(null));
+				S.currentColor(lastColor);
+				str.insert(index+2, escapeSequence);
+				str.delete(index, index+2);
+				return index+escapeSequence.length()-1;
+			}
+			str.delete(index, index+2);
+			return index-1;
+		}
+		case ColorLibrary.COLORCODE_FANSI256:
+		case ColorLibrary.COLORCODE_BANSI256:
+		{
+            if(((S!=null)&&(!S.clientTelnetMode(Session.TELNET_ANSI)))
+            ||(enDex>str.length()-5))
+			{
+				str.delete(index, index+5);
+				return index-1;
+			}
+			enDex++;
+			int finalNum=-1;
+			int num=str.charAt(enDex)-'0';
+			if((num>=0)&&(num<=5))
+			{
+				int buildNum=(num*36);
+				num=str.charAt(enDex+1)-'0';
+				if((num>=0)&&(num<=5))
+				{
+					buildNum+=(num*6);
+					num=str.charAt(enDex)-'0';
+					if((num>=0)&&(num<=5))
+					{
+						finalNum=buildNum + num + 16;
+					}
+				}
+			}
+			if((finalNum < 0) && (str.charAt(enDex)==str.charAt(enDex-1)))
+			{
+				enDex++;
+				num=CMath.hexDigit(str.charAt(enDex));
+				int num2=CMath.hexDigit(str.charAt(enDex+1));
+				if((num>=0)&&(num2>=0))
+					finalNum=(num*16)+num2;
+			}
+			if(finalNum >=0)
+			{
+				final boolean isFg=(c==ColorLibrary.COLORCODE_FANSI256);
+				String escapeSequence; 
+				if(isFg)
+				{
+					escapeSequence="\033[38;5;"+finalNum+"m";
+    				if((S!=null)&&(S.currentColor(null).backgroundCode!='.'))
+    					escapeSequence=ColorLibrary.COLOR_NONE+escapeSequence;
+				}
+				else
+					escapeSequence="\033[48;5;"+finalNum+"m";
+				str.insert(index+5, escapeSequence);
+				str.delete(index, index+5);
+				if(S!=null)
+				{
+					if(isFg)
+					{
+						S.lastColor(S.currentColor(null));
+						S.currentColor(ColorState.valueOf((char)(256 | finalNum), '.'));
+					}
+					else
+					{
+						S.currentColor(ColorState.valueOf(S.currentColor(null).foregroundCode, (char)(256 | finalNum)));
+					}
+				}
+				return index+escapeSequence.length()-1;
+			}
+			str.delete(index, index+5);
+			return index-1;
+		}
+		case ColorLibrary.COLORCODE_BACKGROUND:
+		{
+			enDex++;
+            if((S!=null)&&(!S.clientTelnetMode(Session.TELNET_ANSI)))
+			{
+				str.delete(index, index+2);
+				return index-1;
+			}
+			final char bc=str.charAt(enDex);
+        	final String[] clookup = (S==null)?CMLib.color().standardColorLookups():S.clookup();
+			final String escapeSequence=clookup[bc];
+			final String bgEscapeSequence=ColorLibrary.MAP_COLOR_TO_BGCOLOR.get(escapeSequence);
+			if(bgEscapeSequence != null)
+			{
+				str.insert(index+3, bgEscapeSequence);
+				str.delete(index, index+3);
+				if(S!=null)
+				{
+					final ColorState curColor=S.currentColor(null);
+					S.currentColor(ColorState.valueOf(curColor.foregroundCode, bc));
+				}
+				return index+bgEscapeSequence.length()-1;
+			}
+			else
+			if(escapeSequence != null)
+			{
+				str.insert(index+3, escapeSequence);
+				str.delete(index, index+3);
+				return index+escapeSequence.length()-1;
+			}
+			else
+			{
+				str.delete(index, index+3);
+				return index-1;
+			}
+		}
+		case '>':
+			/* why was this here?
+			if (currentColor > 0) 
+			{
+				if (clookup()[c] == null)
+					escapeCodes = clookup()[currentColor];
+				else if (clookup()[currentColor] == null)
+					escapeCodes = clookup[c];
+				else
+					escapeCodes = clookup()[c] + clookup()[currentColor];
+			} 
+			else
+			*/
+			str.delete(index, index+1);
+			return index;
+		case '<':
+		{
+            while(enDex<(str.length()-1))
+            {
+                if((str.charAt(enDex)!='^')||(str.charAt(enDex+1)!='>'))
+                	enDex++;
+                else
+                if((S==null)||(!S.clientTelnetMode(Session.TELNET_MXP)))
+                {
+                    str.delete(index,enDex+2);
+                    enDex=index-1;
+                    return enDex;
+                }
+                else
+                {
+        			str.delete(enDex, enDex+1);
+        			str.delete(index, index+1);
+        			return enDex;
+                }
+            }
+			str.delete(index, index+1);
+			return index;
+		}
+		case '&':
+		{
+            while(enDex<(str.length()-1))
+            {
+                if(str.charAt(enDex)!=';')
+                	enDex++;
+                else
+                if((S==null)||(!S.clientTelnetMode(Session.TELNET_MXP)))
+                {
+                    str.delete(index,enDex+1);
+                    enDex=index-1;
+                    return enDex;
+                }
+                else
+                {
+        			str.delete(index, index+1);
+        			return enDex;
+                }
+            }
+			str.delete(index, index+1);
+			return index;
+		}
+		case '"':
+			str.delete(index, index+1);
+			return index;
+		case '0': case '1': case '2': case '3': case '4': 
+		case '5': case '6': case '7': case '8': case '9': 
+            if((S==null)||(S.clientTelnetMode(Session.TELNET_MSP)))
+			{
+				final String escapeSequence=CMProps.getVar(CMProps.SYSTEM_ESC0 + (c - ('0')));
+				str.insert(index+2, escapeSequence);
+    			str.delete(index, index+2);
+    			return index+escapeSequence.length()-1;
+			}
+			else
+			{
+    			str.delete(index, index+2);
+    			return index-1;
+			}
+		default:
+            if((S==null)||(S.clientTelnetMode(Session.TELNET_ANSI)))
+			{
+            	final String[] clookup = (S==null)?CMLib.color().standardColorLookups():S.clookup();
+				String escapeSequence=clookup[c];
+				if(escapeSequence==null) escapeSequence="";
+    			if((S!=null)&&(escapeSequence.length()>0)&&(escapeSequence.charAt(0)=='\033'))
+				{
+    				final ColorState state=S.currentColor(null);
+    				if(state.backgroundCode!='.')
+    					escapeSequence=ColorLibrary.COLOR_NONE+escapeSequence;
+					S.lastColor(state);
+					S.currentColor(ColorState.valueOf(c,'.'));
+				}
+				str.insert(index+2, escapeSequence);
+    			str.delete(index, index+2);
+    			return index+escapeSequence.length()-1;
+			}
+			else
+			{
+    			str.delete(index, index+2);
+    			return index-1;
+			}
+		}
+	}
+
     // no word-wrapping, text filtering or ('\','n') -> '\n' translations
     // (it's not a member of the interface either so probably shouldn't be public)
     public String colorOnlyFilter(String msg, Session S)
@@ -360,69 +610,7 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
                     break;
                 case '^':
                 {
-                    if((loop<buf.length()-1)&&(CS!=null))
-                    {
-                        int colorID = CS.getColor( buf.charAt(loop+1) );
-                        if (colorID != -1)
-                        {
-                            String colorEscStr = CS.makeEscape(colorID);
-                            int csl=0;
-                            if (colorEscStr != null)
-                            {
-                                csl = colorEscStr.length();
-                                if (csl > 0)
-                                    buf.replace(loop,loop+2 ,colorEscStr);
-                            }
-                            if (csl == 0)
-                            {
-                                // remove the color code
-                                buf.deleteCharAt(loop);
-                                buf.deleteCharAt(loop);
-                                loop-=1;
-                            }
-                            else
-                            if((colorID<('0'))||(colorID>('9')))
-                            {
-                                // begin MXP tags
-                                if(buf.charAt(loop)=='<')
-                                {
-                                    int tagStart=loop;
-                                    while(loop<(buf.length()-1))
-                                    {
-                                        if((buf.charAt(loop)!='^')||(buf.charAt(loop+1)!='>'))
-                                        {
-                                            loop++;
-                                            if(loop>=(buf.length()-1))
-                                            {
-                                                loop=tagStart;
-                                                break;
-                                            }
-                                        }
-                                        else
-                                        if((S!=null)&&(!S.clientTelnetMode(Session.TELNET_MXP)))
-                                        {
-                                            buf.delete(tagStart,loop+2);
-                                            loop=tagStart-1;
-                                            break;
-                                        }
-                                        else
-                                        {
-                                            loop--;
-                                            break;
-                                        }
-                                    }
-                                }
-                                else
-                                {
-                                    loop+=csl-1;    // already processed 1 char
-                                }
-                            }
-                            else
-                            {
-                                loop--;
-                            }
-                        }
-                    }
+                	loop=convertEscape(CS, buf, loop);
                     break;
                 }
             default:
@@ -431,8 +619,14 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
             loop++;
         }
 
-        if ((S!=null)&&(S.currentColor() != ('N'))&&(S.clientTelnetMode(Session.TELNET_ANSI)))
-            buf.append(S.makeEscape('N'));
+        if ((S!=null)
+        &&(!ColorLibrary.COLORSTATE_NORMAL.equals(S.currentColor(null)))
+        &&(S.clientTelnetMode(Session.TELNET_ANSI)))
+        {
+            buf.append(S.clookup()['N']);
+            S.lastColor(S.currentColor(null));
+            S.currentColor(ColorLibrary.COLORSTATE_NORMAL);
+        }
         if(CMSecurity.isDebugging(CMSecurity.DbgFlag.OUTPUT))
             Log.debugOut("CoffeeFilter","OUTPUT: "+(((S!=null)&&(S.mob()!=null))?S.mob().Name():"")+": "+buf.toString());
         return buf.toString();
@@ -965,72 +1159,9 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
                         break;
                     case '^':
                     {
-                        if((loop<buf.length()-1)&&(S!=null))
-                        {
-                            int colorID = S.getColor( buf.charAt(loop+1) );
-                            if (colorID != -1)
-                            {
-                                String colorEscStr = S.makeEscape(colorID);
-                                int csl=0;
-                                if (colorEscStr != null)
-                                {
-                                    csl = colorEscStr.length();
-                                    if (csl > 0)
-                                        buf.replace(loop,loop+2 ,colorEscStr);
-                                }
-                                if (csl == 0)
-                                {
-                                    // remove the color code
-                                    buf.deleteCharAt(loop);
-                                    buf.deleteCharAt(loop);
-                                    loop-=1;
-                                }
-                                else
-                                if((colorID<('0'))||(colorID>('9')))
-                                {
-                                    // begin MXP tags
-                                    if(buf.charAt(loop)=='<')
-                                    {
-                                        int tagStart=loop;
-                                        while(loop<(buf.length()-1))
-                                        {
-                                            if((buf.charAt(loop)!='^')||(buf.charAt(loop+1)!='>'))
-                                            {
-                                                loop++;
-                                                if(loop>=(buf.length()-1))
-                                                {
-                                                    loop=tagStart;
-                                                    break;
-                                                }
-                                            }
-                                            else
-                                            if(!S.clientTelnetMode(Session.TELNET_MXP))
-                                            {
-                                                buf.delete(tagStart,loop+2);
-                                                loop=tagStart-1;
-                                                break;
-                                            }
-                                            else
-                                            {
-                                                if(wrap>0)len+=(loop-tagStart);
-                                                loop--;
-                                                break;
-                                            }
-                                        }
-                                    }
-                                    else
-                                    {
-                                        loop+=csl-1;    // already processed 1 char
-                                        if(wrap>0)len+=csl;        // does not count for any length
-                                    }
-                                }
-                                else
-                                {
-                                    loop--;
-                                    if(wrap>0)len+=csl;        // does not count for any length
-                                }
-                            }
-                        }
+                    	final int oldLoop=loop;
+                    	loop=convertEscape(S, buf, loop);
+                        if(wrap>0) len=(loop-oldLoop)+len+1;
                         break;
                     }
                 default:
@@ -1069,8 +1200,14 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
         if(firstAlpha<0) firstAlpha=0;
         if(firstAlpha<buf.length())
             buf.setCharAt(firstAlpha,Character.toUpperCase(buf.charAt(firstAlpha)));
-        if ((S!=null)&&(S.currentColor() != ('N'))&&(S.clientTelnetMode(Session.TELNET_ANSI)))
-            buf.append(S.makeEscape('N'));
+        if((S!=null)
+        &&(!ColorLibrary.COLORSTATE_NORMAL.equals(S.currentColor(null)))
+        &&(S.clientTelnetMode(Session.TELNET_ANSI)))
+        {
+            buf.append(S.clookup()['N']);
+            S.lastColor(S.currentColor(null));
+            S.currentColor(ColorLibrary.COLORSTATE_NORMAL);
+        }
 
         /* fabulous debug code
         for(int i=0;i<buf.length();i+=25)

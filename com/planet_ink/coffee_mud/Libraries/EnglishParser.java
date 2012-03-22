@@ -599,7 +599,8 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
                             if(tos < toSrchC.length-1)
                                 tos+=2;
                             break;
-                        case ColorLibrary.COLORCODE_ANSI256:
+                        case ColorLibrary.COLORCODE_FANSI256:
+                        case ColorLibrary.COLORCODE_BANSI256:
                           if(tos < toSrchC.length-4)
                               tos+=4;
                           break;
@@ -627,7 +628,8 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
                           if(x < srchC.length-1)
                               x+=2;
                           break;
-                      case ColorLibrary.COLORCODE_ANSI256:
+                      case ColorLibrary.COLORCODE_FANSI256:
+                      case ColorLibrary.COLORCODE_BANSI256:
                         if(x < srchC.length-4)
                             x+=4;
                         break;

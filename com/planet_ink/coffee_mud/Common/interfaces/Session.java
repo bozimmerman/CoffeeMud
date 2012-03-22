@@ -12,6 +12,7 @@ import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.CharCreationLibrary;
+import com.planet_ink.coffee_mud.Libraries.interfaces.ColorLibrary.ColorState;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -598,44 +599,22 @@ public interface Session extends CMCommon, Modifiable, CMRunnable
     public void setAccount(PlayerAccount account);
     
     /**
-     * Converts a character after the ^ sign (usually a color code)
-     * into an appropriate telnet escape sequence string for output.
-     * @see com.planet_ink.coffee_mud.Common.interfaces.Session#getColor(char)
-     * @see com.planet_ink.coffee_mud.Common.interfaces.Session#currentColor()
-     * @see com.planet_ink.coffee_mud.Common.interfaces.Session#lastColor()
-     * @param c the ^ character code
-     * @return telnet escape sequence string for output
-     */
-    public String makeEscape(int c);
-    
-    /**
-     * Returns the given color code, unless it is one that translates
-     * to another, such as ?
-     * @see com.planet_ink.coffee_mud.Common.interfaces.Session#makeEscape(int)
-     * @see com.planet_ink.coffee_mud.Common.interfaces.Session#currentColor()
-     * @see com.planet_ink.coffee_mud.Common.interfaces.Session#lastColor()
-     * @param c the color code
-     * @return the color code again
-     */
-    public int getColor(char c);
-    
-    /**
      * Returns the current color code.
-     * @see com.planet_ink.coffee_mud.Common.interfaces.Session#getColor(char)
-     * @see com.planet_ink.coffee_mud.Common.interfaces.Session#makeEscape(int)
-     * @see com.planet_ink.coffee_mud.Common.interfaces.Session#lastColor()
+     * @param newcolor the color to change it to
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Session#convertEscape(StringBuffer, int)
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Session#lastColor(ColorState)
      * @return the current color code.
      */
-    public int currentColor();
+    public ColorState currentColor(final ColorState newcolor);
     
     /**
      * Returns the previous current color code.
-     * @see com.planet_ink.coffee_mud.Common.interfaces.Session#getColor(char)
-     * @see com.planet_ink.coffee_mud.Common.interfaces.Session#currentColor()
-     * @see com.planet_ink.coffee_mud.Common.interfaces.Session#makeEscape(int)
+     * @param newColor the color to change it to
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Session#currentColor(ColorState)
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Session#convertEscape(StringBuffer, int)
      * @return the previous current color code.
      */
-    public int lastColor();
+    public ColorState lastColor(final ColorState newColor);
     
     /**
      * Gets the column number for engine word-wrapping. 

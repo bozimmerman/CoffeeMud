@@ -9,6 +9,8 @@ import java.util.Vector;
 import com.planet_ink.coffee_mud.Common.interfaces.PlayerAccount;
 import com.planet_ink.coffee_mud.Common.interfaces.Session;
 import com.planet_ink.coffee_mud.Libraries.interfaces.CharCreationLibrary;
+import com.planet_ink.coffee_mud.Libraries.interfaces.ColorLibrary;
+import com.planet_ink.coffee_mud.Libraries.interfaces.ColorLibrary.ColorState;
 import com.planet_ink.coffee_mud.MOBS.interfaces.MOB;
 import com.planet_ink.coffee_mud.core.CMClass;
 import com.planet_ink.coffee_mud.core.CMFile;
@@ -166,10 +168,9 @@ public class FakeSession implements Session
     public void setMob(MOB newmob){ mob=newmob;}
 	public void setAccount(PlayerAccount account){}
     
-    public String makeEscape(int c){return "";}
-    public int getColor(char c){return ' ';}
-    public int currentColor(){return ' ';}
-    public int lastColor(){return ' ';}
+    public int convertEscape(final StringBuffer str, final int index) { return index+1;}
+    public ColorState currentColor(ColorState newcolor){return ColorLibrary.COLORSTATE_NORMAL;}
+    public ColorState lastColor(ColorState newColor){return ColorLibrary.COLORSTATE_NORMAL;}
     public int getWrap(){return 80;}
     
     public String getAddress(){return "";}

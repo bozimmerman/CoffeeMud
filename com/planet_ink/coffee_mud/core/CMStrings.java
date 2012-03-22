@@ -239,7 +239,8 @@ public class CMStrings
                 {
                   switch(c[i])
                   {
-                  case ColorLibrary.COLORCODE_ANSI256: i+=3; break;
+                  case ColorLibrary.COLORCODE_FANSI256: i+=3; break;
+                  case ColorLibrary.COLORCODE_BANSI256: i+=3; break;
                   case ColorLibrary.COLORCODE_BACKGROUND: i++; break;
                   case '<':
                     while(i<c.length-1)
@@ -292,7 +293,8 @@ public class CMStrings
                 {
                     switch(c[i])
                     {
-                    case ColorLibrary.COLORCODE_ANSI256: i+=3; break;
+                    case ColorLibrary.COLORCODE_FANSI256: i+=3; break;
+                    case ColorLibrary.COLORCODE_BANSI256: i+=3; break;
                     case ColorLibrary.COLORCODE_BACKGROUND: i++; break;
                     case '<':
                       while(i<c.length-1)
@@ -437,7 +439,8 @@ public class CMStrings
                             i--;
                         }
                         break;
-                    case ColorLibrary.COLORCODE_ANSI256:
+                    case ColorLibrary.COLORCODE_FANSI256:
+                    case ColorLibrary.COLORCODE_BANSI256:
                         if(i+5<=str.length())
                         {
                             str.delete(i,i+5);
@@ -529,7 +532,8 @@ public class CMStrings
                     switch(thisStr.charAt(i))
                     {
                     case ColorLibrary.COLORCODE_BACKGROUND: i++; break;
-                    case ColorLibrary.COLORCODE_ANSI256: i+=3; break;
+                    case ColorLibrary.COLORCODE_FANSI256: i+=3; break;
+                    case ColorLibrary.COLORCODE_BANSI256: i+=3; break;
                     case '<':
                     {
                       while(i<(thisStr.length()-1))

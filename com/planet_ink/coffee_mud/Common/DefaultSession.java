@@ -13,6 +13,7 @@ import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.CharCreationLibrary.LoginResult;
+import com.planet_ink.coffee_mud.Libraries.interfaces.ColorLibrary.ColorState;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -89,8 +90,8 @@ public class DefaultSession implements Session
     protected CharCreationLibrary.LoginSession 
                              loginSession = null;
 
-    protected int  currentColor='N';
-    protected int  lastColor=-1;
+    protected ColorState  currentColor=ColorLibrary.COLORSTATE_NORMAL;
+    protected ColorState  lastColor=ColorLibrary.COLORSTATE_NORMAL;
     protected long lastStart=System.currentTimeMillis();
     protected long lastStop=System.currentTimeMillis();
     protected long lastLoopTop=System.currentTimeMillis();
@@ -355,8 +356,19 @@ public class DefaultSession implements Session
         try{if(changedSomething) blockingIn(500);}catch(Exception e){}
     }
 
-    public int currentColor(){return currentColor;}
-    public int lastColor(){return lastColor;}
+    public ColorState currentColor(final ColorState newColor)
+    {
+    	if(newColor!=null)
+    		currentColor=newColor;
+    	return currentColor;
+    }
+    
+    public ColorState lastColor(final ColorState newColor)
+    {
+    	if(newColor!=null)
+    		lastColor=newColor;
+    	return lastColor;
+    }
     public long getTotalMillis(){ return milliTotal;}
     public long getIdleMillis(){ return System.currentTimeMillis()-lastKeystroke;}
     public long getTotalTicks(){ return tickTotal;}
@@ -740,15 +752,8 @@ public class DefaultSession implements Session
         return input;
     }
 
-    public int getColor(char c)
+    public String[] clookup()
     {
-        // warning do not nest!
-        if (c == '?') return lastColor;
-        if (c>255) return -1;
-        return c;
-    }
-
-    public String[] clookup(){
         if(clookup==null)
             clookup=CMLib.color().standardColorLookups();
 
@@ -784,55 +789,6 @@ public class DefaultSession implements Session
             }
         }
         return clookup;
-    }
-
-    public String makeEscape(int c)
-    {
-        //TODO: handle ~ and _ here
-        switch(c)
-        {
-            case '>':
-                if(currentColor>0)
-                {
-                    if(clookup()[c]==null)
-                        return clookup()[currentColor];
-                    if(clookup()[currentColor]==null)
-                        return clookup[c];
-                    return clookup()[c]+clookup()[currentColor];
-                }
-                return clookup()[c];
-            case '<':
-            case '&':
-            case '"':
-                return clookup()[c];
-            case '0': case '1': case '2': case '3': case '4': case '5':
-            case '6': case '7': case '8': case '9':
-            {
-                if(clientTelnetMode(Session.TELNET_MSP))
-                    return CMProps.getVar(CMProps.SYSTEM_ESC0+(c-('0')));
-                return "";
-            }
-            default:
-                break;
-        }
-        if (clientTelnetMode(Session.TELNET_ANSI) && (c != -1))
-        {
-            if ((c != currentColor)||(c=='^'))
-            {
-                if((c!='.')&&(c!='<')&&(c!='>')&&(c!='^'))
-                {
-                    lastColor = currentColor;
-                    currentColor = c;
-                }
-                return clookup()[c];
-            }
-        }
-        else
-        {
-            lastColor = currentColor;
-            currentColor = 0;
-        }
-        return null;
     }
 
     public void handleSubOption(int optionCode, char[] suboptionData, int dataSize)

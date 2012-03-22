@@ -47,21 +47,40 @@ public class CMColor extends StdLibrary implements ColorLibrary
         while(i>=0)
             if(Character.isLetter(code.charAt(i)))
                 return "krgybpcw".indexOf(Character.toLowerCase(code.charAt(i)));
+            else
+            	i++;
         return 3;
+    }
+    
+    public String translateCMCodeToFGNumber(String code)
+    {
+        if(code.length()==0) return code;
+        if(!code.startsWith("^")) return code;
+        final int background=code.indexOf('|');
+        if(background>0)
+        	code=code.substring(0,background);
+        int bold=0;
+        for(int i=0;i<code.length();i++)
+            if(Character.isLowerCase(code.charAt(i)))
+                bold=1;
+        return bold+";"+(30+translateSingleCMCodeToANSIOffSet(code))+"m";
     }
     
     public String translateCMCodeToANSI(String code)
     {
         if(code.length()==0) return code;
         if(!code.startsWith("^")) return code;
-        int background=code.indexOf('|');
+        final int background=code.indexOf('|');
         int bold=0;
         for(int i=0;i<code.length();i++)
             if(Character.isLowerCase(code.charAt(i)))
                 bold=1;
+        final String finalColor;
         if(background>0)
-            return "\033["+(40+translateSingleCMCodeToANSIOffSet(code.substring(0,background)))+";"+bold+";"+(30+translateSingleCMCodeToANSIOffSet(code.substring(background+1)))+"m";
-        return "\033["+bold+";"+(30+translateSingleCMCodeToANSIOffSet(code))+"m";
+            finalColor= "\033["+(40+translateSingleCMCodeToANSIOffSet(code.substring(0,background)))+";"+bold+";"+(30+translateSingleCMCodeToANSIOffSet(code.substring(background+1)))+"m";
+        else
+        	finalColor = "\033["+bold+";"+(30+translateSingleCMCodeToANSIOffSet(code))+"m";
+        return finalColor;
     }
     
     public String translateANSItoCMCode(String code)
@@ -258,8 +277,9 @@ public class CMColor extends StdLibrary implements ColorLibrary
             clookup['"']="\"";              // mxp escape
             clookup['>']=">";               // mxp escape
             clookup['&']="&";               // mxp escape
-            clookup[ColorLibrary.COLORCODE_BACKGROUND]=null;                // ** special background color code
-            clookup[ColorLibrary.COLORCODE_ANSI256]=null;                // ** special 256 color code
+            clookup[ColorLibrary.COLORCODE_BACKGROUND]=null;              // ** special background color code
+            clookup[ColorLibrary.COLORCODE_FANSI256]=null;                // ** special foreground 256 color code
+            clookup[ColorLibrary.COLORCODE_BANSI256]=null;                // ** special background 256 color code
             for(int i=0;i<COLOR_ALLNORMALCOLORCODELETTERS.length;i++)
                 clookup[COLOR_ALLNORMALCOLORCODELETTERS[i].charAt(0)]=COLOR_ALLCOLORS[i];
             
