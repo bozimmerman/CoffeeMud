@@ -244,12 +244,29 @@ public class StdAutoGenInstance extends StdArea implements AutoGenArea
                         msg.source().tell("The area id '"+idName+"' has not been defined in the data file.");
                         return false;
                     }
-                    ScriptingEngine scrptEng=(ScriptingEngine)CMClass.getCommon("DefaultScripingEngine");
-                    Object[] scriptObjs = new Object[ScriptingEngine.SPECIAL_NUM_OBJECTS];
-                    for(String key : getAutoGenVariables().keySet())
+                    final ScriptingEngine scrptEng=(ScriptingEngine)CMClass.getCommon("DefaultScriptingEngine");
+                    final Object[] scriptObjs = new Object[ScriptingEngine.SPECIAL_NUM_OBJECTS];
+                    final List<Double> levels=new ArrayList<Double>();
+                    final Set<MOB> followers=msg.source().getGroupMembers(new HashSet<MOB>());
+                    if(!followers.contains(msg.source())) followers.add(msg.source());
+                    double totalLevels=0.0;
+                    for(final MOB M : followers)
+                    {
+                    	final Double D=Double.valueOf(M.basePhyStats().level());
+                    	levels.add(D);
+                    	totalLevels+=D.doubleValue();
+                    }
+                    final Double[] sortedLevels=levels.toArray(new Double[0]); 
+                    final double lowestLevel=sortedLevels[0].doubleValue();
+                    final double medianLevel=sortedLevels[(int)Math.round(Math.floor(sortedLevels.length/2))].doubleValue();
+                    final double averageLevel=Math.round(10.0*totalLevels/((double)sortedLevels.length))/10.0;
+                    final double highestLevel=sortedLevels[sortedLevels.length-1].doubleValue();
+                    final double groupSize=Double.valueOf(followers.size()).doubleValue();
+                    final double values[]={msg.source().basePhyStats().level(),lowestLevel,medianLevel,averageLevel,highestLevel,totalLevels,groupSize};
+                    for(final String key : getAutoGenVariables().keySet())
                         if(!(key.equalsIgnoreCase("AREA_ID")||key.equalsIgnoreCase("AREA_IDS")||key.equalsIgnoreCase("AREAID")||key.equalsIgnoreCase("AREAIDS")))
                         {
-                            final String rawValue = getAutoGenVariables().get(key);
+                            final String rawValue = CMath.replaceVariables(getAutoGenVariables().get(key),values);
                             final String val=scrptEng.varify(msg.source(), newA, msg.source(), msg.source(), null, null, msg.sourceMessage(), scriptObjs, rawValue);
                             definedIDs.put(key.toUpperCase(),val);
                         }

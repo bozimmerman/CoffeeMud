@@ -531,6 +531,46 @@ public class CMath
     }
 
     /**
+     * Replaces @x1 type variables inside a stringbuffer with an actual value
+     * Not used in the main expression system, this is a stand alone function
+     * Also uniquely, supports @x numbers above 10.  Values are *1* indexed!!
+     * @param str the stringbuffer to assess
+     * @param values values to replace each variable with
+     */
+    public final static void replaceVariables(final StringBuffer str, final double values[])
+    {
+    	final int valueLen=(values.length<=10)?1:Integer.toString(values.length).length();
+    	for(int i=0;i<str.length()-(1+valueLen);i++)
+    		if((str.charAt(i)=='@') && (str.charAt(i+1)=='x') && (Character.isDigit(str.charAt(i+2))))
+	    	{
+    			int endDex=1;
+    			while((endDex < valueLen) && (Character.isDigit(str.charAt(i+2+endDex))))
+    				endDex++;
+    			final int valueDex = Integer.valueOf(str.substring(i+2,i+2+endDex)).intValue();
+    			final double newNumValue = (valueDex >0 && valueDex <= values.length)?values[valueDex-1]:0.0;
+    			final String newValue = ( Math.round(newNumValue) == newNumValue) ? Long.toString(Math.round(newNumValue)) : Double.toString(newNumValue);
+    			str.delete(i, i+2+endDex);
+    			str.insert(i, newValue);
+    			i--;
+	    	}
+    }
+    
+    /**
+     * Replaces @x1 type variables inside a stringbuffer with an actual value
+     * Not used in the main expression system, this is a stand alone function
+     * Also uniquely, supports @x numbers above 10.  Values are *1* indexed!!
+     * @param str the stringbuffer to assess
+     * @param values values to replace each variable with
+     * @return the string with values replaced.
+     */
+    public final static String replaceVariables(final String str, final double values[])
+    {
+    	final StringBuffer buf = new StringBuffer(str);
+    	replaceVariables(buf,values);
+    	return buf.toString();
+    }
+    
+    /**
      * Converts a single hex digit to an int
      * @param c the hex digit, maybe
      * @return the int representation
