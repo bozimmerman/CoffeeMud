@@ -2354,7 +2354,7 @@ Special/Reserved Quest called holidays can be added to/modified on an area-by-ar
 2. (Internal) fakedb now supports dup key detection for insert statements, DBUpgrade now more forgiving of dup keys.
 3. New command: AUTOMAP, for toggling AWARERANGE
 4. Import command now supports at least one type of .wld/.zon/.mob/.obj format areas.
-5. StdAuthGenInstance - Can now insert scriptable variables into autogen variable definitions. 
+5. StdAutoGenInstance - Can now insert scriptable variables into autogen variable definitions, and more level variables. 
 6. New Conjurer Spell: Flaming Sword
 7. CoffeeMud now supports background colors through native ^ escape codes.  See programmer's guide/ahelp colors for more.
 8. Also support for fore/background 256 color support through native ^ escape codes.  As above, check the guides.
