@@ -245,19 +245,33 @@ public class JewelMaking extends EnhancedCraftingSkill implements ItemCraftor, M
             aborted=false;
 			messedUp=false;
 			if(fire==null) return false;
-			String jewel=(String)commands.elementAt(1);
-			String rest=CMParms.combine(commands,2);
-			Environmental jewelE=mob.location().fetchFromMOBRoomFavorsItems(mob,null,jewel,Wearable.FILTER_UNWORNONLY);
-			Environmental thangE=mob.location().fetchFromMOBRoomFavorsItems(mob,null,rest,Wearable.FILTER_UNWORNONLY);
+			final String jewel=(String)commands.elementAt(1);
+			final String rest=CMParms.combine(commands,2);
+			final Environmental jewelE=mob.location().fetchFromMOBRoomFavorsItems(mob,null,jewel,Wearable.FILTER_UNWORNONLY);
+			final Environmental thangE=mob.location().fetchFromMOBRoomFavorsItems(mob,null,rest,Wearable.FILTER_UNWORNONLY);
 			if((jewelE==null)||(!CMLib.flags().canBeSeenBy(jewelE,mob)))
-			{ commonTell(mob,"You don't see any '"+jewel+"' here."); return false;}
+			{ 
+				commonTell(mob,"You don't see any '"+jewel+"' here."); 
+				return false;
+			}
 			if((thangE==null)||(!CMLib.flags().canBeSeenBy(thangE,mob)))
-			{ commonTell(mob,"You don't see any '"+rest+"' here."); return false;}
+			{ 
+				commonTell(mob,"You don't see any '"+rest+"' here."); 
+				return false;
+			}
 			if((!(jewelE instanceof RawMaterial))||(!(jewelE instanceof Item))
 			   ||(((((Item)jewelE).material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_PRECIOUS)
 				  &&((((Item)jewelE).material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_GLASS)))
-			{ commonTell(mob,"A "+jewelE.name()+" is not suitable to "+word+" on anything."); return false;}
-			Item jewelI=(Item)CMLib.materials().unbundle((Item)jewelE,1);
+			{ 
+				commonTell(mob,"You don't see any suitable "+jewelE.name()+" here."); 
+				return false;
+			}
+			final Item jewelI=(Item)CMLib.materials().unbundle((Item)jewelE,1);
+			if(jewelI==null)
+			{
+				commonTell(mob,jewelE.name()+" is not pure enough to be "+word+"ed with.  You will need to use a gathered one.");
+				return false;
+			}
 			if((!(thangE instanceof Item))
 			   ||(!thangE.isGeneric())
 			   ||(((((Item)thangE).material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_CLOTH)
@@ -267,7 +281,10 @@ public class JewelMaking extends EnhancedCraftingSkill implements ItemCraftor, M
 				  &&((((Item)thangE).material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_ROCK)
 				  &&((((Item)thangE).material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_WOODEN)
 				  &&((((Item)thangE).material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_LEATHER)))
-			{ commonTell(mob,"A "+thangE.name()+" is not suitable to be "+word+"ed on."); return false;}
+			{ 
+				commonTell(mob,"A "+thangE.name()+" is not suitable to be "+word+"ed on."); 
+				return false;
+			}
 			if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 				return false;
 			building=(Item)thangE;
