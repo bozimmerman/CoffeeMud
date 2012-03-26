@@ -263,7 +263,7 @@ public class JewelMaking extends EnhancedCraftingSkill implements ItemCraftor, M
 			   ||(((((Item)jewelE).material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_PRECIOUS)
 				  &&((((Item)jewelE).material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_GLASS)))
 			{ 
-				commonTell(mob,"You don't see any suitable "+jewelE.name()+" here."); 
+				commonTell(mob,"A "+jewelE.name()+" is not suitable to "+word+" on anything."); 
 				return false;
 			}
 			final Item jewelI=(Item)CMLib.materials().unbundle((Item)jewelE,1);
