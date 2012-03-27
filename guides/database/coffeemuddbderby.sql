@@ -14,22 +14,22 @@ CMABTX CLOB,
 PRIMARY KEY (CMUSERID, CMABID)
 );
 CREATE TABLE CMSTAT (
-	CMSTRT bigint NOT NULL,
-	CMENDT bigint NOT NULL,
-	CMDATA CLOB,
+    CMSTRT bigint NOT NULL,
+    CMENDT bigint NOT NULL,
+    CMDATA CLOB,
 PRIMARY KEY (CMSTRT)
 );
 CREATE TABLE CMPOLL (
-	CMNAME varchar (100) NOT NULL,
-	CMBYNM varchar (100)  ,
-	CMSUBJ varchar (255)  ,
-	CMDESC CLOB  ,
-	CMOPTN CLOB  ,
-	CMFLAG integer  ,
-	CMQUAL varchar (255)  ,
-	CMRESL CLOB ,
-	CMEXPI bigint ,
-	PRIMARY KEY (CMNAME)
+    CMNAME varchar (100) NOT NULL,
+    CMBYNM varchar (100)  ,
+    CMSUBJ varchar (255)  ,
+    CMDESC CLOB  ,
+    CMOPTN CLOB  ,
+    CMFLAG integer  ,
+    CMQUAL varchar (255)  ,
+    CMRESL CLOB ,
+    CMEXPI bigint ,
+    PRIMARY KEY (CMNAME)
 );
 CREATE TABLE CMCHAR (
 CMUSERID varchar (50) NOT NULL,
@@ -160,20 +160,20 @@ CMTECH integer,
 PRIMARY KEY (CMAREA)
 );
 CREATE TABLE CMJRNL (
-	CMJKEY varchar (75) NOT NULL,
-	CMJRNL varchar (50),
-	CMFROM varchar (50),
-	CMDATE varchar (50),
-	CMTONM varchar (50),
-	CMSUBJ varchar (255),
-	CMPART varchar (75),
-	CMATTR integer,
-	CMDATA varchar (255),
-	CMUPTM bigint,
-	CMIMGP varchar (50),
-	CMVIEW integer,
-	CMREPL integer,
-	CMMSGT CLOB,
+    CMJKEY varchar (75) NOT NULL,
+    CMJRNL varchar (50),
+    CMFROM varchar (50),
+    CMDATE varchar (50),
+    CMTONM varchar (50),
+    CMSUBJ varchar (255),
+    CMPART varchar (75),
+    CMATTR integer,
+    CMDATA varchar (255),
+    CMUPTM bigint,
+    CMIMGP varchar (50),
+    CMVIEW integer,
+    CMREPL integer,
+    CMMSGT CLOB,
 PRIMARY KEY (CMJKEY) 
 );
 CREATE INDEX CMJRNLNAME on CMJRNL (CMJRNL ASC);
@@ -181,45 +181,45 @@ CREATE INDEX CMJRNLCMPART on CMJRNL (CMPART ASC);
 CREATE INDEX CMJRNLCMTONM on CMJRNL (CMTONM ASC);
 CREATE INDEX CMJRNLCMUPTM on CMJRNL (CMUPTM ASC);
 CREATE TABLE CMCLAN (
-	CMCLID varchar (100) NOT NULL,
-	CMTYPE integer NOT NULL,
-	CMDESC CLOB,
-	CMACPT varchar (255),
-	CMPOLI CLOB,
-	CMRCLL varchar (50),
-	CMDNAT varchar (50),
-	CMSTAT integer ,
-	CMMORG varchar (50) ,
-	CMTROP integer ,
-	PRIMARY KEY (CMCLID) 
+    CMCLID varchar (100) NOT NULL,
+    CMTYPE integer NOT NULL,
+    CMDESC CLOB,
+    CMACPT varchar (255),
+    CMPOLI CLOB,
+    CMRCLL varchar (50),
+    CMDNAT varchar (50),
+    CMSTAT integer ,
+    CMMORG varchar (50) ,
+    CMTROP integer ,
+    PRIMARY KEY (CMCLID) 
 );
 CREATE TABLE CMPDAT (
-	CMPLID varchar (100) NOT NULL,
-	CMSECT varchar (100) NOT NULL,
-	CMPKEY varchar (100) NOT NULL,
-	CMPDAT CLOB,
-	PRIMARY KEY (CMPLID,CMSECT,CMPKEY)
+    CMPLID varchar (100) NOT NULL,
+    CMSECT varchar (100) NOT NULL,
+    CMPKEY varchar (100) NOT NULL,
+    CMPDAT CLOB,
+    PRIMARY KEY (CMPLID,CMSECT,CMPKEY)
 );
 CREATE TABLE CMGRAC (
-	CMRCID varchar (50) NOT NULL,
-	CMRDAT CLOB,
-	PRIMARY KEY (CMRCID)
+    CMRCID varchar (50) NOT NULL,
+    CMRDAT CLOB,
+    PRIMARY KEY (CMRCID)
 );
 CREATE TABLE CMCCAC (
-	CMCCID varchar (50) NOT NULL,
-	CMCDAT CLOB,
-	PRIMARY KEY (CMCCID)
+    CMCCID varchar (50) NOT NULL,
+    CMCDAT CLOB,
+    PRIMARY KEY (CMCCID)
 );
 CREATE TABLE CMGAAC (
-	CMGAID varchar (50) NOT NULL,
-	CMGAAT CLOB , 
-	CMGACL varchar (50)
-	PRIMARY KEY (CMGAID)
+    CMGAID varchar (50) NOT NULL,
+    CMGAAT CLOB , 
+    CMGACL varchar (50) ,
+    PRIMARY KEY (CMGAID)
 );
 CREATE TABLE CMACCT (
-	CMANAM varchar (50) NOT NULL,
-	CMPASS varchar (50) NOT NULL,
-	CMCHRS CLOB ,
-	CMAXML CLOB ,
-	PRIMARY KEY (CMANAM)
+    CMANAM varchar (50) NOT NULL,
+    CMPASS varchar (50) NOT NULL,
+    CMCHRS CLOB ,
+    CMAXML CLOB ,
+    PRIMARY KEY (CMANAM)
 );
