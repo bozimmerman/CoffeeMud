@@ -2268,7 +2268,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
                     if(getTheJudgeHere(laws,officer.location())!=null)
                         W.setState(Law.STATE_REPORTING);
                     else
-                    if(CMLib.flags().flaggedAffects(officer,Ability.FLAG_TRACKING).size()==0)
+                    if(!CMLib.flags().isTracking(officer))
                     {
                         if(!trackTheJudge(officer,myArea,laws))
                         {
@@ -2724,7 +2724,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
                             W.setState(Law.STATE_RELEASE);
                     }
                     else
-                    if(CMLib.flags().flaggedAffects(officer,Ability.FLAG_TRACKING).size()==0)
+                    if(!CMLib.flags().isTracking(officer))
                     {
                         Ability A=CMClass.getAbility("Skill_Track");
                         if(A!=null)

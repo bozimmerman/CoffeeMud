@@ -301,269 +301,279 @@ public interface PhyStats extends CMCommon, Modifiable
     /** the size of the internal stats integer array */
     public final static int NUM_STATS=10;
      
-	// sensemask stuff
+    // sensemask stuff
     /** a bit setting, as from sensesMask(), flagging this mob as unable to see */
-	public final static int CAN_NOT_SEE=1;
+    public final static int CAN_NOT_SEE=1;
     /** a bit setting, as from sensesMask(), flagging this mob as able to see hidden */
-	public final static int CAN_SEE_HIDDEN=2;
+    public final static int CAN_SEE_HIDDEN=2;
     /** a bit setting, as from sensesMask(), flagging this mob as able to see invisible */
-	public final static int CAN_SEE_INVISIBLE=4;
+    public final static int CAN_SEE_INVISIBLE=4;
     /** a bit setting, as from sensesMask(), flagging this mob as able to see evil */
-	public final static int CAN_SEE_EVIL=8;
+    public final static int CAN_SEE_EVIL=8;
     /** a bit setting, as from sensesMask(), flagging this mob as able to see good */
-	public final static int CAN_SEE_GOOD=16;
+    public final static int CAN_SEE_GOOD=16;
     /** a bit setting, as from sensesMask(), flagging this mob as able to see sneakers */
-	public final static int CAN_SEE_SNEAKERS=32;
+    public final static int CAN_SEE_SNEAKERS=32;
     /** a bit setting, as from sensesMask(), flagging this mob as able to see bonus */
-	public final static int CAN_SEE_BONUS=64;
+    public final static int CAN_SEE_BONUS=64;
     /** a bit setting, as from sensesMask(), flagging this mob as able to see dark */
-	public final static int CAN_SEE_DARK=128;
+    public final static int CAN_SEE_DARK=128;
     /** a bit setting, as from sensesMask(), flagging this mob as able to see infrared */
-	public final static int CAN_SEE_INFRARED=256;
+    public final static int CAN_SEE_INFRARED=256;
     /** a bit setting, as from sensesMask(), flagging this mob as unable to hear */
-	public final static int CAN_NOT_HEAR=512;
+    public final static int CAN_NOT_HEAR=512;
     /** a bit setting, as from sensesMask(), flagging this mob as unable to move */
-	public final static int CAN_NOT_MOVE=1024;
+    public final static int CAN_NOT_MOVE=1024;
     /** a bit setting, as from sensesMask(), flagging this mob as unable to smell */
-	public final static int CAN_NOT_SMELL=2048;
+    public final static int CAN_NOT_SMELL=2048;
     /** a bit setting, as from sensesMask(), flagging this mob as unable to taste */
-	public final static int CAN_NOT_TASTE=4096;
+    public final static int CAN_NOT_TASTE=4096;
     /** a bit setting, as from sensesMask(), flagging this mob as unable to speak */
-	public final static int CAN_NOT_SPEAK=8192;
+    public final static int CAN_NOT_SPEAK=8192;
     /** a bit setting, as from sensesMask(), flagging this mob as unable to breathe */
-	public final static int CAN_NOT_BREATHE=16384;
+    public final static int CAN_NOT_BREATHE=16384;
     /** a bit setting, as from sensesMask(), flagging this mob as able to see their victims */
-	public final static int CAN_SEE_VICTIM=32768;
+    public final static int CAN_SEE_VICTIM=32768;
     /** a bit setting, as from sensesMask(), flagging this mob as able to see metals*/
-	public final static int CAN_SEE_METAL=65536;
-	
-	// sensemask stuff not applicable to mobs
+    public final static int CAN_SEE_METAL=65536;
+    /** a bit setting, as from sensesMask(), flagging this mob as unable to think clearly*/
+    public final static int CAN_NOT_THINK=131072;
+    /** a bit setting, as from sensesMask(), flagging this mob as unable to engage in long tasks*/
+    public final static int CAN_NOT_WORK=262144;
+    
+    // sensemask stuff not applicable to mobs
     /** a bit setting, as from sensesMask(), flagging this item/room as being unlocatable */
-	public final static int SENSE_UNLOCATABLE=1;
+    public final static int SENSE_UNLOCATABLE=1;
     /** a bit setting, as from sensesMask(), flagging this item/room */
-	public final static int SENSE_ITEMNOMINRANGE=2;
+    public final static int SENSE_ITEMNOMINRANGE=2;
     /** a bit setting, as from sensesMask(), flagging this item/room  */
-	public final static int SENSE_ITEMNOMAXRANGE=4;
+    public final static int SENSE_ITEMNOMAXRANGE=4;
     /** a bit setting, as from sensesMask(), flagging this item/room as readable */
-	public final static int SENSE_ITEMREADABLE=8;
+    public final static int SENSE_ITEMREADABLE=8;
     /** a bit setting, as from sensesMask(), flagging this item/room as ungettable */
-	public final static int SENSE_ITEMNOTGET=16;
+    public final static int SENSE_ITEMNOTGET=16;
     /** a bit setting, as from sensesMask(), flagging this item/room as undroppable */
-	public final static int SENSE_ITEMNODROP=32;
+    public final static int SENSE_ITEMNODROP=32;
     /** a bit setting, as from sensesMask(), flagging this item/room as unremovable */
-	public final static int SENSE_ITEMNOREMOVE=64;
+    public final static int SENSE_ITEMNOREMOVE=64;
     /** a bit setting, as from sensesMask(), flagging this item/room as having unseeable contents */
-	public final static int SENSE_CONTENTSUNSEEN=128;
+    public final static int SENSE_CONTENTSUNSEEN=128;
     /** a bit setting, as from sensesMask(), flagging this item/room as conjured/temporary */
-	//public final static int SENSE_ITEMNOCOPY=256;
+    //public final static int SENSE_ITEMNOCOPY=256;
     /** a bit setting, as from sensesMask(), flagging this item/room as being unexplorable */
-	public final static int SENSE_ROOMUNEXPLORABLE=512;
+    public final static int SENSE_ROOMUNEXPLORABLE=512;
     /** a bit setting, as from sensesMask(), flagging this item/room as not allowing movement */
-	public final static int SENSE_ROOMNOMOVEMENT=1024;
+    public final static int SENSE_ROOMNOMOVEMENT=1024;
     /** a bit setting, as from sensesMask(), flagging this item/room as being unmappable */
-	public final static int SENSE_ROOMUNMAPPABLE=2048;
+    public final static int SENSE_ROOMUNMAPPABLE=2048;
     /** a bit setting, as from sensesMask(), flagging this item/room as being flagged for synchronization */
-	public final static int SENSE_ROOMGRIDSYNC=4096;
+    public final static int SENSE_ROOMGRIDSYNC=4096;
     /** a bit setting, as from sensesMask(), flagging this item/room as being unruinable */
-	public final static int SENSE_ITEMNORUIN=8192;
+    public final static int SENSE_ITEMNORUIN=8192;
     /** a bit setting, as from sensesMask(), flagging this item/room being unwishable for */
-	public final static int SENSE_ITEMNOWISH=16384;
+    public final static int SENSE_ITEMNOWISH=16384;
     /** a bit setting, as from sensesMask(), flagging this item/room  */
-	public final static int SENSE_UNUSEDMASK16=32768;
+    public final static int SENSE_UNUSEDMASK16=32768;
     /** a bit setting, as from sensesMask(), flagging this item/room  */
-	public final static int SENSE_UNUSEDMASK17=65536;
-	
+    public final static int SENSE_UNUSEDMASK17=65536;
+    
     /** STAT codes list, indexed by the 2nd root of the various sensesMask() SENSE_ bitmasks */ 
-	public static final String[] SENSE_CODES={
-		"UNLOCATABLE",
-		"ITEMNOMINRANGE",
-		"ITEMNOMAXRANGE",
-		"ITEMREADABLE",
-		"ITEMNOTGET",
-		"ITEMNODROP",
-		"ITEMNOREMOVE",
-		"CONTENTSUNSEEN",
-		"ITEMNEVERSAVED",
-		"ROOMUNEXPLORABLE",
-		"ROOMNOMOVEMENT",
-		"ROOMUNMAPPABLE",
-		"ROOMGRIDSYNC",
-		"ITEMNORUIN",
-		"UNUSEDMASK15",
-		"UNUSEDMASK16",
-		"UNUSEDMASK17",
-	};
+    public static final String[] SENSE_CODES={
+        "UNLOCATABLE",
+        "ITEMNOMINRANGE",
+        "ITEMNOMAXRANGE",
+        "ITEMREADABLE",
+        "ITEMNOTGET",
+        "ITEMNODROP",
+        "ITEMNOREMOVE",
+        "CONTENTSUNSEEN",
+        "ITEMNEVERSAVED",
+        "ROOMUNEXPLORABLE",
+        "ROOMNOMOVEMENT",
+        "ROOMUNMAPPABLE",
+        "ROOMGRIDSYNC",
+        "ITEMNORUIN",
+        "UNUSEDMASK15",
+        "UNUSEDMASK16",
+        "UNUSEDMASK17",
+    };
 
-		/** All bits in a Integer, cast into a long */
-	public final static long ALLMASK=Integer.MAX_VALUE;
-	
-	// dispositions
+        /** All bits in a Integer, cast into a long */
+    public final static long ALLMASK=Integer.MAX_VALUE;
+    
+    // dispositions
     /** a bit setting, as from disposition(), flagging this object as not being seen */
-	public final static int IS_NOT_SEEN=1;
+    public final static int IS_NOT_SEEN=1;
     /** a bit setting, as from disposition(), flagging this object as being hidden */
-	public final static int IS_HIDDEN=2;
+    public final static int IS_HIDDEN=2;
     /** a bit setting, as from disposition(), flagging this object as being invisible */
-	public final static int IS_INVISIBLE=4;
+    public final static int IS_INVISIBLE=4;
     /** a bit setting, as from disposition(), flagging this object as being evil */
-	public final static int IS_EVIL=8;
+    public final static int IS_EVIL=8;
     /** a bit setting, as from disposition(), flagging this object as being good */
-	public final static int IS_GOOD=16;
+    public final static int IS_GOOD=16;
     /** a bit setting, as from disposition(), flagging this object as sneaking */
-	public final static int IS_SNEAKING=32;
+    public final static int IS_SNEAKING=32;
     /** a bit setting, as from disposition(), flagging this object as being magical */
-	public final static int IS_BONUS=64;
+    public final static int IS_BONUS=64;
     /** a bit setting, as from disposition(), flagging this object as being in the dark */
-	public final static int IS_DARK=128;
+    public final static int IS_DARK=128;
     /** a bit setting, as from disposition(), flagging this object as being a golem */
-	public final static int IS_GOLEM=256;
+    public final static int IS_GOLEM=256;
     /** a bit setting, as from disposition(), flagging this object as being asleep */
-	public final static int IS_SLEEPING=512;
+    public final static int IS_SLEEPING=512;
     /** a bit setting, as from disposition(), flagging this object as sitting/crawling */
-	public final static int IS_SITTING=1024;
+    public final static int IS_SITTING=1024;
     /** a bit setting, as from disposition(), flagging this object as flying */
-	public final static int IS_FLYING=2048;
+    public final static int IS_FLYING=2048;
     /** a bit setting, as from disposition(), flagging this object as swimming */
-	public final static int IS_SWIMMING=4096;
+    public final static int IS_SWIMMING=4096;
     /** a bit setting, as from disposition(), flagging this object as glowing */
-	public final static int IS_GLOWING=8192;
+    public final static int IS_GLOWING=8192;
     /** a bit setting, as from disposition(), flagging this object as climbing */
-	public final static int IS_CLIMBING=16384;
+    public final static int IS_CLIMBING=16384;
     /** a bit setting, as from disposition(), flagging this object as falling */
-	public final static int IS_FALLING=32768;
+    public final static int IS_FALLING=32768;
     /** a bit setting, as from disposition(), flagging this object as being a lightsource */
-	public final static int IS_LIGHTSOURCE=65536;
+    public final static int IS_LIGHTSOURCE=65536;
     /** a bit setting, as from disposition(), flagging this object as being bound */
-	public final static int IS_BOUND=131072;
+    public final static int IS_BOUND=131072;
     /** a bit setting, as from disposition(), flagging this object as being cloaked */
-	public final static int IS_CLOAKED=262144;
+    public final static int IS_CLOAKED=262144;
     /** a bit setting, as from disposition(), flagging this object as being unsavable */
     public final static int IS_UNSAVABLE=524288;
     /** a bit setting, as from disposition(), flagging this object as being cataloged */
     public final static int IS_CATALOGED=1048576;
 
     /** STAT codes list, indexed by the 2nd root of the various sensesMask() CAN_SEE bitmasks */ 
-	public static final String[] CAN_SEE_CODES={"CANNOTSEE",
-											  "CANSEEHIDDEN",
-											  "CANSEEINVISIBLE",
-											  "CANSEEEVIL",
-											  "CANSEEGOOD",
-											  "CANSEESNEAKERS",
-											  "CANSEEBONUS",
-											  "CANSEEDARK",
-											  "CANSEEINFRARED",
-											  "CANNOTHEAR",
-											  "CANNOTMOVE",
-											  "CANNOTSMELL",
-											  "CANNOTTASTE",
-											  "CANNOTSPEAK",
-											  "CANNOTBREATHE",
-											  "CANSEEVICTIM",
-											  "CANSEEMETAL"};
-	
+    public static final String[] CAN_SEE_CODES={"CANNOTSEE",
+                                                "CANSEEHIDDEN",
+                                                "CANSEEINVISIBLE",
+                                                "CANSEEEVIL",
+                                                "CANSEEGOOD",
+                                                "CANSEESNEAKERS",
+                                                "CANSEEBONUS",
+                                                "CANSEEDARK",
+                                                "CANSEEINFRARED",
+                                                "CANNOTHEAR",
+                                                "CANNOTMOVE",
+                                                "CANNOTSMELL",
+                                                "CANNOTTASTE",
+                                                "CANNOTSPEAK",
+                                                "CANNOTBREATHE",
+                                                "CANSEEVICTIM",
+                                                "CANSEEMETAL",
+                                                "CANNOTTHINK",
+                                                "CANNOTWORK"};
+    
     /** Descriptions, indexed by the 2nd root of the various CAN_SEE sensesMask() bitmasks */ 
-	public static final String[] CAN_SEE_DESCS={"Is Blind",
-											 "Can see hidden",
-											 "Can see invisible",
-											 "Can see evil",
-											 "Can see good",
-											 "Can detect sneakers",
-											 "Can see magic",
-											 "Can see in the dark",
-											 "Has infravision",
-											 "Is Deaf",
-											 "Is Paralyzed",
-											 "Can not smell",
-											 "Can not eat",
-											 "Is Mute",
-											 "Can not breathe",
-											 "Can detect victims",
-											 "Can detect metal"};
-	
+    public static final String[] CAN_SEE_DESCS={"Is Blind",
+                                             "Can see hidden",
+                                             "Can see invisible",
+                                             "Can see evil",
+                                             "Can see good",
+                                             "Can detect sneakers",
+                                             "Can see magic",
+                                             "Can see in the dark",
+                                             "Has infravision",
+                                             "Is Deaf",
+                                             "Is Paralyzed",
+                                             "Can not smell",
+                                             "Can not eat",
+                                             "Is Mute",
+                                             "Can not breathe",
+                                             "Can detect victims",
+                                             "Can detect metal",
+                                             "Can not concentrate",
+                                             "Is too busy"};
+    
     /** Descriptive verbs, indexed by the 2nd root of the various CAN_SEE sensesMask() bitmasks */ 
-	public static final String[] CAN_SEE_VERBS={"Causes Blindness",
-											 "Allows see hidden",
-											 "Allows see invisible",
-											 "Allows see evil",
-											 "Allows see good",
-											 "Allows detect sneakers",
-											 "Allows see magic",
-											 "Allows darkvision",
-											 "Allows infravision",
-											 "Causes Deafness",
-											 "Causes Paralyzation",
-											 "Deadens smell",
-											 "Disallows eating",
-											 "Causes Mutemess",
-											 "Causes choking",
-											 "Allows detect victims",
-											 "Allows detect metal"};
-	
+    public static final String[] CAN_SEE_VERBS={"Causes Blindness",
+                                                "Allows see hidden",
+                                                "Allows see invisible",
+                                                "Allows see evil",
+                                                "Allows see good",
+                                                "Allows detect sneakers",
+                                                "Allows see magic",
+                                                "Allows darkvision",
+                                                "Allows infravision",
+                                                "Causes Deafness",
+                                                "Causes Paralyzation",
+                                                "Deadens smell",
+                                                "Disallows eating",
+                                                "Causes Mutemess",
+                                                "Causes choking",
+                                                "Allows detect victims",
+                                                "Allows detect metal",
+                                                "Befuddles the mind",
+                                                "Occupies time"};
+    
     /** STAT codes, indexed by the 2nd root of the various IS_ disposition() bitmasks */ 
-	public static final String[] IS_CODES={"ISSEEN",
-											"ISHIDDEN",
-											"ISINVISIBLE",
-											"ISEVIL",
-											"ISGOOD",
-											"ISSNEAKING",
-											"ISBONUS",
-											"ISDARK",
-											"ISGOLEM",
-											"ISSLEEPING",
-											"ISSITTING",
-											"ISFLYING",
-											"ISSWIMMING",
-											"ISGLOWING",
-											"ISCLIMBING",
-											"ISFALLING",
-											"ISLIGHT",
-											"ISBOUND",
-											"ISCLOAKED",
-                                            "ISUNSAVABLE",
-                                            "ISCATALOGED"};
-	
+    public static final String[] IS_CODES={"ISSEEN",
+                                           "ISHIDDEN",
+                                           "ISINVISIBLE",
+                                           "ISEVIL",
+                                           "ISGOOD",
+                                           "ISSNEAKING",
+                                           "ISBONUS",
+                                           "ISDARK",
+                                           "ISGOLEM",
+                                           "ISSLEEPING",
+                                           "ISSITTING",
+                                           "ISFLYING",
+                                           "ISSWIMMING",
+                                           "ISGLOWING",
+                                           "ISCLIMBING",
+                                           "ISFALLING",
+                                           "ISLIGHT",
+                                           "ISBOUND",
+                                           "ISCLOAKED",
+                                           "ISUNSAVABLE",
+                                           "ISCATALOGED"};
+    
     /** Descriptions, indexed by the 2nd root of the various IS_ disposition() bitmasks */ 
-	public static final String[] IS_DESCS= {"Is never seen",
-											"Is hidden",
-											"Is invisible",
-											"Evil aura",
-											"Good aura",
-											"Is sneaking",
-											"Is magical",
-											"Is dark",
-											"Is golem",
-											"Is sleeping",
-											"Is sitting",
-											"Is flying",
-											"Is swimming",
-											"Is glowing",
-											"Is climbing",
-											"Is falling",
-											"Is a light source",
-											"Is binding",
-											"Is Cloaked",
+    public static final String[] IS_DESCS= {"Is never seen",
+                                            "Is hidden",
+                                            "Is invisible",
+                                            "Evil aura",
+                                            "Good aura",
+                                            "Is sneaking",
+                                            "Is magical",
+                                            "Is dark",
+                                            "Is golem",
+                                            "Is sleeping",
+                                            "Is sitting",
+                                            "Is flying",
+                                            "Is swimming",
+                                            "Is glowing",
+                                            "Is climbing",
+                                            "Is falling",
+                                            "Is a light source",
+                                            "Is binding",
+                                            "Is Cloaked",
                                             "Is never saved",
                                             "Is cataloged"};
-	
+    
     /** Descriptive verbs, indexed by the 2nd root of the various IS_ disposition() bitmasks */ 
-	public static final String[] IS_VERBS= {"Causes Nondetectability",
-											"Causes hide",
-											"Causes invisibility",
-											"Creates Evil aura",
-											"Creates Good aura",
-											"Causes sneaking",
-											"Creates magical aura",
-											"Creates dark aura",
-											"Creates golem aura",
-											"Causes sleeping",
-											"Causes sitting",
-											"Allows flying",
-											"Causes swimming",
-											"Causes glowing aura",
-											"Allows climbing",
-											"Causes falling",
-											"Causes a light source",
-											"Causes binding",
-											"Causes cloaking",
+    public static final String[] IS_VERBS= {"Causes Nondetectability",
+                                            "Causes hide",
+                                            "Causes invisibility",
+                                            "Creates Evil aura",
+                                            "Creates Good aura",
+                                            "Causes sneaking",
+                                            "Creates magical aura",
+                                            "Creates dark aura",
+                                            "Creates golem aura",
+                                            "Causes sleeping",
+                                            "Causes sitting",
+                                            "Allows flying",
+                                            "Causes swimming",
+                                            "Causes glowing aura",
+                                            "Allows climbing",
+                                            "Causes falling",
+                                            "Causes a light source",
+                                            "Causes binding",
+                                            "Causes cloaking",
                                             "Causes disappearance",
                                             "Causes unsavability",
                                             "Created from a template"};

@@ -35,68 +35,73 @@ import java.util.*;
 @SuppressWarnings("unchecked")
 public class Spell extends StdAbility
 {
-	public String ID() { return "Spell"; }
-	public String name(){ return "a Spell";}
-	public String displayText(){ return "";}
-	protected int canAffectCode(){return 0;}
-	protected int canTargetCode(){return CAN_MOBS;}
-	public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
-	private static final String[] triggerStrings = {"CAST","CA","C"};
-	public String[] triggerStrings(){return triggerStrings;}
-	public int classificationCode(){return Ability.ACODE_SPELL;}
-	
-	public boolean maliciousAffect(MOB mob,
-								   Physical target,
-								   int asLevel,
-								   int tickAdjustmentFromStandard,
-								   int additionAffectCheckCode)
-	{
-		boolean truefalse=super.maliciousAffect(mob,target,asLevel,tickAdjustmentFromStandard,additionAffectCheckCode);
-		if(truefalse
-		&&(target!=null)
-		&&(target instanceof MOB)
-		&&(mob!=target)
-		&&(!((MOB)target).isMonster())
-		&&(CMLib.dice().rollPercentage()==1)
-		&&(((MOB)target).charStats().getCurrentClass().baseClass().equals("Mage")))
-		{
-			MOB tmob=(MOB)target;
-			int num=0;
-			for(final Enumeration<Ability> a=tmob.effects();a.hasMoreElements();)
-			{
-				final Ability A=a.nextElement();
-				if((A!=null)
-				&&(A instanceof Spell)
-				&&(A.abstractQuality()==Ability.QUALITY_MALICIOUS))
-				{
-					num++;
-					if((num>5)&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.AUTODISEASE)))
-					{
-						Ability A2=CMClass.getAbility("Disease_Magepox");
-						if((A2!=null)&&(target.fetchEffect(A2.ID())==null))
-							A2.invoke(mob,target,true,asLevel);
-						break;
-					}
-				}
-			}
-		}
-		return truefalse;
-	}
-	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
-	{
-		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
-			return false;
+    public String ID() { return "Spell"; }
+    public String name(){ return "a Spell";}
+    public String displayText(){ return "";}
+    protected int canAffectCode(){return 0;}
+    protected int canTargetCode(){return CAN_MOBS;}
+    public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
+    private static final String[] triggerStrings = {"CAST","CA","C"};
+    public String[] triggerStrings(){return triggerStrings;}
+    public int classificationCode(){return Ability.ACODE_SPELL;}
+    
+    public boolean maliciousAffect(MOB mob,
+                                   Physical target,
+                                   int asLevel,
+                                   int tickAdjustmentFromStandard,
+                                   int additionAffectCheckCode)
+    {
+        boolean truefalse=super.maliciousAffect(mob,target,asLevel,tickAdjustmentFromStandard,additionAffectCheckCode);
+        if(truefalse
+        &&(target!=null)
+        &&(target instanceof MOB)
+        &&(mob!=target)
+        &&(!((MOB)target).isMonster())
+        &&(CMLib.dice().rollPercentage()==1)
+        &&(((MOB)target).charStats().getCurrentClass().baseClass().equals("Mage")))
+        {
+            MOB tmob=(MOB)target;
+            int num=0;
+            for(final Enumeration<Ability> a=tmob.effects();a.hasMoreElements();)
+            {
+                final Ability A=a.nextElement();
+                if((A!=null)
+                &&(A instanceof Spell)
+                &&(A.abstractQuality()==Ability.QUALITY_MALICIOUS))
+                {
+                    num++;
+                    if((num>5)&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.AUTODISEASE)))
+                    {
+                        Ability A2=CMClass.getAbility("Disease_Magepox");
+                        if((A2!=null)&&(target.fetchEffect(A2.ID())==null))
+                            A2.invoke(mob,target,true,asLevel);
+                        break;
+                    }
+                }
+            }
+        }
+        return truefalse;
+    }
+    public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
+    {
+        if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
+            return false;
         if((!auto)&&(mob.isMine(this))&&(mob.location()!=null))
         {
-    		if((!mob.isMonster())
-    		&&(!disregardsArmorCheck(mob))
-    		&&(!CMLib.utensils().armorCheck(mob,CharClass.ARMOR_CLOTH))
-    		&&(CMLib.dice().rollPercentage()<50))
-    		{
-    			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> watch(es) <S-HIS-HER> armor absorb <S-HIS-HER> magical energy!");
-    			return false;
-    		}
+            if((!mob.isMonster())
+            &&(!disregardsArmorCheck(mob))
+            &&(!CMLib.utensils().armorCheck(mob,CharClass.ARMOR_CLOTH))
+            &&(CMLib.dice().rollPercentage()<50))
+            {
+                mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> watch(es) <S-HIS-HER> armor absorb <S-HIS-HER> magical energy!");
+                return false;
+            }
+            if(!CMLib.flags().canConcentrate(mob))
+            {
+                mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> can't seem to concentrate.");
+                return false;
+            }
         }
         return true;
-	}
+    }
 }

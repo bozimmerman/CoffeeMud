@@ -36,334 +36,340 @@ import java.util.*;
 @SuppressWarnings("unchecked")
 public class Skill_Track extends StdSkill
 {
-	public String ID() { return "Skill_Track"; }
-	public String name(){ return "Tracking";}
-	protected String displayText="(Tracking)";
-	public String displayText(){ return displayText;}
-	protected int canAffectCode(){return CAN_MOBS;}
-	protected int canTargetCode(){return CAN_MOBS|CAN_ROOMS;}
-	public int abstractQuality(){return Ability.QUALITY_OK_OTHERS;}
-	private static final String[] triggerStrings = {"TRACKTO"};
-	public String[] triggerStrings(){return triggerStrings;}
-	public int classificationCode(){return Ability.ACODE_SKILL;}
-	public long flags(){return Ability.FLAG_TRACKING;}
-	private Map<String,List<Room>> cachedPaths=new Hashtable<String,List<Room>>();
-	protected int cacheCode=-1;
-	private long tickStatus=0;
-	public long getTickStatus(){return tickStatus;} 
-	public int abilityCode(){return cacheCode;}
-	public void setAbilityCode(int newCode){cacheCode=newCode;}
-	public int usageType(){return USAGE_MOVEMENT;}
+    public String ID() { return "Skill_Track"; }
+    public String name(){ return "Tracking";}
+    protected String displayText="(Tracking)";
+    public String displayText(){ return displayText;}
+    protected int canAffectCode(){return CAN_MOBS;}
+    protected int canTargetCode(){return CAN_MOBS|CAN_ROOMS;}
+    public int abstractQuality(){return Ability.QUALITY_OK_OTHERS;}
+    private static final String[] triggerStrings = {"TRACKTO"};
+    public String[] triggerStrings(){return triggerStrings;}
+    public int classificationCode(){return Ability.ACODE_SKILL;}
+    public long flags(){return Ability.FLAG_TRACKING;}
+    private Map<String,List<Room>> cachedPaths=new Hashtable<String,List<Room>>();
+    protected int cacheCode=-1;
+    private long tickStatus=0;
+    public long getTickStatus(){return tickStatus;} 
+    public int abilityCode(){return cacheCode;}
+    public void setAbilityCode(int newCode){cacheCode=newCode;}
+    public int usageType(){return USAGE_MOVEMENT;}
 
-	protected List<Room> theTrail=null;
-	public int nextDirection=-2;
+    protected List<Room> theTrail=null;
+    public int nextDirection=-2;
 
-	public boolean tick(Tickable ticking, int tickID)
-	{
-		if(!super.tick(ticking,tickID))
-			return false;
-		if(tickID==Tickable.TICKID_MOB)
-		{
-			if(nextDirection==-999)
-				return true;
+    public void affectPhyStats(Physical affectedEnv, PhyStats affectableStats)
+    {
+        affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_NOT_WORK);
+        super.affectPhyStats(affectedEnv, affectableStats);
+    }
+    
+    public boolean tick(Tickable ticking, int tickID)
+    {
+        if(!super.tick(ticking,tickID))
+            return false;
+        if(tickID==Tickable.TICKID_MOB)
+        {
+            if(nextDirection==-999)
+                return true;
 
-			if((theTrail==null)
-			||(affected == null)
-			||(!(affected instanceof MOB)))
-				return false;
+            if((theTrail==null)
+            ||(affected == null)
+            ||(!(affected instanceof MOB)))
+                return false;
 
-			MOB mob=(MOB)affected;
+            MOB mob=(MOB)affected;
 
-			if(nextDirection==999)
-			{
-				mob.tell("The trail seems to pause here.");
-				nextDirection=-2;
-				unInvoke();
-			}
-			else
-			if(nextDirection==-1)
-			{
-				mob.tell("The trail dries up here.");
-				nextDirection=-999;
-				unInvoke();
-			}
-			else
-			if(nextDirection>=0)
-			{
-				mob.tell("The trail seems to continue "+Directions.getDirectionName(nextDirection)+".");
-				if((mob.isMonster())&&(mob.location()!=null))
-				{
-					Room oldRoom=mob.location();
-					Room nextRoom=oldRoom.getRoomInDir(nextDirection);
-					Exit nextExit=oldRoom.getExitInDir(nextDirection);
-					int opDirection=Directions.getOpDirectionCode(nextDirection);
-					if((nextRoom!=null)&&(nextExit!=null))
-					{
-						boolean reclose=false;
-						boolean relock=false;
-						// handle doors!
-						if(nextExit.hasADoor()&&(!nextExit.isOpen()))
-						{
-							if((nextExit.hasALock())&&(nextExit.isLocked()))
-							{
-								CMMsg msg=CMClass.getMsg(mob,nextExit,null,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_OK_VISUAL,null);
-								if(oldRoom.okMessage(mob,msg))
-								{
-									relock=true;
-									msg=CMClass.getMsg(mob,nextExit,null,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_UNLOCK,CMMsg.MSG_OK_VISUAL,"<S-NAME> unlock(s) <T-NAMESELF>.");
-									CMLib.utensils().roomAffectFully(msg,oldRoom,nextDirection);
-								}
-							}
-							CMMsg msg=CMClass.getMsg(mob,nextExit,null,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_OK_VISUAL,null);
-							if(oldRoom.okMessage(mob,msg))
-							{
-								reclose=true;
-								msg=CMClass.getMsg(mob,nextExit,null,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_OPEN,CMMsg.MSG_OK_VISUAL,"<S-NAME> "+nextExit.openWord()+"(s) <T-NAMESELF>.");
-								CMLib.utensils().roomAffectFully(msg,oldRoom,nextDirection);
-							}
-						}
-						if(!nextExit.isOpen())
-							unInvoke();
-						else
-						{
-							int dir=nextDirection;
-							nextDirection=-2;
-							CMLib.tracking().walk(mob,dir,false,false);
-							if(mob.location()==nextRoom)
-							{
-								// backup follower mover for handcuffed followers
-								final LinkedList<MOB> reMoveV=new LinkedList<MOB>();
-								for(Enumeration<Follower> e=mob.followers(); e.hasMoreElements();)
-								{
-									Follower F=e.nextElement();
-									if((F.follower != null)
-									&&(F.follower != mob)
-									&&(F.follower.location()==oldRoom)
-									&&(F.follower.location()!=nextRoom))
-										reMoveV.add(F.follower);
-								}
-								for(MOB M : reMoveV)
-									if(CMLib.flags().isBoundOrHeld(M))
-										CMLib.tracking().walk(M,dir,false,false);
-								if(reclose)
-								{
-									Exit opExit=nextRoom.getExitInDir(opDirection);
-									if((opExit!=null)
-									&&(opExit.hasADoor())
-									&&(opExit.isOpen()))
-									{
-										CMMsg msg=CMClass.getMsg(mob,opExit,null,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_OK_VISUAL,null);
-										if(nextRoom.okMessage(mob,msg))
-										{
-											msg=CMClass.getMsg(mob,opExit,null,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_CLOSE,CMMsg.MSG_OK_VISUAL,"<S-NAME> "+nextExit.closeWord()+"(s) <T-NAMESELF>.");
-											CMLib.utensils().roomAffectFully(msg,nextRoom,opDirection);
-										}
-										if((opExit.hasALock())&&(relock))
-										{
-											msg=CMClass.getMsg(mob,opExit,null,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_OK_VISUAL,null);
-											if(nextRoom.okMessage(mob,msg))
-											{
-												msg=CMClass.getMsg(mob,opExit,null,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_LOCK,CMMsg.MSG_OK_VISUAL,"<S-NAME> lock(s) <T-NAMESELF>.");
-												CMLib.utensils().roomAffectFully(msg,nextRoom,opDirection);
-											}
-										}
-									}
-								}
-							}
-						}
-					}
-					else
-						unInvoke();
-				}
-				else
-					nextDirection=-2;
-			}
+            if(nextDirection==999)
+            {
+                mob.tell("The trail seems to pause here.");
+                nextDirection=-2;
+                unInvoke();
+            }
+            else
+            if(nextDirection==-1)
+            {
+                mob.tell("The trail dries up here.");
+                nextDirection=-999;
+                unInvoke();
+            }
+            else
+            if(nextDirection>=0)
+            {
+                mob.tell("The trail seems to continue "+Directions.getDirectionName(nextDirection)+".");
+                if((mob.isMonster())&&(mob.location()!=null))
+                {
+                    Room oldRoom=mob.location();
+                    Room nextRoom=oldRoom.getRoomInDir(nextDirection);
+                    Exit nextExit=oldRoom.getExitInDir(nextDirection);
+                    int opDirection=Directions.getOpDirectionCode(nextDirection);
+                    if((nextRoom!=null)&&(nextExit!=null))
+                    {
+                        boolean reclose=false;
+                        boolean relock=false;
+                        // handle doors!
+                        if(nextExit.hasADoor()&&(!nextExit.isOpen()))
+                        {
+                            if((nextExit.hasALock())&&(nextExit.isLocked()))
+                            {
+                                CMMsg msg=CMClass.getMsg(mob,nextExit,null,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_OK_VISUAL,null);
+                                if(oldRoom.okMessage(mob,msg))
+                                {
+                                    relock=true;
+                                    msg=CMClass.getMsg(mob,nextExit,null,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_UNLOCK,CMMsg.MSG_OK_VISUAL,"<S-NAME> unlock(s) <T-NAMESELF>.");
+                                    CMLib.utensils().roomAffectFully(msg,oldRoom,nextDirection);
+                                }
+                            }
+                            CMMsg msg=CMClass.getMsg(mob,nextExit,null,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_OK_VISUAL,null);
+                            if(oldRoom.okMessage(mob,msg))
+                            {
+                                reclose=true;
+                                msg=CMClass.getMsg(mob,nextExit,null,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_OPEN,CMMsg.MSG_OK_VISUAL,"<S-NAME> "+nextExit.openWord()+"(s) <T-NAMESELF>.");
+                                CMLib.utensils().roomAffectFully(msg,oldRoom,nextDirection);
+                            }
+                        }
+                        if(!nextExit.isOpen())
+                            unInvoke();
+                        else
+                        {
+                            int dir=nextDirection;
+                            nextDirection=-2;
+                            CMLib.tracking().walk(mob,dir,false,false);
+                            if(mob.location()==nextRoom)
+                            {
+                                // backup follower mover for handcuffed followers
+                                final LinkedList<MOB> reMoveV=new LinkedList<MOB>();
+                                for(Enumeration<Follower> e=mob.followers(); e.hasMoreElements();)
+                                {
+                                    Follower F=e.nextElement();
+                                    if((F.follower != null)
+                                    &&(F.follower != mob)
+                                    &&(F.follower.location()==oldRoom)
+                                    &&(F.follower.location()!=nextRoom))
+                                        reMoveV.add(F.follower);
+                                }
+                                for(MOB M : reMoveV)
+                                    if(CMLib.flags().isBoundOrHeld(M))
+                                        CMLib.tracking().walk(M,dir,false,false);
+                                if(reclose)
+                                {
+                                    Exit opExit=nextRoom.getExitInDir(opDirection);
+                                    if((opExit!=null)
+                                    &&(opExit.hasADoor())
+                                    &&(opExit.isOpen()))
+                                    {
+                                        CMMsg msg=CMClass.getMsg(mob,opExit,null,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_OK_VISUAL,null);
+                                        if(nextRoom.okMessage(mob,msg))
+                                        {
+                                            msg=CMClass.getMsg(mob,opExit,null,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_CLOSE,CMMsg.MSG_OK_VISUAL,"<S-NAME> "+nextExit.closeWord()+"(s) <T-NAMESELF>.");
+                                            CMLib.utensils().roomAffectFully(msg,nextRoom,opDirection);
+                                        }
+                                        if((opExit.hasALock())&&(relock))
+                                        {
+                                            msg=CMClass.getMsg(mob,opExit,null,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_OK_VISUAL,null);
+                                            if(nextRoom.okMessage(mob,msg))
+                                            {
+                                                msg=CMClass.getMsg(mob,opExit,null,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_LOCK,CMMsg.MSG_OK_VISUAL,"<S-NAME> lock(s) <T-NAMESELF>.");
+                                                CMLib.utensils().roomAffectFully(msg,nextRoom,opDirection);
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    else
+                        unInvoke();
+                }
+                else
+                    nextDirection=-2;
+            }
 
-		}
-		return true;
-	}
+        }
+        return true;
+    }
 
-	public void executeMsg(final Environmental myHost, final CMMsg msg)
-	{
-		super.executeMsg(myHost,msg);
+    public void executeMsg(final Environmental myHost, final CMMsg msg)
+    {
+        super.executeMsg(myHost,msg);
 
-		if((affected==null)||(!(affected instanceof MOB)))
-			return;
+        if((affected==null)||(!(affected instanceof MOB)))
+            return;
 
-		MOB mob=(MOB)affected;
-		if((msg.amISource(mob))
-		&&(msg.amITarget(mob.location()))
-		&&(msg.targetMinor()==CMMsg.TYP_LOOK))
-			nextDirection=CMLib.tracking().trackNextDirectionFromHere(theTrail,mob.location(),false);
-	}
+        MOB mob=(MOB)affected;
+        if((msg.amISource(mob))
+        &&(msg.amITarget(mob.location()))
+        &&(msg.targetMinor()==CMMsg.TYP_LOOK))
+            nextDirection=CMLib.tracking().trackNextDirectionFromHere(theTrail,mob.location(),false);
+    }
 
-	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
-	{
-	    tickStatus=Tickable.STATUS_MISC6;
-		if((!CMLib.flags().aliveAwakeMobile(mob,false))||(mob.location()==null)||(!CMLib.flags().isInTheGame(mob,true)))
-		{
-		    tickStatus=Tickable.STATUS_NOT;
-			return false;
-		}
-	    tickStatus=Tickable.STATUS_MISC6+1;
-		Room thisRoom=mob.location();
+    public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
+    {
+        tickStatus=Tickable.STATUS_MISC6;
+        if((!CMLib.flags().aliveAwakeMobile(mob,false))||(mob.location()==null)||(!CMLib.flags().isInTheGame(mob,true)))
+        {
+            tickStatus=Tickable.STATUS_NOT;
+            return false;
+        }
+        tickStatus=Tickable.STATUS_MISC6+1;
+        Room thisRoom=mob.location();
 
-		List<Ability> V=CMLib.flags().flaggedAffects(mob,Ability.FLAG_TRACKING);
-		for(Ability A : V) A.unInvoke();
-		if(V.size()>0)
-		{
-			mob.tell("You stop tracking.");
-			if((commands.size()==0)||(CMParms.combine(commands,0).equalsIgnoreCase("stop"))) 
-			{
-			    tickStatus=Tickable.STATUS_NOT;
-			    return true;
-			}
-		}
+        List<Ability> V=CMLib.flags().flaggedAffects(mob,Ability.FLAG_TRACKING);
+        for(Ability A : V) A.unInvoke();
+        if(V.size()>0)
+        {
+            mob.tell("You stop tracking.");
+            if((commands.size()==0)||(CMParms.combine(commands,0).equalsIgnoreCase("stop"))) 
+            {
+                tickStatus=Tickable.STATUS_NOT;
+                return true;
+            }
+        }
 
-	    tickStatus=Tickable.STATUS_MISC6+2;
-		theTrail=null;
-		nextDirection=-2;
+        tickStatus=Tickable.STATUS_MISC6+2;
+        theTrail=null;
+        nextDirection=-2;
 
-		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
-		{
-		    tickStatus=Tickable.STATUS_NOT;
-			return false;
-		}
+        if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
+        {
+            tickStatus=Tickable.STATUS_NOT;
+            return false;
+        }
 
-	    tickStatus=Tickable.STATUS_MISC6+3;
-	    int radius=50;
-	    boolean allowAir=true;
-	    boolean allowWater=true;
-	    if((commands.size()>1)
-	    &&(((String)commands.lastElement()).toUpperCase().startsWith("RADIUS="))
-	    &&(CMath.isInteger(((String)commands.lastElement()).substring(7))))
-	    {
-	        radius=CMath.s_int(((String)commands.lastElement()).substring(7));
-	        commands.removeElementAt(commands.size()-1);
-	    }
-	    if((commands.size()>1)&&(((String)commands.lastElement()).equalsIgnoreCase("LANDONLY")))
-	    {
-	        allowAir=false;
-	        allowWater=false;
-	        commands.removeElementAt(commands.size()-1);
-	    }
-	    if((commands.size()>1)&&(((String)commands.lastElement()).equalsIgnoreCase("NOAIR")))
-	    {
-	        allowAir=false;
-	        commands.removeElementAt(commands.size()-1);
-	    }
-	    if((commands.size()>1)&&(((String)commands.lastElement()).equalsIgnoreCase("NOWATER")))
-	    {
-	        allowWater=false;
-	        commands.removeElementAt(commands.size()-1);
-	    }
-	    
-		String mobName=CMParms.combine(commands,0);
-		if((givenTarget==null)&&(mobName.length()==0))
-		{
-			mob.tell("Track whom?");
-		    tickStatus=Tickable.STATUS_NOT;
-			return false;
-		}
+        tickStatus=Tickable.STATUS_MISC6+3;
+        int radius=50;
+        boolean allowAir=true;
+        boolean allowWater=true;
+        if((commands.size()>1)
+        &&(((String)commands.lastElement()).toUpperCase().startsWith("RADIUS="))
+        &&(CMath.isInteger(((String)commands.lastElement()).substring(7))))
+        {
+            radius=CMath.s_int(((String)commands.lastElement()).substring(7));
+            commands.removeElementAt(commands.size()-1);
+        }
+        if((commands.size()>1)&&(((String)commands.lastElement()).equalsIgnoreCase("LANDONLY")))
+        {
+            allowAir=false;
+            allowWater=false;
+            commands.removeElementAt(commands.size()-1);
+        }
+        if((commands.size()>1)&&(((String)commands.lastElement()).equalsIgnoreCase("NOAIR")))
+        {
+            allowAir=false;
+            commands.removeElementAt(commands.size()-1);
+        }
+        if((commands.size()>1)&&(((String)commands.lastElement()).equalsIgnoreCase("NOWATER")))
+        {
+            allowWater=false;
+            commands.removeElementAt(commands.size()-1);
+        }
+        
+        String mobName=CMParms.combine(commands,0);
+        if((givenTarget==null)&&(mobName.length()==0))
+        {
+            mob.tell("Track whom?");
+            tickStatus=Tickable.STATUS_NOT;
+            return false;
+        }
 
-		if(givenTarget==null)
-			givenTarget=CMLib.map().getRoom(mobName);
+        if(givenTarget==null)
+            givenTarget=CMLib.map().getRoom(mobName);
 
-		if(givenTarget==null)
-			givenTarget=CMLib.map().getArea(mobName);
+        if(givenTarget==null)
+            givenTarget=CMLib.map().getArea(mobName);
 
-	    tickStatus=Tickable.STATUS_MISC6+4;
-		if((givenTarget==null)
-		&&(thisRoom.fetchInhabitant(mobName)!=null))
-		{
-			mob.tell("Try 'look'.");
-		    tickStatus=Tickable.STATUS_NOT;
-			return false;
-		}
+        tickStatus=Tickable.STATUS_MISC6+4;
+        if((givenTarget==null)
+        &&(thisRoom.fetchInhabitant(mobName)!=null))
+        {
+            mob.tell("Try 'look'.");
+            tickStatus=Tickable.STATUS_NOT;
+            return false;
+        }
 
-		Vector rooms=new Vector();
-		if(givenTarget instanceof Area)
-			rooms.addElement(((Area)givenTarget).getRandomMetroRoom());
-		else
-		if(givenTarget instanceof Room)
-			rooms.addElement(givenTarget);
-		else
-		if((givenTarget instanceof MOB)&&(((MOB)givenTarget).location()!=null))
-			rooms.addElement(((MOB)givenTarget).location());
-		else
-		if(mobName.length()>0)
-		{
-			Room R=CMLib.map().getRoom(mobName);
-			if(R!=null) rooms.addElement(R);
-		}
+        Vector rooms=new Vector();
+        if(givenTarget instanceof Area)
+            rooms.addElement(((Area)givenTarget).getRandomMetroRoom());
+        else
+        if(givenTarget instanceof Room)
+            rooms.addElement(givenTarget);
+        else
+        if((givenTarget instanceof MOB)&&(((MOB)givenTarget).location()!=null))
+            rooms.addElement(((MOB)givenTarget).location());
+        else
+        if(mobName.length()>0)
+        {
+            Room R=CMLib.map().getRoom(mobName);
+            if(R!=null) rooms.addElement(R);
+        }
 
-		TrackingLibrary.TrackingFlags flags=new TrackingLibrary.TrackingFlags();
-		if(!(allowAir||allowWater)) flags.plus(TrackingLibrary.TrackingFlag.NOEMPTYGRIDS);
-		if(!allowAir) flags.plus(TrackingLibrary.TrackingFlag.NOAIR);
-		if(!allowWater) flags.plus(TrackingLibrary.TrackingFlag.NOWATER);
-	    tickStatus=Tickable.STATUS_MISC6+5;
-		if(rooms.size()<=0)
-		{
-		    try
-		    {
-		    	List<Room> checkSet=CMLib.tracking().getRadiantRooms(thisRoom,flags,radius);
-				for(Iterator<Room> r=checkSet.iterator();r.hasNext();)
-				{
-					Room R=CMLib.map().getRoom(r.next());
-					if(R.fetchInhabitant(mobName)!=null)
-						rooms.addElement(R);
-				}
-		    }catch(NoSuchElementException nse){}
-		}
-	    tickStatus=Tickable.STATUS_MISC6+6;
-		
-	    tickStatus=Tickable.STATUS_MISC6+7;
-		boolean success=proficiencyCheck(mob,0,auto);
-		if(rooms.size()>0)
-		{
-			theTrail=null;
-		    tickStatus=Tickable.STATUS_MISC6+8;
-			if((cacheCode==1)&&(rooms.size()==1))
-				theTrail=(List<Room>)cachedPaths.get(CMLib.map().getExtendedRoomID(thisRoom)+"->"+CMLib.map().getExtendedRoomID((Room)rooms.firstElement()));
-		    tickStatus=Tickable.STATUS_MISC6+9;
-			if(theTrail==null)
-				theTrail=CMLib.tracking().findBastardTheBestWay(thisRoom,rooms,flags,radius);
-		    tickStatus=Tickable.STATUS_MISC6+10;
-			if((cacheCode==1)&&(rooms.size()==1)&&(theTrail!=null))
-				cachedPaths.put(CMLib.map().getExtendedRoomID(thisRoom)+"->"+CMLib.map().getExtendedRoomID((Room)rooms.firstElement()),theTrail);
-		}
+        TrackingLibrary.TrackingFlags flags=new TrackingLibrary.TrackingFlags();
+        if(!(allowAir||allowWater)) flags.plus(TrackingLibrary.TrackingFlag.NOEMPTYGRIDS);
+        if(!allowAir) flags.plus(TrackingLibrary.TrackingFlag.NOAIR);
+        if(!allowWater) flags.plus(TrackingLibrary.TrackingFlag.NOWATER);
+        tickStatus=Tickable.STATUS_MISC6+5;
+        if(rooms.size()<=0)
+        {
+            try
+            {
+                List<Room> checkSet=CMLib.tracking().getRadiantRooms(thisRoom,flags,radius);
+                for(Iterator<Room> r=checkSet.iterator();r.hasNext();)
+                {
+                    Room R=CMLib.map().getRoom(r.next());
+                    if(R.fetchInhabitant(mobName)!=null)
+                        rooms.addElement(R);
+                }
+            }catch(NoSuchElementException nse){}
+        }
+        tickStatus=Tickable.STATUS_MISC6+6;
+        
+        tickStatus=Tickable.STATUS_MISC6+7;
+        boolean success=proficiencyCheck(mob,0,auto);
+        if(rooms.size()>0)
+        {
+            theTrail=null;
+            tickStatus=Tickable.STATUS_MISC6+8;
+            if((cacheCode==1)&&(rooms.size()==1))
+                theTrail=(List<Room>)cachedPaths.get(CMLib.map().getExtendedRoomID(thisRoom)+"->"+CMLib.map().getExtendedRoomID((Room)rooms.firstElement()));
+            tickStatus=Tickable.STATUS_MISC6+9;
+            if(theTrail==null)
+                theTrail=CMLib.tracking().findBastardTheBestWay(thisRoom,rooms,flags,radius);
+            tickStatus=Tickable.STATUS_MISC6+10;
+            if((cacheCode==1)&&(rooms.size()==1)&&(theTrail!=null))
+                cachedPaths.put(CMLib.map().getExtendedRoomID(thisRoom)+"->"+CMLib.map().getExtendedRoomID((Room)rooms.firstElement()),theTrail);
+        }
 
-	    tickStatus=Tickable.STATUS_MISC6+11;
-		if((success)&&(theTrail!=null))
-		{
-			theTrail.add(thisRoom);
+        tickStatus=Tickable.STATUS_MISC6+11;
+        if((success)&&(theTrail!=null))
+        {
+            theTrail.add(thisRoom);
 
-			// it worked, so build a copy of this ability,
-			// and add it to the affects list of the
-			// affected MOB.  Then tell everyone else
-			// what happened.
-			CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MSG_QUIETMOVEMENT,mob.isMonster()?null:"<S-NAME> begin(s) to track.");
-			if(thisRoom.okMessage(mob,msg))
-			{
-			    tickStatus=Tickable.STATUS_MISC6+12;
-				thisRoom.send(mob,msg);
-				invoker=mob;
-				Skill_Track newOne=(Skill_Track)copyOf();
-				if(mob.fetchEffect(newOne.ID())==null)
-					mob.addEffect(newOne);
-				mob.recoverPhyStats();
-			    tickStatus=Tickable.STATUS_MISC6+13;
-				newOne.nextDirection=CMLib.tracking().trackNextDirectionFromHere(theTrail,thisRoom,false);
-			}
-		    tickStatus=Tickable.STATUS_MISC6+14;
-		}
-		else
-		{
-		    tickStatus=Tickable.STATUS_NOT;
-			return beneficialVisualFizzle(mob,null,"<S-NAME> attempt(s) to track, but can't find the trail.");
-		}
-	    tickStatus=Tickable.STATUS_NOT;
-		// return whether it worked
-		return success;
-	}
+            // it worked, so build a copy of this ability,
+            // and add it to the affects list of the
+            // affected MOB.  Then tell everyone else
+            // what happened.
+            CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MSG_QUIETMOVEMENT,mob.isMonster()?null:"<S-NAME> begin(s) to track.");
+            if(thisRoom.okMessage(mob,msg))
+            {
+                tickStatus=Tickable.STATUS_MISC6+12;
+                thisRoom.send(mob,msg);
+                invoker=mob;
+                Skill_Track newOne=(Skill_Track)copyOf();
+                if(mob.fetchEffect(newOne.ID())==null)
+                    mob.addEffect(newOne);
+                mob.recoverPhyStats();
+                tickStatus=Tickable.STATUS_MISC6+13;
+                newOne.nextDirection=CMLib.tracking().trackNextDirectionFromHere(theTrail,thisRoom,false);
+            }
+            tickStatus=Tickable.STATUS_MISC6+14;
+        }
+        else
+        {
+            tickStatus=Tickable.STATUS_NOT;
+            return beneficialVisualFizzle(mob,null,"<S-NAME> attempt(s) to track, but can't find the trail.");
+        }
+        tickStatus=Tickable.STATUS_NOT;
+        // return whether it worked
+        return success;
+    }
 }

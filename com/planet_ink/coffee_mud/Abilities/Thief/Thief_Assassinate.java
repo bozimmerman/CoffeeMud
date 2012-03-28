@@ -35,150 +35,156 @@ import java.util.*;
 @SuppressWarnings("unchecked")
 public class Thief_Assassinate extends ThiefSkill
 {
-	public String ID() { return "Thief_Assassinate"; }
-	public String name(){ return "Assassinate";}
-	protected String displayText="(Tracking)";
-	public String displayText(){ return displayText;}
-	protected int canAffectCode(){return CAN_MOBS;}
-	protected int canTargetCode(){return CAN_MOBS;}
-	public int abstractQuality(){return Ability.QUALITY_OK_OTHERS;}
-	private static final String[] triggerStrings = {"ASSASSINATE"};
-	public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
-	public String[] triggerStrings(){return triggerStrings;}
-	public long flags(){return Ability.FLAG_TRACKING;}
+    public String ID() { return "Thief_Assassinate"; }
+    public String name(){ return "Assassinate";}
+    protected String displayText="(Tracking)";
+    public String displayText(){ return displayText;}
+    protected int canAffectCode(){return CAN_MOBS;}
+    protected int canTargetCode(){return CAN_MOBS;}
+    public int abstractQuality(){return Ability.QUALITY_OK_OTHERS;}
+    private static final String[] triggerStrings = {"ASSASSINATE"};
+    public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
+    public String[] triggerStrings(){return triggerStrings;}
+    public long flags(){return Ability.FLAG_TRACKING;}
     public int classificationCode() {   return Ability.ACODE_SKILL|Ability.DOMAIN_DIRTYFIGHTING; }
-	protected List<Room> theTrail=null;
-	public int nextDirection=-2;
-	protected MOB tracking=null;
+    protected List<Room> theTrail=null;
+    public int nextDirection=-2;
+    protected MOB tracking=null;
 
-	public boolean tick(Tickable ticking, int tickID)
-	{
-		if(!super.tick(ticking,tickID))
-			return false;
-		if(tickID==Tickable.TICKID_MOB)
-		{
-			if(nextDirection==-999)
-				return true;
+    public boolean tick(Tickable ticking, int tickID)
+    {
+        if(!super.tick(ticking,tickID))
+            return false;
+        if(tickID==Tickable.TICKID_MOB)
+        {
+            if(nextDirection==-999)
+                return true;
 
-			if((theTrail==null)
-			||(affected == null)
-			||(!(affected instanceof MOB)))
-				return false;
+            if((theTrail==null)
+            ||(affected == null)
+            ||(!(affected instanceof MOB)))
+                return false;
 
-			MOB mob=(MOB)affected;
-			if((mob.isInCombat())
+            MOB mob=(MOB)affected;
+            if((mob.isInCombat())
             &&(mob.isMonster())
             &&(!CMLib.flags().isMobile(mob)))
                 return true;
             
-			Room room=mob.location();
-			if(room==null) return false;
-			if(room.isInhabitant(tracking))
-			{
-				if(CMLib.flags().isHidden(mob))
-				{
-					Ability A=mob.fetchAbility("Thief_BackStab");
-					if(A!=null)
-					{
-						A.setAbilityCode(5);
-						A.invoke(mob,tracking,false,0);
-						A.setAbilityCode(0);
-					}
-				}
-				else
-					CMLib.combat().postAttack(mob,tracking,mob.fetchWieldedItem());
+            Room room=mob.location();
+            if(room==null) return false;
+            if(room.isInhabitant(tracking))
+            {
+                if(CMLib.flags().isHidden(mob))
+                {
+                    Ability A=mob.fetchAbility("Thief_BackStab");
+                    if(A!=null)
+                    {
+                        A.setAbilityCode(5);
+                        A.invoke(mob,tracking,false,0);
+                        A.setAbilityCode(0);
+                    }
+                }
+                else
+                    CMLib.combat().postAttack(mob,tracking,mob.fetchWieldedItem());
                 if((!mob.isMonster())||(CMLib.flags().isMobile(mob)))
                     return false;
-				return true;
-			}
+                return true;
+            }
 
-			for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
-			{
-				Room nextRoom=room.getRoomInDir(d);
-				Exit nextExit=room.getExitInDir(d);
-				if((nextRoom!=null)
-				   &&(nextExit!=null)
-				   &&(nextExit.isOpen())
-				   &&(nextRoom.isInhabitant(tracking)))
-				{
-					nextDirection=d; break;
-				}
-			}
+            for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
+            {
+                Room nextRoom=room.getRoomInDir(d);
+                Exit nextExit=room.getExitInDir(d);
+                if((nextRoom!=null)
+                   &&(nextExit!=null)
+                   &&(nextExit.isOpen())
+                   &&(nextRoom.isInhabitant(tracking)))
+                {
+                    nextDirection=d; break;
+                }
+            }
 
-			if(nextDirection==999)
-			{
-				mob.tell("The trail seems to pause here.");
-				nextDirection=-2;
-				unInvoke();
-			}
-			else
-			if(nextDirection==-1)
-			{
-				mob.tell("The trail dries up here.");
-				nextDirection=-999;
-				unInvoke();
-			}
-			else
-			if(nextDirection>=0)
-			{
-				mob.tell("The trail seems to continue "+Directions.getDirectionName(nextDirection)+".");
-				if(mob.isMonster())
-				{
-					Room nextRoom=room.getRoomInDir(nextDirection);
-					if((nextRoom!=null)&&(nextRoom.getArea()==room.getArea()))
-					{
-						if(!nextRoom.isInhabitant(tracking))
-						{
-							Ability A=mob.fetchAbility("Thief_Sneak");
-							if(A!=null)
-							{
-								int dir=nextDirection;
-								nextDirection=-2;
-								Vector V=new Vector();
-								V.addElement(Directions.getDirectionName(dir));
-								A.invoke(mob,V,null,false,0);
-							}
-							else
-							{
-								int dir=nextDirection;
-								nextDirection=-2;
-								CMLib.tracking().walk(mob,dir,false,false);
-							}
-						}
-						else
-						{
-							int dir=nextDirection;
-							nextDirection=-2;
-							CMLib.tracking().walk(mob,dir,false,false);
-						}
-					}
-					else
+            if(nextDirection==999)
+            {
+                mob.tell("The trail seems to pause here.");
+                nextDirection=-2;
+                unInvoke();
+            }
+            else
+            if(nextDirection==-1)
+            {
+                mob.tell("The trail dries up here.");
+                nextDirection=-999;
+                unInvoke();
+            }
+            else
+            if(nextDirection>=0)
+            {
+                mob.tell("The trail seems to continue "+Directions.getDirectionName(nextDirection)+".");
+                if(mob.isMonster())
+                {
+                    Room nextRoom=room.getRoomInDir(nextDirection);
+                    if((nextRoom!=null)&&(nextRoom.getArea()==room.getArea()))
                     {
-						unInvoke();
+                        if(!nextRoom.isInhabitant(tracking))
+                        {
+                            Ability A=mob.fetchAbility("Thief_Sneak");
+                            if(A!=null)
+                            {
+                                int dir=nextDirection;
+                                nextDirection=-2;
+                                Vector V=new Vector();
+                                V.addElement(Directions.getDirectionName(dir));
+                                A.invoke(mob,V,null,false,0);
+                            }
+                            else
+                            {
+                                int dir=nextDirection;
+                                nextDirection=-2;
+                                CMLib.tracking().walk(mob,dir,false,false);
+                            }
+                        }
+                        else
+                        {
+                            int dir=nextDirection;
+                            nextDirection=-2;
+                            CMLib.tracking().walk(mob,dir,false,false);
+                        }
                     }
-				}
-				else
-					nextDirection=-2;
-			}
+                    else
+                    {
+                        unInvoke();
+                    }
+                }
+                else
+                    nextDirection=-2;
+            }
 
-		}
-		return true;
-	}
+        }
+        return true;
+    }
 
-	public void executeMsg(final Environmental myHost, final CMMsg msg)
-	{
-		super.executeMsg(myHost,msg);
+    public void affectPhyStats(Physical affectedEnv, PhyStats affectableStats)
+    {
+        affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_NOT_WORK);
+        super.affectPhyStats(affectedEnv, affectableStats);
+    }
 
-		if((affected==null)||(!(affected instanceof MOB)))
-			return;
+    public void executeMsg(final Environmental myHost, final CMMsg msg)
+    {
+        super.executeMsg(myHost,msg);
 
-		MOB mob=(MOB)affected;
-		if((msg.amISource(mob))
-		&&(msg.amITarget(mob.location()))
-		&&(CMLib.flags().canBeSeenBy(mob.location(),mob))
-		&&(msg.targetMinor()==CMMsg.TYP_LOOK))
-			nextDirection=CMLib.tracking().trackNextDirectionFromHere(theTrail,mob.location(),true);
-	}
+        if((affected==null)||(!(affected instanceof MOB)))
+            return;
+
+        MOB mob=(MOB)affected;
+        if((msg.amISource(mob))
+        &&(msg.amITarget(mob.location()))
+        &&(CMLib.flags().canBeSeenBy(mob.location(),mob))
+        &&(msg.targetMinor()==CMMsg.TYP_LOOK))
+            nextDirection=CMLib.tracking().trackNextDirectionFromHere(theTrail,mob.location(),true);
+    }
 
     public void unInvoke()
     {
@@ -193,139 +199,139 @@ public class Thief_Assassinate extends ThiefSkill
             CMLib.tracking().wanderAway(mob,false,true);
     }
     
-	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
-	{
-		if(!CMLib.flags().aliveAwakeMobileUnbound(mob,false))
-			return false;
+    public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
+    {
+        if(!CMLib.flags().aliveAwakeMobileUnbound(mob,false))
+            return false;
 
-		if((!auto)&&(!CMLib.flags().canBeSeenBy(mob.location(),mob)))
-		{
-			mob.tell("You can't see anything to track!");
-			return false;
-		}
+        if((!auto)&&(!CMLib.flags().canBeSeenBy(mob.location(),mob)))
+        {
+            mob.tell("You can't see anything to track!");
+            return false;
+        }
 
-		List<Ability> V=CMLib.flags().flaggedAffects(mob,Ability.FLAG_TRACKING);
-		for(Ability A : V) A.unInvoke();
-		if(V.size()>0)
-		{
-			mob.tell("You stop tracking.");
-			if(commands.size()==0) return true;
-		}
+        List<Ability> V=CMLib.flags().flaggedAffects(mob,Ability.FLAG_TRACKING);
+        for(Ability A : V) A.unInvoke();
+        if(V.size()>0)
+        {
+            mob.tell("You stop tracking.");
+            if(commands.size()==0) return true;
+        }
 
-		theTrail=null;
-		nextDirection=-2;
+        theTrail=null;
+        nextDirection=-2;
 
-		tracking=null;
-		String mobName="";
-		if((!mob.isMonster())&&(mob.fetchEffect("Thief_Mark")!=null))
-		{
-			Thief_Mark A=(Thief_Mark)mob.fetchEffect("Thief_Mark");
-			if(A!=null) tracking=A.mark;
-			if(tracking==null)
-			{
-				mob.tell("You'll need to Mark someone first.");
-				return false;
-			}
-		}
-		else
-		{
-			if(givenTarget!=null)
-				mobName=givenTarget.name();
-			else
-				mobName=CMParms.combine(commands,0);
+        tracking=null;
+        String mobName="";
+        if((!mob.isMonster())&&(mob.fetchEffect("Thief_Mark")!=null))
+        {
+            Thief_Mark A=(Thief_Mark)mob.fetchEffect("Thief_Mark");
+            if(A!=null) tracking=A.mark;
+            if(tracking==null)
+            {
+                mob.tell("You'll need to Mark someone first.");
+                return false;
+            }
+        }
+        else
+        {
+            if(givenTarget!=null)
+                mobName=givenTarget.name();
+            else
+                mobName=CMParms.combine(commands,0);
             if(givenTarget instanceof MOB)
                 tracking=(MOB)givenTarget;
-			if(mobName.length()==0)
-			{
-				mob.tell("Assassinate whom?");
-				return false;
-			}
-			MOB M=((givenTarget instanceof MOB)&&(((MOB)givenTarget).location()==mob.location()))?
+            if(mobName.length()==0)
+            {
+                mob.tell("Assassinate whom?");
+                return false;
+            }
+            MOB M=((givenTarget instanceof MOB)&&(((MOB)givenTarget).location()==mob.location()))?
                     (MOB)givenTarget:
                     mob.location().fetchInhabitant(mobName);
-			if(M!=null)
-			{
-				CMLib.combat().postAttack(mob,M,mob.fetchWieldedItem());
-				return false;
-			}
-		}
+            if(M!=null)
+            {
+                CMLib.combat().postAttack(mob,M,mob.fetchWieldedItem());
+                return false;
+            }
+        }
 
-		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
-			return false;
+        if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
+            return false;
 
 
-		boolean success=proficiencyCheck(mob,0,auto);
+        boolean success=proficiencyCheck(mob,0,auto);
 
-		Vector rooms=new Vector();
-		if(tracking!=null)
-		{
-			Room R=tracking.location();
-			if((R!=null)&&(R.isInhabitant(tracking))&&(CMLib.flags().canAccess(mob,R)))
-				rooms.addElement(R);
-		}
-		else
-		if(mobName.length()>0)
-		{
-		    try
-		    {
-				TrackingLibrary.TrackingFlags flags=new TrackingLibrary.TrackingFlags();
-				if(givenTarget!=null&&auto&&mob.isMonster())
-					flags.plus(TrackingLibrary.TrackingFlag.AREAONLY);
-				flags.plus(TrackingLibrary.TrackingFlag.OPENONLY)
-					 .plus(TrackingLibrary.TrackingFlag.NOEMPTYGRIDS)
-					 .plus(TrackingLibrary.TrackingFlag.NOAIR)
-					 .plus(TrackingLibrary.TrackingFlag.NOWATER);
-				List<Room> checkSet=CMLib.tracking().getRadiantRooms(mob.location(),flags,50+(2*getXLEVELLevel(mob)));
-				for(Iterator<Room> r=checkSet.iterator();r.hasNext();)
-				{
-					Room R=CMLib.map().getRoom(r.next());
-					if(R.fetchInhabitant(mobName)!=null)
-						rooms.addElement(R);
-				}
-		    }catch(NoSuchElementException nse){}
-		}
+        Vector rooms=new Vector();
+        if(tracking!=null)
+        {
+            Room R=tracking.location();
+            if((R!=null)&&(R.isInhabitant(tracking))&&(CMLib.flags().canAccess(mob,R)))
+                rooms.addElement(R);
+        }
+        else
+        if(mobName.length()>0)
+        {
+            try
+            {
+                TrackingLibrary.TrackingFlags flags=new TrackingLibrary.TrackingFlags();
+                if(givenTarget!=null&&auto&&mob.isMonster())
+                    flags.plus(TrackingLibrary.TrackingFlag.AREAONLY);
+                flags.plus(TrackingLibrary.TrackingFlag.OPENONLY)
+                     .plus(TrackingLibrary.TrackingFlag.NOEMPTYGRIDS)
+                     .plus(TrackingLibrary.TrackingFlag.NOAIR)
+                     .plus(TrackingLibrary.TrackingFlag.NOWATER);
+                List<Room> checkSet=CMLib.tracking().getRadiantRooms(mob.location(),flags,50+(2*getXLEVELLevel(mob)));
+                for(Iterator<Room> r=checkSet.iterator();r.hasNext();)
+                {
+                    Room R=CMLib.map().getRoom(r.next());
+                    if(R.fetchInhabitant(mobName)!=null)
+                        rooms.addElement(R);
+                }
+            }catch(NoSuchElementException nse){}
+        }
 
-		TrackingLibrary.TrackingFlags flags=new TrackingLibrary.TrackingFlags();
-		flags.plus(TrackingLibrary.TrackingFlag.OPENONLY)
-			 .plus(TrackingLibrary.TrackingFlag.NOEMPTYGRIDS)
-			 .plus(TrackingLibrary.TrackingFlag.NOAIR)
-			 .plus(TrackingLibrary.TrackingFlag.NOWATER);
-		if(givenTarget!=null&&auto&&mob.isMonster())
-			flags.plus(TrackingLibrary.TrackingFlag.AREAONLY);
-		if(rooms.size()>0)
-			theTrail=CMLib.tracking().findBastardTheBestWay(mob.location(),rooms,flags,50+(2*getXLEVELLevel(mob)));
+        TrackingLibrary.TrackingFlags flags=new TrackingLibrary.TrackingFlags();
+        flags.plus(TrackingLibrary.TrackingFlag.OPENONLY)
+             .plus(TrackingLibrary.TrackingFlag.NOEMPTYGRIDS)
+             .plus(TrackingLibrary.TrackingFlag.NOAIR)
+             .plus(TrackingLibrary.TrackingFlag.NOWATER);
+        if(givenTarget!=null&&auto&&mob.isMonster())
+            flags.plus(TrackingLibrary.TrackingFlag.AREAONLY);
+        if(rooms.size()>0)
+            theTrail=CMLib.tracking().findBastardTheBestWay(mob.location(),rooms,flags,50+(2*getXLEVELLevel(mob)));
 
-		if((tracking==null)&&(theTrail!=null)&&(theTrail.size()>0))
-			tracking=((Room)theTrail.get(0)).fetchInhabitant(mobName);
+        if((tracking==null)&&(theTrail!=null)&&(theTrail.size()>0))
+            tracking=((Room)theTrail.get(0)).fetchInhabitant(mobName);
 
-		if((success)&&(theTrail!=null)&&(tracking!=null))
-		{
-			theTrail.add(mob.location());
+        if((success)&&(theTrail!=null)&&(tracking!=null))
+        {
+            theTrail.add(mob.location());
 
-			// it worked, so build a copy of this ability,
-			// and add it to the affects list of the
-			// affected MOB.  Then tell everyone else
-			// what happened.
-			CMMsg msg=CMClass.getMsg(mob,tracking,this,CMMsg.MSG_THIEF_ACT,mob.isMonster()?null:"<S-NAME> begin(s) to track <T-NAMESELF> for assassination.",CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null);
-			if((mob.location().okMessage(mob,msg))
+            // it worked, so build a copy of this ability,
+            // and add it to the affects list of the
+            // affected MOB.  Then tell everyone else
+            // what happened.
+            CMMsg msg=CMClass.getMsg(mob,tracking,this,CMMsg.MSG_THIEF_ACT,mob.isMonster()?null:"<S-NAME> begin(s) to track <T-NAMESELF> for assassination.",CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null);
+            if((mob.location().okMessage(mob,msg))
             &&(tracking.okMessage(tracking,msg)))
-			{
-				mob.location().send(mob,msg);
-				tracking.executeMsg(tracking,msg);
-				invoker=mob;
-				displayText="(tracking "+tracking.name()+")";
-				Thief_Assassinate newOne=(Thief_Assassinate)this.copyOf();
-				if(mob.fetchEffect(newOne.ID())==null)
-					mob.addEffect(newOne);
-				mob.recoverPhyStats();
-				newOne.nextDirection=CMLib.tracking().trackNextDirectionFromHere(theTrail,mob.location(),true);
-			}
-		}
-		else
-			return beneficialVisualFizzle(mob,tracking,"<S-NAME> attempt(s) to track <T-NAMESELF> for assassination, but fail(s).");
+            {
+                mob.location().send(mob,msg);
+                tracking.executeMsg(tracking,msg);
+                invoker=mob;
+                displayText="(tracking "+tracking.name()+")";
+                Thief_Assassinate newOne=(Thief_Assassinate)this.copyOf();
+                if(mob.fetchEffect(newOne.ID())==null)
+                    mob.addEffect(newOne);
+                mob.recoverPhyStats();
+                newOne.nextDirection=CMLib.tracking().trackNextDirectionFromHere(theTrail,mob.location(),true);
+            }
+        }
+        else
+            return beneficialVisualFizzle(mob,tracking,"<S-NAME> attempt(s) to track <T-NAMESELF> for assassination, but fail(s).");
 
 
-		// return whether it worked
-		return success;
-	}
+        // return whether it worked
+        return success;
+    }
 }

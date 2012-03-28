@@ -55,6 +55,8 @@ public interface CMFlagLibrary extends CMLibrary
     public boolean canSpeak(MOB M);
     public boolean canBreathe(MOB M);
     public boolean canSeeMetal(MOB M);
+    public boolean canWorkOnSomething(MOB M);
+    public boolean canConcentrate(MOB M);
     public boolean isReadable(Item I);
     public boolean isGettable(Item I);
     public boolean isDroppable(Item I);
@@ -73,6 +75,7 @@ public interface CMFlagLibrary extends CMLibrary
     public boolean isInvisible(Physical P);
     public boolean isEvil(Physical P);
     public boolean isATrackingMonster(MOB M);
+    public boolean isTracking(MOB M);
     public boolean isGood(Physical P);
     public String getAlignmentName(Environmental E);
     public boolean isNeutral(Physical P);
@@ -89,9 +92,9 @@ public interface CMFlagLibrary extends CMLibrary
     public boolean isSwimming(Physical P);
     public boolean isSwimmingInWater(Physical P);
     public boolean isFalling(Physical P);
-	public boolean isBusy(Physical P);
-	public boolean canBeHeardMovingBy(Physical heard , MOB hearer);
-	public boolean canBeHeardSpeakingBy(Physical heard , MOB hearer);
+    public boolean isBusy(Physical P);
+    public boolean canBeHeardMovingBy(Physical heard , MOB hearer);
+    public boolean canBeHeardSpeakingBy(Physical heard , MOB hearer);
     public boolean canSenseMoving(Physical sensed, MOB sensor);
     public boolean canSenseEnteringLeaving(Physical sensed, MOB sensor);
     public boolean aliveAwakeMobileUnbound(MOB mob, boolean quiet);
@@ -112,8 +115,8 @@ public interface CMFlagLibrary extends CMLibrary
     public boolean isMobile(PhysicalAgent P);
     public boolean isAggressiveTo(MOB M, MOB toM);
     public boolean isPossiblyAggressive(MOB M);
-	public boolean isChild(Environmental E);
-	public boolean isBaby(Environmental E);
+    public boolean isChild(Environmental E);
+    public boolean isBaby(Environmental E);
     public List<Behavior> flaggedBehaviors(PhysicalAgent P, long flag);
     public List<Ability> flaggedAnyAffects(Physical P, long flag);
     public List<Ability> flaggedAffects(Physical P, long flag);
@@ -134,14 +137,14 @@ public interface CMFlagLibrary extends CMLibrary
     public int getSensesCode(String name);
     public String getAbilityType(Ability A);
     public String getAbilityDomain(Ability A);
-	public String describeSenses(MOB mob);
-	public String describeDisposition(MOB mob);
+    public String describeSenses(MOB mob);
+    public String describeDisposition(MOB mob);
     public int getAbilityType(String name);
     public int getAbilityDomain(String name);
-	public int getDetectScore(MOB seer);
-	public int getHideScore(Physical seen);
+    public int getDetectScore(MOB seer);
+    public int getHideScore(Physical seen);
     public boolean canActAtAll(Tickable affecting);
     public boolean canFreelyBehaveNormal(Tickable affecting);
-	public boolean hasAControlledFollower(MOB invoker, Ability A);
-	public boolean isAControlledFollower(MOB invoker, MOB mob, Ability A);
+    public boolean hasAControlledFollower(MOB invoker, Ability A);
+    public boolean isAControlledFollower(MOB invoker, MOB mob, Ability A);
 }

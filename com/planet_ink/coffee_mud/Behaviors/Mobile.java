@@ -214,20 +214,12 @@ public class Mobile extends ActiveTicker implements MobileBehavior
                 tickStatus=Tickable.STATUS_MISC2+6;
             }
             tickStatus=Tickable.STATUS_MISC2+15;
-            Ability A=null;
-            for(final Enumeration<Ability> a=mob.effects();a.hasMoreElements();)
+            if((!CMLib.flags().canWorkOnSomething(mob)) && (CMLib.dice().roll(1,100,0)>5))
             {
-                A=a.nextElement();
-                if((A.canBeUninvoked())
-                &&(!A.isAutoInvoked())
-                &&(((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_COMMON_SKILL)
-                    ||CMath.bset(A.flags(),Ability.FLAG_TRACKING))
-                &&(CMLib.dice().roll(1,100,0)>5))
-                {
-                    tickDown=0;
-                    return true;
-                }
+                tickDown=0;
+                return true;
             }
+            
             tickStatus=Tickable.STATUS_MISC2+16;
             altStatusTaker=new long[1];
             CMLib.tracking().beMobile((MOB)ticking,dooropen,wander,false,objections!=null,altStatusTaker,objections);
