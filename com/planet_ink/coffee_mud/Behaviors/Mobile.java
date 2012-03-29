@@ -192,13 +192,20 @@ public class Mobile extends ActiveTicker implements MobileBehavior
         {
             tickStatus=Tickable.STATUS_MISC2+2;
             Vector objections=null;
-            MOB mob=(MOB)ticking;
-            Room room=mob.location();
+            final MOB mob=(MOB)ticking;
+            final Room room=mob.location();
             if(room==null) return true;
             
             if((room.getArea()!=null)
             &&(room.getArea().getAreaState()>=Area.STATE_PASSIVE))
                 return true;
+            
+            tickStatus=Tickable.STATUS_MISC2+15;
+            if((!CMLib.flags().canWorkOnSomething(mob)) && (CMLib.dice().roll(1,100,0)>1))
+            {
+                tickDown=0;
+                return true;
+            }
             
             for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
             {
@@ -213,13 +220,6 @@ public class Mobile extends ActiveTicker implements MobileBehavior
                 }
                 tickStatus=Tickable.STATUS_MISC2+6;
             }
-            tickStatus=Tickable.STATUS_MISC2+15;
-            if((!CMLib.flags().canWorkOnSomething(mob)) && (CMLib.dice().roll(1,100,0)>5))
-            {
-                tickDown=0;
-                return true;
-            }
-            
             tickStatus=Tickable.STATUS_MISC2+16;
             altStatusTaker=new long[1];
             CMLib.tracking().beMobile((MOB)ticking,dooropen,wander,false,objections!=null,altStatusTaker,objections);
