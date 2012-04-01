@@ -51,7 +51,7 @@ public class GenUndead extends GenMob
 
 		basePhyStats().setAbility(10);
 		basePhyStats().setLevel(1);
-		basePhyStats().setArmor(50);
+		basePhyStats().setArmor(90);
 
 		baseState.setHitPoints(CMLib.dice().roll(basePhyStats().level(),20,basePhyStats().level()));
 

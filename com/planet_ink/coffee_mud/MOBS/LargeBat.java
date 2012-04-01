@@ -59,7 +59,7 @@ public class LargeBat extends StdMOB
 		basePhyStats().setSpeed(1.0);
 		basePhyStats().setAbility(0);
 		basePhyStats().setLevel(2);
-		basePhyStats().setArmor(80);
+		basePhyStats().setArmor(90);
 		basePhyStats().setDisposition(basePhyStats().disposition()|PhyStats.IS_FLYING);
 
 		baseState.setHitPoints(CMLib.dice().roll(basePhyStats().level(),20,basePhyStats().level()));

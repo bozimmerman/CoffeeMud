@@ -53,7 +53,7 @@ public class Skeleton extends Undead
 
 		basePhyStats().setDamage(5);
 		basePhyStats().setLevel(1);
-		basePhyStats().setArmor(70);
+		basePhyStats().setArmor(90);
 		basePhyStats().setSpeed(1.0);
 
 		baseCharStats().setMyRace(CMClass.getRace("Skeleton"));

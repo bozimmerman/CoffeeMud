@@ -55,7 +55,7 @@ public class LizardMan extends StdMOB
 		basePhyStats().setDamage(6);
 		basePhyStats().setSpeed(3);
 		basePhyStats().setLevel(2);
-		basePhyStats().setArmor(50);
+		basePhyStats().setArmor(90);
 
 		baseState.setHitPoints(CMLib.dice().roll(basePhyStats().level(),20,basePhyStats().level()));
 

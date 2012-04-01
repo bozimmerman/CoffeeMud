@@ -55,7 +55,7 @@ public class Horse extends StdRideable
 
 		basePhyStats().setAbility(0);
 		basePhyStats().setLevel(1);
-		basePhyStats().setArmor(10);
+		basePhyStats().setArmor(90);
 
 		baseCharStats().setMyRace(CMClass.getRace("Horse"));
 		baseCharStats().getMyRace().startRacing(this,false);

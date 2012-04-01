@@ -51,7 +51,7 @@ public class Undead extends StdMOB
 
 		basePhyStats().setAbility(0);
 		basePhyStats().setLevel(1);
-		basePhyStats().setArmor(80);
+		basePhyStats().setArmor(90);
 		basePhyStats().setSpeed(1.0);
 		basePhyStats().setDisposition(0); // disable infrared stuff
 		basePhyStats().setSensesMask(PhyStats.CAN_SEE_DARK);

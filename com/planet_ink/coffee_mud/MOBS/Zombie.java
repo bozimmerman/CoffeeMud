@@ -48,7 +48,7 @@ public class Zombie extends Undead
 
 		basePhyStats().setDamage(8);
 		basePhyStats().setLevel(2);
-		basePhyStats().setArmor(80);
+		basePhyStats().setArmor(90);
 		basePhyStats().setSpeed(1.0);
 
 		baseState.setHitPoints(CMLib.dice().roll(basePhyStats().level(),20,basePhyStats().level()));

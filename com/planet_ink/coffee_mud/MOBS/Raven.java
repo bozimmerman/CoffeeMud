@@ -53,7 +53,7 @@ public class Raven extends StdMOB
 
 		basePhyStats().setAbility(0);
 		basePhyStats().setLevel(1);
-		basePhyStats().setArmor(10);
+		basePhyStats().setArmor(90);
 
 		baseCharStats().setMyRace(CMClass.getRace("Raven"));
 		baseCharStats().getMyRace().startRacing(this,false);

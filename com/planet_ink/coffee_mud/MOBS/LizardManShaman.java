@@ -57,7 +57,7 @@ public class LizardManShaman extends LizardMan
 		basePhyStats().setDamage(6);
 		basePhyStats().setSpeed(3);
 		basePhyStats().setLevel(3);
-		basePhyStats().setArmor(30);
+		basePhyStats().setArmor(80);
 		baseCharStats().setCurrentClass(CMClass.getCharClass("Cleric"));
 
 		baseState.setHitPoints(CMLib.dice().roll(basePhyStats().level(),20,basePhyStats().level()));

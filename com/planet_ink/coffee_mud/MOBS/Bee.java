@@ -54,7 +54,7 @@ public class Bee extends StdMOB
 		basePhyStats().setDisposition(PhyStats.IS_FLYING);
 		basePhyStats().setAbility(0);
 		basePhyStats().setLevel(1);
-		basePhyStats().setArmor(10);
+		basePhyStats().setArmor(80);
 
 		baseCharStats().setMyRace(CMClass.getRace("Insect"));
 		baseCharStats().getMyRace().startRacing(this,false);

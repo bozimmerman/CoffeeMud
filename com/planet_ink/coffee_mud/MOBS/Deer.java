@@ -48,7 +48,7 @@ public class Deer extends StdMOB
 		basePhyStats().setSpeed(2.0);
 		basePhyStats().setAbility(0);
 		basePhyStats().setLevel(2);
-		basePhyStats().setArmor(50);
+		basePhyStats().setArmor(90);
 		baseCharStats().setMyRace(CMClass.getRace("Deer"));
 		baseCharStats().getMyRace().startRacing(this,false);
 

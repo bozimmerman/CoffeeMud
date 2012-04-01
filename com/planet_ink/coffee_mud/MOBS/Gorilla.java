@@ -51,7 +51,7 @@ public class Gorilla extends StdMOB
 
 		basePhyStats().setAbility(0);
 		basePhyStats().setLevel(6);
-		basePhyStats().setArmor(50);
+		basePhyStats().setArmor(70);
 
 		baseState.setHitPoints(CMLib.dice().roll(basePhyStats().level(),20,basePhyStats().level()));
 

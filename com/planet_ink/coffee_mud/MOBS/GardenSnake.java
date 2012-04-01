@@ -49,7 +49,7 @@ public class GardenSnake extends StdMOB
 
 		basePhyStats().setAbility(0);
 		basePhyStats().setLevel(1);
-		basePhyStats().setArmor(50);
+		basePhyStats().setArmor(90);
 
 		baseCharStats().setMyRace(CMClass.getRace("GardenSnake"));
 		baseCharStats().getMyRace().startRacing(this,false);

@@ -57,7 +57,7 @@ public class Falcon extends StdMOB
 		basePhyStats().setSpeed(3.0);
 		basePhyStats().setAbility(0);
 		basePhyStats().setLevel(2);
-		basePhyStats().setArmor(50);
+		basePhyStats().setArmor(90);
 		basePhyStats().setDisposition(basePhyStats().disposition()|PhyStats.IS_FLYING);
 		baseCharStats().setMyRace(CMClass.getRace("GreatBird"));
 		baseCharStats().getMyRace().startRacing(this,false);

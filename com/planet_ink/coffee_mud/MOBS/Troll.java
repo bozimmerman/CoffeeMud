@@ -59,7 +59,7 @@ public class Troll extends StdMOB
 		basePhyStats().setLevel(8);
 		basePhyStats().setAttackAdjustment(basePhyStats().attackAdjustment()+20);
 		basePhyStats().setDamage(basePhyStats().damage()+5);
-		basePhyStats().setArmor(30);
+		basePhyStats().setArmor(60);
 		basePhyStats().setSpeed(3.0);
 		basePhyStats().setSensesMask(PhyStats.CAN_SEE_DARK | PhyStats.CAN_SEE_INFRARED);
 

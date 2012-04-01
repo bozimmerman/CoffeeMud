@@ -59,7 +59,7 @@ public class Toadstool extends StdRace
 		affectableStats.setWeight(1);
 		affectableStats.setHeight(1);
 		affectableStats.setAttackAdjustment(0);
-		affectableStats.setArmor(0);
+		affectableStats.setArmor(100);
 		affectableStats.setSensesMask(affectableStats.sensesMask()
 			|PhyStats.CAN_NOT_MOVE|PhyStats.CAN_NOT_SPEAK|PhyStats.CAN_NOT_TASTE);
 		affectableStats.setDamage(0);

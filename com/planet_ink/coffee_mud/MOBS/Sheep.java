@@ -48,7 +48,7 @@ public class Sheep extends StdMOB
 		basePhyStats().setSpeed(1.0);
 		basePhyStats().setAbility(0);
 		basePhyStats().setLevel(1);
-		basePhyStats().setArmor(50);
+		basePhyStats().setArmor(90);
 		baseCharStats().setMyRace(CMClass.getRace("Sheep"));
 		baseCharStats().getMyRace().startRacing(this,false);
 

@@ -60,7 +60,7 @@ public class GiantScorpion extends StdMOB
 		basePhyStats().setSpeed(2.0);
 		basePhyStats().setAbility(0);
 		basePhyStats().setLevel(5);
-		basePhyStats().setArmor(30);
+		basePhyStats().setArmor(70);
 
 		baseState.setHitPoints(CMLib.dice().roll(basePhyStats().level(),20,basePhyStats().level()));
 

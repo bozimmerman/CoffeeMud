@@ -59,7 +59,7 @@ public class Orc extends StdMOB
 
 		basePhyStats().setAbility(0);
 		basePhyStats().setLevel(1);
-		basePhyStats().setArmor(50);
+		basePhyStats().setArmor(90);
 
 		baseState.setHitPoints(CMLib.dice().roll(basePhyStats().level(),20,basePhyStats().level()));
 

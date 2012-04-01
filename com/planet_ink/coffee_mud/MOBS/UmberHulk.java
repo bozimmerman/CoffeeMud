@@ -59,7 +59,7 @@ public class UmberHulk extends StdMOB
 		basePhyStats().setLevel(8);
 		basePhyStats().setAttackAdjustment(basePhyStats().attackAdjustment()+20);
 		basePhyStats().setDamage(basePhyStats().damage()+12);
-		basePhyStats().setArmor(0);
+		basePhyStats().setArmor(60);
 		basePhyStats().setSpeed(2.0);
 		basePhyStats().setSensesMask(PhyStats.CAN_SEE_DARK | PhyStats.CAN_SEE_INFRARED);
 

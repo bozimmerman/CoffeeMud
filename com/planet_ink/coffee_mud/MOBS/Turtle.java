@@ -54,7 +54,7 @@ public class Turtle extends StdMOB
 
 		basePhyStats().setAbility(0);
 		basePhyStats().setLevel(1);
-		basePhyStats().setArmor(10);
+		basePhyStats().setArmor(90);
 
 		baseCharStats().setMyRace(CMClass.getRace("Turtle"));
 		baseCharStats().getMyRace().startRacing(this,false);

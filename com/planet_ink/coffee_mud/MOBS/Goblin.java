@@ -87,7 +87,7 @@ public class Goblin extends StdMOB
 		CMLib.factions().setAlignment(this,Faction.ALIGN_EVIL);
 		baseCharStats().setStat(CharStats.STAT_INTELLIGENCE,5 + Math.abs(randomizer.nextInt() % 6));
 		baseCharStats().setStat(CharStats.STAT_CHARISMA,2 + Math.abs(randomizer.nextInt() % 3));
-		basePhyStats().setArmor(25 + Math.abs(randomizer.nextInt() % 20));
+		basePhyStats().setArmor(75 + Math.abs(randomizer.nextInt() % 20));
 		basePhyStats().setLevel(1 + Math.abs(randomizer.nextInt() % 3));
 		basePhyStats().setAbility(goblinType);
 		baseState.setHitPoints(CMLib.dice().roll(basePhyStats().level(),20,basePhyStats().level()));

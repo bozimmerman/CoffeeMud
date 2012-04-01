@@ -59,7 +59,7 @@ public class Bugbear extends StdMOB
 
 		basePhyStats().setAbility(0);
 		basePhyStats().setLevel(3);
-		basePhyStats().setArmor(40);
+		basePhyStats().setArmor(70);
 
 		baseState.setHitPoints(CMLib.dice().roll(basePhyStats().level(),20,basePhyStats().level()));
 

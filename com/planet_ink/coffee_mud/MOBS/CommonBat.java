@@ -57,7 +57,7 @@ public class CommonBat extends StdMOB
 		basePhyStats().setSpeed(1.0);
 		basePhyStats().setAbility(0);
 		basePhyStats().setLevel(1);
-		basePhyStats().setArmor(80);
+		basePhyStats().setArmor(90);
 		basePhyStats().setDisposition(basePhyStats().disposition()|PhyStats.IS_FLYING);
 		baseCharStats().setMyRace(CMClass.getRace("Bat"));
 		baseCharStats().getMyRace().startRacing(this,false);

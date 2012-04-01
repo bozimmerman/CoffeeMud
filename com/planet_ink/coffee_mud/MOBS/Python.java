@@ -49,7 +49,7 @@ public class Python extends StdMOB
 
 		basePhyStats().setAbility(0);
 		basePhyStats().setLevel(1);
-		basePhyStats().setArmor(10);
+		basePhyStats().setArmor(90);
 
 		baseCharStats().setMyRace(CMClass.getRace("Snake"));
 		baseCharStats().getMyRace().startRacing(this,false);
