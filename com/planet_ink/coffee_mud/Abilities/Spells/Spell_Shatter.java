@@ -90,8 +90,8 @@ public class Spell_Shatter extends Spell
 				return maliciousFizzle(mob,mobTarget,"<S-NAME> attempt(s) a shattering spell at <T-NAMESELF>, but nothing happens.");
 		}
 
-		if(target==null)
-			target=getTarget(mob,mob.location(),givenTarget,commands,Wearable.FILTER_ANY);
+		if((target==null)&&(mobTarget!=null))
+			target=getTarget(mobTarget,mobTarget.location(),givenTarget,commands,Wearable.FILTER_ANY);
 
 		if(target==null) return false;
         Room R=CMLib.map().roomLocation(target);
