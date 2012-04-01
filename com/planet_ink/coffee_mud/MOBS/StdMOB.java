@@ -1353,39 +1353,39 @@ public class StdMOB implements MOB
                 if(System.currentTimeMillis()<cmd.nextCheck)
                     return false;
             }
-            if(cmd != null)
+            if(cmd == null) 
+            	return false;
+            
+            double diff=actions()-cmd.actionDelay;
+            final Object O=cmd.commandObj;
+            final Vector commands=new XVector(cmd.commandVector);
+            cmd.nextCheck=cmd.nextCheck+1000;
+            cmd.seconds+=1;
+            int secondsElapsed=cmd.seconds;
+            int metaFlags=cmd.metaFlags;
+            try
             {
-                double diff=actions()-cmd.actionDelay;
-                final Object O=cmd.commandObj;
-                final Vector commands=new XVector(cmd.commandVector);
-                cmd.nextCheck=cmd.nextCheck+1000;
-                cmd.seconds+=1;
-                int secondsElapsed=cmd.seconds;
-                int metaFlags=cmd.metaFlags;
-                try
+                if(O instanceof Command)
                 {
-                    if(O instanceof Command)
+                    if(!((Command)O).preExecute(this,commands,metaFlags,secondsElapsed,-diff))
                     {
-                        if(!((Command)O).preExecute(this,commands,metaFlags,secondsElapsed,-diff))
-                        {
-                            commandQue.remove(cmd);
-                            return true;
-                        }
-                    }
-                    else
-                    if(O instanceof Ability)
-                    {
-                        if(!CMLib.english().preEvoke(this,commands,secondsElapsed,-diff))
-                        {
-                            commandQue.remove(cmd);
-                            return true;
-                        }
+                        commandQue.remove(cmd);
+                        return true;
                     }
                 }
-                catch(Exception e)
+                else
+                if(O instanceof Ability)
                 {
-                    return false;
+                    if(!CMLib.english().preEvoke(this,commands,secondsElapsed,-diff))
+                    {
+                        commandQue.remove(cmd);
+                        return true;
+                    }
                 }
+            }
+            catch(Exception e)
+            {
+                return false;
             }
         }
         return false;
