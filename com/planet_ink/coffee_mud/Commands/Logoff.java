@@ -43,7 +43,7 @@ public class Logoff extends StdCommand
 		throws java.io.IOException
 	{
 		if(mob.soulMate()!=null)
-			Quit.dispossess(mob);
+			Quit.dispossess(mob,CMParms.combine(commands).endsWith("!"));
 		else
 		if(!mob.isMonster())
 		{

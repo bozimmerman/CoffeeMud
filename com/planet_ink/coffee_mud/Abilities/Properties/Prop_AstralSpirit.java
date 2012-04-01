@@ -77,6 +77,17 @@ public class Prop_AstralSpirit extends Property
 
 		if((msg.amISource(mob))&&(!msg.sourceMajor(CMMsg.MASK_ALWAYS)))
 		{
+			if((msg.sourceMinor()==CMMsg.TYP_DISPOSSESS)&&(msg.source().soulMate()!=null))
+			{
+				Ability A=msg.source().fetchEffect("Chant_AstralProjection");
+				if(A==null) A=msg.source().soulMate().fetchEffect("Chant_AstralProjection");
+				if(A!=null)
+				{
+					A.unInvoke();
+					return false;
+				}
+			}
+			else
 			if((msg.targetMinor()==CMMsg.TYP_SIT)&&(msg.target() instanceof DeadBody))
 			{
 				Vector<String> V=CMParms.parse(text().toUpperCase());
@@ -134,6 +145,9 @@ public class Prop_AstralSpirit extends Property
 		affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_GOLEM);
 		affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_INVISIBLE);
 		affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_NOT_SEEN);
+		affectableStats.setDisposition(affectableStats.disposition()&~PhyStats.IS_SITTING);
+		affectableStats.setDisposition(affectableStats.disposition()&~PhyStats.IS_SLEEPING);
+		affectableStats.setSensesMask(affectableStats.sensesMask()&~PhyStats.CAN_NOT_MOVE);
 		affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_NOT_SPEAK);
 	}
 }

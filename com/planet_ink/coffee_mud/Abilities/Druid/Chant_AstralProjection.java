@@ -56,14 +56,18 @@ public class Chant_AstralProjection extends Chant
 			s.setMob(invoker.soulMate());
 			mob.setSession(s);
 			invoker.setSession(null);
-			mob.tell("^HYour spirit has returned to your body...\n\r\n\r^N");
+			mob.tell("^HYour astral spirit has returned to your body...\n\r\n\r^N");
 			invoker.setSoulMate(null);
 			invoker.destroy();
-
 		}
 		super.unInvoke();
 		if(mob!=null)
+		{
+			mob.recoverCharStats();
+			mob.recoverMaxState();
+			mob.recoverPhyStats();
 			CMLib.commands().postStand(mob,true);
+		}
 	}
 
 	public boolean tick(Tickable ticking, int tickID)
@@ -84,7 +88,7 @@ public class Chant_AstralProjection extends Chant
 		if((affected!=null)
 		&&(affected instanceof MOB)
 		&&(msg.amISource((MOB)affected))
-		&&(msg.sourceMinor()==CMMsg.TYP_DEATH))
+		&&((msg.sourceMinor()==CMMsg.TYP_DEATH)||(msg.sourceMinor()==CMMsg.TYP_QUIT)))
 			unInvoke();
 		return super.okMessage(myHost,msg);
 	}
@@ -158,6 +162,7 @@ public class Chant_AstralProjection extends Chant
 			}
 			CMLib.beanCounter().clearZeroMoney(spirit,null);
 			mob.location().show(target,null,CMMsg.MSG_OK_ACTION,"^Z<S-NAME> go(es) limp!^.^?\n\r");
+	        CMLib.threads().startTickDown(spirit,Tickable.TICKID_MOB,1);
 			beneficialAffect(spirit,target,asLevel,0);
 			Ability A=CMClass.getAbility("Prop_AstralSpirit");
 			spirit.addNonUninvokableEffect(A);

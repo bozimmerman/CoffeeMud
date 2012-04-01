@@ -1326,7 +1326,7 @@ public class CMMap extends StdLibrary implements WorldMap
 	{
 		Area A=getArea(areaName);
 		if(A==null) return;
-		Vector rooms=new Vector(100);
+		LinkedList rooms=new LinkedList();
 		Room R=null;
         Enumeration e=A.getCompleteMap();
 		while(e.hasMoreElements())
@@ -1335,14 +1335,15 @@ public class CMMap extends StdLibrary implements WorldMap
 			{
 				R=(Room)e.nextElement();
 				if((R!=null)&&(R.roomID()!=null))
-					rooms.addElement(R);
+					rooms.add(R);
 			}
 			if(rooms.size()==0) break;
-			for(Enumeration e2=rooms.elements();e2.hasMoreElements();)
+			for(Iterator e2=rooms.iterator();e2.hasNext();)
 			{
-				R=(Room)e2.nextElement();
+				R=(Room)e2.next();
 				if((R!=null)&&(R.roomID().length()>0))
 					obliterateRoom(R);
+				e2.remove();
 			}
 			e=A.getCompleteMap();
 		}

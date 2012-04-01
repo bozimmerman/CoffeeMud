@@ -132,17 +132,21 @@ public class Possess extends StdCommand
 			mob.tell("You may not possess '"+MOBname+"'.");
 			return false;
 		}
-		mob.location().showOthers(mob,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> get(s) a far away look, then seem(s) to fall limp.");
-
-		Session s=mob.session();
-		s.setMob(target);
-		target.setSession(s);
-		target.setSoulMate(mob);
-		mob.setSession(null);
-		CMLib.commands().postLook(target,true);
-		target.tell("^HYour spirit has changed bodies"
-						+(CMath.bset(mob.getBitmap(),MOB.ATT_SYSOPMSGS)?" and SECURITY mode is ON":"")
-						+", use QUIT to return to yours.");
+    	CMMsg msg=CMClass.getMsg(mob,target,null, CMMsg.MSG_POSSESS, "<S-NAME> get(s) a far away look, then seem(s) to fall limp.");
+    	final Room room=mob.location();
+    	if((room==null)||(room.okMessage(mob, msg)))
+		{
+    		if(room!=null) room.send(mob, msg);
+			Session s=mob.session();
+			s.setMob(target);
+			target.setSession(s);
+			target.setSoulMate(mob);
+			mob.setSession(null);
+			CMLib.commands().postLook(target,true);
+			target.tell("^HYour spirit has changed bodies"
+							+(CMath.bset(mob.getBitmap(),MOB.ATT_SYSOPMSGS)?" and SECURITY mode is ON":"")
+							+", use QUIT to return to yours.");
+		}
 		return false;
 	}
 	

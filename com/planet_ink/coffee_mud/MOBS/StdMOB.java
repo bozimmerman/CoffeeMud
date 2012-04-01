@@ -325,6 +325,7 @@ public class StdMOB implements MOB
         pleaseDestroy=false;
 
         inventory=new SVector<Item>(1);
+        commandQue  = new LinkedList<QMCommand>();
         followers=null;
         abilitys=new SVector<Ability>(1);
         affects=new SVector<Ability>(1);
@@ -634,10 +635,7 @@ public class StdMOB implements MOB
             mate.setSession(s);
             setSession(null);
             if(giveMsg)
-            {
-                mate.tell("^HYour spirit has returned to your body...\n\r\n\r^N");
                 CMLib.commands().postLook(mate,true);
-            }
             setSoulMate(null);
         }
     }

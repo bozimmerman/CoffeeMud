@@ -39,21 +39,27 @@ public class Quit extends StdCommand
 	private final String[] access={"QUIT","QUI","Q"};
 	public String[] getAccessWords(){return access;}
 
-	public static void dispossess(MOB mob)
+	public static void dispossess(MOB mob, boolean force)
 	{
 		if(mob.soulMate()==null)
 		{
 			mob.tell("Huh?");
 			return;
 		}
-        mob.dispossess(true);
+    	CMMsg msg=CMClass.getMsg(mob, CMMsg.MSG_DISPOSSESS, "^H<S-YOUPOSS> spirit has returned to <S-YOUPOSS> body...\n\r\n\r^N");
+    	final Room room=mob.location();
+    	if((room==null)||(room.okMessage(mob, msg))||force)
+		{
+    		if(room!=null) room.send(mob, msg);
+	        mob.dispossess(true);
+		}
 	}
 
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
 		if(mob.soulMate()!=null)
-			dispossess(mob);
+			dispossess(mob,CMParms.combine(commands).endsWith("!"));
 		else
 		if(!mob.isMonster())
 		{
