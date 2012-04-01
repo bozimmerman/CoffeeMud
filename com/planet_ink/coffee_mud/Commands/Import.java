@@ -1731,8 +1731,6 @@ public class Import extends StdCommand
 			if(s.startsWith("#"))
 			{
 				s=s.substring(1).trim();
-				if(s.equals("QQ00")) 
-					System.out.println("stop!");
 				if((useThisOne==areaData)&&(s.length()>0)&&(CMath.isInteger(s)||Character.isDigit(s.charAt(s.length()-1))))
 				{
 					wasUsingThisOne=mobData;
@@ -1821,7 +1819,8 @@ public class Import extends StdCommand
 					useThisOne=socialData;
 				}
 				else
-				if((importNumber(s)>0)&&(wasUsingThisOne!=null))
+				if(((importNumber(s)>0)||(s.equals("0") && (buf.size()>1) && (buf.get(1).indexOf('~')>0)))
+				&&(wasUsingThisOne!=null))
 				{
 					List<String> V=new Vector();
 					wasUsingThisOne.add(V);
@@ -1829,9 +1828,7 @@ public class Import extends StdCommand
 				}
 				else
 				if(s.equals("0")||s.equals("$")||s.equals("O"))
-				{
 					okString=false;
-				}
 				else
 				if((s.equals("")||s.equals("~"))&&(useThisOne==socialData))
 					okString=true;
@@ -1841,7 +1838,7 @@ public class Import extends StdCommand
 				else
 				{
 					//useThisOne=null;
-					Log.sysOut("Import","Suspect line: "+s);
+					Log.sysOut("Import","Suspect line (probably ok="+(useThisOne!=null)+"): "+s);
 				}
 			}
 			if(useThisOne!=null)
@@ -4402,6 +4399,7 @@ public class Import extends StdCommand
 		StringBuffer buf=null;
 		String areaFileName=null;
 		CMFile CF=null;
+		boolean zonFormat=false;
 		if(commands.elementAt(areaFile) instanceof StringBuffer)
 		{
 			areaFileName="memory.cmare";
@@ -4418,6 +4416,7 @@ public class Import extends StdCommand
 			|| ext.endsWith("wld")
 			|| ext.endsWith("obj")
 			|| ext.endsWith("mob")
+			|| ext.endsWith("shp")
 			|| ext.endsWith("doc"))
 			{
 				final String baseAreaFileName=areaFileName.substring(0,x);
@@ -4465,6 +4464,7 @@ public class Import extends StdCommand
 					areaFileName=baseAreaFileName+".zon";
 				}
 				buf=finalBuf;
+				zonFormat=true;
 			}
 			else
 			{
@@ -5145,8 +5145,8 @@ public class Import extends StdCommand
 				if((!R.roomID().startsWith("#"))
 				||(R.displayText().length()==0)
 				||(CMParms.numBits(codeLine)<2)
-				||(CMParms.numBits(codeLine)>6)
-				||(CMParms.numBits(codeLine)==4))
+				||((CMParms.numBits(codeLine)>6)&&(!zonFormat))
+				||((CMParms.numBits(codeLine)==4)&&(!zonFormat)))
 				{
 					returnAnError(session,"Malformed room! Aborting this room "+R.roomID()+", display="+R.displayText()+", description="+R.description()+", numBits="+CMParms.numBits(codeLine)+", area="+areaName,compileErrors,commands);
 					continue;
@@ -5169,7 +5169,7 @@ public class Import extends StdCommand
 				{ "air",		"9"},
 				{ "desert",		"10"}};
 				boolean circleFormat=false;
-				if(CMParms.numBits(codeLine)==6) // wierd circlemud exception
+				if((CMParms.numBits(codeLine)>=6)||(CMParms.numBits(codeLine)==4)) // wierder circlemud exception
 				{
 					codeBits=(getBitMask(codeLine,2)<<16)|getBitMask(codeLine,1); // ignoring 3 & 4
 					sectorType=CMath.s_int(CMParms.getBit(codeLine,5));
@@ -5504,10 +5504,12 @@ public class Import extends StdCommand
 												}
 											}
 											if(opExit==null)
+											{
 												if((prompt)
 												&&(session!=null)
 												&&(!session.confirm(R.roomID()+" links to #"+linkRoomID+". Found "+R2.roomID()+". Link?","Y")))
 													continue;
+											}
 											linkRoom=R2;
 											if(opExit!=null) opExit.setTemporaryDoorLink("");
 											if((!doneRooms.containsValue(linkRoom))&&(!doneRooms.contains(linkRoom)))
