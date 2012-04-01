@@ -43,6 +43,7 @@ public class Falling extends StdAbility
 	protected int canTargetCode(){return 0;}
 	boolean temporarilyDisable=false;
 	public Room room=null;
+	boolean hitTheCeiling=false;
 	int damageToTake=0;
 	protected int fallTickDown=1;
 
@@ -91,9 +92,19 @@ public class Falling extends StdAbility
 
     protected boolean stopFalling(MOB mob)
 	{
-		if(reversed()) return true;
+		final Room R=mob.location();
+		if(reversed())
+		{
+			if(!hitTheCeiling)
+			{
+				hitTheCeiling=true;
+				if(R!=null) R.show(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> hit(s) the ceiling."+CMProps.msp("splat.wav",50));
+				CMLib.combat().postDamage(mob,mob,this,damageToTake,CMMsg.MASK_ALWAYS|CMMsg.TYP_JUSTICE,-1,null);
+			}
+			return true;
+		}
+		hitTheCeiling=false;
 		unInvoke();
-		Room R=mob.location();
 		if(R!=null)
 		{
 			if(isAirRoom(R))
@@ -154,8 +165,8 @@ public class Falling extends StdAbility
 				else
 				{
 					mob.tell("\n\r\n\rYOU ARE FALLING "+addStr.toUpperCase()+"!!\n\r\n\r");
-					if(!reversed())
-						damageToTake+=CMLib.dice().roll(1,(int)Math.round(CMath.mul(CMath.mul(mob.maxState().getHitPoints(),0.1),CMath.div(mob.baseWeight(),150.0))),0);
+					int damage = CMLib.dice().roll(1,(int)Math.round(CMath.mul(CMath.mul(mob.maxState().getHitPoints(),0.1),CMath.div(mob.baseWeight(),150.0))),0);
+					damageToTake=reversed()?damage:(damageToTake+damage);
 				}
 				temporarilyDisable=true;
 				CMLib.tracking().walk(mob,direction,false,false);
@@ -225,7 +236,7 @@ public class Falling extends StdAbility
 					unInvoke();
 					return true;
 				}
-				if(msg.targetMajor(CMMsg.MASK_MOVE))
+				if(msg.targetMajor(CMMsg.MASK_MOVE) &&(!hitTheCeiling))
 				{
 					msg.source().tell("You are too busy falling to do that right now.");
 					return false;
