@@ -190,7 +190,7 @@ public class Skill_Disguise extends BardSkill
 			mob.tell("Disguise "+whats[which].toLowerCase()+" in what way?  Be more specific.");
 			return false;
 		}
-		String how=CMParms.combine(commands,0);
+		String how=CMStrings.removeColors(CMParms.combine(commands,0));
 
 		int adjustment=0;
 		switch(which)
@@ -208,11 +208,12 @@ public class Skill_Disguise extends BardSkill
 			break;
 		}
 		case 1: // level
-			if(CMath.s_int(how)<=0)
+			if((CMath.s_int(how)<=0)||CMath.s_int(how)>100000)
 			{
 				mob.tell("You cannot disguise your level as "+how+"!");
 				return false;
 			}
+			how=Integer.toString(CMath.s_int(how));
 			break;
 		case 2: // sex
 			if(how.toUpperCase().startsWith("M")) how="male";

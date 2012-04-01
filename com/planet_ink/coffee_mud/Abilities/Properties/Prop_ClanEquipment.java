@@ -373,7 +373,14 @@ public class Prop_ClanEquipment extends Property
                 break;
             case CMMsg.TYP_SPEAK:
                 if(msg.sourceMinor()==CMMsg.TYP_SPEAK)
-                    msg.addTrailerMsg(CMClass.getMsg(msg.source(),this,msg.target(),CMMsg.NO_EFFECT,null,CMMsg.MASK_ALWAYS|CMMsg.TYP_WAND_USE,CMStrings.getSayFromMessage(msg.sourceMessage()),CMMsg.NO_EFFECT,null));
+                {
+    				boolean alreadyWanding=false;
+    				for(CMMsg msg2 : msg.trailerMsgs())
+    					if(msg2.targetMinor()==CMMsg.TYP_WAND_USE)
+    						alreadyWanding=true;
+    				if(!alreadyWanding)
+	                    msg.addTrailerMsg(CMClass.getMsg(msg.source(),this,msg.target(),CMMsg.NO_EFFECT,null,CMMsg.MASK_ALWAYS|CMMsg.TYP_WAND_USE,CMStrings.getSayFromMessage(msg.sourceMessage()),CMMsg.NO_EFFECT,null));
+                }
                 break;
             default:
                 break;
