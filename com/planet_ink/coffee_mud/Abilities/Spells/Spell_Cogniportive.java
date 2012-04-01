@@ -187,9 +187,11 @@ public class Spell_Cogniportive extends Spell
 							||CMLib.english().containsString(affected.displayText(),str))))
 						{
 							boolean alreadyWanding=false;
-							for(CMMsg msg2 : msg.trailerMsgs())
-								if(msg2.targetMinor()==CMMsg.TYP_WAND_USE)
-									alreadyWanding=true;
+							final List<CMMsg> trailers =msg.trailerMsgs();
+							if(trailers!=null)
+								for(CMMsg msg2 : trailers)
+									if(msg2.targetMinor()==CMMsg.TYP_WAND_USE)
+										alreadyWanding=true;
 							if(!alreadyWanding)
 								msg.addTrailerMsg(CMClass.getMsg(msg.source(),affected,msg.target(),CMMsg.NO_EFFECT,null,CMMsg.MASK_ALWAYS|CMMsg.TYP_WAND_USE,CMStrings.getSayFromMessage(msg.sourceMessage()),CMMsg.NO_EFFECT,null));
 						}

@@ -1,4 +1,6 @@
 package com.planet_ink.coffee_mud.Items.Weapons;
+import java.util.List;
+
 import com.planet_ink.coffee_mud.Items.MiscMagic.StdWand;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
@@ -120,9 +122,11 @@ public class GenStaff extends GenWeapon implements Wand
 			if(msg.sourceMinor()==CMMsg.TYP_SPEAK)
 			{
 				boolean alreadyWanding=false;
-				for(CMMsg msg2 : msg.trailerMsgs())
-					if(msg2.targetMinor()==CMMsg.TYP_WAND_USE)
-						alreadyWanding=true;
+				final List<CMMsg> trailers =msg.trailerMsgs();
+				if(trailers!=null)
+					for(CMMsg msg2 : trailers)
+						if(msg2.targetMinor()==CMMsg.TYP_WAND_USE)
+							alreadyWanding=true;
 				if(!alreadyWanding)
 					msg.addTrailerMsg(CMClass.getMsg(msg.source(),this,msg.target(),CMMsg.NO_EFFECT,null,CMMsg.MASK_ALWAYS|CMMsg.TYP_WAND_USE,CMStrings.getSayFromMessage(msg.sourceMessage()),CMMsg.NO_EFFECT,null));
 			}

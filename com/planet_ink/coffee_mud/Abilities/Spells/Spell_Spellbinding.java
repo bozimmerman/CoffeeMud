@@ -121,9 +121,11 @@ public class Spell_Spellbinding extends Spell
 				if(((String)spellbindings.elementAt(v,1)).equalsIgnoreCase(s))
 				{
 					boolean alreadyWanding=false;
-					for(CMMsg msg2 : msg.trailerMsgs())
-						if(msg2.targetMinor()==CMMsg.TYP_WAND_USE)
-							alreadyWanding=true;
+					final List<CMMsg> trailers =msg.trailerMsgs();
+					if(trailers!=null)
+						for(CMMsg msg2 : trailers)
+							if(msg2.targetMinor()==CMMsg.TYP_WAND_USE)
+								alreadyWanding=true;
 					if(!alreadyWanding)
 						msg.addTrailerMsg(CMClass.getMsg(msg.source(),msg.target(),this,CMMsg.MASK_ALWAYS|CMMsg.TYP_WAND_USE,"The magic of '"+s+"' swells within you!",CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null));
 				}
