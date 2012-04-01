@@ -42,7 +42,6 @@ public class Spell_ReverseGravity extends Spell
 	protected int canTargetCode(){return 0;}
 	public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
 	protected Vector childrenAffects=new Vector();
-	protected int overrideMana(){return Integer.MAX_VALUE-50;}
 	public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_ALTERATION;}
 	public long flags(){return Ability.FLAG_MOVING;}
 
@@ -169,7 +168,7 @@ public class Spell_ReverseGravity extends Spell
 			{
 				childrenAffects=new Vector();
 				mob.location().send(mob,msg);
-				beneficialAffect(mob,mob.location(),asLevel,4+super.getXLEVELLevel(mob));
+				beneficialAffect(mob,mob.location(),asLevel,4+(super.getXLEVELLevel(mob)/3));
 			}
 		}
 		else
