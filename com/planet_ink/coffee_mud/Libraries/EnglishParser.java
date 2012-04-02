@@ -688,6 +688,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
         return (flags.occurrance+1)+"."+flags.srchStr;
     }
 
+    public int getContextNumber(ItemCollection cont, Environmental E){ return getContextNumber(toCollection(cont),E);}
     public int getContextNumber(Object[] list, Environmental E){ return getContextNumber(new XVector(list),E);}
     public int getContextNumber(Collection list, Environmental E)
     {
@@ -706,6 +707,15 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
             }
         return -1;
     }
+    private Collection toCollection(ItemCollection cont)
+    {
+    	LinkedList list=new LinkedList();
+    	for(Enumeration<Item> i=cont.items();i.hasMoreElements();)
+    		list.add(i.nextElement());
+    	return list;
+    }
+    
+    public int getContextSameNumber(ItemCollection cont, Environmental E){ return getContextSameNumber(toCollection(cont),E);}
     public int getContextSameNumber(Object[] list, Environmental E){ return getContextSameNumber(new XVector(list),E);}
     public int getContextSameNumber(Collection list, Environmental E)
     {
@@ -724,6 +734,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
             }
         return -1;
     }
+    public String getContextName(ItemCollection cont, Environmental E){ return getContextName(toCollection(cont),E);}
     public String getContextName(Object[] list, Environmental E){ return getContextName(new XVector(list),E);}
     public String getContextName(Collection list, Environmental E)
     {
@@ -734,7 +745,8 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
         return E.name()+"."+number;
     }
 
-    public String getContextSameName(Object[] list, Environmental E){ return getContextName(new XVector(list),E);}
+    public String getContextSameName(ItemCollection cont, Environmental E){ return getContextSameName(toCollection(cont),E);}
+    public String getContextSameName(Object[] list, Environmental E){ return getContextSameName(new XVector(list),E);}
     public String getContextSameName(Collection list, Environmental E)
     {
         if(list==null) return E.name();

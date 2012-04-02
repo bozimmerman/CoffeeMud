@@ -306,13 +306,16 @@ public class Conquerable extends Arrest
             try{
 	            for(int c=clanItems.size()-1;c>=0;c--)
 	            {
-	            	if((C==null)&&(((ClanItem)clanItems.elementAt(c)).clanID().equalsIgnoreCase(holdingClan)))
+	            	ClanItem item=(ClanItem)clanItems.elementAt(c);
+	            	if((C==null)
+	            	&&(item.clanID().equalsIgnoreCase(holdingClan))
+	            	&&((!(item.owner() instanceof MOB))||(((MOB)item.owner()).isMonster())))
 	            	{
-	            		((ClanItem)clanItems.elementAt(c)).destroy();
+	            		item.destroy();
 	            		clanItems.removeElementAt(c);
 	            	}
 	            	else
-	                if(((ClanItem)clanItems.elementAt(c)).ciType()!=ClanItem.CI_FLAG)
+	                if(item.ciType()!=ClanItem.CI_FLAG)
 	                    deRegisterClanItem((ClanItem)clanItems.elementAt(c));
 	            }
             }catch(ArrayIndexOutOfBoundsException x){}
@@ -366,6 +369,22 @@ public class Conquerable extends Arrest
                 S.println(clanID+" "+(amount<0?"loses "+(-amount):"gains "+amount)+" control points.");
         }
     }
+
+    protected boolean hasItemSameAs(MOB M, Item I)
+    {
+        for(Enumeration<Item> i=M.items();i.hasMoreElements();)
+            if(I.sameAs(i.nextElement()))
+                return true;
+        return false;
+    }
+    
+    protected boolean hasItemSameName(MOB M, String name)
+    {
+        for(Enumeration<Item> i=M.items();i.hasMoreElements();)
+            if(name.equals(i.nextElement().Name()))
+            	return true;
+        return false;
+    }
     
 	public boolean tick(Tickable ticking, int tickID)
 	{
@@ -400,7 +419,6 @@ public class Conquerable extends Arrest
 		&&((waitToReload<=0)||(System.currentTimeMillis()>waitToReload))
 		&&(myArea!=null))
 		{
-			HashSet doneMOBs=new HashSet();
             HashSet doneRooms=new HashSet();
             clanItems.clear();
             List<PlayerData> itemSet=CMLib.database().DBReadData(myArea.name(),"CONQITEMS","CONQITEMS/"+myArea.name());
@@ -438,18 +456,28 @@ public class Conquerable extends Arrest
 									newItem.setMiscText(CMLib.xml().restoreAngleBrackets(CMLib.xml().getValFromPieces(roomData,"ITEXT")));
 									newItem.recoverPhyStats();
 									MOB foundMOB=null;
+									MOB backupMOB=null;
 									if(MOBname.length()>0)
+									{
 										for(int i=0;i<R.numInhabitants();i++)
 										{
 											MOB M=R.fetchInhabitant(i);
 											if((M!=null)
 											&&(M.isMonster())
 											&&(M.name().equals(MOBname))
-											&&(M.getStartRoom()==R)
-											&&(!doneMOBs.contains(M)))
-											{ foundMOB=M; break;}
+											&&(M.getStartRoom()==R))
+											{ 
+												if(!hasItemSameName(M,newItem.Name()))
+													foundMOB=M;
+												else
+												if(!hasItemSameAs(M,newItem))
+													backupMOB=M;
+												break;
+											}
 										}
+									}
 									if((foundMOB==null)&&(MOBname.length()>0))
+									{
 										for(Enumeration e=A.getMetroMap();e.hasMoreElements();)
 										{
 											Room R2=(Room)e.nextElement();
@@ -459,22 +487,24 @@ public class Conquerable extends Arrest
 												if((M!=null)
 												&&(M.isMonster())
 												&&(M.name().equals(MOBname))
-												&&(M.getStartRoom()==R)
-												&&(!doneMOBs.contains(M)))
-												{ foundMOB=M; break;}
+												&&(M.getStartRoom()==R))
+												{ 
+													if(!hasItemSameName(M,newItem.Name()))
+														foundMOB=M;
+													else
+													if(!hasItemSameAs(M,newItem))
+														backupMOB=M;
+													break;
+												}
 											}
 										}
+									}
+									if((foundMOB==null)&&(MOBname.length()>0))
+										foundMOB=backupMOB;
 									if(foundMOB!=null)
 									{
-                                        boolean found=false;
-                                        for(int i=0;i<foundMOB.numItems();i++)
-                                            if(newItem.sameAs(foundMOB.getItem(i)))
-                                                found=true;
-                                        if(!found)
-                                        {
-    										foundMOB.addItem(newItem);
-    										newItem.wearAt(newItem.rawProperLocationBitmap());
-                                        }
+										foundMOB.addItem(newItem);
+										newItem.wearAt(newItem.rawProperLocationBitmap());
 									}
 									else
                                     {
@@ -1249,6 +1279,7 @@ public class Conquerable extends Arrest
 						if((R!=null)
 						&&(((Area)myHost).inMyMetroArea(R.getArea()))
 						&&(!((Item)I).amDestroyed())
+						&&((!(I.owner() instanceof MOB))||(((MOB)I.owner()).isMonster()))
 						&&((I.ciType()!=ClanItem.CI_FLAG)||(R.isContent(I))))
 						{
 							data.append("<ACITEM>");
@@ -1262,7 +1293,7 @@ public class Conquerable extends Arrest
 								&&(myArea.inMyMetroArea(M.getStartRoom().getArea())))
 								{
 									data.append(CMLib.xml().convertXMLtoTag("ROOMID",CMLib.map().getExtendedRoomID(M.getStartRoom())));
-									data.append(CMLib.xml().convertXMLtoTag("MOB",((MOB)((Item)I).owner()).Name()));
+									data.append(CMLib.xml().convertXMLtoTag("MOB",M.Name()));
 								}
 							}
 							data.append(CMLib.xml().convertXMLtoTag("ICLAS",CMClass.classID(I)));

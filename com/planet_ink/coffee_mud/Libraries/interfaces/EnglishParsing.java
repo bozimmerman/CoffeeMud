@@ -60,12 +60,16 @@ public interface EnglishParsing extends CMLibrary
     public List<Item> fetchAvailableItems(List<Item> list, String srchStr, Item goodLocation, int wornFilter, boolean exactOnly);
     public int getContextNumber(Object[] list, Environmental E);
     public int getContextNumber(Collection list, Environmental E);
+    public int getContextNumber(ItemCollection cont, Environmental E);
     public String getContextName(Collection list, Environmental E);
     public String getContextName(Object[] list, Environmental E);
+    public String getContextName(ItemCollection cont, Environmental E);
     public int getContextSameNumber(Object[] list, Environmental E);
     public int getContextSameNumber(Collection list, Environmental E);
+    public int getContextSameNumber(ItemCollection cont, Environmental E);
     public String getContextSameName(Collection list, Environmental E);
     public String getContextSameName(Object[] list, Environmental E);
+    public String getContextSameName(ItemCollection cont, Environmental E);
     public Environmental fetchAvailable(Collection<? extends Environmental> list, String srchStr, Item goodLocation, int wornFilter, boolean exactOnly);
     public Environmental parseShopkeeper(MOB mob, List<String> commands, String error);
     public List<Item> fetchItemList(Environmental from, MOB mob, Item container, List<String> commands, int preferredLoc, boolean visionMatters);
