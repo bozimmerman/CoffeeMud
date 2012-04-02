@@ -487,7 +487,7 @@ public class MUD extends Thread implements MudHost
 
                     if(proceed!=0)
                     {
-                        if((numAtThisAddress % 5)== 1)
+                        if(numAtThisAddress == (Math.round(Math.sqrt(numAtThisAddress+1))*Math.round(Math.sqrt(numAtThisAddress+1))))
                             Log.sysOut(Thread.currentThread().getName(),"Blocking a connection from "+address +"("+numAtThisAddress+")");
                         try
                         {
