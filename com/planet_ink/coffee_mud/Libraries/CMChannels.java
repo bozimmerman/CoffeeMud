@@ -37,39 +37,39 @@ import java.util.*;
 public class CMChannels extends StdLibrary implements ChannelsLibrary
 {
     public String ID(){return "CMChannels";}
-	public final int QUEUE_SIZE=100;
-	
-	public int numChannelsLoaded=0;
-	public int numIChannelsLoaded=0;
-	public int numImc2ChannelsLoaded=0;
-	public List<String> channelNames=new Vector<String>();
-	public List<String> channelColorOverrides=new Vector<String>();
-	public List<String> channelMasks=new Vector<String>();
+    public final int QUEUE_SIZE=100;
+    
+    public int numChannelsLoaded=0;
+    public int numIChannelsLoaded=0;
+    public int numImc2ChannelsLoaded=0;
+    public List<String> channelNames=new Vector<String>();
+    public List<String> channelColorOverrides=new Vector<String>();
+    public List<String> channelMasks=new Vector<String>();
     public List<HashSet<ChannelFlag>> channelFlags=new Vector<HashSet<ChannelFlag>>();
-	public List<String> ichannelList=new Vector<String>();
-	public List<String> imc2channelList=new Vector<String>();
-	public List<List<ChannelMsg>> channelQue=new Vector<List<ChannelMsg>>();
-	public final static List<ChannelMsg> emptyQueue=new ReadOnlyList<ChannelMsg>(new Vector(1));
-	public final static Set<ChannelFlag> emptyFlags=new ReadOnlySet<ChannelFlag>(new HashSet(1));
-	
-	public int getNumChannels()
-	{
-		return channelNames.size();
-	}
-	
-	public String getChannelMask(int i)
-	{
-		if((i>=0)&&(i<channelMasks.size()))
-			return channelMasks.get(i);
-		return "";
-	}
+    public List<String> ichannelList=new Vector<String>();
+    public List<String> imc2channelList=new Vector<String>();
+    public List<List<ChannelMsg>> channelQue=new Vector<List<ChannelMsg>>();
+    public final static List<ChannelMsg> emptyQueue=new ReadOnlyList<ChannelMsg>(new Vector(1));
+    public final static Set<ChannelFlag> emptyFlags=new ReadOnlySet<ChannelFlag>(new HashSet(1));
+    
+    public int getNumChannels()
+    {
+        return channelNames.size();
+    }
+    
+    public String getChannelMask(int i)
+    {
+        if((i>=0)&&(i<channelMasks.size()))
+            return channelMasks.get(i);
+        return "";
+    }
 
-	public String getChannelColorOverride(int i)
-	{
-		if((i>=0)&&(i<channelColorOverrides.size()))
-			return channelColorOverrides.get(i);
-		return "";
-	}
+    public String getChannelColorOverride(int i)
+    {
+        if((i>=0)&&(i<channelColorOverrides.size()))
+            return channelColorOverrides.get(i);
+        return "";
+    }
 
     
     public Set<ChannelFlag> getChannelFlags(int i)
@@ -79,34 +79,36 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
         return emptyFlags;
     }
 
-	public String getChannelName(int i)
-	{
-		if((i>=0)&&(i<channelNames.size()))
-			return channelNames.get(i);
-		return "";
-	}
+    public String getChannelName(int i)
+    {
+        if((i>=0)&&(i<channelNames.size()))
+            return channelNames.get(i);
+        return "";
+    }
 
-	public List<ChannelMsg> getChannelQue(int i)
-	{
-		if((i>=0)&&(i<channelQue.size()))
-			return channelQue.get(i);
-		return emptyQueue;
-	}
-	
+    public List<ChannelMsg> getChannelQue(int i)
+    {
+        if((i>=0)&&(i<channelQue.size()))
+            return channelQue.get(i);
+        return emptyQueue;
+    }
+    
     public boolean mayReadThisChannel(MOB sender, boolean areaReq, MOB M, int i)
     { return mayReadThisChannel(sender,areaReq,M,i,false);}
-	public boolean mayReadThisChannel(MOB sender,
-									  boolean areaReq,
-									  MOB M, 
-									  int i,
+    public boolean mayReadThisChannel(MOB sender,
+                                      boolean areaReq,
+                                      MOB M, 
+                                      int i,
                                       boolean offlineOK)
-	{
-		if((sender==null)||(M==null)||(M.playerStats()==null)) return false;
-		Room R=M.location();
+    {
+        if((sender==null)||(M==null)) return false;
+        PlayerStats pstats=M.playerStats();
+        if(pstats==null) return false;
+        Room R=M.location();
         if(((!offlineOK))
         &&((M.amDead())||(R==null)))
-		    return false;
-		if(getChannelFlags(i).contains(ChannelFlag.CLANONLY)||getChannelFlags(i).contains(ChannelFlag.CLANALLYONLY))
+            return false;
+        if(getChannelFlags(i).contains(ChannelFlag.CLANONLY)||getChannelFlags(i).contains(ChannelFlag.CLANALLYONLY))
         {
             // only way to fail an all-clan send is to have NO clan.
             if((M.getClanID().length()==0)||(!CMLib.clans().authCheck(M.getClanID(), M.getClanRole(), Clan.Function.CHANNEL)))
@@ -114,40 +116,41 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
             if((!sender.getClanID().equalsIgnoreCase("ALL"))
             &&(!M.getClanID().equalsIgnoreCase(sender.getClanID()))
             &&((!getChannelFlags(i).contains(ChannelFlag.CLANALLYONLY))
-        		||(CMLib.clans().getClanRelations(M.getClanID(),sender.getClanID())!=Clan.REL_ALLY)))
-            	return false;
+                ||(CMLib.clans().getClanRelations(M.getClanID(),sender.getClanID())!=Clan.REL_ALLY)))
+                return false;
         }
-		
-		if((!M.playerStats().getIgnored().contains(sender.Name()))
-		&&(CMLib.masking().maskCheck(getChannelMask(i),M,true))
-		&&((!areaReq)
-		   ||(sender.location()==null)
-		   ||(R.getArea()==sender.location().getArea()))
-		&&(!CMath.isSet(M.playerStats().getChannelMask(),i)))
-			return true;
-		return false;
-	}
-	
-	public boolean mayReadThisChannel(MOB sender,
-									  boolean areaReq,
-									  Session ses, 
-									  int i)
-	{
-		if(ses==null) 
-		    return false;
-		MOB M=ses.mob();
-		
-		if((sender==null)
-		||(M==null)
-		||(M.amDead())
-		||(M.location()==null)
-		||(M.playerStats()==null))
-		    return false;
-		String senderName=sender.Name();
-		int x=senderName.indexOf('@');
-		if(x>0) senderName=senderName.substring(0,x);
-		
-		if(getChannelFlags(i).contains(ChannelFlag.CLANONLY)||getChannelFlags(i).contains(ChannelFlag.CLANALLYONLY))
+        
+        if((!pstats.getIgnored().contains(sender.Name()))
+        &&(CMLib.masking().maskCheck(getChannelMask(i),M,true))
+        &&((!areaReq)
+           ||(sender.location()==null)
+           ||(R.getArea()==sender.location().getArea()))
+        &&(!CMath.isSet(pstats.getChannelMask(),i)))
+            return true;
+        return false;
+    }
+
+    public boolean mayReadThisChannel(MOB sender,
+                                      boolean areaReq,
+                                      Session ses, 
+                                      int i)
+    {
+        if(ses==null) 
+            return false;
+        MOB M=ses.mob();
+        
+        if((sender==null)
+        ||(M==null)
+        ||(M.amDead())
+        ||(M.location()==null))
+            return false;
+        PlayerStats pstats=M.playerStats();
+        if(pstats==null) return false;
+        String senderName=sender.Name();
+        int x=senderName.indexOf('@');
+        if(x>0) senderName=senderName.substring(0,x);
+        
+        if(getChannelFlags(i).contains(ChannelFlag.CLANONLY)||getChannelFlags(i).contains(ChannelFlag.CLANALLYONLY))
         {
             // only way to fail an all-clan send is to have NO clan.
             if((M.getClanID().length()==0)||(!CMLib.clans().authCheck(M.getClanID(), M.getClanRole(), Clan.Function.CHANNEL)))
@@ -155,110 +158,110 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
             if((!sender.getClanID().equalsIgnoreCase("ALL"))
             &&(!M.getClanID().equalsIgnoreCase(sender.getClanID()))
             &&((!getChannelFlags(i).contains(ChannelFlag.CLANALLYONLY))
-        		||(CMLib.clans().getClanRelations(M.getClanID(),sender.getClanID())!=Clan.REL_ALLY)))
-            	return false;
+                ||(CMLib.clans().getClanRelations(M.getClanID(),sender.getClanID())!=Clan.REL_ALLY)))
+                return false;
         }
-		
-		Room R=M.location();
-		if((!ses.isStopped())
-		&&(R!=null)
-		&&(!M.playerStats().getIgnored().contains(senderName))
-		&&(CMLib.masking().maskCheck(getChannelMask(i),M,true))
-		&&((!areaReq)
-		   ||(sender.location()==null)
-		   ||(R.getArea()==sender.location().getArea()))
-		&&(!CMath.isSet(M.playerStats().getChannelMask(),i)))
-			return true;
-		return false;
-	}
-	
-	public boolean mayReadThisChannel(MOB M, int i, boolean zapCheckOnly)
-	{
-	    if(M==null) return false;
-	    
-	    if(i>=getNumChannels())
-	        return false;
-	    
-		if((getChannelFlags(i).contains(ChannelFlag.CLANONLY)||getChannelFlags(i).contains(ChannelFlag.CLANALLYONLY))
-		&&((M.getClanID().length()==0)||(!CMLib.clans().authCheck(M.getClanID(), M.getClanRole(), Clan.Function.CHANNEL))))
-		    return false;
+        
+        Room R=M.location();
+        if((!ses.isStopped())
+        &&(R!=null)
+        &&(!pstats.getIgnored().contains(senderName))
+        &&(CMLib.masking().maskCheck(getChannelMask(i),M,true))
+        &&((!areaReq)
+           ||(sender.location()==null)
+           ||(R.getArea()==sender.location().getArea()))
+        &&(!CMath.isSet(pstats.getChannelMask(),i)))
+            return true;
+        return false;
+    }
+    
+    public boolean mayReadThisChannel(MOB M, int i, boolean zapCheckOnly)
+    {
+        if(M==null) return false;
+        
+        if(i>=getNumChannels())
+            return false;
+        
+        if((getChannelFlags(i).contains(ChannelFlag.CLANONLY)||getChannelFlags(i).contains(ChannelFlag.CLANALLYONLY))
+        &&((M.getClanID().length()==0)||(!CMLib.clans().authCheck(M.getClanID(), M.getClanRole(), Clan.Function.CHANNEL))))
+            return false;
 
-		if(((zapCheckOnly)||((!M.amDead())&&(M.location()!=null)))
-		&&(CMLib.masking().maskCheck(getChannelMask(i),M,true))
-		&&(!CMath.isSet(M.playerStats().getChannelMask(),i)))
-			return true;
-		return false;
-	}
+        if(((zapCheckOnly)||((!M.amDead())&&(M.location()!=null)))
+        &&(CMLib.masking().maskCheck(getChannelMask(i),M,true))
+        &&(!CMath.isSet(M.playerStats().getChannelMask(),i)))
+            return true;
+        return false;
+    }
 
-	public void channelQueUp(int i, CMMsg msg)
-	{
+    public void channelQueUp(int i, CMMsg msg)
+    {
         CMLib.map().sendGlobalMessage(msg.source(),CMMsg.TYP_CHANNEL,msg);
         List<ChannelMsg> q=getChannelQue(i);
-		synchronized(q)
-		{
-			if(q.size()>=QUEUE_SIZE)
-				q.remove(0);
-			q.add(new ChannelMsg(msg));
-		}
-	}
-	
-	public int getChannelIndex(String channelName)
-	{
+        synchronized(q)
+        {
+            if(q.size()>=QUEUE_SIZE)
+                q.remove(0);
+            q.add(new ChannelMsg(msg));
+        }
+    }
+    
+    public int getChannelIndex(String channelName)
+    {
         channelName=channelName.toUpperCase();
-		for(int c=0;c<channelNames.size();c++)
-			if((channelNames.get(c)).startsWith(channelName))
-				return c;
-		return -1;
-	}
+        for(int c=0;c<channelNames.size();c++)
+            if((channelNames.get(c)).startsWith(channelName))
+                return c;
+        return -1;
+    }
 
-	public int getChannelCodeNumber(String channelName)
-	{
+    public int getChannelCodeNumber(String channelName)
+    {
         channelName=channelName.toUpperCase();
-		for(int c=0;c<channelNames.size();c++)
-			if((channelNames.get(c)).startsWith(channelName))
-				return 1<<c;
-		return -1;
-	}
+        for(int c=0;c<channelNames.size();c++)
+            if((channelNames.get(c)).startsWith(channelName))
+                return 1<<c;
+        return -1;
+    }
 
-	public String getChannelName(String channelName)
-	{
+    public String getChannelName(String channelName)
+    {
         channelName=channelName.toUpperCase();
-		for(int c=0;c<channelNames.size();c++)
-			if((channelNames.get(c)).startsWith(channelName))
-				return (channelNames.get(c)).toUpperCase();
-		return "";
-	}
+        for(int c=0;c<channelNames.size();c++)
+            if((channelNames.get(c)).startsWith(channelName))
+                return (channelNames.get(c)).toUpperCase();
+        return "";
+    }
 
-	public List<String> getFlaggedChannelNames(ChannelFlag flag)
-	{
+    public List<String> getFlaggedChannelNames(ChannelFlag flag)
+    {
         List<String> channels=new Vector();
-		for(int c=0;c<channelNames.size();c++)
-			if(channelFlags.get(c).contains(flag))
+        for(int c=0;c<channelNames.size();c++)
+            if(channelFlags.get(c).contains(flag))
                 channels.add(channelNames.get(c).toUpperCase());
-		return channels;
-	}
-	
-	public String getExtraChannelDesc(String channelName)
-	{
-		StringBuilder str=new StringBuilder("");
-		int dex = getChannelIndex(channelName);
-		if(dex >= 0)
-		{
-			Set<ChannelFlag> flags = getChannelFlags(dex);
-			String mask = getChannelMask(dex);
-			if(flags.contains(ChannelFlag.CLANALLYONLY))
-				str.append(" This is a channel for clans and their allies.");
-			if(flags.contains(ChannelFlag.CLANONLY))
-				str.append(" Only members of the same clan can see messages on this channel.");
-			if(flags.contains(ChannelFlag.PLAYERREADONLY)||flags.contains(ChannelFlag.READONLY))
-				str.append(" This channel is read-only.");
-			if(flags.contains(ChannelFlag.SAMEAREA))
-				str.append(" Only people in the same area can see messages on this channel.");
-			if((mask!=null)&&(mask.trim().length()>0))
-				str.append(" The following may read this channel : "+CMLib.masking().maskDesc(mask));
-		}
-		return str.toString();
-	}
+        return channels;
+    }
+    
+    public String getExtraChannelDesc(String channelName)
+    {
+        StringBuilder str=new StringBuilder("");
+        int dex = getChannelIndex(channelName);
+        if(dex >= 0)
+        {
+            Set<ChannelFlag> flags = getChannelFlags(dex);
+            String mask = getChannelMask(dex);
+            if(flags.contains(ChannelFlag.CLANALLYONLY))
+                str.append(" This is a channel for clans and their allies.");
+            if(flags.contains(ChannelFlag.CLANONLY))
+                str.append(" Only members of the same clan can see messages on this channel.");
+            if(flags.contains(ChannelFlag.PLAYERREADONLY)||flags.contains(ChannelFlag.READONLY))
+                str.append(" This channel is read-only.");
+            if(flags.contains(ChannelFlag.SAMEAREA))
+                str.append(" Only people in the same area can see messages on this channel.");
+            if((mask!=null)&&(mask.trim().length()>0))
+                str.append(" The following may read this channel : "+CMLib.masking().maskDesc(mask));
+        }
+        return str.toString();
+    }
 
     private void clearChannels()
     {
@@ -267,7 +270,7 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
         numImc2ChannelsLoaded=0;
         channelNames=new Vector();
         channelMasks=new Vector();
-    	channelColorOverrides=new Vector<String>();
+        channelColorOverrides=new Vector<String>();
         channelFlags=new Vector<HashSet<ChannelFlag>>();
         ichannelList=new Vector();
         imc2channelList=new Vector();
@@ -275,90 +278,90 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
     }
     
     public boolean shutdown()
-	{
+    {
         clearChannels();
         return true;
-	}
+    }
 
-	public String[][] imc2ChannelsArray()
-	{
-		String[][] array=new String[numImc2ChannelsLoaded][5];
-		int num=0;
-		for(int i=0;i<channelNames.size();i++)
-		{
-			String name=channelNames.get(i);
-			String mask=channelMasks.get(i);
-			String colorOverride=channelColorOverrides.get(i);
-			HashSet<ChannelFlag> flags=channelFlags.get(i);
-			String iname=imc2channelList.get(i);
-			if((iname!=null)&&(iname.trim().length()>0))
-			{
-				array[num][0]=iname.trim();
-				array[num][1]=name.trim();
-				array[num][2]=mask;
+    public String[][] imc2ChannelsArray()
+    {
+        String[][] array=new String[numImc2ChannelsLoaded][5];
+        int num=0;
+        for(int i=0;i<channelNames.size();i++)
+        {
+            String name=channelNames.get(i);
+            String mask=channelMasks.get(i);
+            String colorOverride=channelColorOverrides.get(i);
+            HashSet<ChannelFlag> flags=channelFlags.get(i);
+            String iname=imc2channelList.get(i);
+            if((iname!=null)&&(iname.trim().length()>0))
+            {
+                array[num][0]=iname.trim();
+                array[num][1]=name.trim();
+                array[num][2]=mask;
                 array[num][3]=CMParms.combine(flags);
                 array[num][4]=colorOverride;
-				num++;
-			}
-		}
-		return array;
-	}
-	public String[][] iChannelsArray()
-	{
-		String[][] array=new String[numIChannelsLoaded][5];
-		int num=0;
-		for(int i=0;i<channelNames.size();i++)
-		{
-			String name=channelNames.get(i);
-			String mask=channelMasks.get(i);
-			String colorOverride=channelColorOverrides.get(i);
-			String iname=ichannelList.get(i);
-			HashSet<ChannelFlag> flags=channelFlags.get(i);
-			if((iname!=null)&&(iname.trim().length()>0))
-			{
-				array[num][0]=iname.trim();
-				array[num][1]=name.trim();
-				array[num][2]=mask;
+                num++;
+            }
+        }
+        return array;
+    }
+    public String[][] iChannelsArray()
+    {
+        String[][] array=new String[numIChannelsLoaded][5];
+        int num=0;
+        for(int i=0;i<channelNames.size();i++)
+        {
+            String name=channelNames.get(i);
+            String mask=channelMasks.get(i);
+            String colorOverride=channelColorOverrides.get(i);
+            String iname=ichannelList.get(i);
+            HashSet<ChannelFlag> flags=channelFlags.get(i);
+            if((iname!=null)&&(iname.trim().length()>0))
+            {
+                array[num][0]=iname.trim();
+                array[num][1]=name.trim();
+                array[num][2]=mask;
                 array[num][3]=CMParms.combine(flags);
-				array[num][4]=colorOverride;
-				num++;
-			}
-		}
-		return array;
-	}
-	public String[] getChannelNames()
-	{
-		if(channelNames.size()==0) return null;
-		return CMParms.toStringArray(channelNames);
-	}
-	
-	public List<Session> clearInvalidSnoopers(Session mySession, int channelCode)
-	{
-		List<Session> invalid=null;
-	    if(mySession!=null)
-	    {
-			for(Session S : CMLib.sessions().allIterable())
-		    {
-		        if((S!=mySession)
-		        &&(S.mob()!=null)
-		        &&(mySession.amBeingSnoopedBy(S))
-		        &&(!mayReadThisChannel(S.mob(),channelCode,false)))
-		        {
-		            if(invalid==null) invalid=new Vector();
-		            invalid.add(S);
-		            mySession.stopBeingSnoopedBy(S);
-		        }
-		    }
-	    }
-	    return invalid;	    
-	}
-	
-	public void restoreInvalidSnoopers(Session mySession, List<Session> invalid)
-	{
-	    if((mySession==null)||(invalid==null)) return;
-		for(int s=0;s<invalid.size();s++)
-		    mySession.startBeingSnoopedBy((Session)invalid.get(s));
-	}
+                array[num][4]=colorOverride;
+                num++;
+            }
+        }
+        return array;
+    }
+    public String[] getChannelNames()
+    {
+        if(channelNames.size()==0) return null;
+        return CMParms.toStringArray(channelNames);
+    }
+    
+    public List<Session> clearInvalidSnoopers(Session mySession, int channelCode)
+    {
+        List<Session> invalid=null;
+        if(mySession!=null)
+        {
+            for(Session S : CMLib.sessions().allIterable())
+            {
+                if((S!=mySession)
+                &&(S.mob()!=null)
+                &&(mySession.amBeingSnoopedBy(S))
+                &&(!mayReadThisChannel(S.mob(),channelCode,false)))
+                {
+                    if(invalid==null) invalid=new Vector();
+                    invalid.add(S);
+                    mySession.stopBeingSnoopedBy(S);
+                }
+            }
+        }
+        return invalid;        
+    }
+    
+    public void restoreInvalidSnoopers(Session mySession, List<Session> invalid)
+    {
+        if((mySession==null)||(invalid==null)) return;
+        for(int s=0;s<invalid.size();s++)
+            mySession.startBeingSnoopedBy((Session)invalid.get(s));
+    }
 
     public String parseOutFlags(String mask, HashSet<ChannelFlag> flags, String[] colorOverride)
     {
@@ -373,144 +376,144 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
             }
             else
             {
-	            int colorNum=CMParms.indexOf(ColorLibrary.COLOR_ALLCOLORNAMES, s);
-	            if(colorNum>=0)
-	            {
-	                V.removeElementAt(v);
-	                if(s.startsWith("BG"))
-		                colorOverride[0]=colorOverride[0]+ColorLibrary.COLOR_ALLCOLORS[colorNum];
-	                else
-		                colorOverride[0]=ColorLibrary.COLOR_ALLCOLORS[colorNum]+ColorLibrary.COLOR_ALLCOLORS[colorNum]+colorOverride[0];
-	            }
+                int colorNum=CMParms.indexOf(ColorLibrary.COLOR_ALLCOLORNAMES, s);
+                if(colorNum>=0)
+                {
+                    V.removeElementAt(v);
+                    if(s.startsWith("BG"))
+                        colorOverride[0]=colorOverride[0]+ColorLibrary.COLOR_ALLCOLORS[colorNum];
+                    else
+                        colorOverride[0]=ColorLibrary.COLOR_ALLCOLORS[colorNum]+ColorLibrary.COLOR_ALLCOLORS[colorNum]+colorOverride[0];
+                }
             }
         }
         final StringBuilder str=new StringBuilder();
         for(final String s : V)
-        	str.append(s).append(" ");
+            str.append(s).append(" ");
         return str.toString().trim();
     }
     
-	public int loadChannels(String list, String ilist, String imc2list)
-	{
+    public int loadChannels(String list, String ilist, String imc2list)
+    {
         clearChannels();
-		while(list.length()>0)
-		{
-			int x=list.indexOf(',');
+        while(list.length()>0)
+        {
+            int x=list.indexOf(',');
 
-			String item=null;
-			if(x<0)
-			{
-				item=list.trim();
-				list="";
-			}
-			else
-			{
-				item=list.substring(0,x).trim();
-				list=list.substring(x+1);
-			}
-			numChannelsLoaded++;
-			x=item.indexOf(' ');
-			HashSet<ChannelFlag> flags=new HashSet<ChannelFlag>();
-			if(x>0)
-			{
-				String[] colorOverride=new String[]{""};
-				channelMasks.add(parseOutFlags(item.substring(x+1).trim(),flags,colorOverride));
-				channelColorOverrides.add(colorOverride[0]);
-				item=item.substring(0,x);
-			}
-			else
-			{
-				channelMasks.add("");
-				channelColorOverrides.add("");
-			}
-			ichannelList.add("");
-			imc2channelList.add("");
-			channelNames.add(item.toUpperCase().trim());
+            String item=null;
+            if(x<0)
+            {
+                item=list.trim();
+                list="";
+            }
+            else
+            {
+                item=list.substring(0,x).trim();
+                list=list.substring(x+1);
+            }
+            numChannelsLoaded++;
+            x=item.indexOf(' ');
+            HashSet<ChannelFlag> flags=new HashSet<ChannelFlag>();
+            if(x>0)
+            {
+                String[] colorOverride=new String[]{""};
+                channelMasks.add(parseOutFlags(item.substring(x+1).trim(),flags,colorOverride));
+                channelColorOverrides.add(colorOverride[0]);
+                item=item.substring(0,x);
+            }
+            else
+            {
+                channelMasks.add("");
+                channelColorOverrides.add("");
+            }
+            ichannelList.add("");
+            imc2channelList.add("");
+            channelNames.add(item.toUpperCase().trim());
             channelFlags.add(flags);
-			channelQue.add(new Vector());
-		}
-		while(ilist.length()>0)
-		{
-			int x=ilist.indexOf(',');
+            channelQue.add(new Vector());
+        }
+        while(ilist.length()>0)
+        {
+            int x=ilist.indexOf(',');
 
-			String item=null;
-			if(x<0)
-			{
-				item=ilist.trim();
-				ilist="";
-			}
-			else
-			{
-				item=ilist.substring(0,x).trim();
-				ilist=ilist.substring(x+1);
-			}
-			int y1=item.indexOf(' ');
-			int y2=item.lastIndexOf(' ');
-			if((y1<0)||(y2<=y1)) continue;
-			numChannelsLoaded++;
-			numIChannelsLoaded++;
-			String lvl=item.substring(y1+1,y2).trim();
-			String ichan=item.substring(y2+1).trim();
-			item=item.substring(0,y1);
-			channelNames.add(item.toUpperCase().trim());
-			channelQue.add(new Vector());
-			HashSet<ChannelFlag> flags=new HashSet<ChannelFlag>();
-			String[] colorOverride=new String[]{""};
-			channelMasks.add(parseOutFlags(lvl,flags,colorOverride));
-			channelColorOverrides.add(colorOverride[0]);
+            String item=null;
+            if(x<0)
+            {
+                item=ilist.trim();
+                ilist="";
+            }
+            else
+            {
+                item=ilist.substring(0,x).trim();
+                ilist=ilist.substring(x+1);
+            }
+            int y1=item.indexOf(' ');
+            int y2=item.lastIndexOf(' ');
+            if((y1<0)||(y2<=y1)) continue;
+            numChannelsLoaded++;
+            numIChannelsLoaded++;
+            String lvl=item.substring(y1+1,y2).trim();
+            String ichan=item.substring(y2+1).trim();
+            item=item.substring(0,y1);
+            channelNames.add(item.toUpperCase().trim());
+            channelQue.add(new Vector());
+            HashSet<ChannelFlag> flags=new HashSet<ChannelFlag>();
+            String[] colorOverride=new String[]{""};
+            channelMasks.add(parseOutFlags(lvl,flags,colorOverride));
+            channelColorOverrides.add(colorOverride[0]);
             channelFlags.add(flags);
-			imc2channelList.add("");
-			ichannelList.add(ichan);
-		}
-		while(imc2list.length()>0)
-		{
-			int x=imc2list.indexOf(',');
+            imc2channelList.add("");
+            ichannelList.add(ichan);
+        }
+        while(imc2list.length()>0)
+        {
+            int x=imc2list.indexOf(',');
 
-			String item=null;
-			if(x<0)
-			{
-				item=imc2list.trim();
-				imc2list="";
-			}
-			else
-			{
-				item=imc2list.substring(0,x).trim();
-				imc2list=imc2list.substring(x+1);
-			}
-			int y1=item.indexOf(' ');
-			int y2=item.lastIndexOf(' ');
-			if((y1<0)||(y2<=y1)) continue;
-			numChannelsLoaded++;
-			numImc2ChannelsLoaded++;
-			String lvl=item.substring(y1+1,y2).trim();
-			String ichan=item.substring(y2+1).trim();
-			item=item.substring(0,y1);
-			channelNames.add(item.toUpperCase().trim());
-			channelQue.add(new Vector());
-			HashSet<ChannelFlag> flags=new HashSet<ChannelFlag>();
-			String[] colorOverride=new String[]{""};
-			channelMasks.add(parseOutFlags(lvl,flags,colorOverride));
-			channelColorOverrides.add(colorOverride[0]);
+            String item=null;
+            if(x<0)
+            {
+                item=imc2list.trim();
+                imc2list="";
+            }
+            else
+            {
+                item=imc2list.substring(0,x).trim();
+                imc2list=imc2list.substring(x+1);
+            }
+            int y1=item.indexOf(' ');
+            int y2=item.lastIndexOf(' ');
+            if((y1<0)||(y2<=y1)) continue;
+            numChannelsLoaded++;
+            numImc2ChannelsLoaded++;
+            String lvl=item.substring(y1+1,y2).trim();
+            String ichan=item.substring(y2+1).trim();
+            item=item.substring(0,y1);
+            channelNames.add(item.toUpperCase().trim());
+            channelQue.add(new Vector());
+            HashSet<ChannelFlag> flags=new HashSet<ChannelFlag>();
+            String[] colorOverride=new String[]{""};
+            channelMasks.add(parseOutFlags(lvl,flags,colorOverride));
+            channelColorOverrides.add(colorOverride[0]);
             channelFlags.add(flags);
-			imc2channelList.add(ichan);
-			ichannelList.add("");
-		}
+            imc2channelList.add(ichan);
+            ichannelList.add("");
+        }
 
-		if(!CMSecurity.isDisabled(CMSecurity.DisFlag.CHANNELAUCTION))
-		{
-			channelNames.add("AUCTION");
-			channelQue.add(new Vector());
-			channelMasks.add("");
-	        channelFlags.add(new HashSet<ChannelFlag>());
-	        channelColorOverrides.add("");
-			ichannelList.add("");
-			imc2channelList.add("");
-			numChannelsLoaded++;
-		}
+        if(!CMSecurity.isDisabled(CMSecurity.DisFlag.CHANNELAUCTION))
+        {
+            channelNames.add("AUCTION");
+            channelQue.add(new Vector());
+            channelMasks.add("");
+            channelFlags.add(new HashSet<ChannelFlag>());
+            channelColorOverrides.add("");
+            ichannelList.add("");
+            imc2channelList.add("");
+            numChannelsLoaded++;
+        }
 
-		numChannelsLoaded++;
-		return numChannelsLoaded;
-	}
+        numChannelsLoaded++;
+        return numChannelsLoaded;
+    }
     
     public boolean channelTo(Session ses, boolean areareq, int channelInt, CMMsg msg, MOB sender)
     {
@@ -524,10 +527,10 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
             didIt=true;
             if(msg.trailerMsgs()!=null)
             {
-	    		for(CMMsg msg2 : msg.trailerMsgs())
-	                if((msg!=msg2)&&(M.location()!=null)&&(M.location().okMessage(M,msg2)))
-	                    M.executeMsg(M,msg2);
-	            msg.trailerMsgs().clear();
+                for(CMMsg msg2 : msg.trailerMsgs())
+                    if((msg!=msg2)&&(M.location()!=null)&&(M.location().okMessage(M,msg2)))
+                        M.executeMsg(M,msg2);
+                msg.trailerMsgs().clear();
             }
         }
         return didIt;
@@ -544,7 +547,7 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
         channelName=getChannelName(channelInt);
         String channelColor=getChannelColorOverride(channelInt);
         if(channelColor.length()==0)
-        	channelColor="^Q";
+            channelColor="^Q";
 
         CMMsg msg=null;
         if(systemMsg)
@@ -586,7 +589,7 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
         {
             boolean areareq=flags.contains(ChannelsLibrary.ChannelFlag.SAMEAREA);
             channelQueUp(channelInt,msg);
-    		for(Session S : CMLib.sessions().localOnlineIterable())
+            for(Session S : CMLib.sessions().localOnlineIterable())
                 channelTo(S,areareq,channelInt,msg,mob);
         }
         if((CMLib.intermud().i3online()&&(CMLib.intermud().isI3channel(channelName)))

@@ -1,6 +1,7 @@
 package com.planet_ink.coffee_mud.Behaviors;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.core.CMSecurity.DbgFlag;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
@@ -67,7 +68,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
         errLogMsg.append(!((W.travelAttemptTime()==0)||((System.currentTimeMillis()-W.travelAttemptTime())<(5*60*1000)))?"AE6 ":"");
         errLogMsg.append(!CMLib.flags().aliveAwakeMobile(officer,true)?"AE7 ":"");
         errLogMsg.append(!CMLib.flags().isBound(W.criminal())?"AE8 ":"");
-        Log.debugOut("Arrest",lead+errLogMsg.toString());
+        if(CMSecurity.isDebugging(DbgFlag.ARREST)) Log.debugOut("Arrest",lead+errLogMsg.toString());
     }
     
     public boolean frame(Area myArea, MOB accused, MOB framed)

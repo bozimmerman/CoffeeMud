@@ -444,7 +444,6 @@ public class MUD extends Thread implements MudHost
                 {
                     String address="unknown";
                     try{address=sock.getInetAddress().getHostAddress().trim();}catch(Exception e){}
-                    Log.sysOut(Thread.currentThread().getName(),"Connection from "+address);
                     int proceed=0;
                     if(CMSecurity.isBanned(address))
                         proceed=1;
@@ -485,10 +484,11 @@ public class MUD extends Thread implements MudHost
         
                         accessed.addElement(address,Long.valueOf(System.currentTimeMillis()));
                     }
-        
+
                     if(proceed!=0)
                     {
-                        Log.sysOut(Thread.currentThread().getName(),"Blocking a connection from "+address);
+                        if((numAtThisAddress % 5)== 1)
+                            Log.sysOut(Thread.currentThread().getName(),"Blocking a connection from "+address +"("+numAtThisAddress+")");
                         try
                         {
                             PrintWriter out = new PrintWriter(sock.getOutputStream());
@@ -510,6 +510,7 @@ public class MUD extends Thread implements MudHost
                     }
                     else
                     {
+                        Log.sysOut(Thread.currentThread().getName(),"Connection from "+address);
                         state=2;
                         // also the intro page
                         CMFile introDir=new CMFile(Resources.makeFileResourceName("text"),null,false,true);
