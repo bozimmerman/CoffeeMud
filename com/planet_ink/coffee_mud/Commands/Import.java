@@ -3644,7 +3644,8 @@ public class Import extends StdCommand
 			}
 			if(CMParms.numBits(codeStr3)>2)
 			{
-				I.basePhyStats().setLevel(CMath.s_int(CMParms.getCleanBit(codeStr3,0).trim()));
+				int level=CMath.s_int(CMParms.getCleanBit(codeStr3,0).trim());
+				I.basePhyStats().setLevel(level);
 				I.basePhyStats().setWeight(CMath.s_int(CMParms.getCleanBit(codeStr3,1).trim()) / 10);
 				if(I.basePhyStats().weight()<1) I.basePhyStats().setWeight(1);
 				if(I instanceof Rideable)
@@ -3653,7 +3654,8 @@ public class Import extends StdCommand
 			}
 			else
 			{
-				I.basePhyStats().setLevel(CMath.s_int(codeStr3));
+				int level=CMath.s_int(codeStr3);
+				I.basePhyStats().setLevel(level);
 			}
 
 
@@ -5667,6 +5669,11 @@ public class Import extends StdCommand
 							I.recoverPhyStats();
 							if(M instanceof ShopKeeper)
 							{
+								if(I.basePhyStats().level()<1)
+								{
+									I.basePhyStats().setLevel(1);
+									I.recoverPhyStats();
+								}
 								int num=CMath.s_int(CMParms.getCleanBit(s,3).trim());
 								if(num<0) num=100;
 								((ShopKeeper)M).getShop().addStoreInventory(I,num,-1);
@@ -5703,7 +5710,14 @@ public class Import extends StdCommand
 								}
 							}
 							else
+							{
+								if(I.basePhyStats().level()<1)
+								{
+									I.basePhyStats().setLevel(M.basePhyStats().level());
+									I.recoverPhyStats();
+								}
 								M.addItem(I);
+							}
 							I.recoverPhyStats();
 							M.recoverCharStats();
 							M.recoverPhyStats();
@@ -5745,6 +5759,8 @@ public class Import extends StdCommand
 						}
 						else
 						{
+							if(I.basePhyStats().level()<1)
+								I.basePhyStats().setLevel(M2.basePhyStats().level());
 							M2.addItem(I);
 							I.wearIfPossible(M2);
 							I.recoverPhyStats();
@@ -5784,6 +5800,8 @@ public class Import extends StdCommand
 						}
 						else
 						{
+							if(I.basePhyStats().level()<1)
+								I.basePhyStats().setLevel(M.basePhyStats().level());
 							M.addItem(I);
 							I.wearIfPossible(M);
 							I.recoverPhyStats();
@@ -5819,6 +5837,8 @@ public class Import extends StdCommand
 						}
 						else
 						{
+							if(I.basePhyStats().level()<1)
+								I.basePhyStats().setLevel(1);
 							R.addItem(I);
 							if(CMLib.flags().isGettable(I))
 							{
@@ -5865,6 +5885,8 @@ public class Import extends StdCommand
 					if(C.owner() instanceof Room)
 					{
 						Room RR=(Room)C.owner();
+						if(I.basePhyStats().level()<1)
+							I.basePhyStats().setLevel(1);
 						RR.addItem(I);
 						I.setContainer(C);
 						if(CMLib.flags().isGettable(I))
@@ -5877,6 +5899,8 @@ public class Import extends StdCommand
 					if(C.owner() instanceof MOB)
 					{
 						MOB MM=(MOB)C.owner();
+						if(I.basePhyStats().level()<1)
+							I.basePhyStats().setLevel(MM.basePhyStats().level());
 						MM.addItem(I);
 						I.setContainer(C);
 						MM.text();

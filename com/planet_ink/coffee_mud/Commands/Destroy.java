@@ -475,38 +475,65 @@ public class Destroy extends StdCommand
 				confirmed=true;
 			}
 		}
-
-		String areaName=CMParms.combine(commands,2);
-		if(CMLib.map().getArea(areaName)==null)
+		List<String> areaNames=new LinkedList<String>();
+		areaNames.add(CMParms.combine(commands,2));
+		if((commands.size()>4))
 		{
-			mob.tell("There is no such area as '"+areaName+"'");
-			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a thunderous spell.");
-			return;
-		}
-		Area A=CMLib.map().getArea(areaName);
-		Room R=A.getRandomProperRoom();
-		if((R!=null)&&(!CMSecurity.isAllowed(mob,R,"CMDAREAS")))
-		{
-			errorOut(mob);
-			return;
-		}
-			
-		if(!confirmed)
-			if(mob.session().confirm("Area: \""+areaName+"\", OBLITERATE IT???","N"))
+			if(((String)commands.get(2)).equalsIgnoreCase("all"))
 			{
-				if(mob.location().getArea().Name().equalsIgnoreCase(areaName))
+				areaNames.clear();
+				for(Enumeration<Area> a=CMLib.map().areas();a.hasMoreElements();)
+					areaNames.add(a.nextElement().Name());
+				if(((String)commands.get(3)).equalsIgnoreCase("except"))
 				{
-					mob.tell("You dip!  You are IN that area!  Leave it first...");
-					mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a thunderous spell.");
-					return;
+					for(int i=4;i<commands.size();i++)
+					{
+						final Area A=CMLib.map().getArea((String)commands.elementAt(i));
+						if(A==null)
+						{
+							mob.tell("There is no such area as '"+((String)commands.elementAt(i))+"'");
+							mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a thunderous spell.");
+							return;
+						}
+						areaNames.remove(A.Name());
+					}
 				}
-				confirmed=true;
 			}
-		if(confirmed)
+		}
+		
+		for(String areaName : areaNames)
 		{
-			mob.location().showHappens(CMMsg.MSG_OK_ACTION,"A thunderous boom of destruction is heard in the distance.");
-			Log.sysOut("Rooms",mob.Name()+" destroyed area "+areaName+".");
-			CMLib.map().obliterateArea(areaName);
+			if(CMLib.map().getArea(areaName)==null)
+			{
+				mob.tell("There is no such area as '"+areaName+"'");
+				mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a thunderous spell.");
+				return;
+			}
+			Area A=CMLib.map().getArea(areaName);
+			Room R=A.getRandomProperRoom();
+			if((R!=null)&&(!CMSecurity.isAllowed(mob,R,"CMDAREAS")))
+			{
+				errorOut(mob);
+				return;
+			}
+				
+			if(!confirmed)
+				if(mob.session().confirm("Area: \""+areaName+"\", OBLITERATE IT???","N"))
+				{
+					if(mob.location().getArea().Name().equalsIgnoreCase(areaName))
+					{
+						mob.tell("You dip!  You are IN that area!  Leave it first...");
+						mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a thunderous spell.");
+						return;
+					}
+					confirmed=true;
+				}
+			if(confirmed)
+			{
+				mob.location().showHappens(CMMsg.MSG_OK_ACTION,"A thunderous boom of destruction is heard in the distance.");
+				Log.sysOut("Rooms",mob.Name()+" destroyed area "+areaName+".");
+				CMLib.map().obliterateArea(areaName);
+			}
 		}
 	}
 
