@@ -186,8 +186,8 @@ public class MUD extends Thread implements MudHost
             int dbConns=page.getInt("DBCONNECTIONS");
             if(dbConns == 0)
             {
-              Log.errOut(Thread.currentThread().getName(),"Fatal error: DBCONNECTIONS in INI file is "+dbConns);
-              System.exit(-1);
+                Log.errOut(Thread.currentThread().getName(),"Fatal error: DBCONNECTIONS in INI file is "+dbConns);
+                System.exit(-1);
             }
             boolean dbReuse=page.getBoolean("DBREUSE");
             boolean useQue=!CMSecurity.isDisabled(CMSecurity.DisFlag.DBERRORQUE);
