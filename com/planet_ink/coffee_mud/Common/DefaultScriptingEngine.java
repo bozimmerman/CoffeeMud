@@ -2987,9 +2987,10 @@ public class DefaultScriptingEngine implements ScriptingEngine
                             MaskingLibrary.CompiledZapperMask MASK=null;
                             if((name.toUpperCase().startsWith("MASK")&&(name.substring(4).trim().startsWith("="))))
                             {
+                            	boolean usePreCompiled = (name.equals(tt[t+0]));
                                 name=name.substring(4).trim();
                                 name=name.substring(1).trim();
-                                MASK=CMLib.masking().maskCompile(name);
+                                MASK=usePreCompiled?CMLib.masking().getPreCompiledMask(name): CMLib.masking().maskCompile(name);
                             }
                             for(int i=0;i<lastKnownLocation.numInhabitants();i++)
                             {
