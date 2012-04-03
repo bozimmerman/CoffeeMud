@@ -50,7 +50,7 @@ public class Shutdown extends StdCommand implements Tickable
         long until = shuttingDownCompletes - System.currentTimeMillis();
         String tm = CMLib.time().date2EllapsedTime(until, TimeUnit.SECONDS, false);
         if((tm == null)||(tm.trim().length()==0))
-            tm = "now";
+            tm = " now";
         else
             tm=" in "+tm;
         for(Session S : CMLib.sessions().allIterable())
