@@ -76,10 +76,11 @@ public class MUD extends Thread implements MudHost
     private static IMC2Driver       imc2server=null;
     private static List<HTTPserver> webServers=new Vector<HTTPserver>();
     private static SMTPserver       smtpServerThread=null;
-    private static DVector          accessed=new DVector(2);
     private static List<String>     autoblocked=new Vector<String>();
     private static List<DBConnector>databases=new Vector<DBConnector>();
     private static List<CM1Server>  cm1Servers=new Vector<CM1Server>();
+    private static List<Triad<String,Long,Integer>>       
+                                    accessed=new LinkedList<Triad<String,Long,Integer>>();
     
 
     public MUD(String name)
@@ -448,47 +449,51 @@ public class MUD extends Thread implements MudHost
                     if(CMSecurity.isBanned(address))
                         proceed=1;
                     int numAtThisAddress=0;
-                    long ConnectionWindow=(180*1000);
                     long LastConnectionDelay=(5*60*1000);
                     boolean anyAtThisAddress=false;
                     int maxAtThisAddress=6;
                     if(!CMSecurity.isDisabled(CMSecurity.DisFlag.CONNSPAMBLOCK))
                     {
-                        try{
-                            for(int a=accessed.size()-1;a>=0;a--)
+                    	synchronized(accessed)
+                    	{
+                            for(Iterator<Triad<String,Long,Integer>> i=accessed.iterator();i.hasNext();)
                             {
-                                if((((Long)accessed.elementAt(a,2)).longValue()+LastConnectionDelay)<System.currentTimeMillis())
-                                    accessed.removeElementAt(a);
+                            	Triad<String,Long,Integer> triad=i.next();
+                                if((triad.second.longValue()+LastConnectionDelay)<System.currentTimeMillis())
+                                    i.remove();
                                 else
-                                if(((String)accessed.elementAt(a,1)).trim().equalsIgnoreCase(address))
+                                if(triad.first.trim().equalsIgnoreCase(address))
                                 {
                                     anyAtThisAddress=true;
-                                    if((((Long)accessed.elementAt(a,2)).longValue()+ConnectionWindow)>System.currentTimeMillis())
-                                        numAtThisAddress++;
+                                    triad.second=Long.valueOf(System.currentTimeMillis());
+                                    numAtThisAddress=triad.third.intValue()+1;
+                                    triad.third=Integer.valueOf(numAtThisAddress);
                                 }
                             }
-                            if(autoblocked.contains(address.toUpperCase()))
-                            {
-                                if(!anyAtThisAddress)
-                                    autoblocked.remove(address.toUpperCase());
-                                else
-                                    proceed=2;
-                            }
+                            if(!anyAtThisAddress)
+    	                        accessed.add(new Triad<String,Long,Integer>(address,Long.valueOf(System.currentTimeMillis()),Integer.valueOf(1)));
+                    	}
+                        if(autoblocked.contains(address.toUpperCase()))
+                        {
+                            if(!anyAtThisAddress)
+                                autoblocked.remove(address.toUpperCase());
                             else
-                            if(numAtThisAddress>=maxAtThisAddress)
-                            {
-                                autoblocked.add(address.toUpperCase());
                                 proceed=2;
-                            }
-                        }catch(java.lang.ArrayIndexOutOfBoundsException e){}
-        
-                        accessed.addElement(address,Long.valueOf(System.currentTimeMillis()));
+                        }
+                        else
+                        if(numAtThisAddress>=maxAtThisAddress)
+                        {
+                            autoblocked.add(address.toUpperCase());
+                            proceed=2;
+                        }
                     }
 
                     if(proceed!=0)
                     {
-                        if(numAtThisAddress == (Math.round(Math.sqrt(numAtThisAddress+1))*Math.round(Math.sqrt(numAtThisAddress+1))))
-                            Log.sysOut(Thread.currentThread().getName(),"Blocking a connection from "+address +"("+numAtThisAddress+")");
+                    	int abusiveCount=numAtThisAddress-maxAtThisAddress+1;
+                    	long rounder=Math.round(Math.sqrt(abusiveCount));
+                        if(abusiveCount == (rounder*rounder))
+                            Log.sysOut(Thread.currentThread().getName(),"Blocking a connection from "+address +" ("+numAtThisAddress+")");
                         try
                         {
                             PrintWriter out = new PrintWriter(sock.getOutputStream());
