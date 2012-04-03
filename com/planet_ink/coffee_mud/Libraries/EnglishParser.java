@@ -709,10 +709,10 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
     }
     private Collection toCollection(ItemCollection cont)
     {
-    	LinkedList list=new LinkedList();
-    	for(Enumeration<Item> i=cont.items();i.hasMoreElements();)
-    		list.add(i.nextElement());
-    	return list;
+        LinkedList list=new LinkedList();
+        for(Enumeration<Item> i=cont.items();i.hasMoreElements();)
+            list.add(i.nextElement());
+        return list;
     }
     
     public int getContextSameNumber(ItemCollection cont, Environmental E){ return getContextSameNumber(toCollection(cont),E);}
@@ -990,6 +990,29 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
         return CMLib.beanCounter().getCurrency(mine);
     }
 
+    public long getMillisMultiplierByName(String timeName)
+    {
+        timeName=timeName.toLowerCase();
+        if("ticks".startsWith(timeName))
+            return CMProps.getTickMillis();
+        else
+        if("seconds".startsWith(timeName))
+            return 1000;
+        else
+        if("minutes".startsWith(timeName))
+            return 1000*60;
+        else
+        if("hours".startsWith(timeName))
+            return 1000*60*60;
+        else
+        if("days".startsWith(timeName))
+            return 1000*60*60*24;
+        else
+        if("weeks".startsWith(timeName))
+            return 1000*60*60*24*7;
+        else
+            return -1;
+    }
 
     public double numPossibleGoldDenomination(Environmental mine, String currency, String itemID)
     {

@@ -55,7 +55,7 @@ public interface EnglishParsing extends CMLibrary
     public String bumpDotNumber(String srchStr);
     public Environmental fetchEnvironmental(Iterable<? extends Environmental> list, String srchStr, boolean exactOnly);
     public Environmental fetchEnvironmental(Map<String, ? extends Environmental> list, String srchStr, boolean exactOnly);
-	public List<Environmental> fetchEnvironmentals(List<? extends Environmental> list, String srchStr, boolean exactOnly);
+    public List<Environmental> fetchEnvironmentals(List<? extends Environmental> list, String srchStr, boolean exactOnly);
     public Item fetchAvailableItem(List<Item> list, String srchStr, Item goodLocation, int wornFilter, boolean exactOnly);
     public List<Item> fetchAvailableItems(List<Item> list, String srchStr, Item goodLocation, int wornFilter, boolean exactOnly);
     public int getContextNumber(Object[] list, Environmental E);
@@ -76,7 +76,8 @@ public interface EnglishParsing extends CMLibrary
     public long numPossibleGold(Environmental mine, String itemID);
     public String numPossibleGoldCurrency(Environmental mine, String itemID);
     public double numPossibleGoldDenomination(Environmental mine, String currency, String itemID);
-	public Object[] parseMoneyStringSDL(MOB mob, String amount, String correctCurrency);
+    public Object[] parseMoneyStringSDL(MOB mob, String amount, String correctCurrency);
+    public long getMillisMultiplierByName(String timeName);
     public String matchAnyCurrencySet(String itemID);
     public double matchAnyDenomination(String currency, String itemID);
     public Item possibleRoomGold(MOB seer, Room room, Container container, String itemID);
