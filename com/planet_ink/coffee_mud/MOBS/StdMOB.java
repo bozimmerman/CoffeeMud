@@ -883,55 +883,75 @@ public class StdMOB implements MOB
         }catch(NullPointerException n){}
         return false;
     }
+    
+    protected boolean isEitherOfUsDead(final MOB mob)
+    {
+      if(location()==null) return true;
+      if(mob.location()==null) return true;
+      if(mob.amDead()) return true;
+      if(mob.curState().getHitPoints()<=0) return true;
+      if(amDead()) return true;
+      if(curState().getHitPoints()<=0) return true;
+      return false;
+    }
+
+    protected boolean isPermissableToFight(final MOB mob)
+    {
+      if(mob==null) return false;
+      final boolean targetIsMonster=mob.isMonster();
+      final boolean iAmMonster=isMonster();
+      if(targetIsMonster)
+      {
+          final MOB fol=mob.amFollowing();
+          if((fol!=null)&&(!isEitherOfUsDead(fol)))
+              if(!isPermissableToFight(fol))
+                  return false;
+      }
+      if(iAmMonster)
+      {
+          final MOB fol=amFollowing();
+          if((fol!=null)&&(!isEitherOfUsDead(fol)))
+              if(!fol.mayIFight(mob))
+                  return false;
+      }
+      if(targetIsMonster || iAmMonster)
+          return true;
+      if((mob.soulMate()!=null)||(soulMate()!=null))
+          return true;
+      if(mob==this) return true;
+      if(CMProps.getVar(CMProps.SYSTEM_PKILL).startsWith("ALWAYS"))
+          return true;
+      if(CMProps.getVar(CMProps.SYSTEM_PKILL).startsWith("NEVER"))
+          return false;
+      if(CMLib.clans().isCommonClanRelations(getClanID(),mob.getClanID(),Clan.REL_WAR))
+          return true;
+      if(CMath.bset(getBitmap(),MOB.ATT_PLAYERKILL))
+      {
+          if(CMSecurity.isAllowed(this,location(),"PKILL")
+          ||(CMath.bset(mob.getBitmap(),MOB.ATT_PLAYERKILL)))
+              return true;
+          return false;
+      }
+      else
+      if(CMath.bset(mob.getBitmap(),MOB.ATT_PLAYERKILL))
+      {
+          if(CMSecurity.isAllowed(mob,location(),"PKILL")
+          ||(CMath.bset(getBitmap(),MOB.ATT_PLAYERKILL)))
+              return true;
+          return false;
+      }
+      else
+          return false;
+    }
+    
     public boolean mayIFight(final MOB mob)
     {
         if(mob==null) return false;
-        if(location()==null) return false;
-        if(mob.location()==null) return false;
-        if(mob.amDead()) return false;
-        if(mob.curState().getHitPoints()<=0) return false;
-        if(amDead()) return false;
-        if(curState().getHitPoints()<=0) return false;
-        if(mob.isMonster())
-        {
-            final MOB fol=mob.amFollowing();
-            if(fol!=null) return mayIFight(fol);
-            return true;
-        }
-        else
-        if(isMonster())
-        {
-            final MOB fol=amFollowing();
-            if(fol!=null) return fol.mayIFight(mob);
-            return true;
-        }
-        if((mob.soulMate()!=null)||(soulMate()!=null))
-            return true;
-        if(mob==this) return true;
-        if(CMProps.getVar(CMProps.SYSTEM_PKILL).startsWith("ALWAYS"))
-            return true;
-        if(CMProps.getVar(CMProps.SYSTEM_PKILL).startsWith("NEVER"))
+        if(isEitherOfUsDead(mob))
             return false;
-        if(CMLib.clans().isCommonClanRelations(getClanID(),mob.getClanID(),Clan.REL_WAR))
-            return true;
-        if(CMath.bset(getBitmap(),MOB.ATT_PLAYERKILL))
-        {
-            if(CMSecurity.isAllowed(this,location(),"PKILL")
-            ||(CMath.bset(mob.getBitmap(),MOB.ATT_PLAYERKILL)))
-                return true;
-            return false;
-        }
-        else
-        if(CMath.bset(mob.getBitmap(),MOB.ATT_PLAYERKILL))
-        {
-            if(CMSecurity.isAllowed(mob,location(),"PKILL")
-            ||(CMath.bset(getBitmap(),MOB.ATT_PLAYERKILL)))
-                return true;
-            return false;
-        }
-        else
-            return false;
+        return isPermissableToFight(mob);
     }
+    
     public boolean mayPhysicallyAttack(MOB mob)
     {
         if((!mayIFight(mob))
