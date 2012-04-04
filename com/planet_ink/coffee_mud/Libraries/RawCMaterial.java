@@ -85,7 +85,7 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
         long lowestNonZeroFoodNumber=Long.MAX_VALUE;
         if(owner instanceof Room)
         {
-            Room R=(Room)item.owner();
+            Room R=(Room)owner;
             for(int i=0;i<R.numItems();i++)
             {
                 I=R.getItem(i);
@@ -102,7 +102,7 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
         else
         if(owner instanceof MOB)
         {
-            MOB M=(MOB)item.owner();
+            MOB M=(MOB)owner;
             for(int i=0;i<M.numItems();i++)
             {
                 I=M.getItem(i);
