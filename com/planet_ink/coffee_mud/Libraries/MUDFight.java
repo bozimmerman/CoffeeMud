@@ -768,6 +768,9 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 
         CharClass combatCharClass=getCombatDominantClass(source,target);
         Set<MOB> beneficiaries=getCombatBeneficiaries(source,target,combatCharClass);
+        Set<MOB> hisGroupH=target.getGroupMembers(new HashSet<MOB>());
+        for(MOB beneficiary : beneficiaries)
+        	pickNextVictim(beneficiary, target, hisGroupH);
         Set<MOB> dividers=getCombatDividers(source,target,combatCharClass);
 
         dispenseExperience(beneficiaries,dividers,target);
@@ -1200,8 +1203,6 @@ public class MUDFight extends StdLibrary implements CombatLibrary
                 MOB killer=(MOB)msg.tool();
                 doDeathPostProcessing(msg);
                 justDie(killer,deadmob);
-                // this needs to be here because his own observe may happen after this, so victim will be gone.
-                pickNextVictim(killer,deadmob,deadmob);
             }
             else
                 justDie(null,deadmob);
@@ -1251,13 +1252,12 @@ public class MUDFight extends StdLibrary implements CombatLibrary
         }
     }
     
-    protected void pickNextVictim(MOB observer, MOB fighting, MOB deadmob)
+    protected void pickNextVictim(MOB observer, MOB deadmob, Set<MOB> deadGroupH)
     {
         Room R=observer.location();
-        if((fighting==deadmob)&&(R!=null))
+        if(R!=null)
         {
             MOB newTargetM=null;
-            Set<MOB> hisGroupH=deadmob.getGroupMembers(new HashSet<MOB>());
             Set<MOB> myGroupH=observer.getGroupMembers(new HashSet<MOB>());
             for(int r=0;r<R.numInhabitants();r++)
             {
@@ -1281,7 +1281,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
                 if((M!=observer)
                 &&(M!=deadmob)
                 &&(M!=null)
-                &&(hisGroupH.contains(M)
+                &&(deadGroupH.contains(M)
                     ||((vic!=null)&&(myGroupH.contains(vic))))
                 &&(!M.amDead())
                 &&(CMLib.flags().isInTheGame(M,true)))
@@ -1290,14 +1290,16 @@ public class MUDFight extends StdLibrary implements CombatLibrary
                     break;
                 }
             }
-            if((newTargetM==null)||(newTargetM.isInCombat()))
+            if(newTargetM==null)
                 observer.setVictim(newTargetM);
+            else
+            	postAttack(observer, newTargetM, observer.fetchWieldedItem());
         }
     }
 
     public void handleObserveDeath(MOB observer, MOB fighting, CMMsg msg)
     {
-    	pickNextVictim(observer, fighting, msg.source());
+    	// no longer does a damn thing
     }
 
     public void handleBeingAssaulted(CMMsg msg)
