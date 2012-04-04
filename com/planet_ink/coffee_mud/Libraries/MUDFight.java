@@ -1200,6 +1200,8 @@ public class MUDFight extends StdLibrary implements CombatLibrary
                 MOB killer=(MOB)msg.tool();
                 doDeathPostProcessing(msg);
                 justDie(killer,deadmob);
+                // this needs to be here because his own observe may happen after this, so victim will be gone.
+                pickNextVictim(killer,deadmob,deadmob);
             }
             else
                 justDie(null,deadmob);
@@ -1248,11 +1250,10 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 	        }
         }
     }
-
-    public void handleObserveDeath(MOB observer, MOB fighting, CMMsg msg)
+    
+    protected void pickNextVictim(MOB observer, MOB fighting, MOB deadmob)
     {
         Room R=observer.location();
-        MOB deadmob=msg.source();
         if((fighting==deadmob)&&(R!=null))
         {
             MOB newTargetM=null;
@@ -1292,6 +1293,11 @@ public class MUDFight extends StdLibrary implements CombatLibrary
             if((newTargetM==null)||(newTargetM.isInCombat()))
                 observer.setVictim(newTargetM);
         }
+    }
+
+    public void handleObserveDeath(MOB observer, MOB fighting, CMMsg msg)
+    {
+    	pickNextVictim(observer, fighting, msg.source());
     }
 
     public void handleBeingAssaulted(CMMsg msg)
