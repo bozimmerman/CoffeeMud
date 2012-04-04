@@ -521,7 +521,7 @@ public class DefaultSession implements Session
                 }
             }
         }
-        catch(Exception ioe){ killFlag=true;}
+        catch(Throwable ioe){ killFlag=true;}
     }
     
     public void out(String c){ if(c!=null) out(c.toCharArray());}
