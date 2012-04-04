@@ -1290,9 +1290,8 @@ public class MUDFight extends StdLibrary implements CombatLibrary
                     break;
                 }
             }
-            if(newTargetM==null)
-                observer.setVictim(newTargetM);
-            else
+            observer.setVictim(null);
+            if(newTargetM!=null)
             	postAttack(observer, newTargetM, observer.fetchWieldedItem());
         }
     }
