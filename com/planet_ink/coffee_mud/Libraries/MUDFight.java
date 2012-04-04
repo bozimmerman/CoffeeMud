@@ -888,6 +888,9 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 			    }
 			}
 
+			if((source != null)&&(source.getVictim()==target))
+				source.setVictim(null);
+            target.setVictim(null);
 			if((body!=null)&&(bodyRoom!=null)&&(body.destroyAfterLooting()))
 			{
 				for(int i=bodyRoom.numItems()-1;i>=0;i--)
