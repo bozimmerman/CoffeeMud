@@ -316,6 +316,14 @@ public class MOBTeacher extends CombatAbilities
         &&(msg.targetMinor()==CMMsg.TYP_SPEAK))
         {
         	String sayMsg=CMStrings.getSayFromMessage(msg.sourceMessage());
+        	if(sayMsg==null)
+        	{
+                int start=msg.sourceMessage().indexOf('\'');
+                if(start>0)
+                	sayMsg=msg.sourceMessage().substring(start+1);
+                else
+                	sayMsg=msg.sourceMessage();
+        	}
             int x=sayMsg.toUpperCase().indexOf("TEACH");
             if(x<0)
                 x=sayMsg.toUpperCase().indexOf("GAIN ");
