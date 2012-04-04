@@ -766,6 +766,8 @@ public class MUDFight extends StdLibrary implements CombatLibrary
         if(target==null) return null;
         Room deathRoom=target.location();
 
+        //TODO: this creates too many loops.  The right thing is to loop once
+        // and call  a boolean function to populate all these lists.
         CharClass combatCharClass=getCombatDominantClass(source,target);
         Set<MOB> beneficiaries=getCombatBeneficiaries(source,target,combatCharClass);
         Set<MOB> hisGroupH=target.getGroupMembers(new HashSet<MOB>());
