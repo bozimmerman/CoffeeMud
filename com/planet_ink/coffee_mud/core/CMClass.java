@@ -1223,6 +1223,14 @@ public class CMClass extends ClassLoader
         return true;
     }
 
+	public static final String getObjInstanceStr(Environmental o)
+    {
+    	if(o==null) return "NULL";
+    	int x=o.toString().indexOf('@');
+    	if(x<0) return o.Name()+o.toString();
+    	return o.Name()+o.toString().substring(x);
+    }
+    
 	public static final String rawClassName(final Object O)
 	{
 		if(O==null) return "";
