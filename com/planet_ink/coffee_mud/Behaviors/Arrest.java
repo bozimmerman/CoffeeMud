@@ -2647,6 +2647,12 @@ public class Arrest extends StdBehavior implements LegalBehavior
                     &&(judge.location()==W.criminal().location()))
                     {
                         dismissOfficer(officer);
+                        CMLib.commands().postFollow(W.criminal(), null, true);
+                        for(Enumeration<MOB.Follower> f=W.criminal().followers();f.hasMoreElements();)
+                        {
+                            MOB.Follower F=f.nextElement();
+                            CMLib.commands().postFollow(F.follower, null, true);
+                        }
                         Ability A=CMClass.getAbility("Prisoner");
                         A.startTickDown(judge,W.criminal(),100);
                         A=judge.fetchAbility("Fighter_Behead");
