@@ -1273,7 +1273,8 @@ public class MUDFight extends StdLibrary implements CombatLibrary
                 &&(M!=null)
                 &&(M.getVictim()==observer)
                 &&(!M.amDead())
-                &&(CMLib.flags().isInTheGame(M,true)))
+                &&(CMLib.flags().isInTheGame(M,true))
+                &&(observer.mayIFight(M)))
                 {
                     newTargetM=M;
                     break;
@@ -1290,7 +1291,8 @@ public class MUDFight extends StdLibrary implements CombatLibrary
                 &&(deadGroupH.contains(M)
                     ||((vic!=null)&&(myGroupH.contains(vic))))
                 &&(!M.amDead())
-                &&(CMLib.flags().isInTheGame(M,true)))
+                &&(CMLib.flags().isInTheGame(M,true))
+                &&(observer.mayIFight(M)))
                 {
                     newTargetM=M;
                     break;
