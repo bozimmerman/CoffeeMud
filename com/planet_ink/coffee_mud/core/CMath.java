@@ -43,7 +43,7 @@ public class CMath
      */
     public final static String convertToRoman(int i)
     {
-    	final StringBuffer roman=new StringBuffer("");
+        final StringBuffer roman=new StringBuffer("");
         if(i>1000)
         {
             roman.append("Y");
@@ -107,10 +107,10 @@ public class CMath
      * @return the st,nd,rd appendage only
      */
     public final static String numAppendage(final int num)
-	{
+    {
         if((num<11)||(num>13))
         {
-        	final String strn=""+num;
+            final String strn=""+num;
             switch(strn.charAt(strn.length()-1))
             {
             case '1': return "st";
@@ -119,7 +119,7 @@ public class CMath
             }
         }
         return "th";
-	}
+    }
 
     /**
      * Return true if the char is a roman numeral digit
@@ -152,7 +152,7 @@ public class CMath
      */
     public final static long absDiff(final long x, final long y)
     {
-    	final long d=x-y;
+        final long d=x-y;
         if(d<0) return d*-1;
         return d;
     }
@@ -166,11 +166,11 @@ public class CMath
      */
     public final static Object s_valueOf(Object[] o, String s)
     {
-    	if(s==null) return null;
-    	for(Object a : o)
-    		if(a.toString().equalsIgnoreCase(s.trim()))
-    			return a;
-    	return null;
+        if(s==null) return null;
+        for(Object a : o)
+            if(a.toString().equalsIgnoreCase(s.trim()))
+                return a;
+        return null;
     }
     
     /**
@@ -512,8 +512,8 @@ public class CMath
      */
     public final static boolean isSet(final int number, final int bitnumber)
     {
-    	int mask=(int)pow(2,bitnumber);
-    	return ((number&mask)==mask);
+        int mask=(int)pow(2,bitnumber);
+        return ((number&mask)==mask);
     }
     /**
      * Returns true if the given string represents a 
@@ -539,20 +539,20 @@ public class CMath
      */
     public final static void replaceVariables(final StringBuffer str, final double values[])
     {
-    	final int valueLen=(values.length<=10)?1:Integer.toString(values.length).length();
-    	for(int i=0;i<str.length()-(1+valueLen);i++)
-    		if((str.charAt(i)=='@') && (str.charAt(i+1)=='x') && (Character.isDigit(str.charAt(i+2))))
-	    	{
-    			int endDex=1;
-    			while((endDex < valueLen) && (Character.isDigit(str.charAt(i+2+endDex))))
-    				endDex++;
-    			final int valueDex = Integer.valueOf(str.substring(i+2,i+2+endDex)).intValue();
-    			final double newNumValue = (valueDex >0 && valueDex <= values.length)?values[valueDex-1]:0.0;
-    			final String newValue = ( Math.round(newNumValue) == newNumValue) ? Long.toString(Math.round(newNumValue)) : Double.toString(newNumValue);
-    			str.delete(i, i+2+endDex);
-    			str.insert(i, newValue);
-    			i--;
-	    	}
+        final int valueLen=(values.length<=10)?1:Integer.toString(values.length).length();
+        for(int i=0;i<str.length()-(1+valueLen);i++)
+            if((str.charAt(i)=='@') && (str.charAt(i+1)=='x') && (Character.isDigit(str.charAt(i+2))))
+            {
+                int endDex=1;
+                while((endDex < valueLen) && (Character.isDigit(str.charAt(i+2+endDex))))
+                    endDex++;
+                final int valueDex = Integer.valueOf(str.substring(i+2,i+2+endDex)).intValue();
+                final double newNumValue = (valueDex >0 && valueDex <= values.length)?values[valueDex-1]:0.0;
+                final String newValue = ( Math.round(newNumValue) == newNumValue) ? Long.toString(Math.round(newNumValue)) : Double.toString(newNumValue);
+                str.delete(i, i+2+endDex);
+                str.insert(i, newValue);
+                i--;
+            }
     }
     
     /**
@@ -565,9 +565,9 @@ public class CMath
      */
     public final static String replaceVariables(final String str, final double values[])
     {
-    	final StringBuffer buf = new StringBuffer(str);
-    	replaceVariables(buf,values);
-    	return buf.toString();
+        final StringBuffer buf = new StringBuffer(str);
+        replaceVariables(buf,values);
+        return buf.toString();
     }
     
     /**
@@ -577,13 +577,13 @@ public class CMath
      */
     public final static int hexDigit(final char c)
     {
-    	if(c<'0') return -1;
-    	if(c<'9') return c-'0';
-    	if(c<'A') return -1;
-    	if(c<'G') return (c-'A')+10;
-    	if(c<'a') return -1;
-    	if(c<'f') return (c-'a')+10;
-    	return -1;
+        if(c<'0') return -1;
+        if(c<'9') return c-'0';
+        if(c<'A') return -1;
+        if(c<'G') return (c-'A')+10;
+        if(c<'a') return -1;
+        if(c<'f') return (c-'a')+10;
+        return -1;
     }
     
     /**
@@ -597,9 +597,9 @@ public class CMath
      */
     public final static double s_pct(String s)
     {
-    	if(s==null) return 0.0;
-    	while(s.trim().endsWith("%")) s=s.trim().substring(0,s.length()-1).trim();
-    	return s_double(s)/100.0;
+        if(s==null) return 0.0;
+        while(s.trim().endsWith("%")) s=s.trim().substring(0,s.length()-1).trim();
+        return s_double(s)/100.0;
     }
     
     /**
@@ -609,7 +609,7 @@ public class CMath
      */
     public final static String toPct(final double d)
     {
-    	final String s=twoPlaces.format(d);
+        final String s=twoPlaces.format(d);
         if(s.endsWith("%%")) return s.substring(0,s.length()-1);
         return s;
     }
@@ -779,16 +779,16 @@ public class CMath
                         throw new ArithmeticException("'"+c+"' is an unexpected token after @.");
                     c=st.nextToken();
                     if((c=='x')||(c=='X'))
-                    	curValue=previous;
+                        curValue=previous;
                     else
                     {
-	                    if(c!=StreamTokenizer.TT_NUMBER)
-	                        throw new ArithmeticException("'"+c+"' is an unexpected token after @x.");
-	                    if(vars==null)
-	                        throw new ArithmeticException("vars have not been defined for @x"+st.nval);
-	                    if((st.nval>vars.length)||(st.nval<1.0))
-	                        throw new ArithmeticException("'"+st.nval+"/"+vars.length+"' is an illegal variable reference.");
-	                    curValue=vars[((int)st.nval)-1];
+                        if(c!=StreamTokenizer.TT_NUMBER)
+                            throw new ArithmeticException("'"+c+"' is an unexpected token after @x.");
+                        if(vars==null)
+                            throw new ArithmeticException("vars have not been defined for @x"+st.nval);
+                        if((st.nval>vars.length)||(st.nval<1.0))
+                            throw new ArithmeticException("'"+st.nval+"/"+vars.length+"' is an illegal variable reference.");
+                        curValue=vars[((int)st.nval)-1];
                     }
                     break;
                 }
@@ -836,21 +836,21 @@ public class CMath
      */
     public static final class CompiledOperation
     {
-    	public static final int OPERATION_VARIABLE=0;
-    	public static final int OPERATION_VALUE=1;
-    	public static final int OPERATION_OPERATION=2;
-    	public static final int OPERATION_LIST=3;
-    	public static final int OPERATION_PREVIOUSVALUE=4;
-    	public final int type;
-    	public int variableIndex = 0;
-    	public double value = 0.0;
-    	public char operation = ' ';
-    	public LinkedList<CompiledOperation> list = null;
-    	public CompiledOperation(int variableIndex) { type = OPERATION_VARIABLE; this.variableIndex = variableIndex;}  
-    	public CompiledOperation(double value) { type = OPERATION_VALUE; this.value = value;}  
-    	public CompiledOperation(LinkedList<CompiledOperation> list) { type = OPERATION_LIST; this.list = list;}  
-    	public CompiledOperation(char operation) { type = OPERATION_OPERATION; this.operation = operation;}  
-    	public CompiledOperation() { type = OPERATION_PREVIOUSVALUE;}  
+        public static final int OPERATION_VARIABLE=0;
+        public static final int OPERATION_VALUE=1;
+        public static final int OPERATION_OPERATION=2;
+        public static final int OPERATION_LIST=3;
+        public static final int OPERATION_PREVIOUSVALUE=4;
+        public final int type;
+        public int variableIndex = 0;
+        public double value = 0.0;
+        public char operation = ' ';
+        public LinkedList<CompiledOperation> list = null;
+        public CompiledOperation(int variableIndex) { type = OPERATION_VARIABLE; this.variableIndex = variableIndex;}  
+        public CompiledOperation(double value) { type = OPERATION_VALUE; this.value = value;}  
+        public CompiledOperation(LinkedList<CompiledOperation> list) { type = OPERATION_LIST; this.list = list;}  
+        public CompiledOperation(char operation) { type = OPERATION_OPERATION; this.operation = operation;}  
+        public CompiledOperation() { type = OPERATION_PREVIOUSVALUE;}  
     }
     
     /**
@@ -872,91 +872,91 @@ public class CMath
      * @throws ArithmeticException
      */
     private final static LinkedList<CompiledOperation> compileMathExpression(final StreamTokenizer st, final boolean inParen)
-    	throws ArithmeticException
-	{
-	    if(!inParen) {
-	        st.ordinaryChar('/');
-	        st.ordinaryChar('x');
-	        st.ordinaryChar('X');
-	    }
-	    final LinkedList<CompiledOperation> list = new LinkedList<CompiledOperation>();
-	    
-	    try{
-	        int c=st.nextToken();
-	        char lastOperation='+';
-	        while(c!=StreamTokenizer.TT_EOF)
-	        {
-	            switch(c)
-	            {
-	            case StreamTokenizer.TT_NUMBER:
-	            	list.add(new CompiledOperation(st.nval));
-	                break;
-	            case '(':
-	            	list.add(new CompiledOperation(compileMathExpression(st,true)));
-	                break;
-	            case ')':
-	                if(!inParen)
-	                    throw new ArithmeticException("')' is an unexpected token.");
-	                return list;
-	            case '@':
-	            {
-	                c=st.nextToken();
-	                if((c!='x')&&(c!='X'))
-	                    throw new ArithmeticException("'"+c+"' is an unexpected token after @.");
-	                c=st.nextToken();
+        throws ArithmeticException
+    {
+        if(!inParen) {
+            st.ordinaryChar('/');
+            st.ordinaryChar('x');
+            st.ordinaryChar('X');
+        }
+        final LinkedList<CompiledOperation> list = new LinkedList<CompiledOperation>();
+        
+        try{
+            int c=st.nextToken();
+            char lastOperation='+';
+            while(c!=StreamTokenizer.TT_EOF)
+            {
+                switch(c)
+                {
+                case StreamTokenizer.TT_NUMBER:
+                    list.add(new CompiledOperation(st.nval));
+                    break;
+                case '(':
+                    list.add(new CompiledOperation(compileMathExpression(st,true)));
+                    break;
+                case ')':
+                    if(!inParen)
+                        throw new ArithmeticException("')' is an unexpected token.");
+                    return list;
+                case '@':
+                {
+                    c=st.nextToken();
+                    if((c!='x')&&(c!='X'))
+                        throw new ArithmeticException("'"+c+"' is an unexpected token after @.");
+                    c=st.nextToken();
                     if((c=='x')||(c=='X'))
-		                list.add(new CompiledOperation());
+                        list.add(new CompiledOperation());
                     else
                     {
-		                if(c!=StreamTokenizer.TT_NUMBER)
-		                    throw new ArithmeticException("'"+c+"' is an unexpected token after @x.");
-		                if((st.nval>11)||(st.nval<1.0))
-		                    throw new ArithmeticException("'"+st.nval+"/11' is an illegal variable reference.");
-		                list.add(new CompiledOperation(((int)st.nval)-1));
+                        if(c!=StreamTokenizer.TT_NUMBER)
+                            throw new ArithmeticException("'"+c+"' is an unexpected token after @x.");
+                        if((st.nval>11)||(st.nval<1.0))
+                            throw new ArithmeticException("'"+st.nval+"/11' is an illegal variable reference.");
+                        list.add(new CompiledOperation(((int)st.nval)-1));
                     }
-	                break;
-	            }
-	            case '+':
-	            case '-':
+                    break;
+                }
+                case '+':
+                case '-':
                 case '%':
-	            case '*':
-	            case '\\':
-	            case '/':
-	            case '?':
+                case '*':
+                case '\\':
+                case '/':
+                case '?':
                 case '<':
                 case '>':
-	            {
-	                lastOperation=(char)c;
-	                c=st.nextToken();
-	                continue;
-	            }
-	            default:
-	                throw new ArithmeticException("'"+(char)c+"' ("+(int)c+") is an illegal expression.");
-	            }
-	            switch(lastOperation)
-	            {
-	            case '+':
-	            case '-':
+                {
+                    lastOperation=(char)c;
+                    c=st.nextToken();
+                    continue;
+                }
+                default:
+                    throw new ArithmeticException("'"+(char)c+"' ("+(int)c+") is an illegal expression.");
+                }
+                switch(lastOperation)
+                {
+                case '+':
+                case '-':
                 case '%':
-	            case '*':
-	            case '?':
+                case '*':
+                case '?':
                 case '<':
                 case '>':
-	            	list.add(new CompiledOperation(lastOperation));
-	            	break;
-	            case '/':
-	            case '\\':
-	            	list.add(new CompiledOperation('/'));
-	            	break;
-	            }
-	            c=st.nextToken();
-	        }
-	    }
-	    catch(IOException e){}
-	    if(inParen)
-	        throw new ArithmeticException("')' was missing from this expression");
-	    return list;
-	}
+                    list.add(new CompiledOperation(lastOperation));
+                    break;
+                case '/':
+                case '\\':
+                    list.add(new CompiledOperation('/'));
+                    break;
+                }
+                c=st.nextToken();
+            }
+        }
+        catch(IOException e){}
+        if(inParen)
+            throw new ArithmeticException("')' was missing from this expression");
+        return list;
+    }
 
     /**
      * Parse a pre-compiled expression.  Requires a vars variable of at least 10 entries
@@ -967,41 +967,41 @@ public class CMath
      * @return the final value
      */
     public final static double parseMathExpression(final LinkedList<CompiledOperation> list, final double[] vars, final double previous)
-	{
+    {
         double finalValue=0.0;
         double curValue=0.0;
-    	for(final Iterator<CompiledOperation> i=list.iterator();i.hasNext();)
-    	{
-    		final CompiledOperation o=i.next();
-    		switch(o.type)
-    		{
-    			case CompiledOperation.OPERATION_VALUE: 
-    				curValue = o.value; break;
-    			case CompiledOperation.OPERATION_VARIABLE: 
-    				curValue = vars[o.variableIndex]; break;
-    			case CompiledOperation.OPERATION_LIST: 
-    				curValue = parseMathExpression(o.list,vars,finalValue); break;
-    			case CompiledOperation.OPERATION_PREVIOUSVALUE: 
-    				curValue = previous; break;
-    			case CompiledOperation.OPERATION_OPERATION:
-    				switch(o.operation)
-    				{
-    	                case '+': finalValue+=curValue; break;
-    	                case '-': finalValue-=curValue; break;
-    	                case '%': finalValue%=curValue; break;
-    	                case '*': finalValue*=curValue; break;
-    	                case '/': finalValue/=curValue; break;
-    	                case '?': finalValue= ((curValue-finalValue+0.5) * rand.nextDouble()) + finalValue; break;
-    	                case '<': finalValue = finalValue < curValue? finalValue : curValue; break;
-    	                case '>': finalValue = finalValue > curValue? finalValue : curValue; break;
-    				}
-    				break;
-    		}
-    	}
-    	return finalValue;
-	}
+        for(final Iterator<CompiledOperation> i=list.iterator();i.hasNext();)
+        {
+            final CompiledOperation o=i.next();
+            switch(o.type)
+            {
+                case CompiledOperation.OPERATION_VALUE: 
+                    curValue = o.value; break;
+                case CompiledOperation.OPERATION_VARIABLE: 
+                    curValue = vars[o.variableIndex]; break;
+                case CompiledOperation.OPERATION_LIST: 
+                    curValue = parseMathExpression(o.list,vars,finalValue); break;
+                case CompiledOperation.OPERATION_PREVIOUSVALUE: 
+                    curValue = previous; break;
+                case CompiledOperation.OPERATION_OPERATION:
+                    switch(o.operation)
+                    {
+                        case '+': finalValue+=curValue; break;
+                        case '-': finalValue-=curValue; break;
+                        case '%': finalValue%=curValue; break;
+                        case '*': finalValue*=curValue; break;
+                        case '/': finalValue/=curValue; break;
+                        case '?': finalValue= ((curValue-finalValue+0.5) * rand.nextDouble()) + finalValue; break;
+                        case '<': finalValue = finalValue < curValue? finalValue : curValue; break;
+                        case '>': finalValue = finalValue > curValue? finalValue : curValue; break;
+                    }
+                    break;
+            }
+        }
+        return finalValue;
+    }
     
-	
+    
     /**
      * Returns the result of evaluating the given math
      * expression.  An expression can be a double or int
@@ -1143,11 +1143,11 @@ public class CMath
      */
     public final static int bitNumber(final long mask)
     {
-    	if(mask<=0) return 0;
-    	for(int i=0;i<64;i++)
-    		if((mask&CMath.pow(2,i))>0)
-    			return i+1;
-    	return 0;
+        if(mask<=0) return 0;
+        for(int i=0;i<64;i++)
+            if((mask&CMath.pow(2,i))>0)
+                return i+1;
+        return 0;
     }
     
     /**
@@ -1171,7 +1171,7 @@ public class CMath
      */
     public final static boolean s_bool(final String BOOL)
     {
-    	if(BOOL==null) return false;
+        if(BOOL==null) return false;
         return Boolean.valueOf(BOOL).booleanValue();
     }
 
@@ -1265,7 +1265,7 @@ public class CMath
      */
     public final static int s_parseBitIntExpression(final String[] bits, final String val)
     {
-    	return (int)s_parseBitLongExpression(bits,val);
+        return (int)s_parseBitLongExpression(bits,val);
     }
     
     /**
@@ -1280,24 +1280,24 @@ public class CMath
      */
     public final static long s_parseBitLongExpression(final String[] bits, String val)
     {
-    	if((val==null)||(val.trim().length()==0)||(CMath.isMathExpression(val)))
-    		return CMath.s_parseLongExpression(val);
-    	final StringTokenizer tokens=new StringTokenizer(val,",");
-    	long l=0;
-    	while(tokens.hasMoreElements())
-    	{
-    		val=tokens.nextToken().trim();
-    		if((val.length()==0)||(CMath.isMathExpression(val)))
-    			l|=CMath.s_parseLongExpression(val);
-    		else
-    		for(int x=0;x<bits.length;x++)
-    			if(bits[x].equalsIgnoreCase(val))
-	    		{
-    				l+=pow(2,x-1);
-	    			break;
-	    		}
-    	}
-    	return l;
+        if((val==null)||(val.trim().length()==0)||(CMath.isMathExpression(val)))
+            return CMath.s_parseLongExpression(val);
+        final StringTokenizer tokens=new StringTokenizer(val,",");
+        long l=0;
+        while(tokens.hasMoreElements())
+        {
+            val=tokens.nextToken().trim();
+            if((val.length()==0)||(CMath.isMathExpression(val)))
+                l|=CMath.s_parseLongExpression(val);
+            else
+            for(int x=0;x<bits.length;x++)
+                if(bits[x].equalsIgnoreCase(val))
+                {
+                    l+=pow(2,x-1);
+                    break;
+                }
+        }
+        return l;
     }
     
     /**
@@ -1308,7 +1308,7 @@ public class CMath
      */
     public final static void setRand(final Random rand)
     {
-    	CMath.rand = rand;
+        CMath.rand = rand;
     }
     
     /**
@@ -1323,12 +1323,12 @@ public class CMath
      */
     public final static long s_parseListLongExpression(final String[] descs, final String val)
     {
-    	if((val==null)||(val.trim().length()==0)||(CMath.isMathExpression(val)))
-    		return CMath.s_parseLongExpression(val);
-		for(int x=0;x<descs.length;x++)
-			if(descs[x].equalsIgnoreCase(val))
-				return x;
-		return 0;
+        if((val==null)||(val.trim().length()==0)||(CMath.isMathExpression(val)))
+            return CMath.s_parseLongExpression(val);
+        for(int x=0;x<descs.length;x++)
+            if(descs[x].equalsIgnoreCase(val))
+                return x;
+        return 0;
     }
     
     /**
