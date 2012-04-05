@@ -34,35 +34,36 @@ import java.util.*;
 @SuppressWarnings("unchecked")
 public class Prompt extends StdCommand
 {
-	public Prompt(){}
+    public Prompt(){}
 
-	private final String[] access={"PROMPT"};
-	public String[] getAccessWords(){return access;}
-	public boolean execute(MOB mob, Vector commands, int metaFlags)
-		throws java.io.IOException
-	{
-		if(mob.session()==null) return false;
-		PlayerStats pstats=mob.playerStats();
-		if(pstats==null) return false;
+    private final String[] access={"PROMPT"};
+    public String[] getAccessWords(){return access;}
+    public boolean execute(MOB mob, Vector commands, int metaFlags)
+        throws java.io.IOException
+    {
+        if(mob.session()==null) return false;
+        PlayerStats pstats=mob.playerStats();
+        Session sess=mob.session();
+        if(pstats==null) return false;
 
-		if(commands.size()==1)
-			mob.session().rawPrintln("Your prompt is currently set at:\n\r"+pstats.getPrompt());
-		else
-		{
-			String str=CMParms.combine(commands,1);
-			if(("DEFAULT").startsWith(str.toUpperCase()))
-				pstats.setPrompt("");
-			else
-            if(mob.session().confirm("Change your prompt to: "+str+", are you sure (Y/n)?","Y"))
+        if(commands.size()==1)
+            sess.rawPrintln("Your prompt is currently set at:\n\r"+pstats.getPrompt());
+        else
+        {
+            String str=CMParms.combine(commands,1);
+            if(("DEFAULT").startsWith(str.toUpperCase()))
+                pstats.setPrompt("");
+            else
+            if(sess.confirm("Change your prompt to: "+str+", are you sure (Y/n)?","Y"))
             {
-				pstats.setPrompt(str);
-    			mob.session().rawPrintln("Your prompt is currently now set at:\n\r"+pstats.getPrompt());
+                pstats.setPrompt(str);
+                sess.rawPrintln("Your prompt is currently now set at:\n\r"+pstats.getPrompt());
             }
-		}
-		return false;
-	}
-	
-	public boolean canBeOrdered(){return false;}
+        }
+        return false;
+    }
+    
+    public boolean canBeOrdered(){return false;}
 
-	
+    
 }
