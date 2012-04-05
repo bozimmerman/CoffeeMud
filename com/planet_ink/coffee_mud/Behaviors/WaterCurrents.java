@@ -212,7 +212,7 @@ public class WaterCurrents extends ActiveTicker
         public AWaterCurrent()
         {
             super();
-            //CMClass.bumpCounter(this,CMClass.OBJECT_ABILITY);//removed for mem & perf
+            //CMClass.bumpCounter(this,CMClass.CMObjectType.ABILITY);//removed for mem & perf
         }
 		public String ID() { return "AWaterCurrent"; }
 		public String name(){ return "a water current";}
@@ -240,7 +240,7 @@ public class WaterCurrents extends ActiveTicker
 		public long flags(){return Ability.FLAG_TRANSPORTING;}
 		public long getTickStatus(){return Tickable.STATUS_NOT;}
 		public int usageType(){return 0;}
-        //protected void finalize(){ CMClass.unbumpCounter(this,CMClass.OBJECT_ABILITY); }//removed for mem & perf
+        //protected void finalize(){ CMClass.unbumpCounter(this,CMClass.CMObjectType.ABILITY); }//removed for mem & perf
     	public long expirationDate(){return 0;}
     	public void setExpirationDate(long time){}
         public void clearExpertiseCache(){}
@@ -351,7 +351,7 @@ public class WaterCurrents extends ActiveTicker
 			try
 			{
 			    AWaterCurrent E=(AWaterCurrent)this.clone();
-                //CMClass.bumpCounter(E,CMClass.OBJECT_ABILITY);//removed for mem & perf
+                //CMClass.bumpCounter(E,CMClass.CMObjectType.ABILITY);//removed for mem & perf
 				E.cloneFix(this);
 				return E;
 

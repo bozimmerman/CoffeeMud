@@ -48,7 +48,7 @@ public class StdBehavior implements Behavior
     public StdBehavior()
     {
         super();
-        //CMClass.bumpCounter(this,CMClass.OBJECT_BEHAVIOR);//removed for perf
+        //CMClass.bumpCounter(this,CMClass.CMObjectType.BEHAVIOR);//removed for perf
     }
 
 	protected String parms="";
@@ -71,7 +71,7 @@ public class StdBehavior implements Behavior
 		try
 		{
             Behavior B=(Behavior)this.clone();
-            //CMClass.bumpCounter(B,CMClass.OBJECT_BEHAVIOR);//removed for perf
+            //CMClass.bumpCounter(B,CMClass.CMObjectType.BEHAVIOR);//removed for perf
             B.setParms(getParms());
             return B;
 		}
@@ -82,7 +82,7 @@ public class StdBehavior implements Behavior
 	}
     public void registerDefaultQuest(String questName){}
 	public void startBehavior(PhysicalAgent forMe){}
-    //protected void finalize(){CMClass.unbumpCounter(this,CMClass.OBJECT_BEHAVIOR);}//removed for perf
+    //protected void finalize(){CMClass.unbumpCounter(this,CMClass.CMObjectType.BEHAVIOR);}//removed for perf
     public void setSavable(boolean truefalse){isSavableBehavior=truefalse;}
     public boolean isSavable(){return isSavableBehavior;}
     public boolean amDestroyed(){ return false;}

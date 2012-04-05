@@ -248,9 +248,9 @@ public class StdAbility implements Ability
 	public StdAbility()
 	{
         super();
-        //CMClass.bumpCounter(this,CMClass.OBJECT_ABILITY);//removed for mem & perf
+        //CMClass.bumpCounter(this,CMClass.CMObjectType.ABILITY);//removed for mem & perf
 	}
-    //protected void finalize(){ CMClass.unbumpCounter(this,CMClass.OBJECT_ABILITY); }//removed for mem & perf
+    //protected void finalize(){ CMClass.unbumpCounter(this,CMClass.CMObjectType.ABILITY); }//removed for mem & perf
 
 	public CMObject newInstance()
 	{
@@ -658,7 +658,7 @@ public class StdAbility implements Ability
 		try
 		{
 			StdAbility E=(StdAbility)this.clone();
-            //CMClass.bumpCounter(E,CMClass.OBJECT_ABILITY);//removed for mem & perf
+            //CMClass.bumpCounter(E,CMClass.CMObjectType.ABILITY);//removed for mem & perf
 			E.cloneFix(this);
 			return E;
 

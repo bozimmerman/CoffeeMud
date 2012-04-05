@@ -481,7 +481,7 @@ public interface Wearable extends Environmental
 	        }
 	    }
 	    private static CODES c(){ return insts[Thread.currentThread().getThreadGroup().getName().charAt(0)];}
-	    public static CODES c(char c){return insts[c];}
+	    public static CODES c(byte c){return insts[c];}
 	    public static CODES instance(){
 	    	CODES c=insts[Thread.currentThread().getThreadGroup().getName().charAt(0)];
 	        if(c==null) c=new CODES();

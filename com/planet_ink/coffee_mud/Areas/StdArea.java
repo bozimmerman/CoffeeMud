@@ -169,10 +169,10 @@ public class StdArea implements Area
     public StdArea()
     {
         super();
-        //CMClass.bumpCounter(this,CMClass.OBJECT_AREA);//removed for mem & perf
+        //CMClass.bumpCounter(this,CMClass.CMObjectType.AREA);//removed for mem & perf
         xtraValues=CMProps.getExtraStatCodesHolder(this);
     }
-    //protected void finalize(){CMClass.unbumpCounter(this,CMClass.OBJECT_AREA);}//removed for mem & perf
+    //protected void finalize(){CMClass.unbumpCounter(this,CMClass.CMObjectType.AREA);}//removed for mem & perf
     public void destroy()
     {
         CMLib.map().registerWorldObjectDestroyed(this,null,this);
@@ -429,7 +429,7 @@ public class StdArea implements Area
         try
         {
             StdArea E=(StdArea)this.clone();
-            //CMClass.bumpCounter(this,CMClass.OBJECT_AREA);//removed for mem & perf
+            //CMClass.bumpCounter(this,CMClass.CMObjectType.AREA);//removed for mem & perf
             E.xtraValues=(xtraValues==null)?null:(String[])xtraValues.clone();
             E.cloneFix(this);
             return E;

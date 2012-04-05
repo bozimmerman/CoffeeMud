@@ -40,14 +40,25 @@ import org.mozilla.javascript.optimizer.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+/**
+ * The core class loader, but more importantly, the core object template manager
+ * for the whole mud.  Classes are grouped by their core interfaces, allowing them
+ * to have short "ID" names as referents.  Classes are loaded and initialized from the
+ * class loader and then kept as template objects, with newInstances created on demand (or
+ * simply returned as the template, in cases where the objects are shared).
+ * @author Bo Zimmerman
+ */
 @SuppressWarnings("unchecked")
 public class CMClass extends ClassLoader
 {
-    protected static boolean debugging=false;
+    protected static boolean debugging=false; 
     protected static volatile long lastUpdateTime=System.currentTimeMillis();
     protected static final Map<String,Class<?>> classes=new Hashtable<String,Class<?>>();
 
     private static CMClass[] clss=new CMClass[256];
+    /**
+     * Creates a new instance of the class loader, updating the thread-group ref if necessary.
+     */
     public CMClass()
     {
         super();
@@ -55,44 +66,85 @@ public class CMClass extends ClassLoader
         if(clss==null) clss=new CMClass[256];
         if(clss[c]==null) clss[c]=this;
     }
+    /**
+     * Returns the CMClass instance tied to this particular thread group, or null if not yet created.
+     * @return the CMClass instance tied to this particular thread group, or null if not yet created.
+     */
     private static CMClass c(){ return clss[Thread.currentThread().getThreadGroup().getName().charAt(0)];}
-    public static CMClass c(char c){return clss[c];}
+    /**
+     * Returns the CMClass instance tied to the given thread group, or null if not yet created.
+     * @param c the code for the thread group to return (0-255)
+     * @return the CMClass instance tied to the given thread group, or null if not yet created.
+     */
+    public static CMClass c(byte c){return clss[c];}
+    /**
+     * Returns the CMClass instance tied to this particular thread group, or null if not yet created.
+     * @return the CMClass instance tied to this particular thread group, or null if not yet created.
+     */
     public static CMClass instance(){return c();}
-    public static boolean[] classLoaderSync={false};
 
-    public static final int OBJECT_RACE=0;
-    public static final int OBJECT_CHARCLASS=1;
-    public static final int OBJECT_MOB=2;
-    public static final int OBJECT_ABILITY=3;
-    public static final int OBJECT_LOCALE=4;
-    public static final int OBJECT_EXIT=5;
-    public static final int OBJECT_ITEM=6;
-    public static final int OBJECT_BEHAVIOR=7;
-    public static final int OBJECT_CLAN=8;
-    public static final int OBJECT_WEAPON=9;
-    public static final int OBJECT_ARMOR=10;
-    public static final int OBJECT_MISCMAGIC=11;
-    public static final int OBJECT_AREA=12;
-    public static final int OBJECT_COMMAND=13;
-    public static final int OBJECT_CLANITEMS=14;
-    public static final int OBJECT_MISCTECH=15;
-    public static final int OBJECT_WEBMACROS=16;
-    public static final int OBJECT_COMMON=17;
-    public static final int OBJECT_LIBRARY=18;
-    public static final int OBJECT_TOTAL=19;
+    private static boolean[] classLoaderSync={false};
 
-    public static final int[] OBJECTS_ITEMTYPES = new int[]{
-        CMClass.OBJECT_MISCMAGIC,
-        CMClass.OBJECT_ITEM,
-        CMClass.OBJECT_ARMOR,
-        CMClass.OBJECT_CLANITEMS,
-        CMClass.OBJECT_MISCMAGIC,
-        CMClass.OBJECT_MISCTECH,
-        CMClass.OBJECT_WEAPON
+    public static enum CMObjectType
+    {
+    /** stat constant for race type objects */
+    RACE("com.planet_ink.coffee_mud.Races.interfaces.Race"),
+    /** stat constant for char class type objects */
+    CHARCLASS("com.planet_ink.coffee_mud.CharClasses.interfaces.CharClass"),
+    /** stat constant for mob type objects */
+    MOB("com.planet_ink.coffee_mud.MOBS.interfaces.MOB"),
+    /** stat constant for ability type objects */
+    ABILITY("com.planet_ink.coffee_mud.Abilities.interfaces.Ability"),
+    /** stat constant for locale/room type objects */
+    LOCALE("com.planet_ink.coffee_mud.Locales.interfaces.Room"),
+    /** stat constant for exit type objects */
+    EXIT("com.planet_ink.coffee_mud.Exits.interfaces.Exit"),
+    /** stat constant for item type objects */
+    ITEM("com.planet_ink.coffee_mud.Items.interfaces.Item"),
+    /** stat constant for behavior type objects */
+    BEHAVIOR("com.planet_ink.coffee_mud.Behaviors.interfaces.Behavior"),
+    /** stat constant for clan type objects */
+    CLAN("com.planet_ink.coffee_mud.core.interfaces.Clan"),
+    /** stat constant for weapon type objects */
+    WEAPON("com.planet_ink.coffee_mud.Items.interfaces.Weapon"),
+    /** stat constant for armor type objects */
+    ARMOR("com.planet_ink.coffee_mud.Items.interfaces.Armor"),
+    /** stat constant for misc magic type objects */
+    MISCMAGIC("com.planet_ink.coffee_mud.Items.interfaces.MiscMagic"),
+    /** stat constant for area type objects */
+    AREA("com.planet_ink.coffee_mud.Areas.interfaces.Area"),
+    /** stat constant for command type objects */
+    COMMAND("com.planet_ink.coffee_mud.Commands.interfaces.Command"),
+    /** stat constant for clan items type objects */
+    CLANITEM("com.planet_ink.coffee_mud.Items.interfaces.ClanItem"),
+    /** stat constant for misc tech type objects */
+    MISCTECH("com.planet_ink.coffee_mud.Items.interfaces.Electronics"),
+    /** stat constant for webmacros type objects */
+    WEBMACRO("com.planet_ink.coffee_mud.WebMacros.interfaces.WebMacro"),
+    /** stat constant for common type objects */
+    COMMON("com.planet_ink.coffee_mud.Common.interfaces.CMCommon"),
+    /** stat constant for library type objects */
+    LIBRARY("com.planet_ink.coffee_mud.Libraries.interfaces.CMLibrary");
+    
+        public final String ancestorName; // in meters
+        CMObjectType(String ancestorName) {
+            this.ancestorName = ancestorName;
+        }
+    }
+
+    /** collection of all object types that are classified as "items" of one sort or another */
+    public static final CMObjectType[] OBJECTS_ITEMTYPES = new CMObjectType[]{
+        CMObjectType.MISCMAGIC,
+        CMObjectType.ITEM,
+        CMObjectType.ARMOR,
+        CMObjectType.CLANITEM,
+        CMObjectType.MISCMAGIC,
+        CMObjectType.MISCTECH,
+        CMObjectType.WEAPON
     };
 
+    /** static int for the web macro object with the longest name, used for web optimization */
     public static int longestWebMacro=-1;
-
 
     protected Hashtable<String,CMCommon> common=new Hashtable<String,CMCommon>();
     protected XVector<Race>              races=new XVector<Race>();
@@ -130,40 +182,6 @@ public class CMClass extends ClassLoader
             for(int i=0;i<OBJECT_TOTAL;i++)
                 OBJECT_CACHE[i]=new WeakHashMap<CMObject,Object>();
     }
-    */
-
-    public static final String[] OBJECT_DESCS=
-    {
-        "RACE","CHARCLASS","MOB","ABILITY","LOCALE","EXIT","ITEM","BEHAVIOR",
-        "CLAN","WEAPON","ARMOR","MISCMAGIC","AREA","COMMAND","CLANITEMS",
-        "MISCTECH","WEBMACROS","COMMON","LIBRARY"
-    };
-
-    protected static final String[] OBJECT_ANCESTORS=
-    {
-        "com.planet_ink.coffee_mud.Races.interfaces.Race",
-        "com.planet_ink.coffee_mud.CharClasses.interfaces.CharClass",
-        "com.planet_ink.coffee_mud.MOBS.interfaces.MOB",
-        "com.planet_ink.coffee_mud.Abilities.interfaces.Ability",
-        "com.planet_ink.coffee_mud.Locales.interfaces.Room",
-        "com.planet_ink.coffee_mud.Exits.interfaces.Exit",
-        "com.planet_ink.coffee_mud.Items.interfaces.Item",
-        "com.planet_ink.coffee_mud.Behaviors.interfaces.Behavior",
-        "com.planet_ink.coffee_mud.core.interfaces.Clan",
-        "com.planet_ink.coffee_mud.Items.interfaces.Weapon",
-        "com.planet_ink.coffee_mud.Items.interfaces.Armor",
-        "com.planet_ink.coffee_mud.Items.interfaces.MiscMagic",
-        "com.planet_ink.coffee_mud.Areas.interfaces.Area",
-        "com.planet_ink.coffee_mud.Commands.interfaces.Command",
-        "com.planet_ink.coffee_mud.Items.interfaces.ClanItem",
-        "com.planet_ink.coffee_mud.Items.interfaces.Electronics",
-        "com.planet_ink.coffee_mud.WebMacros.interfaces.WebMacro",
-        "com.planet_ink.coffee_mud.Common.interfaces.CMCommon",
-        "com.planet_ink.coffee_mud.Libraries.interfaces.CMLibrary",
-    };
-
-    /*
-     * removed to save memory and processing time -- but left for future use
     public final static void bumpCounter(final CMObject O, final int which)
     {
         if(KEEP_OBJECT_CACHE)
@@ -208,7 +226,10 @@ public class CMClass extends ClassLoader
 
     */
 
-    public  final static boolean exists (String className)
+
+
+
+    public final static boolean exists(String className)
     {
         try 
         {
@@ -221,113 +242,180 @@ public class CMClass extends ClassLoader
         }
     }
 
-    public final static boolean isType(final Object O, final int type)
+    /**
+     * Checks the given object against the given object type
+     * @see com.planet_ink.coffee_mud.core.CMClass.CMObjectType
+     * @param O the object to inspect
+     * @param type the type to compare against
+     * @return true if theres a match, and false otherwise
+     */
+    public final static boolean isType(final Object O, final CMObjectType type)
     {
         switch(type)
         {
-            case OBJECT_RACE: return O instanceof Race;
-            case OBJECT_CHARCLASS: return O instanceof CharClass;
-            case OBJECT_MOB: return O instanceof MOB;
-            case OBJECT_ABILITY: return O instanceof Ability;
-            case OBJECT_LOCALE: return O instanceof Room;
-            case OBJECT_EXIT: return O instanceof Exit;
-            case OBJECT_ITEM: return O instanceof Item;
-            case OBJECT_BEHAVIOR: return O instanceof Behavior;
-            case OBJECT_CLAN: return O instanceof Clan;
-            case OBJECT_WEAPON: return O instanceof Weapon;
-            case OBJECT_ARMOR: return O instanceof Armor;
-            case OBJECT_MISCMAGIC: return O instanceof MiscMagic;
-            case OBJECT_AREA: return O instanceof Area;
-            case OBJECT_COMMAND: return O instanceof Command;
-            case OBJECT_CLANITEMS: return O instanceof ClanItem;
-            case OBJECT_MISCTECH: return O instanceof Electronics;
-            case OBJECT_WEBMACROS: return O instanceof WebMacro;
-            case OBJECT_COMMON: return O instanceof CMCommon;
-            case OBJECT_LIBRARY: return O instanceof CMLibrary;
+            case RACE: return O instanceof Race;
+            case CHARCLASS: return O instanceof CharClass;
+            case MOB: return O instanceof MOB;
+            case ABILITY: return O instanceof Ability;
+            case LOCALE: return O instanceof Room;
+            case EXIT: return O instanceof Exit;
+            case ITEM: return O instanceof Item;
+            case BEHAVIOR: return O instanceof Behavior;
+            case CLAN: return O instanceof Clan;
+            case WEAPON: return O instanceof Weapon;
+            case ARMOR: return O instanceof Armor;
+            case MISCMAGIC: return O instanceof MiscMagic;
+            case AREA: return O instanceof Area;
+            case COMMAND: return O instanceof Command;
+            case CLANITEM: return O instanceof ClanItem;
+            case MISCTECH: return O instanceof Electronics;
+            case WEBMACRO: return O instanceof WebMacro;
+            case COMMON: return O instanceof CMCommon;
+            case LIBRARY: return O instanceof CMLibrary;
         }
         return false;
     }
 
-    public final static CMObject getByType(final String ID, final int type)
+    /**
+     * Returns a newInstance of an object of the given type and ID. NULL if not found.
+     * @see com.planet_ink.coffee_mud.core.CMClass.CMObjectType
+     * @param ID the ID of the object to look for
+     * @param type the type of object to check
+     * @return a newInstance of an object of the given type and ID.
+     */
+    public final static CMObject getByType(final String ID, final CMObjectType type)
     {
         switch(type)
         {
-            case OBJECT_RACE: return CMClass.getRace(ID);
-            case OBJECT_CHARCLASS: return CMClass.getCharClass(ID);
-            case OBJECT_MOB: return CMClass.getMOB(ID);
-            case OBJECT_ABILITY: return CMClass.getAbility(ID);
-            case OBJECT_LOCALE: return CMClass.getLocale(ID);
-            case OBJECT_EXIT: return CMClass.getExit(ID);
-            case OBJECT_ITEM: return CMClass.getBasicItem(ID);
-            case OBJECT_BEHAVIOR: return CMClass.getBehavior(ID);
-            case OBJECT_CLAN: return CMClass.getCommon(ID);
-            case OBJECT_WEAPON: return CMClass.getWeapon(ID);
-            case OBJECT_ARMOR: return CMClass.getAreaType(ID);
-            case OBJECT_MISCMAGIC: return CMClass.getMiscMagic(ID);
-            case OBJECT_AREA: return CMClass.getAreaType(ID);
-            case OBJECT_COMMAND: return CMClass.getCommand(ID);
-            case OBJECT_CLANITEMS: return CMClass.getClanItem(ID);
-            case OBJECT_MISCTECH: return CMClass.getMiscMagic(ID);
-            case OBJECT_WEBMACROS: return CMClass.getWebMacro(ID);
-            case OBJECT_COMMON: return CMClass.getCommon(ID);
-            case OBJECT_LIBRARY: return CMClass.getLibrary(ID);
+            case RACE: return CMClass.getRace(ID);
+            case CHARCLASS: return CMClass.getCharClass(ID);
+            case MOB: return CMClass.getMOB(ID);
+            case ABILITY: return CMClass.getAbility(ID);
+            case LOCALE: return CMClass.getLocale(ID);
+            case EXIT: return CMClass.getExit(ID);
+            case ITEM: return CMClass.getBasicItem(ID);
+            case BEHAVIOR: return CMClass.getBehavior(ID);
+            case CLAN: return CMClass.getCommon(ID);
+            case WEAPON: return CMClass.getWeapon(ID);
+            case ARMOR: return CMClass.getAreaType(ID);
+            case MISCMAGIC: return CMClass.getMiscMagic(ID);
+            case AREA: return CMClass.getAreaType(ID);
+            case COMMAND: return CMClass.getCommand(ID);
+            case CLANITEM: return CMClass.getClanItem(ID);
+            case MISCTECH: return CMClass.getMiscMagic(ID);
+            case WEBMACRO: return CMClass.getWebMacro(ID);
+            case COMMON: return CMClass.getCommon(ID);
+            case LIBRARY: return CMClass.getLibrary(ID);
         }
         return null;
     }
 
-    public final static int getType(final Object O)
+    /**
+     * Returns the object type of the given object
+     * @see com.planet_ink.coffee_mud.core.CMClass.CMObjectType
+     * @param O the object to inspect
+     * @return the cmobjectype type
+     */
+    public final static CMObjectType getType(final Object O)
     {
-        if(O instanceof Race) return OBJECT_RACE;
-        if(O instanceof CharClass) return OBJECT_CHARCLASS;
-        if(O instanceof Ability) return OBJECT_ABILITY;
-        if(O instanceof Room) return OBJECT_LOCALE;
-        if(O instanceof MOB) return OBJECT_MOB;
-        if(O instanceof Exit) return OBJECT_EXIT;
-        if(O instanceof Behavior) return OBJECT_BEHAVIOR;
-        if(O instanceof WebMacro) return OBJECT_WEBMACROS;
-        if(O instanceof Area) return OBJECT_AREA;
-        if(O instanceof CMLibrary) return OBJECT_LIBRARY;
-        if(O instanceof CMCommon) return OBJECT_COMMON;
-        if(O instanceof Electronics) return OBJECT_MISCTECH;
-        if(O instanceof Command) return OBJECT_COMMAND;
-        if(O instanceof Clan) return OBJECT_CLAN;
-        if(O instanceof ClanItem) return OBJECT_CLANITEMS;
-        if(O instanceof MiscMagic) return OBJECT_MISCMAGIC;
-        if(O instanceof Armor) return OBJECT_ARMOR;
-        if(O instanceof Weapon) return OBJECT_WEAPON;
-        if(O instanceof Item) return OBJECT_ITEM;
-        return -1;
+        if(O instanceof Race) return CMObjectType.RACE;
+        if(O instanceof CharClass) return CMObjectType.CHARCLASS;
+        if(O instanceof Ability) return CMObjectType.ABILITY;
+        if(O instanceof Room) return CMObjectType.LOCALE;
+        if(O instanceof MOB) return CMObjectType.MOB;
+        if(O instanceof Exit) return CMObjectType.EXIT;
+        if(O instanceof Behavior) return CMObjectType.BEHAVIOR;
+        if(O instanceof WebMacro) return CMObjectType.WEBMACRO;
+        if(O instanceof Area) return CMObjectType.AREA;
+        if(O instanceof CMLibrary) return CMObjectType.LIBRARY;
+        if(O instanceof CMCommon) return CMObjectType.COMMON;
+        if(O instanceof Electronics) return CMObjectType.MISCTECH;
+        if(O instanceof Command) return CMObjectType.COMMAND;
+        if(O instanceof Clan) return CMObjectType.CLAN;
+        if(O instanceof ClanItem) return CMObjectType.CLANITEM;
+        if(O instanceof MiscMagic) return CMObjectType.MISCMAGIC;
+        if(O instanceof Armor) return CMObjectType.ARMOR;
+        if(O instanceof Weapon) return CMObjectType.WEAPON;
+        if(O instanceof Item) return CMObjectType.ITEM;
+        return null;
+    }
+
+    /**
+     * Given a string, Integer, or some other stringable object, this will return the
+     * cmobjecttype based on its name or ordinal relationship.
+     * @see com.planet_ink.coffee_mud.core.CMClass.CMObjectType
+     * @param nameOrOrdinal the string, integer, or whatever object
+     * @return the cmobjecttype it refers to
+     */
+    public static CMObjectType getTypeByNameOrOrdinal(final Object nameOrOrdinal)
+    {
+        if(nameOrOrdinal==null) return null;
+        if(nameOrOrdinal instanceof Integer)
+        {
+            final int itemtypeord = ((Integer)nameOrOrdinal).intValue();
+            if((itemtypeord>=0)&&(itemtypeord<CMObjectType.values().length))
+              return CMClass.CMObjectType.values()[itemtypeord];
+        }
+        if(nameOrOrdinal instanceof Long)
+        {
+            final int itemtypeord = ((Long)nameOrOrdinal).intValue();
+            if((itemtypeord>=0)&&(itemtypeord<CMObjectType.values().length))
+              return CMClass.CMObjectType.values()[itemtypeord];
+        }
+        final String s=nameOrOrdinal.toString();
+        if(s.length()==0) return null;
+        if(CMath.isInteger(s))
+        {
+            final int itemtypeord=CMath.s_int(s);
+            if((itemtypeord>=0)&&(itemtypeord<CMObjectType.values().length))
+                return CMClass.CMObjectType.values()[itemtypeord];
+        }
+        try
+        {
+            return CMClass.CMObjectType.valueOf(s);
+        }
+        catch(Exception e)
+        {
+            return (CMClass.CMObjectType)CMath.s_valueOf(CMClass.CMObjectType.values(), s.toUpperCase().trim());
+        }
     }
 
     protected static final Object getClassSet(final String type) { return getClassSet(classCode(type));}
-    protected static final Object getClassSet(final int code)
+    protected static final Object getClassSet(final CMObjectType code)
     {
         switch(code)
         {
-        case 0: return c().races;
-        case 1: return c().charClasses;
-        case 2: return c().MOBs;
-        case 3: return c().abilities;
-        case 4: return c().locales;
-        case 5: return c().exits;
-        case 6: return c().items;
-        case 7: return c().behaviors;
-        case 8: return null;
-        case 9: return c().weapons;
-        case 10: return c().armor;
-        case 11: return c().miscMagic;
-        case 12: return c().areaTypes;
-        case 13: return c().commands;
-        case 14: return c().clanItems;
-        case 15: return c().miscTech;
-        case 16: return c().webMacros;
-        case 17: return c().common;
-        case 18: return c().libraries;
+        case RACE: return c().races;
+        case CHARCLASS: return c().charClasses;
+        case MOB: return c().MOBs;
+        case ABILITY: return c().abilities;
+        case LOCALE: return c().locales;
+        case EXIT: return c().exits;
+        case ITEM: return c().items;
+        case BEHAVIOR: return c().behaviors;
+        case CLAN: return null;
+        case WEAPON: return c().weapons;
+        case ARMOR: return c().armor;
+        case MISCMAGIC: return c().miscMagic;
+        case AREA: return c().areaTypes;
+        case COMMAND: return c().commands;
+        case CLANITEM: return c().clanItems;
+        case MISCTECH: return c().miscTech;
+        case WEBMACRO: return c().webMacros;
+        case COMMON: return c().common;
+        case LIBRARY: return c().libraries;
         }
         return null;
     }
 
-    public static final int numPrototypes(final int type)
+    /**
+     * Returns the total number of template/prototypes of the given type stored by 
+     * this CMClass instance.
+     * @see com.planet_ink.coffee_mud.core.CMClass.CMObjectType
+     * @param type the type of object to count
+     * @return the number stored
+     */
+    public static final int numPrototypes(final CMObjectType type)
     {
         final Object o = getClassSet(type);
         if(o instanceof Set) return ((Set)o).size();
@@ -339,23 +427,95 @@ public class CMClass extends ClassLoader
         return 0;
     }
 
+    /**
+     * An enumeration of all the stored races in this classloader for this thread
+     * @return an enumeration of all the stored races in this classloader for this thread
+     */
     public static final Enumeration<Race>       races(){return c().races.elements();}
+    /**
+     * An enumeration of all the stored common Objects in this classloader for this thread
+     * @return an enumeration of all the stored common Objects in this classloader for this thread
+     */
     public static final Enumeration<CMCommon>   commonObjects(){return c().common.elements();}
+    /**
+     * An enumeration of all the stored char Classes in this classloader for this thread
+     * @return an enumeration of all the stored char Classes in this classloader for this thread
+     */
     public static final Enumeration<CharClass>  charClasses(){return c().charClasses.elements();}
+    /**
+     * An enumeration of all the stored mob Types in this classloader for this thread
+     * @return an enumeration of all the stored mob Types in this classloader for this thread
+     */
     public static final Enumeration<MOB>        mobTypes(){return c().MOBs.elements();}
+    /**
+     * An enumeration of all the stored races in this classloader for this thread
+     * @return an enumeration of all the stored races in this classloader for this thread
+     */
     public static final Enumeration<CMLibrary>  libraries(){return c().libraries.elements();}
+    /**
+     * An enumeration of all the stored locales in this classloader for this thread
+     * @return an enumeration of all the stored locales in this classloader for this thread
+     */
     public static final Enumeration<Room>       locales(){return c().locales.elements();}
+    /**
+     * An enumeration of all the stored exits in this classloader for this thread
+     * @return an enumeration of all the stored exits in this classloader for this thread
+     */
     public static final Enumeration<Exit>       exits(){return c().exits.elements();}
+    /**
+     * An enumeration of all the stored behaviors in this classloader for this thread
+     * @return an enumeration of all the stored behaviors in this classloader for this thread
+     */
     public static final Enumeration<Behavior>   behaviors(){return c().behaviors.elements();}
+    /**
+     * An enumeration of all the stored basic Items in this classloader for this thread
+     * @return an enumeration of all the stored basic Items in this classloader for this thread
+     */
     public static final Enumeration<Item>       basicItems(){return c().items.elements();}
+    /**
+     * An enumeration of all the stored weapons in this classloader for this thread
+     * @return an enumeration of all the stored weapons in this classloader for this thread
+     */
     public static final Enumeration<Weapon>     weapons(){return c().weapons.elements();}
+    /**
+     * An enumeration of all the stored armor in this classloader for this thread
+     * @return an enumeration of all the stored armor in this classloader for this thread
+     */
     public static final Enumeration<Armor>      armor(){return c().armor.elements();}
+    /**
+     * An enumeration of all the stored misc Magic in this classloader for this thread
+     * @return an enumeration of all the stored misc Magic in this classloader for this thread
+     */
     public static final Enumeration<MiscMagic>  miscMagic(){return c().miscMagic.elements();}
+    /**
+     * An enumeration of all the stored misc Tech in this classloader for this thread
+     * @return an enumeration of all the stored misc Tech in this classloader for this thread
+     */
     public static final Enumeration<Electronics>miscTech(){return c().miscTech.elements();}
+    /**
+     * An enumeration of all the stored clan Items in this classloader for this thread
+     * @return an enumeration of all the stored clan Items in this classloader for this thread
+     */
     public static final Enumeration<ClanItem>   clanItems(){return c().clanItems.elements();}
+    /**
+     * An enumeration of all the stored area Types in this classloader for this thread
+     * @return an enumeration of all the stored area Types in this classloader for this thread
+     */
     public static final Enumeration<Area>       areaTypes(){return c().areaTypes.elements();}
+    /**
+     * An enumeration of all the stored commands in this classloader for this thread
+     * @return an enumeration of all the stored commands in this classloader for this thread
+     */
     public static final Enumeration<Command>    commands(){return c().commands.elements();}
+    /**
+     * An enumeration of all the stored abilities in this classloader for this thread
+     * @return an enumeration of all the stored abilities in this classloader for this thread
+     */
     public static final Enumeration<Ability>    abilities(){return c().abilities.elements();}
+    /**
+     * An enumeration of all the stored webmacros in this classloader for this thread
+     * @return an enumeration of all the stored webmacros in this classloader for this thread
+     */
     public static final Enumeration<WebMacro>   webmacros(){return c().webMacros.elements();}
 
     public static final Race        randomRace(){return (Race)c().races.elementAt((int)Math.round(Math.floor(Math.random()*((double)c().races.size()))));}
@@ -382,7 +542,7 @@ public class CMClass extends ClassLoader
     public static final Race        getRace(final String calledThis){return (Race)getGlobal(c().races,calledThis);}
 
 
-    public static final int numPrototypes(final int[] types)
+    public static final int numPrototypes(final CMObjectType[] types)
     {
         int total=0;
         for(int i=0;i<types.length;i++)
@@ -537,27 +697,27 @@ public class CMClass extends ClassLoader
         return true;
     }
 
-    public final static int classCode(final String name)
+    public final static CMObjectType classCode(final String name)
     {
-        for(int i=0;i<OBJECT_DESCS.length;i++)
+        for(CMObjectType o : CMObjectType.values())
         {
-            if(OBJECT_DESCS[i].toUpperCase().startsWith(name.toUpperCase()))
-                return i;
+            if(o.toString().toUpperCase().startsWith(name.toUpperCase()))
+                return o;
         }
-        return -1;
+        return null;
     }
 
-    public final static int classCode(final Object O)
+    public final static CMObjectType classCode(final Object O)
     {
-        for(int i=CMClass.OBJECT_ANCESTORS.length-1;i>=0;i--)
+        for(CMObjectType o : CMObjectType.values())
         {
             try{
-                Class<?> ancestorCl = instance().loadClass(CMClass.OBJECT_ANCESTORS[i]);
+                Class<?> ancestorCl = instance().loadClass(o.ancestorName);
                 if(CMClass.checkAncestry(O.getClass(),ancestorCl))
-                    return i;
+                    return o;
             }catch(Exception e){}
         }
-        return -1;
+        return null;
     }
 
 
@@ -568,7 +728,7 @@ public class CMClass extends ClassLoader
         if(set==null) return false;
         CMClass.lastUpdateTime=System.currentTimeMillis();
 
-        if(!loadListToObj(set,path,OBJECT_ANCESTORS[classCode(classType)],quiet))
+        if(!loadListToObj(set,path,classCode(classType).ancestorName,quiet))
             return false;
 
         if(set instanceof List)
@@ -598,7 +758,7 @@ public class CMClass extends ClassLoader
                 return (classes.get(pathLess)).newInstance();
         }catch(Exception e){}
         final Vector<Object> V=new Vector<Object>();
-        if(classCode(classType)<0)
+        if(classCode(classType)==null)
             return null;
         if((!path.toUpperCase().endsWith(".CLASS"))
         &&(!path.toUpperCase().endsWith(".JS")))
@@ -606,7 +766,7 @@ public class CMClass extends ClassLoader
             path=path.replace('.','/');
             path+=".class";
         }
-        if(!loadListToObj(V,path,OBJECT_ANCESTORS[classCode(classType)],quiet))
+        if(!loadListToObj(V,path,classCode(classType).ancestorName,quiet))
             return null;
         if(V.size()==0) return null;
         return (Object)V.firstElement();
@@ -619,9 +779,9 @@ public class CMClass extends ClassLoader
 
     public final static String ancestor(final String code)
     {
-        int num=classCode(code);
-        if((num>=0)&&(num<OBJECT_ANCESTORS.length))
-            return OBJECT_ANCESTORS[num];
+        CMObjectType typ=classCode(code);
+        if(typ!=null)
+            return typ.ancestorName;
         return "";
     }
 
@@ -632,9 +792,9 @@ public class CMClass extends ClassLoader
         if(x>0) shortThis=shortThis.substring(x+1);
         Object set=null;
         Object thisItem=null;
-        for(int i=0;i<CMClass.OBJECT_DESCS.length;i++)
+        for(CMObjectType o : CMObjectType.values())
         {
-            set=getClassSet(i);
+            set=getClassSet(o);
             if(set==null) continue;
             if(set instanceof List)
                 thisItem=getGlobal((List)set,shortThis);
@@ -1031,8 +1191,8 @@ public class CMClass extends ClassLoader
     {
         final char tCode=Thread.currentThread().getThreadGroup().getName().charAt(0);
         final Vector privacyV=CMParms.parseCommas(CMProps.getVar(CMProps.SYSTEM_PRIVATERESOURCES).toUpperCase(),true);
-        for(int o=0;o<OBJECT_DESCS.length;o++)
-            if((tCode==MudHost.MAIN_HOST)||(privacyV.contains(OBJECT_DESCS[o])))
+        for(CMObjectType o : CMObjectType.values())
+            if((tCode==MudHost.MAIN_HOST)||(privacyV.contains(o.toString())))
             {
                 Object set = CMClass.getClassSet(o); 
                 if(set instanceof List)

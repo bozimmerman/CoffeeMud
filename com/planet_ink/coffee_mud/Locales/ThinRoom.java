@@ -288,7 +288,7 @@ public class ThinRoom implements Room {
 		try
 		{
 			ThinRoom E=(ThinRoom)this.clone();
-            //CMClass.bumpCounter(E,CMClass.OBJECT_LOCALE);//removed for mem & perf
+            //CMClass.bumpCounter(E,CMClass.CMObjectType.LOCALE);//removed for mem & perf
 			return E;
 
 		}
@@ -305,7 +305,7 @@ public class ThinRoom implements Room {
 	protected static final PhyStats phyStats=(PhyStats)CMClass.getCommon("DefaultPhyStats");
 	public PhyStats phyStats(){return phyStats;}
 	public PhyStats basePhyStats(){return phyStats;}
-    //protected void finalize(){ CMClass.unbumpCounter(this,CMClass.OBJECT_ABILITY); }//removed for mem & perf
+    //protected void finalize(){ CMClass.unbumpCounter(this,CMClass.CMObjectType.ABILITY); }//removed for mem & perf
 
 	public void recoverPhyStats(){}
 	public void setBasePhyStats(PhyStats newStats){}

@@ -53,12 +53,12 @@ public class StdExit implements Exit
 	public StdExit()
 	{
         super();
-        //CMClass.bumpCounter(this,CMClass.OBJECT_EXIT);
+        //CMClass.bumpCounter(this,CMClass.CMObjectType.EXIT);
 		isOpen=!defaultsClosed();
 		isLocked=defaultsLocked();
 	}
 
-    //protected void finalize(){CMClass.unbumpCounter(this,CMClass.OBJECT_EXIT);}//removed for mem & perf
+    //protected void finalize(){CMClass.unbumpCounter(this,CMClass.CMObjectType.EXIT);}//removed for mem & perf
     public void initializeClass(){}
 	public String Name(){ return "a walkway";}
 	public boolean hasADoor(){return false;}
@@ -196,7 +196,7 @@ public class StdExit implements Exit
 		try
 		{
 			StdExit E=(StdExit)this.clone();
-            //CMClass.bumpCounter(this,CMClass.OBJECT_EXIT);//removed for mem & perf
+            //CMClass.bumpCounter(this,CMClass.CMObjectType.EXIT);//removed for mem & perf
 			E.cloneFix(this);
 			return E;
 

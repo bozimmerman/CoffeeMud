@@ -3671,7 +3671,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
         }
     }
 
-    public int getQuestThingIndex(Iterator<? extends Environmental> i, String name, int type, int[] num)
+    public int getQuestThingIndex(Iterator<? extends Environmental> i, String name, CMClass.CMObjectType type, int[] num)
     {
         if(i==null) return -1;
         Environmental E;
@@ -3682,7 +3682,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
             {
                 switch(type)
                 {
-                case CMClass.OBJECT_LOCALE:
+                case LOCALE:
                     if(CMLib.map().getExtendedRoomID((Room)E).equalsIgnoreCase(name))
                         return num[0];
                     break;
@@ -3704,11 +3704,11 @@ public class DefaultQuest implements Quest, Tickable, CMObject
         synchronized(questState)
         {
 	        if(questState.worldObjects!=null)
-	            x=getQuestThingIndex(PreservedQuestObject.getPOIter(questState.worldObjects),name,CMClass.OBJECT_MOB,num);
+	            x=getQuestThingIndex(PreservedQuestObject.getPOIter(questState.worldObjects),name,CMClass.CMObjectType.MOB,num);
 	        if((x<0)&&(questState.mobGroup!=null))
-	            x=getQuestThingIndex(questState.mobGroup.iterator(),name,CMClass.OBJECT_MOB,num);
+	            x=getQuestThingIndex(questState.mobGroup.iterator(),name,CMClass.CMObjectType.MOB,num);
 	        if((x<0)&&(questState.mysteryData!=null)&&(questState.mysteryData.agentGroup!=null))
-	            x=getQuestThingIndex(questState.mysteryData.agentGroup.iterator(),name,CMClass.OBJECT_MOB,num);
+	            x=getQuestThingIndex(questState.mysteryData.agentGroup.iterator(),name,CMClass.CMObjectType.MOB,num);
         }
         return x;
     }
@@ -3720,15 +3720,15 @@ public class DefaultQuest implements Quest, Tickable, CMObject
         synchronized(questState)
         {
 	        if(questState.worldObjects!=null)
-	            x=getQuestThingIndex(PreservedQuestObject.getPOIter(questState.worldObjects),roomID,CMClass.OBJECT_LOCALE,num);
+	            x=getQuestThingIndex(PreservedQuestObject.getPOIter(questState.worldObjects),roomID,CMClass.CMObjectType.LOCALE,num);
 	        if((x<0)&&(questState.roomGroup!=null))
-	            x=getQuestThingIndex(questState.roomGroup.iterator(),roomID,CMClass.OBJECT_LOCALE,num);
+	            x=getQuestThingIndex(questState.roomGroup.iterator(),roomID,CMClass.CMObjectType.LOCALE,num);
 	        if(questState.mysteryData!=null)
 	        {
 	            if((x<0)&&(questState.mysteryData.whereAtGroup!=null))
-	                x=getQuestThingIndex(questState.mysteryData.whereAtGroup.iterator(),roomID,CMClass.OBJECT_LOCALE,num);
+	                x=getQuestThingIndex(questState.mysteryData.whereAtGroup.iterator(),roomID,CMClass.CMObjectType.LOCALE,num);
 	            if((x<0)&&(questState.mysteryData.whereHappenedGroup!=null))
-	                x=getQuestThingIndex(questState.mysteryData.whereHappenedGroup.iterator(),roomID,CMClass.OBJECT_LOCALE,num);
+	                x=getQuestThingIndex(questState.mysteryData.whereHappenedGroup.iterator(),roomID,CMClass.CMObjectType.LOCALE,num);
 	        }
         }
         return x;
@@ -3741,19 +3741,19 @@ public class DefaultQuest implements Quest, Tickable, CMObject
         synchronized(questState)
         {
 	        if(questState.worldObjects!=null)
-	            x=getQuestThingIndex(PreservedQuestObject.getPOIter(questState.worldObjects),name,CMClass.OBJECT_ITEM,num);
+	            x=getQuestThingIndex(PreservedQuestObject.getPOIter(questState.worldObjects),name,CMClass.CMObjectType.ITEM,num);
 	        if((x<0)&&(questState.itemGroup!=null))
-	            x=getQuestThingIndex(questState.itemGroup.iterator(),name,CMClass.OBJECT_ITEM,num);
+	            x=getQuestThingIndex(questState.itemGroup.iterator(),name,CMClass.CMObjectType.ITEM,num);
 	        if(questState.mysteryData!=null)
 	        {
 	            if((x<0)&&(questState.mysteryData.toolGroup!=null))
-	                x=getQuestThingIndex(questState.mysteryData.toolGroup.iterator(),name,CMClass.OBJECT_ITEM,num);
+	                x=getQuestThingIndex(questState.mysteryData.toolGroup.iterator(),name,CMClass.CMObjectType.ITEM,num);
 	        }
         }
         return x;
     }
 
-    public Environmental getQuestThing(Iterator<? extends Environmental> e, int dex, int type, int[] num)
+    public Environmental getQuestThing(Iterator<? extends Environmental> e, int dex, CMClass.CMObjectType type, int[] num)
     {
         if(e==null) return null;
         Environmental E;
@@ -3776,13 +3776,13 @@ public class DefaultQuest implements Quest, Tickable, CMObject
         synchronized(questState)
         {
 	        if(questState.worldObjects!=null)
-	            E=getQuestThing(PreservedQuestObject.getPOIter(questState.worldObjects),i,CMClass.OBJECT_MOB,num);
+	            E=getQuestThing(PreservedQuestObject.getPOIter(questState.worldObjects),i,CMClass.CMObjectType.MOB,num);
 	        if(E instanceof MOB) return (MOB)E;
 	        if(questState.mobGroup!=null)
-		        E=getQuestThing(questState.mobGroup.iterator(),i,CMClass.OBJECT_MOB,num);
+		        E=getQuestThing(questState.mobGroup.iterator(),i,CMClass.CMObjectType.MOB,num);
 	        if(E instanceof MOB) return (MOB)E;
 	        if((questState.mysteryData!=null)&&(questState.mysteryData.agentGroup!=null))
-	            E=getQuestThing(questState.mysteryData.agentGroup.iterator(),i,CMClass.OBJECT_MOB,num);
+	            E=getQuestThing(questState.mysteryData.agentGroup.iterator(),i,CMClass.CMObjectType.MOB,num);
 	        if(E instanceof MOB) return (MOB)E;
         }
         return null;
@@ -3795,13 +3795,13 @@ public class DefaultQuest implements Quest, Tickable, CMObject
         synchronized(questState)
         {
 	        if(questState.worldObjects!=null)
-	            E=getQuestThing(PreservedQuestObject.getPOIter(questState.worldObjects),i,CMClass.OBJECT_ITEM,num);
+	            E=getQuestThing(PreservedQuestObject.getPOIter(questState.worldObjects),i,CMClass.CMObjectType.ITEM,num);
 	        if(E instanceof Item) return (Item)E;
 	        if(questState.itemGroup!=null)
-		        E=getQuestThing(questState.itemGroup.iterator(),i,CMClass.OBJECT_ITEM,num);
+		        E=getQuestThing(questState.itemGroup.iterator(),i,CMClass.CMObjectType.ITEM,num);
 	        if(E instanceof Item) return (Item)E;
 	        if((questState.mysteryData!=null)&&(questState.mysteryData.toolGroup!=null))
-	            E=getQuestThing(questState.mysteryData.toolGroup.iterator(),i,CMClass.OBJECT_ITEM,num);
+	            E=getQuestThing(questState.mysteryData.toolGroup.iterator(),i,CMClass.CMObjectType.ITEM,num);
 	        if(E instanceof Item) return (Item)E;
         }
         return null;
@@ -3814,15 +3814,15 @@ public class DefaultQuest implements Quest, Tickable, CMObject
         synchronized(questState)
         {
 	        if(questState.worldObjects!=null)
-	            E=getQuestThing(PreservedQuestObject.getPOIter(questState.worldObjects),i,CMClass.OBJECT_LOCALE,num);
+	            E=getQuestThing(PreservedQuestObject.getPOIter(questState.worldObjects),i,CMClass.CMObjectType.LOCALE,num);
 	        if(E instanceof Room) return (Room)E;
-	        E=getQuestThing(questState.roomGroup.iterator(),i,CMClass.OBJECT_LOCALE,num);
+	        E=getQuestThing(questState.roomGroup.iterator(),i,CMClass.CMObjectType.LOCALE,num);
 	        if(E instanceof Room) return (Room)E;
 	        if((questState.mysteryData!=null)&&(questState.mysteryData.whereAtGroup!=null))
-	            E=getQuestThing(questState.mysteryData.whereAtGroup.iterator(),i,CMClass.OBJECT_LOCALE,num);
+	            E=getQuestThing(questState.mysteryData.whereAtGroup.iterator(),i,CMClass.CMObjectType.LOCALE,num);
 	        if(E instanceof Room) return (Room)E;
 	        if((questState.mysteryData!=null)&&(questState.mysteryData.whereHappenedGroup!=null))
-	            E=getQuestThing(questState.mysteryData.whereHappenedGroup.iterator(),i,CMClass.OBJECT_LOCALE,num);
+	            E=getQuestThing(questState.mysteryData.whereHappenedGroup.iterator(),i,CMClass.CMObjectType.LOCALE,num);
 	        if(E instanceof Room) return (Room)E;
         }
         return null;
