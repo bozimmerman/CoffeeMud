@@ -134,18 +134,19 @@ public class Chant_SummonAnimal extends Chant
 		{
 			invoker=mob;
 			CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?"":"^S<S-NAME> chant(s) and summon(s) a companion from the Java Plain.^?");
-			if(mob.location().okMessage(mob,msg))
+			Room room=mob.location();
+			if(room.okMessage(mob,msg))
 			{
-				mob.location().send(mob,msg);
+				room.send(mob,msg);
 				MOB target = determineMonster(mob, adjustedLevel(mob,asLevel));
 				target.bringToLife(newRoom,true);
 				CMLib.beanCounter().clearZeroMoney(target,null);
-				target.location().showOthers(target,null,CMMsg.MSG_OK_ACTION,"<S-NAME> appears!");
+				newRoom.showOthers(target,null,CMMsg.MSG_OK_ACTION,"<S-NAME> appears!");
 				newRoom.recoverRoomStats();
 				target.setStartRoom(null);
 				if(target.isInCombat()) target.makePeace();
 				CMLib.tracking().walk(target,opDir,false,false);
-				if(target.location()==mob.location())
+				if(target.location()==room)
 				{
 					if(target.isInCombat()) target.makePeace();
 					CMLib.commands().postFollow(target,mob,true);
