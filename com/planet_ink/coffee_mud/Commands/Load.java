@@ -1,6 +1,7 @@
 package com.planet_ink.coffee_mud.Commands;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.core.CMClass.CMObjectType;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
@@ -224,20 +225,21 @@ public class Load extends StdCommand
                         Object O=CMClass.getClass(unloadClassName);
                         if(O!=null)
                         {
-                            CMClass.CMObjectType x=CMClass.classCode(O);
+                            CMClass.CMObjectType x=CMClass.getObjectType(O);
                             if(x!=null) what=x.toString();
                         }
                     }
-                    if(CMClass.classCode(what)==null)
+                    CMObjectType whatType=CMClass.findObjectType(what);
+                    if(whatType==null)
                         mob.tell("Don't know how to load a '"+what+"'.  Try one of the following: "+ARCHON_LIST);
                     else
                     {
                         Object O=CMClass.getClass(unloadClassName);
                         if((O instanceof CMObject)
                         &&(name.toUpperCase().endsWith(".CLASS"))
-                        &&(CMClass.delClass(what,(CMObject)O))) 
+                        &&(CMClass.delClass(whatType,(CMObject)O))) 
                             mob.tell(unloadClassName+" was unloaded.");
-                        if(CMClass.loadClass(what,name,false))
+                        if(CMClass.loadClass(whatType,name,false))
                         {
                             mob.tell(CMStrings.capitalizeAndLower(what)+" "+name+" was successfully loaded.");
                             return true;

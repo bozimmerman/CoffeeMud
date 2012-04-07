@@ -2,6 +2,7 @@ package com.planet_ink.coffee_mud.Libraries;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.exceptions.*;
 import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.core.CMClass.CMObjectType;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.MoneyLibrary.MoneyDenomination;
@@ -4484,7 +4485,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
         if(newName.length()>0)
         {
             Race R2=CMClass.getRace(newName);
-            if(R2==null) R2=(Race)CMClass.unsortedLoadClass("RACE",newName,true);
+            if(R2==null) R2=(Race)CMClass.getLoadNewClassInstance(CMObjectType.RACE,newName,true);
             if((R2!=null)&&(R2.isGeneric()))
                 R2=null;
             if(R2==null)
@@ -4518,7 +4519,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
         if(newName.length()>0)
         {
             CharClass C2=CMClass.getCharClass(newName);
-            if(C2==null) C2=(CharClass)CMClass.unsortedLoadClass("CHARCLASS",newName,true);
+            if(C2==null) C2=(CharClass)CMClass.getLoadNewClassInstance(CMObjectType.CHARCLASS,newName,true);
             if((C2!=null)&&(C2.isGeneric()))
                 C2=null;
             if(C2==null)

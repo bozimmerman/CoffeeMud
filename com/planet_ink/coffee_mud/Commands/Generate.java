@@ -196,6 +196,8 @@ public class Generate extends StdCommand
             case ITEM:
                 V=CMLib.percolator().findItems(piece, definedIDs);
                 break;
+            default:
+            	break;
             }
         } catch(CMException cex) {
             mob.tell("Unable to generate: "+cex.getMessage());

@@ -1,6 +1,7 @@
 package com.planet_ink.coffee_mud.WebMacros;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.core.CMClass.CMObjectType;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
@@ -52,7 +53,7 @@ public class RaceData extends StdWebMacro
         {
             R2=(Race)e.nextElement();
             R2ID="com.planet_ink.coffee_mud.Races."+R2.ID();
-            if(R2.isGeneric() && CMClass.checkForCMClass("RACE",R2ID))
+            if(R2.isGeneric() && CMClass.checkForCMClass(CMObjectType.RACE,R2ID))
             {
                 str.append("<OPTION VALUE=\""+R2.ID()+"\" "+((old.equalsIgnoreCase(R2.ID()))?"SELECTED":"")+">"+R2.ID()+" (Generic)");
                 str.append("<OPTION VALUE=\""+R2ID+"\" "+((old.equalsIgnoreCase(R2ID))?"SELECTED":"")+">"+R2ID);

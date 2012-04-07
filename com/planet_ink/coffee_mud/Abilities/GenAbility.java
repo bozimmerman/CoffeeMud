@@ -1,6 +1,7 @@
 package com.planet_ink.coffee_mud.Abilities;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.core.CMClass.CMObjectType;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
@@ -611,10 +612,10 @@ public class GenAbility extends StdAbility
         	vars.remove(ID);
         	vars.put(val,O);
         	if(num!=9)
-        	    CMClass.delClass("ABILITY",this);
+        	    CMClass.delClass(CMObjectType.ABILITY,this);
         	ID=val;
             if(num!=9)
-            	CMClass.addClass("ABILITY",this);
+            	CMClass.addClass(CMObjectType.ABILITY,this);
         }
     	break;
         case 1: setMiscText(val); break;

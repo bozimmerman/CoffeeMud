@@ -1,6 +1,7 @@
 package com.planet_ink.coffee_mud.Races;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.core.CMClass.CMObjectType;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
@@ -699,7 +700,7 @@ public class GenRace extends StdRace
 			healthBuddy=CMClass.getRace(val);
 			try{
 				if(healthBuddy==null)
-					healthBuddy=(Race)CMClass.unsortedLoadClass("RACE",val,true);
+					healthBuddy=(Race)CMClass.getLoadNewClassInstance(CMObjectType.RACE,val,true);
 			}catch(Exception e){}
 			break;
 		}
@@ -850,14 +851,14 @@ public class GenRace extends StdRace
 		{
 			eventBuddy=CMClass.getRace(val);
 			if(eventBuddy==null)
-				eventBuddy=(Race)CMClass.unsortedLoadClass("RACE",val,true);
+				eventBuddy=(Race)CMClass.getLoadNewClassInstance(CMObjectType.RACE,val,true);
 			break;
 		}
 		case 43:
 		{
 			weaponBuddy=CMClass.getRace(val);
 			if(weaponBuddy==null)
-				weaponBuddy=(Race)CMClass.unsortedLoadClass("RACE",val,true);
+				weaponBuddy=(Race)CMClass.getLoadNewClassInstance(CMObjectType.RACE,val,true);
 			break;
 		}
 		case 44:

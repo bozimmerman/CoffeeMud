@@ -2,6 +2,7 @@ package com.planet_ink.coffee_mud.WebMacros;
 import com.planet_ink.coffee_mud.WebMacros.grinder.*;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.core.CMClass.CMObjectType;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
@@ -573,7 +574,7 @@ public class MUDGrinder extends StdWebMacro
             String oldRID=R.ID();
             CMClass.delRace(R);
             CMLib.database().DBDeleteRace(R.ID());
-            CMClass.loadClass("RACE","com/planet_ink/coffee_mud/Races/"+oldRID+".class",true);
+            CMClass.loadClass(CMObjectType.RACE,"com/planet_ink/coffee_mud/Races/"+oldRID+".class",true);
             Race oldR=CMClass.getRace(oldRID);
             if(oldR==null) oldR=CMClass.getRace("StdRace");
             CMLib.utensils().swapRaces(oldR, R);
@@ -633,7 +634,7 @@ public class MUDGrinder extends StdWebMacro
             String oldCID=C.ID();
             CMClass.delCharClass(C);
             CMLib.database().DBDeleteClass(C.ID());
-            CMClass.loadClass("CHARCLASS","com/planet_ink/coffee_mud/CharClasses/"+oldCID+".class",true);
+            CMClass.loadClass(CMObjectType.CHARCLASS,"com/planet_ink/coffee_mud/CharClasses/"+oldCID+".class",true);
             CharClass oldC=CMClass.getCharClass(oldCID);
             if(oldC==null) oldC=CMClass.getCharClass("StdCharClass");
             if((oldC!=null)&&(oldC!=C))
@@ -742,7 +743,7 @@ public class MUDGrinder extends StdWebMacro
             Object O=CMClass.getClass(A.ID());
             if(!(O instanceof Ability))
                 return " @break@";
-            CMClass.delClass("ABILITY",(Ability)O);
+            CMClass.delClass(CMObjectType.ABILITY,(Ability)O);
             CMLib.database().DBDeleteAbility(A.ID());
             Log.sysOut("Grinder",mob.name()+" deleted Ability "+A.ID());
             return "Ability "+A.ID()+" deleted.";

@@ -1,6 +1,7 @@
 package com.planet_ink.coffee_mud.Commands;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.core.CMClass.CMObjectType;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
@@ -92,7 +93,7 @@ public class Unload extends StdCommand
         else
         {
             String what=(String)commands.elementAt(1);
-            if((what.equalsIgnoreCase("CLASS")||(CMClass.classCode(what)!=null))
+            if((what.equalsIgnoreCase("CLASS")||(CMClass.findObjectType(what)!=null))
             &&(CMSecurity.isASysOp(mob)))
             {
                 if(commands.size()<3)
@@ -105,11 +106,12 @@ public class Unload extends StdCommand
                     Object O=CMClass.getClass((String)commands.elementAt(2));
                     if(O!=null)
                     {
-                        CMClass.CMObjectType x=CMClass.classCode(O);
+                        CMClass.CMObjectType x=CMClass.getObjectType(O);
                         if(x!=null) what=x.toString();
                     }
                 }
-                if(CMClass.classCode(what)==null)
+                CMObjectType whatType=CMClass.findObjectType(what);
+                if(whatType==null)
                     mob.tell("Don't know how to load a '"+what+"'.  Try one of the following: "+CMParms.toStringList(ARCHON_LIST));
                 else
                 {
@@ -122,7 +124,7 @@ public class Unload extends StdCommand
                         if(!(O instanceof CMObject))
                             mob.tell("Class '"+name+"' was not found in the class loader.");
                         else
-                        if(!CMClass.delClass(what,(CMObject)O))
+                        if(!CMClass.delClass(whatType,(CMObject)O))
                             mob.tell("Failed to unload class '"+name+"' from the class loader.");
                         else
                             mob.tell("Class '"+name+"' was unloaded.");

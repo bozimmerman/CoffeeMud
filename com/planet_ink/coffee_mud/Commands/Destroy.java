@@ -1,6 +1,7 @@
 package com.planet_ink.coffee_mud.Commands;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.core.CMClass.CMObjectType;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
@@ -563,7 +564,7 @@ public class Destroy extends StdCommand
 		String oldRID=R.ID();
 		CMClass.delRace(R);
 		CMLib.database().DBDeleteRace(R.ID());
-		CMClass.loadClass("RACE","com/planet_ink/coffee_mud/Races/"+oldRID+".class",true);
+		CMClass.loadClass(CMObjectType.RACE,"com/planet_ink/coffee_mud/Races/"+oldRID+".class",true);
 		Race oldR=CMClass.getRace(oldRID);
         if(oldR==null) oldR=CMClass.getRace("StdRace");
         CMLib.utensils().swapRaces(oldR,R);
@@ -674,7 +675,7 @@ public class Destroy extends StdCommand
 		CMClass.delCharClass(C);
 		CMLib.database().DBDeleteClass(C.ID());
         String oldCID=C.ID();
-        CMClass.loadClass("CHARCLASS","com/planet_ink/coffee_mud/CharClasses/"+oldCID+".class",true);
+        CMClass.loadClass(CMObjectType.CHARCLASS,"com/planet_ink/coffee_mud/CharClasses/"+oldCID+".class",true);
         CharClass oldC=CMClass.getCharClass(oldCID);
         if(oldC==null) oldC=CMClass.getCharClass("StdCharClass");
         CMLib.utensils().reloadCharClasses(C);
@@ -715,7 +716,7 @@ public class Destroy extends StdCommand
             mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
             return false;
         }
-		CMClass.delClass("ABILITY",(Ability)O);
+		CMClass.delClass(CMObjectType.ABILITY,(Ability)O);
 		CMLib.database().DBDeleteAbility(A.ID());
 		mob.location().showHappens(CMMsg.MSG_OK_ACTION,"The skill of the world just decreased!");
 		return true;

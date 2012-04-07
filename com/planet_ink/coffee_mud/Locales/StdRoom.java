@@ -312,7 +312,7 @@ public class StdRoom implements Room
 	}
 	public Area getArea()
 	{
-		if(myArea==null) return CMClass.anyOldArea();
+		if(myArea==null) return CMClass.randomArea();
 		return myArea;
 	}
 	public void setArea(Area newArea)

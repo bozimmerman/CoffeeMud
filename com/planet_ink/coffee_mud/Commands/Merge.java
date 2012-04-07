@@ -542,8 +542,8 @@ public class Merge extends StdCommand
         case ITEM: return E instanceof Item;
         case WEAPON: return E instanceof Weapon;
         case ARMOR: return E instanceof Armor;
+        default: return false;
         }
-        return false;
     }
     
     private boolean amMerging(CMClass.CMObjectType doType, MaskingLibrary.CompiledZapperMask mask, Environmental E)

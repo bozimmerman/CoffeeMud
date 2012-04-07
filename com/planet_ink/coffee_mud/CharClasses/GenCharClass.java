@@ -1,6 +1,7 @@
 package com.planet_ink.coffee_mud.CharClasses;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.core.CMClass.CMObjectType;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
@@ -927,7 +928,7 @@ public class GenCharClass extends StdCharClass
             statBuddy=CMClass.getCharClass(val);
             try{
                 if(statBuddy==null)
-                    statBuddy=(CharClass)CMClass.unsortedLoadClass("CHARCLASS",val,true);
+                    statBuddy=(CharClass)CMClass.getLoadNewClassInstance(CMObjectType.CHARCLASS,val,true);
             }catch(Exception e){}
             break;
         }
@@ -936,7 +937,7 @@ public class GenCharClass extends StdCharClass
             eventBuddy=CMClass.getCharClass(val);
             try{
                 if(eventBuddy==null)
-                    eventBuddy=(CharClass)CMClass.unsortedLoadClass("CHARCLASS",val,true);
+                    eventBuddy=(CharClass)CMClass.getLoadNewClassInstance(CMObjectType.CHARCLASS,val,true);
             }catch(Exception e){}
             break;
         }

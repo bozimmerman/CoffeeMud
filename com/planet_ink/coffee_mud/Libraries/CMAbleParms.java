@@ -254,18 +254,18 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
             classID=(String)dataRow.elementAt(fieldIndex,2);
         if((classID!=null)&&(classID.length()>0))
             if(classID.equalsIgnoreCase("FOOD"))
-                return CMClass.sampleItem("GenFood");
+                return CMClass.getItemPrototype("GenFood");
             else
                 if(classID.equalsIgnoreCase("SOAP"))
-                    return CMClass.sampleItem("GenItem");
+                    return CMClass.getItemPrototype("GenItem");
                 else
                     if(classID.equalsIgnoreCase("DRINK"))
-                        return CMClass.sampleItem("GenDrink");
+                        return CMClass.getItemPrototype("GenDrink");
                     else
-                        return CMClass.sampleItem(classID);
+                        return CMClass.getItemPrototype(classID);
         if(classIDRequired)
             return null;
-        return CMClass.sampleItem("StdItem");
+        return CMClass.getItemPrototype("StdItem");
     }
     
     protected String stripData(StringBuffer str, String div)

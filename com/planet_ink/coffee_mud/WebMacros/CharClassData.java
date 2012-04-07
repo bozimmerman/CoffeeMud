@@ -1,6 +1,7 @@
 package com.planet_ink.coffee_mud.WebMacros;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.core.CMClass.CMObjectType;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
@@ -49,7 +50,7 @@ public class CharClassData extends StdWebMacro
         {
             C2=(CharClass)e.nextElement();
             C2ID="com.planet_ink.coffee_mud.CharClasses."+C2.ID();
-            if(C2.isGeneric() && CMClass.checkForCMClass("CHARCLASS",C2ID))
+            if(C2.isGeneric() && CMClass.checkForCMClass(CMObjectType.CHARCLASS,C2ID))
             {
                 str.append("<OPTION VALUE=\""+C2.ID()+"\" "+((old.equalsIgnoreCase(C2.ID()))?"SELECTED":"")+">"+C2.ID()+" (Generic)");
                 str.append("<OPTION VALUE=\""+C2ID+"\" "+((old.equalsIgnoreCase(C2ID))?"SELECTED":"")+">"+C2ID);
