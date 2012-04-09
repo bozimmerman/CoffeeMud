@@ -138,9 +138,15 @@ public class Thief_BackStab extends ThiefSkill
 				mob.addEffect(this);
 				mob.recoverPhyStats();
 			}
-			CMLib.combat().postAttack(mob,target,weapon);
-			mob.delEffect(this);
-			mob.recoverPhyStats();
+			try
+			{
+				CMLib.combat().postAttack(mob,target,weapon);
+			}
+			finally
+			{
+				mob.delEffect(this);
+				mob.recoverPhyStats();
+			}
             lastMOB=""+target;
 		}
 		else

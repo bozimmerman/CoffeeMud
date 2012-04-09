@@ -53,6 +53,11 @@ public final class ReadOnlyVector<T> extends Vector<T>
                 super.add(o);
       }
       
+      public ReadOnlyVector(int size)
+      {
+    	  super(size);
+      }
+      
     @Override
     public synchronized boolean add(T t) { return false; }
     @Override

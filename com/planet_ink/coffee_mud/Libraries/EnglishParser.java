@@ -45,6 +45,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
     public static boolean[] PUNCTUATION_TABLE=null;
     public final static char[] ALL_CHRS="ALL".toCharArray();
     public final static String[] fwords={"calf", "half", "knife", "life", "wife", "elf", "self", "shelf", "leaf", "sheaf", "thief", "loaf", "wolf"};
+    public final static List<Environmental> empty=new ReadOnlyVector(1);
     
     public String toEnglishStringList(final String[] V)
     {
@@ -1524,9 +1525,9 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 
     public List<Environmental> fetchEnvironmentals(List<? extends Environmental> list, String srchStr, boolean exactOnly)
     {
-    	if(list.size()==0) return null;
-        FetchFlags flags=fetchFlags(srchStr);
         Vector<Environmental> matches=new Vector(1);
+    	if(list.size()==0) return matches;
+        FetchFlags flags=fetchFlags(srchStr);
         if(flags==null) return matches;
         
         srchStr=flags.srchStr;
@@ -1735,9 +1736,9 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 
     public List<Item> fetchAvailableItems(List<Item> list, String srchStr, Item goodLocation, int wornReqCode, boolean exactOnly)
     {
-    	if(list.size()==0) return null;
-        FetchFlags flags=fetchFlags(srchStr);
         Vector<Item> matches=new Vector(1);
+    	if(list.size()==0) return matches;
+        FetchFlags flags=fetchFlags(srchStr);
         if(flags==null) return matches;
 
         srchStr=flags.srchStr;
