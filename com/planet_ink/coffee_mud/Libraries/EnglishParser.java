@@ -1524,6 +1524,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 
     public List<Environmental> fetchEnvironmentals(List<? extends Environmental> list, String srchStr, boolean exactOnly)
     {
+    	if(list.size()==0) return null;
         FetchFlags flags=fetchFlags(srchStr);
         Vector<Environmental> matches=new Vector(1);
         if(flags==null) return matches;
@@ -1591,6 +1592,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 
     public Environmental fetchEnvironmental(Map<String, ? extends Environmental> list, String srchStr, boolean exactOnly)
     {
+    	if(list.size()==0) return null;
         FetchFlags flags=fetchFlags(srchStr);
         if(flags==null) return null;
 
@@ -1653,6 +1655,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 
     public Item fetchAvailableItem(List<Item> list, String srchStr, Item goodLocation, int wornReqCode, boolean exactOnly)
     {
+    	if(list.size()==0) return null;
         FetchFlags flags=fetchFlags(srchStr);
         if(flags==null) return null;
 
@@ -1732,6 +1735,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 
     public List<Item> fetchAvailableItems(List<Item> list, String srchStr, Item goodLocation, int wornReqCode, boolean exactOnly)
     {
+    	if(list.size()==0) return null;
         FetchFlags flags=fetchFlags(srchStr);
         Vector<Item> matches=new Vector(1);
         if(flags==null) return matches;
@@ -1805,6 +1809,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 
     public Environmental fetchAvailable(Collection<? extends Environmental> list, String srchStr, Item goodLocation, int wornFilter, boolean exactOnly)
     {
+    	if(list.size()==0) return null;
         FetchFlags flags=fetchFlags(srchStr);
         if(flags==null) return null;
 

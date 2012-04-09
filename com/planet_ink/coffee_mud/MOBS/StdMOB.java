@@ -2835,6 +2835,7 @@ public class StdMOB implements MOB
                                    boolean allowCoins,
                                    boolean respectLocationAndWornCode)
     {
+		if(inventory.size()==0) return null;
         SVector inv=inventory;
         if(!allowCoins)
         {
@@ -2863,10 +2864,13 @@ public class StdMOB implements MOB
     
     public List<Item> findItems(final String itemName)
     { 
-        List V=CMLib.english().fetchEnvironmentals(inventory,itemName,true);
-        if((V!=null)&&(V.size()>0)) return V;
-        V=CMLib.english().fetchEnvironmentals(inventory,itemName,false);
-        if(V!=null) return V;
+		if(inventory.size()>0)
+		{
+	        List V=CMLib.english().fetchEnvironmentals(inventory,itemName,true);
+	        if((V!=null)&&(V.size()>0)) return V;
+	        V=CMLib.english().fetchEnvironmentals(inventory,itemName,false);
+	        if(V!=null) return V;
+		}
         return new Vector(1);
     }
 
