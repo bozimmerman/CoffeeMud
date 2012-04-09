@@ -222,7 +222,7 @@ public class Load extends StdCommand
                     
                     if(what.equalsIgnoreCase("CLASS"))
                     {
-                        Object O=CMClass.getClass(unloadClassName);
+                        Object O=CMClass.getObjectOrPrototype(unloadClassName);
                         if(O!=null)
                         {
                             CMClass.CMObjectType x=CMClass.getObjectType(O);
@@ -234,7 +234,7 @@ public class Load extends StdCommand
                         mob.tell("Don't know how to load a '"+what+"'.  Try one of the following: "+ARCHON_LIST);
                     else
                     {
-                        Object O=CMClass.getClass(unloadClassName);
+                        Object O=CMClass.getObjectOrPrototype(unloadClassName);
                         if((O instanceof CMObject)
                         &&(name.toUpperCase().endsWith(".CLASS"))
                         &&(CMClass.delClass(whatType,(CMObject)O))) 

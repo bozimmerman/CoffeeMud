@@ -740,7 +740,7 @@ public class MUDGrinder extends StdWebMacro
             A=CMClass.getAbility(last);
             if((A==null)||(!A.isGeneric()))
                 return " @break@";
-            Object O=CMClass.getClass(A.ID());
+            Object O=CMClass.getObjectOrPrototype(A.ID());
             if(!(O instanceof Ability))
                 return " @break@";
             CMClass.delClass(CMObjectType.ABILITY,(Ability)O);

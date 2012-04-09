@@ -103,7 +103,7 @@ public class Unload extends StdCommand
                 }
                 if(what.equalsIgnoreCase("CLASS"))
                 {
-                    Object O=CMClass.getClass((String)commands.elementAt(2));
+                    Object O=CMClass.getObjectOrPrototype((String)commands.elementAt(2));
                     if(O!=null)
                     {
                         CMClass.CMObjectType x=CMClass.getObjectType(O);
@@ -120,7 +120,7 @@ public class Unload extends StdCommand
                     for(int i=0;i<commands.size();i++)
                     {
                         String name=(String)commands.elementAt(0);
-                        Object O=CMClass.getClass(name);
+                        Object O=CMClass.getObjectOrPrototype(name);
                         if(!(O instanceof CMObject))
                             mob.tell("Class '"+name+"' was not found in the class loader.");
                         else

@@ -1026,30 +1026,59 @@ public class CMClass extends ClassLoader
         return true;
     }
 
-    public static final Object getClass(final String calledThis)
+    /**
+     * Returns the base prototype of the given type, by id
+     * @param type the cmobjecttype to return
+     * @param calledThis the ID of the cmobjecttype
+     * @return the base prototype of the given type, by id
+     */
+    public static final CMObject getPrototypeByID(final CMObjectType type, final String calledThis)
     {
-        String shortThis=calledThis;
-        final int x=shortThis.lastIndexOf('.');
-        if(x>0) shortThis=shortThis.substring(x+1);
-        Object set=null;
-        Object thisItem=null;
-        for(CMObjectType o : CMObjectType.values())
-        {
-            set=getClassSet(o);
-            if(set==null) continue;
-            if(set instanceof List)
-                thisItem=getGlobal((List)set,shortThis);
-            else
-            if(set instanceof Map)
-                thisItem=getGlobal((Map)set,shortThis);
-            if(thisItem!=null) return thisItem;
-        }
-        try{    
-        	return classes.get(calledThis).newInstance();
-        }catch(Exception e){}
+        Object set=getClassSet(type);
+        if(set==null) return null;
+        CMObject thisItem;
+        if(set instanceof List)
+            thisItem=getGlobal((List)set,calledThis);
+        else
+        if(set instanceof Map)
+            thisItem=getGlobal((Map)set,calledThis);
+        else
+        	return null;
         return thisItem;
     }
 
+    /**
+     * Returns either a new instance of the class of the given full java name,
+     * or the coffeemud prototype of the class with the given id.  Checks all
+     * cmobjecttypes.
+     * @param calledThis the ID or the given full java name.
+     * @return a new instance of the class, or the prototype
+     */
+    public static final Object getObjectOrPrototype(final String calledThis)
+    {
+        String shortThis=calledThis;
+        final int x=shortThis.lastIndexOf('.');
+        if(x>0)
+        {
+        	shortThis=shortThis.substring(x+1);
+            try{    
+            	return classes.get(calledThis).newInstance();
+            }catch(Exception e){}
+        }
+        for(CMObjectType o : CMObjectType.values())
+        {
+        	final Object thisItem=getPrototypeByID(o,shortThis);
+            if(thisItem!=null) return thisItem;
+        }
+        return null;
+    }
+
+    /**
+     * Returns a new instance of a Environmental of the given id, prefers items,
+     * but also checks mobs and abilities as well.
+     * @param calledThis the id of the cmobject
+     * @return a new instance of a Environmental
+     */
     public static final Environmental getUnknown(final String calledThis)
     {
         Environmental thisItem=(Environmental)getNewGlobal(c().items,calledThis);
@@ -1065,28 +1094,42 @@ public class CMClass extends ClassLoader
         return thisItem;
     }
 
+    /**
+     * Does a search for a race of the given name, first checking
+     * for identical matches, then case insensitive name matches. 
+     * @param calledThis the name or id
+     * @return the race object
+     */
     public static final Race findRace(final String calledThis)
     {
         final Race thisItem=getRace(calledThis);
         if(thisItem!=null) return thisItem;
         Race R;
-        for(int i=0;i<c().races.size();i++)
+        final CMClass c=c();
+        for(int i=0;i<c.races.size();i++)
         {
-            R=(Race)c().races.elementAt(i);
+            R=(Race)c.races.elementAt(i);
             if(R.name().equalsIgnoreCase(calledThis))
                 return R;
         }
         return null;
     }
 
+    /**
+     * Does a search for a Char Class of the given name, first checking
+     * for identical matches, then case insensitive name matches. 
+     * @param calledThis the name or id
+     * @return the Char Class object
+     */
     public static final CharClass findCharClass(final String calledThis)
     {
         final CharClass thisItem=getCharClass(calledThis);
         if(thisItem!=null) return thisItem;
         CharClass C;
-        for(int i=0;i<c().charClasses.size();i++)
+        final CMClass c=c();
+        for(int i=0;i<c.charClasses.size();i++)
         {
-            C=(CharClass)c().charClasses.elementAt(i);
+            C=(CharClass)c.charClasses.elementAt(i);
             for(int n=0;n<C.nameSet().length;n++)
                 if(C.nameSet()[n].equalsIgnoreCase(calledThis))
                     return C;
@@ -1094,6 +1137,12 @@ public class CMClass extends ClassLoader
         return null;
     }
 
+    /**
+     * Returns a new instance of the cmobject of the given id from the given list
+     * @param list the list to search, must be alphabetized
+     * @param ID the perfect cmobject ID of the object
+     * @return a new instance of the cmobject of the given id from the given list
+     */
     public static final CMObject getNewGlobal(final List<? extends CMObject> list, final String ID)
     {
         final CMObject O=(CMObject)getGlobal(list,ID);
@@ -1101,7 +1150,13 @@ public class CMClass extends ClassLoader
         return null;
     }
 
-    public static final Object getGlobal(final List<? extends CMObject> list, final String ID)
+    /**
+     * Returns the prototype of the cmobject of the given id from the given list
+     * @param list the list to search, must be alphabetized
+     * @param ID the perfect cmobject ID of the object
+     * @return the prototype of the cmobject of the given id from the given list
+     */
+    public static final CMObject getGlobal(final List<? extends CMObject> list, final String ID)
     {
         if(list.size()==0) return null;
         int start=0;
@@ -1356,6 +1411,7 @@ public class CMClass extends ClassLoader
         for(LinkedList<Environmental> l : nameHash.values())
             V.addAll(l);
     }
+
     private final void initializeClassGroup(final List<? extends CMObject> V)
     { 
         for(int v=0;v<V.size();v++) 
@@ -1367,7 +1423,6 @@ public class CMClass extends ClassLoader
         for(Object o : H.keySet())
             ((CMObject)H.get(o)).initializeClass();
     }
-
 
     public final void intializeClasses()
     {
