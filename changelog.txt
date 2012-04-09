@@ -25,64 +25,64 @@ SPELLS SPLIT STAND STEAL SWIM SWIPE SYSMSGS TAKE TEACH TELL TOPICS TRACK
 TRAIN TRAP TRIP TURN UNLINK UNLOADHELP UNLOCK UP VALUE WAKE WEAR WEST
 WHO WHOIS WHOMP WIELD WIMPY WRITE XML YELL
 # Build 3.0.0.0 - Released Nov 23, 2002
-ANSI support is new
-CoffeeMud now has a web server! Yipee!
-Add Area objects and Tables and Affect/Properties!
-Allow classes and directories to be assigned in the INI file in addition to the default path.
-Create a custom command ability, include ability to override existing commands!
-Add Notes abilities -- really need for bug fix reporting! Done this way: a Journal can be read, it will list the posts for a given Journal.
-Druid : a good new base class
-hit and miss strings in the Weapon. Natural Weapons can also be retreived from MOBs, or from Races by default.
-From Maree: (Game/Heath Texts), the descriptions for the health of a MOB should be moved to a text file (A resource?), that is loaded. The descriptions would be assigned to the MOB at build time, and should be assignable to GENMOBS via a new tag.
-ranged combat?!Yes!And thrown weapons
-And ranged pole-arms!
-Add CoffeeMud area files!can import and export rooms or areas
-Languages! Affects says and replies if you don't know a language spoken by the speaker.
-Make mountable MOBS, and mountable Items. Mounted animals will take half of all combat damage, will add to attack ability, and increase movement and will act as a container for the purposes of cargo. Mounted Items will not appear in inventory, and be restrained to a terrain type (air, water, etc). More than one person can mount an item (a boat).
-Armor damage/repair, especially cloth from fire, and metal armor from bludgeoning/leather armor from slashing.
-banks!(Well, the moneychanger behavior is good enough).
-exp from sac/des also based on level of the body. Set body levels based on char level.
-Serve and Rebuke commands. Any character may take on a leige. A Leige receives 10% of all experience gained by the vassels, providing incentive to assist the vassel.
-Weapon condition, sharpness, and bluntness Weapon repair and sharpening/blunting.
-Crawl command, and crawlspace property for rooms and exits
-Furniture.. chairs to sit in, beds to lie in, tables to put things on? It's all riding...
-Convert some properties to work with the new areas. Prop_NOMOB, etc..
-make room properties also work for exits
-Multi-Room Item Transporter. Have a TeleportingContainer that, whenever anything is inside it, it will send the items to the appropriate GateObject. The GateObject can be either a container or not. If not, the GateObject will drop its cargo on the floor. The TeleportingContainer and the GateObject will have identical MiscText fields to establish the Keys between them.
-Forget spell to make someone forget a skill they try, at random!
-Predict Weather spell
-Multi-Room Gate would work the same way. An Entry, Exit, and TwoWay type would be constructed. The Entry type would accept "ENTER" commands from MOBs, and drag all followers along, of course. The Following thing would be automatic, if an Exit and Direction extensions are used.
-genbed, gentable
-ranger skills: find water
-kill commmand to switch among targets fighting you
-Two-handed fighting
-NonVagrant behavior to wake up those sleeping on the streets
-Meditation for Mage should be like Endurance for Fighter.
-Add last-call date/time string to the "list users" command
-be able to drink or fill waterskin from freshwater locales
-PlayerKill flag, properties for nopkill areas, rooms, etc.. (and pkill ONLY areas, room, etc..)
-vassels command to list the ones who serve you (even those which are online)
-Distract ability (can't fight during) to make an enemies scores worse...
-Finish implementing height -- make armor that doesn't fit! Armor can init at height 0, and adjust to the very first wearer.
-make sure you can create pills that generate experience points
-thieves skills -- silent autoloot, silent autogold (thief will autoloot and autogold "off the top")
-die of hunger, thirst
-appraise skill to give weight, base value, and material of an item
-Lore skill for Bards.. allows an identify for them.
-Exit/Area/Room property to only let in mobs with certain tatoos (a property that keeps track of one or more tatoos). A property to grant a tatoo when a mob is killed, or an item picked up.
-add parameter to spells command to list by school
-More stuff for Fighters, especially Paladins and Rangers, who must use their trains for spells. Sweep would make a good Fighter ability, as would cleave!
-iron grip spell to thwart disarm
-Buy command for standard mobs, to facilitate trades.
-race based wearing restrictions, and a "become" method to enforce them (and clothing size);
-resources property for rooms
-HuntableAnimals that produce pieces of raw meat in inventory when killed. (Resources implemented instead)
-Hunt ability for rangers to find them.
-QUAL should only list what you DON'T have -- it's too long.
-0-level abilities. Trade skills to produce mundane items. One would go to a "factory", where one could buy raw materials. Facilities available there would be used, along with your skill, to produce a finished product..e.g. a shirt, pants, minor weapons and armor, etc. Mining, Fishing, Woodcutting, etc.. to get raw materials. Cooking to improve the nourishment of Food objects (and remove rawness from Meat). The LeatherWorker ability can mend leather items, Tailor cloth items, etc..
-Sap skill for thieves to knock someone out who can't see them.
-Binding skill for thieves to bind someone who is asleep (knocked out).
-MUDGrinder web service
+1. ANSI support is new
+2. CoffeeMud now has a web server! Yipee!
+3. Add Area objects and Tables and Affect/Properties!
+4. Allow classes and directories to be assigned in the INI file in addition to the default path.
+5. Create a custom command ability, include ability to override existing commands!
+6. Add Notes abilities -- really need for bug fix reporting! Done this way: a Journal can be read, it will list the posts for a given Journal.
+7. Druid : a good new base class
+8. hit and miss strings in the Weapon. Natural Weapons can also be retreived from MOBs, or from Races by default.
+9. From Maree: (Game/Heath Texts), the descriptions for the health of a MOB should be moved to a text file (A resource?), that is loaded. The descriptions would be assigned to the MOB at build time, and should be assignable to GENMOBS via a new tag.
+10.ranged combat?!Yes!And thrown weapons
+11.And ranged pole-arms!
+12.Add CoffeeMud area files!can import and export rooms or areas
+13.Languages! Affects says and replies if you don't know a language spoken by the speaker.
+14.Make mountable MOBS, and mountable Items. Mounted animals will take half of all combat damage, will add to attack ability, and increase movement and will act as a container for the purposes of cargo. Mounted Items will not appear in inventory, and be restrained to a terrain type (air, water, etc). More than one person can mount an item (a boat).
+15.Armor damage/repair, especially cloth from fire, and metal armor from bludgeoning/leather armor from slashing.
+16.banks!(Well, the moneychanger behavior is good enough).
+17.exp from sac/des also based on level of the body. Set body levels based on char level.
+18.Serve and Rebuke commands. Any character may take on a leige. A Leige receives 10% of all experience gained by the vassels, providing incentive to assist the vassel.
+19.Weapon condition, sharpness, and bluntness Weapon repair and sharpening/blunting.
+20.Crawl command, and crawlspace property for rooms and exits
+21.Furniture.. chairs to sit in, beds to lie in, tables to put things on? It's all riding...
+22.Convert some properties to work with the new areas. Prop_NOMOB, etc..
+23.make room properties also work for exits
+24.Multi-Room Item Transporter. Have a TeleportingContainer that, whenever anything is inside it, it will send the items to the appropriate GateObject. The GateObject can be either a container or not. If not, the GateObject will drop its cargo on the floor. The TeleportingContainer and the GateObject will have identical MiscText fields to establish the Keys between them.
+25.Forget spell to make someone forget a skill they try, at random!
+26.Predict Weather spell
+27.Multi-Room Gate would work the same way. An Entry, Exit, and TwoWay type would be constructed. The Entry type would accept "ENTER" commands from MOBs, and drag all followers along, of course. The Following thing would be automatic, if an Exit and Direction extensions are used.
+28.genbed, gentable
+29.ranger skills: find water
+30.kill commmand to switch among targets fighting you
+31.Two-handed fighting
+32.NonVagrant behavior to wake up those sleeping on the streets
+33.Meditation for Mage should be like Endurance for Fighter.
+34.Add last-call date/time string to the "list users" command
+35.be able to drink or fill waterskin from freshwater locales
+36.PlayerKill flag, properties for nopkill areas, rooms, etc.. (and pkill ONLY areas, room, etc..)
+37.vassels command to list the ones who serve you (even those which are online)
+38.Distract ability (can't fight during) to make an enemies scores worse...
+39.Finish implementing height -- make armor that doesn't fit! Armor can init at height 0, and adjust to the very first wearer.
+40.make sure you can create pills that generate experience points
+41.thieves skills -- silent autoloot, silent autogold (thief will autoloot and autogold "off the top")
+42.die of hunger, thirst
+43.appraise skill to give weight, base value, and material of an item
+44.Lore skill for Bards.. allows an identify for them.
+45.Exit/Area/Room property to only let in mobs with certain tatoos (a property that keeps track of one or more tatoos). A property to grant a tatoo when a mob is killed, or an item picked up.
+46.add parameter to spells command to list by school
+47.More stuff for Fighters, especially Paladins and Rangers, who must use their trains for spells. Sweep would make a good Fighter ability, as would cleave!
+48.iron grip spell to thwart disarm
+49.Buy command for standard mobs, to facilitate trades.
+50.race based wearing restrictions, and a "become" method to enforce them (and clothing size);
+51.resources property for rooms
+52.HuntableAnimals that produce pieces of raw meat in inventory when killed. (Resources implemented instead)
+53.Hunt ability for rangers to find them.
+54.QUAL should only list what you DON'T have -- it's too long.
+55.0-level abilities. Trade skills to produce mundane items. One would go to a "factory", where one could buy raw materials. Facilities available there would be used, along with your skill, to produce a finished product..e.g. a shirt, pants, minor weapons and armor, etc. Mining, Fishing, Woodcutting, etc.. to get raw materials. Cooking to improve the nourishment of Food objects (and remove rawness from Meat). The LeatherWorker ability can mend leather items, Tailor cloth items, etc..
+56.Sap skill for thieves to knock someone out who can't see them.
+57.Binding skill for thieves to bind someone who is asleep (knocked out).
+58.MUDGrinder web service
 # Build 3.8.0.0 - Released Feb 20, 2003
    1. Memory optomization of the classes (especially Abilities). CoffeeMud memory usage cut almost in half!
    2. A global News feature was added. Need to add instructions about that though -- basically, you just create a Journal (GenJournal item) and name it "CoffeeMud News". Writing on it will cause new messages
@@ -622,7 +622,9 @@ The only new features are the addition of the Amputation Ability, a few new Cler
 # Build 4.0.0 - Released Sep 05, 2003
 # Build 4.0.1 - Released Sep 10, 2003
 # Build 4.0.3 - Released Sep 15, 2003
-No need to wait .. there it is. Bug fixes, some playtest balancing stuff done to the druids (including adding a few more chants to bring two of them up to speed), the new hp calculation mentioned previously (without comment), and yes, the channel color thingy.
+No need to wait .. there it is. Bug fixes, some playtest balancing stuff done to the druids (including adding a few more chants 
+to bring two of them up to speed), the new hp calculation mentioned previously (without comment), and yes, the channel 
+color thingy.
 # Build 4.0.4 - Released Sep 19, 2003
     *  Like every version thus far, this one is a hodgepodge of various bug fixes we are finding as we play test. Nothing real serious.
 
@@ -1917,69 +1919,69 @@ ruthless programmer, and sentenced to a quick death.
 24. More stuff added to mudgrinder control panel.
 25. Bugs detonated underground, mysteriously.  Wild claims about bug strength forthcoming.
 # Build 5.2.10 Released Dec 11, 2006
-Internal: New Libraries: Law
-New Behavior: Nanny -- for easily automating watching over children, mounts, or followers for gold by the hour.
-New Scriptable trigger: IMASK_PROG (a mask prog that only responds to scripted mob)
-New Scriptable function: ISLIKE (for doing zapper mask checks on object)
-New Scriptable commands: MPUNLOADSCRIPT (an unload for scriptable files only); MPSTEPQUEST
-Scriptable change: MPGSET/MPSETting a mobs level will rescore it, changing race resizes it
-MudChat now has a "Quest" syntax for additing entries
-Arrest changes: trespassing now also includes being a foreign aggro mob not following a player
-Arrest changes: being wanted for resisting arrest now starts the "copkiller" effect (police don't follow normal procedure)
-Behavior MOBTeachers now teach Expertises
-Quest changes: now support multi-step quests, spawned quests, multi-quest spawned scripts, AREAGROUPs, and GIVE STATs
-Internal: New message type: LIFE (is sent when mobs are rejuved or initially brought into a map)
-GTELL now supports socials/emotes, and automatically emotes a LEVEL msg when a group member levels
-NOFOLLOW (by itself) no longer un-follows all group members, so it can be used to limit FUTURE followings only.
-The despotic Clan type "Clan" renamed to "Gang" to differentiate it from the more generic "Clan" name.
-Dozens of new skill, chant, prayer -domains implemented
-SNOOPED players will be tagged with their snoopitude names
-We now have a AUTO-player-TITLING system -- just use CREATE TITLE to get started
-I3 now connects to the new server, and their are coffeemud.ini entries to specify servers
-Two new log types -- kill log and combat log -- turn these on if you have lots of disk space!
-CoffeeMud has an IDLE timer system now -- settable through coffeemud.ini file
-ShopKeepers can now have price adjustments to items based on zapper masks of items.  Called PriceFactors
-new coffeemud.ini entry: MAXCLANMEMBERS - limit the number of members of player driven clans
-Generic Abilities -- yes, create a new skill/spell/property/whatever from the comfort of your command line editor.  use CREATE ABILITY to get started.
-Generic Races - CREATE RACE <RACEID> can now be used to CONVERT existing standard races to genraces.  This is a very faithful copy system.
-Generic Classes - CREATE CLASS <CLASSID> can now be used to CONVERT existing standard char classes to gencharclasses.  Not as faithful a copy as genraces due to the complexity of gencharclass code.
-Saving a room with items riding rideables will have ride-status be rememberd and restored on room reload, including riding items like wagons on horzes.
-Most java classes can be reloaded at run-time; the LOAD command will unload existing classes from the classloader first, so UNLOAD not necessary.  This includes .class files, .js (javascript) classes, and if setup correctly, .java files will be recompiled and loaded.
-As mentioned previously -- scripts directory eliminated and language scripts folded back into java code.  This is a linguistic surrender to a massive codebase that I can't maintain in an abstract language-scripted form.
-DESTROY now supports THREAD type -- doesn't always work for all threads though as thread.stop() is deprecated..
-CoffeeMud now has numerous skill-tied Expertises, as well as ability to define/destroy them online -- use CREATE/LIST EXPERTISE to get started
-can now LIST AREARESOURCES to scan current resource settings for area rooms
-can now LIST CONQUEREd to review area conquest details
-LIST RESOURCE <specific resource name> will now show the CONTENT of that resource
-New command: LEARN -- combines GAIN with TRAIN
-Expertises are now GAINED and TEACHed instead of TRAINed
-Online COMPONENT editor improved to be more like other online editors.
-All skill-listing commands, such as CHANTS/PRAYERS/SKILLs supports domain parameter, and skill-name parameters now
-ANNOUNCEMSG (no parm) now reveals existing announce message
-Don't normally announce bugs, but the one related to the MUDGRinder menu for non-archons was a doozy. Some may look at it now and wonder at all the "new" editors in there.
-can now TRANSFER large chunks of items from one place to another.
-Prop_SpellAdder (and derivatimes -- PropFightSpellCast, etc -- supports NOUNINVOKE flag now)
-Several new DEBUG coffeemud.ini entries for your amusement
-New Prayer: ROT (counter to good prayer)
-CoffeeMud now stores backup of player kids in database. Resurrect prayer can be used to bring then back, esp. when used by an Archon
-New Fighter Skill: Armor Tweaking
-Songs, Dances, Plays all now support multi-room effects which are exploited only by expertises -- still a cool feature
-Several new MOODs -- and improvements to old ones
-New Thief skills (though Archon only for the moment): Thief_IdentifyTraps, Thief_DisablingCaltrops, Thief_Autocaltrops, Thief_SetDecoys, Thief_Footlocks, Thief_DazzlingCaltrops, Thief_AutoMarkTraps, Thief_AutoDetectTraps
-Several new zapper masks: +-DAY, +-WEATHER, +-SILLFLAG +-MAXCLASSLEVELS
-Areas now have something called a Blurb flag -- not sure what its good for yet, but they are there for flagging areas and/or adding to area help files with custom state information about the area.
-HELP <socialname> now works
-BLOOD liquid types will now rot
-New resource type: BEANS
-Weapon change: magical bonus (+1, +2, etc) is now calculated as part of the attack/damage bonus of the weapon instead of purely as a bonus on the user of the weapon.
-Archon wands/staffs now both have level x up/down ability as well as RESTORE ability
-Can now delete directories in MUDGrinder File Manager
-MUDGrinder FLAT-Map area editor uses a new algorithm for placing rooms that GREATLY improves readability
-Yet another step taken towards the "Multi-Host" MUD abilities -- still not there by a longshot, but more work done in that direction.
-Mechanism for how standard races set their "default stats" (the way birds have an int of 1, for instance) was changed to be a bit more flexible, to allow higher stats in extreme circumstances
-Really a consequence of the GenRace changes, but auto-Mixed races (from breeding) will be a much more accurate mix of the races now.
-Prancer class renamed to Dancer
-Special/Reserved Quest called holidays can be added to/modified on an area-by-area basis using LIST/CREATE/MODIFY HOLIDAY <name>
+1. Internal: New Libraries: Law
+2. New Behavior: Nanny -- for easily automating watching over children, mounts, or followers for gold by the hour.
+3. New Scriptable trigger: IMASK_PROG (a mask prog that only responds to scripted mob)
+4. New Scriptable function: ISLIKE (for doing zapper mask checks on object)
+5. New Scriptable commands: MPUNLOADSCRIPT (an unload for scriptable files only); MPSTEPQUEST
+6. Scriptable change: MPGSET/MPSETting a mobs level will rescore it, changing race resizes it
+7. MudChat now has a "Quest" syntax for additing entries
+8. Arrest changes: trespassing now also includes being a foreign aggro mob not following a player
+9. Arrest changes: being wanted for resisting arrest now starts the "copkiller" effect (police don't follow normal procedure)
+10.Behavior MOBTeachers now teach Expertises
+11.Quest changes: now support multi-step quests, spawned quests, multi-quest spawned scripts, AREAGROUPs, and GIVE STATs
+12.Internal: New message type: LIFE (is sent when mobs are rejuved or initially brought into a map)
+13.GTELL now supports socials/emotes, and automatically emotes a LEVEL msg when a group member levels
+14.NOFOLLOW (by itself) no longer un-follows all group members, so it can be used to limit FUTURE followings only.
+15.The despotic Clan type "Clan" renamed to "Gang" to differentiate it from the more generic "Clan" name.
+16.Dozens of new skill, chant, prayer -domains implemented
+17.SNOOPED players will be tagged with their snoopitude names
+18.We now have a AUTO-player-TITLING system -- just use CREATE TITLE to get started
+19.I3 now connects to the new server, and their are coffeemud.ini entries to specify servers
+20.Two new log types -- kill log and combat log -- turn these on if you have lots of disk space!
+21.CoffeeMud has an IDLE timer system now -- settable through coffeemud.ini file
+22.ShopKeepers can now have price adjustments to items based on zapper masks of items.  Called PriceFactors
+23.new coffeemud.ini entry: MAXCLANMEMBERS - limit the number of members of player driven clans
+24.Generic Abilities -- yes, create a new skill/spell/property/whatever from the comfort of your command line editor.  use CREATE ABILITY to get started.
+25.Generic Races - CREATE RACE <RACEID> can now be used to CONVERT existing standard races to genraces.  This is a very faithful copy system.
+26.Generic Classes - CREATE CLASS <CLASSID> can now be used to CONVERT existing standard char classes to gencharclasses.  Not as faithful a copy as genraces due to the complexity of gencharclass code.
+27.Saving a room with items riding rideables will have ride-status be rememberd and restored on room reload, including riding items like wagons on horzes.
+28.Most java classes can be reloaded at run-time; the LOAD command will unload existing classes from the classloader first, so UNLOAD not necessary.  This includes .class files, .js (javascript) classes, and if setup correctly, .java files will be recompiled and loaded.
+29.As mentioned previously -- scripts directory eliminated and language scripts folded back into java code.  This is a linguistic surrender to a massive codebase that I can't maintain in an abstract language-scripted form.
+30.DESTROY now supports THREAD type -- doesn't always work for all threads though as thread.stop() is deprecated..
+31.CoffeeMud now has numerous skill-tied Expertises, as well as ability to define/destroy them online -- use CREATE/LIST EXPERTISE to get started
+32.can now LIST AREARESOURCES to scan current resource settings for area rooms
+33.can now LIST CONQUEREd to review area conquest details
+34.LIST RESOURCE <specific resource name> will now show the CONTENT of that resource
+35.New command: LEARN -- combines GAIN with TRAIN
+36.Expertises are now GAINED and TEACHed instead of TRAINed
+37.Online COMPONENT editor improved to be more like other online editors.
+38.All skill-listing commands, such as CHANTS/PRAYERS/SKILLs supports domain parameter, and skill-name parameters now
+39.ANNOUNCEMSG (no parm) now reveals existing announce message
+40.Don't normally announce bugs, but the one related to the MUDGRinder menu for non-archons was a doozy. Some may look at it now and wonder at all the "new" editors in there.
+41.can now TRANSFER large chunks of items from one place to another.
+42.Prop_SpellAdder (and derivatimes -- PropFightSpellCast, etc -- supports NOUNINVOKE flag now)
+43.Several new DEBUG coffeemud.ini entries for your amusement
+44.New Prayer: ROT (counter to good prayer)
+45.CoffeeMud now stores backup of player kids in database. Resurrect prayer can be used to bring then back, esp. when used by an Archon
+46.New Fighter Skill: Armor Tweaking
+47.Songs, Dances, Plays all now support multi-room effects which are exploited only by expertises -- still a cool feature
+48.Several new MOODs -- and improvements to old ones
+49.New Thief skills (though Archon only for the moment): Thief_IdentifyTraps, Thief_DisablingCaltrops, Thief_Autocaltrops, Thief_SetDecoys, Thief_Footlocks, Thief_DazzlingCaltrops, Thief_AutoMarkTraps, Thief_AutoDetectTraps
+50.Several new zapper masks: +-DAY, +-WEATHER, +-SILLFLAG +-MAXCLASSLEVELS
+51.Areas now have something called a Blurb flag -- not sure what its good for yet, but they are there for flagging areas and/or adding to area help files with custom state information about the area.
+52.HELP <socialname> now works
+53.BLOOD liquid types will now rot
+54.New resource type: BEANS
+55.Weapon change: magical bonus (+1, +2, etc) is now calculated as part of the attack/damage bonus of the weapon instead of purely as a bonus on the user of the weapon.
+56.Archon wands/staffs now both have level x up/down ability as well as RESTORE ability
+57.Can now delete directories in MUDGrinder File Manager
+58.MUDGrinder FLAT-Map area editor uses a new algorithm for placing rooms that GREATLY improves readability
+59.Yet another step taken towards the "Multi-Host" MUD abilities -- still not there by a longshot, but more work done in that direction.
+60.Mechanism for how standard races set their "default stats" (the way birds have an int of 1, for instance) was changed to be a bit more flexible, to allow higher stats in extreme circumstances
+61.Really a consequence of the GenRace changes, but auto-Mixed races (from breeding) will be a much more accurate mix of the races now.
+62.Prancer class renamed to Dancer
+63.Special/Reserved Quest called holidays can be added to/modified on an area-by-area basis using LIST/CREATE/MODIFY HOLIDAY <name>
 # Build 5.2.11 Released Jan 7, 2007
 1. New language user output parsing abilities.. see resources/translation*.properties
 2. New language user input parsing abilities.. see resources/parser*.properties
