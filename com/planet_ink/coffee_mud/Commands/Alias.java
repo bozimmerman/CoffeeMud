@@ -80,6 +80,12 @@ public class Alias extends StdCommand
                    mob.tell("That alias already exists.  Select it from the menu to delete or modify.");
                }
                else
+               if(CMParms.contains(access,selection.toUpperCase()))
+               {
+                   selection=null;
+                   mob.tell("You may not alias alias.");
+               }
+               else
                {
                    for(int i=0;i<selection.length();i++)
                        if(!Character.isLetterOrDigit(selection.charAt(i)))
