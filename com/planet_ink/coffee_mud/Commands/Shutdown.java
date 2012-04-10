@@ -100,7 +100,7 @@ public class Shutdown extends StdCommand implements Tickable
                 }
                 if((!mob.session().confirm("Shutdown "+CMProps.getVar(CMProps.SYSTEM_MUDNAME)+" in "+wait+" "+multiplier.toLowerCase()+" (y/N)?","N")))
                    return false;
-                shuttingDownCompletes=System.currentTimeMillis()+(wait * timeMultiplier);
+                shuttingDownCompletes=System.currentTimeMillis()+(wait * timeMultiplier)-1;
                 shuttingDownNextAnnounce=System.currentTimeMillis() + ((wait * timeMultiplier)/2)-100;
                 shuttingDownMob=mob;
                 CMLib.threads().startTickDown(this, Tickable.TICKID_AREA, 1);
