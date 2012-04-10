@@ -447,7 +447,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
         DVector editRow = null;
         int[] showNumber = {0};
         int showFlag =-999;
-        MOB mob = CMClass.getMOB("StdMOB");
+        MOB mob=CMClass.getFactoryMOB();
         Session fakeSession = (Session)CMClass.getCommon("FakeSession");
         mob.setSession(fakeSession);
         fakeSession.setMob(mob);

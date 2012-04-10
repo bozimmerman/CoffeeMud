@@ -848,7 +848,7 @@ public class Conquerable extends Arrest
 		if((C==null)||(!C.getGovernment().isConquestEnabled()))
 			return;
 
-        MOB mob=CMLib.map().mobCreated();
+        MOB mob=CMLib.map().getFactoryMOBInAnyRoom();
         mob.setName(clanID);
         if(myArea!=null)
             for(Enumeration e=myArea.getMetroMap();e.hasMoreElements();)

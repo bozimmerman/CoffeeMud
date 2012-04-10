@@ -137,7 +137,7 @@ public class Soiled extends StdAbility
                 boolean killmob=false;
 	            if(M==null)
 	            {
-					M=CMClass.getMOB("StdMOB");
+					M=CMClass.getFactoryMOB();
 					M.setName(affected.name());
 					M.setDisplayText(affected.name()+" is here.");
 					M.setDescription("");

@@ -39,6 +39,7 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
     public String ID(){return "ColumbiaUniv";}
 
     protected SHashtable<String,ExpertiseLibrary.ExpertiseDefinition> completeEduMap=new SHashtable<String,ExpertiseLibrary.ExpertiseDefinition>();
+    protected SHashtable<String,List<String>> baseEduSetLists=new SHashtable<String,List<String>>();
     protected Hashtable[] completeUsageMap=new Hashtable[ExpertiseLibrary.NUM_XFLAGS];
     protected Properties helpMap=new Properties();
     protected DVector rawDefinitions=new DVector(7);
@@ -69,6 +70,7 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
         if(expCost>0) def.addCost(CostType.XP, Double.valueOf(expCost));
         //if(timeCost>0) def.addCost(CostType.PRACTICE, Double.valueOf(practices));
         completeEduMap.put(def.ID,def);
+    	baseEduSetLists.clear();
         return def;
     }
     public String getExpertiseHelp(String ID, boolean exact)
@@ -92,6 +94,7 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
     public void delDefinition(String ID)
     {
         completeEduMap.remove(ID);
+    	baseEduSetLists.clear();
     }
     public Enumeration<ExpertiseDefinition> definitions(){ return completeEduMap.elements();}
     public ExpertiseDefinition getDefinition(String ID){ return (ID==null)?null:(ExpertiseDefinition)completeEduMap.get(ID.trim().toUpperCase());}
@@ -179,17 +182,27 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
     public List<String> getStageCodes(String baseExpertiseCode)
     {
         String key=null;
-        List<String> codes=new Vector();
-        if(baseExpertiseCode==null) return codes;
+        if(baseExpertiseCode==null) return new ReadOnlyVector(1);
         baseExpertiseCode=baseExpertiseCode.toUpperCase();
-        for(Enumeration e=completeEduMap.keys();e.hasMoreElements();)
+        if(!baseEduSetLists.containsKey(baseExpertiseCode))
         {
-            key=(String)e.nextElement();
-            if(key.startsWith(baseExpertiseCode)
-            &&(CMath.isInteger(key.substring(baseExpertiseCode.length()))||CMath.isRomanNumeral(key.substring(baseExpertiseCode.length()))))
-                codes.add(key);
+        	synchronized(("ListedEduBuild:"+baseExpertiseCode).intern())
+        	{
+                if(!baseEduSetLists.containsKey(baseExpertiseCode))
+                {
+	                List<String> codes=new LinkedList<String>();
+			        for(Enumeration e=completeEduMap.keys();e.hasMoreElements();)
+			        {
+			            key=(String)e.nextElement();
+			            if(key.startsWith(baseExpertiseCode)
+			            &&(CMath.isInteger(key.substring(baseExpertiseCode.length()))||CMath.isRomanNumeral(key.substring(baseExpertiseCode.length()))))
+			                codes.add(key);
+			        }
+			        baseEduSetLists.put(baseExpertiseCode, new ReadOnlyVector<String>(codes));
+                }
+        	}
         }
-        return codes;
+        return baseEduSetLists.get(baseExpertiseCode);
     }
 
     public int getStages(String baseExpertiseCode){return getStageCodes(baseExpertiseCode).size();}

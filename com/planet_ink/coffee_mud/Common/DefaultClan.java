@@ -1253,7 +1253,7 @@ public class DefaultClan implements Clan
                                 else
                                 {
                                     CV.voteStatus=VSTAT_PASSED;
-                                    MOB mob=CMClass.getMOB("StdMOB");
+                                    MOB mob=CMClass.getFactoryMOB();
                                     mob.setName(clanID());
                                     mob.setClanID(clanID());
                                     mob.setClanRole(getTopRankedRoles(Function.values()[CV.function]).get(0).intValue());

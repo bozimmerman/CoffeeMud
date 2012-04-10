@@ -575,20 +575,6 @@ public class RaceData extends StdWebMacro
         return str;
     }
 
-    private MOB makeMOB(Race R)
-    {
-		MOB mob=CMClass.getMOB("StdMOB");
-		mob.setSession((Session)CMClass.getCommon("DefaultSession"));
-		mob.baseCharStats().setMyRace(R);
-		R.startRacing(mob,false);
-		mob.recoverCharStats();
-		mob.recoverCharStats();
-		mob.recoverPhyStats();
-		mob.recoverMaxState();
-		mob.setSession(null);
-		return mob;
-    }
-
 	public String runMacro(ExternalHTTPRequests httpReq, String parm)
 	{
 		java.util.Map<String,String> parms=parseParms(parm);
@@ -963,7 +949,18 @@ public class RaceData extends StdWebMacro
 				}
 				if(parms.containsKey("CLASSES"))
 				{
-					if(mob==null) mob=makeMOB(R);
+					if(mob==null)
+					{
+						mob=CMClass.getFactoryMOB();
+						mob.setSession((Session)CMClass.getCommon("DefaultSession"));
+						mob.baseCharStats().setMyRace(R);
+						R.startRacing(mob,false);
+						mob.recoverCharStats();
+						mob.recoverCharStats();
+						mob.recoverPhyStats();
+						mob.recoverMaxState();
+						mob.setSession(null);
+					}
 					for(int i: CharStats.CODES.BASE())
 						mob.baseCharStats().setStat(i,25);
 					mob.recoverCharStats();

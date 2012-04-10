@@ -180,7 +180,7 @@ public class Emoter extends ActiveTicker
 	        MOB emoter=null;
 			if(myHost instanceof Room)
 			{
-				emoter=CMClass.getMOB("StdMOB");
+				emoter=CMClass.getFactoryMOB();
 				emoteHere((Room)myHost,emoter,emote,msg.source(),false);
                 emoter.destroy();
 				return;
@@ -197,7 +197,7 @@ public class Emoter extends ActiveTicker
 				{
 					if((myHost instanceof Item)&&(!CMLib.flags().isInTheGame(myHost,false)))
 						return;
-					emoter=CMClass.getMOB("StdMOB");
+					emoter=CMClass.getFactoryMOB();
 					emoter.setName(myHost.name());
                     emoteHere(room,emoter,emote,null,true);
                     emoter.destroy();
@@ -283,7 +283,7 @@ public class Emoter extends ActiveTicker
 			MOB emoter=null;
 			if(ticking instanceof Area)
 			{
-				emoter=CMClass.getMOB("StdMOB");
+				emoter=CMClass.getFactoryMOB();
 				for(Enumeration r=((Area)ticking).getMetroMap();r.hasMoreElements();)
 				{
 					Room R=(Room)r.nextElement();
@@ -294,7 +294,7 @@ public class Emoter extends ActiveTicker
 			}
 			if(ticking instanceof Room)
 			{
-				emoter=CMClass.getMOB("StdMOB");
+				emoter=CMClass.getFactoryMOB();
 				emoteHere((Room)ticking,emoter,emote,null,false);
                 emoter.destroy();
 				return true;
@@ -313,7 +313,7 @@ public class Emoter extends ActiveTicker
 				if((ticking instanceof Item)&&(!CMLib.flags().isInTheGame((Item)ticking,false)))
 					return true;
 
-				emoter=CMClass.getMOB("StdMOB");
+				emoter=CMClass.getFactoryMOB();
                 killEmoter=true;
 				MOB mob=getBehaversMOB(ticking);
 				String name=ticking.name();
@@ -336,7 +336,7 @@ public class Emoter extends ActiveTicker
 			{
 				if(ticking instanceof MOB)
                 {
-					emoter=CMClass.getMOB("StdMOB");
+					emoter=CMClass.getFactoryMOB();
                     killEmoter=true;
                 }
 				for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)

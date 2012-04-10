@@ -45,7 +45,7 @@ public class Prayer_CureBlindness extends Prayer implements MendingSkill
 	public boolean supportsMending(Physical item)
 	{ 
 		if(!(item instanceof MOB)) return false;
-		MOB caster=CMClass.getMOB("StdMOB");
+		MOB caster=CMClass.getFactoryMOB();
 		caster.basePhyStats().setLevel(CMProps.getIntVar(CMProps.SYSTEMI_LASTPLAYERLEVEL));
 		caster.phyStats().setLevel(CMProps.getIntVar(CMProps.SYSTEMI_LASTPLAYERLEVEL));
 		boolean canMend=returnOffensiveAffects(caster,item).size()>0;
@@ -55,9 +55,9 @@ public class Prayer_CureBlindness extends Prayer implements MendingSkill
 	
 	public List<Ability> returnOffensiveAffects(MOB caster, Physical fromMe)
 	{
-		MOB newMOB=CMClass.getMOB("StdMOB");
-		MOB newerMOB=CMClass.getMOB("StdMOB");
-		Vector offenders=new Vector();
+		MOB newMOB=CMClass.getFactoryMOB();
+		MOB newerMOB=CMClass.getFactoryMOB();
+		Vector offenders=new Vector(1);
 
 		CMMsg msg=CMClass.getMsg(newMOB,newerMOB,null,CMMsg.MSG_LOOK,null);
 		for(int a=0;a<fromMe.numEffects();a++) // personal

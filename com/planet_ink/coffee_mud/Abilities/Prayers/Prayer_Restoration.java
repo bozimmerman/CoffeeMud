@@ -48,7 +48,7 @@ public class Prayer_Restoration extends Prayer implements MendingSkill
 		
 		if(((((MOB)item).curState()).getHitPoints()<(((MOB)item).maxState()).getHitPoints()))
 			return true;
-		MOB caster=CMClass.getMOB("StdMOB");
+		MOB caster=CMClass.getFactoryMOB();
 		caster.basePhyStats().setLevel(CMProps.getIntVar(CMProps.SYSTEMI_LASTPLAYERLEVEL));
 		caster.phyStats().setLevel(CMProps.getIntVar(CMProps.SYSTEMI_LASTPLAYERLEVEL));
 		if(

@@ -228,7 +228,7 @@ public class Sessions extends StdLibrary implements SessionsList
                             Log.errOut(thread.getName(),"KILLING DEAD Session: "+((S.mob()==null)?"Unknown":S.mob().Name())+" ("+roomID+"), out for "+time);
                             Log.errOut(thread.getName(),"STATUS  was :"+S.getStatus()+", LASTCMD was :"+((S.previousCMD()!=null)?S.previousCMD().toString():""));
                             if(S instanceof Thread)
-                                thread.debugDumpStack((Thread)S);
+                                thread.debugDumpStack("Sessions",(Thread)S);
                         }
                         thread.status("killing session ");
                         stopSessionAtAllCosts(S);
@@ -268,7 +268,7 @@ public class Sessions extends StdLibrary implements SessionsList
                     {
 	                    Log.errOut(thread.getName(),"KILLING DEAD Session: "+((S.mob()==null)?"Unknown":S.mob().Name())+" ("+roomID+"), out for "+time);
 	                    if(S instanceof Thread)
-	                        thread.debugDumpStack((Thread)S);
+	                        thread.debugDumpStack("Sessions",(Thread)S);
                     }
                     if((S.getStatus()!=1)||((S.previousCMD()!=null)&&(S.previousCMD().size()>0)))
                     	Log.errOut(thread.getName(),"STATUS  was :"+S.getStatus()+", LASTCMD was :"+((S.previousCMD()!=null)?S.previousCMD().toString():""));

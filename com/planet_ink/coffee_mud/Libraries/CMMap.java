@@ -222,9 +222,15 @@ public class CMMap extends StdLibrary implements WorldMap
     	}
     	return deityStandIn;
     }
-    public MOB mobCreated() { return mobCreated(this.getRandomRoom());}
-    public MOB mobCreated(Room R){
-        MOB everywhereMOB=CMClass.getMOB("StdMOB");
+    
+    public MOB getFactoryMOBInAnyRoom() 
+    { 
+    	return getFactoryMOB(this.getRandomRoom());
+    }
+    
+    public MOB getFactoryMOB(Room R)
+    {
+        MOB everywhereMOB=CMClass.getFactoryMOB();
         everywhereMOB.setName("somebody");
         everywhereMOB.setLocation(R);
         return everywhereMOB;
@@ -1870,7 +1876,7 @@ public class CMMap extends StdLibrary implements WorldMap
         thread.status("expiration sweep");
         final long currentTime=System.currentTimeMillis();
         final boolean debug=CMSecurity.isDebugging(CMSecurity.DbgFlag.VACUUM);
-        final MOB expireM=mobCreated(null);
+        final MOB expireM=getFactoryMOB(null);
         try
         {
             Vector stuffToGo=new Vector();

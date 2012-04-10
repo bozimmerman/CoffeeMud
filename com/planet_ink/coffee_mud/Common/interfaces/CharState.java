@@ -220,6 +220,11 @@ public interface CharState extends CMCommon, Modifiable
 	 */
     public void setAllValues(int def);
     
+    /**
+     * Resets all the stats in this object to their factory defaults.
+     */
+    public void reset();
+    
 	/**
      * Copies the internal data of this object into another of kind.
      * @param intoState another CharState object.

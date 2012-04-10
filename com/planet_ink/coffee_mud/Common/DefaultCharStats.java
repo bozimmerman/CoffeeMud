@@ -56,8 +56,7 @@ public class DefaultCharStats implements CharStats
 	
 	public DefaultCharStats()
 	{
-        setAllBaseValues(VALUE_ALLSTATS_DEFAULT);
-		stats[STAT_GENDER]='M';
+		reset();
 	}
     public void setAllBaseValues(int def)
     {
@@ -69,6 +68,12 @@ public class DefaultCharStats implements CharStats
         for(int i: CharStats.CODES.ALL())
             stats[i]=(short)def;
         unwearableBitmap=0;
+    }
+
+    public void reset()
+    {
+        setAllBaseValues(VALUE_ALLSTATS_DEFAULT);
+		stats[STAT_GENDER]='M';
     }
     
     public void copyInto(CharStats intoStats)

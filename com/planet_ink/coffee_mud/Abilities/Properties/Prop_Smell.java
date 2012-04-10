@@ -183,7 +183,7 @@ public class Prop_Smell extends Property
 		            emoteHere(room,(MOB)affected,emote);
 		            if(lastWasBroadcast)
 		            {
-		                MOB emoter=CMClass.getMOB("StdMOB");
+		                MOB emoter=CMClass.getFactoryMOB();
 						for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 						{
 							Room R=room.getRoomInDir(d);

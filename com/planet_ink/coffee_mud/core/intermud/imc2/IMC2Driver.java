@@ -1055,7 +1055,7 @@ public final class IMC2Driver extends Thread {
 
     final void imc_recv_tell(imc_char_data d, String from, String text)
     {
-        MOB mob=CMClass.getMOB("StdMOB");
+        MOB mob=CMClass.getFactoryMOB();
         mob.setName(from);
         mob.setLocation(CMClass.getLocale("StdRoom"));
         MOB smob=CMLib.sessions().findPlayerOnline(d.name,true);
@@ -1103,7 +1103,7 @@ public final class IMC2Driver extends Thread {
         String channelColor=CMLib.channels().getChannelColorOverride(channelInt);
         if(channelColor.length()==0)
             channelColor="^Q";
-        MOB mob=CMClass.getMOB("StdMOB");
+        MOB mob=CMClass.getFactoryMOB();
         mob.setName(from);
         mob.setLocation(CMClass.getLocale("StdRoom"));
         String str=channelColor+"^<CHANNEL \""+channelName+"\"^>"+mob.name()+" "+channelName+"(S) '"+text+"'^</CHANNEL^>^N^.";

@@ -63,7 +63,7 @@ public class BankChainNext extends StdWebMacro
 			Clan C=CMLib.clans().getClan(player);
 			if(C!=null)
 			{
-				playerM=CMClass.getMOB("StdMOB");
+				playerM=CMClass.getFactoryMOB();
 				playerM.setName(C.clanID());
 				playerM.setLocation(M.location());
 				playerM.setStartRoom(M.getStartRoom());
@@ -76,7 +76,7 @@ public class BankChainNext extends StdWebMacro
 				playerM=CMLib.players().getPlayer(player);
 				if(playerM==null)
 				{
-					playerM=CMClass.getMOB("StdMOB");
+					playerM=CMClass.getFactoryMOB();
 					playerM.setName(CMStrings.capitalizeAndLower(player));
 					playerM.setLocation(M.location());
 					playerM.setStartRoom(M.getStartRoom());

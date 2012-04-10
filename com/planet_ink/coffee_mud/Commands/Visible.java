@@ -42,7 +42,7 @@ public class Visible extends StdCommand
     
     public static java.util.List<Ability> returnOffensiveAffects(Physical fromMe)
     {
-        MOB newMOB=CMClass.getMOB("StdMOB");
+        MOB newMOB=CMClass.getFactoryMOB();
         Vector offenders=new Vector();
         for(int a=0;a<fromMe.numEffects();a++) // personal
         {

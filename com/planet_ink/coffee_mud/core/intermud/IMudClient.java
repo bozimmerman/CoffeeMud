@@ -386,7 +386,7 @@ public class IMudClient implements I3Interface
 			if((message.startsWith(":")||message.startsWith(","))&&(message.trim().length()>1))
 			{
 				message=message.substring(1);
-				MOB mob2=CMClass.getMOB("StdMOB");
+				MOB mob2=CMClass.getFactoryMOB();
 				mob2.setName(mob.Name()+"@"+imc2.imc_name);
 				mob2.setLocation(CMClass.getLocale("StdRoom"));
 				Vector<String> V=CMParms.parse(message);

@@ -470,6 +470,11 @@ public interface CharStats extends CMCommon, Modifiable
     public void setAllValues(int def);
 
     /**
+     * Resets all the stats in this object to their factory defaults.
+     */
+    public void reset();
+    
+    /**
      * Resets all of the basic 1-6 stats in this object, to the same given value
      * @param def the value to set all stats to.
      */

@@ -33,7 +33,8 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 public class DefaultCharState implements CharState
 {
     public String ID(){return "DefaultCharState";}
-    protected int[] states={10,100,50,1000,500};
+    protected final int[] DEFAULT_STATES={10,100,50,1000,500};
+    protected int[] states=DEFAULT_STATES.clone();
 	protected long Fatigue=0;
 
 	protected int botherCycle=0;
@@ -52,6 +53,16 @@ public class DefaultCharState implements CharState
 		Fatigue=def;
 	}
 
+    public void reset()
+    {
+    	for(int i=0;i<DEFAULT_STATES.length;i++)
+    		states[i]=DEFAULT_STATES[i];
+    	Fatigue=0;
+    	botherCycle=0;
+    	ticksHungry=0;
+    	ticksThirsty=0;
+    }
+    
     public void copyInto(CharState intoState)
     {
     	if(intoState instanceof DefaultCharState)

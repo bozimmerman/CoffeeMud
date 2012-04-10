@@ -192,7 +192,7 @@ public class FieryRoom
 
     private static void roastRoom(Room which) 
     {
-		MOB mob=CMLib.map().mobCreated(which);
+		MOB mob=CMLib.map().getFactoryMOB(which);
 		for(int i=0;i<which.numItems();i++) 
 		{
 		    Item target=which.getItem(i);

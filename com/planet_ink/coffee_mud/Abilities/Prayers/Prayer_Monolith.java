@@ -117,7 +117,7 @@ public class Prayer_Monolith extends Prayer
 			&&(((Weapon)msg.tool()).weaponClassification()==Weapon.CLASS_RANGED))
 			{
 				mob.location().show(mob,invoker,CMMsg.MSG_OK_VISUAL,"<S-NAME> fire(s) "+msg.tool().name()+" at <T-NAME>.  The missile enters the monolith of air.");
-				MOB M=CMClass.getMOB("StdMOB");
+				MOB M=CMClass.getFactoryMOB();
 				M.setLocation(mob.location());
 				M.setName("The monolith of air");
 				M.setVictim(mob);

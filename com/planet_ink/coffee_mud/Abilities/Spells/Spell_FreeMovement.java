@@ -74,7 +74,7 @@ public class Spell_FreeMovement extends Spell
 				msg.addTrailerMsg(CMClass.getMsg(mob,null,CMMsg.MSG_OK_VISUAL,"The uninhibiting barrier around <S-NAME> repels the "+A.name()+"."));
 				return false;
 			}
-			MOB newMOB=CMClass.getMOB("StdMOB");
+			MOB newMOB=CMClass.getFactoryMOB();
 			CMMsg msg2=CMClass.getMsg(newMOB,null,null,CMMsg.MSG_SIT,null);
 			newMOB.recoverPhyStats();
 			try

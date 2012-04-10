@@ -163,6 +163,7 @@ public class DefaultPlayerAccount implements PlayerAccount
 
 	public Set<String> getFriends(){return friends;}
 	public Set<String> getIgnored(){return ignored;}
+
 	public MOB getAccountMob()
 	{
 		if(fakePlayerM!=null)

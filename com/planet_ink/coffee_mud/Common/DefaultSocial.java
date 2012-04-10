@@ -232,7 +232,7 @@ public class DefaultSocial implements Social
 				&&(I3channelName!=null)
 				&&((CMLib.intermud().i3online())&&(CMLib.intermud().isI3channel(I3channelName)))))
 			{
-				target=CMClass.getMOB("StdMOB");
+				target=CMClass.getFactoryMOB();
 				target.setName(targetStr);
 				((MOB)target).setLocation(CMLib.map().getRandomRoom());
 			}

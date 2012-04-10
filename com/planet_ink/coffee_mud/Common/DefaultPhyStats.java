@@ -33,7 +33,8 @@ import java.util.Vector;
 public class DefaultPhyStats implements PhyStats
 {
     public String ID(){return "DefaultPhyStats";}
-    protected int[] stats={0,0,100,0,0,0,0,0,0,0};
+    protected int[] DEFAULT_STATS={0,0,100,0,0,0,0,0,0,0};
+    protected int[] stats=DEFAULT_STATS.clone();
 	protected double Speed=1.0;			// should be positive
 	protected String replacementName=null;
 	protected String[] ambiances=null;
@@ -47,6 +48,15 @@ public class DefaultPhyStats implements PhyStats
 		Speed=(double)def;
 	}
 
+    public void reset()
+    {
+    	for(int i=0;i<DEFAULT_STATS.length;i++)
+    		stats[i]=DEFAULT_STATS[i];
+    	Speed=1.0;
+    	replacementName=null;
+    	ambiances=null;
+    }
+    
 	public int sensesMask(){return stats[STAT_SENSES];}
 	public int disposition(){return stats[STAT_DISPOSITION];}
 	public int level(){return stats[STAT_LEVEL];}

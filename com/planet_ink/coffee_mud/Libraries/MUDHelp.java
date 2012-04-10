@@ -136,10 +136,11 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
         boolean destroymob=false;
 		if(forMOB==null)
         {
-			forMOB=CMClass.getMOB("StdMOB");
+			forMOB=CMClass.getFactoryMOB();
 			forMOB.maxState().setMana(Integer.MAX_VALUE/2);
 			forMOB.maxState().setMovement(Integer.MAX_VALUE/2);
 			forMOB.maxState().setHitPoints(Integer.MAX_VALUE/2);
+			destroymob=true;
 		}
 
 		int[] consumption=A.usageCost(forMOB,true);

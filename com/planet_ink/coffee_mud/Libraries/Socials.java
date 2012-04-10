@@ -862,9 +862,9 @@ public class Socials extends StdLibrary implements SocialsList
     	help.append("^H\n\r");
     	help.append("Social     : ^x"+realName+"^.^N\n\r");
     	Session session=(mob!=null)?mob.session():null;
-    	MOB tgtMOB=CMClass.getMOB("StdMOB");
+    	MOB tgtMOB=CMClass.getFactoryMOB();
     	tgtMOB.setName("the target");
-    	MOB othMOB=CMClass.getMOB("StdMOB");
+    	MOB othMOB=CMClass.getFactoryMOB();
     	othMOB.setName("someone");
     	for(int l=0;l<list.size();l++)
     	{

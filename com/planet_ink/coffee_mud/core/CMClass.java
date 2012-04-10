@@ -166,8 +166,10 @@ public class CMClass extends ClassLoader
     protected Hashtable<String,WebMacro> webMacros=new Hashtable<String,WebMacro>();
     protected Hashtable<String,Command>  commandWords=new Hashtable<String,Command>();
    
-    protected static final LinkedList<CMMsg>   MSGS_CACHE=new LinkedList<CMMsg>();
-    protected static final int                 MAX_MSGS=(Runtime.getRuntime().maxMemory()==Integer.MAX_VALUE)?10000:(int)(Runtime.getRuntime().maxMemory()/(long)10000);
+    protected static final LinkedList<CMMsg> MSGS_CACHE=new LinkedList<CMMsg>();
+    protected static final LinkedList<MOB>   MOB_CACHE=new LinkedList<MOB>();
+    protected static final int               MAX_MSGS=10000+((Runtime.getRuntime().maxMemory()==Integer.MAX_VALUE)?10000:(int)(Runtime.getRuntime().maxMemory()/(long)10000));
+    protected static final int               MAX_MOBS=50+(MAX_MSGS/200);
 
     /*
      * removed to save memory and processing time -- but left for future use
@@ -1368,19 +1370,6 @@ public class CMClass extends ClassLoader
         c().races.removeElement(R);
     }
 
-    public static final boolean returnMsg(final CMMsg msg)
-    {
-        if(MSGS_CACHE.size()<MAX_MSGS)
-        {
-            synchronized(CMClass.MSGS_CACHE)
-            {
-                MSGS_CACHE.addLast(msg);
-                return true;
-            }
-        }
-        return false;
-    }
-
     public static final void sortEnvironmentalsByID(final List<Environmental> V) 
     {
         final TreeMap<String,Environmental> hashed=new TreeMap<String,Environmental>();
@@ -2252,6 +2241,18 @@ public class CMClass extends ClassLoader
         public String toJavaString(Object O){return Context.toString(O);}
     }
     
+    public static final boolean returnMsg(final CMMsg msg)
+    {
+        if(MSGS_CACHE.size()<MAX_MSGS)
+        {
+            synchronized(CMClass.MSGS_CACHE)
+            {
+                MSGS_CACHE.addLast(msg);
+                return true;
+            }
+        }
+        return false;
+    }
 
     public final static CMMsg MsgFactory()
     {
@@ -2283,7 +2284,36 @@ public class CMClass extends ClassLoader
     public static final CMMsg getMsg(final MOB source, final Environmental target, final Environmental tool, final int newSourceCode, final String sourceMessage, final int newTargetCode, final String targetMessage, final int newOthersCode, final String othersMessage)
     { final CMMsg M=MsgFactory(); M.modify(source,target,tool,newSourceCode,sourceMessage,newTargetCode,targetMessage,newOthersCode,othersMessage); return M;}
 
+    public static final boolean returnMob(final MOB mob)
+    {
+        if(MOB_CACHE.size()<MAX_MOBS)
+        {
+            synchronized(CMClass.MOB_CACHE)
+            {
+            	MOB_CACHE.addLast(mob);
+                return true;
+            }
+        }
+        return false;
+    }
 
+    public final static MOB MobFactory()
+    {
+        try
+        {
+            synchronized(MOB_CACHE)
+            {
+                return MOB_CACHE.removeFirst();
+            }
+        }
+        catch(Exception e)
+        {
+            return (MOB)getMOB("StdFactoryMOB");
+        }
+    }
+
+    public static final MOB getFactoryMOB(){ final MOB M=MobFactory(); return M;}
+    
     public static final void shutdown() 
     {
         for(int c=0;c<clss.length;c++)

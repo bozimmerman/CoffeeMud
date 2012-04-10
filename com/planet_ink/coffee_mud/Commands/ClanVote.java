@@ -188,7 +188,7 @@ public class ClanVote extends StdCommand
 							else
 							{
 								CV.voteStatus=Clan.VSTAT_PASSED;
-								MOB mob2=CMClass.getMOB("StdMOB");
+								MOB mob2=CMClass.getFactoryMOB();
 								mob2.setName(C.clanID());
 								mob2.setClanID(C.clanID());
 								mob2.setClanRole(C.getTopRankedRoles(Function.ASSIGN).get(0).intValue());

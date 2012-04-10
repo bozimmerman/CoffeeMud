@@ -142,7 +142,7 @@ public class CharGen extends StdCommand
 	
 	protected MOB levelMOBup(int level, CharClass C)
 	{
-		MOB mob=CMClass.getMOB("StdMOB");
+		MOB mob=CMClass.getFactoryMOB();
 		CMLib.factions().setAlignment(mob,Faction.ALIGN_NEUTRAL);
 		mob.setName("Average Joe");
 		mob.baseCharStats().setMyRace(CMClass.getRace("Human"));
@@ -543,7 +543,7 @@ public class CharGen extends StdCommand
 			                MOB M1=null;
 			                if(C.ID().equalsIgnoreCase("StdCharClass"))
 			                {
-			                    M1=CMClass.getMOB("StdMOB");  // MOB stat
+			                    M1=CMClass.getFactoryMOB();  // MOB stat
 			                    Behavior B2=CMClass.getBehavior("CombatAbilities");
 			                    M1.baseCharStats().setMyRace(CMClass.getRace("Human"));
 			                    M1.basePhyStats().setLevel(level);
@@ -604,7 +604,7 @@ public class CharGen extends StdCommand
 			                playerArmor=CMLib.combat().adjustedArmor(M1);
 			                playerAttack=CMLib.combat().adjustedAttackBonus(M1,null);
 			                
-		                    MOB M2=CMClass.getMOB("StdMOB");  // MOB stat
+		                    MOB M2=CMClass.getFactoryMOB();  // MOB stat
 		                    Behavior B2=CMClass.getBehavior("CombatAbilities");
 		                    M2.baseCharStats().setMyRace(CMClass.getRace("Human"));
 		                    M2.basePhyStats().setLevel(level);

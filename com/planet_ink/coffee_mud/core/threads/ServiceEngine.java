@@ -888,7 +888,7 @@ public class ServiceEngine implements ThreadEngine
                         }
                     }
                     // no isDEBUGGING check -- just always let her rip.
-                    thread.debugDumpStack(almostTock);
+                    thread.debugDumpStack("ThreadHealth",almostTock);
                 }
             }
         }

@@ -278,6 +278,11 @@ public interface PhyStats extends CMCommon, Modifiable
      */
     public void setAllValues(int def);
 
+    /**
+     * Resets all the stats in this object to their factory defaults.
+     */
+    public void reset();
+    
     /** an index into the internal stats integer array for level */
     public final static int STAT_LEVEL=0;
     /** an index into the internal stats integer array for senses */

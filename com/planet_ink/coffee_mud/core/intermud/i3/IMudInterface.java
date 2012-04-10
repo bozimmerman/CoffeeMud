@@ -232,7 +232,7 @@ public class IMudInterface implements ImudServices, Serializable
                 ck.message=fixColors(CMProps.applyINIFilter(ck.message,CMProps.SYSTEM_CHANNELFILTER));
                 if(ck.message_target!=null)
                     ck.message_target=fixColors(CMProps.applyINIFilter(ck.message_target,CMProps.SYSTEM_CHANNELFILTER));
-                MOB mob=CMClass.getMOB("StdMOB");
+                MOB mob=CMClass.getFactoryMOB();
                 mob.setName(ck.sender_name+"@"+ck.sender_mud);
                 mob.setLocation(CMClass.getLocale("StdRoom"));
                 MOB targetMOB=null;
@@ -244,7 +244,7 @@ public class IMudInterface implements ImudServices, Serializable
                     if((ck.target_visible_name!=null)&&(ck.target_mud!=null)&&(targetMOB==null))
                     {
                         killtargetmob=true;
-                        targetMOB=CMClass.getMOB("StdMOB");
+                        targetMOB=CMClass.getFactoryMOB();
                         targetMOB.setName(ck.target_visible_name+"@"+ck.target_mud);
                         targetMOB.setLocation(CMClass.getLocale("StdRoom"));
                     }
@@ -527,7 +527,7 @@ public class IMudInterface implements ImudServices, Serializable
         case Packet.TELL:
             {
                 TellPacket tk=(TellPacket)packet;
-                MOB mob=CMClass.getMOB("StdMOB");
+                MOB mob=CMClass.getFactoryMOB();
                 mob.setName(tk.sender_name+"@"+tk.sender_mud);
                 mob.setLocation(CMClass.getLocale("StdRoom"));
                 MOB smob=findSessMob(tk.target_name);

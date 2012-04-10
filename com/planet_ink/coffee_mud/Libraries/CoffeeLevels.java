@@ -141,7 +141,7 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 
 	public MOB fillOutMOB(CharClass C, int level)
 	{
-		MOB mob=CMClass.getMOB("StdMOB");
+		MOB mob=CMClass.getFactoryMOB();
 		mob.baseCharStats().setCurrentClass(C);
 		mob.charStats().setCurrentClass(C);
 		mob.baseCharStats().setCurrentClassLevel(level);
@@ -154,7 +154,7 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 	
 	public MOB fillOutMOB(MOB mob, int level)
 	{
-		if(mob==null) mob=CMClass.getMOB("StdMOB");
+		if(mob==null) mob=CMClass.getFactoryMOB();
 		if(!mob.isMonster()) return mob;
 
 		long rejuv=CMProps.getTicksPerMinute()+CMProps.getTicksPerMinute()+(level*CMProps.getTicksPerMinute()/2);

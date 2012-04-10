@@ -93,14 +93,14 @@ public interface ThreadEngine extends CMLibrary, Runnable
             return true;
         }
         
-        public void debugDumpStack(Thread theThread)
+        public void debugDumpStack(final String ID, Thread theThread)
         {
             // I wish Java had compiler directives.  Would be great to un-comment this for 1.5 JVMs
             java.lang.StackTraceElement[] s=(java.lang.StackTraceElement[])theThread.getStackTrace();
             StringBuffer dump = new StringBuffer("");
             for(int i=0;i<s.length;i++)
             	dump.append("\n   "+s[i].getClassName()+": "+s[i].getMethodName()+"("+s[i].getFileName()+": "+s[i].getLineNumber()+")");
-            Log.debugOut("ThreadEngine",dump.toString());
+            Log.debugOut(ID,dump.toString());
         }
         
         public void run()

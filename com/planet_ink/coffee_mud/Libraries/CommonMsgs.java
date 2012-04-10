@@ -196,7 +196,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
                             String message,
                             boolean systemMsg)
     {
-        MOB talker=CMClass.getMOB("StdMOB");
+        MOB talker=CMClass.getFactoryMOB();
         talker.setName("^?");
         talker.setLocation(CMLib.map().getRandomRoom());
         talker.basePhyStats().setDisposition(PhyStats.IS_GOLEM);
@@ -1416,7 +1416,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
             if((longlook)&&(viewermob.charStats().getStat(CharStats.STAT_INTELLIGENCE)>12))
             {
                 CharStats C=(CharStats)CMClass.getCommon("DefaultCharStats");
-                MOB testMOB=CMClass.getMOB("StdMOB");
+                MOB testMOB=CMClass.getFactoryMOB();
                 viewedmob.charStats().getMyRace().affectCharStats(testMOB,C);
                 myDescription.append(relativeCharStatTest(C,viewedmob,"weaker","stronger",CharStats.STAT_STRENGTH));
                 myDescription.append(relativeCharStatTest(C,viewedmob,"clumsier","more nimble",CharStats.STAT_DEXTERITY));

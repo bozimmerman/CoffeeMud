@@ -44,7 +44,7 @@ public class Prayer_Sober extends Prayer implements MendingSkill
 	public boolean supportsMending(Physical item)
 	{ 
 		if(!(item instanceof MOB)) return false;
-		MOB caster=CMClass.getMOB("StdMOB");
+		MOB caster=CMClass.getFactoryMOB();
 		caster.basePhyStats().setLevel(CMProps.getIntVar(CMProps.SYSTEMI_LASTPLAYERLEVEL));
 		caster.phyStats().setLevel(CMProps.getIntVar(CMProps.SYSTEMI_LASTPLAYERLEVEL));
 		boolean canMend=returnOffensiveAffects(caster,item).size()>0;

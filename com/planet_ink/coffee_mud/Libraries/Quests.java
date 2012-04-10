@@ -1456,7 +1456,7 @@ public class Quests extends StdLibrary implements QuestManager
                 choiceDescs.append(M.name()+", ");
             }
         }
-        MOB canMOB=CMClass.getMOB("StdMOB");
+        MOB canMOB=CMClass.getFactoryMOB();
         canMOB.setName("CANCEL");
         choiceDescs.append("CANCEL");
         choices.addElement(canMOB);

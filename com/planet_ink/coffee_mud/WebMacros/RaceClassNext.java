@@ -50,7 +50,7 @@ public class RaceClassNext extends StdWebMacro
 			return "";
 		}
 		String lastID="";
-		MOB mob=CMClass.getMOB("StdMOB");
+		MOB mob=CMClass.getFactoryMOB();
 		for(int i: CharStats.CODES.BASE())
 			mob.baseCharStats().setStat(i,25);
 		mob.baseCharStats().setMyRace(R);

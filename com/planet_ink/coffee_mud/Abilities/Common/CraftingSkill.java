@@ -498,7 +498,7 @@ public class CraftingSkill extends GatheringSkill
         Item building=null;
         DoorKey key=null;
         int tries=0;
-        MOB mob=CMLib.map().mobCreated();
+        MOB mob=CMLib.map().getFactoryMOBInAnyRoom();
         mob.basePhyStats().setLevel(Integer.MAX_VALUE/2);
         mob.basePhyStats().setSensesMask(mob.basePhyStats().sensesMask()|PhyStats.CAN_SEE_DARK);
         mob.recoverPhyStats();

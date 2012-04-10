@@ -49,8 +49,8 @@ public class Druid_RecoverVoice extends StdAbility
 
 	public List<Ability> returnOffensiveAffects(MOB caster, Physical fromMe)
 	{
-		MOB newMOB=CMClass.getMOB("StdMOB");
-		Vector offenders=new Vector();
+		MOB newMOB=CMClass.getFactoryMOB();
+		Vector offenders=new Vector(1);
 
 		for(int a=0;a<fromMe.numEffects();a++) // personal
 		{

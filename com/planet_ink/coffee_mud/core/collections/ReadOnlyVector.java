@@ -16,6 +16,8 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+import com.planet_ink.coffee_mud.core.Log;
+
 public final class ReadOnlyVector<T> extends Vector<T>
 {
     private static final long serialVersionUID = -9175373358592311411L;
@@ -59,27 +61,70 @@ public final class ReadOnlyVector<T> extends Vector<T>
       }
       
     @Override
-    public synchronized boolean add(T t) { return false; }
+    public synchronized boolean add(T t) 
+    {
+    	Log.errOut("ReadOnlyVector",new UnsupportedOperationException());
+    	return false; 
+    }
     @Override
-    public synchronized void addElement(T t){}
+    public synchronized void addElement(T t)
+    {
+    	Log.errOut("ReadOnlyVector",new UnsupportedOperationException());
+    }
     @Override
-    public synchronized void removeElementAt(int index){}
+    public synchronized void removeElementAt(int index)
+    {
+    	Log.errOut("ReadOnlyVector",new UnsupportedOperationException());
+    }
     @Override
-    public synchronized boolean removeElement(Object obj){ return false;}
+    public synchronized boolean removeElement(Object obj)
+    {
+    	Log.errOut("ReadOnlyVector",new UnsupportedOperationException());
+    	return false; 
+    }
     @Override
-    public boolean remove(Object o) { return false; }
+    public boolean remove(Object o)
+    {
+    	Log.errOut("ReadOnlyVector",new UnsupportedOperationException());
+    	return false; 
+    }
     @Override
-    public void add(int index, T element) {}
+    public void add(int index, T element)
+    {
+    	Log.errOut("ReadOnlyVector",new UnsupportedOperationException());
+    }
     @Override
-    public synchronized T remove(int index) { return null; }
+    public synchronized T remove(int index)
+    {
+    	Log.errOut("ReadOnlyVector",new UnsupportedOperationException());
+    	return null;
+    }
     @Override
-    public void clear() {}
+    public void clear()
+    {
+    	Log.errOut("ReadOnlyVector",new UnsupportedOperationException());
+    }
     @Override
-    public synchronized boolean removeAll(Collection<?> c) { return false;}
+    public synchronized boolean removeAll(Collection<?> c)
+    {
+    	Log.errOut("ReadOnlyVector",new UnsupportedOperationException());
+    	return false; 
+    }
     @Override
-    public synchronized void insertElementAt(T obj, int index) {}
+    public synchronized void insertElementAt(T obj, int index)
+    {
+    	Log.errOut("ReadOnlyVector",new UnsupportedOperationException());
+    }
     @Override
-    public synchronized boolean addAll(Collection<? extends T> c) { return false;}
+    public synchronized boolean addAll(Collection<? extends T> c)
+    {
+    	Log.errOut("ReadOnlyVector",new UnsupportedOperationException());
+    	return false; 
+    }
     @Override
-    public synchronized boolean addAll(int index, Collection<? extends T> c) { return false; }
+    public synchronized boolean addAll(int index, Collection<? extends T> c)
+    {
+    	Log.errOut("ReadOnlyVector",new UnsupportedOperationException());
+    	return false; 
+    }
 }

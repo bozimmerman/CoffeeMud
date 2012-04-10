@@ -1001,7 +1001,7 @@ public class CharClassData extends StdWebMacro
 
 	public String balanceChart(CharClass C)
 	{
-		MOB M=CMClass.getMOB("StdMOB");
+		MOB M=CMClass.getFactoryMOB();
 		M.basePhyStats().setLevel(1);
 		M.baseCharStats().setCurrentClass(C);
 		M.recoverCharStats();
