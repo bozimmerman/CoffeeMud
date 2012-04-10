@@ -465,12 +465,13 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
             return index;
         case '<':
         {
+            final boolean noMXP=((S==null)||(!S.clientTelnetMode(Session.TELNET_MXP)));
             while(enDex<(str.length()-1))
             {
                 if((str.charAt(enDex)!='^')||(str.charAt(enDex+1)!='>'))
                     enDex++;
                 else
-                if((S==null)||(!S.clientTelnetMode(Session.TELNET_MXP)))
+                if(noMXP)
                 {
                     str.delete(index,enDex+2);
                     enDex=index-1;
@@ -480,7 +481,7 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
                 {
                     str.delete(enDex, enDex+1);
                     str.delete(index, index+1);
-                    return enDex;
+                    return enDex-1;
                 }
             }
             str.delete(index, index+1);
@@ -488,12 +489,13 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
         }
         case '&':
         {
+	          final boolean noMXP=((S==null)||(!S.clientTelnetMode(Session.TELNET_MXP)));
             while(enDex<(str.length()-1))
             {
                 if(str.charAt(enDex)!=';')
                     enDex++;
                 else
-                if((S==null)||(!S.clientTelnetMode(Session.TELNET_MXP)))
+                if(noMXP)
                 {
                     str.delete(index,enDex+1);
                     enDex=index-1;
