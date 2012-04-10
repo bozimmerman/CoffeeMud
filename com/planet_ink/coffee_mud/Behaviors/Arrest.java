@@ -1624,7 +1624,8 @@ public class Arrest extends StdBehavior implements LegalBehavior
         if((msg.sourceMinor()==CMMsg.TYP_DEATH)
         &&(msg.tool()!=null)
         &&(msg.tool() instanceof MOB)
-        &&(laws.basicCrimes().containsKey("MURDER")))
+        &&(laws.basicCrimes().containsKey("MURDER"))
+        &&((!msg.source().isMonster())||(!isTroubleMaker(msg.source()))))
         {
             MOB criminal=(MOB)msg.tool();
             for(LegalWarrant W : laws.warrants())
