@@ -508,7 +508,7 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
             if((M!=null)&&(M.getStartRoom()!=null))
             {
                 Room R=CMLib.map().getRoom(M.getStartRoom());
-                D.savedMOB().tell("Your corpse has been moved to "+R.displayText());
+                M.tell("Your corpse has been moved to "+R.displayText());
                 R.moveItemTo(D);
             }
         }

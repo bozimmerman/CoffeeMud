@@ -476,10 +476,27 @@ public class Modify extends StdCommand
         if(commands.size()==2)
             CMLib.genEd().modifyGenArea(mob,myArea);
         else
+        if((commands.size()==3)&&(CMLib.map().getArea((String)commands.elementAt(2))!=null))
+            CMLib.genEd().modifyGenArea(mob,CMLib.map().getArea((String)commands.elementAt(2)));
+        else
         {
             if(commands.size()<3) { flunkAreaCmd(mob); return;}
 
             String command=((String)commands.elementAt(2)).toUpperCase();
+            STreeSet<String> helpSet=new STreeSet<String>();
+            helpSet.addAll(CMParms.parseCommas("NAME,DESCRIPTION,CLIMATE,FILE,AFFECTS,BEHAVIORS,ADDSUB,DELSUB,XGRID,YGRID,PASSIVE,ACTIVE,FROZEN,STOPPED",true));
+            helpSet.addAll(CMLib.coffeeMaker().getAllGenStats(myArea));
+            if((commands.size()>3)&&(!helpSet.contains(command)))
+            {
+                Area possibleArea=CMLib.map().getArea(command);
+                if(possibleArea!=null)
+                {
+                    myArea=possibleArea;
+                    oldName=possibleArea.Name();
+                    commands.remove(2);
+                    command=((String)commands.elementAt(2)).toUpperCase();
+                }
+            }
             String restStr="";
             if(commands.size()>=3)
                 restStr=CMParms.combine(commands,3);
@@ -533,6 +550,7 @@ public class Modify extends StdCommand
                 if(commands.size()<4) { flunkAreaCmd(mob); return;}
                 ((GridZones)myArea).setYGridSize(CMath.s_int(restStr));
             }
+            else
             if(command.equalsIgnoreCase("CLIMATE"))
             {
                 if(commands.size()<4) { flunkAreaCmd(mob); return;}
@@ -605,10 +623,7 @@ public class Modify extends StdCommand
             }
             else
             {
-                STreeSet<String> set=new STreeSet<String>();
-                set.addAll(CMParms.parseCommas("NAME,DESCRIPTION,CLIMATE,FILE,AFFECTS,BEHAVIORS,ADDSUB,DELSUB,XGRID,YGRID",true));
-                set.addAll(CMLib.coffeeMaker().getAllGenStats(myArea));
-                mob.tell("...but failed to specify an aspect.  Try one of: "+CMParms.toStringList(set));
+                mob.tell("...but failed to specify an aspect.  Try one of: "+CMParms.toStringList(helpSet));
                 mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
                 return;
             }
