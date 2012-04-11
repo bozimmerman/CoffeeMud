@@ -228,13 +228,13 @@ public class CMClass extends ClassLoader
     }
     */
 
-	/**
-	 * Returns whether the given class exists in the vm,
-	 * not necessarily any given classloader.
-	 * Requires a fully qualified java class name.
-	 * @param className a fully qualified java class name.
-	 * @return whether the given class exists in the vm
-	 */
+    /**
+     * Returns whether the given class exists in the vm,
+     * not necessarily any given classloader.
+     * Requires a fully qualified java class name.
+     * @param className a fully qualified java class name.
+     * @return whether the given class exists in the vm
+     */
     public final static boolean exists(String className)
     {
         try 
@@ -658,12 +658,12 @@ public class CMClass extends ClassLoader
     public static final void addAllItemClassNames(final List<String> namesList, final boolean NonArchon, 
                                                   final boolean NonGeneric, final boolean NonStandard)
     {
-    	namesList.addAll(getAllItemClassNames(basicItems(),NonArchon,NonGeneric,NonStandard));
-    	namesList.addAll(getAllItemClassNames(weapons(),NonArchon,NonGeneric,NonStandard));
-    	namesList.addAll(getAllItemClassNames(armor(),NonArchon,NonGeneric,NonStandard));
-    	namesList.addAll(getAllItemClassNames(miscMagic(),NonArchon,NonGeneric,NonStandard));
-    	namesList.addAll(getAllItemClassNames(miscTech(),NonArchon,NonGeneric,NonStandard));
-    	namesList.addAll(getAllItemClassNames(clanItems(),NonArchon,NonGeneric,NonStandard));
+        namesList.addAll(getAllItemClassNames(basicItems(),NonArchon,NonGeneric,NonStandard));
+        namesList.addAll(getAllItemClassNames(weapons(),NonArchon,NonGeneric,NonStandard));
+        namesList.addAll(getAllItemClassNames(armor(),NonArchon,NonGeneric,NonStandard));
+        namesList.addAll(getAllItemClassNames(miscMagic(),NonArchon,NonGeneric,NonStandard));
+        namesList.addAll(getAllItemClassNames(miscTech(),NonArchon,NonGeneric,NonStandard));
+        namesList.addAll(getAllItemClassNames(clanItems(),NonArchon,NonGeneric,NonStandard));
     }
 
     private static List<String> getAllItemClassNames(final Enumeration<? extends Item> i, 
@@ -704,9 +704,9 @@ public class CMClass extends ClassLoader
      */
     public static final Item sampleItem()
     {
-    	final CMClass myC=c();
+        final CMClass myC=c();
         if((myC.sampleItem==null)&&(myC.items.size()>0))
-        	myC.sampleItem= (Item)((Item)myC.items.firstElement()).copyOf();
+            myC.sampleItem= (Item)((Item)myC.items.firstElement()).copyOf();
         return myC.sampleItem;
     }
     
@@ -732,7 +732,7 @@ public class CMClass extends ClassLoader
      */
     public static final MOB getMOBPrototype(final String mobID)
     { 
-    	return (MOB)CMClass.getGlobal(c().MOBs,mobID);
+        return (MOB)CMClass.getGlobal(c().MOBs,mobID);
     }
 
     protected MOB sampleMOB=null;
@@ -742,15 +742,15 @@ public class CMClass extends ClassLoader
      */
     public static final MOB sampleMOB()
     {
-    	final CMClass myC=c();
+        final CMClass myC=c();
         if((myC.sampleMOB==null)&&(myC.MOBs.size()>0))
         {
-        	myC.sampleMOB=(MOB)((MOB)myC.MOBs.firstElement()).copyOf();
-        	myC.sampleMOB.basePhyStats().setDisposition(PhyStats.IS_NOT_SEEN);
-        	myC.sampleMOB.phyStats().setDisposition(PhyStats.IS_NOT_SEEN);
+            myC.sampleMOB=(MOB)((MOB)myC.MOBs.firstElement()).copyOf();
+            myC.sampleMOB.basePhyStats().setDisposition(PhyStats.IS_NOT_SEEN);
+            myC.sampleMOB.phyStats().setDisposition(PhyStats.IS_NOT_SEEN);
         }
         if(myC.sampleMOB.location()==null)
-        	myC.sampleMOB.setLocation(CMLib.map().getRandomRoom());
+            myC.sampleMOB.setLocation(CMLib.map().getRandomRoom());
         return myC.sampleMOB;
     }
 
@@ -762,10 +762,10 @@ public class CMClass extends ClassLoader
      */
     public static final Command findCommandByTrigger(final String word, final boolean exactOnly)
     {
-    	final CMClass myC=c();
+        final CMClass myC=c();
         Command C=(Command)myC.commandWords.get(word.trim().toUpperCase());
         if((exactOnly)||(C!=null)) 
-        	return C;
+            return C;
         String upword=word.toUpperCase();
         String key;
         for(Enumeration<String> e=myC.commandWords.keys();e.hasMoreElements();)
@@ -819,7 +819,7 @@ public class CMClass extends ClassLoader
         else
             return false;
         if(set==c().commands) 
-        	reloadCommandWords();
+            reloadCommandWords();
         //if(set==libraries) CMLib.registerLibraries(libraries.elements());
         return true;
     }
@@ -850,9 +850,9 @@ public class CMClass extends ClassLoader
         else
             return false;
         if(set==c().commands) 
-        	reloadCommandWords();
+            reloadCommandWords();
         if(set==c().libraries) 
-        	CMLib.registerLibraries(c().libraries.elements());
+            CMLib.registerLibraries(c().libraries.elements());
         return true;
     }
 
@@ -869,7 +869,7 @@ public class CMClass extends ClassLoader
             if(o.toString().equalsIgnoreCase(name))
                 return o;
         }
-    	final String upperName=name.toUpperCase(); 
+        final String upperName=name.toUpperCase(); 
         for(CMObjectType o : CMObjectType.values())
         {
             if(o.toString().toUpperCase().startsWith(upperName))
@@ -963,11 +963,11 @@ public class CMClass extends ClassLoader
     
     protected static String makeFilePath(final String path)
     {
-    	final String upperPath=path.toUpperCase();
+        final String upperPath=path.toUpperCase();
         if((!upperPath.endsWith(".CLASS"))
         &&(!upperPath.endsWith(".JAVA"))
         &&(!upperPath.endsWith(".JS")))
-        	return path.replace('.','/')+".class";
+            return path.replace('.','/')+".class";
         return path;
     }
     
@@ -992,15 +992,15 @@ public class CMClass extends ClassLoader
         if(!loadListToObj(V,makeFilePath(path),classType.ancestorName,quiet))
             return null;
         if(V.size()==0) 
-        	return null;
+            return null;
         final Object o = (Object)V.firstElement();
         try
         {
-        	return o.getClass().newInstance();
+            return o.getClass().newInstance();
         }
         catch(Exception e)
         {
-        	return o;
+            return o;
         }
     }
 
@@ -1024,7 +1024,7 @@ public class CMClass extends ClassLoader
         if(!loadListToObj(V,makeFilePath(path),classType.ancestorName,true))
             return false;
         if(V.size()==0) 
-        	return false;
+            return false;
         return true;
     }
 
@@ -1045,7 +1045,7 @@ public class CMClass extends ClassLoader
         if(set instanceof Map)
             thisItem=getGlobal((Map)set,calledThis);
         else
-        	return null;
+            return null;
         return thisItem;
     }
 
@@ -1062,14 +1062,14 @@ public class CMClass extends ClassLoader
         final int x=shortThis.lastIndexOf('.');
         if(x>0)
         {
-        	shortThis=shortThis.substring(x+1);
+            shortThis=shortThis.substring(x+1);
             try{    
-            	return classes.get(calledThis).newInstance();
+                return classes.get(calledThis).newInstance();
             }catch(Exception e){}
         }
         for(CMObjectType o : CMObjectType.values())
         {
-        	final Object thisItem=getPrototypeByID(o,shortThis);
+            final Object thisItem=getPrototypeByID(o,shortThis);
             if(thisItem!=null) return thisItem;
         }
         return null;
@@ -2290,7 +2290,7 @@ public class CMClass extends ClassLoader
         {
             synchronized(CMClass.MOB_CACHE)
             {
-            	MOB_CACHE.addLast(mob);
+                MOB_CACHE.addLast(mob);
                 return true;
             }
         }
