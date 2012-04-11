@@ -466,7 +466,7 @@ public class Sense extends StdLibrary implements CMFlagLibrary
         return true;
     }
 
-    public boolean aliveAwakeMobile(MOB mob, boolean quiet)
+    public boolean aliveAwakeMobile(final MOB mob, final boolean quiet)
     {
         if(mob==null) return false;
         if(mob.amDead()||(mob.curState()==null)||(mob.curState().getHitPoints()<0))
@@ -680,26 +680,26 @@ public class Sense extends StdLibrary implements CMFlagLibrary
         return false;
     }
 
-    public boolean canActAtAll(Tickable affecting)
+    public boolean canActAtAll(final Tickable affecting)
     {
         if(affecting instanceof MOB)
         {
-            MOB monster=(MOB)affecting;
+        	final MOB monster=(MOB)affecting;
             if((monster.amDead())
             ||(monster.location()==null)
             ||(!aliveAwakeMobile(monster,true))
-            ||(!isInTheGame(monster,true)))
+            ||(!isInTheGame(monster,false)))
                 return false;
             return true;
         }
         return false;
     }
 
-    public boolean canFreelyBehaveNormal(Tickable affecting)
+    public boolean canFreelyBehaveNormal(final Tickable affecting)
     {
         if(affecting instanceof MOB)
         {
-            MOB monster=(MOB)affecting;
+            final MOB monster=(MOB)affecting;
             if((!canActAtAll(monster))
             ||(monster.isInCombat())
             ||(monster.amFollowing()!=null)

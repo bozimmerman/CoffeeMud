@@ -150,10 +150,14 @@ public class StdBehavior implements Behavior
 		return false;
 	}
 	public static boolean canActAtAll(Tickable affecting)
-	{ return CMLib.flags().canActAtAll(affecting);}
+	{ 
+		return CMLib.flags().canActAtAll(affecting);
+	}
 
 	public static boolean canFreelyBehaveNormal(Tickable affecting)
-    { return CMLib.flags().canFreelyBehaveNormal(affecting);}
+    { 
+		return CMLib.flags().canFreelyBehaveNormal(affecting);
+	}
 
 	public boolean tick(Tickable ticking, int tickID)
 	{
