@@ -1398,8 +1398,11 @@ public class DefaultSession implements Session
                 status=Session.STATUS_LOGOUT8;
                 if(out!=null){
                     try{
-                        out.write(' ');
-                        out.flush();
+                        if(!out.checkError())
+                        {
+                            out.write(' ');
+                            out.checkError();
+                        }
                     } catch(Throwable t){}
                     out.close();
                     lastPing=System.currentTimeMillis();
