@@ -2815,6 +2815,7 @@ public class StdMOB implements MOB
     public boolean isContent(Item I) { return inventory.contains(I);}
     public List<Item> findItems(Item goodLocation, String itemName)
     {
+		if(inventory.size()==0) return new Vector<Item>(1);
         List<Item> items=CMLib.english().fetchAvailableItems(inventory,itemName,goodLocation,Wearable.FILTER_ANY,true);
         if(items.size()==0)
             items=CMLib.english().fetchAvailableItems(inventory,itemName,goodLocation,Wearable.FILTER_ANY,false);

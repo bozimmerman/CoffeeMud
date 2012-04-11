@@ -1502,6 +1502,7 @@ public class StdRoom implements Room
 	
 	public MOB fetchInhabitant(String inhabitantID)
 	{
+		if(inhabitants.size()==0) return null;
 		MOB mob=(MOB)CMLib.english().fetchEnvironmental(inhabitants,inhabitantID,true);
 		if(mob==null)
 			mob=(MOB)CMLib.english().fetchEnvironmental(inhabitants,inhabitantID, false);
@@ -1509,6 +1510,7 @@ public class StdRoom implements Room
 	}
 	public List<MOB> fetchInhabitants(String inhabitantID)
 	{
+		if(inhabitants.size()==0) return new Vector<MOB>(1);
 		List inhabs=CMLib.english().fetchEnvironmentals(inhabitants,inhabitantID,true);
 		if(inhabs.size()==0)
 			inhabs=CMLib.english().fetchEnvironmentals(inhabitants,inhabitantID, false);
@@ -1574,6 +1576,7 @@ public class StdRoom implements Room
 
 	public Item findItem(String itemID)
 	{
+		if(contents.size()==0) return null;
 		Item item=(Item)CMLib.english().fetchEnvironmental(contents,itemID,true);
 		if(item==null) item=(Item)CMLib.english().fetchEnvironmental(contents,itemID,false);
 		return item;
@@ -1581,12 +1584,14 @@ public class StdRoom implements Room
 	public Enumeration<Item> items() { return contents.elements();}
 	public Item findItem(Item goodLocation, String itemID)
 	{
+		if(contents.size()==0) return null;
 		Item item=CMLib.english().fetchAvailableItem(contents,itemID,goodLocation,Wearable.FILTER_ANY,true);
 		if(item==null) item=CMLib.english().fetchAvailableItem(contents,itemID,goodLocation,Wearable.FILTER_ANY,false);
 		return item;
 	}
 	public List<Item> findItems(Item goodLocation, String itemID)
 	{
+		if(contents.size()==0) return new Vector<Item>(1);
 		List<Item> items=CMLib.english().fetchAvailableItems(contents,itemID,goodLocation,Wearable.FILTER_ANY,true);
 		if(items.size()==0)
 			items=CMLib.english().fetchAvailableItems(contents,itemID,goodLocation,Wearable.FILTER_ANY,false);
@@ -1594,6 +1599,7 @@ public class StdRoom implements Room
 	}
 	public List<Item> findItems(String itemID)
 	{
+		if(contents.size()==0) return new Vector<Item>(1);
 		List items=CMLib.english().fetchEnvironmentals(contents,itemID,true);
 		if(items.size()==0)
 			items=CMLib.english().fetchEnvironmentals(contents,itemID, false);

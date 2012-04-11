@@ -70,9 +70,9 @@ public class Spell_KnowFate extends Spell
 			              Vector<String> all_stuff=CMParms.parseSquiggleDelimited(alias,true);
 			              for(String stuff : all_stuff)
 			              {
-			              	List THIS_CMDS=new XVector();
-			              	combatV.add(THIS_CMDS);
 			                Vector preCommands=CMParms.parse(stuff);
+			              	List THIS_CMDS=new Vector(preCommands.size());
+			              	combatV.add(THIS_CMDS);
 			                for(int v=preCommands.size()-1;v>=0;v--)
 			                    THIS_CMDS.add(0,preCommands.elementAt(v));
 			              }
