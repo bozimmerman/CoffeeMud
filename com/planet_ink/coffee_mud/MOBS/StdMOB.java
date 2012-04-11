@@ -1374,7 +1374,7 @@ public class StdMOB implements MOB
                     return false;
             }
             if(cmd == null) 
-            	return false;
+                return false;
             
             double diff=actions()-cmd.actionDelay;
             final Object O=cmd.commandObj;
@@ -2578,9 +2578,9 @@ public class StdMOB implements MOB
                             final Room room=location();
                             if(room != null)
                             {
-	                            if((lastTickedDateTime<0)&&room.getMobility()&&(room.getArea().getAreaState()<Area.STATE_FROZEN))
-	                                lastTickedDateTime=CMLib.utensils().processVariableEquipment(this);
-	                            room.showOthers(this,null,CMMsg.MSG_OK_ACTION,"<S-NAME> appears!");
+                                if((lastTickedDateTime<0)&&room.getMobility()&&(room.getArea().getAreaState()<Area.STATE_FROZEN))
+                                    lastTickedDateTime=CMLib.utensils().processVariableEquipment(this);
+                                room.showOthers(this,null,CMMsg.MSG_OK_ACTION,"<S-NAME> appears!");
                             }
                         }
                     }
@@ -2815,7 +2815,7 @@ public class StdMOB implements MOB
     public boolean isContent(Item I) { return inventory.contains(I);}
     public List<Item> findItems(Item goodLocation, String itemName)
     {
-		if(inventory.size()==0) return new Vector<Item>(1);
+        if(inventory.size()==0) return new Vector<Item>(1);
         List<Item> items=CMLib.english().fetchAvailableItems(inventory,itemName,goodLocation,Wearable.FILTER_ANY,true);
         if(items.size()==0)
             items=CMLib.english().fetchAvailableItems(inventory,itemName,goodLocation,Wearable.FILTER_ANY,false);
@@ -2836,7 +2836,7 @@ public class StdMOB implements MOB
                                    boolean allowCoins,
                                    boolean respectLocationAndWornCode)
     {
-		if(inventory.size()==0) return null;
+        if(inventory.size()==0) return null;
         SVector inv=inventory;
         if(!allowCoins)
         {
@@ -2865,13 +2865,13 @@ public class StdMOB implements MOB
     
     public List<Item> findItems(final String itemName)
     { 
-		if(inventory.size()>0)
-		{
-	        List V=CMLib.english().fetchEnvironmentals(inventory,itemName,true);
-	        if((V!=null)&&(V.size()>0)) return V;
-	        V=CMLib.english().fetchEnvironmentals(inventory,itemName,false);
-	        if(V!=null) return V;
-		}
+        if(inventory.size()>0)
+        {
+            List V=CMLib.english().fetchEnvironmentals(inventory,itemName,true);
+            if((V!=null)&&(V.size()>0)) return V;
+            V=CMLib.english().fetchEnvironmentals(inventory,itemName,false);
+            if(V!=null) return V;
+        }
         return new Vector(1);
     }
 

@@ -51,10 +51,10 @@ public interface CMMiscUtils extends CMLibrary
     public boolean reachableItem(MOB mob, Environmental E);
     public void extinguish(MOB source, Physical target, boolean mundane);
     public boolean armorCheck(MOB mob, int allowedArmorLevel);
-	public boolean armorCheck(MOB mob, Item I, int allowedArmorLevel);
+    public boolean armorCheck(MOB mob, Item I, int allowedArmorLevel);
     public void recursiveDropMOB(MOB mob, Room room, Item thisContainer, boolean bodyFlag);
-	public void confirmWearability(MOB mob);
-	public int processVariableEquipment(MOB mob);
+    public void confirmWearability(MOB mob);
+    public int processVariableEquipment(MOB mob);
     
     public Trap makeADeprecatedTrap(Physical unlockThis);
     public void setTrapped(Physical myThang, boolean isTrapped);
@@ -72,6 +72,6 @@ public interface CMMiscUtils extends CMLibrary
     public void swapRaces(Race newR, Race oldR);
     public void reloadCharClasses(CharClass oldC);
     
-	public boolean disInvokeEffects(Environmental E);
-	public int disenchantItem(Item target);
+    public boolean disInvokeEffects(Environmental E);
+    public int disenchantItem(Item target);
 }
