@@ -184,7 +184,6 @@ public class StdThinInstance extends StdThinArea
                                     M.setLocation(M.getStartRoom());
                             }
                             MOB mob=CMClass.sampleMOB();
-                            CMLib.utensils().movePlayerCorpsesToStartRoom(childA.getProperMap());
                             for(Enumeration<Room> e=childA.getProperMap();e.hasMoreElements();)
                             {
                                 Room R=e.nextElement();

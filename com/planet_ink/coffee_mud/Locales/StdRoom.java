@@ -731,6 +731,25 @@ public class StdRoom implements Room
         {
             synchronized(("SYNC"+roomID()).intern())
             {
+                LinkedList<DeadBody> deadBodies=new LinkedList<DeadBody>();
+                for(Enumeration<Item> j=items();j.hasMoreElements();)
+                {
+                    Item I=j.nextElement();
+                    if((I instanceof DeadBody)
+                    &&(((DeadBody)I).playerCorpse()))
+                        deadBodies.add((DeadBody)I);
+                }
+                for(DeadBody D : deadBodies)
+                {
+                    MOB M=CMLib.players().getLoadPlayer(D.mobName());
+                    if(M==null) M=D.savedMOB();
+                    if((M!=null)&&(M.getStartRoom()!=null))
+                    {
+                        Room startRoom=CMLib.map().getRoom(M.getStartRoom());
+                        M.tell("Your corpse has been moved to "+startRoom.displayText());
+                        startRoom.moveItemTo(D);
+                    }
+                }
                 if(gridParent!=null)
                     gridParent.executeMsg(myHost,msg);
                 else

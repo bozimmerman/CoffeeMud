@@ -121,7 +121,6 @@ public class StdAutoGenInstance extends StdArea implements AutoGenArea
                                 &&(M.location().getArea()==this))
                                     M.setLocation(M.getStartRoom());
                             }
-                            CMLib.utensils().movePlayerCorpsesToStartRoom(childA.getProperMap());
                             MOB mob=CMClass.sampleMOB();
                             for(Enumeration<Room> e=childA.getProperMap();e.hasMoreElements();)
                             {

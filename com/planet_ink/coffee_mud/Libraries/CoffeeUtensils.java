@@ -486,34 +486,6 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
         return newLastTickedDateTime;
     }
 
-    public void movePlayerCorpsesToStartRoom(final Enumeration<Room> e)
-    {
-        LinkedList<DeadBody> deadBodies=new LinkedList<DeadBody>();
-        for(;e.hasMoreElements();)
-        {
-            Room R=e.nextElement();
-            if(R!=null)
-                for(Enumeration<Item> j=R.items();j.hasMoreElements();)
-                {
-                    Item I=j.nextElement();
-                    if((I instanceof DeadBody)
-                    &&(((DeadBody)I).playerCorpse()))
-                        deadBodies.add((DeadBody)I);
-                }
-        }
-        for(DeadBody D : deadBodies)
-        {
-            MOB M=CMLib.players().getLoadPlayer(D.mobName());
-            if(M==null) M=D.savedMOB();
-            if((M!=null)&&(M.getStartRoom()!=null))
-            {
-                Room R=CMLib.map().getRoom(M.getStartRoom());
-                M.tell("Your corpse has been moved to "+R.displayText());
-                R.moveItemTo(D);
-            }
-        }
-    }
-    
     public void recursiveDropMOB(MOB mob,
                                  Room room,
                                  Item thisContainer,
