@@ -80,7 +80,7 @@ public class Draw extends Get
 			&&(((String)commands.lastElement()).equalsIgnoreCase("HELD")))
 			{
 				commands.removeElementAt(commands.size()-1);
-				if(mob.fetchFirstWornItem(Wearable.WORN_HELD)!=null)
+				if(mob.fetchHeldItem()!=null)
 					return false;
 			}
 			else

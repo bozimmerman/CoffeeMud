@@ -833,7 +833,7 @@ public class StdItem implements Item
             {
                 if(!canWear(mob,Wearable.WORN_HELD))
                 {
-                    Item alreadyWearing=mob.fetchFirstWornItem(Wearable.WORN_HELD);
+                    Item alreadyWearing=mob.fetchHeldItem();
                     if(alreadyWearing!=null)
                     {
                         if((!CMLib.commands().postRemove(mob,alreadyWearing,false))

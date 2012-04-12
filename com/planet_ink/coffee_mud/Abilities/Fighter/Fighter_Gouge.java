@@ -34,7 +34,7 @@ import java.util.*;
 */
 
 @SuppressWarnings("unchecked")
-public class Fighter_Gouge extends FighterSkill
+public class Fighter_Gouge extends MonkSkill
 {
 	boolean doneTicking=false;
 	public String ID() { return "Fighter_Gouge"; }
@@ -78,19 +78,6 @@ public class Fighter_Gouge extends FighterSkill
 
 		if(canBeUninvoked())
 			mob.tell("Your eyes feel better.");
-	}
-
-	public boolean anyWeapons(MOB mob)
-	{
-		for(int i=0;i<mob.numItems();i++)
-		{
-			Item I=mob.getItem(i);
-			if((I!=null)
-			   &&((I.amWearingAt(Wearable.WORN_WIELD))
-			      ||(I.amWearingAt(Wearable.WORN_HELD))))
-				return true;
-		}
-		return false;
 	}
 
 	public int castingQuality(MOB mob, Physical target)

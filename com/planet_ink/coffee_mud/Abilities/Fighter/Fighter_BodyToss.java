@@ -34,7 +34,7 @@ import java.util.*;
 */
 
 @SuppressWarnings("unchecked")
-public class Fighter_BodyToss extends FighterSkill
+public class Fighter_BodyToss extends MonkSkill
 {
 	public String ID() { return "Fighter_BodyToss"; }
 	public String name(){ return "Body Toss";}
@@ -45,19 +45,6 @@ public class Fighter_BodyToss extends FighterSkill
 	protected int canTargetCode(){return Ability.CAN_MOBS;}
     public int classificationCode(){ return Ability.ACODE_SKILL|Ability.DOMAIN_GRAPPLING;}
 	public int usageType(){return USAGE_MOVEMENT;}
-
-	public boolean anyWeapons(MOB mob)
-	{
-		for(int i=0;i<mob.numItems();i++)
-		{
-			Item I=mob.getItem(i);
-			if((I!=null)
-			   &&((I.amWearingAt(Wearable.WORN_WIELD))
-			      ||(I.amWearingAt(Wearable.WORN_HELD))))
-				return true;
-		}
-		return false;
-	}
 
 	public int castingQuality(MOB mob, Physical target)
 	{

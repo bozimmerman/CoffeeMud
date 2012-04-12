@@ -33,7 +33,7 @@ import java.util.*;
    limitations under the License.
 */
 
-public class Fighter_BackHand extends FighterSkill
+public class Fighter_BackHand extends MonkSkill
 {
 	public String ID() { return "Fighter_BackHand"; }
 	public String name(){ return "Back Hand";}
@@ -110,18 +110,5 @@ public class Fighter_BackHand extends FighterSkill
 		&&(msg.tool()==naturalWeapon))
 			msg.setValue(msg.value()+naturalWeapon.basePhyStats().damage()+super.getXLEVELLevel(mob));
 		return true;
-	}
-	
-	public boolean anyWeapons(MOB mob)
-	{
-		for(int i=0;i<mob.numItems();i++)
-		{
-			Item I=mob.getItem(i);
-			if((I!=null)
-			   &&((I.amWearingAt(Wearable.WORN_WIELD))
-			      ||(I.amWearingAt(Wearable.WORN_HELD))))
-				return true;
-		}
-		return false;
 	}
 }

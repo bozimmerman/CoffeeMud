@@ -34,7 +34,7 @@ import java.util.*;
 */
 
 @SuppressWarnings("unchecked")
-public class Fighter_LightningStrike extends FighterSkill
+public class Fighter_LightningStrike extends MonkSkill
 {
 	public String ID() { return "Fighter_LightningStrike"; }
 	public String name(){ return "Lightning Strike";}
@@ -103,20 +103,6 @@ public class Fighter_LightningStrike extends FighterSkill
 			}
 		}
 	}
-
-	public boolean anyWeapons(MOB mob)
-	{
-		for(int i=0;i<mob.numItems();i++)
-		{
-			Item I=mob.getItem(i);
-			if((I!=null)
-			   &&((I.amWearingAt(Wearable.WORN_WIELD))
-			      ||(I.amWearingAt(Wearable.WORN_HELD))))
-				return true;
-		}
-		return false;
-	}
-
 
 	public int castingQuality(MOB mob, Physical target)
 	{

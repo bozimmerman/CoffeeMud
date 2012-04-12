@@ -140,7 +140,7 @@ public class Kill extends StdCommand
             Item weapon=mob.fetchWieldedItem();
             if(weapon==null)
             {
-                Item possibleOtherWeapon=mob.fetchFirstWornItem(Wearable.WORN_HELD);
+                Item possibleOtherWeapon=mob.fetchHeldItem();
                 if((possibleOtherWeapon!=null)
                 &&(possibleOtherWeapon instanceof Weapon)
                 &&possibleOtherWeapon.fitsOn(Wearable.WORN_WIELD)

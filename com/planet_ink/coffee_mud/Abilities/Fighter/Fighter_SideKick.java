@@ -32,7 +32,7 @@ import java.util.*;
    limitations under the License.
 */
 
-public class Fighter_SideKick extends FighterSkill
+public class Fighter_SideKick extends MonkSkill
 {
 	public String ID() { return "Fighter_SideKick"; }
 	public String name(){ return "Side Kick";}
@@ -111,16 +111,4 @@ public class Fighter_SideKick extends FighterSkill
 		return true;
 	}
 	
-	public boolean anyWeapons(MOB mob)
-	{
-		for(int i=0;i<mob.numItems();i++)
-		{
-			Item I=mob.getItem(i);
-			if((I!=null)
-			   &&((I.amWearingAt(Wearable.WORN_WIELD))
-			      ||(I.amWearingAt(Wearable.WORN_HELD))))
-				return true;
-		}
-		return false;
-	}
 }

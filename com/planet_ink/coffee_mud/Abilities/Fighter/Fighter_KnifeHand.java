@@ -32,7 +32,7 @@ import java.util.*;
    limitations under the License.
 */
 
-public class Fighter_KnifeHand extends FighterSkill
+public class Fighter_KnifeHand extends MonkSkill
 {
 	public String ID() { return "Fighter_KnifeHand"; }
 	public String name(){ return "Knife Hand";}
@@ -92,18 +92,5 @@ public class Fighter_KnifeHand extends FighterSkill
 		&&(msg.tool()==naturalWeapon))
 			msg.setValue(msg.value()+naturalWeapon.basePhyStats().damage()+super.getXLEVELLevel(mob));
 		return true;
-	}
-	
-	public boolean anyWeapons(MOB mob)
-	{
-		for(int i=0;i<mob.numItems();i++)
-		{
-			Item I=mob.getItem(i);
-			if((I!=null)
-			   &&((I.amWearingAt(Wearable.WORN_WIELD))
-			      ||(I.amWearingAt(Wearable.WORN_HELD))))
-				return true;
-		}
-		return false;
 	}
 }

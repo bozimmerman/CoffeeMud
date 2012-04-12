@@ -61,7 +61,7 @@ public class Fighter_DualParry extends FighterSkill
 			if((msg.tool()!=null)&&(msg.tool() instanceof Item))
 			{
 				Item attackerWeapon=(Item)msg.tool();
-				Item myOtherWeapon=mob.fetchFirstWornItem(Wearable.WORN_HELD);
+				Item myOtherWeapon=mob.fetchHeldItem();
 				if((myOtherWeapon!=null)
 				&&(attackerWeapon!=null)
 				&&(myOtherWeapon instanceof Weapon)

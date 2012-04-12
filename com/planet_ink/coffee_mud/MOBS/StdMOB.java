@@ -72,7 +72,9 @@ public class StdMOB implements MOB
     protected String    cachedImageName=null;
     protected byte[]    miscText=null;
     protected String[]  xtraValues=null;
-    protected int       possibleWeaponIndex=-1;
+    
+    protected volatile WeakReference<Item>  possibleWieldedItem=null;
+    protected volatile WeakReference<Item>  possibleHeldItem=null;
 
     protected long      tickStatus=Tickable.STATUS_NOT;
 
@@ -1791,6 +1793,13 @@ public class StdMOB implements MOB
                 // activity check
                 switch(msg.sourceMinor())
                 {
+                case CMMsg.TYP_WEAR:
+                case CMMsg.TYP_HOLD:
+                case CMMsg.TYP_WIELD:
+                case CMMsg.TYP_REMOVE:
+                    possibleWieldedItem=null;
+                    possibleHeldItem=null;
+                    break;
                 case CMMsg.TYP_JUSTICE:
                     if((msg.target()!=null)
                     &&(isInCombat())
@@ -3669,19 +3678,49 @@ public class StdMOB implements MOB
 
     public Item fetchWieldedItem()
     {
-        if((possibleWeaponIndex>=0)&&(possibleWeaponIndex<numItems()))
+        WeakReference<Item> wieldRef=possibleWieldedItem;
+        if(wieldRef != null)
         {
-            final Item thisItem=getItem(possibleWeaponIndex);
-            if((thisItem!=null)&&(thisItem.amWearingAt(Wearable.WORN_WIELD)))
-                return thisItem;
+            final Item I=wieldRef.get();
+            if(I==null) return null;
+            if((I.owner()==this)&&(I.amWearingAt(Wearable.WORN_WIELD))&&(!I.amDestroyed())&&(I.container()==null))
+                return I;
+            possibleWieldedItem=null;
         }
-        for(possibleWeaponIndex=0;possibleWeaponIndex<numItems();possibleWeaponIndex++)
+        for(Enumeration<Item> i=items();i.hasMoreElements();)
         {
-            final Item thisItem=getItem(possibleWeaponIndex);
-            if((thisItem!=null)&&(thisItem.amWearingAt(Wearable.WORN_WIELD)))
-                return thisItem;
+            final Item I=i.nextElement();
+            if((I!=null)&&(I.owner()==this)&&(I.amWearingAt(Wearable.WORN_WIELD))&&(I.container()==null))
+            {
+                possibleWieldedItem=new WeakReference(I);
+                return I;
+            }
         }
-        possibleWeaponIndex=-1;
+        possibleWieldedItem=new WeakReference(null);
+        return null;
+    }
+
+    public Item fetchHeldItem()
+    {
+        WeakReference<Item> heldRef=possibleHeldItem;
+        if(heldRef != null)
+        {
+            final Item I=heldRef.get();
+            if(I==null) return null;
+            if((I.owner()==this)&&(I.amWearingAt(Wearable.WORN_HELD))&&(!I.amDestroyed())&&(I.container()==null))
+                return I;
+            possibleHeldItem=null;
+        }
+        for(Enumeration<Item> i=items();i.hasMoreElements();)
+        {
+            final Item I=i.nextElement();
+            if((I!=null)&&(I.owner()==this)&&(I.amWearingAt(Wearable.WORN_HELD))&&(I.container()==null))
+            {
+                possibleHeldItem=new WeakReference(I);
+                return I;
+            }
+        }
+        possibleHeldItem=new WeakReference(null);
         return null;
     }
 

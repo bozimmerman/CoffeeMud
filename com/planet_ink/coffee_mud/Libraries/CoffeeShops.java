@@ -682,7 +682,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
                     if(A.canTarget(Ability.CAN_ITEMS))
                     {
                         Item I=buyer.fetchWieldedItem();
-                        if(I==null) I=buyer.fetchFirstWornItem(Wearable.WORN_HELD);
+                        if(I==null) I=buyer.fetchHeldItem();
                         if(I==null)
                         {
                             CMLib.commands().postSay(seller,buyer,"You need to be wielding or holding the item you want this cast on.",true,false);
@@ -1056,7 +1056,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
             if(A.canTarget(Ability.CAN_ITEMS))
             {
                 Item I=mobFor.fetchWieldedItem();
-                if(I==null) I=mobFor.fetchFirstWornItem(Wearable.WORN_HELD);
+                if(I==null) I=mobFor.fetchHeldItem();
                 if(I==null) I=mobFor.fetchWornItem("all");
                 if(I==null) I=mobFor.fetchCarried(null,"all");
                 if(I!=null)
