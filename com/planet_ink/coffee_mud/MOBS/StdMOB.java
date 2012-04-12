@@ -1698,8 +1698,8 @@ public class StdMOB implements MOB
                     &&(msg.sourceMinor()!=CMMsg.TYP_BID)
                     &&(msg.targetMinor()!=CMMsg.TYP_OK_VISUAL)
                     &&((msg.sourceMessage()!=null)||(msg.othersMessage()!=null))
-                    &&((!CMLib.utensils().reachableItem(this,msg.target()))
-                        ||(!CMLib.utensils().reachableItem(this,msg.tool()))))
+                    &&(((!CMLib.utensils().reachableItem(this,msg.target()))||(!CMLib.utensils().reachableItem(this,msg.tool())))
+                    	&&(location()!=null)&&(!CMath.bset(location().phyStats().sensesMask(), PhyStats.SENSE_ROOMCRUNCHEDIN))))
                     {
                         tell("You need to stand up!");
                         return false;

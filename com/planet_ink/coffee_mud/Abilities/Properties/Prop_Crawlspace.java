@@ -40,6 +40,12 @@ public class Prop_Crawlspace extends Property
     public String accountForYourself()
     { return "Must be crawled through.";    }
 
+    public void affectPhyStats(Physical affected, PhyStats affectableStats)
+    {
+    	super.affectPhyStats(affected, affectableStats);
+    	affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.SENSE_ROOMCRUNCHEDIN);
+    }
+    
     public boolean okMessage(final Environmental myHost, final CMMsg msg)
     {
         if((affected!=null)&&((affected instanceof Room)||(affected instanceof Exit)))
