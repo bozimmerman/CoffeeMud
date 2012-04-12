@@ -4816,14 +4816,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
             {
                 String arg1=CMParms.cleanBit(funcParms);
                 Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
-                if(E instanceof MOB)
-                {
-                    if(((MOB)E).numAllEffects()>0) // random
-                        results.append(((MOB)E).fetchEffect(CMLib.dice().roll(1,((MOB)E).numAllEffects(),-1)).name());
-                }
-                else
                 if((E instanceof Physical)&&(((Physical)E).numEffects()>0))
-                    results.append(((Physical)E).fetchEffect(CMLib.dice().roll(1,((Physical)E).numEffects(),-1)).name());
+                    results.append(((Physical)E).effects().nextElement().name());
                 break;
             }
             case 69: // isbehave

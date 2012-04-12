@@ -94,7 +94,7 @@ public class Prayer_Anger extends Prayer
 						MOB target=null;
 						while((tries<100)&&(target==null))
 						{
-							target=mob.location().fetchInhabitant(CMLib.dice().roll(1,mob.location().numInhabitants(),-1));
+							target=mob.location().fetchRandomInhabitant();
 							if(target!=null)
 							{
 								if(target==inhab) target=null;

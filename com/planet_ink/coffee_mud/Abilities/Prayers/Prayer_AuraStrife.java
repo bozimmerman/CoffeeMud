@@ -94,7 +94,7 @@ public class Prayer_AuraStrife extends Prayer
 						if(levels<0) levels=invoker().phyStats().level();
 						if(CMLib.dice().rollPercentage()>=levels)
 						{
-							MOB newvictim=mob.location().fetchInhabitant(CMLib.dice().roll(1,mob.location().numInhabitants(),-1));
+							MOB newvictim=mob.location().fetchRandomInhabitant();
 							if(newvictim!=mob) mob.setVictim(newvictim);
 						}
 					}

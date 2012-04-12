@@ -105,7 +105,7 @@ public class StdClanSpecialItem extends StdClanItem
 					Room R=((MOB)owner()).location();
 					if(R!=null)
 					{
-						Item I=R.getItem(CMLib.dice().roll(1,R.numItems(),-1));
+						Item I=R.getRandomItem();
 						if((I!=null)&&(I.container()==null))
 							CMLib.commands().postGet(mob,null,I,false);
 					}

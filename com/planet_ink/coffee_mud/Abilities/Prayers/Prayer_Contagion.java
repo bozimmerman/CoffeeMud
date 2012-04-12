@@ -85,7 +85,7 @@ public class Prayer_Contagion extends Prayer implements DiseaseAffect
 				choices.addElement(A);
 		}
 		if(choices.size()==0) return true;
-		MOB target=mob.location().fetchInhabitant(CMLib.dice().roll(1,mob.location().numInhabitants(),-1));
+		MOB target=mob.location().fetchRandomInhabitant();
 		Ability thisOne=(Ability)choices.elementAt(CMLib.dice().roll(1,choices.size(),-1));
 		if((target==null)||(thisOne==null)||(target.fetchEffect(ID())!=null))
 			return true;

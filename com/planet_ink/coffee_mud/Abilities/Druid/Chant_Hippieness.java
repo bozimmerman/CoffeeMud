@@ -85,14 +85,14 @@ public class Chant_Hippieness extends Chant
 			Room R=mob.location();
 			if((!mouthed)&&(R!=null)&&(R.numItems()>0))
 			{
-				Item I=R.getItem(CMLib.dice().roll(1,R.numItems(),-1));
+				Item I=R.getRandomItem();
 				if((I!=null)&&(I.fitsOn(Wearable.WORN_MOUTH)))
 					CMLib.commands().postGet(mob,I.container(),I,false);
 			}
 
 			if(mob.numItems()>0)
 			{
-				Item I=mob.getItem(CMLib.dice().roll(1,mob.numItems(),-1));
+				Item I=mob.getRandomItem();
 				if(mouthed)
 				{
 					if((I!=null)&&(!I.amWearingAt(Wearable.IN_INVENTORY))&&(!I.amWearingAt(Wearable.WORN_MOUTH)))

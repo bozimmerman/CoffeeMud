@@ -146,7 +146,7 @@ public class Spell_Torture extends Spell
                 roll=CMLib.dice().roll(1,10,0);
             else
             {
-               Ability A=mob.fetchAbility(CMLib.dice().roll(1,mob.numAbilities(),-1));
+               Ability A=mob.fetchRandomAbility();
                 mob.location().show(mob,null,CMMsg.MSG_SPEAK,
                 "<S-NAME> admit(s) that <S-HE-SHE> knows "+A.name()+" at "+A.proficiency()+"%.");
             }

@@ -310,7 +310,7 @@ public class TaxCollector extends StdBehavior
 		&&(CMLib.flags().aliveAwakeMobileUnbound(mob,true))
 		&&(R.numInhabitants()>1))
 		{
-			MOB M=R.fetchInhabitant(CMLib.dice().roll(1,R.numInhabitants(),-1));
+			MOB M=R.fetchRandomInhabitant();
 			if((M!=null)
 			&&(M!=mob)
 			&&((mob.getClanID().length()==0)
@@ -372,7 +372,7 @@ public class TaxCollector extends StdBehavior
 				}
 			}
 
-			Item I=R.getItem(CMLib.dice().roll(1,R.numItems(),-1));
+			Item I=R.getRandomItem();
 			if((I!=null)&&(I instanceof Coins))
 				CMLib.commands().postGet(mob,I.container(),I,false);
 		}

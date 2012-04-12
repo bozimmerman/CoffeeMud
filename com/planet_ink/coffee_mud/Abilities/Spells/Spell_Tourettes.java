@@ -78,7 +78,7 @@ public class Spell_Tourettes extends Spell implements DiseaseAffect
 			plagueDown=4;
 			if(invoker==null) invoker=mob;
 
-			MOB target=mob.location().fetchInhabitant(CMLib.dice().roll(1,mob.location().numInhabitants(),-1));
+			MOB target=mob.location().fetchRandomInhabitant();
 			if((target!=null)
 			&&(!mob.amDead())
 			&&(target.charStats().getStat(CharStats.STAT_INTELLIGENCE)>5)

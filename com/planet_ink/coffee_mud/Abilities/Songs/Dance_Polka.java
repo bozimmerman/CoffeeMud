@@ -127,7 +127,7 @@ public class Dance_Polka extends Dance
 		if((!msg.targetMajor(CMMsg.MASK_ALWAYS))
 		&&(msg.targetMajor()>0))
 		{
-			MOB newTarget=msg.source().location().fetchInhabitant(CMLib.dice().roll(1,msg.source().location().numInhabitants(),-1));
+			MOB newTarget=msg.source().location().fetchRandomInhabitant();
 			if(newTarget!=null)
 				msg.modify(msg.source(),newTarget,msg.tool(),msg.sourceCode(),msg.sourceMessage(),msg.targetCode(),msg.targetMessage(),msg.othersCode(),msg.othersMessage());
 		}

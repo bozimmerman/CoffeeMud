@@ -75,19 +75,19 @@ public class Chant_ManicMoon extends Chant
 							M.setVictim(null);
 						else
 						{
-							MOB newvictim=M.location().fetchInhabitant(CMLib.dice().roll(1,M.location().numInhabitants(),-1));
+							MOB newvictim=M.location().fetchRandomInhabitant();
 							if(newvictim!=M) M.setVictim(newvictim);
 						}
 					}
 					else
 					if(CMLib.dice().rollPercentage()<20)
 					{
-						MOB newvictim=M.location().fetchInhabitant(CMLib.dice().roll(1,M.location().numInhabitants(),-1));
+						MOB newvictim=M.location().fetchRandomInhabitant();
 						if(newvictim!=M) M.setVictim(newvictim);
 					}
 				}
 			}
-			MOB M=room.fetchInhabitant(CMLib.dice().roll(1,room.numInhabitants(),-1));
+			MOB M=room.fetchRandomInhabitant();
 			if((CMLib.dice().rollPercentage()<50)&&(M!=null)&&(M!=invoker))
 				switch(CMLib.dice().roll(1,5,0))
 				{

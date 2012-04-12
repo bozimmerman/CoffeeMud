@@ -56,7 +56,7 @@ public class Spell_Confusion extends Spell
 		{
 			for(int x=0;x<10;x++)
 			{
-				MOB newvictim=mob.location().fetchInhabitant(CMLib.dice().roll(1,mob.location().numInhabitants(),-1));
+				MOB newvictim=mob.location().fetchRandomInhabitant();
 				if((newvictim!=mob)&&(mob.mayIFight(newvictim)))
 				{
 					mob.setVictim(newvictim);

@@ -359,7 +359,7 @@ public class StdClanCommonItem extends StdClanItem
 						int tries=0;
 						while((I==null)&&((++tries)<20))
 						{
-							I=M.getItem(CMLib.dice().roll(1,M.numItems(),-1));
+							I=M.getRandomItem();
 							if((I==null)
                             ||(I==this)
                             ||(I instanceof RawMaterial)

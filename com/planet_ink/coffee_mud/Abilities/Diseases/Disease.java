@@ -99,7 +99,7 @@ public class Disease extends StdAbility implements DiseaseAffect
 	{
 		if(mob==null) return false;
 		if(mob.location()==null) return false;
-		MOB target=mob.location().fetchInhabitant(CMLib.dice().roll(1,mob.location().numInhabitants(),-1));
+		MOB target=mob.location().fetchRandomInhabitant();
 		return catchIt(mob,target);
 	}
 

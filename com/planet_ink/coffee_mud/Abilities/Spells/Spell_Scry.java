@@ -99,7 +99,7 @@ public class Spell_Scry extends Spell
 			{
 				Room R=CMLib.map().getRandomRoom();
 				if(R.numInhabitants()>0)
-					M=R.fetchInhabitant(CMLib.dice().roll(1,R.numInhabitants(),-1));
+					M=R.fetchRandomInhabitant();
 				if((M!=null)&&(M.name().equals(mob.name())))
 					M=null;
 			}

@@ -361,9 +361,9 @@ public class CombatAbilities extends StdBehavior
 		while((tryThisOne==null)&&((++tries)<100)&&(mob.numAbilities()>0))
 		{
 			if((combatMode==COMBAT_ONLYALWAYS)&&(this.skillsAlways!=null)&&(this.skillsAlways.size()>0))
-				A=mob.fetchAbility((String)skillsAlways.elementAt(CMLib.dice().roll(1,mob.numAbilities(),-1)));
+				A=mob.fetchAbility((String)skillsAlways.elementAt(CMLib.dice().roll(1,skillsAlways.size(),-1)));
 			else
-				A=mob.fetchAbility(CMLib.dice().roll(1,mob.numAbilities(),-1));
+				A=mob.fetchRandomAbility();
 			
             if((A==null)
             ||(A.isAutoInvoked())

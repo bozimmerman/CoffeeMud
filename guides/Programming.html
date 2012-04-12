@@ -2433,12 +2433,12 @@ instance of a piece of food.</p>
 speaking, the mob will quickly devour and use up any and all food which
 it may have had to begin with. What we decide to do when the mob does
 NOT have food, therefore, is just as important.</p>
-      <pre>    int randMob = CMLib.dice().roll( 1, room.numInhabitants(), -1 );<br />    MOB mobToHitUp = room.fetchInhabitant( randMob );<br />    if( ( mobToHitUp == null )<br />        ||( mobToHitUp == mob )<br />        ||( CMLib.dice().rollPercentage() &gt; 75 )<br />      )<br />    {<br />      return true;<br />    }<br /></pre>
+      <pre>    MOB mobToHitUp = room.fetchRandomInhabitant();<br />    if( ( mobToHitUp == null )<br />        ||( mobToHitUp == mob )<br />        ||( CMLib.dice().rollPercentage() &gt; 75 )<br />      )<br />    {<br />      return true;<br />    }<br /></pre>
       <p>Since our mob is hungry, and another mob is the most likely
 source of food, we will pick a random inhabitant of the room, which is
 not ourselves, 25% of the time. Otherwise, we just return true, and try
 again on the next tick.</p>
-      <pre>    int randItem = CMLib.dice().roll( 1, mobToHitUp.numItems(), -1 );<br />    Item I = mobToHitUp.getItem( randItem );<br />    if( ( I != null ) &amp;&amp; ( I instanceof Food ) )<br />    {<br />      eatible = I;<br />    }<br /><br />    if( eatible == null )<br />    {<br />      return true;<br />    }<br />   <br /></pre>
+      <pre>    Item I = mobToHitUp.getRandomItem();<br />    if( ( I != null ) &amp;&amp; ( I instanceof Food ) )<br />    {<br />      eatible = I;<br />    }<br /><br />    if( eatible == null )<br />    {<br />      return true;<br />    }<br />   <br /></pre>
       <p>Next we will pick a random piece of inventory from that mob,
 and see if it is food. If not, we return true and try again on the next
 tick.</p>

@@ -83,7 +83,7 @@ public class Spell_Delirium extends Spell
 				Room R=invoker.location().getArea().getRandomProperRoom();
 				if((R!=null)&&(R.numInhabitants()>0))
 				{
-					MOB possible=R.fetchInhabitant(CMLib.dice().roll(1,R.numInhabitants(),-1));
+					MOB possible=R.fetchRandomInhabitant();
 					if((possible!=null)&&(!possible.name().equalsIgnoreCase(likeThisOne.name())))
 						return possible;
 				}
@@ -98,16 +98,16 @@ public class Spell_Delirium extends Spell
 				Room R=invoker.location().getArea().getRandomProperRoom();
 				if(R.numItems()>0)
 				{
-					Item possible=R.getItem(CMLib.dice().roll(1,R.numItems(),-1));
+					Item possible=R.getRandomItem();
 					if((possible!=null)&&(!possible.name().equalsIgnoreCase(likeThisOne.name())))
 						return possible;
 				}
 				if(R.numInhabitants()>0)
 				{
-					MOB owner=R.fetchInhabitant(CMLib.dice().roll(1,R.numInhabitants(),-1));
+					MOB owner=R.fetchRandomInhabitant();
 					if((owner!=null)&&(owner.numItems()>0))
 					{
-						Item possible=owner.getItem(CMLib.dice().roll(1,owner.numItems(),-1));
+						Item possible=owner.getRandomItem();
 						if((possible!=null)&&(!possible.name().equalsIgnoreCase(likeThisOne.name())))
 							return possible;
 					}

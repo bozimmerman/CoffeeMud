@@ -60,7 +60,7 @@ public class Disease_Fever extends Disease
 		MOB mob=(MOB)affected;
 		if(mob.isInCombat())
 		{
-			MOB newvictim=mob.location().fetchInhabitant(CMLib.dice().roll(1,mob.location().numInhabitants(),-1));
+			MOB newvictim=mob.location().fetchRandomInhabitant();
 			if(newvictim!=mob) mob.setVictim(newvictim);
 		}
 		else

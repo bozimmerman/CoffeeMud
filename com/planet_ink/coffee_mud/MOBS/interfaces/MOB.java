@@ -201,6 +201,7 @@ public interface MOB extends Rider, DBIdentifiable, PhysicalAgent, ItemPossessor
     public Ability fetchAbility(int index);
     public Ability findAbility(String name);
     public Ability fetchAbility(String ID);
+    public Ability fetchRandomAbility();
     public Enumeration<Ability> abilities();
 
     /** Manipulation of the expertise list */

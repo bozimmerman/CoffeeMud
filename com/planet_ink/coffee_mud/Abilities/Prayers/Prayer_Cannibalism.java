@@ -155,7 +155,7 @@ public class Prayer_Cannibalism extends Prayer
 				else
 				if(CMLib.dice().rollPercentage()<10)
 				{
-					MOB M2=M.location().fetchInhabitant(CMLib.dice().roll(1,M.location().numInhabitants(),-1));
+					MOB M2=M.location().fetchRandomInhabitant();
 					if((M2!=null)&&(M2!=M)&&(M.charStats().getMyRace()==M2.charStats().getMyRace()))
 						M.setVictim(M2);
 				}

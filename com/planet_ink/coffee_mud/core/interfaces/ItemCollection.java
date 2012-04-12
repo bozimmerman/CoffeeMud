@@ -19,6 +19,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
+import com.planet_ink.coffee_mud.core.CMLib;
 
 /**
  * An abstract interface for something capable of grouping items together
@@ -57,6 +58,12 @@ public interface ItemCollection extends CMObject
 	 */
 	public Item getItem(int i);
 	
+	/**
+	 * Returns a random item in this collection, or null
+	 * @return a random item in this collection, or null
+	 */
+  public Item getRandomItem();
+  
 	/**
 	 * An enumeration of all the items at this possessor.
 	 * @return enumeration of all the items at this possessor.

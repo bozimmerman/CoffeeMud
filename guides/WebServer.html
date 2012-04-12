@@ -1047,13 +1047,11 @@ while(((--attempts)&gt;0)&amp;&amp;((randomMob==null)||(randomItem==null)))
   var room=lib.map().getRandomRoom();
   if((randomMob==null)&amp;&amp;(room.numInhabitants()&gt;0))
   {
-    var randomNumber=lib.dice().roll(1,room.numInhabitants(),-1);
-    randomMob=room.fetchInhabitant(randomNumber);
+    randomMob=room.fetchRandomInhabitant();
   }
   if((randomItem==null)&amp;&amp;(room.numItems()&gt;0))
   {
-  var randomNumber = lib.dice().roll(1,room.numItems(),-1);
-  randomItem = room.fetchItem(randomNumber)
+    randomItem = room.getRandomItem();
   }
 } //now we have all our random things. We could easily insert our HTML using
   // the write() method as we did in example 1.  To be fancy, however, we'll use the

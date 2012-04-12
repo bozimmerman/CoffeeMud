@@ -81,7 +81,14 @@ public class Spell_Summon extends Spell
 			{
 				Room R=CMLib.map().getRandomRoom();
 				if((CMLib.flags().canAccess(mob,R))&&(R.numInhabitants()>0))
-				{	areaName=R.fetchInhabitant(CMLib.dice().roll(1,R.numInhabitants(),-1)).Name().toUpperCase(); break;}
+				{	
+					MOB M=R.fetchRandomInhabitant();
+					if(M!=null)
+					{
+						areaName=M.Name().toUpperCase(); 
+						break;
+					}
+				}
 			}
 		}
 

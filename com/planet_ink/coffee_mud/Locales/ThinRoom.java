@@ -201,6 +201,7 @@ public class ThinRoom implements Room {
 							  String allMessage){return true;}
 
 	public MOB fetchInhabitant(String inhabitantID){return null;}
+	public MOB fetchRandomInhabitant() { return null; }
 	public List<MOB> fetchInhabitants(String inhabitantID){return new Vector(1);}
 	public void addInhabitant(MOB mob){}
 	public void delInhabitant(MOB mob){}
@@ -225,6 +226,7 @@ public class ThinRoom implements Room {
 	public boolean isContent(Item item){return false;}
 	public Item findItem(Item goodLocation, String itemID){return null;}
 	public Item getItem(int i){return null;}
+  public Item getRandomItem(){return null;}
 	public Enumeration<Item> items(){ return EmptyEnumeration.INSTANCE;}
 	public Item getItem(String s){return null;}
 	public Item getItem(Item goodLocation, String s){return null;}

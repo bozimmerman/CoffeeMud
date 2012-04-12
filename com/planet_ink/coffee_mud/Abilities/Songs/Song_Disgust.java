@@ -52,7 +52,7 @@ public class Song_Disgust extends Song
 		Room room=invoker.location();
 		if((!mob.isInCombat())&&(room!=null))
 		{
-			MOB newMOB=room.fetchInhabitant(CMLib.dice().roll(1,room.numInhabitants(),-1));
+			MOB newMOB=room.fetchRandomInhabitant();
 			if(newMOB!=mob)
 			{
 				room.show(mob,newMOB,CMMsg.MSG_OK_ACTION,"<S-NAME> appear(s) disgusted with <T-NAMESELF>.");

@@ -88,26 +88,26 @@ public class Spell_Nightmare extends Spell
 						mob.tell("You see your flesh melting away in large chunks.");
 						break;
 					case 5:
-						M=R.fetchInhabitant(CMLib.dice().roll(1,R.numInhabitants(),-1));
+						M=R.fetchRandomInhabitant();
 						if(M!=null) mob.tell(mob,M,null,"<T-NAME> glare(s) at you, taking on a horrifying form.");
 						break;
 					case 6:
-						M=R.fetchInhabitant(CMLib.dice().roll(1,R.numInhabitants(),-1));
+						M=R.fetchRandomInhabitant();
 						if(M!=null) mob.tell(mob,M,null,"<T-NAME> rip(s) open <T-HIS-HER> jaws and stuff(s) you in it.");
 						break;
 					case 7:
-						M=R.fetchInhabitant(CMLib.dice().roll(1,R.numInhabitants(),-1));
+						M=R.fetchRandomInhabitant();
 						if(M!=null) mob.tell(mob,M,null,"<T-NAME> rip(s) up <T-HIS-HER> flesh in front of you.");
 						break;
 					case 8:
-						M=R.fetchInhabitant(CMLib.dice().roll(1,R.numInhabitants(),-1));
+						M=R.fetchRandomInhabitant();
 						if(M!=null) mob.tell(mob,M,null,"<T-NAME> become(s) a horrifying image of terror.");
 						break;
 					case 9:
 						mob.tell(mob,null,null,"The nightmare consumes your mind, taking you into madness.");
 						break;
 					case 10:
-						M=R.fetchInhabitant(CMLib.dice().roll(1,R.numInhabitants(),-1));
+						M=R.fetchRandomInhabitant();
 						if(M!=null) mob.tell(mob,M,null,"<T-NAME> <T-IS-ARE> trying to take control of your mind.");
 						break;
 					}

@@ -1519,6 +1519,12 @@ public class StdRoom implements Room
         return false;
     }
     
+    public MOB fetchRandomInhabitant()
+    {
+       if(inhabitants.size()==0) return null;
+       return fetchInhabitant(CMLib.dice().roll(1,numInhabitants(),-1));
+    }
+    
     public MOB fetchInhabitant(String inhabitantID)
     {
         if(inhabitants.size()==0) return null;
@@ -1674,6 +1680,11 @@ public class StdRoom implements Room
         }
         catch(java.lang.ArrayIndexOutOfBoundsException x){}
         return null;
+    }
+    public Item getRandomItem()
+    {
+        if(numItems()==0) return null;
+        return getItem(CMLib.dice().roll(1,numItems(),-1));
     }
     public String getContextName(Environmental E)
     {

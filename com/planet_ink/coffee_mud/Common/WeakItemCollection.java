@@ -177,4 +177,9 @@ public class WeakItemCollection implements ItemCollection, CMCommon
 		catch(java.lang.ArrayIndexOutOfBoundsException x){}
 		return null;
 	}
+  public Item getRandomItem()
+  {
+      if(numItems()==0) return null;
+      return getItem(CMLib.dice().roll(1,numItems(),-1));
+  }
 }

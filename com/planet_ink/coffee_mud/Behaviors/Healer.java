@@ -73,10 +73,10 @@ public class Healer extends ActiveTicker
 			if((Math.random()>aChance)||(mob.curState().getMana()<50))
 				return true;
 
-			MOB target=thisRoom.fetchInhabitant(CMLib.dice().roll(1,thisRoom.numInhabitants(),-1));
+			MOB target=thisRoom.fetchRandomInhabitant();
 			int x=0;
 			while(((++x)<10)&&((target==null)||(target.getVictim()==mob)||(target==mob)||(target.isMonster())))
-				target=thisRoom.fetchInhabitant(CMLib.dice().roll(1,thisRoom.numInhabitants(),-1));
+				target=thisRoom.fetchRandomInhabitant();
 
 			Ability tryThisOne=(Ability)healingVector.elementAt(CMLib.dice().roll(1,healingVector.size(),-1));
 			Ability thisOne=mob.fetchAbility(tryThisOne.ID());

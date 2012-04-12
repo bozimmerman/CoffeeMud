@@ -89,7 +89,7 @@ public class StdClanPamphlet extends StdClanItem
 				&&(CMLib.flags().aliveAwakeMobileUnbound(mob,true))
 				&&(R!=null))
 				{
-					MOB M=R.fetchInhabitant(CMLib.dice().roll(1,R.numInhabitants(),-1));
+					MOB M=R.fetchRandomInhabitant();
 					if((M!=null)
 					&&(M!=mob)
 					&&(M.isMonster())

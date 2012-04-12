@@ -49,7 +49,7 @@ public class Spell_TeleportObject extends Spell
 		{
 			commands.clear();
 			if(mob.numItems()>0)
-				commands.addElement(mob.getItem(CMLib.dice().roll(1,mob.numItems(),-1)));
+				commands.addElement(mob.getRandomItem());
 			commands.addElement(CMLib.map().getRandomArea().Name());
 		}
 		Room oldRoom=mob.location();

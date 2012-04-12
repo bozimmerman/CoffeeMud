@@ -86,7 +86,7 @@ public class Prayer_Absorption extends Prayer
 		int tries=0;
 		while((absorbed==null)&&((++tries)<100))
 		{
-			absorbed=target.fetchAbility(CMLib.dice().roll(1,target.numAbilities(),-1));
+			absorbed=target.fetchRandomAbility();
 			if(mob.fetchAbility(absorbed.ID())!=null)
 				absorbed=null;
 			else

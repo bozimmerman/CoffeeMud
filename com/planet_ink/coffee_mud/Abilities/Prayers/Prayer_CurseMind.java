@@ -56,7 +56,7 @@ public class Prayer_CurseMind extends Prayer
 		MOB mob=(MOB)affected;
 		if(mob.isInCombat())
 		{
-			MOB newvictim=mob.location().fetchInhabitant(CMLib.dice().roll(1,mob.location().numInhabitants(),-1));
+			MOB newvictim=mob.location().fetchRandomInhabitant();
 			if(newvictim!=mob) mob.setVictim(newvictim);
 		}
 		return super.tick(ticking,tickID);

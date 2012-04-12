@@ -503,7 +503,7 @@ public class WeatherAffects extends PuddleMaker
                 if(playerAround)
                 {
                     Room R=A.getRandomProperRoom();
-                    MOB M=R.fetchInhabitant(CMLib.dice().roll(1,R.numInhabitants(),-1));
+                    MOB M=R.fetchRandomInhabitant();
                     if(M!=null)
                     {
                         Ability A2=CMClass.getAbility("Chant_SummonLightning");
@@ -554,7 +554,7 @@ public class WeatherAffects extends PuddleMaker
                 if(playerAround)
                 {
                     Room R=A.getRandomProperRoom();
-                    MOB M=R.fetchInhabitant(CMLib.dice().roll(1,R.numInhabitants(),-1));
+                    MOB M=R.fetchRandomInhabitant();
                     if(M!=null)
                     {
                         Ability A2=CMClass.getAbility("Chant_SummonTornado");
@@ -609,7 +609,7 @@ public class WeatherAffects extends PuddleMaker
                 if(choices.size()>0)
                 {
                     R=(Room)choices.elementAt(CMLib.dice().roll(1,choices.size(),-1));
-                    MOB M=R.fetchInhabitant(CMLib.dice().roll(1,R.numInhabitants(),-1));
+                    MOB M=R.fetchRandomInhabitant();
                     if((M!=null)
                     &&(C.weatherType(R)==Climate.WEATHER_DUSTSTORM)
                     &&(!CMLib.flags().isSleeping(M)))
@@ -642,7 +642,7 @@ public class WeatherAffects extends PuddleMaker
                 if(choices.size()>0)
                 {
                     R=(Room)choices.elementAt(CMLib.dice().roll(1,choices.size(),-1));
-                    MOB M=R.fetchInhabitant(CMLib.dice().roll(1,R.numInhabitants(),-1));
+                    MOB M=R.fetchRandomInhabitant();
                     Ability A2=CMClass.getAbility("Chant_SummonHail");
                     if((A2!=null)
                     &&(C.weatherType(R)==Climate.WEATHER_HAIL))
@@ -666,7 +666,7 @@ public class WeatherAffects extends PuddleMaker
             &&(R.domainType()!=Room.DOMAIN_OUTDOORS_WATERSURFACE)
             &&((R.domainConditions()&Room.CONDITION_WET)==0))
             {
-                Item I=R.getItem(CMLib.dice().roll(1,R.numItems(),-1));
+                Item I=R.getRandomItem();
                 if((I!=null)&&(CMLib.flags().isGettable(I)))
                 switch(I.material()&RawMaterial.MATERIAL_MASK)
                 {

@@ -70,16 +70,16 @@ public class NastyAbilities extends ActiveTicker
 			if((Math.random()>aChance)||(mob.curState().getMana()<50))
 				return true;
 
-			MOB target=thisRoom.fetchInhabitant(CMLib.dice().roll(1,thisRoom.numInhabitants(),-1));
+			MOB target=thisRoom.fetchRandomInhabitant();
 			int x=0;
 			while(((target==null)||(target.getVictim()==mob)||(target==mob)||(target.isMonster()))&&((++x)<10))
-				target=thisRoom.fetchInhabitant(CMLib.dice().roll(1,thisRoom.numInhabitants(),-1));
+				target=thisRoom.fetchRandomInhabitant();
 
 			int tries=0;
 			Ability tryThisOne=null;
 			while((tryThisOne==null)&&(tries<100)&&((mob.numAbilities())>0))
 			{
-				tryThisOne=mob.fetchAbility(CMLib.dice().roll(1,mob.numAbilities(),-1));
+				tryThisOne=mob.fetchRandomAbility();
 				if((tryThisOne!=null)
 				   &&(mob.fetchEffect(tryThisOne.ID())==null)
 				   &&(tryThisOne.castingQuality(mob,target)==Ability.QUALITY_MALICIOUS))

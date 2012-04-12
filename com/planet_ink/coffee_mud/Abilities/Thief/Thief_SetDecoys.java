@@ -117,7 +117,7 @@ public class Thief_SetDecoys extends ThiefSkill implements Trap
 			int tries=20;
 			while(combat&&(R.numInhabitants()>1)&&(target==null)&&((--tries)>=0))
 			{
-				target=R.fetchInhabitant(CMLib.dice().roll(1,R.numInhabitants(),-1));
+				target=R.fetchRandomInhabitant();
 				if((target==mob)||(target.getVictim()!=mob)||(!CMLib.flags().canBeSeenBy(R,target)))
 					target=null;
 			}

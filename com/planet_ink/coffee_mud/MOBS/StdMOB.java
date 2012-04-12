@@ -2839,6 +2839,11 @@ public class StdMOB implements MOB
         catch(java.lang.ArrayIndexOutOfBoundsException x){}
         return null;
     }
+    public Item getRandomItem()
+    {
+        if(numItems()==0) return null;
+        return getItem(CMLib.dice().roll(1,numItems(),-1));
+    }
     public Item fetchFromInventory(Item goodLocation,
                                    String itemName,
                                    int wornFilter,
@@ -3118,6 +3123,12 @@ public class StdMOB implements MOB
         return abilitys.size()
               +charStats().getMyRace().racialAbilities(this).size()
               +((C==null)?0:C.clanAbilities(this).size());
+    }
+
+    public Ability fetchRandomAbility()
+    {
+        if(numAbilities()==0) return null;
+        return fetchAbility(CMLib.dice().roll(1, numAbilities(), -1));
     }
 
     public Ability fetchAbility(int index)

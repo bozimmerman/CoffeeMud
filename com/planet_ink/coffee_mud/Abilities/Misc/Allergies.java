@@ -105,7 +105,7 @@ public class Allergies extends StdAbility
 		            }
 		            if(R.numInhabitants()>0)
 		            {
-			            MOB M=R.fetchInhabitant(CMLib.dice().roll(1,R.numInhabitants(),-1));
+			            MOB M=R.fetchRandomInhabitant();
 			            if(M!=null)
 			            for(int i=0;i<M.numItems();i++)
 			            {
