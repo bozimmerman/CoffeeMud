@@ -63,15 +63,21 @@ public class CoffeeTables extends StdLibrary implements StatisticsLibrary
             todays=(CoffeeTableRow)CMLib.database().DBReadStat(S.getTimeInMillis());
             if(todays==null)
             {
-                Calendar C=Calendar.getInstance();
-                C.set(Calendar.HOUR_OF_DAY,23);
-                C.set(Calendar.MINUTE,59);
-                C.set(Calendar.SECOND,59);
-                C.set(Calendar.MILLISECOND,999);
-                todays=(CoffeeTableRow)CMClass.getCommon("DefaultCoffeeTableRow");
-                todays.setStartTime(S.getTimeInMillis());
-                todays.setEndTime(C.getTimeInMillis());
-                CMLib.database().DBCreateStat(todays.startTime(),todays.endTime(),todays.data());
+                synchronized(this)
+                {
+                    if(todays==null)
+                    {
+                        Calendar C=Calendar.getInstance();
+                        C.set(Calendar.HOUR_OF_DAY,23);
+                        C.set(Calendar.MINUTE,59);
+                        C.set(Calendar.SECOND,59);
+                        C.set(Calendar.MILLISECOND,999);
+                        todays=(CoffeeTableRow)CMClass.getCommon("DefaultCoffeeTableRow");
+                        todays.setStartTime(S.getTimeInMillis());
+                        todays.setEndTime(C.getTimeInMillis());
+                        CMLib.database().DBCreateStat(todays.startTime(),todays.endTime(),todays.data());
+                    }
+                }
             }
             return;
         }
@@ -79,27 +85,34 @@ public class CoffeeTables extends StdLibrary implements StatisticsLibrary
         if((now>todays.endTime())
         &&(!CMLib.time().date2MonthDateString(now, true).equals(CMLib.time().date2MonthDateString(todays.endTime(), true))))
         {
-            CMLib.database().DBUpdateStat(todays.startTime(),todays.data());
-            Calendar S=Calendar.getInstance();
-            S.set(Calendar.HOUR_OF_DAY,0);
-            S.set(Calendar.MINUTE,0);
-            S.set(Calendar.SECOND,0);
-            S.set(Calendar.MILLISECOND,0);
-            Calendar C=Calendar.getInstance();
-            C.set(Calendar.HOUR_OF_DAY,23);
-            C.set(Calendar.MINUTE,59);
-            C.set(Calendar.SECOND,59);
-            C.set(Calendar.MILLISECOND,999);
-            todays=(CoffeeTableRow)CMClass.getCommon("DefaultCoffeeTableRow");
-            todays.setStartTime(S.getTimeInMillis());
-            todays.setEndTime(C.getTimeInMillis());
-            CoffeeTableRow testRow=(CoffeeTableRow)CMLib.database().DBReadStat(todays.startTime());
-            if(testRow!=null)
-                todays=testRow;
-            else
-            if(!CMLib.database().DBCreateStat(todays.startTime(),todays.endTime(),todays.data()))
+            synchronized(this)
             {
-                Log.errOut("CoffeeTables","Unable to manage daily-stat transition");
+                if((now>todays.endTime())
+                &&(!CMLib.time().date2MonthDateString(now, true).equals(CMLib.time().date2MonthDateString(todays.endTime(), true))))
+                {
+                    CMLib.database().DBUpdateStat(todays.startTime(),todays.data());
+                    Calendar S=Calendar.getInstance();
+                    S.set(Calendar.HOUR_OF_DAY,0);
+                    S.set(Calendar.MINUTE,0);
+                    S.set(Calendar.SECOND,0);
+                    S.set(Calendar.MILLISECOND,0);
+                    Calendar C=Calendar.getInstance();
+                    C.set(Calendar.HOUR_OF_DAY,23);
+                    C.set(Calendar.MINUTE,59);
+                    C.set(Calendar.SECOND,59);
+                    C.set(Calendar.MILLISECOND,999);
+                    todays=(CoffeeTableRow)CMClass.getCommon("DefaultCoffeeTableRow");
+                    todays.setStartTime(S.getTimeInMillis());
+                    todays.setEndTime(C.getTimeInMillis());
+                    CoffeeTableRow testRow=(CoffeeTableRow)CMLib.database().DBReadStat(todays.startTime());
+                    if(testRow!=null)
+                        todays=testRow;
+                    else
+                    if(!CMLib.database().DBCreateStat(todays.startTime(),todays.endTime(),todays.data()))
+                    {
+                        Log.errOut("CoffeeTables","Unable to manage daily-stat transition");
+                    }
+                }
             }
         }
         todays.bumpVal(E,type);
