@@ -83,7 +83,7 @@ public class Injury extends StdAbility
                         else if ((dmg<100)||(i==Race.BODY_HEAD))
                             wounds=("a dangling "); 
                         else 
-                            wounds=("a missing "); 
+                            wounds=("a shredded "); 
                         buf.append(", "+wounds+((String)O[0]).toLowerCase()+" ("+dmg+"%)");
                     }
                 }
