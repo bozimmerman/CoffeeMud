@@ -93,14 +93,13 @@ public class CoffeeTables extends StdLibrary implements StatisticsLibrary
             todays=(CoffeeTableRow)CMClass.getCommon("DefaultCoffeeTableRow");
             todays.setStartTime(S.getTimeInMillis());
             todays.setEndTime(C.getTimeInMillis());
+            CoffeeTableRow testRow=(CoffeeTableRow)CMLib.database().DBReadStat(todays.startTime());
+            if(testRow!=null)
+                todays=testRow;
+            else
             if(!CMLib.database().DBCreateStat(todays.startTime(),todays.endTime(),todays.data()))
             {
-                CoffeeTableRow testRow=(CoffeeTableRow)CMLib.database().DBReadStat(todays.startTime());
-                if(testRow != null)
-                {
-                    todays=testRow;
-                    Log.errOut("CoffeeTables","Previous row recovered.");
-                }
+                Log.errOut("CoffeeTables","Unable to manage daily-stat transition");
             }
         }
         todays.bumpVal(E,type);
