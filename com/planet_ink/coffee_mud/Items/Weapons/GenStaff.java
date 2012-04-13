@@ -36,105 +36,105 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 */
 public class GenStaff extends GenWeapon implements Wand
 {
-	public String ID(){	return "GenStaff";}
-	protected String secretWord=CMProps.getAnyListFileValue(CMProps.SYSTEMLF_MAGIC_WORDS);
+    public String ID(){    return "GenStaff";}
+    protected String secretWord=CMProps.getAnyListFileValue(CMProps.SYSTEMLF_MAGIC_WORDS);
 
-	public GenStaff()
-	{
-		super();
+    public GenStaff()
+    {
+        super();
 
-		setName("a wooden staff");
-		setDisplayText("a wooden staff lies in the corner of the room.");
-		setDescription("");
-		secretIdentity="";
-		basePhyStats().setAbility(0);
-		basePhyStats().setLevel(0);
-		basePhyStats.setWeight(4);
-		basePhyStats().setAttackAdjustment(0);
-		basePhyStats().setDamage(4);
-		baseGoldValue=1;
-		recoverPhyStats();
-		wornLogicalAnd=true;
-		material=RawMaterial.RESOURCE_OAK;
-		properWornBitmap=Wearable.WORN_HELD|Wearable.WORN_WIELD;
-		weaponType=TYPE_BASHING;
-		weaponClassification=Weapon.CLASS_STAFF;
-		recoverPhyStats();
-	}
+        setName("a wooden staff");
+        setDisplayText("a wooden staff lies in the corner of the room.");
+        setDescription("");
+        secretIdentity="";
+        basePhyStats().setAbility(0);
+        basePhyStats().setLevel(0);
+        basePhyStats.setWeight(4);
+        basePhyStats().setAttackAdjustment(0);
+        basePhyStats().setDamage(4);
+        baseGoldValue=1;
+        recoverPhyStats();
+        wornLogicalAnd=true;
+        material=RawMaterial.RESOURCE_OAK;
+        properWornBitmap=Wearable.WORN_HELD|Wearable.WORN_WIELD;
+        weaponType=TYPE_BASHING;
+        weaponClassification=Weapon.CLASS_STAFF;
+        recoverPhyStats();
+    }
 
-	protected int maxUses=Integer.MAX_VALUE;
-	public int maxUses(){return maxUses;}
-	public void setMaxUses(int newMaxUses){maxUses=newMaxUses;}
-	
-	public boolean isGeneric(){return true;}
+    protected int maxUses=Integer.MAX_VALUE;
+    public int maxUses(){return maxUses;}
+    public void setMaxUses(int newMaxUses){maxUses=newMaxUses;}
+    
+    public boolean isGeneric(){return true;}
 
-	public int value()
-	{
-		if(usesRemaining()<=0)
-			return 0;
-		return super.value();
-	}
-	public void setSpell(Ability theSpell)
-	{
-		readableText="";
-		if(theSpell!=null)
-			readableText=theSpell.ID();
-		secretWord=StdWand.getWandWord(readableText);
-	}
-	public String readableText(){return readableText;}
-	public void setReadableText(String text){ readableText=text;secretWord=StdWand.getWandWord(readableText);}
+    public int value()
+    {
+        if(usesRemaining()<=0)
+            return 0;
+        return super.value();
+    }
+    public void setSpell(Ability theSpell)
+    {
+        readableText="";
+        if(theSpell!=null)
+            readableText=theSpell.ID();
+        secretWord=StdWand.getWandWord(readableText);
+    }
+    public String readableText(){return readableText;}
+    public void setReadableText(String text){ readableText=text;secretWord=StdWand.getWandWord(readableText);}
 
-	public String secretIdentity()
-	{
-		String id=super.secretIdentity();
-		Ability A=getSpell();
-		if(A!=null)
-			id="'A staff of "+A.name()+"' Charges: "+usesRemaining()+"\n\r"+id;
-		return id+"\n\rSay the magic word :`"+secretWord+"` to the target.";
-	}
+    public String secretIdentity()
+    {
+        String id=super.secretIdentity();
+        Ability A=getSpell();
+        if(A!=null)
+            id="'A staff of "+A.name()+"' Charges: "+usesRemaining()+"\n\r"+id;
+        return id+"\n\rSay the magic word :`"+secretWord+"` to the target.";
+    }
 
-	public Ability getSpell()
-	{
-		return CMClass.getAbility(readableText());
-	}
+    public Ability getSpell()
+    {
+        return CMClass.getAbility(readableText());
+    }
 
-	public String magicWord()
-	{
-		return secretWord;
-	}
-	public void waveIfAble(MOB mob,
-						   Physical afftarget,
-						   String message)
-	{
-		StdWand.waveIfAble(mob,afftarget,message,this);
-	}
+    public String magicWord()
+    {
+        return secretWord;
+    }
+    public void waveIfAble(MOB mob,
+                           Physical afftarget,
+                           String message)
+    {
+        StdWand.waveIfAble(mob,afftarget,message,this);
+    }
 
-	public void executeMsg(final Environmental myHost, final CMMsg msg)
-	{
-		MOB mob=msg.source();
-		switch(msg.targetMinor())
-		{
-		case CMMsg.TYP_WAND_USE:
-			if(msg.amITarget(this)&&((msg.tool()==null)||(msg.tool() instanceof Physical)))
-				StdWand.waveIfAble(mob,(Physical)msg.tool(),msg.targetMessage(),this);
-			break;
-		case CMMsg.TYP_SPEAK:
-			if(msg.sourceMinor()==CMMsg.TYP_SPEAK)
-			{
-				boolean alreadyWanding=false;
-				final List<CMMsg> trailers =msg.trailerMsgs();
-				if(trailers!=null)
-					for(CMMsg msg2 : trailers)
-						if(msg2.targetMinor()==CMMsg.TYP_WAND_USE)
-							alreadyWanding=true;
-				if(!alreadyWanding)
-					msg.addTrailerMsg(CMClass.getMsg(msg.source(),this,msg.target(),CMMsg.NO_EFFECT,null,CMMsg.MASK_ALWAYS|CMMsg.TYP_WAND_USE,CMStrings.getSayFromMessage(msg.sourceMessage()),CMMsg.NO_EFFECT,null));
-			}
-			break;
-		default:
-			break;
-		}
-		super.executeMsg(myHost,msg);
-	}
-	// wand stats handled by genweapon, filled by readableText
+    public void executeMsg(final Environmental myHost, final CMMsg msg)
+    {
+        MOB mob=msg.source();
+        switch(msg.targetMinor())
+        {
+        case CMMsg.TYP_WAND_USE:
+            if(msg.amITarget(this)&&((msg.tool()==null)||(msg.tool() instanceof Physical)))
+                StdWand.waveIfAble(mob,(Physical)msg.tool(),msg.targetMessage(),this);
+            break;
+        case CMMsg.TYP_SPEAK:
+            if((msg.sourceMinor()==CMMsg.TYP_SPEAK)&&(!amWearingAt(Wearable.IN_INVENTORY)))
+            {
+                boolean alreadyWanding=false;
+                final List<CMMsg> trailers =msg.trailerMsgs();
+                if(trailers!=null)
+                    for(CMMsg msg2 : trailers)
+                        if(msg2.targetMinor()==CMMsg.TYP_WAND_USE)
+                            alreadyWanding=true;
+                if(!alreadyWanding)
+                    msg.addTrailerMsg(CMClass.getMsg(msg.source(),this,msg.target(),CMMsg.NO_EFFECT,null,CMMsg.MASK_ALWAYS|CMMsg.TYP_WAND_USE,CMStrings.getSayFromMessage(msg.sourceMessage()),CMMsg.NO_EFFECT,null));
+            }
+            break;
+        default:
+            break;
+        }
+        super.executeMsg(myHost,msg);
+    }
+    // wand stats handled by genweapon, filled by readableText
 }

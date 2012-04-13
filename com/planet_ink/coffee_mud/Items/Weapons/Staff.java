@@ -35,105 +35,109 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 */
 public class Staff extends StdWeapon implements Wand
 {
-	public String ID(){	return "Staff";}
-	protected String secretWord=CMProps.getAnyListFileValue(CMProps.SYSTEMLF_MAGIC_WORDS);
+    public String ID(){    return "Staff";}
+    protected String secretWord=CMProps.getAnyListFileValue(CMProps.SYSTEMLF_MAGIC_WORDS);
 
-	public Staff()
-	{
-		super();
+    public Staff()
+    {
+        super();
 
-		setName("a wooden staff");
-		setDisplayText("a wooden staff lies in the corner of the room.");
-		setDescription("It`s long and wooden, just like a staff ought to be.");
-		secretIdentity="";
-		basePhyStats().setAbility(0);
-		basePhyStats().setLevel(0);
-		basePhyStats.setWeight(4);
-		basePhyStats().setAttackAdjustment(0);
-		basePhyStats().setDamage(4);
-		baseGoldValue=1;
-		recoverPhyStats();
-		wornLogicalAnd=true;
-		material=RawMaterial.RESOURCE_OAK;
-		properWornBitmap=Wearable.WORN_HELD|Wearable.WORN_WIELD;
-		weaponType=TYPE_BASHING;
-		weaponClassification=Weapon.CLASS_STAFF;
-	}
+        setName("a wooden staff");
+        setDisplayText("a wooden staff lies in the corner of the room.");
+        setDescription("It`s long and wooden, just like a staff ought to be.");
+        secretIdentity="";
+        basePhyStats().setAbility(0);
+        basePhyStats().setLevel(0);
+        basePhyStats.setWeight(4);
+        basePhyStats().setAttackAdjustment(0);
+        basePhyStats().setDamage(4);
+        baseGoldValue=1;
+        recoverPhyStats();
+        wornLogicalAnd=true;
+        material=RawMaterial.RESOURCE_OAK;
+        properWornBitmap=Wearable.WORN_HELD|Wearable.WORN_WIELD;
+        weaponType=TYPE_BASHING;
+        weaponClassification=Weapon.CLASS_STAFF;
+    }
 
-	public int maxUses(){return Integer.MAX_VALUE;}
-	public void setMaxUses(int newMaxUses){}
-	
-	public String magicWord()
-	{
-		return secretWord;
-	}
+    public int maxUses(){return Integer.MAX_VALUE;}
+    public void setMaxUses(int newMaxUses){}
+    
+    public String magicWord()
+    {
+        return secretWord;
+    }
 
 
-	public void setSpell(Ability theSpell)
-	{
-		miscText="";
-		if(theSpell!=null)
-			miscText=theSpell.ID();
-		secretWord=StdWand.getWandWord(miscText);
-	}
-	public void setMiscText(String newText)
-	{
-		super.setMiscText(newText);
-		secretWord=StdWand.getWandWord(newText);
-	}
+    public void setSpell(Ability theSpell)
+    {
+        miscText="";
+        if(theSpell!=null)
+            miscText=theSpell.ID();
+        secretWord=StdWand.getWandWord(miscText);
+    }
+    public void setMiscText(String newText)
+    {
+        super.setMiscText(newText);
+        secretWord=StdWand.getWandWord(newText);
+    }
 
-	public Ability getSpell()
-	{
-		return CMClass.getAbility(text());
-	}
-	public int value()
-	{
-		if(usesRemaining()<=0)
-			return 0;
-		return super.value();
-	}
-	public String secretIdentity()
-	{
-		String id=super.secretIdentity();
-		Ability A=getSpell();
-		if(A!=null)
-			id="'A staff of "+A.name()+"' Charges: "+usesRemaining()+"\n\r"+id;
-		return id+"\n\rSay the magic word :`"+secretWord+"` to the target.";
-	}
+    public Ability getSpell()
+    {
+        return CMClass.getAbility(text());
+    }
+    public int value()
+    {
+        if(usesRemaining()<=0)
+            return 0;
+        return super.value();
+    }
+    public String secretIdentity()
+    {
+        String id=super.secretIdentity();
+        Ability A=getSpell();
+        if(A!=null)
+            id="'A staff of "+A.name()+"' Charges: "+usesRemaining()+"\n\r"+id;
+        return id+"\n\rSay the magic word :`"+secretWord+"` to the target.";
+    }
 
-	public void waveIfAble(MOB mob,
-						   Physical afftarget,
-						   String message)
-	{
-		StdWand.waveIfAble(mob,afftarget,message,this);
-	}
+    public void waveIfAble(MOB mob,
+                           Physical afftarget,
+                           String message)
+    {
+        StdWand.waveIfAble(mob,afftarget,message,this);
+    }
 
-	public void executeMsg(final Environmental myHost, final CMMsg msg)
-	{
-		MOB mob=msg.source();
+    public void executeMsg(final Environmental myHost, final CMMsg msg)
+    {
+        MOB mob=msg.source();
 
-		switch(msg.targetMinor())
-		{
-		case CMMsg.TYP_WAND_USE:
-			if(msg.amITarget(this)&&((msg.tool()==null)||(msg.tool() instanceof Physical)))
-				waveIfAble(mob,(Physical)msg.tool(),msg.targetMessage());
-			break;
-		case CMMsg.TYP_SPEAK:
-			if(msg.sourceMinor()==CMMsg.TYP_SPEAK)
-			{
-				boolean alreadyWanding=false;
-				final List<CMMsg> trailers =msg.trailerMsgs();
-				if(trailers!=null)
-					for(CMMsg msg2 : trailers)
-						if(msg2.targetMinor()==CMMsg.TYP_WAND_USE)
-							alreadyWanding=true;
-				if(!alreadyWanding)
-					msg.addTrailerMsg(CMClass.getMsg(msg.source(),this,msg.target(),CMMsg.NO_EFFECT,null,CMMsg.MASK_ALWAYS|CMMsg.TYP_WAND_USE,CMStrings.getSayFromMessage(msg.sourceMessage()),CMMsg.NO_EFFECT,null));
-			}
-			break;
-		default:
-			break;
-		}
-		super.executeMsg(myHost,msg);
-	}
+        switch(msg.targetMinor())
+        {
+        case CMMsg.TYP_WAND_USE:
+            if(msg.amITarget(this)&&((msg.tool()==null)||(msg.tool() instanceof Physical)))
+                waveIfAble(mob,(Physical)msg.tool(),msg.targetMessage());
+            break;
+        case CMMsg.TYP_SPEAK:
+            if((msg.sourceMinor()==CMMsg.TYP_SPEAK)&&(!amWearingAt(Wearable.IN_INVENTORY)))
+            {
+                boolean alreadyWanding=false;
+                final List<CMMsg> trailers =msg.trailerMsgs();
+                if(trailers!=null)
+                    for(CMMsg msg2 : trailers)
+                        if(msg2.targetMinor()==CMMsg.TYP_WAND_USE)
+                            alreadyWanding=true;
+                if(!alreadyWanding)
+                {
+                    String said=CMStrings.getSayFromMessage(msg.sourceMessage());
+                    if((said!=null)&&said.toUpperCase().indexOf(magicWord().toUpperCase())>=0)
+                        msg.addTrailerMsg(CMClass.getMsg(msg.source(),this,msg.target(),CMMsg.NO_EFFECT,null,CMMsg.MASK_ALWAYS|CMMsg.TYP_WAND_USE,CMStrings.getSayFromMessage(msg.sourceMessage()),CMMsg.NO_EFFECT,null));
+                }
+            }
+            break;
+        default:
+            break;
+        }
+        super.executeMsg(myHost,msg);
+    }
 }

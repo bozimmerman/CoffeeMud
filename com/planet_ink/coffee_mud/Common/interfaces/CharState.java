@@ -52,147 +52,147 @@ public interface CharState extends CMCommon, Modifiable
     public final static int STAT_NUM_BASE_STATS=5;
     
     /** constant representing how many ticks between hunger/thirst messages*/
-	public final static int ANNOYANCE_DEFAULT_TICKS=60;
+    public final static int ANNOYANCE_DEFAULT_TICKS=60;
     /** constant representing something*/
-	public final static int ADJUST_FACTOR=5;
+    public final static int ADJUST_FACTOR=5;
     /** constant representing how many ticks a MOB can  be thirsty before death */
-	public final static int DEATH_THIRST_TICKS=(30*30)*6; // 6 hours
+    public final static int DEATH_THIRST_TICKS=(30*30)*6; // 6 hours
     /** constant representing how many ticks a MOB can  be hungry before death */
-	public final static int DEATH_HUNGER_TICKS=(30*30)*12; // 12 hours
+    public final static int DEATH_HUNGER_TICKS=(30*30)*12; // 12 hours
     /** constant for how many fatigue points are lost per tick of rest */
-	public final static long REST_PER_TICK=CMProps.getTickMillis()*200;
+    public final static long REST_PER_TICK=CMProps.getTickMillis()*200;
     /** constant for how many fatigue points are required to be considered fatigued */
-	public final static long FATIGUED_MILLIS=CMProps.getTickMillis()*3000;
+    public final static long FATIGUED_MILLIS=CMProps.getTickMillis()*3000;
     /** constant for how many fatigue points are required to be considered exhausted */
-	public final static long FATIGUED_EXHAUSTED_MILLIS=FATIGUED_MILLIS*10;
+    public final static long FATIGUED_EXHAUSTED_MILLIS=FATIGUED_MILLIS*10;
 
-	/**
+    /**
      * Get primary combat stats as displayable code string
      * @return primary combat stats as displayable code string
      */
-	public String getCombatStats();
-	
+    public String getCombatStats();
+    
    /**
      * Get the number of fatigue points for the player
      * @return number of fatigue points
      */
-	public long getFatigue();
+    public long getFatigue();
     /**
      * Set the number of fatigue points
      * @param newVal number of fatigue points
      */
-	public void setFatigue(long newVal);
+    public void setFatigue(long newVal);
     /**
      * Set the number of fatigue points, respecting boundaries. 0 is always lowest.
      * @param byThisMuch a positive or negative change in value
      * @param max the highest amount to allow the fatigue number to reach
      * @return whether the highest or lowest boundary was reached
      */
-	public boolean adjFatigue(long byThisMuch, CharState max);
+    public boolean adjFatigue(long byThisMuch, CharState max);
 
     /**
      * Get the number of hit points for the player
      * @return number of hit points
      */
-	public int getHitPoints();
+    public int getHitPoints();
     /**
      * Set the number of hit points
      * @param newVal number of hit points
      */
-	public void setHitPoints(int newVal);
+    public void setHitPoints(int newVal);
     /**
      * Set the number of hit points, respecting boundaries. 0 is always lowest.
      * @param byThisMuch a positive or negative change in value
      * @param max the highest amount to allow the hit points number to reach
      * @return whether the highest or lowest boundary was reached
      */
-	public boolean adjHitPoints(int byThisMuch, CharState max);
+    public boolean adjHitPoints(int byThisMuch, CharState max);
 
     /**
      * Get the number of hunger points for the player
      * @return number of hunger points
      */
-	public int getHunger();
+    public int getHunger();
     /**
      * Set the number of hunger points
      * @param newVal number of hunger points
      */
-	public void setHunger(int newVal);
+    public void setHunger(int newVal);
     /**
      * Set the number of hunger points, respecting boundaries. 0 is always lowest.
      * @param byThisMuch a positive or negative change in value
      * @param maxHunger the highest amount to allow the hunger number to reach
      * @return whether the highest or lowest boundary was reached
      */
-	public boolean adjHunger(int byThisMuch, int maxHunger);
+    public boolean adjHunger(int byThisMuch, int maxHunger);
     /**
      * This method is used to recalculate the maximum thirhungerst for a mob, based
      * on their weight and the default maximum hunger
      * @param baseWeight the base weight of  the mob
      * @return the new maximum hunger to set
      */
-	public int maxHunger(int baseWeight);
+    public int maxHunger(int baseWeight);
 
     /**
      * Get the number of thirst points for the player
      * @return number of thirst points
      */
-	public int getThirst();
+    public int getThirst();
     /**
      * Set the number of thirst points
      * @param newVal number of thirst points
      */
-	public void setThirst(int newVal);
+    public void setThirst(int newVal);
     /**
      * Set the number of thirst points, respecting boundaries. 0 is always lowest.
      * @param byThisMuch a positive or negative change in value
      * @param maxThirst the highest amount to allow the thirst number to reach
      * @return whether the highest or lowest boundary was reached
      */
-	public boolean adjThirst(int byThisMuch, int maxThirst);
+    public boolean adjThirst(int byThisMuch, int maxThirst);
     /**
      * This method is used to recalculate the maximum thirst for a mob, based
      * on their weight and the default maximum thirst
      * @param baseWeight the base weight of  the mob
      * @return the new maximum thirst to set
      */
-	public int maxThirst(int baseWeight);
+    public int maxThirst(int baseWeight);
 
     /**
      * Get the number of mana points for the player
      * @return number of mana points
      */
-	public int getMana();
+    public int getMana();
     /**
      * Set the number of mana points
      * @param newVal number of mana points
      */
-	public void setMana(int newVal);
+    public void setMana(int newVal);
     /**
      * Set the number of mana points, respecting boundaries. 0 is always lowest.
      * @param byThisMuch a positive or negative change in value
      * @param max the highest amount to allow the mana number to reach
      * @return whether the highest or lowest boundary was reached
      */
-	public boolean adjMana(int byThisMuch, CharState max);
+    public boolean adjMana(int byThisMuch, CharState max);
 
     /**
      * Get the number of movement points for the player
      * @return number of movement points
      */
-	public int getMovement();
+    public int getMovement();
     /**
      * Set the number of movement points
      * @param newVal number of movement points
      */
-	public void setMovement(int newVal);
+    public void setMovement(int newVal);
     /**
      * Set the number of movement points, respecting boundaries. 0 is always lowest.
      * @param byThisMuch a positive or negative change in value
      * @param max the highest amount to allow the movement number to reach
      * @return whether the highest or lowest boundary was reached
      */
-	public boolean adjMovement(int byThisMuch, CharState max);
+    public boolean adjMovement(int byThisMuch, CharState max);
 
     /**
      * During rest, and even standing still, this method will be called to allow the
@@ -202,7 +202,7 @@ public interface CharState extends CMCommon, Modifiable
      * @param mob the mob recovering
      * @param maxState The CharState objects which represents the maximum values for these fields
      */
-	public void recoverTick(MOB mob, CharState maxState);
+    public void recoverTick(MOB mob, CharState maxState);
     /**
      * During movement and combat, this method will be called to allow the
      * movement to be expended and hunger/thirst to occur.  It is called by methods executing
@@ -212,12 +212,12 @@ public interface CharState extends CMCommon, Modifiable
      * @param maxState The CharState objects which represents the maximum values for these fields
      * @param expendMovement whether to skip movement expending
      */
-	public void expendEnergy(MOB mob, CharState maxState, boolean expendMovement);
+    public void expendEnergy(MOB mob, CharState maxState, boolean expendMovement);
 
-	/**
+    /**
      * Sets all the values in this object to a single given value
      * @param def the value to give to all
-	 */
+     */
     public void setAllValues(int def);
     
     /**
@@ -225,10 +225,10 @@ public interface CharState extends CMCommon, Modifiable
      */
     public void reset();
     
-	/**
+    /**
      * Copies the internal data of this object into another of kind.
      * @param intoState another CharState object.
-	 */
+     */
     public void copyInto(CharState intoState);
     
     /**

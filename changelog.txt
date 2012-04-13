@@ -2361,5 +2361,5 @@ ruthless programmer, and sentenced to a quick death.
 7. CoffeeMud now supports background colors through native ^ escape codes.  See programmer's guide/ahelp colors for more.
 8. Also support for fore/background 256 color support through native ^ escape codes.  As above, check the guides.
 9. Stuff: Shutdown command can now be put on an auto-remind timer, new sample js script FindRawMaterial, new internal property "Truce"
-10.Can now modify areas outside of those areas using MODIFY AREA <areaname>, as well as change their state by adding PASSIVE, ACTIVE, etc.
-
+10.MODIFY AREA Can now modify areas outside of those areas, as well as change their state by adding PASSIVE, ACTIVE, etc.
+11.

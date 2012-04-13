@@ -206,7 +206,7 @@ public class Spell_Spellbinding extends Spell
                 mob.tell("You can't bind '"+((String)commands.elementAt(v))+"'.");
                 return false;
             }
-            V.addElement(A.ID(),Integer.valueOf(50+A.usageCost(mob,true)[Ability.USAGEINDEX_MANA]));
+            V.addElement(A.ID(),Integer.valueOf(100+(2*A.usageCost(mob,true)[Ability.USAGEINDEX_MANA])));
         }
 
         int totalcost=0;
