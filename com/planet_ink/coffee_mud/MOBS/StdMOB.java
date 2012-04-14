@@ -497,7 +497,7 @@ public class StdMOB implements MOB
         try{
             for(final Enumeration<Follower> f=followers();f.hasMoreElements();)
                 total+=f.nextElement().follower.totalFollowers();
-        }catch(Throwable t){}
+        }catch(Exception t){}
         return total;
     }
 
@@ -645,7 +645,7 @@ public class StdMOB implements MOB
     public void destroy()
     {
         CMLib.map().registerWorldObjectDestroyed(null,getStartRoom(),this);
-        try { CMLib.catalog().changeCatalogUsage(this,false);} catch(Throwable t){}
+        try { CMLib.catalog().changeCatalogUsage(this,false);} catch(Exception t){}
         if((CMSecurity.isDebugging(CMSecurity.DbgFlag.MISSINGKIDS))&&(fetchEffect("Age")!=null)&&CMath.isInteger(fetchEffect("Age").text())&&(CMath.s_long(fetchEffect("Age").text())>Short.MAX_VALUE))
             Log.debugOut("MISSKIDS",new Exception(Name()+" went missing form "+CMLib.map().getExtendedRoomID(CMLib.map().roomLocation(this))));
         if(soulMate()!=null) dispossess(false);
@@ -822,7 +822,7 @@ public class StdMOB implements MOB
             try { 
                 imMobile=true;
                 tick(this,Tickable.TICKID_MOB); // slap on the butt
-            } catch(Throwable t) {
+            } catch(Exception t) {
                 t.printStackTrace();
             } finally { imMobile=false; }
         }

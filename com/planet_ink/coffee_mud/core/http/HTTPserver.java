@@ -278,7 +278,7 @@ public class HTTPserver extends Thread implements MudHost
 			if (bindAddr != null)
 				Log.sysOut(getName(),"Bound to: "+bindAddr.toString());
 		}
-		catch(Throwable t)
+		catch(Exception t)
 		{
 			Log.errOut(getName(),t);
 			serverOK=false;
@@ -293,7 +293,7 @@ public class HTTPserver extends Thread implements MudHost
 				sock=servsock.accept();
 				acceptConnection(sock);
 			} 
-			catch(Throwable t) 
+			catch(Exception t) 
 			{
 				if((t!=null)&&(t.getMessage()!=null)&&(!t.getMessage().equals("null")))
 					Log.errOut(getName(),t.getMessage());
@@ -310,7 +310,7 @@ public class HTTPserver extends Thread implements MudHost
 						servsock=new ServerSocket(myPort, q_len, bindAddr);
 					}
 				} 
-				catch(Throwable e) { Log.errOut(getName(),e); }
+				catch(Exception e) { Log.errOut(getName(),e); }
 			}
 			sock = null;
 		}

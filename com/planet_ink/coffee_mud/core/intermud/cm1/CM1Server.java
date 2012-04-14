@@ -153,7 +153,7 @@ public class CM1Server extends Thread
 					}
 				}
 			}
-			catch(Throwable t)
+			catch(Exception t)
 			{
 				Log.errOut("CM1Server",t);
 			}

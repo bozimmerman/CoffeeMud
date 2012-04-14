@@ -56,7 +56,7 @@ public class Spell_NaturalCommunion extends Spell
 				if(!stuff.contains(desc))
 					stuff.add(desc);
 			}
-			catch(Throwable t) { }
+			catch(Exception t) { }
 		}
 		int resource=room.myResource()&RawMaterial.RESOURCE_MASK;
 		if(RawMaterial.CODES.IS_VALID(resource))

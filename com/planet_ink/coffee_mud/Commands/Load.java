@@ -250,7 +250,7 @@ public class Load extends StdCommand
                 {
                     mob.tell(err.getMessage());
                 }
-                catch(Throwable t)
+                catch(Exception t)
                 {
                     Log.errOut("Load",t.getClass().getName()+": "+t.getMessage());
                 }

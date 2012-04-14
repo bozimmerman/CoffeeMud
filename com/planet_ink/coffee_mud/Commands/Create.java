@@ -353,7 +353,7 @@ public class Create extends StdCommand
         if(newMOB!=null)
         {
             newMOB=(MOB)newMOB.copyOf();
-            try { CMLib.catalog().changeCatalogUsage(newMOB,true);} catch(Throwable t){}
+            try { CMLib.catalog().changeCatalogUsage(newMOB,true);} catch(Exception t){}
             newMOB.text();
         }
         return newMOB;
@@ -365,7 +365,7 @@ public class Create extends StdCommand
         if(newItem!=null)
         {
             newItem=(Item)newItem.copyOf();
-            try { CMLib.catalog().changeCatalogUsage(newItem,true);} catch(Throwable t){}
+            try { CMLib.catalog().changeCatalogUsage(newItem,true);} catch(Exception t){}
             newItem.text();
         }
         return newItem;

@@ -1780,13 +1780,14 @@ public class CMMap extends StdLibrary implements WorldMap
             return;
         if(!isAQualifyingScriptHost(host))
             return;
-        synchronized(("SCRIPT_HOST_FOR: "+area.Name().toUpperCase()).intern())
+        final String name=area.Name().toUpperCase();
+        synchronized(("SCRIPT_HOST_FOR: "+name).intern())
         {
-            SLinkedList<LocatedPair> hosts = scriptHostMap.get(area.Name().toUpperCase());
+            SLinkedList<LocatedPair> hosts = scriptHostMap.get(name);
             if(hosts == null)
             {
                 hosts=new SLinkedList<LocatedPair>();
-                scriptHostMap.put(area.Name().toUpperCase(), hosts);
+                scriptHostMap.put(name, hosts);
             }
             else
             {
@@ -1811,9 +1812,10 @@ public class CMMap extends StdLibrary implements WorldMap
                 }
         if(area == null)
             return;
-        synchronized(("SCRIPT_HOST_FOR: "+area.Name().toUpperCase()).intern())
+        final String name=area.Name().toUpperCase();
+        synchronized(("SCRIPT_HOST_FOR: "+name).intern())
         {
-            final SLinkedList<LocatedPair> hosts = scriptHostMap.get(area.Name().toUpperCase());
+            final SLinkedList<LocatedPair> hosts = scriptHostMap.get(name);
             if(hosts==null) return;
             cleanScriptHosts(hosts, oneToDel, false);
         }

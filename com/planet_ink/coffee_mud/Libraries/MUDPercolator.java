@@ -411,7 +411,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 	        }
 	        CMLib.map().delArea(A); // we added it for id assignment, now we are done.
         }
-        catch(Throwable t)
+        catch(Exception t)
         {
         	CMLib.map().delArea(A);
         	CMLib.map().emptyArea(A);

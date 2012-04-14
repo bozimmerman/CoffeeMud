@@ -225,7 +225,7 @@ public class MUD extends Thread implements MudHost
             if(F.exists())
                 Log.sysOut(Thread.currentThread().getName(),"Test file found .. hmm.. that was unexpected.");
                 
-        } catch(Throwable e) {
+        } catch(Exception e) {
             Log.errOut(Thread.currentThread().getName(),e.getMessage());
             Log.errOut(Thread.currentThread().getName(),"Database error! Panic shutdown!");
             System.exit(-1);
@@ -628,7 +628,7 @@ public class MUD extends Thread implements MudHost
                 acceptConnection(sock);
             }
         }
-        catch(Throwable t)
+        catch(Exception t)
         {
             if((!(t instanceof java.net.SocketException))
             ||(t.getMessage()==null)
@@ -939,7 +939,7 @@ public class MUD extends Thread implements MudHost
             {
                 try{
                     CMLib.killThread((Thread)CMLib.hosts().get(m),100,1);
-                } catch(Throwable t){}
+                } catch(Exception t){}
             }
         if(!keepItDown)
             CMProps.setBoolVar(CMProps.SYSTEMB_MUDSHUTTINGDOWN,false);

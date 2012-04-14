@@ -1183,7 +1183,7 @@ public class StdItem implements Item
     {
         myContainer=null;
         CMLib.map().registerWorldObjectDestroyed(null,null,this);
-        try {CMLib.catalog().changeCatalogUsage(this,false);} catch(Throwable t){}
+        try {CMLib.catalog().changeCatalogUsage(this,false);} catch(Exception t){}
         for(final Enumeration<Ability> a=effects();a.hasMoreElements();)
         {
             final Ability A=a.nextElement();

@@ -2922,7 +2922,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
         }
         try{
 	        parseQuestScript(baseScript,args,0);
-        }catch(Throwable t){
+        }catch(Exception t){
         	questState.error=true;
         	Log.errOut("DefaultQuest",t);
         }
@@ -3176,7 +3176,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
         try{
         	setVars(script,questState.lastLine);
             parseQuestScript(script,args,questState.lastLine);
-        }catch(Throwable t){
+        }catch(Exception t){
             questState.error=true;
             Log.errOut("DefaultQuest",t);
         }

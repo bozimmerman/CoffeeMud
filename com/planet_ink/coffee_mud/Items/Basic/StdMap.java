@@ -347,7 +347,7 @@ public class StdMap extends StdItem implements com.planet_ink.coffee_mud.Items.i
 		MapRoom nextRoom=null;
 		try
 		{	nextRoom=grid[x][y];	}
-		catch(Throwable t){}
+		catch(Exception t){}
 
 		if(nextRoom==null)
 		{

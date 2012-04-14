@@ -525,7 +525,7 @@ public class CMProps extends Properties
 		{
 			return Double.parseDouble(getStr(tagToGet));
 		}
-		catch(Throwable t)
+		catch(Exception e)
 		{
 			return 0.0;
 		}
@@ -543,7 +543,7 @@ public class CMProps extends Properties
 		{
 			return Integer.parseInt(getStr(tagToGet));
 		}
-		catch(Throwable t)
+		catch(Exception t)
 		{
 			return 0;
 		}
@@ -561,7 +561,7 @@ public class CMProps extends Properties
 		{
 			return Long.parseLong(getStr(tagToGet));
 		}
-		catch(Throwable t)
+		catch(Exception t)
 		{
 			return 0;
 		}
@@ -628,19 +628,19 @@ public class CMProps extends Properties
     public static final String getVar(final int varNum)
     {
     	try { return p().sysVars[varNum];} 
-    	catch(Throwable t) { return ""; }
+    	catch(Exception t) { return ""; }
     }
 
     public static final int getIntVar(final int varNum)
     {
     	try { return p().sysInts[varNum].intValue(); } 
-    	catch(Throwable t) { return -1; }
+    	catch(Exception t) { return -1; }
     }
 
     public static final String[] getListVar(final int varNum)
     {
     	try { return p().sysLists[varNum]; } 
-    	catch(Throwable t) { return new String[0]; }
+    	catch(Exception t) { return new String[0]; }
     }
 
     public static final boolean getBoolVar0(final int varNum)
@@ -653,7 +653,7 @@ public class CMProps extends Properties
     public static final boolean getBoolVar(final int varNum)
     {
     	try { return p().sysBools[varNum].booleanValue(); } 
-    	catch(Throwable t) { return false; }
+    	catch(Exception t) { return false; }
     }
 
     public static final void setBoolVar(final int varNum, final boolean val)

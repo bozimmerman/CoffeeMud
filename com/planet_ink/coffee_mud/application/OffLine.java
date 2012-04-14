@@ -316,7 +316,7 @@ public class OffLine extends Thread implements MudHost
                 acceptConnection(sock);
             }
         }
-        catch(Throwable t)
+        catch(Exception t)
         {
             if((!(t instanceof java.net.SocketException))
             ||(t.getMessage()==null)

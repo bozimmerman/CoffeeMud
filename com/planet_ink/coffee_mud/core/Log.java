@@ -291,7 +291,7 @@ public class Log
 							directoryPath = null;
 						}
 					}
-					catch(Throwable t)
+					catch(Exception t)
 					{
 						directoryPath=null;
 					}

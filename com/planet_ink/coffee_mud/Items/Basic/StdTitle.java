@@ -430,7 +430,7 @@ public class StdTitle extends StdItem implements LandTitle
 							}
 						}
 					}
-					catch(Throwable t)
+					catch(Exception t)
 					{
 						return;
 					}

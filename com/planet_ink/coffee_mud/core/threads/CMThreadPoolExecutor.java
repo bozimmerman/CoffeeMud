@@ -171,7 +171,7 @@ public class CMThreadPoolExecutor extends ThreadPoolExecutor
                     }
                 }
             }
-            catch(Throwable t)
+            catch(Exception e)
             {
             }
         }
@@ -184,7 +184,7 @@ public class CMThreadPoolExecutor extends ThreadPoolExecutor
                 CMLib.killThread(t,100,3);
             }
         }
-        catch(Throwable t)
+        catch(Exception e)
         {
         }
         return timedOut;

@@ -1599,7 +1599,7 @@ public class CMClass extends ClassLoader
                     }
                 }
             }
-            catch(Throwable e)
+            catch(Exception e)
             {
                 if(!quiet)
                     Log.errOut("CMClass",e);
@@ -1768,7 +1768,7 @@ public class CMClass extends ClassLoader
                     if(debugging) Log.debugOut("CMClass","Loaded: "+result.getName());
                     return result;
                 }
-            } catch(Throwable t){}
+            } catch(Exception t){}
         }
         /* Try to load it from our repository */
         final CMFile CF=new CMFile(pathName,null,false);
@@ -2156,7 +2156,7 @@ public class CMClass extends ClassLoader
             }
             if(c.commands.size()==0) return false;
         }
-        catch(Throwable t)
+        catch(Exception t)
         {
             t.printStackTrace();
             return false;

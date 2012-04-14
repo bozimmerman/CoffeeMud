@@ -120,7 +120,7 @@ public class Spell_KnowFate extends Spell
 				        	CMLib.commands().postStand(newVictiM,true);
 				        	newMOB.tick(newMOB,Tickable.TICKID_MOB);
 				        	newVictiM.tick(newVictiM,Tickable.TICKID_MOB);
-				        } catch(Throwable t) {
+				        } catch(Exception t) {
 				        	Log.errOut("Spell_KnowFate",t);
 				        }
 						final int nowHp2=newMOB.curState().getHitPoints();

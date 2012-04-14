@@ -521,7 +521,7 @@ public class DefaultSession implements Session
                 }
             }
         }
-        catch(Throwable ioe){ killFlag=true;}
+        catch(Exception ioe){ killFlag=true;}
     }
     
     public void out(String c){ if(c!=null) out(c.toCharArray());}
@@ -1403,7 +1403,7 @@ public class DefaultSession implements Session
                             out.write(' ');
                             out.checkError();
                         }
-                    } catch(Throwable t){}
+                    } catch(Exception t){}
                     out.close();
                     lastPing=System.currentTimeMillis();
                 }

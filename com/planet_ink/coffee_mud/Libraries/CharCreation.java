@@ -1266,7 +1266,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 	            CMLib.coffeeTables().bump(mob,CoffeeTableRow.STAT_NEWPLAYERS);
 	        }
         }
-        catch(Throwable t)
+        catch(Exception t)
         {
         	logoff=true;
         	mob.playerStats().setAccount(null);
