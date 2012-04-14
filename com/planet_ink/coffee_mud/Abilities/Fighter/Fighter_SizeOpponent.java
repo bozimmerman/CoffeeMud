@@ -66,7 +66,9 @@ public class Fighter_SizeOpponent extends FighterSkill
 			{
 				mob.location().send(mob,msg);
 				StringBuffer buf=new StringBuffer(target.name()+" looks to have "+target.curState().getHitPoints()+" out of "+target.maxState().getHitPoints()+" hit points.\n\r");
-				buf.append(target.charStats().HeShe()+" looks like "+target.charStats().heshe()+" is "+CMLib.combat().fightingProwessStr(target)+" and is "+CMLib.combat().armorStr(target)+".");
+				buf.append(target.charStats().HeShe()+" looks like "+target.charStats().heshe()+" is "
+						+CMStrings.removeColors(CMLib.combat().fightingProwessStr(target))
+						+" and is "+CMStrings.removeColors(CMLib.combat().armorStr(target))+".");
 				mob.tell(buf.toString());
 			}
 		}

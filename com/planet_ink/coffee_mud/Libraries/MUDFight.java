@@ -970,10 +970,10 @@ public class MUDFight extends StdLibrary implements CombatLibrary
                (armor>=ARMOR_CEILING)?
                        CMProps.getListFileValue(CMProps.SYSTEMLF_ARMOR_DESCS,numArmorDescs-1)
                        +(CMStrings.repeat("!",(armor-ARMOR_CEILING)/100))
-                       +" ("+armor+")"
+                       +"^. ("+armor+")"
                                         :
                        (CMProps.getListFileValue(CMProps.SYSTEMLF_ARMOR_DESCS,(int)Math.round(Math.floor(CMath.mul(CMath.div(armor,ARMOR_CEILING),numArmorDescs))))
-                       +" ("+armor+")"));
+                       +"^. ("+armor+")"));
     }
     
     public String fightingProwessStr(MOB mob)
@@ -985,10 +985,10 @@ public class MUDFight extends StdLibrary implements CombatLibrary
                (prowess>=PROWESS_CEILING)
                                          ?
                                  CMProps.getListFileValue(CMProps.SYSTEMLF_PROWESS_DESCS,numProwessDescs-1)
-                                 +(CMStrings.repeat("!",(prowess-PROWESS_CEILING)/100))+" ("+prowess+")"
+                                 +(CMStrings.repeat("!",(prowess-PROWESS_CEILING)/100))+"^. ("+prowess+")"
                                          :
                                  (CMProps.getListFileValue(CMProps.SYSTEMLF_PROWESS_DESCS,(int)Math.round(Math.floor(CMath.mul(CMath.div(prowess,PROWESS_CEILING),numProwessDescs))))
-                                 +" ("+prowess+")"));
+                                 +"^. ("+prowess+")"));
     }
 
     protected int getWeaponAttackIndex(final int weaponType, final int weaponClassification)

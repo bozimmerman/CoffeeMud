@@ -187,13 +187,14 @@ public class Score extends Affect
 		    Faction F=CMLib.factions().getFaction(factionID);
 		    if(F!=null)
 		    {
-    		    Faction.FactionRange FR=CMLib.factions().getRange(factionID,mob.fetchFaction(factionID));
+		    	int factionAmt=mob.fetchFaction(factionID);
+    		    Faction.FactionRange FR=CMLib.factions().getRange(factionID,factionAmt);
     		    if((FR!=null)&&(F.showInScore()))
-    	            msg.append("Your "+CMStrings.padRight("^<HELP^>"+F.name()+"^</HELP^> is",18)+": ^H"+FR.name()+"^?.\n\r");
+    	            msg.append("Your "+CMStrings.padRight("^<HELP^>"+F.name()+"^</HELP^> is",18)+": ^H"+FR.name()+" ^.("+factionAmt+").\n\r");
 		    }
 		}
-		msg.append("Your ^<HELP^>armored defence^</HELP^> is: ^H"+CMLib.combat().armorStr(mob)+"^?.\n\r");
-		msg.append("Your ^<HELP^>combat prowess^</HELP^> is : ^H"+CMLib.combat().fightingProwessStr(mob)+"^?.\n\r");
+		msg.append("Your ^<HELP^>armored defence^</HELP^> is: ^H"+CMLib.combat().armorStr(mob)+"^..\n\r");
+		msg.append("Your ^<HELP^>combat prowess^</HELP^> is : ^H"+CMLib.combat().fightingProwessStr(mob)+"^..\n\r");
 		//if(CMLib.flags().canSeeHidden(mob))
 		//	msg.append("Your ^<HELP^>observation score^</HELP^> : ^H"+CMLib.flags().getDetectScore(mob)+"^?.\n\r");
 		msg.append("Wimpy is set to ^!"+mob.getWimpHitPoint()+"^? hit points.\n\r");
