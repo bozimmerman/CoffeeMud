@@ -1445,7 +1445,7 @@ public class StdRoom implements Room
             delBehavior(fetchBehavior(0));
         while(numScripts()>0)
             delScript(fetchScript(0));
-        CMLib.threads().deleteTick(this,Tickable.TICKID_ROOM_BEHAVIOR);
+        CMLib.threads().deleteTick(this,-1);
         try{
             Vector V=new Vector();
             for(int v=0;v<numItems();v++)
@@ -1474,7 +1474,6 @@ public class StdRoom implements Room
                     }
             }
         }
-        CMLib.threads().deleteTick(this,-1);
         rawImageName=null;
         cachedImageName=null;
         setArea(null); // this actually deletes the room from the cache map
