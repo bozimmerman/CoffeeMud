@@ -97,6 +97,7 @@ public class Truce extends StdAbility
                     truces.add(new Pair<String,Long>(msg.source().Name(),Long.valueOf(System.currentTimeMillis())));
             }
         }
+        super.executeMsg(myHost, msg);
     }
     public boolean okMessage(final Environmental myHost, final CMMsg msg)
     {
