@@ -36,76 +36,127 @@ import java.util.*;
 @SuppressWarnings("unchecked")
 public class Truce extends StdAbility
 {
-	public String ID() { return "Truce"; }
-	public String name(){return "Truce";}
-	public String displayText(){ return "";}
-	protected int canAffectCode(){return CAN_MOBS;}
-	protected int canTargetCode(){return CAN_MOBS;}
-	public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
-	public boolean putInCommandlist(){return false;}
-	private static final String[] triggerStrings = {"DECLARETRUCE"};
-	public String[] triggerStrings(){return triggerStrings;}
-	public int classificationCode(){return Ability.ACODE_SKILL;}
+    public String ID() { return "Truce"; }
+    public String name(){return "Truce";}
+    public String displayText(){ return "";}
+    protected int canAffectCode(){return CAN_MOBS;}
+    protected int canTargetCode(){return CAN_MOBS;}
+    public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
+    public boolean putInCommandlist(){return false;}
+    private static final String[] triggerStrings = {"DECLARETRUCE"};
+    public String[] triggerStrings(){return triggerStrings;}
+    public int classificationCode(){return Ability.ACODE_SKILL;}
+    public boolean truceWithAnyone=false;
+    public CMList<Pair<String,Long>> truces=new CMList<Pair<String,Long>>();
 
-	public boolean okMessage(final Environmental myHost, final CMMsg msg)
-	{
-		if((affected==null)||(!(affected instanceof MOB)))
-			return true;
+    public void setMiscText(String newMiscText)
+    {
+        super.setMiscText(CMStrings.capitalizeAndLower(newMiscText));
+        truceWithAnyone=((newMiscText==null)||(newMiscText.trim().length()==0));
+    }
 
-		MOB mob=(MOB)affected;
-		if((msg.targetMajor(CMMsg.MASK_MALICIOUS))
-		&&(((msg.source()==mob)&&(msg.target()!=null)&&(text().equals(msg.target().Name())))
-			||((msg.target()==mob)&&(text().equals(msg.source().Name()))))
-		&&(!msg.sourceMajor(CMMsg.MASK_ALWAYS)))
-		{
-			msg.source().tell(msg.source(),msg.target(),null,"You have made peace with <T-NAMESELF>.");
-			msg.source().makePeace();
-			if(msg.target() instanceof MOB)
-				((MOB)msg.target()).makePeace();
-			return false;
-		}
-		return super.okMessage(myHost,msg);
-	}
+    public Pair<String,Long> getMyPair(final String name)
+    {
+        final long now=System.currentTimeMillis();
+        for(Iterator<Pair<String,Long>> i=truces.iterator();i.hasNext();)
+        {
+            final Pair<String,Long> p=i.next();
+            if(p!=null)
+            {
+                if((now-p.second.longValue())>30000)
+                    i.remove();
+                else
+                if(p.first.equals(name))
+                    return p;
+            }
+        }
+        return null;
+    }
+    
+    public boolean isTruceWith(final String name)
+    {
+        if(truceWithAnyone)
+            return getMyPair(name)!=null;
+        else
+            return (text().equals(name));
+    }
 
-	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
-	{
-		MOB target=this.getTarget(mob,commands,givenTarget);
-		if(target==null) return false;
+    public void executeMsg(final Environmental myHost, final CMMsg msg)
+    {
+        if(affected instanceof MOB)
+        {
+            MOB mob=(MOB)affected;
+            if(truceWithAnyone
+            &&(msg.sourceMinor()==CMMsg.TYP_DEATH)
+            &&(msg.tool()==mob))
+            {
+                final Pair<String,Long> p=getMyPair(msg.source().Name());
+                if(p!=null)
+                    p.second=Long.valueOf(System.currentTimeMillis());
+                else
+                    truces.add(new Pair<String,Long>(msg.source().Name(),Long.valueOf(System.currentTimeMillis())));
+            }
+        }
+    }
+    public boolean okMessage(final Environmental myHost, final CMMsg msg)
+    {
+        if((affected==null)||(!(affected instanceof MOB)))
+            return true;
 
-		// the invoke method for spells receives as
-		// parameters the invoker, and the REMAINING
-		// command line parameters, divided into words,
-		// and added as String objects to a vector.
-		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
-			return false;
+        MOB mob=(MOB)affected;
+        if((msg.targetMajor(CMMsg.MASK_MALICIOUS))
+        &&(((msg.source()==mob)&&(msg.target()!=null)&&(isTruceWith(msg.target().Name())))
+            ||((msg.target()==mob)&&(isTruceWith(msg.source().Name()))))
+        &&(!msg.sourceMajor(CMMsg.MASK_ALWAYS)))
+        {
+            msg.source().tell(msg.source(),msg.target(),null,"You have made peace with <T-NAMESELF>.");
+            msg.source().makePeace();
+            if(msg.target() instanceof MOB)
+                ((MOB)msg.target()).makePeace();
+            return false;
+        }
+        return super.okMessage(myHost,msg);
+    }
 
-		boolean success=proficiencyCheck(mob,0,auto);
-		if(success)
-		{
-			// it worked, so build a copy of this ability,
-			// and add it to the affects list of the
-			// affected MOB.  Then tell everyone else
-			// what happened.
-			invoker=mob;
-			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> make(s) a truce with <T-NAMESELF>.^?");
-			if(mob.location().okMessage(mob,msg))
-			{
-				mob.location().send(mob,msg);
-				if(msg.value()<=0)
-				{
-					success=beneficialAffect(mob,target,asLevel,auto?3:0);
-					Ability A=target.fetchEffect(ID());
-					if(A!=null)A.setMiscText(target.Name());
-				}
-				target.makePeace();
-				if(mob.getVictim()==target) 
-					mob.makePeace();
-			}
-		}
-		else
-			return maliciousFizzle(mob,target,auto?"":"^S<S-NAME> tr(ys) to make <T-NAMESELF> fall asleep, but fails.^?");
+    public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
+    {
+        MOB target=this.getTarget(mob,commands,givenTarget);
+        if(target==null) return false;
 
-		// return whether it worked
-		return success;
-	}
+        // the invoke method for spells receives as
+        // parameters the invoker, and the REMAINING
+        // command line parameters, divided into words,
+        // and added as String objects to a vector.
+        if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
+            return false;
+
+        boolean success=proficiencyCheck(mob,0,auto);
+        if(success)
+        {
+            // it worked, so build a copy of this ability,
+            // and add it to the affects list of the
+            // affected MOB.  Then tell everyone else
+            // what happened.
+            invoker=mob;
+            CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> make(s) a truce with <T-NAMESELF>.^?");
+            if(mob.location().okMessage(mob,msg))
+            {
+                mob.location().send(mob,msg);
+                if(msg.value()<=0)
+                {
+                    success=beneficialAffect(mob,target,asLevel,auto?3:0);
+                    Ability A=target.fetchEffect(ID());
+                    if(A!=null)A.setMiscText(target.Name());
+                }
+                target.makePeace();
+                if(mob.getVictim()==target) 
+                    mob.makePeace();
+            }
+        }
+        else
+            return maliciousFizzle(mob,target,auto?"":"^S<S-NAME> tr(ys) to make <T-NAMESELF> fall asleep, but fails.^?");
+
+        // return whether it worked
+        return success;
+    }
 }
