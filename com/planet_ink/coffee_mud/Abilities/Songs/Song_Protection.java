@@ -34,27 +34,27 @@ import java.util.*;
 */
 public class Song_Protection extends Song
 {
-	public String ID() { return "Song_Protection"; }
-	public String name(){ return "Protection";}
-	public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
-	public void affectPhyStats(Physical affected, PhyStats affectableStats)
-	{
-		super.affectPhyStats(affected,affectableStats);
-		if(invoker==null) return;
-		affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()-super.adjustedLevel(invoker(),0));
-	}
+    public String ID() { return "Song_Protection"; }
+    public String name(){ return "Protection";}
+    public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
+    public void affectPhyStats(Physical affected, PhyStats affectableStats)
+    {
+        super.affectPhyStats(affected,affectableStats);
+        if(invoker==null) return;
+        affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()-super.adjustedLevel(invoker(),0));
+    }
 
 
-	public void affectCharStats(MOB affected, CharStats affectableStats)
-	{
-		super.affectCharStats(affected,affectableStats);
-		if(invoker==null) return;
+    public void affectCharStats(MOB affected, CharStats affectableStats)
+    {
+        super.affectCharStats(affected,affectableStats);
+        if(invoker==null) return;
         int bonus=adjustedLevel(invoker(),0)*2;
-		affectableStats.setStat(CharStats.STAT_DEXTERITY,(int)Math.round(CMath.div(affectableStats.getStat(CharStats.STAT_DEXTERITY),3.0)));
-		affectableStats.setStat(CharStats.STAT_SAVE_ACID,affectableStats.getStat(CharStats.STAT_SAVE_ACID)+bonus);
-		affectableStats.setStat(CharStats.STAT_SAVE_COLD,affectableStats.getStat(CharStats.STAT_SAVE_COLD)+bonus);
-		affectableStats.setStat(CharStats.STAT_SAVE_ELECTRIC,affectableStats.getStat(CharStats.STAT_SAVE_ELECTRIC)+bonus);
-		affectableStats.setStat(CharStats.STAT_SAVE_FIRE,affectableStats.getStat(CharStats.STAT_SAVE_FIRE)+bonus);
-		affectableStats.setStat(CharStats.STAT_SAVE_GAS,affectableStats.getStat(CharStats.STAT_SAVE_GAS)+bonus);
-	}
+        affectableStats.setStat(CharStats.STAT_DEXTERITY,(int)Math.round(CMath.div(affectableStats.getStat(CharStats.STAT_DEXTERITY),3.0)));
+        affectableStats.setStat(CharStats.STAT_SAVE_ACID,affectableStats.getStat(CharStats.STAT_SAVE_ACID)+bonus);
+        affectableStats.setStat(CharStats.STAT_SAVE_COLD,affectableStats.getStat(CharStats.STAT_SAVE_COLD)+bonus);
+        affectableStats.setStat(CharStats.STAT_SAVE_ELECTRIC,affectableStats.getStat(CharStats.STAT_SAVE_ELECTRIC)+bonus);
+        affectableStats.setStat(CharStats.STAT_SAVE_FIRE,affectableStats.getStat(CharStats.STAT_SAVE_FIRE)+bonus);
+        affectableStats.setStat(CharStats.STAT_SAVE_GAS,affectableStats.getStat(CharStats.STAT_SAVE_GAS)+bonus);
+    }
 }
