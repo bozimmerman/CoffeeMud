@@ -102,7 +102,7 @@ public class Spell_Shockshield extends Spell
 		super.affectPhyStats(affected,affectableStats);
 		if(affected==null) return;
 		if(!(affected instanceof MOB)) return;
-		affectableStats.setArmor(affectableStats.armor()-5-(getXLEVELLevel(invoker())));
+		affectableStats.setArmor(affectableStats.armor()-(getXLEVELLevel(invoker())));
 	}
 
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)

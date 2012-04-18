@@ -102,7 +102,7 @@ public class Spell_Flameshield extends Spell
 		super.affectPhyStats(affected,affectableStats);
 		if(affected==null) return;
 		if(!(affected instanceof MOB)) return;
-		affectableStats.setArmor(affectableStats.armor()-5-getXLEVELLevel(invoker()));
+		affectableStats.setArmor(affectableStats.armor()-1-getXLEVELLevel(invoker()));
         affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_LIGHTSOURCE);
 	}
 

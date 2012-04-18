@@ -73,7 +73,7 @@ public class Spell_Blur extends Spell
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
-		affectableStats.setArmor(affectableStats.armor() - 5 -super.getXLEVELLevel(invoker()));
+		affectableStats.setArmor(affectableStats.armor()-1-super.getXLEVELLevel(invoker()));
 	}
 
 	public void unInvoke()

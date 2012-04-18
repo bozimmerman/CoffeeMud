@@ -48,7 +48,7 @@ public class Spell_Stoneskin extends Spell
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
-		affectableStats.setArmor(affectableStats.armor() - 5-getXLEVELLevel(invoker()));
+		affectableStats.setArmor(affectableStats.armor()-1-getXLEVELLevel(invoker()));
 	}
 
 	public void unInvoke()
