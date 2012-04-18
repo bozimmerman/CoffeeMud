@@ -36,70 +36,70 @@ import java.util.*;
 @SuppressWarnings("unchecked")
 public class Song_Rebirth extends Song
 {
-	public String ID() { return "Song_Rebirth"; }
-	public String name(){ return "Rebirth";}
-	public int abstractQuality(){ return Ability.QUALITY_OK_OTHERS;}
-	protected boolean skipStandardSongInvoke(){return true;}
-	protected boolean HAS_QUANTITATIVE_ASPECT(){return false;}
+    public String ID() { return "Song_Rebirth"; }
+    public String name(){ return "Rebirth";}
+    public int abstractQuality(){ return Ability.QUALITY_OK_OTHERS;}
+    protected boolean skipStandardSongInvoke(){return true;}
+    protected boolean HAS_QUANTITATIVE_ASPECT(){return false;}
 
-	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
-	{
+    public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
+    {
         timeOut=0;
-		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
-			return false;
+        if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
+            return false;
 
-		if((!auto)&&(!CMLib.flags().canSpeak(mob)))
-		{
-			mob.tell("You can't sing!");
-			return false;
-		}
+        if((!auto)&&(!CMLib.flags().canSpeak(mob)))
+        {
+            mob.tell("You can't sing!");
+            return false;
+        }
 
-		boolean success=proficiencyCheck(mob,0,auto);
-		unsingAllByThis(mob,mob);
-		if(success)
-		{
-			invoker=mob;
-			originRoom=mob.location();
-			commonRoomSet=getInvokerScopeRoomSet(null);
-			String str=auto?"The "+songOf()+" begins to play!":"^S<S-NAME> begin(s) to sing the "+songOf()+".^?";
-			if((!auto)&&(mob.fetchEffect(this.ID())!=null))
-				str="^S<S-NAME> start(s) the "+songOf()+" over again.^?";
+        boolean success=proficiencyCheck(mob,0,auto);
+        unsingAllByThis(mob,mob);
+        if(success)
+        {
+            invoker=mob;
+            originRoom=mob.location();
+            commonRoomSet=getInvokerScopeRoomSet(null);
+            String str=auto?"The "+songOf()+" begins to play!":"^S<S-NAME> begin(s) to sing the "+songOf()+".^?";
+            if((!auto)&&(mob.fetchEffect(this.ID())!=null))
+                str="^S<S-NAME> start(s) the "+songOf()+" over again.^?";
 
-			for(int v=0;v<commonRoomSet.size();v++)
-			{
-				Room R=(Room)commonRoomSet.elementAt(v);
-				String msgStr=getCorrectMsgString(R,str,v);
-				CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),msgStr);
-				if(R.okMessage(mob,msg))
-				{
-					if(R==originRoom)
-						R.send(mob,msg);
-					else
-						R.sendOthers(mob, msg);
-					boolean foundOne=false;
-					int i=0;
-					while(i<R.numItems())
-					{
-						Item body=R.getItem(i);
-						if((body!=null)
-						&&(body instanceof DeadBody)
-						&&(((DeadBody)body).playerCorpse())
-						&&(((DeadBody)body).mobName().length()>0))
-						{
-							if(!CMLib.utensils().resurrect(mob,mob.location(), (DeadBody)body, -1))
-								i++;
-						}
-						else
-							i++;
-					}
-					if(!foundOne)
-						mob.tell("Nothing seems to happen.");
-				}
-			}
-		}
-		else
-			mob.location().show(mob,null,CMMsg.MSG_NOISE,"<S-NAME> hit(s) a foul note.");
+            for(int v=0;v<commonRoomSet.size();v++)
+            {
+                Room R=(Room)commonRoomSet.elementAt(v);
+                String msgStr=getCorrectMsgString(R,str,v);
+                CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),msgStr);
+                if(R.okMessage(mob,msg))
+                {
+                    if(R==originRoom)
+                        R.send(mob,msg);
+                    else
+                        R.sendOthers(mob, msg);
+                    boolean foundOne=false;
+                    int i=0;
+                    while(i<R.numItems())
+                    {
+                        Item body=R.getItem(i);
+                        if((body!=null)
+                        &&(body instanceof DeadBody)
+                        &&(((DeadBody)body).playerCorpse())
+                        &&(((DeadBody)body).mobName().length()>0))
+                        {
+                            if(!CMLib.utensils().resurrect(mob,R, (DeadBody)body, -1))
+                                i++;
+                        }
+                        else
+                            i++;
+                    }
+                    if(!foundOne)
+                        mob.tell("Nothing seems to happen.");
+                }
+            }
+        }
+        else
+            mob.location().show(mob,null,CMMsg.MSG_NOISE,"<S-NAME> hit(s) a foul note.");
 
-		return success;
-	}
+        return success;
+    }
 }
