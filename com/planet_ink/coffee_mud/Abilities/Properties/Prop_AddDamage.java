@@ -10,6 +10,7 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.TimeManager;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -33,139 +34,173 @@ import java.util.*;
 */
 public class Prop_AddDamage extends Property
 {
-	public String ID() { return "Prop_AddDamage"; }
-	public String name(){ return "Additional Damage";}
-	protected int canAffectCode(){return Ability.CAN_MOBS|Ability.CAN_ITEMS;}
+    public String ID() { return "Prop_AddDamage"; }
+    public String name(){ return "Additional Damage";}
+    protected int canAffectCode(){return Ability.CAN_MOBS|Ability.CAN_ITEMS;}
+    int weaponType=Weapon.TYPE_NATURAL;
+    int typeOfEffect=CMMsg.TYP_WEAPONATTACK;
+    double pctDamage=0.0;
+    int bonusDamage=0;
+    volatile boolean norecurse=false;
 
-	public String accountForYourself()
-	{
-		String id="Does extra damage of the following amount and types: "+text();
-		return id;
-	}
+    public String accountForYourself()
+    {
+        String id="Does extra damage of the following amount and types: "+text();
+        return id;
+    }
 
-	public boolean okMessage(final Environmental myHost, final CMMsg msg)
-	{
-		if(!super.okMessage(myHost,msg))
-			return false;
-		if((affected!=null)
-		&&(msg.targetMinor()==CMMsg.TYP_DAMAGE)&&(msg.value()>0))
-		{
-			MOB M=null;
-			if(affected instanceof MOB)
-				M=(MOB)affected;
-			else
-			if((affected instanceof Item)
-			&&(!((Item)affected).amWearingAt(Wearable.IN_INVENTORY))
-			&&(((Item)affected).owner()!=null)
-			&&(((Item)affected).owner() instanceof MOB))
-				M=(MOB)((Item)affected).owner();
-			if(M==null) return true;
-			if(!msg.amITarget(M)) return true;
+    public void setMiscText(String newMiscText)
+    {
+        super.setMiscText(newMiscText);
+        final List<String> parms=CMParms.parse(newMiscText.toUpperCase());
+        for(String s : parms)
+        {
+            if(CMath.isPct(s))
+                pctDamage=CMath.s_pct(s);
+            else
+            if(CMath.isInteger(s))
+                bonusDamage=CMath.s_int(s);
+            else
+            {
+                boolean done=false;
+                for(int i=0;i<Weapon.TYPE_DESCS.length;i++)
+                {
+                    final String type=Weapon.TYPE_DESCS[i];
+                    if(type.equals(s))
+                    {
+                        weaponType=i;
+                        done=true;
+                        break;
+                    }
+                }
+                if(!done)
+                for(int i=0;i<CMMsg.TYPE_DESCS.length;i++)
+                {
+                    final String type=CMMsg.TYPE_DESCS[i];
+                    if(type.equals(s))
+                    {
+                        typeOfEffect=i;
+                        done=true;
+                        break;
+                    }
+                }
+                if(!done)
+                for(int i=0;i<Weapon.TYPE_DESCS.length;i++)
+                {
+                    final String type=Weapon.TYPE_DESCS[i];
+                    if(type.startsWith(s))
+                    {
+                        weaponType=i;
+                        done=true;
+                        break;
+                    }
+                }
+                if(!done)
+                for(int i=0;i<Weapon.TYPE_DESCS.length;i++)
+                {
+                    final String type=Weapon.TYPE_DESCS[i];
+                    if(type.startsWith(s))
+                    {
+                        typeOfEffect=i;
+                        done=true;
+                        break;
+                    }
+                }
+                if(!done)
+                    Log.errOut("Prop_AddDamage","Unknown weapon type/attack: "+s+" in "+CMLib.map().getExtendedRoomID(CMLib.map().roomLocation(affected)));
+            }
+        }
+    }
 
-			String text=text().toUpperCase();
+    protected final int getDamage(final CMMsg msg)
+    {
+        final int dmg = (int)CMath.round(CMath.mul(msg.value(), pctDamage)) + bonusDamage;
+        if(dmg < 0) return 0;
+        return dmg;
+    }
 
-			int immune=text.indexOf("+ALL");
-			int x=-1;
-			for(int i : CharStats.CODES.SAVING_THROWS())
-				if((CharStats.CODES.CMMSGMAP(i)==msg.sourceMinor())
-				&&((msg.tool()==null)||(i!=CharStats.STAT_SAVE_MAGIC)))
-				{
-					x=text.indexOf(CharStats.CODES.NAME(i));
-					if(x>0)
-					{
-						if((text.charAt(x-1)=='-')&&(immune>=0))
-							immune=-1;
-						else
-						if(text.charAt(x-1)!='-')
-							immune=x;
-					}
-				}
-
-			if((x<0)&&(msg.tool() instanceof Weapon))
-			{
-				Weapon W = (Weapon)msg.tool();
-				x=text.indexOf(Weapon.TYPE_DESCS[W.weaponType()]);
-				if(x<0) x=(CMLib.flags().isABonusItems(W))?text.indexOf("MAGIC"):-1;
-				if(x<0) x=text.indexOf(RawMaterial.CODES.NAME(W.material()));
-				if(x>0)
-				{
-					if((text.charAt(x-1)=='-')&&(immune>=0))
-						immune=-1;
-					else
-					if(text.charAt(x-1)!='-')
-						immune=x;
-				}
-				else
-				{
-					x=text.indexOf("LEVEL");
-					if(x>0)
-					{
-						String lvl=text.substring(x+5);
-						if(lvl.indexOf(' ')>=0)
-							lvl=lvl.substring(lvl.indexOf(' '));
-						if((text.charAt(x-1)=='-')&&(immune>=0))
-						{
-							if(W.phyStats().level()>=CMath.s_int(lvl))
-								immune=-1;
-						}
-						else
-						if(text.charAt(x-1)!='-')
-						{
-							if(W.phyStats().level()<CMath.s_int(lvl))
-								immune=x;
-						}
-					}
-				}
-			}
-
-			if((x<0)&&(msg.tool() instanceof Ability))
-			{
-				int classType=((Ability)msg.tool()).classificationCode()&Ability.ALL_ACODES;
-				switch(classType)
-				{
-				case Ability.ACODE_SPELL:
-				case Ability.ACODE_PRAYER:
-				case Ability.ACODE_CHANT:
-				case Ability.ACODE_SONG:
-					{
-						x=text.indexOf("MAGIC");
-						if(x>0)
-						{
-							if((text.charAt(x-1)=='-')&&(immune>=0))
-								immune=-1;
-							else
-							if(text.charAt(x-1)!='-')
-								immune=x;
-						}
-					}
-					break;
-				default:
-					break;
-				}
-			}
-			if(immune>0)
-			{
-				int lastNumber=-1;
-				x=0;
-				while(x<immune)
-				{
-					if(Character.isDigit(text.charAt(x))&&((x==0)||(!Character.isDigit(text.charAt(x-1)))))
-					   lastNumber=x;
-					x++;
-				}
-				if(lastNumber>=0)
-				{
-					text=text.substring(lastNumber,immune).trim();
-					x=text.indexOf(' ');
-					if(x>0) text=text.substring(0,x).trim();
-					if(text.endsWith("%"))
-						msg.setValue(msg.value()+(int)Math.round(CMath.mul(msg.value(),CMath.div(CMath.s_int(text.substring(0,text.length()-1)),100.0))));
-					else
-						msg.setValue(msg.value()+CMath.s_int(text));
-					if(msg.value()<0) msg.setValue(0);
-				}
-			}
-		}
-		return true;
-	}
+    public void executeMsg(final Environmental myHost, final CMMsg msg)
+    {
+        super.executeMsg(myHost,msg);
+        MOB mob=null;
+        if(affected instanceof Item)
+        {
+            if(((Item)affected).owner() instanceof MOB)
+            {
+                mob=(MOB)((Item)affected).owner();
+            }
+            else
+                return;
+        }
+        else
+        if(affected instanceof MOB)
+            mob=(MOB)affected;
+        else
+            return;
+        if((msg.source()!=null)
+        &&(msg.targetMinor()==CMMsg.TYP_DAMAGE)
+        &&(msg.value()>0)
+        &&(msg.target() instanceof MOB)
+        &&(!((MOB)msg.target()).amDead())
+        &&(msg.tool()!=this)
+        &&(msg.source().location()!=null))
+        {
+            if(((affected instanceof Armor)||(affected instanceof Shield))
+            &&(msg.amITarget(mob))
+            &&(!msg.amISource(mob))
+            &&(CMLib.dice().rollPercentage()>32+msg.source().charStats().getStat(CharStats.STAT_DEXTERITY))
+            &&(msg.source().rangeToTarget()==0)
+            &&((msg.targetMajor(CMMsg.MASK_HANDS))||(msg.targetMajor(CMMsg.MASK_MOVE))))
+            {
+                CMMsg msg2=CMClass.getMsg(mob,msg.source(),this,CMMsg.MSG_CAST_ATTACK_VERBAL_SPELL,null);
+                if(msg.source().location().okMessage(msg.source(),msg2))
+                {
+                    msg.source().location().send(msg.source(),msg2);
+                    if(msg2.value()<=0)
+                    {
+                        final int damage=getDamage(msg);
+                        CMLib.combat().postDamage(mob,msg.source(),affected,damage,CMMsg.MASK_MALICIOUS|CMMsg.MASK_ALWAYS|typeOfEffect,weaponType,
+                             "^F^<FIGHT^><S-YOUPOSS> <O-NAME> <DAMAGE> <T-NAME>!^</FIGHT^>^?");
+                    }
+                }
+            }
+            else
+            if((msg.tool()==affected)
+            &&(!msg.amITarget(mob))
+            &&(msg.amISource(mob))
+            &&(!(msg.tool() instanceof Wand)))
+            {
+                final int damage=getDamage(msg);
+                String str="^F^<FIGHT^><S-YOUPOSS> <O-NAME> <DAMAGE> <T-NAME>!^</FIGHT^>^?";
+                synchronized(this)
+                {
+                    if(!norecurse)
+                    {
+                        norecurse=true;
+                        try
+                        {
+                            CMLib.combat().postDamage(msg.source(),(MOB)msg.target(),affected,(int)Math.round(damage),
+                            CMMsg.MASK_MALICIOUS|CMMsg.MASK_ALWAYS|typeOfEffect,weaponType,str);
+                        }
+                        finally
+                        {
+                            norecurse=false;
+                        }
+                    }
+                }
+            }
+            else
+            if((mob==affected)
+            &&(!msg.amITarget(mob))
+            &&(msg.amISource(mob))
+            &&(msg.tool() instanceof Weapon)
+            &&(!(msg.tool() instanceof Wand)))
+            {
+                final int damage=getDamage(msg);
+                String str="^F^<FIGHT^><S-NAME> <DAMAGE> <T-NAME>!^</FIGHT^>^?";
+                CMLib.combat().postDamage(mob,(MOB)msg.target(),this,(int)Math.round(damage),
+                      CMMsg.MASK_MALICIOUS|CMMsg.MASK_ALWAYS|typeOfEffect,weaponType,str);
+            }
+        }
+    }
 }

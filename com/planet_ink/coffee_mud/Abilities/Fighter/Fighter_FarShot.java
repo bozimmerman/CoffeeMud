@@ -80,6 +80,7 @@ public class Fighter_FarShot extends FighterSkill
 					qualifiedWeapons.add(targetW);
 					Ability A=(Ability)this.copyOf();
 					A.setSavable(false);
+					A.setInvoker(invoker());
 					targetW.addEffect(A);
 					A.makeLongLasting();
 					targetW.recoverPhyStats();
@@ -128,6 +129,7 @@ public class Fighter_FarShot extends FighterSkill
 					qualifiedWeapons.add((Weapon)w);
 					Ability A=(Ability)this.copyOf();
 					A.setSavable(false);
+					A.setInvoker(invoker());
 					w.addEffect(A);
 					A.makeLongLasting();
 					w.recoverPhyStats();

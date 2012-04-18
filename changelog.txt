@@ -2363,3 +2363,4 @@ ruthless programmer, and sentenced to a quick death.
 9. Stuff: Shutdown command can now be put on an auto-remind timer, new sample js script FindRawMaterial, new internal property "Truce"
 10.MODIFY AREA Can now modify areas outside of those areas, as well as change their state by adding PASSIVE, ACTIVE, etc.
 11.NPC def hit point formula lowered slightly, some slight skill adjustments to decrease mage armor & increase thief dmg.
+12.New Property: Prop_AddDamage (no, really this time)

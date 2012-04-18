@@ -79,6 +79,7 @@ public class Fighter_PointBlank extends FighterSkill
 				{
 					qualifiedWeapons.add(W);
 					Ability A=(Ability)this.copyOf();
+					A.setInvoker(invoker());
 					A.setSavable(false);
 					W.addEffect(A);
 					W.recoverPhyStats();
@@ -128,6 +129,7 @@ public class Fighter_PointBlank extends FighterSkill
 						qualifiedWeapons.add((Weapon)w);
 					Ability A=(Ability)this.copyOf();
 					A.setSavable(false);
+					A.setInvoker(invoker());
 					w.addEffect(A);
 					w.recoverPhyStats();
 				}

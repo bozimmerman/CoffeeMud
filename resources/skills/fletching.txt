@@ -13,10 +13,10 @@ Quiver of 50 Arrows	5	40	5	25	GenAmmunition	arrows	50			METAL
 Quiver of 100 Arrows	10	60	10	50	GenAmmunition	arrows	100			METAL	
 Quiver of 200 Arrows	15	80	20	75	GenAmmunition	arrows	200			METAL	
 Quiver of 500 Arrows	20	100	50	125	GenAmmunition	arrows	500			METAL	
-Quiver of 50 AP Arrows	35	40	5	125	GenAmmunition	arrows	50			MITHRIL	PROP_ADDDAMAGE;15% +MITHRIL 10
-Quiver of 100 AP Arrows	40	60	10	225	GenAmmunition	arrows	100			MITHRIL	PROP_ADDDAMAGE;15% +MITHRIL 10
-Quiver of 200 AP Arrows	45	80	20	325	GenAmmunition	arrows	200			MITHRIL	PROP_ADDDAMAGE;15% +MITHRIL 10
-Quiver of 500 AP Arrows	50	100	50	500	GenAmmunition	arrows	500			MITHRIL	PROP_ADDDAMAGE;15% +MITHRIL 10
+Quiver of 50 AP Arrows	35	40	5	125	GenAmmunition	arrows	50			MITHRIL	PROP_ADDDAMAGE;15% PIERCING
+Quiver of 100 AP Arrows	40	60	10	225	GenAmmunition	arrows	100			MITHRIL	PROP_ADDDAMAGE;15% PIERCING
+Quiver of 200 AP Arrows	45	80	20	325	GenAmmunition	arrows	200			MITHRIL	PROP_ADDDAMAGE;15% PIERCING
+Quiver of 500 AP Arrows	50	100	50	500	GenAmmunition	arrows	500			MITHRIL	PROP_ADDDAMAGE;15% PIERCING
 Simple Crossbow	1	150	20	395	GenBow	bolts	2	6	2		
 Hand Crossbow	8	180	5	147	GenSling	darts	5	4	2		
 Light Crossbow	8	160	20	620	GenHandBow	bolts	2	10	3		
@@ -26,9 +26,9 @@ Wrist Crossbow	45	200	4	2773	GenHandBow	darts	20	40	2
 Pack of 50 Bolts	5	30	2	25	GenAmmunition	bolts	50			METAL	
 Pack of 100 Bolts	10	40	5	50	GenAmmunition	bolts	100			METAL	
 Pack of 500 Bolts	20	60	20	100	GenAmmunition	bolts	500			METAL	
-Pack of 50 Fire Bolts	35	30	2	125	GenAmmunition	bolts	50			LAMP OIL	PROP_ADDDAMAGE;50% +FIRE 10
-Pack of 100 Fire Bolts	40	40	5	250	GenAmmunition	bolts	100			LAMP OIL	PROP_ADDDAMAGE;50% +FIRE 10
-Pack of 500 Fire Bolts	50	60	20	500	GenAmmunition	bolts	500			LAMP OIL	PROP_ADDDAMAGE;50% +FIRE 10
+Pack of 50 Fire Bolts	35	30	2	125	GenAmmunition	bolts	50			LAMP OIL	PROP_ADDDAMAGE;50% FIRE BURNING
+Pack of 100 Fire Bolts	40	40	5	250	GenAmmunition	bolts	100			LAMP OIL	PROP_ADDDAMAGE;50% FIRE BURNING
+Pack of 500 Fire Bolts	50	60	20	500	GenAmmunition	bolts	500			LAMP OIL	PROP_ADDDAMAGE;50% FIRE BURNING
 Sling	1	30	0	15	GenSling	bullets	50	2	2	LEATHER	
 Staff-Sling	9	40	10	275	GenSling	bullets	10	4	4	LEATHER	
 Arm Sling	50	90	1	707	GenSling	bullets	50	16	3		
@@ -48,6 +48,6 @@ Atlatl	31	80	2	347	GenSling	javelins	1	8	4
 Pack of 10 Javelins	1	30	5	50	GenAmmunition	javelins	10				
 Pack of 50 Javelins	10	50	10	150	GenAmmunition	javelins	50				
 Pack of 100 Javelins	15	70	20	250	GenAmmunition	javelins	100				
-Pack of 10 AP Javelins	31	30	5	250	GenAmmunition	javelins	10			ADAMANTITE	PROP_ADDDAMAGE;50% +MITHRIL 20
-Pack of 50 AP Javelins	40	50	10	500	GenAmmunition	javelins	50			ADAMANTITE	PROP_ADDDAMAGE;50% +MITHRIL 20
-Pack of 100 AP Javelins	45	70	20	1250	GenAmmunition	javelins	100			ADAMANTITE	PROP_ADDDAMAGE;50% +MITHRIL 20
+Pack of 10 AP Javelins	31	30	5	250	GenAmmunition	javelins	10			ADAMANTITE	PROP_ADDDAMAGE;50% PIERCING
+Pack of 50 AP Javelins	40	50	10	500	GenAmmunition	javelins	50			ADAMANTITE	PROP_ADDDAMAGE;50% PIERCING
+Pack of 100 AP Javelins	45	70	20	1250	GenAmmunition	javelins	100			ADAMANTITE	PROP_ADDDAMAGE;50% PIERCING
