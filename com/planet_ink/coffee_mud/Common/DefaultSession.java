@@ -1701,7 +1701,9 @@ public class DefaultSession implements Session
         {
             if(CMSecurity.isDisabled(CMSecurity.DisFlag.LOGOUTS))
             {
+                M.setSession(null);
                 CMLib.commands().postSleep(M);
+                M.setSession(this);
                 M.basePhyStats().setDisposition(mob.basePhyStats().disposition()|PhyStats.IS_SLEEPING);
                 M.phyStats().setDisposition(mob.phyStats().disposition()|PhyStats.IS_SLEEPING);
             }
