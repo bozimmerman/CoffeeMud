@@ -218,7 +218,7 @@ public class Song extends StdAbility
                  return new XVector(backupMob.location());
             return new Vector();
         }
-        int depth=super.getXMAXRANGELevel(invoker());
+        int depth=getXMAXRANGELevel(invoker());
         if(depth==0) return new XVector(invoker().location());
         Vector rooms=new Vector();
         // needs to be area-only, because of the aggro-tracking rule

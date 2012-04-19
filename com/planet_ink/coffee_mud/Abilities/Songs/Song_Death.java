@@ -10,6 +10,7 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.ExpertiseLibrary;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -38,6 +39,7 @@ public class Song_Death extends Song
     public String ID() { return "Song_Death"; }
     public String name(){ return "Death";}
     public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
+    protected int getXMAXRANGELevel(MOB mob){return 0;} // people are complaining about multi-room death
 
     public boolean tick(Tickable ticking, int tickID)
     {
