@@ -40,7 +40,7 @@ public class StdItem implements Item
 
     protected String        name="an ordinary item";
     protected String        displayText="a nondescript item sits here doing nothing.";
-    protected byte[]        description=null;
+    protected Object        description=null;
     protected Container     myContainer=null;
     protected int           myUses=Integer.MAX_VALUE;
     protected long          myWornCode=Wearable.IN_INVENTORY;
@@ -561,16 +561,26 @@ public class StdItem implements Item
     {
         displayText=newDisplayText;
     }
+
     public String description()
     {
-        if((description==null)||(description.length==0))
+        if(description == null)
             return "";
         else
-        if(CMProps.getBoolVar(CMProps.SYSTEMB_ITEMDCOMPRESS))
-            return CMLib.encoder().decompressString(description);
+        if(description instanceof byte[])
+        {
+            final byte[] descriptionBytes=(byte[])description;
+            if(descriptionBytes.length==0)
+                return "";
+            if(CMProps.getBoolVar(CMProps.SYSTEMB_ITEMDCOMPRESS))
+                return CMLib.encoder().decompressString(descriptionBytes);
+            else
+                return CMStrings.bytesToStr(descriptionBytes);
+        }
         else
-            return CMStrings.bytesToStr(description);
+            return (String)description;
     }
+    
     public void setDescription(String newDescription)
     {
         if(newDescription.length()==0)
@@ -579,8 +589,9 @@ public class StdItem implements Item
         if(CMProps.getBoolVar(CMProps.SYSTEMB_ITEMDCOMPRESS))
             description=CMLib.encoder().compressString(newDescription);
         else
-            description=CMStrings.strToBytes(newDescription);
+            description=newDescription;
     }
+    
     public void setContainer(Container newContainer)
     {
         myContainer=newContainer;

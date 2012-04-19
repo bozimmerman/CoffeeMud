@@ -42,7 +42,7 @@ public class StdRoom implements Room
     protected String     displayText="Standard Room";
     protected String     rawImageName=null;
     protected String     cachedImageName=null;
-    protected byte[]     description=null;
+    protected Object     description=null;
     protected Area       myArea=null;
     protected PhyStats   phyStats=(PhyStats)CMClass.getCommon("DefaultPhyStats");
     protected PhyStats   basePhyStats=(PhyStats)CMClass.getCommon("DefaultPhyStats");
@@ -254,26 +254,30 @@ public class StdRoom implements Room
     }
     public String description()
     {
-        if(CMProps.getBoolVar(CMProps.SYSTEMB_ROOMDNOCACHE)
-        &&((description==null)||(description.length==0))
-        &&(roomID().trim().length()>0))
+        if(description == null)
         {
-            String txt=CMLib.database().DBReadRoomDesc(roomID());
-            if(txt==null)
+            if(CMProps.getBoolVar(CMProps.SYSTEMB_ROOMDNOCACHE)&&(roomID().trim().length()>0))
             {
-                Log.errOut("Unable to recover description for "+roomID()+".");
-                return "";
+                String txt=CMLib.database().DBReadRoomDesc(roomID());
+                if(txt==null)
+                {
+                    Log.errOut("Unable to recover description for "+roomID()+".");
+                    return "";
+                }
+                return txt;
             }
-            return txt;
+            return "";
         }
         else
-        if((description==null)||(description.length==0))
-            return "";
+        if(description instanceof byte[])
+        {
+            final byte[] descriptionBytes=(byte[])description;
+            if(CMProps.getBoolVar(CMProps.SYSTEMB_ROOMDCOMPRESS))
+                return CMLib.encoder().decompressString(descriptionBytes);
+            return CMStrings.bytesToStr(descriptionBytes);
+        }
         else
-        if(CMProps.getBoolVar(CMProps.SYSTEMB_ROOMDCOMPRESS))
-            return CMLib.encoder().decompressString(description);
-        else
-            return CMStrings.bytesToStr(description);
+            return ((String)description);
     }
     public void setDescription(String newDescription)
     {
@@ -283,8 +287,9 @@ public class StdRoom implements Room
         if(CMProps.getBoolVar(CMProps.SYSTEMB_ROOMDCOMPRESS))
             description=CMLib.encoder().compressString(newDescription);
         else
-            description=CMStrings.strToBytes(newDescription);
+            description=newDescription;
     }
+    
     public String text()
     {
         return CMLib.coffeeMaker().getPropertiesStr(this,true);

@@ -66,11 +66,11 @@ public class StdMOB implements MOB
 
     protected Session   mySession=null;
     protected boolean   pleaseDestroy=false;
-    protected byte[]    description=null;
+    protected Object    description=null;
     protected String    displayText="";
     protected String    rawImageName=null;
     protected String    cachedImageName=null;
-    protected byte[]    miscText=null;
+    protected Object    miscText=null;
     protected String[]  xtraValues=null;
     
     protected volatile WeakReference<Item>  possibleWieldedItem=null;
@@ -779,8 +779,8 @@ public class StdMOB implements MOB
         amDead=false;
         if((miscText!=null)&&(resetStats)&&(isGeneric()))
         {
-            if(CMProps.getBoolVar(CMProps.SYSTEMB_MOBCOMPRESS))
-                CMLib.coffeeMaker().resetGenMOB(this,CMLib.coffeeMaker().getGenMOBTextUnpacked(this,CMLib.encoder().decompressString(miscText)));
+            if(CMProps.getBoolVar(CMProps.SYSTEMB_MOBCOMPRESS) && (miscText instanceof byte[]))
+                CMLib.coffeeMaker().resetGenMOB(this,CMLib.coffeeMaker().getGenMOBTextUnpacked(this,CMLib.encoder().decompressString((byte[])miscText)));
             else
                 CMLib.coffeeMaker().resetGenMOB(this,CMLib.coffeeMaker().getGenMOBTextUnpacked(this,CMStrings.bytesToStr(miscText)));
         }
@@ -1274,14 +1274,23 @@ public class StdMOB implements MOB
     }
     public String description()
     {
-        if((description==null)||(description.length==0))
+        if(description == null)
             return "";
         else
-        if(CMProps.getBoolVar(CMProps.SYSTEMB_MOBDCOMPRESS))
-            return CMLib.encoder().decompressString(description);
+        if(description instanceof byte[])
+        {
+            final byte[] descriptionBytes=(byte[])description;
+            if(descriptionBytes.length==0)
+                return "";
+            if(CMProps.getBoolVar(CMProps.SYSTEMB_MOBDCOMPRESS))
+                return CMLib.encoder().decompressString(descriptionBytes);
+            else
+                return CMStrings.bytesToStr(descriptionBytes);
+        }
         else
-            return CMStrings.bytesToStr(description);
+            return (String)description;
     }
+    
     public void setDescription(String newDescription)
     {
         if(newDescription.length()==0)
@@ -1290,7 +1299,7 @@ public class StdMOB implements MOB
         if(CMProps.getBoolVar(CMProps.SYSTEMB_MOBDCOMPRESS))
             description=CMLib.encoder().compressString(newDescription);
         else
-            description=CMStrings.strToBytes(newDescription);
+            description=newDescription;
     }
     public void setMiscText(String newText)
     {
@@ -1300,18 +1309,28 @@ public class StdMOB implements MOB
         if(CMProps.getBoolVar(CMProps.SYSTEMB_MOBCOMPRESS))
             miscText=CMLib.encoder().compressString(newText);
         else
-            miscText=CMStrings.strToBytes(newText);
+            miscText=newText;
     }
+
     public String text()
     {
-        if((miscText==null)||(miscText.length==0))
+        if(miscText == null)
             return "";
         else
-        if(CMProps.getBoolVar(CMProps.SYSTEMB_MOBCOMPRESS))
-            return CMLib.encoder().decompressString(miscText);
+        if(miscText instanceof byte[])
+        {
+            final byte[] miscTextBytes=(byte[])miscText;
+            if(miscTextBytes.length==0)
+                return "";
+            if(CMProps.getBoolVar(CMProps.SYSTEMB_MOBCOMPRESS))
+                return CMLib.encoder().decompressString(miscTextBytes);
+            else
+                return CMStrings.bytesToStr(miscTextBytes);
+        }
         else
-            return CMStrings.bytesToStr(miscText);
+            return (String)miscText;
     }
+
     public String miscTextFormat(){return CMParms.FORMAT_UNDEFINED;}
 
     public String healthText(MOB viewer)

@@ -65,6 +65,19 @@ public class CMStrings
         return str.substring(0,x+1)+". "+str.substring(x+1).trim();
     }
     
+    public final static String bytesToStr(final Object b)
+    {
+        if(b instanceof String)
+            return (String)b;
+        else
+        if(b instanceof byte[])
+            return bytesToStr((byte[])b);
+        else
+        if(b!=null)
+            return b.toString();
+        return "";
+    }
+
     public final static String bytesToStr(final byte[] b)
     { 
         if(b==null) 

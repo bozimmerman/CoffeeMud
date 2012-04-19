@@ -54,7 +54,7 @@ public class GenAuctioneer extends StdAuctioneer
         if(CMProps.getBoolVar(CMProps.SYSTEMB_MOBCOMPRESS))
             miscText=CMLib.encoder().compressString(CMLib.coffeeMaker().getPropertiesStr(this,false));
         else
-            miscText=CMStrings.strToBytes(CMLib.coffeeMaker().getPropertiesStr(this,false));
+            miscText=CMLib.coffeeMaker().getPropertiesStr(this,false);
         return super.text();
     }
 

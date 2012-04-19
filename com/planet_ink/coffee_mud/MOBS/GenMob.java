@@ -34,38 +34,38 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 */
 public class GenMob extends StdMOB
 {
-	public String ID(){return "GenMob";}
-	public GenMob()
-	{
-		super();
-		username="a generic mob";
-		setDescription("");
-		setDisplayText("A generic mob stands here.");
+    public String ID(){return "GenMob";}
+    public GenMob()
+    {
+        super();
+        username="a generic mob";
+        setDescription("");
+        setDisplayText("A generic mob stands here.");
 
-		basePhyStats().setAbility(11); // his only off-default
+        basePhyStats().setAbility(11); // his only off-default
 
-		recoverMaxState();
-		resetToMaxState();
-		recoverPhyStats();
-		recoverCharStats();
-	}
+        recoverMaxState();
+        resetToMaxState();
+        recoverPhyStats();
+        recoverCharStats();
+    }
 
-	public boolean isGeneric(){return true;}
+    public boolean isGeneric(){return true;}
 
-	public String text()
-	{
-		if(CMProps.getBoolVar(CMProps.SYSTEMB_MOBCOMPRESS))
-			miscText=CMLib.encoder().compressString(CMLib.coffeeMaker().getPropertiesStr(this,false));
-		else
-			miscText=CMStrings.strToBytes(CMLib.coffeeMaker().getPropertiesStr(this,false));
-		return super.text();
-	}
+    public String text()
+    {
+        if(CMProps.getBoolVar(CMProps.SYSTEMB_MOBCOMPRESS))
+            miscText=CMLib.encoder().compressString(CMLib.coffeeMaker().getPropertiesStr(this,false));
+        else
+            miscText=CMLib.coffeeMaker().getPropertiesStr(this,false);
+        return super.text();
+    }
 
-	public void setMiscText(String newText)
-	{
-		super.setMiscText(newText);
-		CMLib.coffeeMaker().resetGenMOB(this,newText);
-	}
+    public void setMiscText(String newText)
+    {
+        super.setMiscText(newText);
+        CMLib.coffeeMaker().resetGenMOB(this,newText);
+    }
     public String getStat(String code)
     {
         if(CMLib.coffeeMaker().getGenMobCodeNum(code)>=0)
@@ -85,13 +85,13 @@ public class GenMob extends StdMOB
             codes=CMProps.getStatCodesList(GenericBuilder.GENMOBCODES,this);
         return codes; 
     }
-	public boolean sameAs(Environmental E)
-	{
-		if(!(E instanceof GenMob)) return false;
-		String[] theCodes=getStatCodes();
-		for(int i=0;i<theCodes.length;i++)
-			if(!E.getStat(theCodes[i]).equals(getStat(theCodes[i])))
-				return false;
-		return true;
-	}
+    public boolean sameAs(Environmental E)
+    {
+        if(!(E instanceof GenMob)) return false;
+        String[] theCodes=getStatCodes();
+        for(int i=0;i<theCodes.length;i++)
+            if(!E.getStat(theCodes[i]).equals(getStat(theCodes[i])))
+                return false;
+        return true;
+    }
 }
