@@ -46,42 +46,42 @@ public class DefaultFaction implements Faction, MsgListener
     public void initializeClass(){}
     public CMObject copyOf(){try{return (CMObject)this.clone();}catch(Exception e){return newInstance();}}
     public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
-	protected String 	ID="";
-	protected String 	name="";
-	protected String 	choiceIntro="";
-	protected long[] 	lastFactionDataChange=new long[1];
-	protected int 		minimum=Integer.MIN_VALUE;
-	protected int 		middle=0;
-	protected int 		difference;
-	protected int 		maximum=Integer.MAX_VALUE;
-	protected int 		highest=Integer.MAX_VALUE;
-	protected int 		lowest=Integer.MIN_VALUE;
-	protected long 		internalFlagBitmap=0;
-	protected String 	experienceFlag="";
-	protected boolean 	useLightReactions=false;
-	protected boolean 	showInScore=false;
-	protected boolean 	showInSpecialReported=false;
-	protected boolean 	showInEditor=false;
-	protected boolean 	showInFactionsCommand=true;
-	protected SVector<String> 						defaults=new SVector<String>();
-	protected SVector<String> 						autoDefaults=new SVector<String>();
-	protected SHashtable<String,FactionRange> 		ranges=new SHashtable<String,FactionRange>();
-	protected SHashtable<String,String[]> 			affBehavs=new SHashtable<String,String[]>();
-	protected double 								rateModifier=1.0;
+    protected String     ID="";
+    protected String     name="";
+    protected String     choiceIntro="";
+    protected long[]     lastFactionDataChange=new long[1];
+    protected int        minimum=Integer.MIN_VALUE;
+    protected int        middle=0;
+    protected int        difference;
+    protected int        maximum=Integer.MAX_VALUE;
+    protected int        highest=Integer.MAX_VALUE;
+    protected int        lowest=Integer.MIN_VALUE;
+    protected long       internalFlagBitmap=0;
+    protected String     experienceFlag="";
+    protected boolean    useLightReactions=false;
+    protected boolean    showInScore=false;
+    protected boolean    showInSpecialReported=false;
+    protected boolean    showInEditor=false;
+    protected boolean    showInFactionsCommand=true;
+    protected SVector<String>                        defaults=new SVector<String>();
+    protected SVector<String>                        autoDefaults=new SVector<String>();
+    protected SHashtable<String,FactionRange>        ranges=new SHashtable<String,FactionRange>();
+    protected SHashtable<String,String[]>            affBehavs=new SHashtable<String,String[]>();
+    protected double                                 rateModifier=1.0;
     protected SHashtable<String,FactionChangeEvent[]>changes=new SHashtable<String,FactionChangeEvent[]>();
     protected SHashtable<String,FactionChangeEvent[]>abilityChangesCache=new SHashtable<String,FactionChangeEvent[]>();
-    protected SVector<Faction.FactionZapFactor> 	factors=new SVector<Faction.FactionZapFactor>();
-    protected SHashtable<String,Double>				relations=new SHashtable<String,Double>();
-    protected SVector<Faction.FactionAbilityUsage> 	abilityUsages=new SVector<Faction.FactionAbilityUsage>();
-    protected SVector<String> 						choices=new SVector<String>();
-    protected SVector<Faction.FactionReactionItem> 	reactions=new SVector<Faction.FactionReactionItem>();
+    protected SVector<Faction.FactionZapFactor>      factors=new SVector<Faction.FactionZapFactor>();
+    protected SHashtable<String,Double>              relations=new SHashtable<String,Double>();
+    protected SVector<Faction.FactionAbilityUsage>   abilityUsages=new SVector<Faction.FactionAbilityUsage>();
+    protected SVector<String>                        choices=new SVector<String>();
+    protected SVector<Faction.FactionReactionItem>   reactions=new SVector<Faction.FactionReactionItem>();
     protected SHashtable<String,SVector<Faction.FactionReactionItem>> reactionHash=new SHashtable<String,SVector<Faction.FactionReactionItem>>();
     public Enumeration<Faction.FactionReactionItem> reactions(){return reactions.elements();}
     public Enumeration<Faction.FactionReactionItem> reactions(String rangeName)
     {
-    	SVector<Faction.FactionReactionItem> V=(SVector<Faction.FactionReactionItem>)reactionHash.get(rangeName.toUpperCase().trim());
-    	if(V!=null) return V.elements();
-    	return new Vector<Faction.FactionReactionItem>().elements();
+        SVector<Faction.FactionReactionItem> V=(SVector<Faction.FactionReactionItem>)reactionHash.get(rangeName.toUpperCase().trim());
+        if(V!=null) return V.elements();
+        return new Vector<Faction.FactionReactionItem>().elements();
     }
     protected Ability presenceReactionPrototype=null;
 
@@ -136,8 +136,8 @@ public class DefaultFaction implements Faction, MsgListener
     }
     public boolean delFactor(Faction.FactionZapFactor f)
     { 
-    	if(!factors.remove(f))
-    		return false;
+        if(!factors.remove(f))
+            return false;
         factors.trimToSize();
         return true;
     }
@@ -145,7 +145,7 @@ public class DefaultFaction implements Faction, MsgListener
     
     public Faction.FactionZapFactor addFactor(double gain, double loss, String mask)
     {
-    	Faction.FactionZapFactor o=new DefaultFactionZapFactor(gain,loss,mask);
+        Faction.FactionZapFactor o=new DefaultFactionZapFactor(gain,loss,mask);
         factors.addElement(o);
         factors.trimToSize();
         return o;
@@ -153,16 +153,16 @@ public class DefaultFaction implements Faction, MsgListener
     
     public boolean delRelation(String factionID) 
     { 
-    	if(relations.remove(factionID)==null)
-    		return false;
-    	return true;
+        if(relations.remove(factionID)==null)
+            return false;
+        return true;
     }
     
     public boolean addRelation(String factionID, double relation) 
     {
         if(relations.containsKey(factionID))
             return false;
-    	relations.put(factionID,Double.valueOf(relation));
+        relations.put(factionID,Double.valueOf(relation));
         return true;
     }
     
@@ -268,7 +268,7 @@ public class DefaultFaction implements Faction, MsgListener
                 addAbilityUsage(words);
             if(key.startsWith("REACTION"))
             {
-            	DefaultFactionReactionItem item = new DefaultFactionReactionItem(words);
+                DefaultFactionReactionItem item = new DefaultFactionReactionItem(words);
                 addReaction(item.rangeName(), item.presentMOBMask(), item.reactionObjectID(), item.parameters());
             }
         }
@@ -334,9 +334,9 @@ public class DefaultFaction implements Faction, MsgListener
         }
         case TAG_CHANGE_:
         {
-        	int sz=0;
-        	for(Enumeration<Faction.FactionChangeEvent[]> es=changes.elements();es.hasMoreElements();)
-        		sz+=es.nextElement().length;
+            int sz=0;
+            for(Enumeration<Faction.FactionChangeEvent[]> es=changes.elements();es.hasMoreElements();)
+                sz+=es.nextElement().length;
             if((numCall<0)||(numCall>=sz))
                 return ""+sz;
             int i=0;
@@ -345,9 +345,9 @@ public class DefaultFaction implements Faction, MsgListener
                 Faction.FactionChangeEvent[] FCs=e.nextElement();
                 for(int ii=0;ii<FCs.length;ii++)
                 {
-	                if(i==numCall)
-	                    return FCs[ii].toString();
-	                i++;
+                    if(i==numCall)
+                        return FCs[ii].toString();
+                    i++;
                 }
             }
             return "";
@@ -428,33 +428,33 @@ public class DefaultFaction implements Faction, MsgListener
     
     public void updateFactionData(MOB mob, FactionData data)
     {
-		data.resetFactionData(this);
+        data.resetFactionData(this);
         Vector<Ability> aV=new Vector<Ability>();
         Vector<Behavior> bV=new Vector<Behavior>();
         String ID=null;
         String[] stuff=null;
         if(mob.isMonster())
-	        for(Enumeration<String> e=affectsBehavs();e.hasMoreElements();)
-	        {
-	            ID=(String)e.nextElement();
-	            stuff=getAffectBehav(ID);
-	            if(CMLib.masking().maskCheck(stuff[1],mob,true))
-	            {
-	                Behavior B=CMClass.getBehavior(ID);
-	                if(B!=null)
-	                {
-	                    B.setParms(stuff[0]);
-	                    bV.addElement(B);
-	                }
-	                else
-	                {
-	                    Ability A=CMClass.getAbility(ID);
-	                    A.setMiscText(stuff[0]);
-	                    A.setAffectedOne(mob);
-	                    aV.addElement(A);
-	                }
-	            }
-	        }
+            for(Enumeration<String> e=affectsBehavs();e.hasMoreElements();)
+            {
+                ID=(String)e.nextElement();
+                stuff=getAffectBehav(ID);
+                if(CMLib.masking().maskCheck(stuff[1],mob,true))
+                {
+                    Behavior B=CMClass.getBehavior(ID);
+                    if(B!=null)
+                    {
+                        B.setParms(stuff[0]);
+                        bV.addElement(B);
+                    }
+                    else
+                    {
+                        Ability A=CMClass.getAbility(ID);
+                        A.setMiscText(stuff[0]);
+                        A.setAffectedOne(mob);
+                        aV.addElement(A);
+                    }
+                }
+            }
         data.addHandlers(aV,bV);
     }
     
@@ -469,7 +469,7 @@ public class DefaultFaction implements Faction, MsgListener
     {
         boolean b=affBehavs.remove(ID.toUpperCase().trim())!=null;
         if(b)
-        	lastFactionDataChange[0]=System.currentTimeMillis();
+            lastFactionDataChange[0]=System.currentTimeMillis();
         return b;
     }
     
@@ -490,32 +490,32 @@ public class DefaultFaction implements Faction, MsgListener
     
     public boolean delReaction(Faction.FactionReactionItem item)
     {
-    	SVector<Faction.FactionReactionItem> V=(SVector<Faction.FactionReactionItem>)reactionHash.get(item.rangeName().toUpperCase().trim());
-    	if(V!=null)
-    		V.remove(item);
-    	boolean res = reactions.remove(item);
-    	if(reactions.size()==0) reactionHash.clear();
+        SVector<Faction.FactionReactionItem> V=(SVector<Faction.FactionReactionItem>)reactionHash.get(item.rangeName().toUpperCase().trim());
+        if(V!=null)
+            V.remove(item);
+        boolean res = reactions.remove(item);
+        if(reactions.size()==0) reactionHash.clear();
         lastFactionDataChange[0]=System.currentTimeMillis();
-    	return res;
+        return res;
     }
     
     public boolean addReaction(String range, String mask, String abilityID, String parms)
     {
-    	SVector<Faction.FactionReactionItem> V=(SVector<Faction.FactionReactionItem>)reactionHash.get(range.toUpperCase().trim());
-    	DefaultFactionReactionItem item = new DefaultFactionReactionItem();
-    	item.setRangeName(range);
-    	item.setPresentMOBMask(mask);
-    	item.setReactionObjectID(abilityID);
-    	item.setParameters(parms);
-    	if(V==null) 
-    	{
-    		V=new SVector<Faction.FactionReactionItem>();
-    		reactionHash.put(range.toUpperCase().trim(), V);
-    	}
-    	V.add(item);
-    	reactions.add(item);
+        SVector<Faction.FactionReactionItem> V=(SVector<Faction.FactionReactionItem>)reactionHash.get(range.toUpperCase().trim());
+        DefaultFactionReactionItem item = new DefaultFactionReactionItem();
+        item.setRangeName(range);
+        item.setPresentMOBMask(mask);
+        item.setReactionObjectID(abilityID);
+        item.setParameters(parms);
+        if(V==null) 
+        {
+            V=new SVector<Faction.FactionReactionItem>();
+            reactionHash.put(range.toUpperCase().trim(), V);
+        }
+        V.add(item);
+        reactions.add(item);
         lastFactionDataChange[0]=System.currentTimeMillis();
-    	return true;
+        return true;
     }
     
     public FactionChangeEvent[] getChangeEvents(String key) 
@@ -555,8 +555,8 @@ public class DefaultFaction implements Faction, MsgListener
             return abilityChangesCache.get(key.ID().toUpperCase());
         if(changes.containsKey(key.ID().toUpperCase()))
         {
-        	abilityChangesCache.put(key.ID().toUpperCase(), abilityChangesCache.get(key.ID().toUpperCase()));
-        	return abilityChangesCache.get(key.ID().toUpperCase());
+            abilityChangesCache.put(key.ID().toUpperCase(), abilityChangesCache.get(key.ID().toUpperCase()));
+            return abilityChangesCache.get(key.ID().toUpperCase());
         }
         // By TYPE or FLAGS
         FactionChangeEvent[] Cs =null;
@@ -566,14 +566,14 @@ public class DefaultFaction implements Faction, MsgListener
             Cs=e.nextElement();
             for(FactionChangeEvent C : Cs)
             {
-	            if((key.classificationCode()&Ability.ALL_ACODES)==C.IDclassFilter())
-	                events.addElement(C);
-	            else
-	            if((key.classificationCode()&Ability.ALL_DOMAINS)==C.IDdomainFilter())
-	                events.addElement(C);
-	            else
-	            if((C.IDflagFilter()>0)&&(CMath.bset(key.flags(),C.IDflagFilter())))
-	                events.addElement(C);
+                if((key.classificationCode()&Ability.ALL_ACODES)==C.IDclassFilter())
+                    events.addElement(C);
+                else
+                if((key.classificationCode()&Ability.ALL_DOMAINS)==C.IDdomainFilter())
+                    events.addElement(C);
+                else
+                if((C.IDflagFilter()>0)&&(CMath.bset(key.flags(),C.IDflagFilter())))
+                    events.addElement(C);
             }
         }
         FactionChangeEvent[] evs = events.toArray(new FactionChangeEvent[0]);
@@ -710,13 +710,13 @@ public class DefaultFaction implements Faction, MsgListener
     {
         for(Faction.FactionZapFactor factor : factors)
             if(CMLib.masking().maskCheck(factor.compiledMOBMask(),mob,false))
-            	return gain?factor.gainFactor():factor.lossFactor();
+                return gain?factor.gainFactor():factor.lossFactor();
         return 1.0;
     }
 
     public void executeMsg(final Environmental myHost, final CMMsg msg)
     {
-    	FactionChangeEvent[] events;
+        FactionChangeEvent[] events;
         if((msg.sourceMinor()==CMMsg.TYP_DEATH)    // A death occured
         &&((msg.source()==myHost)||(msg.tool()==myHost))
         &&(msg.tool() instanceof MOB))
@@ -744,25 +744,25 @@ public class DefaultFaction implements Faction, MsgListener
         &&(msg.tool().ID().equals("Skill_Handcuff"))
         &&(msg.source().isMonster()))
         {
-        	Room R=msg.source().location();
-        	if((R!=null)&&(R.getArea()!=null))
-        	{
+            Room R=msg.source().location();
+            if((R!=null)&&(R.getArea()!=null))
+            {
                 FactionChangeEvent eventC;
                 events=getChangeEvents("ARRESTED");
                 if(events!=null)
                 {
-    	        	LegalBehavior B=CMLib.law().getLegalBehavior(R);
-    	        	if((B!=null)&&(B.isAnyOfficer(R.getArea(), msg.source())))
-    	        	{
-		                for(int e=0;e<events.length;e++)
-		                {
-		                    eventC=events[e];
-		    	            if(eventC.applies(msg.source(),(MOB)msg.target()))
-				                executeChange(msg.source(),(MOB)msg.target(),eventC);
-		                }
-    	        	}
+                    LegalBehavior B=CMLib.law().getLegalBehavior(R);
+                    if((B!=null)&&(B.isAnyOfficer(R.getArea(), msg.source())))
+                    {
+                        for(int e=0;e<events.length;e++)
+                        {
+                            eventC=events[e];
+                            if(eventC.applies(msg.source(),(MOB)msg.target()))
+                                executeChange(msg.source(),(MOB)msg.target(),eventC);
+                        }
+                    }
                 }
-        	}
+            }
         }
         
         if((msg.sourceMinor()==CMMsg.TYP_GIVE)    // Bribe watching
@@ -776,16 +776,16 @@ public class DefaultFaction implements Faction, MsgListener
             for(int e=0;e<events.length;e++)
             {
                 eventC=events[e];
-	            if(eventC.applies(msg.source(),(MOB)msg.target()))
-	            {
-	                double amount=CMath.s_double(eventC.getTriggerParm("AMOUNT"));
-	                double pctAmount = CMath.s_pct(eventC.getTriggerParm("PCT"))
-	                				 * CMLib.beanCounter().getTotalAbsoluteNativeValue((MOB)msg.target());
-	                if(pctAmount>amount) amount=pctAmount;
-	                if(amount==0) amount=1.0;
-	                if(((Coins)msg.tool()).getTotalValue()>=amount)
-		                executeChange(msg.source(),(MOB)msg.target(),eventC);
-	            }
+                if(eventC.applies(msg.source(),(MOB)msg.target()))
+                {
+                    double amount=CMath.s_double(eventC.getTriggerParm("AMOUNT"));
+                    double pctAmount = CMath.s_pct(eventC.getTriggerParm("PCT"))
+                                     * CMLib.beanCounter().getTotalAbsoluteNativeValue((MOB)msg.target());
+                    if(pctAmount>amount) amount=pctAmount;
+                    if(amount==0) amount=1.0;
+                    if(((Coins)msg.tool()).getTotalValue()>=amount)
+                        executeChange(msg.source(),(MOB)msg.target(),eventC);
+                }
             }
         }
 
@@ -797,120 +797,120 @@ public class DefaultFaction implements Faction, MsgListener
             events=getChangeEvents("TALK");
             if((events!=null)&&(events.length>0))
             {
-            	Room R=msg.source().location();
-            	Vector<MOB> targets=new Vector<MOB>();
-            	if(msg.target() instanceof MOB)
-            		targets.add((MOB)msg.target());
-            	else
-            	for(int m=0;m<R.numInhabitants();m++)
-            	{
-            		MOB M=R.fetchInhabitant(m);
-            		if((M!=null)&&(M.isMonster())
-            		&&(CMLib.flags().canBeHeardSpeakingBy(msg.source(),M))
-            		&&(M.amFollowing()!=msg.source()))
-            			targets.add(M);
-            	}
-	            String sayMsg=CMStrings.getSayFromMessage(msg.othersMessage().toLowerCase());
-	            Matcher M=null;
+                Room R=msg.source().location();
+                Vector<MOB> targets=new Vector<MOB>();
+                if(msg.target() instanceof MOB)
+                    targets.add((MOB)msg.target());
+                else
+                for(int m=0;m<R.numInhabitants();m++)
+                {
+                    MOB M=R.fetchInhabitant(m);
+                    if((M!=null)&&(M.isMonster())
+                    &&(CMLib.flags().canBeHeardSpeakingBy(msg.source(),M))
+                    &&(M.amFollowing()!=msg.source()))
+                        targets.add(M);
+                }
+                String sayMsg=CMStrings.getSayFromMessage(msg.othersMessage().toLowerCase());
+                Matcher M=null;
                 if((sayMsg!=null)&&(sayMsg.length()>0)&&(R!=null))
-	            for(int e=0;e<events.length;e++)
-	            {
-	                eventC=events[e];
-	            	Long time=(Long)eventC.stateVariable(1);
-	            	if(time==null)
-	            		time=Long.valueOf(System.currentTimeMillis());
-	            	if(System.currentTimeMillis()<time.longValue())
-	            		continue;
-	            	Pattern P=(Pattern)eventC.stateVariable(0);
-	            	if(P==null)
-	            	{
-	            		String mask=eventC.getTriggerParm("REGEX");
-	            		if((mask==null)||(mask.trim().length()==0))
-	            			mask=".*";
-	            		P=Pattern.compile(mask.toLowerCase());
-	            		eventC.setStateVariable(0,P);
-	            	}
-	            	M=P.matcher(sayMsg);
-	                if(M.matches())
-	                {
-		            	Long addTime=(Long)eventC.stateVariable(2);
-		            	if(addTime==null)
-		            	{
-		            		addTime=Long.valueOf(CMath.s_long(eventC.getTriggerParm("WAIT"))*CMProps.getTickMillis());
-		            		eventC.setStateVariable(2,addTime);
-		            	}
-		            	eventC.setStateVariable(1,Long.valueOf(System.currentTimeMillis()+addTime.longValue()));
-		            	for(MOB target : targets)
-				            if(eventC.applies(msg.source(),target))
-				            {
-				                executeChange(msg.source(),target,eventC);
-				                break;
-				            }
-	                }
-	            }
+                for(int e=0;e<events.length;e++)
+                {
+                    eventC=events[e];
+                    Long time=(Long)eventC.stateVariable(1);
+                    if(time==null)
+                        time=Long.valueOf(System.currentTimeMillis());
+                    if(System.currentTimeMillis()<time.longValue())
+                        continue;
+                    Pattern P=(Pattern)eventC.stateVariable(0);
+                    if(P==null)
+                    {
+                        String mask=eventC.getTriggerParm("REGEX");
+                        if((mask==null)||(mask.trim().length()==0))
+                            mask=".*";
+                        P=Pattern.compile(mask.toLowerCase());
+                        eventC.setStateVariable(0,P);
+                    }
+                    M=P.matcher(sayMsg);
+                    if(M.matches())
+                    {
+                        Long addTime=(Long)eventC.stateVariable(2);
+                        if(addTime==null)
+                        {
+                            addTime=Long.valueOf(CMath.s_long(eventC.getTriggerParm("WAIT"))*CMProps.getTickMillis());
+                            eventC.setStateVariable(2,addTime);
+                        }
+                        eventC.setStateVariable(1,Long.valueOf(System.currentTimeMillis()+addTime.longValue()));
+                        for(MOB target : targets)
+                            if(eventC.applies(msg.source(),target))
+                            {
+                                executeChange(msg.source(),target,eventC);
+                                break;
+                            }
+                    }
+                }
             }
             events=getChangeEvents("MUDCHAT");
             if((events!=null)&&(events.length>0))
             {
-            	Room R=msg.source().location();
-            	Vector<MOB> targets=new Vector<MOB>();
-            	if(msg.target() instanceof MOB)
-            		targets.add((MOB)msg.target());
-            	else
-            	for(int m=0;m<R.numInhabitants();m++)
-            	{
-            		MOB M=R.fetchInhabitant(m);
-            		if((M!=null)&&(M.isMonster())
-            		&&(CMLib.flags().canBeHeardSpeakingBy(msg.source(),M))
-            		&&(M.amFollowing()!=msg.source()))
-            			targets.add(M);
-            	}
-            	boolean foundOne=false;
-            	for(MOB target : targets)
-            	{
-	            	ChattyBehavior mudChatB=null;
-	            	Behavior B=null;
-	    			for(Enumeration<Behavior> e=target.behaviors();e.hasMoreElements();)
-	    			{
-	    				B=e.nextElement();
-	            		if(B instanceof ChattyBehavior)
-	            			mudChatB=(ChattyBehavior)B;
-	            	}
-	            	if(mudChatB!=null)
-	            	{
-			            String sayMsg=CMStrings.getSayFromMessage(msg.othersMessage().toLowerCase());
-		                if((sayMsg!=null)&&(sayMsg.length()>0))
-			            for(int e=0;e<events.length;e++)
-			            {
-			                eventC=events[e];
-			            	Long time=(Long)eventC.stateVariable(0);
-			            	if(time==null)
-			            		time=Long.valueOf(System.currentTimeMillis());
-			            	if(System.currentTimeMillis()<time.longValue())
-			            		continue;
-			            	Long addTime=(Long)eventC.stateVariable(1);
-			            	if(addTime==null)
-			            	{
-			            		addTime=Long.valueOf(CMath.s_long(eventC.getTriggerParm("WAIT"))*CMProps.getTickMillis());
-			            		if(addTime.longValue()<CMProps.getTickMillis()) addTime=Long.valueOf(CMProps.getTickMillis());
-			            		eventC.setStateVariable(1,addTime);
-			            	}
-			            	eventC.setStateVariable(0,Long.valueOf(System.currentTimeMillis()+addTime.longValue()));
-				            if(eventC.applies(msg.source(),target))
-				            {
-				            	if((mudChatB.getLastRespondedTo()==msg.source())
-				            	&&(mudChatB.getLastThingSaid()!=null)
-				            	&&(!mudChatB.getLastThingSaid().equalsIgnoreCase(sayMsg)))
-				            	{
-				            		executeChange(msg.source(),target,eventC);
-				            		foundOne=true;
-				            	}
-				            }
-			            }
-		                if(foundOne)
-		                	break;
-	            	}
-            	}
+                Room R=msg.source().location();
+                Vector<MOB> targets=new Vector<MOB>();
+                if(msg.target() instanceof MOB)
+                    targets.add((MOB)msg.target());
+                else
+                for(int m=0;m<R.numInhabitants();m++)
+                {
+                    MOB M=R.fetchInhabitant(m);
+                    if((M!=null)&&(M.isMonster())
+                    &&(CMLib.flags().canBeHeardSpeakingBy(msg.source(),M))
+                    &&(M.amFollowing()!=msg.source()))
+                        targets.add(M);
+                }
+                boolean foundOne=false;
+                for(MOB target : targets)
+                {
+                    ChattyBehavior mudChatB=null;
+                    Behavior B=null;
+                    for(Enumeration<Behavior> e=target.behaviors();e.hasMoreElements();)
+                    {
+                        B=e.nextElement();
+                        if(B instanceof ChattyBehavior)
+                            mudChatB=(ChattyBehavior)B;
+                    }
+                    if(mudChatB!=null)
+                    {
+                        String sayMsg=CMStrings.getSayFromMessage(msg.othersMessage().toLowerCase());
+                        if((sayMsg!=null)&&(sayMsg.length()>0))
+                        for(int e=0;e<events.length;e++)
+                        {
+                            eventC=events[e];
+                            Long time=(Long)eventC.stateVariable(0);
+                            if(time==null)
+                                time=Long.valueOf(System.currentTimeMillis());
+                            if(System.currentTimeMillis()<time.longValue())
+                                continue;
+                            Long addTime=(Long)eventC.stateVariable(1);
+                            if(addTime==null)
+                            {
+                                addTime=Long.valueOf(CMath.s_long(eventC.getTriggerParm("WAIT"))*CMProps.getTickMillis());
+                                if(addTime.longValue()<CMProps.getTickMillis()) addTime=Long.valueOf(CMProps.getTickMillis());
+                                eventC.setStateVariable(1,addTime);
+                            }
+                            eventC.setStateVariable(0,Long.valueOf(System.currentTimeMillis()+addTime.longValue()));
+                            if(eventC.applies(msg.source(),target))
+                            {
+                                if((mudChatB.getLastRespondedTo()==msg.source())
+                                &&(mudChatB.getLastThingSaid()!=null)
+                                &&(!mudChatB.getLastThingSaid().equalsIgnoreCase(sayMsg)))
+                                {
+                                    executeChange(msg.source(),target,eventC);
+                                    foundOne=true;
+                                }
+                            }
+                        }
+                        if(foundOne)
+                            break;
+                    }
+                }
             }
         }
         // Ability Watching
@@ -918,15 +918,15 @@ public class DefaultFaction implements Faction, MsgListener
         &&(msg.othersMessage()!=null)
         &&((events=findAbilityChangeEvents((Ability)msg.tool()))!=null))
         {
-        	for(int e=0;e<events.length;e++)
-        	{
-	            FactionChangeEvent C=events[e];
-	            if((msg.target() instanceof MOB)&&(C.applies(msg.source(),(MOB)msg.target())))
-	                executeChange(msg.source(),(MOB)msg.target(),C);
-	            else
-	            if (!(msg.target() instanceof MOB))
-	                executeChange(msg.source(),null,C);
-        	}
+            for(int e=0;e<events.length;e++)
+            {
+                FactionChangeEvent C=events[e];
+                if((msg.target() instanceof MOB)&&(C.applies(msg.source(),(MOB)msg.target())))
+                    executeChange(msg.source(),(MOB)msg.target(),C);
+                else
+                if (!(msg.target() instanceof MOB))
+                    executeChange(msg.source(),null,C);
+            }
         }
     }
 
@@ -1026,8 +1026,8 @@ public class DefaultFaction implements Faction, MsgListener
                 if((sourceFaction>middle)&&(targetFaction>middle)) changeDir=-1;
                 baseChangeAmount=CMath.div(baseChangeAmount,2.0)
                                 +(int)Math.round(CMath.div(baseChangeAmount,2.0)
-                                        *Math.abs((sourceFaction-targetFaction)
-                                                /Math.abs(difference)));
+                                        *Math.abs((double)(sourceFaction-targetFaction)
+                                                /Math.abs((double)difference)));
             }
             else
                 factionAdj=0;
@@ -1163,7 +1163,7 @@ public class DefaultFaction implements Faction, MsgListener
          abilityChangesCache.clear();
          Faction.FactionChangeEvent[] events=changes.get(event.eventID().toUpperCase().trim());
          if(events==null)
-        	 events=new Faction.FactionChangeEvent[0];
+             events=new Faction.FactionChangeEvent[0];
          events=Arrays.copyOf(events, events.length+1);
          events[events.length-1]=event;
          changes.put(event.eventID().toUpperCase().trim(), events);
@@ -1172,28 +1172,28 @@ public class DefaultFaction implements Faction, MsgListener
 
      private boolean replaceEvents(String key, Faction.FactionChangeEvent event, boolean strict)
      {
-    	 Faction.FactionChangeEvent[] events=changes.get(key);
-    	 if(events==null) return false;
-    	 Faction.FactionChangeEvent[] nevents=new Faction.FactionChangeEvent[events.length-1];
-		 int ne1=0;
-		 boolean done=false;
-    	 for(int x=0;x<events.length;x++)
-    	 {
-    		 if((strict&&(events[x] == event))||((!strict)&&(events[x].toString().equals(event.toString()))))
-    		 {
-        		 if(nevents.length==0)
-        			 changes.remove(key);
-        		 else
-        			 changes.put(key,nevents);
-        		 done=true;
-    		 }
-    		 else
-    	     if(ne1<nevents.length)
-    			 nevents[ne1++]=events[x];
-    	 }
-    	 if(done)
-	         abilityChangesCache.clear();
-    	 return done;
+         Faction.FactionChangeEvent[] events=changes.get(key);
+         if(events==null) return false;
+         Faction.FactionChangeEvent[] nevents=new Faction.FactionChangeEvent[events.length-1];
+         int ne1=0;
+         boolean done=false;
+         for(int x=0;x<events.length;x++)
+         {
+             if((strict&&(events[x] == event))||((!strict)&&(events[x].toString().equals(event.toString()))))
+             {
+                 if(nevents.length==0)
+                     changes.remove(key);
+                 else
+                     changes.put(key,nevents);
+                 done=true;
+             }
+             else
+             if(ne1<nevents.length)
+                 nevents[ne1++]=events[x];
+         }
+         if(done)
+             abilityChangesCache.clear();
+         return done;
      }
      public void clearChangeEvents()
      {
@@ -1204,23 +1204,23 @@ public class DefaultFaction implements Faction, MsgListener
      public boolean delChangeEvent(Faction.FactionChangeEvent event)
      {
          for(Enumeration<String> e=changes.keys();e.hasMoreElements();)
-        	 if(replaceEvents(e.nextElement(),event,true))
-        	 {
+             if(replaceEvents(e.nextElement(),event,true))
+             {
                  abilityChangesCache.clear();
-        		 return true;
-        	 }
+                 return true;
+             }
          for(Enumeration<String> e=changes.keys();e.hasMoreElements();)
-        	 if(replaceEvents(e.nextElement(),event,false))
-        	 {
+             if(replaceEvents(e.nextElement(),event,false))
+             {
                  abilityChangesCache.clear();
-        		 return true;
-        	 }
+                 return true;
+             }
          return false;
      }
 
      public class DefaultFactionChangeEvent implements Faction.FactionChangeEvent
      {
-    	private String ID="";
+        private String ID="";
         private String flagCache="";
         private int IDclassFilter=-1;
         private int IDflagFilter=-1;
@@ -1253,34 +1253,34 @@ public class DefaultFaction implements Faction, MsgListener
         public void setFactor(double newVal){factor=newVal;}
         public void setTargetZapper(String newVal)
         {
-        	targetZapperStr=newVal;
-        	compiledTargetZapper=null;
-        	if(newVal.trim().length()>0)
-        		compiledTargetZapper=CMLib.masking().maskCompile(newVal);
+            targetZapperStr=newVal;
+            compiledTargetZapper=null;
+            if(newVal.trim().length()>0)
+                compiledTargetZapper=CMLib.masking().maskCompile(newVal);
         }
-		public MaskingLibrary.CompiledZapperMask compiledTargetZapper(){return compiledTargetZapper;}
+        public MaskingLibrary.CompiledZapperMask compiledTargetZapper(){return compiledTargetZapper;}
         public MaskingLibrary.CompiledZapperMask compiledSourceZapper(){return compiledSourceZapper;}
-		public String getTriggerParm(String parmName) {
-			if((triggerParms==null)||(triggerParms.length()==0))
-				return "";
-			String S=savedTriggerParms.get(parmName);
-			if(S!=null) return S;
-			return "";
-		}
+        public String getTriggerParm(String parmName) {
+            if((triggerParms==null)||(triggerParms.length()==0))
+                return "";
+            String S=savedTriggerParms.get(parmName);
+            if(S!=null) return S;
+            return "";
+        }
 
         public String toString()
         {
-        	if(triggerParms.trim().length()>0)
-	            return ID+"("+triggerParms.replace(';',',')+");"+CHANGE_DIRECTION_DESCS[direction]+";"+((int)Math.round(factor*100.0))+"%;"+flagCache+";"+targetZapperStr;
-        	else
-	            return ID+";"+CHANGE_DIRECTION_DESCS[direction]+";"+((int)Math.round(factor*100.0))+"%;"+flagCache+";"+targetZapperStr;
+            if(triggerParms.trim().length()>0)
+                return ID+"("+triggerParms.replace(';',',')+");"+CHANGE_DIRECTION_DESCS[direction]+";"+((int)Math.round(factor*100.0))+"%;"+flagCache+";"+targetZapperStr;
+            else
+                return ID+";"+CHANGE_DIRECTION_DESCS[direction]+";"+((int)Math.round(factor*100.0))+"%;"+flagCache+";"+targetZapperStr;
         }
 
         public DefaultFactionChangeEvent(Faction F){myFaction=F;}
 
         public DefaultFactionChangeEvent(Faction F, String key)
         {
-        	myFaction=F;
+            myFaction=F;
             Vector v = CMParms.parseSemicolons(key,false);
             
             String trigger =(String)v.elementAt(0);
@@ -1288,8 +1288,8 @@ public class DefaultFaction implements Faction, MsgListener
             int x=trigger.indexOf('(');
             if((x>0)&&(trigger.endsWith(")")))
             {
-            	setTriggerParameters(trigger.substring(x+1,trigger.length()-1));
-            	trigger=trigger.substring(0,x);
+                setTriggerParameters(trigger.substring(x+1,trigger.length()-1));
+                trigger=trigger.substring(0,x);
             }
             
             setEventID(trigger);
@@ -1329,9 +1329,9 @@ public class DefaultFaction implements Faction, MsgListener
         }
         public boolean setDirection(String d)
         {
-        	if(CMath.isInteger(d))
-        		direction=CMath.s_int(d);
-        	else
+            if(CMath.isInteger(d))
+                direction=CMath.s_int(d);
+            else
             if(d.startsWith("U")) {
                 direction = CHANGE_DIRECTION_UP;
             }
@@ -1381,31 +1381,31 @@ public class DefaultFaction implements Faction, MsgListener
         }
         public boolean applies(MOB source, MOB target)
         {
-        	if((compiledTargetZapper!=null)
-        	&&(!CMLib.masking().maskCheck(compiledTargetZapper,target,false)))
-        		return false;
-        	if((compiledSourceZapper!=null)
-        	&&(!CMLib.masking().maskCheck(compiledSourceZapper,target,false)))
-        		return false;
-        	return true;
+            if((compiledTargetZapper!=null)
+            &&(!CMLib.masking().maskCheck(compiledTargetZapper,target,false)))
+                return false;
+            if((compiledSourceZapper!=null)
+            &&(!CMLib.masking().maskCheck(compiledSourceZapper,target,false)))
+                return false;
+            return true;
         }
         
         public String triggerParameters() { return triggerParms;}
         public void setTriggerParameters(String newVal)
         {
-        	triggerParms=newVal;
-        	savedTriggerParms=CMParms.parseEQParms(newVal);
-        	compiledSourceZapper=null;
-        	String S=savedTriggerParms.get("MASK");
-        	if((S!=null)&&(S.length()>0))
-        		compiledSourceZapper=CMLib.masking().maskCompile(S);
+            triggerParms=newVal;
+            savedTriggerParms=CMParms.parseEQParms(newVal);
+            compiledSourceZapper=null;
+            String S=savedTriggerParms.get("MASK");
+            if((S!=null)&&(S.length()>0))
+                compiledSourceZapper=CMLib.masking().maskCompile(S);
         }
         public Object stateVariable(int x){ return ((x>=0)&&(x<stateVariables.length))?stateVariables[x]:null;}
         public void setStateVariable(int x, Object newVal)
         {
-        	if(x<0) return;
-        	if(x>=stateVariables.length) stateVariables=Arrays.copyOf(stateVariables,x+1);
-        	stateVariables[x]=newVal;
+            if(x<0) return;
+            if(x>=stateVariables.length) stateVariables=Arrays.copyOf(stateVariables,x+1);
+            stateVariables[x]=newVal;
         }
         public Faction getFaction(){return myFaction;}
     }
@@ -1482,116 +1482,116 @@ public class DefaultFaction implements Faction, MsgListener
     }
     public boolean delAbilityUsage(Faction.FactionAbilityUsage usage)
     {
-    	if(!abilityUsages.remove(usage))
-    		return false;
-    	abilityUsages.trimToSize();
+        if(!abilityUsages.remove(usage))
+            return false;
+        abilityUsages.trimToSize();
         return true;
     }
 
     public class DefaultFactionData implements FactionData
     {
-        private int 		value;
-        private boolean 	noListeners;
-        private boolean 	noTickers;
-        private boolean 	noStatAffectors;
-        private long 		lastUpdated;
-        private Ability[] 	myEffects;
-        private Behavior[] 	myBehaviors;
-        private Ability 	lightPresenceAbilities[];
+        private int         value;
+        private boolean     noListeners;
+        private boolean     noTickers;
+        private boolean     noStatAffectors;
+        private long         lastUpdated;
+        private Ability[]     myEffects;
+        private Behavior[]     myBehaviors;
+        private Ability     lightPresenceAbilities[];
         private Faction.FactionRange currentRange;
-        private boolean 	erroredOut;
-        private Faction 	myFaction;
-        public  boolean 	isReset = false;
-        private DVector 	currentReactionSets;
+        private boolean     erroredOut;
+        private Faction     myFaction;
+        public  boolean     isReset = false;
+        private DVector     currentReactionSets;
         
         public DefaultFactionData(Faction F)
         {
-        	resetFactionData(F);
+            resetFactionData(F);
         }
         public void resetFactionData(Faction F)
         {
-        	if(!isReset)
-        	{
-	        	myFaction=F;
-	            value=0;
-	            noListeners=false;
-	            noTickers=false;
-	            noStatAffectors=false;
-	            lastUpdated=System.currentTimeMillis();
-	            myEffects=new Ability[0];
-	            myBehaviors=new Behavior[0];
-	            currentReactionSets = new DVector(2);
-	            lightPresenceAbilities = new Ability[0];
-	            currentRange = null;
-	            erroredOut=false;
-	            isReset = true;
-        	}
+            if(!isReset)
+            {
+                myFaction=F;
+                value=0;
+                noListeners=false;
+                noTickers=false;
+                noStatAffectors=false;
+                lastUpdated=System.currentTimeMillis();
+                myEffects=new Ability[0];
+                myBehaviors=new Behavior[0];
+                currentReactionSets = new DVector(2);
+                lightPresenceAbilities = new Ability[0];
+                currentRange = null;
+                erroredOut=false;
+                isReset = true;
+            }
         }
         public int value() { return value;}
         public Faction getFaction() { return myFaction;}
         public void setValue(int newValue)
         {
-        	this.value=newValue;
-        	if((currentRange==null)||(this.value<currentRange.low())||(this.value>currentRange.high()))
-        	{
-        		synchronized(this)
-        		{
-                	if((currentRange!=null)&&(this.value>=currentRange.low())&&(this.value<=currentRange.high()))
-                		return;
-	        		currentRange = fetchRange(value);
-	        		if(currentRange==null)
-	        		{
-	        			if(!erroredOut)
-		        			Log.errOut("DefaultFactionData","Faction "+factionID()+" does not define a range for "+this.value);
-	        			erroredOut=true;
-	        		}
-	        		else
-	        		{
-	        			erroredOut=false;
-	        			currentReactionSets=new DVector(2);
-	        			for(Enumeration<Faction.FactionReactionItem> e=reactions();e.hasMoreElements();)
-	        			{
-	        				Faction.FactionReactionItem react = (Faction.FactionReactionItem)e.nextElement();
-	        				if(!react.rangeName().equalsIgnoreCase(currentRange.codeName()))
-	        					continue;
-	        				Faction.FactionReactionItem sampleReact = null;
-	        				Vector<Faction.FactionReactionItem> reactSet=null;
-	        				for(int r=0;r<currentReactionSets.size();r++)
-	        				{
-	        					reactSet=(Vector<Faction.FactionReactionItem>)currentReactionSets.elementAt(r,2);
-	        					sampleReact=(Faction.FactionReactionItem)reactSet.firstElement();
-	        					if(react.presentMOBMask().trim().equalsIgnoreCase(sampleReact.presentMOBMask().trim()))
-	        					{
-	        						reactSet.addElement(react);
-	        						react=null; break;
-	        					}
-	        				}
-	        				if(react!=null)
-	        					currentReactionSets.addElement(react.compiledPresentMOBMask(),new XVector<Faction.FactionReactionItem>(react));
-	        			}
-	        			//noReactions=currentReactionSets.size()==0;
-	        		}
-	                noListeners=(myEffects.length==0) && (myBehaviors.length==0) && (currentReactionSets.size()==0);
-	                noTickers=(myBehaviors.length==0) && (myEffects.length==0) &&((currentReactionSets.size()==0)||(!useLightReactions()));
-        		}
-        	}
+            this.value=newValue;
+            if((currentRange==null)||(this.value<currentRange.low())||(this.value>currentRange.high()))
+            {
+                synchronized(this)
+                {
+                    if((currentRange!=null)&&(this.value>=currentRange.low())&&(this.value<=currentRange.high()))
+                        return;
+                    currentRange = fetchRange(value);
+                    if(currentRange==null)
+                    {
+                        if(!erroredOut)
+                            Log.errOut("DefaultFactionData","Faction "+factionID()+" does not define a range for "+this.value);
+                        erroredOut=true;
+                    }
+                    else
+                    {
+                        erroredOut=false;
+                        currentReactionSets=new DVector(2);
+                        for(Enumeration<Faction.FactionReactionItem> e=reactions();e.hasMoreElements();)
+                        {
+                            Faction.FactionReactionItem react = (Faction.FactionReactionItem)e.nextElement();
+                            if(!react.rangeName().equalsIgnoreCase(currentRange.codeName()))
+                                continue;
+                            Faction.FactionReactionItem sampleReact = null;
+                            Vector<Faction.FactionReactionItem> reactSet=null;
+                            for(int r=0;r<currentReactionSets.size();r++)
+                            {
+                                reactSet=(Vector<Faction.FactionReactionItem>)currentReactionSets.elementAt(r,2);
+                                sampleReact=(Faction.FactionReactionItem)reactSet.firstElement();
+                                if(react.presentMOBMask().trim().equalsIgnoreCase(sampleReact.presentMOBMask().trim()))
+                                {
+                                    reactSet.addElement(react);
+                                    react=null; break;
+                                }
+                            }
+                            if(react!=null)
+                                currentReactionSets.addElement(react.compiledPresentMOBMask(),new XVector<Faction.FactionReactionItem>(react));
+                        }
+                        //noReactions=currentReactionSets.size()==0;
+                    }
+                    noListeners=(myEffects.length==0) && (myBehaviors.length==0) && (currentReactionSets.size()==0);
+                    noTickers=(myBehaviors.length==0) && (myEffects.length==0) &&((currentReactionSets.size()==0)||(!useLightReactions()));
+                }
+            }
         }
         
-    	public void affectPhyStats(Physical affected, PhyStats affectableStats)
-    	{
-    		if(!noStatAffectors)
-	    		for(Ability A : myEffects) A.affectPhyStats(affected, affectableStats);
-    	}
-    	public void affectCharStats(MOB affectedMob, CharStats affectableStats)
-    	{
-    		if(!noStatAffectors)
-    			for(Ability A : myEffects) A.affectCharStats(affectedMob, affectableStats);
-    	}
-    	public void affectCharState(MOB affectedMob, CharState affectableMaxState)
-    	{
-    		if(!noStatAffectors)
-	    		for(Ability A : myEffects) A.affectCharState(affectedMob, affectableMaxState);
-    	}
+        public void affectPhyStats(Physical affected, PhyStats affectableStats)
+        {
+            if(!noStatAffectors)
+                for(Ability A : myEffects) A.affectPhyStats(affected, affectableStats);
+        }
+        public void affectCharStats(MOB affectedMob, CharStats affectableStats)
+        {
+            if(!noStatAffectors)
+                for(Ability A : myEffects) A.affectCharStats(affectedMob, affectableStats);
+        }
+        public void affectCharState(MOB affectedMob, CharState affectableMaxState)
+        {
+            if(!noStatAffectors)
+                for(Ability A : myEffects) A.affectCharState(affectedMob, affectableMaxState);
+        }
         public void addHandlers(Vector<Ability> listeners, Vector<Behavior> tickers) 
         {
             this.myEffects=listeners.toArray(new Ability[0]);
@@ -1605,167 +1605,167 @@ public class DefaultFaction implements Faction, MsgListener
         
         private Ability setPresenceReaction(MOB M, Physical myHost)
         {
-        	if((!CMLib.flags().canBeSeenBy(myHost, M))&&(!CMLib.flags().canBeHeardMovingBy(myHost,M)))
-        		return null;
-        		
-	    	Vector<Object> myReactions=null;
-	    	List<Faction.FactionReactionItem> tempReactSet=null;
-	    	for(int d=0;d<currentReactionSets.size();d++)
-	    		if(CMLib.masking().maskCheck((MaskingLibrary.CompiledZapperMask)currentReactionSets.elementAt(d,1),M,true))
-	    		{
-	    			if(myReactions==null) myReactions=new Vector<Object>();
-	    			tempReactSet=(List)currentReactionSets.elementAt(d,2);
-	    			for(Faction.FactionReactionItem reactionItem : tempReactSet)
-		    			myReactions.add(reactionItem.reactionObjectID()+"="+reactionItem.parameters());
-	    		}
-	    	if(myReactions!=null)
-	    		if(useLightReactions())
-	    		{
-	    			presenceReactionPrototype.invoke(M,myReactions,myHost,false,0);
-	    			if(myReactions.size()==1)
-	    			{
-	    				Ability A=(Ability)myReactions.firstElement();
-		    			A.setInvoker(M);
-		    			return A;
-	    			}
-	    		}
-	    		else
-			    	presenceReactionPrototype.invoke(M,myReactions,myHost,true,0);
-	    	return null;
+            if((!CMLib.flags().canBeSeenBy(myHost, M))&&(!CMLib.flags().canBeHeardMovingBy(myHost,M)))
+                return null;
+                
+            Vector<Object> myReactions=null;
+            List<Faction.FactionReactionItem> tempReactSet=null;
+            for(int d=0;d<currentReactionSets.size();d++)
+                if(CMLib.masking().maskCheck((MaskingLibrary.CompiledZapperMask)currentReactionSets.elementAt(d,1),M,true))
+                {
+                    if(myReactions==null) myReactions=new Vector<Object>();
+                    tempReactSet=(List)currentReactionSets.elementAt(d,2);
+                    for(Faction.FactionReactionItem reactionItem : tempReactSet)
+                        myReactions.add(reactionItem.reactionObjectID()+"="+reactionItem.parameters());
+                }
+            if(myReactions!=null)
+                if(useLightReactions())
+                {
+                    presenceReactionPrototype.invoke(M,myReactions,myHost,false,0);
+                    if(myReactions.size()==1)
+                    {
+                        Ability A=(Ability)myReactions.firstElement();
+                        A.setInvoker(M);
+                        return A;
+                    }
+                }
+                else
+                    presenceReactionPrototype.invoke(M,myReactions,myHost,true,0);
+            return null;
         }
         
-    	public void executeMsg(final Environmental myHost, final CMMsg msg)
-    	{
-    		if(noListeners) return;
-			synchronized(lightPresenceAbilities)
-			{
-				if((currentReactionSets.size()>0)
-				&&(msg.sourceMinor()==CMMsg.TYP_ENTER)
-				&&(msg.target() instanceof Room))
-				{
-			    	if(presenceReactionPrototype==null)
-			    		if((presenceReactionPrototype=CMClass.getAbility("PresenceReaction"))==null) return;
-					if((msg.source()==myHost)
-					&&(!msg.source().isMonster()))
-					{
-						MOB M=null;
-				    	Room R=(Room)msg.target();
-				    	List<Ability> lightPresenceReactions=new LinkedList<Ability>();
-				    	Ability A=null;
-						for(int m=0;m<R.numInhabitants();m++)
-						{
-							M=R.fetchInhabitant(m);
-							if((M!=null)&&(M!=myHost)&&(M.isMonster()))
-							{
-								A=setPresenceReaction(M,msg.source());
-								if(A!=null) // means yes, we are using light, and yes, heres a reaction to add
-									lightPresenceReactions.add(A);
-							}
-						}
-						lightPresenceAbilities = lightPresenceReactions.toArray(new Ability[0]);
-					}
-					else
-					if((msg.source().isMonster())
-					&&(msg.target()==CMLib.map().roomLocation(myHost))
-					&&(myHost instanceof Physical))
-					{
-						Ability A=setPresenceReaction(msg.source(),(Physical)myHost);
-						if(A!=null){ // means yes, we are using light, and yes, heres a reaction to add
-							lightPresenceAbilities = Arrays.copyOf(lightPresenceAbilities, lightPresenceAbilities.length+1);
-							lightPresenceAbilities[lightPresenceAbilities.length-1]=A;
-						}
-					}
-				}
-				else
-				if((lightPresenceAbilities.length>0)
-				&&(msg.sourceMinor()==CMMsg.TYP_LEAVE)
-				&&(msg.target() instanceof Room))
-				{
-					if((msg.source()==myHost)
-					&&(!msg.source().isMonster()))
-					{
-						Room R=(Room)msg.target();
-						MOB M=null;
-						for(int m=0;m<R.numInhabitants();m++)
-						{
-							M=R.fetchInhabitant(m);
-							if((M!=null)&&(M!=myHost)&&(M.isMonster()))
-								presenceReactionPrototype.invoke(M,new Vector(),null,true,0); // this shuts it down
-						}
-		    			lightPresenceAbilities=new Ability[0];
-					}
-					else
-					if((msg.source().isMonster())
-					&&(myHost instanceof Physical))
-					{
-						presenceReactionPrototype.invoke(msg.source(),new Vector(),null,true,0);
-						Ability[] newAbilities = new Ability[lightPresenceAbilities.length];
-		    			int l=0;
-		    			for(int a=0;a<lightPresenceAbilities.length;a++)
-		    				if(lightPresenceAbilities[a].affecting()==null)
-		    				{}
-		    				else
-		    				if(lightPresenceAbilities[a].affecting()==msg.source())
-		    					lightPresenceAbilities[a].invoke(msg.source(),new Vector(),null,true,0);
-		    				else
-		    					newAbilities[l++]=lightPresenceAbilities[a];
-		    			if(l==0)
-			    			lightPresenceAbilities=new Ability[0];
-		    			else
-		    			if(l<lightPresenceAbilities.length)
-							lightPresenceAbilities = Arrays.copyOf(newAbilities, l);
-					}
-				}
-			}
+        public void executeMsg(final Environmental myHost, final CMMsg msg)
+        {
+            if(noListeners) return;
+            synchronized(lightPresenceAbilities)
+            {
+                if((currentReactionSets.size()>0)
+                &&(msg.sourceMinor()==CMMsg.TYP_ENTER)
+                &&(msg.target() instanceof Room))
+                {
+                    if(presenceReactionPrototype==null)
+                        if((presenceReactionPrototype=CMClass.getAbility("PresenceReaction"))==null) return;
+                    if((msg.source()==myHost)
+                    &&(!msg.source().isMonster()))
+                    {
+                        MOB M=null;
+                        Room R=(Room)msg.target();
+                        List<Ability> lightPresenceReactions=new LinkedList<Ability>();
+                        Ability A=null;
+                        for(int m=0;m<R.numInhabitants();m++)
+                        {
+                            M=R.fetchInhabitant(m);
+                            if((M!=null)&&(M!=myHost)&&(M.isMonster()))
+                            {
+                                A=setPresenceReaction(M,msg.source());
+                                if(A!=null) // means yes, we are using light, and yes, heres a reaction to add
+                                    lightPresenceReactions.add(A);
+                            }
+                        }
+                        lightPresenceAbilities = lightPresenceReactions.toArray(new Ability[0]);
+                    }
+                    else
+                    if((msg.source().isMonster())
+                    &&(msg.target()==CMLib.map().roomLocation(myHost))
+                    &&(myHost instanceof Physical))
+                    {
+                        Ability A=setPresenceReaction(msg.source(),(Physical)myHost);
+                        if(A!=null){ // means yes, we are using light, and yes, heres a reaction to add
+                            lightPresenceAbilities = Arrays.copyOf(lightPresenceAbilities, lightPresenceAbilities.length+1);
+                            lightPresenceAbilities[lightPresenceAbilities.length-1]=A;
+                        }
+                    }
+                }
+                else
+                if((lightPresenceAbilities.length>0)
+                &&(msg.sourceMinor()==CMMsg.TYP_LEAVE)
+                &&(msg.target() instanceof Room))
+                {
+                    if((msg.source()==myHost)
+                    &&(!msg.source().isMonster()))
+                    {
+                        Room R=(Room)msg.target();
+                        MOB M=null;
+                        for(int m=0;m<R.numInhabitants();m++)
+                        {
+                            M=R.fetchInhabitant(m);
+                            if((M!=null)&&(M!=myHost)&&(M.isMonster()))
+                                presenceReactionPrototype.invoke(M,new Vector(),null,true,0); // this shuts it down
+                        }
+                        lightPresenceAbilities=new Ability[0];
+                    }
+                    else
+                    if((msg.source().isMonster())
+                    &&(myHost instanceof Physical))
+                    {
+                        presenceReactionPrototype.invoke(msg.source(),new Vector(),null,true,0);
+                        Ability[] newAbilities = new Ability[lightPresenceAbilities.length];
+                        int l=0;
+                        for(int a=0;a<lightPresenceAbilities.length;a++)
+                            if(lightPresenceAbilities[a].affecting()==null)
+                            {}
+                            else
+                            if(lightPresenceAbilities[a].affecting()==msg.source())
+                                lightPresenceAbilities[a].invoke(msg.source(),new Vector(),null,true,0);
+                            else
+                                newAbilities[l++]=lightPresenceAbilities[a];
+                        if(l==0)
+                            lightPresenceAbilities=new Ability[0];
+                        else
+                        if(l<lightPresenceAbilities.length)
+                            lightPresenceAbilities = Arrays.copyOf(newAbilities, l);
+                    }
+                }
+            }
             for(Ability A : lightPresenceAbilities)
                 A.executeMsg(A.invoker(), msg);
             for(Ability A : myEffects)
                 A.executeMsg(myHost, msg);
             for(Behavior B : myBehaviors)
                 B.executeMsg(myHost, msg);
-    	}
-    	public boolean okMessage(final Environmental myHost, final CMMsg msg)
-    	{
-    		if(noListeners) return true;
+        }
+        public boolean okMessage(final Environmental myHost, final CMMsg msg)
+        {
+            if(noListeners) return true;
             for(Ability A : myEffects)
                 if(!A.okMessage(myHost, msg))
-                	return false;
+                    return false;
             for(Behavior B : myBehaviors)
                 if(!B.okMessage(myHost, msg))
-                	return false;
+                    return false;
             for(Ability A : lightPresenceAbilities)
                 if(!A.okMessage(A.invoker(), msg))
-                	return false;
-    		return true;
-    	}
+                    return false;
+            return true;
+        }
         public boolean tick(Tickable ticking, int tickID)
         {
-    		if(noTickers) return true;
+            if(noTickers) return true;
             for(Ability A : myEffects)
                 if(!A.tick(ticking, tickID))
-                	return false;
+                    return false;
             for(Behavior B : myBehaviors)
                 if(!B.tick(ticking, tickID))
-                	return false;
+                    return false;
             for(Ability A : lightPresenceAbilities)
                 if(!A.tick(A.invoker(), tickID))
-                	return false;
-        	return true;
+                    return false;
+            return true;
         }
     }
     
     public class DefaultFactionZapFactor implements Faction.FactionZapFactor
     {
-    	private double gainF=1.0;
-    	private double lossF=1.0;
-    	private String mask="";
-    	private MaskingLibrary.CompiledZapperMask compiledMask=null;
-    	public DefaultFactionZapFactor(double gain, double loss, String mask)
-    	{
-    		setGainFactor(gain);
-    		setLossFactor(loss);
-    		setMOBMask(mask);
-    	}
+        private double gainF=1.0;
+        private double lossF=1.0;
+        private String mask="";
+        private MaskingLibrary.CompiledZapperMask compiledMask=null;
+        public DefaultFactionZapFactor(double gain, double loss, String mask)
+        {
+            setGainFactor(gain);
+            setLossFactor(loss);
+            setMOBMask(mask);
+        }
         public double gainFactor() { return gainF;}
         public void setGainFactor(double val){gainF=val;}
         public double lossFactor(){return lossF;}
@@ -1773,28 +1773,28 @@ public class DefaultFaction implements Faction, MsgListener
         public String MOBMask(){return mask;}
         public MaskingLibrary.CompiledZapperMask compiledMOBMask(){return compiledMask;}
         public void setMOBMask(String str){
-        	mask=str;
-        	compiledMask=CMLib.masking().maskCompile(str);
+            mask=str;
+            compiledMask=CMLib.masking().maskCompile(str);
         }
         public String toString(){ return gainF+";"+lossF+";"+mask; }
     }
     
     public class DefaultFactionReactionItem implements Faction.FactionReactionItem
     {
-    	private String reactionObjectID="";
-    	private String mobMask="";
-    	private String rangeName="";
-    	private String parms="";
-    	private MaskingLibrary.CompiledZapperMask compiledMobMask=null;
+        private String reactionObjectID="";
+        private String mobMask="";
+        private String rangeName="";
+        private String parms="";
+        private MaskingLibrary.CompiledZapperMask compiledMobMask=null;
         public String reactionObjectID(){return reactionObjectID;}
         public void setReactionObjectID(String str){reactionObjectID=str;}
         public String presentMOBMask(){return mobMask;}
         public void setPresentMOBMask(String str){
-        	mobMask=str;
-        	if((str==null)||(str.trim().length()==0))
-        		compiledMobMask=null;
-        	else
-	        	compiledMobMask=CMLib.masking().maskCompile(str);
+            mobMask=str;
+            if((str==null)||(str.trim().length()==0))
+                compiledMobMask=null;
+            else
+                compiledMobMask=CMLib.masking().maskCompile(str);
         }
         public MaskingLibrary.CompiledZapperMask compiledPresentMOBMask(){ return compiledMobMask;}
         public String rangeName(){return rangeName;}
@@ -1807,21 +1807,21 @@ public class DefaultFaction implements Faction, MsgListener
 
         public DefaultFactionReactionItem(String key)
         {
-        	int x=key.indexOf(';');
-        	String str = key.substring(0,x).toUpperCase().trim();
-        	String rest = key.substring(x+1);
-        	setRangeName(str);
-        	
-        	x=rest.indexOf(';');
-        	str = rest.substring(0,x).trim();
-        	rest = rest.substring(x+1);
-        	setPresentMOBMask(str);
-        	
-        	x=rest.indexOf(';');
-        	str = rest.substring(0,x).trim();
-        	rest = rest.substring(x+1);
-        	setReactionObjectID(str);
-        	setParameters(rest);
+            int x=key.indexOf(';');
+            String str = key.substring(0,x).toUpperCase().trim();
+            String rest = key.substring(x+1);
+            setRangeName(str);
+            
+            x=rest.indexOf(';');
+            str = rest.substring(0,x).trim();
+            rest = rest.substring(x+1);
+            setPresentMOBMask(str);
+            
+            x=rest.indexOf(';');
+            str = rest.substring(0,x).trim();
+            rest = rest.substring(x+1);
+            setReactionObjectID(str);
+            setParameters(rest);
         }
         
     }
