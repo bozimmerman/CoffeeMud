@@ -117,7 +117,7 @@ public class Prop_AddDamage extends Property
                         break;
                     }
                 }
-                if(!done)
+                if((!done)&&(!s.equals("ALL")))
                     Log.errOut("Prop_AddDamage","Unknown weapon type/attack: "+s+" in "+CMLib.map().getExtendedRoomID(CMLib.map().roomLocation(affected)));
             }
         }
