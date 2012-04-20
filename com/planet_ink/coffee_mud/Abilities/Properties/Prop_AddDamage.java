@@ -55,6 +55,7 @@ public class Prop_AddDamage extends Property
         final List<String> parms=CMParms.parse(newMiscText.toUpperCase());
         for(String s : parms)
         {
+            if(s.startsWith("+")) s=s.substring(1);
             if(CMath.isPct(s))
                 pctDamage=CMath.s_pct(s);
             else
@@ -103,6 +104,16 @@ public class Prop_AddDamage extends Property
                     {
                         typeOfEffect=i;
                         done=true;
+                        break;
+                    }
+                }
+                if(!done)
+                for(int i=0;i<RawMaterial.CODES.NAMES().length;i++)
+                {
+                    final String type=RawMaterial.CODES.NAMES()[i];
+                    if(type.equals(s))
+                    {
+                        done=true; // just eat it
                         break;
                     }
                 }
