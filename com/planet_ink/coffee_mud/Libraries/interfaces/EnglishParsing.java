@@ -41,6 +41,8 @@ public interface EnglishParsing extends CMLibrary
     public String cleanArticles(String s);
     public String stripPunctuation(String str);
     public String makePlural(String str);
+    public String getFirstWord(final String str);
+    public String properIndefiniteArticle(String str);
     public String toEnglishStringList(final String[] V);
     public String insertUnColoredAdjective(String str, String adjective);
     public String startWithAorAn(String str);

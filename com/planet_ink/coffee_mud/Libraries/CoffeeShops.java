@@ -44,13 +44,13 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
         if(E instanceof ShopKeeper) return (ShopKeeper)E;
         if(E instanceof Physical)
         {
-        	Physical P=(Physical)E;
-    		for(final Enumeration<Ability> a=P.effects();a.hasMoreElements();)
-    		{
-    			final Ability A=a.nextElement();
-	            if(A instanceof ShopKeeper)
-	                return (ShopKeeper)A;
-	        }
+            Physical P=(Physical)E;
+            for(final Enumeration<Ability> a=P.effects();a.hasMoreElements();)
+            {
+                final Ability A=a.nextElement();
+                if(A instanceof ShopKeeper)
+                    return (ShopKeeper)A;
+            }
         }
         if(E instanceof MOB)
         {
@@ -62,12 +62,12 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
                 if(I instanceof ShopKeeper)
                     return (ShopKeeper)I;
                 if(I!=null)
-            		for(final Enumeration<Ability> a=I.effects();a.hasMoreElements();)
-            		{
-            			final Ability A=a.nextElement();
-	                    if(A instanceof ShopKeeper)
-	                        return (ShopKeeper)A;
-	                }
+                    for(final Enumeration<Ability> a=I.effects();a.hasMoreElements();)
+                    {
+                        final Ability A=a.nextElement();
+                        if(A instanceof ShopKeeper)
+                            return (ShopKeeper)A;
+                    }
             }
         }
         return null;
@@ -119,7 +119,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
         str.append("Interested in "+E.name()+"?");
         str.append(" Here is some information for you:");
         if(E instanceof Physical)
-        	str.append("\n\rLevel      : "+((Physical)E).phyStats().level());
+            str.append("\n\rLevel      : "+((Physical)E).phyStats().level());
         if(E instanceof Item)
         {
             Item I=(Item)E;
@@ -136,20 +136,20 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
                 str.append("\n\rWear Info  : Worn on ");
                 Wearable.CODES codes = Wearable.CODES.instance();
                 for(long wornCode : codes.all())
-	                if(wornCode != Wearable.IN_INVENTORY)
-	                {
-	                    if(codes.name(wornCode).length()>0)
-	                    {
-	                        if(((I.rawProperLocationBitmap()&wornCode)==wornCode))
-	                        {
-	                            str.append(CMStrings.capitalizeAndLower(codes.name(wornCode))+" ");
-	                            if(I.rawLogicalAnd())
-	                                str.append("and ");
-	                            else
-	                                str.append("or ");
-	                        }
-	                    }
-	                }
+                    if(wornCode != Wearable.IN_INVENTORY)
+                    {
+                        if(codes.name(wornCode).length()>0)
+                        {
+                            if(((I.rawProperLocationBitmap()&wornCode)==wornCode))
+                            {
+                                str.append(CMStrings.capitalizeAndLower(codes.name(wornCode))+" ");
+                                if(I.rawLogicalAnd())
+                                    str.append("and ");
+                                else
+                                    str.append("or ");
+                            }
+                        }
+                    }
                 if(str.toString().endsWith(" and "))
                     str.delete(str.length()-5,str.length());
                 else
@@ -163,43 +163,43 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 
     protected Ability getTrainableAbility(MOB teacher, Ability A)
     {
-    	if((teacher==null)||(A==null)) return A;
-    	Ability teachableA=teacher.fetchAbility(A.ID());
-    	if(teachableA==null)
-    	{
-    		teachableA=(Ability)A.copyOf();
-    		teacher.addAbility(teachableA);
-    	}
-    	teachableA.setProficiency(100);
-    	return teachableA;
+        if((teacher==null)||(A==null)) return A;
+        Ability teachableA=teacher.fetchAbility(A.ID());
+        if(teachableA==null)
+        {
+            teachableA=(Ability)A.copyOf();
+            teacher.addAbility(teachableA);
+        }
+        teachableA.setProficiency(100);
+        return teachableA;
     }
     
     protected boolean shownInInventory(MOB seller, MOB buyer, Environmental product, ShopKeeper shopKeeper)
     {
         if(CMSecurity.isAllowed(buyer,buyer.location(),"CMDMOBS")) 
-        	return true;
+            return true;
         if(seller == buyer) return true;
         if(product instanceof Item) 
         {
             if(((Item)product).container()!=null) 
-            	return false;
+                return false;
             if(((Item)product).phyStats().level()>buyer.phyStats().level()) 
-            	return false;
+                return false;
             if(!CMLib.flags().canBeSeenBy(product,buyer)) 
-            	return false;
+                return false;
         }
         if(product instanceof MOB)
         {
             if(((MOB)product).phyStats().level()>buyer.phyStats().level()) 
-            	return false;
+                return false;
         }
         if(product instanceof Ability)
         {
-        	if(shopKeeper.isSold(ShopKeeper.DEAL_TRAINER))
-        	{
-        		if(!CMLib.ableMapper().qualifiesByLevel(buyer, (Ability)product))
-    				return false;
-        	}
+            if(shopKeeper.isSold(ShopKeeper.DEAL_TRAINER))
+            {
+                if(!CMLib.ableMapper().qualifiesByLevel(buyer, (Ability)product))
+                    return false;
+            }
         }
         return true;
     }
@@ -222,7 +222,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
         else
         if(product instanceof MOB)
         {
-        	MOB M=(MOB)product;
+            MOB M=(MOB)product;
             Ability A=M.fetchEffect("Prop_Retainable");
             if(A!=null)
             {
@@ -400,7 +400,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
         if((CMath.bset(buyer.basePhyStats().disposition(),PhyStats.IS_BONUS))
         &&(product instanceof MiscMagic)
         &&(val.absoluteGoldPrice>2.0))
-        	val.absoluteGoldPrice/=2;
+            val.absoluteGoldPrice/=2;
 
         return val;
     }
@@ -508,7 +508,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
         &&(shop.doISellThis(product))
         &&(!(product instanceof Coins)))
         {
-        	Room sellerR=seller.location();
+            Room sellerR=seller.location();
             if(sellerR!=null)
             {
                 int medianLevel=sellerR.getArea().getAreaIStats()[Area.AREASTAT_MEDLEVEL];
@@ -718,7 +718,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
             E=(Environmental)rawInventory.get(i);
             if(shownInInventory(seller,buyer,E,shop)
             &&((mask==null)||(mask.length()==0)||(CMLib.english().containsString(E.name(),mask))))
-            	inventory.addElement(E);
+                inventory.addElement(E);
         }
 
         if(inventory.size()>0)
@@ -849,7 +849,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
             pawner.tell(shopkeeper.name()+" pays you "+CMLib.beanCounter().nameCurrencyShort(shopkeeper,val)+" for "+rawSoldItem.name()+".");
             if(rawSoldItem instanceof Item)
             {
-            	List<Item> V=null;
+                List<Item> V=null;
                 if(rawSoldItem instanceof Container)
                     V=((Container)rawSoldItem).getContents();
                 ((Item)rawSoldItem).unWear();
@@ -957,8 +957,8 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
             return false;
         Room room=seller.location();
         for(int p=0;p<products.size();p++)
-        	if(products.get(p) instanceof Item)
-	            room.addItem((Item)products.get(p),ItemPossessor.Expire.Player_Drop);
+            if(products.get(p) instanceof Item)
+                room.addItem((Item)products.get(p),ItemPossessor.Expire.Player_Drop);
         CMMsg msg2=CMClass.getMsg(mobFor,baseProduct,seller,CMMsg.MSG_GET,null);
         if((baseProduct instanceof LandTitle)||(room.okMessage(mobFor,msg2)))
         {
@@ -1030,7 +1030,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
             MOB teacher=CMClass.getMOB("Teacher");
             Ability teachableA=getTrainableAbility(teacher,A);
             if(teachableA!=null)
-            	teachableA.teach(teacher,mobFor);
+                teachableA.teach(teacher,mobFor);
             teacher.destroy();
         }
         else
@@ -1103,8 +1103,8 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
                     {
                         boolean related=myArea.isChild(A)||A.isParent(myArea);
                         if(!related)
-            	        	for(Enumeration<Area> p=A.getParents();p.hasMoreElements();)
-            		        {
+                            for(Enumeration<Area> p=A.getParents();p.hasMoreElements();)
+                            {
                                 Area P=p.nextElement();
                                 if((P!=null)&&(P!=myArea)&&((P==A)||(A.isParent(P))||(P.isChild(A))))
                                 { related=true; break;}
@@ -1136,8 +1136,8 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
                         roomsHandling.add(R);
                     else
                     {
-                    	List<Room> V2=A.getPropertyRooms();
-                    	roomsHandling.addAll(V2);
+                        List<Room> V2=A.getPropertyRooms();
+                        roomsHandling.addAll(V2);
                     }
                     if((A.landOwner().length()>0)
                     &&(!A.landOwner().equals(name))
@@ -1233,13 +1233,13 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 
     public String storeKeeperString(CoffeeShop shop)
     {
-    	if(shop==null) return "";
-    	if(shop.isSold(ShopKeeper.DEAL_ANYTHING))
-    		return "*Anything*";
-    	
-    	Vector V=new Vector();
-    	for(int d=1;d<ShopKeeper.DEAL_DESCS.length;d++)
-		if(shop.isSold(d))
+        if(shop==null) return "";
+        if(shop.isSold(ShopKeeper.DEAL_ANYTHING))
+            return "*Anything*";
+        
+        Vector V=new Vector();
+        for(int d=1;d<ShopKeeper.DEAL_DESCS.length;d++)
+        if(shop.isSold(d))
         switch(d)
         {
         case ShopKeeper.DEAL_GENERAL:
@@ -1305,7 +1305,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
         default:
             V.addElement("... I have no idea WHAT I sell"); break;
         }
-    	return CMParms.toStringList(V);
+        return CMParms.toStringList(V);
     }
 
     protected boolean shopKeeperItemTypeCheck(Environmental E, int dealCode, ShopKeeper shopKeeper)
@@ -1407,149 +1407,149 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
             return !(thisThang instanceof LandTitle);
         else
         for(int d=1;d<ShopKeeper.DEAL_DESCS.length;d++)
-        	if(shop.isSold(d) && shopKeeperItemTypeCheck(thisThang,d,shop))
-        		return true;
+            if(shop.isSold(d) && shopKeeperItemTypeCheck(thisThang,d,shop))
+                return true;
         return false;
     }
 
-	public void returnMoney(MOB to, String currency, double amt)
-	{
-		if(amt>0)
-			CMLib.beanCounter().giveSomeoneMoney(to, currency, amt);
-		else
-			CMLib.beanCounter().subtractMoney(to, currency,-amt);
-		if(amt!=0)
-			if(!CMLib.flags().isInTheGame(to,true))
-				CMLib.database().DBUpdatePlayerItems(to);
-	}
+    public void returnMoney(MOB to, String currency, double amt)
+    {
+        if(amt>0)
+            CMLib.beanCounter().giveSomeoneMoney(to, currency, amt);
+        else
+            CMLib.beanCounter().subtractMoney(to, currency,-amt);
+        if(amt!=0)
+            if(!CMLib.flags().isInTheGame(to,true))
+                CMLib.database().DBUpdatePlayerItems(to);
+    }
 
-	public String[] bid(MOB mob, double bid, String bidCurrency, Auctioneer.AuctionData auctionData, Item I, List<String> auctionAnnounces)
-	{
-		String bidWords=CMLib.beanCounter().nameCurrencyShort(auctionData.currency,auctionData.bid);
-		String currencyName=CMLib.beanCounter().getDenominationName(auctionData.currency);
-		if(bid==0.0)
-			return new String[]{"Up for auction: "+I.name()+".  The current bid is "+bidWords+".",null};
+    public String[] bid(MOB mob, double bid, String bidCurrency, Auctioneer.AuctionData auctionData, Item I, List<String> auctionAnnounces)
+    {
+        String bidWords=CMLib.beanCounter().nameCurrencyShort(auctionData.currency,auctionData.bid);
+        String currencyName=CMLib.beanCounter().getDenominationName(auctionData.currency);
+        if(bid==0.0)
+            return new String[]{"Up for auction: "+I.name()+".  The current bid is "+bidWords+".",null};
 
-		if(!bidCurrency.equals(auctionData.currency))
-		    return new String[]{"This auction is being bid in "+currencyName+" only.",null};
+        if(!bidCurrency.equals(auctionData.currency))
+            return new String[]{"This auction is being bid in "+currencyName+" only.",null};
 
-		if(bid>CMLib.beanCounter().getTotalAbsoluteValue(mob,auctionData.currency))
-			return new String[]{"You don't have enough "+currencyName+" on hand to cover that bid.",null};
+        if(bid>CMLib.beanCounter().getTotalAbsoluteValue(mob,auctionData.currency))
+            return new String[]{"You don't have enough "+currencyName+" on hand to cover that bid.",null};
 
         if((bid<auctionData.bid)||(bid==0))
         {
-    		String bwords=CMLib.beanCounter().nameCurrencyShort(bidCurrency, bid);
+            String bwords=CMLib.beanCounter().nameCurrencyShort(bidCurrency, bid);
             return new String[]{"Your bid of "+bwords+" is insufficient."+((auctionData.bid>0)?" The current high bid is "+bidWords+".":""),null};
         }
         else
-		if((bid>auctionData.highBid)||((bid>auctionData.bid)&&(auctionData.highBid==0)))
-		{
+        if((bid>auctionData.highBid)||((bid>auctionData.bid)&&(auctionData.highBid==0)))
+        {
             MOB oldHighBider=auctionData.highBidderM;
             if(auctionData.highBidderM!=null)
                 returnMoney(auctionData.highBidderM,auctionData.currency,auctionData.highBid);
-			auctionData.highBidderM=mob;
-			if(auctionData.highBid<=0.0)
+            auctionData.highBidderM=mob;
+            if(auctionData.highBid<=0.0)
             {
                 if(auctionData.bid>0)
                     auctionData.highBid=auctionData.bid;
                 else
                     auctionData.highBid=0.0;
             }
-			auctionData.bid=auctionData.highBid+1.0;
-			auctionData.highBid=bid;
+            auctionData.bid=auctionData.highBid+1.0;
+            auctionData.highBid=bid;
             returnMoney(auctionData.highBidderM,auctionData.currency,-bid);
-			bidWords=CMLib.beanCounter().nameCurrencyShort(auctionData.currency,auctionData.bid);
-			String yourBidWords = CMLib.beanCounter().abbreviatedPrice(currencyName, auctionData.highBid);
-			auctionAnnounces.add("A new bid has been entered for "+I.name()+". The current high bid is "+bidWords+".");
-			if((oldHighBider!=null)&&(oldHighBider==mob))
-				return new String[]{"You have submitted a new high bid of "+yourBidWords+" for "+I.name()+".",null};
-			else
-			if((oldHighBider!=null)&&(oldHighBider!=mob))
-				return new String[]{"You have the new high reserve bid of "+yourBidWords+" for "+I.name()+". The current nominal high bid is "+bidWords+".","You have been outbid for "+I.name()+"."};
-			else
-				return new String[]{"You have submitted a bid of "+yourBidWords+" for "+I.name()+".",null};
-		}
-		else
-		if((bid==auctionData.bid)&&(auctionData.highBidderM!=null))
-		{
-			return new String[]{"You must bid higher than "+bidWords+" to have your bid accepted.",null};
-		}
-		else
-		if((bid==auctionData.highBid)&&(auctionData.highBidderM!=null))
-		{
-			if((auctionData.highBidderM!=null)&&(auctionData.highBidderM!=mob))
-			{
-				auctionData.bid=bid;
-				bidWords=CMLib.beanCounter().nameCurrencyShort(auctionData.currency,auctionData.bid);
-				auctionAnnounces.add("A new bid has been entered for "+I.name()+". The current bid is "+bidWords+".");
-				return new String[]{"You have been outbid by proxy for "+I.name()+".","Your high bid for "+I.name()+" has been reached."};
-			}
-		}
-		else
-		{
-			auctionData.bid=bid;
-			bidWords=CMLib.beanCounter().nameCurrencyShort(auctionData.currency,auctionData.bid);
-			auctionAnnounces.add("A new bid has been entered for "+I.name()+". The current bid is "+bidWords+".");
-			return new String[]{"You have been outbid by proxy for "+I.name()+".",null};
-		}
-		return null;
-	}
+            bidWords=CMLib.beanCounter().nameCurrencyShort(auctionData.currency,auctionData.bid);
+            String yourBidWords = CMLib.beanCounter().abbreviatedPrice(currencyName, auctionData.highBid);
+            auctionAnnounces.add("A new bid has been entered for "+I.name()+". The current high bid is "+bidWords+".");
+            if((oldHighBider!=null)&&(oldHighBider==mob))
+                return new String[]{"You have submitted a new high bid of "+yourBidWords+" for "+I.name()+".",null};
+            else
+            if((oldHighBider!=null)&&(oldHighBider!=mob))
+                return new String[]{"You have the new high reserve bid of "+yourBidWords+" for "+I.name()+". The current nominal high bid is "+bidWords+".","You have been outbid for "+I.name()+"."};
+            else
+                return new String[]{"You have submitted a bid of "+yourBidWords+" for "+I.name()+".",null};
+        }
+        else
+        if((bid==auctionData.bid)&&(auctionData.highBidderM!=null))
+        {
+            return new String[]{"You must bid higher than "+bidWords+" to have your bid accepted.",null};
+        }
+        else
+        if((bid==auctionData.highBid)&&(auctionData.highBidderM!=null))
+        {
+            if((auctionData.highBidderM!=null)&&(auctionData.highBidderM!=mob))
+            {
+                auctionData.bid=bid;
+                bidWords=CMLib.beanCounter().nameCurrencyShort(auctionData.currency,auctionData.bid);
+                auctionAnnounces.add("A new bid has been entered for "+I.name()+". The current bid is "+bidWords+".");
+                return new String[]{"You have been outbid by proxy for "+I.name()+".","Your high bid for "+I.name()+" has been reached."};
+            }
+        }
+        else
+        {
+            auctionData.bid=bid;
+            bidWords=CMLib.beanCounter().nameCurrencyShort(auctionData.currency,auctionData.bid);
+            auctionAnnounces.add("A new bid has been entered for "+I.name()+". The current bid is "+bidWords+".");
+            return new String[]{"You have been outbid by proxy for "+I.name()+".",null};
+        }
+        return null;
+    }
 
-	public Auctioneer.AuctionData getEnumeratedAuction(String named, String auctionHouse)
-	{
-		List<AuctionData> V=getAuctions(null,auctionHouse);
-		Vector V2=new Vector();
-		for(int v=0;v<V.size();v++)
-			V2.addElement(((Auctioneer.AuctionData)V.get(v)).auctioningI);
-		Environmental E=CMLib.english().fetchEnvironmental(V2,named,true);
-		if(!(E instanceof Item)) E=CMLib.english().fetchEnvironmental(V2,named,false);
-		if(E!=null)
-		for(int v=0;v<V.size();v++)
-			if(((Auctioneer.AuctionData)V.get(v)).auctioningI==E)
-				return (Auctioneer.AuctionData)V.get(v);
-		return null;
-	}
+    public Auctioneer.AuctionData getEnumeratedAuction(String named, String auctionHouse)
+    {
+        List<AuctionData> V=getAuctions(null,auctionHouse);
+        Vector V2=new Vector();
+        for(int v=0;v<V.size();v++)
+            V2.addElement(((Auctioneer.AuctionData)V.get(v)).auctioningI);
+        Environmental E=CMLib.english().fetchEnvironmental(V2,named,true);
+        if(!(E instanceof Item)) E=CMLib.english().fetchEnvironmental(V2,named,false);
+        if(E!=null)
+        for(int v=0;v<V.size();v++)
+            if(((Auctioneer.AuctionData)V.get(v)).auctioningI==E)
+                return (Auctioneer.AuctionData)V.get(v);
+        return null;
+    }
 
-	public void saveAuction(Auctioneer.AuctionData data, String auctionHouse, boolean updateOnly)
-	{
-		if(data.auctioningI instanceof Container) ((Container)data.auctioningI).emptyPlease();
+    public void saveAuction(Auctioneer.AuctionData data, String auctionHouse, boolean updateOnly)
+    {
+        if(data.auctioningI instanceof Container) ((Container)data.auctioningI).emptyPlease();
         StringBuffer xml=new StringBuffer("<AUCTION>");
         xml.append("<PRICE>"+data.bid+"</PRICE>");
         xml.append("<BUYOUT>"+data.buyOutPrice+"</BUYOUT>");
         if(data.highBidderM!=null)
-        	xml.append("<BIDDER>"+data.highBidderM.Name()+"</BIDDER>");
+            xml.append("<BIDDER>"+data.highBidderM.Name()+"</BIDDER>");
         else
-        	xml.append("<BIDDER />");
+            xml.append("<BIDDER />");
         xml.append("<MAXBID>"+data.highBid+"</MAXBID>");
         xml.append("<AUCTIONITEM>");
         xml.append(CMLib.coffeeMaker().getItemXML(data.auctioningI).toString());
         xml.append("</AUCTIONITEM>");
         xml.append("</AUCTION>");
         if(!updateOnly)
-			CMLib.database().DBWriteJournal("SYSTEM_AUCTIONS_"+auctionHouse.toUpperCase().trim(),
-											data.auctioningM.Name(),
-											""+data.tickDown,
-											CMStrings.limit(data.auctioningI.name(),38),
-											xml.toString());
+            CMLib.database().DBWriteJournal("SYSTEM_AUCTIONS_"+auctionHouse.toUpperCase().trim(),
+                                            data.auctioningM.Name(),
+                                            ""+data.tickDown,
+                                            CMStrings.limit(data.auctioningI.name(),38),
+                                            xml.toString());
         else
-        	CMLib.database().DBUpdateJournal(data.auctionDBKey, data.auctioningI.Name(),xml.toString(), 0);
-	}
+            CMLib.database().DBUpdateJournal(data.auctionDBKey, data.auctioningI.Name(),xml.toString(), 0);
+    }
 
     public List<AuctionData> getAuctions(Object ofLike, String auctionHouse)
     {
-    	Vector auctions=new Vector();
-    	String house="SYSTEM_AUCTIONS_"+auctionHouse.toUpperCase().trim();
-    	List<JournalsLibrary.JournalEntry> otherAuctions=CMLib.database().DBReadJournalMsgs(house);
-	    for(int o=0;o<otherAuctions.size();o++)
-	    {
-	    	JournalsLibrary.JournalEntry auctionData=(JournalsLibrary.JournalEntry)otherAuctions.get(o);
+        Vector auctions=new Vector();
+        String house="SYSTEM_AUCTIONS_"+auctionHouse.toUpperCase().trim();
+        List<JournalsLibrary.JournalEntry> otherAuctions=CMLib.database().DBReadJournalMsgs(house);
+        for(int o=0;o<otherAuctions.size();o++)
+        {
+            JournalsLibrary.JournalEntry auctionData=(JournalsLibrary.JournalEntry)otherAuctions.get(o);
             String from=(String)auctionData.from;
-	        String to=(String)auctionData.to;
+            String to=(String)auctionData.to;
             String key=(String)auctionData.key;
-	        if((ofLike instanceof MOB)&&(!((MOB)ofLike).Name().equals(to)))
-	        	continue;
-	        if((ofLike instanceof String)&&(!((String)ofLike).equals(key)))
-	        	continue;
+            if((ofLike instanceof MOB)&&(!((MOB)ofLike).Name().equals(to)))
+                continue;
+            if((ofLike instanceof String)&&(!((String)ofLike).equals(key)))
+                continue;
             AuctionData data=new AuctionData();
             data.start=auctionData.date;
             data.tickDown=CMath.s_long(to);
@@ -1582,93 +1582,93 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
             if((ofLike instanceof Item)&&(!((Item)ofLike).sameAs(data.auctioningI)))
                 continue;
             auctions.addElement(data);
-	    }
-	    return auctions;
+        }
+        return auctions;
     }
 
     public String getListForMask(String targetMessage)
     {
-    	if(targetMessage==null) return null;
-		int x=targetMessage.toUpperCase().lastIndexOf("FOR '");
-		if(x>0)
-		{
-			int y=targetMessage.lastIndexOf('\'');
-			if(y>x)
-				return targetMessage.substring(x+5,y);
-		}
-		return null;
+        if(targetMessage==null) return null;
+        int x=targetMessage.toUpperCase().lastIndexOf("FOR '");
+        if(x>0)
+        {
+            int y=targetMessage.lastIndexOf('\'');
+            if(y>x)
+                return targetMessage.substring(x+5,y);
+        }
+        return null;
     }
 
     public String getAuctionInventory(MOB seller,
-    								  MOB buyer,
-    								  Auctioneer auction,
-    								  String mask)
+                                      MOB buyer,
+                                      Auctioneer auction,
+                                      String mask)
     {
         StringBuffer str=new StringBuffer("");
         str.append("^x"+CMStrings.padRight("Lvl",3)+" "+CMStrings.padRight("Item",50)+" "+CMStrings.padRight("Days",4)+" ["+CMStrings.padRight("Bid",6)+"] Buy^.^N\n\r");
         List<AuctionData> auctions=getAuctions(null,auction.auctionHouse());
         for(int v=0;v<auctions.size();v++)
         {
-        	Auctioneer.AuctionData data=(Auctioneer.AuctionData)auctions.get(v);
-	        if(shownInInventory(seller,buyer,data.auctioningI,auction))
-	        {
-	        	if(((mask==null)||(mask.length()==0)||(CMLib.english().containsString(data.auctioningI.name(),mask)))
-	        	&&((data.tickDown>System.currentTimeMillis())||(data.auctioningM==buyer)||(data.highBidderM==buyer)))
-	        	{
-		            Area area=CMLib.map().getStartArea(seller);
-		            if(area==null) area=CMLib.map().getStartArea(buyer);
-		        	str.append(CMStrings.padRight(""+data.auctioningI.phyStats().level(),3)+" ");
-		        	str.append(CMStrings.padRight(data.auctioningI.name(),50)+" ");
-		        	if(data.tickDown>System.currentTimeMillis())
-		        	{
-			        	long days=data.daysRemaining(buyer,seller);
-			        	str.append(CMStrings.padRight(""+days,4)+" ");
-		        	}
-		        	else
-		        	if(data.auctioningM==buyer)
-		        		str.append("DONE ");
-		        	else
-		        		str.append("WON! ");
-		        	str.append("["+CMStrings.padRight(CMLib.beanCounter().abbreviatedPrice(seller,data.bid),6)+"] ");
-		        	if(data.buyOutPrice<=0.0)
-			        	str.append(CMStrings.padRight("-",6));
-		        	else
-			        	str.append(CMStrings.padRight(CMLib.beanCounter().abbreviatedPrice(seller,data.buyOutPrice),6));
-		        	str.append("\n\r");
-	        	}
-	        }
+            Auctioneer.AuctionData data=(Auctioneer.AuctionData)auctions.get(v);
+            if(shownInInventory(seller,buyer,data.auctioningI,auction))
+            {
+                if(((mask==null)||(mask.length()==0)||(CMLib.english().containsString(data.auctioningI.name(),mask)))
+                &&((data.tickDown>System.currentTimeMillis())||(data.auctioningM==buyer)||(data.highBidderM==buyer)))
+                {
+                    Area area=CMLib.map().getStartArea(seller);
+                    if(area==null) area=CMLib.map().getStartArea(buyer);
+                    str.append(CMStrings.padRight(""+data.auctioningI.phyStats().level(),3)+" ");
+                    str.append(CMStrings.padRight(data.auctioningI.name(),50)+" ");
+                    if(data.tickDown>System.currentTimeMillis())
+                    {
+                        long days=data.daysRemaining(buyer,seller);
+                        str.append(CMStrings.padRight(""+days,4)+" ");
+                    }
+                    else
+                    if(data.auctioningM==buyer)
+                        str.append("DONE ");
+                    else
+                        str.append("WON! ");
+                    str.append("["+CMStrings.padRight(CMLib.beanCounter().abbreviatedPrice(seller,data.bid),6)+"] ");
+                    if(data.buyOutPrice<=0.0)
+                        str.append(CMStrings.padRight("-",6));
+                    else
+                        str.append(CMStrings.padRight(CMLib.beanCounter().abbreviatedPrice(seller,data.buyOutPrice),6));
+                    str.append("\n\r");
+                }
+            }
         }
         return "\n\r"+str.toString();
     }
 
-	public void auctionNotify(MOB M, String resp, String regardingItem)
-	{
-		try{
-	    	if(CMLib.flags().isInTheGame(M,true))
-	    		M.tell(resp);
-	    	else
-	    	if(M.playerStats()!=null)
-	    	{
-	            CMLib.smtp().emailIfPossible(CMProps.getVar(CMProps.SYSTEM_SMTPSERVERNAME),
-					                            "auction@"+CMProps.getVar(CMProps.SYSTEM_MUDDOMAIN).toLowerCase(),
-					                            "noreply@"+CMProps.getVar(CMProps.SYSTEM_MUDDOMAIN).toLowerCase(),
-					                            M.playerStats().getEmail(),
-					                            "Auction Update for item: "+regardingItem,
-					                            resp);
-	    	}
-		}catch(Exception e){}
-	}
+    public void auctionNotify(MOB M, String resp, String regardingItem)
+    {
+        try{
+            if(CMLib.flags().isInTheGame(M,true))
+                M.tell(resp);
+            else
+            if(M.playerStats()!=null)
+            {
+                CMLib.smtp().emailIfPossible(CMProps.getVar(CMProps.SYSTEM_SMTPSERVERNAME),
+                                                "auction@"+CMProps.getVar(CMProps.SYSTEM_MUDDOMAIN).toLowerCase(),
+                                                "noreply@"+CMProps.getVar(CMProps.SYSTEM_MUDDOMAIN).toLowerCase(),
+                                                M.playerStats().getEmail(),
+                                                "Auction Update for item: "+regardingItem,
+                                                resp);
+            }
+        }catch(Exception e){}
+    }
 
     public void cancelAuction(String auctionHouse, Auctioneer.AuctionData data)
     {
-    	data.auctioningM.moveItemTo(data.auctioningI);
-    	if(data.highBidderM!=null)
-    	{
-    		MOB M=data.highBidderM;
-	    	auctionNotify(M,"The auction for "+data.auctioningI.Name()+" was closed early.  You have been refunded your max bid.",data.auctioningI.Name());
-	    	CMLib.coffeeShops().returnMoney(M,data.currency,data.highBid);
+        data.auctioningM.moveItemTo(data.auctioningI);
+        if(data.highBidderM!=null)
+        {
+            MOB M=data.highBidderM;
+            auctionNotify(M,"The auction for "+data.auctioningI.Name()+" was closed early.  You have been refunded your max bid.",data.auctioningI.Name());
+            CMLib.coffeeShops().returnMoney(M,data.currency,data.highBid);
         }
-    	CMLib.database().DBDeleteJournal(auctionHouse, data.auctionDBKey);
+        CMLib.database().DBDeleteJournal(auctionHouse, data.auctionDBKey);
         data.auctioningM.tell("Auction ended.");
     }
 }

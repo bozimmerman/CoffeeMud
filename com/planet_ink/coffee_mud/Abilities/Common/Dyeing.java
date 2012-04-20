@@ -71,10 +71,19 @@ public class Dyeing extends CommonSkill
         for(int v=0;v<V.size();v++)
         {
             String word=(String)V.elementAt(v);
+            if((word.equalsIgnoreCase("an")) || (word.equalsIgnoreCase("a")))
+            {
+                String properPrefix=CMLib.english().properIndefiniteArticle(colorWord);
+                V.insertElementAt(colorWord,v+1);
+                if(word.toLowerCase().equals(word))
+                    V.set(v,properPrefix.toLowerCase());
+                else
+                    V.set(v,CMStrings.capitalizeAndLower(properPrefix));
+                return CMParms.combine(V,0);
+            }
+            else
             if((word.equalsIgnoreCase("of"))
             ||(word.equalsIgnoreCase("some"))
-            ||(word.equalsIgnoreCase("an"))
-            ||(word.equalsIgnoreCase("a"))
             ||(word.equalsIgnoreCase("the"))
                )
             {

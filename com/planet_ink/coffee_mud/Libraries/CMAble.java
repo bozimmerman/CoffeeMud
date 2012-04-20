@@ -1862,7 +1862,11 @@ public class CMAble extends StdLibrary implements AbilityMapper
 
     public String getAbilityComponentDesc(MOB mob, String AID)
     {
-        List<AbilityComponent> req=getAbilityComponentDVector(AID);
+        return getAbilityComponentDesc(mob,getAbilityComponentDVector(AID));
+    }
+
+    public String getAbilityComponentDesc(MOB mob, List<AbilityComponent> req)
+    {
         if(req==null) return null;
         StringBuffer buf=new StringBuffer("");
         for(int r=0;r<req.size();r++){ buf.append(getAbilityComponentDesc(mob,req,r));}

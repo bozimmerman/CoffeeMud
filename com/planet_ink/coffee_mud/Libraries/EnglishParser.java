@@ -105,48 +105,139 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
         return s;
     }
 
-    
-    public String startWithAorAn(String str)
+    public String properIndefiniteArticle(String str)
     {
-        if((str==null)||(str.length()==0)) return str;
-        String uppStr=str.toUpperCase();
-        if((!uppStr.startsWith("A "))
-        &&(!uppStr.startsWith("AN "))
-        &&(!uppStr.startsWith("THE "))
-        &&(!uppStr.startsWith("SOME ")))
+        int i=0;
+        for(;i<str.length();i++)
+          switch(str.charAt(i))
+          {
+          case '^':
+          {
+              i++;
+              if(i<str.length())
+              {
+                  switch(str.charAt(i))
+                  {
+                  case ColorLibrary.COLORCODE_FANSI256: i+=3; break;
+                  case ColorLibrary.COLORCODE_BANSI256: i+=3; break;
+                  case ColorLibrary.COLORCODE_BACKGROUND: i++; break;
+                  case '<':
+                    while(i<str.length()-1)
+                    {
+                        if((str.charAt(i)!='^')||(str.charAt(i+1)!='>'))
+                            i++;
+                        else
+                        {
+                            i++;
+                            break;
+                        }
+                    }
+                    break;
+                  case '&':
+                    while(i<str.length())
+                    {
+                        if(str.charAt(i)!=';')
+                            i++;
+                        else
+                            break;
+                    }
+                    break;
+                  }
+              }
+              break;
+          }
+          case 'a': case 'e': case 'i': case 'o': case 'u':
+          case 'A': case 'E': case 'I': case 'O': case 'U':
+              return "an";
+          default:
+              if(Character.isLetter(str.charAt(i)))
+                  return "a";
+              else
+                  return "";
+          }
+        return "";
+    }
+
+    public String getFirstWord(final String str)
+    {
+      int i=0;
+      int start=-1;
+      for(;i<str.length();i++)
+        switch(str.charAt(i))
         {
-            if("AEIOU".indexOf(uppStr.charAt(0))>=0) 
-                return "an "+str;
-            return "a "+str;
+        case '^':
+        {
+            i++;
+            if(i<str.length())
+            {
+                switch(str.charAt(i))
+                {
+                case ColorLibrary.COLORCODE_FANSI256: i+=3; break;
+                case ColorLibrary.COLORCODE_BANSI256: i+=3; break;
+                case ColorLibrary.COLORCODE_BACKGROUND: i++; break;
+                case '<':
+                  while(i<str.length()-1)
+                  {
+                      if((str.charAt(i)!='^')||(str.charAt(i+1)!='>'))
+                          i++;
+                      else
+                      {
+                          i++;
+                          break;
+                      }
+                  }
+                  break;
+                case '&':
+                  while(i<str.length())
+                  {
+                      if(str.charAt(i)!=';')
+                          i++;
+                      else
+                          break;
+                  }
+                  break;
+                }
+            }
+            break;
+        }
+        case ' ':
+            if(start>=0)
+                return str.substring(start,i);
+            break;
+        default:
+            if(Character.isLetter(str.charAt(i)))
+                start=i;
+            break;
         }
         return str;
     }
-    
-    
+
+    public String startWithAorAn(final String str)
+    {
+        if((str==null)||(str.length()==0)) return str;
+        final String uppStr=getFirstWord(str).toUpperCase();
+        if((!uppStr.equals("A")) &&(!uppStr.equals("AN"))
+        &&(!uppStr.equals("THE")) &&(!uppStr.equals("SOME")))
+            return (properIndefiniteArticle(str)+" "+str.trim()).trim();
+        return str;
+    }
+
     public String insertUnColoredAdjective(String str, String adjective)
     {
         if(str.length()==0) 
             return str;
         str=CMStrings.removeColors(str.trim());
-        String uppStr=str.toUpperCase();
+        final String uppStr=str.toUpperCase();
         if((uppStr.startsWith("A "))
         ||(uppStr.startsWith("AN ")))
-        {
-            if("aeiouAEIOU".indexOf(adjective.charAt(0))>=0) 
-                return "an "+adjective+" "+str.substring(2).trim();
-            return "a "+adjective+" "+str.substring(2).trim();
-        }
-        if((!uppStr.startsWith("THE "))
-        &&(!uppStr.startsWith("SOME ")))
-        {
-            if("aeiouAEIOU".indexOf(adjective.charAt(0))>=0) 
-                return "an "+adjective+" "+str.trim();
-            return "a "+adjective+" "+str.trim();
-        }
-        int x=str.indexOf(' ');
-        return str.substring(0,x)+" "+adjective+" "+str.substring(x+1);
+            return properIndefiniteArticle(adjective)+" "+str.substring(2).trim();
+        if(uppStr.startsWith("THE "))
+            return properIndefiniteArticle(adjective)+" "+str.substring(3).trim();
+        if(uppStr.startsWith("SOME "))
+            return properIndefiniteArticle(adjective)+" "+str.substring(4).trim();
+        return properIndefiniteArticle(adjective)+" "+str.trim();
     }
-    
+
     public CMObject findCommand(MOB mob, List<String> commands)
     {
         if((mob==null)

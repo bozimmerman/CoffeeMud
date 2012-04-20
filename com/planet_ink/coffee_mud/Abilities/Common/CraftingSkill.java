@@ -873,20 +873,19 @@ public class CraftingSkill extends GatheringSkill
         else
         {
             final List<AbilityComponent> componentsRequirements;
+            final String ID=woodStr.toUpperCase().trim();
             if(woodStr.trim().startsWith("("))
             {
                 Map<String, List<AbilityComponent>> H=new TreeMap<String, List<AbilityComponent>>();
-                String error=CMLib.ableMapper().addAbilityComponent("ID="+woodStr, H);
+                String error=CMLib.ableMapper().addAbilityComponent("ID="+ID, H);
                 if(error!=null)
                     return "Error parsing custom component: "+woodStr;
                 componentsRequirements=H.get("ID");
             }
             else
-                componentsRequirements=(Vector<AbilityComponent>)CMLib.ableMapper().getAbilityComponentMap().get(woodStr.toUpperCase().trim());
+                componentsRequirements=(Vector<AbilityComponent>)CMLib.ableMapper().getAbilityComponentMap().get(ID);
             if(componentsRequirements!=null)
-            {
-                return CMLib.ableMapper().getAbilityComponentDesc(mob, woodStr.toUpperCase().trim());
-            }
+                return CMLib.ableMapper().getAbilityComponentDesc(mob, componentsRequirements);
         }
         return "?";
     }
