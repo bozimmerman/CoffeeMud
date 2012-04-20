@@ -35,67 +35,67 @@ import java.util.*;
 @SuppressWarnings("unchecked")
 public class ClanDonateSet extends StdCommand
 {
-	public ClanDonateSet(){}
+    public ClanDonateSet(){}
 
-	private final String[] access={"CLANDONATESET"};
-	public String[] getAccessWords(){return access;}
-	public boolean execute(MOB mob, Vector commands, int metaFlags)
-		throws java.io.IOException
-	{
-		boolean skipChecks=mob.Name().equals(mob.getClanID());
-		commands.setElementAt(getAccessWords()[0],0);
+    private final String[] access={"CLANDONATESET"};
+    public String[] getAccessWords(){return access;}
+    public boolean execute(MOB mob, Vector commands, int metaFlags)
+        throws java.io.IOException
+    {
+        boolean skipChecks=mob.Name().equals(mob.getClanID());
+        commands.setElementAt(getAccessWords()[0],0);
 
-		Room R=mob.location();
-		if(skipChecks)
-			R=CMLib.map().getRoom(CMParms.combine(commands,1));
-		else
-		{
-			commands.clear();
-			commands.addElement(getAccessWords()[0]);
-			commands.addElement(CMLib.map().getExtendedRoomID(R));
-		}
+        Room R=mob.location();
+        if(skipChecks)
+            R=CMLib.map().getRoom(CMParms.combine(commands,1));
+        else
+        {
+            commands.clear();
+            commands.addElement(getAccessWords()[0]);
+            commands.addElement(CMLib.map().getExtendedRoomID(R));
+        }
 
-		if((mob.getClanID()==null)||(mob.getClanID().equalsIgnoreCase("")))
-		{
-			mob.tell("You aren't even a member of a clan.");
-			return false;
-		}
+        if((mob.getClanID()==null)||(mob.getClanID().equalsIgnoreCase("")))
+        {
+            mob.tell("You aren't even a member of a clan.");
+            return false;
+        }
         Clan C=mob.getMyClan();
-		if(C==null)
-		{
-			mob.tell("There is no longer a clan called "+mob.getClanID()+".");
-			return false;
-		}
-		if(C.getStatus()>Clan.CLANSTATUS_ACTIVE)
-		{
-			mob.tell("You cannot set a donation room.  Your "+C.getGovernmentName()+" does not have enough members to be considered active.");
-			return false;
-		}
-		if(skipChecks||CMLib.clans().goForward(mob,C,commands,Clan.Function.SET_DONATE,false))
-		{
-			if(!CMLib.law().doesOwnThisProperty(C.clanID(),R))
-			{
-				mob.tell("Your "+C.getGovernmentName()+" does not own this room.");
-				return false;
-			}
-			if(skipChecks||CMLib.clans().goForward(mob,C,commands,Clan.Function.SET_DONATE,true))
-			{
-				C.setDonation(CMLib.map().getExtendedRoomID(R));
-				C.update();
-				mob.tell("The donation room for "+C.getGovernmentName()+" "+C.clanID()+" is now set to "+R.roomTitle(mob)+".");
-				CMLib.clans().clanAnnounce(mob,"The donation room for "+C.getGovernmentName()+" "+C.clanID()+" is now set to "+R.roomTitle(mob)+".");
-				return true;
-			}
-		}
-		else
-		{
-			mob.tell("You aren't in the right position to set your "+C.getGovernmentName()+"'s donation room.");
-			return false;
-		}
-		return false;
-	}
-	
-	public boolean canBeOrdered(){return false;}
+        if(C==null)
+        {
+            mob.tell("There is no longer a clan called "+mob.getClanID()+".");
+            return false;
+        }
+        if(C.getStatus()>Clan.CLANSTATUS_ACTIVE)
+        {
+            mob.tell("You cannot set a donation room.  Your "+C.getGovernmentName()+" does not have enough members to be considered active.");
+            return false;
+        }
+        if(skipChecks||CMLib.clans().goForward(mob,C,commands,Clan.Function.SET_DONATE,false))
+        {
+            if(!CMLib.law().doesOwnThisProperty(C.clanID(),R))
+            {
+                mob.tell("Your "+C.getGovernmentName()+" does not own this room.");
+                return false;
+            }
+            if(skipChecks||CMLib.clans().goForward(mob,C,commands,Clan.Function.SET_DONATE,true))
+            {
+                C.setDonation(CMLib.map().getExtendedRoomID(R));
+                C.update();
+                mob.tell("The donation room for "+C.getGovernmentName()+" "+C.clanID()+" is now set to "+R.roomTitle(mob)+".");
+                CMLib.clans().clanAnnounce(mob,"The donation room for "+C.getGovernmentName()+" "+C.clanID()+" is now set to "+R.roomTitle(mob)+".");
+                return true;
+            }
+        }
+        else
+        {
+            mob.tell("You aren't in the right position to set your "+C.getGovernmentName()+"'s donation room.");
+            return false;
+        }
+        return false;
+    }
+    
+    public boolean canBeOrdered(){return false;}
 
-	
+    
 }

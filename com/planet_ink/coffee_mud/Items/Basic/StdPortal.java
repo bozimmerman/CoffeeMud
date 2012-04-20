@@ -158,7 +158,7 @@ public class StdPortal extends StdContainer implements Rideable, Exit
                     if(R==null) R=thisRoom;
                     Exit E=CMClass.getExit("OpenNameable");
                     E.setMiscText(name());
-                    synchronized(("GATE_"+CMLib.map().getExtendedRoomID(thisRoom)+"_"+CMLib.map().getExtendedRoomID(R)).intern())
+                    synchronized(("GATE_"+CMLib.map().getExtendedTwinRoomIDs(thisRoom,R)).intern())
                     {
                         Exit oldE=thisRoom.getRawExit(Directions.GATE);
                         Room oldR=thisRoom.rawDoors()[Directions.GATE];

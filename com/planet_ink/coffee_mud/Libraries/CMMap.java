@@ -383,6 +383,16 @@ public class CMMap extends StdLibrary implements WorldMap
         return R.roomID();
     }
 
+    public String getExtendedTwinRoomIDs(final Room R1,final Room R2)
+    {
+        final String R1s=getExtendedRoomID(R1);
+        final String R2s=getExtendedRoomID(R2);
+        if(R1s.compareTo(R2s)>0)
+            return R1s+"_"+R2s;
+        else
+            return R2s+"_"+R1s;
+    }
+    
     public Room getRoom(Enumeration<Room> roomSet, String calledThis)
     {
         try
