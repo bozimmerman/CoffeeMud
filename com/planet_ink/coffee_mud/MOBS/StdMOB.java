@@ -916,6 +916,8 @@ public class StdMOB implements MOB
               if(!fol.mayIFight(mob))
                   return false;
       }
+      if(CMLib.flags().isUnattackable(mob))
+          return false;
       if(targetIsMonster || iAmMonster)
           return true;
       if((mob.soulMate()!=null)||(soulMate()!=null))

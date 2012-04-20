@@ -449,6 +449,8 @@ public interface PhyStats extends CMCommon, Modifiable
     public final static int IS_UNSAVABLE=524288;
     /** a bit setting, as from disposition(), flagging this object as being cataloged */
     public final static int IS_CATALOGED=1048576;
+    /** a bit setting, as from disposition(), flagging this object as being unattackable */
+    public final static int IS_UNATTACKABLE=2097152;
 
     /** STAT codes list, indexed by the 2nd root of the various sensesMask() CAN_SEE bitmasks */ 
     public static final String[] CAN_SEE_CODES={"CANNOTSEE",
@@ -534,7 +536,8 @@ public interface PhyStats extends CMCommon, Modifiable
                                            "ISBOUND",
                                            "ISCLOAKED",
                                            "ISUNSAVABLE",
-                                           "ISCATALOGED"};
+                                           "ISCATALOGED",
+                                           "ISUNATTACKABLE"};
     
     /** Descriptions, indexed by the 2nd root of the various IS_ disposition() bitmasks */ 
     public static final String[] IS_DESCS= {"Is never seen",
@@ -557,7 +560,8 @@ public interface PhyStats extends CMCommon, Modifiable
                                             "Is binding",
                                             "Is Cloaked",
                                             "Is never saved",
-                                            "Is cataloged"};
+                                            "Is cataloged",
+                                            "Is unattackable"};
     
     /** Descriptive verbs, indexed by the 2nd root of the various IS_ disposition() bitmasks */ 
     public static final String[] IS_VERBS= {"Causes Nondetectability",
@@ -581,5 +585,6 @@ public interface PhyStats extends CMCommon, Modifiable
                                             "Causes cloaking",
                                             "Causes disappearance",
                                             "Causes unsavability",
-                                            "Created from a template"};
+                                            "Created from a template",
+                                            "Prevents attackability"};
 }
