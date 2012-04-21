@@ -276,6 +276,9 @@
 				<li><a href="#Lighteningbreath">Lighteningbreath</a>
 			&nbsp;
 			
+				<li><a href="#MonkSkill">MonkSkill</a>
+			&nbsp;
+			
 				<li><a href="#Mood">Mood</a>
 			&nbsp;
 			
@@ -1454,6 +1457,11 @@
 			</P>
 			
 			<p>
+			<a name="MonkSkill"><B>MonkSkill: MonkSkill</B></a>
+			<pre></pre>
+			</P>
+			
+			<p>
 			<a name="Mood"><B>Mood: Mood</B></a>
 			<pre>Command : MOOD<BR>Usage   : MOOD LIST/[MOOD NAME]<BR>Example : mood normal<BR>Example : mood list<BR>Short(s): <BR>This command changes how you interact with the world when speaking. You can<BR>enter MOOD LIST to get a list of valid moods.  Be aware that sometimes a mean mood<BR>can actually have an affect on the people you speak to!</pre>
 			</P>
@@ -1605,7 +1613,7 @@
 			
 			<p>
 			<a name="Prayer_AuraStrife"><B>Prayer_AuraStrife: Aura of Strife</B></a>
-			<pre><BR>Prayer   : Aura of Strife<BR>Domain   : Communing<BR>Allows   : Communing I<BR>Alignment: pure evil, evil<BR>Use Cost : Mana (50) <BR>Quality  : Circumstantial<BR>Targets  : Creatures <BR>Range    : Touch, or not applicable<BR>Commands : PRAY, PR<BR>Causes the those in the same room as the cleric to suffer a drop in charisma<BR>due to feelings of anger and hopelessness.  Will also cause confusion in combat<BR>among those not in the clerics group.</pre>
+			<pre><BR>Prayer   : Aura of Strife<BR>Domain   : Communing<BR>Allows   : Communing I<BR>Alignment: pure evil, evil<BR>Use Cost : Mana (50) <BR>Quality  : Circumstantial<BR>Targets  : Creatures <BR>Range    : Touch, or not applicable<BR>Commands : PRAY, PR<BR>Creates an aura of strife bound by the Cleric to the area.  This causes those<BR>in the same room as the cleric to suffer a drop in charisma due to feelings of<BR>anger and hopelessness.  Will also cause confusion in combat among those not in the<BR>clerics group. The cleric must remain in the casting room for the prayer to remain<BR>effective.</pre>
 			</P>
 			
 			<p>
@@ -1665,7 +1673,7 @@
 			
 			<p>
 			<a name="Prop_AddDamage"><B>Prop_AddDamage: Additional Damage</B></a>
-			<pre>Property   : Prop_AddDamage<BR>Targets    : Items, Mobs<BR>Parameters : Extra Damage percentages or amounts, the list of extra damage<BR>types<BR>Example    : 50% +ALL -SILVER -CLOTH -LEATHER<BR>Example    : 5 +ALL -MAGIC -SLASHING -FROSTING<BR>Example    : 25% +ALL -LEVEL15<BR>Example    : 15% +BASHING 1 +IRON 3 +STEEL 15% +MAGIC<BR>Description: <BR>Whenever the the item with this property is worn, or for the mob with this<BR>property, they will do or sustain extra damage from the types and/or materials of<BR>weapons specified.  Extra Damage may be represented as a percentage or as a<BR>straight amount. Damage amounts must be before the type of extra damage in the<BR>parameters. Here are the parameters: <BR>+ALL - Specifies that, by default, the mob has ALL types of damage added to.<BR>-DAMAGETYPE- Creates an exception to the +ALL rule by permitting normal damage<BR>of the given type.  Examples for DAMAGETYPE would be -PIERCING, -GASSING,<BR>-SLASHING, -BURNING, -MELTING, -NATURAL, -BASHING, etc.<BR>+DAMAGETYPE- Can be used instead of +ALL to add damage from the given damage<BR>type.  Examples for DAMAGETYPE would be +PIERCING, +GASSING, +SLASHING, +BURNING,<BR>+MELTING, +NATURAL, +BASHING, etc.<BR>-MAGIC - Creates an exception to the +ALL rule by permitting normal damage from<BR>magical spells and magical weapons.<BR>+MAGIC - If +ALL is not used, this will add damage from magical spells and<BR>weapons.<BR>-LEVELX - Creates an exception to the +ALL rule by permitting normal damage<BR>from weapons whose level is X or better. Example: -LEVEL1, -LEVEL5, -LEVEL10, etc.<BR>+LEVELX - Can be used instead of +ALL to absorb damage from weapons whose level<BR>is X or lower. Example: +LEVEL1, +LEVEL5, +LEVEL10, etc.<BR>-MATERIALTYPE - Creates an exception to the +ALL rule above by permitting<BR>normal damage from a weapon made of the given MATERIALTYPE.  Where MATERIALTYPE may<BR>be any valid material, such as SILVER, WOOD, COTTON, etc.  As for the damage types<BR>above, +MATERIALTYPE may be used instead of +ALL to add damage from materials of a<BR>given material.<BR>-PARALYSIS - Creates an exception to the +All rule by permitting normal damage<BR>from paralysis spells.<BR>+PARALYSIS - If +All is not used, this adds damage from fire spells.<BR>-FIRE - Creates an exception to the +All rule by permitting normal damage from<BR>fire spells.<BR>+FIRE - If +All is not used, this adds damage from fire spells.<BR>-COLD - Creates an exception to the +All rule by permitting normal damage from<BR>cold spells.<BR>+COLD - If +All is not used, this adds damage from cold spells.<BR>-WATER - Creates an exception to the +All rule by permitting normal damage from<BR>water spells.<BR>+WATER - If +All is not used, this adds damage from water spells.<BR>-GAS - Creates an exception to the +All rule by permitting normal damage from<BR>gas spells.<BR>+GAS - If +All is not used, this adds damage from gas spells.<BR>-MIND - Creates an exception to the +All rule by permitting normal damage from<BR>mind spells.<BR>+MIND - If +All is not used, this adds damage from mind spells.<BR>-JUSTICE - Creates an exception to the +All rule by permitting normal damage<BR>from justice spells.<BR>+JUSTICE - If +All is not used, this adds damage from justice spells.<BR>-ACID - Creates an exception to the +All rule by permitting normal damage from<BR>acid spells.<BR>+ACID - If +All is not used, this adds damage from acid spells.<BR>-ELECTRICITY - Creates an exception to the +All rule by permitting normal<BR>damage from electric spells.<BR>+ELECTRICITY - If +All is not used, this adds damage from electric spells.<BR>-POISON - Creates an exception to the +All rule by permitting normal damage<BR>from poison spells.<BR>+POISON - If +All is not used, this adds damage  from poison spells.<BR>-UNDEAD - Creates an exception to the +All rule by permitting normal damage<BR>from undead spells.<BR>+UNDEAD - If +All is not used, this adds damage from undead/evil spells.<BR>-DISEASE - Creates an exception to the +All rule by permitting normal damage<BR>from disease spells.<BR>+DISEASE - If +All is not used, this adds damage from disease spells.<BR>-TRAPS - Creates an exception to the +All rule by permitting normal damage from<BR>traps spells.<BR>+TRAPS - If +All is not used, this adds damage from traps.<BR></pre>
+			<pre>Property   : Prop_AddDamage<BR>Targets    : Items, Mobs<BR>Parameters : Extra Damage percentages or amounts, the list of extra damage<BR>types<BR>Example    : 50% PIERCING<BR>Example    : 5 SLASHING FROST<BR>Description: <BR>Whenever the the item with this property is worn, or for the mob with this<BR>property, they will do extra damage of the types specified.  Extra Damage may be<BR>represented as a percentage or as a straight amount. Damage amounts must be before<BR>the type of extra damage in the parameters. * Here are the classes of damage: <BR>PIERCING, GASSING, SLASHING, BURNING, MELTING, NATURAL, BASHING, etc.<BR>* Here are the types of damage attacks: <BR>PARALYSIS, FIRE, COLD, WATER, GAS, MIND, JUSTICE, ACID, ELECTRICITY, POISON,<BR>UNDEAD, DISEASE, TRAPS, WEAPONATTACK.<BR></pre>
 			</P>
 			
 			<p>
@@ -2040,7 +2048,7 @@
 			
 			<p>
 			<a name="Prop_RoomsForSale"><B>Prop_RoomsForSale: Putting a cluster of rooms up for sale</B></a>
-			<pre>Property   : Prop_RoomsForSale<BR>Targets    : Room<BR>Parameters : (RENTAL) Price of the group ofroom<BR>Example    : 1000000<BR>Example    : The Bob Clan/1000000<BR>Description: <BR>Makes this room part of a group of rooms available for purchase by a player. <BR>The rooms will be sold as a group by the shopkeeper.  If you have more than one<BR>group of rooms for sale, they MUST be separated by at least one room which is not<BR>for sale, otherwise both groups will be considered one.  See Prop_RoomForSale for<BR>more information on sold rooms and the rental flag.  <BR><BR>When property is sold, it will be listed as the owner with a slash and the<BR>price.  Entering this sort of parameter directly is the quick way to give players<BR>or clans property.</pre>
+			<pre>Property   : Prop_RoomsForSale<BR>Targets    : Room<BR>Parameters : (RENTAL) Price of the group of rooms<BR>Example    : 1000000<BR>Example    : The Bob Clan/1000000<BR>Description: <BR>Makes this room part of a group of rooms available for purchase by a player. <BR>The rooms will be sold as a group by the shopkeeper.  If you have more than one<BR>group of rooms for sale, they MUST be separated by at least one room which is not<BR>for sale, otherwise both groups will be considered one.  See Prop_RoomForSale for<BR>more information on sold rooms and the rental flag.  <BR><BR>When property is sold, it will be listed as the owner with a slash and the<BR>price.  Entering this sort of parameter directly is the quick way to give players<BR>or clans property.</pre>
 			</P>
 			
 			<p>
@@ -2650,7 +2658,7 @@
 			
 			<p>
 			<a name="Truce"><B>Truce: Truce</B></a>
-			<pre>Ability    : Truce<BR>Parameters : Name of other party<BR>Example    : DECLARETRUCE bob<BR>Description: <BR>This affect, when applied, prevents combat between the affected mob and one<BR>other for a period. The period is very brief with automatically applied (from<BR>wands, etc), and longer otherwise.</pre>
+			<pre>Ability    : Truce<BR>Parameters : Empty, or Name of other party<BR>Example    : DECLARETRUCE bob<BR>Description: <BR>This affect, when applied, prevents combat between the affected mob and one<BR>other for a period. The period is very brief with automatically applied (from<BR>wands, etc), and longer otherwise. <BR><BR>When applied as a permanent property with a Name parameter, the truce will<BR>exist with mobs of that name forever.  When applied as a permanent property with No<BR>parameter, the truce will begin the moment the affected mob kills any mob, and<BR>persist for 30 seconds.</pre>
 			</P>
 			
 			<p>
