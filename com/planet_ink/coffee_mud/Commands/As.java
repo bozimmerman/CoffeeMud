@@ -55,7 +55,7 @@ public class As extends StdCommand
 			mob.tell("You aren't powerful enough to do that.");
 			return false;
 		}
-		Session mySession=mob.session();
+		final Session mySession=mob.session();
 		MOB M=CMLib.players().getLoadPlayer(cmd);
 		if(M==null)
 			M=mob.location().fetchInhabitant(cmd);
@@ -102,43 +102,46 @@ public class As extends StdCommand
     		M.doCommand(commands,metaFlags|Command.METAFLAG_AS);
     		return false;
         }
-		Session hisSession=M.session();
 		Room oldRoom=M.location();
 		boolean inside=(oldRoom!=null)?oldRoom.isInhabitant(M):false;
 		boolean dead=M.amDead();
-		//int myBitmap=mob.getBitmap();
-		//int oldBitmap=M.getBitmap();
-		M.setSession(mySession);
-		mySession.setMob(M);
-		M.setSoulMate(mob);
-        //mySession.initTelnetMode(oldBitmap);
-		if(((String)commands.firstElement()).equalsIgnoreCase("here")
-		   ||((String)commands.firstElement()).equalsIgnoreCase("."))
-		{
-		    if((M.location()!=mob.location())&&(!mob.location().isInhabitant(M)))
+        synchronized(mySession)
+        {
+			Session hisSession=M.session();
+			//int myBitmap=mob.getBitmap();
+			//int oldBitmap=M.getBitmap();
+			M.setSession(mySession);
+			mySession.setMob(M);
+			M.setSoulMate(mob);
+	        //mySession.initTelnetMode(oldBitmap);
+			if(((String)commands.firstElement()).equalsIgnoreCase("here")
+			   ||((String)commands.firstElement()).equalsIgnoreCase("."))
+			{
+			    if((M.location()!=mob.location())&&(!mob.location().isInhabitant(M)))
+					mob.location().bringMobHere(M,false);
+				commands.removeElementAt(0);
+			}
+			if(dead) M.bringToLife();
+			if((M.location()==null)&&(oldRoom==null)&&(mob.location()!=null))
+			{
+			    inside=false;
 				mob.location().bringMobHere(M,false);
-			commands.removeElementAt(0);
-		}
-		if(dead) M.bringToLife();
-		if((M.location()==null)&&(oldRoom==null)&&(mob.location()!=null))
-		{
-		    inside=false;
-			mob.location().bringMobHere(M,false);
-		}
-		M.doCommand(commands,metaFlags|Command.METAFLAG_AS);
-		if(M.playerStats()!=null) M.playerStats().setLastUpdated(0);
-		if((oldRoom!=null)&&(inside)&&(!oldRoom.isInhabitant(M)))
-			oldRoom.bringMobHere(M,false);
-		else
-		if((oldRoom==null)||(!inside))
-		{
-			if(M.location()!=null)
-				M.location().delInhabitant(M);
-			M.setLocation(oldRoom);
-		}
-		M.setSoulMate(null);
-		M.setSession(hisSession);
-		mySession.setMob(mob);
+			}
+			M.doCommand(commands,metaFlags|Command.METAFLAG_AS);
+			if(M.playerStats()!=null) M.playerStats().setLastUpdated(0);
+			if((oldRoom!=null)&&(inside)&&(!oldRoom.isInhabitant(M)))
+				oldRoom.bringMobHere(M,false);
+			else
+			if((oldRoom==null)||(!inside))
+			{
+				if(M.location()!=null)
+					M.location().delInhabitant(M);
+				M.setLocation(oldRoom);
+			}
+			M.setSoulMate(null);
+			M.setSession(hisSession);
+			mySession.setMob(mob);
+        }
         //mySession.initTelnetMode(myBitmap);
 		if(dead) M.removeFromGame(true,true);
 		return false;

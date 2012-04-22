@@ -997,6 +997,8 @@ public class CMStrings
     public final static String padRight(final String thisStr, final int thisMuch)
     {
         final int lenMinusColors=lengthMinusColors(thisStr);
+        if(lenMinusColors==thisMuch)
+            return thisStr;
         if(lenMinusColors>thisMuch)
             return removeColors(thisStr).substring(0,thisMuch);
         if(thisMuch-lenMinusColors >= SPACES.length())

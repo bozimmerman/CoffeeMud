@@ -1121,7 +1121,7 @@ public class StdMOB implements MOB
         if((ride!=null)&&(!ride.amRiding(this)))
             ride.addRider(this);
     }
-    public Session session()
+    public final Session session()
     {
         return mySession==null?null:mySession.isFake()?null:mySession;
     }

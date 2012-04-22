@@ -55,7 +55,8 @@ public class Spell_Spellbinding extends Spell
     public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_ALTERATION;}
     public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
     protected DVector spellbindings=new DVector(2);
-
+    protected final static int COST_STATIC=50;
+    
     public void affectCharState(MOB affected, CharState affectableState)
     {
         super.affectCharState(affected,affectableState);
@@ -66,6 +67,7 @@ public class Spell_Spellbinding extends Spell
             for(int x=0;x<V.size();x++)
                 total+=((Integer)V.elementAt(x,2)).intValue();
         }
+        total=(total+COST_STATIC)*spellbindings.size();
         if(affectableState.getMana()>=total)
             affectableState.setMana(affectableState.getMana()-total);
         else
@@ -192,7 +194,7 @@ public class Spell_Spellbinding extends Spell
                 mob.tell("You can't bind '"+A.ID()+"'.");
                 return false;
             }
-            V.addElement(A.ID(),Integer.valueOf(25+A.usageCost(mob,true)[Ability.USAGEINDEX_MANA]));
+            V.addElement(A.ID(),Integer.valueOf(A.usageCost(mob,true)[Ability.USAGEINDEX_MANA]));
         }
         else
         for(int v=0;v<commands.size();v++)
@@ -206,12 +208,13 @@ public class Spell_Spellbinding extends Spell
                 mob.tell("You can't bind '"+((String)commands.elementAt(v))+"'.");
                 return false;
             }
-            V.addElement(A.ID(),Integer.valueOf(100+(2*A.usageCost(mob,true)[Ability.USAGEINDEX_MANA])));
+            V.addElement(A.ID(),Integer.valueOf(A.usageCost(mob,true)[Ability.USAGEINDEX_MANA]));
         }
 
         int totalcost=0;
         for(int v=0;v<V.size();v++)
             totalcost+=((Integer)V.elementAt(v,2)).intValue();
+        totalcost=(totalcost+COST_STATIC)*V.size();
         int curMana=mob.curState().getMana();
         if(curMana<totalcost)
         {
