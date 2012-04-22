@@ -105,9 +105,9 @@ public class As extends StdCommand
 		Room oldRoom=M.location();
 		boolean inside=(oldRoom!=null)?oldRoom.isInhabitant(M):false;
 		boolean dead=M.amDead();
+		final Session hisSession=M.session();
         synchronized(mySession)
         {
-			Session hisSession=M.session();
 			//int myBitmap=mob.getBitmap();
 			//int oldBitmap=M.getBitmap();
 			M.setSession(mySession);
@@ -127,7 +127,10 @@ public class As extends StdCommand
 			    inside=false;
 				mob.location().bringMobHere(M,false);
 			}
-			M.doCommand(commands,metaFlags|Command.METAFLAG_AS);
+        }
+		M.doCommand(commands,metaFlags|Command.METAFLAG_AS);
+        synchronized(mySession)
+        {
 			if(M.playerStats()!=null) M.playerStats().setLastUpdated(0);
 			if((oldRoom!=null)&&(inside)&&(!oldRoom.isInhabitant(M)))
 				oldRoom.bringMobHere(M,false);
