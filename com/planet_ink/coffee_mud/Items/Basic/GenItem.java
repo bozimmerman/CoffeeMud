@@ -35,36 +35,36 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 */
 public class GenItem extends StdItem
 {
-	public String ID(){	return "GenItem";}
-	protected String	readableText="";
-	public GenItem()
-	{
-		super();
-		setName("a generic item");
-		basePhyStats.setWeight(2);
-		setDisplayText("a generic item sits here.");
-		setDescription("");
-		baseGoldValue=5;
-		basePhyStats().setLevel(1);
-		recoverPhyStats();
-		setMaterial(RawMaterial.RESOURCE_OAK);
-	}
+    public String ID(){    return "GenItem";}
+    protected String    readableText="";
+    public GenItem()
+    {
+        super();
+        setName("a generic item");
+        basePhyStats.setWeight(2);
+        setDisplayText("a generic item sits here.");
+        setDescription("");
+        baseGoldValue=5;
+        basePhyStats().setLevel(1);
+        recoverPhyStats();
+        setMaterial(RawMaterial.RESOURCE_OAK);
+    }
 
-	public boolean isGeneric(){return true;}
+    public boolean isGeneric(){return true;}
 
-	public String text()
-	{
-		return CMLib.coffeeMaker().getPropertiesStr(this,false);
-	}
+    public String text()
+    {
+        return CMLib.coffeeMaker().getPropertiesStr(this,false);
+    }
 
-	public String readableText(){return readableText;}
-	public void setReadableText(String text){readableText=text;}
-	public void setMiscText(String newText)
-	{
-		miscText="";
-		CMLib.coffeeMaker().setPropertiesStr(this,newText,false);
-		recoverPhyStats();
-	}
+    public String readableText(){return readableText;}
+    public void setReadableText(String text){readableText=text;}
+    public void setMiscText(String newText)
+    {
+        miscText="";
+        CMLib.coffeeMaker().setPropertiesStr(this,newText,false);
+        recoverPhyStats();
+    }
 
     public String getStat(String code)
     {
@@ -85,13 +85,13 @@ public class GenItem extends StdItem
             codes=CMProps.getStatCodesList(GenericBuilder.GENITEMCODES,this);
         return codes; 
     }
-	public boolean sameAs(Environmental E)
-	{
-		if(!(E instanceof GenItem)) return false;
-		String[] theCodes=getStatCodes();
-		for(int i=0;i<theCodes.length;i++)
-			if(!E.getStat(theCodes[i]).equals(getStat(theCodes[i])))
-				return false;
-		return true;
-	}
+    public boolean sameAs(Environmental E)
+    {
+        if(!(E instanceof GenItem)) return false;
+        String[] theCodes=getStatCodes();
+        for(int i=0;i<theCodes.length;i++)
+            if(!E.getStat(theCodes[i]).equals(getStat(theCodes[i])))
+                return false;
+        return true;
+    }
 }
