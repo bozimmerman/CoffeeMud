@@ -422,6 +422,8 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
         if(E instanceof Drink)
         {
             text.append(CMLib.xml().convertXMLtoTag("CAPA2",((Drink)E).liquidHeld()));
+            text.append(CMLib.xml().convertXMLtoTag("REMAN",((Drink)E).liquidRemaining()));
+            text.append(CMLib.xml().convertXMLtoTag("LTYPE",((Drink)E).liquidType()));
             text.append(CMLib.xml().convertXMLtoTag("DRINK",((Drink)E).thirstQuenched()));
         }
 
@@ -2386,8 +2388,16 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 
         if(E instanceof Drink)
         {
-            ((Drink)E).setLiquidHeld(CMLib.xml().getIntFromPieces(buf,"CAPA2"));
-            ((Drink)E).setLiquidRemaining(CMLib.xml().getIntFromPieces(buf,"CAPA2"));
+            final int capacity=CMLib.xml().getIntFromPieces(buf,"CAPA2");
+            ((Drink)E).setLiquidHeld(capacity);
+            final String remaining=CMLib.xml().getValFromPieces(buf,"REMAN"); 
+            if(remaining.length()>0)
+            {
+                ((Drink)E).setLiquidRemaining(CMath.s_int(remaining));
+                ((Drink)E).setLiquidType(CMLib.xml().getIntFromPieces(buf,"LTYPE"));
+            }
+            else
+                ((Drink)E).setLiquidRemaining(CMLib.xml().getIntFromPieces(buf,"CAPA2"));
             ((Drink)E).setThirstQuenched(CMLib.xml().getIntFromPieces(buf,"DRINK"));
         }
         if(E instanceof Weapon)
