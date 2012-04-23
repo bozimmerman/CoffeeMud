@@ -906,7 +906,8 @@ public class ProcessSMTPrequest implements Runnable
                 Log.errOut(runnableName,"Exception: Unknown (NULL-e)");
             else
             {
-                final StringBuilder msg = new StringBuilder(e.getMessage());
+                final String errorMessage=e.getMessage();
+                final StringBuilder msg = new StringBuilder(errorMessage==null?"EMPTY e.getMessage()":errorMessage);
                 final StackTraceElement[] ts = e.getStackTrace();
                 if(ts != null)
                     for(StackTraceElement t : ts)
