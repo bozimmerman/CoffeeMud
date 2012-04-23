@@ -34,9 +34,9 @@ import java.util.*;
 @SuppressWarnings("unchecked")
 public class StdCommand implements Command
 {
-	public StdCommand(){}
+    public StdCommand(){}
     protected String ID=null;
-	public String ID()
+    public String ID()
     {
         if(ID==null){
             ID=this.getClass().getName();
@@ -46,49 +46,49 @@ public class StdCommand implements Command
         return ID;
     }
     
-	private String[] access=null;
-	public String[] getAccessWords(){return access;}
+    private String[] access=null;
+    public String[] getAccessWords(){return access;}
     public void initializeClass(){}
-	public boolean execute(MOB mob, Vector commands, int metaFlags)
-		throws java.io.IOException
-	{
-		// accepts the mob executing, and a Vector of Strings as a parm.
-		// the return value is arbitrary, though false is conventional.
-		return false;
-	}
+    public boolean execute(MOB mob, Vector commands, int metaFlags)
+        throws java.io.IOException
+    {
+        // accepts the mob executing, and a Vector of Strings as a parm.
+        // the return value is arbitrary, though false is conventional.
+        return false;
+    }
     public boolean preExecute(MOB mob, Vector commands, int metaFlags, int secondsElapsed, double actionsRemaining)
         throws java.io.IOException
     {
         return true;
     }
 
-	public Object executeInternal(MOB mob, int metaFlags, Object... args) throws java.io.IOException
-	{
-		// fake it!
-		Vector commands = new Vector();
-		commands.add(getAccessWords()[0]);
-		for(Object o : args)
-			commands.add(o.toString());
-		return Boolean.valueOf(execute(mob,commands,metaFlags));
-	}
-	
+    public Object executeInternal(MOB mob, int metaFlags, Object... args) throws java.io.IOException
+    {
+        // fake it!
+        Vector commands = new Vector();
+        commands.add(getAccessWords()[0]);
+        for(Object o : args)
+            commands.add(o.toString());
+        return Boolean.valueOf(execute(mob,commands,metaFlags));
+    }
+    
     public double actionsCost(final MOB mob, final List<String> cmds)
     {
-		return CMProps.getActionCost(ID(), 0.0);
+        return CMProps.getActionCost(ID(), 0.0);
     }
     public double combatActionsCost(MOB mob, List<String> cmds)
     {
-		return CMProps.getCombatActionCost(ID(), 0.0);
+        return CMProps.getCombatActionCost(ID(), 0.0);
     }
     public double checkedActionsCost(final MOB mob, final List<String> cmds)
     {
-    	if(mob!=null)
-    		return mob.isInCombat() ? combatActionsCost(mob,cmds) : actionsCost(mob,cmds);
-    	return actionsCost(mob,cmds);
+        if(mob!=null)
+            return mob.isInCombat() ? combatActionsCost(mob,cmds) : actionsCost(mob,cmds);
+        return actionsCost(mob,cmds);
     }
-	public boolean canBeOrdered(){return true;}
-	public boolean securityCheck(MOB mob){return true;}
-	public boolean staffCommand(){return false;}
+    public boolean canBeOrdered(){return true;}
+    public boolean securityCheck(MOB mob){return true;}
+    public boolean staffCommand(){return false;}
     public CMObject newInstance(){return this;}
     public CMObject copyOf()
     {
@@ -102,6 +102,6 @@ public class StdCommand implements Command
             return this;
         }
     }
-	
-	public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
+    
+    public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
 }

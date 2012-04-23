@@ -59,12 +59,12 @@ public class StdMOB implements MOB
 
     protected PlayerStats playerStats=null;
 
-    protected boolean   amDead=false;
-    protected Room      location=null;
-    protected Room      lastLocation=null;
-    protected Rideable  riding=null;
+    protected boolean       amDead=false;
+    protected volatile Room location=null;
+    protected volatile Room lastLocation=null;
+    protected Rideable      riding=null;
 
-    protected Session   mySession=null;
+    protected volatile Session   mySession=null;
     protected boolean   pleaseDestroy=false;
     protected Object    description=null;
     protected String    displayText="";
@@ -79,23 +79,19 @@ public class StdMOB implements MOB
     protected long      tickStatus=Tickable.STATUS_NOT;
 
     /* containers of items and attributes*/
-    protected SVector<Item>     inventory   = new SVector<Item>(1);
-    protected SVector<Ability>  abilitys    = new SVector<Ability>(1);
-    protected SVector<Ability>  affects     = new SVector<Ability>(1);
-    protected SVector<Behavior> behaviors   = new SVector<Behavior>(1);
-    protected SVector<Tattoo>   tattoos     = new SVector<Tattoo>(1);
-    protected SVector<String>   expertises  = new SVector<String>(1);
-    protected SVector<Follower> followers   = null;
-    protected LinkedList<QMCommand> 
-                                commandQue  = new LinkedList<QMCommand>();
-    protected SVector<ScriptingEngine>
-                                scripts     = new SVector(1);
+    protected volatile SVector<Item>   inventory   = new SVector<Item>(1);
+    protected SVector<Ability>         abilitys    = new SVector<Ability>(1);
+    protected volatile SVector<Ability>affects     = new SVector<Ability>(1);
+    protected SVector<Behavior>        behaviors   = new SVector<Behavior>(1);
+    protected SVector<Tattoo>          tattoos     = new SVector<Tattoo>(1);
+    protected SVector<String>          expertises  = new SVector<String>(1);
+    protected SVector<Follower>        followers   = null;
+    protected LinkedList<QMCommand>    commandQue  = new LinkedList<QMCommand>();
+    protected SVector<ScriptingEngine> scripts     = new SVector(1);
+    protected ChameleonList<Ability>   racialAffects= null;
+    protected ChameleonList<Ability>   clanAffects = null;
     protected SHashtable<String,Faction.FactionData> 
-                                factions    = new SHashtable<String,Faction.FactionData>(1);
-    protected ChameleonList<Ability> 
-                                racialAffects= null;
-    protected ChameleonList<Ability> 
-                                clanAffects = null;
+                                       factions    = new SHashtable<String,Faction.FactionData>(1);
 
     // gained attributes
     protected int       experience=0;

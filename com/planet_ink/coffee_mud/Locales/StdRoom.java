@@ -56,8 +56,8 @@ public class StdRoom implements Room
     protected SVector<Ability>          affects=null;
     protected SVector<Behavior>         behaviors=null;
     protected SVector<ScriptingEngine>  scripts=null;
-    protected SVector<Item>             contents=new SVector(1);
-    protected SVector<MOB>              inhabitants=new SVector(1);
+    protected volatile SVector<MOB>     inhabitants=new SVector(1);
+    protected volatile SVector<Item>    contents=new SVector(1);
 
     // base move points and thirst points per round
     protected int myResource=-1;
