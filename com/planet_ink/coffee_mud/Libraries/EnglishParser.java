@@ -230,12 +230,12 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
         final String uppStr=str.toUpperCase();
         if((uppStr.startsWith("A "))
         ||(uppStr.startsWith("AN ")))
-            return properIndefiniteArticle(adjective)+" "+str.substring(2).trim();
+            return properIndefiniteArticle(adjective)+" "+adjective+" "+str.substring(2).trim();
         if(uppStr.startsWith("THE "))
-            return properIndefiniteArticle(adjective)+" "+str.substring(3).trim();
+            return properIndefiniteArticle(adjective)+" "+adjective+" "+str.substring(3).trim();
         if(uppStr.startsWith("SOME "))
-            return properIndefiniteArticle(adjective)+" "+str.substring(4).trim();
-        return properIndefiniteArticle(adjective)+" "+str.trim();
+            return properIndefiniteArticle(adjective)+" "+adjective+" "+str.substring(4).trim();
+        return properIndefiniteArticle(adjective)+" "+adjective+" "+str.trim();
     }
 
     public CMObject findCommand(MOB mob, List<String> commands)
