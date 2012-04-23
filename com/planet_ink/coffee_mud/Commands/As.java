@@ -128,6 +128,7 @@ public class As extends StdCommand
                 mob.location().bringMobHere(M,false);
             }
         }
+        CMLib.s_sleep(100);
         M.doCommand(commands,metaFlags|Command.METAFLAG_AS);
         synchronized(mySession)
         {
@@ -145,6 +146,7 @@ public class As extends StdCommand
             M.setSession(hisSession);
             mySession.setMob(mob);
         }
+        CMLib.s_sleep(100);
         //mySession.initTelnetMode(myBitmap);
         if(dead) M.removeFromGame(true,true);
         return false;
