@@ -37,21 +37,22 @@ import java.util.*;
 public class CMMap extends StdLibrary implements WorldMap
 {
     public String ID(){return "CMMap";}
-    public final int         QUADRANT_WIDTH     = 10;
-    public static MOB         deityStandIn     = null;
-    public long             lastVReset         = 0;
-    public List<Area>        areasList          = new SVector<Area>();
-    public List<Area>        sortedAreas         = null;
-    public List<Deity>        deitiesList      = new SVector<Deity>();
-    public List<PostOffice>    postOfficeList     = new SVector<PostOffice>();
-    public List<Auctioneer>    auctionHouseList = new SVector<Auctioneer>();
+    public final int        QUADRANT_WIDTH   = 10;
+    public static MOB       deityStandIn     = null;
+    public long             lastVReset       = 0;
+    public List<Area>       areasList        = new SVector<Area>();
+    public List<Area>       sortedAreas      = null;
+    public List<Deity>      deitiesList      = new SVector<Deity>();
+    public List<PostOffice> postOfficeList   = new SVector<PostOffice>();
+    public List<Auctioneer> auctionHouseList = new SVector<Auctioneer>();
     public List<Banker>     bankList         = new SVector<Banker>();
-    public List<SpaceObject>space             = new SVector<SpaceObject>();
-    
+    public List<SpaceObject>space            = new SVector<SpaceObject>();
     public Map<Integer,List<WeakReference<MsgListener>>> 
-                            globalHandlers     = new SHashtable<Integer,List<WeakReference<MsgListener>>>();
+                            globalHandlers   = new SHashtable<Integer,List<WeakReference<MsgListener>>>();
     public Map<String,SLinkedList<LocatedPair>>
-                            scriptHostMap     = new STreeMap<String,SLinkedList<LocatedPair>>();
+                            scriptHostMap    = new STreeMap<String,SLinkedList<LocatedPair>>();
+    protected Map<String,Object> 
+                            SCRIPT_HOST_SEMAPHORES=new Hashtable<String,Object>();
     
     private ThreadEngine.SupportThread  thread     = null;
     public ThreadEngine.SupportThread getSupportThread() { return thread;}
@@ -1769,7 +1770,7 @@ public class CMMap extends StdLibrary implements WorldMap
     protected boolean isAScriptHost(final Area area, final PhysicalAgent host)
     {
         if(area == null) return false;
-        return isAScriptHost(scriptHostMap.get(area.Name().toUpperCase()), host);
+        return isAScriptHost(scriptHostMap.get(area.Name()), host);
     }
     
     protected boolean isAScriptHost(final SLinkedList<LocatedPair> hosts, final PhysicalAgent host)
@@ -1784,20 +1785,35 @@ public class CMMap extends StdLibrary implements WorldMap
         return false;
     }
     
+    protected final Object getScriptHostSemaphore(final Area area)
+    {
+        final Object semaphore;
+        if(SCRIPT_HOST_SEMAPHORES.containsKey(area.Name()))
+            semaphore=SCRIPT_HOST_SEMAPHORES.get(area.Name());
+        else
+        {
+            synchronized(SCRIPT_HOST_SEMAPHORES)
+            {
+                semaphore=new Object();
+                SCRIPT_HOST_SEMAPHORES.put(area.Name(), semaphore);
+            }
+        }
+        return semaphore;
+    }
+
     protected void addScriptHost(final Area area, final Room room, final PhysicalAgent host)
     {
         if((area==null) || (host == null))
             return;
         if(!isAQualifyingScriptHost(host))
             return;
-        final String name=area.Name().toUpperCase();
-        synchronized(("SCRIPT_HOST_FOR: "+name).intern())
+        synchronized(getScriptHostSemaphore(area))
         {
-            SLinkedList<LocatedPair> hosts = scriptHostMap.get(name);
+            SLinkedList<LocatedPair> hosts = scriptHostMap.get(area.Name());
             if(hosts == null)
             {
                 hosts=new SLinkedList<LocatedPair>();
-                scriptHostMap.put(name, hosts);
+                scriptHostMap.put(area.Name(), hosts);
             }
             else
             {
@@ -1808,7 +1824,6 @@ public class CMMap extends StdLibrary implements WorldMap
             hosts.add(new LocatedPair(room, host));
         }
     }
-    
     protected void delScriptHost(Area area, final PhysicalAgent oneToDel)
     {
         if(oneToDel == null)
@@ -1822,10 +1837,9 @@ public class CMMap extends StdLibrary implements WorldMap
                 }
         if(area == null)
             return;
-        final String name=area.Name().toUpperCase();
-        synchronized(("SCRIPT_HOST_FOR: "+name).intern())
+        synchronized(getScriptHostSemaphore(area))
         {
-            final SLinkedList<LocatedPair> hosts = scriptHostMap.get(name);
+            final SLinkedList<LocatedPair> hosts = scriptHostMap.get(area.Name());
             if(hosts==null) return;
             cleanScriptHosts(hosts, oneToDel, false);
         }
@@ -1837,11 +1851,11 @@ public class CMMap extends StdLibrary implements WorldMap
         if(area == null)
         {
             for(final String areaKey : scriptHostMap.keySet())
-                V.add(scriptHostMap.get(areaKey.toUpperCase()));
+                V.add(scriptHostMap.get(areaKey));
         }
         else
         {
-            final SLinkedList<LocatedPair> hosts = scriptHostMap.get(area.Name().toUpperCase());
+            final SLinkedList<LocatedPair> hosts = scriptHostMap.get(area.Name());
             if(hosts==null) return EmptyEnumeration.INSTANCE;
             V.add(hosts);
         }
