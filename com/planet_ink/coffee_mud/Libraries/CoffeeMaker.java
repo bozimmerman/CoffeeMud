@@ -2397,7 +2397,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
                 ((Drink)E).setLiquidType(CMLib.xml().getIntFromPieces(buf,"LTYPE"));
             }
             else
-                ((Drink)E).setLiquidRemaining(CMLib.xml().getIntFromPieces(buf,"CAPA2"));
+                ((Drink)E).setLiquidRemaining(capacity);
             ((Drink)E).setThirstQuenched(CMLib.xml().getIntFromPieces(buf,"DRINK"));
         }
         if(E instanceof Weapon)
