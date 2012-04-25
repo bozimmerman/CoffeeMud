@@ -6366,17 +6366,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 }
                 if(tt[1].equals("ALL") && (monster!=null))
                 {
-                    while(monster.numItems()>0)
-                    {
-                        Item I=monster.getItem(0);
-                        if(I!=null)
-                        {
-                            if(I.owner()==null) I.setOwner(monster);
-                            I.destroy();
-                        }
-                        else
-                            break;
-                    }
+                    monster.delAllItems(true);
                 }
                 else
                 {

@@ -35,78 +35,78 @@ import java.util.*;
 @SuppressWarnings("unchecked")
 public class StdSpaceShip implements Area, SpaceObject, SpaceShip
 {
-	protected static Climate climateObj=null;
-	
-	public long[] 			coordinates		=new long[3];
-	public double[] 		direction		=new double[2];
-	public long 			velocity		=0;
-	public long 			accelleration	=0;
-    protected String[]  	xtraValues		=null;
-    protected String 		imageName		="";
-	protected RoomnumberSet properRoomIDSet	=null;
-	protected TimeClock 	localClock		=(TimeClock)CMClass.getCommon("DefaultTimeClock");
-	protected String 		currency		="";
-	private long 			expirationDate	=0;
-	protected SpaceObject 	spaceTarget		=null;
-	protected SpaceObject 	spaceSource		=null;
-	protected SpaceObject 	orbiting		=null;
-	protected boolean 		amDestroyed		=false;
-	protected String 		name			="a space ship";
-	protected Room 			savedDock		=null;
-	protected String 		description		="";
-	protected String 		miscText		="";
-	protected SVector<Room>	myRooms			=new SVector();
-	protected int 			flag			=Area.STATE_ACTIVE;
-	protected long 			tickStatus		=Tickable.STATUS_NOT;
-	protected String 		author			=""; // will be used for owner, I guess.
-	protected PhyStats 		phyStats		=(PhyStats)CMClass.getCommon("DefaultPhyStats");
-	protected PhyStats 		basePhyStats	=(PhyStats)CMClass.getCommon("DefaultPhyStats");
-	protected boolean		initializedArea	=false;
-	
-	protected SVector<Ability>  		affects=new SVector<Ability>(1);
-	protected SVector<Behavior> 		behaviors=new SVector<Behavior>(1);
-    protected SVector<ScriptingEngine> 	scripts=new SVector<ScriptingEngine>(1);
-	protected SLinkedList<Area>		  	parents=new SLinkedList<Area>();
-    protected List<String>			  	parentsToLoad=new SLinkedList<String>();
-    protected STreeMap<String,String> 	blurbFlags=new STreeMap<String,String>();
+    protected static Climate climateObj=null;
+    
+    public long[]           coordinates     =new long[3];
+    public double[]         direction       =new double[2];
+    public long             velocity        =0;
+    public long             accelleration   =0;
+    protected String[]      xtraValues      =null;
+    protected String        imageName       ="";
+    protected RoomnumberSet properRoomIDSet =null;
+    protected TimeClock     localClock      =(TimeClock)CMClass.getCommon("DefaultTimeClock");
+    protected String        currency        ="";
+    private long            expirationDate  =0;
+    protected SpaceObject   spaceTarget     =null;
+    protected SpaceObject   spaceSource     =null;
+    protected SpaceObject   orbiting        =null;
+    protected boolean       amDestroyed     =false;
+    protected String        name            ="a space ship";
+    protected Room          savedDock       =null;
+    protected String        description     ="";
+    protected String        miscText        ="";
+    protected SVector<Room> myRooms         =new SVector();
+    protected int           flag            =Area.STATE_ACTIVE;
+    protected long          tickStatus      =Tickable.STATUS_NOT;
+    protected String        author          =""; // will be used for owner, I guess.
+    protected PhyStats      phyStats        =(PhyStats)CMClass.getCommon("DefaultPhyStats");
+    protected PhyStats      basePhyStats    =(PhyStats)CMClass.getCommon("DefaultPhyStats");
+    protected boolean       initializedArea =false;
+    
+    protected SVector<Ability>          affects=new SVector<Ability>(1);
+    protected SVector<Behavior>         behaviors=new SVector<Behavior>(1);
+    protected SVector<ScriptingEngine>  scripts=new SVector<ScriptingEngine>(1);
+    protected SLinkedList<Area>         parents=new SLinkedList<Area>();
+    protected List<String>              parentsToLoad=new SLinkedList<String>();
+    protected STreeMap<String,String>   blurbFlags=new STreeMap<String,String>();
 
     public void initializeClass(){}
-	public long[] coordinates(){return coordinates;}
-	public double[] direction(){return direction;}
-	protected Room getDock(){ return CMLib.map().getRoom(savedDock);}
-	public void setClimateObj(Climate obj){climateObj=obj;}
-	public Climate getClimateObj()
-	{
-		if(climateObj==null)
-		{
-			climateObj=(Climate)CMClass.getCommon("DefaultClimate");
-			climateObj.setCurrentWeatherType(Climate.WEATHER_CLEAR);
-			climateObj.setNextWeatherType(Climate.WEATHER_CLEAR);
-		}
-		return climateObj;
-	}
-	public void setAuthorID(String authorID){author=authorID;}
-	public String getAuthorID(){return author;}
-	public TimeClock getTimeObj(){return localClock;}
-	public void setTimeObj(TimeClock obj){localClock=obj;}
-	public void setCurrency(String newCurrency){currency=newCurrency;}
-	public String getCurrency(){return currency;}
-	public long expirationDate(){return expirationDate;}
-	public void setExpirationDate(long time){expirationDate=time;}
-	public long flags(){return 0;}
-	
-	public SpaceObject knownTarget(){return spaceTarget;}
-	public void setKnownTarget(SpaceObject O){spaceTarget=O;}
-	public SpaceObject knownSource(){return spaceSource;}
-	public void setKnownSource(SpaceObject O){spaceSource=O;}
-	public SpaceObject orbiting(){return orbiting;}
-	public void setOrbiting(SpaceObject O){orbiting=O;}
-	public void setCoords(long[] coords){coordinates=coords;}
-	public void setDirection(double[] dir){direction=dir;}
-	public long velocity(){return velocity;}
-	public void setVelocity(long v){velocity=v;}
-	public long accelleration(){return accelleration;}
-	public void setAccelleration(long v){accelleration=v;}
+    public long[] coordinates(){return coordinates;}
+    public double[] direction(){return direction;}
+    protected Room getDock(){ return CMLib.map().getRoom(savedDock);}
+    public void setClimateObj(Climate obj){climateObj=obj;}
+    public Climate getClimateObj()
+    {
+        if(climateObj==null)
+        {
+            climateObj=(Climate)CMClass.getCommon("DefaultClimate");
+            climateObj.setCurrentWeatherType(Climate.WEATHER_CLEAR);
+            climateObj.setNextWeatherType(Climate.WEATHER_CLEAR);
+        }
+        return climateObj;
+    }
+    public void setAuthorID(String authorID){author=authorID;}
+    public String getAuthorID(){return author;}
+    public TimeClock getTimeObj(){return localClock;}
+    public void setTimeObj(TimeClock obj){localClock=obj;}
+    public void setCurrency(String newCurrency){currency=newCurrency;}
+    public String getCurrency(){return currency;}
+    public long expirationDate(){return expirationDate;}
+    public void setExpirationDate(long time){expirationDate=time;}
+    public long flags(){return 0;}
+    
+    public SpaceObject knownTarget(){return spaceTarget;}
+    public void setKnownTarget(SpaceObject O){spaceTarget=O;}
+    public SpaceObject knownSource(){return spaceSource;}
+    public void setKnownSource(SpaceObject O){spaceSource=O;}
+    public SpaceObject orbiting(){return orbiting;}
+    public void setOrbiting(SpaceObject O){orbiting=O;}
+    public void setCoords(long[] coords){coordinates=coords;}
+    public void setDirection(double[] dir){direction=dir;}
+    public long velocity(){return velocity;}
+    public void setVelocity(long v){velocity=v;}
+    public long accelleration(){return accelleration;}
+    public void setAccelleration(long v){accelleration=v;}
     
     public void destroy()
     {
@@ -134,66 +134,66 @@ public class StdSpaceShip implements Area, SpaceObject, SpaceShip
     public boolean amDestroyed(){return amDestroyed;}
     public boolean isSavable()
     {
-    	return ((!amDestroyed) 
-    			&& (!CMath.bset(flags(),Area.FLAG_INSTANCE_CHILD))
-    			&& (CMLib.flags().isSavable(this)));
+        return ((!amDestroyed) 
+                && (!CMath.bset(flags(),Area.FLAG_INSTANCE_CHILD))
+                && (CMLib.flags().isSavable(this)));
     }
-	public void setSavable(boolean truefalse){}
-	public String ID(){	return "StdSpaceShip";}
-	public int climateType(){return Area.CLIMASK_NORMAL;}
-	public void setClimateType(int newClimateType){}
+    public void setSavable(boolean truefalse){}
+    public String ID(){    return "StdSpaceShip";}
+    public int climateType(){return Area.CLIMASK_NORMAL;}
+    public void setClimateType(int newClimateType){}
 
-	public StdSpaceShip()
-	{
+    public StdSpaceShip()
+    {
         super();
         //CMClass.bumpCounter(this,CMClass.CMObjectType.AREA);
         xtraValues=CMProps.getExtraStatCodesHolder(this);
-	}
+    }
     //protected void finalize(){CMClass.unbumpCounter(this,CMClass.CMObjectType.AREA);}//removed for mem & perf
-	public String name()
-	{
-		if(phyStats().newName()!=null) return phyStats().newName();
-		return name;
-	}
-	public void setName(String newName){
-		name=newName;
-		localClock.setLoadName(newName);
-	}
-	public String Name(){return name;}
-	public PhyStats phyStats()
-	{
-		return phyStats;
-	}
-	public PhyStats basePhyStats()
-	{
-		return basePhyStats;
-	}
-	public void recoverPhyStats()
-	{
-		basePhyStats.copyInto(phyStats);
-		for(final Enumeration<Ability> a=effects();a.hasMoreElements();)
-		{
-			final Ability A=a.nextElement();
-			if(A!=null)
-				A.affectPhyStats(this,phyStats);
-		}
-	}
-	public void setBasePhyStats(PhyStats newStats)
-	{
-		basePhyStats=(PhyStats)newStats.copyOf();
-	}
-	public void setNextWeatherType(int weatherCode){}
-	public void setCurrentWeatherType(int weatherCode){}
-	public int getTechLevel(){return Area.THEME_TECHNOLOGY;}
-	public void setTechLevel(int level){}
+    public String name()
+    {
+        if(phyStats().newName()!=null) return phyStats().newName();
+        return name;
+    }
+    public void setName(String newName){
+        name=newName;
+        localClock.setLoadName(newName);
+    }
+    public String Name(){return name;}
+    public PhyStats phyStats()
+    {
+        return phyStats;
+    }
+    public PhyStats basePhyStats()
+    {
+        return basePhyStats;
+    }
+    public void recoverPhyStats()
+    {
+        basePhyStats.copyInto(phyStats);
+        for(final Enumeration<Ability> a=effects();a.hasMoreElements();)
+        {
+            final Ability A=a.nextElement();
+            if(A!=null)
+                A.affectPhyStats(this,phyStats);
+        }
+    }
+    public void setBasePhyStats(PhyStats newStats)
+    {
+        basePhyStats=(PhyStats)newStats.copyOf();
+    }
+    public void setNextWeatherType(int weatherCode){}
+    public void setCurrentWeatherType(int weatherCode){}
+    public int getTechLevel(){return Area.THEME_TECHNOLOGY;}
+    public void setTechLevel(int level){}
 
-	public String image(){return imageName;}
+    public String image(){return imageName;}
     public String rawImage(){return imageName;}
-	public void setImage(String newImage){imageName=newImage;}
-	
-	public String getArchivePath(){return "";}
-	public void setArchivePath(String pathFile){}
-	
+    public void setImage(String newImage){imageName=newImage;}
+    
+    public String getArchivePath(){return "";}
+    public void setArchivePath(String pathFile){}
+    
     public void setAreaState(int newState)
     {
         if((newState==0)&&(!CMLib.threads().isTicking(this,Tickable.TICKID_AREA)))
@@ -201,98 +201,98 @@ public class StdSpaceShip implements Area, SpaceObject, SpaceShip
         flag=newState;
     }
     public int getAreaState(){return flag;}
-	public boolean amISubOp(String username){return false;}
-	public String getSubOpList(){return "";}
-	public void setSubOpList(String list){}
-	public void addSubOp(String username){}
-	public void delSubOp(String username){}
-	public CMObject newInstance()
-	{
-		try
+    public boolean amISubOp(String username){return false;}
+    public String getSubOpList(){return "";}
+    public void setSubOpList(String list){}
+    public void addSubOp(String username){}
+    public void delSubOp(String username){}
+    public CMObject newInstance()
+    {
+        try
         {
-			return (CMObject)this.getClass().newInstance();
-		}
-		catch(Exception e)
-		{
-			Log.errOut(ID(),e);
-		}
-		return new StdSpaceShip();
-	}
-	public boolean isGeneric(){return false;}
-	protected void cloneFix(StdSpaceShip ship)
-	{
-		basePhyStats=(PhyStats)ship.basePhyStats().copyOf();
-		phyStats=(PhyStats)ship.phyStats().copyOf();
+            return (CMObject)this.getClass().newInstance();
+        }
+        catch(Exception e)
+        {
+            Log.errOut(ID(),e);
+        }
+        return new StdSpaceShip();
+    }
+    public boolean isGeneric(){return false;}
+    protected void cloneFix(StdSpaceShip ship)
+    {
+        basePhyStats=(PhyStats)ship.basePhyStats().copyOf();
+        phyStats=(PhyStats)ship.phyStats().copyOf();
 
-		affects=new SVector<Ability>(1);
-		behaviors=new SVector<Behavior>(1);
+        affects=new SVector<Ability>(1);
+        behaviors=new SVector<Behavior>(1);
         scripts=new SVector<ScriptingEngine>(1);
         if(ship.parents==null)
-        	parents=null;
+            parents=null;
         else
-			parents=new SLinkedList(ship.parents);
+            parents=new SLinkedList(ship.parents);
         initializedArea=ship.initializedArea;
-		for(Enumeration<Behavior> e=ship.behaviors();e.hasMoreElements();)
-		{
-			Behavior B=e.nextElement();
-			if(B!=null)
-				behaviors.addElement(B);
-		}
-		for(final Enumeration<Ability> a=ship.effects();a.hasMoreElements();)
-		{
-			final Ability A=a.nextElement();
-			if(A!=null)
-				affects.addElement((Ability)A.copyOf());
-		}
+        for(Enumeration<Behavior> e=ship.behaviors();e.hasMoreElements();)
+        {
+            Behavior B=e.nextElement();
+            if(B!=null)
+                behaviors.addElement(B);
+        }
+        for(final Enumeration<Ability> a=ship.effects();a.hasMoreElements();)
+        {
+            final Ability A=a.nextElement();
+            if(A!=null)
+                affects.addElement((Ability)A.copyOf());
+        }
         ScriptingEngine SE=null;
-		for(Enumeration<ScriptingEngine> e=ship.scripts();e.hasMoreElements();)
-		{
-			SE=e.nextElement();
+        for(Enumeration<ScriptingEngine> e=ship.scripts();e.hasMoreElements();)
+        {
+            SE=e.nextElement();
             if(SE!=null)
                 addScript((ScriptingEngine)SE.copyOf());
         }
-		setTimeObj((TimeClock)CMClass.getCommon("DefaultTimeClock"));
-	}
-	public CMObject copyOf()
-	{
-		try
-		{
-			StdSpaceShip E=(StdSpaceShip)this.clone();
+        setTimeObj((TimeClock)CMClass.getCommon("DefaultTimeClock"));
+    }
+    public CMObject copyOf()
+    {
+        try
+        {
+            StdSpaceShip E=(StdSpaceShip)this.clone();
             //CMClass.bumpCounter(E,CMClass.CMObjectType.AREA);//removed for mem & perf
             E.xtraValues=(xtraValues==null)?null:(String[])xtraValues.clone();
-			E.cloneFix(this);
-			return E;
+            E.cloneFix(this);
+            return E;
 
-		}
-		catch(CloneNotSupportedException e)
-		{
-			return this.newInstance();
-		}
-	}
-	public String displayText(){return "";}
-	public void setDisplayText(String newDisplayText){}
+        }
+        catch(CloneNotSupportedException e)
+        {
+            return this.newInstance();
+        }
+    }
+    public String displayText(){return "";}
+    public void setDisplayText(String newDisplayText){}
 
-	public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
+    public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
 
-	public String miscTextFormat(){return CMParms.FORMAT_UNDEFINED;}
-	public String text()
-	{
-		return CMLib.coffeeMaker().getPropertiesStr(this,true);
-	}
-	public void setMiscText(String newMiscText)
-	{
-		miscText="";
-		if(newMiscText.trim().length()>0)
-			CMLib.coffeeMaker().setPropertiesStr(this,newMiscText,true);
-	}
+    public String miscTextFormat(){return CMParms.FORMAT_UNDEFINED;}
+    public String text()
+    {
+        return CMLib.coffeeMaker().getPropertiesStr(this,true);
+    }
+    public void setMiscText(String newMiscText)
+    {
+        miscText="";
+        if(newMiscText.trim().length()>0)
+            CMLib.coffeeMaker().setPropertiesStr(this,newMiscText,true);
+    }
 
-	public String description()
-	{ return description;}
-	public void setDescription(String newDescription)
-	{ description=newDescription;}
+    public String description()
+    { return description;}
+    public void setDescription(String newDescription)
+    { description=newDescription;}
 
-	public boolean okMessage(final Environmental myHost, final CMMsg msg)
-	{
+    public boolean okMessage(final Environmental myHost, final CMMsg msg)
+    {
         MsgListener N=null;
         for(int b=0;b<numBehaviors();b++)
         {
@@ -306,51 +306,51 @@ public class StdSpaceShip implements Area, SpaceObject, SpaceShip
             if((N!=null)&&(!N.okMessage(this,msg)))
                 return false;
         }
-		for(final Enumeration<Ability> a=effects();a.hasMoreElements();)
-		{
-			N=a.nextElement();
+        for(final Enumeration<Ability> a=effects();a.hasMoreElements();)
+        {
+            N=a.nextElement();
             if((N!=null)&&(!N.okMessage(this,msg)))
                 return false;
         }
         
-		if((flag>=Area.STATE_FROZEN)||(!CMLib.flags().allowsMovement(this)))
-		{
-			if((msg.sourceMinor()==CMMsg.TYP_ENTER)
-			||(msg.sourceMinor()==CMMsg.TYP_LEAVE)
-			||(msg.sourceMinor()==CMMsg.TYP_FLEE))
-				return false;
-		}
-		if((CMath.bset(msg.sourceMajor(),CMMsg.MASK_MAGIC))
-		||(CMath.bset(msg.targetMajor(),CMMsg.MASK_MAGIC))
-		||(CMath.bset(msg.othersMajor(),CMMsg.MASK_MAGIC)))
-		{
-			Room room=null;
-			if((msg.target()!=null)
-			&&(msg.target() instanceof MOB)
-			&&(((MOB)msg.target()).location()!=null))
-				room=((MOB)msg.target()).location();
-			else
-			if((msg.source()!=null)
-			&&(msg.source().location()!=null))
-				room=msg.source().location();
-			if(room!=null)
-			{
-				if(room.getArea()==this)
-					room.showHappens(CMMsg.MSG_OK_VISUAL,"Magic doesn't seem to work here.");
-				else
-					room.showHappens(CMMsg.MSG_OK_VISUAL,"Magic doesn't seem to work there.");
-			}
+        if((flag>=Area.STATE_FROZEN)||(!CMLib.flags().allowsMovement(this)))
+        {
+            if((msg.sourceMinor()==CMMsg.TYP_ENTER)
+            ||(msg.sourceMinor()==CMMsg.TYP_LEAVE)
+            ||(msg.sourceMinor()==CMMsg.TYP_FLEE))
+                return false;
+        }
+        if((CMath.bset(msg.sourceMajor(),CMMsg.MASK_MAGIC))
+        ||(CMath.bset(msg.targetMajor(),CMMsg.MASK_MAGIC))
+        ||(CMath.bset(msg.othersMajor(),CMMsg.MASK_MAGIC)))
+        {
+            Room room=null;
+            if((msg.target()!=null)
+            &&(msg.target() instanceof MOB)
+            &&(((MOB)msg.target()).location()!=null))
+                room=((MOB)msg.target()).location();
+            else
+            if((msg.source()!=null)
+            &&(msg.source().location()!=null))
+                room=msg.source().location();
+            if(room!=null)
+            {
+                if(room.getArea()==this)
+                    room.showHappens(CMMsg.MSG_OK_VISUAL,"Magic doesn't seem to work here.");
+                else
+                    room.showHappens(CMMsg.MSG_OK_VISUAL,"Magic doesn't seem to work there.");
+            }
 
-			return false;
-		}
-		return true;
-	}
+            return false;
+        }
+        return true;
+    }
 
     protected Enumeration<String> allBlurbFlags()
     {
-    	MultiEnumeration<String> multiEnum = new MultiEnumeration<String>(areaBlurbFlags());
+        MultiEnumeration<String> multiEnum = new MultiEnumeration<String>(areaBlurbFlags());
         for(Iterator<Area> i=getParentsIterator();i.hasNext();)
-        	multiEnum.addEnumeration(i.next().areaBlurbFlags());
+            multiEnum.addEnumeration(i.next().areaBlurbFlags());
         return multiEnum;
     }
 
@@ -363,14 +363,14 @@ public class StdSpaceShip implements Area, SpaceObject, SpaceShip
     public int numBlurbFlags(){return blurbFlags.size();}
     public int numAllBlurbFlags()
     {
-    	int num=numBlurbFlags();
+        int num=numBlurbFlags();
         for(Iterator<Area> i=getParentsIterator();i.hasNext();)
-        	num += i.next().numAllBlurbFlags();
-    	return num;
+            num += i.next().numAllBlurbFlags();
+        return num;
     }
     public Enumeration<String> areaBlurbFlags()
     {
-    	return new IteratorEnumeration<String>(blurbFlags.keySet().iterator());
+        return new IteratorEnumeration<String>(blurbFlags.keySet().iterator());
     }
     
     public void addBlurbFlag(String flagPlusDesc)
@@ -401,8 +401,8 @@ public class StdSpaceShip implements Area, SpaceObject, SpaceShip
         blurbFlags.remove(flagOnly);
     }
     
-	public void executeMsg(final Environmental myHost, final CMMsg msg)
-	{
+    public void executeMsg(final Environmental myHost, final CMMsg msg)
+    {
         MsgListener N=null;
         for(int b=0;b<numBehaviors();b++)
         {
@@ -418,318 +418,339 @@ public class StdSpaceShip implements Area, SpaceObject, SpaceShip
                 N.executeMsg(this,msg);
         }
         
-		for(final Enumeration<Ability> a=effects();a.hasMoreElements();)
-		{
-			N=a.nextElement();
+        for(final Enumeration<Ability> a=effects();a.hasMoreElements();)
+        {
+            N=a.nextElement();
             if(N!=null)
                 N.executeMsg(this,msg);
         }
-	}
+    }
 
-	public Enumeration<Room> getCompleteMap(){return getProperMap();}
-	public List<Room> getMetroCollection(){return new ReadOnlyList(myRooms);}
-	
-	public int[] addMaskAndReturn(int[] one, int[] two)
-	{
-		if(one.length!=two.length)
-			return one;
-		int[] returnable=new int[one.length];
-		for(int o=0;o<one.length;o++)
-			returnable[o]=one[o]+two[o];
-		return returnable;
-	}
+    public Enumeration<Room> getCompleteMap(){return getProperMap();}
+    public List<Room> getMetroCollection(){return new ReadOnlyList(myRooms);}
+    
+    public int[] addMaskAndReturn(int[] one, int[] two)
+    {
+        if(one.length!=two.length)
+            return one;
+        int[] returnable=new int[one.length];
+        for(int o=0;o<one.length;o++)
+            returnable[o]=one[o]+two[o];
+        return returnable;
+    }
 
-	public long getTickStatus(){ return tickStatus;}
-	public boolean tick(Tickable ticking, int tickID)
-	{
-		if(flag>=Area.STATE_STOPPED) return false;
-		tickStatus=Tickable.STATUS_START;
-		if(tickID==Tickable.TICKID_AREA)
-		{
-			getTimeObj().tick(this,tickID);
-			tickStatus=Tickable.STATUS_BEHAVIOR;
-			for(Behavior B : behaviors)
-				if(B!=null)
-					B.tick(ticking,tickID);
+    public long getTickStatus(){ return tickStatus;}
+    public boolean tick(Tickable ticking, int tickID)
+    {
+        if(flag>=Area.STATE_STOPPED) return false;
+        tickStatus=Tickable.STATUS_START;
+        if(tickID==Tickable.TICKID_AREA)
+        {
+            getTimeObj().tick(this,tickID);
+            tickStatus=Tickable.STATUS_BEHAVIOR;
+            for(Behavior B : behaviors)
+                if(B!=null)
+                    B.tick(ticking,tickID);
             tickStatus=Tickable.STATUS_SCRIPT;
             for(ScriptingEngine SE : scripts)
                 if(SE!=null) 
                     SE.tick(ticking,tickID);
 
-			tickStatus=Tickable.STATUS_AFFECT;
-			for(final Enumeration<Ability> a=effects();a.hasMoreElements();)
-			{
-				final Ability A=a.nextElement();
-				if(A!=null)
-				{
-					if(!A.tick(ticking,tickID))
-						A.unInvoke();
-				}
-			}
-		}
-		tickStatus=Tickable.STATUS_NOT;
-		return true;
-	}
+            tickStatus=Tickable.STATUS_AFFECT;
+            for(final Enumeration<Ability> a=effects();a.hasMoreElements();)
+            {
+                final Ability A=a.nextElement();
+                if(A!=null)
+                {
+                    if(!A.tick(ticking,tickID))
+                        A.unInvoke();
+                }
+            }
+        }
+        tickStatus=Tickable.STATUS_NOT;
+        return true;
+    }
 
-	public String getWeatherDescription(){return "There is no weather here.";}
-	public void affectPhyStats(Physical affected, PhyStats affectableStats)
-	{
-		if(phyStats().sensesMask()>0)
-			affectableStats.setSensesMask(affectableStats.sensesMask()|phyStats().sensesMask());
-		int disposition=phyStats().disposition()
-			&((~(PhyStats.IS_SLEEPING|PhyStats.IS_HIDDEN)));
-		if(disposition>0)
-			affectableStats.setDisposition(affectableStats.disposition()|disposition);
-		affectableStats.setWeight(affectableStats.weight()+phyStats().weight());
-	}
-	public void affectCharStats(MOB affectedMob, CharStats affectableStats)
-	{}
-	public void affectCharState(MOB affectedMob, CharState affectableMaxState)
-	{}
+    public String getWeatherDescription(){return "There is no weather here.";}
+    public void affectPhyStats(Physical affected, PhyStats affectableStats)
+    {
+        if(phyStats().sensesMask()>0)
+            affectableStats.setSensesMask(affectableStats.sensesMask()|phyStats().sensesMask());
+        int disposition=phyStats().disposition()
+            &((~(PhyStats.IS_SLEEPING|PhyStats.IS_HIDDEN)));
+        if(disposition>0)
+            affectableStats.setDisposition(affectableStats.disposition()|disposition);
+        affectableStats.setWeight(affectableStats.weight()+phyStats().weight());
+    }
+    public void affectCharStats(MOB affectedMob, CharStats affectableStats)
+    {}
+    public void affectCharState(MOB affectedMob, CharState affectableMaxState)
+    {}
 
-	public void addNonUninvokableEffect(Ability to)
-	{
-		if(to==null) return;
-		if(fetchEffect(to.ID())!=null) return;
-		to.makeNonUninvokable();
-		to.makeLongLasting();
-		affects.addElement(to);
-		to.setAffectedOne(this);
-	}
-	public void addEffect(Ability to)
-	{
-		if(to==null) return;
-		if(fetchEffect(to.ID())!=null) return;
-		affects.addElement(to);
-		to.setAffectedOne(this);
-	}
-	public void delEffect(Ability to)
-	{
-		int size=affects.size();
-		affects.removeElement(to);
-		if(affects.size()<size)
-			to.setAffectedOne(null);
-	}
-	public int numEffects()
-	{
-		return affects.size();
-	}
-	
-	public Enumeration<Ability> effects(){return (affects==null)?EmptyEnumeration.INSTANCE:affects.elements();}
-	
-	public Ability fetchEffect(int index)
-	{
-		try
-		{
-			return (Ability)affects.elementAt(index);
-		}
-		catch(java.lang.ArrayIndexOutOfBoundsException x){}
-		return null;
-	}
-	public Ability fetchEffect(String ID)
-	{
-		for(final Enumeration<Ability> a=effects();a.hasMoreElements();)
-		{
-			final Ability A=a.nextElement();
-			if((A!=null)&&(A.ID().equals(ID)))
-			   return A;
-		}
-		return null;
-	}
+    public void addNonUninvokableEffect(Ability to)
+    {
+        if(to==null) return;
+        if(fetchEffect(to.ID())!=null) return;
+        to.makeNonUninvokable();
+        to.makeLongLasting();
+        affects.addElement(to);
+        to.setAffectedOne(this);
+    }
+    public void addEffect(Ability to)
+    {
+        if(to==null) return;
+        if(fetchEffect(to.ID())!=null) return;
+        affects.addElement(to);
+        to.setAffectedOne(this);
+    }
+    public void delEffect(Ability to)
+    {
+        int size=affects.size();
+        affects.removeElement(to);
+        if(affects.size()<size)
+            to.setAffectedOne(null);
+    }
+    public void delAllEffects(boolean unInvoke)
+    {
+        for(int a=numEffects()-1;a>=0;a--)
+        {
+            Ability A=fetchEffect(a);
+            if(A!=null)
+            {
+                if(unInvoke) A.unInvoke();
+                A.setAffectedOne(null);
+            }
+        }
+        affects.clear();
+    }
+    public int numEffects()
+    {
+        return affects.size();
+    }
+    
+    public Enumeration<Ability> effects(){return (affects==null)?EmptyEnumeration.INSTANCE:affects.elements();}
+    
+    public Ability fetchEffect(int index)
+    {
+        try
+        {
+            return (Ability)affects.elementAt(index);
+        }
+        catch(java.lang.ArrayIndexOutOfBoundsException x){}
+        return null;
+    }
+    public Ability fetchEffect(String ID)
+    {
+        for(final Enumeration<Ability> a=effects();a.hasMoreElements();)
+        {
+            final Ability A=a.nextElement();
+            if((A!=null)&&(A.ID().equals(ID)))
+               return A;
+        }
+        return null;
+    }
 
-	public void fillInAreaRooms() { }
+    public void fillInAreaRooms() { }
 
-	public boolean inMyMetroArea(Area A)
-	{
-		if(A==this) return true;
-		return false;
-	}
-	public void fillInAreaRoom(Room R){}
-	public void dockHere(Room R)
-	{
-		if(R==null) return;
-		if(getDock()!=null) unDock(false);
-		Room airLockRoom=null;
-		int airLockDir=-1;
-		Room backupRoom=null;
-		int backupDir=-1;
-		for(Enumeration<Room> e=getProperMap();e.hasMoreElements();)
-		{
-			Room R2=(Room)e.nextElement();
-			if(R2!=null)
-			for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
-			{
-				if((R2.getRawExit(d)!=null)
-				&&((R2.rawDoors()[d]==null)||(R2.rawDoors()[d].getArea()!=this))
-				&&(R2.getRawExit(d).ID().endsWith("AirLock")))
-				{ 
-					airLockRoom=R2; 
-					R2.rawDoors()[d]=null; 
-					airLockDir=d; 
-					break;
-				}
-				
-				if((d<4)&&(R2.rawDoors()==null))
-				{
-					backupRoom=R2;
-					backupDir=d;
-				}
-			}
-			if(airLockDir>=0) break;
-		}
-		if(airLockRoom==null)
-		{
-			airLockRoom=backupRoom;
-			airLockDir=backupDir;
-		}
-		
-		if(airLockRoom!=null)
-		{
-			if(airLockRoom.rawDoors()[airLockDir]==null)
-				airLockRoom.rawDoors()[airLockDir]=R;
-			if(airLockRoom.getRawExit(airLockDir)==null)
-				airLockRoom.setRawExit(airLockDir,CMClass.getExit("GenAirLock"));
-			Item portal=CMClass.getMiscTech("GenSSPortal");
-			portal.setName(Name());
-			portal.setDisplayText(Name());
-			portal.setDescription(description());
-			portal.setReadableText(CMLib.map().getExtendedRoomID(R));
-			CMLib.flags().setGettable(portal,false);
-			R.addItem(portal);
-			portal.setExpirationDate(0);
-			savedDock=R;
-			CMLib.map().delObjectInSpace(this);
-			R.recoverRoomStats();
-		}
-	}
-	public void unDock(boolean toSpace)
-	{
-		if(getDock()==null) return;
-		Room dock=getDock();
-		for(int i=0;i<dock.numItems();i++)
-		{
-			Item I=dock.getItem(i);
-			if(I.Name().equals(Name()))
-				I.destroy();
-		}
-		for(Enumeration<Room> e=getProperMap();e.hasMoreElements();)
-		{
-			Room R=(Room)e.nextElement();
-			if(R!=null)
-			for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
-			{
-				if(R.rawDoors()[d]==dock)
-					R.rawDoors()[d]=null;
-			}
-		}
-		dock=null;
-		if(toSpace)
-		{
-			CMLib.map().addObjectToSpace(this);
-		}
-	}
+    public boolean inMyMetroArea(Area A)
+    {
+        if(A==this) return true;
+        return false;
+    }
+    public void fillInAreaRoom(Room R){}
+    public void dockHere(Room R)
+    {
+        if(R==null) return;
+        if(getDock()!=null) unDock(false);
+        Room airLockRoom=null;
+        int airLockDir=-1;
+        Room backupRoom=null;
+        int backupDir=-1;
+        for(Enumeration<Room> e=getProperMap();e.hasMoreElements();)
+        {
+            Room R2=(Room)e.nextElement();
+            if(R2!=null)
+            for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
+            {
+                if((R2.getRawExit(d)!=null)
+                &&((R2.rawDoors()[d]==null)||(R2.rawDoors()[d].getArea()!=this))
+                &&(R2.getRawExit(d).ID().endsWith("AirLock")))
+                { 
+                    airLockRoom=R2; 
+                    R2.rawDoors()[d]=null; 
+                    airLockDir=d; 
+                    break;
+                }
+                
+                if((d<4)&&(R2.rawDoors()==null))
+                {
+                    backupRoom=R2;
+                    backupDir=d;
+                }
+            }
+            if(airLockDir>=0) break;
+        }
+        if(airLockRoom==null)
+        {
+            airLockRoom=backupRoom;
+            airLockDir=backupDir;
+        }
+        
+        if(airLockRoom!=null)
+        {
+            if(airLockRoom.rawDoors()[airLockDir]==null)
+                airLockRoom.rawDoors()[airLockDir]=R;
+            if(airLockRoom.getRawExit(airLockDir)==null)
+                airLockRoom.setRawExit(airLockDir,CMClass.getExit("GenAirLock"));
+            Item portal=CMClass.getMiscTech("GenSSPortal");
+            portal.setName(Name());
+            portal.setDisplayText(Name());
+            portal.setDescription(description());
+            portal.setReadableText(CMLib.map().getExtendedRoomID(R));
+            CMLib.flags().setGettable(portal,false);
+            R.addItem(portal);
+            portal.setExpirationDate(0);
+            savedDock=R;
+            CMLib.map().delObjectInSpace(this);
+            R.recoverRoomStats();
+        }
+    }
+    public void unDock(boolean toSpace)
+    {
+        if(getDock()==null) return;
+        Room dock=getDock();
+        for(int i=0;i<dock.numItems();i++)
+        {
+            Item I=dock.getItem(i);
+            if(I.Name().equals(Name()))
+                I.destroy();
+        }
+        for(Enumeration<Room> e=getProperMap();e.hasMoreElements();)
+        {
+            Room R=(Room)e.nextElement();
+            if(R!=null)
+            for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
+            {
+                if(R.rawDoors()[d]==dock)
+                    R.rawDoors()[d]=null;
+            }
+        }
+        dock=null;
+        if(toSpace)
+        {
+            CMLib.map().addObjectToSpace(this);
+        }
+    }
 
-	public RoomnumberSet getCachedRoomnumbers()
-	{
-		RoomnumberSet set=(RoomnumberSet)CMClass.getCommon("DefaultRoomnumberSet");
-		synchronized(myRooms)
-		{
-			Room R=null;
-			for(int p=myRooms.size()-1;p>=0;p--)
-			{
-				R=(Room)myRooms.elementAt(p);
-				if(R.roomID().length()>0)
-					set.add(R.roomID());
-			}
-		}
-		return set;
-	}
-	public RoomnumberSet getProperRoomnumbers()
-	{
-		if(properRoomIDSet==null)
-			properRoomIDSet=(RoomnumberSet)CMClass.getCommon("DefaultRoomnumberSet");
-		return properRoomIDSet;
-	}
-	
-	public String getNewRoomID(Room startRoom, int direction)
-	{
-		int highest=Integer.MIN_VALUE;
-		int lowest=Integer.MAX_VALUE;
-		Hashtable allNums=new Hashtable();
-		try
-		{
-			for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
-			{
-				Room R=(Room)r.nextElement();
-				if((R.getArea().Name().equals(Name()))
-				&&(R.roomID().startsWith(Name()+"#")))
-				{
-					int newnum=CMath.s_int(R.roomID().substring(Name().length()+1));
-					if(newnum>=highest)	highest=newnum;
-					if(newnum<=lowest) lowest=newnum;
-					allNums.put(Integer.valueOf(newnum),R);
-				}
-			}
-	    }catch(NoSuchElementException e){}
-		if((highest<0)&&(CMLib.map().getRoom(Name()+"#0"))==null)
-			return Name()+"#0";
-		if(lowest>highest) lowest=highest+1;
-		for(int i=lowest;i<=highest+1000;i++)
-		{
-			if((!allNums.containsKey(Integer.valueOf(i)))
-			&&(CMLib.map().getRoom(Name()+"#"+i)==null))
-				return Name()+"#"+i;
-		}
-		return Name()+"#"+Math.random();
-	}
-	
-	/** Manipulation of Behavior objects, which includes
-	 * movement, speech, spellcasting, etc, etc.*/
-	public void addBehavior(Behavior to)
-	{
-		if(to==null) return;
-		for(int b=0;b<numBehaviors();b++)
-		{
-			Behavior B=fetchBehavior(b);
-			if((B!=null)&&(B.ID().equals(to.ID())))
-				return;
-		}
-		behaviors.addElement(to);
-	}
-	public void delBehavior(Behavior to)
-	{
-		behaviors.removeElement(to);
-	}
-	public int numBehaviors()
-	{
-		return behaviors.size();
-	}
+    public RoomnumberSet getCachedRoomnumbers()
+    {
+        RoomnumberSet set=(RoomnumberSet)CMClass.getCommon("DefaultRoomnumberSet");
+        synchronized(myRooms)
+        {
+            Room R=null;
+            for(int p=myRooms.size()-1;p>=0;p--)
+            {
+                R=(Room)myRooms.elementAt(p);
+                if(R.roomID().length()>0)
+                    set.add(R.roomID());
+            }
+        }
+        return set;
+    }
+    public RoomnumberSet getProperRoomnumbers()
+    {
+        if(properRoomIDSet==null)
+            properRoomIDSet=(RoomnumberSet)CMClass.getCommon("DefaultRoomnumberSet");
+        return properRoomIDSet;
+    }
+    
+    public String getNewRoomID(Room startRoom, int direction)
+    {
+        int highest=Integer.MIN_VALUE;
+        int lowest=Integer.MAX_VALUE;
+        Hashtable allNums=new Hashtable();
+        try
+        {
+            for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
+            {
+                Room R=(Room)r.nextElement();
+                if((R.getArea().Name().equals(Name()))
+                &&(R.roomID().startsWith(Name()+"#")))
+                {
+                    int newnum=CMath.s_int(R.roomID().substring(Name().length()+1));
+                    if(newnum>=highest)    highest=newnum;
+                    if(newnum<=lowest) lowest=newnum;
+                    allNums.put(Integer.valueOf(newnum),R);
+                }
+            }
+        }catch(NoSuchElementException e){}
+        if((highest<0)&&(CMLib.map().getRoom(Name()+"#0"))==null)
+            return Name()+"#0";
+        if(lowest>highest) lowest=highest+1;
+        for(int i=lowest;i<=highest+1000;i++)
+        {
+            if((!allNums.containsKey(Integer.valueOf(i)))
+            &&(CMLib.map().getRoom(Name()+"#"+i)==null))
+                return Name()+"#"+i;
+        }
+        return Name()+"#"+Math.random();
+    }
+    
+    /** Manipulation of Behavior objects, which includes
+     * movement, speech, spellcasting, etc, etc.*/
+    public void addBehavior(Behavior to)
+    {
+        if(to==null) return;
+        for(int b=0;b<numBehaviors();b++)
+        {
+            Behavior B=fetchBehavior(b);
+            if((B!=null)&&(B.ID().equals(to.ID())))
+                return;
+        }
+        behaviors.addElement(to);
+    }
+    public void delBehavior(Behavior to)
+    {
+        behaviors.removeElement(to);
+    }
+  public void delAllBehaviors()
+  {
+      boolean didSomething=(behaviors!=null)&&(behaviors.size()>0);
+      if(didSomething) behaviors.clear();
+      behaviors=null;
+      if(didSomething && ((scripts==null)||(scripts.size()==0)))
+        CMLib.threads().deleteTick(this,Tickable.TICKID_ROOM_BEHAVIOR);
+  }
+    public int numBehaviors()
+    {
+        return behaviors.size();
+    }
     public Enumeration<Behavior> behaviors() { return behaviors.elements();}
-	public int maxRange(){return Integer.MAX_VALUE;}
-	public int minRange(){return Integer.MIN_VALUE;}
+    public int maxRange(){return Integer.MAX_VALUE;}
+    public int minRange(){return Integer.MIN_VALUE;}
 
-	public int[] getAreaIStats(){return new int[Area.AREASTAT_NUMBER];}
-	public StringBuffer getAreaStats(){	return new StringBuffer("This is a space ship");}
+    public int[] getAreaIStats(){return new int[Area.AREASTAT_NUMBER];}
+    public StringBuffer getAreaStats(){    return new StringBuffer("This is a space ship");}
 
-	public Behavior fetchBehavior(int index)
-	{
-		try
-		{
-			return (Behavior)behaviors.elementAt(index);
-		}
-		catch(java.lang.ArrayIndexOutOfBoundsException x){}
-		return null;
-	}
-	public Behavior fetchBehavior(String ID)
-	{
-		for(int b=0;b<numBehaviors();b++)
-		{
-			Behavior B=fetchBehavior(b);
-			if((B!=null)&&(B.ID().equalsIgnoreCase(ID)))
-				return B;
-		}
-		return null;
-	}
+    public Behavior fetchBehavior(int index)
+    {
+        try
+        {
+            return (Behavior)behaviors.elementAt(index);
+        }
+        catch(java.lang.ArrayIndexOutOfBoundsException x){}
+        return null;
+    }
+    public Behavior fetchBehavior(String ID)
+    {
+        for(int b=0;b<numBehaviors();b++)
+        {
+            Behavior B=fetchBehavior(b);
+            if((B!=null)&&(B.ID().equalsIgnoreCase(ID)))
+                return B;
+        }
+        return null;
+    }
 
     /** Manipulation of the scripts list */
     public void addScript(ScriptingEngine S)
@@ -738,14 +759,22 @@ public class StdSpaceShip implements Area, SpaceObject, SpaceShip
         if(!scripts.contains(S)) 
         {
             for(ScriptingEngine S2 : scripts)
-	            if((S2!=null)&&(S2.getScript().equalsIgnoreCase(S.getScript())))
-	                return;
+                if((S2!=null)&&(S2.getScript().equalsIgnoreCase(S.getScript())))
+                    return;
             scripts.addElement(S);
         }
     }
     public void delScript(ScriptingEngine S)
     {
         scripts.removeElement(S);
+    }
+    public void delAllScripts()
+    {
+        boolean didSomething=(scripts!=null)&&(scripts.size()>0);
+        if(didSomething) scripts.clear();
+        scripts=null;
+        if(didSomething && ((behaviors==null)||(behaviors.size()==0)))
+          CMLib.threads().deleteTick(this,Tickable.TICKID_ITEM_BEHAVIOR);
     }
     public int numScripts(){return (scripts==null)?0:scripts.size();}
     public Enumeration<ScriptingEngine> scripts() { return (scripts==null)?EmptyEnumeration.INSTANCE:scripts.elements();}
@@ -763,7 +792,7 @@ public class StdSpaceShip implements Area, SpaceObject, SpaceShip
         {
             if(!myRooms.contains(R))
             {
-            	addProperRoomnumber(R.roomID());
+                addProperRoomnumber(R.roomID());
                 Room R2=null;
                 for(int i=0;i<myRooms.size();i++)
                 {
@@ -796,13 +825,13 @@ public class StdSpaceShip implements Area, SpaceObject, SpaceShip
     
     public void addProperRoomnumber(String roomID)
     {
-    	if((roomID!=null)&&(roomID.length()>0))
-	        getProperRoomnumbers().add(roomID);
+        if((roomID!=null)&&(roomID.length()>0))
+            getProperRoomnumbers().add(roomID);
     }
     public void delProperRoomnumber(String roomID)
     {
-    	if((roomID!=null)&&(roomID.length()>0))
-	        getProperRoomnumbers().remove(roomID);
+        if((roomID!=null)&&(roomID.length()>0))
+            getProperRoomnumbers().remove(roomID);
     }
     public boolean isRoom(Room R)
     {
@@ -815,92 +844,92 @@ public class StdSpaceShip implements Area, SpaceObject, SpaceShip
         if(myRooms.size()==0) return null;
         synchronized(myRooms)
         {
-	        int start=0;
-	        int end=myRooms.size()-1;
-	        while(start<=end)
-	        {
-	            int mid=(end+start)/2;
-	            int comp=((Room)myRooms.elementAt(mid)).roomID().compareToIgnoreCase(roomID);
-	            if(comp==0)
-	                return (Room)myRooms.elementAt(mid);
-	            else
-	            if(comp>0)
-	                end=mid-1;
-	            else
-	                start=mid+1;
-	
-	        }
+            int start=0;
+            int end=myRooms.size()-1;
+            while(start<=end)
+            {
+                int mid=(end+start)/2;
+                int comp=((Room)myRooms.elementAt(mid)).roomID().compareToIgnoreCase(roomID);
+                if(comp==0)
+                    return (Room)myRooms.elementAt(mid);
+                else
+                if(comp>0)
+                    end=mid-1;
+                else
+                    start=mid+1;
+    
+            }
         }
         return null;
     }
 
-	public int metroSize(){return properSize();}
-	public int properSize()
-	{
-		synchronized(myRooms)
-		{
-			return myRooms.size();
-		}
-	}
-	public int numberOfProperIDedRooms()
-	{
-		int num=0;
-		for(Enumeration<Room> e=getProperMap();e.hasMoreElements();)
-		{
-			Room R=(Room)e.nextElement();
-			if(R.roomID().length()>0)
-				if(R instanceof GridLocale)
-					num+=((GridLocale)R).xGridSize()*((GridLocale)R).yGridSize();
-				else
-					num++;
-		}
-		return num;
-	}
-	public Room getRandomMetroRoom(){return getRandomProperRoom();}
-	public Room getRandomProperRoom()
-	{
-		synchronized(myRooms)
-		{
-			if(properSize()==0) return null;
-			Room R=(Room)myRooms.elementAt(CMLib.dice().roll(1,properSize(),-1));
-			if(R instanceof GridLocale) return ((GridLocale)R).getRandomGridChild();
-			return R;
-		}
-	}
-	public boolean isProperlyEmpty(){ return getProperRoomnumbers().isEmpty(); }
-	public void setProperRoomnumbers(RoomnumberSet set){ properRoomIDSet=set;}
-	public RoomnumberSet getMetroRoomnumbers(){return getProperRoomnumbers();}
-	public Enumeration<Room> getMetroMap(){return getProperMap();}
-	public void addMetroRoomnumber(String roomID){}
-	public void delMetroRoomnumber(String roomID){}
-	public void addMetroRoom(Room R){}
-	public void delMetroRoom(Room R){}
-	public Enumeration<Room> getProperMap()
-	{
-		synchronized(myRooms)
-		{
-			return myRooms.elements();
-		}
-	}
-	public Enumeration<Room> getFilledProperMap() { return getProperMap();}
-	public Enumeration<String> subOps(){ return EmptyEnumeration.INSTANCE;}
+    public int metroSize(){return properSize();}
+    public int properSize()
+    {
+        synchronized(myRooms)
+        {
+            return myRooms.size();
+        }
+    }
+    public int numberOfProperIDedRooms()
+    {
+        int num=0;
+        for(Enumeration<Room> e=getProperMap();e.hasMoreElements();)
+        {
+            Room R=(Room)e.nextElement();
+            if(R.roomID().length()>0)
+                if(R instanceof GridLocale)
+                    num+=((GridLocale)R).xGridSize()*((GridLocale)R).yGridSize();
+                else
+                    num++;
+        }
+        return num;
+    }
+    public Room getRandomMetroRoom(){return getRandomProperRoom();}
+    public Room getRandomProperRoom()
+    {
+        synchronized(myRooms)
+        {
+            if(properSize()==0) return null;
+            Room R=(Room)myRooms.elementAt(CMLib.dice().roll(1,properSize(),-1));
+            if(R instanceof GridLocale) return ((GridLocale)R).getRandomGridChild();
+            return R;
+        }
+    }
+    public boolean isProperlyEmpty(){ return getProperRoomnumbers().isEmpty(); }
+    public void setProperRoomnumbers(RoomnumberSet set){ properRoomIDSet=set;}
+    public RoomnumberSet getMetroRoomnumbers(){return getProperRoomnumbers();}
+    public Enumeration<Room> getMetroMap(){return getProperMap();}
+    public void addMetroRoomnumber(String roomID){}
+    public void delMetroRoomnumber(String roomID){}
+    public void addMetroRoom(Room R){}
+    public void delMetroRoom(Room R){}
+    public Enumeration<Room> getProperMap()
+    {
+        synchronized(myRooms)
+        {
+            return myRooms.elements();
+        }
+    }
+    public Enumeration<Room> getFilledProperMap() { return getProperMap();}
+    public Enumeration<String> subOps(){ return EmptyEnumeration.INSTANCE;}
 
     public void addChildToLoad(String str){}
     public void addParentToLoad(String str) { parentsToLoad.add(str);}
 
-	// Children
-	public Enumeration<Area> getChildren() {return EmptyEnumeration.INSTANCE; }
-	public String getChildrenList() { return "";}
-	public Area getChild(String named) { return null;}
-	public boolean isChild(Area named) { return false;}
-	public boolean isChild(String named) { return false;}
-	public void addChild(Area area) {}
-	public void removeChild(Area area) {}
-	public boolean canChild(Area area) { return false;}
-	
-	public SLinkedList<Area> loadAreas(Collection<String> loadableSet) 
-	{
-    	final SLinkedList<Area> finalSet = new SLinkedList<Area>();
+    // Children
+    public Enumeration<Area> getChildren() {return EmptyEnumeration.INSTANCE; }
+    public String getChildrenList() { return "";}
+    public Area getChild(String named) { return null;}
+    public boolean isChild(Area named) { return false;}
+    public boolean isChild(String named) { return false;}
+    public void addChild(Area area) {}
+    public void removeChild(Area area) {}
+    public boolean canChild(Area area) { return false;}
+    
+    public SLinkedList<Area> loadAreas(Collection<String> loadableSet) 
+    {
+        final SLinkedList<Area> finalSet = new SLinkedList<Area>();
         for (final String areaName : loadableSet) 
         {
             Area A = CMLib.map().getArea(areaName);
@@ -909,37 +938,37 @@ public class StdSpaceShip implements Area, SpaceObject, SpaceShip
             finalSet.add(A);
         }
         return finalSet;
-	}
-	
-	public synchronized void initializeAreaLink() 
-	{
-		if(initializedArea)
-			return;
-		SLinkedList<Area> futureParents=loadAreas(parentsToLoad);
-		parents=new SLinkedList<Area>();
-		for(Area parentA : futureParents)
-			if(canParent(parentA))
-				parents.add(parentA);
-			else
-				Log.errOut("StdSpaceShip","Can not make '"+parentA.name()+"' parent of '"+name+"'");
-		initializedArea=true;
-	}
-		
-	
+    }
+    
+    public synchronized void initializeAreaLink() 
+    {
+        if(initializedArea)
+            return;
+        SLinkedList<Area> futureParents=loadAreas(parentsToLoad);
+        parents=new SLinkedList<Area>();
+        for(Area parentA : futureParents)
+            if(canParent(parentA))
+                parents.add(parentA);
+            else
+                Log.errOut("StdSpaceShip","Can not make '"+parentA.name()+"' parent of '"+name+"'");
+        initializedArea=true;
+    }
+        
+    
     protected final Iterator<Area> getParentsIterator()
     {
-    	if(!initializedArea) initializeAreaLink();
-    	return parents.iterator();
+        if(!initializedArea) initializeAreaLink();
+        return parents.iterator();
     }
     
     protected final Iterator<Area> getParentsReverseIterator()
     {
-    	if(!initializedArea) initializeAreaLink();
-    	return parents.descendingIterator();
+        if(!initializedArea) initializeAreaLink();
+        return parents.descendingIterator();
     }
     
-	public Enumeration<Area> getParents() { return new IteratorEnumeration<Area>(parents.iterator()); }
-	
+    public Enumeration<Area> getParents() { return new IteratorEnumeration<Area>(parents.iterator()); }
+    
     public List<Area> getParentsRecurse()
     {
         final LinkedList<Area> V=new LinkedList<Area>();
@@ -952,8 +981,8 @@ public class StdSpaceShip implements Area, SpaceObject, SpaceShip
         return V;
     }
 
-	public String getParentsList() 
-	{
+    public String getParentsList() 
+    {
         StringBuffer str=new StringBuffer("");
         for(final Iterator<Area> a=getParentsIterator();a.hasNext();)
         {
@@ -962,10 +991,10 @@ public class StdSpaceShip implements Area, SpaceObject, SpaceShip
             str.append(A.name());
         }
         return str.toString();
-	}
+    }
 
-	public Area getParent(String named) 
-	{
+    public Area getParent(String named) 
+    {
         for(final Iterator<Area> a=getParentsIterator();a.hasNext();)
         {
             final Area A=(Area)a.next();
@@ -974,10 +1003,10 @@ public class StdSpaceShip implements Area, SpaceObject, SpaceShip
                return A;
         }
         return null;
-	}
-	
-	public boolean isParent(Area area) 
-	{
+    }
+    
+    public boolean isParent(Area area) 
+    {
         for(final Iterator<Area> a=getParentsIterator();a.hasNext();)
         {
             final Area A=(Area)a.next();
@@ -985,10 +1014,10 @@ public class StdSpaceShip implements Area, SpaceObject, SpaceShip
                return true;
         }
         return false;
-	}
-	
-	public boolean isParent(String named) 
-	{
+    }
+    
+    public boolean isParent(String named) 
+    {
         for(final Iterator<Area> a=getParentsIterator();a.hasNext();)
         {
             final Area A=(Area)a.next();
@@ -997,34 +1026,34 @@ public class StdSpaceShip implements Area, SpaceObject, SpaceShip
                 return true;
         }
         return false;
-	}
-	
-	public void addParent(Area area) 
-	{
-		if(!canParent(area))
-			return;
+    }
+    
+    public void addParent(Area area) 
+    {
+        if(!canParent(area))
+            return;
         for(final Iterator<Area> i=getParentsIterator(); i.hasNext();) 
         {
             final Area A=i.next();
             if(A.Name().equalsIgnoreCase(area.Name()))
             {
-            	parents.remove(A);
-            	break;
+                parents.remove(A);
+                break;
             }
         }
         parents.add(area);
-	}
-	
-	public void removeParent(Area area) 
-	{ 
-		if(isParent(area))
-			parents.remove(area);
-	}
-	
-	public boolean canParent(Area area) 
-	{
-	    return true;
-	}
+    }
+    
+    public void removeParent(Area area) 
+    { 
+        if(isParent(area))
+            parents.remove(area);
+    }
+    
+    public boolean canParent(Area area) 
+    {
+        return true;
+    }
 
     public String prejudiceFactors(){return "";}
     public void setPrejudiceFactors(String factors){}
@@ -1046,36 +1075,36 @@ public class StdSpaceShip implements Area, SpaceObject, SpaceShip
     public String finalBudget(){ return "";}
     public String finalDevalueRate(){ return "";}
    
-	public int getSaveStatIndex(){return getStatCodes().length;}
-	private static final String[] CODES={"CLASS","CLIMATE","DESCRIPTION","TEXT","TECHLEVEL","BLURBS"};
-	public String[] getStatCodes(){return CODES;}
+    public int getSaveStatIndex(){return getStatCodes().length;}
+    private static final String[] CODES={"CLASS","CLIMATE","DESCRIPTION","TEXT","TECHLEVEL","BLURBS"};
+    public String[] getStatCodes(){return CODES;}
     public boolean isStat(String code){ return CMParms.indexOf(getStatCodes(),code.toUpperCase().trim())>=0;}
-	protected int getCodeNum(String code){
-		for(int i=0;i<CODES.length;i++)
-			if(code.equalsIgnoreCase(CODES[i])) return i;
-		return -1;
-	}
-	public String getStat(String code){
-		switch(getCodeNum(code))
-		{
-		case 0: return ID();
-		case 1: return ""+climateType();
-		case 2: return description();
-		case 3: return text();
-		case 4: return ""+getTechLevel();
+    protected int getCodeNum(String code){
+        for(int i=0;i<CODES.length;i++)
+            if(code.equalsIgnoreCase(CODES[i])) return i;
+        return -1;
+    }
+    public String getStat(String code){
+        switch(getCodeNum(code))
+        {
+        case 0: return ID();
+        case 1: return ""+climateType();
+        case 2: return description();
+        case 3: return text();
+        case 4: return ""+getTechLevel();
         case 5: return ""+CMLib.xml().getXMLList(blurbFlags.toStringVector(" "));
-		}
-		return "";
-	}
-	public void setStat(String code, String val)
-	{
-		switch(getCodeNum(code))
-		{
-		case 0: return;
-		case 1: setClimateType(CMath.s_parseBitIntExpression(Area.CLIMATE_DESCS,val)); break;
-		case 2: setDescription(val); break;
-		case 3: setMiscText(val); break;
-		case 4: setTechLevel(CMath.s_parseBitIntExpression(Area.THEME_DESCS,val)); break;
+        }
+        return "";
+    }
+    public void setStat(String code, String val)
+    {
+        switch(getCodeNum(code))
+        {
+        case 0: return;
+        case 1: setClimateType(CMath.s_parseBitIntExpression(Area.CLIMATE_DESCS,val)); break;
+        case 2: setDescription(val); break;
+        case 3: setMiscText(val); break;
+        case 4: setTechLevel(CMath.s_parseBitIntExpression(Area.THEME_DESCS,val)); break;
         case 5:
         {
             if(val.startsWith("+"))
@@ -1086,20 +1115,20 @@ public class StdSpaceShip implements Area, SpaceObject, SpaceShip
             else
             {
                 blurbFlags=new STreeMap<String,String>();
-            	List<String> V=CMLib.xml().parseXMLList(val);
-            	for(String s : V)
-            	{
-            		int x=s.indexOf(' ');
-            		if(x<0)
-            			blurbFlags.put(s,"");
-            		else
-            			blurbFlags.put(s.substring(0,x),s.substring(x+1));
-            	}
+                List<String> V=CMLib.xml().parseXMLList(val);
+                for(String s : V)
+                {
+                    int x=s.indexOf(' ');
+                    if(x<0)
+                        blurbFlags.put(s,"");
+                    else
+                        blurbFlags.put(s.substring(0,x),s.substring(x+1));
+                }
             }
             break;
         }
-		}
-	}
+        }
+    }
     public boolean sameAs(Environmental E)
     {
         if(!(E instanceof StdSpaceShip)) return false;

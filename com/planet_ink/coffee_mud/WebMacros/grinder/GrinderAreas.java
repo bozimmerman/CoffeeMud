@@ -54,8 +54,7 @@ public class GrinderAreas
 
     public static String doBehavs(PhysicalAgent E, ExternalHTTPRequests httpReq, java.util.Map<String,String> parms)
     {
-        while(E.numBehaviors()>0)
-            E.delBehavior(E.fetchBehavior(0));
+        E.delAllBehaviors();
         if(httpReq.isRequestParameter("BEHAV1"))
         {
             int num=1;
@@ -82,8 +81,7 @@ public class GrinderAreas
     
     public static String doAffects(Physical P, ExternalHTTPRequests httpReq, java.util.Map<String,String> parms)
     {
-        while(P.numEffects()>0) // personal effects
-            P.delEffect(P.fetchEffect(0));
+        P.delAllEffects(false);
         if(httpReq.isRequestParameter("AFFECT1"))
         {
             int num=1;

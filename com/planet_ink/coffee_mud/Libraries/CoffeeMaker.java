@@ -2203,17 +2203,8 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 
         if(E instanceof MOB)
         {
-            while(((MOB)E).numLearnedAbilities()>0)
-            {
-                Ability A=((MOB)E).fetchAbility(0);
-                if(A!=null)
-                    ((MOB)E).delAbility(A);
-            }
-            while(((MOB)E).numItems()>0)
-            {
-                Item I=((MOB)E).getItem(0);
-                if(I!=null){ I.setOwner((MOB)E); I.destroy(); ((MOB)E).delItem(I);}
-            }
+            ((MOB)E).delAllAbilities();
+            ((MOB)E).delAllItems(true);
             if(E instanceof ShopKeeper)
             {
                 for(Iterator<Environmental> i=((ShopKeeper)E).getShop().getStoreInventory();i.hasNext();)
@@ -2233,28 +2224,13 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
         if(E instanceof Physical)
         {
             Physical P=(Physical)E;
-            while(P.numEffects()>0)
-            {
-                Ability aff=P.fetchEffect(0);
-                if(aff!=null)
-                    P.delEffect(aff);
-            }
+            P.delAllEffects(false);
         }
         if(E instanceof PhysicalAgent)
         {
             PhysicalAgent P=(PhysicalAgent)E;
-            while(P.numBehaviors()>0)
-            {
-                Behavior behav=P.fetchBehavior(0);
-                if(behav!=null)
-                    P.delBehavior(behav);
-            }
-            while(P.numScripts()>0)
-            {
-                ScriptingEngine scrpt=P.fetchScript(0);
-                if(scrpt!=null)
-                    P.delScript(scrpt);
-            }
+            P.delAllBehaviors();
+            P.delAllScripts();
         }
 
         if(E instanceof MOB)
@@ -3321,16 +3297,8 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
                  }
                  break;
         case 15: {
-                     while(I.numEffects()>0)
-                     {
-                         Ability A=I.fetchEffect(0);
-                         if(A!=null){ A.unInvoke(); I.delEffect(A);}
-                     }
-                     while(I.numBehaviors()>0)
-                     {
-                         Behavior B=I.fetchBehavior(0);
-                         if(B!=null) I.delBehavior(B);
-                     }
+                     I.delAllEffects(true);
+                     I.delAllBehaviors();
                      setExtraEnvProperties(I,CMLib.xml().parseAllXML(val));
                      break;
                  }
@@ -3504,38 +3472,22 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
         case 13: M.basePhyStats().setAttackAdjustment(CMath.s_parseIntExpression(val)); break;
         case 14: M.basePhyStats().setSpeed(CMath.s_parseMathExpression(val)); break;
         case 15: {
-                     while(M.numEffects()>0)
-                     {
-                         Ability A=M.fetchEffect(0);
-                         if(A!=null){ A.unInvoke(); M.delEffect(A);}
-                     }
-                     while(M.numBehaviors()>0)
-                     {
-                         Behavior B=M.fetchBehavior(0);
-                         if(B!=null) M.delBehavior(B);
-                     }
+                     M.delAllEffects(true);
+                     M.delAllBehaviors();
                      setExtraEnvProperties(M,CMLib.xml().parseAllXML(val));
                      break;
                  }
         case 16:
             {
                 String extras=getExtraEnvPropertiesStr(M);
-                while(M.numLearnedAbilities()>0)
-                {
-                    Ability A=M.fetchAbility(0);
-                    if(A!=null) M.delAbility(A);
-                }
+                M.delAllAbilities();
                 setExtraEnvProperties(M,CMLib.xml().parseAllXML(extras));
                 setGenMobAbilities(M,CMLib.xml().parseAllXML(val));
                 break;
             }
         case 17:
             {
-                while(M.numItems()>0)
-                {
-                    Item I=M.getItem(0);
-                    if(I!=null){ I.setOwner(M); I.destroy(); M.delItem(I);}
-                }
+                M.delAllItems(true);
                 setGenMobInventory(M,CMLib.xml().parseAllXML(val));
             }
             break;

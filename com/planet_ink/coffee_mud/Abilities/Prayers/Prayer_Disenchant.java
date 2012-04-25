@@ -65,19 +65,7 @@ public class Prayer_Disenchant extends Prayer
 				mob.location().send(mob,msg);
 				beneficialAffect(mob,target,asLevel,0);
 				target.basePhyStats().setAbility(0);
-				Vector affects=new Vector();
-				for(int a=target.numEffects()-1;a>=0;a--) // personal affects
-				{
-					Ability A=target.fetchEffect(a);
-					if(A!=null)
-						affects.addElement(A);
-				}
-				for(int a=0;a<affects.size();a++)
-				{
-					Ability A=(Ability)affects.elementAt(a);
-					A.unInvoke();
-					target.delEffect(A);
-				}
+				target.delAllEffects(true);
 				if(target instanceof Wand)
 				{
 					((Wand)target).setSpell(null);

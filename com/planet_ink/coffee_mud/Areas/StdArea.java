@@ -853,6 +853,19 @@ public class StdArea implements Area
         if(affects.size()<size)
             to.setAffectedOne(null);
     }
+    public void delAllEffects(boolean unInvoke)
+    {
+        for(int a=numEffects()-1;a>=0;a--)
+        {
+            Ability A=fetchEffect(a);
+            if(A!=null)
+            {
+                if(unInvoke) A.unInvoke();
+                A.setAffectedOne(null);
+            }
+        }
+        affects.clear();
+    }
     public int numEffects()
     {
         return (affects==null)?0:affects.size();
@@ -935,6 +948,10 @@ public class StdArea implements Area
     {
         behaviors.removeElement(to);
     }
+    public void delAllBehaviors()
+    {
+        behaviors.clear();
+    }
     public int numBehaviors()
     {
         return behaviors.size();
@@ -964,6 +981,7 @@ public class StdArea implements Area
     public int numScripts(){return scripts.size();}
     public Enumeration<ScriptingEngine> scripts() { return scripts.elements();}
     public ScriptingEngine fetchScript(int x){try{return (ScriptingEngine)scripts.elementAt(x);}catch(Exception e){} return null;}
+    public void delAllScripts() { scripts.clear(); }
 
     public int maxRange(){return Integer.MAX_VALUE;}
     public int minRange(){return Integer.MIN_VALUE;}

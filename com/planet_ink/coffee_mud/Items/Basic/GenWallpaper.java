@@ -300,6 +300,7 @@ public class GenWallpaper implements Item
     public void addNonUninvokableEffect(Ability to){}
     public void addEffect(Ability to){}
     public void delEffect(Ability to){}
+    public void delAllEffects(boolean unInvoke){}
     public int numEffects(){return 0;}
     public Enumeration<Ability> effects(){return EmptyEnumeration.INSTANCE;}
     public Ability fetchEffect(int index){return null;}
@@ -308,12 +309,14 @@ public class GenWallpaper implements Item
     public int minRange(){return 0;}
     public void addBehavior(Behavior to){}
     public void delBehavior(Behavior to){}
+    public void delAllBehaviors(){}
     public int numBehaviors(){return 0;}
     public Enumeration<Behavior> behaviors() { return EmptyEnumeration.INSTANCE;}
     public Behavior fetchBehavior(int index){return null;}
     public Behavior fetchBehavior(String ID){return null;}
     public void addScript(ScriptingEngine S){}
     public void delScript(ScriptingEngine S) {}
+    public void delAllScripts(){}
     public int numScripts(){return 0;}
     public Enumeration<ScriptingEngine> scripts() { return EmptyEnumeration.INSTANCE;}
     public ScriptingEngine fetchScript(int x){ return null;}

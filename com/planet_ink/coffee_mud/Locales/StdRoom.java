@@ -1430,37 +1430,12 @@ public class StdRoom implements Room
     public void destroy()
     {
         CMLib.map().registerWorldObjectDestroyed(getArea(),this,this);
-        try{
-        for(int a=numEffects()-1;a>=0;a--)
-            fetchEffect(a).unInvoke();
-        }catch(Exception e){}
-        while(numEffects()>0)
-            delEffect(fetchEffect(0));
-        try{
-            Vector V=new Vector();
-            for(int v=0;v<numInhabitants();v++)
-                V.addElement(fetchInhabitant(v));
-            for(int v=0;v<V.size();v++)
-                ((MOB)V.elementAt(v)).destroy();
-            if(numInhabitants()>0)
-            for(int v=0;v<V.size();v++)
-                delInhabitant((MOB)V.elementAt(v));
-        }catch(Exception e){}
-        while(numBehaviors()>0)
-            delBehavior(fetchBehavior(0));
-        while(numScripts()>0)
-            delScript(fetchScript(0));
+        delAllEffects(true);
+        delAllInhabitants(true);
+        delAllBehaviors();
+        delAllScripts();
         CMLib.threads().deleteTick(this,-1);
-        try{
-            Vector V=new Vector();
-            for(int v=0;v<numItems();v++)
-                V.addElement(getItem(v));
-            for(int v=0;v<V.size();v++)
-                ((Item)V.elementAt(v)).destroy();
-            if(numItems()>0)
-            for(int v=0;v<V.size();v++)
-                delItem((Item)V.elementAt(v));
-        }catch(Exception e){}
+        delAllItems(true);
         if(this instanceof GridLocale)
             ((GridLocale)this).clearGrid(null);
         clearSky();
@@ -1602,6 +1577,22 @@ public class StdRoom implements Room
     {
         inhabitants.removeElement(mob);
     }
+    public void delAllInhabitants(boolean destroy)
+    {
+        try{
+          for(int i=numInhabitants()-1;i>=0;i--)
+          {
+              MOB M=fetchInhabitant(i);
+              if(M!=null)
+              {
+                  if(destroy || (M.location()==this))
+                      M.setLocation(null);
+                  M.destroy();
+              }
+          }
+          inhabitants.clear();
+      }catch(Exception e){}
+    }
 
     public Item findItem(String itemID)
     {
@@ -1667,6 +1658,21 @@ public class StdRoom implements Room
     {
         contents.removeElement(item);
         item.recoverPhyStats();
+    }
+    public void delAllItems(boolean destroy)
+    {
+        if(destroy)
+            for(int i=numItems()-1;i>=0;i--)
+            {
+                Item I=getItem(i);
+                if(I!=null)
+                {
+                    // since were deleting you AND all your peers, no need for Item to do it.
+                    I.setOwner(null);
+                    I.destroy();
+                }
+            }
+        contents.clear();
     }
     public int numItems()
     {
@@ -1924,6 +1930,20 @@ public class StdRoom implements Room
                 affects=new SVector(1);
         }
     }
+    public void delAllEffects(boolean unInvoke)
+    {
+        if(affects==null) return;
+        for(int a=numEffects()-1;a>=0;a--)
+        {
+            Ability A=fetchEffect(a);
+            if(A!=null)
+            {
+                if(unInvoke) A.unInvoke();
+                A.setAffectedOne(null);
+            }
+        }
+        affects=new SVector(1);
+    }
     public int numEffects()
     {
         if(affects==null) return 0;
@@ -1978,6 +1998,14 @@ public class StdRoom implements Room
             if(((behaviors==null)||(behaviors.size()==0))&&((scripts==null)||(scripts.size()==0)))
                 CMLib.threads().deleteTick(this,Tickable.TICKID_ROOM_BEHAVIOR);
         }
+    }
+    public void delAllBehaviors()
+    {
+        boolean didSomething=(behaviors!=null)&&(behaviors.size()>0);
+        if(didSomething) behaviors.clear();
+        behaviors=null;
+        if(didSomething && ((scripts==null)||(scripts.size()==0)))
+          CMLib.threads().deleteTick(this,Tickable.TICKID_ROOM_BEHAVIOR);
     }
     public int numBehaviors()
     {
@@ -2035,6 +2063,14 @@ public class StdRoom implements Room
             }
         }
     }
+    public void delAllScripts()
+    {
+        boolean didSomething=(scripts!=null)&&(scripts.size()>0);
+        if(didSomething) scripts.clear();
+        scripts=null;
+        if(didSomething && ((behaviors==null)||(behaviors.size()==0)))
+          CMLib.threads().deleteTick(this,Tickable.TICKID_ROOM_BEHAVIOR);
+    }
     public int numScripts(){return (scripts==null)?0:scripts.size();}
     public Enumeration<ScriptingEngine> scripts() { return (scripts==null)?EmptyEnumeration.INSTANCE:scripts.elements();}
     public ScriptingEngine fetchScript(int x){try{return (ScriptingEngine)scripts.elementAt(x);}catch(Exception e){} return null;}
@@ -2072,16 +2108,8 @@ public class StdRoom implements Room
         case 3: setMiscText(val); break;
         case 4:
         {
-            while(numEffects()>0)
-            {
-                Ability A=fetchEffect(0);
-                if(A!=null){ A.unInvoke(); delEffect(A);}
-            }
-            while(numBehaviors()>0)
-            {
-                Behavior B=fetchBehavior(0);
-                if(B!=null) delBehavior(B);
-            }
+            delAllEffects(true);
+            delAllBehaviors();
             CMLib.coffeeMaker().setExtraEnvProperties(this,CMLib.xml().parseAllXML(val));
             break;
         }

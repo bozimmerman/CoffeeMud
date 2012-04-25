@@ -30,7 +30,7 @@ limitations under the License.
 */
 public interface Affectable 
 {
-	/**
+    /**
      * Object containing a set of base, unmodified, mostly numeric fields.  The values on the fields
      * in this object will be as they were set by the builder. This object is used as a basis for
      * the recoverPhyStats() method.  See the PhyStats interface for information on the fields herein.
@@ -39,7 +39,7 @@ public interface Affectable
      * @see com.planet_ink.coffee_mud.Common.interfaces.PhyStats
      * @return a set of state fields
      */
-	public PhyStats basePhyStats();
+    public PhyStats basePhyStats();
     /**
      * Re-sets the object containing a set of base, unmodified, mostly numeric fields.  The values on the fields
      * in this object will be as they were set by the builder. This object is used as a basis for
@@ -61,7 +61,7 @@ public interface Affectable
      * @see com.planet_ink.coffee_mud.Common.interfaces.PhyStats
      * @return the current set of state fields
      */
-	public PhyStats phyStats();
+    public PhyStats phyStats();
     /**
      * This method copies the basePhyStats() object into the phyStats() object, then makes repeated calls to
      * all surrounding objects  with affectPhyStats(Environmental,PhyStats) method.   Surrounding  objects
@@ -76,9 +76,9 @@ public interface Affectable
      * @see com.planet_ink.coffee_mud.core.interfaces.PhysicalAgent#addBehavior(Behavior)
      * @see com.planet_ink.coffee_mud.Common.interfaces.PhyStats
      */
-	public void recoverPhyStats();
+    public void recoverPhyStats();
 
-	/**
+    /**
      * Add a new effect to this object, whether permanent or temporary.  After calling this method,
      * recoverPhyStats() should be called next in case this ability object modifies the stats.
      * An Ability with a given ID() can only be added once per object.
@@ -86,7 +86,7 @@ public interface Affectable
      * @see com.planet_ink.coffee_mud.core.interfaces.Affectable#recoverPhyStats()
      * @param to The ability object to add as an effect.
      */
-	public void addEffect(Ability to);
+    public void addEffect(Ability to);
     /**
      * Same as addEffect(Ability), but will set the Ability object as never being able to be uninvoked.
      * recoverPhyStats() method  should be called next.
@@ -95,7 +95,7 @@ public interface Affectable
      * @see com.planet_ink.coffee_mud.core.interfaces.Affectable#recoverPhyStats()
      * @param to The ability object to add as an effect.
      */
-	public void addNonUninvokableEffect(Ability to);
+    public void addNonUninvokableEffect(Ability to);
     /**
      * Delete an effect from this object, whether permanent or temporary.  After calling this method,
      * recoverPhyStats() should be called next in case this ability object modified the stats.
@@ -103,13 +103,13 @@ public interface Affectable
      * @see com.planet_ink.coffee_mud.core.interfaces.Affectable#recoverPhyStats()
      * @param to The ability object to remove as an effect on this object
      */
-	public void delEffect(Ability to);
+    public void delEffect(Ability to);
     /**
      * Returns the number of ability objects listed as effects on this object.
      * @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability
      * @return the number of effects this object has
      */
-	public int numEffects();
+    public int numEffects();
     /**
      * Returns an ability object listed as an effect on this object. May return null even if the index
      * is correct to mark a race condition.
@@ -118,7 +118,7 @@ public interface Affectable
      * @param index which object to return
      * @return the ability object effecting this object
      */
-	public Ability fetchEffect(int index);
+    public Ability fetchEffect(int index);
     /**
      * Returns an ability object listed as an effect on this object. The object will
      * be the one with the same ID() string as passed in.
@@ -126,11 +126,18 @@ public interface Affectable
      * @see CMObject#ID()
      * @return the ability object effecting this object
      */
-	public Ability fetchEffect(String ID);
+    public Ability fetchEffect(String ID);
     /**
      * Returns an enumerator of abilities listed as effects on this object. 
      * @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability
      * @return the enumerator of ability objects effecting this object
      */
-	public Enumeration<Ability> effects();
+    public Enumeration<Ability> effects();
+    
+    /**
+     * Optionally uninvokes and then certainly removes all effects
+     * from this object.
+     * @param unInvoke send true to uninvoke before deleting
+     */
+    public void delAllEffects(boolean unInvoke);
 }

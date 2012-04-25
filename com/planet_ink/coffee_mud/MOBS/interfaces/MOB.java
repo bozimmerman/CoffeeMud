@@ -204,6 +204,7 @@ public interface MOB extends Rider, DBIdentifiable, PhysicalAgent, ItemPossessor
     public Ability fetchRandomAbility();
     public Enumeration<Ability> allAbilities();
     public Enumeration<Ability> abilities();
+    public void delAllAbilities();
 
     /** Manipulation of the expertise list */
     public void addExpertise(String of);
@@ -229,7 +230,7 @@ public interface MOB extends Rider, DBIdentifiable, PhysicalAgent, ItemPossessor
     public String getFactionListing();
     public void removeFaction(String which);
     public void copyFactions(MOB source);
-    
+
     public static class Follower
     {
         public MOB follower;

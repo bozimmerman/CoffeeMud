@@ -649,22 +649,12 @@ public class StdMOB implements MOB
         if(possessor!=null) possessor.dispossess(false);
         if(session()!=null){ session().stopSession(false,false,false); try{Thread.sleep(1000);}catch(Exception e){}}
         removeFromGame(session()!=null,true);
-        while(numBehaviors()>0)
-            delBehavior(fetchBehavior(0));
-        while(numEffects()>0)
-            delEffect(fetchEffect(0));
-        while(numLearnedAbilities()>0)
-            delAbility(fetchAbility(0));
-        while(numItems()>0)
-        {
-            Item I=getItem(0);
-            if(I!=null)
-            {
-                I.setOwner(this);
-                I.destroy();
-                delItem(I);
-            }
-        }
+        delAllBehaviors();
+        delAllEffects(false);
+        delAllAbilities();
+        delAllItems(true);
+        delAllExpertises();
+        delAllScripts();
         if(kickFlag)
             CMLib.threads().deleteTick(this,-1);
         kickFlag=false;
@@ -2833,6 +2823,21 @@ public class StdMOB implements MOB
         inventory.removeElement(item);
         item.recoverPhyStats();
     }
+    public void delAllItems(boolean destroy)
+    {
+        if(destroy)
+            for(int i=numItems()-1;i>=0;i--)
+            {
+                Item I=getItem(i);
+                if(I!=null)
+                {
+                    // since were deleting you AND all your peers, no need for Item to do it.
+                    I.setOwner(null);
+                    I.destroy();
+                }
+            }
+        inventory.clear();
+    }
     public int numItems()
     {
         return inventory.size();
@@ -3118,6 +3123,10 @@ public class StdMOB implements MOB
     {
         abilitys.removeElement(to);
     }
+    public void delAllAbilities()
+    {
+        abilitys.clear();
+    }
     public int numLearnedAbilities()
     {
         return abilitys.size();
@@ -3250,7 +3259,19 @@ public class StdMOB implements MOB
         if(affects.removeElement(to))
             to.setAffectedOne(null);
     }
-
+    public void delAllEffects(boolean unInvoke)
+    {
+        for(int a=numEffects()-1;a>=0;a--)
+        {
+            Ability A=fetchEffect(a);
+            if(A!=null)
+            {
+                if(unInvoke) A.unInvoke();
+                A.setAffectedOne(null);
+            }
+        }
+        affects.clear();
+    }
     public int numAllEffects()
     {
         final Clan C=getMyClan();
@@ -3318,6 +3339,10 @@ public class StdMOB implements MOB
     {
         behaviors.removeElement(to);
     }
+    public void delAllBehaviors()
+    {
+        behaviors.clear();
+    }
     public int numBehaviors()
     {
         return behaviors.size();
@@ -3370,6 +3395,13 @@ public class StdMOB implements MOB
             if(expertises.remove(of))
                 clearExpertiseCache();
         }
+    }
+    public void delAllExpertises()
+    {
+        boolean clearExpertiseCache=expertises.size()>0;
+        expertises.clear();
+        if(clearExpertiseCache)
+            clearExpertiseCache();
     }
     public int numExpertises(){return expertises.size();}
     
@@ -3474,6 +3506,10 @@ public class StdMOB implements MOB
     {
         if(S==null) return;
         scripts.removeElement(S);
+    }
+    public void delAllScripts()
+    {
+        scripts.clear();
     }
     public int numScripts(){return (scripts==null)?0:scripts.size();}
     public Enumeration<ScriptingEngine> scripts() { return (scripts==null)?EmptyEnumeration.INSTANCE:scripts.elements();}

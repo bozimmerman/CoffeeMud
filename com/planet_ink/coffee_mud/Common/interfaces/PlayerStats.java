@@ -671,4 +671,6 @@ public interface PlayerStats extends CMCommon, Modifiable, AccountStats
     public final static long HYGIENE_COMMONDIRTY=2;
     /** Constant for hygeine system, denotes amount of dirtiness from fighting */
     public final static long HYGIENE_FIGHTDIRTY=1;
+    /** Constant for hygeine system, denotes amount of cleaning water does per tick */
+    public final static long HYGIENE_RAINCLEAN=-100;
 }

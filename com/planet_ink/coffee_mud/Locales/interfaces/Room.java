@@ -230,6 +230,7 @@ public interface Room extends PhysicalAgent, ItemPossessor
     public Enumeration<MOB> inhabitants();
     public void addInhabitant(MOB mob);
     public void delInhabitant(MOB mob);
+    public void delAllInhabitants(boolean destroy);
     public int numInhabitants();
     public boolean isInhabitant(MOB mob);
     public MOB fetchRandomInhabitant();

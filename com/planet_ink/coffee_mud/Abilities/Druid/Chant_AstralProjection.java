@@ -155,11 +155,7 @@ public class Chant_AstralProjection extends Chant
 				final Ability A=a.nextElement();
 				if(A.canBeUninvoked()) spirit.delEffect(A);
 			}
-			while(spirit.numItems()>0)
-			{
-				Item I=spirit.getItem(0);
-				if(I!=null) I.destroy();
-			}
+			spirit.delAllItems(true);
 			CMLib.beanCounter().clearZeroMoney(spirit,null);
 			mob.location().show(target,null,CMMsg.MSG_OK_ACTION,"^Z<S-NAME> go(es) limp!^.^?\n\r");
 	        CMLib.threads().startTickDown(spirit,Tickable.TICKID_MOB,1);

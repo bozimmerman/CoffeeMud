@@ -1042,15 +1042,13 @@ public class MOBloader
             CMLib.commands().postChannel((String)channels.get(i),mob.getClanID(),mob.Name()+" has just been deleted.",true);
         CMLib.coffeeTables().bump(mob,CoffeeTableRow.STAT_PURGES);
         DB.update("DELETE FROM CMCHAR WHERE CMUSERID='"+mob.Name()+"'");
-        while(mob.numItems()>0)
+        mob.delAllItems(false);
+        for(int i=0;i<mob.numItems();i++)
         {
-            Item thisItem=mob.getItem(0);
-            if(thisItem!=null)
-            {
-                thisItem.setContainer(null);
-                mob.delItem(thisItem);
-            }
+            final Item I=mob.getItem(i);
+            if(I!=null) I.setContainer(null);
         }
+        mob.delAllItems(false);
         DBUpdateItems(mob);
         while(mob.numFollowers()>0)
         {
@@ -1058,11 +1056,7 @@ public class MOBloader
             if(follower!=null) follower.setFollowing(null);
         }
         DBUpdateFollowers(mob);
-        while(mob.numLearnedAbilities()>0)
-        {
-            Ability A=mob.fetchAbility(0);
-            if(A!=null) mob.delAbility(A);
-        }
+        mob.delAllAbilities();
         DBUpdateAbilities(mob);
         CMLib.database().DBDeletePlayerJournals(mob.Name());
         CMLib.database().DBDeletePlayerData(mob.Name());

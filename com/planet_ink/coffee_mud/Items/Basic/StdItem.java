@@ -1195,19 +1195,9 @@ public class StdItem implements Item
         myContainer=null;
         CMLib.map().registerWorldObjectDestroyed(null,null,this);
         try {CMLib.catalog().changeCatalogUsage(this,false);} catch(Exception t){}
-        for(final Enumeration<Ability> a=effects();a.hasMoreElements();)
-        {
-            final Ability A=a.nextElement();
-            if((A!=null)&&(!(A.ID().equals("ItemRejuv"))))
-            {
-                A.unInvoke();
-                delEffect(A);
-            }
-        }
-        for(int b=numBehaviors()-1;b>=0;b--)
-            delBehavior(fetchBehavior(b));
-        for(int s=numScripts()-1;s>=0;s--)
-            delScript(fetchScript(s));
+        delAllEffects(true);
+        delAllBehaviors();
+        delAllScripts();
         CMLib.threads().deleteTick(this,Tickable.TICKID_ITEM_BEHAVIOR);
         
         riding=null;
@@ -1315,7 +1305,33 @@ public class StdItem implements Item
         if(affects.remove(to))
             to.setAffectedOne(null);
     }
-    
+    public void delAllEffects(boolean unInvoke)
+    {
+        if(affects==null) return;
+        Ability keepThisOne=null;
+        for(int a=numEffects()-1;a>=0;a--)
+        {
+            Ability A=fetchEffect(a);
+            if(A!=null)
+            {
+                if(unInvoke)
+                {
+                    if(A.ID().equals("ItemRejuv"))
+                    {
+                        keepThisOne=A;
+                        continue;
+                    }
+                    A.unInvoke();
+                }
+                A.setAffectedOne(null);
+            }
+        }
+        affects.clear();
+        if(keepThisOne != null)
+        {
+            affects.add(keepThisOne);
+        }
+    }
     public Enumeration<Ability> effects(){return (affects==null)?EmptyEnumeration.INSTANCE:affects.elements();}
 
     public int numEffects()
@@ -1360,6 +1376,14 @@ public class StdItem implements Item
             CMLib.threads().startTickDown(this,Tickable.TICKID_ITEM_BEHAVIOR,1);
         to.startBehavior(this);
         behaviors.addElement(to);
+    }
+    public void delAllBehaviors()
+    {
+        boolean didSomething=(behaviors!=null)&&(behaviors.size()>0);
+        if(didSomething) behaviors.clear();
+        behaviors=null;
+        if(didSomething && ((scripts==null)||(scripts.size()==0)))
+          CMLib.threads().deleteTick(this,Tickable.TICKID_ITEM_BEHAVIOR);
     }
     public void delBehavior(Behavior to)
     {
@@ -1427,6 +1451,14 @@ public class StdItem implements Item
                     CMLib.threads().deleteTick(this,Tickable.TICKID_ITEM_BEHAVIOR);
             }
         }
+    }
+    public void delAllScripts()
+    {
+        boolean didSomething=(scripts!=null)&&(scripts.size()>0);
+        if(didSomething) scripts.clear();
+        scripts=null;
+        if(didSomething && ((behaviors==null)||(behaviors.size()==0)))
+          CMLib.threads().deleteTick(this,Tickable.TICKID_ITEM_BEHAVIOR);
     }
     public int numScripts(){return (scripts==null)?0:scripts.size();}
     public Enumeration<ScriptingEngine> scripts() { return (scripts==null)?EmptyEnumeration.INSTANCE:scripts.elements();}
