@@ -1036,7 +1036,7 @@ public class Destroy extends StdCommand
             titles(mob,commands);
         }
 		else
-		if(commandType.equals("USER"))
+    if(commandType.equals("USER")||commandType.equals("PLAYER"))
 		{
 			if(!CMSecurity.isAllowed(mob,mob.location(),"CMDPLAYERS")) return errorOut(mob);
 			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"^S<S-NAME> wave(s) <S-HIS-HER> arms...^?");

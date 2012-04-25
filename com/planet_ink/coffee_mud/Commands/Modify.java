@@ -1602,7 +1602,7 @@ public class Modify extends StdCommand
                 mob.tell("No Javascripts require approval at this time.");
         }
         else
-        if(commandType.equals("USER"))
+        if(commandType.equals("USER")||commandType.equals("PLAYER"))
         {
             if(!CMSecurity.isAllowed(mob,mob.location(),"CMDPLAYERS")) return errorOut(mob);
             players(mob,commands);
