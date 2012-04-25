@@ -2565,7 +2565,7 @@ public class Import extends StdCommand
 				if(CMath.isSet(off,22))
 					M.addAbility(CMClass.getAbility("Fighter_Sweep"));
 
-				if((M.numAbilities())>numAbiles)
+				if((M.numAllAbilities())>numAbiles)
 					M.addBehavior(CMClass.getBehavior("CombatAbilities"));
 
 				Ability resist=CMClass.getAbility("Prop_Resistance");

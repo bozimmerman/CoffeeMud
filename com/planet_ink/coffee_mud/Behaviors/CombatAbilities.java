@@ -138,7 +138,7 @@ public class CombatAbilities extends StdBehavior
 	protected void newCharacter(MOB mob)
 	{
 		Vector oldAbilities=new Vector();
-        for(Enumeration<Ability> a=mob.abilities();a.hasMoreElements();)
+        for(Enumeration<Ability> a=mob.allAbilities();a.hasMoreElements();)
         {
             Ability A=a.nextElement();
 			if(A!=null)
@@ -150,7 +150,7 @@ public class CombatAbilities extends StdBehavior
 			}
 		}
 		mob.charStats().getCurrentClass().startCharacter(mob,true,false);
-		for(int a=0;a<mob.numAbilities();a++)
+		for(int a=0;a<mob.numAllAbilities();a++)
 		{
 			Ability newOne=mob.fetchAbility(a);
 			if((newOne!=null)&&(!oldAbilities.contains(newOne)))
@@ -358,7 +358,7 @@ public class CombatAbilities extends StdBehavior
         int victimQuality=Ability.QUALITY_INDIFFERENT;
         int selfQuality=Ability.QUALITY_INDIFFERENT;
         int leaderQuality=Ability.QUALITY_INDIFFERENT;
-		while((tryThisOne==null)&&((++tries)<100)&&(mob.numAbilities()>0))
+		while((tryThisOne==null)&&((++tries)<100)&&(mob.numAllAbilities()>0))
 		{
 			if((combatMode==COMBAT_ONLYALWAYS)&&(this.skillsAlways!=null)&&(this.skillsAlways.size()>0))
 				A=mob.fetchAbility((String)skillsAlways.elementAt(CMLib.dice().roll(1,skillsAlways.size(),-1)));

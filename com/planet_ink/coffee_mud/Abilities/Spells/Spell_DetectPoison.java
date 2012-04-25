@@ -56,7 +56,7 @@ public class Spell_DetectPoison extends Spell
 		if(fromMe instanceof MOB)
 		{
 			MOB mob=(MOB)fromMe;
-	        for(Enumeration<Ability> a=mob.abilities();a.hasMoreElements();)
+	        for(Enumeration<Ability> a=mob.allAbilities();a.hasMoreElements();)
 	        {
 	            Ability A=a.nextElement();
 				if((A!=null)&&((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_POISON))

@@ -142,7 +142,7 @@ public class Spell_Torture extends Spell
             break;
         }
         case 16:
-            if(mob.numAbilities()<1)
+            if(mob.numAllAbilities()<1)
                 roll=CMLib.dice().roll(1,10,0);
             else
             {

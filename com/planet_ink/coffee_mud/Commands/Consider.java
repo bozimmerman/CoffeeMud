@@ -156,7 +156,7 @@ public class Consider extends StdCommand
         }
 		StringBuffer withWhat=new StringBuffer("");
 		Vector mendors=new Vector();
-        for(Enumeration<Ability> a=mob.abilities();a.hasMoreElements();)
+        for(Enumeration<Ability> a=mob.allAbilities();a.hasMoreElements();)
         {
             Ability A=a.nextElement();
 			if((A instanceof MendingSkill)&&(((MendingSkill)A).supportsMending((target))))

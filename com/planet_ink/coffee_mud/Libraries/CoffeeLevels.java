@@ -425,7 +425,7 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 		mob.tell(theNews.toString());
 		curClass=mob.baseCharStats().getCurrentClass();
         HashSet<String> oldAbilities=new HashSet<String>();
-        for(Enumeration<Ability> a=mob.abilities();a.hasMoreElements();)
+        for(Enumeration<Ability> a=mob.allAbilities();a.hasMoreElements();)
         {
             Ability A=a.nextElement();
             if(A!=null) oldAbilities.add(A.ID());
@@ -443,7 +443,7 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 		}
 
 		List<String> newAbilityIDs=new Vector<String>();
-        for(Enumeration<Ability> a=mob.abilities();a.hasMoreElements();)
+        for(Enumeration<Ability> a=mob.allAbilities();a.hasMoreElements();)
         {
             Ability A=a.nextElement();
             if((A!=null)&&(!oldAbilities.contains(A.ID())))

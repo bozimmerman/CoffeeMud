@@ -77,7 +77,7 @@ public class NastyAbilities extends ActiveTicker
 
 			int tries=0;
 			Ability tryThisOne=null;
-			while((tryThisOne==null)&&(tries<100)&&((mob.numAbilities())>0))
+			while((tryThisOne==null)&&(tries<100)&&((mob.numAllAbilities())>0))
 			{
 				tryThisOne=mob.fetchRandomAbility();
 				if((tryThisOne!=null)

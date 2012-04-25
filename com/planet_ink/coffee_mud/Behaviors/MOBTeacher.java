@@ -189,7 +189,7 @@ public class MOBTeacher extends CombatAbilities
 
         Hashtable myAbles=new Hashtable();
         Ability A=null;
-        for(Enumeration<Ability> a=myMOB.abilities();a.hasMoreElements();)
+        for(Enumeration<Ability> a=myMOB.allAbilities();a.hasMoreElements();)
         {
             A=a.nextElement();
             if(A!=null) myAbles.put(A.ID(),A);

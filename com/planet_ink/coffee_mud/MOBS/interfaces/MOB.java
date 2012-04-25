@@ -197,11 +197,12 @@ public interface MOB extends Rider, DBIdentifiable, PhysicalAgent, ItemPossessor
     public void addAbility(Ability to);
     public void delAbility(Ability to);
     public int numLearnedAbilities();
-    public int numAbilities();
+    public int numAllAbilities();
     public Ability fetchAbility(int index);
     public Ability findAbility(String name);
     public Ability fetchAbility(String ID);
     public Ability fetchRandomAbility();
+    public Enumeration<Ability> allAbilities();
     public Enumeration<Ability> abilities();
 
     /** Manipulation of the expertise list */

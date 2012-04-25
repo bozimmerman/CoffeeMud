@@ -70,7 +70,7 @@ public class Prayer_SenseProfessions extends Prayer
 			{
 				mob.location().send(mob,msg);
 				Vector professionsV = new Vector();
-		        for(Enumeration<Ability> a=target.abilities();a.hasMoreElements();)
+		        for(Enumeration<Ability> a=target.allAbilities();a.hasMoreElements();)
 		        {
 		            Ability A=a.nextElement();
 					if((A!=null) 

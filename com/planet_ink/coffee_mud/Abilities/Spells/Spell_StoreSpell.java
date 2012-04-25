@@ -169,7 +169,7 @@ public class Spell_StoreSpell extends Spell
 
 		String spellName=CMParms.combine(commands,0).trim();
 		Spell wandThis=null;
-        for(Enumeration<Ability> a=mob.abilities();a.hasMoreElements();)
+        for(Enumeration<Ability> a=mob.allAbilities();a.hasMoreElements();)
         {
             Ability A=a.nextElement();
 			if((A!=null)

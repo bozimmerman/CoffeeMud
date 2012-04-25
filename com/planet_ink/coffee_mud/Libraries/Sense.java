@@ -1008,7 +1008,7 @@ public class Sense extends StdLibrary implements CMFlagLibrary
         if(M!=null)
             if(domain>Ability.ALL_ACODES)
             {
-                for(Enumeration<Ability> a=M.abilities();a.hasMoreElements();)
+                for(Enumeration<Ability> a=M.allAbilities();a.hasMoreElements();)
                 {
                     final Ability A=a.nextElement();
                     if((A!=null)&&((A.classificationCode()&Ability.ALL_DOMAINS)==domain))
@@ -1016,7 +1016,7 @@ public class Sense extends StdLibrary implements CMFlagLibrary
                 }
             }
             else
-            for(Enumeration<Ability> a=M.abilities();a.hasMoreElements();)
+            for(Enumeration<Ability> a=M.allAbilities();a.hasMoreElements();)
             {
                 final Ability A=a.nextElement();
                 if((A!=null)&&((A.classificationCode()&Ability.ALL_ACODES)==domain))
@@ -1053,7 +1053,7 @@ public class Sense extends StdLibrary implements CMFlagLibrary
     {
         Vector<Ability> V=new Vector<Ability>();
         if(M!=null)
-            for(Enumeration<Ability> a=M.abilities();a.hasMoreElements();)
+            for(Enumeration<Ability> a=M.allAbilities();a.hasMoreElements();)
             {
                 Ability A=a.nextElement();
                 if((A!=null)&&(CMath.bset(A.flags(),flag)))

@@ -196,7 +196,7 @@ public class CharGen extends StdCommand
             mob.recoverMaxState();
         }
         equipPlayer(mob);
-        for(Enumeration<Ability> a=mob.abilities();a.hasMoreElements();)
+        for(Enumeration<Ability> a=mob.allAbilities();a.hasMoreElements();)
             a.nextElement().setProficiency(100);
         for(int a=0;a<mob.numEffects();a++) // personal
             mob.fetchEffect(a).setProficiency(100);

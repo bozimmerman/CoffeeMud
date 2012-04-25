@@ -299,7 +299,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
         }
 
         // second, inexacting pass
-        for(Enumeration<Ability> a=mob.abilities();a.hasMoreElements();)
+        for(Enumeration<Ability> a=mob.allAbilities();a.hasMoreElements();)
         {
             A=a.nextElement();
             HashSet tried=new HashSet();
@@ -400,7 +400,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
         if(mob==null) return null;
         Ability A=null;
         HashSet done=new HashSet();
-        for(Enumeration<Ability> a=mob.abilities();a.hasMoreElements();)
+        for(Enumeration<Ability> a=mob.allAbilities();a.hasMoreElements();)
         {
             A=a.nextElement();
             if((A!=null)
@@ -422,7 +422,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 
         boolean foundMoreThanOne=false;
         Ability evokableAbility=null;
-        for(Enumeration<Ability> a=mob.abilities();a.hasMoreElements();)
+        for(Enumeration<Ability> a=mob.allAbilities();a.hasMoreElements();)
         {
             Ability A=a.nextElement();
             if((A!=null)
@@ -463,7 +463,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
             commands.remove(0);
             foundMoreThanOne=false;
             String secondWord=((String)commands.get(0)).toUpperCase();
-            for(Enumeration<Ability> a=mob.abilities();a.hasMoreElements();)
+            for(Enumeration<Ability> a=mob.allAbilities();a.hasMoreElements();)
             {
                 Ability A=a.nextElement();
                 if((A!=null)
@@ -490,7 +490,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
             {
                 String secondAndThirdWord=secondWord+" "+((String)commands.get(1)).toUpperCase();
 
-                for(Enumeration<Ability> a=mob.abilities();a.hasMoreElements();)
+                for(Enumeration<Ability> a=mob.allAbilities();a.hasMoreElements();)
                 {
                     Ability A=a.nextElement();
                     if((A!=null) && (evokedBy(A,evokeWord,secondAndThirdWord.toUpperCase())))
@@ -507,7 +507,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
             }
             else
             {
-                for(Enumeration<Ability> a=mob.abilities();a.hasMoreElements();)
+                for(Enumeration<Ability> a=mob.allAbilities();a.hasMoreElements();)
                 {
                     Ability A=a.nextElement();
                     if((A!=null)

@@ -271,7 +271,7 @@ public class GetStat extends CM1Command
 					case 0: 
 					{
 						if(rest.trim().length()==0)
-							req.sendMsg("[OK "+((MOB)mod).numAbilities()+"]");
+							req.sendMsg("[OK "+((MOB)mod).numAllAbilities()+"]");
 						else
 						{
 							Ability A=((MOB)mod).fetchAbility(CMath.s_int(rest));

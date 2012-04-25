@@ -68,7 +68,7 @@ public class Spell_Scribe extends Spell
 
 		String spellName=CMParms.combine(commands,0).trim();
 		Spell scrollThis=null;
-        for(Enumeration<Ability> a=mob.abilities();a.hasMoreElements();)
+        for(Enumeration<Ability> a=mob.allAbilities();a.hasMoreElements();)
         {
             Ability A=a.nextElement();
 			if((A!=null)
@@ -78,7 +78,7 @@ public class Spell_Scribe extends Spell
 				scrollThis=(Spell)A;
 		}
         if(scrollThis==null)
-            for(Enumeration<Ability> a=mob.abilities();a.hasMoreElements();)
+            for(Enumeration<Ability> a=mob.allAbilities();a.hasMoreElements();)
             {
                 Ability A=a.nextElement();
 	            if((A!=null)

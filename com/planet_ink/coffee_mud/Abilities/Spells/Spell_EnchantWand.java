@@ -69,7 +69,7 @@ public class Spell_EnchantWand extends Spell
 
 		String spellName=CMParms.combine(commands,0).trim();
 		Spell wandThis=null;
-        for(Enumeration<Ability> a=mob.abilities();a.hasMoreElements();)
+        for(Enumeration<Ability> a=mob.allAbilities();a.hasMoreElements();)
         {
             Ability A=a.nextElement();
             if((A!=null)
@@ -80,7 +80,7 @@ public class Spell_EnchantWand extends Spell
                 wandThis=(Spell)A;
         }
         if(wandThis==null)
-            for(Enumeration<Ability> a=mob.abilities();a.hasMoreElements();)
+            for(Enumeration<Ability> a=mob.allAbilities();a.hasMoreElements();)
             {
                 Ability A=a.nextElement();
 	            if((A!=null)

@@ -274,7 +274,7 @@ public class Hireling extends StdBehavior
 			if(((upperSrcMsg.indexOf(" SKILLS") > 0)))
 			{
 				StringBuffer skills = new StringBuffer("");
-		        for(final Enumeration<Ability> a=observer.abilities();a.hasMoreElements();)
+		        for(final Enumeration<Ability> a=observer.allAbilities();a.hasMoreElements();)
 		        {
 		            final Ability A=a.nextElement();
 		            if(A!=null)
@@ -329,7 +329,7 @@ public class Hireling extends StdBehavior
 					if(given>price())
 						partials.put(msg.source().Name(),Double.valueOf(given-price()));
 					StringBuffer skills=new StringBuffer("");
-			        for(Enumeration<Ability> a=observer.abilities();a.hasMoreElements();)
+			        for(Enumeration<Ability> a=observer.allAbilities();a.hasMoreElements();)
 			        {
 			            Ability A=a.nextElement();
 			            if(A!=null)

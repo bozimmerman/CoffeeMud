@@ -68,7 +68,7 @@ public class Commands extends StdCommand
 				    commandSet.add(access[0]);
 				}
 			}
-	        for(Enumeration<Ability> a=mob.abilities();a.hasMoreElements();)
+	        for(Enumeration<Ability> a=mob.allAbilities();a.hasMoreElements();)
 	        {
 	            Ability A=a.nextElement();
 				if((A!=null)&&(A.triggerStrings()!=null)&&(A.triggerStrings().length>0)&&(!done.contains(A.triggerStrings()[0])))

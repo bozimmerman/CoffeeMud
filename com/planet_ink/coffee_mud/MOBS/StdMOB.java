@@ -3122,8 +3122,12 @@ public class StdMOB implements MOB
     {
         return abilitys.size();
     }
-    
     public Enumeration<Ability> abilities()
+    {
+        return abilitys.elements();
+    }
+
+    public Enumeration<Ability> allAbilities()
     {
         final Clan C=getMyClan();
         final MultiListEnumeration multi =
@@ -3134,7 +3138,7 @@ public class StdMOB implements MOB
         return multi;
     }
     
-    public int numAbilities()
+    public int numAllAbilities()
     {
         final Clan C=getMyClan();
         return abilitys.size()
@@ -3144,8 +3148,8 @@ public class StdMOB implements MOB
 
     public Ability fetchRandomAbility()
     {
-        if(numAbilities()==0) return null;
-        return fetchAbility(CMLib.dice().roll(1, numAbilities(), -1));
+        if(numAllAbilities()==0) return null;
+        return fetchAbility(CMLib.dice().roll(1, numAllAbilities(), -1));
     }
 
     public Ability fetchAbility(int index)
@@ -3166,13 +3170,13 @@ public class StdMOB implements MOB
     
     public Ability fetchAbility(String ID)
     {
-        for(final Enumeration<Ability> a=abilities();a.hasMoreElements();)
+        for(final Enumeration<Ability> a=allAbilities();a.hasMoreElements();)
         {
             final Ability A=a.nextElement();
             if(A.ID().equalsIgnoreCase(ID))
                 return A;
         }
-        for(final Enumeration<Ability> a=abilities();a.hasMoreElements();)
+        for(final Enumeration<Ability> a=allAbilities();a.hasMoreElements();)
         {
             final Ability A=a.nextElement();
             if(A.Name().equalsIgnoreCase(ID))
@@ -3338,7 +3342,7 @@ public class StdMOB implements MOB
 
     private void clearExpertiseCache()
     {
-        for(final Enumeration<Ability> a=abilities();a.hasMoreElements();)
+        for(final Enumeration<Ability> a=allAbilities();a.hasMoreElements();)
         {
             final Ability A=a.nextElement();
             if(A!=null) A.clearExpertiseCache();

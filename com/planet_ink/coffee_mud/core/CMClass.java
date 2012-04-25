@@ -1288,7 +1288,7 @@ public class CMClass extends ClassLoader
     {
         final List<Ability> As=new LinkedList<Ability>();
         Ability A=null;
-        for(Enumeration<Ability> a=mob.abilities();a.hasMoreElements();)
+        for(Enumeration<Ability> a=mob.allAbilities();a.hasMoreElements();)
         {
             A=a.nextElement();
             if(A!=null) As.add(A);
