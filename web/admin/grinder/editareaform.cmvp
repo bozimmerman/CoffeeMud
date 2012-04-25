@@ -37,6 +37,36 @@
 			if(ME.selectedIndex>0)
 				ReShow();
 		}
+        function EditSubOp(ME)
+        {
+            if(ME.selectedIndex==0)
+                ReShow();
+        }
+        function AddSubOp(ME)
+        {
+            if(ME.selectedIndex>0)
+                ReShow();
+        }
+        function EditAreaParent(ME)
+        {
+            if(ME.selectedIndex==0)
+                ReShow();
+        }
+        function AddAreaParent(ME)
+        {
+            if(ME.selectedIndex>0)
+                ReShow();
+        }
+        function EditAreaChild(ME)
+        {
+            if(ME.selectedIndex==0)
+                ReShow();
+        }
+        function AddAreaChild(ME)
+        {
+            if(ME.selectedIndex>0)
+                ReShow();
+        }
 		function ReShow()
 		{
 			document.AREAEDIT.action='/grinder/editareaform.cmvp';
@@ -179,28 +209,19 @@
 <TR>
 	<TD><FONT COLOR="#66FFFF"><B>Staff:</B></FONT></TD>
     <TD COLSPAN=2>
-	<SELECT NAME=SUBOPS MULTIPLE>
-	<OPTION VALUE="">None (Archons only)
 	@AreaData?SUBOPS@
-	</SELECT>
 	</TD>
 </TR>
 <TR>
 	<TD><FONT COLOR="#66FFFF"><B>Parent Areas:</B></FONT></TD>
     <TD COLSPAN=2>
-	<SELECT NAME=PARENT MULTIPLE>
-	<OPTION VALUE="">None
 	@AreaData?PARENT@
-	</SELECT>
 	</TD>
 </TR>
 <TR>
 	<TD><FONT COLOR="#66FFFF"><B>Children Areas:</B></FONT></TD>
     <TD COLSPAN=2>
-	<SELECT NAME=CHILDREN MULTIPLE>
-	<OPTION VALUE="">None
 	@AreaData?CHILDREN@
-	</SELECT>
 	</TD>
 </TR>
 <TR>

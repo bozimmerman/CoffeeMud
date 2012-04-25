@@ -1292,6 +1292,25 @@ public class CMParms
         return s;
     }
 
+    public final static Vector<String> toNameVector(final Set<? extends Environmental> V)
+    {
+        final Vector<String> s=new Vector<String>();
+        if((V==null)||(V.size()==0))
+            return s;
+        for(Iterator<? extends Environmental> i=V.iterator();i.hasNext();)
+            s.add(i.next().name());
+        return s;
+    }
+
+    public final static Vector<String> toNameVector(final Enumeration<? extends Environmental> V)
+    {
+        final Vector<String> s=new Vector<String>();
+        if(V==null) return s;
+        for(;V.hasMoreElements();)
+            s.add(V.nextElement().name());
+        return s;
+    }
+
     public final static String toStringList(final String[] V)
     {
         if((V==null)||(V.length==0)){
@@ -1330,7 +1349,7 @@ public class CMParms
         return s.toString().substring(2);
     }
 
-    public final static String toEnvironmentalStringList(final Enumeration<?> e)
+    public final static String toEnvironmentalStringList(final Enumeration<? extends Environmental> e)
     {
         if(!e.hasMoreElements()) return "";
         final StringBuffer s=new StringBuffer("");

@@ -34,167 +34,162 @@ import java.util.*;
 @SuppressWarnings("unchecked")
 public class GrinderAreas
 {
-	public static String getAreaList(Area pickedA, MOB mob, boolean noInstances)
-	{
-		StringBuffer AreaList=new StringBuffer("");
-		boolean anywhere=(CMSecurity.isAllowedAnywhere(mob,"CMDROOMS")||CMSecurity.isAllowedAnywhere(mob,"CMDAREAS"));
-		boolean everywhere=(CMSecurity.isASysOp(mob)||CMSecurity.isAllowedEverywhere(mob,"CMDROOMS")||CMSecurity.isAllowedEverywhere(mob,"CMDAREAS"));
-		for(Enumeration a=CMLib.map().sortedAreas();a.hasMoreElements();)
-		{
-			Area A=(Area)a.nextElement();
-			if((everywhere||(A.amISubOp(mob.Name())&&anywhere))
-		    &&((!noInstances)||(!CMath.bset(A.flags(), Area.FLAG_INSTANCE_CHILD))))
-				if((pickedA!=null)&&(pickedA==A))
-					AreaList.append("<OPTION SELECTED VALUE=\""+A.Name()+"\">"+A.name());
-				else
-					AreaList.append("<OPTION VALUE=\""+A.Name()+"\">"+A.name());
-		}
-		return AreaList.toString();
-	}
+    public static String getAreaList(Area pickedA, MOB mob, boolean noInstances)
+    {
+        StringBuffer AreaList=new StringBuffer("");
+        boolean anywhere=(CMSecurity.isAllowedAnywhere(mob,"CMDROOMS")||CMSecurity.isAllowedAnywhere(mob,"CMDAREAS"));
+        boolean everywhere=(CMSecurity.isASysOp(mob)||CMSecurity.isAllowedEverywhere(mob,"CMDROOMS")||CMSecurity.isAllowedEverywhere(mob,"CMDAREAS"));
+        for(Enumeration a=CMLib.map().sortedAreas();a.hasMoreElements();)
+        {
+            Area A=(Area)a.nextElement();
+            if((everywhere||(A.amISubOp(mob.Name())&&anywhere))
+            &&((!noInstances)||(!CMath.bset(A.flags(), Area.FLAG_INSTANCE_CHILD))))
+                if((pickedA!=null)&&(pickedA==A))
+                    AreaList.append("<OPTION SELECTED VALUE=\""+A.Name()+"\">"+A.name());
+                else
+                    AreaList.append("<OPTION VALUE=\""+A.Name()+"\">"+A.name());
+        }
+        return AreaList.toString();
+    }
 
-	public static String doBehavs(PhysicalAgent E, ExternalHTTPRequests httpReq, java.util.Map<String,String> parms)
-	{
-		while(E.numBehaviors()>0)
-			E.delBehavior(E.fetchBehavior(0));
-		if(httpReq.isRequestParameter("BEHAV1"))
-		{
-			int num=1;
-			String behav=httpReq.getRequestParameter("BEHAV"+num);
-			String theparm=httpReq.getRequestParameter("BDATA"+num);
-			while((behav!=null)&&(theparm!=null))
-			{
-				if(behav.length()>0)
-				{
-					Behavior B=CMClass.getBehavior(behav);
-					if(theparm==null) theparm="";
-					if(B==null) return "Unknown behavior '"+behav+"'.";
-					B.setParms(theparm);
-					E.addBehavior(B);
-					B.startBehavior(E);
-				}
-				num++;
-				behav=httpReq.getRequestParameter("BEHAV"+num);
-				theparm=httpReq.getRequestParameter("BDATA"+num);
-			}
-		}
-		return "";
-	}
-	
-	public static String doAffects(Physical P, ExternalHTTPRequests httpReq, java.util.Map<String,String> parms)
-	{
-		while(P.numEffects()>0) // personal effects
-			P.delEffect(P.fetchEffect(0));
-		if(httpReq.isRequestParameter("AFFECT1"))
-		{
-			int num=1;
-			String aff=httpReq.getRequestParameter("AFFECT"+num);
-			String theparm=httpReq.getRequestParameter("ADATA"+num);
-			while((aff!=null)&&(theparm!=null))
-			{
-				if(aff.length()>0)
-				{
-					Ability B=CMClass.getAbility(aff);
-					if(theparm==null) theparm="";
-					if(B==null) return "Unknown Effect '"+aff+"'.";
-					B.setMiscText(theparm);
-					P.addNonUninvokableEffect(B);
-				}
-				num++;
-				aff=httpReq.getRequestParameter("AFFECT"+num);
-				theparm=httpReq.getRequestParameter("ADATA"+num);
-			}
-		}
-		return "";
-	}
+    public static String doBehavs(PhysicalAgent E, ExternalHTTPRequests httpReq, java.util.Map<String,String> parms)
+    {
+        while(E.numBehaviors()>0)
+            E.delBehavior(E.fetchBehavior(0));
+        if(httpReq.isRequestParameter("BEHAV1"))
+        {
+            int num=1;
+            String behav=httpReq.getRequestParameter("BEHAV"+num);
+            String theparm=httpReq.getRequestParameter("BDATA"+num);
+            while((behav!=null)&&(theparm!=null))
+            {
+                if(behav.length()>0)
+                {
+                    Behavior B=CMClass.getBehavior(behav);
+                    if(theparm==null) theparm="";
+                    if(B==null) return "Unknown behavior '"+behav+"'.";
+                    B.setParms(theparm);
+                    E.addBehavior(B);
+                    B.startBehavior(E);
+                }
+                num++;
+                behav=httpReq.getRequestParameter("BEHAV"+num);
+                theparm=httpReq.getRequestParameter("BDATA"+num);
+            }
+        }
+        return "";
+    }
+    
+    public static String doAffects(Physical P, ExternalHTTPRequests httpReq, java.util.Map<String,String> parms)
+    {
+        while(P.numEffects()>0) // personal effects
+            P.delEffect(P.fetchEffect(0));
+        if(httpReq.isRequestParameter("AFFECT1"))
+        {
+            int num=1;
+            String aff=httpReq.getRequestParameter("AFFECT"+num);
+            String theparm=httpReq.getRequestParameter("ADATA"+num);
+            while((aff!=null)&&(theparm!=null))
+            {
+                if(aff.length()>0)
+                {
+                    Ability B=CMClass.getAbility(aff);
+                    if(theparm==null) theparm="";
+                    if(B==null) return "Unknown Effect '"+aff+"'.";
+                    B.setMiscText(theparm);
+                    P.addNonUninvokableEffect(B);
+                }
+                num++;
+                aff=httpReq.getRequestParameter("AFFECT"+num);
+                theparm=httpReq.getRequestParameter("ADATA"+num);
+            }
+        }
+        return "";
+    }
 
-	public static String modifyArea(ExternalHTTPRequests httpReq, java.util.Map<String,String> parms)
-	{
+    public static String modifyArea(ExternalHTTPRequests httpReq, java.util.Map<String,String> parms)
+    {
         Vector areasNeedingUpdates=new Vector();
-		String last=httpReq.getRequestParameter("AREA");
-		if((last==null)||(last.length()==0)) return "Old area name not defined!";
-		Area A=CMLib.map().getArea(last);
-		if(A==null) return "Old Area not defined!";
-		areasNeedingUpdates.addElement(A);
+        String last=httpReq.getRequestParameter("AREA");
+        if((last==null)||(last.length()==0)) return "Old area name not defined!";
+        Area A=CMLib.map().getArea(last);
+        if(A==null) return "Old Area not defined!";
+        areasNeedingUpdates.addElement(A);
 
-		boolean redoAllMyDamnRooms=false;
-		Vector allMyDamnRooms=null;
-		String oldName=null;
+        boolean redoAllMyDamnRooms=false;
+        Vector allMyDamnRooms=null;
+        String oldName=null;
 
-		// class!
-		String className=httpReq.getRequestParameter("CLASSES");
-		if((className==null)||(className.length()==0))
-			return "Please select a class type for this area.";
-		if(!className.equalsIgnoreCase(CMClass.classID(A)))
-		{
-			allMyDamnRooms=new Vector();
-			for(Enumeration<Room> r=A.getProperMap();r.hasMoreElements();)
-				allMyDamnRooms.addElement(r.nextElement());
-			Area oldA=A;
-			A=CMClass.getAreaType(className);
-			if(A==null)
-				return "The class you chose does not exist.  Choose another.";
-			CMLib.map().delArea(oldA);
-			CMLib.map().addArea(A);
-			A.setName(oldA.Name());
-			redoAllMyDamnRooms=true;
-			areasNeedingUpdates.remove(oldA);
-			areasNeedingUpdates.addElement(A);
-		}
+        // class!
+        String className=httpReq.getRequestParameter("CLASSES");
+        if((className==null)||(className.length()==0))
+            return "Please select a class type for this area.";
+        if(!className.equalsIgnoreCase(CMClass.classID(A)))
+        {
+            allMyDamnRooms=new Vector();
+            for(Enumeration<Room> r=A.getProperMap();r.hasMoreElements();)
+                allMyDamnRooms.addElement(r.nextElement());
+            Area oldA=A;
+            A=CMClass.getAreaType(className);
+            if(A==null)
+                return "The class you chose does not exist.  Choose another.";
+            CMLib.map().delArea(oldA);
+            CMLib.map().addArea(A);
+            A.setName(oldA.Name());
+            redoAllMyDamnRooms=true;
+            areasNeedingUpdates.remove(oldA);
+            areasNeedingUpdates.addElement(A);
+        }
 
-		// name
-		String name=httpReq.getRequestParameter("NAME");
-		if((name==null)||(name.length()==0))
-			return "Please enter a name for this area.";
-		name=name.trim();
-		if(!name.equals(A.Name().trim()))
-		{
-			if(CMLib.map().getArea(name)!=null)
-				return "The name you chose is already in use.  Please enter another.";
-			allMyDamnRooms=new Vector();
-			for(Enumeration r=A.getCompleteMap();r.hasMoreElements();)
-				allMyDamnRooms.addElement(r.nextElement());
-			CMLib.map().delArea(A);
-			oldName=A.Name();
-			CMLib.database().DBDeleteArea(A);
-			A=CMClass.getAreaType(A.ID());
-			A.setName(name);
-			CMLib.map().addArea(A);
-			CMLib.database().DBCreateArea(A);
-			redoAllMyDamnRooms=true;
-			httpReq.addRequestParameters("AREA",A.Name());
-		}
+        // name
+        String name=httpReq.getRequestParameter("NAME");
+        if((name==null)||(name.length()==0))
+            return "Please enter a name for this area.";
+        name=name.trim();
+        if(!name.equals(A.Name().trim()))
+        {
+            if(CMLib.map().getArea(name)!=null)
+                return "The name you chose is already in use.  Please enter another.";
+            allMyDamnRooms=new Vector();
+            for(Enumeration r=A.getCompleteMap();r.hasMoreElements();)
+                allMyDamnRooms.addElement(r.nextElement());
+            CMLib.map().delArea(A);
+            oldName=A.Name();
+            CMLib.database().DBDeleteArea(A);
+            A=CMClass.getAreaType(A.ID());
+            A.setName(name);
+            CMLib.map().addArea(A);
+            CMLib.database().DBCreateArea(A);
+            redoAllMyDamnRooms=true;
+            httpReq.addRequestParameters("AREA",A.Name());
+        }
 
-		// climate
-		if(httpReq.isRequestParameter("CLIMATE"))
-		{
-			int climate=CMath.s_int(httpReq.getRequestParameter("CLIMATE"));
-			for(int i=1;;i++)
-				if(httpReq.isRequestParameter("CLIMATE"+(Integer.toString(i))))
-					climate=climate|CMath.s_int(httpReq.getRequestParameter("CLIMATE"+(Integer.toString(i))));
-				else
-					break;
-			A.setClimateType(climate);
-		}
-		else
-			A.setClimateType(0);
+        // climate
+        if(httpReq.isRequestParameter("CLIMATE"))
+        {
+            int climate=CMath.s_int(httpReq.getRequestParameter("CLIMATE"));
+            for(int i=1;;i++)
+                if(httpReq.isRequestParameter("CLIMATE"+(Integer.toString(i))))
+                    climate=climate|CMath.s_int(httpReq.getRequestParameter("CLIMATE"+(Integer.toString(i))));
+                else
+                    break;
+            A.setClimateType(climate);
+        }
+        else
+            A.setClimateType(0);
 
-		// tech level
-		if(httpReq.isRequestParameter("TECHLEVEL"))
-			A.setTechLevel(CMath.s_int(httpReq.getRequestParameter("TECHLEVEL")));
+        // tech level
+        if(httpReq.isRequestParameter("TECHLEVEL"))
+            A.setTechLevel(CMath.s_int(httpReq.getRequestParameter("TECHLEVEL")));
 
-		// modify subop list
-		String subOps=httpReq.getRequestParameter("SUBOPS");
-		for(Enumeration<String> s=A.subOps();s.hasMoreElements();)
-			A.delSubOp(s.nextElement());
-		if((subOps!=null)&&(subOps.length()>0))
-		{
-			A.addSubOp(subOps);
-			for(int i=1;;i++)
-				if(httpReq.isRequestParameter("SUBOPS"+(Integer.toString(i))))
-					A.addSubOp(httpReq.getRequestParameter("SUBOPS"+(Integer.toString(i))));
-				else
-					break;
-		}
+        // modify subop list
+        for(Enumeration<String> s=A.subOps();s.hasMoreElements();)
+            A.delSubOp(s.nextElement());
+        for(int i=1;;i++)
+            if(httpReq.isRequestParameter("SUBOP"+(Integer.toString(i))))
+                A.addSubOp(httpReq.getRequestParameter("SUBOP"+(Integer.toString(i))));
+            else
+                break;
 
         int num=1;
         if(httpReq.isRequestParameter("BLURBFLAG1"))
@@ -215,34 +210,34 @@ public class GrinderAreas
             for(int v=0;v<prics.size();v++)
                 A.addBlurbFlag((String)prics.elementAt(v));
         }
-		// description
-		String desc=httpReq.getRequestParameter("DESCRIPTION");
-		if(desc==null)desc="";
-		A.setDescription(CMLib.coffeeFilter().safetyFilter(desc));
+        // description
+        String desc=httpReq.getRequestParameter("DESCRIPTION");
+        if(desc==null)desc="";
+        A.setDescription(CMLib.coffeeFilter().safetyFilter(desc));
 
-		// image
-		String img=httpReq.getRequestParameter("IMAGE");
-		if(img==null)img="";
-		A.setImage(CMLib.coffeeFilter().safetyFilter(img));
+        // image
+        String img=httpReq.getRequestParameter("IMAGE");
+        if(img==null)img="";
+        A.setImage(CMLib.coffeeFilter().safetyFilter(img));
 
-		// gridy
-		String gridy=httpReq.getRequestParameter("GRIDY");
-		if((gridy!=null)&&(A instanceof GridZones))
-			((GridZones)A).setYGridSize(CMath.s_int(gridy));
-		// gridx
-		String gridx=httpReq.getRequestParameter("GRIDX");
-		if((gridx!=null)&&(A instanceof GridZones))
-			((GridZones)A).setXGridSize(CMath.s_int(gridx));
+        // gridy
+        String gridy=httpReq.getRequestParameter("GRIDY");
+        if((gridy!=null)&&(A instanceof GridZones))
+            ((GridZones)A).setYGridSize(CMath.s_int(gridy));
+        // gridx
+        String gridx=httpReq.getRequestParameter("GRIDX");
+        if((gridx!=null)&&(A instanceof GridZones))
+            ((GridZones)A).setXGridSize(CMath.s_int(gridx));
 
-		// author
-		String author=httpReq.getRequestParameter("AUTHOR");
-		if(author==null)author="";
-		A.setAuthorID(CMLib.coffeeFilter().safetyFilter(author));
+        // author
+        String author=httpReq.getRequestParameter("AUTHOR");
+        if(author==null)author="";
+        A.setAuthorID(CMLib.coffeeFilter().safetyFilter(author));
 
-		// currency
-		String currency=httpReq.getRequestParameter("CURRENCY");
-		if(currency==null)currency="";
-		A.setCurrency(CMLib.coffeeFilter().safetyFilter(currency));
+        // currency
+        String currency=httpReq.getRequestParameter("CURRENCY");
+        if(currency==null)currency="";
+        A.setCurrency(CMLib.coffeeFilter().safetyFilter(currency));
 
         // SHOPPREJ
         String SHOPPREJ=httpReq.getRequestParameter("SHOPPREJ");
@@ -301,105 +296,69 @@ public class GrinderAreas
             ((Economics)A).setItemPricingAdjustments(CMParms.toStringArray(prics));
         }
 
-        // modify Child Area list
-        String parents=httpReq.getRequestParameter("PARENT");
+        // modify Parent Area list
         while(A.getParents().hasMoreElements())
-        	A.removeParent(A.getParents().nextElement());
-        if((parents!=null)&&(parents.length()>0))
-        {
-            Area parent=CMLib.map().getArea(parents);
-            if(parent!=null)
-			{
-                if(A.canParent(parent))
-				{
-                    A.addParent(parent);
-                    parent.addChild(A);
-                    areasNeedingUpdates.addElement(parent);
-                }
-                else
-                    return "The area, '"+parent.Name()+"', cannot be added as a parent, as this would create a circular reference.";
-            }
-            for(int i=1;;i++)
-                if(httpReq.isRequestParameter("PARENT"+(Integer.toString(i))))
-				{
-                    parent=CMLib.map().getArea(httpReq.getRequestParameter("PARENT"+(Integer.toString(i))));
-                    if(parent==null)
-						Log.errOut("Grinder", "Error - Area '"+httpReq.getRequestParameter("PARENT"+(Integer.toString(i)))+"' not found by CMMap");
-                    else
-					{
-						if(A.canParent(parent))
-						{
-							A.addParent(parent);
-							parent.addChild(A);
-							areasNeedingUpdates.addElement(parent);
-						}
-						else
-						    return "The area, '"+parent.Name()+"', cannot be added as a parent, as this would create a circular reference.";
+            A.removeParent(A.getParents().nextElement());
+        for(int i=1;;i++)
+            if(httpReq.isRequestParameter("PARENT"+(Integer.toString(i))))
+            {
+                Area parent=CMLib.map().getArea(httpReq.getRequestParameter("PARENT"+(Integer.toString(i))));
+                if(parent!=null)
+                {
+                    if(A.canParent(parent))
+                    {
+                        A.addParent(parent);
+                        parent.addChild(A);
+                        areasNeedingUpdates.addElement(parent);
                     }
+                    else
+                        return "The area, '"+parent.Name()+"', cannot be added as a parent, as this would create a circular reference.";
                 }
-				else
-					break;
-        }
+            }
+            else
+                break;
 
         // modify Child Area list
-        String children=httpReq.getRequestParameter("CHILDREN");
         while(A.getChildren().hasMoreElements())
-        	A.removeChild(A.getChildren().nextElement());
-        if((children!=null)&&(children.length()>0))
-        {
-			Area child=CMLib.map().getArea(children);
-			if(child!=null)
-			{
-				if(A.canChild(child))
-				{
-				    A.addChild(child);
-				    child.addParent(A);
-				    areasNeedingUpdates.addElement(child);
-				}
-				else
-				    return "The area, '"+child.Name()+"', cannot be added as a child, as this would create a circular reference.";
-			}
-			for(int i=1;;i++)
-			    if(httpReq.isRequestParameter("CHILDREN"+(Integer.toString(i))))
-				{
-			        child=CMLib.map().getArea(httpReq.getRequestParameter("CHILDREN"+(Integer.toString(i))));
-			        if(child==null)
-						Log.errOut("Grinder", "Error - Area '"+httpReq.getRequestParameter("CHILDREN"+(Integer.toString(i)))+"' not found by CMMap");
-			        else
-					{
-			            if(A.canChild(child))
-						{
-			                A.addChild(child);
-			                child.addParent(A);
-			                areasNeedingUpdates.addElement(child);
-			            }
-			            else
-			                return "The area, '"+child.Name()+"', cannot be added as a child, as this would create a circular reference.";
-			        }
-			    }
-				else
-					break;
+            A.removeChild(A.getChildren().nextElement());
+        for(int i=1;;i++)
+          if(httpReq.isRequestParameter("CHILDREN"+(Integer.toString(i))))
+          {
+              Area child=CMLib.map().getArea(httpReq.getRequestParameter("CHILDREN"+(Integer.toString(i))));
+              if(child!=null)
+              {
+                  if(A.canChild(child))
+                  {
+                      A.addChild(child);
+                      child.addParent(A);
+                      areasNeedingUpdates.addElement(child);
+                  }
+                  else
+                      return "The area, '"+child.Name()+"', cannot be added as a child, as this would create a circular reference.";
+              }
+              else
+                  break;
         }
 
-		// archive file
-		String file=httpReq.getRequestParameter("ARCHP");
-		if(file==null)file="";
-		A.setArchivePath(file);
+        // archive file
+        String file=httpReq.getRequestParameter("ARCHP");
+        if(file==null)file="";
+        A.setArchivePath(file);
 
-		String error=GrinderAreas.doAffects(A,httpReq,parms);
-		if(error.length()>0) return error;
-		error=GrinderAreas.doBehavs(A,httpReq,parms);
-		if(error.length()>0) return error;
+        String error=GrinderAreas.doAffects(A,httpReq,parms);
+        if(error.length()>0) return error;
+        error=GrinderAreas.doBehavs(A,httpReq,parms);
+        if(error.length()>0) return error;
 
-		if((redoAllMyDamnRooms)&&(allMyDamnRooms!=null))
-			CMLib.map().renameRooms(A,oldName,allMyDamnRooms);
+        if((redoAllMyDamnRooms)&&(allMyDamnRooms!=null))
+            CMLib.map().renameRooms(A,oldName,allMyDamnRooms);
 
-		for(int i=0;i<areasNeedingUpdates.size();i++) // will always include A
-		{
-		    Area A2=(Area)areasNeedingUpdates.elementAt(i);
-			CMLib.database().DBUpdateArea(A2.Name(),A2);
+        for(int i=0;i<areasNeedingUpdates.size();i++) // will always include A
+        {
+            Area A2=(Area)areasNeedingUpdates.elementAt(i);
+            CMLib.database().DBUpdateArea(A2.Name(),A2);
             CMLib.coffeeMaker().addAutoPropsToAreaIfNecessary(A2);
-		}
-		return "";
-	}
+        }
+        return "";
+    }
 }
