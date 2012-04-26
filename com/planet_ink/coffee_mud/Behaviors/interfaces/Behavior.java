@@ -174,4 +174,6 @@ public interface Behavior extends Tickable, MsgListener, Contingent, Modifiable
 	public static final long FLAG_POTENTIALLYAGGRESSIVE=4;
 	/** constant mask for the flags() method designating that this behavior makes the host inforce laws @see Behavior#flags() */
 	public static final long FLAG_LEGALBEHAVIOR=8;
+	/** constant mask for the flags() method designating that this behavior makes the host capable of killing you instantly */
+	public static final long FLAG_POTENTIALLYAUTODEATHING=16;
 }

@@ -36,6 +36,7 @@ import java.util.*;
 public class InstantDeath extends ActiveTicker
 {
 	public String ID(){return "InstantDeath";}
+	public long flags() { return super.flags()|Behavior.FLAG_POTENTIALLYAUTODEATHING; }
 	public InstantDeath()
 	{
         super();

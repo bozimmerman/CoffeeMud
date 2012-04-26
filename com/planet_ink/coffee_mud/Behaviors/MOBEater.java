@@ -37,6 +37,7 @@ public class MOBEater extends ActiveTicker
 {
 	public String ID(){return "MOBEater";}
 	protected int canImproveCode(){return Behavior.CAN_MOBS;}
+	public long flags() { return super.flags()|Behavior.FLAG_POTENTIALLYAUTODEATHING; }
 	protected Room Stomach = null;
 	protected int digestDown=4;
 	protected Room lastKnownLocation=null;

@@ -731,6 +731,35 @@ public class CraftingSkill extends GatheringSkill
         return true;
     }
     
+    protected boolean isItemElligibleForDeconstruction(final MOB crafterM, final Item I)
+    {
+        
+        if(I==null) return false;
+        if(I instanceof ArchonOnly) return false;
+        //if(!(I.isGeneric())) return false;
+        if(I instanceof Food)
+            return false;
+        if((I instanceof Wand)||(I instanceof Scroll))
+            return false;
+        if(I instanceof ClanItem)
+            return false;
+        if((!CMLib.flags().isDroppable(I))||(!CMLib.flags().isGettable(I)))
+            return false;
+        for(int i=0;i<I.numEffects();i++)
+        {
+            final Ability A=I.fetchEffect(i);
+            if((A!=null)
+            &&((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_PROPERTY)
+            &&(A.ID().toUpperCase().indexOf("ZAPPER"))>=0)
+                return false;
+        }
+        if((!crafterM.isMine(I))&&(!CMLib.law().doesHavePriviledgesHere(crafterM,crafterM.location())))
+            return false;
+        if(CMLib.flags().flaggedBehaviors(I, Behavior.FLAG_POTENTIALLYAUTODEATHING).size()>0)
+            return false;
+        return true;
+    }
+    
     protected void setWeaponTypeClass(Weapon weapon, String weaponClass)
     {
         setWeaponTypeClass(weapon,weaponClass,Weapon.TYPE_BASHING,Weapon.TYPE_BASHING);
