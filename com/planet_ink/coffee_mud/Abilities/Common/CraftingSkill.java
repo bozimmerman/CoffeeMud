@@ -738,6 +738,29 @@ public class CraftingSkill extends GatheringSkill
             *((double)proficiency()/100.0)*((double)proficiency()/100.0)*100.0);
     }
     
+    protected boolean isItemDeadly(final Item I)
+    {
+        if(I==null) return false;
+        if(CMLib.flags().flaggedBehaviors(I, Behavior.FLAG_POTENTIALLYAUTODEATHING).size()>0)
+            return true;
+        for(final Enumeration<Ability> a=I.effects();a.hasMoreElements();)
+        {
+            Ability A=a.nextElement();
+            if((A instanceof AbilityUsing)
+            &&((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_PROPERTY))
+            {
+                AbilityUsing U=(AbilityUsing)A;
+                for(final Enumeration<Ability> e=U.allAbilities();e.hasMoreElements();)
+                {
+                    Ability uA=e.nextElement();
+                    if((uA!=null)&&(uA.abstractQuality()==Ability.QUALITY_MALICIOUS))
+                        return true;
+                }
+            }
+        }
+        return false;
+    }
+    
     protected boolean isItemElligibleForDeconstruction(final Item I)
     {
         return false;
