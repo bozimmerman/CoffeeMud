@@ -162,6 +162,12 @@ public class Carpentry extends EnhancedCraftingSkill implements ItemCraftor
             return false;
         if(I instanceof Container)
             return true;
+        if((I instanceof Drink)&&(!(I instanceof Potion)))
+            return true;
+        if(I.ID().endsWith("Limb"))
+            return true;
+        if(I.rawProperLocationBitmap()==Wearable.WORN_HELD)
+            return true;
         return false;
     }
 
@@ -173,7 +179,7 @@ public class Carpentry extends EnhancedCraftingSkill implements ItemCraftor
         ||(!isItemElligibleForDeconstruction((Item)E)))
         {
             if(!quiet)
-                commonTell(mob,"That's not made of wood.  That can't be mended.");
+                commonTell(mob,"That's not a carpentry item.");
             return false;
         }
         return true;

@@ -114,15 +114,50 @@ public class Tailoring extends EnhancedCraftingSkill implements ItemCraftor, Men
 		super.unInvoke();
 	}
 
+    protected boolean isItemElligibleForDeconstruction(final Item I)
+    {
+        if(I==null) return false;
+        if((I.material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_CLOTH)
+            return false;
+        if(CMLib.flags().isDeadlyOrMaliciousEffect(I)) 
+            return false;
+        if(I instanceof Rideable)
+        {
+            Rideable R=(Rideable)I;
+            int rideType=R.rideBasis();
+            switch(rideType)
+            {
+            case Rideable.RIDEABLE_ENTERIN:
+            case Rideable.RIDEABLE_SIT:
+                return true;
+            default:
+                return false;
+            }
+        }
+        if(I instanceof Armor)
+        {
+            final long nonWearablePlaces=Wearable.WORN_FEET|Wearable.WORN_LEFT_FINGER|Wearable.WORN_RIGHT_FINGER|Wearable.WORN_EARS|Wearable.WORN_EYES;
+            if(I.phyStats().level()>=50) return false;
+            if((I.rawProperLocationBitmap()&nonWearablePlaces)>0) return false;
+            return true;
+        }
+        if(I instanceof Weapon)
+        {
+            if(I.basePhyStats().damage()!=0) return false;
+            if(I.basePhyStats().attackAdjustment()!=0) return false;
+            return true;
+        }
+        return false;
+    }
+
 	public boolean supportsMending(Physical item){ return canMend(null,item,true);}
 	protected boolean canMend(MOB mob, Environmental E, boolean quiet)
 	{
 		if(!super.canMend(mob,E,quiet)) return false;
-		Item IE=(Item)E;
-		if((IE.material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_CLOTH)
+        if((!(E instanceof Item))||(!isItemElligibleForDeconstruction((Item)E)))
 		{
 			if(!quiet)
-				commonTell(mob,"That's not made of any sort of cloth.  It can't be mended.");
+				commonTell(mob,"That's not a tailored item.");
 			return false;
 		}
 		return true;

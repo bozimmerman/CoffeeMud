@@ -114,15 +114,37 @@ public class Costuming extends EnhancedCraftingSkill implements ItemCraftor, Men
 		super.unInvoke();
 	}
 
+    protected boolean isItemElligibleForDeconstruction(final Item I)
+    {
+        if(I==null) return false;
+        if((I.material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_CLOTH)
+            return false;
+        if(CMLib.flags().isDeadlyOrMaliciousEffect(I)) 
+            return false;
+        if(I instanceof Armor)
+        {
+            if(I.phyStats().level()>=50) return false;
+            if(I.baseGoldValue() < I.phyStats().level()) return false;
+            return true;
+        }
+        if(I instanceof Weapon)
+        {
+            if(I.basePhyStats().damage()!=0) return false;
+            if(I.basePhyStats().attackAdjustment()!=0) return false;
+            if(I.basePhyStats().level()>=50) return false;
+            return true;
+        }
+        return false;
+    }
+
 	public boolean supportsMending(Physical item){ return canMend(null,item,true);}
 	protected boolean canMend(MOB mob, Environmental E, boolean quiet)
 	{
 		if(!super.canMend(mob,E,quiet)) return false;
-		Item IE=(Item)E;
-		if((IE.material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_CLOTH)
+        if((!(E instanceof Item))||(!isItemElligibleForDeconstruction((Item)E)))
 		{
 			if(!quiet)
-				commonTell(mob,"That's not made of any sort of cloth.  It can't be mended.");
+				commonTell(mob,"That's not a costuming item.");
 			return false;
 		}
 		return true;
