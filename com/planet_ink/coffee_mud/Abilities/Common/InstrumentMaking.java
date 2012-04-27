@@ -74,6 +74,8 @@ public class InstrumentMaking extends CraftingSkill implements ItemCraftor
     protected boolean isItemElligibleForDeconstruction(final Item I)
     {
         if(I==null) return false;
+        if(CMLib.flags().isItemDeadly(I)) 
+            return false;
         if(I instanceof MusicalInstrument)
             return true;
         return false;

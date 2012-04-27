@@ -84,6 +84,8 @@ public class Blacksmithing extends EnhancedCraftingSkill implements ItemCraftor
         if(((I.material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_METAL)
         &&((I.material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_MITHRIL))
             return false;
+        if(CMLib.flags().isItemDeadly(I)) 
+            return false;
         if(I instanceof Rideable)
         {
             Rideable R=(Rideable)I;

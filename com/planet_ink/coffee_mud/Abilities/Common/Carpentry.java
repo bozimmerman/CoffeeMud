@@ -129,6 +129,8 @@ public class Carpentry extends EnhancedCraftingSkill implements ItemCraftor
         if(I==null) return false;
         if((I.material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_WOODEN)
             return false;
+        if(CMLib.flags().isItemDeadly(I)) 
+            return false;
         if(I instanceof Rideable)
         {
             Rideable R=(Rideable)I;
