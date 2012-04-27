@@ -731,6 +731,13 @@ public class CraftingSkill extends GatheringSkill
         return true;
     }
     
+    protected int getPercentChangeToDeconstruct(final MOB crafterM, final Item I)
+    {
+        return (int)Math.round(((double)((double)(1.0+(double)crafterM.phyStats().level()-(double)I.phyStats().level())
+               /(double)crafterM.phyStats().level())/2.0+0.5)
+            *((double)proficiency()/100.0)*((double)proficiency()/100.0)*100.0);
+    }
+    
     protected boolean isItemElligibleForDeconstruction(final MOB crafterM, final Item I)
     {
         
@@ -743,7 +750,14 @@ public class CraftingSkill extends GatheringSkill
             return false;
         if(I instanceof ClanItem)
             return false;
-        if((!CMLib.flags().isDroppable(I))||(!CMLib.flags().isGettable(I)))
+        if(I instanceof DeadBody)
+            return false;
+        if((!CMLib.flags().isDroppable(I))
+        ||(!CMLib.flags().isGettable(I))
+        ||(!CMLib.flags().isRemovable(I))
+        ||(CMath.bset(I.phyStats().sensesMask(), PhyStats.SENSE_ITEMNORUIN))
+        ||(CMath.bset(I.phyStats().sensesMask(), PhyStats.SENSE_ITEMNOWISH))
+        ||(CMath.bset(I.phyStats().sensesMask(), PhyStats.SENSE_UNLOCATABLE)))
             return false;
         for(int i=0;i<I.numEffects();i++)
         {
