@@ -197,7 +197,7 @@ public class Arcanist extends Thief
 	public void endCharacter(MOB mob)
 	{
 		Vector otherChoices=new Vector();
-		for(int a=0;a<mob.numLearnedAbilities();a++)
+		for(int a=0;a<mob.numAbilities();a++)
 		{
 			Ability A2=mob.fetchAbility(a);
 			if((A2!=null)
@@ -229,7 +229,7 @@ public class Arcanist extends Thief
 					&&(CMLib.ableMapper().lowestQualifyingLevel(A.ID())<30))
 					{
 						Vector otherChoices=new Vector();
-						for(int a=0;a<mob.numLearnedAbilities();a++)
+						for(int a=0;a<mob.numAbilities();a++)
 						{
 							Ability A2=mob.fetchAbility(a);
 							if((A2!=null)

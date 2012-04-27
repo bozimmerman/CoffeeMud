@@ -44,7 +44,7 @@ public class AutoInvoke extends StdCommand
 		throws java.io.IOException
 	{
 	    Vector abilities=new Vector();
-	    for(int a=0;a<mob.numLearnedAbilities();a++)
+	    for(int a=0;a<mob.numAbilities();a++)
 	    {
 	        Ability A=mob.fetchAbility(a);
 	        if((A!=null)

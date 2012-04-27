@@ -54,7 +54,7 @@ public class Prop_UseSpellCast extends Prop_SpellAdder
 		{
 			Ability A=(Ability)V.get(v);
 			Ability EA=target.fetchEffect(A.ID());
-			if((EA==null)&&(didHappen(100)))
+			if((EA==null)&&(didHappen()))
 			{
 				String t=A.text();
 				A=(Ability)A.copyOf();

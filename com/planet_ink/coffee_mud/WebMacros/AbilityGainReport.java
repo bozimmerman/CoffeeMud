@@ -46,7 +46,7 @@ public class AbilityGainReport extends StdWebMacro
         for(String playerName : players)
         {
             MOB player=CMLib.players().getLoadPlayer(playerName);
-            for(int a=0;a<player.numLearnedAbilities();a++)
+            for(int a=0;a<player.numAbilities();a++)
             {
                 Ability A=player.fetchAbility(a);
                 if(A==null) continue;

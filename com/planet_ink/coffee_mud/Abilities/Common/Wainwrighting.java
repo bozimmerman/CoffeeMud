@@ -75,6 +75,26 @@ public class Wainwrighting extends CraftingSkill implements ItemCraftor
     public String parametersFile(){ return "wainwright.txt";}
     protected List<List<String>> loadRecipes(){return super.loadRecipes(parametersFile());}
 
+    protected boolean isItemElligibleForDeconstruction(final Item I)
+    {
+        if(I==null) return false;
+        if(I instanceof Rideable)
+        {
+            Rideable R=(Rideable)I;
+            int rideType=R.rideBasis();
+            switch(rideType)
+            {
+            case Rideable.RIDEABLE_AIR:
+            case Rideable.RIDEABLE_LAND:
+            case Rideable.RIDEABLE_WAGON:
+                return true;
+            default:
+                return false;
+            }
+        }
+        return false;
+    }
+    
 	public void unInvoke()
 	{
 		if(canBeUninvoked())

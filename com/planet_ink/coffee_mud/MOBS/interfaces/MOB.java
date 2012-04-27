@@ -38,7 +38,7 @@ import java.util.Vector;
  * down to a goblin
  */
 @SuppressWarnings("unchecked")
-public interface MOB extends Rider, DBIdentifiable, PhysicalAgent, ItemPossessor
+public interface MOB extends Rider, DBIdentifiable, PhysicalAgent, ItemPossessor, AbilityUsing
 {
     public static long AGE_MILLIS_THRESHOLD = 120000;
     
@@ -192,19 +192,9 @@ public interface MOB extends Rider, DBIdentifiable, PhysicalAgent, ItemPossessor
     public int maxFollowers();
     public int totalFollowers();
 
-    /** Manipulation of ability objects, which includes
+    /** Extra functions on ability objects, which includes
      * spells, traits, skills, etc.*/
-    public void addAbility(Ability to);
-    public void delAbility(Ability to);
-    public int numLearnedAbilities();
-    public int numAllAbilities();
-    public Ability fetchAbility(int index);
     public Ability findAbility(String name);
-    public Ability fetchAbility(String ID);
-    public Ability fetchRandomAbility();
-    public Enumeration<Ability> allAbilities();
-    public Enumeration<Ability> abilities();
-    public void delAllAbilities();
 
     /** Manipulation of the expertise list */
     public void addExpertise(String of);

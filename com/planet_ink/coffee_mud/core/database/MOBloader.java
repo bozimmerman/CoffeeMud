@@ -1085,7 +1085,7 @@ public class MOBloader
         List<DBPreparedBatchEntry> statements=new LinkedList<DBPreparedBatchEntry>();
         statements.add(new DBPreparedBatchEntry("DELETE FROM CMCHAB WHERE CMUSERID='"+mob.Name()+"'"));
         HashSet<String> H=new HashSet<String>();
-        for(int a=0;a<mob.numLearnedAbilities();a++)
+        for(int a=0;a<mob.numAbilities();a++)
         {
             Ability thisAbility=mob.fetchAbility(a);
             if((thisAbility!=null)&&(thisAbility.isSavable()))

@@ -262,7 +262,7 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
         curClass.unLevel(mob);
 		Ability A=null;
 		Vector<Ability> lose=new Vector<Ability>();
-		for(int a=0;a<mob.numLearnedAbilities();a++)
+		for(int a=0;a<mob.numAbilities();a++)
 		{
 			A=mob.fetchAbility(a);
 			if((CMLib.ableMapper().getQualifyingLevel(curClass.ID(),false,A.ID())==oldClassLevel)
@@ -434,7 +434,7 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
         curClass.grantAbilities(mob,false);
 
 		// check for autoinvoking abilities
-		for(int a=0;a<mob.numLearnedAbilities();a++)
+		for(int a=0;a<mob.numAbilities();a++)
 		{
 			Ability A=mob.fetchAbility(a);
 			if((A!=null)

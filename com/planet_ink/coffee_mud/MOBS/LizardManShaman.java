@@ -113,7 +113,7 @@ public class LizardManShaman extends LizardMan
     {
 	    Ability prayer = null;
         if(CMLib.dice().rollPercentage() < 70)
-            prayer = fetchAbility(CMLib.dice().roll(1,numLearnedAbilities(),-1));
+            prayer = fetchAbility(CMLib.dice().roll(1,numAbilities(),-1));
         else
         {
             prayer = CMClass.getAbility("Prayer_CureLight");

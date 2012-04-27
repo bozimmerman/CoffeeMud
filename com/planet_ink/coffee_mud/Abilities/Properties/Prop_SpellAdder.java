@@ -35,7 +35,7 @@ import java.util.*;
    limitations under the License.
 */
 @SuppressWarnings("unchecked")
-public class Prop_SpellAdder extends Property
+public class Prop_SpellAdder extends Property implements AbilityUsing
 {
     public String ID() { return "Prop_SpellAdder"; }
     public String name(){ return "Casting spells on oneself";}
@@ -45,6 +45,7 @@ public class Prop_SpellAdder extends Property
     protected boolean processing=false;
     protected boolean uninvocable=true;
     protected int level=-1;
+    protected int chanceToHappen=-1;
     protected List<Ability> spellV=null;
     protected MaskingLibrary.CompiledZapperMask compiledMask=null;
     protected List<Ability> unrevocableSpells = null;
@@ -53,6 +54,7 @@ public class Prop_SpellAdder extends Property
     {
         spellV=null;
         compiledMask=null;
+        chanceToHappen=-1;
         unrevocableSpells=null;
         if((invokerMOB!=null)&&(invokerMOB.Name().equals("invoker")))
             invokerMOB.destroy();
@@ -74,12 +76,13 @@ public class Prop_SpellAdder extends Property
         return newText;
     }
     
-     public void setMiscText(String newText)
+    public void setMiscText(String newText)
     {
         super.setMiscText(newText);
         spellV=null;
         compiledMask=null;
         lastMOB=null;
+        chanceToHappen=-1;
         String maskString=getMaskString(newText);
         if(maskString.length()>0)
             compiledMask=CMLib.masking().getPreCompiledMask(maskString);
@@ -131,27 +134,30 @@ public class Prop_SpellAdder extends Property
         return spellV;
     }
 
-    public boolean didHappen(int defaultPct)
+    public boolean didHappen()
     {
-        String parmString=getParmString(text());
-        int x=parmString.indexOf('%');
-        if(x<0)
+        if(chanceToHappen<0)
         {
-            if(CMLib.dice().rollPercentage()<=defaultPct)
+            String parmString=getParmString(text());
+            int x=parmString.indexOf('%');
+            if(x<0)
+            {
+                chanceToHappen=100;
                 return true;
-            return false;
+            }
+            int mul=1;
+            int tot=0;
+            while((--x)>=0)
+            {
+                if(Character.isDigit(parmString.charAt(x)))
+                    tot+=CMath.s_int(""+parmString.charAt(x))*mul;
+                else
+                    x=-1;
+                mul=mul*10;
+            }
+            chanceToHappen=tot;
         }
-        int mul=1;
-        int tot=0;
-        while((--x)>=0)
-        {
-            if(Character.isDigit(parmString.charAt(x)))
-                tot+=CMath.s_int(""+parmString.charAt(x))*mul;
-            else
-                x=-1;
-            mul=mul*10;
-        }
-        if(CMLib.dice().rollPercentage()<=tot)
+        if(CMLib.dice().rollPercentage()<=chanceToHappen)
             return true;
         return false;
     }
@@ -201,7 +207,7 @@ public class Prop_SpellAdder extends Property
         {
             Ability A=(Ability)spellsV.get(v);
             Ability EA=(target!=null)?target.fetchEffect(A.ID()):null;
-            if((EA==null)&&(didHappen(100)))
+            if((EA==null)&&(didHappen()))
             {
                 String t=A.text();
                 A=(Ability)A.copyOf();
@@ -393,4 +399,50 @@ public class Prop_SpellAdder extends Property
             id+="  Restrictions: "+CMLib.masking().maskDesc(maskString);
         return id;
     }
+
+    public void addAbility(Ability to){}
+    public void delAbility(Ability to){}
+    public int numAbilities()
+    {
+        return getMySpellsV().size();
+    }
+    public Ability fetchAbility(int index)
+    {
+        List<Ability> spellsV=getMySpellsV();
+        if(spellsV.size()==0) return null;
+        if((index<0)||(index>=spellsV.size()))
+            return null;
+        try
+        {
+            return spellsV.get(index);
+        }
+        catch(Exception e)
+        {
+            return null;
+        }
+    }
+    public Ability fetchAbility(String ID)
+    {
+        for(Enumeration<Ability> a=abilities();a.hasMoreElements();)
+        {
+            final Ability A=a.nextElement();
+            if(A==null) continue;
+            if(A.ID().equalsIgnoreCase(ID))
+                return A;
+        }
+        return null;
+    }
+    public Ability fetchRandomAbility()
+    {
+        List<Ability> spellsV=getMySpellsV();
+        if(spellsV.size()==0) return null;
+        return spellsV.get(CMLib.dice().roll(1, spellsV.size(), -1));
+    }
+    public Enumeration<Ability> abilities(){
+        return new IteratorEnumeration<Ability>(getMySpellsV().iterator());
+    }
+    public void delAllAbilities(){ setMiscText("");}
+    public int numAllAbilities() { return numAbilities();}
+    public Enumeration<Ability> allAbilities(){ return abilities();}
+
 }

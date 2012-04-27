@@ -118,7 +118,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
             M.recoverPhyStats();
             M.recoverCharStats();
             Ability A=null;
-            for(int a=0;a<M.numLearnedAbilities();a++)
+            for(int a=0;a<M.numAbilities();a++)
             {
                 A=M.fetchAbility(a);
                 if(A!=null) A.autoInvocation(M);
@@ -243,7 +243,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
                     continue;
                 thread.status("saving "+mob.Name()+", "+mob.numItems()+" items");
                 CMLib.database().DBUpdatePlayerItems(mob);
-                thread.status("saving "+mob.Name()+", "+mob.numLearnedAbilities()+" abilities");
+                thread.status("saving "+mob.Name()+", "+mob.numAbilities()+" abilities");
                 CMLib.database().DBUpdatePlayerAbilities(mob);
                 thread.status("saving "+mob.numFollowers()+" followers of "+mob.Name());
                 CMLib.database().DBUpdateFollowers(mob);
@@ -268,7 +268,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
                     continue;
                 thread.status("just saving "+mob.Name()+", "+mob.numItems()+" items");
                 CMLib.database().DBUpdatePlayerItems(mob);
-                thread.status("just saving "+mob.Name()+", "+mob.numLearnedAbilities()+" abilities");
+                thread.status("just saving "+mob.Name()+", "+mob.numAbilities()+" abilities");
                 CMLib.database().DBUpdatePlayerAbilities(mob);
                 mob.playerStats().setLastUpdated(System.currentTimeMillis());
                 processed++;

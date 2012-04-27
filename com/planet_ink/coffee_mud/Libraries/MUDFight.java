@@ -1729,9 +1729,9 @@ public class MUDFight extends StdLibrary implements CombatLibrary
             else
             if(whatToDo.startsWith("LOSESK"))
             {
-                if(mob.numLearnedAbilities()>0)
+                if(mob.numAbilities()>0)
                 {
-                    Ability A=mob.fetchAbility(CMLib.dice().roll(1,mob.numLearnedAbilities(),-1));
+                    Ability A=mob.fetchAbility(CMLib.dice().roll(1,mob.numAbilities(),-1));
                     if(A!=null)
                     {
                         mob.tell("You've forgotten "+A.Name()+".");

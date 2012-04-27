@@ -566,7 +566,7 @@ public class StdDeity extends StdMOB implements Deity
 		if((alreadyPowered(mob))&&(mob.location()!=null))
 		{
 			mob.location().show(this,mob,CMMsg.MSG_OK_VISUAL,"<S-NAME> remove(s) <S-HIS-HER> powers from <T-NAME>.");
-			for(int a=mob.numLearnedAbilities()-1;a>=0;a--)
+			for(int a=mob.numAbilities()-1;a>=0;a--)
 			{
 				Ability A=mob.fetchAbility(a);
 				if((A!=null)&&(!A.isSavable()))
@@ -597,7 +597,7 @@ public class StdDeity extends StdMOB implements Deity
 	public boolean alreadyPowered(MOB mob)
 	{
 		if(numPowers()>0)
-		for(int a=0;a<mob.numLearnedAbilities();a++)
+		for(int a=0;a<mob.numAbilities();a++)
 		{
 			Ability A=mob.fetchAbility(a);
 			if((A!=null)&&(!A.isSavable()))

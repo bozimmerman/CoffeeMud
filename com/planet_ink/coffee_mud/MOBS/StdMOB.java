@@ -351,7 +351,7 @@ public class StdMOB implements MOB
                 }
         }
         Ability A=null;
-        for(int i=0;i<M.numLearnedAbilities();i++)
+        for(int i=0;i<M.numAbilities();i++)
         {
             A=M.fetchAbility(i);
             if(A!=null)
@@ -791,7 +791,7 @@ public class StdMOB implements MOB
         CMLib.threads().startTickDown(this,Tickable.TICKID_MOB,1);
 
         Ability A=null;
-        for(int a=0;a<numLearnedAbilities();a++)
+        for(int a=0;a<numAbilities();a++)
         {
             A=fetchAbility(a);
             if(A!=null) A.autoInvocation(this);
@@ -3111,7 +3111,7 @@ public class StdMOB implements MOB
     public void addAbility(Ability to)
     {
         if(to==null) return;
-        for(int a=0;a<numLearnedAbilities();a++)
+        for(int a=0;a<numAbilities();a++)
         {
             final Ability A=fetchAbility(a);
             if((A!=null)&&(A.ID().equals(to.ID())))
@@ -3127,7 +3127,7 @@ public class StdMOB implements MOB
     {
         abilitys.clear();
     }
-    public int numLearnedAbilities()
+    public int numAbilities()
     {
         return abilitys.size();
     }

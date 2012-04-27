@@ -216,9 +216,9 @@ public class DrowPriestess extends DrowElf
 	    int tries = 10;
         if(CMLib.dice().rollPercentage() < 70)
         {
-            prayer = fetchAbility(CMLib.dice().roll(1,numLearnedAbilities(),-1));
+            prayer = fetchAbility(CMLib.dice().roll(1,numAbilities(),-1));
             while(((--tries)>0)&&((prayer==null)||(this.basePhyStats().level() < CMLib.ableMapper().lowestQualifyingLevel(prayer.ID()))))
-				prayer = fetchAbility(CMLib.dice().roll(1,numLearnedAbilities(),-1));
+				prayer = fetchAbility(CMLib.dice().roll(1,numAbilities(),-1));
         }
         else
         {

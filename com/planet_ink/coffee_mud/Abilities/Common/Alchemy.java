@@ -84,6 +84,20 @@ public class Alchemy extends CraftingSkill implements ItemCraftor
     public String parametersFile(){ return "alchemy.txt";}
     protected List<List<String>> loadRecipes(){return super.loadRecipes(parametersFile());}
 
+    protected boolean isItemElligibleForDeconstruction(final Item I)
+    {
+        if(I==null) return false;
+        if(!(I instanceof Potion)) return false;
+        Potion P=(Potion)I;
+        if((P.liquidType()==RawMaterial.RESOURCE_LIQUOR)
+        ||(P.liquidType()==RawMaterial.RESOURCE_POISON))
+            return false;
+        List<Ability> spells=P.getSpells();
+        if((spells == null)||(spells.size()==0))
+            return false;
+        return true;
+    }
+    
 	public void unInvoke()
 	{
 		if(canBeUninvoked())

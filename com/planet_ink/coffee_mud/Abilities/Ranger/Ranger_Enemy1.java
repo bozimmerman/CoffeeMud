@@ -60,7 +60,7 @@ public class Ranger_Enemy1 extends StdAbility
 				&&(CMath.bset(R.availabilityCode(),Area.THEME_FANTASY)))
 					choices.addElement(R.racialCategory());
 			}
-			for(int a=0;a<mob.numLearnedAbilities();a++)
+			for(int a=0;a<mob.numAbilities();a++)
 			{
 				Ability A=mob.fetchAbility(a);
 				if((A instanceof Ranger_Enemy1)
@@ -78,7 +78,7 @@ public class Ranger_Enemy1 extends StdAbility
 			choices.remove("Unknown");
 			choices.remove(mob.charStats().getMyRace().racialCategory());
 			miscText=(String)choices.elementAt(CMLib.dice().roll(1,choices.size(),-1));
-			for(int a=0;a<mob.numLearnedAbilities();a++)
+			for(int a=0;a<mob.numAbilities();a++)
 			{
 				Ability A=mob.fetchAbility(a);
 				if((A!=null)&&(A.ID().equals(ID())))

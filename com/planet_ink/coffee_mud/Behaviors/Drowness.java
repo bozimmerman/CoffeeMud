@@ -319,9 +319,9 @@ public class Drowness extends StdBehavior
         Ability prayer = null;
         if(CMLib.dice().rollPercentage() < 70)
         {
-            prayer = mob.fetchAbility(CMLib.dice().roll(1,mob.numLearnedAbilities(),-1));
+            prayer = mob.fetchAbility(CMLib.dice().roll(1,mob.numAbilities(),-1));
             while((prayer==null)||(mob.basePhyStats().level() < CMLib.ableMapper().lowestQualifyingLevel(prayer.ID())))
-                prayer = mob.fetchAbility(CMLib.dice().roll(1,mob.numLearnedAbilities(),-1));
+                prayer = mob.fetchAbility(CMLib.dice().roll(1,mob.numAbilities(),-1));
         }
         else
         {
@@ -408,9 +408,9 @@ public class Drowness extends StdBehavior
 	    Ability prayer = null;
         if(CMLib.dice().rollPercentage() < 70)
         {
-            prayer = mob.fetchAbility(CMLib.dice().roll(1,mob.numLearnedAbilities(),-1));
+            prayer = mob.fetchAbility(CMLib.dice().roll(1,mob.numAbilities(),-1));
             while((prayer==null)||(mob.basePhyStats().level() < CMLib.ableMapper().lowestQualifyingLevel(prayer.ID())))
-                prayer = mob.fetchAbility(CMLib.dice().roll(1,mob.numLearnedAbilities(),-1));
+                prayer = mob.fetchAbility(CMLib.dice().roll(1,mob.numAbilities(),-1));
         }
         else
         {

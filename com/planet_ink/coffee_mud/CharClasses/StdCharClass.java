@@ -384,7 +384,7 @@ public class StdCharClass implements CharClass
     			final Ability A=a.nextElement();
                 if(A!=null) alreadyAff.put(A.ID(),A);
             }
-            for(int a=0;a<mob.numLearnedAbilities();a++)
+            for(int a=0;a<mob.numAbilities();a++)
             {
                 Ability A=mob.fetchAbility(a);
                 if(A!=null)

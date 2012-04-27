@@ -271,7 +271,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
     public String getGenMobAbilities(MOB M)
     {
         StringBuffer abilitystr=new StringBuffer("");
-        for(int b=0;b<M.numLearnedAbilities();b++)
+        for(int b=0;b<M.numAbilities();b++)
         {
             Ability A=M.fetchAbility(b);
             if((A!=null)&&(A.isSavable()))

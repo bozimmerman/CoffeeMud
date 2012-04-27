@@ -738,6 +738,11 @@ public class CraftingSkill extends GatheringSkill
             *((double)proficiency()/100.0)*((double)proficiency()/100.0)*100.0);
     }
     
+    protected boolean isItemElligibleForDeconstruction(final Item I)
+    {
+        return false;
+    }
+    
     protected boolean isItemElligibleForDeconstruction(final MOB crafterM, final Item I)
     {
         

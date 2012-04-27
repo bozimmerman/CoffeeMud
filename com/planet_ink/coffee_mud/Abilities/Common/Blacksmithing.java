@@ -78,6 +78,42 @@ public class Blacksmithing extends EnhancedCraftingSkill implements ItemCraftor
     public String parametersFile(){ return "blacksmith.txt";}
     protected List<List<String>> loadRecipes(){return super.loadRecipes(parametersFile());}
 
+    protected boolean isItemElligibleForDeconstruction(final Item I)
+    {
+        if(I==null) return false;
+        if(((I.material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_METAL)
+        &&((I.material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_MITHRIL))
+            return false;
+        if(I instanceof Rideable)
+        {
+            Rideable R=(Rideable)I;
+            int rideType=R.rideBasis();
+            switch(rideType)
+            {
+            case Rideable.RIDEABLE_LADDER:
+            case Rideable.RIDEABLE_SLEEP:
+            case Rideable.RIDEABLE_SIT:
+            case Rideable.RIDEABLE_TABLE:
+                return true;
+            default:
+                return false;
+            }
+        }
+        if(I instanceof DoorKey)
+            return false;
+        if(I instanceof Shield)
+            return false;
+        if(I instanceof Weapon)
+            return false;
+        if(I instanceof Light)
+            return true;
+        if(I instanceof Armor)
+            return false;
+        if(I instanceof Container)
+            return true;
+        return false;
+    }
+
     public void unInvoke()
     {
         if(canBeUninvoked())

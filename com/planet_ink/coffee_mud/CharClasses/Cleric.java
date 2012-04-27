@@ -219,7 +219,7 @@ public class Cleric extends StdCharClass
 
 		if(!ID().equals("Cleric")) return;
 
-		for(int a=0;a<mob.numLearnedAbilities();a++)
+		for(int a=0;a<mob.numAbilities();a++)
 		{
 			Ability A=mob.fetchAbility(a);
 			if((CMLib.ableMapper().getQualifyingLevel(ID(),true,A.ID())>0)

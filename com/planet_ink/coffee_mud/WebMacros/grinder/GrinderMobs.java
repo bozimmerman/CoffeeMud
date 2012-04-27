@@ -78,7 +78,7 @@ public class GrinderMobs
 	public static String abilities(MOB M, ExternalHTTPRequests httpReq, java.util.Map<String,String> parms)
 	{
         boolean player=M.playerStats()!=null;
-		while(M.numLearnedAbilities()>0)
+		while(M.numAbilities()>0)
 		{
 			Ability A=M.fetchAbility(0);
 			if(M.fetchEffect(A.ID())!=null)

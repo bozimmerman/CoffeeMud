@@ -3566,7 +3566,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
         while((mob.session()!=null)&&(!mob.session().isStopped())&&(behave.length()>0))
         {
             String abilitiestr="";
-            for(int a=0;a<M.numLearnedAbilities();a++)
+            for(int a=0;a<M.numAbilities();a++)
             {
                 Ability A=M.fetchAbility(a);
                 if((A!=null)&&(A.isSavable()))
@@ -3586,7 +3586,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
                 else
                 {
                     Ability chosenOne=null;
-                    for(int a=0;a<M.numLearnedAbilities();a++)
+                    for(int a=0;a<M.numAbilities();a++)
                     {
                         Ability A=M.fetchAbility(a);
                         if((A!=null)&&(A.ID().equalsIgnoreCase(behave)))

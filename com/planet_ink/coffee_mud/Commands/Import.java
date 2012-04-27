@@ -2505,7 +2505,7 @@ public class Import extends StdCommand
 				case 5: M.basePhyStats().setWeight(2000); break;
 				}
 				// ignore the above, coffeemud does it better!
-				int numAbiles=M.numLearnedAbilities();
+				int numAbiles=M.numAbilities();
 				M.baseCharStats().getMyRace().startRacing(M,false);
 				//if(CMath.isSet(off,0)) // no area killers in coffeemud
 				//if(CMath.isSet(off,1)) // no circling in coffeemud
@@ -3061,7 +3061,7 @@ public class Import extends StdCommand
 				if(s.trim().length()>0)
 					returnAnError(session,"Unknown mob special line: "+s,compileErrors,commands);
 			}
-			for(int a=0;a<M.numLearnedAbilities();a++)
+			for(int a=0;a<M.numAbilities();a++)
 			{
 				Ability A=M.fetchAbility(a);
 				if(A!=null)

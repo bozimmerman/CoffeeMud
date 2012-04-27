@@ -258,7 +258,7 @@ public class Charlatan extends StdCharClass
 			if(classLevel<2) return;
 			if((classLevel%2)!=0) return;
 
-			for(int a=0;a<mob.numLearnedAbilities();a++)
+			for(int a=0;a<mob.numAbilities();a++)
 			{
 				Ability A=mob.fetchAbility(a);
 				if((CMLib.ableMapper().qualifyingLevel(mob,A)<=0)

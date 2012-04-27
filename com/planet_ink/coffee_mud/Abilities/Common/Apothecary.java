@@ -58,7 +58,33 @@ public class Apothecary extends Cooking
         defaultDrinkSound = "hotspring.wav";
     }
 
-
+    protected boolean isItemElligibleForDeconstruction(final Item I)
+    {
+        if(I==null) return false;
+        if(I instanceof Drink)
+        {
+            Drink D=(Drink)I;
+            if(D.liquidType()!=RawMaterial.RESOURCE_POISON)
+                return false;
+            return true;
+        }
+        else
+        if(I instanceof Perfume)
+        {
+            return true;
+        }
+        else
+        if(I instanceof MagicDust)
+        {
+            MagicDust M=(MagicDust)I;
+            List<Ability> spells=M.getSpells();
+            if((spells == null)||(spells.size()==0))
+                return false;
+            return true;
+        }
+        else
+        	return false;
+    }
 
     public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
     {

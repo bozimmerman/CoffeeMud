@@ -1207,7 +1207,7 @@ public class CMAble extends StdLibrary implements AbilityMapper
         DVector culturalAbilitiesDV = student.baseCharStats().getMyRace().culturalAbilities();
         for(int i=0;i<culturalAbilitiesDV.size();i++)
             culturalAbilities.add(culturalAbilitiesDV.elementAt(i, 1).toString().toLowerCase());
-        for(int a=0;a<student.numLearnedAbilities();a++)
+        for(int a=0;a<student.numAbilities();a++)
         {
             Ability A2=student.fetchAbility(a);
             if(A2 instanceof CommonSkill)

@@ -347,7 +347,7 @@ public class StdLanguage extends StdAbility implements Language
         HashSet culturalAbilities=new HashSet();
         for(int i=0;i<culturalAbilitiesDV.size();i++)
             culturalAbilities.add(culturalAbilitiesDV.elementAt(i, 1).toString().toLowerCase());
-        for(int a=0;a<student.numLearnedAbilities();a++)
+        for(int a=0;a<student.numAbilities();a++)
         {
             Ability A=student.fetchAbility(a);
             if(((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_LANGUAGE)

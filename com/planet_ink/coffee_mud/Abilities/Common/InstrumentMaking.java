@@ -71,6 +71,14 @@ public class InstrumentMaking extends CraftingSkill implements ItemCraftor
     public String parametersFile(){ return "instruments.txt";}
     protected List<List<String>> loadRecipes(){return super.loadRecipes(parametersFile());}
 
+    protected boolean isItemElligibleForDeconstruction(final Item I)
+    {
+        if(I==null) return false;
+        if(I instanceof MusicalInstrument)
+            return true;
+        return false;
+    }
+    
 	public void unInvoke()
 	{
 		if(canBeUninvoked())

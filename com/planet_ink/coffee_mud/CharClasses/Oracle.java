@@ -186,7 +186,7 @@ public class Oracle extends Cleric
 	protected int numNonQualified(MOB mob)
 	{
 		int numNonQualified=0;
-		for(int a=0;a<mob.numLearnedAbilities();a++)
+		for(int a=0;a<mob.numAbilities();a++)
 		{
 			Ability A=mob.fetchAbility(a);
 			boolean qualifies=false;

@@ -119,7 +119,7 @@ public class Wizard extends Mage
         if(mob.baseCharStats().getCurrentClass().ID().equals(ID()))
         {
             Ability A=null;
-            for(int a=0;a<mob.numLearnedAbilities();a++)
+            for(int a=0;a<mob.numAbilities();a++)
             {
                 A=mob.fetchAbility(a);
                 if((A!=null)

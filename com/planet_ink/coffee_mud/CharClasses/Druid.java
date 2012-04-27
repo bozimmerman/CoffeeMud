@@ -240,7 +240,7 @@ public class Druid extends StdCharClass
 			&&((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_CHANT)))
 			{if (!grantable.contains(A.ID())) grantable.addElement(A.ID());}
 		}
-		for(int a=0;a<mob.numLearnedAbilities();a++)
+		for(int a=0;a<mob.numAbilities();a++)
 		{
 			Ability A=mob.fetchAbility(a);
 			if(grantable.contains(A.ID()))
