@@ -62,7 +62,7 @@ public interface CMFlagLibrary extends CMLibrary
     public boolean isDroppable(Item I);
     public boolean isCataloged(Environmental E);
     public boolean isRemovable(Item I);
-    public boolean isItemDeadly(final Item I);
+    public boolean isDeadlyOrMaliciousEffect(final PhysicalAgent P);
     public boolean isSavable(Physical P);
     public void setSavable(Physical P, boolean truefalse);
     public boolean hasSeenContents(Physical P);

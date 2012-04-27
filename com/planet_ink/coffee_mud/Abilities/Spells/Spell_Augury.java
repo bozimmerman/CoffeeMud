@@ -41,17 +41,6 @@ public class Spell_Augury extends Spell
 	protected int canTargetCode(){return 0;}
 	public int classificationCode(){	return Ability.ACODE_SPELL|Ability.DOMAIN_DIVINATION;}
 
-	public boolean isTrapped(Physical P)
-	{
-		for(final Enumeration<Ability> a=P.effects();a.hasMoreElements();)
-		{
-			final Ability A=a.nextElement();
-			if((A!=null)&&(A instanceof Trap))
-				return true;
-		}
-		return false;
-	}
-
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if((commands.size()<1)&&(givenTarget==null))
@@ -109,10 +98,10 @@ public class Spell_Augury extends Spell
 						}
 				}
 				mob.location().send(mob,msg);
-				if((isTrapped(exit))
-				||(isTrapped(room))
-				||(aggressiveMonster)
-				||((opExit!=null)&&(isTrapped(opExit))))
+				if((aggressiveMonster)
+				||CMLib.flags().isDeadlyOrMaliciousEffect(room)
+                ||CMLib.flags().isDeadlyOrMaliciousEffect(exit)
+				||((opExit!=null)&&(CMLib.flags().isDeadlyOrMaliciousEffect(opExit))))
 					mob.tell("You feel going that way would be bad.");
 				else
 					mob.tell("You feel going that way would be ok.");

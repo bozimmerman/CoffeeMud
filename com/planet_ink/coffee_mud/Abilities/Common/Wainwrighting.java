@@ -78,7 +78,7 @@ public class Wainwrighting extends CraftingSkill implements ItemCraftor
     protected boolean isItemElligibleForDeconstruction(final Item I)
     {
         if(I==null) return false;
-        if(CMLib.flags().isItemDeadly(I)) 
+        if(CMLib.flags().isDeadlyOrMaliciousEffect(I)) 
             return false;
         if(I instanceof Rideable)
         {

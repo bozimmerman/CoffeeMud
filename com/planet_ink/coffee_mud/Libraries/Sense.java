@@ -284,12 +284,25 @@ public class Sense extends StdLibrary implements CMFlagLibrary
         return false;
     }
 
-    public boolean isItemDeadly(final Item I)
+    public boolean isTrapped(Physical P)
     {
-        if(I==null) return false;
-        if(CMLib.flags().flaggedBehaviors(I, Behavior.FLAG_POTENTIALLYAUTODEATHING).size()>0)
+        for(final Enumeration<Ability> a=P.effects();a.hasMoreElements();)
+        {
+            final Ability A=a.nextElement();
+            if((A!=null)&&(A instanceof Trap))
+                return true;
+        }
+        return false;
+    }
+
+    public boolean isDeadlyOrMaliciousEffect(final PhysicalAgent P)
+    {
+        if(P==null) return false;
+        if(CMLib.flags().flaggedBehaviors(P, Behavior.FLAG_POTENTIALLYAUTODEATHING).size()>0)
             return true;
-        for(final Enumeration<Ability> a=I.effects();a.hasMoreElements();)
+        if(isTrapped(P))
+            return true;
+        for(final Enumeration<Ability> a=P.effects();a.hasMoreElements();)
         {
             Ability A=a.nextElement();
             if((A instanceof AbilityUsing)
