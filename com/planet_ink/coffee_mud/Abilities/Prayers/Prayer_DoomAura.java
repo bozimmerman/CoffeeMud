@@ -45,6 +45,7 @@ public class Prayer_DoomAura extends Prayer
 	public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_SELF;}
 	public long flags(){return Ability.FLAG_UNHOLY;}
 	String lastMessage=null;
+	private final static String msgStr="The aura of doom around <S-NAME> <DAMAGE> <T-NAME>.";
 
 
 	public void unInvoke()
@@ -72,7 +73,7 @@ public class Prayer_DoomAura extends Prayer
 		{
 			if((CMLib.dice().rollPercentage()>60+msg.source().charStats().getStat(CharStats.STAT_DEXTERITY))
 			&&(msg.source().rangeToTarget()==0)
-			&&((lastMessage==null)||(!lastMessage.startsWith("The aura of doom around")))
+			&&((lastMessage==null)||(!lastMessage.equals(msgStr)))
 			&&(CMLib.dice().rollPercentage() <= 33)
 			&&((msg.targetMajor(CMMsg.MASK_HANDS))
 			   ||(msg.targetMajor(CMMsg.MASK_MOVE))))
@@ -86,8 +87,8 @@ public class Prayer_DoomAura extends Prayer
 					hitWord.deleteCharAt(hitWord.length()-2);
 				if(hitWord.charAt(hitWord.length()-3)=='(')
 					hitWord.deleteCharAt(hitWord.length()-3);
-				CMLib.combat().postDamage((MOB)msg.target(),msg.source(),this,damage,CMMsg.TYP_UNDEAD|CMMsg.MASK_ALWAYS,Weapon.TYPE_BURNING,"The aura of doom around <S-NAME> <DAMAGE> <T-NAME>.");
-				lastMessage="The aura of doom around";
+				CMLib.combat().postDamage((MOB)msg.target(),msg.source(),this,damage,CMMsg.TYP_UNDEAD|CMMsg.MASK_ALWAYS,Weapon.TYPE_BURNING,msgStr);
+				lastMessage=msgStr;
 			}
 			else
 				lastMessage=msg.othersMessage();

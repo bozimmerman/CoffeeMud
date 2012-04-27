@@ -42,6 +42,8 @@ public class Spell_Shockshield extends Spell
 	protected int canAffectCode(){return CAN_MOBS;}
 	public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_EVOCATION;}
     public long flags(){return Ability.FLAG_AIRBASED;}
+	final static String msgStr="The shock shield around <S-NAME> sparks and <DAMAGES> <T-NAME>!";
+	String lastMessage=null;
 
 
 	public void unInvoke()
@@ -72,10 +74,9 @@ public class Spell_Shockshield extends Spell
 
 		if(msg.amITarget(mob))
 		{
-			if(CMath.bset(msg.targetMajor(),CMMsg.MASK_HANDS)
-			   &&(msg.targetMessage()!=null)
+			if((CMath.bset(msg.targetMajor(),CMMsg.MASK_HANDS)||(msg.targetMajor(CMMsg.MASK_MOVE)))
 			   &&(msg.source().rangeToTarget()==0)
-			   &&(msg.targetMessage().length()>0))
+			   &&((lastMessage==null)||(!lastMessage.equals(msgStr))))
 			{
 				if((CMLib.dice().rollPercentage()>(source.charStats().getStat(CharStats.STAT_DEXTERITY)*3)))
 				{
@@ -87,12 +88,16 @@ public class Spell_Shockshield extends Spell
 						if(msg2.value()<=0)
 						{
 							int damage = CMLib.dice().roll(1,(int)Math.round((invoker.phyStats().level()+super.getXLEVELLevel(invoker())+(2.0*super.getX1Level(invoker())))/3.0),1);
-							CMLib.combat().postDamage(mob,source,this,damage,CMMsg.MASK_ALWAYS|CMMsg.TYP_ELECTRIC,Weapon.TYPE_STRIKING,"The shock shield around <S-NAME> sparks and <DAMAGES> <T-NAME>!");
+							CMLib.combat().postDamage(mob,source,this,damage,CMMsg.MASK_ALWAYS|CMMsg.MASK_MALICIOUS|CMMsg.TYP_ELECTRIC,Weapon.TYPE_STRIKING,msgStr);
 						}
 					}
+					lastMessage=msgStr;
 				}
+				else
+					lastMessage=msg.othersMessage();
 			}
-
+			else
+				lastMessage=msg.othersMessage();
 		}
 		return;
 	}

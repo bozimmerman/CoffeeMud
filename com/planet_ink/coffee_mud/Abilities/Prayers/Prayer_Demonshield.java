@@ -43,6 +43,8 @@ public class Prayer_Demonshield extends Prayer
 	public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
 	protected int canAffectCode(){return CAN_MOBS;}
 	public long flags(){return Ability.FLAG_UNHOLY|Ability.FLAG_HEATING|Ability.FLAG_FIREBASED;}
+	final static String msgStr="The unholy flames around <S-NAME> flare and <DAMAGE> <T-NAME>!";
+	String lastMessage=null;
 
 	public void unInvoke()
 	{
@@ -72,10 +74,9 @@ public class Prayer_Demonshield extends Prayer
 
 		if(msg.amITarget(mob))
 		{
-			if(CMath.bset(msg.targetMajor(),CMMsg.MASK_HANDS)
-			   &&(msg.targetMessage()!=null)
+			if((CMath.bset(msg.targetMajor(),CMMsg.MASK_HANDS)||(msg.targetMajor(CMMsg.MASK_MOVE)))
 			   &&(msg.source().rangeToTarget()==0)
-			   &&(msg.targetMessage().length()>0))
+			   &&((lastMessage==null)||(!lastMessage.equals(msgStr))))
 			{
 				if((CMLib.dice().rollPercentage()>(source.charStats().getStat(CharStats.STAT_DEXTERITY)*3))
 				   &&(!CMLib.flags().isEvil(source)))
@@ -90,12 +91,16 @@ public class Prayer_Demonshield extends Prayer
 							int damage = CMLib.dice().roll( 1,
 							                                (int)Math.round( ( adjustedLevel( invoker(), 0 ) + ( 2.0 * ((double)super.getX1Level( invoker() )) ) ) / 5.0 ),
 							                                1 );
-							CMLib.combat().postDamage(mob,source,this,damage,CMMsg.MASK_ALWAYS|CMMsg.TYP_FIRE,Weapon.TYPE_BURNING,"The unholy flames around <S-NAME> flare and <DAMAGE> <T-NAME>!");
+							CMLib.combat().postDamage(mob,source,this,damage,CMMsg.MASK_ALWAYS|CMMsg.TYP_FIRE,Weapon.TYPE_BURNING,msgStr);
 						}
 					}
+					lastMessage=msgStr;
 				}
+				else
+					lastMessage=msg.othersMessage();
 			}
-
+			else
+				lastMessage=msg.othersMessage();
 		}
 		return;
 	}

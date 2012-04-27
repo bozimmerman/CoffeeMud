@@ -44,6 +44,7 @@ public class Prayer_BladeBarrier extends Prayer
 	public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_CREATION;}
 	public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_SELF;}
 	public long flags(){return Ability.FLAG_HOLY;}
+	final static String msgStr="The blade barrier around <S-NAME> slices and <DAMAGE> <T-NAME>.";
 	String lastMessage=null;
 
 
@@ -64,15 +65,13 @@ public class Prayer_BladeBarrier extends Prayer
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);
-		if((invoker==null)
-		||(affected==null)
-		||(!(affected instanceof MOB)))
+		if((affected==null)||(!(affected instanceof MOB)))
 			return;
-		if(msg.target()==invoker)
+		if(msg.target()==affected)
 		{
 			if((CMLib.dice().rollPercentage()>60+msg.source().charStats().getStat(CharStats.STAT_DEXTERITY))
 			&&(msg.source().rangeToTarget()==0)
-			&&((lastMessage==null)||(!lastMessage.startsWith("The blade barrier around")))
+			&&((lastMessage==null)||(!lastMessage.equals(msgStr)))
 			&&((msg.targetMajor(CMMsg.MASK_HANDS))
 			   ||(msg.targetMajor(CMMsg.MASK_MOVE))))
 			{
@@ -85,8 +84,8 @@ public class Prayer_BladeBarrier extends Prayer
 					hitWord.deleteCharAt(hitWord.length()-2);
 				if(hitWord.charAt(hitWord.length()-3)=='(')
 					hitWord.deleteCharAt(hitWord.length()-3);
-				CMLib.combat().postDamage((MOB)msg.target(),msg.source(),this,damage,CMMsg.TYP_CAST_SPELL|CMMsg.MASK_ALWAYS,Weapon.TYPE_SLASHING,"The blade barrier around <S-NAME> slices and <DAMAGE> <T-NAME>.");
-				lastMessage="The blade barrier around";
+				CMLib.combat().postDamage((MOB)msg.target(),msg.source(),this,damage,CMMsg.MASK_ALWAYS|CMMsg.MASK_MALICIOUS|CMMsg.TYP_CAST_SPELL,Weapon.TYPE_SLASHING,msgStr);
+				lastMessage=msgStr;
 			}
 			else
 				lastMessage=msg.othersMessage();
