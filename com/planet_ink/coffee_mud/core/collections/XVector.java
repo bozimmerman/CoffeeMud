@@ -114,4 +114,12 @@ public class XVector<T> extends Vector<T>
         clear();
         addAll(V2);
 	}
+	
+    public Iterator<T> iterator() {
+        return new SIterator<T>(iterator());
+    }
+    
+    public Enumeration<T> elements() {
+        return new IteratorEnumeration<T>(new SIterator<T>(iterator()));
+    }
 }
