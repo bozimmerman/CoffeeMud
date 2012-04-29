@@ -123,9 +123,10 @@ public class Aggressive extends StdBehavior
 				MOB mob=R.fetchInhabitant(i);
 				if((mob!=null)
 	            &&(mob!=observer)
+                &&((!mob.isMonster())||(mobKiller))
 	            &&(CMLib.masking().maskCheck(zapStr,mob,false))
 	            &&(!groupMembers.contains(mob))
-	            &&(startFight(observer,mob,mobKiller,misBehave,attackMsg)))			
+	            &&(startFight(observer,mob,mobKiller,misBehave,attackMsg)))
 	                return true;
 			}
 		}
