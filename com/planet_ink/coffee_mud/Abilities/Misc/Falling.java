@@ -189,7 +189,7 @@ public class Falling extends StdAbility
 			||((room!=null)&&(!room.isContent(item)))
 			||(!CMLib.flags().isGettable(item))
             ||(item.container()!=null)
-			||(CMLib.flags().isInFlight(item.ultimateContainer()))
+			||(CMLib.flags().isInFlight(item.ultimateContainer(null)))
 			||(room.getRoomInDir(direction)==null))
 			{
 				unInvoke();

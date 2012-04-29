@@ -3726,7 +3726,7 @@ public class StdMOB implements MOB
         {
             Item I=getItem(i);
             if(I.amWearingAt(Wearable.IN_INVENTORY)
-            &&((I.container()==null)||(I.ultimateContainer().amWearingAt(Wearable.IN_INVENTORY)))
+            &&((I.container()==null)||(I.ultimateContainer(null).amWearingAt(Wearable.IN_INVENTORY)))
             &&(!(I instanceof Coins)))
                 return false;
         }

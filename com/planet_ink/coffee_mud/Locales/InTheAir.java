@@ -63,7 +63,7 @@ public class InTheAir extends StdRoom
 		if(((P instanceof MOB)&&(!CMLib.flags().isInFlight(P)))
 		||((P instanceof Item)
                 &&(((Item)P).container()==null)
-                &&(!CMLib.flags().isFlying(((Item)P).ultimateContainer()))))
+                &&(!CMLib.flags().isFlying(((Item)P).ultimateContainer(null)))))
 		{
 			if(!CMLib.flags().isFalling(P))
 			{

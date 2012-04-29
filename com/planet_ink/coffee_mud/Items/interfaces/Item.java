@@ -59,10 +59,11 @@ public interface Item extends Rider, DBIdentifiable, Wearable, PhysicalAgent, Re
      * return the "highest" or ultimate container in which this item is located.
      * If an item is in a container which is in plain view, it will simply 
      * return container().  If the item is not in a container, it will return itself.
+     * @param stopAtC if contained in this object, it will return this object.. default null.
      * @see Container
      * @return the highest level container in which  this item is found, or itself
      */
-	public Item ultimateContainer();
+	public Item ultimateContainer(Physical stopAtC);
     /**
      * This method basically calls setContainer(null), and then removes this item
      * from its owner().  It effectively removes the item from the map.  This is 

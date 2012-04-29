@@ -137,7 +137,7 @@ public class Prop_Artifact extends Property
 		if((msg.target()!=null)
 		&&((msg.target()==affected)
 			||(msg.target()==((Item)affected).container())
-			||(msg.target()==((Item)affected).ultimateContainer())))
+			||(msg.target()==((Item)affected).ultimateContainer(null))))
 		{
 			if((nomobs)
 			&&(msg.targetMinor()==CMMsg.TYP_GET)

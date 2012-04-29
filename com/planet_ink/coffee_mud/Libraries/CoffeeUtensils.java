@@ -193,10 +193,11 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
         if((E==null)||(!(E instanceof Item)))
             return true;
         Item I=(Item)E;
+        Rideable R=mob.riding();
         if((mob.isMine(I))
         ||((mob.riding()!=null)&&((I==mob.riding())
-                                  ||(I.owner()==mob.riding())
-                                  ||(I.ultimateContainer()==mob.riding())))
+                                  ||(I.owner()==R)
+                                  ||(I.ultimateContainer(R)==R)))
         ||(I.owner()==null)
         ||((I.owner() instanceof Room)&&(!((Room)I.owner()).isContent(I))))
            return true;

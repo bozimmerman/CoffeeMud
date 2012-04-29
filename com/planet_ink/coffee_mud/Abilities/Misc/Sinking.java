@@ -193,8 +193,8 @@ public class Sinking extends StdAbility
 			if((room==null)
 			||((room!=null)&&(!room.isContent(item)))
 			||(!CMLib.flags().isGettable(item))
-			||CMLib.flags().isInFlight(item.ultimateContainer())
-			||(CMLib.flags().isWaterWorthy(item.ultimateContainer()))
+			||CMLib.flags().isInFlight(item.ultimateContainer(null))
+			||(CMLib.flags().isWaterWorthy(item.ultimateContainer(null)))
 			||(item.phyStats().weight()<1))
 			{
 				unInvoke();

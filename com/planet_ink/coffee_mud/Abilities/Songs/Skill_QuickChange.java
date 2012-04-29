@@ -65,7 +65,7 @@ public class Skill_QuickChange extends BardSkill
 		{
 			Item I=i.nextElement();
 			if((!I.amWearingAt(Item.IN_INVENTORY))
-			||(!I.ultimateContainer().amWearingAt(Item.IN_INVENTORY)))
+			||(!I.ultimateContainer(null).amWearingAt(Item.IN_INVENTORY)))
 				items.add(new PackedItem(I,I.container(),I.rawWornCode()));
 		}
 		return items;

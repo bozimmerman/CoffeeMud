@@ -62,7 +62,7 @@ public class Spell_FakeWeapon extends Spell
 			if((msg.target()!=null)
 			&&((msg.target()==affected)
 				||(msg.target()==((Item)affected).container())
-				||(msg.target()==((Item)affected).ultimateContainer())))
+				||(msg.target()==((Item)affected).ultimateContainer(null))))
 			{
 				if(((CMath.bset(msg.sourceMajor(),CMMsg.MASK_MAGIC))
 				||(CMath.bset(msg.targetMajor(),CMMsg.MASK_MAGIC))

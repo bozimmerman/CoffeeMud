@@ -175,7 +175,7 @@ public class GenWallpaper implements Item
         return true;
     }
     public Container container(){return null;}
-    public Item ultimateContainer(){return this;}
+    public Item ultimateContainer(Physical stopAtC){return this;}
     public void wearEvenIfImpossible(MOB mob){}
     public String rawSecretIdentity(){return "";}
     public String secretIdentity(){return "";}

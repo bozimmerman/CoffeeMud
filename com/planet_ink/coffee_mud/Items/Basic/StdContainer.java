@@ -555,14 +555,15 @@ public class StdContainer extends StdItem implements Container
     {
         int weight=phyStats().weight();
         if(owner()==null) return weight;
+        Container C=container();
         if(owner() instanceof MOB)
         {
             MOB M=(MOB)owner();
             for(int i=0;i<M.numItems();i++)
             {
                 Item thisItem=M.getItem(i);
-                if((thisItem!=null)&&(thisItem.container()==this))
-                    weight+=thisItem.recursiveWeight();
+                if((thisItem!=null)&&(thisItem.ultimateContainer(this)==this))
+                    weight+=thisItem.phyStats().weight();
             }
         }
         else
@@ -572,10 +573,11 @@ public class StdContainer extends StdItem implements Container
             for(int i=0;i<R.numItems();i++)
             {
                 Item thisItem=R.getItem(i);
-                if((thisItem!=null)&&(thisItem.container()==this))
+                if((thisItem!=null)&&(thisItem.ultimateContainer(this)==this))
                     weight+=thisItem.recursiveWeight();
             }
         }
+        setContainer(C);
         return weight;
     }
     

@@ -73,7 +73,7 @@ public class Spell_ReverseGravity extends Spell
 				Item inhab=room.getItem(i);
 				if((inhab!=null)
                 &&(inhab.container()==null)
-                &&(!CMLib.flags().isInFlight(inhab.ultimateContainer())))
+                &&(!CMLib.flags().isInFlight(inhab.ultimateContainer(null))))
 				{
 					Ability A=CMClass.getAbility("Falling");
 					A.setAffectedOne(room);

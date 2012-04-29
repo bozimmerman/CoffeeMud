@@ -113,7 +113,7 @@ public class Spell_Boomerang extends Spell
 			final Item item = (Item)affectedEnv;
 			if(item.container()!=null)
 			{
-				final Item container = item.ultimateContainer();
+				final Item container = item.ultimateContainer(null);
 				if((container.amDestroyed())||(container.owner() != item.owner()))
 					item.setContainer(null);
 			}

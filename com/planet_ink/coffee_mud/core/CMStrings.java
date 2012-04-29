@@ -463,7 +463,8 @@ public class CMStrings
     public final static String removeColors(final String s)
     {
         if(s==null) return "";
-        final StringBuffer str=new StringBuffer(s);
+        if(s.indexOf('^')<0) return s;
+        final StringBuilder str=new StringBuilder(s);
         int colorStart=-1;
         for(int i=0;i<str.length();i++)
         {
@@ -572,6 +573,8 @@ public class CMStrings
     {
         if(thisStr==null) 
             return 0;
+        if(thisStr.indexOf('^')<0) 
+            return thisStr.length();
         int size=0;
         for(int i=0;i<thisStr.length();i++)
         {

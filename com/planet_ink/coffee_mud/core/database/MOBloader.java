@@ -895,7 +895,7 @@ public class MOBloader
             	final Item thisItem=coll.getItem(i);
                 if(thisItem!=null)
                 {
-	            	final Item cont=thisItem.ultimateContainer();
+	            	final Item cont=thisItem.ultimateContainer(null);
 	            	if(cont.owner() instanceof Room)
 	            		finalCollection.add(thisItem);
                 }
@@ -916,7 +916,7 @@ public class MOBloader
                 if(!done.contains(""+thisItem))
                 {
                 	CMLib.catalog().updateCatalogIntegrity(thisItem);
-	            	final Item cont=thisItem.ultimateContainer();
+	            	final Item cont=thisItem.ultimateContainer(null);
                 	final String str=getDBItemUpdateString(mob,thisItem);
                 	final String text="<ROOM ID=\""+CMLib.map().getExtendedRoomID((Room)cont.owner())+"\" EXPIRE="+thisItem.expirationDate()+" />"+thisItem.text();
                     strings.add(new DBPreparedBatchEntry(str,text));

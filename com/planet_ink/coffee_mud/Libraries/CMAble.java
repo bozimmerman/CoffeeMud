@@ -1571,7 +1571,7 @@ public class CMAble extends StdLibrary implements AbilityMapper
         else
         if((comp.getType()==AbilityComponent.CompType.MATERIAL)&&((!(I instanceof RawMaterial))||((I.material()&RawMaterial.MATERIAL_MASK)!=comp.getLongType())))
             return false;
-        container=I.ultimateContainer();
+        container=I.ultimateContainer(null);
         if(container==null) container=I;
         switch(comp.getLocation())
         {

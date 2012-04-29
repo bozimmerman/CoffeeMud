@@ -72,7 +72,7 @@ public class UnderWater extends StdRoom implements Drink
 			return;
 
 		if(((P instanceof MOB)&&(!CMLib.flags().isWaterWorthy(P))&&(!CMLib.flags().isInFlight(P))&&(P.phyStats().weight()>=1))
-		||((P instanceof Item)&&(!CMLib.flags().isInFlight(((Item)P).ultimateContainer()))&&(!CMLib.flags().isWaterWorthy(((Item)P).ultimateContainer()))))
+		||((P instanceof Item)&&(!CMLib.flags().isInFlight(((Item)P).ultimateContainer(null)))&&(!CMLib.flags().isWaterWorthy(((Item)P).ultimateContainer(null)))))
 			if(P.fetchEffect("Sinking")==null)
 			{
 				Ability sinking=CMClass.getAbility("Sinking");

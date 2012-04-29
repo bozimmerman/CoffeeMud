@@ -41,7 +41,6 @@ public class StdItem implements Item
     protected String        name="an ordinary item";
     protected String        displayText="a nondescript item sits here doing nothing.";
     protected Object        description=null;
-    protected Container     myContainer=null;
     protected int           myUses=Integer.MAX_VALUE;
     protected long          myWornCode=Wearable.IN_INVENTORY;
     protected String        miscText="";
@@ -52,12 +51,13 @@ public class StdItem implements Item
     protected long          properWornBitmap=Wearable.WORN_HELD;
     protected int           baseGoldValue=0;
     protected int           material=RawMaterial.RESOURCE_COTTON;
-    protected ItemPossessor owner=null;
     protected String[]      xtraValues=null;
     protected long          dispossessionTime=0;
     protected long          tickStatus=Tickable.STATUS_NOT;
     protected String        databaseID="";
-
+    
+    protected volatile Container       myContainer=null;
+    protected volatile ItemPossessor   owner=null;
     protected SVector<Ability>         affects=null;
     protected SVector<Behavior>        behaviors=null;
     protected SVector<ScriptingEngine> scripts=null;
@@ -526,10 +526,16 @@ public class StdItem implements Item
         return !amDestroyed();
     }
 
-    public Item ultimateContainer()
+    public Item ultimateContainer(Physical stopAtC)
     {
-        if(container()==null) return this;
-        return container().ultimateContainer();
+        final Container C=container();
+        if(C==null) 
+            return this;
+        else
+        if(C==stopAtC) 
+            return C;
+        else
+            return C.ultimateContainer(stopAtC);
     }
     public Container container()
     {

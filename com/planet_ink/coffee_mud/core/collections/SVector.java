@@ -1,6 +1,9 @@
 package com.planet_ink.coffee_mud.core.collections;
 import java.io.Serializable;
 import java.util.*;
+import java.util.concurrent.CopyOnWriteArrayList;
+
+import javax.naming.OperationNotSupportedException;
 
 /* 
 Copyright 2000-2012 Bo Zimmerman
@@ -19,377 +22,189 @@ limitations under the License.
 */
 
 /*
- * A version of the Vector class that provides to "safe" adds
- * and removes by copying the underlying vector whenever those
+ * A version of the CopyOnWriteArrayList class that provides to "safe" adds
+ * and removes by copying the underlying CopyOnWriteArrayList whenever those
  * operations are done.
  */
-public class SVector<T> implements Serializable, Iterable<T>, Collection<T>, List<T>, RandomAccess 
+public class SVector<T> extends CopyOnWriteArrayList<T> implements Serializable, Iterable<T>, Collection<T>, List<T>, RandomAccess 
 {
-	private static final long serialVersionUID = 6687178785122561992L;
-	private volatile Vector<T> V;
+    private static final long serialVersionUID = 6687178785122561992L;
 
-	public SVector()
-	{
-		V=new Vector<T>();
-	}
-	
-	public SVector(int size)
-	{
-		V=new Vector<T>(size);
-	}
-	
-	public SVector(List<T> E)
-	{
-		V=new Vector<T>();
-		if(E!=null)
-			this.V.addAll(E);
-	}
-	
-	public SVector(T... E)
-	{
-		V=new Vector<T>();
-		if(E!=null)
-			for(T o : E)
-				V.add(o);
-	}
-	
-	public SVector(Enumeration<T> E)
-	{
-		V=new Vector<T>();
-		if(E!=null)
-			for(;E.hasMoreElements();)
-				V.add(E.nextElement());
-	}
-	
-	public SVector(Iterator<T> E)
-	{
-		V=new Vector<T>();
-		if(E!=null)
-			for(;E.hasNext();)
-				V.add(E.next());
-	}
-	
-	public SVector(Set<T> E)
-	{
-		V=new Vector<T>();
-		if(E!=null)
-			for(T o : E)
-				add(o);
-	}
-	
-	@SuppressWarnings("unchecked")
-	public synchronized void addAll(Enumeration<T> E)
-	{
-		V=(Vector<T>)V.clone();
-		if(E!=null)
-			for(;E.hasMoreElements();)
-				V.add(E.nextElement());
-	}
-	
-	@SuppressWarnings("unchecked")
-	public synchronized void addAll(T[] E)
-	{
-		V=(Vector<T>)V.clone();
-		if(E!=null)
-			for(T e : E)
-				V.add(e);
-	}
-	
-	@SuppressWarnings("unchecked")
-	public synchronized void addAll(Iterator<T> E)
-	{
-		V=(Vector<T>)V.clone();
-		if(E!=null)
-			for(;E.hasNext();)
-				V.add(E.next());
-	}
-	
-	@SuppressWarnings("unchecked")
-	public synchronized void removeAll(Enumeration<T> E)
-	{
-		V=(Vector<T>)V.clone();
-		if(E!=null)
-			for(;E.hasMoreElements();)
-				V.remove(E.nextElement());
-	}
-	
-	@SuppressWarnings("unchecked")
-	public synchronized void removeAll(Iterator<T> E)
-	{
-		V=(Vector<T>)V.clone();
-		if(E!=null)
-			for(;E.hasNext();)
-				V.remove(E.next());
-	}
-	
-	@SuppressWarnings("unchecked")
-	public synchronized void removeAll(List<T> E)
-	{
-		V=(Vector<T>)V.clone();
-		if(E!=null)
-			for(T o : E)
-				V.remove(o);
-	}
-	
-	public synchronized int capacity() {
-		return V.capacity();
-	}
+    public SVector()
+    {
+        super();
+    }
+    public SVector(int size)
+    {
+        super();
+    }
+    public SVector(List<T> E)
+    {
+        super();
+        if(E!=null)
+            this.addAll(E);
+    }
+    
+    public SVector(T... E)
+    {
+        super();
+        if(E!=null)
+            for(T o : E)
+                add(o);
+    }
+    
+    public SVector(Enumeration<T> E)
+    {
+        super();
+        if(E!=null)
+            for(;E.hasMoreElements();)
+                add(E.nextElement());
+    }
+    
+    public SVector(Iterator<T> E)
+    {
+        super();
+        if(E!=null)
+            for(;E.hasNext();)
+                add(E.next());
+    }
+    
+    public SVector(Set<T> E)
+    {
+        super();
+        if(E!=null)
+            for(T o : E)
+                add(o);
+    }
+    
+    public synchronized void addAll(Enumeration<T> E)
+    {
+        if(E!=null)
+            for(;E.hasMoreElements();)
+                add(E.nextElement());
+    }
+    
+    public synchronized void addAll(T[] E)
+    {
+        if(E!=null)
+            for(T e : E)
+                add(e);
+    }
+    
+    public synchronized void addAll(Iterator<T> E)
+    {
+        if(E!=null)
+            for(;E.hasNext();)
+                add(E.next());
+    }
+    
+    public synchronized void removeAll(Enumeration<T> E)
+    {
+        if(E!=null)
+            for(;E.hasMoreElements();)
+                remove(E.nextElement());
+    }
+    
+    public synchronized void removeAll(Iterator<T> E)
+    {
+        if(E!=null)
+            for(;E.hasNext();)
+                remove(E.next());
+    }
+    
+    public synchronized void removeAll(List<T> E)
+    {
+        if(E!=null)
+            for(T o : E)
+                remove(o);
+    }
+    
+    public int capacity() {
+        return size();
+    }
 
-	@SuppressWarnings("unchecked")
-	public synchronized Vector<T> toVector() {
-		return (Vector<T>)V.clone();
-	}
-	
-	@SuppressWarnings("unchecked")
-	public synchronized SVector<T> copyOf() {
-		SVector<T> SV=new SVector<T>();
-		SV.V=(Vector<T>)V.clone();
-		return SV;
-	}
+    public synchronized Vector<T> toVector() {
+        return new XVector<T>(this);
+    }
+    
+    @SuppressWarnings("unchecked")
+    public synchronized SVector<T> copyOf() {
+        try
+        {
+            return (SVector<T>)clone();
+        }
+        catch(Exception e)
+        {
+            return new SVector<T>(this);
+        }
+    }
 
-	@Override
-	public synchronized boolean contains(Object o) {
-		return V.contains(o);
-	}
+    public synchronized void copyInto(Object[] anArray) {
+        toArray(anArray);
+    }
 
-	@Override
-	public synchronized boolean containsAll(Collection<?> c) {
-		return V.containsAll(c);
-	}
+    public synchronized T elementAt(int index) {
+        return get(index);
+    }
 
-	@SuppressWarnings("unchecked")
-	public synchronized void copyInto(Object[] anArray) {
-		V=(Vector<T>)V.clone();
-		V.copyInto(anArray);
-	}
+    public synchronized Enumeration<T> elements() {
+        return new Enumeration<T>()
+        {
+            final Iterator<T> i=iterator();
+            public boolean hasMoreElements() {
+                return i.hasNext();
+            }
+            public T nextElement() {
+                return i.next();
+            }
+        };
+    }
 
-	public synchronized T elementAt(int index) {
-		return V.elementAt(index);
-	}
+    public synchronized void ensureCapacity(int minCapacity) {
+        throw new IllegalArgumentException();
+    }
 
-	public synchronized Enumeration<T> elements() {
-		return V.elements();
-	}
+    public synchronized T firstElement() {
+        return (size()==0)?null:get(0);
+    }
 
-	public synchronized void ensureCapacity(int minCapacity) {
-		V.ensureCapacity(minCapacity);
-	}
+    public synchronized T lastElement() {
+        return (size()==0)?null:get(size()-1);
+    }
 
-	@Override
-	public synchronized boolean equals(Object o) {
-		return o==this;
-	}
+    public synchronized void setElementAt(T obj, int index) {
+        set(index, obj);
+    }
 
-	public synchronized T firstElement() {
-		return V.firstElement();
-	}
+    public synchronized void setSize(int newSize) {
+        throw new IllegalArgumentException();
+    }
 
-	@Override
-	public synchronized T get(int index) {
-		return V.get(index);
-	}
+    public synchronized void trimToSize() {
+    }
+    
+    public synchronized void addElement(T obj) 
+    {
+        add(obj);
+    }
 
-	@Override
-	public synchronized int hashCode() {
-		return super.hashCode();
-	}
+    public synchronized void insertElementAt(T obj, int index) 
+    {
+        add(index, obj);
+    }
 
-	public synchronized int indexOf(Object o, int index) {
-		return V.indexOf(o, index);
-	}
+    public synchronized void removeAllElements() 
+    {
+        clear();
+    }
 
-	@Override
-	public synchronized int indexOf(Object o) {
-		return V.indexOf(o);
-	}
+    public synchronized boolean removeElement(Object obj) 
+    {
+        return remove(obj);
+    }
 
-	@Override
-	public synchronized boolean isEmpty() {
-		return V.isEmpty();
-	}
-
-	public synchronized T lastElement() {
-		return V.lastElement();
-	}
-
-	public synchronized int lastIndexOf(Object o, int index) {
-		return V.lastIndexOf(o, index);
-	}
-
-	@Override
-	public synchronized int lastIndexOf(Object o) {
-		return V.lastIndexOf(o);
-	}
-
-	@SuppressWarnings("unchecked")
-	@Override
-	public synchronized boolean retainAll(Collection<?> c) {
-		V=(Vector<T>)V.clone();
-		return V.retainAll(c);
-	}
-
-	@SuppressWarnings("unchecked")
-	@Override
-	public synchronized T set(int index, T element) {
-		V=(Vector<T>)V.clone();
-		return V.set(index, element);
-	}
-
-	@SuppressWarnings("unchecked")
-	public synchronized void setElementAt(T obj, int index) {
-		V=(Vector<T>)V.clone();
-		V.setElementAt(obj, index);
-	}
-
-	@SuppressWarnings("unchecked")
-	public synchronized void setSize(int newSize) {
-		V=(Vector<T>)V.clone();
-		V.setSize(newSize);
-	}
-
-	@Override
-	public synchronized int size() {
-		return V.size();
-	}
-
-	@Override
-	public synchronized List<T> subList(int fromIndex, int toIndex) {
-		return V.subList(fromIndex, toIndex);
-	}
-
-	@Override
-	public synchronized Object[] toArray() {
-		return V.toArray();
-	}
-
-	@SuppressWarnings("hiding")
-	@Override
-	public synchronized <T> T[] toArray(T[] a) {
-		return V.toArray(a);
-	}
-
-	@Override
-	public synchronized String toString() {
-		return super.toString();
-	}
-
-	@SuppressWarnings("unchecked")
-	public synchronized void trimToSize() {
-		V=(Vector<T>)V.clone();
-		V.trimToSize();
-	}
-	
-	@SuppressWarnings("unchecked")
-	@Override
-	public synchronized void add(int index, T element) 
-	{
-		V=(Vector<T>)V.clone();
-		V.add(index, element);
-	}
-
-	@SuppressWarnings("unchecked")
-	@Override
-	public synchronized boolean add(T e) 
-	{
-		V=(Vector<T>)V.clone();
-		return V.add(e);
-	}
-
-	@SuppressWarnings("unchecked")
-	@Override
-	public synchronized boolean addAll(Collection<? extends T> c) 
-	{
-		V=(Vector<T>)V.clone();
-		return V.addAll(c);
-	}
-
-	@SuppressWarnings("unchecked")
-	@Override
-	public synchronized boolean addAll(int index, Collection<? extends T> c) 
-	{
-		V=(Vector<T>)V.clone();
-		return V.addAll(index, c);
-	}
-
-	@SuppressWarnings("unchecked")
-	public synchronized void addElement(T obj) 
-	{
-		V=(Vector<T>)V.clone();
-		V.addElement(obj);
-	}
-
-	@SuppressWarnings("unchecked")
-	@Override
-	public synchronized void clear() 
-	{
-		V=(Vector<T>)V.clone();
-		V.clear();
-	}
-
-	@SuppressWarnings("unchecked")
-	public synchronized void insertElementAt(T obj, int index) 
-	{
-		V=(Vector<T>)V.clone();
-		V.insertElementAt(obj, index);
-	}
-
-	@SuppressWarnings("unchecked")
-	@Override
-	public synchronized boolean remove(Object o) 
-	{
-		V=(Vector<T>)V.clone();
-		return V.remove(o);
-	}
-
-	@SuppressWarnings("unchecked")
-	@Override
-	public synchronized T remove(int index) 
-	{
-		V=(Vector<T>)V.clone();
-		return V.remove(index);
-	}
-
-	@SuppressWarnings("unchecked")
-	@Override
-	public synchronized boolean removeAll(Collection<?> c) 
-	{
-		V=(Vector<T>)V.clone();
-		return V.removeAll(c);
-	}
-
-	@SuppressWarnings("unchecked")
-	public synchronized void removeAllElements() 
-	{
-		V=(Vector<T>)V.clone();
-		V.removeAllElements();
-	}
-
-	@SuppressWarnings("unchecked")
-	public synchronized boolean removeElement(Object obj) 
-	{
-		V=(Vector<T>)V.clone();
-		return V.removeElement(obj);
-	}
-
-	@SuppressWarnings("unchecked")
-	public synchronized void removeElementAt(int index) 
-	{
-		V=(Vector<T>)V.clone();
-		V.removeElementAt(index);
-	}
-
-	@Override
-	public synchronized Iterator<T> iterator() {
-		return new ReadOnlyIterator<T>(V.iterator());
-	}
-
-	@Override
-	public synchronized ListIterator<T> listIterator() {
-		return new ReadOnlyListIterator<T>(V.listIterator());
-	}
-
-	@Override
-	public synchronized ListIterator<T> listIterator(int index) {
-		return new ReadOnlyListIterator<T>(V.listIterator());
-	}
+    public synchronized void removeElementAt(int index) 
+    {
+        remove(index);
+    }
 }

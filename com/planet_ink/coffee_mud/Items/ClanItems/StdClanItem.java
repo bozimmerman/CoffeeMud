@@ -282,7 +282,7 @@ public class StdClanItem extends StdItem implements ClanItem
 	
 	public static boolean stdOkMessage(Environmental myHost, CMMsg msg)
 	{
-		if(((msg.tool()==myHost)||(msg.tool()==((ClanItem)myHost).ultimateContainer()))
+		if(((msg.tool()==myHost)||(msg.tool()==((ClanItem)myHost).ultimateContainer(null)))
 		&&(msg.targetMinor()==CMMsg.TYP_GIVE)
 		&&(msg.target()!=null)
 		&&(msg.target() instanceof MOB)
@@ -301,7 +301,7 @@ public class StdClanItem extends StdItem implements ClanItem
 				return false;
 		}
 		else
-		if((msg.amITarget(myHost)||(msg.target()==((ClanItem)myHost).ultimateContainer()))
+		if((msg.amITarget(myHost)||(msg.target()==((ClanItem)myHost).ultimateContainer(null)))
         &&(((ClanItem)myHost).clanID().length()>0))
 		{
 	        if((msg.targetMinor()==CMMsg.TYP_GET)
