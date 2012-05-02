@@ -35,92 +35,91 @@ import java.util.*;
 @SuppressWarnings("unchecked")
 public class Spell_Siphon extends Spell
 {
-	private static Random randomizer = null;
-	public Spell_Siphon()
-	{
+    private static Random randomizer = null;
+    public Spell_Siphon()
+    {
         super();
-		if(randomizer==null)
-		   randomizer = new Random(System.currentTimeMillis());
-	}
-	public String ID() { return "Spell_Siphon"; }
-	public String name(){return "Siphon";}
-	public String displayText(){return "(Siphon spell)";}
-	public int maxRange(){return adjustedMaxInvokerRange(1);}
-	public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_OTHERS;}
-	public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_ENCHANTMENT;}
+        if(randomizer==null)
+           randomizer = new Random(System.currentTimeMillis());
+    }
+    public String ID() { return "Spell_Siphon"; }
+    public String name(){return "Siphon";}
+    public String displayText(){return "(Siphon spell)";}
+    public int maxRange(){return adjustedMaxInvokerRange(1);}
+    public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_OTHERS;}
+    public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_ENCHANTMENT;}
 
-	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
-	{
-		MOB target=getTarget(mob,commands,givenTarget);
-		if(target==null) return false;
+    public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
+    {
+        MOB target=getTarget(mob,commands,givenTarget);
+        if(target==null) return false;
 
-		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
-			return false;
+        if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
+            return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
-		if(success)
-		{
-			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"<T-NAME> feel(s) a thirst for the energy of others.":"^S<S-NAME> invoke(s) an area deprived of energy around <T-NAMESELF>.^?");
-			if(mob.location().okMessage(mob,msg))
-			{
-				mob.location().send(mob,msg);
-				beneficialAffect(mob,target,asLevel,0);
-			}
-		}
-		else
-			beneficialWordsFizzle(mob,target,"<S-NAME> attempt(s) to invoke an energy thirst, but fail(s).");
+        boolean success=proficiencyCheck(mob,0,auto);
+        if(success)
+        {
+            CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"<T-NAME> feel(s) a thirst for the energy of others.":"^S<S-NAME> invoke(s) an area deprived of energy around <T-NAMESELF>.^?");
+            if(mob.location().okMessage(mob,msg))
+            {
+                mob.location().send(mob,msg);
+                beneficialAffect(mob,target,asLevel,0);
+            }
+        }
+        else
+            beneficialWordsFizzle(mob,target,"<S-NAME> attempt(s) to invoke an energy thirst, but fail(s).");
 
-		return success;
-	}
+        return success;
+    }
 
    public void unInvoke()
-	{
-		// undo the affects of this spell
-		if((affected==null)||(!(affected instanceof MOB)))
-			return;
-		MOB mob=(MOB)affected;
-		super.unInvoke();
+    {
+        // undo the affects of this spell
+        if((affected==null)||(!(affected instanceof MOB)))
+            return;
+        MOB mob=(MOB)affected;
+        super.unInvoke();
 
-		mob.tell("You no longer feel a thirst for the energy of others.");
-	}
+        mob.tell("You no longer feel a thirst for the energy of others.");
+    }
 
-	public boolean okMessage(final Environmental myHost, final CMMsg msg)
-	{
-		if((affected==null)||(!(affected instanceof MOB)))
-			return true;
+    public boolean okMessage(final Environmental myHost, final CMMsg msg)
+    {
+        if((affected==null)||(!(affected instanceof MOB)))
+            return true;
 
-		MOB mob=(MOB)affected;
+        MOB mob=(MOB)affected;
 
-		if((msg.amITarget(mob))
-		&&(!msg.amISource(mob))
-		&&(msg.targetMinor()==CMMsg.TYP_DAMAGE)
-		&&((msg.value())>0)
-		&&(msg.tool()!=null)
-		&&(msg.tool() instanceof Weapon)
-		&&(CMLib.dice().rollPercentage()>50)
-		&&(msg.source().curState().getMana()>0))
-		{
-
-			CMMsg msg2=CMClass.getMsg(mob,msg.source(),null,CMMsg.MSG_QUIETMOVEMENT,"<S-NAME> siphon(s) mana from <T-NAME>!");
-			if(mob.location().okMessage(mob,msg2))
-			{
-				int maxManaRestore = 3;
-				MOB source = msg.source();
-				int curSourceMana = source.curState().getMana();
-				int manaDrain = 0;
-				if(maxManaRestore <= curSourceMana)
-				{
-				   manaDrain = maxManaRestore;
-				}
-				else
-				{
-				   manaDrain = curSourceMana;
-				}
-				mob.curState().adjMana(manaDrain, mob.maxState());
-				source.curState().adjMana(manaDrain * -1, source.maxState());
-				mob.location().send(mob,msg2);
-			}
-		}
-		return super.okMessage(myHost, msg);
-	}
+        if((msg.amITarget(mob))
+        &&(!msg.amISource(mob))
+        &&(msg.targetMinor()==CMMsg.TYP_DAMAGE)
+        &&((msg.value())>0)
+        &&(msg.tool()!=null)
+        &&(msg.tool() instanceof Weapon)
+        &&(CMLib.dice().rollPercentage()>50)
+        &&(msg.source().curState().getMana()>0))
+        {
+            MOB sourceM = msg.source();
+            CMMsg msg2=CMClass.getMsg(mob,sourceM,null,CMMsg.MSG_QUIETMOVEMENT,"<S-NAME> siphon(s) mana from <T-NAME>!");
+            if(mob.location().okMessage(mob,msg2))
+            {
+                int maxManaRestore = 3;
+                int curSourceMana = sourceM.curState().getMana();
+                int manaDrain = 0;
+                if(maxManaRestore <= curSourceMana)
+                {
+                   manaDrain = maxManaRestore;
+                }
+                else
+                {
+                   manaDrain = curSourceMana;
+                }
+                mob.curState().adjMana(manaDrain, mob.maxState());
+                sourceM.curState().adjMana(manaDrain * -1, sourceM.maxState());
+                mob.location().send(mob,msg2);
+            }
+        }
+        return super.okMessage(myHost, msg);
+    }
 }
