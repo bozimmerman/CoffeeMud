@@ -17,6 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.net.*;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import com.planet_ink.coffee_mud.core.exceptions.*;
 import java.io.*;
@@ -40,21 +41,21 @@ public class ProcessSMTPrequest implements Runnable
 {
     private final static String cr = "\r\n";
     private final static String S_250 = "250 OK";
-    private static volatile long instanceCnt = 0;
+    private static volatile AtomicInteger instanceCnt = new AtomicInteger(0);
     
     
-    private Socket          sock;
-    private SMTPserver      server=null;
-    private StringBuffer data=null;
-    protected String      from=null;
-    protected String      domain=null;
-    protected String       runnableName;
-    protected boolean      debug=false;
-    protected Vector<String>    to=null;
+    private Socket           sock;
+    private SMTPserver       server=null;
+    private StringBuffer     data=null;
+    protected String         from=null;
+    protected String         domain=null;
+    protected String         runnableName;
+    protected boolean        debug=false;
+    protected Vector<String> to=null;
 
     public ProcessSMTPrequest(Socket a_sock, SMTPserver a_Server)
     {
-        runnableName="SMTPrq"+(instanceCnt++);
+        runnableName="SMTPrq"+(instanceCnt.addAndGet(1));
         server = a_Server;
         sock = a_sock;
     }
@@ -89,10 +90,15 @@ public class ProcessSMTPrequest implements Runnable
 
     public void cleanHtml(String journal, StringBuffer finalData)
     {
-        // the input MUST be html -- text that only might be need not apply
-        JournalsLibrary.ForumJournal forum=CMLib.journals().getForumJournal(journal);
-        if(forum!=null)
-            CMStrings.stripHeadHtmlTags(finalData);
+        if(journal!= null)
+        {
+            // the input MUST be html -- text that only might be need not apply
+            JournalsLibrary.ForumJournal forum=CMLib.journals().getForumJournal(journal);
+            if(forum!=null)
+                CMStrings.stripHeadHtmlTags(finalData);
+            else
+                CMStrings.convertHtmlToText(finalData);
+        }
         else
             CMStrings.convertHtmlToText(finalData);
     }

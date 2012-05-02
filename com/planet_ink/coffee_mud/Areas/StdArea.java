@@ -181,19 +181,19 @@ public class StdArea implements Area
         amDestroyed=true;
         miscText=null;
         imageName=null;
-        affects=null;
-        behaviors=null;
-        scripts=null;
+        affects=new SVector<Ability>(1);
+        behaviors=new SVector<Behavior>(1);
+        scripts=new SVector<ScriptingEngine>(1);
         author=null;
         currency=null;
         children=null;
         parents=null;
         initializedArea=true;
-        childrenToLoad=null;
-        parentsToLoad=null;
-        blurbFlags=null;
-        subOps=null;
-        properRooms=null;
+        childrenToLoad=new SLinkedList<String>();
+        parentsToLoad=new SLinkedList<String>();
+        blurbFlags=new STreeMap<String,String>();
+        subOps=new SVector<String>(1);
+        properRooms=new STreeMap();
         //metroRooms=null;
         myClock=null;
         climateObj=null;
@@ -1271,38 +1271,37 @@ public class StdArea implements Area
         if(R==null) return;
         if(R instanceof GridLocale)
             ((GridLocale)R).clearGrid(null);
-        if(properRooms!=null)
-            synchronized(properRooms)
+        synchronized(properRooms)
+        {
+            if(R.roomID().length()==0)
             {
-                if(R.roomID().length()==0)
+                if((R.getGridParent()!=null)&&(R.getGridParent().roomID().length()>0))
                 {
-                    if((R.getGridParent()!=null)&&(R.getGridParent().roomID().length()>0))
-                    {
-                        String id=R.getGridParent().getGridChildCode(R);
-                        delProperRoomnumber(id);
-                        delMetroRoom(R);
-                    }
-                }
-                else
-                if(properRooms.get(R.roomID())==R)
-                {
-                    properRooms.remove(R.roomID());
-                    delMetroRoom(R);
-                    delProperRoomnumber(R.roomID());
-                }
-                else
-                if(properRooms.containsValue(R))
-                {
-                    for(Map.Entry<String,Room> entry : properRooms.entrySet())
-                        if(entry.getValue()==R)
-                        {
-                            properRooms.remove(entry.getKey());
-                            delProperRoomnumber(entry.getKey());
-                        }
-                    delProperRoomnumber(R.roomID());
+                    String id=R.getGridParent().getGridChildCode(R);
+                    delProperRoomnumber(id);
                     delMetroRoom(R);
                 }
             }
+            else
+            if(properRooms.get(R.roomID())==R)
+            {
+                properRooms.remove(R.roomID());
+                delMetroRoom(R);
+                delProperRoomnumber(R.roomID());
+            }
+            else
+            if(properRooms.containsValue(R))
+            {
+                for(Map.Entry<String,Room> entry : properRooms.entrySet())
+                    if(entry.getValue()==R)
+                    {
+                        properRooms.remove(entry.getKey());
+                        delProperRoomnumber(entry.getKey());
+                    }
+                delProperRoomnumber(R.roomID());
+                delMetroRoom(R);
+            }
+        }
     }
 
     public Room getRoom(String roomID)
