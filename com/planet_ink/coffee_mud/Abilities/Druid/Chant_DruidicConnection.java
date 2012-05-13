@@ -111,12 +111,12 @@ public class Chant_DruidicConnection extends Chant
                 Item I=Druid_MyPlants.myPlant((Room)V.elementAt(v),invoker,0);
                 int num=0;
                 while(I!=null) 
-                	I=Druid_MyPlants.myPlant((Room)V.elementAt(v),invoker,++num);
+                    I=Druid_MyPlants.myPlant((Room)V.elementAt(v),invoker,++num);
                 for(int x=num-1;x>=0;x--)
                 {
                     I=Druid_MyPlants.myPlant((Room)V.elementAt(v),invoker,x);
                     if(I!=null)
-	                    I.destroy();
+                        I.destroy();
                 }
             }
             invoker.tell("You have destroyed your connection with "+affected.name()+"!");
