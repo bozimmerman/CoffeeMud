@@ -35,6 +35,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 public class WandArchon extends StdWand implements ArchonOnly
 {
     public String ID(){    return "WandArchon";}
+    protected final static String[] MAGIC_WORDS={"LEVEL","RESTORE","REFRESH","BLAST","BURN"};
     public WandArchon()
     {
         super();
@@ -47,20 +48,19 @@ public class WandArchon extends StdWand implements ArchonOnly
         baseGoldValue=20000;
         material=RawMaterial.RESOURCE_OAK;
         recoverPhyStats();
-        secretWord="REFRESH, RESTORE, BLAST, LEVEL X UP, LEVEL X DOWN, BURN!!";
+        secretWord="REFRESH, RESTORE, BLAST, LEVEL X UP, LEVEL X DOWN, BURN";
     }
-
-
 
     public void setSpell(Ability theSpell)
     {
         super.setSpell(theSpell);
-        secretWord="REFRESH, BLAST, LEVEL X UP, LEVEL X DOWN, BURN!!";
+        secretWord="REFRESH, BLAST, LEVEL X UP, LEVEL X DOWN, BURN";
     }
+
     public void setMiscText(String newText)
     {
         super.setMiscText(newText);
-        secretWord="REFRESH, BLAST, LEVEL X UP, LEVEL X DOWN, BURN!!";
+        secretWord="REFRESH, BLAST, LEVEL X UP, LEVEL X DOWN, BURN";
     }
 
     public void affectCharState(MOB mob, CharState affectableState)
@@ -84,18 +84,31 @@ public class WandArchon extends StdWand implements ArchonOnly
             return true;
 
         if(msg.amITarget(this))
-        switch(msg.targetMinor())
-        {
-        case CMMsg.TYP_HOLD:
-        case CMMsg.TYP_WEAR:
-        case CMMsg.TYP_WIELD:
-        case CMMsg.TYP_GET:
-            if(mob.charStats().getClassLevel("Archon")<0)
+            switch(msg.targetMinor())
             {
-                mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,name()+" flashes and falls out of <S-HIS-HER> hands!");
-                return false;
+            case CMMsg.TYP_HOLD:
+            case CMMsg.TYP_WEAR:
+            case CMMsg.TYP_WIELD:
+            case CMMsg.TYP_GET:
+                if(mob.charStats().getClassLevel("Archon")<0)
+                {
+                    mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,name()+" flashes and falls out of <S-HIS-HER> hands!");
+                    return false;
+                }
+                break;
             }
-            break;
+        if((msg.targetMinor()==CMMsg.TYP_SPEAK)&&(msg.sourceMessage()!=null))
+        {
+            String said=CMStrings.getSayFromMessage(msg.sourceMessage());
+            if(said!=null)
+            {
+                said=said.trim().toUpperCase();
+                int x=said.indexOf(' ');
+                if(x>0)
+                    said=said.substring(0,x);
+                if(CMParms.indexOf(MAGIC_WORDS, said)>=0)
+                    super.secretWord=said;
+            }
         }
         return true;
     }

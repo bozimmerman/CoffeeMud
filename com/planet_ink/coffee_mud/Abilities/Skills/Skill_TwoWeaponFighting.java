@@ -44,43 +44,22 @@ public class Skill_TwoWeaponFighting extends StdSkill
     public boolean isAutoInvoked(){return true;}
     public boolean canBeUninvoked(){return false;}
 
-    protected Weapon lastSecondary=null;
-    protected Weapon lastPrimary=null;
     protected boolean attackedSinceLastTick=false;
 
     protected Weapon getFirstWeapon(MOB mob)
     {
-        final Weapon primary=lastPrimary;
-        if((primary!=null)
-        &&(primary.amWearingAt(Wearable.WORN_WIELD))
-        &&(!primary.amWearingAt(Wearable.WORN_HELD))
-        &&(primary.container()==null))
-            return primary;
-        lastPrimary=null;
-        Item weapon=mob.fetchWieldedItem();
-        if((weapon instanceof Weapon)
-        &&(!weapon.amWearingAt(Wearable.WORN_HELD)))
-        {
-            lastPrimary=(Weapon)weapon;
-        }
-        return lastPrimary;
+        Item I=mob.fetchWieldedItem();
+        if(I instanceof Weapon)
+            return (Weapon)I;
+        return null;
     }
 
     private Weapon getSecondWeapon(MOB mob)
     {
-        final Weapon secondary=lastSecondary;
-        if((secondary!=null)
-        &&(secondary.amWearingAt(Wearable.WORN_HELD))
-        &&(!secondary.amWearingAt(Wearable.WORN_WIELD))
-        &&(secondary.container()==null))
-            return secondary;
-        Item weapon=mob.fetchHeldItem();
-        if((weapon instanceof Weapon)
-        &&(!weapon.amWearingAt(Wearable.WORN_WIELD)))
-        {
-            lastSecondary=(Weapon)weapon;
-        }
-        return lastSecondary;
+        Item I=mob.fetchHeldItem();
+        if((I instanceof Weapon)&&(!I.amWearingAt(Wearable.WORN_WIELD)))
+            return (Weapon)I;
+        return null;
     }
 
     public void affectPhyStats(Physical affected, PhyStats affectableStats)
