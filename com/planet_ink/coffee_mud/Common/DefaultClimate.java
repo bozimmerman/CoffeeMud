@@ -186,7 +186,8 @@ public class DefaultClimate implements Climate
 	public boolean canSeeTheSun(Room room)
 	{
 		if(((room.getArea().getTimeObj().getTODCode()!=TimeClock.TIME_DAY)&&(room.getArea().getTimeObj().getTODCode()!=TimeClock.TIME_DAWN))
-		||(!CMLib.map().hasASky(room)))
+		||(!CMLib.map().hasASky(room))
+		||(CMLib.flags().isInDark(room)))
 			return false;
 
 		switch(weatherType(room))
