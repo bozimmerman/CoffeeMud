@@ -326,9 +326,9 @@ public class StdLanguage extends StdAbility implements Language
                             msg.setOthersCode(CMMsg.TYP_SPEAK);
                             String reply=null;
                             if((L==null)||(!L.beingSpoken(ID())))
-                                reply="<S-NAME> <S-IS-ARE> speaking "+name()+" and do(es) not appear to understand <T-YOUPOSS> words.";
+                                reply="<S-NAME> <S-IS-ARE> speaking "+name()+" and <T-NAME> would not understand <S-HIM-HER>.";
                             else
-                                reply="<S-NAME> <S-IS-ARE> having trouble understanding <T-YOUPOSS> pronunciation.";
+                                reply="<T-NAME> <T-IS-ARE> having trouble understanding <S-YOUPOSS> pronunciation.";
                             msg.addTrailerMsg(CMClass.getMsg((MOB)msg.target(),msg.source(),null,CMMsg.MSG_OK_VISUAL,reply));
                         }
                     }
