@@ -309,6 +309,9 @@ public class StdLanguage extends StdAbility implements Language
                 case CMMsg.TYP_WITHDRAW:
                 case CMMsg.TYP_DEPOSIT:
                 {
+                    // yes, this means that a mob speaking Common to a marketing player will get failed,
+                    // however, remember that the LISTer language doesn't matter, only the responding (this) language.
+                    // also, think about muds where there is no Common (an interesting mud!)
                     if((!CMSecurity.isAllowed(msg.source(),msg.source().location(),"ORDER"))
                     &&(!CMSecurity.isAllowed(msg.source(),msg.source().location(),"CMDMOBS")||(!((MOB)msg.target()).isMonster()))
                     &&(!CMSecurity.isAllowed(msg.source(),msg.source().location(),"CMDROOMS")||(!((MOB)msg.target()).isMonster())))

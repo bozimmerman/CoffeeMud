@@ -95,6 +95,9 @@ public class Alchemy extends CraftingSkill implements ItemCraftor
         List<Ability> spells=P.getSpells();
         if((spells == null)||(spells.size()==0))
             return false;
+        for(Ability A : spells)
+            if((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_POISON)
+                return false;
         return true;
     }
     

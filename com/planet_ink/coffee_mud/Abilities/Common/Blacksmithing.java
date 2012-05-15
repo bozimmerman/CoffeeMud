@@ -102,7 +102,7 @@ public class Blacksmithing extends EnhancedCraftingSkill implements ItemCraftor
             }
         }
         if(I instanceof DoorKey)
-            return false;
+            return true;
         if(I instanceof Shield)
             return false;
         if(I instanceof Weapon)
