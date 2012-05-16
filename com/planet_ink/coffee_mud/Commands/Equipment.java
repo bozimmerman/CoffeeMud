@@ -176,7 +176,7 @@ public class Equipment extends StdCommand
                             if(paragraphView)
                             {
                                 String name=thisItem.name();
-                                if(name.length()>75) name=name.substring(0,75)+"...";
+                                if((name.length()>75)&&(!allPlaces)) name=name.substring(0,75)+"...";
                                 if(wornCode==Wearable.WORN_HELD)
                                 {
                                     if(msg.length()==0) msg.append("nothing.");
@@ -207,7 +207,7 @@ public class Equipment extends StdCommand
                             else
                             {
                                 String name=thisItem.name();
-                                if(name.length()>53) name=name.substring(0,50)+"...";
+                                if((name.length()>53)&&(!allPlaces)) name=name.substring(0,50)+"...";
                                 if(mob==seer)
                                     msg.append(header+"^<EItem^>"+name+"^</EItem^>"+CMLib.flags().colorCodes(thisItem,seer).toString().trim()+"^?\n\r");
                                 else
