@@ -1,5 +1,7 @@
 package com.planet_ink.coffee_mud.Behaviors;
 import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.interfaces.ItemPossessor.Expire;
+import com.planet_ink.coffee_mud.core.interfaces.ItemPossessor.Move;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
@@ -263,7 +265,7 @@ public class Patroller extends ActiveTicker
                             myStartRoom.bringMobHere((MOB)E,true);
                         else
                         if(E instanceof Item)
-                            myStartRoom.moveItemTo((Item)E);
+                            myStartRoom.moveItemTo((Item)E,Expire.Never,Move.Followers);
                     }
                     return true;
                 }
