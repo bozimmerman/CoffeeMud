@@ -4171,7 +4171,7 @@ from a local rooms name or description. The '==' may also be '!='.</p>
       <pre>incontainer(character container/mount)<br /></pre>
       <p>This checks whether the
 character is on the given mount, or,
-if the character is an item, whether the item is in the given container.</p>
+if the character is an item, whether the first item with the given name is in the first container of the given name.</p>
       <p>EXAMPLES:</p>
       <pre>if incontainer($n a chair)<br /> mpecho The actor is sitting on a chair<br />else<br /> mpecho The actor is not sitting on a chair<br />endif<br /><br />if incontainer($p a sack)<br /> mpecho The item is in a sack.<br />else<br /> mpecho The item is not in a sack.<br />endif<br /></pre>
       <h3><a name="inlocale">inlocale</a></h3>
@@ -4245,7 +4245,7 @@ character variable is charmed.</p>
       <p>Usage:</p>
 iscontent(container itemname)<br />
       <p>This checks to see if the
-given container (or rideable) contains the given itemname (or rider).</p>
+first container (or rideable) of the given name contains an item of the given name (or rider).</p>
       <p>EXAMPLE:</p>
       <span style="font-family: monospace;">if
 iscontent($o 'a dagger')</span><br style="font-family: monospace;" />
