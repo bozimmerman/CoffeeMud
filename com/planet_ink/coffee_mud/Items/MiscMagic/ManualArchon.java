@@ -35,83 +35,90 @@ import java.util.*;
 */
 public class ManualArchon extends StdItem implements MiscMagic,ArchonOnly
 {
-	public String ID(){	return "ManualArchon";}
-	public ManualArchon()
-	{
-		super();
+    public String ID(){    return "ManualArchon";}
+    public ManualArchon()
+    {
+        super();
 
-		setName("an ornately decorated book");
-		basePhyStats.setWeight(1);
-		setDisplayText("an ornately decorated book has definitely been left behind by someone.");
-		setDescription("A book covered with mystical symbols, inside and out.");
-		secretIdentity="The Manual of the Archons.";
-		this.setUsesRemaining(Integer.MAX_VALUE);
-		baseGoldValue=50000;
-		material=RawMaterial.RESOURCE_PAPER;
-		recoverPhyStats();
-	}
+        setName("an ornately decorated book");
+        basePhyStats.setWeight(1);
+        setDisplayText("an ornately decorated book has definitely been left behind by someone.");
+        setDescription("A book covered with mystical symbols, inside and out.");
+        secretIdentity="The Manual of the Archons.";
+        this.setUsesRemaining(Integer.MAX_VALUE);
+        baseGoldValue=50000;
+        material=RawMaterial.RESOURCE_PAPER;
+        recoverPhyStats();
+    }
 
-	public void executeMsg(final Environmental myHost, final CMMsg msg)
-	{
-		if(msg.amITarget(this))
-		{
-			MOB mob=msg.source();
-			switch(msg.targetMinor())
-			{
-			case CMMsg.TYP_READ:
-				if(mob.isMine(this))
-				{
-					mob.tell("The manual glows softly, enveloping you in its magical energy.");
-					Session session=mob.session();
-					CharClass newClass=CMClass.getCharClass("Archon");
-					if((session!=null)&&(newClass!=null))
-					{
-						mob.setSession(null);
+    public void affectPhyStats(Physical affected, PhyStats affectableStats)
+    {
+        affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_LIGHTSOURCE);
+        if(CMLib.flags().isInDark(affected))
+            affectableStats.setDisposition(affectableStats.disposition()-PhyStats.IS_DARK);
+    }
 
-						for(int i : CharStats.CODES.BASE())
-							mob.baseCharStats().setStat(i,25);
-						if((!mob.isMonster())&&(mob.soulMate()==null))
-							CMLib.coffeeTables().bump(mob,CoffeeTableRow.STAT_CLASSCHANGE);
-						mob.recoverCharStats();
-						if((!mob.charStats().getCurrentClass().leveless())
+    public void executeMsg(final Environmental myHost, final CMMsg msg)
+    {
+        if(msg.amITarget(this))
+        {
+            MOB mob=msg.source();
+            switch(msg.targetMinor())
+            {
+            case CMMsg.TYP_READ:
+                if(mob.isMine(this))
+                {
+                    mob.tell("The manual glows softly, enveloping you in its magical energy.");
+                    Session session=mob.session();
+                    CharClass newClass=CMClass.getCharClass("Archon");
+                    if((session!=null)&&(newClass!=null))
+                    {
+                        mob.setSession(null);
+
+                        for(int i : CharStats.CODES.BASE())
+                            mob.baseCharStats().setStat(i,25);
+                        if((!mob.isMonster())&&(mob.soulMate()==null))
+                            CMLib.coffeeTables().bump(mob,CoffeeTableRow.STAT_CLASSCHANGE);
+                        mob.recoverCharStats();
+                        if((!mob.charStats().getCurrentClass().leveless())
                         &&(!mob.charStats().isLevelCapped(mob.charStats().getCurrentClass()))
-						&&(!mob.charStats().getMyRace().leveless())
-						&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.LEVELS)))
-						while(mob.basePhyStats().level()<100)
-						{
-							int oldLevel = mob.basePhyStats().level();
-							if((mob.getExpNeededLevel()==Integer.MAX_VALUE)
-							||(mob.charStats().getCurrentClass().expless())
-							||(mob.charStats().getMyRace().expless()))
-								CMLib.leveler().level(mob);
-							else
-								CMLib.leveler().postExperience(mob,null,null,mob.getExpNeededLevel()+1,false);
-							if(mob.basePhyStats().level()==oldLevel)
-								break;
-						}
-						mob.baseCharStats().setCurrentClass(newClass);
-						mob.baseCharStats().setClassLevel(mob.baseCharStats().getCurrentClass(),30);
-						mob.basePhyStats().setLevel(mob.basePhyStats().level()+30);
-						mob.setExperience(mob.getExpNextLevel());
-						mob.recoverCharStats();
-						mob.recoverPhyStats();
-						mob.recoverMaxState();
-						mob.resetToMaxState();
-						mob.charStats().getCurrentClass().startCharacter(mob,true,false);
-						CMLib.utensils().outfit(mob,mob.charStats().getCurrentClass().outfit(mob));
-						mob.setSession(session);
-						CMLib.database().DBUpdatePlayer(mob);
-					}
-				}
-				mob.tell("The book vanishes out of your hands.");
-				destroy();
-				msg.source().location().recoverRoomStats();
-				return;
-			default:
-				break;
-			}
-		}
-		super.executeMsg(myHost,msg);
-	}
+                        &&(!mob.charStats().getMyRace().leveless())
+                        &&(!CMSecurity.isDisabled(CMSecurity.DisFlag.LEVELS)))
+                        while(mob.basePhyStats().level()<100)
+                        {
+                            int oldLevel = mob.basePhyStats().level();
+                            if((mob.getExpNeededLevel()==Integer.MAX_VALUE)
+                            ||(mob.charStats().getCurrentClass().expless())
+                            ||(mob.charStats().getMyRace().expless()))
+                                CMLib.leveler().level(mob);
+                            else
+                                CMLib.leveler().postExperience(mob,null,null,mob.getExpNeededLevel()+1,false);
+                            if(mob.basePhyStats().level()==oldLevel)
+                                break;
+                        }
+                        mob.baseCharStats().setCurrentClass(newClass);
+                        mob.baseCharStats().setClassLevel(mob.baseCharStats().getCurrentClass(),30);
+                        mob.basePhyStats().setLevel(mob.basePhyStats().level()+30);
+                        mob.setExperience(mob.getExpNextLevel());
+                        mob.recoverCharStats();
+                        mob.recoverPhyStats();
+                        mob.recoverMaxState();
+                        mob.resetToMaxState();
+                        mob.charStats().getCurrentClass().startCharacter(mob,true,false);
+                        CMLib.utensils().outfit(mob,mob.charStats().getCurrentClass().outfit(mob));
+                        mob.setSession(session);
+                        CMLib.database().DBUpdatePlayer(mob);
+                    }
+                }
+                mob.tell("The book vanishes out of your hands.");
+                destroy();
+                msg.source().location().recoverRoomStats();
+                return;
+            default:
+                break;
+            }
+        }
+        super.executeMsg(myHost,msg);
+    }
 
 }
