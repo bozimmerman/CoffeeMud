@@ -504,7 +504,7 @@ public class DefaultPlayerStats implements PlayerStats
         {
             Vector<String> V=CMParms.parseCommas(bday,true);
             birthday=new int[4];
-            for(int v=0;v<V.size();v++)
+            for(int v=0;(v<V.size()) && (v<birthday.length);v++)
                 birthday[v]=CMath.s_int((String)V.elementAt(v));
             if(V.size()<4)
             {
