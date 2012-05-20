@@ -51,7 +51,7 @@ public class DefaultPlayerStats implements PlayerStats
     protected String    colorStr="";
     protected String    prompt="";
     protected String    poofin="";
-    protected String    poofout="";                          
+    protected String    poofout="";
     protected String    tranpoofin="";
     protected String    tranpoofout="";
     protected String    announceMsg="";
