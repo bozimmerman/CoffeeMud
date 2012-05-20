@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("unchecked")
 public interface GenericBuilder extends CMLibrary
 {
     public final static String[] GENITEMCODES={
@@ -64,30 +63,30 @@ public interface GenericBuilder extends CMLibrary
     public String unpackErr(String where, String msg);
     public String unpackRoomFromXML(String buf, boolean andContent);
     public String unpackRoomFromXML(List<XMLpiece> xml, boolean andContent);
-    public String fillAreaAndCustomVectorFromXML(String buf,  Vector area, Vector custom, Hashtable externalFiles);
-    public String fillCustomVectorFromXML(String xml,  Vector custom, Hashtable externalFiles);
-    public String fillCustomVectorFromXML(List<XMLpiece> xml,  Vector custom, Hashtable externalFiles);
-    public String fillAreasVectorFromXML(String buf,  List<List<XMLpiece>> areas, Vector custom, Hashtable externalFiles);
+    public String fillAreaAndCustomVectorFromXML(String buf,  List<XMLpiece> area, List<CMObject> custom, Map<String,String> externalFiles);
+    public String fillCustomVectorFromXML(String xml, List<CMObject> custom, Map<String,String> externalFiles);
+    public String fillCustomVectorFromXML(List<XMLpiece> xml,  List<CMObject> custom, Map<String,String> externalFiles);
+    public String fillAreasVectorFromXML(String buf,  List<List<XMLpiece>> areas, List<CMObject> custom, Map<String,String> externalFiles);
     public void addAutoPropsToAreaIfNecessary(Area newArea);
 	public String unpackAreaFromXML(List<XMLpiece> aV, Session S, String overrideAreaType, boolean andRooms);
     public String unpackAreaFromXML(String buf, Session S, String overrideAreaType, boolean andRooms);
-    public StringBuffer getAreaXML(Area area,  Session S, HashSet custom, HashSet files, boolean andRooms);
+    public StringBuffer getAreaXML(Area area,  Session S, Set<CMObject> custom, Set<String> files, boolean andRooms);
     public StringBuffer logTextDiff(String e1, String e2);
     public void logDiff(Environmental E1, Environmental E2);
     public Room makeNewRoomContent(Room room, boolean makeLive);
-    public StringBuffer getRoomMobs(Room room, HashSet custom, HashSet files, Hashtable found);
+    public StringBuffer getRoomMobs(Room room, Set<CMObject> custom, Set<String> files, Map<String,List<MOB>> found);
     public StringBuffer getMobXML(MOB mob);
-    public StringBuffer getMobsXML(Vector mobs, HashSet custom, HashSet files, Hashtable found);
-    public StringBuffer getUniqueItemXML(Item item, int type, Hashtable found, HashSet files);
+    public StringBuffer getMobsXML(List<MOB> mobs, Set<CMObject> custom, Set<String> files, Map<String,List<MOB>> found);
+    public StringBuffer getUniqueItemXML(Item item, int type, Map<String,List<Item>> found, Set<String> files);
     public String addItemsFromXML(String xmlBuffer, List<Item> addHere, Session S);
     public String addMOBsFromXML(String xmlBuffer, List<MOB> addHere, Session S);
     public MOB getMobFromXML(String xmlBuffer);
     public Item getItemFromXML(String xmlBuffer);
     // TYPE= 0=item, 1=weapon, 2=armor
-    public StringBuffer getRoomItems(Room room, Hashtable found, HashSet files, int type); 
-    public StringBuffer getItemsXML(List<Item> items, Hashtable found, HashSet files, int type);
+    public StringBuffer getRoomItems(Room room, Map<String,List<Item>> found, Set<String> files, int type); 
+    public StringBuffer getItemsXML(List<Item> items, Map<String,List<Item>> found, Set<String> files, int type);
     public StringBuffer getItemXML(Item item);
-    public StringBuffer getRoomXML(Room room,  HashSet custom, HashSet files, boolean andContent);
+    public StringBuffer getRoomXML(Room room,  Set<CMObject> custom, Set<String> files, boolean andContent);
 	public Ammunition makeAmmunition(String ammunitionType, int number);
     public void setPropertiesStr(Environmental E, String buf, boolean fromTop);
     public void recoverPhysical(Physical P);
@@ -98,8 +97,8 @@ public interface GenericBuilder extends CMLibrary
     public void setGenMobInventory(MOB M, List<XMLpiece> buf);
     public void populateShops(Environmental E, List<XMLpiece> buf);
     public void setGenPropertiesStr(Environmental E, List<XMLpiece> buf);
-    public String getPlayerXML(MOB mob, HashSet custom, HashSet files);
-    public String addPLAYERsFromXML(String xmlBuffer, Vector addHere, Session S);
+    public String getPlayerXML(MOB mob, Set<CMObject> custom, Set<String> files);
+    public String addPLAYERsFromXML(String xmlBuffer, List<MOB> addHere, Session S);
     public String getExtraEnvPropertiesStr(Environmental E);
     public void fillFileSet(List<String> V, Set<String> H);
     public void fillFileSet(Environmental E, Set<String> H);

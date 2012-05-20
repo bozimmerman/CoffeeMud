@@ -36,12 +36,11 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.XMLLibrary.XMLpiece;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("unchecked")
 public class CoffeeMaker extends StdLibrary implements GenericBuilder
 {
     public String ID(){return "CoffeeMaker";}
-    public Hashtable GENMOBCODESHASH=new Hashtable();
-    public Hashtable GENITEMCODESHASH=new Hashtable();
+    public Map<String,Integer> GENMOBCODESHASH=new Hashtable<String,Integer>();
+    public Map<String,Integer> GENITEMCODESHASH=new Hashtable<String,Integer>();
 
     public boolean get(int x, int m)
     {
@@ -198,17 +197,17 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
             StringBuffer parentstr = new StringBuffer();
             StringBuffer childrenstr = new StringBuffer();
             str.append(CMLib.xml().convertXMLtoTag("ARCHP",myArea.getArchivePath()));
-            for(Enumeration e=myArea.getParents(); e.hasMoreElements();)
+            for(Enumeration<Area> e=myArea.getParents(); e.hasMoreElements();)
             {
-                Area A=(Area)e.nextElement();
+                Area A=e.nextElement();
                 parentstr.append("<PARENT>");
                 parentstr.append(CMLib.xml().convertXMLtoTag("PARENTNAMED", A.name()));
                 parentstr.append("</PARENT>");
             }
             str.append(CMLib.xml().convertXMLtoTag("PARENTS",parentstr.toString()));
-            for(Enumeration e=myArea.getChildren(); e.hasMoreElements();)
+            for(Enumeration<Area> e=myArea.getChildren(); e.hasMoreElements();)
             {
-                Area A=(Area)e.nextElement();
+                Area A=e.nextElement();
                 childrenstr.append("<CHILD>");
                 childrenstr.append(CMLib.xml().convertXMLtoTag("CHILDNAMED", A.name()));
                 childrenstr.append("</CHILD>");
@@ -655,10 +654,10 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
                 if(dir>255)
                 {
                     String xdata=CMLib.xml().getValFromPieces(xblk.contents,"XDATA");
-                    Vector CEs=CMParms.parseSemicolons(xdata.trim(),true);
+                    Vector<String> CEs=CMParms.parseSemicolons(xdata.trim(),true);
                     for(int ces=0;ces<CEs.size();ces++)
                     {
-                        Vector SCE=CMParms.parse(((String)CEs.elementAt(ces)).trim());
+                        Vector<String> SCE=CMParms.parse(((String)CEs.elementAt(ces)).trim());
                         WorldMap.CrossExit CE=new WorldMap.CrossExit();
                         if(SCE.size()<3) continue;
                         CE.x=CMath.s_int((String)SCE.elementAt(0));
@@ -715,9 +714,9 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
         // find any mis-linked exits and fix them!
         try
         {
-            for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
+            for(Enumeration<Room> r=CMLib.map().rooms();r.hasMoreElements();)
             {
-                Room R=(Room)r.nextElement();
+                Room R=r.nextElement();
                 synchronized(("SYNC"+R.roomID()).intern())
                 {
                     R=CMLib.map().getRoom(R);
@@ -746,13 +745,13 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
         CMLib.database().DBUpdateExits(newRoom);
         if(andContent)
         {
-            Hashtable identTable=new Hashtable();
+            Map<String,Physical> identTable=new Hashtable<String,Physical>();
 
             List<XMLLibrary.XMLpiece> cV=CMLib.xml().getContentsFromPieces(xml,"ROOMCONTENT");
             if(cV==null) return unpackErr("Room","null 'cV' in room "+newRoom.roomID());
             if(cV.size()>0)
             {
-                Hashtable mobRideTable=new Hashtable();
+                Map<MOB,String> mobRideTable=new Hashtable<MOB,String>();
                 List<XMLLibrary.XMLpiece> mV=CMLib.xml().getContentsFromPieces(cV,"ROOMMOBS");
                 if(mV!=null) //return unpackErr("Room","null 'mV' in room "+newRoom.roomID());
                 for(int m=0;m<mV.size();m++)
@@ -784,7 +783,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
                     newMOB.bringToLife(newRoom,true);
                 }
 
-                Hashtable itemLocTable=new Hashtable();
+                Map<Item,String> itemLocTable=new Hashtable<Item,String>();
                 List<XMLLibrary.XMLpiece> iV=CMLib.xml().getContentsFromPieces(cV,"ROOMITEMS");
                 if(iV!=null) //return unpackErr("Room","null 'iV' in room "+newRoom.roomID());
                 for(int i=0;i<iV.size();i++)
@@ -813,10 +812,9 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
                     newRoom.addItem(newItem);
                     newItem.recoverPhyStats();
                 }
-                for(Enumeration e=itemLocTable.keys();e.hasMoreElements();)
+                for(Item childI : itemLocTable.keySet())
                 {
-                    Item childI=(Item)e.nextElement();
-                    String loc=(String)itemLocTable.get(childI);
+                    String loc=itemLocTable.get(childI);
                     Item parentI=(Item)identTable.get(loc);
                     if(parentI!=null)
                     {
@@ -826,10 +824,9 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
                         parentI.recoverPhyStats();
                     }
                 }
-                for(Enumeration e=mobRideTable.keys();e.hasMoreElements();)
+                for(MOB M : mobRideTable.keySet())
                 {
-                    MOB M=(MOB)e.nextElement();
-                    String ride=(String)mobRideTable.get(M);
+                    String ride=mobRideTable.get(M);
                     if((ride!=null)&&(ride.length()>0))
                     {
                         Environmental E=(Environmental)identTable.get(ride);
@@ -851,9 +848,9 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
     }
 
     public String fillAreaAndCustomVectorFromXML(String buf,
-                                                 Vector area,
-                                                 Vector custom,
-                                                 Hashtable externalFiles)
+                                                 List<XMLpiece> area,
+                                                 List<CMObject> custom,
+                                                 Map<String,String> externalFiles)
     {
         List<XMLLibrary.XMLpiece> xml=CMLib.xml().parseAllXML(buf);
         if(xml==null) return unpackErr("Fill","null 'xml'");
@@ -862,20 +859,22 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
         List<XMLLibrary.XMLpiece> areaData=CMLib.xml().getContentsFromPieces(xml,"AREA");
         if(areaData==null) return unpackErr("Fill","null 'aV'");
         for(int a=0;a<areaData.size();a++)
-            area.addElement(areaData.get(a));
+            area.add(areaData.get(a));
         return "";
     }
+
     public String fillCustomVectorFromXML(String xml,
-                                          Vector custom,
-                                           Hashtable externalFiles)
+                                          List<CMObject> custom,
+                                          Map<String,String> externalFiles)
     {
         List<XMLLibrary.XMLpiece> xmlv=CMLib.xml().parseAllXML(xml);
         if(xmlv==null) return unpackErr("Custom","null 'xmlv'");
         return fillCustomVectorFromXML(xmlv,custom,externalFiles);
     }
+
     public String fillCustomVectorFromXML(List<XMLpiece> xml,
-                                                 Vector custom,
-                                                  Hashtable externalFiles)
+                                          List<CMObject> custom,
+                                          Map<String,String> externalFiles)
     {
         List<XMLLibrary.XMLpiece> aV=CMLib.xml().getContentsFromPieces(xml,"CUSTOM");
         if(aV!=null)
@@ -891,7 +890,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
                         R=(Race)R.copyOf();
                         R.setRacialParms("<RACE>"+ablk.value+"</RACE>");
                         if(!R.ID().equals("GenRace"))
-                            custom.addElement(R);
+                            custom.add(R);
                     }
                 }
                 else
@@ -903,7 +902,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
                         C=(CharClass)C.copyOf();
                         C.setClassParms("<CCLASS>"+ablk.value+"</CCLASS>");
                         if(!C.ID().equals("GenCharClass"))
-                            custom.addElement(C);
+                            custom.add(C);
                     }
                 }
                 else
@@ -930,8 +929,8 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 
     public String fillAreasVectorFromXML(String buf,
                                          List<List<XMLpiece>> areas,
-                                         Vector custom,
-                                         Hashtable externalFiles)
+                                         List<CMObject> custom,
+                                         Map<String,String> externalFiles)
     {
         List<XMLLibrary.XMLpiece> xml=CMLib.xml().parseAllXML(buf);
         if(xml==null) return unpackErr("Areas","null 'xml'");
@@ -962,7 +961,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
             if(CMProps.getVar(CMProps.SYSTEM_AUTOAREAPROPS).trim().length()>0)
             {
                 String props=CMProps.getVar(CMProps.SYSTEM_AUTOAREAPROPS).trim();
-                Vector allProps=CMParms.parseSemicolons(props,true);
+                Vector<String> allProps=CMParms.parseSemicolons(props,true);
                 String prop=null;
                 String parms=null;
                 Ability A=null;
@@ -1047,8 +1046,8 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 
     public StringBuffer getAreaXML(Area area,
                                    Session S,
-                                   HashSet custom,
-                                   HashSet files,
+                                   Set<CMObject> custom,
+                                   Set<String> files,
                                    boolean andRooms)
     {
         StringBuffer buf=new StringBuffer("");
@@ -1065,7 +1064,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
         buf.append(CMLib.xml().convertXMLtoTag("ADATA",area.text()));
         if(andRooms)
         {
-            Enumeration r=area.getCompleteMap();
+            Enumeration<Room> r=area.getCompleteMap();
             if(!r.hasMoreElements())
                 buf.append("<AROOMS />");
             else
@@ -1074,7 +1073,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
                 Room R=null;
                 for(;r.hasMoreElements();)
                 {
-                    R=(Room)r.nextElement();
+                    R=r.nextElement();
                     synchronized(("SYNC"+R.roomID()).intern())
                     {
                         R=CMLib.map().getRoom(R);
@@ -1180,7 +1179,6 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
         return R;
     }
 
-
     public StringBuffer getMobXML(MOB mob)
     {
         StringBuffer buf=new StringBuffer("");
@@ -1194,21 +1192,20 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
         return buf;
     }
 
-    public StringBuffer getMobsXML(Vector mobs,
-                                   HashSet custom,
-                                   HashSet files,
-                                   Hashtable found)
+    public StringBuffer getMobsXML(List<MOB> mobs,
+                                   Set<CMObject> custom,
+                                   Set<String> files,
+                                   Map<String,List<MOB>> found)
     {
         StringBuffer buf=new StringBuffer("");
-        for(int i=0;i<mobs.size();i++)
+        for(MOB mob : mobs)
         {
-            MOB mob=(MOB)mobs.elementAt(i);
             if(mob.isSavable())
             {
-                List dups=(List)found.get(mob.Name()+mob.displayText());
+                List<MOB> dups=found.get(mob.Name()+mob.displayText());
                 if(dups==null)
                 {
-                    dups=new Vector();
+                    dups=new Vector<MOB>();
                     found.put(mob.Name()+mob.displayText(),dups);
                     dups.add(mob);
                 }
@@ -1267,16 +1264,16 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
     }
 
     public StringBuffer getRoomMobs(Room room,
-                                    HashSet custom,
-                                    HashSet files,
-                                    Hashtable found)
+                                    Set<CMObject> custom,
+                                    Set<String> files,
+                                    Map<String,List<MOB>> found)
     {
         StringBuffer buf=new StringBuffer("");
         room=makeNewRoomContent(room,false);
         if(room==null) return buf;
-        Vector mobs=new Vector();
+        List<MOB> mobs=new Vector<MOB>();
         for(int i=0;i<room.numInhabitants();i++)
-            mobs.addElement(room.fetchInhabitant(i));
+            mobs.add(room.fetchInhabitant(i));
         buf.append(getMobsXML(mobs,custom,files,found));
         room.destroy();
         return buf;
@@ -1284,8 +1281,8 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 
     public StringBuffer getUniqueItemXML(Item item,
                                          int type,
-                                         Hashtable found,
-                                         HashSet files)
+                                         Map<String,List<Item>> found,
+                                         Set<String> files)
     {
         StringBuffer buf=new StringBuffer("");
         switch(type)
@@ -1297,10 +1294,10 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
         }
         if(item.displayText().length()>0)
         {
-            List dups=(List)found.get(item.Name()+item.displayText());
+            List<Item> dups=found.get(item.Name()+item.displayText());
             if(dups==null)
             {
-                dups=new Vector();
+                dups=new Vector<Item>();
                 found.put(item.Name()+item.displayText(),dups);
                 dups.add(item);
             }
@@ -1458,7 +1455,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
         return "";
     }
 
-    public StringBuffer getItemsXML(List<Item> items, Hashtable found, HashSet files, int type)
+    public StringBuffer getItemsXML(List<Item> items, Map<String,List<Item>> found, Set<String> files, int type)
     {
         StringBuffer buf=new StringBuffer("");
         for(Item I : items)
@@ -1467,28 +1464,28 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
     }
     
     public StringBuffer getRoomItems(Room room,
-                                     Hashtable found,
-                                     HashSet files,
+                                     Map<String,List<Item>> found,
+                                     Set<String> files,
                                      int type) // 0=item, 1=weapon, 2=armor
     {
         StringBuffer buf=new StringBuffer("");
         room=makeNewRoomContent(room,false);
         if(room==null) return buf;
-        Vector items=new Vector();
+        List<Item> items=new Vector<Item>();
         for(int i=0;i<room.numItems();i++)
-            items.addElement(room.getItem(i));
-        Vector mobs=new Vector();
+            items.add(room.getItem(i));
+        List<MOB> mobs=new Vector<MOB>();
         for(int i=0;i<room.numInhabitants();i++)
-            mobs.addElement(room.fetchInhabitant(i));
+            mobs.add(room.fetchInhabitant(i));
         for(int i=0;i<items.size();i++)
         {
-            Item item=(Item)items.elementAt(i);
+            Item item=items.get(i);
             if(item.isSavable())
                 buf.append(getUniqueItemXML(item,type,found,files));
         }
         for(int m=0;m<mobs.size();m++)
         {
-            MOB M=(MOB)mobs.elementAt(m);
+            MOB M=mobs.get(m);
             if((M!=null)&&(M.isSavable()))
             {
                 for(int i=0;i<M.numItems();i++)
@@ -1512,22 +1509,22 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
     }
 
     public StringBuffer getRoomXML(Room room,
-                                    HashSet custom,
-                                    HashSet files,
-                                    boolean andContent)
+                                   Set<CMObject> custom,
+                                   Set<String> files,
+                                   boolean andContent)
     {
         StringBuffer buf=new StringBuffer("");
         if(room==null) return buf;
         // do this quick before a tick messes it up!
-        Vector inhabs=new Vector();
+        List<MOB> inhabs=new Vector<MOB>();
         Room croom=makeNewRoomContent(room,false);
         if(andContent)
         for(int i=0;i<croom.numInhabitants();i++)
-            inhabs.addElement(croom.fetchInhabitant(i));
-        Vector items=new Vector();
+            inhabs.add(croom.fetchInhabitant(i));
+        List<Item> items=new Vector<Item>();
         if(andContent)
         for(int i=0;i<croom.numItems();i++)
-            items.addElement(croom.getItem(i));
+            items.add(croom.getItem(i));
 
         buf.append("<AROOM>");
         buf.append(CMLib.xml().convertXMLtoTag("ROOMID",room.roomID()));
@@ -1565,7 +1562,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
         }
         if(room instanceof GridLocale)
         {
-            HashSet done=new HashSet();
+            Set<String> done=new HashSet<String>();
             int ordinal=0;
             for(Iterator<WorldMap.CrossExit> i=((GridLocale)room).outerExits();i.hasNext();)
             {
@@ -1576,7 +1573,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
                 if((R.roomID().length()>0)&&(!done.contains(R.roomID())))
                 {
                     done.add(R.roomID());
-                    HashSet oldStrs=new HashSet();
+                    Set<String> oldStrs=new HashSet<String>();
                     for(Iterator<WorldMap.CrossExit> i2=((GridLocale)room).outerExits();i.hasNext();)
                     {
                         WorldMap.CrossExit CE2=i2.next();
@@ -1589,7 +1586,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
                         }
                     }
                     StringBuffer exitStr=new StringBuffer("");
-                    for(Iterator a=oldStrs.iterator();a.hasNext();)
+                    for(Iterator<String> a=oldStrs.iterator();a.hasNext();)
                         exitStr.append((String)a.next());
                     buf.append("<REXIT>");
                     buf.append(CMLib.xml().convertXMLtoTag("XDIRE",(256+(++ordinal))));
@@ -1610,7 +1607,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
                 buf.append("<ROOMMOBS>");
                 for(int i=0;i<inhabs.size();i++)
                 {
-                    MOB mob=(MOB)inhabs.elementAt(i);
+                    MOB mob=(MOB)inhabs.get(i);
                     if((mob.isMonster())&&((mob.amFollowing()==null)||(mob.amFollowing().isMonster())))
                     {
                         if((mob.charStats().getMyRace().isGeneric())
@@ -1646,7 +1643,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
                 for(int i=0;i<items.size();i++)
                 {
                     buf.append("<RITEM>");
-                    Item item=(Item)items.elementAt(i);
+                    Item item=(Item)items.get(i);
                     if(item.isSavable())
                     {
                         buf.append(CMLib.xml().convertXMLtoTag("ICLAS",CMClass.classID(item)));
@@ -2057,7 +2054,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
         }
         return false;
     }
-    
+
     public List<String> getAllGenStats(Physical P)
     {
         STreeSet<String> set=new STreeSet<String>();
@@ -2075,7 +2072,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
             set.addAll(Arrays.asList(CoffeeMaker.GENITEMCODES));
         return set.toVector();
     }
-    
+
     public boolean isAnyGenStat(Physical P, String stat)
     {
         if(P.isStat(stat)) return true;
@@ -2095,7 +2092,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
                 return true;
         return false;
     }
-    
+
     public String getAnyGenStat(Physical P, String stat)
     {
         if(P.isStat(stat)) 
@@ -2117,12 +2114,12 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
                 return getGenItemStat((Item)P, stat);
         return "";
     }
-    
+
     public void setAnyGenStat(Physical P, String stat, String value)
     {
         setAnyGenStat(P,stat,value,false);
     }
-    
+
     public void setAnyGenStat(Physical P, String stat, String value, boolean supportPlusMinusPrefix)
     {
         if(supportPlusMinusPrefix
@@ -2408,10 +2405,10 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
                     String mobsXML=CMLib.xml().getValFromPieces(buf,"MOBS");
                     if((mobsXML!=null)&&(mobsXML.length()>0))
                     {
-                        Vector V=new Vector();
+                        List<MOB> V=new Vector<MOB>();
                         String err=addMOBsFromXML("<MOBS>"+mobsXML+"</MOBS>",V,null);
                         if((err.length()==0)&&(V.size()>0))
-                            ((DeadBody)E).setSavedMOB((MOB)V.firstElement());
+                            ((DeadBody)E).setSavedMOB((MOB)V.get(0));
 
                     }
                     List<XMLLibrary.XMLpiece> dblk=CMLib.xml().getContentsFromPieces(buf,"KLTOOL");
@@ -2581,7 +2578,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
                     }
                 }
             }
-            Vector V9=CMParms.parseSemicolons(CMLib.xml().getValFromPieces(buf,"TATTS"),true);
+            Vector<String> V9=CMParms.parseSemicolons(CMLib.xml().getValFromPieces(buf,"TATTS"),true);
             for(Enumeration<MOB.Tattoo> e=((MOB)E).tattoos();e.hasMoreElements();)
                 ((MOB)E).delTattoo(e.nextElement());
             for(int v=0;v<V9.size();v++) ((MOB)E).addTattoo(CMLib.database().parseTattoo((String)V9.elementAt(v)));
@@ -2596,8 +2593,8 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
     }
 
     public String getPlayerXML(MOB mob,
-                                      HashSet custom,
-                                      HashSet files)
+                               Set<CMObject> custom,
+                               Set<String> files)
     {
         if(mob==null) return "";
         if(mob.Name().length()==0) return "";
@@ -2709,8 +2706,8 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
     }
 
     public String addPLAYERsFromXML(String xmlBuffer,
-                                           Vector addHere,
-                                           Session S)
+                                    List<MOB> addHere,
+                                    Session S)
     {
         List<XMLLibrary.XMLpiece> xml=CMLib.xml().parseAllXML(xmlBuffer);
         if(xml==null) return unpackErr("PLAYERs","null 'xml'");
@@ -2777,13 +2774,13 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
             mob.playerStats().setEmail(CMLib.xml().getValFromPieces(mblk.contents,"EMAL"));
             String buf=CMLib.xml().getValFromPieces(mblk.contents,"CMPFIL");
             mob.playerStats().setXML(buf);
-            Vector V9=CMParms.parseSemicolons(CMLib.xml().returnXMLValue(buf,"TATTS"),true);
+            List<String> V9=CMParms.parseSemicolons(CMLib.xml().returnXMLValue(buf,"TATTS"),true);
             for(Enumeration<MOB.Tattoo> e=mob.tattoos();e.hasMoreElements();)
                 mob.delTattoo(e.nextElement());
-            for(int v=0;v<V9.size();v++) mob.addTattoo(CMLib.database().parseTattoo((String)V9.elementAt(v)));
+            for(int v=0;v<V9.size();v++) mob.addTattoo(CMLib.database().parseTattoo((String)V9.get(v)));
             V9=CMParms.parseSemicolons(CMLib.xml().returnXMLValue(buf,"EDUS"),true);
             while(mob.numExpertises()>0)mob.delExpertise(mob.fetchExpertise(0));
-            for(int v=0;v<V9.size();v++) mob.addExpertise((String)V9.elementAt(v));
+            for(int v=0;v<V9.size();v++) mob.addExpertise((String)V9.get(v));
             mob.baseCharStats().setNonBaseStatsFromString(CMLib.xml().getValFromPieces(mblk.contents,"SAVE"));
             mob.setDescription(CMLib.xml().getValFromPieces(mblk.contents,"DESC"));
             mob.setImage(CMLib.xml().returnXMLValue(buf,"IMG"));
@@ -2822,7 +2819,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
             mob.recoverPhyStats();
             mob.recoverMaxState();
             mob.resetToMaxState();
-            addHere.addElement(mob);
+            addHere.add(mob);
         }
         return "";
     }
@@ -2905,6 +2902,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
             &&(V.get(v) instanceof String))
                 H.add(V.get(v));
     }
+
     public void fillFileSet(Environmental E, Set<String> H)
     {
         if(E==null) return;
@@ -2958,6 +2956,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
                 E.height()+"|"+
                 E.sensesMask()+"|";
     }
+
     public String getCharStateStr(CharState E)
     {
         return E.getFatigue()+"|"+
@@ -2967,6 +2966,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
                 E.getMovement()+"|"+
                 E.getThirst()+"|";
     }
+
     public String getCharStatsStr(CharStats E)
     {
         StringBuffer str=new StringBuffer("");
@@ -3006,6 +3006,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
             props=props.substring(y+1);
         }
     }
+
     public void setCharState(CharState E, String props)
     {
         int[] nums=new int[6];
@@ -3030,6 +3031,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
         E.setMovement(nums[4]);
         E.setThirst(nums[5]);
     }
+
     public void setPhyStats(PhyStats E, String props)
     {
         if(props.length()==0) return;
@@ -3208,7 +3210,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
         neww.recoverPhyStats();
         return (Ammunition)neww;
     }
-    
+
     public int getGenItemCodeNum(String code)
     {
         if(GENITEMCODESHASH.size()==0)
@@ -3222,6 +3224,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
             if(code.toUpperCase().startsWith(GENITEMCODES[i])) return i;
         return -1;
     }
+
     public String getGenItemStat(Item I, String code)
     {
         switch(getGenItemCodeNum(code))
@@ -3253,6 +3256,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
         }
         return "";
     }
+
     public void setGenItemStat(Item I, String code, String val)
     {
         switch(getGenItemCodeNum(code))
@@ -3271,9 +3275,9 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
                   else
                   {
                       I.setRawProperLocationBitmap(0);
-                      Vector V=CMParms.parseCommas(val,true);
+                      Vector<String> V=CMParms.parseCommas(val,true);
                       Wearable.CODES codes = Wearable.CODES.instance();
-                      for(Enumeration e=V.elements();e.hasMoreElements();)
+                      for(Enumeration<String> e=V.elements();e.hasMoreElements();)
                       {
                           val=(String)e.nextElement();
                           int wornIndex=codes.findDex_ignoreCase(val);
@@ -3308,10 +3312,10 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
                   else
                   {
                       I.basePhyStats().setDisposition(0);
-                      Vector V=CMParms.parseCommas(val,true);
-                      for(Enumeration e=V.elements();e.hasMoreElements();)
+                      Vector<String> V=CMParms.parseCommas(val,true);
+                      for(Enumeration<String> e=V.elements();e.hasMoreElements();)
                       {
-                          val=(String)e.nextElement();
+                          val=e.nextElement();
                           int dispIndex=CMParms.indexOfIgnoreCase(PhyStats.IS_CODES,val);
                           if(dispIndex>=0)
                               I.basePhyStats().setDisposition(I.basePhyStats().disposition()|(int)CMath.pow(2,dispIndex));
@@ -3352,6 +3356,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
             if(code.toUpperCase().startsWith(GENMOBCODES[i])) return i;
         return -1;
     }
+
     public String getGenMobStat(MOB M, String code)
     {
         switch(getGenMobCodeNum(code))
@@ -3414,6 +3419,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
         }
         return "";
     }
+
     public void setGenMobStat(MOB M, String code, String val)
     {
         switch(getGenMobCodeNum(code))
@@ -3438,10 +3444,10 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
                   else
                   {
                       M.basePhyStats().setDisposition(0);
-                      Vector V=CMParms.parseCommas(val,true);
-                      for(Enumeration e=V.elements();e.hasMoreElements();)
+                      Vector<String> V=CMParms.parseCommas(val,true);
+                      for(Enumeration<String> e=V.elements();e.hasMoreElements();)
                       {
-                          val=(String)e.nextElement();
+                          val=e.nextElement();
                           int dispIndex=CMParms.indexOfIgnoreCase(PhyStats.IS_CODES,val);
                           if(dispIndex>=0)
                               M.basePhyStats().setDisposition(M.basePhyStats().disposition()|(int)CMath.pow(2,dispIndex));
@@ -3456,10 +3462,10 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
                   else
                   {
                       M.basePhyStats().setSensesMask(0);
-                      Vector V=CMParms.parseCommas(val,true);
-                      for(Enumeration e=V.elements();e.hasMoreElements();)
+                      Vector<String> V=CMParms.parseCommas(val,true);
+                      for(Enumeration<String> e=V.elements();e.hasMoreElements();)
                       {
-                          val=(String)e.nextElement();
+                          val=e.nextElement();
                           int dispIndex=CMParms.indexOfIgnoreCase(PhyStats.CAN_SEE_CODES,val);
                           if(dispIndex>=0)
                               M.basePhyStats().setSensesMask(M.basePhyStats().sensesMask()|(int)CMath.pow(2,dispIndex));
@@ -3493,7 +3499,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
             break;
         case 18:
             {
-                Vector V9=CMParms.parseSemicolons(val,true);
+                Vector<String> V9=CMParms.parseSemicolons(val,true);
                 for(Enumeration<MOB.Tattoo> e=M.tattoos();e.hasMoreElements();)
                     M.delTattoo(e.nextElement());
                 for(int v=0;v<V9.size();v++) M.addTattoo(CMLib.database().parseTattoo((String)V9.elementAt(v)));
@@ -3501,7 +3507,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
             break;
         case 19:
             {
-                Vector V9=CMParms.parseSemicolons(val,true);
+                Vector<String> V9=CMParms.parseSemicolons(val,true);
                 while(M.numExpertises()>0)M.delExpertise(M.fetchExpertise(0));
                 for(int v=0;v<V9.size();v++) M.addExpertise((String)V9.elementAt(v));
             }
@@ -3509,7 +3515,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
         case 20: M.setImage(val); break;
         case 21:
             {
-                Vector V10=CMParms.parseSemicolons(val,true);
+                Vector<String> V10=CMParms.parseSemicolons(val,true);
                 for(int v=0;v<V10.size();v++)
                 {
                     String s=(String)V10.elementAt(v);
@@ -3540,10 +3546,10 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
         newArea.setName(newName);
         CMLib.database().DBCreateArea(newArea);
         CMLib.map().addArea(newArea);
-        Hashtable altIDs=new Hashtable();
-        for(Enumeration e=A.getCompleteMap();e.hasMoreElements();)
+        Map<String,String> altIDs=new Hashtable<String,String>();
+        for(Enumeration<Room> e=A.getCompleteMap();e.hasMoreElements();)
         {
-            Room room=(Room)e.nextElement();
+            Room room=e.nextElement();
             synchronized(("SYNC"+room.roomID()).intern())
             {
                 room=CMLib.map().getRoom(room);
@@ -3563,9 +3569,9 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
                     CMLib.database().DBUpdateItems(newRoom);
             }
         }
-        for(Enumeration e=A.getCompleteMap();e.hasMoreElements();)
+        for(Enumeration<Room> e=A.getCompleteMap();e.hasMoreElements();)
         {
-            Room room=(Room)e.nextElement();
+            Room room=e.nextElement();
             String altID=(String)altIDs.get(room.roomID());
             if(altID==null) continue;
             Room newRoom=CMLib.map().getRoom(altID);
@@ -3592,7 +3598,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
     public String getFactionXML(MOB mob)
     {
         StringBuffer facts=new StringBuffer();
-        for(Enumeration e=mob.fetchFactions();e.hasMoreElements();) {
+        for(Enumeration<String> e=mob.fetchFactions();e.hasMoreElements();) {
             String name=(String)e.nextElement();
             facts.append("<FCTN ID=\""+name+"\">"+mob.fetchFaction(name)+"</FCTN>");
         }
