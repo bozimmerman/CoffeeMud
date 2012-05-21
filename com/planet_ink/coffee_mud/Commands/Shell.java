@@ -10,6 +10,7 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.JournalsLibrary;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -35,10 +36,10 @@ import java.util.*;
 @SuppressWarnings("unchecked")
 public class Shell extends StdCommand
 {
-	public Shell(){}
+    public Shell(){}
 
-	private final String[] access={"SHELL","CMFS","."};
-	public String[] getAccessWords(){return access;}
+    private final String[] access={"SHELL","CMFS","."};
+    public String[] getAccessWords(){return access;}
     
     protected static DVector pwds=new DVector(2);
     protected String[][] SUB_CMDS={
@@ -61,115 +62,115 @@ public class Shell extends StdCommand
 
     private class cp_options
     {
-    	boolean recurse=false;
-    	boolean forceOverwrites=false;
-    	boolean preservePaths=false;
-    	public cp_options(Vector cmds)
-    	{
+        boolean recurse=false;
+        boolean forceOverwrites=false;
+        boolean preservePaths=false;
+        public cp_options(Vector cmds)
+        {
             for(int c=cmds.size()-1;c>=0;c--)
             {
-            	String s=(String)cmds.elementAt(c);
-            	if(s.startsWith("-"))
-            	{
-            		for(int c2=1;c2<s.length();c2++)
-        			switch(s.charAt(c2))
-        			{
-        			case 'r':
-        			case 'R':
-        				recurse=true;
-        				break;
-        			case 'f':
-        			case 'F':
-        				forceOverwrites=true;
-        				break;
-        			case 'p':
-        			case 'P':
-        				preservePaths=true;
-        				break;
-        			}
-            		cmds.removeElementAt(c);
-            	}
+                String s=(String)cmds.elementAt(c);
+                if(s.startsWith("-"))
+                {
+                    for(int c2=1;c2<s.length();c2++)
+                    switch(s.charAt(c2))
+                    {
+                    case 'r':
+                    case 'R':
+                        recurse=true;
+                        break;
+                    case 'f':
+                    case 'F':
+                        forceOverwrites=true;
+                        break;
+                    case 'p':
+                    case 'P':
+                        preservePaths=true;
+                        break;
+                    }
+                    cmds.removeElementAt(c);
+                }
             }
-    	}
+        }
     }
     
     private java.util.List<CMFile> sortDirsUp(CMFile[] files)
     {
-    	Vector<CMFile> dirs=new Vector<CMFile>();
-    	CMFile CF=null;
-    	Vector<CMFile> finalList=new Vector<CMFile>();
-    	for(int v=files.length-1;v>=0;v--)
-    	{
-    		CF=files[v];
-    		if((CF.isDirectory())&&(CF.exists()))
-    		{
-    			int x=0;
-    			while(x<=dirs.size())
-    			{
-    				if(x==dirs.size())
-    				{
-    					dirs.addElement(CF);
-    					break;
-    				}
-    				else
-    				if(((CMFile)dirs.elementAt(x)).getVFSPathAndName().length()<CF.getVFSPathAndName().length())
-    					x++;
-    				else
-    				{
-    					dirs.insertElementAt(CF,x);
-    					break;
-    				}
-    			}
-    		}
-    		else
-    			finalList.add(CF);
-    			
-    	}
-    	finalList.addAll(dirs);
-    	return finalList;
+        Vector<CMFile> dirs=new Vector<CMFile>();
+        CMFile CF=null;
+        Vector<CMFile> finalList=new Vector<CMFile>();
+        for(int v=files.length-1;v>=0;v--)
+        {
+            CF=files[v];
+            if((CF.isDirectory())&&(CF.exists()))
+            {
+                int x=0;
+                while(x<=dirs.size())
+                {
+                    if(x==dirs.size())
+                    {
+                        dirs.addElement(CF);
+                        break;
+                    }
+                    else
+                    if(((CMFile)dirs.elementAt(x)).getVFSPathAndName().length()<CF.getVFSPathAndName().length())
+                        x++;
+                    else
+                    {
+                        dirs.insertElementAt(CF,x);
+                        break;
+                    }
+                }
+            }
+            else
+                finalList.add(CF);
+                
+        }
+        finalList.addAll(dirs);
+        return finalList;
     }
     
     private java.util.List<CMFile>  sortDirsDown(CMFile[] files)
     {
-    	Vector<CMFile> dirs=new Vector<CMFile>();
-    	HashSet<CMFile> dirsH=new HashSet<CMFile>();
-    	CMFile CF=null;
-    	for(int v=files.length-1;v>=0;v--)
-    	{
-    		CF=files[v];
-    		if((CF.isDirectory())&&(CF.exists()))
-    		{
-    			int x=0;
-    			while(x<=dirs.size())
-    			{
-    				if(x==dirs.size())
-    				{
-    					dirs.addElement(CF);
-    					dirsH.add(CF);
-						break;
-					}
-    				else
-    				if(((CMFile)dirs.elementAt(x)).getVFSPathAndName().length()>CF.getVFSPathAndName().length())
-    					x++;
-    				else
-    				{
-    					dirs.insertElementAt(CF,x);
-    					dirsH.add(CF);
-    					break;
-    				}
-    			}
-    		}
-    	}
-    	for(CMFile F : files)
-    		if(!dirsH.contains(F))
-	    		dirs.addElement(F);
-    	return dirs;
+        Vector<CMFile> dirs=new Vector<CMFile>();
+        HashSet<CMFile> dirsH=new HashSet<CMFile>();
+        CMFile CF=null;
+        for(int v=files.length-1;v>=0;v--)
+        {
+            CF=files[v];
+            if((CF.isDirectory())&&(CF.exists()))
+            {
+                int x=0;
+                while(x<=dirs.size())
+                {
+                    if(x==dirs.size())
+                    {
+                        dirs.addElement(CF);
+                        dirsH.add(CF);
+                        break;
+                    }
+                    else
+                    if(((CMFile)dirs.elementAt(x)).getVFSPathAndName().length()>CF.getVFSPathAndName().length())
+                        x++;
+                    else
+                    {
+                        dirs.insertElementAt(CF,x);
+                        dirsH.add(CF);
+                        break;
+                    }
+                }
+            }
+        }
+        for(CMFile F : files)
+            if(!dirsH.contains(F))
+                dirs.addElement(F);
+        return dirs;
     }
     
     
-	public boolean execute(MOB mob, Vector commands, int metaFlags)
-		throws java.io.IOException
-	{
+    public boolean execute(MOB mob, Vector commands, int metaFlags)
+        throws java.io.IOException
+    {
         String pwd=(pwds.contains(mob))?(String)pwds.elementAt(pwds.indexOf(mob),2):"";
         commands.removeElementAt(0);
         if(commands.size()==0)
@@ -221,7 +222,7 @@ public class Shell extends StdCommand
         {
         case 0: // directory
         {
-        	cp_options opts=new cp_options(commands);
+            cp_options opts=new cp_options(commands);
             CMFile[] dirs=CMFile.getFileList(pwd,CMParms.combine(commands,1),mob,opts.recurse,true);
             if(dirs==null)
             {
@@ -273,7 +274,7 @@ public class Shell extends StdCommand
         }
         case 1: // copy
         {
-        	cp_options opts=new cp_options(commands);
+            cp_options opts=new cp_options(commands);
             if(commands.size()==2)
                 commands.addElement(".");
             if(commands.size()<3)
@@ -317,26 +318,26 @@ public class Shell extends StdCommand
                 target=DD.getVFSPathAndName();
                 if(DD.isDirectory())
                 {
-                	String name=SF.getName();
-                	if((opts.recurse)&&(opts.preservePaths))
-                	{
-                		String srcPath=SF.getVFSPathAndName();
-                		if(srcPath.startsWith(pwd+"/"))
-                			name=srcPath.substring(pwd.length()+1);
-                		else
-                			name=srcPath;
-                	}
+                    String name=SF.getName();
+                    if((opts.recurse)&&(opts.preservePaths))
+                    {
+                        String srcPath=SF.getVFSPathAndName();
+                        if(srcPath.startsWith(pwd+"/"))
+                            name=srcPath.substring(pwd.length()+1);
+                        else
+                            name=srcPath;
+                    }
                     if(target.length()>0) 
                         target=target+"/"+name;
                     else
                         target=name;
                     if(DD.demandedVFS())
-                    	target="::"+target;
+                        target="::"+target;
                     else
                     if(DD.demandedLocal())
-                    	target="//"+target;
+                        target="//"+target;
                     else
-	                    target=(SF.isLocalFile()&&DD.canLocalEquiv())?"//"+target:"::"+target;
+                        target=(SF.isLocalFile()&&DD.canLocalEquiv())?"//"+target:"::"+target;
                     DF=new CMFile(target,mob,false);
                 }
                 else
@@ -349,19 +350,19 @@ public class Shell extends StdCommand
                 if(!DF.canWrite()){ mob.tell("^xError: access denied to destination "+desc(DF)+"!^N"); return false;}
                 if((SF.isDirectory())&&(opts.recurse))
                 {
-	                if(!DF.mkdir())
-	                    mob.tell("^xWarning: failed to mkdir "+desc(DF)+" ^N");
-	                else
-	                    mob.tell(desc(SF)+" copied to "+desc(DF));
+                    if(!DF.mkdir())
+                        mob.tell("^xWarning: failed to mkdir "+desc(DF)+" ^N");
+                    else
+                        mob.tell(desc(SF)+" copied to "+desc(DF));
                 }
                 else
                 {
-	                byte[] O=SF.raw();
-	                if(O.length==0){ mob.tell("^xWarning: "+desc(SF)+" file had no data^N");}
-	                if(!DF.saveRaw(O))
-	                    mob.tell("^xWarning: write failed to "+desc(DF)+" ^N");
-	                else
-	                    mob.tell(desc(SF)+" copied to "+desc(DF));
+                    byte[] O=SF.raw();
+                    if(O.length==0){ mob.tell("^xWarning: "+desc(SF)+" file had no data^N");}
+                    if(!DF.saveRaw(O))
+                        mob.tell("^xWarning: write failed to "+desc(DF)+" ^N");
+                    else
+                        mob.tell(desc(SF)+" copied to "+desc(DF));
                 }
             }
             break;
@@ -388,7 +389,7 @@ public class Shell extends StdCommand
         }
         case 3: // delete
         {
-        	cp_options opts=new cp_options(commands);
+            cp_options opts=new cp_options(commands);
             CMFile[] dirs=CMFile.getFileList(pwd,CMParms.combine(commands,1),mob,opts.recurse,false);
             if(dirs==null)
             {
@@ -582,172 +583,30 @@ public class Shell extends StdCommand
             List<String> vbuf=Resources.getFileLineVector(buf);
             buf=null;
             mob.tell(desc(file)+" has been loaded.\n\r\n\r");
-            final String help=
-                "^HCoffeeMud Message Maker Options:^N\n\r"+
-                "^XA)^.^Wdd new lines (go into ADD mode)\n\r"+
-                "^XD)^.^Welete one or more lines\n\r"+
-                "^XL)^.^Wist the entire text file\n\r"+
-                "^XI)^.^Wnsert a line\n\r"+
-                "^XE)^.^Wdit a line\n\r"+
-                "^XR)^.^Weplace text in the file\n\r"+
-                "^XS)^.^Wave the file\n\r"+
-                "^XQ)^.^Wuit without saving";
-            mob.tell("^HCoffeeMud Message Maker^N");
-            boolean menuMode=true;
-            while((mob.session()!=null)&&(!mob.session().isStopped()))
+            final String messageTitle="File: "+file.getVFSPathAndName();
+            JournalsLibrary.MsgMkrResolution resolution=CMLib.journals().makeMessage(mob, messageTitle, vbuf, false);
+            if(resolution==JournalsLibrary.MsgMkrResolution.SAVEFILE)
             {
-                mob.session().setAfkFlag(false);
-                if(!menuMode)
+                StringBuffer text=new StringBuffer("");
+                for(int i=0;i<vbuf.size();i++)
+                    text.append(((String)vbuf.get(i))+CR);
+                if(file.saveText(text))
                 {
-                    String line=mob.session().prompt("^X"+CMStrings.padRight(""+vbuf.size(),3)+")^.^N ","");
-                    if(line.trim().equals("."))
-                        menuMode=true;
-                    else
-                        vbuf.add(line);
+                    for(final Iterator<String> i=Resources.findResourceKeys(file.getName());i.hasNext();)
+                        Resources.removeResource(i.next());
+                    mob.tell("File saved.");
                 }
                 else
-                {
-                	LinkedList<String> paramsOut=new LinkedList<String>();
-                    String option=mob.session().choose("^HMenu ^N(?/A/D/L/I/E/R/S/Q)^H: ^N","ADLIERSQ?","?",-1,paramsOut);
-                    String paramAll=(paramsOut.size()>0)?CMParms.combine(paramsOut,0):null;
-                    String param1=(paramsOut.size()>0)?paramsOut.getFirst():null;
-                    String param2=(paramsOut.size()>1)?CMParms.combine(paramsOut,1):null;
-                    switch(option.charAt(0))
-                    {
-                    case 'S':
-                    	if(((paramAll!=null)&&(paramAll.equalsIgnoreCase("Y")))
-                        ||(mob.session().confirm("Save and exit, are you sure (N/y)? ","N")))
-                        {
-                            StringBuffer text=new StringBuffer("");
-                            for(int i=0;i<vbuf.size();i++)
-                                text.append(((String)vbuf.get(i))+CR);
-                            if(file.saveText(text))
-                            {
-            	                for(final Iterator<String> i=Resources.findResourceKeys(file.getName());i.hasNext();)
-            	                	Resources.removeResource(i.next());
-                                mob.tell("File saved.");
-                            }
-                            else
-                                mob.tell("^XError: could not save the file!^N^.");
-                            return true;
-                        }
-                        break;
-                    case 'Q':
-                    	if(((paramAll!=null)&&(paramAll.equalsIgnoreCase("Y")))
-                        ||(mob.session().confirm("Quit without saving (N/y)? ","N")))
-                            return true;
-                        break;
-                    case 'R':
-                    {
-                        if(vbuf.size()==0)
-                            mob.tell("The file is empty!");
-                        else
-                        {
-                            String line=param1;
-                            if(line==null)
-                            	line=mob.session().prompt("Text to search for (case sensitive): ","");
-                            if(line.length()>0)
-                            {
-                                String str=param2;
-                                if(str==null)
-                                	str=mob.session().prompt("Text to replace it with: ","");
-                                for(int i=0;i<vbuf.size();i++)
-                                    vbuf.set(i,CMStrings.replaceAll((String)vbuf.get(i),line,str));
-                            }
-                            else
-                                mob.tell("(aborted)");
-                        }
-                        break;
-                    }
-                    case 'E':
-                    {
-                        if(vbuf.size()==0)
-                            mob.tell("The file is empty!");
-                        else
-                        {
-                            String line=param1;
-                            if(line==null)
-                            	line=mob.session().prompt("Line to edit (0-"+(vbuf.size()-1)+"): ","");
-                            if((CMath.isInteger(line))&&(CMath.s_int(line)>=0)&&(CMath.s_int(line)<(vbuf.size())))
-                            {
-                                int ln=CMath.s_int(line);
-                                mob.tell("Current: \n\r"+CMStrings.padRight(""+ln,3)+") "+(String)vbuf.get(ln));
-                                String str=param2;
-                                if(str==null)
-	                                str=mob.session().prompt("Rewrite: \n\r");
-                                if(str.length()==0)
-                                    mob.tell("(no change)");
-                                else
-                                    vbuf.set(ln,str);
-                            }
-                            else
-                                mob.tell("'"+line+"' is not a valid line number.");
-                        }
-                        break;
-                    }
-                    case 'D':
-                    {
-                        if(vbuf.size()==0)
-                            mob.tell("The file is empty!");
-                        else
-                        {
-                            String line=paramAll;
-                            if(line==null)
-                            	line=mob.session().prompt("Line to delete (0-"+(vbuf.size()-1)+"): ","");
-                            if((CMath.isInteger(line))&&(CMath.s_int(line)>=0)&&(CMath.s_int(line)<(vbuf.size())))
-                            {
-                                int ln=CMath.s_int(line);
-                                vbuf.remove(ln);
-                                mob.tell("Line "+ln+" deleted.");
-                            }
-                            else
-                                mob.tell("'"+line+"' is not a valid line number.");
-                        }
-                        break;
-                    }
-                    case '?': mob.tell(help); break;
-                    case 'A': mob.tell("^ZYou are now in Add Text mode.\n\r^ZEnter . on a blank line to exit.^.^N"); 
-                              menuMode=false;
-                              break;
-                    case 'L':
-                    {
-                        StringBuffer list=new StringBuffer("File: "+file.getVFSPathAndName()+"\n\r");
-                        for(int v=0;v<vbuf.size();v++)
-                            list.append(CMLib.coffeeFilter().colorOnlyFilter("^X"+CMStrings.padRight(""+v,3)+")^.^N ",mob.session())+(String)vbuf.get(v)+"\n\r");
-                        mob.session().rawPrint(list.toString());
-                        break;
-                    }
-                    case 'I':
-                    {
-                        if(vbuf.size()==0)
-                            mob.tell("The file is empty!");
-                        else
-                        {
-                            String line=param1;
-                            if(line==null)
-                            	line=mob.session().prompt("Line to insert before (0-"+(vbuf.size()-1)+"): ","");
-                            if((CMath.isInteger(line))&&(CMath.s_int(line)>=0)&&(CMath.s_int(line)<(vbuf.size())))
-                            {
-                                int ln=CMath.s_int(line);
-                                String str=param2;
-                                if(str==null)
-                                	str=mob.session().prompt("Enter text to insert here.\n\r: ");
-                                vbuf.add(ln,str);
-                            }
-                            else
-                                mob.tell("'"+line+"' is not a valid line number.");
-                        }
-                        break;
-                    }
-                    }
-                }
-                    
+                    mob.tell("^XError: could not save the file!^N^.");
+                return true;
             }
+            if(resolution==JournalsLibrary.MsgMkrResolution.CANCELFILE)
+                return true;
             return false;
         }
         case 9: // move
         {
-        	cp_options opts=new cp_options(commands);
+            cp_options opts=new cp_options(commands);
             if(commands.size()==2)
                 commands.addElement(".");
             if(commands.size()<3)
@@ -794,26 +653,26 @@ public class Shell extends StdCommand
                 target=DD.getVFSPathAndName();
                 if(DD.isDirectory())
                 {
-                	String name=SF.getName();
-                	if((opts.recurse)&&(opts.preservePaths))
-                	{
-                		String srcPath=SF.getVFSPathAndName();
-                		if(srcPath.startsWith(pwd+"/"))
-                			name=srcPath.substring(pwd.length()+1);
-                		else
-                			name=srcPath;
-                	}
+                    String name=SF.getName();
+                    if((opts.recurse)&&(opts.preservePaths))
+                    {
+                        String srcPath=SF.getVFSPathAndName();
+                        if(srcPath.startsWith(pwd+"/"))
+                            name=srcPath.substring(pwd.length()+1);
+                        else
+                            name=srcPath;
+                    }
                     if(target.length()>0) 
                         target=target+"/"+name;
                     else
                         target=name;
                     if(DD.demandedVFS())
-                    	target="::"+target;
+                        target="::"+target;
                     else
                     if(DD.demandedLocal())
-                    	target="//"+target;
+                        target="//"+target;
                     else
-	                    target=(SF.isLocalFile()&&DD.canLocalEquiv())?"//"+target:"::"+target;
+                        target=(SF.isLocalFile()&&DD.canLocalEquiv())?"//"+target:"::"+target;
                     DF=new CMFile(target,mob,false);
                 }
                 else
@@ -826,35 +685,35 @@ public class Shell extends StdCommand
                 if(!DF.canWrite()){ mob.tell("^xError: access denied to destination "+desc(DF)+"!^N"); return false;}
                 if((SF.isDirectory())&&(opts.recurse))
                 {
-	                if((!DF.mustOverwrite())&&(!DF.mkdir()))
-	                    mob.tell("^xWarning: failed to mkdir "+desc(DF)+" ^N");
-	                else
-	                    mob.tell(desc(SF)+" copied to "+desc(DF));
-	                dirsLater.add(SF);
+                    if((!DF.mustOverwrite())&&(!DF.mkdir()))
+                        mob.tell("^xWarning: failed to mkdir "+desc(DF)+" ^N");
+                    else
+                        mob.tell(desc(SF)+" copied to "+desc(DF));
+                    dirsLater.add(SF);
                 }
                 else
                 {
-	                byte[] O=SF.raw();
-	                if(O.length==0){ mob.tell("^xWarning: "+desc(SF)+" file had no data^N");}
-	                if(!DF.saveRaw(O))
-	                    mob.tell("^xWarning: write failed to "+desc(DF)+" ^N");
-	                else
-	                    mob.tell(desc(SF)+" moved to "+desc(DF));
-	                if((!SF.delete())&&(SF.exists()))
-	                {
-	                	mob.tell("^xError: Unable to delete file "+desc(SF));
-	                	break;
-	                }
+                    byte[] O=SF.raw();
+                    if(O.length==0){ mob.tell("^xWarning: "+desc(SF)+" file had no data^N");}
+                    if(!DF.saveRaw(O))
+                        mob.tell("^xWarning: write failed to "+desc(DF)+" ^N");
+                    else
+                        mob.tell(desc(SF)+" moved to "+desc(DF));
+                    if((!SF.delete())&&(SF.exists()))
+                    {
+                        mob.tell("^xError: Unable to delete file "+desc(SF));
+                        break;
+                    }
                 }
             }
             dirsLater=sortDirsDown(dirsLater.toArray(new CMFile[0]));
             for(int d=0;d<dirsLater.size();d++)
             {
-            	CMFile CF=(CMFile)dirsLater.get(d);
+                CMFile CF=(CMFile)dirsLater.get(d);
                 if((!CF.delete())&&(CF.exists()))
                 {
-                	mob.tell("^xError: Unable to delete dir "+desc(CF));
-                	break;
+                    mob.tell("^xError: Unable to delete dir "+desc(CF));
+                    break;
                 }
             }
             break;
@@ -868,8 +727,8 @@ public class Shell extends StdCommand
             mob.tell("'"+first+"' is an unknown command.  Valid commands are: "+allcmds.toString()+"and SHELL alone to check your current directory.");
             return false;
         }
-		return true;
-	}
+        return true;
+    }
     
     public String desc(CMFile CF){ return (CF.isLocalFile()?"Local file ":"VFS file ")+"'/"+CF.getVFSPathAndName()+"'";}
     

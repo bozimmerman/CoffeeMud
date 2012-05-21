@@ -63,7 +63,7 @@ public class DefaultPlayerStats implements PlayerStats
     protected MOB       replyTo=null;
     protected int       replyType=0;
     protected long      replyTime=0;
-    protected PlayerAccount account = null;
+    protected PlayerAccount       account = null;
     protected SHashSet<String>    friends=new SHashSet<String>();
     protected SHashSet<String>    ignored=new SHashSet<String>();
     protected SVector<String>     tellStack=new SVector<String>();

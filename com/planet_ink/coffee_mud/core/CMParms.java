@@ -29,7 +29,7 @@ public class CMParms
 
     public final static String combine(final List<?> commands)
     {
-    	final StringBuilder combined=new StringBuilder("");
+        final StringBuilder combined=new StringBuilder("");
         if(commands!=null)
         for(Object o : commands)
             combined.append(o.toString()+" ");
@@ -38,7 +38,7 @@ public class CMParms
 
     public final static String combine(final List<?> commands, final int startAt)
     {
-    	final StringBuilder combined=new StringBuilder("");
+        final StringBuilder combined=new StringBuilder("");
         if(commands!=null)
         for(int commandIndex=startAt;commandIndex<commands.size();commandIndex++)
             combined.append(commands.get(commandIndex).toString()+" ");
@@ -47,83 +47,92 @@ public class CMParms
 
     public final static String combine(final List<?> commands, final int startAt, final int endAt)
     {
-    	final StringBuilder combined=new StringBuilder("");
+        final StringBuilder combined=new StringBuilder("");
         if(commands!=null)
         for(int commandIndex=startAt;commandIndex<endAt;commandIndex++)
-        	combined.append(commands.get(commandIndex).toString()+" ");
+            combined.append(commands.get(commandIndex).toString()+" ");
         return combined.toString().trim();
     }
 
     public final static String combineWith(final List<?> commands, final char withChar, final int startAt, final int endAt)
     {
-    	final StringBuilder combined=new StringBuilder("");
+        final StringBuilder combined=new StringBuilder("");
         if(commands!=null)
         for(int commandIndex=startAt;commandIndex<endAt;commandIndex++)
-        	combined.append(commands.get(commandIndex).toString()+withChar);
+            combined.append(commands.get(commandIndex).toString()+withChar);
         return combined.toString().trim();
     }
 
     public final static String combineWith(final List<?> commands, final char withChar)
     {
-    	final StringBuilder combined=new StringBuilder("");
+        final StringBuilder combined=new StringBuilder("");
         if(commands!=null)
         for(int commandIndex=0;commandIndex<commands.size();commandIndex++)
-        	combined.append(commands.get(commandIndex).toString()+withChar);
+            combined.append(commands.get(commandIndex).toString()+withChar);
         return combined.toString().trim();
     }
 
     public final static String combineWithQuotes(final List<?> commands, final int startAt, final int endAt)
     {
-    	final StringBuffer Combined=new StringBuffer("");
+        final StringBuffer Combined=new StringBuffer("");
         if(commands!=null)
         {
-        	String s;
-	        for(int commandIndex=startAt;commandIndex<endAt;commandIndex++)
-	        {
-	            s=commands.get(commandIndex).toString();
-	            if(s.indexOf(' ')>=0) s="\""+s+"\"";
-	            Combined.append(s+" ");
-	        }
+            String s;
+            for(int commandIndex=startAt;commandIndex<endAt;commandIndex++)
+            {
+                s=commands.get(commandIndex).toString();
+                if(s.indexOf(' ')>=0) s="\""+s+"\"";
+                Combined.append(s+" ");
+            }
         }
         return Combined.toString().trim();
     }
-    
+
+    public final static String combineWith(final List<?> commands, final String withSeparator)
+    {
+        final StringBuilder combined=new StringBuilder("");
+        if(commands!=null)
+        for(int commandIndex=0;commandIndex<commands.size();commandIndex++)
+            combined.append(commands.get(commandIndex).toString()+withSeparator);
+        return combined.toString().trim();
+    }
+
     public final static String quoteIfNecessary(final String str)
     {
         if(str==null) return str;
         if(str.indexOf(' ')>=0) 
-        	return "\""+str+"\"";
+            return "\""+str+"\"";
         return str;
     }
     
     public final static String combineAfterIndexWithQuotes(final Vector<?> commands, final String match)
     {
-    	final StringBuffer Combined=new StringBuffer("");
+        final StringBuffer Combined=new StringBuffer("");
         if(commands!=null)
         {
-        	String s;
-	        for(int commandIndex=0;commandIndex<0;commandIndex++)
-	        {
-	            s=(String)commands.elementAt(commandIndex);
-	            if(s.indexOf(' ')>=0) s="\""+s+"\"";
-	            Combined.append(s+" ");
-	        }
+            String s;
+            for(int commandIndex=0;commandIndex<0;commandIndex++)
+            {
+                s=(String)commands.elementAt(commandIndex);
+                if(s.indexOf(' ')>=0) s="\""+s+"\"";
+                Combined.append(s+" ");
+            }
         }
         return Combined.toString().trim();
     }
 
     public final static String combineWithQuotes(final List<?> commands, final int startAt)
     {
-    	final StringBuffer Combined=new StringBuffer("");
+        final StringBuffer Combined=new StringBuffer("");
         if(commands!=null)
         {
-        	String s;
-	        for(int commandIndex=startAt;commandIndex<commands.size();commandIndex++)
-	        {
-	            s=commands.get(commandIndex).toString();
-	            if(s.indexOf(' ')>=0) s="\""+s+"\"";
-	            Combined.append(s+" ");
-	        }
+            String s;
+            for(int commandIndex=startAt;commandIndex<commands.size();commandIndex++)
+            {
+                s=commands.get(commandIndex).toString();
+                if(s.indexOf(' ')>=0) s="\""+s+"\"";
+                Combined.append(s+" ");
+            }
         }
         return Combined.toString().trim();
     }
@@ -135,22 +144,22 @@ public class CMParms
 
     public final static String combineWithX(final List<?> commands, final String X, final int startAt)
     {
-    	final StringBuffer Combined=new StringBuffer("");
+        final StringBuffer Combined=new StringBuffer("");
         if(commands!=null)
         {
-        	String s;
-	        for(int commandIndex=startAt;commandIndex<commands.size();commandIndex++)
-	        {
-	            s=commands.get(commandIndex).toString();
-	            Combined.append(s+X);
-	        }
+            String s;
+            for(int commandIndex=startAt;commandIndex<commands.size();commandIndex++)
+            {
+                s=commands.get(commandIndex).toString();
+                Combined.append(s+X);
+            }
         }
         return Combined.toString().trim();
     }
 
     public final static String combine(final Set<?> flags)
     {
-    	final StringBuffer combined=new StringBuffer("");
+        final StringBuffer combined=new StringBuffer("");
         if(flags!=null)
         for(Iterator<?> i=flags.iterator();i.hasNext();)
             combined.append(i.next().toString()+" ");
@@ -162,14 +171,14 @@ public class CMParms
 
     public final static Vector<String> paramParse(final String str)
     {
-    	final Vector<String> commands=parse(str);
-    	String s;
+        final Vector<String> commands=parse(str);
+        String s;
         for(int i=0;i<commands.size();i++)
         {
             s=(String)commands.elementAt(i);
             if(s.startsWith("=")&&(s.length()>1)&&(i>0))
             {
-            	final String prev=(String)commands.elementAt(i-1);
+                final String prev=(String)commands.elementAt(i-1);
                 commands.setElementAt(prev+s,i-1);
                 commands.removeElementAt(i);
                 i--;
@@ -177,15 +186,15 @@ public class CMParms
             else
             if(s.endsWith("=")&&(s.length()>1)&&(i<(commands.size()-1)))
             {
-            	final String next=(String)commands.elementAt(i+1);
+                final String next=(String)commands.elementAt(i+1);
                 commands.setElementAt(s+next,i);
                 commands.removeElementAt(i+1);
             }
             else
             if(s.equals("=")&&((i>0)&&(i<(commands.size()-1))))
             {
-            	final String prev=(String)commands.elementAt(i-1);
-            	final String next=(String)commands.elementAt(i+1);
+                final String prev=(String)commands.elementAt(i-1);
+                final String next=(String)commands.elementAt(i+1);
                 commands.setElementAt(prev+"="+next,i-1);
                 commands.removeElementAt(i);
                 commands.removeElementAt(i+1);
@@ -197,60 +206,60 @@ public class CMParms
 
     public final static Vector<String> parse(final String str, final int upTo)
     {
-    	final Vector<String> commands=new Vector<String>();
+        final Vector<String> commands=new Vector<String>();
         if(str==null) return commands;
         final StringBuilder s=new StringBuilder();
         final char[] cs=str.toCharArray();
         int state=0;
         for(char c : cs)
-	    	switch(state)
-	    	{
-	    	case 0:
-	    	{
-	    		if(c=='\"')
-	    			state=2;
-	    		else
-	    		if(!Character.isWhitespace(c))
-	    		{
-	    			s.append(c);
-	    			state=1;
-	    		}
-	    		break;
-	    	}
-	    	case 1:
-	    	{
-	    		if(Character.isWhitespace(c))
-	    		{
-	    			if(s.length()>0)
-		    			commands.add(s.toString());
-	    			s.setLength(0);
-	    			state=0;
-	    		}
-	    		else
-	    			s.append(c);
-	    		break;
-	    	}
-	    	case 2:
-	    	{
-	    		if(c=='\"')
-	    		{
-	    			commands.add(s.toString());
-	    			s.setLength(0);
-	    			state=0;
-	    		}
-	    		else
-	    			s.append(c);
-	    		break;
-	    	}
-	    	}
+            switch(state)
+            {
+            case 0:
+            {
+                if(c=='\"')
+                    state=2;
+                else
+                if(!Character.isWhitespace(c))
+                {
+                    s.append(c);
+                    state=1;
+                }
+                break;
+            }
+            case 1:
+            {
+                if(Character.isWhitespace(c))
+                {
+                    if(s.length()>0)
+                        commands.add(s.toString());
+                    s.setLength(0);
+                    state=0;
+                }
+                else
+                    s.append(c);
+                break;
+            }
+            case 2:
+            {
+                if(c=='\"')
+                {
+                    commands.add(s.toString());
+                    s.setLength(0);
+                    state=0;
+                }
+                else
+                    s.append(c);
+                break;
+            }
+            }
         if(s.length()>0)
-        	commands.add(s.toString());
+            commands.add(s.toString());
         return commands;
     }
 
     public final static Vector<String> parseCommas(final String s, final boolean ignoreNulls)
     {
-    	return parseAny(s,',',ignoreNulls);
+        return parseAny(s,',',ignoreNulls);
     }
 
     public final static Vector<String> parseCommandFlags(final String s, final String[] flags)
@@ -261,136 +270,136 @@ public class CMParms
         int index;
         for(String flag : V)
         {
-        	index=CMParms.indexOfIgnoreCase(flags, flag);
-        	if(index>=0)
-        		finalV.addElement(flags[index]);
+            index=CMParms.indexOfIgnoreCase(flags, flag);
+            if(index>=0)
+                finalV.addElement(flags[index]);
         }
         return V;
     }
 
     public final static Vector<String> parseTabs(final String s, final boolean ignoreNulls)
     {
-    	return parseAny(s,'\t',ignoreNulls);
+        return parseAny(s,'\t',ignoreNulls);
     }
 
     public final static Vector<String> parseAny(final String s, final String delimeter, final boolean ignoreNulls)
     {
-    	final Vector<String> V=new Vector<String>(1);
+        final Vector<String> V=new Vector<String>(1);
         if((s==null)||(s.length()==0)) return V;
         if((delimeter==null)||(delimeter.length()==0))
         {
-        	V.add(s);
-        	return V;
+            V.add(s);
+            return V;
         }
-    	int last=0;
-    	final char firstChar=delimeter.charAt(0);
-    	for(int i=0;i<s.length()-delimeter.length()+1;i++)
-    		if((s.charAt(i)==firstChar)
-    		&&(s.substring(i,i+delimeter.length()).equals(delimeter)))
-    		{
-    			String sub=s.substring(last,i).trim();
-    			last=i+delimeter.length();
-    			i+=delimeter.length()-1;
-    			if(!ignoreNulls||(sub.length()>0))
-	    			V.add(sub);
-    		}
-    	final String sub = (last>=s.length())?"":s.substring(last,s.length()).trim();
-		if(!ignoreNulls||(sub.length()>0))
-			V.add(sub);
+        int last=0;
+        final char firstChar=delimeter.charAt(0);
+        for(int i=0;i<s.length()-delimeter.length()+1;i++)
+            if((s.charAt(i)==firstChar)
+            &&(s.substring(i,i+delimeter.length()).equals(delimeter)))
+            {
+                String sub=s.substring(last,i).trim();
+                last=i+delimeter.length();
+                i+=delimeter.length()-1;
+                if(!ignoreNulls||(sub.length()>0))
+                    V.add(sub);
+            }
+        final String sub = (last>=s.length())?"":s.substring(last,s.length()).trim();
+        if(!ignoreNulls||(sub.length()>0))
+            V.add(sub);
         return V;
     }
     
     public final static Vector<String> parseAnyWords(final String s, final String delimeter, final boolean ignoreNulls)
     {
-    	final Vector<String> V=new Vector<String>(1);
+        final Vector<String> V=new Vector<String>(1);
         if((s==null)||(s.length()==0)) return V;
         if((delimeter==null)||(delimeter.length()==0))
         {
-        	V.add(s);
-        	return V;
+            V.add(s);
+            return V;
         }
-    	int last=0;
-    	final String upDelimeter=delimeter.toUpperCase();
-    	final char firstChar=upDelimeter.charAt(0);
-    	final String tests=s.toUpperCase();
-    	for(int i=0;i<tests.length()-upDelimeter.length()+1;i++)
-    		if((tests.charAt(i)==firstChar)
-    		&&(tests.substring(i,i+upDelimeter.length()).equals(upDelimeter)))
-    		{
-    			String sub=s.substring(last,i).trim();
-    			last=i+upDelimeter.length();
-    			i+=upDelimeter.length()-1;
-    			if(!ignoreNulls||(sub.length()>0))
-	    			V.add(sub);
-    		}
-    	final String sub = (last>=s.length())?"":s.substring(last,s.length()).trim();
-		if(!ignoreNulls||(sub.length()>0))
-			V.add(sub);
+        int last=0;
+        final String upDelimeter=delimeter.toUpperCase();
+        final char firstChar=upDelimeter.charAt(0);
+        final String tests=s.toUpperCase();
+        for(int i=0;i<tests.length()-upDelimeter.length()+1;i++)
+            if((tests.charAt(i)==firstChar)
+            &&(tests.substring(i,i+upDelimeter.length()).equals(upDelimeter)))
+            {
+                String sub=s.substring(last,i).trim();
+                last=i+upDelimeter.length();
+                i+=upDelimeter.length()-1;
+                if(!ignoreNulls||(sub.length()>0))
+                    V.add(sub);
+            }
+        final String sub = (last>=s.length())?"":s.substring(last,s.length()).trim();
+        if(!ignoreNulls||(sub.length()>0))
+            V.add(sub);
         return V;
     }
 
     public final static Vector<String> parseAny(final String s, final char delimiter, final boolean ignoreNulls)
     {
-    	final Vector<String> V=new Vector<String>(1);
+        final Vector<String> V=new Vector<String>(1);
         if((s==null)||(s.length()==0)) return V;
-    	int last=0;
-    	String sub;
-    	for(int i=0;i<s.length();i++)
-    		if(s.charAt(i)==delimiter)
-    		{
-    			sub=s.substring(last,i).trim();
-    			last=i+1;
-    			if(!ignoreNulls||(sub.length()>0))
-	    			V.add(sub);
-    		}
-    	sub = (last>=s.length())?"":s.substring(last,s.length()).trim();
-		if(!ignoreNulls||(sub.length()>0))
-			V.add(sub);
+        int last=0;
+        String sub;
+        for(int i=0;i<s.length();i++)
+            if(s.charAt(i)==delimiter)
+            {
+                sub=s.substring(last,i).trim();
+                last=i+1;
+                if(!ignoreNulls||(sub.length()>0))
+                    V.add(sub);
+            }
+        sub = (last>=s.length())?"":s.substring(last,s.length()).trim();
+        if(!ignoreNulls||(sub.length()>0))
+            V.add(sub);
         return V;
     }
     
     public final static Vector<String> parseSquiggles(final String s)
     {
-    	return parseAny(s,'~',false);
+        return parseAny(s,'~',false);
     }
     
     public final static Vector<String> parseSentences(final String s)
     {
-    	final Vector<String> V=new Vector<String>(1);
+        final Vector<String> V=new Vector<String>(1);
         if((s==null)||(s.length()==0)) return V;
-    	int last=0;
-    	String sub;
-    	for(int i=0;i<s.length();i++)
-    		if(s.charAt(i)=='.')
-    		{
-    			sub=s.substring(last,i+1).trim();
-    			last=i+1;
-    			V.add(sub);
-    		}
-    	sub = (last>=s.length())?"":s.substring(last,s.length()).trim();
-		if(sub.length()>0)
-			V.add(sub);
+        int last=0;
+        String sub;
+        for(int i=0;i<s.length();i++)
+            if(s.charAt(i)=='.')
+            {
+                sub=s.substring(last,i+1).trim();
+                last=i+1;
+                V.add(sub);
+            }
+        sub = (last>=s.length())?"":s.substring(last,s.length()).trim();
+        if(sub.length()>0)
+            V.add(sub);
         return V;
     }
 
     public final static Vector<String> parseSquiggleDelimited(final String s, final boolean ignoreNulls)
     {
-    	return parseAny(s,'~',ignoreNulls);
+        return parseAny(s,'~',ignoreNulls);
     }
 
     public final static Vector<String> parseSemicolons(final String s, final boolean ignoreNulls)
     {
-    	return parseAny(s,';',ignoreNulls);
+        return parseAny(s,';',ignoreNulls);
     }
 
     public final static Vector<String> parseSpaces(final String s, final boolean ignoreNulls)
     {
-    	return parseAny(s,' ',ignoreNulls);
+        return parseAny(s,' ',ignoreNulls);
     }
 
     public final static int numBits(final String s)
     { 
-    	return ((Integer)getBitWork(s,Integer.MAX_VALUE,2)).intValue(); 
+        return ((Integer)getBitWork(s,Integer.MAX_VALUE,2)).intValue(); 
     }
 
     public final static String cleanBit(String s)
@@ -505,7 +514,7 @@ public class CMParms
                 }
                 if(x<text.length())
                 {
-                	boolean endWithQuote=false;
+                    boolean endWithQuote=false;
                     while((x<text.length())&&(!Character.isLetterOrDigit(text.charAt(x))))
                     {
                         if(text.charAt(x)=='\"')
@@ -523,7 +532,7 @@ public class CMParms
                         while((x<text.length())
                             &&((!endWithQuote)&&(!Character.isWhitespace(text.charAt(x)))&&(text.charAt(x)!=';')&&(text.charAt(x)!=','))
                             ||((endWithQuote)&&(text.charAt(x)!='\"')))
-	                            x++;
+                                x++;
                         return text.substring(0,x).trim();
                     }
 
@@ -546,38 +555,38 @@ public class CMParms
             if((x==0)||(!Character.isLetter(text.charAt(x-1))))
             {
                 while((x<text.length())
-					&&(text.charAt(x)!='>')
-					&&(text.charAt(x)!='<')
-					&&(text.charAt(x)!='!')
-					&&(text.charAt(x)!='='))
+                    &&(text.charAt(x)!='>')
+                    &&(text.charAt(x)!='<')
+                    &&(text.charAt(x)!='!')
+                    &&(text.charAt(x)!='='))
                     x++;
                 if(x<text.length()-1)
                 {
-                	final char comp=text.charAt(x);
-					boolean andEqual=(text.charAt(x)=='=');
-					if(text.charAt(x+1)=='='){ x++; andEqual=true;}
-					if(x<text.length()-1)
-					{
-						while((x<text.length())&&(!Character.isDigit(text.charAt(x))))
-							x++;
-						if(x<text.length())
-						{
-							text=text.substring(x);
-							x=0;
-							while((x<text.length())&&(Character.isDigit(text.charAt(x))))
-								x++;
-							int found=CMath.s_int(text.substring(0,x));
-							if(andEqual&&(found==value))
-								return makeIntArray(comp,(comp=='!')?-1:1);
-							switch(comp)
-							{
-								case '>': return makeIntArray(comp,(value>found)?1:-1);
-								case '<': return makeIntArray(comp,(value<found)?1:-1);
-								case '!': makeIntArray(comp,1);
-							}
-							return makeIntArray(comp,0);
-						}
-					}
+                    final char comp=text.charAt(x);
+                    boolean andEqual=(text.charAt(x)=='=');
+                    if(text.charAt(x+1)=='='){ x++; andEqual=true;}
+                    if(x<text.length()-1)
+                    {
+                        while((x<text.length())&&(!Character.isDigit(text.charAt(x))))
+                            x++;
+                        if(x<text.length())
+                        {
+                            text=text.substring(x);
+                            x=0;
+                            while((x<text.length())&&(Character.isDigit(text.charAt(x))))
+                                x++;
+                            int found=CMath.s_int(text.substring(0,x));
+                            if(andEqual&&(found==value))
+                                return makeIntArray(comp,(comp=='!')?-1:1);
+                            switch(comp)
+                            {
+                                case '>': return makeIntArray(comp,(value>found)?1:-1);
+                                case '<': return makeIntArray(comp,(value<found)?1:-1);
+                                case '!': makeIntArray(comp,1);
+                            }
+                            return makeIntArray(comp,0);
+                        }
+                    }
                 }
                 x=-1;
             }
@@ -607,7 +616,7 @@ public class CMParms
     }
     private static int stringContains(final Vector<String> V, final char combiner, final StringBuffer buf, int lastIndex)
     {
-    	final String str=buf.toString().trim();
+        final String str=buf.toString().trim();
         if(str.length()==0) return lastIndex;
         buf.setLength(0);
         switch(combiner)
@@ -633,7 +642,7 @@ public class CMParms
     }
     private static int stringContains(final Vector<String> V, final char[] str, final int[] index, final int depth)
     {
-    	final StringBuffer buf=new StringBuffer("");
+        final StringBuffer buf=new StringBuffer("");
         int lastIndex=0;
         boolean quoteMode=false;
         char combiner='&';
@@ -721,7 +730,7 @@ public class CMParms
 
     public final static Hashtable<String,String> parseEQParms(final String str, final String[] parmList)
     {
-    	final Hashtable<String,String> h=new Hashtable<String,String>();
+        final Hashtable<String,String> h=new Hashtable<String,String>();
         int lastEQ=-1;
         String lastParm=null;
         char c;
@@ -765,7 +774,7 @@ public class CMParms
 
     public final static Hashtable<String,String> parseEQParms(final String parms)
     {
-    	final Hashtable<String,String> h=new Hashtable<String,String>();
+        final Hashtable<String,String> h=new Hashtable<String,String>();
         int state=0;
         int start=-1;
         String parmName=null;
@@ -774,110 +783,110 @@ public class CMParms
         final StringBuffer str=new StringBuffer(parms);
         for(int x=0;x<=str.length();x++)
         {
-        	char c=(x==str.length())?'\n':str.charAt(x);
-        	switch(state)
-        	{
-        	case 0:
-	            if((c=='_')||(Character.isLetter(c)))
-	            {
-	            	start=x;
-	            	state=1;
-	            	parmName=null;
-	            }
-	            break;
-        	case 1:
-	            if(c=='=')
-	            {
-            		parmName=str.substring(start,x).toUpperCase().trim();
-	            	state=2;
-	            }
-	            else
-	            if(Character.isWhitespace(c))
-	            {
-            		parmName=str.substring(start,x).toUpperCase().trim();
-            		start=x;
-	            }
-	            break;
-        	case 2:
-        		if((c=='\"')||(c=='\n'))
-        		{
-        			state=3;
-        			start=x+1;
-        			lastPossibleStart=start;
-        		}
-        		else
-        		if(c=='=')
-        		{ // do nothing, this is a do-over
-        		}
-        		else
-        		if(!Character.isWhitespace(c))
-        		{
-        			lastWasWhitespace=false;
-        			state=4;
-        			start=x;
-        			lastPossibleStart=start;
-        		}
-        		break;
-        	case 3:
-        		if(c=='\\')
-        			str.deleteCharAt(x);
-        		else
-        		if(c=='\"')
-        		{
-        			state=0;
-        			h.put(parmName,str.substring(start,x));
-        			parmName=null;
-        		}
-        		break;
-        	case 4:
-        		if(c=='\\')
-        			str.deleteCharAt(x);
-        		else
-        		if(c=='=')
-        		{
-        			String value=str.substring(start,x).trim();
-        			if(value.length()==0)
-        				state=2;
-        			else
-        			{
-	        			h.put(parmName,str.substring(start,lastPossibleStart).trim());
-	        			parmName=str.substring(lastPossibleStart,x).toUpperCase().trim();
-    	            	state=2;
-        			}
-        		}
-        		else
-        		if(c=='\n')
-        		{
-        			state=0;
-        			h.put(parmName,str.substring(start,x));
-        			parmName=null;
-        		}
-        		else
-        		if(Character.isWhitespace(c))
-        			lastWasWhitespace=true;
-        		else
-        		if(lastWasWhitespace)
-        		{
-        			lastWasWhitespace=false;
-        			lastPossibleStart=x;
-        		}
-        		break;
-        	}
+            char c=(x==str.length())?'\n':str.charAt(x);
+            switch(state)
+            {
+            case 0:
+                if((c=='_')||(Character.isLetter(c)))
+                {
+                    start=x;
+                    state=1;
+                    parmName=null;
+                }
+                break;
+            case 1:
+                if(c=='=')
+                {
+                    parmName=str.substring(start,x).toUpperCase().trim();
+                    state=2;
+                }
+                else
+                if(Character.isWhitespace(c))
+                {
+                    parmName=str.substring(start,x).toUpperCase().trim();
+                    start=x;
+                }
+                break;
+            case 2:
+                if((c=='\"')||(c=='\n'))
+                {
+                    state=3;
+                    start=x+1;
+                    lastPossibleStart=start;
+                }
+                else
+                if(c=='=')
+                { // do nothing, this is a do-over
+                }
+                else
+                if(!Character.isWhitespace(c))
+                {
+                    lastWasWhitespace=false;
+                    state=4;
+                    start=x;
+                    lastPossibleStart=start;
+                }
+                break;
+            case 3:
+                if(c=='\\')
+                    str.deleteCharAt(x);
+                else
+                if(c=='\"')
+                {
+                    state=0;
+                    h.put(parmName,str.substring(start,x));
+                    parmName=null;
+                }
+                break;
+            case 4:
+                if(c=='\\')
+                    str.deleteCharAt(x);
+                else
+                if(c=='=')
+                {
+                    String value=str.substring(start,x).trim();
+                    if(value.length()==0)
+                        state=2;
+                    else
+                    {
+                        h.put(parmName,str.substring(start,lastPossibleStart).trim());
+                        parmName=str.substring(lastPossibleStart,x).toUpperCase().trim();
+                        state=2;
+                    }
+                }
+                else
+                if(c=='\n')
+                {
+                    state=0;
+                    h.put(parmName,str.substring(start,x));
+                    parmName=null;
+                }
+                else
+                if(Character.isWhitespace(c))
+                    lastWasWhitespace=true;
+                else
+                if(lastWasWhitespace)
+                {
+                    lastWasWhitespace=false;
+                    lastPossibleStart=x;
+                }
+                break;
+            }
         }
         return h;
     }
 
     public final static Hashtable<String,String> parseEQParms(final List<String> parms, final int start, final int end)
     {
-    	final Hashtable<String,String> h=new Hashtable<String,String>();
-    	for(Object O : parms)
-    		h.putAll(parseEQParms((String)O));
+        final Hashtable<String,String> h=new Hashtable<String,String>();
+        for(Object O : parms)
+            h.putAll(parseEQParms((String)O));
         return h;
     }
     
     public final static List<List<String>> parseDoubleDelimited(String text, final char delim1, final char delim2)
     {
-    	final List<String> preparseV=new Vector<String>();
+        final List<String> preparseV=new Vector<String>();
         int y=0;
         while((text!=null)&&(text.length()>0))
         {
@@ -896,12 +905,12 @@ public class CMParms
                 text=text.substring(y+1).trim();
             }
             if(script.length()>0)
-            	preparseV.add(script);
+                preparseV.add(script);
         }
         final List<List<String>> parsedV=new Vector<List<String>>();
         for(String s : preparseV)
         {
-        	final List<String> groupV=new Vector<String>();
+            final List<String> groupV=new Vector<String>();
             while(s.length()>0)
             {
                 y=-1;
@@ -928,18 +937,18 @@ public class CMParms
                 {
                     cmd=CMStrings.replaceAll(cmd,"\\"+delim1,""+delim1);
                     cmd=CMStrings.replaceAll(cmd,"\\=","=");
-    	            groupV.add(CMStrings.replaceAll(cmd,"\\"+delim2,""+delim2));
+                    groupV.add(CMStrings.replaceAll(cmd,"\\"+delim2,""+delim2));
                 }
             }
             if(groupV.size()>0)
-            	parsedV.add(groupV);
+                parsedV.add(groupV);
         }
         return parsedV;
     }
     
     public final static int stringContains(final String str1, final String str2)
     {
-    	final StringBuffer buf1=new StringBuffer(str1.toLowerCase());
+        final StringBuffer buf1=new StringBuffer(str1.toLowerCase());
         for(int i=buf1.length()-1;i>=0;i--)
             if((buf1.charAt(i)!=' ')
             &&(buf1.charAt(i)!='\'')
@@ -1116,9 +1125,9 @@ public class CMParms
                     x++;
                 if((x<text.length())&&(text.charAt(x)=='='))
                 {
-                	s=text.substring(x+1).trim();
-                	if(Character.toUpperCase(s.charAt(0))=='T') return true;
-                	if(Character.toUpperCase(s.charAt(0))=='T') return false;
+                    s=text.substring(x+1).trim();
+                    if(Character.toUpperCase(s.charAt(0))=='T') return true;
+                    if(Character.toUpperCase(s.charAt(0))=='T') return false;
                 }
             }
             x=text.toUpperCase().indexOf(key.toUpperCase(),x+1);
@@ -1140,10 +1149,10 @@ public class CMParms
 
     public final static String[] toStringArray(final Object[] O)
     {
-    	if(O==null) return new String[0];
-    	final String[] s=new String[O.length];
+        if(O==null) return new String[0];
+        final String[] s=new String[O.length];
         for(int o=0;o<O.length;o++)
-        	s[o]=(O[o]!=null)?O[o].toString():"";
+            s[o]=(O[o]!=null)?O[o].toString():"";
         return s;
     }
 
@@ -1173,7 +1182,7 @@ public class CMParms
 
     public final static String toSemicolonList(final byte[] bytes)
     {
-    	final StringBuffer str=new StringBuffer("");
+        final StringBuffer str=new StringBuffer("");
         for(int b=0;b<bytes.length;b++)
             str.append(Byte.toString(bytes[b])+(b<(bytes.length-1)?";":""));
         return str.toString();
@@ -1181,7 +1190,7 @@ public class CMParms
 
     public final static String toSemicolonList(final String[] bytes)
     {
-    	final StringBuffer str=new StringBuffer("");
+        final StringBuffer str=new StringBuffer("");
         for(int b=0;b<bytes.length;b++)
             str.append(bytes[b]+(b<(bytes.length-1)?";":""));
         return str.toString();
@@ -1189,7 +1198,7 @@ public class CMParms
 
     public final static String toSemicolonList(final Object[] bytes)
     {
-    	final StringBuffer str=new StringBuffer("");
+        final StringBuffer str=new StringBuffer("");
         for(int b=0;b<bytes.length;b++)
             str.append(bytes[b]+(b<(bytes.length-1)?";":""));
         return str.toString();
@@ -1197,7 +1206,7 @@ public class CMParms
 
     public final static String toSemicolonList(final Enumeration<?> bytes)
     {
-    	final StringBuffer str=new StringBuffer("");
+        final StringBuffer str=new StringBuffer("");
         Object o;
         for(;bytes.hasMoreElements();)
         {
@@ -1209,7 +1218,7 @@ public class CMParms
     
     public final static String toSemicolonList(final List<?> bytes)
     {
-    	final StringBuffer str=new StringBuffer("");
+        final StringBuffer str=new StringBuffer("");
         for(int b=0;b<bytes.size();b++)
             str.append(bytes.get(b)+(b<(bytes.size()-1)?";":""));
         return str.toString();
@@ -1222,7 +1231,7 @@ public class CMParms
     
     public final static String toSafeSemicolonList(final Object[] list)
     {
-    	final StringBuffer buf1=new StringBuffer("");
+        final StringBuffer buf1=new StringBuffer("");
         StringBuffer s=null;
         for(int l=0;l<list.length;l++)
         {
@@ -1245,8 +1254,8 @@ public class CMParms
 
     public final static Vector<String> parseSafeSemicolonList(final String list, final boolean ignoreNulls)
     {
-    	if(list==null) return new Vector<String>();
-    	final StringBuffer buf1=new StringBuffer(list);
+        if(list==null) return new Vector<String>();
+        final StringBuffer buf1=new StringBuffer(list);
         int lastDex=0;
         final Vector<String> V=new Vector<String>();
         for(int l=0;l<buf1.length();l++)
@@ -1268,10 +1277,10 @@ public class CMParms
 
     public final static byte[] fromByteList(final String str)
     {
-    	final Vector<String> V=CMParms.parseSemicolons(str,true);
+        final Vector<String> V=CMParms.parseSemicolons(str,true);
         if(V.size()>0)
         {
-        	final byte[] bytes=new byte[V.size()];
+            final byte[] bytes=new byte[V.size()];
             for(int b=0;b<V.size();b++)
                 bytes[b]=Byte.parseByte((String)V.elementAt(b));
             return bytes;
@@ -1356,7 +1365,7 @@ public class CMParms
         Environmental o;
         for(;e.hasMoreElements();)
         {
-        	o=(Environmental)e.nextElement();
+            o=(Environmental)e.nextElement();
             s.append(", "+o.name());
         }
         if(s.length()==0) return "";
@@ -1370,7 +1379,7 @@ public class CMParms
         CMObject o;
         for(;e.hasMoreElements();)
         {
-        	o=(CMObject)e.nextElement();
+            o=(CMObject)e.nextElement();
             s.append(", "+o.ID());
         }
         if(s.length()==0) return "";
@@ -1488,13 +1497,13 @@ public class CMParms
 
     public final static String[] appendToArray(final String[] front, final String[] back)
     {
-    	if(back==null) return front;
-    	if(front==null) return back;
-    	if(back.length==0) return front;
-    	final String[] newa = Arrays.copyOf(front, front.length + back.length);
-    	for(int i=0;i<back.length;i++)
-    		newa[newa.length-1-i]=back[back.length-1-i];
-    	return newa;
+        if(back==null) return front;
+        if(front==null) return back;
+        if(back.length==0) return front;
+        final String[] newa = Arrays.copyOf(front, front.length + back.length);
+        for(int i=0;i<back.length;i++)
+            newa[newa.length-1-i]=back[back.length-1-i];
+        return newa;
     }
     
     public final static String toStringList(final Map<String,?> V)
@@ -1510,15 +1519,15 @@ public class CMParms
 
     public final static Map<String,String> parseEQStringList(final String s)
     {
-    	Hashtable<String,String> h=new Hashtable<String,String>();
-    	String[] allWords = s.split("/");
-    	for(final String word : allWords)
-    	{
-    		String[] set=word.split("=");
-    		if(set.length==2)
-	    		h.put(set[0].toUpperCase().trim(), set[1]);
-    	}
-    	return h;
+        Hashtable<String,String> h=new Hashtable<String,String>();
+        String[] allWords = s.split("/");
+        for(final String word : allWords)
+        {
+            String[] set=word.split("=");
+            if(set.length==2)
+                h.put(set[0].toUpperCase().trim(), set[1]);
+        }
+        return h;
     }
     
     public final static String toStringEqList(final Map<String,?> V)
@@ -1529,9 +1538,9 @@ public class CMParms
         final StringBuffer s=new StringBuffer("");
         for(String KEY : V.keySet())
         {
-        	String val = V.get(KEY).toString();
-        	if(val.indexOf(' ')>0)
-        		val="\""+val+"\"";
+            String val = V.get(KEY).toString();
+            if(val.indexOf(' ')>0)
+                val="\""+val+"\"";
             s.append(KEY+"="+val+" ");
         }
         return s.toString().trim();
@@ -1540,7 +1549,7 @@ public class CMParms
 
     public final static Vector<Object> copyFlattenVector(final List<?> V)
     {
-    	final Vector<Object> V2=new Vector<Object>();
+        final Vector<Object> V2=new Vector<Object>();
         for(int v=0;v<V.size();v++)
         {
             Object h=V.get(v);
@@ -1638,9 +1647,9 @@ public class CMParms
     public final static boolean contains(final String[] supported, final String expertise)
     { return indexOf(supported,expertise)>=0;}
     public final static boolean contains(final char[] supported, final char c)
-    {	for(char c2 : supported) if(c2==c) return true; return false;}
+    {    for(char c2 : supported) if(c2==c) return true; return false;}
     public final static boolean contains(final byte[] supported, final byte b)
-    {	for(byte b2 : supported) if(b2==b) return true; return false; }
+    {    for(byte b2 : supported) if(b2==b) return true; return false; }
     public final static boolean containsIgnoreCase(final String[] supported, final String expertise)
     { return indexOfIgnoreCase(supported,expertise)>=0;}
 
@@ -1659,17 +1668,17 @@ public class CMParms
     { return indexOf(supported,x)>=0;}
     public final static boolean contains(final ByteBuffer buf, final byte[] bytes, final int pos)
     { 
-    	for(int i=0;i<bytes.length && (i+pos)<buf.limit();i++)
-    		if(buf.get(pos+i)!=bytes[i])
-    			return false;
-    	return true;
+        for(int i=0;i<bytes.length && (i+pos)<buf.limit();i++)
+            if(buf.get(pos+i)!=bytes[i])
+                return false;
+        return true;
     }
     public final static int containIndex(final ByteBuffer buf, final byte[][] bytes, final int pos)
     { 
-    	for(int x=0;x<bytes.length;x++)
-    		if(contains(buf,bytes[x],pos))
-    			return x;
-    	return -1;
+        for(int x=0;x<bytes.length;x++)
+            if(contains(buf,bytes[x],pos))
+                return x;
+        return -1;
     }
 
     public final static int startsWith(final String[] supported, final String expertise)
@@ -1694,12 +1703,12 @@ public class CMParms
 
     public final static boolean startsAnyWith(final String[] supported, final String expertise)
     {
-    	return startsWith(supported,expertise)>=0;
+        return startsWith(supported,expertise)>=0;
     }
 
     public final static boolean startsAnyWithIgnoreCase(final String[] supported, final String expertise)
     {
-    	return startsWithIgnoreCase(supported,expertise)>=0;
+        return startsWithIgnoreCase(supported,expertise)>=0;
     }
 
     public final static int endsWith(final String[] supported, final String expertise)
@@ -1724,16 +1733,16 @@ public class CMParms
 
     public final static boolean endsAnyWith(final String[] supported, final String expertise)
     {
-    	return endsWith(supported,expertise)>=0;
+        return endsWith(supported,expertise)>=0;
     }
 
     public final static boolean endsAnyWithIgnoreCase(final String[] supported, final String expertise)
     {
-    	return endsWithIgnoreCase(supported,expertise)>=0;
+        return endsWithIgnoreCase(supported,expertise)>=0;
     }
 
-	/** constant value representing an undefined/unimplemented miscText/parms format.*/
-	public static final String FORMAT_UNDEFINED="{UNDEFINED}";
-	/** constant value representing an always empty miscText/parms format.*/
-	public static final String FORMAT_EMPTY="{EMPTY}";
+    /** constant value representing an undefined/unimplemented miscText/parms format.*/
+    public static final String FORMAT_UNDEFINED="{UNDEFINED}";
+    /** constant value representing an always empty miscText/parms format.*/
+    public static final String FORMAT_EMPTY="{EMPTY}";
 }

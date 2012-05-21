@@ -13,6 +13,8 @@ import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
+
+import java.io.IOException;
 import java.util.*;
 /* 
    Copyright 2000-2012 Bo Zimmerman
@@ -49,6 +51,11 @@ public interface JournalsLibrary extends CMLibrary, Runnable
     public JournalSummaryStats getJournalStats(String journalName);
     public void clearJournalSummaryStats(String journalName);
     
+
+    public enum MsgMkrResolution { SAVEFILE, CANCELFILE }
+
+    public MsgMkrResolution makeMessage(final MOB mob, final String messageTitle, final List<String> vbuf, boolean autoAdd) throws IOException;
+
 	public static final String JOURNAL_BOUNDARY="%0D^w---------------------------------------------^N%0D";
 
 	public static class JournalSummaryStats

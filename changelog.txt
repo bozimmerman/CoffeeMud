@@ -2367,3 +2367,5 @@ ruthless programmer, and sentenced to a quick death.
 13.New disposition: Unattackable -- effectively deprecates Prop_SafePet
 # Build 5.7.7 Release ??/??/2012
 1. MUDGrinder area editor has easier to manage parent/child areas & subops -- the old multiselect thing was unbearable.
+2. GenBook now uses the Message Maker (from the SHELL command) to add book chapters.
+
