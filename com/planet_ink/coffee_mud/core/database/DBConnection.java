@@ -54,8 +54,11 @@ public class DBConnection
     /** if any SQL errors occur, they are here.**/
     protected String lastError=null;
     
+    /** last time the connection was queried/executed.**/
+    private long lastQueryTime=System.currentTimeMillis();
+    
     /** when this connection was put into use**/
-    private long useTime=System.currentTimeMillis();
+    private long lastPutInUseTime=System.currentTimeMillis();
     
     /** number of failures in a row */
     protected int failuresInARow=0;
@@ -198,6 +201,7 @@ public class DBConnection
                 if(!openerSQL.equals(""))
                 {
                     lastSQL=openerSQL;
+                    lastQueryTime=System.currentTimeMillis();
                     myStatement.executeUpdate(openerSQL);
                 }
             }
@@ -207,7 +211,7 @@ public class DBConnection
                 // not a real error?!
             }
         
-            useTime=System.currentTimeMillis();
+            lastPutInUseTime=System.currentTimeMillis();
             inUse=true;
             return true;
         }
@@ -230,7 +234,7 @@ public class DBConnection
             sqlserver=true;
             myStatement=null;
             sqlserver=false;
-            useTime=System.currentTimeMillis();
+            lastPutInUseTime=System.currentTimeMillis();
             inUse=true;
             return true;
         }
@@ -268,7 +272,7 @@ public class DBConnection
             }
         
             sqlserver=false;
-            useTime=System.currentTimeMillis();
+            lastPutInUseTime=System.currentTimeMillis();
             failuresInARow=0;
             inUse=true;
             return true;
@@ -309,7 +313,7 @@ public class DBConnection
             }
         
             sqlserver=false;
-            useTime=System.currentTimeMillis();
+            lastPutInUseTime=System.currentTimeMillis();
             failuresInARow=0;
             inUse=true;
             return true;
@@ -325,6 +329,7 @@ public class DBConnection
                 if(myStatement!=null)
                 {
                     lastSQL=Closer;
+                    lastQueryTime=System.currentTimeMillis();
                     myStatement.executeUpdate(Closer);
                 }
             if(myResultSet!=null)
@@ -364,6 +369,16 @@ public class DBConnection
         inUse=false;
     }
     
+    /**
+     * Return the time, in millis, when this connection
+     * was last returned.
+     * @return
+     */
+    public long getLastQueryTime()
+    {
+        return lastQueryTime;
+    }
+    
     /** 
      * execute a query, returning the resultset
      * 
@@ -381,6 +396,7 @@ public class DBConnection
             try
             {
                 sqlserver=true;
+                lastQueryTime=System.currentTimeMillis();
                 if(myStatement!=null)
                     R=myStatement.executeQuery(queryString);
                 else
@@ -408,7 +424,7 @@ public class DBConnection
         }
         sqlserver=false;
         failuresInARow=0;
-        useTime=System.currentTimeMillis();
+        lastPutInUseTime=System.currentTimeMillis();
         if(myParent!=null) 
             myParent.clearErrors();
         myResultSet=R;
@@ -446,6 +462,7 @@ public class DBConnection
             try
             {
                 sqlserver=true;
+                lastQueryTime=System.currentTimeMillis();
                 if(myStatement!=null)
                     responseCode=myStatement.executeUpdate(updateString);
                 else
@@ -476,7 +493,7 @@ public class DBConnection
         }
         
         sqlserver=false;
-        useTime=System.currentTimeMillis();
+        lastPutInUseTime=System.currentTimeMillis();
         failuresInARow=0;
         if(myParent!=null) 
             myParent.clearErrors();
@@ -549,7 +566,7 @@ public class DBConnection
     public boolean isProbablyLockedUp()
     {
         long twominsAgo=System.currentTimeMillis()-(2*60*1000);
-        if((useTime<twominsAgo)&&inUse) 
+        if((lastPutInUseTime<twominsAgo)&&inUse) 
             return true;
         return false;
     }

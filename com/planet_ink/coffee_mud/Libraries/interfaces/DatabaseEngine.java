@@ -40,8 +40,10 @@ import java.util.*;
 public interface DatabaseEngine extends CMLibrary
 {
     public String errorStatus();
-    public void resetconnections();
+    public void resetConnections();
     public DBConnector getConnector();
+    public int pingAllConnections();
+    public int pingAllConnections(final long overrideTimeoutIntervalMillis);
     // DBABLES, DBCCLASS, DBRACES, DBPLAYERS, DBMAP, DBSTATS, DBPOLLS, DBVFS, DBJOURNALS, DBQUESTS, DBCLANS  
     
     public void DBUpdateFollowers(MOB mob);

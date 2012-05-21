@@ -717,6 +717,9 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 
     public void run()
     {
+        thread.status("pinging connections");
+        CMLib.database().pingAllConnections();
+        thread.status("not saving players");
         if((!CMSecurity.isDisabled(CMSecurity.DisFlag.SAVETHREAD))
         &&(!CMSecurity.isDisabled(CMSecurity.DisFlag.PLAYERTHREAD)))
         {

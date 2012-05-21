@@ -637,6 +637,7 @@ public class Merge extends StdCommand
         String dbUser=CMParms.getParmStr(theRest,"DBUSER","");
         String dbPass=CMParms.getParmStr(theRest,"DBPASS","");
         int dbConns=CMParms.getParmInt(theRest,"DBCONNECTIONS",3);
+        int dbPingIntMins=CMParms.getParmInt(theRest,"DBPINGINTERVALMINS",30);
         boolean dbReuse=CMParms.getParmBool(theRest,"DBREUSE",true);
         String ignore=CMParms.getParmStr(theRest,"IGNORE","");
         String maskStr=CMParms.getParmStr(theRest,"MASK","");
@@ -663,7 +664,7 @@ public class Merge extends StdCommand
             return false;
         }
         
-        dbConnector=new DBConnector(dbClass,dbService,dbUser,dbPass,dbConns,dbReuse,false,false);
+        dbConnector=new DBConnector(dbClass,dbService,dbUser,dbPass,dbConns,dbPingIntMins,dbReuse,false,false);
         dbConnector.reconnect();
         DBInterface dbInterface = new DBInterface(dbConnector,null);
         

@@ -42,20 +42,20 @@ public class CMProps extends Properties
     private static final CMProps[] props=new CMProps[256];
     public CMProps()
     {
-    	super();
-    	final char c=Thread.currentThread().getThreadGroup().getName().charAt(0);
-	    if(props[c]==null) props[c]=this;
+        super();
+        final char c=Thread.currentThread().getThreadGroup().getName().charAt(0);
+        if(props[c]==null) props[c]=this;
     }
     public static final CMProps instance()
     {
-    	final CMProps p=p();
+        final CMProps p=p();
         if(p==null) return new CMProps();
         return p;
     }
     public static final CMProps instance(char c){ return props[c];}
     private static final CMProps p(){ return props[Thread.currentThread().getThreadGroup().getName().charAt(0)];}
 
-	public static final long serialVersionUID=0;
+    public static final long serialVersionUID=0;
     public static final int SYSTEM_PKILL=0;
     public static final int SYSTEM_MULTICLASS=1;
     public static final int SYSTEM_PLAYERDEATH=2;
@@ -148,7 +148,7 @@ public class CMProps extends Properties
     public static final int SYSTEMI_DAYSCLANDEATH=5;
     public static final int SYSTEMI_MINCLANLEVEL=6;
     public static final int SYSTEMI_MANACOST=7;
-    //public static final int SYSTEMI_COMMONTRAINCOST=8;
+    //public static final int SYSTEMI_DBPINGINTMINS=8;
     //public static final int SYSTEMI_LANGTRAINCOST=9;
     //public static final int SYSTEMI_SKILLTRAINCOST=10;
     //public static final int SYSTEMI_COMMONPRACCOST=11;
@@ -300,70 +300,70 @@ public class CMProps extends Properties
     };
     public static final int NUMLF_SYSTEM=SYSTEMLF_KEYS.length;
 
-    protected final String[] 	sysVars=new String[NUM_SYSTEM];
-    protected final Integer[] 	sysInts=new Integer[NUMI_SYSTEM];
-    protected final Boolean[] 	sysBools=new Boolean[NUMB_SYSTEM];
-    protected final String[][]	sysLists=new String[NUML_SYSTEM][];
-    protected final Object[] 	sysLstFileLists=new Object[NUMLF_SYSTEM];
+    protected final String[]    sysVars=new String[NUM_SYSTEM];
+    protected final Integer[]   sysInts=new Integer[NUMI_SYSTEM];
+    protected final Boolean[]   sysBools=new Boolean[NUMB_SYSTEM];
+    protected final String[][]  sysLists=new String[NUML_SYSTEM][];
+    protected final Object[]    sysLstFileLists=new Object[NUMLF_SYSTEM];
     protected final List<String>sayFilter=new Vector<String>();
     protected final List<String>channelFilter=new Vector<String>();
     protected final List<String>emoteFilter=new Vector<String>();
     protected final List<String>poseFilter=new Vector<String>();
-    protected final DVector 	newusersByIP=new DVector(2);
-    protected String[][] 		statCodeExtensions = null;
-    protected int 				pkillLevelDiff=26;
-    protected boolean 			loaded=false;
-    protected long 				TIME_TICK=4000;
-    protected long 				MILLIS_PER_MUDHOUR=600000;
-    protected long 				TICKS_PER_RLMIN=(int)Math.round(60000.0/(double)TIME_TICK);
-    protected long 				TICKS_PER_RLHOUR=TICKS_PER_RLMIN * 60;
-    protected long 				TICKS_PER_RLDAY=TICKS_PER_RLHOUR * 24;
-    protected double 			TIME_TICK_DOUBLE=(double)TIME_TICK;
-    protected final Map<String,Double> 	skillMaxManaExceptions		=new HashMap<String,Double>();
-    protected final Map<String,Double> 	skillMinManaExceptions		=new HashMap<String,Double>();
-    protected final Map<String,Double> 	skillActionCostExceptions	=new HashMap<String,Double>();
-    protected final Map<String,Double> 	skillComActionCostExceptions=new HashMap<String,Double>();
-    protected final Map<String,Double> 	cmdActionCostExceptions		=new HashMap<String,Double>();
-    protected final Map<String,Double> 	cmdComActionCostExceptions	=new HashMap<String,Double>();
+    protected final DVector     newusersByIP=new DVector(2);
+    protected String[][]        statCodeExtensions = null;
+    protected int               pkillLevelDiff=26;
+    protected boolean           loaded=false;
+    protected long              TIME_TICK=4000;
+    protected long              MILLIS_PER_MUDHOUR=600000;
+    protected long              TICKS_PER_RLMIN=(int)Math.round(60000.0/(double)TIME_TICK);
+    protected long              TICKS_PER_RLHOUR=TICKS_PER_RLMIN * 60;
+    protected long              TICKS_PER_RLDAY=TICKS_PER_RLHOUR * 24;
+    protected double            TIME_TICK_DOUBLE=(double)TIME_TICK;
+    protected final Map<String,Double>     skillMaxManaExceptions      =new HashMap<String,Double>();
+    protected final Map<String,Double>     skillMinManaExceptions      =new HashMap<String,Double>();
+    protected final Map<String,Double>     skillActionCostExceptions   =new HashMap<String,Double>();
+    protected final Map<String,Double>     skillComActionCostExceptions=new HashMap<String,Double>();
+    protected final Map<String,Double>     cmdActionCostExceptions     =new HashMap<String,Double>();
+    protected final Map<String,Double>     cmdComActionCostExceptions  =new HashMap<String,Double>();
     protected final Map<String,ExpertiseLibrary.SkillCostDefinition> commonCost  =new HashMap<String,ExpertiseLibrary.SkillCostDefinition>();
     protected final Map<String,ExpertiseLibrary.SkillCostDefinition> skillsCost  =new HashMap<String,ExpertiseLibrary.SkillCostDefinition>();
     protected final Map<String,ExpertiseLibrary.SkillCostDefinition> languageCost=new HashMap<String,ExpertiseLibrary.SkillCostDefinition>();
 
-	public CMProps(InputStream in)
-	{
-		final char c=Thread.currentThread().getThreadGroup().getName().charAt(0);
-	    if(props[c]==null) props[c]=this;
-		try
-		{
-			this.load(in);
-			loaded=true;
-		}
-		catch(IOException e)
-		{
-			loaded=false;
-		}
-	}
-	
-	public CMProps(String filename)
-	{
-		final char c=Thread.currentThread().getThreadGroup().getName().charAt(0);
-	    if(props[c]==null) props[c]=this;
-		try
-		{
-			final CMFile F=new CMFile(filename,null,false);
-			if(F.exists())
-			{
-				this.load(new ByteArrayInputStream(F.textUnformatted().toString().getBytes()));
-				loaded=true;
-			}
-			else
-				loaded=false;
-		}
-		catch(IOException e)
-		{
-			loaded=false;
-		}
-	}
+    public CMProps(InputStream in)
+    {
+        final char c=Thread.currentThread().getThreadGroup().getName().charAt(0);
+        if(props[c]==null) props[c]=this;
+        try
+        {
+            this.load(in);
+            loaded=true;
+        }
+        catch(IOException e)
+        {
+            loaded=false;
+        }
+    }
+    
+    public CMProps(String filename)
+    {
+        final char c=Thread.currentThread().getThreadGroup().getName().charAt(0);
+        if(props[c]==null) props[c]=this;
+        try
+        {
+            final CMFile F=new CMFile(filename,null,false);
+            if(F.exists())
+            {
+                this.load(new ByteArrayInputStream(F.textUnformatted().toString().getBytes()));
+                loaded=true;
+            }
+            else
+                loaded=false;
+        }
+        catch(IOException e)
+        {
+            loaded=false;
+        }
+    }
 
     public final boolean load(String filename)
     {
@@ -379,39 +379,39 @@ public class CMProps extends Properties
         return loaded;
     }
 
-	public CMProps(final Properties p, final String filename)
-	{
-		super(p);
-		final char c=Thread.currentThread().getThreadGroup().getName().charAt(0);
-	    if(props[c]==null) props[c]=this;
+    public CMProps(final Properties p, final String filename)
+    {
+        super(p);
+        final char c=Thread.currentThread().getThreadGroup().getName().charAt(0);
+        if(props[c]==null) props[c]=this;
 
-		try
-		{
+        try
+        {
             this.load(new ByteArrayInputStream(new CMFile(filename,null,false).raw()));
-			loaded=true;
-		}
-		catch(IOException e)
-		{
-			loaded=false;
-		}
-	}
+            loaded=true;
+        }
+        catch(IOException e)
+        {
+            loaded=false;
+        }
+    }
 
-	public static final CMProps loadPropPage(final String iniFile)
-	{
+    public static final CMProps loadPropPage(final String iniFile)
+    {
         CMProps page=null;
-		if (page==null || !page.loaded)
-		{
+        if (page==null || !page.loaded)
+        {
             page=new CMProps(iniFile);
-			if(!page.loaded)
-				return null;
-		}
-		return page;
-	}
-	
-	public boolean isLoaded()
-	{
-		return loaded;
-	}
+            if(!page.loaded)
+                return null;
+        }
+        return page;
+    }
+    
+    public boolean isLoaded()
+    {
+        return loaded;
+    }
 
     /** retrieve a local .ini file entry as a string
     *
@@ -421,7 +421,7 @@ public class CMProps extends Properties
     */
     public final String getPrivateStr(final String tagToGet)
     {
-    	final String s=getProperty(tagToGet);
+        final String s=getProperty(tagToGet);
         if(s==null) return "";
         return s;
     }
@@ -437,67 +437,67 @@ public class CMProps extends Properties
         return getProperty(tagToGet);
     }
     
-	/** retrieve a particular .ini file entry as a string
-	*
-	* <br><br><b>Usage:</b>  String s=getStr(p,"TAG");
-	* @param tagToGet	the property tag to retreive.
-	* @return String	the value of the .ini file tag
-	*/
-	public final String getStr(final String tagToGet)
-	{
-		final String thisTag=this.getProperty(tagToGet);
-		if((thisTag==null)&&(props[MudHost.MAIN_HOST]!=null)&&(props[MudHost.MAIN_HOST]!=this))
-			return props[MudHost.MAIN_HOST].getStr(tagToGet);
-		if(thisTag==null) return "";
-		return thisTag;
-	}
+    /** retrieve a particular .ini file entry as a string
+    *
+    * <br><br><b>Usage:</b>  String s=getStr(p,"TAG");
+    * @param tagToGet    the property tag to retreive.
+    * @return String    the value of the .ini file tag
+    */
+    public final String getStr(final String tagToGet)
+    {
+        final String thisTag=this.getProperty(tagToGet);
+        if((thisTag==null)&&(props[MudHost.MAIN_HOST]!=null)&&(props[MudHost.MAIN_HOST]!=this))
+            return props[MudHost.MAIN_HOST].getStr(tagToGet);
+        if(thisTag==null) return "";
+        return thisTag;
+    }
 
-	/** retrieve a particular .ini file entry as a string, or use a default
-	*
-	* <br><br><b>Usage:</b>  String s=getStr(p,"TAG");
-	* @param tagToGet	the property tag to retreive.
-	* @return String	the value of the .ini file tag
-	*/
-	public final String getStr(final String tagToGet, final String defaultVal)
-	{
-		String thisTag=this.getProperty(tagToGet);
-		if((thisTag==null)&&(props[MudHost.MAIN_HOST]!=null)&&(props[MudHost.MAIN_HOST]!=this))
-			thisTag=props[MudHost.MAIN_HOST].getStr(tagToGet);
-		if((thisTag==null)||(thisTag.length()==0)) return defaultVal;
-		return thisTag;
-	}
-	
-	/** retrieve particular .ini file entrys as a string array
-	*
-	* <br><br><b>Usage:</b>  String s=getStrsStarting(p,"TAG");
-	* @param tagStartersToGet	the property tag to retreive.
-	* @return String	the value of the .ini file tag
-	*/
-	public final String[][] getStrsStarting(String tagStartersToGet)
-	{
-		final DVector strBag = new DVector(2);
-		tagStartersToGet = tagStartersToGet.toUpperCase();
-		for(Enumeration<?> e=propertyNames(); e.hasMoreElements();)
-		{
-			final String propName = (String)e.nextElement();
-			if(propName.toUpperCase().startsWith(tagStartersToGet))
-			{
-				String subPropName = propName.substring(tagStartersToGet.length()).toUpperCase();
-				String thisTag=this.getProperty(propName);
-				if((thisTag==null)&&(props[MudHost.MAIN_HOST]!=null)&&(props[MudHost.MAIN_HOST]!=this))
-					thisTag = props[MudHost.MAIN_HOST].getStr(propName);
-				if(thisTag!=null)
-					strBag.addElement(subPropName,thisTag);
-			}
-		}
-		final String[][] strArray = new String[strBag.size()][2];
-		for(int s = 0; s < strBag.size(); s++)
-		{
-			strArray[s][0] = (String)strBag.elementAt(s,1);
-			strArray[s][1] = (String)strBag.elementAt(s,2);
-		}
-		return strArray;
-	}
+    /** retrieve a particular .ini file entry as a string, or use a default
+    *
+    * <br><br><b>Usage:</b>  String s=getStr(p,"TAG");
+    * @param tagToGet    the property tag to retreive.
+    * @return String    the value of the .ini file tag
+    */
+    public final String getStr(final String tagToGet, final String defaultVal)
+    {
+        String thisTag=this.getProperty(tagToGet);
+        if((thisTag==null)&&(props[MudHost.MAIN_HOST]!=null)&&(props[MudHost.MAIN_HOST]!=this))
+            thisTag=props[MudHost.MAIN_HOST].getStr(tagToGet);
+        if((thisTag==null)||(thisTag.length()==0)) return defaultVal;
+        return thisTag;
+    }
+    
+    /** retrieve particular .ini file entrys as a string array
+    *
+    * <br><br><b>Usage:</b>  String s=getStrsStarting(p,"TAG");
+    * @param tagStartersToGet    the property tag to retreive.
+    * @return String    the value of the .ini file tag
+    */
+    public final String[][] getStrsStarting(String tagStartersToGet)
+    {
+        final DVector strBag = new DVector(2);
+        tagStartersToGet = tagStartersToGet.toUpperCase();
+        for(Enumeration<?> e=propertyNames(); e.hasMoreElements();)
+        {
+            final String propName = (String)e.nextElement();
+            if(propName.toUpperCase().startsWith(tagStartersToGet))
+            {
+                String subPropName = propName.substring(tagStartersToGet.length()).toUpperCase();
+                String thisTag=this.getProperty(propName);
+                if((thisTag==null)&&(props[MudHost.MAIN_HOST]!=null)&&(props[MudHost.MAIN_HOST]!=this))
+                    thisTag = props[MudHost.MAIN_HOST].getStr(propName);
+                if(thisTag!=null)
+                    strBag.addElement(subPropName,thisTag);
+            }
+        }
+        final String[][] strArray = new String[strBag.size()][2];
+        for(int s = 0; s < strBag.size(); s++)
+        {
+            strArray[s][0] = (String)strBag.elementAt(s,1);
+            strArray[s][1] = (String)strBag.elementAt(s,2);
+        }
+        return strArray;
+    }
 
     /** retrieve a particular .ini file entry as a boolean
     *
@@ -505,142 +505,142 @@ public class CMProps extends Properties
     * @param tagToGet   the property tag to retreive.
     * @return int   the value of the .ini file tag
     */
-	public final boolean getBoolean(final String tagToGet)
-	{
-		final String thisVal=getStr(tagToGet);
-		if(thisVal.toUpperCase().startsWith("T"))
-			return true;
-		return false;
-	}
+    public final boolean getBoolean(final String tagToGet)
+    {
+        final String thisVal=getStr(tagToGet);
+        if(thisVal.toUpperCase().startsWith("T"))
+            return true;
+        return false;
+    }
 
-	/** retrieve a particular .ini file entry as a double
-	*
-	* <br><br><b>Usage:</b>  double i=getDouble("TAG");
-	* @param tagToGet	the property tag to retreive.
-	* @return int	the value of the .ini file tag
-	*/
-	public final double getDouble(final String tagToGet)
-	{
-		try
-		{
-			return Double.parseDouble(getStr(tagToGet));
-		}
-		catch(Exception e)
-		{
-			return 0.0;
-		}
-	}
+    /** retrieve a particular .ini file entry as a double
+    *
+    * <br><br><b>Usage:</b>  double i=getDouble("TAG");
+    * @param tagToGet    the property tag to retreive.
+    * @return int    the value of the .ini file tag
+    */
+    public final double getDouble(final String tagToGet)
+    {
+        try
+        {
+            return Double.parseDouble(getStr(tagToGet));
+        }
+        catch(Exception e)
+        {
+            return 0.0;
+        }
+    }
 
-	/** retrieve a particular .ini file entry as an integer
-	*
-	* <br><br><b>Usage:</b>  int i=getInt("TAG");
-	* @param tagToGet	the property tag to retreive.
-	* @return int	the value of the .ini file tag
-	*/
-	public final int getInt(final String tagToGet)
-	{
-		try
-		{
-			return Integer.parseInt(getStr(tagToGet));
-		}
-		catch(Exception t)
-		{
-			return 0;
-		}
-	}
+    /** retrieve a particular .ini file entry as an integer
+    *
+    * <br><br><b>Usage:</b>  int i=getInt("TAG");
+    * @param tagToGet    the property tag to retreive.
+    * @return int    the value of the .ini file tag
+    */
+    public final int getInt(final String tagToGet)
+    {
+        try
+        {
+            return Integer.parseInt(getStr(tagToGet));
+        }
+        catch(Exception t)
+        {
+            return 0;
+        }
+    }
 
-	/** retrieve a particular .ini file entry as a long
-	*
-	* <br><br><b>Usage:</b>  long i=getInt("TAG");
-	* @param tagToGet	the property tag to retreive.
-	* @return long the value of the .ini file tag
-	*/
-	public final long getLong(final String tagToGet)
-	{
-		try
-		{
-			return Long.parseLong(getStr(tagToGet));
-		}
-		catch(Exception t)
-		{
-			return 0;
-		}
-	}
-	
+    /** retrieve a particular .ini file entry as a long
+    *
+    * <br><br><b>Usage:</b>  long i=getInt("TAG");
+    * @param tagToGet    the property tag to retreive.
+    * @return long the value of the .ini file tag
+    */
+    public final long getLong(final String tagToGet)
+    {
+        try
+        {
+            return Long.parseLong(getStr(tagToGet));
+        }
+        catch(Exception t)
+        {
+            return 0;
+        }
+    }
+    
     public static final double getActionCost(final String ID, final double defaultValue)
     {
-    	final Map<String,Double> overrides=p().cmdActionCostExceptions;
-    	final String uID=ID.toUpperCase();
-    	if(overrides.containsKey(uID))
-    		return overrides.get(uID).doubleValue();
-    	return defaultValue;
+        final Map<String,Double> overrides=p().cmdActionCostExceptions;
+        final String uID=ID.toUpperCase();
+        if(overrides.containsKey(uID))
+            return overrides.get(uID).doubleValue();
+        return defaultValue;
     }
 
     public static final double getCombatActionCost(final String ID, final double defaultValue)
     {
-    	final Map<String,Double> overrides=p().cmdComActionCostExceptions;
-    	final String uID=ID.toUpperCase();
-    	if(overrides.containsKey(uID))
-    		return overrides.get(uID).doubleValue();
-    	return defaultValue;
+        final Map<String,Double> overrides=p().cmdComActionCostExceptions;
+        final String uID=ID.toUpperCase();
+        if(overrides.containsKey(uID))
+            return overrides.get(uID).doubleValue();
+        return defaultValue;
     }
 
     public static final double getActionCost(final String ID)
     {
-    	return getActionCost(ID,CMath.div(getIntVar(CMProps.SYSTEMI_DEFCMDTIME),100.0));
+        return getActionCost(ID,CMath.div(getIntVar(CMProps.SYSTEMI_DEFCMDTIME),100.0));
     }
 
     public static final double getCombatActionCost(final String ID)
     {
-    	return getCombatActionCost(ID,CMath.div(getIntVar(CMProps.SYSTEMI_DEFCOMCMDTIME),100.0));
+        return getCombatActionCost(ID,CMath.div(getIntVar(CMProps.SYSTEMI_DEFCOMCMDTIME),100.0));
     }
 
     public static final double getActionSkillCost(final String ID, final double defaultValue)
     {
-    	final Map<String,Double> overrides=p().skillActionCostExceptions;
-    	final String uID=ID.toUpperCase();
-    	if(overrides.containsKey(uID))
-    		return overrides.get(uID).doubleValue();
-    	return defaultValue;
+        final Map<String,Double> overrides=p().skillActionCostExceptions;
+        final String uID=ID.toUpperCase();
+        if(overrides.containsKey(uID))
+            return overrides.get(uID).doubleValue();
+        return defaultValue;
     }
 
     public static final double getCombatActionSkillCost(final String ID, final double defaultValue)
     {
-    	final Map<String,Double> overrides=p().skillComActionCostExceptions;
-    	final String uID=ID.toUpperCase();
-    	if(overrides.containsKey(uID))
-    		return overrides.get(uID).doubleValue();
-    	return defaultValue;
+        final Map<String,Double> overrides=p().skillComActionCostExceptions;
+        final String uID=ID.toUpperCase();
+        if(overrides.containsKey(uID))
+            return overrides.get(uID).doubleValue();
+        return defaultValue;
     }
 
     public static final double getActionSkillCost(final String ID)
     {
-    	return getActionSkillCost(ID,CMath.div(getIntVar(CMProps.SYSTEMI_DEFABLETIME),100.0));
+        return getActionSkillCost(ID,CMath.div(getIntVar(CMProps.SYSTEMI_DEFABLETIME),100.0));
     }
 
     public static final double getCombatActionSkillCost(final String ID)
     {
-    	return getCombatActionSkillCost(ID,CMath.div(getIntVar(CMProps.SYSTEMI_DEFCOMABLETIME),100.0));
+        return getCombatActionSkillCost(ID,CMath.div(getIntVar(CMProps.SYSTEMI_DEFCOMABLETIME),100.0));
     }
 
     public static final int getPKillLevelDiff(){return p().pkillLevelDiff;}
 
     public static final String getVar(final int varNum)
     {
-    	try { return p().sysVars[varNum];} 
-    	catch(Exception t) { return ""; }
+        try { return p().sysVars[varNum];} 
+        catch(Exception t) { return ""; }
     }
 
     public static final int getIntVar(final int varNum)
     {
-    	try { return p().sysInts[varNum].intValue(); } 
-    	catch(Exception t) { return -1; }
+        try { return p().sysInts[varNum].intValue(); } 
+        catch(Exception t) { return -1; }
     }
 
     public static final String[] getListVar(final int varNum)
     {
-    	try { return p().sysLists[varNum]; } 
-    	catch(Exception t) { return new String[0]; }
+        try { return p().sysLists[varNum]; } 
+        catch(Exception t) { return new String[0]; }
     }
 
     public static final boolean getBoolVar0(final int varNum)
@@ -652,8 +652,8 @@ public class CMProps extends Properties
 
     public static final boolean getBoolVar(final int varNum)
     {
-    	try { return p().sysBools[varNum].booleanValue(); } 
-    	catch(Exception t) { return false; }
+        try { return p().sysBools[varNum].booleanValue(); } 
+        catch(Exception t) { return false; }
     }
 
     public static final void setBoolVar(final int varNum, final boolean val)
@@ -701,7 +701,7 @@ public class CMProps extends Properties
         if(var==null) return;
         CMProps prop=p();
         if(prop.sysLists[varNum]==null)
-        	setListVar(varNum, new String[0]);
+            setListVar(varNum, new String[0]);
         String[] list=prop.sysLists[varNum];
         prop.sysLists[varNum]=Arrays.copyOf(list, list.length+1);
         list[list.length-1]=var;
@@ -728,7 +728,7 @@ public class CMProps extends Properties
         {
         case SYSTEM_PKILL:
             {
-            	final int x=val.indexOf('-');
+                final int x=val.indexOf('-');
                 if(x>0)
                     props.pkillLevelDiff=CMath.s_int(val.substring(x+1));
             }
@@ -738,7 +738,7 @@ public class CMProps extends Properties
     
     public static final void setUpLowVar(final int varNum, final String val)
     { 
-    	setUpLowVar(p(),varNum,val); 
+        setUpLowVar(p(),varNum,val); 
     }
     
     public static final void setUpAllLowVar(final int varNum, final String val)
@@ -750,82 +750,82 @@ public class CMProps extends Properties
 
     public static final void setUpCosts(final String fieldName, final Map<String,ExpertiseLibrary.SkillCostDefinition> map, final Vector<String> fields)
     {
-    	final double[] doubleChecker=new double[10];
-    	for(String field : fields)
-    	{
-    		field=field.trim();
-    		if(field.length()==0) continue;
-    		final int typeIndex=field.lastIndexOf(' ');
-    		if(typeIndex<0)
-    		{
-    			Log.errOut("CMProps","Error parsing coffeemud.ini field "+fieldName+", value: "+field);
-    			continue;
-    		}
-			final String type=field.substring(typeIndex+1).toUpperCase().trim();
-			String formula=field.substring(0,typeIndex).trim();
-			ExpertiseLibrary.CostType costType=(ExpertiseLibrary.CostType)CMath.s_valueOf(ExpertiseLibrary.CostType.values(), type);
-			if(costType==null)
-			{
-    			Log.errOut("CMProps","Error parsing coffeemud.ini field '"+fieldName+"', invalid type: "+type);
-    			Log.errOut("CMProps","Valid values include "+CMParms.toStringList(ExpertiseLibrary.CostType.values()));
-    			continue;
-			}
-			String keyField="";
-			if(!CMath.isMathExpression(formula, doubleChecker))
-			{
-				final int skillIndex=formula.indexOf(' ');
-				if(skillIndex<0)
-				{
-	    			Log.errOut("CMProps","Error parsing coffeemud.ini field "+fieldName+", invalid formula: "+formula);
-	    			continue;
-				}
-				keyField=formula.substring(0,skillIndex).toUpperCase().trim();
-				formula=formula.substring(skillIndex+1).trim();
-				if(!CMath.isMathExpression(formula, doubleChecker))
-				{
-	    			Log.errOut("CMProps","Error parsing coffeemud.ini field "+fieldName+", invalid formula: "+formula);
-	    			continue;
-				}
-			}
-			if(map.containsKey(keyField))
-			{
-    			Log.errOut("CMProps","Error parsing coffeemud.ini '"+fieldName+"' has duplicate key:"+((keyField.length()==0)?"<EMPTY>":keyField));
-    			continue;
-			}
-			map.put(keyField.toUpperCase(), new ExpertiseLibrary.SkillCostDefinition(costType,formula));
-    	}
+        final double[] doubleChecker=new double[10];
+        for(String field : fields)
+        {
+            field=field.trim();
+            if(field.length()==0) continue;
+            final int typeIndex=field.lastIndexOf(' ');
+            if(typeIndex<0)
+            {
+                Log.errOut("CMProps","Error parsing coffeemud.ini field "+fieldName+", value: "+field);
+                continue;
+            }
+            final String type=field.substring(typeIndex+1).toUpperCase().trim();
+            String formula=field.substring(0,typeIndex).trim();
+            ExpertiseLibrary.CostType costType=(ExpertiseLibrary.CostType)CMath.s_valueOf(ExpertiseLibrary.CostType.values(), type);
+            if(costType==null)
+            {
+                Log.errOut("CMProps","Error parsing coffeemud.ini field '"+fieldName+"', invalid type: "+type);
+                Log.errOut("CMProps","Valid values include "+CMParms.toStringList(ExpertiseLibrary.CostType.values()));
+                continue;
+            }
+            String keyField="";
+            if(!CMath.isMathExpression(formula, doubleChecker))
+            {
+                final int skillIndex=formula.indexOf(' ');
+                if(skillIndex<0)
+                {
+                    Log.errOut("CMProps","Error parsing coffeemud.ini field "+fieldName+", invalid formula: "+formula);
+                    continue;
+                }
+                keyField=formula.substring(0,skillIndex).toUpperCase().trim();
+                formula=formula.substring(skillIndex+1).trim();
+                if(!CMath.isMathExpression(formula, doubleChecker))
+                {
+                    Log.errOut("CMProps","Error parsing coffeemud.ini field "+fieldName+", invalid formula: "+formula);
+                    continue;
+                }
+            }
+            if(map.containsKey(keyField))
+            {
+                Log.errOut("CMProps","Error parsing coffeemud.ini '"+fieldName+"' has duplicate key:"+((keyField.length()==0)?"<EMPTY>":keyField));
+                continue;
+            }
+            map.put(keyField.toUpperCase(), new ExpertiseLibrary.SkillCostDefinition(costType,formula));
+        }
     }
 
     public static final ExpertiseLibrary.SkillCostDefinition getSkillTrainCostFormula(final String id)
     { 
-    	final CMProps p=p();
-    	ExpertiseLibrary.SkillCostDefinition pair=p.skillsCost.get(id.toUpperCase());
-    	if(pair==null) pair=p.skillsCost.get("");
-    	if(pair==null) pair=new ExpertiseLibrary.SkillCostDefinition(ExpertiseLibrary.CostType.TRAIN, "1");
-    	return pair;
+        final CMProps p=p();
+        ExpertiseLibrary.SkillCostDefinition pair=p.skillsCost.get(id.toUpperCase());
+        if(pair==null) pair=p.skillsCost.get("");
+        if(pair==null) pair=new ExpertiseLibrary.SkillCostDefinition(ExpertiseLibrary.CostType.TRAIN, "1");
+        return pair;
     }
     
     public static final ExpertiseLibrary.SkillCostDefinition getCommonTrainCostFormula(final String id)
     { 
-    	final CMProps p=p();
-    	ExpertiseLibrary.SkillCostDefinition pair=p.commonCost.get(id.toUpperCase());
-    	if(pair==null) pair=p.commonCost.get("");
-    	if(pair==null) pair=new ExpertiseLibrary.SkillCostDefinition(ExpertiseLibrary.CostType.TRAIN, "1");
-    	return pair;
+        final CMProps p=p();
+        ExpertiseLibrary.SkillCostDefinition pair=p.commonCost.get(id.toUpperCase());
+        if(pair==null) pair=p.commonCost.get("");
+        if(pair==null) pair=new ExpertiseLibrary.SkillCostDefinition(ExpertiseLibrary.CostType.TRAIN, "1");
+        return pair;
     }
     
     public static final ExpertiseLibrary.SkillCostDefinition getLangTrainCostFormula(final String id)
     { 
-    	final CMProps p=p();
-    	ExpertiseLibrary.SkillCostDefinition pair=p.languageCost.get(id.toUpperCase());
-    	if(pair==null) pair=p.languageCost.get("");
-    	if(pair==null) pair=new ExpertiseLibrary.SkillCostDefinition(ExpertiseLibrary.CostType.TRAIN, "1");
-    	return pair;
+        final CMProps p=p();
+        ExpertiseLibrary.SkillCostDefinition pair=p.languageCost.get(id.toUpperCase());
+        if(pair==null) pair=p.languageCost.get("");
+        if(pair==null) pair=new ExpertiseLibrary.SkillCostDefinition(ExpertiseLibrary.CostType.TRAIN, "1");
+        return pair;
     }
     
     public static final int getCountNewUserByIP(final String address)
     {
-    	int count=0;
+        int count=0;
         final DVector DV=p().newusersByIP;
         synchronized(DV)
         {
@@ -833,7 +833,7 @@ public class CMProps extends Properties
                 if(((String)DV.elementAt(i,1)).equalsIgnoreCase(address))
                 {
                     if(System.currentTimeMillis()>(((Long)DV.elementAt(i,2)).longValue()))
-                    	DV.removeElementAt(i);
+                        DV.removeElementAt(i);
                     else
                         count++;
                 }
@@ -842,44 +842,44 @@ public class CMProps extends Properties
     }
     public static final void addNewUserByIP(final String address)
     {
-    	final DVector DV=p().newusersByIP;
+        final DVector DV=p().newusersByIP;
         synchronized(DV)
         {
-        	DV.addElement(address,Long.valueOf(System.currentTimeMillis()+TimeManager.MILI_DAY));
+            DV.addElement(address,Long.valueOf(System.currentTimeMillis()+TimeManager.MILI_DAY));
         }
     }
 
     public static final int getMinManaException(final String skillID)
     {
-    	final Map<String,Double> DV=p().skillMinManaExceptions;
-    	if(DV.containsKey(skillID.toUpperCase()))
-    		return DV.get(skillID.toUpperCase()).intValue();
-    	return Integer.MIN_VALUE;
+        final Map<String,Double> DV=p().skillMinManaExceptions;
+        if(DV.containsKey(skillID.toUpperCase()))
+            return DV.get(skillID.toUpperCase()).intValue();
+        return Integer.MIN_VALUE;
     }
     public static final int getMaxManaException(final String skillID)
     {
-    	final Map<String,Double> DV=p().skillMaxManaExceptions;
-    	if(DV.containsKey(skillID.toUpperCase()))
-    		return DV.get(skillID.toUpperCase()).intValue();
-    	return Integer.MIN_VALUE;
+        final Map<String,Double> DV=p().skillMaxManaExceptions;
+        if(DV.containsKey(skillID.toUpperCase()))
+            return DV.get(skillID.toUpperCase()).intValue();
+        return Integer.MIN_VALUE;
     }
 
     private static final double setExceptionCosts(final String val, final Map<String,Double> set)
     {
-    	if(val==null) return 0;
-    	set.clear();
-    	final Vector<String> V=CMParms.parseCommas(val,true);
-    	String s=null;
-    	double endVal=0;
-    	for(int v=0;v<V.size();v++)
-    	{
-    		s=(String)V.elementAt(v);
-    		if(CMath.isNumber(s)){ endVal=CMath.s_double(s); continue;}
-    		int x=s.indexOf(' ');
-    		if(CMath.isDouble(s.substring(x+1).trim()))
-    			set.put(s.substring(0,x).trim().toUpperCase(),Double.valueOf(CMath.s_double(s.substring(x+1).trim())));
-    	}
-    	return endVal;
+        if(val==null) return 0;
+        set.clear();
+        final Vector<String> V=CMParms.parseCommas(val,true);
+        String s=null;
+        double endVal=0;
+        for(int v=0;v<V.size();v++)
+        {
+            s=(String)V.elementAt(v);
+            if(CMath.isNumber(s)){ endVal=CMath.s_double(s); continue;}
+            int x=s.indexOf(' ');
+            if(CMath.isDouble(s.substring(x+1).trim()))
+                set.put(s.substring(0,x).trim().toUpperCase(),Double.valueOf(CMath.s_double(s.substring(x+1).trim())));
+        }
+        return endVal;
     }
 
     private static final String getRawListFileEntry(final String key) 
@@ -891,20 +891,20 @@ public class CMProps extends Properties
             {
                 if(rawListData==null)
                 {
-	                rawListData=new Properties();
-	                final String listFileName=CMProps.p().getProperty("LISTFILE");
-	                final CMFile F=new CMFile(listFileName,null,true);
-	                if(F.exists())
-	                {
-	                    try{
-	                        rawListData.load(new InputStreamReader(new ByteArrayInputStream(F.raw()), CMProps.getVar(CMProps.SYSTEM_CHARSETINPUT)));
-	                    } catch(IOException e){}
-	                }
-	                Resources.submitResource("PARSED_LISTFILE", rawListData);
-	                final Object[] set=p().sysLstFileLists; 
-	                for(int i=0;i<set.length;i++)
-	                	set[i]=null;
-	            }
+                    rawListData=new Properties();
+                    final String listFileName=CMProps.p().getProperty("LISTFILE");
+                    final CMFile F=new CMFile(listFileName,null,true);
+                    if(F.exists())
+                    {
+                        try{
+                            rawListData.load(new InputStreamReader(new ByteArrayInputStream(F.raw()), CMProps.getVar(CMProps.SYSTEM_CHARSETINPUT)));
+                        } catch(IOException e){}
+                    }
+                    Resources.submitResource("PARSED_LISTFILE", rawListData);
+                    final Object[] set=p().sysLstFileLists; 
+                    for(int i=0;i<set.length;i++)
+                        set[i]=null;
+                }
             }
         }
         final String val = rawListData.getProperty(key);
@@ -925,8 +925,8 @@ public class CMProps extends Properties
         if((var<0)||(var>=NUMLF_SYSTEM)) return new int[0];
         if(p().sysLstFileLists[var]==null)
         {
-        	final Vector<String> V=CMParms.parseCommas(getRawListFileEntry(SYSTEMLF_KEYS[var]), true);
-        	final int[] set=new int[V.size()];
+            final Vector<String> V=CMParms.parseCommas(getRawListFileEntry(SYSTEMLF_KEYS[var]), true);
+            final int[] set=new int[V.size()];
             for(int v=0;v<V.size();v++)
                 set[v]=CMath.s_int((String)V.elementAt(v));
             p().sysLstFileLists[var]=set;
@@ -939,13 +939,13 @@ public class CMProps extends Properties
         if((var<0)||(var>=NUMLF_SYSTEM)) return new Object[0][];
         if(p().sysLstFileLists[var]==null)
         {
-        	final String[] baseArray = CMParms.toStringArray(CMParms.parseCommas(getRawListFileEntry(SYSTEMLF_KEYS[var]),false));
-        	final Object[][] finalArray=new Object[baseArray.length][];
-        	for(int s=0;s<finalArray.length;s++)
-        		if((baseArray[s]==null)||(baseArray[s].length()==0))
-	        		finalArray[s]=new Object[]{""};
-	    		else
-	        		finalArray[s]=CMParms.toStringArray(CMParms.parseAny((String)baseArray[s], '|', false));
+            final String[] baseArray = CMParms.toStringArray(CMParms.parseCommas(getRawListFileEntry(SYSTEMLF_KEYS[var]),false));
+            final Object[][] finalArray=new Object[baseArray.length][];
+            for(int s=0;s<finalArray.length;s++)
+                if((baseArray[s]==null)||(baseArray[s].length()==0))
+                    finalArray[s]=new Object[]{""};
+                else
+                    finalArray[s]=CMParms.toStringArray(CMParms.parseAny((String)baseArray[s], '|', false));
             p().sysLstFileLists[var]=finalArray;
         }
         return (Object[][])p().sysLstFileLists[var];
@@ -959,17 +959,17 @@ public class CMProps extends Properties
             Vector<String> V=CMParms.parseSemicolons(getRawListFileEntry(SYSTEMLF_KEYS[var]),true);
             Object[][] subSet=new Object[V.size()][];
             for(int v=0;v<V.size();v++)
-            	subSet[v]=CMParms.toStringArray(CMParms.parseCommas((String)V.elementAt(v),false));
+                subSet[v]=CMParms.toStringArray(CMParms.parseCommas((String)V.elementAt(v),false));
             Object[][][] finalSet=new Object[subSet.length][][];
-        	for(int s=0;s<subSet.length;s++)
-        	{
-        		finalSet[s]=new Object[subSet[s].length][];
-            	for(int s1=0;s1<subSet[s].length;s1++)
-            		if((subSet[s][s1]==null)||(((String)subSet[s][s1]).length()==0))
-                		finalSet[s][s1]=new Object[]{""};
-            		else
-            			finalSet[s][s1]=CMParms.toStringArray(CMParms.parseAny((String)subSet[s][s1], '|', false));
-        	}
+            for(int s=0;s<subSet.length;s++)
+            {
+                finalSet[s]=new Object[subSet[s].length][];
+                for(int s1=0;s1<subSet[s].length;s1++)
+                    if((subSet[s][s1]==null)||(((String)subSet[s][s1]).length()==0))
+                        finalSet[s][s1]=new Object[]{""};
+                    else
+                        finalSet[s][s1]=CMParms.toStringArray(CMParms.parseAny((String)subSet[s][s1], '|', false));
+            }
             p().sysLstFileLists[var]=finalSet;
         }
         return (Object[][][])p().sysLstFileLists[var];
@@ -977,27 +977,27 @@ public class CMProps extends Properties
 
     public static final String getListFileValue(final int varCode, final int listIndex)
     {
-    	final Object[] set = getSLstFileVar(varCode)[listIndex];
-    	if(set.length==1) return (String)set[0];
-    	return (String)CMLib.dice().pick(set);
+        final Object[] set = getSLstFileVar(varCode)[listIndex];
+        if(set.length==1) return (String)set[0];
+        return (String)CMLib.dice().pick(set);
     }
     
     public static final String getListFileValueByHash(final int varCode, final int hash)
     {
-    	final Object[][] allVars = getSLstFileVar(varCode);
-    	final Object[] set = allVars[hash % allVars.length];
-    	if(set.length==1) return (String)set[0];
-    	return (String)CMLib.dice().pick(set);
+        final Object[][] allVars = getSLstFileVar(varCode);
+        final Object[] set = allVars[hash % allVars.length];
+        if(set.length==1) return (String)set[0];
+        return (String)CMLib.dice().pick(set);
     }
     
     public static final int getListFileSize(final int varCode)
     {
-    	return getSLstFileVar(varCode).length;
+        return getSLstFileVar(varCode).length;
     }
     
     public static final String getAnyListFileValue(final int varCode)
     {
-		return (String)CMLib.dice().doublePick(getSLstFileVar(varCode));
+        return (String)CMLib.dice().doublePick(getSLstFileVar(varCode));
     }
     
     public final void resetSystemVars()
@@ -1013,7 +1013,7 @@ public class CMProps extends Properties
         TICKS_PER_RLDAY=TICKS_PER_RLHOUR * 24;
         MILLIS_PER_MUDHOUR=getLong("MILLISPERMUDHOUR");
         if(MILLIS_PER_MUDHOUR < TIME_TICK)
-        	MILLIS_PER_MUDHOUR = 600000;
+            MILLIS_PER_MUDHOUR = 600000;
         
         setVar(SYSTEM_PRIVATERESOURCES,getStr("PRIVATERESOURCES"));
         setVar(SYSTEM_BADNAMES,getStr("BADNAMES"));
@@ -1043,7 +1043,7 @@ public class CMProps extends Properties
         setUpLowVar(SYSTEM_MUDDOMAIN,getStr("DOMAIN"));
         String adminEmail = getStr("ADMINEMAIL");
         if((adminEmail==null)||(adminEmail.trim().length()==0))
-    		adminEmail = getStr("I3EMAIL");
+            adminEmail = getStr("I3EMAIL");
         setVar(SYSTEM_ADMINEMAIL,adminEmail);
         setUpLowVar(SYSTEM_I3ROUTERS,getStr("I3ROUTERS"));
         setVar(SYSTEM_AUTOREACTION,getStr("AUTOREACTION"));
@@ -1057,7 +1057,7 @@ public class CMProps extends Properties
         setVar(SYSTEM_AUCTIONRATES,getStr("AUCTIONRATES","0,10,0.1%,10%,5%,1,168"));
         setUpLowVar(SYSTEM_DEFAULTPROMPT,getStr("DEFAULTPROMPT"));
         for(int i=0;i<NUMLF_SYSTEM;i++)
-        	sysLstFileLists[i]=null;
+            sysLstFileLists[i]=null;
         setVar(SYSTEM_EMOTEFILTER,getStr("EMOTEFILTER"));
         p().emoteFilter.clear();
         p().emoteFilter.addAll(CMParms.parse((getStr("EMOTEFILTER")).toUpperCase()));
@@ -1249,9 +1249,9 @@ public class CMProps extends Properties
         // initialized elsewhere
         if(getVar(CMProps.SYSTEM_MAILBOX)==null)
         {
-        	setVar(SYSTEM_MAILBOX, "");
+            setVar(SYSTEM_MAILBOX, "");
             setIntVar(SYSTEMI_MAXMAILBOX,0);
-    		setBoolVar(SYSTEMB_EMAILFORWARDING,false);
+            setBoolVar(SYSTEMB_EMAILFORWARDING,false);
         }
 
         CMLib.propertiesLoaded();
@@ -1315,9 +1315,9 @@ public class CMProps extends Properties
                 }
                 else
                 if(fdex<(filterStr.length()-1))
-                	fdex=upp.indexOf(filterStr,fdex+1);
+                    fdex=upp.indexOf(filterStr,fdex+1);
                 else
-                	fdex=-1;
+                    fdex=-1;
             }
         }
         if(newMsg!=null) return newMsg.toString();
@@ -1386,7 +1386,7 @@ public class CMProps extends Properties
     }
 
     @SuppressWarnings("unchecked")
-	public static final String getHashedMXPImage(final String key)
+    public static final String getHashedMXPImage(final String key)
     {
         Map<String,String> H=(Map)Resources.getResource("MXP_IMAGES");
         if(H==null) getDefaultMXPImage(null);
@@ -1533,9 +1533,9 @@ public class CMProps extends Properties
         {
             image=getHashedMXPImage(H,"RESOURCE_"+RawMaterial.CODES.NAME(((RawMaterial)O).material()));
             if(image==null)
-	            image=getHashedMXPImage(H,"RESOURCE_"+RawMaterial.MATERIAL_DESCS[(((RawMaterial)O).material()&RawMaterial.MATERIAL_MASK)>>8]);
+                image=getHashedMXPImage(H,"RESOURCE_"+RawMaterial.MATERIAL_DESCS[(((RawMaterial)O).material()&RawMaterial.MATERIAL_MASK)>>8]);
             if(image==null) 
-            	image=getHashedMXPImage(H,"RESOURCE_*");
+                image=getHashedMXPImage(H,"RESOURCE_*");
         }
         else
         if(O instanceof DoorKey)
@@ -1550,7 +1550,7 @@ public class CMProps extends Properties
         else
         if(O instanceof MagicDust)
         {
-        	List<Ability> V=((MagicDust)O).getSpells();
+            List<Ability> V=((MagicDust)O).getSpells();
             if(V.size()>0)
                 image=getHashedMXPImage(H,"DUST_"+((Ability)V.get(0)).ID().toUpperCase());
             if(image==null) image=getHashedMXPImage(H,"DUST_*");
@@ -1573,7 +1573,7 @@ public class CMProps extends Properties
         else
         if(O instanceof Pill)
         {
-        	List<Ability> V=((Pill)O).getSpells();
+            List<Ability> V=((Pill)O).getSpells();
             if(V.size()>0)
                 image=getHashedMXPImage(H,"PILL_"+((Ability)V.get(0)).ID().toUpperCase());
             if(image==null) image=getHashedMXPImage(H,"PILL_*");
@@ -1581,7 +1581,7 @@ public class CMProps extends Properties
         else
         if(O instanceof Potion)
         {
-        	List<Ability> V=((Potion)O).getSpells();
+            List<Ability> V=((Potion)O).getSpells();
             if(V.size()>0)
                 image=getHashedMXPImage(H,"POTION_"+((Ability)V.get(0)).ID().toUpperCase());
             if(image==null) image=getHashedMXPImage(H,"POTION_*");
@@ -1592,7 +1592,7 @@ public class CMProps extends Properties
         else
         if(O instanceof Scroll)
         {
-        	List<Ability> V=((Scroll)O).getSpells();
+            List<Ability> V=((Scroll)O).getSpells();
             if(V.size()>0)
                 image=getHashedMXPImage(H,"SCROLL_"+((Ability)V.get(0)).ID().toUpperCase());
             if(image==null) image=getHashedMXPImage(H,"SCROLL_*");
@@ -1715,32 +1715,32 @@ public class CMProps extends Properties
 
     public static final long getTickMillis()
     {
-    	return p().TIME_TICK;
+        return p().TIME_TICK;
     }
     
     public static final double getTickMillisD()
     {
-    	return p().TIME_TICK_DOUBLE;
+        return p().TIME_TICK_DOUBLE;
     }
     
     public static final long getMillisPerMudHour()
     {
-    	return p().MILLIS_PER_MUDHOUR;
+        return p().MILLIS_PER_MUDHOUR;
     }
     
     public static final long getTicksPerMinute()
     {
-    	return p().TICKS_PER_RLMIN;
+        return p().TICKS_PER_RLMIN;
     }
     
     public static final long getTicksPerHour()
     {
-    	return p().TICKS_PER_RLHOUR;
+        return p().TICKS_PER_RLHOUR;
     }
     
     public static final long getTicksPerDay()
     {
-    	return p().TICKS_PER_RLDAY;
+        return p().TICKS_PER_RLDAY;
     }
     
     public static final String msp(final String soundName, final int priority)
@@ -1753,7 +1753,7 @@ public class CMProps extends Properties
 
     public static final List<String> loadEnumerablePage(final String iniFile)
     {
-    	final StringBuffer str=new CMFile(iniFile,null,true).text();
+        final StringBuffer str=new CMFile(iniFile,null,true).text();
         if((str==null)||(str.length()==0)) return new Vector<String>();
         final List<String> page=Resources.getFileLineVector(str);
         for(int p=0;p<(page.size()-1);p++)
@@ -1790,11 +1790,11 @@ public class CMProps extends Properties
 
     public static final List<String> getStatCodeExtensions(Class<?> C, final String ID)
     {
-    	final String[][] statCodeExtensions = p().statCodeExtensions;
-    	if( statCodeExtensions == null) return null;
-    	final List<String> V=new Vector<String>();
+        final String[][] statCodeExtensions = p().statCodeExtensions;
+        if( statCodeExtensions == null) return null;
+        final List<String> V=new Vector<String>();
         String myClassName=ID;
-    	V.add(myClassName.toUpperCase());
+        V.add(myClassName.toUpperCase());
         for(;C!=null;C=C.getSuperclass())
         {
             myClassName=C.getName();
@@ -1806,40 +1806,40 @@ public class CMProps extends Properties
         }
         for(final Iterator<String> v=V.iterator();v.hasNext();)
         {
-        	myClassName = (String)v.next();
-        	for(int i=0;i<statCodeExtensions.length;i++)
-        		if(statCodeExtensions[i][0].equals(myClassName))
-        			return CMParms.parseCommas(statCodeExtensions[i][1],true);
+            myClassName = (String)v.next();
+            for(int i=0;i<statCodeExtensions.length;i++)
+                if(statCodeExtensions[i][0].equals(myClassName))
+                    return CMParms.parseCommas(statCodeExtensions[i][1],true);
         }
-    	return null;
+        return null;
     }
     
     public static final List<String> getStatCodeExtentions(final CMObject O)
     {
-    	return getStatCodeExtensions(O.getClass(),O.ID());
+        return getStatCodeExtensions(O.getClass(),O.ID());
     }
 
     public static final String[] getExtraStatCodesHolder(final CMObject O)
     {
-    	final List<String> addedStatCodesV = getStatCodeExtentions(O);
-    	if(addedStatCodesV == null) return null;
-    	final String[] statHolder= new String[addedStatCodesV.size()];
-    	for(int s=0;s<statHolder.length;s++)
-    		statHolder[s]="";
-    	return statHolder;
+        final List<String> addedStatCodesV = getStatCodeExtentions(O);
+        if(addedStatCodesV == null) return null;
+        final String[] statHolder= new String[addedStatCodesV.size()];
+        for(int s=0;s<statHolder.length;s++)
+            statHolder[s]="";
+        return statHolder;
     }
 
     public static final String[] getStatCodesList(final String[] baseStatCodes, final CMObject O)
     {
-    	final List<String> addedStatCodesV = getStatCodeExtentions(O);
-    	if(addedStatCodesV == null)
-    		return baseStatCodes;
+        final List<String> addedStatCodesV = getStatCodeExtentions(O);
+        if(addedStatCodesV == null)
+            return baseStatCodes;
 
-    	final String[] newStatCodes = new String[baseStatCodes.length + addedStatCodesV.size()];
-		for(int x=0;x<baseStatCodes.length;x++)
-			newStatCodes[x] = baseStatCodes[x];
-		for(int x=0;x<addedStatCodesV.size();x++)
-			newStatCodes[x+baseStatCodes.length] = (String)addedStatCodesV.get(x);
-		return newStatCodes;
+        final String[] newStatCodes = new String[baseStatCodes.length + addedStatCodesV.size()];
+        for(int x=0;x<baseStatCodes.length;x++)
+            newStatCodes[x] = baseStatCodes[x];
+        for(int x=0;x<addedStatCodesV.size();x++)
+            newStatCodes[x+baseStatCodes.length] = (String)addedStatCodesV.get(x);
+        return newStatCodes;
     }
 }

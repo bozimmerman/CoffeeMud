@@ -185,6 +185,7 @@ public class MUD extends Thread implements MudHost
             String dbUser=page.getStr("DBUSER");
             String dbPass=page.getStr("DBPASS");
             int dbConns=page.getInt("DBCONNECTIONS");
+            int dbPingIntMins=page.getInt("DBPINGINTERVALMINS");
             if(dbConns == 0)
             {
                 Log.errOut(Thread.currentThread().getName(),"Fatal error: DBCONNECTIONS in INI file is "+dbConns);
@@ -194,7 +195,7 @@ public class MUD extends Thread implements MudHost
             boolean useQue=!CMSecurity.isDisabled(CMSecurity.DisFlag.DBERRORQUE);
             boolean useQueStart=!CMSecurity.isDisabled(CMSecurity.DisFlag.DBERRORQUESTART);
             CMProps.setUpLowVar(CMProps.SYSTEM_MUDSTATUS,"Booting: connecting to database");
-            currentDBconnector=new DBConnector(dbClass,dbService,dbUser,dbPass,dbConns,dbReuse,useQue,useQueStart);
+            currentDBconnector=new DBConnector(dbClass,dbService,dbUser,dbPass,dbConns,dbPingIntMins,dbReuse,useQue,useQueStart);
             currentDBconnector.reconnect();
             CMLib.registerLibrary(new DBInterface(currentDBconnector,CMParms.parseCommas(CMProps.getVar(CMProps.SYSTEM_PRIVATERESOURCES).toUpperCase(),true)));
 

@@ -453,8 +453,14 @@ public class DBInterface implements DatabaseEngine
     public String errorStatus()
     {return DB.errorStatus().toString();}
     
-    public void resetconnections()
+    public void resetConnections()
     {DB.reconnect();}
+    
+    public int pingAllConnections(final long overrideTimeoutIntervalMillis)
+    {   return DB.pingAllConnections("SELECT 1 FROM CMCHAR", overrideTimeoutIntervalMillis); }
+    
+    public int pingAllConnections()
+    {   return DB.pingAllConnections("SELECT 1 FROM CMCHAR"); }
     
     public void DBCreatePoll(String name, String player, String subject, String description, String optionXML, int flag, String qualZapper, String results, long expiration)
     {PollLoader.DBCreate(name,player,subject,description,optionXML,flag,qualZapper,results,expiration);}

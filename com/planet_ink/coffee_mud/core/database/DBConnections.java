@@ -254,6 +254,45 @@ public class DBConnections
         return num;
     }
 
+    public int numAvailable()
+    {
+        int num=0;
+        for(DBConnection conn : connections)
+            if(!conn.inUse())
+                num++;
+        return num;
+    }
+
+    /**
+     * Pings all connections not currently in use.
+     * @param querySql the query to use as a ping
+     */
+    public int pingAllConnections(final String querySql, final long usageTimeoutMillis)
+    {
+        final LinkedList<DBConnection> fetched = new LinkedList<DBConnection>();
+        int numPinged=0;
+        while(numAvailable()>0)
+        {
+            DBConnection DB=DBFetch();
+            if(DB!=null)
+            {
+                fetched.add(DB);
+                if((System.currentTimeMillis()-DB.getLastQueryTime())> usageTimeoutMillis)
+                {
+                    try {
+                        DB.query(querySql);
+                        numPinged++;
+                    } catch (SQLException e) {
+                        Log.errOut("DBConnections",e.getMessage());
+                    }
+                }
+            }
+        }
+        for(DBConnection DB : fetched)
+            DBDone(DB);
+        return numPinged;
+    }
+
     /**
      * Fetch a single, not in use DBConnection object.
      * You can then call DBConnection.query and DBConnection.update on this object.

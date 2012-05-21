@@ -1682,9 +1682,17 @@ public class Modify extends StdCommand
             try
             {
                 String sql=CMParms.combine(commands,2);
-                mob.tell("SQL Statement: "+sql);
-                int resp=CMLib.database().DBRawExecute(sql.replace('`','\''));
-                mob.tell("Command completed. Response code: "+resp);
+                if(sql.equals("ping"))
+                {
+                    int num=CMLib.database().pingAllConnections(1000);
+                    mob.tell("Pings completed="+num+".");
+                }
+                else
+                {
+                    mob.tell("SQL Statement: "+sql);
+                    int resp=CMLib.database().DBRawExecute(sql.replace('`','\''));
+                    mob.tell("Command completed. Response code: "+resp);
+                }
             }
             catch(Exception e)
             {
