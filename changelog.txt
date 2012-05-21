@@ -2368,4 +2368,5 @@ ruthless programmer, and sentenced to a quick death.
 # Build 5.7.7 Release ??/??/2012
 1. MUDGrinder area editor has easier to manage parent/child areas & subops -- the old multiselect thing was unbearable.
 2. GenBook now uses the Message Maker (from the SHELL command) to add book chapters.
+3. (Internal) Database connections can now be kept alive with pings.  See new coffeemud.ini entry: DBPINGINTERVALMINS
 
