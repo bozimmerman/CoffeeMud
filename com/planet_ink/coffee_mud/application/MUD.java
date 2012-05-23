@@ -709,7 +709,8 @@ public class MUD extends Thread implements MudHost
                             try {
                                 if((A!=null)&&(A.canBeUninvoked()))
                                     A.unInvoke();
-                                M.delEffect(A);
+                                if((A!=null)&&(!A.isSavable()))
+                                    M.delEffect(A);
                             } catch(Exception ex) {Log.errOut("MUD",ex);}
                         }
                     }

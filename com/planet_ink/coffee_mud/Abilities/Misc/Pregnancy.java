@@ -73,6 +73,7 @@ public class Pregnancy extends StdAbility
 	public String[] triggerStrings(){return triggerStrings;}
 	public boolean canBeUninvoked(){return false;}
 	public boolean isAutoInvoked(){return false;}
+    public boolean isSavable(){ return true; }
 	public int classificationCode(){return Ability.ACODE_PROPERTY;}
     protected int ticksInLabor=0;
 
