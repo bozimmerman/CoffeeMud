@@ -294,7 +294,7 @@ RAND_PROG 50
 	ELSE
 		YELL $INVADER_SCREAM
 		IF !AFFECTED($i Skill_Track)
-			kill all
+			mpkill $R
 		ENDIF
 	ENDIF
 ~
