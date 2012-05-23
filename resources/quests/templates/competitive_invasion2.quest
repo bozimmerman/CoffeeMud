@@ -292,9 +292,12 @@ RAND_PROG 50
 			MPWALKTO $%INAREA($0)%
 		ENDIF
 	ELSE
-		YELL $INVADER_SCREAM
 		IF !AFFECTED($i Skill_Track)
-			mpkill $R
+            mpargset $1 $C
+            if EVAL( '$%GSTAT($1 NAME)%' != '$%GSTAT($i NAME)%' ) 
+                YELL $INVADER_SCREAM
+                mpkill $1
+            endif
 		ENDIF
 	ENDIF
 ~
