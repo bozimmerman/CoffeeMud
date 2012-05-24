@@ -70,12 +70,10 @@ public class Factions extends StdLibrary implements FactionManager
         if(FR2==null) return false;
         return FR2.codeName().equalsIgnoreCase(FR.codeName());
     }
-    public String rangeDescription(String rangeCodeName, String andOr)
+    public String rangeDescription(Faction.FactionRange FR, String andOr)
     {
-        Faction F=(Faction)rangeCodeNames().get(rangeCodeName.toUpperCase());
-        if(F==null) return "";
-        Faction.FactionRange FR=(Faction.FactionRange)F.fetchRange(rangeCodeName.toUpperCase().trim());
         if(FR==null) return "";
+        Faction F=FR.getFaction();
         Vector relevantFactions=new Vector();
         for(Enumeration e=F.ranges();e.hasMoreElements();)
         {

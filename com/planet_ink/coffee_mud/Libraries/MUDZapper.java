@@ -560,6 +560,29 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
         return false;
     }
 
+    protected Faction.FactionRange getRange(final String s)
+    {
+        Faction F;
+        int x=s.indexOf('.');
+        if(x>0)
+        {
+            F=CMLib.factions().getFaction(s.substring(0,x));
+            if(F==null) F=CMLib.factions().getFactionByName(s.substring(0,x));
+        }
+        else
+        {
+            F=CMLib.factions().getFactionByRangeCodeName(s);
+            x=-1;
+        }
+        if(F!=null)
+        {
+            Faction.FactionRange FR=F.fetchRange(s.substring(x+1));
+            if(FR!=null)
+                return FR;
+        }
+        return null;
+    }
+
     protected boolean fromHereEndsWith(final Vector V, final char plusMinus, final int fromHere, final String find)
     {
         for(int v=fromHere;v<V.size();v++)
@@ -1987,11 +2010,14 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                         final String str2=(String)V.elementAt(v2);
                         if(zapCodes.containsKey(str2))
                             break;
-                        if((str2.startsWith("+"))
-                        &&(CMLib.factions().isRangeCodeName(str2.substring(1))))
+                        if(str2.startsWith("+"))
                         {
-                            String desc=CMLib.factions().rangeDescription(str2.substring(1),"or ");
-                            if(desc.length()>0) buf.append(desc+"; ");
+                            Faction.FactionRange FR=getRange(str2.substring(1).toUpperCase().trim());
+                            if(FR!=null)
+                            {
+                                String desc=CMLib.factions().rangeDescription(FR,"or ");
+                                if(desc.length()>0) buf.append(desc+"; ");
+                            }
                         }
                     }
                     if(buf.toString().endsWith(", "))
@@ -2077,10 +2103,10 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                 if(str.startsWith("-NEUTER"))
                     buf.append((skipFirstWord?"Only ":"Allows only ")+"Males and Females.  ");
                 buf.append(levelHelp(str,'-',"Disallows "));
-                if((str.startsWith("-"))
-                &&(CMLib.factions().isRangeCodeName(str.substring(1))))
+                if(str.startsWith("-"))
                 {
-                    String desc=CMLib.factions().rangeDescription(str.substring(1),"and ");
+                    Faction.FactionRange FR=getRange(str.substring(1));
+                    String desc=CMLib.factions().rangeDescription(FR,"and ");
                     if(desc.length()>0) buf.append("Disallows "+desc);
                 }
             }
@@ -2553,25 +2579,11 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                             break;
                         }
                         else
-                        if((str2.startsWith(plusMinus))
-                        &&(CMLib.factions().isRangeCodeName(str2.substring(1))))
+                        if(str2.startsWith(plusMinus))
                         {
-                            Faction F;
-                            final String str3=str2.substring(1).toUpperCase().trim();
-                            int x=str3.indexOf('.');
-                            if(x>0)
-                                F=CMLib.factions().getFaction(str3.substring(0,x));
-                            else
-                            {
-                                F=CMLib.factions().getFactionByRangeCodeName(str3);
-                                x=-1;
-                            }
-                            if(F!=null)
-                            {
-                                Faction.FactionRange FR=F.fetchRange(str3.substring(x+1));
-                                if(FR!=null)
-                                    parms.addElement(FR);
-                            }
+                            Faction.FactionRange FR=getRange(str2.substring(1).toUpperCase().trim());
+                            if(FR!=null)
+                                parms.addElement(FR);
                         }
                         v=V.size();
                     }
