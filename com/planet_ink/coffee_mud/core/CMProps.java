@@ -1816,7 +1816,13 @@ public class CMProps extends Properties
     
     public static final List<String> getStatCodeExtentions(final CMObject O)
     {
-        return getStatCodeExtensions(O.getClass(),O.ID());
+        String name;
+        try {
+            name = O.ID();
+        }catch (NullPointerException e) {
+            name = O.getClass().getSimpleName();
+        }
+        return getStatCodeExtensions(O.getClass(), name);
     }
 
     public static final String[] getExtraStatCodesHolder(final CMObject O)
