@@ -287,10 +287,10 @@ RAND_PROG 50
 	ELSE
 		IF !AFFECTED($i Skill_Track)
 	        mpargset $1 $C
-	        if EVAL( '$%GSTAT($1 NAME)%' != '$%GSTAT($i NAME)%' ) 
+	        IF !QUESTMOB($1 *)
                 YELL $INVADER_SCREAM
-			    mpkill $1
-			endif
+                mpkill $1
+			ENDIF
 		ENDIF
 	ENDIF
 ~
