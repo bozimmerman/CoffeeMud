@@ -38,7 +38,7 @@ import java.util.*;
 public class MUDZapper extends StdLibrary implements MaskingLibrary
 {
     public String ID(){return "MUDZapper";}
-	public Hashtable<String,Integer> zapCodes=new Hashtable<String,Integer>();
+    public Hashtable<String,Integer> zapCodes=new Hashtable<String,Integer>();
 
     protected MOB nonCrashingMOB=null;
     protected MOB nonCrashingMOB(){
@@ -50,11 +50,11 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 
     protected Item nonCrashingItem=null;
     protected Item nonCrashingItem(final MOB mob){
-    	if(mob.numItems()>0)
-    	{
-	    	Item I = mob.getItem(0);
-	    	if(I!=null) return I;
-    	}
+        if(mob.numItems()>0)
+        {
+            Item I = mob.getItem(0);
+            if(I!=null) return I;
+        }
         if(nonCrashingItem!=null)
             return nonCrashingItem;
         nonCrashingItem=CMClass.getItem("StdItem");
@@ -68,45 +68,45 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
     protected volatile long savedClassUpdateTime=0;
     public synchronized void buildSavedClasses()
     {
-    	if(savedClassUpdateTime==CMClass.getLastClassUpdatedTime())
-    		return;
-    	List<SavedClass> tempSavedCharClasses=new LinkedList<SavedClass>();
-    	List<SavedRace> tempSavedRaces=new LinkedList<SavedRace>();
-    	for(final Enumeration<CharClass> c=CMClass.charClasses();c.hasMoreElements();)
-    	{
-    		final CharClass C=c.nextElement();
-    		tempSavedCharClasses.add(new SavedClass(C,4));
-    	}
-    	for(final Enumeration<Race> r=CMClass.races();r.hasMoreElements();)
-    	{
-    		final Race R=r.nextElement();
-    		tempSavedRaces.add(new SavedRace(R,6));
-    	}
-    	savedCharClasses=tempSavedCharClasses;
-    	savedRaces=tempSavedRaces;
-    	savedClassUpdateTime=CMClass.getLastClassUpdatedTime();
+        if(savedClassUpdateTime==CMClass.getLastClassUpdatedTime())
+            return;
+        List<SavedClass> tempSavedCharClasses=new LinkedList<SavedClass>();
+        List<SavedRace> tempSavedRaces=new LinkedList<SavedRace>();
+        for(final Enumeration<CharClass> c=CMClass.charClasses();c.hasMoreElements();)
+        {
+            final CharClass C=c.nextElement();
+            tempSavedCharClasses.add(new SavedClass(C,4));
+        }
+        for(final Enumeration<Race> r=CMClass.races();r.hasMoreElements();)
+        {
+            final Race R=r.nextElement();
+            tempSavedRaces.add(new SavedRace(R,6));
+        }
+        savedCharClasses=tempSavedCharClasses;
+        savedRaces=tempSavedRaces;
+        savedClassUpdateTime=CMClass.getLastClassUpdatedTime();
     }
     
     public final List<SavedClass> charClasses()
     {
-    	if(savedClassUpdateTime!=CMClass.getLastClassUpdatedTime())
-    		buildSavedClasses();
-    	return savedCharClasses;
+        if(savedClassUpdateTime!=CMClass.getLastClassUpdatedTime())
+            buildSavedClasses();
+        return savedCharClasses;
     }
     public final List<SavedRace> races()
     {
-    	if(savedClassUpdateTime!=CMClass.getLastClassUpdatedTime())
-    		buildSavedClasses();
-    	return savedRaces;
+        if(savedClassUpdateTime!=CMClass.getLastClassUpdatedTime())
+            buildSavedClasses();
+        return savedRaces;
     }
     
-	public CompiledZapperMask getPreCompiledMask(final String str)
+    public CompiledZapperMask getPreCompiledMask(final String str)
     {
         Hashtable<String,CompiledZapperMask> H=(Hashtable<String,CompiledZapperMask>)Resources.getResource("SYSTEM_HASHED_MASKS");
         if(H==null)
         { 
-        	H=new Hashtable<String,CompiledZapperMask>(); 
-        	Resources.submitResource("SYSTEM_HASHED_MASKS",H); 
+            H=new Hashtable<String,CompiledZapperMask>(); 
+            Resources.submitResource("SYSTEM_HASHED_MASKS",H); 
         }
         final String lowerStr=(str==null)?"":str.toLowerCase().trim();
         CompiledZapperMask V=H.get(lowerStr);
@@ -119,91 +119,91 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
     }
 
     public Hashtable<String,Integer> getMaskCodes()
-	{
-		if(zapCodes.size()==0)
-		{
-			zapCodes.put("-CLASS",Integer.valueOf(0));
-			zapCodes.put("-CLASSES",Integer.valueOf(0));
-			zapCodes.put("-BASECLASS",Integer.valueOf(1));
-			zapCodes.put("-BASECLASSES",Integer.valueOf(1));
-			zapCodes.put("-RACE",Integer.valueOf(2));
-			zapCodes.put("-RACES",Integer.valueOf(2));
-			zapCodes.put("-ALIGNMENT",Integer.valueOf(3));
-			zapCodes.put("-ALIGNMENTS",Integer.valueOf(3));
-			zapCodes.put("-ALIGN",Integer.valueOf(3));
-			zapCodes.put("-GENDER",Integer.valueOf(4));
-			zapCodes.put("-GENDERS",Integer.valueOf(4));
-			zapCodes.put("-LEVEL",Integer.valueOf(5));
-			zapCodes.put("-LEVELS",Integer.valueOf(5));
-			zapCodes.put("-CLASSLEVEL",Integer.valueOf(6));
-			zapCodes.put("-CLASSLEVELS",Integer.valueOf(6));
-			zapCodes.put("-TATTOOS",Integer.valueOf(7));
-			zapCodes.put("-TATTOO",Integer.valueOf(7));
-			zapCodes.put("+TATTOOS",Integer.valueOf(8));
-			zapCodes.put("+TATTOO",Integer.valueOf(8));
-			zapCodes.put("-NAME",Integer.valueOf(9));
-			zapCodes.put("-NAMES",Integer.valueOf(9));
-			zapCodes.put("-PLAYER",Integer.valueOf(10));
-			zapCodes.put("-NPC",Integer.valueOf(11));
-			zapCodes.put("-MOB",Integer.valueOf(11));
-			zapCodes.put("-RACECAT",Integer.valueOf(12));
-			zapCodes.put("-RACECATS",Integer.valueOf(12));
-			zapCodes.put("+RACECAT",Integer.valueOf(13));
-			zapCodes.put("+RACECATS",Integer.valueOf(13));
-			zapCodes.put("-CLAN",Integer.valueOf(14));
-			zapCodes.put("-CLANS",Integer.valueOf(14));
-			zapCodes.put("+CLAN",Integer.valueOf(15));
-			zapCodes.put("+CLANS",Integer.valueOf(15));
-			zapCodes.put("+NAME",Integer.valueOf(16));
-			zapCodes.put("+NAMES",Integer.valueOf(16));
-			zapCodes.put("-ANYCLASS",Integer.valueOf(17));
-			zapCodes.put("+ANYCLASS",Integer.valueOf(18));
-			zapCodes.put("+ADJSTR",Integer.valueOf(19));
-			zapCodes.put("+ADJINT",Integer.valueOf(20));
-			zapCodes.put("+ADJWIS",Integer.valueOf(21));
-			zapCodes.put("+ADJDEX",Integer.valueOf(22));
-			zapCodes.put("+ADJCON",Integer.valueOf(23));
-			zapCodes.put("+ADJCHA",Integer.valueOf(24));
-			zapCodes.put("+ADJSTRENGTH",Integer.valueOf(19));
-			zapCodes.put("+ADJINTELLIGENCE",Integer.valueOf(20));
-			zapCodes.put("+ADJWISDOM",Integer.valueOf(21));
-			zapCodes.put("+ADJDEXTERITY",Integer.valueOf(22));
-			zapCodes.put("+ADJCONSTITUTION",Integer.valueOf(23));
-			zapCodes.put("+ADJCHARISMA",Integer.valueOf(24));
-			zapCodes.put("-ADJSTR",Integer.valueOf(25));
-			zapCodes.put("-ADJSTRENGTH",Integer.valueOf(25));
-			zapCodes.put("-ADJINT",Integer.valueOf(26));
-			zapCodes.put("-ADJINTELLIGENCE",Integer.valueOf(26));
-			zapCodes.put("-ADJWIS",Integer.valueOf(27));
-			zapCodes.put("-ADJWISDOM",Integer.valueOf(27));
-			zapCodes.put("-ADJDEX",Integer.valueOf(28));
-			zapCodes.put("-ADJDEXTERITY",Integer.valueOf(28));
-			zapCodes.put("-ADJCON",Integer.valueOf(29));
-			zapCodes.put("-ADJCONSTITUTION",Integer.valueOf(29));
-			zapCodes.put("-ADJCHA",Integer.valueOf(30));
-			zapCodes.put("-ADJCHARISMA",Integer.valueOf(30));
-			zapCodes.put("-AREA",Integer.valueOf(31));
+    {
+        if(zapCodes.size()==0)
+        {
+            zapCodes.put("-CLASS",Integer.valueOf(0));
+            zapCodes.put("-CLASSES",Integer.valueOf(0));
+            zapCodes.put("-BASECLASS",Integer.valueOf(1));
+            zapCodes.put("-BASECLASSES",Integer.valueOf(1));
+            zapCodes.put("-RACE",Integer.valueOf(2));
+            zapCodes.put("-RACES",Integer.valueOf(2));
+            zapCodes.put("-ALIGNMENT",Integer.valueOf(3));
+            zapCodes.put("-ALIGNMENTS",Integer.valueOf(3));
+            zapCodes.put("-ALIGN",Integer.valueOf(3));
+            zapCodes.put("-GENDER",Integer.valueOf(4));
+            zapCodes.put("-GENDERS",Integer.valueOf(4));
+            zapCodes.put("-LEVEL",Integer.valueOf(5));
+            zapCodes.put("-LEVELS",Integer.valueOf(5));
+            zapCodes.put("-CLASSLEVEL",Integer.valueOf(6));
+            zapCodes.put("-CLASSLEVELS",Integer.valueOf(6));
+            zapCodes.put("-TATTOOS",Integer.valueOf(7));
+            zapCodes.put("-TATTOO",Integer.valueOf(7));
+            zapCodes.put("+TATTOOS",Integer.valueOf(8));
+            zapCodes.put("+TATTOO",Integer.valueOf(8));
+            zapCodes.put("-NAME",Integer.valueOf(9));
+            zapCodes.put("-NAMES",Integer.valueOf(9));
+            zapCodes.put("-PLAYER",Integer.valueOf(10));
+            zapCodes.put("-NPC",Integer.valueOf(11));
+            zapCodes.put("-MOB",Integer.valueOf(11));
+            zapCodes.put("-RACECAT",Integer.valueOf(12));
+            zapCodes.put("-RACECATS",Integer.valueOf(12));
+            zapCodes.put("+RACECAT",Integer.valueOf(13));
+            zapCodes.put("+RACECATS",Integer.valueOf(13));
+            zapCodes.put("-CLAN",Integer.valueOf(14));
+            zapCodes.put("-CLANS",Integer.valueOf(14));
+            zapCodes.put("+CLAN",Integer.valueOf(15));
+            zapCodes.put("+CLANS",Integer.valueOf(15));
+            zapCodes.put("+NAME",Integer.valueOf(16));
+            zapCodes.put("+NAMES",Integer.valueOf(16));
+            zapCodes.put("-ANYCLASS",Integer.valueOf(17));
+            zapCodes.put("+ANYCLASS",Integer.valueOf(18));
+            zapCodes.put("+ADJSTR",Integer.valueOf(19));
+            zapCodes.put("+ADJINT",Integer.valueOf(20));
+            zapCodes.put("+ADJWIS",Integer.valueOf(21));
+            zapCodes.put("+ADJDEX",Integer.valueOf(22));
+            zapCodes.put("+ADJCON",Integer.valueOf(23));
+            zapCodes.put("+ADJCHA",Integer.valueOf(24));
+            zapCodes.put("+ADJSTRENGTH",Integer.valueOf(19));
+            zapCodes.put("+ADJINTELLIGENCE",Integer.valueOf(20));
+            zapCodes.put("+ADJWISDOM",Integer.valueOf(21));
+            zapCodes.put("+ADJDEXTERITY",Integer.valueOf(22));
+            zapCodes.put("+ADJCONSTITUTION",Integer.valueOf(23));
+            zapCodes.put("+ADJCHARISMA",Integer.valueOf(24));
+            zapCodes.put("-ADJSTR",Integer.valueOf(25));
+            zapCodes.put("-ADJSTRENGTH",Integer.valueOf(25));
+            zapCodes.put("-ADJINT",Integer.valueOf(26));
+            zapCodes.put("-ADJINTELLIGENCE",Integer.valueOf(26));
+            zapCodes.put("-ADJWIS",Integer.valueOf(27));
+            zapCodes.put("-ADJWISDOM",Integer.valueOf(27));
+            zapCodes.put("-ADJDEX",Integer.valueOf(28));
+            zapCodes.put("-ADJDEXTERITY",Integer.valueOf(28));
+            zapCodes.put("-ADJCON",Integer.valueOf(29));
+            zapCodes.put("-ADJCONSTITUTION",Integer.valueOf(29));
+            zapCodes.put("-ADJCHA",Integer.valueOf(30));
+            zapCodes.put("-ADJCHARISMA",Integer.valueOf(30));
+            zapCodes.put("-AREA",Integer.valueOf(31));
             zapCodes.put("-AREAS",Integer.valueOf(31));
-			zapCodes.put("+AREA",Integer.valueOf(32));
+            zapCodes.put("+AREA",Integer.valueOf(32));
             zapCodes.put("+AREAS",Integer.valueOf(32));
-			zapCodes.put("+ITEM",Integer.valueOf(33));
+            zapCodes.put("+ITEM",Integer.valueOf(33));
             zapCodes.put("-ITEM",Integer.valueOf(33));
-			zapCodes.put("+CLASS",Integer.valueOf(34));  // for compiled use ONLY
-			zapCodes.put("+ALIGNMENT",Integer.valueOf(35));  // for compiled use ONLY
-			zapCodes.put("+GENDER",Integer.valueOf(36));  // for compiled use ONLY
-			zapCodes.put("+LVLGR",Integer.valueOf(37));  // for compiled use ONLY
-			zapCodes.put("+LVLGE",Integer.valueOf(38));  // for compiled use ONLY
-			zapCodes.put("+LVLLT",Integer.valueOf(39));  // for compiled use ONLY
-			zapCodes.put("+LVLLE",Integer.valueOf(40));  // for compiled use ONLY
-			zapCodes.put("+LVLEQ",Integer.valueOf(41));  // for compiled use ONLY
-			zapCodes.put("+EFFECTS",Integer.valueOf(42));
-			zapCodes.put("+EFFECT",Integer.valueOf(42));
-			zapCodes.put("-EFFECTS",Integer.valueOf(43));
-			zapCodes.put("-EFFECT",Integer.valueOf(43));
-			zapCodes.put("-DEITY",Integer.valueOf(44));
-			zapCodes.put("+DEITY",Integer.valueOf(45));
-			zapCodes.put("-FACTION",Integer.valueOf(46));
-			zapCodes.put("+FACTION",Integer.valueOf(47));
+            zapCodes.put("+CLASS",Integer.valueOf(34));  // for compiled use ONLY
+            zapCodes.put("+ALIGNMENT",Integer.valueOf(35));  // for compiled use ONLY
+            zapCodes.put("+GENDER",Integer.valueOf(36));  // for compiled use ONLY
+            zapCodes.put("+LVLGR",Integer.valueOf(37));  // for compiled use ONLY
+            zapCodes.put("+LVLGE",Integer.valueOf(38));  // for compiled use ONLY
+            zapCodes.put("+LVLLT",Integer.valueOf(39));  // for compiled use ONLY
+            zapCodes.put("+LVLLE",Integer.valueOf(40));  // for compiled use ONLY
+            zapCodes.put("+LVLEQ",Integer.valueOf(41));  // for compiled use ONLY
+            zapCodes.put("+EFFECTS",Integer.valueOf(42));
+            zapCodes.put("+EFFECT",Integer.valueOf(42));
+            zapCodes.put("-EFFECTS",Integer.valueOf(43));
+            zapCodes.put("-EFFECT",Integer.valueOf(43));
+            zapCodes.put("-DEITY",Integer.valueOf(44));
+            zapCodes.put("+DEITY",Integer.valueOf(45));
+            zapCodes.put("-FACTION",Integer.valueOf(46));
+            zapCodes.put("+FACTION",Integer.valueOf(47));
             zapCodes.put("+WORN",Integer.valueOf(48));
             zapCodes.put("-WORN",Integer.valueOf(48));
             zapCodes.put("+MATERIAL",Integer.valueOf(49));
@@ -254,30 +254,30 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
             zapCodes.put("+SKILLS",Integer.valueOf(84));
             zapCodes.put("+QUALLVL",Integer.valueOf(85));
             zapCodes.put("-QUALLVL",Integer.valueOf(86));
-			zapCodes.put("+STR",Integer.valueOf(87));
-			zapCodes.put("+INT",Integer.valueOf(88));
-			zapCodes.put("+WIS",Integer.valueOf(89));
-			zapCodes.put("+DEX",Integer.valueOf(90));
-			zapCodes.put("+CON",Integer.valueOf(91));
-			zapCodes.put("+CHA",Integer.valueOf(92));
-			zapCodes.put("+STRENGTH",Integer.valueOf(87));
-			zapCodes.put("+INTELLIGENCE",Integer.valueOf(88));
-			zapCodes.put("+WISDOM",Integer.valueOf(89));
-			zapCodes.put("+DEXTERITY",Integer.valueOf(90));
-			zapCodes.put("+CONSTITUTION",Integer.valueOf(91));
-			zapCodes.put("+CHARISMA",Integer.valueOf(92));
-			zapCodes.put("-STR",Integer.valueOf(93));
-			zapCodes.put("-STRENGTH",Integer.valueOf(93));
-			zapCodes.put("-INT",Integer.valueOf(94));
-			zapCodes.put("-INTELLIGENCE",Integer.valueOf(94));
-			zapCodes.put("-WIS",Integer.valueOf(95));
-			zapCodes.put("-WISDOM",Integer.valueOf(95));
-			zapCodes.put("-DEX",Integer.valueOf(96));
-			zapCodes.put("-DEXTERITY",Integer.valueOf(96));
-			zapCodes.put("-CON",Integer.valueOf(97));
-			zapCodes.put("-CONSTITUTION",Integer.valueOf(97));
-			zapCodes.put("-CHA",Integer.valueOf(98));
-			zapCodes.put("-CHARISMA",Integer.valueOf(98));
+            zapCodes.put("+STR",Integer.valueOf(87));
+            zapCodes.put("+INT",Integer.valueOf(88));
+            zapCodes.put("+WIS",Integer.valueOf(89));
+            zapCodes.put("+DEX",Integer.valueOf(90));
+            zapCodes.put("+CON",Integer.valueOf(91));
+            zapCodes.put("+CHA",Integer.valueOf(92));
+            zapCodes.put("+STRENGTH",Integer.valueOf(87));
+            zapCodes.put("+INTELLIGENCE",Integer.valueOf(88));
+            zapCodes.put("+WISDOM",Integer.valueOf(89));
+            zapCodes.put("+DEXTERITY",Integer.valueOf(90));
+            zapCodes.put("+CONSTITUTION",Integer.valueOf(91));
+            zapCodes.put("+CHARISMA",Integer.valueOf(92));
+            zapCodes.put("-STR",Integer.valueOf(93));
+            zapCodes.put("-STRENGTH",Integer.valueOf(93));
+            zapCodes.put("-INT",Integer.valueOf(94));
+            zapCodes.put("-INTELLIGENCE",Integer.valueOf(94));
+            zapCodes.put("-WIS",Integer.valueOf(95));
+            zapCodes.put("-WISDOM",Integer.valueOf(95));
+            zapCodes.put("-DEX",Integer.valueOf(96));
+            zapCodes.put("-DEXTERITY",Integer.valueOf(96));
+            zapCodes.put("-CON",Integer.valueOf(97));
+            zapCodes.put("-CONSTITUTION",Integer.valueOf(97));
+            zapCodes.put("-CHA",Integer.valueOf(98));
+            zapCodes.put("-CHARISMA",Integer.valueOf(98));
             zapCodes.put("+HOME",Integer.valueOf(99));
             zapCodes.put("-HOME",Integer.valueOf(100));
             zapCodes.put("-SKILLFLAG",Integer.valueOf(101));
@@ -302,29 +302,29 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
             zapCodes.put("+BASECLASS",Integer.valueOf(117));
             zapCodes.put("-IF",Integer.valueOf(118));
             zapCodes.put("+IF",Integer.valueOf(119));
-			zapCodes.put("-MOODS",Integer.valueOf(120));
-			zapCodes.put("-MOOD",Integer.valueOf(120));
-			zapCodes.put("+MOODS",Integer.valueOf(121));
-			zapCodes.put("+MOOD",Integer.valueOf(121));
-			zapCodes.put("-CHANCE",Integer.valueOf(122));
-		}
-		return zapCodes;
-	}
+            zapCodes.put("-MOODS",Integer.valueOf(120));
+            zapCodes.put("-MOOD",Integer.valueOf(120));
+            zapCodes.put("+MOODS",Integer.valueOf(121));
+            zapCodes.put("+MOOD",Integer.valueOf(121));
+            zapCodes.put("-CHANCE",Integer.valueOf(122));
+        }
+        return zapCodes;
+    }
 
-	public String maskHelp(final String CR, final String word)
-	{
-		String copy=rawMaskHelp();
-		if((CR!=null)&&(!CR.equalsIgnoreCase("<BR>")))
-			copy=CMStrings.replaceAll(copy,"<BR>",CR);
-		if((word==null)||(word.length()==0))
-			copy=CMStrings.replaceAll(copy,"<WORD>","disallow");
-		else
-			copy=CMStrings.replaceAll(copy,"<WORD>",word);
-		return copy;
-	}
+    public String maskHelp(final String CR, final String word)
+    {
+        String copy=rawMaskHelp();
+        if((CR!=null)&&(!CR.equalsIgnoreCase("<BR>")))
+            copy=CMStrings.replaceAll(copy,"<BR>",CR);
+        if((word==null)||(word.length()==0))
+            copy=CMStrings.replaceAll(copy,"<WORD>","disallow");
+        else
+            copy=CMStrings.replaceAll(copy,"<WORD>",word);
+        return copy;
+    }
 
-	protected Object makeSkillFlagObject(final String str)
-	{
+    protected Object makeSkillFlagObject(final String str)
+    {
         Object o=null;
         int x=str.indexOf('&');
         if(x>=0)
@@ -380,10 +380,10 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                 break;
             }
         return o;
-	}
+    }
 
-	protected boolean evaluateSkillFlagObject(final Object o, final Ability A)
-	{
+    protected boolean evaluateSkillFlagObject(final Object o, final Ability A)
+    {
         if(A!=null)
         {
             if(o instanceof Object[])
@@ -393,42 +393,42 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                     if(set[i] instanceof Boolean)
                     {
                         if(evaluateSkillFlagObject(set[i+1],A))
-                        	return false;
+                            return false;
                         i++;
                     }
                     else
                     if(!evaluateSkillFlagObject(set[i],A))
-                    	return false;
+                        return false;
                 return true;
             }
             else
-	        if(o instanceof Integer)
-	        {
-	            final int val=((Integer)o).intValue();
-	            if(((A.classificationCode()&Ability.ALL_ACODES)==val)
-	            ||((A.classificationCode()&Ability.ALL_DOMAINS)==val))
-	                return true;
-	        }
-	        else
-	        if(o instanceof Short)
-	        {
-	            final int val=((Short)o).intValue();
-	            if(A.abstractQuality()==val)
-	                return true;
-	        }
-	        else
-	        if(o instanceof Long)
-	        {
-	            long val=((Long)o).longValue();
-	            if((A.flags()&val)==val)
-	                return true;
-	        }
+            if(o instanceof Integer)
+            {
+                final int val=((Integer)o).intValue();
+                if(((A.classificationCode()&Ability.ALL_ACODES)==val)
+                ||((A.classificationCode()&Ability.ALL_DOMAINS)==val))
+                    return true;
+            }
+            else
+            if(o instanceof Short)
+            {
+                final int val=((Short)o).intValue();
+                if(A.abstractQuality()==val)
+                    return true;
+            }
+            else
+            if(o instanceof Long)
+            {
+                long val=((Long)o).longValue();
+                if((A.flags()&val)==val)
+                    return true;
+            }
         }
         return false;
-	}
+    }
 
 
-	protected boolean skillFlagCheck(final Vector V, final char plusMinus, final int fromHere, final MOB mob)
+    protected boolean skillFlagCheck(final Vector V, final char plusMinus, final int fromHere, final MOB mob)
     {
         for(int v=fromHere;v<V.size();v++)
         {
@@ -440,72 +440,72 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
             if(o==null) continue;
             for(final Enumeration<Ability> a=mob.allAbilities();a.hasMoreElements();)
             {
-            	final Ability A=a.nextElement();
+                final Ability A=a.nextElement();
                 if(evaluateSkillFlagObject(o,A))
-                	return true;
+                    return true;
             }
         }
         return false;
     }
 
-	protected CompiledZapperMaskEntry levelCompiledHelper(final String str, final char c)
-	{
-		final Vector<Object> parms=new Vector<Object>();
-		Integer entryType=null;
-		if(str.startsWith(c+">=")&&(CMath.isNumber(str.substring(3).trim())))
-		{
-			entryType=getMaskCodes().get("+LVLGE");
-			parms.addElement(Integer.valueOf(CMath.s_int(str.substring(3).trim())));
-		}
-		else
-		if(str.startsWith(c+"<=")&&(CMath.isNumber(str.substring(3).trim())))
-		{
-			entryType=getMaskCodes().get("+LVLLE");
-			parms.addElement(Integer.valueOf(CMath.s_int(str.substring(3).trim())));
-		}
-		else
-		if(str.startsWith(c+">")&&(CMath.isNumber(str.substring(2).trim())))
-		{
-			entryType=getMaskCodes().get("+LVLGR");
-			parms.addElement(Integer.valueOf(CMath.s_int(str.substring(2).trim())));
-		}
-		else
-		if(str.startsWith(c+"<")&&(CMath.isNumber(str.substring(2).trim())))
-		{
-			entryType=getMaskCodes().get("+LVLLT");
-			parms.addElement(Integer.valueOf(CMath.s_int(str.substring(2).trim())));
-		}
-		else
-		if(str.startsWith(c+"=")&&(CMath.isNumber(str.substring(2).trim())))
-		{
-			entryType=getMaskCodes().get("+LVLEQ");
-			parms.addElement(Integer.valueOf(CMath.s_int(str.substring(2).trim())));
-		}
-		if((entryType==null)||(parms.size()==0))
-			return null;
-		return new CompiledZapperMaskEntry(entryType.intValue(),parms.toArray(new Object[0]));
-	}
+    protected CompiledZapperMaskEntry levelCompiledHelper(final String str, final char c)
+    {
+        final Vector<Object> parms=new Vector<Object>();
+        Integer entryType=null;
+        if(str.startsWith(c+">=")&&(CMath.isNumber(str.substring(3).trim())))
+        {
+            entryType=getMaskCodes().get("+LVLGE");
+            parms.addElement(Integer.valueOf(CMath.s_int(str.substring(3).trim())));
+        }
+        else
+        if(str.startsWith(c+"<=")&&(CMath.isNumber(str.substring(3).trim())))
+        {
+            entryType=getMaskCodes().get("+LVLLE");
+            parms.addElement(Integer.valueOf(CMath.s_int(str.substring(3).trim())));
+        }
+        else
+        if(str.startsWith(c+">")&&(CMath.isNumber(str.substring(2).trim())))
+        {
+            entryType=getMaskCodes().get("+LVLGR");
+            parms.addElement(Integer.valueOf(CMath.s_int(str.substring(2).trim())));
+        }
+        else
+        if(str.startsWith(c+"<")&&(CMath.isNumber(str.substring(2).trim())))
+        {
+            entryType=getMaskCodes().get("+LVLLT");
+            parms.addElement(Integer.valueOf(CMath.s_int(str.substring(2).trim())));
+        }
+        else
+        if(str.startsWith(c+"=")&&(CMath.isNumber(str.substring(2).trim())))
+        {
+            entryType=getMaskCodes().get("+LVLEQ");
+            parms.addElement(Integer.valueOf(CMath.s_int(str.substring(2).trim())));
+        }
+        if((entryType==null)||(parms.size()==0))
+            return null;
+        return new CompiledZapperMaskEntry(entryType.intValue(),parms.toArray(new Object[0]));
+    }
 
-	protected StringBuffer levelHelp(final String lvl, final char c, final String append)
-	{
-		if(lvl.startsWith(c+">=")&&(CMath.isNumber(lvl.substring(3).trim())))
-			return new StringBuffer(append+"levels greater than or equal to "+lvl.substring(3).trim()+".  ");
-		else
-		if(lvl.startsWith(c+"<=")&&(CMath.isNumber(lvl.substring(3).trim())))
-			return new StringBuffer(append+"levels less than or equal to "+lvl.substring(3).trim()+".  ");
-		else
-		if(lvl.startsWith(c+">")&&(CMath.isNumber(lvl.substring(2).trim())))
-			return new StringBuffer(append+"levels greater than "+lvl.substring(2).trim()+".  ");
-		else
-		if(lvl.startsWith(c+"<")&&(CMath.isNumber(lvl.substring(2).trim())))
-			return new StringBuffer(append+"levels less than "+lvl.substring(2).trim()+".  ");
-		else
-		if(lvl.startsWith(c+"=")&&(CMath.isNumber(lvl.substring(2).trim())))
-			return new StringBuffer(append+"level "+lvl.substring(2).trim()+".  ");
-		return new StringBuffer("");
-	}
+    protected StringBuffer levelHelp(final String lvl, final char c, final String append)
+    {
+        if(lvl.startsWith(c+">=")&&(CMath.isNumber(lvl.substring(3).trim())))
+            return new StringBuffer(append+"levels greater than or equal to "+lvl.substring(3).trim()+".  ");
+        else
+        if(lvl.startsWith(c+"<=")&&(CMath.isNumber(lvl.substring(3).trim())))
+            return new StringBuffer(append+"levels less than or equal to "+lvl.substring(3).trim()+".  ");
+        else
+        if(lvl.startsWith(c+">")&&(CMath.isNumber(lvl.substring(2).trim())))
+            return new StringBuffer(append+"levels greater than "+lvl.substring(2).trim()+".  ");
+        else
+        if(lvl.startsWith(c+"<")&&(CMath.isNumber(lvl.substring(2).trim())))
+            return new StringBuffer(append+"levels less than "+lvl.substring(2).trim()+".  ");
+        else
+        if(lvl.startsWith(c+"=")&&(CMath.isNumber(lvl.substring(2).trim())))
+            return new StringBuffer(append+"level "+lvl.substring(2).trim()+".  ");
+        return new StringBuffer("");
+    }
 
-	protected int determineSeason(String str)
+    protected int determineSeason(String str)
     {
         str=str.toUpperCase().trim();
         if(str.length()==0) return -1;
@@ -515,7 +515,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
         return -1;
     }
     
-	protected int levelMinHelp(final String lvl, final char c, final int minMinLevel, final boolean reversed)
+    protected int levelMinHelp(final String lvl, final char c, final int minMinLevel, final boolean reversed)
     {
         if(lvl.startsWith(c+">=")&&(CMath.isNumber(lvl.substring(3).trim())))
             return reversed?minMinLevel:CMath.s_int(lvl.substring(3).trim());
@@ -534,37 +534,37 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
         return Integer.MIN_VALUE;
     }
 
-	protected boolean fromHereEqual(final Vector V, final char plusMinus, final int fromHere, final String find)
-	{
-		for(int v=fromHere;v<V.size();v++)
-		{
-			final String str=(String)V.elementAt(v);
-			if(str.length()==0) continue;
-			if(getMaskCodes().containsKey(str))
-				return false;
-			if(str.equalsIgnoreCase(plusMinus+find)) return true;
-		}
-		return false;
-	}
-
-	protected boolean fromHereStartsWith(final Vector V, final char plusMinus, final int fromHere, final String find)
-	{
-		for(int v=fromHere;v<V.size();v++)
-		{
-			final String str=(String)V.elementAt(v);
-			if(str.length()==0) continue;
-			if(getMaskCodes().containsKey(str))
-				return false;
-			if(str.startsWith(plusMinus+find)) return true;
-		}
-		return false;
-	}
-
-	protected boolean fromHereEndsWith(final Vector V, final char plusMinus, final int fromHere, final String find)
+    protected boolean fromHereEqual(final Vector V, final char plusMinus, final int fromHere, final String find)
     {
         for(int v=fromHere;v<V.size();v++)
         {
-        	final String str=(String)V.elementAt(v);
+            final String str=(String)V.elementAt(v);
+            if(str.length()==0) continue;
+            if(getMaskCodes().containsKey(str))
+                return false;
+            if(str.equalsIgnoreCase(plusMinus+find)) return true;
+        }
+        return false;
+    }
+
+    protected boolean fromHereStartsWith(final Vector V, final char plusMinus, final int fromHere, final String find)
+    {
+        for(int v=fromHere;v<V.size();v++)
+        {
+            final String str=(String)V.elementAt(v);
+            if(str.length()==0) continue;
+            if(getMaskCodes().containsKey(str))
+                return false;
+            if(str.startsWith(plusMinus+find)) return true;
+        }
+        return false;
+    }
+
+    protected boolean fromHereEndsWith(final Vector V, final char plusMinus, final int fromHere, final String find)
+    {
+        for(int v=fromHere;v<V.size();v++)
+        {
+            final String str=(String)V.elementAt(v);
             if(str.length()==0) continue;
             if(getMaskCodes().containsKey(str))
                 return false;
@@ -574,311 +574,311 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
         return false;
     }
 
-	public String maskDesc(final String text){return maskDesc(text,false);}
+    public String maskDesc(final String text){return maskDesc(text,false);}
 
-	public int countQuals(final List<String> V, final int v, final String startsWith)
-	{
-		int ct=0;
+    public int countQuals(final List<String> V, final int v, final String startsWith)
+    {
+        int ct=0;
         for(int v2=v+1;v2<V.size();v2++)
         {
             final String str2=(String)V.get(v2);
             if(zapCodes.containsKey(str2))
                 break;
             if(str2.startsWith(startsWith))
-            	ct++;
+                ct++;
         }
         return ct;
-	}
-	
-	public boolean multipleQuals(final List<String> V, final int v, final String startsWith)
-	{
-		return countQuals(V,v,startsWith)>1;
-	}
-	
-	public String maskDesc(final String text, final boolean skipFirstWord)
-	{
-		if(text.trim().length()==0) return "Anyone";
-		StringBuffer buf=new StringBuffer("");
-		final Hashtable zapCodes=getMaskCodes();
-		final Vector<String> V=CMParms.parse(text.toUpperCase());
-		int val=-1;
-		for(int v=0;v<V.size();v++)
-		{
-			final String str=(String)V.elementAt(v);
-			val=-1;
-			if(zapCodes.containsKey(str))
-				switch(((Integer)zapCodes.get(str)).intValue())
-				{
-				case 0: // -class
-					{
-					buf.append(skipFirstWord?"Only ":"Allows only ");
-					for(final SavedClass C : charClasses())
-					{
-						final String cstr=C.plusNameStart;
-						for(int v2=v+1;v2<V.size();v2++)
-						{
-							final String str2=(String)V.elementAt(v2);
-							if(str2.length()==0) continue;
-							if(zapCodes.containsKey(str2))
-								break;
-							if(str2.startsWith(cstr))
-								buf.append(C.name+", ");
-						}
-					}
-					if(buf.toString().endsWith(", "))
-						buf=new StringBuffer(buf.substring(0,buf.length()-2));
-					buf.append(".  ");
-					}
-					break;
-				case 1: // -baseclass
-					{
-						buf.append(skipFirstWord?"Only ":"Allows only ");
-						final HashSet<String> seenBase=new HashSet<String>();
-						for(final SavedClass C : charClasses())
-						{
-							final String cstr=C.plusBaseClassStart;
-							if(!seenBase.contains(C.baseClass))
-							{
-								seenBase.add(C.baseClass);
-								for(int v2=v+1;v2<V.size();v2++)
-								{
-									final String str2=(String)V.elementAt(v2);
-									if(str2.length()==0) continue;
-									if(zapCodes.containsKey(str2))
-										break;
-									if(str2.startsWith(cstr))
-										buf.append(C.baseClass+" types, ");
-								}
-							}
-						}
-						if(buf.toString().endsWith(", "))
-							buf=new StringBuffer(buf.substring(0,buf.length()-2));
-						buf.append(".  ");
-					}
-					break;
-				case 2: // -Race
-					{
-						buf.append(skipFirstWord?"Only ":"Allows only ");
-						LinkedList<String> cats=new LinkedList<String>();
-						for(final SavedRace R : races())
-						{
-							if((!cats.contains(R.name)
-							&&(fromHereStartsWith(V,'+',v+1,R.nameStart))))
-							   cats.add(R.name);
-						}
-						for(final String s : cats)
-							buf.append(s+", ");
-						if(buf.toString().endsWith(", "))
-							buf=new StringBuffer(buf.substring(0,buf.length()-2));
-						buf.append(".  ");
-					}
-					break;
-				case 12: // -Racecats
-					{
-						buf.append(skipFirstWord?"Only these racial categor"+(multipleQuals(V,v,"+")?"ies":"y")+" ":"Allows only these racial categor"+(multipleQuals(V,v,"+")?"ies":"y")+" ");
-						final LinkedList<String> cats=new LinkedList<String>();
-						for(final SavedRace R : races())
-						{
-							if((!cats.contains(R.racialCategory)
-							&&(fromHereStartsWith(V,'+',v+1,R.upperCatName))))
-							   cats.add(R.racialCategory);
-						}
-						for(final String s : cats)
-							buf.append(s+", ");
-						if(buf.toString().endsWith(", "))
-							buf=new StringBuffer(buf.substring(0,buf.length()-2));
-						buf.append(".  ");
-					}
-					break;
-				case 3: // -Alignment
-					{
-						buf.append(skipFirstWord?"Only ":"Allows only ");
-						if(fromHereStartsWith(V,'+',v+1,Faction.ALIGN_NAMES[Faction.ALIGN_EVIL].substring(0,3)))
-							buf.append(Faction.ALIGN_NAMES[Faction.ALIGN_EVIL].toLowerCase()+", ");
-						if(fromHereStartsWith(V,'+',v+1,Faction.ALIGN_NAMES[Faction.ALIGN_GOOD].substring(0,3)))
-							buf.append(Faction.ALIGN_NAMES[Faction.ALIGN_GOOD].toLowerCase()+", ");
-						if(fromHereStartsWith(V,'+',v+1,Faction.ALIGN_NAMES[Faction.ALIGN_NEUTRAL].substring(0,3)))
-							buf.append(Faction.ALIGN_NAMES[Faction.ALIGN_NEUTRAL].toLowerCase()+", ");
-						if(buf.toString().endsWith(", "))
-							buf=new StringBuffer(buf.substring(0,buf.length()-2));
-						buf.append(".  ");
-					}
-					break;
-				case 4: // -Gender
-					{
-						buf.append(skipFirstWord?"Only ":"Allows only ");
-						if(fromHereStartsWith(V,'+',v+1,"MALE"))
-							buf.append("Male, ");
-						if(fromHereStartsWith(V,'+',v+1,"FEMALE"))
-							buf.append("Female, ");
-						if(fromHereStartsWith(V,'+',v+1,"NEUTER"))
-							buf.append("Neuter");
-						if(buf.toString().endsWith(", "))
-							buf=new StringBuffer(buf.substring(0,buf.length()-2));
-						buf.append(".  ");
-					}
-					break;
-				case 5: // -Levels
-					{
-						for(int v2=v+1;v2<V.size();v2++)
-							buf.append(levelHelp((String)V.elementAt(v2),'+',skipFirstWord?"Only ":"Allows only "));
-					}
-					break;
-				case 6: // -ClassLevels
-					{
-						for(int v2=v+1;v2<V.size();v2++)
-							buf.append(levelHelp((String)V.elementAt(v2),'+',skipFirstWord?"Only class ":"Allows only class "));
-					}
-					break;
+    }
+    
+    public boolean multipleQuals(final List<String> V, final int v, final String startsWith)
+    {
+        return countQuals(V,v,startsWith)>1;
+    }
+    
+    public String maskDesc(final String text, final boolean skipFirstWord)
+    {
+        if(text.trim().length()==0) return "Anyone";
+        StringBuffer buf=new StringBuffer("");
+        final Hashtable zapCodes=getMaskCodes();
+        final Vector<String> V=CMParms.parse(text.toUpperCase());
+        int val=-1;
+        for(int v=0;v<V.size();v++)
+        {
+            final String str=(String)V.elementAt(v);
+            val=-1;
+            if(zapCodes.containsKey(str))
+                switch(((Integer)zapCodes.get(str)).intValue())
+                {
+                case 0: // -class
+                    {
+                    buf.append(skipFirstWord?"Only ":"Allows only ");
+                    for(final SavedClass C : charClasses())
+                    {
+                        final String cstr=C.plusNameStart;
+                        for(int v2=v+1;v2<V.size();v2++)
+                        {
+                            final String str2=(String)V.elementAt(v2);
+                            if(str2.length()==0) continue;
+                            if(zapCodes.containsKey(str2))
+                                break;
+                            if(str2.startsWith(cstr))
+                                buf.append(C.name+", ");
+                        }
+                    }
+                    if(buf.toString().endsWith(", "))
+                        buf=new StringBuffer(buf.substring(0,buf.length()-2));
+                    buf.append(".  ");
+                    }
+                    break;
+                case 1: // -baseclass
+                    {
+                        buf.append(skipFirstWord?"Only ":"Allows only ");
+                        final HashSet<String> seenBase=new HashSet<String>();
+                        for(final SavedClass C : charClasses())
+                        {
+                            final String cstr=C.plusBaseClassStart;
+                            if(!seenBase.contains(C.baseClass))
+                            {
+                                seenBase.add(C.baseClass);
+                                for(int v2=v+1;v2<V.size();v2++)
+                                {
+                                    final String str2=(String)V.elementAt(v2);
+                                    if(str2.length()==0) continue;
+                                    if(zapCodes.containsKey(str2))
+                                        break;
+                                    if(str2.startsWith(cstr))
+                                        buf.append(C.baseClass+" types, ");
+                                }
+                            }
+                        }
+                        if(buf.toString().endsWith(", "))
+                            buf=new StringBuffer(buf.substring(0,buf.length()-2));
+                        buf.append(".  ");
+                    }
+                    break;
+                case 2: // -Race
+                    {
+                        buf.append(skipFirstWord?"Only ":"Allows only ");
+                        LinkedList<String> cats=new LinkedList<String>();
+                        for(final SavedRace R : races())
+                        {
+                            if((!cats.contains(R.name)
+                            &&(fromHereStartsWith(V,'+',v+1,R.nameStart))))
+                               cats.add(R.name);
+                        }
+                        for(final String s : cats)
+                            buf.append(s+", ");
+                        if(buf.toString().endsWith(", "))
+                            buf=new StringBuffer(buf.substring(0,buf.length()-2));
+                        buf.append(".  ");
+                    }
+                    break;
+                case 12: // -Racecats
+                    {
+                        buf.append(skipFirstWord?"Only these racial categor"+(multipleQuals(V,v,"+")?"ies":"y")+" ":"Allows only these racial categor"+(multipleQuals(V,v,"+")?"ies":"y")+" ");
+                        final LinkedList<String> cats=new LinkedList<String>();
+                        for(final SavedRace R : races())
+                        {
+                            if((!cats.contains(R.racialCategory)
+                            &&(fromHereStartsWith(V,'+',v+1,R.upperCatName))))
+                               cats.add(R.racialCategory);
+                        }
+                        for(final String s : cats)
+                            buf.append(s+", ");
+                        if(buf.toString().endsWith(", "))
+                            buf=new StringBuffer(buf.substring(0,buf.length()-2));
+                        buf.append(".  ");
+                    }
+                    break;
+                case 3: // -Alignment
+                    {
+                        buf.append(skipFirstWord?"Only ":"Allows only ");
+                        if(fromHereStartsWith(V,'+',v+1,Faction.ALIGN_NAMES[Faction.ALIGN_EVIL].substring(0,3)))
+                            buf.append(Faction.ALIGN_NAMES[Faction.ALIGN_EVIL].toLowerCase()+", ");
+                        if(fromHereStartsWith(V,'+',v+1,Faction.ALIGN_NAMES[Faction.ALIGN_GOOD].substring(0,3)))
+                            buf.append(Faction.ALIGN_NAMES[Faction.ALIGN_GOOD].toLowerCase()+", ");
+                        if(fromHereStartsWith(V,'+',v+1,Faction.ALIGN_NAMES[Faction.ALIGN_NEUTRAL].substring(0,3)))
+                            buf.append(Faction.ALIGN_NAMES[Faction.ALIGN_NEUTRAL].toLowerCase()+", ");
+                        if(buf.toString().endsWith(", "))
+                            buf=new StringBuffer(buf.substring(0,buf.length()-2));
+                        buf.append(".  ");
+                    }
+                    break;
+                case 4: // -Gender
+                    {
+                        buf.append(skipFirstWord?"Only ":"Allows only ");
+                        if(fromHereStartsWith(V,'+',v+1,"MALE"))
+                            buf.append("Male, ");
+                        if(fromHereStartsWith(V,'+',v+1,"FEMALE"))
+                            buf.append("Female, ");
+                        if(fromHereStartsWith(V,'+',v+1,"NEUTER"))
+                            buf.append("Neuter");
+                        if(buf.toString().endsWith(", "))
+                            buf=new StringBuffer(buf.substring(0,buf.length()-2));
+                        buf.append(".  ");
+                    }
+                    break;
+                case 5: // -Levels
+                    {
+                        for(int v2=v+1;v2<V.size();v2++)
+                            buf.append(levelHelp((String)V.elementAt(v2),'+',skipFirstWord?"Only ":"Allows only "));
+                    }
+                    break;
+                case 6: // -ClassLevels
+                    {
+                        for(int v2=v+1;v2<V.size();v2++)
+                            buf.append(levelHelp((String)V.elementAt(v2),'+',skipFirstWord?"Only class ":"Allows only class "));
+                    }
+                    break;
                 case 103: // -MaxclassLevels
                     {
                         for(int v2=v+1;v2<V.size();v2++)
                             buf.append(levelHelp((String)V.elementAt(v2),'+',skipFirstWord?"Only highest class ":"Allows only highest class "));
                     }
                     break;
-				case 7: // -Tattoos
-					{
-						buf.append((skipFirstWord?"The":"Requires")+" the following tattoo"+(multipleQuals(V,v,"+")?"s":"")+": ");
-						for(int v2=v+1;v2<V.size();v2++)
-						{
-							final String str2=(String)V.elementAt(v2);
+                case 7: // -Tattoos
+                    {
+                        buf.append((skipFirstWord?"The":"Requires")+" the following tattoo"+(multipleQuals(V,v,"+")?"s":"")+": ");
+                        for(int v2=v+1;v2<V.size();v2++)
+                        {
+                            final String str2=(String)V.elementAt(v2);
                             if(zapCodes.containsKey(str2))
                                 break;
                             if(str2.startsWith("+"))
-								buf.append(str2.substring(1)+", ");
-						}
-						if(buf.toString().endsWith(", "))
-							buf=new StringBuffer(buf.substring(0,buf.length()-2));
-						buf.append(".  ");
-					}
-					break;
-				case 8: // +Tattoos
-					{
-						buf.append("Disallows the following tattoo"+(multipleQuals(V,v,"-")?"s":"")+": ");
-						for(int v2=v+1;v2<V.size();v2++)
-						{
-							final String str2=(String)V.elementAt(v2);
+                                buf.append(str2.substring(1)+", ");
+                        }
+                        if(buf.toString().endsWith(", "))
+                            buf=new StringBuffer(buf.substring(0,buf.length()-2));
+                        buf.append(".  ");
+                    }
+                    break;
+                case 8: // +Tattoos
+                    {
+                        buf.append("Disallows the following tattoo"+(multipleQuals(V,v,"-")?"s":"")+": ");
+                        for(int v2=v+1;v2<V.size();v2++)
+                        {
+                            final String str2=(String)V.elementAt(v2);
                             if(zapCodes.containsKey(str2))
                                 break;
                             if(str2.startsWith("-"))
-								buf.append(str2.substring(1)+", ");
-						}
-						if(buf.toString().endsWith(", "))
-							buf=new StringBuffer(buf.substring(0,buf.length()-2));
-						buf.append(".  ");
-					}
-					break;
-				case 120: // -Mood
-					{
-						buf.append((skipFirstWord?"The":"Requires")+" the following mood"+(multipleQuals(V,v,"+")?"s":"")+": ");
-						for(int v2=v+1;v2<V.size();v2++)
-						{
-							final String str2=(String)V.elementAt(v2);
+                                buf.append(str2.substring(1)+", ");
+                        }
+                        if(buf.toString().endsWith(", "))
+                            buf=new StringBuffer(buf.substring(0,buf.length()-2));
+                        buf.append(".  ");
+                    }
+                    break;
+                case 120: // -Mood
+                    {
+                        buf.append((skipFirstWord?"The":"Requires")+" the following mood"+(multipleQuals(V,v,"+")?"s":"")+": ");
+                        for(int v2=v+1;v2<V.size();v2++)
+                        {
+                            final String str2=(String)V.elementAt(v2);
                             if(zapCodes.containsKey(str2))
                                 break;
-	                        if(str2.startsWith("+"))
-								buf.append(str2.substring(1)+", ");
-						}
-						if(buf.toString().endsWith(", "))
-							buf=new StringBuffer(buf.substring(0,buf.length()-2));
-						buf.append(".  ");
-					}
-				break;
-				case 121: // +Mood
-					{
-						buf.append("Disallows the following mood"+(multipleQuals(V,v,"-")?"s":"")+": ");
-						for(int v2=v+1;v2<V.size();v2++)
-						{
-							final String str2=(String)V.elementAt(v2);
+                            if(str2.startsWith("+"))
+                                buf.append(str2.substring(1)+", ");
+                        }
+                        if(buf.toString().endsWith(", "))
+                            buf=new StringBuffer(buf.substring(0,buf.length()-2));
+                        buf.append(".  ");
+                    }
+                break;
+                case 121: // +Mood
+                    {
+                        buf.append("Disallows the following mood"+(multipleQuals(V,v,"-")?"s":"")+": ");
+                        for(int v2=v+1;v2<V.size();v2++)
+                        {
+                            final String str2=(String)V.elementAt(v2);
                             if(zapCodes.containsKey(str2))
                                 break;
-	                        if(str2.startsWith("-"))
-								buf.append(str2.substring(1)+", ");
-						}
-						if(buf.toString().endsWith(", "))
-							buf=new StringBuffer(buf.substring(0,buf.length()-2));
-						buf.append(".  ");
-					}
-					break;
-				case 79: // -Security
-					{
-						buf.append((skipFirstWord?"The":"Requires")+" following security flag"+(multipleQuals(V,v,"+")?"s":"")+": ");
-						for(int v2=v+1;v2<V.size();v2++)
-						{
-							final String str2=(String)V.elementAt(v2);
+                            if(str2.startsWith("-"))
+                                buf.append(str2.substring(1)+", ");
+                        }
+                        if(buf.toString().endsWith(", "))
+                            buf=new StringBuffer(buf.substring(0,buf.length()-2));
+                        buf.append(".  ");
+                    }
+                    break;
+                case 79: // -Security
+                    {
+                        buf.append((skipFirstWord?"The":"Requires")+" following security flag"+(multipleQuals(V,v,"+")?"s":"")+": ");
+                        for(int v2=v+1;v2<V.size();v2++)
+                        {
+                            final String str2=(String)V.elementAt(v2);
                             if(zapCodes.containsKey(str2))
                                 break;
-	                        if(str2.startsWith("+"))
-								buf.append(str2.substring(1)+", ");
-						}
-						if(buf.toString().endsWith(", "))
-							buf=new StringBuffer(buf.substring(0,buf.length()-2));
-						buf.append(".  ");
-					}
-				break;
-				case 80: // +security
-					{
-						buf.append("Disallows the following security flag"+(multipleQuals(V,v,"-")?"s":"")+": ");
-						for(int v2=v+1;v2<V.size();v2++)
-						{
-							final String str2=(String)V.elementAt(v2);
+                            if(str2.startsWith("+"))
+                                buf.append(str2.substring(1)+", ");
+                        }
+                        if(buf.toString().endsWith(", "))
+                            buf=new StringBuffer(buf.substring(0,buf.length()-2));
+                        buf.append(".  ");
+                    }
+                break;
+                case 80: // +security
+                    {
+                        buf.append("Disallows the following security flag"+(multipleQuals(V,v,"-")?"s":"")+": ");
+                        for(int v2=v+1;v2<V.size();v2++)
+                        {
+                            final String str2=(String)V.elementAt(v2);
                             if(zapCodes.containsKey(str2))
                                 break;
-	                        if(str2.startsWith("-"))
-								buf.append(str2.substring(1)+", ");
-						}
-						if(buf.toString().endsWith(", "))
-							buf=new StringBuffer(buf.substring(0,buf.length()-2));
-						buf.append(".  ");
-					}
-					break;
-				case 81: // -expertises
-					{
-						buf.append((skipFirstWord?"The":"Requires")+" following expertise"+(multipleQuals(V,v,"+")?"s":"")+": ");
-						for(int v2=v+1;v2<V.size();v2++)
-						{
-							final String str2=(String)V.elementAt(v2);
+                            if(str2.startsWith("-"))
+                                buf.append(str2.substring(1)+", ");
+                        }
+                        if(buf.toString().endsWith(", "))
+                            buf=new StringBuffer(buf.substring(0,buf.length()-2));
+                        buf.append(".  ");
+                    }
+                    break;
+                case 81: // -expertises
+                    {
+                        buf.append((skipFirstWord?"The":"Requires")+" following expertise"+(multipleQuals(V,v,"+")?"s":"")+": ");
+                        for(int v2=v+1;v2<V.size();v2++)
+                        {
+                            final String str2=(String)V.elementAt(v2);
                             if(zapCodes.containsKey(str2))
                                 break;
-	                        if(str2.startsWith("+"))
-	                        {
-	                        	ExpertiseLibrary.ExpertiseDefinition E=CMLib.expertises().getDefinition(str2.substring(1).toUpperCase().trim());
-	                        	if(E!=null) buf.append(E.name+", ");
-	                        }
-						}
-						if(buf.toString().endsWith(", "))
-							buf=new StringBuffer(buf.substring(0,buf.length()-2));
-						buf.append(".  ");
-					}
-				break;
-				case 82: // +expertises
-					{
-						buf.append("Disallows the following expertise"+(multipleQuals(V,v,"-")?"s":"")+": ");
-						for(int v2=v+1;v2<V.size();v2++)
-						{
-							final String str2=(String)V.elementAt(v2);
+                            if(str2.startsWith("+"))
+                            {
+                                ExpertiseLibrary.ExpertiseDefinition E=CMLib.expertises().getDefinition(str2.substring(1).toUpperCase().trim());
+                                if(E!=null) buf.append(E.name+", ");
+                            }
+                        }
+                        if(buf.toString().endsWith(", "))
+                            buf=new StringBuffer(buf.substring(0,buf.length()-2));
+                        buf.append(".  ");
+                    }
+                break;
+                case 82: // +expertises
+                    {
+                        buf.append("Disallows the following expertise"+(multipleQuals(V,v,"-")?"s":"")+": ");
+                        for(int v2=v+1;v2<V.size();v2++)
+                        {
+                            final String str2=(String)V.elementAt(v2);
                             if(zapCodes.containsKey(str2))
                                 break;
-	                        if(str2.startsWith("-"))
-	                        {
-	                        	ExpertiseLibrary.ExpertiseDefinition E=CMLib.expertises().getDefinition(str2.substring(1).toUpperCase().trim());
-	                        	if(E!=null) buf.append(E.name+", ");
-	                        }
-						}
-						if(buf.toString().endsWith(", "))
-							buf=new StringBuffer(buf.substring(0,buf.length()-2));
-						buf.append(".  ");
-					}
-					break;
-				case 101: // -skillflags
-					{
-						buf.append((skipFirstWord?"A":"Requires a")+" skill of type: ");
-						for(int v2=v+1;v2<V.size();v2++)
-						{
-							final String str2=(String)V.elementAt(v2);
+                            if(str2.startsWith("-"))
+                            {
+                                ExpertiseLibrary.ExpertiseDefinition E=CMLib.expertises().getDefinition(str2.substring(1).toUpperCase().trim());
+                                if(E!=null) buf.append(E.name+", ");
+                            }
+                        }
+                        if(buf.toString().endsWith(", "))
+                            buf=new StringBuffer(buf.substring(0,buf.length()-2));
+                        buf.append(".  ");
+                    }
+                    break;
+                case 101: // -skillflags
+                    {
+                        buf.append((skipFirstWord?"A":"Requires a")+" skill of type: ");
+                        for(int v2=v+1;v2<V.size();v2++)
+                        {
+                            final String str2=(String)V.elementAt(v2);
                             if(zapCodes.containsKey(str2))
                                 break;
-	                        if(str2.startsWith("+"))
+                            if(str2.startsWith("+"))
                             {
                                 Vector<String> V3=CMParms.parseAny(str2.substring(1),'&',true);
                                 String str3=null;
@@ -886,7 +886,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                                 {
                                     str3=CMStrings.replaceAll(CMStrings.capitalizeAndLower((String)V3.elementAt(v3)),"_"," ");
                                     if(str3.startsWith("!"))
-                            			buf.append("not "+str3.substring(1));
+                                        buf.append("not "+str3.substring(1));
                                     else
                                         buf.append(str3);
                                     if(v3<(V3.size()-1))
@@ -895,18 +895,18 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                                         buf.append(", ");
                                 }
                             }
-						}
-						if(buf.toString().endsWith(", "))
-							buf=new StringBuffer(buf.substring(0,buf.length()-2));
-						buf.append(".  ");
-					}
-				break;
+                        }
+                        if(buf.toString().endsWith(", "))
+                            buf=new StringBuffer(buf.substring(0,buf.length()-2));
+                        buf.append(".  ");
+                    }
+                break;
                 case 83: // -skills
                     {
                         buf.append((skipFirstWord?"O":"Requires o")+"ne of the following skills: ");
-						for(int v2=v+1;v2<V.size();v2++)
-						{
-							String str2=(String)V.elementAt(v2);
+                        for(int v2=v+1;v2<V.size();v2++)
+                        {
+                            String str2=(String)V.elementAt(v2);
                             if(zapCodes.containsKey(str2))
                                 break;
                             if(str2.startsWith("+"))
@@ -935,46 +935,46 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                         buf.append(".  ");
                     }
                 break;
-				case 84: // +skills
-					{
-						buf.append("Disallows the following skill"+(multipleQuals(V,v,"-")?"s":"")+": ");
-						for(int v2=v+1;v2<V.size();v2++)
-						{
-							String str2=(String)V.elementAt(v2);
+                case 84: // +skills
+                    {
+                        buf.append("Disallows the following skill"+(multipleQuals(V,v,"-")?"s":"")+": ");
+                        for(int v2=v+1;v2<V.size();v2++)
+                        {
+                            String str2=(String)V.elementAt(v2);
                             if(zapCodes.containsKey(str2))
                                 break;
-	                        if(str2.startsWith("-"))
-	                        {
-	                        	int prof=0;
-	                        	str2=str2.substring(1);
-	                        	int x=str2.indexOf('(');
-	                        	if(x>0)
-	                        	{
-	                        		if(str2.endsWith(")"))
-		                        		prof=CMath.s_int(str2.substring(x+1,str2.length()-1));
-	                        		str2=str2.substring(0,x);
-	                        	}
-	                        	final Ability A=CMClass.getAbility(str2);
-	                        	if(A!=null)
-	                        	{
-	                        		if(prof<=0)
-	                        			buf.append(A.name()+", ");
-	                        		else
-	                        			buf.append(A.name()+" at more than "+prof+"% proficiency, ");
-	                        	}
-	                        }
-						}
-						if(buf.toString().endsWith(", "))
-							buf=new StringBuffer(buf.substring(0,buf.length()-2));
-						buf.append(".  ");
-					}
-					break;
+                            if(str2.startsWith("-"))
+                            {
+                                int prof=0;
+                                str2=str2.substring(1);
+                                int x=str2.indexOf('(');
+                                if(x>0)
+                                {
+                                    if(str2.endsWith(")"))
+                                        prof=CMath.s_int(str2.substring(x+1,str2.length()-1));
+                                    str2=str2.substring(0,x);
+                                }
+                                final Ability A=CMClass.getAbility(str2);
+                                if(A!=null)
+                                {
+                                    if(prof<=0)
+                                        buf.append(A.name()+", ");
+                                    else
+                                        buf.append(A.name()+" at more than "+prof+"% proficiency, ");
+                                }
+                            }
+                        }
+                        if(buf.toString().endsWith(", "))
+                            buf=new StringBuffer(buf.substring(0,buf.length()-2));
+                        buf.append(".  ");
+                    }
+                    break;
                 case 102: // +skillflag
                     {
                         buf.append("Disallows the skill of type: ");
-						for(int v2=v+1;v2<V.size();v2++)
-						{
-							final String str2=(String)V.elementAt(v2);
+                        for(int v2=v+1;v2<V.size();v2++)
+                        {
+                            final String str2=(String)V.elementAt(v2);
                             if(zapCodes.containsKey(str2))
                                 break;
                             if(str2.startsWith("-"))
@@ -1000,44 +1000,44 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                         buf.append(".  ");
                     }
                     break;
-				case 14: // -Clan
-					{
-						buf.append((skipFirstWord?"M":"Requires m")+"embership in the following clan"+(multipleQuals(V,v,"+")?"s":"")+": ");
-						for(int v2=v+1;v2<V.size();v2++)
-						{
-							final String str2=(String)V.elementAt(v2);
+                case 14: // -Clan
+                    {
+                        buf.append((skipFirstWord?"M":"Requires m")+"embership in the following clan"+(multipleQuals(V,v,"+")?"s":"")+": ");
+                        for(int v2=v+1;v2<V.size();v2++)
+                        {
+                            final String str2=(String)V.elementAt(v2);
                             if(zapCodes.containsKey(str2))
                                 break;
                             if(str2.startsWith("+"))
-								buf.append(str2.substring(1)+", ");
-						}
-						if(buf.toString().endsWith(", "))
-							buf=new StringBuffer(buf.substring(0,buf.length()-2));
-						buf.append(".  ");
-					}
-					break;
-				case 15: // +Clan
-					{
-						buf.append("Disallows the following clan"+(multipleQuals(V,v,"-")?"s":"")+": ");
-						for(int v2=v+1;v2<V.size();v2++)
-						{
-							final String str2=(String)V.elementAt(v2);
+                                buf.append(str2.substring(1)+", ");
+                        }
+                        if(buf.toString().endsWith(", "))
+                            buf=new StringBuffer(buf.substring(0,buf.length()-2));
+                        buf.append(".  ");
+                    }
+                    break;
+                case 15: // +Clan
+                    {
+                        buf.append("Disallows the following clan"+(multipleQuals(V,v,"-")?"s":"")+": ");
+                        for(int v2=v+1;v2<V.size();v2++)
+                        {
+                            final String str2=(String)V.elementAt(v2);
                             if(zapCodes.containsKey(str2))
                                 break;
                             if(str2.startsWith("-"))
-								buf.append(str2.substring(1)+", ");
-						}
-						if(buf.toString().endsWith(", "))
-							buf=new StringBuffer(buf.substring(0,buf.length()-2));
-						buf.append(".  ");
-					}
-					break;
+                                buf.append(str2.substring(1)+", ");
+                        }
+                        if(buf.toString().endsWith(", "))
+                            buf=new StringBuffer(buf.substring(0,buf.length()-2));
+                        buf.append(".  ");
+                    }
+                    break;
                 case 50: // -Material
                     {
                         buf.append((skipFirstWord?"C":"Requires c")+"onstruction from the following material"+(multipleQuals(V,v,"+")?"s":"")+": ");
-						for(int v2=v+1;v2<V.size();v2++)
-						{
-							final String str2=(String)V.elementAt(v2);
+                        for(int v2=v+1;v2<V.size();v2++)
+                        {
+                            final String str2=(String)V.elementAt(v2);
                             if(zapCodes.containsKey(str2))
                                 break;
                             if(str2.startsWith("+"))
@@ -1055,9 +1055,9 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                 case 49: // +Material
                     {
                         buf.append("Disallows items of the following material"+(multipleQuals(V,v,"-")?"s":"")+": ");
-						for(int v2=v+1;v2<V.size();v2++)
-						{
-							final String str2=(String)V.elementAt(v2);
+                        for(int v2=v+1;v2<V.size();v2++)
+                        {
+                            final String str2=(String)V.elementAt(v2);
                             if(zapCodes.containsKey(str2))
                                 break;
                             if(str2.startsWith("-"))
@@ -1075,9 +1075,9 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                 case 58: // -wornon
                     {
                         buf.append((skipFirstWord?"A":"Requires a")+"bility to be worn: ");
-						for(int v2=v+1;v2<V.size();v2++)
-						{
-							final String str2=(String)V.elementAt(v2);
+                        for(int v2=v+1;v2<V.size();v2++)
+                        {
+                            final String str2=(String)V.elementAt(v2);
                             if(zapCodes.containsKey(str2))
                                 break;
                             if(str2.startsWith("+"))
@@ -1095,9 +1095,9 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                 case 57: // +wornon
                     {
                         buf.append("Disallows items capable of being worn: ");
-						for(int v2=v+1;v2<V.size();v2++)
-						{
-							final String str2=(String)V.elementAt(v2);
+                        for(int v2=v+1;v2<V.size();v2++)
+                        {
+                            final String str2=(String)V.elementAt(v2);
                             if(zapCodes.containsKey(str2))
                                 break;
                             if(str2.startsWith("-"))
@@ -1115,9 +1115,9 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                 case 72: // -senses
                     {
                         buf.append((skipFirstWord?"The":"Requires")+" following sense"+(multipleQuals(V,v,"+")?"s":"")+": ");
-						for(int v2=v+1;v2<V.size();v2++)
-						{
-							final String str2=(String)V.elementAt(v2);
+                        for(int v2=v+1;v2<V.size();v2++)
+                        {
+                            final String str2=(String)V.elementAt(v2);
                             if(zapCodes.containsKey(str2))
                                 break;
                             if(str2.startsWith("+"))
@@ -1135,9 +1135,9 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                 case 71: // +senses
                     {
                         buf.append("Disallows the following sense"+(multipleQuals(V,v,"-")?"s":"")+": ");
-						for(int v2=v+1;v2<V.size();v2++)
-						{
-							final String str2=(String)V.elementAt(v2);
+                        for(int v2=v+1;v2<V.size();v2++)
+                        {
+                            final String str2=(String)V.elementAt(v2);
                             if(zapCodes.containsKey(str2))
                                 break;
                             if(str2.startsWith("-"))
@@ -1155,9 +1155,9 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                 case 73: // +HOUR
                     {
                         buf.append("Disallowed during the following time"+(multipleQuals(V,v,"-")?"s":"")+" of the day: ");
-						for(int v2=v+1;v2<V.size();v2++)
-						{
-							final String str2=(String)V.elementAt(v2);
+                        for(int v2=v+1;v2<V.size();v2++)
+                        {
+                            final String str2=(String)V.elementAt(v2);
                             if(zapCodes.containsKey(str2))
                                 break;
                             if(str2.startsWith("-"))
@@ -1171,9 +1171,9 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                 case 74: // -HOUR
                     {
                         buf.append((skipFirstWord?"Only ":"Allowed only ")+"during the following time"+(multipleQuals(V,v,"+")?"s":"")+" of the day: ");
-						for(int v2=v+1;v2<V.size();v2++)
-						{
-							final String str2=(String)V.elementAt(v2);
+                        for(int v2=v+1;v2<V.size();v2++)
+                        {
+                            final String str2=(String)V.elementAt(v2);
                             if(zapCodes.containsKey(str2))
                                 break;
                             if(str2.startsWith("+"))
@@ -1187,9 +1187,9 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                 case 75: // +season
                     {
                         buf.append("Disallowed during the following season"+(multipleQuals(V,v,"-")?"s":"")+": ");
-						for(int v2=v+1;v2<V.size();v2++)
-						{
-							final String str2=(String)V.elementAt(v2);
+                        for(int v2=v+1;v2<V.size();v2++)
+                        {
+                            final String str2=(String)V.elementAt(v2);
                             if(zapCodes.containsKey(str2))
                                 break;
                             if(str2.startsWith("-"))
@@ -1214,9 +1214,9 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                 case 76: // -season
                     {
                         buf.append((skipFirstWord?"Only ":"Allowed only ")+"during the following season"+(multipleQuals(V,v,"+")?"s":"")+": ");
-						for(int v2=v+1;v2<V.size();v2++)
-						{
-							final String str2=(String)V.elementAt(v2);
+                        for(int v2=v+1;v2<V.size();v2++)
+                        {
+                            final String str2=(String)V.elementAt(v2);
                             if(zapCodes.containsKey(str2))
                                 break;
                             if(str2.startsWith("+"))
@@ -1242,9 +1242,9 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                 case 104: // +weather
                 {
                     buf.append("Disallowed during the following weather condition"+(multipleQuals(V,v,"-")?"s":"")+": ");
-					for(int v2=v+1;v2<V.size();v2++)
-					{
-						final String str2=(String)V.elementAt(v2);
+                    for(int v2=v+1;v2<V.size();v2++)
+                    {
+                        final String str2=(String)V.elementAt(v2);
                         if(zapCodes.containsKey(str2))
                             break;
                         if(str2.startsWith("-"))
@@ -1297,9 +1297,9 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                 case 77: // +month
                     {
                         buf.append("Disallowed during the following month"+(multipleQuals(V,v,"-")?"s":"")+": ");
-						for(int v2=v+1;v2<V.size();v2++)
-						{
-							final String str2=(String)V.elementAt(v2);
+                        for(int v2=v+1;v2<V.size();v2++)
+                        {
+                            final String str2=(String)V.elementAt(v2);
                             if(zapCodes.containsKey(str2))
                                 break;
                             if(str2.startsWith("-"))
@@ -1313,9 +1313,9 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                 case 78: // -month
                     {
                         buf.append((skipFirstWord?"Only ":"Allowed only ")+"during the following month"+(multipleQuals(V,v,"+")?"s":"")+": ");
-						for(int v2=v+1;v2<V.size();v2++)
-						{
-							final String str2=(String)V.elementAt(v2);
+                        for(int v2=v+1;v2<V.size();v2++)
+                        {
+                            final String str2=(String)V.elementAt(v2);
                             if(zapCodes.containsKey(str2))
                                 break;
                             if(str2.startsWith("+"))
@@ -1329,9 +1329,9 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                 case 106: // +day
                     {
                         buf.append("Disallowed during the following day"+(multipleQuals(V,v,"-")?"s":"")+" of the month: ");
-						for(int v2=v+1;v2<V.size();v2++)
-						{
-							final String str2=(String)V.elementAt(v2);
+                        for(int v2=v+1;v2<V.size();v2++)
+                        {
+                            final String str2=(String)V.elementAt(v2);
                             if(zapCodes.containsKey(str2))
                                 break;
                             if(str2.startsWith("-"))
@@ -1345,9 +1345,9 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                 case 107: // -day
                     {
                         buf.append((skipFirstWord?"Only ":"Allowed only ")+"on the following day"+(multipleQuals(V,v,"+")?"s":"")+" of the month: ");
-						for(int v2=v+1;v2<V.size();v2++)
-						{
-							final String str2=(String)V.elementAt(v2);
+                        for(int v2=v+1;v2<V.size();v2++)
+                        {
+                            final String str2=(String)V.elementAt(v2);
                             if(zapCodes.containsKey(str2))
                                 break;
                             if(str2.startsWith("+"))
@@ -1361,52 +1361,52 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 
                 case 85: // +quallvl
                     if((v+1)<V.size())
-	                {
-	                    final Ability A=CMClass.getAbility((String)V.elementAt(v+1));
-	                    if(A!=null)
-	                    {
-		                    int adjustment=0;
-		                    if(((v+2)<V.size())&&(CMath.isInteger((String)V.elementAt(v+2))))
-		                    	adjustment=CMath.s_int((String)V.elementAt(v+2));
-		                    buf.append(A.Name());
-		                    if(adjustment!=0)
-			                    buf.append("Qualifies for "+A.Name());
-		                    else
-		                    if(adjustment<0)
-		                    	buf.append((-adjustment)+" levels before qualifying for "+A.Name());
-		                    else
-		                    	buf.append(adjustment+" levels after qualifying for "+A.Name());
-		                    buf.append(".  ");
-	                    }
-	                }
-	                break;
-	            case 86: // -quallvl
+                    {
+                        final Ability A=CMClass.getAbility((String)V.elementAt(v+1));
+                        if(A!=null)
+                        {
+                            int adjustment=0;
+                            if(((v+2)<V.size())&&(CMath.isInteger((String)V.elementAt(v+2))))
+                                adjustment=CMath.s_int((String)V.elementAt(v+2));
+                            buf.append(A.Name());
+                            if(adjustment!=0)
+                                buf.append("Qualifies for "+A.Name());
+                            else
+                            if(adjustment<0)
+                                buf.append((-adjustment)+" levels before qualifying for "+A.Name());
+                            else
+                                buf.append(adjustment+" levels after qualifying for "+A.Name());
+                            buf.append(".  ");
+                        }
+                    }
+                    break;
+                case 86: // -quallvl
                     if((v+1)<V.size())
-	                {
-	                    final Ability A=CMClass.getAbility((String)V.elementAt(v+1));
-	                    if(A!=null)
-	                    {
-		                    int adjustment=0;
-		                    if(((v+2)<V.size())&&(CMath.isInteger((String)V.elementAt(v+2))))
-		                    	adjustment=CMath.s_int((String)V.elementAt(v+2));
-		                    buf.append(A.Name());
-		                    if(adjustment!=0)
-			                    buf.append("Does not qualify for "+A.Name());
-		                    else
-		                    if(adjustment<0)
-		                    	buf.append("Still prior to "+(-adjustment)+" levels before qualifying for "+A.Name());
-		                    else
-		                    	buf.append("Still prior to "+adjustment+" levels after qualifying for "+A.Name());
-		                    buf.append(".  ");
-	                    }
-	                }
-	                break;
+                    {
+                        final Ability A=CMClass.getAbility((String)V.elementAt(v+1));
+                        if(A!=null)
+                        {
+                            int adjustment=0;
+                            if(((v+2)<V.size())&&(CMath.isInteger((String)V.elementAt(v+2))))
+                                adjustment=CMath.s_int((String)V.elementAt(v+2));
+                            buf.append(A.Name());
+                            if(adjustment!=0)
+                                buf.append("Does not qualify for "+A.Name());
+                            else
+                            if(adjustment<0)
+                                buf.append("Still prior to "+(-adjustment)+" levels before qualifying for "+A.Name());
+                            else
+                                buf.append("Still prior to "+adjustment+" levels after qualifying for "+A.Name());
+                            buf.append(".  ");
+                        }
+                    }
+                    break;
                 case 70: // -disposition
                     {
                         buf.append((skipFirstWord?"The":"Requires")+" following disposition"+(multipleQuals(V,v,"+")?"s":"")+": ");
-						for(int v2=v+1;v2<V.size();v2++)
-						{
-							final String str2=(String)V.elementAt(v2);
+                        for(int v2=v+1;v2<V.size();v2++)
+                        {
+                            final String str2=(String)V.elementAt(v2);
                             if(zapCodes.containsKey(str2))
                                 break;
                             if(str2.startsWith("+"))
@@ -1424,9 +1424,9 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                 case 69: // +disposition
                     {
                         buf.append("Disallows the following disposition"+(multipleQuals(V,v,"-")?"s":"")+": ");
-						for(int v2=v+1;v2<V.size();v2++)
-						{
-							final String str2=(String)V.elementAt(v2);
+                        for(int v2=v+1;v2<V.size();v2++)
+                        {
+                            final String str2=(String)V.elementAt(v2);
                             if(zapCodes.containsKey(str2))
                                 break;
                             if(str2.startsWith("-"))
@@ -1444,9 +1444,9 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                 case 52: // -Resource
                     {
                         buf.append((skipFirstWord?"C":"Requires c")+"onstruction from the following material"+(multipleQuals(V,v,"+")?"s":"")+": ");
-						for(int v2=v+1;v2<V.size();v2++)
-						{
-							final String str2=(String)V.elementAt(v2);
+                        for(int v2=v+1;v2<V.size();v2++)
+                        {
+                            final String str2=(String)V.elementAt(v2);
                             if(zapCodes.containsKey(str2))
                                 break;
                             if(str2.startsWith("+"))
@@ -1464,9 +1464,9 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                 case 51: // +Resource
                     {
                         buf.append("Disallows items of the following material"+(multipleQuals(V,v,"-")?"s":"")+": ");
-						for(int v2=v+1;v2<V.size();v2++)
-						{
-							final String str2=(String)V.elementAt(v2);
+                        for(int v2=v+1;v2<V.size();v2++)
+                        {
+                            final String str2=(String)V.elementAt(v2);
                             if(zapCodes.containsKey(str2))
                                 break;
                             if(str2.startsWith("-"))
@@ -1484,9 +1484,9 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                 case 53: // -JavaClass
                     {
                         buf.append((skipFirstWord?"B":"Requires b")+"eing of the following type"+(multipleQuals(V,v,"+")?"s":"")+": ");
-						for(int v2=v+1;v2<V.size();v2++)
-						{
-							final String str2=(String)V.elementAt(v2);
+                        for(int v2=v+1;v2<V.size();v2++)
+                        {
+                            final String str2=(String)V.elementAt(v2);
                             if(zapCodes.containsKey(str2))
                                 break;
                             if(str2.startsWith("+"))
@@ -1500,9 +1500,9 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                 case 54: // +JavaClass
                     {
                         buf.append("Disallows being of the following type"+(multipleQuals(V,v,"-")?"s":"")+": ");
-						for(int v2=v+1;v2<V.size();v2++)
-						{
-							final String str2=(String)V.elementAt(v2);
+                        for(int v2=v+1;v2<V.size();v2++)
+                        {
+                            final String str2=(String)V.elementAt(v2);
                             if(zapCodes.containsKey(str2))
                                 break;
                             if(str2.startsWith("-"))
@@ -1513,76 +1513,76 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                         buf.append(".  ");
                     }
                     break;
-				case 44: // -Deity
-					{
-						buf.append((skipFirstWord?"W":"Requires w")+"orshipping the following deity"+(multipleQuals(V,v,"+")?"s":"")+": ");
-						for(int v2=v+1;v2<V.size();v2++)
-						{
-							final String str2=(String)V.elementAt(v2);
+                case 44: // -Deity
+                    {
+                        buf.append((skipFirstWord?"W":"Requires w")+"orshipping the following deity"+(multipleQuals(V,v,"+")?"s":"")+": ");
+                        for(int v2=v+1;v2<V.size();v2++)
+                        {
+                            final String str2=(String)V.elementAt(v2);
                             if(zapCodes.containsKey(str2))
                                 break;
                             if(str2.startsWith("+"))
-								buf.append(str2.substring(1)+", ");
-						}
-						if(buf.toString().endsWith(", "))
-							buf=new StringBuffer(buf.substring(0,buf.length()-2));
-						buf.append(".  ");
-					}
-					break;
-				case 45: // +Deity
-					{
-						buf.append("Disallows the worshippers of: ");
-						for(int v2=v+1;v2<V.size();v2++)
-						{
-							final String str2=(String)V.elementAt(v2);
+                                buf.append(str2.substring(1)+", ");
+                        }
+                        if(buf.toString().endsWith(", "))
+                            buf=new StringBuffer(buf.substring(0,buf.length()-2));
+                        buf.append(".  ");
+                    }
+                    break;
+                case 45: // +Deity
+                    {
+                        buf.append("Disallows the worshippers of: ");
+                        for(int v2=v+1;v2<V.size();v2++)
+                        {
+                            final String str2=(String)V.elementAt(v2);
                             if(zapCodes.containsKey(str2))
                                 break;
                             if(str2.startsWith("-"))
-								buf.append(str2.substring(1)+", ");
-						}
-						if(buf.toString().endsWith(", "))
-							buf=new StringBuffer(buf.substring(0,buf.length()-2));
-						buf.append(".  ");
-					}
-					break;
-				case 16: // +Names
-					{
-						buf.append("Disallows the following mob/player name"+(multipleQuals(V,v,"-")?"s":"")+": ");
-						for(int v2=v+1;v2<V.size();v2++)
-						{
-							final String str2=(String)V.elementAt(v2);
+                                buf.append(str2.substring(1)+", ");
+                        }
+                        if(buf.toString().endsWith(", "))
+                            buf=new StringBuffer(buf.substring(0,buf.length()-2));
+                        buf.append(".  ");
+                    }
+                    break;
+                case 16: // +Names
+                    {
+                        buf.append("Disallows the following mob/player name"+(multipleQuals(V,v,"-")?"s":"")+": ");
+                        for(int v2=v+1;v2<V.size();v2++)
+                        {
+                            final String str2=(String)V.elementAt(v2);
                             if(zapCodes.containsKey(str2))
                                 break;
-							if(str2.startsWith("-"))
-								buf.append(str2.substring(1)+", ");
-						}
-						if(buf.toString().endsWith(", "))
-							buf=new StringBuffer(buf.substring(0,buf.length()-2));
-						buf.append(".  ");
-					}
-					break;
-				case 9: // -Names
-					{
-						buf.append((skipFirstWord?"The":"Requires")+" following name"+(multipleQuals(V,v,"+")?"s":"")+": ");
-						for(int v2=v+1;v2<V.size();v2++)
-						{
-							final String str2=(String)V.elementAt(v2);
+                            if(str2.startsWith("-"))
+                                buf.append(str2.substring(1)+", ");
+                        }
+                        if(buf.toString().endsWith(", "))
+                            buf=new StringBuffer(buf.substring(0,buf.length()-2));
+                        buf.append(".  ");
+                    }
+                    break;
+                case 9: // -Names
+                    {
+                        buf.append((skipFirstWord?"The":"Requires")+" following name"+(multipleQuals(V,v,"+")?"s":"")+": ");
+                        for(int v2=v+1;v2<V.size();v2++)
+                        {
+                            final String str2=(String)V.elementAt(v2);
                             if(zapCodes.containsKey(str2))
                                 break;
                             if(str2.startsWith("+"))
-								buf.append(str2.substring(1)+", ");
-						}
-						if(buf.toString().endsWith(", "))
-							buf=new StringBuffer(buf.substring(0,buf.length()-2));
-						buf.append(".  ");
-					}
-					break;
+                                buf.append(str2.substring(1)+", ");
+                        }
+                        if(buf.toString().endsWith(", "))
+                            buf=new StringBuffer(buf.substring(0,buf.length()-2));
+                        buf.append(".  ");
+                    }
+                    break;
                 case 113: // -Questwin
                     {
                         buf.append((skipFirstWord?"Completing":"Requires completing")+" the following quest"+(multipleQuals(V,v,"+")?"s":"")+": ");
-						for(int v2=v+1;v2<V.size();v2++)
-						{
-							final String str2=(String)V.elementAt(v2);
+                        for(int v2=v+1;v2<V.size();v2++)
+                        {
+                            final String str2=(String)V.elementAt(v2);
                             if(zapCodes.containsKey(str2))
                                 break;
                             if(str2.startsWith("+"))
@@ -1605,9 +1605,9 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                 case 114: // +Questwin
                     {
                         buf.append("Disallows those who`ve won the following quest"+(multipleQuals(V,v,"-")?"s":"")+": ");
-						for(int v2=v+1;v2<V.size();v2++)
-						{
-							final String str2=(String)V.elementAt(v2);
+                        for(int v2=v+1;v2<V.size();v2++)
+                        {
+                            final String str2=(String)V.elementAt(v2);
                             if(zapCodes.containsKey(str2))
                                 break;
                             if(str2.startsWith("-"))
@@ -1627,18 +1627,18 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                         buf.append(".  ");
                     }
                     break;
-				case 10: // -Player
-					buf.append("Disallows players.  ");
-					break;
-				case 11: // -MOB
-					buf.append("Disallows mobs/npcs.  ");
-					break;
+                case 10: // -Player
+                    buf.append("Disallows players.  ");
+                    break;
+                case 11: // -MOB
+                    buf.append("Disallows mobs/npcs.  ");
+                    break;
                 case 112: // +races
                     {
                         buf.append("Disallows the following race"+(multipleQuals(V,v,"-")?"s":"")+": ");
-						for(int v2=v+1;v2<V.size();v2++)
-						{
-							final String str2=(String)V.elementAt(v2);
+                        for(int v2=v+1;v2<V.size();v2++)
+                        {
+                            final String str2=(String)V.elementAt(v2);
                             if(zapCodes.containsKey(str2))
                                 break;
                             if(str2.startsWith("-"))
@@ -1649,148 +1649,148 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                         buf.append(".  ");
                     }
                     break;
-				case 13: // +racecats
-					{
-						buf.append("Disallows the following racial category"+(multipleQuals(V,v,"-")?"s":"")+": ");
-						for(int v2=v+1;v2<V.size();v2++)
-						{
-							final String str2=(String)V.elementAt(v2);
+                case 13: // +racecats
+                    {
+                        buf.append("Disallows the following racial category"+(multipleQuals(V,v,"-")?"s":"")+": ");
+                        for(int v2=v+1;v2<V.size();v2++)
+                        {
+                            final String str2=(String)V.elementAt(v2);
                             if(zapCodes.containsKey(str2))
                                 break;
                             if(str2.startsWith("-"))
-								buf.append(str2.substring(1)+", ");
-						}
-						if(buf.toString().endsWith(", "))
-							buf=new StringBuffer(buf.substring(0,buf.length()-2));
-						buf.append(".  ");
-					}
-					break;
-				case 17: // -anyclass
-					{
-						buf.append((skipFirstWord?"L":"Requires l")+"evels in one of the following:  ");
-						for(final SavedClass C : charClasses())
-						{
-							if(fromHereStartsWith(V,'+',v+1,C.nameStart))
-								buf.append(C.name+", ");
-						}
-						if(buf.toString().endsWith(", "))
-							buf=new StringBuffer(buf.substring(0,buf.length()-2));
-						buf.append(".  ");
-					}
-					break;
-				case 18: // +anyclass
-					{
-						buf.append("Disallows any levels in any of the following:  ");
-						for(final SavedClass C : charClasses())
-						{
-							if(fromHereStartsWith(V,'-',v+1,C.nameStart))
-								buf.append(C.name+", ");
-						}
-						if(buf.toString().endsWith(", "))
-							buf=new StringBuffer(buf.substring(0,buf.length()-2));
-						buf.append(".  ");
-					}
-					break;
-				case 19: // +adjstr
-					val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
-					buf.append((skipFirstWord?"A":"Requires a")+" strength of at least "+val+".  ");
-					break;
-				case 20: // +adjint
-					val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
-					buf.append((skipFirstWord?"An":"Requires an")+" intelligence of at least "+val+".  ");
-					break;
-				case 21: // +adjwis
-					val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
-					buf.append((skipFirstWord?"A":"Requires a")+" wisdom of at least "+val+".  ");
-					break;
-				case 22: // +adjdex
-					val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
-					buf.append((skipFirstWord?"A":"Requires a")+" dexterity of at least "+val+".  ");
-					break;
-				case 23: // -adjcha
-					val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
-					buf.append((skipFirstWord?"A":"Requires a")+" constitution of at least "+val+".  ");
-					break;
-				case 24: // +adjcha
-					val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
-					buf.append((skipFirstWord?"A":"Requires a")+" charisma of at least "+val+".  ");
-					break;
-				case 25: // -adjstr
-					val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
-					buf.append((skipFirstWord?"A":"Requires a")+" strength of at most "+val+".  ");
-					break;
-				case 26: // -adjint
-					val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
-					buf.append((skipFirstWord?"An":"Requires an")+" intelligence of at most "+val+".  ");
-					break;
-				case 27: // -adjwis
-					val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
-					buf.append((skipFirstWord?"A":"Requires a")+" wisdom of at most "+val+".  ");
-					break;
-				case 28: // -adjdex
-					val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
-					buf.append((skipFirstWord?"A":"Requires a")+" dexterity of at most "+val+".  ");
-					break;
-				case 29: // -adjcon
-					val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
-					buf.append((skipFirstWord?"A":"Requires a")+" constitution of at most "+val+".  ");
-					break;
-				case 30: // -adjcha
-					val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
-					buf.append((skipFirstWord?"A":"Requires a")+" charisma of at most "+val+".  ");
-					break;
-				case 87: // +str
-					val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
-					buf.append((skipFirstWord?"A":"Requires a")+" base strength of at least "+val+".  ");
-					break;
-				case 88: // +int
-					val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
-					buf.append((skipFirstWord?"A":"Requires a")+" base intelligence of at least "+val+".  ");
-					break;
-				case 89: // +wis
-					val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
-					buf.append((skipFirstWord?"A":"Requires a")+" base wisdom of at least "+val+".  ");
-					break;
-				case 90: // +dex
-					val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
-					buf.append((skipFirstWord?"A":"Requires a")+" base dexterity of at least "+val+".  ");
-					break;
-				case 91: // +con
-					val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
-					buf.append((skipFirstWord?"A":"Requires a")+" base constitution of at least "+val+".  ");
-					break;
-				case 92: // +cha
-					val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
-					buf.append((skipFirstWord?"A":"Requires a")+" base charisma of at least "+val+".  ");
-					break;
-				case 93: // -str
-					val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
-					buf.append((skipFirstWord?"A":"Requires a")+" base strength of at most "+val+".  ");
-					break;
-				case 94: // -int
-					val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
-					buf.append((skipFirstWord?"A":"Requires a")+" base intelligence of at most "+val+".  ");
-					break;
-				case 95: // -wis
-					val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
-					buf.append((skipFirstWord?"A":"Requires a")+" base wisdom of at most "+val+".  ");
-					break;
-				case 96: // -dex
-					val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
-					buf.append((skipFirstWord?"A":"Requires a")+" base dexterity of at most "+val+".  ");
-					break;
-				case 97: // -con
-					val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
-					buf.append((skipFirstWord?"A":"Requires a")+" base constitution of at most "+val+".  ");
-					break;
-				case 98: // -cha
-					val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
-					buf.append((skipFirstWord?"A":"Requires a")+" base charisma of at most "+val+".  ");
-					break;
-				case 122: // -chance
-					val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
-					buf.append((skipFirstWord?"":"Allowed ")+" "+(100-val)+"% of the time.  ");
-					break;
+                                buf.append(str2.substring(1)+", ");
+                        }
+                        if(buf.toString().endsWith(", "))
+                            buf=new StringBuffer(buf.substring(0,buf.length()-2));
+                        buf.append(".  ");
+                    }
+                    break;
+                case 17: // -anyclass
+                    {
+                        buf.append((skipFirstWord?"L":"Requires l")+"evels in one of the following:  ");
+                        for(final SavedClass C : charClasses())
+                        {
+                            if(fromHereStartsWith(V,'+',v+1,C.nameStart))
+                                buf.append(C.name+", ");
+                        }
+                        if(buf.toString().endsWith(", "))
+                            buf=new StringBuffer(buf.substring(0,buf.length()-2));
+                        buf.append(".  ");
+                    }
+                    break;
+                case 18: // +anyclass
+                    {
+                        buf.append("Disallows any levels in any of the following:  ");
+                        for(final SavedClass C : charClasses())
+                        {
+                            if(fromHereStartsWith(V,'-',v+1,C.nameStart))
+                                buf.append(C.name+", ");
+                        }
+                        if(buf.toString().endsWith(", "))
+                            buf=new StringBuffer(buf.substring(0,buf.length()-2));
+                        buf.append(".  ");
+                    }
+                    break;
+                case 19: // +adjstr
+                    val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
+                    buf.append((skipFirstWord?"A":"Requires a")+" strength of at least "+val+".  ");
+                    break;
+                case 20: // +adjint
+                    val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
+                    buf.append((skipFirstWord?"An":"Requires an")+" intelligence of at least "+val+".  ");
+                    break;
+                case 21: // +adjwis
+                    val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
+                    buf.append((skipFirstWord?"A":"Requires a")+" wisdom of at least "+val+".  ");
+                    break;
+                case 22: // +adjdex
+                    val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
+                    buf.append((skipFirstWord?"A":"Requires a")+" dexterity of at least "+val+".  ");
+                    break;
+                case 23: // -adjcha
+                    val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
+                    buf.append((skipFirstWord?"A":"Requires a")+" constitution of at least "+val+".  ");
+                    break;
+                case 24: // +adjcha
+                    val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
+                    buf.append((skipFirstWord?"A":"Requires a")+" charisma of at least "+val+".  ");
+                    break;
+                case 25: // -adjstr
+                    val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
+                    buf.append((skipFirstWord?"A":"Requires a")+" strength of at most "+val+".  ");
+                    break;
+                case 26: // -adjint
+                    val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
+                    buf.append((skipFirstWord?"An":"Requires an")+" intelligence of at most "+val+".  ");
+                    break;
+                case 27: // -adjwis
+                    val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
+                    buf.append((skipFirstWord?"A":"Requires a")+" wisdom of at most "+val+".  ");
+                    break;
+                case 28: // -adjdex
+                    val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
+                    buf.append((skipFirstWord?"A":"Requires a")+" dexterity of at most "+val+".  ");
+                    break;
+                case 29: // -adjcon
+                    val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
+                    buf.append((skipFirstWord?"A":"Requires a")+" constitution of at most "+val+".  ");
+                    break;
+                case 30: // -adjcha
+                    val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
+                    buf.append((skipFirstWord?"A":"Requires a")+" charisma of at most "+val+".  ");
+                    break;
+                case 87: // +str
+                    val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
+                    buf.append((skipFirstWord?"A":"Requires a")+" base strength of at least "+val+".  ");
+                    break;
+                case 88: // +int
+                    val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
+                    buf.append((skipFirstWord?"A":"Requires a")+" base intelligence of at least "+val+".  ");
+                    break;
+                case 89: // +wis
+                    val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
+                    buf.append((skipFirstWord?"A":"Requires a")+" base wisdom of at least "+val+".  ");
+                    break;
+                case 90: // +dex
+                    val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
+                    buf.append((skipFirstWord?"A":"Requires a")+" base dexterity of at least "+val+".  ");
+                    break;
+                case 91: // +con
+                    val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
+                    buf.append((skipFirstWord?"A":"Requires a")+" base constitution of at least "+val+".  ");
+                    break;
+                case 92: // +cha
+                    val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
+                    buf.append((skipFirstWord?"A":"Requires a")+" base charisma of at least "+val+".  ");
+                    break;
+                case 93: // -str
+                    val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
+                    buf.append((skipFirstWord?"A":"Requires a")+" base strength of at most "+val+".  ");
+                    break;
+                case 94: // -int
+                    val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
+                    buf.append((skipFirstWord?"A":"Requires a")+" base intelligence of at most "+val+".  ");
+                    break;
+                case 95: // -wis
+                    val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
+                    buf.append((skipFirstWord?"A":"Requires a")+" base wisdom of at most "+val+".  ");
+                    break;
+                case 96: // -dex
+                    val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
+                    buf.append((skipFirstWord?"A":"Requires a")+" base dexterity of at most "+val+".  ");
+                    break;
+                case 97: // -con
+                    val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
+                    buf.append((skipFirstWord?"A":"Requires a")+" base constitution of at most "+val+".  ");
+                    break;
+                case 98: // -cha
+                    val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
+                    buf.append((skipFirstWord?"A":"Requires a")+" base charisma of at most "+val+".  ");
+                    break;
+                case 122: // -chance
+                    val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
+                    buf.append((skipFirstWord?"":"Allowed ")+" "+(100-val)+"% of the time.  ");
+                    break;
                 case 55: // +able
                     val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
                     buf.append((skipFirstWord?"A":"Requires a")+" magic/ability of at most "+val+".  ");
@@ -1839,44 +1839,44 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                     val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
                     buf.append((skipFirstWord?"An":"Requires an")+" attack bonus of at least "+val+".  ");
                     break;
-				case 32: // +Area
-					{
-						buf.append("Disallows the following area"+(multipleQuals(V,v,"-")?"s":"")+": ");
-						for(int v2=v+1;v2<V.size();v2++)
-						{
-							final String str2=(String)V.elementAt(v2);
+                case 32: // +Area
+                    {
+                        buf.append("Disallows the following area"+(multipleQuals(V,v,"-")?"s":"")+": ");
+                        for(int v2=v+1;v2<V.size();v2++)
+                        {
+                            final String str2=(String)V.elementAt(v2);
                             if(zapCodes.containsKey(str2))
                                 break;
                             if(str2.startsWith("-"))
-								buf.append(str2.substring(1)+", ");
-						}
-						if(buf.toString().endsWith(", "))
-							buf=new StringBuffer(buf.substring(0,buf.length()-2));
-						buf.append(".  ");
-					}
-					break;
-				case 31: // -Area
-					{
-						buf.append((skipFirstWord?"The":"Requires the")+" following area"+(multipleQuals(V,v,"+")?"s":"")+": ");
-						for(int v2=v+1;v2<V.size();v2++)
-						{
-							final String str2=(String)V.elementAt(v2);
+                                buf.append(str2.substring(1)+", ");
+                        }
+                        if(buf.toString().endsWith(", "))
+                            buf=new StringBuffer(buf.substring(0,buf.length()-2));
+                        buf.append(".  ");
+                    }
+                    break;
+                case 31: // -Area
+                    {
+                        buf.append((skipFirstWord?"The":"Requires the")+" following area"+(multipleQuals(V,v,"+")?"s":"")+": ");
+                        for(int v2=v+1;v2<V.size();v2++)
+                        {
+                            final String str2=(String)V.elementAt(v2);
                             if(zapCodes.containsKey(str2))
                                 break;
                             if(str2.startsWith("+"))
-								buf.append(str2.substring(1)+", ");
-						}
-						if(buf.toString().endsWith(", "))
-							buf=new StringBuffer(buf.substring(0,buf.length()-2));
-						buf.append(".  ");
-					}
-					break;
+                                buf.append(str2.substring(1)+", ");
+                        }
+                        if(buf.toString().endsWith(", "))
+                            buf=new StringBuffer(buf.substring(0,buf.length()-2));
+                        buf.append(".  ");
+                    }
+                    break;
                 case 99: // +Home
                 {
                     buf.append("Disallows those whose home is the following area"+(multipleQuals(V,v,"-")?"s":"")+": ");
-					for(int v2=v+1;v2<V.size();v2++)
-					{
-						final String str2=(String)V.elementAt(v2);
+                    for(int v2=v+1;v2<V.size();v2++)
+                    {
+                        final String str2=(String)V.elementAt(v2);
                         if(zapCodes.containsKey(str2))
                             break;
                         if(str2.startsWith("-"))
@@ -1890,9 +1890,9 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                 case 100: // -Home
                     {
                         buf.append((skipFirstWord?"From the":"Requires being from the")+" following area"+(multipleQuals(V,v,"+")?"s":"")+": ");
-						for(int v2=v+1;v2<V.size();v2++)
-						{
-							final String str2=(String)V.elementAt(v2);
+                        for(int v2=v+1;v2<V.size();v2++)
+                        {
+                            final String str2=(String)V.elementAt(v2);
                             if(zapCodes.containsKey(str2))
                                 break;
                             if(str2.startsWith("+"))
@@ -1903,28 +1903,28 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                         buf.append(".  ");
                     }
                     break;
-				case 33: // +Item
-					{
-						buf.append((skipFirstWord?"The":"Requires the")+" following item"+(multipleQuals(V,v,"-")?"s":"")+": ");
-						for(int v2=v+1;v2<V.size();v2++)
-						{
-							final String str2=(String)V.elementAt(v2);
+                case 33: // +Item
+                    {
+                        buf.append((skipFirstWord?"The":"Requires the")+" following item"+(multipleQuals(V,v,"-")?"s":"")+": ");
+                        for(int v2=v+1;v2<V.size();v2++)
+                        {
+                            final String str2=(String)V.elementAt(v2);
                             if(zapCodes.containsKey(str2))
                                 break;
                             if(str2.startsWith("-"))
-								buf.append(str2.substring(1)+", ");
-						}
-						if(buf.toString().endsWith(", "))
-							buf=new StringBuffer(buf.substring(0,buf.length()-2));
-						buf.append(".  ");
-					}
-					break;
+                                buf.append(str2.substring(1)+", ");
+                        }
+                        if(buf.toString().endsWith(", "))
+                            buf=new StringBuffer(buf.substring(0,buf.length()-2));
+                        buf.append(".  ");
+                    }
+                    break;
                 case 48: // -Worn
                 {
                     buf.append((skipFirstWord?"W":"Requires w")+"earing the following item"+(multipleQuals(V,v,"+")?"s":"")+": ");
-					for(int v2=v+1;v2<V.size();v2++)
-					{
-						final String str2=(String)V.elementAt(v2);
+                    for(int v2=v+1;v2<V.size();v2++)
+                    {
+                        final String str2=(String)V.elementAt(v2);
                         if(zapCodes.containsKey(str2))
                             break;
                         if((str2.startsWith("+"))||(str2.startsWith("-")))
@@ -1935,12 +1935,12 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                     buf.append(".  ");
                 }
                 break;
-				case 42: // +Effects
-					{
-						buf.append("Disallows the following activities/effect"+(multipleQuals(V,v,"-")?"s":"")+": ");
-						for(int v2=v+1;v2<V.size();v2++)
-						{
-							final String str2=(String)V.elementAt(v2);
+                case 42: // +Effects
+                    {
+                        buf.append("Disallows the following activities/effect"+(multipleQuals(V,v,"-")?"s":"")+": ");
+                        for(int v2=v+1;v2<V.size();v2++)
+                        {
+                            final String str2=(String)V.elementAt(v2);
                             if(zapCodes.containsKey(str2))
                                 break;
                             if(str2.startsWith("-"))
@@ -1949,20 +1949,20 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                                 if(A!=null)
                                     buf.append(A.name()+", ");
                                 else
-    								buf.append(str2.substring(1)+", ");
+                                    buf.append(str2.substring(1)+", ");
                             }
-						}
-						if(buf.toString().endsWith(", "))
-							buf=new StringBuffer(buf.substring(0,buf.length()-2));
-						buf.append(".  ");
-					}
-					break;
-				case 43: // -Effects
-					{
-						buf.append((skipFirstWord?"P":"Requires p")+"articipation in the following activities/effect"+(multipleQuals(V,v,"+")?"s":"")+": ");
-						for(int v2=v+1;v2<V.size();v2++)
-						{
-							final String str2=(String)V.elementAt(v2);
+                        }
+                        if(buf.toString().endsWith(", "))
+                            buf=new StringBuffer(buf.substring(0,buf.length()-2));
+                        buf.append(".  ");
+                    }
+                    break;
+                case 43: // -Effects
+                    {
+                        buf.append((skipFirstWord?"P":"Requires p")+"articipation in the following activities/effect"+(multipleQuals(V,v,"+")?"s":"")+": ");
+                        for(int v2=v+1;v2<V.size();v2++)
+                        {
+                            final String str2=(String)V.elementAt(v2);
                             if(zapCodes.containsKey(str2))
                                 break;
                             if(str2.startsWith("+"))
@@ -1973,249 +1973,249 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                                 else
                                     buf.append(str2.substring(1)+", ");
                             }
-						}
-						if(buf.toString().endsWith(", "))
-							buf=new StringBuffer(buf.substring(0,buf.length()-2));
-						buf.append(".  ");
-					}
-					break;
-				case 46: // -faction
-				{
-				    buf.append((skipFirstWord?"The":"Requires the")+" following: ");
-					for(int v2=v+1;v2<V.size();v2++)
-					{
-						final String str2=(String)V.elementAt(v2);
+                        }
+                        if(buf.toString().endsWith(", "))
+                            buf=new StringBuffer(buf.substring(0,buf.length()-2));
+                        buf.append(".  ");
+                    }
+                    break;
+                case 46: // -faction
+                {
+                    buf.append((skipFirstWord?"The":"Requires the")+" following: ");
+                    for(int v2=v+1;v2<V.size();v2++)
+                    {
+                        final String str2=(String)V.elementAt(v2);
                         if(zapCodes.containsKey(str2))
                             break;
-				        if((str2.startsWith("+"))
-				        &&(CMLib.factions().isRangeCodeName(str2.substring(1))))
-				        {
-				            String desc=CMLib.factions().rangeDescription(str2.substring(1),"or ");
-				            if(desc.length()>0) buf.append(desc+"; ");
-				        }
-				    }
-					if(buf.toString().endsWith(", "))
-						buf=new StringBuffer(buf.substring(0,buf.length()-2));
-					if(buf.toString().endsWith("; "))
-						buf=new StringBuffer(buf.substring(0,buf.length()-2));
-					buf.append(".  ");
-				}
-				break;
-				case 115: // -groupsize
-					val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
-					buf.append((skipFirstWord?"A":"Requires a")+" group size of at most "+val+".  ");
-					break;
-				case 116: // +groupsize
-					val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
-					buf.append((skipFirstWord?"A":"Requires a")+" group size of at least "+val+".  ");
-					break;
-				case 118: // -if
-					buf.append((skipFirstWord?"n":"Requires n")+"ot meeting the following condition(s):");
-					for(int v2=v+1;v2<V.size();v2++)
-					{
-						final String str2=(String)V.elementAt(v2);
+                        if((str2.startsWith("+"))
+                        &&(CMLib.factions().isRangeCodeName(str2.substring(1))))
+                        {
+                            String desc=CMLib.factions().rangeDescription(str2.substring(1),"or ");
+                            if(desc.length()>0) buf.append(desc+"; ");
+                        }
+                    }
+                    if(buf.toString().endsWith(", "))
+                        buf=new StringBuffer(buf.substring(0,buf.length()-2));
+                    if(buf.toString().endsWith("; "))
+                        buf=new StringBuffer(buf.substring(0,buf.length()-2));
+                    buf.append(".  ");
+                }
+                break;
+                case 115: // -groupsize
+                    val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
+                    buf.append((skipFirstWord?"A":"Requires a")+" group size of at most "+val+".  ");
+                    break;
+                case 116: // +groupsize
+                    val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
+                    buf.append((skipFirstWord?"A":"Requires a")+" group size of at least "+val+".  ");
+                    break;
+                case 118: // -if
+                    buf.append((skipFirstWord?"n":"Requires n")+"ot meeting the following condition(s):");
+                    for(int v2=v+1;v2<V.size();v2++)
+                    {
+                        final String str2=(String)V.elementAt(v2);
                         if(zapCodes.containsKey(str2))
                             break;
-				        buf.append(str2).append(" ");
-				    }
-					break;
-				case 119: // +if
-					buf.append((skipFirstWord?"m":"Requires m")+"meets the following condition(s):");
-					for(int v2=v+1;v2<V.size();v2++)
-					{
-						final String str2=(String)V.elementAt(v2);
+                        buf.append(str2).append(" ");
+                    }
+                    break;
+                case 119: // +if
+                    buf.append((skipFirstWord?"m":"Requires m")+"meets the following condition(s):");
+                    for(int v2=v+1;v2<V.size();v2++)
+                    {
+                        final String str2=(String)V.elementAt(v2);
                         if(zapCodes.containsKey(str2))
                             break;
-				        buf.append(str2).append(" ");
-				    }
-					break;
-				case 117: // +baseclass
-				{
-					buf.append("Disallows the following types"+(multipleQuals(V,v,"-")?"s":"")+": ");
-					HashSet<String> seenBase=new HashSet<String>();
-					for(final SavedClass C : charClasses())
-					{
-						if(!seenBase.contains(C.baseClass))
-						{
-							seenBase.add(C.baseClass);
-							if(fromHereStartsWith(V,'-',v+1,C.baseClassStart))
-								buf.append(C.baseClass+" types, ");
-						}
-					}
-					if(buf.toString().endsWith(", "))
-						buf=new StringBuffer(buf.substring(0,buf.length()-2));
-					buf.append(".  ");
-					break;
-				}
-				}
-			else
-			{
-				for(final SavedClass C : charClasses())
-				{
-					if(str.startsWith("-"+C.nameStart))
-						buf.append("Disallows "+C.name+".  ");
-				}
-				final LinkedList<String> cats=new LinkedList<String>();
-				for(final SavedRace R : races())
-				{
-					if((str.startsWith(R.minusCatNameStart))&&(!cats.contains(R.racialCategory)))
-					{
-						cats.add(R.racialCategory);
-						buf.append("Disallows "+R.racialCategory+".  ");
-					}
-				}
-				if(str.startsWith("-"+Faction.ALIGN_NAMES[Faction.ALIGN_EVIL].substring(0,3)))
-					buf.append("Disallows "+Faction.ALIGN_NAMES[Faction.ALIGN_EVIL].toLowerCase()+".  ");
-				if(str.startsWith("-"+Faction.ALIGN_NAMES[Faction.ALIGN_GOOD].substring(0,3)))
-					buf.append("Disallows "+Faction.ALIGN_NAMES[Faction.ALIGN_GOOD].toLowerCase()+".  ");
-				if(str.startsWith("-"+Faction.ALIGN_NAMES[Faction.ALIGN_NEUTRAL].substring(0,3)))
-					buf.append("Disallows "+Faction.ALIGN_NAMES[Faction.ALIGN_NEUTRAL].toLowerCase()+".  ");
-				if(str.startsWith("-MALE"))
-					buf.append("Disallows Males.  ");
-				if(str.startsWith("-FEMALE"))
-					buf.append("Disallows Females.  ");
-				if(str.startsWith("-NEUTER"))
-					buf.append((skipFirstWord?"Only ":"Allows only ")+"Males and Females.  ");
-				buf.append(levelHelp(str,'-',"Disallows "));
-				if((str.startsWith("-"))
-		        &&(CMLib.factions().isRangeCodeName(str.substring(1))))
-				{
-		            String desc=CMLib.factions().rangeDescription(str.substring(1),"and ");
-		            if(desc.length()>0) buf.append("Disallows "+desc);
-				}
-			}
-		}
-
-		if(buf.length()==0) buf.append("Anyone.");
-		return buf.toString();
-	}
-
-	public boolean syntaxCheck(final String mask, final Vector errorSink)
-	{
-		if(mask.trim().length()==0) return true;
-		Vector<String> V=CMParms.parse(mask.toUpperCase());
-		for(int v=0;v<V.size();v++)
-		{
-			String str=(String)V.elementAt(v);
-	        Hashtable zapCodes=getMaskCodes();
-	        if(zapCodes.containsKey(str)) return true;
-			for(final SavedClass C : charClasses())
-			{
-				if(str.startsWith(C.minusNameStart))
-					return true;
-			}
-			for(final SavedRace R : races())
-			{
-				if(str.startsWith(R.minusNameStart))
-					return true;
-				if(str.startsWith(R.minusCatNameStart))
-					return true;
-			}
-			if(str.startsWith("-"+Faction.ALIGN_NAMES[Faction.ALIGN_EVIL].substring(0,3)))
-				return true;
-			if(str.startsWith("-"+Faction.ALIGN_NAMES[Faction.ALIGN_GOOD].substring(0,3)))
-				return true;
-			if(str.startsWith("-"+Faction.ALIGN_NAMES[Faction.ALIGN_NEUTRAL].substring(0,3)))
-				return true;
-			if(str.startsWith("-MALE"))
-				return true;
-			if(str.startsWith("-FEMALE"))
-				return true;
-			if(str.startsWith("-NEUTER"))
-				return true;
-			if(levelHelp(str,'-',"").length()>0)
-				return true;
-			if((str.startsWith("-"))
-	        &&(CMLib.factions().isRangeCodeName(str.substring(1))))
-				return true;
-		}
-		errorSink.addElement("No valid zapper codes found.");
-		return false;
-	}
-	
-	public Vector getAbilityEduReqs(final String text)
-	{
-		final Vector preReqs=new Vector();
-		if(text.trim().length()==0)
-			return preReqs;
-		final Hashtable zapCodes=getMaskCodes();
-		final Vector<String> V=CMParms.parse(text.toUpperCase());
-		String str2;
-		for(int v=0;v<V.size();v++)
-		{
-			final String str=(String)V.elementAt(v);
-			if(zapCodes.containsKey(str))
+                        buf.append(str2).append(" ");
+                    }
+                    break;
+                case 117: // +baseclass
+                {
+                    buf.append("Disallows the following types"+(multipleQuals(V,v,"-")?"s":"")+": ");
+                    HashSet<String> seenBase=new HashSet<String>();
+                    for(final SavedClass C : charClasses())
+                    {
+                        if(!seenBase.contains(C.baseClass))
+                        {
+                            seenBase.add(C.baseClass);
+                            if(fromHereStartsWith(V,'-',v+1,C.baseClassStart))
+                                buf.append(C.baseClass+" types, ");
+                        }
+                    }
+                    if(buf.toString().endsWith(", "))
+                        buf=new StringBuffer(buf.substring(0,buf.length()-2));
+                    buf.append(".  ");
+                    break;
+                }
+                }
+            else
             {
-				switch(((Integer)zapCodes.get(str)).intValue())
-				{
-				case 81: // -expertises
-					{
-						for(int v2=v+1;v2<V.size();v2++)
-						{
-							str2=(String)V.elementAt(v2);
-	                        if(zapCodes.containsKey(str2))
-	                            break;
-	                        if(str2.startsWith("+"))
-	                        {
-	                        	ExpertiseLibrary.ExpertiseDefinition E=CMLib.expertises().getDefinition(str2.substring(1).toUpperCase().trim());
-	                        	if(E!=null) preReqs.addElement(E.ID);
-	                        }
-						}
-					}
-					break;
-				case 83: // -skills
-					{
-						for(int v2=v+1;v2<V.size();v2++)
-						{
-							str2=(String)V.elementAt(v2);
-	                        if(zapCodes.containsKey(str2))
-	                            break;
-	                        if(str2.startsWith("+"))
-	                        {
-	                        	str2=str2.substring(1);
-	                        	int x=str2.indexOf('(');
-	                        	if(x>0) str2=str2.substring(0,x);
-	                        	final Ability A=CMClass.getAbility(str2);
-	                        	if((A!=null)&&(!preReqs.contains(A.ID())))
-	                        		preReqs.addElement(A.ID());
-	                        }
-						}
-					}
-					break;
-				case 101: // -skillflag
-				{
-					final Vector objs=new Vector();
-					Object o=null;
-					for(int v2=v+1;v2<V.size();v2++)
-					{
-						str2=(String)V.elementAt(v2);
+                for(final SavedClass C : charClasses())
+                {
+                    if(str.startsWith("-"+C.nameStart))
+                        buf.append("Disallows "+C.name+".  ");
+                }
+                final LinkedList<String> cats=new LinkedList<String>();
+                for(final SavedRace R : races())
+                {
+                    if((str.startsWith(R.minusCatNameStart))&&(!cats.contains(R.racialCategory)))
+                    {
+                        cats.add(R.racialCategory);
+                        buf.append("Disallows "+R.racialCategory+".  ");
+                    }
+                }
+                if(str.startsWith("-"+Faction.ALIGN_NAMES[Faction.ALIGN_EVIL].substring(0,3)))
+                    buf.append("Disallows "+Faction.ALIGN_NAMES[Faction.ALIGN_EVIL].toLowerCase()+".  ");
+                if(str.startsWith("-"+Faction.ALIGN_NAMES[Faction.ALIGN_GOOD].substring(0,3)))
+                    buf.append("Disallows "+Faction.ALIGN_NAMES[Faction.ALIGN_GOOD].toLowerCase()+".  ");
+                if(str.startsWith("-"+Faction.ALIGN_NAMES[Faction.ALIGN_NEUTRAL].substring(0,3)))
+                    buf.append("Disallows "+Faction.ALIGN_NAMES[Faction.ALIGN_NEUTRAL].toLowerCase()+".  ");
+                if(str.startsWith("-MALE"))
+                    buf.append("Disallows Males.  ");
+                if(str.startsWith("-FEMALE"))
+                    buf.append("Disallows Females.  ");
+                if(str.startsWith("-NEUTER"))
+                    buf.append((skipFirstWord?"Only ":"Allows only ")+"Males and Females.  ");
+                buf.append(levelHelp(str,'-',"Disallows "));
+                if((str.startsWith("-"))
+                &&(CMLib.factions().isRangeCodeName(str.substring(1))))
+                {
+                    String desc=CMLib.factions().rangeDescription(str.substring(1),"and ");
+                    if(desc.length()>0) buf.append("Disallows "+desc);
+                }
+            }
+        }
+
+        if(buf.length()==0) buf.append("Anyone.");
+        return buf.toString();
+    }
+
+    public boolean syntaxCheck(final String mask, final Vector errorSink)
+    {
+        if(mask.trim().length()==0) return true;
+        Vector<String> V=CMParms.parse(mask.toUpperCase());
+        for(int v=0;v<V.size();v++)
+        {
+            String str=(String)V.elementAt(v);
+            Hashtable zapCodes=getMaskCodes();
+            if(zapCodes.containsKey(str)) return true;
+            for(final SavedClass C : charClasses())
+            {
+                if(str.startsWith(C.minusNameStart))
+                    return true;
+            }
+            for(final SavedRace R : races())
+            {
+                if(str.startsWith(R.minusNameStart))
+                    return true;
+                if(str.startsWith(R.minusCatNameStart))
+                    return true;
+            }
+            if(str.startsWith("-"+Faction.ALIGN_NAMES[Faction.ALIGN_EVIL].substring(0,3)))
+                return true;
+            if(str.startsWith("-"+Faction.ALIGN_NAMES[Faction.ALIGN_GOOD].substring(0,3)))
+                return true;
+            if(str.startsWith("-"+Faction.ALIGN_NAMES[Faction.ALIGN_NEUTRAL].substring(0,3)))
+                return true;
+            if(str.startsWith("-MALE"))
+                return true;
+            if(str.startsWith("-FEMALE"))
+                return true;
+            if(str.startsWith("-NEUTER"))
+                return true;
+            if(levelHelp(str,'-',"").length()>0)
+                return true;
+            if((str.startsWith("-"))
+            &&(CMLib.factions().isRangeCodeName(str.substring(1))))
+                return true;
+        }
+        errorSink.addElement("No valid zapper codes found.");
+        return false;
+    }
+    
+    public Vector getAbilityEduReqs(final String text)
+    {
+        final Vector preReqs=new Vector();
+        if(text.trim().length()==0)
+            return preReqs;
+        final Hashtable zapCodes=getMaskCodes();
+        final Vector<String> V=CMParms.parse(text.toUpperCase());
+        String str2;
+        for(int v=0;v<V.size();v++)
+        {
+            final String str=(String)V.elementAt(v);
+            if(zapCodes.containsKey(str))
+            {
+                switch(((Integer)zapCodes.get(str)).intValue())
+                {
+                case 81: // -expertises
+                    {
+                        for(int v2=v+1;v2<V.size();v2++)
+                        {
+                            str2=(String)V.elementAt(v2);
+                            if(zapCodes.containsKey(str2))
+                                break;
+                            if(str2.startsWith("+"))
+                            {
+                                ExpertiseLibrary.ExpertiseDefinition E=CMLib.expertises().getDefinition(str2.substring(1).toUpperCase().trim());
+                                if(E!=null) preReqs.addElement(E.ID);
+                            }
+                        }
+                    }
+                    break;
+                case 83: // -skills
+                    {
+                        for(int v2=v+1;v2<V.size();v2++)
+                        {
+                            str2=(String)V.elementAt(v2);
+                            if(zapCodes.containsKey(str2))
+                                break;
+                            if(str2.startsWith("+"))
+                            {
+                                str2=str2.substring(1);
+                                int x=str2.indexOf('(');
+                                if(x>0) str2=str2.substring(0,x);
+                                final Ability A=CMClass.getAbility(str2);
+                                if((A!=null)&&(!preReqs.contains(A.ID())))
+                                    preReqs.addElement(A.ID());
+                            }
+                        }
+                    }
+                    break;
+                case 101: // -skillflag
+                {
+                    final Vector objs=new Vector();
+                    Object o=null;
+                    for(int v2=v+1;v2<V.size();v2++)
+                    {
+                        str2=(String)V.elementAt(v2);
                         if(zapCodes.containsKey(str2))
                             break;
                         if(str2.startsWith("+"))
                         {
-                        	str2=str2.substring(1);
-                        	o=this.makeSkillFlagObject(str2);
-                        	if(o!=null)
-                        		objs.addElement(o);
+                            str2=str2.substring(1);
+                            o=this.makeSkillFlagObject(str2);
+                            if(o!=null)
+                                objs.addElement(o);
                         }
-					}
-					for(final Object O : objs)
-                    	for(final Enumeration<Ability> e=CMClass.abilities();e.hasMoreElements();)
-                    	{
-                        	final Ability A=(Ability)e.nextElement();
-                        	if((evaluateSkillFlagObject(O,A))
-                        	&&(!preReqs.contains(A.ID())))
-                        	{
-                        		preReqs.addElement(A.ID());
-                        	}
-                    	}
-				}
-				break;
-				}
+                    }
+                    for(final Object O : objs)
+                        for(final Enumeration<Ability> e=CMClass.abilities();e.hasMoreElements();)
+                        {
+                            final Ability A=(Ability)e.nextElement();
+                            if((evaluateSkillFlagObject(O,A))
+                            &&(!preReqs.contains(A.ID())))
+                            {
+                                preReqs.addElement(A.ID());
+                            }
+                        }
+                }
+                break;
+                }
             }
-		}
-		return preReqs;
-	}
+        }
+        return preReqs;
+    }
 
     public int minMaskLevel(final String text, final int minMinLevel)
     {
@@ -2314,170 +2314,170 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
         return level;
     }
 
-	public CompiledZapperMask maskCompile(final String text)
-	{
-		final Vector<CompiledZapperMaskEntry> buf=new Vector<CompiledZapperMaskEntry>();
-		if(text.trim().length()==0) return new CompiledZapperMask(new boolean[]{false,false},buf.toArray(new CompiledZapperMaskEntry[0]));
-		final Hashtable<String,Integer> zapCodes=getMaskCodes();
-		final Vector<String> V=CMParms.parse(text.toUpperCase());
-		boolean buildItemFlag=false;
-		boolean buildRoomFlag=false;
-		Integer entryType;
-		for(int v=0;v<V.size();v++)
-		{
-			final String str=(String)V.elementAt(v);
-			int val=-1;
-			entryType=zapCodes.get(str);
-			if(entryType!=null)
-				switch(entryType.intValue())
-				{
-				case 0: // -class
-					{
-						final Vector<Object> parms=new Vector<Object>();
-						for(final SavedClass C : charClasses())
-						{
-							if(fromHereStartsWith(V,'+',v+1,C.nameStart))
-								parms.addElement(C.name);
-						}
-						buf.add(new CompiledZapperMaskEntry(entryType.intValue(),parms.toArray(new Object[0])));
-					}
-					break;
-				case 1: // -baseclass
-					{
-						final Vector<Object> parms=new Vector<Object>();
-						final HashSet<String> seenBase=new HashSet<String>();
-						for(final SavedClass C : charClasses())
-						{
-							if(!seenBase.contains(C.baseClass))
-							{
-								seenBase.add(C.baseClass);
-								if(fromHereStartsWith(V,'+',v+1,C.baseClassStart))
-									parms.addElement(C.baseClass);
-							}
-						}
-						buf.add(new CompiledZapperMaskEntry(entryType.intValue(),parms.toArray(new Object[0])));
-					}
-					break;
-				case 117: // +baseclass
-					{
-						final Vector<Object> parms=new Vector<Object>();
-						final HashSet<String> seenBase=new HashSet<String>();
-						for(final SavedClass C : charClasses())
-						{
-							if(!seenBase.contains(C.baseClass))
-							{
-								seenBase.add(C.baseClass);
-								if(fromHereStartsWith(V,'-',v+1,C.baseClassStart))
-									parms.addElement(C.baseClass);
-							}
-						}
-						buf.add(new CompiledZapperMaskEntry(entryType.intValue(),parms.toArray(new Object[0])));
-					}
-					break;
-				case 2: // -Race
-					{
-						final Vector<Object> parms=new Vector<Object>();
-						final LinkedList<String> cats=new LinkedList<String>();
-						for(final SavedRace R : races())
-						{
-							if((!cats.contains(R.name)
-							&&(fromHereStartsWith(V,'+',v+1,R.nameStart))))
-							   cats.add(R.name);
-						}
-						for(final String s : cats)
-							parms.addElement(s);
-						buf.add(new CompiledZapperMaskEntry(entryType.intValue(),parms.toArray(new Object[0])));
-					}
-					break;
-				case 12: // -Racecats
-					{
-						final Vector<Object> parms=new Vector<Object>();
-						final LinkedList<String> cats=new LinkedList<String>();
-						for(final SavedRace R : races())
-						{
-							if((!cats.contains(R.racialCategory)
-							&&(fromHereStartsWith(V,'+',v+1,R.upperCatName))))
-							   cats.add(R.racialCategory);
-						}
-						for(final String s : cats)
-							parms.addElement(s);
-						buf.add(new CompiledZapperMaskEntry(entryType.intValue(),parms.toArray(new Object[0])));
-					}
-					break;
-				case 13: // +Racecats
-					{
-						final Vector<Object> parms=new Vector<Object>();
-						final LinkedList<String> cats=new LinkedList<String>();
-						for(final SavedRace R : races())
-						{
-							if((!cats.contains(R.racialCategory)
-							&&(fromHereStartsWith(V,'-',v+1,R.upperCatName))))
-							   cats.add(R.racialCategory);
-						}
-						for(final String s : cats)
-							parms.addElement(s);
-						buf.add(new CompiledZapperMaskEntry(entryType.intValue(),parms.toArray(new Object[0])));
-					}
-					break;
+    public CompiledZapperMask maskCompile(final String text)
+    {
+        final Vector<CompiledZapperMaskEntry> buf=new Vector<CompiledZapperMaskEntry>();
+        if(text.trim().length()==0) return new CompiledZapperMask(new boolean[]{false,false},buf.toArray(new CompiledZapperMaskEntry[0]));
+        final Hashtable<String,Integer> zapCodes=getMaskCodes();
+        final Vector<String> V=CMParms.parse(text.toUpperCase());
+        boolean buildItemFlag=false;
+        boolean buildRoomFlag=false;
+        Integer entryType;
+        for(int v=0;v<V.size();v++)
+        {
+            final String str=(String)V.elementAt(v);
+            int val=-1;
+            entryType=zapCodes.get(str);
+            if(entryType!=null)
+                switch(entryType.intValue())
+                {
+                case 0: // -class
+                    {
+                        final Vector<Object> parms=new Vector<Object>();
+                        for(final SavedClass C : charClasses())
+                        {
+                            if(fromHereStartsWith(V,'+',v+1,C.nameStart))
+                                parms.addElement(C.name);
+                        }
+                        buf.add(new CompiledZapperMaskEntry(entryType.intValue(),parms.toArray(new Object[0])));
+                    }
+                    break;
+                case 1: // -baseclass
+                    {
+                        final Vector<Object> parms=new Vector<Object>();
+                        final HashSet<String> seenBase=new HashSet<String>();
+                        for(final SavedClass C : charClasses())
+                        {
+                            if(!seenBase.contains(C.baseClass))
+                            {
+                                seenBase.add(C.baseClass);
+                                if(fromHereStartsWith(V,'+',v+1,C.baseClassStart))
+                                    parms.addElement(C.baseClass);
+                            }
+                        }
+                        buf.add(new CompiledZapperMaskEntry(entryType.intValue(),parms.toArray(new Object[0])));
+                    }
+                    break;
+                case 117: // +baseclass
+                    {
+                        final Vector<Object> parms=new Vector<Object>();
+                        final HashSet<String> seenBase=new HashSet<String>();
+                        for(final SavedClass C : charClasses())
+                        {
+                            if(!seenBase.contains(C.baseClass))
+                            {
+                                seenBase.add(C.baseClass);
+                                if(fromHereStartsWith(V,'-',v+1,C.baseClassStart))
+                                    parms.addElement(C.baseClass);
+                            }
+                        }
+                        buf.add(new CompiledZapperMaskEntry(entryType.intValue(),parms.toArray(new Object[0])));
+                    }
+                    break;
+                case 2: // -Race
+                    {
+                        final Vector<Object> parms=new Vector<Object>();
+                        final LinkedList<String> cats=new LinkedList<String>();
+                        for(final SavedRace R : races())
+                        {
+                            if((!cats.contains(R.name)
+                            &&(fromHereStartsWith(V,'+',v+1,R.nameStart))))
+                               cats.add(R.name);
+                        }
+                        for(final String s : cats)
+                            parms.addElement(s);
+                        buf.add(new CompiledZapperMaskEntry(entryType.intValue(),parms.toArray(new Object[0])));
+                    }
+                    break;
+                case 12: // -Racecats
+                    {
+                        final Vector<Object> parms=new Vector<Object>();
+                        final LinkedList<String> cats=new LinkedList<String>();
+                        for(final SavedRace R : races())
+                        {
+                            if((!cats.contains(R.racialCategory)
+                            &&(fromHereStartsWith(V,'+',v+1,R.upperCatName))))
+                               cats.add(R.racialCategory);
+                        }
+                        for(final String s : cats)
+                            parms.addElement(s);
+                        buf.add(new CompiledZapperMaskEntry(entryType.intValue(),parms.toArray(new Object[0])));
+                    }
+                    break;
+                case 13: // +Racecats
+                    {
+                        final Vector<Object> parms=new Vector<Object>();
+                        final LinkedList<String> cats=new LinkedList<String>();
+                        for(final SavedRace R : races())
+                        {
+                            if((!cats.contains(R.racialCategory)
+                            &&(fromHereStartsWith(V,'-',v+1,R.upperCatName))))
+                               cats.add(R.racialCategory);
+                        }
+                        for(final String s : cats)
+                            parms.addElement(s);
+                        buf.add(new CompiledZapperMaskEntry(entryType.intValue(),parms.toArray(new Object[0])));
+                    }
+                    break;
                 case 112: // +Race
                     {
                         final Vector<Object> parms=new Vector<Object>();
-						for(final SavedRace R : races())
-						{
+                        for(final SavedRace R : races())
+                        {
                             if(fromHereStartsWith(V,'-',v+1,R.upperName))
                                parms.addElement(R.name);
                         }
-						buf.add(new CompiledZapperMaskEntry(entryType.intValue(),parms.toArray(new Object[0])));
+                        buf.add(new CompiledZapperMaskEntry(entryType.intValue(),parms.toArray(new Object[0])));
                     }
                     break;
-				case 3: // -Alignment
-					{
-						final Vector<Object> parms=new Vector<Object>();
-						if(fromHereStartsWith(V,'+',v+1,Faction.ALIGN_NAMES[Faction.ALIGN_EVIL].substring(0,3)))
-						    parms.addElement(Faction.ALIGN_NAMES[Faction.ALIGN_EVIL]);
-						if(fromHereStartsWith(V,'+',v+1,Faction.ALIGN_NAMES[Faction.ALIGN_GOOD].substring(0,3)))
-						    parms.addElement(Faction.ALIGN_NAMES[Faction.ALIGN_GOOD]);
-						if(fromHereStartsWith(V,'+',v+1,Faction.ALIGN_NAMES[Faction.ALIGN_NEUTRAL].substring(0,3)))
-						    parms.addElement(Faction.ALIGN_NAMES[Faction.ALIGN_NEUTRAL]);
-						buf.add(new CompiledZapperMaskEntry(entryType.intValue(),parms.toArray(new Object[0])));
-					}
-					break;
-				case 4: // -Gender
-					{
-						final Vector<Object> parms=new Vector<Object>();
-						if(fromHereStartsWith(V,'+',v+1,"MALE"))
-							parms.addElement("M");
-						if(fromHereStartsWith(V,'+',v+1,"FEMALE"))
-							parms.addElement("F");
-						if(fromHereStartsWith(V,'+',v+1,"NEUTER"))
-							parms.addElement("N");
-						buf.add(new CompiledZapperMaskEntry(entryType.intValue(),parms.toArray(new Object[0])));
-					}
-					break;
-				case 5: // -Levels
-				case 6: // -ClassLevels
+                case 3: // -Alignment
+                    {
+                        final Vector<Object> parms=new Vector<Object>();
+                        if(fromHereStartsWith(V,'+',v+1,Faction.ALIGN_NAMES[Faction.ALIGN_EVIL].substring(0,3)))
+                            parms.addElement(Faction.ALIGN_NAMES[Faction.ALIGN_EVIL]);
+                        if(fromHereStartsWith(V,'+',v+1,Faction.ALIGN_NAMES[Faction.ALIGN_GOOD].substring(0,3)))
+                            parms.addElement(Faction.ALIGN_NAMES[Faction.ALIGN_GOOD]);
+                        if(fromHereStartsWith(V,'+',v+1,Faction.ALIGN_NAMES[Faction.ALIGN_NEUTRAL].substring(0,3)))
+                            parms.addElement(Faction.ALIGN_NAMES[Faction.ALIGN_NEUTRAL]);
+                        buf.add(new CompiledZapperMaskEntry(entryType.intValue(),parms.toArray(new Object[0])));
+                    }
+                    break;
+                case 4: // -Gender
+                    {
+                        final Vector<Object> parms=new Vector<Object>();
+                        if(fromHereStartsWith(V,'+',v+1,"MALE"))
+                            parms.addElement("M");
+                        if(fromHereStartsWith(V,'+',v+1,"FEMALE"))
+                            parms.addElement("F");
+                        if(fromHereStartsWith(V,'+',v+1,"NEUTER"))
+                            parms.addElement("N");
+                        buf.add(new CompiledZapperMaskEntry(entryType.intValue(),parms.toArray(new Object[0])));
+                    }
+                    break;
+                case 5: // -Levels
+                case 6: // -ClassLevels
                 case 103: // -MaxclassLevels
-					{
-						final Vector<Object> parms=new Vector<Object>();
-						for(int v2=v+1;v2<V.size();v2++)
+                    {
+                        final Vector<Object> parms=new Vector<Object>();
+                        for(int v2=v+1;v2<V.size();v2++)
                         {
-							final String str2=(String)V.elementAt(v2);
+                            final String str2=(String)V.elementAt(v2);
                             if(zapCodes.containsKey(str2))
                             {
                                 v=v2-1;
                                 break;
                             }
                             final CompiledZapperMaskEntry e = levelCompiledHelper(str2,'+');
-							if(e!=null)
-							{
-								parms.add(Integer.valueOf(e.maskType));
-								parms.add(e.parms[0]);
-							}
+                            if(e!=null)
+                            {
+                                parms.add(Integer.valueOf(e.maskType));
+                                parms.add(e.parms[0]);
+                            }
                             v=V.size();
                         }
-						buf.add(new CompiledZapperMaskEntry(entryType.intValue(),parms.toArray(new Object[0])));
-					}
-					break;
+                        buf.add(new CompiledZapperMaskEntry(entryType.intValue(),parms.toArray(new Object[0])));
+                    }
+                    break;
                 case 43: // -Effect
                 case 42: // +Effect
                     {
@@ -2505,91 +2505,110 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                             }
                             v=V.size();
                         }
-						buf.add(new CompiledZapperMaskEntry(entryType.intValue(),parms.toArray(new Object[0])));
+                        buf.add(new CompiledZapperMaskEntry(entryType.intValue(),parms.toArray(new Object[0])));
                     }
                     break;
-				case 7: // -Tattoos
-				case 79: // -security
-				case 31: // -Area
-					buildRoomFlag=true;
-	            //$FALL-THROUGH$
-				case 120: // -Mood
-				case 81: // -expertise
-				case 14: // -Clan
-				case 44: // -Deity
-				case 9: // -Names
+                case 7: // -Tattoos
+                case 79: // -security
+                case 31: // -Area
+                    buildRoomFlag=true;
+                //$FALL-THROUGH$
+                case 120: // -Mood
+                case 81: // -expertise
+                case 14: // -Clan
+                case 44: // -Deity
+                case 9: // -Names
                 case 113: // -Questwin
                 case 100: // -Home
                 case 53: // -JavaClass
-					{
-						final Vector<Object> parms=new Vector<Object>();
-						for(int v2=v+1;v2<V.size();v2++)
-						{
-							final String str2=(String)V.elementAt(v2);
+                    {
+                        final Vector<Object> parms=new Vector<Object>();
+                        for(int v2=v+1;v2<V.size();v2++)
+                        {
+                            final String str2=(String)V.elementAt(v2);
                             if(zapCodes.containsKey(str2))
                             {
                                 v=v2-1;
                                 break;
                             }
                             else
-							if(str2.startsWith("+"))
-								parms.addElement(str2.substring(1));
+                            if(str2.startsWith("+"))
+                                parms.addElement(str2.substring(1));
                             v=V.size();
-						}
-						buf.add(new CompiledZapperMaskEntry(entryType.intValue(),parms.toArray(new Object[0])));
-					}
-					break;
-				case 46: // -Faction
-				{
-					final Vector<Object> parms=new Vector<Object>();
-					for(int v2=v+1;v2<V.size();v2++)
-					{
-						final String str2=(String)V.elementAt(v2);
+                        }
+                        buf.add(new CompiledZapperMaskEntry(entryType.intValue(),parms.toArray(new Object[0])));
+                    }
+                    break;
+                case 47: // +Faction
+                case 46: // -Faction
+                {
+                    final String plusMinus=(entryType.intValue()==46)?"+":"-"; 
+                    final Vector<Object> parms=new Vector<Object>();
+                    for(int v2=v+1;v2<V.size();v2++)
+                    {
+                        final String str2=(String)V.elementAt(v2);
                         if(zapCodes.containsKey(str2))
                         {
                             v=v2-1;
                             break;
                         }
                         else
-						if((str2.startsWith("+"))
-				        &&(CMLib.factions().isRangeCodeName(str2.substring(1))))
-							parms.addElement(str2.substring(1).toUpperCase());
+                        if((str2.startsWith(plusMinus))
+                        &&(CMLib.factions().isRangeCodeName(str2.substring(1))))
+                        {
+                            Faction F;
+                            final String str3=str2.substring(1).toUpperCase().trim();
+                            int x=str3.indexOf('.');
+                            if(x>0)
+                                F=CMLib.factions().getFaction(str3.substring(0,x));
+                            else
+                            {
+                                F=CMLib.factions().getFactionByRangeCodeName(str3);
+                                x=-1;
+                            }
+                            if(F!=null)
+                            {
+                                Faction.FactionRange FR=F.fetchRange(str3.substring(x+1));
+                                if(FR!=null)
+                                    parms.addElement(FR);
+                            }
+                        }
                         v=V.size();
-					}
-					buf.add(new CompiledZapperMaskEntry(entryType.intValue(),parms.toArray(new Object[0])));
-					break;
-				}
-				case 8: // +Tattoos
-				case 80: // +security
-				case 32: // +Area
-					buildRoomFlag=true;
-	            //$FALL-THROUGH$
-				case 121: // +Mood
-				case 82: // +expertise
-				case 15: // +Clan
-				case 45: // +Deity
-				case 16: // +Names
+                    }
+                    buf.add(new CompiledZapperMaskEntry(entryType.intValue(),parms.toArray(new Object[0])));
+                    break;
+                }
+                case 8: // +Tattoos
+                case 80: // +security
+                case 32: // +Area
+                    buildRoomFlag=true;
+                //$FALL-THROUGH$
+                case 121: // +Mood
+                case 82: // +expertise
+                case 15: // +Clan
+                case 45: // +Deity
+                case 16: // +Names
                 case 114: // +Questwin
                 case 99: // +Home
                 case 54: // +JavaClass
-					{
-						final Vector<Object> parms=new Vector<Object>();
-						for(int v2=v+1;v2<V.size();v2++)
-						{
-							final String str2=(String)V.elementAt(v2);
+                    {
+                        final Vector<Object> parms=new Vector<Object>();
+                        for(int v2=v+1;v2<V.size();v2++)
+                        {
+                            final String str2=(String)V.elementAt(v2);
                             if(zapCodes.containsKey(str2))
                             {
                                 v=v2-1;
                                 break;
                             }
                             else
-							if(str2.startsWith("-"))
-								parms.addElement(str2.substring(1));
+                            if(str2.startsWith("-"))
+                                parms.addElement(str2.substring(1));
                             v=V.size();
-						}
-						buf.add(new CompiledZapperMaskEntry(entryType.intValue(),parms.toArray(new Object[0])));
-					}
-					break;
+                        }
+                        buf.add(new CompiledZapperMaskEntry(entryType.intValue(),parms.toArray(new Object[0])));
+                    }
+                    break;
                 case 83: // +skills
                 case 84: // -skills
                     {
@@ -2605,16 +2624,16 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                             else
                             if((str2.startsWith("-"))||(str2.startsWith("+")))
                             {
-                            	str2=str2.substring(1);
-                            	int prof=0;
-                            	int x=str2.indexOf('(');
-                            	if(x>0)
-                            	{
-                            		if(str2.endsWith(")"))
-                            			prof=CMath.s_int(str2.substring(x+1,str2.length()-1));
-                            		str2=str2.substring(0,x);
-                            	}
-                            	final Ability A=CMClass.getAbility(str2);
+                                str2=str2.substring(1);
+                                int prof=0;
+                                int x=str2.indexOf('(');
+                                if(x>0)
+                                {
+                                    if(str2.endsWith(")"))
+                                        prof=CMath.s_int(str2.substring(x+1,str2.length()-1));
+                                    str2=str2.substring(0,x);
+                                }
+                                final Ability A=CMClass.getAbility(str2);
                                 if(A!=null)
                                 {
                                     parms.addElement(A.ID());
@@ -2623,7 +2642,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                             }
                             v=V.size();
                         }
-						buf.add(new CompiledZapperMaskEntry(entryType.intValue(),parms.toArray(new Object[0])));
+                        buf.add(new CompiledZapperMaskEntry(entryType.intValue(),parms.toArray(new Object[0])));
                     }
                     break;
                 case 101: // -skillflag
@@ -2647,7 +2666,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                             }
                             v=V.size();
                         }
-						buf.add(new CompiledZapperMaskEntry(entryType.intValue(),parms.toArray(new Object[0])));
+                        buf.add(new CompiledZapperMaskEntry(entryType.intValue(),parms.toArray(new Object[0])));
                     }
                     break;
                 case 33: // -Item
@@ -2656,7 +2675,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                         final Vector<Object> parms=new Vector<Object>();
                         for(int v2=v+1;v2<V.size();v2++)
                         {
-                        	final String str2=(String)V.elementAt(v2);
+                            final String str2=(String)V.elementAt(v2);
                             if(zapCodes.containsKey(str2))
                             {
                                 v=v2-1;
@@ -2667,7 +2686,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                                 parms.addElement(str2.substring(1));
                             v=V.size();
                         }
-						buf.add(new CompiledZapperMaskEntry(entryType.intValue(),parms.toArray(new Object[0])));
+                        buf.add(new CompiledZapperMaskEntry(entryType.intValue(),parms.toArray(new Object[0])));
                     }
                     break;
                 case 49: // +Material
@@ -2677,7 +2696,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                         buildItemFlag=true;
                         for(int v2=v+1;v2<V.size();v2++)
                         {
-                        	final String str2=(String)V.elementAt(v2);
+                            final String str2=(String)V.elementAt(v2);
                             if(zapCodes.containsKey(str2))
                             {
                                 v=v2-1;
@@ -2692,7 +2711,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                             }
                             v=V.size();
                         }
-						buf.add(new CompiledZapperMaskEntry(entryType.intValue(),parms.toArray(new Object[0])));
+                        buf.add(new CompiledZapperMaskEntry(entryType.intValue(),parms.toArray(new Object[0])));
                     }
                     break;
                 case 57: // -WornOn
@@ -2702,7 +2721,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                         buildItemFlag=true;
                         for(int v2=v+1;v2<V.size();v2++)
                         {
-                        	final String str2=(String)V.elementAt(v2);
+                            final String str2=(String)V.elementAt(v2);
                             if(zapCodes.containsKey(str2))
                             {
                                 v=v2-1;
@@ -2711,12 +2730,12 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                             else
                             if((str2.startsWith("-"))||(str2.startsWith("+")))
                             {
-                            	final long code=Wearable.CODES.FIND_endsWith(str2.substring(1));
+                                final long code=Wearable.CODES.FIND_endsWith(str2.substring(1));
                                 if(code>=0) parms.addElement(Long.valueOf(code));
                             }
                             v=V.size();
                         }
-						buf.add(new CompiledZapperMaskEntry(entryType.intValue(),parms.toArray(new Object[0])));
+                        buf.add(new CompiledZapperMaskEntry(entryType.intValue(),parms.toArray(new Object[0])));
                     }
                     break;
                 case 69: // +Disposition
@@ -2725,7 +2744,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                         final Vector<Object> parms=new Vector<Object>();
                         for(int v2=v+1;v2<V.size();v2++)
                         {
-                        	final String str2=(String)V.elementAt(v2);
+                            final String str2=(String)V.elementAt(v2);
                             if(zapCodes.containsKey(str2))
                             {
                                 v=v2-1;
@@ -2734,12 +2753,12 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                             else
                             if((str2.startsWith("-"))||(str2.startsWith("+")))
                             {
-                            	final int code=CMLib.flags().getDispositionCode(str2.substring(1));
+                                final int code=CMLib.flags().getDispositionCode(str2.substring(1));
                                 if(code>=0) parms.addElement(Integer.valueOf((int)CMath.pow(2,code)));
                             }
                             v=V.size();
                         }
-						buf.add(new CompiledZapperMaskEntry(entryType.intValue(),parms.toArray(new Object[0])));
+                        buf.add(new CompiledZapperMaskEntry(entryType.intValue(),parms.toArray(new Object[0])));
                     }
                     break;
                 case 71: // +Senses
@@ -2748,7 +2767,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                         final Vector<Object> parms=new Vector<Object>();
                         for(int v2=v+1;v2<V.size();v2++)
                         {
-                        	final String str2=(String)V.elementAt(v2);
+                            final String str2=(String)V.elementAt(v2);
                             if(zapCodes.containsKey(str2))
                             {
                                 v=v2-1;
@@ -2762,7 +2781,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                             }
                             v=V.size();
                         }
-						buf.add(new CompiledZapperMaskEntry(entryType.intValue(),parms.toArray(new Object[0])));
+                        buf.add(new CompiledZapperMaskEntry(entryType.intValue(),parms.toArray(new Object[0])));
                     }
                     break;
                 case 75: // +Season
@@ -2789,7 +2808,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                             }
                             v=V.size();
                         }
-						buf.add(new CompiledZapperMaskEntry(entryType.intValue(),parms.toArray(new Object[0])));
+                        buf.add(new CompiledZapperMaskEntry(entryType.intValue(),parms.toArray(new Object[0])));
                     }
                     break;
                 case 104: // +weather
@@ -2816,7 +2835,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                             }
                             v=V.size();
                         }
-						buf.add(new CompiledZapperMaskEntry(entryType.intValue(),parms.toArray(new Object[0])));
+                        buf.add(new CompiledZapperMaskEntry(entryType.intValue(),parms.toArray(new Object[0])));
                     }
                     break;
                 case 73: // +HOUR
@@ -2841,34 +2860,34 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                                 parms.addElement(Integer.valueOf(CMath.s_int(str2.substring(1).trim())));
                             v=V.size();
                         }
-						buf.add(new CompiledZapperMaskEntry(entryType.intValue(),parms.toArray(new Object[0])));
+                        buf.add(new CompiledZapperMaskEntry(entryType.intValue(),parms.toArray(new Object[0])));
                     }
                     break;
                 case 85: // +quallvl
                 case 86: // -quallvl
                     if((v+1)<V.size())
-	                {
-	                    final Ability A=CMClass.getAbility((String)V.elementAt(v+1));
-	                    if(A!=null)
-	                    {
-		                    int adjustment=0;
-		                    if(((v+2)<V.size())&&(CMath.isInteger((String)V.elementAt(v+2))))
-		                    	adjustment=CMath.s_int((String)V.elementAt(v+2));
-	                        final Vector<Object> parms=new Vector<Object>();
-	                        parms.addElement(A.ID());
-	                        parms.addElement(Integer.valueOf(adjustment));
-							buf.add(new CompiledZapperMaskEntry(entryType.intValue(),parms.toArray(new Object[0])));
-	                    }
-	                }
-                	break;
+                    {
+                        final Ability A=CMClass.getAbility((String)V.elementAt(v+1));
+                        if(A!=null)
+                        {
+                            int adjustment=0;
+                            if(((v+2)<V.size())&&(CMath.isInteger((String)V.elementAt(v+2))))
+                                adjustment=CMath.s_int((String)V.elementAt(v+2));
+                            final Vector<Object> parms=new Vector<Object>();
+                            parms.addElement(A.ID());
+                            parms.addElement(Integer.valueOf(adjustment));
+                            buf.add(new CompiledZapperMaskEntry(entryType.intValue(),parms.toArray(new Object[0])));
+                        }
+                    }
+                    break;
                 case 110: // +subop
                 case 111: // +subop
-                	buildRoomFlag=true;
-	            //$FALL-THROUGH$
+                    buildRoomFlag=true;
+                //$FALL-THROUGH$
                 case 108: // +sysop
                 case 109: // +sysop
                 {
-					buf.add(new CompiledZapperMaskEntry(entryType.intValue(),new Object[0]));
+                    buf.add(new CompiledZapperMaskEntry(entryType.intValue(),new Object[0]));
                     break;
                 }
                 case 51: // +Resource
@@ -2893,66 +2912,66 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                             }
                             v=V.size();
                         }
-						buf.add(new CompiledZapperMaskEntry(entryType.intValue(),parms.toArray(new Object[0])));
+                        buf.add(new CompiledZapperMaskEntry(entryType.intValue(),parms.toArray(new Object[0])));
                     }
                     break;
-				case 10: // -Player
-				case 11: // -MOB
-					{
-						buf.add(new CompiledZapperMaskEntry(entryType.intValue(),new Object[0]));
-						break;
-					}
-				case 17: // -anyclass
-					{
-						final Vector<Object> parms=new Vector<Object>();
-						for(final SavedClass C : charClasses())
-						{
-							if(fromHereStartsWith(V,'+',v+1,C.nameStart))
-								parms.addElement(C.name);
-						}
-						buf.add(new CompiledZapperMaskEntry(entryType.intValue(),parms.toArray(new Object[0])));
-					}
-					break;
-				case 18: // +anyclass
-					{
-						final Vector<Object> parms=new Vector<Object>();
-						for(final SavedClass C : charClasses())
-						{
-							if(fromHereStartsWith(V,'-',v+1,C.nameStart))
-								parms.addElement(C.name);
-						}
-						buf.add(new CompiledZapperMaskEntry(entryType.intValue(),parms.toArray(new Object[0])));
-					}
-					break;
+                case 10: // -Player
+                case 11: // -MOB
+                    {
+                        buf.add(new CompiledZapperMaskEntry(entryType.intValue(),new Object[0]));
+                        break;
+                    }
+                case 17: // -anyclass
+                    {
+                        final Vector<Object> parms=new Vector<Object>();
+                        for(final SavedClass C : charClasses())
+                        {
+                            if(fromHereStartsWith(V,'+',v+1,C.nameStart))
+                                parms.addElement(C.name);
+                        }
+                        buf.add(new CompiledZapperMaskEntry(entryType.intValue(),parms.toArray(new Object[0])));
+                    }
+                    break;
+                case 18: // +anyclass
+                    {
+                        final Vector<Object> parms=new Vector<Object>();
+                        for(final SavedClass C : charClasses())
+                        {
+                            if(fromHereStartsWith(V,'-',v+1,C.nameStart))
+                                parms.addElement(C.name);
+                        }
+                        buf.add(new CompiledZapperMaskEntry(entryType.intValue(),parms.toArray(new Object[0])));
+                    }
+                    break;
                 case 59: // +value
                 case 60: // -value
                     buildItemFlag=true;
-	            //$FALL-THROUGH$
-				case 19: // +adjstr
-				case 20: // +adjint
-				case 21: // +adjwis
-				case 22: // +adjdex
-				case 23: // -adjcha
-				case 24: // +adjcha
-				case 25: // -adjstr
-				case 26: // -adjint
-				case 27: // -adjwis
-				case 28: // -adjdex
-				case 29: // -adjcon
-				case 30: // -adjcha
-				case 87: // +str
-				case 88: // +int
-				case 89: // +wis
-				case 90: // +dex
-				case 91: // +con
-				case 92: // +cha
-				case 93: // -str
-				case 94: // -int
-				case 95: // -wis
-				case 96: // -dex
-				case 97: // -con
-				case 98: // -cha
-				case 122: // -chance
+                //$FALL-THROUGH$
+                case 19: // +adjstr
+                case 20: // +adjint
+                case 21: // +adjwis
+                case 22: // +adjdex
+                case 23: // -adjcha
+                case 24: // +adjcha
+                case 25: // -adjstr
+                case 26: // -adjint
+                case 27: // -adjwis
+                case 28: // -adjdex
+                case 29: // -adjcon
+                case 30: // -adjcha
+                case 87: // +str
+                case 88: // +int
+                case 89: // +wis
+                case 90: // +dex
+                case 91: // +con
+                case 92: // +cha
+                case 93: // -str
+                case 94: // -int
+                case 95: // -wis
+                case 96: // -dex
+                case 97: // -con
+                case 98: // -cha
+                case 122: // -chance
                 case 55: // +able
                 case 56: // -able
                 case 61: // +weight
@@ -2965,16 +2984,16 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                 case 68: // -attack
                 case 115: // -groupsize
                 case 116: // +groupsize
-					{
-						val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
-						final Vector<Object> parms=new Vector<Object>();
-						parms.addElement(Integer.valueOf(val));
-						buf.add(new CompiledZapperMaskEntry(entryType.intValue(),parms.toArray(new Object[0])));
-						break;
-					}
+                    {
+                        val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
+                        final Vector<Object> parms=new Vector<Object>();
+                        parms.addElement(Integer.valueOf(val));
+                        buf.add(new CompiledZapperMaskEntry(entryType.intValue(),parms.toArray(new Object[0])));
+                        break;
+                    }
                 case 118: // -if
                 case 119: // +if
-					{
+                    {
                         final Vector<Object> parms=new Vector<Object>();
                         for(int v2=v+1;v2<V.size();v2++)
                         {
@@ -2990,49 +3009,49 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                                 SE.setSavable(false);
                                 SE.setVarScope("*");
                                 try {
-	                                String[] tt = SE.parseEval(str2);
-	                                parms.addElement(SE);
-	                                String[][] EVAL={tt};
-	                                parms.addElement(EVAL); // the compiled eval
-	                                Object[] tmp = new Object[ScriptingEngine.SPECIAL_NUM_OBJECTS];
-	                                parms.addElement(tmp);
+                                    String[] tt = SE.parseEval(str2);
+                                    parms.addElement(SE);
+                                    String[][] EVAL={tt};
+                                    parms.addElement(EVAL); // the compiled eval
+                                    Object[] tmp = new Object[ScriptingEngine.SPECIAL_NUM_OBJECTS];
+                                    parms.addElement(tmp);
                                 } catch(ScriptParseException spe) {
-                                	Log.errOut("MUDZapper","Script parse Exception for "+str2);
-                                	Log.errOut("MUDZapper",spe);
+                                    Log.errOut("MUDZapper","Script parse Exception for "+str2);
+                                    Log.errOut("MUDZapper",spe);
                                 }
                             }
                             v=V.size();
                         }
-						buf.add(new CompiledZapperMaskEntry(entryType.intValue(),parms.toArray(new Object[0])));
-						break;
-					}
-				}
-			else
-			{
+                        buf.add(new CompiledZapperMaskEntry(entryType.intValue(),parms.toArray(new Object[0])));
+                        break;
+                    }
+                }
+            else
+            {
                 boolean found=false;
                 if(!found)
-				for(final SavedClass C : charClasses())
-				{
+                for(final SavedClass C : charClasses())
+                {
                     if(str.equals("-"+C.upperName))
                     {
                         final Vector<Object> parms=new Vector<Object>();
                         entryType=zapCodes.get("+CLASS");
                         parms.addElement(C.name);
                         found=true;
-						buf.add(new CompiledZapperMaskEntry(entryType.intValue(),parms.toArray(new Object[0])));
+                        buf.add(new CompiledZapperMaskEntry(entryType.intValue(),parms.toArray(new Object[0])));
                         break;
                     }
                 }
                 if(!found)
-				for(final SavedRace R : races())
-				{
+                for(final SavedRace R : races())
+                {
                     if(str.equals("-"+R.upperName))
                     {
                         final Vector<Object> parms=new Vector<Object>();
                         entryType=zapCodes.get("+RACE");
                         parms.addElement(R.name);
                         found=true;
-						buf.add(new CompiledZapperMaskEntry(entryType.intValue(),parms.toArray(new Object[0])));
+                        buf.add(new CompiledZapperMaskEntry(entryType.intValue(),parms.toArray(new Object[0])));
                         break;
                     }
                 }
@@ -3043,7 +3062,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                     entryType=zapCodes.get("+ALIGNMENT");
                     parms.addElement(Faction.ALIGN_NAMES[Faction.ALIGN_EVIL]);
                     found=true;
-					buf.add(new CompiledZapperMaskEntry(entryType.intValue(),parms.toArray(new Object[0])));
+                    buf.add(new CompiledZapperMaskEntry(entryType.intValue(),parms.toArray(new Object[0])));
                 }
                 if((!found)
                 &&(str.equals("-"+Faction.ALIGN_NAMES[Faction.ALIGN_GOOD].toUpperCase())))
@@ -3052,7 +3071,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                     entryType=zapCodes.get("+ALIGNMENT");
                     parms.addElement(Faction.ALIGN_NAMES[Faction.ALIGN_GOOD]);
                     found=true;
-					buf.add(new CompiledZapperMaskEntry(entryType.intValue(),parms.toArray(new Object[0])));
+                    buf.add(new CompiledZapperMaskEntry(entryType.intValue(),parms.toArray(new Object[0])));
                 }
                 if((!found)
                 &&(str.equals("-"+Faction.ALIGN_NAMES[Faction.ALIGN_NEUTRAL].toUpperCase())))
@@ -3061,7 +3080,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                     entryType=zapCodes.get("+ALIGNMENT");
                     parms.addElement(Faction.ALIGN_NAMES[Faction.ALIGN_NEUTRAL]);
                     found=true;
-					buf.add(new CompiledZapperMaskEntry(entryType.intValue(),parms.toArray(new Object[0])));
+                    buf.add(new CompiledZapperMaskEntry(entryType.intValue(),parms.toArray(new Object[0])));
                 }
                 if((!found)&&(str.equals("-MALE")))
                 {
@@ -3069,7 +3088,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                     entryType=zapCodes.get("+GENDER");
                     parms.addElement("M");
                     found=true;
-					buf.add(new CompiledZapperMaskEntry(entryType.intValue(),parms.toArray(new Object[0])));
+                    buf.add(new CompiledZapperMaskEntry(entryType.intValue(),parms.toArray(new Object[0])));
                 }
                 if((!found)&&(str.equals("-FEMALE")))
                 {
@@ -3077,7 +3096,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                     entryType=zapCodes.get("+GENDER");
                     parms.addElement("F");
                     found=true;
-					buf.add(new CompiledZapperMaskEntry(entryType.intValue(),parms.toArray(new Object[0])));
+                    buf.add(new CompiledZapperMaskEntry(entryType.intValue(),parms.toArray(new Object[0])));
                 }
                 if((!found)&&(str.equals("-NEUTER")))
                 {
@@ -3085,7 +3104,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                     entryType=zapCodes.get("+GENDER");
                     parms.addElement("N");
                     found=true;
-					buf.add(new CompiledZapperMaskEntry(entryType.intValue(),parms.toArray(new Object[0])));
+                    buf.add(new CompiledZapperMaskEntry(entryType.intValue(),parms.toArray(new Object[0])));
                 }
                 if((!found)
                 &&(str.startsWith("-"))
@@ -3095,121 +3114,121 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                     entryType=zapCodes.get("+FACTION");
                     parms.addElement(str.substring(1));
                     found=true;
-					buf.add(new CompiledZapperMaskEntry(entryType.intValue(),parms.toArray(new Object[0])));
+                    buf.add(new CompiledZapperMaskEntry(entryType.intValue(),parms.toArray(new Object[0])));
                 }
                 if(!found)
-				for(final SavedClass C : charClasses())
-				{
-					if(str.startsWith(C.minusNameStart))
-					{
-						final Vector<Object> parms=new Vector<Object>();
-	                    entryType=zapCodes.get("+CLASS");
-						parms.addElement(C.name);
+                for(final SavedClass C : charClasses())
+                {
+                    if(str.startsWith(C.minusNameStart))
+                    {
+                        final Vector<Object> parms=new Vector<Object>();
+                        entryType=zapCodes.get("+CLASS");
+                        parms.addElement(C.name);
                         found=true;
-						buf.add(new CompiledZapperMaskEntry(entryType.intValue(),parms.toArray(new Object[0])));
+                        buf.add(new CompiledZapperMaskEntry(entryType.intValue(),parms.toArray(new Object[0])));
                         break;
-					}
-				}
+                    }
+                }
                 if(!found)
-				for(final SavedRace R : races())
-				{
-					if(str.startsWith(R.minusNameStart))
-					{
-						final Vector<Object> parms=new Vector<Object>();
-	                    entryType=zapCodes.get("+RACE");
-						parms.addElement(R.name);
+                for(final SavedRace R : races())
+                {
+                    if(str.startsWith(R.minusNameStart))
+                    {
+                        final Vector<Object> parms=new Vector<Object>();
+                        entryType=zapCodes.get("+RACE");
+                        parms.addElement(R.name);
                         found=true;
-						buf.add(new CompiledZapperMaskEntry(entryType.intValue(),parms.toArray(new Object[0])));
+                        buf.add(new CompiledZapperMaskEntry(entryType.intValue(),parms.toArray(new Object[0])));
                         break;
-					}
-				}
+                    }
+                }
                 if(!found)
-				for(final SavedRace R : races())
-				{
+                for(final SavedRace R : races())
+                {
                     if(str.startsWith(R.minusCatNameStart))
                     {
                         final Vector<Object> parms=new Vector<Object>();
-	                    entryType=zapCodes.get("+RACECAT");
+                        entryType=zapCodes.get("+RACECAT");
                         parms.addElement(R.racialCategory);
-						buf.add(new CompiledZapperMaskEntry(entryType.intValue(),parms.toArray(new Object[0])));
+                        buf.add(new CompiledZapperMaskEntry(entryType.intValue(),parms.toArray(new Object[0])));
                     }
                 }
                 if((!found)
-				&&(str.startsWith("-"+Faction.ALIGN_NAMES[Faction.ALIGN_EVIL].substring(0,3))))
-				{
-					final Vector<Object> parms=new Vector<Object>();
+                &&(str.startsWith("-"+Faction.ALIGN_NAMES[Faction.ALIGN_EVIL].substring(0,3))))
+                {
+                    final Vector<Object> parms=new Vector<Object>();
                     entryType=zapCodes.get("+ALIGNMENT");
-					parms.addElement(Faction.ALIGN_NAMES[Faction.ALIGN_EVIL]);
+                    parms.addElement(Faction.ALIGN_NAMES[Faction.ALIGN_EVIL]);
                     found=true;
-					buf.add(new CompiledZapperMaskEntry(entryType.intValue(),parms.toArray(new Object[0])));
-				}
+                    buf.add(new CompiledZapperMaskEntry(entryType.intValue(),parms.toArray(new Object[0])));
+                }
                 if((!found)
-				&&(str.startsWith("-"+Faction.ALIGN_NAMES[Faction.ALIGN_GOOD].substring(0,3))))
-				{
-					final Vector<Object> parms=new Vector<Object>();
+                &&(str.startsWith("-"+Faction.ALIGN_NAMES[Faction.ALIGN_GOOD].substring(0,3))))
+                {
+                    final Vector<Object> parms=new Vector<Object>();
                     entryType=zapCodes.get("+ALIGNMENT");
-					parms.addElement(Faction.ALIGN_NAMES[Faction.ALIGN_GOOD]);
+                    parms.addElement(Faction.ALIGN_NAMES[Faction.ALIGN_GOOD]);
                     found=true;
-					buf.add(new CompiledZapperMaskEntry(entryType.intValue(),parms.toArray(new Object[0])));
-				}
+                    buf.add(new CompiledZapperMaskEntry(entryType.intValue(),parms.toArray(new Object[0])));
+                }
                 if((!found)
-				&&(str.startsWith("-"+Faction.ALIGN_NAMES[Faction.ALIGN_NEUTRAL].substring(0,3))))
-				{
-					final Vector<Object> parms=new Vector<Object>();
+                &&(str.startsWith("-"+Faction.ALIGN_NAMES[Faction.ALIGN_NEUTRAL].substring(0,3))))
+                {
+                    final Vector<Object> parms=new Vector<Object>();
                     entryType=zapCodes.get("+ALIGNMENT");
-					parms.addElement(Faction.ALIGN_NAMES[Faction.ALIGN_NEUTRAL]);
+                    parms.addElement(Faction.ALIGN_NAMES[Faction.ALIGN_NEUTRAL]);
                     found=true;
-					buf.add(new CompiledZapperMaskEntry(entryType.intValue(),parms.toArray(new Object[0])));
-				}
+                    buf.add(new CompiledZapperMaskEntry(entryType.intValue(),parms.toArray(new Object[0])));
+                }
                 if((!found)
-				&&(str.startsWith("-MALE")))
-				{
-					final Vector<Object> parms=new Vector<Object>();
+                &&(str.startsWith("-MALE")))
+                {
+                    final Vector<Object> parms=new Vector<Object>();
                     entryType=zapCodes.get("+GENDER");
-					parms.addElement("M");
+                    parms.addElement("M");
                     found=true;
-					buf.add(new CompiledZapperMaskEntry(entryType.intValue(),parms.toArray(new Object[0])));
-				}
+                    buf.add(new CompiledZapperMaskEntry(entryType.intValue(),parms.toArray(new Object[0])));
+                }
                 if((!found)
-				&&(str.startsWith("-FEMALE")))
-				{
-					final Vector<Object> parms=new Vector<Object>();
+                &&(str.startsWith("-FEMALE")))
+                {
+                    final Vector<Object> parms=new Vector<Object>();
                     entryType=zapCodes.get("+GENDER");
-					parms.addElement("F");
+                    parms.addElement("F");
                     found=true;
-					buf.add(new CompiledZapperMaskEntry(entryType.intValue(),parms.toArray(new Object[0])));
-				}
+                    buf.add(new CompiledZapperMaskEntry(entryType.intValue(),parms.toArray(new Object[0])));
+                }
                 if((!found)
                 &&(str.startsWith("-NEUTER")))
-				{
-					final Vector<Object> parms=new Vector<Object>();
+                {
+                    final Vector<Object> parms=new Vector<Object>();
                     entryType=zapCodes.get("+GENDER");
-					parms.addElement("N");
+                    parms.addElement("N");
                     found=true;
-					buf.add(new CompiledZapperMaskEntry(entryType.intValue(),parms.toArray(new Object[0])));
-				}
+                    buf.add(new CompiledZapperMaskEntry(entryType.intValue(),parms.toArray(new Object[0])));
+                }
                 if((!found)
-				&&(str.startsWith("-"))
- 		        &&(CMLib.factions().isRangeCodeName(str.substring(1))))
-				{
-					final Vector<Object> parms=new Vector<Object>();
+                &&(str.startsWith("-"))
+                 &&(CMLib.factions().isRangeCodeName(str.substring(1))))
+                {
+                    final Vector<Object> parms=new Vector<Object>();
                     entryType=zapCodes.get("+FACTION");
-					parms.addElement(str.substring(1));
+                    parms.addElement(str.substring(1));
                     found=true;
-					buf.add(new CompiledZapperMaskEntry(entryType.intValue(),parms.toArray(new Object[0])));
-				}
+                    buf.add(new CompiledZapperMaskEntry(entryType.intValue(),parms.toArray(new Object[0])));
+                }
                 if(!found)
                 {
-                	CompiledZapperMaskEntry entry=levelCompiledHelper(str,'-');
-    				if(entry!=null)
-    					buf.addElement(entry);
+                    CompiledZapperMaskEntry entry=levelCompiledHelper(str,'-');
+                    if(entry!=null)
+                        buf.addElement(entry);
                 }
-			}
-		}
-		return new CompiledZapperMask(new boolean[]{buildItemFlag,buildRoomFlag},buf.toArray(new CompiledZapperMaskEntry[0]));
-	}
+            }
+        }
+        return new CompiledZapperMask(new boolean[]{buildItemFlag,buildRoomFlag},buf.toArray(new CompiledZapperMaskEntry[0]));
+    }
 
-	protected Room outdoorRoom(Area A)
+    protected Room outdoorRoom(Area A)
     {
         Room R=null;
         for(final Enumeration e=A.getMetroMap();e.hasMoreElements();)
@@ -3220,21 +3239,21 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
         return A.getRandomMetroRoom();
     }
 
-	protected CharStats getBaseCharStats(CharStats base, MOB mob)
-	{
+    protected CharStats getBaseCharStats(CharStats base, MOB mob)
+    {
         if(base==null)
         {
-        	base=(CharStats)mob.baseCharStats().copyOf();
-        	base.getMyRace().affectCharStats(mob,base);
+            base=(CharStats)mob.baseCharStats().copyOf();
+            base.getMyRace().affectCharStats(mob,base);
         }
-		return base;
-	}
+        return base;
+    }
 
-	public boolean maskCheck(final String text, final Environmental E, final boolean actual){ return maskCheck(getPreCompiledMask(text),E,actual);}
-	public boolean maskCheck(final CompiledZapperMask cset, final Environmental E, final boolean actual)
-	{
-		if(E==null) return true;
-		if((cset==null)||(cset.entries.length<1)) return true;
+    public boolean maskCheck(final String text, final Environmental E, final boolean actual){ return maskCheck(getPreCompiledMask(text),E,actual);}
+    public boolean maskCheck(final CompiledZapperMask cset, final Environmental E, final boolean actual)
+    {
+        if(E==null) return true;
+        if((cset==null)||(cset.entries.length<1)) return true;
         getMaskCodes();
         CharStats base=null;
         final MOB mob=(E instanceof MOB)?(MOB)E:nonCrashingMOB();
@@ -3243,13 +3262,13 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
         final Room room = flags[1]?((E instanceof Area)?outdoorRoom((Area)E):CMLib.map().roomLocation(E)):null;
         final Physical P = (E instanceof Physical)?(Physical)E:null;
         if((mob==null)||(flags[0]&&(item==null))) 
-        	return false;
-		for(CompiledZapperMaskEntry entry : cset.entries)
-		{
+            return false;
+        for(CompiledZapperMaskEntry entry : cset.entries)
+        {
             try
             {
-			switch(entry.maskType)
-			{
+            switch(entry.maskType)
+            {
             case 108: // +sysop
                 if(CMSecurity.isASysOp(mob))
                     return true;
@@ -3268,115 +3287,115 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                 ||((room!=null)&&(room.getArea().amISubOp(mob.Name()))))
                     return false;
                 break;
-			case 0: // -class
-			{
-				if(!CMParms.contains(entry.parms,actual?mob.baseCharStats().getCurrentClass().name():mob.charStats().displayClassName()))
-					return false;
-				break;
-			}
-			case 1: // -baseclass
-			{
-				String baseClass=mob.baseCharStats().getCurrentClass().baseClass();
-				if((!actual)&&(!baseClass.equals(mob.charStats().displayClassName())))
-				{
-					final CharClass C=CMClass.getCharClass(mob.charStats().displayClassName());
-					if(C!=null) baseClass=C.baseClass();
-				}
-				if(!CMParms.contains(entry.parms,baseClass))
-					return false;
-				break;
-			}
-			case 117: // +baseclass
-			{
-				String baseClass=mob.baseCharStats().getCurrentClass().baseClass();
-				if((!actual)&&(!baseClass.equals(mob.charStats().displayClassName())))
-				{
-					final CharClass C=CMClass.getCharClass(mob.charStats().displayClassName());
-					if(C!=null) baseClass=C.baseClass();
-				}
-				if(CMParms.contains(entry.parms,baseClass))
-					return false;
-				break;
-			}
-			case 2: // -race
-				if(!CMParms.contains(entry.parms,actual?mob.baseCharStats().getMyRace().name():mob.charStats().raceName()))
-					return false;
-				break;
-			case 3: // -alignment
-				if(!CMParms.contains(entry.parms,CMLib.flags().getAlignmentName(mob)))
-					return false;
-				break;
-			case 4: // -gender
-			{
-		        base=getBaseCharStats(base,mob);
-				if(!CMParms.contains(entry.parms,actual?(""+((char)base.getStat(CharStats.STAT_GENDER))):(""+(Character.toUpperCase(mob.charStats().genderName().charAt(0))))))
-					return false;
-				break;
-			}
-			case 5: // -level
-				if(P!=null)
-				{
-					final int level=actual?P.basePhyStats().level():P.phyStats().level();
-					boolean found=false;
-					for(int v=0;v<entry.parms.length-1;v+=2)
-						switch(((Integer)entry.parms[v]).intValue())
-						{
-							case 37: // +lvlgr
-								if(level>((Integer)entry.parms[v+1]).intValue())
-								   found=true;
-								break;
-							case 38: // +lvlge
-								if(level>=((Integer)entry.parms[v+1]).intValue())
-								   found=true;
-								break;
-							case 39: // +lvlt
-								if(level<((Integer)entry.parms[v+1]).intValue())
-								   found=true;
-								break;
-							case 40: // +lvlle
-								if(level<=((Integer)entry.parms[v+1]).intValue())
-								   found=true;
-								break;
-							case 41: // +lvleq
-								if(level==((Integer)entry.parms[v+1]).intValue())
-								   found=true;
-								break;
-						}
-					if(!found) return false;
-				}
-				break;
-			case 6: // -classlevel
-				{
-					boolean found=false;
-					int cl=actual?mob.baseCharStats().getClassLevel(mob.baseCharStats().getCurrentClass())
-								 :mob.charStats().getClassLevel(mob.charStats().getCurrentClass());
-					for(int v=0;v<entry.parms.length-1;v+=2)
-						switch(((Integer)entry.parms[v]).intValue())
-						{
-							case 37: // +lvlgr
-								if(cl>((Integer)entry.parms[v+1]).intValue())
-								   found=true;
-								break;
-							case 38: // +lvlge
-								if(cl>=((Integer)entry.parms[v+1]).intValue())
-								   found=true;
-								break;
-							case 39: // +lvlt
-								if(cl<((Integer)entry.parms[v+1]).intValue())
-								   found=true;
-								break;
-							case 40: // +lvlle
-								if(cl<=((Integer)entry.parms[v+1]).intValue())
-								   found=true;
-								break;
-							case 41: // +lvleq
-								if(cl==((Integer)entry.parms[v+1]).intValue())
-								   found=true;
-								break;
-						}
-					if(!found) return false;
-				}
-				break;
+            case 0: // -class
+            {
+                if(!CMParms.contains(entry.parms,actual?mob.baseCharStats().getCurrentClass().name():mob.charStats().displayClassName()))
+                    return false;
+                break;
+            }
+            case 1: // -baseclass
+            {
+                String baseClass=mob.baseCharStats().getCurrentClass().baseClass();
+                if((!actual)&&(!baseClass.equals(mob.charStats().displayClassName())))
+                {
+                    final CharClass C=CMClass.getCharClass(mob.charStats().displayClassName());
+                    if(C!=null) baseClass=C.baseClass();
+                }
+                if(!CMParms.contains(entry.parms,baseClass))
+                    return false;
+                break;
+            }
+            case 117: // +baseclass
+            {
+                String baseClass=mob.baseCharStats().getCurrentClass().baseClass();
+                if((!actual)&&(!baseClass.equals(mob.charStats().displayClassName())))
+                {
+                    final CharClass C=CMClass.getCharClass(mob.charStats().displayClassName());
+                    if(C!=null) baseClass=C.baseClass();
+                }
+                if(CMParms.contains(entry.parms,baseClass))
+                    return false;
+                break;
+            }
+            case 2: // -race
+                if(!CMParms.contains(entry.parms,actual?mob.baseCharStats().getMyRace().name():mob.charStats().raceName()))
+                    return false;
+                break;
+            case 3: // -alignment
+                if(!CMParms.contains(entry.parms,CMLib.flags().getAlignmentName(mob)))
+                    return false;
+                break;
+            case 4: // -gender
+            {
+                base=getBaseCharStats(base,mob);
+                if(!CMParms.contains(entry.parms,actual?(""+((char)base.getStat(CharStats.STAT_GENDER))):(""+(Character.toUpperCase(mob.charStats().genderName().charAt(0))))))
+                    return false;
+                break;
+            }
+            case 5: // -level
+                if(P!=null)
+                {
+                    final int level=actual?P.basePhyStats().level():P.phyStats().level();
+                    boolean found=false;
+                    for(int v=0;v<entry.parms.length-1;v+=2)
+                        switch(((Integer)entry.parms[v]).intValue())
+                        {
+                            case 37: // +lvlgr
+                                if(level>((Integer)entry.parms[v+1]).intValue())
+                                   found=true;
+                                break;
+                            case 38: // +lvlge
+                                if(level>=((Integer)entry.parms[v+1]).intValue())
+                                   found=true;
+                                break;
+                            case 39: // +lvlt
+                                if(level<((Integer)entry.parms[v+1]).intValue())
+                                   found=true;
+                                break;
+                            case 40: // +lvlle
+                                if(level<=((Integer)entry.parms[v+1]).intValue())
+                                   found=true;
+                                break;
+                            case 41: // +lvleq
+                                if(level==((Integer)entry.parms[v+1]).intValue())
+                                   found=true;
+                                break;
+                        }
+                    if(!found) return false;
+                }
+                break;
+            case 6: // -classlevel
+                {
+                    boolean found=false;
+                    int cl=actual?mob.baseCharStats().getClassLevel(mob.baseCharStats().getCurrentClass())
+                                 :mob.charStats().getClassLevel(mob.charStats().getCurrentClass());
+                    for(int v=0;v<entry.parms.length-1;v+=2)
+                        switch(((Integer)entry.parms[v]).intValue())
+                        {
+                            case 37: // +lvlgr
+                                if(cl>((Integer)entry.parms[v+1]).intValue())
+                                   found=true;
+                                break;
+                            case 38: // +lvlge
+                                if(cl>=((Integer)entry.parms[v+1]).intValue())
+                                   found=true;
+                                break;
+                            case 39: // +lvlt
+                                if(cl<((Integer)entry.parms[v+1]).intValue())
+                                   found=true;
+                                break;
+                            case 40: // +lvlle
+                                if(cl<=((Integer)entry.parms[v+1]).intValue())
+                                   found=true;
+                                break;
+                            case 41: // +lvleq
+                                if(cl==((Integer)entry.parms[v+1]).intValue())
+                                   found=true;
+                                break;
+                        }
+                    if(!found) return false;
+                }
+                break;
             case 103: // -maxclasslevel
                 {
                     boolean found=false;
@@ -3384,21 +3403,21 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                     int c2=0;
                     if(actual)
                     {
-                    	cl=mob.baseCharStats().getClassLevel(mob.baseCharStats().getMyClass(0));
-	                    for(int v=1;v<mob.baseCharStats().numClasses();v++)
-	                    {
-	                        c2=mob.baseCharStats().getClassLevel(mob.baseCharStats().getMyClass(v));
-	                        if(c2>cl) cl=c2;
-	                    }
+                        cl=mob.baseCharStats().getClassLevel(mob.baseCharStats().getMyClass(0));
+                        for(int v=1;v<mob.baseCharStats().numClasses();v++)
+                        {
+                            c2=mob.baseCharStats().getClassLevel(mob.baseCharStats().getMyClass(v));
+                            if(c2>cl) cl=c2;
+                        }
                     }
                     else
                     {
-                    	cl=mob.charStats().getClassLevel(mob.charStats().getMyClass(0));
-	                    for(int v=1;v<mob.charStats().numClasses();v++)
-	                    {
-	                        c2=mob.charStats().getClassLevel(mob.charStats().getMyClass(v));
-	                        if(c2>cl) cl=c2;
-	                    }
+                        cl=mob.charStats().getClassLevel(mob.charStats().getMyClass(0));
+                        for(int v=1;v<mob.charStats().numClasses();v++)
+                        {
+                            c2=mob.charStats().getClassLevel(mob.charStats().getMyClass(v));
+                            if(c2>cl) cl=c2;
+                        }
                     }
                     for(int v=0;v<entry.parms.length-1;v+=2)
                         switch(((Integer)entry.parms[v]).intValue())
@@ -3427,64 +3446,64 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                     if(!found) return false;
                 }
                 break;
-			case 7: // -tattoo
-				{
-					boolean found=false;
-					for(final Object o : entry.parms)
-						if((mob.findTattoo((String)o)!=null)
+            case 7: // -tattoo
+                {
+                    boolean found=false;
+                    for(final Object o : entry.parms)
+                        if((mob.findTattoo((String)o)!=null)
                         ||((room!=null)&&(room.getArea().getBlurbFlag((String)o)!=null)))
-						{ found=true; break;}
+                        { found=true; break;}
 
-					if(!found) return false;
-				}
-				break;
-			case 8: // +tattoo
-				{
-					for(final Object o : entry.parms)
-						if((mob.findTattoo((String)o)!=null)
+                    if(!found) return false;
+                }
+                break;
+            case 8: // +tattoo
+                {
+                    for(final Object o : entry.parms)
+                        if((mob.findTattoo((String)o)!=null)
                         ||((room!=null)&&(room.getArea().getBlurbFlag((String)o)!=null)))
-						{ return false;}
-				}
-				break;
-			case 120: // -mood
-				{
-					String moodName = "NORMAL";
-					final Ability A = mob.fetchEffect("Mood");
-					if((A!=null)&&(A.text().trim().length()>0)) moodName=A.text().toUpperCase().trim();
-					if(!CMParms.contains(entry.parms,moodName)) return false;
-				}
-				break;
-			case 121: // +mood
-				{
-					final String moodName;
-					final Ability A = mob.fetchEffect("Mood");
-					if((A!=null)&&(A.text().trim().length()>0)) 
-						moodName=A.text().toUpperCase().trim();
-					else
-						moodName= "NORMAL";
-					if(CMParms.contains(entry.parms,moodName)) return false;
-				}
-				break;
-			case 81: // -expertise
-				{
-					boolean found=false;
-					for(final Object o : entry.parms)
-						if(mob.fetchExpertise((String)o)!=null)
-						{ found=true; break;}
-					if(!found) return false;
-				}
-				break;
-			case 82: // +expertise
-				{
-					for(final Object o : entry.parms)
-						if(mob.fetchExpertise((String)o)!=null)
-						{ return false;}
-				}
-				break;
+                        { return false;}
+                }
+                break;
+            case 120: // -mood
+                {
+                    String moodName = "NORMAL";
+                    final Ability A = mob.fetchEffect("Mood");
+                    if((A!=null)&&(A.text().trim().length()>0)) moodName=A.text().toUpperCase().trim();
+                    if(!CMParms.contains(entry.parms,moodName)) return false;
+                }
+                break;
+            case 121: // +mood
+                {
+                    final String moodName;
+                    final Ability A = mob.fetchEffect("Mood");
+                    if((A!=null)&&(A.text().trim().length()>0)) 
+                        moodName=A.text().toUpperCase().trim();
+                    else
+                        moodName= "NORMAL";
+                    if(CMParms.contains(entry.parms,moodName)) return false;
+                }
+                break;
+            case 81: // -expertise
+                {
+                    boolean found=false;
+                    for(final Object o : entry.parms)
+                        if(mob.fetchExpertise((String)o)!=null)
+                        { found=true; break;}
+                    if(!found) return false;
+                }
+                break;
+            case 82: // +expertise
+                {
+                    for(final Object o : entry.parms)
+                        if(mob.fetchExpertise((String)o)!=null)
+                        { return false;}
+                }
+                break;
             case 113: // -questwin
                 {
                     boolean found=false;
-					for(final Object o : entry.parms)
+                    for(final Object o : entry.parms)
                     {
                         final Quest Q=CMLib.quests().fetchQuest((String)o);
                         if((Q!=null)&&(Q.wasWinner(mob.Name())))
@@ -3495,34 +3514,34 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                 break;
             case 114: // +questwin
                 {
-					for(final Object o : entry.parms)
+                    for(final Object o : entry.parms)
                     {
-						final Quest Q=CMLib.quests().fetchQuest((String)o);
+                        final Quest Q=CMLib.quests().fetchQuest((String)o);
                         if((Q!=null)&&(Q.wasWinner(mob.Name())))
                         { return false;}
                     }
                 }
                 break;
-			case 83: // -skill
-				{
-					boolean found=false;
-					for(int v=0;v<entry.parms.length-1;v+=2)
-					{
-						final Ability A=mob.fetchAbility((String)entry.parms[v]);
-						if((A!=null)&&(A.proficiency()>=((Integer)entry.parms[v+1]).intValue()))
-						{ found=true; break;}
-					}
-					if(!found) return false;
-				}
-				break;
+            case 83: // -skill
+                {
+                    boolean found=false;
+                    for(int v=0;v<entry.parms.length-1;v+=2)
+                    {
+                        final Ability A=mob.fetchAbility((String)entry.parms[v]);
+                        if((A!=null)&&(A.proficiency()>=((Integer)entry.parms[v+1]).intValue()))
+                        { found=true; break;}
+                    }
+                    if(!found) return false;
+                }
+                break;
             case 101: // -skillflag
                 {
                     boolean found=false;
-					for(final Object o : entry.parms)
+                    for(final Object o : entry.parms)
                     {
-				        for(final Enumeration<Ability> a=mob.allAbilities();a.hasMoreElements();)
-				        {
-				        	final Ability A=a.nextElement();
+                        for(final Enumeration<Ability> a=mob.allAbilities();a.hasMoreElements();)
+                        {
+                            final Ability A=a.nextElement();
                             if(evaluateSkillFlagObject(o,A))
                             { found=true; break;}
                         }
@@ -3531,73 +3550,73 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                     if(!found) return false;
                 }
                 break;
-			case 84: // +skill
-				{
-					for(int v=0;v<entry.parms.length-1;v+=2)
-					{
-						final Ability A=mob.fetchAbility((String)entry.parms[v]);
-						if((A!=null)&&(A.proficiency()>=((Integer)entry.parms[v+1]).intValue()))
-						{ return false;}
-					}
-				}
-				break;
+            case 84: // +skill
+                {
+                    for(int v=0;v<entry.parms.length-1;v+=2)
+                    {
+                        final Ability A=mob.fetchAbility((String)entry.parms[v]);
+                        if((A!=null)&&(A.proficiency()>=((Integer)entry.parms[v+1]).intValue()))
+                        { return false;}
+                    }
+                }
+                break;
             case 102: // +skillflag
                 {
-					for(final Object o : entry.parms)
+                    for(final Object o : entry.parms)
                     {
-				        for(final Enumeration<Ability> a=mob.allAbilities();a.hasMoreElements();)
-				        {
-				        	final Ability A=a.nextElement();
+                        for(final Enumeration<Ability> a=mob.allAbilities();a.hasMoreElements();)
+                        {
+                            final Ability A=a.nextElement();
                             if(evaluateSkillFlagObject(o,A))
-                            	return false;
+                                return false;
                         }
                     }
                 }
                 break;
-			case 79: // -security
-				{
-					boolean found=false;
-					for(final Object o : entry.parms)
-						if(CMSecurity.isAllowed(mob,room,(String)o))
-						{ found=true; break;}
-					if(!found) return false;
-				}
-				break;
-			case 80: // +security
-				{
-					for(final Object o : entry.parms)
-						if(CMSecurity.isAllowed(mob,room,(String)o))
-						{ return false;}
-				}
-				break;
-			case 9: // -names
-				{
-					boolean found=false;
-					final String name=actual?E.Name():E.name();
-					for(final Object o : entry.parms)
-						if(name.equalsIgnoreCase((String)o))
-						{ found=true; break;}
-					if(!found) return false;
-				}
-				break;
-			case 10: // -player
-				if(!mob.isMonster()) return false;
-				break;
-			case 11: // -npc
-				if(mob.isMonster()) return false;
-				break;
-			case 12: // -racecat
-			{
-				String raceCat=mob.baseCharStats().getMyRace().racialCategory();
-				if((!actual)&&(!mob.baseCharStats().getMyRace().name().equals(mob.charStats().raceName())))
-				{
-					final Race R2=CMClass.getRace(mob.charStats().raceName());
-					if(R2!=null) raceCat=R2.racialCategory();
-				}
-				if(!CMParms.contains(entry.parms,raceCat))
-					return false;
-				break;
-			}
+            case 79: // -security
+                {
+                    boolean found=false;
+                    for(final Object o : entry.parms)
+                        if(CMSecurity.isAllowed(mob,room,(String)o))
+                        { found=true; break;}
+                    if(!found) return false;
+                }
+                break;
+            case 80: // +security
+                {
+                    for(final Object o : entry.parms)
+                        if(CMSecurity.isAllowed(mob,room,(String)o))
+                        { return false;}
+                }
+                break;
+            case 9: // -names
+                {
+                    boolean found=false;
+                    final String name=actual?E.Name():E.name();
+                    for(final Object o : entry.parms)
+                        if(name.equalsIgnoreCase((String)o))
+                        { found=true; break;}
+                    if(!found) return false;
+                }
+                break;
+            case 10: // -player
+                if(!mob.isMonster()) return false;
+                break;
+            case 11: // -npc
+                if(mob.isMonster()) return false;
+                break;
+            case 12: // -racecat
+            {
+                String raceCat=mob.baseCharStats().getMyRace().racialCategory();
+                if((!actual)&&(!mob.baseCharStats().getMyRace().name().equals(mob.charStats().raceName())))
+                {
+                    final Race R2=CMClass.getRace(mob.charStats().raceName());
+                    if(R2!=null) raceCat=R2.racialCategory();
+                }
+                if(!CMParms.contains(entry.parms,raceCat))
+                    return false;
+                break;
+            }
             case 112: // +race
             {
                 String race=mob.baseCharStats().getMyRace().name();
@@ -3606,86 +3625,86 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                 if(CMParms.contains(entry.parms,race)) return false;
                 break;
             }
-			case 13: // +racecat
-			{
-				String raceCat=mob.baseCharStats().getMyRace().racialCategory();
-				if((!actual)&&(!mob.baseCharStats().getMyRace().name().equals(mob.charStats().raceName())))
-				{
-					final Race R2=CMClass.getRace(mob.charStats().raceName());
-					if(R2!=null) raceCat=R2.racialCategory();
-				}
-				if(CMParms.contains(entry.parms,raceCat))
-					return false;
-				break;
-			}
-			case 14: // -clan
-				{
-					final String clanID=(E instanceof MOB)?mob.getClanID():(E instanceof ClanItem)?((ClanItem)E).clanID():"";
-					if(clanID.length()==0)
-						return false;
-					boolean found=false;
-					for(final Object o : entry.parms)
-						if(clanID.equalsIgnoreCase((String)o))
-						{ found=true; break;}
-					if(!found) return false;
-				}
-				break;
-			case 15: // +clan
-				final String clanID=(E instanceof MOB)?mob.getClanID():(E instanceof ClanItem)?((ClanItem)E).clanID():"";
-				if(clanID.length()>0)
-					for(final Object o : entry.parms)
-						if(clanID.equalsIgnoreCase((String)o))
-						{ return false;}
-				break;
+            case 13: // +racecat
+            {
+                String raceCat=mob.baseCharStats().getMyRace().racialCategory();
+                if((!actual)&&(!mob.baseCharStats().getMyRace().name().equals(mob.charStats().raceName())))
+                {
+                    final Race R2=CMClass.getRace(mob.charStats().raceName());
+                    if(R2!=null) raceCat=R2.racialCategory();
+                }
+                if(CMParms.contains(entry.parms,raceCat))
+                    return false;
+                break;
+            }
+            case 14: // -clan
+                {
+                    final String clanID=(E instanceof MOB)?mob.getClanID():(E instanceof ClanItem)?((ClanItem)E).clanID():"";
+                    if(clanID.length()==0)
+                        return false;
+                    boolean found=false;
+                    for(final Object o : entry.parms)
+                        if(clanID.equalsIgnoreCase((String)o))
+                        { found=true; break;}
+                    if(!found) return false;
+                }
+                break;
+            case 15: // +clan
+                final String clanID=(E instanceof MOB)?mob.getClanID():(E instanceof ClanItem)?((ClanItem)E).clanID():"";
+                if(clanID.length()>0)
+                    for(final Object o : entry.parms)
+                        if(clanID.equalsIgnoreCase((String)o))
+                        { return false;}
+                break;
             case 49: // +material
                 if(CMParms.contains(entry.parms,RawMaterial.MATERIAL_DESCS[(item.material()&RawMaterial.MATERIAL_MASK)>>8]))
                     return false;
                 break;
             case 50: // -material
-        		if(!CMParms.contains(entry.parms,RawMaterial.MATERIAL_DESCS[(item.material()&RawMaterial.MATERIAL_MASK)>>8]))
+                if(!CMParms.contains(entry.parms,RawMaterial.MATERIAL_DESCS[(item.material()&RawMaterial.MATERIAL_MASK)>>8]))
                     return false;
                 break;
             case 57: // +wornOn
-				for(final Object o : entry.parms)
+                for(final Object o : entry.parms)
                     if((item.rawProperLocationBitmap()&((Long)o).longValue())>0)
                         return false;
                 break;
             case 58: // -wornOn
                 {
                     boolean found=false;
-					for(final Object o : entry.parms)
+                    for(final Object o : entry.parms)
                         if((item.rawProperLocationBitmap()&((Long)o).longValue())>0)
                         { found=true; break;}
                     if(!found) return false;
                 }
                 break;
             case 69: // +disposition
-            	if(P!=null)
-					for(final Object o : entry.parms)
-	                    if((P.phyStats().disposition()&((Integer)o).intValue())>0)
-	                        return false;
+                if(P!=null)
+                    for(final Object o : entry.parms)
+                        if((P.phyStats().disposition()&((Integer)o).intValue())>0)
+                            return false;
                 break;
             case 70: // -disposition
-            	if(P!=null)
+                if(P!=null)
                 {
                     boolean found=false;
-					for(final Object o : entry.parms)
+                    for(final Object o : entry.parms)
                         if((P.phyStats().disposition()&((Integer)o).intValue())>0)
                         { found=true; break;}
                     if(!found) return false;
                 }
                 break;
             case 71: // +senses
-            	if(P!=null)
-					for(final Object o : entry.parms)
-	                    if((P.phyStats().sensesMask()&((Integer)o).intValue())>0)
-	                        return false;
-	            break;
+                if(P!=null)
+                    for(final Object o : entry.parms)
+                        if((P.phyStats().sensesMask()&((Integer)o).intValue())>0)
+                            return false;
+                break;
             case 72: // -senses
-            	if(P!=null)
+                if(P!=null)
                 {
                     boolean found=false;
-					for(final Object o : entry.parms)
+                    for(final Object o : entry.parms)
                         if((P.phyStats().sensesMask()&((Integer)o).intValue())>0)
                         { found=true; break;}
                     if(!found) return false;
@@ -3694,70 +3713,70 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
             case 73: // +HOUR
                 {
                     if(room!=null)
-    					for(final Object o : entry.parms)
-	                        if(room.getArea().getTimeObj().getTimeOfDay()==((Integer)o).intValue())
-	                            return false;
+                        for(final Object o : entry.parms)
+                            if(room.getArea().getTimeObj().getTimeOfDay()==((Integer)o).intValue())
+                                return false;
                 }
                 break;
             case 74: // -HOUR
                 {
                     boolean found=false;
                     if(room!=null)
-    					for(final Object o : entry.parms)
-	                        if(room.getArea().getTimeObj().getTimeOfDay()==((Integer)o).intValue())
-	                        { found=true; break;}
+                        for(final Object o : entry.parms)
+                            if(room.getArea().getTimeObj().getTimeOfDay()==((Integer)o).intValue())
+                            { found=true; break;}
                     if(!found) return false;
                 }
                 break;
             case 75: // +season
                 {
                     if(room!=null)
-    					for(final Object o : entry.parms)
-	                        if(room.getArea().getTimeObj().getSeasonCode()==((Integer)o).intValue())
-	                            return false;
+                        for(final Object o : entry.parms)
+                            if(room.getArea().getTimeObj().getSeasonCode()==((Integer)o).intValue())
+                                return false;
                 }
                 break;
             case 76: // -season
                 {
                     boolean found=false;
                     if(room!=null)
-    					for(final Object o : entry.parms)
-	                        if(room.getArea().getTimeObj().getSeasonCode()==((Integer)o).intValue())
-	                        { found=true; break;}
+                        for(final Object o : entry.parms)
+                            if(room.getArea().getTimeObj().getSeasonCode()==((Integer)o).intValue())
+                            { found=true; break;}
                     if(!found) return false;
                 }
                 break;
             case 104: // +weather
-	            {
-	                if(room!=null)
-						for(final Object o : entry.parms)
-		                    if(room.getArea().getClimateObj().weatherType(room)==((Integer)o).intValue())
-		                        return false;
-	            }
-	            break;
+                {
+                    if(room!=null)
+                        for(final Object o : entry.parms)
+                            if(room.getArea().getClimateObj().weatherType(room)==((Integer)o).intValue())
+                                return false;
+                }
+                break;
             case 105: // -weather
                 {
                     boolean found=false;
                     if(room!=null)
-    					for(final Object o : entry.parms)
-	                        if(room.getArea().getClimateObj().weatherType(room)==((Integer)o).intValue())
-	                        { found=true; break;}
+                        for(final Object o : entry.parms)
+                            if(room.getArea().getClimateObj().weatherType(room)==((Integer)o).intValue())
+                            { found=true; break;}
                     if(!found) return false;
                 }
                 break;
             case 77: // +month
                 {
                     if(room!=null)
-    					for(final Object o : entry.parms)
-	                        if(room.getArea().getTimeObj().getMonth()==((Integer)o).intValue())
-	                            return false;
+                        for(final Object o : entry.parms)
+                            if(room.getArea().getTimeObj().getMonth()==((Integer)o).intValue())
+                                return false;
                 }
                 break;
             case 78: // -month
                 {
                     boolean found=false;
                     if(room!=null)
-    					for(final Object o : entry.parms)
+                        for(final Object o : entry.parms)
                         if(room.getArea().getTimeObj().getMonth()==((Integer)o).intValue())
                         { found=true; break;}
                     if(!found) return false;
@@ -3766,39 +3785,39 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
             case 106: // +day
                 {
                     if(room!=null)
-    					for(final Object o : entry.parms)
-	                        if(room.getArea().getTimeObj().getDayOfMonth()==((Integer)o).intValue())
-	                            return false;
+                        for(final Object o : entry.parms)
+                            if(room.getArea().getTimeObj().getDayOfMonth()==((Integer)o).intValue())
+                                return false;
                 }
                 break;
             case 107: // -day
                 {
                     boolean found=false;
                     if(room!=null)
-    					for(final Object o : entry.parms)
-	                        if(room.getArea().getTimeObj().getDayOfMonth()==((Integer)o).intValue())
-	                        { found=true; break;}
+                        for(final Object o : entry.parms)
+                            if(room.getArea().getTimeObj().getDayOfMonth()==((Integer)o).intValue())
+                            { found=true; break;}
                     if(!found) return false;
                 }
                 break;
             case 85: // +quallvl
-            	if(entry.parms.length>1)
-	            {
-	                final Ability A=CMClass.getAbility((String)entry.parms[0]);
-	                final int adjustment=((Integer)entry.parms[1]).intValue();
-	                final int lvl=CMLib.ableMapper().qualifyingClassLevel(mob,A);
-	                final int clvl=CMLib.ableMapper().qualifyingLevel(mob,A)+adjustment;
-	        		if(lvl<clvl) return false;
-	            }
-                break;
-            case 86: // -quallvl
-            	if(entry.parms.length>1)
+                if(entry.parms.length>1)
                 {
                     final Ability A=CMClass.getAbility((String)entry.parms[0]);
                     final int adjustment=((Integer)entry.parms[1]).intValue();
                     final int lvl=CMLib.ableMapper().qualifyingClassLevel(mob,A);
                     final int clvl=CMLib.ableMapper().qualifyingLevel(mob,A)+adjustment;
-            		if(lvl>clvl) return false;
+                    if(lvl<clvl) return false;
+                }
+                break;
+            case 86: // -quallvl
+                if(entry.parms.length>1)
+                {
+                    final Ability A=CMClass.getAbility((String)entry.parms[0]);
+                    final int adjustment=((Integer)entry.parms[1]).intValue();
+                    final int lvl=CMLib.ableMapper().qualifyingClassLevel(mob,A);
+                    final int clvl=CMLib.ableMapper().qualifyingLevel(mob,A)+adjustment;
+                    if(lvl>clvl) return false;
                 }
                 break;
             case 51: // +resource
@@ -3812,232 +3831,232 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
             case 53: // -JavaClass
                 {
                     boolean found=false;
-					for(final Object o : entry.parms)
+                    for(final Object o : entry.parms)
                         if(E.ID().equalsIgnoreCase((String)o))
                         { found=true; break;}
                     if(!found) return false;
                 }
                 break;
             case 54: // +JavaClass
-				for(final Object o : entry.parms)
+                for(final Object o : entry.parms)
                     if(E.ID().equalsIgnoreCase((String)o))
                     { return false;}
                 break;
-			case 44: // -deity
-				{
-					if(mob.getWorshipCharID().length()==0)
-						return false;
-					boolean found=false;
-					for(final Object o : entry.parms)
-						if(mob.getWorshipCharID().equalsIgnoreCase((String)o)||((String)o).equals("ANY"))
-						{ found=true; break;}
-					if(!found) return false;
-				}
-				break;
-			case 45: // +deity
-				{
-					if(mob.getWorshipCharID().length()>0)
-						for(final Object o : entry.parms)
-							if(mob.getWorshipCharID().equalsIgnoreCase((String)o))
-							{ return false;}
-				}
-				break;
-			case 43: // -effects
-				{
-					boolean found=false;
-					if(E instanceof PhysicalAgent)
-						for(final Object o : entry.parms)
-	                        if(((Physical)E).fetchEffect((String)o)!=null)
-	                        {   found=true; break;}
+            case 44: // -deity
+                {
+                    if(mob.getWorshipCharID().length()==0)
+                        return false;
+                    boolean found=false;
+                    for(final Object o : entry.parms)
+                        if(mob.getWorshipCharID().equalsIgnoreCase((String)o)||((String)o).equals("ANY"))
+                        { found=true; break;}
+                    if(!found) return false;
+                }
+                break;
+            case 45: // +deity
+                {
+                    if(mob.getWorshipCharID().length()>0)
+                        for(final Object o : entry.parms)
+                            if(mob.getWorshipCharID().equalsIgnoreCase((String)o))
+                            { return false;}
+                }
+                break;
+            case 43: // -effects
+                {
+                    boolean found=false;
+                    if(E instanceof PhysicalAgent)
+                        for(final Object o : entry.parms)
+                            if(((Physical)E).fetchEffect((String)o)!=null)
+                            {   found=true; break;}
                     if((!found)&&(E instanceof PhysicalAgent))
-    					for(final Object o : entry.parms)
-	                        if(((PhysicalAgent)E).fetchBehavior((String)o)!=null)
-	                        {   found=true; break;}
-					if(!found) return false;
-				}
-				break;
-			case 46: // -faction
-				{
-			    	boolean found=false;
-					for(final Object o : entry.parms)
-			    	    if(CMLib.factions().isFactionedThisWay(mob,(String)o))
-			    	    { found=true; break;}
-					if(!found) return false;
-				}
-				break;
-			case 47: // +faction
-				{
-					for(final Object o : entry.parms)
-			    	    if(CMLib.factions().isFactionedThisWay(mob,(String)o))
-			    	        return false;
-				}
-				break;
-			case 42: // +effects
-				{
-	                if(E instanceof Physical)
-						for(final Object o : entry.parms)
-		                    if(((Physical)E).fetchEffect((String)o)!=null)
-		                        return false;
-	                if(E instanceof PhysicalAgent)
-						for(final Object o : entry.parms)
-		                    if(((PhysicalAgent)E).fetchBehavior((String)o)!=null)
-		                        return false;
-				}
-				break;
-			case 16: // +name
-				{
-					final String name=actual?E.Name():E.name();
-					for(final Object o : entry.parms)
+                        for(final Object o : entry.parms)
+                            if(((PhysicalAgent)E).fetchBehavior((String)o)!=null)
+                            {   found=true; break;}
+                    if(!found) return false;
+                }
+                break;
+            case 46: // -faction
+                {
+                    boolean found=false;
+                    for(final Object o : entry.parms)
+                        if(CMLib.factions().isFactionedThisWay(mob,(Faction.FactionRange)o))
+                        { found=true; break;}
+                    if(!found) return false;
+                }
+                break;
+            case 47: // +faction
+                {
+                    for(final Object o : entry.parms)
+                        if(CMLib.factions().isFactionedThisWay(mob,(Faction.FactionRange)o))
+                            return false;
+                }
+                break;
+            case 42: // +effects
+                {
+                    if(E instanceof Physical)
+                        for(final Object o : entry.parms)
+                            if(((Physical)E).fetchEffect((String)o)!=null)
+                                return false;
+                    if(E instanceof PhysicalAgent)
+                        for(final Object o : entry.parms)
+                            if(((PhysicalAgent)E).fetchBehavior((String)o)!=null)
+                                return false;
+                }
+                break;
+            case 16: // +name
+                {
+                    final String name=actual?E.Name():E.name();
+                    for(final Object o : entry.parms)
                         if(name.equalsIgnoreCase((String)o))
-						{ return false;}
-				}
-				break;
-			case 17: // -anyclass
-				{
-					boolean found=false;
-					if(actual)
-					{
-						for(final Object o : entry.parms)
-							if(mob.baseCharStats().getClassLevel((String)o)>=0)
-							{ found=true; break;}
-					}
-					else
-					{
-						for(final Object o : entry.parms)
-							if((mob.charStats().getClassLevel((String)o)>=0)
-							||(mob.charStats().displayClassName().equalsIgnoreCase((String)o)))
-							{ found=true; break;}
-					}
-					if(!found) return false;
-				}
-				break;
-			case 18: // +anyclass
-				if(actual)
-				{
-					for(final Object o : entry.parms)
-						if(mob.baseCharStats().getClassLevel((String)o)>=0)
-						{ return false;}
-				}
-				else
-				{
-					for(final Object o : entry.parms)
-						if((mob.charStats().getClassLevel((String)o)>=0)
-						||(mob.charStats().displayClassName().equalsIgnoreCase((String)o)))
-						{ return false; }
-				}
-				break;
-			case 19: // +adjstr
-				if((entry.parms.length>0)&&(mob.charStats().getStat(CharStats.STAT_STRENGTH)<(((Integer)entry.parms[0]).intValue())))
-				   return false;
-				break;
-			case 20: // +adjint
-				if((entry.parms.length>0)&&(mob.charStats().getStat(CharStats.STAT_INTELLIGENCE)<(((Integer)entry.parms[0]).intValue())))
-				   return false;
-				break;
-			case 21: // +adjwis
-				if((entry.parms.length>0)&&(mob.charStats().getStat(CharStats.STAT_WISDOM)<(((Integer)entry.parms[0]).intValue())))
-				   return false;
-				break;
-			case 22: // +adjdex
-				if((entry.parms.length>0)&&(mob.charStats().getStat(CharStats.STAT_DEXTERITY)<(((Integer)entry.parms[0]).intValue())))
-				   return false;
-				break;
-			case 23: // -adjcha
-				if((entry.parms.length>0)&&(mob.charStats().getStat(CharStats.STAT_CONSTITUTION)<(((Integer)entry.parms[0]).intValue())))
-				   return false;
-				break;
-			case 24: // +adjcha
-				if((entry.parms.length>0)&&(mob.charStats().getStat(CharStats.STAT_CHARISMA)<(((Integer)entry.parms[0]).intValue())))
-				   return false;
-				break;
-			case 25: // -adjstr
-				if((entry.parms.length>0)&&(mob.charStats().getStat(CharStats.STAT_STRENGTH)>(((Integer)entry.parms[0]).intValue())))
-				   return false;
-				break;
-			case 26: // -adjint
-				if((entry.parms.length>0)&&(mob.charStats().getStat(CharStats.STAT_INTELLIGENCE)>(((Integer)entry.parms[0]).intValue())))
-				   return false;
-				break;
-			case 27: // -adjwis
-				if((entry.parms.length>0)&&(mob.charStats().getStat(CharStats.STAT_WISDOM)>(((Integer)entry.parms[0]).intValue())))
-				   return false;
-				break;
-			case 28: // -adjdex
-				if((entry.parms.length>0)&&(mob.charStats().getStat(CharStats.STAT_DEXTERITY)>(((Integer)entry.parms[0]).intValue())))
-				   return false;
-				break;
-			case 29: // -adjcon
-				if((entry.parms.length>0)&&(mob.charStats().getStat(CharStats.STAT_CONSTITUTION)>(((Integer)entry.parms[0]).intValue())))
-				   return false;
-				break;
-			case 30: // -adjcha
-				if((entry.parms.length>0)&&(mob.charStats().getStat(CharStats.STAT_CHARISMA)>(((Integer)entry.parms[0]).intValue())))
-				   return false;
-				break;
-			case 87: // +str
-		        base=getBaseCharStats(base,mob);
-				if((entry.parms.length>0)&&(base.getStat(CharStats.STAT_STRENGTH)<(((Integer)entry.parms[0]).intValue())))
-				   return false;
-				break;
-			case 88: // +int
-		        base=getBaseCharStats(base,mob);
-				if((entry.parms.length>0)&&(base.getStat(CharStats.STAT_INTELLIGENCE)<(((Integer)entry.parms[0]).intValue())))
-				   return false;
-				break;
-			case 89: // +wis
-		        base=getBaseCharStats(base,mob);
-				if((entry.parms.length>0)&&(base.getStat(CharStats.STAT_WISDOM)<(((Integer)entry.parms[0]).intValue())))
-				   return false;
-				break;
-			case 90: // +dex
-		        base=getBaseCharStats(base,mob);
-				if((entry.parms.length>0)&&(base.getStat(CharStats.STAT_DEXTERITY)<(((Integer)entry.parms[0]).intValue())))
-				   return false;
-				break;
-			case 91: // +con
-		        base=getBaseCharStats(base,mob);
-				if((entry.parms.length>0)&&(base.getStat(CharStats.STAT_CONSTITUTION)<(((Integer)entry.parms[0]).intValue())))
-				   return false;
-				break;
-			case 92: // +cha
-		        base=getBaseCharStats(base,mob);
-				if((entry.parms.length>0)&&(base.getStat(CharStats.STAT_CHARISMA)<(((Integer)entry.parms[0]).intValue())))
-				   return false;
-				break;
-			case 93: // -str
-		        base=getBaseCharStats(base,mob);
-				if((entry.parms.length>0)&&(base.getStat(CharStats.STAT_STRENGTH)>(((Integer)entry.parms[0]).intValue())))
-				   return false;
-				break;
-			case 94: // -int
-		        base=getBaseCharStats(base,mob);
-				if((entry.parms.length>0)&&(base.getStat(CharStats.STAT_INTELLIGENCE)>(((Integer)entry.parms[0]).intValue())))
-				   return false;
-				break;
-			case 95: // -wis
-		        base=getBaseCharStats(base,mob);
-				if((entry.parms.length>0)&&(base.getStat(CharStats.STAT_WISDOM)>(((Integer)entry.parms[0]).intValue())))
-				   return false;
-				break;
-			case 96: // -dex
-		        base=getBaseCharStats(base,mob);
-				if((entry.parms.length>0)&&(base.getStat(CharStats.STAT_DEXTERITY)>(((Integer)entry.parms[0]).intValue())))
-				   return false;
-				break;
-			case 97: // -con
-		        base=getBaseCharStats(base,mob);
-				if((entry.parms.length>0)&&(base.getStat(CharStats.STAT_CONSTITUTION)>(((Integer)entry.parms[0]).intValue())))
-				   return false;
-				break;
-			case 98: // -cha
-		        base=getBaseCharStats(base,mob);
-				if((entry.parms.length>0)&&(base.getStat(CharStats.STAT_CHARISMA)>(((Integer)entry.parms[0]).intValue())))
-				   return false;
-				break;
-			case 122: // -chance
-				if((entry.parms.length>0)&&(CMLib.dice().rollPercentage()<(((Integer)entry.parms[0]).intValue())))
-				   return false;
-				break;
+                        { return false;}
+                }
+                break;
+            case 17: // -anyclass
+                {
+                    boolean found=false;
+                    if(actual)
+                    {
+                        for(final Object o : entry.parms)
+                            if(mob.baseCharStats().getClassLevel((String)o)>=0)
+                            { found=true; break;}
+                    }
+                    else
+                    {
+                        for(final Object o : entry.parms)
+                            if((mob.charStats().getClassLevel((String)o)>=0)
+                            ||(mob.charStats().displayClassName().equalsIgnoreCase((String)o)))
+                            { found=true; break;}
+                    }
+                    if(!found) return false;
+                }
+                break;
+            case 18: // +anyclass
+                if(actual)
+                {
+                    for(final Object o : entry.parms)
+                        if(mob.baseCharStats().getClassLevel((String)o)>=0)
+                        { return false;}
+                }
+                else
+                {
+                    for(final Object o : entry.parms)
+                        if((mob.charStats().getClassLevel((String)o)>=0)
+                        ||(mob.charStats().displayClassName().equalsIgnoreCase((String)o)))
+                        { return false; }
+                }
+                break;
+            case 19: // +adjstr
+                if((entry.parms.length>0)&&(mob.charStats().getStat(CharStats.STAT_STRENGTH)<(((Integer)entry.parms[0]).intValue())))
+                   return false;
+                break;
+            case 20: // +adjint
+                if((entry.parms.length>0)&&(mob.charStats().getStat(CharStats.STAT_INTELLIGENCE)<(((Integer)entry.parms[0]).intValue())))
+                   return false;
+                break;
+            case 21: // +adjwis
+                if((entry.parms.length>0)&&(mob.charStats().getStat(CharStats.STAT_WISDOM)<(((Integer)entry.parms[0]).intValue())))
+                   return false;
+                break;
+            case 22: // +adjdex
+                if((entry.parms.length>0)&&(mob.charStats().getStat(CharStats.STAT_DEXTERITY)<(((Integer)entry.parms[0]).intValue())))
+                   return false;
+                break;
+            case 23: // -adjcha
+                if((entry.parms.length>0)&&(mob.charStats().getStat(CharStats.STAT_CONSTITUTION)<(((Integer)entry.parms[0]).intValue())))
+                   return false;
+                break;
+            case 24: // +adjcha
+                if((entry.parms.length>0)&&(mob.charStats().getStat(CharStats.STAT_CHARISMA)<(((Integer)entry.parms[0]).intValue())))
+                   return false;
+                break;
+            case 25: // -adjstr
+                if((entry.parms.length>0)&&(mob.charStats().getStat(CharStats.STAT_STRENGTH)>(((Integer)entry.parms[0]).intValue())))
+                   return false;
+                break;
+            case 26: // -adjint
+                if((entry.parms.length>0)&&(mob.charStats().getStat(CharStats.STAT_INTELLIGENCE)>(((Integer)entry.parms[0]).intValue())))
+                   return false;
+                break;
+            case 27: // -adjwis
+                if((entry.parms.length>0)&&(mob.charStats().getStat(CharStats.STAT_WISDOM)>(((Integer)entry.parms[0]).intValue())))
+                   return false;
+                break;
+            case 28: // -adjdex
+                if((entry.parms.length>0)&&(mob.charStats().getStat(CharStats.STAT_DEXTERITY)>(((Integer)entry.parms[0]).intValue())))
+                   return false;
+                break;
+            case 29: // -adjcon
+                if((entry.parms.length>0)&&(mob.charStats().getStat(CharStats.STAT_CONSTITUTION)>(((Integer)entry.parms[0]).intValue())))
+                   return false;
+                break;
+            case 30: // -adjcha
+                if((entry.parms.length>0)&&(mob.charStats().getStat(CharStats.STAT_CHARISMA)>(((Integer)entry.parms[0]).intValue())))
+                   return false;
+                break;
+            case 87: // +str
+                base=getBaseCharStats(base,mob);
+                if((entry.parms.length>0)&&(base.getStat(CharStats.STAT_STRENGTH)<(((Integer)entry.parms[0]).intValue())))
+                   return false;
+                break;
+            case 88: // +int
+                base=getBaseCharStats(base,mob);
+                if((entry.parms.length>0)&&(base.getStat(CharStats.STAT_INTELLIGENCE)<(((Integer)entry.parms[0]).intValue())))
+                   return false;
+                break;
+            case 89: // +wis
+                base=getBaseCharStats(base,mob);
+                if((entry.parms.length>0)&&(base.getStat(CharStats.STAT_WISDOM)<(((Integer)entry.parms[0]).intValue())))
+                   return false;
+                break;
+            case 90: // +dex
+                base=getBaseCharStats(base,mob);
+                if((entry.parms.length>0)&&(base.getStat(CharStats.STAT_DEXTERITY)<(((Integer)entry.parms[0]).intValue())))
+                   return false;
+                break;
+            case 91: // +con
+                base=getBaseCharStats(base,mob);
+                if((entry.parms.length>0)&&(base.getStat(CharStats.STAT_CONSTITUTION)<(((Integer)entry.parms[0]).intValue())))
+                   return false;
+                break;
+            case 92: // +cha
+                base=getBaseCharStats(base,mob);
+                if((entry.parms.length>0)&&(base.getStat(CharStats.STAT_CHARISMA)<(((Integer)entry.parms[0]).intValue())))
+                   return false;
+                break;
+            case 93: // -str
+                base=getBaseCharStats(base,mob);
+                if((entry.parms.length>0)&&(base.getStat(CharStats.STAT_STRENGTH)>(((Integer)entry.parms[0]).intValue())))
+                   return false;
+                break;
+            case 94: // -int
+                base=getBaseCharStats(base,mob);
+                if((entry.parms.length>0)&&(base.getStat(CharStats.STAT_INTELLIGENCE)>(((Integer)entry.parms[0]).intValue())))
+                   return false;
+                break;
+            case 95: // -wis
+                base=getBaseCharStats(base,mob);
+                if((entry.parms.length>0)&&(base.getStat(CharStats.STAT_WISDOM)>(((Integer)entry.parms[0]).intValue())))
+                   return false;
+                break;
+            case 96: // -dex
+                base=getBaseCharStats(base,mob);
+                if((entry.parms.length>0)&&(base.getStat(CharStats.STAT_DEXTERITY)>(((Integer)entry.parms[0]).intValue())))
+                   return false;
+                break;
+            case 97: // -con
+                base=getBaseCharStats(base,mob);
+                if((entry.parms.length>0)&&(base.getStat(CharStats.STAT_CONSTITUTION)>(((Integer)entry.parms[0]).intValue())))
+                   return false;
+                break;
+            case 98: // -cha
+                base=getBaseCharStats(base,mob);
+                if((entry.parms.length>0)&&(base.getStat(CharStats.STAT_CHARISMA)>(((Integer)entry.parms[0]).intValue())))
+                   return false;
+                break;
+            case 122: // -chance
+                if((entry.parms.length>0)&&(CMLib.dice().rollPercentage()<(((Integer)entry.parms[0]).intValue())))
+                   return false;
+                break;
             case 55: // +able
                 if((entry.parms.length>0)&&(P != null)&&(P.phyStats().ability()>(((Integer)entry.parms[0]).intValue())))
                    return false;
@@ -4102,22 +4121,22 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                         return false;
                 }
                 break;
-			case 31: // -area
-				{
-					boolean found=false;
+            case 31: // -area
+                {
+                    boolean found=false;
                     if(room!=null)
-    					for(final Object o : entry.parms)
-							if(room.getArea().Name().equalsIgnoreCase((String)o))
-							{ found=true; break;}
-					if(!found) return false;
-				}
-				break;
-			case 32: // +area
+                        for(final Object o : entry.parms)
+                            if(room.getArea().Name().equalsIgnoreCase((String)o))
+                            { found=true; break;}
+                    if(!found) return false;
+                }
+                break;
+            case 32: // +area
             {
-				if(room!=null)
-					for(final Object o : entry.parms)
-						if(room.getArea().Name().equalsIgnoreCase((String)o))
-						{ return false;}
+                if(room!=null)
+                    for(final Object o : entry.parms)
+                        if(room.getArea().Name().equalsIgnoreCase((String)o))
+                        { return false;}
                 break;
             }
             case 100: // -home
@@ -4133,29 +4152,29 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
             break;
             case 99: // +home
             {
-            	final Area A=CMLib.map().getStartArea(E);
+                final Area A=CMLib.map().getStartArea(E);
                 if(A!=null)
                     for(final Object o : entry.parms)
                         if(A.Name().equalsIgnoreCase((String)o))
                         { return false;}
                 break;
             }
-			case 33: // -item
-				{
-					boolean found=false;
+            case 33: // -item
+                {
+                    boolean found=false;
                     for(final Object o : entry.parms)
-						if(mob.findItem((String)o)!=null)
-						{ found=true; break;}
-					if(!found) return false;
-				}
-				break;
+                        if(mob.findItem((String)o)!=null)
+                        { found=true; break;}
+                    if(!found) return false;
+                }
+                break;
             case 48: // -worn
                 if(E instanceof MOB)
                 {
                     boolean found=false;
                     for(final Object o : entry.parms)
                     {
-                    	final Item I=mob.findItem((String)o);
+                        final Item I=mob.findItem((String)o);
                         if((I!=null)&&(!I.amWearingAt(Wearable.IN_INVENTORY)))
                         { found=true; break;}
                     }
@@ -4166,102 +4185,102 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                     if(((Item)E).amWearingAt(Wearable.IN_INVENTORY))
                         return false;
                 break;
-			case 34: // +class
-				if(CMParms.contains(entry.parms,actual?mob.baseCharStats().getCurrentClass().name():mob.charStats().displayClassName()))
-					return false;
-				break;
-			case 35: // +alignment
-				if(CMParms.contains(entry.parms,CMLib.flags().getAlignmentName(mob)))
-					return false;
-				break;
-			case 36: // +gender
-		        base=getBaseCharStats(base,mob);
-				if(CMParms.contains(entry.parms,actual?(""+((char)base.getStat(CharStats.STAT_GENDER))):(""+Character.toUpperCase(mob.charStats().genderName().charAt(0)))))
-					return false;
-				break;
-			case 37: // +lvlgr
-				if((entry.parms.length>0)&&(P!=null)&&((actual?P.basePhyStats().level():P.phyStats().level())>((Integer)entry.parms[0]).intValue()))
-				   return false;
-				break;
-			case 38: // +lvlge
-				if((entry.parms.length>0)&&(P!=null)&&((actual?P.basePhyStats().level():P.phyStats().level())>=((Integer)entry.parms[0]).intValue()))
-				   return false;
-				break;
-			case 39: // +lvlt
-				if((entry.parms.length>0)&&(P!=null)&&((actual?P.basePhyStats().level():P.phyStats().level())<((Integer)entry.parms[0]).intValue()))
-				   return false;
-				break;
-			case 40: // +lvlle
-				if((entry.parms.length>0)&&(P!=null)&&((actual?P.basePhyStats().level():P.phyStats().level())<=((Integer)entry.parms[0]).intValue()))
-				   return false;
-				break;
-			case 41: // +lvleq
-				if((entry.parms.length>0)&&(P!=null)&&((actual?P.basePhyStats().level():P.phyStats().level())==((Integer)entry.parms[0]).intValue()))
-				   return false;
-				break;
-			case 116: // +groupsize
-				if((entry.parms.length>0)&&(mob.getGroupMembers(new HashSet(1)).size()<(((Integer)entry.parms[0]).intValue())))
-				   return false;
-				break;
-			case 115: // -groupsize
-				if((entry.parms.length>0)&&(mob.getGroupMembers(new HashSet(1)).size()>(((Integer)entry.parms[0]).intValue())))
-				   return false;
-				break;
-			case 118: // -if
-				{
-					boolean oneIsOK = false;
-			        if(E instanceof PhysicalAgent)
-						for(int v=0;v<entry.parms.length-2;v+=3)
-						{
-							final ScriptingEngine SE = (ScriptingEngine)entry.parms[v];
-							final String[][] EVAL = (String[][])entry.parms[v+1];
-							final Object[] tmp = (Object[])entry.parms[v+2];
-							final MOB M = SE.getMakeMOB(E);
-							final Item defaultItem=(E instanceof Item)?(Item)E:null;
-							if(SE.eval((PhysicalAgent)E, M, null,M, defaultItem, null, "", tmp, EVAL, 0))
-							{
-								oneIsOK = true;
-								break;
-							}
-						}
-					if(!oneIsOK) return false;
-					break;
-				}
-			case 119: // +if
-		        {
-		        	if(E instanceof PhysicalAgent)
-						for(int v=0;v<entry.parms.length-2;v+=3)
-						{
-							final ScriptingEngine SE = (ScriptingEngine)entry.parms[v];
-							final String[][] EVAL = (String[][])entry.parms[v+1];
-							final Object[] tmp = (Object[])entry.parms[v+2];
-							final MOB M = SE.getMakeMOB(E);
-							final Item defaultItem=(E instanceof Item)?(Item)E:null;
-					        if(E instanceof PhysicalAgent)
-								if(SE.eval((PhysicalAgent)E, M, null,M, defaultItem, null, "", tmp, EVAL, 0))
-									return true;
-						}
-					break;
-		        }
-			}
+            case 34: // +class
+                if(CMParms.contains(entry.parms,actual?mob.baseCharStats().getCurrentClass().name():mob.charStats().displayClassName()))
+                    return false;
+                break;
+            case 35: // +alignment
+                if(CMParms.contains(entry.parms,CMLib.flags().getAlignmentName(mob)))
+                    return false;
+                break;
+            case 36: // +gender
+                base=getBaseCharStats(base,mob);
+                if(CMParms.contains(entry.parms,actual?(""+((char)base.getStat(CharStats.STAT_GENDER))):(""+Character.toUpperCase(mob.charStats().genderName().charAt(0)))))
+                    return false;
+                break;
+            case 37: // +lvlgr
+                if((entry.parms.length>0)&&(P!=null)&&((actual?P.basePhyStats().level():P.phyStats().level())>((Integer)entry.parms[0]).intValue()))
+                   return false;
+                break;
+            case 38: // +lvlge
+                if((entry.parms.length>0)&&(P!=null)&&((actual?P.basePhyStats().level():P.phyStats().level())>=((Integer)entry.parms[0]).intValue()))
+                   return false;
+                break;
+            case 39: // +lvlt
+                if((entry.parms.length>0)&&(P!=null)&&((actual?P.basePhyStats().level():P.phyStats().level())<((Integer)entry.parms[0]).intValue()))
+                   return false;
+                break;
+            case 40: // +lvlle
+                if((entry.parms.length>0)&&(P!=null)&&((actual?P.basePhyStats().level():P.phyStats().level())<=((Integer)entry.parms[0]).intValue()))
+                   return false;
+                break;
+            case 41: // +lvleq
+                if((entry.parms.length>0)&&(P!=null)&&((actual?P.basePhyStats().level():P.phyStats().level())==((Integer)entry.parms[0]).intValue()))
+                   return false;
+                break;
+            case 116: // +groupsize
+                if((entry.parms.length>0)&&(mob.getGroupMembers(new HashSet(1)).size()<(((Integer)entry.parms[0]).intValue())))
+                   return false;
+                break;
+            case 115: // -groupsize
+                if((entry.parms.length>0)&&(mob.getGroupMembers(new HashSet(1)).size()>(((Integer)entry.parms[0]).intValue())))
+                   return false;
+                break;
+            case 118: // -if
+                {
+                    boolean oneIsOK = false;
+                    if(E instanceof PhysicalAgent)
+                        for(int v=0;v<entry.parms.length-2;v+=3)
+                        {
+                            final ScriptingEngine SE = (ScriptingEngine)entry.parms[v];
+                            final String[][] EVAL = (String[][])entry.parms[v+1];
+                            final Object[] tmp = (Object[])entry.parms[v+2];
+                            final MOB M = SE.getMakeMOB(E);
+                            final Item defaultItem=(E instanceof Item)?(Item)E:null;
+                            if(SE.eval((PhysicalAgent)E, M, null,M, defaultItem, null, "", tmp, EVAL, 0))
+                            {
+                                oneIsOK = true;
+                                break;
+                            }
+                        }
+                    if(!oneIsOK) return false;
+                    break;
+                }
+            case 119: // +if
+                {
+                    if(E instanceof PhysicalAgent)
+                        for(int v=0;v<entry.parms.length-2;v+=3)
+                        {
+                            final ScriptingEngine SE = (ScriptingEngine)entry.parms[v];
+                            final String[][] EVAL = (String[][])entry.parms[v+1];
+                            final Object[] tmp = (Object[])entry.parms[v+2];
+                            final MOB M = SE.getMakeMOB(E);
+                            final Item defaultItem=(E instanceof Item)?(Item)E:null;
+                            if(E instanceof PhysicalAgent)
+                                if(SE.eval((PhysicalAgent)E, M, null,M, defaultItem, null, "", tmp, EVAL, 0))
+                                    return true;
+                        }
+                    break;
+                }
+            }
             }catch(NullPointerException n){}
-		}
-		return true;
-	}
+        }
+        return true;
+    }
 
     public boolean maskCheck(final String text, final PlayerLibrary.ThinPlayer E){ return maskCheck(getPreCompiledMask(text),E);}
-	public boolean maskCheck(final CompiledZapperMask cset, final PlayerLibrary.ThinPlayer E)
-	{
-		if(E==null) return true;
-		if((cset==null)||(cset.empty)||(cset.entries.length<1)) return true;
+    public boolean maskCheck(final CompiledZapperMask cset, final PlayerLibrary.ThinPlayer E)
+    {
+        if(E==null) return true;
+        if((cset==null)||(cset.empty)||(cset.entries.length<1)) return true;
         getMaskCodes();
         //boolean[] flags=(boolean[])cset.firstElement();
-		for(CompiledZapperMaskEntry entry : cset.entries)
-		{
+        for(CompiledZapperMaskEntry entry : cset.entries)
+        {
             try
             {
-			switch(entry.maskType)
-			{
+            switch(entry.maskType)
+            {
             case 108: // +sysop
                 if(CMSecurity.isASysOp(E))
                     return true;
@@ -4272,132 +4291,132 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                 break;
             case 110: // +subop
                 if(CMSecurity.isASysOp(E))
-                	return true;
+                    return true;
                 for(final Enumeration<Area> e=CMLib.map().areas();e.hasMoreElements();)
-                	if(e.nextElement().amISubOp(E.name))
+                    if(e.nextElement().amISubOp(E.name))
                     return true;
                 break;
             case 111: // -subop
                 if(CMSecurity.isASysOp(E))
-                	return false;
+                    return false;
                 for(final Enumeration<Area> e=CMLib.map().areas();e.hasMoreElements();)
-                	if(e.nextElement().amISubOp(E.name))
+                    if(e.nextElement().amISubOp(E.name))
                     return false;
                 break;
-			case 0: // -class
-			{
-				final CharClass C=CMClass.getCharClass(E.charClass);
-				if((C==null)||(!CMParms.contains(entry.parms,C.name())))
-					return false;
-				break;
-			}
-			case 1: // -baseclass
-			{
-				final CharClass C=CMClass.getCharClass(E.charClass);
-				if((C==null)||(!CMParms.contains(entry.parms,C.baseClass())))
-					return false;
-				break;
-			}
-			case 117: // +baseclass
-			{
-				final CharClass C=CMClass.getCharClass(E.charClass);
-				if((C!=null)&&(CMParms.contains(entry.parms,C.baseClass())))
-					return false;
-				break;
-			}
-			case 2: // -race
-			{
-				final Race R=CMClass.getRace(E.race); 
-				if((R==null)||(!CMParms.contains(entry.parms,R.name())))
-					return false;
-				break;
-			}
-			case 5: // -level
-				{
-					final int level=E.level;
-					boolean found=false;
-					for(int v=0;v<entry.parms.length-1;v+=2)
-						switch(((Integer)entry.parms[v]).intValue())
-						{
-							case 37: // +lvlgr
-								if(level>((Integer)entry.parms[v+1]).intValue())
-								   found=true;
-								break;
-							case 38: // +lvlge
-								if(level>=((Integer)entry.parms[v+1]).intValue())
-								   found=true;
-								break;
-							case 39: // +lvlt
-								if(level<((Integer)entry.parms[v+1]).intValue())
-								   found=true;
-								break;
-							case 40: // +lvlle
-								if(level<=((Integer)entry.parms[v+1]).intValue())
-								   found=true;
-								break;
-							case 41: // +lvleq
-								if(level==((Integer)entry.parms[v+1]).intValue())
-								   found=true;
-								break;
-						}
-					if(!found) return false;
-				}
-				break;
-	            case 113: // -questwin
-	            {
-	                boolean found=false;
-	                for(final Object o : entry.parms)
-	                {
-	                	final Quest Q=CMLib.quests().fetchQuest((String)o);
-	                    if((Q!=null)&&(Q.wasWinner(E.name)))
-	                    { found=true; break;}
-	                }
-	                if(!found) return false;
-	            }
-	            break;
-	        case 114: // +questwin
+            case 0: // -class
+            {
+                final CharClass C=CMClass.getCharClass(E.charClass);
+                if((C==null)||(!CMParms.contains(entry.parms,C.name())))
+                    return false;
+                break;
+            }
+            case 1: // -baseclass
+            {
+                final CharClass C=CMClass.getCharClass(E.charClass);
+                if((C==null)||(!CMParms.contains(entry.parms,C.baseClass())))
+                    return false;
+                break;
+            }
+            case 117: // +baseclass
+            {
+                final CharClass C=CMClass.getCharClass(E.charClass);
+                if((C!=null)&&(CMParms.contains(entry.parms,C.baseClass())))
+                    return false;
+                break;
+            }
+            case 2: // -race
+            {
+                final Race R=CMClass.getRace(E.race); 
+                if((R==null)||(!CMParms.contains(entry.parms,R.name())))
+                    return false;
+                break;
+            }
+            case 5: // -level
+                {
+                    final int level=E.level;
+                    boolean found=false;
+                    for(int v=0;v<entry.parms.length-1;v+=2)
+                        switch(((Integer)entry.parms[v]).intValue())
+                        {
+                            case 37: // +lvlgr
+                                if(level>((Integer)entry.parms[v+1]).intValue())
+                                   found=true;
+                                break;
+                            case 38: // +lvlge
+                                if(level>=((Integer)entry.parms[v+1]).intValue())
+                                   found=true;
+                                break;
+                            case 39: // +lvlt
+                                if(level<((Integer)entry.parms[v+1]).intValue())
+                                   found=true;
+                                break;
+                            case 40: // +lvlle
+                                if(level<=((Integer)entry.parms[v+1]).intValue())
+                                   found=true;
+                                break;
+                            case 41: // +lvleq
+                                if(level==((Integer)entry.parms[v+1]).intValue())
+                                   found=true;
+                                break;
+                        }
+                    if(!found) return false;
+                }
+                break;
+                case 113: // -questwin
+                {
+                    boolean found=false;
+                    for(final Object o : entry.parms)
+                    {
+                        final Quest Q=CMLib.quests().fetchQuest((String)o);
+                        if((Q!=null)&&(Q.wasWinner(E.name)))
+                        { found=true; break;}
+                    }
+                    if(!found) return false;
+                }
+                break;
+            case 114: // +questwin
             {
                 for(final Object o : entry.parms)
                 {
-                	final Quest Q=CMLib.quests().fetchQuest((String)o);
+                    final Quest Q=CMLib.quests().fetchQuest((String)o);
                     if((Q!=null)&&(Q.wasWinner(E.name)))
                     { return false;}
                 }
             }
             break;
-			case 9: // -names
-				{
-					boolean found=false;
-					final String name=E.name;
-					for(final Object o : entry.parms)
-						if(name.equalsIgnoreCase((String)o))
-						{ found=true; break;}
-					if(!found) return false;
-				}
-				break;
-			case 11: // -npc
-				break; // always true
-			case 12: // -racecat
-			{
-				final Race R=CMClass.getRace(E.race); 
-				if((R==null)||(!CMParms.contains(entry.parms,R.racialCategory())))
-					return false;
-				break;
-			}
-            case 112: // +race
+            case 9: // -names
+                {
+                    boolean found=false;
+                    final String name=E.name;
+                    for(final Object o : entry.parms)
+                        if(name.equalsIgnoreCase((String)o))
+                        { found=true; break;}
+                    if(!found) return false;
+                }
+                break;
+            case 11: // -npc
+                break; // always true
+            case 12: // -racecat
             {
-				final Race R=CMClass.getRace(E.race); 
-                if((R!=null)&&(CMParms.contains(entry.parms,R.name())))
-                	return false;
+                final Race R=CMClass.getRace(E.race); 
+                if((R==null)||(!CMParms.contains(entry.parms,R.racialCategory())))
+                    return false;
                 break;
             }
-			case 13: // +racecat
-			{
-				final Race R=CMClass.getRace(E.race); 
+            case 112: // +race
+            {
+                final Race R=CMClass.getRace(E.race); 
+                if((R!=null)&&(CMParms.contains(entry.parms,R.name())))
+                    return false;
+                break;
+            }
+            case 13: // +racecat
+            {
+                final Race R=CMClass.getRace(E.race); 
                 if((R!=null)&&(CMParms.contains(entry.parms,R.racialCategory())))
-					return false;
-				break;
-			}
+                    return false;
+                break;
+            }
             case 53: // -JavaClass
                 {
                     boolean found=false;
@@ -4412,53 +4431,53 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                         if("StdMOB".equalsIgnoreCase((String)o))
                         { return false;}
                 break;
-			case 16: // +name
-				{
-					final String name=E.name;
-					for(final Object o : entry.parms)
+            case 16: // +name
+                {
+                    final String name=E.name;
+                    for(final Object o : entry.parms)
                         if(name.equalsIgnoreCase((String)o))
-						{ return false;}
-				}
-				break;
-			case 17: // -anyclass
-				{
-					boolean found=false;
-					final CharClass C=CMClass.getCharClass(E.charClass);
-					if(C!=null)
-					for(final Object o : entry.parms)
-						if(C.name().equalsIgnoreCase((String)o))
-						{ found=true; break;}
-					if(!found) return false;
-				}
-				break;
-			case 18: // +anyclass
-			{
-				final CharClass C=CMClass.getCharClass(E.charClass);
-				if(C!=null)
-					for(final Object o : entry.parms)
-						if(C.name().equalsIgnoreCase((String)o))
-						{ return false; }
-				break;
-			}
-			case 3: // -alignment
-			case 4: // -gender
-			case 6: // -classlevel
+                        { return false;}
+                }
+                break;
+            case 17: // -anyclass
+                {
+                    boolean found=false;
+                    final CharClass C=CMClass.getCharClass(E.charClass);
+                    if(C!=null)
+                    for(final Object o : entry.parms)
+                        if(C.name().equalsIgnoreCase((String)o))
+                        { found=true; break;}
+                    if(!found) return false;
+                }
+                break;
+            case 18: // +anyclass
+            {
+                final CharClass C=CMClass.getCharClass(E.charClass);
+                if(C!=null)
+                    for(final Object o : entry.parms)
+                        if(C.name().equalsIgnoreCase((String)o))
+                        { return false; }
+                break;
+            }
+            case 3: // -alignment
+            case 4: // -gender
+            case 6: // -classlevel
             case 103: // -maxclasslevel
-			case 7: // -tattoo
-			case 8: // +tattoo
-			case 120: // -mood
-			case 121: // +mood
-			case 81: // -expertise
-			case 82: // +expertise
-			case 83: // -skill
+            case 7: // -tattoo
+            case 8: // +tattoo
+            case 120: // -mood
+            case 121: // +mood
+            case 81: // -expertise
+            case 82: // +expertise
+            case 83: // -skill
             case 101: // -skillflag
-			case 84: // +skill
+            case 84: // +skill
             case 102: // +skillflag
-			case 79: // -security
-			case 80: // +security
-			case 10: // -player
-			case 14: // -clan
-			case 15: // +clan
+            case 79: // -security
+            case 80: // +security
+            case 10: // -player
+            case 14: // -clan
+            case 15: // +clan
             case 49: // +material
             case 50: // -material
             case 57: // +wornOn
@@ -4481,36 +4500,36 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
             case 86: // -quallvl
             case 51: // +resource
             case 52: // -resource
-			case 44: // -deity
-			case 45: // +deity
-			case 43: // -effects
-			case 46: // -faction
-			case 47: // +faction
-			case 42: // +effects
-			case 19: // +adjstr
-			case 20: // +adjint
-			case 21: // +adjwis
-			case 22: // +adjdex
-			case 23: // -adjcha
-			case 24: // +adjcha
-			case 25: // -adjstr
-			case 26: // -adjint
-			case 27: // -adjwis
-			case 28: // -adjdex
-			case 29: // -adjcon
-			case 30: // -adjcha
-			case 87: // +str
-			case 88: // +int
-			case 89: // +wis
-			case 90: // +dex
-			case 91: // +con
-			case 92: // +cha
-			case 93: // -str
-			case 94: // -int
-			case 95: // -wis
-			case 96: // -dex
-			case 97: // -con
-			case 98: // -cha
+            case 44: // -deity
+            case 45: // +deity
+            case 43: // -effects
+            case 46: // -faction
+            case 47: // +faction
+            case 42: // +effects
+            case 19: // +adjstr
+            case 20: // +adjint
+            case 21: // +adjwis
+            case 22: // +adjdex
+            case 23: // -adjcha
+            case 24: // +adjcha
+            case 25: // -adjstr
+            case 26: // -adjint
+            case 27: // -adjwis
+            case 28: // -adjdex
+            case 29: // -adjcon
+            case 30: // -adjcha
+            case 87: // +str
+            case 88: // +int
+            case 89: // +wis
+            case 90: // +dex
+            case 91: // +con
+            case 92: // +cha
+            case 93: // -str
+            case 94: // -int
+            case 95: // -wis
+            case 96: // -dex
+            case 97: // -con
+            case 98: // -cha
             case 55: // +able
             case 56: // -able
             case 61: // +weight
@@ -4523,61 +4542,61 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
             case 68: // -attack
             case 59: // +value
             case 60: // -value
-			case 31: // -area
-			case 32: // +area
+            case 31: // -area
+            case 32: // +area
             case 100: // -home
             case 99: // +home
-			case 33: // -item
+            case 33: // -item
             case 48: // -worn
-			case 35: // +alignment
-			case 36: // +gender
-			case 116: // +groupsize
-			case 115: // -groupsize
-			case 118: // -if
-			case 119: // +if
-				return false;
-			case 37: // +lvlgr
-				if((entry.parms.length>0)&&((E.level)>((Integer)entry.parms[0]).intValue()))
-				   return false;
-				break;
-			case 38: // +lvlge
-				if((entry.parms.length>0)&&((E.level)>=((Integer)entry.parms[0]).intValue()))
-				   return false;
-				break;
-			case 39: // +lvlt
-				if((entry.parms.length>0)&&((E.level)<((Integer)entry.parms[0]).intValue()))
-				   return false;
-				break;
-			case 40: // +lvlle
-				if((entry.parms.length>0)&&((E.level)<=((Integer)entry.parms[0]).intValue()))
-				   return false;
-				break;
-			case 41: // +lvleq
-				if((entry.parms.length>0)&&((E.level)==((Integer)entry.parms[0]).intValue()))
-				   return false;
-				break;
-			case 122: // -chance
-				if((entry.parms.length>0)&&(CMLib.dice().rollPercentage()<(((Integer)entry.parms[0]).intValue())))
-				   return false;
-				break;
-			case 34: // +class
-			{
-				final CharClass C=CMClass.getCharClass(E.charClass);
-				if(C!=null)
-				if(CMParms.contains(entry.parms,C.name()))
-					return false;
-				break;
-			}
-			}
+            case 35: // +alignment
+            case 36: // +gender
+            case 116: // +groupsize
+            case 115: // -groupsize
+            case 118: // -if
+            case 119: // +if
+                return false;
+            case 37: // +lvlgr
+                if((entry.parms.length>0)&&((E.level)>((Integer)entry.parms[0]).intValue()))
+                   return false;
+                break;
+            case 38: // +lvlge
+                if((entry.parms.length>0)&&((E.level)>=((Integer)entry.parms[0]).intValue()))
+                   return false;
+                break;
+            case 39: // +lvlt
+                if((entry.parms.length>0)&&((E.level)<((Integer)entry.parms[0]).intValue()))
+                   return false;
+                break;
+            case 40: // +lvlle
+                if((entry.parms.length>0)&&((E.level)<=((Integer)entry.parms[0]).intValue()))
+                   return false;
+                break;
+            case 41: // +lvleq
+                if((entry.parms.length>0)&&((E.level)==((Integer)entry.parms[0]).intValue()))
+                   return false;
+                break;
+            case 122: // -chance
+                if((entry.parms.length>0)&&(CMLib.dice().rollPercentage()<(((Integer)entry.parms[0]).intValue())))
+                   return false;
+                break;
+            case 34: // +class
+            {
+                final CharClass C=CMClass.getCharClass(E.charClass);
+                if(C!=null)
+                if(CMParms.contains(entry.parms,C.name()))
+                    return false;
+                break;
+            }
+            }
             }catch(NullPointerException n){}
-		}
-		return true;
-	}
-	
+        }
+        return true;
+    }
+    
     public String[] separateMaskStrs(final String newText)
     {
-    	final String[] strs=new String[2];
-    	final int maskindex=newText.toUpperCase().indexOf("MASK=");
+        final String[] strs=new String[2];
+        final int maskindex=newText.toUpperCase().indexOf("MASK=");
         if(maskindex>0)
         {
             strs[1]=newText.substring(maskindex+5).trim();

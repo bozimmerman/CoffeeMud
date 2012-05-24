@@ -1255,6 +1255,13 @@ public interface Faction extends CMCommon, MsgListener
          * @return a random numeric value within this faction range
          */
         public int random();
+        
+        /**
+         * Returns the faction of which this is a range
+         * @see com.planet_ink.coffee_mud.Common.interfaces.Faction#addRange(String)
+         * @return the faction of which this is a range
+         */
+        public Faction getFaction();
     }
     
     /**

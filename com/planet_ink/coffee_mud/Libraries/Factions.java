@@ -38,19 +38,19 @@ import java.util.*;
 public class Factions extends StdLibrary implements FactionManager
 {
     public String ID(){return "Factions";}
-	public SHashtable<String,Faction> factionSet = new SHashtable<String,Faction>();
-	public SHashtable<String,Faction> hashedFactionRanges=new SHashtable<String,Faction>();
-	
+    public SHashtable<String,Faction> factionSet = new SHashtable<String,Faction>();
+    public SHashtable<String,Faction> hashedFactionRanges=new SHashtable<String,Faction>();
+    
     public Enumeration<Faction> factions()
     {
-    	return factionSet.elements();
+        return factionSet.elements();
     }
     public int numFactions(){return factionSet.size();}
-	public void clearFactions()
-	{
-	    factionSet.clear();
-	    hashedFactionRanges.clear();
-	}
+    public void clearFactions()
+    {
+        factionSet.clear();
+        hashedFactionRanges.clear();
+    }
     public void reloadFactions(String factionList)
     {
         Vector preLoadFactions=CMParms.parseSemicolons(factionList,true);
@@ -58,44 +58,43 @@ public class Factions extends StdLibrary implements FactionManager
         for(int i=0;i<preLoadFactions.size();i++)
             getFaction((String)preLoadFactions.elementAt(i));
     }
-	
-	public java.util.Map<String,Faction> rangeCodeNames(){ return hashedFactionRanges; }
-	public boolean isRangeCodeName(String key){ return rangeCodeNames().containsKey(key.toUpperCase());}
-	public boolean isFactionedThisWay(MOB mob, String rangeCodeName)
-	{
-	    Faction F=(Faction)rangeCodeNames().get(rangeCodeName.toUpperCase());
-	    if(F==null) return false;
-	    Faction.FactionRange FR=(Faction.FactionRange)F.fetchRange(rangeCodeName.toUpperCase().trim());
-	    if(FR==null) return false;
-	    Faction.FactionRange FR2=F.fetchRange(mob.fetchFaction(F.factionID()));
-	    if(FR2==null) return false;
-	    return FR2.codeName().equalsIgnoreCase(FR.codeName());
-	}
-	public String rangeDescription(String rangeCodeName, String andOr)
-	{
+    
+    public java.util.Map<String,Faction> rangeCodeNames(){ return hashedFactionRanges; }
+    public boolean isRangeCodeName(String key){ return rangeCodeNames().containsKey(key.toUpperCase());}
+    public boolean isFactionedThisWay(MOB mob, Faction.FactionRange rangeCode)
+    {
+        Faction.FactionRange FR=rangeCode;
+        if(FR==null) return false;
+        Faction F=rangeCode.getFaction();
+        Faction.FactionRange FR2=F.fetchRange(mob.fetchFaction(F.factionID()));
+        if(FR2==null) return false;
+        return FR2.codeName().equalsIgnoreCase(FR.codeName());
+    }
+    public String rangeDescription(String rangeCodeName, String andOr)
+    {
         Faction F=(Faction)rangeCodeNames().get(rangeCodeName.toUpperCase());
         if(F==null) return "";
         Faction.FactionRange FR=(Faction.FactionRange)F.fetchRange(rangeCodeName.toUpperCase().trim());
         if(FR==null) return "";
-	    Vector relevantFactions=new Vector();
+        Vector relevantFactions=new Vector();
         for(Enumeration e=F.ranges();e.hasMoreElements();)
-	    {
+        {
             Faction.FactionRange FR2=(Faction.FactionRange)e.nextElement();
-	        if(FR2.codeName().equalsIgnoreCase(FR.codeName()))
-	            relevantFactions.addElement(FR2);
-	    }
-	    if(relevantFactions.size()==0) return "";
-	    if(relevantFactions.size()==1)
-	        return F.name()+" of "+((Faction.FactionRange)relevantFactions.firstElement()).name();
-	    StringBuffer buf=new StringBuffer(F.name()+" of ");
-	    for(int i=0;i<relevantFactions.size()-1;i++)
-	        buf.append(((Faction.FactionRange)relevantFactions.elementAt(i)).name()+", ");
+            if(FR2.codeName().equalsIgnoreCase(FR.codeName()))
+                relevantFactions.addElement(FR2);
+        }
+        if(relevantFactions.size()==0) return "";
+        if(relevantFactions.size()==1)
+            return F.name()+" of "+((Faction.FactionRange)relevantFactions.firstElement()).name();
+        StringBuffer buf=new StringBuffer(F.name()+" of ");
+        for(int i=0;i<relevantFactions.size()-1;i++)
+            buf.append(((Faction.FactionRange)relevantFactions.elementAt(i)).name()+", ");
         buf.append(andOr+((Faction.FactionRange)relevantFactions.lastElement()).name());
         return buf.toString();
-	}
-	    
-	private Faction buildFactionFromXML(StringBuffer buf, String factionID)
-	{
+    }
+        
+    private Faction buildFactionFromXML(StringBuffer buf, String factionID)
+    {
         Faction F=(Faction)CMClass.getCommon("DefaultFaction");
         F.initializeFaction(buf,factionID);
         for(Enumeration e=F.ranges();e.hasMoreElements();)
@@ -113,134 +112,134 @@ public class Factions extends StdLibrary implements FactionManager
         }
         addFaction(factionID,F);
         return F;
-	}
+    }
 
-	public void addFaction(String factionID, Faction F)
-	{
+    public void addFaction(String factionID, Faction F)
+    {
         factionSet.put(factionID.toUpperCase().trim(),F);
-	}
-	
-	public Faction getFaction(String factionID) 
-	{
-	    if(factionID==null) return null;
-		Faction F=(Faction)factionSet.get(factionID.toUpperCase());
-		if(F!=null) return F;
-		CMFile FILE=new CMFile(Resources.makeFileResourceName(factionID),null,true);
-		if(!FILE.exists()) return null;
+    }
+    
+    public Faction getFaction(String factionID) 
+    {
+        if(factionID==null) return null;
+        Faction F=(Faction)factionSet.get(factionID.toUpperCase());
+        if(F!=null) return F;
+        CMFile FILE=new CMFile(Resources.makeFileResourceName(factionID),null,true);
+        if(!FILE.exists()) return null;
         StringBuffer buf=FILE.text();
-	    if((buf!=null)&&(buf.length()>0))
-	    {
-	    	return buildFactionFromXML(buf, factionID);
-	    }
+        if((buf!=null)&&(buf.length()>0))
+        {
+            return buildFactionFromXML(buf, factionID);
+        }
         return null;
-	}
-	
-	public Faction getFactionByRangeCodeName(String rangeCodeName)
-	{
-	    if(hashedFactionRanges.containsKey(rangeCodeName.toUpperCase()))
-	        return (Faction)hashedFactionRanges.get(rangeCodeName.toUpperCase());
-	    return null;
-	}
-	
-	public Faction getFactionByName(String factionNamed) 
-	{
-		Faction F;
-	    for(Enumeration e=factionSet.keys();e.hasMoreElements();) 
-	    {
-	        F=(Faction)factionSet.get(e.nextElement());
-	        if(F.name().equalsIgnoreCase(factionNamed)) 
-	        	return F;
-	    }
-	    return null;
-	}
-	
-	public boolean removeFaction(String factionID) 
-	{
-		Faction F;
-	    if(factionID==null) 
-	    {
-	        for(Enumeration<Faction> e=factionSet.elements();e.hasMoreElements();) 
-	        {
-	            F=e.nextElement();
-	            if(F!=null)
-		            removeFaction(F.factionID());
-	        }
-	        return true;
-	    }
+    }
+    
+    public Faction getFactionByRangeCodeName(String rangeCodeName)
+    {
+        if(hashedFactionRanges.containsKey(rangeCodeName.toUpperCase()))
+            return (Faction)hashedFactionRanges.get(rangeCodeName.toUpperCase());
+        return null;
+    }
+    
+    public Faction getFactionByName(String factionNamed) 
+    {
+        Faction F;
+        for(Enumeration e=factionSet.keys();e.hasMoreElements();) 
+        {
+            F=(Faction)factionSet.get(e.nextElement());
+            if(F.name().equalsIgnoreCase(factionNamed)) 
+                return F;
+        }
+        return null;
+    }
+    
+    public boolean removeFaction(String factionID) 
+    {
+        Faction F;
+        if(factionID==null) 
+        {
+            for(Enumeration<Faction> e=factionSet.elements();e.hasMoreElements();) 
+            {
+                F=e.nextElement();
+                if(F!=null)
+                    removeFaction(F.factionID());
+            }
+            return true;
+        }
         F=getFactionByName(factionID);
         if(F==null) F=getFaction(factionID);
         if(F==null) return false;
         Resources.removeResource(F.factionID());
         factionSet.remove(F.factionID().toUpperCase());
         return true;
-	}
-	
-	public String listFactions() 
-	{
-	    StringBuffer msg=new StringBuffer();
-	    msg.append("\n\r^.^N");
-	    msg.append("+--------------------------------+-----------------------------------------+\n\r");
-	    msg.append("| ^HFaction Name^N                   | ^HFaction INI Source File (Faction ID)^N    |\n\r");
-	    msg.append("+--------------------------------+-----------------------------------------+\n\r");
-	    for(Enumeration<Faction> e=factionSet.elements();e.hasMoreElements();) 
-	    {
-	        Faction f=e.nextElement();
-	        msg.append("| ");
-	        msg.append(CMStrings.padRight(f.name(),30));
-	        msg.append(" | ");
-	        msg.append(CMStrings.padRight(f.factionID(),39));
-	        msg.append(" |\n\r");
-	    }
-	    msg.append("+--------------------------------+-----------------------------------------+\n\r");
-	    msg.append("\n\r");
-	    return msg.toString();
-	}
-	
-	public String name(){return "Factions";}
-	public long getTickStatus(){ return Tickable.STATUS_NOT;}
-	public String getName(String factionID) {  Faction f=getFaction(factionID); if(f!=null) return f.name(); return ""; }
-	public int getMinimum(String factionID) {  Faction f=getFaction(factionID); if(f!=null) return f.minimum(); return 0; }
-	public int getMaximum(String factionID) {  Faction f=getFaction(factionID); if(f!=null) return f.maximum(); return 0; }
-	public int getPercent(String factionID, int faction) { Faction f=getFaction(factionID); if(f!=null) return f.asPercent(faction); return 0; }
-	public int getPercentFromAvg(String factionID, int faction) { Faction f=getFaction(factionID); if(f!=null) return f.asPercentFromAvg(faction); return 0; }
-	public Faction.FactionRange getRange(String factionID, int faction) { Faction f=getFaction(factionID); if(f!=null) return f.fetchRange(faction); return null; }
-	public Enumeration<Faction.FactionRange> getRanges(String factionID) { 
+    }
+    
+    public String listFactions() 
+    {
+        StringBuffer msg=new StringBuffer();
+        msg.append("\n\r^.^N");
+        msg.append("+--------------------------------+-----------------------------------------+\n\r");
+        msg.append("| ^HFaction Name^N                   | ^HFaction INI Source File (Faction ID)^N    |\n\r");
+        msg.append("+--------------------------------+-----------------------------------------+\n\r");
+        for(Enumeration<Faction> e=factionSet.elements();e.hasMoreElements();) 
+        {
+            Faction f=e.nextElement();
+            msg.append("| ");
+            msg.append(CMStrings.padRight(f.name(),30));
+            msg.append(" | ");
+            msg.append(CMStrings.padRight(f.factionID(),39));
+            msg.append(" |\n\r");
+        }
+        msg.append("+--------------------------------+-----------------------------------------+\n\r");
+        msg.append("\n\r");
+        return msg.toString();
+    }
+    
+    public String name(){return "Factions";}
+    public long getTickStatus(){ return Tickable.STATUS_NOT;}
+    public String getName(String factionID) {  Faction f=getFaction(factionID); if(f!=null) return f.name(); return ""; }
+    public int getMinimum(String factionID) {  Faction f=getFaction(factionID); if(f!=null) return f.minimum(); return 0; }
+    public int getMaximum(String factionID) {  Faction f=getFaction(factionID); if(f!=null) return f.maximum(); return 0; }
+    public int getPercent(String factionID, int faction) { Faction f=getFaction(factionID); if(f!=null) return f.asPercent(faction); return 0; }
+    public int getPercentFromAvg(String factionID, int faction) { Faction f=getFaction(factionID); if(f!=null) return f.asPercentFromAvg(faction); return 0; }
+    public Faction.FactionRange getRange(String factionID, int faction) { Faction f=getFaction(factionID); if(f!=null) return f.fetchRange(faction); return null; }
+    public Enumeration<Faction.FactionRange> getRanges(String factionID) { 
         Faction f=getFaction(factionID); 
         if(f!=null) return f.ranges(); 
         return null; 
     }
-	public double getRangePercent(String factionID, int faction) 
+    public double getRangePercent(String factionID, int faction) 
     { 
         Faction F=getFaction(factionID); 
         if(F==null) return 0.0;
         return CMath.div((int)Math.round(CMath.div((faction - F.minimum()),(F.maximum() - F.minimum())) * 10000.0),100.0);
     }
-	public int getTotal(String factionID) {  Faction f=getFaction(factionID); if(f!=null) return (f.maximum()-f.minimum()); return 0; }
-	public int getRandom(String factionID) {  Faction f=getFaction(factionID); if(f!=null) return f.randomFaction(); return 0; }
-	
-	public String AlignID() { return "alignment.ini"; }
-	public void setAlignment(MOB mob, int newAlignment)
-	{
-	    if(getFaction(AlignID())!=null) 
-	        mob.addFaction(AlignID(),getAlignThingie(newAlignment));
-	}
-	
-	public void setAlignmentOldRange(MOB mob, int oldRange)
-	{
-		if(getFaction(AlignID())!=null)
-		{
-			if(oldRange>=650)
-				setAlignment(mob,Faction.ALIGN_GOOD);
-			else
-			if(oldRange>=350) 
-			    setAlignment(mob,Faction.ALIGN_NEUTRAL);
-			else
-			if(oldRange>=0) 
-			    setAlignment(mob,Faction.ALIGN_EVIL);
-			else{ /* a -1 value is the new norm */}
-		}
-	}
-	
+    public int getTotal(String factionID) {  Faction f=getFaction(factionID); if(f!=null) return (f.maximum()-f.minimum()); return 0; }
+    public int getRandom(String factionID) {  Faction f=getFaction(factionID); if(f!=null) return f.randomFaction(); return 0; }
+    
+    public String AlignID() { return "alignment.ini"; }
+    public void setAlignment(MOB mob, int newAlignment)
+    {
+        if(getFaction(AlignID())!=null) 
+            mob.addFaction(AlignID(),getAlignThingie(newAlignment));
+    }
+    
+    public void setAlignmentOldRange(MOB mob, int oldRange)
+    {
+        if(getFaction(AlignID())!=null)
+        {
+            if(oldRange>=650)
+                setAlignment(mob,Faction.ALIGN_GOOD);
+            else
+            if(oldRange>=350) 
+                setAlignment(mob,Faction.ALIGN_NEUTRAL);
+            else
+            if(oldRange>=0) 
+                setAlignment(mob,Faction.ALIGN_EVIL);
+            else{ /* a -1 value is the new norm */}
+        }
+    }
+    
     public boolean postChangeAllFactions(MOB mob, MOB victim, int amount, boolean quiet)
     {
         if((mob==null))
@@ -258,112 +257,112 @@ public class Factions extends StdLibrary implements FactionManager
     }
     
     public boolean postFactionChange(MOB mob,Environmental tool, String factionID, int amount)
-	{
-		if((mob==null))
-			return false;
-		CMMsg msg=CMClass.getMsg(mob,null,tool,CMMsg.MASK_ALWAYS|CMMsg.TYP_FACTIONCHANGE,null,CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,factionID);
-		msg.setValue(amount);
-		if(mob.location()!=null)
-		{
-			if(mob.location().okMessage(mob,msg))
-				mob.location().send(mob,msg);
-			else
-				return false;
-		}
-		return true;
-	}
+    {
+        if((mob==null))
+            return false;
+        CMMsg msg=CMClass.getMsg(mob,null,tool,CMMsg.MASK_ALWAYS|CMMsg.TYP_FACTIONCHANGE,null,CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,factionID);
+        msg.setValue(amount);
+        if(mob.location()!=null)
+        {
+            if(mob.location().okMessage(mob,msg))
+                mob.location().send(mob,msg);
+            else
+                return false;
+        }
+        return true;
+    }
 
     protected Faction makeReactionFaction(String prefix, String classID, String Name, String code, String baseTemplateFilename)
     {
-    	String codedName=Name.toUpperCase().trim().replace(' ','_');
-    	String factionID=prefix+codedName;
-    	Faction templateF=getFaction("factions/"+codedName.toLowerCase()+".ini");
-    	if(templateF==null)
-    		templateF=getFaction(baseTemplateFilename);
-    	if(templateF==null)
-    	{
-    		Log.errOut("Factions","Could not find base template '"+baseTemplateFilename+"'");
-    		return null;
-    	}
-    	StringBuffer buf = rebuildFactionProperties(templateF);
-    	factionSet.remove(templateF.factionID().toUpperCase().trim());
-    	String bufStr = buf.toString();
-    	bufStr = CMStrings.replaceAll(bufStr,"<CODE>",code);
-    	bufStr = CMStrings.replaceAll(bufStr,"<NAME>",Name);
-    	bufStr = CMStrings.replaceAll(bufStr,"<FACTIONID>",factionID);
-    	bufStr = CMStrings.replaceAll(bufStr,"<CLASSID>",classID);
-    	buf=new StringBuffer(bufStr);
-    	Faction F=buildFactionFromXML(buf, factionID);
-    	F.setInternalFlags(F.getInternalFlags() | Faction.IFLAG_IGNOREAUTO);
-    	F.setInternalFlags(F.getInternalFlags() | Faction.IFLAG_NEVERSAVE);
-    	F.setInternalFlags(F.getInternalFlags() | Faction.IFLAG_CUSTOMTICK);
-    	factionSet.put(factionID,F);
-    	return F;
+        String codedName=Name.toUpperCase().trim().replace(' ','_');
+        String factionID=prefix+codedName;
+        Faction templateF=getFaction("factions/"+codedName.toLowerCase()+".ini");
+        if(templateF==null)
+            templateF=getFaction(baseTemplateFilename);
+        if(templateF==null)
+        {
+            Log.errOut("Factions","Could not find base template '"+baseTemplateFilename+"'");
+            return null;
+        }
+        StringBuffer buf = rebuildFactionProperties(templateF);
+        factionSet.remove(templateF.factionID().toUpperCase().trim());
+        String bufStr = buf.toString();
+        bufStr = CMStrings.replaceAll(bufStr,"<CODE>",code);
+        bufStr = CMStrings.replaceAll(bufStr,"<NAME>",Name);
+        bufStr = CMStrings.replaceAll(bufStr,"<FACTIONID>",factionID);
+        bufStr = CMStrings.replaceAll(bufStr,"<CLASSID>",classID);
+        buf=new StringBuffer(bufStr);
+        Faction F=buildFactionFromXML(buf, factionID);
+        F.setInternalFlags(F.getInternalFlags() | Faction.IFLAG_IGNOREAUTO);
+        F.setInternalFlags(F.getInternalFlags() | Faction.IFLAG_NEVERSAVE);
+        F.setInternalFlags(F.getInternalFlags() | Faction.IFLAG_CUSTOMTICK);
+        factionSet.put(factionID,F);
+        return F;
     }
     
     public Faction[] getSpecialFactions(MOB mob, Room R)
     {
         if((mob==null)||(R==null))
-        	return null;
+            return null;
         Faction F=null;
         String SPECIALTYPE=CMProps.getVar(CMProps.SYSTEM_AUTOREACTION).toUpperCase().trim();
         if((SPECIALTYPE==null)||(SPECIALTYPE.length()==0))
-        	return null;
+            return null;
         if(SPECIALTYPE.equals("AREA"))
         {
-        	Area A=R.getArea();
-        	if(A!=null)
-        	{
-	        	String areaCode = A.Name().toUpperCase().trim().replace(' ','_');
-	        	F=getFaction("AREA_"+areaCode);
-	        	if(F==null)
-	        		F=makeReactionFaction("AREA_",A.ID(),A.Name(),areaCode,"examples/areareaction.ini");
-	        	if(F==null) return null;
-	        	return new Faction[]{F};
-        	}
+            Area A=R.getArea();
+            if(A!=null)
+            {
+                String areaCode = A.Name().toUpperCase().trim().replace(' ','_');
+                F=getFaction("AREA_"+areaCode);
+                if(F==null)
+                    F=makeReactionFaction("AREA_",A.ID(),A.Name(),areaCode,"examples/areareaction.ini");
+                if(F==null) return null;
+                return new Faction[]{F};
+            }
         }
         else
         if(SPECIALTYPE.equals("NAME"))
         {
-        	Vector<Faction> Fs=new Vector<Faction>();
-        	for(int i=0;i<R.numInhabitants();i++)
-        	{
-        		MOB M=R.fetchInhabitant(i);
-        		if((M!=null)&&(M!=mob)&&(M.isMonster()))
-        		{
-    	        	String nameCode = M.Name().toUpperCase().trim().replace(' ','_');
-    	        	F=getFaction("NAME_"+nameCode);
-    	        	if(F==null)
-    	        		F=makeReactionFaction("NAME_",M.ID(),M.Name(),nameCode,"examples/namereaction.ini");
-    	        	if(F!=null)
-    	        		Fs.add(F);
-        		}
-        	}
-        	if(Fs.size()==0) return null;
-        	return Fs.toArray(new Faction[0]);
+            Vector<Faction> Fs=new Vector<Faction>();
+            for(int i=0;i<R.numInhabitants();i++)
+            {
+                MOB M=R.fetchInhabitant(i);
+                if((M!=null)&&(M!=mob)&&(M.isMonster()))
+                {
+                    String nameCode = M.Name().toUpperCase().trim().replace(' ','_');
+                    F=getFaction("NAME_"+nameCode);
+                    if(F==null)
+                        F=makeReactionFaction("NAME_",M.ID(),M.Name(),nameCode,"examples/namereaction.ini");
+                    if(F!=null)
+                        Fs.add(F);
+                }
+            }
+            if(Fs.size()==0) return null;
+            return Fs.toArray(new Faction[0]);
         }
         else
         if(SPECIALTYPE.equals("RACE"))
         {
-        	Vector<Faction> Fs=new Vector<Faction>();
-        	HashSet<Race> done=new HashSet<Race>(2);
-        	for(int i=0;i<R.numInhabitants();i++)
-        	{
-        		MOB M=R.fetchInhabitant(i);
-        		if((M!=null)&&(M!=mob)&&(M.isMonster())&&(!done.contains(M.charStats().getMyRace())))
-        		{
-        			Race rR=M.charStats().getMyRace();
-        			done.add(rR);
-    	        	String nameCode = rR.name().toUpperCase().trim().replace(' ','_');
-    	        	F=getFaction("RACE_"+nameCode);
-    	        	if(F==null)
-    	        		F=makeReactionFaction("RACE_",rR.ID(),rR.name(),nameCode,"examples/racereaction.ini");
-    	        	if(F!=null)
-    	        		Fs.add(F);
-        		}
-        	}
-        	if(Fs.size()==0) return null;
-        	return Fs.toArray(new Faction[0]);
+            Vector<Faction> Fs=new Vector<Faction>();
+            HashSet<Race> done=new HashSet<Race>(2);
+            for(int i=0;i<R.numInhabitants();i++)
+            {
+                MOB M=R.fetchInhabitant(i);
+                if((M!=null)&&(M!=mob)&&(M.isMonster())&&(!done.contains(M.charStats().getMyRace())))
+                {
+                    Race rR=M.charStats().getMyRace();
+                    done.add(rR);
+                    String nameCode = rR.name().toUpperCase().trim().replace(' ','_');
+                    F=getFaction("RACE_"+nameCode);
+                    if(F==null)
+                        F=makeReactionFaction("RACE_",rR.ID(),rR.name(),nameCode,"examples/racereaction.ini");
+                    if(F!=null)
+                        Fs.add(F);
+                }
+            }
+            if(Fs.size()==0) return null;
+            return Fs.toArray(new Faction[0]);
         }
         return null;
     }
@@ -372,65 +371,65 @@ public class Factions extends StdLibrary implements FactionManager
     public void updatePlayerFactions(MOB mob, Room R)
     {
         if((mob==null)||(R==null))
-        	return;
+            return;
         else
-    	{
-	    	Faction F=null;
-	        for(Enumeration e=factions();e.hasMoreElements();)
-	        {
-	            F=(Faction)e.nextElement();
-	            if(((F.getInternalFlags()&Faction.IFLAG_IGNOREAUTO)==0)
-	            &&(!F.hasFaction(mob))
-	            &&(F.findAutoDefault(mob)!=Integer.MAX_VALUE))
-	                mob.addFaction(F.factionID(),F.findAutoDefault(mob));
-	        }
-    	}
+        {
+            Faction F=null;
+            for(Enumeration e=factions();e.hasMoreElements();)
+            {
+                F=(Faction)e.nextElement();
+                if(((F.getInternalFlags()&Faction.IFLAG_IGNOREAUTO)==0)
+                &&(!F.hasFaction(mob))
+                &&(F.findAutoDefault(mob)!=Integer.MAX_VALUE))
+                    mob.addFaction(F.factionID(),F.findAutoDefault(mob));
+            }
+        }
         Faction[] Fs=getSpecialFactions(mob,R);
         if(Fs!=null)
-	        for(Faction F : Fs)
-	            if((F!=null)&&(!F.hasFaction(mob))&&(F.findAutoDefault(mob)!=Integer.MAX_VALUE))
-	                mob.addFaction(F.factionID(),F.findAutoDefault(mob));
+            for(Faction F : Fs)
+                if((F!=null)&&(!F.hasFaction(mob))&&(F.findAutoDefault(mob)!=Integer.MAX_VALUE))
+                    mob.addFaction(F.factionID(),F.findAutoDefault(mob));
     }
 
     protected void addOutsidersAndTimers(Faction F, Vector<Faction.FactionChangeEvent> outSiders, Vector<Faction.FactionChangeEvent> timers)
     {
-	    Faction.FactionChangeEvent[] CEs=null;
+        Faction.FactionChangeEvent[] CEs=null;
         CEs=F.getChangeEvents("ADDOUTSIDER");
         if(CEs!=null)
-	        for(int i=0;i<CEs.length;i++)
-	        	outSiders.addElement(CEs[i]);
+            for(int i=0;i<CEs.length;i++)
+                outSiders.addElement(CEs[i]);
         CEs=F.getChangeEvents("TIME");
         if(CEs!=null)
         for(int i=0;i<CEs.length;i++)
         {
-        	if(CEs[i].triggerParameters().length()==0)
-            	timers.addElement(CEs[i]);
-        	else
-        	{
-            	int[] ctr=(int[])CEs[i].stateVariable(0);
-            	if(ctr==null)
-            	{
-            		ctr=new int[]{CMath.s_int(CEs[i].getTriggerParm("ROUNDS"))};
-            		CEs[i].setStateVariable(0,ctr);
-            	}
-            	if((--ctr[0])<=0)
-            	{
-                	ctr[0]=CMath.s_int(CEs[i].getTriggerParm("ROUNDS"));
-                	timers.addElement(CEs[i]);
-            	}
-        	}
+            if(CEs[i].triggerParameters().length()==0)
+                timers.addElement(CEs[i]);
+            else
+            {
+                int[] ctr=(int[])CEs[i].stateVariable(0);
+                if(ctr==null)
+                {
+                    ctr=new int[]{CMath.s_int(CEs[i].getTriggerParm("ROUNDS"))};
+                    CEs[i].setStateVariable(0,ctr);
+                }
+                if((--ctr[0])<=0)
+                {
+                    ctr[0]=CMath.s_int(CEs[i].getTriggerParm("ROUNDS"));
+                    timers.addElement(CEs[i]);
+                }
+            }
         }
     }
     
-	public boolean tick(Tickable ticking, int tickID)
-	{
+    public boolean tick(Tickable ticking, int tickID)
+    {
         if(!CMLib.sessions().all().hasNext()) 
             return true;
-	    try
-	    {
-		    MOB mob=null;
-		    Faction F=null;
-		    Faction.FactionChangeEvent CE=null;
+        try
+        {
+            MOB mob=null;
+            Faction F=null;
+            Faction.FactionChangeEvent CE=null;
             Vector<Faction.FactionChangeEvent> outSiders=new Vector<Faction.FactionChangeEvent>();
             Vector<Faction.FactionChangeEvent> timers=new Vector<Faction.FactionChangeEvent>();
             HashSet<Faction> factionsDone=new HashSet<Faction>();
@@ -439,100 +438,100 @@ public class Factions extends StdLibrary implements FactionManager
                 F=(Faction)e.nextElement();
                 if((F.getInternalFlags()&Faction.IFLAG_CUSTOMTICK)==0)
                 {
-                	addOutsidersAndTimers(F, outSiders, timers);
-                	factionsDone.add(F);
+                    addOutsidersAndTimers(F, outSiders, timers);
+                    factionsDone.add(F);
                 }
             }
             Room R;
             Faction[] Fs;
-		    for(Session S : CMLib.sessions().allIterable())
-		    {
-		        mob=(!S.isStopped())?S.mob():null;
-		        R=(mob==null)?null:mob.location();
-		        if(R!=null)
-		        {
-		        	Fs=getSpecialFactions(mob, R);
-		        	if(Fs!=null)
-		        		for(Faction sF : Fs)
-		        			if(!factionsDone.contains(sF))
-			        		{
-		                    	addOutsidersAndTimers(sF, outSiders, timers);
-		                    	factionsDone.add(sF);
-			        		}
+            for(Session S : CMLib.sessions().allIterable())
+            {
+                mob=(!S.isStopped())?S.mob():null;
+                R=(mob==null)?null:mob.location();
+                if(R!=null)
+                {
+                    Fs=getSpecialFactions(mob, R);
+                    if(Fs!=null)
+                        for(Faction sF : Fs)
+                            if(!factionsDone.contains(sF))
+                            {
+                                addOutsidersAndTimers(sF, outSiders, timers);
+                                factionsDone.add(sF);
+                            }
                     for(int o=0;o<outSiders.size();o++)
-		            {
-		                CE=(Faction.FactionChangeEvent)outSiders.elementAt(o);
-		                if((CE.applies(mob,mob))&&(!CE.getFaction().hasFaction(mob)))
-		                	CE.getFaction().executeChange(mob,mob,CE);
-		            }
+                    {
+                        CE=(Faction.FactionChangeEvent)outSiders.elementAt(o);
+                        if((CE.applies(mob,mob))&&(!CE.getFaction().hasFaction(mob)))
+                            CE.getFaction().executeChange(mob,mob,CE);
+                    }
                     for(int o=0;o<timers.size();o++)
                     {
                         CE=(Faction.FactionChangeEvent)timers.elementAt(o);
-		                if((CE.applies(mob,mob))&&(CE.getFaction().hasFaction(mob)))
-		                	CE.getFaction().executeChange(mob,mob,CE);
-		            }
-		        }
-		    }
-	    }catch(Exception e){ Log.errOut("Factions",e);}
-	    return true;
-	}
-	
-	public int getAlignPurity(int faction, int AlignEq) 
-	{
-		int bottom=Integer.MAX_VALUE;
-		int top=Integer.MIN_VALUE;
-        int pct=getPercent(AlignID(),faction);
-		Enumeration e = getRanges(AlignID());
-        if(e!=null)
-		for(;e.hasMoreElements();) 
-        {
-			Faction.FactionRange R=(Faction.FactionRange)e.nextElement();
-			if(R.alignEquiv()==AlignEq) 
-            {
-				if(R.low()<bottom) bottom=R.low();
-				if(R.high()>top) top=R.high();
-			}
-		}
-		switch(AlignEq) 
-        {
-			case Faction.ALIGN_GOOD:
-				return Math.abs(pct - getPercent(AlignID(),top));
-			case Faction.ALIGN_EVIL:
-				return Math.abs(getPercent(AlignID(),bottom) - pct);
-			case Faction.ALIGN_NEUTRAL:
-				return Math.abs(getPercent(AlignID(),(int)Math.round(CMath.div((top+bottom),2))) - pct);
-			default:
-				return 0;
-		}
-	}
-	
-	// Please don't mock the name, I couldn't think of a better one.  Sadly.
-	public int getAlignThingie(int AlignEq) 
-	{
+                        if((CE.applies(mob,mob))&&(CE.getFaction().hasFaction(mob)))
+                            CE.getFaction().executeChange(mob,mob,CE);
+                    }
+                }
+            }
+        }catch(Exception e){ Log.errOut("Factions",e);}
+        return true;
+    }
+    
+    public int getAlignPurity(int faction, int AlignEq) 
+    {
         int bottom=Integer.MAX_VALUE;
         int top=Integer.MIN_VALUE;
-		Enumeration e = getRanges(AlignID());
-	    if(e==null) return 0;
-		for(;e.hasMoreElements();) 
+        int pct=getPercent(AlignID(),faction);
+        Enumeration e = getRanges(AlignID());
+        if(e!=null)
+        for(;e.hasMoreElements();) 
         {
-			Faction.FactionRange R=(Faction.FactionRange)e.nextElement();
-			if(R.alignEquiv()==AlignEq) {
-				if(R.low()<bottom) bottom=R.low();
-				if(R.high()>top) top=R.high();
-			}
-		}
-		switch(AlignEq) 
-		{
-			case Faction.ALIGN_GOOD:
-				return top;
-			case Faction.ALIGN_EVIL:
-				return bottom;
-			case Faction.ALIGN_NEUTRAL:
-				return (int)Math.round(CMath.div((top+bottom),2));
-			default:
-				return 0;
-		}
-	}
+            Faction.FactionRange R=(Faction.FactionRange)e.nextElement();
+            if(R.alignEquiv()==AlignEq) 
+            {
+                if(R.low()<bottom) bottom=R.low();
+                if(R.high()>top) top=R.high();
+            }
+        }
+        switch(AlignEq) 
+        {
+            case Faction.ALIGN_GOOD:
+                return Math.abs(pct - getPercent(AlignID(),top));
+            case Faction.ALIGN_EVIL:
+                return Math.abs(getPercent(AlignID(),bottom) - pct);
+            case Faction.ALIGN_NEUTRAL:
+                return Math.abs(getPercent(AlignID(),(int)Math.round(CMath.div((top+bottom),2))) - pct);
+            default:
+                return 0;
+        }
+    }
+    
+    // Please don't mock the name, I couldn't think of a better one.  Sadly.
+    public int getAlignThingie(int AlignEq) 
+    {
+        int bottom=Integer.MAX_VALUE;
+        int top=Integer.MIN_VALUE;
+        Enumeration e = getRanges(AlignID());
+        if(e==null) return 0;
+        for(;e.hasMoreElements();) 
+        {
+            Faction.FactionRange R=(Faction.FactionRange)e.nextElement();
+            if(R.alignEquiv()==AlignEq) {
+                if(R.low()<bottom) bottom=R.low();
+                if(R.high()>top) top=R.high();
+            }
+        }
+        switch(AlignEq) 
+        {
+            case Faction.ALIGN_GOOD:
+                return top;
+            case Faction.ALIGN_EVIL:
+                return bottom;
+            case Faction.ALIGN_NEUTRAL:
+                return (int)Math.round(CMath.div((top+bottom),2));
+            default:
+                return 0;
+        }
+    }
     public int isFactionTag(String tag)
     {
         for(int i=0;i<Faction.TAG_NAMES.length;i++)
@@ -893,22 +892,22 @@ public class Factions extends StdLibrary implements FactionManager
                     Faction.FactionChangeEvent[] CEs=me.getChangeEvents((String)e.nextElement());
                     if(CEs!=null)
                     {
-                    	for(int e1=0;e1<CEs.length;e1++)
-                    	{
-                    		Faction.FactionChangeEvent CE=CEs[e1];
+                        for(int e1=0;e1<CEs.length;e1++)
+                        {
+                            Faction.FactionChangeEvent CE=CEs[e1];
                             choices.append(((char)('A'+numChanges)));
                             list.append(" "+(((char)('A'+numChanges))+") "));
                             choicesHashed.put(Character.valueOf((char)('A'+numChanges)), CE);
-	                        if(CE.triggerParameters().trim().length()==0)
-		                        list.append(CMStrings.padRight(CE.eventID(),15)+" ");
-	                        else
-		                        list.append(CMStrings.padRight(CE.eventID()+":"+CE.triggerParameters(),15)+" ");
-	                        list.append(CMStrings.padRight(Faction.FactionChangeEvent.CHANGE_DIRECTION_DESCS[CE.direction()],10)+" ");
-	                        list.append(CMStrings.padRight(CMath.toPct(CE.factor()),10)+" ");
-	                        list.append(CMStrings.padRight(CE.flagCache(),20)+" ");
-	                        list.append(CE.targetZapper()+"\n\r");
-	                        numChanges++;
-                    	}
+                            if(CE.triggerParameters().trim().length()==0)
+                                list.append(CMStrings.padRight(CE.eventID(),15)+" ");
+                            else
+                                list.append(CMStrings.padRight(CE.eventID()+":"+CE.triggerParameters(),15)+" ");
+                            list.append(CMStrings.padRight(Faction.FactionChangeEvent.CHANGE_DIRECTION_DESCS[CE.direction()],10)+" ");
+                            list.append(CMStrings.padRight(CMath.toPct(CE.factor()),10)+" ");
+                            list.append(CMStrings.padRight(CE.flagCache(),20)+" ");
+                            list.append(CE.targetZapper()+"\n\r");
+                            numChanges++;
+                        }
                     }
                 }
                 mob.tell(list.toString());
@@ -1319,7 +1318,7 @@ public class Factions extends StdLibrary implements FactionManager
                     String rangeCode=mob.session().prompt("Enter a new range code or ? ("+oldData[0]+")\n\r: ",oldData[0]).toUpperCase().trim();
                     if(rangeCode.equalsIgnoreCase("?"))
                     {
-                    	StringBuffer str=new StringBuffer("");
+                        StringBuffer str=new StringBuffer("");
                         for(Enumeration e=me.ranges();e.hasMoreElements();)
                         {
                             Faction.FactionRange FR=(Faction.FactionRange)e.nextElement();
@@ -1331,7 +1330,7 @@ public class Factions extends StdLibrary implements FactionManager
                     else
                     if(!rangeCode.equals(oldData[0]))
                     {
-                    	cont=true;
+                        cont=true;
                         for(Enumeration e=me.ranges();e.hasMoreElements();)
                             if(((Faction.FactionRange)e.nextElement()).codeName().equalsIgnoreCase(rangeCode))
                             {
@@ -1339,7 +1338,7 @@ public class Factions extends StdLibrary implements FactionManager
                                 cont=false;
                             }
                         if(cont)
-                        	mob.tell("'"+rangeCode+"' is not a valid range code.  Use ?");
+                            mob.tell("'"+rangeCode+"' is not a valid range code.  Use ?");
                     }
                 }
                 
@@ -1363,27 +1362,27 @@ public class Factions extends StdLibrary implements FactionManager
                 while((cont)&&(!mob.session().isStopped()))
                 {
                     cont=false;
-	                String ID=mob.session().prompt("Enter a new Ability, Behavior, or Command ID ("+oldData[2]+")\n\r: ",oldData[2]);
-	                if(ID.equalsIgnoreCase("?"))
-	                {
-	                    StringBuffer vals=new StringBuffer("Valid IDs: \n\r");
-	                    vals.append(CMParms.toCMObjectStringList(CMClass.abilities()));
-	                    vals.append(CMParms.toCMObjectStringList(CMClass.behaviors()));
-	                    vals.append(CMParms.toCMObjectStringList(CMClass.commands()));
-	                    mob.tell(vals.toString());
-	                    cont=true;
-	                }
-	                else
-	                {
-	                    type=getWordAffOrBehav(ID);
-	                    if(type==null)
-	                    {
-	                        mob.tell("'"+ID+" is neither a valid behavior, command, ability ID. Use ? for a list.");
-	                        cont=true;
-	                    }
-	                    else
-	                        newData[2]=ID;
-	                }
+                    String ID=mob.session().prompt("Enter a new Ability, Behavior, or Command ID ("+oldData[2]+")\n\r: ",oldData[2]);
+                    if(ID.equalsIgnoreCase("?"))
+                    {
+                        StringBuffer vals=new StringBuffer("Valid IDs: \n\r");
+                        vals.append(CMParms.toCMObjectStringList(CMClass.abilities()));
+                        vals.append(CMParms.toCMObjectStringList(CMClass.behaviors()));
+                        vals.append(CMParms.toCMObjectStringList(CMClass.commands()));
+                        mob.tell(vals.toString());
+                        cont=true;
+                    }
+                    else
+                    {
+                        type=getWordAffOrBehav(ID);
+                        if(type==null)
+                        {
+                            mob.tell("'"+ID+" is neither a valid behavior, command, ability ID. Use ? for a list.");
+                            cont=true;
+                        }
+                        else
+                            newData[2]=ID;
+                    }
                 }
                 
                 cont=true;
@@ -1402,22 +1401,22 @@ public class Factions extends StdLibrary implements FactionManager
                 }
                 
                 for(int n=0;n<oldData.length;n++)
-                	if(newData[n]==null)
-                		newData[n]=oldData[n];
+                    if(newData[n]==null)
+                        newData[n]=oldData[n];
                 if(item==null)
-                	me.addReaction(newData[0], newData[1], newData[2], newData[3]);
+                    me.addReaction(newData[0], newData[1], newData[2], newData[3]);
                 else
                 {
-                	item.setRangeName(newData[0]);
-                	item.setPresentMOBMask(newData[1]);
-                	item.setReactionObjectID(newData[2]);
-                	item.setParameters(newData[3]);
+                    item.setRangeName(newData[0]);
+                    item.setPresentMOBMask(newData[1]);
+                    item.setReactionObjectID(newData[2]);
+                    item.setParameters(newData[3]);
                 }
             }
             if(me.reactions().hasMoreElements())
-	            me.setLightReactions(CMLib.genEd().prompt(mob,me.useLightReactions(),++showNumber,showFlag,"Use 'Light' Reactions"));
+                me.setLightReactions(CMLib.genEd().prompt(mob,me.useLightReactions(),++showNumber,showFlag,"Use 'Light' Reactions"));
             else
-            	me.setLightReactions(false);
+                me.setLightReactions(false);
             
             if(showFlag<-900){ ok=true; break;}
             if(showFlag>0){ showFlag=-1; continue;}
@@ -1436,7 +1435,7 @@ public class Factions extends StdLibrary implements FactionManager
 
     private StringBuffer rebuildFactionProperties(Faction F)
     {
-    	List<String> oldV=Resources.getFileLineVector(Resources.getFileResource(F.factionID(),true));
+        List<String> oldV=Resources.getFileLineVector(Resources.getFileResource(F.factionID(),true));
         if(oldV.size()<10)
         {
 
@@ -1510,12 +1509,12 @@ public class Factions extends StdLibrary implements FactionManager
         if((F.factionID().length()>0)
         &&(CMLib.factions().getFaction(F.factionID())!=null))
         {
-        	if(!CMath.bset(F.getInternalFlags(), Faction.IFLAG_NEVERSAVE))
-        	{
-	        	StringBuffer buf = rebuildFactionProperties(F);
-	            if(!Resources.updateFileResource(F.factionID(),buf))
-	                return "Faction File '"+F.factionID()+"' could not be modified.  Make sure it is not READ-ONLY.";
-        	}
+            if(!CMath.bset(F.getInternalFlags(), Faction.IFLAG_NEVERSAVE))
+            {
+                StringBuffer buf = rebuildFactionProperties(F);
+                if(!Resources.updateFileResource(F.factionID(),buf))
+                    return "Faction File '"+F.factionID()+"' could not be modified.  Make sure it is not READ-ONLY.";
+            }
         }
         else
             return "Can not save a blank faction";

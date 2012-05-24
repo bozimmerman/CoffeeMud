@@ -1438,7 +1438,7 @@ public class DefaultFaction implements Faction, MsgListener
         public String name(){return Name;}
         public String codeName(){return CodeName;}
         public int alignEquiv(){return AlignEquiv;}
-        public Faction myFaction(){return myFaction;}
+        public Faction getFaction(){return myFaction;}
 
         public void setLow(int newVal){low=newVal;}
         public void setHigh(int newVal){high=newVal;}

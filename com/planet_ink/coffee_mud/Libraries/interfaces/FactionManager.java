@@ -43,7 +43,7 @@ public interface FactionManager extends CMLibrary, Tickable
     public void clearFactions();
     public void reloadFactions(String factionList);
     public boolean isRangeCodeName(String key);
-    public boolean isFactionedThisWay(MOB mob, String rangeCodeName);
+    public boolean isFactionedThisWay(MOB mob, Faction.FactionRange rangeCode);
     public String rangeDescription(String rangeCodeName, String andOr);
     public Faction getFaction(String factionID);
     public Faction getFactionByRangeCodeName(String rangeCodeName);
