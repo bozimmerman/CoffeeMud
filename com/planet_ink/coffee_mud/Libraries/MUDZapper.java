@@ -562,25 +562,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 
     protected Faction.FactionRange getRange(final String s)
     {
-        Faction F;
-        int x=s.indexOf('.');
-        if(x>0)
-        {
-            F=CMLib.factions().getFaction(s.substring(0,x));
-            if(F==null) F=CMLib.factions().getFactionByName(s.substring(0,x));
-        }
-        else
-        {
-            F=CMLib.factions().getFactionByRangeCodeName(s);
-            x=-1;
-        }
-        if(F!=null)
-        {
-            Faction.FactionRange FR=F.fetchRange(s.substring(x+1));
-            if(FR!=null)
-                return FR;
-        }
-        return null;
+        return CMLib.factions().getFactionRangeByCodeName(s);
     }
 
     protected boolean fromHereEndsWith(final Vector V, final char plusMinus, final int fromHere, final String find)
@@ -2581,9 +2563,10 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                         else
                         if(str2.startsWith(plusMinus))
                         {
-                            Faction.FactionRange FR=getRange(str2.substring(1).toUpperCase().trim());
+                            final String str3=str2.substring(1).toUpperCase().trim();
+                            Faction.FactionRange FR=getRange(str3);
                             if(FR!=null)
-                                parms.addElement(FR);
+                                parms.addElement(str3);
                         }
                         v=V.size();
                     }
@@ -3891,16 +3874,25 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                 {
                     boolean found=false;
                     for(final Object o : entry.parms)
-                        if(CMLib.factions().isFactionedThisWay(mob,(Faction.FactionRange)o))
-                        { found=true; break;}
+                    {
+                        Faction.FactionRange FR=getRange((String)o);
+                        if((FR!=null)&&(CMLib.factions().isFactionedThisWay(mob,FR)))
+                        { 
+                            found=true; 
+                            break;
+                        }
+                    }
                     if(!found) return false;
                 }
                 break;
             case 47: // +faction
                 {
                     for(final Object o : entry.parms)
-                        if(CMLib.factions().isFactionedThisWay(mob,(Faction.FactionRange)o))
+                    {
+                        Faction.FactionRange FR=getRange((String)o);
+                        if((FR!=null)&&(CMLib.factions().isFactionedThisWay(mob,FR)))
                             return false;
+                    }
                 }
                 break;
             case 42: // +effects

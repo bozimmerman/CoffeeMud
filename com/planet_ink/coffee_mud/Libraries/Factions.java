@@ -9,6 +9,7 @@ import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.Faction.FactionRange;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
@@ -39,7 +40,7 @@ public class Factions extends StdLibrary implements FactionManager
 {
     public String ID(){return "Factions";}
     public SHashtable<String,Faction> factionSet = new SHashtable<String,Faction>();
-    public SHashtable<String,Faction> hashedFactionRanges=new SHashtable<String,Faction>();
+    public SHashtable<String,FactionRange> hashedFactionRanges=new SHashtable<String,FactionRange>();
     
     public Enumeration<Faction> factions()
     {
@@ -59,8 +60,17 @@ public class Factions extends StdLibrary implements FactionManager
             getFaction((String)preLoadFactions.elementAt(i));
     }
     
-    public java.util.Map<String,Faction> rangeCodeNames(){ return hashedFactionRanges; }
+    public java.util.Map<String,FactionRange> rangeCodeNames(){ return hashedFactionRanges; }
+    
     public boolean isRangeCodeName(String key){ return rangeCodeNames().containsKey(key.toUpperCase());}
+
+    public FactionRange getFactionRangeByCodeName(String rangeCodeName) 
+    {
+        if(hashedFactionRanges.containsKey(rangeCodeName.toUpperCase()))
+            return hashedFactionRanges.get(rangeCodeName.toUpperCase());
+        return null;
+    }
+
     public boolean isFactionedThisWay(MOB mob, Faction.FactionRange rangeCode)
     {
         Faction.FactionRange FR=rangeCode;
@@ -100,13 +110,13 @@ public class Factions extends StdLibrary implements FactionManager
             Faction.FactionRange FR=(Faction.FactionRange)e.nextElement();
             String CodeName=(FR.codeName().length()>0)?FR.codeName().toUpperCase():FR.name().toUpperCase();
             if(!hashedFactionRanges.containsKey(CodeName))
-                hashedFactionRanges.put(CodeName,F);
+                hashedFactionRanges.put(CodeName,FR);
             String SimpleUniqueCodeName = F.name().toUpperCase()+"."+CodeName;
             if(!hashedFactionRanges.containsKey(SimpleUniqueCodeName))
-                hashedFactionRanges.put(SimpleUniqueCodeName,F);
+                hashedFactionRanges.put(SimpleUniqueCodeName,FR);
             String UniqueCodeName = SimpleUniqueCodeName.replace(' ','_');
             if(!hashedFactionRanges.containsKey(UniqueCodeName))
-                hashedFactionRanges.put(UniqueCodeName,F);
+                hashedFactionRanges.put(UniqueCodeName,FR);
         }
         addFaction(factionID,F);
         return F;
@@ -135,7 +145,11 @@ public class Factions extends StdLibrary implements FactionManager
     public Faction getFactionByRangeCodeName(String rangeCodeName)
     {
         if(hashedFactionRanges.containsKey(rangeCodeName.toUpperCase()))
-            return (Faction)hashedFactionRanges.get(rangeCodeName.toUpperCase());
+        {
+            Faction.FactionRange FR=hashedFactionRanges.get(rangeCodeName.toUpperCase());
+            if(FR!=null) 
+                return FR.getFaction();
+        }
         return null;
     }
     
@@ -1534,5 +1548,4 @@ public class Factions extends StdLibrary implements FactionManager
             return 0;
         return -1;
     }
-    
 }
