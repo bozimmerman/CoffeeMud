@@ -124,9 +124,11 @@ public class Carpentry extends EnhancedCraftingSkill implements ItemCraftor
         super.unInvoke();
     }
 
-    protected boolean isItemElligibleForDeconstruction(final Item I)
+    public boolean mayICraft(final Item I)
     {
         if(I==null) return false;
+        if(!super.mayBeCrafted(I))
+            return false;
         if((I.material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_WOODEN)
             return false;
         if(CMLib.flags().isDeadlyOrMaliciousEffect(I)) 
@@ -164,19 +166,19 @@ public class Carpentry extends EnhancedCraftingSkill implements ItemCraftor
             return true;
         if((I instanceof Drink)&&(!(I instanceof Potion)))
             return true;
-        if(I.ID().endsWith("Limb"))
+        if(I instanceof FalseLimb)
             return true;
         if(I.rawProperLocationBitmap()==Wearable.WORN_HELD)
             return true;
         return false;
     }
 
-    public boolean supportsMending(Environmental I){ return canMend(null,I,true);}
+    public boolean supportsMending(Physical I){ return canMend(null,I,true);}
     protected boolean canMend(MOB mob, Environmental E, boolean quiet)
     {
         if(!super.canMend(mob,E,quiet)) return false;
         if((!(E instanceof Item))
-        ||(!isItemElligibleForDeconstruction((Item)E)))
+        ||(!mayICraft((Item)E)))
         {
             if(!quiet)
                 commonTell(mob,"That's not a carpentry item.");

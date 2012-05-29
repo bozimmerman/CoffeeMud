@@ -37,30 +37,40 @@ import java.util.*;
 @SuppressWarnings("unchecked")
 public class MasterArmorsmithing extends Armorsmithing implements ItemCraftor
 {
-	public String ID() { return "MasterArmorsmithing"; }
-	public String name(){ return "Master Armorsmithing";}
-	private static final String[] triggerStrings = {"MARMORSMITH","MASTERARMORSMITHING"};
-	public String[] triggerStrings(){return triggerStrings;}
+    public String ID() { return "MasterArmorsmithing"; }
+    public String name(){ return "Master Armorsmithing";}
+    private static final String[] triggerStrings = {"MARMORSMITH","MASTERARMORSMITHING"};
+    public String[] triggerStrings(){return triggerStrings;}
 
     public String parametersFile(){ return "masterarmorsmith.txt";}
     protected List<List<String>> loadRecipes(){return super.loadRecipes(parametersFile());}
 
-	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
-	{
-		int autoGenerate=0;
-		if((auto)&&(commands.size()>0)&&(commands.firstElement() instanceof Integer))
-		{
-			autoGenerate=((Integer)commands.firstElement()).intValue();
-			commands.removeElementAt(0);
-		}
-		randomRecipeFix(mob,addRecipes(mob,loadRecipes()),commands,autoGenerate);
-		if(commands.size()==0)
-		{
-			commonTell(mob,"Make what? Enter \"marmorsmith list\" for a list,\"marmorsmith scan\", or \"marmorsmith mend <item>\".");
-			return false;
-		}
-		if(autoGenerate>0)
-			commands.insertElementAt(Integer.valueOf(autoGenerate),0);
-		return super.invoke(mob,commands,givenTarget,auto,asLevel);
-	}
+    protected boolean masterCraftCheck(final Item I)
+    {
+        if(I.basePhyStats().level()<30)
+        {
+            if(I.fetchEffect("Prop_WearAdjuster")==null)
+                return false;
+        }
+        return true;
+    }
+
+    public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
+    {
+        int autoGenerate=0;
+        if((auto)&&(commands.size()>0)&&(commands.firstElement() instanceof Integer))
+        {
+            autoGenerate=((Integer)commands.firstElement()).intValue();
+            commands.removeElementAt(0);
+        }
+        randomRecipeFix(mob,addRecipes(mob,loadRecipes()),commands,autoGenerate);
+        if(commands.size()==0)
+        {
+            commonTell(mob,"Make what? Enter \"marmorsmith list\" for a list,\"marmorsmith scan\", or \"marmorsmith mend <item>\".");
+            return false;
+        }
+        if(autoGenerate>0)
+            commands.insertElementAt(Integer.valueOf(autoGenerate),0);
+        return super.invoke(mob,commands,givenTarget,auto,asLevel);
+    }
 }

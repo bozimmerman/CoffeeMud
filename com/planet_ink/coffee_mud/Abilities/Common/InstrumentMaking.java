@@ -71,9 +71,13 @@ public class InstrumentMaking extends CraftingSkill implements ItemCraftor
     public String parametersFile(){ return "instruments.txt";}
     protected List<List<String>> loadRecipes(){return super.loadRecipes(parametersFile());}
 
-    protected boolean isItemElligibleForDeconstruction(final Item I)
+    public boolean supportsDeconstruction() { return true; }
+
+    public boolean mayICraft(final Item I)
     {
         if(I==null) return false;
+        if(!super.mayBeCrafted(I))
+            return false;
         if(CMLib.flags().isDeadlyOrMaliciousEffect(I)) 
             return false;
         if(I instanceof MusicalInstrument)

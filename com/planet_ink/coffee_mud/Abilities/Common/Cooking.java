@@ -132,6 +132,8 @@ public class Cooking extends CraftingSkill implements ItemCraftor
         return super.tick(ticking,tickID);
     }
 
+    public boolean supportsDeconstruction() { return false; }
+
     public String parametersFile(){ return "recipes.txt";}
     protected List<List<String>> loadRecipes(){return super.loadRecipes(parametersFile());}
 

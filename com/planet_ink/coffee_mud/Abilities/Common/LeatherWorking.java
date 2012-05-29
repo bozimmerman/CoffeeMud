@@ -142,17 +142,19 @@ public class LeatherWorking extends EnhancedCraftingSkill implements ItemCraftor
         super.unInvoke();
     }
 
-    protected boolean isItemElligibleForDeconstruction(final Item I)
+    public boolean mayICraft(final Item I)
     {
         if(I==null) return false;
+        if(!super.mayBeCrafted(I))
+            return false;
         if((I.material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_LEATHER)
             return false;
         if(CMLib.flags().isDeadlyOrMaliciousEffect(I)) 
             return false;
+        if(I.basePhyStats().level()>20)
+            return false;
         if(I instanceof Armor)
         {
-            if(I.basePhyStats().level()>=50)
-                return false;
             final long noWearLocations=Wearable.WORN_FEET|Wearable.WORN_LEFT_FINGER|Wearable.WORN_RIGHT_FINGER|Wearable.WORN_EARS|Wearable.WORN_EYES;
             if((I.rawProperLocationBitmap() & noWearLocations)>0)
                 return false;
@@ -185,7 +187,7 @@ public class LeatherWorking extends EnhancedCraftingSkill implements ItemCraftor
             return true;
         if((I instanceof Drink)&&(!(I instanceof Potion)))
             return true;
-        if(I.ID().endsWith("Limb"))
+        if(I instanceof FalseLimb)
             return true;
         if(I.rawProperLocationBitmap()==Wearable.WORN_HELD)
             return true;
@@ -196,7 +198,7 @@ public class LeatherWorking extends EnhancedCraftingSkill implements ItemCraftor
     protected boolean canMend(MOB mob, Environmental E, boolean quiet)
     {
         if(!super.canMend(mob,E,quiet)) return false;
-        if((!(E instanceof Item))||(!isItemElligibleForDeconstruction((Item)E)))
+        if((!(E instanceof Item))||(!mayICraft((Item)E)))
         {
             if(!quiet)
                 commonTell(mob,"That's not a simple leatherworked item.");

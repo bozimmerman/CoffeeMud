@@ -95,9 +95,13 @@ public class Pottery extends CraftingSkill implements ItemCraftor
         super.unInvoke();
     }
 
-    protected boolean isItemElligibleForDeconstruction(final Item I)
+    public boolean supportsDeconstruction() { return true; }
+
+    public boolean mayICraft(final Item I)
     {
         if(I==null) return false;
+        if(!super.mayBeCrafted(I))
+            return false;
         if((I.material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_GLASS)
             return false;
         if((I.material()==RawMaterial.RESOURCE_GLASS)||(I.material()==RawMaterial.RESOURCE_BONE))
@@ -130,7 +134,7 @@ public class Pottery extends CraftingSkill implements ItemCraftor
             return true;
         if((I instanceof Drink)&&(!(I instanceof Potion)))
             return false;
-        if(I.ID().endsWith("Limb"))
+        if(I instanceof FalseLimb)
             return true;
         if((I instanceof Light)&&((I.rawProperLocationBitmap()&Wearable.WORN_MOUTH)>0))
             return true;

@@ -113,9 +113,11 @@ public class ScrimShaw extends EnhancedCraftingSkill implements ItemCraftor, Men
         super.unInvoke();
     }
 
-    protected boolean isItemElligibleForDeconstruction(final Item I)
+    public boolean mayICraft(final Item I)
     {
         if(I==null) return false;
+        if(!super.mayBeCrafted(I))
+            return false;
         if(I.material()!=RawMaterial.RESOURCE_BONE)
             return false;
         if(CMLib.flags().isDeadlyOrMaliciousEffect(I)) 
@@ -146,7 +148,7 @@ public class ScrimShaw extends EnhancedCraftingSkill implements ItemCraftor, Men
             return true;
         if((I instanceof Drink)&&(!(I instanceof Potion)))
             return false;
-        if(I.ID().endsWith("Limb"))
+        if(I instanceof FalseLimb)
             return true;
         if((I instanceof Light)&&((I.rawProperLocationBitmap()&Wearable.WORN_MOUTH)>0))
             return true;
@@ -159,7 +161,7 @@ public class ScrimShaw extends EnhancedCraftingSkill implements ItemCraftor, Men
     protected boolean canMend(MOB mob, Environmental E, boolean quiet)
     {
         if(!super.canMend(mob,E,quiet)) return false;
-        if((!(E instanceof Item))||(!isItemElligibleForDeconstruction((Item)E)))
+        if((!(E instanceof Item))||(!mayICraft((Item)E)))
         {
             if(!quiet)
                 commonTell(mob,"That's not a scrimshawable item.");

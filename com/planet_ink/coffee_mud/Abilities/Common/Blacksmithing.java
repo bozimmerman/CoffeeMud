@@ -78,9 +78,13 @@ public class Blacksmithing extends EnhancedCraftingSkill implements ItemCraftor
     public String parametersFile(){ return "blacksmith.txt";}
     protected List<List<String>> loadRecipes(){return super.loadRecipes(parametersFile());}
 
-    protected boolean isItemElligibleForDeconstruction(final Item I)
+    public boolean supportsDeconstruction() { return true; }
+
+    public boolean mayICraft(final Item I)
     {
         if(I==null) return false;
+        if(!super.mayBeCrafted(I))
+            return false;
         if(((I.material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_METAL)
         &&((I.material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_MITHRIL))
             return false;
@@ -115,7 +119,7 @@ public class Blacksmithing extends EnhancedCraftingSkill implements ItemCraftor
             return true;
         if((I instanceof Drink)&&(!(I instanceof Potion)))
             return true;
-        if(I.ID().endsWith("Limb"))
+        if(I instanceof FalseLimb)
             return true;
         if(I.rawProperLocationBitmap()==Wearable.WORN_HELD)
             return true;

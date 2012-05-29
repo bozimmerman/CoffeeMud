@@ -37,13 +37,13 @@ import java.util.*;
 @SuppressWarnings("unchecked")
 public class Distilling extends Cooking
 {
-	public String ID() { return "Distilling"; }
-	public String name(){ return "Distilling";}
-	private static final String[] triggerStrings = {"DISTILLING"};
-	public String[] triggerStrings(){return triggerStrings;}
-	public String cookWordShort(){return "distill";}
-	public String cookWord(){return "distilling";}
-	public boolean honorHerbs(){return false;}
+    public String ID() { return "Distilling"; }
+    public String name(){ return "Distilling";}
+    private static final String[] triggerStrings = {"DISTILLING"};
+    public String[] triggerStrings(){return triggerStrings;}
+    public String cookWordShort(){return "distill";}
+    public String cookWord(){return "distilling";}
+    public boolean honorHerbs(){return false;}
     public String supportedResourceString(){return "MISC";}
 
     public String parametersFile(){ return "liquors.txt";}
@@ -55,6 +55,22 @@ public class Distilling extends Cooking
 
         defaultFoodSound = "hotspring.wav";
         defaultDrinkSound = "hotspring.wav";
+    }
+
+    public boolean mayICraft(final Item I)
+    {
+        if(I==null) return false;
+        if(!super.mayBeCrafted(I))
+            return false;
+        if(I instanceof Drink)
+        {
+            Drink D=(Drink)I;
+            if(D.liquidType()!=RawMaterial.RESOURCE_LIQUOR)
+                return false;
+            if(CMLib.flags().flaggedAffects(D, Ability.FLAG_INTOXICATING).size()>0)
+                return true;
+        }
+        return false;
     }
 
     public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)

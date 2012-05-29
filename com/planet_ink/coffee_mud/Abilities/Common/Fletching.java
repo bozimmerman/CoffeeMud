@@ -105,17 +105,34 @@ public class Fletching extends EnhancedCraftingSkill implements ItemCraftor, Men
         return super.tick(ticking,tickID);
     }
 
+    public boolean mayICraft(final Item I)
+    {
+        if(I==null) return false;
+        if(!super.mayBeCrafted(I))
+            return false;
+        if((I.material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_WOODEN)
+            return false;
+        if(CMLib.flags().isDeadlyOrMaliciousEffect(I)) 
+            return false;
+        if(I instanceof Ammunition)
+            return true;
+        if(!(I instanceof Weapon))
+            return false;
+        if((((Weapon)I).weaponClassification()==Weapon.CLASS_RANGED)
+        ||(((Weapon)I).weaponClassification()==Weapon.CLASS_THROWN))
+            return true;
+        return false;
+    }
+
     public boolean supportsMending(Physical item){ return canMend(null,item,true);}
     protected boolean canMend(MOB mob, Environmental E, boolean quiet)
     {
         if(!super.canMend(mob,E,quiet)) return false;
-        Item IE=(Item)E;
-        if((!(IE instanceof Weapon))
-        ||(((Weapon)IE).weaponClassification()!=Weapon.CLASS_RANGED)
-           &&(((Weapon)IE).weaponClassification()!=Weapon.CLASS_THROWN))
+        if((!(E instanceof Item))
+        ||(!mayICraft((Item)E)))
         {
             if(!quiet)
-                commonTell(mob,"You don't know how to mend that sort of thing.");
+                commonTell(mob,"That's not a fletched item.");
             return false;
         }
         return true;

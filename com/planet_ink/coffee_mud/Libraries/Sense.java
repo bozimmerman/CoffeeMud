@@ -1018,7 +1018,7 @@ public class Sense extends StdLibrary implements CMFlagLibrary
     }
     public List<Ability> domainAffects(Physical P, int domain)
     {
-        Vector<Ability> V=new Vector<Ability>();
+        final Vector<Ability> V=new Vector<Ability>();
         if(P!=null)
             if(domain>Ability.ALL_ACODES)
             {
@@ -1030,9 +1030,9 @@ public class Sense extends StdLibrary implements CMFlagLibrary
                 }
             }
             else
-                for(final Enumeration<Ability> a=P.effects();a.hasMoreElements();)
-                {
-                    final Ability A=a.nextElement();
+            for(final Enumeration<Ability> a=P.effects();a.hasMoreElements();)
+            {
+                final Ability A=a.nextElement();
                 if((A!=null)&&((A.classificationCode()&Ability.ALL_ACODES)==domain))
                 { V.addElement(A);}
             }

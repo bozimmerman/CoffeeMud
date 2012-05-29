@@ -526,7 +526,7 @@ public class Amputation extends StdAbility implements Amputator
                 Item I=tmob.getItem(i);
                 if((I!=null)
                 &&(!I.amWearingAt(Wearable.IN_INVENTORY))
-                &&(I.ID().endsWith("Limb"))
+                &&(I instanceof FalseLimb)
                 &&((I.name().toUpperCase().endsWith(named))
                     ||(I.rawSecretIdentity().toUpperCase().endsWith(named))))
                     return I;

@@ -36,22 +36,41 @@ import java.util.*;
 @SuppressWarnings("unchecked")
 public class CageBuilding extends Wainwrighting
 {
-	public String ID() { return "CageBuilding"; }
-	public String name(){ return "Cage Building";}
-	private static final String[] triggerStrings = {"BUILDCAGE","CAGEBUILDING"};
-	public String[] triggerStrings(){return triggerStrings;}
+    public String ID() { return "CageBuilding"; }
+    public String name(){ return "Cage Building";}
+    private static final String[] triggerStrings = {"BUILDCAGE","CAGEBUILDING"};
+    public String[] triggerStrings(){return triggerStrings;}
     public String supportedResourceString(){return "WOODEN";}
 
     public String parametersFile(){ return "cagebuilding.txt";}
     protected List<List<String>> loadRecipes(){return super.loadRecipes(parametersFile());}
 
-	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
-	{
-		if(commands.size()==0)
-		{
-			commonTell(mob,"Build what? Enter \"buildcage list\" for a list.");
-			return false;
-		}
-		return super.invoke(mob,commands,givenTarget,auto,asLevel);
-	}
+    public boolean mayICraft(final Item I)
+    {
+        if(I==null) return false;
+        if(!super.mayBeCrafted(I))
+            return false;
+        if((I.material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_WOODEN)
+            return false;
+        if(CMLib.flags().isDeadlyOrMaliciousEffect(I))
+            return false;
+        if(!(I instanceof Container))
+            return false;
+        Container C=(Container)I;
+        if((C.containTypes()==Container.CONTAIN_BODIES)
+        ||(C.containTypes()==Container.CONTAIN_CAGED)
+        ||(C.containTypes()==(Container.CONTAIN_BODIES|Container.CONTAIN_CAGED)))
+            return true;
+        return false;
+    }
+
+    public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
+    {
+        if(commands.size()==0)
+        {
+            commonTell(mob,"Build what? Enter \"buildcage list\" for a list.");
+            return false;
+        }
+        return super.invoke(mob,commands,givenTarget,auto,asLevel);
+    }
 }

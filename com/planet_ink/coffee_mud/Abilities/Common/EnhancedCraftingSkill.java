@@ -58,6 +58,8 @@ public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
         {"Even","Balanced","Counterbalanced"},
     };
 
+    public boolean supportsDeconstruction() { return true; }
+
 	protected int[][] fetchFoundResourceData(MOB mob,
 											 int req1Required,
 											 String req1Desc, int[] req1,

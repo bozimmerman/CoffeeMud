@@ -38,14 +38,23 @@ import java.util.*;
 @SuppressWarnings("unchecked")
 public class MasterCostuming extends Costuming
 {
-	public String ID() { return "MasterCostuming"; }
-	public String name(){ return "Master Costuming";}
-	private static final String[] triggerStrings = {"MASTERCOSTUME","MCOSTUME","MCOSTUMING","MASTERCOSTUMING"};
-	public String[] triggerStrings(){return triggerStrings;}
+    public String ID() { return "MasterCostuming"; }
+    public String name(){ return "Master Costuming";}
+    private static final String[] triggerStrings = {"MASTERCOSTUME","MCOSTUME","MCOSTUMING","MASTERCOSTUMING"};
+    public String[] triggerStrings(){return triggerStrings;}
     public String parametersFile(){ return "mastercostume.txt";}
 
-	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
-	{
+    protected boolean masterCraftCheck(final Item I)
+    {
+        if(I.name().toUpperCase().startsWith("DESIGNER"))
+            return true;
+        if(I.basePhyStats().level()<31)
+            return false;
+        return true;
+    }
+
+    public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
+    {
         int autoGenerate=0;
         if((auto)&&(commands.size()>0)&&(commands.firstElement() instanceof Integer))
         {
@@ -61,6 +70,6 @@ public class MasterCostuming extends Costuming
         if(autoGenerate>0)
             commands.insertElementAt(Integer.valueOf(autoGenerate),0);
         return super.invoke(mob,commands,givenTarget,auto,asLevel);
-	}
+    }
 }
 

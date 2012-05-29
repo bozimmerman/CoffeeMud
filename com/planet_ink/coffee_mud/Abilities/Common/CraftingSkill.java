@@ -49,9 +49,9 @@ public class CraftingSkill extends GatheringSkill
     protected boolean messedUp=false;
 
     public CraftingSkill(){super();}
-    
+
     public String parametersFile(){ return "";}
-    
+
     protected String replacePercent(String thisStr, String withThis)
     {
         if(withThis.length()==0)
@@ -70,7 +70,7 @@ public class CraftingSkill extends GatheringSkill
         }
         return thisStr;
     }
-    
+
     protected void messedUpCrafting(MOB mob)
     {
         if(building!=null)
@@ -95,7 +95,7 @@ public class CraftingSkill extends GatheringSkill
         }
         
     }
-    
+
     protected long getContainerType(final String s)
     {
         if(s.length()==0) return 0;
@@ -113,7 +113,7 @@ public class CraftingSkill extends GatheringSkill
         }
         return ret;
     }
-    
+
     protected List<List<String>> addRecipes(MOB mob, List<List<String>> recipes)
     {
         if(mob==null) return recipes;
@@ -157,8 +157,9 @@ public class CraftingSkill extends GatheringSkill
             ((Vector)recipes).trimToSize();
         return recipes;
     }
-    
-    protected int adjustWoodRequired(int woodRequired, MOB mob) {
+
+    protected int adjustWoodRequired(int woodRequired, MOB mob) 
+    {
         int newWoodRequired=woodRequired-(int)Math.round((0.05*(double)woodRequired*(double)getXPCOSTLevel(mob)));
         if(newWoodRequired<=0)
             if(woodRequired > 0)
@@ -167,7 +168,7 @@ public class CraftingSkill extends GatheringSkill
                 newWoodRequired=0;
         return newWoodRequired;
     }
-    
+
     protected void dropAWinner(MOB mob, Item building)
     {
         Room R=mob.location();
@@ -191,7 +192,7 @@ public class CraftingSkill extends GatheringSkill
             }
         }
     }
-    
+
     protected void addSpells(Physical P, String spells)
     {
         if(spells.length()==0) return;
@@ -200,8 +201,9 @@ public class CraftingSkill extends GatheringSkill
         for(int v=0;v<V.size();v++)
             P.addNonUninvokableEffect((Ability)V.get(v));
     }
-    
-    protected void setWearLocation(Item I, String wearLocation, int hardnessMultiplier) {
+
+    protected void setWearLocation(Item I, String wearLocation, int hardnessMultiplier)
+    {
         short[] layerAtt = null;
         short[] layers = null;
         if(I instanceof Armor) {
@@ -221,7 +223,7 @@ public class CraftingSkill extends GatheringSkill
             I.setRawProperLocationBitmap(wornLoc[0]);
         }
     }
-    
+
     protected List<List<String>> loadList(StringBuffer str)
     {
         List<List<String>> V=new Vector<List<String>>();
@@ -291,7 +293,7 @@ public class CraftingSkill extends GatheringSkill
         }
         return V;
     }
-    
+
     protected static final int FOUND_CODE=0;
     protected static final int FOUND_AMT=1;
     protected int fixResourceRequirement(int resource, int amt)
@@ -315,10 +317,14 @@ public class CraftingSkill extends GatheringSkill
         if(amt<=0) amt=1;
         return amt;
     }
-    
-    public List<List<String>> fetchRecipes(){return loadRecipes();}
+
+    public List<List<String>> fetchRecipes()
+    {
+        return loadRecipes();
+    }
+
     protected List<List<String>> loadRecipes(){ return new Vector();}
-    
+
     protected Ability getCraftableSpellRecipe(Vector commands)
     {
         Ability theSpell=null;
@@ -347,7 +353,7 @@ public class CraftingSkill extends GatheringSkill
         }
         return theSpell;
     }
-    
+
     protected int[][] fetchFoundResourceData(MOB mob,
                                              int req1Required,
                                              String req1Desc, int[] req1,
@@ -492,7 +498,11 @@ public class CraftingSkill extends GatheringSkill
         }
     }
 
-    public ItemKeyPair craftAnyItem(int material){return craftItem(null,material);}
+    public ItemKeyPair craftAnyItem(int material)
+    {
+        return craftItem(null,material);
+    }
+
     public ItemKeyPair craftItem(String recipe, int material)
     {
         Item building=null;
@@ -534,6 +544,7 @@ public class CraftingSkill extends GatheringSkill
         }
         return new ItemKeyPair(building, key);
     }
+
     public List<ItemKeyPair> craftAllItemSets(int material)
     {
         List<ItemKeyPair> allItems=new Vector<ItemKeyPair>();
@@ -558,7 +569,7 @@ public class CraftingSkill extends GatheringSkill
         usedNames.clear();
         return allItems;
     }
-    
+
     public ItemKeyPair craftItem(String recipe)
     {
         List<Integer> rscs=myResources();
@@ -566,7 +577,7 @@ public class CraftingSkill extends GatheringSkill
         int material=((Integer)rscs.get(CMLib.dice().roll(1,rscs.size(),-1))).intValue();
         return craftItem(recipe,material);
     }
-    
+
     public List<ItemKeyPair> craftAllItemSets()
     {
         List<Integer> rscs=myResources();
@@ -581,12 +592,12 @@ public class CraftingSkill extends GatheringSkill
         }
         return allItems;
     }
-    
+
     public List<List<String>> matchingRecipeNames(String recipeName, boolean beLoose)
     {
         return matchingRecipeNames(fetchRecipes(),recipeName,beLoose);
     }
-    
+
     protected List<List<String>> matchingRecipeNames(List<List<String>> recipes, String recipeName, boolean beLoose)
     {
         List<List<String>> matches=new Vector();
@@ -642,7 +653,7 @@ public class CraftingSkill extends GatheringSkill
         }
         return matches;
     }
-    
+
     protected Vector getAllMendable(MOB mob, Environmental from, Item contained)
     {
         Vector V=new Vector();
@@ -730,28 +741,27 @@ public class CraftingSkill extends GatheringSkill
         commonTell(mob,buf.toString());
         return true;
     }
-    
+
     protected int getPercentChangeToDeconstruct(final MOB crafterM, final Item I)
     {
         return (int)Math.round(((double)((double)(1.0+(double)crafterM.phyStats().level()-(double)I.phyStats().level())
                /(double)crafterM.phyStats().level())/2.0+0.5)
             *((double)proficiency()/100.0)*((double)proficiency()/100.0)*100.0);
     }
-    
-    protected boolean isItemElligibleForDeconstruction(final Item I)
+
+    public boolean mayICraft(final Item I)
     {
         return false;
     }
-    
-    protected boolean isItemElligibleForDeconstruction(final MOB crafterM, final Item I)
+
+    protected boolean mayBeCrafted(final Item I)
     {
-        
         if(I==null) return false;
         if(I instanceof ArchonOnly) return false;
         //if(!(I.isGeneric())) return false;
         if(I instanceof Food)
             return false;
-        if((I instanceof Wand)||(I instanceof Scroll))
+        if(I instanceof Scroll)
             return false;
         if(I instanceof ClanItem)
             return false;
@@ -772,23 +782,30 @@ public class CraftingSkill extends GatheringSkill
             &&(A.ID().toUpperCase().indexOf("ZAPPER"))>=0)
                 return false;
         }
-        if((!crafterM.isMine(I))&&(!CMLib.law().doesHavePriviledgesHere(crafterM,crafterM.location())))
-            return false;
         if(CMLib.flags().flaggedBehaviors(I, Behavior.FLAG_POTENTIALLYAUTODEATHING).size()>0)
             return false;
         return true;
     }
-    
+
+    public boolean mayICraft(final MOB crafterM, final Item I)
+    {
+        if(!mayICraft(I))
+            return false;
+        if((!crafterM.isMine(I))&&(!CMLib.law().doesHavePriviledgesHere(crafterM,crafterM.location())))
+            return false;
+        return true;
+    }
+
     protected void setWeaponTypeClass(Weapon weapon, String weaponClass)
     {
         setWeaponTypeClass(weapon,weaponClass,Weapon.TYPE_BASHING,Weapon.TYPE_BASHING);
     }
-    
+
     protected void setWeaponTypeClass(Weapon weapon, String weaponClass, int flailedType)
     {
         setWeaponTypeClass(weapon,weaponClass,flailedType,Weapon.TYPE_BASHING);
     }
-    
+
     protected void setWeaponTypeClass(Weapon weapon, String weaponClass, int flailedType, int naturalType)
     {
         weapon.setWeaponType(Weapon.TYPE_BASHING);
@@ -849,7 +866,7 @@ public class CraftingSkill extends GatheringSkill
         if(type.equalsIgnoreCase("BED"))
             rideable.setRideBasis(Rideable.RIDEABLE_SLEEP);
     }
-    
+
     protected boolean canMend(MOB mob, Environmental E, boolean quiet)
     {
         if(E==null) return false;
@@ -908,7 +925,7 @@ public class CraftingSkill extends GatheringSkill
         }
         return new LinkedList<Object>();
     }
-    
+
     public String getComponentDescription(final MOB mob, final List<String> recipe, final int RCP_WOOD)
     {
         final String woodStr = (String)recipe.get(RCP_WOOD);
@@ -937,5 +954,4 @@ public class CraftingSkill extends GatheringSkill
         }
         return "?";
     }
-    
 }

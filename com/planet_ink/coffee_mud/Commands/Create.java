@@ -968,7 +968,7 @@ public class Create extends StdCommand
                 mob.tell("'"+named+"' is now disabled");
                 CMSecurity.setDisableVar(named.toUpperCase().trim(), false);
             }
-            return false;
+            return true;
         }
         else
         if(commandType.equals("DEBUGFLAG"))
@@ -990,7 +990,7 @@ public class Create extends StdCommand
                 
                 CMSecurity.setDebugVar(flag, false);
             }
-            return false;
+            return true;
         }
         else
         if(commandType.equals("SOCIAL"))
@@ -1017,6 +1017,7 @@ public class Create extends StdCommand
                 mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"^S<S-NAME> wave(s) <S-HIS-HER> arms...^?");
                 mob.tell(err);
                 mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
+                return false;
             }
             else
                 mob.doCommand(new XVector("MODIFY","HOLIDAY",named),metaFlags);
@@ -1027,7 +1028,10 @@ public class Create extends StdCommand
             if(!CMSecurity.isAllowed(mob,mob.location(),"CMDFACTIONS")) return errorOut(mob);
             mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"^S<S-NAME> wave(s) <S-HIS-HER> arms...^?");
             if((commands.size()<3)||(CMParms.combine(commands,2).indexOf('.')<0))
+            {
                 mob.tell("Create which faction?  You must give a filename with an extension.");
+                return false;
+            }
             else
             {
                 String name=CMParms.combine(commands,2);
@@ -1039,7 +1043,10 @@ public class Create extends StdCommand
                 Faction F=CMLib.factions().getFaction(name);
                 if(F==null) F=CMLib.factions().getFactionByName(name);
                 if(F!=null)
+                {
                     mob.tell("Faction '"+name+"' already exists.  Try another.");
+                    return false;
+                }
                 else
                 if((!mob.isMonster())&&(mob.session().confirm("Create a new faction with ID/filename: 'resources/"+name+"' (N/y)? ","N")))
                 {
@@ -1057,6 +1064,8 @@ public class Create extends StdCommand
                     CMLib.factions().modifyFaction(mob,F);
                     Log.sysOut("CreateEdit",mob.Name()+" created Faction "+F.name()+" ("+F.factionID()+").");
                 }
+                else
+                    return false;
             }
         }
         else
@@ -1081,6 +1090,8 @@ public class Create extends StdCommand
                 I.executeMsg(mob,newMsg);
                 mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"^SThe world is now more informed!^?");
             }
+            else
+                return false;
         }
         else
         if(commandType.equals("MOB"))
@@ -1113,7 +1124,10 @@ public class Create extends StdCommand
                 if((mob.session()!=null)&&(mob.session().confirm("Create a new Quest using the Quest Maker Wizard (y/N)? ","N")))
                     CMLib.quests().questMaker(mob);
                 else
+                {
                     mob.tell("You must specify a valid quest string.  Try AHELP QUESTS.");
+                    return false;
+                }
             }
             else
             {
@@ -1122,7 +1136,10 @@ public class Create extends StdCommand
                 Q.setAuthor(mob.Name());
                 Q.setScript(script);
                 if((Q.name().trim().length()==0)||(Q.duration()<0))
+                {
                     mob.tell("You must specify a VALID quest string.  This one contained errors.  Try AHELP QUESTS.");
+                    return false;
+                }
                 else
                 if((CMLib.quests().fetchQuest(Q.name())!=null)
                 &&((mob.isMonster())
@@ -1141,17 +1158,26 @@ public class Create extends StdCommand
             if(!CMSecurity.isAllowed(mob,mob.location(),"CMDCLANS")) return errorOut(mob);
             mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"^S<S-NAME> wave(s) <S-HIS-HER> arms...^?");
             if(commands.size()<3)
+            {
                 mob.tell("You must specify a valid clan name.  Try CLANLIST and AHELP CLANS.");
+                return false;
+            }
             else
             {
                 String name=CMParms.combine(commands,2);
                 Clan C=(Clan)CMClass.getCommon("DefaultClan");
                 C.setName(name);
                 if(C.name().trim().length()==0)
+                {
                     mob.tell("You must specify a VALID clan name.");
+                    return false;
+                }
                 else
                 if(CMLib.clans().getClan(C.name())!=null)
+                {
                     mob.tell("That clan already exists, try CLANLIST.");
+                    return false;
+                }
                 else
                 {
                     mob.tell("Clan '"+C.name()+"' created.");
@@ -1168,13 +1194,19 @@ public class Create extends StdCommand
             if(!CMSecurity.isAllowed(mob,mob.location(),"CMDCLANS")) return errorOut(mob);
             mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"^S<S-NAME> wave(s) <S-HIS-HER> arms...^?");
             if(commands.size()<3)
+            {
                 mob.tell("You must specify a valid government name.  Try LIST GOVERNMENTS.");
+                return false;
+            }
             else
             {
                 String name=CMParms.combine(commands,2);
                 ClanGovernment G=CMLib.clans().createGovernment(name);
                 if(G==null)
+                {
                     mob.tell("You must specify an unused government name.");
+                    return false;
+                }
                 else
                 if(!mob.isMonster())
                 {
@@ -1183,14 +1215,20 @@ public class Create extends StdCommand
                     CMLib.clans().reSaveGovernmentsXML();
                     Log.sysOut("CreateEdit",mob.Name()+" created Clan Government "+G.getName()+".");
                 }
+                else
+                    return false;
             }
         }
         else
         {
             String allWord=CMParms.combine(commands,1);
+            String firstWord=allWord;
             String lastWord=null;
             if(commands.size()>2)
+            {
+                firstWord=(String)commands.get(1);
                 lastWord=(String)commands.lastElement();
+            }
             Environmental E=null;
             E=CMClass.getItem(allWord);
             if(((E!=null)&&(E instanceof Item))
@@ -1250,13 +1288,42 @@ public class Create extends StdCommand
                         execute(mob,commands,metaFlags);
                     }
                     else
+                    {
                         mob.tell("\n\rYou cannot create a '"+commandType+"'. However, you might try an EXIT, ITEM, QUEST, FACTION, COMPONENT, GOVERNMENT, HOLIDAY, CLAN, MOB, RACE, ABILITY, LANGUAGE, CRAFTSKILL, ALLQUALIFY, CLASS, POLL, DEBUGFLAG, DISABLEFLAG, NEWS, USER, or ROOM.");
+                        return false;
+                    }
                 }
                 else
+                if(CMath.isInteger(firstWord)&&(lastWord!=null))
+                {
+                    int num=CMath.s_int(firstWord);
+                    String theRest=CMParms.combine(commands,2);
+                    int matCode=RawMaterial.CODES.FIND_IgnoreCase(theRest);
+                    if(matCode<0)
+                        matCode=RawMaterial.CODES.FIND_StartsWith(theRest);
+                    if((theRest.length()>0)&&(matCode>=0))
+                    {
+                        for(int i=0;i<num;i++)
+                            mob.location().addItem(CMLib.materials().makeItemResource(matCode),ItemPossessor.Expire.Player_Drop);
+                        mob.location().showHappens(CMMsg.MSG_OK_VISUAL, "Suddenly "+num+" "+RawMaterial.CODES.NAME(matCode)+" fall from the sky.");
+                    }
+                    else
+                    {
+                        Vector V=(Vector)commands.clone();
+                        V.remove(2);
+                        for(int i=0;i<num;i++)
+                            if(!execute(mob,V,metaFlags))
+                                return false;
+                    }
+                }
+                else
+                {
                     mob.tell("\n\rYou cannot create a '"+commandType+"'. However, you might try an EXIT, ITEM, QUEST, FACTION, MOB, COMPONENT, GOVERNMENT, HOLIDAY, CLAN, RACE, ABILITY, LANGUAGE, CRAFTSKILL, ALLQUALIFY, CLASS, POLL, USER, DEBUGFLAG, NEWS, DISABLEFLAG, ROOM.");
+                    return false;
+                }
             }
         }
-        return false;
+        return true;
     }
     
     public boolean canBeOrdered(){return true;}

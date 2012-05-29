@@ -71,6 +71,8 @@ public class ClanCrafting extends CraftingSkill implements ItemCraftor
     public String parametersFile(){ return "clancraft.txt";}
     protected List<List<String>> loadRecipes(){return super.loadRecipes(parametersFile());}
 
+    public boolean supportsDeconstruction() { return false; }
+
 	public void unInvoke()
 	{
 		if(canBeUninvoked())

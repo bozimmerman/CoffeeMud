@@ -38,15 +38,22 @@ import java.util.*;
 @SuppressWarnings("unchecked")
 public class MasterTailoring extends Tailoring
 {
-	public String ID() { return "MasterTailoring"; }
-	public String name(){ return "Master Tailoring";}
-	private static final String[] triggerStrings = {"MASTERKNIT","MKNIT","MTAILOR","MTAILORING","MASTERTAILOR","MASTERTAILORING"};
-	public String[] triggerStrings(){return triggerStrings;}
+    public String ID() { return "MasterTailoring"; }
+    public String name(){ return "Master Tailoring";}
+    private static final String[] triggerStrings = {"MASTERKNIT","MKNIT","MTAILOR","MTAILORING","MASTERTAILOR","MASTERTAILORING"};
+    public String[] triggerStrings(){return triggerStrings;}
 
     public String parametersFile(){ return "mastertailor.txt";}
 
-	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
-	{
+    protected boolean masterCraftCheck(final Item I)
+    {
+        if(I.basePhyStats().level()<31)
+            return false;
+        return true;
+    }
+
+    public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
+    {
         int autoGenerate=0;
         if((auto)&&(commands.size()>0)&&(commands.firstElement() instanceof Integer))
         {
@@ -62,6 +69,6 @@ public class MasterTailoring extends Tailoring
         if(autoGenerate>0)
             commands.insertElementAt(Integer.valueOf(autoGenerate),0);
         return super.invoke(mob,commands,givenTarget,auto,asLevel);
-	}
+    }
 }
 
