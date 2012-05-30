@@ -48,6 +48,8 @@ public class MasterWeaponsmithing extends Weaponsmithing implements ItemCraftor
 
     protected boolean masterCraftCheck(final Item I)
     {
+        if(I.name().toUpperCase().startsWith("MASTER")||(I.name().toUpperCase().indexOf(" MASTER ")>0))
+            return true;
         if(I.basePhyStats().level()<31)
             return false;
         return true;

@@ -85,9 +85,9 @@ public class LeatherWorking extends EnhancedCraftingSkill implements ItemCraftor
                         List<String> V2=new XVector<String>(V);
                         String name=(String)V.get(RCP_FINALNAME);
                         V1.set(RCP_FINALNAME,"Hard "+name);
-                        V1.set(RCP_LEVEL,""+(CMath.s_int((String)V.get(RCP_LEVEL))+5));
+                        V1.set(RCP_LEVEL,""+(CMath.s_int((String)V.get(RCP_LEVEL))+9));
                         V2.set(RCP_FINALNAME,"Studded "+name);
-                        V2.set(RCP_LEVEL,""+(CMath.s_int((String)V.get(RCP_LEVEL))+11));
+                        V2.set(RCP_LEVEL,""+(CMath.s_int((String)V.get(RCP_LEVEL))+18));
                         pleaseAdd1.add(V1);
                         pleaseAdd2.add(V2);
                     }
@@ -151,11 +151,13 @@ public class LeatherWorking extends EnhancedCraftingSkill implements ItemCraftor
             return false;
         if(CMLib.flags().isDeadlyOrMaliciousEffect(I)) 
             return false;
-        if(I.basePhyStats().level()>20)
+        if(I.basePhyStats().level()>30)
+            return false;
+        if(I.name().toUpperCase().startsWith("DESIGNER")||(I.name().toUpperCase().indexOf(" DESIGNER ")>0))
             return false;
         if(I instanceof Armor)
         {
-            final long noWearLocations=Wearable.WORN_FEET|Wearable.WORN_LEFT_FINGER|Wearable.WORN_RIGHT_FINGER|Wearable.WORN_EARS|Wearable.WORN_EYES;
+            final long noWearLocations=Wearable.WORN_LEFT_FINGER|Wearable.WORN_RIGHT_FINGER|Wearable.WORN_EARS;
             if((I.rawProperLocationBitmap() & noWearLocations)>0)
                 return false;
             return true;
@@ -420,7 +422,7 @@ public class LeatherWorking extends EnhancedCraftingSkill implements ItemCraftor
             building.setMaterial(data[0][FOUND_CODE]);
             building.setSecretIdentity("This is the work of "+mob.Name()+".");
             int hardness=RawMaterial.CODES.HARDNESS(data[0][FOUND_CODE])-2;
-            building.basePhyStats().setLevel(CMath.s_int((String)foundRecipe.get(RCP_LEVEL))+(6*hardness));
+            building.basePhyStats().setLevel(CMath.s_int((String)foundRecipe.get(RCP_LEVEL))+hardness+((multiplier-1)*9));
             int capacity=CMath.s_int((String)foundRecipe.get(RCP_CAPACITY));
             long canContain=getContainerType((String)foundRecipe.get(RCP_CONTAINMASK));
             int armordmg=CMath.s_int((String)foundRecipe.get(RCP_ARMORDMG));

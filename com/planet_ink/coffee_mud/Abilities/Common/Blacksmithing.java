@@ -304,6 +304,16 @@ public class Blacksmithing extends EnhancedCraftingSkill implements ItemCraftor
             }
         }
         else
+        if(building instanceof Rideable)
+        {
+            setRideBasis((Rideable)building,misctype);
+            if(capacity==0)
+                ((Rideable)building).setRiderCapacity(1);
+            else
+            if(capacity<5)
+                ((Rideable)building).setRiderCapacity(capacity);
+        }
+        else
         if(building instanceof Container)
         {
             ((Container)building).setCapacity(capacity+woodRequired);

@@ -102,9 +102,7 @@ public class Pottery extends CraftingSkill implements ItemCraftor
         if(I==null) return false;
         if(!super.mayBeCrafted(I))
             return false;
-        if((I.material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_GLASS)
-            return false;
-        if((I.material()==RawMaterial.RESOURCE_GLASS)||(I.material()==RawMaterial.RESOURCE_BONE))
+        if((I.material()!=RawMaterial.RESOURCE_CLAY)&&((I.material()!=RawMaterial.RESOURCE_CHINA)))
             return false;
         if(CMLib.flags().isDeadlyOrMaliciousEffect(I)) 
             return false;

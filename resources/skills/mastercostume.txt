@@ -7,7 +7,7 @@ Designer % Fedora	62	20	4	162	GenArmor	1:HEAD	0	9	0
 Designer % Wimple	52	30	6	192	GenArmor	1:HEAD&&NECK	0	12	0	
 Designer % Bandana	33	20	2	72	GenArmor	-2:HEAD||NECK||LEFT WRIST||RIGHT WRIST	0	0	0	
 Designer % Tights	33	10	5	90	GenArmor	-4:LEGS	0	0	0	
-Designer % Peplum	42	10	1	21	GenArmor	S2:LEGS	0	13	0	
+Designer % Peplum	42	10	1	51	GenArmor	S2:LEGS	0	13	0	
 Designer % Kilt	52	80	3	96	GenArmor	S1:LEGS	0	16	0	
 Designer % Great Kilt	82	100	8	484	GenArmor	S2:LEGS	0	22	0	
 Designer % Cape	52	20	2	64	GenArmor	2:NECK	0	4	0	

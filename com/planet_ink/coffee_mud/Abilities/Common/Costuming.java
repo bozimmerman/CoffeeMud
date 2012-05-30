@@ -118,7 +118,7 @@ public class Costuming extends EnhancedCraftingSkill implements ItemCraftor, Men
     {
         if(I.basePhyStats().level()>31)
             return false;
-        if(I.name().toUpperCase().startsWith("DESIGNER"))
+        if(I.name().toUpperCase().startsWith("DESIGNER")||(I.name().toUpperCase().indexOf(" DESIGNER ")>0))
             return false;
         return true;
     }
@@ -132,17 +132,24 @@ public class Costuming extends EnhancedCraftingSkill implements ItemCraftor, Men
             return false;
         if(CMLib.flags().isDeadlyOrMaliciousEffect(I)) 
             return false;
+        if(I.baseGoldValue()<I.basePhyStats().level())
+            return false;
         if(I instanceof Armor)
         {
-            if(!masterCraftCheck(I)) return false;
-            if(I.baseGoldValue() < I.phyStats().level()) return false;
+            if(!masterCraftCheck(I))
+                return false;
+            if(I.baseGoldValue() < I.phyStats().level())
+                return false;
             return true;
         }
         if(I instanceof Weapon)
         {
-            if(I.basePhyStats().damage()!=0) return false;
-            if(I.basePhyStats().attackAdjustment()!=0) return false;
-            if(!masterCraftCheck(I)) return false;
+            if(I.basePhyStats().damage()!=0)
+                return false;
+            if(I.basePhyStats().attackAdjustment()!=0)
+                return false;
+            if(!masterCraftCheck(I))
+                return false;
             return true;
         }
         return false;

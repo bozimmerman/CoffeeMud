@@ -84,6 +84,14 @@ public class Wainwrighting extends CraftingSkill implements ItemCraftor
             return false;
         if(CMLib.flags().isDeadlyOrMaliciousEffect(I)) 
             return false;
+        if(I instanceof Container)
+        {
+            Container C=(Container)I;
+            if((C.containTypes()==Container.CONTAIN_BODIES)
+            ||(C.containTypes()==Container.CONTAIN_CAGED)
+            ||(C.containTypes()==(Container.CONTAIN_BODIES|Container.CONTAIN_CAGED)))
+                return false;
+        }
         if(I instanceof Rideable)
         {
             Rideable R=(Rideable)I;

@@ -312,14 +312,15 @@ public class CommonSkill extends StdAbility
 			for(int i=0;i<set.size();i++)
 			{
 				int x=-1;
+				String setMat=set.get(i);
 				for(int j=0;j<RawMaterial.MATERIAL_DESCS.length;j++)
-					if(RawMaterial.MATERIAL_DESCS[j].equalsIgnoreCase(set.get(j)))
+					if(RawMaterial.MATERIAL_DESCS[j].equalsIgnoreCase(setMat))
 					{ 
 						x=RawMaterial.MATERIAL_CODES[j];
 						break;
 					}
 				if(x<0)
-					x=RawMaterial.CODES.FIND_IgnoreCase(set.get(i));
+					x=RawMaterial.CODES.FIND_IgnoreCase(setMat);
 				if(x>=0)
 					finalSet.add(Integer.valueOf(x));
 			}

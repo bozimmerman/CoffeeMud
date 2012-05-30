@@ -102,7 +102,7 @@ public class GlassBlowing extends CraftingSkill implements ItemCraftor
         if(I==null) return false;
         if(!super.mayBeCrafted(I))
             return false;
-        if((I.material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_GLASS)
+        if(I.material()!=RawMaterial.RESOURCE_GLASS)
             return false;
         if(CMLib.flags().isDeadlyOrMaliciousEffect(I)) 
             return false;
@@ -135,9 +135,11 @@ public class GlassBlowing extends CraftingSkill implements ItemCraftor
             return true;
         if(I instanceof Armor)
             return false;
-        if(I instanceof Container)
-            return true;
         if((I instanceof Drink)&&(!(I instanceof Potion)))
+            return true;
+        if(I instanceof Potion)
+            return false;
+        if(I instanceof Container)
             return true;
         if(I instanceof FalseLimb)
             return true;

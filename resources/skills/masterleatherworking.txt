@@ -9,10 +9,10 @@
 % Collar	1	30	5	50	GenArmor	NECK	0	1	0	
 % Coat	2	40	30	200	GenArmor	1:TORSO	5	6	0	
 % Jacket	2	30	20	250	GenArmor	1:TORSO	5	6	0	
-% Trenchcoat	3	30	40	450	GenArmor	1:BODY	20	12	0	
+% Trenchcoat	3	30	40	450	GenArmor	1:BODY	20	8	0	
 % Vest	1	30	20	250	GenArmor	S0:TORSO	0	6	0	
-% Hauberk	2	40	20	250	GenArmor	1:TORSO	0	6	0	
-% Jerkin	1	40	20	250	GenArmor	TORSO	0	6	0	
+% Hauberk	2	40	20	250	GenArmor	1:TORSO	0	16	0	
+% Jerkin	1	40	20	250	GenArmor	TORSO	0	16	0	
 % Bikini	1	10	15	150	GenArmor	S-3:TORSO	0	0	0	
 % Halter	1	20	15	100	GenArmor	S-1:TORSO	0	6	0	
 % Battleharness	1	20	5	250	GenArmor	S-2:TORSO	100	6	20	

@@ -1,21 +1,21 @@
 Pointy % Cap	2	10	2	2	GenArmor	1:HEAD	0	1	0	
 % Sombrero	6	20	3	8	GenArmor	1:HEAD	0	2	0	
-% Chef`s Hat	10	30	8	2	GenArmor	HEAD	0	3	0	
-% Coxcomb	12	20	3	2	GenArmor	HEAD	0	3	0	
-% Turban	17	25	8	2	GenArmor	1:HEAD	0	4	0	
-% Fedora	18	20	4	2	GenArmor	1:HEAD	0	4	0	
+% Chef`s Hat	10	30	8	12	GenArmor	HEAD	0	3	0	
+% Coxcomb	12	20	3	15	GenArmor	HEAD	0	3	0	
+% Turban	17	25	8	20	GenArmor	1:HEAD	0	4	0	
+% Fedora	18	20	4	20	GenArmor	1:HEAD	0	4	0	
 % Wimple	18	30	6	27	GenArmor	1:HEAD&&NECK	0	6	0	
-% Bandana	6	20	2	5	GenArmor	-2:HEAD||NECK||LEFT WRIST||RIGHT WRIST	0	0	0	
+% Bandana	6	20	2	8	GenArmor	-2:HEAD||NECK||LEFT WRIST||RIGHT WRIST	0	0	0	
 % Tights	1	10	5	12	GenArmor	-4:LEGS	0	0	0	
 % Peplum	2	10	1	4	GenArmor	S2:LEGS	0	1	0	
 % Kilt	7	80	3	24	GenArmor	S1:LEGS	0	4	0	
 Great % Kilt	24	100	8	96	GenArmor	S2:LEGS	0	10	0	
-% Cape	6	20	2	7	GenArmor	2:NECK	0	1	0	
+% Cape	6	20	2	17	GenArmor	2:NECK	0	1	0	
 % Boa	11	10	16	12	GenArmor	2:NECK	0	2	0	
-% Cravat	16	10	5	6	GenArmor	1:NECK	0	2	0	
-% Tie	17	15	3	6	GenArmor	1:NECK	0	2	0	
-% Rabat	18	20	2	6	GenArmor	-1:NECK	0	2	0	
-% Jabot	30	20	12	6	GenArmor	1:NECK	0	3	0	
+% Cravat	16	10	5	26	GenArmor	1:NECK	0	2	0	
+% Tie	17	15	3	26	GenArmor	1:NECK	0	2	0	
+% Rabat	18	20	2	26	GenArmor	-1:NECK	0	2	0	
+% Jabot	30	20	12	36	GenArmor	1:NECK	0	3	0	
 % Bikini	1	20	2	15	GenArmor	S-3:TORSO&&LEGS	0	0	0	
 % Kimono	13	60	6	112	GenArmor	1:TORSO&&ARMS	10	12	0	
 % Smoking Jacket	26	80	20	96	GenArmor	1:TORSO&&ARMS	5	20	0	

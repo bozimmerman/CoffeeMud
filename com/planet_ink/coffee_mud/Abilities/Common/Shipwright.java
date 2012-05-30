@@ -121,6 +121,8 @@ public class Shipwright extends CraftingSkill implements ItemCraftor, MendingSki
         if(I==null) return false;
         if(!super.mayBeCrafted(I))
             return false;
+        if((I.material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_WOODEN)
+            return false;
         if(CMLib.flags().isDeadlyOrMaliciousEffect(I)) 
             return false;
         if(I instanceof Rideable)
@@ -142,17 +144,10 @@ public class Shipwright extends CraftingSkill implements ItemCraftor, MendingSki
     protected boolean canMend(MOB mob, Environmental E, boolean quiet)
     {
         if(!super.canMend(mob,E,quiet)) return false;
-        Item IE=(Item)E;
-        if(!(IE instanceof Rideable))
+        if((!(E instanceof Item))||(!mayICraft((Item)E)))
         {
             if(!quiet)
-                commonTell(mob,"You don't know how to mend that.");
-            return false;
-        }
-        if((IE.material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_WOODEN)
-        {
-            if(!quiet)
-                commonTell(mob,"That's not made of wood.  That can't be mended.");
+                commonTell(mob,"That's not a shipwrighting item.");
             return false;
         }
         return true;

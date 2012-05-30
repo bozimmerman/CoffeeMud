@@ -112,8 +112,6 @@ public class Fletching extends EnhancedCraftingSkill implements ItemCraftor, Men
             return false;
         if((I.material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_WOODEN)
             return false;
-        if(CMLib.flags().isDeadlyOrMaliciousEffect(I)) 
-            return false;
         if(I instanceof Ammunition)
             return true;
         if(!(I instanceof Weapon))

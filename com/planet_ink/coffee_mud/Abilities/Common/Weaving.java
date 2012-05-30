@@ -142,12 +142,15 @@ public class Weaving extends EnhancedCraftingSkill implements ItemCraftor, Mendi
         if(I==null) return false;
         if(!super.mayBeCrafted(I))
             return false;
+        if(I.material()==RawMaterial.RESOURCE_PAPER)
+            return false;
         if((I.material()!=RawMaterial.RESOURCE_COTTON)
         &&(I.material()!=RawMaterial.RESOURCE_SILK)
         &&(I.material()!=RawMaterial.RESOURCE_HEMP)
         &&(I.material()!=RawMaterial.RESOURCE_VINE)
         &&(I.material()!=RawMaterial.RESOURCE_WHEAT)
-        &&(I.material()!=RawMaterial.RESOURCE_SEAWEED))
+        &&(I.material()!=RawMaterial.RESOURCE_SEAWEED)
+        &&(((I.material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_VEGETATION)))
             return false;
         if(CMLib.flags().isDeadlyOrMaliciousEffect(I)) 
             return false;
@@ -169,13 +172,7 @@ public class Weaving extends EnhancedCraftingSkill implements ItemCraftor, Mendi
         if(I instanceof Shield)
             return true;
         if(I instanceof Weapon)
-        {
-            Weapon W=(Weapon)I;
-            if((W.weaponClassification()!=Weapon.CLASS_BLUNT)
-            ||(W.requiresAmmunition()))
-                return false;
             return true;
-        }
         if(I instanceof Light)
             return true;
         if(I instanceof Armor)

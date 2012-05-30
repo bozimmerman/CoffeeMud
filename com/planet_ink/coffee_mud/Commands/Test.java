@@ -128,7 +128,7 @@ public class Test extends StdCommand
         Item[] IS=new Item[2];
         Item I1=(Item)I.copyOf();
         if(A!=null)
-	        giveAbility(I1,A);
+            giveAbility(I1,A);
         if(code<2)
         {
             mob1.addItem(I1);
@@ -145,7 +145,7 @@ public class Test extends StdCommand
         
         Item I2=(Item)I.copyOf();
         if(A!=null)
-	        giveAbility(I2,A);
+            giveAbility(I2,A);
         if(mob2!=null)
         {
             if(code<2)
@@ -219,16 +219,16 @@ public class Test extends StdCommand
             String what=((String)commands.elementAt(1)).toUpperCase().trim();
             if(what.equalsIgnoreCase("levelxptest"))
             {
-            	for(int i=0;i<100;i++)
-            		CMLib.leveler().getLevelExperience(CMLib.dice().roll(1,100,0));
-            	MOB M=CMClass.getMOB("StdMOB");
+                for(int i=0;i<100;i++)
+                    CMLib.leveler().getLevelExperience(CMLib.dice().roll(1,100,0));
+                MOB M=CMClass.getMOB("StdMOB");
                 M.setExperience(0);
-            	for(int i=1;i<100;i++)
-            	{
-            		M.basePhyStats().setLevel(i);
-            		M.phyStats().setLevel(i);
-            		M.baseCharStats().setClassLevel(M.baseCharStats().getCurrentClass(),i);
-            		M.charStats().setClassLevel(M.baseCharStats().getCurrentClass(),i);
+                for(int i=1;i<100;i++)
+                {
+                    M.basePhyStats().setLevel(i);
+                    M.phyStats().setLevel(i);
+                    M.baseCharStats().setClassLevel(M.baseCharStats().getCurrentClass(),i);
+                    M.charStats().setClassLevel(M.baseCharStats().getCurrentClass(),i);
                     int level=M.basePhyStats().level();
                     int xp=0;
                     String s=i+") "+M.getExperience()+"/"+M.getExpNextLevel()+"/"+M.getExpNeededLevel()+": ";
@@ -238,7 +238,7 @@ public class Test extends StdCommand
                         CMLib.leveler().gainExperience(M,null,"",10,true);
                     }
                     mob.tell(s+xp);
-            	}
+                }
             }
             else
             if(what.equalsIgnoreCase("levelcharts"))
@@ -249,48 +249,114 @@ public class Test extends StdCommand
                 mob.tell(str.toString());
             }
             else
+            if(what.equalsIgnoreCase("timsdeconstruction"))
+            {
+                mob.tell("Checking...");
+                String theRest=CMParms.combine(commands,2).toUpperCase();
+                for(Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
+                {
+                    Ability A=a.nextElement();
+                    if(A instanceof ItemCraftor)
+                    {
+                        ItemCraftor I=(ItemCraftor)A;
+                        if((theRest.length()==0)||(I.ID().toUpperCase().indexOf(theRest)>=0))
+                        {
+                            List<ItemCraftor.ItemKeyPair> set=I.craftAllItemSets();
+                            for(ItemCraftor.ItemKeyPair KP : set)
+                            {
+                                if((KP.item instanceof Armor)||(KP.item instanceof Weapon))
+                                {
+                                    int newLevel=CMLib.itemBuilder().timsLevelCalculator(KP.item);
+                                    if((newLevel < Math.round((double)KP.item.basePhyStats().level() * .7))
+                                    ||(newLevel > Math.round((double)KP.item.basePhyStats().level() * 1.3)))
+                                        mob.tell(KP.item.name()+": "+KP.item.basePhyStats().level()+"!="+newLevel);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            if(what.equalsIgnoreCase("deconstruction"))
+            {
+                mob.tell("Building item sets...");
+                Hashtable<ItemCraftor,List<ItemCraftor.ItemKeyPair>> allSets=new Hashtable();
+                for(Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
+                {
+                    Ability A=a.nextElement();
+                    if(A instanceof ItemCraftor)
+                    {
+                        ItemCraftor I=(ItemCraftor)A;
+                        allSets.put(I,I.craftAllItemSets());
+                    }
+                }
+                mob.tell("Sorting...");
+                for(ItemCraftor I : allSets.keySet())
+                {
+                    List<ItemCraftor.ItemKeyPair> allItems=allSets.get(I);
+                    for(ItemCraftor.ItemKeyPair P : allItems)
+                    {
+                        for(ItemCraftor oI : allSets.keySet())
+                        {
+                            if(oI.supportsDeconstruction())
+                            {
+                                if(!oI.mayICraft(P.item))
+                                {
+                                    if(oI==I)
+                                        Log.sysOut("INFO",P.item.name()+" can't even be built by "+oI.ID());
+                                }
+                                else
+                                {
+                                    if(oI!=I)
+                                        Log.sysOut("INFO",P.item.name()+", owned by "+I.ID()+" can also be built by "+oI.ID());
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            else
             if(what.equalsIgnoreCase("statcreationspeed"))
             {
-            	int times=CMath.s_int(CMParms.combine(commands,2));
-            	if(times<=0) times=9999999;
-            	mob.tell("times="+times);
-            	Object newStats=null;
-            	long time=System.currentTimeMillis();
-            	for(int i=0;i<times;i++)
-            		newStats=(PhyStats)mob.basePhyStats().copyOf();
-            	mob.tell("PhyStats CopyOf took :"+(System.currentTimeMillis()-time));
-            	time=System.currentTimeMillis();
-            	for(int i=0;i<times;i++)
-            		mob.basePhyStats().copyInto((PhyStats)newStats);
-            	mob.tell("PhyStats CopyInto took :"+(System.currentTimeMillis()-time));
-            	
-            	time=System.currentTimeMillis();
-            	for(int i=0;i<times;i++)
-            		newStats=(CharStats)mob.baseCharStats().copyOf();
-            	mob.tell("CharStats CopyOf took :"+(System.currentTimeMillis()-time));
-            	time=System.currentTimeMillis();
-            	for(int i=0;i<times;i++)
-            		mob.baseCharStats().copyInto((CharStats)newStats);
-            	mob.tell("CharStats CopyInto took :"+(System.currentTimeMillis()-time));
-            	
-            	time=System.currentTimeMillis();
-            	for(int i=0;i<times;i++)
-            		newStats=(CharState)mob.maxState().copyOf();
-            	mob.tell("CharState CopyOf took :"+(System.currentTimeMillis()-time));
-            	time=System.currentTimeMillis();
-            	for(int i=0;i<times;i++)
-            		mob.maxState().copyInto((CharState)newStats);
-            	mob.tell("CharState CopyInto took :"+(System.currentTimeMillis()-time));
+                int times=CMath.s_int(CMParms.combine(commands,2));
+                if(times<=0) times=9999999;
+                mob.tell("times="+times);
+                Object newStats=null;
+                long time=System.currentTimeMillis();
+                for(int i=0;i<times;i++)
+                    newStats=(PhyStats)mob.basePhyStats().copyOf();
+                mob.tell("PhyStats CopyOf took :"+(System.currentTimeMillis()-time));
+                time=System.currentTimeMillis();
+                for(int i=0;i<times;i++)
+                    mob.basePhyStats().copyInto((PhyStats)newStats);
+                mob.tell("PhyStats CopyInto took :"+(System.currentTimeMillis()-time));
+                
+                time=System.currentTimeMillis();
+                for(int i=0;i<times;i++)
+                    newStats=(CharStats)mob.baseCharStats().copyOf();
+                mob.tell("CharStats CopyOf took :"+(System.currentTimeMillis()-time));
+                time=System.currentTimeMillis();
+                for(int i=0;i<times;i++)
+                    mob.baseCharStats().copyInto((CharStats)newStats);
+                mob.tell("CharStats CopyInto took :"+(System.currentTimeMillis()-time));
+                
+                time=System.currentTimeMillis();
+                for(int i=0;i<times;i++)
+                    newStats=(CharState)mob.maxState().copyOf();
+                mob.tell("CharState CopyOf took :"+(System.currentTimeMillis()-time));
+                time=System.currentTimeMillis();
+                for(int i=0;i<times;i++)
+                    mob.maxState().copyInto((CharState)newStats);
+                mob.tell("CharState CopyInto took :"+(System.currentTimeMillis()-time));
             }
             else
             if(what.equalsIgnoreCase("randomroompick"))
             {
-            	int num=CMath.s_int(CMParms.combine(commands,2));
-            	int numNull=0;
-            	for(int i=0;i<num;i++)
-            		if(mob.location().getArea().getRandomProperRoom()==null)
-            			numNull++;
-            	mob.tell("Picked "+(num-numNull)+"/"+num+" rooms in this area.");
+                int num=CMath.s_int(CMParms.combine(commands,2));
+                int numNull=0;
+                for(int i=0;i<num;i++)
+                    if(mob.location().getArea().getRandomProperRoom()==null)
+                        numNull++;
+                mob.tell("Picked "+(num-numNull)+"/"+num+" rooms in this area.");
             }
             else
             if(what.equalsIgnoreCase("edrecipe"))
@@ -376,24 +442,24 @@ public class Test extends StdCommand
             else
             if(what.equalsIgnoreCase("horsedraggers"))
             {
-            	MOB M=CMClass.getMOB("GenMOB");
-            	M.setName("MrRider");
-            	M.setDisplayText("MrRider is here");
-            	Behavior B=CMClass.getBehavior("Mobile");
-            	B.setParms("min=1 max=1 chance=99 wander");
-            	M.addBehavior(B);
-            	M.bringToLife(mob.location(),true);
-            	MOB M2=CMClass.getMOB("GenRideable");
-            	M2.setName("a pack horse");
-            	M2.setDisplayText("a pack horse is here");
-            	M2.bringToLife(mob.location(),true);
-            	M.setRiding((Rideable)M2);
-            	Behavior B2=CMClass.getBehavior("Scriptable");
-            	B2.setParms("RAND_PROG 100;IF !ISHERE(nondescript);MPECHO LOST MY CONTAINER $d $D!; GOSSIP LOST MY CONTAINER! $d $D; MPPURGE $i;ENDIF;~;");
-            	M2.addBehavior(B2);
-            	Item I=CMClass.getBasicItem("LockableContainer");
-            	mob.location().addItem(I,ItemPossessor.Expire.Player_Drop);
-            	I.setRiding((Rideable)M2);
+                MOB M=CMClass.getMOB("GenMOB");
+                M.setName("MrRider");
+                M.setDisplayText("MrRider is here");
+                Behavior B=CMClass.getBehavior("Mobile");
+                B.setParms("min=1 max=1 chance=99 wander");
+                M.addBehavior(B);
+                M.bringToLife(mob.location(),true);
+                MOB M2=CMClass.getMOB("GenRideable");
+                M2.setName("a pack horse");
+                M2.setDisplayText("a pack horse is here");
+                M2.bringToLife(mob.location(),true);
+                M.setRiding((Rideable)M2);
+                Behavior B2=CMClass.getBehavior("Scriptable");
+                B2.setParms("RAND_PROG 100;IF !ISHERE(nondescript);MPECHO LOST MY CONTAINER $d $D!; GOSSIP LOST MY CONTAINER! $d $D; MPPURGE $i;ENDIF;~;");
+                M2.addBehavior(B2);
+                Item I=CMClass.getBasicItem("LockableContainer");
+                mob.location().addItem(I,ItemPossessor.Expire.Player_Drop);
+                I.setRiding((Rideable)M2);
             }
             
             Ability A2=null;
@@ -743,51 +809,51 @@ public class Test extends StdCommand
             }
             if(what.equalsIgnoreCase("cmparms"))
             {
-            	Vector V=CMParms.parseAny("blah~BLAH~BLAH!",'~',true);
-            	if(V.size()!=3){ mob.tell("Error cmparms-1"); return false;}
-            	if(!CMParms.combineWithX(V, "~", 0).equals("blah~BLAH~BLAH!~")){ mob.tell("Error cmparms-2"); return false;}
-            	
-            	V=CMParms.parseAny("blah~~",'~',true);
-            	if(V.size()!=1){ mob.tell("Error cmparms-3"); return false;}
-            	if(!V.firstElement().equals("blah")){ mob.tell("Error cmparms-4"); return false;}
-            	
-            	V=CMParms.parseAny("blah~~",'~',false);
-            	if(V.size()!=3){ mob.tell("Error cmparms-5"); return false;}
-            	if(!CMParms.combineWithX(V, "~", 0).equals("blah~~~")){ mob.tell("Error cmparms-6"); return false;}
-            	
-            	V=CMParms.parseAny("blah~~BLAH~~BLAH!","~~",true);
-            	if(V.size()!=3){ mob.tell("Error cmparms-7"); return false;}
-            	if(!CMParms.combineWithX(V, "~~", 0).equals("blah~~BLAH~~BLAH!~~")){ mob.tell("Error cmparms-8"); return false;}
-            	
-            	V=CMParms.parseAny("blah~~~~","~~",true);
-            	if(V.size()!=1){ mob.tell("Error cmparms-9"); return false;}
-            	if(!V.firstElement().equals("blah")){ mob.tell("Error cmparms-10"); return false;}
-            	
-            	V=CMParms.parseAny("blah~~~~","~~",false);
-            	if(V.size()!=3){ mob.tell("Error cmparms-11"); return false;}
-            	if(!CMParms.combineWithX(V, "~~", 0).equals("blah~~~~~~")){ mob.tell("Error cmparms-12"); return false;}
-            	
-            	V=CMParms.parseSentences("blah. blahblah. poo");
-            	if(V.size()!=3){ mob.tell("Error cmparms-13"); return false;}
-            	if(!V.firstElement().equals("blah.")){ mob.tell("Error cmparms-14:"+V.firstElement()); return false;}
-            	if(!V.elementAt(1).equals("blahblah.")){ mob.tell("Error cmparms-15:"+V.elementAt(1)); return false;}
-            	if(!V.elementAt(2).equals("poo")){ mob.tell("Error cmparms-16:"+V.elementAt(2)); return false;}
-            	
-            	V=CMParms.parseAny("blah~BLAH~BLAH!~",'~',true);
-            	if(V.size()!=3){ mob.tell("Error cmparms-17"); return false;}
-            	if(!CMParms.combineWithX(V, "~", 0).equals("blah~BLAH~BLAH!~")){ mob.tell("Error cmparms-18"); return false;}
-            	
-            	V=CMParms.parseAny("blah~~BLAH~~BLAH!~~","~~",true);
-            	if(V.size()!=3){ mob.tell("Error cmparms-19"); return false;}
-            	if(!CMParms.combineWithX(V, "~~", 0).equals("blah~~BLAH~~BLAH!~~")){ mob.tell("Error cmparms-20"); return false;}
-            	
-            	V=CMParms.parseAny("blah~BLAH~BLAH!~",'~',false);
-            	if(V.size()!=4){ mob.tell("Error cmparms-21"); return false;}
-            	if(!CMParms.combineWithX(V, "~", 0).equals("blah~BLAH~BLAH!~~")){ mob.tell("Error cmparms-22"); return false;}
-            	
-            	V=CMParms.parseAny("blah~~BLAH~~BLAH!~~","~~",false);
-            	if(V.size()!=4){ mob.tell("Error cmparms-23"); return false;}
-            	if(!CMParms.combineWithX(V, "~~", 0).equals("blah~~BLAH~~BLAH!~~~~")){ mob.tell("Error cmparms-24"); return false;}
+                Vector V=CMParms.parseAny("blah~BLAH~BLAH!",'~',true);
+                if(V.size()!=3){ mob.tell("Error cmparms-1"); return false;}
+                if(!CMParms.combineWithX(V, "~", 0).equals("blah~BLAH~BLAH!~")){ mob.tell("Error cmparms-2"); return false;}
+                
+                V=CMParms.parseAny("blah~~",'~',true);
+                if(V.size()!=1){ mob.tell("Error cmparms-3"); return false;}
+                if(!V.firstElement().equals("blah")){ mob.tell("Error cmparms-4"); return false;}
+                
+                V=CMParms.parseAny("blah~~",'~',false);
+                if(V.size()!=3){ mob.tell("Error cmparms-5"); return false;}
+                if(!CMParms.combineWithX(V, "~", 0).equals("blah~~~")){ mob.tell("Error cmparms-6"); return false;}
+                
+                V=CMParms.parseAny("blah~~BLAH~~BLAH!","~~",true);
+                if(V.size()!=3){ mob.tell("Error cmparms-7"); return false;}
+                if(!CMParms.combineWithX(V, "~~", 0).equals("blah~~BLAH~~BLAH!~~")){ mob.tell("Error cmparms-8"); return false;}
+                
+                V=CMParms.parseAny("blah~~~~","~~",true);
+                if(V.size()!=1){ mob.tell("Error cmparms-9"); return false;}
+                if(!V.firstElement().equals("blah")){ mob.tell("Error cmparms-10"); return false;}
+                
+                V=CMParms.parseAny("blah~~~~","~~",false);
+                if(V.size()!=3){ mob.tell("Error cmparms-11"); return false;}
+                if(!CMParms.combineWithX(V, "~~", 0).equals("blah~~~~~~")){ mob.tell("Error cmparms-12"); return false;}
+                
+                V=CMParms.parseSentences("blah. blahblah. poo");
+                if(V.size()!=3){ mob.tell("Error cmparms-13"); return false;}
+                if(!V.firstElement().equals("blah.")){ mob.tell("Error cmparms-14:"+V.firstElement()); return false;}
+                if(!V.elementAt(1).equals("blahblah.")){ mob.tell("Error cmparms-15:"+V.elementAt(1)); return false;}
+                if(!V.elementAt(2).equals("poo")){ mob.tell("Error cmparms-16:"+V.elementAt(2)); return false;}
+                
+                V=CMParms.parseAny("blah~BLAH~BLAH!~",'~',true);
+                if(V.size()!=3){ mob.tell("Error cmparms-17"); return false;}
+                if(!CMParms.combineWithX(V, "~", 0).equals("blah~BLAH~BLAH!~")){ mob.tell("Error cmparms-18"); return false;}
+                
+                V=CMParms.parseAny("blah~~BLAH~~BLAH!~~","~~",true);
+                if(V.size()!=3){ mob.tell("Error cmparms-19"); return false;}
+                if(!CMParms.combineWithX(V, "~~", 0).equals("blah~~BLAH~~BLAH!~~")){ mob.tell("Error cmparms-20"); return false;}
+                
+                V=CMParms.parseAny("blah~BLAH~BLAH!~",'~',false);
+                if(V.size()!=4){ mob.tell("Error cmparms-21"); return false;}
+                if(!CMParms.combineWithX(V, "~", 0).equals("blah~BLAH~BLAH!~~")){ mob.tell("Error cmparms-22"); return false;}
+                
+                V=CMParms.parseAny("blah~~BLAH~~BLAH!~~","~~",false);
+                if(V.size()!=4){ mob.tell("Error cmparms-23"); return false;}
+                if(!CMParms.combineWithX(V, "~~", 0).equals("blah~~BLAH~~BLAH!~~~~")){ mob.tell("Error cmparms-24"); return false;}
             }
             if((what.equalsIgnoreCase("all_properties"))
             ||(what.equalsIgnoreCase("Prop_FightSpellCast")))
@@ -801,8 +867,8 @@ public class Test extends StdCommand
                 if(effectCheck(maliciousspells,mobs[0])){ mob.tell("Error11-2"); return false;}
                 for(int i=0;i<100;i++)
                 {
-                	mobs[1].curState().setHitPoints(1000);
-                	mobs[0].curState().setHitPoints(1000);
+                    mobs[1].curState().setHitPoints(1000);
+                    mobs[0].curState().setHitPoints(1000);
                     CMLib.combat().postAttack(mobs[0],mobs[1],mobs[0].fetchWieldedItem());
                     if(effectCheck(maliciousspells,mobs[1]))
                         break;
@@ -818,8 +884,8 @@ public class Test extends StdCommand
                 if(effectCheck(maliciousspells,mobs[0])){ mob.tell("Error11-5"); return false;}
                 for(int i=0;i<100;i++)
                 {
-                	mobs[1].curState().setHitPoints(1000);
-                	mobs[0].curState().setHitPoints(1000);
+                    mobs[1].curState().setHitPoints(1000);
+                    mobs[0].curState().setHitPoints(1000);
                     CMLib.combat().postAttack(mobs[1],mobs[0],mobs[1].fetchWieldedItem());
                     if(effectCheck(maliciousspells,mobs[1]))
                         break;
@@ -835,8 +901,8 @@ public class Test extends StdCommand
                 if(effectCheck(maliciousspells,mobs[0])){ mob.tell("Error11-8"); return false;}
                 for(int i=0;i<100;i++)
                 {
-                	mobs[1].curState().setHitPoints(1000);
-                	mobs[0].curState().setHitPoints(1000);
+                    mobs[1].curState().setHitPoints(1000);
+                    mobs[0].curState().setHitPoints(1000);
                     CMLib.combat().postAttack(mobs[0],mobs[1],mobs[0].fetchWieldedItem());
                     if(effectCheck(maliciousspells,mobs[1]))
                         break;
@@ -1156,13 +1222,13 @@ public class Test extends StdCommand
                 reqA.setMiscText("NOFOL -EVIL");
                 R2.addNonUninvokableEffect(reqA);
                 
-        		CMLib.factions().setAlignment(mobs[0],Faction.ALIGN_EVIL);
+                CMLib.factions().setAlignment(mobs[0],Faction.ALIGN_EVIL);
                 
                 CMLib.tracking().walk(mobs[0],Directions.UP,false,false);
                 if(mobs[0].location() == R2)
                 { mob.tell("Error23-1"); return false;}
                 
-        		CMLib.factions().setAlignment(mobs[0],Faction.ALIGN_NEUTRAL);
+                CMLib.factions().setAlignment(mobs[0],Faction.ALIGN_NEUTRAL);
                 CMLib.tracking().walk(mobs[0],Directions.UP,false,false);
                 if(mobs[0].location() != R2)
                 { mob.tell("Error23-2"); return false;}
@@ -1170,13 +1236,13 @@ public class Test extends StdCommand
                 R.bringMobHere(mobs[0],false);
                 
                 reqA.setMiscText("NOFOL -ALL +EVIL");
-        		CMLib.factions().setAlignment(mobs[0],Faction.ALIGN_NEUTRAL);
+                CMLib.factions().setAlignment(mobs[0],Faction.ALIGN_NEUTRAL);
                 
                 CMLib.tracking().walk(mobs[0],Directions.UP,false,false);
                 if(mobs[0].location() == R2)
                 { mob.tell("Error23-3"); return false;}
                 
-        		CMLib.factions().setAlignment(mobs[0],Faction.ALIGN_EVIL);
+                CMLib.factions().setAlignment(mobs[0],Faction.ALIGN_EVIL);
                 
                 CMLib.tracking().walk(mobs[0],Directions.UP,false,false);
                 if(mobs[0].location() != R2)
@@ -1192,7 +1258,7 @@ public class Test extends StdCommand
                 reqA.setMiscText("people=1 weight=100 items=1");
                 R2.addNonUninvokableEffect(reqA);
                 IS=giveTo(CMClass.getWeapon("Sword"),null,mobs[0],mobs[1],0);
-            	
+                
                 CMLib.tracking().walk(mobs[0],Directions.UP,false,false);
                 if(mobs[0].location() != R2)
                 { mob.tell("Error24-1"); return false;}
@@ -1218,47 +1284,47 @@ public class Test extends StdCommand
             if((what.equalsIgnoreCase("all_properties"))
             ||(what.equalsIgnoreCase("Prop_ReqClasses")))
             {
-            	
+                
             }
             if((what.equalsIgnoreCase("all_properties"))
             ||(what.equalsIgnoreCase("Prop_ReqEntry")))
             {
-            	
+                
             }
             if((what.equalsIgnoreCase("all_properties"))
             ||(what.equalsIgnoreCase("Prop_ReqHeight")))
             {
-            	
+                
             }
             if((what.equalsIgnoreCase("all_properties"))
             ||(what.equalsIgnoreCase("Prop_ReqLevels")))
             {
-            	
+                
             }
             if((what.equalsIgnoreCase("all_properties"))
             ||(what.equalsIgnoreCase("Prop_ReqNoMOB")))
             {
-            	
+                
             }
             if((what.equalsIgnoreCase("all_properties"))
             ||(what.equalsIgnoreCase("Prop_ReqPKill")))
             {
-            	
+                
             }
             if((what.equalsIgnoreCase("all_properties"))
             ||(what.equalsIgnoreCase("Prop_ReqRaces")))
             {
-            	
+                
             }
             if((what.equalsIgnoreCase("all_properties"))
             ||(what.equalsIgnoreCase("Prop_ReqStat")))
             {
-            	
+                
             }
             if((what.equalsIgnoreCase("all_properties"))
             ||(what.equalsIgnoreCase("Prop_ReqTattoo")))
             {
-            	
+                
             }
             reset(mobs,backups,R,IS,R2);
             CMLib.map().emptyRoom(R2,null);

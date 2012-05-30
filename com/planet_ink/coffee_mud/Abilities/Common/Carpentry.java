@@ -133,6 +133,8 @@ public class Carpentry extends EnhancedCraftingSkill implements ItemCraftor
             return false;
         if(CMLib.flags().isDeadlyOrMaliciousEffect(I)) 
             return false;
+        if(I instanceof MusicalInstrument)
+            return false;
         if(I instanceof Rideable)
         {
             Rideable R=(Rideable)I;
@@ -160,10 +162,18 @@ public class Carpentry extends EnhancedCraftingSkill implements ItemCraftor
         }
         if(I instanceof Light)
             return true;
+        if(I instanceof Ammunition)
+            return false;
         if(I instanceof Armor)
             return false;
         if(I instanceof Container)
+        {
+            Container C=(Container)I;
+            if((C.containTypes()==Container.CONTAIN_CAGED)
+            ||(C.containTypes()==(Container.CONTAIN_BODIES|Container.CONTAIN_CAGED)))
+                return false;
             return true;
+        }
         if((I instanceof Drink)&&(!(I instanceof Potion)))
             return true;
         if(I instanceof FalseLimb)

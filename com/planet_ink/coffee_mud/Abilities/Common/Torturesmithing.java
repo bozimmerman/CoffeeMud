@@ -94,12 +94,12 @@ public class Torturesmithing extends CraftingSkill implements ItemCraftor
             return false;
         if(!CMLib.flags().isDeadlyOrMaliciousEffect(I)) 
             return false;
-        if((I.material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_WOODEN)
+        if(I instanceof Ammunition)
             return false;
         if(I instanceof Rideable)
             return true;
         if(I instanceof Shield)
-            return true;
+            return false;
         if(I instanceof Weapon)
             return false;
         if(I instanceof Armor)

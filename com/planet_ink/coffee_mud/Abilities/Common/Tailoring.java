@@ -118,6 +118,8 @@ public class Tailoring extends EnhancedCraftingSkill implements ItemCraftor, Men
     {
         if(I.basePhyStats().level()>30)
             return false;
+        if(I.name().toUpperCase().startsWith("DESIGNER")||(I.name().toUpperCase().indexOf(" DESIGNER ")>0))
+            return false;
         return true;
     }
 
@@ -131,6 +133,8 @@ public class Tailoring extends EnhancedCraftingSkill implements ItemCraftor, Men
         if(CMLib.flags().isDeadlyOrMaliciousEffect(I)) 
             return false;
         if(!masterCraftCheck(I))
+            return false;
+        if(I.baseGoldValue()>I.basePhyStats().level())
             return false;
         if(I instanceof Rideable)
         {
@@ -148,13 +152,16 @@ public class Tailoring extends EnhancedCraftingSkill implements ItemCraftor, Men
         if(I instanceof Armor)
         {
             final long nonWearablePlaces=Wearable.WORN_FEET|Wearable.WORN_LEFT_FINGER|Wearable.WORN_RIGHT_FINGER|Wearable.WORN_EARS|Wearable.WORN_EYES;
-            if((I.rawProperLocationBitmap()&nonWearablePlaces)>0) return false;
+            if((I.rawProperLocationBitmap()&nonWearablePlaces)>0) 
+                return false;
             return true;
         }
         if(I instanceof Weapon)
         {
-            if(I.basePhyStats().damage()!=0) return false;
-            if(I.basePhyStats().attackAdjustment()!=0) return false;
+            if(I.basePhyStats().damage()!=0) 
+                return false;
+            if(I.basePhyStats().attackAdjustment()!=0) 
+                return false;
             return true;
         }
         return false;

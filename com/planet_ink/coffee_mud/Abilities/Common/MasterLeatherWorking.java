@@ -62,7 +62,6 @@ public class MasterLeatherWorking extends EnhancedCraftingSkill implements ItemC
     protected static final int RCP_SPELL=10;
 
     public String parametersFile(){ return "masterleatherworking.txt";}
-    protected List<List<String>> loadRecipes(){return super.loadRecipes(parametersFile());}
 
     public void unInvoke()
     {
@@ -113,11 +112,11 @@ public class MasterLeatherWorking extends EnhancedCraftingSkill implements ItemC
             return false;
         if(CMLib.flags().isDeadlyOrMaliciousEffect(I)) 
             return false;
-        if(I.basePhyStats().level()<21)
+        if(I.basePhyStats().level()<31)
             return false;
         if(I instanceof Armor)
         {
-            final long noWearLocations=Wearable.WORN_FEET|Wearable.WORN_LEFT_FINGER|Wearable.WORN_RIGHT_FINGER|Wearable.WORN_EARS|Wearable.WORN_EYES;
+            final long noWearLocations=Wearable.WORN_LEFT_FINGER|Wearable.WORN_RIGHT_FINGER|Wearable.WORN_EARS;
             if((I.rawProperLocationBitmap() & noWearLocations)>0)
                 return false;
             return true;
@@ -169,6 +168,64 @@ public class MasterLeatherWorking extends EnhancedCraftingSkill implements ItemC
         return true;
     }
 
+    protected List<List<String>> loadRecipes()
+    {
+        String filename=parametersFile();
+        List<List<String>> recipes=(List<List<String>>)Resources.getResource("PARSED: "+filename);
+        if(recipes==null)
+        {
+            StringBuffer str=new CMFile(Resources.buildResourcePath("skills")+filename,null,true).text();
+            recipes=loadList(str);
+            if(recipes.size()==0)
+                Log.errOut("LeatherWorking","Recipes not found!");
+            else
+            {
+                List<List<String>> pleaseAdd=new Vector();
+                for(int r=0;r<recipes.size();r++)
+                {
+                    List<String> V=recipes.get(r);
+                    if(V.size()>0)
+                    {
+                        String name=(String)V.get(RCP_FINALNAME);
+                        int baseLevel=CMath.s_int((String)V.get(RCP_LEVEL))+2;
+                        
+                        List<String> V1=new XVector<String>(V);
+                        V1.set(RCP_FINALNAME,"Cuirbouli "+name);
+                        V1.set(RCP_LEVEL,""+(baseLevel+37));
+                        pleaseAdd.add(V1);
+                        
+                        V1=new XVector<String>(V);
+                        V1.set(RCP_FINALNAME,"Reinforced "+name);
+                        V1.set(RCP_LEVEL,""+(baseLevel+45));
+                        pleaseAdd.add(V1);
+                        
+                        V1=new XVector<String>(V);
+                        V1.set(RCP_FINALNAME,"Masterwork "+name);
+                        V1.set(RCP_LEVEL,""+(baseLevel+54));
+                        pleaseAdd.add(V1);
+                        
+                        V1=new XVector<String>(V);
+                        V1.set(RCP_FINALNAME,"Laminar "+name);
+                        V1.set(RCP_LEVEL,""+(baseLevel+63));
+                        pleaseAdd.add(V1);
+                        
+                        V1=new XVector<String>(V);
+                        V1.set(RCP_FINALNAME,"Battlemoulded "+name);
+                        V1.set(RCP_LEVEL,""+(baseLevel+72));
+                        pleaseAdd.add(V1);
+                        
+                        V.set(RCP_FINALNAME,"Designer "+name);
+                        V.set(RCP_LEVEL,""+(baseLevel+30));
+                    }
+                }
+                for(int i=0;i<pleaseAdd.size();i++)
+                    recipes.add(pleaseAdd.get(i));
+            }
+            Resources.submitResource("PARSED: "+filename,recipes);
+        }
+        return recipes;
+    }
+
     public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
     {
         int autoGenerate=0;
@@ -198,7 +255,6 @@ public class MasterLeatherWorking extends EnhancedCraftingSkill implements ItemC
         String str=(String)commands.elementAt(0);
         playSound="scissor.wav";
         String startStr=null;
-        String prefix="";
         bundling=false;
         int multiplier=4;
         int duration=4;
@@ -224,115 +280,10 @@ public class MasterLeatherWorking extends EnhancedCraftingSkill implements ItemC
                         if(toggler>1) buf.append("\n\r");
                         toggler=toggleTop;
                     }
-                    if((level+20<=xlevel(mob))
+                    if((level<=xlevel(mob))
                     &&((mask==null)||(mask.length()==0)||mask.equalsIgnoreCase("all")||CMLib.english().containsString(item,mask)))
                     {
-                        buf.append(CMStrings.padRight("Designer "+item,30)+" "+CMStrings.padRight(""+(level+20),3)+" "+CMStrings.padRightPreserve(""+wood,3)+((toggler!=toggleTop)?" ":"\n\r"));
-                        if(++toggler>toggleTop) toggler=1;
-                    }
-                }
-            }
-            for(int r=0;r<recipes.size();r++)
-            {
-                List<String> V=recipes.get(r);
-                if(V.size()>0)
-                {
-                    String item=replacePercent((String)V.get(RCP_FINALNAME),"");
-                    int level=CMath.s_int((String)V.get(RCP_LEVEL));
-                    String wood=getComponentDescription(mob,V,RCP_WOOD);
-                    if(wood.length()>5)
-                    {
-                        if(toggler>1) buf.append("\n\r");
-                        toggler=toggleTop;
-                    }
-                    if(((level+25)<=(xlevel(mob)))
-                    &&((mask==null)||(mask.length()==0)||mask.equalsIgnoreCase("all")||CMLib.english().containsString(item,mask)))
-                    {
-                        buf.append(CMStrings.padRight("Cuirbouli "+item,30)+" "+CMStrings.padRight(""+(level+25),3)+" "+CMStrings.padRightPreserve(""+wood,3)+((toggler!=toggleTop)?" ":"\n\r"));
-                        if(++toggler>toggleTop) toggler=1;
-                    }
-                }
-            }
-            for(int r=0;r<recipes.size();r++)
-            {
-                List<String> V=recipes.get(r);
-                if(V.size()>0)
-                {
-                    String item=replacePercent((String)V.get(RCP_FINALNAME),"");
-                    int level=CMath.s_int((String)V.get(RCP_LEVEL));
-                    String wood=getComponentDescription(mob,V,RCP_WOOD);
-                    if(wood.length()>5)
-                    {
-                        if(toggler>1) buf.append("\n\r");
-                        toggler=toggleTop;
-                    }
-                    if(((level+30)<=xlevel(mob))
-                    &&((mask==null)||(mask.length()==0)||mask.equalsIgnoreCase("all")||CMLib.english().containsString(item,mask)))
-                    {
-                        buf.append(CMStrings.padRight("Reinforced "+item,30)+" "+CMStrings.padRight(""+(level+30),3)+" "+CMStrings.padRightPreserve(""+wood,3)+((toggler!=toggleTop)?" ":"\n\r"));
-                        if(++toggler>toggleTop) toggler=1;
-                    }
-                }
-            }
-            for(int r=0;r<recipes.size();r++)
-            {
-                List<String> V=recipes.get(r);
-                if(V.size()>0)
-                {
-                    String item=replacePercent((String)V.get(RCP_FINALNAME),"");
-                    int level=CMath.s_int((String)V.get(RCP_LEVEL));
-                    String wood=getComponentDescription(mob,V,RCP_WOOD);
-                    if(wood.length()>5)
-                    {
-                        if(toggler>1) buf.append("\n\r");
-                        toggler=toggleTop;
-                    }
-                    if(((level+35)<=xlevel(mob))
-                    &&((mask==null)||(mask.length()==0)||mask.equalsIgnoreCase("all")||CMLib.english().containsString(item,mask)))
-                    {
-                        buf.append(CMStrings.padRight("Masterwork "+item,30)+" "+CMStrings.padRight(""+(level+35),3)+" "+CMStrings.padRightPreserve(""+wood,3)+((toggler!=toggleTop)?" ":"\n\r"));
-                        if(++toggler>toggleTop) toggler=1;
-                    }
-                }
-            }            
-            for(int r=0;r<recipes.size();r++)
-            {
-                List<String> V=recipes.get(r);
-                if(V.size()>0)
-                {
-                    String item=replacePercent((String)V.get(RCP_FINALNAME),"");
-                    int level=CMath.s_int((String)V.get(RCP_LEVEL));
-                    String wood=getComponentDescription(mob,V,RCP_WOOD);
-                    if(wood.length()>5)
-                    {
-                        if(toggler>1) buf.append("\n\r");
-                        toggler=toggleTop;
-                    }
-                    if(((level+40)<=xlevel(mob))
-                    &&((mask==null)||(mask.length()==0)||mask.equalsIgnoreCase("all")||CMLib.english().containsString(item,mask)))
-                    {
-                        buf.append(CMStrings.padRight("Laminar "+item,30)+" "+CMStrings.padRight(""+(level+40),3)+" "+CMStrings.padRightPreserve(""+wood,3)+((toggler!=toggleTop)?" ":"\n\r"));
-                        if(++toggler>toggleTop) toggler=1;
-                    }
-                }
-            }
-            for(int r=0;r<recipes.size();r++)
-            {
-                List<String> V=recipes.get(r);
-                if(V.size()>0)
-                {
-                    String item=replacePercent((String)V.get(RCP_FINALNAME),"");
-                    int level=CMath.s_int((String)V.get(RCP_LEVEL));
-                    String wood=getComponentDescription(mob,V,RCP_WOOD);
-                    if(wood.length()>5)
-                    {
-                        if(toggler>1) buf.append("\n\r");
-                        toggler=toggleTop;
-                    }
-                    if(((level+45)<=xlevel(mob))
-                    &&((mask==null)||(mask.length()==0)||mask.equalsIgnoreCase("all")||CMLib.english().containsString(item,mask)))
-                    {
-                        buf.append(CMStrings.padRight("Battlemoulded "+item,30)+" "+CMStrings.padRight(""+(level+45),3)+" "+CMStrings.padRight(""+wood,3)+((toggler!=toggleTop)?" ":"\n\r"));
+                        buf.append(CMStrings.padRight(item,30)+" "+CMStrings.padRight(""+(level),3)+" "+CMStrings.padRightPreserve(""+wood,3)+((toggler!=toggleTop)?" ":"\n\r"));
                         if(++toggler>toggleTop) toggler=1;
                     }
                 }
@@ -413,56 +364,51 @@ public class MasterLeatherWorking extends EnhancedCraftingSkill implements ItemC
                 List<String> V=matches.get(r);
                 if(V.size()>0)
                 {
+                    String name=(String)V.get(RCP_FINALNAME);
                     int level=CMath.s_int((String)V.get(RCP_LEVEL));
-                    if(((level+45)<=xlevel(mob))
-                    &&(recipeName.toUpperCase().indexOf("BATTLEMOULDED")>=0))
+                    if((level<=xlevel(mob))
+                    &&(name.toUpperCase().indexOf("BATTLEMOULDED")>=0))
                     {
                         multiplier=9;
-                        prefix="Battlemoulded ";
                         foundRecipe=V;
                         break;
                     }
                     else
-                    if(((level+40)<=xlevel(mob))
-                    &&(recipeName.toUpperCase().indexOf("LAMINAR")>=0))
+                    if((level<=xlevel(mob))
+                    &&(name.toUpperCase().indexOf("LAMINAR")>=0))
                     {
                         multiplier=8;
-                        prefix="Laminar ";
                         foundRecipe=V;
                         break;
                     }
                     else
-                    if((level+35)<=(xlevel(mob))
-                    &&(recipeName.toUpperCase().indexOf("MASTERWORK")>=0))
+                    if((level<=(xlevel(mob)))
+                    &&(name.toUpperCase().indexOf("MASTERWORK")>=0))
                     {
                         multiplier=7;
-                        prefix="Masterwork ";
                         foundRecipe=V;
                         break;
                     }
                     else
-                    if(((level+30)<=xlevel(mob))
-                    &&(recipeName.toUpperCase().indexOf("REINFORCED")>=0))
+                    if((level<=xlevel(mob))
+                    &&(name.toUpperCase().indexOf("REINFORCED")>=0))
                     {
                         multiplier=6;
-                        prefix="Reinforced ";
                         foundRecipe=V;
                         break;
                     }
                     else
-                    if(((level+25)<=(xlevel(mob)))
-                    &&(recipeName.toUpperCase().indexOf("CUIRBOULI")>=0))
+                    if((level<=(xlevel(mob)))
+                    &&(name.toUpperCase().indexOf("CUIRBOULI")>=0))
                     {
                         multiplier=5;
-                        prefix="Cuirbouli ";
                         foundRecipe=V;
                         break;
                     }
                     else
-                    if((level+20)<=(xlevel(mob)))
+                    if(level<=(xlevel(mob)))
                     {
                         multiplier=4;
-                        prefix="Designer ";
                         foundRecipe=V;
                         break;
                     }
@@ -507,8 +453,8 @@ public class MasterLeatherWorking extends EnhancedCraftingSkill implements ItemC
                 commonTell(mob,"There's no such thing as a "+foundRecipe.get(RCP_CLASSTYPE)+"!!!");
                 return false;
             }
-            duration=getDuration(multiplier*CMath.s_int((String)foundRecipe.get(RCP_TICKS)),mob,CMath.s_int((String)foundRecipe.get(RCP_LEVEL)),4);
-            String itemName=(prefix+replacePercent((String)foundRecipe.get(RCP_FINALNAME),RawMaterial.CODES.NAME(data[0][FOUND_CODE]))).toLowerCase();
+            duration=getDuration(multiplier*CMath.s_int((String)foundRecipe.get(RCP_TICKS)),mob,30,4);
+            String itemName=(replacePercent((String)foundRecipe.get(RCP_FINALNAME),RawMaterial.CODES.NAME(data[0][FOUND_CODE]))).toLowerCase();
             if(bundling)
                 itemName="a "+woodRequired+"# "+itemName;
             else
@@ -527,7 +473,7 @@ public class MasterLeatherWorking extends EnhancedCraftingSkill implements ItemC
             building.setMaterial(data[0][FOUND_CODE]);
             building.setSecretIdentity("This is the work of "+mob.Name()+".");
             int hardness=RawMaterial.CODES.HARDNESS(data[0][FOUND_CODE])-2;
-            building.basePhyStats().setLevel(CMath.s_int((String)foundRecipe.get(RCP_LEVEL))+6*hardness+((multiplier-1)*5));
+            building.basePhyStats().setLevel(CMath.s_int((String)foundRecipe.get(RCP_LEVEL))+(2*hardness));
             int capacity=CMath.s_int((String)foundRecipe.get(RCP_CAPACITY));
             long canContain=getContainerType((String)foundRecipe.get(RCP_CONTAINMASK));
             int armordmg=CMath.s_int((String)foundRecipe.get(RCP_ARMORDMG));

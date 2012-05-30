@@ -42,7 +42,7 @@ public class Cobbling extends EnhancedCraftingSkill implements ItemCraftor, Mend
     public String name(){ return "Cobbling";}
     private static final String[] triggerStrings = {"COBBLE","COBBLING"};
     public String[] triggerStrings(){return triggerStrings;}
-    public String supportedResourceString(){return "WOODEN|METAL|MITHRIL";}
+    public String supportedResourceString(){return "WOODEN|METAL";}
     public String parametersFormat(){ return 
         "ITEM_NAME\tITEM_LEVEL\tBUILD_TIME_TICKS\tMATERIALS_REQUIRED\tITEM_BASE_VALUE\t"
         +"ITEM_CLASS_ID\tCODED_WEAR_LOCATION\tCONTAINER_CAPACITY\tBASE_ARMOR_AMOUNT\tCONTAINER_TYPE\tCODED_SPELL_LIST";}
@@ -120,15 +120,13 @@ public class Cobbling extends EnhancedCraftingSkill implements ItemCraftor, Mend
         if(I==null) return false;
         if(!super.mayBeCrafted(I))
             return false;
-        if((I.material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_WOODEN)
-            return false;
         if(CMLib.flags().isDeadlyOrMaliciousEffect(I)) 
             return false;
         if(!(I instanceof Armor))
             return false;
         if(!I.fitsOn(Wearable.WORN_FEET))
             return false;
-        return false;
+        return true;
     }
 
     public boolean supportsMending(Physical item){ return canMend(null,item,true);}

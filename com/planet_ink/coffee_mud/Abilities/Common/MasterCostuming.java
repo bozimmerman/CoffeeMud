@@ -46,7 +46,7 @@ public class MasterCostuming extends Costuming
 
     protected boolean masterCraftCheck(final Item I)
     {
-        if(I.name().toUpperCase().startsWith("DESIGNER"))
+        if(I.name().toUpperCase().startsWith("DESIGNER")||(I.name().toUpperCase().indexOf(" DESIGNER ")>0))
             return true;
         if(I.basePhyStats().level()<31)
             return false;

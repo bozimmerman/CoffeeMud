@@ -163,6 +163,8 @@ public class Weaponsmithing extends EnhancedCraftingSkill implements ItemCraftor
     {
         if(I.basePhyStats().level()>30)
             return false;
+        if(I.name().toUpperCase().startsWith("MASTER")||(I.name().toUpperCase().indexOf(" MASTER ")>0))
+            return false;
         return true;
     }
 
