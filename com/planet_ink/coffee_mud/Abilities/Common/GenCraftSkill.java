@@ -44,7 +44,7 @@ public class GenCraftSkill extends EnhancedCraftingSkill implements ItemCraftor
     public String ID() { return ID;}
     public String Name(){return name();}
     public String name(){ return (String)V(ID,V_NAME);}
-    
+
     private static final Hashtable<String,Object[]> vars=new Hashtable<String,Object[]>();
     private static final int V_NAME=0;//S
     private static final int V_TRIG=1;//S[]
@@ -57,7 +57,7 @@ public class GenCraftSkill extends EnhancedCraftingSkill implements ItemCraftor
     private static final int V_CNBN=8;//B
     private static final int V_SOND=9;//S
     private static final int NUM_VS=10;//S
-    
+
     public String parametersFormat(){ return 
         "ITEM_NAME\tITEM_LEVEL\tBUILD_TIME_TICKS\tMATERIALS_REQUIRED\t"
        +"ITEM_BASE_VALUE\tITEM_CLASS_ID\t"
@@ -77,7 +77,7 @@ public class GenCraftSkill extends EnhancedCraftingSkill implements ItemCraftor
     protected static final int RCP_SPELL=10;
 
     protected DoorKey key=null;
-    
+
     private static final Object[] makeEmpty()
     {
         Object[] O=new Object[NUM_VS];
@@ -93,13 +93,13 @@ public class GenCraftSkill extends EnhancedCraftingSkill implements ItemCraftor
         O[V_SOND]="sawing.wav";
         return O;
     }
-    
+
     public String[] triggerStrings(){return (String[])V(ID,V_TRIG);}
-    
+
     public String parametersFile(){ return (String)V(ID,V_FNAM);}
-    
+
     public String supportedResourceString(){return (String)V(ID,V_RSCS);}
-    
+
     private static final Object V(String ID, int varNum)
     {
         if(vars.containsKey(ID)) return vars.get(ID)[varNum];
@@ -107,7 +107,7 @@ public class GenCraftSkill extends EnhancedCraftingSkill implements ItemCraftor
         vars.put(ID,O);
         return O[varNum];
     }
-    
+
     private static final void SV(String ID,int varNum,Object O)
     {
         if(vars.containsKey(ID))
@@ -119,13 +119,12 @@ public class GenCraftSkill extends EnhancedCraftingSkill implements ItemCraftor
             O2[varNum]=O;
         }
     }
-    
+
     public GenCraftSkill()
     {
         super();
     }
-    
-    
+
     public CMObject newInstance()
     {
         try
@@ -146,10 +145,10 @@ public class GenCraftSkill extends EnhancedCraftingSkill implements ItemCraftor
     }
 
     public boolean isGeneric(){return true;}
-    
-    
+
     // lots of work to be done here
     public int getSaveStatIndex(){return getStatCodes().length;}
+
     private static final String[] CODES={"CLASS",//0
                                          "TEXT",//1
                                          "NAME",//2S
@@ -163,13 +162,15 @@ public class GenCraftSkill extends EnhancedCraftingSkill implements ItemCraftor
                                          "CANBUNDLE",//2S
                                          "SOUND",//2S
                                         };
+
     public String[] getStatCodes(){return CODES;}
+
     protected int getCodeNum(String code){
         for(int i=0;i<CODES.length;i++)
             if(code.equalsIgnoreCase(CODES[i])) return i;
         return -1;
     }
-    
+
     public String getStat(String code)
     {
         /*
@@ -202,7 +203,7 @@ public class GenCraftSkill extends EnhancedCraftingSkill implements ItemCraftor
         }
         return "";
     }
-    
+
     public void setStat(String code, String val)
     {
         int num=0;
@@ -248,7 +249,7 @@ public class GenCraftSkill extends EnhancedCraftingSkill implements ItemCraftor
             break;
         }
     }
-    
+
     public boolean sameAs(Environmental E)
     {
         if(!(E instanceof GenCraftSkill)) return false;
@@ -268,6 +269,7 @@ public class GenCraftSkill extends EnhancedCraftingSkill implements ItemCraftor
             if(!getStatCodes()[c].equals("TEXT"))
                 setStat(getStatCodes()[c],CMLib.xml().restoreAngleBrackets(CMLib.xml().getValFromPieces(V, getStatCodes()[c])));
     }
+
     private String getAllXML()
     {
         StringBuffer str=new StringBuffer("");
@@ -278,7 +280,7 @@ public class GenCraftSkill extends EnhancedCraftingSkill implements ItemCraftor
                         +"</"+getStatCodes()[c]+">");
         return str.toString();
     }
-    
+
     public boolean tick(Tickable ticking, int tickID)
     {
         if((affected!=null)&&(affected instanceof MOB)&&(tickID==Tickable.TICKID_MOB))
@@ -289,7 +291,8 @@ public class GenCraftSkill extends EnhancedCraftingSkill implements ItemCraftor
         return super.tick(ticking,tickID);
     }
 
-    protected List<List<String>> loadRecipes(){
+    protected List<List<String>> loadRecipes()
+    {
         if(parametersFile().length()==0)
             return new Vector<List<String>>();
         return super.loadRecipes(parametersFile());
@@ -344,9 +347,18 @@ public class GenCraftSkill extends EnhancedCraftingSkill implements ItemCraftor
         super.unInvoke();
     }
 
-    protected boolean couldIHaveProducedThis(MOB mob, Item I)
+    public boolean mayICraft(final Item I)
+    {
+        return mayICraft(null,I);
+    }
+
+    public boolean mayICraft(final MOB mob, final Item I)
     {
         if(I==null) return false;
+        if(!super.isMadeOfSupportedResource(I))
+            return false;
+        if(!super.mayBeCrafted(I))
+            return false;
         final List<List<String>> recipes=addRecipes(mob,loadRecipes());
         for(final List<String> recipe : recipes)
         {
@@ -357,8 +369,9 @@ public class GenCraftSkill extends EnhancedCraftingSkill implements ItemCraftor
         }
         return false;
     }
-    
-    public boolean supportsMending(Physical I){ return canMend(null,I,true);}
+
+    public boolean supportsMending(Physical I){ return canMend(null,I,true); }
+
     protected boolean canMend(MOB mob, Environmental E, boolean quiet)
     {
         Boolean canMendB=(Boolean)V(ID,V_CNMN);
@@ -367,7 +380,7 @@ public class GenCraftSkill extends EnhancedCraftingSkill implements ItemCraftor
         if(!super.canMend(mob,E,quiet)) 
             return false;
         Item IE=(Item)E;
-        if(couldIHaveProducedThis(mob, IE))
+        if(mayICraft(mob, IE))
             return true;
         if(!super.isMadeOfSupportedResource(IE))
         {
@@ -485,7 +498,7 @@ public class GenCraftSkill extends EnhancedCraftingSkill implements ItemCraftor
             Vector newCommands=CMParms.parse(CMParms.combine(commands,1));
             building=getTarget(mob,mob.location(),givenTarget,newCommands,Wearable.FILTER_UNWORNONLY);
             if(building==null) return false;
-            if((!this.couldIHaveProducedThis(mob, building))&&(!super.isMadeOfSupportedResource(building)))
+            if((!this.mayICraft(mob, building))&&(!super.isMadeOfSupportedResource(building)))
             {
                 commonTell(mob,"That's can't be refitted with this skill.");
                 return false;
@@ -673,7 +686,6 @@ public class GenCraftSkill extends EnhancedCraftingSkill implements ItemCraftor
             building.text();
             building.recoverPhyStats();
         }
-
 
         messedUp=!proficiencyCheck(mob,0,auto);
 

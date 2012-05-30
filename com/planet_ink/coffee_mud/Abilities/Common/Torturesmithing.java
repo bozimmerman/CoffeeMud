@@ -87,6 +87,45 @@ public class Torturesmithing extends CraftingSkill implements ItemCraftor
 
     public boolean supportsDeconstruction() { return true; }
 
+    public boolean mayICraft(final Item I)
+    {
+        if(I==null) return false;
+        if(!super.mayBeCrafted(I))
+            return false;
+        if(!CMLib.flags().isDeadlyOrMaliciousEffect(I)) 
+            return false;
+        if((I.material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_WOODEN)
+            return false;
+        if(I instanceof Rideable)
+            return true;
+        if(I instanceof Shield)
+            return true;
+        if(I instanceof Weapon)
+            return false;
+        if(I instanceof Armor)
+            return true;
+        if(I instanceof FalseLimb)
+            return true;
+        if(I.rawProperLocationBitmap()==Wearable.WORN_HELD)
+            return true;
+        return false;
+    }
+
+    public boolean supportsMending(Physical I){ return canMend(null,I,true);}
+
+    protected boolean canMend(MOB mob, Environmental E, boolean quiet)
+    {
+        if(!super.canMend(mob,E,quiet)) return false;
+        if((!(E instanceof Item))
+        ||(!mayICraft((Item)E)))
+        {
+            if(!quiet)
+                commonTell(mob,"That's not a torturesmithing item.");
+            return false;
+        }
+        return true;
+    }
+
     public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
     {
         int autoGenerate=0;
