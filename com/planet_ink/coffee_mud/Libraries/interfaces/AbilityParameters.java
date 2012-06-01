@@ -58,6 +58,7 @@ public interface AbilityParameters extends CMLibrary
         public String webValue(ExternalHTTPRequests httpReq, java.util.Map<String,String> parms, String oldVal, String fieldName);
         public String webField(ExternalHTTPRequests httpReq, java.util.Map<String,String> parms, String oldVal, String fieldName);
         public String webTableField(ExternalHTTPRequests httpReq, java.util.Map<String,String> parms, String oldVal);
+        //public String convertFromItem(Item I);
     }
     
     public List<Ability> getCodedSpells(String spells);

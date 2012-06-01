@@ -744,7 +744,7 @@ public class CraftingSkill extends GatheringSkill
         return true;
     }
 
-    protected int getPercentChangeToDeconstruct(final MOB crafterM, final Item I)
+    protected int getPercentChanceToDeconstruct(final MOB crafterM, final Item I)
     {
         return (int)Math.round(((double)((double)(1.0+(double)crafterM.phyStats().level()-(double)I.phyStats().level())
                /(double)crafterM.phyStats().level())/2.0+0.5)
@@ -754,6 +754,22 @@ public class CraftingSkill extends GatheringSkill
     public boolean mayICraft(final Item I)
     {
         return false;
+    }
+
+    public boolean deconstructRecipeInto(final Item I, final Recipe R)
+    {
+        
+        if((I==null)||(R==null))
+            return false;
+        if(!(this instanceof ItemCraftor))
+            return false;
+        ItemCraftor C=(ItemCraftor)this;
+        if(!C.supportsDeconstruction())
+            return false;
+        final String parms = C.parametersFormat();
+        List<String> parmSet=CMParms.parseTabs(parms, false);
+        
+        return true;
     }
 
     protected boolean mayBeCrafted(final Item I)

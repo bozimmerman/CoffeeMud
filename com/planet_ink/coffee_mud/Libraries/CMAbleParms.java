@@ -1625,17 +1625,20 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
                 new AbilityParmEditorImpl("WEAPON_TYPE","W.Type",PARMTYPE_CHOICES) {
                     public int appliesToClass(Object o) { return (o instanceof Weapon)?2:-1;}
                     public void createChoices() { createChoices(Weapon.TYPE_DESCS);}
+                    public String convertFromItem(Item I){ return (I instanceof Weapon) ? Weapon.TYPE_DESCS[((Weapon)I).weaponType()] : ""; }
                     public String defaultValue(){ return "BASHING";}
                 },
                 new AbilityParmEditorImpl("ATTACK_MODIFICATION","Att.",PARMTYPE_NUMBER) {
                     public void createChoices() {}
                     public int appliesToClass(Object o) { return (o instanceof Weapon)?2:-1;}
+                    public String convertFromItem(Item I){ return ""+((I instanceof Weapon)?((Weapon)I).basePhyStats().attackAdjustment():0); }
                     public String defaultValue(){ return "0";}
                 },
                 new AbilityParmEditorImpl("N_A","N/A",PARMTYPE_STRING) {
                     public void createChoices() {}
                     public int appliesToClass(Object o) { return -1;}
                     public String defaultValue(){ return "";}
+                    public String convertFromItem(Item I){ return ""; }
                     public boolean confirmValue(String oldVal) { return oldVal.trim().length()==0||oldVal.equals("0");}
                     public String commandLinePrompt(MOB mob, String oldVal, int[] showNumber, int showFlag) throws java.io.IOException
                     { return "";}
