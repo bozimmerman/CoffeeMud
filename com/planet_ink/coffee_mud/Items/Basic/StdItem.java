@@ -1313,6 +1313,7 @@ public class StdItem implements Item
     }
     public void delAllEffects(boolean unInvoke)
     {
+        SVector<Ability> affects=this.affects;
         if(affects==null) return;
         Ability keepThisOne=null;
         for(int a=numEffects()-1;a>=0;a--)

@@ -692,6 +692,7 @@ public class StdExit implements Exit
     }
     public void delAllEffects(boolean unInvoke)
     {
+        SVector<Ability> affects=this.affects;
         if(affects==null) return;
         for(int a=numEffects()-1;a>=0;a--)
         {
