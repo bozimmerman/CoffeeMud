@@ -61,6 +61,7 @@ public interface AbilityParameters extends CMLibrary
         //public String convertFromItem(Item I);
     }
     
+    public String encodeCodedSpells(Affectable I);
     public List<Ability> getCodedSpells(String spells);
     public void parseWearLocation(short[] layerAtt, short[] layers, long[] wornLoc, boolean[] logicalAnd, double[] hardBonus, String wearLocation);
     public void modifyRecipesList(MOB mob, String recipeFilename, String recipeFormat) throws java.io.IOException;
