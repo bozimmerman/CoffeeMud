@@ -701,6 +701,20 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
         }
     }
 
+    public static List<Integer> extraMaterial(final ItemCraftor A, final Item I)
+    {
+        List<Integer> extraMatsV=new Vector<Integer>();
+        /*
+         * behaviors/properties of the item + 1
+         */
+        int numExtra=0;
+        for(Enumeration<Ability> a=I.effects(); a.hasMoreElements();)
+        {
+            //Ability A=a.nextElement();
+        }
+        return extraMatsV;
+    }
+    
     public synchronized Map<String,AbilityParmEditor> getEditors()
     {
         if(DEFAULT_EDITORS != null)
@@ -723,6 +737,10 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
                 new AbilityParmEditorImpl("RESOURCE_NAME","Resource",PARMTYPE_CHOICES) {
                     public void createChoices() { createChoices(RawMaterial.CODES.NAMES());}
                     public String defaultValue(){ return "IRON";}
+                    public String convertFromItem(Item I)
+                    { 
+                        return RawMaterial.CODES.NAME(I.material());
+                    }
                 },
                 new AbilityParmEditorImpl("ITEM_NAME","Item Final Name",PARMTYPE_STRING){
                     public void createChoices() {}
@@ -819,6 +837,12 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
                                 return CMLib.ableMapper().getAbilityComponentCodedString(comps);
                         }
                         return oldVal;
+                    }
+                    public String convertFromItem(Item I)
+                    { 
+                        int amt=I.basePhyStats().weight()-1;
+                        if(amt>0) return ""+amt;
+                        return ""+1;
                     }
                     public String webField(ExternalHTTPRequests httpReq, java.util.Map<String,String> parms, String oldVal, String fieldName) {
                         String value=webValue(httpReq,parms,oldVal,fieldName);
@@ -973,6 +997,10 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
                     public void createChoices() {}
                     public boolean confirmValue(String oldVal) { return true;}
                     public String defaultValue(){ return "";}
+                    public String convertFromItem(Item I)
+                    { 
+                        return "";
+                    }
                 },
                 new AbilityParmEditorImpl("ITEM_BASE_VALUE","Value",PARMTYPE_NUMBER){
                     public void createChoices() {}
@@ -1592,6 +1620,10 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
                         }
                         return oldVal;
                     }
+                    public String convertFromItem(Item I)
+                    {
+                        return "";
+                    }
                     public String webField(ExternalHTTPRequests httpReq, java.util.Map<String,String> parms, String oldVal, String fieldName) {
                         String value=webValue(httpReq,parms,oldVal,fieldName);
                         if(value.endsWith("$")) 
@@ -1653,6 +1685,10 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
                             return CMParms.contains(RawMaterial.CODES.NAMES(),oldVal);
                         }
                         return true;
+                    }
+                    public String convertFromItem(Item I)
+                    {
+                        return "";
                     }
                     public String[] fakeUserInput(String oldVal) {
                         if(oldVal.endsWith("$"))
@@ -1749,6 +1785,14 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
                         V.addAll(new XVector<String>(RawMaterial.MATERIAL_DESCS));
                         createChoices(V);
                     }
+                    public String convertFromItem(Item I)
+                    {
+                        if(CMStrings.containsWordIgnoreCase(I.Name(),"rice"))
+                            return "RICE";
+                        if(I.material() == RawMaterial.RESOURCE_PAPER)
+                            return "WOOD";
+                        return RawMaterial.CODES.NAME(I.material());
+                    }
                     public String defaultValue(){ return "IRON";}
                 },
                 new AbilityParmEditorImpl("OPTIONAL_RESOURCE_OR_MATERIAL","Rsc/Mat",PARMTYPE_CHOICES) {
@@ -1757,6 +1801,10 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
                         V.addAll(new XVector<String>(RawMaterial.MATERIAL_DESCS));
                         V.addElement("");
                         createChoices(V);
+                    }
+                    public String convertFromItem(Item I)
+                    { 
+                        return "";
                     }
                     public String defaultValue(){ return "";}
                 },
@@ -1991,6 +2039,12 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
                     public void createChoices() { 
                         createChoices(RawMaterial.CODES.NAMES()); 
                         choices().addElement("","");
+                    }
+                    public String convertFromItem(Item I)
+                    { 
+                        int amt=I.basePhyStats().weight()-1;
+                        if(amt<1) amt=1;
+                        return RawMaterial.CODES.NAME(I.material())+"/"+amt;
                     }
                     public String defaultValue(){ return "";}
                     public int appliesToClass(Object o) { return 0;}

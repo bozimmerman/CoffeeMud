@@ -17,31 +17,31 @@ limitations under the License.
 */
 
 import com.planet_ink.coffee_mud.Libraries.interfaces.MaskingLibrary;
-public final class PairSVector<T,K> extends SVector<Pair<T,K>> 
+public class PairSVector<T,K> extends SVector<Pair<T,K>> implements List<Pair<T,K>>
 {
 	private static final long serialVersionUID = -9175373358892311411L;
-	public final Pair.FirstConverter<T,K> getFirstConverter() {
+	public Pair.FirstConverter<T,K> getFirstConverter() {
 		return new Pair.FirstConverter<T, K>();
 	}
-	public final Pair.SecondConverter<T,K> getSecondConverter() {
+	public Pair.SecondConverter<T,K> getSecondConverter() {
 		return new Pair.SecondConverter<T, K>();
 	}
-	public final Enumeration<T> firstElements()
+	public Enumeration<T> firstElements()
 	{
 		return new ConvertingEnumeration<Pair<T,K>,T>(
 				elements(),getFirstConverter());
 	}
-	public final Enumeration<K> secondElements()
+	public Enumeration<K> secondElements()
 	{
 		return new ConvertingEnumeration<Pair<T,K>,K>(
     		elements(),getSecondConverter());
 	}
-	public final Iterator<T> firstIterator()
+	public Iterator<T> firstIterator()
 	{
 		return new ConvertingIterator<Pair<T,K>,T>(
     		iterator(),getFirstConverter());
 	}
-	public final Iterator<K> secondIterator()
+	public Iterator<K> secondIterator()
 	{
 		return new ConvertingIterator<Pair<T,K>,K>(
     		iterator(),getSecondConverter());

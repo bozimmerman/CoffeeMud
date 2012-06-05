@@ -1,9 +1,12 @@
 package com.planet_ink.coffee_mud.Items.interfaces;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.Enumeration;
 import java.util.HashSet;
 import java.util.Hashtable;
+import java.util.Iterator;
 import java.util.List;
+import java.util.TreeSet;
 import java.util.Vector;
 
 import com.planet_ink.coffee_mud.core.interfaces.*;
@@ -644,7 +647,13 @@ public interface RawMaterial extends Item
     "",// 175
     "",// 176
     };
-        
+    
+    public final static int RSCDATAINDX_CODE=0;
+    public final static int RSCDATAINDX_VALUE=1;
+    public final static int RSCDATAINDX_FREQ=2;
+    public final static int RSCDATAINDX_HARDNESS=3;
+    public final static int RSCDATAINDX_BOUANCY=4;
+    
     public final static int[][] DEFAULT_RESOURCE_DATA={ 
     // full code, base value, frequency, hardness (1-10), bouancy
     {RESOURCE_NOTHING,         0,    0,    0,    0},
@@ -1138,6 +1147,7 @@ public interface RawMaterial extends Item
         private String[] descs = new String[0];
         private String[] effects = new String[0];
         private Ability[][] effectAs = new Ability[0][];
+        private SPairList<Integer,Double>[] buckets = null;
         
         /**
          * Returns an array of the numeric codes for the berry resources
@@ -1402,6 +1412,50 @@ public interface RawMaterial extends Item
                 }
             }
             return c.effectAs[cd];
+        }
+        
+        @SuppressWarnings("unchecked")
+        public SPairList<Integer,Double> getBucket(int material)
+        {
+            material=material&RawMaterial.MATERIAL_MASK;
+            if((material<0)||(material>=RawMaterial.MATERIAL_DESCS.length))
+                return null;
+            if(buckets == null)
+            {
+                PairSLinkedList<Integer,Double>[] newBuckets=new PairSLinkedList[RawMaterial.MATERIAL_DESCS.length];
+                for(int matCode=0;matCode<RawMaterial.MATERIAL_DESCS.length;matCode++)
+                {
+                    TreeSet<Pair<Integer,Double>> newBucket=new TreeSet<Pair<Integer,Double>>(
+                        new Comparator<Pair<Integer,Double>>()
+                        {
+                            public int compare(Pair<Integer, Double> o1, Pair<Integer, Double> o2) {
+                                return o1.second.compareTo(o2.second);
+                            }
+                        });
+                    double totalValue=0.0;
+                    for(int i=0;i<RawMaterial.DEFAULT_RESOURCE_DATA.length;i++)
+                    {
+                        int resourceCode=RawMaterial.DEFAULT_RESOURCE_DATA[i][RSCDATAINDX_CODE];
+                        int resourceValue=RawMaterial.DEFAULT_RESOURCE_DATA[i][RSCDATAINDX_VALUE];
+                        if((resourceCode&RawMaterial.MATERIAL_MASK)==matCode)
+                        {
+                            totalValue+=(double)resourceValue;
+                            newBucket.add(new Pair<Integer,Double>(Integer.valueOf(resourceCode),Double.valueOf(resourceValue)));
+                        }
+                    }
+                    PairSLinkedList<Integer,Double> finalBucket=new PairSLinkedList<Integer,Double>();
+                    double which=1.0;
+                    double total=(double)newBucket.size();
+                    for(Iterator<Pair<Integer,Double>> i=newBucket.iterator();i.hasNext();which+=1.0)
+                    {
+                        Pair<Integer,Double> p=i.next();
+                        finalBucket.add(p.first, Double.valueOf(which/total));
+                    }
+                    newBuckets[matCode]=finalBucket;
+                }
+                buckets=newBuckets;
+            }
+            return buckets[material];
         }
         
         public synchronized void add(int material, String name, String smell, int value, int frequ, int hardness, int bouancy, boolean fish, boolean berry, String abilityID)

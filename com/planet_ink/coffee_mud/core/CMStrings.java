@@ -108,7 +108,37 @@ public class CMStrings
     { 
         return (("aeiou").indexOf(Character.toLowerCase(c))>=0);
     }
-    
+
+    public final static boolean containsWordIgnoreCase(final String thisStr, final String word)
+    {
+        if((thisStr==null)
+        ||(word==null)
+        ||(thisStr.length()==0)
+        ||(word.length()==0))
+            return false;
+        return containsWord(thisStr.toLowerCase(),word.toLowerCase());
+    }
+
+    public final static boolean containsWord(final String thisStr, final String word)
+    {
+        if((thisStr==null)
+        ||(word==null)
+        ||(thisStr.length()==0)
+        ||(word.length()==0))
+            return false;
+        for(int i=thisStr.length()-1;i>=0;i--)
+        {
+            if((thisStr.charAt(i)==word.charAt(0))
+            &&((i==0)||(!Character.isLetter(thisStr.charAt(i-1)))))
+                if((thisStr.substring(i).startsWith(word.toLowerCase()))
+                &&((thisStr.length()==i+word.length())||(!Character.isLetter(thisStr.charAt(i+word.length())))))
+                {
+                    return true;
+                }
+        }
+        return false;
+    }
+
     public final static String replaceAllofAny(final String str, final char[] theseChars, final char with)
     {
         if((str==null)
