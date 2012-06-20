@@ -850,43 +850,55 @@ public interface Ability extends Environmental
 	public static final String[] RANGE_CHOICES={"MELEE","CLOSE","SHORT","MEDIUM","LONG","LONGER","LONGERSTILL","VERYLONG","EXTREMELYLONG","INFINITE"};
 
 	/** constant mask for the flags() method designating that this ability is a binding effect @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#flags() */
-	public static final int FLAG_BINDING=1;
+	public static final long FLAG_BINDING=1;
 	/** constant mask for the flags() method designating that this ability is a room-moving skill @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#flags() */
-	public static final int FLAG_MOVING=2;
+	public static final long FLAG_MOVING=2;
 	/** constant mask for the flags() method designating that this ability is a transporting skill @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#flags() */
-	public static final int FLAG_TRANSPORTING=4;
+	public static final long FLAG_TRANSPORTING=4;
 	/** constant mask for the flags() method designating that this ability is a weather-affecting skill @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#flags() */
-	public static final int FLAG_WEATHERAFFECTING=8;
+	public static final long FLAG_WEATHERAFFECTING=8;
 	/** constant mask for the flags() method designating that this ability is a summoning skill @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#flags() */
-	public static final int FLAG_SUMMONING=16;
+	public static final long FLAG_SUMMONING=16;
 	/** constant mask for the flags() method designating that this ability is a charming effect @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#flags() */
-	public static final int FLAG_CHARMING=32;
+	public static final long FLAG_CHARMING=32;
 	/** constant mask for the flags() method designating that this ability is a tracking-causing effect @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#flags() */
-	public static final int FLAG_TRACKING=64;
+	public static final long FLAG_TRACKING=64;
 	/** constant mask for the flags() method designating that this ability is a heating effect @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#flags() */
-	public static final int FLAG_HEATING=128;
+	public static final long FLAG_HEATING=128;
 	/** constant mask for the flags() method designating that this ability is a burning effect @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#flags() */
-	public static final int FLAG_FIREBASED=256;
+	public static final long FLAG_FIREBASED=256;
 	/** constant mask for the flags() method designating that this ability is a holy or neutral effect @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#flags() */
-	public static final int FLAG_HOLY=512;
+	public static final long FLAG_HOLY=512;
 	/** constant mask for the flags() method designating that this ability is a unholy or neutral effect @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#flags() */
-	public static final int FLAG_UNHOLY=1024;
+	public static final long FLAG_UNHOLY=1024;
 	/** constant mask for the flags() method designating that this ability is a paralyzing effect @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#flags() */
-	public static final int FLAG_PARALYZING=2048;
+	public static final long FLAG_PARALYZING=2048;
 	/** constant mask for the flags() method designating that this ability may not be ordered @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#flags() */
-	public static final int FLAG_NOORDERING=4096;
+	public static final long FLAG_NOORDERING=4096;
     /** constant mask for the flags() method designating that this ability is a clan magic @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#flags() */
-    public static final int FLAG_CLANMAGIC=8192;
+    public static final long FLAG_CLANMAGIC=8192;
     /** constant mask for the flags() method designating that this ability is healing magic @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#flags() */
-    public static final int FLAG_HEALINGMAGIC=16384;
+    public static final long FLAG_HEALINGMAGIC=16384;
     /** constant mask for the flags() method designating that this ability is a freezing effect @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#flags() */
-    public static final int FLAG_WATERBASED=32768;
+    public static final long FLAG_WATERBASED=32768;
     /** constant mask for the flags() method designating that this ability is a washing effect @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#flags() */
-    public static final int FLAG_AIRBASED=65536;
+    public static final long FLAG_AIRBASED=65536;
     /** constant mask for the flags() method designating that this ability is a grounded effect @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#flags() */
-    public static final int FLAG_EARTHBASED=131072;
+    public static final long FLAG_EARTHBASED=131072;
     /** constant mask for the flags() method designating that this ability is an intoxicating effect @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#flags() */
-    public static final int FLAG_INTOXICATING=262144;
+    public static final long FLAG_INTOXICATING=262144;
+    /** constant mask for the flags() method designating that this ability adjusts char/phy/base stats @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#flags() */
+    public static final long FLAG_ADJUSTER=524288;
+    /** constant mask for the flags() method designating that this ability resists/saves @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#flags() */
+    public static final long FLAG_RESISTER=1048576;
+    /** constant mask for the flags() method designating that this ability blocks certain negative affects @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#flags() */
+    public static final long FLAG_IMMUNER=2097152;
+    /** constant mask for the flags() method designating that this ability blocks getting and other mundane actions @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#flags() */
+    public static final long FLAG_ZAPPER=2097152;
+    /** constant mask for the flags() method designating that this ability casts some other spell/ability @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#flags() */
+    public static final long FLAG_CASTER=4194304;
+    /** constant mask for the flags() method designating that this ability grants another spell/ability @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#flags() */
+    public static final long FLAG_ENABLER=8388608;
 	
 	/** array of string describtions for the FLAG_* constants, indexed by their values */
 	public static final String[] FLAG_DESCS={
@@ -908,7 +920,13 @@ public interface Ability extends Environmental
         "FREEZING",
         "ELECTROCUTING",
         "ACIDIZING",
-        "INTOXICATING"
+        "INTOXICATING",
+        "ADJUSTER",
+        "RESISTER",
+        "IMMUNER",
+        "ZAPPER",
+        "CASTER",
+        "ENABLER",
 	};
 
 	/* constant for the abstractQuality and other methods.  Means that this skill would not make the target happy. @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#abstractQuality()*/
