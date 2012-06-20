@@ -42,14 +42,14 @@ import java.util.*;
 public class CMAbleParms extends StdLibrary implements AbilityParameters
 {
     public String ID(){return "CMAbleParms";}
-    
+
     protected Map<String,AbilityParmEditor> DEFAULT_EDITORS = null; 
-    
+
     public CMAbleParms()
     {
         super();
     }
-    
+
     public String encodeCodedSpells(Affectable I)
     {
         final StringBuilder str=new StringBuilder("");
@@ -68,7 +68,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 
     public List<Ability> getCodedSpells(String spells)
     {
-        Vector spellsV=new Vector(); 
+        Vector<Ability> spellsV=new Vector<Ability>(); 
         if(spells.length()==0) return spellsV;
         if(spells.startsWith("*"))
         {
@@ -84,12 +84,12 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
                 return spellsV;
             }
         }
-        Vector V=CMParms.parseSemicolons(spells,true);
+        Vector<String> V=CMParms.parseSemicolons(spells,true);
         Ability lastSpell=null;
         Ability A=null;
         for(int v=0;v<V.size();v++)
         {
-            spells=(String)V.elementAt(v); 
+            spells=V.elementAt(v); 
             A=CMClass.getAbility(spells);
             if(A==null)
             {
@@ -112,15 +112,23 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
         {
             String layers=misctype.substring(0,colon).toUpperCase().trim();
             misctype=misctype.substring(colon+1).trim();
-            if((layers.startsWith("MS"))
-                    ||(layers.startsWith("SM")))
-            { layers=layers.substring(2); layerAtt[0]=Armor.LAYERMASK_MULTIWEAR|Armor.LAYERMASK_SEETHROUGH;}
+            if((layers.startsWith("MS"))||(layers.startsWith("SM")))
+            { 
+                layers=layers.substring(2); 
+                layerAtt[0]=Armor.LAYERMASK_MULTIWEAR|Armor.LAYERMASK_SEETHROUGH;
+            }
             else
             if(layers.startsWith("M"))
-            { layers=layers.substring(1); layerAtt[0]=Armor.LAYERMASK_MULTIWEAR;}
+            { 
+                layers=layers.substring(1); 
+                layerAtt[0]=Armor.LAYERMASK_MULTIWEAR;
+            }
             else
             if(layers.startsWith("S"))
-            { layers=layers.substring(1); layerAtt[0]=Armor.LAYERMASK_SEETHROUGH;}
+            { 
+                layers=layers.substring(1); 
+                layerAtt[0]=Armor.LAYERMASK_SEETHROUGH;
+            }
             clothingLayers[0]=CMath.s_short(layers);
         }
         return misctype;
@@ -149,22 +157,22 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
                 logicalAnd[0]=false;
             }
             else
-                if((wearLocation.toUpperCase().indexOf(WO+"||")>=0)
-                        ||(wearLocation.toUpperCase().endsWith("||"+WO)))
-                {
-                    if(hardBonus[0]==0.0)
-                        hardBonus[0]+=codes.location_strength_points()[wo];
-                    wornLoc[0]=wornLoc[0]|CMath.pow(2,wo-1);
-                    logicalAnd[0]=false;
-                }
-                else
-                    if((wearLocation.toUpperCase().indexOf(WO+"&&")>=0)
-                            ||(wearLocation.toUpperCase().endsWith("&&"+WO)))
-                    {
-                        hardBonus[0]+=codes.location_strength_points()[wo];
-                        wornLoc[0]=wornLoc[0]|CMath.pow(2,wo-1);
-                        logicalAnd[0]=true;
-                    }
+            if((wearLocation.toUpperCase().indexOf(WO+"||")>=0)
+            ||(wearLocation.toUpperCase().endsWith("||"+WO)))
+            {
+                if(hardBonus[0]==0.0)
+                    hardBonus[0]+=codes.location_strength_points()[wo];
+                wornLoc[0]=wornLoc[0]|CMath.pow(2,wo-1);
+                logicalAnd[0]=false;
+            }
+            else
+            if((wearLocation.toUpperCase().indexOf(WO+"&&")>=0)
+            ||(wearLocation.toUpperCase().endsWith("&&"+WO)))
+            {
+                hardBonus[0]+=codes.location_strength_points()[wo];
+                wornLoc[0]=wornLoc[0]|CMath.pow(2,wo-1);
+                logicalAnd[0]=true;
+            }
         }
         hardBonus[0]=(int)Math.round(hardBonus[0] * hardnessMultiplier);
     }
@@ -175,10 +183,11 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
         StringBuffer currentColumn = new StringBuffer("");
         Vector<String> currentColumns = null;
         char[] recipeFmtC = recipeFormat.toCharArray();
-        Vector columnsV = new Vector();
-        for(int c=0;c<=recipeFmtC.length;c++) {
-            if(c==recipeFmtC.length) {
-                
+        Vector<Object> columnsV = new Vector<Object>();
+        for(int c=0;c<=recipeFmtC.length;c++) 
+        {
+            if(c==recipeFmtC.length) 
+            {
                 break;
             }
             C = recipeFmtC[c];
@@ -187,8 +196,10 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
             &&(recipeFmtC[c+1]=='|')
             &&(currentColumn.length()>0))
             {
-                if(currentColumn.length()>0) {
-                    if(currentColumns == null) {
+                if(currentColumn.length()>0) 
+                {
+                    if(currentColumns == null) 
+                    {
                         currentColumns = new Vector<String>();
                         columnsV.addElement(currentColumns);
                     }
@@ -198,38 +209,41 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
                 c++;
             }
             else
-                if(Character.isLetter(C)||Character.isDigit(C)||(C=='_'))
-                    currentColumn.append(C);
-                else
+            if(Character.isLetter(C)||Character.isDigit(C)||(C=='_'))
+                currentColumn.append(C);
+            else
+            {
+                if(currentColumn.length()>0)
                 {
-                    if(currentColumn.length()>0) {
-                        if(currentColumns == null) {
-                            currentColumns = new Vector<String>();
-                            columnsV.addElement(currentColumns);
-                        }
-                        currentColumns.addElement(currentColumn.toString());
-                        currentColumn.setLength(0);
-                    }
-                    currentColumns = null;
-                    if((C=='.')
-                    &&(c<(recipeFmtC.length-2))
-                    &&(recipeFmtC[c+1]=='.')
-                    &&(recipeFmtC[c+2]=='.'))
+                    if(currentColumns == null)
                     {
-                        c+=2;
-                        columnsV.addElement("...");
+                        currentColumns = new Vector<String>();
+                        columnsV.addElement(currentColumns);
                     }
-                    else
-                        if(columnsV.lastElement() instanceof String)
-                            columnsV.setElementAt(((String)columnsV.lastElement())+C,columnsV.size()-1);
-                        else
-                            columnsV.addElement(""+C);
+                    currentColumns.addElement(currentColumn.toString());
+                    currentColumn.setLength(0);
                 }
+                currentColumns = null;
+                if((C=='.')
+                &&(c<(recipeFmtC.length-2))
+                &&(recipeFmtC[c+1]=='.')
+                &&(recipeFmtC[c+2]=='.'))
+                {
+                    c+=2;
+                    columnsV.addElement("...");
+                }
+                else
+                if(columnsV.lastElement() instanceof String)
+                    columnsV.setElementAt(((String)columnsV.lastElement())+C,columnsV.size()-1);
+                else
+                    columnsV.addElement(""+C);
+            }
         }
         if(currentColumn.length()>0)
         {
-            if(currentColumns == null) {
-                currentColumns = new Vector();
+            if(currentColumns == null) 
+            {
+                currentColumns = new Vector<String>();
                 columnsV.addElement(currentColumns);
             }
             currentColumns.addElement(currentColumn.toString());
@@ -244,17 +258,17 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
         for(int d=0;d<dataRow.size();d++)
             if(dataRow.elementAt(d,1) instanceof List) 
             {
-                List V=(List)dataRow.elementAt(d,1);
+                List<String> V=(List<String>)dataRow.elementAt(d,1);
                 if(V.contains("ITEM_CLASS_ID")||V.contains("FOOD_DRINK"))
                     return d;
             }
             else
-                if(dataRow.elementAt(d,1) instanceof String)
-                {
-                    String s=(String)dataRow.elementAt(d,1);
-                    if(s.equalsIgnoreCase("ITEM_CLASS_ID")||s.equalsIgnoreCase("FOOD_DRINK"))
-                        return d;
-                }
+            if(dataRow.elementAt(d,1) instanceof String)
+            {
+                String s=(String)dataRow.elementAt(d,1);
+                if(s.equalsIgnoreCase("ITEM_CLASS_ID")||s.equalsIgnoreCase("FOOD_DRINK"))
+                    return d;
+            }
         return -1;
     }
 
@@ -266,21 +280,23 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
         for(int d=0;d<dataRow.size();d++)
             if((dataRow.elementAt(d,1) instanceof List) 
             &&(!classIDRequired)
-            &&(((List)dataRow.elementAt(d,1)).size()>1))
+            &&(((List<String>)dataRow.elementAt(d,1)).size()>1))
                 classIDRequired=true;
         if(fieldIndex >=0)
             classID=(String)dataRow.elementAt(fieldIndex,2);
         if((classID!=null)&&(classID.length()>0))
+        {
             if(classID.equalsIgnoreCase("FOOD"))
                 return CMClass.getItemPrototype("GenFood");
             else
-                if(classID.equalsIgnoreCase("SOAP"))
-                    return CMClass.getItemPrototype("GenItem");
-                else
-                    if(classID.equalsIgnoreCase("DRINK"))
-                        return CMClass.getItemPrototype("GenDrink");
-                    else
-                        return CMClass.getItemPrototype(classID);
+            if(classID.equalsIgnoreCase("SOAP"))
+                return CMClass.getItemPrototype("GenItem");
+            else
+            if(classID.equalsIgnoreCase("DRINK"))
+                return CMClass.getItemPrototype("GenDrink");
+            else
+                return CMClass.getItemPrototype(classID);
+        }
         if(classIDRequired)
             return null;
         return CMClass.getItemPrototype("StdItem");
@@ -316,14 +332,14 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
         return null;
     }
 
-    protected Vector parseDataRows(StringBuffer recipeData, Vector columnsV, int numberOfDataColumns)
+    protected Vector<DVector> parseDataRows(StringBuffer recipeData, Vector<Object> columnsV, int numberOfDataColumns)
         throws CMException
     {
         StringBuffer str = new StringBuffer(recipeData.toString());
         str = cleanDataRowEOLs(str);
-        Vector rowsV = new Vector();
+        Vector<DVector> rowsV = new Vector<DVector>();
         DVector dataRow = new DVector(2);
-        List currCol = null;
+        List<String> currCol = null;
         String lastDiv = null;
         
         int lastLen = str.length();
@@ -337,15 +353,15 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
                 if(columnsV.elementAt(c) instanceof String)
                     stripData(str,(String)columnsV.elementAt(c));
                 else
-                    if(columnsV.elementAt(c) instanceof List)
+                if(columnsV.elementAt(c) instanceof List)
+                {
+                    currCol = (List<String>)columnsV.elementAt(c);
+                    if(c<columnsV.size()-1)
                     {
-                        currCol = (List)columnsV.elementAt(c);
-                        if(c<columnsV.size()-1)
-                        {
-                            div = (String)columnsV.elementAt(c+1);
-                            c++;
-                        }
+                        div = (String)columnsV.elementAt(c+1);
+                        c++;
                     }
+                }
                 if(!div.equals("..."))
                 {
                     lastDiv = div;
@@ -385,10 +401,10 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
         } 
         for(int d=0;d<dataRow.size();d++) 
         {
-            List colV=(List)dataRow.elementAt(d,1);
+            List<String> colV=(List<String>)dataRow.elementAt(d,1);
             if(colV.size()==1)
             {
-                AbilityParmEditor A = (AbilityParmEditor)editors.get((String)colV.get(0));
+                AbilityParmEditor A = (AbilityParmEditor)editors.get(colV.get(0));
                 if((A == null)||(A.appliesToClass(classModelI)<0))
                     A = (AbilityParmEditor)editors.get("N_A");
                 dataRow.setElementAt(d,1,A.ID());
@@ -398,9 +414,9 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
                 AbilityParmEditor applicableA = null;
                 for(int c=0;c<colV.size();c++)
                 {
-                    AbilityParmEditor A = (AbilityParmEditor)editors.get((String)colV.get(c));
+                    AbilityParmEditor A = (AbilityParmEditor)editors.get(colV.get(c));
                     if(A==null) 
-                        throw new CMException("Col name "+((String)colV.get(c))+" is not defined.");
+                        throw new CMException("Col name "+(colV.get(c))+" is not defined.");
                     if((applicableA==null)
                             ||(A.appliesToClass(classModelI) > applicableA.appliesToClass(classModelI)))
                         applicableA = A;
@@ -422,7 +438,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
         return true;
     }
 
-    protected void fixDataColumns(Vector rowsV) throws CMException
+    protected void fixDataColumns(Vector<DVector> rowsV) throws CMException
     {
         DVector dataRow = new DVector(2);
         for(int r=0;r<rowsV.size();r++) {
@@ -453,8 +469,9 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
         for(int c = 0; c < columnsV.size(); c++)
             if(columnsV.elementAt(c) instanceof List)
                 numberOfDataColumns++;
-        Vector rowsV = null;
-        try {
+        Vector<DVector> rowsV = null;
+        try
+        {
             rowsV = parseDataRows(str,columnsV,numberOfDataColumns);
             fixDataColumns(rowsV);
         } catch(CMException e) {
@@ -475,7 +492,8 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
             for(int a=0;a<editRow.size();a++)
             {
                 AbilityParmEditor A = (AbilityParmEditor)editors.get((String)editRow.elementAt(a,1));
-                try{ 
+                try
+                { 
                     String oldVal = (String)editRow.elementAt(a,2);
                     fakeSession.previousCMD().clear();
                     fakeSession.previousCMD().addAll(new XVector<String>(A.fakeUserInput(oldVal)));
@@ -490,7 +508,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
             resaveRecipeFile(mob,recipeFilename,rowsV,columnsV,false);
     }
 
-    protected void calculateRecipeCols(int[] lengths, String[] headers, Vector rowsV)
+    protected void calculateRecipeCols(int[] lengths, String[] headers, Vector<DVector> rowsV)
     {
         Map<String,AbilityParmEditor> editors = getEditors();
         DVector dataRow = null;
@@ -508,12 +526,11 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
                     lengths[c]=headers[c].length();
                 }
                 else
-                    if((!headers[c].startsWith("#"))
-                            &&(!headers[c].equalsIgnoreCase(A.colHeader())))
-                    {
-                        headers[c]="#"+c;
-                        lengths[c]=headers[c].length();
-                    }
+                if((!headers[c].startsWith("#"))&&(!headers[c].equalsIgnoreCase(A.colHeader())))
+                {
+                    headers[c]="#"+c;
+                    lengths[c]=headers[c].length();
+                }
             }
         }
         for(int i=0;i<headers.length;i++)
@@ -523,7 +540,8 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
         for(int l=0;l<lengths.length;l++)
             currLenTotal+=lengths[l];
         int curCol = 0;
-        while((currLenTotal+lengths.length)>72) {
+        while((currLenTotal+lengths.length)>72) 
+        {
             if(lengths[curCol]>1)
             {
                 lengths[curCol]--;
@@ -533,7 +551,8 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
             if(curCol >= lengths.length)
                 curCol = 0;
         }
-        while((currLenTotal+lengths.length)<72) {
+        while((currLenTotal+lengths.length)<72) 
+        {
             lengths[curCol]++;
             currLenTotal++;
             curCol++;
@@ -564,12 +583,12 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
         for(int l=0;l<recipe.columnLengths().length;l++)
             list.append(CMStrings.padRight(recipe.columnHeaders()[l],recipe.columnLengths()[l])+" ");
         list.append("\n\r");
-        for(int r=0;r<recipe.dataRows().size();r++) {
+        for(int r=0;r<recipe.dataRows().size();r++) 
+        {
             dataRow=(DVector)recipe.dataRows().elementAt(r);
             list.append(CMStrings.padRight(""+(r+1),3)+" ");
             for(int c=0;c<dataRow.size();c++)
                 list.append(CMStrings.padRight(CMStrings.limit((String)dataRow.elementAt(c,2),recipe.columnLengths()[c]),recipe.columnLengths()[c])+" ");
-            
             list.append("\n\r");
         }
         return list;
@@ -597,7 +616,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
                 int keyIndex = getClassFieldIndex(editRow);
                 String classFieldData = null;
                 if(keyIndex>=0) {
-                    AbilityParmEditor A = (AbilityParmEditor)editors.get(((List)editRow.elementAt(keyIndex,1)).get(0));
+                    AbilityParmEditor A = (AbilityParmEditor)editors.get(((List<String>)editRow.elementAt(keyIndex,1)).get(0));
                     if(A!=null)
                     {
                         classFieldData = A.commandLinePrompt(mob,(String)editRow.elementAt(keyIndex,2),new int[]{0},-999);
@@ -613,15 +632,15 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
                 recipe.dataRows().addElement(editRow);
             }
             else
-                if(CMath.isInteger(lineNum))
-                {
-                    int line = CMath.s_int(lineNum);
-                    if((line<1)||(line>recipe.dataRows().size()))
-                        continue;
-                    editRow = (DVector)recipe.dataRows().elementAt(line-1);
-                }
-                else
-                    break;
+            if(CMath.isInteger(lineNum))
+            {
+                int line = CMath.s_int(lineNum);
+                if((line<1)||(line>recipe.dataRows().size()))
+                    continue;
+                editRow = (DVector)recipe.dataRows().elementAt(line-1);
+            }
+            else
+                break;
             if(editRow != null) 
             {
                 int showFlag=-1;
@@ -664,7 +683,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
         }
     }
 
-    public void resaveRecipeFile(MOB mob, String recipeFilename, Vector rowsV, Vector columnsV, boolean saveToVFS)
+    public void resaveRecipeFile(MOB mob, String recipeFilename, Vector<DVector> rowsV, Vector<String> columnsV, boolean saveToVFS)
     {
         StringBuffer saveBuf = new StringBuffer("");
         for(int r=0;r<rowsV.size();r++)
@@ -1558,7 +1577,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
                 new AbilityParmEditorImpl("REQUIRED_COMMON_SKILL_ID","Common Skill",PARMTYPE_CHOICES) {
                     public int appliesToClass(Object o) { return (o instanceof ClanItem)?5:-1;}
                     public void createChoices() {
-                        Vector V  = new Vector();
+                        Vector<Object> V  = new Vector<Object>();
                         Ability A = null;
                         for(Enumeration<Ability> e=CMClass.abilities();e.hasMoreElements();)
                         {
@@ -1797,7 +1816,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
                 },
                 new AbilityParmEditorImpl("OPTIONAL_RESOURCE_OR_MATERIAL","Rsc/Mat",PARMTYPE_CHOICES) {
                     public void createChoices() {
-                        Vector V=new XVector<String>(RawMaterial.CODES.NAMES());
+                        Vector<String> V=new XVector<String>(RawMaterial.CODES.NAMES());
                         V.addAll(new XVector<String>(RawMaterial.MATERIAL_DESCS));
                         V.addElement("");
                         createChoices(V);
@@ -2126,8 +2145,8 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
     {
         private String recipeFilename;
         private String recipeFormat;
-        private Vector columns;
-        private Vector dataRows;
+        private Vector<Object> columns;
+        private Vector<DVector> dataRows;
         private int numberOfDataColumns;
         public String[] columnHeaders;
         public int[] columnLengths;
@@ -2274,7 +2293,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
             case PARMTYPE_CHOICES:
             {
                 if(oldVal.trim().length()==0) return new String[]{"NULL"};
-                Vector V = choices.getDimensionVector(1);
+                Vector<String> V = choices.getDimensionVector(1);
                 for(int v=0;v<V.size();v++)
                     if(oldVal.equalsIgnoreCase((String)V.elementAt(v)))
                         return new String[]{(String)choices.elementAt(v,2)};
@@ -2284,12 +2303,12 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
                 if(oldVal.trim().length()==0) return new String[]{"NULL"};
                 if(!CMath.isInteger(oldVal))
                 {
-                    Vector V = (Vector)choices.getDimensionVector(1);
+                    Vector<String> V = (Vector<String>)choices.getDimensionVector(1);
                     for(int v=0;v<V.size();v++)
                         if(oldVal.equalsIgnoreCase((String)V.elementAt(v)))
                             return new String[]{(String)choices.elementAt(v,2),""};
                 } else {
-                    Vector V = new Vector();
+                    Vector<String> V = new Vector<String>();
                     for(int c=0;c<choices.size();c++)
                         if(CMath.bset(CMath.s_int(oldVal),CMath.s_int((String)choices.elementAt(c,1))))
                         {
@@ -2436,7 +2455,8 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
         }
         
         public abstract void createChoices(); 
-        public DVector createChoices(Enumeration e) {
+        public DVector createChoices(Enumeration e) 
+        {
             if(choices != null) return choices;
             choices = new DVector(2);
             Object o = null;
@@ -2445,14 +2465,14 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
                 if(o instanceof String)
                     choices.addElement(o,CMStrings.capitalizeAndLower((String)o));
                 else
-                    if(o instanceof Ability)
-                        choices.addElement(((Ability)o).ID(),((Ability)o).name());
-                    else
-                        if(o instanceof Race)
-                            choices.addElement(((Race)o).ID(),((Race)o).name());
-                        else
-                            if(o instanceof Environmental)
-                                choices.addElement(((Environmental)o).ID(),((Environmental)o).ID());
+                if(o instanceof Ability)
+                    choices.addElement(((Ability)o).ID(),((Ability)o).name());
+                else
+                if(o instanceof Race)
+                    choices.addElement(((Race)o).ID(),((Race)o).name());
+                else
+                if(o instanceof Environmental)
+                    choices.addElement(((Environmental)o).ID(),((Environmental)o).ID());
             }
             return choices;
         }

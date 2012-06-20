@@ -68,7 +68,7 @@ public interface AbilityParameters extends CMLibrary
     public void testRecipeParsing(String recipeFilename, String recipeFormat, boolean save);
     public AbilityRecipeData parseRecipe(String recipeFilename, String recipeFormat);
     public Map<String,AbilityParmEditor> getEditors();
-    public void resaveRecipeFile(MOB mob, String recipeFilename, Vector rowsV, Vector columnsV, boolean saveVFS);
+    public void resaveRecipeFile(MOB mob, String recipeFilename, Vector<DVector> rowsV, Vector<String> columnsV, boolean saveVFS);
     public StringBuffer getRecipeList(ItemCraftor iA);
     
     public static interface AbilityRecipeData 
