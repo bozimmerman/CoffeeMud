@@ -33,7 +33,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
  * PropertyAffect is an ability interface to denote those properties
  * that are typically non-removable inherent attributes of the things they affect.
  */
-public interface PropertyAffect extends Ability
+public interface TriggeredAffect extends Ability
 {
 	/** denotes a property whose affects are triggered always */
 	public final static int TRIGGER_ALWAYS=1;
@@ -57,7 +57,7 @@ public interface PropertyAffect extends Ability
 	
 	/**
 	 * This method returns a mask of TRIGGER_* constants denoting what triggers the properties
-	 * @see PropertyAffect#TRIGGER_ALWAYS
+	 * @see TriggeredAffect#TRIGGER_ALWAYS
 	 * 
 	 * @return  a mask of TRIGGER_* constants denoting what triggers the properties
 	 */
