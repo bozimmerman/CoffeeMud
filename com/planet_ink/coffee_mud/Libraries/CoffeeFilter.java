@@ -543,7 +543,7 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
               return index-1;
           }
         default:
-            if((S==null)||(S.clientTelnetMode(Session.TELNET_ANSI)))
+            if((c>=0)&&(c<256)&&((S==null)||(S.clientTelnetMode(Session.TELNET_ANSI))))
             {
                 final String[] clookup = (S==null)?CMLib.color().standardColorLookups():S.clookup();
                 String escapeSequence=clookup[c];
