@@ -763,78 +763,81 @@ public class ProcessSMTPrequest implements Runnable
                     else
                     if(cmd.equals("RCPT"))
                     {
-                        if(from==null)
-                            replyData=("503 Need MAIL before RCPT"+cr).getBytes();
+                        int x=parm.indexOf(':');
+                        if(x<0)
+                            replyData=("501 Syntax error in \""+parm+"\""+cr).getBytes();
                         else
                         {
-                            int x=parm.indexOf(':');
-                            if(x<0)
-                                replyData=("501 Syntax error in \""+parm+"\""+cr).getBytes();
+                            String to2=parm.substring(0,x).trim();
+                            if(!to2.equalsIgnoreCase("to"))
+                                replyData=("500 Unrecognized command \""+cmd+"\""+cr).getBytes();
                             else
                             {
-                                String to2=parm.substring(0,x).trim();
-                                if(!to2.equalsIgnoreCase("to"))
-                                    replyData=("500 Unrecognized command \""+cmd+"\""+cr).getBytes();
-                                else
+                                parm=parm.substring(x+1).trim();
+                                String parmparms="";
+                                boolean error=false;
+                                if(parm.startsWith("<"))
                                 {
-                                    parm=parm.substring(x+1).trim();
-                                    String parmparms="";
-                                    boolean error=false;
-                                    if(parm.startsWith("<"))
-                                    {
-                                        x=parm.indexOf('>');
-                                        if(x<0)
-                                        {
-                                            replyData=("501 Syntax error in \""+parm+"\""+cr).getBytes();
-                                            error=true;
-                                        }
-                                        else
-                                        {
-                                            parmparms=parm.substring(x+1).trim();
-                                            parm=parm.substring(1,x);
-                                        }
-                                    }
-                                    else
-                                    if(parm.indexOf(' ')>=0)
+                                    x=parm.indexOf('>');
+                                    if(x<0)
                                     {
                                         replyData=("501 Syntax error in \""+parm+"\""+cr).getBytes();
                                         error=true;
                                     }
-                                    if(parmparms.trim().length()>0)
+                                    else
                                     {
-                                        if((parmparms.trim().toUpperCase().startsWith("SIZE="))
-                                        ||(!CMath.isNumber(parmparms.trim().toUpperCase().substring(5))))
-                                        {
-                                            int size=CMath.s_int(parmparms.trim().toUpperCase().substring(5));
-                                            if(size>server.getMaxMsgSize())
-                                                replyData=("552 String exceeds size limit. But you were nice to tell me!"+cr).getBytes();
-                                        }
-                                        else
-                                            replyData=("502 Parameters not supported... \""+parmparms+"\""+cr).getBytes();
+                                        parmparms=parm.substring(x+1).trim();
+                                        parm=parm.substring(1,x);
+                                    }
+                                }
+                                else
+                                if(parm.indexOf(' ')>=0)
+                                {
+                                    replyData=("501 Syntax error in \""+parm+"\""+cr).getBytes();
+                                    error=true;
+                                }
+                                if(parmparms.trim().length()>0)
+                                {
+                                    if((parmparms.trim().toUpperCase().startsWith("SIZE="))
+                                    ||(!CMath.isNumber(parmparms.trim().toUpperCase().substring(5))))
+                                    {
+                                        int size=CMath.s_int(parmparms.trim().toUpperCase().substring(5));
+                                        if(size>server.getMaxMsgSize())
+                                            replyData=("552 String exceeds size limit. But you were nice to tell me!"+cr).getBytes();
                                     }
                                     else
-                                    if(parm.indexOf('@')<0)
-                                        replyData=("550 "+parm+" user unknown."+cr).getBytes();
-                                    else
-                                    if(!error)
+                                        replyData=("502 Parameters not supported... \""+parmparms+"\""+cr).getBytes();
+                                }
+                                else
+                                if(parm.indexOf('@')<0)
+                                    replyData=("550 "+parm+" user unknown."+cr).getBytes();
+                                else
+                                if(!error)
+                                {
+                                    String name=validLocalAccount(parm);
+                                    if(name==null)
                                     {
-                                        String name=validLocalAccount(parm);
-                                        if(name==null)
+                                        if((++failures)==3)
                                         {
-                                            if((++failures)==3)
-                                            {
-                                                replyData=("421 Quit Fishing!"+cr).getBytes();
-                                                quitFlag=true;
-                                            }
-                                            else
-                                                replyData=("553 Requested action not taken: User is not local."+cr).getBytes();
+                                            replyData=("421 Quit Fishing!"+cr).getBytes();
+                                            quitFlag=true;
                                         }
                                         else
+                                            replyData=("553 Requested action not taken: User is not local."+cr).getBytes();
+                                    }
+                                    else
+                                    {
+                                        if(server.getAnEmailJournal(name)!=null)
                                         {
-                                            if(server.getAnEmailJournal(name)!=null)
+                                            boolean jerror=false;
+                                            if(server.getJournalCriteria(name)!=null)
                                             {
-                                                boolean jerror=false;
-                                                if(server.getJournalCriteria(name)!=null)
+                                                if(from==null)
+                                                {
+                                                    replyData=("503 Need MAIL before RCPT"+cr).getBytes();
+                                                    jerror=true;
+                                                }
+                                                else
                                                 {
                                                     MOB M=CMLib.players().getPlayer(from);
                                                     if((M==null)
@@ -844,25 +847,25 @@ public class ProcessSMTPrequest implements Runnable
                                                         jerror=true;
                                                     }
                                                 }
-                                                
-                                                if(!jerror)
-                                                {
-                                                    replyData=("250 OK "+name+cr).getBytes();
-                                                    if(to==null) to=new Vector<String>();
-                                                    if(!to.contains(name))
-                                                        to.addElement(name);
-                                                }
                                             }
-                                            else
-                                            if(CMLib.database().DBCountJournal(server.mailboxName(),null,name)>=server.getMaxMsgs())
-                                                replyData=("552 Mailbox '"+name+"' is full."+cr).getBytes();
-                                            else
+                                            
+                                            if(!jerror)
                                             {
                                                 replyData=("250 OK "+name+cr).getBytes();
                                                 if(to==null) to=new Vector<String>();
                                                 if(!to.contains(name))
                                                     to.addElement(name);
                                             }
+                                        }
+                                        else
+                                        if(CMLib.database().DBCountJournal(server.mailboxName(),null,name)>=server.getMaxMsgs())
+                                            replyData=("552 Mailbox '"+name+"' is full."+cr).getBytes();
+                                        else
+                                        {
+                                            replyData=("250 OK "+name+cr).getBytes();
+                                            if(to==null) to=new Vector<String>();
+                                            if(!to.contains(name))
+                                                to.addElement(name);
                                         }
                                     }
                                 }
