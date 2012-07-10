@@ -33,7 +33,7 @@ import java.util.*;
    limitations under the License.
 */
 
-@SuppressWarnings("unchecked")
+@SuppressWarnings("rawtypes")
 public class Archon_Stinkify extends ArchonSkill
 {
 	boolean doneTicking=false;

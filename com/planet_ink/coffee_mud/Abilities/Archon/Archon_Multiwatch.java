@@ -32,7 +32,7 @@ import java.util.*;
    limitations under the License.
 */
 
-@SuppressWarnings("unchecked")
+@SuppressWarnings({"unchecked","rawtypes"})
 public class Archon_Multiwatch extends ArchonSkill
 {
 	public String ID() { return "Archon_Multiwatch"; }
