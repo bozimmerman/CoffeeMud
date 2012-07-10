@@ -30,7 +30,7 @@ import com.planet_ink.coffee_mud.core.interfaces.Physical;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("unchecked")
+@SuppressWarnings({"unchecked","rawtypes"})
 public class Drow extends Elf
 {
     public String ID(){    return "Drow"; }

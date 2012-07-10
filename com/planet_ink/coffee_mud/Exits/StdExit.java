@@ -705,7 +705,7 @@ public class StdExit implements Exit
         }
         affects.clear();
     }
-    @SuppressWarnings("unchecked")
+	@SuppressWarnings("unchecked")
     public Enumeration<Ability> effects(){return (affects==null)?EmptyEnumeration.INSTANCE:affects.elements();}
     
     public int numEffects()
@@ -771,7 +771,7 @@ public class StdExit implements Exit
         if(behaviors==null) return 0;
         return behaviors.size();
     }
-    @SuppressWarnings("unchecked")
+	@SuppressWarnings("unchecked")
     public Enumeration<Behavior> behaviors() { return (behaviors==null)?EmptyEnumeration.INSTANCE:behaviors.elements();}
     public Behavior fetchBehavior(int index)
     {
@@ -834,7 +834,7 @@ public class StdExit implements Exit
           CMLib.threads().deleteTick(this,Tickable.TICKID_EXIT_BEHAVIOR);
     }
     public int numScripts(){return (scripts==null)?0:scripts.size();}
-    @SuppressWarnings("unchecked")
+	@SuppressWarnings("unchecked")
     public Enumeration<ScriptingEngine> scripts() { return (scripts==null)?EmptyEnumeration.INSTANCE:scripts.elements();}
     public ScriptingEngine fetchScript(int x){try{return (ScriptingEngine)scripts.elementAt(x);}catch(Exception e){} return null;}
     

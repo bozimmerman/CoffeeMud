@@ -39,7 +39,7 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("unchecked")
+@SuppressWarnings({"unchecked","rawtypes"})
 public class StdMOB implements MOB
 {
     public String ID(){return "StdMOB";}
@@ -1379,11 +1379,9 @@ public class StdMOB implements MOB
             {
                 if(commandQue.size()==0) return false;
                 cmd=commandQue.getFirst();
-                if(System.currentTimeMillis()<cmd.nextCheck)
+                if((cmd == null) || (System.currentTimeMillis()<cmd.nextCheck))
                     return false;
             }
-            if(cmd == null) 
-                return false;
             
             double diff=actions()-cmd.actionDelay;
             final Object O=cmd.commandObj;

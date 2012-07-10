@@ -417,7 +417,7 @@ public class PreparedStatement extends Statement implements java.sql.PreparedSta
 		setObject(parameterIndex, null);
 	}
 
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("rawtypes")
 	private boolean setRecursiveObject(final int parameterIndex, final Object x, final List<Backend.FakeCondition> conds, final int[] atIndex)
 	{
 		if((conds != null) && (conds.size()>0))

@@ -31,7 +31,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("unchecked")
+@SuppressWarnings({"unchecked","rawtypes"})
 public class GrinderAreas
 {
     public static String getAreaList(Area pickedA, MOB mob, boolean noInstances)
@@ -65,7 +65,6 @@ public class GrinderAreas
                 if(behav.length()>0)
                 {
                     Behavior B=CMClass.getBehavior(behav);
-                    if(theparm==null) theparm="";
                     if(B==null) return "Unknown behavior '"+behav+"'.";
                     B.setParms(theparm);
                     E.addBehavior(B);
@@ -92,7 +91,6 @@ public class GrinderAreas
                 if(aff.length()>0)
                 {
                     Ability B=CMClass.getAbility(aff);
-                    if(theparm==null) theparm="";
                     if(B==null) return "Unknown Effect '"+aff+"'.";
                     B.setMiscText(theparm);
                     P.addNonUninvokableEffect(B);

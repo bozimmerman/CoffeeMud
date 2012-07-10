@@ -149,7 +149,7 @@ public class FakeSession implements Session
     public boolean amBeingSnoopedBy(Session S){return S==this;}
     public int snoopSuspension(int x){return 0;}
     
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings("rawtypes")
 	public void cmdExit(MOB mob, Vector commands) throws Exception {}
     public void stopSession(boolean t1, boolean t2, boolean t3){}
     public boolean isStopped(){return false;}

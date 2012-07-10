@@ -37,7 +37,7 @@ import java.util.Vector;
  * A MOB is a creature in the system, from a user
  * down to a goblin
  */
-@SuppressWarnings("unchecked")
+@SuppressWarnings("rawtypes")
 public interface MOB extends Rider, DBIdentifiable, PhysicalAgent, ItemPossessor, AbilityUsing
 {
     public static long AGE_MILLIS_THRESHOLD = 120000;

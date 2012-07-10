@@ -34,7 +34,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("unchecked")
+@SuppressWarnings({"unchecked","rawtypes"})
 public class AbilityRecipeData extends StdWebMacro
 {
     public String name()    {return this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);}
@@ -212,9 +212,9 @@ public class AbilityRecipeData extends StdWebMacro
                 if(parms.containsKey("TABLE"))
                 {
                     str.append("\n\r<TABLE WIDTH=100% BORDER=1 CELLSPACING=0 CELLPADDING=0>");
-                    int currLenTotal = 0;
-                    for(int l=0;l<recipeData.columnLengths().length;l++)
-                        currLenTotal+=recipeData.columnLengths()[l];
+                    //int currLenTotal = 0;
+                    //for(int l=0;l<recipeData.columnLengths().length;l++)
+                    //    currLenTotal+=recipeData.columnLengths()[l];
                     str.append("\n\r<TR>");
                     str.append("<TD WIDTH=1%>" + hsfont + "#" + hefont + "</TD>");
                     for(int c=0;c<recipeData.columnHeaders().length;c++)

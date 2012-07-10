@@ -18,7 +18,7 @@ import java.sql.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("unchecked")
+@SuppressWarnings({"unchecked","rawtypes"})
 public class DBUpgrade
 {
 	static PrintStream out=System.out;
@@ -642,7 +642,6 @@ public class DBUpgrade
 					matrix[i]=oldIndex;
 				}
 				
-				int successes=0;
 				for(int r=0;r<rows.size();r++)
 				{
 					List row=(List)rows.get(r);
@@ -669,7 +668,6 @@ public class DBUpgrade
 						myStatement.executeUpdate(str.toString());
 						if(debug) p(".");
 						myStatement.close();
-						successes++;
 					}
 					catch(SQLException sqle)
 					{

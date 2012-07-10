@@ -17,7 +17,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("unchecked")
+@SuppressWarnings({"unchecked","rawtypes"})
 public class Util
 {
     public final static String SPACES="                                                                     ";
@@ -803,7 +803,6 @@ public class Util
         int w=0;
         boolean in=false;
         s=s.trim();
-        String t="";
         char c=(char)0;
         char lc=(char)0;
         char fc=(char)0;
@@ -834,14 +833,12 @@ public class Util
             {
                 if(!in)
                 {
-                    t="";
                     fc=c;
                     lc=(char)0;
                     in=true;
                 }
                 else
                     lc=c;
-                t+=c;
             }
             i++;
         }

@@ -38,7 +38,7 @@ import java.lang.reflect.*;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-@SuppressWarnings("unchecked")
+@SuppressWarnings({"unchecked","rawtypes"})
 public class DefaultFaction implements Faction, MsgListener
 {
     public String ID(){return "DefaultFaction";}

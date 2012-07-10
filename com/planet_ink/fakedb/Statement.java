@@ -23,7 +23,7 @@ import com.planet_ink.fakedb.Backend.FakeTable;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("unchecked")
+@SuppressWarnings({"unchecked","rawtypes"})
 public class Statement implements java.sql.Statement
 {
    protected ResultSet myResultSet=null;

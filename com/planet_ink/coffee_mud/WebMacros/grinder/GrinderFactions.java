@@ -35,7 +35,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("unchecked")
+@SuppressWarnings({"unchecked","rawtypes"})
 public class GrinderFactions {
     public String name()    {return this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);}
 
@@ -212,17 +212,14 @@ public class GrinderFactions {
                 if(usedType>0)
                 {
                     int x=-1;
-                    int sx=-1;
                     while(httpReq.isRequestParameter("ABILITYUSE"+num+"_"+(++x)))
                     {
                         String s=httpReq.getRequestParameter("ABILITYUSE"+num+"_"+x);
                         if(s.length()>0)
                         {
                             old+=" "+s.toUpperCase().trim();
-                            ++sx;
                         }
                     }
-                    ++sx;
                 }
                 old+=";"+CMath.s_int(httpReq.getRequestParameter("ABILITYMIN"+num));
                 old+=";"+CMath.s_int(httpReq.getRequestParameter("ABILITYMAX"+num));

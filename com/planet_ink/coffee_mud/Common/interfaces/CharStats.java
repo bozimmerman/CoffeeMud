@@ -768,7 +768,7 @@ public interface CharStats extends CMCommon, Modifiable
         private String[] statAttributionDescriptions=new String[0];
         private int[] statCMMsgMapping=new int[0];
         
-        @SuppressWarnings("unchecked")
+        @SuppressWarnings("rawtypes")
         public CODES(){
             super();
             char c=Thread.currentThread().getThreadGroup().getName().charAt(0);

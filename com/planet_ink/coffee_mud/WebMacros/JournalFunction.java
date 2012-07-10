@@ -275,47 +275,39 @@ public class JournalFunction extends StdWebMacro
 	            }
 				if(parms.containsKey("DELETE")||parms.containsKey("DELETEREPLY"))
 				{
-					if(M==null)	
-						messages.append("Can not delete #"+cardinalNumber+"-- required logged in user.<BR>");
+					if((forum!=null)&&(!forum.authorizationCheck(M, ForumJournalFlags.ADMIN)))
+						return "Delete not authorized.";
+					CMLib.database().DBDeleteJournal(journalName,entry.key);
+					if(parms.containsKey("DELETEREPLY")&&(entry.parent!=null)&&(entry.parent.length()>0))
+					{
+						// this constitutes a threaded reply -- update the counter
+						JournalsLibrary.JournalEntry parentEntry=CMLib.database().DBReadJournalEntry(journalName, entry.parent);
+						if(parentEntry!=null)
+							CMLib.database().DBUpdateMessageReplies(parentEntry.key,parentEntry.replies-1);
+						JournalInfo.clearJournalCache(httpReq, journalName);
+						httpReq.addRequestParameters("JOURNALMESSAGE",entry.parent);
+						httpReq.addRequestParameters("JOURNALPARENT","");
+						if(cardinalNumber==0) cardinalNumber=entry.cardinal;
+						if(cardinalNumber==0)
+							messages.append("Reply deleted.<BR>");
+						else
+							messages.append("Reply #"+cardinalNumber+" deleted.<BR>");
+					}
 					else
 					{
-						if((forum!=null)&&(!forum.authorizationCheck(M, ForumJournalFlags.ADMIN)))
-							return "Delete not authorized.";
-						CMLib.database().DBDeleteJournal(journalName,entry.key);
-						if(parms.containsKey("DELETEREPLY")&&(entry.parent!=null)&&(entry.parent.length()>0))
-						{
-							// this constitutes a threaded reply -- update the counter
-							JournalsLibrary.JournalEntry parentEntry=CMLib.database().DBReadJournalEntry(journalName, entry.parent);
-							if(parentEntry!=null)
-								CMLib.database().DBUpdateMessageReplies(parentEntry.key,parentEntry.replies-1);
-							JournalInfo.clearJournalCache(httpReq, journalName);
-							httpReq.addRequestParameters("JOURNALMESSAGE",entry.parent);
-							httpReq.addRequestParameters("JOURNALPARENT","");
-							if(cardinalNumber==0) cardinalNumber=entry.cardinal;
-							if(cardinalNumber==0)
-								messages.append("Reply deleted.<BR>");
-							else
-								messages.append("Reply #"+cardinalNumber+" deleted.<BR>");
-						}
+						if(cardinalNumber==0) cardinalNumber=entry.cardinal;
+						if(cardinalNumber==0)
+							messages.append("Message deleted.<BR>");
 						else
-						{
-							if(cardinalNumber==0) cardinalNumber=entry.cardinal;
-							if(cardinalNumber==0)
-								messages.append("Message deleted.<BR>");
-							else
-								messages.append("Message #"+cardinalNumber+" deleted.<BR>");
-							JournalInfo.clearJournalCache(httpReq, journalName);
-							httpReq.addRequestParameters("JOURNALMESSAGE","");
-						}
-						CMLib.journals().clearJournalSummaryStats(journalName);
+							messages.append("Message #"+cardinalNumber+" deleted.<BR>");
+						JournalInfo.clearJournalCache(httpReq, journalName);
+						httpReq.addRequestParameters("JOURNALMESSAGE","");
 					}
+					CMLib.journals().clearJournalSummaryStats(journalName);
 				}
 				else
 				if(parms.containsKey("EDIT"))
 				{
-					if(M==null)	
-						messages.append("Can not edit #"+cardinalNumber+"-- required logged in user.<BR>");
-					else
 					if((entry.to.equals(M.Name()))
 					||((forum!=null)&&(!forum.authorizationCheck(M, ForumJournalFlags.ADMIN)))
 					||CMSecurity.isAllowedAnywhere(M,"JOURNALS"))

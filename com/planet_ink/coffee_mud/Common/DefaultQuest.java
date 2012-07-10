@@ -36,7 +36,7 @@ import org.mozilla.javascript.ScriptableObject;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("unchecked")
+@SuppressWarnings({"unchecked","rawtypes"})
 public class DefaultQuest implements Quest, Tickable, CMObject
 {
     public String ID(){return "DefaultQuest";}
@@ -1756,7 +1756,6 @@ public class DefaultQuest implements Quest, Tickable, CMObject
                         if(p.size()<3) continue;
                         V2=new Vector();
                         TimeClock NOW=getMysteryTimeNowFromState();
-                    	if(TC!=null) V2.add(TC);
                     	if(cmd.equals("WHENHAPPENEDGROUP"))
                     	{
 	                    	q.mysteryData.whenHappenedGroup=V2;

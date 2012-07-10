@@ -36,7 +36,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("unchecked")
+@SuppressWarnings({"unchecked","rawtypes"})
 public class MUDGrinder extends StdWebMacro
 {
 	public String name()	{return this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);}
@@ -400,10 +400,10 @@ public class MUDGrinder extends StdWebMacro
 			{
 				String areaClass=httpReq.getRequestParameter("AREATYPE");
 				A=CMClass.getAreaType(areaClass);
+				if(A==null) return "false";
 				A.setName(AREA);
 				CMLib.map().addArea(A);
 				CMLib.database().DBCreateArea(A);
-				if(A==null) return "false";
 				A.setName(AREA);
 		        CMLib.coffeeMaker().addAutoPropsToAreaIfNecessary(A);			}
 			else
@@ -596,9 +596,9 @@ public class MUDGrinder extends StdWebMacro
                 create=true;
                 if(R!=null) oldR=R;
                 R=(Race)CMClass.getRace("GenRace").copyOf();
+    	        if(R==null) return " @break@";
                 R.setRacialParms("<RACE><ID>"+last+"</ID><NAME>"+last+"</NAME></RACE>");
             }
-	        if(R==null) return " @break@";
 	        R=R.makeGenRace();
 	        String errMsg=GrinderRaces.modifyRace(httpReq, parms, (oldR==null)?R:oldR, R);
             httpReq.addRequestParameters("ERRMSG",errMsg);
@@ -657,9 +657,9 @@ public class MUDGrinder extends StdWebMacro
                 create=true;
                 if(C!=null) oldC=C;
                 C=(CharClass)CMClass.getCharClass("GenCharClass").copyOf();
+                if(C==null) return " @break@";
                 C.setClassParms("<CCLASS><ID>"+last+"</ID><NAME>"+last+"</NAME></CCLASS>");
             }
-            if(C==null) return " @break@";
             C=C.makeGenCharClass();
             String errMsg=GrinderClasses.modifyCharClass(httpReq, parms, (oldC==null)?C:oldC, C);
             httpReq.addRequestParameters("ERRMSG",errMsg);
@@ -717,10 +717,10 @@ public class MUDGrinder extends StdWebMacro
                 if(!Resources.saveFileResource("::"+last,mob,template))
                     return "Unable to save "+Resources.buildResourcePath("")+last;
                 F=(Faction)CMClass.getCommon("DefaultFaction");
+                if(F==null) return " @break@";
                 F.initializeFaction(template,last);
                 CMLib.factions().addFaction(F.factionID().toUpperCase(),F);
             }
-            if(F==null) return " @break@";
             String errMsg=GrinderFactions.modifyFaction(httpReq, parms, F);
             if(errMsg.length()==0)
                 errMsg=CMLib.factions().resaveFaction(F);
@@ -767,11 +767,10 @@ public class MUDGrinder extends StdWebMacro
             if(code==Ability.ACODE_COMMON_SKILL) type="GenCraftSkill";
             if(A==null) {
                 create=true;
-                if(A!=null) oldA=A;
                 A=(Ability)CMClass.getAbility(type).copyOf();
+                if(A==null) return " @break@";
                 A.setStat("CLASS",last);
             }
-            if(A==null) return " @break@";
             String errMsg=GrinderAbilities.modifyAbility(httpReq, parms, (oldA==null)?A:oldA, A);
             httpReq.addRequestParameters("ERRMSG",errMsg);
             if(!create)

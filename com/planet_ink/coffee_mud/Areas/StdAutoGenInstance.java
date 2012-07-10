@@ -137,7 +137,7 @@ public class StdAutoGenInstance extends StdArea implements AutoGenArea
         return true;
     }
     
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({"unchecked","rawtypes"})
     public boolean okMessage(final Environmental myHost, final CMMsg msg)
     {
         if(!super.okMessage(myHost, msg))

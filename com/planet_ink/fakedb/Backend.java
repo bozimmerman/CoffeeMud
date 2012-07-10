@@ -20,7 +20,7 @@ package com.planet_ink.fakedb;
 import java.io.*;
 import java.util.*;
 
-@SuppressWarnings("unchecked")
+@SuppressWarnings({"unchecked","rawtypes"})
 public class Backend
 {
    public static enum StatementType { SELECT,INSERT,UPDATE,DELETE}
@@ -268,7 +268,6 @@ public class Backend
     */
    protected static class IndexedRowMap
    {
-       private static final long serialVersionUID = -6521841021212034843L;
        private Vector<RecordInfo> unsortedRecords=new Vector<RecordInfo>();
        private List<RecordInfo>[] forwardSorted=null;
        private List<RecordInfo>[] reverseSorted=null;

@@ -101,7 +101,7 @@ public class ForumInfo extends StdWebMacro
 			return ""+journal.replyMask();
 		
 		JournalsLibrary.JournalSummaryStats stats = CMLib.journals().getJournalStats(last);
-		if(journal == null) 
+		if(stats == null) 
 			return " @break@";
 		
 		if(parms.containsKey("POSTS"))

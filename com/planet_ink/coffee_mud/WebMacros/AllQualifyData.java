@@ -43,7 +43,8 @@ public class AllQualifyData extends StdWebMacro
         String last=httpReq.getRequestParameter("ALLQUALID");
         String which=httpReq.getRequestParameter("ALLQUALWHICH");
         if(parms.containsKey("WHICH"))
-        	which=parms.get("WHICH");	
+        	which=parms.get("WHICH");
+        String origiWhich=which;
         if((which==null)||(which.length()==0)) which="ALL";
         Map<String,Map<String,AbilityMapper.AbilityMapping>> allQualMap=CMLib.ableMapper().getAllQualifiesMap(httpReq.getRequestObjects());
         Map<String,AbilityMapper.AbilityMapping> map=allQualMap.get(which.toUpperCase().trim());
@@ -52,7 +53,7 @@ public class AllQualifyData extends StdWebMacro
         AbilityMapper.AbilityMapping mapped=map.get(last);
         if(mapped==null)
         {
-        	if((which==null) && (allQualMap.get("EACH")!=null))
+        	if((origiWhich==null) && (allQualMap.get("EACH")!=null))
         		mapped=allQualMap.get("EACH").get(last);
             if(mapped==null)
         		return "";
