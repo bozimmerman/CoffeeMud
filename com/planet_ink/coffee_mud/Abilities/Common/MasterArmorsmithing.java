@@ -49,8 +49,19 @@ public class MasterArmorsmithing extends Armorsmithing implements ItemCraftor
 	{
 		if(I.basePhyStats().level()<30)
 		{
-			if(I.fetchEffect("Prop_WearAdjuster")==null)
-				return false;
+			Ability A;
+			for(int i=0;i<I.numEffects();i++)
+			{
+				A=I.fetchEffect( i );
+				if(A instanceof TriggeredAffect)
+				{
+					final long flags=A.flags();
+					final int triggers=((TriggeredAffect) A).triggerMask();
+					if( CMath.bset( flags, Ability.FLAG_ADJUSTER ) 
+					&&  CMath.bset(triggers,TriggeredAffect.TRIGGER_WEAR_WIELD))
+						return false;
+				}
+			}
 		}
 		return true;
 	}

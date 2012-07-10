@@ -202,21 +202,33 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 
 	public Ability[] getTimsAdjResCast(Item I, int[] castMul)
 	{
-		Ability ADJ=I.fetchEffect("Prop_WearAdjuster");
-		if(ADJ==null) ADJ=I.fetchEffect("Prop_HaveAdjuster");
-		if(ADJ==null) ADJ=I.fetchEffect("Prop_RideAdjuster");
-		Ability RES=I.fetchEffect("Prop_WearResister");
-		if(RES==null) RES=I.fetchEffect("Prop_HaveResister");
-		Ability CAST=I.fetchEffect("Prop_WearSpellCast");
+		Ability A;
+		Ability[] RET=new Ability[3]; // adj, res, cast
 		castMul[0]=1;
-		if(CAST==null) CAST=I.fetchEffect("Prop_UseSpellCast");
-		if(CAST==null) CAST=I.fetchEffect("Prop_UseSpellCast2");
-		if(CAST==null) CAST=I.fetchEffect("Prop_HaveSpellCast");
-		if(CAST==null){ CAST=I.fetchEffect("Prop_FightSpellCast"); castMul[0]=-1;}
-		Ability[] RET=new Ability[3];
-		RET[0]=ADJ;
-		RET[1]=RES;
-		RET[2]=CAST;
+		for(int i=0;i<I.numEffects();i++)
+		{
+			A=I.fetchEffect( i );
+			if(A instanceof TriggeredAffect)
+			{
+				final long flags=A.flags();
+				final int triggers=((TriggeredAffect) A).triggerMask();
+				if( CMath.bset( flags, Ability.FLAG_ADJUSTER ) 
+				&& (( triggers&(TriggeredAffect.TRIGGER_WEAR_WIELD|TriggeredAffect.TRIGGER_GET|TriggeredAffect.TRIGGER_MOUNT ))>0))
+					RET[0]=A;
+				else
+				if( CMath.bset( flags, Ability.FLAG_RESISTER ) 
+				&& (( triggers&(TriggeredAffect.TRIGGER_WEAR_WIELD|TriggeredAffect.TRIGGER_GET|TriggeredAffect.TRIGGER_MOUNT ))>0))
+					RET[1]=A;
+				else
+				if( CMath.bset( flags, Ability.FLAG_CASTER ) 
+				&& (triggers > 0))
+				{
+					RET[2]=A;
+					if((triggers & TriggeredAffect.TRIGGER_HITTING_WITH)>0)
+						castMul[0]=-1;
+				}
+			}
+		}
 		return RET;
 	}
 
