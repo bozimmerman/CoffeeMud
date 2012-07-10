@@ -25,7 +25,7 @@ import java.util.List;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -57,7 +57,7 @@ public class ClanExile extends StdCommand
 			}
 			else
 			{
-	            C=mob.getMyClan();
+				C=mob.getMyClan();
 				if(C==null)
 				{
 					mob.tell("There is no longer a clan called "+mob.getClanID()+".");
@@ -89,10 +89,10 @@ public class ClanExile extends StdCommand
 						if(skipChecks||CMLib.clans().goForward(mob,C,commands,Clan.Function.EXILE,true))
 						{
 							CMLib.clans().clanAnnounce(mob,"Member exiled from "+C.getGovernmentName()+" "+C.name()+": "+M.Name());
-                            mob.tell(M.Name()+" has been exiled from "+C.getGovernmentName()+" '"+C.clanID()+"'.");
+							mob.tell(M.Name()+" has been exiled from "+C.getGovernmentName()+" '"+C.clanID()+"'.");
 							if((M.session()!=null)&&(M.session().mob()==M))
-	                            M.tell("You have been exiled from "+C.getGovernmentName()+" '"+C.clanID()+"'.");
-                            C.delMember(M);
+								M.tell("You have been exiled from "+C.getGovernmentName()+" '"+C.clanID()+"'.");
+							C.delMember(M);
 							return false;
 						}
 					}

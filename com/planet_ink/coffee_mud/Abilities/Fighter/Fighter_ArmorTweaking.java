@@ -25,7 +25,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -48,7 +48,7 @@ public class Fighter_ArmorTweaking extends FighterSkill
 	public int classificationCode(){ return Ability.ACODE_SKILL|Ability.DOMAIN_ARMORUSE;}
 	public int usageType(){return USAGE_MANA;}
 	private int armorBonus = 1;
-    
+	
 	public void executeMsg(Environmental host, CMMsg msg)
 	{
 		super.executeMsg(host,msg);
@@ -61,9 +61,9 @@ public class Fighter_ArmorTweaking extends FighterSkill
 	}
 
 	public void setMiscText(String newMiscText) {
-	    super.setMiscText(newMiscText);
-	    if(newMiscText.length()>0)
-	        armorBonus=CMath.s_int(newMiscText);
+		super.setMiscText(newMiscText);
+		if(newMiscText.length()>0)
+			armorBonus=CMath.s_int(newMiscText);
 	}
 	
 	public void unInvoke()
@@ -88,16 +88,16 @@ public class Fighter_ArmorTweaking extends FighterSkill
 		}
 	}
 	
-    public int castingQuality(MOB mob, Physical target)
-    {
-        if(mob!=null)
-        {
-            if(mob.isInCombat())
-                return Ability.QUALITY_INDIFFERENT;
-        }
-        return super.castingQuality(mob,target);
-    }
-    
+	public int castingQuality(MOB mob, Physical target)
+	{
+		if(mob!=null)
+		{
+			if(mob.isInCombat())
+				return Ability.QUALITY_INDIFFERENT;
+		}
+		return super.castingQuality(mob,target);
+	}
+	
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 
@@ -118,8 +118,8 @@ public class Fighter_ArmorTweaking extends FighterSkill
 		}
 		if((!auto)&&(mob.isInCombat()))
 		{
-		    mob.tell("You are a bit too busy to do that right now.");
-		    return false;
+			mob.tell("You are a bit too busy to do that right now.");
+			return false;
 		}
 		int bonus=(int)Math.round(CMath.mul(0.10+(0.10*getXLEVELLevel(mob)),armor.phyStats().armor()));
 		if(bonus<1)

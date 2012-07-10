@@ -26,7 +26,7 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -48,7 +48,7 @@ public class Thief_TrophyCount extends ThiefSkill
 	private static final String[] triggerStrings = {"TROPHYCOUNT"};
 	protected boolean disregardsArmorCheck(MOB mob){return true;}
 	public String[] triggerStrings(){return triggerStrings;}
-    public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_COMBATLORE;}
+	public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_COMBATLORE;}
 	Hashtable theList=new Hashtable();
 
 	public String text()

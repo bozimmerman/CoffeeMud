@@ -26,7 +26,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -47,7 +47,7 @@ public class Druid_PackCall extends StdAbility
 	public int enchantQuality(){return Ability.QUALITY_INDIFFERENT;}
 	protected int canAffectCode(){return CAN_MOBS;}
 	protected int canTargetCode(){return 0;}
-    public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_ANIMALAFFINITY;}
+	public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_ANIMALAFFINITY;}
 
 	public boolean tick(Tickable ticking, int tickID)
 	{
@@ -94,33 +94,33 @@ public class Druid_PackCall extends StdAbility
 		}
 	}
 
-    public int castingQuality(MOB mob, Physical target)
-    {
-        if(mob!=null)
-        {
-            Room R=mob.location();
-            if(R!=null)
-            {
-                if((R.domainType()&Room.INDOORS)>0)
-                    return Ability.QUALITY_INDIFFERENT;
-                if((R.domainType()==Room.DOMAIN_OUTDOORS_CITY)
-                ||(R.domainType()==Room.DOMAIN_OUTDOORS_SPACEPORT))
-                    return Ability.QUALITY_INDIFFERENT;
-            }
-            if(target instanceof MOB)
-            {
-                if(!(((MOB)target).isInCombat()))
-                    return Ability.QUALITY_INDIFFERENT;
-                
-                if(!Druid_ShapeShift.isShapeShifted((MOB)target))
-                    return Ability.QUALITY_INDIFFERENT;
-                
-                if(((MOB)target).totalFollowers()>=((MOB)target).maxFollowers())
-                    return Ability.QUALITY_INDIFFERENT;
-            }
-        }
-        return super.castingQuality(mob,target);
-    }
+	public int castingQuality(MOB mob, Physical target)
+	{
+		if(mob!=null)
+		{
+			Room R=mob.location();
+			if(R!=null)
+			{
+				if((R.domainType()&Room.INDOORS)>0)
+					return Ability.QUALITY_INDIFFERENT;
+				if((R.domainType()==Room.DOMAIN_OUTDOORS_CITY)
+				||(R.domainType()==Room.DOMAIN_OUTDOORS_SPACEPORT))
+					return Ability.QUALITY_INDIFFERENT;
+			}
+			if(target instanceof MOB)
+			{
+				if(!(((MOB)target).isInCombat()))
+					return Ability.QUALITY_INDIFFERENT;
+				
+				if(!Druid_ShapeShift.isShapeShifted((MOB)target))
+					return Ability.QUALITY_INDIFFERENT;
+				
+				if(((MOB)target).totalFollowers()>=((MOB)target).maxFollowers())
+					return Ability.QUALITY_INDIFFERENT;
+			}
+		}
+		return super.castingQuality(mob,target);
+	}
 
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
@@ -227,7 +227,7 @@ public class Druid_PackCall extends StdAbility
 					CMLib.beanCounter().clearZeroMoney(newMOB,null);
 					if(victim.getVictim()!=newMOB) victim.setVictim(newMOB);
 					int dir=((Integer)choices.elementAt(CMLib.dice().roll(1,choices.size(),-1))).intValue();
-                    if(newMOB.getVictim()!=victim) newMOB.setVictim(victim);
+					if(newMOB.getVictim()!=victim) newMOB.setVictim(victim);
 					newMOB.location().showOthers(newMOB,victim,CMMsg.MSG_OK_ACTION,"<S-NAME> arrive(s) "+Directions.getFromDirectionName(dir)+" and attack(s) <T-NAMESELF>!");
 					newMOB.setStartRoom(null); // keep before postFollow for Conquest
 					CMLib.commands().postFollow(newMOB,mob,true);

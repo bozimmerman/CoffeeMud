@@ -26,7 +26,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -48,62 +48,62 @@ public class Prayer_Stoning extends Prayer
 	protected int canTargetCode(){return Ability.CAN_MOBS;}
 	protected Vector cits=new Vector();
 
-    public void setMiscText(String newText)
-    {
-        super.setMiscText(newText);
-        cits=new Vector();
-    }
-    
+	public void setMiscText(String newText)
+	{
+		super.setMiscText(newText);
+		cits=new Vector();
+	}
+	
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID)) return false;
 		if((affected==null)||(!(affected instanceof MOB)))
 			return super.tick(ticking,tickID);
 		MOB mob=(MOB)affected;
-	    Room R=mob.location();
+		Room R=mob.location();
 		if(R!=null)
 		{
 			for(int i=0;i<cits.size();i++)
 			{
-			    MOB M=(MOB)cits.elementAt(i);
-			    if((M.location()!=mob.location())||(mob.amDead()))
-			    {
-			        CMLib.tracking().wanderAway(M,true,false);
-			        M.destroy();
-			        M.setLocation(null);
-			    }
-			    else
-			    {
-			        if(CMLib.dice().rollPercentage()>=50)
-			        {
-				        int dmg=mob.maxState().getHitPoints()/20;
-				        if(dmg<1) dmg=1;
-				        Item W=M.fetchWieldedItem();
-				        if(W!=null)
-				        {
-				            W.basePhyStats().setDamage(dmg);
-				            W.phyStats().setDamage(dmg);
-				        }
-				        CMLib.combat().postDamage(M,mob,W,dmg,CMMsg.MSG_WEAPONATTACK|CMMsg.MASK_ALWAYS,Weapon.TYPE_BASHING,"<S-NAME> stone(s) <T-NAMESELF>!");
-			        }
-			        else
-			            R.show(M,mob,null,CMMsg.MSG_NOISE,"<S-NAME> shout(s) obscenities at <T-NAMESELF>.");
-			    }
+				MOB M=(MOB)cits.elementAt(i);
+				if((M.location()!=mob.location())||(mob.amDead()))
+				{
+					CMLib.tracking().wanderAway(M,true,false);
+					M.destroy();
+					M.setLocation(null);
+				}
+				else
+				{
+					if(CMLib.dice().rollPercentage()>=50)
+					{
+						int dmg=mob.maxState().getHitPoints()/20;
+						if(dmg<1) dmg=1;
+						Item W=M.fetchWieldedItem();
+						if(W!=null)
+						{
+							W.basePhyStats().setDamage(dmg);
+							W.phyStats().setDamage(dmg);
+						}
+						CMLib.combat().postDamage(M,mob,W,dmg,CMMsg.MSG_WEAPONATTACK|CMMsg.MASK_ALWAYS,Weapon.TYPE_BASHING,"<S-NAME> stone(s) <T-NAMESELF>!");
+					}
+					else
+						R.show(M,mob,null,CMMsg.MSG_NOISE,"<S-NAME> shout(s) obscenities at <T-NAMESELF>.");
+				}
 			}
-		    while(cits.size()<10)
+			while(cits.size()<10)
 			{
-		        MOB M=CMClass.getMOB("AngryCitizen");
-		        if(M==null)
-		        {
-		            unInvoke();
-		            break;
-		        }
-	            Room R2=CMClass.getLocale("StdRoom");
-	            cits.addElement(M);
-	            M.bringToLife(R2,true);
-	            CMLib.tracking().wanderIn(M,R);
-	            M.setStartRoom(null);
-                R2.destroy();
+				MOB M=CMClass.getMOB("AngryCitizen");
+				if(M==null)
+				{
+					unInvoke();
+					break;
+				}
+				Room R2=CMClass.getLocale("StdRoom");
+				cits.addElement(M);
+				M.bringToLife(R2,true);
+				CMLib.tracking().wanderIn(M,R);
+				M.setStartRoom(null);
+				R2.destroy();
 			}
 		}
 		return true;
@@ -113,15 +113,15 @@ public class Prayer_Stoning extends Prayer
 	{
 		MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
-        LegalBehavior B=null;
+		LegalBehavior B=null;
 		if(mob.location()!=null) B=CMLib.law().getLegalBehavior(mob.location());
 		List<LegalWarrant> warrants=new Vector();
 		if(B!=null)
-            warrants=B.getWarrantsOf(CMLib.law().getLegalObject(mob.location()),target);
+			warrants=B.getWarrantsOf(CMLib.law().getLegalObject(mob.location()),target);
 		if((warrants.size()==0)&&(!CMSecurity.isAllowed(mob,mob.location(),"ABOVELAW")))
 		{
-		    mob.tell("You are not allowed to stone "+target.Name()+" at this time.");
-		    return false;
+			mob.tell("You are not allowed to stone "+target.Name()+" at this time.");
+			return false;
 		}
 		
 		if((!auto)&&(!CMLib.flags().isBoundOrHeld(target))&&(!CMSecurity.isASysOp(mob)))

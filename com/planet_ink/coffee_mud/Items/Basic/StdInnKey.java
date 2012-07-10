@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -76,12 +76,12 @@ public class StdInnKey extends StdKey implements InnKey
 		{
 			myShopkeeper=SK;
 			int y=0;
-            for(Iterator<Environmental> i=SK.getShop().getStoreInventory();i.hasNext();)
-            {
-                Environmental E=(Environmental)i.next();
+			for(Iterator<Environmental> i=SK.getShop().getStoreInventory();i.hasNext();)
+			{
+				Environmental E=(Environmental)i.next();
 				if(E instanceof InnKey)
 					y++;
-            }
+			}
 			setName("key to room "+(y+1));
 			setDescription("The key goes to room "+(y+1)+", but will expire soon, so you better use it quickly! Give the key to your innkeeper, "+SK.name()+", when you leave.");
 			setMiscText("INN"+(y+1));

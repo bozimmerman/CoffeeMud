@@ -23,7 +23,7 @@ import java.util.Vector;
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *        http://www.apache.org/licenses/LICENSE-2.0
+ *  	  http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -46,22 +46,22 @@ public class FingerReply extends Packet {
 	public FingerReply()
 	{
 		super();
-        type = Packet.FINGER_REPLY;
+		type = Packet.FINGER_REPLY;
 	}
 	
-    public FingerReply(String to_whom, String mud) 
-    {
-        super();
-        type = Packet.FINGER_REPLY;
-        target_mud = mud;
-        target_name = to_whom;
-    }
-    
-    public FingerReply(Vector v) throws InvalidPacketException 
-    {
-        super(v);
-        try {
-            type = Packet.FINGER_REPLY;
+	public FingerReply(String to_whom, String mud) 
+	{
+		super();
+		type = Packet.FINGER_REPLY;
+		target_mud = mud;
+		target_name = to_whom;
+	}
+	
+	public FingerReply(Vector v) throws InvalidPacketException 
+	{
+		super(v);
+		try {
+			type = Packet.FINGER_REPLY;
 			try{
 			visible_name = v.elementAt(6).toString();
 			title = v.elementAt(7).toString();
@@ -72,32 +72,32 @@ public class FingerReply extends Packet {
 			ip_time = v.elementAt(12).toString();
 			extra = v.elementAt(13).toString();
 			}catch(Exception e){ }
-        }
-        catch( ClassCastException e ) {
-            throw new InvalidPacketException();
-        }
-    }
+		}
+		catch( ClassCastException e ) {
+			throw new InvalidPacketException();
+		}
+	}
 
-    public void send() throws InvalidPacketException {
-        super.send();
-    }
+	public void send() throws InvalidPacketException {
+		super.send();
+	}
 
-    public String toString() {
+	public String toString() {
 		String str = "({\"finger-reply\",5,\"" + I3Server.getMudName() +
-		         "\",0,\"" + target_mud + "\",\"" + target_name + "\",";
+				 "\",0,\"" + target_mud + "\",\"" + target_name + "\",";
 		String[] responses={ visible_name, title, real_name, e_mail,
 							loginout_time, idle_time, ip_time, extra };
 		for(String nom : responses) {
 			if(nom.length()==0)
-			    str += "0,";
-		    else
-		    if(CMath.isNumber(nom))
-			    str += "" + nom + ",";
-		    else
-			    str += "\"" + nom + "\",";
+				str += "0,";
+			else
+			if(CMath.isNumber(nom))
+				str += "" + nom + ",";
+			else
+				str += "\"" + nom + "\",";
 		}
 		str += "})";
 		return str;
 
-    }
+	}
 }

@@ -25,7 +25,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -66,14 +66,14 @@ public class Prayer_UndeadInvisibility extends Prayer
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(((msg.targetMajor()&CMMsg.MASK_MALICIOUS)>0)
-        &&(!CMath.bset(msg.sourceMajor(),CMMsg.MASK_ALWAYS))
+		&&(!CMath.bset(msg.sourceMajor(),CMMsg.MASK_ALWAYS))
 		&&((msg.amITarget(affected))))
 		{
 			MOB target=(MOB)msg.target();
 			if((!target.isInCombat())
-		    &&(msg.source().charStats().getMyRace().racialCategory().equals("Undead"))
-            &&(msg.source().location()==target.location())
-		    &&(msg.source().getVictim()!=target))
+			&&(msg.source().charStats().getMyRace().racialCategory().equals("Undead"))
+			&&(msg.source().location()==target.location())
+			&&(msg.source().getVictim()!=target))
 			{
 				msg.source().tell("You don't see "+target.name());
 				if(target.getVictim()==msg.source())
@@ -102,25 +102,25 @@ public class Prayer_UndeadInvisibility extends Prayer
 			mob.tell("Your invisibility to undead fades.");
 	}
 
-    public int castingQuality(MOB mob, Physical target)
-    {
-        if(mob!=null)
-        {
-            MOB victim=mob.getVictim();
-            if((victim!=null)
-            &&(victim.charStats().getMyRace().racialCategory().equalsIgnoreCase("Undead")))
-                return super.castingQuality(mob, target,Ability.QUALITY_BENEFICIAL_SELF);
-        }
-        return super.castingQuality(mob,target);
-    }
-    
+	public int castingQuality(MOB mob, Physical target)
+	{
+		if(mob!=null)
+		{
+			MOB victim=mob.getVictim();
+			if((victim!=null)
+			&&(victim.charStats().getMyRace().racialCategory().equalsIgnoreCase("Undead")))
+				return super.castingQuality(mob, target,Ability.QUALITY_BENEFICIAL_SELF);
+		}
+		return super.castingQuality(mob,target);
+	}
+	
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-        Physical target=mob;
-        if((auto)&&(givenTarget!=null)) target=givenTarget;
-        if(target.fetchEffect(this.ID())!=null)
+		Physical target=mob;
+		if((auto)&&(givenTarget!=null)) target=givenTarget;
+		if(target.fetchEffect(this.ID())!=null)
 		{
-            mob.tell(mob,target,null,"<T-NAME> <T-IS-ARE> already affected by "+name()+".");
+			mob.tell(mob,target,null,"<T-NAME> <T-IS-ARE> already affected by "+name()+".");
 			return false;
 		}
 

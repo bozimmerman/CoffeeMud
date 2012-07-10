@@ -25,7 +25,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -58,8 +58,8 @@ public class Spell_StinkingCloud extends Spell
 				unInvoke();
 			else
 			if((!M.amDead())
-            &&(M.location()!=null)
-            &&(CMLib.flags().canSmell(M)))
+			&&(M.location()!=null)
+			&&(CMLib.flags().canSmell(M)))
 			{
 				if((M.curState().getHunger()<=0))
 					CMLib.combat().postDamage(invoker,M,this,M.phyStats().level(),CMMsg.MASK_ALWAYS|CMMsg.TYP_GAS,-1,"<T-NAME> heave(s) in the stinking cloud.");
@@ -68,8 +68,8 @@ public class Spell_StinkingCloud extends Spell
 					CMLib.combat().postDamage(invoker,M,this,M.phyStats().level(),CMMsg.MASK_ALWAYS|CMMsg.TYP_GAS,-1,"<T-NAME> heave(s) all over the place!");
 					M.curState().adjHunger(-500,M.maxState().maxHunger(M.baseWeight()));
 				}
-                if((!M.isInCombat())&&(M!=invoker)&&(M.location()!=null)&&(M.location().isInhabitant(invoker))&&(CMLib.flags().canBeSeenBy(invoker,M)))
-                    CMLib.combat().postAttack(M,invoker,M.fetchWieldedItem());
+				if((!M.isInCombat())&&(M!=invoker)&&(M.location()!=null)&&(M.location().isInhabitant(invoker))&&(CMLib.flags().canBeSeenBy(invoker,M)))
+					CMLib.combat().postAttack(M,invoker,M.fetchWieldedItem());
 			}
 			else
 				unInvoke();

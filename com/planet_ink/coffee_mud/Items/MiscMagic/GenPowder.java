@@ -25,7 +25,7 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.*;
  * <p>you may not use this file except in compliance with the License.
  * <p>You may obtain a copy of the License at
  *
- * <p>       http://www.apache.org/licenses/LICENSE-2.0
+ * <p>  	 http://www.apache.org/licenses/LICENSE-2.0
  *
  * <p>Unless required by applicable law or agreed to in writing, software
  * <p>distributed under the License is distributed on an "AS IS" BASIS,
@@ -40,7 +40,7 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 public class GenPowder extends StdPowder {
 	public String ID(){	return "GenPowder";}
 
-    public GenPowder() {
+	public GenPowder() {
 		super();
 		setName("a generic powder");
 		basePhyStats.setWeight(1);
@@ -50,7 +50,7 @@ public class GenPowder extends StdPowder {
 		basePhyStats().setLevel(1);
 		recoverPhyStats();
 		setMaterial(RawMaterial.RESOURCE_ASH);
-    }
+	}
 
 	public boolean isGeneric(){return true;}
 
@@ -66,25 +66,25 @@ public class GenPowder extends StdPowder {
 		recoverPhyStats();
 	}
 
-    public String getStat(String code)
-    {
-        if(CMLib.coffeeMaker().getGenItemCodeNum(code)>=0)
-            return CMLib.coffeeMaker().getGenItemStat(this,code);
-        return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
-    }
-    public void setStat(String code, String val)
-    {
-        if(CMLib.coffeeMaker().getGenItemCodeNum(code)>=0)
-            CMLib.coffeeMaker().setGenItemStat(this,code,val);
-        CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code,val);
-    }
-    private static String[] codes=null;
-    public String[] getStatCodes()
-    {
-        if(codes==null)
-            codes=CMProps.getStatCodesList(GenericBuilder.GENITEMCODES,this);
-        return codes; 
-    }
+	public String getStat(String code)
+	{
+		if(CMLib.coffeeMaker().getGenItemCodeNum(code)>=0)
+			return CMLib.coffeeMaker().getGenItemStat(this,code);
+		return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
+	}
+	public void setStat(String code, String val)
+	{
+		if(CMLib.coffeeMaker().getGenItemCodeNum(code)>=0)
+			CMLib.coffeeMaker().setGenItemStat(this,code,val);
+		CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code,val);
+	}
+	private static String[] codes=null;
+	public String[] getStatCodes()
+	{
+		if(codes==null)
+			codes=CMProps.getStatCodesList(GenericBuilder.GENITEMCODES,this);
+		return codes; 
+	}
 	public boolean sameAs(Environmental E)
 	{
 		if(!(E instanceof GenPowder)) return false;

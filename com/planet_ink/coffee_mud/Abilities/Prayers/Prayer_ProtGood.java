@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -114,24 +114,24 @@ public class Prayer_ProtGood extends Prayer
 			mob.tell("Your protection from goodness fades.");
 	}
 
-    public int castingQuality(MOB mob, Physical target)
-    {
-        if(mob!=null)
-        {
-            MOB victim=mob.getVictim();
-            if((victim!=null)&&(CMLib.flags().isGood(victim))&&(!CMLib.flags().isGood(mob)))
-                return super.castingQuality(mob, target,Ability.QUALITY_BENEFICIAL_SELF);
-        }
-        return super.castingQuality(mob,target);
-    }
-    
+	public int castingQuality(MOB mob, Physical target)
+	{
+		if(mob!=null)
+		{
+			MOB victim=mob.getVictim();
+			if((victim!=null)&&(CMLib.flags().isGood(victim))&&(!CMLib.flags().isGood(mob)))
+				return super.castingQuality(mob, target,Ability.QUALITY_BENEFICIAL_SELF);
+		}
+		return super.castingQuality(mob,target);
+	}
+	
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-        Physical target=mob;
-        if((auto)&&(givenTarget!=null)) target=givenTarget;
-        if(target.fetchEffect(this.ID())!=null)
+		Physical target=mob;
+		if((auto)&&(givenTarget!=null)) target=givenTarget;
+		if(target.fetchEffect(this.ID())!=null)
 		{
-            mob.tell(mob,target,null,"<T-NAME> <T-IS-ARE> already affected by "+name()+".");
+			mob.tell(mob,target,null,"<T-NAME> <T-IS-ARE> already affected by "+name()+".");
 			return false;
 		}
 

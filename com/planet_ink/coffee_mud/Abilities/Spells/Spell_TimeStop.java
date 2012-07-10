@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -46,12 +46,12 @@ public class Spell_TimeStop extends Spell
 
 	protected Vector fixed=new Vector();
 
-    public void setMiscText(String newText)
-    {
-        super.setMiscText(newText);
-        fixed=new Vector();
-    }
-    
+	public void setMiscText(String newText)
+	{
+		super.setMiscText(newText);
+		fixed=new Vector();
+	}
+	
 	public void unInvoke()
 	{
 		// undo the affects of this spell
@@ -110,9 +110,9 @@ public class Spell_TimeStop extends Spell
 				if((msg.source() == invoker)
 				&&(msg.target() != invoker)
 				&&(msg.target() instanceof MOB)
-			    &&((CMath.bset(msg.sourceMajor(),CMMsg.MASK_MALICIOUS))
-			    ||(CMath.bset(msg.targetMajor(),CMMsg.MASK_MALICIOUS))
-			    ||(CMath.bset(msg.targetMajor(),CMMsg.MASK_MALICIOUS))))
+				&&((CMath.bset(msg.sourceMajor(),CMMsg.MASK_MALICIOUS))
+				||(CMath.bset(msg.targetMajor(),CMMsg.MASK_MALICIOUS))
+				||(CMath.bset(msg.targetMajor(),CMMsg.MASK_MALICIOUS))))
 				{
 					if(invoker.getVictim()==null)
 						invoker.setVictim((MOB)msg.target());
@@ -143,7 +143,7 @@ public class Spell_TimeStop extends Spell
 
 		if(target.fetchEffect(this.ID())!=null)
 		{
-		    mob.tell(mob,null,null,"Time has already been stopped here!");
+			mob.tell(mob,null,null,"Time has already been stopped here!");
 			return false;
 		}
 

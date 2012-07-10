@@ -25,7 +25,7 @@ import java.util.Vector;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -35,41 +35,41 @@ import java.util.Vector;
 */
 public interface PostOffice extends ShopKeeper
 {
-    public void addToBox(String boxName, Item thisThang, String from, String to, long holdTime, double COD);
-    public void addToBox(MOB mob, Item thisThang, String from, String to, long holdTime, double COD);
-    public boolean delFromBox(String mob, Item thisThang);
-    public boolean delFromBox(MOB mob, Item thisThang);
-    public void emptyBox(String mob);
-    public Map<String, String> getOurOpenBoxes(String mob);
-    public void createBoxHere(String mob, String forward);
-    public void deleteBoxHere(String mob);
-    public MailPiece parsePostalItemData(String data);
-    public Item findBoxContents(String mob, String likeThis);
-    public Item findBoxContents(MOB mob, String likeThis);
-    public String postalChain();
-    public void setPostalChain(String name);
-    public String postalBranch(); // based on individual shopkeeper
-    public String findProperBranch(String name);
-    
-    public double minimumPostage();
-    public void setMinimumPostage(double d);
-    public double postagePerPound();
-    public void setPostagePerPound(double d);
-    public double holdFeePerPound();
-    public void setHoldFeePerPound(double d);
-    public double feeForNewBox();
-    public void setFeeForNewBox(double d);
-    public int maxMudMonthsHeld();
-    public void setMaxMudMonthsHeld(int months);
-    
-    public static class MailPiece
-    {
-    	public String from="";
-    	public String to="";
-    	public String time="";
-    	public String cod="";
-    	public String classID="";
-    	public String xml="";
-    }
+	public void addToBox(String boxName, Item thisThang, String from, String to, long holdTime, double COD);
+	public void addToBox(MOB mob, Item thisThang, String from, String to, long holdTime, double COD);
+	public boolean delFromBox(String mob, Item thisThang);
+	public boolean delFromBox(MOB mob, Item thisThang);
+	public void emptyBox(String mob);
+	public Map<String, String> getOurOpenBoxes(String mob);
+	public void createBoxHere(String mob, String forward);
+	public void deleteBoxHere(String mob);
+	public MailPiece parsePostalItemData(String data);
+	public Item findBoxContents(String mob, String likeThis);
+	public Item findBoxContents(MOB mob, String likeThis);
+	public String postalChain();
+	public void setPostalChain(String name);
+	public String postalBranch(); // based on individual shopkeeper
+	public String findProperBranch(String name);
+	
+	public double minimumPostage();
+	public void setMinimumPostage(double d);
+	public double postagePerPound();
+	public void setPostagePerPound(double d);
+	public double holdFeePerPound();
+	public void setHoldFeePerPound(double d);
+	public double feeForNewBox();
+	public void setFeeForNewBox(double d);
+	public int maxMudMonthsHeld();
+	public void setMaxMudMonthsHeld(int months);
+	
+	public static class MailPiece
+	{
+		public String from="";
+		public String to="";
+		public String time="";
+		public String cod="";
+		public String classID="";
+		public String xml="";
+	}
 
 }

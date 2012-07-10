@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -41,13 +41,13 @@ public class Sinking extends StdAbility
 	public String displayText(){ return "";}
 	protected int canAffectCode(){return CAN_ITEMS|Ability.CAN_MOBS;}
 	protected int canTargetCode(){return 0;}
-    protected boolean isTreading=false;
+	protected boolean isTreading=false;
 	public Room room=null;
 	protected int sinkTickDown=1;
 
-    protected boolean reversed(){return proficiency()==100;}
+	protected boolean reversed(){return proficiency()==100;}
 
-    protected boolean isWaterSurface(Room R)
+	protected boolean isWaterSurface(Room R)
 	{
 		if(R==null) return false;
 		if((R.domainType()==Room.DOMAIN_INDOORS_WATERSURFACE)
@@ -55,7 +55,7 @@ public class Sinking extends StdAbility
 			return true;
 		return false;
 	}
-    protected boolean isUnderWater(Room R)
+	protected boolean isUnderWater(Room R)
 	{
 		if(R==null) return false;
 		if((R.domainType()==Room.DOMAIN_INDOORS_UNDERWATER)
@@ -64,7 +64,7 @@ public class Sinking extends StdAbility
 		return false;
 	}
 
-    protected boolean canSinkFrom(Room fromHere, int direction)
+	protected boolean canSinkFrom(Room fromHere, int direction)
 	{
 		if((fromHere==null)||(direction<0)||(direction>=Directions.NUM_DIRECTIONS()))
 			return false;
@@ -79,7 +79,7 @@ public class Sinking extends StdAbility
 		return true;
 	}
 
-    protected boolean stopSinking(MOB mob)
+	protected boolean stopSinking(MOB mob)
 	{
 		unInvoke();
 		mob.delEffect(this);
@@ -164,14 +164,14 @@ public class Sinking extends StdAbility
 				if((R.show(mob,null,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> tread(s) water."))
 				&&(!mob.isMonster()))
 				{
-                    isTreading=true;
+					isTreading=true;
 					mob.curState().expendEnergy(mob,mob.maxState(),true);
-                    mob.recoverPhyStats();
+					mob.recoverPhyStats();
 					return true;
 				}
 			}
-            isTreading=false;
-            mob.recoverPhyStats();
+			isTreading=false;
+			mob.recoverPhyStats();
 			mob.tell("\n\r\n\rYOU ARE SINKING "+addStr.toUpperCase()+"!!\n\r\n\r");
 			CMLib.tracking().walk(mob,direction,false,false);
 			R=mob.location();
@@ -246,7 +246,7 @@ public class Sinking extends StdAbility
 		super.affectPhyStats(affected,affectableStats);
 		if((!CMLib.flags().isWaterWorthy(affected))
 		&&(!CMLib.flags().isInFlight(affected))
-        &&(!isTreading)
+		&&(!isTreading)
 		&&(affected.phyStats().weight()>=1))
 			affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_FALLING);
 	}

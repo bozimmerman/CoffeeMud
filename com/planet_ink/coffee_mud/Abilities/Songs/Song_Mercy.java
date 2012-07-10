@@ -26,7 +26,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -40,7 +40,7 @@ public class Song_Mercy extends Song
 	public String ID() { return "Song_Mercy"; }
 	public String name(){ return "Mercy";}
 	public int abstractQuality(){ return Ability.QUALITY_OK_OTHERS;}
-    protected boolean HAS_QUANTITATIVE_ASPECT(){return false;}
+	protected boolean HAS_QUANTITATIVE_ASPECT(){return false;}
 
 	protected Room lastRoom=null;
 	protected int count=3;
@@ -65,15 +65,15 @@ public class Song_Mercy extends Song
 	{
 		MOB mob=(MOB)affected;
 		if(((msg.targetMajor()&CMMsg.MASK_MALICIOUS)>0)
-        &&(!CMath.bset(msg.sourceMajor(),CMMsg.MASK_ALWAYS))
+		&&(!CMath.bset(msg.sourceMajor(),CMMsg.MASK_ALWAYS))
 		&&(mob.location()!=null)
 		&&((msg.amITarget(mob)))
 		&&((count>0)||(lastRoom==null)||(lastRoom!=mob.location())))
 		{
 			MOB target=(MOB)msg.target();
 			if((!target.isInCombat())
-            &&(mob.location()==target.location())
-            &&(msg.source().getVictim()!=target))
+			&&(mob.location()==target.location())
+			&&(msg.source().getVictim()!=target))
 			{
 				msg.source().tell("You feel like showing "+target.name()+" mercy right now.");
 				if(target.getVictim()==msg.source())

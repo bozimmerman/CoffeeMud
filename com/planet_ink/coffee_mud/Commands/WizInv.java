@@ -23,7 +23,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -49,7 +49,7 @@ public class WizInv extends StdCommand
 		str="Prop_WizInvis";
 		Ability A=mob.fetchEffect(str);
 		if((commands.size()>0)&&("NOCLOAK".startsWith(CMParms.combine(commands,0).trim().toUpperCase())))
-		    abilityCode=PhyStats.IS_NOT_SEEN;
+			abilityCode=PhyStats.IS_NOT_SEEN;
 		if(CMParms.combine(commands,0).trim().equalsIgnoreCase("OFF"))
 		{
 		   if(A!=null)
@@ -61,11 +61,11 @@ public class WizInv extends StdCommand
 		else
 		if(A!=null)
 		{
-		    if(CMath.bset(A.abilityCode(),abilityCode))
-		    {
+			if(CMath.bset(A.abilityCode(),abilityCode))
+			{
 				mob.tell("You have already faded from view!");
 				return false;
-		    }
+			}
 		}
 
 		// it worked, so build a copy of this ability,
@@ -76,8 +76,8 @@ public class WizInv extends StdCommand
 			A=CMClass.getAbility(str);
 		if(A!=null)
 		{
-            if(mob.location()!=null)
-    			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> fade(s) from view!");
+			if(mob.location()!=null)
+				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> fade(s) from view!");
 			if(mob.fetchEffect(A.ID())==null)
 				mob.addPriorityEffect((Ability)A.copyOf());
 			A=mob.fetchEffect(A.ID());

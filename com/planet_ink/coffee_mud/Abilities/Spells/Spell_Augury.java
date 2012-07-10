@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -37,7 +37,7 @@ public class Spell_Augury extends Spell
 {
 	public String ID() { return "Spell_Augury"; }
 	public String name(){return "Augury";}
-    public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
+	public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
 	protected int canTargetCode(){return 0;}
 	public int classificationCode(){	return Ability.ACODE_SPELL|Ability.DOMAIN_DIVINATION;}
 
@@ -100,7 +100,7 @@ public class Spell_Augury extends Spell
 				mob.location().send(mob,msg);
 				if((aggressiveMonster)
 				||CMLib.flags().isDeadlyOrMaliciousEffect(room)
-                ||CMLib.flags().isDeadlyOrMaliciousEffect(exit)
+				||CMLib.flags().isDeadlyOrMaliciousEffect(exit)
 				||((opExit!=null)&&(CMLib.flags().isDeadlyOrMaliciousEffect(opExit))))
 					mob.tell("You feel going that way would be bad.");
 				else

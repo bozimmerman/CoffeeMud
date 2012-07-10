@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -45,26 +45,26 @@ public class AccountCreate extends StdWebMacro
 	
 	public String runMacro(ExternalHTTPRequests httpReq, String parm)
 	{
-        boolean emailPassword=((CMProps.getVar(CMProps.SYSTEM_EMAILREQ).toUpperCase().startsWith("PASS"))
+		boolean emailPassword=((CMProps.getVar(CMProps.SYSTEM_EMAILREQ).toUpperCase().startsWith("PASS"))
 				 &&(CMProps.getVar(CMProps.SYSTEM_MAILBOX).length()>0));
-        boolean emailDisabled=CMProps.getVar(CMProps.SYSTEM_EMAILREQ).toUpperCase().startsWith("DISABLE");
-        
-        java.util.Map<String,String> parms=parseParms(parm);
-        if(parms.containsKey("SHOWPASSWORD"))
-        	return Boolean.toString(!emailPassword);
-        if(parms.containsKey("SHOWEMAILADDRESS"))
-        	return Boolean.toString(!emailDisabled);
-        if(!parms.containsKey("CREATE"))
-        	return " @break@";
-        
+		boolean emailDisabled=CMProps.getVar(CMProps.SYSTEM_EMAILREQ).toUpperCase().startsWith("DISABLE");
+		
+		java.util.Map<String,String> parms=parseParms(parm);
+		if(parms.containsKey("SHOWPASSWORD"))
+			return Boolean.toString(!emailPassword);
+		if(parms.containsKey("SHOWEMAILADDRESS"))
+			return Boolean.toString(!emailDisabled);
+		if(!parms.containsKey("CREATE"))
+			return " @break@";
+		
 		String name=httpReq.getRequestParameter("ACCOUNTNAME");
 		if((name==null)||(name.length()==0)) return AccountCreateErrors.NO_NAME.toString();
 		String password;
 		if(emailPassword)
 		{
-            password="";
-            for(int i=0;i<6;i++)
-                password+=(char)('a'+CMLib.dice().roll(1,26,-1));
+			password="";
+			for(int i=0;i<6;i++)
+				password+=(char)('a'+CMLib.dice().roll(1,26,-1));
 		}
 		else
 		{
@@ -80,16 +80,16 @@ public class AccountCreate extends StdWebMacro
 		String verify=httpReq.getRequestParameter("VERIFY");
 		if((verify==null)||(verify.length()==0)) return AccountCreateErrors.NO_VERIFY.toString();
 		String emailAddress="";
-        if(!emailDisabled)
-        {
-            boolean emailReq=(!CMProps.getVar(CMProps.SYSTEM_EMAILREQ).toUpperCase().startsWith("OPTION"));
-            emailAddress=httpReq.getRequestParameter("EMAILADDRESS");
-            if(emailReq)
-            {
-        		if((emailAddress==null)||(emailAddress.length()==0)||!CMLib.smtp().isValidEmailAddress(emailAddress)) 
-        			return AccountCreateErrors.BAD_EMAILADDRESS.toString();
-            }
-        }
+		if(!emailDisabled)
+		{
+			boolean emailReq=(!CMProps.getVar(CMProps.SYSTEM_EMAILREQ).toUpperCase().startsWith("OPTION"));
+			emailAddress=httpReq.getRequestParameter("EMAILADDRESS");
+			if(emailReq)
+			{
+				if((emailAddress==null)||(emailAddress.length()==0)||!CMLib.smtp().isValidEmailAddress(emailAddress)) 
+					return AccountCreateErrors.BAD_EMAILADDRESS.toString();
+			}
+		}
 		synchronized(ImageVerificationImage.sync)
 		{
 		   	SLinkedList<ImageVerificationImage.ImgCacheEntry> cache = ImageVerificationImage.getVerifyCache();
@@ -113,36 +113,36 @@ public class AccountCreate extends StdWebMacro
 		CharCreationLibrary.NewCharNameCheckResult checkResult=CMLib.login().newCharNameCheck(name, httpReq.getHTTPclientIP(), false);
 		if(checkResult!=CharCreationLibrary.NewCharNameCheckResult.OK)
 			return checkResult.toString();
-    	PlayerAccount acct = (PlayerAccount)CMClass.getCommon("DefaultPlayerAccount");
-    	acct.setFlag(PlayerAccount.FLAG_ANSI, true);
-        acct.setAccountName(name);
-        acct.setPassword(password);
-        acct.setEmail(emailAddress);
-        acct.setLastIP(httpReq.getHTTPclientIP());
-        acct.setLastDateTime(System.currentTimeMillis());
-        if(CMProps.getBoolVar(CMProps.SYSTEMB_ACCOUNTEXPIRATION))
-            acct.setAccountExpiration(System.currentTimeMillis()+(1000l*60l*60l*24l*((long)CMProps.getIntVar(CMProps.SYSTEMI_TRIALDAYS))));
-        CMLib.database().DBCreateAccount(acct);
-        if(emailPassword)
-        {
-            CMLib.database().DBWriteJournal(CMProps.getVar(CMProps.SYSTEM_MAILBOX),
-                    acct.accountName(),
-                    acct.accountName(),
-                    "Password for "+acct.accountName(),
-                    "Your password for "+acct.accountName()+" is: "+acct.password()+"\n\rYou can login by pointing your mud client at "+CMProps.getVar(CMProps.SYSTEM_MUDDOMAIN)+" port(s):"+CMProps.getVar(CMProps.SYSTEM_MUDPORTS)+".\n\rAfter creating a character, you may use the PASSWORD command to change it once you are online.");
-        }
-        if(parms.containsKey("LOGIN"))
-        {
+		PlayerAccount acct = (PlayerAccount)CMClass.getCommon("DefaultPlayerAccount");
+		acct.setFlag(PlayerAccount.FLAG_ANSI, true);
+		acct.setAccountName(name);
+		acct.setPassword(password);
+		acct.setEmail(emailAddress);
+		acct.setLastIP(httpReq.getHTTPclientIP());
+		acct.setLastDateTime(System.currentTimeMillis());
+		if(CMProps.getBoolVar(CMProps.SYSTEMB_ACCOUNTEXPIRATION))
+			acct.setAccountExpiration(System.currentTimeMillis()+(1000l*60l*60l*24l*((long)CMProps.getIntVar(CMProps.SYSTEMI_TRIALDAYS))));
+		CMLib.database().DBCreateAccount(acct);
+		if(emailPassword)
+		{
+			CMLib.database().DBWriteJournal(CMProps.getVar(CMProps.SYSTEM_MAILBOX),
+					acct.accountName(),
+					acct.accountName(),
+					"Password for "+acct.accountName(),
+					"Your password for "+acct.accountName()+" is: "+acct.password()+"\n\rYou can login by pointing your mud client at "+CMProps.getVar(CMProps.SYSTEM_MUDDOMAIN)+" port(s):"+CMProps.getVar(CMProps.SYSTEM_MUDPORTS)+".\n\rAfter creating a character, you may use the PASSWORD command to change it once you are online.");
+		}
+		if(parms.containsKey("LOGIN"))
+		{
 			httpReq.addRequestParameters("PLAYER",name);
-    		if(Authenticate.authenticated(httpReq,name,password))
-    		    try
-			    {
-        			httpReq.addRequestParameters("AUTH", URLEncoder.encode(Authenticate.Encrypt(Authenticate.getLogin(httpReq))+"-"+Authenticate.Encrypt(Authenticate.getPassword(httpReq)),"UTF-8"));
-			    }
-			    catch(Exception u)
-			    {
-			    }
-        }
+			if(Authenticate.authenticated(httpReq,name,password))
+				try
+				{
+					httpReq.addRequestParameters("AUTH", URLEncoder.encode(Authenticate.Encrypt(Authenticate.getLogin(httpReq))+"-"+Authenticate.Encrypt(Authenticate.getPassword(httpReq)),"UTF-8"));
+				}
+				catch(Exception u)
+				{
+				}
+		}
 		return "";
 	}
 }

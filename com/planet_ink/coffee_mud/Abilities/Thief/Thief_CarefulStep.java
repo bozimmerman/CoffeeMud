@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -39,54 +39,54 @@ public class Thief_CarefulStep extends ThiefSkill
 	public String name(){ return "Careful Step";}
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return 0;}
-    public double castingTime(final MOB mob, final List<String> cmds){return CMProps.getActionSkillCost(ID(),CMath.div(CMProps.getIntVar(CMProps.SYSTEMI_DEFABLETIME),50.0));}
-    public double combatCastingTime(final MOB mob, final List<String> cmds){return CMProps.getCombatActionSkillCost(ID(),CMath.div(CMProps.getIntVar(CMProps.SYSTEMI_DEFCOMABLETIME),50.0));}
+	public double castingTime(final MOB mob, final List<String> cmds){return CMProps.getActionSkillCost(ID(),CMath.div(CMProps.getIntVar(CMProps.SYSTEMI_DEFABLETIME),50.0));}
+	public double combatCastingTime(final MOB mob, final List<String> cmds){return CMProps.getCombatActionSkillCost(ID(),CMath.div(CMProps.getIntVar(CMProps.SYSTEMI_DEFCOMABLETIME),50.0));}
 	public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 	private static final String[] triggerStrings = {"CARESTEP","CAREFULSTEP"};
 	public String[] triggerStrings(){return triggerStrings;}
 	public int usageType(){return USAGE_MOVEMENT;}
-    public int classificationCode() {   return Ability.ACODE_SKILL|Ability.DOMAIN_ACROBATIC; }
+	public int classificationCode() {   return Ability.ACODE_SKILL|Ability.DOMAIN_ACROBATIC; }
 
-    public boolean preInvoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel, int secondsElapsed, double actionsRemaining)
-    {
-        if(secondsElapsed==0)
-        {
-            String dir=CMParms.combine(commands,0);
-            if(commands.size()>0) dir=(String)commands.get(commands.size()-1);
-            int dirCode=Directions.getGoodDirectionCode(dir);
-            if(dirCode<0)
-            {
-                mob.tell("Step where?");
-                return false;
-            }
-            if(mob.isInCombat())
-            {
-                mob.tell("Not while you are fighting!");
-                return false;
-            }
-    
-            if((mob.location().getRoomInDir(dirCode)==null)||(mob.location().getExitInDir(dirCode)==null))
-            {
-                mob.tell("Step where?");
-                return false;
-            }
-            CMMsg msg=CMClass.getMsg(mob,null,this,auto?CMMsg.MSG_OK_VISUAL:CMMsg.MSG_DELICATE_HANDS_ACT,"<S-NAME> start(s) walking carefully "+Directions.getDirectionName(dirCode)+".");
-            if(mob.location().okMessage(mob,msg))
-                mob.location().send(mob,msg);
-            else
-                return false;
-        }
-        return true;
-    }
+	public boolean preInvoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel, int secondsElapsed, double actionsRemaining)
+	{
+		if(secondsElapsed==0)
+		{
+			String dir=CMParms.combine(commands,0);
+			if(commands.size()>0) dir=(String)commands.get(commands.size()-1);
+			int dirCode=Directions.getGoodDirectionCode(dir);
+			if(dirCode<0)
+			{
+				mob.tell("Step where?");
+				return false;
+			}
+			if(mob.isInCombat())
+			{
+				mob.tell("Not while you are fighting!");
+				return false;
+			}
+	
+			if((mob.location().getRoomInDir(dirCode)==null)||(mob.location().getExitInDir(dirCode)==null))
+			{
+				mob.tell("Step where?");
+				return false;
+			}
+			CMMsg msg=CMClass.getMsg(mob,null,this,auto?CMMsg.MSG_OK_VISUAL:CMMsg.MSG_DELICATE_HANDS_ACT,"<S-NAME> start(s) walking carefully "+Directions.getDirectionName(dirCode)+".");
+			if(mob.location().okMessage(mob,msg))
+				mob.location().send(mob,msg);
+			else
+				return false;
+		}
+		return true;
+	}
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		String dir=CMParms.combine(commands,0);
 		if(commands.size()>0) dir=(String)commands.lastElement();
 		int dirCode=Directions.getGoodDirectionCode(dir);
-        if(!preInvoke(mob,commands,givenTarget,auto,asLevel,0,0.0))
-            return false;
+		if(!preInvoke(mob,commands,givenTarget,auto,asLevel,0,0.0))
+			return false;
 
-        MOB highestMOB=getHighestLevelMOB(mob,null);
+		MOB highestMOB=getHighestLevelMOB(mob,null);
 		int levelDiff=mob.phyStats().level()+(2*super.getXLEVELLevel(mob))-getMOBLevel(highestMOB);
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))

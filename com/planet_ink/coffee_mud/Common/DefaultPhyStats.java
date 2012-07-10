@@ -22,7 +22,7 @@ import java.util.Vector;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -32,9 +32,9 @@ import java.util.Vector;
 */
 public class DefaultPhyStats implements PhyStats
 {
-    public String ID(){return "DefaultPhyStats";}
-    protected int[] DEFAULT_STATS={0,0,100,0,0,0,0,0,0,0};
-    protected int[] stats=DEFAULT_STATS.clone();
+	public String ID(){return "DefaultPhyStats";}
+	protected int[] DEFAULT_STATS={0,0,100,0,0,0,0,0,0,0};
+	protected int[] stats=DEFAULT_STATS.clone();
 	protected double Speed=1.0;			// should be positive
 	protected String replacementName=null;
 	protected String[] ambiances=null;
@@ -48,15 +48,15 @@ public class DefaultPhyStats implements PhyStats
 		Speed=(double)def;
 	}
 
-    public void reset()
-    {
-    	for(int i=0;i<DEFAULT_STATS.length;i++)
-    		stats[i]=DEFAULT_STATS[i];
-    	Speed=1.0;
-    	replacementName=null;
-    	ambiances=null;
-    }
-    
+	public void reset()
+	{
+		for(int i=0;i<DEFAULT_STATS.length;i++)
+			stats[i]=DEFAULT_STATS[i];
+		Speed=1.0;
+		replacementName=null;
+		ambiances=null;
+	}
+	
 	public int sensesMask(){return stats[STAT_SENSES];}
 	public int disposition(){return stats[STAT_DISPOSITION];}
 	public int level(){return stats[STAT_LEVEL];}
@@ -98,46 +98,46 @@ public class DefaultPhyStats implements PhyStats
 		ambiance=ambiance.trim();
 		int i=0;
 		String[] ambis=ambiances();
-        Vector<String> V=null;
+		Vector<String> V=null;
 		for(i=0;i<ambis.length;i++)
 			if(ambis[i].equalsIgnoreCase(ambiance))
 			{
 				if(ambis.length==1)
 					ambiances=null;
-                else
-                {
-                    V=CMParms.parseCommas(CMParms.toStringList(ambis),true);
-                    if(V.size()==ambis.length)
-                        V.removeElementAt(i);
-                    ambiances=CMParms.toStringArray(V);
-                }
+				else
+				{
+					V=CMParms.parseCommas(CMParms.toStringList(ambis),true);
+					if(V.size()==ambis.length)
+						V.removeElementAt(i);
+					ambiances=CMParms.toStringArray(V);
+				}
 				return;
 			}
 	}
 
-    public CMObject newInstance(){try{return (CMObject)getClass().newInstance();}catch(Exception e){return new DefaultPhyStats();}}
-    public void initializeClass(){}
-    public void copyInto(PhyStats intoStats)
-    {
-    	if(intoStats instanceof DefaultPhyStats)
-    	{
-    		for(int i=0;i<NUM_STATS;i++)
-    			((DefaultPhyStats)intoStats).stats[i]=stats[i];
-    		((DefaultPhyStats)intoStats).Speed=Speed;
-    		((DefaultPhyStats)intoStats).ambiances=ambiances;
-    		((DefaultPhyStats)intoStats).replacementName=replacementName;
-    	}
-    	else
-    	for(int i=0;i<getStatCodes().length;i++)
-    		intoStats.setStat(getStatCodes()[i],getStat(getStatCodes()[i]));
-    }
+	public CMObject newInstance(){try{return (CMObject)getClass().newInstance();}catch(Exception e){return new DefaultPhyStats();}}
+	public void initializeClass(){}
+	public void copyInto(PhyStats intoStats)
+	{
+		if(intoStats instanceof DefaultPhyStats)
+		{
+			for(int i=0;i<NUM_STATS;i++)
+				((DefaultPhyStats)intoStats).stats[i]=stats[i];
+			((DefaultPhyStats)intoStats).Speed=Speed;
+			((DefaultPhyStats)intoStats).ambiances=ambiances;
+			((DefaultPhyStats)intoStats).replacementName=replacementName;
+		}
+		else
+		for(int i=0;i<getStatCodes().length;i++)
+			intoStats.setStat(getStatCodes()[i],getStat(getStatCodes()[i]));
+	}
 	public CMObject copyOf()
 	{
 		try
 		{
 			DefaultPhyStats E=(DefaultPhyStats)this.clone();
-            E.stats=(int[])E.stats.clone();
-            return E;
+			E.stats=(int[])E.stats.clone();
+			return E;
 		}
 		catch(java.lang.CloneNotSupportedException e)
 		{
@@ -148,9 +148,9 @@ public class DefaultPhyStats implements PhyStats
 		"SENSES","DISPOSITION","LEVEL",
 		"ABILITY","REJUV","WEIGHT","HEIGHT",
 		"ARMOR","DAMAGE","ATTACK", "AMBIANCES"};
-    public int getSaveStatIndex(){return getStatCodes().length;}
+	public int getSaveStatIndex(){return getStatCodes().length;}
 	public String[] getStatCodes(){return CODES;}
-    public boolean isStat(String code){ return CMParms.indexOf(getStatCodes(),code.toUpperCase().trim())>=0;}
+	public boolean isStat(String code){ return CMParms.indexOf(getStatCodes(),code.toUpperCase().trim())>=0;}
 	protected int getCodeNum(String code)
 	{
 		for(int i=0;i<CODES.length;i++)
@@ -197,5 +197,5 @@ public class DefaultPhyStats implements PhyStats
 		default: return "";
 		}
 	}
-    public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
+	public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
 }

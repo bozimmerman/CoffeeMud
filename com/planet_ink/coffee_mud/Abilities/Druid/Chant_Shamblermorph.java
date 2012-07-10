@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -39,7 +39,7 @@ public class Chant_Shamblermorph extends Chant
 	public String ID() { return "Chant_Shamblermorph"; }
 	public String name(){ return "Shamblermorph";}
 	public String displayText(){return "(Shamblermorph)";}
-    public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_SHAPE_SHIFTING;}
+	public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_SHAPE_SHIFTING;}
 	public int abstractQuality(){return Ability.QUALITY_OK_OTHERS;}
 	protected static Race treeForm=null;
 
@@ -48,12 +48,12 @@ public class Chant_Shamblermorph extends Chant
 		super.affectCharStats(affected,affectableStats);
 		if(treeForm==null) treeForm=CMClass.getRace("Shambler");
 		if(treeForm!=null)
-	    {
-		    int oldCat=affected.baseCharStats().ageCategory();
+		{
+			int oldCat=affected.baseCharStats().ageCategory();
 			affectableStats.setMyRace(treeForm);
 			if(affected.baseCharStats().getStat(CharStats.STAT_AGE)>0)
 				affectableStats.setStat(CharStats.STAT_AGE,treeForm.getAgingChart()[oldCat]);
-	    }
+		}
 		affectableStats.setStat(CharStats.STAT_GENDER,'N');
 	}
 

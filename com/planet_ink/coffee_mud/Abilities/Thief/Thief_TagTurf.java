@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -44,7 +44,7 @@ public class Thief_TagTurf extends ThiefSkill
 	private static final String[] triggerStrings = {"TAGTURF","TURFTAG"};
 	public String[] triggerStrings(){return triggerStrings;}
 	public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
-    public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_STREETSMARTS;}
+	public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_STREETSMARTS;}
 
 	public boolean okMessage(Environmental host, CMMsg msg)
 	{
@@ -53,7 +53,7 @@ public class Thief_TagTurf extends ThiefSkill
 
 		if((msg.tool() instanceof Ability)
 		&&(!msg.source().Name().equals(text()))
-        &&((msg.source().getClanID().length()==0)||(!msg.source().getClanID().equals(text())))
+		&&((msg.source().getClanID().length()==0)||(!msg.source().getClanID().equals(text())))
 		&&(!msg.tool().ID().equals("Thief_TurfWar"))
 		&&((((Ability)msg.tool()).classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_THIEF_SKILL))
 		{
@@ -71,10 +71,10 @@ public class Thief_TagTurf extends ThiefSkill
 		&&((msg.targetMinor()==CMMsg.TYP_LOOK)||(msg.targetMinor()==CMMsg.TYP_EXAMINE))
 		&&((CMLib.flags().canSeeHidden(msg.source()))||(msg.source().Name().equals(text()))))
 		{
-            if((msg.source().Name().equals(text()))
-            ||((msg.source().getClanID().length()>0)
-            	&&(msg.source().getClanRole()>0)
-            	&&(msg.source().getClanID().equals(text()))))
+			if((msg.source().Name().equals(text()))
+			||((msg.source().getClanID().length()>0)
+				&&(msg.source().getClanRole()>0)
+				&&(msg.source().getClanID().equals(text()))))
 				msg.addTrailerMsg(CMClass.getMsg(msg.source(),msg.target(),null,
 										CMMsg.MSG_OK_VISUAL,"This is your turf.",
 										CMMsg.NO_EFFECT,null,
@@ -95,18 +95,18 @@ public class Thief_TagTurf extends ThiefSkill
 		Room target=mob.location();
 		if((auto)&&(givenTarget!=null)&&(givenTarget instanceof Room))
 			target=(Room)givenTarget;
-        Ability A=target.fetchEffect(ID());
+		Ability A=target.fetchEffect(ID());
 		if(A!=null)
 		{
-            if((A.text().equals(mob.Name())
-        		||((mob.getClanID().length()>0)&&(mob.getClanID().equals(A.text()))&&(mob.getClanRole()>0)))
-            &&(CMParms.combine(commands,0).equalsIgnoreCase("UNTAG")))
-            {
-                A.unInvoke();
-                target.delEffect(A);
-                mob.tell("This place has been untagged.");
-                return true;
-            }
+			if((A.text().equals(mob.Name())
+				||((mob.getClanID().length()>0)&&(mob.getClanID().equals(A.text()))&&(mob.getClanRole()>0)))
+			&&(CMParms.combine(commands,0).equalsIgnoreCase("UNTAG")))
+			{
+				A.unInvoke();
+				target.delEffect(A);
+				mob.tell("This place has been untagged.");
+				return true;
+			}
 			mob.tell("This place has already been tagged by "+A.text()+".");
 			return false;
 		}
@@ -136,10 +136,10 @@ public class Thief_TagTurf extends ThiefSkill
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);
-            if(mob.getClanID().length()>0)
-    			setMiscText(mob.getClanID());
-            else
-                setMiscText(mob.Name());
+			if(mob.getClanID().length()>0)
+				setMiscText(mob.getClanID());
+			else
+				setMiscText(mob.Name());
 			beneficialAffect(mob,target,asLevel,(CMProps.getIntVar(CMProps.SYSTEMI_TICKSPERMUDMONTH)));
 		}
 		return success;

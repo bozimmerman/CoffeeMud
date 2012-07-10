@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -64,8 +64,8 @@ public class Display extends StdCommand
 		if((commands.size()>0)&&(((String)commands.lastElement()).equalsIgnoreCase("to")))
 			commands.removeElementAt(commands.size()-1);
 
-        int maxToGive=CMLib.english().calculateMaxToGive(mob,commands,true,mob,false);
-        if(maxToGive<0) return false;
+		int maxToGive=CMLib.english().calculateMaxToGive(mob,commands,true,mob,false);
+		if(maxToGive<0) return false;
 
 		String thingToGive=CMParms.combine(commands,0);
 		int addendum=1;
@@ -81,8 +81,8 @@ public class Display extends StdCommand
 			Environmental giveThis=CMLib.english().bestPossibleGold(mob,null,thingToGive);
 			if(giveThis!=null)
 			{
-			    if(((Coins)giveThis).getNumberOfCoins()<CMLib.english().numPossibleGold(mob,thingToGive))
-			        return false;
+				if(((Coins)giveThis).getNumberOfCoins()<CMLib.english().numPossibleGold(mob,thingToGive))
+					return false;
 			}
 			else
 				giveThis=mob.fetchCarried(null,thingToGive+addendumStr);
@@ -113,8 +113,8 @@ public class Display extends StdCommand
 		}
 		return false;
 	}
-    public double combatActionsCost(final MOB mob, final List<String> cmds){return CMProps.getCombatActionCost(ID());}
-    public double actionsCost(final MOB mob, final List<String> cmds){return CMProps.getActionCost(ID());}
+	public double combatActionsCost(final MOB mob, final List<String> cmds){return CMProps.getCombatActionCost(ID());}
+	public double actionsCost(final MOB mob, final List<String> cmds){return CMProps.getActionCost(ID());}
 	public boolean canBeOrdered(){return true;}
 
 	

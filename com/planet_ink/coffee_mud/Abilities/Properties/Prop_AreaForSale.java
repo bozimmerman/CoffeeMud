@@ -25,7 +25,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -42,34 +42,34 @@ public class Prop_AreaForSale extends Property implements LandTitle
 	protected Hashtable lastItemNums=new Hashtable();
 	public String accountForYourself()
 	{ return "For Sale";	}
-    protected long lastCall=0;
-    protected long lastMobSave=0;
+	protected long lastCall=0;
+	protected long lastMobSave=0;
 	protected int lastDayDone=-1;
 
 	public int landPrice()
 	{
 		if(text().length()==0)
-		    return 100000;
+			return 100000;
 		String s=text();
 		int index=s.length();
 		while((--index)>=0)
 		{
 			if((!Character.isDigit(s.charAt(index)))
 			&&(!Character.isWhitespace(s.charAt(index))))
-			    break;
+				break;
 		}
 		int price=CMath.s_int(s.substring(index+1).trim());
-			    
+				
 		if(price<=0) price=100000;
 		return price;
 	}
 	
 	public void setLandPrice(int price)
 	{   
-	    setMiscText(landOwner()+"/"
-	        +(rentalProperty()?"RENTAL ":"")
-	        +((backTaxes()!=0)?"TAX"+backTaxes()+"X ":"")
-	        +price);
+		setMiscText(landOwner()+"/"
+			+(rentalProperty()?"RENTAL ":"")
+			+((backTaxes()!=0)?"TAX"+backTaxes()+"X ":"")
+			+price);
 	}
 	
 	public String landOwner()
@@ -89,11 +89,11 @@ public class Prop_AreaForSale extends Property implements LandTitle
 	
 	public void setLandOwner(String owner)
 	{   
-	    setMiscText(owner+"/"
-		        +(rentalProperty()?"RENTAL ":"")
-		        +((backTaxes()!=0)?"TAX"+backTaxes()+"X ":"")
-		        +landPrice());
-    }
+		setMiscText(owner+"/"
+				+(rentalProperty()?"RENTAL ":"")
+				+((backTaxes()!=0)?"TAX"+backTaxes()+"X ":"")
+				+landPrice());
+	}
 
 	public int backTaxes()
 	{
@@ -102,26 +102,26 @@ public class Prop_AreaForSale extends Property implements LandTitle
 		if(x<0) return 0;
 		String s=(String)CMParms.parse(text().substring(x+3)).firstElement();
 		return CMath.s_int(s.substring(0,s.length()-1));
-    }
+	}
 	public void setBackTaxes(int tax)
 	{	
-	    setMiscText(landOwner()+"/"
-		        +(rentalProperty()?"RENTAL ":"")
-		        +((tax!=0)?"TAX"+tax+"X ":"")
-		        +landPrice());
+		setMiscText(landOwner()+"/"
+				+(rentalProperty()?"RENTAL ":"")
+				+((tax!=0)?"TAX"+tax+"X ":"")
+				+landPrice());
 	}
 	
 	public boolean rentalProperty()
 	{
 		if(text().indexOf('/')<0) return text().indexOf("RENTAL")>=0;
-	    return text().indexOf("RENTAL",text().indexOf('/'))>0;
-    }
+		return text().indexOf("RENTAL",text().indexOf('/'))>0;
+	}
 	public void setRentalProperty(boolean truefalse)
 	{	
-	    setMiscText(landOwner()+"/"
-		        +(truefalse?"RENTAL ":"")
-		        +((backTaxes()!=0)?"TAX"+backTaxes()+"X ":"")
-		        +landPrice());
+		setMiscText(landOwner()+"/"
+				+(truefalse?"RENTAL ":"")
+				+((backTaxes()!=0)?"TAX"+backTaxes()+"X ":"")
+				+landPrice());
 	}
 	
 	// update title, since it may affect clusters, worries about ALL involved
@@ -146,7 +146,7 @@ public class Prop_AreaForSale extends Property implements LandTitle
 
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
-	    if(!super.okMessage(myHost,msg)) return false;
+		if(!super.okMessage(myHost,msg)) return false;
 		Prop_RoomForSale.robberyCheck(this,msg);
 		return true;
 	}
@@ -222,13 +222,13 @@ public class Prop_AreaForSale extends Property implements LandTitle
 				A=CMLib.map().getArea(landPropertyID());
 			if(lastDayDone!=A.getTimeObj().getDayOfMonth())
 			{
-			    lastDayDone=A.getTimeObj().getDayOfMonth();
-			    if((landOwner().length()>0)&&rentalProperty())
-			        if(Prop_RoomForSale.doRentalProperty(A,A.Name(),landOwner(),landPrice()))
-			        {
-			            setLandOwner("");
+				lastDayDone=A.getTimeObj().getDayOfMonth();
+				if((landOwner().length()>0)&&rentalProperty())
+					if(Prop_RoomForSale.doRentalProperty(A,A.Name(),landOwner(),landPrice()))
+					{
+						setLandOwner("");
 						CMLib.database().DBUpdateArea(A.Name(),A);
-			        }
+					}
 			}
 		}
 	}

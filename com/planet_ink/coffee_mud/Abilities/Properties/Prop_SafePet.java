@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -34,49 +34,49 @@ import java.util.*;
 */
 public class Prop_SafePet extends Property
 {
-    public String ID() { return "Prop_SafePet"; }
-    public String name(){ return "Unattackable Pets";}
-    protected int canAffectCode(){return Ability.CAN_MOBS;}
-    boolean disabled=false;
+	public String ID() { return "Prop_SafePet"; }
+	public String name(){ return "Unattackable Pets";}
+	protected int canAffectCode(){return Ability.CAN_MOBS;}
+	boolean disabled=false;
 
-    public String accountForYourself()
-    { return "Unattackable";    }
+	public String accountForYourself()
+	{ return "Unattackable";	}
 
-    public void affectPhyStats(Physical affected, PhyStats affectableStats)
-    {
-        super.affectPhyStats(affected, affectableStats);
-        affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_UNATTACKABLE);
-    }
-    
-    public boolean okMessage(final Environmental myHost, final CMMsg msg)
-    {
-        if(affected instanceof MOB)
-        {
-            if(CMath.bset(msg.targetMajor(),CMMsg.MASK_MALICIOUS))
-            {
-                if((msg.amITarget(affected))
-                &&(!disabled))
-                {
-                    if(!CMath.bset(msg.sourceMajor(),CMMsg.MASK_ALWAYS))
-                        msg.source().tell("Ah, leave "+affected.name()+" alone.");
-                    ((MOB)affected).makePeace();
-                    return false;
-                }
-                else
-                if(msg.amISource((MOB)affected))
-                    disabled=true;
-            }
-            else
-            if(!((MOB)affected).isInCombat())
-                disabled=false;
-        }
-        else
-        if(CMath.bset(msg.targetMajor(),CMMsg.MASK_MALICIOUS) && msg.amITarget(affected))
-        {
-            if(!CMath.bset(msg.sourceMajor(),CMMsg.MASK_ALWAYS))
-                msg.source().tell("Ah, leave "+affected.name()+" alone.");
-            return false;
-        }
-        return super.okMessage(myHost,msg);
-    }
+	public void affectPhyStats(Physical affected, PhyStats affectableStats)
+	{
+		super.affectPhyStats(affected, affectableStats);
+		affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_UNATTACKABLE);
+	}
+	
+	public boolean okMessage(final Environmental myHost, final CMMsg msg)
+	{
+		if(affected instanceof MOB)
+		{
+			if(CMath.bset(msg.targetMajor(),CMMsg.MASK_MALICIOUS))
+			{
+				if((msg.amITarget(affected))
+				&&(!disabled))
+				{
+					if(!CMath.bset(msg.sourceMajor(),CMMsg.MASK_ALWAYS))
+						msg.source().tell("Ah, leave "+affected.name()+" alone.");
+					((MOB)affected).makePeace();
+					return false;
+				}
+				else
+				if(msg.amISource((MOB)affected))
+					disabled=true;
+			}
+			else
+			if(!((MOB)affected).isInCombat())
+				disabled=false;
+		}
+		else
+		if(CMath.bset(msg.targetMajor(),CMMsg.MASK_MALICIOUS) && msg.amITarget(affected))
+		{
+			if(!CMath.bset(msg.sourceMajor(),CMMsg.MASK_ALWAYS))
+				msg.source().tell("Ah, leave "+affected.name()+" alone.");
+			return false;
+		}
+		return super.okMessage(myHost,msg);
+	}
 }

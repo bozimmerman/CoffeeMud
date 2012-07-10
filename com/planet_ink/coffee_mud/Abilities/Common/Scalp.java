@@ -23,7 +23,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -40,7 +40,7 @@ public class Scalp extends CommonSkill
 	private static final String[] triggerStrings = {"SCALP","SCALPING"};
 	public String[] triggerStrings(){return triggerStrings;}
 	public static Vector lastSoManyScalps=new Vector();
-    public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_ANATOMY;}
+	public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_ANATOMY;}
 
 	private DeadBody body=null;
 	protected boolean failed=false;
@@ -152,7 +152,7 @@ public class Scalp extends CommonSkill
 			I=(Item)msg.target();
 			body=(DeadBody)I;
 			verb="scalping "+I.name();
-            playSound="ripping.wav";
+			playSound="ripping.wav";
 			int duration=(I.phyStats().weight()/(10+getXLEVELLevel(mob)));
 			if(duration<3) duration=3;
 			if(duration>40) duration=40;

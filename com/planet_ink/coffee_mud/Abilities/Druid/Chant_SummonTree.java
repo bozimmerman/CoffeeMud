@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -38,14 +38,14 @@ public class Chant_SummonTree extends Chant_SummonPlants
 {
 	public String ID() { return "Chant_SummonTree"; }
 	public String name(){ return "Summon Tree";}
-    public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
+	public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 	public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PLANTGROWTH;}
 	protected int canAffectCode(){return Ability.CAN_ITEMS;}
 	protected int canTargetCode(){return 0;}
 	protected int material=0;
 	protected int oldMaterial=-1;
 
-    protected Item buildMyPlant(MOB mob, Room room)
+	protected Item buildMyPlant(MOB mob, Room room)
 	{
 		int code=material&RawMaterial.RESOURCE_MASK;
 		Item newItem=CMClass.getBasicItem("GenItem");

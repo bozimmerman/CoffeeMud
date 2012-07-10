@@ -22,7 +22,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -40,10 +40,10 @@ public class Trapper extends Thief
 		super();
 		maxStatAdj[CharStats.STAT_DEXTERITY]=4;
 		maxStatAdj[CharStats.STAT_CONSTITUTION]=4;
-    }
-    public void initializeClass()
-    {
-        super.initializeClass();
+	}
+	public void initializeClass()
+	{
+		super.initializeClass();
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Write",50,true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Specialization_Ranged",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Specialization_EdgedWeapon",50,true);
@@ -128,13 +128,13 @@ public class Trapper extends Thief
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),30,"Thief_DeathTrap",true);
 	}
-    public String getOtherBonusDesc(){return "Benefits from animal followers leveling.  Gets experience for selling foreign unconjured animals of comparable level.";}
+	public String getOtherBonusDesc(){return "Benefits from animal followers leveling.  Gets experience for selling foreign unconjured animals of comparable level.";}
 	public String getOtherLimitsDesc(){return "Sneak and Hide attempts will fail outside of the wild.";}
-    public void executeMsg(Environmental host, CMMsg msg)
-    { 
-        super.executeMsg(host,msg); 
-        Druid.doAnimalFollowerLevelingCheck(this,host,msg);
-    }
+	public void executeMsg(Environmental host, CMMsg msg)
+	{ 
+		super.executeMsg(host,msg); 
+		Druid.doAnimalFollowerLevelingCheck(this,host,msg);
+	}
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(!(myHost instanceof MOB)) return super.okMessage(myHost,msg);
@@ -149,18 +149,18 @@ public class Trapper extends Thief
 			// animal trade must be here because execute of trade kills the mob object
 			// also, an add trailer is done, which only hits if this msg is not cancelled, 
 			// so ALL GOOD
-            if((msg.tool().ID().equalsIgnoreCase("AnimalTrading"))
-            &&(msg.value()<0)
-            &&(msg.target() instanceof MOB)
-            &&(CMLib.flags().isAnimalIntelligence((MOB)msg.target()))
-            &&(((MOB)msg.target()).getStartRoom()!=null)
-            &&(CMLib.map().areaLocation(myChar)!=CMLib.map().getStartArea(msg.target())))
-            {
-                int xp=(int)Math.round(10.0*CMath.div(((MOB)msg.target()).phyStats().level(),myChar.phyStats().level()));
-                if(xp>125) xp=125;
-                if((xp>0)&&CMLib.leveler().postExperience(myChar,null,null,xp,true))
-                    msg.addTrailerMsg(CMClass.getMsg(myChar,null,null,CMMsg.MSG_OK_VISUAL,"You gain "+xp+" experience for selling "+msg.target().name()+".",CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null));
-            }
+			if((msg.tool().ID().equalsIgnoreCase("AnimalTrading"))
+			&&(msg.value()<0)
+			&&(msg.target() instanceof MOB)
+			&&(CMLib.flags().isAnimalIntelligence((MOB)msg.target()))
+			&&(((MOB)msg.target()).getStartRoom()!=null)
+			&&(CMLib.map().areaLocation(myChar)!=CMLib.map().getStartArea(msg.target())))
+			{
+				int xp=(int)Math.round(10.0*CMath.div(((MOB)msg.target()).phyStats().level(),myChar.phyStats().level()));
+				if(xp>125) xp=125;
+				if((xp>0)&&CMLib.leveler().postExperience(myChar,null,null,xp,true))
+					msg.addTrailerMsg(CMClass.getMsg(myChar,null,null,CMMsg.MSG_OK_VISUAL,"You gain "+xp+" experience for selling "+msg.target().name()+".",CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null));
+			}
 			if((((myChar.location().domainType()&Room.INDOORS)>0))
 			||(myChar.location().domainType()==Room.DOMAIN_OUTDOORS_CITY))
 			{

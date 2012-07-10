@@ -25,7 +25,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -38,38 +38,38 @@ public class Song_Seeing extends Song
 	public String ID() { return "Song_Seeing"; }
 	public String name(){ return "Seeing";}
 	public int abstractQuality(){ return Ability.QUALITY_OK_OTHERS;}
-    
-    
-    public void affectCharStats(MOB affected, CharStats affectableStats)
-    {
-        super.affectCharStats(affected,affectableStats);
-        affectableStats.setStat(CharStats.STAT_SAVE_OVERLOOKING,super.adjustedLevel(invoker(),0)+100+affectableStats.getStat(CharStats.STAT_SAVE_OVERLOOKING));
-    }
-    
-    public int castingQuality(MOB mob, Physical target)
-    {
-        if(mob!=null)
-        {
-            if((mob.isInCombat())&&(!CMLib.flags().canBeSeenBy(mob.getVictim(),mob)))
-                return super.castingQuality(mob, target,Ability.QUALITY_BENEFICIAL_OTHERS);
-            if(target instanceof MOB)
-            {
-                Room R=((MOB)target).location();
-                boolean found=false;
-                if(R!=null)
-                    for(int r=0;r<R.numInhabitants();r++)
-                    {
-                        MOB M=R.fetchInhabitant(r);
-                        if((M!=null)&&(M!=mob)&&(M!=target)
-                        &&(CMLib.flags().isHidden(M)))
-                        { found=true; break;}
-                    }
-                if(found)
-                    return super.castingQuality(mob, target,Ability.QUALITY_BENEFICIAL_OTHERS);
-            }
-        }
-        return super.castingQuality(mob,target);
-    }
+	
+	
+	public void affectCharStats(MOB affected, CharStats affectableStats)
+	{
+		super.affectCharStats(affected,affectableStats);
+		affectableStats.setStat(CharStats.STAT_SAVE_OVERLOOKING,super.adjustedLevel(invoker(),0)+100+affectableStats.getStat(CharStats.STAT_SAVE_OVERLOOKING));
+	}
+	
+	public int castingQuality(MOB mob, Physical target)
+	{
+		if(mob!=null)
+		{
+			if((mob.isInCombat())&&(!CMLib.flags().canBeSeenBy(mob.getVictim(),mob)))
+				return super.castingQuality(mob, target,Ability.QUALITY_BENEFICIAL_OTHERS);
+			if(target instanceof MOB)
+			{
+				Room R=((MOB)target).location();
+				boolean found=false;
+				if(R!=null)
+					for(int r=0;r<R.numInhabitants();r++)
+					{
+						MOB M=R.fetchInhabitant(r);
+						if((M!=null)&&(M!=mob)&&(M!=target)
+						&&(CMLib.flags().isHidden(M)))
+						{ found=true; break;}
+					}
+				if(found)
+					return super.castingQuality(mob, target,Ability.QUALITY_BENEFICIAL_OTHERS);
+			}
+		}
+		return super.castingQuality(mob,target);
+	}
 
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{

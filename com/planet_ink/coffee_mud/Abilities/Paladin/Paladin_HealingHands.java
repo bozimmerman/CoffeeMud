@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -45,7 +45,7 @@ public class Paladin_HealingHands extends StdAbility
 	protected int canTargetCode(){return Ability.CAN_MOBS;}
 	public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_HEALING;}
 	public long flags(){return Ability.FLAG_HEALINGMAGIC;}
-    protected long minCastWaitTime(){return CMProps.getTickMillis();}
+	protected long minCastWaitTime(){return CMProps.getTickMillis();}
 
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
@@ -87,7 +87,7 @@ public class Paladin_HealingHands extends StdAbility
 				mob.curState().adjMana(manaLost,mob.maxState());
 				CMLib.combat().postHealing(mob,target,this,CMMsg.MASK_ALWAYS|CMMsg.TYP_CAST_SPELL,healing,null);
 				target.tell("You feel a little better!");
-                lastCastHelp=System.currentTimeMillis();
+				lastCastHelp=System.currentTimeMillis();
 			}
 		}
 		else

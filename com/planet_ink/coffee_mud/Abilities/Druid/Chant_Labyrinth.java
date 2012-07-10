@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -39,7 +39,7 @@ public class Chant_Labyrinth extends Chant
 	public String ID() { return "Chant_Labyrinth"; }
 	public String name(){ return "Labyrinth";}
 	public String displayText(){return "(Labyrinth)";}
-    public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_DEEPMAGIC;}
+	public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_DEEPMAGIC;}
 	public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
 	protected int canAffectCode(){return CAN_ROOMS;}
 	protected int canTargetCode(){return CAN_ROOMS;}
@@ -56,39 +56,39 @@ public class Chant_Labyrinth extends Chant
 		if((canBeUninvoked())&&(room instanceof GridLocale)&&(oldRoom!=null))
 			((GridLocale)room).clearGrid(oldRoom);
 		for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
-		    room.setRawExit(d,null);
+			room.setRawExit(d,null);
 		super.unInvoke();
 		room.destroy();
 	}
 
-    public boolean okMessage(Environmental host, CMMsg msg)
-    {
-        if(((msg.sourceMinor()==CMMsg.TYP_QUIT)
-	        ||(msg.sourceMinor()==CMMsg.TYP_SHUTDOWN)
+	public boolean okMessage(Environmental host, CMMsg msg)
+	{
+		if(((msg.sourceMinor()==CMMsg.TYP_QUIT)
+			||(msg.sourceMinor()==CMMsg.TYP_SHUTDOWN)
 			||((msg.targetMinor()==CMMsg.TYP_EXPIRE)&&(msg.target()==oldRoom))
 			||(msg.sourceMinor()==CMMsg.TYP_ROOMRESET))
-        &&(msg.source().location()!=null)
-        &&(msg.source().location().getGridParent()==affected))
-        {
-            if(oldRoom!=null)
-                oldRoom.bringMobHere(msg.source(),false);
-            if(msg.source()==invoker)
-                unInvoke();
-        }
-        return super.okMessage(host,msg);
-    }
-    
-    public int castingQuality(MOB mob, Physical target)
-    {
-        if(mob!=null)
-        {
-            if(mob.location().roomID().length()==0)
-                return Ability.QUALITY_INDIFFERENT;
-        }
-        return super.castingQuality(mob,target);
-    }
-    
-    
+		&&(msg.source().location()!=null)
+		&&(msg.source().location().getGridParent()==affected))
+		{
+			if(oldRoom!=null)
+				oldRoom.bringMobHere(msg.source(),false);
+			if(msg.source()==invoker)
+				unInvoke();
+		}
+		return super.okMessage(host,msg);
+	}
+	
+	public int castingQuality(MOB mob, Physical target)
+	{
+		if(mob!=null)
+		{
+			if(mob.location().roomID().length()==0)
+				return Ability.QUALITY_INDIFFERENT;
+		}
+		return super.castingQuality(mob,target);
+	}
+	
+	
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if(mob.location().roomID().length()==0)

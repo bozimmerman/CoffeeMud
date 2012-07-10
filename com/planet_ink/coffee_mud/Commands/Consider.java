@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -46,7 +46,7 @@ public class Consider extends StdCommand
 		int mob2Armor=CMLib.combat().adjustedArmor(mob2);
 		int mob1Armor=CMLib.combat().adjustedArmor(mob1);
 		double mob1Attack=(double)CMLib.combat().adjustedAttackBonus(mob1,mob2);
-        double mob2Attack=(double)CMLib.combat().adjustedAttackBonus(mob2,mob1);
+		double mob2Attack=(double)CMLib.combat().adjustedAttackBonus(mob2,mob1);
 		int mob2Dmg=mob2.phyStats().damage();
 		int mob1Dmg=mob1.phyStats().damage();
 		int mob2Hp=mob2.baseState().getHitPoints();
@@ -71,10 +71,10 @@ public class Consider extends StdCommand
 		CMMsg msg=CMClass.getMsg(mob,target,null,CMMsg.MASK_EYES|CMMsg.TYP_OK_VISUAL,null,"<S-NAME> consider(s) <T-NAMESELF>.","<S-NAME> consider(s) <T-NAMESELF>.");
 		if(R.okMessage(mob,msg))
 			R.send(mob,msg);
-    	int lvlDiff=0;
-        if(target instanceof MOB)
-        {
-        	MOB targetMOB=(MOB)target;
+		int lvlDiff=0;
+		if(target instanceof MOB)
+		{
+			MOB targetMOB=(MOB)target;
 			int relDiff=relativeLevelDiff(targetMOB,mob);
 			lvlDiff=(target.phyStats().level()-mob.phyStats().level());
 			int realDiff=relDiff;//(relDiff+lvlDiff)/2;
@@ -153,12 +153,12 @@ public class Consider extends StdCommand
 					levelMsg+=targetMOB.charStats().heshe()+" WILL KILL YOU DEAD!";
 			}
 			mob.tell(levelMsg);
-        }
+		}
 		StringBuffer withWhat=new StringBuffer("");
 		Vector mendors=new Vector();
-        for(Enumeration<Ability> a=mob.allAbilities();a.hasMoreElements();)
-        {
-            Ability A=a.nextElement();
+		for(Enumeration<Ability> a=mob.allAbilities();a.hasMoreElements();)
+		{
+			Ability A=a.nextElement();
 			if((A instanceof MendingSkill)&&(((MendingSkill)A).supportsMending((target))))
 				mendors.addElement(A);
 		}
@@ -185,7 +185,7 @@ public class Consider extends StdCommand
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
-        Physical target=null;
+		Physical target=null;
 		if(commands.size()<2)
 		{
 			mob.tell("Consider whom or what?");
@@ -202,7 +202,7 @@ public class Consider extends StdCommand
 			mob.tell("I don't see '"+targetName+"' here.");
 			return false;
 		}
-        doConsider(mob,target);
+		doConsider(mob,target);
 		return true;
 	}
 	
@@ -213,8 +213,8 @@ public class Consider extends StdCommand
 		return Integer.valueOf(doConsider(mob, (MOB)args[0]));
 	}
 	
-    public double combatActionsCost(final MOB mob, final List<String> cmds){return CMProps.getCombatActionCost(ID());}
-    public double actionsCost(final MOB mob, final List<String> cmds){return CMProps.getActionCost(ID());}
+	public double combatActionsCost(final MOB mob, final List<String> cmds){return CMProps.getCombatActionCost(ID());}
+	public double actionsCost(final MOB mob, final List<String> cmds){return CMProps.getActionCost(ID());}
 	public boolean canBeOrdered(){return true;}
 
 

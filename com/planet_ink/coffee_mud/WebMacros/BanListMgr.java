@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -71,7 +71,7 @@ public class BanListMgr extends StdWebMacro
 		{
 			String key=httpReq.getRequestParameter("BANNEDONE");
 			if(key==null) return "";
-            CMSecurity.unban(key);
+			CMSecurity.unban(key);
 			return "'"+key+"' no longer banned.";
 		}
 		else
@@ -79,7 +79,7 @@ public class BanListMgr extends StdWebMacro
 		{
 			String key=httpReq.getRequestParameter("NEWBANNEDONE");
 			if(key==null) return "";
-            CMSecurity.ban(key);
+			CMSecurity.ban(key);
 			return "'"+key+"' is now banned.";
 		}
 		else

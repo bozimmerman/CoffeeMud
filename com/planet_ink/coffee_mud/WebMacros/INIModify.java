@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -43,7 +43,7 @@ public class INIModify extends StdWebMacro
 		StringBuffer buf=new StringBuffer("");
 		for(int p=0;p<page.size();p++)
 			buf.append(((String)page.get(p))+"\r\n");
-        new CMFile(CMProps.getVar(CMProps.SYSTEM_INIPATH),null,false,true).saveText(buf);
+		new CMFile(CMProps.getVar(CMProps.SYSTEM_INIPATH),null,false,true).saveText(buf);
 	}
 
 	public boolean modified(HashSet H, String s)
@@ -67,7 +67,7 @@ public class INIModify extends StdWebMacro
 			String key=(String)parms.get("KEY");
 			if((key==null)||(key.trim().length()==0)) return "";
 			key=key.trim().toUpperCase();
-            CMProps ipage=CMProps.loadPropPage(CMProps.getVar(CMProps.SYSTEM_INIPATH));
+			CMProps ipage=CMProps.loadPropPage(CMProps.getVar(CMProps.SYSTEM_INIPATH));
 			if((ipage==null)||(!ipage.isLoaded())) return "";
 			if(ipage.containsKey(key)) return "";
 			int where=0;
@@ -125,7 +125,7 @@ public class INIModify extends StdWebMacro
 		if(parms.containsKey("UPDATE"))
 		{
 			HashSet modified=new HashSet();
-            CMProps ipage=CMProps.loadPropPage(CMProps.getVar(CMProps.SYSTEM_INIPATH));
+			CMProps ipage=CMProps.loadPropPage(CMProps.getVar(CMProps.SYSTEM_INIPATH));
 			if((ipage==null)||(!ipage.isLoaded())) return "";
 			for(int p=0;p<page.size();p++)
 			{
@@ -135,7 +135,7 @@ public class INIModify extends StdWebMacro
 				if(x<0) x=s.indexOf(':');
 				if(x<0) continue;
 				String thisKey=s.substring(0,x).trim().toUpperCase();
-                
+				
 				if(httpReq.isRequestParameter(thisKey)
 				&&(ipage.containsKey(thisKey))
 				&&(!modified.contains(thisKey))
@@ -148,7 +148,7 @@ public class INIModify extends StdWebMacro
 			}
 			if(modified.size()>0)
 			{
-                if(modified.contains("JSCRIPTS")) return ""; // never modified through this
+				if(modified.contains("JSCRIPTS")) return ""; // never modified through this
 				updateINIFile(page);
 				ipage=CMProps.loadPropPage(CMProps.getVar(CMProps.SYSTEM_INIPATH));
 				if((ipage==null)||(!ipage.isLoaded())) return "";
@@ -163,19 +163,19 @@ public class INIModify extends StdWebMacro
 					CMLib.login().initDeathRooms(ipage);
 				if(modified(modified,"MORGUE")||(modified(modified,"MORGUE_*")))
 					CMLib.login().initBodyRooms(ipage);
-                if(modified(modified,"FACTIONS"))
-                    CMLib.factions().reloadFactions(CMProps.getVar(CMProps.SYSTEM_PREFACTIONS));
+				if(modified(modified,"FACTIONS"))
+					CMLib.factions().reloadFactions(CMProps.getVar(CMProps.SYSTEM_PREFACTIONS));
 				if(modified(modified,"CHANNELS")
 				||(modified(modified,"ICHANNELS"))
-                ||(modified(modified,"COMMANDJOURNALS"))
-                ||(modified(modified,"FORUMJOURNALS"))
+				||(modified(modified,"COMMANDJOURNALS"))
+				||(modified(modified,"FORUMJOURNALS"))
 				||(modified(modified,"IMC2CHANNELS")))
 				{
 					CMLib.channels().loadChannels(ipage.getStr("CHANNELS"),ipage.getStr("ICHANNELS"),ipage.getStr("IMC2CHANNELS"));
-                    CMLib.journals().loadCommandJournals(ipage.getStr("COMMANDJOURNALS"));
-                    CMLib.journals().loadForumJournals(ipage.getStr("FORUMJOURNALS"));
+					CMLib.journals().loadCommandJournals(ipage.getStr("COMMANDJOURNALS"));
+					CMLib.journals().loadForumJournals(ipage.getStr("FORUMJOURNALS"));
 				}
-                CMLib.time().globalClock().initializeINIClock(ipage);
+				CMLib.time().globalClock().initializeINIClock(ipage);
 			}
 			return "";
 		}

@@ -25,7 +25,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -43,38 +43,38 @@ public class Spell_Blademouth extends Spell
 	protected int canAffectCode(){return CAN_MOBS;}
 	public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_EVOCATION;}
 	public Vector limbsToRemove=new Vector();
-    protected boolean noRecurse=false;
+	protected boolean noRecurse=false;
 	
 	public void executeMsg(Environmental host, CMMsg msg)
 	{
-	    if((msg.sourceMinor()==CMMsg.TYP_SPEAK)
-        &&(!noRecurse)
-        &&(affected instanceof MOB)
-        &&(invoker!=null)
-        &&(msg.amISource((MOB)affected))
-        &&(msg.source().location()!=null)
-	    &&(msg.source().charStats().getMyRace().bodyMask()[Race.BODY_MOUTH]>=0))
-        {
-	        noRecurse=true;
-            try{CMLib.combat().postDamage(invoker,msg.source(),this,msg.source().maxState().getHitPoints()/10,CMMsg.MASK_ALWAYS|CMMsg.TYP_CAST_SPELL,Weapon.TYPE_SLASHING,"The blades in <T-YOUPOSS> mouth <DAMAGE> <T-HIM-HER>!");
-            }finally{noRecurse=false;}
-        }
-	    super.executeMsg(host,msg);
+		if((msg.sourceMinor()==CMMsg.TYP_SPEAK)
+		&&(!noRecurse)
+		&&(affected instanceof MOB)
+		&&(invoker!=null)
+		&&(msg.amISource((MOB)affected))
+		&&(msg.source().location()!=null)
+		&&(msg.source().charStats().getMyRace().bodyMask()[Race.BODY_MOUTH]>=0))
+		{
+			noRecurse=true;
+			try{CMLib.combat().postDamage(invoker,msg.source(),this,msg.source().maxState().getHitPoints()/10,CMMsg.MASK_ALWAYS|CMMsg.TYP_CAST_SPELL,Weapon.TYPE_SLASHING,"The blades in <T-YOUPOSS> mouth <DAMAGE> <T-HIM-HER>!");
+			}finally{noRecurse=false;}
+		}
+		super.executeMsg(host,msg);
 	}
 	
-    public int castingQuality(MOB mob, Physical target)
-    {
-        if(mob!=null)
-        {
-            if(target instanceof MOB)
-            {
-                if(((MOB)target).charStats().getMyRace().bodyMask()[Race.BODY_MOUTH]<=0)
-                    return Ability.QUALITY_INDIFFERENT;
-            }
-        }
-        return super.castingQuality(mob,target);
-    }
-    
+	public int castingQuality(MOB mob, Physical target)
+	{
+		if(mob!=null)
+		{
+			if(target instanceof MOB)
+			{
+				if(((MOB)target).charStats().getMyRace().bodyMask()[Race.BODY_MOUTH]<=0)
+					return Ability.QUALITY_INDIFFERENT;
+			}
+		}
+		return super.castingQuality(mob,target);
+	}
+	
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=this.getTarget(mob,commands,givenTarget);

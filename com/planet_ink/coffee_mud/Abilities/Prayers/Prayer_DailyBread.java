@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -83,9 +83,9 @@ public class Prayer_DailyBread extends Prayer
 			ShopKeeper SK=CMLib.coffeeShops().getShopKeeper(target);
 			if(SK!=null)
 			{
-    			for(Iterator<Environmental> i=SK.getShop().getStoreInventory();i.hasNext();)
-    			{
-    				Environmental E2=(Environmental)i.next();
+				for(Iterator<Environmental> i=SK.getShop().getStoreInventory();i.hasNext();)
+				{
+					Environmental E2=(Environmental)i.next();
 					if((E2!=null)&&(E2 instanceof Food))
 					{
 						Bread=(Item)E2.copyOf();

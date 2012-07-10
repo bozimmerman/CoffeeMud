@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -42,7 +42,7 @@ public class Thief_Safecracking extends ThiefSkill
 	public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
 	public boolean isAutoInvoked(){return true;}
 	public boolean canBeUninvoked(){return false;}
-    public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_CRIMINAL;}
+	public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_CRIMINAL;}
 
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
@@ -56,8 +56,8 @@ public class Thief_Safecracking extends ThiefSkill
 		{
 			helpProficiency(mob);
 			Ability A=mob.fetchAbility("Thief_Pick");
-            float f=(float)getXLEVELLevel(mob);
-            int ableDiv=(int)Math.round(5.0-(f*0.2));
+			float f=(float)getXLEVELLevel(mob);
+			int ableDiv=(int)Math.round(5.0-(f*0.2));
 			A.setAbilityCode(proficiency()/ableDiv);
 			if((msg.target() instanceof Physical)
 			&&(CMLib.dice().rollPercentage()<proficiency()))

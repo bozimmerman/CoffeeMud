@@ -24,7 +24,7 @@ import java.util.*;
  * <p>you may not use this file except in compliance with the License.
  * <p>You may obtain a copy of the License at
  *
- * <p>       http://www.apache.org/licenses/LICENSE-2.0
+ * <p>  	 http://www.apache.org/licenses/LICENSE-2.0
  *
  * <p>Unless required by applicable law or agreed to in writing, software
  * <p>distributed under the License is distributed on an "AS IS" BASIS,
@@ -44,10 +44,10 @@ public class Spell_CEqFire extends Spell_BaseClanEq {
 
   public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
   {
-    type="Fire";
-    // All the work is done by the base model
-    if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
-        return false;
-      return true;
+	type="Fire";
+	// All the work is done by the base model
+	if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
+		return false;
+	  return true;
   }
 }

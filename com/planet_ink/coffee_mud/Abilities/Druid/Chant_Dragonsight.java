@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -43,11 +43,11 @@ public class Chant_Dragonsight extends Chant
 	public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_SELF;}
 	protected int canAffectCode(){return CAN_MOBS;}
 
-    public void affectCharStats(MOB affected, CharStats affectableStats)
-    {
-        super.affectCharStats(affected,affectableStats);
-        affectableStats.setStat(CharStats.STAT_SAVE_OVERLOOKING,affected.phyStats().level()+(2*super.getXLEVELLevel(invoker()))+100+affectableStats.getStat(CharStats.STAT_SAVE_OVERLOOKING));
-    }
+	public void affectCharStats(MOB affected, CharStats affectableStats)
+	{
+		super.affectCharStats(affected,affectableStats);
+		affectableStats.setStat(CharStats.STAT_SAVE_OVERLOOKING,affected.phyStats().level()+(2*super.getXLEVELLevel(invoker()))+100+affectableStats.getStat(CharStats.STAT_SAVE_OVERLOOKING));
+	}
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
@@ -70,27 +70,27 @@ public class Chant_Dragonsight extends Chant
 			mob.tell("You lose your dragonsight.");
 	}
 
-    public int castingQuality(MOB mob, Physical target)
-    {
-        if(mob!=null)
-        {
-            if(target instanceof MOB)
-            {
-                Room R=((MOB)target).location();
-                boolean found=CMLib.flags().isInDark((MOB)target);
-                if(R!=null)
-                    for(int r=0;r<R.numInhabitants();r++)
-                    {
-                        MOB M=R.fetchInhabitant(r);
-                        if((M!=null)&&(M!=mob)&&(M!=target)
-                        &&(CMLib.flags().isHidden(M)||CMLib.flags().isInvisible(M)))
-                        { found=true; break;}
-                    }
-                if(!found) return Ability.QUALITY_INDIFFERENT;
-            }
-        }
-        return super.castingQuality(mob,target);
-    }
+	public int castingQuality(MOB mob, Physical target)
+	{
+		if(mob!=null)
+		{
+			if(target instanceof MOB)
+			{
+				Room R=((MOB)target).location();
+				boolean found=CMLib.flags().isInDark((MOB)target);
+				if(R!=null)
+					for(int r=0;r<R.numInhabitants();r++)
+					{
+						MOB M=R.fetchInhabitant(r);
+						if((M!=null)&&(M!=mob)&&(M!=target)
+						&&(CMLib.flags().isHidden(M)||CMLib.flags().isInvisible(M)))
+						{ found=true; break;}
+					}
+				if(!found) return Ability.QUALITY_INDIFFERENT;
+			}
+		}
+		return super.castingQuality(mob,target);
+	}
 
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{

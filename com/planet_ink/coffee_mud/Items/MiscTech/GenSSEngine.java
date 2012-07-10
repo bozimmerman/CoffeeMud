@@ -23,7 +23,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -53,9 +53,9 @@ public class GenSSEngine extends GenShipComponent
 		return super.sameAs(E);
 	}
 	protected int maxThrust=1000;
-    public int getMaxThrust(){return maxThrust;}
-    public void setMaxThrust(int max){maxThrust=max;}
+	public int getMaxThrust(){return maxThrust;}
+	public void setMaxThrust(int max){maxThrust=max;}
 	protected int thrust=1000;
-    public int getThrust(){return thrust;}
-    public void setThrust(int current){thrust=current;}
+	public int getThrust(){return thrust;}
+	public void setThrust(int current){thrust=current;}
 }

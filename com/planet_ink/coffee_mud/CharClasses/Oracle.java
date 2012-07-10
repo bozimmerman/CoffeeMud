@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -46,13 +46,13 @@ public class Oracle extends Cleric
 
 	public Oracle()
 	{
-        super();
+		super();
 		maxStatAdj[CharStats.STAT_WISDOM]=4;
 		maxStatAdj[CharStats.STAT_INTELLIGENCE]=4;
-    }
-    public void initializeClass()
-    {
-        super.initializeClass();
+	}
+	public void initializeClass()
+	{
+		super.initializeClass();
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Write",50,true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Recall",100,true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Revoke",true);
@@ -84,9 +84,9 @@ public class Oracle extends Cleric
 		CMLib.ableMapper().addCharAbilityMapping(ID(),6,"Prayer_SenseDisease",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Prayer_Bless",true);
-        CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Prayer_CureFatigue",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Prayer_CureFatigue",false);
 
-        CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Prayer_MinorInfusion",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Prayer_MinorInfusion",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Skill_Prayercraft",true);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),9,"Prayer_DivineGuidance",false);
@@ -119,10 +119,10 @@ public class Oracle extends Cleric
 		CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Prayer_CureBlindness",true);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),18,"Prayer_SeekersPrayer",false);
-        CMLib.ableMapper().addCharAbilityMapping(ID(),18,"Prayer_InfuseHoliness",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),18,"Prayer_InfuseHoliness",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),19,"Prayer_Godstrike",true);
-        CMLib.ableMapper().addCharAbilityMapping(ID(),19,"Prayer_CureExhaustion",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),19,"Prayer_CureExhaustion",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),20,"Prayer_MassFreedom",false,CMParms.parseSemicolons("Prayer_Freedom",true));
 		CMLib.ableMapper().addCharAbilityMapping(ID(),20,"Prayer_SenseSongs",true);
@@ -239,15 +239,15 @@ public class Oracle extends Cleric
 						{
 						  int lql=CMLib.ableMapper().lowestQualifyingLevel(A.ID());
 						  if((lql<25)
-					      &&(lql>0)
-					      &&(!CMLib.ableMapper().getSecretSkill(C.ID(),true,A.ID()))
-					      &&(CMLib.ableMapper().getQualifyingLevel(ID(),true,A.ID())<0)
-					      &&(CMLib.ableMapper().availableToTheme(A.ID(),Area.THEME_FANTASY,true))
-					      &&(CMLib.ableMapper().qualifiesByAnyCharClass(A.ID()))
-                          &&(A.isAutoInvoked()||((A.triggerStrings()!=null)&&(A.triggerStrings().length>0)))
-                          &&(mob.fetchAbility(A.ID())==null))
+						  &&(lql>0)
+						  &&(!CMLib.ableMapper().getSecretSkill(C.ID(),true,A.ID()))
+						  &&(CMLib.ableMapper().getQualifyingLevel(ID(),true,A.ID())<0)
+						  &&(CMLib.ableMapper().availableToTheme(A.ID(),Area.THEME_FANTASY,true))
+						  &&(CMLib.ableMapper().qualifiesByAnyCharClass(A.ID()))
+						  &&(A.isAutoInvoked()||((A.triggerStrings()!=null)&&(A.triggerStrings().length>0)))
+						  &&(mob.fetchAbility(A.ID())==null))
 						  {
-						    newOne=A;
+							newOne=A;
 						  }
 						}
 					}
@@ -297,7 +297,7 @@ public class Oracle extends Cleric
 	
 	public void level(MOB mob, List<String> newAbilityIDs)
 	{
-	    if(CMSecurity.isDisabled(CMSecurity.DisFlag.LEVELS)) return;
+		if(CMSecurity.isDisabled(CMSecurity.DisFlag.LEVELS)) return;
 		if((!mob.isMonster())&&(mob.charStats().getClassLevel(this)>=30))
 		{
 			if((newAbilityIDs.size()==0)&&(numNonQualified(mob)>=maxNonQualified(mob)))

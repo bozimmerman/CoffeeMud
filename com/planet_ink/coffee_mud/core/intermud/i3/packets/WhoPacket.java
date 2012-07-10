@@ -23,7 +23,7 @@ import java.util.Vector;
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *        http://www.apache.org/licenses/LICENSE-2.0
+ *  	  http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -34,53 +34,53 @@ import java.util.Vector;
  */
 @SuppressWarnings("rawtypes")
 public class WhoPacket extends Packet {
-    public Vector who = null;
+	public Vector who = null;
 
 	public WhoPacket()
 	{
 		super();
-        type = Packet.WHO_REQUEST;
+		type = Packet.WHO_REQUEST;
 	}
 	
-    public WhoPacket(Vector v)
-    {
-        super(v);
-        if( v.size() == 6 ) {
-            type = Packet.WHO_REQUEST;
-        }
-        else {
-            type = Packet.WHO_REPLY;
-            who = (Vector)v.elementAt(6);
-        }
-    }
+	public WhoPacket(Vector v)
+	{
+		super(v);
+		if( v.size() == 6 ) {
+			type = Packet.WHO_REQUEST;
+		}
+		else {
+			type = Packet.WHO_REPLY;
+			who = (Vector)v.elementAt(6);
+		}
+	}
 
-    public void send() throws InvalidPacketException {
-        if( type == Packet.WHO_REPLY && who == null ) {
-            throw new InvalidPacketException();
-        }
-        super.send();
-    }
+	public void send() throws InvalidPacketException {
+		if( type == Packet.WHO_REPLY && who == null ) {
+			throw new InvalidPacketException();
+		}
+		super.send();
+	}
 
-    public String toString() {
+	public String toString() {
 		if(type==Packet.WHO_REQUEST)
 		{
 			return "({\"who-req\",5,\"" + I3Server.getMudName() +
-			       "\",\"" + sender_name + "\",\"" + target_mud +
-			       "\",0,})";
+				   "\",\"" + sender_name + "\",\"" + target_mud +
+				   "\",0,})";
 		}
 		String str = "({\"who-reply\",5,\"" + I3Server.getMudName() +
-	             "\",0,\"" + target_mud + "\",\"" + target_name + "\",({";
+				 "\",0,\"" + target_mud + "\",\"" + target_name + "\",({";
 		int i;
 
 		for(i=0; i<who.size(); i++) {
-		    Vector v = (Vector)who.elementAt(i);
-		    String nom = (String)v.elementAt(0);
-		    int idle = ((Integer)v.elementAt(1)).intValue();
-		    String xtra = (String)v.elementAt(2);
+			Vector v = (Vector)who.elementAt(i);
+			String nom = (String)v.elementAt(0);
+			int idle = ((Integer)v.elementAt(1)).intValue();
+			String xtra = (String)v.elementAt(2);
 
-		    str += "({\"" + nom + "\"," + idle + ",\"" + xtra + "\",}),";
+			str += "({\"" + nom + "\"," + idle + ",\"" + xtra + "\",}),";
 		}
 		str += "}),})";
 		return str;
-    }
+	}
 }

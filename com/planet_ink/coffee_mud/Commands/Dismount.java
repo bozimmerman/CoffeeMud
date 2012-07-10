@@ -23,7 +23,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -72,8 +72,8 @@ public class Dismount extends StdCommand
 			}
 			if((RI instanceof MOB)&&(!CMLib.flags().isBoundOrHeld(RI))&&(!((MOB)RI).willFollowOrdersOf(mob)))
 			{
-			    mob.tell(RI.name()+" may not want you to do that.");
-			    return false;
+				mob.tell(RI.name()+" may not want you to do that.");
+				return false;
 			}
 			CMMsg msg=CMClass.getMsg(mob,RI.riding(),RI,CMMsg.MSG_DISMOUNT,"<S-NAME> dismount(s) <O-NAME> from <T-NAMESELF>.");
 			if(mob.location().okMessage(mob,msg))
@@ -81,8 +81,8 @@ public class Dismount extends StdCommand
 		}
 		return false;
 	}
-    public double combatActionsCost(final MOB mob, final List<String> cmds){return CMProps.getCombatActionCost(ID());}
-    public double actionsCost(final MOB mob, final List<String> cmds){return CMProps.getActionCost(ID());}
+	public double combatActionsCost(final MOB mob, final List<String> cmds){return CMProps.getCombatActionCost(ID());}
+	public double actionsCost(final MOB mob, final List<String> cmds){return CMProps.getActionCost(ID());}
 	public boolean canBeOrdered(){return true;}
 
 	

@@ -27,7 +27,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -97,10 +97,10 @@ public class ClanGovernmentData extends StdWebMacro
 					String oldMask=httpReq.getRequestParameter("GPOSINNERMASK_"+posDexStr);
 					String oldIsPublicStr=httpReq.getRequestParameter("GPOSISPUBLIC_"+posDexStr);
 					boolean oldIsPublic=oldIsPublicStr==null?false:oldIsPublicStr.equalsIgnoreCase("on");
-    				Clan.Authority powerFuncs[]=new Clan.Authority[Clan.Function.values().length];
-    				for(int f=0;f<Clan.Function.values().length;f++)
-    					powerFuncs[f]=Clan.Authority.CAN_NOT_DO;
-    				String authDexStr="";
+					Clan.Authority powerFuncs[]=new Clan.Authority[Clan.Function.values().length];
+					for(int f=0;f<Clan.Function.values().length;f++)
+						powerFuncs[f]=Clan.Authority.CAN_NOT_DO;
+					String authDexStr="";
 					int authDex=0;
 					while(httpReq.getRequestParameter("GPOSPOWER_"+posDexStr+"_"+authDexStr)!=null)
 					{
@@ -145,20 +145,20 @@ public class ClanGovernmentData extends StdWebMacro
 					str.append(gPos.getInnerMaskStr()+", ");
 				if((gPos!=null)&&parms.containsKey("GPOSISPUBLIC_"+cmpos))
 					str.append(gPos.isPublic()?"checked, ":"");
-                if((gPos!=null)&&parms.containsKey("GPOSPOWER_"+cmpos+"_"))
-                {
-    				for(Clan.Function func : Clan.Function.values())
-    				{
+				if((gPos!=null)&&parms.containsKey("GPOSPOWER_"+cmpos+"_"))
+				{
+					for(Clan.Function func : Clan.Function.values())
+					{
 						str.append("<OPTION VALUE=\""+func.toString()+"\"");
 						if(gPos.getFunctionChart()[func.ordinal()]==Authority.CAN_DO)
 							str.append(" SELECTED");
 						str.append(">"+func.toString());
-    				}
-                }
-                if(parms.containsKey("GPOSPOWERLIST"))
-    				for(Clan.Function func : Clan.Function.values())
+					}
+				}
+				if(parms.containsKey("GPOSPOWERLIST"))
+					for(Clan.Function func : Clan.Function.values())
 						str.append("<OPTION VALUE=\""+func.toString()+"\">"+func.toString());
-                
+				
 				if(parms.containsKey("NEXTPOSITIONID"))
 				{
 					for(int i=0;i<posList.size()+10;i++)
@@ -196,27 +196,27 @@ public class ClanGovernmentData extends StdWebMacro
 					}
 				
 				if(parms.containsKey("NAME"))
-                {
-                    String old=httpReq.getRequestParameter("NAME");
-                    if(old==null) old=G.getName();
-                    str.append(old+", ");
-                }
-                if(parms.containsKey("AUTOROLE"))
-                {
-                    String old=httpReq.getRequestParameter("AUTOROLE");
-                    if(old==null) old=""+G.getAutoRole();
-                    int autoPos=CMath.s_int(old);
-                    for(ClanPosition pos : posList)
-                        str.append("<OPTION VALUE="+pos.getRoleID()+" "+((autoPos==pos.getRoleID())?"SELECTED":"")+">"+pos.getName());
-                }
-                if(parms.containsKey("ACCEPTPOS"))
-                {
-                    String old=httpReq.getRequestParameter("ACCEPTPOS");
-                    if(old==null) old=""+G.getAcceptPos();
-                    int autoPos=CMath.s_int(old);
-                    for(ClanPosition pos : posList)
-                        str.append("<OPTION VALUE="+pos.getRoleID()+" "+((autoPos==pos.getRoleID())?"SELECTED":"")+">"+pos.getName());
-                }
+				{
+					String old=httpReq.getRequestParameter("NAME");
+					if(old==null) old=G.getName();
+					str.append(old+", ");
+				}
+				if(parms.containsKey("AUTOROLE"))
+				{
+					String old=httpReq.getRequestParameter("AUTOROLE");
+					if(old==null) old=""+G.getAutoRole();
+					int autoPos=CMath.s_int(old);
+					for(ClanPosition pos : posList)
+						str.append("<OPTION VALUE="+pos.getRoleID()+" "+((autoPos==pos.getRoleID())?"SELECTED":"")+">"+pos.getName());
+				}
+				if(parms.containsKey("ACCEPTPOS"))
+				{
+					String old=httpReq.getRequestParameter("ACCEPTPOS");
+					if(old==null) old=""+G.getAcceptPos();
+					int autoPos=CMath.s_int(old);
+					for(ClanPosition pos : posList)
+						str.append("<OPTION VALUE="+pos.getRoleID()+" "+((autoPos==pos.getRoleID())?"SELECTED":"")+">"+pos.getName());
+				}
 				if(parms.containsKey("SHORTDESC"))
 				{
 					String old=httpReq.getRequestParameter("SHORTDESC");
@@ -289,66 +289,66 @@ public class ClanGovernmentData extends StdWebMacro
 					if(old==null) old=Integer.toString(G.getVoteQuorumPct());
 					str.append(CMath.s_int(old)+", ");
 				}
-                if(parms.containsKey("AUTOPROMOTEBY"))
-                {
-                    String old=httpReq.getRequestParameter("AUTOPROMOTEBY");
-                    if(old==null) old=""+G.getAutoPromoteBy().toString();
-                    for(Clan.AutoPromoteFlag flag : Clan.AutoPromoteFlag.values())
-                        str.append("<OPTION VALUE="+flag.toString()+" "+((old.equals(flag.toString()))?"SELECTED":"")+">"+flag.toString());
-                }
-                if(parms.containsKey("VOTEFUNCS"))
-                {
-                    String old=httpReq.getRequestParameter("VOTEFUNCS");
-    				Set<String> voteFuncs=new HashSet<String>();
-    				if(old==null)
-    				{
-    					if(posList.size()>0)
-    					{
-    						ClanPosition P=posList.get(0);
-    						for(Clan.Function func : Clan.Function.values())
-    							if(P.getFunctionChart()[func.ordinal()]==Clan.Authority.MUST_VOTE_ON)
-    								voteFuncs.add(func.toString());
-    					}
-    				}
-    				else
-    				{
-    					voteFuncs.add(old);
-    					int x=1;
-    					while(httpReq.getRequestParameter("VOTEFUNCS"+x)!=null)
-    					{
-    						voteFuncs.add(httpReq.getRequestParameter("VOTEFUNCS"+x));
-    						x++;
-    					}
-    				}
-    				for(Clan.Function func : Clan.Function.values())
-    				{
+				if(parms.containsKey("AUTOPROMOTEBY"))
+				{
+					String old=httpReq.getRequestParameter("AUTOPROMOTEBY");
+					if(old==null) old=""+G.getAutoPromoteBy().toString();
+					for(Clan.AutoPromoteFlag flag : Clan.AutoPromoteFlag.values())
+						str.append("<OPTION VALUE="+flag.toString()+" "+((old.equals(flag.toString()))?"SELECTED":"")+">"+flag.toString());
+				}
+				if(parms.containsKey("VOTEFUNCS"))
+				{
+					String old=httpReq.getRequestParameter("VOTEFUNCS");
+					Set<String> voteFuncs=new HashSet<String>();
+					if(old==null)
+					{
+						if(posList.size()>0)
+						{
+							ClanPosition P=posList.get(0);
+							for(Clan.Function func : Clan.Function.values())
+								if(P.getFunctionChart()[func.ordinal()]==Clan.Authority.MUST_VOTE_ON)
+									voteFuncs.add(func.toString());
+						}
+					}
+					else
+					{
+						voteFuncs.add(old);
+						int x=1;
+						while(httpReq.getRequestParameter("VOTEFUNCS"+x)!=null)
+						{
+							voteFuncs.add(httpReq.getRequestParameter("VOTEFUNCS"+x));
+							x++;
+						}
+					}
+					for(Clan.Function func : Clan.Function.values())
+					{
 						str.append("<OPTION VALUE=\""+func.toString()+"\"");
 						if(voteFuncs.contains(func.toString())) str.append(" SELECTED");
 						str.append(">"+func.toString());
-    				}
-                }
+					}
+				}
 				if(parms.containsKey("LONGDESC"))
 				{
 					String old=httpReq.getRequestParameter("LONGDESC");
 					if(old==null) old=G.getLongDesc();
 					str.append(old+", ");
 				}
-                if(parms.containsKey("RABLE"))
-                {
-                	G.getClanLevelAbilities(Integer.valueOf(Integer.MAX_VALUE));
-                	final Enumeration<AbilityMapping> m= CMLib.ableMapper().getClassAbles(G.ID(), false);
-                	final List<Ability> abilities = new LinkedList<Ability>();
-                	for(;m.hasMoreElements();)
-                		abilities.add(CMClass.getAbility(m.nextElement().abilityID));
-                    str.append(RaceData.dynAbilities(G.getClanLevelAbilities(Integer.valueOf(1000)),G.ID(),G,httpReq,parms,0,(String)parms.get("FONT"))+", ");
-                }
-                if(parms.containsKey("REFFS"))
-                    str.append(RaceData.dynEffects(G.ID(),G.getClanLevelEffects(null, Integer.valueOf(1000)),G,httpReq,parms,0,(String)parms.get("FONT"))+", ");
+				if(parms.containsKey("RABLE"))
+				{
+					G.getClanLevelAbilities(Integer.valueOf(Integer.MAX_VALUE));
+					final Enumeration<AbilityMapping> m= CMLib.ableMapper().getClassAbles(G.ID(), false);
+					final List<Ability> abilities = new LinkedList<Ability>();
+					for(;m.hasMoreElements();)
+						abilities.add(CMClass.getAbility(m.nextElement().abilityID));
+					str.append(RaceData.dynAbilities(G.getClanLevelAbilities(Integer.valueOf(1000)),G.ID(),G,httpReq,parms,0,(String)parms.get("FONT"))+", ");
+				}
+				if(parms.containsKey("REFFS"))
+					str.append(RaceData.dynEffects(G.ID(),G.getClanLevelEffects(null, Integer.valueOf(1000)),G,httpReq,parms,0,(String)parms.get("FONT"))+", ");
 
 				String strstr=str.toString();
 				if(strstr.endsWith(", "))
 					strstr=strstr.substring(0,strstr.length()-2);
-                return clearWebMacros(strstr);
+				return clearWebMacros(strstr);
 			}
 		}
 		return "";

@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -43,7 +43,7 @@ public class Thief_Shadow extends ThiefSkill
 	protected int canAffectCode(){return CAN_MOBS;}
 	protected int canTargetCode(){return CAN_MOBS;}
 	public int abstractQuality(){return Ability.QUALITY_OK_OTHERS;}
-    public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_STEALTHY;}
+	public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_STEALTHY;}
 	private static final String[] triggerStrings = {"SHADOW"};
 	public String[] triggerStrings(){return triggerStrings;}
 	public MOB shadowing=null;
@@ -100,7 +100,7 @@ public class Thief_Shadow extends ThiefSkill
 		&&(!CMLib.flags().isSneaking(shadowing))
 		&&(msg.tool()!=null)
 		&&(msg.tool() instanceof Exit)
-        &&((shadowing.riding()==null)||(msg.source().riding()!=shadowing.riding())))
+		&&((shadowing.riding()==null)||(msg.source().riding()!=shadowing.riding())))
 		{
 			int dir=-1;
 			for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
@@ -140,19 +140,19 @@ public class Thief_Shadow extends ThiefSkill
 		return true;
 	}
 
-    public void affectCharStats(MOB affected, CharStats affectableStats)
-    {
-        super.affectCharStats(affected,affectableStats);
-        if((shadowing!=null)&&(shadowing.location()==affected.location()))
-            affectableStats.setStat(CharStats.STAT_SAVE_DETECTION,
-                    25
-                    +proficiency()
-                    +affectableStats.getStat(CharStats.STAT_SAVE_DETECTION));
-        else
-            affectableStats.setStat(CharStats.STAT_SAVE_DETECTION,
-                    +proficiency()
-                    +affectableStats.getStat(CharStats.STAT_SAVE_DETECTION));
-    }
+	public void affectCharStats(MOB affected, CharStats affectableStats)
+	{
+		super.affectCharStats(affected,affectableStats);
+		if((shadowing!=null)&&(shadowing.location()==affected.location()))
+			affectableStats.setStat(CharStats.STAT_SAVE_DETECTION,
+					25
+					+proficiency()
+					+affectableStats.getStat(CharStats.STAT_SAVE_DETECTION));
+		else
+			affectableStats.setStat(CharStats.STAT_SAVE_DETECTION,
+					+proficiency()
+					+affectableStats.getStat(CharStats.STAT_SAVE_DETECTION));
+	}
 
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{

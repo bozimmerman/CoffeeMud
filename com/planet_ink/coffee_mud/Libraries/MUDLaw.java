@@ -28,7 +28,7 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -39,17 +39,17 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class MUDLaw extends StdLibrary implements LegalLibrary
 {
-    public String ID(){return "MUDLaw";}
-    
+	public String ID(){return "MUDLaw";}
+	
 	public Law getTheLaw(Room R, MOB mob)
 	{
-        LegalBehavior B=getLegalBehavior(R);
-	    if(B!=null)
-	    {
+		LegalBehavior B=getLegalBehavior(R);
+		if(B!=null)
+		{
 			Area A2=getLegalObject(R.getArea());
-            return B.legalInfo(A2);
-	    }
-	    return null;
+			return B.legalInfo(A2);
+		}
+		return null;
 	}
 	
 	public LegalBehavior getLegalBehavior(Area A)
@@ -57,11 +57,11 @@ public class MUDLaw extends StdLibrary implements LegalLibrary
 		if(A==null) return null;
 		List<Behavior> V=CMLib.flags().flaggedBehaviors(A,Behavior.FLAG_LEGALBEHAVIOR);
 		if(V.size()>0) return (LegalBehavior)V.get(0);
-        LegalBehavior B=null;
+		LegalBehavior B=null;
 		for(Enumeration e=A.getParents();e.hasMoreElements();)
 		{
-		    B=getLegalBehavior((Area)e.nextElement());
-		    if(B!=null) break;
+			B=getLegalBehavior((Area)e.nextElement());
+			if(B!=null) break;
 		}
 		return B;
 	}
@@ -77,13 +77,13 @@ public class MUDLaw extends StdLibrary implements LegalLibrary
 		if(A==null) return null;
 		List<Behavior> V=CMLib.flags().flaggedBehaviors(A,Behavior.FLAG_LEGALBEHAVIOR);
 		if(V.size()>0) return A;
-	    Area A2=null;
-	    Area A3=null;
+		Area A2=null;
+		Area A3=null;
 		for(Enumeration e=A.getParents();e.hasMoreElements();)
 		{
-		    A2=(Area)e.nextElement();
-		    A3=getLegalObject(A2);
-		    if(A3!=null) return A3;
+			A2=(Area)e.nextElement();
+			A3=getLegalObject(A2);
+			if(A3!=null) return A3;
 		}
 		return A3;
 	}
@@ -93,64 +93,64 @@ public class MUDLaw extends StdLibrary implements LegalLibrary
 		return getLegalObject(R.getArea());
 	}
 
-    public boolean isACity(Area A)
-    {
-        int other=0;
-        int streets=0;
-        int buildings=0;
-        Room R=null;
-        for(Enumeration e=A.getCompleteMap();e.hasMoreElements();)
-        {
-            R=(Room)e.nextElement();
-            if((R==null)||(R.roomID()==null)||(R.roomID().length()==0)) continue;
-            if(R.domainType()==Room.DOMAIN_OUTDOORS_CITY)
-                streets++;
-            else
-            if((R.domainType()==Room.DOMAIN_INDOORS_METAL)
-            ||(R.domainType()==Room.DOMAIN_INDOORS_STONE)
-            ||(R.domainType()==Room.DOMAIN_INDOORS_WOOD))
-                buildings++;
-            else
-                other++;
-        }
-        if((streets<(other/2))||((streets+buildings)<other))
-            return false;
-        return true;
-    }
-    
+	public boolean isACity(Area A)
+	{
+		int other=0;
+		int streets=0;
+		int buildings=0;
+		Room R=null;
+		for(Enumeration e=A.getCompleteMap();e.hasMoreElements();)
+		{
+			R=(Room)e.nextElement();
+			if((R==null)||(R.roomID()==null)||(R.roomID().length()==0)) continue;
+			if(R.domainType()==Room.DOMAIN_OUTDOORS_CITY)
+				streets++;
+			else
+			if((R.domainType()==Room.DOMAIN_INDOORS_METAL)
+			||(R.domainType()==Room.DOMAIN_INDOORS_STONE)
+			||(R.domainType()==Room.DOMAIN_INDOORS_WOOD))
+				buildings++;
+			else
+				other++;
+		}
+		if((streets<(other/2))||((streets+buildings)<other))
+			return false;
+		return true;
+	}
+	
 	public List<LandTitle> getAllUniqueTitles(Enumeration<Room> e, String owner, boolean includeRentals)
 	{
-	    Vector V=new Vector();
-	    HashSet roomsDone=new HashSet();
-	    Room R=null;
-	    for(;e.hasMoreElements();)
-	    {
-	        R=(Room)e.nextElement();
-	        LandTitle T=getLandTitle(R);
-	        if((T!=null)
-	        &&(!V.contains(T))
-	        &&(includeRentals||(!T.rentalProperty()))
-            &&((owner==null)
-                ||(owner.length()==0)
-                ||(owner.equals("*")&&(T.landOwner().length()>0))
-                ||(T.landOwner().equals(owner))))
-	        {
-	            List<Room> V2=T.getPropertyRooms();
-	            boolean proceed=true;
-	            for(int v=0;v<V2.size();v++)
-	            {
-	                Room R2=(Room)V2.get(v);
-	                if(!roomsDone.contains(R2))
-	                    roomsDone.add(R2);
-	                else
-	                    proceed=false;
-	            }
-	            if(proceed)
-	                V.addElement(T);
-	                
-	        }
-	    }
-	    return V;
+		Vector V=new Vector();
+		HashSet roomsDone=new HashSet();
+		Room R=null;
+		for(;e.hasMoreElements();)
+		{
+			R=(Room)e.nextElement();
+			LandTitle T=getLandTitle(R);
+			if((T!=null)
+			&&(!V.contains(T))
+			&&(includeRentals||(!T.rentalProperty()))
+			&&((owner==null)
+				||(owner.length()==0)
+				||(owner.equals("*")&&(T.landOwner().length()>0))
+				||(T.landOwner().equals(owner))))
+			{
+				List<Room> V2=T.getPropertyRooms();
+				boolean proceed=true;
+				for(int v=0;v<V2.size();v++)
+				{
+					Room R2=(Room)V2.get(v);
+					if(!roomsDone.contains(R2))
+						roomsDone.add(R2);
+					else
+						proceed=false;
+				}
+				if(proceed)
+					V.addElement(T);
+					
+			}
+		}
+		return V;
 	}
 	
 	public LandTitle getLandTitle(Area area)
@@ -212,24 +212,24 @@ public class MUDLaw extends StdLibrary implements LegalLibrary
 		if(title.landOwner().equals(name)) return true;
 		return false;
 	}
-    
-    public Ability getClericInfusion(Physical room)
-    {
-        if(room==null) return null;
+	
+	public Ability getClericInfusion(Physical room)
+	{
+		if(room==null) return null;
 		for(final Enumeration<Ability> a=room.effects();a.hasMoreElements();)
 		{
 			final Ability A=a.nextElement();
-            if((A!=null)&&(A.ID().startsWith("Prayer_Infuse")))
-                return A;
-        }
-        return null;
-    }
-    public Deity getClericInfused(Room room)
-    {
-        Ability A=getClericInfusion(room);
-        if(A==null) return null;
-        return CMLib.map().getDeity(A.text());
-    }
+			if((A!=null)&&(A.ID().startsWith("Prayer_Infuse")))
+				return A;
+		}
+		return null;
+	}
+	public Deity getClericInfused(Room room)
+	{
+		Ability A=getClericInfusion(room);
+		if(A==null) return null;
+		return CMLib.map().getDeity(A.text());
+	}
 	
 	public boolean doesOwnThisProperty(MOB mob, Room room)
 	{
@@ -252,23 +252,23 @@ public class MUDLaw extends StdLibrary implements LegalLibrary
 		return false;
 	}
 	
-    public boolean isLegalOfficerHere(MOB mob)
-    {
-    	if((mob==null)||(mob.location()==null)) return false;
-    	Area A=this.getLegalObject(mob.location());
-    	if(A==null) return false;
-    	LegalBehavior B=this.getLegalBehavior(A);
-    	if(B==null) return false;
-    	return B.isAnyOfficer(A, mob);
-    }
-    public boolean isLegalJudgeHere(MOB mob)
-    {
-    	if((mob==null)||(mob.location()==null)) return false;
-    	Area A=this.getLegalObject(mob.location());
-    	if(A==null) return false;
-    	LegalBehavior B=this.getLegalBehavior(A);
-    	if(B==null) return false;
-    	return B.isJudge(A, mob);
-    }
-    public boolean isLegalOfficialHere(MOB mob){ return isLegalOfficerHere(mob)||isLegalJudgeHere(mob);}
+	public boolean isLegalOfficerHere(MOB mob)
+	{
+		if((mob==null)||(mob.location()==null)) return false;
+		Area A=this.getLegalObject(mob.location());
+		if(A==null) return false;
+		LegalBehavior B=this.getLegalBehavior(A);
+		if(B==null) return false;
+		return B.isAnyOfficer(A, mob);
+	}
+	public boolean isLegalJudgeHere(MOB mob)
+	{
+		if((mob==null)||(mob.location()==null)) return false;
+		Area A=this.getLegalObject(mob.location());
+		if(A==null) return false;
+		LegalBehavior B=this.getLegalBehavior(A);
+		if(B==null) return false;
+		return B.isJudge(A, mob);
+	}
+	public boolean isLegalOfficialHere(MOB mob){ return isLegalOfficerHere(mob)||isLegalJudgeHere(mob);}
 }

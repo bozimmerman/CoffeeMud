@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -41,14 +41,14 @@ public class Spell_Fireball extends Spell
 	public int minRange(){return 1;}
 	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_EVOCATION;}
-    public long flags(){return Ability.FLAG_FIREBASED;}
+	public long flags(){return Ability.FLAG_FIREBASED;}
 
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
-        Room R=CMLib.map().roomLocation(target);
-        if(R==null) R=mob.location();
+		Room R=CMLib.map().roomLocation(target);
+		if(R==null) R=mob.location();
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
@@ -68,7 +68,7 @@ public class Spell_Fireball extends Spell
 				R.send(mob,msg);
 				R.send(mob,msg2);
 				invoker=mob;
-                int numDice = (int)Math.round(CMath.div(adjustedLevel(mob,asLevel)+(2*super.getX1Level(mob)),2.0));
+				int numDice = (int)Math.round(CMath.div(adjustedLevel(mob,asLevel)+(2*super.getX1Level(mob)),2.0));
 				int damage = CMLib.dice().roll(numDice, 9, 10);
 				if((msg.value()>0)||(msg2.value()>0))
 					damage = (int)Math.round(CMath.div(damage,2.0));

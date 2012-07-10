@@ -25,7 +25,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -53,19 +53,19 @@ public class GenFoodResource extends GenFood implements RawMaterial, Food
 	
 	public void setMaterial(int newValue)
 	{
-	    super.setMaterial(newValue);
-	    decayTime=0;
+		super.setMaterial(newValue);
+		decayTime=0;
 	}
 	
 	public void executeMsg(Environmental host, CMMsg msg)
 	{
-        super.executeMsg(host,msg);
-        if(rot==null){
-        	rot=CMClass.getAbility("Prayer_Rot");
-        	if(rot==null) return;
-        	rot.setAffectedOne(null);
-        }
-        rot.executeMsg(this,msg);
+		super.executeMsg(host,msg);
+		if(rot==null){
+			rot=CMClass.getAbility("Prayer_Rot");
+			if(rot==null) return;
+			rot.setAffectedOne(null);
+		}
+		rot.executeMsg(this,msg);
 	}
 	
 	public boolean rebundle(){return false;}//CMLib.materials().rebundle(this);}
@@ -73,14 +73,14 @@ public class GenFoodResource extends GenFood implements RawMaterial, Food
 	
 	public boolean okMessage(Environmental host, CMMsg msg)
 	{
-        if(rot==null){
-        	rot=CMClass.getAbility("Prayer_Rot");
-        	if(rot==null) return true;
-        	rot.setAffectedOne(null);
-        }
-        if(!rot.okMessage(this,msg))
-        	return false;
-        return super.okMessage(host,msg);
+		if(rot==null){
+			rot=CMClass.getAbility("Prayer_Rot");
+			if(rot==null) return true;
+			rot.setAffectedOne(null);
+		}
+		if(!rot.okMessage(this,msg))
+			return false;
+		return super.okMessage(host,msg);
 	}
 	protected String domainSource=null;
 	public String domainSource(){return domainSource;}

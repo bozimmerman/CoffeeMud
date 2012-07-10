@@ -25,7 +25,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -76,29 +76,29 @@ public class Prayer_Monolith extends Prayer
 					if(w==null) w=mob.myNaturalWeapon();
 					if(w==null) return false;
 					Room room=mob.location();
-                    CMMsg msg2=CMClass.getMsg(mob,null,CMMsg.MSG_WEAPONATTACK,"^F^<FIGHT^><S-NAME> hack(s) at the monolith of ice with "+w.name()+".^</FIGHT^>^?");
-                    CMLib.color().fixSourceFightColor(msg2);
-                    if(room.okMessage(mob,msg2))
-                    {
-                        room.send(mob,msg2);
-    					amountRemaining-=mob.phyStats().damage();
-    					if(amountRemaining<0)
-    					{
-    						for(int i=0;i<room.numInhabitants();i++)
-    						{
-    							MOB M=room.fetchInhabitant(i);
-    							if((M.isInCombat())
-    							&&(M.getVictim()==invoker)
-    							&&(M.rangeToTarget()>0)
-    							&&(M.rangeToTarget()<3)
-    							&&(!M.amDead()))
-    								CMLib.combat().postDamage(invoker,M,this,CMLib.dice().roll(M.phyStats().level()/2,4,0),CMMsg.MASK_ALWAYS|CMMsg.TYP_COLD,Weapon.TYPE_PIERCING,"A shard of ice <DAMAGE> <T-NAME>!");
-    						}
-    					    mob.location().showHappens(CMMsg.MSG_OK_ACTION,"The monolith of ice shatters!!!");
-    						((Item)affected).destroy();
-    					}
-                    }
-                    return false;
+					CMMsg msg2=CMClass.getMsg(mob,null,CMMsg.MSG_WEAPONATTACK,"^F^<FIGHT^><S-NAME> hack(s) at the monolith of ice with "+w.name()+".^</FIGHT^>^?");
+					CMLib.color().fixSourceFightColor(msg2);
+					if(room.okMessage(mob,msg2))
+					{
+						room.send(mob,msg2);
+						amountRemaining-=mob.phyStats().damage();
+						if(amountRemaining<0)
+						{
+							for(int i=0;i<room.numInhabitants();i++)
+							{
+								MOB M=room.fetchInhabitant(i);
+								if((M.isInCombat())
+								&&(M.getVictim()==invoker)
+								&&(M.rangeToTarget()>0)
+								&&(M.rangeToTarget()<3)
+								&&(!M.amDead()))
+									CMLib.combat().postDamage(invoker,M,this,CMLib.dice().roll(M.phyStats().level()/2,4,0),CMMsg.MASK_ALWAYS|CMMsg.TYP_COLD,Weapon.TYPE_PIERCING,"A shard of ice <DAMAGE> <T-NAME>!");
+							}
+							mob.location().showHappens(CMMsg.MSG_OK_ACTION,"The monolith of ice shatters!!!");
+							((Item)affected).destroy();
+						}
+					}
+					return false;
 				}
 			}
 			break;
@@ -127,7 +127,7 @@ public class Prayer_Monolith extends Prayer
 				M.setVictim(null);
 				if(mob.isMonster())
 					CMLib.commands().postRemove(mob,(Weapon)msg.tool(),true);
-                M.destroy();
+				M.destroy();
 				return false;
 			}
 			break;
@@ -147,7 +147,7 @@ public class Prayer_Monolith extends Prayer
 						amountRemaining-=mob.phyStats().damage();
 						if(amountRemaining<0)
 						{
-						    mob.location().showHappens(CMMsg.MSG_OK_ACTION,"The monolith of stone is destroyed!");
+							mob.location().showHappens(CMMsg.MSG_OK_ACTION,"The monolith of stone is destroyed!");
 							((Item)affected).destroy();
 						}
 					}

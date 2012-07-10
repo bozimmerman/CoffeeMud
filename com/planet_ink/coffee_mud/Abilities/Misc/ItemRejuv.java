@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -42,9 +42,9 @@ public class ItemRejuv extends StdAbility implements ItemTicker
 	protected int canAffectCode(){return CAN_ITEMS;}
 	protected int canTargetCode(){return 0;}
 	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-    protected Room myProperLocation=null;
-    protected Vector contents=new Vector();
-    protected Vector ccontents=new Vector();
+	protected Room myProperLocation=null;
+	protected Vector contents=new Vector();
+	protected Vector ccontents=new Vector();
 
 	public void loadContent(ItemTicker ticker,
 							Item item,
@@ -75,8 +75,8 @@ public class ItemRejuv extends StdAbility implements ItemTicker
 	public void loadMeUp(Item item, Room room)
 	{
 		unloadIfNecessary(item);
-        contents=new Vector();
-        ccontents=new Vector();
+		contents=new Vector();
+		ccontents=new Vector();
 		ItemRejuv ability=new ItemRejuv();
 		ability.myProperLocation=room;
 		if(item.fetchEffect(ability.ID())==null)

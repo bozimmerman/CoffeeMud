@@ -31,7 +31,7 @@ Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
 You may obtain a copy of the License at
 
-    http://www.apache.org/licenses/LICENSE-2.0
+	http://www.apache.org/licenses/LICENSE-2.0
 
 Unless required by applicable law or agreed to in writing, software
 distributed under the License is distributed on an "AS IS" BASIS,
@@ -41,8 +41,8 @@ limitations under the License.
 */
 public class DefaultClanGovernment implements ClanGovernment
 {
-    public String ID(){return "DefaultClanGovernment";}
-    
+	public String ID(){return "DefaultClanGovernment";}
+	
 	/** If this is a default government type, this is its ID, otherwise -1 */
 	public int		ID;
 	/** The name of this government type, which is its identifier when ID above is -1 */
@@ -100,21 +100,21 @@ public class DefaultClanGovernment implements ClanGovernment
 	protected int[] 	clanAbilityProficiencies=null;
 	protected boolean[] clanAbilityQuals		=null;
 	
-    /** return a new instance of the object*/
-    public CMObject newInstance(){try{return (CMObject)getClass().newInstance();}catch(Exception e){return new DefaultClanGovernment();}}
-    public void initializeClass(){}
-    public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
-    public CMObject copyOf()
-    {
-        try
-        {
-            return (ClanGovernment)this.clone();
-        }
-        catch(CloneNotSupportedException e)
-        {
-            return new DefaultClanGovernment();
-        }
-    }
+	/** return a new instance of the object*/
+	public CMObject newInstance(){try{return (CMObject)getClass().newInstance();}catch(Exception e){return new DefaultClanGovernment();}}
+	public void initializeClass(){}
+	public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
+	public CMObject copyOf()
+	{
+		try
+		{
+			return (ClanGovernment)this.clone();
+		}
+		catch(CloneNotSupportedException e)
+		{
+			return new DefaultClanGovernment();
+		}
+	}
 
 	public int getID() {
 		return ID;
@@ -331,13 +331,13 @@ public class DefaultClanGovernment implements ClanGovernment
 	public String getStat(String code) 
 	{
 		int num=0;
-        int numDex=code.length();
-        while((numDex>0)&&(Character.isDigit(code.charAt(numDex-1)))) numDex--;
-        if(numDex<code.length())
-        {
-            num=CMath.s_int(code.substring(numDex));
-            code=code.substring(0,numDex);
-        }
+		int numDex=code.length();
+		while((numDex>0)&&(Character.isDigit(code.charAt(numDex-1)))) numDex--;
+		if(numDex<code.length())
+		{
+			num=CMath.s_int(code.substring(numDex));
+			code=code.substring(0,numDex);
+		}
 		final GOVT_STAT_CODES stat = getStatIndex(code);
 		if(stat==null){ return "";}
 		switch(stat)
@@ -389,13 +389,13 @@ public class DefaultClanGovernment implements ClanGovernment
 	public void setStat(String code, String val) 
 	{
 		int num=0;
-        int numDex=code.length();
-        while((numDex>0)&&(Character.isDigit(code.charAt(numDex-1)))) numDex--;
-        if(numDex<code.length())
-        {
-            num=CMath.s_int(code.substring(numDex));
-            code=code.substring(0,numDex);
-        }
+		int numDex=code.length();
+		while((numDex>0)&&(Character.isDigit(code.charAt(numDex-1)))) numDex--;
+		if(numDex<code.length())
+		{
+			num=CMath.s_int(code.substring(numDex));
+			code=code.substring(0,numDex);
+		}
 		final GOVT_STAT_CODES stat = getStatIndex(code);
 		if(stat==null){ return;}
 		switch(stat)
@@ -456,22 +456,22 @@ public class DefaultClanGovernment implements ClanGovernment
 				 break;
 		case GETRABLE: 
 				 {   if(clanAbilityNames==null) clanAbilityNames=new String[num+1];
-				     clanAbilityNames[num]=val;
+					 clanAbilityNames[num]=val;
 					 break;
 				 }
 		case GETRABLEPROF: 
 				 {   if(clanAbilityProficiencies==null) clanAbilityProficiencies=new int[num+1];
-				     clanAbilityProficiencies[num]=CMath.s_parseIntExpression(val);
+					 clanAbilityProficiencies[num]=CMath.s_parseIntExpression(val);
 					 break;
 				 }
 		case GETRABLEQUAL: 
 				 {   if(clanAbilityQuals==null) clanAbilityQuals=new boolean[num+1];
-				     clanAbilityQuals[num]=CMath.s_bool(val);
+					 clanAbilityQuals[num]=CMath.s_bool(val);
 					 break;
 				 }
 		case GETRABLELVL: 
 				 {   if(clanAbilityLevels==null) clanAbilityLevels=new int[num+1];
-				     clanAbilityLevels[num]=CMath.s_parseIntExpression(val);
+					 clanAbilityLevels[num]=CMath.s_parseIntExpression(val);
 					 break;
 				 }
 		case NUMREFF: 
@@ -489,17 +489,17 @@ public class DefaultClanGovernment implements ClanGovernment
 				 break;
 		case GETREFF: 
 		 		 {   if(clanEffectNames==null) clanEffectNames=new String[num+1];
-				     clanEffectNames[num]=val;
+					 clanEffectNames[num]=val;
 					 break;
 				 }
 		case GETREFFPARM: 
 				 {   if(clanEffectParms==null) clanEffectParms=new String[num+1];
-				     clanEffectParms[num]=val;
+					 clanEffectParms[num]=val;
 					 break;
 				 }
 		case GETREFFLVL: 
 		 		 {   if(clanEffectLevels==null) clanEffectLevels=new int[num+1];
-				     clanEffectLevels[num]=CMath.s_int(val);
+					 clanEffectLevels[num]=CMath.s_int(val);
 					 break;
 				 }
 		default: Log.errOut("Clan","setStat:Unhandled:"+stat.toString()); break;
@@ -508,112 +508,112 @@ public class DefaultClanGovernment implements ClanGovernment
 	
 	public String getHelpStr() 
 	{
-    	if(getLongDesc().length()==0)
-    		return null;
-    	if(helpStr==null)
-    	{
-	    	StringBuilder str=new StringBuilder("\n\rOrganization type: "+getName()+"\n\r\n\r");
-	    	str.append(getLongDesc()).append("\n\r");
-	    	str.append("\n\rAuthority Chart:\n\r\n\r");
-	    	final List<ClanPosition> showablePositions=new Vector<ClanPosition>();
-    		for(ClanPosition P : getPositions())
-    		{
-    			boolean showMe=false;
-    			for(Clan.Authority a : P.getFunctionChart())
-    				if(a==Authority.CAN_DO)
-    					showMe=true;
-    			if(showMe)
-    				showablePositions.add(P);
-    		}
-	    	final List<ClanPosition> sortedPositions=new Vector<ClanPosition>();
-	    	while(sortedPositions.size() < showablePositions.size())
-	    	{
-	    		ClanPosition highPos=null;
-	    		for(ClanPosition P : showablePositions)
-	    			if((!sortedPositions.contains(P))
-	    			&&((highPos==null)||(highPos.getRank()<P.getRank())))
-	    				highPos=P;
-	    		sortedPositions.add(highPos);
-	    	}
-	    	final int[] posses=new int[sortedPositions.size()];
-	    	int posTotalLen=0;
-	    	for(int p=0;p<sortedPositions.size();p++)
-	    	{
-	    		posses[p]=sortedPositions.get(p).getName().length()+2;
-	    		posTotalLen+=posses[p];
-	    	}
-	    	int funcMaxLen=0;
-	    	int funcTotal=0;
-	    	String[] functionNames=new String[Clan.Function.values().length];
-	    	for(int f=0;f<Clan.Function.values().length;f++)
-	    	{
-	    		Clan.Function func=Clan.Function.values()[f];
+		if(getLongDesc().length()==0)
+			return null;
+		if(helpStr==null)
+		{
+			StringBuilder str=new StringBuilder("\n\rOrganization type: "+getName()+"\n\r\n\r");
+			str.append(getLongDesc()).append("\n\r");
+			str.append("\n\rAuthority Chart:\n\r\n\r");
+			final List<ClanPosition> showablePositions=new Vector<ClanPosition>();
+			for(ClanPosition P : getPositions())
+			{
+				boolean showMe=false;
+				for(Clan.Authority a : P.getFunctionChart())
+					if(a==Authority.CAN_DO)
+						showMe=true;
+				if(showMe)
+					showablePositions.add(P);
+			}
+			final List<ClanPosition> sortedPositions=new Vector<ClanPosition>();
+			while(sortedPositions.size() < showablePositions.size())
+			{
+				ClanPosition highPos=null;
+				for(ClanPosition P : showablePositions)
+					if((!sortedPositions.contains(P))
+					&&((highPos==null)||(highPos.getRank()<P.getRank())))
+						highPos=P;
+				sortedPositions.add(highPos);
+			}
+			final int[] posses=new int[sortedPositions.size()];
+			int posTotalLen=0;
+			for(int p=0;p<sortedPositions.size();p++)
+			{
+				posses[p]=sortedPositions.get(p).getName().length()+2;
+				posTotalLen+=posses[p];
+			}
+			int funcMaxLen=0;
+			int funcTotal=0;
+			String[] functionNames=new String[Clan.Function.values().length];
+			for(int f=0;f<Clan.Function.values().length;f++)
+			{
+				Clan.Function func=Clan.Function.values()[f];
 				funcTotal+=func.name().length()+1;
-	    		if(func.name().length() > funcMaxLen)
-	    			funcMaxLen=func.name().length()+1;
-	    		functionNames[f]=func.name();
-	    	}
-	    	int funcAvg = funcTotal / Clan.Function.values().length;
-	    	int funcMaxAvg = (int)CMath.round((double)funcAvg * 1.3);
-	    	while((funcMaxLen > funcMaxAvg)&&((funcMaxAvg + posTotalLen)>78))
-	    		funcMaxLen--;
-	    	if(posses.length>0)
-		    	while((funcMaxLen + posTotalLen) > 78)
-		    	{
-		    		int highPos=0;
-		        	for(int p=1;p<sortedPositions.size();p++)
-		        		if(posses[p]>posses[highPos])
-		        			highPos=p;
-		        	posTotalLen--;
-		        	posses[highPos]--;
-		    	}
-	    	
-	    	final int commandColLen = funcMaxLen;
-	    	str.append(CMStrings.padRight("Command",commandColLen-1)).append("!");
-	    	for(int p=0;p<posses.length;p++)
-	    	{
-	    		ClanPosition pos = sortedPositions.get(p);
-	    		String name=CMStrings.capitalizeAndLower(pos.getName().replace('_',' '));
-		    	str.append(CMStrings.padRight(name,posses[p]-1));
-		    	if(p<posses.length-1)
-		    		str.append("!");
-	    	}
-	    	str.append("\n\r");
-	    	Object lineDraw = new Object(){
-	    		private static final String line = "----------------------------------------------------------------------------"; 
-	    		public String toString() {
-	    			StringBuilder s=new StringBuilder("");
-	    	    	s.append(line.substring(0,commandColLen-1)).append("+");
-	    	    	for(int p=0;p<posses.length;p++)
-	    	    	{
-	    		    	s.append(CMStrings.padRight(line,posses[p]-1));
-	    		    	if(p<posses.length-1)
-	    		    		s.append("+");
-	    	    	}
-	    	    	return s.toString();
-	    		}
-	    	};
-	    	str.append(lineDraw.toString()).append("\n\r");
-	    	for(Clan.Function func : Clan.Function.values())
-	    	{
-	    		String fname=CMStrings.capitalizeAndLower(func.toString().replace('_', ' '));
-		    	str.append(CMStrings.padRight(fname,commandColLen-1)).append("!");
-		    	for(int p=0;p<sortedPositions.size();p++)
-		    	{
-		    		ClanPosition pos = sortedPositions.get(p);
-		    		Authority auth = pos.getFunctionChart()[func.ordinal()];
-		    		String x = "";
-		    		if(auth==Authority.CAN_DO)
-		    			x="X";
-		    		else
-		    		if(auth==Authority.MUST_VOTE_ON)
-		    			x="v";
-    		    	str.append(CMStrings.padCenter(x,posses[p]-1));
-    		    	if(p<posses.length-1)
-    		    		str.append("!");
-		    	}
-		    	str.append("\n\r").append(lineDraw.toString()).append("\n\r");
-	    	}
+				if(func.name().length() > funcMaxLen)
+					funcMaxLen=func.name().length()+1;
+				functionNames[f]=func.name();
+			}
+			int funcAvg = funcTotal / Clan.Function.values().length;
+			int funcMaxAvg = (int)CMath.round((double)funcAvg * 1.3);
+			while((funcMaxLen > funcMaxAvg)&&((funcMaxAvg + posTotalLen)>78))
+				funcMaxLen--;
+			if(posses.length>0)
+				while((funcMaxLen + posTotalLen) > 78)
+				{
+					int highPos=0;
+					for(int p=1;p<sortedPositions.size();p++)
+						if(posses[p]>posses[highPos])
+							highPos=p;
+					posTotalLen--;
+					posses[highPos]--;
+				}
+			
+			final int commandColLen = funcMaxLen;
+			str.append(CMStrings.padRight("Command",commandColLen-1)).append("!");
+			for(int p=0;p<posses.length;p++)
+			{
+				ClanPosition pos = sortedPositions.get(p);
+				String name=CMStrings.capitalizeAndLower(pos.getName().replace('_',' '));
+				str.append(CMStrings.padRight(name,posses[p]-1));
+				if(p<posses.length-1)
+					str.append("!");
+			}
+			str.append("\n\r");
+			Object lineDraw = new Object(){
+				private static final String line = "----------------------------------------------------------------------------"; 
+				public String toString() {
+					StringBuilder s=new StringBuilder("");
+					s.append(line.substring(0,commandColLen-1)).append("+");
+					for(int p=0;p<posses.length;p++)
+					{
+						s.append(CMStrings.padRight(line,posses[p]-1));
+						if(p<posses.length-1)
+							s.append("+");
+					}
+					return s.toString();
+				}
+			};
+			str.append(lineDraw.toString()).append("\n\r");
+			for(Clan.Function func : Clan.Function.values())
+			{
+				String fname=CMStrings.capitalizeAndLower(func.toString().replace('_', ' '));
+				str.append(CMStrings.padRight(fname,commandColLen-1)).append("!");
+				for(int p=0;p<sortedPositions.size();p++)
+				{
+					ClanPosition pos = sortedPositions.get(p);
+					Authority auth = pos.getFunctionChart()[func.ordinal()];
+					String x = "";
+					if(auth==Authority.CAN_DO)
+						x="X";
+					else
+					if(auth==Authority.MUST_VOTE_ON)
+						x="v";
+					str.append(CMStrings.padCenter(x,posses[p]-1));
+					if(p<posses.length-1)
+						str.append("!");
+				}
+				str.append("\n\r").append(lineDraw.toString()).append("\n\r");
+			}
 /*
 protected String[] 	clanEffectNames			=null;
 protected int[] 	clanEffectLevels		=null;
@@ -623,7 +623,7 @@ protected int[] 	clanAbilityLevels		=null;
 protected int[] 	clanAbilityProficiencies=null;
 protected boolean[] clanAbilityQuals		=null;
 */
-	    	
+			
 			if((clanAbilityLevels!=null)&&(clanEffectLevels!=null)
 			&&(clanAbilityLevels.length>0)&&(clanEffectLevels.length>0))
 			{
@@ -663,9 +663,9 @@ protected boolean[] clanAbilityQuals		=null;
 						str.append("Level "+l+": "+bene+"\n\r");
 				}
 			}
-	    	helpStr=str.toString();
-    	}
-    	return helpStr;
+			helpStr=str.toString();
+		}
+		return helpStr;
 	}
 
 	public List<Ability> getClanLevelAbilities(Integer level)

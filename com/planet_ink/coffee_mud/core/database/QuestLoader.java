@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -58,14 +58,14 @@ public class QuestLoader
 				if(Q.name().length()==0)
 					Q.setName(questName);
 				if(Q.name().length()==0)
-                    Log.sysOut("QuestLoader","Unable to load Quest '"+questName+"' due to blank name.");
-                else
-                if(Q.duration()<0)
-                    Log.sysOut("QuestLoader","Unable to load Quest '"+questName+"' due to duration "+Q.duration()+".");
-                else
-                if(CMLib.quests().fetchQuest(Q.name())!=null)
-                    Log.sysOut("QuestLoader","Unable to load Quest '"+questName+"' due to it already being loaded.");
-                else
+					Log.sysOut("QuestLoader","Unable to load Quest '"+questName+"' due to blank name.");
+				else
+				if(Q.duration()<0)
+					Log.sysOut("QuestLoader","Unable to load Quest '"+questName+"' due to duration "+Q.duration()+".");
+				else
+				if(CMLib.quests().fetchQuest(Q.name())!=null)
+					Log.sysOut("QuestLoader","Unable to load Quest '"+questName+"' due to it already being loaded.");
+				else
 					CMLib.quests().addQuest(Q);
 			}
 		}
@@ -73,10 +73,10 @@ public class QuestLoader
 		{
 			Log.errOut("Quest",sqle);
 		}
-        finally
-        {
-	        DB.DBDone(D);
-        }
+		finally
+		{
+			DB.DBDone(D);
+		}
 	}
 	
 	
@@ -115,7 +115,7 @@ public class QuestLoader
 		for(int m=0;m<quests.size();m++)
 		{
 			Quest Q=(Quest)quests.get(m);
-            if(Q.isCopy()) continue;
+			if(Q.isCopy()) continue;
 			try{
 				D.rePrepare(
 				"INSERT INTO CMQUESTS ("

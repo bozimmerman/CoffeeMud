@@ -25,7 +25,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -39,18 +39,18 @@ public class Prop_RideEnabler extends Prop_HaveEnabler
 	public String ID() { return "Prop_RideEnabler"; }
 	public String name(){ return "Granting skills when ridden";}
 	protected int canAffectCode(){return Ability.CAN_ITEMS|Ability.CAN_MOBS;}
-    protected Vector lastRiders=new Vector();
-    
-    public String accountForYourself()
-    { return spellAccountingsWithMask("Grants "," to those mounted.");}
+	protected Vector lastRiders=new Vector();
+	
+	public String accountForYourself()
+	{ return spellAccountingsWithMask("Grants "," to those mounted.");}
 
 
-    public void setMiscText(String newText)
-    { 
-        super.setMiscText(newText);
-        lastRiders=new Vector();
-    }
-    
+	public void setMiscText(String newText)
+	{ 
+		super.setMiscText(newText);
+		lastRiders=new Vector();
+	}
+	
 	public void affectPhyStats(Physical host, PhyStats affectableStats)
 	{
 		if(processing) return;
@@ -65,21 +65,21 @@ public class Prop_RideEnabler extends Prop_HaveEnabler
 				{
 					MOB M=(MOB)R;
 					if((!lastRiders.contains(M))&&(RI.amRiding(M)))
-                    {
+					{
 						if(addMeIfNeccessary(M,M,false))
-                            lastRiders.add(M);
-                    }
+							lastRiders.add(M);
+					}
 				}
 			}
 			for(int i=lastRiders.size()-1;i>=0;i--)
 			{
 				MOB M=(MOB)lastRiders.elementAt(i);
 				if(!RI.amRiding(M))
-                {
+				{
 					removeMyAffectsFrom(M);
-                    while(lastRiders.contains(M))
-                        lastRiders.removeElement(M);
-                }
+					while(lastRiders.contains(M))
+						lastRiders.removeElement(M);
+				}
 			}
 		}
 		processing=false;

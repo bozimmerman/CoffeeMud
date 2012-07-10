@@ -27,7 +27,7 @@ import java.util.Vector;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -59,7 +59,7 @@ public class QuestBound implements Ability
 	public long flags(){return 0;}
 	public long getTickStatus(){return Tickable.STATUS_NOT;}
 	public int usageType(){return 0;}
-    public void initializeClass(){}
+	public void initializeClass(){}
 	public ExpertiseLibrary.SkillCost getTrainingCost(MOB mob)
 	{ return new ExpertiseLibrary.SkillCost(ExpertiseLibrary.CostType.TRAIN,Double.valueOf(1.0));}
 
@@ -67,7 +67,7 @@ public class QuestBound implements Ability
 	public void setDescription(String newDescription){}
 	public void setDisplayText(String newDisplayText){}
 	public String image(){return "";}
-    public String rawImage(){return "";}
+	public String rawImage(){return "";}
 	public void setImage(String newImage){}
 	public MOB invoker(){return null;}
 	public void setInvoker(MOB mob){}
@@ -75,14 +75,14 @@ public class QuestBound implements Ability
 	public String[] triggerStrings(){return empty;}
 	public boolean invoke(MOB mob, Vector commands, Physical target, boolean auto, int asLevel){return false;}
 	public boolean invoke(MOB mob, Physical target, boolean auto, int asLevel){return false;}
-    public boolean preInvoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel, int secondsElapsed, double actionsRemaining){return true;}
+	public boolean preInvoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel, int secondsElapsed, double actionsRemaining){return true;}
 	public boolean autoInvocation(MOB mob){return false;}
 	public void unInvoke(){}
 	public boolean canBeUninvoked(){return false;}
 	public boolean isAutoInvoked(){return true;}
 	public boolean isNowAnAutoEffect(){return true;}
 	public List<String> externalFiles(){return null;}
-    public void clearExpertiseCache(){}
+	public void clearExpertiseCache(){}
 
 	public boolean canBeTaughtBy(MOB teacher, MOB student){return false;}
 	public boolean canBePracticedBy(MOB teacher, MOB student){return false;}
@@ -116,16 +116,16 @@ public class QuestBound implements Ability
 	public int classificationCode(){ return Ability.ACODE_PROPERTY;}
 	public boolean isSavable(){ return false;	}
 	public void setSavable(boolean truefalse){}
-    protected boolean amDestroyed=false;
-    public void destroy(){amDestroyed=true; affected=null;}
-    public boolean amDestroyed(){return amDestroyed;}
+	protected boolean amDestroyed=false;
+	public void destroy(){amDestroyed=true; affected=null;}
+	public boolean amDestroyed(){return amDestroyed;}
 
-    //protected void finalize(){ CMClass.unbumpCounter(this,CMClass.CMObjectType.ABILITY); }//removed for mem & perf
+	//protected void finalize(){ CMClass.unbumpCounter(this,CMClass.CMObjectType.ABILITY); }//removed for mem & perf
 
 	public CMObject newInstance()
 	{
 		try
-        {
+		{
 			return (CMObject)this.getClass().newInstance();
 		}
 		catch(Exception e)
@@ -135,15 +135,15 @@ public class QuestBound implements Ability
 		return new QuestBound();
 	}
 
-    public QuestBound()
-    {
-        super();
-        //CMClass.bumpCounter(this,CMClass.CMObjectType.ABILITY);//removed for mem & perf
-    }
+	public QuestBound()
+	{
+		super();
+		//CMClass.bumpCounter(this,CMClass.CMObjectType.ABILITY);//removed for mem & perf
+	}
 	public int getSaveStatIndex(){return getStatCodes().length;}
 	private static final String[] CODES={"CLASS","TEXT","KEY"};
 	public String[] getStatCodes(){return CODES;}
-    public boolean isStat(String code){ return CMParms.indexOf(getStatCodes(),code.toUpperCase().trim())>=0;}
+	public boolean isStat(String code){ return CMParms.indexOf(getStatCodes(),code.toUpperCase().trim())>=0;}
 	protected int getCodeNum(String code){
 		for(int i=0;i<CODES.length;i++)
 			if(code.equalsIgnoreCase(CODES[i])) return i;
@@ -182,7 +182,7 @@ public class QuestBound implements Ability
 		try
 		{
 			QuestBound E=(QuestBound)this.clone();
-            //CMClass.bumpCounter(E,CMClass.CMObjectType.ABILITY);//removed for mem & perf
+			//CMClass.bumpCounter(E,CMClass.CMObjectType.ABILITY);//removed for mem & perf
 			E.cloneFix(this);
 			return E;
 
@@ -226,58 +226,58 @@ public class QuestBound implements Ability
 		||(keyPlayer
 		   &&(msg.source()==affected)
 		   &&(msg.sourceMinor()==CMMsg.TYP_DEATH)))
-		    resetQuest(msg.targetMinor());
+			resetQuest(msg.targetMinor());
 		return true;
 	}
-    public void executeMsg(final Environmental myHost, final CMMsg msg)
-    {
-        if((amDestroyed())||(affected==null)) return;
-        if((msg.targetMinor()==CMMsg.TYP_SHUTDOWN)
-        ||((msg.targetMinor()==CMMsg.TYP_EXPIRE)
-            &&(msg.target()!=null)
-            &&((msg.target() instanceof Room)
-                ||(msg.target()==affected)
-                ||((affected instanceof Item)&&(((Item)affected).owner()==msg.target()))))
-        ||(msg.targetMinor()==CMMsg.TYP_ROOMRESET)
-        ||(keyPlayer
-            &&(msg.source()==affected)
-            &&(msg.sourceMinor()==CMMsg.TYP_DEATH)))
-            resetQuest(msg.targetMinor());
-    }
-    
-    private void resetQuest(int reason)
-    {
-        if(text().length()>0)
-        {
-            Quest theQ=null;
-            for(int q=0;q<CMLib.quests().numQuests();q++)
-            {
-                Quest Q=CMLib.quests().fetchQuest(q);
-                if((Q!=null)&&(""+Q).equals(text()))
-                { theQ=Q; break;}
-            }
-            if((theQ==null)||(!theQ.running()))
-                affected.delEffect(this);
-            else
-            {
-                Log.sysOut("QuestBound",CMMsg.TYPE_DESCS[reason]+" message for "+(affected==null?"null":affected.name())+" caused "+theQ.name()+" to reset.");
-                theQ.resetQuest(5);
-            }
-        }
-        else
-            affected.delEffect(this);
-    }
-    
+	public void executeMsg(final Environmental myHost, final CMMsg msg)
+	{
+		if((amDestroyed())||(affected==null)) return;
+		if((msg.targetMinor()==CMMsg.TYP_SHUTDOWN)
+		||((msg.targetMinor()==CMMsg.TYP_EXPIRE)
+			&&(msg.target()!=null)
+			&&((msg.target() instanceof Room)
+				||(msg.target()==affected)
+				||((affected instanceof Item)&&(((Item)affected).owner()==msg.target()))))
+		||(msg.targetMinor()==CMMsg.TYP_ROOMRESET)
+		||(keyPlayer
+			&&(msg.source()==affected)
+			&&(msg.sourceMinor()==CMMsg.TYP_DEATH)))
+			resetQuest(msg.targetMinor());
+	}
+	
+	private void resetQuest(int reason)
+	{
+		if(text().length()>0)
+		{
+			Quest theQ=null;
+			for(int q=0;q<CMLib.quests().numQuests();q++)
+			{
+				Quest Q=CMLib.quests().fetchQuest(q);
+				if((Q!=null)&&(""+Q).equals(text()))
+				{ theQ=Q; break;}
+			}
+			if((theQ==null)||(!theQ.running()))
+				affected.delEffect(this);
+			else
+			{
+				Log.sysOut("QuestBound",CMMsg.TYPE_DESCS[reason]+" message for "+(affected==null?"null":affected.name())+" caused "+theQ.name()+" to reset.");
+				theQ.resetQuest(5);
+			}
+		}
+		else
+			affected.delEffect(this);
+	}
+	
 	public boolean tick(Tickable ticking, int tickID)
 	{
-	    if((keyPlayer)
-	    &&(ticking instanceof MOB)
-	    &&(((MOB)ticking).amDead() || ((MOB)ticking).amDestroyed()))
-	    {
-	        resetQuest(CMMsg.TYP_DEATH);
-            return false;
-	    }
-	    return true;	
+		if((keyPlayer)
+		&&(ticking instanceof MOB)
+		&&(((MOB)ticking).amDead() || ((MOB)ticking).amDestroyed()))
+		{
+			resetQuest(CMMsg.TYP_DEATH);
+			return false;
+		}
+		return true;	
 	}
 	
 	public void makeLongLasting(){}

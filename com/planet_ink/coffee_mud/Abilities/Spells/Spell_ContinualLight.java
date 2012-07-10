@@ -25,7 +25,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -65,16 +65,16 @@ public class Spell_ContinualLight extends Spell
 			room.recoverRoomStats();
 	}
 
-    public int castingQuality(MOB mob, Physical target)
-    {
-        if(mob!=null)
-        {
-            if((mob==target)&&(!CMLib.flags().canBeSeenBy(mob.location(),mob)))
-                return super.castingQuality(mob, target,Ability.QUALITY_BENEFICIAL_SELF);
-        }
-        return super.castingQuality(mob,target);
-    }
-    
+	public int castingQuality(MOB mob, Physical target)
+	{
+		if(mob!=null)
+		{
+			if((mob==target)&&(!CMLib.flags().canBeSeenBy(mob.location(),mob)))
+				return super.castingQuality(mob, target,Ability.QUALITY_BENEFICIAL_SELF);
+		}
+		return super.castingQuality(mob,target);
+	}
+	
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		Physical target=null;

@@ -23,7 +23,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -39,7 +39,7 @@ public class Spell_ForkedLightning extends Spell
 	public int maxRange(){return adjustedMaxInvokerRange(2);}
 	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	public int classificationCode(){	return Ability.ACODE_SPELL|Ability.DOMAIN_EVOCATION;}
-    public long flags(){return Ability.FLAG_AIRBASED;}
+	public long flags(){return Ability.FLAG_AIRBASED;}
 
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{

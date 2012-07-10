@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -131,10 +131,10 @@ public class Prop_ReqStat extends Property
 			}
 			else
 			if((msg.target()!=null)
-		    &&(((msg.target() instanceof Room)&&(msg.targetMinor()==CMMsg.TYP_ENTER))
+			&&(((msg.target() instanceof Room)&&(msg.targetMinor()==CMMsg.TYP_ENTER))
 			  ||((msg.target() instanceof Rideable)&&(msg.targetMinor()==CMMsg.TYP_SIT)))
-		    &&(!CMLib.flags().isFalling(msg.source()))
-		    &&((msg.amITarget(affected))||(msg.tool()==affected)||(affected instanceof Area)))
+			&&(!CMLib.flags().isFalling(msg.source()))
+			&&((msg.amITarget(affected))||(msg.tool()==affected)||(affected instanceof Area)))
 			{
 				if(passesMuster(msg.source(),"go there"))
 					return super.okMessage(myHost,msg);
@@ -160,7 +160,7 @@ public class Prop_ReqStat extends Property
 						break;
 					case CMMsg.TYP_WEAR:
 						if((myItem instanceof Armor)
-					    &&(msg.amITarget(myItem)))
+						&&(msg.amITarget(myItem)))
 						{
 							if(passesMuster(msg.source(),"wear that"))
 								return super.okMessage(myHost,msg);
@@ -179,9 +179,9 @@ public class Prop_ReqStat extends Property
 					case CMMsg.TYP_WIELD:
 					case CMMsg.TYP_HOLD:
 						if((!(myItem instanceof Drink))
-					    &&(!(myItem instanceof Armor))
-					    &&(!(myItem instanceof Container))
-					    &&(msg.amITarget(myItem)))
+						&&(!(myItem instanceof Armor))
+						&&(!(myItem instanceof Container))
+						&&(msg.amITarget(myItem)))
 						{
 							if(passesMuster(msg.source(),"hold that"))
 								return super.okMessage(myHost,msg);

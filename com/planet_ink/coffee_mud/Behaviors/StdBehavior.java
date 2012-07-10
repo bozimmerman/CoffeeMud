@@ -25,7 +25,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -41,15 +41,15 @@ public class StdBehavior implements Behavior
 	public long flags(){return 0;}
 	public boolean grantsAggressivenessTo(MOB M){return false;}
 	public long getTickStatus(){return Tickable.STATUS_NOT;}
-    public void initializeClass(){}
+	public void initializeClass(){}
 	public String accountForYourself(){ return "";}
-    protected boolean isSavableBehavior=true;
+	protected boolean isSavableBehavior=true;
 
-    public StdBehavior()
-    {
-        super();
-        //CMClass.bumpCounter(this,CMClass.CMObjectType.BEHAVIOR);//removed for perf
-    }
+	public StdBehavior()
+	{
+		super();
+		//CMClass.bumpCounter(this,CMClass.CMObjectType.BEHAVIOR);//removed for perf
+	}
 
 	protected String parms="";
 
@@ -57,7 +57,7 @@ public class StdBehavior implements Behavior
 	public CMObject newInstance()
 	{
 		try
-        {
+		{
 			return (Behavior)this.getClass().newInstance();
 		}
 		catch(Exception e)
@@ -70,23 +70,23 @@ public class StdBehavior implements Behavior
 	{
 		try
 		{
-            Behavior B=(Behavior)this.clone();
-            //CMClass.bumpCounter(B,CMClass.CMObjectType.BEHAVIOR);//removed for perf
-            B.setParms(getParms());
-            return B;
+			Behavior B=(Behavior)this.clone();
+			//CMClass.bumpCounter(B,CMClass.CMObjectType.BEHAVIOR);//removed for perf
+			B.setParms(getParms());
+			return B;
 		}
 		catch(CloneNotSupportedException e)
 		{
 			return new StdBehavior();
 		}
 	}
-    public void registerDefaultQuest(String questName){}
+	public void registerDefaultQuest(String questName){}
 	public void startBehavior(PhysicalAgent forMe){}
-    //protected void finalize(){CMClass.unbumpCounter(this,CMClass.CMObjectType.BEHAVIOR);}//removed for perf
-    public void setSavable(boolean truefalse){isSavableBehavior=truefalse;}
-    public boolean isSavable(){return isSavableBehavior;}
-    public boolean amDestroyed(){ return false;}
-    public void destroy() {parms="";}
+	//protected void finalize(){CMClass.unbumpCounter(this,CMClass.CMObjectType.BEHAVIOR);}//removed for perf
+	public void setSavable(boolean truefalse){isSavableBehavior=truefalse;}
+	public boolean isSavable(){return isSavableBehavior;}
+	public boolean amDestroyed(){ return false;}
+	public void destroy() {parms="";}
 	protected MOB getBehaversMOB(Tickable ticking)
 	{
 		if(ticking==null) return null;
@@ -155,7 +155,7 @@ public class StdBehavior implements Behavior
 	}
 
 	public static boolean canFreelyBehaveNormal(Tickable affecting)
-    { 
+	{ 
 		return CMLib.flags().canFreelyBehaveNormal(affecting);
 	}
 
@@ -189,8 +189,8 @@ public class StdBehavior implements Behavior
 		case 1: setParms(val); break;
 		}
 	}
-    public int getSaveStatIndex(){return getStatCodes().length;}
-    public boolean isStat(String code){ return CMParms.indexOf(getStatCodes(),code.toUpperCase().trim())>=0;}
+	public int getSaveStatIndex(){return getStatCodes().length;}
+	public boolean isStat(String code){ return CMParms.indexOf(getStatCodes(),code.toUpperCase().trim())>=0;}
 	public boolean sameAs(Behavior E)
 	{
 		if(!(E instanceof StdBehavior)) return false;

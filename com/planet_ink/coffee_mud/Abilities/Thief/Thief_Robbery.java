@@ -25,7 +25,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -42,7 +42,7 @@ public class Thief_Robbery extends ThiefSkill
 	protected int canAffectCode(){return CAN_MOBS;}
 	protected int canTargetCode(){return CAN_MOBS;}
 	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-    public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_STEALING;}
+	public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_STEALING;}
 	private static final String[] triggerStrings = {"ROBBERY","ROB"};
 	public String[] triggerStrings(){return triggerStrings;}
 	public Vector mobs=new Vector();
@@ -88,21 +88,21 @@ public class Thief_Robbery extends ThiefSkill
 		return super.okMessage(myHost,msg);
 	}
 
-    public int castingQuality(MOB mob, Physical target)
-    {
-        if(mob!=null)
-        {
-            if(mob.isInCombat())
-                return Ability.QUALITY_INDIFFERENT;
-            if(!(target instanceof MOB))
-                return Ability.QUALITY_INDIFFERENT;
-            if((target==null)||(((MOB)target).amDead())||(!CMLib.flags().canBeSeenBy(target,mob)))
-                return Ability.QUALITY_INDIFFERENT;
-            if((!((MOB)target).mayIFight(mob))||(CMLib.coffeeShops().getShopKeeper(target)==null))
-                return Ability.QUALITY_INDIFFERENT;
-        }
-        return super.castingQuality(mob,target);
-    }
+	public int castingQuality(MOB mob, Physical target)
+	{
+		if(mob!=null)
+		{
+			if(mob.isInCombat())
+				return Ability.QUALITY_INDIFFERENT;
+			if(!(target instanceof MOB))
+				return Ability.QUALITY_INDIFFERENT;
+			if((target==null)||(((MOB)target).amDead())||(!CMLib.flags().canBeSeenBy(target,mob)))
+				return Ability.QUALITY_INDIFFERENT;
+			if((!((MOB)target).mayIFight(mob))||(CMLib.coffeeShops().getShopKeeper(target)==null))
+				return Ability.QUALITY_INDIFFERENT;
+		}
+		return super.castingQuality(mob,target);
+	}
 
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
@@ -119,11 +119,11 @@ public class Thief_Robbery extends ThiefSkill
 
 		String itemToSteal=(String)commands.elementAt(0);
 
-        MOB target=null;
-        if((target==null)&&(givenTarget!=null)&&(givenTarget instanceof MOB)) 
-            target=(MOB)givenTarget;
-        else
-            target=mob.location().fetchInhabitant(CMParms.combine(commands,1));
+		MOB target=null;
+		if((target==null)&&(givenTarget!=null)&&(givenTarget instanceof MOB)) 
+			target=(MOB)givenTarget;
+		else
+			target=mob.location().fetchInhabitant(CMParms.combine(commands,1));
 		if((target==null)||(target.amDead())||(!CMLib.flags().canBeSeenBy(target,mob)))
 		{
 			mob.tell("You don't see '"+CMParms.combine(commands,1)+"' here.");

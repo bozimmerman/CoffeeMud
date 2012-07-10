@@ -30,7 +30,7 @@ import java.util.concurrent.atomic.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -120,79 +120,79 @@ public class RequestHandler implements CMRunnable
 		{
 			try
 			{
-	    		ByteBuffer buffer = null;
-	    		if(workingBuffers.size()>0)
-	    			buffer=workingBuffers.getLast();
-	    		if((buffer==null)||(buffer.capacity()==buffer.limit()))
-	    			buffer = ByteBuffer.allocate(BUFFER_SIZE);
-	    		else
-	    		{
-	    			buffer.position(buffer.limit());
-	    			buffer.limit(buffer.capacity());
-	    		}
-	    		while (chan.isConnected() && (chan.isOpen()) && (chan.read (buffer) > 0)) 
-	    		{
-	    			buffer.flip();
-	    			int containIndex=-1;
-	    			for(int i=0;i<buffer.limit();i++)
-	    				if((containIndex=CMParms.containIndex(buffer, markBlocks, i))>=0)
-	    				{
-	    					int containIndexLength = markBlocks[containIndex].length;
-	    					workingBuffers.remove(buffer);
-	    					if(i>0)
-	    					{
-	    						ByteBuffer prevBuf = ByteBuffer.allocate(BUFFER_SIZE);
-	    						prevBuf.put(buffer.array(),0,i);
-	    						prevBuf.flip();
-	    						workingBuffers.add(prevBuf);
-	    					}
-	    					if(((i + containIndexLength)>=buffer.limit())
-	    					||((i + containIndexLength)>=buffer.capacity()))
-	    						buffer.position(buffer.limit());
-	    					else
-		    					buffer.position(i + containIndexLength);
-	    					if(buffer.remaining()>0)
-	    					{
-	    						buffer = ByteBuffer.allocate(BUFFER_SIZE);
-	    						buffer.put(buffer);
-	    						i=-1;
-	    					}
-	    					else
-	    						buffer = ByteBuffer.allocate(BUFFER_SIZE);
-    						buffer.flip();
-    						
-	    					int fullSize = 0;
-	    					for(ByteBuffer buf : workingBuffers)
-	    						fullSize += buf.limit();
-	    					ByteBuffer finalBuf=ByteBuffer.allocate(fullSize);
-	    					for(ByteBuffer buf : workingBuffers)
-	    					{
-	    						buf.rewind();
-	    						finalBuf.put(buf);
-	    						workingBuffers.remove(buf);
-	    					}
-	    					finalBuf.flip();
-	    					markBlocks=DEFAULT_MARK_BLOCKS;
-	    					execute(new String(finalBuf.array()));
-	    				}
-	    			if(!workingBuffers.contains(buffer) && (buffer.limit()>0))
-	    				workingBuffers.add(buffer);
-	    			if(buffer.limit()==buffer.capacity())
-	    				buffer=ByteBuffer.allocate(BUFFER_SIZE);
-	    			else
-	    			{
-	    				buffer.position(buffer.limit());
-	    				buffer.limit(buffer.capacity());
-	    			}
-	    			if (((long)BUFFER_SIZE * (long)workingBuffers.size())>MAXIMUM_BYTES)
-	    			{
-	    				workingBuffers.clear();
-	    				shutdown();
-	    				return;
-	    			}
-	    		}
-	    		buffer.flip();
-	    		try{Thread.sleep(1);}catch(Exception e){}
+				ByteBuffer buffer = null;
+				if(workingBuffers.size()>0)
+					buffer=workingBuffers.getLast();
+				if((buffer==null)||(buffer.capacity()==buffer.limit()))
+					buffer = ByteBuffer.allocate(BUFFER_SIZE);
+				else
+				{
+					buffer.position(buffer.limit());
+					buffer.limit(buffer.capacity());
+				}
+				while (chan.isConnected() && (chan.isOpen()) && (chan.read (buffer) > 0)) 
+				{
+					buffer.flip();
+					int containIndex=-1;
+					for(int i=0;i<buffer.limit();i++)
+						if((containIndex=CMParms.containIndex(buffer, markBlocks, i))>=0)
+						{
+							int containIndexLength = markBlocks[containIndex].length;
+							workingBuffers.remove(buffer);
+							if(i>0)
+							{
+								ByteBuffer prevBuf = ByteBuffer.allocate(BUFFER_SIZE);
+								prevBuf.put(buffer.array(),0,i);
+								prevBuf.flip();
+								workingBuffers.add(prevBuf);
+							}
+							if(((i + containIndexLength)>=buffer.limit())
+							||((i + containIndexLength)>=buffer.capacity()))
+								buffer.position(buffer.limit());
+							else
+								buffer.position(i + containIndexLength);
+							if(buffer.remaining()>0)
+							{
+								buffer = ByteBuffer.allocate(BUFFER_SIZE);
+								buffer.put(buffer);
+								i=-1;
+							}
+							else
+								buffer = ByteBuffer.allocate(BUFFER_SIZE);
+							buffer.flip();
+							
+							int fullSize = 0;
+							for(ByteBuffer buf : workingBuffers)
+								fullSize += buf.limit();
+							ByteBuffer finalBuf=ByteBuffer.allocate(fullSize);
+							for(ByteBuffer buf : workingBuffers)
+							{
+								buf.rewind();
+								finalBuf.put(buf);
+								workingBuffers.remove(buf);
+							}
+							finalBuf.flip();
+							markBlocks=DEFAULT_MARK_BLOCKS;
+							execute(new String(finalBuf.array()));
+						}
+					if(!workingBuffers.contains(buffer) && (buffer.limit()>0))
+						workingBuffers.add(buffer);
+					if(buffer.limit()==buffer.capacity())
+						buffer=ByteBuffer.allocate(BUFFER_SIZE);
+					else
+					{
+						buffer.position(buffer.limit());
+						buffer.limit(buffer.capacity());
+					}
+					if (((long)BUFFER_SIZE * (long)workingBuffers.size())>MAXIMUM_BYTES)
+					{
+						workingBuffers.clear();
+						shutdown();
+						return;
+					}
+				}
+				buffer.flip();
+				try{Thread.sleep(1);}catch(Exception e){}
 			}
 			catch(IOException ioe)
 			{

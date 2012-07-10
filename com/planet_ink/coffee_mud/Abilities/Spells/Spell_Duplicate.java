@@ -25,7 +25,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -41,7 +41,7 @@ public class Spell_Duplicate extends Spell
 	protected int canTargetCode(){return CAN_ITEMS;}
 	public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_ALTERATION;}
 	protected int overrideMana(){return Integer.MAX_VALUE;}
-    public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
+	public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
 
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
@@ -77,7 +77,7 @@ public class Spell_Duplicate extends Spell
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-        expLoss=getXPCOSTAdjustment(mob,-expLoss);
+		expLoss=getXPCOSTAdjustment(mob,-expLoss);
 		mob.tell("You lose "+(-expLoss)+" experience points.");
 		CMLib.leveler().postExperience(mob,null,null,expLoss,false);
 

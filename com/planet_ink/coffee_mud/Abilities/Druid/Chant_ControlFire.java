@@ -24,7 +24,7 @@ import java.util.Vector;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -44,39 +44,39 @@ public class Chant_ControlFire extends Chant
 	protected int canTargetCode(){return CAN_MOBS;}
 	public int maxRange(){return adjustedMaxInvokerRange(5);}
 	public int minRange(){return 0;}
-    public long flags(){return Ability.FLAG_FIREBASED;}
-    
-    private Item getFireSource(MOB target) 
-    {
-        for(int i=0;i<target.numItems();i++)
-        {
-            Item I=target.getItem(i);
-            if((CMLib.flags().isOnFire(I))&&(I.container()==null))
-                return I;
-        }
+	public long flags(){return Ability.FLAG_FIREBASED;}
+	
+	private Item getFireSource(MOB target) 
+	{
+		for(int i=0;i<target.numItems();i++)
+		{
+			Item I=target.getItem(i);
+			if((CMLib.flags().isOnFire(I))&&(I.container()==null))
+				return I;
+		}
 
-        for(int i=0;i<target.location().numItems();i++)
-        {
-            Item I=target.location().getItem(i);
-            if((CMLib.flags().isOnFire(I))&&(I.container()==null))
-                return I;
-        }
-        return null;
-    }
-    
-    public int castingQuality(MOB mob, Physical target)
-    {
-        if(mob!=null)
-        {
-            if(target instanceof MOB)
-            {
-                if(getFireSource((MOB)target)==null)
-                    return Ability.QUALITY_INDIFFERENT;
-            }
-        }
-        return super.castingQuality(mob,target);
-    }
-    
+		for(int i=0;i<target.location().numItems();i++)
+		{
+			Item I=target.location().getItem(i);
+			if((CMLib.flags().isOnFire(I))&&(I.container()==null))
+				return I;
+		}
+		return null;
+	}
+	
+	public int castingQuality(MOB mob, Physical target)
+	{
+		if(mob!=null)
+		{
+			if(target instanceof MOB)
+			{
+				if(getFireSource((MOB)target)==null)
+					return Ability.QUALITY_INDIFFERENT;
+			}
+		}
+		return super.castingQuality(mob,target);
+	}
+	
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=this.getTarget(mob,commands,givenTarget);
@@ -106,7 +106,7 @@ public class Chant_ControlFire extends Chant
 			{
 				mob.location().send(mob,msg);
 				mob.location().send(mob,msg2);
-                int numDice = (int)Math.round(CMath.div(adjustedLevel(mob,asLevel)+(2*super.getX1Level(mob)),2.0))+1;
+				int numDice = (int)Math.round(CMath.div(adjustedLevel(mob,asLevel)+(2*super.getX1Level(mob)),2.0))+1;
 				int damage = CMLib.dice().roll(numDice, 6, 20);
 				if((msg.value()>0)||(msg2.value()>0))
 					damage = (int)Math.round(CMath.div(damage,2.0));

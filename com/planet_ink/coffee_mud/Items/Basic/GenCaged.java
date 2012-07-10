@@ -26,7 +26,7 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -49,9 +49,9 @@ public class GenCaged extends GenItem implements CagedAnimal
 		setMaterial(RawMaterial.RESOURCE_MEAT);
 		recoverPhyStats();
 	}
-    protected byte[]    readableText=null;
-    public String readableText(){return readableText==null?"":CMLib.encoder().decompressString(readableText);}
-    public void setReadableText(String text){readableText=(text.trim().length()==0)?null:CMLib.encoder().compressString(text);}
+	protected byte[]	readableText=null;
+	public String readableText(){return readableText==null?"":CMLib.encoder().decompressString(readableText);}
+	public void setReadableText(String text){readableText=(text.trim().length()==0)?null:CMLib.encoder().compressString(text);}
 	public boolean cageMe(MOB M)
 	{
 		if(M==null) return false;
@@ -72,14 +72,14 @@ public class GenCaged extends GenItem implements CagedAnimal
 		recoverPhyStats();
 		return true;
 	}
-    
-    public void destroy()
-    {
-        if((CMSecurity.isDebugging(CMSecurity.DbgFlag.MISSINGKIDS))&&(fetchEffect("Age")!=null)&&CMath.isInteger(fetchEffect("Age").text())&&(CMath.s_int(fetchEffect("Age").text())>Short.MAX_VALUE))
-            Log.debugOut("MISSKIDS",new Exception(Name()+" went missing form "+CMLib.map().getExtendedRoomID(CMLib.map().roomLocation(this))));
-        super.destroy();
-    }
-    
+	
+	public void destroy()
+	{
+		if((CMSecurity.isDebugging(CMSecurity.DbgFlag.MISSINGKIDS))&&(fetchEffect("Age")!=null)&&CMath.isInteger(fetchEffect("Age").text())&&(CMath.s_int(fetchEffect("Age").text())>Short.MAX_VALUE))
+			Log.debugOut("MISSKIDS",new Exception(Name()+" went missing form "+CMLib.map().getExtendedRoomID(CMLib.map().roomLocation(this))));
+		super.destroy();
+	}
+	
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		if((msg.amITarget(this)

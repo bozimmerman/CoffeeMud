@@ -25,7 +25,7 @@ import java.util.List;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -233,11 +233,11 @@ public class Reset extends StdCommand
 	{
 		if((changes == null)||(oldM==null)) return;
 		changes.append(newM.name()+":"+newM.basePhyStats().level()+", ");
-        for(int i=0;i<oldM.getStatCodes().length;i++)
-            if((!oldM.getStat(oldM.getStatCodes()[i]).equals(newM.getStat(newM.getStatCodes()[i]))))
-            	changes.append(oldM.getStatCodes()[i]+"("+oldM.getStat(oldM.getStatCodes()[i])+"->"+newM.getStat(newM.getStatCodes()[i])+"), ");
-        changes.append("\n\r");
-        newM.destroy(); // this was a copy
+		for(int i=0;i<oldM.getStatCodes().length;i++)
+			if((!oldM.getStat(oldM.getStatCodes()[i]).equals(newM.getStat(newM.getStatCodes()[i]))))
+				changes.append(oldM.getStatCodes()[i]+"("+oldM.getStat(oldM.getStatCodes()[i])+"->"+newM.getStat(newM.getStatCodes()[i])+"), ");
+		changes.append("\n\r");
+		newM.destroy(); // this was a copy
 	}
 	
 	public boolean fixMob(MOB M, StringBuffer recordedChanges)
@@ -274,60 +274,60 @@ public class Reset extends StdCommand
 			return false;
 		}
 		String s=(String)commands.elementAt(0);
-        String rest=(commands.size()>1)?CMParms.combine(commands,1):"";
-        if(s.equalsIgnoreCase("rejuv"))
-        {
-            commands.removeElementAt(0);
-            if(commands.size()<1)
-            {
-                mob.tell("Rejuv this ROOM, or the whole AREA?  You can also specify ITEMS or MOBS after ROOM/AREA.");
-                return false;
-            }
-            s=(String)commands.elementAt(0);
-            rest=(commands.size()>1)?CMParms.combine(commands,1):"";
-            int tickID=0;
-            if(rest.startsWith("MOB")) tickID=Tickable.TICKID_MOB;
-            if(rest.startsWith("ITEM")) tickID=Tickable.TICKID_ROOM_ITEM_REJUV;
-            if(s.equalsIgnoreCase("room"))
-            {
-                CMLib.threads().rejuv(mob.location(),tickID);
-                mob.tell("Done.");
-            }
-            else
-            if(s.equalsIgnoreCase("area"))
-            {
-                Area A=mob.location().getArea();
-                for(Enumeration<Room> e=A.getProperMap();e.hasMoreElements();)
-                    CMLib.threads().rejuv((Room)e.nextElement(),tickID);
-                mob.tell("Done.");
-            }
-            else
-            {
-                mob.tell("Rejuv this ROOM, or the whole AREA?");
-                return false;
-            }
-        }
-        else
+		String rest=(commands.size()>1)?CMParms.combine(commands,1):"";
+		if(s.equalsIgnoreCase("rejuv"))
+		{
+			commands.removeElementAt(0);
+			if(commands.size()<1)
+			{
+				mob.tell("Rejuv this ROOM, or the whole AREA?  You can also specify ITEMS or MOBS after ROOM/AREA.");
+				return false;
+			}
+			s=(String)commands.elementAt(0);
+			rest=(commands.size()>1)?CMParms.combine(commands,1):"";
+			int tickID=0;
+			if(rest.startsWith("MOB")) tickID=Tickable.TICKID_MOB;
+			if(rest.startsWith("ITEM")) tickID=Tickable.TICKID_ROOM_ITEM_REJUV;
+			if(s.equalsIgnoreCase("room"))
+			{
+				CMLib.threads().rejuv(mob.location(),tickID);
+				mob.tell("Done.");
+			}
+			else
+			if(s.equalsIgnoreCase("area"))
+			{
+				Area A=mob.location().getArea();
+				for(Enumeration<Room> e=A.getProperMap();e.hasMoreElements();)
+					CMLib.threads().rejuv((Room)e.nextElement(),tickID);
+				mob.tell("Done.");
+			}
+			else
+			{
+				mob.tell("Rejuv this ROOM, or the whole AREA?");
+				return false;
+			}
+		}
+		else
 		if(s.equalsIgnoreCase("room"))
 		{
-            String warning=resetWarning(mob, mob.location());
-            if((mob.session()==null)||(warning==null)||(mob.session().confirm(warning + "\n\rReset the contents of the room '"+mob.location().roomTitle(mob)+"', OK (Y/n)?","Y")))
-            {
-        		for(Session S : CMLib.sessions().localOnlineIterable())
-                    if((S!=null)&&(S.mob()!=null)&&(S.mob().location()!=null)&&(S.mob().location()==mob.location()))
-                        S.mob().tell(mob,null,null,"<S-NAME> order(s) this room to normalcy.");
-    			CMLib.map().resetRoom(mob.location(), true);
-                mob.tell("Done.");
-            }
-            else
-                mob.tell("Cancelled.");
+			String warning=resetWarning(mob, mob.location());
+			if((mob.session()==null)||(warning==null)||(mob.session().confirm(warning + "\n\rReset the contents of the room '"+mob.location().roomTitle(mob)+"', OK (Y/n)?","Y")))
+			{
+				for(Session S : CMLib.sessions().localOnlineIterable())
+					if((S!=null)&&(S.mob()!=null)&&(S.mob().location()!=null)&&(S.mob().location()==mob.location()))
+						S.mob().tell(mob,null,null,"<S-NAME> order(s) this room to normalcy.");
+				CMLib.map().resetRoom(mob.location(), true);
+				mob.tell("Done.");
+			}
+			else
+				mob.tell("Cancelled.");
 		}
-        else
+		else
 		if(s.equalsIgnoreCase("INIFILE")||s.equalsIgnoreCase("coffeemud.ini"))
 		{
 			CMProps.instance().resetSecurityVars();
 			CMProps.instance().resetSystemVars();
-            mob.tell("Done.");
+			mob.tell("Done.");
 		}
 		else
 		if(s.equalsIgnoreCase("area"))
@@ -341,31 +341,31 @@ public class Reset extends StdCommand
 				{
 					for(Session S : CMLib.sessions().localOnlineIterable())
 						if((S!=null)&&(S.mob()!=null)&&(S.mob().location()!=null)&&(A.inMyMetroArea(S.mob().location().getArea())))
-	                        S.mob().tell(mob,null,null,"<S-NAME> order(s) this area to normalcy.");
+							S.mob().tell(mob,null,null,"<S-NAME> order(s) this area to normalcy.");
 					CMLib.map().resetArea(A);
-		            mob.tell("Done.");
+					mob.tell("Done.");
 				}
 				else
-		            mob.tell("Cancelled.");
+					mob.tell("Cancelled.");
 			}
 		}
-        else
-        if(CMLib.players().getPlayer(s)!=null)
-        {
-            MOB M=CMLib.players().getPlayer(s);
-            String what="";
-            if(commands.size()>0)
-                what=CMParms.combine(commands,1).toUpperCase();
-            if(what.startsWith("EXPERTIS"))
-            {
-                while(M.numExpertises()>0)
-                    M.delExpertise(M.fetchExpertise(0));
-                mob.tell("Done.");
-            }
-            else
-                mob.tell("Can't reset that trait -- as its not defined.");
-        }
-        else
+		else
+		if(CMLib.players().getPlayer(s)!=null)
+		{
+			MOB M=CMLib.players().getPlayer(s);
+			String what="";
+			if(commands.size()>0)
+				what=CMParms.combine(commands,1).toUpperCase();
+			if(what.startsWith("EXPERTIS"))
+			{
+				while(M.numExpertises()>0)
+					M.delExpertise(M.fetchExpertise(0));
+				mob.tell("Done.");
+			}
+			else
+				mob.tell("Can't reset that trait -- as its not defined.");
+		}
+		else
 		if(s.equalsIgnoreCase("arearoomids")&&(CMSecurity.isAllowed(mob, mob.location(), "CMDROOMS")))
 		{
 			Area A=mob.location().getArea();
@@ -373,9 +373,9 @@ public class Reset extends StdCommand
 			for(Enumeration e=A.getCompleteMap();e.hasMoreElements();)
 			{
 				Room R=(Room)e.nextElement();
-	    		synchronized(("SYNC"+R.roomID()).intern())
-	    		{
-	    			R=CMLib.map().getRoom(R);
+				synchronized(("SYNC"+R.roomID()).intern())
+				{
+					R=CMLib.map().getRoom(R);
 					if((R.roomID().length()>0)
 					&&(R.roomID().indexOf('#')>0)
 					&&(!R.roomID().startsWith(A.Name())))
@@ -388,7 +388,7 @@ public class Reset extends StdCommand
 							for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
 							{
 								Room R2=(Room)r.nextElement();
-				    			R2=CMLib.map().getRoom(R2);
+								R2=CMLib.map().getRoom(R2);
 								if(R2!=R)
 								for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 									if(R2.rawDoors()[d]==R)
@@ -397,13 +397,13 @@ public class Reset extends StdCommand
 										break;
 									}
 							}
-					    }catch(NoSuchElementException nse){}
+						}catch(NoSuchElementException nse){}
 						if(R instanceof GridLocale)
 							R.getArea().fillInAreaRoom(R);
 						somethingDone=true;
 						mob.tell("Room "+oldID+" changed to "+R.roomID()+".");
 					}
-	    		}
+				}
 			}
 			if(!somethingDone)
 				mob.tell("No rooms were found which needed renaming.");
@@ -417,143 +417,143 @@ public class Reset extends StdCommand
 			return false;
 		}
 		else
-        if(s.equalsIgnoreCase("propertygarbage"))
-        {
-            Room R=null;
-            LandTitle T=null;
-            for(Enumeration e=CMLib.map().rooms();e.hasMoreElements();)
-            {
-                R=(Room)e.nextElement();
-	    		synchronized(("SYNC"+R.roomID()).intern())
-	    		{
-	    			R=CMLib.map().getRoom(R);
-	                T=CMLib.law().getLandTitle(R);
-	                if((T!=null)
-	                &&(T.landOwner().length()==0))
-	                {
-	                    T.setLandOwner(mob.Name());
-	                    T.setLandOwner("");
-	                    T.updateLot(new XVector(mob.name()));
-	                }
-	    		}
-            }
-        }
-        else
+		if(s.equalsIgnoreCase("propertygarbage"))
+		{
+			Room R=null;
+			LandTitle T=null;
+			for(Enumeration e=CMLib.map().rooms();e.hasMoreElements();)
+			{
+				R=(Room)e.nextElement();
+				synchronized(("SYNC"+R.roomID()).intern())
+				{
+					R=CMLib.map().getRoom(R);
+					T=CMLib.law().getLandTitle(R);
+					if((T!=null)
+					&&(T.landOwner().length()==0))
+					{
+						T.setLandOwner(mob.Name());
+						T.setLandOwner("");
+						T.updateLot(new XVector(mob.name()));
+					}
+				}
+			}
+		}
+		else
 		if(s.equalsIgnoreCase("racestatgains")&&(CMSecurity.isAllowed(mob,mob.location(),"CMDRACES")))
 		{
-		    for(Enumeration e=CMClass.races();e.hasMoreElements();)
-		    {
-		        Race R=(Race)e.nextElement();
-		        if(R.isGeneric())
-		        {
-		            CharStats ADJSTAT1=(CharStats)CMClass.getCommon("DefaultCharStats");
-		            ADJSTAT1.setAllValues(0);
-		            CMLib.coffeeMaker().setCharStats(ADJSTAT1,R.getStat("ASTATS"));
-		            boolean save=false;
-		    		for(int i: CharStats.CODES.BASE())
-		    		{
-	    				if(ADJSTAT1.getStat(i)>5)
-	    				{
-	    					ADJSTAT1.setStat(i,5);
-	    					save=true;
-	    				}
-		    		}
-		    		if(save)
-		    		{
-			    		R.setStat("ASTATS",CMLib.coffeeMaker().getCharStatsStr(ADJSTAT1));
-			    		mob.tell("Modified "+R.ID());
-			    		CMLib.database().DBDeleteRace(R.ID());
-			    		CMLib.database().DBCreateRace(R.ID(),R.racialParms());
-		    		}
-		        }
-		    }
+			for(Enumeration e=CMClass.races();e.hasMoreElements();)
+			{
+				Race R=(Race)e.nextElement();
+				if(R.isGeneric())
+				{
+					CharStats ADJSTAT1=(CharStats)CMClass.getCommon("DefaultCharStats");
+					ADJSTAT1.setAllValues(0);
+					CMLib.coffeeMaker().setCharStats(ADJSTAT1,R.getStat("ASTATS"));
+					boolean save=false;
+					for(int i: CharStats.CODES.BASE())
+					{
+						if(ADJSTAT1.getStat(i)>5)
+						{
+							ADJSTAT1.setStat(i,5);
+							save=true;
+						}
+					}
+					if(save)
+					{
+						R.setStat("ASTATS",CMLib.coffeeMaker().getCharStatsStr(ADJSTAT1));
+						mob.tell("Modified "+R.ID());
+						CMLib.database().DBDeleteRace(R.ID());
+						CMLib.database().DBCreateRace(R.ID(),R.racialParms());
+					}
+				}
+			}
 		}
 		else
 		if(s.equalsIgnoreCase("genraceagingcharts")&&(CMSecurity.isAllowed(mob,mob.location(),"CMDRACES")))
 		{
-		    for(Enumeration e=CMClass.races();e.hasMoreElements();)
-		    {
-		        Race R=(Race)e.nextElement();
-		        Vector racesToBaseFrom=new Vector();
-		        Race human=CMClass.getRace("Human");
-		        Race halfling=CMClass.getRace("Halfling");
-		        if((R.isGeneric())&&(R.ID().length()>1)&&(!R.ID().endsWith("Race"))&&(Character.isUpperCase(R.ID().charAt(0))))
-		        {
-		            int lastStart=0;
-		            int c=1;
-		            while(c<=R.ID().length())
-		            {
-		                if((c==R.ID().length())||(Character.isUpperCase(R.ID().charAt(c))))
-		                {
-		                    if((lastStart==0)&&(c==R.ID().length())&&(!R.ID().endsWith("ling"))&&(!R.ID().startsWith("Half")))
-	                            break;
-		                    String partial=R.ID().substring(lastStart,c);
-		                    if(partial.equals("Half")&&(!racesToBaseFrom.contains(human)))
-		                    {
-		                        racesToBaseFrom.add(human);
-		                        lastStart=c;
-		                    }
-		                    else
-		                    {
-		                        Race R2=CMClass.getRace(partial);
-		                        if((R2!=null)&&(R2!=R))
-		                        {
-			                        racesToBaseFrom.add(R2);
-			                        lastStart=c;
-		                        }
-		                        else
-		                        if(partial.endsWith("ling"))
-		                        {
-		                            if(!racesToBaseFrom.contains(halfling))
-				                        racesToBaseFrom.add(halfling);
-			                        lastStart=c;
-		                            R2=CMClass.getRace(partial.substring(0,partial.length()-4));
-		                            if(R2!=null)
-				                        racesToBaseFrom.add(R2);
-		                        }
-		                    }
-		                    if(c==R.ID().length())
-		                        break;
-		                }
-	                    c++;
-		            }
-		            StringBuffer answer=new StringBuffer(R.ID()+": ");
-		            for(int i=0;i<racesToBaseFrom.size();i++)
-		                answer.append(((Race)racesToBaseFrom.elementAt(i)).ID()+" ");
-		            mob.tell(answer.toString());
-		            if(racesToBaseFrom.size()>0)
-		            {
-		                long[] ageChart=new long[Race.AGE_ANCIENT+1];
-		                for(int i=0;i<racesToBaseFrom.size();i++)
-		                {
-		                    Race R2=(Race)racesToBaseFrom.elementAt(i);
-		                    int lastVal=0;
-		                    for(int x=0;x<ageChart.length;x++)
-		                    {
-		                        int val=R2.getAgingChart()[x];
-		                        if(val>=Integer.MAX_VALUE)
-		                            val=lastVal+(x*1000);
-		                        ageChart[x]+=val;
-		                        lastVal=val;
-		                    }
-		                }
-	                    for(int x=0;x<ageChart.length;x++)
-	                        ageChart[x]=ageChart[x]/racesToBaseFrom.size();
-	                    int lastVal=0;
-	                    int thisVal=0;
-	                    for(int x=0;x<ageChart.length;x++)
-	                    {
-	                        lastVal=thisVal;
-	                        thisVal=(int)ageChart[x];
-	                        if(thisVal<lastVal)
-	                            thisVal+=lastVal;
-	                        R.getAgingChart()[x]=thisVal;
-	                    }
-	                    CMLib.database().DBDeleteRace(R.ID());
-	                    CMLib.database().DBCreateRace(R.ID(),R.racialParms());
-		            }
-		        }
-		    }
+			for(Enumeration e=CMClass.races();e.hasMoreElements();)
+			{
+				Race R=(Race)e.nextElement();
+				Vector racesToBaseFrom=new Vector();
+				Race human=CMClass.getRace("Human");
+				Race halfling=CMClass.getRace("Halfling");
+				if((R.isGeneric())&&(R.ID().length()>1)&&(!R.ID().endsWith("Race"))&&(Character.isUpperCase(R.ID().charAt(0))))
+				{
+					int lastStart=0;
+					int c=1;
+					while(c<=R.ID().length())
+					{
+						if((c==R.ID().length())||(Character.isUpperCase(R.ID().charAt(c))))
+						{
+							if((lastStart==0)&&(c==R.ID().length())&&(!R.ID().endsWith("ling"))&&(!R.ID().startsWith("Half")))
+								break;
+							String partial=R.ID().substring(lastStart,c);
+							if(partial.equals("Half")&&(!racesToBaseFrom.contains(human)))
+							{
+								racesToBaseFrom.add(human);
+								lastStart=c;
+							}
+							else
+							{
+								Race R2=CMClass.getRace(partial);
+								if((R2!=null)&&(R2!=R))
+								{
+									racesToBaseFrom.add(R2);
+									lastStart=c;
+								}
+								else
+								if(partial.endsWith("ling"))
+								{
+									if(!racesToBaseFrom.contains(halfling))
+										racesToBaseFrom.add(halfling);
+									lastStart=c;
+									R2=CMClass.getRace(partial.substring(0,partial.length()-4));
+									if(R2!=null)
+										racesToBaseFrom.add(R2);
+								}
+							}
+							if(c==R.ID().length())
+								break;
+						}
+						c++;
+					}
+					StringBuffer answer=new StringBuffer(R.ID()+": ");
+					for(int i=0;i<racesToBaseFrom.size();i++)
+						answer.append(((Race)racesToBaseFrom.elementAt(i)).ID()+" ");
+					mob.tell(answer.toString());
+					if(racesToBaseFrom.size()>0)
+					{
+						long[] ageChart=new long[Race.AGE_ANCIENT+1];
+						for(int i=0;i<racesToBaseFrom.size();i++)
+						{
+							Race R2=(Race)racesToBaseFrom.elementAt(i);
+							int lastVal=0;
+							for(int x=0;x<ageChart.length;x++)
+							{
+								int val=R2.getAgingChart()[x];
+								if(val>=Integer.MAX_VALUE)
+									val=lastVal+(x*1000);
+								ageChart[x]+=val;
+								lastVal=val;
+							}
+						}
+						for(int x=0;x<ageChart.length;x++)
+							ageChart[x]=ageChart[x]/racesToBaseFrom.size();
+						int lastVal=0;
+						int thisVal=0;
+						for(int x=0;x<ageChart.length;x++)
+						{
+							lastVal=thisVal;
+							thisVal=(int)ageChart[x];
+							if(thisVal<lastVal)
+								thisVal+=lastVal;
+							R.getAgingChart()[x]=thisVal;
+						}
+						CMLib.database().DBDeleteRace(R.ID());
+						CMLib.database().DBCreateRace(R.ID(),R.racialParms());
+					}
+				}
+			}
 		}
 		else
 		if(s.equalsIgnoreCase("bankdata")&&(CMSecurity.isASysOp(mob)))
@@ -598,37 +598,37 @@ public class Reset extends StdCommand
 			else
 			if(s.toUpperCase().startsWith("AREA"))
 			{
-			    try
-			    {
+				try
+				{
 					for(Enumeration e=mob.location().getArea().getCompleteMap();e.hasMoreElements();)
 						rooms.addElement(e.nextElement());
-			    }catch(NoSuchElementException nse){}
+				}catch(NoSuchElementException nse){}
 			}
 			else
 			if(s.toUpperCase().startsWith("CATALOG"))
 			{
-			    try
-			    {
-			    	MOB[] mobs=CMLib.catalog().getCatalogMobs();
-			    	for(int m=0;m<mobs.length;m++)
-			    	{
-			    		MOB M=mobs[m];
-			    		if(fixMob(M,recordedChanges))
-			    		{
+				try
+				{
+					MOB[] mobs=CMLib.catalog().getCatalogMobs();
+					for(int m=0;m<mobs.length;m++)
+					{
+						MOB M=mobs[m];
+						if(fixMob(M,recordedChanges))
+						{
 							mob.tell("Catalog mob "+M.Name()+" done.");
-			    			CMLib.catalog().updateCatalog(M);
-			    		}
-			    	}
-			    }catch(NoSuchElementException nse){}
+							CMLib.catalog().updateCatalog(M);
+						}
+					}
+				}catch(NoSuchElementException nse){}
 			}
 			else
 			if(s.toUpperCase().startsWith("WORLD"))
 			{
-			    try
-			    {
-			    	for(Enumeration e=CMLib.map().areas();e.hasMoreElements();)
-			    	{
-			    		Area A=(Area)e.nextElement();
+				try
+				{
+					for(Enumeration e=CMLib.map().areas();e.hasMoreElements();)
+					{
+						Area A=(Area)e.nextElement();
 						boolean skip=false;
 						for(int i=1;i<commands.size();i++)
 							if(((String)commands.elementAt(i)).equalsIgnoreCase(A.Name())||rest.equalsIgnoreCase(A.Name()))
@@ -637,10 +637,10 @@ public class Reset extends StdCommand
 								break;
 							}
 						if(skip) continue;
-			    		for(Enumeration r=A.getCompleteMap();r.hasMoreElements();)
+						for(Enumeration r=A.getCompleteMap();r.hasMoreElements();)
 							rooms.addElement(r.nextElement());
-			    	}
-			    }catch(NoSuchElementException nse){}
+					}
+				}catch(NoSuchElementException nse){}
 			}
 			else
 			{
@@ -653,10 +653,10 @@ public class Reset extends StdCommand
 			{
 				Room R=CMLib.map().getRoom((Room)r.nextElement());
 				if(R!=null)
-		    	synchronized(("SYNC"+R.roomID()).intern())
-		    	{
-		    		R=CMLib.map().getRoom(R);
-		    		if(R==null) continue;
+				synchronized(("SYNC"+R.roomID()).intern())
+				{
+					R=CMLib.map().getRoom(R);
+					if(R==null) continue;
 					if((recordedChanges!=null)&&(recordedChanges.length()>0))
 					{
 						mob.session().rawOut(recordedChanges.toString());
@@ -678,9 +678,9 @@ public class Reset extends StdCommand
 						mob.tell("Room "+R.roomID()+" done.");
 						CMLib.database().DBUpdateMOBs(R);
 					}
-                    if(R.getArea().getAreaState()>Area.STATE_ACTIVE)
-    					R.getArea().setAreaState(Area.STATE_ACTIVE);
-		    	}
+					if(R.getArea().getAreaState()>Area.STATE_ACTIVE)
+						R.getArea().setAreaState(Area.STATE_ACTIVE);
+				}
 				if(recordedChanges==null)
 					mob.session().print(".");
 			}
@@ -717,7 +717,7 @@ public class Reset extends StdCommand
 					}
 					mob.session().print(".");
 				}
-		    }catch(NoSuchElementException nse){}
+			}catch(NoSuchElementException nse){}
 			mob.session().println("done!");
 		}
 		else
@@ -733,9 +733,9 @@ public class Reset extends StdCommand
 				{
 					Room R=(Room)r.nextElement();
 					if(R.roomID().length()==0) continue;
-			    	synchronized(("SYNC"+R.roomID()).intern())
-			    	{
-			    		R=CMLib.map().getRoom(R);
+					synchronized(("SYNC"+R.roomID()).intern())
+					{
+						R=CMLib.map().getRoom(R);
 						CMLib.map().resetRoom(R, true);
 						boolean didSomething=false;
 						for(int i=0;i<R.numInhabitants();i++)
@@ -757,7 +757,7 @@ public class Reset extends StdCommand
 						mob.session().print(".");
 						if(didSomething)
 							CMLib.database().DBUpdateMOBs(R);
-			    	}
+					}
 				}
 				if(A.getAreaState()>Area.STATE_ACTIVE) A.setAreaState(Area.STATE_ACTIVE);
 			}
@@ -776,9 +776,9 @@ public class Reset extends StdCommand
 				{
 					Room R=(Room)r.nextElement();
 					if(R.roomID().length()==0) continue;
-			    	synchronized(("SYNC"+R.roomID()).intern())
-			    	{
-			    		R=CMLib.map().getRoom(R);
+					synchronized(("SYNC"+R.roomID()).intern())
+					{
+						R=CMLib.map().getRoom(R);
 						CMLib.map().resetRoom(R, true);
 						boolean didSomething=false;
 						for(int i=0;i<R.numInhabitants();i++)
@@ -796,7 +796,7 @@ public class Reset extends StdCommand
 						mob.session().print(".");
 						if(didSomething)
 							CMLib.database().DBUpdateMOBs(R);
-			    	}
+					}
 				}
 				if(A.getAreaState()>Area.STATE_ACTIVE) A.setAreaState(Area.STATE_ACTIVE);
 			}
@@ -882,9 +882,9 @@ public class Reset extends StdCommand
 					Room R=(Room)r.nextElement();
 					if(R.roomID().length()>0)
 					{
-				    	synchronized(("SYNC"+R.roomID()).intern())
-				    	{
-				    		R=CMLib.map().getRoom(R);
+						synchronized(("SYNC"+R.roomID()).intern())
+						{
+							R=CMLib.map().getRoom(R);
 							CMLib.map().resetRoom(R, true);
 							boolean changedMOBS=false;
 							boolean changedItems=false;
@@ -900,9 +900,9 @@ public class Reset extends StdCommand
 								ShopKeeper SK=CMLib.coffeeShops().getShopKeeper(M);
 								if(SK!=null)
 								{
-						            for(Iterator<Environmental> i=SK.getShop().getStoreInventory();i.hasNext();)
-						            {
-						                Environmental E=(Environmental)i.next();
+									for(Iterator<Environmental> i=SK.getShop().getStoreInventory();i.hasNext();)
+									{
+										Environmental E=(Environmental)i.next();
 										if(E instanceof Item)
 										{
 											Item I=(Item)E;
@@ -954,37 +954,37 @@ public class Reset extends StdCommand
 			else
 			if(s.toUpperCase().startsWith("AREA"))
 			{
-			    try
-			    {
+				try
+				{
 					for(Enumeration e=mob.location().getArea().getCompleteMap();e.hasMoreElements();)
 						rooms.addElement(e.nextElement());
-			    }catch(NoSuchElementException nse){}
+				}catch(NoSuchElementException nse){}
 			}
 			else
 			if(s.toUpperCase().startsWith("CATALOG"))
 			{
-			    try
-			    {
-			    	Item[] items=CMLib.catalog().getCatalogItems();
-			    	for(int i=0;i<items.length;i++)
-			    	{
-			    		Item I=items[i];
-			    		if(CMLib.itemBuilder().itemFix(I,-1,recordedChanges))
-			    		{
+				try
+				{
+					Item[] items=CMLib.catalog().getCatalogItems();
+					for(int i=0;i<items.length;i++)
+					{
+						Item I=items[i];
+						if(CMLib.itemBuilder().itemFix(I,-1,recordedChanges))
+						{
 							mob.tell("Catalog item "+I.Name()+" done.");
-			    			CMLib.catalog().updateCatalog(I);
-			    		}
-			    	}
-			    }catch(NoSuchElementException nse){}
+							CMLib.catalog().updateCatalog(I);
+						}
+					}
+				}catch(NoSuchElementException nse){}
 			}
 			else
 			if(s.toUpperCase().startsWith("WORLD"))
 			{
-			    try
-			    {
-			    	for(Enumeration e=CMLib.map().areas();e.hasMoreElements();)
-			    	{
-			    		Area A=(Area)e.nextElement();
+				try
+				{
+					for(Enumeration e=CMLib.map().areas();e.hasMoreElements();)
+					{
+						Area A=(Area)e.nextElement();
 						boolean skip=false;
 						for(int i=1;i<commands.size();i++)
 							if(((String)commands.elementAt(i)).equalsIgnoreCase(A.Name())||rest.equalsIgnoreCase(A.Name()))
@@ -994,10 +994,10 @@ public class Reset extends StdCommand
 								break;
 							}
 						if(skip) continue;
-			    		for(Enumeration r=A.getCompleteMap();r.hasMoreElements();)
+						for(Enumeration r=A.getCompleteMap();r.hasMoreElements();)
 							rooms.addElement(r.nextElement());
-			    	}
-			    }catch(NoSuchElementException nse){}
+					}
+				}catch(NoSuchElementException nse){}
 			}
 			else
 			{
@@ -1017,10 +1017,10 @@ public class Reset extends StdCommand
 					mob.session().rawOut(recordedChanges.toString());
 					recordedChanges.setLength(0);
 				}
-		    	synchronized(("SYNC"+R.roomID()).intern())
-		    	{
-		    		
-		    		R=CMLib.map().getRoom(R);
+				synchronized(("SYNC"+R.roomID()).intern())
+				{
+					
+					R=CMLib.map().getRoom(R);
 					CMLib.map().resetRoom(R, true);
 					boolean changedMOBS=false;
 					boolean changedItems=false;
@@ -1048,9 +1048,9 @@ public class Reset extends StdCommand
 						ShopKeeper SK=CMLib.coffeeShops().getShopKeeper(M);
 						if(SK!=null)
 						{
-				            for(Iterator<Environmental> i=SK.getShop().getStoreInventory();i.hasNext();)
-				            {
-				                Environmental E=(Environmental)i.next();
+							for(Iterator<Environmental> i=SK.getShop().getStoreInventory();i.hasNext();)
+							{
+								Environmental E=(Environmental)i.next();
 								if(E instanceof Item)
 								{
 									Item I=(Item)E;
@@ -1074,44 +1074,44 @@ public class Reset extends StdCommand
 						CMLib.database().DBUpdateMOBs(R);
 					if(recordedChanges==null)
 						mob.session().print(".");
-		    	}
+				}
 				if(A.getAreaState()>Area.STATE_ACTIVE) A.setAreaState(Area.STATE_ACTIVE);
 			}
 			if((recordedChanges!=null)&&(recordedChanges.length()>0))
 				mob.session().rawOut(recordedChanges.toString());
 			mob.session().println("done!");
 		}
-        else
+		else
 		if(s.startsWith("clantick"))
 			CMLib.clans().tickAllClans();
 		else
 		if(s.equalsIgnoreCase("VISITATION"))
 		{
-		    try
-		    {
+			try
+			{
 				if(commands.size()>1) s=(String)commands.elementAt(1);
-		    	boolean area=false;
-		    	if(s.equalsIgnoreCase("AREA"))
-		    	{
-		    		area=true;
+				boolean area=false;
+				if(s.equalsIgnoreCase("AREA"))
+				{
+					area=true;
 					if(commands.size()>2) s=(String)commands.elementAt(2);
-		    	}
-		    	MOB M=CMLib.players().getLoadPlayer(s);
-		    	if((M!=null)&&(M.playerStats()!=null))
-		    	{
-		    		if(area)
-			    		M.playerStats().unVisit(M.location().getArea());
-		    		else
-			    		M.playerStats().unVisit(M.location());
-		    	}
-		    }catch(NoSuchElementException nse){}
+				}
+				MOB M=CMLib.players().getLoadPlayer(s);
+				if((M!=null)&&(M.playerStats()!=null))
+				{
+					if(area)
+						M.playerStats().unVisit(M.location().getArea());
+					else
+						M.playerStats().unVisit(M.location());
+				}
+			}catch(NoSuchElementException nse){}
 		}
-        else
+		else
 		if(s.equalsIgnoreCase("arearacemat")&&(CMSecurity.isASysOp(mob)))
 		{
 			// this is just utility code and will change frequently
 			Area A=mob.location().getArea();
-            CMLib.map().resetArea(A);
+			CMLib.map().resetArea(A);
 			A.setAreaState(Area.STATE_FROZEN);
 			Hashtable rememberI=new Hashtable();
 			Hashtable rememberM=new Hashtable();
@@ -1120,9 +1120,9 @@ public class Reset extends StdCommand
 			{
 				Room R=(Room)r.nextElement();
 				if(R.roomID().length()>0)
-		    	synchronized(("SYNC"+R.roomID()).intern())
-		    	{
-		    		R=CMLib.map().getRoom(R);
+				synchronized(("SYNC"+R.roomID()).intern())
+				{
+					R=CMLib.map().getRoom(R);
 					CMLib.map().resetRoom(R, true);
 					boolean somethingDone=false;
 					mob.tell(R.roomID()+"/"+R.name()+"/"+R.displayText()+"--------------------");
@@ -1239,9 +1239,9 @@ public class Reset extends StdCommand
 						ShopKeeper SK=CMLib.coffeeShops().getShopKeeper(M);
 						if(SK!=null)
 						{
-				            for(Iterator<Environmental> i=SK.getShop().getStoreInventory();i.hasNext();)
-				            {
-				                Environmental E=(Environmental)i.next();
+							for(Iterator<Environmental> i=SK.getShop().getStoreInventory();i.hasNext();)
+							{
+								Environmental E=(Environmental)i.next();
 								if(E instanceof Item)
 								{
 									Item I=(Item)E;

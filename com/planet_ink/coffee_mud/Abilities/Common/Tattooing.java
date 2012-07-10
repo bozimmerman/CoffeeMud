@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -39,7 +39,7 @@ public class Tattooing extends CommonSkill
 	public String ID() { return "Tattooing"; }
 	public String name(){ return "Tattooing";}
 	private static final String[] triggerStrings = {"TATTOO","TATTOOING"};
-    public int classificationCode() {   return Ability.ACODE_COMMON_SKILL|Ability.DOMAIN_ARTISTIC; }
+	public int classificationCode() {   return Ability.ACODE_COMMON_SKILL|Ability.DOMAIN_ARTISTIC; }
 	public String[] triggerStrings(){return triggerStrings;}
 	protected String writing="";
 	MOB target=null;
@@ -62,7 +62,7 @@ public class Tattooing extends CommonSkill
 				else
 				{
 					commonEmote(mob,"<S-NAME> complete(s) the tattoo on "+target.name()+".");
-				    target.addTattoo(new MOB.Tattoo(writing));
+					target.addTattoo(new MOB.Tattoo(writing));
 				}
 			}
 		}
@@ -100,31 +100,31 @@ public class Tattooing extends CommonSkill
 		int partNum=-1;
 		StringBuffer allParts=new StringBuffer("");
 		long[] tattoable={Wearable.WORN_ARMS,
-		        		  Wearable.WORN_LEGS,
-		        		  Wearable.WORN_HANDS,
-		        		  Wearable.WORN_HEAD,
-		        		  Wearable.WORN_FEET,
-		        		  Wearable.WORN_LEFT_WRIST,
-		        		  Wearable.WORN_RIGHT_WRIST,
-		        		  Wearable.WORN_NECK,
-		        		  Wearable.WORN_BACK,
-		        		  Wearable.WORN_TORSO};
+						  Wearable.WORN_LEGS,
+						  Wearable.WORN_HANDS,
+						  Wearable.WORN_HEAD,
+						  Wearable.WORN_FEET,
+						  Wearable.WORN_LEFT_WRIST,
+						  Wearable.WORN_RIGHT_WRIST,
+						  Wearable.WORN_NECK,
+						  Wearable.WORN_BACK,
+						  Wearable.WORN_TORSO};
 		Wearable.CODES codes = Wearable.CODES.instance();
 		for(int i=0;i<codes.total();i++)
 		{
-		    for(int ii=0;ii<tattoable.length;ii++)
-		        if(codes.get(i)==tattoable[ii])
-		        {
-				    if(codes.name(i).equalsIgnoreCase(part))
-				        partNum=i;
-				    allParts.append(", "+CMStrings.capitalizeAndLower(codes.name(i).toLowerCase()));
-				    break;
-			    }
+			for(int ii=0;ii<tattoable.length;ii++)
+				if(codes.get(i)==tattoable[ii])
+				{
+					if(codes.name(i).equalsIgnoreCase(part))
+						partNum=i;
+					allParts.append(", "+CMStrings.capitalizeAndLower(codes.name(i).toLowerCase()));
+					break;
+				}
 		}
 		if(partNum<0)
 		{
-		    commonTell(mob,"'"+part+"' is not a valid location.  Valid locations include: "+allParts.toString().substring(2));
-		    return false;
+			commonTell(mob,"'"+part+"' is not a valid location.  Valid locations include: "+allParts.toString().substring(2));
+			return false;
 		}
 		long wornCode=codes.get(partNum);
 		String wornName=codes.name(partNum);
@@ -134,40 +134,40 @@ public class Tattooing extends CommonSkill
 
 		if(target.getWearPositions(wornCode)<=0)
 		{
-		    commonTell(mob,"That location is not available for tattooing.");
-		    return false;
+			commonTell(mob,"That location is not available for tattooing.");
+			return false;
 		}
 		if(target.freeWearPositions(wornCode,(short)(Short.MIN_VALUE+1),(short)0)<=0)
 		{
-		    commonTell(mob,"That location is currently covered by something.");
-		    return false;
+			commonTell(mob,"That location is currently covered by something.");
+			return false;
 		}
 		
-	    int numTattsDone=0;
-	    MOB.Tattoo tatToRemove=null;
-        for(Enumeration<MOB.Tattoo> e=target.tattoos();e.hasMoreElements();)
-        {
-            MOB.Tattoo T=e.nextElement();
-		    if(T.tattooName.startsWith(wornName.toUpperCase()+":"))
-		    {
-	            numTattsDone++;
-	            if(T.tattooName.substring(wornName.length()+1).toUpperCase().startsWith("A TATTOO OF"))
-		            tatToRemove=T;
-		    }
+		int numTattsDone=0;
+		MOB.Tattoo tatToRemove=null;
+		for(Enumeration<MOB.Tattoo> e=target.tattoos();e.hasMoreElements();)
+		{
+			MOB.Tattoo T=e.nextElement();
+			if(T.tattooName.startsWith(wornName.toUpperCase()+":"))
+			{
+				numTattsDone++;
+				if(T.tattooName.substring(wornName.length()+1).toUpperCase().startsWith("A TATTOO OF"))
+					tatToRemove=T;
+			}
 		}
 		if("REMOVE".startsWith(message.toUpperCase()))
 		{
-		    if(tatToRemove==null)
-		    {
-			    commonTell(mob,"There is no tattoo there to remove.");
-			    return false;
-		    }
+			if(tatToRemove==null)
+			{
+				commonTell(mob,"There is no tattoo there to remove.");
+				return false;
+			}
 		}
 		else
 		if(numTattsDone>=target.getWearPositions(codes.get(partNum)))
 		{
-		    commonTell(mob,"That location is already completely decorated.");
-		    return false;
+			commonTell(mob,"That location is already completely decorated.");
+			return false;
 		}
 		
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
@@ -179,14 +179,14 @@ public class Tattooing extends CommonSkill
 		int duration=getDuration(35,mob,1,6);
 		String str="<S-NAME> start(s) tattooing "+message+" on <T-YOUPOSS> "+wornName.toLowerCase()+".";
 		if("REMOVE".startsWith(message.toUpperCase()))
-		    str="<S-NAME> remove(s) the tattoo on <T-YOUPOSS> "+wornName.toLowerCase()+".";
+			str="<S-NAME> remove(s) the tattoo on <T-YOUPOSS> "+wornName.toLowerCase()+".";
 		
 		CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_NOISYMOVEMENT,str);
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);
 			if("REMOVE".startsWith(message.toUpperCase()))
-			    target.delTattoo(tatToRemove);
+				target.delTattoo(tatToRemove);
 			else
 			{
 				beneficialAffect(mob,mob,asLevel,duration);

@@ -23,7 +23,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -44,10 +44,10 @@ public class Config extends StdCommand
 		StringBuffer msg=new StringBuffer("^HYour configuration flags:^?\n\r");
 		for(int i=0;i<MOB.AUTODESC.length;i++)
 		{
-            if((MOB.AUTODESC[i].equalsIgnoreCase("SYSMSGS"))&&(!(CMSecurity.isAllowed(mob,mob.location(),"SYSMSGS"))))
-                continue;
-            if((MOB.AUTODESC[i].equalsIgnoreCase("AUTOMAP"))&&(CMProps.getIntVar(CMProps.SYSTEMI_AWARERANGE)<=0))
-              continue;
+			if((MOB.AUTODESC[i].equalsIgnoreCase("SYSMSGS"))&&(!(CMSecurity.isAllowed(mob,mob.location(),"SYSMSGS"))))
+				continue;
+			if((MOB.AUTODESC[i].equalsIgnoreCase("AUTOMAP"))&&(CMProps.getIntVar(CMProps.SYSTEMI_AWARERANGE)<=0))
+			  continue;
 			
 			msg.append(CMStrings.padRight(MOB.AUTODESC[i],15)+": ");
 			boolean set=CMath.isSet(mob.getBitmap(),i);
@@ -55,10 +55,10 @@ public class Config extends StdCommand
 			msg.append(set?"ON":"OFF");
 			msg.append("\n\r");
 		}
-	    String wrap=(mob.playerStats().getWrap()!=0)?(""+mob.playerStats().getWrap()):"Disabled";
+		String wrap=(mob.playerStats().getWrap()!=0)?(""+mob.playerStats().getWrap()):"Disabled";
 		msg.append(CMStrings.padRight("LINEWRAP",15)+": "+wrap);
 		msg.append("\n\r");
-	    String pageBreak=(mob.playerStats().getPageBreak()!=0)?(""+mob.playerStats().getPageBreak()):"Disabled";
+		String pageBreak=(mob.playerStats().getPageBreak()!=0)?(""+mob.playerStats().getPageBreak()):"Disabled";
 		msg.append(CMStrings.padRight("PAGEBREAK",15)+": "+pageBreak);
 		msg.append("\n\r");
 		mob.tell(msg.toString());

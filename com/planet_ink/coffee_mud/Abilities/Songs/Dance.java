@@ -25,7 +25,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -45,11 +45,11 @@ public class Dance extends StdAbility
 	public String[] triggerStrings(){return triggerStrings;}
 	public int classificationCode(){return Ability.ACODE_SONG|Ability.DOMAIN_DANCING;}
 	public int usageType(){return USAGE_MOVEMENT;}
-    public int maxRange(){return adjustedMaxInvokerRange(2);}
+	public int maxRange(){return adjustedMaxInvokerRange(2);}
 	protected int invokerManaCost=-1;
-    protected long timeOut=0;
-    protected Vector commonRoomSet=null;
-    protected Room originRoom=null;
+	protected long timeOut=0;
+	protected Vector commonRoomSet=null;
+	protected Room originRoom=null;
 
 	protected boolean skipStandardDanceInvoke(){return false;}
 	protected boolean mindAttack(){return abstractQuality()==Ability.QUALITY_MALICIOUS;}
@@ -57,15 +57,15 @@ public class Dance extends StdAbility
 	protected boolean maliciousButNotAggressiveFlag(){return false;}
 	protected String danceOf(){return name();}
 
-    protected boolean HAS_QUANTITATIVE_ASPECT(){return true;}
-    
+	protected boolean HAS_QUANTITATIVE_ASPECT(){return true;}
+	
 	public int adjustedLevel(MOB mob, int asLevel)
 	{
-        int level=super.adjustedLevel(mob,asLevel);
-        int charisma=(invoker().charStats().getStat(CharStats.STAT_CHARISMA)-10);
-        if(charisma>0)
-            return level+(charisma/3);
-        return level;
+		int level=super.adjustedLevel(mob,asLevel);
+		int charisma=(invoker().charStats().getStat(CharStats.STAT_CHARISMA)-10);
+		if(charisma>0)
+			return level+(charisma/3);
+		return level;
 	}
 
 	public boolean tick(Tickable ticking, int tickID)
@@ -88,9 +88,9 @@ public class Dance extends StdAbility
 		&&(mob.isMonster())
 		&&(!mob.isInCombat())
 		&&(CMLib.flags().aliveAwakeMobile(mob,true))
-        &&(mob.amFollowing()==null)
-        &&((!(mob instanceof Rideable))||(((Rideable)mob).numRiders()==0))
-        &&(!CMLib.flags().isATrackingMonster(mob)))
+		&&(mob.amFollowing()==null)
+		&&((!(mob instanceof Rideable))||(((Rideable)mob).numRiders()==0))
+		&&(!CMLib.flags().isATrackingMonster(mob)))
 		{
 			if((mob.location()!=originRoom)
 			&&(CMLib.flags().isMobile(mob)))
@@ -176,30 +176,30 @@ public class Dance extends StdAbility
 		return true;
 	}
 
-    protected Vector getInvokerScopeRoomSet(MOB backupMob)
-    {
-    	if((invoker()==null)
-    	||(invoker().location()==null))
-        {
-    		if((backupMob!=null)&&(backupMob.location()!=null))
-	    		 return new XVector(backupMob.location());
+	protected Vector getInvokerScopeRoomSet(MOB backupMob)
+	{
+		if((invoker()==null)
+		||(invoker().location()==null))
+		{
+			if((backupMob!=null)&&(backupMob.location()!=null))
+				 return new XVector(backupMob.location());
 			return new Vector();
-        }
-    	int depth=super.getXMAXRANGELevel(invoker());
-    	if(depth==0) return new XVector(invoker().location());
-    	Vector rooms=new Vector();
-        // needs to be area-only, because of the aggro-tracking rule
+		}
+		int depth=super.getXMAXRANGELevel(invoker());
+		if(depth==0) return new XVector(invoker().location());
+		Vector rooms=new Vector();
+		// needs to be area-only, because of the aggro-tracking rule
 		TrackingLibrary.TrackingFlags flags;
 		flags = new TrackingLibrary.TrackingFlags()
 				.plus(TrackingLibrary.TrackingFlag.OPENONLY)
 				.plus(TrackingLibrary.TrackingFlag.AREAONLY)
 				.plus(TrackingLibrary.TrackingFlag.NOAIR);
-    	CMLib.tracking().getRadiantRooms(invoker().location(), rooms, flags, null, depth, null);
-    	if(!rooms.contains(invoker().location()))
-    		rooms.addElement(invoker().location());
-    	return rooms;
-    }
-    
+		CMLib.tracking().getRadiantRooms(invoker().location(), rooms, flags, null, depth, null);
+		if(!rooms.contains(invoker().location()))
+			rooms.addElement(invoker().location());
+		return rooms;
+	}
+	
 	protected int getCorrectDirToOriginRoom(Room R, int v)
 	{
 		if(v<0) return -1;
@@ -281,23 +281,23 @@ public class Dance extends StdAbility
 		super.executeMsg(host,msg);
 	}
 
-    public int castingQuality(MOB mob, Physical target)
-    {
-        if(mob!=null)
-        {
-    		for(final Enumeration<Ability> a=mob.effects();a.hasMoreElements();)
-    		{
-    			final Ability A=a.nextElement();
-                if(A instanceof Dance)
-                    return Ability.QUALITY_INDIFFERENT;
-    		}
-        }
-        return super.castingQuality(mob,target);
-    }
+	public int castingQuality(MOB mob, Physical target)
+	{
+		if(mob!=null)
+		{
+			for(final Enumeration<Ability> a=mob.effects();a.hasMoreElements();)
+			{
+				final Ability A=a.nextElement();
+				if(A instanceof Dance)
+					return Ability.QUALITY_INDIFFERENT;
+			}
+		}
+		return super.castingQuality(mob,target);
+	}
 
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-        timeOut=0;
+		timeOut=0;
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 

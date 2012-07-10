@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -58,7 +58,7 @@ public class Channel extends StdCommand
 			boolean systemMsg=((Boolean)commands.firstElement()).booleanValue();
 			String channelName=(String)commands.elementAt(1);
 			String message=(String)commands.elementAt(2);
-            CMLib.channels().reallyChannel(mob,channelName,message,systemMsg);
+			CMLib.channels().reallyChannel(mob,channelName,message,systemMsg);
 			return true;
 		}
 		return channel(mob, commands, false);
@@ -113,15 +113,15 @@ public class Channel extends StdCommand
 			mob.tell("This channel is not available to you.");
 			return false;
 		}
-        
+		
 		Set<ChannelsLibrary.ChannelFlag> flags=CMLib.channels().getChannelFlags(channelInt);
 		if((mob.getClanID().equalsIgnoreCase("")||(!CMLib.clans().authCheck(mob.getClanID(), mob.getClanRole(), Clan.Function.CHANNEL)))
-        &&(flags.contains(ChannelsLibrary.ChannelFlag.CLANONLY)||flags.contains(ChannelsLibrary.ChannelFlag.CLANALLYONLY)))
+		&&(flags.contains(ChannelsLibrary.ChannelFlag.CLANONLY)||flags.contains(ChannelsLibrary.ChannelFlag.CLANALLYONLY)))
 		{
-            mob.tell("You can't talk to your clan - you don't have one.");
-            return false;
+			mob.tell("You can't talk to your clan - you don't have one.");
+			return false;
 		}
-        
+		
 		if((commands.size()==2)
 		&&(mob.session()!=null)
 		&&(((String)commands.firstElement()).equalsIgnoreCase("last"))
@@ -164,23 +164,23 @@ public class Channel extends StdCommand
 			}
 		}
 		else
-        if(flags.contains(ChannelsLibrary.ChannelFlag.READONLY))
-        {
-            mob.tell("This channel is read-only.");
-            return false;
-        }
-        else
-        if(flags.contains(ChannelsLibrary.ChannelFlag.PLAYERREADONLY)&&(!mob.isMonster()))
-        {
-            mob.tell("This channel is read-only.");
-            return false;
-        }
-        else
-            CMLib.channels().reallyChannel(mob,channelName,CMParms.combine(commands,0),systemMsg);
+		if(flags.contains(ChannelsLibrary.ChannelFlag.READONLY))
+		{
+			mob.tell("This channel is read-only.");
+			return false;
+		}
+		else
+		if(flags.contains(ChannelsLibrary.ChannelFlag.PLAYERREADONLY)&&(!mob.isMonster()))
+		{
+			mob.tell("This channel is read-only.");
+			return false;
+		}
+		else
+			CMLib.channels().reallyChannel(mob,channelName,CMParms.combine(commands,0),systemMsg);
 		return false;
 	}
 
 	
 	public boolean canBeOrdered(){return true;}
-    public double combatActionsCost(final MOB mob, final List<String> cmds){return CMProps.getCombatActionCost(ID());}
+	public double combatActionsCost(final MOB mob, final List<String> cmds){return CMProps.getCombatActionCost(ID());}
 }

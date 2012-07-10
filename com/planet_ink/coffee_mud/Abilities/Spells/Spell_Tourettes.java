@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -59,7 +59,7 @@ public class Spell_Tourettes extends Spell implements DiseaseAffect
 		if(canBeUninvoked())
 			if((mob.location()!=null)&&(!mob.amDead()))
 			{
-			    spreadImmunity(mob);
+				spreadImmunity(mob);
 				mob.tell("You feel more polite.");
 			}
 	}
@@ -129,7 +129,7 @@ public class Spell_Tourettes extends Spell implements DiseaseAffect
 						maliciousAffect(invoker,target,0,0,-1);
 					}
 					else
-					    spreadImmunity(target);
+						spreadImmunity(target);
 				}
 			}
 		}
@@ -176,7 +176,7 @@ public class Spell_Tourettes extends Spell implements DiseaseAffect
 					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> feel(s) different somehow...");
 				}
 				else
-				    spreadImmunity(target);
+					spreadImmunity(target);
 			}
 		}
 		else

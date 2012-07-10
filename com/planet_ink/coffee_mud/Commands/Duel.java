@@ -26,7 +26,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -68,7 +68,7 @@ public class Duel extends StdCommand
 		if((mob.isMonster()))
 			mob.tell("You are not allowed to duel "+target.name()+".");
 		else
-        {
+		{
 			Tattoo uiT=target.findTattoo("IDUEL");
 			Tattoo uuT=target.findTattoo("UDUEL");
 			Tattoo iiT=mob.findTattoo("IDUEL");
@@ -87,24 +87,24 @@ public class Duel extends StdCommand
 			if((uiT != null)&&(iuT != null))
 			{
 				target.tell(mob,target,null,"^X<T-NAME> <T-HAS-HAVE> ACCEPTED <T-YOUPOSS> CHALLENGE!^.^N");
-	            Item weapon=mob.fetchWieldedItem();
-	            if(weapon==null)
-	            {
-	                Item possibleOtherWeapon=mob.fetchHeldItem();
-	                if((possibleOtherWeapon!=null)
-	                &&(possibleOtherWeapon instanceof Weapon)
-	                &&possibleOtherWeapon.fitsOn(Wearable.WORN_WIELD)
-	                &&(CMLib.flags().canBeSeenBy(possibleOtherWeapon,mob))
-	                &&(CMLib.flags().isRemovable(possibleOtherWeapon)))
-	                {
-	                    CMLib.commands().postRemove(mob,possibleOtherWeapon,false);
-	                    if(possibleOtherWeapon.amWearingAt(Wearable.IN_INVENTORY))
-	                    {
-	                        Command C=CMClass.getCommand("Wield");
-	                        if(C!=null) C.execute(mob,new XVector("WIELD",possibleOtherWeapon),metaFlags);
-	                    }
-	                }
-	            }
+				Item weapon=mob.fetchWieldedItem();
+				if(weapon==null)
+				{
+					Item possibleOtherWeapon=mob.fetchHeldItem();
+					if((possibleOtherWeapon!=null)
+					&&(possibleOtherWeapon instanceof Weapon)
+					&&possibleOtherWeapon.fitsOn(Wearable.WORN_WIELD)
+					&&(CMLib.flags().canBeSeenBy(possibleOtherWeapon,mob))
+					&&(CMLib.flags().isRemovable(possibleOtherWeapon)))
+					{
+						CMLib.commands().postRemove(mob,possibleOtherWeapon,false);
+						if(possibleOtherWeapon.amWearingAt(Wearable.IN_INVENTORY))
+						{
+							Command C=CMClass.getCommand("Wield");
+							if(C!=null) C.execute(mob,new XVector("WIELD",possibleOtherWeapon),metaFlags);
+						}
+					}
+				}
 				Ability A=CMClass.getAbility("Dueler");
 				if(A!=null) A.invoke(target, mob, true, 0);
 			}
@@ -128,11 +128,11 @@ public class Duel extends StdCommand
 				mob.tell(mob,target,null,"Your previous challenge has not yet expired.  Please wait "+(time/1000)+" seconds longer and try again.");
 				return false;
 			}
-        }
+		}
 		return false;
 	}
-    public double combatActionsCost(final MOB mob, final List<String> cmds){return CMProps.getCombatActionCost(ID());}
-    public double actionsCost(final MOB mob, final List<String> cmds){return CMProps.getActionCost(ID());}
+	public double combatActionsCost(final MOB mob, final List<String> cmds){return CMProps.getCombatActionCost(ID());}
+	public double actionsCost(final MOB mob, final List<String> cmds){return CMProps.getActionCost(ID());}
 	public boolean canBeOrdered(){return true;}
 
 	

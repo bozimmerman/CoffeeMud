@@ -23,7 +23,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -53,9 +53,9 @@ public class Who extends StdCommand
 		msg.append("[");
 		if(!CMSecurity.isDisabled(CMSecurity.DisFlag.RACES))
 		{
-		    if(who.charStats().getCurrentClass().raceless())
+			if(who.charStats().getCurrentClass().raceless())
 				msg.append(CMStrings.padRight(" ",12)+" ");
-		    else
+			else
 				msg.append(CMStrings.padRight(who.charStats().raceName(),12)+" ");
 		}
 		String levelStr=who.charStats().displayClassLevel(who,true).trim();
@@ -63,17 +63,17 @@ public class Who extends StdCommand
 		if(x>=0) levelStr=levelStr.substring(x).trim();
 		if(!CMSecurity.isDisabled(CMSecurity.DisFlag.CLASSES))
 		{
-		    if(who.charStats().getMyRace().classless())
+			if(who.charStats().getMyRace().classless())
 				msg.append(CMStrings.padRight(" ",12)+" ");
-		    else
+			else
 				msg.append(CMStrings.padRight(who.charStats().displayClassName(),12)+" ");
 		}
 		if(!CMSecurity.isDisabled(CMSecurity.DisFlag.LEVELS))
 		{
-		    if(who.charStats().getMyRace().leveless()
-		    ||who.charStats().getCurrentClass().leveless())
+			if(who.charStats().getMyRace().leveless()
+			||who.charStats().getCurrentClass().leveless())
 				msg.append(CMStrings.padRight(" ",7));
-		    else
+			else
 				msg.append(CMStrings.padRight(levelStr,7));
 		}
 		String name=null;
@@ -165,23 +165,23 @@ public class Who extends StdCommand
 			friends=mob.playerStats().getFriends();
 			mobName=null;
 		}
-        
-        if((mobName!=null)
-        &&(mob!=null)
-        &&(mobName.equalsIgnoreCase("pk")
-        ||mobName.equalsIgnoreCase("pkill")
-        ||mobName.equalsIgnoreCase("playerkill")))
-        {
-            friends=new HashSet();
-    		for(Session S : CMLib.sessions().allIterable())
-            {
-                MOB mob2=S.mob();
-                if((mob2!=null)&&(CMath.bset(mob2.getBitmap(),MOB.ATT_PLAYERKILL)))
-                    friends.add(mob2.Name());
-            }
-        }
+		
+		if((mobName!=null)
+		&&(mob!=null)
+		&&(mobName.equalsIgnoreCase("pk")
+		||mobName.equalsIgnoreCase("pkill")
+		||mobName.equalsIgnoreCase("playerkill")))
+		{
+			friends=new HashSet();
+			for(Session S : CMLib.sessions().allIterable())
+			{
+				MOB mob2=S.mob();
+				if((mob2!=null)&&(CMath.bset(mob2.getBitmap(),MOB.ATT_PLAYERKILL)))
+					friends.add(mob2.Name());
+			}
+		}
 
-        String msg = getWho(mob,friends,mobName);
+		String msg = getWho(mob,friends,mobName);
 		if((mobName!=null)&&(msg.length()==0))
 			mob.tell("That person doesn't appear to be online.\n\r");
 		else

@@ -23,7 +23,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -49,7 +49,7 @@ public class Sounder extends StdBehavior
 
 	public Sounder()
 	{
-        super();
+		super();
 		minTicks=23;
 		maxTicks=23;
 		tickReset();
@@ -84,11 +84,11 @@ public class Sounder extends StdBehavior
 			{
 				s=((String)emote.elementAt(v)).trim();
 				s=CMStrings.replaceAll(s,"$n","<S-NAME>");
-                s=CMStrings.replaceAll(s,"$N","<S-NAME>");
+				s=CMStrings.replaceAll(s,"$N","<S-NAME>");
 				s=CMStrings.replaceAll(s,"$e","<S-HE-SHE>");
-                s=CMStrings.replaceAll(s,"$E","<S-HE-SHE>");
+				s=CMStrings.replaceAll(s,"$E","<S-HE-SHE>");
 				s=CMStrings.replaceAll(s,"$s","<S-HIS-HER>");
-                s=CMStrings.replaceAll(s,"$S","<S-HIS-HER>");
+				s=CMStrings.replaceAll(s,"$S","<S-HIS-HER>");
 				if(s.toUpperCase().startsWith("SOUND "))
 				{
 					s=s.substring(6).trim();
@@ -125,30 +125,30 @@ public class Sounder extends StdBehavior
 					strings[v]=s.substring(4).trim();
 				}
 				else
-                if((s.toUpperCase().startsWith("PUSH_ROOM ")))
-                {
-                    triggers[v]=CMMsg.TYP_PUSH|ROOM_MASK;
-                    strings[v]=s.substring(10).trim();
-                }
-                else
-                if((s.toUpperCase().startsWith("PUSH ")))
-                {
-                    triggers[v]=CMMsg.TYP_PUSH;
-                    strings[v]=s.substring(5).trim();
-                }
-                else
-                if((s.toUpperCase().startsWith("PULL_ROOM ")))
-                {
-                    triggers[v]=CMMsg.TYP_PULL|ROOM_MASK;
-                    strings[v]=s.substring(10).trim();
-                }
-                else
-                if((s.toUpperCase().startsWith("PULL ")))
-                {
-                    triggers[v]=CMMsg.TYP_PULL;
-                    strings[v]=s.substring(5).trim();
-                }
-                else
+				if((s.toUpperCase().startsWith("PUSH_ROOM ")))
+				{
+					triggers[v]=CMMsg.TYP_PUSH|ROOM_MASK;
+					strings[v]=s.substring(10).trim();
+				}
+				else
+				if((s.toUpperCase().startsWith("PUSH ")))
+				{
+					triggers[v]=CMMsg.TYP_PUSH;
+					strings[v]=s.substring(5).trim();
+				}
+				else
+				if((s.toUpperCase().startsWith("PULL_ROOM ")))
+				{
+					triggers[v]=CMMsg.TYP_PULL|ROOM_MASK;
+					strings[v]=s.substring(10).trim();
+				}
+				else
+				if((s.toUpperCase().startsWith("PULL ")))
+				{
+					triggers[v]=CMMsg.TYP_PULL;
+					strings[v]=s.substring(5).trim();
+				}
+				else
 				if((s.toUpperCase().startsWith("SIT ")))
 				{
 					triggers[v]=CMMsg.TYP_SIT;
@@ -346,7 +346,7 @@ public class Sounder extends StdBehavior
 	{
 		MOB emoter=null;
 		emote=CMStrings.replaceAll(emote,"$p",ticking.name());
-        emote=CMStrings.replaceAll(emote,"$P",ticking.name());
+		emote=CMStrings.replaceAll(emote,"$P",ticking.name());
 		if(ticking instanceof Area)
 		{
 			emoter=CMClass.getMOB("StdMOB");
@@ -357,7 +357,7 @@ public class Sounder extends StdBehavior
 				Room R=(Room)r.nextElement();
 				emoteHere(R,emoter,emote);
 			}
-            emoter.destroy();
+			emoter.destroy();
 		}
 		else
 		if(ticking instanceof Room)
@@ -366,7 +366,7 @@ public class Sounder extends StdBehavior
 			emoter.setName(ticking.name());
 			emoter.charStats().setStat(CharStats.STAT_GENDER,'N');
 			emoteHere((Room)ticking,emoter,emote);
-            emoter.destroy();
+			emoter.destroy();
 		}
 		else
 		if(ticking instanceof MOB)
@@ -387,7 +387,7 @@ public class Sounder extends StdBehavior
 				emoter.setName(ticking.name());
 				emoter.charStats().setStat(CharStats.STAT_GENDER,'N');
 				emoteHere(R,emoter,emote);
-                emoter.destroy();
+				emoter.destroy();
 			}
 		}
 	}

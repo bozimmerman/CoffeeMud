@@ -24,7 +24,7 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -56,11 +56,11 @@ public class GenJournal extends StdJournal
 
 	public void executeMsg(Environmental host, CMMsg msg)
 	{
-	    if(((msg.target()==this)||(msg.tool()==this))
-	    &&(name().trim().equalsIgnoreCase("THE ARCHON JOURNAL")))
-	        destroy();
-	    else
-	        super.executeMsg(host,msg);
+		if(((msg.target()==this)||(msg.tool()==this))
+		&&(name().trim().equalsIgnoreCase("THE ARCHON JOURNAL")))
+			destroy();
+		else
+			super.executeMsg(host,msg);
 	}
 	
 	public String readableText(){return readableText;}
@@ -71,25 +71,25 @@ public class GenJournal extends StdJournal
 		CMLib.coffeeMaker().setPropertiesStr(this,newText,false);
 		recoverPhyStats();
 	}
-    public String getStat(String code)
-    {
-        if(CMLib.coffeeMaker().getGenItemCodeNum(code)>=0)
-            return CMLib.coffeeMaker().getGenItemStat(this,code);
-        return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
-    }
-    public void setStat(String code, String val)
-    {
-        if(CMLib.coffeeMaker().getGenItemCodeNum(code)>=0)
-            CMLib.coffeeMaker().setGenItemStat(this,code,val);
-        CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code,val);
-    }
-    private static String[] codes=null;
-    public String[] getStatCodes()
-    {
-        if(codes==null)
-            codes=CMProps.getStatCodesList(GenericBuilder.GENITEMCODES,this);
-        return codes; 
-    }
+	public String getStat(String code)
+	{
+		if(CMLib.coffeeMaker().getGenItemCodeNum(code)>=0)
+			return CMLib.coffeeMaker().getGenItemStat(this,code);
+		return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
+	}
+	public void setStat(String code, String val)
+	{
+		if(CMLib.coffeeMaker().getGenItemCodeNum(code)>=0)
+			CMLib.coffeeMaker().setGenItemStat(this,code,val);
+		CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code,val);
+	}
+	private static String[] codes=null;
+	public String[] getStatCodes()
+	{
+		if(codes==null)
+			codes=CMProps.getStatCodesList(GenericBuilder.GENITEMCODES,this);
+		return codes; 
+	}
 	public boolean sameAs(Environmental E)
 	{
 		if(!(E instanceof GenJournal)) return false;

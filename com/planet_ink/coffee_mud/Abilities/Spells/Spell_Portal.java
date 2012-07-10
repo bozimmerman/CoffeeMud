@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -41,10 +41,10 @@ public class Spell_Portal extends Spell
 	public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_EVOCATION;}
 	public long flags(){return Ability.FLAG_TRANSPORTING;}
 	protected int overrideMana(){return Integer.MAX_VALUE-90;}
-    public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
+	public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
 
-    Room newRoom=null;
-    Room oldRoom=null;
+	Room newRoom=null;
+	Room oldRoom=null;
 
 	public void unInvoke()
 	{
@@ -68,8 +68,8 @@ public class Spell_Portal extends Spell
 
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-        newRoom=null;
-        oldRoom=null;
+		newRoom=null;
+		oldRoom=null;
 
 		if((auto||mob.isMonster())&&((commands.size()<1)||(((String)commands.firstElement()).equals(mob.name()))))
 		{
@@ -103,12 +103,12 @@ public class Spell_Portal extends Spell
 		}
 		if(newRoom==null)
 		{
-		    try
-		    {
-		    	List<Room> rooms=CMLib.map().findRooms(CMLib.map().rooms(), mob, areaName, true, 10);
-		    	if(rooms.size()>0)
-		    		newRoom=(Room)rooms.get(CMLib.dice().roll(1,rooms.size(),-1));
-		    }catch(NoSuchElementException nse){}
+			try
+			{
+				List<Room> rooms=CMLib.map().findRooms(CMLib.map().rooms(), mob, areaName, true, 10);
+				if(rooms.size()>0)
+					newRoom=(Room)rooms.get(CMLib.dice().roll(1,rooms.size(),-1));
+			}catch(NoSuchElementException nse){}
 		}
 
 		if(newRoom==null)

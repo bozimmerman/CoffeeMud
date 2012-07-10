@@ -23,7 +23,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -64,9 +64,9 @@ public class Look extends StdCommand
 			if((ID.toUpperCase().startsWith("EXIT")&&(commands.size()==2))&&(CMProps.getIntVar(CMProps.SYSTEMI_EXVIEW)!=1))
 			{
 				if((CMProps.getIntVar(CMProps.SYSTEMI_EXVIEW)>=2)!=CMath.bset(mob.getBitmap(), MOB.ATT_BRIEF))
-	                CMLib.commands().lookAtExitsShort(R,mob);
+					CMLib.commands().lookAtExitsShort(R,mob);
 				else
-	                CMLib.commands().lookAtExits(R,mob);
+					CMLib.commands().lookAtExits(R,mob);
 				return false;
 			}
 			if(ID.equalsIgnoreCase("SELF")||ID.equalsIgnoreCase("ME"))
@@ -88,7 +88,7 @@ public class Look extends StdCommand
 				}
 			}
 			int dirCode=-1;
-            Environmental lookingTool=null;
+			Environmental lookingTool=null;
 			if(thisThang==null)
 			{
 				dirCode=Directions.getGoodDirectionCode(ID);
@@ -97,10 +97,10 @@ public class Look extends StdCommand
 					Room room=R.getRoomInDir(dirCode);
 					Exit exit=R.getExitInDir(dirCode);
 					if((room!=null)&&(exit!=null))
-                    {
+					{
 						thisThang=exit;
-                        lookingTool=room;
-                    }
+						lookingTool=room;
+					}
 					else
 					{
 						mob.tell("You don't see anything that way.");
@@ -125,7 +125,7 @@ public class Look extends StdCommand
 				if((thisThang instanceof Room)&&(CMath.bset(mob.getBitmap(),MOB.ATT_AUTOEXITS))&&(CMProps.getIntVar(CMProps.SYSTEMI_EXVIEW)!=1))
 				{
 					if((CMProps.getIntVar(CMProps.SYSTEMI_EXVIEW)>=2)!=CMath.bset(mob.getBitmap(), MOB.ATT_BRIEF))
-		                CMLib.commands().lookAtExitsShort(R,mob);
+						CMLib.commands().lookAtExitsShort(R,mob);
 					else
 						CMLib.commands().lookAtExits((Room)thisThang,mob);
 				}
@@ -150,9 +150,9 @@ public class Look extends StdCommand
 			&&(CMProps.getIntVar(CMProps.SYSTEMI_EXVIEW)!=1))
 			{
 				if((CMProps.getIntVar(CMProps.SYSTEMI_EXVIEW)>=2)!=CMath.bset(mob.getBitmap(), MOB.ATT_BRIEF))
-	                CMLib.commands().lookAtExitsShort(R,mob);
+					CMLib.commands().lookAtExitsShort(R,mob);
 				else
-	                CMLib.commands().lookAtExits(R,mob);
+					CMLib.commands().lookAtExits(R,mob);
 			}
 		}
 		return false;

@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -52,7 +52,7 @@ public class Prayer_Benediction extends Prayer
 
 		MOB mob=affected;
 		int pts=adjustedLevel(invoker(),0)/5;
-        CharStats chk=(CharStats)CMClass.getCommon("DefaultCharStats"); chk.setAllBaseValues(0);
+		CharStats chk=(CharStats)CMClass.getCommon("DefaultCharStats"); chk.setAllBaseValues(0);
 		chk.setCurrentClass(mob.charStats().getCurrentClass());
 		for(int c=0;c<mob.charStats().numClasses();c++)
 			mob.charStats().getMyClass(c).affectCharStats(mob,chk);

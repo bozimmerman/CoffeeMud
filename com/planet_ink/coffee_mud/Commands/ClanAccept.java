@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -57,7 +57,7 @@ public class ClanAccept extends StdCommand
 			}
 			else
 			{
-	            C=mob.getMyClan();
+				C=mob.getMyClan();
 				if(C==null)
 				{
 					mob.tell("There is no longer a clan called "+mob.getClanID()+".");
@@ -94,7 +94,7 @@ public class ClanAccept extends StdCommand
 						}
 						if(skipChecks||CMLib.clans().goForward(mob,C,commands,Clan.Function.ACCEPT,true))
 						{
-                            C.addMember(M,C.getGovernment().getAcceptPos());
+							C.addMember(M,C.getGovernment().getAcceptPos());
 							CMLib.clans().clanAnnounce(mob,M.Name()+" is now a new member of "+C.getGovernmentName()+" "+C.name()+".");
 							mob.tell(M.Name()+" has been accepted into "+C.getGovernmentName()+" '"+C.clanID()+"'.");
 							if((M.session()!=null)&&(M.session().mob()==M))

@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -106,14 +106,14 @@ public class Dragon extends StdMOB
 
 		if(!CMProps.getBoolVar(CMProps.SYSTEMB_MUDSTARTED))
 			return;
-        if((DragonAge()==birthAge)&&(DragonColor()==birthColor))
-        	return;
-        int colorValue=DragonColor(); 
-        int ageValue=DragonAge();
+		if((DragonAge()==birthAge)&&(DragonColor()==birthColor))
+			return;
+		int colorValue=DragonColor(); 
+		int ageValue=DragonAge();
 
-        birthAge=ageValue;
-        birthColor=colorValue;
-        
+		birthAge=ageValue;
+		birthColor=colorValue;
+		
 		// ===== is it a male or female
 		short gend = (short)Math.round(Math.random());
 		if (gend == 0)
@@ -159,7 +159,7 @@ public class Dragon extends StdMOB
 			default:		PointMod = 3;	CMLib.factions().setAlignment(this,Faction.ALIGN_NEUTRAL);	break;
 		}
 
-        CMLib.leveler().fillOutMOB(this,basePhyStats().level());
+		CMLib.leveler().fillOutMOB(this,basePhyStats().level());
 		baseState.setHitPoints(baseState.getHitPoints() * PointMod);
 		setMoney(getMoney()*PointMod);
 		basePhyStats().setWeight(1500 * DragonAge());
@@ -183,7 +183,7 @@ public class Dragon extends StdMOB
 		recoverCharStats();
 	}
 
-    protected static int determineAge()
+	protected static int determineAge()
 	{
 		// ===== Get a percent chance
 		int iRoll = CMLib.dice().rollPercentage()+1;
@@ -248,9 +248,9 @@ public class Dragon extends StdMOB
 
 	public boolean tick(Tickable ticking, int tickID)
 	{
-        if(tickID!=Tickable.TICKID_MOB)
-        	return super.tick(ticking, tickID);
-        setupDragonIfNecessary();
+		if(tickID!=Tickable.TICKID_MOB)
+			return super.tick(ticking, tickID);
+		setupDragonIfNecessary();
 		if(!amDead())
 		{
 			if((Stomach==null)
@@ -260,17 +260,17 @@ public class Dragon extends StdMOB
 				Stomach = CMClass.getLocale("StdRoom");
 				if(Stomach!=null)
 				{
-                    Stomach.setName("Dragon Stomach");
+					Stomach.setName("Dragon Stomach");
 					Stomach.setDisplayText("Dragon Stomach");
 					Stomach.setArea(location().getArea());
 					Stomach.setDescription("You are in the stomach of a dragon.  It is wet with digestive acids, and the walls are grinding you to a pulp.  You have been Swallowed whole and are being digested.");
 				}
 			}
-            if((--digestDown)<=0)
-            {
-                digestDown=2;
-                digestTastyMorsels();
-            }
+			if((--digestDown)<=0)
+			{
+				digestDown=2;
+				digestTastyMorsels();
+			}
 			if (isInCombat())
 			{
 				if((--breatheDown)<=0)
@@ -280,7 +280,7 @@ public class Dragon extends StdMOB
 				}
 				if((--swallowDown)<=0)
 				{
-                    swallowDown=4;
+					swallowDown=4;
 					trySwallowWhole();
 				}
 			}
@@ -298,7 +298,7 @@ public class Dragon extends StdMOB
 		String msgText = "";
 
 		// ===== if we are following don't Breath, we might
-		//       hurt the one we follow...
+		//  	 hurt the one we follow...
 		if (amFollowing()!=null)
 		{
 			// ===== if we breath we might hurt him
@@ -512,10 +512,10 @@ public class Dragon extends StdMOB
 	{
 		// ===== move all inhabitants to the dragons location
 		// ===== loop through all inhabitants of the stomach
-    	Room room = location();
-    	if(room == null) room = CMLib.map().getRandomRoom();
-	    if((Stomach!=null)&&(room != null))
-	    {
+		Room room = location();
+		if(room == null) room = CMLib.map().getRandomRoom();
+		if((Stomach!=null)&&(room != null))
+		{
 			int morselCount = Stomach.numInhabitants();
 			for (int x=morselCount-1;x>=0;x--)
 			{
@@ -537,7 +537,7 @@ public class Dragon extends StdMOB
 				}
 			}
 			room.recoverRoomStats();
-	    }
+		}
 		// ===== Bury Him
 		return super.killMeDead(createBody);
 	}

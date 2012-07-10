@@ -24,7 +24,7 @@ import java.util.Vector;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -52,11 +52,11 @@ public interface Command extends CMObject
 	 * is not in combat.
 	 * @see Command#combatActionsCost(MOB, List)
 	 * @see Command#checkedActionsCost(MOB, List)
-     * @param mob the mob executing the command, if any
-     * @param cmds the parameters to be passed to the command, if any
+	 * @param mob the mob executing the command, if any
+	 * @param cmds the parameters to be passed to the command, if any
 	 * @return the number of player free actions required to do this
 	 */
-    public double actionsCost(final MOB mob, final List<String> cmds);
+	public double actionsCost(final MOB mob, final List<String> cmds);
 	/**
 	 * Returns the number of actions required to completely
 	 * activate this command. A value of 0.0 means perform 
@@ -64,11 +64,11 @@ public interface Command extends CMObject
 	 * is fighting in combat.
 	 * @see Command#actionsCost(MOB, List)
 	 * @see Command#checkedActionsCost(MOB, List)
-     * @param mob the mob executing the command, if any
-     * @param cmds the parameters to be passed to the command, if any
+	 * @param mob the mob executing the command, if any
+	 * @param cmds the parameters to be passed to the command, if any
 	 * @return the number of player free actions required to do this
 	 */
-    public double combatActionsCost(final MOB mob, final List<String> cmds);
+	public double combatActionsCost(final MOB mob, final List<String> cmds);
 	/**
 	 * Returns the number of actions required to completely
 	 * activate this command. A value of 0.0 means perform 
@@ -76,16 +76,16 @@ public interface Command extends CMObject
 	 * user is in combat and return a proper value.
 	 * @see Command#combatActionsCost(MOB, List)
 	 * @see Command#actionsCost(MOB, List)
-     * @param mob the mob executing the command, if any
-     * @param cmds the parameters to be passed to the command, if any
+	 * @param mob the mob executing the command, if any
+	 * @param cmds the parameters to be passed to the command, if any
 	 * @return the number of player free actions required to do this
 	 */
-    public double checkedActionsCost(final MOB mob, final List<String> cmds);
-    /**
-     * Whether the a group leader or charmer can order their followers
-     * to do this command.
-     * @return whether this command can be ordered.
-     */
+	public double checkedActionsCost(final MOB mob, final List<String> cmds);
+	/**
+	 * Whether the a group leader or charmer can order their followers
+	 * to do this command.
+	 * @return whether this command can be ordered.
+	 */
 	public boolean canBeOrdered();
 	/**
 	 * Whether this command is available to the given player
@@ -105,7 +105,7 @@ public interface Command extends CMObject
 	 * @see com.planet_ink.coffee_mud.Commands.interfaces.Command#securityCheck(MOB)
 	 * @param mob the mob or player issueing the command
 	 * @param commands usually the command words and parameters; a set of strings
-     * @param metaFlags flags denoting how the command is being executed
+	 * @param metaFlags flags denoting how the command is being executed
 	 * @return whether the command was successfully executed.  Is almost meaningless.
 	 * @throws java.io.IOException usually means the player has dropped carrier
 	 */
@@ -125,15 +125,15 @@ public interface Command extends CMObject
 	 * @param actionsRemaining number of free actions the player is defficient.
 	 * @return whether the command should be allowed to go forward. false cancels altogether.
 	 */
-    public boolean preExecute(MOB mob, Vector commands, int metaFlags, int secondsElapsed, double actionsRemaining)
-        throws java.io.IOException;
-    
+	public boolean preExecute(MOB mob, Vector commands, int metaFlags, int secondsElapsed, double actionsRemaining)
+		throws java.io.IOException;
+	
 	/**
 	 * This method is used for making "insider" calls to the command.  It's parameters
 	 * and implementation can follow any rules you like.  The engine will sometimes
 	 * use these to make direct calls to the command implementations.
 	 * @param mob the mob or player issueing the command
-     * @param metaFlags flags denoting how the command is being executed
+	 * @param metaFlags flags denoting how the command is being executed
 	 * @param args a set of object parameters
 	 * @return a object response
 	 * @throws java.io.IOException usually means the player has dropped carrier
@@ -141,16 +141,16 @@ public interface Command extends CMObject
 	public Object executeInternal(MOB mob, int metaFlags, Object... args)
 		throws java.io.IOException;
 	
-    /** constant mask for the metaflags parameter for execute and preexecute, means being mpforced*/
-    public static final int METAFLAG_MPFORCED=1;
-    /** constant mask for the metaflags parameter for execute and preexecute, means being ordered*/
-    public static final int METAFLAG_ORDER=2;
-    /** constant mask for the metaflags parameter for execute and preexecute, means being possessed*/
-    public static final int METAFLAG_POSSESSED=4;
-    /** constant mask for the metaflags parameter for execute and preexecute, means being snooped*/
-    public static final int METAFLAG_SNOOPED=8;
-    /** constant mask for the metaflags parameter for execute and preexecute, means being forced with AS*/
-    public static final int METAFLAG_AS=16;
-    /** constant mask for the metaflags parameter for execute and preexecute, means being forced with spells*/
-    public static final int METAFLAG_FORCED=32;
+	/** constant mask for the metaflags parameter for execute and preexecute, means being mpforced*/
+	public static final int METAFLAG_MPFORCED=1;
+	/** constant mask for the metaflags parameter for execute and preexecute, means being ordered*/
+	public static final int METAFLAG_ORDER=2;
+	/** constant mask for the metaflags parameter for execute and preexecute, means being possessed*/
+	public static final int METAFLAG_POSSESSED=4;
+	/** constant mask for the metaflags parameter for execute and preexecute, means being snooped*/
+	public static final int METAFLAG_SNOOPED=8;
+	/** constant mask for the metaflags parameter for execute and preexecute, means being forced with AS*/
+	public static final int METAFLAG_AS=16;
+	/** constant mask for the metaflags parameter for execute and preexecute, means being forced with spells*/
+	public static final int METAFLAG_FORCED=32;
 }

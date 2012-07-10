@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -41,7 +41,7 @@ public class Thief_SetDecoys extends ThiefSkill implements Trap
 	protected int canTargetCode(){return Ability.CAN_ROOMS;}
 	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	private static final String[] triggerStrings = {"SETDECOYS","DECOYS"};
-    public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_DECEPTIVE;}
+	public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_DECEPTIVE;}
 	public String[] triggerStrings(){return triggerStrings;}
 	public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
 
@@ -53,7 +53,7 @@ public class Thief_SetDecoys extends ThiefSkill implements Trap
 	public int getReset(){return 0;}
 	public boolean maySetTrap(MOB mob, int asLevel){return false;}
 	public boolean canSetTrapOn(MOB mob, Physical P){return false;}
-    public List<Item> getTrapComponents() { return new Vector(); }
+	public List<Item> getTrapComponents() { return new Vector(); }
 	public String requiresToSet(){return "";}
 	public Trap setTrap(MOB mob, Physical P, int trapBonus, int qualifyingClassLevel, boolean perm)
 	{maliciousAffect(mob,P,qualifyingClassLevel+trapBonus,0,-1); return (Trap)P.fetchEffect(ID());}
@@ -133,20 +133,20 @@ public class Thief_SetDecoys extends ThiefSkill implements Trap
 		return true;
 	}
 
-    public int castingQuality(MOB mob, Physical target)
-    {
-        if(mob!=null)
-        {
-            if(mob.isInCombat())
-                return Ability.QUALITY_INDIFFERENT;
-            if(target != null)
-            {
-                if(target.fetchEffect(ID())!=null)
-                    return Ability.QUALITY_INDIFFERENT;
-            }
-        }
-        return super.castingQuality(mob,target);
-    }
+	public int castingQuality(MOB mob, Physical target)
+	{
+		if(mob!=null)
+		{
+			if(mob.isInCombat())
+				return Ability.QUALITY_INDIFFERENT;
+			if(target != null)
+			{
+				if(target.fetchEffect(ID())!=null)
+					return Ability.QUALITY_INDIFFERENT;
+			}
+		}
+		return super.castingQuality(mob,target);
+	}
 
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{

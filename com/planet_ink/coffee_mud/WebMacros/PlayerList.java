@@ -23,7 +23,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -72,7 +72,7 @@ public class PlayerList extends StdWebMacro
 					}
 					if ( m.charStats().displayClassName().length() > 0
 					&& ((!m.charStats().displayClassName().equals("MOB"))
-				        ||CMSecurity.isDisabled(CMSecurity.DisFlag.CLASSES)
+						||CMSecurity.isDisabled(CMSecurity.DisFlag.CLASSES)
 						||m.charStats().getMyRace().classless()))
 					{
 						if((!CMSecurity.isDisabled(CMSecurity.DisFlag.CLASSES))
@@ -84,12 +84,12 @@ public class PlayerList extends StdWebMacro
 						else
 						if((!CMSecurity.isDisabled(CMSecurity.DisFlag.CLASSES))
 						&&(!m.charStats().getMyRace().classless()))
-						    s.append(""+m.charStats().displayClassName());
+							s.append(""+m.charStats().displayClassName());
 						else
 						if((!CMSecurity.isDisabled(CMSecurity.DisFlag.LEVELS))
 						&&(!m.charStats().getMyRace().leveless())
 						&&(!m.charStats().getCurrentClass().leveless()))
-						    s.append(""+m.charStats().getClassLevel(m.charStats().getCurrentClass()));
+							s.append(""+m.charStats().getClassLevel(m.charStats().getCurrentClass()));
 					}
 					else
 					if (( m.charStats().displayClassName().length() == 0)
@@ -107,7 +107,7 @@ public class PlayerList extends StdWebMacro
 			}
 			s.append("\r\n");
 		}
-        return clearWebMacros(s);
+		return clearWebMacros(s);
 	}
 
 }

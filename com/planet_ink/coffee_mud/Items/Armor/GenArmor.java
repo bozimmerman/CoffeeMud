@@ -25,7 +25,7 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -64,14 +64,14 @@ public class GenArmor extends StdArmor
 	}
 	public String readableText(){return readableText;}
 	public void setReadableText(String text){readableText=text;}
-    public String keyName()
-    {
-        return readableText;
-    }
-    public void setKeyName(String newKeyName)
-    {
-        readableText=newKeyName;
-    }
+	public String keyName()
+	{
+		return readableText;
+	}
+	public void setKeyName(String newKeyName)
+	{
+		readableText=newKeyName;
+	}
 
 	public void setMiscText(String newText)
 	{
@@ -92,9 +92,9 @@ public class GenArmor extends StdArmor
 		case 3: return ""+containTypes();
 		case 4: return ""+getClothingLayer();
 		case 5: return ""+getLayerAttributes();
-        default:
-            return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
-        }
+		default:
+			return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
+		}
 	}
 	
 	public void setStat(String code, String val)
@@ -110,9 +110,9 @@ public class GenArmor extends StdArmor
 		case 3: setContainTypes(CMath.s_parseBitLongExpression(Container.CONTAIN_DESCS,val)); break;
 		case 4: setClothingLayer((short)CMath.s_parseIntExpression(val)); break;
 		case 5: setLayerAttributes((short)CMath.s_parseListLongExpression(Armor.LAYERMASK_DESCS,val)); break;
-        default:
-            CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code, val);
-            break;
+		default:
+			CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code, val);
+			break;
 		}
 	}
 	protected int getCodeNum(String code){
@@ -124,7 +124,7 @@ public class GenArmor extends StdArmor
 	public String[] getStatCodes()
 	{
 		if(codes!=null) return codes;
-        String[] MYCODES=CMProps.getStatCodesList(GenArmor.MYCODES,this);
+		String[] MYCODES=CMProps.getStatCodesList(GenArmor.MYCODES,this);
 		String[] superCodes=GenericBuilder.GENITEMCODES;
 		codes=new String[superCodes.length+MYCODES.length];
 		int i=0;

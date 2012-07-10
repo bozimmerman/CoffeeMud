@@ -25,7 +25,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -40,7 +40,7 @@ public class Dance_Morris extends Dance
 	public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
 	protected String danceOf(){return name()+" Dance";}
 	private boolean missedLastOne=false;
-    
+	
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
@@ -58,15 +58,15 @@ public class Dance_Morris extends Dance
 		MOB mob=(MOB)affected;
 		// preventing distracting player from doin anything else
 		if(msg.amISource(mob)
-        &&(msg.targetMinor()==CMMsg.TYP_WEAPONATTACK)
-        &&(!missedLastOne)
-        &&(CMLib.dice().rollPercentage()>mob.charStats().getSave(CharStats.STAT_SAVE_MIND)))
+		&&(msg.targetMinor()==CMMsg.TYP_WEAPONATTACK)
+		&&(!missedLastOne)
+		&&(CMLib.dice().rollPercentage()>mob.charStats().getSave(CharStats.STAT_SAVE_MIND)))
 		{
-            missedLastOne=true;
+			missedLastOne=true;
 			mob.location().show(mob,null,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> become(s) distracted.");
 			return false;
 		}
-        missedLastOne=false;
+		missedLastOne=false;
 		return super.okMessage(myHost,msg);
 	}
 

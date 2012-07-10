@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -71,13 +71,13 @@ public class Fill extends StdCommand
 			fillFromThis=mob.location();
 		else
 		{
-            int fromDex=commands.size()-1;
-            for(int i=commands.size()-2;i>=1;i--)
-                if(((String)commands.elementAt(i)).equalsIgnoreCase("from"))
-                {
-                    fromDex=i;
-                    commands.removeElementAt(i);
-                }
+			int fromDex=commands.size()-1;
+			for(int i=commands.size()-2;i>=1;i--)
+				if(((String)commands.elementAt(i)).equalsIgnoreCase("from"))
+				{
+					fromDex=i;
+					commands.removeElementAt(i);
+				}
 			String thingToFillFrom=CMParms.combine(commands,fromDex);
 			fillFromThis=mob.location().fetchFromMOBRoomFavorsItems(mob,null,thingToFillFrom,Wearable.FILTER_ANY);
 			if((fillFromThis==null)||(!CMLib.flags().canBeSeenBy(fillFromThis,mob)))
@@ -85,12 +85,12 @@ public class Fill extends StdCommand
 				mob.tell("I don't see "+thingToFillFrom+" here.");
 				return false;
 			}
-            while(commands.size()>=(fromDex+1))
-    			commands.removeElementAt(commands.size()-1);
+			while(commands.size()>=(fromDex+1))
+				commands.removeElementAt(commands.size()-1);
 		}
 
-        int maxToFill=CMLib.english().calculateMaxToGive(mob,commands,true,mob,false);
-        if(maxToFill<0) return false;
+		int maxToFill=CMLib.english().calculateMaxToGive(mob,commands,true,mob,false);
+		if(maxToFill<0) return false;
 
 		String thingToFill=CMParms.combine(commands,0);
 		int addendum=1;
@@ -130,8 +130,8 @@ public class Fill extends StdCommand
 		}
 		return false;
 	}
-    public double combatActionsCost(final MOB mob, final List<String> cmds){return CMProps.getCombatActionCost(ID());}
-    public double actionsCost(final MOB mob, final List<String> cmds){return CMProps.getActionCost(ID());}
+	public double combatActionsCost(final MOB mob, final List<String> cmds){return CMProps.getCombatActionCost(ID());}
+	public double actionsCost(final MOB mob, final List<String> cmds){return CMProps.getActionCost(ID());}
 	public boolean canBeOrdered(){return true;}
 
 	

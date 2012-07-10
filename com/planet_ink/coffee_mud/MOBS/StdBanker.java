@@ -25,7 +25,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -67,13 +67,13 @@ public class StdBanker extends StdShopKeeper implements Banker
 		recoverCharStats();
 	}
 
-    public void addSoldType(int mask){setWhatIsSoldMask(CMath.abs(mask));}
+	public void addSoldType(int mask){setWhatIsSoldMask(CMath.abs(mask));}
 	public void setWhatIsSoldMask(long newSellCode){
-    	super.setWhatIsSoldMask(newSellCode);
-    	if(!isSold(ShopKeeper.DEAL_CLANBANKER))
-    		whatIsSoldMask=ShopKeeper.DEAL_BANKER;
-    	else
-    		whatIsSoldMask=ShopKeeper.DEAL_CLANBANKER;
+		super.setWhatIsSoldMask(newSellCode);
+		if(!isSold(ShopKeeper.DEAL_CLANBANKER))
+			whatIsSoldMask=ShopKeeper.DEAL_BANKER;
+		else
+			whatIsSoldMask=ShopKeeper.DEAL_CLANBANKER;
 	}
 
 	public String bankChain(){return text();}
@@ -83,7 +83,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 	{
 		String name=thisThang.ID();
 		if(thisThang instanceof Coins) name="COINS";
-    	CMLib.catalog().updateCatalogIntegrity(thisThang);
+		CMLib.catalog().updateCatalogIntegrity(thisThang);
 		CMLib.database().DBCreateData(mob,bankChain(),""+thisThang+Math.random(),name+";"+CMLib.coffeeMaker().getPropertiesStr(thisThang,true));
 	}
 
@@ -126,7 +126,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 			if((I instanceof Coins)
 			&&(((Coins)I).getDenomination()==0.0)
 			&&(((Coins)I).getNumberOfCoins()>0))
-			    ((Coins)I).setDenomination(1.0);
+				((Coins)I).setDenomination(1.0);
 			I.recoverPhyStats();
 			I.text();
 			return I;
@@ -209,14 +209,14 @@ public class StdBanker extends StdShopKeeper implements Banker
 
 	public void bankLedger(MOB mob, String msg)
 	{
-	    String date=CMLib.utensils().getFormattedDate(mob);
+		String date=CMLib.utensils().getFormattedDate(mob);
 		if(isSold(ShopKeeper.DEAL_CLANBANKER))
 		{
 			if(mob.getClanID().length()==0) return;
-		    CMLib.beanCounter().bankLedger(bankChain(),mob.getClanID(),date+": "+msg);
+			CMLib.beanCounter().bankLedger(bankChain(),mob.getClanID(),date+": "+msg);
 		}
 		else
-		    CMLib.beanCounter().bankLedger(bankChain(),mob.Name(),date+": "+msg);
+			CMLib.beanCounter().bankLedger(bankChain(),mob.Name(),date+": "+msg);
 	}
 
 	public Item findDepositInventory(MOB mob, String likeThis)
@@ -364,7 +364,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 									double amtDueNow=(timeRemaining<0)?(dueAmount+intDue):CMath.div((dueAmount+intDue),(timeRemaining/timeInterval));
 									if(newBalance>=amtDueNow)
 									{
-								        CMLib.beanCounter().bankLedger(bankChain(),name,CMLib.utensils().getFormattedDate(this)+": Withdrawal of "+CMLib.beanCounter().nameCurrencyShort(this,amtDueNow)+": Loan payment made.");
+										CMLib.beanCounter().bankLedger(bankChain(),name,CMLib.utensils().getFormattedDate(this)+": Withdrawal of "+CMLib.beanCounter().nameCurrencyShort(this,amtDueNow)+": Loan payment made.");
 										CMLib.beanCounter().adjustDebt(debtor,bankChain(),intDue-amtDueNow,reason,intRate,debtDueAt);
 										newBalance-=amtDueNow;
 									}
@@ -386,7 +386,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 									((LandTitle)I).updateLot(null);
 								}
 								if(!(I instanceof Coins))
-                                    getShop().addStoreInventory(I);
+									getShop().addStoreInventory(I);
 							}
 							delAllDeposits(name);
 							CMLib.beanCounter().delAllDebt(name,bankChain());
@@ -394,17 +394,17 @@ public class StdBanker extends StdShopKeeper implements Banker
 						else
 						if((coinItem==null)||(newBalance!=coinItem.getTotalValue()))
 						{
-						    if(coinItem!=null)
-						    {
-							    if(newBalance>coinItem.getTotalValue())
-							        CMLib.beanCounter().bankLedger(bankChain(),name,CMLib.utensils().getFormattedDate(this)+": Deposit of "+CMLib.beanCounter().nameCurrencyShort(this,newBalance-coinItem.getTotalValue())+": Interest paid.");
-							    else
-							        CMLib.beanCounter().bankLedger(bankChain(),name,CMLib.utensils().getFormattedDate(this)+": Withdrawl of "+CMLib.beanCounter().nameCurrencyShort(this,coinItem.getTotalValue()-newBalance)+": Interest charged.");
+							if(coinItem!=null)
+							{
+								if(newBalance>coinItem.getTotalValue())
+									CMLib.beanCounter().bankLedger(bankChain(),name,CMLib.utensils().getFormattedDate(this)+": Deposit of "+CMLib.beanCounter().nameCurrencyShort(this,newBalance-coinItem.getTotalValue())+": Interest paid.");
+								else
+									CMLib.beanCounter().bankLedger(bankChain(),name,CMLib.utensils().getFormattedDate(this)+": Withdrawl of "+CMLib.beanCounter().nameCurrencyShort(this,coinItem.getTotalValue()-newBalance)+": Interest charged.");
 								delDepositInventory(name,coinItem);
-						    }
+							}
 							String currency=CMLib.beanCounter().getCurrency(this);
-						    coinItem=CMLib.beanCounter().makeBestCurrency(currency,newBalance);
-						    if(coinItem!=null)
+							coinItem=CMLib.beanCounter().makeBestCurrency(currency,newBalance);
+							if(coinItem!=null)
 								addDepositInventory(name,coinItem);
 						}
 					}
@@ -473,16 +473,16 @@ public class StdBanker extends StdShopKeeper implements Banker
 							if(old!=null) owner=CMLib.players().getPlayer(msg.source().getLiegeID());
 						}
 						if((old!=null)&&(old instanceof Coins))
-						    newValue+=((Coins)old).getTotalValue();
+							newValue+=((Coins)old).getTotalValue();
 						Coins item=CMLib.beanCounter().makeBestCurrency(CMLib.beanCounter().getCurrency(this),newValue);
-					    bankLedger(owner,"Deposit of "+CMLib.beanCounter().nameCurrencyShort(this,newValue)+": "+msg.source().Name());
+						bankLedger(owner,"Deposit of "+CMLib.beanCounter().nameCurrencyShort(this,newValue)+": "+msg.source().Name());
 						if(old!=null) delDepositInventory(owner,old);
 						if(item!=null)
 							addDepositInventory(owner,item);
 						if(isSold(ShopKeeper.DEAL_CLANBANKER))
-						    CMLib.commands().postSay(this,mob,"Ok, Clan "+owner.getClanID()+" now has a balance of "+CMLib.beanCounter().nameCurrencyLong(this,getBalance(owner))+".",true,false);
+							CMLib.commands().postSay(this,mob,"Ok, Clan "+owner.getClanID()+" now has a balance of "+CMLib.beanCounter().nameCurrencyLong(this,getBalance(owner))+".",true,false);
 						else
-						    CMLib.commands().postSay(this,mob,"Ok, your new balance is "+CMLib.beanCounter().nameCurrencyLong(this,getBalance(owner))+".",true,false);
+							CMLib.commands().postSay(this,mob,"Ok, your new balance is "+CMLib.beanCounter().nameCurrencyLong(this,getBalance(owner))+".",true,false);
 						recoverPhyStats();
 
 						if(msg.sourceMessage()!=null) msg.setSourceMessage(CMStrings.replaceAll(msg.sourceMessage(),"<O-NAME>",msg.tool().name()));
@@ -495,14 +495,14 @@ public class StdBanker extends StdShopKeeper implements Banker
 					else
 					{
 						Item item =(Item)msg.tool().copyOf();
-				        if(!item.amDestroyed())
-				        {
+						if(!item.amDestroyed())
+						{
 							addDepositInventory(msg.source(),item);
-						    CMLib.commands().postSay(this,mob,"Thank you, "+item.name()+" is safe with us.",true,false);
+							CMLib.commands().postSay(this,mob,"Thank you, "+item.name()+" is safe with us.",true,false);
 							((Item)msg.tool()).destroy();
-				        }
-				        else
-						    CMLib.commands().postSay(this,mob,"Whoops! Where'd it go?",true,false);
+						}
+						else
+							CMLib.commands().postSay(this,mob,"Whoops! Where'd it go?",true,false);
 					}
 				}
 				return;
@@ -513,15 +513,15 @@ public class StdBanker extends StdShopKeeper implements Banker
 					if(old instanceof Coins)
 					{
 						MOB borrower=msg.source();
-					    bankLedger(borrower,"Loan of "+old.Name()+": "+msg.source().Name());
-				        addItem(old);
-				        double amt=((Coins)old).getTotalValue();
+						bankLedger(borrower,"Loan of "+old.Name()+": "+msg.source().Name());
+						addItem(old);
+						double amt=((Coins)old).getTotalValue();
 						CMMsg newMsg=CMClass.getMsg(this,msg.source(),old,CMMsg.MSG_GIVE,"<S-NAME> give(s) <O-NAME> to <T-NAMESELF>.");
 						if(location().okMessage(this,newMsg))
 						{
 							location().send(this,newMsg);
 							((Coins)old).putCoinsBack();
-					    }
+						}
 						else
 							CMLib.commands().postDrop(this,old,true,false);
 						double interestRate=getLoanInterest();
@@ -547,13 +547,13 @@ public class StdBanker extends StdShopKeeper implements Banker
 						if((!isSold(ShopKeeper.DEAL_CLANBANKER))
 						&&(msg.source().isMarriedToLiege())
 						&&((depositInventoryItem==null)
-						        ||((depositInventoryItem instanceof Coins)
-						                &&(((Coins)depositInventoryItem).getTotalValue()<((Coins)old).getTotalValue()))))
+								||((depositInventoryItem instanceof Coins)
+										&&(((Coins)depositInventoryItem).getTotalValue()<((Coins)old).getTotalValue()))))
 						{
 							Item item2=findDepositInventory(msg.source().getLiegeID(),""+Integer.MAX_VALUE);
 							if((item2!=null)&&(item2 instanceof Coins)&&(((Coins)item2).getTotalValue()>=((Coins)old).getTotalValue()))
 							{
-							    depositInventoryItem=item2;
+								depositInventoryItem=item2;
 								owner=CMLib.players().getPlayer(msg.source().getLiegeID());
 							}
 						}
@@ -563,16 +563,16 @@ public class StdBanker extends StdShopKeeper implements Banker
 						&&(((Coins)depositInventoryItem).getTotalValue()>=((Coins)old).getTotalValue()))
 						{
 							Coins coins=CMLib.beanCounter().makeBestCurrency(this,((Coins)depositInventoryItem).getTotalValue()-((Coins)old).getTotalValue());
-						    bankLedger(owner,"Withdrawl of "+CMLib.beanCounter().nameCurrencyShort(this,((Coins)old).getTotalValue())+": "+msg.source().Name());
+							bankLedger(owner,"Withdrawl of "+CMLib.beanCounter().nameCurrencyShort(this,((Coins)old).getTotalValue())+": "+msg.source().Name());
 							delDepositInventory(owner,depositInventoryItem);
 
-					        addItem(old);
+							addItem(old);
 							CMMsg newMsg=CMClass.getMsg(this,msg.source(),old,CMMsg.MSG_GIVE,"<S-NAME> give(s) <O-NAME> to <T-NAMESELF>.");
 							if(location().okMessage(this,newMsg))
 							{
 								location().send(this,newMsg);
 								((Coins)old).putCoinsBack();
-						    }
+							}
 							else
 								CMLib.commands().postDrop(this,old,true,false);
 							if((coins==null)||(coins.getNumberOfCoins()<=0))
@@ -585,13 +585,13 @@ public class StdBanker extends StdShopKeeper implements Banker
 							}
 							addDepositInventory(owner,coins);
 							if(isSold(ShopKeeper.DEAL_CLANBANKER))
-							    CMLib.commands().postSay(this,mob,"Ok, Clan "+owner.getClanID()+" now has a balance of "+CMLib.beanCounter().nameCurrencyLong(this,coins.getTotalValue())+".",true,false);
+								CMLib.commands().postSay(this,mob,"Ok, Clan "+owner.getClanID()+" now has a balance of "+CMLib.beanCounter().nameCurrencyLong(this,coins.getTotalValue())+".",true,false);
 							else
-							    CMLib.commands().postSay(this,mob,"Ok, your new balance is "+CMLib.beanCounter().nameCurrencyLong(this,coins.getTotalValue())+".",true,false);
+								CMLib.commands().postSay(this,mob,"Ok, your new balance is "+CMLib.beanCounter().nameCurrencyLong(this,coins.getTotalValue())+".",true,false);
 						}
 						else
 						if(depositInventoryItem!=null)
-						    CMLib.commands().postSay(this,mob,"But, your balance is "+CMLib.beanCounter().nameCurrencyLong(this,((Coins)depositInventoryItem).getTotalValue())+".",true,false);
+							CMLib.commands().postSay(this,mob,"But, your balance is "+CMLib.beanCounter().nameCurrencyLong(this,((Coins)depositInventoryItem).getTotalValue())+".",true,false);
 					}
 					else
 					{
@@ -600,7 +600,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 						&&(msg.source().isMarriedToLiege()))
 							delDepositInventory(msg.source().getLiegeID(),old);
 
-					    CMLib.commands().postSay(this,mob,"Thank you for your trust.",true,false);
+						CMLib.commands().postSay(this,mob,"Thank you for your trust.",true,false);
 						if(location()!=null)
 							location().addItem(old,ItemPossessor.Expire.Player_Drop);
 						CMMsg msg2=CMClass.getMsg(mob,old,this,CMMsg.MSG_GET,null);
@@ -647,7 +647,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 							}
 						}
 
-			        final int COL_LEN=ListingLibrary.ColFixer.fixColWidth(34.0,mob);
+					final int COL_LEN=ListingLibrary.ColFixer.fixColWidth(34.0,mob);
 					StringBuffer str=new StringBuffer("");
 					str.append("\n\rAccount balance at '"+bankChain()+"'.\n\r");
 					String c="^x[Item                              ] ";
@@ -739,10 +739,10 @@ public class StdBanker extends StdShopKeeper implements Banker
 			case CMMsg.TYP_GIVE:
 			case CMMsg.TYP_DEPOSIT:
 				{
-                    if(!CMLib.coffeeShops().ignoreIfNecessary(msg.source(),finalIgnoreMask(),this))
-                        return false;
+					if(!CMLib.coffeeShops().ignoreIfNecessary(msg.source(),finalIgnoreMask(),this))
+						return false;
 					if(msg.tool()==null)
-                        return false;
+						return false;
 					double balance=getBalance(mob);
 					if((isSold(ShopKeeper.DEAL_CLANBANKER))
 					&&((msg.source().getClanID().length()==0)
@@ -760,8 +760,8 @@ public class StdBanker extends StdShopKeeper implements Banker
 						}
 						if(!((Coins)msg.tool()).getCurrency().equalsIgnoreCase(CMLib.beanCounter().getCurrency(this)))
 						{
-						    CMLib.commands().postSay(this,mob,"I'm sorry, this bank only deals in "+CMLib.beanCounter().getDenominationName(CMLib.beanCounter().getCurrency(this))+".",true,false);
-						    return false;
+							CMLib.commands().postSay(this,mob,"I'm sorry, this bank only deals in "+CMLib.beanCounter().getDenominationName(CMLib.beanCounter().getCurrency(this))+".",true,false);
+							return false;
 						}
 						return true;
 					}
@@ -783,8 +783,8 @@ public class StdBanker extends StdShopKeeper implements Banker
 				return true;
 			case CMMsg.TYP_WITHDRAW:
 				{
-                    if(!CMLib.coffeeShops().ignoreIfNecessary(msg.source(),finalIgnoreMask(),this))
-                        return false;
+					if(!CMLib.coffeeShops().ignoreIfNecessary(msg.source(),finalIgnoreMask(),this))
+						return false;
 					String thename=msg.source().Name();
 					if(isSold(ShopKeeper.DEAL_CLANBANKER))
 					{
@@ -809,17 +809,17 @@ public class StdBanker extends StdShopKeeper implements Banker
 						return false;
 					}
 					if((msg.tool()!=null)&&(!msg.tool().okMessage(myHost,msg)))
-					    return false;
+						return false;
 					MOB owner=msg.source();
 					double balance=getBalance(owner);
 					double collateral=totalItemsWorth(owner);
 					if(msg.tool() instanceof Coins)
 					{
-					    if(!((Coins)msg.tool()).getCurrency().equals(CMLib.beanCounter().getCurrency(this)))
-					    {
+						if(!((Coins)msg.tool()).getCurrency().equals(CMLib.beanCounter().getCurrency(this)))
+						{
 							CMLib.commands().postSay(this,mob,"I'm sorry, I can only give you "+CMLib.beanCounter().getDenominationName(CMLib.beanCounter().getCurrency(this))+".",true,false);
 							return false;
-					    }
+						}
 
 						if((!isSold(ShopKeeper.DEAL_CLANBANKER))
 						&&(owner.isMarriedToLiege())
@@ -893,13 +893,13 @@ public class StdBanker extends StdShopKeeper implements Banker
 				return super.okMessage(myHost,msg);
 			case CMMsg.TYP_BORROW:
 			{
-                if(!CMLib.coffeeShops().ignoreIfNecessary(msg.source(),finalIgnoreMask(),this))
-                    return false;
-                if(!(msg.tool() instanceof Coins))
-                {
+				if(!CMLib.coffeeShops().ignoreIfNecessary(msg.source(),finalIgnoreMask(),this))
+					return false;
+				if(!(msg.tool() instanceof Coins))
+				{
 					CMLib.commands().postSay(this,mob,"I'm sorry, only MONEY can be borrowed.",true,false);
-                	return false;
-                }
+					return false;
+				}
 				String thename=msg.source().Name();
 				if(isSold(ShopKeeper.DEAL_CLANBANKER))
 				{
@@ -959,8 +959,8 @@ public class StdBanker extends StdShopKeeper implements Banker
 			}
 			case CMMsg.TYP_LIST:
 			{
-                if(!CMLib.coffeeShops().ignoreIfNecessary(msg.source(),finalIgnoreMask(),this))
-                    return false;
+				if(!CMLib.coffeeShops().ignoreIfNecessary(msg.source(),finalIgnoreMask(),this))
+					return false;
 				String thename=msg.source().Name();
 				if(isSold(ShopKeeper.DEAL_CLANBANKER))
 				{

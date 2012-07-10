@@ -25,7 +25,7 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -76,10 +76,10 @@ public class GenFood extends StdFood
 		switch(getCodeNum(code))
 		{
 		case 0: return ""+nourishment();
-        case 1: return ""+bite();
-        default:
-            return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
-        }
+		case 1: return ""+bite();
+		default:
+			return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
+		}
 	}
 	public void setStat(String code, String val)
 	{
@@ -89,10 +89,10 @@ public class GenFood extends StdFood
 		switch(getCodeNum(code))
 		{
 		case 0: setNourishment(CMath.s_parseIntExpression(val)); break;
-        case 1: setBite(CMath.s_parseIntExpression(val)); break;
-        default:
-            CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code, val);
-            break;
+		case 1: setBite(CMath.s_parseIntExpression(val)); break;
+		default:
+			CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code, val);
+			break;
 		}
 	}
 	protected int getCodeNum(String code){
@@ -104,7 +104,7 @@ public class GenFood extends StdFood
 	public String[] getStatCodes()
 	{
 		if(codes!=null) return codes;
-        String[] MYCODES=CMProps.getStatCodesList(GenFood.MYCODES,this);
+		String[] MYCODES=CMProps.getStatCodesList(GenFood.MYCODES,this);
 		String[] superCodes=GenericBuilder.GENITEMCODES;
 		codes=new String[superCodes.length+MYCODES.length];
 		int i=0;

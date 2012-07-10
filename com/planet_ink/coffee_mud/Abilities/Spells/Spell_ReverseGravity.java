@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -72,8 +72,8 @@ public class Spell_ReverseGravity extends Spell
 			{
 				Item inhab=room.getItem(i);
 				if((inhab!=null)
-                &&(inhab.container()==null)
-                &&(!CMLib.flags().isInFlight(inhab.ultimateContainer(null))))
+				&&(inhab.container()==null)
+				&&(!CMLib.flags().isInFlight(inhab.ultimateContainer(null))))
 				{
 					Ability A=CMClass.getAbility("Falling");
 					A.setAffectedOne(room);
@@ -126,16 +126,16 @@ public class Spell_ReverseGravity extends Spell
 		super.unInvoke();
 	}
 
-    public int castingQuality(MOB mob, Physical target)
-    {
-        if(mob!=null)
-        {
-            if(mob.location().fetchEffect(this.ID())!=null)
-                return Ability.QUALITY_INDIFFERENT;
-        }
-        return super.castingQuality(mob,target);
-    }
-    
+	public int castingQuality(MOB mob, Physical target)
+	{
+		if(mob!=null)
+		{
+			if(mob.location().fetchEffect(this.ID())!=null)
+				return Ability.QUALITY_INDIFFERENT;
+		}
+		return super.castingQuality(mob,target);
+	}
+	
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		// the invoke method for spells receives as
@@ -149,7 +149,7 @@ public class Spell_ReverseGravity extends Spell
 
 		if(target.fetchEffect(this.ID())!=null)
 		{
-		    mob.tell(mob,null,null,"Gravity has already been reversed here!");
+			mob.tell(mob,null,null,"Gravity has already been reversed here!");
 			return false;
 		}
 

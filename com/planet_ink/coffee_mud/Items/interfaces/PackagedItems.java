@@ -21,7 +21,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -31,12 +31,12 @@ import java.util.*;
 */
 public interface PackagedItems extends Item
 {
-    public boolean packageMe(Item I, int number);
-    public boolean isPackagable(List<Item> V);
-    public List<Item> unPackage(int number);
-    public int numberOfItemsInPackage();
-    public Item getItem();
-    public void setNumberOfItemsInPackage(int number);
-    public String packageText();
-    public void setPackageText(String text);
+	public boolean packageMe(Item I, int number);
+	public boolean isPackagable(List<Item> V);
+	public List<Item> unPackage(int number);
+	public int numberOfItemsInPackage();
+	public Item getItem();
+	public void setNumberOfItemsInPackage(int number);
+	public String packageText();
+	public void setPackageText(String text);
 }

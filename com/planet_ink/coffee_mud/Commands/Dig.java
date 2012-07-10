@@ -23,7 +23,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -75,43 +75,43 @@ public class Dig extends StdCommand
 		return false;
 	}
 	
-    public boolean preExecute(MOB mob, Vector commands, int metaFlags, int secondsElapsed, double actionsRemaining)
-    throws java.io.IOException
+	public boolean preExecute(MOB mob, Vector commands, int metaFlags, int secondsElapsed, double actionsRemaining)
+	throws java.io.IOException
 	{
-    	if(secondsElapsed==0)
-    	{
-    		if(isOccupiedWithOtherWork(mob))
-    		{
-    			mob.tell("You are too busy to dig right now.");
-    			return false;
-    		}
-    		
-	    	String msgStr="<S-NAME> start(s) digging a hole with <O-NAME>.";
-	    	Item I=mob.fetchWieldedItem();
-	    	if(I==null)  I=mob.myNaturalWeapon();
+		if(secondsElapsed==0)
+		{
+			if(isOccupiedWithOtherWork(mob))
+			{
+				mob.tell("You are too busy to dig right now.");
+				return false;
+			}
+			
+			String msgStr="<S-NAME> start(s) digging a hole with <O-NAME>.";
+			Item I=mob.fetchWieldedItem();
+			if(I==null)  I=mob.myNaturalWeapon();
 			CMMsg msg=CMClass.getMsg(mob,mob.location(),I,CMMsg.MSG_DIG,msgStr);
 			msg.setValue(1);
 			if(mob.location().okMessage(mob,msg))
 				mob.location().send(mob,msg);
 			else
 				return false;
-    	}
-    	else
-    	if((secondsElapsed % 8)==0)
-    	{
-	    	String msgStr="<S-NAME> continue(s) digging a hole with <O-NAME>.";
-	    	Item I=mob.fetchWieldedItem();
-	    	if(I==null)  I=mob.myNaturalWeapon();
+		}
+		else
+		if((secondsElapsed % 8)==0)
+		{
+			String msgStr="<S-NAME> continue(s) digging a hole with <O-NAME>.";
+			Item I=mob.fetchWieldedItem();
+			if(I==null)  I=mob.myNaturalWeapon();
 			CMMsg msg=CMClass.getMsg(mob,mob.location(),I,CMMsg.MSG_DIG,msgStr);
 			msg.setValue(getDiggingDepth(I));
 			if(mob.location().okMessage(mob,msg))
 				mob.location().send(mob,msg);
 			else
 				return false;
-    	}
-	    return true;
+		}
+		return true;
 	}
-    
+	
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
@@ -120,10 +120,10 @@ public class Dig extends StdCommand
 			mob.location().send(mob,msg);
 		return false;
 	}
-    public double combatActionsCost(final MOB mob, final List<String> cmds){return 30.0 * mob.phyStats().speed();}
-    public double actionsCost(final MOB mob, final List<String> cmds)
-    {
-    	return 10.0 * mob.phyStats().speed();
-    }
+	public double combatActionsCost(final MOB mob, final List<String> cmds){return 30.0 * mob.phyStats().speed();}
+	public double actionsCost(final MOB mob, final List<String> cmds)
+	{
+		return 10.0 * mob.phyStats().speed();
+	}
 	public boolean canBeOrdered(){return true;}
 }

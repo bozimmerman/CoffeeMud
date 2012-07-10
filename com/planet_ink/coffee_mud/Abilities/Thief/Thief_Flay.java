@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -41,7 +41,7 @@ public class Thief_Flay extends ThiefSkill
 	protected int canAffectCode(){return CAN_MOBS;}
 	protected int canTargetCode(){return CAN_MOBS;}
 	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-    public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_LEGAL;}
+	public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_LEGAL;}
 	private static final String[] triggerStrings = {"FLAY"};
 	public String[] triggerStrings(){return triggerStrings;}
 	protected int overrideMana(){return 100;}
@@ -49,38 +49,38 @@ public class Thief_Flay extends ThiefSkill
 	
 	public boolean okMessage(Environmental host, CMMsg msg)
 	{
-	    if(!super.okMessage(host,msg)) return false;
-	    if((affected instanceof MOB)
-	    &&msg.amISource((MOB)affected)
-	    &&(msg.targetMinor()==CMMsg.TYP_WEAR)
-	    &&(msg.target() instanceof Item)
-	    &&((CMath.bset(((Item)msg.target()).rawProperLocationBitmap(),Wearable.WORN_BACK))
-        ||(CMath.bset(((Item)msg.target()).rawProperLocationBitmap(),Wearable.WORN_TORSO))))
-	    {
-	        msg.source().tell("The flayed marks on your back make wearing that too painful.");
-	        return false;
-	    }
-	    return true;
+		if(!super.okMessage(host,msg)) return false;
+		if((affected instanceof MOB)
+		&&msg.amISource((MOB)affected)
+		&&(msg.targetMinor()==CMMsg.TYP_WEAR)
+		&&(msg.target() instanceof Item)
+		&&((CMath.bset(((Item)msg.target()).rawProperLocationBitmap(),Wearable.WORN_BACK))
+		||(CMath.bset(((Item)msg.target()).rawProperLocationBitmap(),Wearable.WORN_TORSO))))
+		{
+			msg.source().tell("The flayed marks on your back make wearing that too painful.");
+			return false;
+		}
+		return true;
 	}
 
-    public int castingQuality(MOB mob, Physical target)
-    {
-        if(mob!=null)
-        {
-            if(mob.isInCombat())
-                return Ability.QUALITY_INDIFFERENT;
-            if(CMLib.flags().isSitting(mob))
-                return Ability.QUALITY_INDIFFERENT;
-            if(!CMLib.flags().aliveAwakeMobileUnbound(mob,false))
-                return Ability.QUALITY_INDIFFERENT;
-            if(target != null)
-            {
-                if((!CMLib.flags().isBoundOrHeld(target))&&(!CMLib.flags().isSleeping(target)))
-                    return Ability.QUALITY_INDIFFERENT;
-            }
-        }
-        return super.castingQuality(mob,target);
-    }
+	public int castingQuality(MOB mob, Physical target)
+	{
+		if(mob!=null)
+		{
+			if(mob.isInCombat())
+				return Ability.QUALITY_INDIFFERENT;
+			if(CMLib.flags().isSitting(mob))
+				return Ability.QUALITY_INDIFFERENT;
+			if(!CMLib.flags().aliveAwakeMobileUnbound(mob,false))
+				return Ability.QUALITY_INDIFFERENT;
+			if(target != null)
+			{
+				if((!CMLib.flags().isBoundOrHeld(target))&&(!CMLib.flags().isSleeping(target)))
+					return Ability.QUALITY_INDIFFERENT;
+			}
+		}
+		return super.castingQuality(mob,target);
+	}
 
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
@@ -92,13 +92,13 @@ public class Thief_Flay extends ThiefSkill
 		MOB target=getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 
-        if(CMLib.flags().isSitting(mob))
-        {
-            mob.tell("You need to stand up!");
-            return false;
-        }
-        if(!CMLib.flags().aliveAwakeMobileUnbound(mob,false))
-            return false;
+		if(CMLib.flags().isSitting(mob))
+		{
+			mob.tell("You need to stand up!");
+			return false;
+		}
+		if(!CMLib.flags().aliveAwakeMobileUnbound(mob,false))
+			return false;
 		if((!auto)&&(!CMLib.flags().isBoundOrHeld(target))&&(!CMLib.flags().isSleeping(target)))
 		{
 			mob.tell(target.name()+" must be prone or bound first.");
@@ -106,12 +106,12 @@ public class Thief_Flay extends ThiefSkill
 		}
 		for(int i=0;i<target.numItems();i++)
 		{
-		    Item I=target.getItem(i);
-		    if((I!=null)&&((I.amWearingAt(Wearable.WORN_BACK))||(I.amWearingAt(Wearable.WORN_TORSO))))
-		    {
-			    mob.tell(target.name()+" must be remove items worn on the torso or back first.");
-			    return false;
-		    }
+			Item I=target.getItem(i);
+			if((I!=null)&&((I.amWearingAt(Wearable.WORN_BACK))||(I.amWearingAt(Wearable.WORN_TORSO))))
+			{
+				mob.tell(target.name()+" must be remove items worn on the torso or back first.");
+				return false;
+			}
 		}
 		
 		Item w=mob.fetchWieldedItem();
@@ -164,7 +164,7 @@ public class Thief_Flay extends ThiefSkill
 			}
 		}
 		else
-		    maliciousFizzle(mob,target,"<S-NAME> attempt(s) flay <T-NAMESELF>, but fail(s).");
+			maliciousFizzle(mob,target,"<S-NAME> attempt(s) flay <T-NAMESELF>, but fail(s).");
 		return success;
 	}
 }

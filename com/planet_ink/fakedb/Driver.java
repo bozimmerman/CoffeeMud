@@ -10,7 +10,7 @@ import java.util.Properties;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -22,14 +22,14 @@ public class Driver implements java.sql.Driver
 {
    static 
    {
-      try 
-      {
-         java.sql.DriverManager.registerDriver(new Driver());
-      } 
-      catch (java.sql.SQLException E) 
-      {
-         E.printStackTrace();
-      }
+	  try 
+	  {
+		 java.sql.DriverManager.registerDriver(new Driver());
+	  } 
+	  catch (java.sql.SQLException E) 
+	  {
+		 E.printStackTrace();
+	  }
    }
 
    public Driver()
@@ -38,19 +38,19 @@ public class Driver implements java.sql.Driver
 
    public synchronized java.sql.Connection connect(String url, Properties info) throws java.sql.SQLException 
    {
-      Properties p=parseUrl(url,info);
-      if (p==null) return null;
-      return new Connection(p.getProperty("PATH"));
+	  Properties p=parseUrl(url,info);
+	  if (p==null) return null;
+	  return new Connection(p.getProperty("PATH"));
    }
 
    public synchronized boolean acceptsURL(String url) throws java.sql.SQLException 
    {
-      return parseUrl(url,null)!=null;
+	  return parseUrl(url,null)!=null;
    }
 
    public java.sql.DriverPropertyInfo[] getPropertyInfo(String url, Properties info) throws java.sql.SQLException 
    {
-      return new java.sql.DriverPropertyInfo[0];
+	  return new java.sql.DriverPropertyInfo[0];
    }
 
    public int getMajorVersion() 
@@ -69,22 +69,22 @@ public class Driver implements java.sql.Driver
    }
 
    /**
-    * 
-    * @param url
-    * @param defaults
-    * @return
-    */
+	* 
+	* @param url
+	* @param defaults
+	* @return
+	*/
    private Properties parseUrl(String url, Properties defaults)
    {
-      if (!url.startsWith("jdbc:fakedb:")) return null;
+	  if (!url.startsWith("jdbc:fakedb:")) return null;
 
-      String path=url.substring(12);
-      if ((path.length()>0)&&(!path.endsWith(java.io.File.separator)))
-         path=path+java.io.File.separator;
+	  String path=url.substring(12);
+	  if ((path.length()>0)&&(!path.endsWith(java.io.File.separator)))
+		 path=path+java.io.File.separator;
 
-      Properties result=new Properties(defaults);
-      result.put("PATH",path.replace('/',java.io.File.separatorChar));
+	  Properties result=new Properties(defaults);
+	  result.put("PATH",path.replace('/',java.io.File.separatorChar));
 
-      return result;
+	  return result;
    }
 }

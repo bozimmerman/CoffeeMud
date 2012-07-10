@@ -25,7 +25,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -47,7 +47,7 @@ public class Thief_SenseLaw extends ThiefSkill
 	public static final Vector empty=new ReadOnlyVector();
 	protected Room oldroom=null;
 	protected String lastReport="";
-    public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_STREETSMARTS;}
+	public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_STREETSMARTS;}
 
 	public Vector getLawMen(Area legalObject, Room room, LegalBehavior B)
 	{
@@ -64,11 +64,11 @@ public class Thief_SenseLaw extends ThiefSkill
 		return V;
 	}
 
-    public boolean findLaw(Room R, int depth, int maxDepth)
-    {
-        return true;
-    }
-    
+	public boolean findLaw(Room R, int depth, int maxDepth)
+	{
+		return true;
+	}
+	
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if((affected!=null)&&(affected instanceof MOB))
@@ -76,7 +76,7 @@ public class Thief_SenseLaw extends ThiefSkill
 			MOB mob=(MOB)affected;
 			if((mob.location()!=null)&&(!mob.isMonster()))
 			{
-                LegalBehavior B=CMLib.law().getLegalBehavior(mob.location());
+				LegalBehavior B=CMLib.law().getLegalBehavior(mob.location());
 				if(B==null)
 					return super.tick(ticking,tickID);
 				StringBuffer buf=new StringBuffer("");

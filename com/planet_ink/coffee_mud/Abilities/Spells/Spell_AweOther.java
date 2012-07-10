@@ -25,7 +25,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -46,14 +46,14 @@ public class Spell_AweOther extends Spell
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(((msg.targetMajor()&CMMsg.MASK_MALICIOUS)>0)
-        &&(!CMath.bset(msg.sourceMajor(),CMMsg.MASK_ALWAYS))
+		&&(!CMath.bset(msg.sourceMajor(),CMMsg.MASK_ALWAYS))
 		&&(msg.target()!=null)
 		&&(msg.target().Name().equalsIgnoreCase(text())))
 		{
 			MOB target=(MOB)msg.target();
 			if((!target.isInCombat())
 			&&(msg.source().getVictim()!=target)
-            &&(msg.source().location()==target.location()))
+			&&(msg.source().location()==target.location()))
 			{
 				msg.source().tell("You are too much in awe of "+target.name());
 				if(target.getVictim()==msg.source())
@@ -67,19 +67,19 @@ public class Spell_AweOther extends Spell
 		return super.okMessage(myHost,msg);
 	}
 
-    public int castingQuality(MOB mob, Physical target)
-    {
-        if(mob!=null)
-        {
-            if(target instanceof MOB)
-            {
-                if(((MOB)target).isInCombat())
-                    return Ability.QUALITY_INDIFFERENT;
-            }
-        }
-        return super.castingQuality(mob,target);
-    }
-    
+	public int castingQuality(MOB mob, Physical target)
+	{
+		if(mob!=null)
+		{
+			if(target instanceof MOB)
+			{
+				if(((MOB)target).isInCombat())
+					return Ability.QUALITY_INDIFFERENT;
+			}
+		}
+		return super.castingQuality(mob,target);
+	}
+	
 	public void unInvoke()
 	{
 		// undo the affects of this spell
@@ -105,8 +105,8 @@ public class Spell_AweOther extends Spell
 		String aweWhom=CMParms.combine(commands,1);
 		MOB target=getTarget(mob,new XVector(commands.firstElement()),givenTarget);
 		if(target==null) return false;
-        Room R=CMLib.map().roomLocation(target);
-        if(R==null) R=mob.location();
+		Room R=CMLib.map().roomLocation(target);
+		if(R==null) R=mob.location();
 
 		// the invoke method for spells receives as
 		// parameters the invoker, and the REMAINING

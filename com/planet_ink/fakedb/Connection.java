@@ -12,7 +12,7 @@ import java.lang.ref.WeakReference;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -31,7 +31,7 @@ public class Connection implements java.sql.Connection
 
    static private void log(String x) 
    {
-      System.err.println("Connection: "+x);
+	  System.err.println("Connection: "+x);
    }
 
    Backend getBackend() { return backend; }
@@ -39,11 +39,11 @@ public class Connection implements java.sql.Connection
    public Connection(String path) throws java.sql.SQLException
    {
 	  
-      try 
-      {
-         path=(new java.io.File(path)).getCanonicalPath();
-      } 
-      catch (java.io.IOException e) {}
+	  try 
+	  {
+		 path=(new java.io.File(path)).getCanonicalPath();
+	  } 
+	  catch (java.io.IOException e) {}
 	  
 	  oldPath=path;
 	  if(!closed)
@@ -58,26 +58,26 @@ public class Connection implements java.sql.Connection
 		  }
 	  }
 
-      synchronized (databases) 
+	  synchronized (databases) 
 	  {
-          WeakReference ref=(WeakReference)databases.get(path);
-          Backend       backend=null;
-          if (ref!=null)
-             backend=(Backend)ref.get();
-          if (backend==null) 
-          {
-             backend=new Backend();
-             if (!backend.open(new java.io.File(path)))
-                throw new java.sql.SQLException("unable to open database");
-             databases.put(path,new WeakReference(backend));
-          }
-          this.backend=backend;
-      }
+		  WeakReference ref=(WeakReference)databases.get(path);
+		  Backend   	backend=null;
+		  if (ref!=null)
+			 backend=(Backend)ref.get();
+		  if (backend==null) 
+		  {
+			 backend=new Backend();
+			 if (!backend.open(new java.io.File(path)))
+				throw new java.sql.SQLException("unable to open database");
+			 databases.put(path,new WeakReference(backend));
+		  }
+		  this.backend=backend;
+	  }
    }
 
    public java.sql.Statement createStatement() throws java.sql.SQLException
    {
-      return new Statement(this);
+	  return new Statement(this);
    }
    
    public java.sql.Statement createStatement(int a, int b) throws java.sql.SQLException
@@ -129,8 +129,8 @@ public class Connection implements java.sql.Connection
 
    public java.sql.CallableStatement prepareCall(String sql) throws java.sql.SQLException
    {
-      log("prepareCall");
-      throw new java.sql.SQLException("Callable statments not suppoted.", "S1C00");
+	  log("prepareCall");
+	  throw new java.sql.SQLException("Callable statments not suppoted.", "S1C00");
    }
    
    public java.sql.CallableStatement prepareCall(String sql,int a,int b) throws java.sql.SQLException
@@ -174,15 +174,15 @@ public class Connection implements java.sql.Connection
 
    public String nativeSQL(String sql) throws java.sql.SQLException
    {
-      return sql;
+	  return sql;
    }
    
    public void setAutoCommit(boolean autoCommit) throws java.sql.SQLException
    {
-      log("setAutoCommit");
-      if (!autoCommit)
-    	  throw new java.sql.SQLException("Cannot disable AUTO_COMMIT", "08003");
-      return;
+	  log("setAutoCommit");
+	  if (!autoCommit)
+		  throw new java.sql.SQLException("Cannot disable AUTO_COMMIT", "08003");
+	  return;
    }
    
    public boolean getAutoCommit() throws java.sql.SQLException
@@ -235,23 +235,23 @@ public class Connection implements java.sql.Connection
 
    public java.sql.DatabaseMetaData getMetaData() throws java.sql.SQLException
    {
-      log("getMetaData");
-      return null;
+	  log("getMetaData");
+	  return null;
    }
    
    public void setReadOnly (boolean readOnly) throws java.sql.SQLException
    {
-      log("setReadOnly");
+	  log("setReadOnly");
    }
    
    public boolean isReadOnly() throws java.sql.SQLException
    {
-      return false;
+	  return false;
    }
    
    public void setCatalog(String Catalog) throws java.sql.SQLException
    {
-      log("setCatalog");
+	  log("setCatalog");
    }
    
    public String getCatalog() throws java.sql.SQLException
@@ -261,24 +261,24 @@ public class Connection implements java.sql.Connection
    
    public void setTransactionIsolation(int level) throws java.sql.SQLException
    {
-      log("setTransactionIsolation");
-      throw new java.sql.SQLException("Transaction Isolation Levels are not supported.", "S1C00");
+	  log("setTransactionIsolation");
+	  throw new java.sql.SQLException("Transaction Isolation Levels are not supported.", "S1C00");
    }
    
    public int getTransactionIsolation() throws java.sql.SQLException
    {
-      return java.sql.Connection.TRANSACTION_NONE;
+	  return java.sql.Connection.TRANSACTION_NONE;
    }
    
    public java.sql.SQLWarning getWarnings() throws java.sql.SQLException
    {
-      log("getWarnings");
-      return null;
+	  log("getWarnings");
+	  return null;
    }
    
    public void clearWarnings() throws java.sql.SQLException
    {
-      log("clearWarnings");
+	  log("clearWarnings");
    }
 
    public void setHoldability(int holdability) throws java.sql.SQLException
@@ -360,13 +360,13 @@ public class Connection implements java.sql.Connection
    // JDK 1.4 stuff
 /*
    public int getHoldability() throws java.sql.SQLException
-      { return java.sql.ResultSet.CLOSE_CURSORS_AT_COMMIT; }
+	  { return java.sql.ResultSet.CLOSE_CURSORS_AT_COMMIT; }
    public void releaseSavepoint(java.sql.Savepoint savepoint) throws java.sql.SQLException
-      {}
+	  {}
    public java.sql.Savepoint setSavepoint() throws java.sql.SQLException
-      { return null; }
+	  { return null; }
    public java.sql.Savepoint setSavepoint(String name) throws java.sql.SQLException
-      { return null; }
+	  { return null; }
    public void rollback(java.sql.Savepoint p) throws java.sql.SQLException
    { rollback(); }
 */

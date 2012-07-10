@@ -39,7 +39,7 @@ import java.io.IOException;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -87,7 +87,7 @@ public class FileGrabber
 	// form is stored
 	protected boolean addPermittedDirectory(String virtPath, String actPath)
 	{
-        virtPath=virtPath.replace(File.separatorChar,'/');
+		virtPath=virtPath.replace(File.separatorChar,'/');
 		if (!virtPath.endsWith("/")) virtPath += "/";
 
 		String cn;
@@ -132,7 +132,7 @@ public class FileGrabber
 	public GrabbedFile grabFile(String fn)
 	{
 		GrabbedFile gf = new GrabbedFile();
-        fn=fn.replace(File.separatorChar,'/');
+		fn=fn.replace(File.separatorChar,'/');
 		if (!fn.startsWith("/")) fn = '/' + fn;
 
 		String baseDir = "";
@@ -143,17 +143,17 @@ public class FileGrabber
 			{
 
 				String searchPath = fn;
-                String ssp=null;
-                int x=0;
+				String ssp=null;
+				int x=0;
 				if (!searchPath.endsWith("/")) searchPath += '/';
 				while (searchPath.length() > 1 && !virtualDirectories.containsKey(searchPath))
 				{
-                    x=searchPath.lastIndexOf('/',searchPath.lastIndexOf('/')-1);
-                    ssp=searchPath.substring(x);
-                    if(fn2.startsWith("/")&&(ssp.endsWith("/")))
-    					fn2 = searchPath.substring(x) + fn2.substring(1);
-                    else
-                        fn2 = searchPath.substring(x) + fn2;
+					x=searchPath.lastIndexOf('/',searchPath.lastIndexOf('/')-1);
+					ssp=searchPath.substring(x);
+					if(fn2.startsWith("/")&&(ssp.endsWith("/")))
+						fn2 = searchPath.substring(x) + fn2.substring(1);
+					else
+						fn2 = searchPath.substring(x) + fn2;
 					searchPath = searchPath.substring(0,x+1);
 				}
 				baseDir = (String)virtualDirectories.get(searchPath);
@@ -175,12 +175,12 @@ public class FileGrabber
 
 			try
 			{
-                String fullFilename=null;
-                if(filename.startsWith("/")&&baseDir.endsWith("/"))
-                    fullFilename = ( baseDir.substring( 0, baseDir.length() - 1 ) + filename );
-                else
-                    fullFilename=baseDir+filename;
-                if(fullFilename.endsWith("/")) fullFilename=fullFilename.substring(0,fullFilename.length()-1);
+				String fullFilename=null;
+				if(filename.startsWith("/")&&baseDir.endsWith("/"))
+					fullFilename = ( baseDir.substring( 0, baseDir.length() - 1 ) + filename );
+				else
+					fullFilename=baseDir+filename;
+				if(fullFilename.endsWith("/")) fullFilename=fullFilename.substring(0,fullFilename.length()-1);
 				gf.file = new CMFile(fullFilename,null,true);
 			}
 			catch (Exception e)

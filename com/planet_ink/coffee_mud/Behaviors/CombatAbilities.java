@@ -25,7 +25,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -69,9 +69,9 @@ public class CombatAbilities extends StdBehavior
 	
 	private static class InternalWeaponSet
 	{
-        public Item wand=null;
-        public Item offHandWand=null;
-        public Item weapon=null;
+		public Item wand=null;
+		public Item offHandWand=null;
+		public Item weapon=null;
 	}
 
 	public String accountForYourself()
@@ -81,42 +81,42 @@ public class CombatAbilities extends StdBehavior
 
 	protected void makeClass(MOB mob, String theParms, String defaultClassName)
 	{
-	    CharClass C=null;
-	    if(theParms.trim().length()==0) 
-	    {
-	        C=CMClass.findCharClass(defaultClassName);
+		CharClass C=null;
+		if(theParms.trim().length()==0) 
+		{
+			C=CMClass.findCharClass(defaultClassName);
 			if(mob.baseCharStats().getCurrentClass()!=C)
 			{
 				mob.baseCharStats().setCurrentClass(C);
 				mob.recoverCharStats();
 			}
 			return;
-	    }
-	    Vector<String> V=CMParms.parse(theParms.trim());
-	    Vector classes=new Vector();
-	    for(int v=0;v<V.size();v++)
-	    {
-	        C=CMClass.findCharClass((String)V.elementAt(v));
-	        if((C!=null)&&(!C.ID().equalsIgnoreCase("Archon")))
-	            classes.addElement(C);
-	    }
-	    if(classes.size()==0) 
-	    {
-	        C=CMClass.findCharClass(defaultClassName);
+		}
+		Vector<String> V=CMParms.parse(theParms.trim());
+		Vector classes=new Vector();
+		for(int v=0;v<V.size();v++)
+		{
+			C=CMClass.findCharClass((String)V.elementAt(v));
+			if((C!=null)&&(!C.ID().equalsIgnoreCase("Archon")))
+				classes.addElement(C);
+		}
+		if(classes.size()==0) 
+		{
+			C=CMClass.findCharClass(defaultClassName);
 			if(mob.baseCharStats().getCurrentClass()!=C)
 			{
 				mob.baseCharStats().setCurrentClass(C);
 				mob.recoverCharStats();
 			}
 			return;
-	    }
-	    for(int i=0;i<classes.size();i++)
-	    {
-	        C=(CharClass)classes.elementAt(i);
-	        mob.baseCharStats().setCurrentClass(C);
-	        mob.baseCharStats().setClassLevel(C,mob.basePhyStats().level()/classes.size());
-	    }
-	    mob.recoverCharStats();
+		}
+		for(int i=0;i<classes.size();i++)
+		{
+			C=(CharClass)classes.elementAt(i);
+			mob.baseCharStats().setCurrentClass(C);
+			mob.baseCharStats().setClassLevel(C,mob.basePhyStats().level()/classes.size());
+		}
+		mob.recoverCharStats();
 	}
 
 	protected String getParmsMinusCombatMode()
@@ -138,9 +138,9 @@ public class CombatAbilities extends StdBehavior
 	protected void newCharacter(MOB mob)
 	{
 		Vector oldAbilities=new Vector();
-        for(Enumeration<Ability> a=mob.allAbilities();a.hasMoreElements();)
-        {
-            Ability A=a.nextElement();
+		for(Enumeration<Ability> a=mob.allAbilities();a.hasMoreElements();)
+		{
+			Ability A=a.nextElement();
 			if(A!=null)
 			{
 				int proficiency=CMLib.ableMapper().getMaxProficiency(mob,true,A.ID())/2;
@@ -230,14 +230,14 @@ public class CombatAbilities extends StdBehavior
 			&&(!attackerM.amDead())
 			&&(attackerM.isInCombat()))
 			{
-	            if((hostM.getGroupMembers(new HashSet<MOB>()).contains(attackerM))
-	            ||(!CMLib.flags().canBeSeenBy(attackerM, hostM)))
-	            	I[0]=0;
-	            else
-	            {
+				if((hostM.getGroupMembers(new HashSet<MOB>()).contains(attackerM))
+				||(!CMLib.flags().canBeSeenBy(attackerM, hostM)))
+					I[0]=0;
+				else
+				{
 					hostM.setVictim(attackerM);
 					aggro.clear();
-	            }
+				}
 			}
 		}
 	}
@@ -332,18 +332,18 @@ public class CombatAbilities extends StdBehavior
 
 	protected boolean isRightCombatAbilities(MOB mob)
 	{
-        // insures we only try this once!
+		// insures we only try this once!
 		Behavior B;
 		for(Enumeration<Behavior> e=mob.behaviors();e.hasMoreElements();)
 		{
 			B=e.nextElement();
-            if((B==null)||(B==this))
-            	return true;
-            else
-            if(B instanceof CombatAbilities)
-                return false;
-        }
-        return true;
+			if((B==null)||(B==this))
+				return true;
+			else
+			if(B instanceof CombatAbilities)
+				return false;
+		}
+		return true;
 	}
 
 	protected Ability useSkill(MOB mob, MOB victim, MOB leader) throws CMException
@@ -355,9 +355,9 @@ public class CombatAbilities extends StdBehavior
 		
 
 		MOB target = null;
-        int victimQuality=Ability.QUALITY_INDIFFERENT;
-        int selfQuality=Ability.QUALITY_INDIFFERENT;
-        int leaderQuality=Ability.QUALITY_INDIFFERENT;
+		int victimQuality=Ability.QUALITY_INDIFFERENT;
+		int selfQuality=Ability.QUALITY_INDIFFERENT;
+		int leaderQuality=Ability.QUALITY_INDIFFERENT;
 		while((tryThisOne==null)&&((++tries)<100)&&(mob.numAllAbilities()>0))
 		{
 			if((combatMode==COMBAT_ONLYALWAYS)&&(this.skillsAlways!=null)&&(this.skillsAlways.size()>0))
@@ -365,17 +365,17 @@ public class CombatAbilities extends StdBehavior
 			else
 				A=mob.fetchRandomAbility();
 			
-            if((A==null)
-            ||(A.isAutoInvoked())
-            ||(A.triggerStrings()==null)
-            ||(A.triggerStrings().length==0)
-            ||((skillsAlways!=null)&&(!skillsAlways.contains(A.ID())))
-            ||((skillsNever!=null)&&(skillsNever.contains(A.ID()))))
-                continue;
-            
+			if((A==null)
+			||(A.isAutoInvoked())
+			||(A.triggerStrings()==null)
+			||(A.triggerStrings().length==0)
+			||((skillsAlways!=null)&&(!skillsAlways.contains(A.ID())))
+			||((skillsNever!=null)&&(skillsNever.contains(A.ID()))))
+				continue;
+			
 			victimQuality=(victim!=null)?A.castingQuality(mob,victim):Ability.QUALITY_INDIFFERENT;
-            selfQuality=A.castingQuality(mob,mob);
-            leaderQuality=((mob==leader)||(leader==null))?Ability.QUALITY_INDIFFERENT:A.castingQuality(mob,leader);
+			selfQuality=A.castingQuality(mob,mob);
+			leaderQuality=((mob==leader)||(leader==null))?Ability.QUALITY_INDIFFERENT:A.castingQuality(mob,leader);
 
 			if(victimQuality==Ability.QUALITY_MALICIOUS)
 			{
@@ -383,58 +383,58 @@ public class CombatAbilities extends StdBehavior
 				{
 				case COMBAT_RANDOM:
 				case COMBAT_ONLYALWAYS:
-	                tryThisOne=A;
+					tryThisOne=A;
 					break;
 				case COMBAT_DEFENSIVE:
 					if(CMLib.dice().rollPercentage()<=5)
-		                tryThisOne=A;
+						tryThisOne=A;
 					break;
 				case COMBAT_OFFENSIVE:
-	                tryThisOne=A;
+					tryThisOne=A;
 					break;
 				case COMBAT_MIXEDOFFENSIVE:
 					if(CMLib.dice().rollPercentage()<=75)
-		                tryThisOne=A;
+						tryThisOne=A;
 					break;
 				case COMBAT_MIXEDDEFENSIVE:
 					if(CMLib.dice().rollPercentage()<=25)
-		                tryThisOne=A;
+						tryThisOne=A;
 					break;
 				}
 			}
 			else
-            if((selfQuality==Ability.QUALITY_BENEFICIAL_SELF)
-            ||(leaderQuality==Ability.QUALITY_BENEFICIAL_OTHERS))
+			if((selfQuality==Ability.QUALITY_BENEFICIAL_SELF)
+			||(leaderQuality==Ability.QUALITY_BENEFICIAL_OTHERS))
 			{
 				switch(combatMode)
 				{
 				case COMBAT_RANDOM:
 				case COMBAT_ONLYALWAYS:
-	                tryThisOne=A;
+					tryThisOne=A;
 					break;
 				case COMBAT_DEFENSIVE:
-	                tryThisOne=A;
+					tryThisOne=A;
 					break;
 				case COMBAT_OFFENSIVE:
 					if(CMLib.dice().rollPercentage()<=5)
-		                tryThisOne=A;
+						tryThisOne=A;
 					break;
 				case COMBAT_MIXEDOFFENSIVE:
 					if(CMLib.dice().rollPercentage()<=25)
-		                tryThisOne=A;
+						tryThisOne=A;
 					break;
 				case COMBAT_MIXEDDEFENSIVE:
 					if(CMLib.dice().rollPercentage()<=75)
-		                tryThisOne=A;
+						tryThisOne=A;
 					break;
 				}
 			}
 			target=victim;
 			if(selfQuality==Ability.QUALITY_BENEFICIAL_SELF)
-			    target=mob;
+				target=mob;
 			else
 			if(leaderQuality==Ability.QUALITY_BENEFICIAL_OTHERS)
-			    target=((leader==null)||(mob.location()!=leader.location()))?mob:leader;
+				target=((leader==null)||(mob.location()!=leader.location()))?mob:leader;
 			if((target != null) && (tryThisOne != null) && (target.fetchEffect(tryThisOne.ID())!=null))
 				tryThisOne = null;
 		}
@@ -444,12 +444,12 @@ public class CombatAbilities extends StdBehavior
 			if(CMath.bset(tryThisOne.usageType(),Ability.USAGE_MANA))
 			{
 				if((Math.random()>CMath.div(mob.curState().getMana(), mob.maxState().getMana()))
-                ||(mob.curState().getMana() < tryThisOne.usageCost(mob,false)[0]))
+				||(mob.curState().getMana() < tryThisOne.usageCost(mob,false)[0]))
 				{
-                   if((CMLib.dice().rollPercentage()>30)
+				   if((CMLib.dice().rollPercentage()>30)
 				   ||(CMProps.getIntVar(CMProps.SYSTEMI_MANACONSUMETIME)<=0)
 				   ||((mob.amFollowing()!=null)&&(!mob.amFollowing().isMonster())))
-                	   throw new CMException("Not enough mana");
+					   throw new CMException("Not enough mana");
 				   mob.curState().adjMana(tryThisOne.usageCost(mob,false)[0],mob.maxState());
 				}
 				mob.curState().adjMana(5,mob.maxState());
@@ -458,23 +458,23 @@ public class CombatAbilities extends StdBehavior
 			{
 				if((Math.random()>CMath.div(mob.curState().getMovement(),mob.maxState().getMovement()))
 				||(mob.curState().getMovement()<tryThisOne.usageCost(mob,false)[1]))
-             	   throw new CMException("Not enough movement");
+			 	   throw new CMException("Not enough movement");
 				mob.curState().adjMovement(5,mob.maxState());
 			}
 			if(CMath.bset(tryThisOne.usageType(),Ability.USAGE_HITPOINTS))
 			{
 				if((Math.random()>CMath.div(mob.curState().getHitPoints(),mob.maxState().getHitPoints()))
 				   ||(mob.curState().getHitPoints()<tryThisOne.usageCost(mob,false)[2]))
-	             	   throw new CMException("Not enough hp");
+				 	   throw new CMException("Not enough hp");
 			}
 			
 			if(proficient)
-                tryThisOne.setProficiency(100);
+				tryThisOne.setProficiency(100);
 			else
 			{
 				int qualLevel=CMLib.ableMapper().qualifyingLevel(mob,tryThisOne);
 				if(qualLevel<=0)
-	                tryThisOne.setProficiency(75);
+					tryThisOne.setProficiency(75);
 				else
 				{
 					int levelDiff=mob.basePhyStats().level()-qualLevel;
@@ -492,16 +492,16 @@ public class CombatAbilities extends StdBehavior
 			}
 			if(skillUsed)
 			{
-			    skillUsed=true;
+				skillUsed=true;
 				if(lastSpell!=null)
-				    lastSpell=tryThisOne.ID();
+					lastSpell=tryThisOne.ID();
 			}
 			else
 			{
-	            if(lastSpell!=null)
-    	            lastSpell="!"+tryThisOne.ID();
-                if(record!=null) 
-                    record.append("!");
+				if(lastSpell!=null)
+					lastSpell="!"+tryThisOne.ID();
+				if(record!=null) 
+					record.append("!");
 			}
 			if(record!=null) 
 				record.append(tryThisOne.ID()).append("; ");
@@ -522,128 +522,128 @@ public class CombatAbilities extends StdBehavior
 		final MOB mob=(MOB)ticking;
 
 		if(!canActAtAll(mob)) 
-		    return true;
+			return true;
 		if(!mob.isInCombat())
 		{ 
-		    if(aggro!=null)
-		    {
-		    	synchronized(aggro)
-		    	{
-			        aggro=null;
-		    	}
-		    }
-		    if((preCastSet < Integer.MAX_VALUE) && (preCastSet >0) && ((--preCastDown)<=0))
-		    {
-		    	preCastDown=preCastSet;
+			if(aggro!=null)
+			{
+				synchronized(aggro)
+				{
+					aggro=null;
+				}
+			}
+			if((preCastSet < Integer.MAX_VALUE) && (preCastSet >0) && ((--preCastDown)<=0))
+			{
+				preCastDown=preCastSet;
 				if(!isRightCombatAbilities(mob))
 					return true;
 				try {
 					useSkill(mob,null,null);
 				} catch(CMException cme){}
-		    }
-		    return true;
+			}
+			return true;
 		}
 		MOB victim=mob.getVictim();
 		if(victim==null) return true;
 		
-        // insures we only try this once!
+		// insures we only try this once!
 		if(!isRightCombatAbilities(mob))
 			return true;
 
-        final Room R=mob.location();
-        if((lastSpell!=null)&&(lastSpell.length()>0))
-            lastSpell="";
-        
-        if(!wandUseCheck[0]) {
-            wandUseCheck[0]=true;
-            Ability wandUse=mob.fetchAbility("Skill_WandUse");
-            wandUseCheck[1]=false;
-            if(wandUse!=null)
-            { 
-                wandUseCheck[1]=true;
-                wandUse.setProficiency(100); 
-                wandUse.setInvoker(mob);
-            }
-        }
-        
-        boolean rebuildSet=false;
-        final int rtt=mob.rangeToTarget();
-        if((weaponSet.weapon==null)||(weaponSet.weapon.owner()!=mob)
-        ||(weaponSet.weapon.amDestroyed())
-        ||(weaponSet.weapon.amWearingAt(Wearable.IN_INVENTORY))
-        ||(weaponSet.weapon.minRange()>rtt)
-        ||(weaponSet.weapon.maxRange()<rtt))
-        	rebuildSet=true;
-        if((weaponSet.wand!=null)
-        &&((weaponSet.wand.owner()!=mob)||(weaponSet.wand.amDestroyed())||(weaponSet.wand.amWearingAt(Wearable.IN_INVENTORY))))
-        	rebuildSet=true;
-        if((weaponSet.offHandWand!=null)
-        &&((weaponSet.offHandWand.owner()!=mob)||(weaponSet.offHandWand.amDestroyed())||(!weaponSet.offHandWand.amWearingAt(Wearable.IN_INVENTORY))))
-        	rebuildSet=true;
-        if(rebuildSet)
-        {
-        	weaponSet.weapon=null;
-        	weaponSet.wand=null;
-        	weaponSet.offHandWand=null;
-        	Item newWeapon=null;
-	        for(final Enumeration<Item> i=mob.items();i.hasMoreElements();)
-	        {
-	            final Item I=i.nextElement();
-	            if(I instanceof Wand)
-	            {
-	                if(!I.amWearingAt(Wearable.IN_INVENTORY))
-	                    weaponSet.wand=I;
-	                else
-	                	weaponSet.offHandWand=I;
-	            }
-	            if(I instanceof Weapon)
-	            {
-	                if((((Weapon)I).minRange()<=rtt)&&(((Weapon)I).maxRange()>=rtt))
-	                {
-	                    if(I.amWearingAt(Wearable.WORN_WIELD))
-	                    	weaponSet.weapon=I;
-	                    else
-	                    if(((newWeapon==null)&&(weaponSet.weapon==null))
-	                    ||(I.amWearingAt(Wearable.WORN_HELD)))
-	                    	newWeapon=I;
-	                }
-	            }
-	        }
-	        // first look for an appropriate weapon to weild
-	        if((weaponSet.weapon==null)&&((--chkDown)<=0))
-	        {
-	            if((newWeapon==null)&&(R!=null))
-	            {
-	                final Vector choices=new Vector(1);
-	                for(final Enumeration<Item> i=R.items();i.hasMoreElements();)
-	                {
-	                    final Item I=i.nextElement();
-	                    if((!(I instanceof Weapon))
-	                    ||(((Weapon)I).minRange()>rtt)
-	                    ||(((Weapon)I).maxRange()<rtt)
-	                    ||(I.container()!=null)
-	                    ||(!CMLib.flags().isGettable(I))
-	                    ||(I.phyStats().level()>mob.phyStats().level()))
-	                        continue;
-	                    choices.addElement(I);
-	                }
-	                final Item I=(choices.size()==0)?null:(Item)choices.elementAt(CMLib.dice().roll(1,choices.size(),-1));
-	                if(I!=null)
-	                {
-	                    CMLib.commands().forceStandardCommand(mob,"GET",new XVector("GET",I.Name()));
-	                    if(mob.isMine(I))
-	                    	newWeapon=I;
-	                }
-	            }
-	            if(newWeapon!=null)
-	            {
-	                CMLib.commands().forceStandardCommand(mob,"WIELD",new XVector("WIELD",newWeapon.Name()));
-	            }
-	            chkDown=5;
-	        }
-        }
-        
-        // next deal with aggro changes
+		final Room R=mob.location();
+		if((lastSpell!=null)&&(lastSpell.length()>0))
+			lastSpell="";
+		
+		if(!wandUseCheck[0]) {
+			wandUseCheck[0]=true;
+			Ability wandUse=mob.fetchAbility("Skill_WandUse");
+			wandUseCheck[1]=false;
+			if(wandUse!=null)
+			{ 
+				wandUseCheck[1]=true;
+				wandUse.setProficiency(100); 
+				wandUse.setInvoker(mob);
+			}
+		}
+		
+		boolean rebuildSet=false;
+		final int rtt=mob.rangeToTarget();
+		if((weaponSet.weapon==null)||(weaponSet.weapon.owner()!=mob)
+		||(weaponSet.weapon.amDestroyed())
+		||(weaponSet.weapon.amWearingAt(Wearable.IN_INVENTORY))
+		||(weaponSet.weapon.minRange()>rtt)
+		||(weaponSet.weapon.maxRange()<rtt))
+			rebuildSet=true;
+		if((weaponSet.wand!=null)
+		&&((weaponSet.wand.owner()!=mob)||(weaponSet.wand.amDestroyed())||(weaponSet.wand.amWearingAt(Wearable.IN_INVENTORY))))
+			rebuildSet=true;
+		if((weaponSet.offHandWand!=null)
+		&&((weaponSet.offHandWand.owner()!=mob)||(weaponSet.offHandWand.amDestroyed())||(!weaponSet.offHandWand.amWearingAt(Wearable.IN_INVENTORY))))
+			rebuildSet=true;
+		if(rebuildSet)
+		{
+			weaponSet.weapon=null;
+			weaponSet.wand=null;
+			weaponSet.offHandWand=null;
+			Item newWeapon=null;
+			for(final Enumeration<Item> i=mob.items();i.hasMoreElements();)
+			{
+				final Item I=i.nextElement();
+				if(I instanceof Wand)
+				{
+					if(!I.amWearingAt(Wearable.IN_INVENTORY))
+						weaponSet.wand=I;
+					else
+						weaponSet.offHandWand=I;
+				}
+				if(I instanceof Weapon)
+				{
+					if((((Weapon)I).minRange()<=rtt)&&(((Weapon)I).maxRange()>=rtt))
+					{
+						if(I.amWearingAt(Wearable.WORN_WIELD))
+							weaponSet.weapon=I;
+						else
+						if(((newWeapon==null)&&(weaponSet.weapon==null))
+						||(I.amWearingAt(Wearable.WORN_HELD)))
+							newWeapon=I;
+					}
+				}
+			}
+			// first look for an appropriate weapon to weild
+			if((weaponSet.weapon==null)&&((--chkDown)<=0))
+			{
+				if((newWeapon==null)&&(R!=null))
+				{
+					final Vector choices=new Vector(1);
+					for(final Enumeration<Item> i=R.items();i.hasMoreElements();)
+					{
+						final Item I=i.nextElement();
+						if((!(I instanceof Weapon))
+						||(((Weapon)I).minRange()>rtt)
+						||(((Weapon)I).maxRange()<rtt)
+						||(I.container()!=null)
+						||(!CMLib.flags().isGettable(I))
+						||(I.phyStats().level()>mob.phyStats().level()))
+							continue;
+						choices.addElement(I);
+					}
+					final Item I=(choices.size()==0)?null:(Item)choices.elementAt(CMLib.dice().roll(1,choices.size(),-1));
+					if(I!=null)
+					{
+						CMLib.commands().forceStandardCommand(mob,"GET",new XVector("GET",I.Name()));
+						if(mob.isMine(I))
+							newWeapon=I;
+					}
+				}
+				if(newWeapon!=null)
+				{
+					CMLib.commands().forceStandardCommand(mob,"WIELD",new XVector("WIELD",newWeapon.Name()));
+				}
+				chkDown=5;
+			}
+		}
+		
+		// next deal with aggro changes
 		if(aggro!=null)
 		{
 			synchronized(aggro)
@@ -670,7 +670,7 @@ public class CombatAbilities extends StdBehavior
 				&&(winMOB!=null)
 				&&(!winMOB.amDead())
 				&&(winMOB.isInCombat())
-	            &&(!mob.getGroupMembers(new HashSet<MOB>()).contains(winMOB)))
+				&&(!mob.getGroupMembers(new HashSet<MOB>()).contains(winMOB)))
 				{
 					mob.setVictim(winMOB);
 					victim=mob.getVictim();
@@ -690,7 +690,7 @@ public class CombatAbilities extends StdBehavior
 		Ability A=null;
 		// if a skill use failed, take a stab at wanding
 		if((!skillUsed)
-        &&(wandUseCheck[1])
+		&&(wandUseCheck[1])
 		&&(victim.location()!=null)
 		&&(!victim.amDead())
 		&&((weaponSet.wand!=null)||(weaponSet.offHandWand!=null)))
@@ -708,25 +708,25 @@ public class CombatAbilities extends StdBehavior
 				A=((Wand)weaponSet.wand).getSpell();
 				if(A!=null)
 				{
-	                final MOB target;
-                    if(A.castingQuality(mob,mob)==Ability.QUALITY_BENEFICIAL_SELF)
-                        target=mob;
-                    else
-                    if(A.castingQuality(mob,victim)==Ability.QUALITY_MALICIOUS)
-                        target=victim;
-                    else
-                    if(((mob!=leader)&&(leader!=null))&&(A.castingQuality(mob,leader)==Ability.QUALITY_BENEFICIAL_OTHERS))
-                        target=((leader==null)||(mob.location()!=leader.location()))?mob:leader;
-                    else
-                    	target=null;
-    				if(target!=null)
-    				{
-    					Vector V=new Vector();
-    					V.addElement("sayto");
-    					V.addElement(target.name());
-    					V.addElement(((Wand)weaponSet.wand).magicWord());
-    					mob.doCommand(V,Command.METAFLAG_FORCED);
-    				}
+					final MOB target;
+					if(A.castingQuality(mob,mob)==Ability.QUALITY_BENEFICIAL_SELF)
+						target=mob;
+					else
+					if(A.castingQuality(mob,victim)==Ability.QUALITY_MALICIOUS)
+						target=victim;
+					else
+					if(((mob!=leader)&&(leader!=null))&&(A.castingQuality(mob,leader)==Ability.QUALITY_BENEFICIAL_OTHERS))
+						target=((leader==null)||(mob.location()!=leader.location()))?mob:leader;
+					else
+						target=null;
+					if(target!=null)
+					{
+						Vector V=new Vector();
+						V.addElement("sayto");
+						V.addElement(target.name());
+						V.addElement(((Wand)weaponSet.wand).magicWord());
+						mob.doCommand(V,Command.METAFLAG_FORCED);
+					}
 				}
 			}
 		}
@@ -734,90 +734,90 @@ public class CombatAbilities extends StdBehavior
 	}
 	
 	
-    protected static String[] CODES=null;
-    public String[] getStatCodes(){
-        if(CombatAbilities.CODES==null)
-        {
-            String[] superCodes=super.getStatCodes();
-            CODES=new String[superCodes.length+8];
-            for(int c=0;c<superCodes.length;c++)
-                CODES[c]=superCodes[c];
-            CODES[CODES.length-8]="RECORD";
-            CODES[CODES.length-7]="PROF";
-            CODES[CODES.length-6]="LASTSPELL";
-            CODES[CODES.length-5]="PRECAST";
-            CODES[CODES.length-4]="PHYSDAMTAKEN";
-            CODES[CODES.length-3]="SKILLSALWAYS";
-            CODES[CODES.length-2]="SKILLSNEVER";
-            CODES[CODES.length-1]="COMBATMODE";
-        }
-        return CODES;
-    }
-    protected int getCodeNum(String code){
-        String[] CODES=getStatCodes();
-        for(int i=0;i<CODES.length;i++)
-            if(code.equalsIgnoreCase(CODES[i])) return i;
-        return -1;
-    }
-    public String getStat(String code){
-        int x=getCodeNum(code);
-        if(x<super.getStatCodes().length)
-            return super.getStat(code);
-        x=x-super.getStatCodes().length;
-        switch(x)
-        {
-        case 0: return (record==null)?"":record.toString();
-        case 1: return Boolean.toString(proficient);
-        case 2: return lastSpell!=null?lastSpell:"";
-        case 3: return Integer.toString(preCastSet);
-        case 4: return Integer.toString(physicalDamageTaken);
-        case 5: return (skillsAlways==null)?"":CMParms.toSemicolonList(skillsAlways);
-        case 6: return (skillsAlways==null)?"":CMParms.toSemicolonList(skillsNever);
-        case 7: return Integer.toString(combatMode);
-        }
-        return "";
-    }
-    public void setStat(String code, String val)
-    {
-        int x=getCodeNum(code);
-        if(x<super.getStatCodes().length)
-            super.setStat(code,val);
-        x=x-super.getStatCodes().length;
-        switch(x)
-        {
-        case 0:
-            if(val.length()==0)
-                record=null;
-            else
-                record=new StringBuffer(val.trim());
-            break;
-        case 1:
-            proficient=CMath.s_bool(val);
-            break;
-        case 2:
-            lastSpell=val;
-            break;
-        case 3:
-        	preCastSet=CMath.s_int(val);
-        	preCastDown=CMath.s_int(val);
-        	break;
-        case 4:
-        	physicalDamageTaken=CMath.s_int(val);
-        	break;
-        case 5:
-        	skillsAlways=CMParms.parseSemicolons(val,true);
-        	if(skillsAlways.size()==0) skillsAlways=null;
-        	break;
-        case 6:
-        	skillsNever=CMParms.parseSemicolons(val,true);
-        	if(skillsNever.size()==0) skillsNever=null;
-        	break;
-        case 7:
-        	if(CMath.isInteger(val))
-	        	combatMode=CMath.s_int(val);
-        	else
-        		combatMode=CMParms.indexOf(names,val.toUpperCase().trim());
-        	break;
-        }
-    }
+	protected static String[] CODES=null;
+	public String[] getStatCodes(){
+		if(CombatAbilities.CODES==null)
+		{
+			String[] superCodes=super.getStatCodes();
+			CODES=new String[superCodes.length+8];
+			for(int c=0;c<superCodes.length;c++)
+				CODES[c]=superCodes[c];
+			CODES[CODES.length-8]="RECORD";
+			CODES[CODES.length-7]="PROF";
+			CODES[CODES.length-6]="LASTSPELL";
+			CODES[CODES.length-5]="PRECAST";
+			CODES[CODES.length-4]="PHYSDAMTAKEN";
+			CODES[CODES.length-3]="SKILLSALWAYS";
+			CODES[CODES.length-2]="SKILLSNEVER";
+			CODES[CODES.length-1]="COMBATMODE";
+		}
+		return CODES;
+	}
+	protected int getCodeNum(String code){
+		String[] CODES=getStatCodes();
+		for(int i=0;i<CODES.length;i++)
+			if(code.equalsIgnoreCase(CODES[i])) return i;
+		return -1;
+	}
+	public String getStat(String code){
+		int x=getCodeNum(code);
+		if(x<super.getStatCodes().length)
+			return super.getStat(code);
+		x=x-super.getStatCodes().length;
+		switch(x)
+		{
+		case 0: return (record==null)?"":record.toString();
+		case 1: return Boolean.toString(proficient);
+		case 2: return lastSpell!=null?lastSpell:"";
+		case 3: return Integer.toString(preCastSet);
+		case 4: return Integer.toString(physicalDamageTaken);
+		case 5: return (skillsAlways==null)?"":CMParms.toSemicolonList(skillsAlways);
+		case 6: return (skillsAlways==null)?"":CMParms.toSemicolonList(skillsNever);
+		case 7: return Integer.toString(combatMode);
+		}
+		return "";
+	}
+	public void setStat(String code, String val)
+	{
+		int x=getCodeNum(code);
+		if(x<super.getStatCodes().length)
+			super.setStat(code,val);
+		x=x-super.getStatCodes().length;
+		switch(x)
+		{
+		case 0:
+			if(val.length()==0)
+				record=null;
+			else
+				record=new StringBuffer(val.trim());
+			break;
+		case 1:
+			proficient=CMath.s_bool(val);
+			break;
+		case 2:
+			lastSpell=val;
+			break;
+		case 3:
+			preCastSet=CMath.s_int(val);
+			preCastDown=CMath.s_int(val);
+			break;
+		case 4:
+			physicalDamageTaken=CMath.s_int(val);
+			break;
+		case 5:
+			skillsAlways=CMParms.parseSemicolons(val,true);
+			if(skillsAlways.size()==0) skillsAlways=null;
+			break;
+		case 6:
+			skillsNever=CMParms.parseSemicolons(val,true);
+			if(skillsNever.size()==0) skillsNever=null;
+			break;
+		case 7:
+			if(CMath.isInteger(val))
+				combatMode=CMath.s_int(val);
+			else
+				combatMode=CMParms.indexOf(names,val.toUpperCase().trim());
+			break;
+		}
+	}
 }

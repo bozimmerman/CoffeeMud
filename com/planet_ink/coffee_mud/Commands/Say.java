@@ -23,7 +23,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -37,13 +37,13 @@ public class Say extends StdCommand
 	public Say(){}
 
 	private final String[] access={"SAY",
-                             "ASK",
-                             "`",
-                             "SA",
-                             "SAYTO"};
+							 "ASK",
+							 "`",
+							 "SA",
+							 "SAYTO"};
 	public String[] getAccessWords(){return access;}
 
-    protected static final String[] impossibleTargets={
+	protected static final String[] impossibleTargets={
 		"HERE",
 		"THERE",
 		"IS",
@@ -78,14 +78,14 @@ public class Say extends StdCommand
 			toFlag=true;
 		}
 
-        Room R=mob.location();
+		Room R=mob.location();
 		if((commands.size()==1)||(R==null))
 		{
 			mob.tell(theWord+" what?");
 			return false;
 		}
 
-        
+		
 		String whom="";
 		Environmental target=null;
 		if(commands.size()>2)
@@ -102,7 +102,7 @@ public class Say extends StdCommand
 			{
 				target=R.fetchFromRoomFavorMOBs(null,whom);
 				if((toFlag)&&(target==null))
-				    target=mob.findItem(null,whom);
+					target=mob.findItem(null,whom);
 
 				if((!toFlag)&&(target!=null))
 				{
@@ -137,9 +137,9 @@ public class Say extends StdCommand
 
 		CMMsg msg=null;
 		if((!theWord.equalsIgnoreCase("ASK"))&&(target!=null))
-		    theWord+="(s) to";
+			theWord+="(s) to";
 		else
-		    theWord+="(s)";
+			theWord+="(s)";
 		String fromSelf="^T^<SAY \""+CMStrings.removeColors((target!=null)?target.name():mob.name())+"\"^><S-NAME> "+theWord.toLowerCase()+" <T-NAMESELF> '"+combinedCommands+"'^</SAY^>^?";
 		String toTarget="^T^<SAY \""+CMStrings.removeColors(mob.name())+"\"^><S-NAME> "+theWord.toLowerCase()+" <T-NAMESELF> '"+combinedCommands+"'^</SAY^>^?";
 		if(target==null)
@@ -147,8 +147,8 @@ public class Say extends StdCommand
 		else
 			msg=CMClass.getMsg(mob,target,null,CMMsg.MSG_SPEAK,fromSelf,toTarget,fromSelf);
 		
-        
-        
+		
+		
 		if(R.okMessage(mob,msg))
 		{
 			R.send(mob,msg);
@@ -171,8 +171,8 @@ public class Say extends StdCommand
 		}
 		return false;
 	}
-    public double combatActionsCost(final MOB mob, final List<String> cmds){return CMProps.getCombatActionCost(ID());}
-    public double actionsCost(final MOB mob, final List<String> cmds){return CMProps.getActionCost(ID());}
+	public double combatActionsCost(final MOB mob, final List<String> cmds){return CMProps.getCombatActionCost(ID());}
+	public double actionsCost(final MOB mob, final List<String> cmds){return CMProps.getActionCost(ID());}
 	public boolean canBeOrdered(){return true;}
 
 	

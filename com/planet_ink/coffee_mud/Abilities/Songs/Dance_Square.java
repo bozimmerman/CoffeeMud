@@ -25,7 +25,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -41,18 +41,18 @@ public class Dance_Square extends Dance
 	public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
 	protected boolean skipStandardDanceInvoke(){return true;}
 	protected String danceOf(){return name()+" Dance";}
-    protected boolean HAS_QUANTITATIVE_ASPECT(){return false;}
+	protected boolean HAS_QUANTITATIVE_ASPECT(){return false;}
 
-    public int castingQuality(MOB mob, Physical target)
-    {
-        if(mob!=null)
-        {
-            if(mob.isMonster())
-                return Ability.QUALITY_INDIFFERENT;
-        }
-        return super.castingQuality(mob,target);
-    }
-    
+	public int castingQuality(MOB mob, Physical target)
+	{
+		if(mob!=null)
+		{
+			if(mob.isMonster())
+				return Ability.QUALITY_INDIFFERENT;
+		}
+		return super.castingQuality(mob,target);
+	}
+	
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		if(msg.amISource(invoker())
@@ -61,19 +61,19 @@ public class Dance_Square extends Dance
 		&&(msg.sourceMessage()!=null)
 		&&(msg.sourceMessage().length()>0))
 		{
-            String cmd=CMStrings.getSayFromMessage(msg.sourceMessage());
+			String cmd=CMStrings.getSayFromMessage(msg.sourceMessage());
 			if(cmd!=null)
 			{
 				MOB M=(MOB)affected;
-                if(CMLib.flags().canBeHeardMovingBy(invoker(),M)
-                &&CMLib.flags().canBeSeenBy(invoker(),M)
-                &&(M.location()==invoker().location())
-                &&(M.location().show(invoker(),affected,CMMsg.MSG_ORDER,null)))
-                {
-                    CMObject O=CMLib.english().findCommand(M,CMParms.parse(cmd));
-                    if((O!=null)&&((!(O instanceof Command))||(((Command)O).canBeOrdered())))
+				if(CMLib.flags().canBeHeardMovingBy(invoker(),M)
+				&&CMLib.flags().canBeSeenBy(invoker(),M)
+				&&(M.location()==invoker().location())
+				&&(M.location().show(invoker(),affected,CMMsg.MSG_ORDER,null)))
+				{
+					CMObject O=CMLib.english().findCommand(M,CMParms.parse(cmd));
+					if((O!=null)&&((!(O instanceof Command))||(((Command)O).canBeOrdered())))
 						M.enqueCommand(CMParms.parse(cmd),Command.METAFLAG_FORCED|Command.METAFLAG_ORDER,0);
-                }
+				}
 			}
 		}
 		super.executeMsg(myHost,msg);

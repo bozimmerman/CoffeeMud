@@ -23,7 +23,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -73,19 +73,19 @@ public class Trap_SpikePit extends Trap_RoomPit
 		return super.setTrap(mob,P,trapBonus,qualifyingClassLevel,perm);
 	}
 
-    public List<Item> getTrapComponents() {
-        Vector V=new Vector();
-        if((daggerDamages==null)||(daggerDamages.size()==0))
-            V.addElement(CMClass.getWeapon("Dagger"));
-        else
-        for(int d=0;d<daggerDamages.size();d++) {
-            Item I=CMClass.getWeapon("Dagger");
-            I.basePhyStats().setDamage(((Integer)daggerDamages.elementAt(d)).intValue());
-            I.recoverPhyStats();
-            V.addElement(I);
-        }
-        return V;
-    }
+	public List<Item> getTrapComponents() {
+		Vector V=new Vector();
+		if((daggerDamages==null)||(daggerDamages.size()==0))
+			V.addElement(CMClass.getWeapon("Dagger"));
+		else
+		for(int d=0;d<daggerDamages.size();d++) {
+			Item I=CMClass.getWeapon("Dagger");
+			I.basePhyStats().setDamage(((Integer)daggerDamages.elementAt(d)).intValue());
+			I.recoverPhyStats();
+			V.addElement(I);
+		}
+		return V;
+	}
 	public boolean canSetTrapOn(MOB mob, Physical P)
 	{
 		if(!super.canSetTrapOn(mob,P)) return false;

@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -44,10 +44,10 @@ public class MobileAggressive extends Mobile
 	
 	public MobileAggressive()
 	{
-	    super();
+		super();
 
-	    tickDown = 0;
-	    aggressiveTickDown = 0;
+		tickDown = 0;
+		aggressiveTickDown = 0;
 	}
 
 	public String accountForYourself()
@@ -77,23 +77,23 @@ public class MobileAggressive extends Mobile
 
 	public boolean tick(Tickable ticking, int tickID)
 	{
-        tickStatus=Tickable.STATUS_MISC+0;
+		tickStatus=Tickable.STATUS_MISC+0;
 		super.tick(ticking,tickID);
-        tickStatus=Tickable.STATUS_MISC+1;
+		tickStatus=Tickable.STATUS_MISC+1;
 		if(tickID!=Tickable.TICKID_MOB)
-        {
-            tickStatus=Tickable.STATUS_NOT;
-            return true;
-        }
+		{
+			tickStatus=Tickable.STATUS_NOT;
+			return true;
+		}
 		if((--aggressiveTickDown)<0)
 		{
 			aggressiveTickDown=tickWait;
-            tickStatus=Tickable.STATUS_MISC+2;
+			tickStatus=Tickable.STATUS_MISC+2;
 			Aggressive.tickAggressively(ticking,tickID,mobkill,misbehave,getParms(),attackMsg);
-            tickStatus=Tickable.STATUS_MISC+3;
+			tickStatus=Tickable.STATUS_MISC+3;
 			VeryAggressive.tickVeryAggressively(ticking,tickID,wander,mobkill,misbehave,getParms(),attackMsg);
 		}
-        tickStatus=Tickable.STATUS_NOT;
+		tickStatus=Tickable.STATUS_NOT;
 		return true;
 	}
 }

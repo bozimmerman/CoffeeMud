@@ -23,7 +23,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -73,23 +73,23 @@ public class Mount extends StdCommand
 			}
 			if(RI==null)
 			{
-			    MOB M=mob.location().fetchInhabitant((String)commands.firstElement());
-			    if(M!=null)
-			    {
-			        if(!CMLib.flags().canBeSeenBy(M,mob))
-			        {
-			            mob.tell("You don't see "+((String)commands.firstElement())+" here.");
-			            return false;
-			        }
-			        if((!CMLib.flags().isBoundOrHeld(M))&&(!M.willFollowOrdersOf(mob)))
-			        {
-			            mob.tell("Only the bound or servants can be mounted unwillingly.");
-			            return false;
-			        }
-			        RI=M;
-			        RI.setRiding(null);
-			        commands.removeElementAt(0);
-			    }
+				MOB M=mob.location().fetchInhabitant((String)commands.firstElement());
+				if(M!=null)
+				{
+					if(!CMLib.flags().canBeSeenBy(M,mob))
+					{
+						mob.tell("You don't see "+((String)commands.firstElement())+" here.");
+						return false;
+					}
+					if((!CMLib.flags().isBoundOrHeld(M))&&(!M.willFollowOrdersOf(mob)))
+					{
+						mob.tell("Only the bound or servants can be mounted unwillingly.");
+						return false;
+					}
+					RI=M;
+					RI.setRiding(null);
+					commands.removeElementAt(0);
+				}
 			}
 		}
 		recipient=CMLib.english().fetchEnvironmental(possRecipients,CMParms.combine(commands,0),true);
@@ -122,7 +122,7 @@ public class Mount extends StdCommand
 			mob.location().send(mob,msg);
 		return false;
 	}
-    public double combatActionsCost(final MOB mob, final List<String> cmds){return CMProps.getCombatActionCost(ID());}
-    public double actionsCost(final MOB mob, final List<String> cmds){return CMProps.getActionCost(ID());}
+	public double combatActionsCost(final MOB mob, final List<String> cmds){return CMProps.getCombatActionCost(ID());}
+	public double actionsCost(final MOB mob, final List<String> cmds){return CMProps.getActionCost(ID());}
 	public boolean canBeOrdered(){return true;}
 }

@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -53,7 +53,7 @@ public class Prayer_Contagion extends Prayer implements DiseaseAffect
 		if(canBeUninvoked())
 		{
 			if(!mob.amDead())
-			    spreadImmunity(mob);
+				spreadImmunity(mob);
 			mob.tell("The contagion fades.");
 		}
 		super.unInvoke();
@@ -96,7 +96,7 @@ public class Prayer_Contagion extends Prayer implements DiseaseAffect
 				((Ability)thisOne.copyOf()).invoke(target,target,true,0);
 		}
 		else
-		    spreadImmunity(target);
+			spreadImmunity(target);
 		return true;
 	}
 
@@ -126,7 +126,7 @@ public class Prayer_Contagion extends Prayer implements DiseaseAffect
 				if((msg.value()<=0)&&(msg2.value()<=0))
 					success=maliciousAffect(mob,target,asLevel,0,-1);
 				else
-				    spreadImmunity(target);
+					spreadImmunity(target);
 			}
 		}
 		else

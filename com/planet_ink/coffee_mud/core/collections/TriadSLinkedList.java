@@ -10,7 +10,7 @@ Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
 You may obtain a copy of the License at
 
-    http://www.apache.org/licenses/LICENSE-2.0
+	http://www.apache.org/licenses/LICENSE-2.0
 
 Unless required by applicable law or agreed to in writing, software
 distributed under the License is distributed on an "AS IS" BASIS,
@@ -33,17 +33,17 @@ public final class TriadSLinkedList<T,K,L> extends SLinkedList<Triad<T,K,L>>
 	public final Iterator<T> firstIterator()
 	{
 		return new ConvertingIterator<Triad<T,K,L>,T>(
-    		iterator(),getFirstConverter());
+			iterator(),getFirstConverter());
 	}
 	public final Iterator<K> secondIterator()
 	{
 		return new ConvertingIterator<Triad<T,K,L>,K>(
-    		iterator(),getSecondConverter());
+			iterator(),getSecondConverter());
 	}
 	public final Iterator<L> thirdIterator()
 	{
 		return new ConvertingIterator<Triad<T,K,L>,L>(
-    		iterator(),getThirdConverter());
+			iterator(),getThirdConverter());
 	}
 	public synchronized int indexOfFirst(T t)
 	{

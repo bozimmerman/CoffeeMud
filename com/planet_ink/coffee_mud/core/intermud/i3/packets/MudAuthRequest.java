@@ -23,7 +23,7 @@ import java.util.Vector;
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *        http://www.apache.org/licenses/LICENSE-2.0
+ *  	  http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -38,31 +38,31 @@ public class MudAuthRequest extends Packet
 	public MudAuthRequest()
 	{
 		super();
-        type = Packet.MAUTH_REQUEST;
-        target_mud=I3Server.getMudName();
+		type = Packet.MAUTH_REQUEST;
+		target_mud=I3Server.getMudName();
 	}
 	
-    public MudAuthRequest(Vector v)
-    {
-        super(v);
-        type = Packet.MAUTH_REQUEST;
-        target_mud=(String)v.elementAt(4);
-    }
+	public MudAuthRequest(Vector v)
+	{
+		super(v);
+		type = Packet.MAUTH_REQUEST;
+		target_mud=(String)v.elementAt(4);
+	}
 
-    public MudAuthRequest(String target_mud)
-    {
-        super();
-        type = Packet.MAUTH_REQUEST;
-        this.target_mud=target_mud;
-    }
+	public MudAuthRequest(String target_mud)
+	{
+		super();
+		type = Packet.MAUTH_REQUEST;
+		this.target_mud=target_mud;
+	}
 
-    public void send() throws InvalidPacketException 
-    {
-        super.send();
-    }
+	public void send() throws InvalidPacketException 
+	{
+		super.send();
+	}
 
-    public String toString() 
-    {
-        return "({\"auth-mud-req\",5,\""+I3Server.getMudName()+"\",0,\""+target_mud+"\",0,})";
-    }
+	public String toString() 
+	{
+		return "({\"auth-mud-req\",5,\""+I3Server.getMudName()+"\",0,\""+target_mud+"\",0,})";
+	}
 }

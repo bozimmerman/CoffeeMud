@@ -24,7 +24,7 @@ import com.planet_ink.coffee_mud.core.exceptions.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -51,11 +51,11 @@ public interface WebMacro extends CMObject
 	 * @see WebMacro#runMacro(ExternalHTTPRequests, String)
 	 * @return whether the runBinaryMacro executor should be called instead of runMacro
 	 */
-    public boolean preferBinary();
-    /**
-     * Whether this macro is restricted to the admin web server.
-     * @return true if the macro is restricted to the admin web server
-     */
+	public boolean preferBinary();
+	/**
+	 * Whether this macro is restricted to the admin web server.
+	 * @return true if the macro is restricted to the admin web server
+	 */
 	public boolean isAdminMacro();
 	
 	/**
@@ -66,8 +66,8 @@ public interface WebMacro extends CMObject
 	 * @param filename the filename from getFilename
 	 * @return  this is an attachment macro, so send back header
 	 */
-    public String getSpecialContentHeader(String filename);
-    
+	public String getSpecialContentHeader(String filename);
+	
 	/**
 	 * Whether this macro substitutes as an aspect of the web path instead
 	 * of a standard web macro.  If true is returned, URLs such as:
@@ -76,40 +76,40 @@ public interface WebMacro extends CMObject
 	 * @see WebMacro#getFilename(ExternalHTTPRequests, String)
 	 * @return whether this is a wierd URL macro
 	 */
-    public boolean isAWebPath();
-    /**
-     * If this macro returns true from isAWebPath(), this will be the substitute
-     * filename to use as a page for returning to the caller.  It may simply
-     * return what is given to it.
-     * @see WebMacro#isAWebPath()
-     * @see com.planet_ink.coffee_mud.Libraries.interfaces.ExternalHTTPRequests
-     * @param httpReq the requests object
-     * @param filename the default filename
-     * @return usually the default filename again
-     */
-    public String getFilename(ExternalHTTPRequests httpReq, String filename);
-    
-    /**
-     * This method is executed only if this macro returns true for preferBinary().
-     * It will execute the macro and return its results as a binary byte array.
-     * @see WebMacro#preferBinary()
-     * @see com.planet_ink.coffee_mud.Libraries.interfaces.ExternalHTTPRequests
-     * @param httpReq the external requests object
-     * @param parm any parameter strigs given to the macro
-     * @return the binary stream result of running this macro
-     * @throws HTTPServerException
-     */
-    public byte[] runBinaryMacro(ExternalHTTPRequests httpReq, String parm) throws HTTPServerException;
-    /**
-     * This method is executed only if this macro returns false for preferBinary().
-     * It will execute the macro and return its results as a string, which is then
-     * substituted for the macro reference in the web page where the macro was found.
-     * @see WebMacro#preferBinary()
-     * @see com.planet_ink.coffee_mud.Libraries.interfaces.ExternalHTTPRequests
-     * @param httpReq the external requests object
-     * @param parm any parameter strigs given to the macro
-     * @return the string result of running this macro
-     * @throws HTTPServerException
-     */
+	public boolean isAWebPath();
+	/**
+	 * If this macro returns true from isAWebPath(), this will be the substitute
+	 * filename to use as a page for returning to the caller.  It may simply
+	 * return what is given to it.
+	 * @see WebMacro#isAWebPath()
+	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.ExternalHTTPRequests
+	 * @param httpReq the requests object
+	 * @param filename the default filename
+	 * @return usually the default filename again
+	 */
+	public String getFilename(ExternalHTTPRequests httpReq, String filename);
+	
+	/**
+	 * This method is executed only if this macro returns true for preferBinary().
+	 * It will execute the macro and return its results as a binary byte array.
+	 * @see WebMacro#preferBinary()
+	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.ExternalHTTPRequests
+	 * @param httpReq the external requests object
+	 * @param parm any parameter strigs given to the macro
+	 * @return the binary stream result of running this macro
+	 * @throws HTTPServerException
+	 */
+	public byte[] runBinaryMacro(ExternalHTTPRequests httpReq, String parm) throws HTTPServerException;
+	/**
+	 * This method is executed only if this macro returns false for preferBinary().
+	 * It will execute the macro and return its results as a string, which is then
+	 * substituted for the macro reference in the web page where the macro was found.
+	 * @see WebMacro#preferBinary()
+	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.ExternalHTTPRequests
+	 * @param httpReq the external requests object
+	 * @param parm any parameter strigs given to the macro
+	 * @return the string result of running this macro
+	 * @throws HTTPServerException
+	 */
 	public String runMacro(ExternalHTTPRequests httpReq, String parm) throws HTTPServerException;
 }

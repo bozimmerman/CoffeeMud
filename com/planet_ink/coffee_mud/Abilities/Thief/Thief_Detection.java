@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -42,17 +42,17 @@ public class Thief_Detection extends ThiefSkill
 	protected int canTargetCode(){return 0;}
 	public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 	private static final String[] triggerStrings = {"DETECT","DETECTION"};
-    public int classificationCode(){    return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_ALERT;}
+	public int classificationCode(){	return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_ALERT;}
 	public String[] triggerStrings(){return triggerStrings;}
 	protected Room lastRoom=null;
-    private int bonusThisRoom=0;
-    
-    public void affectCharStats(MOB affected, CharStats affectableStats)
-    {
-        super.affectCharStats(affected,affectableStats);
-        affectableStats.setStat(CharStats.STAT_SAVE_OVERLOOKING,bonusThisRoom+proficiency()+affectableStats.getStat(CharStats.STAT_SAVE_OVERLOOKING));
-    }
-    
+	private int bonusThisRoom=0;
+	
+	public void affectCharStats(MOB affected, CharStats affectableStats)
+	{
+		super.affectCharStats(affected,affectableStats);
+		affectableStats.setStat(CharStats.STAT_SAVE_OVERLOOKING,bonusThisRoom+proficiency()+affectableStats.getStat(CharStats.STAT_SAVE_OVERLOOKING));
+	}
+	
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
@@ -70,43 +70,43 @@ public class Thief_Detection extends ThiefSkill
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if((affected!=null)&&(affected instanceof MOB))
-        {
-    		if(!CMLib.flags().aliveAwakeMobile((MOB)affected,true))
-    		{ unInvoke(); return false;}
-            if(((MOB)affected).location()!=lastRoom)
-            {
-                lastRoom=((MOB)affected).location();
-                bonusThisRoom=getXLEVELLevel((MOB)affected)*2;
-                ((MOB)affected).recoverCharStats();
-            }
-            else
-            if(bonusThisRoom<affected.phyStats().level())
-            {
-                bonusThisRoom+=5;
-                ((MOB)affected).recoverCharStats();
-            }
-        }
+		{
+			if(!CMLib.flags().aliveAwakeMobile((MOB)affected,true))
+			{ unInvoke(); return false;}
+			if(((MOB)affected).location()!=lastRoom)
+			{
+				lastRoom=((MOB)affected).location();
+				bonusThisRoom=getXLEVELLevel((MOB)affected)*2;
+				((MOB)affected).recoverCharStats();
+			}
+			else
+			if(bonusThisRoom<affected.phyStats().level())
+			{
+				bonusThisRoom+=5;
+				((MOB)affected).recoverCharStats();
+			}
+		}
 		return true;
 	}
 
-    public int castingQuality(MOB mob, Physical target)
-    {
-        if(mob!=null)
-        {
-            if(mob.fetchEffect(this.ID())!=null)
-                return Ability.QUALITY_INDIFFERENT;
-            
-            Room R=mob.location();
-            if(R!=null)
-                for(int r=0;r<R.numInhabitants();r++)
-                {
-                    MOB M=R.fetchInhabitant(r);
-                    if((M!=null)&&(M!=mob)&&(CMLib.flags().isHidden(M)))
-                        return super.castingQuality(mob, target,Ability.QUALITY_BENEFICIAL_SELF);
-                }
-        }
-        return super.castingQuality(mob,target);
-    }
+	public int castingQuality(MOB mob, Physical target)
+	{
+		if(mob!=null)
+		{
+			if(mob.fetchEffect(this.ID())!=null)
+				return Ability.QUALITY_INDIFFERENT;
+			
+			Room R=mob.location();
+			if(R!=null)
+				for(int r=0;r<R.numInhabitants();r++)
+				{
+					MOB M=R.fetchInhabitant(r);
+					if((M!=null)&&(M!=mob)&&(CMLib.flags().isHidden(M)))
+						return super.castingQuality(mob, target,Ability.QUALITY_BENEFICIAL_SELF);
+				}
+		}
+		return super.castingQuality(mob,target);
+	}
 
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{

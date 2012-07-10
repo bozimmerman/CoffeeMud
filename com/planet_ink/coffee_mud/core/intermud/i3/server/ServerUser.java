@@ -20,7 +20,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *        http://www.apache.org/licenses/LICENSE-2.0
+ *  	  http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -46,37 +46,37 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
  * @version 1.0
  */
 public interface ServerUser extends ServerObject {
-    /**
-     * This method is triggered by the server when the
-     * user first connects.
-     */
-    public abstract void connect();
+	/**
+	 * This method is triggered by the server when the
+	 * user first connects.
+	 */
+	public abstract void connect();
 
-    /**
-     * The server calls this method every server cycle.  The
-     * mudlib implementation is expected to be queueing up user
-     * input as it gets it (as opposed to processing it immediately
-     * as it comes across the net) for synchronicity's sake.
-     * The mudlib implementation therefore should use this method
-     * to pull a command off the queue and process it.
-     */
-    public abstract void processInput();
+	/**
+	 * The server calls this method every server cycle.  The
+	 * mudlib implementation is expected to be queueing up user
+	 * input as it gets it (as opposed to processing it immediately
+	 * as it comes across the net) for synchronicity's sake.
+	 * The mudlib implementation therefore should use this method
+	 * to pull a command off the queue and process it.
+	 */
+	public abstract void processInput();
 
-    /**
-     * The server calls this method just after creating an instance
-     * of the mudlib user connection object that implements this
-     * interface.  Normally, the socket would be passed as an
-     * argument to the constructor.  Because the Server class does
-     * not know the name of the user connection implementation class
-     * at compile time, it has to use the Class.forName.newInstance()
-     * construct, which means the default constructor must be used.
-     * This method thus allows the server to pass the mudlib
-     * implementation the socket to use for communication with the
-     * client.
-     * @exception java.io.IOException thrown if a problem creating I/O streams occurs
-     * @param s the socket connected to the user's machine
-     * @see java.lang.Class#forName
-     * @see java.lang.Class#newInstance
-     */
-    public abstract void setSocket(java.net.Socket s) throws java.io.IOException;
+	/**
+	 * The server calls this method just after creating an instance
+	 * of the mudlib user connection object that implements this
+	 * interface.  Normally, the socket would be passed as an
+	 * argument to the constructor.  Because the Server class does
+	 * not know the name of the user connection implementation class
+	 * at compile time, it has to use the Class.forName.newInstance()
+	 * construct, which means the default constructor must be used.
+	 * This method thus allows the server to pass the mudlib
+	 * implementation the socket to use for communication with the
+	 * client.
+	 * @exception java.io.IOException thrown if a problem creating I/O streams occurs
+	 * @param s the socket connected to the user's machine
+	 * @see java.lang.Class#forName
+	 * @see java.lang.Class#newInstance
+	 */
+	public abstract void setSocket(java.net.Socket s) throws java.io.IOException;
 }

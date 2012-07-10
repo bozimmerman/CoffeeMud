@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -81,84 +81,84 @@ public class StdShipConsole extends StdRideable
 	{
 		final StringBuilder str=new StringBuilder(super.readableText());
 		if(str.length()>0) str.append("\n\r");
-        if(!activated())
-            str.append("The screen is blank.  Try ACTIVATEing it first.");
-        else
-        {
-	        if((software==null)||(System.currentTimeMillis()-lastSoftwareCheck)>(60*1000))
-	        {
-	        	final List<Item> list=getContents();
-	        	final LinkedList<Software> softwareList=new LinkedList<Software>();
-	        	for(Item I : list)
-	        		if(I instanceof Software)
-	        			softwareList.add((Software)I);
-	        	lastSoftwareCheck=System.currentTimeMillis();
-	        	software=softwareList;
-	        }
-	        for(final Software S : software)
-	        	if(S.getInternalName().equals(currentMenu))
-	        		str.append(S.readableText());
-	        	else
-	        	if(S.getParentMenu().equals(currentMenu))
-	        		str.append(S.getActivationString()).append(": ").append(S.getActivationDescription()).append("\n\r");
-        }
-        
+		if(!activated())
+			str.append("The screen is blank.  Try ACTIVATEing it first.");
+		else
+		{
+			if((software==null)||(System.currentTimeMillis()-lastSoftwareCheck)>(60*1000))
+			{
+				final List<Item> list=getContents();
+				final LinkedList<Software> softwareList=new LinkedList<Software>();
+				for(Item I : list)
+					if(I instanceof Software)
+						softwareList.add((Software)I);
+				lastSoftwareCheck=System.currentTimeMillis();
+				software=softwareList;
+			}
+			for(final Software S : software)
+				if(S.getInternalName().equals(currentMenu))
+					str.append(S.readableText());
+				else
+				if(S.getParentMenu().equals(currentMenu))
+					str.append(S.getActivationString()).append(": ").append(S.getActivationDescription()).append("\n\r");
+		}
+		
 		return str.toString();
 	}
 	
 	public boolean okMessage(Environmental host, CMMsg msg)
 	{
-	    if(msg.amITarget(this))
-	    {
-	        switch(msg.targetMinor())
-	        {
-	        case CMMsg.TYP_READ:
-	            return true;
-	        case CMMsg.TYP_ACTIVATE:
-	            if((msg.targetMessage()==null)&&(activated()))
-	            {
-	                msg.source().tell(name()+" is already booted up.");
-	                return false;
-	            }
-	        	break;
-	        case CMMsg.TYP_DEACTIVATE:
-	            if((msg.targetMessage()==null)&&(!activated()))
-	            {
-	                msg.source().tell(name()+" is already shut down.");
-	                return false;
-	            }
-	        	break;
-	        }
-	    }
-	    return super.okMessage(host,msg);
+		if(msg.amITarget(this))
+		{
+			switch(msg.targetMinor())
+			{
+			case CMMsg.TYP_READ:
+				return true;
+			case CMMsg.TYP_ACTIVATE:
+				if((msg.targetMessage()==null)&&(activated()))
+				{
+					msg.source().tell(name()+" is already booted up.");
+					return false;
+				}
+				break;
+			case CMMsg.TYP_DEACTIVATE:
+				if((msg.targetMessage()==null)&&(!activated()))
+				{
+					msg.source().tell(name()+" is already shut down.");
+					return false;
+				}
+				break;
+			}
+		}
+		return super.okMessage(host,msg);
 	}
 
 	public void executeMsg(Environmental host, CMMsg msg)
 	{
-	    if(msg.amITarget(this))
-	    {
-	        switch(msg.targetMinor())
-	        {
-	        case CMMsg.TYP_GET:
-	        case CMMsg.TYP_PUT:
-	        	lastSoftwareCheck=0;
-	        	break;
-	        case CMMsg.TYP_ACTIVATE:
-	            if(!activated())
-	            {
-	                activate(true);
-	                msg.source().location().show(msg.source(),this,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> boot(s) up <T-NAME>.");
-	            }
-	        	break;
-	        case CMMsg.TYP_DEACTIVATE:
-	            if(activated())
-	            {
-	                activate(false);
-	                msg.source().location().show(msg.source(),this,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> shut(s) up <T-NAME>.");
-	            }
-	            break;
-	        }
-	    }
-	    super.executeMsg(host,msg);
+		if(msg.amITarget(this))
+		{
+			switch(msg.targetMinor())
+			{
+			case CMMsg.TYP_GET:
+			case CMMsg.TYP_PUT:
+				lastSoftwareCheck=0;
+				break;
+			case CMMsg.TYP_ACTIVATE:
+				if(!activated())
+				{
+					activate(true);
+					msg.source().location().show(msg.source(),this,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> boot(s) up <T-NAME>.");
+				}
+				break;
+			case CMMsg.TYP_DEACTIVATE:
+				if(activated())
+				{
+					activate(false);
+					msg.source().location().show(msg.source(),this,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> shut(s) up <T-NAME>.");
+				}
+				break;
+			}
+		}
+		super.executeMsg(host,msg);
 	}
 }

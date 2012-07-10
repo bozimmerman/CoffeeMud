@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -44,16 +44,16 @@ public class NoSounds extends StdCommand
 	{
 		if(!mob.isMonster())
 		{
-            if((CMath.bset(mob.getBitmap(),MOB.ATT_SOUND))
-            ||(mob.session().clientTelnetMode(Session.TELNET_MSP)))
-            {
-                mob.setBitmap(CMath.unsetb(mob.getBitmap(),MOB.ATT_SOUND));
-                mob.session().changeTelnetMode(Session.TELNET_MSP,false);
-                mob.session().setClientTelnetMode(Session.TELNET_MSP,false);
-                mob.tell("MSP Sound/Music disabled.\n\r");
-            }
-            else
-                mob.tell("MSP Sound/Music already disabled.\n\r");
+			if((CMath.bset(mob.getBitmap(),MOB.ATT_SOUND))
+			||(mob.session().clientTelnetMode(Session.TELNET_MSP)))
+			{
+				mob.setBitmap(CMath.unsetb(mob.getBitmap(),MOB.ATT_SOUND));
+				mob.session().changeTelnetMode(Session.TELNET_MSP,false);
+				mob.session().setClientTelnetMode(Session.TELNET_MSP,false);
+				mob.tell("MSP Sound/Music disabled.\n\r");
+			}
+			else
+				mob.tell("MSP Sound/Music already disabled.\n\r");
 		}
 		return false;
 	}

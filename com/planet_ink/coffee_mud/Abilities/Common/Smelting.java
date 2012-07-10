@@ -26,7 +26,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -42,8 +42,8 @@ public class Smelting extends CraftingSkill
 	public String name(){ return "Smelting";}
 	private static final String[] triggerStrings = {"SMELT","SMELTING"};
 	public String[] triggerStrings(){return triggerStrings;}
-    public String supportedResourceString(){return "METAL|MITHRIL";}
-    public String parametersFormat(){ return "ITEM_NAME\tITEM_LEVEL\tBUILD_TIME_TICKS\t\t\t\tRESOURCE_NAME\tRESOURCE_NAME";}
+	public String supportedResourceString(){return "METAL|MITHRIL";}
+	public String parametersFormat(){ return "ITEM_NAME\tITEM_LEVEL\tBUILD_TIME_TICKS\t\t\t\tRESOURCE_NAME\tRESOURCE_NAME";}
 
 	protected static final int RCP_FINALNAME=0;
 	protected static final int RCP_LEVEL=1;
@@ -72,8 +72,8 @@ public class Smelting extends CraftingSkill
 		return super.tick(ticking,tickID);
 	}
 
-    public String parametersFile(){ return "smelting.txt";}
-    protected List<List<String>> loadRecipes(){return super.loadRecipes(parametersFile());}
+	public String parametersFile(){ return "smelting.txt";}
+	protected List<List<String>> loadRecipes(){return super.loadRecipes(parametersFile());}
 
 	public void unInvoke()
 	{
@@ -155,7 +155,7 @@ public class Smelting extends CraftingSkill
 			if(V.size()>0)
 			{
 				int level=CMath.s_int((String)V.get(RCP_LEVEL));
-                if(level<=xlevel(mob))
+				if(level<=xlevel(mob))
 				{
 					foundRecipe=V;
 					break;
@@ -202,7 +202,7 @@ public class Smelting extends CraftingSkill
 		building=(Item)CMLib.materials().makeResource(RawMaterial.CODES.GET(doneResourceCode),null,false,null);
 		startStr="<S-NAME> start(s) smelting "+doneResourceDesc.toLowerCase()+".";
 		displayText="You are smelting "+doneResourceDesc.toLowerCase();
-        playSound="sizzling.wav";
+		playSound="sizzling.wav";
 		verb="smelting "+doneResourceDesc.toLowerCase();
 
 		messedUp=!proficiencyCheck(mob,0,auto);

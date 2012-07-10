@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -43,7 +43,7 @@ public class Beholder extends StdRace
 	public int weightVariance(){return 100;}
 	public long forbiddenWornBits(){return 0;}
 	public String racialCategory(){return "Unique";}
-    private String[]racialAbilityNames={"Spell_Sleep","Spell_FloatingDisc","Spell_Fear","Spell_Slow","Spell_Charm","Prayer_CauseCritical","Spell_DispelMagic","Spell_FleshStone","Prayer_DeathFinger","Spell_Disintegrate"};
+	private String[]racialAbilityNames={"Spell_Sleep","Spell_FloatingDisc","Spell_Fear","Spell_Slow","Spell_Charm","Prayer_CauseCritical","Spell_DispelMagic","Spell_FleshStone","Prayer_DeathFinger","Spell_Disintegrate"};
 	private int[]racialAbilityLevels={1,1,1,5,10,10,15,20,30,30};
 	private int[]racialAbilityProficiencies={50,50,50,50,50,50,100,50,50,50};
 	private boolean[]racialAbilityQuals={false,false,false,false,false,false,false,false,false,false};
@@ -56,7 +56,7 @@ public class Beholder extends StdRace
 	public String[] culturalAbilityNames(){return culturalAbilityNames;}
 	public int[] culturalAbilityProficiencies(){return culturalAbilityProficiencies;}
 
-	//                                an ey ea he ne ar ha to le fo no gi mo wa ta wi
+	//  							  an ey ea he ne ar ha to le fo no gi mo wa ta wi
 	private static final int[] parts={-1,10,-1,1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1};
 	public int[] bodyMask(){return parts;}
 

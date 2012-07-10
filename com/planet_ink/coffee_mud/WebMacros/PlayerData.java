@@ -25,7 +25,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -86,25 +86,25 @@ public class PlayerData extends StdWebMacro
 		"BASEMANA",
 		"BASEMOVEMENT",
 		"IMAGE",
-        "MAXITEMS",
-        "IMGURL",
-        "HASIMG",
-        "NOTES",
-        "LEVELS",
-        "ATTACK",
-        "DAMAGE",
-        "ARMOR",
-        "SPEEDNAME",
-        "SPEED",
-        "EXPERTISE",
-        "TATTOOS",
-        "SECURITY",
-        "TITLES",
-        "FACTIONNAMES",
-        "ACCTEXPUSED",
-        "ACCTEXP",
-        "FOLLOWERNAMES",
-        "ACCOUNT"
+		"MAXITEMS",
+		"IMGURL",
+		"HASIMG",
+		"NOTES",
+		"LEVELS",
+		"ATTACK",
+		"DAMAGE",
+		"ARMOR",
+		"SPEEDNAME",
+		"SPEED",
+		"EXPERTISE",
+		"TATTOOS",
+		"SECURITY",
+		"TITLES",
+		"FACTIONNAMES",
+		"ACCTEXPUSED",
+		"ACCTEXP",
+		"FOLLOWERNAMES",
+		"ACCOUNT"
 	};
 
 	public static int getBasicCode(String val)
@@ -170,12 +170,12 @@ public class PlayerData extends StdWebMacro
 		case 24: str.append(M.fetchFaction(CMLib.factions().AlignID())+", ");
 				 break;
 		case 25: {
-		    		Faction.FactionRange FR=CMLib.factions().getRange(CMLib.factions().AlignID(),M.fetchFaction(CMLib.factions().AlignID()));
-		    		if(FR!=null)
-		    		    str.append(FR.name()+", ");
-		    		else
-		    		    str.append(M.fetchFaction(CMLib.factions().AlignID()));
-		    		break;
+					Faction.FactionRange FR=CMLib.factions().getRange(CMLib.factions().AlignID(),M.fetchFaction(CMLib.factions().AlignID()));
+					if(FR!=null)
+						str.append(FR.name()+", ");
+					else
+						str.append(M.fetchFaction(CMLib.factions().AlignID()));
+					break;
 				}
 		case 26: str.append(M.getWimpHitPoint()+", "); break;
 		case 27: if(M.getStartRoom()!=null)
@@ -224,19 +224,19 @@ public class PlayerData extends StdWebMacro
 		case 44: str.append(M.maxState().getMana()+", "); break;
 		case 45: str.append(M.maxState().getMovement()+", "); break;
 		case 46: str.append(M.rawImage()+", "); break;
-        case 47: str.append(M.maxItems()+", "); break;
-        case 48:
-        {
-                 String[] paths=CMProps.mxpImagePath(M.image());
-                 if(paths[0].length()>0)
-                     str.append(paths[0]+paths[1]+", ");
-                 break;
-        }
-        case 49: if(CMProps.mxpImagePath(M.image())[0].length()>0)
-                    str.append("true, ");
-                 else
-                     str.append("false, ");
-                 break;
+		case 47: str.append(M.maxItems()+", "); break;
+		case 48:
+		{
+				 String[] paths=CMProps.mxpImagePath(M.image());
+				 if(paths[0].length()>0)
+					 str.append(paths[0]+paths[1]+", ");
+				 break;
+		}
+		case 49: if(CMProps.mxpImagePath(M.image())[0].length()>0)
+					str.append("true, ");
+				 else
+					 str.append("false, ");
+				 break;
 		case 50: if(M.playerStats()!=null)
 				 	str.append(M.playerStats().notes()+", ");
 				 break;
@@ -318,12 +318,12 @@ public class PlayerData extends StdWebMacro
 		case 63: if(M.playerStats()!=null)str.append(CMLib.time().date2String(M.playerStats().getAccountExpiration()));
 					break;
 		case 64: {
-		    for(int f=0;f<M.numFollowers();f++)
-	            str.append(M.fetchFollower(f).name()).append(", ");
-		    //Vector V=CMLib.database().DBScanFollowers(M);
-		    //for(int v=0;v<V.size();v++)
-		    //    str.append(((MOB)V.elementAt(v)).name()).append(", ");
-		    break;
+			for(int f=0;f<M.numFollowers();f++)
+				str.append(M.fetchFollower(f).name()).append(", ");
+			//Vector V=CMLib.database().DBScanFollowers(M);
+			//for(int v=0;v<V.size();v++)
+			//    str.append(((MOB)V.elementAt(v)).name()).append(", ");
+			break;
 		}
 		case 65:
 			if((M.playerStats()!=null)&&(M.playerStats().getAccount()!=null))
@@ -479,24 +479,24 @@ public class PlayerData extends StdWebMacro
 				String old=httpReq.getRequestParameter("ALIGNMENT");
 				if((firstTime)||(old.length()==0)) 
 					old=""+M.fetchFaction(CMLib.factions().AlignID());
-			    if(CMLib.factions().getFaction(CMLib.factions().AlignID())!=null)
-			    {
+				if(CMLib.factions().getFaction(CMLib.factions().AlignID())!=null)
+				{
 					for(int v=1;v<Faction.ALIGN_NAMES.length;v++)
 					{
-					    str.append("<OPTION VALUE="+Faction.ALIGN_NAMES[v]);
-					    if(old.equalsIgnoreCase(Faction.ALIGN_NAMES[v]))
-					        str.append(" SELECTED");
-					    str.append(">"+CMStrings.capitalizeAndLower(Faction.ALIGN_NAMES[v].toLowerCase()));
+						str.append("<OPTION VALUE="+Faction.ALIGN_NAMES[v]);
+						if(old.equalsIgnoreCase(Faction.ALIGN_NAMES[v]))
+							str.append(" SELECTED");
+						str.append(">"+CMStrings.capitalizeAndLower(Faction.ALIGN_NAMES[v].toLowerCase()));
 					}
-			    }
+				}
 			}
 			if(parms.containsKey("BASEGENDER"))
 			{
 				String old=httpReq.getRequestParameter("BASEGENDER");
 				if(firstTime) old=""+(char)M.baseCharStats().getStat(CharStats.STAT_GENDER);
-			    str.append("<OPTION VALUE=M "+((old.equalsIgnoreCase("M"))?"SELECTED":"")+">M");
-			    str.append("<OPTION VALUE=F "+((old.equalsIgnoreCase("F"))?"SELECTED":"")+">F");
-			    str.append("<OPTION VALUE=N "+((old.equalsIgnoreCase("N"))?"SELECTED":"")+">N");
+				str.append("<OPTION VALUE=M "+((old.equalsIgnoreCase("M"))?"SELECTED":"")+">M");
+				str.append("<OPTION VALUE=F "+((old.equalsIgnoreCase("F"))?"SELECTED":"")+">F");
+				str.append("<OPTION VALUE=N "+((old.equalsIgnoreCase("N"))?"SELECTED":"")+">N");
 			}
 			str.append(MobData.expertiseList(M,httpReq,parms));
 			str.append(MobData.classList(M,httpReq,parms));
@@ -510,7 +510,7 @@ public class PlayerData extends StdWebMacro
 			String strstr=str.toString();
 			if(strstr.endsWith(", "))
 				strstr=strstr.substring(0,strstr.length()-2);
-            return clearWebMacros(strstr);
+			return clearWebMacros(strstr);
 		}
 		return "";
 	}

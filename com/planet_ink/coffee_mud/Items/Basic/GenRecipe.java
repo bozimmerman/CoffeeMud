@@ -27,7 +27,7 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -66,9 +66,9 @@ public class GenRecipe extends GenReadable implements Recipe
 		{
 		case 0: return ""+getCommonSkillID();
 		case 1: return ""+getRecipeCodeLine();
-        default:
-            return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
-        }
+		default:
+			return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
+		}
 	}
 	public void setStat(String code, String val)
 	{
@@ -79,9 +79,9 @@ public class GenRecipe extends GenReadable implements Recipe
 		{
 		case 0: setCommonSkillID(val); break;
 		case 1: setRecipeCodeLine(val); break;
-        default:
-            CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code, val);
-            break;
+		default:
+			CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code, val);
+			break;
 		}
 	}
 	protected int getCodeNum(String code){
@@ -93,7 +93,7 @@ public class GenRecipe extends GenReadable implements Recipe
 	public String[] getStatCodes()
 	{
 		if(codes!=null) return codes;
-        String[] MYCODES=CMProps.getStatCodesList(GenRecipe.MYCODES,this);
+		String[] MYCODES=CMProps.getStatCodesList(GenRecipe.MYCODES,this);
 		String[] superCodes=GenericBuilder.GENITEMCODES;
 		codes=new String[superCodes.length+MYCODES.length];
 		int i=0;

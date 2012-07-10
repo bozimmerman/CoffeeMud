@@ -23,7 +23,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -67,24 +67,24 @@ public class Eat extends StdCommand
 		CMMsg newMsg=CMClass.getMsg(mob,thisThang,null,hasHands?CMMsg.MSG_EAT:CMMsg.MSG_EAT_GROUND,eatMsg+eatSound);
 		if(mob.location().okMessage(mob,newMsg)) 
 		{
-		    if((thisThang instanceof Food)
-		    &&(newMsg.value()>0)
-		    &&(newMsg.value()<((Food)thisThang).nourishment())
-		    &&(newMsg.othersMessage()!=null)
-		    &&(newMsg.othersMessage().startsWith(eatMsg))
-		    &&(newMsg.sourceMessage().equalsIgnoreCase(newMsg.othersMessage()))
-		    &&(newMsg.targetMessage().equalsIgnoreCase(newMsg.othersMessage())))
-		    {
-		        newMsg.setSourceMessage("<S-NAME> take(s) a bite of <T-NAMESELF>."+eatSound);
-                newMsg.setTargetMessage(newMsg.sourceMessage());
-                newMsg.setOthersMessage(newMsg.othersMessage());
-		    }
+			if((thisThang instanceof Food)
+			&&(newMsg.value()>0)
+			&&(newMsg.value()<((Food)thisThang).nourishment())
+			&&(newMsg.othersMessage()!=null)
+			&&(newMsg.othersMessage().startsWith(eatMsg))
+			&&(newMsg.sourceMessage().equalsIgnoreCase(newMsg.othersMessage()))
+			&&(newMsg.targetMessage().equalsIgnoreCase(newMsg.othersMessage())))
+			{
+				newMsg.setSourceMessage("<S-NAME> take(s) a bite of <T-NAMESELF>."+eatSound);
+				newMsg.setTargetMessage(newMsg.sourceMessage());
+				newMsg.setOthersMessage(newMsg.othersMessage());
+			}
 			mob.location().send(mob,newMsg);
 		}
 		return false;
 	}
-    public double combatActionsCost(final MOB mob, final List<String> cmds){return CMProps.getCombatActionCost(ID());}
-    public double actionsCost(final MOB mob, final List<String> cmds){return CMProps.getActionCost(ID());}
+	public double combatActionsCost(final MOB mob, final List<String> cmds){return CMProps.getCombatActionCost(ID());}
+	public double actionsCost(final MOB mob, final List<String> cmds){return CMProps.getActionCost(ID());}
 	public boolean canBeOrdered(){return true;}
 
 	

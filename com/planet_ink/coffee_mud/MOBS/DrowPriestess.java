@@ -23,7 +23,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -45,7 +45,7 @@ public class DrowPriestess extends DrowElf
 
 		basePhyStats().setLevel(CMLib.dice().roll(4,6,1));
 
-        magicResistance = 50 + basePhyStats().level() * 2;
+		magicResistance = 50 + basePhyStats().level() * 2;
 
 		// ===== set the basics
 		username="a Drow priestess";
@@ -78,10 +78,10 @@ public class DrowPriestess extends DrowElf
 		baseCharStats().setStat(CharStats.STAT_CONSTITUTION,12 + CMLib.dice().roll(1,6,0));
 		baseCharStats().setStat(CharStats.STAT_CHARISMA,13 + CMLib.dice().roll(1,6,0));
 		baseCharStats().setCurrentClass(CMClass.getCharClass("Cleric"));
-	    baseCharStats().setMyRace(CMClass.getRace("Elf"));
+		baseCharStats().setMyRace(CMClass.getRace("Elf"));
 		baseCharStats().getMyRace().startRacing(this,false);
 
-        addNaturalAbilities();
+		addNaturalAbilities();
 
 		recoverMaxState();
 		resetToMaxState();
@@ -89,87 +89,87 @@ public class DrowPriestess extends DrowElf
 		recoverCharStats();
 	}
 
-    public void addNaturalAbilities()
-    {
-        Ability dark=CMClass.getAbility("Spell_Darkness");
+	public void addNaturalAbilities()
+	{
+		Ability dark=CMClass.getAbility("Spell_Darkness");
 		if(dark==null) return;
 
 
-        dark.setProficiency(100);
+		dark.setProficiency(100);
 		dark.setSavable(false);
-        this.addAbility(dark);
+		this.addAbility(dark);
 
-        Ability p1 =CMClass.getAbility("Prayer_ProtGood");
-        p1.setProficiency(CMLib.dice().roll(5, 10, 50));
+		Ability p1 =CMClass.getAbility("Prayer_ProtGood");
+		p1.setProficiency(CMLib.dice().roll(5, 10, 50));
 		p1.setSavable(false);
-        this.addAbility(p1);
+		this.addAbility(p1);
 
-        Ability p2 =CMClass.getAbility("Prayer_CauseLight");
-        p2.setProficiency(CMLib.dice().roll(5, 10, 50));
+		Ability p2 =CMClass.getAbility("Prayer_CauseLight");
+		p2.setProficiency(CMLib.dice().roll(5, 10, 50));
 		p2.setSavable(false);
-        this.addAbility(p2);
+		this.addAbility(p2);
 
-        Ability p3 =CMClass.getAbility("Prayer_CauseSerious");
-        p3.setProficiency(CMLib.dice().roll(5, 10, 50));
+		Ability p3 =CMClass.getAbility("Prayer_CauseSerious");
+		p3.setProficiency(CMLib.dice().roll(5, 10, 50));
 		p3.setSavable(false);
-        this.addAbility(p3);
+		this.addAbility(p3);
 
-        Ability p4 =CMClass.getAbility("Prayer_Curse");
-        p4.setProficiency(CMLib.dice().roll(5, 10, 50));
+		Ability p4 =CMClass.getAbility("Prayer_Curse");
+		p4.setProficiency(CMLib.dice().roll(5, 10, 50));
 		p4.setSavable(false);
-        this.addAbility(p4);
+		this.addAbility(p4);
 
-        Ability p5 =CMClass.getAbility("Prayer_Paralyze");
-        p5.setProficiency(CMLib.dice().roll(5, 10, 50));
+		Ability p5 =CMClass.getAbility("Prayer_Paralyze");
+		p5.setProficiency(CMLib.dice().roll(5, 10, 50));
 		p5.setSavable(false);
-        this.addAbility(p5);
+		this.addAbility(p5);
 
-        Ability p6 =CMClass.getAbility("Prayer_DispelGood");
-        p6.setProficiency(CMLib.dice().roll(5, 10, 50));
+		Ability p6 =CMClass.getAbility("Prayer_DispelGood");
+		p6.setProficiency(CMLib.dice().roll(5, 10, 50));
 		p6.setSavable(false);
-        this.addAbility(p6);
+		this.addAbility(p6);
 
-        Ability p7 =CMClass.getAbility("Prayer_Plague");
-        p7.setProficiency(CMLib.dice().roll(5, 10, 50));
+		Ability p7 =CMClass.getAbility("Prayer_Plague");
+		p7.setProficiency(CMLib.dice().roll(5, 10, 50));
 		p7.setSavable(false);
-        this.addAbility(p7);
+		this.addAbility(p7);
 
-        Ability p8 =CMClass.getAbility("Prayer_CauseCritical");
-        p8.setProficiency(CMLib.dice().roll(5, 10, 50));
+		Ability p8 =CMClass.getAbility("Prayer_CauseCritical");
+		p8.setProficiency(CMLib.dice().roll(5, 10, 50));
 		p8.setSavable(false);
-        this.addAbility(p8);
+		this.addAbility(p8);
 
-        Ability p9 =CMClass.getAbility("Prayer_Blindness");
-        p9.setProficiency(CMLib.dice().roll(5, 10, 50));
+		Ability p9 =CMClass.getAbility("Prayer_Blindness");
+		p9.setProficiency(CMLib.dice().roll(5, 10, 50));
 		p9.setSavable(false);
-        this.addAbility(p9);
+		this.addAbility(p9);
 
-        Ability p10 =CMClass.getAbility("Prayer_BladeBarrier");
-        p10.setProficiency(CMLib.dice().roll(5, 10, 50));
+		Ability p10 =CMClass.getAbility("Prayer_BladeBarrier");
+		p10.setProficiency(CMLib.dice().roll(5, 10, 50));
 		p10.setSavable(false);
-        this.addAbility(p10);
+		this.addAbility(p10);
 
-        Ability p11 =CMClass.getAbility("Prayer_Hellfire");
-        p11.setProficiency(CMLib.dice().roll(5, 10, 50));
+		Ability p11 =CMClass.getAbility("Prayer_Hellfire");
+		p11.setProficiency(CMLib.dice().roll(5, 10, 50));
 		p11.setSavable(false);
-        this.addAbility(p11);
+		this.addAbility(p11);
 
-        Ability p12 =CMClass.getAbility("Prayer_UnholyWord");
-        p12.setProficiency(CMLib.dice().roll(5, 10, 50));
+		Ability p12 =CMClass.getAbility("Prayer_UnholyWord");
+		p12.setProficiency(CMLib.dice().roll(5, 10, 50));
 		p12.setSavable(false);
-        this.addAbility(p12);
+		this.addAbility(p12);
 
-        Ability p13 =CMClass.getAbility("Prayer_Deathfinger");
-        p13.setProficiency(CMLib.dice().roll(5, 10, 50));
+		Ability p13 =CMClass.getAbility("Prayer_Deathfinger");
+		p13.setProficiency(CMLib.dice().roll(5, 10, 50));
 		p13.setSavable(false);
-        this.addAbility(p13);
+		this.addAbility(p13);
 
-        Ability p14 =CMClass.getAbility("Prayer_Harm");
-        p14.setProficiency(CMLib.dice().roll(5, 10, 50));
+		Ability p14 =CMClass.getAbility("Prayer_Harm");
+		p14.setProficiency(CMLib.dice().roll(5, 10, 50));
 		p14.setSavable(false);
-        this.addAbility(p14);
+		this.addAbility(p14);
 
-    }
+	}
 
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
@@ -179,14 +179,14 @@ public class DrowPriestess extends DrowElf
 		&&(CMath.bset(msg.targetMajor(),CMMsg.MASK_MALICIOUS))
 		&&(msg.targetMinor()==CMMsg.TYP_CAST_SPELL))
 		{
-            if(CMLib.dice().rollPercentage() <= magicResistance)
-            {
-	            msg.source().tell("The drow priestess resisted your spell!");
-	            return false;
-            }
-        }
-        return retval;
-    }
+			if(CMLib.dice().rollPercentage() <= magicResistance)
+			{
+				msg.source().tell("The drow priestess resisted your spell!");
+				return false;
+			}
+		}
+		return retval;
+	}
 
 	public boolean tick(Tickable ticking, int tickID)
 	{
@@ -210,27 +210,27 @@ public class DrowPriestess extends DrowElf
 		return super.tick(ticking,tickID);
 	}
 
-    public boolean castSpell()
-    {
-	    Ability prayer = null;
-	    int tries = 10;
-        if(CMLib.dice().rollPercentage() < 70)
-        {
-            prayer = fetchAbility(CMLib.dice().roll(1,numAbilities(),-1));
-            while(((--tries)>0)&&((prayer==null)||(this.basePhyStats().level() < CMLib.ableMapper().lowestQualifyingLevel(prayer.ID()))))
+	public boolean castSpell()
+	{
+		Ability prayer = null;
+		int tries = 10;
+		if(CMLib.dice().rollPercentage() < 70)
+		{
+			prayer = fetchAbility(CMLib.dice().roll(1,numAbilities(),-1));
+			while(((--tries)>0)&&((prayer==null)||(this.basePhyStats().level() < CMLib.ableMapper().lowestQualifyingLevel(prayer.ID()))))
 				prayer = fetchAbility(CMLib.dice().roll(1,numAbilities(),-1));
-        }
-        else
-        {
-            prayer = CMClass.getAbility("Prayer_CureSerious");
-            prayer.setProficiency(CMLib.dice().roll(5, 10, 50));
-        }
+		}
+		else
+		{
+			prayer = CMClass.getAbility("Prayer_CureSerious");
+			prayer.setProficiency(CMLib.dice().roll(5, 10, 50));
+		}
 
 		if(prayer!=null)
-		    return prayer.invoke(this,null,false,0);
-        return false;
+			return prayer.invoke(this,null,false,0);
+		return false;
 
-    }
+	}
 
 	protected boolean castDarkness()
 	{

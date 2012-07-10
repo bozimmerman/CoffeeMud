@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -41,7 +41,7 @@ public class Chant_Fertilization extends Chant
 	protected int canTargetCode(){return 0;}
 	public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PLANTGROWTH;}
 	protected int canAffectCode(){return Ability.CAN_ROOMS;}
-    public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
+	public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 
 	public boolean tick(Tickable ticking, int tickID)
 	{
@@ -71,7 +71,7 @@ public class Chant_Fertilization extends Chant
 		if(((type&Room.INDOORS)>0)
 			||(type==Room.DOMAIN_OUTDOORS_AIR)
 			||(type==Room.DOMAIN_OUTDOORS_CITY)
-		    ||(type==Room.DOMAIN_OUTDOORS_SPACEPORT)
+			||(type==Room.DOMAIN_OUTDOORS_SPACEPORT)
 			||(type==Room.DOMAIN_OUTDOORS_UNDERWATER)
 			||(type==Room.DOMAIN_OUTDOORS_WATERSURFACE))
 		{
@@ -90,10 +90,10 @@ public class Chant_Fertilization extends Chant
 			{
 				mob.location().send(mob,msg);
 				beneficialAffect( mob,
-				                  mob.location(),
-				                  asLevel,
-				                  (int)( CMLib.ableMapper().qualifyingClassLevel( mob, this ) *
-				                      ( ( ( CMProps.getMillisPerMudHour() * mob.location().getArea().getTimeObj().getHoursInDay() ) / CMProps.getTickMillis() ) ) ) );
+								  mob.location(),
+								  asLevel,
+								  (int)( CMLib.ableMapper().qualifyingClassLevel( mob, this ) *
+									  ( ( ( CMProps.getMillisPerMudHour() * mob.location().getArea().getTimeObj().getHoursInDay() ) / CMProps.getTickMillis() ) ) ) );
 			}
 
 		}

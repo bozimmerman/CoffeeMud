@@ -25,7 +25,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -74,15 +74,15 @@ public class Dance_Swing extends Dance
 				&&(((Weapon)attackerWeapon).weaponClassification()!=Weapon.CLASS_THROWN))
 				{
 					if(proficiencyCheck(null,mob.charStats().getStat(CharStats.STAT_DEXTERITY)+(getXLEVELLevel(invoker())*2)-70,false))
-                    {
-                        CMMsg msg2=CMClass.getMsg(mob,msg.source(),null,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> parr(ys) "+attackerWeapon.name()+" attack from <T-NAME>!");
-    					if(mob.location().okMessage(mob,msg2))
-    					{
-    						doneThisRound=true;
-    						mob.location().send(mob,msg2);
-    						return false;
-    					}
-                    }
+					{
+						CMMsg msg2=CMClass.getMsg(mob,msg.source(),null,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> parr(ys) "+attackerWeapon.name()+" attack from <T-NAME>!");
+						if(mob.location().okMessage(mob,msg2))
+						{
+							doneThisRound=true;
+							mob.location().send(mob,msg2);
+							return false;
+						}
+					}
 				}
 			}
 		}

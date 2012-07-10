@@ -26,7 +26,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -40,18 +40,18 @@ public class Play_Spiritual extends Play
 	public String name(){ return "Spiritual";}
 	public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
 	protected String songOf(){return name()+" Music";}
-    protected boolean HAS_QUANTITATIVE_ASPECT(){return false;}
+	protected boolean HAS_QUANTITATIVE_ASPECT(){return false;}
 
-    public int castingQuality(MOB mob, Physical target)
-    {
-        if(mob!=null)
-        {
-            if((mob.isInCombat())&&(mob.isMonster()))
-                return Ability.QUALITY_INDIFFERENT;
-        }
-        return super.castingQuality(mob,target);
-    }
-    
+	public int castingQuality(MOB mob, Physical target)
+	{
+		if(mob!=null)
+		{
+			if((mob.isInCombat())&&(mob.isMonster()))
+				return Ability.QUALITY_INDIFFERENT;
+		}
+		return super.castingQuality(mob,target);
+	}
+	
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID))
@@ -70,7 +70,7 @@ public class Play_Spiritual extends Play
 				&&(A.abstractQuality()!=Ability.QUALITY_MALICIOUS)
 				&&((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_PRAYER)
 				&&(((StdAbility)A).getTickDownRemaining()==1))
-                    ((StdAbility)A).setTickDownRemaining(2);
+					((StdAbility)A).setTickDownRemaining(2);
 			}
 		}
 		return true;

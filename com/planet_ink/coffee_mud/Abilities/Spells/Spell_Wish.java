@@ -25,7 +25,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -41,7 +41,7 @@ public class Spell_Wish extends Spell
 	protected int canTargetCode(){return 0;}
 	public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_ALTERATION;}
 	public int enchantQuality(){return Ability.QUALITY_INDIFFERENT;}
-    public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
+	public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
 	public long flags(){return Ability.FLAG_NOORDERING;}
 	protected int overrideMana(){return Integer.MAX_VALUE;}
 
@@ -82,9 +82,9 @@ public class Spell_Wish extends Spell
 	public void wishDrain(MOB mob, int expLoss, boolean conLoss)
 	{
 		if(mob==null) return;
-        expLoss=getXPCOSTAdjustment(mob,expLoss);
-        if(expLoss > mob.getExperience())
-        	expLoss=mob.getExperience();
+		expLoss=getXPCOSTAdjustment(mob,expLoss);
+		if(expLoss > mob.getExperience())
+			expLoss=mob.getExperience();
 		CMLib.leveler().postExperience(mob,null,null,-expLoss,false);
 		if(conLoss)
 		{
@@ -101,8 +101,8 @@ public class Spell_Wish extends Spell
 	
 	public void age(MOB mob)
 	{
-	    Ability A=CMClass.getAbility("Chant_SpeedAging");
-	    if(A!=null){ A.setAbilityCode(65536); A.invoke(mob,mob,true,0);}
+		Ability A=CMClass.getAbility("Chant_SpeedAging");
+		if(A!=null){ A.setAbilityCode(65536); A.invoke(mob,mob,true,0);}
 	}
 
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
@@ -239,7 +239,7 @@ public class Spell_Wish extends Spell
 				for(final Environmental O : items)
 					if(O instanceof Physical)
 						foundThang=maybeAdd(((Physical)O),thangsFound,foundThang);
-		    }catch(NoSuchElementException nse){}
+			}catch(NoSuchElementException nse){}
 
 			if(foundThang instanceof PackagedItems)
 				foundThang = ((PackagedItems)foundThang).getItem();
@@ -326,10 +326,10 @@ public class Spell_Wish extends Spell
 			if(target instanceof PackagedItems)
 				target = ((PackagedItems)target).getItem();
 
-            if((target instanceof ArchonOnly)
-            ||(target instanceof ClanItem))
-                target=null;
-            
+			if((target instanceof ArchonOnly)
+			||(target instanceof ClanItem))
+				target=null;
+			
 			if((target!=null)
 			&&(target!=mob)
 			&&(target instanceof MOB)
@@ -492,12 +492,12 @@ public class Spell_Wish extends Spell
 					newRoom=mob.location().getRoomInDir(dir);
 				if(newRoom==null)
 				{
-				    try
-				    {
-				    	List<Room> rooms=CMLib.map().findRooms(CMLib.map().rooms(), mob, locationWish.trim(), true, 10);
-				    	if(rooms.size()>0)
-				    		newRoom=(Room)rooms.get(CMLib.dice().roll(1,rooms.size(),-1));
-				    }catch(NoSuchElementException nse){}
+					try
+					{
+						List<Room> rooms=CMLib.map().findRooms(CMLib.map().rooms(), mob, locationWish.trim(), true, 10);
+						if(rooms.size()>0)
+							newRoom=(Room)rooms.get(CMLib.dice().roll(1,rooms.size(),-1));
+					}catch(NoSuchElementException nse){}
 				}
 				if(newRoom!=null)
 				{
@@ -715,11 +715,11 @@ public class Spell_Wish extends Spell
 					int newLevel=target.basePhyStats().level()+level;
 					if(target instanceof MOB)
 					{
-					    if(((newLevel>CMProps.getIntVar(CMProps.SYSTEMI_LASTPLAYERLEVEL))
-				            ||(((MOB)target).charStats().getCurrentClass().leveless())
-                            ||(((MOB)target).charStats().isLevelCapped(((MOB)target).charStats().getCurrentClass()))
-				            ||(((MOB)target).charStats().getMyRace().leveless()))
-					    &&(newLevel>target.basePhyStats().level()))
+						if(((newLevel>CMProps.getIntVar(CMProps.SYSTEMI_LASTPLAYERLEVEL))
+							||(((MOB)target).charStats().getCurrentClass().leveless())
+							||(((MOB)target).charStats().isLevelCapped(((MOB)target).charStats().getCurrentClass()))
+							||(((MOB)target).charStats().getMyRace().leveless()))
+						&&(newLevel>target.basePhyStats().level()))
 						{
 							wishDrain(mob,baseLoss,false);
 							mob.tell("That's beyond your power, but you lost exp even for trying.");
@@ -954,7 +954,7 @@ public class Spell_Wish extends Spell
 
 			// attributes will be hairy
 			int foundAttribute=-1;
-            for(int attributes : CharStats.CODES.ALL())
+			for(int attributes : CharStats.CODES.ALL())
 			{
 				if(CMLib.english().containsString(myWish,CharStats.CODES.DESC(attributes)))
 				{	foundAttribute=attributes; break;}
@@ -982,11 +982,11 @@ public class Spell_Wish extends Spell
 			if((myWish.indexOf("RESIST")>=0)
 			||(myWish.indexOf("IMMUN")>=0))
 			{
-		        for(int saveStat : CharStats.CODES.SAVING_THROWS())
+				for(int saveStat : CharStats.CODES.SAVING_THROWS())
 					if(myWish.indexOf(" "+CharStats.CODES.DESC(saveStat))>=0)
 						foundAttribute=saveStat;
-		        if(foundAttribute<0)
-		        for(int saveStat : CharStats.CODES.SAVING_THROWS())
+				if(foundAttribute<0)
+				for(int saveStat : CharStats.CODES.SAVING_THROWS())
 					if(myWish.indexOf(" "+CharStats.CODES.NAME(saveStat))>=0)
 						foundAttribute=saveStat;
 				if(myWish.indexOf(" PARALY")>=0)

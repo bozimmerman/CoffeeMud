@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -47,7 +47,7 @@ public class Channels extends StdCommand
 		StringBuffer buf=new StringBuffer("Available channels: \n\r");
 		int col=0;
 		String[] names=CMLib.channels().getChannelNames();
-        final int COL_LEN=ListingLibrary.ColFixer.fixColWidth(24.0,mob);
+		final int COL_LEN=ListingLibrary.ColFixer.fixColWidth(24.0,mob);
 		for(int x=0;x<names.length;x++)
 			if(CMLib.masking().maskCheck(CMLib.channels().getChannelMask(x),mob,true))
 			{

@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -43,7 +43,7 @@ public class Skill_HandCuff extends StdSkill
 	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	private static final String[] triggerStrings = {"HANDCUFF","CUFF"};
 	public String[] triggerStrings(){return triggerStrings;}
-    public int classificationCode() {   return Ability.ACODE_SKILL|Ability.DOMAIN_BINDING; }
+	public int classificationCode() {   return Ability.ACODE_SKILL|Ability.DOMAIN_BINDING; }
 	public long flags(){return Ability.FLAG_BINDING;}
 	public int usageType(){return USAGE_MOVEMENT;}
 
@@ -182,31 +182,31 @@ public class Skill_HandCuff extends StdSkill
 			mob.tell("Not while you are fighting!");
 			return false;
 		}
-	    if((commands.size()>0)&&((String)commands.firstElement()).equalsIgnoreCase("UNTIE"))
-	    {
-	        commands.removeElementAt(0);
+		if((commands.size()>0)&&((String)commands.firstElement()).equalsIgnoreCase("UNTIE"))
+		{
+			commands.removeElementAt(0);
 			MOB target=super.getTarget(mob,commands,givenTarget,false,true);
 			if(target==null) return false;
 			Ability A=target.fetchEffect(ID());
 			if(A!=null)
 			{
-			    if(mob.location().show(mob,target,null,CMMsg.MSG_HANDS,"<S-NAME> attempt(s) to unbind <T-NAMESELF>."))
-			    {
-				    A.unInvoke();
-				    return true;
-			    }
-		        return false;
+				if(mob.location().show(mob,target,null,CMMsg.MSG_HANDS,"<S-NAME> attempt(s) to unbind <T-NAMESELF>."))
+				{
+					A.unInvoke();
+					return true;
+				}
+				return false;
 			}
-		    mob.tell(target.name()+" doesn't appear to be handcuffed.");
-		    return false;
-	    }
+			mob.tell(target.name()+" doesn't appear to be handcuffed.");
+			return false;
+		}
 		MOB target=getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 
 		if(Skill_Arrest.getWarrantsOf(target, CMLib.law().getLegalObject(mob.location().getArea())).size()==0)
 		{
-		    mob.tell(target.name()+" has no warrants out here.");
-		    return false;
+			mob.tell(target.name()+" has no warrants out here.");
+			return false;
 		}
 		if((CMLib.flags().isStanding(target))&&(!auto))
 		{

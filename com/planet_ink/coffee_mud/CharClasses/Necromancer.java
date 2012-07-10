@@ -26,7 +26,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -49,13 +49,13 @@ public class Necromancer extends Cleric
 
 	public Necromancer()
 	{
-        super();
+		super();
 		maxStatAdj[CharStats.STAT_WISDOM]=4;
 		maxStatAdj[CharStats.STAT_CONSTITUTION]=4;
-    }
-    public void initializeClass()
-    {
-        super.initializeClass();
+	}
+	public void initializeClass()
+	{
+		super.initializeClass();
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Recall",100,true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Swim",false);
 
@@ -82,10 +82,10 @@ public class Necromancer extends Cleric
 		CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Prayer_DarkSenses",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),6,"Prayer_AnimateGhoul",false);
-        CMLib.ableMapper().addCharAbilityMapping(ID(),6,"Prayer_CallUndead",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),6,"Prayer_CallUndead",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Prayer_Curse",true);
-        CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Prayer_CauseFatigue",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Prayer_CauseFatigue",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Prayer_Paralyze",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Prayer_ProtParalyzation",false);
@@ -118,7 +118,7 @@ public class Necromancer extends Cleric
 		CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Skill_AttackHalf",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),18,"Prayer_AnimateGhost",false);
-        CMLib.ableMapper().addCharAbilityMapping(ID(),18,"Prayer_InfuseUnholiness",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),18,"Prayer_InfuseUnholiness",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),19,"Prayer_Hellfire",true);
 
@@ -131,7 +131,7 @@ public class Necromancer extends Cleric
 		CMLib.ableMapper().addCharAbilityMapping(ID(),22,"Prayer_Disenchant",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),23,"Prayer_AnimateDead",false);
-        CMLib.ableMapper().addCharAbilityMapping(ID(),23,"Prayer_CauseExhaustion",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),23,"Prayer_CauseExhaustion",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),24,"Prayer_UnholyWord",true,CMParms.parseSemicolons("Prayer_GreatCurse",true));
 		CMLib.ableMapper().addCharAbilityMapping(ID(),24,"Prayer_Nullification",false);
@@ -234,10 +234,10 @@ public class Necromancer extends Cleric
 		}
 	}
 	
-    public boolean isValidClassDivider(MOB killer, MOB killed, MOB mob, Set<MOB> followers)
+	public boolean isValidClassDivider(MOB killer, MOB killed, MOB mob, Set<MOB> followers)
 	{
 		if((mob!=null)
-        &&(mob!=killed)
+		&&(mob!=killed)
 		&&(!mob.amDead())
 		&&((!mob.isMonster())||(!mob.charStats().getMyRace().racialCategory().equals("Undead")))
 		&&((mob.getVictim()==killed)

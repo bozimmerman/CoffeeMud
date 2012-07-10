@@ -23,7 +23,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -39,7 +39,7 @@ public class QuestChat extends MudChat
 	private Map<String,List<String>> alreadySaid=new Hashtable<String,List<String>>();
 	private String myQuestName=null;
 
-    public void registerDefaultQuest(String questName){ myQuestName=questName;}
+	public void registerDefaultQuest(String questName){ myQuestName=questName;}
 
 
 	protected boolean match(MOB speaker, String expression, String message, String[] rest)
@@ -65,20 +65,20 @@ public class QuestChat extends MudChat
 							 alreadySaid.put(speaker.Name().toUpperCase(),V);
 						 }
 						 else
-					     if(V.contains(codeStr))
-					    	 return false;
+						 if(V.contains(codeStr))
+							 return false;
 						 if(super.match(speaker,expression,message,rest))
 						 {
 							 V.add(codeStr);
 							 if((myQuestName!=null)&&(myQuestName.length()>0))
 							 {
-							     Quest myQuest=CMLib.quests().fetchQuest(myQuestName);
-							     if(myQuest!=null)
-							     {
-    								 String stat=myQuest.getStat("CHAT:"+speaker.Name().toUpperCase());
-    								 if(stat.length()>0) stat+=" ";
-    								 myQuest.setStat("CHAT:"+speaker.Name().toUpperCase(),stat+codeStr);
-							     }
+								 Quest myQuest=CMLib.quests().fetchQuest(myQuestName);
+								 if(myQuest!=null)
+								 {
+									 String stat=myQuest.getStat("CHAT:"+speaker.Name().toUpperCase());
+									 if(stat.length()>0) stat+=" ";
+									 myQuest.setStat("CHAT:"+speaker.Name().toUpperCase(),stat+codeStr);
+								 }
 							 }
 							 return true;
 						 }

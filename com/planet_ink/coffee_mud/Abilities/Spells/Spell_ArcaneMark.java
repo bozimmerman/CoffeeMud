@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -37,7 +37,7 @@ public class Spell_ArcaneMark extends Spell
 {
 	public String ID() { return "Spell_ArcaneMark"; }
 	public String name(){return "Arcane Mark";}
-    public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
+	public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return CAN_ITEMS;}
 	public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_ALTERATION;}

@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -58,7 +58,7 @@ public class Spell_DemonGate extends Spell
 					myTarget=mob.getVictim();
 				else
 				if(myTarget!=mob.getVictim())
-                    unInvoke();
+					unInvoke();
 			}
 		}
 		return super.tick(ticking,tickID);
@@ -86,10 +86,10 @@ public class Spell_DemonGate extends Spell
 			Room R=mob.location();
 			if(R!=null)
 			{
-	            if(mob.amFollowing()!=null)
-	                R.showOthers(mob,mob.amFollowing(),CMMsg.MSG_OK_ACTION,"^F^<FIGHT^><S-NAME> uses the fight to wrest itself from out of <T-YOUPOSS> control!^?%0DTo <T-YOUPOSS> great relief, it disappears back into its home plane.^</FIGHT^>^?");
-	            else
-	                R.showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> disappears back into its home plane.");
+				if(mob.amFollowing()!=null)
+					R.showOthers(mob,mob.amFollowing(),CMMsg.MSG_OK_ACTION,"^F^<FIGHT^><S-NAME> uses the fight to wrest itself from out of <T-YOUPOSS> control!^?%0DTo <T-YOUPOSS> great relief, it disappears back into its home plane.^</FIGHT^>^?");
+				else
+					R.showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> disappears back into its home plane.");
 			}
 			if(mob.amDead()) mob.setLocation(null);
 			mob.destroy();
@@ -110,19 +110,19 @@ public class Spell_DemonGate extends Spell
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-                MOB otherMonster=mob.location().fetchInhabitant("the great demonbeast$");
+				MOB otherMonster=mob.location().fetchInhabitant("the great demonbeast$");
 				MOB myMonster = determineMonster(mob, mob.phyStats().level()+(getXLEVELLevel(mob)+(2*getX1Level(mob))));
-                if(otherMonster!=null)
-                {
-                    myMonster.location().showOthers(myMonster,mob,CMMsg.MSG_OK_ACTION,"^F^<FIGHT^><S-NAME> wrests itself from out of <T-YOUPOSS> control!^</FIGHT^>^?");
-                    myMonster.setVictim(otherMonster);
-                }
-                else
-				if(CMLib.dice().rollPercentage()<10)
-                {
+				if(otherMonster!=null)
+				{
 					myMonster.location().showOthers(myMonster,mob,CMMsg.MSG_OK_ACTION,"^F^<FIGHT^><S-NAME> wrests itself from out of <T-YOUPOSS> control!^</FIGHT^>^?");
-                    myMonster.setVictim(mob);
-                }
+					myMonster.setVictim(otherMonster);
+				}
+				else
+				if(CMLib.dice().rollPercentage()<10)
+				{
+					myMonster.location().showOthers(myMonster,mob,CMMsg.MSG_OK_ACTION,"^F^<FIGHT^><S-NAME> wrests itself from out of <T-YOUPOSS> control!^</FIGHT^>^?");
+					myMonster.setVictim(mob);
+				}
 				else
 				{
 					myMonster.setVictim(mob.getVictim());
@@ -173,7 +173,7 @@ public class Spell_DemonGate extends Spell
 		newMOB.text();
 		newMOB.bringToLife(caster.location(),true);
 		CMLib.beanCounter().clearZeroMoney(newMOB,null);
-        newMOB.location().showOthers(newMOB,null,CMMsg.MSG_OK_ACTION,"<S-NAME> tears through the fabric of reality and steps into this world!");
+		newMOB.location().showOthers(newMOB,null,CMMsg.MSG_OK_ACTION,"<S-NAME> tears through the fabric of reality and steps into this world!");
 		caster.location().recoverRoomStats();
 		newMOB.setStartRoom(null);
 		return(newMOB);

@@ -23,7 +23,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -40,7 +40,7 @@ public class Thief_Arsonry extends ThiefSkill
 	protected int canTargetCode(){return Ability.CAN_ITEMS;}
 	public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 	private static final String[] triggerStrings = {"ARSON","ARSONRY"};
-    public int classificationCode() {   return Ability.ACODE_SKILL|Ability.DOMAIN_CRIMINAL; }
+	public int classificationCode() {   return Ability.ACODE_SKILL|Ability.DOMAIN_CRIMINAL; }
 	public String[] triggerStrings(){return triggerStrings;}
 
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
@@ -75,7 +75,7 @@ public class Thief_Arsonry extends ThiefSkill
 				&&(I.container()==null)
 				&&(I.displayText().length()==0)
 				&&(CMLib.flags().isGettable(I))
-                &&(!(I instanceof ClanItem))
+				&&(!(I instanceof ClanItem))
 				&&(CMLib.flags().burnStatus(I)>0))
 					choices.addElement(I);
 			}
@@ -110,8 +110,8 @@ public class Thief_Arsonry extends ThiefSkill
 			return false;
 
 		int levelDiff=target.phyStats().level()-(mob.phyStats().level()+abilityCode()+(2*super.getXLEVELLevel(mob)));
-        if(levelDiff<0) levelDiff=0;
-        levelDiff*=5;
+		if(levelDiff<0) levelDiff=0;
+		levelDiff*=5;
 		boolean success=proficiencyCheck(mob,-levelDiff,auto);
 		if(success)
 		{

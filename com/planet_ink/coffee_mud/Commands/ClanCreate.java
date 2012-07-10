@@ -23,7 +23,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -63,11 +63,11 @@ public class ClanCreate extends StdCommand
 						String doubleCheck=mob.session().prompt("Enter the name of your new clan (30 chars max), exactly how you want it\n\r:","");
 						if(doubleCheck.length()<1)
 							return false;
-                        if(doubleCheck.length()>30) // Robert checking length
-                        {
-                            mob.tell("That name is too long, please use a shorter one.");
-                            return false;
-                        }
+						if(doubleCheck.length()>30) // Robert checking length
+						{
+							mob.tell("That name is too long, please use a shorter one.");
+							return false;
+						}
 						Clan C=CMLib.clans().findClan(doubleCheck);
 						if(CMLib.players().playerExists(doubleCheck)
 						||(doubleCheck.equalsIgnoreCase("All")))
@@ -88,35 +88,35 @@ public class ClanCreate extends StdCommand
 									StringBuilder promptmsg=new StringBuilder("Now enter a political style for this clan. Choices are:\n\r");
 									{
 										int longest=0;
-							            for(ClanGovernment gvt : CMLib.clans().getStockGovernments())
-							            	if(gvt.getName().length() > longest)
-							            		longest=gvt.getName().length();
-							            for(ClanGovernment gvt : CMLib.clans().getStockGovernments())
-							            	promptmsg.append(CMStrings.padRight(gvt.getName(), longest))
-										            	.append(":").append(gvt.getShortDesc()).append("\n\r");
+										for(ClanGovernment gvt : CMLib.clans().getStockGovernments())
+											if(gvt.getName().length() > longest)
+												longest=gvt.getName().length();
+										for(ClanGovernment gvt : CMLib.clans().getStockGovernments())
+											promptmsg.append(CMStrings.padRight(gvt.getName(), longest))
+														.append(":").append(gvt.getShortDesc()).append("\n\r");
 										
 									}
 									String govt=mob.session().prompt(promptmsg.toString()+"\n\r: ","");
 									if(govt.length()==0){ mob.tell("Aborted."); return false;}
-						            for(ClanGovernment gvt : CMLib.clans().getStockGovernments())
+									for(ClanGovernment gvt : CMLib.clans().getStockGovernments())
 										if(govt.equalsIgnoreCase(gvt.getName()))
 										{
 											govtType=gvt.getID();
 											/*
-							            	if(!CMLib.masking().maskCheck(C.getBasicRequirementMask(), mob, true))
-							            	{
-							            		mob.tell("You are not qualified to create a clan of this style.\n\rRequirements: "+CMLib.masking().maskDesc(gvt.requiredMaskStr));
-							            		govtType=-1;
-							            	}
-							            	*/
+											if(!CMLib.masking().maskCheck(C.getBasicRequirementMask(), mob, true))
+											{
+												mob.tell("You are not qualified to create a clan of this style.\n\rRequirements: "+CMLib.masking().maskDesc(gvt.requiredMaskStr));
+												govtType=-1;
+											}
+											*/
 											newClan.setGovernmentID(govtType);
 											newRoleID=newClan.getTopQualifiedRoleID(Clan.Function.ASSIGN,mob);
 											if(newClan.getAuthority(newRoleID, Clan.Function.ASSIGN) == Clan.Authority.CAN_NOT_DO)
 											{
-							            		mob.tell("You are not qualified to lead a clan of this style.\n\r");
-							            		govtType=-1;
+												mob.tell("You are not qualified to lead a clan of this style.\n\r");
+												govtType=-1;
 											}
-						            		break;
+											break;
 										}
 								}
 

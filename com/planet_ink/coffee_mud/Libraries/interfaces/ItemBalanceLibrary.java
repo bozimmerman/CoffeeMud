@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -40,7 +40,7 @@ public interface ItemBalanceLibrary extends CMLibrary
 	public void toneDownWeapon(Weapon W, Ability ADJ);
 	public void toneDownArmor(Armor A, Ability ADJ);
 	public void toneDownAdjuster(Item I, Ability ADJ);
-    public boolean toneDownValue(Item I);
+	public boolean toneDownValue(Item I);
 	public int timsBaseLevel(Item I);
 	public void balanceItemByLevel(Item I);
 	public int levelsFromCaster(Item savedI, Ability CAST);
@@ -48,12 +48,12 @@ public interface ItemBalanceLibrary extends CMLibrary
 	public boolean itemFix(Item I, int lvlOr0, StringBuffer changes);
 	public Ability[] getTimsAdjResCast(Item I, int[] castMul);
 	public Item enchant(Item I, int pct);
-    public int levelsFromAbility(Item savedI);
-    public Map<String, String> timsItemAdjustments(Item I,
-							             int level,
-							             int material,
-							             int hands,
-							             int wclass,
-							             int reach,
-							             long worndata);
+	public int levelsFromAbility(Item savedI);
+	public Map<String, String> timsItemAdjustments(Item I,
+										 int level,
+										 int material,
+										 int hands,
+										 int wclass,
+										 int reach,
+										 long worndata);
 }

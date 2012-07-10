@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -48,7 +48,7 @@ public class Troll extends StdRace
 	public String[] culturalAbilityNames(){return culturalAbilityNames;}
 	public int[] culturalAbilityProficiencies(){return culturalAbilityProficiencies;}
 
-	//                                an ey ea he ne ar ha to le fo no gi mo wa ta wi
+	//  							  an ey ea he ne ar ha to le fo no gi mo wa ta wi
 	private static final int[] parts={0 ,2 ,2 ,1 ,1 ,2 ,2 ,1 ,2 ,2 ,1 ,0 ,1 ,1 ,0 ,0 };
 	public int[] bodyMask(){return parts;}
 
@@ -113,8 +113,8 @@ public class Troll extends StdRace
 					int damage=CMLib.dice().roll(1,8,0);
 					CMLib.combat().postDamage(M,M,null,damage,CMMsg.MASK_ALWAYS|CMMsg.TYP_FIRE,Weapon.TYPE_BURNING,"The burning dry heat <DAMAGE> <T-NAME>!");
 				}
-                else
-                    return true;
+				else
+					return true;
 			}
 		}
 		return true;

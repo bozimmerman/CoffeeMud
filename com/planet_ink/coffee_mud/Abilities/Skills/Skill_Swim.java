@@ -23,7 +23,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -42,10 +42,10 @@ public class Skill_Swim extends StdSkill
 	public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 	private static final String[] triggerStrings = {"SWIM"};
 	public String[] triggerStrings(){return triggerStrings;}
-    public int classificationCode() {   return Ability.ACODE_SKILL|Ability.DOMAIN_FITNESS; }
+	public int classificationCode() {   return Ability.ACODE_SKILL|Ability.DOMAIN_FITNESS; }
 	public int usageType(){return USAGE_MOVEMENT;}
-    public double castingTime(final MOB mob, final List<String> cmds){return CMProps.getActionSkillCost(ID(),CMath.greater(CMath.div(CMProps.getIntVar(CMProps.SYSTEMI_DEFABLETIME),50.0),1.0));}
-    public double combatCastingTime(final MOB mob, final List<String> cmds){return CMProps.getCombatActionSkillCost(ID(),CMath.greater(CMath.div(CMProps.getIntVar(CMProps.SYSTEMI_DEFCOMABLETIME),50.0),1.0));}
+	public double castingTime(final MOB mob, final List<String> cmds){return CMProps.getActionSkillCost(ID(),CMath.greater(CMath.div(CMProps.getIntVar(CMProps.SYSTEMI_DEFABLETIME),50.0),1.0));}
+	public double combatCastingTime(final MOB mob, final List<String> cmds){return CMProps.getCombatActionSkillCost(ID(),CMath.greater(CMath.div(CMProps.getIntVar(CMProps.SYSTEMI_DEFCOMABLETIME),50.0),1.0));}
 
 	public boolean placeToSwim(Room r2)
 	{
@@ -66,55 +66,55 @@ public class Skill_Swim extends StdSkill
 		affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_SWIMMING);
 	}
 
-    public boolean preInvoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel, int secondsElapsed, double actionsRemaining)
-    {
-        if(secondsElapsed==0)
-        {
-            int dirCode=Directions.getDirectionCode(CMParms.combine(commands,0));
-            if(dirCode<0)
-            {
-                mob.tell("Swim where?");
-                return false;
-            }
-            Room r=mob.location().getRoomInDir(dirCode);
-            if(!placeToSwim(mob.location()))
-            {
-                if(!placeToSwim(r))
-                {
-                    mob.tell("There is no water to swim on that way.");
-                    return false;
-                }
-            }
-            else
-            if((r!=null)
-            &&(r.domainType()==Room.DOMAIN_OUTDOORS_AIR)
-            &&(r.domainType()==Room.DOMAIN_INDOORS_AIR))
-            {
-                mob.tell("There is no water to swim on that way.");
-                return false;
-            }
-    
-            if((mob.riding()!=null)
-            &&(mob.riding().rideBasis()!=Rideable.RIDEABLE_WATER)
-            &&(mob.riding().rideBasis()!=Rideable.RIDEABLE_AIR))
-            {
-                mob.tell("You need to get off "+mob.riding().name()+" first!");
-                return false;
-            }
-            CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> start(s) swimming "+Directions.getDirectionName(dirCode)+".");
-            Room R=mob.location();
-            if((R!=null)&&(R.okMessage(mob,msg)))
-                R.send(mob,msg);
-            else
-                return false;
-        }
-        return true;
-    }
+	public boolean preInvoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel, int secondsElapsed, double actionsRemaining)
+	{
+		if(secondsElapsed==0)
+		{
+			int dirCode=Directions.getDirectionCode(CMParms.combine(commands,0));
+			if(dirCode<0)
+			{
+				mob.tell("Swim where?");
+				return false;
+			}
+			Room r=mob.location().getRoomInDir(dirCode);
+			if(!placeToSwim(mob.location()))
+			{
+				if(!placeToSwim(r))
+				{
+					mob.tell("There is no water to swim on that way.");
+					return false;
+				}
+			}
+			else
+			if((r!=null)
+			&&(r.domainType()==Room.DOMAIN_OUTDOORS_AIR)
+			&&(r.domainType()==Room.DOMAIN_INDOORS_AIR))
+			{
+				mob.tell("There is no water to swim on that way.");
+				return false;
+			}
+	
+			if((mob.riding()!=null)
+			&&(mob.riding().rideBasis()!=Rideable.RIDEABLE_WATER)
+			&&(mob.riding().rideBasis()!=Rideable.RIDEABLE_AIR))
+			{
+				mob.tell("You need to get off "+mob.riding().name()+" first!");
+				return false;
+			}
+			CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> start(s) swimming "+Directions.getDirectionName(dirCode)+".");
+			Room R=mob.location();
+			if((R!=null)&&(R.okMessage(mob,msg)))
+				R.send(mob,msg);
+			else
+				return false;
+		}
+		return true;
+	}
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		int dirCode=Directions.getDirectionCode(CMParms.combine(commands,0));
-        if(!preInvoke(mob,commands,givenTarget,auto,asLevel,0,0.0))
-            return false;
+		if(!preInvoke(mob,commands,givenTarget,auto,asLevel,0,0.0))
+			return false;
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;

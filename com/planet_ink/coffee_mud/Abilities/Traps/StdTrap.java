@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -87,18 +87,18 @@ public class StdTrap extends StdAbility implements Trap
 	{
 		if(target==null) return false;
 		Room R=target.location();
-        if((!canBeUninvoked())
-        &&(!isABomb())
-        &&(R!=null)) {
-            if((CMLib.law().getLandTitle(R)!=null)
-            &&(CMLib.law().doesHavePriviledgesHere(target,R)))
-                return true;
-            
-            if((target.isMonster())
-            &&(target.getStartRoom()!=null)
-            &&(target.getStartRoom().getArea()==R.getArea()))
-                return true;
-        }
+		if((!canBeUninvoked())
+		&&(!isABomb())
+		&&(R!=null)) {
+			if((CMLib.law().getLandTitle(R)!=null)
+			&&(CMLib.law().doesHavePriviledgesHere(target,R)))
+				return true;
+			
+			if((target.isMonster())
+			&&(target.getStartRoom()!=null)
+			&&(target.getStartRoom().getArea()==R.getArea()))
+				return true;
+		}
 		return false;
 	}
 	
@@ -316,7 +316,7 @@ public class StdTrap extends StdAbility implements Trap
 		}
 		return true;
 	}
-    public List<Item> getTrapComponents() { return new Vector<Item>();}
+	public List<Item> getTrapComponents() { return new Vector<Item>();}
 	public Trap setTrap(MOB mob, Physical P, int trapBonus, int qualifyingClassLevel, boolean perm)
 	{
 		if(P==null) return null;
@@ -327,12 +327,12 @@ public class StdTrap extends StdAbility implements Trap
 		T.setSavable(false);
 		T.setAbilityCode(trapBonus);
 		P.addEffect(T);
-        if(perm)
-        {
-            T.setSavable(true);
-            T.makeNonUninvokable();
-        }
-        else
+		if(perm)
+		{
+			T.setSavable(true);
+			T.makeNonUninvokable();
+		}
+		else
 		if(!isABomb())
 			CMLib.threads().startTickDown(T,Tickable.TICKID_TRAP_DESTRUCTION,baseDestructTime(qualifyingClassLevel+trapBonus));
 		return T;

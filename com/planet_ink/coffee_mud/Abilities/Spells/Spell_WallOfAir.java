@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -77,7 +77,7 @@ public class Spell_WallOfAir extends Spell
 			M.setVictim(null);
 			if(mob.isMonster())
 				CMLib.commands().postRemove(mob,(Item)msg.tool(),true);
-            M.destroy();
+			M.destroy();
 			return false;
 		}
 

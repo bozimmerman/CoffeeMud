@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -45,7 +45,7 @@ public class FileInfo extends StdWebMacro
 		String file=httpReq.getRequestParameter("FILE");
 		if(file==null) file="";
 		MOB M = Authenticate.getAuthenticatedMob(httpReq);
-        if(M==null) return "[authentication error]";
+		if(M==null) return "[authentication error]";
 		try
 		{
 			CMFile F=new CMFile(path+"/"+file,M,false);
@@ -53,34 +53,34 @@ public class FileInfo extends StdWebMacro
 				return ""+F.isDirectory();
 			if(parms.containsKey("ISFILE"))
 				return ""+F.isFile();
-            if(parms.containsKey("ISLOCAL"))
-                return ""+F.canLocalEquiv();
-            if(parms.containsKey("ISBOTH"))
-                return ""+(F.canLocalEquiv()&&(F.canVFSEquiv()));
-            if(parms.containsKey("ISVFS"))
-                return ""+F.canVFSEquiv();
-            if(parms.containsKey("ISTEXT"))
-            {
-                int x=F.getName().lastIndexOf('.');
-                if(x<0) return "false";
-                String mime=httpReq.getMimeType(F.getName().substring(x));
-                if(mime.toUpperCase().startsWith("TEXT"))
-                    return "true";
-                return "false";
-            }
-            if(parms.containsKey("ISBINARY"))
-            {
-                int x=F.getName().lastIndexOf('.');
-                if(x<0) return "true";
-                String mime=httpReq.getMimeType(F.getName().substring(x));
-                if(mime.toUpperCase().startsWith("TEXT"))
-                    return "false";
-                return "true";
-            }
+			if(parms.containsKey("ISLOCAL"))
+				return ""+F.canLocalEquiv();
+			if(parms.containsKey("ISBOTH"))
+				return ""+(F.canLocalEquiv()&&(F.canVFSEquiv()));
+			if(parms.containsKey("ISVFS"))
+				return ""+F.canVFSEquiv();
+			if(parms.containsKey("ISTEXT"))
+			{
+				int x=F.getName().lastIndexOf('.');
+				if(x<0) return "false";
+				String mime=httpReq.getMimeType(F.getName().substring(x));
+				if(mime.toUpperCase().startsWith("TEXT"))
+					return "true";
+				return "false";
+			}
+			if(parms.containsKey("ISBINARY"))
+			{
+				int x=F.getName().lastIndexOf('.');
+				if(x<0) return "true";
+				String mime=httpReq.getMimeType(F.getName().substring(x));
+				if(mime.toUpperCase().startsWith("TEXT"))
+					return "false";
+				return "true";
+			}
 			if(parms.containsKey("NAME"))
 				return ""+F.getName();
 			if(parms.containsKey("DATA"))
-                return F.textUnformatted().toString();
+				return F.textUnformatted().toString();
 			if(parms.containsKey("TEXTDATA"))
 			{
 				String s=F.text().toString();

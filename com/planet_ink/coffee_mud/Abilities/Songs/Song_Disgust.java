@@ -25,7 +25,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -38,7 +38,7 @@ public class Song_Disgust extends Song
 	public String ID() { return "Song_Disgust"; }
 	public String name(){ return "Disgust";}
 	public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
-    protected boolean HAS_QUANTITATIVE_ASPECT(){return false;}
+	protected boolean HAS_QUANTITATIVE_ASPECT(){return false;}
 
 	public boolean tick(Tickable ticking, int tickID)
 	{
@@ -62,14 +62,14 @@ public class Song_Disgust extends Song
 		return true;
 	}
 
-    public int castingQuality(MOB mob, Physical target)
-    {
-        if(mob!=null)
-        {
-            if(mob.location().numInhabitants()<3)
-                return Ability.QUALITY_INDIFFERENT;
-        }
-        return super.castingQuality(mob,target);
-    }
-    
+	public int castingQuality(MOB mob, Physical target)
+	{
+		if(mob!=null)
+		{
+			if(mob.location().numInhabitants()<3)
+				return Ability.QUALITY_INDIFFERENT;
+		}
+		return super.castingQuality(mob,target);
+	}
+	
 }

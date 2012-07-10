@@ -29,7 +29,7 @@ import com.planet_ink.coffee_mud.core.exceptions.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -40,16 +40,16 @@ import com.planet_ink.coffee_mud.core.exceptions.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class SMTPclient extends StdLibrary implements SMTPLibrary, SMTPLibrary.SMTPClient
 {
-    public String ID(){return "SMTPclient";}
+	public String ID(){return "SMTPclient";}
 
 	/** Reply buffer */
-    public BufferedReader reply = null;
+	public BufferedReader reply = null;
 	/** Send writer */
-    public PrintWriter send = null;
+	public PrintWriter send = null;
 	/** Socket to use */
-    public Socket sock = null;
-    
-    private SMTPHostAuth auth = null;
+	public Socket sock = null;
+	
+	private SMTPHostAuth auth = null;
 
 	Attribute doMXLookup( String hostName ) 
 	{
@@ -57,7 +57,7 @@ public class SMTPclient extends StdLibrary implements SMTPLibrary, SMTPLibrary.S
 		{
 			Hashtable env = new Hashtable();
 			env.put("java.naming.factory.initial",
-			        "com.sun.jndi.dns.DnsContextFactory");
+					"com.sun.jndi.dns.DnsContextFactory");
 			DirContext ictx = new InitialDirContext( env );
 			Attributes attrs = ictx.getAttributes( hostName, new String[] { "MX" });
 			Attribute attr = attrs.get( "MX" );
@@ -71,51 +71,51 @@ public class SMTPclient extends StdLibrary implements SMTPLibrary, SMTPLibrary.S
 	}
   
 	public SMTPClient getClient(String SMTPServerInfo, int port) 
-        throws UnknownHostException,IOException 
-    {
-        return new SMTPclient(SMTPServerInfo,port);
-    }
-    public SMTPClient getClient(String emailAddress) 
-        throws IOException, BadEmailAddressException 
-    {
-        return new SMTPclient(emailAddress);
-    }
-    
-    public SMTPclient()
-    {
-        super();
-    }
+		throws UnknownHostException,IOException 
+	{
+		return new SMTPclient(SMTPServerInfo,port);
+	}
+	public SMTPClient getClient(String emailAddress) 
+		throws IOException, BadEmailAddressException 
+	{
+		return new SMTPclient(emailAddress);
+	}
+	
+	public SMTPclient()
+	{
+		super();
+	}
 
-    /**
-     *   Create a SMTP object pointing to the specified host
-     *   @param SMTPServerInfo the host to connect to.
-     *   @param port the port to connect to.
-     *   @exception UnknownHostException
-     *   @exception IOException
-     */
-    public SMTPclient( String SMTPServerInfo, int port) throws UnknownHostException,IOException 
-    {
-    	auth = new SMTPHostAuth(SMTPServerInfo);
-    	int portIndex=auth.host.lastIndexOf(':');
-    	if(portIndex>0)
-    	{
-    		port=CMath.s_int(auth.host.substring(portIndex+1));
-    		auth.host=auth.host.substring(0,portIndex);
-    	}
-        sock = new Socket( auth.getHost(), port );
+	/**
+	 *   Create a SMTP object pointing to the specified host
+	 *   @param SMTPServerInfo the host to connect to.
+	 *   @param port the port to connect to.
+	 *   @exception UnknownHostException
+	 *   @exception IOException
+	 */
+	public SMTPclient( String SMTPServerInfo, int port) throws UnknownHostException,IOException 
+	{
+		auth = new SMTPHostAuth(SMTPServerInfo);
+		int portIndex=auth.host.lastIndexOf(':');
+		if(portIndex>0)
+		{
+			port=CMath.s_int(auth.host.substring(portIndex+1));
+			auth.host=auth.host.substring(0,portIndex);
+		}
+		sock = new Socket( auth.getHost(), port );
 		reply = new BufferedReader(new InputStreamReader(sock.getInputStream()));
 		sock.setSoTimeout(DEFAULT_TIMEOUT);
-        send = new PrintWriter( sock.getOutputStream() );
-        boolean debug = CMSecurity.isDebugging(CMSecurity.DbgFlag.SMTPCLIENT);
-        String rstr = reply.readLine();
-        if(debug) Log.debugOut("SMTPclient",rstr);
-        if ((rstr==null)||(!rstr.startsWith("220"))) throw new ProtocolException(rstr);
-        while (rstr.indexOf('-') == 3) {
-            rstr = reply.readLine();
-            if(debug) Log.debugOut("SMTPclient",rstr);
-            if (!rstr.startsWith("220")) throw new ProtocolException(rstr);
-        }
-    }
+		send = new PrintWriter( sock.getOutputStream() );
+		boolean debug = CMSecurity.isDebugging(CMSecurity.DbgFlag.SMTPCLIENT);
+		String rstr = reply.readLine();
+		if(debug) Log.debugOut("SMTPclient",rstr);
+		if ((rstr==null)||(!rstr.startsWith("220"))) throw new ProtocolException(rstr);
+		while (rstr.indexOf('-') == 3) {
+			rstr = reply.readLine();
+			if(debug) Log.debugOut("SMTPclient",rstr);
+			if (!rstr.startsWith("220")) throw new ProtocolException(rstr);
+		}
+	}
 
 	public SMTPclient (String emailAddress) throws IOException, 
 												   BadEmailAddressException
@@ -148,14 +148,14 @@ public class SMTPclient extends StdLibrary implements SMTPLibrary, SMTPLibrary.S
 				reply = new BufferedReader(new InputStreamReader(sock.getInputStream()));
 				sock.setSoTimeout(DEFAULT_TIMEOUT);
 				send = new PrintWriter( sock.getOutputStream() );
-		        boolean debug = CMSecurity.isDebugging(CMSecurity.DbgFlag.SMTPCLIENT);
-		        String rstr = reply.readLine();
-		        if(debug) Log.debugOut("SMTPclient",rstr);
+				boolean debug = CMSecurity.isDebugging(CMSecurity.DbgFlag.SMTPCLIENT);
+				String rstr = reply.readLine();
+				if(debug) Log.debugOut("SMTPclient",rstr);
 				if ((rstr==null)||(!rstr.startsWith("220"))) throw new ProtocolException(rstr);
 				while (rstr.indexOf('-') == 3) {
-				    rstr = reply.readLine();
-			        if(debug) Log.debugOut("SMTPclient",rstr);
-				    if (!rstr.startsWith("220")) throw new ProtocolException(rstr);
+					rstr = reply.readLine();
+					if(debug) Log.debugOut("SMTPclient",rstr);
+					if (!rstr.startsWith("220")) throw new ProtocolException(rstr);
 				}
 				connected=true;
 				break;
@@ -172,20 +172,20 @@ public class SMTPclient extends StdLibrary implements SMTPLibrary, SMTPLibrary.S
 	{
 		try
 		{
-	        SMTPLibrary.SMTPClient SC=null;
-	        if(CMProps.getVar(CMProps.SYSTEM_SMTPSERVERNAME).length()>0)
-	            SC=CMLib.smtp().getClient(CMProps.getVar(CMProps.SYSTEM_SMTPSERVERNAME),SMTPLibrary.DEFAULT_PORT);
-	        else
-	            SC=CMLib.smtp().getClient(mob.playerStats().getEmail());
+			SMTPLibrary.SMTPClient SC=null;
+			if(CMProps.getVar(CMProps.SYSTEM_SMTPSERVERNAME).length()>0)
+				SC=CMLib.smtp().getClient(CMProps.getVar(CMProps.SYSTEM_SMTPSERVERNAME),SMTPLibrary.DEFAULT_PORT);
+			else
+				SC=CMLib.smtp().getClient(mob.playerStats().getEmail());
 	
-	        String domain=CMProps.getVar(CMProps.SYSTEM_MUDDOMAIN).toLowerCase();
-	        SC.sendMessage(from+"@"+domain,
-	        			   from+"@"+domain,
-	                       mob.playerStats().getEmail(),
-	                       mob.playerStats().getEmail(),
-	                       subj,
-	                       CMLib.coffeeFilter().simpleOutFilter(msg));
-	        return true;
+			String domain=CMProps.getVar(CMProps.SYSTEM_MUDDOMAIN).toLowerCase();
+			SC.sendMessage(from+"@"+domain,
+						   from+"@"+domain,
+						   mob.playerStats().getEmail(),
+						   mob.playerStats().getEmail(),
+						   subj,
+						   CMLib.coffeeFilter().simpleOutFilter(msg));
+			return true;
 		}
 		catch(Exception e) {
 			Log.errOut("SMTPClient",e.getMessage());
@@ -194,20 +194,20 @@ public class SMTPclient extends StdLibrary implements SMTPLibrary, SMTPLibrary.S
 	}
 	
 	public boolean emailIfPossible(String SMTPServerInfo, 
-    						       String from,
-    						       String replyTo,
-    						       String to,
-    						       String subject,
-    						       String message)
+								   String from,
+								   String replyTo,
+								   String to,
+								   String subject,
+								   String message)
 	{
 		try
 		{
 			SMTPclient SC=null;
-		    if(SMTPServerInfo.length()>0)
+			if(SMTPServerInfo.length()>0)
 				SC=new SMTPclient(SMTPServerInfo,DEFAULT_PORT);
-		    else
+			else
 				SC=new SMTPclient(to);
-		    
+			
 			SC.sendMessage(from,
 						   replyTo,
 						   to,
@@ -219,7 +219,7 @@ public class SMTPclient extends StdLibrary implements SMTPLibrary, SMTPLibrary.S
 		catch(Exception ioe)
 		{
 		}
-	    return false;
+		return false;
 	}
 	
 	
@@ -275,7 +275,7 @@ public class SMTPclient extends StdLibrary implements SMTPLibrary, SMTPLibrary.S
 
 	public void sendLine(boolean debug, String sstr)
 	{
-        if(debug) Log.debugOut("SMTPclient",sstr);
+		if(debug) Log.debugOut("SMTPclient",sstr);
 		send.print(sstr);
 		send.print(EOL);
 		send.flush();
@@ -292,7 +292,7 @@ public class SMTPclient extends StdLibrary implements SMTPLibrary, SMTPLibrary.S
 	* @param subject Subject line
 	* @param message Message content
 	*/
-    public synchronized void sendMessage(String froaddress, 
+	public synchronized void sendMessage(String froaddress, 
 										 String reply_address,
 										 String to_address, 
 										 String mockto_address,
@@ -300,54 +300,54 @@ public class SMTPclient extends StdLibrary implements SMTPLibrary, SMTPLibrary.S
 										 String message)
 		throws IOException
 	{
-    	froaddress=froaddress.replace(' ','_');
-    	reply_address=reply_address.replace(' ','_');
-    	to_address=to_address.replace(' ','_');
-    	
-    	if(CMSecurity.isDisabled(CMSecurity.DisFlag.SMTPCLIENT))
-    	{
-    		Log.debugOut("SMTPclient", "Message not sent: "+froaddress+"/"+reply_address+"/"+to_address+"/"+mockto_address+"/"+subject+"/"+message);
-    		return;
-    	}
-    	
+		froaddress=froaddress.replace(' ','_');
+		reply_address=reply_address.replace(' ','_');
+		to_address=to_address.replace(' ','_');
+		
+		if(CMSecurity.isDisabled(CMSecurity.DisFlag.SMTPCLIENT))
+		{
+			Log.debugOut("SMTPclient", "Message not sent: "+froaddress+"/"+reply_address+"/"+to_address+"/"+mockto_address+"/"+subject+"/"+message);
+			return;
+		}
+		
 		String rstr;
 		boolean debug = CMSecurity.isDebugging(CMSecurity.DbgFlag.SMTPCLIENT);
-        StringBuffer fixMsg=new StringBuffer(message);
-        for(int f=0;f<fixMsg.length();f++)
-        {
-            if((fixMsg.charAt(f)=='\n')
-            &&(f>0)
-            &&(fixMsg.charAt(f-1)!='\r'))
-            {
-                if((f<fixMsg.length()-1)&&(fixMsg.charAt(f+1)=='\r'))
-                {
-                    fixMsg.setCharAt(f,'\r');
-                    fixMsg.setCharAt(f+1,'\n');
-                }
-                else
-                {
-                    fixMsg.insert(f,'\r');
-                    f++;
-                }
-            }
-            else
-            if((fixMsg.charAt(f)=='\r')
-            &&(f<fixMsg.length()-1)
-            &&(fixMsg.charAt(f+1)!='\n'))
-            {
-                if((f>0)&&(fixMsg.charAt(f-1)=='\n'))
-                {
-                    fixMsg.setCharAt(f-1,'\r');
-                    fixMsg.setCharAt(f,'\n');
-                }
-                else
-                {
-                    fixMsg.insert(f+1,'\n');
-                    f++;
-                }
-            }
-        }
-        message=fixMsg.toString();
+		StringBuffer fixMsg=new StringBuffer(message);
+		for(int f=0;f<fixMsg.length();f++)
+		{
+			if((fixMsg.charAt(f)=='\n')
+			&&(f>0)
+			&&(fixMsg.charAt(f-1)!='\r'))
+			{
+				if((f<fixMsg.length()-1)&&(fixMsg.charAt(f+1)=='\r'))
+				{
+					fixMsg.setCharAt(f,'\r');
+					fixMsg.setCharAt(f+1,'\n');
+				}
+				else
+				{
+					fixMsg.insert(f,'\r');
+					f++;
+				}
+			}
+			else
+			if((fixMsg.charAt(f)=='\r')
+			&&(f<fixMsg.length()-1)
+			&&(fixMsg.charAt(f+1)!='\n'))
+			{
+				if((f>0)&&(fixMsg.charAt(f-1)=='\n'))
+				{
+					fixMsg.setCharAt(f-1,'\r');
+					fixMsg.setCharAt(f,'\n');
+				}
+				else
+				{
+					fixMsg.insert(f+1,'\n');
+					f++;
+				}
+			}
+		}
+		message=fixMsg.toString();
 
 		InetAddress local;
 		try {
@@ -360,14 +360,14 @@ public class SMTPclient extends StdLibrary implements SMTPLibrary, SMTPLibrary.S
 		String host = local.getHostName();
 		sendLine(debug,"HELO " + host);
 		rstr = reply.readLine();
-        if(debug) Log.debugOut("SMTPclient",rstr);
+		if(debug) Log.debugOut("SMTPclient",rstr);
 		if ((rstr==null)||(!rstr.startsWith("250"))) throw new ProtocolException(""+rstr);
 		
 		if((auth != null) && (auth.getAuthType().length()>0))
 		{
 			sendLine(debug,"AUTH " + auth.getAuthType());
 			rstr = reply.readLine();
-	        if(debug) Log.debugOut("SMTPclient",rstr);
+			if(debug) Log.debugOut("SMTPclient",rstr);
 			if ((rstr==null)||(!rstr.startsWith("334"))) throw new ProtocolException(""+rstr);
 			if(auth.getAuthType().equalsIgnoreCase("plain"))
 				sendLine(debug,auth.getPlainLogin());
@@ -376,25 +376,25 @@ public class SMTPclient extends StdLibrary implements SMTPLibrary, SMTPLibrary.S
 			{
 				sendLine(debug,auth.getLogin());
 				rstr = reply.readLine();
-		        if(debug) Log.debugOut("SMTPclient",rstr);
+				if(debug) Log.debugOut("SMTPclient",rstr);
 				if ((rstr==null)||(!rstr.startsWith("334"))) throw new ProtocolException(""+rstr);
 				sendLine(debug,auth.getPassword());
 			}
 			rstr = reply.readLine();
-	        if(debug) Log.debugOut("SMTPclient",rstr);
+			if(debug) Log.debugOut("SMTPclient",rstr);
 			if ((rstr==null)||(!rstr.startsWith("235"))) throw new ProtocolException(""+rstr);
 		}
 		sendLine(debug,"MAIL FROM:<" + froaddress+">");
 		rstr = reply.readLine();
-        if(debug) Log.debugOut("SMTPclient",rstr);
+		if(debug) Log.debugOut("SMTPclient",rstr);
 		if ((rstr==null)||(!rstr.startsWith("250"))) throw new ProtocolException(""+rstr);
 		sendLine(debug,"RCPT TO:<" + to_address+">");
 		rstr = reply.readLine();
-        if(debug) Log.debugOut("SMTPclient",rstr);
+		if(debug) Log.debugOut("SMTPclient",rstr);
 		if ((rstr==null)||(!rstr.startsWith("250"))) throw new ProtocolException(""+rstr);
 		sendLine(debug,"DATA");
 		rstr = reply.readLine();
-        if(debug) Log.debugOut("SMTPclient",rstr);
+		if(debug) Log.debugOut("SMTPclient",rstr);
 		if ((rstr==null)||(!rstr.startsWith("354"))) throw new ProtocolException(""+rstr);
 		sendLine(debug,"MIME-Version: 1.0");
 		if((message.indexOf("<HTML>")>=0)&&(message.indexOf("</HTML>")>=0))
@@ -417,9 +417,9 @@ public class SMTPclient extends StdLibrary implements SMTPLibrary, SMTPLibrary.S
 		sendLine(debug,".");
 		
 		rstr = reply.readLine();
-        if(debug) Log.debugOut("SMTPclient",rstr);
+		if(debug) Log.debugOut("SMTPclient",rstr);
 		if (!rstr.startsWith("250")) throw new ProtocolException(rstr);
-    }
+	}
 
 	/**
 	* return members of a list on an email server.
@@ -429,29 +429,29 @@ public class SMTPclient extends StdLibrary implements SMTPLibrary, SMTPLibrary.S
 	* @param list member list
 	* @return String List of members
 	*/
-    public synchronized String getListMembers( String list)
-                         throws IOException, ProtocolException {
+	public synchronized String getListMembers( String list)
+						 throws IOException, ProtocolException {
 
-        String sendString;
+		String sendString;
 
-        InetAddress local;
-        try {
-          local = InetAddress.getLocalHost();
-        }
-        catch (UnknownHostException ioe) {
-          System.err.println("No local IP address found - is your network up?");
-          throw ioe;
-        }
-        String host = local.getHostName();
-        send.print("HELO " + host);
-        send.print(EOL);
-        send.flush();
-        String rstr = reply.readLine();
-        if (!rstr.startsWith("250")) throw new ProtocolException(rstr);
-        sendString = "EXPN " + list ;
-        send.print(sendString);
-        send.print(EOL);
-        send.flush();
+		InetAddress local;
+		try {
+		  local = InetAddress.getLocalHost();
+		}
+		catch (UnknownHostException ioe) {
+		  System.err.println("No local IP address found - is your network up?");
+		  throw ioe;
+		}
+		String host = local.getHostName();
+		send.print("HELO " + host);
+		send.print(EOL);
+		send.flush();
+		String rstr = reply.readLine();
+		if (!rstr.startsWith("250")) throw new ProtocolException(rstr);
+		sendString = "EXPN " + list ;
+		send.print(sendString);
+		send.print(EOL);
+		send.flush();
 		rstr="";
 		try
 		{
@@ -465,9 +465,9 @@ public class SMTPclient extends StdLibrary implements SMTPLibrary, SMTPLibrary.S
 		{ // not really an error, just a control break			
 		}
 		sock.setSoTimeout(DEFAULT_TIMEOUT);
-        if (!rstr.startsWith("250")) throw new ProtocolException(rstr);
+		if (!rstr.startsWith("250")) throw new ProtocolException(rstr);
 		return rstr;
-    }
+	}
 
 	/**
 	* close this socket
@@ -475,26 +475,26 @@ public class SMTPclient extends StdLibrary implements SMTPLibrary, SMTPLibrary.S
 	* <br><br><b>Usage:</b>  this.close();
 	*/
 	public void close() {
-      try {
-        send.print("QUIT");
-        send.print(EOL);
-        send.flush();
-        sock.close();
-      }
-      catch (IOException ioe) {
-        // As though there's anything I can dof about it now...
-      }
-    }
+	  try {
+		send.print("QUIT");
+		send.print(EOL);
+		send.flush();
+		sock.close();
+	  }
+	  catch (IOException ioe) {
+		// As though there's anything I can dof about it now...
+	  }
+	}
 
-    /**
+	/**
 	* close this socket
 	* 
 	* <br><br><b>Usage:</b>  finalize();
 	*/
 	protected void finalize() throws Throwable {
-        this.close();
-        super.finalize();
-    }
+		this.close();
+		super.finalize();
+	}
 
 	private class SMTPHostAuth
 	{

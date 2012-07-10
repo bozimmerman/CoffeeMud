@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -75,7 +75,7 @@ public class Prayer_Tithe extends Prayer
 			if((invoker()!=msg.source())&&((num/10)>0))
 			{
 				invoker().tell(msg.source(),null,null,"<S-NAME> tithes.");
-			    String currency=((Coins)msg.target()).getCurrency();
+				String currency=((Coins)msg.target()).getCurrency();
 				CMLib.beanCounter().addMoney(invoker(),currency,CMath.mul(((Coins)msg.target()).getDenomination(),(num/10)));
 			}
 		}
@@ -86,7 +86,7 @@ public class Prayer_Tithe extends Prayer
 			ShopKeeper SK=CMLib.coffeeShops().getShopKeeper(affected);
 			if(SK.getShop().doIHaveThisInStock("$"+msg.tool().Name()+"$",msg.source()))
 			{
-			    ShopKeeper.ShopPrice price=CMLib.coffeeShops().sellingPrice((MOB)affected,msg.source(),msg.tool(),SK,true);
+				ShopKeeper.ShopPrice price=CMLib.coffeeShops().sellingPrice((MOB)affected,msg.source(),msg.tool(),SK,true);
 				if((price.absoluteGoldPrice>0.0)&&(price.absoluteGoldPrice<=CMLib.beanCounter().getTotalAbsoluteShopKeepersValue(msg.source(),invoker())))
 					if(invoker()!=msg.target())
 					{
@@ -98,18 +98,18 @@ public class Prayer_Tithe extends Prayer
 		super.executeMsg(myHost,msg);
 	}
 
-    public int castingQuality(MOB mob, Physical target)
-    {
-        if(mob!=null)
-        {
-            if(mob.isInCombat())
-                return Ability.QUALITY_INDIFFERENT;
-            if(target instanceof MOB)
-            {
-            }
-        }
-        return super.castingQuality(mob,target);
-    }
+	public int castingQuality(MOB mob, Physical target)
+	{
+		if(mob!=null)
+		{
+			if(mob.isInCombat())
+				return Ability.QUALITY_INDIFFERENT;
+			if(target instanceof MOB)
+			{
+			}
+		}
+		return super.castingQuality(mob,target);
+	}
 
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{

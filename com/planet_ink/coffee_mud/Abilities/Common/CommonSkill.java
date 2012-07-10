@@ -26,7 +26,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -42,8 +42,8 @@ public class CommonSkill extends StdAbility
 	public String name(){ return "Common Skill";}
 	private static final String[] triggerStrings = empty;
 	public String[] triggerStrings(){return triggerStrings;}
-    public String supportedResourceString(){return "";}
-    public static final Map<String,Integer[]> resourcesMap=new Hashtable<String,Integer[]>();
+	public String supportedResourceString(){return "";}
+	public static final Map<String,Integer[]> resourcesMap=new Hashtable<String,Integer[]>();
 
 	public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 	protected String displayText="(Doing something productive)";
@@ -57,11 +57,11 @@ public class CommonSkill extends StdAbility
 	protected Room activityRoom=null;
 	protected boolean aborted=false;
 	protected boolean helping=false;
-    protected boolean bundling=false;
+	protected boolean bundling=false;
 	public Ability helpingAbility=null;
 	protected int tickUp=0;
 	protected String verb="working";
-    protected String playSound=null;
+	protected String playSound=null;
 	public int usageType(){return USAGE_MOVEMENT;}
 
 	protected int canAffectCode(){return Ability.CAN_MOBS;}
@@ -96,7 +96,7 @@ public class CommonSkill extends StdAbility
 			MOB mob=(MOB)affected;
 			if((mob.isInCombat())||(mob.location()!=activityRoom)||(!CMLib.flags().aliveAwakeMobileUnbound(mob,true)))
 			{aborted=true; unInvoke(); return false;}
-            String sound=(playSound!=null)?CMProps.msp(playSound,10):"";
+			String sound=(playSound!=null)?CMProps.msp(playSound,10):"";
 			if(tickDown==4)
 				mob.location().show(mob,null,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> <S-IS-ARE> almost done "+verb+"."+sound);
 			else
@@ -112,7 +112,7 @@ public class CommonSkill extends StdAbility
 			&&(((MOB)helpingAbility.affecting()).isMine(helpingAbility)))
 				helpingAbility.tick(helpingAbility.affecting(),tickID);
 			if((mob.soulMate()==null)&&(mob.playerStats()!=null)&&(mob.location()!=null))
-			    mob.playerStats().adjHygiene(PlayerStats.HYGIENE_COMMONDIRTY);
+				mob.playerStats().adjHygiene(PlayerStats.HYGIENE_COMMONDIRTY);
 		}
 		tickUp++;
 		return super.tick(ticking,tickID);
@@ -259,8 +259,8 @@ public class CommonSkill extends StdAbility
 		case 1: consumed=20; break;
 		case 2: consumed=16; break;
 		case 3: consumed=13; break;
-        case 4: consumed=11; break;
-        case 5: consumed=8; break;
+		case 4: consumed=11; break;
+		case 5: consumed=8; break;
 		default: consumed=5; break;
 		}
 		if(overrideMana()>=0) consumed=overrideMana();
@@ -277,7 +277,7 @@ public class CommonSkill extends StdAbility
 	{ 
 		return mob.phyStats().level()+(2*getXLEVELLevel(mob));
 	}
-    
+	
 	public boolean confirmPossibleMaterialLocation(int resource, Room room)
 	{
 		if(room==null) return false;
@@ -398,7 +398,7 @@ public class CommonSkill extends StdAbility
 	
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-        aborted=false;
+		aborted=false;
 		if(mob.isInCombat())
 		{
 			commonEmote(mob,"<S-NAME> <S-IS-ARE> in combat!");
@@ -460,14 +460,14 @@ public class CommonSkill extends StdAbility
 				mob.tell("You don't have enough hit points to do that.");
 			return false;
 		}
-        if(!checkComponents(mob))
-            return false;
-        mob.curState().adjMana(-consumed[0],mob.maxState());
-        mob.curState().adjMovement(-consumed[1],mob.maxState());
+		if(!checkComponents(mob))
+			return false;
+		mob.curState().adjMana(-consumed[0],mob.maxState());
+		mob.curState().adjMovement(-consumed[1],mob.maxState());
 		mob.curState().adjHitPoints(-consumed[2],mob.maxState());
 		activityRoom=mob.location();
-        if(!bundling)
-    		helpProficiency(mob);
+		if(!bundling)
+			helpProficiency(mob);
 
 		return true;
 	}

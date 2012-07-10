@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -43,77 +43,77 @@ public class Announce extends StdCommand
 	public void sendAnnounce(MOB from, String announcement, Session S)
 	{
 	  	StringBuffer Message=new StringBuffer("");
-        if((from!=null)&&(from.playerStats()!=null)&&(from.playerStats().announceMessage().length()>0))
-            Message.append(from.playerStats().announceMessage()+" '"+announcement+"'.^.^N");
-        else
-        {
-    	  	int alignType=2;
-            if (CMLib.flags().isEvil(S.mob()))
-                alignType = 0;
-            else
-            if (CMLib.flags().isGood(S.mob()))
-                alignType = 1;
-    	  	switch(alignType)
-    	  	{
-    	  	  case 0:
-    	  	    Message.append("^rA terrifying voice bellows out of Hell '"+announcement+"'.^N");
-    	  	    break;
-    	  	  case 1:
-    	  	    Message.append("^wAn awe-inspiring voice thunders down from Heaven '"+announcement+"'.^N");
-    	  	    break;
-    	  	  case 2:
-    	  	    Message.append("^pA powerful voice rings out '"+announcement+"'.^N");
-    	  	    break;
-    	  	}
-        }
+		if((from!=null)&&(from.playerStats()!=null)&&(from.playerStats().announceMessage().length()>0))
+			Message.append(from.playerStats().announceMessage()+" '"+announcement+"'.^.^N");
+		else
+		{
+		  	int alignType=2;
+			if (CMLib.flags().isEvil(S.mob()))
+				alignType = 0;
+			else
+			if (CMLib.flags().isGood(S.mob()))
+				alignType = 1;
+		  	switch(alignType)
+		  	{
+		  	  case 0:
+		  		Message.append("^rA terrifying voice bellows out of Hell '"+announcement+"'.^N");
+		  		break;
+		  	  case 1:
+		  		Message.append("^wAn awe-inspiring voice thunders down from Heaven '"+announcement+"'.^N");
+		  		break;
+		  	  case 2:
+		  		Message.append("^pA powerful voice rings out '"+announcement+"'.^N");
+		  		break;
+		  	}
+		}
 	  	S.stdPrintln(Message.toString());
 	}
 
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
-        
-        String cmd=((String)commands.firstElement()).toUpperCase();
-        if((!cmd.equalsIgnoreCase("ANNOUNCEMSG"))
-        &&(!cmd.equalsIgnoreCase("ANNOUNCETO"))
-        &&(!cmd.equalsIgnoreCase("ANNOUNCE")))
-        {
-            boolean cmdm="ANNOUNCEMSG".toUpperCase().startsWith(cmd);
-            boolean cmdt="ANNOUNCETO".toUpperCase().startsWith(cmd);
-            boolean cmd1="ANNOUNCE".toUpperCase().startsWith(cmd);
-            if(cmdm&&(!cmdt)&&(!cmd1))
-                cmd="ANNOUNCEMSG";
-            else
-            if(cmdt&&(!cmdm)&&(!cmd1))
-                cmd="ANNOUNCETO";
-            else
-            if(cmd1&&(!cmdm)&&(!cmdt))
-                cmd="ANNOUNCE";
-        }
-        if(cmd.equalsIgnoreCase("ANNOUNCEMSG"))
-        {
-            String s=CMParms.combine(commands,1);
-            if(s.length()==0)
-                mob.tell("Your announce message is currently: "+mob.playerStats().announceMessage());
-            else
-            {
-                if(mob.playerStats()!=null)
-                    mob.playerStats().setAnnounceMessage(s);
-                mob.tell("Your announce message has been changed.");
-            }
-        }
-        else
+		
+		String cmd=((String)commands.firstElement()).toUpperCase();
+		if((!cmd.equalsIgnoreCase("ANNOUNCEMSG"))
+		&&(!cmd.equalsIgnoreCase("ANNOUNCETO"))
+		&&(!cmd.equalsIgnoreCase("ANNOUNCE")))
+		{
+			boolean cmdm="ANNOUNCEMSG".toUpperCase().startsWith(cmd);
+			boolean cmdt="ANNOUNCETO".toUpperCase().startsWith(cmd);
+			boolean cmd1="ANNOUNCE".toUpperCase().startsWith(cmd);
+			if(cmdm&&(!cmdt)&&(!cmd1))
+				cmd="ANNOUNCEMSG";
+			else
+			if(cmdt&&(!cmdm)&&(!cmd1))
+				cmd="ANNOUNCETO";
+			else
+			if(cmd1&&(!cmdm)&&(!cmdt))
+				cmd="ANNOUNCE";
+		}
+		if(cmd.equalsIgnoreCase("ANNOUNCEMSG"))
+		{
+			String s=CMParms.combine(commands,1);
+			if(s.length()==0)
+				mob.tell("Your announce message is currently: "+mob.playerStats().announceMessage());
+			else
+			{
+				if(mob.playerStats()!=null)
+					mob.playerStats().setAnnounceMessage(s);
+				mob.tell("Your announce message has been changed.");
+			}
+		}
+		else
 		if(commands.size()>1)
 		{
-            if((!cmd.equalsIgnoreCase("ANNOUNCETO"))
-            ||(((String)commands.elementAt(1)).toUpperCase().equals("ALL")))
+			if((!cmd.equalsIgnoreCase("ANNOUNCETO"))
+			||(((String)commands.elementAt(1)).toUpperCase().equals("ALL")))
 			{
-                String text=null;
-                if(cmd.equalsIgnoreCase("ANNOUNCETO"))
-                    text=CMParms.combine(commands,2);
-                else
-                    text=CMParms.combine(commands,1);
-                    
+				String text=null;
+				if(cmd.equalsIgnoreCase("ANNOUNCETO"))
+					text=CMParms.combine(commands,2);
+				else
+					text=CMParms.combine(commands,1);
+					
 				for(Session S : CMLib.sessions().localOnlineIterable())
 				{
 					if((S.mob()!=null)
@@ -125,14 +125,14 @@ public class Announce extends StdCommand
 			else
 			{
 				boolean found=false;
-                String name=(String)commands.elementAt(1);
+				String name=(String)commands.elementAt(1);
 				for(Session S : CMLib.sessions().localOnlineIterable())
 				{
 					if((S.mob()!=null)
 					&&(S.mob().location()!=null)
 					&&(CMSecurity.isAllowed(mob,S.mob().location(),"ANNOUNCE"))
-                    &&(((name.equalsIgnoreCase("here"))&&(S.mob().location()==mob.location()))
-                        ||(CMLib.english().containsString(S.mob().name(),name))))
+					&&(((name.equalsIgnoreCase("here"))&&(S.mob().location()==mob.location()))
+						||(CMLib.english().containsString(S.mob().name(),name))))
 					{
 						sendAnnounce(mob,CMParms.combine(commands,2),S);
 						found=true;

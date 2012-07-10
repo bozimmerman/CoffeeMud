@@ -23,7 +23,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -51,7 +51,7 @@ public class Group extends StdCommand
 			else
 				msg.append(CMStrings.padRight(who.charStats().raceName(),7)+" ");
 		}
-		    
+			
 		String levelStr=who.charStats().displayClassLevel(who,true).trim();
 		int x=levelStr.lastIndexOf(' ');
 		if(x>=0) levelStr=levelStr.substring(x).trim();

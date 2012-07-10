@@ -32,7 +32,7 @@ import com.planet_ink.coffee_mud.core.exceptions.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -44,12 +44,12 @@ import com.planet_ink.coffee_mud.core.exceptions.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class ProcessHTTPrequest implements CMRunnable, ExternalHTTPRequests
 {
-    public String ID(){return "ProcessHTTPrequest";}
-    public CMObject newInstance(){try{return (CMObject)getClass().newInstance();}catch(Exception e){return new ProcessHTTPrequest();}}
-    public void initializeClass(){}
-    public CMObject copyOf(){try{return (CMObject)this.clone();}catch(Exception e){return newInstance();}}
-    public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
-    public void propertiesLoaded(){}
+	public String ID(){return "ProcessHTTPrequest";}
+	public CMObject newInstance(){try{return (CMObject)getClass().newInstance();}catch(Exception e){return new ProcessHTTPrequest();}}
+	public void initializeClass(){}
+	public CMObject copyOf(){try{return (CMObject)this.clone();}catch(Exception e){return newInstance();}}
+	public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
+	public void propertiesLoaded(){}
 
 	private CMProps page;
 	private Socket sock;
@@ -101,21 +101,21 @@ public class ProcessHTTPrequest implements CMRunnable, ExternalHTTPRequests
 
 	private Hashtable objects=null;
 
-    public ProcessHTTPrequest()
-    {
-        super();
-        page = null;
-        webServer = null;
-        sock = null;
-        isAdminServer = true;
-        pageGrabber=new FileGrabber(null);
-        templateGrabber=new FileGrabber(null);
-        processStartTime=System.currentTimeMillis();
-        debugMacros=CMSecurity.isDebugging(CMSecurity.DbgFlag.HTTPMACROS);
-    }
+	public ProcessHTTPrequest()
+	{
+		super();
+		page = null;
+		webServer = null;
+		sock = null;
+		isAdminServer = true;
+		pageGrabber=new FileGrabber(null);
+		templateGrabber=new FileGrabber(null);
+		processStartTime=System.currentTimeMillis();
+		debugMacros=CMSecurity.isDebugging(CMSecurity.DbgFlag.HTTPMACROS);
+	}
 	public ProcessHTTPrequest(Socket a_sock,
 							  HTTPserver a_webServer,
-                              CMProps a_page,
+							  CMProps a_page,
 							  boolean a_isAdminServer)
 	{
 		// thread name contains both an instance counter and the client's IP address
@@ -128,18 +128,18 @@ public class ProcessHTTPrequest implements CMRunnable, ExternalHTTPRequests
 		webServer = a_webServer;
 		sock = a_sock;
 		isAdminServer = a_isAdminServer;
-        debugMacros=CMSecurity.isDebugging(CMSecurity.DbgFlag.HTTPMACROS);
+		debugMacros=CMSecurity.isDebugging(CMSecurity.DbgFlag.HTTPMACROS);
 		if(webServer!=null)
 		{
 			pageGrabber=webServer.getPageGrabber();
-	        templateGrabber=webServer.getTemplateGrabber();
+			templateGrabber=webServer.getTemplateGrabber();
 		}
 		else
 		{
-	        pageGrabber=new FileGrabber(null);
-	        templateGrabber=new FileGrabber(null);
+			pageGrabber=new FileGrabber(null);
+			templateGrabber=new FileGrabber(null);
 		}
-        processStartTime=System.currentTimeMillis();
+		processStartTime=System.currentTimeMillis();
 	}
 	public boolean readyToRun()
 	{
@@ -150,11 +150,11 @@ public class ProcessHTTPrequest implements CMRunnable, ExternalHTTPRequests
 	public HTTPserver getWebServer()	{return webServer;}
 	public String getHTTPstatus()	{return status;}
 	public String getHTTPstatusInfo()	{return statusExtra==null?"":statusExtra;}
-    public boolean activate(){ return true;}
-    public boolean shutdown(){ return true;}
-    public ThreadEngine.SupportThread getSupportThread() { return null;}
-    public boolean isCompleted(){ return completed;}
-    
+	public boolean activate(){ return true;}
+	public boolean shutdown(){ return true;}
+	public ThreadEngine.SupportThread getSupportThread() { return null;}
+	public boolean isCompleted(){ return completed;}
+	
 	public CMFile grabFile(String fn)
 	{
 		GrabbedFile GF=pageGrabber.grabFile(fn);
@@ -191,7 +191,7 @@ public class ProcessHTTPrequest implements CMRunnable, ExternalHTTPRequests
 				return false;
 			}
 
-            statusExtra=inLine;
+			statusExtra=inLine;
 			if(command.startsWith("["))
 			{
 				int err=400;
@@ -226,16 +226,16 @@ public class ProcessHTTPrequest implements CMRunnable, ExternalHTTPRequests
 				command = "GET";
 			}
 			else
-            if (command.equalsIgnoreCase("MUD"))
-            {
-                if(getWebServer() != null) {
-                    if(getWebServer().getMUD() != null) {
-                        getWebServer().getMUD().acceptConnection(sock);
-                    }
-                }
-                return false;
-            }
-            else
+			if (command.equalsIgnoreCase("MUD"))
+			{
+				if(getWebServer() != null) {
+					if(getWebServer().getMUD() != null) {
+						getWebServer().getMUD().acceptConnection(sock);
+					}
+				}
+				return false;
+			}
+			else
 			if((command.equalsIgnoreCase("GET"))
 			||(command.equalsIgnoreCase("POST")))
 			{
@@ -343,20 +343,20 @@ public class ProcessHTTPrequest implements CMRunnable, ExternalHTTPRequests
 		return (String)getRequestParameters().get(key);
 	}
 
-    public List<String> getAllRequestParameterKeys(String keyMask)
-    {
-        Hashtable H=getRequestParameters();
-        Pattern p=Pattern.compile(keyMask,Pattern.CASE_INSENSITIVE);
-        Matcher M=null;
-        Vector V=new Vector();
-        for(Enumeration e=H.keys();e.hasMoreElements();)
-        {
-            String key=(String)e.nextElement();
-            M=p.matcher(key);
-            if(M.matches()) V.addElement(key);
-        }
-        return V;
-    }
+	public List<String> getAllRequestParameterKeys(String keyMask)
+	{
+		Hashtable H=getRequestParameters();
+		Pattern p=Pattern.compile(keyMask,Pattern.CASE_INSENSITIVE);
+		Matcher M=null;
+		Vector V=new Vector();
+		for(Enumeration e=H.keys();e.hasMoreElements();)
+		{
+			String key=(String)e.nextElement();
+			M=p.matcher(key);
+			if(M.matches()) V.addElement(key);
+		}
+		return V;
+	}
 
 	private Hashtable getRequestParameters()
 	{
@@ -432,26 +432,26 @@ public class ProcessHTTPrequest implements CMRunnable, ExternalHTTPRequests
 					}
 					catch(Exception e2)
 					{
-					    if((!Log.isMaskedErrMsg(e2.getMessage()))
-					    ||(CMSecurity.isDebugging(CMSecurity.DbgFlag.HTTPERR)))
+						if((!Log.isMaskedErrMsg(e2.getMessage()))
+						||(CMSecurity.isDebugging(CMSecurity.DbgFlag.HTTPERR)))
 							Log.errOut(getName(),e2.getMessage());
-					    if(CMSecurity.isDebugging(CMSecurity.DbgFlag.HTTPERREXT))
-					    	Log.errOut(getName(),e2);
+						if(CMSecurity.isDebugging(CMSecurity.DbgFlag.HTTPERREXT))
+							Log.errOut(getName(),e2);
 					}
 				}
 			}
-            if(thisParamName.length()>0)
-            {
-    			if(!requestParametersTable.containsKey(thisParamName.toUpperCase()))
-    				requestParametersTable.put(thisParamName.toUpperCase(),thisParamValue);
-    			else
-    			for(int i=1;;i++)
-    				if(!requestParametersTable.containsKey(thisParamName.toUpperCase()+(Integer.toString(i))))
-    				{
-    					requestParametersTable.put(thisParamName.toUpperCase()+(Integer.toString(i)),thisParamValue);
-    					break;
-    				}
-            }
+			if(thisParamName.length()>0)
+			{
+				if(!requestParametersTable.containsKey(thisParamName.toUpperCase()))
+					requestParametersTable.put(thisParamName.toUpperCase(),thisParamValue);
+				else
+				for(int i=1;;i++)
+					if(!requestParametersTable.containsKey(thisParamName.toUpperCase()+(Integer.toString(i))))
+					{
+						requestParametersTable.put(thisParamName.toUpperCase()+(Integer.toString(i)),thisParamValue);
+						break;
+					}
+			}
 		}
 
 		return requestParametersTable;
@@ -468,10 +468,10 @@ public class ProcessHTTPrequest implements CMRunnable, ExternalHTTPRequests
 	{
 		String foundMacro=null;
 		boolean extend=false;
-        if((i<s.length()-2)
-        &&((s.charAt(i+1)=='X')||(s.charAt(i+1)=='x'))
-    	&&(Character.isDigit(s.charAt(i+2))||(s.charAt(i+1)=='x')||(s.charAt(i+1)=='X')))
-    		return null;
+		if((i<s.length()-2)
+		&&((s.charAt(i+1)=='X')||(s.charAt(i+1)=='x'))
+		&&(Character.isDigit(s.charAt(i+2))||(s.charAt(i+1)=='x')||(s.charAt(i+1)=='X')))
+			return null;
 		for(int x=i+1;x<s.length();x++)
 		{
 			if((s.charAt(x)=='@')
@@ -581,22 +581,22 @@ public class ProcessHTTPrequest implements CMRunnable, ExternalHTTPRequests
 		return -1;
 	}
 
-    private int myEndJScript(StringBuffer s, int i)
-    {
-        for(;i<s.length();i++)
-        {
-            if(s.charAt(i)=='@')
-            {
-                String foundMacro=parseFoundMacro(s,i,true);
-                if((foundMacro!=null)&&(foundMacro.length()>0))
-                {
-                    if(foundMacro.equalsIgnoreCase("/jscript"))
-                        return i;
-                }
-            }
-        }
-        return -1;
-    }
+	private int myEndJScript(StringBuffer s, int i)
+	{
+		for(;i<s.length();i++)
+		{
+			if(s.charAt(i)=='@')
+			{
+				String foundMacro=parseFoundMacro(s,i,true);
+				if((foundMacro!=null)&&(foundMacro.length()>0))
+				{
+					if(foundMacro.equalsIgnoreCase("/jscript"))
+						return i;
+				}
+			}
+		}
+		return -1;
+	}
 
 	protected String runMacro(String foundMacro)
 		throws HTTPRedirectException, HTTPServerException
@@ -637,16 +637,16 @@ public class ProcessHTTPrequest implements CMRunnable, ExternalHTTPRequests
 				q = "[error]";
 			}
 			else
-            if(W.preferBinary())
-            {
-                byte[] bin=W.runBinaryMacro(this,(parms==null)?null:parms.toString());
-                if(bin==null)
-                    q=" @break@";
-                else
-                    q=new String(bin);
-            }
-            else
-                q=W.runMacro(this,(parms==null)?null:parms.toString());
+			if(W.preferBinary())
+			{
+				byte[] bin=W.runBinaryMacro(this,(parms==null)?null:parms.toString());
+				if(bin==null)
+					q=" @break@";
+				else
+					q=new String(bin);
+			}
+			else
+				q=W.runMacro(this,(parms==null)?null:parms.toString());
 			if (q != null)
 				return q;
 			return "[error]";
@@ -691,240 +691,240 @@ public class ProcessHTTPrequest implements CMRunnable, ExternalHTTPRequests
 	//  I'm probably gonna replace it soon
 	public byte [] doVirtualPage(byte [] data) throws HTTPRedirectException
 	{
-        return doVirtualPage(new String(data)).getBytes();
+		return doVirtualPage(new String(data)).getBytes();
 	}
 
 
-    // OK - this parser is getting a bit ugly now;
-    //  I'm probably gonna replace it soon
-    public String doVirtualPage(String data) throws HTTPRedirectException
-    {
-        StringBuffer s2 = new StringBuffer(data);
-        return doVirtualPage(s2).toString();
-    }
+	// OK - this parser is getting a bit ugly now;
+	//  I'm probably gonna replace it soon
+	public String doVirtualPage(String data) throws HTTPRedirectException
+	{
+		StringBuffer s2 = new StringBuffer(data);
+		return doVirtualPage(s2).toString();
+	}
 
-    // OK - this parser is getting a bit ugly now;
-    //  I'm probably gonna replace it soon
-    public StringBuffer doVirtualPage(StringBuffer s) throws HTTPRedirectException
-    {
-        String redirectTo = null;
-        boolean analLogging=CMSecurity.isDebugging(CMSecurity.DbgFlag.HTTPERREXT);
-        if((webServer!=null)
-        &&(!isAdminServer)
-        &&(processStartTime>0)
-        &&(System.currentTimeMillis()-processStartTime)>(120*1000))
-        {
-	        if(analLogging) Log.infoOut(getName(),"Encountered TIMEOUT!");
-	        return new StringBuffer("");
-        }
-        try
-        {
-            for(int i=0;i<s.length();i++)
-            {
-                if(s.charAt(i)=='@')
-                {
-                    String foundMacro=parseFoundMacro(s,i,false);
-                    if((foundMacro!=null)&&(foundMacro.length()>0))
-                    {
-                    	if(debugMacros) Log.debugOut("ProcessHTTPRequest", "Found macro: "+foundMacro);
-                        if(foundMacro.startsWith("if?"))
-                        {
-                            int l=foundMacro.length()+2;
-                            int v=myEndif(s,i+l);
-                            if(v<0)
-                            {
-                            	if(debugMacros) Log.debugOut("ProcessHTTPRequest", "if without endif");
-                                s.replace(i,i+l,"[if without endif]");
-                            }
-                            else
-                            {
-                                int v2=myElse(s,i+l,v);
-                                foundMacro=foundMacro.substring(3);
-                                try
-                                {
-                                    String compare="true";
-                                    if(foundMacro.startsWith("!"))
-                                    {
-                                        foundMacro=foundMacro.substring(1);
-                                        compare="false";
-                                    }
-                                	if(debugMacros) Log.debugOut("ProcessHTTPRequest", "Found IF macro: "+foundMacro);
-                                    String q=runMacro(foundMacro);
-                                	if(debugMacros) Log.debugOut("ProcessHTTPRequest", "Ran IF macro: "+foundMacro+"="+q);
-                                    if((q!=null)&&(q.equalsIgnoreCase(compare)))
-                                    {
-                                    	if(debugMacros) Log.debugOut("ProcessHTTPRequest", "Result IF macro: TRUE");
-                                        if(v2>=0)
-                                            s.replace(v2,v+7,"");
-                                        else
-                                            s.replace(v,v+7,"");
-                                        s.replace(i,i+l,"");
-                                    }
-                                    else
-                                    {
-                                    	if(debugMacros) Log.debugOut("ProcessHTTPRequest", "Result IF macro: FALSE");
-                                        if(v2>=0)
-                                            s.replace(i,v2+6,"");
-                                        else
-                                            s.replace(i,v+7,"");
-                                    }
-                                }
-                                catch (HTTPRedirectException e)
-                                {
-                                	if(debugMacros) Log.debugOut("ProcessHTTPRequest", "if exception: "+e.getMessage());
-                                    redirectTo = e.getMessage();
-                                }
-                            }
-                            continue;
-                        }
-                        else
-                        if(foundMacro.equalsIgnoreCase("/jscript"))
-                        {
-                            int l=foundMacro.length()+2;
-                            s.replace(i,i+l,"[/jscript without jscript]");
-                        }
-                        else
-                        if(foundMacro.equalsIgnoreCase("jscript"))
-                        {
-                            int l=foundMacro.length()+2;
-                            int v=myEndJScript(s,i+l);
-                            if(v<0)
-                                s.replace(i,i+l,"[jscript without /jscript]");
-                            else
-                            {
-                                Context cx = Context.enter();
-                                try
-                                {
-                                    String script=s.substring(i+l,v);
-                                    JScriptablePage scope = new JScriptablePage(this);
-                                    cx.initStandardObjects(scope);
-                                    scope.defineFunctionProperties(JScriptablePage.functions,
-                                                                   JScriptablePage.class,
-                                                                   ScriptableObject.DONTENUM);
-                                    cx.evaluateString(scope, script,"<cmd>", 1, null);
-                                    s.replace(i,v+l+1,scope.getBuffer());
-                                    i=i+scope.getBuffer().length();
-                                }
-                                catch(Exception e)
-                                {
-                                    s.replace(i,v+l+1,"[jscript error: "+e.getMessage()+"]");
-                                }
-                                Context.exit();
-                            }
-                            continue;
-                        }
-                        else
-                        if(foundMacro.equalsIgnoreCase("endif"))
-                        {
-                            s.replace(i,i+7,"");
-                            continue;
-                        }
-                        else
-                        if(foundMacro.equalsIgnoreCase("else"))
-                        {
-                            s.replace(i,i+6,"");
-                            continue;
-                        }
-                        else
-                        if(foundMacro.equalsIgnoreCase("loop"))
-                        {
-                            int v=myBack(s,i+6);
-                            if(v<0)
-                                s.replace(i,i+6, "[loop without back]" );
-                            else
-                            {
-                                String s2=s.substring(i+6,v);
-                                s.replace(i,v+6,"");
-                                int ldex=i;
-                                String s3=" ";
-                                while(s3.length()>0)
-                                {
-                                    try
-                                    {
-                                        s3=new String(doVirtualPage(s2.getBytes()));
-                                    }
-                                    catch (HTTPRedirectException e)
-                                    {
-                                        s3 = " ";
-                                        redirectTo = e.getMessage();
-                                    }
+	// OK - this parser is getting a bit ugly now;
+	//  I'm probably gonna replace it soon
+	public StringBuffer doVirtualPage(StringBuffer s) throws HTTPRedirectException
+	{
+		String redirectTo = null;
+		boolean analLogging=CMSecurity.isDebugging(CMSecurity.DbgFlag.HTTPERREXT);
+		if((webServer!=null)
+		&&(!isAdminServer)
+		&&(processStartTime>0)
+		&&(System.currentTimeMillis()-processStartTime)>(120*1000))
+		{
+			if(analLogging) Log.infoOut(getName(),"Encountered TIMEOUT!");
+			return new StringBuffer("");
+		}
+		try
+		{
+			for(int i=0;i<s.length();i++)
+			{
+				if(s.charAt(i)=='@')
+				{
+					String foundMacro=parseFoundMacro(s,i,false);
+					if((foundMacro!=null)&&(foundMacro.length()>0))
+					{
+						if(debugMacros) Log.debugOut("ProcessHTTPRequest", "Found macro: "+foundMacro);
+						if(foundMacro.startsWith("if?"))
+						{
+							int l=foundMacro.length()+2;
+							int v=myEndif(s,i+l);
+							if(v<0)
+							{
+								if(debugMacros) Log.debugOut("ProcessHTTPRequest", "if without endif");
+								s.replace(i,i+l,"[if without endif]");
+							}
+							else
+							{
+								int v2=myElse(s,i+l,v);
+								foundMacro=foundMacro.substring(3);
+								try
+								{
+									String compare="true";
+									if(foundMacro.startsWith("!"))
+									{
+										foundMacro=foundMacro.substring(1);
+										compare="false";
+									}
+									if(debugMacros) Log.debugOut("ProcessHTTPRequest", "Found IF macro: "+foundMacro);
+									String q=runMacro(foundMacro);
+									if(debugMacros) Log.debugOut("ProcessHTTPRequest", "Ran IF macro: "+foundMacro+"="+q);
+									if((q!=null)&&(q.equalsIgnoreCase(compare)))
+									{
+										if(debugMacros) Log.debugOut("ProcessHTTPRequest", "Result IF macro: TRUE");
+										if(v2>=0)
+											s.replace(v2,v+7,"");
+										else
+											s.replace(v,v+7,"");
+										s.replace(i,i+l,"");
+									}
+									else
+									{
+										if(debugMacros) Log.debugOut("ProcessHTTPRequest", "Result IF macro: FALSE");
+										if(v2>=0)
+											s.replace(i,v2+6,"");
+										else
+											s.replace(i,v+7,"");
+									}
+								}
+								catch (HTTPRedirectException e)
+								{
+									if(debugMacros) Log.debugOut("ProcessHTTPRequest", "if exception: "+e.getMessage());
+									redirectTo = e.getMessage();
+								}
+							}
+							continue;
+						}
+						else
+						if(foundMacro.equalsIgnoreCase("/jscript"))
+						{
+							int l=foundMacro.length()+2;
+							s.replace(i,i+l,"[/jscript without jscript]");
+						}
+						else
+						if(foundMacro.equalsIgnoreCase("jscript"))
+						{
+							int l=foundMacro.length()+2;
+							int v=myEndJScript(s,i+l);
+							if(v<0)
+								s.replace(i,i+l,"[jscript without /jscript]");
+							else
+							{
+								Context cx = Context.enter();
+								try
+								{
+									String script=s.substring(i+l,v);
+									JScriptablePage scope = new JScriptablePage(this);
+									cx.initStandardObjects(scope);
+									scope.defineFunctionProperties(JScriptablePage.functions,
+																   JScriptablePage.class,
+																   ScriptableObject.DONTENUM);
+									cx.evaluateString(scope, script,"<cmd>", 1, null);
+									s.replace(i,v+l+1,scope.getBuffer());
+									i=i+scope.getBuffer().length();
+								}
+								catch(Exception e)
+								{
+									s.replace(i,v+l+1,"[jscript error: "+e.getMessage()+"]");
+								}
+								Context.exit();
+							}
+							continue;
+						}
+						else
+						if(foundMacro.equalsIgnoreCase("endif"))
+						{
+							s.replace(i,i+7,"");
+							continue;
+						}
+						else
+						if(foundMacro.equalsIgnoreCase("else"))
+						{
+							s.replace(i,i+6,"");
+							continue;
+						}
+						else
+						if(foundMacro.equalsIgnoreCase("loop"))
+						{
+							int v=myBack(s,i+6);
+							if(v<0)
+								s.replace(i,i+6, "[loop without back]" );
+							else
+							{
+								String s2=s.substring(i+6,v);
+								s.replace(i,v+6,"");
+								int ldex=i;
+								String s3=" ";
+								while(s3.length()>0)
+								{
+									try
+									{
+										s3=new String(doVirtualPage(s2.getBytes()));
+									}
+									catch (HTTPRedirectException e)
+									{
+										s3 = " ";
+										redirectTo = e.getMessage();
+									}
 
-                                    s.insert(ldex,s3);
-                                    ldex+=s3.length();
-                                }
-                                if((webServer!=null)
-                                &&(!isAdminServer)
-						        &&(processStartTime>0)
-                                &&(System.currentTimeMillis()-processStartTime)>(120*1000))
-                                {
-                        	        if(analLogging) Log.infoOut(getName(),"Encountered TIMEOUT!");
-                        	        return new StringBuffer("");
-                                }
-                            }
-                            continue;
-                        }
-                        else
-                        if(foundMacro.equalsIgnoreCase("break"))
-                        {
-                            if(analLogging) Log.infoOut(getName(),"Encountered BREAK! at "+i);
-                            return new StringBuffer("");
-                        }
-                        else
-                        if(foundMacro.equalsIgnoreCase("back"))
-                        {
-                            s.replace(i,i+6, "[back without loop]" );
-                            continue;
-                        }
+									s.insert(ldex,s3);
+									ldex+=s3.length();
+								}
+								if((webServer!=null)
+								&&(!isAdminServer)
+								&&(processStartTime>0)
+								&&(System.currentTimeMillis()-processStartTime)>(120*1000))
+								{
+									if(analLogging) Log.infoOut(getName(),"Encountered TIMEOUT!");
+									return new StringBuffer("");
+								}
+							}
+							continue;
+						}
+						else
+						if(foundMacro.equalsIgnoreCase("break"))
+						{
+							if(analLogging) Log.infoOut(getName(),"Encountered BREAK! at "+i);
+							return new StringBuffer("");
+						}
+						else
+						if(foundMacro.equalsIgnoreCase("back"))
+						{
+							s.replace(i,i+6, "[back without loop]" );
+							continue;
+						}
 
-                        if(foundMacro.length()>0)
-                        {
-                            try
-                            {
-                                int l=foundMacro.length();
-                                String q=runMacro(foundMacro);
-                            	if(debugMacros) Log.debugOut("ProcessHTTPRequest", "Ran Macro: "+foundMacro+"="+q);
-                                if (q != null)
-                                {
-                                    if((analLogging)&&(q.toUpperCase().indexOf("@BREAK@")>=0))
-                                        Log.infoOut(getName(),"WebMacro:"+foundMacro+" generated a BREAK! at "+i);
-                                    s.replace(i,i+l+2, q );
-                                }
-                                else
-                                    s.replace(i,i+l+2, "[error]" );
-                            }
-                            catch (HTTPRedirectException e)
-                            {
-                                // can't just do this:
-                                // throw e;
-                                // since we want ALL macros on the page to run
-                                redirectTo = e.getMessage();
-                                // doesn't bother to replace original
-                                // macro text; page will never be seen
-                                // (replaced by redirection page)
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        catch (Exception e)
-        {
+						if(foundMacro.length()>0)
+						{
+							try
+							{
+								int l=foundMacro.length();
+								String q=runMacro(foundMacro);
+								if(debugMacros) Log.debugOut("ProcessHTTPRequest", "Ran Macro: "+foundMacro+"="+q);
+								if (q != null)
+								{
+									if((analLogging)&&(q.toUpperCase().indexOf("@BREAK@")>=0))
+										Log.infoOut(getName(),"WebMacro:"+foundMacro+" generated a BREAK! at "+i);
+									s.replace(i,i+l+2, q );
+								}
+								else
+									s.replace(i,i+l+2, "[error]" );
+							}
+							catch (HTTPRedirectException e)
+							{
+								// can't just do this:
+								// throw e;
+								// since we want ALL macros on the page to run
+								redirectTo = e.getMessage();
+								// doesn't bother to replace original
+								// macro text; page will never be seen
+								// (replaced by redirection page)
+							}
+						}
+					}
+				}
+			}
+		}
+		catch (Exception e)
+		{
 			String errMsg=e.getMessage()==null?e.toString():e.getMessage();
-            if((errMsg!=null)
-            &&((!Log.isMaskedErrMsg(errMsg))||(CMSecurity.isDebugging(CMSecurity.DbgFlag.HTTPERR))))
-            {
-                Log.errOut(getName(), "Exception in doVirtualPage() - " + errMsg );
-                Log.errOut(getName(),e);
-            }
-        }
+			if((errMsg!=null)
+			&&((!Log.isMaskedErrMsg(errMsg))||(CMSecurity.isDebugging(CMSecurity.DbgFlag.HTTPERR))))
+			{
+				Log.errOut(getName(), "Exception in doVirtualPage() - " + errMsg );
+				Log.errOut(getName(),e);
+			}
+		}
 
-        if (redirectTo != null)
-        {
-            throw new HTTPRedirectException(redirectTo);
-        }
+		if (redirectTo != null)
+		{
+			throw new HTTPRedirectException(redirectTo);
+		}
 
-        return s;
-    }
+		return s;
+	}
 
 	// if the client's browser does not support or honour 3xx redirects,
 	//  then this attached page attempts to use javascript to redirect
@@ -950,8 +950,8 @@ public class ProcessHTTPrequest implements CMRunnable, ExternalHTTPRequests
 		try
 		{
 			processStartTime=System.currentTimeMillis();
-        try
-        {
+		try
+		{
 		String hdrRedirectTo = null;
 
 		DataOutputStream sout = null;
@@ -972,7 +972,7 @@ public class ProcessHTTPrequest implements CMRunnable, ExternalHTTPRequests
 
 			virtualPage = false;
 			sock.setSoTimeout(10000);
-            String totalRequest=getHTTPRequest(sock.getInputStream());
+			String totalRequest=getHTTPRequest(sock.getInputStream());
 			boolean processOK = process(totalRequest);
 
 			if (processOK)
@@ -980,34 +980,34 @@ public class ProcessHTTPrequest implements CMRunnable, ExternalHTTPRequests
 				if(requestMain==null) requestMain="";
 				String filename = requestMain;
 
-                // now do the web path macro check, complete
-                // with zmud correction;
-                int lastSlash=filename.lastIndexOf('/');
-                String macCheck=(lastSlash>=0)?filename.substring(lastSlash+1):filename;
-                lastSlash=macCheck.indexOf('?');
-                if(lastSlash>=0) macCheck=macCheck.substring(0,lastSlash);
-                lastSlash=macCheck.indexOf('&');
-                if(lastSlash>=0) macCheck=macCheck.substring(0,lastSlash);
-                WebMacro W=CMClass.getWebMacro(macCheck.toUpperCase());
-                if((W!=null)&&(W.isAWebPath())&&((!W.isAdminMacro())||(isAdminServer)))
-                {
-                    requestedFile=null;
-                    virtualPage=false;
-                    if(W.preferBinary())
-                        replyData=W.runBinaryMacro(this,"");
-                    else
-                    {
-                        virtualPage=true;
-                        replyData=W.runMacro(this,"").getBytes();
-                    }
-                    filename=W.getFilename(this,filename);
-                }
-                else
-    				requestedFile = pageGrabber.grabFile(filename);
+				// now do the web path macro check, complete
+				// with zmud correction;
+				int lastSlash=filename.lastIndexOf('/');
+				String macCheck=(lastSlash>=0)?filename.substring(lastSlash+1):filename;
+				lastSlash=macCheck.indexOf('?');
+				if(lastSlash>=0) macCheck=macCheck.substring(0,lastSlash);
+				lastSlash=macCheck.indexOf('&');
+				if(lastSlash>=0) macCheck=macCheck.substring(0,lastSlash);
+				WebMacro W=CMClass.getWebMacro(macCheck.toUpperCase());
+				if((W!=null)&&(W.isAWebPath())&&((!W.isAdminMacro())||(isAdminServer)))
+				{
+					requestedFile=null;
+					virtualPage=false;
+					if(W.preferBinary())
+						replyData=W.runBinaryMacro(this,"");
+					else
+					{
+						virtualPage=true;
+						replyData=W.runMacro(this,"").getBytes();
+					}
+					filename=W.getFilename(this,filename);
+				}
+				else
+					requestedFile = pageGrabber.grabFile(filename);
 
-                if(W!=null) contentHeader=W.getSpecialContentHeader(filename);
+				if(W!=null) contentHeader=W.getSpecialContentHeader(filename);
 
-                if(requestedFile!=null)
+				if(requestedFile!=null)
 				switch (requestedFile.state)
 				{
 					case GrabbedFile.STATE_OK:
@@ -1064,35 +1064,35 @@ public class ProcessHTTPrequest implements CMRunnable, ExternalHTTPRequests
 					if (page.getStr("VIRTUALPAGEEXTENSION").equalsIgnoreCase(exten) )
 						virtualPage = true;
 
-                    if((replyData==null)&&(requestedFile!=null))
-                    {
-    					try
-    					{
-                            replyData=requestedFile.file.raw();
-                            if(replyData.length==0)
-                            {
-                                replyData=null;
-                                throw new IOException("File not found!");
-                            }
-    					}
-    					catch (IOException e)
-    					{
-    						status = S_500;
-    						statusExtra = "IO error while reading URL <I>" + request +"</I>";
-    						processOK = false;
-    					}
-                    }
+					if((replyData==null)&&(requestedFile!=null))
+					{
+						try
+						{
+							replyData=requestedFile.file.raw();
+							if(replyData.length==0)
+							{
+								replyData=null;
+								throw new IOException("File not found!");
+							}
+						}
+						catch (IOException e)
+						{
+							status = S_500;
+							statusExtra = "IO error while reading URL <I>" + request +"</I>";
+							processOK = false;
+						}
+					}
 				}
 			}
 
 			// build error page
 			if (!processOK || replyData == null)
 			{
-			    if(totalRequest.equalsIgnoreCase("MUD"))
-			    {
-			        return;
-			    }
-			    
+				if(totalRequest.equalsIgnoreCase("MUD"))
+				{
+					return;
+				}
+				
 				//mimetype = "text/html";
 				mimetype = getMimeType(page.getStr("VIRTUALPAGEEXTENSION"));
 
@@ -1110,12 +1110,12 @@ public class ProcessHTTPrequest implements CMRunnable, ExternalHTTPRequests
 					if (requestedFile.state == GrabbedFile.STATE_OK)
 					{
 						virtualPage = true;
-                        replyData=requestedFile.file.raw();
-                        if(replyData.length==0)
-                        {
-                            replyData=null;
-                            throw new IOException("File not found!");
-                        }
+						replyData=requestedFile.file.raw();
+						if(replyData.length==0)
+						{
+							replyData=null;
+							throw new IOException("File not found!");
+						}
 					}
 					else
 						replyData = null;
@@ -1190,11 +1190,11 @@ public class ProcessHTTPrequest implements CMRunnable, ExternalHTTPRequests
 			String errMsg=e.getMessage()==null?e.toString():e.getMessage();
 			if((errMsg!=null)
 			&&((!Log.isMaskedErrMsg(errMsg))
-			    ||(CMSecurity.isDebugging(CMSecurity.DbgFlag.HTTPERR))))
+				||(CMSecurity.isDebugging(CMSecurity.DbgFlag.HTTPERR))))
 			{
 				Log.errOut(getName(),"Exception: " + errMsg );
 				if((!(e instanceof java.net.SocketException))
-			    ||(CMSecurity.isDebugging(CMSecurity.DbgFlag.HTTPERREXT)))
+				||(CMSecurity.isDebugging(CMSecurity.DbgFlag.HTTPERREXT)))
 					Log.errOut(getName(),e);
 			}
 		}
@@ -1230,15 +1230,15 @@ public class ProcessHTTPrequest implements CMRunnable, ExternalHTTPRequests
 			}
 		}
 		catch (Exception e)	{}
-        }
-        catch (Throwable t) {
-            Log.errOut("ProcessHTTPrequest", t);
-        }
-        
+		}
+		catch (Throwable t) {
+			Log.errOut("ProcessHTTPrequest", t);
+		}
+		
 		}
 		finally
 		{
-	    	completed=true;
+			completed=true;
 		}
 	}
 	public String getHTTPclientIP()
@@ -1273,12 +1273,12 @@ public class ProcessHTTPrequest implements CMRunnable, ExternalHTTPRequests
 			if((requestedFile==null)
 			||(requestedFile.state!=GrabbedFile.STATE_OK))
 				return "";
-            byte[] replyData=requestedFile.file.raw();
-            if(replyData.length==0)
-            {
-                replyData=null;
-                throw new IOException("File not found!");
-            }
+			byte[] replyData=requestedFile.file.raw();
+			if(replyData.length==0)
+			{
+				replyData=null;
+				throw new IOException("File not found!");
+			}
 			String exten="";
 			try { exten = filename.substring(filename.lastIndexOf('.')); }
 			catch (Exception e) {}
@@ -1291,11 +1291,11 @@ public class ProcessHTTPrequest implements CMRunnable, ExternalHTTPRequests
 			String errMsg=e.getMessage()==null?e.toString():e.getMessage();
 			if((errMsg!=null)
 			&&((!Log.isMaskedErrMsg(errMsg))
-			    ||(CMSecurity.isDebugging(CMSecurity.DbgFlag.HTTPERR))))
+				||(CMSecurity.isDebugging(CMSecurity.DbgFlag.HTTPERR))))
 			{
 				Log.errOut(getName(),"Exception: " + errMsg );
 				if((!(e instanceof java.net.SocketException))
-			    ||(CMSecurity.isDebugging(CMSecurity.DbgFlag.HTTPERREXT)))
+				||(CMSecurity.isDebugging(CMSecurity.DbgFlag.HTTPERREXT)))
 					Log.errOut(getName(),e);
 			}
 		}
@@ -1305,16 +1305,16 @@ public class ProcessHTTPrequest implements CMRunnable, ExternalHTTPRequests
 	protected Vector getData(InputStream sin)
 	{
 		Vector data=new Vector();
-        ByteArrayOutputStream out=new ByteArrayOutputStream();
+		ByteArrayOutputStream out=new ByteArrayOutputStream();
 		try
 		{
-            BufferedInputStream BR=new BufferedInputStream(sin);
+			BufferedInputStream BR=new BufferedInputStream(sin);
 			int contentLength=-1;
 			byte c=-1;
-            long startTime=System.currentTimeMillis();
-            int byteCounter = 0;
+			long startTime=System.currentTimeMillis();
+			int byteCounter = 0;
 			while(((contentLength<0)||(out.size()<contentLength))
-            &&((System.currentTimeMillis()-startTime)<20000))
+			&&((System.currentTimeMillis()-startTime)<20000))
 			{
 				c=(byte)BR.read();
 				if((contentLength<0)&&(c==13))
@@ -1323,16 +1323,16 @@ public class ProcessHTTPrequest implements CMRunnable, ExternalHTTPRequests
 					{
 						// got empty line, but no data yet!
 						contentLength=getContentLength(data);
-                        if(contentLength<0) 
-                        	return data;
+						if(contentLength<0) 
+							return data;
 					}
 					else
 					{
 						String s=new String(out.toByteArray());
 						out=new ByteArrayOutputStream();
 						data.addElement(s);
-                        if(s.startsWith("GET ")||s.startsWith("MUD")) 
-                        	return data;
+						if(s.startsWith("GET ")||s.startsWith("MUD")) 
+							return data;
 					}
 				}
 				else
@@ -1342,29 +1342,29 @@ public class ProcessHTTPrequest implements CMRunnable, ExternalHTTPRequests
 					if((++byteCounter)>1024)
 					{
 						byteCounter=0;
-	                    if(out.size()>=(Runtime.getRuntime().freeMemory()/10))
-	                    	return data;
+						if(out.size()>=(Runtime.getRuntime().freeMemory()/10))
+							return data;
 					}
 					if((contentLength>0)&&(out.size()>=contentLength))
-                    {
+					{
 						data.addElement(out.toByteArray());
-                        return data;
-                    }
+						return data;
+					}
 				}
 			}
 		}
 		catch(Exception e)
 		{
-            if((!Log.isMaskedErrMsg(e.getMessage()))
-		    ||(CMSecurity.isDebugging(CMSecurity.DbgFlag.HTTPERR)))
-            	Log.errOut(getName(),e.getMessage());
-		    if(CMSecurity.isDebugging(CMSecurity.DbgFlag.HTTPERREXT))
-		    	Log.errOut(getName(),e);
+			if((!Log.isMaskedErrMsg(e.getMessage()))
+			||(CMSecurity.isDebugging(CMSecurity.DbgFlag.HTTPERR)))
+				Log.errOut(getName(),e.getMessage());
+			if(CMSecurity.isDebugging(CMSecurity.DbgFlag.HTTPERREXT))
+				Log.errOut(getName(),e);
 		}
 		if(data.size()==0)
 			data.addElement(new String(out.toByteArray()));
 		else
-        if(out.size()>0)
+		if(out.size()>0)
 			data.addElement(out.toByteArray());
 		return data;
 	}
@@ -1399,33 +1399,33 @@ public class ProcessHTTPrequest implements CMRunnable, ExternalHTTPRequests
 		return -1;
 	}
 
-    public String getBoundary(Vector data)
-    {
-        for(int s=0;s<data.size();s++)
-        {
-            Object O=data.elementAt(s);
-            if(O instanceof String)
-            {
-                String str=(String)O;
-                int x=str.toLowerCase().indexOf("boundary=");
-                if(x>=0)
-                    return str.substring(x+9).trim();
-            }
-        }
-        return "";
-    }
+	public String getBoundary(Vector data)
+	{
+		for(int s=0;s<data.size();s++)
+		{
+			Object O=data.elementAt(s);
+			if(O instanceof String)
+			{
+				String str=(String)O;
+				int x=str.toLowerCase().indexOf("boundary=");
+				if(x>=0)
+					return str.substring(x+9).trim();
+			}
+		}
+		return "";
+	}
 
-    public boolean byteCompare(byte[] buf, int start, byte[] to)
-    {
-        if((buf.length-start)<to.length)
-            return false;
-        for(int i=0;i<to.length;i++)
-            if(buf[start+i]!=to[i])
-                return false;
-        return true;
-    }
+	public boolean byteCompare(byte[] buf, int start, byte[] to)
+	{
+		if((buf.length-start)<to.length)
+			return false;
+		for(int i=0;i<to.length;i++)
+			if(buf[start+i]!=to[i])
+				return false;
+		return true;
+	}
 
-    public String getHTTPRequest(InputStream sin)
+	public String getHTTPRequest(InputStream sin)
 	{
 		try
 		{
@@ -1445,95 +1445,95 @@ public class ProcessHTTPrequest implements CMRunnable, ExternalHTTPRequests
 			{
 				String type=getContentType(inData);
 				if(type.length()==0) return "";
-                if(!(inData.lastElement() instanceof byte[]))
-                    return "[400 -- no content data received]";
-                if(type.toLowerCase().indexOf("multipart/form-data")>=0)
-                {
-                    int x=inLine.lastIndexOf(' ');
-                    if(x<0) return "[400 -- improperly formatted post request]";
-                    StringBuffer parms=new StringBuffer("");
-                    String boundary="--"+getBoundary(inData)+"\r\n";
-                    String secondBoundary="\r\n"+boundary;
-                    if(boundary.length()==0) return "[400 -- improperly formatted post request]";
-                    byte[] bounBytes=boundary.getBytes();
-                    byte[] bounBytes2=secondBoundary.getBytes();
-                    byte[] buf=(byte[])inData.lastElement();
-                    byte[] CRCR="\r\n\r\n".getBytes();
-                    int s=0;
-                    int lastEnd=-1;
-                    while(s<buf.length)
-                    {
-                        if(byteCompare(buf,s,bounBytes))
-                        {
-                            if(lastEnd>0)
-                            {
-                                for(int i=lastEnd;i<s;i++)
-                                    if(byteCompare(buf,i,CRCR))
-                                    {
-                                        byte[] mybuf=new byte[i-lastEnd];
-                                        System.arraycopy(buf,lastEnd,mybuf,0,mybuf.length);
-                                        String header=new String(mybuf);
-                                        int nameDex=header.indexOf("name=\"");
-                                        String name=null;
-                                        if(nameDex>=0)
-                                        {
-                                            int nameEnDex=header.indexOf("\"",nameDex+6);
-                                            if(nameEnDex>nameDex)
-                                                name=header.substring(nameDex+6,nameEnDex);
-                                        }
-                                        nameDex=header.indexOf("filename=\"");
-                                        String filename=null;
-                                        if(nameDex>=0)
-                                        {
-                                            int nameEnDex=header.indexOf("\"",nameDex+10);
-                                            if(nameEnDex>nameDex)
-                                                filename=header.substring(nameDex+10,nameEnDex);
-                                        }
-                                        boolean binary=filename!=null;
-                                        mybuf=new byte[s-(i+CRCR.length)];
-                                        System.arraycopy(buf,(i+CRCR.length),mybuf,0,mybuf.length);
-                                        if(!binary)
-                                        {
-                                            parms.append("&"+URLEncoder.encode(name, "UTF-8")+"="+URLEncoder.encode(new String(mybuf), "UTF-8"));
-                                        }
-                                        else
-                                        if(filename!=null)
-                                        {
-                                            getRequestObjects().put(name,mybuf);
-                                            char c3=' ';
-                                            for(int i3=0;i3<filename.length();i3++)
-                                            {
-                                                if((filename.charAt(i3)=='\\')||(filename.charAt(i3)=='/'))
-                                                { c3=filename.charAt(i3); break;}
-                                            }
-                                            if(c3!=' ')
-                                                filename=filename.substring(filename.lastIndexOf(c3)+1);
-                                            parms.append("&"+URLEncoder.encode(name, "UTF-8")+"="+URLEncoder.encode(filename, "UTF-8"));
-                                        }
-                                        break;
-                                    }
-                            }
-                            s+=bounBytes.length;
-                            lastEnd=s;
-                            bounBytes=bounBytes2;
-                        }
-                        else
-                            s++;
-                    }
-                    if(parms.length()>0)
-                        return inLine.substring(0,x)+"?"+(parms.toString().substring(1));
-                    return inLine.substring(0,x);
-                }
-                else
+				if(!(inData.lastElement() instanceof byte[]))
+					return "[400 -- no content data received]";
+				if(type.toLowerCase().indexOf("multipart/form-data")>=0)
+				{
+					int x=inLine.lastIndexOf(' ');
+					if(x<0) return "[400 -- improperly formatted post request]";
+					StringBuffer parms=new StringBuffer("");
+					String boundary="--"+getBoundary(inData)+"\r\n";
+					String secondBoundary="\r\n"+boundary;
+					if(boundary.length()==0) return "[400 -- improperly formatted post request]";
+					byte[] bounBytes=boundary.getBytes();
+					byte[] bounBytes2=secondBoundary.getBytes();
+					byte[] buf=(byte[])inData.lastElement();
+					byte[] CRCR="\r\n\r\n".getBytes();
+					int s=0;
+					int lastEnd=-1;
+					while(s<buf.length)
+					{
+						if(byteCompare(buf,s,bounBytes))
+						{
+							if(lastEnd>0)
+							{
+								for(int i=lastEnd;i<s;i++)
+									if(byteCompare(buf,i,CRCR))
+									{
+										byte[] mybuf=new byte[i-lastEnd];
+										System.arraycopy(buf,lastEnd,mybuf,0,mybuf.length);
+										String header=new String(mybuf);
+										int nameDex=header.indexOf("name=\"");
+										String name=null;
+										if(nameDex>=0)
+										{
+											int nameEnDex=header.indexOf("\"",nameDex+6);
+											if(nameEnDex>nameDex)
+												name=header.substring(nameDex+6,nameEnDex);
+										}
+										nameDex=header.indexOf("filename=\"");
+										String filename=null;
+										if(nameDex>=0)
+										{
+											int nameEnDex=header.indexOf("\"",nameDex+10);
+											if(nameEnDex>nameDex)
+												filename=header.substring(nameDex+10,nameEnDex);
+										}
+										boolean binary=filename!=null;
+										mybuf=new byte[s-(i+CRCR.length)];
+										System.arraycopy(buf,(i+CRCR.length),mybuf,0,mybuf.length);
+										if(!binary)
+										{
+											parms.append("&"+URLEncoder.encode(name, "UTF-8")+"="+URLEncoder.encode(new String(mybuf), "UTF-8"));
+										}
+										else
+										if(filename!=null)
+										{
+											getRequestObjects().put(name,mybuf);
+											char c3=' ';
+											for(int i3=0;i3<filename.length();i3++)
+											{
+												if((filename.charAt(i3)=='\\')||(filename.charAt(i3)=='/'))
+												{ c3=filename.charAt(i3); break;}
+											}
+											if(c3!=' ')
+												filename=filename.substring(filename.lastIndexOf(c3)+1);
+											parms.append("&"+URLEncoder.encode(name, "UTF-8")+"="+URLEncoder.encode(filename, "UTF-8"));
+										}
+										break;
+									}
+							}
+							s+=bounBytes.length;
+							lastEnd=s;
+							bounBytes=bounBytes2;
+						}
+						else
+							s++;
+					}
+					if(parms.length()>0)
+						return inLine.substring(0,x)+"?"+(parms.toString().substring(1));
+					return inLine.substring(0,x);
+				}
+				else
 				if(type.toLowerCase().indexOf("urlencoded")>=0)
-                {
-                    String lastLine=new String((byte[])inData.lastElement());
-                    int x=inLine.lastIndexOf(' ');
-                    if(x<0) return "[400 -- improperly formatted post request]";
-                    return inLine.substring(0,x)+"?"+lastLine+inLine.substring(x);
-                }
-                else
-                    return "[501 -- unsupported post type]";
+				{
+					String lastLine=new String((byte[])inData.lastElement());
+					int x=inLine.lastIndexOf(' ');
+					if(x<0) return "[400 -- improperly formatted post request]";
+					return inLine.substring(0,x)+"?"+lastLine+inLine.substring(x);
+				}
+				else
+					return "[501 -- unsupported post type]";
 			}
 			else
 				return "[501 -- command not implemented]";
@@ -1543,36 +1543,36 @@ public class ProcessHTTPrequest implements CMRunnable, ExternalHTTPRequests
 			String errMsg=e.getMessage()==null?e.toString():e.getMessage();
 			if((errMsg!=null)
 			&&((!Log.isMaskedErrMsg(errMsg))
-			    ||(CMSecurity.isDebugging(CMSecurity.DbgFlag.HTTPERR))))
+				||(CMSecurity.isDebugging(CMSecurity.DbgFlag.HTTPERR))))
 			{
 				Log.errOut(getName(),"Exception: " + errMsg );
 				if((!(e instanceof java.net.SocketException))
-			    ||(CMSecurity.isDebugging(CMSecurity.DbgFlag.HTTPERREXT)))
+				||(CMSecurity.isDebugging(CMSecurity.DbgFlag.HTTPERREXT)))
 					Log.errOut(getName(),e);
 			}
 		}
-        finally
-        {
-        }
+		finally
+		{
+		}
 		return "[400 -- error occurred processing request]";
 	}
 
-    protected static class JScriptablePage extends ScriptableObject
-    {
-        public String getClassName(){ return "JScriptablePage";}
-        static final long serialVersionUID=43;
-        StringBuffer buf=new StringBuffer("");
-        public void write(Object O){buf.append( Context.toString(O));}
-        public String getBuffer(){return buf.toString();}
-        ExternalHTTPRequests req=null;
-        public ExternalHTTPRequests request(){return req;}
-        public JScriptablePage(ExternalHTTPRequests requests){req=requests;}
-        public static String[] functions = { "request", "write", "toJavaString"};
-        public String toJavaString(Object O){return Context.toString(O);}
-    }
+	protected static class JScriptablePage extends ScriptableObject
+	{
+		public String getClassName(){ return "JScriptablePage";}
+		static final long serialVersionUID=43;
+		StringBuffer buf=new StringBuffer("");
+		public void write(Object O){buf.append( Context.toString(O));}
+		public String getBuffer(){return buf.toString();}
+		ExternalHTTPRequests req=null;
+		public ExternalHTTPRequests request(){return req;}
+		public JScriptablePage(ExternalHTTPRequests requests){req=requests;}
+		public static String[] functions = { "request", "write", "toJavaString"};
+		public String toJavaString(Object O){return Context.toString(O);}
+	}
 
 	public String getServerVersionString(){return HTTPserver.getServerVersionString();}
-    public int getWebServerPort(){return getWebServer().getPort();}
+	public int getWebServerPort(){return getWebServer().getPort();}
 	public String getWebServerPortStr(){return getWebServer().getPortStr();}
 	public String getWebServerPartialName(){ return getWebServer().getPartialName();}
 	public MudHost getMUD(){return getWebServer().getMUD();}

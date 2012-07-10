@@ -23,7 +23,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -61,20 +61,20 @@ public class Tell extends StdCommand
 			java.util.List<String> V=mob.playerStats().getTellStack();
 			if((V.size()==0)
 			||(CMath.bset(metaFlags,Command.METAFLAG_AS))
-	        ||(CMath.bset(metaFlags,Command.METAFLAG_POSSESSED)))
+			||(CMath.bset(metaFlags,Command.METAFLAG_POSSESSED)))
 				mob.tell("No telling.");
 			else
 			{
 				int num=CMath.s_int(CMParms.combine(commands,1));
 				if(num>V.size()) num=V.size();
-		        Session S=mob.session();
-		        try {
-    		        if(S!=null) S.snoopSuspension(1);
-    				for(int i=V.size()-num;i<V.size();i++)
-    					mob.tell((String)V.get(i));
-		        } finally {
-		            if(S!=null) S.snoopSuspension(-1);
-		        }
+				Session S=mob.session();
+				try {
+					if(S!=null) S.snoopSuspension(1);
+					for(int i=V.size()-num;i<V.size();i++)
+						mob.tell((String)V.get(i));
+				} finally {
+					if(S!=null) S.snoopSuspension(-1);
+				}
 			}
 			return false;
 		}
@@ -121,18 +121,18 @@ public class Tell extends StdCommand
 		
 		Session ts=targetM.session();
 		try{
-            if(ts!=null) ts.snoopSuspension(1);
-            CMLib.commands().postSay(mob,targetM,combinedCommands,true,true);
+			if(ts!=null) ts.snoopSuspension(1);
+			CMLib.commands().postSay(mob,targetM,combinedCommands,true,true);
 		} finally {
-		    if(ts!=null) ts.snoopSuspension(-1);
+			if(ts!=null) ts.snoopSuspension(-1);
 		}
-        
+		
 		if((targetM.session()!=null)&&(targetM.session().afkFlag()))
 			mob.tell(targetM.session().afkMessage());
 		return false;
 	}
 	// the reason this is not 0ed is because of combat -- we want the players to use SAY, and pay for it when coordinating.
-    public double combatActionsCost(final MOB mob, final List<String> cmds){return CMProps.getCombatActionCost(ID());}
+	public double combatActionsCost(final MOB mob, final List<String> cmds){return CMProps.getCombatActionCost(ID());}
 	public boolean canBeOrdered(){return false;}
 
 	

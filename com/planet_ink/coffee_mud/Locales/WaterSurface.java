@@ -23,7 +23,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -121,7 +121,7 @@ public class WaterSurface extends StdRoom implements Drink
 			((GridLocale)room).clearGrid(null);
 			rawDoors()[Directions.UP]=null;
 			setRawExit(Directions.UP,null);
-            CMLib.map().emptyRoom(room,null);
+			CMLib.map().emptyRoom(room,null);
 			room.destroy();
 			skyedYet=false;
 		}
@@ -150,7 +150,7 @@ public class WaterSurface extends StdRoom implements Drink
 		   ||(!(msg.tool() instanceof Ability))
 		   ||(!CMath.bset(((Ability)msg.tool()).flags(),Ability.FLAG_TRANSPORTING)))
 		&&(!CMLib.flags().isFalling(msg.source()))
-        &&(!CMLib.flags().isInFlight(msg.source()))
+		&&(!CMLib.flags().isInFlight(msg.source()))
 		&&(!CMLib.flags().isWaterWorthy(msg.source())))
 		{
 			MOB mob=msg.source();
@@ -162,8 +162,8 @@ public class WaterSurface extends StdRoom implements Drink
 				{	hasBoat=true; break;}
 			}
 			if((!CMLib.flags().isWaterWorthy(mob))
-            &&(!hasBoat)
-            &&(!CMLib.flags().isInFlight(mob)))
+			&&(!hasBoat)
+			&&(!CMLib.flags().isInFlight(mob)))
 			{
 				mob.tell("You need to swim or ride a boat that way.");
 				return -1;
@@ -212,8 +212,8 @@ public class WaterSurface extends StdRoom implements Drink
 	public void setThirstQuenched(int amount){}
 	public void setLiquidHeld(int amount){}
 	public void setLiquidRemaining(int amount){}
-    public boolean disappearsAfterDrinking(){return false;}
+	public boolean disappearsAfterDrinking(){return false;}
 	public boolean containsDrink(){return true;}
-    public int amountTakenToFillMe(Drink theSource){return 0;}
+	public int amountTakenToFillMe(Drink theSource){return 0;}
 	public List<Integer> resourceChoices(){return UnderWater.roomResources;}
 }

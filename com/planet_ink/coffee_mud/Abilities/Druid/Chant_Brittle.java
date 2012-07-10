@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -44,7 +44,7 @@ public class Chant_Brittle extends Chant
 	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	protected int oldCondition=-1;
 	protected boolean noRecurse=true;
-    
+	
 	public void affectPhyStats(Physical E, PhyStats stats)
 	{
 		super.affectPhyStats(E,stats);
@@ -65,41 +65,41 @@ public class Chant_Brittle extends Chant
 			noRecurse=false;
 		}
 	}
-    
-    private Item getItem(MOB mobTarget) {
-        Vector goodPossibilities=new Vector();
-        Vector possibilities=new Vector();
-        for(int i=0;i<mobTarget.numItems();i++)
-        {
-            Item item=mobTarget.getItem(i);
-            if((item!=null)
-               &&(item.subjectToWearAndTear()))
-            {
-                if(item.amWearingAt(Wearable.IN_INVENTORY))
-                    possibilities.addElement(item);
-                else
-                    goodPossibilities.addElement(item);
-            }
-        }
-        if(goodPossibilities.size()>0)
-            return (Item)goodPossibilities.elementAt(CMLib.dice().roll(1,goodPossibilities.size(),-1));
-        else
-        if(possibilities.size()>0)
-            return (Item)possibilities.elementAt(CMLib.dice().roll(1,possibilities.size(),-1));
-        return null;
-    }
+	
+	private Item getItem(MOB mobTarget) {
+		Vector goodPossibilities=new Vector();
+		Vector possibilities=new Vector();
+		for(int i=0;i<mobTarget.numItems();i++)
+		{
+			Item item=mobTarget.getItem(i);
+			if((item!=null)
+			   &&(item.subjectToWearAndTear()))
+			{
+				if(item.amWearingAt(Wearable.IN_INVENTORY))
+					possibilities.addElement(item);
+				else
+					goodPossibilities.addElement(item);
+			}
+		}
+		if(goodPossibilities.size()>0)
+			return (Item)goodPossibilities.elementAt(CMLib.dice().roll(1,goodPossibilities.size(),-1));
+		else
+		if(possibilities.size()>0)
+			return (Item)possibilities.elementAt(CMLib.dice().roll(1,possibilities.size(),-1));
+		return null;
+	}
 
-    public int castingQuality(MOB mob, Physical target)
-    {
-        if(!(target instanceof MOB)) return Ability.QUALITY_INDIFFERENT;
-        if((mob!=null)&&(mob!=target))
-        {
-            Item I=getItem((MOB)target);
-            if(I==null)
-                return Ability.QUALITY_INDIFFERENT;
-        }
-        return super.castingQuality(mob,target);
-    }
+	public int castingQuality(MOB mob, Physical target)
+	{
+		if(!(target instanceof MOB)) return Ability.QUALITY_INDIFFERENT;
+		if((mob!=null)&&(mob!=target))
+		{
+			Item I=getItem((MOB)target);
+			if(I==null)
+				return Ability.QUALITY_INDIFFERENT;
+		}
+		return super.castingQuality(mob,target);
+	}
 
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
@@ -107,7 +107,7 @@ public class Chant_Brittle extends Chant
 		Item target=null;
 		if(mobTarget!=null)
 		{
-            target=getItem(mobTarget);
+			target=getItem(mobTarget);
 			if(target==null)
 				return maliciousFizzle(mob,mobTarget,"<S-NAME> chant(s) at <T-NAMESELF>, but nothing happens.");
 		}

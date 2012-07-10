@@ -18,7 +18,7 @@ Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
 You may obtain a copy of the License at
 
-    http://www.apache.org/licenses/LICENSE-2.0
+	http://www.apache.org/licenses/LICENSE-2.0
 
 Unless required by applicable law or agreed to in writing, software
 distributed under the License is distributed on an "AS IS" BASIS,
@@ -38,23 +38,23 @@ public class DefaultAbilityComponent implements AbilityComponent
 	private String maskStr = "";
 	private MaskingLibrary.CompiledZapperMask compiledMask = null;
 	
-    public String ID(){return "DefaultAbilityComponent";}
-    public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
-    public CMObject newInstance(){try{return (CMObject)getClass().newInstance();}catch(Exception e){return new DefaultAbilityComponent();}}
-    public void initializeClass(){}
-    public CMObject copyOf()
-    {
-        try
-        {
-            Object O=this.clone();
-            return (CMObject)O;
-        }
-        catch(CloneNotSupportedException e)
-        {
-            return new DefaultAbilityComponent();
-        }
-    }
-    
+	public String ID(){return "DefaultAbilityComponent";}
+	public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
+	public CMObject newInstance(){try{return (CMObject)getClass().newInstance();}catch(Exception e){return new DefaultAbilityComponent();}}
+	public void initializeClass(){}
+	public CMObject copyOf()
+	{
+		try
+		{
+			Object O=this.clone();
+			return (CMObject)O;
+		}
+		catch(CloneNotSupportedException e)
+		{
+			return new DefaultAbilityComponent();
+		}
+	}
+	
 	public CompConnector getConnector() 
 	{
 		return connector;

@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -40,11 +40,11 @@ public class Prop_ReqPKill extends Property
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if((affected!=null)
-	    &&(msg.target()!=null)
-	    &&(((msg.target() instanceof Room)&&(msg.targetMinor()==CMMsg.TYP_ENTER))
+		&&(msg.target()!=null)
+		&&(((msg.target() instanceof Room)&&(msg.targetMinor()==CMMsg.TYP_ENTER))
 		   ||((msg.target() instanceof Rideable)&&(msg.targetMinor()==CMMsg.TYP_SIT)))
-	    &&(!CMLib.flags().isFalling(msg.source()))
-	    &&((msg.amITarget(affected))||(msg.tool()==affected)||(affected instanceof Area)))
+		&&(!CMLib.flags().isFalling(msg.source()))
+		&&((msg.amITarget(affected))||(msg.tool()==affected)||(affected instanceof Area)))
 		{
 			if((!msg.source().isMonster())
 			   &&(!CMath.bset(msg.source().getBitmap(),MOB.ATT_PLAYERKILL)))
@@ -55,14 +55,14 @@ public class Prop_ReqPKill extends Property
 		}
 		if((!msg.source().isMonster())
  		&&(!CMath.bset(msg.source().getBitmap(),MOB.ATT_PLAYERKILL)))
-        {
-            Room R=CMLib.map().roomLocation(msg.source());
-            if((R!=null)&&((R==affected)||(R.getArea()==affected)||((affected instanceof Area)&&(((Area)affected).inMyMetroArea(R.getArea())))))
-            {
-                msg.source().tell("Your PLAYERKILL flag is now ON!");
-    			msg.source().setBitmap(CMath.setb(msg.source().getBitmap(),MOB.ATT_PLAYERKILL));
-            }
-        }
+		{
+			Room R=CMLib.map().roomLocation(msg.source());
+			if((R!=null)&&((R==affected)||(R.getArea()==affected)||((affected instanceof Area)&&(((Area)affected).inMyMetroArea(R.getArea())))))
+			{
+				msg.source().tell("Your PLAYERKILL flag is now ON!");
+				msg.source().setBitmap(CMath.setb(msg.source().getBitmap(),MOB.ATT_PLAYERKILL));
+			}
+		}
 		return super.okMessage(myHost,msg);
 	}
 }

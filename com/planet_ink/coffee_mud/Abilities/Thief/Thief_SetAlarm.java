@@ -25,7 +25,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -40,7 +40,7 @@ public class Thief_SetAlarm extends ThiefSkill implements Trap
 	public String name(){ return "Set Alarm";}
 	protected int canAffectCode(){return Ability.CAN_EXITS;}
 	protected int canTargetCode(){return Ability.CAN_EXITS;}
-    public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_TRAPPING;}
+	public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_TRAPPING;}
 	public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 	private static final String[] triggerStrings = {"SETALARM"};
 	public String[] triggerStrings(){return triggerStrings;}
@@ -58,7 +58,7 @@ public class Thief_SetAlarm extends ThiefSkill implements Trap
 	public int getReset(){return 0;}
 	public boolean maySetTrap(MOB mob, int asLevel){return false;}
 	public boolean canSetTrapOn(MOB mob, Physical P){return false;}
-    public List<Item> getTrapComponents() { return new Vector(); }
+	public List<Item> getTrapComponents() { return new Vector(); }
 	public String requiresToSet(){return "";}
 	public Trap setTrap(MOB mob, Physical P, int trapBonus, int qualifyingClassLevel, boolean perm)
 	{beneficialAffect(mob,P,qualifyingClassLevel+trapBonus,0);return (Trap)P.fetchEffect(ID());}

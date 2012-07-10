@@ -26,7 +26,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -60,10 +60,10 @@ public class Ranger extends StdCharClass
 		super();
 		maxStatAdj[CharStats.STAT_STRENGTH]=4;
 		maxStatAdj[CharStats.STAT_INTELLIGENCE]=4;
-    }
-    public void initializeClass()
-    {
-        super.initializeClass();
+	}
+	public void initializeClass()
+	{
+		super.initializeClass();
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Write",25,true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Specialization_Axe",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Specialization_BluntWeapon",false);
@@ -176,7 +176,7 @@ public class Ranger extends StdCharClass
 	public String getStatQualDesc(){return "Strength 9+, Intelligence 9+";}
 	public String getOtherLimitsDesc(){return "Must remain Neutral to avoid chant failure chances.";}
 	public String getOtherBonusDesc(){return "When leading animals into battle, will not divide experience among animal followers.  Receives bonus conquest experience.  Benefits from animal followers leveling.";}
-    public void executeMsg(Environmental host, CMMsg msg){ super.executeMsg(host,msg); Fighter.conquestExperience(this,host,msg); Druid.doAnimalFollowerLevelingCheck(this,host,msg);}
+	public void executeMsg(Environmental host, CMMsg msg){ super.executeMsg(host,msg); Fighter.conquestExperience(this,host,msg); Druid.doAnimalFollowerLevelingCheck(this,host,msg);}
 	public boolean qualifiesForThisClass(MOB mob, boolean quiet)
 	{
 		if(mob != null)
@@ -251,10 +251,10 @@ public class Ranger extends StdCharClass
 		}
 	}
 
-    public boolean isValidClassDivider(MOB killer, MOB killed, MOB mob, Set<MOB> followers)
+	public boolean isValidClassDivider(MOB killer, MOB killed, MOB mob, Set<MOB> followers)
 	{
 		if((mob!=null)
-        &&(mob!=killed)
+		&&(mob!=killed)
 		&&(!mob.amDead())
 		&&((!mob.isMonster())||(!CMLib.flags().isAnimalIntelligence(mob)))
 		&&((mob.getVictim()==killed)

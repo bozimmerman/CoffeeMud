@@ -25,7 +25,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -42,7 +42,7 @@ public class Spell_Permanency extends Spell
 	protected int canTargetCode(){return CAN_ITEMS|CAN_MOBS|CAN_EXITS;}
 	public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_ENCHANTMENT;}
 	protected int overrideMana(){return Integer.MAX_VALUE;}
-    public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
+	public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
 
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
@@ -66,7 +66,7 @@ public class Spell_Permanency extends Spell
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-                StdAbility theOne=null;
+				StdAbility theOne=null;
 				for(int a=target.numEffects()-1;a>=0;a--) // personal effects
 				{
 					Ability A=target.fetchEffect(a);
@@ -76,7 +76,7 @@ public class Spell_Permanency extends Spell
 					 &&(A instanceof StdAbility)
 					 &&((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_SPELL))
 					{
-                        theOne=(StdAbility)A;
+						theOne=(StdAbility)A;
 						break;
 					}
 				}

@@ -25,7 +25,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -73,11 +73,11 @@ public class Dragonbreath extends StdAbility
 			mob.tell("You can't breathe!");
 			return false;
 		}
-        if(mob.charStats().getBodyPart(Race.BODY_MOUTH)==0)
-        {
-            mob.tell("You don't have a mouth!");
-            return false;
-        }
+		if(mob.charStats().getBodyPart(Race.BODY_MOUTH)==0)
+		{
+			mob.tell("You don't have a mouth!");
+			return false;
+		}
 		char colorc='f';
 		if((text().length()==0)
 		&&(mob.charStats().getMyRace().racialCategory().equals("Dragon")))

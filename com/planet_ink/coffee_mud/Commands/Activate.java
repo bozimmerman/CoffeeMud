@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -54,13 +54,13 @@ public class Activate extends StdCommand
 		Item item=null;
 		if(mob.riding() instanceof Electronics)
 		{
-		    if((P==null)||(cmd.equalsIgnoreCase(">")))
-		        item=(Item)mob.riding();
+			if((P==null)||(cmd.equalsIgnoreCase(">")))
+				item=(Item)mob.riding();
 		}
 		else
-		    commands.removeElementAt(commands.size()-1);
+			commands.removeElementAt(commands.size()-1);
 		if((item==null)&&(P instanceof Electronics))
-		    item=(Item)P;
+			item=(Item)P;
 		if((P==null)||(!CMLib.flags().canBeSeenBy(P,mob)))
 			mob.tell("You don't see anything called "+what+" here that you can activate.");
 		else
@@ -74,9 +74,9 @@ public class Activate extends StdCommand
 		return false;
 	}
 	public double combatActionsCost(final MOB mob, final List<String> cmds){return CMProps.getCombatActionCost(ID());}
-    public double actionsCost(final MOB mob, final List<String> cmds){return CMProps.getActionCost(ID());}
+	public double actionsCost(final MOB mob, final List<String> cmds){return CMProps.getActionCost(ID());}
 	public boolean canBeOrdered(){return true;}
-    public boolean securityCheck(MOB mob){return CMSecurity.isASysOp(mob);}
+	public boolean securityCheck(MOB mob){return CMSecurity.isASysOp(mob);}
 
 	
 }

@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -44,7 +44,7 @@ public class Thief_Bribe extends ThiefSkill
 	public String[] triggerStrings(){return triggerStrings;}
 	protected boolean disregardsArmorCheck(MOB mob){return true;}
 	protected MOB lastChecked=null;
-    public int classificationCode() {   return Ability.ACODE_SKILL|Ability.DOMAIN_INFLUENTIAL; }
+	public int classificationCode() {   return Ability.ACODE_SKILL|Ability.DOMAIN_INFLUENTIAL; }
 
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
@@ -121,23 +121,23 @@ public class Thief_Bribe extends ThiefSkill
 				mob.location().send(mob,msg);
 			if(CMLib.beanCounter().getTotalAbsoluteValue(mob,currency)<amountRequired)
 			{
-			    String costWords=CMLib.beanCounter().nameCurrencyShort(currency,amountRequired);
+				String costWords=CMLib.beanCounter().nameCurrencyShort(currency,amountRequired);
 				mob.tell(target.charStats().HeShe()+" requires "+costWords+" to do this.");
 			}
 			success=false;
 		}
 		else
 		{
-		    String costWords=CMLib.beanCounter().nameCurrencyShort(target,amountRequired);
+			String costWords=CMLib.beanCounter().nameCurrencyShort(target,amountRequired);
 			CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_SPEAK,"^T<S-NAME> bribe(s) <T-NAMESELF> to '"+CMParms.combine(commands,0)+"' for "+costWords+".^?");
 			CMLib.beanCounter().subtractMoney(mob,currency,amountRequired);
 			mob.recoverPhyStats();
-            CMMsg msg2=CMClass.getMsg(mob,target,null,CMMsg.MSG_ORDER,null);
+			CMMsg msg2=CMClass.getMsg(mob,target,null,CMMsg.MSG_ORDER,null);
 			if((mob.location().okMessage(mob,msg))
-            &&(mob.location().okMessage(mob,msg2)))
+			&&(mob.location().okMessage(mob,msg2)))
 			{
 				mob.location().send(mob,msg);
-                mob.location().send(mob,msg2);
+				mob.location().send(mob,msg2);
 				target.doCommand(commands,Command.METAFLAG_FORCED);
 			}
 			CMLib.beanCounter().addMoney(mob,currency,amountRequired);

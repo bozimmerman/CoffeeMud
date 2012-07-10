@@ -25,7 +25,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -51,32 +51,32 @@ public class Song_Dexterity extends Song
 			affectableStats.setStat(CharStats.STAT_DEXTERITY,affectableStats.getStat(CharStats.STAT_DEXTERITY)+(amount+super.getXLEVELLevel(invoker())));
 	}
 
-    public int castingQuality(MOB mob, Physical target)
-    {
-        if(mob!=null)
-        {
-            if(target instanceof MOB)
-            {
-                if(mob.getGroupMembers(new HashSet<MOB>()).size()==0)
-                    return Ability.QUALITY_INDIFFERENT;
-            }
-        }
-        return super.castingQuality(mob,target);
-    }
-    
+	public int castingQuality(MOB mob, Physical target)
+	{
+		if(mob!=null)
+		{
+			if(target instanceof MOB)
+			{
+				if(mob.getGroupMembers(new HashSet<MOB>()).size()==0)
+					return Ability.QUALITY_INDIFFERENT;
+			}
+		}
+		return super.castingQuality(mob,target);
+	}
+	
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		amount=CMath.s_int(CMParms.combine(commands,0));
 
 		if(amount<=0)
 		{
-            if(mob.isMonster())
-                amount=mob.charStats().getStat(CharStats.STAT_DEXTERITY)/2;
-            else
-            {
-    			mob.tell("Sing about how much dexterity?");
-    			return false;
-            }
+			if(mob.isMonster())
+				amount=mob.charStats().getStat(CharStats.STAT_DEXTERITY)/2;
+			else
+			{
+				mob.tell("Sing about how much dexterity?");
+				return false;
+			}
 		}
 
 		if(amount>=mob.charStats().getStat(CharStats.STAT_DEXTERITY))

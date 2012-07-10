@@ -25,7 +25,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -74,50 +74,50 @@ public class Spell_Brainwash extends Spell
 						  msg.target(),
 						  this,
 						  msg.sourceCode(),
-                          CMStrings.substituteSayInMessage(msg.sourceMessage(),smsg),
+						  CMStrings.substituteSayInMessage(msg.sourceMessage(),smsg),
 						  msg.targetCode(),
-                          CMStrings.substituteSayInMessage(msg.targetMessage(),str),
+						  CMStrings.substituteSayInMessage(msg.targetMessage(),str),
 						  msg.othersCode(),
-                          CMStrings.substituteSayInMessage(msg.othersMessage(),str));
+						  CMStrings.substituteSayInMessage(msg.othersMessage(),str));
 				helpProficiency((MOB)affected);
 			}
 		}
-	    return super.okMessage(host,msg);
+		return super.okMessage(host,msg);
 	}
 	
-    public int castingQuality(MOB mob, Physical target)
-    {
-        if(mob!=null)
-        {
-            if((mob.isInCombat())&&(mob.isMonster()))
-                return Ability.QUALITY_INDIFFERENT;
-            if(target instanceof MOB)
-            {
-                if(CMLib.flags().isAnimalIntelligence((MOB)target))
-                    return Ability.QUALITY_INDIFFERENT;
-            }
-        }
-        return super.castingQuality(mob,target);
-    }
-    
+	public int castingQuality(MOB mob, Physical target)
+	{
+		if(mob!=null)
+		{
+			if((mob.isInCombat())&&(mob.isMonster()))
+				return Ability.QUALITY_INDIFFERENT;
+			if(target instanceof MOB)
+			{
+				if(CMLib.flags().isAnimalIntelligence((MOB)target))
+					return Ability.QUALITY_INDIFFERENT;
+			}
+		}
+		return super.castingQuality(mob,target);
+	}
+	
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-	    String message="";
-	    if(givenTarget==null)
-	    {
-	        if(commands.size()<2)
-	        {
-	            mob.tell("You must specify your target, followed by the message they will believe.");
-	            return false;
-	        }
-	        message=CMParms.combine(commands,1);
-	        commands=new XVector(commands.firstElement());
-	    }
-	    else
-	    if(text().length()>0)
-	        message=text();
-	    else
-	        message=CMParms.combine(commands,0);
+		String message="";
+		if(givenTarget==null)
+		{
+			if(commands.size()<2)
+			{
+				mob.tell("You must specify your target, followed by the message they will believe.");
+				return false;
+			}
+			message=CMParms.combine(commands,1);
+			commands=new XVector(commands.firstElement());
+		}
+		else
+		if(text().length()>0)
+			message=text();
+		else
+			message=CMParms.combine(commands,0);
 		MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 
@@ -140,8 +140,8 @@ public class Spell_Brainwash extends Spell
 
 		if(success)
 		{
-		    MOB oldVictim=mob.getVictim();
-		    MOB oldVictim2=target.getVictim();
+			MOB oldVictim=mob.getVictim();
+			MOB oldVictim2=target.getVictim();
 			// it worked, so build a copy of this ability,
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
@@ -154,9 +154,9 @@ public class Spell_Brainwash extends Spell
 				Ability A=target.fetchEffect(ID());
 				if(A!=null) A.setMiscText(message);
 				if(mob.getVictim()!=oldVictim)
-				    mob.setVictim(oldVictim);
+					mob.setVictim(oldVictim);
 				if(target.getVictim()!=oldVictim2)
-				    target.setVictim(oldVictim2);
+					target.setVictim(oldVictim2);
 			}
 		}
 		else

@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -43,7 +43,7 @@ public class Spell_AcidArrow extends Spell
 	protected int canTargetCode(){return 0;}
 	public int maxRange(){return adjustedMaxInvokerRange(2);}
 	public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_CONJURATION;}
-    public long flags(){return Ability.FLAG_EARTHBASED;}
+	public long flags(){return Ability.FLAG_EARTHBASED;}
 
 	public boolean tick(Tickable ticking, int tickID)
 	{
@@ -61,8 +61,8 @@ public class Spell_AcidArrow extends Spell
 	{
 		MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
-        Room R=CMLib.map().roomLocation(target);
-        if(R==null) R=mob.location();
+		Room R=CMLib.map().roomLocation(target);
+		if(R==null) R=mob.location();
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
@@ -82,7 +82,7 @@ public class Spell_AcidArrow extends Spell
 				R.send(mob,msg);
 				R.send(mob,msg2);
 				invoker=mob;
-                int numDice = (adjustedLevel(mob,asLevel)+(2*super.getX1Level(invoker())))/2;
+				int numDice = (adjustedLevel(mob,asLevel)+(2*super.getX1Level(invoker())))/2;
 				int damage = CMLib.dice().roll(1, numDice+10, 5);
 				if((msg2.value()>0)||(msg.value()>0))
 					damage = (int)Math.round(CMath.div(damage,2.0));

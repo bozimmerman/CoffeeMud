@@ -27,7 +27,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -116,7 +116,7 @@ public class Prop_Artifact extends Property
 				new Exception().printStackTrace(new java.io.PrintStream(o));
 				o.close();
 				if(o.toString().indexOf("Commands.Destroy.execute")>=0)
-	    			CMLib.database().DBDeleteData(getItemID(),"ARTIFACTS","ARTIFACTS/"+getItemID());
+					CMLib.database().DBDeleteData(getItemID(),"ARTIFACTS","ARTIFACTS/"+getItemID());
 			}catch(Exception e){}
 		}
 	}
@@ -254,8 +254,8 @@ public class Prop_Artifact extends Property
 				data.append(CMLib.xml().convertXMLtoTag("IABLE",I.basePhyStats().ability()));
 				data.append(CMLib.xml().convertXMLtoTag("ITEXT",CMLib.xml().parseOutAngleBrackets(I.text())));
 				data.append("</ARTITEM>");
-                ((Item)I).destroy();
-    			CMLib.database().DBReCreateData(getItemID(),"ARTIFACTS","ARTIFACTS/"+getItemID(),data.toString());
+				((Item)I).destroy();
+				CMLib.database().DBReCreateData(getItemID(),"ARTIFACTS","ARTIFACTS/"+getItemID(),data.toString());
 			}
 		}
 	}
@@ -336,51 +336,51 @@ public class Prop_Artifact extends Property
 													{ foundMOB=M; break;}
 												}
 											}
-                                        Item newItemMinusArtifact=(Item)newItem.copyOf();
-                                        Ability A2=newItemMinusArtifact.fetchEffect(ID());
-                                        if(A2!=null) newItemMinusArtifact.delEffect(A2);
-                                        Item I=null;
+										Item newItemMinusArtifact=(Item)newItem.copyOf();
+										Ability A2=newItemMinusArtifact.fetchEffect(ID());
+										if(A2!=null) newItemMinusArtifact.delEffect(A2);
+										Item I=null;
 										if(foundMOB!=null)
 										{
-	                                        for(int i=0;i<foundMOB.numItems();i++)
-	                                        {
-	                                        	I=foundMOB.getItem(i);
-	                                        	if(I==null) break;
-	                                        	if(I.Name().equals(newItemMinusArtifact.Name()))
-	                                        	{
-	                                        		I=(Item)I.copyOf();
-	                                                A2=I.fetchEffect(ID());
-	                                                if(A2!=null) I.delEffect(A2);
-		                                            if(newItemMinusArtifact.sameAs(I))
-		                                            	I.destroy();
-	                                        	}
-	                                        }
-    										foundMOB.addItem(newItem);
-    										newItem.wearAt(newItem.rawProperLocationBitmap());
+											for(int i=0;i<foundMOB.numItems();i++)
+											{
+												I=foundMOB.getItem(i);
+												if(I==null) break;
+												if(I.Name().equals(newItemMinusArtifact.Name()))
+												{
+													I=(Item)I.copyOf();
+													A2=I.fetchEffect(ID());
+													if(A2!=null) I.delEffect(A2);
+													if(newItemMinusArtifact.sameAs(I))
+														I.destroy();
+												}
+											}
+											foundMOB.addItem(newItem);
+											newItem.wearAt(newItem.rawProperLocationBitmap());
 										}
 										else
 										if(MOBname.length()==0)
 										{
-	                                        for(int i=0;i<R.numItems();i++)
-	                                        {
-	                                        	I=R.getItem(i);
-	                                        	if(I==null) break;
-	                                        	if(I.Name().equals(newItemMinusArtifact.Name()))
-	                                        	{
-	                                        		I=(Item)I.copyOf();
-	                                                A2=I.fetchEffect(ID());
-	                                                if(A2!=null) I.delEffect(A2);
-		                                            if(newItemMinusArtifact.sameAs(I))
-		                                            	I.destroy();
-	                                        	}
-	                                        }
+											for(int i=0;i<R.numItems();i++)
+											{
+												I=R.getItem(i);
+												if(I==null) break;
+												if(I.Name().equals(newItemMinusArtifact.Name()))
+												{
+													I=(Item)I.copyOf();
+													A2=I.fetchEffect(ID());
+													if(A2!=null) I.delEffect(A2);
+													if(newItemMinusArtifact.sameAs(I))
+														I.destroy();
+												}
+											}
 											R.addItem(newItem);
 										}
 										else
 										{
-                                        	Log.errOut("Prop_Artifact","Unable to reset: "+getItemID()+" to "+MOBname+" in "+CMLib.map().getExtendedRoomID(R));
-                                        	waitToReload=System.currentTimeMillis()+10*60000;
-                                        	return true;
+											Log.errOut("Prop_Artifact","Unable to reset: "+getItemID()+" to "+MOBname+" in "+CMLib.map().getExtendedRoomID(R));
+											waitToReload=System.currentTimeMillis()+10*60000;
+											return true;
 										}
 									}
 								}

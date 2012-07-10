@@ -22,7 +22,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -37,9 +37,9 @@ public class Evoker extends SpecialistMage
 	public int domain(){return Ability.DOMAIN_EVOCATION;}
 	public int opposed(){return Ability.DOMAIN_ALTERATION;}
 	public int availabilityCode(){return Area.THEME_FANTASY;}
-    public void initializeClass()
-    {
-        super.initializeClass();
+	public void initializeClass()
+	{
+		super.initializeClass();
 		CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Skill_Spellcraft",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),9,"Spell_ContinualLight",25,true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),11,"Spell_Shockshield",25,true);

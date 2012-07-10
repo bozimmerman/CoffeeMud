@@ -23,7 +23,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -43,9 +43,9 @@ public class Exits extends StdCommand
 	{
 		if(mob.location()!=null)
 			if((commands!=null)&&(commands.size()>1)&&(commands.lastElement() instanceof String)&&(((String)commands.lastElement()).equalsIgnoreCase("SHORT")))
-	            CMLib.commands().lookAtExitsShort(mob.location(),mob);
+				CMLib.commands().lookAtExitsShort(mob.location(),mob);
 			else
-	            CMLib.commands().lookAtExits(mob.location(),mob);
+				CMLib.commands().lookAtExits(mob.location(),mob);
 		return false;
 	}
 	

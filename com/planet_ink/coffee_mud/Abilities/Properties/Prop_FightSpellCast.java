@@ -25,7 +25,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -42,9 +42,9 @@ public class Prop_FightSpellCast extends Prop_SpellAdder
 	public String accountForYourself()
 	{ return spellAccountingsWithMask("Casts "," during combat.");}
 
-    public void affectPhyStats(Physical affected, PhyStats affectableStats)
-    {}
-    
+	public void affectPhyStats(Physical affected, PhyStats affectableStats)
+	{}
+	
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		if(processing) return;

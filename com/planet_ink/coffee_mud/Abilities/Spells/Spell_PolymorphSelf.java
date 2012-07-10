@@ -25,7 +25,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -42,7 +42,7 @@ public class Spell_PolymorphSelf extends Spell
 	protected int canAffectCode(){return CAN_MOBS;}
 	protected int canTargetCode(){return 0;}
 	public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_TRANSMUTATION;}
-    public int abstractQuality(){ return Ability.QUALITY_OK_SELF;}
+	public int abstractQuality(){ return Ability.QUALITY_OK_SELF;}
 
 	Race newRace=null;
 
@@ -65,7 +65,7 @@ public class Spell_PolymorphSelf extends Spell
 		super.affectCharStats(affected,affectableStats);
 		if(newRace!=null)
 		{
-		    int oldCat=affected.baseCharStats().ageCategory();
+			int oldCat=affected.baseCharStats().ageCategory();
 			affectableStats.setMyRace(newRace);
 			if(affected.baseCharStats().getStat(CharStats.STAT_AGE)>0)
 				affectableStats.setStat(CharStats.STAT_AGE,newRace.getAgingChart()[oldCat]);
@@ -148,7 +148,7 @@ public class Spell_PolymorphSelf extends Spell
 		for(int s: CharStats.CODES.BASE())
 			fakeStatTotal+=fakeMOB.charStats().getStat(s);
 
-        fakeMOB.destroy();
+		fakeMOB.destroy();
 		int statDiff=mobStatTotal-fakeStatTotal;
 		boolean success=proficiencyCheck(mob,-(statDiff*5),auto);
 		if(success)

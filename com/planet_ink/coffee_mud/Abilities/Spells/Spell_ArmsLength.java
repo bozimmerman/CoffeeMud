@@ -25,7 +25,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -57,12 +57,12 @@ public class Spell_ArmsLength extends Spell
 
   public int castingQuality(MOB mob, Physical target)
   {
-      if(mob!=null)
-      {
-          if((!mob.isInCombat())||(mob.rangeToTarget()==0))
-              return Ability.QUALITY_INDIFFERENT;
-      }
-      return super.castingQuality(mob,target);
+	  if(mob!=null)
+	  {
+		  if((!mob.isInCombat())||(mob.rangeToTarget()==0))
+			  return Ability.QUALITY_INDIFFERENT;
+	  }
+	  return super.castingQuality(mob,target);
   }
   
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
@@ -77,9 +77,9 @@ public class Spell_ArmsLength extends Spell
 			if((mob.getVictim()==msg.source())
 			&&(mob.location()!=null))
 			{
-        CMMsg msg2=CMClass.getMsg(mob,mob.getVictim(),CMMsg.MSG_RETREAT,"<S-NAME> predict(s) <T-YOUPOSS> advance and retreat(s).");
-        if(mob.location().okMessage(mob,msg2))
-        	mob.location().send(mob,msg2);
+		CMMsg msg2=CMClass.getMsg(mob,mob.getVictim(),CMMsg.MSG_RETREAT,"<S-NAME> predict(s) <T-YOUPOSS> advance and retreat(s).");
+		if(mob.location().okMessage(mob,msg2))
+			mob.location().send(mob,msg2);
 			}
 		}
 		return true;

@@ -25,7 +25,7 @@ import java.util.*;
  * <p>you may not use this file except in compliance with the License.
  * <p>You may obtain a copy of the License at
  *
- * <p>       http://www.apache.org/licenses/LICENSE-2.0
+ * <p>  	 http://www.apache.org/licenses/LICENSE-2.0
  *
  * <p>Unless required by applicable law or agreed to in writing, software
  * <p>distributed under the License is distributed on an "AS IS" BASIS,
@@ -50,7 +50,7 @@ public class Prayer_Regrowth extends Prayer implements MendingSkill
 
 	public Prayer_Regrowth()
 	{
-        super();
+		super();
 		if(limbsToRegrow==null)
 		{
 			limbsToRegrow = new Vector();
@@ -73,35 +73,35 @@ public class Prayer_Regrowth extends Prayer implements MendingSkill
 		return (item.fetchEffect("Amputation")!=null);
 	}
 	
-    public int castingQuality(MOB mob, Physical target)
-    {
-        if(mob!=null)
-        {
-            if(target instanceof MOB)
-            {
-                if(!supportsMending(target))
-                    return Ability.QUALITY_INDIFFERENT;
-            }
-        }
-        return super.castingQuality(mob,target);
-    }
-    
+	public int castingQuality(MOB mob, Physical target)
+	{
+		if(mob!=null)
+		{
+			if(target instanceof MOB)
+			{
+				if(!supportsMending(target))
+					return Ability.QUALITY_INDIFFERENT;
+			}
+		}
+		return super.castingQuality(mob,target);
+	}
+	
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=getTarget(mob,commands,givenTarget);
 		if(target==null)return false;
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
-		    return false;
+			return false;
 		boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
 			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"<T-NAME> become(s) surrounded by a bright light.":"^S<S-NAME> "+prayWord(mob)+" over <T-NAMESELF> for restorative healing.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
-		        mob.location().send(mob,msg);
-		        Ability A=target.fetchEffect("Amputation");
-		        if(A!=null)
-		        {
+				mob.location().send(mob,msg);
+				Ability A=target.fetchEffect("Amputation");
+				if(A!=null)
+				{
 					Amputator Amp=(Amputator)A;
 					List<String> missing = Amp.missingLimbNameSet();
 					String LookingFor = null;
@@ -126,12 +126,12 @@ public class Prayer_Regrowth extends Prayer implements MendingSkill
 					target.recoverCharStats();
 					target.recoverPhyStats();
 					target.recoverMaxState();
-		        }
+				}
 				mob.location().recoverRoomStats();
 			}
 		}
 		else
-		    beneficialWordsFizzle(mob,target,"<S-NAME> "+prayWord(mob)+" over <T-NAMESELF>, but "+hisHerDiety(mob)+" does not heed.");
+			beneficialWordsFizzle(mob,target,"<S-NAME> "+prayWord(mob)+" over <T-NAMESELF>, but "+hisHerDiety(mob)+" does not heed.");
 		// return whether it worked
 		return success;
 	}

@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -64,7 +64,7 @@ public class Spell_Nondetection extends Spell
 		MOB mob=(MOB)affected;
 		if((msg.amITarget(mob))
 		&&(msg.tool() instanceof Ability)
-        &&((msg.source()!=mob)||(!mob.isMine(msg.tool())))
+		&&((msg.source()!=mob)||(!mob.isMine(msg.tool())))
 		&&((((Ability)msg.tool()).classificationCode()&ALL_DOMAINS)==Ability.DOMAIN_DIVINATION)
 		&&(!mob.amDead())
 		&&((mob.fetchAbility(ID())==null)||(proficiency()>99)||proficiencyCheck(null,0,false)))

@@ -25,7 +25,7 @@ import java.util.*;
  * <p>you may not use this file except in compliance with the License.
  * <p>You may obtain a copy of the License at
  *
- * <p>       http://www.apache.org/licenses/LICENSE-2.0
+ * <p>  	 http://www.apache.org/licenses/LICENSE-2.0
  *
  * <p>Unless required by applicable law or agreed to in writing, software
  * <p>distributed under the License is distributed on an "AS IS" BASIS,
@@ -40,8 +40,8 @@ public class ClanLoader
 	{
 		DB=newDB;
 	}
-    protected int currentRecordPos=1;
-    protected int recordCount=0;
+	protected int currentRecordPos=1;
+	protected int recordCount=0;
 
 	public void updateBootStatus(String loading)
 	{
@@ -51,7 +51,7 @@ public class ClanLoader
 	public void DBRead()
 	{
 		DBConnection D=null;
-	    Clan C=null;
+		Clan C=null;
 		try
 		{
 			D=DB.DBFetch();
@@ -72,17 +72,17 @@ public class ClanLoader
 				C.setMorgue(DBConnections.getRes(R,"CMMORG"));
 				C.setTrophies(CMath.s_int(DBConnections.getRes(R, "CMTROP")));
 				CMLib.clans().addClan(C);
-		        updateBootStatus("Clans");
+				updateBootStatus("Clans");
 			}
 		}
 		catch(Exception sqle)
 		{
 			Log.errOut("Clan",sqle);
 		}
-        finally
-        {
-	        DB.DBDone(D);
-        }
+		finally
+		{
+			DB.DBDone(D);
+		}
 		// log comment
 	}
 

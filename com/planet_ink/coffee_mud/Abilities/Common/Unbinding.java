@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -40,7 +40,7 @@ public class Unbinding extends CommonSkill
 	public String name(){ return "Unbinding";}
 	private static final String[] triggerStrings = {"UNBIND","UNTIE"};
 	public String[] triggerStrings(){return triggerStrings;}
-    public int classificationCode() {   return Ability.ACODE_COMMON_SKILL|Ability.DOMAIN_BINDING; }
+	public int classificationCode() {   return Ability.ACODE_COMMON_SKILL|Ability.DOMAIN_BINDING; }
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return Ability.CAN_MOBS;}
 	MOB found=null;
@@ -54,11 +54,11 @@ public class Unbinding extends CommonSkill
 			if(tickUp==3)
 			{
 				List<Ability> affects=null;
-			    if(found!=null)
+				if(found!=null)
 				   affects=CMLib.flags().flaggedAffects(found,Ability.FLAG_BINDING);
 				if((affects!=null)&&(affects.size()>0))
 				{
-				    removing=(Ability)affects.get(0);
+					removing=(Ability)affects.get(0);
 					displayText="You are removing "+removing.name()+" from "+found.name();
 					verb="removing "+removing.name()+" from "+found.name();
 				}
@@ -72,26 +72,26 @@ public class Unbinding extends CommonSkill
 			else
 			if((found!=null)&&(mob!=null))
 			{
-			    if(found.location()!=mob.location())
-                {
-                    aborted=true;
-				    unInvoke();
-                }
-			    if(!CMLib.flags().canBeSeenBy(found,mob))
-                {
-                    aborted=true;
-                    unInvoke();
-                }
-			    if(!CMLib.flags().aliveAwakeMobileUnbound(mob,false))
-                {
-                    aborted=true;
-                    unInvoke();
-                }
-			    if((removing!=null)&&(found.fetchEffect(removing.ID())!=removing))
-                {
-                    aborted=true;
-                    unInvoke();
-                }
+				if(found.location()!=mob.location())
+				{
+					aborted=true;
+					unInvoke();
+				}
+				if(!CMLib.flags().canBeSeenBy(found,mob))
+				{
+					aborted=true;
+					unInvoke();
+				}
+				if(!CMLib.flags().aliveAwakeMobileUnbound(mob,false))
+				{
+					aborted=true;
+					unInvoke();
+				}
+				if((removing!=null)&&(found.fetchEffect(removing.ID())!=removing))
+				{
+					aborted=true;
+					unInvoke();
+				}
 			}
 		}
 		return super.tick(ticking,tickID);
@@ -106,10 +106,10 @@ public class Unbinding extends CommonSkill
 				MOB mob=(MOB)affected;
 				if((found!=null)&&(removing!=null)&&(!aborted))
 				{
-				    removing.unInvoke();
-				    if(found.fetchEffect(removing.ID())==null)
+					removing.unInvoke();
+					if(found.fetchEffect(removing.ID())==null)
 						mob.location().show(mob,null,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> manage(s) to remove "+removing.name()+" from "+found.name()+".");
-				    else
+					else
 						mob.location().show(mob,null,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> fail(s) to remove "+removing.name()+" from "+found.name()+".");
 				}
 			}
@@ -121,26 +121,26 @@ public class Unbinding extends CommonSkill
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 
-	    MOB target=getTarget(mob,commands,givenTarget);
-	    if(target==null) return false;
-	    if((!auto)&&(target==mob))
-	    {
-	        mob.tell("You can't unbind yourself!");
-	        return false;
-	    }
-	    if((!auto)&&mob.isInCombat())
-	    {
-	        mob.tell("Not while you are fighting!");
-	        return false;
-	    }
-	    List<Ability> affects=CMLib.flags().flaggedAffects(target,Ability.FLAG_BINDING);
-	    if(affects.size()==0)
-	    {
-	        mob.tell(target.name()+" does not have any bindings you can remove.");
-	        return false;
-	    }
-	    Ability A=(Ability)affects.get(0);
-	    
+		MOB target=getTarget(mob,commands,givenTarget);
+		if(target==null) return false;
+		if((!auto)&&(target==mob))
+		{
+			mob.tell("You can't unbind yourself!");
+			return false;
+		}
+		if((!auto)&&mob.isInCombat())
+		{
+			mob.tell("Not while you are fighting!");
+			return false;
+		}
+		List<Ability> affects=CMLib.flags().flaggedAffects(target,Ability.FLAG_BINDING);
+		if(affects.size()==0)
+		{
+			mob.tell(target.name()+" does not have any bindings you can remove.");
+			return false;
+		}
+		Ability A=(Ability)affects.get(0);
+		
 		verb="unbinding";
 		found=null;
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
@@ -153,10 +153,10 @@ public class Unbinding extends CommonSkill
 		{
 			mob.location().send(mob,msg);
 			found=target;
-            verb="unbinding "+found.name();
-            displayText="You are "+verb;
-            found=proficiencyCheck(mob,0,auto)?found:null;
-            beneficialAffect(mob,mob,asLevel,duration);
+			verb="unbinding "+found.name();
+			displayText="You are "+verb;
+			found=proficiencyCheck(mob,0,auto)?found:null;
+			beneficialAffect(mob,mob,asLevel,duration);
 		}
 		return true;
 		

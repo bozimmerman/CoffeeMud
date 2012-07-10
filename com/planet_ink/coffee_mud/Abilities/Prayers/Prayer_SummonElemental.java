@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -83,15 +83,15 @@ public class Prayer_SummonElemental extends Prayer
 		}
 	}
 
-    public int castingQuality(MOB mob, Physical target)
-    {
-        if(mob!=null)
-        {
-    		if(CMLib.flags().hasAControlledFollower(mob, this))
-                return Ability.QUALITY_INDIFFERENT;
-        }
-        return super.castingQuality(mob,target);
-    }
+	public int castingQuality(MOB mob, Physical target)
+	{
+		if(mob!=null)
+		{
+			if(CMLib.flags().hasAControlledFollower(mob, this))
+				return Ability.QUALITY_INDIFFERENT;
+		}
+		return super.castingQuality(mob,target);
+	}
 
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
@@ -191,17 +191,17 @@ public class Prayer_SummonElemental extends Prayer
 		CMLib.beanCounter().clearZeroMoney(newMOB,null);
 		newMOB.location().showOthers(newMOB,null,CMMsg.MSG_OK_ACTION,"<S-NAME> appears!");
 		caster.location().recoverRoomStats();
-        MOB victim=caster.getVictim();
+		MOB victim=caster.getVictim();
 		newMOB.setStartRoom(null); // this must be before postFollow due to the effects on conquest.
-        CMLib.commands().postFollow(newMOB,caster,true);
-        if(newMOB.amFollowing()!=caster)
-            caster.tell(newMOB.name()+" seems unwilling to follow you.");
-        else
-        if(victim!=null)
-        {
-            if(newMOB.getVictim()!=victim) newMOB.setVictim(victim);
-            newMOB.location().showOthers(newMOB,victim,CMMsg.MSG_OK_ACTION,"<S-NAME> start(s) attacking <T-NAMESELF>!");
-        }
+		CMLib.commands().postFollow(newMOB,caster,true);
+		if(newMOB.amFollowing()!=caster)
+			caster.tell(newMOB.name()+" seems unwilling to follow you.");
+		else
+		if(victim!=null)
+		{
+			if(newMOB.getVictim()!=victim) newMOB.setVictim(victim);
+			newMOB.location().showOthers(newMOB,victim,CMMsg.MSG_OK_ACTION,"<S-NAME> start(s) attacking <T-NAMESELF>!");
+		}
 		return(newMOB);
 
 

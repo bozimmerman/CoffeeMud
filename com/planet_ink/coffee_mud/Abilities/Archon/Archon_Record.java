@@ -26,7 +26,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -105,29 +105,29 @@ public class Archon_Record extends ArchonSkill
 		if(success)
 		{
 			CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MASK_MOVE|CMMsg.TYP_JUSTICE|(auto?CMMsg.MASK_ALWAYS:0),"^F<S-NAME> begin(s) recording <T-NAMESELF>.^?");
-            CMLib.color().fixSourceFightColor(msg);
+			CMLib.color().fixSourceFightColor(msg);
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				String filename="/"+target.Name()+System.currentTimeMillis()+".log";
 				CMFile file=new CMFile(filename,null,true);
 				if(!file.canWrite())
-                {
-                    if(!CMSecurity.isASysOp(mob)||(CMSecurity.isASysOp(target)))
-    	                Log.sysOut("Record",mob.name()+" failed to start recording "+target.name()+".");
-                }
+				{
+					if(!CMSecurity.isASysOp(mob)||(CMSecurity.isASysOp(target)))
+						Log.sysOut("Record",mob.name()+" failed to start recording "+target.name()+".");
+				}
 				else
 				{
-                    if(!CMSecurity.isASysOp(mob)||(CMSecurity.isASysOp(target)))
-    	                Log.sysOut("Record",mob.name()+" started recording "+target.name()+" to /"+filename+".");
+					if(!CMSecurity.isASysOp(mob)||(CMSecurity.isASysOp(target)))
+						Log.sysOut("Record",mob.name()+" started recording "+target.name()+" to /"+filename+".");
 					Archon_Record A2=(Archon_Record)copyOf();
 					Session F=(Session)CMClass.getCommon("FakeSession");
-                    F.initializeSession(null,filename);
-                    if(target.session()==null)
-                		target.setSession(F);
+					F.initializeSession(null,filename);
+					if(target.session()==null)
+						target.setSession(F);
 					A2.sess=F;
-	                target.addNonUninvokableEffect(A2);
-	                mob.tell("Enter RECORD "+target.Name()+" again to stop recording.");
+					target.addNonUninvokableEffect(A2);
+					mob.tell("Enter RECORD "+target.Name()+" again to stop recording.");
 				}
 			}
 		}

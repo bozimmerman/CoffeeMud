@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -45,35 +45,35 @@ public class Thief_Snipe extends ThiefSkill
 	public String[] triggerStrings(){return triggerStrings;}
 	protected int overrideMana(){return 100;}
 	public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
-    public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_DIRTYFIGHTING;}
+	public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_DIRTYFIGHTING;}
 
-    public int castingQuality(MOB mob, Physical target)
-    {
-        if(mob!=null)
-        {
-            if(mob.isInCombat())
-                return Ability.QUALITY_INDIFFERENT;
-            if(CMLib.flags().isSitting(mob))
-                return Ability.QUALITY_INDIFFERENT;
-            if(!CMLib.flags().aliveAwakeMobileUnbound(mob,false))
-                return Ability.QUALITY_INDIFFERENT;
-            if(target instanceof MOB)
-            {
-                if(CMLib.flags().canBeSeenBy(mob,(MOB)target))
-                    return Ability.QUALITY_INDIFFERENT;
-                Item w=mob.fetchWieldedItem();
-                if((w==null)
-                ||(!(w instanceof Weapon)))
-                    return Ability.QUALITY_INDIFFERENT;
-                Weapon ww=(Weapon)w;
-                if(((ww.weaponClassification()!=Weapon.CLASS_RANGED)&&(ww.weaponClassification()!=Weapon.CLASS_THROWN))
-                ||(w.maxRange()<=0))
-                    return Ability.QUALITY_INDIFFERENT;
-                return Ability.QUALITY_MALICIOUS;
-            }
-        }
-        return super.castingQuality(mob,target);
-    }
+	public int castingQuality(MOB mob, Physical target)
+	{
+		if(mob!=null)
+		{
+			if(mob.isInCombat())
+				return Ability.QUALITY_INDIFFERENT;
+			if(CMLib.flags().isSitting(mob))
+				return Ability.QUALITY_INDIFFERENT;
+			if(!CMLib.flags().aliveAwakeMobileUnbound(mob,false))
+				return Ability.QUALITY_INDIFFERENT;
+			if(target instanceof MOB)
+			{
+				if(CMLib.flags().canBeSeenBy(mob,(MOB)target))
+					return Ability.QUALITY_INDIFFERENT;
+				Item w=mob.fetchWieldedItem();
+				if((w==null)
+				||(!(w instanceof Weapon)))
+					return Ability.QUALITY_INDIFFERENT;
+				Weapon ww=(Weapon)w;
+				if(((ww.weaponClassification()!=Weapon.CLASS_RANGED)&&(ww.weaponClassification()!=Weapon.CLASS_THROWN))
+				||(w.maxRange()<=0))
+					return Ability.QUALITY_INDIFFERENT;
+				return Ability.QUALITY_MALICIOUS;
+			}
+		}
+		return super.castingQuality(mob,target);
+	}
 
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
@@ -85,13 +85,13 @@ public class Thief_Snipe extends ThiefSkill
 		MOB target=getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 
-        if(CMLib.flags().isSitting(mob))
-        {
-            mob.tell("You need to stand up!");
-            return false;
-        }
-        if(!CMLib.flags().aliveAwakeMobileUnbound(mob,false))
-            return false;
+		if(CMLib.flags().isSitting(mob))
+		{
+			mob.tell("You need to stand up!");
+			return false;
+		}
+		if(!CMLib.flags().aliveAwakeMobileUnbound(mob,false))
+			return false;
 		if(CMLib.flags().canBeSeenBy(mob,target))
 		{
 			mob.tell(target.name()+" is watching you too closely.");
@@ -123,13 +123,13 @@ public class Thief_Snipe extends ThiefSkill
 		CMMsg msg=CMClass.getMsg(mob,target,this,code,str,otherCode,otherStr,otherCode,otherStr);
 		if(mob.location().okMessage(mob,msg))
 		{
-		    boolean alwaysInvis=CMath.bset(mob.basePhyStats().disposition(),PhyStats.IS_INVISIBLE);
-		    if(!alwaysInvis) mob.basePhyStats().setDisposition(mob.basePhyStats().disposition()|PhyStats.IS_INVISIBLE);
-		    mob.recoverPhyStats();
-		    mob.location().send(mob,msg);
-		    CMLib.combat().postAttack(mob,target,w);
-		    if(!alwaysInvis) mob.basePhyStats().setDisposition(mob.basePhyStats().disposition()-PhyStats.IS_INVISIBLE);
-		    mob.recoverPhyStats();
+			boolean alwaysInvis=CMath.bset(mob.basePhyStats().disposition(),PhyStats.IS_INVISIBLE);
+			if(!alwaysInvis) mob.basePhyStats().setDisposition(mob.basePhyStats().disposition()|PhyStats.IS_INVISIBLE);
+			mob.recoverPhyStats();
+			mob.location().send(mob,msg);
+			CMLib.combat().postAttack(mob,target,w);
+			if(!alwaysInvis) mob.basePhyStats().setDisposition(mob.basePhyStats().disposition()-PhyStats.IS_INVISIBLE);
+			mob.recoverPhyStats();
 			if(success)
 			{
 				MOB oldVictim=target.getVictim();

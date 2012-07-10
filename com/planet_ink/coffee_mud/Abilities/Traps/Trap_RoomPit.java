@@ -23,7 +23,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -79,8 +79,8 @@ public class Trap_RoomPit extends StdTrap
 			R1.rawDoors()[Directions.UP]=null;
 			R1.setRawExit(Directions.UP,null);
 			pit=null;
-            R1.destroy();
-            R2.destroy();
+			R1.destroy();
+			R2.destroy();
 			super.unInvoke();
 		}
 		else
@@ -90,20 +90,20 @@ public class Trap_RoomPit extends StdTrap
 		}
 	}
 
-    public boolean canSetTrapOn(MOB mob, Physical P)
-    {
-        if(!super.canSetTrapOn(mob,P)) return false;
-        if(P instanceof Room)
-        {
-            if(((Room)P).getRoomInDir(Directions.DOWN)!=null)
-            {
-                mob.tell("The flooring here won't support a pit.");
-                return false;
-            }
-        }
-        return true;
-    }
-    
+	public boolean canSetTrapOn(MOB mob, Physical P)
+	{
+		if(!super.canSetTrapOn(mob,P)) return false;
+		if(P instanceof Room)
+		{
+			if(((Room)P).getRoomInDir(Directions.DOWN)!=null)
+			{
+				mob.tell("The flooring here won't support a pit.");
+				return false;
+			}
+		}
+		return true;
+	}
+	
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if((unInvoked)&&(canBeUninvoked()))

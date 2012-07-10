@@ -23,7 +23,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -34,97 +34,97 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Alias extends StdCommand
 {
-    private final String[] access={"ALIAS"};
-    public String[] getAccessWords(){return access;}
-    public boolean execute(MOB mob, Vector commands, int metaFlags)
-        throws java.io.IOException
-    {
-        if((mob.playerStats()==null)||(mob.session()==null))
-            return false;
-        PlayerStats ps=mob.playerStats();
-        while((mob.session()!=null)&&(!mob.session().isStopped()))
-        {
-            StringBuffer menu=new StringBuffer("^xAlias definitions:^.^?\n\r");
-            String[] aliasNames=ps.getAliasNames();
-            for(int i=0;i<aliasNames.length;i++)
-                menu.append(CMStrings.padRight((i+1)+". "+aliasNames[i],15)+": "+ps.getAlias(aliasNames[i])+"\n\r");
-            menu.append((aliasNames.length+1)+". Add a new alias\n\r");
-            mob.tell(menu.toString());
-            String which=mob.session().prompt("Enter a selection: ","");
-            if(which.length()==0)
-                break;
-            int num=CMath.s_int(which);
-            String selection=null;
-            if((num>0)&&(num<=(aliasNames.length)))
-            {
-                selection=aliasNames[num-1];
-                if(mob.session().choose("\n\rAlias selected '"+selection+"'.\n\rWould you like to D)elete or M)odify this alias (d/M)? ","MD","M").equals("D"))
-                {
-                    ps.delAliasName(selection);
-                    mob.tell("Alias deleted.");
-                    selection=null;
-                }
-            }
-            else
-            if(num<=0)
-                break;
-            else
-            {
-               selection=mob.session().prompt("Enter a new alias string consisting of letters and numbers only.\n\r: ","").trim().toUpperCase();
-               if(selection.length()==0)
-                   selection=null;
-               else
-               if(ps.getAlias(selection).length()>0)
-               {
-                   selection=null;
-                   mob.tell("That alias already exists.  Select it from the menu to delete or modify.");
-               }
-               else
-               if(CMParms.contains(access,selection.toUpperCase()))
-               {
-                   selection=null;
-                   mob.tell("You may not alias alias.");
-               }
-               else
-               {
-                   for(int i=0;i<selection.length();i++)
-                       if(!Character.isLetterOrDigit(selection.charAt(i)))
-                       {
-                           selection=null;
-                           break;
-                       }
-                   if(selection==null)
-                       mob.tell("Your alias name may only contain letters and numbers without spaces. ");
-                   else
-                       ps.addAliasName(selection);
-               }
-            }
-            if(selection!=null)
-            {
-                mob.session().rawPrintln("Enter a value for alias '"+selection+"'.  Use ~ to separate commands.");
-                String value=mob.session().prompt(": ","").trim();
-                value=CMStrings.replaceAll(value,"<","");
-                value=CMStrings.replaceAll(value,"&","");
-                if((value.length()==0)&&(ps.getAlias(selection).length()>0))
-                    mob.tell("(No change)");
-                else
-                if(value.length()==0)
-                {
-                    mob.tell("Aborted.");
-                    ps.delAliasName(selection);
-                }
-                else
-                {
-                    ps.setAlias(selection,value);
-                    mob.tell("The alias was successfully changed.");
-                }
-            }
-        }
-        return true;
-    }
-    
-    public boolean canBeOrdered(){return true;}
+	private final String[] access={"ALIAS"};
+	public String[] getAccessWords(){return access;}
+	public boolean execute(MOB mob, Vector commands, int metaFlags)
+		throws java.io.IOException
+	{
+		if((mob.playerStats()==null)||(mob.session()==null))
+			return false;
+		PlayerStats ps=mob.playerStats();
+		while((mob.session()!=null)&&(!mob.session().isStopped()))
+		{
+			StringBuffer menu=new StringBuffer("^xAlias definitions:^.^?\n\r");
+			String[] aliasNames=ps.getAliasNames();
+			for(int i=0;i<aliasNames.length;i++)
+				menu.append(CMStrings.padRight((i+1)+". "+aliasNames[i],15)+": "+ps.getAlias(aliasNames[i])+"\n\r");
+			menu.append((aliasNames.length+1)+". Add a new alias\n\r");
+			mob.tell(menu.toString());
+			String which=mob.session().prompt("Enter a selection: ","");
+			if(which.length()==0)
+				break;
+			int num=CMath.s_int(which);
+			String selection=null;
+			if((num>0)&&(num<=(aliasNames.length)))
+			{
+				selection=aliasNames[num-1];
+				if(mob.session().choose("\n\rAlias selected '"+selection+"'.\n\rWould you like to D)elete or M)odify this alias (d/M)? ","MD","M").equals("D"))
+				{
+					ps.delAliasName(selection);
+					mob.tell("Alias deleted.");
+					selection=null;
+				}
+			}
+			else
+			if(num<=0)
+				break;
+			else
+			{
+			   selection=mob.session().prompt("Enter a new alias string consisting of letters and numbers only.\n\r: ","").trim().toUpperCase();
+			   if(selection.length()==0)
+				   selection=null;
+			   else
+			   if(ps.getAlias(selection).length()>0)
+			   {
+				   selection=null;
+				   mob.tell("That alias already exists.  Select it from the menu to delete or modify.");
+			   }
+			   else
+			   if(CMParms.contains(access,selection.toUpperCase()))
+			   {
+				   selection=null;
+				   mob.tell("You may not alias alias.");
+			   }
+			   else
+			   {
+				   for(int i=0;i<selection.length();i++)
+					   if(!Character.isLetterOrDigit(selection.charAt(i)))
+					   {
+						   selection=null;
+						   break;
+					   }
+				   if(selection==null)
+					   mob.tell("Your alias name may only contain letters and numbers without spaces. ");
+				   else
+					   ps.addAliasName(selection);
+			   }
+			}
+			if(selection!=null)
+			{
+				mob.session().rawPrintln("Enter a value for alias '"+selection+"'.  Use ~ to separate commands.");
+				String value=mob.session().prompt(": ","").trim();
+				value=CMStrings.replaceAll(value,"<","");
+				value=CMStrings.replaceAll(value,"&","");
+				if((value.length()==0)&&(ps.getAlias(selection).length()>0))
+					mob.tell("(No change)");
+				else
+				if(value.length()==0)
+				{
+					mob.tell("Aborted.");
+					ps.delAliasName(selection);
+				}
+				else
+				{
+					ps.setAlias(selection,value);
+					mob.tell("The alias was successfully changed.");
+				}
+			}
+		}
+		return true;
+	}
+	
+	public boolean canBeOrdered(){return true;}
 
-    
+	
 }
 

@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -35,47 +35,47 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Thief_AutoMarkTraps extends Thief_AutoDetectTraps
 {
-    public String ID() { return "Thief_AutoMarkTraps"; }
-    public String displayText() {return "(Automarking traps)";}
-    public String name(){ return "AutoMark Traps";}
-    private static final String[] triggerStrings = {"AUTOMARKTRAPS"};
-    public String[] triggerStrings(){return triggerStrings;}
-    protected String skillName(){return "mark";}
+	public String ID() { return "Thief_AutoMarkTraps"; }
+	public String displayText() {return "(Automarking traps)";}
+	public String name(){ return "AutoMark Traps";}
+	private static final String[] triggerStrings = {"AUTOMARKTRAPS"};
+	public String[] triggerStrings(){return triggerStrings;}
+	protected String skillName(){return "mark";}
 
-    public void dropem(MOB mob, Physical P)
-    {
-        Ability A=mob.fetchAbility("Thief_DetectTraps");
-        if(A==null)
-        {
-            A=CMClass.getAbility("Thief_DetectTraps");
-            A.setProficiency(100);
-        }
-        CharState savedState=(CharState)mob.curState().copyOf();
-        if(A.invoke(mob,P,false,0))
-        {
-            A=mob.fetchAbility("Thief_MarkTraps");
-            if(A==null)
-            {
-                A=CMClass.getAbility("Thief_MarkTraps");
-                A.setProficiency(100);
-            }
-            A.invoke(mob,P,false,0);
-        }
-        mob.curState().setMana(savedState.getMana());
-        mob.curState().setHitPoints(savedState.getHitPoints());
-        mob.curState().setMana(savedState.getMovement());
-    }
-    
-    public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
-    {
-        MOB target=(givenTarget instanceof MOB)?(MOB)givenTarget:mob;
-        if((!auto)&&(target.fetchAbility("Thief_MarkTraps")==null))
-        {
-            target.tell("You don't know how to mark traps yet!");
-            return false;
-        }
-        if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
-            return false;
-        return true;
-    }
+	public void dropem(MOB mob, Physical P)
+	{
+		Ability A=mob.fetchAbility("Thief_DetectTraps");
+		if(A==null)
+		{
+			A=CMClass.getAbility("Thief_DetectTraps");
+			A.setProficiency(100);
+		}
+		CharState savedState=(CharState)mob.curState().copyOf();
+		if(A.invoke(mob,P,false,0))
+		{
+			A=mob.fetchAbility("Thief_MarkTraps");
+			if(A==null)
+			{
+				A=CMClass.getAbility("Thief_MarkTraps");
+				A.setProficiency(100);
+			}
+			A.invoke(mob,P,false,0);
+		}
+		mob.curState().setMana(savedState.getMana());
+		mob.curState().setHitPoints(savedState.getHitPoints());
+		mob.curState().setMana(savedState.getMovement());
+	}
+	
+	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
+	{
+		MOB target=(givenTarget instanceof MOB)?(MOB)givenTarget:mob;
+		if((!auto)&&(target.fetchAbility("Thief_MarkTraps")==null))
+		{
+			target.tell("You don't know how to mark traps yet!");
+			return false;
+		}
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
+			return false;
+		return true;
+	}
 }

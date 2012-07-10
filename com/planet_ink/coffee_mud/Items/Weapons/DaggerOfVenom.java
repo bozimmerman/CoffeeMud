@@ -23,7 +23,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -41,7 +41,7 @@ public class DaggerOfVenom extends Dagger
 		setName("a small dagger");
 		setDisplayText("a sharp little dagger lies here.");
 		setDescription("It has a wooden handle and a metal blade.");
-        secretIdentity="A Dagger of Venom (Periodically injects poison on a successful hit.)";
+		secretIdentity="A Dagger of Venom (Periodically injects poison on a successful hit.)";
 		basePhyStats().setAbility(0);
 		basePhyStats().setLevel(1);
 		basePhyStats.setWeight(1);
@@ -49,7 +49,7 @@ public class DaggerOfVenom extends Dagger
 		basePhyStats().setAttackAdjustment(0);
 		basePhyStats().setDamage(4);
 		material=RawMaterial.RESOURCE_STEEL;
-        basePhyStats().setDisposition(basePhyStats().disposition()|PhyStats.IS_BONUS);
+		basePhyStats().setDisposition(basePhyStats().disposition()|PhyStats.IS_BONUS);
 		weaponType=Weapon.TYPE_PIERCING;
 		weaponClassification=Weapon.CLASS_DAGGER;
 		recoverPhyStats();
@@ -65,12 +65,12 @@ public class DaggerOfVenom extends Dagger
 		   &&(msg.tool()==this)
 		   &&(msg.target() instanceof MOB))
 		{
-            int chance = (int)Math.round(Math.random() * 20.0);
-            if(chance == 10)
-            {
-                Ability poison = CMClass.getAbility("Poison");
-	            if(poison!=null) poison.invoke(msg.source(),(MOB)msg.target(), true,phyStats().level());
-            }
+			int chance = (int)Math.round(Math.random() * 20.0);
+			if(chance == 10)
+			{
+				Ability poison = CMClass.getAbility("Poison");
+				if(poison!=null) poison.invoke(msg.source(),(MOB)msg.target(), true,phyStats().level());
+			}
 		}
 	}
 

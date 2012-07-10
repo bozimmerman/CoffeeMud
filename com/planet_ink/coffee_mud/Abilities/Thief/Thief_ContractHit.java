@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -43,7 +43,7 @@ public class Thief_ContractHit extends ThiefSkill
 	private static final String[] triggerStrings = {"CONTRACTHIT"};
 	public String[] triggerStrings(){return triggerStrings;}
 	protected boolean disregardsArmorCheck(MOB mob){return true;}
-    public int classificationCode() {   return Ability.ACODE_SKILL|Ability.DOMAIN_CRIMINAL; }
+	public int classificationCode() {   return Ability.ACODE_SKILL|Ability.DOMAIN_CRIMINAL; }
 	public String displayText(){return "";}
 	protected boolean done=false;
 	protected boolean readyToHit=false;
@@ -165,22 +165,22 @@ public class Thief_ContractHit extends ThiefSkill
 		}
 	}
 
-    public int castingQuality(MOB mob, Physical target)
-    {
-        if(mob!=null)
-        {
-            if(!(target instanceof MOB))
-                return Ability.QUALITY_INDIFFERENT;
-            if(mob.location().domainType()!=Room.DOMAIN_OUTDOORS_CITY)
-                return Ability.QUALITY_INDIFFERENT;
-            if(mob.isInCombat())
-                return Ability.QUALITY_INDIFFERENT;
-            if(target==mob)
-                return Ability.QUALITY_INDIFFERENT;
-        }
-        return super.castingQuality(mob,target);
-    }
-    
+	public int castingQuality(MOB mob, Physical target)
+	{
+		if(mob!=null)
+		{
+			if(!(target instanceof MOB))
+				return Ability.QUALITY_INDIFFERENT;
+			if(mob.location().domainType()!=Room.DOMAIN_OUTDOORS_CITY)
+				return Ability.QUALITY_INDIFFERENT;
+			if(mob.isInCombat())
+				return Ability.QUALITY_INDIFFERENT;
+			if(target==mob)
+				return Ability.QUALITY_INDIFFERENT;
+		}
+		return super.castingQuality(mob,target);
+	}
+	
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if(commands.size()<1)
@@ -194,16 +194,16 @@ public class Thief_ContractHit extends ThiefSkill
 			mob.tell("You need to be on the streets to put out a hit.");
 			return false;
 		}
-        if(mob.isInCombat())
-        {
-            mob.tell("You are too busy to get that done right now.");
-            return false;
-        }
+		if(mob.isInCombat())
+		{
+			mob.tell("You are too busy to get that done right now.");
+			return false;
+		}
 
-        List<MOB> V=new Vector();
+		List<MOB> V=new Vector();
 		try {
-	    	V=CMLib.map().findInhabitants(CMLib.map().rooms(), mob,CMParms.combine(commands,0), 10);
-	    }catch(NoSuchElementException nse){}
+			V=CMLib.map().findInhabitants(CMLib.map().rooms(), mob,CMParms.combine(commands,0), 10);
+		}catch(NoSuchElementException nse){}
 		MOB target=null;
 		if(V.size()>0)
 			target=(MOB)V.get(CMLib.dice().roll(1,V.size(),-1));
@@ -229,7 +229,7 @@ public class Thief_ContractHit extends ThiefSkill
 		String localCurrency=CMLib.beanCounter().getCurrency(mob.location());
 		if(CMLib.beanCounter().getTotalAbsoluteValue(mob,localCurrency)<goldRequired)
 		{
-		    String costWords=CMLib.beanCounter().nameCurrencyShort(localCurrency,goldRequired);
+			String costWords=CMLib.beanCounter().nameCurrencyShort(localCurrency,goldRequired);
 			mob.tell("You'll need at least "+costWords+" to put a hit out on "+target.name()+".");
 			return false;
 		}
@@ -238,8 +238,8 @@ public class Thief_ContractHit extends ThiefSkill
 			return false;
 
 		int levelDiff=target.phyStats().level()-(mob.phyStats().level()+(2*super.getXLEVELLevel(mob)));
-        if(levelDiff<0) levelDiff=0;
-        levelDiff*=10;
+		if(levelDiff<0) levelDiff=0;
+		levelDiff*=10;
 		boolean success=proficiencyCheck(mob,-levelDiff,auto);
 
 		CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MASK_ALWAYS|CMMsg.MSG_THIEF_ACT,CMMsg.MSG_THIEF_ACT,CMMsg.MSG_THIEF_ACT,"<S-NAME> whisper(s) to a dark figure stepping out of the shadows.  The person nods and slips away.");

@@ -27,7 +27,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -42,7 +42,7 @@ public class Pregnancy extends StdAbility
 	public String ID() { return "Pregnancy"; }
 	public String name(){ return "Pregnancy";}
 	protected long monthsRemaining=-1;
-    protected long daysRemaining=-1;
+	protected long daysRemaining=-1;
 
 	public String displayText()
 	{
@@ -73,9 +73,9 @@ public class Pregnancy extends StdAbility
 	public String[] triggerStrings(){return triggerStrings;}
 	public boolean canBeUninvoked(){return false;}
 	public boolean isAutoInvoked(){return false;}
-    public boolean isSavable(){ return true; }
+	public boolean isSavable(){ return true; }
 	public int classificationCode(){return Ability.ACODE_PROPERTY;}
-    protected int ticksInLabor=0;
+	protected int ticksInLabor=0;
 
 
 	public void executeMsg(Environmental host, CMMsg msg)
@@ -186,11 +186,11 @@ public class Pregnancy extends StdAbility
 					long divisor=CMProps.getTickMillis()*CMProps.getIntVar(CMProps.SYSTEMI_TICKSPERMUDDAY);
 					daysRemaining=(end-System.currentTimeMillis())/divisor; // down to days
 					monthsRemaining=daysRemaining/CMLib.time().globalClock().getDaysInMonth(); // down to months
-                    if(CMLib.dice().roll(1,200,0)==1)
-                    {
-                        Ability A=CMClass.getAbility("Mood");
-                        if(A!=null) A.invoke(mob,new XVector("RANDOM"),mob,true,0);
-                    }
+					if(CMLib.dice().roll(1,200,0)==1)
+					{
+						Ability A=CMClass.getAbility("Mood");
+						if(A!=null) A.invoke(mob,new XVector("RANDOM"),mob,true,0);
+					}
 					if(daysRemaining<7) // BIRTH!
 					{
 						if(CMLib.flags().isSleeping(mob))
@@ -204,22 +204,22 @@ public class Pregnancy extends StdAbility
 							String race1=mob.baseCharStats().getMyRace().ID();
 							char gender='F';
 							String sondat="daughter";
-                            MOB babe=CMClass.getMOB("GenMOB");
+							MOB babe=CMClass.getMOB("GenMOB");
 							if(CMLib.dice().rollPercentage()>50){
 								gender='M';
 								sondat="son";
 							}
 							String desc="The "+sondat+" of "+mob.Name();
-                            babe.addTattoo(new MOB.Tattoo("PARENT:"+mob.Name()));
+							babe.addTattoo(new MOB.Tattoo("PARENT:"+mob.Name()));
 							String race2=mob.baseCharStats().getMyRace().ID();
-                            MOB otherParentM=null;
+							MOB otherParentM=null;
 							if(z>y)
 							{
 								race2=text().substring(z+1).trim();
-                                otherParentM=CMLib.players().getLoadPlayer(text().substring(y+1,z));
+								otherParentM=CMLib.players().getLoadPlayer(text().substring(y+1,z));
 								desc+=" and "+text().substring(y+1,z);
-                                if(otherParentM != null)
-                                    babe.addTattoo(new MOB.Tattoo("PARENT:"+otherParentM.Name()));
+								if(otherParentM != null)
+									babe.addTattoo(new MOB.Tattoo("PARENT:"+otherParentM.Name()));
 							}
 							desc+=".";
 							mob.curState().setMovement(0);
@@ -230,13 +230,13 @@ public class Pregnancy extends StdAbility
 								Ability A=mob.fetchEffect(ID());
 								while(A!=null){
 									mob.delEffect(A);
-								    A.setAffectedOne(null);
+									A.setAffectedOne(null);
 									A=mob.fetchEffect(ID());
 								}
 								A=mob.fetchAbility(ID());
 								while(A!=null){
 									mob.delAbility(A);
-								    A.setAffectedOne(null);
+									A.setAffectedOne(null);
 									A=mob.fetchAbility(ID());
 								}
 							}
@@ -266,17 +266,17 @@ public class Pregnancy extends StdAbility
 							babe.baseState().setMovement(0);
 							if(CMLib.dice().rollPercentage()>50)
 							{
-							    Ability A=mob.fetchEffect("Allergies");
-							    if(A!=null)
-							    {
-							        A=(Ability)A.copyOf();
-							        babe.addNonUninvokableEffect(A);
-							    }
-							    else
-							    {
-							        A=CMClass.getAbility("Allergies");
-							        if(A!=null) A.invoke(babe,babe,true,0);
-							    }
+								Ability A=mob.fetchEffect("Allergies");
+								if(A!=null)
+								{
+									A=(Ability)A.copyOf();
+									babe.addNonUninvokableEffect(A);
+								}
+								else
+								{
+									A=CMClass.getAbility("Allergies");
+									if(A!=null) A.invoke(babe,babe,true,0);
+								}
 							}
 							Ability STAT=CMClass.getAbility("Prop_StatTrainer");
 							if(STAT!=null)
@@ -313,18 +313,18 @@ public class Pregnancy extends StdAbility
 								CMLib.coffeeTables().bump(mob,CoffeeTableRow.STAT_BIRTHS);
 								if((CMLib.dice().rollPercentage()<20)&&(mob.fetchEffect("Disease_Depression")==null))
 								{
-								    Ability A=CMClass.getAbility("Disease_Depression");
-								    if(A!=null) A.invoke(mob,mob,true,0);
+									Ability A=CMClass.getAbility("Disease_Depression");
+									if(A!=null) A.invoke(mob,mob,true,0);
 								}
 							}
-                            List<String> channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.BIRTHS);
-                            for(int i=0;i<channels.size();i++)
-                                CMLib.commands().postChannel(mob,(String)channels.get(i),mob.name()+" has just given birth to "+I.name()+"!",true);
-                            String parent=mob.Name();
-                            if(mob.isMonster()&&(otherParentM!=null))
-                                parent=otherParentM.Name();
-                            if(AGE!=null)
-                            	CMLib.database().DBCreateData(parent,"HEAVEN",parent+"/HEAVEN/"+AGE.text(),I.ID()+"/"+I.basePhyStats().ability()+"/"+I.text());
+							List<String> channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.BIRTHS);
+							for(int i=0;i<channels.size();i++)
+								CMLib.commands().postChannel(mob,(String)channels.get(i),mob.name()+" has just given birth to "+I.name()+"!",true);
+							String parent=mob.Name();
+							if(mob.isMonster()&&(otherParentM!=null))
+								parent=otherParentM.Name();
+							if(AGE!=null)
+								CMLib.database().DBCreateData(parent,"HEAVEN",parent+"/HEAVEN/"+AGE.text(),I.ID()+"/"+I.basePhyStats().ability()+"/"+I.text());
 						}
 						else
 							mob.tell("You are in labor!!");
@@ -385,10 +385,10 @@ public class Pregnancy extends StdAbility
 			if(mob.location().show(mob,target,this,CMMsg.TYP_GENERAL,auto?null:"<S-NAME> imgregnate(s) <T-NAMESELF>."))
 			{
 				setMiscText(start+"/"+end+"/"+mob.Name()+"/"+mob.charStats().getMyRace().ID());
-                List<String> channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.CONCEPTIONS);
-                for(int i=0;i<channels.size();i++)
-                    CMLib.commands().postChannel((String)channels.get(i),mob.getClanID(),target.name()+" is now in a 'family way'.",true);
-                target.addNonUninvokableEffect((Ability)copyOf());
+				List<String> channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.CONCEPTIONS);
+				for(int i=0;i<channels.size();i++)
+					CMLib.commands().postChannel((String)channels.get(i),mob.getClanID(),target.name()+" is now in a 'family way'.",true);
+				target.addNonUninvokableEffect((Ability)copyOf());
 			}
 		}
 		else

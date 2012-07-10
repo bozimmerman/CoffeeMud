@@ -25,7 +25,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -38,7 +38,7 @@ public class Song_Lightness extends Song
 	public String ID() { return "Song_Lightness"; }
 	public String name(){ return "Lightness";}
 	public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
-    protected boolean HAS_QUANTITATIVE_ASPECT(){return false;}
+	protected boolean HAS_QUANTITATIVE_ASPECT(){return false;}
 
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
@@ -91,13 +91,13 @@ public class Song_Lightness extends Song
 			mob.tell("Your normal weight returns.");
 	}
 	
-    public int castingQuality(MOB mob, Physical target)
-    {
-        if(mob!=null)
-        {
-            if(mob.isInCombat()&&(mob.isMonster()))
-                return Ability.QUALITY_INDIFFERENT;
-        }
-        return super.castingQuality(mob,target);
-    }
+	public int castingQuality(MOB mob, Physical target)
+	{
+		if(mob!=null)
+		{
+			if(mob.isInCombat()&&(mob.isMonster()))
+				return Ability.QUALITY_INDIFFERENT;
+		}
+		return super.castingQuality(mob,target);
+	}
 }

@@ -29,7 +29,7 @@ import java.nio.channels.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -109,35 +109,35 @@ public class CM1Server extends Thread
 					   Iterator<SelectionKey> it = servSelector.selectedKeys().iterator();
 					   while (it.hasNext()) 
 					   {
-					      SelectionKey key = it.next();
-					      if (key.isAcceptable()) 
-					      {
-					         ServerSocketChannel server = (ServerSocketChannel) key.channel();
-					         SocketChannel channel = server.accept();
-					         if (channel != null) 
-					         {
-					            RequestHandler handler=new RequestHandler(channel,page.getInt("IDLETIMEOUTMINS"));
-					            channel.configureBlocking (false);
-					            channel.register (servSelector, SelectionKey.OP_READ, handler);
-					            handlers.put(channel,handler);
-						        handler.sendMsg("CONNECTED TO "+name.toUpperCase());
-					         } 
-					         //sayHello (channel);
-					      }
-					      try
-					      {
-						      if (key.isReadable()) 
-						      {
-						    	  RequestHandler handler = (RequestHandler)key.attachment();
-						    	  if((!handler.isRunning())&&(!handler.needsClosing()))
+						  SelectionKey key = it.next();
+						  if (key.isAcceptable()) 
+						  {
+							 ServerSocketChannel server = (ServerSocketChannel) key.channel();
+							 SocketChannel channel = server.accept();
+							 if (channel != null) 
+							 {
+								RequestHandler handler=new RequestHandler(channel,page.getInt("IDLETIMEOUTMINS"));
+								channel.configureBlocking (false);
+								channel.register (servSelector, SelectionKey.OP_READ, handler);
+								handlers.put(channel,handler);
+								handler.sendMsg("CONNECTED TO "+name.toUpperCase());
+							 } 
+							 //sayHello (channel);
+						  }
+						  try
+						  {
+							  if (key.isReadable()) 
+							  {
+								  RequestHandler handler = (RequestHandler)key.attachment();
+								  if((!handler.isRunning())&&(!handler.needsClosing()))
 							  		  CMLib.threads().executeRunnable(handler);
-						      }
-					      }
-					      finally
-					      {
-						      it.remove();
-					      }
-					    }
+							  }
+						  }
+						  finally
+						  {
+							  it.remove();
+						  }
+						}
 						for(SocketChannel schan : handlers.keySet())
 							try
 							{

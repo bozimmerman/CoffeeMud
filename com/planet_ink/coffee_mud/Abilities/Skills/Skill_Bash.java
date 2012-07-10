@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -42,7 +42,7 @@ public class Skill_Bash extends StdSkill
 	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	private static final String[] triggerStrings = {"BASH"};
 	public String[] triggerStrings(){return triggerStrings;}
-    public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_SHIELDUSE;}
+	public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_SHIELDUSE;}
 	public int usageType(){return USAGE_MOVEMENT;}
 
 	public int castingQuality(MOB mob, Physical target)
@@ -97,7 +97,7 @@ public class Skill_Bash extends StdSkill
 		{
 			str=auto?"<T-NAME> is bashed!":"^F^<FIGHT^><S-NAME> bash(es) <T-NAMESELF> with "+thisShield.name()+"!^</FIGHT^>^?";
 			CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_JUSTICE|(auto?CMMsg.MASK_ALWAYS:0),str);
-            CMLib.color().fixSourceFightColor(msg);
+			CMLib.color().fixSourceFightColor(msg);
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

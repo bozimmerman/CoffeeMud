@@ -24,7 +24,7 @@ import com.planet_ink.coffee_mud.core.exceptions.HTTPServerException;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -34,33 +34,33 @@ import com.planet_ink.coffee_mud.core.exceptions.HTTPServerException;
 */
 public class FileData extends StdWebMacro
 {
-    public String name()    {return this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);}
+	public String name()	{return this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);}
 
-    public boolean isAWebPath(){return true;}
-    public boolean preferBinary(){return true;}
-    
-    public String getFilename(ExternalHTTPRequests httpReq, String filename)
-    {
-        String path=httpReq.getRequestParameter("PATH");
-        if(path==null) return filename;
-        String file=httpReq.getRequestParameter("FILE");
-        if(file==null) return filename;
-        return path+"/"+file;
-    }
-    
-    public byte[] runBinaryMacro(ExternalHTTPRequests httpReq, String parm) throws HTTPServerException
-    {
-        String filename=getFilename(httpReq,"");
-        if(filename.length()==0) return null;
+	public boolean isAWebPath(){return true;}
+	public boolean preferBinary(){return true;}
+	
+	public String getFilename(ExternalHTTPRequests httpReq, String filename)
+	{
+		String path=httpReq.getRequestParameter("PATH");
+		if(path==null) return filename;
+		String file=httpReq.getRequestParameter("FILE");
+		if(file==null) return filename;
+		return path+"/"+file;
+	}
+	
+	public byte[] runBinaryMacro(ExternalHTTPRequests httpReq, String parm) throws HTTPServerException
+	{
+		String filename=getFilename(httpReq,"");
+		if(filename.length()==0) return null;
 		MOB M = Authenticate.getAuthenticatedMob(httpReq);
-        if(M==null) return null;
-        CMFile F=new CMFile(filename,M,false);
-        if((!F.exists())||(!F.canRead())) return null;
-        return F.raw();
-    }
-    
-    public String runMacro(ExternalHTTPRequests httpReq, String parm) throws HTTPServerException
-    {
-        return "[Unimplemented string method!]";
-    }
+		if(M==null) return null;
+		CMFile F=new CMFile(filename,M,false);
+		if((!F.exists())||(!F.canRead())) return null;
+		return F.raw();
+	}
+	
+	public String runMacro(ExternalHTTPRequests httpReq, String parm) throws HTTPServerException
+	{
+		return "[Unimplemented string method!]";
+	}
 }

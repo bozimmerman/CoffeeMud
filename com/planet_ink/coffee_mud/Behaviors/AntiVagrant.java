@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -35,7 +35,7 @@ import java.util.*;
 public class AntiVagrant extends ActiveTicker
 {
 	public String ID(){return "AntiVagrant";}
-    protected int canImproveCode(){return Behavior.CAN_MOBS;}
+	protected int canImproveCode(){return Behavior.CAN_MOBS;}
 	protected int speakDown=3;
 	protected MOB target=null;
 	protected boolean kickout=false;
@@ -99,7 +99,7 @@ public class AntiVagrant extends ActiveTicker
 				if((mob!=null)
 				&&(mob!=observer)
 				&&((CMLib.flags().isSitting(mob))||(CMLib.flags().isSleeping(mob)))
-                &&(CMLib.flags().canBeSeenBy(mob,observer)))
+				&&(CMLib.flags().canBeSeenBy(mob,observer)))
 				{
 				   target=mob;
 				   break;

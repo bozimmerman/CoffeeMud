@@ -11,13 +11,13 @@ import java.util.*;
 
 /*
 	Written by Robert from The Looking Glass 2005
-    Copyright 2005 Robert
+	Copyright 2005 Robert
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -37,7 +37,7 @@ public class Experience extends StdCommand
 		StringBuffer msg=new StringBuffer("^N");
 
 		if(CMProps.getBoolVar(CMProps.SYSTEMB_ACCOUNTEXPIRATION)&&(mob.playerStats()!=null))
-            msg.append("Your account is Registered and Active until: "+CMLib.time().date2String(mob.playerStats().getAccountExpiration())+"!\n\r");
+			msg.append("Your account is Registered and Active until: "+CMLib.time().date2String(mob.playerStats().getAccountExpiration())+"!\n\r");
 
 		if((!CMSecurity.isDisabled(CMSecurity.DisFlag.EXPERIENCE))
 		&&!mob.charStats().getCurrentClass().expless()

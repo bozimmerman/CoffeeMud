@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -40,7 +40,7 @@ public class Thief_DetectTraps extends ThiefSkill
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return Ability.CAN_ITEMS|Ability.CAN_EXITS;}
 	public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
-    public int classificationCode(){    return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_ALERT;}
+	public int classificationCode(){	return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_ALERT;}
 	private static final String[] triggerStrings = {"CHECK"};
 	public String[] triggerStrings(){return triggerStrings;}
 	protected Environmental lastChecked=null;
@@ -49,17 +49,17 @@ public class Thief_DetectTraps extends ThiefSkill
 	{
 		String whatTounlock=CMParms.combine(commands,0);
 		Physical unlockThis=givenTarget;
-        Room nextRoom=null;
-        int dirCode=-1;
-        if(unlockThis==null)
-        {
-    		dirCode=Directions.getGoodDirectionCode(whatTounlock);
-    		if(dirCode>=0)
-    		{
-    			unlockThis=mob.location().getExitInDir(dirCode);
-    			nextRoom=mob.location().getRoomInDir(dirCode);
-    		}
-        }
+		Room nextRoom=null;
+		int dirCode=-1;
+		if(unlockThis==null)
+		{
+			dirCode=Directions.getGoodDirectionCode(whatTounlock);
+			if(dirCode>=0)
+			{
+				unlockThis=mob.location().getExitInDir(dirCode);
+				nextRoom=mob.location().getRoomInDir(dirCode);
+			}
+		}
 		if((unlockThis==null)&&(whatTounlock.equalsIgnoreCase("room")||whatTounlock.equalsIgnoreCase("here")))
 			unlockThis=mob.location();
 		if(unlockThis==null)
@@ -101,7 +101,7 @@ public class Thief_DetectTraps extends ThiefSkill
 				}
 			}
 		}
-        String add=(dirCode>=0)?" "+Directions.getInDirectionName(dirCode):"";
+		String add=(dirCode>=0)?" "+Directions.getInDirectionName(dirCode):"";
 		CMMsg msg=CMClass.getMsg(mob,unlockThis,this,auto?CMMsg.MSG_OK_ACTION:CMMsg.MSG_DELICATE_HANDS_ACT,auto?null:"<S-NAME> look(s) "+((unlockThis==null)?"":unlockThis.name())+add+" over very carefully.");
 		if((unlockThis!=null)&&(mob.location().okMessage(mob,msg)))
 		{
@@ -109,11 +109,11 @@ public class Thief_DetectTraps extends ThiefSkill
 			if((unlockThis==lastChecked)&&((theTrap==null)||(theTrap.disabled())))
 				setProficiency(oldProficiency);
 			if((!success)||(theTrap==null))
-            {
-                if(!auto)
-    				mob.tell("You don't find any traps on "+unlockThis.name()+add+".");
-                success=false;
-            }
+			{
+				if(!auto)
+					mob.tell("You don't find any traps on "+unlockThis.name()+add+".");
+				success=false;
+			}
 			else
 			{
 				if(theTrap.disabled())
@@ -126,8 +126,8 @@ public class Thief_DetectTraps extends ThiefSkill
 			}
 			lastChecked=unlockThis;
 		}
-        else
-            success=false;
+		else
+			success=false;
 
 		return success;
 	}

@@ -24,7 +24,7 @@ import java.util.Vector;
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *        http://www.apache.org/licenses/LICENSE-2.0
+ *  	  http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -35,46 +35,46 @@ import java.util.Vector;
  */
 @SuppressWarnings("rawtypes")
 public class ChannelListen extends Packet  {
-    public String channel = null;
+	public String channel = null;
 	public String onoff="0";
 	
 	public ChannelListen()
 	{
 		super();
-        type = ChannelPacket.CHAN_LISTEN;
+		type = ChannelPacket.CHAN_LISTEN;
 	}
-    public ChannelListen(Vector v) throws InvalidPacketException {
-        super(v);
-        try {
+	public ChannelListen(Vector v) throws InvalidPacketException {
+		super(v);
+		try {
 			type = ChannelPacket.CHAN_LISTEN;
 			channel = (String)v.elementAt(6);
 			onoff = (String)v.elementAt(7);
-        }
-        catch( ClassCastException e ) {
-            throw new InvalidPacketException();
-        }
-    }
+		}
+		catch( ClassCastException e ) {
+			throw new InvalidPacketException();
+		}
+	}
 
 	
-    public ChannelListen(int t, String chan, String setonoff) {
-        super();
-        type = t;
-        channel = chan;
+	public ChannelListen(int t, String chan, String setonoff) {
+		super();
+		type = t;
+		channel = chan;
 		onoff=setonoff;
-    }
+	}
 
-    public void send() throws InvalidPacketException {
-        if( channel == null  ) {
-            throw new InvalidPacketException();
-        }
-        super.send();
-    }
+	public void send() throws InvalidPacketException {
+		if( channel == null  ) {
+			throw new InvalidPacketException();
+		}
+		super.send();
+	}
 
-    public String toString() {
-        NameServer n = Intermud.getNameServer();
+	public String toString() {
+		NameServer n = Intermud.getNameServer();
 		String str=
 			 "({\"channel-listen\",5,\"" + I3Server.getMudName() + "\",0,\""+n.name+"\",0,\"" + channel + "\"," +
-               onoff + ",})";
+			   onoff + ",})";
 		return str;
-    }
+	}
 }

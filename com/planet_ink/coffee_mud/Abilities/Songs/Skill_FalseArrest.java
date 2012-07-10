@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -43,7 +43,7 @@ public class Skill_FalseArrest extends BardSkill
 	private static final String[] triggerStrings = {"FALSEARREST"};
 	public String[] triggerStrings(){return triggerStrings;}
 	protected int overrideMana(){return 50;}
-    public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_DECEPTIVE;}
+	public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_DECEPTIVE;}
 
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
@@ -60,7 +60,7 @@ public class Skill_FalseArrest extends BardSkill
 			return false;
 		}
 
-        LegalBehavior B=null;
+		LegalBehavior B=null;
 		Area A2=null;
 		if(mob.location()!=null)
 		{
@@ -98,12 +98,12 @@ public class Skill_FalseArrest extends BardSkill
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-        int levelDiff=target.phyStats().level()-(mob.phyStats().level()+abilityCode()+(2*super.getXLEVELLevel(mob)));
-        if(levelDiff>0)
-            levelDiff=levelDiff*5;
-        else
-            levelDiff=0;
-        
+		int levelDiff=target.phyStats().level()-(mob.phyStats().level()+abilityCode()+(2*super.getXLEVELLevel(mob)));
+		if(levelDiff>0)
+			levelDiff=levelDiff*5;
+		else
+			levelDiff=0;
+		
 		boolean success=proficiencyCheck(mob,-levelDiff,auto);
 
 		if(!success)

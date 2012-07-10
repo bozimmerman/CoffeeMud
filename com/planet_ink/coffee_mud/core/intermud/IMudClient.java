@@ -33,7 +33,7 @@ import java.net.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -44,16 +44,16 @@ import java.net.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class IMudClient implements I3Interface
 {
-    public String ID(){return "IMudClient";}
-    public CMObject newInstance(){try{return (CMObject)getClass().newInstance();}catch(Exception e){return new IMudClient();}}
-    public void initializeClass(){}
-    public CMObject copyOf(){try{return (CMObject)this.clone();}catch(Exception e){return newInstance();}}
-    public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
-    public boolean activate(){ return true;}
-    public boolean shutdown(){ return true;}
-    public void propertiesLoaded(){}
-    public ThreadEngine.SupportThread getSupportThread() { return null;}
-    
+	public String ID(){return "IMudClient";}
+	public CMObject newInstance(){try{return (CMObject)getClass().newInstance();}catch(Exception e){return new IMudClient();}}
+	public void initializeClass(){}
+	public CMObject copyOf(){try{return (CMObject)this.clone();}catch(Exception e){return newInstance();}}
+	public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
+	public boolean activate(){ return true;}
+	public boolean shutdown(){ return true;}
+	public void propertiesLoaded(){}
+	public ThreadEngine.SupportThread getSupportThread() { return null;}
+	
 	public IMC2Driver imc2=null;
 	public void registerIMC2(Object O)
 	{ 
@@ -258,7 +258,7 @@ public class IMudClient implements I3Interface
 			tk.target_name=tellName;
 			tk.message=message;
 			if(mob.playerStats()!=null) 
-			    mob.playerStats().addTellStack("You tell "+tellName+" '"+message+"'");
+				mob.playerStats().addTellStack("You tell "+tellName+" '"+message+"'");
 			try{
 			tk.send();
 			}catch(Exception e){Log.errOut("IMudClient",e);}
@@ -269,7 +269,7 @@ public class IMudClient implements I3Interface
 			tellName=CMStrings.capitalizeAndLower(tellName)+"@"+imc2.getIMC2Mud(mudName).name;
 			mob.tell("^CYou tell "+tellName+" '"+message+"'^?");
 			if(mob.playerStats()!=null) 
-			    mob.playerStats().addTellStack("You tell "+tellName+" '"+message+"'");
+				mob.playerStats().addTellStack("You tell "+tellName+" '"+message+"'");
 			imc2.imc_send_tell(mob.name(),tellName,message,0,CMLib.flags().isInvisible(mob)?1:0);
 		}
 		else
@@ -278,14 +278,14 @@ public class IMudClient implements I3Interface
 			return;
 		}
 	}
-    
-    public void destroymob(MOB mob)
-    {
-        if(mob==null) return;
-        Room R=mob.location();
-        mob.destroy();
-        if(R!=null) R.destroy();
-    }
+	
+	public void destroymob(MOB mob)
+	{
+		if(mob==null) return;
+		Room R=mob.location();
+		mob.destroy();
+		if(R!=null) R.destroy();
+	}
 
 	public void i3channel(MOB mob, String channelName, String message)
 	{
@@ -354,20 +354,20 @@ public class IMudClient implements I3Interface
 						ck.target_visible_name=msg.target().name();
 					}
 					if((msg.target()!=null)&&(msg.targetMessage()!=null)&&(msg.targetMessage().length()>0))
-					    ck.message_target=socialFixOut(CMStrings.removeColors(msg.targetMessage()));
+						ck.message_target=socialFixOut(CMStrings.removeColors(msg.targetMessage()));
 					if((msg.othersMessage()!=null)&&(msg.othersMessage().length()>0))
 						ck.message=socialFixOut(CMStrings.removeColors(msg.othersMessage()));
 					else
 						ck.message=socialFixOut(CMStrings.removeColors(msg.sourceMessage()));
 				}
 				else
-                {
-                    if(msgstr.trim().startsWith("'")||msgstr.trim().startsWith("`"))
-                        msgstr=msgstr.trim();
-                    else
-                        msgstr=" "+msgstr.trim();
+				{
+					if(msgstr.trim().startsWith("'")||msgstr.trim().startsWith("`"))
+						msgstr=msgstr.trim();
+					else
+						msgstr=" "+msgstr.trim();
 					ck.message=socialFixOut("<S-NAME>"+msgstr);
-                }
+				}
 				if((ck.target_name!=null)&&(ck.target_name.length()>0))
 					ck.type=Packet.CHAN_TARGET;
 				else
@@ -404,19 +404,19 @@ public class IMudClient implements I3Interface
 						if((mudName==null)||(mudName.length()==0))
 						{
 							mob.tell("You must specify a mud name.");
-                            destroymob(mob2);
+							destroymob(mob2);
 							return;
 						}
 						if((tellName==null)||(tellName.length()<1))
 						{
 							mob.tell("You must specify someone to emote to.");
-                            destroymob(mob2);
+							destroymob(mob2);
 							return;
 						}
 						if(imc2.getIMC2Mud(mudName)==null)
 						{
 							mob.tell(mudName+" is not available.");
-                            destroymob(mob2);
+							destroymob(mob2);
 							return;
 						}
 					}
@@ -430,7 +430,7 @@ public class IMudClient implements I3Interface
 					emote=2;
 				}
 				emote=1;
-                destroymob(mob2);
+				destroymob(mob2);
 			}
 			IMC_CHANNEL c=imc2.getAnIMC2Channel(channelName);
 			imc2.imc_send_chat(mob.name(),c.name,message,c.level,emote);
@@ -628,28 +628,28 @@ public class IMudClient implements I3Interface
 		if((mob==null)||(!imc2online())) return;
 		if(mob.isMonster()) return;
 		StringBuffer buf=new StringBuffer("\n\rIMC2 Channels List:\n\r");
-        Hashtable channels=imc2.query_channels();
-        buf.append(CMStrings.padRight("Name", 22)+CMStrings.padRight("Policy",25)+CMStrings.padRight("Owner",20)+"\n\r");
-        Enumeration e = channels.keys();
-        while (e.hasMoreElements()) {
-            String key = (String) e.nextElement();
-            IMC_CHANNEL r = (IMC_CHANNEL) channels.get(key);
-            if (r != null) {
-                String policy = "final public";
-                if (r.policy == IMC2Driver.CHAN_PRIVATE)
-                    policy = "(private)";
-                else
-                if (r.policy == IMC2Driver.CHAN_COPEN)
-                    policy = "open";
-                else
-                if (r.policy == IMC2Driver.CHAN_CPRIVATE)
-                    policy = "(cprivate)";
+		Hashtable channels=imc2.query_channels();
+		buf.append(CMStrings.padRight("Name", 22)+CMStrings.padRight("Policy",25)+CMStrings.padRight("Owner",20)+"\n\r");
+		Enumeration e = channels.keys();
+		while (e.hasMoreElements()) {
+			String key = (String) e.nextElement();
+			IMC_CHANNEL r = (IMC_CHANNEL) channels.get(key);
+			if (r != null) {
+				String policy = "final public";
+				if (r.policy == IMC2Driver.CHAN_PRIVATE)
+					policy = "(private)";
+				else
+				if (r.policy == IMC2Driver.CHAN_COPEN)
+					policy = "open";
+				else
+				if (r.policy == IMC2Driver.CHAN_CPRIVATE)
+					policy = "(cprivate)";
 
-                buf.append(CMStrings.padRight(key, 22)+
+				buf.append(CMStrings.padRight(key, 22)+
 						   CMStrings.padRight(policy+"("+r.level+")",25)+
 						   r.owner+"\n\r");
-            }
-        }
+			}
+		}
 		mob.session().wraplessPrintln(buf.toString());
 	}
 

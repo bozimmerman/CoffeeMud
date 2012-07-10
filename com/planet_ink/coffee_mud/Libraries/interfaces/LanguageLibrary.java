@@ -25,7 +25,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -35,18 +35,18 @@ import java.util.*;
 */
 public interface LanguageLibrary extends CMLibrary
 {
-    public void clear();
-    public DVector getLanguageParser(String parser);
-    public String finalTranslation(String item);
-    public String sessionTranslation(String item);
-    public String filterTranslation(String item);
-    public DVector getLanguageTranslator(String parser);
-    public void setLocale(String lang, String state);
-    public List<List<String>> preCommandParser(List<String> CMDS);
-    public String preItemParser(String item);
-    public String failedItemParser(String item);
-    
-    public String[][] ISO_LANG_CODES = {
+	public void clear();
+	public DVector getLanguageParser(String parser);
+	public String finalTranslation(String item);
+	public String sessionTranslation(String item);
+	public String filterTranslation(String item);
+	public DVector getLanguageTranslator(String parser);
+	public void setLocale(String lang, String state);
+	public List<List<String>> preCommandParser(List<String> CMDS);
+	public String preItemParser(String item);
+	public String failedItemParser(String item);
+	
+	public String[][] ISO_LANG_CODES = {
 		{"AA","Afar"},
 		{"AB","Abkhazian"},
 		{"AF","Afrikaans"},

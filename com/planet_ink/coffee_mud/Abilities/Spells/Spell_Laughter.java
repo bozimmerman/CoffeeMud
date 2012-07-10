@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -121,8 +121,8 @@ public class Spell_Laughter extends Spell
 				R.send(mob,msg2);
 				if((msg.value()<=0)&&(msg2.value()<=0))
 				{
-                    int ticks=8-levelDiff;
-                    if(ticks<=0) ticks=1;
+					int ticks=8-levelDiff;
+					if(ticks<=0) ticks=1;
 					success=maliciousAffect(mob,target,asLevel,ticks,-1);
 					if(success)
 						if(target.location()==R)

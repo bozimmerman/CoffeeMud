@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -45,7 +45,7 @@ public class Fighter_CircleTrip extends FighterSkill
 	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	private static final String[] triggerStrings = {"CIRCLETRIP","CTRIP"};
 	public String[] triggerStrings(){return triggerStrings;}
-    public int classificationCode(){ return Ability.ACODE_SKILL|Ability.DOMAIN_DIRTYFIGHTING;}
+	public int classificationCode(){ return Ability.ACODE_SKILL|Ability.DOMAIN_DIRTYFIGHTING;}
 	public int usageType(){return USAGE_MOVEMENT;}
 
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
@@ -97,9 +97,9 @@ public class Fighter_CircleTrip extends FighterSkill
 	{
 		if((mob!=null)&&(target!=null))
 		{
-	        if(CMLib.flags().isSitting(mob))
+			if(CMLib.flags().isSitting(mob))
 				return Ability.QUALITY_INDIFFERENT;
-	        if(!CMLib.flags().aliveAwakeMobileUnbound(mob,false))
+			if(!CMLib.flags().aliveAwakeMobileUnbound(mob,false))
 				return Ability.QUALITY_INDIFFERENT;
 			if(mob.isInCombat()&&(mob.rangeToTarget()>0))
 				return Ability.QUALITY_INDIFFERENT;
@@ -113,13 +113,13 @@ public class Fighter_CircleTrip extends FighterSkill
 
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-        if(CMLib.flags().isSitting(mob))
-        {
-            mob.tell("You need to stand up!");
-            return false;
-        }
-        if(!CMLib.flags().aliveAwakeMobileUnbound(mob,false))
-            return false;
+		if(CMLib.flags().isSitting(mob))
+		{
+			mob.tell("You need to stand up!");
+			return false;
+		}
+		if(!CMLib.flags().aliveAwakeMobileUnbound(mob,false))
+			return false;
 		if(mob.isInCombat()&&(mob.rangeToTarget()>0))
 		{
 			mob.tell("You are too far away to circle trip!");
@@ -142,7 +142,7 @@ public class Fighter_CircleTrip extends FighterSkill
 
 		boolean success=true;
 		CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_JUSTICE|(auto?CMMsg.MASK_ALWAYS:0),auto?"":"^F^<FIGHT^><S-NAME> slide(s) into a circle trip!^<FIGHT^>^?");
-        CMLib.color().fixSourceFightColor(msg);
+		CMLib.color().fixSourceFightColor(msg);
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);
@@ -173,13 +173,13 @@ public class Fighter_CircleTrip extends FighterSkill
 				else
 					levelDiff=0;
 				int adjustment = ( -levelDiff ) +
-				                 ( -( 35 + ((int)Math.round( ( ((double) target.charStats().getStat( CharStats.STAT_DEXTERITY ) ) - 9.0 ) * 3.0 ) ) ) );
+								 ( -( 35 + ((int)Math.round( ( ((double) target.charStats().getStat( CharStats.STAT_DEXTERITY ) ) - 9.0 ) * 3.0 ) ) ) );
 				success=proficiencyCheck(mob,adjustment,auto);
 				success=success&&(target.charStats().getBodyPart(Race.BODY_LEG)>0);
 				if(success)
 				{
 					msg=CMClass.getMsg(mob,target,this,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_JUSTICE|(auto?CMMsg.MASK_ALWAYS:0),auto?"<T-NAME> trip(s)!":"^F^<FIGHT^><S-NAME> trip(s) <T-NAMESELF>!^</FIGHT^>^?");
-                    CMLib.color().fixSourceFightColor(msg);
+					CMLib.color().fixSourceFightColor(msg);
 					if(mob.location().okMessage(mob,msg))
 					{
 						mob.location().send(mob,msg);

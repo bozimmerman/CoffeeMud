@@ -25,7 +25,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -42,7 +42,7 @@ public class Spell_Scribe extends Spell
 	public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_EVOCATION;}
 	protected int overrideMana(){return Integer.MAX_VALUE;}
 	public long flags(){return Ability.FLAG_NOORDERING;}
-    public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
+	public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
 
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
@@ -68,25 +68,25 @@ public class Spell_Scribe extends Spell
 
 		String spellName=CMParms.combine(commands,0).trim();
 		Spell scrollThis=null;
-        for(Enumeration<Ability> a=mob.allAbilities();a.hasMoreElements();)
-        {
-            Ability A=a.nextElement();
+		for(Enumeration<Ability> a=mob.allAbilities();a.hasMoreElements();)
+		{
+			Ability A=a.nextElement();
 			if((A!=null)
 			&&(A instanceof Spell)
 			&&(A.name().equalsIgnoreCase(spellName))
 			&&(!A.ID().equals(this.ID())))
 				scrollThis=(Spell)A;
 		}
-        if(scrollThis==null)
-            for(Enumeration<Ability> a=mob.allAbilities();a.hasMoreElements();)
-            {
-                Ability A=a.nextElement();
-	            if((A!=null)
-	            &&(A instanceof Spell)
-	            &&(CMLib.english().containsString(A.name(),spellName))
-	            &&(!A.ID().equals(this.ID())))
-	                scrollThis=(Spell)A;
-	        }
+		if(scrollThis==null)
+			for(Enumeration<Ability> a=mob.allAbilities();a.hasMoreElements();)
+			{
+				Ability A=a.nextElement();
+				if((A!=null)
+				&&(A instanceof Spell)
+				&&(CMLib.english().containsString(A.name(),spellName))
+				&&(!A.ID().equals(this.ID())))
+					scrollThis=(Spell)A;
+			}
 		if(scrollThis==null)
 		{
 			mob.tell("You don't know how to scribe '"+spellName+"'.");
@@ -124,7 +124,7 @@ public class Spell_Scribe extends Spell
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-        experienceToLose=getXPCOSTAdjustment(mob,experienceToLose);
+		experienceToLose=getXPCOSTAdjustment(mob,experienceToLose);
 		CMLib.leveler().postExperience(mob,null,null,-experienceToLose,false);
 		mob.tell("You lose "+experienceToLose+" experience points for the effort.");
 

@@ -26,7 +26,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -42,38 +42,38 @@ public class Thief_Snatch extends ThiefSkill
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return CAN_MOBS;}
 	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-    public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_STEALING;}
+	public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_STEALING;}
 	private static final String[] triggerStrings = {"SNATCH"};
 	public String[] triggerStrings(){return triggerStrings;}
 	public int usageType(){return USAGE_MOVEMENT;}
 
-    public int castingQuality(MOB mob, Physical target)
-    {
-        if(mob!=null)
-        {
-            if(!mob.isInCombat())
-                return Ability.QUALITY_INDIFFERENT;
-            if(mob.isInCombat()&&(mob.rangeToTarget()>0))
-                return Ability.QUALITY_INDIFFERENT;
-            Item weapon=mob.fetchWieldedItem();
-            if(weapon==null)
-                return Ability.QUALITY_INDIFFERENT;
-            if(mob.freeWearPositions(Wearable.WORN_HELD,(short)0,(short)0)>0)
-                return Ability.QUALITY_INDIFFERENT;
-            if(target instanceof MOB)
-            {
-                MOB targetM=(MOB)target;
-                Item hisItem=targetM.fetchWieldedItem();
-                if((hisItem==null)
-                ||(!(hisItem instanceof Weapon))
-                ||((((Weapon)hisItem).weaponClassification()==Weapon.CLASS_NATURAL)))
-                    return Ability.QUALITY_INDIFFERENT;
-                if(hisItem.rawLogicalAnd())
-                    return Ability.QUALITY_INDIFFERENT;
-            }
-        }
-        return super.castingQuality(mob,target);
-    }
+	public int castingQuality(MOB mob, Physical target)
+	{
+		if(mob!=null)
+		{
+			if(!mob.isInCombat())
+				return Ability.QUALITY_INDIFFERENT;
+			if(mob.isInCombat()&&(mob.rangeToTarget()>0))
+				return Ability.QUALITY_INDIFFERENT;
+			Item weapon=mob.fetchWieldedItem();
+			if(weapon==null)
+				return Ability.QUALITY_INDIFFERENT;
+			if(mob.freeWearPositions(Wearable.WORN_HELD,(short)0,(short)0)>0)
+				return Ability.QUALITY_INDIFFERENT;
+			if(target instanceof MOB)
+			{
+				MOB targetM=(MOB)target;
+				Item hisItem=targetM.fetchWieldedItem();
+				if((hisItem==null)
+				||(!(hisItem instanceof Weapon))
+				||((((Weapon)hisItem).weaponClassification()==Weapon.CLASS_NATURAL)))
+					return Ability.QUALITY_INDIFFERENT;
+				if(hisItem.rawLogicalAnd())
+					return Ability.QUALITY_INDIFFERENT;
+			}
+		}
+		return super.castingQuality(mob,target);
+	}
 
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{

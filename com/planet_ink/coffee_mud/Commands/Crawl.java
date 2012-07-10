@@ -23,7 +23,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -38,21 +38,21 @@ public class Crawl extends Go
 
 	private final String[] access={"CRAWL","CR"};
 	public String[] getAccessWords(){return access;}
-    
-    public boolean preExecute(MOB mob, Vector commands, int metaFlags, int secondsElapsed, double actionsRemaining)
-        throws java.io.IOException
-    {
-        if(secondsElapsed==0)
-        {
-            int direction=Directions.getGoodDirectionCode(CMParms.combine(commands,1));
-            if(direction<0)
-            {
-                mob.tell("Crawl which way?\n\rTry north, south, east, west, up, or down.");
-                return false;
-            }
-        }
-        return true;
-    }
+	
+	public boolean preExecute(MOB mob, Vector commands, int metaFlags, int secondsElapsed, double actionsRemaining)
+		throws java.io.IOException
+	{
+		if(secondsElapsed==0)
+		{
+			int direction=Directions.getGoodDirectionCode(CMParms.combine(commands,1));
+			if(direction<0)
+			{
+				mob.tell("Crawl which way?\n\rTry north, south, east, west, up, or down.");
+				return false;
+			}
+		}
+		return true;
+	}
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
@@ -74,14 +74,14 @@ public class Crawl extends Go
 		}
 		return false;
 	}
-    public double actionsCost(final MOB mob, final List<String> cmds)
-    {
+	public double actionsCost(final MOB mob, final List<String> cmds)
+	{
 		return CMProps.getActionCost(ID(), CMath.greater(CMath.div(CMProps.getIntVar(CMProps.SYSTEMI_DEFCMDTIME),50.0),1.0));
-    }
-    public double combatActionsCost(MOB mob, List<String> cmds)
-    {
+	}
+	public double combatActionsCost(MOB mob, List<String> cmds)
+	{
 		return CMProps.getCombatActionCost(ID(), CMath.greater(CMath.div(CMProps.getIntVar(CMProps.SYSTEMI_DEFCOMCMDTIME),50.0),2.0));
-    }
+	}
 	public boolean canBeOrdered(){return true;}
 
 	

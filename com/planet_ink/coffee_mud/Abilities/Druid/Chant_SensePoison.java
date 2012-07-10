@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -41,7 +41,7 @@ public class Chant_SensePoison extends Chant
 	public int abstractQuality(){return Ability.QUALITY_OK_OTHERS;}
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return CAN_MOBS|CAN_ITEMS;}
-    public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PRESERVING;}
+	public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PRESERVING;}
 
 	public List<Ability> returnOffensiveAffects(Physical fromMe)
 	{
@@ -56,9 +56,9 @@ public class Chant_SensePoison extends Chant
 		if(fromMe instanceof MOB)
 		{
 			MOB mob=(MOB)fromMe;
-	        for(Enumeration<Ability> a=mob.allAbilities();a.hasMoreElements();)
-	        {
-	            Ability A=a.nextElement();
+			for(Enumeration<Ability> a=mob.allAbilities();a.hasMoreElements();)
+			{
+				Ability A=a.nextElement();
 				if((A!=null)&&((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_POISON))
 					offenders.addElement(A);
 			}

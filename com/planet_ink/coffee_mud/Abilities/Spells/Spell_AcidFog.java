@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -45,7 +45,7 @@ public class Spell_AcidFog extends Spell
 	public int maxRange(){return adjustedMaxInvokerRange(5);}
 	Room castingLocation=null;
 	public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_EVOCATION;}
-    public long flags(){return Ability.FLAG_EARTHBASED;}
+	public long flags(){return Ability.FLAG_EARTHBASED;}
 
 	public boolean tick(Tickable ticking, int tickID)
 	{
@@ -61,8 +61,8 @@ public class Spell_AcidFog extends Spell
 			{
 				int damage=M.phyStats().level()+super.getXLEVELLevel(invoker())+(2*super.getX1Level(invoker()));
 				CMLib.combat().postDamage(invoker,M,this,CMLib.dice().roll(1,damage,0),CMMsg.TYP_ACID,-1,"<T-NAME> sizzle(s) in the acid fog!");
-                if((!M.isInCombat())&&(M!=invoker)&&(M.location()!=null)&&(M.location().isInhabitant(invoker))&&(CMLib.flags().canBeSeenBy(invoker,M)))
-                    CMLib.combat().postAttack(M,invoker,M.fetchWieldedItem());
+				if((!M.isInCombat())&&(M!=invoker)&&(M.location()!=null)&&(M.location().isInhabitant(invoker))&&(CMLib.flags().canBeSeenBy(invoker,M)))
+					CMLib.combat().postAttack(M,invoker,M.fetchWieldedItem());
 			}
 		}
 		return super.tick(ticking,tickID);

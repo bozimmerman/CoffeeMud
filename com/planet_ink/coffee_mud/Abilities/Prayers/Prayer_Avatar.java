@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -169,15 +169,15 @@ public class Prayer_Avatar extends Prayer
 
 		int levels=mob.charStats().getClassLevel("Avatar");
 		if(levels<0) 
-            levels=mob.phyStats().level();
+			levels=mob.phyStats().level();
 		else
 		if(!mob.charStats().getCurrentClass().ID().equals("Avatar"))
 		{
 			mob.tell("You have lost this ability for all time.");
 			return false;
 		}
-        else
-            levels=adjustedLevel(mob,asLevel);
+		else
+			levels=adjustedLevel(mob,asLevel);
 
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))

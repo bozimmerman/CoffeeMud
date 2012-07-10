@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -36,7 +36,7 @@ public class SocialTbl extends StdWebMacro
 {
 	public String name()	{return "SocialTbl";}
 	
-    protected static final int AT_MAX_COL = 6;
+	protected static final int AT_MAX_COL = 6;
 
 	public String runMacro(ExternalHTTPRequests httpReq, String parm)
 	{
@@ -55,9 +55,9 @@ public class SocialTbl extends StdWebMacro
 				// the bottom elements can be full width if there's
 				//  not enough to fill one row
 				// ie.   -X- -X- -X-
-				//       -X- -X- -X-
-				//       -----X-----
-				//       -----X-----
+				//  	 -X- -X- -X-
+				//  	 -----X-----
+				//  	 -----X-----
 				if (i > socialVec.size() - AT_MAX_COL)
 					percent = 100;
 			}
@@ -82,7 +82,7 @@ public class SocialTbl extends StdWebMacro
 		if (!msg.toString().endsWith("</tr>\n\r"))
 			msg.append("</tr>\n\r");
 		Resources.submitResource("WEB SOCIALS TBL",msg);
-        return clearWebMacros(msg);
+		return clearWebMacros(msg);
 	}
 
 }

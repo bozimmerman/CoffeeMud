@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -44,7 +44,7 @@ public class Ranger_AnimalFrenzy extends StdAbility
 	protected int canAffectCode(){return Ability.CAN_MOBS;}
 	protected int canTargetCode(){return 0;}
 	protected Vector rangersGroup=null;
-    public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_ANIMALAFFINITY;}
+	public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_ANIMALAFFINITY;}
 
 	public boolean tick(Tickable ticking, int tickID)
 	{
@@ -98,8 +98,8 @@ public class Ranger_AnimalFrenzy extends StdAbility
 				}
 			}
 			if((CMLib.dice().rollPercentage()<5)
-		    &&(invoker.isInCombat())
-		    &&(rangersGroup.size()>0))
+			&&(invoker.isInCombat())
+			&&(rangersGroup.size()>0))
 				helpProficiency(invoker);
 		}
 		return true;

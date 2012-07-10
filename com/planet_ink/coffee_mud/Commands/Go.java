@@ -25,7 +25,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -41,7 +41,7 @@ public class Go extends StdCommand
 	private final String[] access={"GO","WALK"};
 	public String[] getAccessWords(){return access;}
 	
-    protected Command stander=null;
+	protected Command stander=null;
 	protected Vector ifneccvec=null;
 	public void standIfNecessary(MOB mob, int metaFlags)
 		throws java.io.IOException

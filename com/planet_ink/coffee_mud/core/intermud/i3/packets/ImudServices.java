@@ -36,66 +36,66 @@ import java.util.Vector;
  */
 @SuppressWarnings("rawtypes")
 public interface ImudServices {
-    /**
-     * Handles an incoming I3 packet asynchronously.
-     * An implementation should make sure that asynchronously
-     * processing the incoming packet will not have any
-     * impact, otherwise you could end up with bizarre
-     * behaviour like an intermud chat line appearing
-     * in the middle of a room description.  If your
-     * mudlib is not prepared to handle multiple threads,
-     * just stack up incoming packets and pull them off
-     * the stack during your main thread of execution.
-     * @param packet the incoming packet
-     */
-    public abstract void receive(Packet packet);
+	/**
+	 * Handles an incoming I3 packet asynchronously.
+	 * An implementation should make sure that asynchronously
+	 * processing the incoming packet will not have any
+	 * impact, otherwise you could end up with bizarre
+	 * behaviour like an intermud chat line appearing
+	 * in the middle of a room description.  If your
+	 * mudlib is not prepared to handle multiple threads,
+	 * just stack up incoming packets and pull them off
+	 * the stack during your main thread of execution.
+	 * @param packet the incoming packet
+	 */
+	public abstract void receive(Packet packet);
 
-    /**
-     * @return an enumeration of channels this mud subscribes to
-     */
-    public abstract java.util.Enumeration getChannels();
+	/**
+	 * @return an enumeration of channels this mud subscribes to
+	 */
+	public abstract java.util.Enumeration getChannels();
 
-    /**
-     * Given a I3 channel name, this method should provide
-     * the local name for that channel.
-     * Example:
-     * <PRE>
-     * if( str.equals("imud_code") ) return "intercre";
-     * </PRE>
-     * @param str the remote name of the desired channel
-     * @return the local channel name for a remote channel
-     * @see #getRemoteChannel
-     */
-    public abstract String getLocalChannel(String str);
+	/**
+	 * Given a I3 channel name, this method should provide
+	 * the local name for that channel.
+	 * Example:
+	 * <PRE>
+	 * if( str.equals("imud_code") ) return "intercre";
+	 * </PRE>
+	 * @param str the remote name of the desired channel
+	 * @return the local channel name for a remote channel
+	 * @see #getRemoteChannel
+	 */
+	public abstract String getLocalChannel(String str);
 
-    /**
-     * @return the software name and version
-     */
-    public abstract String getMudVersion();
+	/**
+	 * @return the software name and version
+	 */
+	public abstract String getMudVersion();
 
-    /**
-     * @return the name of this mud
-     */
-    public abstract String getMudName();
+	/**
+	 * @return the name of this mud
+	 */
+	public abstract String getMudName();
 
-    /**
-     * @return the status of this mud
-     */
+	/**
+	 * @return the status of this mud
+	 */
 	public abstract String getMudState();
-    /**
-     * @return the player port for this mud
-     */
-    public abstract int getMudPort();
+	/**
+	 * @return the player port for this mud
+	 */
+	public abstract int getMudPort();
 
-    /**
-     * Given a local channel name, returns the remote
-     * channel name.
-     * Example:
-     * <PRE>
-     * if( str.equals("intercre") ) return "imud_code";
-     * </PRE>
-     * @param str the local name of the desired channel
-     * @return the remote name of the specified local channel
-     */
-    public abstract String getRemoteChannel(String str);
+	/**
+	 * Given a local channel name, returns the remote
+	 * channel name.
+	 * Example:
+	 * <PRE>
+	 * if( str.equals("intercre") ) return "imud_code";
+	 * </PRE>
+	 * @param str the local name of the desired channel
+	 * @return the remote name of the specified local channel
+	 */
+	public abstract String getRemoteChannel(String str);
 }

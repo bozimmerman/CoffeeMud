@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -53,19 +53,19 @@ public class Skill_Disguise extends BardSkill
 	public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
 	private static final String[] triggerStrings = {"DISGUISE"};
 	public String[] triggerStrings(){return triggerStrings;}
-    public int classificationCode(){ return Ability.ACODE_SKILL|Ability.DOMAIN_DECEPTIVE;}
+	public int classificationCode(){ return Ability.ACODE_SKILL|Ability.DOMAIN_DECEPTIVE;}
 
-    protected final static String[] whats={
-		//0!     1!      2!    3!     4!       5!     6!      7!          8!
+	protected final static String[] whats={
+		//0!	 1! 	 2!    3!     4!	   5!     6!	  7!		  8!
 		"WEIGHT","LEVEL","SEX","RACE","HEIGHT","NAME","CLASS","ALIGNMENT","AGE"};
-    protected final static int[] levels={2,10,4,14,6,8,0,18,12};
+	protected final static int[] levels={2,10,4,14,6,8,0,18,12};
 	protected String[] values=new String[whats.length];
 
 	protected void cloneFix(Ability E)
 	{
-	    values=new String[whats.length];
-	    for(int i=0;i<values.length;i++)
-	        values[i]=null;
+		values=new String[whats.length];
+		for(int i=0;i<values.length;i++)
+			values[i]=null;
 	}
 	public void affectPhyStats(Physical myHost, PhyStats affectableStats)
 	{

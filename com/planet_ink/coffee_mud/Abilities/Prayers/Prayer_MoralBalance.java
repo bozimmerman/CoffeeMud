@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -49,11 +49,11 @@ public class Prayer_MoralBalance extends Prayer
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-        
+		
 		boolean success=proficiencyCheck(mob,0,auto);
-        CMMsg msg2=null;
-        if((mob!=target)&&(!mob.getGroupMembers(new HashSet<MOB>()).contains(target)))
-            msg2=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto)|CMMsg.MASK_MALICIOUS,"<T-NAME> do(es) not seem to like <S-NAME> messing with <T-HIS-HER> head.");
+		CMMsg msg2=null;
+		if((mob!=target)&&(!mob.getGroupMembers(new HashSet<MOB>()).contains(target)))
+			msg2=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto)|CMMsg.MASK_MALICIOUS,"<T-NAME> do(es) not seem to like <S-NAME> messing with <T-HIS-HER> head.");
 
 		if((success)&&(CMLib.factions().getFaction(CMLib.factions().AlignID())!=null))
 		{
@@ -63,30 +63,30 @@ public class Prayer_MoralBalance extends Prayer
 			// what happened.
 			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),(auto?"<T-NAME> feel(s) completely different about the world.":"^S<S-NAME> "+prayWord(mob)+" to bring balance to <T-NAMESELF>!^?"));
 			if((mob.location().okMessage(mob,msg))
-            &&((msg2==null)||(mob.location().okMessage(mob,msg2))))
+			&&((msg2==null)||(mob.location().okMessage(mob,msg2))))
 			{
 				mob.location().send(mob,msg);
-                if((msg.value()<=0)&&((msg2==null)||(msg2.value()<=0)))
+				if((msg.value()<=0)&&((msg2==null)||(msg2.value()<=0)))
 				{
 					target.tell("Your views on the world suddenly change.");
-                    Faction F=CMLib.factions().getFaction(CMLib.factions().AlignID());
-                    if(F!=null)
-                    {
-                     	int bredth=F.maximum()-F.minimum();
-                    	int midpoint=F.minimum()+(bredth/2);
-                    	int distance=midpoint-target.fetchFaction(F.factionID());
-                    	int amt=target.fetchFaction(F.factionID())+(distance/8);
-                        int change=amt-target.fetchFaction(F.factionID());
-    					CMLib.factions().postFactionChange(target,this, CMLib.factions().AlignID(),change);
-                    }
+					Faction F=CMLib.factions().getFaction(CMLib.factions().AlignID());
+					if(F!=null)
+					{
+					 	int bredth=F.maximum()-F.minimum();
+						int midpoint=F.minimum()+(bredth/2);
+						int distance=midpoint-target.fetchFaction(F.factionID());
+						int amt=target.fetchFaction(F.factionID())+(distance/8);
+						int change=amt-target.fetchFaction(F.factionID());
+						CMLib.factions().postFactionChange(target,this, CMLib.factions().AlignID(),change);
+					}
 				}
-                if(msg2!=null) mob.location().send(mob,msg2);
+				if(msg2!=null) mob.location().send(mob,msg2);
 			}
 		}
 		else
 		{
-            if((msg2!=null)&&(mob.location().okMessage(mob,msg2)))
-                mob.location().send(mob,msg2);
+			if((msg2!=null)&&(mob.location().okMessage(mob,msg2)))
+				mob.location().send(mob,msg2);
 			return beneficialWordsFizzle(mob,target,"<S-NAME> point(s) at <T-NAMESELF> and "+prayWord(mob)+", but nothing happens.");
 		}
 

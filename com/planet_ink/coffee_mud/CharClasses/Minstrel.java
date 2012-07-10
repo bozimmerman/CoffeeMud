@@ -25,7 +25,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -60,10 +60,10 @@ public class Minstrel extends StdCharClass
 		super();
 		maxStatAdj[CharStats.STAT_CHARISMA]=4;
 		maxStatAdj[CharStats.STAT_INTELLIGENCE]=4;
-    }
-    public void initializeClass()
-    {
-        super.initializeClass();
+	}
+	public void initializeClass()
+	{
+		super.initializeClass();
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Specialization_Ranged",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Specialization_Sword",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Specialization_Natural",false);
@@ -71,7 +71,7 @@ public class Minstrel extends StdCharClass
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Write",50,true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Swim",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Climb",false);
-        CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Befriend",50,true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Befriend",50,true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"InstrumentMaking",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Song_Nothing",100,true);
@@ -185,12 +185,12 @@ public class Minstrel extends StdCharClass
 		}
 	}
 
-    public void executeMsg(Environmental host, CMMsg msg)
-    {
-        super.executeMsg(host,msg);
-        Bard.visitationBonusMessage(host,msg);
-    }
-    
+	public void executeMsg(Environmental host, CMMsg msg)
+	{
+		super.executeMsg(host,msg);
+		Bard.visitationBonusMessage(host,msg);
+	}
+	
 	protected boolean weaponCheck(MOB mob, int sourceCode, Environmental E)
 	{
 		if(E instanceof MusicalInstrument)
@@ -225,8 +225,8 @@ public class Minstrel extends StdCharClass
 			+(affectableStats.getClassLevel(this)*2));
 	}
 
-    public int adjustExperienceGain(MOB host, MOB mob, MOB victim, int amount){ return Bard.bardAdjustExperienceGain(host,mob,victim,amount,5.0);}
-    
+	public int adjustExperienceGain(MOB host, MOB mob, MOB victim, int amount){ return Bard.bardAdjustExperienceGain(host,mob,victim,amount,5.0);}
+	
 	public String getOtherLimitsDesc(){return "";}
 	public String getOtherBonusDesc(){return "Receives group bonus combat experience when in an intelligent group, and more for a group of players.  Receives exploration and pub-finding experience based on danger level.";}
 	public List<Item> outfit(MOB myChar)

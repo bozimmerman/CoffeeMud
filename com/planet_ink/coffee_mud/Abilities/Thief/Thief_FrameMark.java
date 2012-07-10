@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -43,7 +43,7 @@ public class Thief_FrameMark extends ThiefSkill
 	private static final String[] triggerStrings = {"FRAME"};
 	public String[] triggerStrings(){return triggerStrings;}
 	protected int overrideMana(){return 50;}
-    public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_STREETSMARTS;}
+	public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_STREETSMARTS;}
 
 	public MOB getMark(MOB mob)
 	{
@@ -68,7 +68,7 @@ public class Thief_FrameMark extends ThiefSkill
 			return false;
 		}
 
-        LegalBehavior B=null;
+		LegalBehavior B=null;
 		if(mob.location()!=null) B=CMLib.law().getLegalBehavior(mob.location());
 		if((B==null)
 		||(!B.hasWarrant(CMLib.law().getLegalObject(mob.location()),mob)))
@@ -80,7 +80,7 @@ public class Thief_FrameMark extends ThiefSkill
 		String localCurrency=CMLib.beanCounter().getCurrency(mob.location());
 		if(CMLib.beanCounter().getTotalAbsoluteValue(mob,localCurrency)<goldRequired)
 		{
-		    String costWords=CMLib.beanCounter().nameCurrencyShort(localCurrency,goldRequired);
+			String costWords=CMLib.beanCounter().nameCurrencyShort(localCurrency,goldRequired);
 			mob.tell("You'll need at least "+costWords+" on hand to frame "+target.name()+".");
 			return false;
 		}
@@ -89,7 +89,7 @@ public class Thief_FrameMark extends ThiefSkill
 			return false;
 
 		int levelDiff=(target.phyStats().level()-(mob.phyStats().level()+(2*super.getXLEVELLevel(mob)))*15);
-        if(levelDiff<0) levelDiff=0;
+		if(levelDiff<0) levelDiff=0;
 		boolean success=proficiencyCheck(mob,-levelDiff,auto);
 
 		CMLib.beanCounter().subtractMoney(mob,localCurrency,goldRequired);
@@ -98,7 +98,7 @@ public class Thief_FrameMark extends ThiefSkill
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);
-            B.frame(CMLib.law().getLegalObject(mob.location()),mob,target);
+			B.frame(CMLib.law().getLegalObject(mob.location()),mob,target);
 		}
 		return success;
 	}

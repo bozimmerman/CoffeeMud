@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -42,29 +42,29 @@ public class Skill_RegionalAwareness extends StdSkill
 	public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 	private static final String[] triggerStrings = {"REGION","REGIONALAWARENESS"};
 	public String[] triggerStrings(){return triggerStrings;}
-    public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_NATURELORE;}
+	public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_NATURELORE;}
 	public int overrideMana(){return 0;}
 
-    public char roomColor(Room room)
-    {
-        if(room==null) return ' ';
-        if(CMath.bset(room.phyStats().sensesMask(),PhyStats.SENSE_ROOMUNMAPPABLE))
-            return 'w';
-        switch(room.domainType())
-        {
-        case Room.DOMAIN_OUTDOORS_CITY:return 'w';
-        case Room.DOMAIN_OUTDOORS_WOODS:return 'G';
-        case Room.DOMAIN_OUTDOORS_ROCKS:return 'W';
-        case Room.DOMAIN_OUTDOORS_PLAINS:return 'Y';
-        case Room.DOMAIN_OUTDOORS_UNDERWATER:return 'B';
-        case Room.DOMAIN_OUTDOORS_AIR:return ' ';
-        case Room.DOMAIN_OUTDOORS_WATERSURFACE:return 'b';
-        case Room.DOMAIN_OUTDOORS_JUNGLE:return 'R';
-        case Room.DOMAIN_OUTDOORS_SWAMP:return 'r';
-        case Room.DOMAIN_OUTDOORS_DESERT:return 'y';
-        case Room.DOMAIN_OUTDOORS_HILLS:return 'g';
-        case Room.DOMAIN_OUTDOORS_MOUNTAINS:return 'p';
-        case Room.DOMAIN_OUTDOORS_SPACEPORT:return 'P';
+	public char roomColor(Room room)
+	{
+		if(room==null) return ' ';
+		if(CMath.bset(room.phyStats().sensesMask(),PhyStats.SENSE_ROOMUNMAPPABLE))
+			return 'w';
+		switch(room.domainType())
+		{
+		case Room.DOMAIN_OUTDOORS_CITY:return 'w';
+		case Room.DOMAIN_OUTDOORS_WOODS:return 'G';
+		case Room.DOMAIN_OUTDOORS_ROCKS:return 'W';
+		case Room.DOMAIN_OUTDOORS_PLAINS:return 'Y';
+		case Room.DOMAIN_OUTDOORS_UNDERWATER:return 'B';
+		case Room.DOMAIN_OUTDOORS_AIR:return ' ';
+		case Room.DOMAIN_OUTDOORS_WATERSURFACE:return 'b';
+		case Room.DOMAIN_OUTDOORS_JUNGLE:return 'R';
+		case Room.DOMAIN_OUTDOORS_SWAMP:return 'r';
+		case Room.DOMAIN_OUTDOORS_DESERT:return 'y';
+		case Room.DOMAIN_OUTDOORS_HILLS:return 'g';
+		case Room.DOMAIN_OUTDOORS_MOUNTAINS:return 'p';
+		case Room.DOMAIN_OUTDOORS_SPACEPORT:return 'P';
 		case Room.DOMAIN_INDOORS_STONE:return 'W';
 		case Room.DOMAIN_INDOORS_WOOD:return 'y';
 		case Room.DOMAIN_INDOORS_CAVE:return 'w';
@@ -73,15 +73,15 @@ public class Skill_RegionalAwareness extends StdSkill
 		case Room.DOMAIN_INDOORS_AIR:return ' ';
 		case Room.DOMAIN_INDOORS_WATERSURFACE:return 'b';
 		case Room.DOMAIN_INDOORS_METAL:return 'P';
-        default: 
-            return 'k';
-        }
-    }
+		default: 
+			return 'k';
+		}
+	}
 	public char roomChar(Room room, boolean amOutdoors)
 	{
-        if(room==null) return ' ';
-        if(CMath.bset(room.phyStats().sensesMask(),PhyStats.SENSE_ROOMUNMAPPABLE))
-            return ' ';
+		if(room==null) return ' ';
+		if(CMath.bset(room.phyStats().sensesMask(),PhyStats.SENSE_ROOMUNMAPPABLE))
+			return ' ';
 		switch(room.domainType())
 		{
 		case Room.DOMAIN_OUTDOORS_CITY:return '=';
@@ -174,20 +174,20 @@ public class Skill_RegionalAwareness extends StdSkill
 		}
 		final String[] miniMap=new String[diameter];
 		final StringBuffer str=new StringBuffer("");
-        char r=' ';
-        char c=' ';
+		char r=' ';
+		char c=' ';
 		for(int i2=0;i2<diameter;i2++)
 		{
 			str.setLength(0);
 			for(int i3=0;i3<diameter;i3++)
-            {
-                r=map[i2][i3];
-                c=roomColor(rmap[i2][i3]);
-                if(c!=' ')
+			{
+				r=map[i2][i3];
+				c=roomColor(rmap[i2][i3]);
+				if(c!=' ')
 					str.append("^"+c+""+r);
-                else
-                    str.append(r);
-            }
+				else
+					str.append(r);
+			}
 			miniMap[i2]=str.toString();
 		}
 		return miniMap;
@@ -216,15 +216,15 @@ public class Skill_RegionalAwareness extends StdSkill
 			return false;
 		}
 		
-        if((!auto)
-        &&(!CMLib.flags().canBeSeenBy(mob.location(),mob)))
-        {
-            mob.tell("You need to be able to see your surroundings to do that.");
-            return false;
-        }
-        
+		if((!auto)
+		&&(!CMLib.flags().canBeSeenBy(mob.location(),mob)))
+		{
+			mob.tell("You need to be able to see your surroundings to do that.");
+			return false;
+		}
+		
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
-		    return false;
+			return false;
 		
 		boolean success=proficiencyCheck(mob,0,auto);
 		if(success)

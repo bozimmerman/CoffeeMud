@@ -25,7 +25,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -80,7 +80,7 @@ public class Prop_ReqLevels extends Property
 		if((allFlag)
 		||(text().length()==0)
 		||(!(R instanceof Room))
-	    ||(CMSecurity.isAllowed(mob,(Room)R,"GOTO")))
+		||(CMSecurity.isAllowed(mob,(Room)R,"GOTO")))
 			return true;
 
 		if((sysopFlag)
@@ -92,51 +92,51 @@ public class Prop_ReqLevels extends Property
 
 		int lastPlace=0;
 		int x=0;
-        String text=text().trim();
-        if(text.length()==0) return true;
-        while(x>=0)
-        {
-            x=text.indexOf('>',lastPlace);
-            if(x<0) x=text.indexOf('<',lastPlace);
-            if(x<0) x=text.indexOf('=',lastPlace);
-            if(x>=0)
-            {
-                char primaryChar=text.charAt(x);
-                x++;
-                boolean andEqual=false;
-                if(text.charAt(x)=='=')
-                {
-                    andEqual=true;
-                    x++;
-                }
-                lastPlace=x;
+		String text=text().trim();
+		if(text.length()==0) return true;
+		while(x>=0)
+		{
+			x=text.indexOf('>',lastPlace);
+			if(x<0) x=text.indexOf('<',lastPlace);
+			if(x<0) x=text.indexOf('=',lastPlace);
+			if(x>=0)
+			{
+				char primaryChar=text.charAt(x);
+				x++;
+				boolean andEqual=false;
+				if(text.charAt(x)=='=')
+				{
+					andEqual=true;
+					x++;
+				}
+				lastPlace=x;
 
-                boolean found=false;
-                String cmpString="";
-                while((x<text.length())&&
-                      (((text.charAt(x)==' ')&&(cmpString.length()==0))
-                       ||(Character.isDigit(text.charAt(x)))))
-                {
-                    if(Character.isDigit(text.charAt(x)))
-                        cmpString+=text.charAt(x);
-                    x++;
-                }
-                if(cmpString.length()>0)
-                {
-                    int cmpLevel=CMath.s_int(cmpString);
-                    if((cmpLevel==lvl)&&(andEqual))
-                        found=true;
-                    else
-                    switch(primaryChar)
-                    {
-                    case '>': found=(lvl>cmpLevel); break;
-                    case '<': found=(lvl<cmpLevel); break;
-                    case '=': found=(lvl==cmpLevel); break;
-                    }
-                }
-                if(found) return true;
-            }
-        }
+				boolean found=false;
+				String cmpString="";
+				while((x<text.length())&&
+					  (((text.charAt(x)==' ')&&(cmpString.length()==0))
+					   ||(Character.isDigit(text.charAt(x)))))
+				{
+					if(Character.isDigit(text.charAt(x)))
+						cmpString+=text.charAt(x);
+					x++;
+				}
+				if(cmpString.length()>0)
+				{
+					int cmpLevel=CMath.s_int(cmpString);
+					if((cmpLevel==lvl)&&(andEqual))
+						found=true;
+					else
+					switch(primaryChar)
+					{
+					case '>': found=(lvl>cmpLevel); break;
+					case '<': found=(lvl<cmpLevel); break;
+					case '=': found=(lvl==cmpLevel); break;
+					}
+				}
+				if(found) return true;
+			}
+		}
 		return false;
 	}
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
@@ -144,7 +144,7 @@ public class Prop_ReqLevels extends Property
 		if((affected!=null)
 		&&(msg.target()!=null)
 		&&(((msg.target() instanceof Room)&&(msg.targetMinor()==CMMsg.TYP_ENTER))
-	        ||((msg.target() instanceof Rideable)&&(msg.targetMinor()==CMMsg.TYP_SIT)))
+			||((msg.target() instanceof Rideable)&&(msg.targetMinor()==CMMsg.TYP_SIT)))
 		&&(!CMLib.flags().isFalling(msg.source()))
 		&&((msg.amITarget(affected))||(msg.tool()==affected)||(affected instanceof Area)))
 		{
@@ -160,8 +160,8 @@ public class Prop_ReqLevels extends Property
 			}
 			for(Iterator e=H.iterator();e.hasNext();)
 			{
-			    Environmental E=(Environmental)e.next();
-			    if((E instanceof MOB)
+				Environmental E=(Environmental)e.next();
+				if((E instanceof MOB)
 				&&(passesMuster((MOB)E,msg.target())))
 					return super.okMessage(myHost,msg);
 			}

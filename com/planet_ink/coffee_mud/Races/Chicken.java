@@ -25,7 +25,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -45,7 +45,7 @@ public class Chicken extends StdRace
 	public long forbiddenWornBits(){return ~(Wearable.WORN_HEAD|Wearable.WORN_EYES);}
 	public String racialCategory(){return "Avian";}
 
-	//                                an ey ea he ne ar ha to le fo no gi mo wa ta wi
+	//  							  an ey ea he ne ar ha to le fo no gi mo wa ta wi
 	private static final int[] parts={0 ,2 ,0 ,1 ,1 ,0 ,0 ,1 ,2 ,2 ,0 ,0 ,1 ,1 ,0 ,2 };
 	public int[] bodyMask(){return parts;}
 
@@ -117,42 +117,42 @@ public class Chicken extends StdRace
 		else
 			return "^c" + mob.displayName(viewer) + "^c is in perfect health.^N";
 	}
-    
-    public boolean tick(Tickable ticking, int tickID)
-    {
-        if(!super.tick(ticking,tickID))
-            return false;
-        if((tickID==Tickable.TICKID_MOB)&&(ticking instanceof MOB))
-        {
-            if((CMLib.dice().rollPercentage()>99)&&(((MOB)ticking).numItems()<9))
-            {
-                Item I=CMClass.getItem("GenFoodResource");
-                I.setName("an egg");
-                I.setDisplayText("an egg has been left here.");
-                I.setMaterial(RawMaterial.RESOURCE_EGGS);
-                I.setDescription("It looks like a chicken egg!");
-                I.basePhyStats().setWeight(1);
-        		CMLib.materials().addEffectsToResource(I);
-                ((MOB)ticking).addItem((Item)I.copyOf());
-            }
-            if((((MOB)ticking).numItems()>5)
-            &&(((MOB)ticking).location()!=null)
-            &&(((MOB)ticking).location().findItem(null,"an egg")==null))
-            {
-                Item I=((MOB)ticking).findItem("an egg");
-                if(I!=null)
-                {
-                    ((MOB)ticking).location().show(((MOB)ticking),null,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> lay(s) an egg.");
-                    I.removeFromOwnerContainer();
-                    I.executeMsg((MOB)ticking,CMClass.getMsg((MOB)ticking,I,null,CMMsg.TYP_ROOMRESET,null));
-                    ((MOB)ticking).location().addItem(I,ItemPossessor.Expire.Resource);
-                    ((MOB)ticking).location().recoverRoomStats();
-                }
-            }
-        }
-        return true;
-    }
-    
+	
+	public boolean tick(Tickable ticking, int tickID)
+	{
+		if(!super.tick(ticking,tickID))
+			return false;
+		if((tickID==Tickable.TICKID_MOB)&&(ticking instanceof MOB))
+		{
+			if((CMLib.dice().rollPercentage()>99)&&(((MOB)ticking).numItems()<9))
+			{
+				Item I=CMClass.getItem("GenFoodResource");
+				I.setName("an egg");
+				I.setDisplayText("an egg has been left here.");
+				I.setMaterial(RawMaterial.RESOURCE_EGGS);
+				I.setDescription("It looks like a chicken egg!");
+				I.basePhyStats().setWeight(1);
+				CMLib.materials().addEffectsToResource(I);
+				((MOB)ticking).addItem((Item)I.copyOf());
+			}
+			if((((MOB)ticking).numItems()>5)
+			&&(((MOB)ticking).location()!=null)
+			&&(((MOB)ticking).location().findItem(null,"an egg")==null))
+			{
+				Item I=((MOB)ticking).findItem("an egg");
+				if(I!=null)
+				{
+					((MOB)ticking).location().show(((MOB)ticking),null,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> lay(s) an egg.");
+					I.removeFromOwnerContainer();
+					I.executeMsg((MOB)ticking,CMClass.getMsg((MOB)ticking,I,null,CMMsg.TYP_ROOMRESET,null));
+					((MOB)ticking).location().addItem(I,ItemPossessor.Expire.Resource);
+					((MOB)ticking).location().recoverRoomStats();
+				}
+			}
+		}
+		return true;
+	}
+	
 	public List<RawMaterial> myResources()
 	{
 		synchronized(resources)

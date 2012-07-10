@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -43,71 +43,71 @@ public class Prayer_SanctifyRoom extends Prayer
 	protected int canAffectCode(){return CAN_ROOMS;}
 	protected int canTargetCode(){return CAN_ROOMS;}
 	public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY;}
-    
-    public static final SHashSet MSG_CODESH=new SHashSet(Integer.valueOf(CMMsg.TYP_GET),
-                                                         Integer.valueOf(CMMsg.TYP_PULL),
-                                                         Integer.valueOf(CMMsg.TYP_PUSH),
-                                                         Integer.valueOf(CMMsg.TYP_CAST_SPELL));
+	
+	public static final SHashSet MSG_CODESH=new SHashSet(Integer.valueOf(CMMsg.TYP_GET),
+														 Integer.valueOf(CMMsg.TYP_PULL),
+														 Integer.valueOf(CMMsg.TYP_PUSH),
+														 Integer.valueOf(CMMsg.TYP_CAST_SPELL));
 
-    protected boolean inRoom(MOB mob, Room R)
-    {
-        boolean inRoom=((CMLib.law().doesHavePriviledgesHere(mob,R))
-                        ||((text().length()>0)&&(mob.Name().equals(text())))
-                        ||((text().length()>0)&&(mob.getClanID().equals(text()))));
-        inRoom = inRoom || CMSecurity.isAllowed(mob, R,"CMDROOMS");
-        inRoom = inRoom || CMSecurity.isAllowed(mob, R,"CMDITEMS");
-        for(int i=0;i<R.numInhabitants();i++)
-        {
-            MOB M=R.fetchInhabitant(i);
-            if(CMLib.law().doesHavePriviledgesHere(M,R))
-            { inRoom=true; break;}
-            if((text().length()>0)&&(M.Name().equals(text())))
-            { inRoom=true; break;}
-            if((text().length()>0)&&(M.getClanID().equals(text())))
-            { inRoom=true; break;}
+	protected boolean inRoom(MOB mob, Room R)
+	{
+		boolean inRoom=((CMLib.law().doesHavePriviledgesHere(mob,R))
+						||((text().length()>0)&&(mob.Name().equals(text())))
+						||((text().length()>0)&&(mob.getClanID().equals(text()))));
+		inRoom = inRoom || CMSecurity.isAllowed(mob, R,"CMDROOMS");
+		inRoom = inRoom || CMSecurity.isAllowed(mob, R,"CMDITEMS");
+		for(int i=0;i<R.numInhabitants();i++)
+		{
+			MOB M=R.fetchInhabitant(i);
+			if(CMLib.law().doesHavePriviledgesHere(M,R))
+			{ inRoom=true; break;}
+			if((text().length()>0)&&(M.Name().equals(text())))
+			{ inRoom=true; break;}
+			if((text().length()>0)&&(M.getClanID().equals(text())))
+			{ inRoom=true; break;}
 
-        }
-        if(!inRoom)
-        {
-            mob.tell("You feel your muscles unwilling to cooperate.");
-            return false;
-        }
-        return true;
-    }
-    
+		}
+		if(!inRoom)
+		{
+			mob.tell("You feel your muscles unwilling to cooperate.");
+			return false;
+		}
+		return true;
+	}
+	
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(affected==null)
 			return super.okMessage(myHost,msg);
 
 		Room R=(Room)affected;
-        int targMinor=msg.targetMinor();
-        if(((targMinor==CMMsg.TYP_GET)
-            ||(targMinor==CMMsg.TYP_PULL)
-            ||(targMinor==CMMsg.TYP_PUSH)
-            ||(targMinor==CMMsg.TYP_CAST_SPELL))
-        &&(msg.target() instanceof Item)
-        &&(!msg.targetMajor(CMMsg.MASK_INTERMSG))
-        &&(!msg.source().isMine(msg.target()))
-        &&((!(msg.tool() instanceof Item))
-            ||(!msg.source().isMine(msg.tool()))))
-            return inRoom(msg.source(),R);
+		int targMinor=msg.targetMinor();
+		if(((targMinor==CMMsg.TYP_GET)
+			||(targMinor==CMMsg.TYP_PULL)
+			||(targMinor==CMMsg.TYP_PUSH)
+			||(targMinor==CMMsg.TYP_CAST_SPELL))
+		&&(msg.target() instanceof Item)
+		&&(!msg.targetMajor(CMMsg.MASK_INTERMSG))
+		&&(!msg.source().isMine(msg.target()))
+		&&((!(msg.tool() instanceof Item))
+			||(!msg.source().isMine(msg.tool()))))
+			return inRoom(msg.source(),R);
 		return super.okMessage(myHost,msg);
 	}
 
-    public int castingQuality(MOB mob, Physical target)
-    {
-        if(mob!=null)
-        {
-            if(mob.isInCombat())
-                return Ability.QUALITY_INDIFFERENT;
-            if(target instanceof MOB)
-            {
-            }
-        }
-        return super.castingQuality(mob,target);
-    }
-    
+	public int castingQuality(MOB mob, Physical target)
+	{
+		if(mob!=null)
+		{
+			if(mob.isInCombat())
+				return Ability.QUALITY_INDIFFERENT;
+			if(target instanceof MOB)
+			{
+			}
+		}
+		return super.castingQuality(mob,target);
+	}
+	
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		Physical target=mob.location();
@@ -135,20 +135,20 @@ public class Prayer_SanctifyRoom extends Prayer
 					String clanID=mob.getClanID();
 					if((mob.amFollowing()!=null)&&(clanID.length()==0))
 						clanID=mob.amFollowing().getClanID();
-                	if((clanID.length()>0)
-                    &&(CMLib.law().doesOwnThisProperty(clanID,((Room)target))))
-                        setMiscText(clanID);
-                    
-                    if((clanID.length()>0)
-                    &&(CMLib.law().doesOwnThisProperty(clanID,((Room)target)))
-                    &&(CMLib.clans().getClan(clanID)!=null)
-                    &&(!CMLib.clans().getClan(clanID).getMorgue().equals(CMLib.map().getExtendedRoomID((Room)target))))
-                        beneficialAffect(mob,target,asLevel,0);
-                    else
-                    {
-    					target.addNonUninvokableEffect((Ability)this.copyOf());
-    					CMLib.database().DBUpdateRoom((Room)target);
-                    }
+					if((clanID.length()>0)
+					&&(CMLib.law().doesOwnThisProperty(clanID,((Room)target))))
+						setMiscText(clanID);
+					
+					if((clanID.length()>0)
+					&&(CMLib.law().doesOwnThisProperty(clanID,((Room)target)))
+					&&(CMLib.clans().getClan(clanID)!=null)
+					&&(!CMLib.clans().getClan(clanID).getMorgue().equals(CMLib.map().getExtendedRoomID((Room)target))))
+						beneficialAffect(mob,target,asLevel,0);
+					else
+					{
+						target.addNonUninvokableEffect((Ability)this.copyOf());
+						CMLib.database().DBUpdateRoom((Room)target);
+					}
 				}
 				else
 					beneficialAffect(mob,target,asLevel,0);

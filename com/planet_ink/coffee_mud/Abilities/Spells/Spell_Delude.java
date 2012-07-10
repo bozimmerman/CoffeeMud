@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -52,8 +52,8 @@ public class Spell_Delude extends Spell
 		super.unInvoke();
 		if(canBeUninvoked())
 		{
-            if(mob.playerStats()!=null)
-                mob.playerStats().setLastUpdated(0);
+			if(mob.playerStats()!=null)
+				mob.playerStats().setLastUpdated(0);
 			CMLib.factions().postFactionChange(mob,this, CMLib.factions().AlignID(), previousAlignment-mob.fetchFaction(CMLib.factions().AlignID()));
 			if(mob.fetchFaction(CMLib.factions().AlignID()) != previousAlignment)
 				mob.addFaction(CMLib.factions().AlignID(), previousAlignment);
@@ -101,55 +101,55 @@ public class Spell_Delude extends Spell
 					success=beneficialAffect(mob,target,asLevel,0);
 					if(success)
 					{
-                        int which=0;
-                        if(CMLib.flags().isEvil(target)) 
-                            which=1;
-                        else 
-                        if(CMLib.flags().isGood(target)) 
-                            which=2;
-                        else
-                        if(CMLib.dice().rollPercentage()>50) 
-                            which=1;
-                        else 
-                            which=2;
-                        Enumeration e;
-                        switch(which) 
-                        {
-                            case 1:
-                                // find a good range, set them within that
-                                int newAlign=0;
-                                e=CMLib.factions().getRanges(CMLib.factions().AlignID());
-                                if(e!=null)
-                                for(;e.hasMoreElements();) 
-                                {
-                                    Faction.FactionRange R=(Faction.FactionRange)e.nextElement();
-                                    if(R.alignEquiv()==Faction.ALIGN_GOOD) 
-                                    {
-                                        newAlign = R.random();
-                                        break;
-                                    }
-                                }
-            					CMLib.factions().postFactionChange(target,this, CMLib.factions().AlignID(), newAlign-target.fetchFaction(CMLib.factions().AlignID()));
-            					CMLib.utensils().confirmWearability(target);
-                                return true;
-                            case 2:
-                                // find an evil range, set them within that
-                                newAlign=0;
-                                e=CMLib.factions().getRanges(CMLib.factions().AlignID());
-                                if(e!=null)
-                                for(;e.hasMoreElements();) 
-                                {
-                                    Faction.FactionRange R=(Faction.FactionRange)e.nextElement();
-                                    if(R.alignEquiv()==Faction.ALIGN_EVIL) 
-                                    {
-                                        newAlign = R.random();
-                                        break;
-                                    }
-                                }
-            					CMLib.factions().postFactionChange(target,this, CMLib.factions().AlignID(), newAlign-target.fetchFaction(CMLib.factions().AlignID()));
-            					CMLib.utensils().confirmWearability(target);
-                                return true;
-                        }
+						int which=0;
+						if(CMLib.flags().isEvil(target)) 
+							which=1;
+						else 
+						if(CMLib.flags().isGood(target)) 
+							which=2;
+						else
+						if(CMLib.dice().rollPercentage()>50) 
+							which=1;
+						else 
+							which=2;
+						Enumeration e;
+						switch(which) 
+						{
+							case 1:
+								// find a good range, set them within that
+								int newAlign=0;
+								e=CMLib.factions().getRanges(CMLib.factions().AlignID());
+								if(e!=null)
+								for(;e.hasMoreElements();) 
+								{
+									Faction.FactionRange R=(Faction.FactionRange)e.nextElement();
+									if(R.alignEquiv()==Faction.ALIGN_GOOD) 
+									{
+										newAlign = R.random();
+										break;
+									}
+								}
+								CMLib.factions().postFactionChange(target,this, CMLib.factions().AlignID(), newAlign-target.fetchFaction(CMLib.factions().AlignID()));
+								CMLib.utensils().confirmWearability(target);
+								return true;
+							case 2:
+								// find an evil range, set them within that
+								newAlign=0;
+								e=CMLib.factions().getRanges(CMLib.factions().AlignID());
+								if(e!=null)
+								for(;e.hasMoreElements();) 
+								{
+									Faction.FactionRange R=(Faction.FactionRange)e.nextElement();
+									if(R.alignEquiv()==Faction.ALIGN_EVIL) 
+									{
+										newAlign = R.random();
+										break;
+									}
+								}
+								CMLib.factions().postFactionChange(target,this, CMLib.factions().AlignID(), newAlign-target.fetchFaction(CMLib.factions().AlignID()));
+								CMLib.utensils().confirmWearability(target);
+								return true;
+						}
 					}
 				}
 			}

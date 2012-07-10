@@ -12,7 +12,7 @@ Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
 You may obtain a copy of the License at
 
-    http://www.apache.org/licenses/LICENSE-2.0
+	http://www.apache.org/licenses/LICENSE-2.0
 
 Unless required by applicable law or agreed to in writing, software
 distributed under the License is distributed on an "AS IS" BASIS,
@@ -28,21 +28,21 @@ public class MultiEnumeration<K> implements Enumeration<K>
 	
 	@SuppressWarnings("unchecked")
 	public MultiEnumeration(Enumeration<K>[] esets) 
-    {
-        if((esets==null)||(esets.length==0))
-        	enums.add((Enumeration<K>)EmptyEnumeration.INSTANCE);
-        else
-        for(Enumeration<K> E : esets)
-        	if(E!=null) enums.add(E);
+	{
+		if((esets==null)||(esets.length==0))
+			enums.add((Enumeration<K>)EmptyEnumeration.INSTANCE);
+		else
+		for(Enumeration<K> E : esets)
+			if(E!=null) enums.add(E);
 		setup();
-    }
-    
+	}
+	
 	public MultiEnumeration(Enumeration<K> eset) 
-    {
-    	enums.add(eset);
+	{
+		enums.add(eset);
 		setup();
-    }
-    
+	}
+	
 	public void addEnumeration(Enumeration<K> set)
 	{
 		if(set != null)
@@ -52,24 +52,24 @@ public class MultiEnumeration<K> implements Enumeration<K>
 	
 	private void setup()
 	{
-    	if((enumer==null)&&(dex<enums.size()))
-    		enumer=enums.get(dex);
-    	while((enumer!=null)&&(!enumer.hasMoreElements())&&(++dex<enums.size()))
-    		enumer=enums.get(dex);
+		if((enumer==null)&&(dex<enums.size()))
+			enumer=enums.get(dex);
+		while((enumer!=null)&&(!enumer.hasMoreElements())&&(++dex<enums.size()))
+			enumer=enums.get(dex);
 	}
 	
-    public boolean hasMoreElements() 
-    { 
-    	if(enumer.hasMoreElements()) return true;
-    	while((!enumer.hasMoreElements())&&(++dex<enums.size()))
-    		enumer=enums.get(dex);
-    	return enumer.hasMoreElements();
-    }
-    
-    public K nextElement() 
-    {
-    	if(!hasMoreElements())
-    		throw new NoSuchElementException();
-    	return enumer.nextElement();
-    }
+	public boolean hasMoreElements() 
+	{ 
+		if(enumer.hasMoreElements()) return true;
+		while((!enumer.hasMoreElements())&&(++dex<enums.size()))
+			enumer=enums.get(dex);
+		return enumer.hasMoreElements();
+	}
+	
+	public K nextElement() 
+	{
+		if(!hasMoreElements())
+			throw new NoSuchElementException();
+		return enumer.nextElement();
+	}
 }

@@ -23,7 +23,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -68,7 +68,7 @@ public class AHelp extends StdCommand
 					}
 					if(V.size()>0)
 					{
-					    theRest.append("\n\rProperties:\n\r");
+						theRest.append("\n\rProperties:\n\r");
 						theRest.append(CMLib.lister().fourColumns(mob,V));
 					}
 
@@ -81,7 +81,7 @@ public class AHelp extends StdCommand
 					}
 					if(V.size()>0)
 					{
-					    theRest.append("\n\rDiseases:\n\r");
+						theRest.append("\n\rDiseases:\n\r");
 						theRest.append(CMLib.lister().fourColumns(mob,V));
 					}
 
@@ -94,7 +94,7 @@ public class AHelp extends StdCommand
 					}
 					if(V.size()>0)
 					{
-					    theRest.append("\n\rPoisons:\n\r");
+						theRest.append("\n\rPoisons:\n\r");
 						theRest.append(CMLib.lister().fourColumns(mob,V));
 					}
 
@@ -107,7 +107,7 @@ public class AHelp extends StdCommand
 					}
 					if(V.size()>0)
 					{
-					    theRest.append("\n\rSuper Powers:\n\r");
+						theRest.append("\n\rSuper Powers:\n\r");
 						theRest.append(CMLib.lister().fourColumns(mob,V));
 					}
 
@@ -119,7 +119,7 @@ public class AHelp extends StdCommand
 					}
 					if(V.size()>0)
 					{
-					    theRest.append("\n\r\n\rBehaviors:\n\r");
+						theRest.append("\n\r\n\rBehaviors:\n\r");
 						theRest.append(CMLib.lister().fourColumns(mob,V));
 					}
 					Resources.submitResource("arc_help.therest",theRest);

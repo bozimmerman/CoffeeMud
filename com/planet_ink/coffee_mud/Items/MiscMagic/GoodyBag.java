@@ -25,7 +25,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -69,17 +69,17 @@ public class GoodyBag extends BagOfEndlessness implements ArchonOnly
 			alreadyFilled=true;
 			if(getContents().size()==0)
 			{
-			    List<String> V=CMLib.beanCounter().getAllCurrencies();
-			    for(int v=0;v<V.size();v++)
-			    {
-			        String currency=(String)V.get(v);
-			        MoneyLibrary.MoneyDenomination[] DV=CMLib.beanCounter().getCurrencySet(currency);
-			        for(int v2=0;v2<DV.length;v2++)
-			        {
+				List<String> V=CMLib.beanCounter().getAllCurrencies();
+				for(int v=0;v<V.size();v++)
+				{
+					String currency=(String)V.get(v);
+					MoneyLibrary.MoneyDenomination[] DV=CMLib.beanCounter().getCurrencySet(currency);
+					for(int v2=0;v2<DV.length;v2++)
+					{
 						Coins C=CMLib.beanCounter().makeBestCurrency(currency,DV[v2].value,owner(),this);
 						if(C!=null)	C.setNumberOfCoins(100);
-			        }
-			    }
+					}
+				}
 				Item I=CMClass.getItem("GenSuperPill");
 				I.setName("a training pill");
 				I.setDisplayText("A small round pill has been left here.");

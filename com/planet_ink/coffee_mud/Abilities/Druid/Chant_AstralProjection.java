@@ -26,7 +26,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -42,8 +42,8 @@ public class Chant_AstralProjection extends Chant
 	public String name(){return "Astral Projection";}
 	public String displayText(){return "(Astral Projection)";}
 	protected int canAffectCode(){return CAN_MOBS;}
-    public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_SHAPE_SHIFTING;}
-    public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
+	public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_SHAPE_SHIFTING;}
+	public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
 
 	public void unInvoke()
 	{
@@ -158,7 +158,7 @@ public class Chant_AstralProjection extends Chant
 			spirit.delAllItems(true);
 			CMLib.beanCounter().clearZeroMoney(spirit,null);
 			mob.location().show(target,null,CMMsg.MSG_OK_ACTION,"^Z<S-NAME> go(es) limp!^.^?\n\r");
-	        CMLib.threads().startTickDown(spirit,Tickable.TICKID_MOB,1);
+			CMLib.threads().startTickDown(spirit,Tickable.TICKID_MOB,1);
 			beneficialAffect(spirit,target,asLevel,0);
 			Ability A=CMClass.getAbility("Prop_AstralSpirit");
 			spirit.addNonUninvokableEffect(A);

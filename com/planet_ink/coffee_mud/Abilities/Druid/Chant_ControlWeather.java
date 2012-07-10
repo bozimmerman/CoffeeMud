@@ -25,7 +25,7 @@ import java.util.Vector;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -43,10 +43,10 @@ public class Chant_ControlWeather extends Chant
 	protected int canTargetCode(){return 0;}
 	public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_WEATHER_MASTERY;}
 	public int controlCode=0;
-    public int abilityCode(){return controlCode;}
-    public void setAbilityCode(int code){ super.setAbilityCode(code); controlCode=code;}
-    public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
-    
+	public int abilityCode(){return controlCode;}
+	public void setAbilityCode(int code){ super.setAbilityCode(code); controlCode=code;}
+	public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
+	
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(!super.okMessage(myHost,msg)) return false;
@@ -84,13 +84,13 @@ public class Chant_ControlWeather extends Chant
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-        Chant_ControlWeather A=(Chant_ControlWeather)mob.location().getArea().fetchEffect(ID());
-        if((A!=null)&&(A.abilityCode()==1))
-        {
-            long remaining=A.tickDown*CMProps.getTickMillis();
-            mob.tell("This area is under an enchantment of climactic balance, which can not be controlled for "+mob.location().getArea().getTimeObj().deriveEllapsedTimeString(remaining)+".");
-            return false;
-        }
+		Chant_ControlWeather A=(Chant_ControlWeather)mob.location().getArea().fetchEffect(ID());
+		if((A!=null)&&(A.abilityCode()==1))
+		{
+			long remaining=A.tickDown*CMProps.getTickMillis();
+			mob.tell("This area is under an enchantment of climactic balance, which can not be controlled for "+mob.location().getArea().getTimeObj().deriveEllapsedTimeString(remaining)+".");
+			return false;
+		}
 		int size=mob.location().getArea().numberOfProperIDedRooms();
 		size=size/(mob.phyStats().level()+(super.getXLEVELLevel(mob)));
 		if(size<0) size=0;

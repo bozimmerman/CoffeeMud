@@ -25,7 +25,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -40,7 +40,7 @@ public class Chant_Reincarnation extends Chant
 	public String ID() { return "Chant_Reincarnation"; }
 	public String name(){ return "Reincarnation";}
 	public String displayText(){return "(Reincarnation Geas)";}
-    public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_BREEDING;}
+	public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_BREEDING;}
 	public int abstractQuality(){return Ability.QUALITY_OK_OTHERS;}
 	public boolean canBeUninvoked(){return false;}
 	protected int overrideMana(){return 200;}
@@ -133,27 +133,27 @@ public class Chant_Reincarnation extends Chant
 	{
 		MOB target=getTarget(mob,commands,givenTarget,false,true);
 		if(target==null) return false;
-        if(target.fetchEffect(ID())!=null)
-        {
-            if(mob.location().show(mob,target,null,CMMsg.MSG_CAST,"<S-NAME> lift(s) the reincarnation geas on <T-NAMESELF>."))
-                target.delEffect(target.fetchEffect(ID()));
-            else
-                mob.location().show(mob,target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> fail(s) to lift the reincarnation geas on <T-NAMESELF>.");
-            return false;
-        }
+		if(target.fetchEffect(ID())!=null)
+		{
+			if(mob.location().show(mob,target,null,CMMsg.MSG_CAST,"<S-NAME> lift(s) the reincarnation geas on <T-NAMESELF>."))
+				target.delEffect(target.fetchEffect(ID()));
+			else
+				mob.location().show(mob,target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> fail(s) to lift the reincarnation geas on <T-NAMESELF>.");
+			return false;
+		}
 		if(target.isMonster())
 		{
 			mob.tell("Your chant would have no effect on such a creature.");
 			return false;
 		}
 
-        boolean success=proficiencyCheck(mob,0,auto);
-        if(success&&(!auto)&&(mob!=target)&&(!mob.mayIFight(target))&&(!mob.getGroupMembers(new HashSet<MOB>()).contains(target)))
-        {
-            mob.tell(target.name()+" is a player, so you must be group members, or your playerkill flags must be on for this to work.");
-            success=false;
-        }
-        
+		boolean success=proficiencyCheck(mob,0,auto);
+		if(success&&(!auto)&&(mob!=target)&&(!mob.mayIFight(target))&&(!mob.getGroupMembers(new HashSet<MOB>()).contains(target)))
+		{
+			mob.tell(target.name()+" is a player, so you must be group members, or your playerkill flags must be on for this to work.");
+			success=false;
+		}
+		
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 

@@ -26,7 +26,7 @@ import java.util.*;
  * <p>you may not use this file except in compliance with the License.
  * <p>You may obtain a copy of the License at
  *
- * <p>       http://www.apache.org/licenses/LICENSE-2.0
+ * <p>  	 http://www.apache.org/licenses/LICENSE-2.0
  *
  * <p>Unless required by applicable law or agreed to in writing, software
  * <p>distributed under the License is distributed on an "AS IS" BASIS,
@@ -104,9 +104,9 @@ public class MOBHunter extends ActiveTicker
 
 	public boolean tick(Tickable ticking, int tickID)
 	{
-	    super.tick(ticking,tickID);
-	    if((canAct(ticking,tickID))&&(ticking instanceof MOB))
-	    {
+		super.tick(ticking,tickID);
+		if((canAct(ticking,tickID))&&(ticking instanceof MOB))
+		{
 			MOB mob=(MOB)ticking;
 			if(debug) Log.sysOut("ZAPHUNT", "Tick starting");
 			if(!isHunting(mob))
@@ -123,7 +123,7 @@ public class MOBHunter extends ActiveTicker
 					A.invoke(mob, new Vector(), prey, false,0);
 				}
 			}
-	    }
-	    return true;
+		}
+		return true;
 	}
 }

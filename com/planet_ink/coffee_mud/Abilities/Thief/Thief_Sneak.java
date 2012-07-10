@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -40,7 +40,7 @@ public class Thief_Sneak extends ThiefSkill
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return 0;}
 	public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
-    public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_STEALTHY;}
+	public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_STEALTHY;}
 	private static final String[] triggerStrings = {"SNEAK"};
 	public String[] triggerStrings(){return triggerStrings;}
 	public int usageType(){return USAGE_MOVEMENT;}
@@ -62,7 +62,7 @@ public class Thief_Sneak extends ThiefSkill
 			return false;
 		}
 
-        MOB highestMOB=getHighestLevelMOB(mob,null);
+		MOB highestMOB=getHighestLevelMOB(mob,null);
 		int levelDiff=(mob.phyStats().level()+(super.getXLEVELLevel(mob)*2))-getMOBLevel(highestMOB);
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))

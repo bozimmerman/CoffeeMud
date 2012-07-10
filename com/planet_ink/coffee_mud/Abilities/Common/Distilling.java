@@ -25,7 +25,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -37,54 +37,54 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Distilling extends Cooking
 {
-    public String ID() { return "Distilling"; }
-    public String name(){ return "Distilling";}
-    private static final String[] triggerStrings = {"DISTILLING"};
-    public String[] triggerStrings(){return triggerStrings;}
-    public String cookWordShort(){return "distill";}
-    public String cookWord(){return "distilling";}
-    public boolean honorHerbs(){return false;}
-    public String supportedResourceString(){return "MISC";}
+	public String ID() { return "Distilling"; }
+	public String name(){ return "Distilling";}
+	private static final String[] triggerStrings = {"DISTILLING"};
+	public String[] triggerStrings(){return triggerStrings;}
+	public String cookWordShort(){return "distill";}
+	public String cookWord(){return "distilling";}
+	public boolean honorHerbs(){return false;}
+	public String supportedResourceString(){return "MISC";}
 
-    public String parametersFile(){ return "liquors.txt";}
-    protected List<List<String>> loadRecipes(){return super.loadRecipes(parametersFile());}
+	public String parametersFile(){ return "liquors.txt";}
+	protected List<List<String>> loadRecipes(){return super.loadRecipes(parametersFile());}
 
-    public Distilling()
-    {
-        super();
+	public Distilling()
+	{
+		super();
 
-        defaultFoodSound = "hotspring.wav";
-        defaultDrinkSound = "hotspring.wav";
-    }
+		defaultFoodSound = "hotspring.wav";
+		defaultDrinkSound = "hotspring.wav";
+	}
 
-    public boolean mayICraft(final Item I)
-    {
-        if(I==null) return false;
-        if(!super.mayBeCrafted(I))
-            return false;
-        if(I instanceof Drink)
-        {
-            Drink D=(Drink)I;
-            if(D.liquidType()!=RawMaterial.RESOURCE_LIQUOR)
-                return false;
-            if(CMLib.flags().flaggedAffects(D, Ability.FLAG_INTOXICATING).size()>0)
-                return true;
-        }
-        return false;
-    }
+	public boolean mayICraft(final Item I)
+	{
+		if(I==null) return false;
+		if(!super.mayBeCrafted(I))
+			return false;
+		if(I instanceof Drink)
+		{
+			Drink D=(Drink)I;
+			if(D.liquidType()!=RawMaterial.RESOURCE_LIQUOR)
+				return false;
+			if(CMLib.flags().flaggedAffects(D, Ability.FLAG_INTOXICATING).size()>0)
+				return true;
+		}
+		return false;
+	}
 
-    public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
-    {
-        if((!super.invoke(mob,commands,givenTarget,auto,asLevel))||(building==null))
-            return false;
-        Ability A2=building.fetchEffect(0);
-        if((A2!=null)
-        &&(building instanceof Drink))
-        {
-            ((Drink)building).setLiquidType(RawMaterial.RESOURCE_LIQUOR);
-            if(building instanceof Item)
-                ((Item)building).setMaterial(RawMaterial.RESOURCE_LIQUOR);
-        }
-        return true;
-    }
+	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
+	{
+		if((!super.invoke(mob,commands,givenTarget,auto,asLevel))||(building==null))
+			return false;
+		Ability A2=building.fetchEffect(0);
+		if((A2!=null)
+		&&(building instanceof Drink))
+		{
+			((Drink)building).setLiquidType(RawMaterial.RESOURCE_LIQUOR);
+			if(building instanceof Item)
+				((Item)building).setMaterial(RawMaterial.RESOURCE_LIQUOR);
+		}
+		return true;
+	}
 }

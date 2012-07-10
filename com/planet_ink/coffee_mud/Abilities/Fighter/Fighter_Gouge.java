@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -45,7 +45,7 @@ public class Fighter_Gouge extends MonkSkill
 	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	private static final String[] triggerStrings = {"GOUGE"};
 	public String[] triggerStrings(){return triggerStrings;}
-    public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_DIRTYFIGHTING;}
+	public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_DIRTYFIGHTING;}
 	protected int overrideMana(){return 100;}
 	public int usageType(){return USAGE_MOVEMENT;}
 
@@ -93,7 +93,7 @@ public class Fighter_Gouge extends MonkSkill
 			if((target instanceof MOB)&&(((MOB)target).charStats().getBodyPart(Race.BODY_EYE)<=0))
 				return Ability.QUALITY_INDIFFERENT;
 			if((target instanceof MOB)&&(!CMLib.flags().canSee((MOB)target)))
-                return Ability.QUALITY_INDIFFERENT;
+				return Ability.QUALITY_INDIFFERENT;
 			if(anyWeapons(mob))
 				return Ability.QUALITY_INDIFFERENT;
 			if(target.fetchEffect(ID())!=null)
@@ -136,41 +136,41 @@ public class Fighter_Gouge extends MonkSkill
 		if((success)&&(hit))
 		{
 			CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_JUSTICE|(auto?CMMsg.MASK_ALWAYS:0),auto?"":"^F^<FIGHT^><S-NAME> gouge(s) at <T-YOUPOSS> eyes!^</FIGHT^>^?");
-            CMLib.color().fixSourceFightColor(msg);
+			CMLib.color().fixSourceFightColor(msg);
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> <S-IS-ARE> blinded!");
 				maliciousAffect(mob,target,asLevel,5,-1);
-                Amputator A=(Amputator)target.fetchEffect("Amputation");
-                if(A==null) A=(Amputator)CMClass.getAbility("Amputation");
-                List<String> remainingLimbList=A.remainingLimbNameSet(target);
-                String gone=null;
-                for(int i=0;i<remainingLimbList.size();i++)
-                    if(((String)remainingLimbList.get(i)).toUpperCase().endsWith("EYE"))
-                    {
-                        gone=(String)remainingLimbList.get(i);
-                        break;
-                    }
-                if(gone!=null)
-                {
-                    Ability A2=CMClass.getAbility("Injury");
-                    if(A2!=null)
-                    {
-                        A2.setMiscText(mob.Name()+"/"+gone);
-                        CMMsg msg2=CMClass.getMsg(mob,target,this,CMMsg.MSG_DAMAGE,"<DAMAGE> <T-NAME>.");
-                        msg2.setValue(target.maxState().getHitPoints()/(20-getXLEVELLevel(mob)));
-                        if(!A2.invoke(mob,new XVector(msg2),target,true,0))
-                        {
-                            A2=target.fetchEffect("Injury");
-                            if( A2 != null )
-                            {
-                              A2.setMiscText(mob.Name()+"/"+gone);
-                              A2.okMessage(target,msg2);
-                            }
-                        }
-                    }
-                }
+				Amputator A=(Amputator)target.fetchEffect("Amputation");
+				if(A==null) A=(Amputator)CMClass.getAbility("Amputation");
+				List<String> remainingLimbList=A.remainingLimbNameSet(target);
+				String gone=null;
+				for(int i=0;i<remainingLimbList.size();i++)
+					if(((String)remainingLimbList.get(i)).toUpperCase().endsWith("EYE"))
+					{
+						gone=(String)remainingLimbList.get(i);
+						break;
+					}
+				if(gone!=null)
+				{
+					Ability A2=CMClass.getAbility("Injury");
+					if(A2!=null)
+					{
+						A2.setMiscText(mob.Name()+"/"+gone);
+						CMMsg msg2=CMClass.getMsg(mob,target,this,CMMsg.MSG_DAMAGE,"<DAMAGE> <T-NAME>.");
+						msg2.setValue(target.maxState().getHitPoints()/(20-getXLEVELLevel(mob)));
+						if(!A2.invoke(mob,new XVector(msg2),target,true,0))
+						{
+							A2=target.fetchEffect("Injury");
+							if( A2 != null )
+							{
+							  A2.setMiscText(mob.Name()+"/"+gone);
+							  A2.okMessage(target,msg2);
+							}
+						}
+					}
+				}
 			}
 		}
 		else

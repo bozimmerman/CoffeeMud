@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -35,23 +35,23 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public interface AreaGenerationLibrary extends CMLibrary
 {
-    public void buildDefinedIDSet(List<XMLpiece> xmlRoot, Hashtable defined);
-    public Vector findItems(XMLLibrary.XMLpiece piece, Hashtable defined) throws CMException;
-    public Vector findMobs(XMLLibrary.XMLpiece piece, Hashtable defined) throws CMException;
-    public String findString(String tagName, XMLLibrary.XMLpiece piece, Hashtable defined) throws CMException;
-    public Room buildRoom(XMLLibrary.XMLpiece piece, Hashtable defined, Exit[] exits, int direction) throws CMException;
-    public void checkRequirements(XMLLibrary.XMLpiece piece, Hashtable defined) throws CMException;
-    public Map<String,String> getUnfilledRequirements(Hashtable defined, XMLLibrary.XMLpiece piece);
-    public Area buildArea(XMLLibrary.XMLpiece piece, Hashtable defined, int direction) throws CMException;
-    public boolean fillInArea(XMLLibrary.XMLpiece piece, Hashtable defined, Area A, int direction) throws CMException;
-    public LayoutManager getLayoutManager(String named);
-    
-    public static interface LayoutManager
-    {
-    	public String name();
-    	public Vector<LayoutNode> generate(int num, int dir);
-    }
-    
+	public void buildDefinedIDSet(List<XMLpiece> xmlRoot, Hashtable defined);
+	public Vector findItems(XMLLibrary.XMLpiece piece, Hashtable defined) throws CMException;
+	public Vector findMobs(XMLLibrary.XMLpiece piece, Hashtable defined) throws CMException;
+	public String findString(String tagName, XMLLibrary.XMLpiece piece, Hashtable defined) throws CMException;
+	public Room buildRoom(XMLLibrary.XMLpiece piece, Hashtable defined, Exit[] exits, int direction) throws CMException;
+	public void checkRequirements(XMLLibrary.XMLpiece piece, Hashtable defined) throws CMException;
+	public Map<String,String> getUnfilledRequirements(Hashtable defined, XMLLibrary.XMLpiece piece);
+	public Area buildArea(XMLLibrary.XMLpiece piece, Hashtable defined, int direction) throws CMException;
+	public boolean fillInArea(XMLLibrary.XMLpiece piece, Hashtable defined, Area A, int direction) throws CMException;
+	public LayoutManager getLayoutManager(String named);
+	
+	public static interface LayoutManager
+	{
+		public String name();
+		public Vector<LayoutNode> generate(int num, int dir);
+	}
+	
 	public static interface LayoutNode 
 	{
 		public void crossLink(LayoutNode to);

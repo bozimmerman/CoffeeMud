@@ -22,7 +22,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -32,33 +32,33 @@ import java.util.*;
 */
 public class ComponentNext extends StdWebMacro
 {
-    public String name(){return this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);}
-    public boolean isAdminMacro()   {return true;}
+	public String name(){return this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);}
+	public boolean isAdminMacro()   {return true;}
 
-    public String runMacro(ExternalHTTPRequests httpReq, String parm)
-    {
-        java.util.Map<String,String> parms=parseParms(parm);
-        String last=httpReq.getRequestParameter("COMPONENT");
-        if(parms.containsKey("RESET"))
-        {   
-            if(last!=null) httpReq.removeRequestParameter("COMPONENT");
-            return "";
-        }
-        String lastID="";
-        String componentID;
-        for(Iterator<String> i=CMLib.ableMapper().getAbilityComponentMap().keySet().iterator();i.hasNext();)
-        {
-        	componentID=(String)i.next();
-            if((last==null)||((last.length()>0)&&(last.equals(lastID))&&(!componentID.equalsIgnoreCase(lastID))))
-            {
-                httpReq.addRequestParameters("COMPONENT",componentID);
-                return "";
-            }
-            lastID=componentID;
-        }
-        httpReq.addRequestParameters("COMPONENT","");
-        if(parms.containsKey("EMPTYOK"))
-            return "<!--EMPTY-->";
-        return " @break@";
-    }
+	public String runMacro(ExternalHTTPRequests httpReq, String parm)
+	{
+		java.util.Map<String,String> parms=parseParms(parm);
+		String last=httpReq.getRequestParameter("COMPONENT");
+		if(parms.containsKey("RESET"))
+		{   
+			if(last!=null) httpReq.removeRequestParameter("COMPONENT");
+			return "";
+		}
+		String lastID="";
+		String componentID;
+		for(Iterator<String> i=CMLib.ableMapper().getAbilityComponentMap().keySet().iterator();i.hasNext();)
+		{
+			componentID=(String)i.next();
+			if((last==null)||((last.length()>0)&&(last.equals(lastID))&&(!componentID.equalsIgnoreCase(lastID))))
+			{
+				httpReq.addRequestParameters("COMPONENT",componentID);
+				return "";
+			}
+			lastID=componentID;
+		}
+		httpReq.addRequestParameters("COMPONENT","");
+		if(parms.containsKey("EMPTYOK"))
+			return "<!--EMPTY-->";
+		return " @break@";
+	}
 }

@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -56,36 +56,36 @@ public class AbilityNext extends StdWebMacro
 		String flagString=httpReq.getRequestParameter("FLAGS");
 		if((flagString!=null)&&(flagString.length()>0))
 		{
-		    Vector V=CMParms.parseSquiggles(flagString.toUpperCase());
-		    for(int i=0;i<Ability.FLAG_DESCS.length;i++)
-		        if(V.contains(Ability.FLAG_DESCS[i]))
-		            flags=flags|(CMath.pow(2,i));
+			Vector V=CMParms.parseSquiggles(flagString.toUpperCase());
+			for(int i=0;i<Ability.FLAG_DESCS.length;i++)
+				if(V.contains(Ability.FLAG_DESCS[i]))
+					flags=flags|(CMath.pow(2,i));
 		}
 		
 		String lastID="";
-        String className=httpReq.getRequestParameter("CLASS");
-        boolean genericOnly =parms.containsKey("GENERIC");
-        boolean parmsEditable=parms.containsKey("PARMSEDITABLE");
-        boolean unqualifiedOK=parms.containsKey("UNQUALIFIEDOK");
-        String levelName=httpReq.getRequestParameter("LEVEL");
-        boolean notFlag =parms.containsKey("NOT"); 
-        boolean allFlag =parms.containsKey("ALL");
-        boolean domainFlag=parms.containsKey("DOMAIN");
-        String domain=(String)parms.get("DOMAIN");
+		String className=httpReq.getRequestParameter("CLASS");
+		boolean genericOnly =parms.containsKey("GENERIC");
+		boolean parmsEditable=parms.containsKey("PARMSEDITABLE");
+		boolean unqualifiedOK=parms.containsKey("UNQUALIFIEDOK");
+		String levelName=httpReq.getRequestParameter("LEVEL");
+		boolean notFlag =parms.containsKey("NOT"); 
+		boolean allFlag =parms.containsKey("ALL");
+		boolean domainFlag=parms.containsKey("DOMAIN");
+		String domain=(String)parms.get("DOMAIN");
 		for(Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
 		{
 			Ability A=(Ability)a.nextElement();
 			boolean okToShow=true;
 			int classType=A.classificationCode()&Ability.ALL_ACODES;
 			if(genericOnly)
-			    okToShow=A.isGeneric();
-            else
-            if(parmsEditable)
-                okToShow=((A instanceof ItemCraftor)
-                       &&(((ItemCraftor)A).parametersFile()!=null)
-                       &&(((ItemCraftor)A).parametersFile().length()>0)
-                       &&(((ItemCraftor)A).parametersFormat()!=null)
-                       &&(((ItemCraftor)A).parametersFormat().length()>0));
+				okToShow=A.isGeneric();
+			else
+			if(parmsEditable)
+				okToShow=((A instanceof ItemCraftor)
+					   &&(((ItemCraftor)A).parametersFile()!=null)
+					   &&(((ItemCraftor)A).parametersFile().length()>0)
+					   &&(((ItemCraftor)A).parametersFormat()!=null)
+					   &&(((ItemCraftor)A).parametersFormat().length()>0));
 			
 			if((className!=null)&&(className.length()>0))
 			{
@@ -97,7 +97,7 @@ public class AbilityNext extends StdWebMacro
 					okToShow=false;
 				else
 				if((flags>0)&&((A.flags()&flags)!=flags))
-				    okToShow=false;
+					okToShow=false;
 				else
 				{
 					if((levelName!=null)&&(levelName.length()>0)&&(CMath.s_int(levelName)!=level))
@@ -115,7 +115,7 @@ public class AbilityNext extends StdWebMacro
 					okToShow=false;
 				else
 				if((flags>0)&&((A.flags()&flags)!=flags))
-				    okToShow=false;
+					okToShow=false;
 				else
 				{
 					if((levelName!=null)&&(levelName.length()>0)&&(CMath.s_int(levelName)!=level))

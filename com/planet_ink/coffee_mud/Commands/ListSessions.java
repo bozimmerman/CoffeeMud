@@ -23,7 +23,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -47,7 +47,7 @@ public class ListSessions extends StdCommand
 		if((commands!=null)&&(commands.size()>1))
 			sort=CMParms.combine(commands,1).trim().toUpperCase();
 		StringBuffer lines=new StringBuffer("\n\r^x");
-        lines.append(CMStrings.padRight("#",3)+"| ");
+		lines.append(CMStrings.padRight("#",3)+"| ");
 		lines.append(CMStrings.padRight("Status",9)+"| ");
 		lines.append(CMStrings.padRight("Valid",5)+"| ");
 		lines.append(CMStrings.padRight("Name",17)+"| ");
@@ -57,7 +57,7 @@ public class ListSessions extends StdCommand
 		for(Session S : CMLib.sessions().allIterable())
 		{
 			String[] set=new String[6];
-            set[0]=CMStrings.padRight(""+broken.size(),3)+"| ";
+			set[0]=CMStrings.padRight(""+broken.size(),3)+"| ";
 			set[1]=(S.isStopped()?"^H":"")+CMStrings.padRight(Session.STATUS_STR[S.getStatus()],9)+(S.isStopped()?"^?":"")+"| ";
 			if (S.mob() != null)
 			{

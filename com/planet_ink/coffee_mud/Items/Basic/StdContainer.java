@@ -25,7 +25,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -177,12 +177,12 @@ public class StdContainer extends StdItem implements Container
 							return false;
 						}
 						else
-                        if((newitem.numberOfItems()>(mob.maxItems()-mob.numItems()))&&(!mob.isMine(this)))
-                        {
-                            mob.tell("You can't carry that many items.");
-                            return false;
-                        }
-                        else
+						if((newitem.numberOfItems()>(mob.maxItems()-mob.numItems()))&&(!mob.isMine(this)))
+						{
+							mob.tell("You can't carry that many items.");
+							return false;
+						}
+						else
 						if(!CMLib.flags().isGettable(newitem))
 						{
 							mob.tell("You can't get "+newitem.name()+".");
@@ -190,7 +190,7 @@ public class StdContainer extends StdItem implements Container
 						}
 						return true;
 					}
-                    mob.tell(mob,newitem,this,"You can't see <T-NAME> in <O-NAME>.");
+					mob.tell(mob,newitem,this,"You can't see <T-NAME> in <O-NAME>.");
 					return false;
 				}
 				else
@@ -199,12 +199,12 @@ public class StdContainer extends StdItem implements Container
 					mob.tell(name()+" is too heavy.");
 					return false;
 				}
-                else
-                if(((numberOfItems()>mob.maxItems()-mob.numItems()))&&(!mob.isMine(this)))
-                {
-                    mob.tell("You can't carry that many items.");
-                    return false;
-                }
+				else
+				if(((numberOfItems()>mob.maxItems()-mob.numItems()))&&(!mob.isMine(this)))
+				{
+					mob.tell("You can't carry that many items.");
+					return false;
+				}
 				break;
 			case CMMsg.TYP_REMOVE:
 				if((msg.tool()!=null)
@@ -544,41 +544,41 @@ public class StdContainer extends StdItem implements Container
 		return isInside(I.container());
 	}
 	
-    @Override
-    public int numberOfItems()
-    {
-        return getContents().size()+1;
-    }
-    
-    @Override
-    public int recursiveWeight()
-    {
-        int weight=phyStats().weight();
-        if(owner()==null) return weight;
-        if(owner() instanceof MOB)
-        {
-            MOB M=(MOB)owner();
-            for(int i=0;i<M.numItems();i++)
-            {
-                Item thisItem=M.getItem(i);
-                if((thisItem!=null)&&(thisItem.ultimateContainer(this)==this))
-                    weight+=thisItem.phyStats().weight();
-            }
-        }
-        else
-        if(owner() instanceof Room)
-        {
-            Room R=(Room)owner();
-            for(int i=0;i<R.numItems();i++)
-            {
-                Item thisItem=R.getItem(i);
-                if((thisItem!=null)&&(thisItem.ultimateContainer(this)==this))
-                    weight+=thisItem.phyStats().weight();
-            }
-        }
-        return weight;
-    }
-    
+	@Override
+	public int numberOfItems()
+	{
+		return getContents().size()+1;
+	}
+	
+	@Override
+	public int recursiveWeight()
+	{
+		int weight=phyStats().weight();
+		if(owner()==null) return weight;
+		if(owner() instanceof MOB)
+		{
+			MOB M=(MOB)owner();
+			for(int i=0;i<M.numItems();i++)
+			{
+				Item thisItem=M.getItem(i);
+				if((thisItem!=null)&&(thisItem.ultimateContainer(this)==this))
+					weight+=thisItem.phyStats().weight();
+			}
+		}
+		else
+		if(owner() instanceof Room)
+		{
+			Room R=(Room)owner();
+			for(int i=0;i<R.numItems();i++)
+			{
+				Item thisItem=R.getItem(i);
+				if((thisItem!=null)&&(thisItem.ultimateContainer(this)==this))
+					weight+=thisItem.phyStats().weight();
+			}
+		}
+		return weight;
+	}
+	
 	public ReadOnlyList<Item> getContents()
 	{
 		List<Item> V=new Vector<Item>();

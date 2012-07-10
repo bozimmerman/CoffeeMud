@@ -22,7 +22,7 @@ import java.util.*;
  * <p>you may not use this file except in compliance with the License.
  * <p>You may obtain a copy of the License at
  *
- * <p>       http://www.apache.org/licenses/LICENSE-2.0
+ * <p>  	 http://www.apache.org/licenses/LICENSE-2.0
  *
  * <p>Unless required by applicable law or agreed to in writing, software
  * <p>distributed under the License is distributed on an "AS IS" BASIS,
@@ -42,52 +42,52 @@ public class FactionList extends StdCommand
 		throws java.io.IOException
 	{
 		StringBuffer msg=new StringBuffer("\n\r^HFaction Standings:^?^N\n\r");
-        boolean none=true;
-        XVector<String> list=new XVector<String>(mob.fetchFactions());
-        list.sort();
-        for(Enumeration<String> e=list.elements();e.hasMoreElements();) 
-        {
-            String name=e.nextElement();
-            Faction F=CMLib.factions().getFaction(name);
-            if((F!=null)&&(F.showInFactionsCommand()))
-            {
-                none=false;
-                msg.append(formatFactionLine(name,mob.fetchFaction(name)));
-            }
-        }
+		boolean none=true;
+		XVector<String> list=new XVector<String>(mob.fetchFactions());
+		list.sort();
+		for(Enumeration<String> e=list.elements();e.hasMoreElements();) 
+		{
+			String name=e.nextElement();
+			Faction F=CMLib.factions().getFaction(name);
+			if((F!=null)&&(F.showInFactionsCommand()))
+			{
+				none=false;
+				msg.append(formatFactionLine(name,mob.fetchFaction(name)));
+			}
+		}
 		if(!mob.isMonster())
-            if(none)
-                mob.session().colorOnlyPrintln("\n\r^HNo factions apply.^?^N");
-            else
-    			mob.session().colorOnlyPrintln(msg.toString());
+			if(none)
+				mob.session().colorOnlyPrintln("\n\r^HNo factions apply.^?^N");
+			else
+				mob.session().colorOnlyPrintln(msg.toString());
 		return false;
 	}
 
-    public String formatFactionLine(String name,int faction) 
-    {
-        StringBuffer line=new StringBuffer();
-        line.append("  "+CMStrings.padRight(CMStrings.capitalizeAndLower(CMLib.factions().getName(name).toLowerCase()),21)+" ");
-        Faction.FactionRange FR=CMLib.factions().getRange(name,faction);
-        if(FR==null)
-	        line.append(CMStrings.padRight(""+faction,17)+" ");
-        else
-	        line.append(CMStrings.padRight(FR.name(),17)+" ");
-        line.append("[");
-        line.append(CMStrings.padRight(calcRangeBar(name,faction),25));
-        line.append("]\n\r");
-        return line.toString();
-    }
+	public String formatFactionLine(String name,int faction) 
+	{
+		StringBuffer line=new StringBuffer();
+		line.append("  "+CMStrings.padRight(CMStrings.capitalizeAndLower(CMLib.factions().getName(name).toLowerCase()),21)+" ");
+		Faction.FactionRange FR=CMLib.factions().getRange(name,faction);
+		if(FR==null)
+			line.append(CMStrings.padRight(""+faction,17)+" ");
+		else
+			line.append(CMStrings.padRight(FR.name(),17)+" ");
+		line.append("[");
+		line.append(CMStrings.padRight(calcRangeBar(name,faction),25));
+		line.append("]\n\r");
+		return line.toString();
+	}
 
-    public String calcRangeBar(String factionID, int faction) 
-    {
+	public String calcRangeBar(String factionID, int faction) 
+	{
 		StringBuffer bar=new StringBuffer();
-        Double fill=Double.valueOf(CMath.div(CMLib.factions().getRangePercent(factionID,faction),4));
-        for(int i=0;i<fill.intValue();i++) 
-        {
-            bar.append("*");
-        }
-        return bar.toString();
-    }
+		Double fill=Double.valueOf(CMath.div(CMLib.factions().getRangePercent(factionID,faction),4));
+		for(int i=0;i<fill.intValue();i++) 
+		{
+			bar.append("*");
+		}
+		return bar.toString();
+	}
 
 	
 	public boolean canBeOrdered(){return true;}

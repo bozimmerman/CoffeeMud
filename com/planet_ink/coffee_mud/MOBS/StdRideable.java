@@ -26,7 +26,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -309,9 +309,9 @@ public class StdRideable extends StdMOB implements Rideable
 				msg.source().setRiding(this);
 				return false;
 			}
-		    if(msg.amITarget(this))
-		    {
-		        Rider whoWantsToRide=(msg.tool() instanceof Rider)?(Rider)msg.tool():msg.source();
+			if(msg.amITarget(this))
+			{
+				Rider whoWantsToRide=(msg.tool() instanceof Rider)?(Rider)msg.tool():msg.source();
 				if(amRiding(whoWantsToRide))
 				{
 					msg.source().tell(whoWantsToRide.name()+" is "+stateString(whoWantsToRide)+" "+name()+"!");
@@ -319,7 +319,7 @@ public class StdRideable extends StdMOB implements Rideable
 					return false;
 				}
 				if((msg.tool() instanceof MOB)&&(!CMLib.flags().isBoundOrHeld((MOB)msg.tool())))
-			    {
+				{
 					msg.source().tell(msg.tool().name()+" won't let you do that.");
 					return false;
 				}
@@ -356,7 +356,7 @@ public class StdRideable extends StdMOB implements Rideable
 				}
 				// protects from standard item rejection
 				return true;
-		    }
+			}
 			break;
 		case CMMsg.TYP_ENTER:
 			if(amRiding(msg.source())
@@ -473,13 +473,13 @@ public class StdRideable extends StdMOB implements Rideable
 		super.executeMsg(myHost,msg);
 		switch(msg.targetMinor())
 		{
-        case CMMsg.TYP_LOOK:
-        case CMMsg.TYP_EXAMINE:
-            if((msg.target()==this)
-            &&(numRiders()>0)
-            &&(CMLib.flags().canBeSeenBy(this,msg.source())))
-                msg.addTrailerMsg(CMClass.getMsg(msg.source(),null,null,CMMsg.MSG_OK_VISUAL,displayText(),CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null));
-            break;
+		case CMMsg.TYP_LOOK:
+		case CMMsg.TYP_EXAMINE:
+			if((msg.target()==this)
+			&&(numRiders()>0)
+			&&(CMLib.flags().canBeSeenBy(this,msg.source())))
+				msg.addTrailerMsg(CMClass.getMsg(msg.source(),null,null,CMMsg.MSG_OK_VISUAL,displayText(),CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null));
+			break;
 		case CMMsg.TYP_DISMOUNT:
 			if((msg.tool()!=null)
 			   &&(msg.tool() instanceof Rider))

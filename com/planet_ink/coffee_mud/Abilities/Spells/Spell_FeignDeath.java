@@ -26,7 +26,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -42,7 +42,7 @@ public class Spell_FeignDeath extends Spell
 	public String displayText(){return "(Feign Death)";}
 	protected int canAffectCode(){return CAN_MOBS;}
 	public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_ILLUSION;}
-    public int abstractQuality(){ return Ability.QUALITY_OK_OTHERS;}
+	public int abstractQuality(){ return Ability.QUALITY_OK_OTHERS;}
 
 	public DeadBody Body=null;
 	public Room deathRoom=null;
@@ -150,22 +150,22 @@ public class Spell_FeignDeath extends Spell
 				if(follower!=null)
 					follower.setFollowing(null);
 			}
-            String msp=CMProps.msp("death"+CMLib.dice().roll(1,4,0)+".wav",50);
-            msg=CMClass.getMsg(target,null,null,
-                    CMMsg.MSG_OK_VISUAL,"^f^*^<FIGHT^>!!!!!!!!!!!!!!YOU ARE DEAD!!!!!!!!!!!!!!^</FIGHT^>^?^.\n\r"+msp,
-                    CMMsg.MSG_OK_VISUAL,null,
-                    CMMsg.MSG_OK_VISUAL,"^F^<FIGHT^><S-NAME> is DEAD!!!^</FIGHT^>^?\n\r"+msp);
-            if(deathRoom.okMessage(target,msg))
-            {
-                deathRoom.send(target,msg);
-    			Body.setName("the body of "+target.name());
-    			Body.setDisplayText("the body of "+target.name()+" lies here.");
-    			Body.basePhyStats().setWeight(target.phyStats().weight()+100);
-    			Body.setSecretIdentity("FAKE");
-    			deathRoom.addItem(Body,ItemPossessor.Expire.Monster_Body);
-    			Body.recoverPhyStats();
-    			deathRoom.recoverRoomStats();
-            }
+			String msp=CMProps.msp("death"+CMLib.dice().roll(1,4,0)+".wav",50);
+			msg=CMClass.getMsg(target,null,null,
+					CMMsg.MSG_OK_VISUAL,"^f^*^<FIGHT^>!!!!!!!!!!!!!!YOU ARE DEAD!!!!!!!!!!!!!!^</FIGHT^>^?^.\n\r"+msp,
+					CMMsg.MSG_OK_VISUAL,null,
+					CMMsg.MSG_OK_VISUAL,"^F^<FIGHT^><S-NAME> is DEAD!!!^</FIGHT^>^?\n\r"+msp);
+			if(deathRoom.okMessage(target,msg))
+			{
+				deathRoom.send(target,msg);
+				Body.setName("the body of "+target.name());
+				Body.setDisplayText("the body of "+target.name()+" lies here.");
+				Body.basePhyStats().setWeight(target.phyStats().weight()+100);
+				Body.setSecretIdentity("FAKE");
+				deathRoom.addItem(Body,ItemPossessor.Expire.Monster_Body);
+				Body.recoverPhyStats();
+				deathRoom.recoverRoomStats();
+			}
 		}
 
 		return success;

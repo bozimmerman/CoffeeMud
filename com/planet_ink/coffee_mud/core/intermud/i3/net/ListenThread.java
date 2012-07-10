@@ -24,7 +24,7 @@ import java.util.Vector;
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *        http://www.apache.org/licenses/LICENSE-2.0
+ *  	  http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -35,31 +35,31 @@ import java.util.Vector;
  */
 @SuppressWarnings({"unchecked","rawtypes"})
 public class ListenThread extends Thread {
-    private ServerSocket listen;
-    private Vector clients;
+	private ServerSocket listen;
+	private Vector clients;
 
-    public ListenThread(int port) throws java.io.IOException {
+	public ListenThread(int port) throws java.io.IOException {
 		super("I3Listener@"+port);
-        clients = new Vector(10, 2);
-        listen = new ServerSocket(port);
-        setDaemon(true);
-        start();
-    }
+		clients = new Vector(10, 2);
+		listen = new ServerSocket(port);
+		setDaemon(true);
+		start();
+	}
 
-    public void run() {
-        while( listen!=null && !listen.isClosed() ) {
-            Socket client;
+	public void run() {
+		while( listen!=null && !listen.isClosed() ) {
+			Socket client;
 
-            try {
-                client = listen.accept();
-                synchronized( clients ) {
-                    clients.addElement(client);
-                }
-            }
-            catch( java.io.IOException e ) {
-            }
-        }
-    }
+			try {
+				client = listen.accept();
+				synchronized( clients ) {
+					clients.addElement(client);
+				}
+			}
+			catch( java.io.IOException e ) {
+			}
+		}
+	}
 
 	public void close()
 	{
@@ -70,18 +70,18 @@ public class ListenThread extends Thread {
 		catch(Exception e){}
 	}
 	
-    public Socket nextSocket() {
-        Socket client;
+	public Socket nextSocket() {
+		Socket client;
 
-        synchronized( clients ) {
-            if( clients.size() > 0 ) {
-                client = (Socket)clients.elementAt(0);
-                clients.removeElementAt(0);
-            }
-            else {
-                client = null;
-            }
-        }
-        return client;
-    }
+		synchronized( clients ) {
+			if( clients.size() > 0 ) {
+				client = (Socket)clients.elementAt(0);
+				clients.removeElementAt(0);
+			}
+			else {
+				client = null;
+			}
+		}
+		return client;
+	}
 }

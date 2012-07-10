@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -41,7 +41,7 @@ public class Chant_NeutralizePoison extends Chant implements MendingSkill
 	public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_OTHERS;}
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return CAN_MOBS;}
-    public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PRESERVING;}
+	public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PRESERVING;}
 
 	public boolean supportsMending(Physical item)
 	{ 
@@ -63,20 +63,20 @@ public class Chant_NeutralizePoison extends Chant implements MendingSkill
 		return offenders;
 	}
 
-    public int castingQuality(MOB mob, Physical target)
-    {
-        if(mob!=null)
-        {
-            if(target instanceof MOB)
-            {
-            	List<Ability> offensiveAffects=returnOffensiveAffects(target);
-                if(offensiveAffects.size()==0)
-                    return Ability.QUALITY_INDIFFERENT;
-            }
-        }
-        return super.castingQuality(mob,target);
-    }
-    
+	public int castingQuality(MOB mob, Physical target)
+	{
+		if(mob!=null)
+		{
+			if(target instanceof MOB)
+			{
+				List<Ability> offensiveAffects=returnOffensiveAffects(target);
+				if(offensiveAffects.size()==0)
+					return Ability.QUALITY_INDIFFERENT;
+			}
+		}
+		return super.castingQuality(mob,target);
+	}
+	
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		Physical target=getAnyTarget(mob,commands,givenTarget,Wearable.FILTER_UNWORNONLY);

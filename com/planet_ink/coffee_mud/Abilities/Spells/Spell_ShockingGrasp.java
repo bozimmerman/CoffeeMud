@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -39,7 +39,7 @@ public class Spell_ShockingGrasp extends Spell
 	public String name(){return "Shocking Grasp";}
 	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_EVOCATION;}
-    public long flags(){return Ability.FLAG_AIRBASED;}
+	public long flags(){return Ability.FLAG_AIRBASED;}
 
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
@@ -65,10 +65,10 @@ public class Spell_ShockingGrasp extends Spell
 			CMMsg msg2=CMClass.getMsg(mob,target,this,CMMsg.MSK_CAST_MALICIOUS_VERBAL|CMMsg.TYP_ELECTRIC|(auto?CMMsg.MASK_ALWAYS:0),null);
 			if((target.location().okMessage(mob,msg))&&((target.location().okMessage(mob,msg2))))
 			{
-                target.location().send(mob,msg);
+				target.location().send(mob,msg);
 				if(msg.value()<=0)
 				{
-                    target.location().send(mob,msg2);
+					target.location().send(mob,msg2);
 					if(msg2.value()<=0)
 					{
 						invoker=mob;

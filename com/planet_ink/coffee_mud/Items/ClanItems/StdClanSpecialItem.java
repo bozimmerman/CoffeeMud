@@ -23,7 +23,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -35,7 +35,7 @@ public class StdClanSpecialItem extends StdClanItem
 {
 	public String ID(){	return "StdClanSpecialItem";}
 	private Behavior B=null;
-    private String flag="";
+	private String flag="";
 
 	public StdClanSpecialItem()
 	{
@@ -51,15 +51,15 @@ public class StdClanSpecialItem extends StdClanItem
 		material=RawMaterial.RESOURCE_PINE;
 		recoverPhyStats();
 	}
-    
-    public void setReadableText(String text)
-    {
-        if((text.equalsIgnoreCase("GOOD"))
-        ||(text.equalsIgnoreCase("EVIL")))
-            flag=text;
-        else
-            super.setReadableText(text);
-    }
+	
+	public void setReadableText(String text)
+	{
+		if((text.equalsIgnoreCase("GOOD"))
+		||(text.equalsIgnoreCase("EVIL")))
+			flag=text;
+		else
+			super.setReadableText(text);
+	}
 
 	public void executeMsg(Environmental affecting, CMMsg msg)
 	{
@@ -114,14 +114,14 @@ public class StdClanSpecialItem extends StdClanItem
 			case ClanItem.CI_SPECIALSCALES:
 				{
 					if(((B==null))
-                    ||(!flag.equalsIgnoreCase("EVIL")&&(!B.ID().equals("GoodExecutioner")))
-                    ||(flag.equalsIgnoreCase("EVIL")&&(!B.ID().equals("EvilExecutioner"))))
-                    {
-                        if(flag.equalsIgnoreCase("EVIL"))
-    						B=CMClass.getBehavior("EvilExecutioner");
-                        else
-                            B=CMClass.getBehavior("GoodExecutioner");
-                    }
+					||(!flag.equalsIgnoreCase("EVIL")&&(!B.ID().equals("GoodExecutioner")))
+					||(flag.equalsIgnoreCase("EVIL")&&(!B.ID().equals("EvilExecutioner"))))
+					{
+						if(flag.equalsIgnoreCase("EVIL"))
+							B=CMClass.getBehavior("EvilExecutioner");
+						else
+							B=CMClass.getBehavior("GoodExecutioner");
+					}
 					break;
 				}
 			case ClanItem.CI_SPECIALTAXER:

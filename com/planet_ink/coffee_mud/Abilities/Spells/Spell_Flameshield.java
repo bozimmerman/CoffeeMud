@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -108,7 +108,7 @@ public class Spell_Flameshield extends Spell
 		if(affected==null) return;
 		if(!(affected instanceof MOB)) return;
 		affectableStats.setArmor(affectableStats.armor()-1-getXLEVELLevel(invoker()));
-        affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_LIGHTSOURCE);
+		affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_LIGHTSOURCE);
 	}
 
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)

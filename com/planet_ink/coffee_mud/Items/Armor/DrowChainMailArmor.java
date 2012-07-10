@@ -22,7 +22,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -40,7 +40,7 @@ public class DrowChainMailArmor extends StdArmor
 		setName("a suit of dark chain mail armor");
 		setDisplayText("a suit of chain mail armor made of dark material sits here.");
 		setDescription("This suit includes a fairly solid looking hauberk with leggings and a coif, all constructed from a strong, dark metal.");
-        secretIdentity="A suit of Drow Chain Mail Armor";
+		secretIdentity="A suit of Drow Chain Mail Armor";
 		properWornBitmap=Wearable.WORN_TORSO | Wearable.WORN_ARMS | Wearable.WORN_LEGS;
 		wornLogicalAnd=true;
 		basePhyStats().setArmor(65);

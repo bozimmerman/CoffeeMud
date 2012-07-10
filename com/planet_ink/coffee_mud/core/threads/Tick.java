@@ -27,7 +27,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -38,47 +38,47 @@ import java.util.*;
 public class Tick extends Thread implements TickableGroup, Cloneable
 {
 	private final ThreadEngine myEngine;
-    public final long TICK_TIME;
-    private final int tickObjectCounter;
-    
+	public final long TICK_TIME;
+	private final int tickObjectCounter;
+	
 	public volatile long lastStart=0;
 	public volatile long lastStop=0;
 	public volatile long milliTotal=0;
 	public volatile long tickTotal=0;
 	public volatile boolean solitaryTicker=false;
-    public volatile boolean awake=false;
-    public volatile TockClient lastClient=null;
+	public volatile boolean awake=false;
+	public volatile TockClient lastClient=null;
 
 	private static volatile int tickObjReference=0;
 	
-    private volatile long SUBTRACT_TIME=0;
-    private volatile STreeSet<TockClient> tickers=new STreeSet<TockClient>();
-    
+	private volatile long SUBTRACT_TIME=0;
+	private volatile STreeSet<TockClient> tickers=new STreeSet<TockClient>();
+	
 	public Tick(long sleep)
 	{
-        super("Tick."+(tickObjReference+1));
-        tickObjectCounter=tickObjReference++;
-        TICK_TIME=sleep;
-        myEngine=null;
+		super("Tick."+(tickObjReference+1));
+		tickObjectCounter=tickObjReference++;
+		TICK_TIME=sleep;
+		myEngine=null;
 		this.start();
 	}
 
 	public Tick(String a_name, long sleep)
 	{
-        super("Tick."+ a_name + "." +(tickObjReference+1));
-        setDaemon(true);
-        tickObjectCounter=tickObjReference++;
-        TICK_TIME=sleep;
-        myEngine=null;
+		super("Tick."+ a_name + "." +(tickObjReference+1));
+		setDaemon(true);
+		tickObjectCounter=tickObjReference++;
+		TICK_TIME=sleep;
+		myEngine=null;
 		this.start();
 	}
 	
 	public Tick(ThreadEngine theEngine, long sleep)
 	{
 		super("Tick."+(tickObjReference+1));
-        tickObjectCounter=tickObjReference++;
+		tickObjectCounter=tickObjReference++;
 		myEngine=theEngine;
-        TICK_TIME=sleep;
+		TICK_TIME=sleep;
 	}
 
 	public Tick copyOf()
@@ -126,34 +126,34 @@ public class Tick extends Thread implements TickableGroup, Cloneable
 				if(C.clientObject instanceof MOB)
 				{
 					if(((MOB)C.clientObject).getStartRoom()==R)
-                    {
-                        if(localItems==null) localItems=new LinkedList<TockClient>();
+					{
+						if(localItems==null) localItems=new LinkedList<TockClient>();
 						localItems.add(C);
-                    }
+					}
 				}
 				else
 				if((C.clientObject instanceof ItemTicker)
 				&&((((ItemTicker)C.clientObject).properLocation()==R)))
-                {
-                    if(localItems==null) localItems=new LinkedList<TockClient>();
+				{
+					if(localItems==null) localItems=new LinkedList<TockClient>();
 					localItems.add(C);
-                }
+				}
 				break;
 			case 1:
 				if((C.clientObject instanceof ItemTicker)
 				&&((((ItemTicker)C.clientObject).properLocation()==R)))
-                {
-                    if(localItems==null) localItems=new LinkedList<TockClient>();
+				{
+					if(localItems==null) localItems=new LinkedList<TockClient>();
 					localItems.add(C);
-                }
+				}
 				break;
 			case 2:
 				if((C.clientObject instanceof MOB)
 				&&(((MOB)C.clientObject).getStartRoom()==R))
-                {
-                    if(localItems==null) localItems=new LinkedList<TockClient>();
+				{
+					if(localItems==null) localItems=new LinkedList<TockClient>();
 					localItems.add(C);
-                }
+				}
 				break;
 			}
 		}
@@ -168,9 +168,9 @@ public class Tick extends Thread implements TickableGroup, Cloneable
 			return tickers.contains(new TockClient(T,0,tickID));
 		return tickers.subSet(new TockClient(T,0,-1), true, new TockClient(T,0,Integer.MAX_VALUE), true).size()>0;
 	}
-    
-    public int getCounter(){return tickObjectCounter;}
-    
+	
+	public int getCounter(){return tickObjectCounter;}
+	
 	public void delTicker(TockClient C)
 	{
 		tickers.remove(C);
@@ -181,21 +181,21 @@ public class Tick extends Thread implements TickableGroup, Cloneable
 			tickers.add(C);
 	}
 	
-    public Tickable lastTicked()
-    {
-        return lastClient!=null?lastClient.clientObject:null;
-    }
+	public Tickable lastTicked()
+	{
+		return lastClient!=null?lastClient.clientObject:null;
+	}
 
-    public String getStatus() 
-    {
-    	final Tickable lastTicked = lastTicked();
-    	if((lastTicked==null)||(myEngine==null))
-    		return "Asleep or Shutdown";
-    	if(!awake)
-    		return "Sleeping";
-    	return "Ticking: "+lastTicked.ID()+": "+lastTicked.name()+": "+((myEngine!=null)?myEngine.getTickStatusSummary(lastTicked):"null");
-    }
-    
+	public String getStatus() 
+	{
+		final Tickable lastTicked = lastTicked();
+		if((lastTicked==null)||(myEngine==null))
+			return "Asleep or Shutdown";
+		if(!awake)
+			return "Sleeping";
+		return "Ticking: "+lastTicked.ID()+": "+lastTicked.name()+": "+((myEngine!=null)?myEngine.getTickStatusSummary(lastTicked):"null");
+	}
+	
 	public void shutdown()
 	{
 		tickers.clear();
@@ -238,19 +238,19 @@ public class Tick extends Thread implements TickableGroup, Cloneable
 				milliTotal+=(lastStop-lastStart);
 				tickTotal++;
 				awake=false;
-                long timeToSleep=TICK_TIME;
+				long timeToSleep=TICK_TIME;
 				if(SUBTRACT_TIME<timeToSleep)
 				{
-                    timeToSleep-=SUBTRACT_TIME;
-                    SUBTRACT_TIME=0;
+					timeToSleep-=SUBTRACT_TIME;
+					SUBTRACT_TIME=0;
 				}
 				if(timeToSleep>0)
-				    Thread.sleep(timeToSleep);
+					Thread.sleep(timeToSleep);
 				awake=true;
 				lastStart=System.currentTimeMillis();
 				lastClient=null;
 				if((CMProps.getBoolVar(CMProps.SYSTEMB_MUDSTARTED))
-                &&(!CMLib.threads().isAllSuspended()))
+				&&(!CMLib.threads().isAllSuspended()))
 				{
 					for(Iterator<TockClient> i=tickers();i.hasNext();)
 					{
@@ -258,9 +258,9 @@ public class Tick extends Thread implements TickableGroup, Cloneable
 						lastClient=client;
 						client.lastStart=System.currentTimeMillis();
 						if(tickTicker(client,CMLib.threads().isAllSuspended()))
-                        {
-                            delTicker(client);
-                        }
+						{
+							delTicker(client);
+						}
 						client.lastStop=System.currentTimeMillis();
 						client.milliTotal+=(client.lastStop-client.lastStart);
 						client.tickTotal++;

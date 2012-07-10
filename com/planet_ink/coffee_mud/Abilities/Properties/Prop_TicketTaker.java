@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -44,13 +44,13 @@ public class Prop_TicketTaker extends Property
 		return "one who acts as a ticket taker";
 	}
 
-    protected double cost(){
+	protected double cost(){
 		int amount=CMath.s_int(text());
 		if(amount==0) amount=10;
 		return (double)amount;
 	}
 
-    protected boolean isMine(Environmental host, Rideable R)
+	protected boolean isMine(Environmental host, Rideable R)
 	{
 		if(host instanceof Rider)
 		{
@@ -91,10 +91,10 @@ public class Prop_TicketTaker extends Property
 				{
 					String currency=CMLib.beanCounter().getCurrency(affected);
 					if(currency.length()==0)
-					    currency=CMLib.beanCounter().getCurrency(mob);
+						currency=CMLib.beanCounter().getCurrency(mob);
 					if(CMLib.beanCounter().getTotalAbsoluteValue(mob,currency)>=cost())
 					{
-					    String costStr=CMLib.beanCounter().nameCurrencyShort(currency,cost());
+						String costStr=CMLib.beanCounter().nameCurrencyShort(currency,cost());
 						mob.location().show(mob,myHost,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> give(s) "+costStr+" to <T-NAME>.");
 						CMLib.beanCounter().subtractMoney(mob,currency,cost());
 					}
@@ -125,10 +125,10 @@ public class Prop_TicketTaker extends Property
 				{
 					String currency=CMLib.beanCounter().getCurrency(affected);
 					if(currency.length()==0)
-					    currency=CMLib.beanCounter().getCurrency(mob);
+						currency=CMLib.beanCounter().getCurrency(mob);
 					if(CMLib.beanCounter().getTotalAbsoluteValue(mob,currency)<cost())
 					{
-					    String costStr=CMLib.beanCounter().nameCurrencyLong(currency,cost());
+						String costStr=CMLib.beanCounter().nameCurrencyLong(currency,cost());
 						if(myHost instanceof MOB)
 							CMLib.commands().postSay((MOB)myHost,mob,"You'll need "+costStr+" to board.",false,false);
 						else

@@ -25,7 +25,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -662,16 +662,16 @@ public class Play_Symphony extends Play
 		}
 	}
 
-    public int castingQuality(MOB mob, Physical target)
-    {
-        if(mob!=null)
-        {
-            if((mob.isInCombat())&&(mob.isMonster()))
-                return Ability.QUALITY_INDIFFERENT;
-        }
-        return super.castingQuality(mob,target);
-    }
-    
+	public int castingQuality(MOB mob, Physical target)
+	{
+		if(mob!=null)
+		{
+			if((mob.isInCombat())&&(mob.isMonster()))
+				return Ability.QUALITY_INDIFFERENT;
+		}
+		return super.castingQuality(mob,target);
+	}
+	
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID)) return false;
@@ -720,9 +720,9 @@ public class Play_Symphony extends Play
 		case CODE_SPEEDCOMMONSKILLS:
 			{
 				MOB M=(MOB)affected;
-	    		for(final Enumeration<Ability> a=M.effects();a.hasMoreElements();)
-	    		{
-	    			final Ability A=a.nextElement();
+				for(final Enumeration<Ability> a=M.effects();a.hasMoreElements();)
+				{
+					final Ability A=a.nextElement();
 					if((A!=null)
 					&&(A.invoker()==M)
 					&&((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_COMMON_SKILL))

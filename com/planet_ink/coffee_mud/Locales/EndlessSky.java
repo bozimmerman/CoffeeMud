@@ -25,7 +25,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -73,7 +73,7 @@ public class EndlessSky extends StdGrid
 	}
 	public String getGridChildLocaleID(){return "InTheAir";}
 
-    protected Room findCenterRoom(int dirCode)
+	protected Room findCenterRoom(int dirCode)
 	{
 		if(dirCode!=Directions.DOWN)
 			return super.findCenterRoom(dirCode);
@@ -85,7 +85,7 @@ public class EndlessSky extends StdGrid
 		Exit ox=CMClass.getExit("Open");
 		for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 		{
-		    if(d==Directions.GATE) continue;
+			if(d==Directions.GATE) continue;
 			Room dirRoom=rawDoors()[d];
 			Exit dirExit=getRawExit(d);
 			if((dirExit==null)||(dirExit.hasADoor()))
@@ -156,13 +156,13 @@ public class EndlessSky extends StdGrid
 						}
 						if((x>0)&&(subMap[x-1][y]!=null))
 							linkRoom(newRoom,subMap[x-1][y],Directions.WEST,ox,ox);
-                        
-                        if((y>0)&&(x>0)&&(subMap[x-1][y-1]!=null)&&(Directions.NORTHWEST<Directions.NUM_DIRECTIONS()))
-                            linkRoom(newRoom,subMap[x-1][y-1],Directions.NORTHWEST,ox,ox);
-                        
-                        if((y>0)&&(x<subMap.length-1)&&(subMap[x+1][y-1]!=null)&&(Directions.NORTHEAST<Directions.NUM_DIRECTIONS()))
-                            linkRoom(newRoom,subMap[x+1][y-1],Directions.NORTHEAST,ox,ox);
-                        
+						
+						if((y>0)&&(x>0)&&(subMap[x-1][y-1]!=null)&&(Directions.NORTHWEST<Directions.NUM_DIRECTIONS()))
+							linkRoom(newRoom,subMap[x-1][y-1],Directions.NORTHWEST,ox,ox);
+						
+						if((y>0)&&(x<subMap.length-1)&&(subMap[x+1][y-1]!=null)&&(Directions.NORTHEAST<Directions.NUM_DIRECTIONS()))
+							linkRoom(newRoom,subMap[x+1][y-1],Directions.NORTHEAST,ox,ox);
+						
 					}
 				}
 			buildFinalLinks();
@@ -176,10 +176,10 @@ public class EndlessSky extends StdGrid
 				linkRoom(subMap[x][0],subMap[x][subMap[x].length-1],Directions.NORTH,ox,ox);
 			for(int x=1;x<subMap.length;x++)
 				linkRoom(subMap[x][0],subMap[x-1][subMap[x-1].length-1],Directions.UP,ox,ox);
-            if(Directions.NORTHWEST<Directions.NUM_DIRECTIONS())
-                linkRoom(subMap[0][0],subMap[subMap.length-1][subMap[0].length-1],Directions.NORTHWEST,ox,ox);
-            if(Directions.NORTHEAST<Directions.NUM_DIRECTIONS())
-                linkRoom(subMap[subMap.length-1][0],subMap[0][subMap[0].length-1],Directions.NORTHEAST,ox,ox);
+			if(Directions.NORTHWEST<Directions.NUM_DIRECTIONS())
+				linkRoom(subMap[0][0],subMap[subMap.length-1][subMap[0].length-1],Directions.NORTHWEST,ox,ox);
+			if(Directions.NORTHEAST<Directions.NUM_DIRECTIONS())
+				linkRoom(subMap[subMap.length-1][0],subMap[0][subMap[0].length-1],Directions.NORTHEAST,ox,ox);
 		}
 		catch(Exception e)
 		{

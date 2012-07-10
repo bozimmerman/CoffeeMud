@@ -27,7 +27,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -38,40 +38,40 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 public interface FactionManager extends CMLibrary, Tickable
 {
 	public void addFaction(String factionID, Faction F);
-    public Enumeration<Faction> factions();
-    public int numFactions();
-    public void clearFactions();
-    public void reloadFactions(String factionList);
-    public boolean isRangeCodeName(String key);
-    public boolean isFactionedThisWay(MOB mob, Faction.FactionRange rangeCode);
-    public String rangeDescription(Faction.FactionRange FR, String andOr);
-    public Faction getFaction(String factionID);
-    public Faction getFactionByRangeCodeName(String rangeCodeName);
-    public Faction.FactionRange getFactionRangeByCodeName(String rangeCodeName);
-    public Faction getFactionByName(String factionNamed);
-    public boolean removeFaction(String factionID); 
-    public String listFactions(); 
-    public String getName(String factionID);
-    public int getMinimum(String factionID);
-    public int getMaximum(String factionID);
-    public int getPercent(String factionID, int faction);
-    public int getPercentFromAvg(String factionID, int faction);
-    public Faction.FactionRange getRange(String factionID, int faction);
-    public Enumeration<Faction.FactionRange> getRanges(String factionID);
-    public double getRangePercent(String factionID, int faction); 
-    public int getTotal(String factionID);
-    public int getRandom(String factionID);
-    public void updatePlayerFactions(MOB mob, Room R);
-    public String AlignID();
-    public void setAlignment(MOB mob, int newAlignment);
-    public void setAlignmentOldRange(MOB mob, int oldRange);
-    public int getAlignPurity(int faction, int AlignEq);
-    public int getAlignThingie(int AlignEq);
-    public int isFactionTag(String tag);
-    public int getAlignEquiv(String str);
-    public void modifyFaction(MOB mob, Faction me) throws IOException;
-    public boolean postChangeAllFactions(MOB mob, MOB victim, int amount, boolean quiet);
-    public boolean postFactionChange(MOB mob, Environmental tool,String factionID, int amount);
-    public int getAbilityFlagType(String strflag);
-    public String resaveFaction(Faction F);
+	public Enumeration<Faction> factions();
+	public int numFactions();
+	public void clearFactions();
+	public void reloadFactions(String factionList);
+	public boolean isRangeCodeName(String key);
+	public boolean isFactionedThisWay(MOB mob, Faction.FactionRange rangeCode);
+	public String rangeDescription(Faction.FactionRange FR, String andOr);
+	public Faction getFaction(String factionID);
+	public Faction getFactionByRangeCodeName(String rangeCodeName);
+	public Faction.FactionRange getFactionRangeByCodeName(String rangeCodeName);
+	public Faction getFactionByName(String factionNamed);
+	public boolean removeFaction(String factionID); 
+	public String listFactions(); 
+	public String getName(String factionID);
+	public int getMinimum(String factionID);
+	public int getMaximum(String factionID);
+	public int getPercent(String factionID, int faction);
+	public int getPercentFromAvg(String factionID, int faction);
+	public Faction.FactionRange getRange(String factionID, int faction);
+	public Enumeration<Faction.FactionRange> getRanges(String factionID);
+	public double getRangePercent(String factionID, int faction); 
+	public int getTotal(String factionID);
+	public int getRandom(String factionID);
+	public void updatePlayerFactions(MOB mob, Room R);
+	public String AlignID();
+	public void setAlignment(MOB mob, int newAlignment);
+	public void setAlignmentOldRange(MOB mob, int oldRange);
+	public int getAlignPurity(int faction, int AlignEq);
+	public int getAlignThingie(int AlignEq);
+	public int isFactionTag(String tag);
+	public int getAlignEquiv(String str);
+	public void modifyFaction(MOB mob, Faction me) throws IOException;
+	public boolean postChangeAllFactions(MOB mob, MOB victim, int amount, boolean quiet);
+	public boolean postFactionChange(MOB mob, Environmental tool,String factionID, int amount);
+	public int getAbilityFlagType(String strflag);
+	public String resaveFaction(Faction F);
 }

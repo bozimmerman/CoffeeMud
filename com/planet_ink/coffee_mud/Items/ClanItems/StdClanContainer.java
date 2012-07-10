@@ -26,7 +26,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -37,9 +37,9 @@ import java.util.*;
 public class StdClanContainer extends StdContainer implements ClanItem
 {
 	public String ID(){	return "StdClanContainer";}
-    private Environmental riteOwner=null;
-    public Environmental rightfulOwner(){return riteOwner;}
-    public void setRightfulOwner(Environmental E){riteOwner=E;}	protected String myClan="";
+	private Environmental riteOwner=null;
+	public Environmental rightfulOwner(){return riteOwner;}
+	public void setRightfulOwner(Environmental E){riteOwner=E;}	protected String myClan="";
 	protected int ciType=0;
 	private long lastClanCheck=0;
 	public int ciType(){return ciType;}
@@ -64,29 +64,29 @@ public class StdClanContainer extends StdContainer implements ClanItem
 
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
-	    if((System.currentTimeMillis()-lastClanCheck)>TimeManager.MILI_HOUR)
-	    {
-            if((clanID().length()>0)&&(owner() instanceof MOB)&&(!amDestroyed()))
-            {
-                if((CMLib.clans().getClan(clanID())==null)
-                ||((!((MOB)owner()).getClanID().equals(clanID()))&&(ciType()!=ClanItem.CI_PROPAGANDA)))
-                {
-                    Room R=CMLib.map().roomLocation(this);
-                    setRightfulOwner(null);
-                    unWear();
-                    removeFromOwnerContainer();
-                    if(owner()!=R) R.moveItemTo(this,ItemPossessor.Expire.Player_Drop);
-                    if(R!=null)
-                        R.showHappens(CMMsg.MSG_OK_VISUAL,name()+" is dropped!");
-                }
-            }
-            lastClanCheck=System.currentTimeMillis();
-		    if((clanID().length()>0)&&(CMLib.clans().getClan(clanID())==null))
-            {
-		        destroy();
-                return;
-            }
-	    }
+		if((System.currentTimeMillis()-lastClanCheck)>TimeManager.MILI_HOUR)
+		{
+			if((clanID().length()>0)&&(owner() instanceof MOB)&&(!amDestroyed()))
+			{
+				if((CMLib.clans().getClan(clanID())==null)
+				||((!((MOB)owner()).getClanID().equals(clanID()))&&(ciType()!=ClanItem.CI_PROPAGANDA)))
+				{
+					Room R=CMLib.map().roomLocation(this);
+					setRightfulOwner(null);
+					unWear();
+					removeFromOwnerContainer();
+					if(owner()!=R) R.moveItemTo(this,ItemPossessor.Expire.Player_Drop);
+					if(R!=null)
+						R.showHappens(CMMsg.MSG_OK_VISUAL,name()+" is dropped!");
+				}
+			}
+			lastClanCheck=System.currentTimeMillis();
+			if((clanID().length()>0)&&(CMLib.clans().getClan(clanID())==null))
+			{
+				destroy();
+				return;
+			}
+		}
 		if(StdClanItem.stdExecuteMsg(this,msg))
 			super.executeMsg(myHost,msg);
 	}

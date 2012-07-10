@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -43,7 +43,7 @@ public class Thief_Autosneak extends ThiefSkill
 	public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
 	private static final String[] triggerStrings = {"AUTOSNEAK"};
 	public String[] triggerStrings(){return triggerStrings;}
-    public int classificationCode() {   return Ability.ACODE_SKILL|Ability.DOMAIN_STEALTHY; }
+	public int classificationCode() {   return Ability.ACODE_SKILL|Ability.DOMAIN_STEALTHY; }
 	protected boolean noRepeat=false;
 
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)

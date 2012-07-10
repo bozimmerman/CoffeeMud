@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -35,7 +35,7 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 {
-    public String ID(){return "TimsLibrary";}
+	public String ID(){return "TimsLibrary";}
 
 	public int timsLevelCalculator(Item I)
 	{
@@ -231,11 +231,11 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 		int TLVL2=totalLevels(LVLS);
 		
 		changes.append(newI.name()+":"+newI.basePhyStats().level()+"("+OTLVL+")=>"+TLVL2+"("+TLVL+"), ");
-        for(int i=0;i<oldI.getStatCodes().length;i++)
-            if((!oldI.getStat(oldI.getStatCodes()[i]).equals(newI.getStat(newI.getStatCodes()[i]))))
-            	changes.append(oldI.getStatCodes()[i]+"("+oldI.getStat(newI.getStatCodes()[i])+"->"+newI.getStat(newI.getStatCodes()[i])+"), ");
-        changes.append("\n\r");
-        oldI.destroy(); // this was a copy
+		for(int i=0;i<oldI.getStatCodes().length;i++)
+			if((!oldI.getStat(oldI.getStatCodes()[i]).equals(newI.getStat(newI.getStatCodes()[i]))))
+				changes.append(oldI.getStatCodes()[i]+"("+oldI.getStat(newI.getStatCodes()[i])+"->"+newI.getStat(newI.getStatCodes()[i])+"), ");
+		changes.append("\n\r");
+		oldI.destroy(); // this was a copy
 	}
 	
 	public boolean itemFix(Item I, int lvlOr0, StringBuffer changes)
@@ -374,28 +374,28 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 		return false;
 	}
 
-    public boolean toneDownValue(Item I)
-    {
-        int hands=0;
-        int weaponClass=0;
-        if(I instanceof Coins) return false;
-        if(I instanceof Weapon)
-        {
-            hands=I.rawLogicalAnd()?2:1;
-            weaponClass=((Weapon)I).weaponClassification();
-        }
-        else
-        if(!(I instanceof Armor))
-            return false;
-        Map<String,String> H=timsItemAdjustments(I,I.phyStats().level(),I.material(),hands,weaponClass,I.maxRange(),I.rawProperLocationBitmap());
-        int newValue=CMath.s_int((String)H.get("VALUE"));
-        if((I.baseGoldValue()>newValue)&&(newValue>0))
-        {
-            I.setBaseValue(newValue);
-            return true;
-        }
-        return false;
-    }
+	public boolean toneDownValue(Item I)
+	{
+		int hands=0;
+		int weaponClass=0;
+		if(I instanceof Coins) return false;
+		if(I instanceof Weapon)
+		{
+			hands=I.rawLogicalAnd()?2:1;
+			weaponClass=((Weapon)I).weaponClassification();
+		}
+		else
+		if(!(I instanceof Armor))
+			return false;
+		Map<String,String> H=timsItemAdjustments(I,I.phyStats().level(),I.material(),hands,weaponClass,I.maxRange(),I.rawProperLocationBitmap());
+		int newValue=CMath.s_int((String)H.get("VALUE"));
+		if((I.baseGoldValue()>newValue)&&(newValue>0))
+		{
+			I.setBaseValue(newValue);
+			return true;
+		}
+		return false;
+	}
 
 	public void balanceItemByLevel(Item I)
 	{
@@ -861,7 +861,7 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 	{
 		int lvl=levels[0];
 		for(int i=1;i<levels.length;i++)
-		    lvl+=levels[i];
+			lvl+=levels[i];
 		return lvl;
 	}
 
@@ -1049,9 +1049,9 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 			if(((malicious)&&(A.canTarget(Ability.CAN_MOBS))&&(A.enchantQuality()==Ability.QUALITY_MALICIOUS)))
 				return A;
 			if((!malicious)
-		    &&(A.canAffect(Ability.CAN_MOBS))
-		    &&(A.enchantQuality()!=Ability.QUALITY_MALICIOUS)
-		    &&(A.enchantQuality()!=Ability.QUALITY_INDIFFERENT))
+			&&(A.canAffect(Ability.CAN_MOBS))
+			&&(A.enchantQuality()!=Ability.QUALITY_MALICIOUS)
+			&&(A.enchantQuality()!=Ability.QUALITY_INDIFFERENT))
 				return A;
 		}
 		return null;

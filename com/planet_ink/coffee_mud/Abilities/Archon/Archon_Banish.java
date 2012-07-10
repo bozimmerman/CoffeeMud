@@ -25,7 +25,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -78,9 +78,9 @@ public class Archon_Banish extends ArchonSkill
 			prisonRoom.setDescription("You are standing on an immense, grey stone floor that stretches as far as you can see in all directions.  Rough winds plunging from the dark, starless sky tear savagely at your fragile body.");
 			prisonRoom.setDisplayText("The Hall of Lost Souls");
 			prisonRoom.setRoomID("");
-            Ability A2=CMClass.getAbility("Prop_HereSpellCast");
-            if(A2!=null) A2.setMiscText("Spell_Hungerless;Spell_Thirstless");
-            if(A2!=null) prisonRoom.addNonUninvokableEffect(A2);
+			Ability A2=CMClass.getAbility("Prop_HereSpellCast");
+			if(A2!=null) A2.setMiscText("Spell_Hungerless;Spell_Thirstless");
+			if(A2!=null) prisonRoom.addNonUninvokableEffect(A2);
 		}
 		for(int d=0;d<Directions.DIRECTIONS_BASE().length;d++)
 		{
@@ -220,7 +220,7 @@ public class Archon_Banish extends ArchonSkill
 				}
 			}
 		}
-        Room myPrison = CMLib.map().getRoom(CMParms.combine(commands,1));
+		Room myPrison = CMLib.map().getRoom(CMParms.combine(commands,1));
 		if(myPrison != null && CMLib.map().getExtendedRoomID(myPrison).length()>0)
 		{
 			while(commands.size() > 1)
@@ -248,7 +248,7 @@ public class Archon_Banish extends ArchonSkill
 		if(success)
 		{
 			CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MASK_MOVE|CMMsg.TYP_JUSTICE|(auto?CMMsg.MASK_ALWAYS:0),auto?"<T-NAME> is banished!":"^F<S-NAME> banish(es) <T-NAMESELF>.^?");
-            CMLib.color().fixSourceFightColor(msg);
+			CMLib.color().fixSourceFightColor(msg);
 			if(mob.location().okMessage(mob,msg))
 			{
 				A=(Archon_Banish)copyOf();
@@ -262,7 +262,7 @@ public class Archon_Banish extends ArchonSkill
 					A.prison().bringMobHere(target,false);
 					mob.location().send(mob,msg);
 					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> <S-IS-ARE> banished to " + A.prison().displayText() + "!");
-                    Log.sysOut("Banish",mob.name()+" banished "+target.name()+" to "+CMLib.map().getExtendedRoomID(A.prison())+".");
+					Log.sysOut("Banish",mob.name()+" banished "+target.name()+" to "+CMLib.map().getExtendedRoomID(A.prison())+".");
 				}
 				
 			}

@@ -25,7 +25,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -48,7 +48,7 @@ public class Prop_ModExperience extends Property
 
 	public int translateAmount(int amount, String val)
 	{
-	    if(amount<0) amount=-amount;
+		if(amount<0) amount=-amount;
 		if(val.endsWith("%"))
 			return (int)Math.round(CMath.mul(amount,CMath.div(CMath.s_int(val.substring(0,val.length()-1)),100)));
 		return CMath.s_int(val);
@@ -105,8 +105,8 @@ public class Prop_ModExperience extends Property
 		&&(operation != null)
 		&&(((msg.target()==affected)&&(affected instanceof MOB))
 		   ||((affected instanceof Item)
-               &&(msg.source()==((Item)affected).owner())
-               &&(!((Item)affected).amWearingAt(Wearable.IN_INVENTORY)))
+			   &&(msg.source()==((Item)affected).owner())
+			   &&(!((Item)affected).amWearingAt(Wearable.IN_INVENTORY)))
 		   ||(affected instanceof Room)
 		   ||(affected instanceof Area)))
 		{

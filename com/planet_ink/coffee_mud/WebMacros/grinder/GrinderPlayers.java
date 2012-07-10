@@ -28,7 +28,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -88,24 +88,24 @@ public class GrinderPlayers extends GrinderMobs
 		"BASEMANA",
 		"BASEMOVEMENT",
 		"IMAGE",
-        "MAXITEMS",
-        "IMGURL",
-        "HASIMG",
-        "NOTES",
-        "LEVELS",
-        "ATTACK",
-        "DAMAGE",
-        "ARMOR",
-        "SPEEDNAME",
-        "SPEED",
-        "EXPERTISE",
-        "TATTOOS",
-        "SECURITY",
-        "TITLES",
-        "FACTIONNAMES",
-        "ACCTEXPUSED",
-        "ACCTEXP",
-        "ACCOUNT"
+		"MAXITEMS",
+		"IMGURL",
+		"HASIMG",
+		"NOTES",
+		"LEVELS",
+		"ATTACK",
+		"DAMAGE",
+		"ARMOR",
+		"SPEEDNAME",
+		"SPEED",
+		"EXPERTISE",
+		"TATTOOS",
+		"SECURITY",
+		"TITLES",
+		"FACTIONNAMES",
+		"ACCTEXPUSED",
+		"ACCTEXP",
+		"ACCOUNT"
 	};
 	
 	public static int getBasicCode(String val)
@@ -188,9 +188,9 @@ public class GrinderPlayers extends GrinderMobs
 			case 44: M.baseState().setMana(CMath.s_int(old)); break;
 			case 45: M.baseState().setMovement(CMath.s_int(old)); break;
 			case 46: break; // dont set rawimage here
-	        case 47: break; // dont set maxitems here?!
-	        case 48: break; // dont set image here
-	        case 49: break; // dont set imagepath here
+			case 47: break; // dont set maxitems here?!
+			case 48: break; // dont set image here
+			case 49: break; // dont set imagepath here
 			case 50: if(M.playerStats()!=null) 	M.playerStats().setNotes(old); break;
 			case 51: break; // dont set level chart
 			case 52: M.basePhyStats().setAttackAdjustment(CMath.s_int(old)); break;
@@ -210,8 +210,8 @@ public class GrinderPlayers extends GrinderMobs
 			case 58: 
 			{
 				Vector V=CMParms.parseCommas(old.toUpperCase(),true);
-		        for(Enumeration<MOB.Tattoo> e=M.tattoos();e.hasMoreElements();)
-		        	M.delTattoo(e.nextElement());
+				for(Enumeration<MOB.Tattoo> e=M.tattoos();e.hasMoreElements();)
+					M.delTattoo(e.nextElement());
 				for(int v=0;v<V.size();v++)
 					M.addTattoo(CMLib.database().parseTattoo((String)V.elementAt(v)));
 				break;
@@ -237,21 +237,21 @@ public class GrinderPlayers extends GrinderMobs
 				if(M.playerStats()!=null)
 				{
 					String oldAccountName =(M.playerStats().getAccount()!=null) ? M.playerStats().getAccount().accountName() : ""; 
-		            if(!old.equals(oldAccountName))
-		            {
-		            	PlayerAccount newAccount = CMLib.players().getLoadAccount(old);
-		            	if(newAccount != null)
-		            	{
-			            	M.playerStats().setAccount(newAccount);
-			            	newAccount.addNewPlayer(M);
-			            	PlayerAccount oldAccount = (oldAccountName.length()>0)?CMLib.players().getLoadAccount(oldAccountName):null;
-			            	if(oldAccount!=null)
-			            	{
-			            		oldAccount.delPlayer(M);
-			            		CMLib.database().DBUpdateAccount(oldAccount);
-			            	}
-		            	}
-		            }
+					if(!old.equals(oldAccountName))
+					{
+						PlayerAccount newAccount = CMLib.players().getLoadAccount(old);
+						if(newAccount != null)
+						{
+							M.playerStats().setAccount(newAccount);
+							newAccount.addNewPlayer(M);
+							PlayerAccount oldAccount = (oldAccountName.length()>0)?CMLib.players().getLoadAccount(oldAccountName):null;
+							if(oldAccount!=null)
+							{
+								oldAccount.delPlayer(M);
+								CMLib.database().DBUpdateAccount(oldAccount);
+							}
+						}
+					}
 				}
 				break;
 			}
@@ -310,11 +310,11 @@ public class GrinderPlayers extends GrinderMobs
 
 		Vector allitems=new Vector();
 		while(M.numItems()>0)
-        {
-            Item I=M.getItem(0);
+		{
+			Item I=M.getItem(0);
 			allitems.addElement(I);
-            M.delItem(I);
-        }
+			M.delItem(I);
+		}
 		
 		for(int i=0;i<MOB.AUTODESC.length;i++)
 		{
@@ -381,7 +381,7 @@ public class GrinderPlayers extends GrinderMobs
 		{
 			String old=httpReq.getRequestParameter("ALIGNMENT");
 			Faction F=CMLib.factions().getFaction(CMLib.factions().AlignID());
-		    if((F!=null)&&(old!=null)&&(old.length()>0))
+			if((F!=null)&&(old!=null)&&(old.length()>0))
 				for(int v=1;v<Faction.ALIGN_NAMES.length;v++)
 					if(Faction.ALIGN_NAMES[v].equalsIgnoreCase(old))
 						CMLib.factions().setAlignment(M,v);

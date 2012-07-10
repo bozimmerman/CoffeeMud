@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -38,7 +38,7 @@ public class FightFlee extends ActiveTicker
 	protected int canImproveCode(){return Behavior.CAN_MOBS;}
 	public FightFlee()
 	{
-        super();
+		super();
 		minTicks=1;maxTicks=1;chance=33;
 		tickReset();
 	}

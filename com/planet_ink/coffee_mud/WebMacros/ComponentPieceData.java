@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -45,7 +45,7 @@ public class ComponentPieceData extends StdWebMacro
 		if(last==null) return " @break@";
 		if(last.length()>0)
 		{
-	        String fixedCompID=compID.replace(' ','_').toUpperCase();
+			String fixedCompID=compID.replace(' ','_').toUpperCase();
 			StringBuilder str=new StringBuilder("");
 			if(parms.containsKey("MASK")||parms.containsKey("MASKEDIT"))
 			{
@@ -164,7 +164,7 @@ public class ComponentPieceData extends StdWebMacro
 			String strstr=str.toString();
 			if(strstr.endsWith(", "))
 				strstr=strstr.substring(0,strstr.length()-2);
-            return clearWebMacros(strstr);
+			return clearWebMacros(strstr);
 		}
 		return "";
 	}

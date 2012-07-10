@@ -23,7 +23,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -44,41 +44,41 @@ public class Deities extends StdCommand
 		StringBuffer msg = new StringBuffer("");
 		msg.append("\n\r^x"+D.name()+"^.^?\n\r");
 		msg.append(D.description()+"\n\r\n\r");
-        if((mob==null)||(CMSecurity.isASysOp(mob)))
-        {
-            msg.append(D.getClericRequirementsDesc()+"\n\r\n\r");
-            msg.append(D.getWorshipRequirementsDesc()+"\n\r");
-        }
-        else
-        if(mob.charStats().getCurrentClass().baseClass().equals("Cleric"))
+		if((mob==null)||(CMSecurity.isASysOp(mob)))
+		{
+			msg.append(D.getClericRequirementsDesc()+"\n\r\n\r");
+			msg.append(D.getWorshipRequirementsDesc()+"\n\r");
+		}
+		else
+		if(mob.charStats().getCurrentClass().baseClass().equals("Cleric"))
 			msg.append(D.getClericRequirementsDesc()+"\n\r");
-        else
-            msg.append(D.getWorshipRequirementsDesc()+"\n\r");
+		else
+			msg.append(D.getWorshipRequirementsDesc()+"\n\r");
 		if(D.numBlessings()>0)
 		{
 			msg.append("\n\r^HBlessings: ^N");
 			for(int b=0;b<D.numBlessings();b++)
 			{
 				msg.append(D.fetchBlessing(b).name());
-                if(D.fetchBlessingCleric(b))
-                    msg.append(" (Clerics only)");
+				if(D.fetchBlessingCleric(b))
+					msg.append(" (Clerics only)");
 				if(b<D.numBlessings()-1)
 					msg.append(", ");
 			}
 			msg.append("\n\r^HBlessing Instructions: ^N");
-            if((mob==null)||(CMSecurity.isASysOp(mob)))
-            {
-                msg.append(D.getClericTriggerDesc()+"\n\r");
-                msg.append(D.getWorshipTriggerDesc()+"\n\r");
-            }
-            else
-            if(mob.charStats().getCurrentClass().baseClass().equals("Cleric"))
-                msg.append(D.getClericTriggerDesc()+"\n\r");
-            else
-                msg.append(D.getWorshipTriggerDesc()+"\n\r");
+			if((mob==null)||(CMSecurity.isASysOp(mob)))
+			{
+				msg.append(D.getClericTriggerDesc()+"\n\r");
+				msg.append(D.getWorshipTriggerDesc()+"\n\r");
+			}
+			else
+			if(mob.charStats().getCurrentClass().baseClass().equals("Cleric"))
+				msg.append(D.getClericTriggerDesc()+"\n\r");
+			else
+				msg.append(D.getWorshipTriggerDesc()+"\n\r");
 		}
-        if((mob==null)||CMSecurity.isASysOp(mob)||mob.charStats().getCurrentClass().baseClass().equals("Cleric"))
-        {
+		if((mob==null)||CMSecurity.isASysOp(mob)||mob.charStats().getCurrentClass().baseClass().equals("Cleric"))
+		{
 			if(D.numPowers()>0)
 			{
 				msg.append("\n\r^HGranted Powers: ^N");
@@ -92,9 +92,9 @@ public class Deities extends StdCommand
 				msg.append(D.getClericPowerupDesc()+"\n\r");
 			}
 			msg.append("\n\r^HService Instructions: ^N");
-            msg.append(D.getServiceTriggerDesc()+"\n\r");
-        }
-        return msg.toString();
+			msg.append(D.getServiceTriggerDesc()+"\n\r");
+		}
+		return msg.toString();
 	}
 	
 	public boolean execute(MOB mob, Vector commands, int metaFlags)

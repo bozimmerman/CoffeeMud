@@ -26,7 +26,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -56,7 +56,7 @@ public class Deviations extends StdCommand
 		str.append(CMStrings.padRight("Speed",5)+" ");
 		str.append(CMStrings.padRight("Rejuv",5)+" ");
 		if(useFaction!=null)
-		    str.append(CMStrings.padRight(useFaction.name(),7)+" ");
+			str.append(CMStrings.padRight(useFaction.name(),7)+" ");
 		str.append(CMStrings.padRight("Worn",5));
 		str.append("\n\r");
 		return str.toString();
@@ -124,9 +124,9 @@ public class Deviations extends StdCommand
 					ShopKeeper SK=CMLib.coffeeShops().getShopKeeper(M);
 					if(SK!=null)
 					{
-	        			for(Iterator<Environmental> i=SK.getShop().getStoreInventory();i.hasNext();)
-	        			{
-	        				Environmental E2=(Environmental)i.next();
+						for(Iterator<Environmental> i=SK.getShop().getStoreInventory();i.hasNext();)
+						{
+							Environmental E2=(Environmental)i.next();
 							if(E2 instanceof Item)
 							{
 								Item I=(Item)E2;
@@ -134,7 +134,7 @@ public class Deviations extends StdCommand
 								&&(!alreadyDone(I,check)))
 									check.addElement(I);
 							}
-	        			}
+						}
 					}
 				}
 			}
@@ -155,7 +155,7 @@ public class Deviations extends StdCommand
 		int oval=val2-val;
 		int pval=(int)Math.round(CMath.div((oval<0)?(oval*-1):oval,val2==0?1:val2)*100.0);
 		if(oval>0) return "-"+pval+"%";
-        return "+"+pval+"%";
+		return "+"+pval+"%";
 	}
 
 	public StringBuffer deviations(MOB mob, String rest)
@@ -174,9 +174,9 @@ public class Deviations extends StdCommand
 		Faction useFaction=null;
 		for(Enumeration<Faction> e=CMLib.factions().factions();e.hasMoreElements();)
 		{
-		    Faction F=(Faction)e.nextElement();
-		    if(F.showInSpecialReported()) useFaction=F;
-		        
+			Faction F=(Faction)e.nextElement();
+			if(F.showInSpecialReported()) useFaction=F;
+				
 		}
 		String where=((String)V.elementAt(1)).toLowerCase();
 		Environmental E=mob.location().fetchFromMOBRoomFavorsItems(mob,null,where,Wearable.FILTER_ANY);
@@ -285,7 +285,7 @@ public class Deviations extends StdCommand
 												(int)Math.round(CMLib.leveler().getLevelMOBSpeed(M))),5)+" ");
 				mobResults.append(CMStrings.padRight(""+((M.phyStats().rejuv()==Integer.MAX_VALUE)?" MAX":""+M.phyStats().rejuv()) ,5)+" ");
 				if(useFaction!=null) 
-				    mobResults.append(CMStrings.padRight(""+(M.fetchFaction(useFaction.factionID())==Integer.MAX_VALUE?"N/A":""+M.fetchFaction(useFaction.factionID())),7)+" ");
+					mobResults.append(CMStrings.padRight(""+(M.fetchFaction(useFaction.factionID())==Integer.MAX_VALUE?"N/A":""+M.fetchFaction(useFaction.factionID())),7)+" ");
 				int reallyWornCount = 0;
 				for(int j=0;j<M.numItems();j++)
 				{

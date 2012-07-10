@@ -25,7 +25,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -35,28 +35,28 @@ import java.util.*;
 */
 public class DefaultPlayerAccount implements PlayerAccount
 {
-    public String ID(){return "DefaultPlayerAccount";}
-    protected SHashSet<String> friends=new SHashSet<String>();
-    protected SHashSet<String> ignored=new SHashSet<String>();
-    protected SVector<String> players = new SVector<String>();
-    protected SVector<PlayerLibrary.ThinPlayer> thinPlayers = new SVector<PlayerLibrary.ThinPlayer>();
-    protected String accountName = "";
+	public String ID(){return "DefaultPlayerAccount";}
+	protected SHashSet<String> friends=new SHashSet<String>();
+	protected SHashSet<String> ignored=new SHashSet<String>();
+	protected SVector<String> players = new SVector<String>();
+	protected SVector<PlayerLibrary.ThinPlayer> thinPlayers = new SVector<PlayerLibrary.ThinPlayer>();
+	protected String accountName = "";
 	protected String lastIP="";
-    protected long LastDateTime=System.currentTimeMillis();
-    protected long lastUpdated=0;
+	protected long LastDateTime=System.currentTimeMillis();
+	protected long lastUpdated=0;
 	protected String email="";
 	protected String Password="";
-    protected String notes="";
-    protected long accountExpiration=0;
-    protected String[] xtraValues=null;
-    protected SHashSet<String> acctFlags = new SHashSet<String>();
-    protected volatile MOB fakePlayerM=null;
+	protected String notes="";
+	protected long accountExpiration=0;
+	protected String[] xtraValues=null;
+	protected SHashSet<String> acctFlags = new SHashSet<String>();
+	protected volatile MOB fakePlayerM=null;
 
-    public DefaultPlayerAccount() {
-        super();
-        xtraValues=CMProps.getExtraStatCodesHolder(this);
-    }
-    
+	public DefaultPlayerAccount() {
+		super();
+		xtraValues=CMProps.getExtraStatCodesHolder(this);
+	}
+	
 	protected static String[] CODES={"CLASS","FRIENDS","IGNORE","LASTIP","LASTDATETIME",
 									 "NOTES","ACCTEXPIRATION","FLAGS","EMAIL"};
 	public String getStat(String code)
@@ -72,8 +72,8 @@ public class DefaultPlayerAccount implements PlayerAccount
 		case 6: return ""+accountExpiration;
 		case 7: return CMParms.toStringList(acctFlags);
 		case 8: return email;
-        default:
-            return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
+		default:
+			return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
 		}
 	}
 	public void setStat(String code, String val)
@@ -90,18 +90,18 @@ public class DefaultPlayerAccount implements PlayerAccount
 		case 7: acctFlags = new SHashSet<String>(CMParms.parseCommandFlags(val.toUpperCase(),PlayerAccount.FLAG_DESCS)); break;
 		case 8: email=val; break;
 		default:
-            CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code, val);
-            break;
+			CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code, val);
+			break;
 		}
 	}
 	public int getSaveStatIndex(){return (xtraValues==null)?getStatCodes().length:getStatCodes().length-xtraValues.length;}
 	private static String[] codes=null;
 	public String[] getStatCodes(){
-	    if(codes==null)
-	        codes=CMProps.getStatCodesList(CODES,this);
-	    return codes;
+		if(codes==null)
+			codes=CMProps.getStatCodesList(CODES,this);
+		return codes;
 	}
-    public boolean isStat(String code){ return CMParms.indexOf(getStatCodes(),code.toUpperCase().trim())>=0;}
+	public boolean isStat(String code){ return CMParms.indexOf(getStatCodes(),code.toUpperCase().trim())>=0;}
 	protected int getCodeNum(String code){
 		for(int i=0;i<CODES.length;i++)
 			if(code.equalsIgnoreCase(CODES[i])) return i;
@@ -115,24 +115,24 @@ public class DefaultPlayerAccount implements PlayerAccount
 				return false;
 		return true;
 	}
-    
-    public CMObject newInstance(){try{return (CMObject)getClass().newInstance();}catch(Exception e){return new DefaultPlayerStats();}}
-    public void initializeClass(){}
-    public CMObject copyOf()
-    {
-        try
-        {
-            DefaultPlayerAccount O=(DefaultPlayerAccount)this.clone();
-            O.friends=friends.copyOf();
-            O.ignored=ignored.copyOf();
-            O.xtraValues=(xtraValues==null)?null:(String[])xtraValues.clone();
-            return O;
-        }
-        catch(CloneNotSupportedException e)
-        {
-            return new DefaultPlayerStats();
-        }
-    }
+	
+	public CMObject newInstance(){try{return (CMObject)getClass().newInstance();}catch(Exception e){return new DefaultPlayerStats();}}
+	public void initializeClass(){}
+	public CMObject copyOf()
+	{
+		try
+		{
+			DefaultPlayerAccount O=(DefaultPlayerAccount)this.clone();
+			O.friends=friends.copyOf();
+			O.ignored=ignored.copyOf();
+			O.xtraValues=(xtraValues==null)?null:(String[])xtraValues.clone();
+			return O;
+		}
+		catch(CloneNotSupportedException e)
+		{
+			return new DefaultPlayerStats();
+		}
+	}
 	public String lastIP(){return lastIP;}
 	public void setLastIP(String ip){lastIP=ip;}
 	public String getEmail(){if(email==null) return ""; return email;}
@@ -193,39 +193,39 @@ public class DefaultPlayerAccount implements PlayerAccount
 	
 	public String getXML()
 	{
-        StringBuffer rest=new StringBuffer("");
-        String[] codes=getStatCodes();
+		StringBuffer rest=new StringBuffer("");
+		String[] codes=getStatCodes();
 		XMLLibrary libXML = CMLib.xml();
-        for(int x=0;x<codes.length;x++)
-        {
-        	String code=codes[x].toUpperCase();
-        	String value = getStat(code);
-        	if(value.length()==0)
-            	rest.append("<"+code+" />");
-        	else
-	        	rest.append("<"+code+">"+libXML.parseOutAngleBrackets(value)+"</"+code+">");
-        }
-        return rest.toString();
+		for(int x=0;x<codes.length;x++)
+		{
+			String code=codes[x].toUpperCase();
+			String value = getStat(code);
+			if(value.length()==0)
+				rest.append("<"+code+" />");
+			else
+				rest.append("<"+code+">"+libXML.parseOutAngleBrackets(value)+"</"+code+">");
+		}
+		return rest.toString();
 	}
 
 	public void setXML(String str)
 	{
 		List<XMLLibrary.XMLpiece> xml = CMLib.xml().parseAllXML(str);
 		XMLLibrary libXML = CMLib.xml();
-        String[] codes=getStatCodes();
-        for(int i=0;i<codes.length;i++)
-        {
-        	String val=libXML.getValFromPieces(xml,codes[i].toUpperCase());
-        	if(val==null) val="";
-        	setStat(codes[i].toUpperCase(),libXML.restoreAngleBrackets(val));
-        }
+		String[] codes=getStatCodes();
+		for(int i=0;i<codes.length;i++)
+		{
+			String val=libXML.getValFromPieces(xml,codes[i].toUpperCase());
+			if(val==null) val="";
+			setStat(codes[i].toUpperCase(),libXML.restoreAngleBrackets(val));
+		}
 	}
 
 
-    // Acct Expire Code
-    public long getAccountExpiration() {return accountExpiration;}
-    public void setAccountExpiration(long newVal){accountExpiration=newVal;}
-    
+	// Acct Expire Code
+	public long getAccountExpiration() {return accountExpiration;}
+	public void setAccountExpiration(long newVal){accountExpiration=newVal;}
+	
 	public String accountName() { return accountName;}
 	public void setAccountName(String name) { accountName = name;}
 	
@@ -324,5 +324,5 @@ public class DefaultPlayerAccount implements PlayerAccount
 			acctFlags.remove(flagName.toUpperCase());
 	}
 	
-    public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
+	public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
 }

@@ -23,7 +23,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -41,7 +41,7 @@ public class Skill_Puppeteer extends BardSkill
 	public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 	private static final String[] triggerStrings = {"PUPPETEER","PUPPET"};
 	public String[] triggerStrings(){return triggerStrings;}
-    public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_FOOLISHNESS;}
+	public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_FOOLISHNESS;}
 
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
@@ -58,19 +58,19 @@ public class Skill_Puppeteer extends BardSkill
 		&&((msg.sourceMajor(CMMsg.MASK_HANDS))
 		||(msg.sourceMajor(CMMsg.MASK_MOVE)))
 		&&(msg.targetMinor()!=CMMsg.TYP_SPEAK)
-	    &&(msg.targetMinor()==CMMsg.TYP_ORDER)
+		&&(msg.targetMinor()==CMMsg.TYP_ORDER)
 		&&(msg.targetMinor()!=CMMsg.TYP_PANIC)
 		&&(!((msg.tool()!=null)&&(msg.tool() instanceof Song)))
 		&&(!((msg.tool()!=null)&&(msg.tool() instanceof Skill_Puppeteer)))
 		&&(!((msg.tool()!=null)&&(msg.tool() instanceof Dance)))
 		&&(!msg.amITarget(puppet)))
 		{
-		    if((!msg.source().isInCombat())&&(msg.target() instanceof MOB))
-		    {
-			    if((msg.sourceMajor(CMMsg.MASK_MALICIOUS))
-			    ||(msg.targetMajor(CMMsg.MASK_MALICIOUS)))
-			        msg.source().setVictim((MOB)msg.target());
-		    }
+			if((!msg.source().isInCombat())&&(msg.target() instanceof MOB))
+			{
+				if((msg.sourceMajor(CMMsg.MASK_MALICIOUS))
+				||(msg.targetMajor(CMMsg.MASK_MALICIOUS)))
+					msg.source().setVictim((MOB)msg.target());
+			}
 			invoker().location().show(invoker(),puppet,CMMsg.MSG_OK_ACTION,"<S-NAME> animate(s) <T-NAMESELF>.");
 			return false;
 		}
@@ -99,7 +99,7 @@ public class Skill_Puppeteer extends BardSkill
 			if(M.isInCombat())
 			{
 				boolean isHit=(CMLib.combat().rollToHit(CMLib.combat().adjustedAttackBonus(M,M.getVictim())+(5*getXLEVELLevel(M))
-                            +((Item)affected).phyStats().attackAdjustment(),CMLib.combat().adjustedArmor(M.getVictim()), 0));
+							+((Item)affected).phyStats().attackAdjustment(),CMLib.combat().adjustedArmor(M.getVictim()), 0));
 				if(!isHit)
 					M.location().show(M,M.getVictim(),affected,CMMsg.MSG_OK_ACTION,"<O-NAME> attacks <T-NAME> and misses!");
 				else

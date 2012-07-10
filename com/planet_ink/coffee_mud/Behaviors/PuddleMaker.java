@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -36,13 +36,13 @@ public class PuddleMaker extends StdBehavior
 {
 	public String ID(){return "PuddleMaker";}
 	protected int canImproveCode(){return Behavior.CAN_ROOMS|Behavior.CAN_AREAS;}
-    protected int lastWeather=-1;
+	protected int lastWeather=-1;
 
 	public String accountForYourself()
 	{ 
 		return "puddle making";
 	}
-    
+	
 	public boolean coldWetWeather(int weather)
 	{
 		switch(weather)
@@ -55,19 +55,19 @@ public class PuddleMaker extends StdBehavior
 		}
 		return false;
 	}
-    public boolean coldWeather(int weather)
-    {
-        switch(weather)
-        {
-        case Climate.WEATHER_BLIZZARD:
-        case Climate.WEATHER_SLEET:
-        case Climate.WEATHER_SNOW:
-        case Climate.WEATHER_HAIL:
-        case Climate.WEATHER_WINTER_COLD:
-            return true;
-        }
-        return false;
-    }
+	public boolean coldWeather(int weather)
+	{
+		switch(weather)
+		{
+		case Climate.WEATHER_BLIZZARD:
+		case Climate.WEATHER_SLEET:
+		case Climate.WEATHER_SNOW:
+		case Climate.WEATHER_HAIL:
+		case Climate.WEATHER_WINTER_COLD:
+			return true;
+		}
+		return false;
+	}
 	public boolean dryWeather(int weather)
 	{
 		switch(weather)
@@ -118,9 +118,9 @@ public class PuddleMaker extends StdBehavior
 		((Drink)I).setLiquidRemaining(100);
 		((Drink)I).setLiquidType(RawMaterial.RESOURCE_FRESHWATER);
 		I.setMaterial(RawMaterial.RESOURCE_FRESHWATER);
-        I.basePhyStats().setDisposition(I.basePhyStats().disposition()|PhyStats.IS_UNSAVABLE);
+		I.basePhyStats().setDisposition(I.basePhyStats().disposition()|PhyStats.IS_UNSAVABLE);
 		CMLib.materials().addEffectsToResource(I);
-        I.recoverPhyStats();
+		I.recoverPhyStats();
 		if(coldWetWeather(oldWeather))
 		{
 			I.setName("some snow");

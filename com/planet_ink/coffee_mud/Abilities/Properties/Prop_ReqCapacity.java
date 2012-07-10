@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -39,8 +39,8 @@ public class Prop_ReqCapacity extends Property
 	protected int canAffectCode(){return Ability.CAN_ROOMS|Ability.CAN_AREAS|Ability.CAN_EXITS;}
 
 	public int peopleCap=Integer.MAX_VALUE;
-    public int playerCap=Integer.MAX_VALUE;
-    public int mobCap=Integer.MAX_VALUE;
+	public int playerCap=Integer.MAX_VALUE;
+	public int mobCap=Integer.MAX_VALUE;
 	public int itemCap=Integer.MAX_VALUE;
 	public int maxWeight=Integer.MAX_VALUE;
 	public boolean indoorOnly=false;
@@ -48,8 +48,8 @@ public class Prop_ReqCapacity extends Property
 	public String accountForYourself()
 	{
 		return "Person limit: "+((peopleCap==Integer.MAX_VALUE)?"None":(""+peopleCap))
-          +"\n\rPlayer limit: "+((playerCap==Integer.MAX_VALUE)?"None":(""+playerCap))
-          +"\n\rMOB limit   : "+((mobCap==Integer.MAX_VALUE)?"None":(""+mobCap))
+		  +"\n\rPlayer limit: "+((playerCap==Integer.MAX_VALUE)?"None":(""+playerCap))
+		  +"\n\rMOB limit   : "+((mobCap==Integer.MAX_VALUE)?"None":(""+mobCap))
 		  +"\n\rItem limit  : "+((itemCap==Integer.MAX_VALUE)?"None":(""+itemCap))
 		  +"\n\rWeight limit: "+((maxWeight==Integer.MAX_VALUE)?"None":(""+maxWeight));
 	}
@@ -58,8 +58,8 @@ public class Prop_ReqCapacity extends Property
 	{
 		super.setMiscText(txt);
 		peopleCap=Integer.MAX_VALUE;
-        playerCap=Integer.MAX_VALUE;
-        mobCap=Integer.MAX_VALUE;
+		playerCap=Integer.MAX_VALUE;
+		mobCap=Integer.MAX_VALUE;
 		itemCap=Integer.MAX_VALUE;
 		maxWeight=Integer.MAX_VALUE;
 		indoorOnly=false;
@@ -71,8 +71,8 @@ public class Prop_ReqCapacity extends Property
 		else
 		{
 			peopleCap=CMParms.getParmInt(txt,"people",peopleCap);
-            playerCap=CMParms.getParmInt(txt,"players",playerCap);
-            mobCap=CMParms.getParmInt(txt,"mobs",mobCap);
+			playerCap=CMParms.getParmInt(txt,"players",playerCap);
+			mobCap=CMParms.getParmInt(txt,"mobs",mobCap);
 			itemCap=CMParms.getParmInt(txt,"items",itemCap);
 			maxWeight=CMParms.getParmInt(txt,"weight",maxWeight);
 			indoorOnly=CMParms.getParmBool(txt,"indoor",indoorOnly);
@@ -95,53 +95,53 @@ public class Prop_ReqCapacity extends Property
 					msg.source().tell("No more people can fit in there.");
 					return false;
 				}
-                if(((Room)msg.target()).numPCInhabitants()>=playerCap)
-                {
-                    msg.source().tell("No more players can fit in there.");
-                    return false;
-                }
-                if(msg.source().isMonster() 
-                && (((Room)msg.target()).numInhabitants()-((Room)msg.target()).numPCInhabitants())>=mobCap)
-                {
-                    msg.source().tell("No more MOBs can fit in there.");
-                    return false;
-                }
+				if(((Room)msg.target()).numPCInhabitants()>=playerCap)
+				{
+					msg.source().tell("No more players can fit in there.");
+					return false;
+				}
+				if(msg.source().isMonster() 
+				&& (((Room)msg.target()).numInhabitants()-((Room)msg.target()).numPCInhabitants())>=mobCap)
+				{
+					msg.source().tell("No more MOBs can fit in there.");
+					return false;
+				}
 			}
 			break;
 		case CMMsg.TYP_DROP:
 			if((msg.target() instanceof Item)
 			&&(msg.source()!=null)
 			&&(msg.source().location()!=null)
-	        &&(!msg.targetMajor(CMMsg.MASK_INTERMSG)))
+			&&(!msg.targetMajor(CMMsg.MASK_INTERMSG)))
 			{
 				Item targetI=(Item)msg.target();
-                Room R=null;
-                if(affected instanceof Room)
-                    R=(Room)affected;
-                else
-                if(myHost instanceof Room)
-                    R=(Room)myHost;
-                else
-                    R=msg.source().location();
+				Room R=null;
+				if(affected instanceof Room)
+					R=(Room)affected;
+				else
+				if(myHost instanceof Room)
+					R=(Room)myHost;
+				else
+					R=msg.source().location();
 				if((!indoorOnly)||((R.domainType()&Room.INDOORS)==Room.INDOORS))
 				{
 					if(itemCap<Integer.MAX_VALUE)
 					{
 						int soFar=0;
-                        int rawResources=0;
+						int rawResources=0;
 						for(int i=0;i<R.numItems();i++)
 						{
-                            Item I=R.getItem(i); 
-                            if(I instanceof RawMaterial) 
-                                rawResources++;
-                            if((I!=null)&&(I.container()==null)) 
-                                soFar++;
-                        }
+							Item I=R.getItem(i); 
+							if(I instanceof RawMaterial) 
+								rawResources++;
+							if((I!=null)&&(I.container()==null)) 
+								soFar++;
+						}
 						if(soFar>=itemCap)
 						{
 							msg.source().tell("There is no more room in here to drop "+msg.target().Name()+".");
-                            if((rawResources>0)&&(CMath.div(rawResources,itemCap)>0.5))
-                                msg.source().tell("You should consider bundling up some of those resources.");
+							if((rawResources>0)&&(CMath.div(rawResources,itemCap)>0.5))
+								msg.source().tell("You should consider bundling up some of those resources.");
 							return false;
 						}
 					}

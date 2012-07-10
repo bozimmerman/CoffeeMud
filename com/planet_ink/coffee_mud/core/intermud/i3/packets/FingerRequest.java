@@ -23,7 +23,7 @@ import java.util.Vector;
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *        http://www.apache.org/licenses/LICENSE-2.0
+ *  	  http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -38,30 +38,30 @@ public class FingerRequest extends Packet
 	public FingerRequest()
 	{
 		super();
-        type = Packet.FINGER_REQUEST;
+		type = Packet.FINGER_REQUEST;
 	}
-    public FingerRequest(Vector v) throws InvalidPacketException {
-        super(v);
-        try {
-            type = Packet.FINGER_REQUEST;
-            target_mud=(String)v.elementAt(4);
-            target_name=(String)v.elementAt(6);
-        }
-        catch( ClassCastException e ) {
-            throw new InvalidPacketException();
-        }
-    }
+	public FingerRequest(Vector v) throws InvalidPacketException {
+		super(v);
+		try {
+			type = Packet.FINGER_REQUEST;
+			target_mud=(String)v.elementAt(4);
+			target_name=(String)v.elementAt(6);
+		}
+		catch( ClassCastException e ) {
+			throw new InvalidPacketException();
+		}
+	}
 
-    public void send() throws InvalidPacketException {
-        if( sender_name == null || target_mud == null || sender_mud == null  || target_name == null) {
-            throw new InvalidPacketException();
-        }
-        super.send();
-    }
+	public void send() throws InvalidPacketException {
+		if( sender_name == null || target_mud == null || sender_mud == null  || target_name == null) {
+			throw new InvalidPacketException();
+		}
+		super.send();
+	}
 
-    public String toString() {
+	public String toString() {
 		String str="({\"finger-req\",5,\"" + I3Server.getMudName() +
-               "\",\"" + sender_name + "\",\"" + target_mud + "\",0,\"" + target_name + "\",})";
+			   "\",\"" + sender_name + "\",\"" + target_mud + "\",0,\"" + target_name + "\",})";
 		return str;
-    }
+	}
 }

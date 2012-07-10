@@ -26,7 +26,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -43,7 +43,7 @@ public class WaterCurrents extends ActiveTicker
 
 	public WaterCurrents()
 	{
-        super();
+		super();
 		minTicks=3;maxTicks=5;chance=75;
 		tickReset();
 	}
@@ -68,10 +68,10 @@ public class WaterCurrents extends ActiveTicker
 	}
 	public void applyCurrents(Room R, Vector done)
 	{
-        Vector todo=new Vector();
+		Vector todo=new Vector();
 		if((R!=null)&&(R.numInhabitants()>0))
 		{
-		    MOB M=null;
+			MOB M=null;
 			for(int m=0;m<R.numInhabitants();m++)
 			{
 				M=R.fetchInhabitant(m);
@@ -81,32 +81,32 @@ public class WaterCurrents extends ActiveTicker
 				&&(!CMLib.flags().isInFlight(M))
 				&&((!(M instanceof Rideable))||(((Rideable)M).numRiders()==0))
 				&&(!M.isInCombat())
-                &&(!CMLib.flags().isMobile(M))
+				&&(!CMLib.flags().isMobile(M))
 				&&(!done.contains(M)))
-                {
-                    todo.addElement(M);
+				{
+					todo.addElement(M);
 					done.addElement(M);
-                }
+				}
 			}
 		}
 		if((R!=null)&&(R.numItems()>0))
 		{
-		    Item I=null;
+			Item I=null;
 			for(int i=0;i<R.numItems();i++)
 			{
 				I=R.getItem(i);
 				if((I!=null)
 				&&(I.container()==null)
 				&&((!(I instanceof Rideable))
-				        ||(((Rideable)I).rideBasis()!=Rideable.RIDEABLE_WATER)
-				        ||(((Rideable)I).numRiders()==0))
+						||(((Rideable)I).rideBasis()!=Rideable.RIDEABLE_WATER)
+						||(((Rideable)I).numRiders()==0))
 				&&(!CMLib.flags().isInFlight(I))
-                &&(!CMLib.flags().isMobile(I))
+				&&(!CMLib.flags().isMobile(I))
 				&&(!done.contains(I)))
-                {
-                    todo.addElement(I);
-				    done.addElement(I);
-                }
+				{
+					todo.addElement(I);
+					done.addElement(I);
+				}
 			}
 		}
 		if((todo.size()>0)&&(R!=null))
@@ -135,30 +135,30 @@ public class WaterCurrents extends ActiveTicker
 			}
 			if(R2!=null)
 			{
-			    MOB M=null;
-			    Item I=null;
+				MOB M=null;
+				Item I=null;
 				for(int m=0;m<todo.size();m++)
 				{
-				    if(todo.elementAt(m) instanceof MOB)
-				    {
+					if(todo.elementAt(m) instanceof MOB)
+					{
 						M=(MOB)todo.elementAt(m);
-                        CMMsg themsg=CMClass.getMsg(M,M,new AWaterCurrent(),CMMsg.MSG_OK_VISUAL,"<S-NAME> <S-IS-ARE> swept "+Directions.getDirectionName(dir).toLowerCase()+" by the current.");
-                        if(R.okMessage(M,themsg))
+						CMMsg themsg=CMClass.getMsg(M,M,new AWaterCurrent(),CMMsg.MSG_OK_VISUAL,"<S-NAME> <S-IS-ARE> swept "+Directions.getDirectionName(dir).toLowerCase()+" by the current.");
+						if(R.okMessage(M,themsg))
 						{
-                            R.send(M,themsg);
+							R.send(M,themsg);
 							R2.bringMobHere(M,false);
 							R2.showOthers(M,null,new AWaterCurrent(),CMMsg.MSG_OK_VISUAL,"<S-NAME> <S-IS-ARE> swept in from "+Directions.getFromDirectionName(Directions.getOpDirectionCode(dir)).toLowerCase()+" by the current.");
 							CMLib.commands().postLook(M,true);
 						}
-				    }
-				    else
-				    if(todo.elementAt(m) instanceof Item)
-				    {
+					}
+					else
+					if(todo.elementAt(m) instanceof Item)
+					{
 						I=(Item)todo.elementAt(m);
 						R.showHappens(CMMsg.MSG_OK_VISUAL,I.name()+" is swept "+Directions.getDirectionName(dir).toLowerCase()+" by the current.");
 						R2.moveItemTo(I,ItemPossessor.Expire.Player_Drop);
 						R2.showHappens(CMMsg.MSG_OK_VISUAL,I.name()+" is swept in from "+Directions.getFromDirectionName(Directions.getOpDirectionCode(dir)).toLowerCase()+" by the current.");
-				    }
+					}
 				}
 			}
 		}
@@ -209,11 +209,11 @@ public class WaterCurrents extends ActiveTicker
 	protected static final int[] cost=new int[3];
 	protected static class AWaterCurrent implements Ability, Cloneable
 	{
-        public AWaterCurrent()
-        {
-            super();
-            //CMClass.bumpCounter(this,CMClass.CMObjectType.ABILITY);//removed for mem & perf
-        }
+		public AWaterCurrent()
+		{
+			super();
+			//CMClass.bumpCounter(this,CMClass.CMObjectType.ABILITY);//removed for mem & perf
+		}
 		public String ID() { return "AWaterCurrent"; }
 		public String name(){ return "a water current";}
 		public String Name(){return name();}
@@ -230,7 +230,7 @@ public class WaterCurrents extends ActiveTicker
 		public double castingTime(final MOB mob, final List<String> cmds){return 0.0;}
 		public double combatCastingTime(final MOB mob, final List<String> cmds){return 0.0;}
 		public double checkedCastingCost(final MOB mob, final List<String> cmds){return 0.0;}
-        public void initializeClass(){}
+		public void initializeClass(){}
 		public int abilityCode(){return 0;}
 		public void setAbilityCode(int newCode){}
 		public int adjustedLevel(MOB mob, int asLevel){return -1;}
@@ -240,21 +240,21 @@ public class WaterCurrents extends ActiveTicker
 		public long flags(){return Ability.FLAG_TRANSPORTING;}
 		public long getTickStatus(){return Tickable.STATUS_NOT;}
 		public int usageType(){return 0;}
-        //protected void finalize(){ CMClass.unbumpCounter(this,CMClass.CMObjectType.ABILITY); }//removed for mem & perf
-    	public long expirationDate(){return 0;}
-    	public void setExpirationDate(long time){}
-        public void clearExpertiseCache(){}
+		//protected void finalize(){ CMClass.unbumpCounter(this,CMClass.CMObjectType.ABILITY); }//removed for mem & perf
+		public long expirationDate(){return 0;}
+		public void setExpirationDate(long time){}
+		public void clearExpertiseCache(){}
 
 		public void setName(String newName){}
 		public void setDescription(String newDescription){}
 		public void setDisplayText(String newDisplayText){}
 		public String image(){return "";}
-        public String rawImage(){return "";}
+		public String rawImage(){return "";}
 		public void setImage(String newImage){}
 		public MOB invoker(){return null;}
 		public void setInvoker(MOB mob){}
 		public String[] triggerStrings(){return empty;}
-        public boolean preInvoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel, int secondsElapsed, double actionsRemaining){return true;}
+		public boolean preInvoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel, int secondsElapsed, double actionsRemaining){return true;}
 		public boolean invoke(MOB mob, Vector commands, Physical target, boolean auto, int asLevel){return false;}
 		public boolean invoke(MOB mob, Physical target, boolean auto, int asLevel){return false;}
 		public boolean autoInvocation(MOB mob){return false;}
@@ -294,14 +294,14 @@ public class WaterCurrents extends ActiveTicker
 		public int classificationCode(){ return Ability.ACODE_PROPERTY;}
 		public boolean isSavable(){ return savable;}
 		public void setSavable(boolean truefalse)	{ savable=truefalse; }
-        protected boolean amDestroyed=false;
-        public void destroy(){amDestroyed=true;}
-        public boolean amDestroyed(){return amDestroyed;}
+		protected boolean amDestroyed=false;
+		public void destroy(){amDestroyed=true;}
+		public boolean amDestroyed(){return amDestroyed;}
 
 		public CMObject newInstance()
 		{
 			try
-            {
+			{
 				return (CMObject)this.getClass().newInstance();
 			}
 			catch(Exception e)
@@ -313,7 +313,7 @@ public class WaterCurrents extends ActiveTicker
 
 		public int getSaveStatIndex(){return getStatCodes().length;}
 		public String[] getStatCodes(){return CODES;}
-	    public boolean isStat(String code){ return CMParms.indexOf(getStatCodes(),code.toUpperCase().trim())>=0;}
+		public boolean isStat(String code){ return CMParms.indexOf(getStatCodes(),code.toUpperCase().trim())>=0;}
 		protected int getCodeNum(String code){
 			for(int i=0;i<CODES.length;i++)
 				if(code.equalsIgnoreCase(CODES[i])) return i;
@@ -335,23 +335,23 @@ public class WaterCurrents extends ActiveTicker
 			case 1: setMiscText(val); break;
 			}
 		}
-	    public boolean sameAs(Environmental E)
-	    {
-	        if(!(E instanceof AWaterCurrent)) return false;
-	        String[] codes=getStatCodes();
-	        for(int i=0;i<codes.length;i++)
-	            if(!E.getStat(codes[i]).equals(getStat(codes[i])))
-	                return false;
-	        return true;
-	    }
+		public boolean sameAs(Environmental E)
+		{
+			if(!(E instanceof AWaterCurrent)) return false;
+			String[] codes=getStatCodes();
+			for(int i=0;i<codes.length;i++)
+				if(!E.getStat(codes[i]).equals(getStat(codes[i])))
+					return false;
+			return true;
+		}
 		protected void cloneFix(Ability E){}
 
 		public CMObject copyOf()
 		{
 			try
 			{
-			    AWaterCurrent E=(AWaterCurrent)this.clone();
-                //CMClass.bumpCounter(E,CMClass.CMObjectType.ABILITY);//removed for mem & perf
+				AWaterCurrent E=(AWaterCurrent)this.clone();
+				//CMClass.bumpCounter(E,CMClass.CMObjectType.ABILITY);//removed for mem & perf
 				E.cloneFix(this);
 				return E;
 

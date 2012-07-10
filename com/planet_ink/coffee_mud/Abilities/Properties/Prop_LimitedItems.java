@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -50,7 +50,7 @@ public class Prop_LimitedItems extends Property
 		return "Only "+CMath.s_int(text())+" may exist.";
 	}
 
-    protected void countIfNecessary(Item I)
+	protected void countIfNecessary(Item I)
 	{
 		if(CMLib.flags().isInTheGame(I,false))
 		{
@@ -137,7 +137,7 @@ public class Prop_LimitedItems extends Property
 		if((((Item)affected).owner() instanceof MOB)
 		&&(((MOB)((Item)affected).owner()).playerStats()!=null))
 			countIfNecessary((Item)affected);
-        if(destroy) ((Item)affected).destroy();
+		if(destroy) ((Item)affected).destroy();
 		norecurse=false;
 	}
 }

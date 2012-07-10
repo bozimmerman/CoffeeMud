@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -35,63 +35,63 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Visible extends StdCommand
 {
-    public Visible(){}
+	public Visible(){}
 
-    private final String[] access={"VISIBLE","VIS"};
-    public String[] getAccessWords(){return access;}
-    
-    public static java.util.List<Ability> returnOffensiveAffects(Physical fromMe)
-    {
-        MOB newMOB=CMClass.getFactoryMOB();
-        Vector offenders=new Vector();
-        for(int a=0;a<fromMe.numEffects();a++) // personal
-        {
-            Ability A=fromMe.fetchEffect(a);
-            if((A!=null)&&(A.canBeUninvoked()))
-            {
-                try
-                {
-                    newMOB.recoverPhyStats();
-                    A.affectPhyStats(newMOB,newMOB.phyStats());
-                    if(CMLib.flags().isInvisible(newMOB)||CMLib.flags().isHidden(newMOB))
-                      offenders.addElement(A);
-                }
-                catch(Exception e)
-                {}
-            }
-        }
-        newMOB.destroy();
-        return offenders;
-    }
+	private final String[] access={"VISIBLE","VIS"};
+	public String[] getAccessWords(){return access;}
+	
+	public static java.util.List<Ability> returnOffensiveAffects(Physical fromMe)
+	{
+		MOB newMOB=CMClass.getFactoryMOB();
+		Vector offenders=new Vector();
+		for(int a=0;a<fromMe.numEffects();a++) // personal
+		{
+			Ability A=fromMe.fetchEffect(a);
+			if((A!=null)&&(A.canBeUninvoked()))
+			{
+				try
+				{
+					newMOB.recoverPhyStats();
+					A.affectPhyStats(newMOB,newMOB.phyStats());
+					if(CMLib.flags().isInvisible(newMOB)||CMLib.flags().isHidden(newMOB))
+					  offenders.addElement(A);
+				}
+				catch(Exception e)
+				{}
+			}
+		}
+		newMOB.destroy();
+		return offenders;
+	}
 
-    public boolean execute(MOB mob, Vector commands, int metaFlags)
-        throws java.io.IOException
-    {
-        String str="Prop_WizInvis";
-        Ability A=mob.fetchEffect(str);
-        boolean didSomething=false;
-        if(A!=null)
-        {
-            Command C=CMClass.getCommand("WizInv");
-            if((C!=null)&&(C.securityCheck(mob)))
-            {
-                didSomething=true;
-                C.execute(mob,new XVector("WIZINV","OFF"),metaFlags);
-            }
-        }
-        java.util.List V=returnOffensiveAffects(mob);
-        if(V.size()==0)
-        {
-            if(!didSomething)
-            mob.tell("You are not invisible or hidden!");
-        }
-        else
-        for(int v=0;v<V.size();v++)
-            ((Ability)V.get(v)).unInvoke();
-        return false;
-    }
-    public double actionsCost(final MOB mob, final List<String> cmds){return CMProps.getActionCost(ID());}
-    public double combatActionsCost(MOB mob, List<String> cmds){return 0.25;}
-    public boolean canBeOrdered(){return true;}
-    
+	public boolean execute(MOB mob, Vector commands, int metaFlags)
+		throws java.io.IOException
+	{
+		String str="Prop_WizInvis";
+		Ability A=mob.fetchEffect(str);
+		boolean didSomething=false;
+		if(A!=null)
+		{
+			Command C=CMClass.getCommand("WizInv");
+			if((C!=null)&&(C.securityCheck(mob)))
+			{
+				didSomething=true;
+				C.execute(mob,new XVector("WIZINV","OFF"),metaFlags);
+			}
+		}
+		java.util.List V=returnOffensiveAffects(mob);
+		if(V.size()==0)
+		{
+			if(!didSomething)
+			mob.tell("You are not invisible or hidden!");
+		}
+		else
+		for(int v=0;v<V.size();v++)
+			((Ability)V.get(v)).unInvoke();
+		return false;
+	}
+	public double actionsCost(final MOB mob, final List<String> cmds){return CMProps.getActionCost(ID());}
+	public double combatActionsCost(MOB mob, List<String> cmds){return 0.25;}
+	public boolean canBeOrdered(){return true;}
+	
 }

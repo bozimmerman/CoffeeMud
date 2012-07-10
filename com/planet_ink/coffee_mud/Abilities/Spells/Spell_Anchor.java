@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -98,17 +98,17 @@ public class Spell_Anchor extends Spell
 			if((roomS!=null)&&(roomD!=null)&&(roomS==roomD))
 				roomD=null;
 
-            Ability A=(Ability)msg.tool();
-            if(((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_CHANT)
-            ||((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_SPELL)
-            ||((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_PRAYER)
-            ||((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_SONG))
-            {
-    			if(roomS!=null)
-    				roomS.showHappens(CMMsg.MSG_OK_VISUAL,"Magic energy fizzles and is absorbed into the air.");
-    			if(roomD!=null)
-    				roomD.showHappens(CMMsg.MSG_OK_VISUAL,"Magic energy fizzles and is absorbed into the air.");
-            }
+			Ability A=(Ability)msg.tool();
+			if(((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_CHANT)
+			||((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_SPELL)
+			||((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_PRAYER)
+			||((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_SONG))
+			{
+				if(roomS!=null)
+					roomS.showHappens(CMMsg.MSG_OK_VISUAL,"Magic energy fizzles and is absorbed into the air.");
+				if(roomD!=null)
+					roomD.showHappens(CMMsg.MSG_OK_VISUAL,"Magic energy fizzles and is absorbed into the air.");
+			}
 			return false;
 		}
 		return true;

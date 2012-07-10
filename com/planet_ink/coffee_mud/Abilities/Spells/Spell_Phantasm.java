@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -124,39 +124,39 @@ public class Spell_Phantasm extends Spell
 		String type=null;
 		if(mob.isMonster())
 		{
-		    Race R=CMClass.randomRace();
-		    for(int i=0;i<10;i++)
-		    {
-			    if((R!=null)
+			Race R=CMClass.randomRace();
+			for(int i=0;i<10;i++)
+			{
+				if((R!=null)
 				&&(CMProps.isTheme(R.availabilityCode()))
 				&&(CMath.bset(R.availabilityCode(),Area.THEME_SKILLONLYMASK)))
-			    	break;
-			    R=CMClass.randomRace();
-		    }
-		    if(R!=null)
-		    {
-		        type=R.name();
-		    }
-		    else
-		        return false;
+					break;
+				R=CMClass.randomRace();
+			}
+			if(R!=null)
+			{
+				type=R.name();
+			}
+			else
+				return false;
 		}
 		else
 		{
-    		if(commands.size()==0)
-    		{
-    			mob.tell("You must specify the type of creature to create a phantasm of!");
-    			return false;
-    		}
-    		type=CMStrings.capitalizeAndLower(CMParms.combine(commands,0));
+			if(commands.size()==0)
+			{
+				mob.tell("You must specify the type of creature to create a phantasm of!");
+				return false;
+			}
+			type=CMStrings.capitalizeAndLower(CMParms.combine(commands,0));
 		}
-        Race R=CMClass.getRace(type);
-        if((R==null)
+		Race R=CMClass.getRace(type);
+		if((R==null)
 		||(!CMProps.isTheme(R.availabilityCode()))
 		||(!CMath.bset(R.availabilityCode(),Area.THEME_SKILLONLYMASK)))
-        {
-            mob.tell("You don't know how to create a phantasm of a '"+type+"'.");
-            return false;
-        }
+		{
+			mob.tell("You don't know how to create a phantasm of a '"+type+"'.");
+			return false;
+		}
 
 		boolean success=proficiencyCheck(mob,0,auto);
 

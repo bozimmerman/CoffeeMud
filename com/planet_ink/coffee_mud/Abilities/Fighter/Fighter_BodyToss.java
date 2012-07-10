@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -43,7 +43,7 @@ public class Fighter_BodyToss extends MonkSkill
 	public String[] triggerStrings(){return triggerStrings;}
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return Ability.CAN_MOBS;}
-    public int classificationCode(){ return Ability.ACODE_SKILL|Ability.DOMAIN_GRAPPLING;}
+	public int classificationCode(){ return Ability.ACODE_SKILL|Ability.DOMAIN_GRAPPLING;}
 	public int usageType(){return USAGE_MOVEMENT;}
 
 	public int castingQuality(MOB mob, Physical target)
@@ -116,7 +116,7 @@ public class Fighter_BodyToss extends MonkSkill
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_JUSTICE|(auto?CMMsg.MASK_ALWAYS:0),"^F^<FIGHT^><S-NAME> pick(s) up <T-NAMESELF> and toss(es) <T-HIM-HER> into the air!^</FIGHT^>^?");
-            CMLib.color().fixSourceFightColor(msg);
+			CMLib.color().fixSourceFightColor(msg);
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

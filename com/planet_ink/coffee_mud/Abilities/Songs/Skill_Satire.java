@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -42,18 +42,18 @@ public class Skill_Satire extends BardSkill
 	public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 	private static final String[] triggerStrings = {"SATIRE"};
 	public String[] triggerStrings(){return triggerStrings;}
-    public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_FOOLISHNESS;}
+	public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_FOOLISHNESS;}
 
-    public void criminalFail(LegalBehavior B, Area A2, MOB mob, MOB witness)
-    {
-        String crime="disrespect for the law";
-        String desc="Everyone should respect the law.";
-        String crimeLocs="";
-        String crimeFlags="!witness";
-        String sentence=Law.PUNISHMENT_DESCS[0];
+	public void criminalFail(LegalBehavior B, Area A2, MOB mob, MOB witness)
+	{
+		String crime="disrespect for the law";
+		String desc="Everyone should respect the law.";
+		String crimeLocs="";
+		String crimeFlags="!witness";
+		String sentence=Law.PUNISHMENT_DESCS[0];
 		B.addWarrant(A2,mob,witness,crimeLocs,crimeFlags,crime,sentence,desc);
-    }
-    
+	}
+	
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=getTarget(mob,commands,givenTarget);
@@ -63,7 +63,7 @@ public class Skill_Satire extends BardSkill
 			mob.tell("Mock whom?!");
 			return false;
 		}
-        LegalBehavior B=null;
+		LegalBehavior B=null;
 		Area A2=null;
 		Vector<MOB> forgivables=new Vector();
 		final Room room=mob.location();
@@ -105,12 +105,12 @@ public class Skill_Satire extends BardSkill
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-        int levelDiff=target.phyStats().level()-(mob.phyStats().level()+abilityCode()+(2*super.getXLEVELLevel(mob)));
-        if(levelDiff>0)
-            levelDiff=levelDiff*5;
-        else
-            levelDiff=0;
-        
+		int levelDiff=target.phyStats().level()-(mob.phyStats().level()+abilityCode()+(2*super.getXLEVELLevel(mob)));
+		if(levelDiff>0)
+			levelDiff=levelDiff*5;
+		else
+			levelDiff=0;
+		
 		boolean success=proficiencyCheck(mob,-levelDiff,auto);
 
 		if(!success)

@@ -23,7 +23,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -41,20 +41,20 @@ public class DefaultClimate implements Climate
 	protected int nextWeather=WEATHER_CLEAR;
 	protected int weatherTicker=WEATHER_TICK_DOWN;
 
-    public CMObject newInstance(){try{return (CMObject)getClass().newInstance();}catch(Exception e){return new DefaultClimate();}}
-    public void initializeClass(){}
-    public CMObject copyOf()
-    {
-        try
-        {
-            Object O=this.clone();
-            return (CMObject)O;
-        }
-        catch(CloneNotSupportedException e)
-        {
-            return new DefaultClimate();
-        }
-    }
+	public CMObject newInstance(){try{return (CMObject)getClass().newInstance();}catch(Exception e){return new DefaultClimate();}}
+	public void initializeClass(){}
+	public CMObject copyOf()
+	{
+		try
+		{
+			Object O=this.clone();
+			return (CMObject)O;
+		}
+		catch(CloneNotSupportedException e)
+		{
+			return new DefaultClimate();
+		}
+	}
 	public int nextWeatherType(Room room)
 	{
 		if(room==null) return nextWeather;
@@ -71,58 +71,58 @@ public class DefaultClimate implements Climate
 		return theWeatherDescription(A,nextWeather);
 	}
 
-    protected final static
+	protected final static
 	int[] seasonalWeather={
-		/*          -   CL  WD  RA  TH  SN  HA  HE  SL  BL  DU  DR  WC*/
+		/*  		-   CL  WD  RA  TH  SN  HA  HE  SL  BL  DU  DR  WC*/
 		/*SPRING*/  40, 20, 10, 14,  5,  1,  0,  5,  0,  0,  0,  0,  5,
 		/*SUMMER*/  31, 20, 5,  10, 12,  0,  0, 20,  0,  0,  1,  1,  0,
-		/*FALL*/    37, 10, 15, 15, 10,  5,  2,  5,  2,  1,  0,  0, 10,
+		/*FALL*/	37, 10, 15, 15, 10,  5,  2,  5,  2,  1,  0,  0, 10,
 		/*WINTER*/  32, 15, 11,  4,  2,  7,  3,  0,  3,  3,  0,  0, 20,
 	};
 
-    protected final static
+	protected final static
 	int[] cold={
-		/*          -   CL  WD  RA  TH  SN  HA  HE  SL  BL  DU  DR  WC*/
+		/*  		-   CL  WD  RA  TH  SN  HA  HE  SL  BL  DU  DR  WC*/
 		/*SPRING*/  -5, -5,  5,-10,  0,  5,  0, -5,  5,  0,  0,  0,  10,
 		/*SUMMER*/   5,  1,  5,  0,  0,  1,  1,-20,  1,  1,  0,  0,  5,
-		/*FALL*/     0,  0,  1, -5,  0,  1,  1, -5,  1,  1,  0,  0,  5,
+		/*FALL*/	 0,  0,  1, -5,  0,  1,  1, -5,  1,  1,  0,  0,  5,
 		/*WINTER*/ -15,  0,  0, -4, -2,  5,  2,  0,  2,  2,  0,  0,  10,
 	};
-    protected final static
+	protected final static
 	int[] hot={
-		/*          -   CL  WD  RA  TH  SN  HA  HE  SL  BL  DU  DR  WC*/
+		/*  		-   CL  WD  RA  TH  SN  HA  HE  SL  BL  DU  DR  WC*/
 		/*SPRING*/   5,  5, -5, 10,  0, -5,  0,  5, -5,  0,  0,  0, -10,
 		/*SUMMER*/  -5, -1, -5,  0,  0, -1, -1, 20, -1, -1,  0,  0, -5,
-		/*FALL*/     0,  0, -1,  5,  0, -1, -1,  5, -1, -1,  0,  0, -5,
+		/*FALL*/	 0,  0, -1,  5,  0, -1, -1,  5, -1, -1,  0,  0, -5,
 		/*WINTER*/  15,  0,  0,  4,  2, -5, -2,  0, -2, -2,  0,  0, -10,
 	};
-    protected final static
+	protected final static
 	int[] dry={
-		/*          -   CL  WD  RA  TH  SN  HA  HE  SL  BL  DU  DR  WC*/
+		/*  		-   CL  WD  RA  TH  SN  HA  HE  SL  BL  DU  DR  WC*/
 		/*SPRING*/  10,-15,  0,  0,  0,  0,  0,  2,  0,  0,  0,  3,   0,
 		/*SUMMER*/  10,-22,  0,  0,  0,  0,  0,  0,  0,  0,  6,  6,   0,
-		/*FALL*/    10,-15,  0,  0,  0,  0,  0,  2,  0,  0,  0,  3,   0,
+		/*FALL*/	10,-15,  0,  0,  0,  0,  0,  2,  0,  0,  0,  3,   0,
 		/*WINTER*/  10,-15,  0,  0,  0,  0,  0,  2,  0,  0,  0,  3,   0,
 	};
-    protected final static
+	protected final static
 	int[] wet={
-		/*          -   CL  WD  RA  TH  SN  HA  HE  SL  BL  DU  DR  WC*/
+		/*  		-   CL  WD  RA  TH  SN  HA  HE  SL  BL  DU  DR  WC*/
 		/*SPRING*/ -10, 15,  0,  0,  0,  0,  0,  0,  0,  0,  0, -3,  -2,
 		/*SUMMER*/ -10, 22,  0,  0,  0,  0,  0,  0,  0,  0, -6, -6,   0,
 		/*FALL*/   -10, 15,  0,  0,  0,  0,  0,  0,  0,  0,  0, -3,  -2,
 		/*WINTER*/ -10, 15,  0,  0,  0,  0,  0,  0,  0,  0,  0, -3,   2,
 	};
-    protected final static
+	protected final static
 	int[] windy={
-		/*          -   CL  WD  RA  TH  SN  HA  HE  SL  BL  DU  DR  WC*/
+		/*  		-   CL  WD  RA  TH  SN  HA  HE  SL  BL  DU  DR  WC*/
 		/*SPRING*/ -10,  0, 10,  0,  0,  0,  0,  0,  0,  0,  0,  0,   0,
 		/*SUMMER*/ -10,  0, 11,  0,  0,  0,  0, -2,  0,  0,  0,  1,   0,
 		/*FALL*/   -10,  0, 10,  0,  0,  0,  0,  0,  0,  0,  0,  0,   0,
 		/*WINTER*/ -10, -2, 10,  0,  0,  0,  0,  0,  0,  0,  0,  0,   2,
 	};
-    protected final static
+	protected final static
 	int[] changeMap=		{
-	/*				     -    CL   WD   RA   TH   SN   HA   HE   SL   BL   DU   DR   WC*/
+	/*					 -    CL   WD   RA   TH   SN   HA   HE   SL   BL   DU   DR   WC*/
 	/*CLEAR*/			85,    0,   0,-100,-100,-100,-100,   0,-100,-100,   0, -20,   0,
 	/*CLOUDY*/			 0,   75,   0,   0,   0,   0,   0,   0,   0,   0,-100,-100,   0,
 	/*WINDY*/			 0,    0,  25,-100,-100,-100,-100,-100,-100,-100,   1,   0,   0,
@@ -164,7 +164,7 @@ public class DefaultClimate implements Climate
 	public boolean canSeeTheStars(Room room)
 	{
 		if(((room.getArea().getTimeObj().getTODCode()!=TimeClock.TIME_NIGHT)
-                &&(room.getArea().getTimeObj().getTODCode()!=TimeClock.TIME_DUSK))
+				&&(room.getArea().getTimeObj().getTODCode()!=TimeClock.TIME_DUSK))
 		||(!CMLib.map().hasASky(room)))
 			return false;
 		switch(weatherType(room))
@@ -325,7 +325,7 @@ public class DefaultClimate implements Climate
 				// 1=say weatherdescription only
 				// 2=say stop word only
 				// 3=say stop word, then weatherdescription
-				/*				     -   CL  WD  RA  TH  SN  HA  HE  SL  BL  DU  DR  WC*/
+				/*					 -   CL  WD  RA  TH  SN  HA  HE  SL  BL  DU  DR  WC*/
 				int[] sayMap=		{
 				/*CLEAR*/			 0,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,
 				/*CLOUDY*/			 2,  0,  3,  1,  1,  1,  1,  3,  1,  1,  3,  3,  3,
@@ -376,7 +376,7 @@ public class DefaultClimate implements Climate
 			Area A=(Area)ticking;
 			tickStatus=Tickable.STATUS_WEATHER;
 			weatherTick(A);
-        }
+		}
 		tickStatus=Tickable.STATUS_NOT;
 		return true;
 	}
@@ -474,5 +474,5 @@ public class DefaultClimate implements Climate
 		}
 		return base;
 	}
-    public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
+	public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
 }

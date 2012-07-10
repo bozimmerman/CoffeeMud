@@ -25,7 +25,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -39,17 +39,17 @@ public class Prop_UseSpellCast extends Prop_SpellAdder
 	public String ID() { return "Prop_UseSpellCast"; }
 	public String name(){ return "Casting spells when used";}
 	protected int canAffectCode(){return Ability.CAN_ITEMS;}
-    
-    public boolean addMeIfNeccessary(PhysicalAgent source, Physical target, int asLevel)
-    {
-    	List<Ability> V=getMySpellsV();
-        if((target==null)
-        ||(V.size()==0)
-        ||((compiledMask!=null)&&(!CMLib.masking().maskCheck(compiledMask,target,true))))
-            return false;
-        
-        MOB qualMOB=getInvokerMOB(source,target);
-        
+	
+	public boolean addMeIfNeccessary(PhysicalAgent source, Physical target, int asLevel)
+	{
+		List<Ability> V=getMySpellsV();
+		if((target==null)
+		||(V.size()==0)
+		||((compiledMask!=null)&&(!CMLib.masking().maskCheck(compiledMask,target,true))))
+			return false;
+		
+		MOB qualMOB=getInvokerMOB(source,target);
+		
 		for(int v=0;v<V.size();v++)
 		{
 			Ability A=(Ability)V.get(v);
@@ -76,15 +76,15 @@ public class Prop_UseSpellCast extends Prop_SpellAdder
 				A.invoke(qualMOB,V2,target,true,asLevel>0?asLevel:((affected!=null)?affected.phyStats().level():0));
 			}
 		}
-        return true;
+		return true;
 	}
 
-    public String accountForYourself()
-    { return spellAccountingsWithMask("Casts "," when used.");}
+	public String accountForYourself()
+	{ return spellAccountingsWithMask("Casts "," when used.");}
 
-    public void affectPhyStats(Physical host, PhyStats affectableStats)
-    {}
-    
+	public void affectPhyStats(Physical host, PhyStats affectableStats)
+	{}
+	
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		if(processing) return;

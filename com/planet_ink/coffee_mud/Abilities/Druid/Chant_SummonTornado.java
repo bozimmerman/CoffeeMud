@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -51,27 +51,27 @@ public class Chant_SummonTornado extends Chant
 		affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_FLYING);
 	}
 
-    public int castingQuality(MOB mob, Physical target)
-    {
-         if(mob!=null)
-         {
-             Room R=mob.location();
-             if(R!=null)
-             {
-                 if((R.domainType()&Room.INDOORS)>0)
-                     return Ability.QUALITY_INDIFFERENT;
-                 Area A=R.getArea();
-                 if((A.getClimateObj().weatherType(mob.location())!=Climate.WEATHER_THUNDERSTORM)
-                 &&(A.getClimateObj().weatherType(mob.location())!=Climate.WEATHER_BLIZZARD)
-                 &&(A.getClimateObj().weatherType(mob.location())!=Climate.WEATHER_WINDY))
-                     return Ability.QUALITY_INDIFFERENT;
-                 if(R.fetchEffect(this.ID())!=null)
-                     return Ability.QUALITY_INDIFFERENT;
-             }
-         }
-         return super.castingQuality(mob,target);
-    }
-    
+	public int castingQuality(MOB mob, Physical target)
+	{
+		 if(mob!=null)
+		 {
+			 Room R=mob.location();
+			 if(R!=null)
+			 {
+				 if((R.domainType()&Room.INDOORS)>0)
+					 return Ability.QUALITY_INDIFFERENT;
+				 Area A=R.getArea();
+				 if((A.getClimateObj().weatherType(mob.location())!=Climate.WEATHER_THUNDERSTORM)
+				 &&(A.getClimateObj().weatherType(mob.location())!=Climate.WEATHER_BLIZZARD)
+				 &&(A.getClimateObj().weatherType(mob.location())!=Climate.WEATHER_WINDY))
+					 return Ability.QUALITY_INDIFFERENT;
+				 if(R.fetchEffect(this.ID())!=null)
+					 return Ability.QUALITY_INDIFFERENT;
+			 }
+		 }
+		 return super.castingQuality(mob,target);
+	}
+	
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if(((mob.location().domainType()&Room.INDOORS)>0)&&(!auto))
@@ -81,8 +81,8 @@ public class Chant_SummonTornado extends Chant
 		}
 		if((mob.location().getArea().getClimateObj().weatherType(mob.location())!=Climate.WEATHER_THUNDERSTORM)
 		&&(mob.location().getArea().getClimateObj().weatherType(mob.location())!=Climate.WEATHER_WINDY)
-        &&(mob.location().getArea().getClimateObj().weatherType(mob.location())!=Climate.WEATHER_BLIZZARD)
-        &&(!auto))
+		&&(mob.location().getArea().getClimateObj().weatherType(mob.location())!=Climate.WEATHER_BLIZZARD)
+		&&(!auto))
 		{
 			mob.tell("This chant requires wind, a thunderstorm, or a blizzard!");
 			return false;
@@ -92,7 +92,7 @@ public class Chant_SummonTornado extends Chant
 
 		if(target.fetchEffect(this.ID())!=null)
 		{
-		    mob.tell(mob,null,null,"A tornado is already here!");
+			mob.tell(mob,null,null,"A tornado is already here!");
 			return false;
 		}
 

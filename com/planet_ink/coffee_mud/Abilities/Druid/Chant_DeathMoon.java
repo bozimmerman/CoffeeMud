@@ -26,7 +26,7 @@ import java.util.Vector;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -77,37 +77,37 @@ public class Chant_DeathMoon extends Chant
 			{
 				MOB M=room.fetchInhabitant(i);
 				if((M!=null)&&(M!=invoker))
-                {
+				{
 					CMLib.combat().postDamage(invoker,M,this,CMLib.dice().roll(1,M.phyStats().level()+(2*super.getXLEVELLevel(invoker())),0),CMMsg.MASK_ALWAYS|CMMsg.TYP_UNDEAD,Weapon.TYPE_BURSTING,"The gaze of the death moon <DAMAGE> <T-NAME>!");
-                    if((!M.isInCombat())&&(M.location().isInhabitant(invoker))&&(CMLib.flags().canBeSeenBy(invoker,M)))
-                        CMLib.combat().postAttack(M,invoker,M.fetchWieldedItem());
-                }
+					if((!M.isInCombat())&&(M.location().isInhabitant(invoker))&&(CMLib.flags().canBeSeenBy(invoker,M)))
+						CMLib.combat().postAttack(M,invoker,M.fetchWieldedItem());
+				}
 			}
 		}
 		return true;
 	}
 
-    public int castingQuality(MOB mob, Physical target)
-    {
-        if(mob!=null)
-        {
-            Room R=mob.location();
-            if(R!=null)
-            {
-                if(!R.getArea().getClimateObj().canSeeTheMoon(R,null))
-                    return Ability.QUALITY_INDIFFERENT;
-    			for(final Enumeration<Ability> a=R.effects();a.hasMoreElements();)
-    			{
-    				final Ability A=a.nextElement();
-                    if((A!=null)
-                    &&((A.classificationCode()&Ability.ALL_DOMAINS)==Ability.DOMAIN_MOONALTERING))
-                        return Ability.QUALITY_INDIFFERENT;
-                }
-            }
-        }
-        return super.castingQuality(mob,target);
-    }
-    
+	public int castingQuality(MOB mob, Physical target)
+	{
+		if(mob!=null)
+		{
+			Room R=mob.location();
+			if(R!=null)
+			{
+				if(!R.getArea().getClimateObj().canSeeTheMoon(R,null))
+					return Ability.QUALITY_INDIFFERENT;
+				for(final Enumeration<Ability> a=R.effects();a.hasMoreElements();)
+				{
+					final Ability A=a.nextElement();
+					if((A!=null)
+					&&((A.classificationCode()&Ability.ALL_DOMAINS)==Ability.DOMAIN_MOONALTERING))
+						return Ability.QUALITY_INDIFFERENT;
+				}
+			}
+		}
+		return super.castingQuality(mob,target);
+	}
+	
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		Room target=mob.location();

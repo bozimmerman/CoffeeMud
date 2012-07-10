@@ -25,7 +25,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -48,7 +48,7 @@ public class Prayer_Heresy extends Prayer
 
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-        LegalBehavior B=null;
+		LegalBehavior B=null;
 		if(mob.location()!=null) B=CMLib.law().getLegalBehavior(mob.location());
 
 		MOB target=getTarget(mob,commands,givenTarget);
@@ -70,29 +70,29 @@ public class Prayer_Heresy extends Prayer
 				{
 					MOB D=null;
 					if(mob.getWorshipCharID().length()>0) D=CMLib.map().getDeity(mob.getWorshipCharID());
-                    String crime="heresy against <T-NAME>";
-                    String desc=null;
+					String crime="heresy against <T-NAME>";
+					String desc=null;
 					if(D==null)
-                    { 
+					{ 
 						Enumeration deities = CMLib.map().deities();
 						if(deities.hasMoreElements())
-	                        D=(MOB)deities.nextElement();
-                    }
+							D=(MOB)deities.nextElement();
+					}
 					if(D==null) 
 					{
-                        crime="heresy against the gods";
-                        desc="Angering the gods will bring doom upon us all!";
-                    }
-                    else
-                        desc="Angering "+D.name()+" will bring doom upon us all!";
-                    String crimeLocs="";
-                    String crimeFlags="!witness";
+						crime="heresy against the gods";
+						desc="Angering the gods will bring doom upon us all!";
+					}
+					else
+						desc="Angering "+D.name()+" will bring doom upon us all!";
+					String crimeLocs="";
+					String crimeFlags="!witness";
 					int low=CMLib.ableMapper().lowestQualifyingLevel(ID());
 					int me=CMLib.ableMapper().qualifyingClassLevel(mob,this);
 					int lvl=(me-low)/5;
 					if(lvl<0) lvl=0;
 					if(lvl>Law.PUNISHMENT_HIGHEST) lvl=Law.PUNISHMENT_HIGHEST;
-                    String sentence=Law.PUNISHMENT_DESCS[lvl];
+					String sentence=Law.PUNISHMENT_DESCS[lvl];
 					B.addWarrant(CMLib.law().getLegalObject(mob.location()),target,D,crimeLocs,crimeFlags,crime,sentence,desc);
 				}
 			}

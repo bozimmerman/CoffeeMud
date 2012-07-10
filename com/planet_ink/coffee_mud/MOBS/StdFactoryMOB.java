@@ -31,7 +31,7 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -41,63 +41,63 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 */
 public class StdFactoryMOB extends StdMOB
 {
-    public String ID(){return "StdFactoryMOB";}
-    
-    public CMObject newInstance()
-    {
-        try
-        {
-            return (Environmental)this.getClass().newInstance();
-        }
-        catch(Exception e)
-        {
-            Log.errOut(ID(),e);
-        }
-        return new StdFactoryMOB();
-    }
+	public String ID(){return "StdFactoryMOB";}
+	
+	public CMObject newInstance()
+	{
+		try
+		{
+			return (Environmental)this.getClass().newInstance();
+		}
+		catch(Exception e)
+		{
+			Log.errOut(ID(),e);
+		}
+		return new StdFactoryMOB();
+	}
 
-    protected void finalize() throws Throwable
-    { 
-    	if(!amDestroyed)
-    		destroy();
-        amDestroyed=false;
-    	if(!CMClass.returnMob(this))
-    	{
-            amDestroyed=true;
-	    	super.finalize();
-    	}
-    }
-    
-    public void destroy()
-    {
-        try
-        {
-        	CharStats savedCStats=charStats;
-        	if(charStats==baseCharStats)
-        		savedCStats=(CharStats)CMClass.getCommon("DefaultCharStats");
-        	PhyStats savedPStats=phyStats;
-        	if(phyStats==basePhyStats)
-        		savedPStats=(PhyStats)CMClass.getCommon("DefaultPhyStats");
-        	CharState savedCState=curState;
-        	if((curState==baseState)||(curState==maxState))
-	            curState=(CharState)CMClass.getCommon("DefaultCharState");
-        	super.destroy();
-            pleaseDestroy=false;
-            charStats=savedCStats;
-            phyStats=savedPStats;
-            curState=savedCState;
-        	baseCharStats.reset();
-        	basePhyStats.reset();
-        	baseState.reset();
-        	maxState.reset();
-        	curState.reset();
-        	phyStats.reset();
-        	charStats.reset();
-        	finalize();
-        }
-        catch(Throwable t)
-        {
-        	Log.errOut(ID(),t);
-        }
-    }
+	protected void finalize() throws Throwable
+	{ 
+		if(!amDestroyed)
+			destroy();
+		amDestroyed=false;
+		if(!CMClass.returnMob(this))
+		{
+			amDestroyed=true;
+			super.finalize();
+		}
+	}
+	
+	public void destroy()
+	{
+		try
+		{
+			CharStats savedCStats=charStats;
+			if(charStats==baseCharStats)
+				savedCStats=(CharStats)CMClass.getCommon("DefaultCharStats");
+			PhyStats savedPStats=phyStats;
+			if(phyStats==basePhyStats)
+				savedPStats=(PhyStats)CMClass.getCommon("DefaultPhyStats");
+			CharState savedCState=curState;
+			if((curState==baseState)||(curState==maxState))
+				curState=(CharState)CMClass.getCommon("DefaultCharState");
+			super.destroy();
+			pleaseDestroy=false;
+			charStats=savedCStats;
+			phyStats=savedPStats;
+			curState=savedCState;
+			baseCharStats.reset();
+			basePhyStats.reset();
+			baseState.reset();
+			maxState.reset();
+			curState.reset();
+			phyStats.reset();
+			charStats.reset();
+			finalize();
+		}
+		catch(Throwable t)
+		{
+			Log.errOut(ID(),t);
+		}
+	}
 }

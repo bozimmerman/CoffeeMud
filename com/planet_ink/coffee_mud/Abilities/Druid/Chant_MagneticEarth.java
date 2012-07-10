@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -38,7 +38,7 @@ public class Chant_MagneticEarth extends Chant
 {
 	public String ID() { return "Chant_MagneticEarth"; }
 	public String name(){ return "Magnetic Earth";}
-    public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_DEEPMAGIC;}
+	public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_DEEPMAGIC;}
 	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	protected int canAffectCode(){return Ability.CAN_ROOMS;}
 	protected int canTargetCode(){return Ability.CAN_ROOMS;}
@@ -105,24 +105,24 @@ public class Chant_MagneticEarth extends Chant
 		}
 		super.executeMsg(host,msg);
 	}
-    
-    public int castingQuality(MOB mob, Physical target)
-    {
-        if(mob!=null)
-        {
-            Room R=mob.location();
-            if(R!=null)
-            {
-                if((R.domainType()!=Room.DOMAIN_INDOORS_CAVE)
-                &&(R.domainType()!=Room.DOMAIN_OUTDOORS_CITY)
-                &&(R.domainType()!=Room.DOMAIN_OUTDOORS_MOUNTAINS)
-                &&(R.domainType()!=Room.DOMAIN_OUTDOORS_ROCKS))
-                    return Ability.QUALITY_INDIFFERENT;
-            }
-        }
-        return super.castingQuality(mob,target);
-    }
-    
+	
+	public int castingQuality(MOB mob, Physical target)
+	{
+		if(mob!=null)
+		{
+			Room R=mob.location();
+			if(R!=null)
+			{
+				if((R.domainType()!=Room.DOMAIN_INDOORS_CAVE)
+				&&(R.domainType()!=Room.DOMAIN_OUTDOORS_CITY)
+				&&(R.domainType()!=Room.DOMAIN_OUTDOORS_MOUNTAINS)
+				&&(R.domainType()!=Room.DOMAIN_OUTDOORS_ROCKS))
+					return Ability.QUALITY_INDIFFERENT;
+			}
+		}
+		return super.castingQuality(mob,target);
+	}
+	
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		Room target=mob.location();

@@ -22,7 +22,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -49,7 +49,7 @@ public class Disease_Anthrax extends Disease
 	protected String DISEASE_START(){return "^G<S-NAME> look(s) ill.^?";}
 	protected String DISEASE_AFFECT(){return "<S-NAME> watch(s) black necrotic wounds appear on <S-HIS-HER> flesh.";}
 	public int abilityCode(){return DiseaseAffect.SPREAD_CONSUMPTION|DiseaseAffect.SPREAD_CONTACT;}
-    private boolean norecurse=false;
+	private boolean norecurse=false;
 	protected int conDown=0;
 	protected int conTickDown=60;
 
@@ -68,9 +68,9 @@ public class Disease_Anthrax extends Disease
 			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,DISEASE_AFFECT());
 			int damage=CMLib.dice().roll(1,6,0);
 			if(damage>1)
-            {
+			{
 				CMLib.combat().postDamage(diseaser,mob,this,damage,CMMsg.MASK_ALWAYS|CMMsg.TYP_DISEASE,-1,null);
-            }
+			}
 			if((--conTickDown)<=0)
 			{
 				conTickDown=60;
@@ -93,9 +93,9 @@ public class Disease_Anthrax extends Disease
 			conDown=-1;
 			MOB diseaser=invoker;
 			if(diseaser==null) diseaser=affected;
-            norecurse=true;
-            CMLib.combat().postDeath(diseaser,affected,null);
-            norecurse=false;
+			norecurse=true;
+			CMLib.combat().postDeath(diseaser,affected,null);
+			norecurse=false;
 		}
 	}
 }

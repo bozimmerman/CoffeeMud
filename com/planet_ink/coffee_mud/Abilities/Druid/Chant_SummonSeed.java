@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -38,18 +38,18 @@ public class Chant_SummonSeed extends Chant
 {
 	public String ID() { return "Chant_SummonSeed"; }
 	public String name(){ return "Summon Seeds";}
-    public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
+	public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return 0;}
 	public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PLANTGROWTH;}
 
-    public static final Integer[] NON_SEEDS={Integer.valueOf(RawMaterial.RESOURCE_ASH),
-                                            Integer.valueOf(RawMaterial.RESOURCE_SOAP),
-                                            Integer.valueOf(RawMaterial.RESOURCE_CHEESE),
-                                            Integer.valueOf(RawMaterial.RESOURCE_BREAD),
-                                            Integer.valueOf( RawMaterial.RESOURCE_CRACKER),
-    };
-    
+	public static final Integer[] NON_SEEDS={Integer.valueOf(RawMaterial.RESOURCE_ASH),
+											Integer.valueOf(RawMaterial.RESOURCE_SOAP),
+											Integer.valueOf(RawMaterial.RESOURCE_CHEESE),
+											Integer.valueOf(RawMaterial.RESOURCE_BREAD),
+											Integer.valueOf( RawMaterial.RESOURCE_CRACKER),
+	};
+	
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		String s=CMParms.combine(commands,0);
@@ -61,7 +61,7 @@ public class Chant_SummonSeed extends Chant
 		for(Integer code : codes)
 		{
 			if(!CMParms.contains(Chant_SummonSeed.NON_SEEDS,code))
-            {
+			{
 				String str=RawMaterial.CODES.NAME(code.intValue());
 				if(str.toUpperCase().equalsIgnoreCase(s))
 				{

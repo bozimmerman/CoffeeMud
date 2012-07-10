@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -88,8 +88,8 @@ public class Spell_GustOfWind extends Spell
 
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-        Room R=CMLib.map().roomLocation(givenTarget);
-        if(R==null) R=mob.location();
+		Room R=CMLib.map().roomLocation(givenTarget);
+		if(R==null) R=mob.location();
 		Set<MOB> h=properTargets(mob,givenTarget,auto);
 		if((h==null)||(h.size()==0))
 		{

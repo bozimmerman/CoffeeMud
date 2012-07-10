@@ -25,7 +25,7 @@ import java.util.*;
  * <p>you may not use this file except in compliance with the License.
  * <p>You may obtain a copy of the License at
  *
- * <p>       http://www.apache.org/licenses/LICENSE-2.0
+ * <p>  	 http://www.apache.org/licenses/LICENSE-2.0
  *
  * <p>Unless required by applicable law or agreed to in writing, software
  * <p>distributed under the License is distributed on an "AS IS" BASIS,
@@ -44,8 +44,8 @@ public class TargetPlayer extends ActiveTicker
 
 	public TargetPlayer() 
 	{
-        super();
-	    minTicks=3; maxTicks=12; chance=100;
+		super();
+		minTicks=3; maxTicks=12; chance=100;
 		tickReset();
 	}
 

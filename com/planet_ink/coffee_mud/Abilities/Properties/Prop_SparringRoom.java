@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -43,8 +43,8 @@ public class Prop_SparringRoom extends Property
 		if(!super.okMessage(myHost,msg))
 			return false;
 
-        if((msg.tool()!=null)&&(msg.tool().ID().equalsIgnoreCase("Amputation")))
-            return false;
+		if((msg.tool()!=null)&&(msg.tool().ID().equalsIgnoreCase("Amputation")))
+			return false;
 		if((msg.sourceMinor()==CMMsg.TYP_DEATH)
 		&&(!msg.source().isMonster()))
 		{
@@ -56,10 +56,10 @@ public class Prop_SparringRoom extends Property
 			deathRoom.show(source,source,CMMsg.MSG_OK_VISUAL,msg.sourceMessage());
 			if(source!=null)
 			{
-                CharClass combatCharClass=CMLib.combat().getCombatDominantClass(source,target);
-                Set<MOB> beneficiaries=CMLib.combat().getCombatBeneficiaries(source,target,combatCharClass);
-                Set<MOB> dividers=CMLib.combat().getCombatDividers(source,target,combatCharClass);
-                CMLib.combat().dispenseExperience(beneficiaries,dividers,target);
+				CharClass combatCharClass=CMLib.combat().getCombatDominantClass(source,target);
+				Set<MOB> beneficiaries=CMLib.combat().getCombatBeneficiaries(source,target,combatCharClass);
+				Set<MOB> dividers=CMLib.combat().getCombatDividers(source,target,combatCharClass);
+				CMLib.combat().dispenseExperience(beneficiaries,dividers,target);
 			}
 			target.makePeace();
 			target.setRiding(null);

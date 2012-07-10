@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -42,23 +42,23 @@ public class AddFile extends StdWebMacro
 		java.util.Map<String,String> parms=parseParms(parm);
 		if((parms==null)||(parms.size()==0)) return "";
 		StringBuffer buf=new StringBuffer("");
-        boolean webify=false;
-        Vector V=new Vector();
-        V.addAll(parms.values());
-        for(int v=V.size()-1;v>=0;v--)
-        {
-            String file=(String)V.elementAt(v);
-            if(file.length()>0)
-            {
-                if(file.equalsIgnoreCase("webify"))
-                    webify=true;
-                else
-                if(webify)
-                    buf.append(webify(new StringBuffer(httpReq.getPageContent(file))));
-                else
-                    buf.append(httpReq.getPageContent(file));
-            }
-        }
+		boolean webify=false;
+		Vector V=new Vector();
+		V.addAll(parms.values());
+		for(int v=V.size()-1;v>=0;v--)
+		{
+			String file=(String)V.elementAt(v);
+			if(file.length()>0)
+			{
+				if(file.equalsIgnoreCase("webify"))
+					webify=true;
+				else
+				if(webify)
+					buf.append(webify(new StringBuffer(httpReq.getPageContent(file))));
+				else
+					buf.append(httpReq.getPageContent(file));
+			}
+		}
 		return buf.toString();
 	}
 }

@@ -23,7 +23,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -61,23 +61,23 @@ public class Save extends StdCommand
 	{
 		if((commands.size()==1)&&CMSecurity.isSaveFlag("NOPLAYERS"))
 		{
-		    if(!mob.isMonster())
-		    {
+			if(!mob.isMonster())
+			{
 				CMLib.database().DBUpdatePlayer(mob);
 				CMLib.database().DBUpdateFollowers(mob);
 				mob.tell("Your player record has been updated.");
-		    }
-		    return false;
+			}
+			return false;
 		}
 		
 		mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"^S<S-NAME> wave(s) <S-HIS-HER> arms...^?");
-        String firstCommand="";
-        String lastCommand = "";
+		String firstCommand="";
+		String lastCommand = "";
 		if(commands.size()>1)
-        {
-            firstCommand=((String)commands.elementAt(1)).toUpperCase();
-            lastCommand=((String)commands.lastElement()).toUpperCase();
-        }
+		{
+			firstCommand=((String)commands.elementAt(1)).toUpperCase();
+			lastCommand=((String)commands.lastElement()).toUpperCase();
+		}
 		
 		if(lastCommand.equals("USERS"))
 		{
@@ -191,33 +191,33 @@ public class Save extends StdCommand
 			mob.tell("Quest list saved.");
 		}
 		else
-        if(firstCommand.equals("USER"))
-        {
-            MOB M=CMLib.players().getPlayer(lastCommand);
-            CMLib.database().DBUpdatePlayer(M);
-            if(CMLib.flags().isInTheGame(M,true))
-                CMLib.database().DBUpdateFollowers(M);
-            mob.location().showHappens(CMMsg.MSG_OK_ACTION,"A feeling of permanency envelopes '"+M.name()+"'.\n\r");
-        }
-        else
-        if(CMLib.players().getPlayer(firstCommand)!=null)
-        {
-            MOB M=CMLib.players().getPlayer(firstCommand);
-            CMLib.database().DBUpdatePlayer(M);
-            if(CMLib.flags().isInTheGame(M,true))
-                CMLib.database().DBUpdateFollowers(M);
-            mob.location().showHappens(CMMsg.MSG_OK_ACTION,"A feeling of permanency envelopes '"+M.name()+"'.\n\r");
-        }
-        else
-        if(CMLib.players().getPlayer(lastCommand)!=null)
-        {
-            MOB M=CMLib.players().getPlayer(lastCommand);
-            CMLib.database().DBUpdatePlayer(M);
-            if(CMLib.flags().isInTheGame(M,true))
-                CMLib.database().DBUpdateFollowers(M);
-            mob.location().showHappens(CMMsg.MSG_OK_ACTION,"A feeling of permanency envelopes '"+M.name()+"'.\n\r");
-        }
-        else
+		if(firstCommand.equals("USER"))
+		{
+			MOB M=CMLib.players().getPlayer(lastCommand);
+			CMLib.database().DBUpdatePlayer(M);
+			if(CMLib.flags().isInTheGame(M,true))
+				CMLib.database().DBUpdateFollowers(M);
+			mob.location().showHappens(CMMsg.MSG_OK_ACTION,"A feeling of permanency envelopes '"+M.name()+"'.\n\r");
+		}
+		else
+		if(CMLib.players().getPlayer(firstCommand)!=null)
+		{
+			MOB M=CMLib.players().getPlayer(firstCommand);
+			CMLib.database().DBUpdatePlayer(M);
+			if(CMLib.flags().isInTheGame(M,true))
+				CMLib.database().DBUpdateFollowers(M);
+			mob.location().showHappens(CMMsg.MSG_OK_ACTION,"A feeling of permanency envelopes '"+M.name()+"'.\n\r");
+		}
+		else
+		if(CMLib.players().getPlayer(lastCommand)!=null)
+		{
+			MOB M=CMLib.players().getPlayer(lastCommand);
+			CMLib.database().DBUpdatePlayer(M);
+			if(CMLib.flags().isInTheGame(M,true))
+				CMLib.database().DBUpdateFollowers(M);
+			mob.location().showHappens(CMMsg.MSG_OK_ACTION,"A feeling of permanency envelopes '"+M.name()+"'.\n\r");
+		}
+		else
 		{
 			mob.tell(
 				"\n\rYou cannot save '"+firstCommand+"'. "

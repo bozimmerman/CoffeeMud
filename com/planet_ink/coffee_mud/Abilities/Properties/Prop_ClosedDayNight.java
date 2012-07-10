@@ -25,7 +25,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -187,15 +187,15 @@ public class Prop_ClosedDayNight extends Property
 			try
 			{
 				List<Room> rooms=CMLib.map().findRooms(CMLib.map().rooms(), mob, Home,false,10);
-		    	if(rooms.size()>0) 
-		    		R=(Room)rooms.get(CMLib.dice().roll(1,rooms.size(),-1));
-		    	else
-		    	{
-		    		List<MOB> inhabs=CMLib.map().findInhabitants(CMLib.map().rooms(), mob, Home, 10);
-			    	if(inhabs.size()>0) 
-			    		R=CMLib.map().roomLocation((MOB)inhabs.get(CMLib.dice().roll(1,inhabs.size(),-1)));
-		    	}
-		    }catch(NoSuchElementException e){}
+				if(rooms.size()>0) 
+					R=(Room)rooms.get(CMLib.dice().roll(1,rooms.size(),-1));
+				else
+				{
+					List<MOB> inhabs=CMLib.map().findInhabitants(CMLib.map().rooms(), mob, Home, 10);
+					if(inhabs.size()>0) 
+						R=CMLib.map().roomLocation((MOB)inhabs.get(CMLib.dice().roll(1,inhabs.size(),-1)));
+				}
+			}catch(NoSuchElementException e){}
 		}
 		return R;
 	}

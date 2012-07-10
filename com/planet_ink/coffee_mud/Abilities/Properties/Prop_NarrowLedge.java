@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -48,7 +48,7 @@ public class Prop_NarrowLedge extends Property
 
 	public void setMiscText(String newText)
 	{
-        mobsToKill=new Vector();
+		mobsToKill=new Vector();
 		super.setMiscText(newText);
 		check=CMParms.getParmInt(newText,"check",16);
 		name=CMParms.getParmStr(newText,"name","the narrow ledge");
@@ -81,8 +81,8 @@ public class Prop_NarrowLedge extends Property
 						else
 						{
 							mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> fall(s) off "+name+" to <S-HIS-HER> death!!");
-                            if(!CMSecurity.isAllowed(mob,mob.location(),"IMMORT"))
-                                mob.location().show(mob,null,CMMsg.MSG_DEATH,null);
+							if(!CMSecurity.isAllowed(mob,mob.location(),"IMMORT"))
+								mob.location().show(mob,null,CMMsg.MSG_DEATH,null);
 						}
 					}
 				}

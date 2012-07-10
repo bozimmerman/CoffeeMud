@@ -26,7 +26,7 @@ import java.io.IOException;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -76,7 +76,7 @@ public class StdLawBook extends StdItem
 			if(!mob.isMonster())
 			{
 				Area A=CMLib.map().getArea(readableText());
-                LegalBehavior B=CMLib.law().getLegalBehavior(A);
+				LegalBehavior B=CMLib.law().getLegalBehavior(A);
 				if(B==null)
 				{
 					msg.source().tell("The pages appear blank, and damaged.");
@@ -84,7 +84,7 @@ public class StdLawBook extends StdItem
 				}
 				
 				Area A2=CMLib.law().getLegalObject(A);
-                Law theLaw=B.legalInfo(A2);
+				Law theLaw=B.legalInfo(A2);
 				if(theLaw==null)
 				{
 					msg.source().tell("There is no law here.");
@@ -98,10 +98,10 @@ public class StdLawBook extends StdItem
 				boolean allowedToModify=(CMSecurity.isAllowed(mob,mob.location(),"ABOVELAW"));
 				if(A.getMetroMap().hasMoreElements())
 					allowedToModify=(CMSecurity.isAllowed(mob,((Room)A.getMetroMap().nextElement()),"ABOVELAW"));
-                String rulingClan=B.rulingOrganization();
+				String rulingClan=B.rulingOrganization();
 				if((!allowedToModify)
 				&&(rulingClan.length()>0)
-                &&(mob.getClanID().equals(rulingClan)))
+				&&(mob.getClanID().equals(rulingClan)))
 				{
 					Clan C=CMLib.clans().getClan(rulingClan);
 					if((C!=null)&&(C.getAuthority(mob.getClanRole(),Clan.Function.ORDER_CONQUERED)==Clan.Authority.CAN_DO))
@@ -176,7 +176,7 @@ public class StdLawBook extends StdItem
 			if((lawProps==null)||(lawProps.isEmpty()))
 			{
 				lawProps=new Properties();
-                lawProps.load(new ByteArrayInputStream(new CMFile("resources/lawtoc.ini",null,false).raw()));
+				lawProps.load(new ByteArrayInputStream(new CMFile("resources/lawtoc.ini",null,false).raw()));
 				Resources.submitResource("LAWBOOKTOC",lawProps);
 			}
 			String s=(String)lawProps.get(tag);
@@ -198,7 +198,7 @@ public class StdLawBook extends StdItem
 							 String newValue)
 	{
 		theLaw.setInternalStr(tag,newValue);
-        if(A instanceof Area) B.updateLaw((Area)A);
+		if(A instanceof Area) B.updateLaw((Area)A);
 	}
 
 	public String shortLawDesc(String[] bits)
@@ -284,163 +284,163 @@ public class StdLawBook extends StdItem
 				{
 					StringBuffer msg=new StringBuffer("Sentences ( ");
 					for(int i=0;i<Law.PUNISHMENT_DESCS.length;i++)
-                    {
-                        String sentence=Law.PUNISHMENT_DESCS[i];
+					{
+						String sentence=Law.PUNISHMENT_DESCS[i];
 						msg.append(sentence.toLowerCase()+" ");
-                    }
-                    String oldSentence="";
-                    Vector<String> V=CMParms.parse(oldLaw[Law.BIT_SENTENCE]);
-                    DVector V2=new DVector(2);
-                    for(int v=0;v<V.size();v++)
-                    {
-                        String t=(String)V.elementAt(v);
-                        boolean sent=false;
-                        for(int i=0;i<Law.PUNISHMENT_DESCS.length;i++)
-                        {
-                            if(Law.PUNISHMENT_DESCS[i].startsWith(t.toUpperCase()))
-                            {
-                                oldSentence=t.toLowerCase();
-                                sent=true;
-                                V2.addElement(oldSentence,"");
-                                break;
-                            }
-                        }
-                        if(!sent)
-                        {
-                            for(int i=0;i<Law.PUNISHMENTMASK_DESCS.length;i++)
-                            {
-                                if(t.toUpperCase().startsWith(Law.PUNISHMENTMASK_DESCS[i]))
-                                {
-                                    int x1=t.indexOf('=');
-                                    if(x1>0)
-                                        V2.addElement(Law.PUNISHMENTMASK_DESCS[i].toLowerCase(),t.substring(x1+1));
-                                    else
-                                        V2.addElement(Law.PUNISHMENTMASK_DESCS[i].toLowerCase(),"");
-                                    break;
-                                }
-                            }
-                        }
-                    }
+					}
+					String oldSentence="";
+					Vector<String> V=CMParms.parse(oldLaw[Law.BIT_SENTENCE]);
+					DVector V2=new DVector(2);
+					for(int v=0;v<V.size();v++)
+					{
+						String t=(String)V.elementAt(v);
+						boolean sent=false;
+						for(int i=0;i<Law.PUNISHMENT_DESCS.length;i++)
+						{
+							if(Law.PUNISHMENT_DESCS[i].startsWith(t.toUpperCase()))
+							{
+								oldSentence=t.toLowerCase();
+								sent=true;
+								V2.addElement(oldSentence,"");
+								break;
+							}
+						}
+						if(!sent)
+						{
+							for(int i=0;i<Law.PUNISHMENTMASK_DESCS.length;i++)
+							{
+								if(t.toUpperCase().startsWith(Law.PUNISHMENTMASK_DESCS[i]))
+								{
+									int x1=t.indexOf('=');
+									if(x1>0)
+										V2.addElement(Law.PUNISHMENTMASK_DESCS[i].toLowerCase(),t.substring(x1+1));
+									else
+										V2.addElement(Law.PUNISHMENTMASK_DESCS[i].toLowerCase(),"");
+									break;
+								}
+							}
+						}
+					}
 					msg.append("\n\rSelect a sentence ("+oldSentence+"): ");
 					String t=mob.session().prompt(msg.toString(),oldSentence);
 					for(int i=0;i<Law.PUNISHMENT_DESCS.length;i++)
 					{
 						if(Law.PUNISHMENT_DESCS[i].startsWith(t.toUpperCase()))
 						{
-                            int x1=V2.indexOf(oldSentence);
-                            oldSentence=Law.PUNISHMENT_DESCS[i].toLowerCase();
-                            V2.setElementAt(x1,1,oldSentence);
-                            V2.setElementAt(x1,2,"");
-                            t=null;
+							int x1=V2.indexOf(oldSentence);
+							oldSentence=Law.PUNISHMENT_DESCS[i].toLowerCase();
+							V2.setElementAt(x1,1,oldSentence);
+							V2.setElementAt(x1,2,"");
+							t=null;
 							break;
 						}
 					}
-                    if(t==null)
-                    {
-                        while(t==null)
-                        {
-                            msg=new StringBuffer("Sentence Flags ( ");
-                            for(int i=0;i<Law.PUNISHMENTMASK_DESCS.length;i++)
-                            {
-                                String sentence=Law.PUNISHMENTMASK_DESCS[i];
-                                if(sentence.indexOf('=')>0) sentence=sentence.substring(0,sentence.indexOf('='));
-                                msg.append(sentence.toLowerCase()+" ");
-                            }
-                            StringBuffer oldFlags=new StringBuffer("");
-                            for(int v=0;v<V2.size();v++)
-                            {
-                                t=(String)V2.elementAt(v,1);
-                                if(t.equalsIgnoreCase(oldSentence)) continue;
-                                oldFlags.append(t+((String)V2.elementAt(v,2))+" ");
-                            }
-                            msg.append("\n\rSelect a flag to toggle or RETURN ("+oldFlags+"): ");
-                            int selectedMask=-1;
-                            t=mob.session().prompt(msg.toString(),"");
-                            if(t.length()==0) break;
-                            int indexIfExists=-1;
-                            for(int i=0;i<Law.PUNISHMENTMASK_DESCS.length;i++)
-                            {
-                                if(Law.PUNISHMENTMASK_DESCS[i].startsWith(t.toUpperCase()))
-                                {
-                                    selectedMask=i;
-                                    indexIfExists=V2.indexOf(Law.PUNISHMENTMASK_DESCS[selectedMask].toLowerCase());
-                                    t=null;
-                                    break;
-                                }
-                            }
-                            if(t==null)
-                            {
-                                if(indexIfExists>=0)
-                                {
-                                    mob.tell("'"+V2.elementAt(indexIfExists,1)+"' has been removed.");
-                                    V2.removeElementAt(indexIfExists);
-                                }
-                                else
-                                {
-                                    String parm="";
-                                    boolean abort=false;
-                                    switch(Law.PUNISHMENTMASK_CODES[selectedMask])
-                                    {
-                                    case Law.PUNISHMENTMASK_DETAIN:
-                                        if(!CMLib.law().getLegalObject(A).inMyMetroArea(mob.location().getArea()))
-                                        {
-                                            mob.tell("You can not add this room as a detention center, as it is not in the area.");
-                                            abort=true;
-                                        }
-                                        else
-                                        if(mob.session().confirm("Add this room as a new detention center room (y/N)? ","N"))
-                                        {
-                                            String time=mob.session().prompt("Enter the amount of time before they are released: ","");
-                                            if((time.length()==0)||(!CMath.isInteger(time))||(CMath.s_int(time)<0)||(CMath.s_int(time)>10000))
-                                            {
-                                                mob.tell("Invalid entry.  Aborted.");
-                                                abort=true;
-                                            }
-                                            else
-                                                parm=CMLib.map().getExtendedRoomID(mob.location())+","+time;
-                                        }
-                                        else
-                                            abort=true;
-                                        break;
-                                    case Law.PUNISHMENTMASK_FINE:
-                                    {
-                                        String fine=mob.session().prompt("Enter the amount of the fine in base-gold value: ","");
-                                        if((fine.length()==0)||(!CMath.isNumber(fine))||(CMath.s_double(fine)<0)||(CMath.s_double(fine)>100000.0))
-                                        {
-                                            mob.tell("Invalid entry.  Aborted.");
-                                            abort=true;
-                                        }
-                                        else
-                                            parm=fine;
-                                        break;
-                                    }
-                                    }
-                                    if(!abort)
-                                    {
-                                        V2.addElement(Law.PUNISHMENTMASK_DESCS[selectedMask],parm);
-                                        mob.tell("'"+V2.elementAt(V2.size()-1,1)+parm+"' has been added.");
-                                    }
-                                    else
-                                        mob.tell("'"+V2.elementAt(V2.size()-1,1)+parm+"' has been aborted.");
-                                }
-                            }
-                            else
-                                mob.tell("'"+t+"' is not a valid flag.  Unchanged.");
-                        }
-                        StringBuffer newSentence=new StringBuffer("");
-                        for(int v2=0;v2<V2.size();v2++)
-                        {
-                            t=(String)V2.elementAt(v2,1);
-                            String p=(String)V2.elementAt(v2,2);
-                            if(p.indexOf(' ')>0)
-                                newSentence.append("\""+t+p+"\" ");
-                            else
-                                newSentence.append(t+p+" ");
-                        }
-                        oldLaw[Law.BIT_SENTENCE]=newSentence.toString().trim();
-                    }
-                    else
-    					mob.tell("'"+t+"' is not a valid sentence.  Unchanged.");
+					if(t==null)
+					{
+						while(t==null)
+						{
+							msg=new StringBuffer("Sentence Flags ( ");
+							for(int i=0;i<Law.PUNISHMENTMASK_DESCS.length;i++)
+							{
+								String sentence=Law.PUNISHMENTMASK_DESCS[i];
+								if(sentence.indexOf('=')>0) sentence=sentence.substring(0,sentence.indexOf('='));
+								msg.append(sentence.toLowerCase()+" ");
+							}
+							StringBuffer oldFlags=new StringBuffer("");
+							for(int v=0;v<V2.size();v++)
+							{
+								t=(String)V2.elementAt(v,1);
+								if(t.equalsIgnoreCase(oldSentence)) continue;
+								oldFlags.append(t+((String)V2.elementAt(v,2))+" ");
+							}
+							msg.append("\n\rSelect a flag to toggle or RETURN ("+oldFlags+"): ");
+							int selectedMask=-1;
+							t=mob.session().prompt(msg.toString(),"");
+							if(t.length()==0) break;
+							int indexIfExists=-1;
+							for(int i=0;i<Law.PUNISHMENTMASK_DESCS.length;i++)
+							{
+								if(Law.PUNISHMENTMASK_DESCS[i].startsWith(t.toUpperCase()))
+								{
+									selectedMask=i;
+									indexIfExists=V2.indexOf(Law.PUNISHMENTMASK_DESCS[selectedMask].toLowerCase());
+									t=null;
+									break;
+								}
+							}
+							if(t==null)
+							{
+								if(indexIfExists>=0)
+								{
+									mob.tell("'"+V2.elementAt(indexIfExists,1)+"' has been removed.");
+									V2.removeElementAt(indexIfExists);
+								}
+								else
+								{
+									String parm="";
+									boolean abort=false;
+									switch(Law.PUNISHMENTMASK_CODES[selectedMask])
+									{
+									case Law.PUNISHMENTMASK_DETAIN:
+										if(!CMLib.law().getLegalObject(A).inMyMetroArea(mob.location().getArea()))
+										{
+											mob.tell("You can not add this room as a detention center, as it is not in the area.");
+											abort=true;
+										}
+										else
+										if(mob.session().confirm("Add this room as a new detention center room (y/N)? ","N"))
+										{
+											String time=mob.session().prompt("Enter the amount of time before they are released: ","");
+											if((time.length()==0)||(!CMath.isInteger(time))||(CMath.s_int(time)<0)||(CMath.s_int(time)>10000))
+											{
+												mob.tell("Invalid entry.  Aborted.");
+												abort=true;
+											}
+											else
+												parm=CMLib.map().getExtendedRoomID(mob.location())+","+time;
+										}
+										else
+											abort=true;
+										break;
+									case Law.PUNISHMENTMASK_FINE:
+									{
+										String fine=mob.session().prompt("Enter the amount of the fine in base-gold value: ","");
+										if((fine.length()==0)||(!CMath.isNumber(fine))||(CMath.s_double(fine)<0)||(CMath.s_double(fine)>100000.0))
+										{
+											mob.tell("Invalid entry.  Aborted.");
+											abort=true;
+										}
+										else
+											parm=fine;
+										break;
+									}
+									}
+									if(!abort)
+									{
+										V2.addElement(Law.PUNISHMENTMASK_DESCS[selectedMask],parm);
+										mob.tell("'"+V2.elementAt(V2.size()-1,1)+parm+"' has been added.");
+									}
+									else
+										mob.tell("'"+V2.elementAt(V2.size()-1,1)+parm+"' has been aborted.");
+								}
+							}
+							else
+								mob.tell("'"+t+"' is not a valid flag.  Unchanged.");
+						}
+						StringBuffer newSentence=new StringBuffer("");
+						for(int v2=0;v2<V2.size();v2++)
+						{
+							t=(String)V2.elementAt(v2,1);
+							String p=(String)V2.elementAt(v2,2);
+							if(p.indexOf(' ')>0)
+								newSentence.append("\""+t+p+"\" ");
+							else
+								newSentence.append(t+p+" ");
+						}
+						oldLaw[Law.BIT_SENTENCE]=newSentence.toString().trim();
+					}
+					else
+						mob.tell("'"+t+"' is not a valid sentence.  Unchanged.");
 				}
 				break;
 			case 3:
@@ -645,14 +645,14 @@ public class StdLawBook extends StdItem
 			{
 				s=mob.session().prompt("\n\rEnter item key words or resource types to make illegal (?)\n\r: ","");
 				if(s.equals("?"))
-				    mob.tell("Valid resources: "+CMParms.toStringList(RawMaterial.CODES.NAMES()));
+					mob.tell("Valid resources: "+CMParms.toStringList(RawMaterial.CODES.NAMES()));
 				else
 				if(s.length()>0)
 				{
-				    s=s.toUpperCase();
-				    boolean resource=RawMaterial.CODES.FIND_CaseSensitive(s)>=0;
-				    if(resource||mob.session().confirm("'"+s+"' is not a known resource.  Add as a key word anyway (y/N)?","N"))
-				    {
+					s=s.toUpperCase();
+					boolean resource=RawMaterial.CODES.FIND_CaseSensitive(s)>=0;
+					if(resource||mob.session().confirm("'"+s+"' is not a known resource.  Add as a key word anyway (y/N)?","N"))
+					{
 						String[] newValue=modifyLaw(A,B,theLaw,mob,null);
 						if(newValue!=null)
 						{
@@ -666,7 +666,7 @@ public class StdLawBook extends StdItem
 							changeTheLaw(A,B,mob,theLaw,"BANNED"+(theLaw.bannedBits().size()+1),s2.toString());
 							mob.tell("Added.");
 						}
-				    }
+					}
 				}
 			}
 			else
@@ -731,11 +731,11 @@ public class StdLawBook extends StdItem
 				if(key.startsWith("$")) continue;
 				Ability AB=CMClass.getAbility(key);
 				if(((AB==null)
-                    &&(CMLib.flags().getAbilityType(key)<0)
-                    &&(CMLib.flags().getAbilityDomain(key)<0))
-                ||(set==null)
-                ||(set.length<Law.BIT_NUMBITS)) 
-                    continue;
+					&&(CMLib.flags().getAbilityType(key)<0)
+					&&(CMLib.flags().getAbilityDomain(key)<0))
+				||(set==null)
+				||(set.length<Law.BIT_NUMBITS)) 
+					continue;
 				filteredTable.put(key.toUpperCase(),set);
 			}
 			int highest=0;
@@ -744,7 +744,7 @@ public class StdLawBook extends StdItem
 				String key=(String)e.nextElement();
 				String[] set=(String[])filteredTable.get(key);
 				Ability AB=CMClass.getAbility(key);
-                String name=(AB!=null)?AB.name():key;
+				String name=(AB!=null)?AB.name():key;
 				str.append(CMStrings.padRight(""+(highest+1)+". "+name,20)+" "+shortLawDesc(set)+"\n\r");
 				highest++;
 			}
@@ -762,10 +762,10 @@ public class StdLawBook extends StdItem
 				if(s.length()>0)
 				{
 					Ability AB=CMClass.findAbility(s);
-                    if(AB!=null) s=AB.ID();
+					if(AB!=null) s=AB.ID();
 					if((AB==null)
-                    &&(CMLib.flags().getAbilityType(s)<0)
-                    &&(CMLib.flags().getAbilityDomain(s)<0))
+					&&(CMLib.flags().getAbilityType(s)<0)
+					&&(CMLib.flags().getAbilityDomain(s)<0))
 						mob.tell("That skill name or skill class is unknown.");
 					else
 					if(filteredTable.containsKey(s.toUpperCase()))
@@ -922,9 +922,9 @@ public class StdLawBook extends StdItem
 				}
 			case 5:
 				{
-				    String room2="/";
+					String room2="/";
 					while((room2.equals("/"))||(!room2.equals("*"))&&(room2.length()>0)&&(CMLib.map().getRoom(room2)==null))
-					    room2=mob.session().prompt("Enter a new room ID (RETURN="+room+", *=any): ",room);
+						room2=mob.session().prompt("Enter a new room ID (RETURN="+room+", *=any): ",room);
 					String item2=mob.session().prompt("Enter an optional container name (RETURN="+item+"): ",item);
 					if((!room.equalsIgnoreCase(room2))||(!item.equalsIgnoreCase(item2)))
 					{
@@ -953,10 +953,10 @@ public class StdLawBook extends StdItem
 				if(!key.startsWith("$")) continue;
 				Ability AB=CMClass.getAbility(key.substring(1));
 				if(((AB==null)
-                    &&(CMLib.flags().getAbilityType(key.substring(1))<0)
-                    &&(CMLib.flags().getAbilityDomain(key.substring(1))<0))
-                ||(set==null)
-                ||(set.length<Law.BIT_NUMBITS)) continue;
+					&&(CMLib.flags().getAbilityType(key.substring(1))<0)
+					&&(CMLib.flags().getAbilityDomain(key.substring(1))<0))
+				||(set==null)
+				||(set.length<Law.BIT_NUMBITS)) continue;
 				filteredTable.put(key,set);
 			}
 			int highest=0;
@@ -965,7 +965,7 @@ public class StdLawBook extends StdItem
 				String key=(String)e.nextElement();
 				String[] set=(String[])filteredTable.get(key);
 				Ability AB=CMClass.getAbility(key.substring(1));
-                String name=(AB!=null)?AB.name():key.substring(1);
+				String name=(AB!=null)?AB.name():key.substring(1);
 				str.append(CMStrings.padRight(""+(highest+1)+". "+name,20)+" "+shortLawDesc(set)+"\n\r");
 				highest++;
 			}
@@ -983,10 +983,10 @@ public class StdLawBook extends StdItem
 				if(s.length()>0)
 				{
 					Ability AB=CMClass.findAbility(s);
-                    if(AB!=null)s=AB.ID();
+					if(AB!=null)s=AB.ID();
 					if((AB==null)
-                    &&(CMLib.flags().getAbilityType(s)<0)
-                    &&(CMLib.flags().getAbilityDomain(s)<0))
+					&&(CMLib.flags().getAbilityType(s)<0)
+					&&(CMLib.flags().getAbilityDomain(s)<0))
 						mob.tell("That skill name or skill class is unknown.");
 					else
 					if(filteredTable.containsKey("$"+s.toUpperCase()))
@@ -1361,10 +1361,10 @@ public class StdLawBook extends StdItem
 	}
 
 	public void doOfficersAndJudges(Area A, 
-							        LegalBehavior B,
-							        Area legalO,
-							        Law theLaw, 
-							        MOB mob)
+									LegalBehavior B,
+									Area legalO,
+									Law theLaw, 
+									MOB mob)
 		throws IOException
 	{
 		if(mob.session()==null) return;
@@ -1384,7 +1384,7 @@ public class StdLawBook extends StdItem
 					if(B.isAnyOfficer(legalO,M))
 						duhOfficers.append(M.name()+" from room '"+R2.displayText()+"'\n\r");
 					else
-                    if(B.isJudge(legalO,M))
+					if(B.isJudge(legalO,M))
 						duhJudge=M.name()+" from room '"+R2.displayText()+"'\n\r";
 				}
 			}

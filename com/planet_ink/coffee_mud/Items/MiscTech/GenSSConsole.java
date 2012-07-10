@@ -26,7 +26,7 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -85,9 +85,9 @@ public class GenSSConsole extends StdShipConsole
 		case 5: return ""+riderCapacity();
 		case 6: return ""+fuelType();
 		case 7: return ""+powerCapacity();
-        default:
-            return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
-        }
+		default:
+			return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
+		}
 	}
 	public void setStat(String code, String val)
 	{
@@ -109,9 +109,9 @@ public class GenSSConsole extends StdShipConsole
 				break;
 			   } 
 		case 7: setPowerCapacity(CMath.s_parseLongExpression(val)); break;
-        default:
-            CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code, val);
-            break;
+		default:
+			CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code, val);
+			break;
 		}
 	}
 	protected int getCodeNum(String code){
@@ -123,7 +123,7 @@ public class GenSSConsole extends StdShipConsole
 	public String[] getStatCodes()
 	{
 		if(codes!=null) return codes;
-        String[] MYCODES=CMProps.getStatCodesList(GenSSConsole.MYCODES,this);
+		String[] MYCODES=CMProps.getStatCodesList(GenSSConsole.MYCODES,this);
 		String[] superCodes=GenericBuilder.GENITEMCODES;
 		codes=new String[superCodes.length+MYCODES.length];
 		int i=0;

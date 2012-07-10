@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -86,7 +86,7 @@ public class Put extends StdCommand
 		if(commands.size()>=4)
 		{
 			String s=CMParms.combine(commands, 0).toLowerCase();
-	        Wearable.CODES codes = Wearable.CODES.instance();
+			Wearable.CODES codes = Wearable.CODES.instance();
 			for(int i=1;i<codes.total();i++)
 				if(s.endsWith(" on "+codes.name(i).toLowerCase())||s.endsWith(" on my "+codes.name(i).toLowerCase()))
 				{
@@ -125,8 +125,8 @@ public class Put extends StdCommand
 		}
 
 		int maxToPut=CMLib.english().calculateMaxToGive(mob,commands,true,mob,false);
-        if(maxToPut<0) return false;
-        
+		if(maxToPut<0) return false;
+		
 		String thingToPut=CMParms.combine(commands,0);
 		int addendum=1;
 		String addendumStr="";
@@ -134,30 +134,30 @@ public class Put extends StdCommand
 		boolean allFlag=(commands.size()>0)?((String)commands.elementAt(0)).equalsIgnoreCase("all"):false;
 		if(thingToPut.toUpperCase().startsWith("ALL.")){ allFlag=true; thingToPut="ALL "+thingToPut.substring(4);}
 		if(thingToPut.toUpperCase().endsWith(".ALL")){ allFlag=true; thingToPut="ALL "+thingToPut.substring(0,thingToPut.length()-4);}
-        boolean onlyGoldFlag=mob.hasOnlyGoldInInventory();
-        Item putThis=CMLib.english().bestPossibleGold(mob,null,thingToPut);
-        if(putThis!=null)
-        {
-            if(((Coins)putThis).getNumberOfCoins()<CMLib.english().numPossibleGold(mob,thingToPut))
-                return false;
-            if(CMLib.flags().canBeSeenBy(putThis,mob))
-                V.addElement(putThis);
-        }
+		boolean onlyGoldFlag=mob.hasOnlyGoldInInventory();
+		Item putThis=CMLib.english().bestPossibleGold(mob,null,thingToPut);
+		if(putThis!=null)
+		{
+			if(((Coins)putThis).getNumberOfCoins()<CMLib.english().numPossibleGold(mob,thingToPut))
+				return false;
+			if(CMLib.flags().canBeSeenBy(putThis,mob))
+				V.addElement(putThis);
+		}
 		boolean doBugFix = true;
-        if(V.size()==0)
+		if(V.size()==0)
 		while(doBugFix || ((allFlag)&&(addendum<=maxToPut)))
 		{
 			doBugFix=false;
 			putThis=mob.fetchCarried(null,thingToPut+addendumStr);
-            if((allFlag)&&(!onlyGoldFlag)&&(putThis instanceof Coins)&&(thingToPut.equalsIgnoreCase("ALL")))
-                putThis=null;
-            else
-            {
-    			if(putThis==null) break;
-    			if((CMLib.flags().canBeSeenBy(putThis,mob))
-    			&&(!V.contains(putThis)))
-    				V.addElement(putThis);
-            }
+			if((allFlag)&&(!onlyGoldFlag)&&(putThis instanceof Coins)&&(thingToPut.equalsIgnoreCase("ALL")))
+				putThis=null;
+			else
+			{
+				if(putThis==null) break;
+				if((CMLib.flags().canBeSeenBy(putThis,mob))
+				&&(!V.contains(putThis)))
+					V.addElement(putThis);
+			}
 			addendumStr="."+(++addendum);
 		}
 
@@ -183,8 +183,8 @@ public class Put extends StdCommand
 		mob.location().recoverRoomStats();
 		return false;
 	}
-    public double combatActionsCost(final MOB mob, final List<String> cmds){return CMProps.getCombatActionCost(ID());}
-    public double actionsCost(final MOB mob, final List<String> cmds){return CMProps.getActionCost(ID());}
+	public double combatActionsCost(final MOB mob, final List<String> cmds){return CMProps.getCombatActionCost(ID());}
+	public double actionsCost(final MOB mob, final List<String> cmds){return CMProps.getActionCost(ID());}
 	public boolean canBeOrdered(){return true;}
 
 	

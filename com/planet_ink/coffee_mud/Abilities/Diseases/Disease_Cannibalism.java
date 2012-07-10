@@ -23,7 +23,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -47,31 +47,31 @@ public class Disease_Cannibalism extends Disease
 	protected int DISEASE_DELAY(){return 100;}
 	protected String DISEASE_DONE()
    {
-      String desiredMeat = "";
-      if(affected instanceof MOB)
-      {
-         MOB mob = (MOB) affected;
-         desiredMeat = mob.charStats().raceName();
-      }
-      else
-      {
-         desiredMeat = "your race's";
-      }
-      return "<S-NAME> no longer hunger for "+ desiredMeat +" meat.";
+	  String desiredMeat = "";
+	  if(affected instanceof MOB)
+	  {
+		 MOB mob = (MOB) affected;
+		 desiredMeat = mob.charStats().raceName();
+	  }
+	  else
+	  {
+		 desiredMeat = "your race's";
+	  }
+	  return "<S-NAME> no longer hunger for "+ desiredMeat +" meat.";
    }
 	protected String DISEASE_START()
    {
-      String desiredMeat = "";
-      if(affected instanceof MOB)
-      {
-         MOB mob = (MOB) affected;
-         desiredMeat = mob.charStats().raceName();
-      }
-      else
-      {
-         desiredMeat = "your race's";
-      }
-      return "^G<S-NAME> hunger(s) for "+ desiredMeat +" meat.^?";
+	  String desiredMeat = "";
+	  if(affected instanceof MOB)
+	  {
+		 MOB mob = (MOB) affected;
+		 desiredMeat = mob.charStats().raceName();
+	  }
+	  else
+	  {
+		 desiredMeat = "your race's";
+	  }
+	  return "^G<S-NAME> hunger(s) for "+ desiredMeat +" meat.^?";
    }
 	protected String DISEASE_AFFECT(){return "";}
 	public int abilityCode(){return DiseaseAffect.SPREAD_CONSUMPTION;}
@@ -96,23 +96,23 @@ public class Disease_Cannibalism extends Disease
 	{
 		if((affected!=null)&&(affected instanceof MOB))
 		{
-         MOB source=msg.source();
-         if(source == null)
-            return false;
+		 MOB source=msg.source();
+		 if(source == null)
+			return false;
 			MOB mob=(MOB)affected;
-         if(msg.targetMinor() == CMMsg.TYP_EAT)
-         {
-            Environmental food = msg.target();
-            if((food!=null)
+		 if(msg.targetMinor() == CMMsg.TYP_EAT)
+		 {
+			Environmental food = msg.target();
+			if((food!=null)
 			&&(food.name().toLowerCase().indexOf(mob.charStats().raceName()) < 0))
-            {
+			{
 				CMMsg newMessage=CMClass.getMsg(mob,null,this,CMMsg.MSG_OK_VISUAL,"^S<S-NAME> attempt(s) to eat "+ food.Name() +", but can't stomach it....^?");
 				if(mob.location().okMessage(mob,newMessage))
 					mob.location().send(mob,newMessage);
 				return false;
-            }
-         }
-      }
+			}
+		 }
+	  }
 		if((affected!=null)&&(affected instanceof MOB))
 		{
 			MOB mob=(MOB)affected;
@@ -125,6 +125,6 @@ public class Disease_Cannibalism extends Disease
 			}
 		}
 
-      return super.okMessage(myHost,msg);
+	  return super.okMessage(myHost,msg);
 	}
 }

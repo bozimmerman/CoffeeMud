@@ -25,7 +25,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -38,7 +38,7 @@ public class Spell_AnalyzeDweomer extends Spell
 {
 	public String ID() { return "Spell_AnalyzeDweomer"; }
 	public String name(){return "Analyze Item";}
-    public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
+	public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
 	protected int canTargetCode(){return CAN_ITEMS;}
 	public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_DIVINATION;}
 
@@ -60,22 +60,22 @@ public class Spell_AnalyzeDweomer extends Spell
 				mob.location().send(mob,msg);
 				StringBuffer str=new StringBuffer("");
 				if(target instanceof Armor)
-                {
+				{
 					str.append("It is a kind of armor.  ");
-                    if(!target.rawLogicalAnd())
-                        str.append("It is worn on any one of the following: ");
-                    else
-                        str.append("It is worn on all of the following: ");
-                    Wearable.CODES codes = Wearable.CODES.instance();
-                    for(long wornCode : codes.all())
-                    	if(wornCode!=Wearable.IN_INVENTORY)
-	                    {
-	                        if((codes.name(wornCode).length()>0)
-	                        &&(((target.rawProperLocationBitmap()&wornCode)==wornCode)))
-	                            str.append(codes.name(wornCode).toLowerCase()+" ");
-	                    }
-                    str.append(".  ");
-                }
+					if(!target.rawLogicalAnd())
+						str.append("It is worn on any one of the following: ");
+					else
+						str.append("It is worn on all of the following: ");
+					Wearable.CODES codes = Wearable.CODES.instance();
+					for(long wornCode : codes.all())
+						if(wornCode!=Wearable.IN_INVENTORY)
+						{
+							if((codes.name(wornCode).length()>0)
+							&&(((target.rawProperLocationBitmap()&wornCode)==wornCode)))
+								str.append(codes.name(wornCode).toLowerCase()+" ");
+						}
+					str.append(".  ");
+				}
 				if((target instanceof Container)&&(((Container)target).capacity()>0))
 					str.append("It is a container.  ");
 				if(target instanceof Coins)
@@ -122,14 +122,14 @@ public class Spell_AnalyzeDweomer extends Spell
 						str.append("It has a maximum range of "+w.maxRange()+".  ");
 				}
 				str.append("It is made of "+RawMaterial.CODES.NAME(target.material()).toLowerCase()+".  ");
-	            Command C=CMClass.getCommand("Affect");
-	            try
-	            {
-	            	String affectStr=C.executeInternal(mob,0,target).toString();
-	            	if(affectStr.length()<5)
-	            		str.append("It is affected by: "+affectStr);
-	            }
-	            catch(Exception e){}
+				Command C=CMClass.getCommand("Affect");
+				try
+				{
+					String affectStr=C.executeInternal(mob,0,target).toString();
+					if(affectStr.length()<5)
+						str.append("It is affected by: "+affectStr);
+				}
+				catch(Exception e){}
 				if(mob.isMonster())
 					CMLib.commands().postSay(mob,null,str.toString().trim(),false,false);
 				else

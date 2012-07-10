@@ -23,7 +23,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -33,15 +33,15 @@ import java.util.*;
 */
 public class GrinderExits
 {
-    private static final String[] okparms={
-      "NAME"," CLASSES","DISPLAYTEXT","DESCRIPTION",
-      "LEVEL","LEVELRESTRICTED","ISTRAPPED","HASADOOR",
-      "CLOSEDTEXT","DEFAULTSCLOSED","OPENWORD","CLOSEWORD",
-      "HASALOCK","DEFAULTSLOCKED","KEYNAME","ISREADABLE",
-      "READABLETEXT","ISCLASSRESTRICTED","RESTRICTEDCLASSES",
-      "ISALIGNMENTRESTRICTED","RESTRICTEDALIGNMENTS",
-      " MISCTEXT","ISGENERIC","DOORNAME","IMAGE","OPENTICKS"};
-    
+	private static final String[] okparms={
+	  "NAME"," CLASSES","DISPLAYTEXT","DESCRIPTION",
+	  "LEVEL","LEVELRESTRICTED","ISTRAPPED","HASADOOR",
+	  "CLOSEDTEXT","DEFAULTSCLOSED","OPENWORD","CLOSEWORD",
+	  "HASALOCK","DEFAULTSLOCKED","KEYNAME","ISREADABLE",
+	  "READABLETEXT","ISCLASSRESTRICTED","RESTRICTEDCLASSES",
+	  "ISALIGNMENTRESTRICTED","RESTRICTEDALIGNMENTS",
+	  " MISCTEXT","ISGENERIC","DOORNAME","IMAGE","OPENTICKS"};
+	
 	public static String dispositions(Physical P, ExternalHTTPRequests httpReq, java.util.Map<String,String> parms)
 	{
 		P.basePhyStats().setDisposition(0);
@@ -157,8 +157,8 @@ public class GrinderExits
 					X.setExitParams(old,X.closeWord(),X.openWord(),X.closedText());
 					break;
 				case 24: // image
-				    X.setImage(old);
-				    break;
+					X.setImage(old);
+					break;
 				case 25:
 					X.setOpenDelayTicks(CMath.s_int(old));
 					break;
@@ -244,7 +244,7 @@ public class GrinderExits
 				((GridLocale)R2).clearGrid(null);
 			if(R2.rawDoors()[dir2]==null) R2.rawDoors()[dir2]=R;
 			if(R2.getRawExit(dir2)==null)
-                R2.setRawExit(dir2,CMClass.getExit("StdOpenDoorway"));
+				R2.setRawExit(dir2,CMClass.getExit("StdOpenDoorway"));
 			R.getArea().fillInAreaRoom(R2);
 			CMLib.database().DBUpdateExits(R2);
 		}

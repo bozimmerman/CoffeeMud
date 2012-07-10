@@ -26,7 +26,7 @@ import org.mozilla.javascript.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -37,66 +37,66 @@ import org.mozilla.javascript.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class MPRun extends StdCommand
 {
-    public MPRun(){}
+	public MPRun(){}
 
-    private final String[] access={"MPRUN"};
-    public String[] getAccessWords(){return access;}
-    
-    public boolean execute(MOB mob, Vector commands, int metaFlags)
-        throws java.io.IOException
-    {
-    	if(mob.findTattoo("SYSTEM_MPRUNDOWN")!=null)
+	private final String[] access={"MPRUN"};
+	public String[] getAccessWords(){return access;}
+	
+	public boolean execute(MOB mob, Vector commands, int metaFlags)
+		throws java.io.IOException
+	{
+		if(mob.findTattoo("SYSTEM_MPRUNDOWN")!=null)
 			return CMLib.commands().handleUnknownCommand(mob, commands);
-    	MOB checkMOB=mob;
-    	if(commands.size()>1)
-    	{
-    		String firstParm=(String)commands.elementAt(1);
-    		int x=firstParm.indexOf(':');
-    		if(x>0)
-    		{
-    			checkMOB=CMLib.players().getLoadPlayer(firstParm.substring(0,x));
-    			if(checkMOB==null)
-    			{
-    				mob.addTattoo(new MOB.Tattoo("SYSTEM_MPRUNDOWN",(int)CMProps.getTicksPerMinute()));
-    				return CMLib.commands().handleUnknownCommand(mob, commands);
-    			}
-    			String pw=firstParm.substring(x+1);
-    			if(!pw.equalsIgnoreCase(checkMOB.playerStats().password()))
-    			{
-    				mob.addTattoo(new MOB.Tattoo("SYSTEM_MPRUNDOWN",(int)(2 * CMProps.getTicksPerMinute())));
-    				return CMLib.commands().handleUnknownCommand(mob, commands);
-    			}
-    			commands.removeElementAt(1);
-    		}
-    	}
-    	if(!CMSecurity.isAllowed(checkMOB,mob.location(),"JSCRIPTS"))
+		MOB checkMOB=mob;
+		if(commands.size()>1)
+		{
+			String firstParm=(String)commands.elementAt(1);
+			int x=firstParm.indexOf(':');
+			if(x>0)
+			{
+				checkMOB=CMLib.players().getLoadPlayer(firstParm.substring(0,x));
+				if(checkMOB==null)
+				{
+					mob.addTattoo(new MOB.Tattoo("SYSTEM_MPRUNDOWN",(int)CMProps.getTicksPerMinute()));
+					return CMLib.commands().handleUnknownCommand(mob, commands);
+				}
+				String pw=firstParm.substring(x+1);
+				if(!pw.equalsIgnoreCase(checkMOB.playerStats().password()))
+				{
+					mob.addTattoo(new MOB.Tattoo("SYSTEM_MPRUNDOWN",(int)(2 * CMProps.getTicksPerMinute())));
+					return CMLib.commands().handleUnknownCommand(mob, commands);
+				}
+				commands.removeElementAt(1);
+			}
+		}
+		if(!CMSecurity.isAllowed(checkMOB,mob.location(),"JSCRIPTS"))
 			return CMLib.commands().handleUnknownCommand(mob, commands);
-        if(commands.size()<2)
-        {
-            mob.tell("mprun (user:password) [script]");
-            return false;
-        }
-        commands.removeElementAt(0);
+		if(commands.size()<2)
+		{
+			mob.tell("mprun (user:password) [script]");
+			return false;
+		}
+		commands.removeElementAt(0);
 
-        String cmd = CMParms.combineWithQuotes(commands, 0);
-        executeScript(mob, cmd);
-        mob.tell("Completed.");
-        return false;
-    }
+		String cmd = CMParms.combineWithQuotes(commands, 0);
+		executeScript(mob, cmd);
+		mob.tell("Completed.");
+		return false;
+	}
 
-    private void executeScript(MOB mob, String script) 
-    {
-        ScriptingEngine S=(ScriptingEngine)CMClass.getCommon("DefaultScriptingEngine");
-        S.setSavable(false);
-        S.setVarScope("*");
-        S.setScript(script);
-        CMMsg msg2=CMClass.getMsg(mob,mob,null,CMMsg.MSG_OK_VISUAL,null,null,"MPRUN");
-        S.executeMsg(mob, msg2);
-        S.dequeResponses();
-        S.tick(mob,Tickable.TICKID_MOB);
-    }
+	private void executeScript(MOB mob, String script) 
+	{
+		ScriptingEngine S=(ScriptingEngine)CMClass.getCommon("DefaultScriptingEngine");
+		S.setSavable(false);
+		S.setVarScope("*");
+		S.setScript(script);
+		CMMsg msg2=CMClass.getMsg(mob,mob,null,CMMsg.MSG_OK_VISUAL,null,null,"MPRUN");
+		S.executeMsg(mob, msg2);
+		S.dequeResponses();
+		S.tick(mob,Tickable.TICKID_MOB);
+	}
 
-    public boolean canBeOrdered(){return false;}
-    public boolean securityCheck(MOB mob){return true; }
-    public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
+	public boolean canBeOrdered(){return false;}
+	public boolean securityCheck(MOB mob){return true; }
+	public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
 }

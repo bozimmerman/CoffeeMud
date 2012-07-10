@@ -25,7 +25,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -41,7 +41,7 @@ public class Chant_VampireVine extends Chant_SummonVine
 	public String displayText(){return "(Vampire Vine)";}
 	public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PLANTCONTROL;}
 	public long flags(){return Ability.FLAG_SUMMONING;}
-    public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
+	public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
 	public int enchantQuality(){return Ability.QUALITY_INDIFFERENT;}
 
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
@@ -101,14 +101,14 @@ public class Chant_VampireVine extends Chant_SummonVine
 		newMOB.bringToLife(caster.location(),true);
 		CMLib.beanCounter().clearZeroMoney(newMOB,null);
 		newMOB.setStartRoom(null); // keep before postFollow for Conquest
-        CMLib.commands().postFollow(newMOB,caster,true);
-        if(newMOB.amFollowing()!=caster)
-            caster.tell(newMOB.name()+" seems unwilling to follow you.");
-        else
-        {
-            if(newMOB.getVictim()!=victim) newMOB.setVictim(victim);
-            newMOB.location().showOthers(newMOB,victim,CMMsg.MSG_OK_ACTION,"<S-NAME> start(s) attacking <T-NAMESELF>!");
-        }
+		CMLib.commands().postFollow(newMOB,caster,true);
+		if(newMOB.amFollowing()!=caster)
+			caster.tell(newMOB.name()+" seems unwilling to follow you.");
+		else
+		{
+			if(newMOB.getVictim()!=victim) newMOB.setVictim(victim);
+			newMOB.location().showOthers(newMOB,victim,CMMsg.MSG_OK_ACTION,"<S-NAME> start(s) attacking <T-NAMESELF>!");
+		}
 		return(newMOB);
 	}
 }

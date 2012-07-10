@@ -23,7 +23,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -45,7 +45,7 @@ public class QuestPoint extends StdItem
 		myWornCode=0;
 		material=0;
 		basePhyStats.setWeight(0);
-        basePhyStats.setSensesMask(basePhyStats().sensesMask()|PhyStats.SENSE_ITEMNORUIN|PhyStats.SENSE_ITEMNOWISH);
+		basePhyStats.setSensesMask(basePhyStats().sensesMask()|PhyStats.SENSE_ITEMNORUIN|PhyStats.SENSE_ITEMNOWISH);
 		recoverPhyStats();
 	}
 
@@ -60,13 +60,13 @@ public class QuestPoint extends StdItem
 			case CMMsg.TYP_GET:
 			case CMMsg.TYP_REMOVE:
 			{
-                unWear();
+				unWear();
 				setContainer(null);
 				if(!mob.isMine(this))
 					mob.setQuestPoint(mob.getQuestPoint()+1);
 				if(!CMath.bset(msg.targetMajor(),CMMsg.MASK_OPTIMIZE))
 					mob.location().recoverRoomStats();
-                destroy();
+				destroy();
 				return;
 			}
 			default:

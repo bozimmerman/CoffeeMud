@@ -25,7 +25,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -60,10 +60,10 @@ public class Thief extends StdCharClass
 	{
 		super();
 		maxStatAdj[CharStats.STAT_DEXTERITY]=7;
-    }
-    public void initializeClass()
-    {
-        super.initializeClass();
+	}
+	public void initializeClass()
+	{
+		super.initializeClass();
 		if(!ID().equals(baseClass())) return;
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Write",50,true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Specialization_Ranged",false);
@@ -223,9 +223,9 @@ public class Thief extends StdCharClass
 				  ||msg.tool().ID().equals("Thief_Robbery")
 				  ||msg.tool().ID().equals("Thief_Embezzle")
 				  ||msg.tool().ID().equals("Thief_Mug")
-                  ||(msg.tool().ID().equals("Thief_Pick")&&(msg.value()==1))
-                  ||(msg.tool().ID().equals("Thief_RemoveTraps")&&(msg.value()==1))
-                  ||msg.tool().ID().equals("Thief_Racketeer")
+				  ||(msg.tool().ID().equals("Thief_Pick")&&(msg.value()==1))
+				  ||(msg.tool().ID().equals("Thief_RemoveTraps")&&(msg.value()==1))
+				  ||msg.tool().ID().equals("Thief_Racketeer")
 				  ||msg.tool().ID().equals("Thief_Swipe")))
 				CMLib.leveler().postExperience(myChar,(MOB)msg.target()," for a successful "+msg.tool().name(),10,false);
 		}

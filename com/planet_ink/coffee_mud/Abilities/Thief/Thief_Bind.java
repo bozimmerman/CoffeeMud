@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -41,7 +41,7 @@ public class Thief_Bind extends ThiefSkill
 	protected int canAffectCode(){return CAN_MOBS|CAN_ROOMS;}
 	protected int canTargetCode(){return CAN_MOBS;}
 	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-    public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_BINDING;}
+	public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_BINDING;}
 	private static final String[] triggerStrings = {"BIND"};
 	public String[] triggerStrings(){return triggerStrings;}
 	protected int maxRange=0;
@@ -122,20 +122,20 @@ public class Thief_Bind extends ThiefSkill
 			CMLib.commands().postStand(mob,true);
 		}
 	}
-    
-    public int castingQuality(MOB mob, Physical target)
-    {
-        if((mob!=null)&&(target!=null))
-        {
-            if(!(target instanceof MOB))
-                return Ability.QUALITY_INDIFFERENT;
-            if(mob.isInCombat())
-                return Ability.QUALITY_INDIFFERENT;
-            if((!CMLib.flags().isSleeping(target))&&(CMLib.flags().canMove((MOB)target)))
-                return Ability.QUALITY_INDIFFERENT;
-        }
-        return super.castingQuality(mob,target);
-    }
+	
+	public int castingQuality(MOB mob, Physical target)
+	{
+		if((mob!=null)&&(target!=null))
+		{
+			if(!(target instanceof MOB))
+				return Ability.QUALITY_INDIFFERENT;
+			if(mob.isInCombat())
+				return Ability.QUALITY_INDIFFERENT;
+			if((!CMLib.flags().isSleeping(target))&&(CMLib.flags().canMove((MOB)target)))
+				return Ability.QUALITY_INDIFFERENT;
+		}
+		return super.castingQuality(mob,target);
+	}
 
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
@@ -144,24 +144,24 @@ public class Thief_Bind extends ThiefSkill
 			mob.tell("Not while you are fighting!");
 			return false;
 		}
-	    if((commands.size()>0)&&((String)commands.firstElement()).equalsIgnoreCase("UNTIE"))
-	    {
-	        commands.removeElementAt(0);
+		if((commands.size()>0)&&((String)commands.firstElement()).equalsIgnoreCase("UNTIE"))
+		{
+			commands.removeElementAt(0);
 			MOB target=super.getTarget(mob,commands,givenTarget,false,true);
 			if(target==null) return false;
 			Ability A=target.fetchEffect(ID());
 			if(A!=null)
 			{
-			    if(mob.location().show(mob,target,null,CMMsg.MSG_HANDS,"<S-NAME> attempt(s) to unbind <T-NAMESELF>."))
-			    {
-				    A.unInvoke();
-				    return true;
-			    }
-		        return false;
+				if(mob.location().show(mob,target,null,CMMsg.MSG_HANDS,"<S-NAME> attempt(s) to unbind <T-NAMESELF>."))
+				{
+					A.unInvoke();
+					return true;
+				}
+				return false;
 			}
-		    mob.tell(target.name()+" doesn't appear to be bound with ropes.");
-		    return false;
-	    }
+			mob.tell(target.name()+" doesn't appear to be bound with ropes.");
+			return false;
+		}
 
 
 		MOB target=getTarget(mob,commands,givenTarget);

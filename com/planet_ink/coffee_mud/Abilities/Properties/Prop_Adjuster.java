@@ -25,7 +25,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -35,18 +35,18 @@ import java.util.*;
 */
 public class Prop_Adjuster extends Prop_HaveAdjuster
 {
-    public String ID() { return "Prop_Adjuster"; }
-    public String name(){ return "Adjustments to stats";}
-    protected int canAffectCode(){return Ability.CAN_MOBS;}
-    public boolean bubbleAffect(){return false;}
-    public boolean canApply(MOB mob)
-    {
-        if((affected!=null)
-        &&((mask==null)||(CMLib.masking().maskCheck(mask,mob,true))))
-            return true;
-        return false;
-    }
-    
+	public String ID() { return "Prop_Adjuster"; }
+	public String name(){ return "Adjustments to stats";}
+	protected int canAffectCode(){return Ability.CAN_MOBS;}
+	public boolean bubbleAffect(){return false;}
+	public boolean canApply(MOB mob)
+	{
+		if((affected!=null)
+		&&((mask==null)||(CMLib.masking().maskCheck(mask,mob,true))))
+			return true;
+		return false;
+	}
+	
 	public String accountForYourself()
 	{
 		return fixAccoutingsWithMask("Effects: "+parameters[0],parameters[1]);

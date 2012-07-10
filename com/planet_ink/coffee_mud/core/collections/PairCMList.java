@@ -7,7 +7,7 @@ Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
 You may obtain a copy of the License at
 
-    http://www.apache.org/licenses/LICENSE-2.0
+	http://www.apache.org/licenses/LICENSE-2.0
 
 Unless required by applicable law or agreed to in writing, software
 distributed under the License is distributed on an "AS IS" BASIS,
@@ -29,12 +29,12 @@ public final class PairCMList<T,K> extends CMList<Pair<T,K>> implements SPairLis
 	public final Iterator<T> firstIterator()
 	{
 		return new ConvertingIterator<Pair<T,K>,T>(
-    		iterator(),getFirstConverter());
+			iterator(),getFirstConverter());
 	}
 	public final Iterator<K> secondIterator()
 	{
 		return new ConvertingIterator<Pair<T,K>,K>(
-    		iterator(),getSecondConverter());
+			iterator(),getSecondConverter());
 	}
 	public synchronized int indexOfFirst(T t)
 	{

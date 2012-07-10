@@ -25,7 +25,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -63,7 +63,7 @@ public class ClanAssign extends StdCommand
 			}
 			else
 			{
-	            C=mob.getMyClan();
+				C=mob.getMyClan();
 				if(C==null)
 				{
 					mob.tell("There is no longer a clan called "+mob.getClanID()+".");
@@ -106,7 +106,7 @@ public class ClanAssign extends StdCommand
 						}
 						if(skipChecks||CMLib.clans().goForward(mob,C,commands,Clan.Function.ASSIGN,true))
 						{
-						    int oldPos=M.getClanRole();
+							int oldPos=M.getClanRole();
 							int maxInNewPos=C.getMostInRole(newPos);
 							Vector currentMembersInNewPosV=new Vector();
 							for(MemberRecord member : members)
@@ -116,15 +116,15 @@ public class ClanAssign extends StdCommand
 							if(topRoleIDs.contains(Integer.valueOf(oldPos)))
 							{ // If you WERE already the highest order.. you must be being demoted.
 								// so we check to see if there will be any other high officers left
-							    int numMembers=0;
+								int numMembers=0;
 								for(MemberRecord member : members)
-								    if(!M.Name().equalsIgnoreCase(member.name))
+									if(!M.Name().equalsIgnoreCase(member.name))
 										if(topRoleIDs.contains(Integer.valueOf(member.role)))
 											numMembers++;
 								if(numMembers==0)
 								{
-								    mob.tell(M.Name()+" is the last "+C.getRoleName(oldPos,true,false)+" and must be replaced before being reassigned.");
-								    return false;
+									mob.tell(M.Name()+" is the last "+C.getRoleName(oldPos,true,false)+" and must be replaced before being reassigned.");
+									return false;
 								}
 							}
 							if((currentMembersInNewPosV.size()>0)&&(maxInNewPos<Integer.MAX_VALUE))
@@ -143,7 +143,7 @@ public class ClanAssign extends StdCommand
 							}
 							// finally, promote
 							CMLib.clans().clanAnnounce(mob,M.name()+" of the "+C.getGovernmentName()+" "+C.clanID()+" changed from "+C.getRoleName(M.getClanRole(),true,false)+" to "+C.getRoleName(newPos,true,false)+".");
-                            C.addMember(M,newPos);
+							C.addMember(M,newPos);
 							mob.tell(M.Name()+" of the "+C.getGovernmentName()+" "+C.clanID()+" has been assigned to be "+CMLib.english().startWithAorAn(C.getRoleName(newPos,false,false))+". ");
 							if((M.session()!=null)&&(M.session().mob()==M))
 								M.tell("You have been assigned to be "+CMLib.english().startWithAorAn(C.getRoleName(newPos,false,false))+" of "+C.getGovernmentName()+" "+C.clanID()+".");

@@ -21,7 +21,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -36,13 +36,13 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 public interface MsgMonitor
 {
 	/** 
-     * The general message event monitor for the object.  The messages
-     * have already been through an approval process, so this method is
-     * called only to see the final execution of the meaning of the
-     * message.
+	 * The general message event monitor for the object.  The messages
+	 * have already been through an approval process, so this method is
+	 * called only to see the final execution of the meaning of the
+	 * message.
 	 * @param room the room the message was sent to
 	 * @param msg the CMMsg that needs to be executed
-     * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg
 	 */
 	public void monitorMsg(Room room, CMMsg msg);
 }

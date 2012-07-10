@@ -13,7 +13,7 @@ import com.planet_ink.coffee_mud.core.Log;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -23,67 +23,67 @@ import com.planet_ink.coffee_mud.core.Log;
 */
 public class CMEncoder extends StdLibrary implements TextEncoders
 {
-    public String ID(){return "CMEncoder";}
-    private byte[] encodeBuffer = new byte[65536];
-    private Deflater compresser = new Deflater(Deflater.BEST_COMPRESSION);
-    private Inflater decompresser = new Inflater();
-    
-    public CMEncoder()
-    {
-        super();
-    }
+	public String ID(){return "CMEncoder";}
+	private byte[] encodeBuffer = new byte[65536];
+	private Deflater compresser = new Deflater(Deflater.BEST_COMPRESSION);
+	private Inflater decompresser = new Inflater();
+	
+	public CMEncoder()
+	{
+		super();
+	}
 
-    public synchronized String decompressString(byte[] b)
-    {
-        try
-        {
-            if ((b == null)||(b.length==0)) return "";
+	public synchronized String decompressString(byte[] b)
+	{
+		try
+		{
+			if ((b == null)||(b.length==0)) return "";
 
-            decompresser.reset();
-            decompresser.setInput(b);
+			decompresser.reset();
+			decompresser.setInput(b);
 
-            synchronized (encodeBuffer)
-            {
-                int len = decompresser.inflate(encodeBuffer);
-                return new String(encodeBuffer, 0, len, CMProps.getVar(CMProps.SYSTEM_CHARSETINPUT));
-            }
-        }
-        catch (Exception ex)
-        {
-            Log.errOut(Thread.currentThread().getName(), "Error occurred during decompression: "+ex.getMessage());
-            encodeBuffer=new byte[65536];
-            return "";
-        }
-    }
+			synchronized (encodeBuffer)
+			{
+				int len = decompresser.inflate(encodeBuffer);
+				return new String(encodeBuffer, 0, len, CMProps.getVar(CMProps.SYSTEM_CHARSETINPUT));
+			}
+		}
+		catch (Exception ex)
+		{
+			Log.errOut(Thread.currentThread().getName(), "Error occurred during decompression: "+ex.getMessage());
+			encodeBuffer=new byte[65536];
+			return "";
+		}
+	}
 
-    public synchronized byte[] compressString(String s)
-    {
-        byte[] result = null;
+	public synchronized byte[] compressString(String s)
+	{
+		byte[] result = null;
 
-        try
-        {
-            compresser.reset();
-            compresser.setInput(s.getBytes(CMProps.getVar(CMProps.SYSTEM_CHARSETINPUT)));
-            compresser.finish();
-            
-            synchronized (encodeBuffer)
-            {
-                if(s.length()>encodeBuffer.length)
-                    encodeBuffer=new byte[s.length()];
-                encodeBuffer[0]=0;
+		try
+		{
+			compresser.reset();
+			compresser.setInput(s.getBytes(CMProps.getVar(CMProps.SYSTEM_CHARSETINPUT)));
+			compresser.finish();
+			
+			synchronized (encodeBuffer)
+			{
+				if(s.length()>encodeBuffer.length)
+					encodeBuffer=new byte[s.length()];
+				encodeBuffer[0]=0;
 
-                int len = compresser.deflate(encodeBuffer);
-                result = new byte[len];
-                System.arraycopy(encodeBuffer, 0, result, 0, len);
-            }
-        }
-        catch (Exception ex)
-        {
-            Log.errOut("MUD", "Error occurred during compression: "+ex.getMessage());
-            encodeBuffer=new byte[65536];
-        }
+				int len = compresser.deflate(encodeBuffer);
+				result = new byte[len];
+				System.arraycopy(encodeBuffer, 0, result, 0, len);
+			}
+		}
+		catch (Exception ex)
+		{
+			Log.errOut("MUD", "Error occurred during compression: "+ex.getMessage());
+			encodeBuffer=new byte[65536];
+		}
 
-        return result;
-    }
-    
+		return result;
+	}
+	
 }

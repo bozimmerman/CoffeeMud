@@ -26,7 +26,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -98,39 +98,39 @@ public class Mood extends StdAbility
 
 	public void setMiscText(String newText)
 	{
-	    // this checks the input, and allows us to get mood
-	    // lists without having the code in front of us.
-	    if(newText.length()>0)
-	    {
-	        moodCode=-1;
-	        if(CMath.isInteger(newText))
-	        {
-	            int x=CMath.s_int(newText);
-	            if((x>=0)&&(x<MOODS.length))
-	            {
-                    moodCode=x;
-	                newText=MOODS[x][0];
-	            }
-	        }
-	        else
-    	    for(int i=0;i<MOODS.length;i++)
-    	    	if(MOODS[i][0].equalsIgnoreCase(newText))
-    	    		moodCode=i;
-	        if(moodCode<0)
-	            newText="";
-	    }
-        super.setMiscText(newText);
+		// this checks the input, and allows us to get mood
+		// lists without having the code in front of us.
+		if(newText.length()>0)
+		{
+			moodCode=-1;
+			if(CMath.isInteger(newText))
+			{
+				int x=CMath.s_int(newText);
+				if((x>=0)&&(x<MOODS.length))
+				{
+					moodCode=x;
+					newText=MOODS[x][0];
+				}
+			}
+			else
+			for(int i=0;i<MOODS.length;i++)
+				if(MOODS[i][0].equalsIgnoreCase(newText))
+					moodCode=i;
+			if(moodCode<0)
+				newText="";
+		}
+		super.setMiscText(newText);
 	}
 
 	public boolean tick(Tickable ticking, int tickID)
 	{
-	    if(!super.tick(ticking,tickID))
-	        return false;
-	    switch(moodCode)
-	    {
+		if(!super.tick(ticking,tickID))
+			return false;
+		switch(moodCode)
+		{
 
-	    }
-	    return true;
+		}
+		return true;
 	}
 
 	public void affectPhyStats(Physical affected, PhyStats stats)
@@ -156,39 +156,39 @@ public class Mood extends StdAbility
 		msg.setOthersMessage(changeSay(msg.othersMessage(),to));
 	}
 
-    public MOB target(MOB mob, Environmental target)
-    {
-        if(target instanceof MOB) return (MOB)target;
-        if(mob==null) return null;
-        Room R=mob.location();
-        if(R==null) return null;
-        if(R.numInhabitants()==1) return null;
-        if(R.numInhabitants()==2)
-        for(int r=0;r<R.numInhabitants();r++)
-            if(R.fetchInhabitant(r)!=mob)
-                return R.fetchInhabitant(r);
-        if((lastOne instanceof MOB)&&(R.isInhabitant((MOB)lastOne)))
-            return (MOB)lastOne;
-        Vector players=new Vector();
-        Vector mobs=new Vector();
-        MOB M=null;
-        for(int r=0;r<R.numInhabitants();r++)
-        {
-            M=R.fetchInhabitant(r);
-            if((M!=mob)&&(M!=null))
-            {
-                if(M.isMonster())
-                    mobs.addElement(M);
-                else
-                if(!M.isMonster())
-                    players.addElement(M);
-            }
-        }
-        if(players.size()==1) return (MOB)players.firstElement();
-        if(players.size()>1) return null;
-        if(mobs.size()==1) return (MOB)mobs.firstElement();
-        return null;
-    }
+	public MOB target(MOB mob, Environmental target)
+	{
+		if(target instanceof MOB) return (MOB)target;
+		if(mob==null) return null;
+		Room R=mob.location();
+		if(R==null) return null;
+		if(R.numInhabitants()==1) return null;
+		if(R.numInhabitants()==2)
+		for(int r=0;r<R.numInhabitants();r++)
+			if(R.fetchInhabitant(r)!=mob)
+				return R.fetchInhabitant(r);
+		if((lastOne instanceof MOB)&&(R.isInhabitant((MOB)lastOne)))
+			return (MOB)lastOne;
+		Vector players=new Vector();
+		Vector mobs=new Vector();
+		MOB M=null;
+		for(int r=0;r<R.numInhabitants();r++)
+		{
+			M=R.fetchInhabitant(r);
+			if((M!=mob)&&(M!=null))
+			{
+				if(M.isMonster())
+					mobs.addElement(M);
+				else
+				if(!M.isMonster())
+					players.addElement(M);
+			}
+		}
+		if(players.size()==1) return (MOB)players.firstElement();
+		if(players.size()>1) return null;
+		if(mobs.size()==1) return (MOB)mobs.firstElement();
+		return null;
+	}
 
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
@@ -200,13 +200,13 @@ public class Mood extends StdAbility
 			&&((msg.sourceMinor()==CMMsg.TYP_SPEAK)
 			   ||(msg.sourceMinor()==CMMsg.TYP_TELL)
 			   ||(CMath.bset(msg.sourceMajor(),CMMsg.MASK_CHANNEL)))
-            &&(moodCode>=0))
+			&&(moodCode>=0))
 			{
-                String str=CMStrings.getSayFromMessage(msg.othersMessage());
+				String str=CMStrings.getSayFromMessage(msg.othersMessage());
 				if(str==null) str=CMStrings.getSayFromMessage(msg.targetMessage());
 				if(str!=null)
 				{
-                    MOB M=target(msg.source(),msg.target());
+					MOB M=target(msg.source(),msg.target());
 					if(CMath.bset(msg.sourceMajor(),CMMsg.MASK_CHANNEL))
 					{
 						final String[] tags={"<S-NAME>","You"};
@@ -222,44 +222,44 @@ public class Mood extends StdAbility
 								msg.setSourceMessage(CMStrings.replaceFirst(msg.sourceMessage(),tag,tag+" "+MOODS[moodCode][3]));
 						}
 					}
-                    String oldStr=str;
+					String oldStr=str;
 					switch(moodCode)
 					{
 					case 0: // formal
 					{
 						if(str.toUpperCase().startsWith("YOU "))
 							str=CMStrings.replaceFirstWord(str,"you","thou");
-                        str=CMStrings.replaceWord(str,"you`ll","thou willst");
-                        str=CMStrings.replaceWord(str,"youll","thou willst");
-                        str=CMStrings.replaceWord(str,"you`re","thou art");
-                        str=CMStrings.replaceWord(str,"youre","thou art");
-                        str=CMStrings.replaceWord(str,"you`d","thou wouldst");
-                        str=CMStrings.replaceWord(str,"youd","thou wouldst");
-                        str=CMStrings.replaceWord(str,"you`ve","thou hast");
-                        str=CMStrings.replaceWord(str,"youve","thou hast");
-                        str=CMStrings.replaceWord(str,"he`s","he ist");
-                        str=CMStrings.replaceWord(str,"hes","he ist");
-                        str=CMStrings.replaceWord(str,"she`s","she ist");
-                        str=CMStrings.replaceWord(str,"shes","she ist");
-                        str=CMStrings.replaceWord(str,"it`s","it ist");
-                        str=CMStrings.replaceWord(str,"its","it ist");
-                        str=CMStrings.replaceWord(str,"it`ll","it willst");
-                        str=CMStrings.replaceWord(str,"itll","it willst");
-                        str=CMStrings.replaceWord(str,"it`d","it wouldst");
-                        str=CMStrings.replaceWord(str,"itd","it wouldst");
+						str=CMStrings.replaceWord(str,"you`ll","thou willst");
+						str=CMStrings.replaceWord(str,"youll","thou willst");
+						str=CMStrings.replaceWord(str,"you`re","thou art");
+						str=CMStrings.replaceWord(str,"youre","thou art");
+						str=CMStrings.replaceWord(str,"you`d","thou wouldst");
+						str=CMStrings.replaceWord(str,"youd","thou wouldst");
+						str=CMStrings.replaceWord(str,"you`ve","thou hast");
+						str=CMStrings.replaceWord(str,"youve","thou hast");
+						str=CMStrings.replaceWord(str,"he`s","he ist");
+						str=CMStrings.replaceWord(str,"hes","he ist");
+						str=CMStrings.replaceWord(str,"she`s","she ist");
+						str=CMStrings.replaceWord(str,"shes","she ist");
+						str=CMStrings.replaceWord(str,"it`s","it ist");
+						str=CMStrings.replaceWord(str,"its","it ist");
+						str=CMStrings.replaceWord(str,"it`ll","it willst");
+						str=CMStrings.replaceWord(str,"itll","it willst");
+						str=CMStrings.replaceWord(str,"it`d","it wouldst");
+						str=CMStrings.replaceWord(str,"itd","it wouldst");
 						str=CMStrings.replaceWord(str,"you","thee");
 						str=CMStrings.replaceWord(str,"your","thine");
 						str=CMStrings.replaceWord(str,"really","indeed");
 						str=CMStrings.replaceWord(str,"mine","my own");
 						str=CMStrings.replaceWord(str,"my","mine");
-                        str=CMStrings.replaceWord(str,"I`m","we art");
-                        str=CMStrings.replaceWord(str,"Im","we art");
-                        str=CMStrings.replaceWord(str,"I`ll","we willst");
-                        str=CMStrings.replaceWord(str,"Ill","we willst");
-                        str=CMStrings.replaceWord(str,"I`d","we had");
-                        str=CMStrings.replaceWord(str,"Id","we had");
-                        str=CMStrings.replaceWord(str,"I`ve","we hast");
-                        str=CMStrings.replaceWord(str,"Ive","we hast");
+						str=CMStrings.replaceWord(str,"I`m","we art");
+						str=CMStrings.replaceWord(str,"Im","we art");
+						str=CMStrings.replaceWord(str,"I`ll","we willst");
+						str=CMStrings.replaceWord(str,"Ill","we willst");
+						str=CMStrings.replaceWord(str,"I`d","we had");
+						str=CMStrings.replaceWord(str,"Id","we had");
+						str=CMStrings.replaceWord(str,"I`ve","we hast");
+						str=CMStrings.replaceWord(str,"Ive","we hast");
 						str=CMStrings.replaceWord(str,"i am","we art");
 						str=CMStrings.replaceWord(str,"i","we");
 						str=CMStrings.replaceWord(str,"hi","greetings");
@@ -268,74 +268,74 @@ public class Mood extends StdAbility
 						str=CMStrings.replaceWord(str,"hey","greetings");
 						str=CMStrings.replaceWord(str,"where is","where might we find");
 						str=CMStrings.replaceWord(str,"how do","how wouldst");
-                        str=CMStrings.replaceWord(str,"can`t","canst not");
-                        str=CMStrings.replaceWord(str,"cant","canst not");
-                        str=CMStrings.replaceWord(str,"couldn`t","couldst not");
-                        str=CMStrings.replaceWord(str,"couldnt","couldst not");
-                        str=CMStrings.replaceWord(str,"aren`t","are not");
-                        str=CMStrings.replaceWord(str,"arent","are not");
-                        str=CMStrings.replaceWord(str,"didn`t","didst not");
-                        str=CMStrings.replaceWord(str,"didnt","didst not");
-                        str=CMStrings.replaceWord(str,"doesn`t","doth not");
-                        str=CMStrings.replaceWord(str,"doesnt","doth not");
-                        str=CMStrings.replaceWord(str,"does","doth");
-                        str=CMStrings.replaceWord(str,"wont","willst not");
-                        str=CMStrings.replaceWord(str,"won`t","willst not");
-                        str=CMStrings.replaceWord(str,"wasnt","wast not");
-                        str=CMStrings.replaceWord(str,"wasn`t","wast not");
-                        str=CMStrings.replaceWord(str,"werent","were not");
-                        str=CMStrings.replaceWord(str,"weren`t","were not");
-                        str=CMStrings.replaceWord(str,"wouldnt","wouldst not");
-                        str=CMStrings.replaceWord(str,"wouldn`t","wouldst not");
-                        str=CMStrings.replaceWord(str,"don`t","doest not");
-                        str=CMStrings.replaceWord(str,"dont","doest not");
-                        str=CMStrings.replaceWord(str,"haven`t","hast not");
-                        str=CMStrings.replaceWord(str,"havent","hast not");
-                        str=CMStrings.replaceWord(str,"hadn`t","hath not");
-                        str=CMStrings.replaceWord(str,"hadnt","hath not");
-                        str=CMStrings.replaceWord(str,"hasn`t","hast not");
-                        str=CMStrings.replaceWord(str,"hasnt","hast not");
-                        str=CMStrings.replaceWord(str,"have","hast");
-                        str=CMStrings.replaceWord(str,"had","hath");
-                        str=CMStrings.replaceWord(str,"isn`t","is not");
-                        str=CMStrings.replaceWord(str,"isnt","is not");
-                        str=CMStrings.replaceWord(str,"mustn`t","must not");
-                        str=CMStrings.replaceWord(str,"mustnt","must not");
-                        str=CMStrings.replaceWord(str,"needn`t","need not");
-                        str=CMStrings.replaceWord(str,"neednt","need not");
-                        str=CMStrings.replaceWord(str,"shouldn`t","should not");
-                        str=CMStrings.replaceWord(str,"shouldnt","should not");
-                        str=CMStrings.replaceWord(str,"are","art");
-                        str=CMStrings.replaceWord(str,"would","wouldst");
-                        str=CMStrings.replaceWord(str,"have","hast");
-                        str=CMStrings.replaceWord(str,"we`ll","we willst");
-                        str=CMStrings.replaceWord(str,"we`re","we art");
-                        str=CMStrings.replaceWord(str,"we`d","we wouldst");
-                        str=CMStrings.replaceWord(str,"we`ve","we hast");
-                        str=CMStrings.replaceWord(str,"weve","we hast");
-                        str=CMStrings.replaceWord(str,"they`ll","they willst");
-                        str=CMStrings.replaceWord(str,"theyll","they willst");
-                        str=CMStrings.replaceWord(str,"they`re","they art");
-                        str=CMStrings.replaceWord(str,"theyre","they art");
-                        str=CMStrings.replaceWord(str,"they`d","they wouldst");
-                        str=CMStrings.replaceWord(str,"theyd","they wouldst");
-                        str=CMStrings.replaceWord(str,"they`ve","they hast");
-                        str=CMStrings.replaceWord(str,"theyve","they hast");
-                        str=CMStrings.replaceWord(str,"there`s","there ist");
-                        str=CMStrings.replaceWord(str,"theres","there ist");
-                        str=CMStrings.replaceWord(str,"there`d","there wouldst");
-                        str=CMStrings.replaceWord(str,"thered","there wouldst");
-                        str=CMStrings.replaceWord(str,"there`ll","there willst");
-                        str=CMStrings.replaceWord(str,"therell","there shall");
-                        str=CMStrings.replaceWord(str,"that`s","that ist");
-                        str=CMStrings.replaceWord(str,"thats","that ist");
-                        str=CMStrings.replaceWord(str,"that`d","that wouldst");
-                        str=CMStrings.replaceWord(str,"thatd","that wouldst");
-                        str=CMStrings.replaceWord(str,"that`ll","that willst");
-                        str=CMStrings.replaceWord(str,"thatll","that willst");
-                        str=CMStrings.replaceWord(str,"is","ist");
-                        str=CMStrings.replaceWord(str,"will","shall");
-                        str=CMStrings.replaceWord(str,"would","wouldst");
+						str=CMStrings.replaceWord(str,"can`t","canst not");
+						str=CMStrings.replaceWord(str,"cant","canst not");
+						str=CMStrings.replaceWord(str,"couldn`t","couldst not");
+						str=CMStrings.replaceWord(str,"couldnt","couldst not");
+						str=CMStrings.replaceWord(str,"aren`t","are not");
+						str=CMStrings.replaceWord(str,"arent","are not");
+						str=CMStrings.replaceWord(str,"didn`t","didst not");
+						str=CMStrings.replaceWord(str,"didnt","didst not");
+						str=CMStrings.replaceWord(str,"doesn`t","doth not");
+						str=CMStrings.replaceWord(str,"doesnt","doth not");
+						str=CMStrings.replaceWord(str,"does","doth");
+						str=CMStrings.replaceWord(str,"wont","willst not");
+						str=CMStrings.replaceWord(str,"won`t","willst not");
+						str=CMStrings.replaceWord(str,"wasnt","wast not");
+						str=CMStrings.replaceWord(str,"wasn`t","wast not");
+						str=CMStrings.replaceWord(str,"werent","were not");
+						str=CMStrings.replaceWord(str,"weren`t","were not");
+						str=CMStrings.replaceWord(str,"wouldnt","wouldst not");
+						str=CMStrings.replaceWord(str,"wouldn`t","wouldst not");
+						str=CMStrings.replaceWord(str,"don`t","doest not");
+						str=CMStrings.replaceWord(str,"dont","doest not");
+						str=CMStrings.replaceWord(str,"haven`t","hast not");
+						str=CMStrings.replaceWord(str,"havent","hast not");
+						str=CMStrings.replaceWord(str,"hadn`t","hath not");
+						str=CMStrings.replaceWord(str,"hadnt","hath not");
+						str=CMStrings.replaceWord(str,"hasn`t","hast not");
+						str=CMStrings.replaceWord(str,"hasnt","hast not");
+						str=CMStrings.replaceWord(str,"have","hast");
+						str=CMStrings.replaceWord(str,"had","hath");
+						str=CMStrings.replaceWord(str,"isn`t","is not");
+						str=CMStrings.replaceWord(str,"isnt","is not");
+						str=CMStrings.replaceWord(str,"mustn`t","must not");
+						str=CMStrings.replaceWord(str,"mustnt","must not");
+						str=CMStrings.replaceWord(str,"needn`t","need not");
+						str=CMStrings.replaceWord(str,"neednt","need not");
+						str=CMStrings.replaceWord(str,"shouldn`t","should not");
+						str=CMStrings.replaceWord(str,"shouldnt","should not");
+						str=CMStrings.replaceWord(str,"are","art");
+						str=CMStrings.replaceWord(str,"would","wouldst");
+						str=CMStrings.replaceWord(str,"have","hast");
+						str=CMStrings.replaceWord(str,"we`ll","we willst");
+						str=CMStrings.replaceWord(str,"we`re","we art");
+						str=CMStrings.replaceWord(str,"we`d","we wouldst");
+						str=CMStrings.replaceWord(str,"we`ve","we hast");
+						str=CMStrings.replaceWord(str,"weve","we hast");
+						str=CMStrings.replaceWord(str,"they`ll","they willst");
+						str=CMStrings.replaceWord(str,"theyll","they willst");
+						str=CMStrings.replaceWord(str,"they`re","they art");
+						str=CMStrings.replaceWord(str,"theyre","they art");
+						str=CMStrings.replaceWord(str,"they`d","they wouldst");
+						str=CMStrings.replaceWord(str,"theyd","they wouldst");
+						str=CMStrings.replaceWord(str,"they`ve","they hast");
+						str=CMStrings.replaceWord(str,"theyve","they hast");
+						str=CMStrings.replaceWord(str,"there`s","there ist");
+						str=CMStrings.replaceWord(str,"theres","there ist");
+						str=CMStrings.replaceWord(str,"there`d","there wouldst");
+						str=CMStrings.replaceWord(str,"thered","there wouldst");
+						str=CMStrings.replaceWord(str,"there`ll","there willst");
+						str=CMStrings.replaceWord(str,"therell","there shall");
+						str=CMStrings.replaceWord(str,"that`s","that ist");
+						str=CMStrings.replaceWord(str,"thats","that ist");
+						str=CMStrings.replaceWord(str,"that`d","that wouldst");
+						str=CMStrings.replaceWord(str,"thatd","that wouldst");
+						str=CMStrings.replaceWord(str,"that`ll","that willst");
+						str=CMStrings.replaceWord(str,"thatll","that willst");
+						str=CMStrings.replaceWord(str,"is","ist");
+						str=CMStrings.replaceWord(str,"will","shall");
+						str=CMStrings.replaceWord(str,"would","wouldst");
 						str=CMStrings.endWithAPeriod(str);
 						switch(CMLib.dice().roll(1,15,0))
 						{
@@ -367,10 +367,10 @@ public class Mood extends StdAbility
 						case 1: str="If you please, "+str; break;
 						case 2: str=CMStrings.endWithAPeriod(str)+" Thank you."; break;
 						case 3: str=CMStrings.endWithAPeriod(str)+" If you please."; break;
-                        case 4: str="Forgive me but, "+str; break;
-                        case 5: str="If I may, "+str; break;
-                        case 6: str="Please, "+str; break;
-                        case 7: str="Humbly speaking, "+str; break;
+						case 4: str="Forgive me but, "+str; break;
+						case 5: str="If I may, "+str; break;
+						case 6: str="Please, "+str; break;
+						case 7: str="Humbly speaking, "+str; break;
 						default:
 							if(msg.source().charStats().getStat(CharStats.STAT_GENDER)=='F')
 							{
@@ -391,7 +391,7 @@ public class Mood extends StdAbility
 						case 1: changeAllSays(msg,"politely say(s)"); break;
 						case 2: changeAllSays(msg,"humbly say(s)"); break;
 						case 3: changeAllSays(msg,"meekly say(s)"); break;
-                        case 4: changeAllSays(msg,"politely say(s)"); break;
+						case 4: changeAllSays(msg,"politely say(s)"); break;
 						default:
 							break;
 						}
@@ -451,7 +451,7 @@ public class Mood extends StdAbility
 						case 6: changeAllSays(msg,"yell(s)"); break;
 						case 7: changeAllSays(msg,"angrily say(s)"); break;
 						case 8:
-                            if(M!=null)
+							if(M!=null)
 								msg.source().doCommand(new XVector("GRUMBLE",M.Name()),Command.METAFLAG_FORCED);
 							else
 								msg.source().doCommand(new XVector("GRUMBLE"),Command.METAFLAG_FORCED);
@@ -506,7 +506,7 @@ public class Mood extends StdAbility
 							str=CMStrings.endWithAPeriod(str)+"..you "+uglyPhrases[CMLib.dice().roll(1,uglyPhrases.length,-1)]+".";
 						else
 						{
-                            if(M!=null)
+							if(M!=null)
 								msg.source().doCommand(new XVector("WHAP",M.Name()),Command.METAFLAG_FORCED);
 							else
 								msg.source().doCommand(new XVector("WHAP"),Command.METAFLAG_FORCED);
@@ -640,9 +640,9 @@ public class Mood extends StdAbility
 							  msg.sourceCode(),
 							  CMStrings.substituteSayInMessage(msg.sourceMessage(),str),
 							  msg.targetCode(),
-                              CMStrings.substituteSayInMessage(msg.targetMessage(),str),
+							  CMStrings.substituteSayInMessage(msg.targetMessage(),str),
 							  msg.othersCode(),
-                              CMStrings.substituteSayInMessage(msg.othersMessage(),str));
+							  CMStrings.substituteSayInMessage(msg.othersMessage(),str));
 				}
 			}
 		}
@@ -699,7 +699,7 @@ public class Mood extends StdAbility
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		String entered=CMParms.combine(commands,0);
-        String origEntered=CMParms.combine(commands,0);
+		String origEntered=CMParms.combine(commands,0);
 		MOB target=mob;
 		if((auto)&&(givenTarget!=null)&&(givenTarget instanceof MOB))
 			target=(MOB)givenTarget;
@@ -719,14 +719,14 @@ public class Mood extends StdAbility
 			mob.tell("You are currently in "+moodName+" mood.");
 			return false;
 		}
-        if(entered.equalsIgnoreCase("RANDOM"))
-        {
-            int rand=CMLib.dice().roll(1,MOODS.length+3,-1);
-            if(rand>=MOODS.length)
-                entered="NORMAL";
-            else
-                entered=MOODS[rand][0];
-        }
+		if(entered.equalsIgnoreCase("RANDOM"))
+		{
+			int rand=CMLib.dice().roll(1,MOODS.length+3,-1);
+			if(rand>=MOODS.length)
+				entered="NORMAL";
+			else
+				entered=MOODS[rand][0];
+		}
 		String choice=null;
 		String mask="";
 		if(entered.equalsIgnoreCase("NORMAL"))
@@ -755,24 +755,24 @@ public class Mood extends StdAbility
 			String choices=", NORMAL";
 			for(int i=0;i<MOODS.length;i++)
 				choices+=", "+MOODS[i][0];
-            if(entered.equalsIgnoreCase("LIST"))
-                mob.tell("Mood choices include: "+choices.substring(2));
-            else
-    			mob.tell("'"+entered+"' is not a known mood. Choices include: "+choices.substring(2));
+			if(entered.equalsIgnoreCase("LIST"))
+				mob.tell("Mood choices include: "+choices.substring(2));
+			else
+				mob.tell("'"+entered+"' is not a known mood. Choices include: "+choices.substring(2));
 			return false;
 		}
-        if(moodCode.equalsIgnoreCase(choice))
-        {
-            if(origEntered.equalsIgnoreCase("RANDOM"))
-                return false;
-            mob.tell("You are already in "+CMLib.english().startWithAorAn(choice.toLowerCase())+" mood.");
-            return false;
-        }
+		if(moodCode.equalsIgnoreCase(choice))
+		{
+			if(origEntered.equalsIgnoreCase("RANDOM"))
+				return false;
+			mob.tell("You are already in "+CMLib.english().startWithAorAn(choice.toLowerCase())+" mood.");
+			return false;
+		}
 
 		if((mask.length()>0)&&(!CMLib.masking().maskCheck(mask,mob,true)))
 		{
-            if(origEntered.equalsIgnoreCase("RANDOM"))
-                return false;
+			if(origEntered.equalsIgnoreCase("RANDOM"))
+				return false;
 			mob.tell("You must meet the following criteria to be in that mood: "+CMLib.masking().maskDesc(mask,true));
 			return false;
 		}
@@ -787,19 +787,19 @@ public class Mood extends StdAbility
 			{
 				if(target.location().okMessage(target,msg))
 				{
-				    target.location().send(target,msg);
+					target.location().send(target,msg);
 					if(choice.equalsIgnoreCase("NORMAL"))
 						target.delEffect(MOOD);
 					else
 					{
 						if(add) target.addNonUninvokableEffect(MOOD);
-					    MOOD.setMiscText(choice);
+						MOOD.setMiscText(choice);
 					}
-                    target.recoverPhyStats();
-                    target.location().recoverRoomStats();
+					target.recoverPhyStats();
+					target.location().recoverRoomStats();
 				}
 			}
 		}
-        return success;
+		return success;
 	}
 }

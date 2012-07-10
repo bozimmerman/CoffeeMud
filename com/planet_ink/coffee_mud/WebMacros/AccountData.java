@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -48,9 +48,9 @@ public class AccountData extends StdWebMacro
 			PlayerAccount A = CMLib.players().getLoadAccount(last);
 			if(A==null) return "";
 			if(parms.containsKey("NAME")||parms.containsKey("ACCOUNT"))
-                return clearWebMacros(A.accountName());
-            if(parms.containsKey("CLASS"))
-                return clearWebMacros(A.ID());
+				return clearWebMacros(A.accountName());
+			if(parms.containsKey("CLASS"))
+				return clearWebMacros(A.ID());
 			if(parms.containsKey("LASTIP"))
 				return ""+A.lastIP();
 			if(parms.containsKey("LASTDATETIME"))
@@ -64,31 +64,31 @@ public class AccountData extends StdWebMacro
 			for(String flag : PlayerAccount.FLAG_DESCS)
 				if(parms.containsKey("IS"+flag))
 					return ""+A.isSet(flag);
-            if(parms.containsKey("FLAGS"))
-            {
-                String old=httpReq.getRequestParameter("FLAGS");
-                Vector set=null;
-                if(old==null)
-                {
-                    String matList=A.getStat("FLAG");
-                    set=CMParms.parseCommas(matList,true);
-                }
-                else
-                {
-                    String id="";
-                    set=new Vector();
-                    for(int i=0;httpReq.isRequestParameter("FLAG"+id);id=""+(++i))
-                        set.addElement(httpReq.getRequestParameter("FLAG"+id));
-                }
-                StringBuffer str=new StringBuffer("");
-                for(int i=0;i<PlayerAccount.FLAG_DESCS.length;i++)
-                {
-                    str.append("<OPTION VALUE=\""+PlayerAccount.FLAG_DESCS[i]+"\"");
-                    if(set.contains(PlayerAccount.FLAG_DESCS[i])) str.append(" SELECTED");
-                    str.append(">"+CMStrings.capitalizeAndLower(PlayerAccount.FLAG_DESCS[i]));
-                }
-                str.append(", ");
-            }
+			if(parms.containsKey("FLAGS"))
+			{
+				String old=httpReq.getRequestParameter("FLAGS");
+				Vector set=null;
+				if(old==null)
+				{
+					String matList=A.getStat("FLAG");
+					set=CMParms.parseCommas(matList,true);
+				}
+				else
+				{
+					String id="";
+					set=new Vector();
+					for(int i=0;httpReq.isRequestParameter("FLAG"+id);id=""+(++i))
+						set.addElement(httpReq.getRequestParameter("FLAG"+id));
+				}
+				StringBuffer str=new StringBuffer("");
+				for(int i=0;i<PlayerAccount.FLAG_DESCS.length;i++)
+				{
+					str.append("<OPTION VALUE=\""+PlayerAccount.FLAG_DESCS[i]+"\"");
+					if(set.contains(PlayerAccount.FLAG_DESCS[i])) str.append(" SELECTED");
+					str.append(">"+CMStrings.capitalizeAndLower(PlayerAccount.FLAG_DESCS[i]));
+				}
+				str.append(", ");
+			}
 			if(parms.containsKey("IGNORE"))
 				return ""+CMParms.toStringList(A.getIgnored());
 		}

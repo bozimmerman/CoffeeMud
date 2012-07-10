@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -47,13 +47,13 @@ public class Healer extends Cleric
 	
 	public Healer()
 	{
-        super();
+		super();
 		maxStatAdj[CharStats.STAT_WISDOM]=4;
 		maxStatAdj[CharStats.STAT_CHARISMA]=4;
-    }
-    public void initializeClass()
-    {
-        super.initializeClass();
+	}
+	public void initializeClass()
+	{
+		super.initializeClass();
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Write",50,true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Recall",100,true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Revoke",true);
@@ -75,7 +75,7 @@ public class Healer extends Cleric
 		CMLib.ableMapper().addCharAbilityMapping(ID(),3,"Prayer_RemoveDeathMark",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),4,"Prayer_ProtEvil",false);
-        CMLib.ableMapper().addCharAbilityMapping(ID(),4,"Prayer_CureFatigue",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),4,"Prayer_CureFatigue",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Prayer_CureDeafness",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Prayer_Fidelity",false);
@@ -99,7 +99,7 @@ public class Healer extends Cleric
 		CMLib.ableMapper().addCharAbilityMapping(ID(),11,"Prayer_Benediction",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),12,"Prayer_CureDisease",true);
-        CMLib.ableMapper().addCharAbilityMapping(ID(),12,"Prayer_CureExhaustion",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),12,"Prayer_CureExhaustion",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),13,"Prayer_ProtectHealth",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),13,"Prayer_MassFreedom",true,CMParms.parseSemicolons("Prayer_Freedom",true));
@@ -114,7 +114,7 @@ public class Healer extends Cleric
 		CMLib.ableMapper().addCharAbilityMapping(ID(),16,"Prayer_CureCannibalism",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Prayer_CureBlindness",true);
-        CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Prayer_Invigorate",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Prayer_Invigorate",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),18,"Prayer_DispelUndead",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),18,"Prayer_BlessedHearth",false);

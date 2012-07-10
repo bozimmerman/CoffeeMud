@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -64,24 +64,24 @@ public class Commands extends StdCommand
 				&&(!done.contains(access[0]))
 				&&(C.securityCheck(mob)))
 				{
-				    done.add(access[0]);
-				    commandSet.add(access[0]);
+					done.add(access[0]);
+					commandSet.add(access[0]);
 				}
 			}
-	        for(Enumeration<Ability> a=mob.allAbilities();a.hasMoreElements();)
-	        {
-	            Ability A=a.nextElement();
+			for(Enumeration<Ability> a=mob.allAbilities();a.hasMoreElements();)
+			{
+				Ability A=a.nextElement();
 				if((A!=null)&&(A.triggerStrings()!=null)&&(A.triggerStrings().length>0)&&(!done.contains(A.triggerStrings()[0])))
 				{
-				    done.add(A.triggerStrings()[0]);
-				    commandSet.add(A.triggerStrings()[0]);
+					done.add(A.triggerStrings()[0]);
+					commandSet.add(A.triggerStrings()[0]);
 				}
 			}
 			Collections.sort(commandSet);
-	        final int COL_LEN=ListingLibrary.ColFixer.fixColWidth(19.0,mob);
+			final int COL_LEN=ListingLibrary.ColFixer.fixColWidth(19.0,mob);
 			for(Iterator i=commandSet.iterator();i.hasNext();)
 			{
-			    String s=(String)i.next();
+				String s=(String)i.next();
 				if(++col>3){ commandList.append("\n\r"); col=0;}
 				commandList.append(CMStrings.padRight("^<HELP^>"+s+"^</HELP^>",COL_LEN));
 			}

@@ -23,7 +23,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -39,27 +39,27 @@ public class Chant_MeteorStrike extends Chant
 	public String name(){return "Meteor Strike";}
 	public int maxRange(){return adjustedMaxInvokerRange(5);}
 	public int minRange(){return 1;}
-    public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_ROCKCONTROL;}
+	public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_ROCKCONTROL;}
 	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 
-    public int castingQuality(MOB mob, Physical target)
-    {
-        if(mob!=null)
-        {
-        	Set<MOB> h=properTargets(mob,target,false);
-            if(h==null)
-                return Ability.QUALITY_INDIFFERENT;
-            
-            Room R=mob.location();
-            if(R!=null)
-            {
-                if((R.domainType()&Room.INDOORS)>0)
-                    return Ability.QUALITY_INDIFFERENT;
-            }
-        }
-        return super.castingQuality(mob,target);
-    }
-    
+	public int castingQuality(MOB mob, Physical target)
+	{
+		if(mob!=null)
+		{
+			Set<MOB> h=properTargets(mob,target,false);
+			if(h==null)
+				return Ability.QUALITY_INDIFFERENT;
+			
+			Room R=mob.location();
+			if(R!=null)
+			{
+				if((R.domainType()&Room.INDOORS)>0)
+					return Ability.QUALITY_INDIFFERENT;
+			}
+		}
+		return super.castingQuality(mob,target);
+	}
+	
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		Set<MOB> h=properTargets(mob,givenTarget,auto);

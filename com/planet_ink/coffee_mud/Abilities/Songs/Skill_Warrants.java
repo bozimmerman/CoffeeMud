@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -42,12 +42,12 @@ public class Skill_Warrants extends BardSkill
 	public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 	private static final String[] triggerStrings = {"WARRANTS"};
 	public String[] triggerStrings(){return triggerStrings;}
-    public int classificationCode() {   return Ability.ACODE_SKILL|Ability.DOMAIN_LEGAL; }
+	public int classificationCode() {   return Ability.ACODE_SKILL|Ability.DOMAIN_LEGAL; }
 	protected boolean disregardsArmorCheck(MOB mob){return true;}
 
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-        LegalBehavior B=null;
+		LegalBehavior B=null;
 		if(mob.location()!=null) B=CMLib.law().getLegalBehavior(mob.location());
 		
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
@@ -62,7 +62,7 @@ public class Skill_Warrants extends BardSkill
 				mob.location().send(mob,msg);
 				List<LegalWarrant> V=new Vector();
 				if(B!=null)
-                    V=B.getWarrantsOf(CMLib.law().getLegalObject(mob.location()),(MOB)null);
+					V=B.getWarrantsOf(CMLib.law().getLegalObject(mob.location()),(MOB)null);
 				if(V.size()==0)
 				{
 					mob.tell("No one is wanted for anything here.");
@@ -72,8 +72,8 @@ public class Skill_Warrants extends BardSkill
 				buf.append(CMStrings.padRight("Name",14)+" "+CMStrings.padRight("Victim",14)+" "+CMStrings.padRight("Witness",14)+" Crime\n\r");
 				for(int v=0;v<V.size();v++)
 				{
-                    LegalWarrant W=(LegalWarrant)V.get(v);
-                    buf.append(CMStrings.padRight(W.criminal().Name(),14)+" ");
+					LegalWarrant W=(LegalWarrant)V.get(v);
+					buf.append(CMStrings.padRight(W.criminal().Name(),14)+" ");
 					buf.append(CMStrings.padRight(W.victim()!=null?W.victim().Name():"N/A",14)+" ");
 					buf.append(CMStrings.padRight(W.witness()!=null?W.witness().Name():"N/A",14)+" ");
 					buf.append(CMLib.coffeeFilter().fullOutFilter(mob.session(),mob,W.criminal(),W.victim(),null,W.crime(),false)+"\n\r");

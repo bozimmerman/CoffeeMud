@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -85,7 +85,7 @@ public class Disease extends StdAbility implements DiseaseAffect
 						targetMOB.setFollowing(following);
 					return doMe;
 				}
-			    spreadImmunity(targetMOB);
+				spreadImmunity(targetMOB);
 			}
 			else
 			{
@@ -115,7 +115,7 @@ public class Disease extends StdAbility implements DiseaseAffect
 			if(canBeUninvoked())
 			{
 				if(!mob.amDead())
-				    spreadImmunity(mob);
+					spreadImmunity(mob);
 				mob.tell(mob,null,this,DISEASE_DONE());
 			}
 		}
@@ -224,14 +224,14 @@ public class Disease extends StdAbility implements DiseaseAffect
 			Room R=target.location();
 			if((R!=null)&&(R.okMessage(target,msg)))
 			{
-			    R.send(target,msg);
+				R.send(target,msg);
 				if(msg.value()<=0)
 				{
 					R.show(target,null,CMMsg.MSG_OK_VISUAL,DISEASE_START());
-				    success=maliciousAffect(mob,target,asLevel,DISEASE_TICKS(),-1);
+					success=maliciousAffect(mob,target,asLevel,DISEASE_TICKS(),-1);
 				}
 				else
-				    spreadImmunity(target);
+					spreadImmunity(target);
 			}
 			if(!DISEASE_MALICIOUS())
 			{
@@ -248,6 +248,6 @@ public class Disease extends StdAbility implements DiseaseAffect
 			}
 			
 		}
-        return success;
+		return success;
 	}
 }

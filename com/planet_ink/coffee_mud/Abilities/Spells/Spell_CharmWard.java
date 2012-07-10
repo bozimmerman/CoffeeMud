@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -74,12 +74,12 @@ public class Spell_CharmWard extends Spell
 			&&(CMath.bset(((Ability)msg.tool()).flags(),Ability.FLAG_CHARMING))
 			&&(!mob.amDead()))
 			{
-                Ability A=(Ability)msg.tool();
-                if(((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_CHANT)
-                ||((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_SPELL)
-                ||((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_PRAYER)
-                ||((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_SONG))
-    				msg.source().location().showHappens(CMMsg.MSG_OK_VISUAL,"Magical energy fizzles and is absorbed into the air!");
+				Ability A=(Ability)msg.tool();
+				if(((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_CHANT)
+				||((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_SPELL)
+				||((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_PRAYER)
+				||((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_SONG))
+					msg.source().location().showHappens(CMMsg.MSG_OK_VISUAL,"Magical energy fizzles and is absorbed into the air!");
 				return false;
 			}
 		}
@@ -100,20 +100,20 @@ public class Spell_CharmWard extends Spell
 		return super.okMessage(myHost,msg);
 	}
 
-    public int castingQuality(MOB mob, Physical target)
-    {
-        if(mob!=null)
-        {
-            if(target instanceof MOB)
-            {
-                MOB victim=((MOB)target).getVictim();
-                if((victim!=null)&&(CMLib.flags().flaggedAbilities(victim,Ability.FLAG_CHARMING).size()>0))
-                    return super.castingQuality(mob, target,Ability.QUALITY_BENEFICIAL_SELF);
-            }
-        }
-        return super.castingQuality(mob,target);
-    }
-    
+	public int castingQuality(MOB mob, Physical target)
+	{
+		if(mob!=null)
+		{
+			if(target instanceof MOB)
+			{
+				MOB victim=((MOB)target).getVictim();
+				if((victim!=null)&&(CMLib.flags().flaggedAbilities(victim,Ability.FLAG_CHARMING).size()>0))
+					return super.castingQuality(mob, target,Ability.QUALITY_BENEFICIAL_SELF);
+			}
+		}
+		return super.castingQuality(mob,target);
+	}
+	
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		Physical target=null;
@@ -134,10 +134,10 @@ public class Spell_CharmWard extends Spell
 		if(target==null)
 			target=getTarget(mob,commands,givenTarget);
 		if(target==null) {
-		    if(mob.isMonster())
-		        target=mob.location();
-		    else
-    		    return false;
+			if(mob.isMonster())
+				target=mob.location();
+			else
+				return false;
 		}
 		if(target.fetchEffect(ID())!=null)
 		{

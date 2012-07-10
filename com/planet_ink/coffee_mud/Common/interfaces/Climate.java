@@ -21,7 +21,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -187,8 +187,8 @@ public interface Climate extends Tickable, CMCommon
 	/** constant describing the number of weather types. @see Climate#weatherType(Room) */
 	public final static int NUM_WEATHER=13;
 	/** constant defining how often weather changes in the climates */
-    public static final int WEATHER_TICK_DOWN=300; // 300 = 20 minutes * 60 seconds / 4
-    /**  descriptive strings for the Climate.WEATHER_* constants, ordered by their value. @see Climate */
+	public static final int WEATHER_TICK_DOWN=300; // 300 = 20 minutes * 60 seconds / 4
+	/**  descriptive strings for the Climate.WEATHER_* constants, ordered by their value. @see Climate */
 	public final static String[] WEATHER_DESCS=
 	{ "CLEAR","CLOUDY","WINDY","RAIN","THUNDERSTORM","SNOW","HAIL","HEAT","SLEET","BLIZZARD","DUST","DROUGHT","COLD"};
 	

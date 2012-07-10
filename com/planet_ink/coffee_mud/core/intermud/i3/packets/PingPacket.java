@@ -23,7 +23,7 @@ import java.util.Vector;
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *        http://www.apache.org/licenses/LICENSE-2.0
+ *  	  http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -35,36 +35,36 @@ import java.util.Vector;
 @SuppressWarnings("rawtypes")
 public class PingPacket extends Packet 
 {
-    public static volatile long lastPingResponse=0;
-    
+	public static volatile long lastPingResponse=0;
+	
 	public PingPacket()
 	{
 		super();
-        type = Packet.PING_PACKET;
-        target_mud=Intermud.getNameServer().name;
+		type = Packet.PING_PACKET;
+		target_mud=Intermud.getNameServer().name;
 	}
 	
-    public PingPacket(Vector v)
-    {
-        super(v);
-        type = Packet.PING_PACKET;
-        target_mud=v.elementAt(4).toString();
-    }
+	public PingPacket(Vector v)
+	{
+		super(v);
+		type = Packet.PING_PACKET;
+		target_mud=v.elementAt(4).toString();
+	}
 
-    public PingPacket(String mud)
-    {
-        super();
-        type = Packet.PING_PACKET;
-        target_mud=mud;
-    }
+	public PingPacket(String mud)
+	{
+		super();
+		type = Packet.PING_PACKET;
+		target_mud=mud;
+	}
 
-    public void send() throws InvalidPacketException 
-    {
-        super.send();
-    }
+	public void send() throws InvalidPacketException 
+	{
+		super.send();
+	}
 
-    public String toString() 
-    {
-        return "({\"ping-req\",5,\""+I3Server.getMudName()+"\",0,\""+target_mud+"\",0,0,})";
-    }
+	public String toString() 
+	{
+		return "({\"ping-req\",5,\""+I3Server.getMudName()+"\",0,\""+target_mud+"\",0,0,})";
+	}
 }

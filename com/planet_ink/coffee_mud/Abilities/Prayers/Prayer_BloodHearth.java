@@ -25,7 +25,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -58,32 +58,32 @@ public class Prayer_BloodHearth extends Prayer
 		{
 			Set<MOB> H=msg.source().getGroupMembers(new HashSet<MOB>());
 			for(Iterator e=H.iterator();e.hasNext();)
-            {
-                MOB M=(MOB)e.next();
-                if((CMLib.law().doesHavePriviledgesHere(M,R))
-                ||((text().length()>0)
-                    &&((M.Name().equals(text()))
-                        ||(M.getClanID().equals(text())))))
-                {
+			{
+				MOB M=(MOB)e.next();
+				if((CMLib.law().doesHavePriviledgesHere(M,R))
+				||((text().length()>0)
+					&&((M.Name().equals(text()))
+						||(M.getClanID().equals(text())))))
+				{
 					msg.setValue(msg.value()+(msg.value()/2));
 					break;
 				}
-            }
+			}
 		}
 		return super.okMessage(myHost,msg);
 	}
 
-    public int castingQuality(MOB mob, Physical target)
-    {
-        if((mob!=null)&&(target instanceof Room))
-        {
-            if((!CMLib.law().doesOwnThisProperty(mob,mob.location()))
-            &&(!((mob.getClanID().length()>0)&&(CMLib.law().doesOwnThisProperty(mob.getClanID(),((Room)target))))))
-                return Ability.QUALITY_INDIFFERENT;
-        }
-        return super.castingQuality(mob,target);
-    }
-    
+	public int castingQuality(MOB mob, Physical target)
+	{
+		if((mob!=null)&&(target instanceof Room))
+		{
+			if((!CMLib.law().doesOwnThisProperty(mob,mob.location()))
+			&&(!((mob.getClanID().length()>0)&&(CMLib.law().doesOwnThisProperty(mob.getClanID(),((Room)target))))))
+				return Ability.QUALITY_INDIFFERENT;
+		}
+		return super.castingQuality(mob,target);
+	}
+	
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		Physical target=mob.location();
@@ -107,14 +107,14 @@ public class Prayer_BloodHearth extends Prayer
 				setMiscText(mob.Name());
 				if((target instanceof Room)
 				&&((CMLib.law().doesOwnThisProperty(mob,((Room)target)))
-                    ||((mob.getClanID().length()>0)&&(CMLib.law().doesOwnThisProperty(mob.getClanID(),((Room)target))))))
+					||((mob.getClanID().length()>0)&&(CMLib.law().doesOwnThisProperty(mob.getClanID(),((Room)target))))))
 				{
 					String clanID=mob.getClanID();
 					if((mob.amFollowing()!=null)&&(clanID.length()==0))
 						clanID=mob.amFollowing().getClanID();
-                	if((clanID.length()>0)
-                    &&(CMLib.law().doesOwnThisProperty(clanID,((Room)target))))
-                        setMiscText(clanID);
+					if((clanID.length()>0)
+					&&(CMLib.law().doesOwnThisProperty(clanID,((Room)target))))
+						setMiscText(clanID);
 					target.addNonUninvokableEffect((Ability)this.copyOf());
 					CMLib.database().DBUpdateRoom((Room)target);
 				}

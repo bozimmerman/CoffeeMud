@@ -25,7 +25,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -61,17 +61,17 @@ public class Prancer extends StdCharClass
 		super();
 		maxStatAdj[CharStats.STAT_CHARISMA]=4;
 		maxStatAdj[CharStats.STAT_STRENGTH]=4;
-    }
-    public void initializeClass()
-    {
-        super.initializeClass();
+	}
+	public void initializeClass()
+	{
+		super.initializeClass();
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Specialization_Natural",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Specialization_Ranged",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Specialization_Sword",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Recall",50,true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Write",50,true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Swim",false);
-        CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Befriend",50,true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Befriend",50,true);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Dance_Stop",100,true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Dance_CanCan",true);
@@ -150,12 +150,12 @@ public class Prancer extends StdCharClass
 
 	public int availabilityCode(){return Area.THEME_FANTASY;}
 
-    public void executeMsg(Environmental host, CMMsg msg)
-    {
-        super.executeMsg(host,msg);
-        Bard.visitationBonusMessage(host,msg);
-    }
-    
+	public void executeMsg(Environmental host, CMMsg msg)
+	{
+		super.executeMsg(host,msg);
+		Bard.visitationBonusMessage(host,msg);
+	}
+	
 	public String getStatQualDesc(){return "Charisma 9+, Strength 9+";}
 	public boolean qualifiesForThisClass(MOB mob, boolean quiet)
 	{
@@ -239,8 +239,8 @@ public class Prancer extends StdCharClass
 		if(mob.phyStats().level()<2)
 			return;
 		super.unLevel(mob);
-	    if(((mob.basePhyStats().level()+1) % 3)==0)
-	    {
+		if(((mob.basePhyStats().level()+1) % 3)==0)
+		{
 			int dexStat=mob.charStats().getStat(CharStats.STAT_DEXTERITY);
 			int maxDexStat=(CMProps.getIntVar(CMProps.SYSTEMI_BASEMAXSTAT)
 						 +mob.charStats().getStat(CharStats.STAT_MAX_DEXTERITY_ADJ));
@@ -252,22 +252,22 @@ public class Prancer extends StdCharClass
 			attArmor=attArmor*-1;
 			mob.basePhyStats().setArmor(mob.basePhyStats().armor()-attArmor);
 			mob.phyStats().setArmor(mob.phyStats().armor()-attArmor);
-	    }
+		}
 
 		mob.recoverPhyStats();
 		mob.recoverCharStats();
 		mob.recoverMaxState();
 	}
 
-    public int adjustExperienceGain(MOB host, MOB mob, MOB victim, int amount){ return Bard.bardAdjustExperienceGain(host,mob,victim,amount,5.0);}
-    
+	public int adjustExperienceGain(MOB host, MOB mob, MOB victim, int amount){ return Bard.bardAdjustExperienceGain(host,mob,victim,amount,5.0);}
+	
 	public String getOtherBonusDesc(){return "Receives defensive bonus for high dexterity.  Receives group bonus combat experience when in an intelligent group, and more for a group of players.  Receives exploration and pub-finding experience based on danger level.";}
 
 	public void level(MOB mob, List<String> newAbilityIDs)
 	{
-	    if(CMSecurity.isDisabled(CMSecurity.DisFlag.LEVELS))  return;
-	    if((mob.basePhyStats().level() % 3)==0)
-	    {
+		if(CMSecurity.isDisabled(CMSecurity.DisFlag.LEVELS))  return;
+		if((mob.basePhyStats().level() % 3)==0)
+		{
 			int dexStat=mob.charStats().getStat(CharStats.STAT_DEXTERITY);
 			int maxDexStat=(CMProps.getIntVar(CMProps.SYSTEMI_BASEMAXSTAT)
 						 +mob.charStats().getStat(CharStats.STAT_MAX_DEXTERITY_ADJ));
@@ -280,7 +280,7 @@ public class Prancer extends StdCharClass
 			mob.basePhyStats().setArmor(mob.basePhyStats().armor()-attArmor);
 			mob.phyStats().setArmor(mob.phyStats().armor()-attArmor);
 			mob.tell("^NYour grace grants you a defensive bonus of ^H"+attArmor+"^?.^N");
-	    }
+		}
 	}
 }
 

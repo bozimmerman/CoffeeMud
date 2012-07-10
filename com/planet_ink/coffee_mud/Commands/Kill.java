@@ -25,7 +25,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -43,16 +43,16 @@ public class Kill extends StdCommand
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
-        if(commands==null)
-        {
-            if(mob.isInCombat())
-            {
-                CMLib.combat().postAttack(mob,mob.getVictim(),mob.fetchWieldedItem());
-                return true;
-            }
-            return false;
-        }
-        
+		if(commands==null)
+		{
+			if(mob.isInCombat())
+			{
+				CMLib.combat().postAttack(mob,mob.getVictim(),mob.fetchWieldedItem());
+				return true;
+			}
+			return false;
+		}
+		
 		MOB target=null;
 		if(commands.size()<2)
 		{
@@ -93,7 +93,7 @@ public class Kill extends StdCommand
 		if(reallyKill)
 		{
 			CMMsg msg=CMClass.getMsg(mob,target,null,CMMsg.MSG_OK_ACTION,"^F^<FIGHT^><S-NAME> touch(es) <T-NAMESELF>.^</FIGHT^>^?");
-            CMLib.color().fixSourceFightColor(msg);
+			CMLib.color().fixSourceFightColor(msg);
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -136,31 +136,31 @@ public class Kill extends StdCommand
 		if((!mob.mayPhysicallyAttack(target)))
 			mob.tell("You are not allowed to attack "+target.name()+".");
 		else
-        {
-            Item weapon=mob.fetchWieldedItem();
-            if(weapon==null)
-            {
-                Item possibleOtherWeapon=mob.fetchHeldItem();
-                if((possibleOtherWeapon!=null)
-                &&(possibleOtherWeapon instanceof Weapon)
-                &&possibleOtherWeapon.fitsOn(Wearable.WORN_WIELD)
-                &&(CMLib.flags().canBeSeenBy(possibleOtherWeapon,mob))
-                &&(CMLib.flags().isRemovable(possibleOtherWeapon)))
-                {
-                    CMLib.commands().postRemove(mob,possibleOtherWeapon,false);
-                    if(possibleOtherWeapon.amWearingAt(Wearable.IN_INVENTORY))
-                    {
-                        Command C=CMClass.getCommand("Wield");
-                        if(C!=null) C.execute(mob,new XVector("WIELD",possibleOtherWeapon),metaFlags);
-                    }
-                }
-            }
+		{
+			Item weapon=mob.fetchWieldedItem();
+			if(weapon==null)
+			{
+				Item possibleOtherWeapon=mob.fetchHeldItem();
+				if((possibleOtherWeapon!=null)
+				&&(possibleOtherWeapon instanceof Weapon)
+				&&possibleOtherWeapon.fitsOn(Wearable.WORN_WIELD)
+				&&(CMLib.flags().canBeSeenBy(possibleOtherWeapon,mob))
+				&&(CMLib.flags().isRemovable(possibleOtherWeapon)))
+				{
+					CMLib.commands().postRemove(mob,possibleOtherWeapon,false);
+					if(possibleOtherWeapon.amWearingAt(Wearable.IN_INVENTORY))
+					{
+						Command C=CMClass.getCommand("Wield");
+						if(C!=null) C.execute(mob,new XVector("WIELD",possibleOtherWeapon),metaFlags);
+					}
+				}
+			}
 			CMLib.combat().postAttack(mob,target,mob.fetchWieldedItem());
-        }
+		}
 		return false;
 	}
-    public double combatActionsCost(final MOB mob, final List<String> cmds){return CMProps.getCombatActionCost(ID());}
-    public double actionsCost(final MOB mob, final List<String> cmds){return CMProps.getActionCost(ID());}
+	public double combatActionsCost(final MOB mob, final List<String> cmds){return CMProps.getCombatActionCost(ID());}
+	public double actionsCost(final MOB mob, final List<String> cmds){return CMProps.getActionCost(ID());}
 	public boolean canBeOrdered(){return true;}
 
 	

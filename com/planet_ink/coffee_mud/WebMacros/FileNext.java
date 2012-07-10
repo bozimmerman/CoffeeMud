@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -45,7 +45,7 @@ public class FileNext extends StdWebMacro
 		if(path==null) path="";
 		String last=httpReq.getRequestParameter("FILE");
 		MOB M = Authenticate.getAuthenticatedMob(httpReq);
-        if(M==null) return "[authentication error]";
+		if(M==null) return "[authentication error]";
 		if(parms.containsKey("RESET"))
 		{	
 			if(last!=null) httpReq.removeRequestParameter("FILE");
@@ -55,9 +55,9 @@ public class FileNext extends StdWebMacro
 		XVector fileList=new XVector();
 		if((directory.canRead())&&(directory.isDirectory()))
 		{
-            httpReq.addRequestParameters("PATH",directory.getVFSPathAndName());
-            CMFile[] dirs=CMFile.getFileList(path,"",M,false,true);
-            for(int d=0;d<dirs.length;d++)
+			httpReq.addRequestParameters("PATH",directory.getVFSPathAndName());
+			CMFile[] dirs=CMFile.getFileList(path,"",M,false,true);
+			for(int d=0;d<dirs.length;d++)
 				fileList.addElement(dirs[d].getName());
 			
 		}

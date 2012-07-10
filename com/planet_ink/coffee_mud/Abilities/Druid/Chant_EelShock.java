@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -43,9 +43,9 @@ public class Chant_EelShock extends Chant
 	public int maxRange() {return 3;}
 	public int minRange() {return 0;}
 	protected int canAffectCode(){return CAN_MOBS;}
-    public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_WEATHER_MASTERY;}
-    public long flags(){return Ability.FLAG_AIRBASED;}
-    
+	public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_WEATHER_MASTERY;}
+	public long flags(){return Ability.FLAG_AIRBASED;}
+	
 	public void unInvoke()
 	{
 		// undo the affects of this spell
@@ -85,40 +85,40 @@ public class Chant_EelShock extends Chant
 		}
 		return super.okMessage(myHost,msg);
 	}
-    
-    private boolean roomWet(Room location)
-    {
-        if(location.domainType() == Room.DOMAIN_INDOORS_UNDERWATER ||
-           location.domainType() == Room.DOMAIN_INDOORS_WATERSURFACE ||
-           location.domainType() == Room.DOMAIN_OUTDOORS_UNDERWATER ||
-           location.domainType() == Room.DOMAIN_OUTDOORS_WATERSURFACE ||
-           location.domainType() == Room.DOMAIN_OUTDOORS_SWAMP)
-            return true;
+	
+	private boolean roomWet(Room location)
+	{
+		if(location.domainType() == Room.DOMAIN_INDOORS_UNDERWATER ||
+		   location.domainType() == Room.DOMAIN_INDOORS_WATERSURFACE ||
+		   location.domainType() == Room.DOMAIN_OUTDOORS_UNDERWATER ||
+		   location.domainType() == Room.DOMAIN_OUTDOORS_WATERSURFACE ||
+		   location.domainType() == Room.DOMAIN_OUTDOORS_SWAMP)
+			return true;
 
-        Area currentArea = location.getArea();
-        if(currentArea.getClimateObj().weatherType(location) == Climate.WEATHER_RAIN ||
-           currentArea.getClimateObj().weatherType(location) == Climate.WEATHER_THUNDERSTORM)
-            return true;
-        return false;
-    }
+		Area currentArea = location.getArea();
+		if(currentArea.getClimateObj().weatherType(location) == Climate.WEATHER_RAIN ||
+		   currentArea.getClimateObj().weatherType(location) == Climate.WEATHER_THUNDERSTORM)
+			return true;
+		return false;
+	}
 
-    public int castingQuality(MOB mob, Physical target)
-    {
-        if(mob!=null)
-        {
-        	Set<MOB> h=CMLib.combat().properTargets(this,mob,false);
-            if(h==null)
-                return Ability.QUALITY_INDIFFERENT;
-            Room location=mob.location();
-            if(location!=null)
-            {
-                if(!roomWet(location))
-                    return Ability.QUALITY_INDIFFERENT;
-            }
-        }
-        return super.castingQuality(mob,target);
-    }
-    
+	public int castingQuality(MOB mob, Physical target)
+	{
+		if(mob!=null)
+		{
+			Set<MOB> h=CMLib.combat().properTargets(this,mob,false);
+			if(h==null)
+				return Ability.QUALITY_INDIFFERENT;
+			Room location=mob.location();
+			if(location!=null)
+			{
+				if(!roomWet(location))
+					return Ability.QUALITY_INDIFFERENT;
+			}
+		}
+		return super.castingQuality(mob,target);
+	}
+	
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		Set<MOB> h=CMLib.combat().properTargets(this,mob,auto);

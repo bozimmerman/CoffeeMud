@@ -35,7 +35,7 @@ import com.planet_ink.siplet.applet.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -45,78 +45,78 @@ import com.planet_ink.siplet.applet.*;
 */
 public class SipletInterface extends StdWebMacro
 {
-    public String name()    {return this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);}
+	public String name()	{return this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);}
 
-    public boolean isAWebPath(){return true;}
-    
+	public boolean isAWebPath(){return true;}
+	
 	public static final LinkedList<String> removables		 = new LinkedList<String>();
 	public static final Object 			   sipletConnectSync = new Object();
 	public static volatile boolean 		   initialized		 = false;
-    public static final SHashtable<String,SipletSession> 	 siplets 	= new SHashtable<String,SipletSession>(); 
-    
+	public static final SHashtable<String,SipletSession> 	 siplets 	= new SHashtable<String,SipletSession>(); 
+	
 	private class SipletSession
 	{
 		public long 		lastTouched = System.currentTimeMillis();
 		public Siplet 		siplet		= null;
-		public String       response	= "";
+		public String   	response	= "";
 		public SipletSession(Siplet sip) { siplet=sip;}
 	}
-    
-    private class PipeSocket extends Socket
-    {
-    	private boolean 			isClosed = false;
-    	private PipedInputStream 	inStream = new PipedInputStream();
-    	private PipedOutputStream 	outStream= new PipedOutputStream();
-    	private InetAddress			addr=null;
-    	private PipeSocket 			friendPipe=null;
-    	public PipeSocket(InetAddress addr, PipeSocket pipeLocal) throws IOException
-    	{
-    		this.addr=addr;
-    		if(pipeLocal!=null)
-    		{
-    			pipeLocal.inStream.connect(outStream);
-    			pipeLocal.outStream.connect(inStream);
-    			friendPipe=pipeLocal;
-    			pipeLocal=friendPipe;
-    		}
-    	}
-    	public void shutdownInput() throws IOException  
-    	{ 
-    		inStream.close(); 
-    		isClosed=true; 
-    	}
-    	public void shutdownOutput() throws IOException 
-    	{ 
-    		outStream.close(); 
-    		isClosed=true; 
-    	}
-    	public boolean isConnected() { return !isClosed; }
-        public boolean isClosed() { return isClosed; }
-        public synchronized void close() throws IOException 
-        {
-        	inStream.close();
-        	outStream.close();
-        	if(friendPipe!=null)
-        	{
-        		friendPipe.shutdownInput();
-        		friendPipe.shutdownOutput();
-        	}
-            isClosed = true;
-        }
-        public InputStream getInputStream() throws IOException { return inStream; }
-        public OutputStream getOutputStream() throws IOException { return outStream; }
-        public InetAddress getInetAddress() { return addr; }
-    }
-    
-    public String runMacro(ExternalHTTPRequests httpReq, String parm) throws HTTPServerException
-    {
-    	if(!CMProps.getBoolVar(CMProps.SYSTEMB_MUDSTARTED))
-    		return "false;";
-    	if(!initialized)
-    	{
-    		initialized=true;
-    		CMLib.threads().startTickDown(new Tickable(){
-    			private long tickStatus=Tickable.STATUS_NOT;
+	
+	private class PipeSocket extends Socket
+	{
+		private boolean 			isClosed = false;
+		private PipedInputStream 	inStream = new PipedInputStream();
+		private PipedOutputStream 	outStream= new PipedOutputStream();
+		private InetAddress			addr=null;
+		private PipeSocket 			friendPipe=null;
+		public PipeSocket(InetAddress addr, PipeSocket pipeLocal) throws IOException
+		{
+			this.addr=addr;
+			if(pipeLocal!=null)
+			{
+				pipeLocal.inStream.connect(outStream);
+				pipeLocal.outStream.connect(inStream);
+				friendPipe=pipeLocal;
+				pipeLocal=friendPipe;
+			}
+		}
+		public void shutdownInput() throws IOException  
+		{ 
+			inStream.close(); 
+			isClosed=true; 
+		}
+		public void shutdownOutput() throws IOException 
+		{ 
+			outStream.close(); 
+			isClosed=true; 
+		}
+		public boolean isConnected() { return !isClosed; }
+		public boolean isClosed() { return isClosed; }
+		public synchronized void close() throws IOException 
+		{
+			inStream.close();
+			outStream.close();
+			if(friendPipe!=null)
+			{
+				friendPipe.shutdownInput();
+				friendPipe.shutdownOutput();
+			}
+			isClosed = true;
+		}
+		public InputStream getInputStream() throws IOException { return inStream; }
+		public OutputStream getOutputStream() throws IOException { return outStream; }
+		public InetAddress getInetAddress() { return addr; }
+	}
+	
+	public String runMacro(ExternalHTTPRequests httpReq, String parm) throws HTTPServerException
+	{
+		if(!CMProps.getBoolVar(CMProps.SYSTEMB_MUDSTARTED))
+			return "false;";
+		if(!initialized)
+		{
+			initialized=true;
+			CMLib.threads().startTickDown(new Tickable(){
+				private long tickStatus=Tickable.STATUS_NOT;
 				public long getTickStatus() { return tickStatus;}
 				public String name() { return "SipletInterface";}
 				public boolean tick(Tickable ticking, int tickID) 
@@ -148,9 +148,9 @@ public class SipletInterface extends StdWebMacro
 				public void initializeClass() {}
 				public CMObject newInstance() { return this;}
 				public int compareTo(CMObject o) { return o==this?0:1;}
-    		}, Tickable.TICKID_MISCELLANEOUS, 10);
-    	}
-    	
+			}, Tickable.TICKID_MISCELLANEOUS, 10);
+		}
+		
 		if(httpReq.isRequestParameter("CONNECT"))
 		{
 			String url=httpReq.getRequestParameter("URL");
@@ -266,6 +266,6 @@ public class SipletInterface extends StdWebMacro
 			}
 			return "false;"+token+";"+token+";";
 		}
-        return "false;";
-    }
+		return "false;";
+	}
 }

@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -62,7 +62,7 @@ public class Spell_WardArea extends Spell implements Trap
 	public int getReset(){return 0;}
 	public boolean maySetTrap(MOB mob, int asLevel){return false;}
 	public boolean canSetTrapOn(MOB mob, Physical P){return false;}
-    public List<Item> getTrapComponents() { return new Vector(); }
+	public List<Item> getTrapComponents() { return new Vector(); }
 	public String requiresToSet(){return "";}
 	public Trap setTrap(MOB mob, Physical P, int trapBonus, int qualifyingClassLevel, boolean perm)
 	{beneficialAffect(mob,P,qualifyingClassLevel+trapBonus,0);return (Trap)P.fetchEffect(ID());}
@@ -156,19 +156,19 @@ public class Spell_WardArea extends Spell implements Trap
 		}
 	}
 
-    public int castingQuality(MOB mob, Physical target)
-    {
-        if(mob!=null)
-        {
-            if(mob.isMonster())
-                return Ability.QUALITY_INDIFFERENT;
-            if(target instanceof MOB)
-            {
-            }
-        }
-        return super.castingQuality(mob,target);
-    }
-    
+	public int castingQuality(MOB mob, Physical target)
+	{
+		if(mob!=null)
+		{
+			if(mob.isMonster())
+				return Ability.QUALITY_INDIFFERENT;
+			if(target instanceof MOB)
+			{
+			}
+		}
+		return super.castingQuality(mob,target);
+	}
+	
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if(commands.size()<1)
@@ -198,13 +198,13 @@ public class Spell_WardArea extends Spell implements Trap
 			}
 		}
 		Physical target = mob.location();
-        if((target.fetchEffect(this.ID())!=null)||(givenTarget!=null))
-        {
-            CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":"A ward trap has already been set here!");
-            if(mob.location().okMessage(mob,msg))
-                mob.location().send(mob,msg);
-            return false;
-        }
+		if((target.fetchEffect(this.ID())!=null)||(givenTarget!=null))
+		{
+			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":"A ward trap has already been set here!");
+			if(mob.location().okMessage(mob,msg))
+				mob.location().send(mob,msg);
+			return false;
+		}
 
 		// the invoke method for spells receives as
 		// parameters the invoker, and the REMAINING

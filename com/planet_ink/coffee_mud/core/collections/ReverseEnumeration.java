@@ -10,7 +10,7 @@ Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
 You may obtain a copy of the License at
 
-    http://www.apache.org/licenses/LICENSE-2.0
+	http://www.apache.org/licenses/LICENSE-2.0
 
 Unless required by applicable law or agreed to in writing, software
 distributed under the License is distributed on an "AS IS" BASIS,
@@ -23,23 +23,23 @@ public class ReverseEnumeration<K> implements Enumeration<K>
 	private int index;
 	private final List<K> set;
 	public ReverseEnumeration(List<K> eset) 
-    {
+	{
 		set=eset;
 		index=set.size();
-        hasMoreElements();
-    }
-    
-    public boolean hasMoreElements() 
-    { 
-    	while(index>set.size()) index--;
-    	return (index>0);
-    }
-    
-    public K nextElement() 
-    {
-    	if(!hasMoreElements())
-    		throw new NoSuchElementException();
-    	index--;
-    	return set.get(index);
-    }
+		hasMoreElements();
+	}
+	
+	public boolean hasMoreElements() 
+	{ 
+		while(index>set.size()) index--;
+		return (index>0);
+	}
+	
+	public K nextElement() 
+	{
+		if(!hasMoreElements())
+			throw new NoSuchElementException();
+		index--;
+		return set.get(index);
+	}
 }

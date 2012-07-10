@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -64,7 +64,7 @@ public class GiantScorpion extends StdMOB
 
 		baseState.setHitPoints(CMLib.dice().roll(basePhyStats().level(),20,basePhyStats().level()));
 
-        addBehavior(CMClass.getBehavior("Mobile"));
+		addBehavior(CMClass.getBehavior("Mobile"));
 
 		recoverMaxState();
 		resetToMaxState();
@@ -85,7 +85,7 @@ public class GiantScorpion extends StdMOB
 					sting();
 			}
 		}
-        return super.tick(ticking,tickID);
+		return super.tick(ticking,tickID);
 	}
 
 	protected boolean sting()
@@ -100,9 +100,9 @@ public class GiantScorpion extends StdMOB
 			// ===== check the result
 			if (roll<20)
 			{
-                // Sting was successful
+				// Sting was successful
  				CMMsg msg=CMClass.getMsg(this, target, null, CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_POISON, "^F^<FIGHT^><S-NAME> sting(s) <T-NAMESELF>!^</FIGHT^>^?");
-                CMLib.color().fixSourceFightColor(msg);
+				CMLib.color().fixSourceFightColor(msg);
 				if(location().okMessage(target,msg))
 				{
 					this.location().send(target,msg);

@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -44,7 +44,7 @@ public class Fighter_CalledStrike extends FighterSkill
 	public String[] triggerStrings(){return triggerStrings;}
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return Ability.CAN_MOBS;}
-    public int classificationCode(){ return Ability.ACODE_SKILL|Ability.DOMAIN_MARTIALLORE;}
+	public int classificationCode(){ return Ability.ACODE_SKILL|Ability.DOMAIN_MARTIALLORE;}
 	public int usageType(){return USAGE_MOVEMENT;}
 
 	protected String gone="";
@@ -63,7 +63,7 @@ public class Fighter_CalledStrike extends FighterSkill
 		Amputator A=(Amputator)mob.fetchEffect("Amputation");
 		if(A==null)	A=(Amputator)CMClass.getAbility("Amputation");
 		A.amputate(mob,A,gone);
-        if(mob.fetchEffect(A.ID())==null)
+		if(mob.fetchEffect(A.ID())==null)
 			mob.addNonUninvokableEffect(A);
 		return true;
 	}
@@ -96,7 +96,7 @@ public class Fighter_CalledStrike extends FighterSkill
 	{
 		if(mob.isInCombat()&&(mob.rangeToTarget()>0))
 		{
-		    if(!quiet)
+			if(!quiet)
 			mob.tell("You are too far away to perform a called strike!");
 			return false;
 		}
@@ -104,30 +104,30 @@ public class Fighter_CalledStrike extends FighterSkill
 		Item w=mob.fetchWieldedItem();
 		if((w==null)||(!(w instanceof Weapon)))
 		{
-            if(!quiet)
+			if(!quiet)
 			mob.tell("You need a weapon to perform a called strike!");
 			return false;
 		}
 		Weapon wp=(Weapon)w;
 		if(wp.weaponType()!=Weapon.TYPE_SLASHING)
 		{
-            if(!quiet)
+			if(!quiet)
 			mob.tell("You cannot amputate with "+wp.name()+"!");
 			return false;
 		}
 		return true;
 	}
 	
-    public int castingQuality(MOB mob, Physical target)
-    {
-        if(mob!=null)
-        {
-            if(!prereqs(mob,true))
-                return Ability.QUALITY_INDIFFERENT;
-        }
-        return super.castingQuality(mob,target);
-    }
-    
+	public int castingQuality(MOB mob, Physical target)
+	{
+		if(mob!=null)
+		{
+			if(!prereqs(mob,true))
+				return Ability.QUALITY_INDIFFERENT;
+		}
+		return super.castingQuality(mob,target);
+	}
+	
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if(!prereqs(mob,false)) return false;
@@ -189,7 +189,7 @@ public class Fighter_CalledStrike extends FighterSkill
 			String off=CMParms.combine(commands,0);
 			if((off.equalsIgnoreCase("head"))
 			&&(target.charStats().getBodyPart(Race.BODY_HEAD)>=0))
-		    {
+			{
 				gone=Race.BODYPARTSTR[Race.BODY_HEAD].toLowerCase();
 				hpReq=3;
 			}
@@ -222,11 +222,11 @@ public class Fighter_CalledStrike extends FighterSkill
 		boolean success=proficiencyCheck(mob,0,auto);
 		if((success)&&(gone.length()>0))
 		{
-            CMMsg msg=CMClass.getMsg(mob,target,this,(auto?CMMsg.MASK_ALWAYS:0)|CMMsg.MASK_MALICIOUS|CMMsg.MSG_NOISYMOVEMENT,"^F^<FIGHT^><S-NAME> call(s) '"+gone+"'!^</FIGHT^>^?");
-            CMLib.color().fixSourceFightColor(msg);
-            if(mob.location().okMessage(mob,msg))
-            {
-                mob.location().send(mob,msg);
+			CMMsg msg=CMClass.getMsg(mob,target,this,(auto?CMMsg.MASK_ALWAYS:0)|CMMsg.MASK_MALICIOUS|CMMsg.MSG_NOISYMOVEMENT,"^F^<FIGHT^><S-NAME> call(s) '"+gone+"'!^</FIGHT^>^?");
+			CMLib.color().fixSourceFightColor(msg);
+			if(mob.location().okMessage(mob,msg))
+			{
+				mob.location().send(mob,msg);
 				invoker=mob;
 				beneficialAffect(mob,mob,asLevel,2);
 				Ability A2=target.fetchEffect("Injury");

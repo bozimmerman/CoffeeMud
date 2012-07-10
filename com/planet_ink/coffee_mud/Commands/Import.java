@@ -26,7 +26,7 @@ import java.io.IOException;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -249,7 +249,7 @@ public class Import extends StdCommand
 	};
 
 
-    protected static String getAreaName(List<String> V)
+	protected static String getAreaName(List<String> V)
 	{
 		V=new XVector<String>(V);
 		// find area line first
@@ -397,8 +397,8 @@ public class Import extends StdCommand
 				int s1=link.indexOf('/');
 				int s2=link.lastIndexOf('/');
 				String sourceRoomID=link.substring(0,s1);
-	    		synchronized(("SYNC"+sourceRoomID).intern())
-	    		{
+				synchronized(("SYNC"+sourceRoomID).intern())
+				{
 					int direction=CMath.s_int(link.substring(s1+1,s2));
 					String destRoomID=link.substring(s2+1);
 					Room sourceRoom=getRoom(areaHashedRoomSet,hashedRoomSet,areaName,sourceRoomID);
@@ -412,7 +412,7 @@ public class Import extends StdCommand
 						&&((nextLink.length()==0)||(!nextLink.startsWith(sourceRoomID+"/"))))
 							CMLib.database().DBUpdateExits(sourceRoom);
 					}
-	    		}
+				}
 			}
 
 	}
@@ -424,8 +424,8 @@ public class Import extends StdCommand
 			mob.tell("You dip!  You are IN that area!  Leave it first...");
 			return false;
 		}
-	    try
-	    {
+		try
+		{
 			for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
 			{
 				Room R=(Room)r.nextElement();
@@ -437,7 +437,7 @@ public class Import extends StdCommand
 							reLinkTable.addElement(R.roomID()+"/"+d+"/"+dirR.roomID());
 					}
 			}
-	    }catch(NoSuchElementException e){}
+		}catch(NoSuchElementException e){}
 		while(true)
 		{
 			Room foundOne=null;
@@ -452,7 +452,7 @@ public class Import extends StdCommand
 						break;
 					}
 				}
-		    }catch(NoSuchElementException e){}
+			}catch(NoSuchElementException e){}
 			if(foundOne==null)
 				break;
 			CMLib.map().obliterateRoom(foundOne);
@@ -466,7 +466,7 @@ public class Import extends StdCommand
 		return true;
 	}
 	
-    protected static String getAreaAuthor(List<String> V)
+	protected static String getAreaAuthor(List<String> V)
 	{
 		V=new XVector<String>(V);
 		for(int v=0;v<V.size();v++)
@@ -602,7 +602,7 @@ public class Import extends StdCommand
 		return "";
 	}
 	
-    protected static final String[][] colors={
+	protected static final String[][] colors={
 		{((char)27)+"ash"+((char)27),"^c"},
 		{((char)27)+"black"+((char)27),"^W"},
 		{((char)27)+"blood"+((char)27),"^R"},
@@ -710,19 +710,19 @@ public class Import extends StdCommand
 		{"@@N","^?"}
 	};
 
-    protected static String nextLine(List<String> V)
+	protected static String nextLine(List<String> V)
 	{
 		if(V.size()==0) return "";
 		return (String)V.get(0);
 	}
-    protected static String eatLine(List<String> V)
+	protected static String eatLine(List<String> V)
 	{
 		if(V.size()==0) return "";
 		String s=(String)V.get(0);
 		V.remove(0);
 		return s;
 	}
-    protected static String eatNextLine(List<String> V)
+	protected static String eatNextLine(List<String> V)
 	{
 		String s="";
 		while((s.trim().length()==0)&&(V.size()>0))
@@ -730,7 +730,7 @@ public class Import extends StdCommand
 		return s;
 	}
 
-    protected static Room changeRoomClass(Room R, String newClass)
+	protected static Room changeRoomClass(Room R, String newClass)
 	{
 		Room R2=CMClass.getLocale(newClass);
 		if(R2==null)
@@ -751,7 +751,7 @@ public class Import extends StdCommand
 		return R2;
 	}
 
-    protected static long getBitMask(String str, int which)
+	protected static long getBitMask(String str, int which)
 	{
 		String s=CMParms.getCleanBit(str,which).trim();
 		if(s.length()==0)
@@ -789,7 +789,7 @@ public class Import extends StdCommand
 		return (num|CMath.s_int(s));
 	}
 
-    protected static String trimSpacesOnly(String s)
+	protected static String trimSpacesOnly(String s)
 	{
 		while(s.startsWith(" ")||s.startsWith("\t")||s.startsWith("\n")||s.startsWith("\r"))
 			s=s.substring(1);
@@ -798,7 +798,7 @@ public class Import extends StdCommand
 		return s;
 	}
 
-    protected static String eatLineSquiggle(List<String> V)
+	protected static String eatLineSquiggle(List<String> V)
 	{
 		if(V.size()==0) return "";
 		String s=eatLine(V);
@@ -849,24 +849,24 @@ public class Import extends StdCommand
 		return s.trim();
 	}
 
-    protected static boolean hasReadableContent(String objectName)
+	protected static boolean hasReadableContent(String objectName)
 	{
 		objectName=objectName.toUpperCase();
 		if((objectName.indexOf("SIGN")>=0)
 			||(objectName.indexOf("PLAQUE")>=0)
-		    ||(objectName.indexOf("NOTICE")>=0)
-		    ||(objectName.indexOf("PAPER")>=0)
-		    ||(objectName.indexOf("WRITING")>=0)
-		    ||(objectName.indexOf("CARVING")>=0)
-		    ||(objectName.indexOf("LETTER")>=0)
-		    ||(objectName.indexOf("INSCRIPTION")>=0)
-		    ||(objectName.indexOf("NOTE")>=0)
-		    ||(objectName.indexOf("POST")>=0))
+			||(objectName.indexOf("NOTICE")>=0)
+			||(objectName.indexOf("PAPER")>=0)
+			||(objectName.indexOf("WRITING")>=0)
+			||(objectName.indexOf("CARVING")>=0)
+			||(objectName.indexOf("LETTER")>=0)
+			||(objectName.indexOf("INSCRIPTION")>=0)
+			||(objectName.indexOf("NOTE")>=0)
+			||(objectName.indexOf("POST")>=0))
 				return true;
 		return false;
 	}
 
-    protected static String fixReadableContent(String text)
+	protected static String fixReadableContent(String text)
 	{
 		while(text.startsWith("%0D"))
 			text=text.substring(3);
@@ -884,24 +884,24 @@ public class Import extends StdCommand
 		return text;
 	}
 
-    protected static boolean returnAnError(Session sess, String str, boolean compileErrors, Vector commands)
+	protected static boolean returnAnError(Session sess, String str, boolean compileErrors, Vector commands)
 	{
-    	if((str==null)||(str.length()==0)) return true;
+		if((str==null)||(str.length()==0)) return true;
 		Log.errOut("Import",str);
 		if(sess!=null) sess.println(str);
 		if(compileErrors&&(commands!=null)) commands.addElement(str);
 		return false;
 	}
 
-    protected static void importCustomFiles(MOB mob, Hashtable files, HashSet customBother, boolean noPrompt, boolean noDelete)
+	protected static void importCustomFiles(MOB mob, Hashtable files, HashSet customBother, boolean noPrompt, boolean noDelete)
 	throws IOException
 	{
 		if(files.size()==0) return;
 		if((!noPrompt)&&((mob==null)||(mob.session()==null))) return;
 		for(Enumeration e=files.keys();e.hasMoreElements();)
 		{
-		    String filename=(String)e.nextElement();
-		    String data=(String)files.get(filename);
+			String filename=(String)e.nextElement();
+			String data=(String)files.get(filename);
 			if(customBother.contains(filename))
 			   continue;
 	
@@ -921,7 +921,7 @@ public class Import extends StdCommand
 					if(!mob.session().confirm("\n\rExternal resource '"+filename+"' found, import (Y/n)?","Y"))
 						continue;
 			}
-		    Resources.saveFileResource(filename,mob,new StringBuffer(data));
+			Resources.saveFileResource(filename,mob,new StringBuffer(data));
 		}
 	}
 	
@@ -992,7 +992,7 @@ public class Import extends StdCommand
 		}
 	}
 	
-    protected static String getSpell(String word, int i)
+	protected static String getSpell(String word, int i)
 	{
 		if((word.trim().length()>0)&&((Character.isLetter(word.trim().charAt(0)))||(word.trim().startsWith("'"))||(word.trim().startsWith("`"))))
 		{
@@ -1669,7 +1669,7 @@ public class Import extends StdCommand
 		return "";
 	}
 
-    protected static int importNumber(String s)
+	protected static int importNumber(String s)
 	{
 		StringBuffer str=new StringBuffer("");
 		for(int i=0;i<s.length();i++)
@@ -1698,9 +1698,9 @@ public class Import extends StdCommand
 		return CMath.s_int(str.toString());
 	}
 
-    protected static void readBlocks(
-    					   List<String> buf,
-    					   List<String> areaData,
+	protected static void readBlocks(
+						   List<String> buf,
+						   List<String> areaData,
 						   List<List<String>> roomData,
 						   List<String> mobData,
 						   List<String> resetData,
@@ -1860,7 +1860,7 @@ public class Import extends StdCommand
 		}
 	}
 
-    protected static void doWeapon(Weapon I, String name, int val1, String str1, int val2, int val3, int val4, String str4)
+	protected static void doWeapon(Weapon I, String name, int val1, String str1, int val2, int val3, int val4, String str4)
 	{
 		final String[][] weaponTypes={
 			{ "exotic","0"},
@@ -2042,18 +2042,18 @@ public class Import extends StdCommand
 		return (roll*dice)+plus;
 	}
 
-    protected static MOB getMOB(String OfThisID,
-        					    Room putInRoom,
-        					    Session session,
-        					    Vector mobData,
-        					    Vector mobProgData,
-        					    Vector specialData,
-        					    Vector shopData,
-        					    Hashtable areaMOBS,
-        					    Hashtable doneMOBS,
-        					    String areaFileName,
-        					    boolean compileErrors,
-        					    Vector commands)
+	protected static MOB getMOB(String OfThisID,
+								Room putInRoom,
+								Session session,
+								Vector mobData,
+								Vector mobProgData,
+								Vector specialData,
+								Vector shopData,
+								Hashtable areaMOBS,
+								Hashtable doneMOBS,
+								String areaFileName,
+								boolean compileErrors,
+								Vector commands)
 	{
 		if(OfThisID.startsWith("#"))
 		{
@@ -3072,21 +3072,21 @@ public class Import extends StdCommand
 			M.basePhyStats().setRejuv((int)rejuv);
 			if(M.displayText().toUpperCase().indexOf("MONEY CHANGER")>=0)
 				M.addBehavior(CMClass.getBehavior("MoneyChanger"));
-            Behavior B=M.fetchBehavior("CombatAbilities");
-            if(B!=null)
-            {
-                Behavior BB=B;
-    			for(Enumeration<Behavior> e=M.behaviors();e.hasMoreElements();)
-    			{
-    				B=e.nextElement();
-                    if((B!=null)&&(B.getClass().getSuperclass().getName().endsWith("CombatAbilities")))
-                    {
-                        M.delBehavior(BB);
-                        M.recoverPhyStats();
-                        break;
-                    }
-                }
-            }
+			Behavior B=M.fetchBehavior("CombatAbilities");
+			if(B!=null)
+			{
+				Behavior BB=B;
+				for(Enumeration<Behavior> e=M.behaviors();e.hasMoreElements();)
+				{
+					B=e.nextElement();
+					if((B!=null)&&(B.getClass().getSuperclass().getName().endsWith("CombatAbilities")))
+					{
+						M.delBehavior(BB);
+						M.recoverPhyStats();
+						break;
+					}
+				}
+			}
 			M.recoverCharStats();
 			M.recoverPhyStats();
 			M.recoverMaxState();
@@ -3101,8 +3101,8 @@ public class Import extends StdCommand
 		return null;
 	}
 
-    private static void applyItemApplyCode(String codesLine, Item I, Environmental adjuster, Environmental caster, Environmental resister)
-    {
+	private static void applyItemApplyCode(String codesLine, Item I, Environmental adjuster, Environmental caster, Environmental resister)
+	{
 		int num=CMath.s_int(CMParms.getCleanBit(codesLine,0).trim());
 		int val=CMath.s_int(CMParms.getCleanBit(codesLine,1).trim());
 		switch(num)
@@ -3190,8 +3190,8 @@ public class Import extends StdCommand
 			}
 			break;
 		}
-    }
-    
+	}
+	
 	private static Item getItem(String OfThisID,
 								Session session,
 								String areaName,
@@ -3342,9 +3342,9 @@ public class Import extends StdCommand
 				{
 					forgiveZeroes=true;
 					codeStr2="'"+((String)V.elementAt(0))+"' "
-						    +"'"+((String)V.elementAt(1))+"' "
-						    +"'"+((String)V.elementAt(2))+"' "
-						    +"'"+((String)V.elementAt(3))+"'";
+							+"'"+((String)V.elementAt(1))+"' "
+							+"'"+((String)V.elementAt(2))+"' "
+							+"'"+((String)V.elementAt(3))+"'";
 				}
 				else
 					returnAnError(session,"Invalid object codeStr2 line: "+codeStr2+", item not aborted, but stuff will be wrong!",compileErrors,commands);
@@ -3690,7 +3690,7 @@ public class Import extends StdCommand
 			}
 
 			if(materialchange)
-			    I.setDescription("");
+				I.setDescription("");
 
 			if((I instanceof Armor)&&(((Armor)I).containTypes()==Container.CONTAIN_ANYTHING))
 			{
@@ -4517,7 +4517,7 @@ public class Import extends StdCommand
 					continue;
 				}
 				
-                if(CF!=null) buf=CF.textUnformatted();
+				if(CF!=null) buf=CF.textUnformatted();
 				List<List<XMLLibrary.XMLpiece>> areas=new Vector();
 				if(session!=null)
 					session.rawPrint("Unpacking area(s) from file: '"+areaFileName+"'...");
@@ -4550,8 +4550,8 @@ public class Import extends StdCommand
 							if((mob.location()!=null)
 							&&(mob.location().getArea().Name().equalsIgnoreCase(areaName)))
 							{
-							    try
-							    {
+								try
+								{
 									for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
 									{
 										Room R=(Room)r.nextElement();
@@ -4561,7 +4561,7 @@ public class Import extends StdCommand
 											break;
 										}
 									}
-							    }catch(NoSuchElementException e){}
+								}catch(NoSuchElementException e){}
 							}
 							if(!temporarilyDeleteArea(mob,reLinkTable,areaName))
 								return false;
@@ -4664,7 +4664,7 @@ public class Import extends StdCommand
 										reLinkTable.addElement(R2.roomID()+"/"+d+"/"+dirR.roomID());
 								}
 							}
-					    }catch(NoSuchElementException e){}
+						}catch(NoSuchElementException e){}
 						CMLib.map().obliterateRoom(R);
 					}
 					error=CMLib.coffeeMaker().unpackRoomFromXML(buf.toString(),true);
@@ -4731,32 +4731,32 @@ public class Import extends StdCommand
 				if(error.length()>0)
 					return returnAnError(session,"An error occurred on import: "+error+"\n\rPlease correct the problem and try the import again.",compileErrors,commands);
 				
-                Vector names=null;
-                for(int m=0;m<mobs.size();m++)
-                {
-                    MOB M=(MOB)mobs.elementAt(m);
-                    for(int af=areaFile+1;af<commands.size();af++)
-                        if(M.Name().equalsIgnoreCase((String)commands.elementAt(af)))
-                        {
-                            if(names==null) names=new Vector();
-                            names.addElement(commands.elementAt(af));
-                        }
-                }
-                if(names!=null)
-                for(int n=0;n<names.size();n++)
-                    commands.removeElement(names.elementAt(n));
+				Vector names=null;
 				for(int m=0;m<mobs.size();m++)
 				{
 					MOB M=(MOB)mobs.elementAt(m);
-                    if(names!=null)
-                    {
-                        boolean found=false;
-                        for(int n=0;n<names.size();n++)
-                            if(M.Name().equalsIgnoreCase((String)names.elementAt(n)))
-                                found=true;
-                        if(!found)
-                            continue;
-                    }
+					for(int af=areaFile+1;af<commands.size();af++)
+						if(M.Name().equalsIgnoreCase((String)commands.elementAt(af)))
+						{
+							if(names==null) names=new Vector();
+							names.addElement(commands.elementAt(af));
+						}
+				}
+				if(names!=null)
+				for(int n=0;n<names.size();n++)
+					commands.removeElement(names.elementAt(n));
+				for(int m=0;m<mobs.size();m++)
+				{
+					MOB M=(MOB)mobs.elementAt(m);
+					if(names!=null)
+					{
+						boolean found=false;
+						for(int n=0;n<names.size();n++)
+							if(M.Name().equalsIgnoreCase((String)names.elementAt(n)))
+								found=true;
+						if(!found)
+							continue;
+					}
 					if(CMLib.players().playerExists(M.Name()))
 					{
 						if(!prompt)
@@ -4775,18 +4775,18 @@ public class Import extends StdCommand
 					CMLib.database().DBCreateCharacter(M);
 					CMLib.players().addPlayer(M);
 					Log.sysOut("Import","Imported user: "+M.Name());
-		            CMLib.login().notifyFriends(M,"^X"+M.Name()+" has just been created.^.^?");
-                    List<String> channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.NEWPLAYERS);
-                    for(int i=0;i<channels.size();i++)
-                        CMLib.commands().postChannel((String)channels.get(i),M.getClanID(),M.Name()+" has just been created.",true);
+					CMLib.login().notifyFriends(M,"^X"+M.Name()+" has just been created.^.^?");
+					List<String> channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.NEWPLAYERS);
+					for(int i=0;i<channels.size();i++)
+						CMLib.commands().postChannel((String)channels.get(i),M.getClanID(),M.Name()+" has just been created.",true);
 					if(M.getStartRoom()==null)
 						M.setStartRoom(CMLib.login().getDefaultStartRoom(M));
 					if(M.location()==null)
 						M.setLocation(mob.location());
 					if(M.playerStats().getBirthday()==null)
 					{
-					    M.baseCharStats().setStat(CharStats.STAT_AGE,M.playerStats().initializeBirthday((int)Math.round(CMath.div(M.getAgeMinutes(),60.0)),M.baseCharStats().getMyRace()));
-					    M.recoverCharStats();
+						M.baseCharStats().setStat(CharStats.STAT_AGE,M.playerStats().initializeBirthday((int)Math.round(CMath.div(M.getAgeMinutes(),60.0)),M.baseCharStats().getMyRace()));
+						M.recoverCharStats();
 					}
 					CMLib.database().DBUpdatePlayer(M);
 					M.removeFromGame(false,true);
@@ -5034,7 +5034,7 @@ public class Import extends StdCommand
 						break;
 					}
 				}
-		    }catch(NoSuchElementException e){}
+			}catch(NoSuchElementException e){}
 			if(exists)
 			{
 				if((nodelete)&&(!prompt))
@@ -5154,7 +5154,7 @@ public class Import extends StdCommand
 					returnAnError(session,"Malformed room! Aborting this room "+R.roomID()+", display="+R.displayText()+", description="+R.description()+", numBits="+CMParms.numBits(codeLine)+", area="+areaName,compileErrors,commands);
 					continue;
 				}
-                
+				
 				R.setRoomID(areaName+R.roomID());
 				R.setArea(A);
 				long codeBits=getBitMask(codeLine,0);
@@ -5375,7 +5375,7 @@ public class Import extends StdCommand
 						}
 						else
 						if((dirCode==10)&&(Directions.NUM_DIRECTIONS()<10))
-						    dirCode=Directions.GATE;
+							dirCode=Directions.GATE;
 						else
 						for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 							if(R.rawDoors()[d]==null)
@@ -5485,16 +5485,16 @@ public class Import extends StdCommand
 						Exit opExit=null;
 						if(((linkRoom==null)||(linkRoom.getArea().Name()!=R.getArea().Name()))&&(linkRoomID>=0))
 						{
-						    try
-						    {
+							try
+							{
 								for(Enumeration r2=CMLib.map().rooms();r2.hasMoreElements();)
 								{
 									Room R2=(Room)r2.nextElement();
 									if((R2.roomID().endsWith("#"+linkRoomID))&&(R2!=R))
 									{
-							    		synchronized(("SYNC"+R2.roomID()).intern())
-							    		{
-							    			R2=CMLib.map().getRoom(R2);
+										synchronized(("SYNC"+R2.roomID()).intern())
+										{
+											R2=CMLib.map().getRoom(R2);
 											for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 											{
 												Exit E3=R2.getRawExit(d);
@@ -5517,11 +5517,11 @@ public class Import extends StdCommand
 											if(opExit!=null) opExit.setTemporaryDoorLink("");
 											if((!doneRooms.containsValue(linkRoom))&&(!doneRooms.contains(linkRoom)))
 												CMLib.database().DBUpdateExits(linkRoom);
-							    		}
+										}
 										break;
 									}
 								}
-						    }catch(NoSuchElementException e){}
+							}catch(NoSuchElementException e){}
 							if(linkRoom==null)
 								X.setTemporaryDoorLink("#"+linkRoomID);
 							else
@@ -6180,19 +6180,19 @@ public class Import extends StdCommand
 					else
 					if(RR==null)
 					{
-			    		synchronized(("SYNC"+R1.roomID()).intern())
-			    		{
-			    			R1=CMLib.map().getRoom(R1);
+						synchronized(("SYNC"+R1.roomID()).intern())
+						{
+							R1=CMLib.map().getRoom(R1);
 							R1.rawDoors()[dir]=TR;
 							if(RE!=null) RE.setTemporaryDoorLink("");
 							CMLib.database().DBUpdateExits(R1);
-			    		}
+						}
 					}
 				}
 			}
 		}
 
-        Area A=null;
+		Area A=null;
 		for(Enumeration e=doneRooms.elements();e.hasMoreElements();)
 		{
 			A=((Room)e.nextElement()).getArea();

@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -60,10 +60,10 @@ public class Artisan extends StdCharClass
 		super();
 		for(int i : CharStats.CODES.BASE())
 			maxStatAdj[i]=4;
-    }
-    public void initializeClass()
-    {
-        super.initializeClass();
+	}
+	public void initializeClass()
+	{
+		super.initializeClass();
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Write",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Specialization_Natural",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Specialization_EdgedWeapon",true);
@@ -145,16 +145,16 @@ public class Artisan extends StdCharClass
 		
 		CMLib.ableMapper().addCharAbilityMapping(ID(),19,"Thief_Haggle",false);
 
-        CMLib.ableMapper().addCharAbilityMapping(ID(),20,"MasterTailoring",false,CMParms.parseSemicolons("Tailoring(100)",true),"+DEX 16");
-        
-        CMLib.ableMapper().addCharAbilityMapping(ID(),21,"MasterCostuming",false,CMParms.parseSemicolons("Costuming(100)",true),"+INT 16");
-        
-        CMLib.ableMapper().addCharAbilityMapping(ID(),22,"MasterLeatherWorking",false,CMParms.parseSemicolons("LeatherWorking(100)",true),"+CON 16");
-        
-        CMLib.ableMapper().addCharAbilityMapping(ID(),23,"MasterArmorsmithing",false,CMParms.parseSemicolons("Armorsmithing(100)",true),"+STR 16");
+		CMLib.ableMapper().addCharAbilityMapping(ID(),20,"MasterTailoring",false,CMParms.parseSemicolons("Tailoring(100)",true),"+DEX 16");
+		
+		CMLib.ableMapper().addCharAbilityMapping(ID(),21,"MasterCostuming",false,CMParms.parseSemicolons("Costuming(100)",true),"+INT 16");
+		
+		CMLib.ableMapper().addCharAbilityMapping(ID(),22,"MasterLeatherWorking",false,CMParms.parseSemicolons("LeatherWorking(100)",true),"+CON 16");
+		
+		CMLib.ableMapper().addCharAbilityMapping(ID(),23,"MasterArmorsmithing",false,CMParms.parseSemicolons("Armorsmithing(100)",true),"+STR 16");
 
-        CMLib.ableMapper().addCharAbilityMapping(ID(),24,"MasterWeaponsmithing",false,CMParms.parseSemicolons("Weaponsmithing(100);Specialization_*",true),"+STR 16");
-        
+		CMLib.ableMapper().addCharAbilityMapping(ID(),24,"MasterWeaponsmithing",false,CMParms.parseSemicolons("Weaponsmithing(100);Specialization_*",true),"+STR 16");
+		
 		CMLib.ableMapper().addCharAbilityMapping(ID(),25,"Scrapping",true);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),30,"Thief_Lore",false);
@@ -168,9 +168,9 @@ public class Artisan extends StdCharClass
 			if(mob.charStats().getCurrentClass().ID().equals(ID()))
 			{
 				int exp=0;
-	    		for(final Enumeration<Ability> a=mob.effects();a.hasMoreElements();)
-	    		{
-	    			final Ability A=a.nextElement();
+				for(final Enumeration<Ability> a=mob.effects();a.hasMoreElements();)
+				{
+					final Ability A=a.nextElement();
 					if((A!=null)
 					&&(!A.isAutoInvoked())
 					&&(mob.isMine(A))

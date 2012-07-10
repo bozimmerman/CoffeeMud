@@ -23,7 +23,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -42,43 +42,43 @@ public class Spell_Fear extends Spell
 	
 	public void unInvoke()
 	{
-	    MOB M=null;
-	    MOB oldI=invoker;
-	    if(affected instanceof MOB) M=(MOB)affected;
-	    super.unInvoke();
-	    if(M!=null)
-	    {
-	        if(!M.isMonster())
-		        CMLib.commands().postStand(M,true);
-	        if((oldI!=M)&&(oldI!=null))
-		        M.tell(M,oldI,null,"You are no longer afraid of <T-NAMESELF>.");
-	        else
-	            M.tell("You are no longer afraid.");
-	    }
+		MOB M=null;
+		MOB oldI=invoker;
+		if(affected instanceof MOB) M=(MOB)affected;
+		super.unInvoke();
+		if(M!=null)
+		{
+			if(!M.isMonster())
+				CMLib.commands().postStand(M,true);
+			if((oldI!=M)&&(oldI!=null))
+				M.tell(M,oldI,null,"You are no longer afraid of <T-NAMESELF>.");
+			else
+				M.tell("You are no longer afraid.");
+		}
 	}
 	
 	public boolean tick(Tickable ticking, int tickID)
 	{
-	    if((affected instanceof MOB)
-	    &&(invoker!=null)
-	    &&(invoker!=affected)
-	    &&((((MOB)affected).location()==null)
-            ||(!((MOB)affected).location().isInhabitant(invoker))))
-	    {
-	        unInvoke();
-	    }
-	    return super.tick(ticking,tickID);
+		if((affected instanceof MOB)
+		&&(invoker!=null)
+		&&(invoker!=affected)
+		&&((((MOB)affected).location()==null)
+			||(!((MOB)affected).location().isInhabitant(invoker))))
+		{
+			unInvoke();
+		}
+		return super.tick(ticking,tickID);
 	}
 	
 	public void affectPhyStats(Physical E, PhyStats stats)
 	{
-	    if((affected instanceof MOB)&&(invoker!=null)&&(invoker!=affected)&&(((MOB)affected).getVictim()==invoker))
-	    {
-	    	float f=(float)0.05*(float)super.getXLEVELLevel(invoker());
-	        stats.setArmor((int)Math.round(CMath.mul(stats.armor(),0.90-f)));
-	        stats.setAttackAdjustment((int)Math.round(CMath.mul(stats.attackAdjustment(),0.90-f)));
-	        stats.setDamage((int)Math.round(CMath.mul(stats.damage(),0.90-f)));
-	    }
+		if((affected instanceof MOB)&&(invoker!=null)&&(invoker!=affected)&&(((MOB)affected).getVictim()==invoker))
+		{
+			float f=(float)0.05*(float)super.getXLEVELLevel(invoker());
+			stats.setArmor((int)Math.round(CMath.mul(stats.armor(),0.90-f)));
+			stats.setAttackAdjustment((int)Math.round(CMath.mul(stats.attackAdjustment(),0.90-f)));
+			stats.setDamage((int)Math.round(CMath.mul(stats.damage(),0.90-f)));
+		}
 	}
 	
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)

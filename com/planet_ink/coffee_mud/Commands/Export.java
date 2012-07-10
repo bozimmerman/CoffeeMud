@@ -23,7 +23,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -59,26 +59,26 @@ public class Export extends StdCommand
 			if(!CMProps.getBoolVar(CMProps.SYSTEMB_EMAILFORWARDING))
 			{
 				if(S!=null) mob.tell("Mail forwarding is not enabled on this mud.");
-			    return;
+				return;
 			}
 			if(CMProps.getVar(CMProps.SYSTEM_MAILBOX).length()==0)
 			{
 				if(S!=null) mob.tell("No email box has been defined.");
-			    return;
+				return;
 			}
 			if((mob.playerStats()==null)||(mob.playerStats().getEmail().length()==0))
 			{
 				if(S!=null) mob.tell("No email address has been defined.");
-			    return;
+				return;
 			}
 			xml=xml.replace('\n',' ');
 			xml=xml.replace('\r',' ');
 			CMLib.database().DBWriteJournal(
-			        CMProps.getVar(CMProps.SYSTEM_MAILBOX),
-			        mob.Name(),
-			        mob.Name(),
-			        "Exported XML",
-			        xml);
+					CMProps.getVar(CMProps.SYSTEM_MAILBOX),
+					mob.Name(),
+					mob.Name(),
+					"Exported XML",
+					xml);
 			if(S!=null) mob.tell("XML emailed to "+mob.playerStats().getEmail());
 		}
 		else
@@ -86,8 +86,8 @@ public class Export extends StdCommand
 			if(S!=null) mob.tell("Writing file...");
 			if(fileName.indexOf('.')<0)
 				fileName=fileName+".cmare";
-            new CMFile(fileName,mob,false).saveText(xml);
-            if(S!=null) mob.tell("File '"+fileName+"' written.");
+			new CMFile(fileName,mob,false).saveText(xml);
+			if(S!=null) mob.tell("File '"+fileName+"' written.");
 		}
 	}
 
@@ -357,7 +357,7 @@ public class Export extends StdCommand
 						//if(S!=null) S.rawPrint(".");
 						buf.append(CMLib.coffeeMaker().getRoomMobs(R,custom,files,found).toString());
 					}
-			    }catch(NoSuchElementException e){}
+				}catch(NoSuchElementException e){}
 				xml=buf.toString()+"</MOBS>";
 				if(S!=null)
 					S.rawPrintln("!");
@@ -420,7 +420,7 @@ public class Export extends StdCommand
 						//if(S!=null) S.rawPrint(".");
 						buf.append(CMLib.coffeeMaker().getRoomItems(R,found,files,type).toString());
 					}
-			    }catch(NoSuchElementException e){}
+				}catch(NoSuchElementException e){}
 				xml=buf.toString()+"</ITEMS>";
 				if(S!=null)
 					S.rawPrintln("!");
@@ -446,7 +446,7 @@ public class Export extends StdCommand
 			StringBuffer str=new StringBuffer("<FILES>");
 			for(Iterator i=files.iterator();i.hasNext();)
 			{
-                Object O=i.next();
+				Object O=i.next();
 				String filename=(String)O;
 				StringBuffer buf=new CMFile(Resources.makeFileResourceName(filename),null,true).text();
 				if((buf!=null)&&(buf.length()>0))
@@ -459,9 +459,9 @@ public class Export extends StdCommand
 			str.append("</FILES>");
 			xml+=str.toString();
 		}
-        if(fileNameCode==2) fileName=fileName+"/extras";
-        if(fileNameCode==4)
-        	return xml;
+		if(fileNameCode==2) fileName=fileName+"/extras";
+		if(fileNameCode==4)
+			return xml;
 		reallyExport(mob,S,fileName,xml);
 		return null;
 	}

@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -47,7 +47,7 @@ public class Prayer_Doomspout extends Prayer implements DiseaseAffect
 	public int difficultyLevel(){return 7;}
 	int plagueDown=4;
 	String godName="The Demon";
-    protected boolean ispoke=false;
+	protected boolean ispoke=false;
 
 	public int abilityCode(){return DiseaseAffect.SPREAD_PROXIMITY;}
 
@@ -97,7 +97,7 @@ public class Prayer_Doomspout extends Prayer implements DiseaseAffect
 						maliciousAffect(invoker,target,0,0,-1);
 					}
 					else
-					    spreadImmunity(target);
+						spreadImmunity(target);
 			}
 		}
 		return true;
@@ -113,11 +113,11 @@ public class Prayer_Doomspout extends Prayer implements DiseaseAffect
 
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
-	    super.executeMsg(myHost,msg);
-	    if((affected!=null)
-	    &&(msg.source()==affected)
-	    &&(msg.sourceMinor()==CMMsg.TYP_SPEAK))
-	        ispoke=true;
+		super.executeMsg(myHost,msg);
+		if((affected!=null)
+		&&(msg.source()==affected)
+		&&(msg.sourceMinor()==CMMsg.TYP_SPEAK))
+			ispoke=true;
 	}	
 	
 	public void unInvoke()
@@ -132,21 +132,21 @@ public class Prayer_Doomspout extends Prayer implements DiseaseAffect
 		if(canBeUninvoked())
 			if((mob.location()!=null)&&(!mob.amDead()))
 			{
-			    spreadImmunity(mob);
+				spreadImmunity(mob);
 				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-YOUPOSS> doomspout disease clear up.");
 			}
 	}
 
-    public int castingQuality(MOB mob, Physical target)
-    {
-        if(mob!=null)
-        {
-            if(mob.isInCombat())
-                return Ability.QUALITY_INDIFFERENT;
-        }
-        return super.castingQuality(mob,target);
-    }
-    
+	public int castingQuality(MOB mob, Physical target)
+	{
+		if(mob!=null)
+		{
+			if(mob.isInCombat())
+				return Ability.QUALITY_INDIFFERENT;
+		}
+		return super.castingQuality(mob,target);
+	}
+	
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=getTarget(mob,commands,givenTarget);
@@ -181,7 +181,7 @@ public class Prayer_Doomspout extends Prayer implements DiseaseAffect
 					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> look(s) seriously ill!");
 				}
 				else
-				    spreadImmunity(target);
+					spreadImmunity(target);
 			}
 		}
 		else

@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -46,14 +46,14 @@ public class TemporaryImmunity extends StdAbility
 	public boolean canBeUninvoked(){return true;}
 	public boolean isAutoInvoked(){return true;}
 	public final static long IMMUNITY_TIME=36000000;
-    protected DVector set=new DVector(2);
+	protected DVector set=new DVector(2);
 
-    public TemporaryImmunity()
-    {
-        super();
+	public TemporaryImmunity()
+	{
+		super();
 
-        tickDown = 10;
-    }
+		tickDown = 10;
+	}
 
 	public boolean tick(Tickable ticking, int tickID)
 	{
@@ -119,8 +119,8 @@ public class TemporaryImmunity extends StdAbility
 		&&(msg.tool() instanceof Ability)
 		&&(set.contains(msg.tool().ID())))
 		{
-            if(msg.source()!=msg.target())
-    			mob.location().show(mob,msg.source(),CMMsg.MSG_OK_VISUAL,"<S-NAME> seem(s) immune to "+msg.tool().name()+".");
+			if(msg.source()!=msg.target())
+				mob.location().show(mob,msg.source(),CMMsg.MSG_OK_VISUAL,"<S-NAME> seem(s) immune to "+msg.tool().name()+".");
 			return false;
 		}
 		return true;

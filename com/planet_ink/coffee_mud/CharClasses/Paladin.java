@@ -25,7 +25,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -59,10 +59,10 @@ public class Paladin extends StdCharClass
 		super();
 		maxStatAdj[CharStats.STAT_STRENGTH]=4;
 		maxStatAdj[CharStats.STAT_WISDOM]=4;
-    }
-    public void initializeClass()
-    {
-        super.initializeClass();
+	}
+	public void initializeClass()
+	{
+		super.initializeClass();
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Write",50,true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Specialization_Axe",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Specialization_BluntWeapon",false);
@@ -141,7 +141,7 @@ public class Paladin extends StdCharClass
 		CMLib.ableMapper().addCharAbilityMapping(ID(),21,"Prayer_CureBlindness",true);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),22,"Prayer_BladeBarrier",false);
-        CMLib.ableMapper().addCharAbilityMapping(ID(),22,"Prayer_CureFatigue",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),22,"Prayer_CureFatigue",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),23,"Prayer_Godstrike",false);
 
@@ -177,9 +177,9 @@ public class Paladin extends StdCharClass
 		}
 	}
 
-    public void executeMsg(Environmental host, CMMsg msg){ super.executeMsg(host,msg); Fighter.conquestExperience(this,host,msg);}
+	public void executeMsg(Environmental host, CMMsg msg){ super.executeMsg(host,msg); Fighter.conquestExperience(this,host,msg);}
 	public String getOtherLimitsDesc(){return "Must remain good to avoid spell/skill failure chance.";}
-    public String getOtherBonusDesc(){return "Receives bonus conquest experience.";}
+	public String getOtherBonusDesc(){return "Receives bonus conquest experience.";}
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(!(myHost instanceof MOB)) return super.okMessage(myHost,msg);

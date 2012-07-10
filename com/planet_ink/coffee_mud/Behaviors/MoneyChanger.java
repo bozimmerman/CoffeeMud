@@ -23,7 +23,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -54,18 +54,18 @@ public class MoneyChanger extends StdBehavior
 
 	public void setParms(String newParm)
 	{
-	    super.setParms(newParm);
-	    rates.clear();
-	    cut=0.05;
-	    newParm=newParm.toUpperCase();
+		super.setParms(newParm);
+		rates.clear();
+		cut=0.05;
+		newParm=newParm.toUpperCase();
 		int x=newParm.indexOf('=');
 		while(x>0)
 		{
-		    int lastSp=newParm.lastIndexOf(' ',x);
-		    if(lastSp<0) lastSp=0;
+			int lastSp=newParm.lastIndexOf(' ',x);
+			if(lastSp<0) lastSp=0;
 			if((lastSp>=0)&&(lastSp<x-1)&&(Character.isLetter(newParm.charAt(x-1))))
 			{
-			    String parm=newParm.substring(lastSp,x).trim().toUpperCase();
+				String parm=newParm.substring(lastSp,x).trim().toUpperCase();
 				while((x<newParm.length())&&(newParm.charAt(x)!='='))
 					x++;
 				if(x<newParm.length())
@@ -76,7 +76,7 @@ public class MoneyChanger extends StdBehavior
 						x++;
 					if(x<newParm.length())
 					{
-					    newParm=newParm.substring(x);
+						newParm=newParm.substring(x);
 						x=0;
 						while((x<newParm.length())
 						&&((Character.isDigit(newParm.charAt(x)))||(newParm.charAt(x)=='.')))
@@ -87,13 +87,13 @@ public class MoneyChanger extends StdBehavior
 						if(x<newParm.length())
 							newParm=newParm.substring(x+1);
 						else
-						    newParm="";
+							newParm="";
 						if(parm.equalsIgnoreCase("default"))
-						    parm="";
+							parm="";
 						if(parm.equalsIgnoreCase("cut"))
-						    cut=val/100.0;
+							cut=val/100.0;
 						else
-						    rates.put(parm,Double.valueOf(val/100.0));
+							rates.put(parm,Double.valueOf(val/100.0));
 					}
 				}
 
@@ -131,10 +131,10 @@ public class MoneyChanger extends StdBehavior
 			double takeCut=cut;
 			String currency=((Coins)msg.tool()).getCurrency().toUpperCase();
 			if((rates.size()>0)&&(rates.containsKey(currency)))
-			    takeCut=((Double)rates.get(currency)).doubleValue();
+				takeCut=((Double)rates.get(currency)).doubleValue();
 			double amountToTake=CMLib.beanCounter().abbreviatedRePrice(observer,value*takeCut);
 			if((amountToTake>0.0)&&(amountToTake<CMLib.beanCounter().getLowestDenomination(CMLib.beanCounter().getCurrency(observer))))
-			    amountToTake=CMLib.beanCounter().getLowestDenomination(CMLib.beanCounter().getCurrency(observer));
+				amountToTake=CMLib.beanCounter().getLowestDenomination(CMLib.beanCounter().getCurrency(observer));
 			value-=amountToTake;
 			observer.recoverPhyStats();
 			Coins C=CMLib.beanCounter().makeBestCurrency(observer,value);
@@ -157,7 +157,7 @@ public class MoneyChanger extends StdBehavior
 
 		if((source!=observer)
 		&&(msg.amITarget(observer))
-        &&(msg.targetMinor()==CMMsg.TYP_GIVE)
+		&&(msg.targetMinor()==CMMsg.TYP_GIVE)
 		&&(msg.tool() instanceof Coins))
 		{
 			if((CMLib.flags().canBeSeenBy(source,observer))
@@ -167,43 +167,43 @@ public class MoneyChanger extends StdBehavior
 				double takeCut=cut;
 				String currency=((Coins)msg.tool()).getCurrency().toUpperCase();
 				if((rates.size()>0)&&(rates.containsKey(currency)))
-				    takeCut=((Double)rates.get(currency)).doubleValue();
+					takeCut=((Double)rates.get(currency)).doubleValue();
 				double amountToTake=CMLib.beanCounter().abbreviatedRePrice(observer,value*takeCut);
 				if((amountToTake>0.0)&&(amountToTake<CMLib.beanCounter().getLowestDenomination(CMLib.beanCounter().getCurrency(observer))))
-				    amountToTake=CMLib.beanCounter().getLowestDenomination(CMLib.beanCounter().getCurrency(observer));
+					amountToTake=CMLib.beanCounter().getLowestDenomination(CMLib.beanCounter().getCurrency(observer));
 				value-=amountToTake;
 				observer.recoverPhyStats();
-	            Coins C=CMLib.beanCounter().makeBestCurrency(observer,value);
+				Coins C=CMLib.beanCounter().makeBestCurrency(observer,value);
 				if((value>0.0)&&(C!=null))
 				{
-	                // this message will actually end up triggering the hand-over.
+					// this message will actually end up triggering the hand-over.
 					CMMsg newMsg=CMClass.getMsg(observer,source,C,CMMsg.MSG_SPEAK,"^T<S-NAME> say(s) 'Thank you for your business' to <T-NAMESELF>.^?");
-	                C.setOwner(observer);
-	                long num=C.getNumberOfCoins();
-	                String curr=C.getCurrency();
-	                double denom=C.getDenomination();
-	                C.destroy();
-	                C.setNumberOfCoins(num);
-	                C.setCurrency(curr);
-	                C.setDenomination(denom);
+					C.setOwner(observer);
+					long num=C.getNumberOfCoins();
+					String curr=C.getCurrency();
+					double denom=C.getDenomination();
+					C.destroy();
+					C.setNumberOfCoins(num);
+					C.setCurrency(curr);
+					C.setDenomination(denom);
 					msg.addTrailerMsg(newMsg);
 				}
 				else
 					CMLib.commands().postSay(observer,source,"Gee, thanks. :)",true,false);
-	            ((Coins)msg.tool()).destroy();
+				((Coins)msg.tool()).destroy();
 			}
 			else
 			if(!CMLib.flags().canBeSeenBy(source,observer))
 				CMLib.commands().postSay(observer,null,"Wha?  Where did this come from?  Cool!",true,false);
 		}
-        else
-        if((msg.source()==observer)
-        &&(msg.target() instanceof MOB)
-        &&(msg.targetMinor()==CMMsg.TYP_SPEAK)
-        &&(msg.tool() instanceof Coins)
-        &&(((Coins)msg.tool()).amDestroyed())
-        &&(!msg.source().isMine(msg.tool()))
-        &&(!((MOB)msg.target()).isMine(msg.tool())))
-            CMLib.beanCounter().giveSomeoneMoney(msg.source(),(MOB)msg.target(),((Coins)msg.tool()).getTotalValue());
+		else
+		if((msg.source()==observer)
+		&&(msg.target() instanceof MOB)
+		&&(msg.targetMinor()==CMMsg.TYP_SPEAK)
+		&&(msg.tool() instanceof Coins)
+		&&(((Coins)msg.tool()).amDestroyed())
+		&&(!msg.source().isMine(msg.tool()))
+		&&(!((MOB)msg.target()).isMine(msg.tool())))
+			CMLib.beanCounter().giveSomeoneMoney(msg.source(),(MOB)msg.target(),((Coins)msg.tool()).getTotalValue());
 	}
 }

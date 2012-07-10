@@ -23,7 +23,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -51,36 +51,36 @@ public class Transfer extends At
 		String mobname=(String)commands.elementAt(0);
 		Room curRoom=mob.location();
 		Vector V=new Vector();
-        boolean allFlag=false;
-        if(mobname.equalsIgnoreCase("ALL"))
-        {
-            allFlag=true;
-            if(commands.size()>2)
-            {
-                commands.removeElementAt(0);
-                mobname=(String)commands.elementAt(0);
-            }
-            else
-                mobname="";
-        }
-        boolean itemFlag=false;
-        if((mobname.equalsIgnoreCase("item")||(mobname.equalsIgnoreCase("items"))))
-        {
-            itemFlag=true;
-            if(commands.size()>2)
-            {
-                commands.removeElementAt(0);
-                mobname=(String)commands.elementAt(0);
-            }
-            else
-                mobname="";
-        }
+		boolean allFlag=false;
+		if(mobname.equalsIgnoreCase("ALL"))
+		{
+			allFlag=true;
+			if(commands.size()>2)
+			{
+				commands.removeElementAt(0);
+				mobname=(String)commands.elementAt(0);
+			}
+			else
+				mobname="";
+		}
+		boolean itemFlag=false;
+		if((mobname.equalsIgnoreCase("item")||(mobname.equalsIgnoreCase("items"))))
+		{
+			itemFlag=true;
+			if(commands.size()>2)
+			{
+				commands.removeElementAt(0);
+				mobname=(String)commands.elementAt(0);
+			}
+			else
+				mobname="";
+		}
 		if((mobname.length()==0)&&(allFlag))
 		{
-            if(itemFlag)
-                for(int i=0;i<curRoom.numItems();i++)
-                    V.addElement(curRoom.getItem(i));
-            else
+			if(itemFlag)
+				for(int i=0;i<curRoom.numItems();i++)
+					V.addElement(curRoom.getItem(i));
+			else
 			for(int i=0;i<curRoom.numInhabitants();i++)
 			{
 				MOB M=curRoom.fetchInhabitant(i);
@@ -89,26 +89,26 @@ public class Transfer extends At
 			}
 		}
 		else
-        if(itemFlag)
+		if(itemFlag)
 		{
-                if(!allFlag)
-                {
-                    Environmental E=curRoom.fetchFromMOBRoomFavorsItems(mob,null,mobname,Wearable.FILTER_UNWORNONLY);
-                    if(E instanceof Item) V.addElement(E);
-                }
-                else
-                if(mobname.length()>0)
-                {
-                    for(int i=0;i<curRoom.numItems();i++)
-                    {
-                        Item I=curRoom.getItem(i);
-                        if((I!=null)&&(CMLib.english().containsString(I.name(),mobname)))
-                            V.addElement(I);
-                    }
-                }
-        }
-        else
-        {
+				if(!allFlag)
+				{
+					Environmental E=curRoom.fetchFromMOBRoomFavorsItems(mob,null,mobname,Wearable.FILTER_UNWORNONLY);
+					if(E instanceof Item) V.addElement(E);
+				}
+				else
+				if(mobname.length()>0)
+				{
+					for(int i=0;i<curRoom.numItems();i++)
+					{
+						Item I=curRoom.getItem(i);
+						if((I!=null)&&(CMLib.english().containsString(I.name(),mobname)))
+							V.addElement(I);
+					}
+				}
+		}
+		else
+		{
 			if(!allFlag)
 			{
 				MOB M=CMLib.sessions().findPlayerOnline(mobname,true);
@@ -132,8 +132,8 @@ public class Transfer extends At
 				}
 			if(V.size()==0)
 			{
-			    try
-			    {
+				try
+				{
 					for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
 					{
 						Room R=(Room)r.nextElement();
@@ -149,7 +149,7 @@ public class Transfer extends At
 						}
 						if((!allFlag)&&(V.size()>0)) break;
 					}
-			    }catch(NoSuchElementException nse){}
+				}catch(NoSuchElementException nse){}
 			}
 		}
 
@@ -171,14 +171,14 @@ public class Transfer extends At
 			return false;
 		}
 		for(int i=0;i<V.size();i++)
-        if(V.elementAt(i) instanceof Item)
-        {
-            Item I=(Item)V.elementAt(i);
-            if(!room.isContent(I))
-                room.moveItemTo(I,ItemPossessor.Expire.Never,ItemPossessor.Move.Followers);
-        }
-        else
-        if(V.elementAt(i) instanceof MOB)
+		if(V.elementAt(i) instanceof Item)
+		{
+			Item I=(Item)V.elementAt(i);
+			if(!room.isContent(I))
+				room.moveItemTo(I,ItemPossessor.Expire.Never,ItemPossessor.Move.Followers);
+		}
+		else
+		if(V.elementAt(i) instanceof MOB)
 		{
 			MOB M=(MOB)V.elementAt(i);
 			if(!room.isInhabitant(M))

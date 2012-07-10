@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -44,7 +44,7 @@ public class Druid_GolemForm extends StdAbility
 	protected int canAffectCode(){return Ability.CAN_MOBS;}
 	protected int canTargetCode(){return 0;}
 
-    public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_SHAPE_SHIFTING;}
+	public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_SHAPE_SHIFTING;}
 
 	public Race newRace=null;
 	public String raceName="";
@@ -167,9 +167,9 @@ public class Druid_GolemForm extends StdAbility
 
 	public void setRaceName(MOB mob)
 	{
-        int qualClassLevel=CMLib.ableMapper().qualifyingClassLevel(mob,this)+(2*getXLEVELLevel(mob));
-        int classLevel=qualClassLevel-CMLib.ableMapper().qualifyingLevel(mob,this);
-        if(qualClassLevel<0) classLevel=30;
+		int qualClassLevel=CMLib.ableMapper().qualifyingClassLevel(mob,this)+(2*getXLEVELLevel(mob));
+		int classLevel=qualClassLevel-CMLib.ableMapper().qualifyingLevel(mob,this);
+		if(qualClassLevel<0) classLevel=30;
 		raceName=getRaceName(classLevel);
 		newRace=getRace(classLevel);
 	}
@@ -210,19 +210,19 @@ public class Druid_GolemForm extends StdAbility
 		return false;
 	}
 
-    public int castingQuality(MOB mob, Physical target)
-    {
-        if(mob!=null)
-        {
-            if(target instanceof MOB)
-            {
-                if((((MOB)target).isInCombat())
-                &&(!Druid_ShapeShift.isShapeShifted((MOB)target)))
-                    return super.castingQuality(mob, target,Ability.QUALITY_BENEFICIAL_SELF);
-            }
-        }
-        return super.castingQuality(mob,target);
-    }
+	public int castingQuality(MOB mob, Physical target)
+	{
+		if(mob!=null)
+		{
+			if(target instanceof MOB)
+			{
+				if((((MOB)target).isInCombat())
+				&&(!Druid_ShapeShift.isShapeShifted((MOB)target)))
+					return super.castingQuality(mob, target,Ability.QUALITY_BENEFICIAL_SELF);
+			}
+		}
+		return super.castingQuality(mob,target);
+	}
 
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
@@ -236,10 +236,10 @@ public class Druid_GolemForm extends StdAbility
 			}
 		}
 
-        int qualClassLevel=CMLib.ableMapper().qualifyingClassLevel(mob,this)+(2*getXLEVELLevel(mob));
-        int classLevel=qualClassLevel-CMLib.ableMapper().qualifyingLevel(mob,this);
-        if(qualClassLevel<0) classLevel=30;
-        String choice=(mob.isMonster()||(commands.size()==0))?getRaceName(classLevel-1):CMParms.combine(commands,0);
+		int qualClassLevel=CMLib.ableMapper().qualifyingClassLevel(mob,this)+(2*getXLEVELLevel(mob));
+		int classLevel=qualClassLevel-CMLib.ableMapper().qualifyingLevel(mob,this);
+		if(qualClassLevel<0) classLevel=30;
+		String choice=(mob.isMonster()||(commands.size()==0))?getRaceName(classLevel-1):CMParms.combine(commands,0);
 		if(choice.trim().length()>0)
 		{
 			StringBuffer buf=new StringBuffer("Golem Forms:\n\r");

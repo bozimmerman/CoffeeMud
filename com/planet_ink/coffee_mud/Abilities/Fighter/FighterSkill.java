@@ -25,7 +25,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -36,11 +36,11 @@ import java.util.*;
 
 public class FighterSkill extends StdAbility
 {
-    public String ID() { return "FighterSkill"; }
-    public String name(){ return "FighterSkill";}
-    public int classificationCode(){ return Ability.ACODE_SKILL;}
-    public int usageType(){return USAGE_MOVEMENT;}
-    protected int canAffectCode(){return 0;}
-    protected int canTargetCode(){return CAN_MOBS;}
+	public String ID() { return "FighterSkill"; }
+	public String name(){ return "FighterSkill";}
+	public int classificationCode(){ return Ability.ACODE_SKILL;}
+	public int usageType(){return USAGE_MOVEMENT;}
+	protected int canAffectCode(){return 0;}
+	protected int canTargetCode(){return CAN_MOBS;}
 
 }

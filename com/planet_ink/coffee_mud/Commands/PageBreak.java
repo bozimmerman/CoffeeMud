@@ -23,7 +23,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -42,29 +42,29 @@ public class PageBreak extends StdCommand
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
-	    if((mob==null)||(mob.playerStats()==null))
-	        return false;
-	    
+		if((mob==null)||(mob.playerStats()==null))
+			return false;
+		
 		if(commands.size()<2)
 		{
-		    String pageBreak=(mob.playerStats().getPageBreak()!=0)?(""+mob.playerStats().getPageBreak()):"Disabled";
+			String pageBreak=(mob.playerStats().getPageBreak()!=0)?(""+mob.playerStats().getPageBreak()):"Disabled";
 			mob.tell("Change your page break to what? Your current page break setting is: "+pageBreak+". Enter a number larger than 0 or 'disable'.");
 			return false;
 		}
 		String newBreak=CMParms.combine(commands,1);
 		int newVal=mob.playerStats().getWrap();
 		if((CMath.isInteger(newBreak))&&(CMath.s_int(newBreak)>0))
-		    newVal=CMath.s_int(newBreak);
+			newVal=CMath.s_int(newBreak);
 		else
 		if("DISABLED".startsWith(newBreak.toUpperCase()))
-		    newVal=0;
+			newVal=0;
 		else
 		{
 			mob.tell("'"+newBreak+"' is not a valid setting. Enter a number larger than 0 or 'disable'.");
-		    return false;
+			return false;
 		}
 		mob.playerStats().setPageBreak(newVal);
-	    String pageBreak=(mob.playerStats().getPageBreak()!=0)?(""+mob.playerStats().getPageBreak()):"Disabled";
+		String pageBreak=(mob.playerStats().getPageBreak()!=0)?(""+mob.playerStats().getPageBreak()):"Disabled";
 		mob.tell("Your new page break setting is: "+pageBreak+".");
 		return false;
 	}

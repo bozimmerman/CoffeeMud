@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -49,11 +49,11 @@ public class Swamp extends StdRoom
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		if((msg.amITarget(this)||(msg.targetMinor()==CMMsg.TYP_ADVANCE)||(msg.targetMinor()==CMMsg.TYP_RETREAT))
-	    &&(!msg.source().isMonster())
-	    &&(msg.source().curState().getHitPoints()<msg.source().maxState().getHitPoints())
-	    &&(CMLib.dice().rollPercentage()==1)
-	    &&(CMLib.dice().rollPercentage()==1)
-	    &&(!CMSecurity.isDisabled(CMSecurity.DisFlag.AUTODISEASE)))
+		&&(!msg.source().isMonster())
+		&&(msg.source().curState().getHitPoints()<msg.source().maxState().getHitPoints())
+		&&(CMLib.dice().rollPercentage()==1)
+		&&(CMLib.dice().rollPercentage()==1)
+		&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.AUTODISEASE)))
 		{
 			Ability A=null;
 			if(CMLib.dice().rollPercentage()>50)

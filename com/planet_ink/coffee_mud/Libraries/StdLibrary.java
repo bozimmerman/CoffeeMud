@@ -12,7 +12,7 @@ Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
 You may obtain a copy of the License at
 
-    http://www.apache.org/licenses/LICENSE-2.0
+	http://www.apache.org/licenses/LICENSE-2.0
 
 Unless required by applicable law or agreed to in writing, software
 distributed under the License is distributed on an "AS IS" BASIS,
@@ -22,24 +22,24 @@ limitations under the License.
 */
 public class StdLibrary implements CMLibrary
 {
-    public String ID(){return "StdLibrary";}
-    public CMObject newInstance()
-    {
-        try
-        {
-            return (CMObject)this.getClass().newInstance();
-        }
-        catch(Exception e)
-        {
-            Log.errOut(ID(),e);
-        }
-        return new StdLibrary();
-    }
-    public CMObject copyOf(){try{return (CMObject)this.clone();}catch(Exception e){return newInstance();}}
-    public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
-    public void initializeClass(){}
-    public boolean activate(){ return true;}
-    public void propertiesLoaded(){ }
-    public boolean shutdown(){ return true;}
-    public ThreadEngine.SupportThread getSupportThread() { return null;}
+	public String ID(){return "StdLibrary";}
+	public CMObject newInstance()
+	{
+		try
+		{
+			return (CMObject)this.getClass().newInstance();
+		}
+		catch(Exception e)
+		{
+			Log.errOut(ID(),e);
+		}
+		return new StdLibrary();
+	}
+	public CMObject copyOf(){try{return (CMObject)this.clone();}catch(Exception e){return newInstance();}}
+	public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
+	public void initializeClass(){}
+	public boolean activate(){ return true;}
+	public void propertiesLoaded(){ }
+	public boolean shutdown(){ return true;}
+	public ThreadEngine.SupportThread getSupportThread() { return null;}
 }

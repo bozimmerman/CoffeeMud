@@ -25,7 +25,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -40,7 +40,7 @@ public class Spell_LocateObject extends Spell
 	public String name(){return "Locate Object";}
 	protected int canTargetCode(){return 0;}
 	public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_DIVINATION;}
-    public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
+	public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
 
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
@@ -107,26 +107,26 @@ public class Spell_LocateObject extends Spell
 				int tries=numAreas*numAreas;
 				while((areas.size()<numAreas)&&(((--tries)>0)))
 				{
-				    A=CMLib.map().getRandomArea();
-				    if((A!=null)&&(!areasTried.contains(A)))
-				    {
-				        areasTried.add(A);
-				        if((CMLib.flags().canAccess(mob,A))
-		        		&&(!CMath.bset(A.flags(),Area.FLAG_INSTANCE_CHILD)))
-				            areas.add(A);
-				        else
-				            numAreas--;
-				    }
+					A=CMLib.map().getRandomArea();
+					if((A!=null)&&(!areasTried.contains(A)))
+					{
+						areasTried.add(A);
+						if((CMLib.flags().canAccess(mob,A))
+						&&(!CMath.bset(A.flags(),Area.FLAG_INSTANCE_CHILD)))
+							areas.add(A);
+						else
+							numAreas--;
+					}
 				}
 				MOB inhab=null;
 				Environmental item=null;
 				Room room=null;
-                ShopKeeper SK=null;
-    			TrackingLibrary.TrackingFlags flags=new TrackingLibrary.TrackingFlags();
-    			List<Room> checkSet=CMLib.tracking().getRadiantRooms(mob.location(),flags,50+adjustedLevel(mob,asLevel));
-    			for(Iterator<Room> r=checkSet.iterator();r.hasNext();)
-    			{
-    				room=CMLib.map().getRoom(r.next());
+				ShopKeeper SK=null;
+				TrackingLibrary.TrackingFlags flags=new TrackingLibrary.TrackingFlags();
+				List<Room> checkSet=CMLib.tracking().getRadiantRooms(mob.location(),flags,50+adjustedLevel(mob,asLevel));
+				for(Iterator<Room> r=checkSet.iterator();r.hasNext();)
+				{
+					room=CMLib.map().getRoom(r.next());
 					if(!CMLib.flags().canAccess(mob,room)) continue;
 
 					item=room.findItem(null,what);
@@ -142,7 +142,7 @@ public class Spell_LocateObject extends Spell
 						if(inhab==null) break;
 
 						item=inhab.findItem(what);
-                        SK=CMLib.coffeeShops().getShopKeeper(inhab);
+						SK=CMLib.coffeeShops().getShopKeeper(inhab);
 						if((item==null)&&(SK!=null))
 							item=SK.getShop().getStock(what,mob);
 						if((item instanceof Item)

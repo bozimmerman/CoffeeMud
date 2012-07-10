@@ -26,7 +26,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -44,12 +44,12 @@ public class Spell_EnchantArrows extends Spell
 	public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_ENCHANTMENT;}
 	protected int overrideMana(){return Integer.MAX_VALUE;}
 	public long flags(){return Ability.FLAG_NOORDERING;}
-    public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
+	public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
 
 	public void affectPhyStats(Physical host, PhyStats affectableStats)
 	{
-        affectableStats.setAbility(affectableStats.ability()+CMath.s_int(text()));
-        affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_BONUS);
+		affectableStats.setAbility(affectableStats.ability()+CMath.s_int(text()));
+		affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_BONUS);
 	}
 	
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
@@ -66,7 +66,7 @@ public class Spell_EnchantArrows extends Spell
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-        int experienceToLose=getXPCOSTAdjustment(mob,5);
+		int experienceToLose=getXPCOSTAdjustment(mob,5);
 		CMLib.leveler().postExperience(mob,null,null,-experienceToLose,false);
 
 		boolean success=proficiencyCheck(mob,0,auto);

@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -45,13 +45,13 @@ public class Missionary extends Cleric
 
 	public Missionary()
 	{
-        super();
+		super();
 		maxStatAdj[CharStats.STAT_WISDOM]=4;
 		maxStatAdj[CharStats.STAT_DEXTERITY]=4;
-    }
-    public void initializeClass()
-    {
-        super.initializeClass();
+	}
+	public void initializeClass()
+	{
+		super.initializeClass();
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Recall",100,true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Swim",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Prayer_Marry",false);
@@ -71,7 +71,7 @@ public class Missionary extends Cleric
 		CMLib.ableMapper().addCharAbilityMapping(ID(),2,"Prayer_SenseLife",true);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),3,"Prayer_Bury",true);
-        CMLib.ableMapper().addCharAbilityMapping(ID(),3,"Prayer_InfuseBalance",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),3,"Prayer_InfuseBalance",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),4,"Prayer_ProtUndead",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),4,"Prayer_Position",false);
@@ -88,7 +88,7 @@ public class Missionary extends Cleric
 		CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Prayer_Revival",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),9,"Prayer_AiryForm",false);
-        CMLib.ableMapper().addCharAbilityMapping(ID(),9,"Prayer_MinorInfusion",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),9,"Prayer_MinorInfusion",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),10,"Prayer_SenseMagic",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),10,"Prayer_SenseInvisible",false);
@@ -122,7 +122,7 @@ public class Missionary extends Cleric
 		CMLib.ableMapper().addCharAbilityMapping(ID(),21,"Prayer_MoralBalance",true);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),22,"Prayer_Disenchant",false);
-        CMLib.ableMapper().addCharAbilityMapping(ID(),22,"Prayer_ModerateInfusion",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),22,"Prayer_ModerateInfusion",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),23,"Prayer_LinkedHealth",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),23,"Prayer_Weather",false);

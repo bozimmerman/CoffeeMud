@@ -23,7 +23,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -36,13 +36,13 @@ public class Baking extends Cooking
 	public String ID() { return "Baking"; }
 	public String name(){ return "Baking";}
 	private static final String[] triggerStrings = {"BAKING","BAKE"};
-    public String supportedResourceString(){return "MISC";}
+	public String supportedResourceString(){return "MISC";}
 	public String[] triggerStrings(){return triggerStrings;}
 	public String cookWordShort(){return "bake";}
 	public String cookWord(){return "baking";}
 	public boolean honorHerbs(){return false;}
 	public boolean requireLid(){return true;}
 
-    public String parametersFile(){ return "bake.txt";}
-    protected List<List<String>> loadRecipes(){return super.loadRecipes(parametersFile());}
+	public String parametersFile(){ return "bake.txt";}
+	protected List<List<String>> loadRecipes(){return super.loadRecipes(parametersFile());}
 }

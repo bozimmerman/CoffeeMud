@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -38,7 +38,7 @@ public class Thief_Mug extends ThiefSkill
 	public String ID() { return "Thief_Mug"; }
 	public String name(){ return "Mug";}
 	protected int canAffectCode(){return 0;}
-    public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_STEALING;}
+	public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_STEALING;}
 	protected int canTargetCode(){return CAN_MOBS;}
 	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	private static final String[] triggerStrings = {"MUG"};
@@ -49,15 +49,15 @@ public class Thief_Mug extends ThiefSkill
 	public int abilityCode(){return code;}
 	public void setAbilityCode(int newCode){code=newCode;}
 
-    public int castingQuality(MOB mob, Physical target)
-    {
-        if(mob!=null)
-        {
-            if(!mob.isInCombat())
-                return Ability.QUALITY_INDIFFERENT;
-        }
-        return super.castingQuality(mob,target);
-    }
+	public int castingQuality(MOB mob, Physical target)
+	{
+		if(mob!=null)
+		{
+			if(!mob.isInCombat())
+				return Ability.QUALITY_INDIFFERENT;
+		}
+		return super.castingQuality(mob,target);
+	}
 
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
@@ -67,16 +67,16 @@ public class Thief_Mug extends ThiefSkill
 			mob.tell("You can only mug someone you are fighting!");
 			return false;
 		}
-        String itemToSteal="all";
-        if(!auto)
-        {
-    		if(commands.size()<1)
-    		{
-    			mob.tell("Mug what from "+target.name()+"?");
-    			return false;
-    		}
-    		itemToSteal=CMParms.combine(commands,0);
-        }
+		String itemToSteal="all";
+		if(!auto)
+		{
+			if(commands.size()<1)
+			{
+				mob.tell("Mug what from "+target.name()+"?");
+				return false;
+			}
+			itemToSteal=CMParms.combine(commands,0);
+		}
 		int levelDiff=target.phyStats().level()-(mob.phyStats().level()+abilityCode()+(getXLEVELLevel(mob)*2));
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;

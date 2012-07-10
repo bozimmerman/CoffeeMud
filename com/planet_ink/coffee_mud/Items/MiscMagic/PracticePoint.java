@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -34,46 +34,46 @@ import java.util.*;
 */
 public class PracticePoint extends StdItem implements MiscMagic
 {
-    public String ID(){ return "PracticePoint";}
-    public PracticePoint()
-    {
-        super();
-        setName("a practice point");
-        setDisplayText("A shiny green coin has been left here.");
-        myContainer=null;
-        setDescription("A shiny green coin with magical script around the edges.");
-        myUses=Integer.MAX_VALUE;
-        myWornCode=0;
-        material=0;
-        basePhyStats.setWeight(0);
-        basePhyStats.setSensesMask(basePhyStats().sensesMask()|PhyStats.SENSE_ITEMNORUIN|PhyStats.SENSE_ITEMNOWISH);
-        recoverPhyStats();
-    }
+	public String ID(){ return "PracticePoint";}
+	public PracticePoint()
+	{
+		super();
+		setName("a practice point");
+		setDisplayText("A shiny green coin has been left here.");
+		myContainer=null;
+		setDescription("A shiny green coin with magical script around the edges.");
+		myUses=Integer.MAX_VALUE;
+		myWornCode=0;
+		material=0;
+		basePhyStats.setWeight(0);
+		basePhyStats.setSensesMask(basePhyStats().sensesMask()|PhyStats.SENSE_ITEMNORUIN|PhyStats.SENSE_ITEMNOWISH);
+		recoverPhyStats();
+	}
 
 
-    public void executeMsg(final Environmental myHost, final CMMsg msg)
-    {
-        if(msg.amITarget(this))
-        {
-            MOB mob=msg.source();
-            switch(msg.targetMinor())
-            {
-            case CMMsg.TYP_GET:
-            case CMMsg.TYP_REMOVE:
-            {
-                setContainer(null);
-                destroy();
-                if(!mob.isMine(this))
-                    mob.setPractices(mob.getPractices()+1);
-                unWear();
-                if(!CMath.bset(msg.targetMajor(),CMMsg.MASK_OPTIMIZE))
-                    mob.location().recoverRoomStats();
-                return;
-            }
-            default:
-                break;
-            }
-        }
-        super.executeMsg(myHost,msg);
-    }
+	public void executeMsg(final Environmental myHost, final CMMsg msg)
+	{
+		if(msg.amITarget(this))
+		{
+			MOB mob=msg.source();
+			switch(msg.targetMinor())
+			{
+			case CMMsg.TYP_GET:
+			case CMMsg.TYP_REMOVE:
+			{
+				setContainer(null);
+				destroy();
+				if(!mob.isMine(this))
+					mob.setPractices(mob.getPractices()+1);
+				unWear();
+				if(!CMath.bset(msg.targetMajor(),CMMsg.MASK_OPTIMIZE))
+					mob.location().recoverRoomStats();
+				return;
+			}
+			default:
+				break;
+			}
+		}
+		super.executeMsg(myHost,msg);
+	}
 }

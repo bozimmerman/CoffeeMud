@@ -25,7 +25,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -40,7 +40,7 @@ public class Chant_SummonAnimal extends Chant
 	public String ID() { return "Chant_SummonAnimal"; }
 	public String name(){ return "Summon Animal";}
 	public String displayText(){return "(Animal Summoning)";}
-    public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_ANIMALAFFINITY;}
+	public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_ANIMALAFFINITY;}
 	public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
 	public int enchantQuality(){return Ability.QUALITY_INDIFFERENT;}
 	protected int canAffectCode(){return 0;}
@@ -73,39 +73,39 @@ public class Chant_SummonAnimal extends Chant
 	
 	public Vector outdoorChoices(Room R)
 	{
-        Vector choices=new Vector();
-        if(R==null) return choices;
-        for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
-        {
-            Room room=R.getRoomInDir(d);
-            Exit exit=R.getExitInDir(d);
-            Exit opExit=R.getReverseExit(d);
-            if((room!=null)
-            &&((room.domainType()&Room.INDOORS)==0)
-            &&(room.domainType()!=Room.DOMAIN_OUTDOORS_AIR)
-            &&((exit!=null)&&(exit.isOpen()))
-            &&(opExit!=null)&&(opExit.isOpen()))
-                choices.addElement(Integer.valueOf(d));
-        }
-        return choices;
+		Vector choices=new Vector();
+		if(R==null) return choices;
+		for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
+		{
+			Room room=R.getRoomInDir(d);
+			Exit exit=R.getExitInDir(d);
+			Exit opExit=R.getReverseExit(d);
+			if((room!=null)
+			&&((room.domainType()&Room.INDOORS)==0)
+			&&(room.domainType()!=Room.DOMAIN_OUTDOORS_AIR)
+			&&((exit!=null)&&(exit.isOpen()))
+			&&(opExit!=null)&&(opExit.isOpen()))
+				choices.addElement(Integer.valueOf(d));
+		}
+		return choices;
 	}
 
-    public int castingQuality(MOB mob, Physical target)
-    {
-        if(mob!=null)
-        {
-            Room R=mob.location();
-            if(R!=null)
-            {
-                if((R.domainType()&Room.INDOORS)>0)
-                    return Ability.QUALITY_INDIFFERENT;
-                Vector choices=outdoorChoices(mob.location());
-                if(choices.size()==0)
-                    return Ability.QUALITY_INDIFFERENT;
-            }
-        }
-        return super.castingQuality(mob,target);
-    }
+	public int castingQuality(MOB mob, Physical target)
+	{
+		if(mob!=null)
+		{
+			Room R=mob.location();
+			if(R!=null)
+			{
+				if((R.domainType()&Room.INDOORS)>0)
+					return Ability.QUALITY_INDIFFERENT;
+				Vector choices=outdoorChoices(mob.location());
+				if(choices.size()==0)
+					return Ability.QUALITY_INDIFFERENT;
+			}
+		}
+		return super.castingQuality(mob,target);
+	}
 
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{

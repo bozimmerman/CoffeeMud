@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -43,18 +43,18 @@ public class Thief_RemoveTraps extends ThiefSkill
 	private static final String[] triggerStrings = {"DETRAP","UNTRAP","REMOVETRAPS"};
 	public String[] triggerStrings(){return triggerStrings;}
 	public Environmental lastChecked=null;
-    public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_DETRAP;}
+	public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_DETRAP;}
 	public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
-    public Vector lastDone=new Vector();
+	public Vector lastDone=new Vector();
 
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-        boolean saveTheTrap=false;
-        if((commands.size()>0)&&(commands.lastElement() instanceof Boolean))
-        {
-            saveTheTrap=((Boolean)commands.lastElement()).booleanValue();
-            commands.removeElementAt(commands.size()-1);
-        }
+		boolean saveTheTrap=false;
+		if((commands.size()>0)&&(commands.lastElement() instanceof Boolean))
+		{
+			saveTheTrap=((Boolean)commands.lastElement()).booleanValue();
+			commands.removeElementAt(commands.size()-1);
+		}
 		String whatTounlock=CMParms.combine(commands,0);
 		Physical unlockThis=null;
 		int dirCode=Directions.getGoodDirectionCode(whatTounlock);
@@ -114,18 +114,18 @@ public class Thief_RemoveTraps extends ThiefSkill
 		}
 		if(unlockThis==null)
 		{
-		    mob.tell("You can't seem to remember how this works.");
-		    return false;
+			mob.tell("You can't seem to remember how this works.");
+			return false;
 		}
 		CMMsg msg=CMClass.getMsg(mob,unlockThis,this,auto?CMMsg.MSG_OK_ACTION:CMMsg.MSG_DELICATE_HANDS_ACT,CMMsg.MSG_DELICATE_HANDS_ACT,CMMsg.MSG_OK_ACTION,auto?unlockThis.name()+" begins to glow.":"<S-NAME> attempt(s) to safely deactivate a trap on "+unlockThis.name()+".");
-        if((success)&&(!lastDone.contains(""+unlockThis)))
-        {
-            while(lastDone.size()>40) lastDone.removeElementAt(0);
-            lastDone.addElement(""+unlockThis);
-            msg.setValue(1);
-        }
-        else
-            msg.setValue(0);
+		if((success)&&(!lastDone.contains(""+unlockThis)))
+		{
+			while(lastDone.size()>40) lastDone.removeElementAt(0);
+			lastDone.addElement(""+unlockThis);
+			msg.setValue(1);
+		}
+		else
+			msg.setValue(0);
 		if(R.okMessage(mob,msg))
 		{
 			R.send(mob,msg);
@@ -134,29 +134,29 @@ public class Thief_RemoveTraps extends ThiefSkill
 			if(success)
 			{
 				if(theTrap!=null)
-                {
+				{
 					theTrap.disable();
-                    if(saveTheTrap)
-                        commands.addElement(theTrap);
-                }
+					if(saveTheTrap)
+						commands.addElement(theTrap);
+				}
 				if(opTrap!=null)
-                {
+				{
 					opTrap.disable();
-                    if(saveTheTrap)
-                        commands.addElement(opTrap);
-                }
+					if(saveTheTrap)
+						commands.addElement(opTrap);
+				}
 				if(permanent)
 				{
 					for(int i=0;i<permSetV.size();i++)
 					{
 						if(theTrap!=null) { 
-                            theTrap.unInvoke(); 
-                            ((Physical)permSetV.elementAt(i)).delEffect(theTrap);
-                        }
+							theTrap.unInvoke(); 
+							((Physical)permSetV.elementAt(i)).delEffect(theTrap);
+						}
 						if(opTrap!=null) { 
-                            opTrap.unInvoke(); 
-                            ((Physical)permSetV.elementAt(i)).delEffect(opTrap);
-                        }
+							opTrap.unInvoke(); 
+							((Physical)permSetV.elementAt(i)).delEffect(opTrap);
+						}
 					}
 					CMLib.database().DBUpdateRoom(R);
 					CMLib.database().DBUpdateExits(R);

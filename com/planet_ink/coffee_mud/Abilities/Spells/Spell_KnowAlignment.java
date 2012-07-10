@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -38,7 +38,7 @@ public class Spell_KnowAlignment extends Spell
 	public String ID() { return "Spell_KnowAlignment"; }
 	public String name(){return "Know Alignment";}
 	public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_DIVINATION;}
-    public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
+	public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
 
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
@@ -59,12 +59,12 @@ public class Spell_KnowAlignment extends Spell
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);
-            if(success)
-                mob.tell(mob,target,null,"<T-NAME> seem(s) like <T-HE-SHE> is "+CMLib.flags().getAlignmentName(target).toLowerCase()+".");
-            else
-            {
-                mob.tell(mob,target,null,"<T-NAME> seem(s) like <T-HE-SHE> is "+Faction.ALIGN_NAMES[CMLib.dice().roll(1,Faction.ALIGN_NAMES.length-1,0)].toLowerCase()+".");
-            }
+			if(success)
+				mob.tell(mob,target,null,"<T-NAME> seem(s) like <T-HE-SHE> is "+CMLib.flags().getAlignmentName(target).toLowerCase()+".");
+			else
+			{
+				mob.tell(mob,target,null,"<T-NAME> seem(s) like <T-HE-SHE> is "+Faction.ALIGN_NAMES[CMLib.dice().roll(1,Faction.ALIGN_NAMES.length-1,0)].toLowerCase()+".");
+			}
 		}
 
 

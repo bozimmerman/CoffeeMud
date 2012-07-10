@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -43,19 +43,19 @@ public class Prayer_Calm extends Prayer
 	public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
 	public long flags(){return Ability.FLAG_HOLY;}
 
-    public int castingQuality(MOB mob, Physical target)
-    {
-        if(mob!=null)
-        {
-            if(CMLib.flags().isEvil(mob))
-                return Ability.QUALITY_INDIFFERENT;
-                
-            if(CMLib.flags().isNeutral(mob)&&(CMLib.dice().roll(1,2,0)==1))
-                return Ability.QUALITY_INDIFFERENT;
-        }
-        return super.castingQuality(mob,target);
-    }
-    
+	public int castingQuality(MOB mob, Physical target)
+	{
+		if(mob!=null)
+		{
+			if(CMLib.flags().isEvil(mob))
+				return Ability.QUALITY_INDIFFERENT;
+				
+			if(CMLib.flags().isNeutral(mob)&&(CMLib.dice().roll(1,2,0)==1))
+				return Ability.QUALITY_INDIFFERENT;
+		}
+		return super.castingQuality(mob,target);
+	}
+	
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))

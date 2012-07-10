@@ -26,7 +26,7 @@ import com.planet_ink.coffee_mud.core.exceptions.HTTPServerException;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -36,44 +36,44 @@ import com.planet_ink.coffee_mud.core.exceptions.HTTPServerException;
 */
 public class PlayerPortrait extends StdWebMacro
 {
-    public String name()    {return this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);}
+	public String name()	{return this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);}
 
-    public boolean isAWebPath(){return true;}
-    public boolean preferBinary(){return true;}
-    
-    public String getFilename(ExternalHTTPRequests httpReq, String filename)
-    {
-        String foundFilename=httpReq.getRequestParameter("FILENAME");
-        if((foundFilename!=null)&&(foundFilename.length()>0))
-            return foundFilename;
-        return filename;
-    }
-    
-    public byte[] runBinaryMacro(ExternalHTTPRequests httpReq, String parm) throws HTTPServerException
-    {
-        String last=httpReq.getRequestParameter("PLAYER");
-        if(last==null) return null; // for binary macros, null is BREAK
-        byte[] img=null;
-        if(last.length()>0)
-        {
-            img=(byte[])Resources.getResource("CMPORTRAIT-"+last);
-            if(img==null)
-            {
-            	List<PlayerData> data=CMLib.database().DBReadData(last,"CMPORTRAIT");
-                if((data!=null)&&(data.size()>0))
-                {
-                    String encoded=((DatabaseEngine.PlayerData)data.get(0)).xml;
-                    img=B64Encoder.B64decode(encoded);
-                    if(img!=null)
-                        Resources.submitResource("CMPORTRAIT-"+last,img);
-                }
-            }
-        }
-        return img;
-    }
-    
-    public String runMacro(ExternalHTTPRequests httpReq, String parm) throws HTTPServerException
-    {
-        return "[Unimplemented string method!]";
-    }
+	public boolean isAWebPath(){return true;}
+	public boolean preferBinary(){return true;}
+	
+	public String getFilename(ExternalHTTPRequests httpReq, String filename)
+	{
+		String foundFilename=httpReq.getRequestParameter("FILENAME");
+		if((foundFilename!=null)&&(foundFilename.length()>0))
+			return foundFilename;
+		return filename;
+	}
+	
+	public byte[] runBinaryMacro(ExternalHTTPRequests httpReq, String parm) throws HTTPServerException
+	{
+		String last=httpReq.getRequestParameter("PLAYER");
+		if(last==null) return null; // for binary macros, null is BREAK
+		byte[] img=null;
+		if(last.length()>0)
+		{
+			img=(byte[])Resources.getResource("CMPORTRAIT-"+last);
+			if(img==null)
+			{
+				List<PlayerData> data=CMLib.database().DBReadData(last,"CMPORTRAIT");
+				if((data!=null)&&(data.size()>0))
+				{
+					String encoded=((DatabaseEngine.PlayerData)data.get(0)).xml;
+					img=B64Encoder.B64decode(encoded);
+					if(img!=null)
+						Resources.submitResource("CMPORTRAIT-"+last,img);
+				}
+			}
+		}
+		return img;
+	}
+	
+	public String runMacro(ExternalHTTPRequests httpReq, String parm) throws HTTPServerException
+	{
+		return "[Unimplemented string method!]";
+	}
 }

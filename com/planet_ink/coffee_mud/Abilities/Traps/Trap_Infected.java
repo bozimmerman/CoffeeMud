@@ -23,7 +23,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -71,15 +71,15 @@ public class Trap_Infected extends StdTrap
 		}
 		return null;
 	}
-    public List<Item> getTrapComponents() {
-        Vector V=new Vector();
-        Item I=CMLib.materials().makeItemResource(RawMaterial.RESOURCE_MEAT);
-        Ability A=CMClass.getAbility(text());
-        if(A==null) A=CMClass.getAbility("Disease_Cold");
-        I.addNonUninvokableEffect(A);
-        V.addElement(I);
-        return V;
-    }
+	public List<Item> getTrapComponents() {
+		Vector V=new Vector();
+		Item I=CMLib.materials().makeItemResource(RawMaterial.RESOURCE_MEAT);
+		Ability A=CMClass.getAbility(text());
+		if(A==null) A=CMClass.getAbility("Disease_Cold");
+		I.addNonUninvokableEffect(A);
+		V.addElement(I);
+		return V;
+	}
 
 	public Trap setTrap(MOB mob, Physical P, int trapBonus, int qualifyingClassLevel, boolean perm)
 	{

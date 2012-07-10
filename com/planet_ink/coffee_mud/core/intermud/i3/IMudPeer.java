@@ -34,7 +34,7 @@ import java.io.ObjectOutputStream;
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *        http://www.apache.org/licenses/LICENSE-2.0
+ *  	  http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -50,20 +50,20 @@ public class IMudPeer implements PersistentPeer
 	boolean isRestoring=false;
 	String myID="";
 	
-    /**
-     * Gets data about this peer from storage and gives it
-     * back to the object for which this peer exists.
-     * @exception com.planet_ink.coffee_mud.core.intermud.i3.persist.PersistenceException if an error occurs during restore
-     */
+	/**
+	 * Gets data about this peer from storage and gives it
+	 * back to the object for which this peer exists.
+	 * @exception com.planet_ink.coffee_mud.core.intermud.i3.persist.PersistenceException if an error occurs during restore
+	 */
 	public void restore() throws PersistenceException
 	{
 		isRestoring=true;
 		if(myobj instanceof Intermud)
 		{
 			try{
-                CMFile F=new CMFile("resources/ppeer."+myID,null,false);
-                if(!F.exists()) return;
-                
+				CMFile F=new CMFile("resources/ppeer."+myID,null,false);
+				if(!F.exists()) return;
+				
 				ObjectInputStream in=new ObjectInputStream(new ByteArrayInputStream(F.raw()));
 				Object newobj;
 				newobj=in.readObject();
@@ -90,30 +90,30 @@ public class IMudPeer implements PersistentPeer
 		isRestoring=false;
 	}
 
-    /**
-     * Triggers a save of its peer.  Implementing classes
-     * should do whatever it takes to save the object in
-     * this method.
-     * @exception com.planet_ink.coffee_mud.core.intermud.i3.persist.PersistenceException if a problem occurs in saving
-     */
-    public void save() throws PersistenceException
+	/**
+	 * Triggers a save of its peer.  Implementing classes
+	 * should do whatever it takes to save the object in
+	 * this method.
+	 * @exception com.planet_ink.coffee_mud.core.intermud.i3.persist.PersistenceException if a problem occurs in saving
+	 */
+	public void save() throws PersistenceException
 	{
 		if(myobj instanceof Intermud)
 		{
 			try
 			{
-                ByteArrayOutputStream bout=new ByteArrayOutputStream();
+				ByteArrayOutputStream bout=new ByteArrayOutputStream();
 				ObjectOutputStream out=new ObjectOutputStream(bout);
 				out.writeObject(Integer.valueOf(((Intermud)myobj).password));
 				out.writeObject(((Intermud)myobj).banned);
 				out.writeObject(((Intermud)myobj).channels);
 				out.writeObject(((Intermud)myobj).muds);
 				out.writeObject(((Intermud)myobj).name_servers);
-                out.flush();
-                bout.flush();
-                new CMFile("::resources/ppeer."+myID,null,false).saveRaw(bout.toByteArray());
-                out.close();
-                bout.close();
+				out.flush();
+				bout.flush();
+				new CMFile("::resources/ppeer."+myID,null,false).saveRaw(bout.toByteArray());
+				out.close();
+				bout.close();
 			}
 			catch(Exception e)
 			{
@@ -122,24 +122,24 @@ public class IMudPeer implements PersistentPeer
 		}
 	}
 
-    /**
-     * Assigns a persistent object to this peer for
-     * persistence operations.
-     * @param ob the implementation of com.planet_ink.coffee_mud.core.intermud.i3.persist.Persistent that this is a peer for
-     * @see com.planet_ink.coffee_mud.core.intermud.i3.persist.Persistent
-     */
-    public void setPersistent(Persistent ob)
+	/**
+	 * Assigns a persistent object to this peer for
+	 * persistence operations.
+	 * @param ob the implementation of com.planet_ink.coffee_mud.core.intermud.i3.persist.Persistent that this is a peer for
+	 * @see com.planet_ink.coffee_mud.core.intermud.i3.persist.Persistent
+	 */
+	public void setPersistent(Persistent ob)
 	{
 		myobj=ob;
 		myID=ob.getClass().getName().substring(ob.getClass().getName().lastIndexOf('.')+1);
 	}
 		
 
-    /**
-     * An implementation uses this to tell its Persistent
-     * that it is in the middle of restoring.
-     * @return true if a restore operation is in progress
-     */
-    public boolean isRestoring()
+	/**
+	 * An implementation uses this to tell its Persistent
+	 * that it is in the middle of restoring.
+	 * @return true if a restore operation is in progress
+	 */
+	public boolean isRestoring()
 	{return isRestoring;}
 }

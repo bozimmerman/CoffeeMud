@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -80,12 +80,12 @@ public class Spell_WallOfForce extends Spell
 			&&((mob==invoker)||(mob.rangeToTarget()==1)))
 			{
 				if(mob!=invoker)
-                {
-                    CMMsg msg2=CMClass.getMsg(mob,null,CMMsg.MSG_WEAPONATTACK,"^F^<FIGHT^><S-NAME> attempt(s) to penetrate the wall of force and fail(s).^</FIGHT^>^?");
-                    CMLib.color().fixSourceFightColor(msg2);
+				{
+					CMMsg msg2=CMClass.getMsg(mob,null,CMMsg.MSG_WEAPONATTACK,"^F^<FIGHT^><S-NAME> attempt(s) to penetrate the wall of force and fail(s).^</FIGHT^>^?");
+					CMLib.color().fixSourceFightColor(msg2);
 					if(mob.location().okMessage(mob,msg2))
-                        mob.location().send(mob,msg2);
-                }
+						mob.location().send(mob,msg2);
+				}
 				return false;
 			}
 		}

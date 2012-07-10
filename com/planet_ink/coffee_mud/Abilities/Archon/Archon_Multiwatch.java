@@ -23,7 +23,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -226,12 +226,12 @@ public class Archon_Multiwatch extends ArchonSkill
 		else
 		if(CMParms.combine(commands,0).equalsIgnoreCase("stop"))
 		{
-            boolean foundLegacy=false;
+			boolean foundLegacy=false;
 			for(Session S : CMLib.sessions().localOnlineIterable())
-            {
-                if((S!=null)&&(S.mob()!=null)&&(S.mob().fetchEffect(ID())!=null))
-                { foundLegacy=true; break;}
-            }
+			{
+				if((S!=null)&&(S.mob()!=null)&&(S.mob().fetchEffect(ID())!=null))
+				{ foundLegacy=true; break;}
+			}
 			if((DATA.size()==0)&&(IPS.size()==0)&&(!foundLegacy))
 			{
 				mob.tell("Multiwatch is already off.");
@@ -248,14 +248,14 @@ public class Archon_Multiwatch extends ArchonSkill
 				}
 			}
 			for(Session S : CMLib.sessions().localOnlineIterable())
-            {
-                if((S!=null)&&(S.mob()!=null))
-                {
-                    MOB M=S.mob();
-                    Ability A=M.fetchEffect(ID());
-                    if(A!=null) M.delEffect(A);
-                }
-            }
+			{
+				if((S!=null)&&(S.mob()!=null))
+				{
+					MOB M=S.mob();
+					Ability A=M.fetchEffect(ID());
+					if(A!=null) M.delEffect(A);
+				}
+			}
 			mob.tell("Multiplay watcher is now turned off.");
 			DATA.clear();
 			IPS.clear();

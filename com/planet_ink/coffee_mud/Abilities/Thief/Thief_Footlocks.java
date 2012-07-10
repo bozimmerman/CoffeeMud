@@ -23,7 +23,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -38,7 +38,7 @@ public class Thief_Footlocks extends ThiefSkill
 	public String name(){ return "Footlocks";}
 	public String displayText(){ return "(Footlocked)";}
 	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-    public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_BINDING;}
+	public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_BINDING;}
 	protected int canAffectCode(){return CAN_MOBS;}
 	protected int canTargetCode(){return CAN_MOBS;}
 	private static final String[] triggerStrings = {"FOOTLOCK"};
@@ -87,34 +87,34 @@ public class Thief_Footlocks extends ThiefSkill
 		super.unInvoke();
 	}
 
-    public int castingQuality(MOB mob, Physical target)
-    {
-        if((mob!=null)&&(target!=null))
-        {
-            if(CMLib.flags().isSleeping(mob))
-                return Ability.QUALITY_INDIFFERENT;
-            if(!CMLib.flags().aliveAwakeMobileUnbound(mob,false))
-                return Ability.QUALITY_INDIFFERENT;
-            Item cloth=CMLib.materials().findMostOfMaterial(mob,RawMaterial.MATERIAL_CLOTH);
-            if((cloth==null)||CMLib.materials().findNumberOfResource(mob,cloth.material())<1)
-                return Ability.QUALITY_INDIFFERENT;
-            Item wood=CMLib.materials().findMostOfMaterial(mob,RawMaterial.MATERIAL_WOODEN);
-            if((wood==null)||CMLib.materials().findNumberOfResource(mob,wood.material())<2)
-                return Ability.QUALITY_INDIFFERENT;
-        }
-        return super.castingQuality(mob,target);
-    }
+	public int castingQuality(MOB mob, Physical target)
+	{
+		if((mob!=null)&&(target!=null))
+		{
+			if(CMLib.flags().isSleeping(mob))
+				return Ability.QUALITY_INDIFFERENT;
+			if(!CMLib.flags().aliveAwakeMobileUnbound(mob,false))
+				return Ability.QUALITY_INDIFFERENT;
+			Item cloth=CMLib.materials().findMostOfMaterial(mob,RawMaterial.MATERIAL_CLOTH);
+			if((cloth==null)||CMLib.materials().findNumberOfResource(mob,cloth.material())<1)
+				return Ability.QUALITY_INDIFFERENT;
+			Item wood=CMLib.materials().findMostOfMaterial(mob,RawMaterial.MATERIAL_WOODEN);
+			if((wood==null)||CMLib.materials().findNumberOfResource(mob,wood.material())<2)
+				return Ability.QUALITY_INDIFFERENT;
+		}
+		return super.castingQuality(mob,target);
+	}
 
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 
-        if(CMLib.flags().isSleeping(mob))
-        {
-            mob.tell("You need to wake up!");
-            return false;
-        }
+		if(CMLib.flags().isSleeping(mob))
+		{
+			mob.tell("You need to wake up!");
+			return false;
+		}
 		if(!CMLib.flags().aliveAwakeMobileUnbound(mob,false))
 			return false;
 		Item cloth=null;

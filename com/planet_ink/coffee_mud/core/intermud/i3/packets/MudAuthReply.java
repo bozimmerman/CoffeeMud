@@ -23,7 +23,7 @@ import java.util.Vector;
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *        http://www.apache.org/licenses/LICENSE-2.0
+ *  	  http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -35,38 +35,38 @@ import java.util.Vector;
 @SuppressWarnings("rawtypes")
 public class MudAuthReply extends Packet 
 {
-    public long key=0;
-    
+	public long key=0;
+	
 	public MudAuthReply()
 	{
 		super();
-        type = Packet.MAUTH_REPLY;
-        target_mud=I3Server.getMudName();
+		type = Packet.MAUTH_REPLY;
+		target_mud=I3Server.getMudName();
 	}
 	
-    public MudAuthReply(Vector v)
-    {
-        super(v);
-        type = Packet.MAUTH_REPLY;
-        target_mud=(String)v.elementAt(4);
-        key=CMath.s_int(v.elementAt(6).toString());
-    }
+	public MudAuthReply(Vector v)
+	{
+		super(v);
+		type = Packet.MAUTH_REPLY;
+		target_mud=(String)v.elementAt(4);
+		key=CMath.s_int(v.elementAt(6).toString());
+	}
 
-    public MudAuthReply(String mud, long key)
-    {
-        super();
-        type = Packet.MAUTH_REPLY;
-        target_mud=mud;
-        this.key=key;
-    }
-    
-    public void send() throws InvalidPacketException 
-    {
-        super.send();
-    }
+	public MudAuthReply(String mud, long key)
+	{
+		super();
+		type = Packet.MAUTH_REPLY;
+		target_mud=mud;
+		this.key=key;
+	}
+	
+	public void send() throws InvalidPacketException 
+	{
+		super.send();
+	}
 
-    public String toString() 
-    {
-        return "({\"auth-mud-reply\",5,\""+I3Server.getMudName()+"\",0,\""+target_mud+"\",0,"+key+",})";
-    }
+	public String toString() 
+	{
+		return "({\"auth-mud-reply\",5,\""+I3Server.getMudName()+"\",0,\""+target_mud+"\",0,"+key+",})";
+	}
 }

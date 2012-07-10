@@ -20,7 +20,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -35,6 +35,6 @@ public class Gasbreath extends Dragonbreath
 	public String name(){ return "Gasbreath";}
 	public String text(){return "gas";}
 	public void setMiscText(String newText){super.setMiscText(text());}
-    private static final String[] triggerStrings = {"GASBREATH"};
-    public String[] triggerStrings(){return triggerStrings;}
+	private static final String[] triggerStrings = {"GASBREATH"};
+	public String[] triggerStrings(){return triggerStrings;}
 }

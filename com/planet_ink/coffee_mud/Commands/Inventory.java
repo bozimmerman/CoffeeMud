@@ -23,7 +23,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -62,25 +62,25 @@ public class Inventory extends StdCommand
 			{
 				if(CMLib.flags().canBeSeenBy(thisItem,seer))
 					lst.foundAndSeen=true;
-                else
-                	lst.foundButUnseen=true;
+				else
+					lst.foundButUnseen=true;
 				if((!(thisItem instanceof Coins))||(((Coins)thisItem).getDenomination()==0.0))
 					lst.viewItems.addElement(thisItem);
 				else
 				{
 					coinsV=lst.moneyItems.get(((Coins)thisItem).getCurrency());
-				    if(coinsV==null)
-				    {
-				    	coinsV=new Vector<Coins>();
-				        lst.moneyItems.put(((Coins)thisItem).getCurrency(),coinsV);
-				    }
-                    for(insertAt=0;insertAt<coinsV.size();insertAt++)
-                        if(((Coins)coinsV.elementAt(insertAt)).getDenomination()>((Coins)thisItem).getDenomination())
-                            break;
-                    if(insertAt>=coinsV.size())
-                    	coinsV.addElement((Coins)thisItem);
-                    else
-                    	coinsV.insertElementAt((Coins)thisItem,insertAt);
+					if(coinsV==null)
+					{
+						coinsV=new Vector<Coins>();
+						lst.moneyItems.put(((Coins)thisItem).getCurrency(),coinsV);
+					}
+					for(insertAt=0;insertAt<coinsV.size();insertAt++)
+						if(((Coins)coinsV.elementAt(insertAt)).getDenomination()>((Coins)thisItem).getDenomination())
+							break;
+					if(insertAt>=coinsV.size())
+						coinsV.addElement((Coins)thisItem);
+					else
+						coinsV.insertElementAt((Coins)thisItem,insertAt);
 				}
 			}
 		}
@@ -92,23 +92,23 @@ public class Inventory extends StdCommand
 		StringBuilder msg=new StringBuilder("");
 		if(list.moneyItems.size()>0)
 		{
-		    msg.append("\n\r^HMoney:^N\n\r");
-		    Item I=null;
+			msg.append("\n\r^HMoney:^N\n\r");
+			Item I=null;
 			for(Enumeration e=list.moneyItems.keys();e.hasMoreElements();)
 			{
-			    String key=(String)e.nextElement();
-			    Vector<Coins> V=list.moneyItems.get(key);
-                double totalValue=0.0;
-			    for(int v=0;v<V.size();v++)
-			    {
-			        I=(Item)V.elementAt(v);
-			        if(v>0) msg.append(", ");
-                    if(I instanceof Coins)
-                        totalValue+=((Coins)I).getTotalValue();
-			        msg.append(I.name());
-			    }
-                msg.append(" ^N("+CMLib.beanCounter().abbreviatedPrice(key,totalValue)+")");
-			    if(e.hasMoreElements()) msg.append("\n\r");
+				String key=(String)e.nextElement();
+				Vector<Coins> V=list.moneyItems.get(key);
+				double totalValue=0.0;
+				for(int v=0;v<V.size();v++)
+				{
+					I=(Item)V.elementAt(v);
+					if(v>0) msg.append(", ");
+					if(I instanceof Coins)
+						totalValue+=((Coins)I).getTotalValue();
+					msg.append(I.name());
+				}
+				msg.append(" ^N("+CMLib.beanCounter().abbreviatedPrice(key,totalValue)+")");
+				if(e.hasMoreElements()) msg.append("\n\r");
 			}
 		}
 		return msg.toString();
@@ -119,12 +119,12 @@ public class Inventory extends StdCommand
 		StringBuilder msg=new StringBuilder("");
 		InventoryList list = fetchInventory(seer,mob);
 		if(((list.viewItems.size()>0)||(list.moneyItems.size()>0))
-        &&(!list.foundAndSeen))
-        {
+		&&(!list.foundAndSeen))
+		{
 			list.viewItems.clear();
 			list.moneyItems.clear();
 			list.foundButUnseen=true;
-        }
+		}
 		else
 		if((mask!=null)&&(mask.trim().length()>0))
 		{
@@ -154,10 +154,10 @@ public class Inventory extends StdCommand
 		{
 			if(list.viewItems.size()>0)
 				msg.append(CMLib.lister().lister(seer,list.viewItems,true,"MItem","",false,CMath.bset(seer.getBitmap(),MOB.ATT_COMPRESS)));
-            if(list.foundButUnseen)
-                msg.append("(stuff you can't see right now)");
-                
-            msg.append(getShowableMoney(list));
+			if(list.foundButUnseen)
+				msg.append("(stuff you can't see right now)");
+				
+			msg.append(getShowableMoney(list));
 		}
 		return msg;
 	}

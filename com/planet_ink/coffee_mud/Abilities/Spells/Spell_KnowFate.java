@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -58,37 +58,37 @@ public class Spell_KnowFate extends Spell
 			{
 				mob.location().send(mob,msg);
 				
-		        String[] aliasNames=new String[0];
-		        if(mob.playerStats()!=null)
-		        	aliasNames=mob.playerStats().getAliasNames();
-		        List<List<String>> combatV=new LinkedList<List<String>>();
-		        for(int i=0;i<aliasNames.length;i++)
-		        {
-		        	String alias=mob.playerStats().getAlias(aliasNames[i]);
-		        	if(alias.length()>0)
-			        {
-			              Vector<String> all_stuff=CMParms.parseSquiggleDelimited(alias,true);
-			              for(String stuff : all_stuff)
-			              {
-			                Vector preCommands=CMParms.parse(stuff);
-			              	List THIS_CMDS=new Vector(preCommands.size());
-			              	combatV.add(THIS_CMDS);
-			                for(int v=preCommands.size()-1;v>=0;v--)
-			                    THIS_CMDS.add(0,preCommands.elementAt(v));
-			              }
-			        }
-			     }
+				String[] aliasNames=new String[0];
+				if(mob.playerStats()!=null)
+					aliasNames=mob.playerStats().getAliasNames();
+				List<List<String>> combatV=new LinkedList<List<String>>();
+				for(int i=0;i<aliasNames.length;i++)
+				{
+					String alias=mob.playerStats().getAlias(aliasNames[i]);
+					if(alias.length()>0)
+					{
+						  Vector<String> all_stuff=CMParms.parseSquiggleDelimited(alias,true);
+						  for(String stuff : all_stuff)
+						  {
+							Vector preCommands=CMParms.parse(stuff);
+						  	List THIS_CMDS=new Vector(preCommands.size());
+						  	combatV.add(THIS_CMDS);
+							for(int v=preCommands.size()-1;v>=0;v--)
+								THIS_CMDS.add(0,preCommands.elementAt(v));
+						  }
+					}
+				 }
 				
-		        int iwin=0;
-		        int hewin=0;
-		        long ihp=0;
-		        long hehp=0;
-		        int draws=0;
-		        
+				int iwin=0;
+				int hewin=0;
+				long ihp=0;
+				long hehp=0;
+				int draws=0;
+				
 				Session fakeS=(Session)CMClass.getCommon("FakeSession");
 				fakeS.initializeSession(null,"MEMORY");
-		        for(int tries=0;tries<20;tries++)
-		        {
+				for(int tries=0;tries<20;tries++)
+				{
 					MOB newMOB=(MOB)mob.copyOf();
 					MOB newVictiM=(MOB)target.copyOf();
 					Room arenaR=CMClass.getLocale("StdRoom");
@@ -100,7 +100,7 @@ public class Spell_KnowFate extends Spell
 					newVictiM.setVictim(newMOB);
 					newMOB.setStartRoom(null);
 					newVictiM.setStartRoom(null);
-		    	
+				
 					int motionlessTries=10;
 					while((!newMOB.amDead())
 					&&(!newVictiM.amDead())
@@ -112,17 +112,17 @@ public class Spell_KnowFate extends Spell
 								newMOB.enqueCommand(cmd, 0, 0);
 						final int nowHp=newMOB.curState().getHitPoints();
 						final int hisHp=newVictiM.curState().getHitPoints();
-				        try 
-				        {
+						try 
+						{
 							newMOB.setVictim(newVictiM);
 							newVictiM.setVictim(newMOB);
-				        	CMLib.commands().postStand(newMOB,true);
-				        	CMLib.commands().postStand(newVictiM,true);
-				        	newMOB.tick(newMOB,Tickable.TICKID_MOB);
-				        	newVictiM.tick(newVictiM,Tickable.TICKID_MOB);
-				        } catch(Exception t) {
-				        	Log.errOut("Spell_KnowFate",t);
-				        }
+							CMLib.commands().postStand(newMOB,true);
+							CMLib.commands().postStand(newVictiM,true);
+							newMOB.tick(newMOB,Tickable.TICKID_MOB);
+							newVictiM.tick(newVictiM,Tickable.TICKID_MOB);
+						} catch(Exception t) {
+							Log.errOut("Spell_KnowFate",t);
+						}
 						final int nowHp2=newMOB.curState().getHitPoints();
 						final int hisHp2=newVictiM.curState().getHitPoints();
 						if((nowHp==nowHp2)&&(hisHp==hisHp2))
@@ -152,21 +152,21 @@ public class Spell_KnowFate extends Spell
 					arenaR.setArea(null);
 					arenaR.destroy();
 					fakeS.onlyPrint("--------------------------------------------\n\r");
-		        }
-		        String addendum="";
-		        if(draws>0)
-		        	addendum=" with "+draws+" draws.";
-		        if(iwin>hewin)
-		        	mob.tell(iwin+"% of the time, you defeat "+target.charStats().himher()+" with "+(ihp/iwin)+" hit points left"+addendum+".");
-		        else
-		        if(hewin>iwin)
-		        	mob.tell(hewin+"% of the time you die, and "+target.charStats().himher()+" still has "+(hehp/hewin)+" hit points left"+addendum+".");
-		        else
-		        if(iwin>0)
-		        	mob.tell("Half of the time, you defeat "+target.charStats().himher()+" with "+(ihp/iwin)+" hit points left"+addendum+".");
-		        else
-		        	mob.tell("You can't hurt each other .. there were "+(draws*5)+"% draws.");
-		        //Log.debugOut(fakeS.afkMessage());
+				}
+				String addendum="";
+				if(draws>0)
+					addendum=" with "+draws+" draws.";
+				if(iwin>hewin)
+					mob.tell(iwin+"% of the time, you defeat "+target.charStats().himher()+" with "+(ihp/iwin)+" hit points left"+addendum+".");
+				else
+				if(hewin>iwin)
+					mob.tell(hewin+"% of the time you die, and "+target.charStats().himher()+" still has "+(hehp/hewin)+" hit points left"+addendum+".");
+				else
+				if(iwin>0)
+					mob.tell("Half of the time, you defeat "+target.charStats().himher()+" with "+(ihp/iwin)+" hit points left"+addendum+".");
+				else
+					mob.tell("You can't hurt each other .. there were "+(draws*5)+"% draws.");
+				//Log.debugOut(fakeS.afkMessage());
 			}
 		}
 		else

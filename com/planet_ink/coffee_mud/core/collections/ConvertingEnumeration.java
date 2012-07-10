@@ -10,7 +10,7 @@ Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
 You may obtain a copy of the License at
 
-    http://www.apache.org/licenses/LICENSE-2.0
+	http://www.apache.org/licenses/LICENSE-2.0
 
 Unless required by applicable law or agreed to in writing, software
 distributed under the License is distributed on an "AS IS" BASIS,
@@ -24,31 +24,31 @@ public class ConvertingEnumeration<K, L> implements Enumeration<L>
 	Converter<K, L> converter;
 
 	public ConvertingEnumeration(Enumeration<K> eset, Converter<K, L> conv) 
-    {
+	{
 		enumer=eset;
 		converter=conv;
-    }
-    
+	}
+	
 	public ConvertingEnumeration(Iterator<K> eset, Converter<K, L> conv) 
-    {
+	{
 		enumer=new IteratorEnumeration<K>(eset);
 		converter=conv;
-    }
+	}
 	
 	public void setConverter(Converter<K, L> conv) 
-    {
-    	converter=conv;
-    }
-    
-    public boolean hasMoreElements() 
-    { 
-    	return (converter!=null) && enumer.hasMoreElements();
-    }
-    
-    public L nextElement() 
-    {
-    	if(!hasMoreElements())
-    		throw new NoSuchElementException();
-    	return converter.convert(enumer.nextElement());
-    }
+	{
+		converter=conv;
+	}
+	
+	public boolean hasMoreElements() 
+	{ 
+		return (converter!=null) && enumer.hasMoreElements();
+	}
+	
+	public L nextElement() 
+	{
+		if(!hasMoreElements())
+			throw new NoSuchElementException();
+		return converter.convert(enumer.nextElement());
+	}
 }

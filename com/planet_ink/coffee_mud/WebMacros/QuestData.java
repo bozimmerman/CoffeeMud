@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -45,18 +45,18 @@ public class QuestData extends StdWebMacro
 		if(last.length()>0)
 		{
 			Quest Q=CMLib.quests().fetchQuest(last);
-            if(Q==null)
-            {
-            	String newLast=CMStrings.replaceAll(last,"*","@");
-	            for(int q=0;q<CMLib.quests().numQuests();q++)
-	                if((""+CMLib.quests().fetchQuest(q)).equals(newLast))
-	                { Q=CMLib.quests().fetchQuest(q); break;}
-            }
+			if(Q==null)
+			{
+				String newLast=CMStrings.replaceAll(last,"*","@");
+				for(int q=0;q<CMLib.quests().numQuests();q++)
+					if((""+CMLib.quests().fetchQuest(q)).equals(newLast))
+					{ Q=CMLib.quests().fetchQuest(q); break;}
+			}
 			if(Q==null) return "";
 			if(parms.containsKey("NAME"))
-                return clearWebMacros(Q.name());
-            if(parms.containsKey("ID"))
-                return clearWebMacros(CMStrings.replaceAll(""+Q,"@","*"));
+				return clearWebMacros(Q.name());
+			if(parms.containsKey("ID"))
+				return clearWebMacros(CMStrings.replaceAll(""+Q,"@","*"));
 			if(parms.containsKey("DURATION"))
 				return ""+Q.duration();
 			if(parms.containsKey("WAIT"))
@@ -67,29 +67,29 @@ public class QuestData extends StdWebMacro
 				return ""+Q.running();
 			if(parms.containsKey("WAITING"))
 				return ""+Q.waiting();
-            if(parms.containsKey("SUSPENDED"))
-                return ""+Q.suspended();
+			if(parms.containsKey("SUSPENDED"))
+				return ""+Q.suspended();
 			if(parms.containsKey("REMAINING"))
 				return ""+Q.minsRemaining();
-            if(parms.containsKey("REMAININGLEFT"))
-            {
-                if(Q.duration()==0)
-                    return "eternity";
-                return Q.minsRemaining()+" minutes";
-            }
+			if(parms.containsKey("REMAININGLEFT"))
+			{
+				if(Q.duration()==0)
+					return "eternity";
+				return Q.minsRemaining()+" minutes";
+			}
 			if(parms.containsKey("WAITLEFT"))
 				return ""+Q.waitRemaining();
-            if(parms.containsKey("WAITMINSLEFT"))
-            {
-                long min=Q.waitRemaining();
-                if(min>0) {
-                    min=min*CMProps.getTickMillis();
-                    if(min>60000)
-                        return (min/60000)+" minutes";
-                    return (min/1000)+" seconds";
-                }
-                return min+" minutes";
-            }
+			if(parms.containsKey("WAITMINSLEFT"))
+			{
+				long min=Q.waitRemaining();
+				if(min>0) {
+					min=min*CMProps.getTickMillis();
+					if(min>60000)
+						return (min/60000)+" minutes";
+					return (min/1000)+" seconds";
+				}
+				return min+" minutes";
+			}
 			if(parms.containsKey("WINNERS"))
 				return ""+Q.getWinnerStr();
 			if(parms.containsKey("RAWTEXT"))
@@ -102,22 +102,22 @@ public class QuestData extends StdWebMacro
 					CMFile F=new CMFile(Resources.makeFileResourceName(fileName),null,true);
 					if((F.exists())&&(F.canRead()))
 						script=F.text();
-                    script=new StringBuffer(CMStrings.replaceAll(script.toString(),"\n\r","\n"));
+					script=new StringBuffer(CMStrings.replaceAll(script.toString(),"\n\r","\n"));
 				}
-                script=new StringBuffer(CMStrings.replaceAll(script.toString(),"&","&amp;"));
-                String postFix="";
-                int limit=script.toString().toUpperCase().indexOf("<?XML");
-                if(limit>=0)
-                {
-                    postFix=script.toString().substring(limit);
-                    script=new StringBuffer(script.toString().substring(0,limit));
-                }
+				script=new StringBuffer(CMStrings.replaceAll(script.toString(),"&","&amp;"));
+				String postFix="";
+				int limit=script.toString().toUpperCase().indexOf("<?XML");
+				if(limit>=0)
+				{
+					postFix=script.toString().substring(limit);
+					script=new StringBuffer(script.toString().substring(0,limit));
+				}
 				for(int i=0;i<script.length();i++)
 					if((script.charAt(i)==';')
 					&&((i==0)||(script.charAt(i-1)!='\\')))
 						script.setCharAt(i,'\n');
-                script=new StringBuffer(CMStrings.replaceAll(script.toString(),"\\;",";"));
-                return clearWebMacros(script+postFix);
+				script=new StringBuffer(CMStrings.replaceAll(script.toString(),"\\;",";"));
+				return clearWebMacros(script+postFix);
  			}
 		}
 		return "";

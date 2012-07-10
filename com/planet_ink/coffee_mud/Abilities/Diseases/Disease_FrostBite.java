@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -36,72 +36,72 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Disease_FrostBite extends Disease
 {
-    public String ID() { return "Disease_FrostBite"; }
-    public String name(){ return "Frost Bite";}
-    private String where="feet";
-    public String displayText(){ return "(Frost bitten "+where+")";}
-    protected int canAffectCode(){return CAN_MOBS;}
-    protected int canTargetCode(){return CAN_MOBS;}
-    public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-    public boolean putInCommandlist(){return false;}
-    public int difficultyLevel(){return 1;}
-    public int[] limbsAffectable={Race.BODY_EAR,Race.BODY_ANTENEA,Race.BODY_FOOT,Race.BODY_HAND,Race.BODY_NOSE};
-    protected int DISEASE_TICKS(){return (CMProps.getIntVar( CMProps.SYSTEMI_TICKSPERMUDDAY ) / 2);}
-    protected int DISEASE_DELAY(){return 50;}
-    protected String DISEASE_DONE()
-    {
-        if(tickDown>0)
-            return "Your frost bite heals.";
-        return "Your frost bite has cost you dearly.";
-    }
-    protected String DISEASE_START(){return "^G<S-NAME> <S-IS-ARE> getting frost bite.^?";}
-    protected String DISEASE_AFFECT(){return "";}
-    public int abilityCode(){return 0;}
+	public String ID() { return "Disease_FrostBite"; }
+	public String name(){ return "Frost Bite";}
+	private String where="feet";
+	public String displayText(){ return "(Frost bitten "+where+")";}
+	protected int canAffectCode(){return CAN_MOBS;}
+	protected int canTargetCode(){return CAN_MOBS;}
+	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
+	public boolean putInCommandlist(){return false;}
+	public int difficultyLevel(){return 1;}
+	public int[] limbsAffectable={Race.BODY_EAR,Race.BODY_ANTENEA,Race.BODY_FOOT,Race.BODY_HAND,Race.BODY_NOSE};
+	protected int DISEASE_TICKS(){return (CMProps.getIntVar( CMProps.SYSTEMI_TICKSPERMUDDAY ) / 2);}
+	protected int DISEASE_DELAY(){return 50;}
+	protected String DISEASE_DONE()
+	{
+		if(tickDown>0)
+			return "Your frost bite heals.";
+		return "Your frost bite has cost you dearly.";
+	}
+	protected String DISEASE_START(){return "^G<S-NAME> <S-IS-ARE> getting frost bite.^?";}
+	protected String DISEASE_AFFECT(){return "";}
+	public int abilityCode(){return 0;}
 
-    public void unInvoke()
-    {
-        if((affected instanceof MOB)&&(tickDown<=0))
-        {
-            MOB mob=(MOB)affected;
-            Ability A=CMClass.getAbility("Amputation");
-            if(A!=null)
-            {
-                super.unInvoke();
-                A.invoke(mob,CMParms.parse(where),mob,true,0);
-                mob.recoverCharStats();
-                mob.recoverPhyStats();
-                mob.recoverMaxState();
-            }
-            else
-                super.unInvoke();
-        }
-        else
-            super.unInvoke();
-    }
+	public void unInvoke()
+	{
+		if((affected instanceof MOB)&&(tickDown<=0))
+		{
+			MOB mob=(MOB)affected;
+			Ability A=CMClass.getAbility("Amputation");
+			if(A!=null)
+			{
+				super.unInvoke();
+				A.invoke(mob,CMParms.parse(where),mob,true,0);
+				mob.recoverCharStats();
+				mob.recoverPhyStats();
+				mob.recoverMaxState();
+			}
+			else
+				super.unInvoke();
+		}
+		else
+			super.unInvoke();
+	}
 
-    public void affectCharStats(MOB affected, CharStats affectableStats)
-    {
-        super.affectCharStats(affected,affectableStats);
-        if(affected==null) return;
-        if(where==null)
-        {
-            Vector choices=new Vector();
-            for(int i=0;i<limbsAffectable.length;i++)
-                if(affected.charStats().getBodyPart(limbsAffectable[i])>0)
-                    choices.addElement(Integer.valueOf(limbsAffectable[i]));
-            if(choices.size()<=0)
-            {
-                where="nowhere";
-                unInvoke();
-            }
-            else
-                where=Race.BODYPARTSTR[((Integer)choices.elementAt(CMLib.dice().roll(1,choices.size(),-1))).intValue()];
-        }
-    }
+	public void affectCharStats(MOB affected, CharStats affectableStats)
+	{
+		super.affectCharStats(affected,affectableStats);
+		if(affected==null) return;
+		if(where==null)
+		{
+			Vector choices=new Vector();
+			for(int i=0;i<limbsAffectable.length;i++)
+				if(affected.charStats().getBodyPart(limbsAffectable[i])>0)
+					choices.addElement(Integer.valueOf(limbsAffectable[i]));
+			if(choices.size()<=0)
+			{
+				where="nowhere";
+				unInvoke();
+			}
+			else
+				where=Race.BODYPARTSTR[((Integer)choices.elementAt(CMLib.dice().roll(1,choices.size(),-1))).intValue()];
+		}
+	}
 
-    public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
-    {
-        where=null;
-        return super.invoke(mob,commands,givenTarget,auto,asLevel);
-    }
+	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
+	{
+		where=null;
+		return super.invoke(mob,commands,givenTarget,auto,asLevel);
+	}
 }

@@ -25,7 +25,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -42,9 +42,9 @@ public class Chant_AcidRain extends Chant
 	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	protected int canAffectCode(){return Ability.CAN_ROOMS;}
 	protected int canTargetCode(){return Ability.CAN_ROOMS;}
-    public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_WEATHER_MASTERY;}
-    public long flags(){return Ability.FLAG_EARTHBASED;}
-    
+	public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_WEATHER_MASTERY;}
+	public long flags(){return Ability.FLAG_EARTHBASED;}
+	
 	public boolean isRaining(Room R)
 	{
 		if((R.getArea().getClimateObj().weatherType(R)==Climate.WEATHER_RAIN)
@@ -69,28 +69,28 @@ public class Chant_AcidRain extends Chant
 				{
 					if(CMLib.dice().rollPercentage()>M.charStats().getSave(CharStats.STAT_SAVE_ACID))
 						CMLib.combat().postDamage(invoker(),M,this,CMLib.dice().roll(1,M.phyStats().level()+(2*super.getXLEVELLevel(invoker())),1),CMMsg.MASK_ALWAYS|CMMsg.TYP_ACID,Weapon.TYPE_MELTING,"The acid rain <DAMAGE> <T-NAME>!");
-	                if((!M.isInCombat())
-	                &&(M!=invoker)
-	                &&(M.location()!=null)
-	                &&(M.location().isInhabitant(invoker))
-	                &&(CMLib.flags().canBeSeenBy(invoker,M)))
-	                    CMLib.combat().postAttack(M,invoker,M.fetchWieldedItem());
+					if((!M.isInCombat())
+					&&(M!=invoker)
+					&&(M.location()!=null)
+					&&(M.location().isInhabitant(invoker))
+					&&(CMLib.flags().canBeSeenBy(invoker,M)))
+						CMLib.combat().postAttack(M,invoker,M.fetchWieldedItem());
 				}
 			}
 		}
 		return true;
 	}
 
-    public int castingQuality(MOB mob, Physical target)
-    {
-        if(mob!=null)
-        {
-            if(!isRaining(mob.location()))
-                return Ability.QUALITY_INDIFFERENT;
-        }
-        return super.castingQuality(mob,target);
-    }
-    
+	public int castingQuality(MOB mob, Physical target)
+	{
+		if(mob!=null)
+		{
+			if(!isRaining(mob.location()))
+				return Ability.QUALITY_INDIFFERENT;
+		}
+		return super.castingQuality(mob,target);
+	}
+	
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		Room target=mob.location();

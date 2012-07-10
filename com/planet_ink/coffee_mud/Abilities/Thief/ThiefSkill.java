@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -40,9 +40,9 @@ public class ThiefSkill extends StdAbility
 	public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 	public int enchantQuality(){return Ability.QUALITY_INDIFFERENT;}
 	public int classificationCode(){	return Ability.ACODE_THIEF_SKILL;}
-    protected int canAffectCode(){return 0;}
-    protected int canTargetCode(){return CAN_MOBS;}
-    
+	protected int canAffectCode(){return 0;}
+	protected int canTargetCode(){return CAN_MOBS;}
+	
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))

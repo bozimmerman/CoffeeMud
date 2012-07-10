@@ -28,7 +28,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -69,9 +69,9 @@ public class MUDGrinder extends StdWebMacro
 			map.rePlaceRooms();
 			return map.getHTMLTable(httpReq).toString();
 		}
-        else
-        if(parms.containsKey("AREATHUMBNAIL"))
-        {
+		else
+		if(parms.containsKey("AREATHUMBNAIL"))
+		{
 			try
 			{
 				String AREA = httpReq.getRequestParameter("AREA");
@@ -96,10 +96,10 @@ public class MUDGrinder extends StdWebMacro
 				return map.getHTMLMap(httpReq, roomSize).toString();
 			}
 			catch(Exception e){e.printStackTrace();}
-        }
-        else
-        if(parms.containsKey("WORLDMAP"))
-        {
+		}
+		else
+		if(parms.containsKey("WORLDMAP"))
+		{
 			GrinderFlatMap map=null;
 			if((httpReq.getRequestParameter("MAPSTYLE")!=null)
 			&&(httpReq.getRequestParameter("MAPSTYLE").length()>0))
@@ -108,7 +108,7 @@ public class MUDGrinder extends StdWebMacro
 				map=new GrinderFlatMap();
 			map.rePlaceRooms();
 			return map.getHTMLMap(httpReq).toString();
-        }
+		}
 		else
 		if(parms.containsKey("AREALIST"))
 		{
@@ -129,34 +129,34 @@ public class MUDGrinder extends StdWebMacro
 			Log.sysOut("Grinder",mob.Name()+" obliterated area "+A.Name());
 			return "The area "+A.Name()+" has been successfully deleted.";
 		}
-        else
-        if(parms.containsKey("EDITACCOUNT"))
-        {
+		else
+		if(parms.containsKey("EDITACCOUNT"))
+		{
 			MOB mob = Authenticate.getAuthenticatedMob(httpReq);
-            if(mob==null) return "@break@";
-            String last=httpReq.getRequestParameter("ACCOUNT");
-            if(last==null) return "@break@";
-            if(last.length()==0) return "@break@";
-            PlayerAccount A=CMLib.players().getLoadAccount(last);
-            if(A==null) return "@break@";
-            if(!CMSecurity.isAllowedEverywhere(mob,"CMDPLAYERS")) return "@break@";
-            String err=new GrinderAccounts().runMacro(httpReq,parm);
-            if(err.length()>0) return err;
-            Log.sysOut("Grinder",mob.Name()+" modified account "+A.accountName());
-            return "";
-        }
-        else
-        if(parms.containsKey("DELACCOUNT"))
-        {
+			if(mob==null) return "@break@";
+			String last=httpReq.getRequestParameter("ACCOUNT");
+			if(last==null) return "@break@";
+			if(last.length()==0) return "@break@";
+			PlayerAccount A=CMLib.players().getLoadAccount(last);
+			if(A==null) return "@break@";
+			if(!CMSecurity.isAllowedEverywhere(mob,"CMDPLAYERS")) return "@break@";
+			String err=new GrinderAccounts().runMacro(httpReq,parm);
+			if(err.length()>0) return err;
+			Log.sysOut("Grinder",mob.Name()+" modified account "+A.accountName());
+			return "";
+		}
+		else
+		if(parms.containsKey("DELACCOUNT"))
+		{
 			MOB mob = Authenticate.getAuthenticatedMob(httpReq);
-            if(mob==null) return "@break@";
-            String last=httpReq.getRequestParameter("ACCOUNT");
-            if(last==null) return "@break@";
-            if(last.length()==0) return "@break@";
-            PlayerAccount A=CMLib.players().getLoadAccount(last);
-            if(A==null) return "@break@";
-            if(!CMSecurity.isAllowedEverywhere(mob,"CMDPLAYERS")) return "@break@";
-    	    String playerList = CMParms.toStringList(A.getPlayers());
+			if(mob==null) return "@break@";
+			String last=httpReq.getRequestParameter("ACCOUNT");
+			if(last==null) return "@break@";
+			if(last.length()==0) return "@break@";
+			PlayerAccount A=CMLib.players().getLoadAccount(last);
+			if(A==null) return "@break@";
+			if(!CMSecurity.isAllowedEverywhere(mob,"CMDPLAYERS")) return "@break@";
+			String playerList = CMParms.toStringList(A.getPlayers());
 			for(Enumeration<String> p=A.getPlayers();p.hasMoreElements();)
 			{
 				MOB deadMOB=CMLib.players().getLoadPlayer(p.nextElement());
@@ -164,234 +164,234 @@ public class MUDGrinder extends StdWebMacro
 				Log.sysOut("Grinder",mob.Name()+" destroyed user "+deadMOB.Name()+".");
 				deadMOB.destroy();
 			}
-		    CMLib.players().obliterateAccountOnly(A);
+			CMLib.players().obliterateAccountOnly(A);
 			Log.sysOut("Grinder",mob.Name()+" destroyed account "+A.accountName()+" and players '"+playerList+"'.");
-            return "";
-        }
+			return "";
+		}
 		else
-        if(parms.containsKey("DELCATALOGMOB"))
-        {
+		if(parms.containsKey("DELCATALOGMOB"))
+		{
 			MOB mob = Authenticate.getAuthenticatedMob(httpReq);
-            if(mob==null) return "@break@";
-            String last=httpReq.getRequestParameter("DELMOB");
-            if(last==null) return "@break@";
-            if(last.length()==0) return "@break@";
-            if(last.startsWith("CATALOG-")) {
-                last=last.substring(8);
-                MOB M=CMLib.catalog().getCatalogMob(last);
-                if(M==null) return "@break@";
-                if(!CMSecurity.isAllowedEverywhere(mob,"CATALOG")) return "@break@";
-                CMLib.catalog().delCatalog(M);
-                Log.sysOut("Grinder",mob.Name()+" destroyed catalog mob "+last);
-                return "The catalog mob "+last+" has been removed.";
-            }
-            return "@break@";
-        }
-        else
-        if(parms.containsKey("DELCATALOGITEM"))
-        {
+			if(mob==null) return "@break@";
+			String last=httpReq.getRequestParameter("DELMOB");
+			if(last==null) return "@break@";
+			if(last.length()==0) return "@break@";
+			if(last.startsWith("CATALOG-")) {
+				last=last.substring(8);
+				MOB M=CMLib.catalog().getCatalogMob(last);
+				if(M==null) return "@break@";
+				if(!CMSecurity.isAllowedEverywhere(mob,"CATALOG")) return "@break@";
+				CMLib.catalog().delCatalog(M);
+				Log.sysOut("Grinder",mob.Name()+" destroyed catalog mob "+last);
+				return "The catalog mob "+last+" has been removed.";
+			}
+			return "@break@";
+		}
+		else
+		if(parms.containsKey("DELCATALOGITEM"))
+		{
 			MOB mob = Authenticate.getAuthenticatedMob(httpReq);
-            if(mob==null) return "@break@";
-            String last=httpReq.getRequestParameter("DELITEM");
-            if(last==null) return "@break@";
-            if(last.length()==0) return "@break@";
-            if(last.startsWith("CATALOG-")) {
-                last=last.substring(8);
-                Item I=CMLib.catalog().getCatalogItem(last);
-                if(I==null) return "@break@";
-                if(!CMSecurity.isAllowedEverywhere(mob,"CATALOG")) return "@break@";
-                CMLib.catalog().delCatalog(I);
-                Log.sysOut("Grinder",mob.Name()+" destroyed catalog item "+last);
-                return "The catalog item "+last+" has been removed.";
-            }
-            return "@break@";
-        }
-        else
-        if(parms.containsKey("DELCOMPONENT"))
-        {
+			if(mob==null) return "@break@";
+			String last=httpReq.getRequestParameter("DELITEM");
+			if(last==null) return "@break@";
+			if(last.length()==0) return "@break@";
+			if(last.startsWith("CATALOG-")) {
+				last=last.substring(8);
+				Item I=CMLib.catalog().getCatalogItem(last);
+				if(I==null) return "@break@";
+				if(!CMSecurity.isAllowedEverywhere(mob,"CATALOG")) return "@break@";
+				CMLib.catalog().delCatalog(I);
+				Log.sysOut("Grinder",mob.Name()+" destroyed catalog item "+last);
+				return "The catalog item "+last+" has been removed.";
+			}
+			return "@break@";
+		}
+		else
+		if(parms.containsKey("DELCOMPONENT"))
+		{
 			MOB mob = Authenticate.getAuthenticatedMob(httpReq);
-            if(mob==null) return "@break@";
-            String last=httpReq.getRequestParameter("COMPONENT");
-            if(last==null) return "@break@";
-            if(last.length()==0) return "@break@";
-            List<AbilityComponent> list = CMLib.ableMapper().getAbilityComponentDVector(last);
-            if(list==null) return "@break@";
+			if(mob==null) return "@break@";
+			String last=httpReq.getRequestParameter("COMPONENT");
+			if(last==null) return "@break@";
+			if(last.length()==0) return "@break@";
+			List<AbilityComponent> list = CMLib.ableMapper().getAbilityComponentDVector(last);
+			if(list==null) return "@break@";
 			if(!CMSecurity.isAllowedEverywhere(mob,"COMPONENTS")) return "@break@";
 			CMLib.ableMapper().getAbilityComponentMap().remove(last.toUpperCase().trim());
 			CMLib.ableMapper().alterAbilityComponentFile(last, true);
-            Log.sysOut("Grinder",mob.Name()+" destroyed component "+last);
-            return "The component "+last+" has been successfully destroyed.";
-        }
-        else
-        if(parms.containsKey("EDITCOMPONENT")||parms.containsKey("ADDCOMPONENT"))
-        {
+			Log.sysOut("Grinder",mob.Name()+" destroyed component "+last);
+			return "The component "+last+" has been successfully destroyed.";
+		}
+		else
+		if(parms.containsKey("EDITCOMPONENT")||parms.containsKey("ADDCOMPONENT"))
+		{
 			MOB mob = Authenticate.getAuthenticatedMob(httpReq);
-            if(mob==null) return "@break@";
-            String last=httpReq.getRequestParameter("COMPONENT");
-            if(last==null) return "@break@";
-            if(last.length()==0) return "@break@";
-            if(!CMSecurity.isAllowedEverywhere(mob,"COMPONENTS")) return "@break@";
-            String err=new GrinderComponent().runMacro(httpReq,parm);
-            if(err.length()>0) return err;
-            Log.sysOut("Grinder",mob.Name()+" modified component "+last);
-            return "The component "+last+" has been successfully modified.";
-        }
-        else
-        if(parms.containsKey("DELALLQUALIFY"))
-        {
+			if(mob==null) return "@break@";
+			String last=httpReq.getRequestParameter("COMPONENT");
+			if(last==null) return "@break@";
+			if(last.length()==0) return "@break@";
+			if(!CMSecurity.isAllowedEverywhere(mob,"COMPONENTS")) return "@break@";
+			String err=new GrinderComponent().runMacro(httpReq,parm);
+			if(err.length()>0) return err;
+			Log.sysOut("Grinder",mob.Name()+" modified component "+last);
+			return "The component "+last+" has been successfully modified.";
+		}
+		else
+		if(parms.containsKey("DELALLQUALIFY"))
+		{
 			MOB mob = Authenticate.getAuthenticatedMob(httpReq);
-            if(mob==null) return "@break@";
-            String last=httpReq.getRequestParameter("ALLQUALID");
-            if(last==null) return "@break@";
-            if(last.length()==0) return "@break@";
+			if(mob==null) return "@break@";
+			String last=httpReq.getRequestParameter("ALLQUALID");
+			if(last==null) return "@break@";
+			if(last.length()==0) return "@break@";
 			if(!CMSecurity.isAllowedEverywhere(mob,"ABILITIES")) return "@break@";
-	        String which=httpReq.getRequestParameter("ALLQUALWHICH");
-	        if(parms.containsKey("WHICH"))
-	        	which=parms.get("WHICH");	
-	        if((which==null)||(which.length()==0))
-	        	return " @break@";
-	        Map<String,Map<String,AbilityMapper.AbilityMapping>> allQualMap=CMLib.ableMapper().getAllQualifiesMap(httpReq.getRequestObjects());
-	        Map<String,AbilityMapper.AbilityMapping> map=allQualMap.get(which.toUpperCase().trim());
-	        if(map==null) return " @break@";
+			String which=httpReq.getRequestParameter("ALLQUALWHICH");
+			if(parms.containsKey("WHICH"))
+				which=parms.get("WHICH");	
+			if((which==null)||(which.length()==0))
+				return " @break@";
+			Map<String,Map<String,AbilityMapper.AbilityMapping>> allQualMap=CMLib.ableMapper().getAllQualifiesMap(httpReq.getRequestObjects());
+			Map<String,AbilityMapper.AbilityMapping> map=allQualMap.get(which.toUpperCase().trim());
+			if(map==null) return " @break@";
 			map.remove(last.toUpperCase().trim());
 			CMLib.ableMapper().saveAllQualifysFile(allQualMap);
-            Log.sysOut("Grinder",mob.Name()+" destroyed all qualify ability "+last);
-            return "The all qualify ability "+last+" has been successfully destroyed.";
-        }
-        else
-        if(parms.containsKey("EDITALLQUALIFY")||parms.containsKey("ADDALLQUALIFY"))
-        {
-			MOB mob = Authenticate.getAuthenticatedMob(httpReq);
-            if(mob==null) return "@break@";
-            String last=httpReq.getRequestParameter("ALLQUALID");
-            if(last==null) return "@break@";
-            if(last.length()==0) return "@break@";
-			if(!CMSecurity.isAllowedEverywhere(mob,"ABILITIES")) return "@break@";
-            String err=new GrinderAllQualifys().editAllQualify(httpReq, parms);
-            if(err.length()>0) return err;
-            Log.sysOut("Grinder",mob.Name()+" modified all qualify ability "+last);
-            return "The all qualify ability "+last+" has been successfully modified.";
-        }
-        else
-        if(parms.containsKey("DELCLAN"))
-        {
-			MOB mob = Authenticate.getAuthenticatedMob(httpReq);
-            if(mob==null) return "@break@";
-            String last=httpReq.getRequestParameter("CLAN");
-            if(last==null) return "@break@";
-            if(last.length()==0) return "@break@";
-            Clan C=CMLib.clans().getClan(last);
-            if(C==null) return "@break@";
-            if(!CMSecurity.isAllowedEverywhere(mob,"CMDCLANS")) return "@break@";
-            C.destroyClan();
-            Log.sysOut("Grinder",mob.Name()+" destroyed clan "+C.clanID());
-            return "The clan "+C.clanID()+" has been successfully destroyed.";
-        }
-        else
-        if(parms.containsKey("EDITCLAN"))
-        {
-			MOB mob = Authenticate.getAuthenticatedMob(httpReq);
-            if(mob==null) return "@break@";
-            String last=httpReq.getRequestParameter("CLAN");
-            if(last==null) return "@break@";
-            if(last.length()==0) return "@break@";
-            Clan C=CMLib.clans().getClan(last);
-            if(C==null) return "@break@";
-            if(!CMSecurity.isAllowedEverywhere(mob,"CMDCLANS")) return "@break@";
-            String err=new GrinderClans().runMacro(httpReq,parm);
-            if(err.length()>0) return err;
-            C.update();
-            Log.sysOut("Grinder",mob.Name()+" modified clan "+C.clanID());
-            return "The clan "+C.clanID()+" has been successfully modified.";
-        }
+			Log.sysOut("Grinder",mob.Name()+" destroyed all qualify ability "+last);
+			return "The all qualify ability "+last+" has been successfully destroyed.";
+		}
 		else
-        if(parms.containsKey("ADDCLAN"))
-        {
-            MOB mob = Authenticate.getAuthenticatedMob(httpReq);
-            if(mob==null) return "@break@";
-            String last=httpReq.getRequestParameter("NEWCLANID");
-            if(last==null) return "@break@";
-            if(last.length()==0) return "@break@";
-            Clan C=CMLib.clans().findClan(last);
-            if((C!=null) 
-            ||CMLib.players().playerExists(last)
-            ||(last.equalsIgnoreCase("All")))
-                return "@break@";
-            if(!CMSecurity.isAllowedEverywhere(mob,"CMDCLANS")) return "@break@";
-            Clan newClan=(Clan)CMClass.getCommon("DefaultClan");
-            newClan.setName(last);
-            newClan.setGovernmentID(CMLib.clans().getDefaultGovernment().getID());
-            newClan.setStatus(Clan.CLANSTATUS_PENDING);
-            newClan.create();
-            Log.sysOut("Grinder",mob.Name()+" created clan "+newClan.clanID());
-            httpReq.addRequestParameters("CLAN",last);
-            return "The clan "+newClan.clanID()+" has been successfully created.";
-        }
-        else
-        if(parms.containsKey("DELCLANGOVERNMENT"))
-        {
+		if(parms.containsKey("EDITALLQUALIFY")||parms.containsKey("ADDALLQUALIFY"))
+		{
 			MOB mob = Authenticate.getAuthenticatedMob(httpReq);
-            if(mob==null) return "@break@";
-            String last=httpReq.getRequestParameter("GOVERNMENT");
-            if(last==null) return "@break@";
-            if(last.length()==0) return "@break@";
-            ClanGovernment G=CMLib.clans().getStockGovernment(CMath.s_int(last));
-            if(G==null) return "@break@";
-            if(!CMSecurity.isAllowedEverywhere(mob,"CMDCLANS")) return "@break@";
-            if(!CMLib.clans().removeGovernment(G)) 
-            	return "Unable to remove last government.";
-            Log.sysOut("Grinder",mob.Name()+" destroyed clan government "+G.getName());
-            return "The clan government "+G.getName()+" has been successfully destroyed.";
-        }
-        else
-        if(parms.containsKey("EDITCLANGOVERNMENT"))
-        {
+			if(mob==null) return "@break@";
+			String last=httpReq.getRequestParameter("ALLQUALID");
+			if(last==null) return "@break@";
+			if(last.length()==0) return "@break@";
+			if(!CMSecurity.isAllowedEverywhere(mob,"ABILITIES")) return "@break@";
+			String err=new GrinderAllQualifys().editAllQualify(httpReq, parms);
+			if(err.length()>0) return err;
+			Log.sysOut("Grinder",mob.Name()+" modified all qualify ability "+last);
+			return "The all qualify ability "+last+" has been successfully modified.";
+		}
+		else
+		if(parms.containsKey("DELCLAN"))
+		{
 			MOB mob = Authenticate.getAuthenticatedMob(httpReq);
-            if(mob==null) return "@break@";
-            String last=httpReq.getRequestParameter("GOVERNMENT");
-            if(last==null) return "@break@";
-            if(last.length()==0) return "@break@";
-            ClanGovernment G=CMLib.clans().getStockGovernment(CMath.s_int(last));
-            if(G==null) return "@break@";
-            if(!CMSecurity.isAllowedEverywhere(mob,"CMDCLANS")) return "@break@";
-            String err=new GrinderClanGovernments().runMacro(httpReq,parm);
-            if(err.length()>0) return err;
+			if(mob==null) return "@break@";
+			String last=httpReq.getRequestParameter("CLAN");
+			if(last==null) return "@break@";
+			if(last.length()==0) return "@break@";
+			Clan C=CMLib.clans().getClan(last);
+			if(C==null) return "@break@";
+			if(!CMSecurity.isAllowedEverywhere(mob,"CMDCLANS")) return "@break@";
+			C.destroyClan();
+			Log.sysOut("Grinder",mob.Name()+" destroyed clan "+C.clanID());
+			return "The clan "+C.clanID()+" has been successfully destroyed.";
+		}
+		else
+		if(parms.containsKey("EDITCLAN"))
+		{
+			MOB mob = Authenticate.getAuthenticatedMob(httpReq);
+			if(mob==null) return "@break@";
+			String last=httpReq.getRequestParameter("CLAN");
+			if(last==null) return "@break@";
+			if(last.length()==0) return "@break@";
+			Clan C=CMLib.clans().getClan(last);
+			if(C==null) return "@break@";
+			if(!CMSecurity.isAllowedEverywhere(mob,"CMDCLANS")) return "@break@";
+			String err=new GrinderClans().runMacro(httpReq,parm);
+			if(err.length()>0) return err;
+			C.update();
+			Log.sysOut("Grinder",mob.Name()+" modified clan "+C.clanID());
+			return "The clan "+C.clanID()+" has been successfully modified.";
+		}
+		else
+		if(parms.containsKey("ADDCLAN"))
+		{
+			MOB mob = Authenticate.getAuthenticatedMob(httpReq);
+			if(mob==null) return "@break@";
+			String last=httpReq.getRequestParameter("NEWCLANID");
+			if(last==null) return "@break@";
+			if(last.length()==0) return "@break@";
+			Clan C=CMLib.clans().findClan(last);
+			if((C!=null) 
+			||CMLib.players().playerExists(last)
+			||(last.equalsIgnoreCase("All")))
+				return "@break@";
+			if(!CMSecurity.isAllowedEverywhere(mob,"CMDCLANS")) return "@break@";
+			Clan newClan=(Clan)CMClass.getCommon("DefaultClan");
+			newClan.setName(last);
+			newClan.setGovernmentID(CMLib.clans().getDefaultGovernment().getID());
+			newClan.setStatus(Clan.CLANSTATUS_PENDING);
+			newClan.create();
+			Log.sysOut("Grinder",mob.Name()+" created clan "+newClan.clanID());
+			httpReq.addRequestParameters("CLAN",last);
+			return "The clan "+newClan.clanID()+" has been successfully created.";
+		}
+		else
+		if(parms.containsKey("DELCLANGOVERNMENT"))
+		{
+			MOB mob = Authenticate.getAuthenticatedMob(httpReq);
+			if(mob==null) return "@break@";
+			String last=httpReq.getRequestParameter("GOVERNMENT");
+			if(last==null) return "@break@";
+			if(last.length()==0) return "@break@";
+			ClanGovernment G=CMLib.clans().getStockGovernment(CMath.s_int(last));
+			if(G==null) return "@break@";
+			if(!CMSecurity.isAllowedEverywhere(mob,"CMDCLANS")) return "@break@";
+			if(!CMLib.clans().removeGovernment(G)) 
+				return "Unable to remove last government.";
+			Log.sysOut("Grinder",mob.Name()+" destroyed clan government "+G.getName());
+			return "The clan government "+G.getName()+" has been successfully destroyed.";
+		}
+		else
+		if(parms.containsKey("EDITCLANGOVERNMENT"))
+		{
+			MOB mob = Authenticate.getAuthenticatedMob(httpReq);
+			if(mob==null) return "@break@";
+			String last=httpReq.getRequestParameter("GOVERNMENT");
+			if(last==null) return "@break@";
+			if(last.length()==0) return "@break@";
+			ClanGovernment G=CMLib.clans().getStockGovernment(CMath.s_int(last));
+			if(G==null) return "@break@";
+			if(!CMSecurity.isAllowedEverywhere(mob,"CMDCLANS")) return "@break@";
+			String err=new GrinderClanGovernments().runMacro(httpReq,parm);
+			if(err.length()>0) return err;
 			CMLib.clans().reSaveGovernmentsXML();
-            Log.sysOut("Grinder",mob.Name()+" modified clan government "+G.getName());
-            return "The clan government "+G.getName()+" has been successfully modified.";
-        }
-        else
+			Log.sysOut("Grinder",mob.Name()+" modified clan government "+G.getName());
+			return "The clan government "+G.getName()+" has been successfully modified.";
+		}
+		else
 		if(parms.containsKey("IMPORTAREA"))
 		{
 			MOB mob = Authenticate.getAuthenticatedMob(httpReq);
 			if(mob==null) return "@break@";
-            String file=httpReq.getRequestParameter("FILE");
-            if(file==null) file="";
-            byte[] bufBytes=(byte[])httpReq.getRequestObjects().get("FILE");
-            if((file.length()==0)||(bufBytes==null)||(bufBytes.length==0))
-            	return "That file was empty.";
-            boolean deleteIfExists=false;
-            if(httpReq.getRequestParameter("DELFIRST")!=null)
-            	deleteIfExists=httpReq.getRequestParameter("DELFIRST").equalsIgnoreCase("ON");
-            StringBuffer buf=new StringBuffer(CMStrings.bytesToStr(bufBytes));
-    		Vector<Object> V=new Vector<Object>();
-    		V.addAll(CMParms.parse("IMPORT "+(deleteIfExists?"":"NODELETE ")+"NOPROMPT"));
-    		V.add(buf);
-    		Command C=CMClass.getCommand("Import");
-    		if(C==null) return null;
-    		try{C.execute(mob,V,0);}catch(Exception e){return e.getMessage();}
-    		if((V.size()==0)||(V.get(V.size()-1) instanceof StringBuffer))
-    			return "<FONT COLOR=LIGHTGREEN>Your file was successfully imported.</FONT>";
-    		StringBuffer error=new StringBuffer("");
-    		for(int i=0;i<V.size();i++)
-    			if(V.elementAt(i) instanceof String)
-    				error.append(((String)V.elementAt(i))+"<BR>");
-    		return error.toString();
+			String file=httpReq.getRequestParameter("FILE");
+			if(file==null) file="";
+			byte[] bufBytes=(byte[])httpReq.getRequestObjects().get("FILE");
+			if((file.length()==0)||(bufBytes==null)||(bufBytes.length==0))
+				return "That file was empty.";
+			boolean deleteIfExists=false;
+			if(httpReq.getRequestParameter("DELFIRST")!=null)
+				deleteIfExists=httpReq.getRequestParameter("DELFIRST").equalsIgnoreCase("ON");
+			StringBuffer buf=new StringBuffer(CMStrings.bytesToStr(bufBytes));
+			Vector<Object> V=new Vector<Object>();
+			V.addAll(CMParms.parse("IMPORT "+(deleteIfExists?"":"NODELETE ")+"NOPROMPT"));
+			V.add(buf);
+			Command C=CMClass.getCommand("Import");
+			if(C==null) return null;
+			try{C.execute(mob,V,0);}catch(Exception e){return e.getMessage();}
+			if((V.size()==0)||(V.get(V.size()-1) instanceof StringBuffer))
+				return "<FONT COLOR=LIGHTGREEN>Your file was successfully imported.</FONT>";
+			StringBuffer error=new StringBuffer("");
+			for(int i=0;i<V.size();i++)
+				if(V.elementAt(i) instanceof String)
+					error.append(((String)V.elementAt(i))+"<BR>");
+			return error.toString();
 		}
 		else
 		if(parms.containsKey("ADDAREA"))
 		{
-            MOB mob = Authenticate.getAuthenticatedMob(httpReq);
+			MOB mob = Authenticate.getAuthenticatedMob(httpReq);
 			String AREA=httpReq.getRequestParameter("AREA");
 			if(AREA==null) return "false";
 			if(AREA.length()==0) return "false";
@@ -405,7 +405,7 @@ public class MUDGrinder extends StdWebMacro
 				CMLib.map().addArea(A);
 				CMLib.database().DBCreateArea(A);
 				A.setName(AREA);
-		        CMLib.coffeeMaker().addAutoPropsToAreaIfNecessary(A);			}
+				CMLib.coffeeMaker().addAutoPropsToAreaIfNecessary(A);			}
 			else
 				return "false";
 			Log.sysOut("Grinder",mob.Name()+" added area "+A.Name());
@@ -414,7 +414,7 @@ public class MUDGrinder extends StdWebMacro
 		else
 		if(parms.containsKey("EDITAREA"))
 		{
-            MOB mob = Authenticate.getAuthenticatedMob(httpReq);
+			MOB mob = Authenticate.getAuthenticatedMob(httpReq);
 			String AREA=httpReq.getRequestParameter("AREA");
 			if(AREA==null) return "";
 			if(AREA.length()==0) return "";
@@ -532,266 +532,266 @@ public class MUDGrinder extends StdWebMacro
 				errMsg=GrinderRooms.editRoom(httpReq,parms,mob,R);
 			httpReq.addRequestParameters("ERRMSG",errMsg);
 		}
-        else
-        if(parms.containsKey("DELHOLIDAY"))
-        {
-            MOB mob = Authenticate.getAuthenticatedMob(httpReq);
-            if(mob==null) return "@break@";
-            String last=httpReq.getRequestParameter("HOLIDAY");
-            if(last==null) return " @break@";
-            int dex=CMLib.quests().getHolidayIndex(last);
-            if(dex<0) return "Holiday '" + last +"' does not exist.";
-            String err=CMLib.quests().deleteHoliday(dex);
-            Log.sysOut("Grinder",mob.name()+" deleted holiday "+last);
-            return (err.length()>0)?err:"Holiday '"+last+"' deleted.";
-        }
-        else
-        if(parms.containsKey("EDITHOLIDAY"))
-        {
-            MOB mob = Authenticate.getAuthenticatedMob(httpReq);
-            if(mob==null) return "@break@";
-            String last=httpReq.getRequestParameter("HOLIDAY");
-            if(last==null) return " @break@";
-            int holidayIndex=CMLib.quests().getHolidayIndex(last);
-            String err=GrinderHolidays.createModifyHoliday(httpReq, parms, last);
-            if(holidayIndex<0)
-                Log.sysOut("Grinder",mob.name()+" created holiday "+last);
-            else
-                Log.sysOut("Grinder",mob.name()+" modified holiday "+last);
-            return (err.length()>0)?err:"";
-        }
-        else
-        if(parms.containsKey("DELRACE"))
-        {
-            MOB mob = Authenticate.getAuthenticatedMob(httpReq);
-            if(mob==null) return "@break@";
-            Race R=null;
-            String last=httpReq.getRequestParameter("RACE");
-            if(last==null) return " @break@";
-            R=CMClass.getRace(last);
-            if((R==null)||(!R.isGeneric()))
-                return " @break@";
-            String oldRID=R.ID();
-            CMClass.delRace(R);
-            CMLib.database().DBDeleteRace(R.ID());
-            CMClass.loadClass(CMObjectType.RACE,"com/planet_ink/coffee_mud/Races/"+oldRID+".class",true);
-            Race oldR=CMClass.getRace(oldRID);
-            if(oldR==null) oldR=CMClass.getRace("StdRace");
-            CMLib.utensils().swapRaces(oldR, R);
-            Log.sysOut("Grinder",mob.name()+" deleted race "+R.ID());
-            return "Race "+R.ID()+" deleted.";
-        }
+		else
+		if(parms.containsKey("DELHOLIDAY"))
+		{
+			MOB mob = Authenticate.getAuthenticatedMob(httpReq);
+			if(mob==null) return "@break@";
+			String last=httpReq.getRequestParameter("HOLIDAY");
+			if(last==null) return " @break@";
+			int dex=CMLib.quests().getHolidayIndex(last);
+			if(dex<0) return "Holiday '" + last +"' does not exist.";
+			String err=CMLib.quests().deleteHoliday(dex);
+			Log.sysOut("Grinder",mob.name()+" deleted holiday "+last);
+			return (err.length()>0)?err:"Holiday '"+last+"' deleted.";
+		}
+		else
+		if(parms.containsKey("EDITHOLIDAY"))
+		{
+			MOB mob = Authenticate.getAuthenticatedMob(httpReq);
+			if(mob==null) return "@break@";
+			String last=httpReq.getRequestParameter("HOLIDAY");
+			if(last==null) return " @break@";
+			int holidayIndex=CMLib.quests().getHolidayIndex(last);
+			String err=GrinderHolidays.createModifyHoliday(httpReq, parms, last);
+			if(holidayIndex<0)
+				Log.sysOut("Grinder",mob.name()+" created holiday "+last);
+			else
+				Log.sysOut("Grinder",mob.name()+" modified holiday "+last);
+			return (err.length()>0)?err:"";
+		}
+		else
+		if(parms.containsKey("DELRACE"))
+		{
+			MOB mob = Authenticate.getAuthenticatedMob(httpReq);
+			if(mob==null) return "@break@";
+			Race R=null;
+			String last=httpReq.getRequestParameter("RACE");
+			if(last==null) return " @break@";
+			R=CMClass.getRace(last);
+			if((R==null)||(!R.isGeneric()))
+				return " @break@";
+			String oldRID=R.ID();
+			CMClass.delRace(R);
+			CMLib.database().DBDeleteRace(R.ID());
+			CMClass.loadClass(CMObjectType.RACE,"com/planet_ink/coffee_mud/Races/"+oldRID+".class",true);
+			Race oldR=CMClass.getRace(oldRID);
+			if(oldR==null) oldR=CMClass.getRace("StdRace");
+			CMLib.utensils().swapRaces(oldR, R);
+			Log.sysOut("Grinder",mob.name()+" deleted race "+R.ID());
+			return "Race "+R.ID()+" deleted.";
+		}
 		else
 		if(parms.containsKey("EDITRACE"))
 		{
-            MOB mob = Authenticate.getAuthenticatedMob(httpReq);
-            if(mob==null) return "@break@";
-            Race R=null;
-            Race oldR=null;
-	        String last=httpReq.getRequestParameter("RACE");
-	        if(last==null) return " @break@";
-            R=CMClass.getRace(last);
-            boolean create=false;
-            if((R==null)||(!R.isGeneric())) {
-                create=true;
-                if(R!=null) oldR=R;
-                R=(Race)CMClass.getRace("GenRace").copyOf();
-    	        if(R==null) return " @break@";
-                R.setRacialParms("<RACE><ID>"+last+"</ID><NAME>"+last+"</NAME></RACE>");
-            }
-	        R=R.makeGenRace();
-	        String errMsg=GrinderRaces.modifyRace(httpReq, parms, (oldR==null)?R:oldR, R);
-            httpReq.addRequestParameters("ERRMSG",errMsg);
-            if(!create)
-            {
-                CMLib.database().DBDeleteRace(R.ID());
-                CMLib.database().DBCreateRace(R.ID(),R.racialParms());
-                if((oldR!=null)&&(oldR!=R))
-                    CMLib.utensils().swapRaces(R, oldR);
-                Log.sysOut("Grinder",mob.name()+" modified race "+R.ID());
-                return "Race "+R.ID()+" modified.";
-            }
-            CMClass.addRace(R);
-            CMLib.database().DBCreateRace(R.ID(),R.racialParms());
-            if((oldR!=null)&&(oldR!=R))
-                CMLib.utensils().swapRaces(R, oldR);
-            Log.sysOut("Grinder",mob.name()+" created race "+R.ID());
-            if((oldR!=null)&&(!oldR.isGeneric()))
-                return "Race "+R.ID()+" replaced with Generic Race " + R.ID()+".";
-            return "Race "+R.ID()+" created.";
+			MOB mob = Authenticate.getAuthenticatedMob(httpReq);
+			if(mob==null) return "@break@";
+			Race R=null;
+			Race oldR=null;
+			String last=httpReq.getRequestParameter("RACE");
+			if(last==null) return " @break@";
+			R=CMClass.getRace(last);
+			boolean create=false;
+			if((R==null)||(!R.isGeneric())) {
+				create=true;
+				if(R!=null) oldR=R;
+				R=(Race)CMClass.getRace("GenRace").copyOf();
+				if(R==null) return " @break@";
+				R.setRacialParms("<RACE><ID>"+last+"</ID><NAME>"+last+"</NAME></RACE>");
+			}
+			R=R.makeGenRace();
+			String errMsg=GrinderRaces.modifyRace(httpReq, parms, (oldR==null)?R:oldR, R);
+			httpReq.addRequestParameters("ERRMSG",errMsg);
+			if(!create)
+			{
+				CMLib.database().DBDeleteRace(R.ID());
+				CMLib.database().DBCreateRace(R.ID(),R.racialParms());
+				if((oldR!=null)&&(oldR!=R))
+					CMLib.utensils().swapRaces(R, oldR);
+				Log.sysOut("Grinder",mob.name()+" modified race "+R.ID());
+				return "Race "+R.ID()+" modified.";
+			}
+			CMClass.addRace(R);
+			CMLib.database().DBCreateRace(R.ID(),R.racialParms());
+			if((oldR!=null)&&(oldR!=R))
+				CMLib.utensils().swapRaces(R, oldR);
+			Log.sysOut("Grinder",mob.name()+" created race "+R.ID());
+			if((oldR!=null)&&(!oldR.isGeneric()))
+				return "Race "+R.ID()+" replaced with Generic Race " + R.ID()+".";
+			return "Race "+R.ID()+" created.";
 		}
-        else
-        if(parms.containsKey("DELCLASS"))
-        {
-            MOB mob = Authenticate.getAuthenticatedMob(httpReq);
-            if(mob==null) return "@break@";
-            CharClass C=null;
-            String last=httpReq.getRequestParameter("CLASS");
-            if(last==null) return " @break@";
-            C=CMClass.getCharClass(last);
-            if((C==null)||(!C.isGeneric()))
-                return " @break@";
-            String oldCID=C.ID();
-            CMClass.delCharClass(C);
-            CMLib.database().DBDeleteClass(C.ID());
-            CMClass.loadClass(CMObjectType.CHARCLASS,"com/planet_ink/coffee_mud/CharClasses/"+oldCID+".class",true);
-            CharClass oldC=CMClass.getCharClass(oldCID);
-            if(oldC==null) oldC=CMClass.getCharClass("StdCharClass");
-            if((oldC!=null)&&(oldC!=C))
-                CMLib.utensils().reloadCharClasses(oldC);
-            Log.sysOut("Grinder",mob.name()+" deleted charclass "+C.ID());
-            return "CharClass "+C.ID()+" deleted.";
-        }
-        else
-        if(parms.containsKey("EDITCLASS"))
-        {
-            MOB mob = Authenticate.getAuthenticatedMob(httpReq);
-            if(mob==null) return "@break@";
-            CharClass C=null;
-            CharClass oldC=null;
-            String last=httpReq.getRequestParameter("CLASS");
-            if(last==null) return " @break@";
-            C=CMClass.getCharClass(last);
-            boolean create=false;
-            if((C==null)||(!C.isGeneric())) {
-                create=true;
-                if(C!=null) oldC=C;
-                C=(CharClass)CMClass.getCharClass("GenCharClass").copyOf();
-                if(C==null) return " @break@";
-                C.setClassParms("<CCLASS><ID>"+last+"</ID><NAME>"+last+"</NAME></CCLASS>");
-            }
-            C=C.makeGenCharClass();
-            String errMsg=GrinderClasses.modifyCharClass(httpReq, parms, (oldC==null)?C:oldC, C);
-            httpReq.addRequestParameters("ERRMSG",errMsg);
-            if(!create)
-            {
-                CMLib.database().DBDeleteClass(C.ID());
-                CMLib.database().DBCreateClass(C.ID(),C.classParms());
-                if((oldC!=null)&&(oldC!=C))
-                    CMLib.utensils().reloadCharClasses(oldC);
-                Log.sysOut("Grinder",mob.name()+" modified class "+C.ID());
-                return "Char Class "+C.ID()+" modified.";
-            }
-            CMClass.addCharClass(C);
-            CMLib.database().DBCreateClass(C.ID(),C.classParms());
-            if((oldC!=null)&&(oldC!=C))
-                CMLib.utensils().reloadCharClasses(oldC);
-            Log.sysOut("Grinder",mob.name()+" created class "+C.ID());
-            if((oldC!=null)&&(!oldC.isGeneric()))
-                return "Char Class "+C.ID()+" replaced with Generic Class " + C.ID()+".";
-            return "Char Class "+C.ID()+" created.";
-        }
-        else
-        if(parms.containsKey("DELFACTION"))
-        {
-            MOB mob = Authenticate.getAuthenticatedMob(httpReq);
-            if(mob==null) return "@break@";
-            Faction F=null;
-            String last=httpReq.getRequestParameter("FACTION");
-            if(last==null) return " @break@";
-            F=CMLib.factions().getFaction(last);
-            if(F==null) return " @break@";
-            java.io.File F2=new java.io.File(Resources.makeFileResourceName(F.factionID()));
-            if(F2.exists()) F2.delete();
-            Log.sysOut("Grinder",mob.Name()+" destroyed Faction "+F.name()+" ("+F.factionID()+").");
-            Resources.removeResource(F.factionID());
-            CMLib.factions().removeFaction(F.factionID());
-            return "Faction "+F.ID()+" deleted.";
-        }
-        else
-        if(parms.containsKey("EDITFACTION"))
-        {
-            MOB mob = Authenticate.getAuthenticatedMob(httpReq);
-            if(mob==null) return "@break@";
-            Faction F=null;
-            String last=httpReq.getRequestParameter("FACTION");
-            if(last==null) return " @break@";
-            F=CMLib.factions().getFaction(last);
-            //boolean create=false;
-            if(F==null){
-                //create=true;
-                StringBuffer template=new CMFile(Resources.buildResourcePath("examples")+"factiontemplate.ini",null,true).text();
-                if((template==null)||(template.length()==0))
-                    return "The file 'resources/examples/factiontemplate.ini' could not be located and is required for command line faction creation.";
-                Resources.submitResource(last,template);
-                if(!Resources.saveFileResource("::"+last,mob,template))
-                    return "Unable to save "+Resources.buildResourcePath("")+last;
-                F=(Faction)CMClass.getCommon("DefaultFaction");
-                if(F==null) return " @break@";
-                F.initializeFaction(template,last);
-                CMLib.factions().addFaction(F.factionID().toUpperCase(),F);
-            }
-            String errMsg=GrinderFactions.modifyFaction(httpReq, parms, F);
-            if(errMsg.length()==0)
-                errMsg=CMLib.factions().resaveFaction(F);
-            httpReq.addRequestParameters("ERRMSG",errMsg);
-            if(errMsg.length()==0)
-                return "Faction "+F.ID()+" created/modified";
-            return errMsg;
-        }
-        else
-        if(parms.containsKey("DELABILITY"))
-        {
-            MOB mob = Authenticate.getAuthenticatedMob(httpReq);
-            if(mob==null) return "@break@";
-            Ability A=null;
-            String last=httpReq.getRequestParameter("ABILITY");
-            if(last==null) return " @break@";
-            A=CMClass.getAbility(last);
-            if((A==null)||(!A.isGeneric()))
-                return " @break@";
-            Object O=CMClass.getObjectOrPrototype(A.ID());
-            if(!(O instanceof Ability))
-                return " @break@";
-            CMClass.delClass(CMObjectType.ABILITY,(Ability)O);
-            CMLib.database().DBDeleteAbility(A.ID());
-            Log.sysOut("Grinder",mob.name()+" deleted Ability "+A.ID());
-            return "Ability "+A.ID()+" deleted.";
-        }
-        else
-        if(parms.containsKey("EDITABILITY"))
-        {
-            MOB mob = Authenticate.getAuthenticatedMob(httpReq);
-            if(mob==null) return "@break@";
-            Ability A=null;
-            Ability oldA=null;
-            String last=httpReq.getRequestParameter("ABILITY");
-            if(last==null) return " @break@";
-            A=CMClass.getAbility(last);
-            boolean create=false;
-            if((A!=null)&&(!A.isGeneric()))
-                return " @break@";
-            String type="GenAbility";
-            int code=CMath.s_int(httpReq.getRequestParameter("CLASSIFICATION_ACODE"));
-            if(code==Ability.ACODE_LANGUAGE) type="GenLanguage";
-            if(code==Ability.ACODE_COMMON_SKILL) type="GenCraftSkill";
-            if(A==null) {
-                create=true;
-                A=(Ability)CMClass.getAbility(type).copyOf();
-                if(A==null) return " @break@";
-                A.setStat("CLASS",last);
-            }
-            String errMsg=GrinderAbilities.modifyAbility(httpReq, parms, (oldA==null)?A:oldA, A);
-            httpReq.addRequestParameters("ERRMSG",errMsg);
-            if(!create)
-            {
-                CMLib.database().DBDeleteAbility(A.ID());
-                CMLib.database().DBCreateAbility(A.ID(),type,A.getStat("ALLXML"));
-                Log.sysOut("Grinder",mob.name()+" modified ability "+A.ID()+" ("+type+")");
-                return "Ability "+A.ID()+" modified.";
-            }
-            CMLib.database().DBCreateAbility(A.ID(),type,A.getStat("ALLXML"));
-            Log.sysOut("Grinder",mob.name()+" created ability "+A.ID()+" ("+type+")");
-            return type+" "+A.ID()+" created.";
-        }
+		else
+		if(parms.containsKey("DELCLASS"))
+		{
+			MOB mob = Authenticate.getAuthenticatedMob(httpReq);
+			if(mob==null) return "@break@";
+			CharClass C=null;
+			String last=httpReq.getRequestParameter("CLASS");
+			if(last==null) return " @break@";
+			C=CMClass.getCharClass(last);
+			if((C==null)||(!C.isGeneric()))
+				return " @break@";
+			String oldCID=C.ID();
+			CMClass.delCharClass(C);
+			CMLib.database().DBDeleteClass(C.ID());
+			CMClass.loadClass(CMObjectType.CHARCLASS,"com/planet_ink/coffee_mud/CharClasses/"+oldCID+".class",true);
+			CharClass oldC=CMClass.getCharClass(oldCID);
+			if(oldC==null) oldC=CMClass.getCharClass("StdCharClass");
+			if((oldC!=null)&&(oldC!=C))
+				CMLib.utensils().reloadCharClasses(oldC);
+			Log.sysOut("Grinder",mob.name()+" deleted charclass "+C.ID());
+			return "CharClass "+C.ID()+" deleted.";
+		}
+		else
+		if(parms.containsKey("EDITCLASS"))
+		{
+			MOB mob = Authenticate.getAuthenticatedMob(httpReq);
+			if(mob==null) return "@break@";
+			CharClass C=null;
+			CharClass oldC=null;
+			String last=httpReq.getRequestParameter("CLASS");
+			if(last==null) return " @break@";
+			C=CMClass.getCharClass(last);
+			boolean create=false;
+			if((C==null)||(!C.isGeneric())) {
+				create=true;
+				if(C!=null) oldC=C;
+				C=(CharClass)CMClass.getCharClass("GenCharClass").copyOf();
+				if(C==null) return " @break@";
+				C.setClassParms("<CCLASS><ID>"+last+"</ID><NAME>"+last+"</NAME></CCLASS>");
+			}
+			C=C.makeGenCharClass();
+			String errMsg=GrinderClasses.modifyCharClass(httpReq, parms, (oldC==null)?C:oldC, C);
+			httpReq.addRequestParameters("ERRMSG",errMsg);
+			if(!create)
+			{
+				CMLib.database().DBDeleteClass(C.ID());
+				CMLib.database().DBCreateClass(C.ID(),C.classParms());
+				if((oldC!=null)&&(oldC!=C))
+					CMLib.utensils().reloadCharClasses(oldC);
+				Log.sysOut("Grinder",mob.name()+" modified class "+C.ID());
+				return "Char Class "+C.ID()+" modified.";
+			}
+			CMClass.addCharClass(C);
+			CMLib.database().DBCreateClass(C.ID(),C.classParms());
+			if((oldC!=null)&&(oldC!=C))
+				CMLib.utensils().reloadCharClasses(oldC);
+			Log.sysOut("Grinder",mob.name()+" created class "+C.ID());
+			if((oldC!=null)&&(!oldC.isGeneric()))
+				return "Char Class "+C.ID()+" replaced with Generic Class " + C.ID()+".";
+			return "Char Class "+C.ID()+" created.";
+		}
+		else
+		if(parms.containsKey("DELFACTION"))
+		{
+			MOB mob = Authenticate.getAuthenticatedMob(httpReq);
+			if(mob==null) return "@break@";
+			Faction F=null;
+			String last=httpReq.getRequestParameter("FACTION");
+			if(last==null) return " @break@";
+			F=CMLib.factions().getFaction(last);
+			if(F==null) return " @break@";
+			java.io.File F2=new java.io.File(Resources.makeFileResourceName(F.factionID()));
+			if(F2.exists()) F2.delete();
+			Log.sysOut("Grinder",mob.Name()+" destroyed Faction "+F.name()+" ("+F.factionID()+").");
+			Resources.removeResource(F.factionID());
+			CMLib.factions().removeFaction(F.factionID());
+			return "Faction "+F.ID()+" deleted.";
+		}
+		else
+		if(parms.containsKey("EDITFACTION"))
+		{
+			MOB mob = Authenticate.getAuthenticatedMob(httpReq);
+			if(mob==null) return "@break@";
+			Faction F=null;
+			String last=httpReq.getRequestParameter("FACTION");
+			if(last==null) return " @break@";
+			F=CMLib.factions().getFaction(last);
+			//boolean create=false;
+			if(F==null){
+				//create=true;
+				StringBuffer template=new CMFile(Resources.buildResourcePath("examples")+"factiontemplate.ini",null,true).text();
+				if((template==null)||(template.length()==0))
+					return "The file 'resources/examples/factiontemplate.ini' could not be located and is required for command line faction creation.";
+				Resources.submitResource(last,template);
+				if(!Resources.saveFileResource("::"+last,mob,template))
+					return "Unable to save "+Resources.buildResourcePath("")+last;
+				F=(Faction)CMClass.getCommon("DefaultFaction");
+				if(F==null) return " @break@";
+				F.initializeFaction(template,last);
+				CMLib.factions().addFaction(F.factionID().toUpperCase(),F);
+			}
+			String errMsg=GrinderFactions.modifyFaction(httpReq, parms, F);
+			if(errMsg.length()==0)
+				errMsg=CMLib.factions().resaveFaction(F);
+			httpReq.addRequestParameters("ERRMSG",errMsg);
+			if(errMsg.length()==0)
+				return "Faction "+F.ID()+" created/modified";
+			return errMsg;
+		}
+		else
+		if(parms.containsKey("DELABILITY"))
+		{
+			MOB mob = Authenticate.getAuthenticatedMob(httpReq);
+			if(mob==null) return "@break@";
+			Ability A=null;
+			String last=httpReq.getRequestParameter("ABILITY");
+			if(last==null) return " @break@";
+			A=CMClass.getAbility(last);
+			if((A==null)||(!A.isGeneric()))
+				return " @break@";
+			Object O=CMClass.getObjectOrPrototype(A.ID());
+			if(!(O instanceof Ability))
+				return " @break@";
+			CMClass.delClass(CMObjectType.ABILITY,(Ability)O);
+			CMLib.database().DBDeleteAbility(A.ID());
+			Log.sysOut("Grinder",mob.name()+" deleted Ability "+A.ID());
+			return "Ability "+A.ID()+" deleted.";
+		}
+		else
+		if(parms.containsKey("EDITABILITY"))
+		{
+			MOB mob = Authenticate.getAuthenticatedMob(httpReq);
+			if(mob==null) return "@break@";
+			Ability A=null;
+			Ability oldA=null;
+			String last=httpReq.getRequestParameter("ABILITY");
+			if(last==null) return " @break@";
+			A=CMClass.getAbility(last);
+			boolean create=false;
+			if((A!=null)&&(!A.isGeneric()))
+				return " @break@";
+			String type="GenAbility";
+			int code=CMath.s_int(httpReq.getRequestParameter("CLASSIFICATION_ACODE"));
+			if(code==Ability.ACODE_LANGUAGE) type="GenLanguage";
+			if(code==Ability.ACODE_COMMON_SKILL) type="GenCraftSkill";
+			if(A==null) {
+				create=true;
+				A=(Ability)CMClass.getAbility(type).copyOf();
+				if(A==null) return " @break@";
+				A.setStat("CLASS",last);
+			}
+			String errMsg=GrinderAbilities.modifyAbility(httpReq, parms, (oldA==null)?A:oldA, A);
+			httpReq.addRequestParameters("ERRMSG",errMsg);
+			if(!create)
+			{
+				CMLib.database().DBDeleteAbility(A.ID());
+				CMLib.database().DBCreateAbility(A.ID(),type,A.getStat("ALLXML"));
+				Log.sysOut("Grinder",mob.name()+" modified ability "+A.ID()+" ("+type+")");
+				return "Ability "+A.ID()+" modified.";
+			}
+			CMLib.database().DBCreateAbility(A.ID(),type,A.getStat("ALLXML"));
+			Log.sysOut("Grinder",mob.name()+" created ability "+A.ID()+" ("+type+")");
+			return type+" "+A.ID()+" created.";
+		}
 		else
 		if(parms.containsKey("EDITITEM"))
 		{
 			MOB mob = Authenticate.getAuthenticatedMob(httpReq);
 			if(mob==null) return "@break@";
-            String player=httpReq.getRequestParameter("PLAYER");
-            MOB playerM=(player!=null)?CMLib.players().getLoadPlayer(player):null;
-            String roomID=httpReq.getRequestParameter("ROOM");
+			String player=httpReq.getRequestParameter("PLAYER");
+			MOB playerM=(player!=null)?CMLib.players().getLoadPlayer(player):null;
+			String roomID=httpReq.getRequestParameter("ROOM");
 			Room R=CMLib.map().getRoom(roomID);
 			if((R==null)&&(playerM==null)&&((roomID==null)||(!roomID.equalsIgnoreCase("ANY")))) return "@break@";
 			String errMsg=GrinderItems.editItem(httpReq,parms,mob,R,playerM);
@@ -802,7 +802,7 @@ public class MUDGrinder extends StdWebMacro
 		{
 			MOB mob = Authenticate.getAuthenticatedMob(httpReq);
 			if(mob==null) return "@break@";
-            String roomID=httpReq.getRequestParameter("ROOM");
+			String roomID=httpReq.getRequestParameter("ROOM");
 			Room R=CMLib.map().getRoom(roomID);
 			if((R==null)&&((roomID==null)||(!roomID.equalsIgnoreCase("ANY")))) return "@break@";
 			String errMsg=GrinderMobs.editMob(httpReq,parms,mob,R);
@@ -1064,7 +1064,7 @@ public class MUDGrinder extends StdWebMacro
 		return null;
 	}
 
-    protected Area getLoggedArea(ExternalHTTPRequests httpReq, MOB mob)
+	protected Area getLoggedArea(ExternalHTTPRequests httpReq, MOB mob)
 	{
 		String AREA=httpReq.getRequestParameter("AREA");
 		if(AREA==null) return null;
@@ -1075,21 +1075,21 @@ public class MUDGrinder extends StdWebMacro
 			return A;
 		return null;
 	}
-    
-    protected String quickfind(Area A, String find)
-    {
-    	Room R=A.getRoom(find);
-    	if((R!=null)&&(R.roomID().length()>0)) return R.roomID();
-    	if(find.startsWith("#"))
-    	{
-    		R=A.getRoom(A.Name()+find);
-        	if((R!=null)&&(R.roomID().length()>0)) return R.roomID();
-    	}
-    	if(CMath.isNumber(find))
-    	{
-    		R=A.getRoom(A.Name()+"#"+find);
-        	if((R!=null)&&(R.roomID().length()>0)) return R.roomID();
-    	}
+	
+	protected String quickfind(Area A, String find)
+	{
+		Room R=A.getRoom(find);
+		if((R!=null)&&(R.roomID().length()>0)) return R.roomID();
+		if(find.startsWith("#"))
+		{
+			R=A.getRoom(A.Name()+find);
+			if((R!=null)&&(R.roomID().length()>0)) return R.roomID();
+		}
+		if(CMath.isNumber(find))
+		{
+			R=A.getRoom(A.Name()+"#"+find);
+			if((R!=null)&&(R.roomID().length()>0)) return R.roomID();
+		}
 		for(Enumeration<Room> r=A.getProperMap();r.hasMoreElements();)
 		{
 			R=(Room)r.nextElement();
@@ -1109,7 +1109,7 @@ public class MUDGrinder extends StdWebMacro
 				return R.roomID();
 		}
 		R=CMLib.map().getRoom(find);
-    	if((R!=null)&&(R.roomID().length()>0)) return R.roomID();
+		if((R!=null)&&(R.roomID().length()>0)) return R.roomID();
 		return null;
-    }
+	}
 }

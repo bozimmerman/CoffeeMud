@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -39,7 +39,7 @@ public class Chant_Rockfeet extends Chant
 	public String ID() { return "Chant_Rockfeet"; }
 	public String name(){return "Rockfeet";}
 	public String displayText(){return "(Rockfeet)";}
-    public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_SHAPE_SHIFTING;}
+	public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_SHAPE_SHIFTING;}
 	public int maxRange(){return adjustedMaxInvokerRange(10);}
 	public int minRange(){return 0;}
 	public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
@@ -76,21 +76,21 @@ public class Chant_Rockfeet extends Chant
 
    public int castingQuality(MOB mob, Physical target)
    {
-        if(mob!=null)
-        {
-            if(target instanceof MOB)
-            {
-                if((((MOB)target).getWearPositions(Wearable.WORN_HANDS)==0)
-                &&(((MOB)target).getWearPositions(Wearable.WORN_FEET)==0))
-                    return Ability.QUALITY_INDIFFERENT;
-            }
-            Room R=mob.location();
-            if(R!=null)
-            {
-            }
-        }
-        return super.castingQuality(mob,target);
-    }    
+		if(mob!=null)
+		{
+			if(target instanceof MOB)
+			{
+				if((((MOB)target).getWearPositions(Wearable.WORN_HANDS)==0)
+				&&(((MOB)target).getWearPositions(Wearable.WORN_FEET)==0))
+					return Ability.QUALITY_INDIFFERENT;
+			}
+			Room R=mob.location();
+			if(R!=null)
+			{
+			}
+		}
+		return super.castingQuality(mob,target);
+	}    
    
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{

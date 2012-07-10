@@ -21,7 +21,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -53,12 +53,12 @@ public class Prop_NoTeleport extends Property
 			if(((!shere)&&(!summon)&&(teleport))
 			   ||((shere)&&(summon)))
 			{
-                Ability A=(Ability)msg.tool();
-                if(((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_CHANT)
-                ||((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_SPELL)
-                ||((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_PRAYER)
-                ||((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_SONG))
-    				msg.source().location().showHappens(CMMsg.MSG_OK_VISUAL,"Magic energy fizzles and is absorbed into the air.");
+				Ability A=(Ability)msg.tool();
+				if(((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_CHANT)
+				||((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_SPELL)
+				||((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_PRAYER)
+				||((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_SONG))
+					msg.source().location().showHappens(CMMsg.MSG_OK_VISUAL,"Magic energy fizzles and is absorbed into the air.");
 				return false;
 			}
 		}

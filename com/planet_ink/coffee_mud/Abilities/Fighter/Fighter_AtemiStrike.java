@@ -25,7 +25,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -46,7 +46,7 @@ public class Fighter_AtemiStrike extends MonkSkill
 	protected int canAffectCode(){return 0; }
 	protected int overrideMana(){return 100; }
 	protected int canTargetCode(){return Ability.CAN_MOBS;}
-    public int classificationCode(){ return Ability.ACODE_SKILL|Ability.DOMAIN_PUNCHING;}
+	public int classificationCode(){ return Ability.ACODE_SKILL|Ability.DOMAIN_PUNCHING;}
 	public int usageType(){return USAGE_MOVEMENT;}
 
 	public void unInvoke()
@@ -142,7 +142,7 @@ public class Fighter_AtemiStrike extends MonkSkill
 			// what happened.
 			invoker=mob;
 			CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_JUSTICE|(auto?CMMsg.MASK_ALWAYS:0),auto?"<T-NAME> hit(s) the floor!":"^F^<FIGHT^><S-NAME> deliver(s) a deadly Atemi strike to <T-NAMESELF>!^</FIGHT^>^?");
-            CMLib.color().fixSourceFightColor(msg);
+			CMLib.color().fixSourceFightColor(msg);
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

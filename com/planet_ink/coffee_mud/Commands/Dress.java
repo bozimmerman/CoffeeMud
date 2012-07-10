@@ -23,7 +23,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -88,9 +88,9 @@ public class Dress extends StdCommand
 						item.wearAt(item.rawProperLocationBitmap());
 					else
 					{
-	                    for(long wornCode : Wearable.CODES.ALL())
-		                    if(wornCode != Wearable.IN_INVENTORY)
-		                    {
+						for(long wornCode : Wearable.CODES.ALL())
+							if(wornCode != Wearable.IN_INVENTORY)
+							{
 								if(item.fitsOn(wornCode)&&(wornCode!=Wearable.WORN_HELD))
 								{ item.wearAt(wornCode); break;}
 							}
@@ -109,8 +109,8 @@ public class Dress extends StdCommand
 				}
 				if(item instanceof Coins)
 				{
-				    mob.tell("I don't think you want to dress someone in "+item.name()+".");
-				    return false;
+					mob.tell("I don't think you want to dress someone in "+item.name()+".");
+					return false;
 				}
 				if(target.isInCombat())
 				{
@@ -145,8 +145,8 @@ public class Dress extends StdCommand
 			mob.tell(target.name()+" won't let you.");
 		return false;
 	}
-    public double combatActionsCost(final MOB mob, final List<String> cmds){return CMProps.getCombatActionCost(ID());}
-    public double actionsCost(final MOB mob, final List<String> cmds){return CMProps.getActionCost(ID());}
+	public double combatActionsCost(final MOB mob, final List<String> cmds){return CMProps.getCombatActionCost(ID());}
+	public double actionsCost(final MOB mob, final List<String> cmds){return CMProps.getActionCost(ID());}
 	public boolean canBeOrdered(){return true;}
 
 	

@@ -25,7 +25,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -121,10 +121,10 @@ public class Chant_FeelCold extends Chant
 					int damage=CMLib.dice().roll(1,8,0);
 					CMLib.combat().postDamage(invoker,M,null,damage,CMMsg.MASK_ALWAYS|CMMsg.TYP_COLD,Weapon.TYPE_FROSTING,"The biting hail <DAMAGE> <T-NAME>!");
 				}
-                else
-                    return true;
-                if((!M.isInCombat())&&(M!=invoker)&&(M.location().isInhabitant(invoker))&&(CMLib.flags().canBeSeenBy(invoker,M)))
-                    CMLib.combat().postAttack(M,invoker,M.fetchWieldedItem());
+				else
+					return true;
+				if((!M.isInCombat())&&(M!=invoker)&&(M.location().isInhabitant(invoker))&&(CMLib.flags().canBeSeenBy(invoker,M)))
+					CMLib.combat().postAttack(M,invoker,M.fetchWieldedItem());
 			}
 		}
 		return true;

@@ -23,7 +23,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -41,18 +41,18 @@ public class Skill_Juggle extends BardSkill
 	public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 	private static final String[] triggerStrings = {"JUGGLE"};
 	public String[] triggerStrings(){return triggerStrings;}
-    public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_FOOLISHNESS;}
+	public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_FOOLISHNESS;}
 	public int usageType(){return USAGE_MOVEMENT;}
 	protected SVector<Item> juggles=new SVector<Item>();
 	protected long lastJuggle=-1;
 	protected boolean pause=false;
 
-    public void setMiscText(String newText)
-    {
-        super.setMiscText(newText);
-        juggles=new SVector();
-    }
-    
+	public void setMiscText(String newText)
+	{
+		super.setMiscText(newText);
+		juggles=new SVector();
+	}
+	
 	public int maxJuggles()
 	{
 		if((affected!=null)&&(affected instanceof MOB))
@@ -117,7 +117,7 @@ public class Skill_Juggle extends BardSkill
 		return true;
 	}
 
-    protected void unJuggle(Item I)
+	protected void unJuggle(Item I)
 	{
 		if(I==null) return;
 		Ability A=I.fetchEffect("Spell_Fly");
@@ -143,7 +143,7 @@ public class Skill_Juggle extends BardSkill
 		juggles.addElement(I);
 	}
 
-    protected synchronized void juggle()
+	protected synchronized void juggle()
 	{
 		boolean anythingToDo=false;
 		if((affected==null)||(!(affected instanceof MOB)))
@@ -342,15 +342,15 @@ public class Skill_Juggle extends BardSkill
 		super.unInvoke();
 	}
 
-    public int castingQuality(MOB mob, Physical target)
-    {
-        if(mob!=null)
-        {
-            if(mob.isInCombat()&&(mob.fetchCarried(null,"all")!=null))
-                return super.castingQuality(mob, target,Ability.QUALITY_BENEFICIAL_SELF);
-        }
-        return super.castingQuality(mob,target);
-    }
+	public int castingQuality(MOB mob, Physical target)
+	{
+		if(mob!=null)
+		{
+			if(mob.isInCombat()&&(mob.fetchCarried(null,"all")!=null))
+				return super.castingQuality(mob, target,Ability.QUALITY_BENEFICIAL_SELF);
+		}
+		return super.castingQuality(mob,target);
+	}
 	
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{

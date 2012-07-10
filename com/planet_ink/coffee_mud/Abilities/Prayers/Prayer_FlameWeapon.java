@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -44,7 +44,7 @@ public class Prayer_FlameWeapon extends Prayer
 	protected int canAffectCode(){return CAN_ITEMS;}
 	protected int canTargetCode(){return CAN_ITEMS;}
 	public long flags(){return Ability.FLAG_UNHOLY|Ability.FLAG_HEATING|Ability.FLAG_FIREBASED;}
-    protected boolean notAgain=false;
+	protected boolean notAgain=false;
 
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
@@ -60,7 +60,7 @@ public class Prayer_FlameWeapon extends Prayer
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);
-        
+		
 		if((msg.source().location()!=null)
 		&&(msg.targetMinor()==CMMsg.TYP_DAMAGE)
 		&&((msg.value())>0)
@@ -69,23 +69,23 @@ public class Prayer_FlameWeapon extends Prayer
 		&&(msg.target() instanceof MOB)
 		&&(!((MOB)msg.target()).amDead()))
 		{
-            try{
-    			notAgain=true;
-    			CMMsg msg2=CMClass.getMsg(msg.source(),msg.target(),affected,CMMsg.MSG_OK_ACTION,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_FIRE,CMMsg.MSG_NOISYMOVEMENT,null);
-    			if(msg.source().location().okMessage(msg.source(),msg2))
-    			{
-    				msg.source().location().send(msg.source(), msg2);
-    				if(msg2.value()<=0)
-    				{
-    					int flameDamage = (int) Math.round( Math.random() * 6 );
-    					flameDamage *= (super.getXLEVELLevel(invoker())+(super.getX1Level(invoker())));
-    					msg.addTrailerMsg(CMClass.getMsg(msg.source(),msg.target(),CMMsg.MSG_OK_ACTION,"^RThe flame around "+affected.name()+" "+CMLib.combat().standardHitWord(Weapon.TYPE_BURNING,flameDamage)+" <T-NAME>!^?"));
-    					CMMsg msg3=CMClass.getMsg(msg.source(),msg.target(),null,CMMsg.MASK_ALWAYS|CMMsg.TYP_FIRE,CMMsg.MSG_DAMAGE,CMMsg.NO_EFFECT,null);
-    					msg3.setValue(flameDamage);
-    					msg.addTrailerMsg(msg3);
-    				}
-    			}
-            }finally{notAgain=false;}
+			try{
+				notAgain=true;
+				CMMsg msg2=CMClass.getMsg(msg.source(),msg.target(),affected,CMMsg.MSG_OK_ACTION,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_FIRE,CMMsg.MSG_NOISYMOVEMENT,null);
+				if(msg.source().location().okMessage(msg.source(),msg2))
+				{
+					msg.source().location().send(msg.source(), msg2);
+					if(msg2.value()<=0)
+					{
+						int flameDamage = (int) Math.round( Math.random() * 6 );
+						flameDamage *= (super.getXLEVELLevel(invoker())+(super.getX1Level(invoker())));
+						msg.addTrailerMsg(CMClass.getMsg(msg.source(),msg.target(),CMMsg.MSG_OK_ACTION,"^RThe flame around "+affected.name()+" "+CMLib.combat().standardHitWord(Weapon.TYPE_BURNING,flameDamage)+" <T-NAME>!^?"));
+						CMMsg msg3=CMClass.getMsg(msg.source(),msg.target(),null,CMMsg.MASK_ALWAYS|CMMsg.TYP_FIRE,CMMsg.MSG_DAMAGE,CMMsg.NO_EFFECT,null);
+						msg3.setValue(flameDamage);
+						msg.addTrailerMsg(msg3);
+					}
+				}
+			}finally{notAgain=false;}
 		}
 	}
 
@@ -115,41 +115,41 @@ public class Prayer_FlameWeapon extends Prayer
 			destroyMe.destroy();
 	}
 
-    public int castingQuality(MOB mob, Physical target)
-    {
-        if(mob!=null)
-        {
-            if((mob.fetchWieldedItem() instanceof Weapon)
-            &&(mob.fetchWieldedItem().fetchEffect(ID())==null))
-                return super.castingQuality(mob, target,Ability.QUALITY_BENEFICIAL_SELF);
-        }
-        return super.castingQuality(mob,target);
-    }
-    
+	public int castingQuality(MOB mob, Physical target)
+	{
+		if(mob!=null)
+		{
+			if((mob.fetchWieldedItem() instanceof Weapon)
+			&&(mob.fetchWieldedItem().fetchEffect(ID())==null))
+				return super.castingQuality(mob, target,Ability.QUALITY_BENEFICIAL_SELF);
+		}
+		return super.castingQuality(mob,target);
+	}
+	
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-        Item target=getTarget(mob,mob.location(),givenTarget,commands,Wearable.FILTER_ANY);
-        if(target==null) return false;
-        if(!(target instanceof Weapon))
-        {
-            if(auto||mob.isMonster())
-            {
-                target=mob.fetchWieldedItem();
-                if(target==null)
-                    for(int i=0;i<mob.location().numItems();i++)
-                    {
-                        Item I2=mob.location().getItem(i);
-                        if((I2!=null)&&(I2.container()==null)&&(I2 instanceof Weapon))
-                        { target=I2; break;}
-                    }
-            }
-            if(!(target instanceof Weapon))
-            {
-                mob.tell("You can only enflame weapons.");
-                return false;
-            }
-        }
-        
+		Item target=getTarget(mob,mob.location(),givenTarget,commands,Wearable.FILTER_ANY);
+		if(target==null) return false;
+		if(!(target instanceof Weapon))
+		{
+			if(auto||mob.isMonster())
+			{
+				target=mob.fetchWieldedItem();
+				if(target==null)
+					for(int i=0;i<mob.location().numItems();i++)
+					{
+						Item I2=mob.location().getItem(i);
+						if((I2!=null)&&(I2.container()==null)&&(I2 instanceof Weapon))
+						{ target=I2; break;}
+					}
+			}
+			if(!(target instanceof Weapon))
+			{
+				mob.tell("You can only enflame weapons.");
+				return false;
+			}
+		}
+		
 		if(((Weapon)target).fetchEffect(this.ID())!=null)
 		{
 			mob.tell(target.name()+" is already enflamed.");

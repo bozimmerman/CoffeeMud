@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -43,9 +43,9 @@ public class Chant_Worms extends Chant implements DiseaseAffect
 	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	public int abilityCode(){return 0;}
 	public int difficultyLevel(){return 1;}
-    
+	
 	int plagueDown=5;
-    
+	
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if((affected==null)||(!(affected instanceof MOB)))
@@ -85,7 +85,7 @@ public class Chant_Worms extends Chant implements DiseaseAffect
 		if(canBeUninvoked())
 			if((mob.location()!=null)&&(!mob.amDead()))
 			{
-			    spreadImmunity(mob);
+				spreadImmunity(mob);
 				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-YOUPOSS> worms disease is cured.");
 			}
 	}
@@ -119,7 +119,7 @@ public class Chant_Worms extends Chant implements DiseaseAffect
 					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> feel(s) very sick in the stomach!");
 				}
 				else
-				    spreadImmunity(target);
+					spreadImmunity(target);
 			}
 		}
 		else

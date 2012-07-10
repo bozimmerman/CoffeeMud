@@ -28,7 +28,7 @@ import java.util.Vector;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -75,7 +75,7 @@ public class Property implements Ability
 	public long flags(){return 0;}
 	public long getTickStatus(){return Tickable.STATUS_NOT;}
 	public int usageType(){return 0;}
-    public void initializeClass(){}
+	public void initializeClass(){}
 	public ExpertiseLibrary.SkillCost getTrainingCost(MOB mob)
 	{ return new ExpertiseLibrary.SkillCost(ExpertiseLibrary.CostType.TRAIN, Double.valueOf(1.0));}
 
@@ -83,7 +83,7 @@ public class Property implements Ability
 	public void setDescription(String newDescription){}
 	public void setDisplayText(String newDisplayText){}
 	public String image(){return "";}
-    public String rawImage(){return "";}
+	public String rawImage(){return "";}
 	public void setImage(String newImage){}
 	public MOB invoker(){return null;}
 	public void setInvoker(MOB mob){}
@@ -91,7 +91,7 @@ public class Property implements Ability
 	public String[] triggerStrings(){return empty;}
 	public boolean invoke(MOB mob, Vector commands, Physical target, boolean auto, int asLevel){return false;}
 	public boolean invoke(MOB mob, Physical target, boolean auto, int asLevel){return false;}
-    public boolean preInvoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel, int secondsElapsed, double actionsRemaining){return true;}
+	public boolean preInvoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel, int secondsElapsed, double actionsRemaining){return true;}
 	public boolean autoInvocation(MOB mob){return false;}
 	public void unInvoke(){}
 	public boolean canBeUninvoked(){return false;}
@@ -131,16 +131,16 @@ public class Property implements Ability
 	public int classificationCode(){ return Ability.ACODE_PROPERTY;}
 	public boolean isSavable(){ return savable;	}
 	public void setSavable(boolean truefalse)	{ savable=truefalse; }
-    protected boolean amDestroyed=false;
-    public void destroy(){amDestroyed=true; affected=null; miscText=null; }
-    public boolean amDestroyed(){return amDestroyed;}
+	protected boolean amDestroyed=false;
+	public void destroy(){amDestroyed=true; affected=null; miscText=null; }
+	public boolean amDestroyed(){return amDestroyed;}
 
-    //protected void finalize(){ CMClass.unbumpCounter(this,CMClass.CMObjectType.ABILITY); }//removed for mem & perf
+	//protected void finalize(){ CMClass.unbumpCounter(this,CMClass.CMObjectType.ABILITY); }//removed for mem & perf
 
 	public CMObject newInstance()
 	{
 		try
-        {
+		{
 			return (CMObject)this.getClass().newInstance();
 		}
 		catch(Exception e)
@@ -150,15 +150,15 @@ public class Property implements Ability
 		return new Property();
 	}
 
-    public Property()
-    {
-        super();
-        //CMClass.bumpCounter(this,CMClass.CMObjectType.ABILITY);//removed for mem & perf
-    }
+	public Property()
+	{
+		super();
+		//CMClass.bumpCounter(this,CMClass.CMObjectType.ABILITY);//removed for mem & perf
+	}
 	public int getSaveStatIndex(){return getStatCodes().length;}
 	private static final String[] CODES={"CLASS","TEXT"};
 	public String[] getStatCodes(){return CODES;}
-    public boolean isStat(String code){ return CMParms.indexOf(getStatCodes(),code.toUpperCase().trim())>=0;}
+	public boolean isStat(String code){ return CMParms.indexOf(getStatCodes(),code.toUpperCase().trim())>=0;}
 	protected int getCodeNum(String code){
 		for(int i=0;i<CODES.length;i++)
 			if(code.equalsIgnoreCase(CODES[i])) return i;
@@ -195,7 +195,7 @@ public class Property implements Ability
 		try
 		{
 			Property E=(Property)this.clone();
-            //CMClass.bumpCounter(E,CMClass.CMObjectType.ABILITY);//removed for mem & perf
+			//CMClass.bumpCounter(E,CMClass.CMObjectType.ABILITY);//removed for mem & perf
 			E.cloneFix(this);
 			return E;
 
@@ -251,6 +251,6 @@ public class Property implements Ability
 	public void makeNonUninvokable(){}
 	private static final int[] cost=new int[3];
 	public int[] usageCost(MOB mob,boolean ignoreCostOverride){return cost;}
-    public void clearExpertiseCache(){}
+	public void clearExpertiseCache(){}
 	public boolean isGeneric(){return false;}
 }

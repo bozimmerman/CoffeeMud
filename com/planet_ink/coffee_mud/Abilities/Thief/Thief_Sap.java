@@ -25,7 +25,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -45,7 +45,7 @@ public class Thief_Sap extends ThiefSkill
 	private static final String[] triggerStrings = {"SAP"};
 	public String[] triggerStrings(){return triggerStrings;}
 	public int usageType(){return USAGE_MOVEMENT;}
-    public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_DIRTYFIGHTING;}
+	public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_DIRTYFIGHTING;}
 
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
@@ -103,21 +103,21 @@ public class Thief_Sap extends ThiefSkill
 		}
 	}
 
-    public int castingQuality(MOB mob, Physical target)
-    {
-        if(mob!=null)
-        {
-            if(mob.isInCombat())
-                return Ability.QUALITY_INDIFFERENT;
-            if(!(target instanceof MOB))
-                return Ability.QUALITY_INDIFFERENT;
-            if(CMLib.flags().canBeSeenBy(mob,(MOB)target))
-                return Ability.QUALITY_INDIFFERENT;
-            if(mob.baseWeight()<(((MOB)target).baseWeight()-100))
-                return Ability.QUALITY_INDIFFERENT;
-        }
-        return super.castingQuality(mob,target);
-    }
+	public int castingQuality(MOB mob, Physical target)
+	{
+		if(mob!=null)
+		{
+			if(mob.isInCombat())
+				return Ability.QUALITY_INDIFFERENT;
+			if(!(target instanceof MOB))
+				return Ability.QUALITY_INDIFFERENT;
+			if(CMLib.flags().canBeSeenBy(mob,(MOB)target))
+				return Ability.QUALITY_INDIFFERENT;
+			if(mob.baseWeight()<(((MOB)target).baseWeight()-100))
+				return Ability.QUALITY_INDIFFERENT;
+		}
+		return super.castingQuality(mob,target);
+	}
 
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
@@ -168,7 +168,7 @@ public class Thief_Sap extends ThiefSkill
 			// what happened.
 			invoker=mob;
 			CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_THIEF_ACT|CMMsg.MASK_SOUND|CMMsg.MSK_MALICIOUS_MOVE|(auto?CMMsg.MASK_ALWAYS:0),auto?"<T-NAME> hit(s) the floor!":"^F^<FIGHT^><S-NAME> sneak(s) up behind <T-NAMESELF> and knock(s) <T-HIM-HER> out!^</FIGHT^>^?");
-            CMLib.color().fixSourceFightColor(msg);
+			CMLib.color().fixSourceFightColor(msg);
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

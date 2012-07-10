@@ -25,7 +25,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -44,9 +44,9 @@ public class Thief_Pick extends ThiefSkill
 	private static final String[] triggerStrings = {"PICK"};
 	public String[] triggerStrings(){return triggerStrings;}
 	public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
-    public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_CRIMINAL;}
+	public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_CRIMINAL;}
 	public int code=0;
-    public Vector lastDone=new Vector();
+	public Vector lastDone=new Vector();
 
 	public int abilityCode(){return code;}
 	public void setAbilityCode(int newCode){code=newCode;}
@@ -89,7 +89,7 @@ public class Thief_Pick extends ThiefSkill
 		else
 		{
 			CMMsg msg=CMClass.getMsg(mob,unlockThis,this,auto?CMMsg.MSG_OK_VISUAL:(CMMsg.MSG_THIEF_ACT),CMMsg.MSG_OK_VISUAL,CMMsg.MSG_OK_VISUAL,null);
-            msg.setValue(0);
+			msg.setValue(0);
 			if(mob.location().okMessage(mob,msg))
 			{
 				if(((unlockThis instanceof Exit)&&(!((Exit)unlockThis).isLocked()))
@@ -97,12 +97,12 @@ public class Thief_Pick extends ThiefSkill
 					msg=CMClass.getMsg(mob,unlockThis,null,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_LOCK,CMMsg.MSG_OK_VISUAL,auto?"<T-NAME> vibrate(s) and click(s).":"<S-NAME> pick(s) and relock(s) <T-NAME>.");
 				else
 					msg=CMClass.getMsg(mob,unlockThis,null,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_UNLOCK,CMMsg.MSG_OK_VISUAL,auto?"<T-NAME> vibrate(s) and click(s).":"<S-NAME> pick(s) the lock on <T-NAME>.");
-                if(!lastDone.contains(""+unlockThis))
-                {
-                    while(lastDone.size()>40) lastDone.removeElementAt(0);
-                    lastDone.addElement(""+unlockThis);
-                    msg.setValue(1);
-                }
+				if(!lastDone.contains(""+unlockThis))
+				{
+					while(lastDone.size()>40) lastDone.removeElementAt(0);
+					lastDone.addElement(""+unlockThis);
+					msg.setValue(1);
+				}
 				CMLib.utensils().roomAffectFully(msg,mob.location(),dirCode);
 			}
 		}

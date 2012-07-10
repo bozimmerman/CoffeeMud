@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -44,14 +44,14 @@ public class Fighter_Charge extends FighterSkill
 	public String displayText(){return "(Charging!!)";}
 	protected int canAffectCode(){return Ability.CAN_MOBS;}
 	protected int canTargetCode(){return Ability.CAN_MOBS;}
-    public int classificationCode(){ return Ability.ACODE_SKILL|Ability.DOMAIN_ACROBATIC;}
+	public int classificationCode(){ return Ability.ACODE_SKILL|Ability.DOMAIN_ACROBATIC;}
 	public int usageType(){return USAGE_MOVEMENT;}
 	public int minRange(){return 1;}
 	public int maxRange(){return adjustedMaxInvokerRange(2);}
-    protected int code=0;
-    public int abilityCode(){return code;}
-    public void setAbilityCode(int c){code=c;}
-    
+	protected int code=0;
+	public int abilityCode(){return code;}
+	public void setAbilityCode(int c){code=c;}
+	
 	public boolean done=false;
 
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
@@ -126,7 +126,7 @@ public class Fighter_Charge extends FighterSkill
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MASK_MALICIOUS|CMMsg.MSG_ADVANCE,"^F^<FIGHT^><S-NAME> charge(s) at <T-NAMESELF>!^</FIGHT^>^?");
-            CMLib.color().fixSourceFightColor(msg);
+			CMLib.color().fixSourceFightColor(msg);
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

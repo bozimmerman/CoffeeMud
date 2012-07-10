@@ -24,7 +24,7 @@ import java.util.Vector;
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *        http://www.apache.org/licenses/LICENSE-2.0
+ *  	  http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -35,46 +35,46 @@ import java.util.Vector;
  */
 @SuppressWarnings("rawtypes")
 public class ChannelDelete extends Packet  {
-    public String channel = null;
+	public String channel = null;
 
 	public ChannelDelete()
 	{
 		super();
-        type = ChannelPacket.CHAN_REMOVE;
+		type = ChannelPacket.CHAN_REMOVE;
 	}
-    public ChannelDelete(Vector v) throws InvalidPacketException {
-        super(v);
-        try {
+	public ChannelDelete(Vector v) throws InvalidPacketException {
+		super(v);
+		try {
 			type = ChannelPacket.CHAN_REMOVE;
 			channel = (String)v.elementAt(6);
-            channel = Intermud.getLocalChannel(channel);
-        }
-        catch( ClassCastException e ) {
-            throw new InvalidPacketException();
-        }
-    }
+			channel = Intermud.getLocalChannel(channel);
+		}
+		catch( ClassCastException e ) {
+			throw new InvalidPacketException();
+		}
+	}
 
 	
-    public ChannelDelete(int t, String chan, String who) {
-        super();
-        type = t;
-        channel = chan;
-        sender_name = who;
-    }
+	public ChannelDelete(int t, String chan, String who) {
+		super();
+		type = t;
+		channel = chan;
+		sender_name = who;
+	}
 
-    public void send() throws InvalidPacketException {
-        if( channel == null ) {
-            throw new InvalidPacketException();
-        }
-        channel = Intermud.getRemoteChannel(channel);
-        super.send();
-    }
+	public void send() throws InvalidPacketException {
+		if( channel == null ) {
+			throw new InvalidPacketException();
+		}
+		channel = Intermud.getRemoteChannel(channel);
+		super.send();
+	}
 
-    public String toString() {
-        NameServer n = Intermud.getNameServer();
+	public String toString() {
+		NameServer n = Intermud.getNameServer();
 		String str=
 			 "({\"channel-remove\",5,\"" + I3Server.getMudName() + "\",\"" +
-               sender_name + "\",\""+n.name+"\",0,\"" + channel + "\",})";
+			   sender_name + "\",\""+n.name+"\",0,\"" + channel + "\",})";
 		return str;
-    }
+	}
 }

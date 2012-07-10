@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -39,7 +39,7 @@ public class Chant_Yearning extends Chant
 	public String ID() { return "Chant_Yearning"; }
 	public String name(){ return "Yearning";}
 	public String displayText(){return "(Sexual Yearnings)";}
-    public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_BREEDING;}
+	public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_BREEDING;}
 	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 
 	public void affectCharStats(MOB affected, CharStats affectableStats)
@@ -83,16 +83,16 @@ public class Chant_Yearning extends Chant
 		&&(((MOB)msg.target()).fetchWornItems(Wearable.WORN_LEGS|Wearable.WORN_WAIST,(short)-2048,(short)0).size()==0))
 			unInvoke();
 	}
-    
-    public int castingQuality(MOB mob, Physical target)
-    {
-         if(mob!=null)
-         {
-             if(mob.isInCombat())
-                 return Ability.QUALITY_INDIFFERENT;
-         }
-         return super.castingQuality(mob,target);
-    }
+	
+	public int castingQuality(MOB mob, Physical target)
+	{
+		 if(mob!=null)
+		 {
+			 if(mob.isInCombat())
+				 return Ability.QUALITY_INDIFFERENT;
+		 }
+		 return super.castingQuality(mob,target);
+	}
 
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{

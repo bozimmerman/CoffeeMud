@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -48,13 +48,13 @@ public class Templar extends Cleric
 
 	public Templar()
 	{
-        super();
+		super();
 		maxStatAdj[CharStats.STAT_STRENGTH]=4;
 		maxStatAdj[CharStats.STAT_WISDOM]=4;
-    }
-    public void initializeClass()
-    {
-        super.initializeClass();
+	}
+	public void initializeClass()
+	{
+		super.initializeClass();
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Recall",100,true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Swim",false);
 
@@ -70,7 +70,7 @@ public class Templar extends Cleric
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),2,"Prayer_SenseGood",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),2,"Prayer_SenseLife",false);
-        CMLib.ableMapper().addCharAbilityMapping(ID(),2,"Prayer_CauseFatigue",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),2,"Prayer_CauseFatigue",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),3,"Prayer_Desecrate",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),3,"Specialization_EdgedWeapon",false);
@@ -95,7 +95,7 @@ public class Templar extends Cleric
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),10,"Specialization_Ranged",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),10,"Prayer_DispelGood",false);
-        CMLib.ableMapper().addCharAbilityMapping(ID(),10,"Prayer_CauseExhaustion",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),10,"Prayer_CauseExhaustion",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),11,"Prayer_Poison",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),11,"Prayer_ProtPoison",false);
@@ -120,7 +120,7 @@ public class Templar extends Cleric
 		CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Prayer_BoneMoon",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),18,"Prayer_Tithe",true);
-        CMLib.ableMapper().addCharAbilityMapping(ID(),18,"Prayer_Enervate",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),18,"Prayer_Enervate",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),19,"Prayer_Hellfire",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),19,"Prayer_Maladiction",false);

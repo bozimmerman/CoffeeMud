@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -54,13 +54,13 @@ public class Spell_Command extends Spell
 
 		if(commands.size()==0)
 		{
-	        if(mob.isMonster())
-	            commands.addElement("FLEE");
-	        else
-	        {
-    			mob.tell("Command "+((String)V.elementAt(0))+" to do what?");
-    			return false;
-	        }
+			if(mob.isMonster())
+				commands.addElement("FLEE");
+			else
+			{
+				mob.tell("Command "+((String)V.elementAt(0))+" to do what?");
+				return false;
+			}
 		}
 		
 		if(!target.mayIFight(mob))
@@ -75,15 +75,15 @@ public class Spell_Command extends Spell
 			return false;
 		}
 
-        CMObject O=CMLib.english().findCommand(target,(Vector)commands.clone());
-        if(O instanceof Command)
-        {
-            if((!((Command)O).canBeOrdered())||(!((Command)O).securityCheck(mob))||(((Command)O).ID().equals("Sleep")))
-            {
-                mob.tell("You can't command someone to doing that.");
-                return false;
-            }
-        }
+		CMObject O=CMLib.english().findCommand(target,(Vector)commands.clone());
+		if(O instanceof Command)
+		{
+			if((!((Command)O).canBeOrdered())||(!((Command)O).securityCheck(mob))||(((Command)O).ID().equals("Sleep")))
+			{
+				mob.tell("You can't command someone to doing that.");
+				return false;
+			}
+		}
 		else
 		{
 			if(O instanceof Ability)
@@ -116,8 +116,8 @@ public class Spell_Command extends Spell
 			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> command(s) <T-NAMESELF> to '"+CMParms.combine(commands,0)+"'.^?");
 			CMMsg msg2=CMClass.getMsg(mob,target,this,CMMsg.MSK_CAST_MALICIOUS_VERBAL|CMMsg.TYP_MIND|(auto?CMMsg.MASK_ALWAYS:0),null);
 			if((mob.location().okMessage(mob,msg))
-            &&((mob.location().okMessage(mob,msg2)))
-            &&(mob.location().show(mob,target,CMMsg.MSG_ORDER,null)))
+			&&((mob.location().okMessage(mob,msg2)))
+			&&(mob.location().show(mob,target,CMMsg.MSG_ORDER,null)))
 			{
 				mob.location().send(mob,msg);
 				if(msg.value()<=0)

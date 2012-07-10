@@ -21,7 +21,7 @@ import java.io.Serializable;
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *        http://www.apache.org/licenses/LICENSE-2.0
+ *  	  http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -34,14 +34,14 @@ public class NameServer implements Serializable
 {
 	public static final long serialVersionUID=0;
 	
-    protected String ip;
-    protected String name;
-    protected int    port;
+	protected String ip;
+	protected String name;
+	protected int    port;
 
-    public NameServer(String addr, int p, String nom) {
-        super();
-        ip = addr;
-        port = p;
-        name = nom;
-    }
+	public NameServer(String addr, int p, String nom) {
+		super();
+		ip = addr;
+		port = p;
+		name = nom;
+	}
 }

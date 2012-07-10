@@ -23,7 +23,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -40,7 +40,7 @@ public class Fighter_FieldTactics extends FighterSkill
 	protected int canAffectCode(){return CAN_MOBS;}
 	protected int canTargetCode(){return 0;}
 	public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
-    public int classificationCode(){ return Ability.ACODE_SKILL|Ability.DOMAIN_NATURELORE;}
+	public int classificationCode(){ return Ability.ACODE_SKILL|Ability.DOMAIN_NATURELORE;}
 	public boolean isAutoInvoked(){return true;}
 	public boolean canBeUninvoked(){return false;}
 	private static final Integer[] landClasses = {Integer.valueOf(-1)};
@@ -115,7 +115,7 @@ public class Fighter_FieldTactics extends FighterSkill
 			 ||(msg.sourceMinor()==CMMsg.TYP_RECALL)))
 		 &&(!msg.sourceMajor(CMMsg.MASK_ALWAYS))
 		 &&(msg.sourceMinor()!=CMMsg.TYP_LOOK)
-         &&(msg.sourceMinor()!=CMMsg.TYP_EXAMINE)
+		 &&(msg.sourceMinor()!=CMMsg.TYP_EXAMINE)
 		 &&(msg.sourceMajor()>0))
 		{
 			hidden=false;

@@ -28,7 +28,7 @@ import java.util.regex.Pattern;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -38,49 +38,49 @@ import java.util.regex.Pattern;
 */
 public class GAbilityLoader
 {
-    protected DBConnector DB=null;
-    public GAbilityLoader(DBConnector newDB)
-    {
-        DB=newDB;
-    }
-    public List<DatabaseEngine.AckRecord> DBReadAbilities()
-    {
-        DBConnection D=null;
-        Vector<DatabaseEngine.AckRecord> rows=new Vector<DatabaseEngine.AckRecord>();
-        try
-        {
-            D=DB.DBFetch();
-            ResultSet R=D.query("SELECT * FROM CMGAAC");
-            while(R.next())
-            	rows.addElement(new DatabaseEngine.AckRecord(DBConnections.getRes(R,"CMGAID"), DBConnections.getRes(R,"CMGAAT"), DBConnections.getRes(R,"CMGACL")));
-        }
-        catch(Exception sqle)
-        {
-            Log.errOut("DataLoader",sqle);
-        }
-        finally
-        {
-	        DB.DBDone(D);
-        }
-        // log comment
-        return rows;
-    }
-    public void DBCreateAbility(String classID, String typeClass, String data)
-    {
-        DB.updateWithClobs(
-         "INSERT INTO CMGAAC ("
-         +"CMGAID, "
-         +"CMGAAT, "
-         +"CMGACL "
-         +") values ("
-         +"'"+classID+"',"
-         +"?,"
-         +"'"+typeClass+"'"
-         +")", 
-         data+" ");
-    }
-    public void DBDeleteAbility(String classID)
-    {
-        DB.update("DELETE FROM CMGAAC WHERE CMGAID='"+classID+"'");
-    }
+	protected DBConnector DB=null;
+	public GAbilityLoader(DBConnector newDB)
+	{
+		DB=newDB;
+	}
+	public List<DatabaseEngine.AckRecord> DBReadAbilities()
+	{
+		DBConnection D=null;
+		Vector<DatabaseEngine.AckRecord> rows=new Vector<DatabaseEngine.AckRecord>();
+		try
+		{
+			D=DB.DBFetch();
+			ResultSet R=D.query("SELECT * FROM CMGAAC");
+			while(R.next())
+				rows.addElement(new DatabaseEngine.AckRecord(DBConnections.getRes(R,"CMGAID"), DBConnections.getRes(R,"CMGAAT"), DBConnections.getRes(R,"CMGACL")));
+		}
+		catch(Exception sqle)
+		{
+			Log.errOut("DataLoader",sqle);
+		}
+		finally
+		{
+			DB.DBDone(D);
+		}
+		// log comment
+		return rows;
+	}
+	public void DBCreateAbility(String classID, String typeClass, String data)
+	{
+		DB.updateWithClobs(
+		 "INSERT INTO CMGAAC ("
+		 +"CMGAID, "
+		 +"CMGAAT, "
+		 +"CMGACL "
+		 +") values ("
+		 +"'"+classID+"',"
+		 +"?,"
+		 +"'"+typeClass+"'"
+		 +")", 
+		 data+" ");
+	}
+	public void DBDeleteAbility(String classID)
+	{
+		DB.update("DELETE FROM CMGAAC WHERE CMGAID='"+classID+"'");
+	}
 }

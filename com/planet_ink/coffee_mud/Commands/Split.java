@@ -23,7 +23,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -92,8 +92,8 @@ public class Split extends StdCommand
 			MOB recipient=(MOB)e.next();
 			for(int v=0;v<V.size();v++)
 			{
-			    Coins C=(Coins)V.get(v);
-			    C=(Coins)C.copyOf();
+				Coins C=(Coins)V.get(v);
+				C=(Coins)C.copyOf();
 				mob.addItem(C);
 				CMMsg newMsg=CMClass.getMsg(mob,recipient,C,CMMsg.MSG_GIVE,"<S-NAME> give(s) <O-NAME> to <T-NAMESELF>.");
 				if(mob.location().okMessage(mob,newMsg))
@@ -103,8 +103,8 @@ public class Split extends StdCommand
 		}
 		return false;
 	}
-    public double combatActionsCost(final MOB mob, final List<String> cmds){return CMProps.getCombatActionCost(ID());}
-    public double actionsCost(final MOB mob, final List<String> cmds){return CMProps.getActionCost(ID());}
+	public double combatActionsCost(final MOB mob, final List<String> cmds){return CMProps.getCombatActionCost(ID());}
+	public double actionsCost(final MOB mob, final List<String> cmds){return CMProps.getActionCost(ID());}
 	public boolean canBeOrdered(){return true;}
 
 	

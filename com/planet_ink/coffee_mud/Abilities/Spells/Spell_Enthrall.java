@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -143,18 +143,18 @@ public class Spell_Enthrall extends Spell
 
 		super.unInvoke();
 
-        if((canBeUninvoked()&&(!mob.amDead())))
-        {
-            mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-YOUPOSS> free-will returns.");
+		if((canBeUninvoked()&&(!mob.amDead())))
+		{
+			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-YOUPOSS> free-will returns.");
 			if(mob.amFollowing()!=null)
 				CMLib.commands().postFollow(mob,null,false);
 			CMLib.commands().postStand(mob,true);
 			if(mob.isMonster())
 			{
-                if((CMLib.dice().rollPercentage()>50)
-                ||((mob.getStartRoom()!=null)
-                    &&(mob.getStartRoom().getArea()!=mob.location().getArea())
-                    &&(CMLib.flags().isAggressiveTo(mob,null)||(invoker==null)||(!mob.location().isInhabitant(invoker)))))
+				if((CMLib.dice().rollPercentage()>50)
+				||((mob.getStartRoom()!=null)
+					&&(mob.getStartRoom().getArea()!=mob.location().getArea())
+					&&(CMLib.flags().isAggressiveTo(mob,null)||(invoker==null)||(!mob.location().isInhabitant(invoker)))))
 						CMLib.tracking().wanderAway(mob,true,true);
 				else
 				if((invoker!=null)&&(invoker!=mob))
@@ -163,23 +163,23 @@ public class Spell_Enthrall extends Spell
 		}
 	}
 
-    public int castingQuality(MOB mob, Physical target)
-    {
-        if(mob!=null)
-        {
-            if(!CMLib.flags().canSpeak(mob))
-                return Ability.QUALITY_INDIFFERENT;
-            if(target instanceof MOB)
-            {
-                if(!CMLib.flags().canBeHeardSpeakingBy(mob,(MOB)target))
-                    return Ability.QUALITY_INDIFFERENT;
-                if((mob.isMonster())&&(((MOB)target).isMonster()))
-                    return Ability.QUALITY_INDIFFERENT;
-            }
-        }
-        return super.castingQuality(mob,target);
-    }
-    
+	public int castingQuality(MOB mob, Physical target)
+	{
+		if(mob!=null)
+		{
+			if(!CMLib.flags().canSpeak(mob))
+				return Ability.QUALITY_INDIFFERENT;
+			if(target instanceof MOB)
+			{
+				if(!CMLib.flags().canBeHeardSpeakingBy(mob,(MOB)target))
+					return Ability.QUALITY_INDIFFERENT;
+				if((mob.isMonster())&&(((MOB)target).isMonster()))
+					return Ability.QUALITY_INDIFFERENT;
+			}
+		}
+		return super.castingQuality(mob,target);
+	}
+	
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=this.getTarget(mob,commands,givenTarget);

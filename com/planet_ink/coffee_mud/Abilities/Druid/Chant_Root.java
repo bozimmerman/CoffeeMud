@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -42,7 +42,7 @@ public class Chant_Root extends Chant
 	public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_SELF;}
 	protected int canAffectCode(){return CAN_MOBS;}
 	protected boolean uprooted=false;
-    public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PRESERVING;}
+	public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PRESERVING;}
 
 	public void unInvoke()
 	{
@@ -95,18 +95,18 @@ public class Chant_Root extends Chant
 		return super.okMessage(myHost,msg);
 	}
 
-    public int castingQuality(MOB mob, Physical target)
-    {
-        if(mob!=null)
-        {
-            if(target instanceof MOB)
-            {
-                if((((MOB)target).isInCombat())&&(((MOB)target).isMonster()))
-                    return Ability.QUALITY_INDIFFERENT;
-            }
-        }
-        return super.castingQuality(mob,target);
-    }
+	public int castingQuality(MOB mob, Physical target)
+	{
+		if(mob!=null)
+		{
+			if(target instanceof MOB)
+			{
+				if((((MOB)target).isInCombat())&&(((MOB)target).isMonster()))
+					return Ability.QUALITY_INDIFFERENT;
+			}
+		}
+		return super.castingQuality(mob,target);
+	}
 
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{

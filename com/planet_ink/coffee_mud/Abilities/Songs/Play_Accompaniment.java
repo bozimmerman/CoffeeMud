@@ -25,7 +25,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -49,25 +49,25 @@ public class Play_Accompaniment extends Play
 			stats.setLevel(stats.level()+lvl);
 		}
 	}
-    public void affectCharStats(MOB E, CharStats stats)
-    {
-        super.affectCharStats(E,stats);
-        if((E instanceof MOB)&&(E!=invoker())&&(stats.getCurrentClass().baseClass().equals("Bard")))
-        {
-            int lvl=adjustedLevel(invoker(),0)/10;
-            if(lvl<1) lvl=1;
-            stats.setClassLevel(stats.getCurrentClass(),stats.getCurrentClassLevel()+lvl);
-        }
-    }
-    
-    public int castingQuality(MOB mob, Physical target)
-    {
-        if(mob!=null)
-        {
-            if(mob.getGroupMembers(new HashSet<MOB>()).size()<2)
-                return Ability.QUALITY_INDIFFERENT;
-        }
-        return super.castingQuality(mob,target);
-    }
-    
+	public void affectCharStats(MOB E, CharStats stats)
+	{
+		super.affectCharStats(E,stats);
+		if((E instanceof MOB)&&(E!=invoker())&&(stats.getCurrentClass().baseClass().equals("Bard")))
+		{
+			int lvl=adjustedLevel(invoker(),0)/10;
+			if(lvl<1) lvl=1;
+			stats.setClassLevel(stats.getCurrentClass(),stats.getCurrentClassLevel()+lvl);
+		}
+	}
+	
+	public int castingQuality(MOB mob, Physical target)
+	{
+		if(mob!=null)
+		{
+			if(mob.getGroupMembers(new HashSet<MOB>()).size()<2)
+				return Ability.QUALITY_INDIFFERENT;
+		}
+		return super.castingQuality(mob,target);
+	}
+	
 }

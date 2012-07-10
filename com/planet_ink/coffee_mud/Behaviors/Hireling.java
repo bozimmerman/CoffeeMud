@@ -26,7 +26,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -126,14 +126,14 @@ public class Hireling extends StdBehavior
 		int direction=-1;
 		for(int d=0;d<Directions.DIRECTIONS_BASE().length;d++)
 			if(observer.location().getExitInDir(Directions.DIRECTIONS_BASE()[d])!=null)
-            {
+			{
 				if(observer.location().getExitInDir(Directions.DIRECTIONS_BASE()[d]).isOpen())
 				{
 					direction=Directions.DIRECTIONS_BASE()[d];
 					break;
 				}
 				direction=Directions.DIRECTIONS_BASE()[d];
-            }
+			}
 		if(direction>=0)
 			CMLib.tracking().walk(observer,direction,false,false);
 		if(observer.getStartRoom()!=null)
@@ -274,15 +274,15 @@ public class Hireling extends StdBehavior
 			if(((upperSrcMsg.indexOf(" SKILLS") > 0)))
 			{
 				StringBuffer skills = new StringBuffer("");
-		        for(final Enumeration<Ability> a=observer.allAbilities();a.hasMoreElements();)
-		        {
-		            final Ability A=a.nextElement();
-		            if(A!=null)
-		            {
+				for(final Enumeration<Ability> a=observer.allAbilities();a.hasMoreElements();)
+				{
+					final Ability A=a.nextElement();
+					if(A!=null)
+					{
 						if(A.proficiency() == 0)
 							A.setProficiency(50 + observer.phyStats().level() - CMLib.ableMapper().lowestQualifyingLevel(A.ID()));
 						skills.append(", " + A.name());
-		            }
+					}
 				}
 				if(skills.length()>2)
 					CMLib.commands().postSay(observer, source, "My skills include: " + skills.substring(2) + ".",false,false);
@@ -329,15 +329,15 @@ public class Hireling extends StdBehavior
 					if(given>price())
 						partials.put(msg.source().Name(),Double.valueOf(given-price()));
 					StringBuffer skills=new StringBuffer("");
-			        for(Enumeration<Ability> a=observer.allAbilities();a.hasMoreElements();)
-			        {
-			            Ability A=a.nextElement();
-			            if(A!=null)
-			            {
+					for(Enumeration<Ability> a=observer.allAbilities();a.hasMoreElements();)
+					{
+						Ability A=a.nextElement();
+						if(A!=null)
+						{
 							if(A.proficiency()==0)
 								A.setProficiency(50+observer.phyStats().level()-CMLib.ableMapper().lowestQualifyingLevel(A.ID()));
 							skills.append(", "+A.name());
-			            }
+						}
 					}
 					workingFor=source.Name();
 					onTheJobUntil=System.currentTimeMillis();

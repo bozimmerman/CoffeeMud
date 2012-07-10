@@ -27,7 +27,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -79,9 +79,9 @@ public class Prayer_Divorce extends Prayer
 					femaleName=target.Name();
 					maleName=target.getLiegeID();
 				}
-                List<String> channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.DIVORCES);
-                for(int i=0;i<channels.size();i++)
-                    CMLib.commands().postChannel((String)channels.get(i),mob.getClanID(),maleName+" and "+femaleName+" are now divorced.",true);
+				List<String> channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.DIVORCES);
+				for(int i=0;i<channels.size();i++)
+					CMLib.commands().postChannel((String)channels.get(i),mob.getClanID(),maleName+" and "+femaleName+" are now divorced.",true);
 				MOB M=CMLib.players().getPlayer(target.getLiegeID());
 				if(M!=null) M.setLiegeID("");
 				target.setLiegeID("");
@@ -126,7 +126,7 @@ public class Prayer_Divorce extends Prayer
 							}
 						}
 					}
-			    }catch(NoSuchElementException e){}
+				}catch(NoSuchElementException e){}
 			}
 		}
 		else

@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -116,27 +116,27 @@ public class Chant_PlantConstriction extends Chant
 		&&((Item)affected).amWearingAt(Wearable.WORN_LEGS))
 			affectableState.setMovement(affectableState.getMovement()/2);
 	}
-    
-    public int castingQuality(MOB mob, Physical target)
-    {
-        if(mob!=null)
-        {
-            Item myPlant=Druid_MyPlants.myPlant(mob.location(),mob,0);
-            if(myPlant==null)
-                return Ability.QUALITY_INDIFFERENT;
-            if(target instanceof MOB)
-            {
-                Vector positionChoices=new Vector();
-                if(((MOB)target).getWearPositions(Wearable.WORN_ARMS)>0)
-                    positionChoices.addElement(Long.valueOf(Wearable.WORN_ARMS));
-                if(((MOB)target).getWearPositions(Wearable.WORN_LEGS)>0)
-                    positionChoices.addElement(Long.valueOf(Wearable.WORN_LEGS));
-                if(positionChoices.size()==0)
-                    return Ability.QUALITY_INDIFFERENT;
-            }
-        }
-        return super.castingQuality(mob,target);
-    }
+	
+	public int castingQuality(MOB mob, Physical target)
+	{
+		if(mob!=null)
+		{
+			Item myPlant=Druid_MyPlants.myPlant(mob.location(),mob,0);
+			if(myPlant==null)
+				return Ability.QUALITY_INDIFFERENT;
+			if(target instanceof MOB)
+			{
+				Vector positionChoices=new Vector();
+				if(((MOB)target).getWearPositions(Wearable.WORN_ARMS)>0)
+					positionChoices.addElement(Long.valueOf(Wearable.WORN_ARMS));
+				if(((MOB)target).getWearPositions(Wearable.WORN_LEGS)>0)
+					positionChoices.addElement(Long.valueOf(Wearable.WORN_LEGS));
+				if(positionChoices.size()==0)
+					return Ability.QUALITY_INDIFFERENT;
+			}
+		}
+		return super.castingQuality(mob,target);
+	}
 
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{

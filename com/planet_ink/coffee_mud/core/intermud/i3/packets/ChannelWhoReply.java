@@ -23,7 +23,7 @@ import java.util.Vector;
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *        http://www.apache.org/licenses/LICENSE-2.0
+ *  	  http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -34,49 +34,49 @@ import java.util.Vector;
  */
 @SuppressWarnings("rawtypes")
 public class ChannelWhoReply extends Packet {
-    public String channel = null;
+	public String channel = null;
 	public Vector who=null;
 
 	public ChannelWhoReply()
 	{
 		super();
-        type = Packet.CHAN_WHO_REP;
+		type = Packet.CHAN_WHO_REP;
 	}
 	
-    public ChannelWhoReply(Vector v) throws InvalidPacketException {
-        super(v);
-        try {
-            type = Packet.CHAN_WHO_REP;
+	public ChannelWhoReply(Vector v) throws InvalidPacketException {
+		super(v);
+		try {
+			type = Packet.CHAN_WHO_REP;
 			channel = (String)v.elementAt(6);
-            channel = Intermud.getLocalChannel(channel);
+			channel = Intermud.getLocalChannel(channel);
 			try{
 			who = (Vector)v.elementAt(7);
 			}catch(Exception e){ who=new Vector();}
-        }
-        catch( ClassCastException e ) {
-            throw new InvalidPacketException();
-        }
-    }
+		}
+		catch( ClassCastException e ) {
+			throw new InvalidPacketException();
+		}
+	}
 
-    public void send() throws InvalidPacketException {
-        if( channel==null || who == null  ) {
-            throw new InvalidPacketException();
-        }
-        channel = Intermud.getRemoteChannel(channel);
-        super.send();
-    }
+	public void send() throws InvalidPacketException {
+		if( channel==null || who == null  ) {
+			throw new InvalidPacketException();
+		}
+		channel = Intermud.getRemoteChannel(channel);
+		super.send();
+	}
 
-    public String toString() {
+	public String toString() {
 		String str = "({\"chan-who-reply\",5,\"" + I3Server.getMudName() +
-		         "\",0,\"" + target_mud + "\",\"" + target_name + "\",\"" + channel + "\",({";
+				 "\",0,\"" + target_mud + "\",\"" + target_name + "\",\"" + channel + "\",({";
 		int i;
 
 		for(i=0; i<who.size(); i++) {
-		    String nom = (String)who.elementAt(0);
-		    str += "\"" + nom + "\",";
+			String nom = (String)who.elementAt(0);
+			str += "\"" + nom + "\",";
 		}
 		str += "}),})";
 		return str;
 
-    }
+	}
 }

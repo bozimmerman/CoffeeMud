@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -57,25 +57,25 @@ public class Druid_ShapeShift extends StdAbility
 	}
 
 	private static String[][] shapes={
-	{"Mouse",   "Kitten",   "Puppy",    "Robin",  "Garden Snake", "Cub",    "Grasshopper","Spider Monkey","Calf"},
-	{"Rat",     "Cat",      "Dog",      "Owl",    "Snake",        "Cub",    "Centipede",  "Chimp",        "Cow"},
-	{"Dire Rat","Puma",     "Wolf",     "Hawk",   "Python",    "Brown Bear","Tarantula",  "Ape",          "Buffalo"},
-	{"WereRat", "Lion",     "Dire Wolf","Eagle",  "Cobra",     "Black Bear","Scarab",     "Gorilla",      "Bull"},
+	{"Mouse",   "Kitten",   "Puppy",	"Robin",  "Garden Snake", "Cub",	"Grasshopper","Spider Monkey","Calf"},
+	{"Rat", 	"Cat",  	"Dog",  	"Owl",    "Snake",  	  "Cub",	"Centipede",  "Chimp",  	  "Cow"},
+	{"Dire Rat","Puma", 	"Wolf", 	"Hawk",   "Python",    "Brown Bear","Tarantula",  "Ape",		  "Buffalo"},
+	{"WereRat", "Lion", 	"Dire Wolf","Eagle",  "Cobra",     "Black Bear","Scarab",     "Gorilla",	  "Bull"},
 	{"WereBat", "Manticore","WereWolf", "Harpy",  "Naga",      "WereBear",  "ManScorpion","Sasquatch",    "Minotaur"}
 	};
 	private static String[][] races={
-	{"Mouse",  "Kitten",   "Puppy",   "Robin",  "GardenSnake","Cub",     "Grasshopper","Monkey",   "Calf"},
-	{"Rat",    "Cat",      "Dog",     "Owl",    "Snake",      "Cub",     "Centipede",  "Chimp",    "Cow"},
+	{"Mouse",  "Kitten",   "Puppy",   "Robin",  "GardenSnake","Cub",	 "Grasshopper","Monkey",   "Calf"},
+	{"Rat",    "Cat",      "Dog",     "Owl",	"Snake",	  "Cub",	 "Centipede",  "Chimp",    "Cow"},
 	{"DireRat","Puma",     "Wolf",    "Hawk",   "Python",     "Bear",    "Tarantula",  "Ape",      "Buffalo"},
-	{"WereRat","Lion",     "DireWolf","Eagle",  "Cobra",      "Bear",    "Scarab",     "Gorilla",  "Bull"},
-	{"WereBat","Manticore","WereWolf","Harpy",  "Naga",       "WereBear","ManScorpion","Sasquatch","Minotaur"}
+	{"WereRat","Lion",     "DireWolf","Eagle",  "Cobra",	  "Bear",    "Scarab",     "Gorilla",  "Bull"},
+	{"WereBat","Manticore","WereWolf","Harpy",  "Naga", 	  "WereBear","ManScorpion","Sasquatch","Minotaur"}
 	};
 	private static double[]   attadj=
-	{.7	      ,1.0		  ,1.0		 ,.2	   ,.3			  ,1.2      ,.7          ,1.0        ,.7};
+	{.7		  ,1.0		  ,1.0		 ,.2	   ,.3			  ,1.2  	,.7 		 ,1.0   	 ,.7};
 	private static double[]   dmgadj=
-	{.4		  ,.6         ,.8        ,1.0	   ,.4			  ,.6       ,.6           ,.8         ,1.0};
+	{.4		  ,.6   	  ,.8   	 ,1.0	   ,.4			  ,.6   	,.6 		  ,.8   	  ,1.0};
 	private static double[]   armadj=
-	{1.0	  ,.5         ,.4        ,.5	   ,1.0			  ,.3       ,1.0          ,.2         ,.2};
+	{1.0	  ,.5   	  ,.4   	 ,.5	   ,1.0			  ,.3   	,1.0		  ,.2   	  ,.2};
 
 	private static String[] forms={"Rodent form",
 								   "Feline form",
@@ -99,7 +99,7 @@ public class Druid_ShapeShift extends StdAbility
 		super.affectPhyStats(affected,affectableStats);
 		if((newRace!=null)&&(affected instanceof MOB))
 		{
-            int xlvl=getXLEVELLevel(invoker());
+			int xlvl=getXLEVELLevel(invoker());
 			affectableStats.setName(CMLib.english().startWithAorAn(raceName.toLowerCase()));
 			int oldAdd=affectableStats.weight()-affected.basePhyStats().weight();
 			newRace.setHeightWeight(affectableStats,(char)((MOB)affected).charStats().getStat(CharStats.STAT_GENDER));
@@ -117,12 +117,12 @@ public class Druid_ShapeShift extends StdAbility
 	{
 		super.affectCharStats(affected,affectableStats);
 		if(newRace!=null)
-	    {
-		    int oldCat=affected.baseCharStats().ageCategory();
+		{
+			int oldCat=affected.baseCharStats().ageCategory();
 			affectableStats.setMyRace(newRace);
 			if(affected.baseCharStats().getStat(CharStats.STAT_AGE)>0)
 				affectableStats.setStat(CharStats.STAT_AGE,newRace.getAgingChart()[oldCat]);
-	    }
+		}
 	}
 
 
@@ -139,9 +139,9 @@ public class Druid_ShapeShift extends StdAbility
 
 	public void setRaceName(MOB mob)
 	{
-        int qualClassLevel=CMLib.ableMapper().qualifyingClassLevel(mob,this)+(2*getXLEVELLevel(mob));
+		int qualClassLevel=CMLib.ableMapper().qualifyingClassLevel(mob,this)+(2*getXLEVELLevel(mob));
 		int classLevel=qualClassLevel-CMLib.ableMapper().qualifyingLevel(mob,this);
-        if(qualClassLevel<0) classLevel=30;
+		if(qualClassLevel<0) classLevel=30;
 		raceName=getRaceName(classLevel,myRaceCode);
 		newRace=getRace(classLevel,myRaceCode);
 	}
@@ -189,25 +189,25 @@ public class Druid_ShapeShift extends StdAbility
 		return false;
 	}
 
-    public int castingQuality(MOB mob, Physical target)
-    {
-        if(mob!=null)
-        {
-            if(target instanceof MOB)
-            {
-                if((((MOB)target).isInCombat())
-                &&(!Druid_ShapeShift.isShapeShifted((MOB)target)))
-                {
-                    int qualClassLevel=CMLib.ableMapper().qualifyingClassLevel(mob,this)+(2*getXLEVELLevel(mob));
-                    int classLevel=qualClassLevel-CMLib.ableMapper().qualifyingLevel(mob,this);
-                    if(qualClassLevel<0) classLevel=30;
-                    if(getRaceLevel(classLevel)>=3)
-                        return super.castingQuality(mob, target,Ability.QUALITY_BENEFICIAL_SELF);
-                }
-            }
-        }
-        return super.castingQuality(mob,target);
-    }
+	public int castingQuality(MOB mob, Physical target)
+	{
+		if(mob!=null)
+		{
+			if(target instanceof MOB)
+			{
+				if((((MOB)target).isInCombat())
+				&&(!Druid_ShapeShift.isShapeShifted((MOB)target)))
+				{
+					int qualClassLevel=CMLib.ableMapper().qualifyingClassLevel(mob,this)+(2*getXLEVELLevel(mob));
+					int classLevel=qualClassLevel-CMLib.ableMapper().qualifyingLevel(mob,this);
+					if(qualClassLevel<0) classLevel=30;
+					if(getRaceLevel(classLevel)>=3)
+						return super.castingQuality(mob, target,Ability.QUALITY_BENEFICIAL_SELF);
+				}
+			}
+		}
+		return super.castingQuality(mob,target);
+	}
 
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
@@ -243,7 +243,7 @@ public class Druid_ShapeShift extends StdAbility
 			if(mob.isMonster())
 			{
 				myRaceCode=CMLib.dice().roll(1,racesTaken.length,-1);
-                long t=System.currentTimeMillis();
+				long t=System.currentTimeMillis();
 				while((racesTaken[myRaceCode]>0)&&((System.currentTimeMillis()-t)<10000))
 					myRaceCode=CMLib.dice().roll(1,racesTaken.length,-1);
 			}
@@ -291,7 +291,7 @@ public class Druid_ShapeShift extends StdAbility
 					Ability A=(Ability)V.elementAt(v);
 					int lvl=CMLib.ableMapper().qualifyingLevel(mob,A);
 					if(lvl<=0) lvl=CMLib.ableMapper().lowestQualifyingLevel(A.ID());
-                    lvl+=getXLEVELLevel(mob);
+					lvl+=getXLEVELLevel(mob);
 					if(lvl<sortByLevel)
 					{
 						sortByLevel=lvl;

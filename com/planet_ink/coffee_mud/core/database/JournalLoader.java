@@ -26,7 +26,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -71,45 +71,45 @@ public class JournalLoader
 				Log.errOut("Journal",sqle);
 				return ct;
 			}
-	        finally
-	        {
-		        DB.DBDone(D);
-	        }
+			finally
+			{
+				DB.DBDone(D);
+			}
 			return ct;
 		}
 	}
-    
 	
 	
-    public String DBGetRealName(String possibleName)
-    {
-    	possibleName = DB.injectionClean(possibleName);
+	
+	public String DBGetRealName(String possibleName)
+	{
+		possibleName = DB.injectionClean(possibleName);
 		
-        DBConnection D=null;
-        String realName=null;
-        try
-        {
-            D=DB.DBFetch(); // add unique
-            ResultSet R=D.query("SELECT CMJRNL FROM CMJRNL WHERE CMJRNL='"+possibleName+"'");
-            if(R.next())
-            {
-                realName=DBConnections.getRes(R,"CMJRNL");
-                if(realName.length()==0)
-                {
-                    return realName=null;
-                }
-            }
-        }
-        catch(Exception sqle)
-        {
-            Log.errOut("Journal",sqle);
-        }
-        finally
-        {
-	        DB.DBDone(D);
-        }
-        return realName;
-    }
+		DBConnection D=null;
+		String realName=null;
+		try
+		{
+			D=DB.DBFetch(); // add unique
+			ResultSet R=D.query("SELECT CMJRNL FROM CMJRNL WHERE CMJRNL='"+possibleName+"'");
+			if(R.next())
+			{
+				realName=DBConnections.getRes(R,"CMJRNL");
+				if(realName.length()==0)
+				{
+					return realName=null;
+				}
+			}
+		}
+		catch(Exception sqle)
+		{
+			Log.errOut("Journal",sqle);
+		}
+		finally
+		{
+			DB.DBDone(D);
+		}
+		return realName;
+	}
 	
 	public long[] DBJournalLatestDateNewerThan(String Journal, String to, long olderTime)
 	{
@@ -136,10 +136,10 @@ public class JournalLoader
 		{
 			Log.errOut("Journal",sqle);
 		}
-        finally
-        {
-	        DB.DBDone(D);
-        }
+		finally
+		{
+			DB.DBDone(D);
+		}
 		return newest;
 	}
 	
@@ -158,7 +158,7 @@ public class JournalLoader
 				if(!journalsH.contains(which)) 
 				{
 					journalsH.add(which);
-			    	journals.addElement(which);
+					journals.addElement(which);
 				}
 			}
 		}
@@ -167,10 +167,10 @@ public class JournalLoader
 			Log.errOut("Journal",sqle);
 			return null;
 		}
-        finally
-        {
-	        DB.DBDone(D);
-        }
+		finally
+		{
+			DB.DBDone(D);
+		}
 		return journals;
 	}
 	
@@ -284,10 +284,10 @@ public class JournalLoader
 			Log.errOut("Journal",sqle);
 			return null;
 		}
-        finally
-        {
-	        DB.DBDone(D);
-        }
+		finally
+		{
+			DB.DBDone(D);
+		}
 		return journal;
 	}
 	
@@ -318,10 +318,10 @@ public class JournalLoader
 			Log.errOut("Journal",sqle);
 			return null;
 		}
-        finally
-        {
-	        DB.DBDone(D);
-        }
+		finally
+		{
+			DB.DBDone(D);
+		}
 		Collections.sort(journal);
 		return journal;
 	}
@@ -354,10 +354,10 @@ public class JournalLoader
 				Log.errOut("Journal",sqle);
 				return null;
 			}
-	        finally
-	        {
-		        DB.DBDone(D);
-	        }
+			finally
+			{
+				DB.DBDone(D);
+			}
 			Collections.sort(journal);
 			return journal;
 		}
@@ -388,10 +388,10 @@ public class JournalLoader
 				Log.errOut("Journal",sqle);
 				return null;
 			}
-	        finally
-	        {
-		        DB.DBDone(D);
-	        }
+			finally
+			{
+				DB.DBDone(D);
+			}
 			return null;
 		}
 	}
@@ -527,10 +527,10 @@ public class JournalLoader
 		{
 			Log.errOut("Journal",sqle);
 		}
-        finally
-        {
-	        DB.DBDone(D);
-        }
+		finally
+		{
+			DB.DBDone(D);
+		}
 	}
 	
 	public void DBUpdateJournalStats(String Journal, JournalsLibrary.JournalSummaryStats stats)
@@ -579,10 +579,10 @@ public class JournalLoader
 		{
 			Log.errOut("JournalLoader",sqle.getMessage());
 		}
-        finally
-        {
-	        DB.DBDone(D);
-        }
+		finally
+		{
+			DB.DBDone(D);
+		}
 	}
 	
 	public void DBReadJournalSummaryStats(JournalsLibrary.JournalSummaryStats stats)
@@ -656,10 +656,10 @@ public class JournalLoader
 		{
 			Log.errOut("JournalLoader",sqle.getMessage());
 		}
-        finally
-        {
-	        DB.DBDone(D);
-        }
+		finally
+		{
+			DB.DBDone(D);
+		}
 	}
 
 	

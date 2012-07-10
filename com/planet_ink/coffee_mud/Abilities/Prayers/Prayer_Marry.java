@@ -27,7 +27,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -144,10 +144,10 @@ public class Prayer_Marry extends Prayer
 				wife.setLiegeID(husband.Name());
 				CMLib.coffeeTables().bump(husband,CoffeeTableRow.STAT_MARRIAGES);
 				CMLib.commands().postSay(mob,husband,"You may kiss your bride!",false,false);
-                List<String> channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.MARRIAGES);
-                for(int i=0;i<channels.size();i++)
-                    CMLib.commands().postChannel((String)channels.get(i),husband.getClanID(),husband.name()+" and "+wife.name()+" were just joined in holy matrimony!",true);
-             }
+				List<String> channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.MARRIAGES);
+				for(int i=0;i<channels.size();i++)
+					CMLib.commands().postChannel((String)channels.get(i),husband.getClanID(),husband.name()+" and "+wife.name()+" were just joined in holy matrimony!",true);
+			 }
 		}
 		else
 			beneficialWordsFizzle(mob,null,"<S-NAME> start(s) 'Dearly beloved', and then clear(s) <S-HIS-HER> throat.");

@@ -25,7 +25,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -44,16 +44,16 @@ public class Prayer_InfuseHoliness extends Prayer
 	public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 	protected int canAffectCode(){return Ability.CAN_MOBS|Ability.CAN_ITEMS|Ability.CAN_ROOMS|Ability.CAN_EXITS;}
 	protected int canTargetCode(){return Ability.CAN_MOBS|Ability.CAN_ITEMS|Ability.CAN_ROOMS|Ability.CAN_EXITS;}
-    protected int serviceRunning=0;
-    public int abilityCode(){return serviceRunning;}
-    public void setAbilityCode(int newCode){serviceRunning=newCode;}
+	protected int serviceRunning=0;
+	public int abilityCode(){return serviceRunning;}
+	public void setAbilityCode(int newCode){serviceRunning=newCode;}
 
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
 		affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_GOOD);
-        if(CMath.bset(affectableStats.disposition(),PhyStats.IS_EVIL))
-            affectableStats.setDisposition(affectableStats.disposition()-PhyStats.IS_EVIL);
+		if(CMath.bset(affectableStats.disposition(),PhyStats.IS_EVIL))
+			affectableStats.setDisposition(affectableStats.disposition()-PhyStats.IS_EVIL);
 	}
 
 	public void unInvoke()
@@ -93,61 +93,61 @@ public class Prayer_InfuseHoliness extends Prayer
 		return super.okMessage(myHost, msg);
 	}
 	
-    public int castingQuality(MOB mob, Physical target)
-    {
-        if(mob!=null)
-        {
-            if(mob.isInCombat())
-                return Ability.QUALITY_INDIFFERENT;
-        }
-        return super.castingQuality(mob,target);
-    }
-    
+	public int castingQuality(MOB mob, Physical target)
+	{
+		if(mob!=null)
+		{
+			if(mob.isInCombat())
+				return Ability.QUALITY_INDIFFERENT;
+		}
+		return super.castingQuality(mob,target);
+	}
+	
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		Physical target=getAnyTarget(mob,commands,givenTarget,Wearable.FILTER_ANY);
 		if(target==null)
-        {
-            if((CMLib.law().doesOwnThisProperty(mob,mob.location()))
-            &&(CMParms.combine(commands,0).equalsIgnoreCase("room")
-                ||CMParms.combine(commands,0).equalsIgnoreCase("here")))
-                target=mob.location();
-            else
-                return false;
-        }
+		{
+			if((CMLib.law().doesOwnThisProperty(mob,mob.location()))
+			&&(CMParms.combine(commands,0).equalsIgnoreCase("room")
+				||CMParms.combine(commands,0).equalsIgnoreCase("here")))
+				target=mob.location();
+			else
+				return false;
+		}
 
-        Deity D=null;
+		Deity D=null;
 		if(CMLib.law().getClericInfusion(target)!=null)
 		{
-            
-            if(target instanceof Room) D=CMLib.law().getClericInfused((Room)target);
-            if(D!=null)
-    			mob.tell("There is already an infused aura of "+D.Name()+" around "+target.name()+".");
-            else
-                mob.tell("There is already an infused aura around "+target.name()+".");
+			
+			if(target instanceof Room) D=CMLib.law().getClericInfused((Room)target);
+			if(D!=null)
+				mob.tell("There is already an infused aura of "+D.Name()+" around "+target.name()+".");
+			else
+				mob.tell("There is already an infused aura around "+target.name()+".");
 			return false;
 		}
-        
-        D=mob.getMyDeity();
-        if(target instanceof Room)
-        {
-            if(D==null)
-            {
-                mob.tell("The faithless may not infuse holiness in a room.");
-                return false;
-            }
-            Area A=mob.location().getArea();
-            Room R=null;
-            for(Enumeration e=A.getMetroMap();e.hasMoreElements();)
-            {
-                R=(Room)e.nextElement();
-                if(CMLib.law().getClericInfused((Room)target)==D)
-                {
-                    mob.tell("There is already a holy place of "+D.Name()+" in this area at "+R.roomTitle(mob)+".");
-                    return false;
-                }
-            }
-        }
+		
+		D=mob.getMyDeity();
+		if(target instanceof Room)
+		{
+			if(D==null)
+			{
+				mob.tell("The faithless may not infuse holiness in a room.");
+				return false;
+			}
+			Area A=mob.location().getArea();
+			Room R=null;
+			for(Enumeration e=A.getMetroMap();e.hasMoreElements();)
+			{
+				R=(Room)e.nextElement();
+				if(CMLib.law().getClericInfused((Room)target)==D)
+				{
+					mob.tell("There is already a holy place of "+D.Name()+" in this area at "+R.roomTitle(mob)+".");
+					return false;
+				}
+			}
+		}
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
@@ -159,15 +159,15 @@ public class Prayer_InfuseHoliness extends Prayer
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-                if(D!=null) setMiscText(D.Name());
-                if((target instanceof Room)
-                &&(CMLib.law().doesOwnThisProperty(mob,((Room)target))))
-                {
-                    target.addNonUninvokableEffect((Ability)this.copyOf());
-                    CMLib.database().DBUpdateRoom((Room)target);
-                }
-                else
-    				beneficialAffect(mob,target,asLevel,0);
+				if(D!=null) setMiscText(D.Name());
+				if((target instanceof Room)
+				&&(CMLib.law().doesOwnThisProperty(mob,((Room)target))))
+				{
+					target.addNonUninvokableEffect((Ability)this.copyOf());
+					CMLib.database().DBUpdateRoom((Room)target);
+				}
+				else
+					beneficialAffect(mob,target,asLevel,0);
 				target.recoverPhyStats();
 			}
 		}

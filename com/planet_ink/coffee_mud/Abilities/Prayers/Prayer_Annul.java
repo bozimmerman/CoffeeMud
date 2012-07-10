@@ -27,7 +27,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -73,9 +73,9 @@ public class Prayer_Annul extends Prayer
 				if((!target.isMonster())&&(target.soulMate()==null))
 					CMLib.coffeeTables().bump(target,CoffeeTableRow.STAT_DIVORCES);
 				mob.location().send(mob,msg);
-                List<String> channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.DIVORCES);
-                for(int i=0;i<channels.size();i++)
-                    CMLib.commands().postChannel((String)channels.get(i),mob.getClanID(),target.name()+" and "+target.getLiegeID()+" just had their marriage annulled.",true);
+				List<String> channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.DIVORCES);
+				for(int i=0;i<channels.size();i++)
+					CMLib.commands().postChannel((String)channels.get(i),mob.getClanID(),target.name()+" and "+target.getLiegeID()+" just had their marriage annulled.",true);
 				MOB M=CMLib.players().getPlayer(target.getLiegeID());
 				if(M!=null) M.setLiegeID("");
 				target.setLiegeID("");

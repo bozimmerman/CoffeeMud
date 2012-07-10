@@ -25,7 +25,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -70,19 +70,19 @@ public class Chant_PlantWall extends Chant
 			&&(((Weapon)msg.tool()).weaponClassification()==Weapon.CLASS_RANGED)
 			&&(msg.tool().maxRange()>0))
 			{
-                CMMsg msg2=CMClass.getMsg(mob,null,CMMsg.MSG_WEAPONATTACK,"^F^<FIGHT^><S-NAME> fire(s) at the plant wall with "+msg.tool().name()+".^</FIGHT^>^?");
-                CMLib.color().fixSourceFightColor(msg2);
-                if(mob.location().okMessage(mob,msg2))
-                {
-                    mob.location().send(mob,msg2);
-    				amountRemaining-=mob.phyStats().damage();
-    				if(amountRemaining<0)
-    				{
-    					deathNotice="The plant wall is destroyed!";
-    					((Item)affected).destroy();
-    				}
-                }
-                return false;
+				CMMsg msg2=CMClass.getMsg(mob,null,CMMsg.MSG_WEAPONATTACK,"^F^<FIGHT^><S-NAME> fire(s) at the plant wall with "+msg.tool().name()+".^</FIGHT^>^?");
+				CMLib.color().fixSourceFightColor(msg2);
+				if(mob.location().okMessage(mob,msg2))
+				{
+					mob.location().send(mob,msg2);
+					amountRemaining-=mob.phyStats().damage();
+					if(amountRemaining<0)
+					{
+						deathNotice="The plant wall is destroyed!";
+						((Item)affected).destroy();
+					}
+				}
+				return false;
 			}
 			else
 			if((mob.rangeToTarget()==1)&&(msg.sourceMinor()==CMMsg.TYP_ADVANCE))
@@ -90,19 +90,19 @@ public class Chant_PlantWall extends Chant
 				Item w=mob.fetchWieldedItem();
 				if(w==null) w=mob.myNaturalWeapon();
 				if(w==null) return false;
-                CMMsg msg2=CMClass.getMsg(mob,null,CMMsg.MSG_WEAPONATTACK,"^F<S-NAME> hack(s) at the plant wall with "+w.name()+".^?");
-                CMLib.color().fixSourceFightColor(msg2);
-                if(mob.location().okMessage(mob,msg2))
-                {
-                    mob.location().send(mob,msg2);
-    				amountRemaining-=mob.phyStats().damage();
-    				if(amountRemaining<0)
-    				{
-    					deathNotice="The plant wall is destroyed!";
-    					((Item)affected).destroy();
-    				}
-                }
-                return false;
+				CMMsg msg2=CMClass.getMsg(mob,null,CMMsg.MSG_WEAPONATTACK,"^F<S-NAME> hack(s) at the plant wall with "+w.name()+".^?");
+				CMLib.color().fixSourceFightColor(msg2);
+				if(mob.location().okMessage(mob,msg2))
+				{
+					mob.location().send(mob,msg2);
+					amountRemaining-=mob.phyStats().damage();
+					if(amountRemaining<0)
+					{
+						deathNotice="The plant wall is destroyed!";
+						((Item)affected).destroy();
+					}
+				}
+				return false;
 			}
 			else
 			if((mob.rangeToTarget()>0)
@@ -111,11 +111,11 @@ public class Chant_PlantWall extends Chant
 			&&(msg.tool() instanceof Ability)
 			&&(msg.tool().maxRange()>0))
 			{
-                CMMsg msg2=CMClass.getMsg(mob,null,msg.tool(),CMMsg.MSG_OK_VISUAL,"^F^<FIGHT^>The plant wall absorbs <O-NAME> from <S-NAME>.^</FIGHT^>^?");
-                CMLib.color().fixSourceFightColor(msg2);
-                if(mob.location().okMessage(mob,msg2))
-                    mob.location().send(mob,msg2);
-                return false;
+				CMMsg msg2=CMClass.getMsg(mob,null,msg.tool(),CMMsg.MSG_OK_VISUAL,"^F^<FIGHT^>The plant wall absorbs <O-NAME> from <S-NAME>.^</FIGHT^>^?");
+				CMLib.color().fixSourceFightColor(msg2);
+				if(mob.location().okMessage(mob,msg2))
+					mob.location().send(mob,msg2);
+				return false;
 			}
 		}
 		return super.okMessage(myHost,msg);

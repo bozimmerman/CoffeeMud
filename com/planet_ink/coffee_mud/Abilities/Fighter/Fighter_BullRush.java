@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -47,7 +47,7 @@ public class Fighter_BullRush extends FighterSkill
 	public String[] triggerStrings(){return triggerStrings;}
 	public long flags(){return Ability.FLAG_MOVING;}
 	public int usageType(){return USAGE_MOVEMENT;}
-    public int classificationCode(){ return Ability.ACODE_SKILL|Ability.DOMAIN_ACROBATIC;}
+	public int classificationCode(){ return Ability.ACODE_SKILL|Ability.DOMAIN_ACROBATIC;}
 
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
@@ -83,7 +83,7 @@ public class Fighter_BullRush extends FighterSkill
 
 		str="^F^<FIGHT^><S-NAME> bullrush(es) <T-NAME> "+direction+".^</FIGHT^>^?";
 		CMMsg msg=CMClass.getMsg(mob,target,this,(auto?CMMsg.MASK_ALWAYS:0)|CMMsg.MASK_MOVE|CMMsg.MASK_SOUND|CMMsg.MASK_HANDS|CMMsg.TYP_JUSTICE,str);
-        CMLib.color().fixSourceFightColor(msg);
+		CMLib.color().fixSourceFightColor(msg);
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);

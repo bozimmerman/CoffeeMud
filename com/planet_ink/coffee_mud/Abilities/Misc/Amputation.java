@@ -26,7 +26,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -54,7 +54,7 @@ public class Amputation extends StdAbility implements Amputator
 	private static final String[] triggerStrings = {"AMPUTATE"};
 	public String[] triggerStrings(){return triggerStrings;}
 	public boolean canBeUninvoked(){return false;}
-    public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_ANATOMY;}
+	public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_ANATOMY;}
 	public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
 	protected Vector missingLimbs=null;
 	private int[] amputations=new int[Race.BODY_PARTS];
@@ -81,9 +81,9 @@ public class Amputation extends StdAbility implements Amputator
 												 };
 
 	public final static int[][] extraamuputees={{-1},//antenea
-											    {-1},//eye
-											    {-1},//ear
-											    {Race.BODY_EAR,Race.BODY_EYE,Race.BODY_MOUTH,Race.BODY_NOSE,Race.BODY_ANTENEA,Race.BODY_GILL},//head
+												{-1},//eye
+												{-1},//ear
+												{Race.BODY_EAR,Race.BODY_EYE,Race.BODY_MOUTH,Race.BODY_NOSE,Race.BODY_ANTENEA,Race.BODY_GILL},//head
 												{Race.BODY_EAR,Race.BODY_EYE,Race.BODY_MOUTH,Race.BODY_NOSE,Race.BODY_ANTENEA,Race.BODY_GILL,Race.BODY_HEAD},//nect
 												{Race.BODY_HAND},//arm
 												{-1},//hand
@@ -151,20 +151,20 @@ public class Amputation extends StdAbility implements Amputator
 		super.affectCharState(affected,affectableState);
 		missingLimbNameSet();
 		if(amputations[Race.BODY_LEG]<0)
-        {
-            if(affected.getWearPositions(Wearable.WORN_LEGS)==0)
-    			affectableState.setMovement(affectableState.getMovement()/8);
-            else
-                affectableState.setMovement(affectableState.getMovement()/4);
-        }
-        else
+		{
+			if(affected.getWearPositions(Wearable.WORN_LEGS)==0)
+				affectableState.setMovement(affectableState.getMovement()/8);
+			else
+				affectableState.setMovement(affectableState.getMovement()/4);
+		}
+		else
 		if(amputations[Race.BODY_FOOT]<0)
-        {
-            if(affected.getWearPositions(Wearable.WORN_FEET)==0)
-    			affectableState.setMovement(affectableState.getMovement()/4);
-            else
-                affectableState.setMovement(affectableState.getMovement()/2);
-        }
+		{
+			if(affected.getWearPositions(Wearable.WORN_FEET)==0)
+				affectableState.setMovement(affectableState.getMovement()/4);
+			else
+				affectableState.setMovement(affectableState.getMovement()/2);
+		}
 	}
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{
@@ -184,9 +184,9 @@ public class Amputation extends StdAbility implements Amputator
 			return;
 		MOB mob=(MOB)affected;
 
-        if((mob.isMonster())&&(mob.amDead())&&(!canBeUninvoked()))
-            super.canBeUninvoked=true;
-        
+		if((mob.isMonster())&&(mob.amDead())&&(!canBeUninvoked()))
+			super.canBeUninvoked=true;
+		
 		super.unInvoke();
 
 		if(canBeUninvoked())
@@ -279,32 +279,32 @@ public class Amputation extends StdAbility implements Amputator
 		return missingLimbs;
 	}
 
-    public List<String> completeLimbNameSet(Environmental E)
-    {
-        Vector<String> V=new Vector<String>();
-        if(!(E instanceof MOB)) return V;
-        MOB M=(MOB)E;
-        int[] limbs=M.charStats().getMyRace().bodyMask();
-        for(int i=0;i<limbs.length;i++)
-        {
-            if((limbs[i]>0)&&(validamputees[i]))
-            {
-                if(limbs[i]==1)
-                    V.addElement(Race.BODYPARTSTR[i].toLowerCase());
-                else
-                if(limbs[i]==2)
-                {
-                        V.addElement("left "+Race.BODYPARTSTR[i].toLowerCase());
-                        V.addElement("right "+Race.BODYPARTSTR[i].toLowerCase());
-                }
-                else
-                for(int ii=0;ii<limbs[i];ii++)
-                    V.addElement(Race.BODYPARTSTR[i].toLowerCase());
-            }
-        }
-        return V;
-    }
-    
+	public List<String> completeLimbNameSet(Environmental E)
+	{
+		Vector<String> V=new Vector<String>();
+		if(!(E instanceof MOB)) return V;
+		MOB M=(MOB)E;
+		int[] limbs=M.charStats().getMyRace().bodyMask();
+		for(int i=0;i<limbs.length;i++)
+		{
+			if((limbs[i]>0)&&(validamputees[i]))
+			{
+				if(limbs[i]==1)
+					V.addElement(Race.BODYPARTSTR[i].toLowerCase());
+				else
+				if(limbs[i]==2)
+				{
+						V.addElement("left "+Race.BODYPARTSTR[i].toLowerCase());
+						V.addElement("right "+Race.BODYPARTSTR[i].toLowerCase());
+				}
+				else
+				for(int ii=0;ii<limbs[i];ii++)
+					V.addElement(Race.BODYPARTSTR[i].toLowerCase());
+			}
+		}
+		return V;
+	}
+	
 	public List<String> remainingLimbNameSet(Physical P)
 	{
 		missingLimbNameSet();
@@ -349,13 +349,13 @@ public class Amputation extends StdAbility implements Amputator
 		if (target != null)
 		{
 			if (target instanceof MOB) {
-			    ((MOB)target).location().show(((MOB)target), null, CMMsg.MSG_OK_VISUAL, "^G<S-YOUPOSS> " + gone + " miraculously regrows!!^?");
+				((MOB)target).location().show(((MOB)target), null, CMMsg.MSG_OK_VISUAL, "^G<S-YOUPOSS> " + gone + " miraculously regrows!!^?");
 			}
 			else
 			if ((target instanceof DeadBody)
-			    && (((Item)target).owner() != null)
-			    && (((Item)target).owner() instanceof Room)) {
-			    ((Room)((Item)target).owner()).showHappens(CMMsg.MSG_OK_VISUAL, "^G" + target.name() + "'s " + gone + " miraculously regrows!!^?");
+				&& (((Item)target).owner() != null)
+				&& (((Item)target).owner() instanceof Room)) {
+				((Room)((Item)target).owner()).showHappens(CMMsg.MSG_OK_VISUAL, "^G" + target.name() + "'s " + gone + " miraculously regrows!!^?");
 			}
 		}
 
@@ -364,7 +364,7 @@ public class Amputation extends StdAbility implements Amputator
 		if (theRest.contains(gone))theRest.remove(gone);
 		A.setMiscText("");
 		for (int i = 0; i < theRest.size(); i++)
-		    A.setMiscText(A.text() + ((String)theRest.get(i)) + ";");
+			A.setMiscText(A.text() + ((String)theRest.get(i)) + ";");
 	}
 
 	public static int getRacialCode(String name)
@@ -431,17 +431,17 @@ public class Amputation extends StdAbility implements Amputator
 		boolean isFakeLimb=false;
 		if(target instanceof MOB)
 		{
-		    MOB tmob=(MOB)target;
-		    limb=findFakeLimb(tmob,gone);
-		    if(limb!=null)
-		    {
-	            limb.unWear();
-	            limb.removeFromOwnerContainer();
-	            isFakeLimb=true;
-	            tmob.recoverCharStats();
-	            tmob.recoverPhyStats();
-	            tmob.recoverMaxState();
-		    }
+			MOB tmob=(MOB)target;
+			limb=findFakeLimb(tmob,gone);
+			if(limb!=null)
+			{
+				limb.unWear();
+				limb.removeFromOwnerContainer();
+				isFakeLimb=true;
+				tmob.recoverCharStats();
+				tmob.recoverPhyStats();
+				tmob.recoverMaxState();
+			}
 		}
 		if(!isFakeLimb)
 		{
@@ -477,30 +477,30 @@ public class Amputation extends StdAbility implements Amputator
 		&&(((Item)target).owner()!=null)
 		&&(((Item)target).owner() instanceof Room))
 			((Room)((Item)target).owner()).addItem(limb,ItemPossessor.Expire.Monster_EQ);
-        
-        if(!isFakeLimb)
-        {
-        	List<String> theRest=A.affectedLimbNameSet(target,gone,A.missingLimbNameSet());
-    		if(!theRest.contains(gone)) theRest.add(gone);
-            for(int i=0;i<theRest.size();i++)
-                A.setMiscText(A.text()+((String)theRest.get(i))+";");
-        }
+		
+		if(!isFakeLimb)
+		{
+			List<String> theRest=A.affectedLimbNameSet(target,gone,A.missingLimbNameSet());
+			if(!theRest.contains(gone)) theRest.add(gone);
+			for(int i=0;i<theRest.size();i++)
+				A.setMiscText(A.text()+((String)theRest.get(i))+";");
+		}
 		
 		Injury I=(target==null)?null:(Injury)target.fetchEffect("Injury");
 		if(I!=null)
 		{
-		    Vector V=null;
+			Vector V=null;
 			for(int i=0;i<I.injuries.length;i++)
 			{
-			    V=I.injuries[i];
-			    if(V!=null)
-			    for(int v=0;v<V.size();v++)
-				    if(((String)((Object[])V.elementAt(v))[0]).equalsIgnoreCase(gone))
-				    {
-				        V.removeElementAt(v);
-				        if(V.size()==0) I.injuries[i]=null;
-				        break;
-				    }
+				V=I.injuries[i];
+				if(V!=null)
+				for(int v=0;v<V.size();v++)
+					if(((String)((Object[])V.elementAt(v))[0]).equalsIgnoreCase(gone))
+					{
+						V.removeElementAt(v);
+						if(V.size()==0) I.injuries[i]=null;
+						break;
+					}
 			}
 		}
 		if((target instanceof MOB)
@@ -513,26 +513,26 @@ public class Amputation extends StdAbility implements Amputator
 	}
 
 	private Item findFakeLimb(MOB tmob, String named) {
-        if(named.length()>0)
-        {
-            named=named.toUpperCase();
-            if(named.startsWith("RIGHT "))
-                named=named.substring(6).trim();
-            else
-            if(named.startsWith("LEFT "))
-                named=named.substring(5).trim();
-            for(int i=0;i<tmob.numItems();i++)
-            {
-                Item I=tmob.getItem(i);
-                if((I!=null)
-                &&(!I.amWearingAt(Wearable.IN_INVENTORY))
-                &&(I instanceof FalseLimb)
-                &&((I.name().toUpperCase().endsWith(named))
-                    ||(I.rawSecretIdentity().toUpperCase().endsWith(named))))
-                    return I;
-            }
-        }
-        return null;
+		if(named.length()>0)
+		{
+			named=named.toUpperCase();
+			if(named.startsWith("RIGHT "))
+				named=named.substring(6).trim();
+			else
+			if(named.startsWith("LEFT "))
+				named=named.substring(5).trim();
+			for(int i=0;i<tmob.numItems();i++)
+			{
+				Item I=tmob.getItem(i);
+				if((I!=null)
+				&&(!I.amWearingAt(Wearable.IN_INVENTORY))
+				&&(I instanceof FalseLimb)
+				&&((I.name().toUpperCase().endsWith(named))
+					||(I.rawSecretIdentity().toUpperCase().endsWith(named))))
+					return I;
+			}
+		}
+		return null;
 	}
 	
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
@@ -550,13 +550,13 @@ public class Amputation extends StdAbility implements Amputator
 		{
 			choice=CMParms.combine(commands,1);
 			while(commands.size()>1)
-			    commands.removeElementAt(1);
+				commands.removeElementAt(1);
 		}
 		if(choice.toUpperCase().startsWith("RIGHT "))
-		    choice=choice.substring(6).trim();
+			choice=choice.substring(6).trim();
 		else
 		if(choice.toUpperCase().startsWith("LEFT "))
-		    choice=choice.substring(5).trim();
+			choice=choice.substring(5).trim();
 		MOB target=super.getTarget(mob,commands,givenTarget,false,true);
 		if(target==null) return false;
 		if(!auto)
@@ -565,11 +565,11 @@ public class Amputation extends StdAbility implements Amputator
 			if(mob.location()!=null) B=CMLib.law().getLegalBehavior(mob.location());
 			List<LegalWarrant> warrants=new Vector();
 			if(B!=null)
-                warrants=B.getWarrantsOf(CMLib.law().getLegalObject(mob.location()),target);
+				warrants=B.getWarrantsOf(CMLib.law().getLegalObject(mob.location()),target);
 			if((warrants.size()==0)&&(!CMSecurity.isAllowed(mob,mob.location(),"ABOVELAW")))
 			{
-			    mob.tell("You are not authorized by law to amputate from "+target.Name()+" at this time.");
-			    return false;
+				mob.tell("You are not authorized by law to amputate from "+target.Name()+" at this time.");
+				return false;
 			}
 			Item w=mob.fetchWieldedItem();
 			if(!CMSecurity.isASysOp(mob))
@@ -610,23 +610,23 @@ public class Amputation extends StdAbility implements Amputator
 				newOne=true;
 			}
 
-	        Item fakeLimb=null;
-            String gone=null;
-	        if((target instanceof MOB)&&(choice.length()>0)) 
-	        {
-	            fakeLimb=findFakeLimb((MOB)target,choice);
-	            if(fakeLimb != null)
-	            {
-	            	List<String> VN=completeLimbNameSet(target);
-	                for(int i=0;i<VN.size();i++)
-	                    if(CMLib.english().containsString((String)VN.get(i),choice))
-	                    { gone=(String)VN.get(i); break;}
-	                if(gone==null)
-	                    fakeLimb=null;
-	            }
-	        }
-	        
-	        List<String> VN=A.remainingLimbNameSet(target);
+			Item fakeLimb=null;
+			String gone=null;
+			if((target instanceof MOB)&&(choice.length()>0)) 
+			{
+				fakeLimb=findFakeLimb((MOB)target,choice);
+				if(fakeLimb != null)
+				{
+					List<String> VN=completeLimbNameSet(target);
+					for(int i=0;i<VN.size();i++)
+						if(CMLib.english().containsString((String)VN.get(i),choice))
+						{ gone=(String)VN.get(i); break;}
+					if(gone==null)
+						fakeLimb=null;
+				}
+			}
+			
+			List<String> VN=A.remainingLimbNameSet(target);
 			if((VN.size()==0)&&(fakeLimb==null))
 			{
 				if(!auto)
@@ -648,28 +648,28 @@ public class Amputation extends StdAbility implements Amputator
 
 			if(gone==null)
 			{
-                if(target instanceof MOB)
-                {
-                	List<String> completeSet = completeLimbNameSet(target);
-    			    for(int v=0;v<completeSet.size();v++)
-    			        if((!VN.contains(completeSet.get(v)))
-    			        &&(findFakeLimb((MOB)target,(String)completeSet.get(v))!=null))
-    			            VN.add(completeSet.get(v));
-                }
+				if(target instanceof MOB)
+				{
+					List<String> completeSet = completeLimbNameSet(target);
+					for(int v=0;v<completeSet.size();v++)
+						if((!VN.contains(completeSet.get(v)))
+						&&(findFakeLimb((MOB)target,(String)completeSet.get(v))!=null))
+							VN.add(completeSet.get(v));
+				}
 				gone=(String)VN.get(CMLib.dice().roll(1,VN.size(),-1));
-                if(target instanceof MOB)
-	                fakeLimb=findFakeLimb((MOB)target,gone);
+				if(target instanceof MOB)
+					fakeLimb=findFakeLimb((MOB)target,gone);
 			}
 			String goneName = (fakeLimb!=null)?fakeLimb.name():gone;
 
 			String str=auto?"":"^F^<FIGHT^><S-NAME> amputate(s) <T-YOUPOSS> "+goneName+"!^</FIGHT^>^?";
 			CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_DELICATE_HANDS_ACT|(auto?CMMsg.MASK_ALWAYS:0),str);
-            CMLib.color().fixSourceFightColor(msg);
+			CMLib.color().fixSourceFightColor(msg);
 			if(target.location().okMessage(target,msg))
 			{
 				MOB vic=target.getVictim();
 				MOB vic2=mob.getVictim();
-			    target.location().send(target,msg);
+				target.location().send(target,msg);
 				if(msg.value()<=0)
 				{
 					amputate(target,A,gone);
@@ -689,6 +689,6 @@ public class Amputation extends StdAbility implements Amputator
 		}
 		else
 			return maliciousFizzle(mob,target,"<S-NAME> attempt(s) to amputate <T-NAMESELF>, but fail(s).");
-        return success;
+		return success;
 	}
 }

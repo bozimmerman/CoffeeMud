@@ -25,7 +25,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -47,7 +47,7 @@ public class Undead extends StdRace
 	public boolean fertile(){return false;}
 	public boolean uncharmable(){return true;}
 
-	//                                an ey ea he ne ar ha to le fo no gi mo wa ta wi
+	//  							  an ey ea he ne ar ha to le fo no gi mo wa ta wi
 	private static final int[] parts={0 ,2 ,2 ,1 ,1 ,2 ,2 ,1 ,2 ,2 ,1 ,0 ,1 ,1 ,0 ,0 };
 	public int[] bodyMask(){return parts;}
 
@@ -78,8 +78,8 @@ public class Undead extends StdRace
 		if(msg.amITarget(myHost)
 		&&(msg.targetMinor()==CMMsg.TYP_SNIFF)
 		&&(myHost instanceof MOB)
-        &&(ID().equals("Undead")))
-		    msg.source().tell(name()+" stinks of grime and decay.");
+		&&(ID().equals("Undead")))
+			msg.source().tell(name()+" stinks of grime and decay.");
 	}
 	
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
@@ -173,12 +173,12 @@ public class Undead extends StdRace
 				||(mob.name().toUpperCase().indexOf("GHAST")>=0))
 					body.addNonUninvokableEffect(CMClass.getAbility("Disease_Cannibalism"));
 			}
-	        if(ID().equals("Undead"))
-	        {
-	            Ability A=CMClass.getAbility("Prop_Smell");
-	            body.addNonUninvokableEffect(A);
-	            A.setMiscText(body.name()+" SMELLS HORRIBLE!");
-	        }
+			if(ID().equals("Undead"))
+			{
+				Ability A=CMClass.getAbility("Prop_Smell");
+				body.addNonUninvokableEffect(A);
+				A.setMiscText(body.name()+" SMELLS HORRIBLE!");
+			}
 		}
 		return body;
 	}

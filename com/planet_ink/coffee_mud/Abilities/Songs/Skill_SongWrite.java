@@ -25,7 +25,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -43,7 +43,7 @@ public class Skill_SongWrite extends BardSkill
 	public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 	private static final String[] triggerStrings = {"SONGWRITE"};
 	public String[] triggerStrings(){return triggerStrings;}
-    public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_CALLIGRAPHY;}
+	public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_CALLIGRAPHY;}
 
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
@@ -111,7 +111,7 @@ public class Skill_SongWrite extends BardSkill
 		if(!auto)mob.curState().setMana(0);
 
 		int experienceToLose=20*CMLib.ableMapper().lowestQualifyingLevel(scrollThis.ID());
-        experienceToLose=getXPCOSTAdjustment(mob,experienceToLose);
+		experienceToLose=getXPCOSTAdjustment(mob,experienceToLose);
 		CMLib.leveler().postExperience(mob,null,null,-experienceToLose,false);
 		mob.tell("You lose "+experienceToLose+" experience points for the effort.");
 

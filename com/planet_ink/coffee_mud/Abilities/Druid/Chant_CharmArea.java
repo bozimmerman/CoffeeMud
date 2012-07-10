@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -75,38 +75,38 @@ public class Chant_CharmArea extends Chant
 	{
 		super.executeMsg(myHost,msg);
 		if(msg.amITarget(affected)
-        &&((msg.targetMinor()==CMMsg.TYP_LOOK)||(msg.targetMinor()==CMMsg.TYP_EXAMINE)))
+		&&((msg.targetMinor()==CMMsg.TYP_LOOK)||(msg.targetMinor()==CMMsg.TYP_EXAMINE)))
 		{
 			msg.addTrailerMsg(CMClass.getMsg(msg.source(),null,null,CMMsg.MSG_OK_VISUAL,CMMsg.NO_EFFECT,CMMsg.NO_EFFECT,"There is something charming about this place."));
 		}
 	}
-    
-    public int castingQuality(MOB mob, Physical target)
-    {
-        if(mob!=null)
-        {
-            if(mob.isInCombat())
-                return Ability.QUALITY_INDIFFERENT;
-            Room R=mob.location();
-            if(R!=null)
-            {
-                if((R.domainType()&Room.INDOORS)>0)
-                    return Ability.QUALITY_INDIFFERENT;
-                if((R.domainType()==Room.DOMAIN_OUTDOORS_CITY)
-                ||(R.domainType()==Room.DOMAIN_OUTDOORS_SPACEPORT)
-                ||(R.domainType()==Room.DOMAIN_OUTDOORS_UNDERWATER)
-                ||(R.domainType()==Room.DOMAIN_OUTDOORS_AIR)
-                ||(R.domainType()==Room.DOMAIN_OUTDOORS_WATERSURFACE))
-                    return Ability.QUALITY_INDIFFERENT;
-                
-            }
-            if(target instanceof MOB)
-            {
-            }
-        }
-        return super.castingQuality(mob,target);
-    }
-    
+	
+	public int castingQuality(MOB mob, Physical target)
+	{
+		if(mob!=null)
+		{
+			if(mob.isInCombat())
+				return Ability.QUALITY_INDIFFERENT;
+			Room R=mob.location();
+			if(R!=null)
+			{
+				if((R.domainType()&Room.INDOORS)>0)
+					return Ability.QUALITY_INDIFFERENT;
+				if((R.domainType()==Room.DOMAIN_OUTDOORS_CITY)
+				||(R.domainType()==Room.DOMAIN_OUTDOORS_SPACEPORT)
+				||(R.domainType()==Room.DOMAIN_OUTDOORS_UNDERWATER)
+				||(R.domainType()==Room.DOMAIN_OUTDOORS_AIR)
+				||(R.domainType()==Room.DOMAIN_OUTDOORS_WATERSURFACE))
+					return Ability.QUALITY_INDIFFERENT;
+				
+			}
+			if(target instanceof MOB)
+			{
+			}
+		}
+		return super.castingQuality(mob,target);
+	}
+	
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		Room target=mob.location();

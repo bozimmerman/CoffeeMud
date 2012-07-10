@@ -25,7 +25,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -40,7 +40,7 @@ public class Prop_LotsForSale extends Prop_RoomForSale
 	public String name(){ return "Putting many rooms up for sale";}
 
 
-    protected static boolean isCleanRoom(Room fromRoom, Room theRoom)
+	protected static boolean isCleanRoom(Room fromRoom, Room theRoom)
 	{
 		if(theRoom==null) return true;
 
@@ -79,7 +79,7 @@ public class Prop_LotsForSale extends Prop_RoomForSale
 				{
 					Room R2=R.rawDoors()[d];
 					foundOne=foundOne||(R2!=null);
-	                Exit E=R.getRawExit(d);
+					Exit E=R.getRawExit(d);
 					if((R2!=null)&&(isCleanRoom(R,R2)))
 					{
 						R.rawDoors()[d]=null;
@@ -87,24 +87,24 @@ public class Prop_LotsForSale extends Prop_RoomForSale
 						updateExits=true;
 						CMLib.map().obliterateRoom(R2);
 					}
-	                else
-	                if((E!=null)&&(E.hasALock())&&(E.isGeneric()))
-	                {
-	                    E.setKeyName("");
-	                    E.setDoorsNLocks(E.hasADoor(),E.isOpen(),E.defaultsClosed(),false,false,false);
-	                    updateExits=true;
-	                    if(R2!=null)
-	                    {
-	                        E=R2.getRawExit(Directions.getOpDirectionCode(d));
-	                        if((E!=null)&&(E.hasALock())&&(E.isGeneric()))
-	                        {
-	                            E.setKeyName("");
-	                            E.setDoorsNLocks(E.hasADoor(),E.isOpen(),E.defaultsClosed(),false,false,false);
-	                            CMLib.database().DBUpdateExits(R2);
-	                            R2.getArea().fillInAreaRoom(R2);
-	                        }
-	                    }
-	                }
+					else
+					if((E!=null)&&(E.hasALock())&&(E.isGeneric()))
+					{
+						E.setKeyName("");
+						E.setDoorsNLocks(E.hasADoor(),E.isOpen(),E.defaultsClosed(),false,false,false);
+						updateExits=true;
+						if(R2!=null)
+						{
+							E=R2.getRawExit(Directions.getOpDirectionCode(d));
+							if((E!=null)&&(E.hasALock())&&(E.isGeneric()))
+							{
+								E.setKeyName("");
+								E.setDoorsNLocks(E.hasADoor(),E.isOpen(),E.defaultsClosed(),false,false,false);
+								CMLib.database().DBUpdateExits(R2);
+								R2.getArea().fillInAreaRoom(R2);
+							}
+						}
+					}
 				}
 				if(!foundOne)
 				{
@@ -143,7 +143,7 @@ public class Prop_LotsForSale extends Prop_RoomForSale
 						R2.setRawExit(Directions.getOpDirectionCode(d),CMClass.getExit("Open"));
 						updateExits=true;
 						if(CMSecurity.isDebugging(CMSecurity.DbgFlag.PROPERTY))
-                            Log.debugOut("Lots4Sale",R2.roomID()+" created and put up for sale.");
+							Log.debugOut("Lots4Sale",R2.roomID()+" created and put up for sale.");
 						CMLib.database().DBCreateRoom(R2);
 						if(newTitle!=null)
 							colorForSale(R2,newTitle.rentalProperty(),true);
@@ -158,6 +158,6 @@ public class Prop_LotsForSale extends Prop_RoomForSale
 				}
 			}
 		}
-        scheduleReset=false;
+		scheduleReset=false;
 	}
 }

@@ -23,7 +23,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -36,41 +36,41 @@ public class Prop_StayAboard extends Property
 	public String ID() { return "Prop_StayAboard"; }
 	public String name(){ return "Stays on mounted thing";}
 	protected int canAffectCode(){return Ability.CAN_ITEMS|Ability.CAN_MOBS;}
-    protected Rideable rideable=null;
-    public String accountForYourself() { return "Stays on anything mounted to.";}
-    protected boolean noRepeat=false;
-    
-    public void setAffectedOne(Physical P)
-    {
-    	super.setAffectedOne(P);
-    	if(P instanceof Rider) {
-    		rideable = ((Rider)P).riding();
-    	}
-    }
-    
-    public boolean tick(Tickable ticking, int tickID)
-    {
-    	if(!super.tick(ticking, tickID))
-    		return false;
-    	synchronized(this)
-    	{
-    		if(noRepeat) return true;
-    		try {
-	    		noRepeat=true;
-		    	if((tickID==Tickable.TICKID_MOB)
-		    	&&(ticking instanceof Rider)
-		    	&&(ticking instanceof MOB)
-		    	&&(rideable!=null))
-		    		stayAboard((Rider)ticking);
-    		} finally {
-    			noRepeat=false;
-    		}
-    	}
-    	return true;
-    }
-    
-    public void stayAboard(Rider R)
-    {
+	protected Rideable rideable=null;
+	public String accountForYourself() { return "Stays on anything mounted to.";}
+	protected boolean noRepeat=false;
+	
+	public void setAffectedOne(Physical P)
+	{
+		super.setAffectedOne(P);
+		if(P instanceof Rider) {
+			rideable = ((Rider)P).riding();
+		}
+	}
+	
+	public boolean tick(Tickable ticking, int tickID)
+	{
+		if(!super.tick(ticking, tickID))
+			return false;
+		synchronized(this)
+		{
+			if(noRepeat) return true;
+			try {
+				noRepeat=true;
+				if((tickID==Tickable.TICKID_MOB)
+				&&(ticking instanceof Rider)
+				&&(ticking instanceof MOB)
+				&&(rideable!=null))
+					stayAboard((Rider)ticking);
+			} finally {
+				noRepeat=false;
+			}
+		}
+		return true;
+	}
+	
+	public void stayAboard(Rider R)
+	{
 		Room rideR=CMLib.map().roomLocation(rideable);
 		if((rideR!=null)
 		&&((CMLib.map().roomLocation(R)!=rideR)
@@ -86,28 +86,28 @@ public class Prop_StayAboard extends Property
 					rideR.bringMobHere((MOB)R,true);
 			R.setRiding(rideable);
 		}
-    }
-    
-    public void affectPhyStats(Physical E, PhyStats affectableStats)
-    {
-    	super.affectPhyStats(E, affectableStats);
-    	synchronized(this)
-    	{
-    		if(noRepeat) return;
-    		try {
-	    		noRepeat=true;
-		    	if(E instanceof Rider)
-		    		if(rideable==null)
-			    		rideable=((Rider)E).riding();
-		    		else
-		    		if(!CMLib.flags().isInTheGame(rideable,true))
-		    			rideable=null;
-		    		else
-		    		if(E instanceof Item)
-		    			stayAboard((Rider)E);
-    		} finally {
-    			noRepeat=false;
-    		}
-    	}
-    }
+	}
+	
+	public void affectPhyStats(Physical E, PhyStats affectableStats)
+	{
+		super.affectPhyStats(E, affectableStats);
+		synchronized(this)
+		{
+			if(noRepeat) return;
+			try {
+				noRepeat=true;
+				if(E instanceof Rider)
+					if(rideable==null)
+						rideable=((Rider)E).riding();
+					else
+					if(!CMLib.flags().isInTheGame(rideable,true))
+						rideable=null;
+					else
+					if(E instanceof Item)
+						stayAboard((Rider)E);
+			} finally {
+				noRepeat=false;
+			}
+		}
+	}
 }

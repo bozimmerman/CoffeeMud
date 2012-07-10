@@ -25,7 +25,7 @@ import java.util.*;
  * <p>you may not use this file except in compliance with the License.
  * <p>You may obtain a copy of the License at
  *
- * <p>       http://www.apache.org/licenses/LICENSE-2.0
+ * <p>  	 http://www.apache.org/licenses/LICENSE-2.0
  *
  * <p>Unless required by applicable law or agreed to in writing, software
  * <p>distributed under the License is distributed on an "AS IS" BASIS,
@@ -57,10 +57,10 @@ public class StdPowder extends StdItem implements MagicDust {
 	public void spreadIfAble(MOB mob, Physical target)
 	{
 		List<Ability> spells = getSpells();
-        if (spells.size() > 0)
-            for (int i = 0; i < spells.size(); i++) 
+		if (spells.size() > 0)
+			for (int i = 0; i < spells.size(); i++) 
 			{
-                Ability thisOne = (Ability) ( (Ability) spells.get(i)).copyOf();
+				Ability thisOne = (Ability) ( (Ability) spells.get(i)).copyOf();
 				if(thisOne.canTarget(target))
 				{
 					if((malicious(this))||(!(target instanceof MOB)))
@@ -68,7 +68,7 @@ public class StdPowder extends StdItem implements MagicDust {
 					else
 						thisOne.invoke((MOB)target,(MOB)target, true, phyStats().level());
 				}
-            }
+			}
 		destroy();
 	}
 
@@ -76,28 +76,28 @@ public class StdPowder extends StdItem implements MagicDust {
 // That which makes Powders work.  They're an item that when successfully dusted on a target, are 'cast' on the target
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
-        if(msg.sourceMinor()==CMMsg.TYP_THROW ) 
+		if(msg.sourceMinor()==CMMsg.TYP_THROW ) 
 		{
-            if((msg.tool()==this)&&(msg.target() instanceof Physical)) 
+			if((msg.tool()==this)&&(msg.target() instanceof Physical)) 
 				spreadIfAble(msg.source(),(Physical)msg.target());
-            else
-                super.executeMsg(myHost,msg);
-        }
-        else
-            super.executeMsg(myHost,msg);
-    }
+			else
+				super.executeMsg(myHost,msg);
+		}
+		else
+			super.executeMsg(myHost,msg);
+	}
 
 	public String getSpellList()
 	{ return miscText;}
 	public void setSpellList(String list){miscText=list;}
 
-    public boolean malicious(SpellHolder me) {
-    	List<Ability> spells=getSpells();
-        for(Ability checking : spells) 
-            if(checking.abstractQuality()==Ability.QUALITY_MALICIOUS)
-                return true;
-        return false;
-    }
+	public boolean malicious(SpellHolder me) {
+		List<Ability> spells=getSpells();
+		for(Ability checking : spells) 
+			if(checking.abstractQuality()==Ability.QUALITY_MALICIOUS)
+				return true;
+		return false;
+	}
 	public List<Ability> getSpells()
 	{
 		String names=getSpellList();
@@ -134,7 +134,7 @@ public class StdPowder extends StdItem implements MagicDust {
 
 	public String secretIdentity()
 	{
-        return description()+"\n\r"+super.secretIdentity();
+		return description()+"\n\r"+super.secretIdentity();
 	}
 
 }

@@ -23,7 +23,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -83,10 +83,10 @@ public class Order extends StdCommand
 
 		if(V.size()==0)
 		{
-            if(whomToOrder.equalsIgnoreCase("ALL"))
-    			mob.tell("You don't see anyone called '"+whomToOrder+"' here.");
-            else
-                mob.tell("You don't see anyone here.");
+			if(whomToOrder.equalsIgnoreCase("ALL"))
+				mob.tell("You don't see anyone called '"+whomToOrder+"' here.");
+			else
+				mob.tell("You don't see anyone here.");
 			return false;
 		}
 		
@@ -170,8 +170,8 @@ public class Order extends StdCommand
 		}
 		return false;
 	}
-    public double combatActionsCost(final MOB mob, final List<String> cmds){return CMProps.getCombatActionCost(ID());}
-    public double actionsCost(final MOB mob, final List<String> cmds){return CMProps.getActionCost(ID());}
+	public double combatActionsCost(final MOB mob, final List<String> cmds){return CMProps.getCombatActionCost(ID());}
+	public double actionsCost(final MOB mob, final List<String> cmds){return CMProps.getActionCost(ID());}
 	public boolean canBeOrdered(){return true;}
 
 	

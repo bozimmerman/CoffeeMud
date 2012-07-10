@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -44,12 +44,12 @@ public class Thief_SlipperyMind extends ThiefSkill
 	private static final String[] triggerStrings = {"SLIPPERYMIND"};
 	public String[] triggerStrings(){return triggerStrings;}
 	DVector oldFactions=null;
-    
+	
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(unInvoked) return false;
 		if((affected!=null)&&(affected instanceof MOB)&&(ticking instanceof MOB))
-        {
+		{
 			if(!super.tick(ticking,tickID)) 
 				return false;
 			MOB mob=(MOB)affected;
@@ -57,14 +57,14 @@ public class Thief_SlipperyMind extends ThiefSkill
 			if(oldFactions==null)
 			{
 				oldFactions=new DVector(2);
-		        for(Enumeration e=mob.fetchFactions();e.hasMoreElements();) 
+				for(Enumeration e=mob.fetchFactions();e.hasMoreElements();) 
 				{
-		            F=CMLib.factions().getFaction((String)e.nextElement());
-		            if(F!=null)
-		            {
-		            	oldFactions.addElement(F,Integer.valueOf(mob.fetchFaction(F.factionID())));
-		            	mob.addFaction(F.factionID(),F.middle());
-		            }
+					F=CMLib.factions().getFaction((String)e.nextElement());
+					if(F!=null)
+					{
+						oldFactions.addElement(F,Integer.valueOf(mob.fetchFaction(F.factionID())));
+						mob.addFaction(F.factionID(),F.middle());
+					}
 				}
 			}
 			else
@@ -74,7 +74,7 @@ public class Thief_SlipperyMind extends ThiefSkill
 				if(mob.fetchFaction(F.factionID())!=F.middle())
 					mob.addFaction(F.factionID(),F.middle());
 			}
-        }
+		}
 		return true;
 	}
 	

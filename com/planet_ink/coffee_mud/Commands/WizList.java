@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -58,14 +58,14 @@ public class WizList extends StdCommand
 		MaskingLibrary.CompiledZapperMask compiledMask=CMLib.masking().maskCompile(mask);
 		for(PlayerLibrary.ThinPlayer U : allUsers)
 		{
-	        CharClass C;
-	        MOB player = CMLib.players().getPlayer(U.name);
-	        if(player != null)
-	        	C=player.charStats().getCurrentClass();
-	        else
-	        	C=CMClass.getCharClass(U.charClass);
-	        if(C==null)
-	        	C=CMClass.findCharClass(U.charClass);
+			CharClass C;
+			MOB player = CMLib.players().getPlayer(U.name);
+			if(player != null)
+				C=player.charStats().getCurrentClass();
+			else
+				C=CMClass.getCharClass(U.charClass);
+			if(C==null)
+				C=CMClass.findCharClass(U.charClass);
 			if(((player!=null)&&(CMLib.masking().maskCheck(compiledMask, player, true)))
 			||(CMLib.masking().maskCheck(compiledMask, U)))
 			{
@@ -75,11 +75,11 @@ public class WizList extends StdCommand
 				else
 					head.append(CMStrings.padRight("Unknown",16)+" ");
 				head.append(CMStrings.padRight(U.race,8)+" ");
-                if((C==null)||(!C.leveless()))
-    				head.append(CMStrings.padRight(""+U.level,4)+" ");
-                else
-                    head.append(CMStrings.padRight("    ",4)+" ");
-                if(isArchonLooker)
+				if((C==null)||(!C.leveless()))
+					head.append(CMStrings.padRight(""+U.level,4)+" ");
+				else
+					head.append(CMStrings.padRight("    ",4)+" ");
+				if(isArchonLooker)
 					head.append(CMStrings.padRight(CMLib.time().date2String(U.last),18)+" ");
 				head.append("] "+U.name);
 				head.append("\n\r");

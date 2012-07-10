@@ -26,7 +26,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -65,23 +65,23 @@ public class Spell_DetectSentience extends Spell
 						.plus(TrackingLibrary.TrackingFlag.AREAONLY);
 				List<Room> checkSet=CMLib.tracking().getRadiantRooms(mob.location(),flags,35+this.getXMAXRANGELevel(mob));
 				if(!checkSet.contains(mob.location())) checkSet.add(mob.location());
-                CMMsg msg2=CMClass.getMsg(mob,null,this,CMMsg.MASK_ALWAYS|CMMsg.MSG_CAST,null);
-        		for(Iterator<Room> r=checkSet.iterator();r.hasNext();)
-        		{
-        			Room R=CMLib.map().getRoom(r.next());
+				CMMsg msg2=CMClass.getMsg(mob,null,this,CMMsg.MASK_ALWAYS|CMMsg.MSG_CAST,null);
+				for(Iterator<Room> r=checkSet.iterator();r.hasNext();)
+				{
+					Room R=CMLib.map().getRoom(r.next());
 					for(int m=0;m<R.numInhabitants();m++)
 					{
 						MOB M=R.fetchInhabitant(m);
 						if((M!=null)&&(M.charStats().getStat(CharStats.STAT_INTELLIGENCE)>=2))
 						{
-                            msg2.setTarget(M);
-                            if(R.okMessage(mob,msg2))
-                            {
-                                R.send(mob,msg2);
-    							lines.append("^!"+CMStrings.padRight(M.name(),25)+"^?| ");
-    							lines.append(R.roomTitle(mob));
-    							lines.append("\n\r");
-                            }
+							msg2.setTarget(M);
+							if(R.okMessage(mob,msg2))
+							{
+								R.send(mob,msg2);
+								lines.append("^!"+CMStrings.padRight(M.name(),25)+"^?| ");
+								lines.append(R.roomTitle(mob));
+								lines.append("\n\r");
+							}
 						}
 					}
 				}

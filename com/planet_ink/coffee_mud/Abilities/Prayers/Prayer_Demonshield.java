@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -89,8 +89,8 @@ public class Prayer_Demonshield extends Prayer
 						if(msg2.value()<=0)
 						{
 							int damage = CMLib.dice().roll( 1,
-							                                (int)Math.round( ( adjustedLevel( invoker(), 0 ) + ( 2.0 * ((double)super.getX1Level( invoker() )) ) ) / 5.0 ),
-							                                1 );
+															(int)Math.round( ( adjustedLevel( invoker(), 0 ) + ( 2.0 * ((double)super.getX1Level( invoker() )) ) ) / 5.0 ),
+															1 );
 							CMLib.combat().postDamage(mob,source,this,damage,CMMsg.MASK_ALWAYS|CMMsg.TYP_FIRE,Weapon.TYPE_BURNING,msgStr);
 						}
 					}

@@ -23,7 +23,7 @@ import java.util.Vector;
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *        http://www.apache.org/licenses/LICENSE-2.0
+ *  	  http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -38,23 +38,23 @@ public class ShutdownPacket extends Packet
 	public ShutdownPacket()
 	{
 		super();
-        type = Packet.SHUTDOWN;
+		type = Packet.SHUTDOWN;
 	}
 	
-    public ShutdownPacket(Vector v)
-    {
-        super(v);
-        type = Packet.SHUTDOWN;
-        target_mud=Intermud.getNameServer().name;
-    }
+	public ShutdownPacket(Vector v)
+	{
+		super(v);
+		type = Packet.SHUTDOWN;
+		target_mud=Intermud.getNameServer().name;
+	}
 
-    public void send() throws InvalidPacketException 
-    {
-        super.send();
-    }
+	public void send() throws InvalidPacketException 
+	{
+		super.send();
+	}
 
-    public String toString() 
-    {
-        return "({\"shutdown\",5,\""+I3Server.getMudName()+"\",0,\""+target_mud+"\",0,0,})";
-    }
+	public String toString() 
+	{
+		return "({\"shutdown\",5,\""+I3Server.getMudName()+"\",0,\""+target_mud+"\",0,0,})";
+	}
 }

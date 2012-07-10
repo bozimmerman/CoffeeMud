@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -38,31 +38,31 @@ public class Prop_Doppleganger extends Property
 	public String name(){ return "Doppleganger";}
 	protected int canAffectCode(){return Ability.CAN_MOBS|Ability.CAN_ITEMS;}
 	//protected boolean lastLevelChangers=true;
-    private int maxLevel=Integer.MAX_VALUE;
-    private int minLevel=Integer.MIN_VALUE;
-    protected Physical lastOwner=null;
+	private int maxLevel=Integer.MAX_VALUE;
+	private int minLevel=Integer.MIN_VALUE;
+	protected Physical lastOwner=null;
 
 	public String accountForYourself()
 	{ return "Level Changer";	}
 
-    public void setMiscText(String text)
-    {
-        super.setMiscText(text);
-        maxLevel=CMParms.getParmInt(text,"MAX",Integer.MAX_VALUE);
-        minLevel=CMParms.getParmInt(text,"MIN",Integer.MIN_VALUE);
-    }
+	public void setMiscText(String text)
+	{
+		super.setMiscText(text);
+		maxLevel=CMParms.getParmInt(text,"MAX",Integer.MAX_VALUE);
+		minLevel=CMParms.getParmInt(text,"MIN",Integer.MIN_VALUE);
+	}
 
-    public void executeMsg(final Environmental myHost, final CMMsg msg)
-    {
-    	if((affected instanceof Item)
-    	&&(((Item)affected).owner()!=lastOwner)
-    	&&(((Item)affected).owner() instanceof MOB))
-    	{
-    		lastOwner=((Item)affected).owner();
+	public void executeMsg(final Environmental myHost, final CMMsg msg)
+	{
+		if((affected instanceof Item)
+		&&(((Item)affected).owner()!=lastOwner)
+		&&(((Item)affected).owner() instanceof MOB))
+		{
+			lastOwner=((Item)affected).owner();
 			int level=((MOB)lastOwner).phyStats().level()+CMath.s_int(text());
 			if(text().endsWith("%")) level=(int)Math.round(CMath.mul(level,CMath.s_pct(text())));
 			if(level<minLevel) level=minLevel;
-            if(level>maxLevel) level=maxLevel;
+			if(level>maxLevel) level=maxLevel;
 			((Item)affected).basePhyStats().setLevel(level);
 			((Item)affected).phyStats().setLevel(level);
 			CMLib.itemBuilder().balanceItemByLevel((Item)affected);
@@ -71,31 +71,31 @@ public class Prop_Doppleganger extends Property
 			lastOwner.recoverPhyStats();
 			Room R=((MOB)lastOwner).location();
 			if(R!=null) R.recoverRoomStats();
-    	}
-    	super.executeMsg(myHost,msg);
-    }
+		}
+		super.executeMsg(myHost,msg);
+	}
 
-    public boolean qualifies(MOB mob, Room R)
-    {
-        if((mob==affected)||(mob==null)) return false;
-        if(mob.fetchEffect(ID())!=null) return false;
-        if(mob.isMonster())return true;
-        if((!CMSecurity.isAllowed(mob,R,"CMDMOBS"))
-        &&(!CMSecurity.isAllowed(mob,R,"CMDROOMS")))
-            return true;
-        return false;
-    }
+	public boolean qualifies(MOB mob, Room R)
+	{
+		if((mob==affected)||(mob==null)) return false;
+		if(mob.fetchEffect(ID())!=null) return false;
+		if(mob.isMonster())return true;
+		if((!CMSecurity.isAllowed(mob,R,"CMDMOBS"))
+		&&(!CMSecurity.isAllowed(mob,R,"CMDROOMS")))
+			return true;
+		return false;
+	}
 
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if((affected instanceof MOB)
 		&&(((msg.target() instanceof Room)&&(msg.sourceMinor()==CMMsg.TYP_ENTER))
-           ||(msg.sourceMinor()==CMMsg.TYP_LIFE)))
+		   ||(msg.sourceMinor()==CMMsg.TYP_LIFE)))
 		//&&(lastLevelChangers))
 		{
 			//lastLevelChangers=false;
 			MOB mob=(MOB)affected;
-            Room R=(msg.target() instanceof Room)?((Room)msg.target()):msg.source().location();
+			Room R=(msg.target() instanceof Room)?((Room)msg.target()):msg.source().location();
 			if((R!=null)
 			&&(CMLib.flags().aliveAwakeMobile(mob,true))
 			&&(mob.curState().getHitPoints()>=mob.maxState().getHitPoints()))
@@ -103,24 +103,24 @@ public class Prop_Doppleganger extends Property
 				int total=0;
 				int num=0;
 				MOB victim=mob.getVictim();
-                if(qualifies(victim,R))
+				if(qualifies(victim,R))
 				{
 					total+=victim.phyStats().level();
 					num++;
 				}
-                MOB entrant=(MOB)msg.source();
-                if(qualifies(entrant,R))
-                {
-                    total+=entrant.phyStats().level();
-                    num++;
-                }
+				MOB entrant=(MOB)msg.source();
+				if(qualifies(entrant,R))
+				{
+					total+=entrant.phyStats().level();
+					num++;
+				}
 				for(int i=0;i<R.numInhabitants();i++)
 				{
 					MOB M=R.fetchInhabitant(i);
 					if((M!=mob)
 					&&((M.getVictim()==mob)||(victim==null))
-                    &&((M!=victim)&&(M!=entrant))
-                    &&(qualifies(M,R)))
+					&&((M!=victim)&&(M!=entrant))
+					&&(qualifies(M,R)))
 					{
 						total+=M.phyStats().level();
 						num++;
@@ -131,7 +131,7 @@ public class Prop_Doppleganger extends Property
 					int level=(int)Math.round(CMath.div(total,num))+CMath.s_int(text());
 					if(text().endsWith("%")) level=(int)Math.round(CMath.mul(CMath.div(total,num),CMath.s_pct(text())));
 					if(level<minLevel) level=minLevel;
-                    if(level>maxLevel) level=maxLevel;
+					if(level>maxLevel) level=maxLevel;
 					if(level!=mob.basePhyStats().level())
 					{
 						mob.basePhyStats().setLevel(level);

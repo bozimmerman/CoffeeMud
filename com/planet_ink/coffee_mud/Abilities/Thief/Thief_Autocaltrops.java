@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -35,79 +35,79 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Thief_Autocaltrops extends ThiefSkill
 {
-    public String ID() { return "Thief_Autocaltrops"; }
-    public String displayText() {return "(Autocaltropping)";}
-    public String name(){ return "AutoCaltrops";}
-    protected int canAffectCode(){return CAN_MOBS;}
-    protected int canTargetCode(){return 0;}
-    public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_TRAPPING;}
-    public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
-    private static final String[] triggerStrings = {"AUTOCALTROPS"};
-    public String[] triggerStrings(){return triggerStrings;}
-    protected boolean noRepeat=false;
+	public String ID() { return "Thief_Autocaltrops"; }
+	public String displayText() {return "(Autocaltropping)";}
+	public String name(){ return "AutoCaltrops";}
+	protected int canAffectCode(){return CAN_MOBS;}
+	protected int canTargetCode(){return 0;}
+	public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_TRAPPING;}
+	public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
+	private static final String[] triggerStrings = {"AUTOCALTROPS"};
+	public String[] triggerStrings(){return triggerStrings;}
+	protected boolean noRepeat=false;
 
-    public void executeMsg(final Environmental myHost, final CMMsg msg)
-    {
-        super.executeMsg(myHost,msg);
-        if((affected instanceof MOB)
-        &&(!noRepeat)
-        &&(msg.targetMinor()==CMMsg.TYP_ENTER)
-        &&(msg.source()==affected)
-        &&(msg.target() instanceof Room)
-        &&(msg.tool() instanceof Exit)
-        &&(((MOB)affected).location()!=null))
-            dropem(msg.source(),(Room)msg.target());
-    }
-    
-    public void dropem(MOB mob, Room R)
-    {
-        Ability A=mob.fetchAbility("Thief_Caltrops");
-        if(A==null)
-        {
-            A=CMClass.getAbility("Thief_Caltrops");
-            A.setProficiency(100);
-        }
-        int mana=mob.curState().getMana();
-        int movement=mob.curState().getMovement();
-        A.invoke(mob,R,false,0);
-        mob.curState().setMana(mana);
-        mob.curState().setMana(movement);
-    }
-    
-    public void unInvoke()
-    {
-        if((affected instanceof MOB)&&(!((MOB)affected).amDead()))
-            ((MOB)affected).tell("You stop throwing down caltrops.");
-        super.unInvoke();    
-    }
+	public void executeMsg(final Environmental myHost, final CMMsg msg)
+	{
+		super.executeMsg(myHost,msg);
+		if((affected instanceof MOB)
+		&&(!noRepeat)
+		&&(msg.targetMinor()==CMMsg.TYP_ENTER)
+		&&(msg.source()==affected)
+		&&(msg.target() instanceof Room)
+		&&(msg.tool() instanceof Exit)
+		&&(((MOB)affected).location()!=null))
+			dropem(msg.source(),(Room)msg.target());
+	}
+	
+	public void dropem(MOB mob, Room R)
+	{
+		Ability A=mob.fetchAbility("Thief_Caltrops");
+		if(A==null)
+		{
+			A=CMClass.getAbility("Thief_Caltrops");
+			A.setProficiency(100);
+		}
+		int mana=mob.curState().getMana();
+		int movement=mob.curState().getMovement();
+		A.invoke(mob,R,false,0);
+		mob.curState().setMana(mana);
+		mob.curState().setMana(movement);
+	}
+	
+	public void unInvoke()
+	{
+		if((affected instanceof MOB)&&(!((MOB)affected).amDead()))
+			((MOB)affected).tell("You stop throwing down caltrops.");
+		super.unInvoke();    
+	}
 
-    public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
-    {
-        MOB target=(givenTarget instanceof MOB)?(MOB)givenTarget:mob;
-        if(target.fetchEffect(ID())!=null)
-        {
-            target.tell("You are no longer automatically dropping caltrops.");
-            target.delEffect(mob.fetchEffect(ID()));
-            return false;
-        }
-        if((!auto)&&(target.fetchAbility("Thief_Caltrops")==null))
-        {
-            target.tell("You don't know how to make and drop caltrops yet!");
-            return false;
-        }
-        if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
-            return false;
+	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
+	{
+		MOB target=(givenTarget instanceof MOB)?(MOB)givenTarget:mob;
+		if(target.fetchEffect(ID())!=null)
+		{
+			target.tell("You are no longer automatically dropping caltrops.");
+			target.delEffect(mob.fetchEffect(ID()));
+			return false;
+		}
+		if((!auto)&&(target.fetchAbility("Thief_Caltrops")==null))
+		{
+			target.tell("You don't know how to make and drop caltrops yet!");
+			return false;
+		}
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
+			return false;
 
-        boolean success=proficiencyCheck(mob,0,auto);
+		boolean success=proficiencyCheck(mob,0,auto);
 
-        if(success)
-        {
-            target.tell("You will now automatically drop caltrops around when you enter a room.");
-            beneficialAffect(mob,target,asLevel,5+(3*getXLEVELLevel(mob)));
-            dropem(target,target.location());
-        }
-        else
-            beneficialVisualFizzle(mob,null,"<S-NAME> attempt(s) to prepare some caltrops for quick dropping, but mess(es) up.");
-        return success;
-    }
+		if(success)
+		{
+			target.tell("You will now automatically drop caltrops around when you enter a room.");
+			beneficialAffect(mob,target,asLevel,5+(3*getXLEVELLevel(mob)));
+			dropem(target,target.location());
+		}
+		else
+			beneficialVisualFizzle(mob,null,"<S-NAME> attempt(s) to prepare some caltrops for quick dropping, but mess(es) up.");
+		return success;
+	}
 }

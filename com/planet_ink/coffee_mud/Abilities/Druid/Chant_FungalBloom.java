@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -41,40 +41,40 @@ public class Chant_FungalBloom extends Chant
 	protected int canAffectCode(){return Ability.CAN_ITEMS;}
 	protected int canTargetCode(){return Ability.CAN_ITEMS;}
 	public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PLANTCONTROL;}
-    public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
+	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 
-    public Item getShroomHere(Room R)
-    {
-        for(int i=0;i<R.numItems();i++)
-        {
-            Item I=R.getItem(i);
-            if((I!=null)
-            &&(I.container()==null)
-            &&(I.material()!=RawMaterial.RESOURCE_MUSHROOMS)
-            &&(I.fetchEffect("Bomb_Poison")==null))
-                return I;
-        }
-        return null;
-    }
-    
-    public int castingQuality(MOB mob, Physical target)
-    {
-        if(mob!=null)
-        {
-            Room R=mob.location();
-            if(R!=null)
-            {
-                if((R.domainType()==Room.DOMAIN_OUTDOORS_UNDERWATER)
-                ||(R.domainType()==Room.DOMAIN_OUTDOORS_AIR)
-                ||(R.domainType()==Room.DOMAIN_INDOORS_AIR)
-                ||(R.domainType()==Room.DOMAIN_OUTDOORS_WATERSURFACE))
-                    return Ability.QUALITY_INDIFFERENT;
-                if(getShroomHere(mob.location())==null)
-                    return Ability.QUALITY_INDIFFERENT;
-            }
-        }
-        return super.castingQuality(mob,target);
-    }
+	public Item getShroomHere(Room R)
+	{
+		for(int i=0;i<R.numItems();i++)
+		{
+			Item I=R.getItem(i);
+			if((I!=null)
+			&&(I.container()==null)
+			&&(I.material()!=RawMaterial.RESOURCE_MUSHROOMS)
+			&&(I.fetchEffect("Bomb_Poison")==null))
+				return I;
+		}
+		return null;
+	}
+	
+	public int castingQuality(MOB mob, Physical target)
+	{
+		if(mob!=null)
+		{
+			Room R=mob.location();
+			if(R!=null)
+			{
+				if((R.domainType()==Room.DOMAIN_OUTDOORS_UNDERWATER)
+				||(R.domainType()==Room.DOMAIN_OUTDOORS_AIR)
+				||(R.domainType()==Room.DOMAIN_INDOORS_AIR)
+				||(R.domainType()==Room.DOMAIN_OUTDOORS_WATERSURFACE))
+					return Ability.QUALITY_INDIFFERENT;
+				if(getShroomHere(mob.location())==null)
+					return Ability.QUALITY_INDIFFERENT;
+			}
+		}
+		return super.castingQuality(mob,target);
+	}
 
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
@@ -87,17 +87,17 @@ public class Chant_FungalBloom extends Chant
 			return false;
 		}
 
-        Item target=null;
-        if(commands.size()==0)
-            target=getShroomHere(mob.location());
-        else
-            target=getTarget(mob,mob.location(),givenTarget,commands,Wearable.FILTER_UNWORNONLY);
+		Item target=null;
+		if(commands.size()==0)
+			target=getShroomHere(mob.location());
+		else
+			target=getTarget(mob,mob.location(),givenTarget,commands,Wearable.FILTER_UNWORNONLY);
 		if(target==null) {
-            if(mob.isMonster())
-                target=getShroomHere(mob.location());
-            if(target==null)
-                return false;
-        }
+			if(mob.isMonster())
+				target=getShroomHere(mob.location());
+			if(target==null)
+				return false;
+		}
 		if(target.material()!=RawMaterial.RESOURCE_MUSHROOMS)
 		{
 			mob.tell(target.name()+" is not a fungus!");

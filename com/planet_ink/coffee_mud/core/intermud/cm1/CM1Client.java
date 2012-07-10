@@ -29,7 +29,7 @@ import java.nio.channels.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -51,12 +51,12 @@ public class CM1Client
 		this.port=port;
 	}
 	
-    public final static int s_int(final String INT)
-    {
-        try{ return Integer.parseInt(INT); }
-        catch(Exception e){ return 0;}
-    }
-    
+	public final static int s_int(final String INT)
+	{
+		try{ return Integer.parseInt(INT); }
+		catch(Exception e){ return 0;}
+	}
+	
 	public synchronized List<String> transactMessages(String command)
 	{
 		LinkedList<String> list=new LinkedList<String>();

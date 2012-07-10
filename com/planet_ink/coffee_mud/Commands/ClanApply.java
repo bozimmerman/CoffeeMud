@@ -23,7 +23,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -38,7 +38,7 @@ public class ClanApply extends StdCommand
 
 	private final String[] access={"CLANAPPLY"};
 	public String[] getAccessWords(){return access;}
-    
+	
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
@@ -53,51 +53,51 @@ public class ClanApply extends StdCommand
 				Clan C=CMLib.clans().findClan(qual);
 				if(C!=null)
 				{
-                    if(C.isOnlyFamilyApplicants()
-                    &&(!CMLib.clans().isFamilyOfMembership(mob,C.getMemberList())))
-                    {
-                        msg.append("The clan  "+C.clanID()+" is a family.  You can not join a family, you must be born or married into it.");
-                        return false;
-                    }
-                    
-                    if(!CMLib.masking().maskCheck(C.getBasicRequirementMask(), mob, true))
-                    {
+					if(C.isOnlyFamilyApplicants()
+					&&(!CMLib.clans().isFamilyOfMembership(mob,C.getMemberList())))
+					{
+						msg.append("The clan  "+C.clanID()+" is a family.  You can not join a family, you must be born or married into it.");
+						return false;
+					}
+					
+					if(!CMLib.masking().maskCheck(C.getBasicRequirementMask(), mob, true))
+					{
 						msg.append("You are not of the right qualities to join "+C.clanID()+". Use CLANDETAILS \""+C.clanID()+"\" for more information.");
 						return false;
-                    }
-                    
+					}
+					
 					if(CMLib.masking().maskCheck(C.getAcceptanceSettings(),mob,true))
 					{
-                        if((CMLib.masking().maskCheck("-<"+CMProps.getIntVar(CMProps.SYSTEMI_MINCLANLEVEL),mob,true))
-                        ||(CMLib.clans().isFamilyOfMembership(mob,C.getMemberList())))
-                        {
-                        	int maxMembers=CMProps.getIntVar(CMProps.SYSTEMI_MAXCLANMEMBERS);
-                        	int numMembers=C.getSize();
-                        	if((maxMembers<=0)||(numMembers<maxMembers))
-                        	{
-	                        	int role=C.getAutoPosition();
-                                C.addMember(mob,role);
-	    						if((mob.getClanRole()!=C.getGovernment().getAcceptPos())
-	    						&&(mob.getClanRole()==C.getGovernment().getAutoRole()))
-	    						{
-	        						CMLib.clans().clanAnnounce(mob,"The "+C.getGovernmentName()+" "+C.clanID()+" has a new Applicant: "+mob.Name());
-		    						mob.tell("You have successfully applied for membership in clan "+C.clanID()+".  Your application will be reviewed by management.  Use SCORE to check for a change in status.");
-	    						}
-	    						else
-	    						{
-	        						CMLib.clans().clanAnnounce(mob,"The "+C.getGovernmentName()+" "+C.clanID()+" has a new member: "+mob.Name());
-	    							mob.tell("You have successfully joined "+C.clanID()+".  Use CLANDETAILS for information.");
-	    						}
-                        	}
-                        	else
-                        	{
-                                msg.append("This "+C.getGovernmentName()+" already has the maximum number of members ("+numMembers+"/"+maxMembers+") and can not accept new applicants.");
-                        	}
-                        }
-                        else
-                        {
-                            msg.append("You must be at least level "+CMProps.getIntVar(CMProps.SYSTEMI_MINCLANLEVEL)+" to join a clan.");
-                        }
+						if((CMLib.masking().maskCheck("-<"+CMProps.getIntVar(CMProps.SYSTEMI_MINCLANLEVEL),mob,true))
+						||(CMLib.clans().isFamilyOfMembership(mob,C.getMemberList())))
+						{
+							int maxMembers=CMProps.getIntVar(CMProps.SYSTEMI_MAXCLANMEMBERS);
+							int numMembers=C.getSize();
+							if((maxMembers<=0)||(numMembers<maxMembers))
+							{
+								int role=C.getAutoPosition();
+								C.addMember(mob,role);
+								if((mob.getClanRole()!=C.getGovernment().getAcceptPos())
+								&&(mob.getClanRole()==C.getGovernment().getAutoRole()))
+								{
+									CMLib.clans().clanAnnounce(mob,"The "+C.getGovernmentName()+" "+C.clanID()+" has a new Applicant: "+mob.Name());
+									mob.tell("You have successfully applied for membership in clan "+C.clanID()+".  Your application will be reviewed by management.  Use SCORE to check for a change in status.");
+								}
+								else
+								{
+									CMLib.clans().clanAnnounce(mob,"The "+C.getGovernmentName()+" "+C.clanID()+" has a new member: "+mob.Name());
+									mob.tell("You have successfully joined "+C.clanID()+".  Use CLANDETAILS for information.");
+								}
+							}
+							else
+							{
+								msg.append("This "+C.getGovernmentName()+" already has the maximum number of members ("+numMembers+"/"+maxMembers+") and can not accept new applicants.");
+							}
+						}
+						else
+						{
+							msg.append("You must be at least level "+CMProps.getIntVar(CMProps.SYSTEMI_MINCLANLEVEL)+" to join a clan.");
+						}
 					}
 					else
 					{

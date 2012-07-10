@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -44,21 +44,21 @@ public class Skill_Arrest extends StdSkill
 	private static final String[] triggerStrings = {"ARREST"};
 	public String[] triggerStrings(){return triggerStrings;}
 	public int usageType(){return USAGE_MOVEMENT;}
-    public int classificationCode() {   return Ability.ACODE_SKILL|Ability.DOMAIN_LEGAL; }
+	public int classificationCode() {   return Ability.ACODE_SKILL|Ability.DOMAIN_LEGAL; }
 
 	public static List<LegalWarrant> getWarrantsOf(MOB target, Area legalA)
 	{
-        LegalBehavior B=null;
+		LegalBehavior B=null;
 		if(legalA!=null) B=CMLib.law().getLegalBehavior(legalA);
 		List<LegalWarrant> warrants=new Vector();
 		if(B!=null)
-        {
-            warrants=B.getWarrantsOf(legalA,target);
+		{
+			warrants=B.getWarrantsOf(legalA,target);
 			for(int i=warrants.size()-1;i>=0;i--)
 			{
-			    LegalWarrant W=(LegalWarrant)warrants.get(i);
-			    if(W.crime().equalsIgnoreCase("pardoned"))
-			        warrants.remove(i);
+				LegalWarrant W=(LegalWarrant)warrants.get(i);
+				if(W.crime().equalsIgnoreCase("pardoned"))
+					warrants.remove(i);
 			}
 		}
 		return warrants;
@@ -72,9 +72,9 @@ public class Skill_Arrest extends StdSkill
 			MOB inhab=R.fetchInhabitant(i);
 			if((inhab!=null)&&(inhab.isInCombat()))
 			{
-			    if(inhab.getVictim()==mob)
+				if(inhab.getVictim()==mob)
 					inhab.makePeace();
-			    if(inhab.getVictim()==target)
+				if(inhab.getVictim()==target)
 					inhab.makePeace();
 			}
 		}
@@ -86,14 +86,14 @@ public class Skill_Arrest extends StdSkill
 		if(target==null) return false;
 		if((mob==target)&&(!auto))
 		{
-		    mob.tell("You can not arrest yourself.");
-		    return false;
+			mob.tell("You can not arrest yourself.");
+			return false;
 		}
 
 		if(Skill_Arrest.getWarrantsOf(target, CMLib.law().getLegalObject(mob.location().getArea())).size()==0)
 		{
-		    mob.tell(target.name()+" has no warrants out here.");
-		    return false;
+			mob.tell(target.name()+" has no warrants out here.");
+			return false;
 		}
 		
 		// the invoke method for spells receives as
@@ -131,13 +131,13 @@ public class Skill_Arrest extends StdSkill
 			}
 			if(CMLib.flags().isSleeping(target))
 			{
-			    makePeace(mob.location(),mob,target);
+				makePeace(mob.location(),mob,target);
 				A=target.fetchEffect("Skill_ArrestingSap");
 				if(A!=null)A.unInvoke();
 				A=CMClass.getAbility("Skill_HandCuff");
 				if(A!=null)	A.invoke(mob,target,true,0);
-			    makePeace(mob.location(),mob,target);
-			    mob.tell("You'll have to PULL "+target.charStats().himher()+" to the judge now before he gets out of the cuffs.");
+				makePeace(mob.location(),mob,target);
+				mob.tell("You'll have to PULL "+target.charStats().himher()+" to the judge now before he gets out of the cuffs.");
 			}
 		}
 		else

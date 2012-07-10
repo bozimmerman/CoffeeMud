@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -45,7 +45,7 @@ public class UmberHulk extends StdRace
 	public String racialCategory(){return "Giant-kin";}
 	public int availabilityCode(){return Area.THEME_FANTASY|Area.THEME_SKILLONLYMASK;}
 	protected static Vector<RawMaterial> resources=new Vector<RawMaterial>();
-    private String[]racialAbilityNames={"Chant_StoneWalking","Spell_Confusion"};
+	private String[]racialAbilityNames={"Chant_StoneWalking","Spell_Confusion"};
 	private int[]racialAbilityLevels={1,10};
 	private int[]racialAbilityProficiencies={100,50};
 	private boolean[]racialAbilityQuals={false,false};
@@ -54,7 +54,7 @@ public class UmberHulk extends StdRace
 	public int[] racialAbilityProficiencies(){return racialAbilityProficiencies;}
 	public boolean[] racialAbilityQuals(){return racialAbilityQuals;}
 
-	//                                an ey ea he ne ar ha to le fo no gi mo wa ta wi
+	//  							  an ey ea he ne ar ha to le fo no gi mo wa ta wi
 	private static final int[] parts={0 ,2 ,2 ,1 ,1 ,2 ,2 ,1 ,2 ,2 ,1 ,0 ,1 ,1 ,0 ,0 };
 	public int[] bodyMask(){return parts;}
 

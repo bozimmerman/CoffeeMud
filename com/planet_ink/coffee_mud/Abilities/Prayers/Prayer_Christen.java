@@ -26,7 +26,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -45,25 +45,25 @@ public class Prayer_Christen extends Prayer
 	public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
 	public long flags(){return Ability.FLAG_HOLY;}
 
-    public int castingQuality(MOB mob, Physical target)
-    {
-        if(mob!=null)
-        {
-            if(mob.isInCombat())
-                return Ability.QUALITY_INDIFFERENT;
-            if(mob.isMonster())
-                return Ability.QUALITY_INDIFFERENT;
-        }
-        return super.castingQuality(mob,target);
-    }
-    
+	public int castingQuality(MOB mob, Physical target)
+	{
+		if(mob!=null)
+		{
+			if(mob.isInCombat())
+				return Ability.QUALITY_INDIFFERENT;
+			if(mob.isMonster())
+				return Ability.QUALITY_INDIFFERENT;
+		}
+		return super.castingQuality(mob,target);
+	}
+	
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-	    if(mob.isInCombat())
-	    {
-	        mob.tell("Not while you're fighting!");
-	        return false;
-	    }
+		if(mob.isInCombat())
+		{
+			mob.tell("Not while you're fighting!");
+			return false;
+		}
 		if(commands.size()<2)
 		{
 			mob.tell("Christen whom what?");
@@ -120,10 +120,10 @@ public class Prayer_Christen extends Prayer
 				txt=CMStrings.replaceFirst(txt,"<NAME>"+oldName+"</NAME>","<NAME>"+name+"</NAME>");
 				txt=CMStrings.replaceFirst(txt,"<DISP>"+oldName,"<DISP>"+name);
 				((CagedAnimal)target).setCageText(txt);
-                List<String> channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.CHRISTENINGS);
-                for(int i=0;i<channels.size();i++)
-                    CMLib.commands().postChannel((String)channels.get(i),mob.getClanID(),target.name()+" was just christened.",true);
-                CMLib.leveler().postExperience(mob,null,null,5,false);
+				List<String> channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.CHRISTENINGS);
+				for(int i=0;i<channels.size();i++)
+					CMLib.commands().postChannel((String)channels.get(i),mob.getClanID(),target.name()+" was just christened.",true);
+				CMLib.leveler().postExperience(mob,null,null,5,false);
 			}
 		}
 		else

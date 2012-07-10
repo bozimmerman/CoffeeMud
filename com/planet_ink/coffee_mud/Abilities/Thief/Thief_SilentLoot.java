@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -40,7 +40,7 @@ public class Thief_SilentLoot extends ThiefSkill
 	public String name(){ return "Silent AutoLoot";}
 	protected int canAffectCode(){return CAN_MOBS;}
 	protected int canTargetCode(){return 0;}
-    public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_STEALING;}
+	public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_STEALING;}
 	public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
 	private static final String[] triggerStrings = {"SILENTLOOT"};
 	public String[] triggerStrings(){return triggerStrings;}
@@ -56,7 +56,7 @@ public class Thief_SilentLoot extends ThiefSkill
 			&&(msg.source().location()==((MOB)affected).location())
 			&&((msg.source().numItems())>0))
 			{
-                int max=1+getXLEVELLevel((MOB)affected);
+				int max=1+getXLEVELLevel((MOB)affected);
 				Item item=msg.source().fetchCarried(null,"all");
 				if(item==null) item=msg.source().fetchWornItem("all");
 				while(((--max)>=0)&&(item!=null)&&(msg.source().isMine(item)))
@@ -75,8 +75,8 @@ public class Thief_SilentLoot extends ThiefSkill
 						CMLib.commands().postGet(mob,null,item,true);
 					}
 					if(victim!=null) mob.setVictim(victim);
-                    item=msg.source().fetchCarried(null,"all");
-                    if(item==null) item=msg.source().fetchWornItem("all");
+					item=msg.source().fetchCarried(null,"all");
+					if(item==null) item=msg.source().fetchWornItem("all");
 				}
 			}
 		}

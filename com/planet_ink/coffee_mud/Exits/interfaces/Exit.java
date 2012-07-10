@@ -22,7 +22,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -37,17 +37,17 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
  */
 public interface Exit extends PhysicalAgent, Readable
 {
-    /**
-     * Returns whether this exit is OPEN and may be travelled through
-     * @return whether this exit is OPEN and may be travelled through
-     */
+	/**
+	 * Returns whether this exit is OPEN and may be travelled through
+	 * @return whether this exit is OPEN and may be travelled through
+	 */
 	public boolean isOpen();
 	
 	/**
 	 * Returns whether this exit is LOCKED, and must be unlocked before
 	 * being used.
-     * @see com.planet_ink.coffee_mud.Exits.interfaces.Exit#hasADoor()
-     * @see com.planet_ink.coffee_mud.Exits.interfaces.Exit#hasALock()
+	 * @see com.planet_ink.coffee_mud.Exits.interfaces.Exit#hasADoor()
+	 * @see com.planet_ink.coffee_mud.Exits.interfaces.Exit#hasALock()
 	 * @return true if locked, false otherwise
 	 */
 	public boolean isLocked();
@@ -56,7 +56,7 @@ public interface Exit extends PhysicalAgent, Readable
 	 * Returns whether this exit has a door, and must be opened before
 	 * being used.
 	 * @see com.planet_ink.coffee_mud.Exits.interfaces.Exit#isOpen()
-     * @see com.planet_ink.coffee_mud.Exits.interfaces.Exit#isLocked()
+	 * @see com.planet_ink.coffee_mud.Exits.interfaces.Exit#isLocked()
 	 * @return true if a door is present, false otherwise.
 	 */
 	public boolean hasADoor();
@@ -64,9 +64,9 @@ public interface Exit extends PhysicalAgent, Readable
 	/**
 	 * Returns whether this exit has a lock on its door, and, if locked, 
 	 * must be unlocked before being used.
-     * @see com.planet_ink.coffee_mud.Exits.interfaces.Exit#isOpen()
-     * @see com.planet_ink.coffee_mud.Exits.interfaces.Exit#isLocked()
-     * @see com.planet_ink.coffee_mud.Exits.interfaces.Exit#hasADoor()
+	 * @see com.planet_ink.coffee_mud.Exits.interfaces.Exit#isOpen()
+	 * @see com.planet_ink.coffee_mud.Exits.interfaces.Exit#isLocked()
+	 * @see com.planet_ink.coffee_mud.Exits.interfaces.Exit#hasADoor()
 	 * @return whether a lock is present
 	 */
 	public boolean hasALock();
@@ -74,30 +74,30 @@ public interface Exit extends PhysicalAgent, Readable
 	/**
 	 * For exits with a door and lock, this returns whether the door
 	 * defaults in a closed and locked state. 
-     * @see com.planet_ink.coffee_mud.Exits.interfaces.Exit#hasADoor()
-     * @see com.planet_ink.coffee_mud.Exits.interfaces.Exit#defaultsClosed()
+	 * @see com.planet_ink.coffee_mud.Exits.interfaces.Exit#hasADoor()
+	 * @see com.planet_ink.coffee_mud.Exits.interfaces.Exit#defaultsClosed()
 	 * @return true if defaults closed and locked, false otherwise
 	 */
 	public boolean defaultsLocked();
 	
 	
-    /**
-     * For exits with a door, this returns whether the door
-     * defaults in a closed state. 
-     * @see com.planet_ink.coffee_mud.Exits.interfaces.Exit#hasADoor()
-     * @see com.planet_ink.coffee_mud.Exits.interfaces.Exit#defaultsLocked()
-     * @return true if defaults closed, false otherwise
-     */
+	/**
+	 * For exits with a door, this returns whether the door
+	 * defaults in a closed state. 
+	 * @see com.planet_ink.coffee_mud.Exits.interfaces.Exit#hasADoor()
+	 * @see com.planet_ink.coffee_mud.Exits.interfaces.Exit#defaultsLocked()
+	 * @return true if defaults closed, false otherwise
+	 */
 	public boolean defaultsClosed();
 	
 	/**
 	 * Modifies the various door/lock settings for this exit.
-     * @see com.planet_ink.coffee_mud.Exits.interfaces.Exit#isOpen()
-     * @see com.planet_ink.coffee_mud.Exits.interfaces.Exit#isLocked()
-     * @see com.planet_ink.coffee_mud.Exits.interfaces.Exit#hasADoor()
-     * @see com.planet_ink.coffee_mud.Exits.interfaces.Exit#hasALock()
-     * @see com.planet_ink.coffee_mud.Exits.interfaces.Exit#defaultsClosed()
-     * @see com.planet_ink.coffee_mud.Exits.interfaces.Exit#defaultsLocked()
+	 * @see com.planet_ink.coffee_mud.Exits.interfaces.Exit#isOpen()
+	 * @see com.planet_ink.coffee_mud.Exits.interfaces.Exit#isLocked()
+	 * @see com.planet_ink.coffee_mud.Exits.interfaces.Exit#hasADoor()
+	 * @see com.planet_ink.coffee_mud.Exits.interfaces.Exit#hasALock()
+	 * @see com.planet_ink.coffee_mud.Exits.interfaces.Exit#defaultsClosed()
+	 * @see com.planet_ink.coffee_mud.Exits.interfaces.Exit#defaultsLocked()
 	 * @param hasADoor whether this exit has a door
 	 * @param isOpen whether this exit is open for travel
 	 * @param defaultsClosed whether this exit defaults closed
@@ -115,15 +115,15 @@ public interface Exit extends PhysicalAgent, Readable
 	/**
 	 * For Exits with doors and locks, this returns the unique string
 	 * representing the key code required to unlock/lock the door.
-     * @see com.planet_ink.coffee_mud.Exits.interfaces.Exit#setKeyName(String)
+	 * @see com.planet_ink.coffee_mud.Exits.interfaces.Exit#setKeyName(String)
 	 * @return the key code
 	 */
 	public String keyName();
 	
 	/**
-     * For Exits with doors and locks, this sets the unique string
-     * representing the key code required to unlock/lock the door.
-     * @see com.planet_ink.coffee_mud.Exits.interfaces.Exit#keyName()
+	 * For Exits with doors and locks, this sets the unique string
+	 * representing the key code required to unlock/lock the door.
+	 * @see com.planet_ink.coffee_mud.Exits.interfaces.Exit#keyName()
 	 * @param keyName the new key code
 	 */
 	public void setKeyName(String keyName);
@@ -146,37 +146,37 @@ public interface Exit extends PhysicalAgent, Readable
 	
 	/**
 	 * Returns the short name of this door, e.g. gate, door, portal, etc..
-     * @see com.planet_ink.coffee_mud.Exits.interfaces.Exit#setExitParams(String, String, String, String)
+	 * @see com.planet_ink.coffee_mud.Exits.interfaces.Exit#setExitParams(String, String, String, String)
 	 * @return the short name of this door.
 	 */
 	public String doorName();
 	
-    /**
-     * Returns the verb used for describing closing this exit, e.g. close,
-     * lower, drop, etc..
-     * @see com.planet_ink.coffee_mud.Exits.interfaces.Exit#openWord()
-     * @see com.planet_ink.coffee_mud.Exits.interfaces.Exit#hasADoor()
-     * @see com.planet_ink.coffee_mud.Exits.interfaces.Exit#defaultsClosed()
-     * @see com.planet_ink.coffee_mud.Exits.interfaces.Exit#setExitParams(String, String, String, String)
-     * @return the short name of a verb used when closing this door.
-     */
+	/**
+	 * Returns the verb used for describing closing this exit, e.g. close,
+	 * lower, drop, etc..
+	 * @see com.planet_ink.coffee_mud.Exits.interfaces.Exit#openWord()
+	 * @see com.planet_ink.coffee_mud.Exits.interfaces.Exit#hasADoor()
+	 * @see com.planet_ink.coffee_mud.Exits.interfaces.Exit#defaultsClosed()
+	 * @see com.planet_ink.coffee_mud.Exits.interfaces.Exit#setExitParams(String, String, String, String)
+	 * @return the short name of a verb used when closing this door.
+	 */
 	public String closeWord();
-    
-    /**
-     * Returns the verb used for describing opening this exit, e.g. open,
-     * raise, lift, etc..
-     * @see com.planet_ink.coffee_mud.Exits.interfaces.Exit#closeWord()
-     * @see com.planet_ink.coffee_mud.Exits.interfaces.Exit#hasADoor()
-     * @see com.planet_ink.coffee_mud.Exits.interfaces.Exit#defaultsClosed()
-     * @see com.planet_ink.coffee_mud.Exits.interfaces.Exit#setExitParams(String, String, String, String)
-     * @return the short name of a verb used when opening this door.
-     */
+	
+	/**
+	 * Returns the verb used for describing opening this exit, e.g. open,
+	 * raise, lift, etc..
+	 * @see com.planet_ink.coffee_mud.Exits.interfaces.Exit#closeWord()
+	 * @see com.planet_ink.coffee_mud.Exits.interfaces.Exit#hasADoor()
+	 * @see com.planet_ink.coffee_mud.Exits.interfaces.Exit#defaultsClosed()
+	 * @see com.planet_ink.coffee_mud.Exits.interfaces.Exit#setExitParams(String, String, String, String)
+	 * @return the short name of a verb used when opening this door.
+	 */
 	public String openWord();
 	
 	/**
 	 * Returns a text description of what this exit looks like when closed. 
-     * @see com.planet_ink.coffee_mud.Exits.interfaces.Exit#hasADoor()
-     * @see com.planet_ink.coffee_mud.Exits.interfaces.Exit#defaultsClosed()
+	 * @see com.planet_ink.coffee_mud.Exits.interfaces.Exit#hasADoor()
+	 * @see com.planet_ink.coffee_mud.Exits.interfaces.Exit#defaultsClosed()
 	 * @return A description of this exit when closed.
 	 */
 	public String closedText();
@@ -184,10 +184,10 @@ public interface Exit extends PhysicalAgent, Readable
 	/**
 	 * Sets various word descriptions used when doing some dynamic manipulations
 	 * of this exit.
-     * @see com.planet_ink.coffee_mud.Exits.interfaces.Exit#closeWord()
-     * @see com.planet_ink.coffee_mud.Exits.interfaces.Exit#openWord()
-     * @see com.planet_ink.coffee_mud.Exits.interfaces.Exit#doorName()
-     * @see com.planet_ink.coffee_mud.Exits.interfaces.Exit#closedText()
+	 * @see com.planet_ink.coffee_mud.Exits.interfaces.Exit#closeWord()
+	 * @see com.planet_ink.coffee_mud.Exits.interfaces.Exit#openWord()
+	 * @see com.planet_ink.coffee_mud.Exits.interfaces.Exit#doorName()
+	 * @see com.planet_ink.coffee_mud.Exits.interfaces.Exit#closedText()
 	 * @param newDoorName short name of this door, e.g. door, gate
 	 * @param newCloseWord verb used to close this door, e.g. close, lower
 	 * @param newOpenWord verb used to open this door, e.g. open, raise
@@ -202,18 +202,18 @@ public interface Exit extends PhysicalAgent, Readable
 	 * Returns the number of ticks that this exit remains open when a mob
 	 * or player changes it from a closed to an open state, and the door
 	 * defaults in a closed state.
-     * @see com.planet_ink.coffee_mud.Exits.interfaces.Exit#setOpenDelayTicks(int)
+	 * @see com.planet_ink.coffee_mud.Exits.interfaces.Exit#setOpenDelayTicks(int)
 	 * @see com.planet_ink.coffee_mud.core.interfaces.Tickable#TICKID_EXIT_REOPEN
 	 * @return the number of ticks this exit remains open
 	 */
 	public int openDelayTicks();
 	
 	/**
-     * Sets the number of ticks that this exit will remain open when a mob
-     * or player changes it from a closed to an open state, and the door
-     * defaults in a closed state.
-     * @see com.planet_ink.coffee_mud.Exits.interfaces.Exit#openDelayTicks()
-     * @see com.planet_ink.coffee_mud.core.interfaces.Tickable#TICKID_EXIT_REOPEN
+	 * Sets the number of ticks that this exit will remain open when a mob
+	 * or player changes it from a closed to an open state, and the door
+	 * defaults in a closed state.
+	 * @see com.planet_ink.coffee_mud.Exits.interfaces.Exit#openDelayTicks()
+	 * @see com.planet_ink.coffee_mud.core.interfaces.Tickable#TICKID_EXIT_REOPEN
 	 * @param numTicks the number of ticks this exit will remain open
 	 */
 	public void setOpenDelayTicks(int numTicks);
@@ -221,16 +221,16 @@ public interface Exit extends PhysicalAgent, Readable
 	/**
 	 * If this exit represents a route to a room not yet created, but whose room id
 	 * is already known, this will return that designated room id.
-     * @see com.planet_ink.coffee_mud.Exits.interfaces.Exit#setTemporaryDoorLink(String)
+	 * @see com.planet_ink.coffee_mud.Exits.interfaces.Exit#setTemporaryDoorLink(String)
 	 * @return the room id of the room that will be linked in later
 	 */
 	public String temporaryDoorLink();
 	
-    /**
-     * If this exit represents a route to a room not yet created, but whose room id
-     * is already known, this will set that designated room id.
-     * @see com.planet_ink.coffee_mud.Exits.interfaces.Exit#temporaryDoorLink()
-     * @param link the room id of the room that will be linked in later
-     */
+	/**
+	 * If this exit represents a route to a room not yet created, but whose room id
+	 * is already known, this will set that designated room id.
+	 * @see com.planet_ink.coffee_mud.Exits.interfaces.Exit#temporaryDoorLink()
+	 * @param link the room id of the room that will be linked in later
+	 */
 	public void setTemporaryDoorLink(String link);
 }

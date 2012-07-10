@@ -25,7 +25,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -36,236 +36,236 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public interface MaskingLibrary extends CMLibrary
 {
-    public Hashtable getMaskCodes();
-    public String rawMaskHelp();
-    public String maskHelp(final String CR, final String word);
+	public Hashtable getMaskCodes();
+	public String rawMaskHelp();
+	public String maskHelp(final String CR, final String word);
 	public Vector getAbilityEduReqs(final String text);
-    public String maskDesc(final String text);
+	public String maskDesc(final String text);
 	public String maskDesc(final String text, final boolean skipFirstWord);
 	public CompiledZapperMask maskCompile(final String text);
 	public CompiledZapperMask getPreCompiledMask(final String str);
-    public boolean maskCheck(final CompiledZapperMask cset, final Environmental E, final boolean actual);
-    public boolean maskCheck(final String text, final Environmental E, final boolean actual);
+	public boolean maskCheck(final CompiledZapperMask cset, final Environmental E, final boolean actual);
+	public boolean maskCheck(final String text, final Environmental E, final boolean actual);
 	public boolean maskCheck(final CompiledZapperMask cset, final PlayerLibrary.ThinPlayer E);
-    public boolean maskCheck(final String text, final PlayerLibrary.ThinPlayer E);
-    public boolean syntaxCheck(final String text, final Vector errorSink);
-    public int minMaskLevel(final String text, final int minMinLevel);
-    public String[] separateMaskStrs(final String newText);
+	public boolean maskCheck(final String text, final PlayerLibrary.ThinPlayer E);
+	public boolean syntaxCheck(final String text, final Vector errorSink);
+	public int minMaskLevel(final String text, final int minMinLevel);
+	public String[] separateMaskStrs(final String newText);
 
-    public static class CompiledZapperMaskEntry
-    {
-    	public final int maskType;
-    	public final Object[] parms;
-    	public CompiledZapperMaskEntry(final int type, final Object[] parms)
-    	{	maskType=type;this.parms=parms;}
-    }
-    
-    public static class CompiledZapperMask
-    {
-    	public final boolean[] flags;
-    	public final boolean empty;
-    	public final CompiledZapperMaskEntry[] entries;
-    	public CompiledZapperMask(final boolean[] flags, final CompiledZapperMaskEntry[] entries)
-    	{	this.flags=flags; this.entries=entries; this.empty=false;}
-    	public CompiledZapperMask(final boolean[] flags, final CompiledZapperMaskEntry[] entries, final boolean empty)
-    	{	this.flags=flags; this.entries=entries; this.empty=empty;}
-    	public static final CompiledZapperMask EMPTY()
-    	{	return new CompiledZapperMask(new boolean[2],new CompiledZapperMaskEntry[0],true); }
-    }
-    
-    public static class SavedClass
-    {
-    	public final CharClass C;
-    	public final String name;
-    	public final String upperName;
-    	public final String baseClass;
-    	public final String upperBaseClass;
-    	public final String nameStart;
-    	public final String plusNameStart;
-    	public final String minusNameStart;
-    	public final String baseClassStart;
-    	public final String plusBaseClassStart;
-    	public final String minusBaseClassStart;
-    	public SavedClass(final CharClass charClass, final int startChars)
-    	{
-    		C=charClass;
-    		name=charClass.name();
-    		upperName=name.toUpperCase();
-    		nameStart=CMStrings.safeLeft(name.toUpperCase(),startChars);
-    		plusNameStart="+"+nameStart;
-    		minusNameStart="-"+nameStart;
-    		baseClass=charClass.baseClass();
-    		upperBaseClass=baseClass.toUpperCase();
-    		baseClassStart=CMStrings.safeLeft(baseClass.toUpperCase(),startChars);
-    		plusBaseClassStart="+"+baseClassStart;
-    		minusBaseClassStart="-"+baseClassStart;
-    	}
-    }
-    
-    public static class SavedRace
-    {
-    	public final Race R;
-    	public final String name;
-    	public final String upperName;
-    	public final String racialCategory;
-    	public final String upperCatName;
-    	public final String nameStart;
-    	public final String plusNameStart;
-    	public final String minusNameStart;
-    	public final String catNameStart;
-    	public final String plusCatNameStart;
-    	public final String minusCatNameStart;
-    	public SavedRace(final Race race, final int startChars)
-    	{
-    		R=race;
-    		name=race.name();
-    		upperName=name.toUpperCase();
-    		nameStart=CMStrings.safeLeft(name.toUpperCase(),startChars);
-    		plusNameStart="+"+nameStart;
-    		minusNameStart="-"+nameStart;
-    		racialCategory=race.racialCategory();
-    		upperCatName=racialCategory.toUpperCase();
-    		catNameStart=CMStrings.safeLeft(racialCategory.toUpperCase(),startChars);
-    		plusCatNameStart="+"+catNameStart;
-    		minusCatNameStart="-"+catNameStart;
-    	}
-    }
-    
-    public final String DEFAULT_MASK_HELP =
-        "+SYSOP (allow archons to bypass the rules)  <BR>"
-        +"-SYSOP (always <WORD> archons)  <BR>"
-        +"+SUBOP (allow archons or area staff to bypass the rules)  <BR>"
-        +"-SUBOP (always <WORD> archons and area staff)  <BR>"
-        +"-PLAYER (<WORD> all players) <BR>"
-        +"-MOB (<WORD> all mobs/npcs)  <BR>"
-        +"-CLASS  (<WORD> all classes)  <BR>"
-        +"-CLASS +thief +mage +ranger (create exceptions) <BR>"
-        +"-BASECLASS  (<WORD> all base classes)  <BR>"
-        +"-BASECLASS +thief +mage +ranger (create exceptions) <BR>"
-        +"-thief -mage  -ranger (<WORD> only listed classes)<BR>"
-        +"-RACE (<WORD> all races)  <BR>"
-        +"-RACE +elf +dwarf +human +half +gnome (create exceptions)  <BR>"
-        +"-elf -dwarf -human -half -gnome (<WORD> only listed races)  <BR>"
-        +"-RACECAT (<WORD> all racial categories)  <BR>"
-        +"-RACECAT +elf +insect +humanoid +canine +gnome (create exceptions)  <BR>"
-        +"+RACECAT (do not <WORD> all racial categories)  <BR>"
-        +"+RACECAT -elf -insect -humanoid -canine -gnome (create exceptions)  <BR>"
-        +"-ALIGNMENT (<WORD> all alignments)  <BR>"
-        +"-ALIGNMENT +evil +good +neutral (create exceptions)  <BR>"
-        +"-evil -good -neutral (<WORD> only listed alignments)  <BR>"
-        +"-GENDER (<WORD> all genders)  <BR>"
-        +"-GENDER +male +female +neuter (create exceptions)  <BR>"
-        +"-male -female -neuter (<WORD> only listed genders)  <BR>"
-        +"-FACTION (<WORD> all faction and values, even a lack of faction) <BR>"
-        +"-FACTION +myfactionrange +faction.rangename (create exceptions) <BR>"
-        +"-rangename -faction.rangename (<WORD> only faction range named)<BR>"
-        +"-TATTOOS (<WORD> all tattoos, even a lack of a tattoo) <BR>"
-        +"-TATTOOS +mytatto +thistattoo +anytattoo etc..  (create exceptions) <BR>"
-        +"+TATTOOS (do not <WORD> any or no tattoos) <BR>"
-        +"+TATTOOS -mytattoo -anytatto, etc.. (create exceptions) <BR>"
-        +"-EXPERTISES (<WORD> all expertises, even a lack of a edus) <BR>"
-        +"-EXPERTISES +myedu +thisedu +anyedu etc..  (create exceptions)<BR>"
-        +"+EXPERTISES (do not <WORD> any or no expertises) <BR>"
-        +"+EXPERTISES -myedu -anyedu, etc.. (create exceptions) <BR>"
-        +"-SECURITY (<WORD> all security flags, even a lack of a security) <BR>"
-        +"-SECURITY +cmdrooms +area cmditems etc..  (create exceptions)<BR>"
-        +"+SECURITY (do not <WORD> any or no expertises) <BR>"
-        +"+SECURITY -cmdrooms +area cmditems, etc.. (create exceptions) <BR>"
-        +"-MOOD +grumpy +normal (<WORD> all except those with given moods)<BR>"
-        +"+MOOD -grumpy -normal (<WORD> only those with subtracted moods)<BR>"
-        +"-LEVEL (<WORD> all levels)  <BR>"
-        +"-LEVEL +=1 +>5 +>=7 +<13 +<=20 (create exceptions)  <BR>"
-        +"-=1 ->5 ->=7 -<13 -<=20 (<WORD> only listed levels range) <BR>"
-        +"-NAMES (<WORD> everyone) <BR>"
-        +"-NAMES +bob \"+my name\" etc.. (create name exceptions) <BR>"
-        +"+NAMES (do not <WORD> anyone who has a name) <BR>"
-        +"+NAMES -bob \"-my name\" etc.. (create name exceptions) <BR>"
-        +"-CLAN (<WORD> anyone, even no clan) <BR>"
-        +"-CLAN +Killers \"+Holy Avengers\" etc.. (create clan exceptions) <BR>"
-        +"+CLAN (do not <WORD> anyone, even non clan people) <BR>"
-        +"+CLAN -Killers \"-Holy Avengers\" etc.. (create clan exceptions) <BR>"
-        +"-DEITY (<WORD> anyone, even no deity) <BR>"
-        +"-DEITY +Apollo \"+Grothon The Great\" etc.. (create deity exceptions) <BR>"
-        +"+DEITY (do not <WORD> anyone, even non deity worshipping people) <BR>"
-        +"+DEITY -Apollo \"-rothon The Great\" etc.. (create deity exceptions) <BR>"
-        +"-ANYCLASS (<WORD> all multi-class combinations)  <BR>"
-        +"-ANYCLASS +thief +mage +ranger (exceptions, allow any class) <BR>"
-        +"+ANYCLASS (do not <WORD> all multi-class combinations)  <BR>"
-        +"+ANYCLASS -thief -mage -ranger (exceptions, disallow any class) <BR>"
-        +"-STR X (<WORD> those with strength greater than X)  <BR>"
-        +"+STR X (<WORD> those with strength less than X)  <BR>"
-        +"-INT X (<WORD> those with intelligence greater than X)  <BR>"
-        +"+INT X (<WORD> those with intelligence less than X)  <BR>"
-        +"-WIS X (<WORD> those with wisdom greater than X)  <BR>"
-        +"+WIS X (<WORD> those with wisdom less than X)  <BR>"
-        +"-CON X (<WORD> those with constitution greater than X)  <BR>"
-        +"+CON X (<WORD> those with constitution less than X)  <BR>"
-        +"-CHA X (<WORD> those with charisma greater than X)  <BR>"
-        +"+CHA X (<WORD> those with charisma less than X)  <BR>"
-        +"-DEX X (<WORD> those with dexterity greater than X)  <BR>"
-        +"+DEX X (<WORD> those with dexterity less than X) <BR>"
-        +"+-ADJSTR...ADJCON (Same as above, but uses current values) <BR>"
-        +"-GROUPSIZE X (<WORD> those in groups larger than X)  <BR>"
-        +"+GROUPSIZE X (<WORD> those in groups smaller than X)  <BR>"
-        +"-AREA (<WORD> in all areas) <BR>"
-        +"-AREA \"+my areaname\" etc.. (create exceptions) <BR>"
-        +"+AREA (do not <WORD> any areas) <BR>"
-        +"+AREA \"-my areaname\" etc.. (create exceptions) <BR>"
-        +"-HOME (<WORD> in all home/beacon areas) <BR>"
-        +"-HOME \"+my home/beacon areaname\" etc.. (create exceptions) <BR>"
-        +"+HOME (do not <WORD> any home/beacon areas) <BR>"
-        +"+HOME \"-my home/beacon areaname\" etc.. (create exceptions) <BR>"
-        +"-ITEM \"+item name\" etc... (<WORD> only those with an item name) <BR>"
-        +"-WORN \"+item name\" etc... (<WORD> only those wearing item name) <BR>"
-        +"-EFFECTS (<WORD> anyone, even no effects) <BR>"
-        +"-EFFECTS +Sleep \"+Wood Chopping\" etc.. (create name exceptions) <BR>"
-        +"+EFFECTS (do not <WORD> anyone, even non effected people) <BR>"
-        +"+EFFECTS -Sleep \"-Wood Chopping\" etc.. (create name exceptions) <BR>"
-        +"-SKILLS (<WORD> anyone, even those with no skill) <BR>"
-        +"-SKILLS +Spell_Sleep(75) etc.. (create exceptions with proficiency) <BR>"
-        +"+SKILLS (do not <WORD> anyone, even non skilled people) <BR>"
-        +"+SKILLS -Spell_Sleep(75) etc.. (create exceptions with proficiency) <BR>"
-        +"-MATERIAL \"+WOODEN\" etc.. (<WORD> only items of added materials) <BR>"
-        +"+MATERIAL \"-WOODEN\" etc.. (Do not <WORD> items of -materials) <BR>"
-        +"-RESOURCES \"+OAK\" etc.. (<WORD> only items of added resources) <BR>"
-        +"+RESOURCES \"-OAK\" etc.. (Do not <WORD> items of -resources) <BR>"
-        +"-JAVACLASS \"+GENMOB\" etc.. (<WORD> only objects of +java class) <BR>"
-        +"+JAVACLASS \"-GENITEM\" etc.. (Do not <WORD> objs of -classes) <BR>"
-        +"-ABILITY X (<WORD> those with magical ability less than X)  <BR>"
-        +"+ABILITY X (<WORD> those with magical ability greater than X) <BR>"
-        +"-IF <CONDITION> (<WORD>, unless they meet Scriptable conditions)<BR>"
-        +"+IF <CONDITION> (never <WORD> anyone who meets Scriptable cond)<BR>"
-        +"-VALUE X (<WORD> those with value or money less than X)  <BR>"
-        +"+VALUE X (<WORD> those with value or money greater than X) <BR>"
-        +"-WEIGHT X (<WORD> those weighing less than X)  <BR>"
-        +"+WEIGHT X (<WORD> those weighing more than X) <BR>"
-        +"-ARMOR X (<WORD> those with armor bonus less than X)  <BR>"
-        +"+ARMOR X (<WORD> those with armor bonus more than X) <BR>"
-        +"-DAMAGE X (<WORD> those with damage bonus less than X)  <BR>"
-        +"+DAMAGE X (<WORD> those with damage bonus more than X) <BR>"
-        +"-ATTACK X (<WORD> those with attack bonus less than X)  <BR>"
-        +"+ATTACK X (<WORD> those with attack bonus more than X) <BR>"
-        +"-WORNON \"+TORSO\" etc.. (<WORD> only items wearable on +locations) <BR>"
-        +"+WORNON \"-NECK\" etc.. (Do not <WORD> items wearable on -locations) <BR>"
-        +"-DISPOSITION \"+ISHIDDEN\" etc.. (<WORD> only with +dispositions) <BR>"
-        +"+DISPOSITION \"-ISHIDDEN\" etc.. (Do not <WORD> only with sub disp) <BR>"
-        +"-SENSES \"+CANSEEDARK\" etc.. (<WORD> only those with +senses) <BR>"
-        +"+SENSES \"-CANSEEDARK\" etc.. (Do not <WORD> those with -senses) <BR>"
-        +"-HOUR +X (<WORD> always, unless the hour is X)  <BR>"
-        +"+HOUR -X (<WORD> those only when the hour is X) <BR>"
-        +"-SEASON +FALL (<WORD> those only when season is FALL)  <BR>"
-        +"+SEASON -SPRING (<WORD> those whenever the season is SPRING) <BR>"
-        +"-MONTH +X (<WORD> those only when month number is X)  <BR>"
-        +"+MONTH -X (<WORD> those whenever the month number is X) <BR>"
-        +"-DAY +X (<WORD> those only when day number is X)  <BR>"
-        +"+DAY -X (<WORD> those whenever the day number is X)  <BR>"
-        +"-WEATHER +DROUGHT (<WORD> those only when weather is DROUGHT)  <BR>"
-        +"+WEATHER -BLIZZARD (<WORD> those whenever the weather is BLIZZARD) <BR>"
-        +"-QUESTWIN \"+MY QUEST\" (<WORD> those who have not my MY QUEST)  <BR>"
-        +"+QUESTWIN \"-MY QUEST\" (<WORD> those who have won MY QUEST) <BR>"
-        +"-SKILLFLAG (<WORD> anyone, even those with no skills) <BR>"
-        +"-SKILLFLAG +ENCHANTMENT etc.. (create exceptions to -skillflag) <BR>"
-        +"+SKILLFLAG (do not <WORD> anyone, even non skilled people) <BR>"
-        +"+SKILLFLAG -ENCHANTMENT etc.. (create exceptions to +skillflag)<BR>"
-	    +"-CHANCE 50 (<WORD> the given % of the time)";
+	public static class CompiledZapperMaskEntry
+	{
+		public final int maskType;
+		public final Object[] parms;
+		public CompiledZapperMaskEntry(final int type, final Object[] parms)
+		{	maskType=type;this.parms=parms;}
+	}
+	
+	public static class CompiledZapperMask
+	{
+		public final boolean[] flags;
+		public final boolean empty;
+		public final CompiledZapperMaskEntry[] entries;
+		public CompiledZapperMask(final boolean[] flags, final CompiledZapperMaskEntry[] entries)
+		{	this.flags=flags; this.entries=entries; this.empty=false;}
+		public CompiledZapperMask(final boolean[] flags, final CompiledZapperMaskEntry[] entries, final boolean empty)
+		{	this.flags=flags; this.entries=entries; this.empty=empty;}
+		public static final CompiledZapperMask EMPTY()
+		{	return new CompiledZapperMask(new boolean[2],new CompiledZapperMaskEntry[0],true); }
+	}
+	
+	public static class SavedClass
+	{
+		public final CharClass C;
+		public final String name;
+		public final String upperName;
+		public final String baseClass;
+		public final String upperBaseClass;
+		public final String nameStart;
+		public final String plusNameStart;
+		public final String minusNameStart;
+		public final String baseClassStart;
+		public final String plusBaseClassStart;
+		public final String minusBaseClassStart;
+		public SavedClass(final CharClass charClass, final int startChars)
+		{
+			C=charClass;
+			name=charClass.name();
+			upperName=name.toUpperCase();
+			nameStart=CMStrings.safeLeft(name.toUpperCase(),startChars);
+			plusNameStart="+"+nameStart;
+			minusNameStart="-"+nameStart;
+			baseClass=charClass.baseClass();
+			upperBaseClass=baseClass.toUpperCase();
+			baseClassStart=CMStrings.safeLeft(baseClass.toUpperCase(),startChars);
+			plusBaseClassStart="+"+baseClassStart;
+			minusBaseClassStart="-"+baseClassStart;
+		}
+	}
+	
+	public static class SavedRace
+	{
+		public final Race R;
+		public final String name;
+		public final String upperName;
+		public final String racialCategory;
+		public final String upperCatName;
+		public final String nameStart;
+		public final String plusNameStart;
+		public final String minusNameStart;
+		public final String catNameStart;
+		public final String plusCatNameStart;
+		public final String minusCatNameStart;
+		public SavedRace(final Race race, final int startChars)
+		{
+			R=race;
+			name=race.name();
+			upperName=name.toUpperCase();
+			nameStart=CMStrings.safeLeft(name.toUpperCase(),startChars);
+			plusNameStart="+"+nameStart;
+			minusNameStart="-"+nameStart;
+			racialCategory=race.racialCategory();
+			upperCatName=racialCategory.toUpperCase();
+			catNameStart=CMStrings.safeLeft(racialCategory.toUpperCase(),startChars);
+			plusCatNameStart="+"+catNameStart;
+			minusCatNameStart="-"+catNameStart;
+		}
+	}
+	
+	public final String DEFAULT_MASK_HELP =
+		"+SYSOP (allow archons to bypass the rules)  <BR>"
+		+"-SYSOP (always <WORD> archons)  <BR>"
+		+"+SUBOP (allow archons or area staff to bypass the rules)  <BR>"
+		+"-SUBOP (always <WORD> archons and area staff)  <BR>"
+		+"-PLAYER (<WORD> all players) <BR>"
+		+"-MOB (<WORD> all mobs/npcs)  <BR>"
+		+"-CLASS  (<WORD> all classes)  <BR>"
+		+"-CLASS +thief +mage +ranger (create exceptions) <BR>"
+		+"-BASECLASS  (<WORD> all base classes)  <BR>"
+		+"-BASECLASS +thief +mage +ranger (create exceptions) <BR>"
+		+"-thief -mage  -ranger (<WORD> only listed classes)<BR>"
+		+"-RACE (<WORD> all races)  <BR>"
+		+"-RACE +elf +dwarf +human +half +gnome (create exceptions)  <BR>"
+		+"-elf -dwarf -human -half -gnome (<WORD> only listed races)  <BR>"
+		+"-RACECAT (<WORD> all racial categories)  <BR>"
+		+"-RACECAT +elf +insect +humanoid +canine +gnome (create exceptions)  <BR>"
+		+"+RACECAT (do not <WORD> all racial categories)  <BR>"
+		+"+RACECAT -elf -insect -humanoid -canine -gnome (create exceptions)  <BR>"
+		+"-ALIGNMENT (<WORD> all alignments)  <BR>"
+		+"-ALIGNMENT +evil +good +neutral (create exceptions)  <BR>"
+		+"-evil -good -neutral (<WORD> only listed alignments)  <BR>"
+		+"-GENDER (<WORD> all genders)  <BR>"
+		+"-GENDER +male +female +neuter (create exceptions)  <BR>"
+		+"-male -female -neuter (<WORD> only listed genders)  <BR>"
+		+"-FACTION (<WORD> all faction and values, even a lack of faction) <BR>"
+		+"-FACTION +myfactionrange +faction.rangename (create exceptions) <BR>"
+		+"-rangename -faction.rangename (<WORD> only faction range named)<BR>"
+		+"-TATTOOS (<WORD> all tattoos, even a lack of a tattoo) <BR>"
+		+"-TATTOOS +mytatto +thistattoo +anytattoo etc..  (create exceptions) <BR>"
+		+"+TATTOOS (do not <WORD> any or no tattoos) <BR>"
+		+"+TATTOOS -mytattoo -anytatto, etc.. (create exceptions) <BR>"
+		+"-EXPERTISES (<WORD> all expertises, even a lack of a edus) <BR>"
+		+"-EXPERTISES +myedu +thisedu +anyedu etc..  (create exceptions)<BR>"
+		+"+EXPERTISES (do not <WORD> any or no expertises) <BR>"
+		+"+EXPERTISES -myedu -anyedu, etc.. (create exceptions) <BR>"
+		+"-SECURITY (<WORD> all security flags, even a lack of a security) <BR>"
+		+"-SECURITY +cmdrooms +area cmditems etc..  (create exceptions)<BR>"
+		+"+SECURITY (do not <WORD> any or no expertises) <BR>"
+		+"+SECURITY -cmdrooms +area cmditems, etc.. (create exceptions) <BR>"
+		+"-MOOD +grumpy +normal (<WORD> all except those with given moods)<BR>"
+		+"+MOOD -grumpy -normal (<WORD> only those with subtracted moods)<BR>"
+		+"-LEVEL (<WORD> all levels)  <BR>"
+		+"-LEVEL +=1 +>5 +>=7 +<13 +<=20 (create exceptions)  <BR>"
+		+"-=1 ->5 ->=7 -<13 -<=20 (<WORD> only listed levels range) <BR>"
+		+"-NAMES (<WORD> everyone) <BR>"
+		+"-NAMES +bob \"+my name\" etc.. (create name exceptions) <BR>"
+		+"+NAMES (do not <WORD> anyone who has a name) <BR>"
+		+"+NAMES -bob \"-my name\" etc.. (create name exceptions) <BR>"
+		+"-CLAN (<WORD> anyone, even no clan) <BR>"
+		+"-CLAN +Killers \"+Holy Avengers\" etc.. (create clan exceptions) <BR>"
+		+"+CLAN (do not <WORD> anyone, even non clan people) <BR>"
+		+"+CLAN -Killers \"-Holy Avengers\" etc.. (create clan exceptions) <BR>"
+		+"-DEITY (<WORD> anyone, even no deity) <BR>"
+		+"-DEITY +Apollo \"+Grothon The Great\" etc.. (create deity exceptions) <BR>"
+		+"+DEITY (do not <WORD> anyone, even non deity worshipping people) <BR>"
+		+"+DEITY -Apollo \"-rothon The Great\" etc.. (create deity exceptions) <BR>"
+		+"-ANYCLASS (<WORD> all multi-class combinations)  <BR>"
+		+"-ANYCLASS +thief +mage +ranger (exceptions, allow any class) <BR>"
+		+"+ANYCLASS (do not <WORD> all multi-class combinations)  <BR>"
+		+"+ANYCLASS -thief -mage -ranger (exceptions, disallow any class) <BR>"
+		+"-STR X (<WORD> those with strength greater than X)  <BR>"
+		+"+STR X (<WORD> those with strength less than X)  <BR>"
+		+"-INT X (<WORD> those with intelligence greater than X)  <BR>"
+		+"+INT X (<WORD> those with intelligence less than X)  <BR>"
+		+"-WIS X (<WORD> those with wisdom greater than X)  <BR>"
+		+"+WIS X (<WORD> those with wisdom less than X)  <BR>"
+		+"-CON X (<WORD> those with constitution greater than X)  <BR>"
+		+"+CON X (<WORD> those with constitution less than X)  <BR>"
+		+"-CHA X (<WORD> those with charisma greater than X)  <BR>"
+		+"+CHA X (<WORD> those with charisma less than X)  <BR>"
+		+"-DEX X (<WORD> those with dexterity greater than X)  <BR>"
+		+"+DEX X (<WORD> those with dexterity less than X) <BR>"
+		+"+-ADJSTR...ADJCON (Same as above, but uses current values) <BR>"
+		+"-GROUPSIZE X (<WORD> those in groups larger than X)  <BR>"
+		+"+GROUPSIZE X (<WORD> those in groups smaller than X)  <BR>"
+		+"-AREA (<WORD> in all areas) <BR>"
+		+"-AREA \"+my areaname\" etc.. (create exceptions) <BR>"
+		+"+AREA (do not <WORD> any areas) <BR>"
+		+"+AREA \"-my areaname\" etc.. (create exceptions) <BR>"
+		+"-HOME (<WORD> in all home/beacon areas) <BR>"
+		+"-HOME \"+my home/beacon areaname\" etc.. (create exceptions) <BR>"
+		+"+HOME (do not <WORD> any home/beacon areas) <BR>"
+		+"+HOME \"-my home/beacon areaname\" etc.. (create exceptions) <BR>"
+		+"-ITEM \"+item name\" etc... (<WORD> only those with an item name) <BR>"
+		+"-WORN \"+item name\" etc... (<WORD> only those wearing item name) <BR>"
+		+"-EFFECTS (<WORD> anyone, even no effects) <BR>"
+		+"-EFFECTS +Sleep \"+Wood Chopping\" etc.. (create name exceptions) <BR>"
+		+"+EFFECTS (do not <WORD> anyone, even non effected people) <BR>"
+		+"+EFFECTS -Sleep \"-Wood Chopping\" etc.. (create name exceptions) <BR>"
+		+"-SKILLS (<WORD> anyone, even those with no skill) <BR>"
+		+"-SKILLS +Spell_Sleep(75) etc.. (create exceptions with proficiency) <BR>"
+		+"+SKILLS (do not <WORD> anyone, even non skilled people) <BR>"
+		+"+SKILLS -Spell_Sleep(75) etc.. (create exceptions with proficiency) <BR>"
+		+"-MATERIAL \"+WOODEN\" etc.. (<WORD> only items of added materials) <BR>"
+		+"+MATERIAL \"-WOODEN\" etc.. (Do not <WORD> items of -materials) <BR>"
+		+"-RESOURCES \"+OAK\" etc.. (<WORD> only items of added resources) <BR>"
+		+"+RESOURCES \"-OAK\" etc.. (Do not <WORD> items of -resources) <BR>"
+		+"-JAVACLASS \"+GENMOB\" etc.. (<WORD> only objects of +java class) <BR>"
+		+"+JAVACLASS \"-GENITEM\" etc.. (Do not <WORD> objs of -classes) <BR>"
+		+"-ABILITY X (<WORD> those with magical ability less than X)  <BR>"
+		+"+ABILITY X (<WORD> those with magical ability greater than X) <BR>"
+		+"-IF <CONDITION> (<WORD>, unless they meet Scriptable conditions)<BR>"
+		+"+IF <CONDITION> (never <WORD> anyone who meets Scriptable cond)<BR>"
+		+"-VALUE X (<WORD> those with value or money less than X)  <BR>"
+		+"+VALUE X (<WORD> those with value or money greater than X) <BR>"
+		+"-WEIGHT X (<WORD> those weighing less than X)  <BR>"
+		+"+WEIGHT X (<WORD> those weighing more than X) <BR>"
+		+"-ARMOR X (<WORD> those with armor bonus less than X)  <BR>"
+		+"+ARMOR X (<WORD> those with armor bonus more than X) <BR>"
+		+"-DAMAGE X (<WORD> those with damage bonus less than X)  <BR>"
+		+"+DAMAGE X (<WORD> those with damage bonus more than X) <BR>"
+		+"-ATTACK X (<WORD> those with attack bonus less than X)  <BR>"
+		+"+ATTACK X (<WORD> those with attack bonus more than X) <BR>"
+		+"-WORNON \"+TORSO\" etc.. (<WORD> only items wearable on +locations) <BR>"
+		+"+WORNON \"-NECK\" etc.. (Do not <WORD> items wearable on -locations) <BR>"
+		+"-DISPOSITION \"+ISHIDDEN\" etc.. (<WORD> only with +dispositions) <BR>"
+		+"+DISPOSITION \"-ISHIDDEN\" etc.. (Do not <WORD> only with sub disp) <BR>"
+		+"-SENSES \"+CANSEEDARK\" etc.. (<WORD> only those with +senses) <BR>"
+		+"+SENSES \"-CANSEEDARK\" etc.. (Do not <WORD> those with -senses) <BR>"
+		+"-HOUR +X (<WORD> always, unless the hour is X)  <BR>"
+		+"+HOUR -X (<WORD> those only when the hour is X) <BR>"
+		+"-SEASON +FALL (<WORD> those only when season is FALL)  <BR>"
+		+"+SEASON -SPRING (<WORD> those whenever the season is SPRING) <BR>"
+		+"-MONTH +X (<WORD> those only when month number is X)  <BR>"
+		+"+MONTH -X (<WORD> those whenever the month number is X) <BR>"
+		+"-DAY +X (<WORD> those only when day number is X)  <BR>"
+		+"+DAY -X (<WORD> those whenever the day number is X)  <BR>"
+		+"-WEATHER +DROUGHT (<WORD> those only when weather is DROUGHT)  <BR>"
+		+"+WEATHER -BLIZZARD (<WORD> those whenever the weather is BLIZZARD) <BR>"
+		+"-QUESTWIN \"+MY QUEST\" (<WORD> those who have not my MY QUEST)  <BR>"
+		+"+QUESTWIN \"-MY QUEST\" (<WORD> those who have won MY QUEST) <BR>"
+		+"-SKILLFLAG (<WORD> anyone, even those with no skills) <BR>"
+		+"-SKILLFLAG +ENCHANTMENT etc.. (create exceptions to -skillflag) <BR>"
+		+"+SKILLFLAG (do not <WORD> anyone, even non skilled people) <BR>"
+		+"+SKILLFLAG -ENCHANTMENT etc.. (create exceptions to +skillflag)<BR>"
+		+"-CHANCE 50 (<WORD> the given % of the time)";
 }

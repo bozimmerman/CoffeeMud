@@ -25,7 +25,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -51,7 +51,7 @@ public class StdRideable extends StdContainer implements Rideable
 		capacity=3000;
 		material=RawMaterial.RESOURCE_OAK;
 	}
-    
+	
 	public void destroy()
 	{
 		while(riders.size()>0)
@@ -440,9 +440,9 @@ public class StdRideable extends StdContainer implements Rideable
 				msg.source().tell(null,msg.source(),null,"<T-NAME> <T-IS-ARE> already "+stateString(msg.source())+" "+name()+"!");
 				return false;
 			}
-		    if(msg.amITarget(this))
-		    {
-		        Rider whoWantsToRide=(msg.tool() instanceof Rider)?(Rider)msg.tool():msg.source();
+			if(msg.amITarget(this))
+			{
+				Rider whoWantsToRide=(msg.tool() instanceof Rider)?(Rider)msg.tool():msg.source();
 				if(amRiding(whoWantsToRide))
 				{
 					msg.source().tell(null,whoWantsToRide,null,"<T-NAME> <T-IS-ARE> "+stateString(msg.source())+" "+name()+"!");
@@ -451,7 +451,7 @@ public class StdRideable extends StdContainer implements Rideable
 				}
 				if((msg.tool() instanceof MOB)
 				&&(!CMLib.flags().isBoundOrHeld((MOB)msg.tool())))
-			    {
+				{
 					msg.source().tell(msg.tool().name()+" won't let you do that.");
 					return false;
 				}
@@ -468,16 +468,16 @@ public class StdRideable extends StdContainer implements Rideable
 					return false;
 				}
 				if(msg.tool()==null)
-				    switch(rideBasis())
-				    {
-			    	case Rideable.RIDEABLE_ENTERIN:
-			    	case Rideable.RIDEABLE_SIT:
-			    	case Rideable.RIDEABLE_SLEEP:
+					switch(rideBasis())
+					{
+					case Rideable.RIDEABLE_ENTERIN:
+					case Rideable.RIDEABLE_SIT:
+					case Rideable.RIDEABLE_SLEEP:
 						msg.source().tell(name()+" can not be mounted in this way.");
 						return false;
 					default:
-					    break;
-				    }
+						break;
+					}
 				if((numRiders()>=riderCapacity())
 				&&(!amRiding(whoWantsToRide)))
 				{
@@ -489,7 +489,7 @@ public class StdRideable extends StdContainer implements Rideable
 				}
 				// protects from standard item rejection
 				return true;
-		    }
+			}
 			break;
 		}
 		case CMMsg.TYP_ENTER:
@@ -574,13 +574,13 @@ public class StdRideable extends StdContainer implements Rideable
 		case CMMsg.TYP_BID:
 		case CMMsg.TYP_SELL:
 			if((amRiding(msg.source()))
-            &&(rideBasis()!=Rideable.RIDEABLE_TABLE)
-        	&&(rideBasis()!=Rideable.RIDEABLE_SIT))
+			&&(rideBasis()!=Rideable.RIDEABLE_TABLE)
+			&&(rideBasis()!=Rideable.RIDEABLE_SIT))
 			{
 				msg.source().tell("You can not do that while "+stateString(msg.source())+" "+name()+".");
 				return false;
 			}
-		    return super.okMessage(myHost,msg);
+			return super.okMessage(myHost,msg);
 		}
 		if((msg.sourceMajor(CMMsg.MASK_HANDS))
 		&&(amRiding(msg.source()))
@@ -592,7 +592,7 @@ public class StdRideable extends StdContainer implements Rideable
 			|| ((msg.sourceMinor()==CMMsg.TYP_GIVE)&&(msg.target() instanceof MOB)&&(msg.target()!=this)&&(!amRiding((MOB)msg.target()))))
 		&&(!((msg.sourceMinor()==CMMsg.TYP_GIVE)&&(msg.target() instanceof MOB)&&(amRiding((MOB)msg.target()))&&(CMLib.flags().isStanding(msg.source())))))
 		{
-		    // some of the above applies to genrideable items only
+			// some of the above applies to genrideable items only
 			msg.source().tell("You can not do that while "+stateString(msg.source())+" "+name()+".");
 			return false;
 		}
@@ -603,13 +603,13 @@ public class StdRideable extends StdContainer implements Rideable
 		super.executeMsg(myHost,msg);
 		switch(msg.targetMinor())
 		{
-        case CMMsg.TYP_LOOK:
-        case CMMsg.TYP_EXAMINE:
-            if((msg.target()==this)
-            &&(numRiders()>0)
-            &&(CMLib.flags().canBeSeenBy(this,msg.source())))
-                msg.addTrailerMsg(CMClass.getMsg(msg.source(),null,null,CMMsg.MSG_OK_VISUAL,displayText(),CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null));
-            break;
+		case CMMsg.TYP_LOOK:
+		case CMMsg.TYP_EXAMINE:
+			if((msg.target()==this)
+			&&(numRiders()>0)
+			&&(CMLib.flags().canBeSeenBy(this,msg.source())))
+				msg.addTrailerMsg(CMClass.getMsg(msg.source(),null,null,CMMsg.MSG_OK_VISUAL,displayText(),CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null));
+			break;
 		case CMMsg.TYP_DISMOUNT:
 			if((msg.tool()!=null)
 			   &&(msg.tool() instanceof Rider))
@@ -648,18 +648,18 @@ public class StdRideable extends StdContainer implements Rideable
 					Rider R = (Rider)msg.tool();
 					R.setRiding(this);
 					if(msg.tool() instanceof MOB)
-				    switch(rideBasis())
-				    {
-			    	case Rideable.RIDEABLE_SIT:
-			    	case Rideable.RIDEABLE_ENTERIN:
-			    	    R.basePhyStats().setDisposition(R.basePhyStats().disposition()|PhyStats.IS_SITTING);
-			    	    break;
-			    	case Rideable.RIDEABLE_SLEEP:
-			    	    R.basePhyStats().setDisposition(R.basePhyStats().disposition()|PhyStats.IS_SLEEPING);
-			    		break;
+					switch(rideBasis())
+					{
+					case Rideable.RIDEABLE_SIT:
+					case Rideable.RIDEABLE_ENTERIN:
+						R.basePhyStats().setDisposition(R.basePhyStats().disposition()|PhyStats.IS_SITTING);
+						break;
+					case Rideable.RIDEABLE_SLEEP:
+						R.basePhyStats().setDisposition(R.basePhyStats().disposition()|PhyStats.IS_SLEEPING);
+						break;
 					default:
-					    break;
-				    }
+						break;
+					}
 					if(msg.source().location()!=null)
 						msg.source().location().recoverRoomStats();
 				}

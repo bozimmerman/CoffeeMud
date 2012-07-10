@@ -31,7 +31,7 @@ Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
 You may obtain a copy of the License at
 
-    http://www.apache.org/licenses/LICENSE-2.0
+	http://www.apache.org/licenses/LICENSE-2.0
 
 Unless required by applicable law or agreed to in writing, software
 distributed under the License is distributed on an "AS IS" BASIS,
@@ -52,50 +52,50 @@ public class PreparedStatement extends Statement implements java.sql.PreparedSta
 	public void prepare(String sql) throws java.sql.SQLException
 	{
 	  lastSQL=sql;
-      String originalSql=sql;
-      try 
-      {
-         String[] token=new String[1];
-         sql=split(sql,token);
-         if (token[0].equalsIgnoreCase("insert")) 
-         {
-        	stmt = parseInsert(sql, token);
-         } 
-         else 
-         if (token[0].equalsIgnoreCase("update")) 
-         {
-        	stmt = parseUpdate(sql, token);
-         } 
-         else 
-         if (token[0].equalsIgnoreCase("delete")) 
-         {
-        	stmt = parseDelete(sql, token);
-         } 
-         else 
-         if (token[0].equalsIgnoreCase("select")) 
-         {
-        	stmt = parseSelect(sql, token);
-         } 
-         else 
-        	 throw new java.sql.SQLException("unimplemented command: "+token[0]);
-      } 
-      catch (java.sql.SQLException e) 
-      {
-         e.printStackTrace();
-         log("unsupported SQL in preparedStatement: "+originalSql);
-         throw e;
-      }
+	  String originalSql=sql;
+	  try 
+	  {
+		 String[] token=new String[1];
+		 sql=split(sql,token);
+		 if (token[0].equalsIgnoreCase("insert")) 
+		 {
+			stmt = parseInsert(sql, token);
+		 } 
+		 else 
+		 if (token[0].equalsIgnoreCase("update")) 
+		 {
+			stmt = parseUpdate(sql, token);
+		 } 
+		 else 
+		 if (token[0].equalsIgnoreCase("delete")) 
+		 {
+			stmt = parseDelete(sql, token);
+		 } 
+		 else 
+		 if (token[0].equalsIgnoreCase("select")) 
+		 {
+			stmt = parseSelect(sql, token);
+		 } 
+		 else 
+			 throw new java.sql.SQLException("unimplemented command: "+token[0]);
+	  } 
+	  catch (java.sql.SQLException e) 
+	  {
+		 e.printStackTrace();
+		 log("unsupported SQL in preparedStatement: "+originalSql);
+		 throw e;
+	  }
 	}
 	
 	
 	@Override
 	public void addBatch() throws SQLException {
-        log("unsupported method: addBatch");
+		log("unsupported method: addBatch");
 	}
 
 	@Override
 	public void clearParameters() throws SQLException {
-        log("unsupported method: clearParameters");
+		log("unsupported method: clearParameters");
 	}
 
 	@Override
@@ -103,8 +103,8 @@ public class PreparedStatement extends Statement implements java.sql.PreparedSta
 		switch(stmt.getStatementType())
 		{
 		case SELECT:
-	        myResultSet=(ResultSet)connection.getBackend().constructScan((Backend.ImplSelectStatement)stmt);
-	        return true;
+			myResultSet=(ResultSet)connection.getBackend().constructScan((Backend.ImplSelectStatement)stmt);
+			return true;
 		case UPDATE:
 			connection.getBackend().updateRecord((Backend.ImplUpdateStatement)stmt);
 			return true;
@@ -114,7 +114,7 @@ public class PreparedStatement extends Statement implements java.sql.PreparedSta
 		case INSERT:
 		{
 			final Backend.ImplInsertStatement istmt=(Backend.ImplInsertStatement)stmt;
-        	connection.getBackend().dupKeyCheck(istmt.tableName, istmt.columns, istmt.sqlValues);
+			connection.getBackend().dupKeyCheck(istmt.tableName, istmt.columns, istmt.sqlValues);
 			connection.getBackend().insertValues(istmt);
 			return true;
 		}
@@ -126,7 +126,7 @@ public class PreparedStatement extends Statement implements java.sql.PreparedSta
 	public java.sql.ResultSet executeQuery() throws SQLException {
 		if(stmt.getStatementType() != Backend.StatementType.SELECT)
 			throw new SQLException("Not a query.");
-        return connection.getBackend().constructScan((Backend.ImplSelectStatement)stmt);
+		return connection.getBackend().constructScan((Backend.ImplSelectStatement)stmt);
 	}
 
 	@Override
@@ -144,7 +144,7 @@ public class PreparedStatement extends Statement implements java.sql.PreparedSta
 		case INSERT:
 		{
 			final Backend.ImplInsertStatement istmt=(Backend.ImplInsertStatement)stmt;
-        	connection.getBackend().dupKeyCheck(istmt.tableName, istmt.columns, istmt.sqlValues);
+			connection.getBackend().dupKeyCheck(istmt.tableName, istmt.columns, istmt.sqlValues);
 			connection.getBackend().insertValues(istmt);
 			return 0;
 		}
@@ -154,13 +154,13 @@ public class PreparedStatement extends Statement implements java.sql.PreparedSta
 
 	@Override
 	public ResultSetMetaData getMetaData() throws SQLException {
-        log("unsupported method: getMetaData");
+		log("unsupported method: getMetaData");
 		return null;
 	}
 
 	@Override
 	public ParameterMetaData getParameterMetaData() throws SQLException {
-        log("unsupported method: getParameterMetaData");
+		log("unsupported method: getParameterMetaData");
 		return null;
 	}
 

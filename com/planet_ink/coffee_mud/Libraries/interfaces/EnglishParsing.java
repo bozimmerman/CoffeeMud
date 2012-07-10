@@ -26,7 +26,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -37,55 +37,55 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public interface EnglishParsing extends CMLibrary
 {
-    public boolean isAnArticle(String s);
-    public String cleanArticles(String s);
-    public String stripPunctuation(String str);
-    public String makePlural(String str);
-    public String getFirstWord(final String str);
-    public String properIndefiniteArticle(String str);
-    public String toEnglishStringList(final String[] V);
-    public String insertUnColoredAdjective(String str, String adjective);
-    public String startWithAorAn(String str);
-    public CMObject findCommand(MOB mob, List<String> commands);
-    public boolean evokedBy(Ability thisAbility, String thisWord);
-    public boolean evokedBy(Ability thisAbility, String thisWord, String secondWord);
-    public String getAnEvokeWord(MOB mob, String word);
-    public Ability getToEvoke(MOB mob, List<String> commands);
-    public boolean preEvoke(MOB mob, List<String> commands, int secondsElapsed, double actionsRemaining);
-    public void evoke(MOB mob, Vector commands);
-    public boolean containsString(final String toSrchStr, final String srchStr);
-    public String bumpDotNumber(String srchStr);
-    public Environmental fetchEnvironmental(Iterable<? extends Environmental> list, String srchStr, boolean exactOnly);
-    public Environmental fetchEnvironmental(Map<String, ? extends Environmental> list, String srchStr, boolean exactOnly);
-    public List<Environmental> fetchEnvironmentals(List<? extends Environmental> list, String srchStr, boolean exactOnly);
-    public Item fetchAvailableItem(List<Item> list, String srchStr, Item goodLocation, int wornFilter, boolean exactOnly);
-    public List<Item> fetchAvailableItems(List<Item> list, String srchStr, Item goodLocation, int wornFilter, boolean exactOnly);
-    public int getContextNumber(Object[] list, Environmental E);
-    public int getContextNumber(Collection list, Environmental E);
-    public int getContextNumber(ItemCollection cont, Environmental E);
-    public String getContextName(Collection list, Environmental E);
-    public String getContextName(Object[] list, Environmental E);
-    public String getContextName(ItemCollection cont, Environmental E);
-    public int getContextSameNumber(Object[] list, Environmental E);
-    public int getContextSameNumber(Collection list, Environmental E);
-    public int getContextSameNumber(ItemCollection cont, Environmental E);
-    public String getContextSameName(Collection list, Environmental E);
-    public String getContextSameName(Object[] list, Environmental E);
-    public String getContextSameName(ItemCollection cont, Environmental E);
-    public Environmental fetchAvailable(Collection<? extends Environmental> list, String srchStr, Item goodLocation, int wornFilter, boolean exactOnly);
-    public Environmental parseShopkeeper(MOB mob, List<String> commands, String error);
-    public List<Item> fetchItemList(Environmental from, MOB mob, Item container, List<String> commands, int preferredLoc, boolean visionMatters);
-    public long numPossibleGold(Environmental mine, String itemID);
-    public String numPossibleGoldCurrency(Environmental mine, String itemID);
-    public double numPossibleGoldDenomination(Environmental mine, String currency, String itemID);
-    public Object[] parseMoneyStringSDL(MOB mob, String amount, String correctCurrency);
-    public long getMillisMultiplierByName(String timeName);
-    public String matchAnyCurrencySet(String itemID);
-    public double matchAnyDenomination(String currency, String itemID);
-    public Item possibleRoomGold(MOB seer, Room room, Container container, String itemID);
-    public Item bestPossibleGold(MOB mob, Container container, String itemID);
-    public List<Container> possibleContainers(MOB mob, List<String> commands, int wornFilter, boolean withContentOnly);
-    public Item possibleContainer(MOB mob, List<String> commands, boolean withStuff, int wornFilter);
-    public String returnTime(long millis, long ticks);
-    public int calculateMaxToGive(MOB mob, List<String> commands, boolean breakPackages, Environmental checkWhat, boolean getOnly);
+	public boolean isAnArticle(String s);
+	public String cleanArticles(String s);
+	public String stripPunctuation(String str);
+	public String makePlural(String str);
+	public String getFirstWord(final String str);
+	public String properIndefiniteArticle(String str);
+	public String toEnglishStringList(final String[] V);
+	public String insertUnColoredAdjective(String str, String adjective);
+	public String startWithAorAn(String str);
+	public CMObject findCommand(MOB mob, List<String> commands);
+	public boolean evokedBy(Ability thisAbility, String thisWord);
+	public boolean evokedBy(Ability thisAbility, String thisWord, String secondWord);
+	public String getAnEvokeWord(MOB mob, String word);
+	public Ability getToEvoke(MOB mob, List<String> commands);
+	public boolean preEvoke(MOB mob, List<String> commands, int secondsElapsed, double actionsRemaining);
+	public void evoke(MOB mob, Vector commands);
+	public boolean containsString(final String toSrchStr, final String srchStr);
+	public String bumpDotNumber(String srchStr);
+	public Environmental fetchEnvironmental(Iterable<? extends Environmental> list, String srchStr, boolean exactOnly);
+	public Environmental fetchEnvironmental(Map<String, ? extends Environmental> list, String srchStr, boolean exactOnly);
+	public List<Environmental> fetchEnvironmentals(List<? extends Environmental> list, String srchStr, boolean exactOnly);
+	public Item fetchAvailableItem(List<Item> list, String srchStr, Item goodLocation, int wornFilter, boolean exactOnly);
+	public List<Item> fetchAvailableItems(List<Item> list, String srchStr, Item goodLocation, int wornFilter, boolean exactOnly);
+	public int getContextNumber(Object[] list, Environmental E);
+	public int getContextNumber(Collection list, Environmental E);
+	public int getContextNumber(ItemCollection cont, Environmental E);
+	public String getContextName(Collection list, Environmental E);
+	public String getContextName(Object[] list, Environmental E);
+	public String getContextName(ItemCollection cont, Environmental E);
+	public int getContextSameNumber(Object[] list, Environmental E);
+	public int getContextSameNumber(Collection list, Environmental E);
+	public int getContextSameNumber(ItemCollection cont, Environmental E);
+	public String getContextSameName(Collection list, Environmental E);
+	public String getContextSameName(Object[] list, Environmental E);
+	public String getContextSameName(ItemCollection cont, Environmental E);
+	public Environmental fetchAvailable(Collection<? extends Environmental> list, String srchStr, Item goodLocation, int wornFilter, boolean exactOnly);
+	public Environmental parseShopkeeper(MOB mob, List<String> commands, String error);
+	public List<Item> fetchItemList(Environmental from, MOB mob, Item container, List<String> commands, int preferredLoc, boolean visionMatters);
+	public long numPossibleGold(Environmental mine, String itemID);
+	public String numPossibleGoldCurrency(Environmental mine, String itemID);
+	public double numPossibleGoldDenomination(Environmental mine, String currency, String itemID);
+	public Object[] parseMoneyStringSDL(MOB mob, String amount, String correctCurrency);
+	public long getMillisMultiplierByName(String timeName);
+	public String matchAnyCurrencySet(String itemID);
+	public double matchAnyDenomination(String currency, String itemID);
+	public Item possibleRoomGold(MOB seer, Room room, Container container, String itemID);
+	public Item bestPossibleGold(MOB mob, Container container, String itemID);
+	public List<Container> possibleContainers(MOB mob, List<String> commands, int wornFilter, boolean withContentOnly);
+	public Item possibleContainer(MOB mob, List<String> commands, boolean withStuff, int wornFilter);
+	public String returnTime(long millis, long ticks);
+	public int calculateMaxToGive(MOB mob, List<String> commands, boolean breakPackages, Environmental checkWhat, boolean getOnly);
 }

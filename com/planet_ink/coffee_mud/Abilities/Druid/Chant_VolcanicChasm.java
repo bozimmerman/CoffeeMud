@@ -25,7 +25,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -39,7 +39,7 @@ public class Chant_VolcanicChasm extends Chant
 {
 	public String ID() { return "Chant_VolcanicChasm"; }
 	public String name(){ return "Volcanic Chasm";}
-    public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_DEEPMAGIC;}
+	public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_DEEPMAGIC;}
 	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	protected int canAffectCode(){return Ability.CAN_ROOMS;}
 	protected int canTargetCode(){return Ability.CAN_ROOMS;}
@@ -53,17 +53,17 @@ public class Chant_VolcanicChasm extends Chant
 			{
 				MOB M=R.fetchInhabitant(i);
 				if((M!=null)&&(CMLib.dice().rollPercentage()>M.charStats().getSave(CharStats.STAT_SAVE_FIRE)))
-                {
+				{
 					CMLib.combat().postDamage(invoker(),M,this,CMLib.dice().roll(1,M.phyStats().level()+(2*super.getXLEVELLevel(invoker())),1),CMMsg.MASK_ALWAYS|CMMsg.TYP_FIRE,Weapon.TYPE_MELTING,"The extreme heat <DAMAGE> <T-NAME>!");
-                    if((!M.isInCombat())
-                    &&(M!=invoker)
-                    &&(!M.amDead())
-                    &&(!M.amDestroyed())
-                    &&(invoker!=null)
-                    &&(R.isInhabitant(invoker))
-                    &&(CMLib.flags().canBeSeenBy(invoker,M)))
-                        CMLib.combat().postAttack(M,invoker,M.fetchWieldedItem());
-                }
+					if((!M.isInCombat())
+					&&(M!=invoker)
+					&&(!M.amDead())
+					&&(!M.amDestroyed())
+					&&(invoker!=null)
+					&&(R.isInhabitant(invoker))
+					&&(CMLib.flags().canBeSeenBy(invoker,M)))
+						CMLib.combat().postAttack(M,invoker,M.fetchWieldedItem());
+				}
 			}
 			for(int i=0;i<R.numItems();i++)
 			{
@@ -91,20 +91,20 @@ public class Chant_VolcanicChasm extends Chant
 		}
 		super.executeMsg(host,msg);
 	}
-    
-    public int castingQuality(MOB mob, Physical target)
-    {
-        if(mob!=null)
-        {
-            Room R=mob.location();
-            if(R!=null)
-            {
-                if(mob.location().domainType()!=Room.DOMAIN_INDOORS_CAVE)
-                    return Ability.QUALITY_INDIFFERENT;
-            }
-        }
-        return super.castingQuality(mob,target);
-    }
+	
+	public int castingQuality(MOB mob, Physical target)
+	{
+		if(mob!=null)
+		{
+			Room R=mob.location();
+			if(R!=null)
+			{
+				if(mob.location().domainType()!=Room.DOMAIN_INDOORS_CAVE)
+					return Ability.QUALITY_INDIFFERENT;
+			}
+		}
+		return super.castingQuality(mob,target);
+	}
 
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{

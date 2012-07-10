@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -40,7 +40,7 @@ public class Spell_MagicMouth extends Spell
 	protected int canAffectCode(){return CAN_ITEMS;}
 	protected int canTargetCode(){return CAN_ITEMS;}
 	public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_ALTERATION;}
-    public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
+	public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
 
 	Room myRoomContainer=null;
 	int myTrigger=CMMsg.TYP_ENTER;
@@ -69,7 +69,7 @@ public class Spell_MagicMouth extends Spell
 		&&(!CMLib.flags().isSneaking(msg.source())))
 		{
 			if((waitingForLook)
-            &&(msg.targetMinor()==CMMsg.TYP_LOOK))
+			&&(msg.targetMinor()==CMMsg.TYP_LOOK))
 			{
 				doMyThing();
 				return;

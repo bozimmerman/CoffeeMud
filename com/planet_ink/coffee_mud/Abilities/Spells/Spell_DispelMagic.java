@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -41,44 +41,44 @@ public class Spell_DispelMagic extends Spell
 	public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
 	public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_EVOCATION;}
 
-    public int castingQuality(MOB mob, Physical target)
-    {
-        if(mob!=null)
-        {
-            Ability A=null;
-            if(target==mob)
-            {
-    			for(final Enumeration<Ability> a=mob.effects();a.hasMoreElements();)
-    			{
-    				A=a.nextElement();
-                    if((A!=null)
-                    &&(A.canBeUninvoked())
-                    &&(A.abstractQuality()==Ability.QUALITY_MALICIOUS)
-                    &&(A.invoker()!=mob)
-                    &&(A.invoker().phyStats().level()<=mob.phyStats().level()+5))
-                        return super.castingQuality(mob, target,Ability.QUALITY_BENEFICIAL_SELF);
-                }
-            }
-            else
-            if(target instanceof MOB)
-            {
-    			for(final Enumeration<Ability> a=((MOB)target).personalEffects();a.hasMoreElements();)
-    			{
-    				A=a.nextElement();
-                    if((A!=null)
-                    &&((A.abstractQuality()==Ability.QUALITY_BENEFICIAL_OTHERS)
-                        ||(A.abstractQuality()==Ability.QUALITY_BENEFICIAL_SELF))
-                    &&(A.invoker()==((MOB)target))
-                    &&(A.invoker().phyStats().level()<=mob.phyStats().level()+5))
-                        return super.castingQuality(mob, target,Ability.QUALITY_MALICIOUS);
-                }
-            }
-            if((mob.isMonster())&&(mob.isInCombat()))
-                return Ability.QUALITY_INDIFFERENT;
-        }
-        return super.castingQuality(mob,target);
-    }
-    
+	public int castingQuality(MOB mob, Physical target)
+	{
+		if(mob!=null)
+		{
+			Ability A=null;
+			if(target==mob)
+			{
+				for(final Enumeration<Ability> a=mob.effects();a.hasMoreElements();)
+				{
+					A=a.nextElement();
+					if((A!=null)
+					&&(A.canBeUninvoked())
+					&&(A.abstractQuality()==Ability.QUALITY_MALICIOUS)
+					&&(A.invoker()!=mob)
+					&&(A.invoker().phyStats().level()<=mob.phyStats().level()+5))
+						return super.castingQuality(mob, target,Ability.QUALITY_BENEFICIAL_SELF);
+				}
+			}
+			else
+			if(target instanceof MOB)
+			{
+				for(final Enumeration<Ability> a=((MOB)target).personalEffects();a.hasMoreElements();)
+				{
+					A=a.nextElement();
+					if((A!=null)
+					&&((A.abstractQuality()==Ability.QUALITY_BENEFICIAL_OTHERS)
+						||(A.abstractQuality()==Ability.QUALITY_BENEFICIAL_SELF))
+					&&(A.invoker()==((MOB)target))
+					&&(A.invoker().phyStats().level()<=mob.phyStats().level()+5))
+						return super.castingQuality(mob, target,Ability.QUALITY_MALICIOUS);
+				}
+			}
+			if((mob.isMonster())&&(mob.isInCombat()))
+				return Ability.QUALITY_INDIFFERENT;
+		}
+		return super.castingQuality(mob,target);
+	}
+	
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		Physical target=getAnyTarget(mob,commands,givenTarget,Wearable.FILTER_ANY);
@@ -86,7 +86,7 @@ public class Spell_DispelMagic extends Spell
 
 		Ability revokeThis=null;
 		boolean foundSomethingAtLeast=false;
-        boolean admin=CMSecurity.isASysOp(mob);
+		boolean admin=CMSecurity.isASysOp(mob);
 		for(int a=0;a<target.numEffects();a++)
 		{
 			Ability A=target.fetchEffect(a);
@@ -101,8 +101,8 @@ public class Spell_DispelMagic extends Spell
 				foundSomethingAtLeast=true;
 				if((A.invoker()!=null)
 				&&((A.invoker()==mob)
-    				||(A.invoker().phyStats().level()<=mob.phyStats().level()+5)
-                    ||admin))
+					||(A.invoker().phyStats().level()<=mob.phyStats().level()+5)
+					||admin))
 					revokeThis=A;
 			}
 		}

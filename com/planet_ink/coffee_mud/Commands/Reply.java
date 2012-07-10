@@ -23,7 +23,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -78,9 +78,9 @@ public class Reply extends StdCommand
 		case PlayerStats.REPLY_TELL:
 		{
 			Session S=pstats.replyTo().session();
-	        if(S!=null) S.snoopSuspension(1);
+			if(S!=null) S.snoopSuspension(1);
 			CMLib.commands().postSay(mob,pstats.replyTo(),CMParms.combine(commands,1),true,true);
-	        if(S!=null) S.snoopSuspension(-11);
+			if(S!=null) S.snoopSuspension(-11);
 			break;
 		}
 		case PlayerStats.REPLY_YELL:
@@ -99,8 +99,8 @@ public class Reply extends StdCommand
 			mob.tell(pstats.replyTo().session().afkMessage());
 		return false;
 	}
-    public double combatActionsCost(final MOB mob, final List<String> cmds){return CMProps.getCombatActionCost(ID());}
-    public double actionsCost(final MOB mob, final List<String> cmds){return CMProps.getActionCost(ID());}
+	public double combatActionsCost(final MOB mob, final List<String> cmds){return CMProps.getCombatActionCost(ID());}
+	public double actionsCost(final MOB mob, final List<String> cmds){return CMProps.getActionCost(ID());}
 	public boolean canBeOrdered(){return false;}
 
 	

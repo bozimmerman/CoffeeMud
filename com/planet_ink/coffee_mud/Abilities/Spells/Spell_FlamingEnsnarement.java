@@ -25,7 +25,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -102,11 +102,11 @@ public class Spell_FlamingEnsnarement extends Spell
 		{
 			MOB M=(MOB)affected;
 			if((!M.amDead())&&(M.location()!=null))
-            {
+			{
 				CMLib.combat().postDamage(invoker,M,this,CMLib.dice().roll(2,4+super.getXLEVELLevel(invoker())+(2*super.getX1Level(invoker())),0),CMMsg.TYP_FIRE,-1,"<T-NAME> get(s) singed from <T-HIS-HER> flaming ensnarement!");
-                if((!M.isInCombat())&&(M!=invoker)&&(M.location()!=null)&&(M.location().isInhabitant(invoker))&&(CMLib.flags().canBeSeenBy(invoker,M)))
-                    CMLib.combat().postAttack(M,invoker,M.fetchWieldedItem());
-            }
+				if((!M.isInCombat())&&(M!=invoker)&&(M.location()!=null)&&(M.location().isInhabitant(invoker))&&(CMLib.flags().canBeSeenBy(invoker,M)))
+					CMLib.combat().postAttack(M,invoker,M.fetchWieldedItem());
+			}
 		}
 		return super.tick(ticking,tickID);
 	}

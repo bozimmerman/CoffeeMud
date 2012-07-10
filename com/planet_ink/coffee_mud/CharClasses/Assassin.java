@@ -22,7 +22,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -61,10 +61,10 @@ public class Assassin extends Thief
 		super();
 		maxStatAdj[CharStats.STAT_DEXTERITY]=4;
 		maxStatAdj[CharStats.STAT_WISDOM]=4;
-    }
-    public void initializeClass()
-    {
-        super.initializeClass();
+	}
+	public void initializeClass()
+	{
+		super.initializeClass();
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Write",50,true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Specialization_Ranged",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Specialization_EdgedWeapon",50,true);
@@ -75,13 +75,13 @@ public class Assassin extends Thief
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Swim",false);
 		
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Climb",50,true);
-        CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Thief_Mark",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Thief_Mark",true);
 		
 		CMLib.ableMapper().addCharAbilityMapping(ID(),2,"Thief_Hide",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),2,"Fighter_Kick",false);
 		
 		CMLib.ableMapper().addCharAbilityMapping(ID(),3,"Thief_SneakAttack",false);
-        CMLib.ableMapper().addCharAbilityMapping(ID(),3,"Thief_KillLog",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),3,"Thief_KillLog",false);
 		
 		CMLib.ableMapper().addCharAbilityMapping(ID(),4,"Thief_Sneak",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),4,"Skill_IdentifyPoison",false,CMParms.parseSemicolons("Apothecary",true));

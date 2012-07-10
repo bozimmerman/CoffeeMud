@@ -23,7 +23,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -58,11 +58,11 @@ public class Help extends StdCommand
 		if(thisTag==null)
 		{
 			StringBuilder thisList=
-	    		CMLib.help().getHelpList(
-		        helpStr,
-		        CMLib.help().getHelpFile(),
-		        CMSecurity.isAllowed(mob,mob.location(),"AHELP")?CMLib.help().getArcHelpFile():null,
-		        mob);
+				CMLib.help().getHelpList(
+				helpStr,
+				CMLib.help().getHelpFile(),
+				CMSecurity.isAllowed(mob,mob.location(),"AHELP")?CMLib.help().getArcHelpFile():null,
+				mob);
 			if((thisList!=null)&&(thisList.length()>0))
 				mob.tell("No help is available on '"+helpStr+"'.\n\rHowever, here are some search matches:\n\r^N"+thisList.toString().replace('_',' '));
 			else

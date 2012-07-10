@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -43,9 +43,9 @@ public class Spell_Grease extends Spell
 	public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_CONJURATION;}
 	public long flags(){return Ability.FLAG_MOVING;}
 
-    public final static int SIT = 0;
-    public final static int FUMBLE_WEAPON = 1;
-    public final static int BOTH = 2;
+	public final static int SIT = 0;
+	public final static int FUMBLE_WEAPON = 1;
+	public final static int BOTH = 2;
 
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{
@@ -58,8 +58,8 @@ public class Spell_Grease extends Spell
 		if((affected==null)||(!(affected instanceof MOB)))
 			return true;
 
-        CMMsg msg2 = null;
-        Item weapon = null;
+		CMMsg msg2 = null;
+		Item weapon = null;
 
 		MOB mob=(MOB)affected;
 
@@ -76,33 +76,33 @@ public class Spell_Grease extends Spell
 				{
 					if(CMLib.dice().rollPercentage()>(mob.charStats().getStat(CharStats.STAT_DEXTERITY)*4))
 					{
-                        int greaseEffect = (int) Math.round(Math.random()*3);
-                        if((!CMLib.flags().isFlying(mob))||(greaseEffect==FUMBLE_WEAPON))
-                        switch(greaseEffect)
-                        {
-                            case SIT:
-						        msg2=CMClass.getMsg(mob,msg.source(),null,CMMsg.MSG_OK_ACTION,"<S-NAME> slip(s) and slide(s) around in the grease!");
-						        mob.phyStats().setDisposition(mob.phyStats().disposition() | PhyStats.IS_SITTING);
+						int greaseEffect = (int) Math.round(Math.random()*3);
+						if((!CMLib.flags().isFlying(mob))||(greaseEffect==FUMBLE_WEAPON))
+						switch(greaseEffect)
+						{
+							case SIT:
+								msg2=CMClass.getMsg(mob,msg.source(),null,CMMsg.MSG_OK_ACTION,"<S-NAME> slip(s) and slide(s) around in the grease!");
+								mob.phyStats().setDisposition(mob.phyStats().disposition() | PhyStats.IS_SITTING);
 								if(mob.location().okMessage(mob,msg2))
-							        mob.location().send(mob,msg2);
-						        return false;
-                            case FUMBLE_WEAPON:
-                                weapon = mob.fetchWieldedItem();
+									mob.location().send(mob,msg2);
+								return false;
+							case FUMBLE_WEAPON:
+								weapon = mob.fetchWieldedItem();
 								if((weapon!=null)&&(CMLib.dice().rollPercentage()>(mob.charStats().getStat(CharStats.STAT_DEXTERITY)*5))
 								&&((weapon.rawProperLocationBitmap()==Wearable.WORN_WIELD)||(weapon.rawProperLocationBitmap()==Wearable.WORN_WIELD+Wearable.WORN_HELD)))
-                                {
+								{
 									msg2=CMClass.getMsg(mob,weapon,null,CMMsg.MSG_DROP,"<S-NAME> can't hold onto <S-HIS-HER> weapon since it's covered with grease.");
 									weapon.unWear();
 									if(mob.location().okMessage(mob,msg2))
 										mob.location().send(mob,msg2);
-                                }
-						        return false;
-                            case BOTH:
-                                weapon = mob.fetchWieldedItem();
-                                if(weapon != null)
-						            msg2=CMClass.getMsg(mob,msg.source(),null,CMMsg.MSG_OK_ACTION,"<S-NAME> slip(s) and slide(s) around in the grease and lose(s) <S-HIS-HER> weapon.");
-                                else
-						            msg2=CMClass.getMsg(mob,msg.source(),null,CMMsg.MSG_OK_ACTION,"<S-NAME> slip(s) in the grease and fall(s) down.");
+								}
+								return false;
+							case BOTH:
+								weapon = mob.fetchWieldedItem();
+								if(weapon != null)
+									msg2=CMClass.getMsg(mob,msg.source(),null,CMMsg.MSG_OK_ACTION,"<S-NAME> slip(s) and slide(s) around in the grease and lose(s) <S-HIS-HER> weapon.");
+								else
+									msg2=CMClass.getMsg(mob,msg.source(),null,CMMsg.MSG_OK_ACTION,"<S-NAME> slip(s) in the grease and fall(s) down.");
 								if(mob.location().okMessage(mob,msg2))
 								{
 									mob.phyStats().setDisposition(mob.phyStats().disposition() | PhyStats.IS_SITTING);
@@ -116,16 +116,16 @@ public class Spell_Grease extends Spell
 											mob.location().send(mob,msg2);
 									}
 								}
-						        return false;
-                            default:
-						        msg2=CMClass.getMsg(mob,msg.source(),null,CMMsg.MSG_OK_ACTION,"<S-NAME> slip(s) and slide(s) around in the grease!");
+								return false;
+							default:
+								msg2=CMClass.getMsg(mob,msg.source(),null,CMMsg.MSG_OK_ACTION,"<S-NAME> slip(s) and slide(s) around in the grease!");
 								if(mob.location().okMessage(mob,msg2))
 								{
 									mob.phyStats().setDisposition(mob.phyStats().disposition() | PhyStats.IS_SITTING);
 									mob.location().send(mob,msg2);
 								}
-						        return false;
-                        }
+								return false;
+						}
 					}
 				}
 				break;

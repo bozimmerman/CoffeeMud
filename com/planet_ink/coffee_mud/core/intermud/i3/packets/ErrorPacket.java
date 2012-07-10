@@ -23,7 +23,7 @@ import java.util.Vector;
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *        http://www.apache.org/licenses/LICENSE-2.0
+ *  	  http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -42,47 +42,47 @@ public class ErrorPacket extends Packet
 	public ErrorPacket()
 	{
 		super();
-        type = Packet.ERROR_PACKET;
+		type = Packet.ERROR_PACKET;
 	}
 	
-    public ErrorPacket(String to_whom, String mud, String error_code, String error_message, String packetStr) 
-    {
-        super();
-        type = Packet.ERROR_PACKET;
-        target_mud = mud;
-        target_name = to_whom;
-        this.error_code=error_code;
-        this.error_message=error_message;
-        this.packetStr=packetStr;
-    }
-    
-    public ErrorPacket(Vector v) throws InvalidPacketException 
-    {
-        super(v);
-        try {
-            type = Packet.ERROR_PACKET;
+	public ErrorPacket(String to_whom, String mud, String error_code, String error_message, String packetStr) 
+	{
+		super();
+		type = Packet.ERROR_PACKET;
+		target_mud = mud;
+		target_name = to_whom;
+		this.error_code=error_code;
+		this.error_message=error_message;
+		this.packetStr=packetStr;
+	}
+	
+	public ErrorPacket(Vector v) throws InvalidPacketException 
+	{
+		super(v);
+		try {
+			type = Packet.ERROR_PACKET;
 			try{
 				error_code = v.elementAt(6).toString();
 				error_message = v.elementAt(7).toString();
 				packetStr=v.elementAt(8).toString();
 			}catch(Exception e){ }
-        }
-        catch( ClassCastException e ) {
-            throw new InvalidPacketException();
-        }
-    }
+		}
+		catch( ClassCastException e ) {
+			throw new InvalidPacketException();
+		}
+	}
 
-    public void send() throws InvalidPacketException 
-    {
-        super.send();
-    }
+	public void send() throws InvalidPacketException 
+	{
+		super.send();
+	}
 
-    public String toString() 
-    {
+	public String toString() 
+	{
 		String str = "({\"error\",5,\"" + I3Server.getMudName() +
-		         "\",0,\"" + target_mud + "\",\"" + target_name + "\"," +
-		         "\""+error_code+"\",\""+error_message+"\","+packetStr+",})";
+				 "\",0,\"" + target_mud + "\",\"" + target_name + "\"," +
+				 "\""+error_code+"\",\""+error_message+"\","+packetStr+",})";
 		return str;
 
-    }
+	}
 }

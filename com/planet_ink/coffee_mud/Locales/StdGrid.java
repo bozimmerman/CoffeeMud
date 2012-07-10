@@ -29,7 +29,7 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -54,16 +54,16 @@ public class StdGrid extends StdRoom implements GridLocale
 		myID=getClass().getName().substring(getClass().getName().lastIndexOf('.')+1);
 	}
 
-    protected void cloneFix(Room E)
-    {
-        super.cloneFix(E);
-        if(E instanceof StdGrid)
-        {
-            descriptions=(String[])((StdGrid)E).descriptions.clone();
-            displayTexts=(String[])((StdGrid)E).displayTexts.clone();
-            gridexits=((StdGrid)E).gridexits.copyOf();
-        }
-    }
+	protected void cloneFix(Room E)
+	{
+		super.cloneFix(E);
+		if(E instanceof StdGrid)
+		{
+			descriptions=(String[])((StdGrid)E).descriptions.clone();
+			displayTexts=(String[])((StdGrid)E).displayTexts.clone();
+			gridexits=((StdGrid)E).gridexits.copyOf();
+		}
+	}
 	public String getGridChildLocaleID(){return "StdRoom";}
 	public Room getGridChild(XYVector xy) {
 		if(xy==null) return null;
@@ -379,118 +379,118 @@ public class StdGrid extends StdRoom implements GridLocale
 		loc.setRawExit(opCode,ao);
 	}
 
-    protected int[] initCenterRoomXY(int dirCode)
-    {
-        int[] xy=new int[2];
-        switch(dirCode)
-        {
-        case Directions.NORTHEAST:
-            xy[0]=xGridSize()-1;
-            break;
-        case Directions.NORTHWEST:
-            break;
-        case Directions.NORTH:
-            xy[0]=xGridSize()/2;
-            break;
-        case Directions.SOUTHEAST:
-            xy[1]=yGridSize()-1;
-            xy[0]=xGridSize()-1;
-            break;
-        case Directions.SOUTHWEST:
-            xy[1]=yGridSize()-1;
-            break;
-        case Directions.SOUTH:
-            xy[0]=xGridSize()/2;
-            xy[1]=yGridSize()-1;
-            break;
-        case Directions.EAST:
-            xy[0]=xGridSize()-1;
-            xy[1]=yGridSize()/2;
-            break;
-        case Directions.WEST:
-            xy[1]=yGridSize()/2;
-            break;
-        default:
-            xy[0]=xGridSize()/2;
-            xy[1]=yGridSize()/2;
-            break;
-        }
-        return xy;
-    }
-    
-    private static int[][] XY_ADJUSTMENT_CHART=null;
-    private static int[] XY_ADJUSTMENT_DEFAULT={1,1};
-    protected int[] initCenterRoomAdjustsXY(int dirCode)
-    {
-        if((dirCode<0)||(dirCode>=Directions.NUM_DIRECTIONS()))
-            return XY_ADJUSTMENT_DEFAULT;
-        if((XY_ADJUSTMENT_CHART!=null)&&(dirCode<XY_ADJUSTMENT_CHART.length))
-            return XY_ADJUSTMENT_CHART[dirCode];
-        
-        int[][] xy=new int[Directions.NUM_DIRECTIONS()][2];
-        for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
-        {
-            switch(d)
-            {
-            case Directions.NORTHEAST:
-            case Directions.NORTH:
-            case Directions.SOUTHEAST:
-            case Directions.SOUTH:
-                xy[d][0]=1;
-                xy[d][1]=0;
-                break;
-            case Directions.NORTHWEST:
-            case Directions.EAST:
-            case Directions.SOUTHWEST:
-            case Directions.WEST:
-                xy[d][0]=0;
-                xy[d][1]=1;
-                break;
-            default:
-                xy[d][0]=1;
-                xy[d][1]=1;
-                break;
-            }
-        }
-        XY_ADJUSTMENT_CHART=xy;
-        return xy[dirCode];
-    }
-    
+	protected int[] initCenterRoomXY(int dirCode)
+	{
+		int[] xy=new int[2];
+		switch(dirCode)
+		{
+		case Directions.NORTHEAST:
+			xy[0]=xGridSize()-1;
+			break;
+		case Directions.NORTHWEST:
+			break;
+		case Directions.NORTH:
+			xy[0]=xGridSize()/2;
+			break;
+		case Directions.SOUTHEAST:
+			xy[1]=yGridSize()-1;
+			xy[0]=xGridSize()-1;
+			break;
+		case Directions.SOUTHWEST:
+			xy[1]=yGridSize()-1;
+			break;
+		case Directions.SOUTH:
+			xy[0]=xGridSize()/2;
+			xy[1]=yGridSize()-1;
+			break;
+		case Directions.EAST:
+			xy[0]=xGridSize()-1;
+			xy[1]=yGridSize()/2;
+			break;
+		case Directions.WEST:
+			xy[1]=yGridSize()/2;
+			break;
+		default:
+			xy[0]=xGridSize()/2;
+			xy[1]=yGridSize()/2;
+			break;
+		}
+		return xy;
+	}
+	
+	private static int[][] XY_ADJUSTMENT_CHART=null;
+	private static int[] XY_ADJUSTMENT_DEFAULT={1,1};
+	protected int[] initCenterRoomAdjustsXY(int dirCode)
+	{
+		if((dirCode<0)||(dirCode>=Directions.NUM_DIRECTIONS()))
+			return XY_ADJUSTMENT_DEFAULT;
+		if((XY_ADJUSTMENT_CHART!=null)&&(dirCode<XY_ADJUSTMENT_CHART.length))
+			return XY_ADJUSTMENT_CHART[dirCode];
+		
+		int[][] xy=new int[Directions.NUM_DIRECTIONS()][2];
+		for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
+		{
+			switch(d)
+			{
+			case Directions.NORTHEAST:
+			case Directions.NORTH:
+			case Directions.SOUTHEAST:
+			case Directions.SOUTH:
+				xy[d][0]=1;
+				xy[d][1]=0;
+				break;
+			case Directions.NORTHWEST:
+			case Directions.EAST:
+			case Directions.SOUTHWEST:
+			case Directions.WEST:
+				xy[d][0]=0;
+				xy[d][1]=1;
+				break;
+			default:
+				xy[d][0]=1;
+				xy[d][1]=1;
+				break;
+			}
+		}
+		XY_ADJUSTMENT_CHART=xy;
+		return xy[dirCode];
+	}
+	
 	protected Room findCenterRoom(int dirCode)
 	{
-        int[] xy=initCenterRoomXY(dirCode);
-        int[] adjXY=initCenterRoomAdjustsXY(dirCode);
-        
+		int[] xy=initCenterRoomXY(dirCode);
+		int[] adjXY=initCenterRoomAdjustsXY(dirCode);
+		
 		Room returnRoom=null;
 		int xadjust=0;
 		int yadjust=0;
-        boolean moveAndCheckAgain=true;
+		boolean moveAndCheckAgain=true;
 		while((subMap!=null)&&(moveAndCheckAgain))
 		{
-            moveAndCheckAgain=false;
-            
-            if(((xy[0]-xadjust)>=0)&&((xy[1]-yadjust)>=0))
-            {
-                moveAndCheckAgain=true;
-                try{
-                    if(subMap[xy[0]-xadjust][xy[1]-yadjust]!=null)
-                        return subMap[xy[0]-xadjust][xy[1]-yadjust];
-                }catch(Exception e){}
-            }
-            
-            if(((xy[0]+xadjust)<xGridSize())&&((xy[1]+yadjust)<yGridSize()))
-            {
-                moveAndCheckAgain=true;
-                try{
-                    if(subMap[xy[0]+xadjust][xy[1]+yadjust]!=null)
-                        return subMap[xy[0]+xadjust][xy[1]+yadjust];
-                }catch(Exception e){}
-            }
-            if(moveAndCheckAgain)
-            {
-                xadjust+=adjXY[0];
-                yadjust+=adjXY[1];
-            }
+			moveAndCheckAgain=false;
+			
+			if(((xy[0]-xadjust)>=0)&&((xy[1]-yadjust)>=0))
+			{
+				moveAndCheckAgain=true;
+				try{
+					if(subMap[xy[0]-xadjust][xy[1]-yadjust]!=null)
+						return subMap[xy[0]-xadjust][xy[1]-yadjust];
+				}catch(Exception e){}
+			}
+			
+			if(((xy[0]+xadjust)<xGridSize())&&((xy[1]+yadjust)<yGridSize()))
+			{
+				moveAndCheckAgain=true;
+				try{
+					if(subMap[xy[0]+xadjust][xy[1]+yadjust]!=null)
+						return subMap[xy[0]+xadjust][xy[1]+yadjust];
+				}catch(Exception e){}
+			}
+			if(moveAndCheckAgain)
+			{
+				xadjust+=adjXY[0];
+				yadjust+=adjXY[1];
+			}
 		}
 		return returnRoom;
 	}
@@ -500,7 +500,7 @@ public class StdGrid extends StdRoom implements GridLocale
 		Exit ox=CMClass.getExit("Open");
 		for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 		{
-		    if(d==Directions.GATE) continue;
+			if(d==Directions.GATE) continue;
 			Room dirRoom=rawDoors()[d];
 			Exit dirExit=getRawExit(d);
 			if((dirExit==null)||(dirExit.hasADoor()))
@@ -640,9 +640,9 @@ public class StdGrid extends StdRoom implements GridLocale
 							linkRoom(newRoom,subMap[x-1][y],Directions.WEST,ox,ox);
 						if(Directions.NORTHEAST<Directions.NUM_DIRECTIONS())
 						{
-						    if((y>0)&&(x>0)&&(subMap[x-1][y-1]!=null))
+							if((y>0)&&(x>0)&&(subMap[x-1][y-1]!=null))
 								linkRoom(newRoom,subMap[x-1][y-1],Directions.NORTHWEST,ox,ox);
-						    if(((y+1)<subMap[x].length)&&(x>0)&&(subMap[x-1][y+1]!=null))
+							if(((y+1)<subMap[x].length)&&(x>0)&&(subMap[x-1][y+1]!=null))
 								linkRoom(newRoom,subMap[x-1][y+1],Directions.SOUTHWEST,ox,ox);
 						}
 					}
@@ -652,7 +652,7 @@ public class StdGrid extends StdRoom implements GridLocale
 		}
 		catch(Exception e)
 		{
-		    Log.errOut("StdGrid",e);
+			Log.errOut("StdGrid",e);
 			clearGrid(null);
 		}
 	}
@@ -694,13 +694,13 @@ public class StdGrid extends StdRoom implements GridLocale
 									M.destroy();
 								else
 									M.getStartRoom().bringMobHere(M,false);
-                                if(room.isInhabitant(M))
-                                {
-                                    M.destroy();
-                                    M.setLocation(null);
-                                    if(room.isInhabitant(M))
-                                        room.delInhabitant(M);
-                                }
+								if(room.isInhabitant(M))
+								{
+									M.destroy();
+									M.setLocation(null);
+									if(room.isInhabitant(M))
+										room.delInhabitant(M);
+								}
 							}
 						}
 						while(room.numItems()>0)
@@ -712,22 +712,22 @@ public class StdGrid extends StdRoom implements GridLocale
 									backHere.moveItemTo(I,ItemPossessor.Expire.Player_Drop,ItemPossessor.Move.Followers);
 								else
 									I.destroy();
-                                if(room.isContent(I))
-                                {
-                                    I.destroy();
-                                    if(room.isContent(I))
-                                    {
-                                        I.setOwner(null);
-                                        room.delItem(I);
-                                    }
-                                }
+								if(room.isContent(I))
+								{
+									I.destroy();
+									if(room.isContent(I))
+									{
+										I.setOwner(null);
+										room.delItem(I);
+									}
+								}
 							}
 						}
 						room.clearSky();
 						room.destroy();
 						room.setGridParent(null);
 					}
-			    }
+				}
 			subMap=null;
 		}
 		catch(Exception e){}
@@ -872,8 +872,8 @@ public class StdGrid extends StdRoom implements GridLocale
 		{
 		case 0: return Integer.toString(xGridSize());
 		case 1: return Integer.toString(yGridSize());
-        default: return super.getStat(code);
-        }
+		default: return super.getStat(code);
+		}
 	}
 	public void setStat(String code, String val)
 	{
@@ -881,7 +881,7 @@ public class StdGrid extends StdRoom implements GridLocale
 		{
 		case 0: setXGridSize(CMath.s_parseIntExpression(val)); break;
 		case 1: setYGridSize(CMath.s_parseIntExpression(val)); break;
-        default: super.setStat(code, val); break;
+		default: super.setStat(code, val); break;
 		}
 	}
 	protected int getStdGridCodeNum(String code){

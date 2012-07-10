@@ -25,7 +25,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -63,18 +63,18 @@ public class Soiled extends StdAbility
 		super.unInvoke();
 		if(canBeUninvoked())
 		{
-		    if(E instanceof MOB)
-		    {
-		        MOB mob=(MOB)E;
+			if(E instanceof MOB)
+			{
+				MOB mob=(MOB)E;
 				mob.tell("You are no longer soiled.");
 				MOB following=((MOB)E).amFollowing();
 				if((following!=null)
 				&&(following.location()==mob.location())
-                &&(CMLib.flags().isInTheGame(E,true))
-			    &&(CMLib.flags().canBeSeenBy(mob,following)))
+				&&(CMLib.flags().isInTheGame(E,true))
+				&&(CMLib.flags().canBeSeenBy(mob,following)))
 					following.tell(E.name()+" is no longer soiled.");
-		    }
-		    else
+			}
+			else
 			if((E instanceof Item)&&(((Item)E).owner() instanceof MOB))
 				((MOB)((Item)E).owner()).tell(E.name()+" is no longer soiled.");
 		}
@@ -82,107 +82,107 @@ public class Soiled extends StdAbility
 
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
-	    if(((msg.source()==affected)
-        ||((affected instanceof Item)
-            &&(((Item)affected).owner()==msg.source()))))
-	    {
-		    if((msg.sourceMajor(CMMsg.MASK_MOVE))
-		    &&(msg.source().riding()==null)
-		    &&(msg.source().location()!=null)
-		    &&((msg.source().location().domainType()==Room.DOMAIN_INDOORS_WATERSURFACE)
-	            ||(msg.source().location().domainType()==Room.DOMAIN_OUTDOORS_WATERSURFACE)
-	            ||(msg.source().location().domainType()==Room.DOMAIN_INDOORS_UNDERWATER)
-	            ||(msg.source().location().domainType()==Room.DOMAIN_OUTDOORS_UNDERWATER)))
-		        unInvoke();
-		    else
-		    if((msg.sourceMajor(CMMsg.MASK_MOVE))
-		    &&(msg.source().riding() instanceof Drink)
-		    &&(((Drink)msg.source().riding()).containsDrink()))
-		        unInvoke();
-		    else
-		    if((affected instanceof Item)
-		    &&(((Item)affected).container() instanceof Drink)
-		    &&(msg.target()==affected)
-		    &&(msg.targetMinor()==CMMsg.TYP_PUT)
-		    &&(((Drink)((Item)affected).container()).containsDrink()))
-		        unInvoke();
-	    }
-	    if((msg.target()==affected)
-	    &&(msg.targetMinor()==CMMsg.TYP_SNIFF))
-	    {
-	        String smell=null;
-	        switch(CMLib.dice().roll(1,5,0))
-	        {
-		        case 1: smell="<T-NAME> is stinky!"; break;
-		        case 2: smell="<T-NAME> smells like poo."; break;
-		        case 3: smell="<T-NAME> has soiled a diaper."; break;
-		        case 4: smell="Whew! <T-NAME> stinks!"; break;
-		        case 5: smell="<T-NAME> must have let one go!"; break;
-	        }
-	        if((CMLib.flags().canSmell(msg.source()))&&(smell!=null))
-	            msg.source().tell(msg.source(),affected,null,smell);
-	    }
+		if(((msg.source()==affected)
+		||((affected instanceof Item)
+			&&(((Item)affected).owner()==msg.source()))))
+		{
+			if((msg.sourceMajor(CMMsg.MASK_MOVE))
+			&&(msg.source().riding()==null)
+			&&(msg.source().location()!=null)
+			&&((msg.source().location().domainType()==Room.DOMAIN_INDOORS_WATERSURFACE)
+				||(msg.source().location().domainType()==Room.DOMAIN_OUTDOORS_WATERSURFACE)
+				||(msg.source().location().domainType()==Room.DOMAIN_INDOORS_UNDERWATER)
+				||(msg.source().location().domainType()==Room.DOMAIN_OUTDOORS_UNDERWATER)))
+				unInvoke();
+			else
+			if((msg.sourceMajor(CMMsg.MASK_MOVE))
+			&&(msg.source().riding() instanceof Drink)
+			&&(((Drink)msg.source().riding()).containsDrink()))
+				unInvoke();
+			else
+			if((affected instanceof Item)
+			&&(((Item)affected).container() instanceof Drink)
+			&&(msg.target()==affected)
+			&&(msg.targetMinor()==CMMsg.TYP_PUT)
+			&&(((Drink)((Item)affected).container()).containsDrink()))
+				unInvoke();
+		}
+		if((msg.target()==affected)
+		&&(msg.targetMinor()==CMMsg.TYP_SNIFF))
+		{
+			String smell=null;
+			switch(CMLib.dice().roll(1,5,0))
+			{
+				case 1: smell="<T-NAME> is stinky!"; break;
+				case 2: smell="<T-NAME> smells like poo."; break;
+				case 3: smell="<T-NAME> has soiled a diaper."; break;
+				case 4: smell="Whew! <T-NAME> stinks!"; break;
+				case 5: smell="<T-NAME> must have let one go!"; break;
+			}
+			if((CMLib.flags().canSmell(msg.source()))&&(smell!=null))
+				msg.source().tell(msg.source(),affected,null,smell);
+		}
 	}
 	
 	public boolean tick(Tickable ticking, int tickID)
 	{
-	    if(affected!=null)
-	    if(CMLib.dice().rollPercentage()==1)
-	    {
-	        Environmental E=affected;
-	        Room R=CMLib.map().roomLocation(E);
-	        if(R!=null)
-	        {
-	            MOB M=(E instanceof MOB)?(MOB)E:null;
-                boolean killmob=false;
-	            if(M==null)
-	            {
+		if(affected!=null)
+		if(CMLib.dice().rollPercentage()==1)
+		{
+			Environmental E=affected;
+			Room R=CMLib.map().roomLocation(E);
+			if(R!=null)
+			{
+				MOB M=(E instanceof MOB)?(MOB)E:null;
+				boolean killmob=false;
+				if(M==null)
+				{
 					M=CMClass.getFactoryMOB();
 					M.setName(affected.name());
 					M.setDisplayText(affected.name()+" is here.");
 					M.setDescription("");
 					if(M.location()!=R)
 						M.setLocation(R);
-                    killmob=true;
-	            }
-	            else
-	            if((M.playerStats()!=null)&&(M.playerStats().getHygiene()<10000))
-	            {
-	                M.playerStats().setHygiene(10000);
-	                M.recoverCharStats();
-	            }
-	            String smell=null;
-	            switch(CMLib.dice().roll(1,5,0))
-	            {
-	            case 1: smell="<S-NAME> <S-IS-ARE> stinky!"; break;
-	            case 2: smell="<S-NAME> smells like poo."; break;
-	            case 3: smell="<S-NAME> has soiled a diaper."; break;
-	            case 4: smell="Whew! <S-NAME> stinks!"; break;
-	            case 5: smell="<S-NAME> must have let one go!"; break;
-	            }
-	            if((smell!=null)
-	            &&(CMLib.flags().isInTheGame(M,true)))
-	            {
-	                CMMsg msg=CMClass.getMsg(M,null,null,CMMsg.TYP_EMOTE|CMMsg.MASK_ALWAYS,smell);
-	                if(R.okMessage(M,msg))
-		            for(int m=0;m<R.numInhabitants();m++)
-		            {
-		                MOB mob=R.fetchInhabitant(m);
-		                if(CMLib.flags().canSmell(mob))
-		                    mob.executeMsg(M,msg);
-		            }
-	            }
-                if(killmob) M.destroy();
-	        }
-	    }
-	    return super.tick(ticking,tickID);
+					killmob=true;
+				}
+				else
+				if((M.playerStats()!=null)&&(M.playerStats().getHygiene()<10000))
+				{
+					M.playerStats().setHygiene(10000);
+					M.recoverCharStats();
+				}
+				String smell=null;
+				switch(CMLib.dice().roll(1,5,0))
+				{
+				case 1: smell="<S-NAME> <S-IS-ARE> stinky!"; break;
+				case 2: smell="<S-NAME> smells like poo."; break;
+				case 3: smell="<S-NAME> has soiled a diaper."; break;
+				case 4: smell="Whew! <S-NAME> stinks!"; break;
+				case 5: smell="<S-NAME> must have let one go!"; break;
+				}
+				if((smell!=null)
+				&&(CMLib.flags().isInTheGame(M,true)))
+				{
+					CMMsg msg=CMClass.getMsg(M,null,null,CMMsg.TYP_EMOTE|CMMsg.MASK_ALWAYS,smell);
+					if(R.okMessage(M,msg))
+					for(int m=0;m<R.numInhabitants();m++)
+					{
+						MOB mob=R.fetchInhabitant(m);
+						if(CMLib.flags().canSmell(mob))
+							mob.executeMsg(M,msg);
+					}
+				}
+				if(killmob) M.destroy();
+			}
+		}
+		return super.tick(ticking,tickID);
 	}
 
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		Physical target=getAnyTarget(mob,commands,givenTarget,Wearable.FILTER_ANY);
 		if((target==null)||(target.fetchEffect(ID())!=null)) 
-		    return false;
+			return false;
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
@@ -191,20 +191,20 @@ public class Soiled extends StdAbility
 		// and add it to the affects list of the
 		// affected MOB.  Then tell everyone else
 		// what happened.
-	    Ability A=(Ability)copyOf();
-	    A.startTickDown(mob,target,Integer.MAX_VALUE/2);
-        Environmental msgTarget=target;
-        if(target instanceof CagedAnimal) msgTarget=((CagedAnimal)target).unCageMe();
+		Ability A=(Ability)copyOf();
+		A.startTickDown(mob,target,Integer.MAX_VALUE/2);
+		Environmental msgTarget=target;
+		if(target instanceof CagedAnimal) msgTarget=((CagedAnimal)target).unCageMe();
 		mob.location().show(mob,msgTarget,CMMsg.MSG_OK_VISUAL,"<T-NAME> has soiled <T-HIM-HERSELF>!");
-        if(target instanceof MOB)
-        {
-            Item pants=((MOB)target).fetchFirstWornItem(Wearable.WORN_WAIST);
-            if((pants!=null)&&(pants.fetchEffect(ID())==null))
-            {
-			    A=(Ability)copyOf();
-			    A.startTickDown((MOB)target,pants,Integer.MAX_VALUE/2);
-            }
-        }
+		if(target instanceof MOB)
+		{
+			Item pants=((MOB)target).fetchFirstWornItem(Wearable.WORN_WAIST);
+			if((pants!=null)&&(pants.fetchEffect(ID())==null))
+			{
+				A=(Ability)copyOf();
+				A.startTickDown((MOB)target,pants,Integer.MAX_VALUE/2);
+			}
+		}
 		return true;
 	}
 }

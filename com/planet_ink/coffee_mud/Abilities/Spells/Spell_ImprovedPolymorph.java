@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -40,7 +40,7 @@ public class Spell_ImprovedPolymorph extends Spell
 	public String displayText(){return "(Improved Polymorph)";}
 	protected int canAffectCode(){return CAN_MOBS;}
 	public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_TRANSMUTATION;}
-    public int abstractQuality(){ return Ability.QUALITY_OK_OTHERS;}
+	public int abstractQuality(){ return Ability.QUALITY_OK_OTHERS;}
 
 	Race newRace=null;
 
@@ -63,7 +63,7 @@ public class Spell_ImprovedPolymorph extends Spell
 		super.affectCharStats(affected,affectableStats);
 		if(newRace!=null)
 		{
-		    int oldCat=affected.baseCharStats().ageCategory();
+			int oldCat=affected.baseCharStats().ageCategory();
 			affectableStats.setMyRace(newRace);
 			if((affected.baseCharStats().getStat(CharStats.STAT_AGE)>0)
 			&&(newRace.getAgingChart()[oldCat]<Short.MAX_VALUE))
@@ -83,19 +83,19 @@ public class Spell_ImprovedPolymorph extends Spell
 				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> morph(s) back to <S-HIS-HER> normal form.");
 	}
 
-    public int castingQuality(MOB mob, Physical target)
-    {
-        if(mob!=null)
-        {
-            if(target instanceof MOB)
-            {
-                if((mob.getVictim()==target)&&(target.fetchEffect(ID())==null))
-                    return Ability.QUALITY_MALICIOUS;
-            }
-        }
-        return super.castingQuality(mob,target);
-    }
-    
+	public int castingQuality(MOB mob, Physical target)
+	{
+		if(mob!=null)
+		{
+			if(target instanceof MOB)
+			{
+				if((mob.getVictim()==target)&&(target.fetchEffect(ID())==null))
+					return Ability.QUALITY_MALICIOUS;
+			}
+		}
+		return super.castingQuality(mob,target);
+	}
+	
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if(commands.size()==0)
@@ -115,36 +115,36 @@ public class Spell_ImprovedPolymorph extends Spell
 		Race R=CMClass.getRace(race);
 		if((R==null)&&(!auto))
 		{
-		    if(mob.isMonster())
-		    {
-		        R=CMClass.randomRace();
-			    for(int i=0;i<10;i++)
-			    {
-				    if((R!=null)
+			if(mob.isMonster())
+			{
+				R=CMClass.randomRace();
+				for(int i=0;i<10;i++)
+				{
+					if((R!=null)
 					&&(CMProps.isTheme(R.availabilityCode()))
 					&&(CMath.bset(R.availabilityCode(),Area.THEME_SKILLONLYMASK)))
-				    	break;
-				    R=CMClass.randomRace();
-			    }
-		    }
-		    else
-		    {
-    			mob.tell("You can't turn "+target.name()+" into a '"+race+"'!");
-    			return false;
-		    }
+						break;
+					R=CMClass.randomRace();
+				}
+			}
+			else
+			{
+				mob.tell("You can't turn "+target.name()+" into a '"+race+"'!");
+				return false;
+			}
 		}
 		else
 		if(R==null)
 		{
 			R=CMClass.randomRace();
-		    for(int i=0;i<10;i++)
-		    {
-			    if((R!=null)
+			for(int i=0;i<10;i++)
+			{
+				if((R!=null)
 				&&(CMProps.isTheme(R.availabilityCode()))
 				&&(CMath.bset(R.availabilityCode(),Area.THEME_SKILLONLYMASK)))
-			    	break;
-			    R=CMClass.randomRace();
-		    }
+					break;
+				R=CMClass.randomRace();
+			}
 		}
 
 		if(target.baseCharStats().getMyRace() != target.charStats().getMyRace())
@@ -185,14 +185,14 @@ public class Spell_ImprovedPolymorph extends Spell
 			fakeStatTotal+=fakeMOB.charStats().getStat(s);
 
 		int statDiff=targetStatTotal-fakeStatTotal;
-        if(CMLib.flags().canMove(fakeMOB)!=CMLib.flags().canMove(target)) statDiff+=100;
-        if(CMLib.flags().canBreathe(fakeMOB)!=CMLib.flags().canBreathe(target)) statDiff+=50;
-        if(CMLib.flags().canSee(fakeMOB)!=CMLib.flags().canSee(target)) statDiff+=25;
-        if(CMLib.flags().canHear(fakeMOB)!=CMLib.flags().canHear(target)) statDiff+=10;
-        if(CMLib.flags().canSpeak(fakeMOB)!=CMLib.flags().canSpeak(target)) statDiff+=25;
-        if(CMLib.flags().canSmell(fakeMOB)!=CMLib.flags().canSmell(target)) statDiff+=5;
-        fakeMOB.destroy();
-        
+		if(CMLib.flags().canMove(fakeMOB)!=CMLib.flags().canMove(target)) statDiff+=100;
+		if(CMLib.flags().canBreathe(fakeMOB)!=CMLib.flags().canBreathe(target)) statDiff+=50;
+		if(CMLib.flags().canSee(fakeMOB)!=CMLib.flags().canSee(target)) statDiff+=25;
+		if(CMLib.flags().canHear(fakeMOB)!=CMLib.flags().canHear(target)) statDiff+=10;
+		if(CMLib.flags().canSpeak(fakeMOB)!=CMLib.flags().canSpeak(target)) statDiff+=25;
+		if(CMLib.flags().canSmell(fakeMOB)!=CMLib.flags().canSmell(target)) statDiff+=5;
+		fakeMOB.destroy();
+		
 		if(statDiff<0) statDiff=statDiff*-1;
 		int levelDiff=((mob.phyStats().level()+(2*getXLEVELLevel(mob)))-target.phyStats().level());
 		boolean success=proficiencyCheck(mob,levelDiff-statDiff,auto);

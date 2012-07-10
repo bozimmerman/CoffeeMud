@@ -23,7 +23,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -43,8 +43,8 @@ public class Formation extends StdCommand
 		throws java.io.IOException
 	{
 		commands.removeElementAt(0);
-	    MOB leader=CMLib.combat().getFollowedLeader(mob);
-	    List<MOB>[] done=CMLib.combat().getFormation(mob);
+		MOB leader=CMLib.combat().getFollowedLeader(mob);
+		List<MOB>[] done=CMLib.combat().getFormation(mob);
 		if(commands.size()==0)
 		{
 			StringBuffer str=new StringBuffer("");

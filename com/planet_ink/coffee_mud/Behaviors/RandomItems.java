@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -53,21 +53,21 @@ public class RandomItems extends ActiveTicker
 	
 	public List<String> externalFiles()
 	{
-        Vector xmlfiles=new Vector();
-        String theseparms=getParms();
+		Vector xmlfiles=new Vector();
+		String theseparms=getParms();
 		int x=theseparms.indexOf(';');
 		String filename=(x>=0)?theseparms.substring(x+1):theseparms;
 		if(filename.trim().length()==0)
-		    return null;
+			return null;
 		int start=filename.indexOf("<ITEMS>");
 		if((start<0)||(start>20))
 		{
 			int extraSemicolon=filename.indexOf(';');
 			if(extraSemicolon>=0) filename=filename.substring(0,extraSemicolon);
 			if(filename.trim().length()>0)
-			    xmlfiles.addElement(filename.trim());
-		    return xmlfiles;
-	    }
+				xmlfiles.addElement(filename.trim());
+			return xmlfiles;
+		}
 		return null;
 	}
 
@@ -75,7 +75,7 @@ public class RandomItems extends ActiveTicker
 	public void setParms(String newParms)
 	{
 		favorMobs=false;
-        maintained=new Vector();
+		maintained=new Vector();
 		int x=newParms.indexOf(';');
 		String oldParms=newParms;
 		restrictedLocales=null;
@@ -158,7 +158,7 @@ public class RandomItems extends ActiveTicker
 
 	public RandomItems()
 	{
-        super();
+		super();
 		tickReset();
 	}
 
@@ -181,15 +181,15 @@ public class RandomItems extends ActiveTicker
 			return ((Area)thang).inMyMetroArea(R.getArea());
 		}
 		else
-        if(thang instanceof Room)
-        	return CMLib.map().roomLocation(I)==thang;
-        else
-	    if(thang instanceof MOB)
-	    	return (I.owner()==thang);
-	    else
-	    if(thang instanceof Container)
-	    	return (I.owner()==((Container)thang).owner())&&(I.container()==thang);
-    	return I.owner()==CMLib.map().roomLocation(thang);
+		if(thang instanceof Room)
+			return CMLib.map().roomLocation(I)==thang;
+		else
+		if(thang instanceof MOB)
+			return (I.owner()==thang);
+		else
+		if(thang instanceof Container)
+			return (I.owner()==((Container)thang).owner())&&(I.container()==thang);
+		return I.owner()==CMLib.map().roomLocation(thang);
 	}
 
 	public List<Item> getItems(Tickable thang, String theseparms)
@@ -213,13 +213,13 @@ public class RandomItems extends ActiveTicker
 			String error=CMLib.coffeeMaker().addItemsFromXML(filename,items,null);
 			String thangName="null";
 			if(thang instanceof Room)
-			    thangName=CMLib.map().getExtendedRoomID((Room)thang);
+				thangName=CMLib.map().getExtendedRoomID((Room)thang);
 			else
 			if((thang instanceof MOB)&&(((MOB)thang).getStartRoom())!=null)
-			    thangName=CMLib.map().getExtendedRoomID(((MOB)thang).getStartRoom());
+				thangName=CMLib.map().getExtendedRoomID(((MOB)thang).getStartRoom());
 			else
 			if(thang!=null)
-			    thangName=thang.name();
+				thangName=thang.name();
 			if(error.length()>0)
 			{
 				Log.errOut("RandomItems","Error on import of xml for '"+thangName+"': "+error+".");
@@ -244,13 +244,13 @@ public class RandomItems extends ActiveTicker
 				StringBuffer buf=Resources.getFileResource(filename,true);
 				String thangName="null";
 				if(thang instanceof Room)
-				    thangName=CMLib.map().getExtendedRoomID((Room)thang);
+					thangName=CMLib.map().getExtendedRoomID((Room)thang);
 				else
 				if((thang instanceof MOB)&&(((MOB)thang).getStartRoom())!=null)
-				    thangName=CMLib.map().getExtendedRoomID(((MOB)thang).getStartRoom());
+					thangName=CMLib.map().getExtendedRoomID(((MOB)thang).getStartRoom());
 				else
 				if(thang!=null)
-				    thangName=thang.name();
+					thangName=thang.name();
 
 				if((buf==null)||(buf.length()<20))
 				{
@@ -285,7 +285,7 @@ public class RandomItems extends ActiveTicker
 	{
 		super.tick(ticking,tickID);
 		if((!CMProps.getBoolVar(CMProps.SYSTEMB_MUDSTARTED))
-	    ||(!(ticking instanceof Environmental))
+		||(!(ticking instanceof Environmental))
 		||(CMSecurity.isDisabled(CMSecurity.DisFlag.RANDOMITEMS)))
 			return true;
 		Item I=null;
@@ -326,27 +326,27 @@ public class RandomItems extends ActiveTicker
 						}
 					}
 					else
-				    if(ticking instanceof Container)
-				    {
-				    	if(((Container)ticking).owner() instanceof Room)
-				    		((Room)((Container)ticking).owner()).addItem(I);
-				    	else
-				    	if(((Container)ticking).owner() instanceof MOB)
-				    		((MOB)((Container)ticking).owner()).addItem(I);
-				    	else
-				    		break;
+					if(ticking instanceof Container)
+					{
+						if(((Container)ticking).owner() instanceof Room)
+							((Room)((Container)ticking).owner()).addItem(I);
+						else
+						if(((Container)ticking).owner() instanceof MOB)
+							((MOB)((Container)ticking).owner()).addItem(I);
+						else
+							break;
 						maintained.addElement(I);
-				    	I.setContainer((Container)ticking);
-				    }
+						I.setContainer((Container)ticking);
+					}
 					else
-				    if(ticking instanceof MOB)
-				    {
-			    		((MOB)ticking).addItem(I);
-			    		I.wearIfPossible((MOB)ticking);
+					if(ticking instanceof MOB)
+					{
+						((MOB)ticking).addItem(I);
+						I.wearIfPossible((MOB)ticking);
 						maintained.addElement(I);
-				    	I.setContainer((Container)ticking);
-				    }
-				    else
+						I.setContainer((Container)ticking);
+					}
+					else
 					{
 						Room room=null;
 						if(ticking instanceof Room)
@@ -376,7 +376,7 @@ public class RandomItems extends ActiveTicker
 								break;
 						}
 						else
-					    if(ticking instanceof Environmental)
+						if(ticking instanceof Environmental)
 							room=CMLib.map().roomLocation((Environmental)ticking);
 						else
 							break;

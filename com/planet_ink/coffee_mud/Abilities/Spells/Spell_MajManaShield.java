@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -34,10 +34,10 @@ import java.util.*;
 */
 public class Spell_MajManaShield extends Spell_ManaShield
 {
-    public String ID() { return "Spell_MajManaShield"; }
-    public String name(){return "Major Mana Shield";}
-    public String displayText(){return "(Major Mana Shield)";}
-    protected double protection(){return 0.75;}
-    protected String adjective(){return " a powerful";}
+	public String ID() { return "Spell_MajManaShield"; }
+	public String name(){return "Major Mana Shield";}
+	public String displayText(){return "(Major Mana Shield)";}
+	protected double protection(){return 0.75;}
+	protected String adjective(){return " a powerful";}
 
 }

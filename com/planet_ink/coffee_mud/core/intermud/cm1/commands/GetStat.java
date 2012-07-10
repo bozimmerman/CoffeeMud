@@ -31,7 +31,7 @@ import java.util.concurrent.atomic.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -47,7 +47,7 @@ public class GetStat extends CM1Command
 	}
 	
 	protected static final String[] STATTYPES={"SESSION","MOB","CHAR","STATE","PHYSICAL","BASECHAR","MAXSTATE","BASESTATE","BASEPHYSICAL","PLAYERSTATS", "ITEM", "EXIT", "ROOM", "AREA"};
-	protected static final String[] TYPESTYPE={"P",		 "MP", "MP",  "MP",   "MPIREA",  "MP",      "MP",      "MP",       "MPIREA",      "P",           "I",    "E",    "R",    "A"};
+	protected static final String[] TYPESTYPE={"P",		 "MP", "MP",  "MP",   "MPIREA",  "MP",  	"MP",      "MP",	   "MPIREA",	  "P",  		 "I",    "E",    "R",    "A"};
 	
 	protected static final String[] PHYSSTATS={"EFFECT"};
 	protected static final String[] PHYASTATS={"BEHAVIOR"};
@@ -149,10 +149,10 @@ public class GetStat extends CM1Command
 			return m.isStat(stat);
 		String[] codes = getStatCodes(P,m);
 		if(codes != null)
-	        for(int i=0;i<codes.length;i++)
-	            if(codes[i].equalsIgnoreCase(stat))
-	            	return true;
-        return false;
+			for(int i=0;i<codes.length;i++)
+				if(codes[i].equalsIgnoreCase(stat))
+					return true;
+		return false;
 	}
 
 	public boolean isAuthorized(MOB user, PhysicalAgent target)
@@ -380,14 +380,14 @@ public class GetStat extends CM1Command
 			else
 			{
 				String[] codes = this.getStatCodes(P, mod);
-		        for(int i=0;i<codes.length;i++)
-		            if(codes[i].equalsIgnoreCase(stat))
-		    			if(P instanceof MOB)
+				for(int i=0;i<codes.length;i++)
+					if(codes[i].equalsIgnoreCase(stat))
+						if(P instanceof MOB)
 							req.sendMsg("[OK "+CMLib.coffeeMaker().getGenMobStat((MOB)P, stat)+"]");
-		    			else
-		    			if(P instanceof Item)
+						else
+						if(P instanceof Item)
 							req.sendMsg("[OK "+CMLib.coffeeMaker().getGenItemStat((Item)P, stat)+"]");
-		        		
+						
 			}
 		}
 		catch(Exception ioe)

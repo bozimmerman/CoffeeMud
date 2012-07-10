@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -47,22 +47,22 @@ public class BrotherHelper extends StdBehavior
 	
 	public void setParms(String parms)
 	{
-	    super.setParms(parms);
-	    nameOnly=parms.toUpperCase().indexOf("NAMEONLY")>=0;
-	    num=-1;
+		super.setParms(parms);
+		nameOnly=parms.toUpperCase().indexOf("NAMEONLY")>=0;
+		num=-1;
 	}
 	
 	public int numAllowed() {
-	    if(num<0)
-	    {
-	        num=0;
-	        Vector<String> V=CMParms.parse(getParms());
-	        for(int v=0;v<V.size();v++)
-	            if(CMath.isInteger((String)V.elementAt(v)))
-	                num=CMath.s_int((String)V.elementAt(v));
-	        
-	    }
-	    return num;
+		if(num<0)
+		{
+			num=0;
+			Vector<String> V=CMParms.parse(getParms());
+			for(int v=0;v<V.size();v++)
+				if(CMath.isInteger((String)V.elementAt(v)))
+					num=CMath.s_int((String)V.elementAt(v));
+			
+		}
+		return num;
 	}
 
 	public static boolean isBrother(MOB target, MOB observer, boolean nameOnly)
@@ -70,13 +70,13 @@ public class BrotherHelper extends StdBehavior
 		if((observer==null)||(target==null)) return false;
 		if(!nameOnly)
 		{
-    		if((observer.getStartRoom()!=null)&&(target.getStartRoom()!=null))
-            {
-    			if (observer.getStartRoom() == target.getStartRoom())
-    				return true;
-            }
+			if((observer.getStartRoom()!=null)&&(target.getStartRoom()!=null))
+			{
+				if (observer.getStartRoom() == target.getStartRoom())
+					return true;
+			}
 		}
-        if((observer.ID().equals(target.ID()))&&(observer.name().equals(target.name())))
+		if((observer.ID().equals(target.ID()))&&(observer.name().equals(target.name())))
 			return true;
 		return false;
 	}
@@ -111,17 +111,17 @@ public class BrotherHelper extends StdBehavior
 			boolean yep=true;
 			if(CMLib.law().isLegalOfficerHere(observer))
 			{
-			    yep=false;
-			    if(CMLib.law().isLegalOfficialHere(target))
-			        yep=true;
-			    else
-			    if(!CMLib.flags().isAggressiveTo(target,source))
-			        yep=true;
+				yep=false;
+				if(CMLib.law().isLegalOfficialHere(target))
+					yep=true;
+				else
+				if(!CMLib.flags().isAggressiveTo(target,source))
+					yep=true;
 			}
 			if(yep&&((numAllowed()==0)||(numInFray<numAllowed())))
-            {
+			{
 				yep=Aggressive.startFight(observer,source,true,false,"DON'T HURT MY FRIEND!");
-            }
+			}
 		}
 	}
 

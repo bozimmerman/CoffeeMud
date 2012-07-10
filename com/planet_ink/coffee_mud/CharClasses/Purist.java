@@ -25,7 +25,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -47,13 +47,13 @@ public class Purist extends Cleric
 
 	public Purist()
 	{
-        super();
+		super();
 		maxStatAdj[CharStats.STAT_WISDOM]=4;
 		maxStatAdj[CharStats.STAT_CHARISMA]=4;
-    }
-    public void initializeClass()
-    {
-        super.initializeClass();
+	}
+	public void initializeClass()
+	{
+		super.initializeClass();
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Write",50,true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Recall",100,true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Revoke",true);
@@ -90,7 +90,7 @@ public class Purist extends Cleric
 		CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Prayer_ProtParalyzation",true);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),9,"Prayer_Gills",false);
-        CMLib.ableMapper().addCharAbilityMapping(ID(),9,"Prayer_CureFatigue",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),9,"Prayer_CureFatigue",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),10,"Prayer_RestoreVoice",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),10,"Prayer_SenseMagic",false);
@@ -111,7 +111,7 @@ public class Purist extends Cleric
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),16,"Prayer_Calm",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),16,"Prayer_Conviction",false);
-        CMLib.ableMapper().addCharAbilityMapping(ID(),16,"Prayer_InfuseHoliness",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),16,"Prayer_InfuseHoliness",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Skill_AttackHalf",false);
 

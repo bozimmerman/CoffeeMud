@@ -23,7 +23,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -38,7 +38,7 @@ public class Shearing extends CommonSkill
 	public String ID() { return "Shearing"; }
 	public String name(){ return "Shearing";}
 	private static final String[] triggerStrings = {"SHEAR","SHEARING"};
-    public int classificationCode() {   return Ability.ACODE_COMMON_SKILL|Ability.DOMAIN_ANIMALAFFINITY; }
+	public int classificationCode() {   return Ability.ACODE_COMMON_SKILL|Ability.DOMAIN_ANIMALAFFINITY; }
 	public String[] triggerStrings(){return triggerStrings;}
 
 	private MOB sheep=null;
@@ -149,7 +149,7 @@ public class Shearing extends CommonSkill
 			mob.location().send(mob,msg);
 			sheep=target;
 			verb="shearing "+target.name();
-            playSound="scissor.wav";
+			playSound="scissor.wav";
 			int duration=(target.phyStats().weight()/(10+getXLEVELLevel(mob)));
 			if(duration<10) duration=10;
 			if(duration>40) duration=40;

@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -56,9 +56,9 @@ public class Spell_DetectPoison extends Spell
 		if(fromMe instanceof MOB)
 		{
 			MOB mob=(MOB)fromMe;
-	        for(Enumeration<Ability> a=mob.allAbilities();a.hasMoreElements();)
-	        {
-	            Ability A=a.nextElement();
+			for(Enumeration<Ability> a=mob.allAbilities();a.hasMoreElements();)
+			{
+				Ability A=a.nextElement();
 				if((A!=null)&&((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_POISON))
 					offenders.addElement(A);
 			}
@@ -66,19 +66,19 @@ public class Spell_DetectPoison extends Spell
 		return offenders;
 	}
 
-    public int castingQuality(MOB mob, Physical target)
-    {
-        if(mob!=null)
-        {
-            if(target instanceof MOB)
-            {
-                if(((MOB)target).isInCombat()&&((MOB)target).isMonster())
-                    return Ability.QUALITY_INDIFFERENT;
-            }
-        }
-        return super.castingQuality(mob,target);
-    }
-    
+	public int castingQuality(MOB mob, Physical target)
+	{
+		if(mob!=null)
+		{
+			if(target instanceof MOB)
+			{
+				if(((MOB)target).isInCombat()&&((MOB)target).isMonster())
+					return Ability.QUALITY_INDIFFERENT;
+			}
+		}
+		return super.castingQuality(mob,target);
+	}
+	
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		Physical target=getAnyTarget(mob,commands,givenTarget,Wearable.FILTER_UNWORNONLY);

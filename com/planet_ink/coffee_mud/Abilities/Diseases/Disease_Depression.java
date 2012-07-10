@@ -23,7 +23,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -60,14 +60,14 @@ public class Disease_Depression extends Disease
 				return true;
 			if(msg.source().location()==null)
 				return true;
-		    MOB mob=(MOB)affected;
+			MOB mob=(MOB)affected;
 			if(((msg.amITarget(mob))||(msg.amISource(mob)))
 			&&(msg.tool() instanceof Social)
 			&&(msg.tool().Name().equals("MATE <T-NAME>")
 				||msg.tool().Name().equals("SEX <T-NAME>")))
 			{
-			    mob.tell("You don't really feel like doing it right now.");
-			    return false;
+				mob.tell("You don't really feel like doing it right now.");
+				return false;
 			}
 		}
 		return true;
@@ -75,14 +75,14 @@ public class Disease_Depression extends Disease
 	
 	public void affectPhyStats(Physical E, PhyStats stats)
 	{
-	    super.affectPhyStats(E,stats);
-	    stats.setAttackAdjustment(stats.attackAdjustment()-10);
+		super.affectPhyStats(E,stats);
+		stats.setAttackAdjustment(stats.attackAdjustment()-10);
 	}
 	
 	public void affectChatStats(MOB E, CharStats stats)
 	{
-	    super.affectCharStats(E,stats);
-	    stats.setStat(CharStats.STAT_SAVE_JUSTICE,stats.getStat(CharStats.STAT_SAVE_JUSTICE)-20);
+		super.affectCharStats(E,stats);
+		stats.setStat(CharStats.STAT_SAVE_JUSTICE,stats.getStat(CharStats.STAT_SAVE_JUSTICE)-20);
 	}
 	
 	public boolean tick(Tickable ticking, int tickID)
@@ -97,18 +97,18 @@ public class Disease_Depression extends Disease
 		if(mob.isInCombat()
 		&&(CMLib.dice().rollPercentage()<10))
 		{
-		    mob.tell("Whats the point in fighting, really?");
-		    mob.makePeace();
+			mob.tell("Whats the point in fighting, really?");
+			mob.makePeace();
 		}
 		else
 		if((!mob.isInCombat())
 		&&(mob.session()!=null)
 		&&(mob.session().getIdleMillis()>10000)
-        &&((CMLib.dice().rollPercentage()==1)||(CMLib.flags().isSitting(mob))))
-        {
-		    Command C=CMClass.getCommand("Sleep");
-		    try{C.execute(mob,new XVector<String>("Sleep"),Command.METAFLAG_FORCED);}catch(Exception e){}
-        }
+		&&((CMLib.dice().rollPercentage()==1)||(CMLib.flags().isSitting(mob))))
+		{
+			Command C=CMClass.getCommand("Sleep");
+			try{C.execute(mob,new XVector<String>("Sleep"),Command.METAFLAG_FORCED);}catch(Exception e){}
+		}
 		if(mob.curState().getFatigue()<CharState.FATIGUED_MILLIS)
 			mob.curState().setFatigue(CharState.FATIGUED_MILLIS);
 		return true;

@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -40,7 +40,7 @@ public class Chant_AnimalSpy extends Chant
 	public String name(){ return "Animal Spy";}
 	public String displayText(){return "(Animal Spy)";}
 	public int abstractQuality(){return Ability.QUALITY_OK_OTHERS;}
-    public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_ANIMALAFFINITY;}
+	public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_ANIMALAFFINITY;}
 	protected MOB spy=null;
 	protected boolean disable=false;
 
@@ -126,9 +126,9 @@ public class Chant_AnimalSpy extends Chant
 		{
 			disable=false;
 			if((spy!=null)&&((spy.amFollowing()!=invoker)
-                            ||(spy.amDead())
-                            ||(!CMLib.flags().isInTheGame(spy,false))
-                            ||(!CMLib.flags().isInTheGame(invoker,true))))
+							||(spy.amDead())
+							||(!CMLib.flags().isInTheGame(spy,false))
+							||(!CMLib.flags().isInTheGame(invoker,true))))
 				unInvoke();
 		}
 	}

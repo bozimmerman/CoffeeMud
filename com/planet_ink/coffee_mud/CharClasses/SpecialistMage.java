@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -40,9 +40,9 @@ public class SpecialistMage extends Mage
 	public int domain(){return Ability.DOMAIN_ABJURATION;}
 	public int opposed(){return Ability.DOMAIN_ENCHANTMENT;}
 
-    public void initializeClass()
-    {
-        super.initializeClass();
+	public void initializeClass()
+	{
+		super.initializeClass();
 		for(Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
 		{
 			Ability A=(Ability)a.nextElement();
@@ -108,9 +108,9 @@ public class SpecialistMage extends Mage
 			&&(msg.targetMinor()==CMMsg.TYP_DAMAGE)
 			&&((((Ability)msg.tool()).classificationCode()&Ability.ALL_DOMAINS)==domain()))
 			{
-                int classLevel=myChar.charStats().getClassLevel(this);
-                if(classLevel>30) classLevel=30;
-                msg.setValue((int)Math.round(CMath.mul(msg.value(),1.0+CMath.mul(0.01,classLevel))));
+				int classLevel=myChar.charStats().getClassLevel(this);
+				if(classLevel>30) classLevel=30;
+				msg.setValue((int)Math.round(CMath.mul(msg.value(),1.0+CMath.mul(0.01,classLevel))));
 			}
 		}
 		else
@@ -119,8 +119,8 @@ public class SpecialistMage extends Mage
 		&&(msg.tool()!=null)
 		&&(msg.tool() instanceof Ability))
 		{
-            int classLevel=myChar.charStats().getClassLevel(this);
-            if(classLevel>30) classLevel=30;
+			int classLevel=myChar.charStats().getClassLevel(this);
+			if(classLevel>30) classLevel=30;
 			if((domain==domain())
 			&&(classLevel>=5))
 				msg.setValue((int)Math.round(CMath.div((msg.value()),1.0+CMath.mul(0.01,classLevel))));

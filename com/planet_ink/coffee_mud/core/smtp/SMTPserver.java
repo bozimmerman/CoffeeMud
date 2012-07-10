@@ -34,7 +34,7 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.JournalsLibrary.JournalEnt
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -50,11 +50,11 @@ public class SMTPserver extends Thread implements Tickable
 	
 	public String ID(){return "SMTPserver";}
 	public String name(){return "SMTPserver";}
-    public CMObject newInstance(){try{return (CMObject)getClass().newInstance();}catch(Exception e){return new SMTPserver(mud);}}
-    public void initializeClass(){}
-    public CMObject copyOf(){try{return (SMTPserver)this.clone();}catch(Exception e){return newInstance();}}
-    public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
-    
+	public CMObject newInstance(){try{return (CMObject)getClass().newInstance();}catch(Exception e){return new SMTPserver(mud);}}
+	public void initializeClass(){}
+	public CMObject copyOf(){try{return (SMTPserver)this.clone();}catch(Exception e){return newInstance();}}
+	public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
+	
 	public long 		tickStatus=STATUS_NOT;
 	public long 		lastAllProcessing=System.currentTimeMillis();
 	public boolean 		isOK = false;
@@ -69,16 +69,16 @@ public class SMTPserver extends Thread implements Tickable
 	private HashSet<String> 		 oldEmailComplaints=new HashSet<String>();
 	private CMThreadPoolExecutor  	 threadPool;
 
-    public SMTPserver()
-    {
-    	super("SMTP"); 
-    	mud=null;
-    	isOK=false;
+	public SMTPserver()
+	{
+		super("SMTP"); 
+		mud=null;
+		isOK=false;
 		threadPool = new CMThreadPoolExecutor("SMTP", 0, 3, 30, TimeUnit.SECONDS, 5, 256);
 		threadPool.setThreadFactory(new CMThreadFactory("SMTP"));
-    	setDaemon(true);
-    }
-    
+		setDaemon(true);
+	}
+	
 	public SMTPserver(MudHost a_mud)
 	{
 		super("SMTP");
@@ -136,7 +136,7 @@ public class SMTPserver extends Thread implements Tickable
 		String mailbox=page.getStr("MAILBOX");
 		if(mailbox==null) mailbox="";
 		CMProps.setVar(CMProps.SYSTEM_MAILBOX,mailbox.trim());
-        CMProps.setIntVar(CMProps.SYSTEMI_MAXMAILBOX,getMaxMsgs());
+		CMProps.setIntVar(CMProps.SYSTEMI_MAXMAILBOX,getMaxMsgs());
 
 		CMProps.setBoolVar(CMProps.SYSTEMB_EMAILFORWARDING,CMath.s_bool(page.getStr("FORWARD")));
 
@@ -305,10 +305,10 @@ public class SMTPserver extends Thread implements Tickable
 			while(true)
 			{
 				sock=servsock.accept();
-                while(CMLib.threads().isAllSuspended())
-                    Thread.sleep(1000);
-                if(CMSecurity.isDebugging(CMSecurity.DbgFlag.SMTPSERVER))
-                	Log.debugOut("SMTPserver","Connection received: "+sock.getInetAddress().getHostAddress());
+				while(CMLib.threads().isAllSuspended())
+					Thread.sleep(1000);
+				if(CMSecurity.isDebugging(CMSecurity.DbgFlag.SMTPSERVER))
+					Log.debugOut("SMTPserver","Connection received: "+sock.getInetAddress().getHostAddress());
 				if(CMProps.getBoolVar(CMProps.SYSTEMB_MUDSTARTED))
 					threadPool.execute(new ProcessSMTPrequest(sock,this));
 				else
@@ -499,7 +499,7 @@ public class SMTPserver extends Thread implements Tickable
 		else
 		{
 			Calendar IQE=Calendar.getInstance();
-            IQE.setTimeInMillis(msg.update);
+			IQE.setTimeInMillis(msg.update);
 			IQE.add(Calendar.DATE,getJournalDays());
 			if(IQE.getTimeInMillis()<System.currentTimeMillis())
 				CMLib.database().DBDeleteJournal(journalName,msg.key);

@@ -25,7 +25,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -40,7 +40,7 @@ public class Chant_SummonInsects extends Chant
 	public String ID() { return "Chant_SummonInsects"; }
 	public String name(){ return "Summon Insects";}
 	public String displayText(){return "(In a swarm of insects)";}
-    public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_ANIMALAFFINITY;}
+	public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_ANIMALAFFINITY;}
 	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	public int maxRange(){return adjustedMaxInvokerRange(5);}
 	protected int canAffectCode(){return CAN_MOBS;}
@@ -59,11 +59,11 @@ public class Chant_SummonInsects extends Chant
 				unInvoke();
 			else
 			if((!M.amDead())&&(M.location()!=null))
-            {
+			{
 				CMLib.combat().postDamage(invoker,M,this,CMLib.dice().roll(1,3,0),CMMsg.MASK_ALWAYS|CMMsg.TYP_CAST_SPELL,-1,"<T-NAME> <T-IS-ARE> stung by the swarm!");
-                if((!M.isInCombat())&&(M!=invoker)&&(M.location()!=null)&&(M.location().isInhabitant(invoker))&&(CMLib.flags().canBeSeenBy(invoker,M)))
-                    CMLib.combat().postAttack(M,invoker,M.fetchWieldedItem());
-            }
+				if((!M.isInCombat())&&(M!=invoker)&&(M.location()!=null)&&(M.location().isInhabitant(invoker))&&(CMLib.flags().canBeSeenBy(invoker,M)))
+					CMLib.combat().postAttack(M,invoker,M.fetchWieldedItem());
+			}
 		}
 		return super.tick(ticking,tickID);
 	}
@@ -80,21 +80,21 @@ public class Chant_SummonInsects extends Chant
 				mob.location().show(mob,null,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> manage(s) to escape the insect swarm!");
 	}
 
-    public int castingQuality(MOB mob, Physical target)
-    {
-         if(mob!=null)
-         {
-             if(!mob.isInCombat())
-                 return Ability.QUALITY_INDIFFERENT;
-             Room R=mob.location();
-             if(R!=null)
-             {
-                 if((R.domainType()&Room.INDOORS)>0)
-                     return Ability.QUALITY_INDIFFERENT;
-             }
-         }
-         return super.castingQuality(mob,target);
-    }
+	public int castingQuality(MOB mob, Physical target)
+	{
+		 if(mob!=null)
+		 {
+			 if(!mob.isInCombat())
+				 return Ability.QUALITY_INDIFFERENT;
+			 Room R=mob.location();
+			 if(R!=null)
+			 {
+				 if((R.domainType()&Room.INDOORS)>0)
+					 return Ability.QUALITY_INDIFFERENT;
+			 }
+		 }
+		 return super.castingQuality(mob,target);
+	}
 
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{

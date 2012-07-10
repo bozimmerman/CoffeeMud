@@ -25,7 +25,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -38,7 +38,7 @@ public class Song_Comprehension extends Song
 	public String ID() { return "Song_Comprehension"; }
 	public String name(){ return "Comprehension";}
 	public int abstractQuality(){ return Ability.QUALITY_OK_OTHERS;}
-    protected boolean HAS_QUANTITATIVE_ASPECT(){return false;}
+	protected boolean HAS_QUANTITATIVE_ASPECT(){return false;}
 
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{

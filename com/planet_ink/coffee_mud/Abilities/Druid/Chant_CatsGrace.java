@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -39,7 +39,7 @@ public class Chant_CatsGrace extends Chant
 	public String ID() { return "Chant_CatsGrace"; }
 	public String name(){return "Cats Grace";}
 	public String displayText(){return "(Cats Grace)";}
-    public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_SHAPE_SHIFTING;}
+	public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_SHAPE_SHIFTING;}
 	public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_SELF;}
 	protected int canAffectCode(){return CAN_MOBS;}
 

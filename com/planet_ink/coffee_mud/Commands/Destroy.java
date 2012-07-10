@@ -26,7 +26,7 @@ import java.io.IOException;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -75,8 +75,8 @@ public class Destroy extends StdCommand
 			doneSomething=true;
 			mob.location().showHappens(CMMsg.MSG_OK_VISUAL,deadMOB.name()+" vanishes in a puff of smoke.");
 			Log.sysOut("Mobs",mob.Name()+" destroyed mob "+deadMOB.Name()+".");
-            deadMOB.destroy();
-            mob.location().delInhabitant(deadMOB);
+			deadMOB.destroy();
+			mob.location().delInhabitant(deadMOB);
 			deadMOB=mob.location().fetchInhabitant(mobID);
 			if(!allFlag) break;
 		}
@@ -101,14 +101,14 @@ public class Destroy extends StdCommand
 			return;
 		}
 		String accountName=CMStrings.capitalizeAndLower(CMParms.combine(commands, 2));
-	    PlayerAccount theAccount = CMLib.players().getLoadAccount(accountName);
-	    if(theAccount==null)
-	    {
+		PlayerAccount theAccount = CMLib.players().getLoadAccount(accountName);
+		if(theAccount==null)
+		{
 			mob.tell("There is no account called '"+accountName+"'!\n\r");
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a powerful spell.");
 			return;
-	    }
-	    String playerList = CMParms.toStringList(theAccount.getPlayers());
+		}
+		String playerList = CMParms.toStringList(theAccount.getPlayers());
 		if(mob.session().confirm("This will complete OBLITERATE the account '"+theAccount.accountName()+"' and players '"+playerList+"' forever.  Are you SURE?! (y/N)?","N"))
 		{
 			for(Enumeration<String> p=theAccount.getPlayers();p.hasMoreElements();)
@@ -119,7 +119,7 @@ public class Destroy extends StdCommand
 				Log.sysOut("Mobs",mob.Name()+" destroyed user "+deadMOB.Name()+".");
 				deadMOB.destroy();
 			}
-		    CMLib.players().obliterateAccountOnly(theAccount);
+			CMLib.players().obliterateAccountOnly(theAccount);
 			mob.location().recoverRoomStats();
 			Log.sysOut("Destroy",mob.Name()+" destroyed account "+theAccount.accountName()+" and players '"+playerList+"'.");
 		}
@@ -157,68 +157,68 @@ public class Destroy extends StdCommand
 		}
 		return true;
 	}
-    
-    
-    public Thread findThreadGroup(String threadName,ThreadGroup tGroup)
-    {
-        int ac = tGroup.activeCount();
-        int agc = tGroup.activeGroupCount();
-        Thread tArray[] = new Thread [ac+1];
-        ThreadGroup tgArray[] = new ThreadGroup [agc+1];
+	
+	
+	public Thread findThreadGroup(String threadName,ThreadGroup tGroup)
+	{
+		int ac = tGroup.activeCount();
+		int agc = tGroup.activeGroupCount();
+		Thread tArray[] = new Thread [ac+1];
+		ThreadGroup tgArray[] = new ThreadGroup [agc+1];
 
-        tGroup.enumerate(tArray,false);
-        tGroup.enumerate(tgArray,false);
+		tGroup.enumerate(tArray,false);
+		tGroup.enumerate(tgArray,false);
 
-        for (int i = 0; i<ac; ++i)
-        {
-            if (tArray[i] != null)
-            {
-                if((tArray[i] instanceof TickableGroup)
-                &&(((TickableGroup)tArray[i]).lastTicked()!=null)
-                &&(((TickableGroup)tArray[i]).lastTicked().getTickStatus()==0))
-                    continue;
-                if((tArray[i] instanceof Tickable)
-                &&(((Tickable)tArray[i]).getTickStatus()==0))
-                    continue;
-                
-                if(tArray[i].getName().equalsIgnoreCase(threadName))
-                    return tArray[i];
-            }
-        }
+		for (int i = 0; i<ac; ++i)
+		{
+			if (tArray[i] != null)
+			{
+				if((tArray[i] instanceof TickableGroup)
+				&&(((TickableGroup)tArray[i]).lastTicked()!=null)
+				&&(((TickableGroup)tArray[i]).lastTicked().getTickStatus()==0))
+					continue;
+				if((tArray[i] instanceof Tickable)
+				&&(((Tickable)tArray[i]).getTickStatus()==0))
+					continue;
+				
+				if(tArray[i].getName().equalsIgnoreCase(threadName))
+					return tArray[i];
+			}
+		}
 
-        if (agc > 0)
-        {
-            for (int i = 0; i<agc; ++i)
-            {
-                if (tgArray[i] != null)
-                {
-                    Thread t=findThreadGroup(threadName,tgArray[i]);
-                    if(t!=null) return t;
-                }
-            }
-        }
-        return null;
-    }
+		if (agc > 0)
+		{
+			for (int i = 0; i<agc; ++i)
+			{
+				if (tgArray[i] != null)
+				{
+					Thread t=findThreadGroup(threadName,tgArray[i]);
+					if(t!=null) return t;
+				}
+			}
+		}
+		return null;
+	}
 
 
-    public Thread findThread(String threadName)
-    {
-        Thread t=null;
-        try
-        {
-            ThreadGroup topTG = Thread.currentThread().getThreadGroup();
-            while (topTG != null && topTG.getParent() != null)
-                topTG = topTG.getParent();
-            if (topTG != null)
-                t=findThreadGroup(threadName,topTG);
+	public Thread findThread(String threadName)
+	{
+		Thread t=null;
+		try
+		{
+			ThreadGroup topTG = Thread.currentThread().getThreadGroup();
+			while (topTG != null && topTG.getParent() != null)
+				topTG = topTG.getParent();
+			if (topTG != null)
+				t=findThreadGroup(threadName,topTG);
 
-        }
-        catch (Exception e)
-        {
-        }
-        return t;
+		}
+		catch (Exception e)
+		{
+		}
+		return t;
 
-    }
+	}
 
 	public void rooms(MOB mob, Vector commands)
 		throws IOException
@@ -319,7 +319,7 @@ public class Destroy extends StdCommand
 			else
 			{
 				mob.location().rawDoors()[direction]=null;
-                mob.location().setRawExit(direction,null);
+				mob.location().setRawExit(direction,null);
 				CMLib.database().DBUpdateExits(mob.location());
 			}
 			if(unRoom instanceof GridLocale)
@@ -436,13 +436,13 @@ public class Destroy extends StdCommand
 			mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,deadItem.name()+" disintegrates!");
 			doneSomething=true;
 			Log.sysOut("Items",mob.Name()+" destroyed item "+deadItem.name()+".");
-            if(srchMob!=null)
-                deadItem.setOwner(srchMob);
-            else
-            if(srchRoom!=null)
-                deadItem.setOwner(srchRoom);
-            deadItem.destroy();
-            mob.location().delItem(deadItem);
+			if(srchMob!=null)
+				deadItem.setOwner(srchMob);
+			else
+			if(srchRoom!=null)
+				deadItem.setOwner(srchRoom);
+			deadItem.destroy();
+			mob.location().delItem(deadItem);
 			deadItem=null;
 			if(!allFlag) deadItem=(srchMob==null)?null:srchMob.findItem(null,itemID);
 			if(deadItem==null) deadItem=(srchRoom==null)?null:srchRoom.findItem(null,itemID);
@@ -566,9 +566,9 @@ public class Destroy extends StdCommand
 		CMLib.database().DBDeleteRace(R.ID());
 		CMClass.loadClass(CMObjectType.RACE,"com/planet_ink/coffee_mud/Races/"+oldRID+".class",true);
 		Race oldR=CMClass.getRace(oldRID);
-        if(oldR==null) oldR=CMClass.getRace("StdRace");
-        CMLib.utensils().swapRaces(oldR,R);
-        if(!oldR.ID().equals("StdRace"))
+		if(oldR==null) oldR=CMClass.getRace("StdRace");
+		CMLib.utensils().swapRaces(oldR,R);
+		if(!oldR.ID().equals("StdRace"))
 			mob.location().showHappens(CMMsg.MSG_OK_ACTION,"The diversity of the world just changed?!");
 		else
 			mob.location().showHappens(CMMsg.MSG_OK_ACTION,"The diversity of the world just decreased!");
@@ -596,59 +596,59 @@ public class Destroy extends StdCommand
 		mob.location().showHappens(CMMsg.MSG_OK_ACTION,"The complication of skill usage just decreased!");
 		return true;
 	}
-    
-    public boolean expertises(MOB mob, Vector commands)
-    {
-        if(commands.size()<3)
-        {
-            mob.tell("You have failed to specify the proper fields.\n\rThe format is DESTROY EXPERTISE [CODE ID or HELP line]\n\r");
-            mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
-            return false;
-        }
+	
+	public boolean expertises(MOB mob, Vector commands)
+	{
+		if(commands.size()<3)
+		{
+			mob.tell("You have failed to specify the proper fields.\n\rThe format is DESTROY EXPERTISE [CODE ID or HELP line]\n\r");
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
+			return false;
+		}
 
-        String classID=CMParms.combine(commands,2);
-        CMFile F=new CMFile(Resources.makeFileResourceName("skills/expertises.txt"),null,true);
-        boolean removed=Resources.findRemoveProperty(F, classID);
-        if(removed)
-        {
-            Resources.removeResource("skills/expertises.txt");
-            mob.location().showHappens(CMMsg.MSG_OK_ACTION,"The power of skill usage just decreased!");
-            CMLib.expertises().recompileExpertises();
-        }
-        return true;
-    }
-    
-    public boolean titles(MOB mob, Vector commands)
-    {
-        mob.tell("Destroying a title will not remove the title from all players who may have it.");
-        mob.tell("If this is important, you should destroy and then re-add the exact same title with an unreachable " +
-                 "mask for a few days to allow the system to remove the title from the players as they log in.\n\r");
-        if(commands.size()<3)
-        {
-            mob.tell("You have failed to specify the proper fields.\n\rThe format is DESTROY TITLE [TITLE STRING]\n\r");
-            mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
-            return false;
-        }
+		String classID=CMParms.combine(commands,2);
+		CMFile F=new CMFile(Resources.makeFileResourceName("skills/expertises.txt"),null,true);
+		boolean removed=Resources.findRemoveProperty(F, classID);
+		if(removed)
+		{
+			Resources.removeResource("skills/expertises.txt");
+			mob.location().showHappens(CMMsg.MSG_OK_ACTION,"The power of skill usage just decreased!");
+			CMLib.expertises().recompileExpertises();
+		}
+		return true;
+	}
+	
+	public boolean titles(MOB mob, Vector commands)
+	{
+		mob.tell("Destroying a title will not remove the title from all players who may have it.");
+		mob.tell("If this is important, you should destroy and then re-add the exact same title with an unreachable " +
+				 "mask for a few days to allow the system to remove the title from the players as they log in.\n\r");
+		if(commands.size()<3)
+		{
+			mob.tell("You have failed to specify the proper fields.\n\rThe format is DESTROY TITLE [TITLE STRING]\n\r");
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
+			return false;
+		}
 
-        String classID=CMParms.combine(commands,2);
-        if(!CMLib.titles().isExistingAutoTitle(classID))
-        {
-            mob.tell("'"+classID+"' is not an existing auto-title, try LIST TITLES.");
-            mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
-            return false;
-        }
-        CMLib.titles().dispossesTitle(classID);
-        CMFile F=new CMFile(Resources.makeFileResourceName("titles.txt"),null,true);
-        boolean removed=Resources.findRemoveProperty(F, classID);
-        if(removed)
-        {
-            mob.location().showHappens(CMMsg.MSG_OK_ACTION,"The prestige of players just decreased!");
-            Resources.removeResource("titles.txt");
-            CMLib.titles().reloadAutoTitles();
-        }
-        return true;
-    }
-    
+		String classID=CMParms.combine(commands,2);
+		if(!CMLib.titles().isExistingAutoTitle(classID))
+		{
+			mob.tell("'"+classID+"' is not an existing auto-title, try LIST TITLES.");
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
+			return false;
+		}
+		CMLib.titles().dispossesTitle(classID);
+		CMFile F=new CMFile(Resources.makeFileResourceName("titles.txt"),null,true);
+		boolean removed=Resources.findRemoveProperty(F, classID);
+		if(removed)
+		{
+			mob.location().showHappens(CMMsg.MSG_OK_ACTION,"The prestige of players just decreased!");
+			Resources.removeResource("titles.txt");
+			CMLib.titles().reloadAutoTitles();
+		}
+		return true;
+	}
+	
 	public boolean classes(MOB mob, Vector commands)
 	{
 		if(commands.size()<3)
@@ -674,15 +674,15 @@ public class Destroy extends StdCommand
 		}
 		CMClass.delCharClass(C);
 		CMLib.database().DBDeleteClass(C.ID());
-        String oldCID=C.ID();
-        CMClass.loadClass(CMObjectType.CHARCLASS,"com/planet_ink/coffee_mud/CharClasses/"+oldCID+".class",true);
-        CharClass oldC=CMClass.getCharClass(oldCID);
-        if(oldC==null) oldC=CMClass.getCharClass("StdCharClass");
-        CMLib.utensils().reloadCharClasses(C);
-        if(!oldC.ID().equals("StdCharClass"))
-            mob.location().showHappens(CMMsg.MSG_OK_ACTION,"The diversity of the world just changed?!");
-        else
-    		mob.location().showHappens(CMMsg.MSG_OK_ACTION,"The employment of the world just decreased!");
+		String oldCID=C.ID();
+		CMClass.loadClass(CMObjectType.CHARCLASS,"com/planet_ink/coffee_mud/CharClasses/"+oldCID+".class",true);
+		CharClass oldC=CMClass.getCharClass(oldCID);
+		if(oldC==null) oldC=CMClass.getCharClass("StdCharClass");
+		CMLib.utensils().reloadCharClasses(C);
+		if(!oldC.ID().equals("StdCharClass"))
+			mob.location().showHappens(CMMsg.MSG_OK_ACTION,"The diversity of the world just changed?!");
+		else
+			mob.location().showHappens(CMMsg.MSG_OK_ACTION,"The employment of the world just decreased!");
 		return true;
 	}
 
@@ -709,13 +709,13 @@ public class Destroy extends StdCommand
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
 			return false;
 		}
-        Object O=CMClass.getObjectOrPrototype(A.ID());
-        if(!(O instanceof Ability))
-        {
-            mob.tell("'"+classID+"' can not be deleted, because it is also an "+CMClass.rawClassName(O)+".");
-            mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
-            return false;
-        }
+		Object O=CMClass.getObjectOrPrototype(A.ID());
+		if(!(O instanceof Ability))
+		{
+			mob.tell("'"+classID+"' can not be deleted, because it is also an "+CMClass.rawClassName(O)+".");
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
+			return false;
+		}
 		CMClass.delClass(CMObjectType.ABILITY,(Ability)O);
 		CMLib.database().DBDeleteAbility(A.ID());
 		mob.location().showHappens(CMMsg.MSG_OK_ACTION,"The skill of the world just decreased!");
@@ -736,8 +736,8 @@ public class Destroy extends StdCommand
 		{
 			String therest=CMParms.combine(commands,3);
 			if(!((therest.equalsIgnoreCase("<T-NAME>")
-                    ||therest.equalsIgnoreCase("SELF")
-                    ||therest.equalsIgnoreCase("ALL"))))
+					||therest.equalsIgnoreCase("SELF")
+					||therest.equalsIgnoreCase("ALL"))))
 			{
 				mob.session().rawPrintln("but fail to specify the proper second parameter.\n\rThe format is DESTROY SOCIAL [NAME] ([<T-NAME>], [SELF])\n\r");
 				mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a powerful spell.");
@@ -757,7 +757,7 @@ public class Destroy extends StdCommand
 			CMLib.socials().remove(soc2.name());
 			CMLib.socials().save(mob);
 			mob.location().showHappens(CMMsg.MSG_OK_ACTION,"The happiness of all mankind has just decreased!");
-            Log.sysOut("SysopSocials",mob.Name()+" destroyed social "+soc2.name()+".");
+			Log.sysOut("SysopSocials",mob.Name()+" destroyed social "+soc2.name()+".");
 		}
 		else
 			mob.location().showHappens(CMMsg.MSG_OK_ACTION,"The happiness of all mankind has just increased!");
@@ -789,9 +789,9 @@ public class Destroy extends StdCommand
 			return true;
 		}
 		if(dropThis instanceof Coins)
-		    ((Coins)dropThis).putCoinsBack();
-        if(dropThis instanceof RawMaterial)
-        	((RawMaterial)dropThis).rebundle();
+			((Coins)dropThis).putCoinsBack();
+		if(dropThis instanceof RawMaterial)
+			((RawMaterial)dropThis).rebundle();
 		return false;
 	}
 
@@ -821,7 +821,7 @@ public class Destroy extends StdCommand
 			return;
 		}
 		subMap.remove(classD.toUpperCase().trim());
-        CMLib.ableMapper().saveAllQualifysFile(map);
+		CMLib.ableMapper().saveAllQualifysFile(map);
 		mob.location().showHappens(CMMsg.MSG_OK_ACTION,"The skill of the world just decreased!");
 	}
 
@@ -937,30 +937,30 @@ public class Destroy extends StdCommand
 		{
 			commandType=((String)commands.elementAt(1)).toUpperCase();
 		}
-        for(Enumeration<JournalsLibrary.CommandJournal> e=CMLib.journals().commandJournals();e.hasMoreElements();)
-        {
-        	JournalsLibrary.CommandJournal CMJ=e.nextElement();
-            if((CMJ.NAME().equals(commandType))
-            &&(CMSecurity.isAllowed(mob,mob.location(),CMJ.NAME())
-                ||CMSecurity.isAllowed(mob,mob.location(),"KILL"+CMJ.NAME()+"S")))
-            {
-                int which=-1;
-                if(commands.size()>2)
-                    which=CMath.s_int((String)commands.elementAt(2));
-                List<JournalsLibrary.JournalEntry> entries = CMLib.database().DBReadJournalMsgs(CMJ.JOURNAL_NAME());
-                
-                if((which<=0)||(which>entries.size()))
-                    mob.tell("Please enter a valid "+CMJ.NAME().toLowerCase()+" number to delete.  Use LIST "+CMJ.NAME()+"S for more information.");
-                else
-                {
-                	JournalsLibrary.JournalEntry entry = entries.get(which-1);
-                    CMLib.database().DBDeleteJournal(CMJ.JOURNAL_NAME(),entry.key);
-                    mob.tell(CMJ.NAME().toLowerCase()+" deletion submitted.");
-                    
-                }
-                return true;
-            }
-        }
+		for(Enumeration<JournalsLibrary.CommandJournal> e=CMLib.journals().commandJournals();e.hasMoreElements();)
+		{
+			JournalsLibrary.CommandJournal CMJ=e.nextElement();
+			if((CMJ.NAME().equals(commandType))
+			&&(CMSecurity.isAllowed(mob,mob.location(),CMJ.NAME())
+				||CMSecurity.isAllowed(mob,mob.location(),"KILL"+CMJ.NAME()+"S")))
+			{
+				int which=-1;
+				if(commands.size()>2)
+					which=CMath.s_int((String)commands.elementAt(2));
+				List<JournalsLibrary.JournalEntry> entries = CMLib.database().DBReadJournalMsgs(CMJ.JOURNAL_NAME());
+				
+				if((which<=0)||(which>entries.size()))
+					mob.tell("Please enter a valid "+CMJ.NAME().toLowerCase()+" number to delete.  Use LIST "+CMJ.NAME()+"S for more information.");
+				else
+				{
+					JournalsLibrary.JournalEntry entry = entries.get(which-1);
+					CMLib.database().DBDeleteJournal(CMJ.JOURNAL_NAME(),entry.key);
+					mob.tell(CMJ.NAME().toLowerCase()+" deletion submitted.");
+					
+				}
+				return true;
+			}
+		}
 		if(commandType.equals("EXIT"))
 		{
 			if(!CMSecurity.isAllowed(mob,mob.location(),"CMDEXITS")) return errorOut(mob);
@@ -1021,22 +1021,22 @@ public class Destroy extends StdCommand
 			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"^S<S-NAME> wave(s) <S-HIS-HER> arms...^?");
 			components(mob,commands);
 		}
-        else
-        if(commandType.equals("EXPERTISE"))
-        {
-            if(!CMSecurity.isAllowed(mob,mob.location(),"EXPERTISES")) return errorOut(mob);
-            mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"^S<S-NAME> wave(s) <S-HIS-HER> arms...^?");
-            expertises(mob,commands);
-        }
-        else
-        if(commandType.equals("TITLE"))
-        {
-            if(!CMSecurity.isAllowed(mob,mob.location(),"TITLES")) return errorOut(mob);
-            mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"^S<S-NAME> wave(s) <S-HIS-HER> arms...^?");
-            titles(mob,commands);
-        }
 		else
-    if(commandType.equals("USER")||commandType.equals("PLAYER"))
+		if(commandType.equals("EXPERTISE"))
+		{
+			if(!CMSecurity.isAllowed(mob,mob.location(),"EXPERTISES")) return errorOut(mob);
+			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"^S<S-NAME> wave(s) <S-HIS-HER> arms...^?");
+			expertises(mob,commands);
+		}
+		else
+		if(commandType.equals("TITLE"))
+		{
+			if(!CMSecurity.isAllowed(mob,mob.location(),"TITLES")) return errorOut(mob);
+			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"^S<S-NAME> wave(s) <S-HIS-HER> arms...^?");
+			titles(mob,commands);
+		}
+		else
+	if(commandType.equals("USER")||commandType.equals("PLAYER"))
 		{
 			if(!CMSecurity.isAllowed(mob,mob.location(),"CMDPLAYERS")) return errorOut(mob);
 			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"^S<S-NAME> wave(s) <S-HIS-HER> arms...^?");
@@ -1061,36 +1061,36 @@ public class Destroy extends StdCommand
 		{
 			if(!CMSecurity.isAllowed(mob,mob.location(),"LISTADMIN")) 
 				return errorOut(mob);
-            String named=CMParms.combine(commands,2);
-            if(!CMSecurity.isDisabledSearch(named.toUpperCase()))
-            	mob.tell("'"+named+"' is not disabled");
-            else
-            {
-            	mob.tell("'"+named+"' is no longer disabled");
-            	CMSecurity.setDisableVar(named.toUpperCase().trim(), true);
-            }
-            return false;
+			String named=CMParms.combine(commands,2);
+			if(!CMSecurity.isDisabledSearch(named.toUpperCase()))
+				mob.tell("'"+named+"' is not disabled");
+			else
+			{
+				mob.tell("'"+named+"' is no longer disabled");
+				CMSecurity.setDisableVar(named.toUpperCase().trim(), true);
+			}
+			return false;
 		}
 		else
 		if(commandType.equals("DEBUGFLAG"))
 		{
 			if(!CMSecurity.isAllowed(mob,mob.location(),"LISTADMIN")) 
 				return errorOut(mob);
-            String named=CMParms.combine(commands,2);
-            CMSecurity.DbgFlag flag = (CMSecurity.DbgFlag)CMath.s_valueOf(CMSecurity.DbgFlag.values(), named.toUpperCase().trim());
-            if(flag==null)
-            {
-            	mob.tell("'"+named+"' is not a valid flag.  Try: "+CMParms.toStringList(CMSecurity.DbgFlag.values()));
-            	return false;
-            }
-            if(!CMSecurity.isDebugging(flag))
-            	mob.tell("'"+named+"' is not debugging");
-            else
-            {
-            	mob.tell("'"+named+"' is no longer debugging");
-            	CMSecurity.setDebugVar(flag, true);
-            }
-            return false;
+			String named=CMParms.combine(commands,2);
+			CMSecurity.DbgFlag flag = (CMSecurity.DbgFlag)CMath.s_valueOf(CMSecurity.DbgFlag.values(), named.toUpperCase().trim());
+			if(flag==null)
+			{
+				mob.tell("'"+named+"' is not a valid flag.  Try: "+CMParms.toStringList(CMSecurity.DbgFlag.values()));
+				return false;
+			}
+			if(!CMSecurity.isDebugging(flag))
+				mob.tell("'"+named+"' is not debugging");
+			else
+			{
+				mob.tell("'"+named+"' is no longer debugging");
+				CMSecurity.setDebugVar(flag, true);
+			}
+			return false;
 		}
 		else
 		if(commandType.equals("NOPURGE"))
@@ -1116,54 +1116,54 @@ public class Destroy extends StdCommand
 				mob.tell("Ok.");
 			}
 		}
-        else
-        if(commandType.equals("HOLIDAY"))
-        {
-            if(!CMSecurity.isAllowed(mob,mob.location(),"CMDQUESTS")) return errorOut(mob);
-            String name=CMParms.combine(commands,2);
-            int num=-1;
-            if(CMath.isInteger(name))
-                num=CMath.s_int(name);
-            else
-            if(name.length()>0)
-                num=CMLib.quests().getHolidayIndex(name);
-            if(num<0)
-            {
-                mob.tell("HOLIDAY '"+name+"' not found. Try LIST HOLIDAYS.");
-                mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
-                return false;
-            }
-            mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"^S<S-NAME> wave(s) <S-HIS-HER> arms...^?");
-            mob.tell(CMLib.quests().deleteHoliday(num));
-            Log.sysOut("CreateEdit",mob.Name()+" deleted Holiday "+name+".");
-        }
 		else
-        if(commandType.equals("TICKS"))
-        {
-            if(!CMSecurity.isASysOp(mob)) return errorOut(mob);
-            String which=CMParms.combine(commands,2);
-            List<Tickable> V=null;
-            if(which.length()>0)
-            {
-                V=CMLib.threads().getNamedTickingObjects(which);
-                if(V.size()==0) V=null;
-            }
-            if(V==null)
-                mob.tell("Please enter a valid ticking object name to destroy.  Use List ticks for a list of groups and objects.");
-            else
-            {
-                StringBuffer list=new StringBuffer("");
-                for(int v=0;v<V.size();v++)
-                    list.append(((Tickable)V.get(v)).name()+", ");
-                if((mob.session()!=null)&&(mob.session().confirm("Destroy the following ticking objects: "+list.substring(0,list.length()-2)+"  (y/N)? ","N")))
-                {
-                    for(int v=0;v<V.size();v++)
-                        CMLib.threads().deleteTick((Tickable)V.get(v),-1);
-                    Log.sysOut("CreateEdit",mob.Name()+" destroyed ticks named '"+which+"'.");
-                }
-            }
-        }
-        else
+		if(commandType.equals("HOLIDAY"))
+		{
+			if(!CMSecurity.isAllowed(mob,mob.location(),"CMDQUESTS")) return errorOut(mob);
+			String name=CMParms.combine(commands,2);
+			int num=-1;
+			if(CMath.isInteger(name))
+				num=CMath.s_int(name);
+			else
+			if(name.length()>0)
+				num=CMLib.quests().getHolidayIndex(name);
+			if(num<0)
+			{
+				mob.tell("HOLIDAY '"+name+"' not found. Try LIST HOLIDAYS.");
+				mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
+				return false;
+			}
+			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"^S<S-NAME> wave(s) <S-HIS-HER> arms...^?");
+			mob.tell(CMLib.quests().deleteHoliday(num));
+			Log.sysOut("CreateEdit",mob.Name()+" deleted Holiday "+name+".");
+		}
+		else
+		if(commandType.equals("TICKS"))
+		{
+			if(!CMSecurity.isASysOp(mob)) return errorOut(mob);
+			String which=CMParms.combine(commands,2);
+			List<Tickable> V=null;
+			if(which.length()>0)
+			{
+				V=CMLib.threads().getNamedTickingObjects(which);
+				if(V.size()==0) V=null;
+			}
+			if(V==null)
+				mob.tell("Please enter a valid ticking object name to destroy.  Use List ticks for a list of groups and objects.");
+			else
+			{
+				StringBuffer list=new StringBuffer("");
+				for(int v=0;v<V.size();v++)
+					list.append(((Tickable)V.get(v)).name()+", ");
+				if((mob.session()!=null)&&(mob.session().confirm("Destroy the following ticking objects: "+list.substring(0,list.length()-2)+"  (y/N)? ","N")))
+				{
+					for(int v=0;v<V.size();v++)
+						CMLib.threads().deleteTick((Tickable)V.get(v),-1);
+					Log.sysOut("CreateEdit",mob.Name()+" destroyed ticks named '"+which+"'.");
+				}
+			}
+		}
+		else
 		if(commandType.equals("BAN"))
 		{
 			if(!CMSecurity.isAllowed(mob,mob.location(),"BAN")) return errorOut(mob);
@@ -1174,149 +1174,149 @@ public class Destroy extends StdCommand
 				mob.tell("Please enter a valid ban number to delete.  Use List Banned for more information.");
 			else
 			{
-                CMSecurity.unban(which);
+				CMSecurity.unban(which);
 				mob.tell("Ok.");
 			}
 		}
-        else
-        if(commandType.equals("THREAD"))
-        {
-            if(!CMSecurity.isASysOp(mob)) return errorOut(mob);
-            String which=CMParms.combine(commands,2);
-            Thread whichT=null;
-            if(which.length()>0)
-                whichT=findThread(which);
-            if(whichT==null)
-                mob.tell("Please enter a valid thread name to destroy.  Use List threads for a list.");
-            else
-            {
-                CMLib.killThread(whichT,500,1);
-                Log.sysOut("CreateEdit",mob.Name()+" destroyed thread "+whichT.getName()+".");
-                mob.tell("Stop sent to: "+whichT.getName()+".");
-            }
-        }
-        else
-        if(commandType.startsWith("SESSION"))
-        {
-            if(!CMSecurity.isAllowed(mob,mob.location(),"BOOT")) return errorOut(mob);
-            int which=-1;
-            if(commands.size()>2)
-                which=CMath.s_int((String)commands.elementAt(2));
-            Session S=CMLib.sessions().getAllSessionAt(which);
-            if(S==null)
-                mob.tell("Please enter a valid session number to delete.  Use SESSIONS for more information.");
-            else
-            {
-                CMLib.sessions().stopSessionAtAllCosts(S);
-                if(S.getStatus()==Session.STATUS_LOGOUTFINAL)
-                    mob.tell("Ok.");
-                else
-                    mob.tell("Failed to gracefully shutdown: "+Session.STATUS_STR[S.getStatus()]+", but a forcable stop was issued.");
-            }
-        }
-        else
-        if(commandType.equals("JOURNAL"))
-        {
-            if(!CMSecurity.isAllowed(mob,mob.location(),"JOURNALS")) return errorOut(mob);
-            if(commands.size()<3)
-            {
-                mob.tell("Destroy which journal? Try List Journal");
-                return errorOut(mob);
-            }
-            List<String> V=CMLib.database().DBReadJournals();
-            String name=CMParms.combine(commands,2);
-            int which=-1;
-            for(int v=0;v<V.size();v++)
-                if(((String)V.get(v)).equalsIgnoreCase(name))
-                {
-                    name=(String)V.get(v);
-                    which=v;
-                    break;
-                }
-            if(which<0)
-            for(int v=0;v<V.size();v++)
-                if(((String)V.get(v)).startsWith(name))
-                {
-                    name=(String)V.get(v);
-                    which=v;
-                    break;
-                }
-            if(which<0)
-                mob.tell("Please enter a valid journal name to delete.  Use List Journals for more information.");
-            else
-            if(mob.session().confirm("This will destroy all "+CMLib.database().DBCountJournal(name,null,null)+" messages.  Are you SURE (y/N)? ","N"))
-            {
-                CMLib.database().DBDeleteJournal(name,null);
-                mob.tell("It is done.");
-            }
-        }
-        else
-        if(commandType.equals("FACTION"))
-        {
-            if(!CMSecurity.isAllowed(mob,mob.location(),"CMDFACTIONS")) return errorOut(mob);
-            mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"^S<S-NAME> wave(s) <S-HIS-HER> arms...^?");
-            if(commands.size()<3)
-                mob.tell("Destroy which faction?  Use list factions.");
-            else
-            {
-                String name=CMParms.combine(commands,2);
-                Faction F=CMLib.factions().getFaction(name);
-                if(F==null) F=CMLib.factions().getFactionByName(name);
-                if(F==null)
-                    mob.tell("Faction '"+name+"' is unknown.  Try list factions.");
-                else
-                if((!mob.isMonster())&&(mob.session().confirm("Destroy file '"+F.factionID()+"' -- this could have unexpected consequences in the future -- (N/y)? ","N")))
-                {
-                    try
-                    {
-                        java.io.File F2=new java.io.File(Resources.makeFileResourceName(F.factionID()));
-                        if(F2.exists()) F2.delete();
-                        Log.sysOut("CreateEdit",mob.Name()+" destroyed Faction "+F.name()+" ("+F.factionID()+").");
-                        mob.tell("Faction File '"+F.factionID()+"' deleted.");
-                        Resources.removeResource(F.factionID());
-                    }
-                    catch(Exception e)
-                    {
-                        Log.errOut("CreateEdit",e);
-                        mob.tell("Faction File '"+F.factionID()+"' could NOT be deleted.");
-                    }
-                }
-            }
-        }
-        else
+		else
+		if(commandType.equals("THREAD"))
+		{
+			if(!CMSecurity.isASysOp(mob)) return errorOut(mob);
+			String which=CMParms.combine(commands,2);
+			Thread whichT=null;
+			if(which.length()>0)
+				whichT=findThread(which);
+			if(whichT==null)
+				mob.tell("Please enter a valid thread name to destroy.  Use List threads for a list.");
+			else
+			{
+				CMLib.killThread(whichT,500,1);
+				Log.sysOut("CreateEdit",mob.Name()+" destroyed thread "+whichT.getName()+".");
+				mob.tell("Stop sent to: "+whichT.getName()+".");
+			}
+		}
+		else
+		if(commandType.startsWith("SESSION"))
+		{
+			if(!CMSecurity.isAllowed(mob,mob.location(),"BOOT")) return errorOut(mob);
+			int which=-1;
+			if(commands.size()>2)
+				which=CMath.s_int((String)commands.elementAt(2));
+			Session S=CMLib.sessions().getAllSessionAt(which);
+			if(S==null)
+				mob.tell("Please enter a valid session number to delete.  Use SESSIONS for more information.");
+			else
+			{
+				CMLib.sessions().stopSessionAtAllCosts(S);
+				if(S.getStatus()==Session.STATUS_LOGOUTFINAL)
+					mob.tell("Ok.");
+				else
+					mob.tell("Failed to gracefully shutdown: "+Session.STATUS_STR[S.getStatus()]+", but a forcable stop was issued.");
+			}
+		}
+		else
+		if(commandType.equals("JOURNAL"))
+		{
+			if(!CMSecurity.isAllowed(mob,mob.location(),"JOURNALS")) return errorOut(mob);
+			if(commands.size()<3)
+			{
+				mob.tell("Destroy which journal? Try List Journal");
+				return errorOut(mob);
+			}
+			List<String> V=CMLib.database().DBReadJournals();
+			String name=CMParms.combine(commands,2);
+			int which=-1;
+			for(int v=0;v<V.size();v++)
+				if(((String)V.get(v)).equalsIgnoreCase(name))
+				{
+					name=(String)V.get(v);
+					which=v;
+					break;
+				}
+			if(which<0)
+			for(int v=0;v<V.size();v++)
+				if(((String)V.get(v)).startsWith(name))
+				{
+					name=(String)V.get(v);
+					which=v;
+					break;
+				}
+			if(which<0)
+				mob.tell("Please enter a valid journal name to delete.  Use List Journals for more information.");
+			else
+			if(mob.session().confirm("This will destroy all "+CMLib.database().DBCountJournal(name,null,null)+" messages.  Are you SURE (y/N)? ","N"))
+			{
+				CMLib.database().DBDeleteJournal(name,null);
+				mob.tell("It is done.");
+			}
+		}
+		else
+		if(commandType.equals("FACTION"))
+		{
+			if(!CMSecurity.isAllowed(mob,mob.location(),"CMDFACTIONS")) return errorOut(mob);
+			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"^S<S-NAME> wave(s) <S-HIS-HER> arms...^?");
+			if(commands.size()<3)
+				mob.tell("Destroy which faction?  Use list factions.");
+			else
+			{
+				String name=CMParms.combine(commands,2);
+				Faction F=CMLib.factions().getFaction(name);
+				if(F==null) F=CMLib.factions().getFactionByName(name);
+				if(F==null)
+					mob.tell("Faction '"+name+"' is unknown.  Try list factions.");
+				else
+				if((!mob.isMonster())&&(mob.session().confirm("Destroy file '"+F.factionID()+"' -- this could have unexpected consequences in the future -- (N/y)? ","N")))
+				{
+					try
+					{
+						java.io.File F2=new java.io.File(Resources.makeFileResourceName(F.factionID()));
+						if(F2.exists()) F2.delete();
+						Log.sysOut("CreateEdit",mob.Name()+" destroyed Faction "+F.name()+" ("+F.factionID()+").");
+						mob.tell("Faction File '"+F.factionID()+"' deleted.");
+						Resources.removeResource(F.factionID());
+					}
+					catch(Exception e)
+					{
+						Log.errOut("CreateEdit",e);
+						mob.tell("Faction File '"+F.factionID()+"' could NOT be deleted.");
+					}
+				}
+			}
+		}
+		else
 		if(commandType.equals("MOB"))
 		{
 			if(!CMSecurity.isAllowed(mob,mob.location(),"CMDMOBS")) return errorOut(mob);
 			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"^S<S-NAME> wave(s) <S-HIS-HER> arms...^?");
 			mobs(mob,commands);
 		}
-        else
-        if(commandType.equals("POLL"))
-        {
-            if(!CMSecurity.isAllowed(mob,mob.location(),"POLLS")) return errorOut(mob);
-            String name=CMParms.combine(commands,2);
-            Poll P=null;
-            if(CMath.isInteger(name))
-                P=CMLib.polls().getPoll(CMath.s_int(name)-1);
-            else
-            if(name.length()>0)
-                P=CMLib.polls().getPoll(name);
-            if(P==null)
-            {
-                mob.tell("POLL '"+name+"' not found. Try LIST POLLS.");
-                mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
-                return false;
-            }
-            mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"^S<S-NAME> wave(s) <S-HIS-HER> arms...^?");
-            if((mob.session()!=null)&&(mob.session().confirm("Destroy POLL "+P.getName()+", are you SURE? (Y/n)? ","Y")))
-            {
-                CMLib.polls().deletePoll(P);
-                mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"^SThe world has grown a bit more certain.^?");
-                Log.sysOut("CreateEdit",mob.Name()+" modified Poll "+P.getName()+".");
-            }
-            else
-                mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
-        }
+		else
+		if(commandType.equals("POLL"))
+		{
+			if(!CMSecurity.isAllowed(mob,mob.location(),"POLLS")) return errorOut(mob);
+			String name=CMParms.combine(commands,2);
+			Poll P=null;
+			if(CMath.isInteger(name))
+				P=CMLib.polls().getPoll(CMath.s_int(name)-1);
+			else
+			if(name.length()>0)
+				P=CMLib.polls().getPoll(name);
+			if(P==null)
+			{
+				mob.tell("POLL '"+name+"' not found. Try LIST POLLS.");
+				mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
+				return false;
+			}
+			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"^S<S-NAME> wave(s) <S-HIS-HER> arms...^?");
+			if((mob.session()!=null)&&(mob.session().confirm("Destroy POLL "+P.getName()+", are you SURE? (Y/n)? ","Y")))
+			{
+				CMLib.polls().deletePoll(P);
+				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"^SThe world has grown a bit more certain.^?");
+				Log.sysOut("CreateEdit",mob.Name()+" modified Poll "+P.getName()+".");
+			}
+			else
+				mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
+		}
 		else
 		if(commandType.equals("QUEST"))
 		{
@@ -1327,18 +1327,18 @@ public class Destroy extends StdCommand
 			else
 			{
 				String name=CMParms.combine(commands,2);
-                Quest Q=null;
-                if(CMath.isInteger(name))
-                {
-                    Q=CMLib.quests().fetchQuest(CMath.s_int(name)-1);
-                    if(Q!=null) name=Q.name();
-                }
-                if(Q==null) Q=CMLib.quests().fetchQuest(name);
+				Quest Q=null;
+				if(CMath.isInteger(name))
+				{
+					Q=CMLib.quests().fetchQuest(CMath.s_int(name)-1);
+					if(Q!=null) name=Q.name();
+				}
+				if(Q==null) Q=CMLib.quests().fetchQuest(name);
 				if(Q==null)
 					mob.tell("Quest '"+name+"' is unknown.  Try list quests.");
 				else
 				{
-                    if(Q.running()&&(!Q.stopping())) Q.stopQuest();
+					if(Q.running()&&(!Q.stopping())) Q.stopQuest();
 					mob.tell("Quest '"+Q.name()+"' is destroyed!");
 					CMLib.quests().delQuest(Q);
 				}
@@ -1397,7 +1397,7 @@ public class Destroy extends StdCommand
 			String allWord=CMParms.combine(commands,1);
 			Environmental thang=mob.location().fetchFromRoomFavorItems(null,allWord);
 			if(thang==null)
-			    thang=mob.location().fetchFromMOBRoomFavorsItems(mob,null,allWord,Wearable.FILTER_ANY);
+				thang=mob.location().fetchFromMOBRoomFavorsItems(mob,null,allWord,Wearable.FILTER_ANY);
 			if((thang!=null)&&(thang instanceof Item))
 			{
 				commands.insertElementAt("ITEM",1);
@@ -1417,7 +1417,7 @@ public class Destroy extends StdCommand
 				Room theRoom=null;
 				if(allWord.length()>0)
 				{
-				    try{ theRoom=CMLib.map().getRoom(allWord); }catch(NoSuchElementException e){}
+					try{ theRoom=CMLib.map().getRoom(allWord); }catch(NoSuchElementException e){}
 				}
 				if(theRoom!=null)
 				{
@@ -1459,8 +1459,8 @@ public class Destroy extends StdCommand
 		}
 		return false;
 	}
-    public double combatActionsCost(final MOB mob, final List<String> cmds){return CMProps.getCombatActionCost(ID());}
-    public double actionsCost(final MOB mob, final List<String> cmds){return CMProps.getActionCost(ID());}
+	public double combatActionsCost(final MOB mob, final List<String> cmds){return CMProps.getCombatActionCost(ID());}
+	public double actionsCost(final MOB mob, final List<String> cmds){return CMProps.getActionCost(ID());}
 	public boolean canBeOrdered(){return false;}
 
 	

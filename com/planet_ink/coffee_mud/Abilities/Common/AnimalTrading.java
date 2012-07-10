@@ -23,7 +23,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -41,8 +41,8 @@ public class AnimalTrading extends CommonSkill
 	public String[] triggerStrings(){return triggerStrings;}
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return Ability.CAN_MOBS;}
-    public int classificationCode() {   return Ability.ACODE_COMMON_SKILL|Ability.DOMAIN_ANIMALAFFINITY; }
-    protected Vector recentlyTraded=new Vector();
+	public int classificationCode() {   return Ability.ACODE_COMMON_SKILL|Ability.DOMAIN_ANIMALAFFINITY; }
+	protected Vector recentlyTraded=new Vector();
 
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
@@ -50,7 +50,7 @@ public class AnimalTrading extends CommonSkill
 		Item cage=null;
 
 		commands.insertElementAt("SELL",0);
-        Environmental shopkeeper=CMLib.english().parseShopkeeper(mob,commands,"Sell what to whom?");
+		Environmental shopkeeper=CMLib.english().parseShopkeeper(mob,commands,"Sell what to whom?");
 		if(shopkeeper==null) return false;
 		if(commands.size()==0)
 		{
@@ -133,18 +133,18 @@ public class AnimalTrading extends CommonSkill
 		if(proficiencyCheck(mob,0,auto))
 		{
 			CMMsg msg=CMClass.getMsg(mob,shopkeeper,M,CMMsg.MSG_SELL,"<S-NAME> sell(s) <O-NAME> to <T-NAME>.");
-            CMMsg msg2=CMClass.getMsg(mob,M,this,CMMsg.MSG_NOISYMOVEMENT,null);
-            if(!recentlyTraded.contains(mob.Name()))
-            {
-                while(recentlyTraded.size()>30)
-                    recentlyTraded.removeElementAt(0);
-                recentlyTraded.addElement(M.Name());
-                msg2.setValue(-1);
-            }
+			CMMsg msg2=CMClass.getMsg(mob,M,this,CMMsg.MSG_NOISYMOVEMENT,null);
+			if(!recentlyTraded.contains(mob.Name()))
+			{
+				while(recentlyTraded.size()>30)
+					recentlyTraded.removeElementAt(0);
+				recentlyTraded.addElement(M.Name());
+				msg2.setValue(-1);
+			}
 			if((mob.location().okMessage(mob,msg))&&(mob.location().okMessage(mob,msg2)))
 			{
 				mob.location().send(mob,msg);
-                mob.location().send(mob,msg2);
+				mob.location().send(mob,msg2);
 				if(taming instanceof Item)
 					((Item)taming).destroy();
 			}

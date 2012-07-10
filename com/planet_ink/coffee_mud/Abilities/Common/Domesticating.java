@@ -23,7 +23,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -39,7 +39,7 @@ public class Domesticating extends CommonSkill
 	public String name(){ return "Domesticating";}
 	private static final String[] triggerStrings = {"DOMESTICATE","DOMESTICATING"};
 	public String[] triggerStrings(){return triggerStrings;}
-    public int classificationCode() {   return Ability.ACODE_COMMON_SKILL|Ability.DOMAIN_ANIMALAFFINITY; }
+	public int classificationCode() {   return Ability.ACODE_COMMON_SKILL|Ability.DOMAIN_ANIMALAFFINITY; }
 
 	protected MOB taming=null;
 	protected boolean messedUp=false;
@@ -85,7 +85,7 @@ public class Domesticating extends CommonSkill
 						{
 							CMLib.commands().postFollow(taming,mob,true);
 							if(taming.amFollowing()==mob)
-                                mob.location().show(mob,null,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> manage(s) to domesticate "+taming.name()+".");
+								mob.location().show(mob,null,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> manage(s) to domesticate "+taming.name()+".");
 						}
 					}
 				}
@@ -171,7 +171,7 @@ public class Domesticating extends CommonSkill
 		taming=M;
 		verb="domesticating "+M.name();
 		int levelDiff=taming.phyStats().level()-xlevel(mob);
-        if(levelDiff<0) levelDiff=0;
+		if(levelDiff<0) levelDiff=0;
 		messedUp=!proficiencyCheck(mob,-(levelDiff*5),auto);
 		int duration=35+levelDiff;
 		if(duration<10) duration=10;

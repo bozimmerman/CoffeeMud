@@ -22,7 +22,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -32,28 +32,28 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 */
 public class Conjurer extends SpecialistMage
 {
-    public String ID(){return "Conjurer";}
-    public String name(){return "Conjurer";}
-    public int domain(){return Ability.DOMAIN_CONJURATION;}
-    public int opposed(){return Ability.DOMAIN_TRANSMUTATION;}
-    public int availabilityCode(){return Area.THEME_FANTASY;}
-        
-    public void initializeClass()
-    {
-        super.initializeClass();
-        CMLib.ableMapper().delCharAbilityMapping(ID(),"Spell_IronGrip");
-        
-        CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Skill_Spellcraft",false);
-        CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Spell_SummonMarker",25,true);
-        CMLib.ableMapper().addCharAbilityMapping(ID(),11,"Spell_Scatter",25,true);
-        CMLib.ableMapper().addCharAbilityMapping(ID(),13,"Spell_WaterCannon",25,true);
-        CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Spell_WordRecall",0,true);
-        CMLib.ableMapper().addCharAbilityMapping(ID(),16,"Spell_FlamingSword",25,true);    
-        CMLib.ableMapper().addCharAbilityMapping(ID(),18,"Spell_MarkerSummoning",25,true);
-        CMLib.ableMapper().addCharAbilityMapping(ID(),20,"Spell_MarkerPortal",25,true);
-        CMLib.ableMapper().addCharAbilityMapping(ID(),21,"Spell_TeleportObject",25,true);
-        CMLib.ableMapper().addCharAbilityMapping(ID(),23,"Spell_ConjureNexus",25,true);
-        CMLib.ableMapper().addCharAbilityMapping(ID(),25,"Spell_FlamingEnsnarement",25,true);
-        CMLib.ableMapper().addCharAbilityMapping(ID(),30,"Spell_SummonArmy",25,true);
-    }
+	public String ID(){return "Conjurer";}
+	public String name(){return "Conjurer";}
+	public int domain(){return Ability.DOMAIN_CONJURATION;}
+	public int opposed(){return Ability.DOMAIN_TRANSMUTATION;}
+	public int availabilityCode(){return Area.THEME_FANTASY;}
+		
+	public void initializeClass()
+	{
+		super.initializeClass();
+		CMLib.ableMapper().delCharAbilityMapping(ID(),"Spell_IronGrip");
+		
+		CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Skill_Spellcraft",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Spell_SummonMarker",25,true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),11,"Spell_Scatter",25,true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),13,"Spell_WaterCannon",25,true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Spell_WordRecall",0,true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),16,"Spell_FlamingSword",25,true);    
+		CMLib.ableMapper().addCharAbilityMapping(ID(),18,"Spell_MarkerSummoning",25,true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),20,"Spell_MarkerPortal",25,true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),21,"Spell_TeleportObject",25,true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),23,"Spell_ConjureNexus",25,true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),25,"Spell_FlamingEnsnarement",25,true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),30,"Spell_SummonArmy",25,true);
+	}
 }

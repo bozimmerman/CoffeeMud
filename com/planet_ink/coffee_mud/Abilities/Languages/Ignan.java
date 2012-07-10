@@ -27,9 +27,9 @@ public class Ignan extends StdLanguage
 		super();
 	}
 	public CMObject newInstance()
-    {	
-        return new Ignan();
-    }
+	{	
+		return new Ignan();
+	}
 	public List<String[]> translationVector(String language)
 	{
 		if(wordLists==null)

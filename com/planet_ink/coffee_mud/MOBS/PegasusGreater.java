@@ -23,7 +23,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -33,43 +33,43 @@ import java.util.*;
 */
 public class PegasusGreater extends StdRideable
 {
-    public PegasusGreater()
-    {
-        super();
+	public PegasusGreater()
+	{
+		super();
 
-        rideBasis = Rideable.RIDEABLE_AIR;
+		rideBasis = Rideable.RIDEABLE_AIR;
 
-        Random randomizer = new Random(System.currentTimeMillis());
+		Random randomizer = new Random(System.currentTimeMillis());
 
-        username="a Greater Pegasus";
-        setDescription("a beautiful, white stallion with wings.");
-        setDisplayText("A regal Pegasus flaps its wings.");
-        CMLib.factions().setAlignment(this,Faction.ALIGN_NEUTRAL);
-        setMoney(0);
-        setWimpHitPoint(0);
+		username="a Greater Pegasus";
+		setDescription("a beautiful, white stallion with wings.");
+		setDisplayText("A regal Pegasus flaps its wings.");
+		CMLib.factions().setAlignment(this,Faction.ALIGN_NEUTRAL);
+		setMoney(0);
+		setWimpHitPoint(0);
 
-        basePhyStats.setWeight(1500 + Math.abs(randomizer.nextInt() % 200));
+		basePhyStats.setWeight(1500 + Math.abs(randomizer.nextInt() % 200));
 
 
-        baseCharStats().setStat(CharStats.STAT_INTELLIGENCE,8 + Math.abs(randomizer.nextInt() % 3));
-        baseCharStats().setStat(CharStats.STAT_STRENGTH,11);
-        baseCharStats().setStat(CharStats.STAT_DEXTERITY,17);
-        baseCharStats().setMyRace(CMClass.getRace("Horse"));
-        baseCharStats().getMyRace().startRacing(this,false);
+		baseCharStats().setStat(CharStats.STAT_INTELLIGENCE,8 + Math.abs(randomizer.nextInt() % 3));
+		baseCharStats().setStat(CharStats.STAT_STRENGTH,11);
+		baseCharStats().setStat(CharStats.STAT_DEXTERITY,17);
+		baseCharStats().setMyRace(CMClass.getRace("Horse"));
+		baseCharStats().getMyRace().startRacing(this,false);
 
-        basePhyStats().setDamage(8);
-        basePhyStats().setSpeed(3.0);
-        basePhyStats().setAbility(0);
-        basePhyStats().setLevel(6);
-        basePhyStats().setArmor(60);
-        basePhyStats().setDisposition(basePhyStats().disposition()|PhyStats.IS_FLYING);
+		basePhyStats().setDamage(8);
+		basePhyStats().setSpeed(3.0);
+		basePhyStats().setAbility(0);
+		basePhyStats().setLevel(6);
+		basePhyStats().setArmor(60);
+		basePhyStats().setDisposition(basePhyStats().disposition()|PhyStats.IS_FLYING);
 
-        baseState.setHitPoints(CMLib.dice().roll(basePhyStats().level(),20,basePhyStats().level()));
+		baseState.setHitPoints(CMLib.dice().roll(basePhyStats().level(),20,basePhyStats().level()));
 
-        recoverMaxState();
-        resetToMaxState();
-        recoverPhyStats();
-        recoverCharStats();
-    }
+		recoverMaxState();
+		resetToMaxState();
+		recoverPhyStats();
+		recoverCharStats();
+	}
 
 }

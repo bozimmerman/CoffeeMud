@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -44,29 +44,29 @@ public class Spell_DispelDivination extends Spell
 	public List<Ability> returnOffensiveAffects(MOB caster, Physical fromMe)
 	{
 		List<Ability> offenders=new Vector<Ability>();
-        boolean admin=CMSecurity.isASysOp(caster);
-        Ability A=null;
-        for(int e=0;e<fromMe.numEffects();e++) // personal
-        {
-            A=fromMe.fetchEffect(e);
-            if((A!=null)
-            &&(A.canBeUninvoked())
-            &&((A.classificationCode()&Ability.ALL_DOMAINS)==Ability.DOMAIN_DIVINATION)
-            &&((A.invoker()==caster)
-	            ||(A.invoker().phyStats().level()<=caster.phyStats().level()+25)
-	            ||admin))
-	            	offenders.add(A);
-        }
+		boolean admin=CMSecurity.isASysOp(caster);
+		Ability A=null;
+		for(int e=0;e<fromMe.numEffects();e++) // personal
+		{
+			A=fromMe.fetchEffect(e);
+			if((A!=null)
+			&&(A.canBeUninvoked())
+			&&((A.classificationCode()&Ability.ALL_DOMAINS)==Ability.DOMAIN_DIVINATION)
+			&&((A.invoker()==caster)
+				||(A.invoker().phyStats().level()<=caster.phyStats().level()+25)
+				||admin))
+					offenders.add(A);
+		}
 		return offenders;
 	}
 
-    public int castingQuality(MOB mob, Physical target)
-    {
-        if((mob.isMonster())&&(mob.isInCombat()))
-            return Ability.QUALITY_INDIFFERENT;
-        return super.castingQuality(mob,target);
-    }
-    
+	public int castingQuality(MOB mob, Physical target)
+	{
+		if((mob.isMonster())&&(mob.isInCombat()))
+			return Ability.QUALITY_INDIFFERENT;
+		return super.castingQuality(mob,target);
+	}
+	
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		Physical target=getAnyTarget(mob,commands,givenTarget,Wearable.FILTER_ANY);
@@ -76,8 +76,8 @@ public class Spell_DispelDivination extends Spell
 		List<Ability> allDivinations=CMLib.flags().domainAffects(target,Ability.DOMAIN_DIVINATION);
 		boolean foundSomethingAtLeast=((allDivinations!=null)&&(allDivinations.size()>0));
 		List<Ability> affects=returnOffensiveAffects(mob,target);
-        if(affects.size()>0)
-        	revokeThis=(Ability)affects.get(CMLib.dice().roll(1,affects.size(),-1));
+		if(affects.size()>0)
+			revokeThis=(Ability)affects.get(CMLib.dice().roll(1,affects.size(),-1));
 
 		if(revokeThis==null)
 		{

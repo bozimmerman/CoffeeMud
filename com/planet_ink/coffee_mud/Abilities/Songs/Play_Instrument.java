@@ -23,7 +23,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -41,26 +41,26 @@ public class Play_Instrument extends Play
 
 	protected void inpersistantAffect(MOB mob)
 	{
-        Ability A=getSpell();
+		Ability A=getSpell();
 		if((A!=null)
 		&&((mob!=invoker())||(getSpell().abstractQuality()!=Ability.QUALITY_MALICIOUS)))
 		{
 			Vector chcommands=new Vector();
 			chcommands.addElement(mob.name());
-            A=(Ability)A.copyOf();
+			A=(Ability)A.copyOf();
 			A.invoke(invoker(),chcommands,mob,true,adjustedLevel(invoker(),0));
-            if((A.abstractQuality()==Ability.QUALITY_MALICIOUS)
-            &&(mob.isMonster())
-            &&(!mob.isInCombat())
-            &&(CMLib.flags().isMobile(mob))
-            &&(!CMLib.flags().isATrackingMonster(mob))
-            &&(mob.amFollowing()==null)
-            &&(!mob.amDead())
-            &&((!(mob instanceof Rideable))||(((Rideable)mob).numRiders()==0)))
-            {
-                A=CMClass.getAbility("Thief_Assassinate");
-                if(A!=null) A.invoke(mob,invoker(),true,0);
-            }
+			if((A.abstractQuality()==Ability.QUALITY_MALICIOUS)
+			&&(mob.isMonster())
+			&&(!mob.isInCombat())
+			&&(CMLib.flags().isMobile(mob))
+			&&(!CMLib.flags().isATrackingMonster(mob))
+			&&(mob.amFollowing()==null)
+			&&(!mob.amDead())
+			&&((!(mob instanceof Rideable))||(((Rideable)mob).numRiders()==0)))
+			{
+				A=CMClass.getAbility("Thief_Assassinate");
+				if(A!=null) A.invoke(mob,invoker(),true,0);
+			}
 		}
 	}
 

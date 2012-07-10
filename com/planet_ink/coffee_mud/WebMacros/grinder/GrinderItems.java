@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -34,30 +34,30 @@ import java.util.*;
 */
 public class GrinderItems
 {
-    private static final String[] okparms={
-          "NAME","CLASSES","DISPLAYTEXT","DESCRIPTION"," LEVEL",
-          " ABILITY"," REJUV"," MISCTEXT","MATERIALS","ISGENERIC",
-          "ISREADABLE","READABLETEXT","ISDRINK","LIQUIDHELD","QUENCHED",
-          "ISCONTAINER","CAPACITY","ISARMOR","ARMOR","WORNDATA",
-          " HEIGHT","ISWEAPON","WEAPONTYPE","WEAPONCLASS","ATTACK",
-          "DAMAGE","MINRANGE","MAXRANGE","SECRETIDENTITY",
-          "ISGETTABLE","ISREMOVABLE","ISDROPPABLE","ISTWOHANDED","ISTRAPPED",
-          "READABLESPELLS","ISWAND"," USESREMAIN","VALUE","WEIGHT",
-          "ISMAP","MAPAREAS","ISFOOD","ISPILL","ISSUPERPILL",
-          "ISPOTION","LIQUIDTYPES","AMMOTYPE","AMMOCAP","READABLESPELL",
-          "ISRIDEABLE","RIDEABLETYPE","MOBSHELD","HASALID","HASALOCK",
-          "KEYCODE","ISWALLPAPER","NOURISHMENT","CONTAINER","ISLIGHTSOURCE",
-          "DURATION","NONLOCATABLE","ISKEY","CONTENTTYPES","ISINSTRUMENT",
-          "INSTRUMENTTYPE","ISAMMO","ISMOBITEM","ISDUST","ISPERFUME",
-          "SMELLS","IMAGE","ISEXIT","EXITNAME","EXITCLOSEDTEXT",
-          "NUMCOINS","CURRENCY","DENOM","ISRECIPE","RECIPESKILL",
-          "RECIPEDATA", "LAYER","SEETHRU","MULTIWEAR","ISCATALOGED",
-          "CATARATE","CATALIVE","CATAMASK","BITE","MAXUSES"};
+	private static final String[] okparms={
+		  "NAME","CLASSES","DISPLAYTEXT","DESCRIPTION"," LEVEL",
+		  " ABILITY"," REJUV"," MISCTEXT","MATERIALS","ISGENERIC",
+		  "ISREADABLE","READABLETEXT","ISDRINK","LIQUIDHELD","QUENCHED",
+		  "ISCONTAINER","CAPACITY","ISARMOR","ARMOR","WORNDATA",
+		  " HEIGHT","ISWEAPON","WEAPONTYPE","WEAPONCLASS","ATTACK",
+		  "DAMAGE","MINRANGE","MAXRANGE","SECRETIDENTITY",
+		  "ISGETTABLE","ISREMOVABLE","ISDROPPABLE","ISTWOHANDED","ISTRAPPED",
+		  "READABLESPELLS","ISWAND"," USESREMAIN","VALUE","WEIGHT",
+		  "ISMAP","MAPAREAS","ISFOOD","ISPILL","ISSUPERPILL",
+		  "ISPOTION","LIQUIDTYPES","AMMOTYPE","AMMOCAP","READABLESPELL",
+		  "ISRIDEABLE","RIDEABLETYPE","MOBSHELD","HASALID","HASALOCK",
+		  "KEYCODE","ISWALLPAPER","NOURISHMENT","CONTAINER","ISLIGHTSOURCE",
+		  "DURATION","NONLOCATABLE","ISKEY","CONTENTTYPES","ISINSTRUMENT",
+		  "INSTRUMENTTYPE","ISAMMO","ISMOBITEM","ISDUST","ISPERFUME",
+		  "SMELLS","IMAGE","ISEXIT","EXITNAME","EXITCLOSEDTEXT",
+		  "NUMCOINS","CURRENCY","DENOM","ISRECIPE","RECIPESKILL",
+		  "RECIPEDATA", "LAYER","SEETHRU","MULTIWEAR","ISCATALOGED",
+		  "CATARATE","CATALIVE","CATAMASK","BITE","MAXUSES"};
 	public static String editItem(ExternalHTTPRequests httpReq,
 								  java.util.Map<String,String> parms,
 								  MOB whom,
 								  Room R,
-                                  MOB playerM)
+								  MOB playerM)
 	{
 		String itemCode=httpReq.getRequestParameter("ITEM");
 		if(itemCode==null) return "@break@";
@@ -65,32 +65,32 @@ public class GrinderItems
 		String mobNum=httpReq.getRequestParameter("MOB");
 		String newClassID=httpReq.getRequestParameter("CLASSES");
 
-        String sync=("SYNC"+((R==null)?((playerM!=null)?playerM.Name():null):R.roomID()));
-    	synchronized(sync.intern())
-    	{
-    		if(R!=null)
-            {
-                R=CMLib.map().getRoom(R);
-                CMLib.map().resetRoom(R);
-            }
+		String sync=("SYNC"+((R==null)?((playerM!=null)?playerM.Name():null):R.roomID()));
+		synchronized(sync.intern())
+		{
+			if(R!=null)
+			{
+				R=CMLib.map().getRoom(R);
+				CMLib.map().resetRoom(R);
+			}
 
 			Item I=null;
 			MOB M=null;
-            if(playerM!=null)
-                M=playerM;
-            else
+			if(playerM!=null)
+				M=playerM;
+			else
 			if((mobNum!=null)&&(mobNum.length()>0))
 			{
 				if(R!=null)
 					M=RoomData.getMOBFromCode(R,mobNum);
-                else
-                    M=RoomData.getMOBFromCode(RoomData.getMOBCache(),mobNum);
+				else
+					M=RoomData.getMOBFromCode(RoomData.getMOBCache(),mobNum);
 				if(M==null)
 				{
 					StringBuffer str=new StringBuffer("No MOB?!");
 					str.append(" Got: "+mobNum);
 					str.append(", Includes: ");
-                    if(R!=null)
+					if(R!=null)
 					for(int m=0;m<R.numInhabitants();m++)
 					{
 						MOB M2=R.fetchInhabitant(m);
@@ -133,10 +133,10 @@ public class GrinderItems
 			Item copyItem=(Item)I.copyOf();
 			Item oldI=I;
 			if((newClassID!=null)&&(!newClassID.equals(CMClass.classID(I))))
-            {
+			{
 				I=CMClass.getItem(newClassID);
-                if(I==null) Log.errOut("GrinderItems","Error: bad class id: "+newClassID);
-            }
+				if(I==null) Log.errOut("GrinderItems","Error: bad class id: "+newClassID);
+			}
 			
 			if(I==null)
 			{
@@ -161,7 +161,7 @@ public class GrinderItems
 				&&(CMLib.flags().isCataloged(oldI))
 				&&(!parm.equalsIgnoreCase("CONTAINER"))
 				&&(!parm.equalsIgnoreCase("BEINGWORN")))
-				    continue;
+					continue;
 
 				String old=httpReq.getRequestParameter(parm);
 				if(old==null) old="";
@@ -407,7 +407,7 @@ public class GrinderItems
 						((Food)I).setNourishment(CMath.s_int(old));
 					break;
 				case 57: // container
-				    /* pushed back to room/mob, where it belongs
+					/* pushed back to room/mob, where it belongs
 					if(!RoomData.isAllNum(old))
 						I.setContainer(null);
 					else
@@ -415,7 +415,7 @@ public class GrinderItems
 						I.setContainer(RoomData.getItemFromCode(R,old));
 					else
 						I.setContainer(RoomData.getItemFromCode(M,old));
-				    */
+					*/
 					break;
 				case 58: // is light
 					break;
@@ -464,40 +464,40 @@ public class GrinderItems
 						((Perfume)I).setSmellList(old);
 					break;
 				case 70:
-				    I.setImage(old);
-				    break;
+					I.setImage(old);
+					break;
 				case 71: // is exit
-				    break;
+					break;
 				case 72: // exit name
-				    if(I instanceof Exit)
-				        ((Exit)I).setExitParams(old,((Exit)I).closeWord(),((Exit)I).openWord(),((Exit)I).closedText());
-				    break;
+					if(I instanceof Exit)
+						((Exit)I).setExitParams(old,((Exit)I).closeWord(),((Exit)I).openWord(),((Exit)I).closedText());
+					break;
 				case 73: // exit closed text
-				    if(I instanceof Exit)
-				        ((Exit)I).setExitParams(((Exit)I).doorName(),((Exit)I).closeWord(),((Exit)I).openWord(),old);
-				    break;
+					if(I instanceof Exit)
+						((Exit)I).setExitParams(((Exit)I).doorName(),((Exit)I).closeWord(),((Exit)I).openWord(),old);
+					break;
 				case 74: // numcoins
-				    if(I instanceof Coins)
-				        ((Coins)I).setNumberOfCoins(CMath.s_long(old));
-				    break;
+					if(I instanceof Coins)
+						((Coins)I).setNumberOfCoins(CMath.s_long(old));
+					break;
 				case 75: // currency
-				    if(I instanceof Coins)
-				        ((Coins)I).setCurrency(old);
-				    break;
+					if(I instanceof Coins)
+						((Coins)I).setCurrency(old);
+					break;
 				case 76: // denomination
-				    if(I instanceof Coins)
-				        ((Coins)I).setDenomination(CMath.s_double(old));
-				    break;
+					if(I instanceof Coins)
+						((Coins)I).setDenomination(CMath.s_double(old));
+					break;
 				case 77: // isrecipe
-				    break;
+					break;
 				case 78: // recipeskill
-				    if(I instanceof Recipe)
-				        ((Recipe)I).setCommonSkillID(old);
-				    break;
+					if(I instanceof Recipe)
+						((Recipe)I).setCommonSkillID(old);
+					break;
 				case 79: // recipedata
-				    if(I instanceof Recipe)
-				        ((Recipe)I).setRecipeCodeLine(CMStrings.replaceAll(old,",","\t"));
-				    break;
+					if(I instanceof Recipe)
+						((Recipe)I).setRecipeCodeLine(CMStrings.replaceAll(old,",","\t"));
+					break;
 				case 80: // layer
 					if(I instanceof Armor)
 						((Armor)I).setClothingLayer(CMath.s_short(old));
@@ -523,36 +523,36 @@ public class GrinderItems
 					}
 					break;
 				case 83: // iscataloged
-				    break;
+					break;
 				case 84: // catarate
-				    if(itemCode.startsWith("CATALOG-")||itemCode.startsWith("NEWCATA-"))
-				    {
-				        if(cataData==null) cataData=CMLib.catalog().sampleCataData("");
-				        cataData.setRate(CMath.s_pct(old));
-				    }
-				    break;
-                case 85: // catalive
-                    if(itemCode.startsWith("CATALOG-")||itemCode.startsWith("NEWCATA-"))
-                    {
-                        if(cataData==null) cataData=CMLib.catalog().sampleCataData("");
-                        cataData.setWhenLive(((old!=null)&&(old.equalsIgnoreCase("on"))));
-                    }
-                    break;
-                case 86: // catamask
-                    if(itemCode.startsWith("CATALOG-")||itemCode.startsWith("NEWCATA-"))
-                    {
-                        if(cataData==null) cataData=CMLib.catalog().sampleCataData("");
-                        cataData.setMaskStr(old);
-                    }
-                    break;
-                case 87: // bite
-                    if(I instanceof Food)
-                        ((Food)I).setBite(CMath.s_int(old));
-                    break;
-                case 88: // max uses
-                    if(I instanceof Wand)
-                        ((Wand)I).setMaxUses(CMath.s_int(old));
-                    break;
+					if(itemCode.startsWith("CATALOG-")||itemCode.startsWith("NEWCATA-"))
+					{
+						if(cataData==null) cataData=CMLib.catalog().sampleCataData("");
+						cataData.setRate(CMath.s_pct(old));
+					}
+					break;
+				case 85: // catalive
+					if(itemCode.startsWith("CATALOG-")||itemCode.startsWith("NEWCATA-"))
+					{
+						if(cataData==null) cataData=CMLib.catalog().sampleCataData("");
+						cataData.setWhenLive(((old!=null)&&(old.equalsIgnoreCase("on"))));
+					}
+					break;
+				case 86: // catamask
+					if(itemCode.startsWith("CATALOG-")||itemCode.startsWith("NEWCATA-"))
+					{
+						if(cataData==null) cataData=CMLib.catalog().sampleCataData("");
+						cataData.setMaskStr(old);
+					}
+					break;
+				case 87: // bite
+					if(I instanceof Food)
+						((Food)I).setBite(CMath.s_int(old));
+					break;
+				case 88: // max uses
+					if(I instanceof Wand)
+						((Wand)I).setMaxUses(CMath.s_int(old));
+					break;
 				}
 			}
 			if(I.isGeneric()&&(!CMLib.flags().isCataloged(I)))
@@ -569,27 +569,27 @@ public class GrinderItems
 			I.text();
 			if(itemCode.startsWith("CATALOG-")||itemCode.startsWith("NEWCATA-"))
 			{
-                Item I2=CMLib.catalog().getCatalogItem(itemCode.substring(8));
-                if((I2!=null)&&(!I.Name().equalsIgnoreCase(I2.Name())))
-                    I.setName(I2.Name());
-                httpReq.addRequestParameters("ITEM",itemCode);
-                if(I2==null)
-                {
-                    CMLib.catalog().addCatalog(I);
-	                Log.infoOut("GrinderItems",whom.Name()+" created catalog ITEM "+I.Name());
-                }
-                else
-                {
-                	if(cataData!=null)
-                	{
-	                    CatalogLibrary.CataData data=CMLib.catalog().getCatalogItemData(I.Name());
-	                    data.build(cataData.data());
-                	}
-                	CMLib.catalog().updateCatalog(I);
-	                Log.infoOut("GrinderItems",whom.Name()+" updated catalog ITEM "+I.Name());
-                }
+				Item I2=CMLib.catalog().getCatalogItem(itemCode.substring(8));
+				if((I2!=null)&&(!I.Name().equalsIgnoreCase(I2.Name())))
+					I.setName(I2.Name());
+				httpReq.addRequestParameters("ITEM",itemCode);
+				if(I2==null)
+				{
+					CMLib.catalog().addCatalog(I);
+					Log.infoOut("GrinderItems",whom.Name()+" created catalog ITEM "+I.Name());
+				}
+				else
+				{
+					if(cataData!=null)
+					{
+						CatalogLibrary.CataData data=CMLib.catalog().getCatalogItemData(I.Name());
+						data.build(cataData.data());
+					}
+					CMLib.catalog().updateCatalog(I);
+					Log.infoOut("GrinderItems",whom.Name()+" updated catalog ITEM "+I.Name());
+				}
 				copyItem.destroy();
-                copyItem=(Item)I.copyOf();
+				copyItem=(Item)I.copyOf();
 			}
 			else
 			if(itemCode.equals("NEW"))
@@ -649,7 +649,7 @@ public class GrinderItems
 					M.recoverPhyStats();
 					if((mobNum==null)||(!mobNum.startsWith("CATALOG-")))
 						M.text();
-                    if(R!=null) R.recoverRoomStats();
+					if(R!=null) R.recoverRoomStats();
 					for(int i=0;i<M.numItems();i++)
 					{
 						Item I2=M.getItem(i);
@@ -668,12 +668,12 @@ public class GrinderItems
 			{
 				if(R==null)
 				{
-				    if((!itemCode.startsWith("CATALOG-"))
-				    &&(!itemCode.startsWith("NEWCATA-")))
-				    {
-    					RoomData.contributeItems(new XVector<Item>(I));
-    					httpReq.addRequestParameters("ITEM",RoomData.getItemCode(RoomData.getItemCache(),I));
-				    }
+					if((!itemCode.startsWith("CATALOG-"))
+					&&(!itemCode.startsWith("NEWCATA-")))
+					{
+						RoomData.contributeItems(new XVector<Item>(I));
+						httpReq.addRequestParameters("ITEM",RoomData.getItemCode(RoomData.getItemCache(),I));
+					}
 				}
 				else
 				{
@@ -685,29 +685,29 @@ public class GrinderItems
 			else
 			{
 				if((httpReq.isRequestParameter("BEINGWORN"))
-			    &&((httpReq.getRequestParameter("BEINGWORN")).equals("on")))
+				&&((httpReq.getRequestParameter("BEINGWORN")).equals("on")))
 				{
-				    // deprecated back to room/mob, where it belongs
+					// deprecated back to room/mob, where it belongs
 					//if(I.amWearingAt(Wearable.IN_INVENTORY))
 					//	I.wearEvenIfImpossible(M);
 				}
 				//else I.wearAt(Wearable.IN_INVENTORY);
-                if((R!=null)&&(playerM==null))
-                {
-    				CMLib.database().DBUpdateMOBs(R);
-    				httpReq.addRequestParameters("MOB",RoomData.getMOBCode(R,M));
-                }
+				if((R!=null)&&(playerM==null))
+				{
+					CMLib.database().DBUpdateMOBs(R);
+					httpReq.addRequestParameters("MOB",RoomData.getMOBCode(R,M));
+				}
 				httpReq.addRequestParameters("ITEM",RoomData.getItemCode(M,I));
-			    if((mobNum==null)||(mobNum.startsWith("CATALOG-"))||(mobNum.startsWith("NEWCATA-")))
-			    {
-			    	CMLib.catalog().updateCatalog(M);
-			    	M.text();
-			    }
+				if((mobNum==null)||(mobNum.startsWith("CATALOG-"))||(mobNum.startsWith("NEWCATA-")))
+				{
+					CMLib.catalog().updateCatalog(M);
+					M.text();
+				}
 			}
 			if(!copyItem.sameAs(I))
 				Log.sysOut("Grinder",whom.Name()+" modified item "+copyItem.Name()+((M!=null)?" on mob "+M.Name():"")+((R!=null)?" in room "+R.roomID():"")+".");
 			copyItem.destroy();
-    	}
+		}
 		return "";
 	}
 }

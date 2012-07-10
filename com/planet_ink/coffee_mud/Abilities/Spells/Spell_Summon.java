@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -37,34 +37,34 @@ public class Spell_Summon extends Spell
 {
 	public String ID() { return "Spell_Summon"; }
 	public String name(){return "Summon";}
-    public String displayText(){return "(Summoned)";}
+	public String displayText(){return "(Summoned)";}
 	protected int canTargetCode(){return 0;}
-    protected int canAffectCode(){return 0;}
+	protected int canAffectCode(){return 0;}
 	public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_CONJURATION;}
 	public long flags(){return Ability.FLAG_TRANSPORTING|Ability.FLAG_SUMMONING;}
 	public int enchantQuality(){return Ability.QUALITY_INDIFFERENT;}
-    public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
+	public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
 
-    public void unInvoke()
-    {
-        if(affected instanceof MOB)
-        {
-            MOB mob=(MOB)affected;
-            if((!mob.amDead())&&(mob.location()!=null))
-            {
-                if((mob.amFollowing()!=null)
-                &&(mob.location().isInhabitant(mob.amFollowing())))
-                    return;
-                if(mob.getStartRoom().getArea()!=mob.location().getArea())
-                {
-                    mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> <S-IS-ARE> drawn back into the summoning swirl.");
-                    mob.getStartRoom().bringMobHere(mob,false);
-                }
-            }
-        }
-        super.unInvoke();
-    }
-    
+	public void unInvoke()
+	{
+		if(affected instanceof MOB)
+		{
+			MOB mob=(MOB)affected;
+			if((!mob.amDead())&&(mob.location()!=null))
+			{
+				if((mob.amFollowing()!=null)
+				&&(mob.location().isInhabitant(mob.amFollowing())))
+					return;
+				if(mob.getStartRoom().getArea()!=mob.location().getArea())
+				{
+					mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> <S-IS-ARE> drawn back into the summoning swirl.");
+					mob.getStartRoom().bringMobHere(mob,false);
+				}
+			}
+		}
+		super.unInvoke();
+	}
+	
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 
@@ -103,23 +103,23 @@ public class Spell_Summon extends Spell
 		try
 		{
 			for(Session S : CMLib.sessions().localOnlineIterable())
-            {
-                if((S.mob()!=null)
-                &&(CMLib.flags().canAccess(mob,S.mob().location()))
-                &&(CMLib.english().containsString(S.mob().name(),areaName)))
-                {
-                    oldRoom=S.mob().location();
-                    target=S.mob();
-                    break;
-                }
-            }
-            if(oldRoom==null)
-            {
-            	target=CMLib.map().findFirstInhabitant(CMLib.map().rooms(), mob,areaName,10);
-            	if(target != null)
-            		oldRoom=target.location();
-            }
-	    }catch(NoSuchElementException nse){}
+			{
+				if((S.mob()!=null)
+				&&(CMLib.flags().canAccess(mob,S.mob().location()))
+				&&(CMLib.english().containsString(S.mob().name(),areaName)))
+				{
+					oldRoom=S.mob().location();
+					target=S.mob();
+					break;
+				}
+			}
+			if(oldRoom==null)
+			{
+				target=CMLib.map().findFirstInhabitant(CMLib.map().rooms(), mob,areaName,10);
+				if(target != null)
+					oldRoom=target.location();
+			}
+		}catch(NoSuchElementException nse){}
 
 		if((oldRoom==null)||(target==null))
 		{
@@ -159,10 +159,10 @@ public class Spell_Summon extends Spell
 						newRoom.bringMobHere(follower,false);
 						newRoom.send(follower,enterMsg);
 						follower.tell("\n\r\n\r");
-                        if(follower.isMonster()
-                        &&(follower.getStartRoom()!=null)
-                        &&(follower.getStartRoom().getArea().name().equals(oldRoom.getArea().name())))
-                            beneficialAffect(mob,follower,asLevel,0);
+						if(follower.isMonster()
+						&&(follower.getStartRoom()!=null)
+						&&(follower.getStartRoom().getArea().name().equals(oldRoom.getArea().name())))
+							beneficialAffect(mob,follower,asLevel,0);
 						CMLib.commands().postLook(follower,true);
 					}
 					else

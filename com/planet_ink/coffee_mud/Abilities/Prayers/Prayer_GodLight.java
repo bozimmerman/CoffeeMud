@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -49,8 +49,8 @@ public class Prayer_GodLight extends Prayer
 		if(affected==null) return;
 		affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_LIGHTSOURCE);
 		affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_GLOWING);
-        if(CMath.bset(affectableStats.disposition(),PhyStats.IS_DARK))
-            affectableStats.setDisposition(affectableStats.disposition()-PhyStats.IS_DARK);
+		if(CMath.bset(affectableStats.disposition(),PhyStats.IS_DARK))
+			affectableStats.setDisposition(affectableStats.disposition()-PhyStats.IS_DARK);
 		if(!(affected instanceof MOB)) return;
 		affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_NOT_SEE);
 	}
@@ -69,33 +69,33 @@ public class Prayer_GodLight extends Prayer
 	}
 
 
-    public int castingQuality(MOB mob, Physical target)
-    {
-        if(mob!=null)
-        {
-            if(mob.isInCombat())
-            {
-                if(CMLib.flags().isInDark(mob.location()))
-                    return Ability.QUALITY_INDIFFERENT;
-                if(target instanceof MOB)
-                {
-                    if(((MOB)target).charStats().getBodyPart(Race.BODY_EYE)==0)
-                        return Ability.QUALITY_INDIFFERENT;
-                    if(!CMLib.flags().canSee((MOB)target))
-                        return Ability.QUALITY_INDIFFERENT;
-                }
-            }
-        }
-        return super.castingQuality(mob,target);
-    }
-    
+	public int castingQuality(MOB mob, Physical target)
+	{
+		if(mob!=null)
+		{
+			if(mob.isInCombat())
+			{
+				if(CMLib.flags().isInDark(mob.location()))
+					return Ability.QUALITY_INDIFFERENT;
+				if(target instanceof MOB)
+				{
+					if(((MOB)target).charStats().getBodyPart(Race.BODY_EYE)==0)
+						return Ability.QUALITY_INDIFFERENT;
+					if(!CMLib.flags().canSee((MOB)target))
+						return Ability.QUALITY_INDIFFERENT;
+				}
+			}
+		}
+		return super.castingQuality(mob,target);
+	}
+	
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 
 		Physical target=null;
 		if((!auto)
-        &&((commands.size()==0)||(((String)commands.firstElement()).equalsIgnoreCase("ROOM")))
-        &&(!mob.isInCombat()))
+		&&((commands.size()==0)||(((String)commands.firstElement()).equalsIgnoreCase("ROOM")))
+		&&(!mob.isInCombat()))
 			target=mob.location();
 		else
 		{
@@ -139,8 +139,8 @@ public class Prayer_GodLight extends Prayer
 					if(target instanceof MOB)
 						mob.location().show((MOB)target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> go(es) blind!");
 					maliciousAffect(mob,target,asLevel,0,-1);
-                    mob.location().recoverRoomStats();
-                    mob.location().recoverRoomStats();
+					mob.location().recoverRoomStats();
+					mob.location().recoverRoomStats();
 				}
 			}
 		}

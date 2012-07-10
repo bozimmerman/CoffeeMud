@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -43,13 +43,13 @@ public class Fighter_Intimidate extends FighterSkill
 	protected int canTargetCode(){return 0;}
 	public boolean isAutoInvoked(){return true;}
 	public boolean canBeUninvoked(){return false;}
-    public int classificationCode() {   return Ability.ACODE_SKILL|Ability.DOMAIN_INFLUENTIAL; }
+	public int classificationCode() {   return Ability.ACODE_SKILL|Ability.DOMAIN_INFLUENTIAL; }
 	public Room lastRoom=null;
 
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(((msg.targetMajor()&CMMsg.MASK_MALICIOUS)>0)
-        &&(!CMath.bset(msg.sourceMajor(),CMMsg.MASK_ALWAYS))
+		&&(!CMath.bset(msg.sourceMajor(),CMMsg.MASK_ALWAYS))
 		&&((msg.amITarget(affected))))
 		{
 			MOB target=(MOB)msg.target();
@@ -60,10 +60,10 @@ public class Fighter_Intimidate extends FighterSkill
 			if((!target.isInCombat())
 			&&(msg.source().getVictim()!=target)
 			&&(levelDiff<0)
-            &&(attacker.location()==target.location())
+			&&(attacker.location()==target.location())
 			&&((target.fetchAbility(ID())==null)||proficiencyCheck(null,(-(100+levelDiff))+(target.charStats().getStat(CharStats.STAT_CHARISMA)*2),false)))
 			{
-                attacker.tell("You are too intimidated by "+target.name());
+				attacker.tell("You are too intimidated by "+target.name());
 				if(target.location()!=lastRoom)
 				{
 					lastRoom=target.location();

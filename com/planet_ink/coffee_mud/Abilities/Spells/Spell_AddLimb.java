@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -45,7 +45,7 @@ public class Spell_AddLimb extends Spell
 	public Item itemRef=null;
 	public long wornRef=0;
 	public int oldMsg=0;
-    private boolean noloop=false;
+	private boolean noloop=false;
 
 	public void unInvoke()
 	{
@@ -54,21 +54,21 @@ public class Spell_AddLimb extends Spell
 			return;
 		MOB mob=(MOB)affected;
 		super.unInvoke();
-        try
-        {
-    		if((canBeUninvoked())&&(mob!=null)&&(!noloop))
-    		{
-                noloop=true;
-    			if((mob.location()!=null)&&(!mob.amDead()))
-    				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-YOUPOSS> extra limb fades away.");
-    			mob.recoverCharStats();
+		try
+		{
+			if((canBeUninvoked())&&(mob!=null)&&(!noloop))
+			{
+				noloop=true;
+				if((mob.location()!=null)&&(!mob.amDead()))
+					mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-YOUPOSS> extra limb fades away.");
+				mob.recoverCharStats();
 				CMLib.utensils().confirmWearability(mob);
-    		}
-        }
-        finally
-        {
-            noloop=false;
-        }
+			}
+		}
+		finally
+		{
+			noloop=false;
+		}
 	}
 
 	public void affectCharStats(MOB affected, CharStats affectableStats)
@@ -78,19 +78,19 @@ public class Spell_AddLimb extends Spell
 		affectableStats.alterBodypart(Race.BODY_HAND,1);
 	}
 
-    public int castingQuality(MOB mob, Physical target)
-    {
-        if(mob!=null)
-        {
-            if(target instanceof MOB)
-            {
-                if(((MOB)target).isInCombat()&&((MOB)target).isMonster())
-                    return Ability.QUALITY_INDIFFERENT;
-            }
-        }
-        return super.castingQuality(mob,target);
-    }
-    
+	public int castingQuality(MOB mob, Physical target)
+	{
+		if(mob!=null)
+		{
+			if(target instanceof MOB)
+			{
+				if(((MOB)target).isInCombat()&&((MOB)target).isMonster())
+					return Ability.QUALITY_INDIFFERENT;
+			}
+		}
+		return super.castingQuality(mob,target);
+	}
+	
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=getTarget(mob,commands,givenTarget);

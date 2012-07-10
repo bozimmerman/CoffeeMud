@@ -23,7 +23,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -43,7 +43,7 @@ public class Fighter_Stonebody extends FighterSkill
 	protected int canTargetCode(){return 0;}
 	public boolean isAutoInvoked(){return true;}
 	public boolean canBeUninvoked(){return false;}
-    public int classificationCode() {   return Ability.ACODE_SKILL|Ability.DOMAIN_FITNESS; }
+	public int classificationCode() {   return Ability.ACODE_SKILL|Ability.DOMAIN_FITNESS; }
 
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
@@ -64,7 +64,7 @@ public class Fighter_Stonebody extends FighterSkill
 		&&(mob.rangeToTarget()==0)
 		&&((mob.fetchAbility(ID())==null)||proficiencyCheck(null,-85+mob.charStats().getStat(CharStats.STAT_CONSTITUTION),false)))
 		{
-            float f=(float)getXLEVELLevel(mob);
+			float f=(float)getXLEVELLevel(mob);
 			int regain=(int)Math.round(CMath.mul(CMath.div(proficiency(),100.0),2.0+(0.15*f)));
 			msg.setValue(msg.value()-regain);
 		}

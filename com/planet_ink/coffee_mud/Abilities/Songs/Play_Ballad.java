@@ -25,7 +25,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -68,11 +68,11 @@ public class Play_Ballad extends Play
 			&&(myChar.fetchWornItems(Wearable.WORN_LEGS|Wearable.WORN_WAIST,(short)-2048,(short)0).size()==0)
 			&&(mate.fetchWornItems(Wearable.WORN_LEGS|Wearable.WORN_WAIST,(short)-2048,(short)0).size()==0)
 			&&((mate.charStats().getStat(CharStats.STAT_AGE)==0)
-			        ||((mate.charStats().ageCategory()>Race.AGE_CHILD)
-			                &&(mate.charStats().ageCategory()<Race.AGE_OLD)))
+					||((mate.charStats().ageCategory()>Race.AGE_CHILD)
+							&&(mate.charStats().ageCategory()<Race.AGE_OLD)))
 			&&((myChar.charStats().getStat(CharStats.STAT_AGE)==0)
-			        ||((myChar.charStats().ageCategory()>Race.AGE_CHILD)
-			                &&(myChar.charStats().ageCategory()<Race.AGE_OLD))))
+					||((myChar.charStats().ageCategory()>Race.AGE_CHILD)
+							&&(myChar.charStats().ageCategory()<Race.AGE_OLD))))
 			{
 				MOB female=myChar;
 				MOB male=mate;

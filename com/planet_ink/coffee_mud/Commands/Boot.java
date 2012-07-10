@@ -23,7 +23,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -60,18 +60,18 @@ public class Boot extends StdCommand
 					mob.tell("Try QUIT.");
 					return false;
 				}
-			    if(S.mob()!=null)
-			    {
+				if(S.mob()!=null)
+				{
 					mob.tell("You boot "+S.mob().name());
 					if(S.mob().location()!=null)
 						S.mob().location().show(S.mob(),null,CMMsg.MSG_OK_VISUAL,"Something is happening to <S-NAME>.");
-			    }
-			    else
-			        mob.tell("You boot "+S.getAddress());
+				}
+				else
+					mob.tell("You boot "+S.getAddress());
 				S.stopSession(false,false,false);
-			    if(((S.previousCMD()==null)||(S.previousCMD().size()==0))
-			    &&(!CMLib.flags().isInTheGame(S.mob(),true)))
-                    CMLib.sessions().stopSessionAtAllCosts(S);
+				if(((S.previousCMD()==null)||(S.previousCMD().size()==0))
+				&&(!CMLib.flags().isInTheGame(S.mob(),true)))
+					CMLib.sessions().stopSessionAtAllCosts(S);
 				boot=true;
 				break;
 			}

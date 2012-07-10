@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -43,41 +43,41 @@ public class TickTock extends StdCommand
 		throws java.io.IOException
 	{
 		String s=CMParms.combine(commands,1).toLowerCase();
-        try
-        {
-    		if(CMath.isInteger(s))
-    		{
-    			int h=CMath.s_int(s);
-    			if(h==0) h=1;
-    			mob.tell("..tick..tock..");
-    			mob.location().getArea().getTimeObj().tickTock(h);
-    			mob.location().getArea().getTimeObj().save();
-    		}
-    		else
-    		if(s.startsWith("clantick"))
-    			CMLib.clans().tickAllClans();
-    		else
-            {
-                for(Enumeration e=CMLib.libraries();e.hasMoreElements();)
-                {
-                    CMLibrary lib=(CMLibrary)e.nextElement();
-                    if((lib.getSupportThread()!=null)&&(s.equalsIgnoreCase(lib.getSupportThread().getName())))
-                    {
-                    	if(lib instanceof Runnable)
-	                        ((Runnable)lib).run();
-                    	else
-                    		lib.getSupportThread().interrupt();
-                        mob.tell("Done.");
-                        return false;
-                    }
-                }
-    			mob.tell("Ticktock what?  Enter a number of mud-hours, or clanticks, or thread id.");
-            }
-        }
-        catch(Exception e)
-        {
-            mob.tell("Ticktock failed: "+e.getMessage());
-        }
+		try
+		{
+			if(CMath.isInteger(s))
+			{
+				int h=CMath.s_int(s);
+				if(h==0) h=1;
+				mob.tell("..tick..tock..");
+				mob.location().getArea().getTimeObj().tickTock(h);
+				mob.location().getArea().getTimeObj().save();
+			}
+			else
+			if(s.startsWith("clantick"))
+				CMLib.clans().tickAllClans();
+			else
+			{
+				for(Enumeration e=CMLib.libraries();e.hasMoreElements();)
+				{
+					CMLibrary lib=(CMLibrary)e.nextElement();
+					if((lib.getSupportThread()!=null)&&(s.equalsIgnoreCase(lib.getSupportThread().getName())))
+					{
+						if(lib instanceof Runnable)
+							((Runnable)lib).run();
+						else
+							lib.getSupportThread().interrupt();
+						mob.tell("Done.");
+						return false;
+					}
+				}
+				mob.tell("Ticktock what?  Enter a number of mud-hours, or clanticks, or thread id.");
+			}
+		}
+		catch(Exception e)
+		{
+			mob.tell("Ticktock failed: "+e.getMessage());
+		}
 		
 		return false;
 	}

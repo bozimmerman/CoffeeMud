@@ -23,7 +23,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -48,79 +48,79 @@ public class SignLanguage extends StdLanguage
 		return wordLists;
 	}
 
-    protected boolean processSourceMessage(CMMsg msg, String str, int numToMess)
-    {
-    	if(msg.sourceMessage()==null) return true;
-    	int wordStart=msg.sourceMessage().indexOf('\'');
-    	if(wordStart<0) return true;
-        String wordsSaid=CMStrings.getSayFromMessage(msg.sourceMessage());
-        if(numToMess>0) wordsSaid=messChars(ID(),wordsSaid,numToMess);
-        String fullMsgStr = CMStrings.substituteSayInMessage(msg.sourceMessage(),wordsSaid);
-    	wordStart=fullMsgStr.indexOf('\'');
-    	String startFullMsg=fullMsgStr.substring(0,wordStart);
-    	if(startFullMsg.indexOf("YELL(S)")>0)
-    	{
-    		msg.source().tell("You can't yell in sign language.");
-    		return false;
-    	}
-    	String oldStartFullMsg = startFullMsg;
-    	startFullMsg = CMStrings.replaceFirstWord(startFullMsg, "say(s)", "sign(s)");
-    	startFullMsg = CMStrings.replaceFirstWord(startFullMsg, "ask(s)", "sign(s) askingly");
-    	startFullMsg = CMStrings.replaceFirstWord(startFullMsg, "exclaim(s)", "sign(s) excitedly");
-    	if(oldStartFullMsg.equals(startFullMsg))
-    	{
-    		int x=startFullMsg.toLowerCase().lastIndexOf("(s)");
-    		if(x<0) 
-    			x=startFullMsg.trim().length();
-    		else
-    			x+=3;
-    		startFullMsg = startFullMsg.substring(0,x)+" in sign" +startFullMsg.substring(x);
-    	}
-    	
+	protected boolean processSourceMessage(CMMsg msg, String str, int numToMess)
+	{
+		if(msg.sourceMessage()==null) return true;
+		int wordStart=msg.sourceMessage().indexOf('\'');
+		if(wordStart<0) return true;
+		String wordsSaid=CMStrings.getSayFromMessage(msg.sourceMessage());
+		if(numToMess>0) wordsSaid=messChars(ID(),wordsSaid,numToMess);
+		String fullMsgStr = CMStrings.substituteSayInMessage(msg.sourceMessage(),wordsSaid);
+		wordStart=fullMsgStr.indexOf('\'');
+		String startFullMsg=fullMsgStr.substring(0,wordStart);
+		if(startFullMsg.indexOf("YELL(S)")>0)
+		{
+			msg.source().tell("You can't yell in sign language.");
+			return false;
+		}
+		String oldStartFullMsg = startFullMsg;
+		startFullMsg = CMStrings.replaceFirstWord(startFullMsg, "say(s)", "sign(s)");
+		startFullMsg = CMStrings.replaceFirstWord(startFullMsg, "ask(s)", "sign(s) askingly");
+		startFullMsg = CMStrings.replaceFirstWord(startFullMsg, "exclaim(s)", "sign(s) excitedly");
+		if(oldStartFullMsg.equals(startFullMsg))
+		{
+			int x=startFullMsg.toLowerCase().lastIndexOf("(s)");
+			if(x<0) 
+				x=startFullMsg.trim().length();
+			else
+				x+=3;
+			startFullMsg = startFullMsg.substring(0,x)+" in sign" +startFullMsg.substring(x);
+		}
+		
 		msg.modify(msg.source(),
 				   msg.target(),
 				   this,
 				   CMath.unsetb(msg.sourceCode(), CMMsg.MASK_SOUND) | CMMsg.MASK_MOVE,
 				   startFullMsg + fullMsgStr.substring(wordStart),
 				   msg.targetCode(),
-                   msg.targetMessage(),
+				   msg.targetMessage(),
 				   msg.othersCode(),
-                   msg.othersMessage());
+				   msg.othersMessage());
 		return true;
-    }
-    
-    protected boolean processNonSourceMessages(CMMsg msg, String str, int numToMess)
-    {
-        String fullOtherMsgStr=(msg.othersMessage()==null)?msg.targetMessage():msg.othersMessage();
-        if(fullOtherMsgStr==null) return true;
-    	int wordStart=fullOtherMsgStr.indexOf('\'');
-    	if(wordStart<0) return true;
-    	String startFullMsg=fullOtherMsgStr.substring(0,wordStart);
-    	String verb = "sign(s)";
-    	switch(CMLib.dice().roll(1, 20, 0))
-    	{
-    	case 1: case 2: case 3: case 4: case 5: verb="gesture(s)"; break;
-    	case 6: verb="wave(s)"; break;
-    	case 7: case 8: verb="gesticulate(s)"; break;
-    	case 9: verb="wave(s) <S-HIS-HER> fingers"; break;
-    	case 10: verb="wiggle(s) <S-HIS-HER> hands"; break;
-    	case 11: case 12: verb="wave(s) <S-HIS-HER> hands"; break;
-    	case 13: verb="wiggle(s) <S-HIS-HER> fingers"; break;
-    	}
-    	String oldStartFullMsg = startFullMsg;
-    	startFullMsg = CMStrings.replaceFirstWord(startFullMsg, "tell(s)", verb);
-    	startFullMsg = CMStrings.replaceFirstWord(startFullMsg, "say(s)", verb);
-    	startFullMsg = CMStrings.replaceFirstWord(startFullMsg, "ask(s)", verb+" askingly");
-    	startFullMsg = CMStrings.replaceFirstWord(startFullMsg, "exclaim(s)", verb+" excitedly");
-    	if(oldStartFullMsg.equals(startFullMsg))
-    	{
-    		int x=startFullMsg.toLowerCase().lastIndexOf("(s)");
-    		if(x<0) 
-    			x=startFullMsg.trim().length();
-    		else
-    			x+=3;
-    		startFullMsg = startFullMsg.substring(0,x)+" in "+verb+startFullMsg.substring(x);
-    	}
+	}
+	
+	protected boolean processNonSourceMessages(CMMsg msg, String str, int numToMess)
+	{
+		String fullOtherMsgStr=(msg.othersMessage()==null)?msg.targetMessage():msg.othersMessage();
+		if(fullOtherMsgStr==null) return true;
+		int wordStart=fullOtherMsgStr.indexOf('\'');
+		if(wordStart<0) return true;
+		String startFullMsg=fullOtherMsgStr.substring(0,wordStart);
+		String verb = "sign(s)";
+		switch(CMLib.dice().roll(1, 20, 0))
+		{
+		case 1: case 2: case 3: case 4: case 5: verb="gesture(s)"; break;
+		case 6: verb="wave(s)"; break;
+		case 7: case 8: verb="gesticulate(s)"; break;
+		case 9: verb="wave(s) <S-HIS-HER> fingers"; break;
+		case 10: verb="wiggle(s) <S-HIS-HER> hands"; break;
+		case 11: case 12: verb="wave(s) <S-HIS-HER> hands"; break;
+		case 13: verb="wiggle(s) <S-HIS-HER> fingers"; break;
+		}
+		String oldStartFullMsg = startFullMsg;
+		startFullMsg = CMStrings.replaceFirstWord(startFullMsg, "tell(s)", verb);
+		startFullMsg = CMStrings.replaceFirstWord(startFullMsg, "say(s)", verb);
+		startFullMsg = CMStrings.replaceFirstWord(startFullMsg, "ask(s)", verb+" askingly");
+		startFullMsg = CMStrings.replaceFirstWord(startFullMsg, "exclaim(s)", verb+" excitedly");
+		if(oldStartFullMsg.equals(startFullMsg))
+		{
+			int x=startFullMsg.toLowerCase().lastIndexOf("(s)");
+			if(x<0) 
+				x=startFullMsg.trim().length();
+			else
+				x+=3;
+			startFullMsg = startFullMsg.substring(0,x)+" in "+verb+startFullMsg.substring(x);
+		}
 		msg.modify(msg.source(),
 				   msg.target(),
 				   this,
@@ -131,8 +131,8 @@ public class SignLanguage extends StdLanguage
 				   CMath.unsetb(msg.othersCode(), CMMsg.MASK_SOUND) | CMMsg.MASK_MOVE,
 				   startFullMsg.trim() + ".");
 		return true;
-    }
-    
+	}
+	
 	protected boolean translateOthersMessage(CMMsg msg, String sourceWords)
 	{
 		if((msg.othersMessage()!=null)&&(sourceWords!=null)&&(sourceWords!=null))

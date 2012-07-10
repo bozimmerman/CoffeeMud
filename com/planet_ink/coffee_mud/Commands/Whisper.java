@@ -23,7 +23,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -82,8 +82,8 @@ public class Whisper extends StdCommand
 			if(riddenR==null)
 			{
 				msg=CMClass.getMsg(mob,null,null,CMMsg.MSG_SPEAK,"^T<S-NAME> whisper(s) to <S-HIM-HERSELF> '"+combinedCommands+"'.^?"+CMProps.msp("whisper.wav",40),
-                                              CMMsg.NO_EFFECT,null,
-                                              CMMsg.MSG_QUIETMOVEMENT,"^T<S-NAME> whisper(s) to <S-HIM-HERSELF>.^?"+CMProps.msp("whisper.wav",40));
+											  CMMsg.NO_EFFECT,null,
+											  CMMsg.MSG_QUIETMOVEMENT,"^T<S-NAME> whisper(s) to <S-HIM-HERSELF>.^?"+CMProps.msp("whisper.wav",40));
 				if(R.okMessage(mob,msg))
 					R.send(mob,msg);
 			}
@@ -128,8 +128,8 @@ public class Whisper extends StdCommand
 		}
 		return false;
 	}
-    public double combatActionsCost(final MOB mob, final List<String> cmds){return CMProps.getCombatActionCost(ID());}
-    public double actionsCost(final MOB mob, final List<String> cmds){return CMProps.getActionCost(ID());}
+	public double combatActionsCost(final MOB mob, final List<String> cmds){return CMProps.getCombatActionCost(ID());}
+	public double actionsCost(final MOB mob, final List<String> cmds){return CMProps.getActionCost(ID());}
 	public boolean canBeOrdered(){return true;}
 
 	

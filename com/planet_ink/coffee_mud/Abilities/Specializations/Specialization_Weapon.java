@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -46,37 +46,37 @@ public class Specialization_Weapon extends StdAbility
 	protected boolean activated=false;
 	protected int weaponClass=-1;
 	protected int secondWeaponClass=-1;
-    
+	
 	protected short[] bonuses=null;
 	protected int numExpertises=-1;
 
 	public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_WEAPON_USE;}
 
-    protected int getDamageBonus(int dmgType)
-    {
-        switch(dmgType)
-        {
-        case Weapon.TYPE_SLASHING: return bonuses[0];
-        case Weapon.TYPE_PIERCING: return bonuses[1];
-        case Weapon.TYPE_BASHING: return bonuses[2];
-        case Weapon.TYPE_SHOOT: return bonuses[1];
-        default:
-            return 0;
-        }
-    }
-    protected int getDamageBonus(MOB mob, int dmgType)
-    {
-    	if(mob==null) return 0;
-    	if((numExpertises==mob.numExpertises())&&(bonuses!=null))
-            return getDamageBonus(dmgType);
-    	if(bonuses==null) bonuses=new short[3];
+	protected int getDamageBonus(int dmgType)
+	{
+		switch(dmgType)
+		{
+		case Weapon.TYPE_SLASHING: return bonuses[0];
+		case Weapon.TYPE_PIERCING: return bonuses[1];
+		case Weapon.TYPE_BASHING: return bonuses[2];
+		case Weapon.TYPE_SHOOT: return bonuses[1];
+		default:
+			return 0;
+		}
+	}
+	protected int getDamageBonus(MOB mob, int dmgType)
+	{
+		if(mob==null) return 0;
+		if((numExpertises==mob.numExpertises())&&(bonuses!=null))
+			return getDamageBonus(dmgType);
+		if(bonuses==null) bonuses=new short[3];
 		bonuses[0]=(short)getX1Level(mob);
-        bonuses[1]=(short)getX2Level(mob);
-        bonuses[2]=(short)getX3Level(mob);
-    	numExpertises=mob.numExpertises();
-        return getDamageBonus(dmgType);
-    }
-    
+		bonuses[1]=(short)getX2Level(mob);
+		bonuses[2]=(short)getX3Level(mob);
+		numExpertises=mob.numExpertises();
+		return getDamageBonus(dmgType);
+	}
+	
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		if((activated)

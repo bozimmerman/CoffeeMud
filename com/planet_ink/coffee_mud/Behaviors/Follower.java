@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -46,22 +46,22 @@ public class Follower extends ActiveTicker
 
 	public Follower()
 	{
-        super();
+		super();
 		minTicks=0;
 		maxTicks=0;
 		direction=-1;
 	}
 
-    public void setParms(String newParms)
+	public void setParms(String newParms)
 	{
 		minTicks=0;
 		maxTicks=0;
 		chance=100;
-        super.setParms(newParms);
+		super.setParms(newParms);
 		Vector<String> V=CMParms.parse(newParms.toUpperCase());
 		realFollow=V.contains("GROUP");
 		inventory=V.contains("INVENTORY")||V.contains("INV");
-    }
+	}
 
 	public String accountForYourself()
 	{ 

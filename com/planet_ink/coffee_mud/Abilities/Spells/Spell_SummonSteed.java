@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -63,7 +63,7 @@ public class Spell_SummonSteed extends Spell
 			if((affected!=null)&&(affected instanceof MOB))
 			{
 				MOB mob=(MOB)affected;
-                if(!mob.isInCombat())
+				if(!mob.isInCombat())
 				if(((mob.amFollowing()==null)
 				||(mob.location()==null)
 				||(mob.amDead())
@@ -75,16 +75,16 @@ public class Spell_SummonSteed extends Spell
 					if(mob.amDead()) mob.setLocation(null);
 					mob.destroy();
 				}
-                else
-                if((mob.amFollowing()==null)
-                &&(mob.location()!=null)
-                &&(mob.curState().getHitPoints()<((mob.maxState().getHitPoints()/10)*3)))
-                {
-                    mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> flees.");
-                    mob.delEffect(this);
-                    if(mob.amDead()) mob.setLocation(null);
-                    mob.destroy();
-                }
+				else
+				if((mob.amFollowing()==null)
+				&&(mob.location()!=null)
+				&&(mob.curState().getHitPoints()<((mob.maxState().getHitPoints()/10)*3)))
+				{
+					mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> flees.");
+					mob.delEffect(this);
+					if(mob.amDead()) mob.setLocation(null);
+					mob.destroy();
+				}
 			}
 		}
 		return super.tick(ticking,tickID);
@@ -118,22 +118,22 @@ public class Spell_SummonSteed extends Spell
 			{
 				mob.location().send(mob,msg);
 				MOB target = determineMonster(mob, mob.phyStats().level()+(getXLEVELLevel(mob)+(2*getX1Level(mob))));
-                MOB squabble = checkPack(target, mob);
-                target.addNonUninvokableEffect( (Ability) copyOf());
-                if(squabble==null)
+				MOB squabble = checkPack(target, mob);
+				target.addNonUninvokableEffect( (Ability) copyOf());
+				if(squabble==null)
 				{
-                    if (target.isInCombat()) target.makePeace();
+					if (target.isInCombat()) target.makePeace();
 					CMLib.commands().postFollow(target,mob,true);
-                    invoker=mob;
-                    if (target.amFollowing() != mob)
-                        mob.tell(target.name() + " seems unwilling to follow you.");
-                }
-                else
-                if(squabble.location()!=null)
-                {
-                    squabble.location().showOthers(squabble,target,CMMsg.MSG_OK_ACTION,"^F^<FIGHT^><S-NAME> bares its teeth at <T-NAME> and begins to attack!^</FIGHT^>^?");
-                    target.setVictim(squabble);
-                }
+					invoker=mob;
+					if (target.amFollowing() != mob)
+						mob.tell(target.name() + " seems unwilling to follow you.");
+				}
+				else
+				if(squabble.location()!=null)
+				{
+					squabble.location().showOthers(squabble,target,CMMsg.MSG_OK_ACTION,"^F^<FIGHT^><S-NAME> bares its teeth at <T-NAME> and begins to attack!^</FIGHT^>^?");
+					target.setVictim(squabble);
+				}
 			}
 		}
 		else
@@ -208,16 +208,16 @@ public class Spell_SummonSteed extends Spell
 
 	}
 
-    public MOB checkPack(MOB newPackmate, MOB mob)
+	public MOB checkPack(MOB newPackmate, MOB mob)
 	{
-        for(int i=0;i<mob.numFollowers();i++)
+		for(int i=0;i<mob.numFollowers();i++)
 		{
-            MOB possibleBitch = mob.fetchFollower(i);
-            if(newPackmate.Name().equalsIgnoreCase(possibleBitch.Name())
-            &&(possibleBitch.location()==newPackmate.location())
-            && (CMLib.dice().rollPercentage()-mob.charStats().getStat(CharStats.STAT_CHARISMA)+newPackmate.phyStats().level() > 75))
-                return possibleBitch;
-        }
-        return null;
-    }
+			MOB possibleBitch = mob.fetchFollower(i);
+			if(newPackmate.Name().equalsIgnoreCase(possibleBitch.Name())
+			&&(possibleBitch.location()==newPackmate.location())
+			&& (CMLib.dice().rollPercentage()-mob.charStats().getStat(CharStats.STAT_CHARISMA)+newPackmate.phyStats().level() > 75))
+				return possibleBitch;
+		}
+		return null;
+	}
 }

@@ -25,7 +25,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -42,7 +42,7 @@ public class Spell_Shelter extends Spell
 	protected int canAffectCode(){return CAN_MOBS;}
 	protected int canTargetCode(){return 0;}
 	public int enchantQuality(){return Ability.QUALITY_INDIFFERENT;}
-    public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
+	public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
 	public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_CONJURATION;}
 
 	public Room previousLocation=null;
@@ -88,21 +88,21 @@ public class Spell_Shelter extends Spell
 		super.unInvoke();
 	}
 
-    public boolean okMessage(Environmental host, CMMsg msg)
-    {
-        if(((msg.sourceMinor()==CMMsg.TYP_QUIT)
-	        ||(msg.sourceMinor()==CMMsg.TYP_SHUTDOWN)
+	public boolean okMessage(Environmental host, CMMsg msg)
+	{
+		if(((msg.sourceMinor()==CMMsg.TYP_QUIT)
+			||(msg.sourceMinor()==CMMsg.TYP_SHUTDOWN)
 			||((msg.targetMinor()==CMMsg.TYP_EXPIRE)&&(msg.target()==shelter))
 			||(msg.sourceMinor()==CMMsg.TYP_ROOMRESET))
-        &&(shelter!=null)
-        &&(shelter.isInhabitant(msg.source())))
-        {
-        	getPreviousLocation(msg.source()).bringMobHere(msg.source(),false);
-            unInvoke();
-        }
-        return super.okMessage(host,msg);
-    }
-    
+		&&(shelter!=null)
+		&&(shelter.isInhabitant(msg.source())))
+		{
+			getPreviousLocation(msg.source()).bringMobHere(msg.source(),false);
+			unInvoke();
+		}
+		return super.okMessage(host,msg);
+	}
+	
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
@@ -144,7 +144,7 @@ public class Spell_Shelter extends Spell
 						}
 						thisRoom.send(follower,leaveMsg);
 						newRoom.bringMobHere(follower,false);
-	                    thisRoom.delInhabitant(follower);
+						thisRoom.delInhabitant(follower);
 						newRoom.send(follower,enterMsg);
 						follower.tell("\n\r\n\r");
 						CMLib.commands().postLook(follower,true);

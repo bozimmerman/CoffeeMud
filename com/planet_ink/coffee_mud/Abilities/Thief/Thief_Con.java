@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -43,88 +43,88 @@ public class Thief_Con extends ThiefSkill
 	private static final String[] triggerStrings = {"CON"};
 	public String[] triggerStrings(){return triggerStrings;}
 	protected boolean disregardsArmorCheck(MOB mob){return true;}
-    public int classificationCode() {   return Ability.ACODE_SKILL|Ability.DOMAIN_DECEPTIVE; }
+	public int classificationCode() {   return Ability.ACODE_SKILL|Ability.DOMAIN_DECEPTIVE; }
 	protected MOB lastChecked=null;
-    public double castingTime(final MOB mob, final List<String> cmds){return CMProps.getActionSkillCost(ID(),CMath.div(CMProps.getIntVar(CMProps.SYSTEMI_DEFABLETIME),20.0));}
-    public boolean preInvoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel, int secondsElapsed, double actionsRemaining)
-    {
-        if(commands!=null) commands=new XVector<String>(commands);
-        if(!conCheck(mob,commands,givenTarget,auto,asLevel))
-            return false;
-        Vector V=new Vector();
-        V.addElement(commands.get(0));
-        MOB target=this.getTarget(mob,V,givenTarget);
-        if(target==null) return false;
-        commands.remove(0);
-        if(secondsElapsed>0)
-        {
-            if((secondsElapsed%4)==0)
-                return mob.location().show(mob,target,CMMsg.MSG_SPEAK,"^T<S-NAME> continue(s) conning <T-NAMESELF> to '"+CMParms.combine(commands,0)+"'.^?");
-            return true;
-        }
-        CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_SPEAK,"^T<S-NAME> attempt(s) to con <T-NAMESELF> to '"+CMParms.combine(commands,0)+"'.^?");
-        if(mob.location().okMessage(mob,msg))
-            mob.location().send(mob,msg);
-        else
-            return false;
-        return true;
-    }
+	public double castingTime(final MOB mob, final List<String> cmds){return CMProps.getActionSkillCost(ID(),CMath.div(CMProps.getIntVar(CMProps.SYSTEMI_DEFABLETIME),20.0));}
+	public boolean preInvoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel, int secondsElapsed, double actionsRemaining)
+	{
+		if(commands!=null) commands=new XVector<String>(commands);
+		if(!conCheck(mob,commands,givenTarget,auto,asLevel))
+			return false;
+		Vector V=new Vector();
+		V.addElement(commands.get(0));
+		MOB target=this.getTarget(mob,V,givenTarget);
+		if(target==null) return false;
+		commands.remove(0);
+		if(secondsElapsed>0)
+		{
+			if((secondsElapsed%4)==0)
+				return mob.location().show(mob,target,CMMsg.MSG_SPEAK,"^T<S-NAME> continue(s) conning <T-NAMESELF> to '"+CMParms.combine(commands,0)+"'.^?");
+			return true;
+		}
+		CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_SPEAK,"^T<S-NAME> attempt(s) to con <T-NAMESELF> to '"+CMParms.combine(commands,0)+"'.^?");
+		if(mob.location().okMessage(mob,msg))
+			mob.location().send(mob,msg);
+		else
+			return false;
+		return true;
+	}
 
-    public boolean conCheck(MOB mob, List<String> commands, Environmental givenTarget, boolean auto, int asLevel)
-    {
-        if(commands!=null) commands= new XVector<String>(commands);
-        if(commands.size()<1)
-        {
-            mob.tell("Con whom into doing what?");
-            return false;
-        }
-        Vector V=new Vector();
-        V.addElement(commands.get(0));
-        MOB target=this.getTarget(mob,V,givenTarget);
-        if(target==null) return false;
-        
-        commands.remove(0);
+	public boolean conCheck(MOB mob, List<String> commands, Environmental givenTarget, boolean auto, int asLevel)
+	{
+		if(commands!=null) commands= new XVector<String>(commands);
+		if(commands.size()<1)
+		{
+			mob.tell("Con whom into doing what?");
+			return false;
+		}
+		Vector V=new Vector();
+		V.addElement(commands.get(0));
+		MOB target=this.getTarget(mob,V,givenTarget);
+		if(target==null) return false;
+		
+		commands.remove(0);
 
-        if((!target.mayIFight(mob))||(target.charStats().getStat(CharStats.STAT_INTELLIGENCE)<3))
-        {
-            mob.tell("You can't con "+target.name()+".");
-            return false;
-        }
+		if((!target.mayIFight(mob))||(target.charStats().getStat(CharStats.STAT_INTELLIGENCE)<3))
+		{
+			mob.tell("You can't con "+target.name()+".");
+			return false;
+		}
 
-        if(target.isInCombat())
-        {
-            mob.tell(target.name()+" is too busy fighting right now.");
-            return false;
-        }
+		if(target.isInCombat())
+		{
+			mob.tell(target.name()+" is too busy fighting right now.");
+			return false;
+		}
 
-        if(mob.isInCombat())
-        {
-            mob.tell("You are too busy fighting right now.");
-            return false;
-        }
+		if(mob.isInCombat())
+		{
+			mob.tell("You are too busy fighting right now.");
+			return false;
+		}
 
-        if(commands.size()<1)
-        {
-            mob.tell("Con "+target.charStats().himher()+" into doing what?");
-            return false;
-        }
+		if(commands.size()<1)
+		{
+			mob.tell("Con "+target.charStats().himher()+" into doing what?");
+			return false;
+		}
 
 
-        if(((String)commands.get(0)).toUpperCase().startsWith("FOL"))
-        {
-            mob.tell("You can't con someone into following you.");
-            return false;
-        }
-        
-        CMObject O=CMLib.english().findCommand(target,commands);
-        if(O instanceof Command)
-        {
-            if((!((Command)O).canBeOrdered())||(!((Command)O).securityCheck(mob))||(((Command)O).ID().equals("Sleep")))
-            {
-                mob.tell("You can't con someone into doing that.");
-                return false;
-            }
-        }
+		if(((String)commands.get(0)).toUpperCase().startsWith("FOL"))
+		{
+			mob.tell("You can't con someone into following you.");
+			return false;
+		}
+		
+		CMObject O=CMLib.english().findCommand(target,commands);
+		if(O instanceof Command)
+		{
+			if((!((Command)O).canBeOrdered())||(!((Command)O).securityCheck(mob))||(((Command)O).ID().equals("Sleep")))
+			{
+				mob.tell("You can't con someone into doing that.");
+				return false;
+			}
+		}
 		else
 		{
 			if(O instanceof Ability)
@@ -138,18 +138,18 @@ public class Thief_Con extends ThiefSkill
 				}
 			}
 		}
-        return true;
-    }
-    
+		return true;
+	}
+	
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-        if(commands!=null) commands=new XVector(commands);
-        if(!conCheck(mob,commands,givenTarget,auto,asLevel))
-            return false;
-        Vector V=new Vector();
-        V.addElement(commands.elementAt(0));
-        MOB target=this.getTarget(mob,V,givenTarget);
-        if(target==null) return false;
+		if(commands!=null) commands=new XVector(commands);
+		if(!conCheck(mob,commands,givenTarget,auto,asLevel))
+			return false;
+		Vector V=new Vector();
+		V.addElement(commands.elementAt(0));
+		MOB target=this.getTarget(mob,V,givenTarget);
+		if(target==null) return false;
 		commands.removeElementAt(0);
 
 		int oldProficiency=proficiency();
@@ -172,7 +172,7 @@ public class Thief_Con extends ThiefSkill
 			CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_SPEAK,"^T<S-NAME> con(s) <T-NAMESELF> to '"+CMParms.combine(commands,0)+"'.^?");
 			mob.recoverPhyStats();
 			if((mob.location().okMessage(mob,msg))
-            &&(mob.location().show(mob,target,CMMsg.MSG_ORDER,null)))
+			&&(mob.location().show(mob,target,CMMsg.MSG_ORDER,null)))
 			{
 				mob.location().send(mob,msg);
 				target.enqueCommand(commands,Command.METAFLAG_FORCED|Command.METAFLAG_ORDER,0);

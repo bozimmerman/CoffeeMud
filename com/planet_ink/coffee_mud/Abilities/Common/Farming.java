@@ -23,7 +23,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -134,15 +134,15 @@ public class Farming extends GatheringSkill
 	
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-        bundling=false;
+		bundling=false;
 		if((!auto)
 		&&(commands.size()>0)
 		&&(((String)commands.firstElement()).equalsIgnoreCase("bundle")))
 		{
-            bundling=true;
+			bundling=true;
 			if(super.invoke(mob,commands,givenTarget,auto,asLevel))
-			    return super.bundle(mob,commands);
-		    return false;
+				return super.bundle(mob,commands);
+			return false;
 		}
 		
 		verb="planting";
@@ -159,18 +159,18 @@ public class Farming extends GatheringSkill
 			commonTell(mob,"The land is not suitable for farming here.");
 			return false;
 		}
-        if((!auto)&&(mob.location().getArea().getClimateObj().weatherType(mob.location())==Climate.WEATHER_DROUGHT))
-        {
-            commonTell(mob,"The current drought conditions make planting useless.");
-            return false;
-        }
+		if((!auto)&&(mob.location().getArea().getClimateObj().weatherType(mob.location())==Climate.WEATHER_DROUGHT))
+		{
+			commonTell(mob,"The current drought conditions make planting useless.");
+			return false;
+		}
 		if(mob.location().fetchEffect(ID())!=null)
 		{
 			commonTell(mob,"It looks like a crop is already growing here.");
 			return false;
 		}
 		if(mob.isMonster()
-        &&(!auto)
+		&&(!auto)
 		&&(!CMLib.flags().isAnimalIntelligence(mob))
 		&&(commands.size()==0))
 		{
@@ -260,19 +260,19 @@ public class Farming extends GatheringSkill
 			commonTell(mob,"You'll need to have some "+foundShortName+" to seed from on the ground first.");
 			return false;
 		}
-        String mineName=mine.name();
-        mine=(Item)CMLib.materials().unbundle(mine,-1);
-        if(mine==null)
-        {
-            commonTell(mob,"'"+mineName+"' is not suitable for use as a seed crop.");
-            return false;
-        }
-        if(!(isPotentialCrop(mob.location(),code)))
-        {
-            commonTell(mob,"'"+mineName+"' does not seem to be taking root here.");
-            return false;
-        }
-        
+		String mineName=mine.name();
+		mine=(Item)CMLib.materials().unbundle(mine,-1);
+		if(mine==null)
+		{
+			commonTell(mob,"'"+mineName+"' is not suitable for use as a seed crop.");
+			return false;
+		}
+		if(!(isPotentialCrop(mob.location(),code)))
+		{
+			commonTell(mob,"'"+mineName+"' does not seem to be taking root here.");
+			return false;
+		}
+		
 		found=null;
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
@@ -290,7 +290,7 @@ public class Farming extends GatheringSkill
 				found.text();
 			}
 		}
-        
+		
 		mine.destroy();
 		int duration=getDuration(45,mob,1,15);
 		CMMsg msg=CMClass.getMsg(mob,found,this,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> start(s) planting "+foundShortName+".");

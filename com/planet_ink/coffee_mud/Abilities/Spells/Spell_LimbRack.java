@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -45,47 +45,47 @@ public class Spell_LimbRack extends Spell
 	
 	public boolean tick(Tickable ticking, int tickID)
 	{
-	    if(!super.tick(ticking,tickID))
-	        return false;
-	    if(invoker==null) return false;
-	    MOB mob=(MOB)affected;
-	    if((mob.location()!=null)
-	    &&(mob.charStats().getMyRace().bodyMask()[Race.BODY_ARM]>=0)
-	    &&(mob.charStats().getMyRace().bodyMask()[Race.BODY_LEG]>=0))
-	    {
-	        String str=(text().equalsIgnoreCase("ARMSONLY"))?
-		        "<T-NAME> <T-IS-ARE> having <T-HIS-HER> arms pulled from <T-HIS-HER> body!"
-		        :"<T-NAME> <T-IS-ARE> having <T-HIS-HER> arms and legs pulled from <T-HIS-HER> body!";
-	        CMLib.combat().postDamage(invoker,mob,this,mob.maxState().getHitPoints()/(10-(getXLEVELLevel(invoker)/2)),CMMsg.MASK_ALWAYS|CMMsg.TYP_JUSTICE,Weapon.TYPE_BURSTING,str);
-	    }
-	    
-	    return true;
+		if(!super.tick(ticking,tickID))
+			return false;
+		if(invoker==null) return false;
+		MOB mob=(MOB)affected;
+		if((mob.location()!=null)
+		&&(mob.charStats().getMyRace().bodyMask()[Race.BODY_ARM]>=0)
+		&&(mob.charStats().getMyRace().bodyMask()[Race.BODY_LEG]>=0))
+		{
+			String str=(text().equalsIgnoreCase("ARMSONLY"))?
+				"<T-NAME> <T-IS-ARE> having <T-HIS-HER> arms pulled from <T-HIS-HER> body!"
+				:"<T-NAME> <T-IS-ARE> having <T-HIS-HER> arms and legs pulled from <T-HIS-HER> body!";
+			CMLib.combat().postDamage(invoker,mob,this,mob.maxState().getHitPoints()/(10-(getXLEVELLevel(invoker)/2)),CMMsg.MASK_ALWAYS|CMMsg.TYP_JUSTICE,Weapon.TYPE_BURSTING,str);
+		}
+		
+		return true;
 	}
 	
 	public void unInvoke()
 	{
-	    if((affected instanceof MOB)
-	    &&(((MOB)affected).amDead()))
-	    {
-	        MOB mob=(MOB)affected;
-	        if((mob.location()!=null)
-		    &&(mob.charStats().getMyRace().bodyMask()[Race.BODY_ARM]>0)
-		    &&(mob.charStats().getMyRace().bodyMask()[Race.BODY_LEG]>0))
-		    {
-		        if(text().equalsIgnoreCase("ARMSONLY"))
-			        mob.location().show(mob,null,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> has <S-HIS-HER> arms TORN OFF!");
-		        else
-			        mob.location().show(mob,null,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> has <S-HIS-HER> arms and legs TORN OFF!");
-                Amputator A=(Amputator)mob.fetchEffect("Amputation");
-                if(A==null) A=(Amputator)CMClass.getAbility("Amputation");
-                for(int i=0;i<limbsToRemove.size();i++)
-                    A.amputate(mob,A,(String)limbsToRemove.get(i));
-                if(mob.fetchEffect(A.ID())==null)
-                    mob.addNonUninvokableEffect(A);
-		    }
+		if((affected instanceof MOB)
+		&&(((MOB)affected).amDead()))
+		{
+			MOB mob=(MOB)affected;
+			if((mob.location()!=null)
+			&&(mob.charStats().getMyRace().bodyMask()[Race.BODY_ARM]>0)
+			&&(mob.charStats().getMyRace().bodyMask()[Race.BODY_LEG]>0))
+			{
+				if(text().equalsIgnoreCase("ARMSONLY"))
+					mob.location().show(mob,null,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> has <S-HIS-HER> arms TORN OFF!");
+				else
+					mob.location().show(mob,null,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> has <S-HIS-HER> arms and legs TORN OFF!");
+				Amputator A=(Amputator)mob.fetchEffect("Amputation");
+				if(A==null) A=(Amputator)CMClass.getAbility("Amputation");
+				for(int i=0;i<limbsToRemove.size();i++)
+					A.amputate(mob,A,(String)limbsToRemove.get(i));
+				if(mob.fetchEffect(A.ID())==null)
+					mob.addNonUninvokableEffect(A);
+			}
 			CMLib.utensils().confirmWearability(mob);
-	    }
-	    super.unInvoke();
+		}
+		super.unInvoke();
 	}
 	
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
@@ -98,14 +98,14 @@ public class Spell_LimbRack extends Spell
 		List<String> remainingLimbList=A.remainingLimbNameSet(target);
 		for(int i=remainingLimbList.size()-1;i>=0;i--)
 		{
-		    String gone=(String)remainingLimbList.get(i);
-		    if((!gone.toUpperCase().endsWith(" ARM"))
-		    &&(!gone.toUpperCase().endsWith(" LEG")))
-		        remainingLimbList.remove(i);
+			String gone=(String)remainingLimbList.get(i);
+			if((!gone.toUpperCase().endsWith(" ARM"))
+			&&(!gone.toUpperCase().endsWith(" LEG")))
+				remainingLimbList.remove(i);
 		}
 		if((remainingLimbList.size()==0)
-	    ||((target.charStats().getMyRace().bodyMask()[Race.BODY_ARM]<=0)
-	    &&(target.charStats().getMyRace().bodyMask()[Race.BODY_LEG]<=0)))
+		||((target.charStats().getMyRace().bodyMask()[Race.BODY_ARM]<=0)
+		&&(target.charStats().getMyRace().bodyMask()[Race.BODY_LEG]<=0)))
 		{
 			if(!auto)
 				mob.tell("There is nothing left on "+target.name()+" to rack off!");
@@ -132,15 +132,15 @@ public class Spell_LimbRack extends Spell
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-                if(msg.value()<=0)
-                {
-    				super.maliciousAffect(mob,target,asLevel,12,-1);
-    				Ability A2=target.fetchEffect(ID());
-    				if(A2!=null){
-    					((Spell_LimbRack)A2).limbsToRemove=new Vector<String>();
-    					((Spell_LimbRack)A2).limbsToRemove.addAll(remainingLimbList);
-    				}
-                }
+				if(msg.value()<=0)
+				{
+					super.maliciousAffect(mob,target,asLevel,12,-1);
+					Ability A2=target.fetchEffect(ID());
+					if(A2!=null){
+						((Spell_LimbRack)A2).limbsToRemove=new Vector<String>();
+						((Spell_LimbRack)A2).limbsToRemove.addAll(remainingLimbList);
+					}
+				}
 			}
 		}
 		else

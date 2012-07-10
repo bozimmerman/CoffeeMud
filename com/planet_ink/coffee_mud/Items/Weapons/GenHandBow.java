@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -34,37 +34,37 @@ import java.util.*;
 */
 public class GenHandBow extends StdBow
 {
-    public String ID(){ return "GenHandBow";}
-    protected String    readableText="";
-    public GenHandBow()
-    {
-        super();
-        setName("a generic hand crossbow");
-        setDisplayText("a generic hand crossbow sits here.");
-        setDescription("");
-        setAmmunitionType("bolts");
-        setAmmoCapacity(1);
-        setAmmoRemaining(1);
-        minRange=1;
-        maxRange=2;
-        setRawLogicalAnd(false);
-        recoverPhyStats();
-    }
+	public String ID(){ return "GenHandBow";}
+	protected String	readableText="";
+	public GenHandBow()
+	{
+		super();
+		setName("a generic hand crossbow");
+		setDisplayText("a generic hand crossbow sits here.");
+		setDescription("");
+		setAmmunitionType("bolts");
+		setAmmoCapacity(1);
+		setAmmoRemaining(1);
+		minRange=1;
+		maxRange=2;
+		setRawLogicalAnd(false);
+		recoverPhyStats();
+	}
 
-    public boolean isGeneric(){return true;}
+	public boolean isGeneric(){return true;}
 
 
-    public String text()
-    {
-        return CMLib.coffeeMaker().getPropertiesStr(this,false);
-    }
-    public String readableText(){return readableText;}
-    public void setReadableText(String text){readableText=text;}
+	public String text()
+	{
+		return CMLib.coffeeMaker().getPropertiesStr(this,false);
+	}
+	public String readableText(){return readableText;}
+	public void setReadableText(String text){readableText=text;}
 
-    public void setMiscText(String newText)
-    {
-        miscText="";
-        CMLib.coffeeMaker().setPropertiesStr(this,newText,false);
-        recoverPhyStats();
-    }
+	public void setMiscText(String newText)
+	{
+		miscText="";
+		CMLib.coffeeMaker().setPropertiesStr(this,newText,false);
+		recoverPhyStats();
+	}
 }

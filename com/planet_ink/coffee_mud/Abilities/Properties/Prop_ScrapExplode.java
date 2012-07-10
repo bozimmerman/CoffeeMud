@@ -24,7 +24,7 @@ import java.util.*;
  * <p>you may not use this file except in compliance with the License.
  * <p>You may obtain a copy of the License at
  *
- * <p>       http://www.apache.org/licenses/LICENSE-2.0
+ * <p>  	 http://www.apache.org/licenses/LICENSE-2.0
  *
  * <p>Unless required by applicable law or agreed to in writing, software
  * <p>distributed under the License is distributed on an "AS IS" BASIS,
@@ -45,9 +45,9 @@ public class Prop_ScrapExplode extends Property {
 
 	public void executeMsg(Environmental myHost, CMMsg affect)
 	{
-	    super.executeMsg(myHost, affect);
-	    if((affect.target()!=null)&&(affect.target().equals(affected))
-	       &&(affect.tool()!=null)&&(affect.tool().ID().equals("Scrapping")))
+		super.executeMsg(myHost, affect);
+		if((affect.target()!=null)&&(affect.target().equals(affected))
+		   &&(affect.tool()!=null)&&(affect.tool().ID().equals("Scrapping")))
 		{
 			Item item=(Item)affect.target();
 			MOB mob = affect.source();
@@ -56,18 +56,18 @@ public class Prop_ScrapExplode extends Property {
 			if (mob != null)
 			{
 				CMLib.combat().postDamage(mob, mob, item, damage*2,  CMMsg.MASK_ALWAYS|CMMsg.TYP_FIRE, Weapon.TYPE_PIERCING,
-				        "Scrapping " + item.Name() + " causes an explosion which <DAMAGE> <T-NAME>!!!");
+						"Scrapping " + item.Name() + " causes an explosion which <DAMAGE> <T-NAME>!!!");
 				Set<MOB> theBadGuys=mob.getGroupMembers(new HashSet<MOB>());
 				for(Iterator e=theBadGuys.iterator();e.hasNext();)
 				{
 					MOB inhab=(MOB)e.next();
 					if (mob != inhab)
 						CMLib.combat().postDamage(inhab, inhab, item, damage, CMMsg.MASK_ALWAYS|CMMsg.TYP_FIRE, Weapon.TYPE_PIERCING,
-						        "Fragments from " + item.Name() + " <DAMAGE> <T-NAME>!");
+								"Fragments from " + item.Name() + " <DAMAGE> <T-NAME>!");
 				}
 			}
 			item.destroy();
 			room.recoverRoomStats();
-	    }
+		}
 	}
 }

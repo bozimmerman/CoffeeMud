@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -41,7 +41,7 @@ public class Spell_MindLight extends Spell
 	protected int canAffectCode(){return CAN_ROOMS;}
 	protected int canTargetCode(){return CAN_ROOMS;}
 	public int classificationCode(){	return Ability.ACODE_SPELL|Ability.DOMAIN_ENCHANTMENT;}
-    public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
+	public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
 
 	public void unInvoke()
 	{
@@ -97,7 +97,7 @@ public class Spell_MindLight extends Spell
 
 		if(target.fetchEffect(this.ID())!=null)
 		{
-		    mob.tell(mob,null,null,"The Mind Light is already here!");
+			mob.tell(mob,null,null,"The Mind Light is already here!");
 			return false;
 		}
 

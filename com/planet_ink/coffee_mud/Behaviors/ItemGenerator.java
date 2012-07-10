@@ -25,7 +25,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -64,7 +64,7 @@ public class ItemGenerator extends ActiveTicker
 	public void setParms(String newParms)
 	{
 		favorMobs=false;
-        maintained=new Vector();
+		maintained=new Vector();
 		restrictedLocales=null;
 		String parms=newParms;
 		if(parms.indexOf(';')>=0)
@@ -136,7 +136,7 @@ public class ItemGenerator extends ActiveTicker
 
 	public ItemGenerator()
 	{
-        super();
+		super();
 		tickReset();
 	}
 
@@ -159,15 +159,15 @@ public class ItemGenerator extends ActiveTicker
 			return ((Area)thang).inMyMetroArea(R.getArea());
 		}
 		else
-        if(thang instanceof Room)
-        	return CMLib.map().roomLocation(I)==thang;
-        else
-	    if(thang instanceof MOB)
-	    	return (I.owner()==thang);
-	    else
-	    if(thang instanceof Container)
-	    	return (I.owner()==((Container)thang).owner())&&(I.container()==thang);
-    	return I.owner()==CMLib.map().roomLocation(thang);
+		if(thang instanceof Room)
+			return CMLib.map().roomLocation(I)==thang;
+		else
+		if(thang instanceof MOB)
+			return (I.owner()==thang);
+		else
+		if(thang instanceof Container)
+			return (I.owner()==((Container)thang).owner())&&(I.container()==thang);
+		return I.owner()==CMLib.map().roomLocation(thang);
 	}
 
 
@@ -176,7 +176,7 @@ public class ItemGenerator extends ActiveTicker
 		public String ID(){return "ItemGenerationTicker";}
 		public String name(){return "ItemGenerationTicker";}
 		public CMObject newInstance(){return this;}
-        public void initializeClass(){}
+		public void initializeClass(){}
 		public CMObject copyOf(){return this;}
 		public int compareTo(CMObject o){return (o==this)?1:0;}
 		private int tickStatus=0;
@@ -184,7 +184,7 @@ public class ItemGenerator extends ActiveTicker
 		public boolean tick(Tickable host, int tickID)
 		{
 			List<Item> allItems=new Vector<Item>();
-		    List<ItemCraftor> skills=new Vector<ItemCraftor>();
+			List<ItemCraftor> skills=new Vector<ItemCraftor>();
 			for(Enumeration<Ability> e=CMClass.abilities();e.hasMoreElements();)
 			{
 				Ability A=(Ability)e.nextElement();
@@ -226,8 +226,8 @@ public class ItemGenerator extends ActiveTicker
 				}
 			}
 			items=new GeneratedItemSet();
-  		    Item I=null;
-  		    MaskingLibrary.CompiledZapperMask compiled=CMLib.masking().maskCompile(mask);
+  			Item I=null;
+  			MaskingLibrary.CompiledZapperMask compiled=CMLib.masking().maskCompile(mask);
 			double totalValue=0;
 			int maxValue=-1;
 			for(int a=0;a<allItems.size();a++)
@@ -260,7 +260,7 @@ public class ItemGenerator extends ActiveTicker
 	{
 		super.tick(ticking,tickID);
 		if((!CMProps.getBoolVar(CMProps.SYSTEMB_MUDSTARTED))
-	    ||(!(ticking instanceof Environmental))
+		||(!(ticking instanceof Environmental))
 		||(CMSecurity.isDisabled(CMSecurity.DisFlag.RANDOMITEMS)))
 			return true;
 		Item I=null;
@@ -285,7 +285,7 @@ public class ItemGenerator extends ActiveTicker
 				return false;
 
 			if((maintained.size()<avgItems)
-            &&(items.size()>1))
+			&&(items.size()>1))
 			{
 				double totalValue=items.totalValue;
 				int maxValue=items.maxValue;
@@ -324,27 +324,27 @@ public class ItemGenerator extends ActiveTicker
 						}
 					}
 					else
-				    if(ticking instanceof Container)
-				    {
-				    	if(((Container)ticking).owner() instanceof Room)
-				    		((Room)((Container)ticking).owner()).addItem(CMLib.itemBuilder().enchant(I,enchantPct));
-				    	else
-				    	if(((Container)ticking).owner() instanceof MOB)
-				    		((MOB)((Container)ticking).owner()).addItem(CMLib.itemBuilder().enchant(I,enchantPct));
-				    	else
-				    		return true;
+					if(ticking instanceof Container)
+					{
+						if(((Container)ticking).owner() instanceof Room)
+							((Room)((Container)ticking).owner()).addItem(CMLib.itemBuilder().enchant(I,enchantPct));
+						else
+						if(((Container)ticking).owner() instanceof MOB)
+							((MOB)((Container)ticking).owner()).addItem(CMLib.itemBuilder().enchant(I,enchantPct));
+						else
+							return true;
 						maintained.addElement(I);
-				    	I.setContainer((Container)ticking);
-				    }
+						I.setContainer((Container)ticking);
+					}
 					else
-				    if(ticking instanceof MOB)
-				    {
-			    		((MOB)ticking).addItem(CMLib.itemBuilder().enchant(I,enchantPct));
-			    		I.wearIfPossible((MOB)ticking);
+					if(ticking instanceof MOB)
+					{
+						((MOB)ticking).addItem(CMLib.itemBuilder().enchant(I,enchantPct));
+						I.wearIfPossible((MOB)ticking);
 						maintained.addElement(I);
-				    	I.setContainer((Container)ticking);
-				    }
-				    else
+						I.setContainer((Container)ticking);
+					}
+					else
 					{
 						Room room=null;
 						if(ticking instanceof Room)
@@ -373,7 +373,7 @@ public class ItemGenerator extends ActiveTicker
 								return true;
 						}
 						else
-					    if(ticking instanceof Environmental)
+						if(ticking instanceof Environmental)
 							room=CMLib.map().roomLocation((Environmental)ticking);
 						else
 							return true;

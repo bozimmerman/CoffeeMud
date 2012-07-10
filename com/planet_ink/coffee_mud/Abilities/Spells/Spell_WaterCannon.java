@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -93,7 +93,7 @@ public class Spell_WaterCannon extends Spell
 				int percentage = CMLib.dice().roll(1, 100, 0);
 				if(percentage < 10)
 				{
-      				CMMsg msg3=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),"<T-NAME> is knocked down by the water cannon.");
+	  				CMMsg msg3=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),"<T-NAME> is knocked down by the water cannon.");
 					if(mob.location().okMessage(mob,msg3))
 					{
 					   mob.location().send(mob, msg3);

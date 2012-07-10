@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -43,8 +43,8 @@ public class Prayer_CurseLuck extends Prayer
 	public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_CURSING;}
 	public long flags(){return Ability.FLAG_UNHOLY;}
 	protected int canAffectCode(){return CAN_MOBS;}
-    protected HashSet permProts=new HashSet();
-    protected int prots=4;
+	protected HashSet permProts=new HashSet();
+	protected int prots=4;
 	boolean notAgain=false;
 
 	public void unInvoke()
@@ -61,8 +61,8 @@ public class Prayer_CurseLuck extends Prayer
 
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{
-        int amt=100+(10*super.getXLEVELLevel(invoker()));
-        for(int i : CharStats.CODES.SAVING_THROWS())
+		int amt=100+(10*super.getXLEVELLevel(invoker()));
+		for(int i : CharStats.CODES.SAVING_THROWS())
 			affectableStats.setStat(i,-amt);
 	}
 

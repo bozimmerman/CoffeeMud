@@ -23,7 +23,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -41,7 +41,7 @@ public class Thief_Distract extends ThiefSkill
 	protected int canAffectCode(){return CAN_MOBS;}
 	protected int canTargetCode(){return CAN_MOBS;}
 	private static final String[] triggerStrings = {"DISTRACT"};
-    public int classificationCode() {   return Ability.ACODE_SKILL|Ability.DOMAIN_DECEPTIVE; }
+	public int classificationCode() {   return Ability.ACODE_SKILL|Ability.DOMAIN_DECEPTIVE; }
 	public String[] triggerStrings(){return triggerStrings;}
 	public int usageType(){return USAGE_MOVEMENT;}
 	public int code=0;
@@ -97,19 +97,19 @@ public class Thief_Distract extends ThiefSkill
 		super.unInvoke();
 	}
 
-    public int castingQuality(MOB mob, Physical target)
-    {
-        if((mob!=null)&&(target!=null))
-        {
-            if((CMLib.flags().isSitting(mob)||CMLib.flags().isSleeping(mob)))
-                return Ability.QUALITY_INDIFFERENT;
-            if(!CMLib.flags().aliveAwakeMobileUnbound(mob,true))
-                return Ability.QUALITY_INDIFFERENT;
-            if(mob.isInCombat()&&(mob.rangeToTarget()>0))
-                return Ability.QUALITY_INDIFFERENT;
-        }
-        return super.castingQuality(mob,target);
-    }
+	public int castingQuality(MOB mob, Physical target)
+	{
+		if((mob!=null)&&(target!=null))
+		{
+			if((CMLib.flags().isSitting(mob)||CMLib.flags().isSleeping(mob)))
+				return Ability.QUALITY_INDIFFERENT;
+			if(!CMLib.flags().aliveAwakeMobileUnbound(mob,true))
+				return Ability.QUALITY_INDIFFERENT;
+			if(mob.isInCombat()&&(mob.rangeToTarget()>0))
+				return Ability.QUALITY_INDIFFERENT;
+		}
+		return super.castingQuality(mob,target);
+	}
 
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{

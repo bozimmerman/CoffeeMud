@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -39,7 +39,7 @@ public class Chant_SpeedAging extends Chant
 	public String ID() { return "Chant_SpeedAging"; }
 	public String name(){ return "Speed Aging";}
 	protected int canAffectCode(){return 0;}
-    public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_BREEDING;}
+	public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_BREEDING;}
 	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	protected int overrideMana(){return Integer.MAX_VALUE;}
 
@@ -51,23 +51,23 @@ public class Chant_SpeedAging extends Chant
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-	    int type=verbalCastCode(mob,target,auto);
-	    if((target instanceof MOB)
-	    &&(CMath.bset(type,CMMsg.MASK_MALICIOUS))
-	    &&(((MOB)target).charStats().getStat(CharStats.STAT_AGE)>0))
-	    {
-	        MOB mobt=(MOB)target;
-	        if(mobt.charStats().ageCategory()<=Race.AGE_CHILD)
-		        type=CMath.unsetb(type,CMMsg.MASK_MALICIOUS);
-	        else
-	        if((mobt.getLiegeID().equals(mob.Name()))||(mobt.amFollowing()==mob))
-		        type=CMath.unsetb(type,CMMsg.MASK_MALICIOUS);
-	        else
-	        if((mobt.charStats().ageCategory()<=Race.AGE_MATURE)
-	        &&(mobt.getLiegeID().length()>0))
-		        type=CMath.unsetb(type,CMMsg.MASK_MALICIOUS);
-	    }
-	            
+		int type=verbalCastCode(mob,target,auto);
+		if((target instanceof MOB)
+		&&(CMath.bset(type,CMMsg.MASK_MALICIOUS))
+		&&(((MOB)target).charStats().getStat(CharStats.STAT_AGE)>0))
+		{
+			MOB mobt=(MOB)target;
+			if(mobt.charStats().ageCategory()<=Race.AGE_CHILD)
+				type=CMath.unsetb(type,CMMsg.MASK_MALICIOUS);
+			else
+			if((mobt.getLiegeID().equals(mob.Name()))||(mobt.amFollowing()==mob))
+				type=CMath.unsetb(type,CMMsg.MASK_MALICIOUS);
+			else
+			if((mobt.charStats().ageCategory()<=Race.AGE_MATURE)
+			&&(mobt.getLiegeID().length()>0))
+				type=CMath.unsetb(type,CMMsg.MASK_MALICIOUS);
+		}
+				
 		boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
@@ -125,19 +125,19 @@ public class Chant_SpeedAging extends Chant
 					else
 					if((M.playerStats()!=null) && (M.playerStats().getBirthday()!=null))
 					{
-					    double aging=CMath.mul(M.baseCharStats().getStat(CharStats.STAT_AGE),.10);
-					    int years=(int)Math.round(Math.floor(aging));
-					    int monthsInYear=CMLib.time().globalClock().getMonthsInYear();
-					    int months=(int)Math.round(CMath.mul(aging-Math.floor(aging),monthsInYear));
-					    M.playerStats().getBirthday()[2]-=years;
-					    M.playerStats().getBirthday()[1]-=months;
-					    if(M.playerStats().getBirthday()[1]<1)
-					    {
-						    M.playerStats().getBirthday()[2]--;
-						    years++;
-						    M.playerStats().getBirthday()[1]=monthsInYear+M.playerStats().getBirthday()[1];
-					    }
-					    M.baseCharStats().setStat(CharStats.STAT_AGE,M.baseCharStats().getStat(CharStats.STAT_AGE)+years);
+						double aging=CMath.mul(M.baseCharStats().getStat(CharStats.STAT_AGE),.10);
+						int years=(int)Math.round(Math.floor(aging));
+						int monthsInYear=CMLib.time().globalClock().getMonthsInYear();
+						int months=(int)Math.round(CMath.mul(aging-Math.floor(aging),monthsInYear));
+						M.playerStats().getBirthday()[2]-=years;
+						M.playerStats().getBirthday()[1]-=months;
+						if(M.playerStats().getBirthday()[1]<1)
+						{
+							M.playerStats().getBirthday()[2]--;
+							years++;
+							M.playerStats().getBirthday()[1]=monthsInYear+M.playerStats().getBirthday()[1];
+						}
+						M.baseCharStats().setStat(CharStats.STAT_AGE,M.baseCharStats().getStat(CharStats.STAT_AGE)+years);
 					}
 					M.recoverPhyStats();
 					M.recoverCharStats();

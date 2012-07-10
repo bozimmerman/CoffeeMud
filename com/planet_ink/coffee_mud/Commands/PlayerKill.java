@@ -23,7 +23,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -60,16 +60,16 @@ public class PlayerKill extends StdCommand
 				mob.tell("Once turned on, this flag may not be turned off again.");
 				return false;
 			}
-            
-            if((mob.session()!=null)
-            &&(mob.session().getLastPKFight()>0)
-            &&((System.currentTimeMillis()-mob.session().getLastPKFight())<(5*60*1000)))
-            {
-                mob.tell("You'll need to wait a few minutes before you can turn off your PK flag.");
-                return false;
-            }
+			
+			if((mob.session()!=null)
+			&&(mob.session().getLastPKFight()>0)
+			&&((System.currentTimeMillis()-mob.session().getLastPKFight())<(5*60*1000)))
+			{
+				mob.tell("You'll need to wait a few minutes before you can turn off your PK flag.");
+				return false;
+			}
 
-            mob.setBitmap(CMath.unsetb(mob.getBitmap(),MOB.ATT_PLAYERKILL));
+			mob.setBitmap(CMath.unsetb(mob.getBitmap(),MOB.ATT_PLAYERKILL));
 			mob.tell("Your playerkill flag has been turned off.");
 		}
 		else

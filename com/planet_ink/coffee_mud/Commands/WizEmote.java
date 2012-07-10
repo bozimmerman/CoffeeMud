@@ -23,7 +23,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -60,40 +60,40 @@ public class WizEmote extends StdCommand
 				}
 			}
 			else
-            if(R!=null)
-            {
+			if(R!=null)
+			{
 				for(Session S : CMLib.sessions().localOnlineIterable())
-                {
-                    if((S.mob()!=null)
-                    &&(S.mob().location()==R)
-                    &&(CMSecurity.isAllowed(mob,R,"WIZEMOTE")))
-                        S.stdPrintln("^w"+msg+"^?");
-                }
-            }
-            else
-            if(A!=null)
-            {
+				{
+					if((S.mob()!=null)
+					&&(S.mob().location()==R)
+					&&(CMSecurity.isAllowed(mob,R,"WIZEMOTE")))
+						S.stdPrintln("^w"+msg+"^?");
+				}
+			}
+			else
+			if(A!=null)
+			{
 				for(Session S : CMLib.sessions().localOnlineIterable())
-                {
-                    if((S.mob()!=null)
-                    &&(S.mob().location()!=null)
-                    &&(A.inMyMetroArea(S.mob().location().getArea()))
-                    &&(CMSecurity.isAllowed(mob,S.mob().location(),"WIZEMOTE")))
-                        S.stdPrintln("^w"+msg+"^?");
-                }
-            }
-            else
-            if(C!=null)
-            {
+				{
+					if((S.mob()!=null)
+					&&(S.mob().location()!=null)
+					&&(A.inMyMetroArea(S.mob().location().getArea()))
+					&&(CMSecurity.isAllowed(mob,S.mob().location(),"WIZEMOTE")))
+						S.stdPrintln("^w"+msg+"^?");
+				}
+			}
+			else
+			if(C!=null)
+			{
 				for(Session S : CMLib.sessions().localOnlineIterable())
-                {
-                    if((S.mob()!=null)
-                    &&(S.mob().getClanID().equals(C.clanID()))
-                    &&(CMSecurity.isAllowed(mob,S.mob().location(),"WIZEMOTE")))
-                        S.stdPrintln("^w"+msg+"^?");
-                }
-            }
-            else
+				{
+					if((S.mob()!=null)
+					&&(S.mob().getClanID().equals(C.clanID()))
+					&&(CMSecurity.isAllowed(mob,S.mob().location(),"WIZEMOTE")))
+						S.stdPrintln("^w"+msg+"^?");
+				}
+			}
+			else
 			{
 				boolean found=false;
 				for(Session S : CMLib.sessions().localOnlineIterable())
@@ -112,8 +112,8 @@ public class WizEmote extends StdCommand
 				if(!found)
 					mob.tell("You can't find anyone or anywhere by that name.");
 			}
-	    }
-	    else
+		}
+		else
 			mob.tell("You must specify either all, or an area/mob name, and an message.");
 		return false;
 	}

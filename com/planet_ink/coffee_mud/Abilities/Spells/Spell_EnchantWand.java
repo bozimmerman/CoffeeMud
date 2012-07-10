@@ -26,7 +26,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -43,7 +43,7 @@ public class Spell_EnchantWand extends Spell
 	public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_ENCHANTMENT;}
 	public long flags(){return Ability.FLAG_NOORDERING;}
 	protected int overrideMana(){return Integer.MAX_VALUE;}
-    public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
+	public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
 
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
@@ -69,40 +69,40 @@ public class Spell_EnchantWand extends Spell
 
 		String spellName=CMParms.combine(commands,0).trim();
 		Spell wandThis=null;
-        for(Enumeration<Ability> a=mob.allAbilities();a.hasMoreElements();)
-        {
-            Ability A=a.nextElement();
-            if((A!=null)
-            &&(A instanceof Spell)
-            &&((!A.isSavable())||(CMLib.ableMapper().qualifiesByLevel(mob,A)))
-            &&(A.name().equalsIgnoreCase(spellName))
-            &&(!A.ID().equals(this.ID())))
-                wandThis=(Spell)A;
-        }
-        if(wandThis==null)
-            for(Enumeration<Ability> a=mob.allAbilities();a.hasMoreElements();)
-            {
-                Ability A=a.nextElement();
-	            if((A!=null)
-	            &&(A instanceof Spell)
-	            &&((!A.isSavable())||(CMLib.ableMapper().qualifiesByLevel(mob,A)))
-	            &&(CMLib.english().containsString(A.name(),spellName))
-	            &&(!A.ID().equals(this.ID())))
-	                wandThis=(Spell)A;
-	        }
+		for(Enumeration<Ability> a=mob.allAbilities();a.hasMoreElements();)
+		{
+			Ability A=a.nextElement();
+			if((A!=null)
+			&&(A instanceof Spell)
+			&&((!A.isSavable())||(CMLib.ableMapper().qualifiesByLevel(mob,A)))
+			&&(A.name().equalsIgnoreCase(spellName))
+			&&(!A.ID().equals(this.ID())))
+				wandThis=(Spell)A;
+		}
+		if(wandThis==null)
+			for(Enumeration<Ability> a=mob.allAbilities();a.hasMoreElements();)
+			{
+				Ability A=a.nextElement();
+				if((A!=null)
+				&&(A instanceof Spell)
+				&&((!A.isSavable())||(CMLib.ableMapper().qualifiesByLevel(mob,A)))
+				&&(CMLib.english().containsString(A.name(),spellName))
+				&&(!A.ID().equals(this.ID())))
+					wandThis=(Spell)A;
+			}
 		if(wandThis==null)
 		{
 			mob.tell("You don't know how to enchant anything with '"+spellName+"'.");
 			return false;
 		}
 
-        if((CMLib.ableMapper().lowestQualifyingLevel(wandThis.ID())>24)
-        ||(((StdAbility)wandThis).usageCost(null,true)[0]>45))
-        {
-            mob.tell("That spell is too powerful to enchant into wands.");
-            return false;
-        }
-        
+		if((CMLib.ableMapper().lowestQualifyingLevel(wandThis.ID())>24)
+		||(((StdAbility)wandThis).usageCost(null,true)[0]>45))
+		{
+			mob.tell("That spell is too powerful to enchant into wands.");
+			return false;
+		}
+		
 		if(wand.getSpell()!=null)
 		{
 			mob.tell("A spell has already been enchanted into '"+wand.name()+"'.");
@@ -119,7 +119,7 @@ public class Spell_EnchantWand extends Spell
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-        experienceToLose=getXPCOSTAdjustment(mob,experienceToLose);
+		experienceToLose=getXPCOSTAdjustment(mob,experienceToLose);
 		CMLib.leveler().postExperience(mob,null,null,-experienceToLose,false);
 		mob.tell("You lose "+experienceToLose+" experience points for the effort.");
 

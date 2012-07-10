@@ -25,7 +25,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -116,7 +116,7 @@ public class ItemMender extends StdBehavior
 			}
 			if(CMLib.beanCounter().getTotalAbsoluteShopKeepersValue(msg.source(),observer)<((double)cost))
 			{
-			    String costStr=CMLib.beanCounter().nameCurrencyShort(observer,(double)cost);
+				String costStr=CMLib.beanCounter().nameCurrencyShort(observer,(double)cost);
 				CMLib.commands().postSay(observer,source,"You'll need "+costStr+" for me to repair that.",true,false);
 				return false;
 			}

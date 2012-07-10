@@ -23,7 +23,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -51,30 +51,30 @@ public class Compare extends StdCommand
 		if((compareThis==null)||(!CMLib.flags().canBeSeenBy(compareThis,mob)))
 		{
 			List<Environmental> V=CMLib.coffeeShops().getAllShopkeepers(mob.location(),mob);
-            if(V.size()>0) 
+			if(V.size()>0) 
 			{
-                for(int i=0;i<V.size();i++) 
+				for(int i=0;i<V.size();i++) 
 				{
-                    Environmental shopkeeper=(Environmental)V.get(i);
-                    ShopKeeper SK=CMLib.coffeeShops().getShopKeeper(shopkeeper);
-                    Environmental itemToDo=SK.getShop().getStock((String)commands.elementAt(0),mob);
-                    if((itemToDo==null)||(!(itemToDo instanceof Item))) 
+					Environmental shopkeeper=(Environmental)V.get(i);
+					ShopKeeper SK=CMLib.coffeeShops().getShopKeeper(shopkeeper);
+					Environmental itemToDo=SK.getShop().getStock((String)commands.elementAt(0),mob);
+					if((itemToDo==null)||(!(itemToDo instanceof Item))) 
 					{
-                        continue; // next shopkeeper
-                    }
-                    compareThis=(Item)itemToDo;
-                }
-                if((compareThis==null)||(!CMLib.flags().canBeSeenBy(compareThis,mob))) 
+						continue; // next shopkeeper
+					}
+					compareThis=(Item)itemToDo;
+				}
+				if((compareThis==null)||(!CMLib.flags().canBeSeenBy(compareThis,mob))) 
 				{
-                    mob.tell("You don't have a "+( (String) commands.elementAt(0))+".");
-                    return false;
-                }
-            }
-            else 
+					mob.tell("You don't have a "+( (String) commands.elementAt(0))+".");
+					return false;
+				}
+			}
+			else 
 			{
-                mob.tell("You don't have a "+ ( (String) commands.elementAt(0)) +".");
-                return false;
-            }
+				mob.tell("You don't have a "+ ( (String) commands.elementAt(0)) +".");
+				return false;
+			}
 		}
 		long compareThisCode = compareThis.rawProperLocationBitmap();
 		if(CMath.bset(compareThisCode,Wearable.WORN_HELD)
@@ -164,8 +164,8 @@ public class Compare extends StdCommand
 			mob.tell("You can't compare "+compareThis.name()+" and "+toThis.name()+".");
 		return false;
 	}
-    public double combatActionsCost(final MOB mob, final List<String> cmds){return CMProps.getCombatActionCost(ID());}
-    public double actionsCost(final MOB mob, final List<String> cmds){return CMProps.getActionCost(ID());}
+	public double combatActionsCost(final MOB mob, final List<String> cmds){return CMProps.getCombatActionCost(ID());}
+	public double actionsCost(final MOB mob, final List<String> cmds){return CMProps.getActionCost(ID());}
 	public boolean canBeOrdered(){return true;}
 
 	

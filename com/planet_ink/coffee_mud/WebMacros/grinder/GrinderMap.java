@@ -26,7 +26,7 @@ import java.net.URLEncoder;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -37,7 +37,7 @@ import java.net.URLEncoder;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class GrinderMap extends GrinderFlatMap
 {
-    private GrinderRoom[][][] grid=null;
+	private GrinderRoom[][][] grid=null;
 	protected int minZ = 0;
 	protected int maxZ = 0;
 	protected int zFix = 0;
@@ -71,15 +71,15 @@ public class GrinderMap extends GrinderFlatMap
 		super(A,xyxy);
 	}
 
-    public void rePlaceRooms()
-    {
-        if(areaMap==null)
-            return;
-        grid=null;
-        placeRooms();
-        hashRooms=null;
-        rebuildGrid();
-    }
+	public void rePlaceRooms()
+	{
+		if(areaMap==null)
+			return;
+		grid=null;
+		placeRooms();
+		hashRooms=null;
+		rebuildGrid();
+	}
 
 	public void rebuildGrid()
 	{
@@ -120,7 +120,7 @@ public class GrinderMap extends GrinderFlatMap
 		if (debug) Log.sysOut("GR-REGRID", "Xbound  set2: " + Xbound);
 		grid = new GrinderRoom[Xbound + 1][Ybound + 1][maxZ + 1];
 		if (debug) Log.sysOut("GR-REGRID", "GrinderRoom Grid Created: (x,y,z) " +
-		                      (Xbound + 1) + "," + (Ybound + 1) + "," + (maxZ + 1));
+							  (Xbound + 1) + "," + (Ybound + 1) + "," + (maxZ + 1));
 		for (int y = 0; y < areaMap.size(); y++)
 		{
 			GrinderRoom room = areaMap.get(y);
@@ -134,8 +134,8 @@ public class GrinderMap extends GrinderFlatMap
 			else
 			{
 				if ((debug) && ((room.z > maxZ) || (room.z < minZ)))
-				      Log.sysOut("GR-HTML", "Room.z error: " + room.z + " outside " + maxZ + "-" + minZ + "(" +
-				                 room.roomID + ")");
+					  Log.sysOut("GR-HTML", "Room.z error: " + room.z + " outside " + maxZ + "-" + minZ + "(" +
+								 room.roomID + ")");
 				grid[room.xy[0]][room.xy[1]][room.z] = room;
 			}
 		}
@@ -175,8 +175,8 @@ public class GrinderMap extends GrinderFlatMap
 		{
 			GrinderRoom room = (GrinderRoom) e.nextElement();
 			if ( ( ( (room.xy[0] > x - CLUSTERSIZE) && (room.xy[0] < x + CLUSTERSIZE))
-			      && ( (room.xy[1] > y - CLUSTERSIZE) && (room.xy[1] < y + CLUSTERSIZE)))
-			    || ( (room.xy[0] == x) && (room.xy[1] == y)) && (room.z == z))
+				  && ( (room.xy[1] > y - CLUSTERSIZE) && (room.xy[1] < y + CLUSTERSIZE)))
+				|| ( (room.xy[0] == x) && (room.xy[1] == y)) && (room.z == z))
 				return false;
 		}
 		return true;
@@ -227,7 +227,7 @@ public class GrinderMap extends GrinderFlatMap
 				}
 				// I'm letting EmptyCluster always search the current Z level
 				if (isEmptyCluster(processed, x + (spacing * xadjust),
-				                   y + (spacing * yadjust), z))
+								   y + (spacing * yadjust), z))
 				{
 					XYZ.setElementAt(Integer.valueOf(x + (spacing * xadjust)), 0);
 					XYZ.setElementAt(Integer.valueOf(y + (spacing * yadjust)), 1);
@@ -280,7 +280,7 @@ public class GrinderMap extends GrinderFlatMap
 		for (int x = 0; x < areaMap.size(); x++)
 		{
 			GrinderRoom GR = areaMap.get(x);
-            if(GR.xy==null) Log.errOut("GrinderMap",GR.roomID+" not assigned an XY!");
+			if(GR.xy==null) Log.errOut("GrinderMap",GR.roomID+" not assigned an XY!");
 			if (GR.z < minZ)
 			{
 				if (debug) Log.sysOut("GR-PLACERS", "minZ changed: " + minZ + " to " + GR.z);
@@ -316,8 +316,8 @@ public class GrinderMap extends GrinderFlatMap
 
 		if (areaMap.size() > processed.size())
 			Log.errOut("GrinderMap",
-			           areaMap.size() - processed.size() +
-			           " room(s) were not placed.");
+					   areaMap.size() - processed.size() +
+					   " room(s) were not placed.");
 	}
 
 	public StringBuffer getHTMLTable(ExternalHTTPRequests httpReq)
@@ -326,8 +326,8 @@ public class GrinderMap extends GrinderFlatMap
 		// For now, we will populate the SELECT element prior to the
 		// map layers, but for our cool hover list, we make it a DIV
 		buf.append("<DIV id=\"layersMenu\" style=\"position:absolute; width:110px; "
-		             + "height:200px; z-index:1000000" +
-		             "; left: 0px; top: 10px; visibility: show\">");
+					 + "height:200px; z-index:1000000" +
+					 "; left: 0px; top: 10px; visibility: show\">");
 		buf.append("<select name=\"layerSelect\" size=\"18\" onChange=\"showSelected()\">");
 		for (int z = minZ; z <= maxZ; z++)
 			buf.append("<option value=\"MapLayer" + z + "\">Level " + z + "</option>");
@@ -339,11 +339,11 @@ public class GrinderMap extends GrinderFlatMap
 			// As per the new evalation = LAYER handling
 			// So, here we create the (for now) hidden DIV's
 			buf.append("<DIV id=\"MapLayer" + z + "\" style=\"position:absolute; width:" +
-			           ( (Xbound + 1) * 130) + "px; " + "height:" +
-			           ( (Ybound + 1) * 120) + "px; z-index:" + z +
-			           "; left: 120px; top: 10px; visibility: hidden\">");
+					   ( (Xbound + 1) * 130) + "px; " + "height:" +
+					   ( (Ybound + 1) * 120) + "px; z-index:" + z +
+					   "; left: 120px; top: 10px; visibility: hidden\">");
 			buf.append("<TABLE WIDTH=" + ( (Xbound + 1) * 130) +
-			           " BORDER=0 CELLSPACING=0 CELLPADDING=0>");
+					   " BORDER=0 CELLSPACING=0 CELLPADDING=0>");
 			for(int l=0;l<5;l++)
 			{
 				buf.append("<TR HEIGHT=1>");
@@ -372,19 +372,19 @@ public class GrinderMap extends GrinderFlatMap
 								buf.append("<TD>"+getDoorLabelGif(Directions.NORTHWEST,GR,httpReq)+"</TD>");
 								buf.append("<TD><BR></TD>");
 								buf.append("<TD>" +
-								           getDoorLabelGif(Directions.NORTH, GR, httpReq) +
-								           "</TD>");
+										   getDoorLabelGif(Directions.NORTH, GR, httpReq) +
+										   "</TD>");
 								buf.append("<TD>" +
-								           getDoorLabelGif(Directions.UP, GR, httpReq) +
-								           "</TD>");
+										   getDoorLabelGif(Directions.UP, GR, httpReq) +
+										   "</TD>");
 								buf.append("<TD>"+getDoorLabelGif(Directions.NORTHEAST,GR,httpReq)+"</TD>");
 								break;
 							}
 							case 1:
 							{ // west, east
 								buf.append("<TD>" +
-								           getDoorLabelGif(Directions.WEST, GR, httpReq) +
-								           "</TD>");
+										   getDoorLabelGif(Directions.WEST, GR, httpReq) +
+										   "</TD>");
 								buf.append("<TD COLSPAN=3 ROWSPAN=3 VALIGN=TOP ");
 								buf.append(roomColorStyle(GR));
 								buf.append((boundsXYXY!=null)?" ID=X"+(x+boundsXYXY[0])+"_"+(y+boundsXYXY[1]):"");
@@ -395,24 +395,24 @@ public class GrinderMap extends GrinderFlatMap
 								}
 								try {
 								  buf.append("<a name=\"" +
-								             URLEncoder.encode(GR.roomID, "UTF-8") +
-								      "\" href=\"javascript:RC('" +GR.roomID
-								      + "');\"><FONT SIZE=-1><B>" + roomID +
-								      "</B></FONT></a><BR>");
+											 URLEncoder.encode(GR.roomID, "UTF-8") +
+									  "\" href=\"javascript:RC('" +GR.roomID
+									  + "');\"><FONT SIZE=-1><B>" + roomID +
+									  "</B></FONT></a><BR>");
 								}
 								catch (java.io.UnsupportedEncodingException e) {
 								  Log.errOut("GrinderMap", "Wrong Encoding");
 								}
 								buf.append("<FONT SIZE=-2>(" + CMClass.classID(GR.room()) +
-								           ")<BR>");
+										   ")<BR>");
 								String displayText = GR.room().displayText();
 								if (displayText.length() > 20) {
 								  displayText = displayText.substring(0, 20) + "...";
 								}
 								buf.append(displayText + "</FONT></TD>");
 								buf.append("<TD>" +
-								           getDoorLabelGif(Directions.EAST, GR, httpReq) +
-								           "</TD>");
+										   getDoorLabelGif(Directions.EAST, GR, httpReq) +
+										   "</TD>");
 								break;
 							}
 							case 2: // nada
@@ -430,11 +430,11 @@ public class GrinderMap extends GrinderFlatMap
 								buf.append("<TD>"+getDoorLabelGif(Directions.SOUTHWEST,GR,httpReq)+"</TD>");
 								buf.append("<TD><BR></TD>");
 								buf.append("<TD>" +
-								           getDoorLabelGif(Directions.SOUTH, GR, httpReq) +
-								           "</TD>");
+										   getDoorLabelGif(Directions.SOUTH, GR, httpReq) +
+										   "</TD>");
 								buf.append("<TD>" +
-								           getDoorLabelGif(Directions.DOWN, GR, httpReq) +
-								           "</TD>");
+										   getDoorLabelGif(Directions.DOWN, GR, httpReq) +
+										   "</TD>");
 								buf.append("<TD>"+getDoorLabelGif(Directions.SOUTHEAST,GR,httpReq)+"</TD>");
 								break;
 							}
@@ -464,17 +464,17 @@ public class GrinderMap extends GrinderFlatMap
 		// For now, we will populate the SELECT element prior to the
 		// map layers, but for our cool hover list, we make it a DIV
 		buf.append("<DIV id=\"layersMenu\" style=\"position:absolute; width:110px; "
-		             + "height:200px; z-index:1000000" +
-		             "; left: 0px; top: 10px; visibility: show\">");
+					 + "height:200px; z-index:1000000" +
+					 "; left: 0px; top: 10px; visibility: show\">");
 		buf.append("<select name=\"layerSelect\" size=\"18\" onChange=\"showSelected()\">");
 		String MaPlayer=httpReq.getRequestParameter("MAPLAYER");
 		if(MaPlayer==null) MaPlayer="";
 		for (int z = minZ; z <= maxZ; z++)
 		{
-		    buf.append("<option value=\"MapLayer" + z + "\"");
-		    if(MaPlayer.equalsIgnoreCase("MapLayer"+z))
+			buf.append("<option value=\"MapLayer" + z + "\"");
+			if(MaPlayer.equalsIgnoreCase("MapLayer"+z))
 				buf.append(" SELECTED");
-		    buf.append(">Level " + z + "</option>");
+			buf.append(">Level " + z + "</option>");
 
 		}
 		buf.append("</select></div>");
@@ -484,11 +484,11 @@ public class GrinderMap extends GrinderFlatMap
 			// As per the new evalation = LAYER handling
 			// So, here we create the (for now) hidden DIV's
 			buf.append("<DIV id=\"MapLayer" + z + "\" style=\"position:absolute; width:" +
-			           ( (Xbound + 1) * roomSize) + "px; " + "height:" +
-			           ( (Ybound + 1) * roomSize) + "px; z-index:" + z +
-			           "; left: 120px; top: 10px; visibility: hidden\">");
+					   ( (Xbound + 1) * roomSize) + "px; " + "height:" +
+					   ( (Ybound + 1) * roomSize) + "px; z-index:" + z +
+					   "; left: 120px; top: 10px; visibility: hidden\">");
 			buf.append("<TABLE WIDTH=" + ( (Xbound + 1) * roomSize) +
-			           " BORDER=0 CELLSPACING=0 CELLPADDING=0>");
+					   " BORDER=0 CELLSPACING=0 CELLPADDING=0>");
 			buf.append("<TR HEIGHT=" + roomSize + ">");
 			for (int x = 0; x <= Xbound; x++)
 				buf.append("<TD WIDTH=" + roomSize + " HEIGHT=" + roomSize +"></TD>");
@@ -501,7 +501,7 @@ public class GrinderMap extends GrinderFlatMap
 				{
 					if ( (debug) && ( (z > maxZ) || (z < minZ)))
 						Log.sysOut("GR-HTML",
-						           "z error     : " + z + " outside " + maxZ + "-" + minZ);
+								   "z error     : " + z + " outside " + maxZ + "-" + minZ);
 					GrinderRoom GR = grid[x][y][z];
 					String tdins=(boundsXYXY!=null)?" ID=X"+(x+boundsXYXY[0])+"_"+(y+boundsXYXY[1]):"";
 					if (GR == null)
@@ -537,22 +537,22 @@ public class GrinderMap extends GrinderFlatMap
 			if (room.xy[1] < Ybound)
 				return grid[room.xy[0]][room.xy[1] + 1][room.z];
 			break;
-        case Directions.NORTHWEST:
-            if((room.xy[1]>0)&&(room.xy[0]>0))
-                return grid[room.xy[0]-1][room.xy[1]-1][room.z];
-            break;
-        case Directions.SOUTHWEST:
-            if((room.xy[1]<Ybound)&&(room.xy[0]>0))
-                return grid[room.xy[0]-1][room.xy[1]+1][room.z];
-            break;
-        case Directions.NORTHEAST:
-            if((room.xy[1]>0)&&(room.xy[0]<Xbound))
-                return grid[room.xy[0]+1][room.xy[1]-1][room.z];
-            break;
-        case Directions.SOUTHEAST:
-            if((room.xy[1]<Ybound)&&(room.xy[0]<Xbound))
-                return grid[room.xy[0]+1][room.xy[1]+1][room.z];
-            break;
+		case Directions.NORTHWEST:
+			if((room.xy[1]>0)&&(room.xy[0]>0))
+				return grid[room.xy[0]-1][room.xy[1]-1][room.z];
+			break;
+		case Directions.SOUTHWEST:
+			if((room.xy[1]<Ybound)&&(room.xy[0]>0))
+				return grid[room.xy[0]-1][room.xy[1]+1][room.z];
+			break;
+		case Directions.NORTHEAST:
+			if((room.xy[1]>0)&&(room.xy[0]<Xbound))
+				return grid[room.xy[0]+1][room.xy[1]-1][room.z];
+			break;
+		case Directions.SOUTHEAST:
+			if((room.xy[1]<Ybound)&&(room.xy[0]<Xbound))
+				return grid[room.xy[0]+1][room.xy[1]+1][room.z];
+			break;
 		case Directions.EAST:
 			if (room.xy[0] < Xbound)
 				return grid[room.xy[0] + 1][room.xy[1]][room.z];
@@ -574,13 +574,13 @@ public class GrinderMap extends GrinderFlatMap
 	}
 
 	public void placeRoom(GrinderRoom room,
-	                      int favoredX,
-	                      int favoredY,
-	                      Hashtable processed,
-	                      boolean doNotDefer,
-	                      boolean passTwo,
-	                      int depth,
-	                      int zLevel)
+						  int favoredX,
+						  int favoredY,
+						  Hashtable processed,
+						  boolean doNotDefer,
+						  boolean passTwo,
+						  int depth,
+						  int zLevel)
 	{
 		if (room == null)
 		  return;
@@ -602,10 +602,10 @@ public class GrinderMap extends GrinderFlatMap
 						{
 						  GrinderDir RD = roomToBlame.doors[rd];
 						  if ( (RD != null)
-						      && (RD.room != null)
-						      && (!RD.positionedAlready)
-						      && (RD.room.equals(room.roomID)))
-						    return;
+							  && (RD.room != null)
+							  && (!RD.positionedAlready)
+							  && (RD.room.equals(room.roomID)))
+							return;
 						}
 					}
 				}
@@ -651,17 +651,17 @@ public class GrinderMap extends GrinderFlatMap
 					switch (d)
 					{
 					  case Directions.NORTH:
-					    newFavoredY--;
-					    break;
+						newFavoredY--;
+						break;
 					  case Directions.SOUTH:
-					    newFavoredY++;
-					    break;
+						newFavoredY++;
+						break;
 					  case Directions.EAST:
-					    newFavoredX++;
-					    break;
+						newFavoredX++;
+						break;
 					  case Directions.WEST:
-					    newFavoredX--;
-					    break;
+						newFavoredX--;
+						break;
 					case Directions.NORTHEAST:
 						newFavoredY--; newFavoredX++; break;
 					case Directions.NORTHWEST:
@@ -671,15 +671,15 @@ public class GrinderMap extends GrinderFlatMap
 					case Directions.SOUTHWEST:
 						newFavoredY++; newFavoredX--; break;
 					  case Directions.UP:
-					    newZLevel++;
-					    break;
+						newZLevel++;
+						break;
 					  case Directions.DOWN:
-					    newZLevel--;
-					    break;
+						newZLevel--;
+						break;
 					}
 					room.doors[d].positionedAlready = true;
 					placeRoom(nextRoom, newFavoredX, newFavoredY, processed, false,
-					          passTwo, depth + 1, newZLevel);
+							  passTwo, depth + 1, newZLevel);
 				}
 			}
 		}

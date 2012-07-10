@@ -23,7 +23,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -137,7 +137,7 @@ public class Copy extends StdCommand
 			}
 		}
 		if(E==null) E=mob.location().fetchFromRoomFavorItems(srchContainer,name);
-        if(E==null) E=mob.location().fetchFromRoomFavorMOBs(srchContainer,name);
+		if(E==null) E=mob.location().fetchFromRoomFavorMOBs(srchContainer,name);
 		if(E==null)	E=mob.findItem(name);
 		if(E==null)
 		{
@@ -145,20 +145,20 @@ public class Copy extends StdCommand
 		}
 		if(E==null)
 		{
-		    try
-		    {
-		    	E=CMLib.map().findFirstInhabitant(mob.location().getArea().getMetroMap(), mob, name, 50);
-		    	if(E==null) 
-			    	E=CMLib.map().findFirstRoomItem(mob.location().getArea().getMetroMap(), mob, name, true, 50);
-		    	if(E==null) 
-			    	E=CMLib.map().findFirstInventory(null, mob, name, 50);
-		    	if(E==null) 
-			    	E=CMLib.map().findFirstShopStock(null, mob, name, 50);
-		    	if(E==null) 
-			    	E=CMLib.map().findFirstInventory(CMLib.map().rooms(), mob, name, 50);
-		    	if(E==null) 
-			    	E=CMLib.map().findFirstShopStock(CMLib.map().rooms(), mob, name, 50);
-		    }catch(NoSuchElementException e){}
+			try
+			{
+				E=CMLib.map().findFirstInhabitant(mob.location().getArea().getMetroMap(), mob, name, 50);
+				if(E==null) 
+					E=CMLib.map().findFirstRoomItem(mob.location().getArea().getMetroMap(), mob, name, true, 50);
+				if(E==null) 
+					E=CMLib.map().findFirstInventory(null, mob, name, 50);
+				if(E==null) 
+					E=CMLib.map().findFirstShopStock(null, mob, name, 50);
+				if(E==null) 
+					E=CMLib.map().findFirstInventory(CMLib.map().rooms(), mob, name, 50);
+				if(E==null) 
+					E=CMLib.map().findFirstShopStock(CMLib.map().rooms(), mob, name, 50);
+			}catch(NoSuchElementException e){}
 		}
 		if(E==null)
 		{
@@ -241,8 +241,8 @@ public class Copy extends StdCommand
 					mob.tell("A room already exists "+Directions.getInDirectionName(dirCode)+"!");
 					return false;
 				}
-	    		synchronized(("SYNC"+room.roomID()).intern())
-	    		{
+				synchronized(("SYNC"+room.roomID()).intern())
+				{
 					Room newRoom=(Room)E.copyOf();
 					newRoom.clearSky();
 					if(newRoom instanceof GridLocale)
@@ -284,7 +284,7 @@ public class Copy extends StdCommand
 					else
 						room.showHappens(CMMsg.MSG_OK_ACTION,"Suddenly, "+newRoom.roomTitle(mob)+" falls "+Directions.getInDirectionName(dirCode)+".");
 					room=newRoom;
-	    		}
+				}
 			}
 			else
 			if((E instanceof Exit)&&(dirCode>=0))
@@ -305,16 +305,16 @@ public class Copy extends StdCommand
 						return false;
 					}
 				}
-	    		synchronized(("SYNC"+editRoom.roomID()).intern())
-	    		{
-	    			Exit oldE=editRoom.getRawExit(dirCode);
-	    			if((oldE==null)||(oldE!=E))
-	    			{
+				synchronized(("SYNC"+editRoom.roomID()).intern())
+				{
+					Exit oldE=editRoom.getRawExit(dirCode);
+					if((oldE==null)||(oldE!=E))
+					{
 						editRoom.setRawExit(dirCode, E);
 						CMLib.database().DBUpdateExits(editRoom);
-	    			}
+					}
 					room.showHappens(CMMsg.MSG_OK_ACTION,"Suddenly, "+E.name()+" falls "+Directions.getInDirectionName(dirCode)+".");
-	    		}
+				}
 			}
 			else
 			{
@@ -324,7 +324,7 @@ public class Copy extends StdCommand
 			}
 		}
 		if((E instanceof Item)&&(!(E instanceof ArchonOnly))&&(room!=null))
-		    room.recoverRoomStats();
+			room.recoverRoomStats();
 		return false;
 	}
 	

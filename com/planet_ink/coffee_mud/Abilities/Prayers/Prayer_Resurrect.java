@@ -26,7 +26,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -52,96 +52,96 @@ public class Prayer_Resurrect extends Prayer implements MendingSkill
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		Physical body=null;
-        body=getTarget(mob,mob.location(),givenTarget,commands,Wearable.FILTER_UNWORNONLY);
-        DatabaseEngine.PlayerData nonPlayerData=null;
-        boolean playerCorpse=false;
-        if((body==null)&&(CMSecurity.isASysOp(mob)))
-        {
-        	List<PlayerData> V=CMLib.database().DBReadData("HEAVEN");
-            Vector<Physical> allObjs=new Vector<Physical>();
-            Vector allDataPs=new Vector();
-            if((V!=null)&&(V.size()>0))
-            for(int v=0;v<V.size();v++)
-            {
-            	DatabaseEngine.PlayerData dataP=(DatabaseEngine.PlayerData)V.get(v);
-                String data=dataP.xml;
-                PhysicalAgent obj=parseHeavenlyData(data);
-                if(obj!=null)
-                {
-                    allDataPs.addElement(dataP);
-                    allObjs.addElement(obj);
-                }
-            }
-            if(allObjs.size()==0) return false;
-            String name=CMParms.combine(commands,0);
-            if(name.equalsIgnoreCase("list"))
-            {
-                mob.tell("^x"+CMStrings.padRight("Guardian",15)
-                        +CMStrings.padRight("Child name",45)
-                        +CMStrings.padRight("Birth date",16)+"^?");
-                for(int i=0;i<allObjs.size();i++)
-                {
-                    body=allObjs.elementAt(i);
-                    Ability age=body.fetchEffect("Age");
-                    mob.tell(CMStrings.padRight(((DatabaseEngine.PlayerData)allDataPs.elementAt(i)).who,15)
-                            +CMStrings.padRight(body.name(),45)
-                            +CMStrings.padRight(((age==null)?"":CMLib.time().date2String(CMath.s_long(age.text()))),16)+"\n\r"+CMStrings.padRight("",15)+body.description());
-                }
-                return false;
-            }
-            Physical P=(Physical)CMLib.english().fetchEnvironmental(allObjs,name,true);
-            if(P==null) P=(Physical)CMLib.english().fetchEnvironmental(allObjs,name,false);
-            if(P==null) return false;
-            for(int i=0;i<allObjs.size();i++)
-                if(allObjs.elementAt(i)==P)
-                {
-                    nonPlayerData=(DatabaseEngine.PlayerData)allDataPs.elementAt(i);
-                    body=P;
-                    break;
-                }
-        }
-        if(nonPlayerData==null)
-        {
-            if(body==null) return false;
-            if((!(body instanceof DeadBody))
-            ||(((DeadBody)body).mobName().length()==0))
-            {
-                mob.tell("You can't resurrect that.");
-                return false;
-            }
-            playerCorpse=((DeadBody)body).playerCorpse();
-    		if(!playerCorpse)
-    		{
-    			Ability AGE=body.fetchEffect("Age");
-    			if((AGE!=null)&&(CMath.isLong(AGE.text()))&&(CMath.s_long(AGE.text())>Short.MAX_VALUE))
-    			{
-    				MOB M=null;
-    				for(int i=0;i<mob.location().numInhabitants();i++)
-    				{
-    					M=mob.location().fetchInhabitant(i);
-    					if((M!=null)&&(!M.isMonster()))
-    					{
-    						List<PlayerData> V=CMLib.database().DBReadData(M.Name(),"HEAVEN",M.Name()+"/HEAVEN/"+AGE.text());
-    						if((V!=null)&&(V.size()>0))
-    						{
-    							nonPlayerData=(DatabaseEngine.PlayerData)V.get(0);
-    							break;
-    						}
-    					}
-    				}
-    				if(nonPlayerData==null)
-    				{
-    					mob.tell("You can't seem to focus on "+body.Name()+"'s spirit.  Perhaps if loved ones were here?");
-    					return false;
-    				}
-    			}
-    			else
-    			{
-    				mob.tell("You can't resurrect "+((DeadBody)body).charStats().himher()+".");
-    				return false;
-    			}
-    		}
-        }
+		body=getTarget(mob,mob.location(),givenTarget,commands,Wearable.FILTER_UNWORNONLY);
+		DatabaseEngine.PlayerData nonPlayerData=null;
+		boolean playerCorpse=false;
+		if((body==null)&&(CMSecurity.isASysOp(mob)))
+		{
+			List<PlayerData> V=CMLib.database().DBReadData("HEAVEN");
+			Vector<Physical> allObjs=new Vector<Physical>();
+			Vector allDataPs=new Vector();
+			if((V!=null)&&(V.size()>0))
+			for(int v=0;v<V.size();v++)
+			{
+				DatabaseEngine.PlayerData dataP=(DatabaseEngine.PlayerData)V.get(v);
+				String data=dataP.xml;
+				PhysicalAgent obj=parseHeavenlyData(data);
+				if(obj!=null)
+				{
+					allDataPs.addElement(dataP);
+					allObjs.addElement(obj);
+				}
+			}
+			if(allObjs.size()==0) return false;
+			String name=CMParms.combine(commands,0);
+			if(name.equalsIgnoreCase("list"))
+			{
+				mob.tell("^x"+CMStrings.padRight("Guardian",15)
+						+CMStrings.padRight("Child name",45)
+						+CMStrings.padRight("Birth date",16)+"^?");
+				for(int i=0;i<allObjs.size();i++)
+				{
+					body=allObjs.elementAt(i);
+					Ability age=body.fetchEffect("Age");
+					mob.tell(CMStrings.padRight(((DatabaseEngine.PlayerData)allDataPs.elementAt(i)).who,15)
+							+CMStrings.padRight(body.name(),45)
+							+CMStrings.padRight(((age==null)?"":CMLib.time().date2String(CMath.s_long(age.text()))),16)+"\n\r"+CMStrings.padRight("",15)+body.description());
+				}
+				return false;
+			}
+			Physical P=(Physical)CMLib.english().fetchEnvironmental(allObjs,name,true);
+			if(P==null) P=(Physical)CMLib.english().fetchEnvironmental(allObjs,name,false);
+			if(P==null) return false;
+			for(int i=0;i<allObjs.size();i++)
+				if(allObjs.elementAt(i)==P)
+				{
+					nonPlayerData=(DatabaseEngine.PlayerData)allDataPs.elementAt(i);
+					body=P;
+					break;
+				}
+		}
+		if(nonPlayerData==null)
+		{
+			if(body==null) return false;
+			if((!(body instanceof DeadBody))
+			||(((DeadBody)body).mobName().length()==0))
+			{
+				mob.tell("You can't resurrect that.");
+				return false;
+			}
+			playerCorpse=((DeadBody)body).playerCorpse();
+			if(!playerCorpse)
+			{
+				Ability AGE=body.fetchEffect("Age");
+				if((AGE!=null)&&(CMath.isLong(AGE.text()))&&(CMath.s_long(AGE.text())>Short.MAX_VALUE))
+				{
+					MOB M=null;
+					for(int i=0;i<mob.location().numInhabitants();i++)
+					{
+						M=mob.location().fetchInhabitant(i);
+						if((M!=null)&&(!M.isMonster()))
+						{
+							List<PlayerData> V=CMLib.database().DBReadData(M.Name(),"HEAVEN",M.Name()+"/HEAVEN/"+AGE.text());
+							if((V!=null)&&(V.size()>0))
+							{
+								nonPlayerData=(DatabaseEngine.PlayerData)V.get(0);
+								break;
+							}
+						}
+					}
+					if(nonPlayerData==null)
+					{
+						mob.tell("You can't seem to focus on "+body.Name()+"'s spirit.  Perhaps if loved ones were here?");
+						return false;
+					}
+				}
+				else
+				{
+					mob.tell("You can't resurrect "+((DeadBody)body).charStats().himher()+".");
+					return false;
+				}
+			}
+		}
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
@@ -179,7 +179,7 @@ public class Prayer_Resurrect extends Prayer implements MendingSkill
 						MOB rejuvedMOB=(MOB)object;
 						rejuvedMOB.recoverCharStats();
 						rejuvedMOB.recoverMaxState();
-                        body.delEffect(body.fetchEffect("Age")); // so misskids doesn't record it
+						body.delEffect(body.fetchEffect("Age")); // so misskids doesn't record it
 						body.destroy();
 						rejuvedMOB.bringToLife(mob.location(),true);
 						rejuvedMOB.location().show(rejuvedMOB,null,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> get(s) up!");
@@ -195,30 +195,30 @@ public class Prayer_Resurrect extends Prayer implements MendingSkill
 		// return whether it worked
 		return success;
 	}
-    
-    public PhysicalAgent parseHeavenlyData(String data)
-    {
-        String classID=null;
-        int ability=0;
-        int x=data.indexOf('/');
-        if(x>=0)
-        {
-            classID=data.substring(0,x);
-            data=data.substring(x+1);
-        }
-        x=data.indexOf('/');
-        if(x>=0)
-        {
-            ability=CMath.s_int(data.substring(0,x));
-            data=data.substring(x+1);
-        }
-        PhysicalAgent object=CMClass.getItem(classID);
-        if(object==null) object=CMClass.getMOB(classID);
-        if(object==null) return null;
-        object.setMiscText(data);
-        object.basePhyStats().setAbility(ability);
-        object.recoverPhyStats();
-        return object;
-        
-    }
+	
+	public PhysicalAgent parseHeavenlyData(String data)
+	{
+		String classID=null;
+		int ability=0;
+		int x=data.indexOf('/');
+		if(x>=0)
+		{
+			classID=data.substring(0,x);
+			data=data.substring(x+1);
+		}
+		x=data.indexOf('/');
+		if(x>=0)
+		{
+			ability=CMath.s_int(data.substring(0,x));
+			data=data.substring(x+1);
+		}
+		PhysicalAgent object=CMClass.getItem(classID);
+		if(object==null) object=CMClass.getMOB(classID);
+		if(object==null) return null;
+		object.setMiscText(data);
+		object.basePhyStats().setAbility(ability);
+		object.recoverPhyStats();
+		return object;
+		
+	}
 }

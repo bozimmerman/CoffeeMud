@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -44,7 +44,7 @@ public class Skill_Dirt extends StdSkill
 	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	private static final String[] triggerStrings = {"DIRT"};
 	public String[] triggerStrings(){return triggerStrings;}
-    public int classificationCode(){ return Ability.ACODE_SKILL|Ability.DOMAIN_DIRTYFIGHTING;}
+	public int classificationCode(){ return Ability.ACODE_SKILL|Ability.DOMAIN_DIRTYFIGHTING;}
 	public int maxRange(){return adjustedMaxInvokerRange(1);}
 	public int usageType(){return USAGE_MOVEMENT;}
 
@@ -91,9 +91,9 @@ public class Skill_Dirt extends StdSkill
 				return Ability.QUALITY_INDIFFERENT;
 			if((target instanceof MOB)&&(((MOB)target).charStats().getBodyPart(Race.BODY_EYE)==0))
 				return Ability.QUALITY_INDIFFERENT;
-            if((target instanceof MOB)&&(!CMLib.flags().canSee((MOB)target)))
-                return Ability.QUALITY_INDIFFERENT;
-	        if(CMLib.flags().isSleeping(target))
+			if((target instanceof MOB)&&(!CMLib.flags().canSee((MOB)target)))
+				return Ability.QUALITY_INDIFFERENT;
+			if(CMLib.flags().isSleeping(target))
 				return Ability.QUALITY_INDIFFERENT;
 			if(CMLib.flags().isFlying(mob))
 				return Ability.QUALITY_INDIFFERENT;
@@ -131,8 +131,8 @@ public class Skill_Dirt extends StdSkill
 
 		if(!hereOK(mob))
 		{
-            if(!auto)
-    			mob.tell("There's no dirt here to kick!");
+			if(!auto)
+				mob.tell("There's no dirt here to kick!");
 			return false;
 		}
 
@@ -148,13 +148,13 @@ public class Skill_Dirt extends StdSkill
 			return false;
 		}
 		
-        if(CMLib.flags().isSleeping(target))
-        {
-            if(!auto)
-                mob.tell(target.name()+" has "+target.charStats().hisher()+" eyes closed.");
-            return false;
-        }
-        
+		if(CMLib.flags().isSleeping(target))
+		{
+			if(!auto)
+				mob.tell(target.name()+" has "+target.charStats().hisher()+" eyes closed.");
+			return false;
+		}
+		
 		if((!auto)&&CMLib.flags().isFlying(mob))
 		{
 			mob.tell("You are too far from the ground to kick dirt.");
@@ -169,7 +169,7 @@ public class Skill_Dirt extends StdSkill
 		if(success)
 		{
 			CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_JUSTICE|(auto?CMMsg.MASK_ALWAYS:0),auto?"Dirt flies at <T-NAME>!":"^F^<FIGHT^><S-NAME> kick(s) dirt at <T-NAMESELF>.^</FIGHT^>^?");
-            CMLib.color().fixSourceFightColor(msg);
+			CMLib.color().fixSourceFightColor(msg);
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

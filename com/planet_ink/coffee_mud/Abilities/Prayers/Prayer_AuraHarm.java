@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -46,12 +46,12 @@ public class Prayer_AuraHarm extends Prayer
 	public long flags(){return Ability.FLAG_UNHOLY;}
 	private int damageTickDown=4;
 
-    public Prayer_AuraHarm()
-    {
-        super();
+	public Prayer_AuraHarm()
+	{
+		super();
 
-        damageTickDown = 4;
-    }
+		damageTickDown = 4;
+	}
 
 
 	public void unInvoke()
@@ -102,22 +102,22 @@ public class Prayer_AuraHarm extends Prayer
 		return super.tick(ticking,tickID);
 	}
 	
-    public int castingQuality(MOB mob, Physical target)
-    {
-        if(mob!=null)
-        {
-        	if(target instanceof Room)
-        	{
-        		if(!mob.isInCombat())
-    	            return super.castingQuality(mob, target,Ability.QUALITY_INDIFFERENT);
-	            if(mob.charStats().getMyRace().racialCategory().equals("Undead"))
-	                return super.castingQuality(mob, target,Ability.QUALITY_BENEFICIAL_SELF);
-	            return super.castingQuality(mob, target,Ability.QUALITY_MALICIOUS);
-        	}
-        }
-        return super.castingQuality(mob,target);
-    }
-    
+	public int castingQuality(MOB mob, Physical target)
+	{
+		if(mob!=null)
+		{
+			if(target instanceof Room)
+			{
+				if(!mob.isInCombat())
+					return super.castingQuality(mob, target,Ability.QUALITY_INDIFFERENT);
+				if(mob.charStats().getMyRace().racialCategory().equals("Undead"))
+					return super.castingQuality(mob, target,Ability.QUALITY_BENEFICIAL_SELF);
+				return super.castingQuality(mob, target,Ability.QUALITY_MALICIOUS);
+			}
+		}
+		return super.castingQuality(mob,target);
+	}
+	
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		Room target=mob.location();

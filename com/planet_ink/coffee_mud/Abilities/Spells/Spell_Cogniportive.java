@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -40,7 +40,7 @@ public class Spell_Cogniportive extends Spell
 	protected int canAffectCode(){return CAN_ITEMS;}
 	protected int canTargetCode(){return CAN_ITEMS;}
 	public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_CONJURATION;}
-    public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
+	public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
 	public long flags(){return Ability.FLAG_TRANSPORTING;}
 
 	public String establishHome(MOB mob, Item me, boolean beLoose)
@@ -50,9 +50,9 @@ public class Spell_Cogniportive extends Spell
 		// check mobs worn items first!
 		String srchStr="$"+me.Name()+"$";
 		List<Item> mobInventory=new Vector(1);
-	    try
-	    {
-	    	mobInventory=CMLib.map().findInventory(CMLib.map().rooms(),null, srchStr, 10);
+		try
+		{
+			mobInventory=CMLib.map().findInventory(CMLib.map().rooms(),null, srchStr, 10);
 			for(Item I : mobInventory)
 			{
 				Environmental owner=I.owner();
@@ -61,13 +61,13 @@ public class Spell_Cogniportive extends Spell
 				&&(((MOB)owner).isMonster())
 				&&(!I.amWearingAt(Wearable.IN_INVENTORY))
 				&&((beLoose) || me.sameAs(I))
-                &&(CMLib.law().getLandTitle(room)==null))
+				&&(CMLib.law().getLandTitle(room)==null))
 					return CMLib.map().getExtendedRoomID(room);
 			}
-	    }catch(NoSuchElementException nse){}
-	    try
-	    {
-	    	List<Environmental> all=CMLib.map().findShopStockers(CMLib.map().rooms(), mob, srchStr, 10);
+		}catch(NoSuchElementException nse){}
+		try
+		{
+			List<Environmental> all=CMLib.map().findShopStockers(CMLib.map().rooms(), mob, srchStr, 10);
 			for(Environmental O : all)
 				if(O instanceof ShopKeeper)
 				{
@@ -75,13 +75,13 @@ public class Spell_Cogniportive extends Spell
 					Room room=CMLib.map().getStartRoom(S);
 					Environmental E=S.getShop().getStock(me.Name(), null);
 					if((E instanceof Item)
-	                &&((beLoose) || me.sameAs(E))
-	                &&(CMLib.law().getLandTitle(room)==null))
+					&&((beLoose) || me.sameAs(E))
+					&&(CMLib.law().getLandTitle(room)==null))
 						return CMLib.map().getExtendedRoomID(room);
 				}
-	    }catch(NoSuchElementException nse){}
-	    try
-	    {
+		}catch(NoSuchElementException nse){}
+		try
+		{
 			// check mobs inventory items third!
 			for(Item I : mobInventory)
 			{
@@ -91,23 +91,23 @@ public class Spell_Cogniportive extends Spell
 				&&(((MOB)owner).isMonster())
 				&&(I.amWearingAt(Wearable.IN_INVENTORY))
 				&&((beLoose) || me.sameAs(I))
-                &&(CMLib.law().getLandTitle(room)==null))
+				&&(CMLib.law().getLandTitle(room)==null))
 					return CMLib.map().getExtendedRoomID(room);
 			}
-	    }catch(NoSuchElementException nse){}
-	    try
-	    {
+		}catch(NoSuchElementException nse){}
+		try
+		{
 			// check room stuff last
-	    	List<Item> targets=CMLib.map().findRoomItems(CMLib.map().rooms(), mob, me.Name(), false,10);
+			List<Item> targets=CMLib.map().findRoomItems(CMLib.map().rooms(), mob, me.Name(), false,10);
 			for(Item I : targets)
 			{
 				Room R=CMLib.map().roomLocation(I);
 				if((R!=null)
-                &&((beLoose) || me.sameAs(I))
-                &&(CMLib.law().getLandTitle(R)==null))
+				&&((beLoose) || me.sameAs(I))
+				&&(CMLib.law().getLandTitle(R)==null))
 				   return CMLib.map().getExtendedRoomID(R);
 			}
-	    }catch(NoSuchElementException nse){}
+		}catch(NoSuchElementException nse){}
 		return "";
 	}
 
@@ -122,8 +122,8 @@ public class Spell_Cogniportive extends Spell
 		{
 			if(text().length()==0)
 				setMiscText(establishHome(mob,me,false));
-            if(text().length()==0)
-                setMiscText(establishHome(mob,me,true));
+			if(text().length()==0)
+				setMiscText(establishHome(mob,me,true));
 			Room home=CMLib.map().getRoom(text());
 			if((home==null)||(!CMLib.flags().canAccess(mob,home)))
 				mob.location().showHappens(CMMsg.MSG_OK_VISUAL,"Strange fizzled sparks fly from "+me.name()+".");
@@ -139,9 +139,9 @@ public class Spell_Cogniportive extends Spell
 					CMMsg enterMsg=CMClass.getMsg(follower,home,this,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,"<S-NAME> appears in a puff of smoke.");
 					CMMsg leaveMsg=CMClass.getMsg(follower,thisRoom,this,CMMsg.MSG_LEAVE|CMMsg.MASK_MAGIC,"<S-NAME> disappear(s) in a puff of smoke.");
 					if(thisRoom.isInhabitant(follower)
-                    &&thisRoom.okMessage(follower,leaveMsg)
-                    &&(!home.isInhabitant(follower))
-                    &&home.okMessage(follower,enterMsg))
+					&&thisRoom.okMessage(follower,leaveMsg)
+					&&(!home.isInhabitant(follower))
+					&&home.okMessage(follower,enterMsg))
 					{
 						if(follower.isInCombat())
 						{
@@ -238,9 +238,9 @@ public class Spell_Cogniportive extends Spell
 				beneficialAffect(mob,target,asLevel,1000);
 				A=target.fetchEffect(ID());
 				if(A!=null) {
-				    String home=((Spell_Cogniportive)A).establishHome(mob,target,false);
-				    if(home.length()==0)
-				        home=((Spell_Cogniportive)A).establishHome(mob,target,true);
+					String home=((Spell_Cogniportive)A).establishHome(mob,target,false);
+					if(home.length()==0)
+						home=((Spell_Cogniportive)A).establishHome(mob,target,true);
 					A.setMiscText(home);
 				}
 				target.recoverPhyStats();

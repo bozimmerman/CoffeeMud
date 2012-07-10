@@ -23,7 +23,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -38,8 +38,8 @@ public class Chant_Hibernation extends Chant
 	public String ID() { return "Chant_Hibernation"; }
 	public String name(){ return "Hibernation";}
 	public String displayText(){return "(Hibernating)";}
-    public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_ANIMALAFFINITY;}
-    public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
+	public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_ANIMALAFFINITY;}
+	public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
 	protected int canAffectCode(){return Ability.CAN_MOBS;}
 	protected int canTargetCode(){return 0;}
 	private CharState oldState=null;
@@ -114,21 +114,21 @@ public class Chant_Hibernation extends Chant
 			roundsHibernating++;
 			double man = (double)( ( mob.charStats().getStat( CharStats.STAT_INTELLIGENCE ) + mob.charStats().getStat( CharStats.STAT_WISDOM ) ) );
 			mob.curState().adjMana( (int)Math.round( ( man * .1 ) + ( ( mob.phyStats().level() + ( 2.0 * super.getXLEVELLevel( invoker() ) )  ) / 2.0 ) ),
-			                        mob.maxState() );
+									mob.maxState() );
 			mob.curState().setHunger(oldState.getHunger());
 			mob.curState().setThirst(oldState.getThirst());
 			double move = (double)mob.charStats().getStat( CharStats.STAT_STRENGTH );
 			mob.curState().adjMovement( (int)Math.round( ( move * .1 ) + ( ( mob.phyStats().level() + ( 2.0 * super.getXLEVELLevel( invoker() ) )  ) / 2.0 ) ),
-			                            mob.maxState() );
+										mob.maxState() );
 			if(!CMLib.flags().isGolem(mob))
 			{
 				double hp=(double)mob.charStats().getStat( CharStats.STAT_CONSTITUTION );
 				if(!CMLib.combat().postHealing( mob,
-				                                mob,
-				                                this,
-				                                CMMsg.MASK_ALWAYS|CMMsg.TYP_CAST_SPELL,
-				                                (int)Math.round( ( hp * .1 ) + ( ( mob.phyStats().level() + ( 2.0 * super.getXLEVELLevel( invoker() ) ) ) / 2.0 ) ),
-				                                null ) )
+												mob,
+												this,
+												CMMsg.MASK_ALWAYS|CMMsg.TYP_CAST_SPELL,
+												(int)Math.round( ( hp * .1 ) + ( ( mob.phyStats().level() + ( 2.0 * super.getXLEVELLevel( invoker() ) ) ) / 2.0 ) ),
+												null ) )
 					unInvoke();
 			}
 		}

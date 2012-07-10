@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -63,10 +63,10 @@ public class Mage extends StdCharClass
 	{
 		super();
 		maxStatAdj[CharStats.STAT_INTELLIGENCE]=7;
-    }
-    public void initializeClass()
-    {
-        super.initializeClass();
+	}
+	public void initializeClass()
+	{
+		super.initializeClass();
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Write",100,true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_WandUse",25,true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Recall",25,true);
@@ -111,7 +111,7 @@ public class Mage extends StdCharClass
 		CMLib.ableMapper().addCharAbilityMapping(ID(),3,"Spell_ResistGas",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),3,"Spell_Grease",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),3,"Spell_SummoningWard",false);
-        CMLib.ableMapper().addCharAbilityMapping(ID(),3,"Spell_SummonCompanion",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),3,"Spell_SummonCompanion",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),3,"Spell_WizardLock",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),3,"Spell_Deafness",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),3,"Spell_Knock",false);
@@ -352,7 +352,7 @@ public class Mage extends StdCharClass
 		}
 		return super.qualifiesForThisClass(mob,quiet);
 	}
-    
+	
 	public void grantAbilities(MOB mob, boolean isBorrowedClass)
 	{
 		super.grantAbilities(mob,isBorrowedClass);

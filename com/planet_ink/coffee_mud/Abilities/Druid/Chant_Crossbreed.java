@@ -24,7 +24,7 @@ import java.util.Vector;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -39,7 +39,7 @@ public class Chant_Crossbreed extends Chant
 	public String ID() { return "Chant_Crossbreed"; }
 	public String name(){ return "Crossbreed";}
 	public String displayText(){return "(Crossbreed)";}
-    public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_BREEDING;}
+	public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_BREEDING;}
 	public int abstractQuality(){return Ability.QUALITY_OK_OTHERS;}
 
 	public void unInvoke()
@@ -83,11 +83,11 @@ public class Chant_Crossbreed extends Chant
 			&&(myChar.fetchWornItems(Wearable.WORN_LEGS|Wearable.WORN_WAIST,(short)-2048,(short)0).size()==0)
 			&&(mate.fetchWornItems(Wearable.WORN_LEGS|Wearable.WORN_WAIST,(short)-2048,(short)0).size()==0)
 			&&((mate.charStats().getStat(CharStats.STAT_AGE)==0)
-			        ||((mate.charStats().ageCategory()>Race.AGE_CHILD)
-			                &&(mate.charStats().ageCategory()<Race.AGE_OLD)))
+					||((mate.charStats().ageCategory()>Race.AGE_CHILD)
+							&&(mate.charStats().ageCategory()<Race.AGE_OLD)))
 			&&((myChar.charStats().getStat(CharStats.STAT_AGE)==0)
-			        ||((myChar.charStats().ageCategory()>Race.AGE_CHILD)
-			                &&(myChar.charStats().ageCategory()<Race.AGE_OLD))))
+					||((myChar.charStats().ageCategory()>Race.AGE_CHILD)
+							&&(myChar.charStats().ageCategory()<Race.AGE_OLD))))
 			{
 				MOB female=myChar;
 				MOB male=mate;

@@ -26,7 +26,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -68,16 +68,16 @@ public class GrinderRooms
 		String className=httpReq.getRequestParameter("CLASSES");
 		if((className==null)||(className.length()==0))
 			return "Please select a class type for this room.";
-    	synchronized(("SYNC"+R.roomID()).intern())
-    	{
-    		R=CMLib.map().getRoom(R);
+		synchronized(("SYNC"+R.roomID()).intern())
+		{
+			R=CMLib.map().getRoom(R);
 	
-            boolean singleMobMode=CMath.s_bool(httpReq.getRequestParameter("SINGLEMOB"));
-            String delMOB=singleMobMode?httpReq.getRequestParameter("DELMOB"):null;
-            
+			boolean singleMobMode=CMath.s_bool(httpReq.getRequestParameter("SINGLEMOB"));
+			String delMOB=singleMobMode?httpReq.getRequestParameter("DELMOB"):null;
+			
 			CMLib.map().resetRoom(R);
 			Room copyRoom=(Room)R.copyOf();
-            boolean skipImage=false;
+			boolean skipImage=false;
 	
 			if(!className.equalsIgnoreCase(CMClass.classID(R)))
 			{
@@ -94,16 +94,16 @@ public class GrinderRooms
 					R.rawDoors()[d]=oldR.rawDoors()[d];
 				for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 				{
-				    Exit E=oldR.getRawExit(d);
-				    if(E!=null)
-				        R.setRawExit(d,(Exit)E.copyOf());
+					Exit E=oldR.getRawExit(d);
+					if(E!=null)
+						R.setRawExit(d,(Exit)E.copyOf());
 				}
 				redoAllMyDamnRooms=true;
-                if(R.image().equalsIgnoreCase(CMProps.getDefaultMXPImage(oldR)))
-                {
-                    R.setImage(null);
-                    skipImage=true;
-                }
+				if(R.image().equalsIgnoreCase(CMProps.getDefaultMXPImage(oldR)))
+				{
+					R.setImage(null);
+					skipImage=true;
+				}
 			}
 	
 			// name
@@ -119,12 +119,12 @@ public class GrinderRooms
 			R.setDescription(desc);
 	
 			// image
-            if(!skipImage)
-            {
-    			String img=httpReq.getRequestParameter("IMAGE");
-    			if(img==null)img="";
-    			R.setImage(img);
-            }
+			if(!skipImage)
+			{
+				String img=httpReq.getRequestParameter("IMAGE");
+				if(img==null)img="";
+				R.setImage(img);
+			}
 	
 			if(R instanceof GridLocale)
 			{
@@ -184,11 +184,11 @@ public class GrinderRooms
 					{
 						MOB M=RoomData.getMOBFromCode(allmobs,MATCHING);
 						if(M!=null)	
-                        {
-                            if(MATCHING.equalsIgnoreCase(delMOB))
-                                continue;
-                            happilyAddMob(M,R);
-                        }
+						{
+							if(MATCHING.equalsIgnoreCase(delMOB))
+								continue;
+							happilyAddMob(M,R);
+						}
 						else
 						{
 							StringBuffer str=new StringBuffer("!!!No MOB?!!!!");
@@ -198,9 +198,9 @@ public class GrinderRooms
 					else
 					if(MATCHING.startsWith("CATALOG-"))
 					{
-					    MOB M=RoomData.getMOBFromCatalog(MATCHING);
-					    if(M!=null)
-                            happilyAddMob((MOB)M.copyOf(),R);
+						MOB M=RoomData.getMOBFromCatalog(MATCHING);
+						if(M!=null)
+							happilyAddMob((MOB)M.copyOf(),R);
 					}
 					else
 					if(MATCHING.indexOf('@')>0)
@@ -233,35 +233,35 @@ public class GrinderRooms
 	
 			if(httpReq.isRequestParameter("ITEM1"))
 			{
-			    Vector items=new Vector();
-			    Vector cstrings=new Vector();
+				Vector items=new Vector();
+				Vector cstrings=new Vector();
 				for(int i=1;;i++)
 				{
 					String MATCHING=httpReq.getRequestParameter("ITEM"+i);
-                    if(MATCHING==null) break;
+					if(MATCHING==null) break;
 					Item I2=RoomData.getItemFromAnywhere(allitems,MATCHING);
 					if(I2!=null)
 					{
-	                    if(!RoomData.isAllNum(MATCHING))
-	                        I2=(Item)I2.copyOf();
-                        I2.unWear();
-	                    //if(worn) I2.wearEvenIfImpossible(M);
+						if(!RoomData.isAllNum(MATCHING))
+							I2=(Item)I2.copyOf();
+						I2.unWear();
+						//if(worn) I2.wearEvenIfImpossible(M);
 						happilyAddItem(I2,R);
 						items.addElement(I2);
 						I2.setContainer(null);
-                        String CONTAINER=httpReq.getRequestParameter("ITEMCONT"+i);
-                        cstrings.addElement((CONTAINER==null)?"":CONTAINER);
+						String CONTAINER=httpReq.getRequestParameter("ITEMCONT"+i);
+						cstrings.addElement((CONTAINER==null)?"":CONTAINER);
 					}
 				}
-	            for(int i=0;i<cstrings.size();i++)
-	            {
-	                String CONTAINER=(String)cstrings.elementAt(i);
-	                if(CONTAINER.length()==0) continue;
-	                Item I2=(Item)items.elementAt(i);
-	                Item C2=(Item)CMLib.english().fetchEnvironmental(items,CONTAINER,true);
-	                if(C2 instanceof Container)
-	                	I2.setContainer((Container)C2);
-	            }
+				for(int i=0;i<cstrings.size();i++)
+				{
+					String CONTAINER=(String)cstrings.elementAt(i);
+					if(CONTAINER.length()==0) continue;
+					Item I2=(Item)items.elementAt(i);
+					Item C2=(Item)CMLib.english().fetchEnvironmental(items,CONTAINER,true);
+					if(C2 instanceof Container)
+						I2.setContainer((Container)C2);
+				}
 			}
 			else
 				return "No Item Data!";
@@ -288,8 +288,8 @@ public class GrinderRooms
 	
 			if(redoAllMyDamnRooms)
 			{
-			    try
-			    {
+				try
+				{
 					for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
 					{
 						Room R2=(Room)r.nextElement();
@@ -301,9 +301,9 @@ public class GrinderRooms
 									((GridLocale)R2).buildGrid();
 							}
 					}
-			    }catch(NoSuchElementException e){}
-			    try
-			    {
+				}catch(NoSuchElementException e){}
+				try
+				{
 					for(Enumeration e=CMLib.players().players();e.hasMoreElements();)
 					{
 						MOB M=(MOB)e.nextElement();
@@ -313,22 +313,22 @@ public class GrinderRooms
 						if(M.location()==oldR)
 							M.setLocation(R);
 					}
-			    }catch(NoSuchElementException e){}
+				}catch(NoSuchElementException e){}
 			}
 			R.getArea().fillInAreaRoom(R);
 			CMLib.database().DBUpdateRoom(R);
 			CMLib.database().DBUpdateMOBs(R);
 			CMLib.database().DBUpdateItems(R);
 			R.startItemRejuv();
-	        if(oldR!=R)
-            { 
-                oldR.destroy(); 
-                R.getArea().addProperRoom(R);
-            }
+			if(oldR!=R)
+			{ 
+				oldR.destroy(); 
+				R.getArea().addProperRoom(R);
+			}
 			if(!copyRoom.sameAs(R))
 				Log.sysOut("Grinder",whom.Name()+" modified room "+R.roomID()+".");
 			copyRoom.destroy();
-    	}
+		}
 		return "";
 	}
 

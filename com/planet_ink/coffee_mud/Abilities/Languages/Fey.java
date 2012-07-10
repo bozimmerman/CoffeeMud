@@ -23,7 +23,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -43,9 +43,9 @@ public class Fey extends StdLanguage
 		super();
 	}
 	public CMObject newInstance()
-    {	
-        return new Fey();
-    }
+	{	
+		return new Fey();
+	}
 	public List<String[]> translationVector(String language)
 	{ 
 		if(wordLists==null)
@@ -923,7 +923,7 @@ public class Fey extends StdLanguage
 		hashwords.put("TREE","rhabuu");
 		hashwords.put("TRENCHCOAT","lufluu");
 		hashwords.put("TRIBE","galn'hiete");
-        hashwords.put("GANG","galn'hiete");
+		hashwords.put("GANG","galn'hiete");
 		hashwords.put("TRUE","vosalb");
 		hashwords.put("TRULY","vosalb-eh");
 		hashwords.put("TRUELY","vosalb-eh");

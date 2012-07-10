@@ -25,7 +25,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -58,7 +58,7 @@ public class Poison extends StdAbility
 	protected String POISON_CAST(){return "^F^<FIGHT^><S-NAME> attempt(s) to poison <T-NAMESELF>!^</FIGHT^>^?";}
 	protected String POISON_FAIL(){return "<S-NAME> attempt(s) to poison <T-NAMESELF>, but fail(s).";}
 	protected int POISON_DAMAGE(){return (invoker!=null)?CMLib.dice().roll(1,invoker().phyStats().level(),1):0;}
-    protected boolean processing=false;
+	protected boolean processing=false;
 
 	protected int poisonTick=3;
 
@@ -71,22 +71,22 @@ public class Poison extends StdAbility
 		{
 			MOB targetMOB=(MOB)target;
 			if(POISON_START_TARGETONLY().length()>0)
-			    targetMOB.tell(POISON_START_TARGETONLY());
-            String startMsg=CMStrings.replaceAll(POISON_START(),"<S-","<T-");
-            CMMsg msg=CMClass.getMsg(poisoner,targetMOB,this,CMMsg.MASK_ALWAYS|CMMsg.MASK_MALICIOUS|CMMsg.TYP_POISON,startMsg);
+				targetMOB.tell(POISON_START_TARGETONLY());
+			String startMsg=CMStrings.replaceAll(POISON_START(),"<S-","<T-");
+			CMMsg msg=CMClass.getMsg(poisoner,targetMOB,this,CMMsg.MASK_ALWAYS|CMMsg.MASK_MALICIOUS|CMMsg.TYP_POISON,startMsg);
 			if((POISON_START_TARGETONLY().length()>0)
 			||((targetMOB.location()!=null)
-    			&&(targetMOB.location().okMessage(targetMOB,msg))))
+				&&(targetMOB.location().okMessage(targetMOB,msg))))
 			{
-                targetMOB.location().send(targetMOB,msg);
-			    if((POISON_AFFECTTARGET()&&(msg.value()<=0)))
-			    {
+				targetMOB.location().send(targetMOB,msg);
+				if((POISON_AFFECTTARGET()&&(msg.value()<=0)))
+				{
 					maliciousAffect(poisoner,target,
 									(affected instanceof Item)?affected.phyStats().level():0,
 									POISON_TICKS(),-1);
 					return true;
-			    }
-		        return false;
+				}
+				return false;
 			}
 		}
 		return false;
@@ -109,11 +109,11 @@ public class Poison extends StdAbility
 				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,POISON_AFFECT()+CMProps.msp("poisoned.wav",10));
 			if(invoker==null) invoker=mob;
 			if(POISON_DAMAGE()!=0)
-            {
+			{
 				CMLib.combat().postDamage(invoker,mob,this,POISON_DAMAGE(),CMMsg.MASK_ALWAYS|CMMsg.TYP_POISON,-1,null);
-                if((!mob.isInCombat())&&(mob!=invoker)&&(mob.location()!=null)&&(mob.location().isInhabitant(invoker))&&(CMLib.flags().canBeSeenBy(invoker,mob)))
-                    CMLib.combat().postAttack(mob,invoker,mob.fetchWieldedItem());
-            }
+				if((!mob.isInCombat())&&(mob!=invoker)&&(mob.location()!=null)&&(mob.location().isInhabitant(invoker))&&(CMLib.flags().canBeSeenBy(invoker,mob)))
+					CMLib.combat().postAttack(mob,invoker,mob.fetchWieldedItem());
+			}
 		}
 		return true;
 	}
@@ -162,13 +162,13 @@ public class Poison extends StdAbility
 					{
 					case CMMsg.TYP_DRINK:
 						if(myItem instanceof Drink)
-                        {
+						{
 							catchIt(msg.source(),msg.source());
-                            if(((((Drink)myItem).liquidRemaining()<0)
-                                ||((((Drink)myItem).liquidRemaining()-((Drink)myItem).thirstQuenched())<=0))
-                            &&(!((Drink)myItem).disappearsAfterDrinking()))
-                                affected.delEffect(this);
-                        }
+							if(((((Drink)myItem).liquidRemaining()<0)
+								||((((Drink)myItem).liquidRemaining()-((Drink)myItem).thirstQuenched())<=0))
+							&&(!((Drink)myItem).disappearsAfterDrinking()))
+								affected.delEffect(this);
+						}
 						break;
 					case CMMsg.TYP_EAT:
 						if(myItem instanceof Food)
@@ -189,15 +189,15 @@ public class Poison extends StdAbility
 							catchIt(msg.source(),(MOB)msg.target());
 						}
 						break;
-                    case CMMsg.TYP_FILL:
-                        if((msg.target() instanceof Drink)
-                        &&(affected instanceof Drink))
-                        {
-                            ((Drink)msg.target()).addEffect((Ability)this.copyOf());
-                            if((((Drink)affected).liquidRemaining()-((Drink)msg.target()).amountTakenToFillMe((Drink)affected))<=0)
-                                affected.delEffect(this);
-                        }
-                        break;
+					case CMMsg.TYP_FILL:
+						if((msg.target() instanceof Drink)
+						&&(affected instanceof Drink))
+						{
+							((Drink)msg.target()).addEffect((Ability)this.copyOf());
+							if((((Drink)affected).liquidRemaining()-((Drink)msg.target()).amountTakenToFillMe((Drink)affected))<=0)
+								affected.delEffect(this);
+						}
+						break;
 					}
 			}
 			processing=false;
@@ -216,29 +216,29 @@ public class Poison extends StdAbility
 		{
 			String str=auto?"":POISON_CAST();
 			CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_POISON|(auto?CMMsg.MASK_ALWAYS:0),str);
-            CMLib.color().fixSourceFightColor(msg);
+			CMLib.color().fixSourceFightColor(msg);
 			Room R=mob.location();
 			if((target instanceof MOB)&&(((MOB)target).location()!=null))
 				R=((MOB)target).location();
 			if(R.okMessage(mob,msg))
 			{
-			    R.send(mob,msg);
+				R.send(mob,msg);
 				if(msg.value()<=0)
 				{
 					if(target instanceof MOB)
 					{
-					    if(POISON_START_TARGETONLY().length()>0)
+						if(POISON_START_TARGETONLY().length()>0)
 							((MOB)target).tell(POISON_START_TARGETONLY());
-					    else
+						else
 							R.show((MOB)target,null,CMMsg.MSG_OK_VISUAL,POISON_START());
 						if(POISON_AFFECTTARGET())
-						    success=maliciousAffect(mob,(MOB)target,asLevel,POISON_TICKS(),-1);
+							success=maliciousAffect(mob,(MOB)target,asLevel,POISON_TICKS(),-1);
 						else
-						    success=true;
+							success=true;
 					}
-                    else
-                    if(target instanceof Physical)
-                        success=maliciousAffect(mob,(Physical)target,asLevel,100,-1);
+					else
+					if(target instanceof Physical)
+						success=maliciousAffect(mob,(Physical)target,asLevel,100,-1);
 				}
 				else
 					success=false;
@@ -249,7 +249,7 @@ public class Poison extends StdAbility
 		else
 			return maliciousFizzle(mob,target,POISON_FAIL());
 
-        return success;
+		return success;
 
 	}
 

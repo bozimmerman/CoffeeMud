@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -37,14 +37,14 @@ public class ExitData extends StdWebMacro
 {
 	public String name()	{return this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);}
 
-    private static final String[] okparms={
-        "NAME","CLASSES","DISPLAYTEXT","DESCRIPTION",
-        "LEVEL","LEVELRESTRICTED","ISTRAPPED","HASADOOR",
-        "CLOSEDTEXT","DEFAULTSCLOSED","OPENWORD","CLOSEWORD",
-        "HASALOCK","DEFAULTSLOCKED","KEYNAME","ISREADABLE",
-        "READABLETEXT","ISCLASSRESTRICTED","RESTRICTEDCLASSES",
-        "ISALIGNMENTRESTRICTED","RESTRICTEDALIGNMENTS",
-        "MISCTEXT","ISGENERIC","DOORNAME","IMAGE","OPENTICKS"};
+	private static final String[] okparms={
+		"NAME","CLASSES","DISPLAYTEXT","DESCRIPTION",
+		"LEVEL","LEVELRESTRICTED","ISTRAPPED","HASADOOR",
+		"CLOSEDTEXT","DEFAULTSCLOSED","OPENWORD","CLOSEWORD",
+		"HASALOCK","DEFAULTSLOCKED","KEYNAME","ISREADABLE",
+		"READABLETEXT","ISCLASSRESTRICTED","RESTRICTEDCLASSES",
+		"ISALIGNMENTRESTRICTED","RESTRICTEDALIGNMENTS",
+		"MISCTEXT","ISGENERIC","DOORNAME","IMAGE","OPENTICKS"};
 	public static String dispositions(Physical P,
 									  boolean firstTime,
 									  ExternalHTTPRequests httpReq,
@@ -257,6 +257,6 @@ public class ExitData extends StdWebMacro
 		String strstr=str.toString();
 		if(strstr.endsWith(", "))
 			strstr=strstr.substring(0,strstr.length()-2);
-        return clearWebMacros(strstr);
+		return clearWebMacros(strstr);
 	}
 }

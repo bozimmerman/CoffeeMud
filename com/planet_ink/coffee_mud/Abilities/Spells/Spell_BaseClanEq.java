@@ -24,7 +24,7 @@ import java.util.*;
  * <p>you may not use this file except in compliance with the License.
  * <p>You may obtain a copy of the License at
  *
- * <p>       http://www.apache.org/licenses/LICENSE-2.0
+ * <p>  	 http://www.apache.org/licenses/LICENSE-2.0
  *
  * <p>Unless required by applicable law or agreed to in writing, software
  * <p>distributed under the License is distributed on an "AS IS" BASIS,
@@ -42,9 +42,9 @@ public class Spell_BaseClanEq extends Spell
 	public String ID() { return "Spell_BaseClanEq"; }
 	public String name(){return "Enchant Clan Equipment Base Model";}
 	protected int canTargetCode(){return CAN_ITEMS;}
-    public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
+	public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
 	public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_ENCHANTMENT;}
-    public long flags(){return super.flags()|Ability.FLAG_CLANMAGIC;}
+	public long flags(){return super.flags()|Ability.FLAG_CLANMAGIC;}
 	protected int overrideMana(){return Integer.MAX_VALUE;}
 	protected String type="";
 	protected boolean disregardsArmorCheck(MOB mob){return true;}
@@ -53,9 +53,9 @@ public class Spell_BaseClanEq extends Spell
 	{
 		if(student!=null)
 		{
-	        for(Enumeration<Ability> a=student.allAbilities();a.hasMoreElements();)
-	        {
-	            Ability A=a.nextElement();
+			for(Enumeration<Ability> a=student.allAbilities();a.hasMoreElements();)
+			{
+				Ability A=a.nextElement();
 				if((A!=null)&&(A instanceof Spell_BaseClanEq))
 				{
 					teacher.tell(student.name()+" already knows '"+A.name()+"', and may not learn another clan enchantment.");
@@ -90,7 +90,7 @@ public class Spell_BaseClanEq extends Spell
 
 		// Invoking will be like:
 		//   CAST [CLANEQSPELL] ITEM QUANTITY
-		//   -2   -1            0    1
+		//   -2   -1			0    1
 		if(commands.size()<1)
 		{
 			mob.tell("Enchant which spell onto what?");
@@ -104,8 +104,8 @@ public class Spell_BaseClanEq extends Spell
 		Physical target=mob.location().fetchFromMOBRoomFavorsItems(mob,null,(String)commands.elementAt(0),Wearable.FILTER_UNWORNONLY);
 		if((target==null)||(!CMLib.flags().canBeSeenBy(target,mob)))
 		{
-		    mob.tell("You don't see '"+((String)commands.elementAt(0))+"' here.");
-		    return false;
+			mob.tell("You don't see '"+((String)commands.elementAt(0))+"' here.");
+			return false;
 		}
 		// Add clan power check start
 		int points=CMath.s_int((String)commands.elementAt(1));
@@ -130,7 +130,7 @@ public class Spell_BaseClanEq extends Spell
 
 		// lose all the mana!
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
-		    return false;
+			return false;
 
 		boolean success=proficiencyCheck(mob,0,auto);
 
@@ -149,9 +149,9 @@ public class Spell_BaseClanEq extends Spell
 				str.append(" ");
 				str.append(""+points);     // Power of Enchantment
 				str.append(" \"");
-				str.append(ClanName);                          // Clan Name
+				str.append(ClanName);   					   // Clan Name
 				str.append("\" \"");
-				str.append(ClanType);                          // Clan Type
+				str.append(ClanType);   					   // Clan Type
 				str.append("\"");
 				A.setMiscText(str.toString());
 				target.addEffect(A);

@@ -25,7 +25,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -66,11 +66,11 @@ public class Cleric extends StdCharClass
 	{
 		super();
 		maxStatAdj[CharStats.STAT_WISDOM]=7;
-    }
-    public void initializeClass()
-    {
-        super.initializeClass();
-        if(!ID().equals(baseClass())) return;
+	}
+	public void initializeClass()
+	{
+		super.initializeClass();
+		if(!ID().equals(baseClass())) return;
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Write",50,true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Recall",100,true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Revoke",false);
@@ -150,9 +150,9 @@ public class Cleric extends StdCharClass
 		CMLib.ableMapper().addCharAbilityMapping(ID(),16,"Prayer_Anger",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Skill_AttackHalf",false);
-        CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Prayer_InfuseHoliness",false);
-        CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Prayer_InfuseUnholiness",false);
-        CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Prayer_InfuseBalance",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Prayer_InfuseHoliness",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Prayer_InfuseUnholiness",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Prayer_InfuseBalance",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Prayer_CureBlindness",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Prayer_Blindness",false);
@@ -296,7 +296,7 @@ public class Cleric extends StdCharClass
 			Ability A=(Ability)msg.tool();
 			if(A.appropriateToMyFactions(myChar))
 				return true;
-            
+			
 			int hq=holyQuality(A);
 			int basis=0;
 

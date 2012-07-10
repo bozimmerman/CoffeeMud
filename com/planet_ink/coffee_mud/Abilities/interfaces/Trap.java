@@ -22,7 +22,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -112,11 +112,11 @@ public interface Trap extends Ability
 	 * @return true if the given trapper is allowed to set this trap, false otherwise
 	 */
 	public boolean maySetTrap(MOB mob, int asLevel);
-    /**
-     * Returns a sample set of the components used to make this trap.
-     * @return a vector of item objects
-     */
-    public List<Item> getTrapComponents();
+	/**
+	 * Returns a sample set of the components used to make this trap.
+	 * @return a vector of item objects
+	 */
+	public List<Item> getTrapComponents();
 	/**
 	 * Returns whether the given trapper is currently in a position to set this
 	 * trap on the specified object.  Error messages should be delivered to the 

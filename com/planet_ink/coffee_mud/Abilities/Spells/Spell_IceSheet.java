@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -98,7 +98,7 @@ public class Spell_IceSheet extends Spell
 		   return;
 		super.executeMsg(myHost,msg);
 		if((msg.target()==affected)
-        &&((msg.targetMinor()==CMMsg.TYP_LOOK)||(msg.targetMinor()==CMMsg.TYP_EXAMINE)))
+		&&((msg.targetMinor()==CMMsg.TYP_LOOK)||(msg.targetMinor()==CMMsg.TYP_EXAMINE)))
 		{
 			MOB mob=msg.source();
 			Room room=(Room)affected;
@@ -127,7 +127,7 @@ public class Spell_IceSheet extends Spell
 
 		if(target.fetchEffect(this.ID())!=null)
 		{
-		    mob.tell(mob,null,null,"An Ice Sheet is already here!");
+			mob.tell(mob,null,null,"An Ice Sheet is already here!");
 			return false;
 		}
 

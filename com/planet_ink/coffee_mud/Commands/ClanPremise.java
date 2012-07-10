@@ -23,7 +23,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -53,7 +53,7 @@ public class ClanPremise extends StdCommand
 		}
 		else
 		{
-            Clan C=mob.getMyClan();
+			Clan C=mob.getMyClan();
 			if((!skipChecks)&&(!CMLib.clans().goForward(mob,C,commands,Clan.Function.PREMISE,false)))
 			{
 				msg.append("You aren't in the right position to set the premise to your "+C.getGovernmentName()+".");

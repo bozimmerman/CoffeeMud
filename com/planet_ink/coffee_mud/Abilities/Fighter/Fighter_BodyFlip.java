@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -45,7 +45,7 @@ public class Fighter_BodyFlip extends FighterSkill
 	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	private static final String[] triggerStrings = {"BODYFLIP"};
 	public String[] triggerStrings(){return triggerStrings;}
-    public int classificationCode(){ return Ability.ACODE_SKILL|Ability.DOMAIN_GRAPPLING;}
+	public int classificationCode(){ return Ability.ACODE_SKILL|Ability.DOMAIN_GRAPPLING;}
 	public int usageType(){return USAGE_MOVEMENT;}
 
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
@@ -99,7 +99,7 @@ public class Fighter_BodyFlip extends FighterSkill
 		{
 			if((CMLib.flags().isSitting(target)||CMLib.flags().isSleeping(target)))
 				return Ability.QUALITY_INDIFFERENT;
-	        if(CMLib.flags().isSitting(mob))
+			if(CMLib.flags().isSitting(mob))
 				return Ability.QUALITY_INDIFFERENT;
 			if(!CMLib.flags().aliveAwakeMobileUnbound(mob,false))
 				return Ability.QUALITY_INDIFFERENT;
@@ -127,11 +127,11 @@ public class Fighter_BodyFlip extends FighterSkill
 			return false;
 		}
 
-        if(CMLib.flags().isSitting(mob))
-        {
-            mob.tell("You need to stand up!");
-            return false;
-        }
+		if(CMLib.flags().isSitting(mob))
+		{
+			mob.tell("You need to stand up!");
+			return false;
+		}
 		if(!CMLib.flags().aliveAwakeMobileUnbound(mob,false))
 			return false;
 		if(mob.isInCombat()&&(mob.rangeToTarget()>0))
@@ -163,13 +163,13 @@ public class Fighter_BodyFlip extends FighterSkill
 		else
 			levelDiff=0;
 		int adjustment = ( -levelDiff ) +
-		                 ( -( (int)Math.round ( ( (double)(target.charStats().getStat( CharStats.STAT_STRENGTH) ) - 9.0 ) * 3.0 ) ) );
+						 ( -( (int)Math.round ( ( (double)(target.charStats().getStat( CharStats.STAT_STRENGTH) ) - 9.0 ) * 3.0 ) ) );
 		boolean success=proficiencyCheck(mob,adjustment,auto);
 		success=success&&(target.charStats().getBodyPart(Race.BODY_LEG)>0);
 		if(success)
 		{
 			CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_JUSTICE|(auto?CMMsg.MASK_ALWAYS:0),auto?"<T-NAME> flip(s) over!":"^F^<FIGHT^><S-NAME> flip(s) <T-NAMESELF> over!^</FIGHT^>^?");
-            CMLib.color().fixSourceFightColor(msg);
+			CMLib.color().fixSourceFightColor(msg);
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -39,7 +39,7 @@ public class Chant_Fertility extends Chant
 	public String ID() { return "Chant_Fertility"; }
 	public String name(){ return "Fertility";}
 	public String displayText(){return "(Fertility)";}
-    public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_BREEDING;}
+	public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_BREEDING;}
 	public int abstractQuality(){return Ability.QUALITY_OK_OTHERS;}
 
 	public void unInvoke()
@@ -124,16 +124,16 @@ public class Chant_Fertility extends Chant
 				Ability A=target.fetchEffect("Chant_StrikeBarren");
 				if(A!=null)
 				{
-				    if(A.invoker()==null) 
-				        A.unInvoke();
-				    else
-				    if(A.invoker().phyStats().level()<adjustedLevel(mob,asLevel))
-				        A.unInvoke();
-				    else
-				    {
-				        mob.tell("The magical barrenness upon "+target.name()+" is too powerful.");
-				        return false;
-				    }
+					if(A.invoker()==null) 
+						A.unInvoke();
+					else
+					if(A.invoker().phyStats().level()<adjustedLevel(mob,asLevel))
+						A.unInvoke();
+					else
+					{
+						mob.tell("The magical barrenness upon "+target.name()+" is too powerful.");
+						return false;
+					}
 				}
 				mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> seem(s) extremely fertile!");
 				beneficialAffect(mob,target,asLevel,(Integer.MAX_VALUE/2));

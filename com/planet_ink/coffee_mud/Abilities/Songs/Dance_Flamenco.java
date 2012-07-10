@@ -25,7 +25,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -50,7 +50,7 @@ public class Dance_Flamenco extends Dance
 		if(invoker==null) return false;
 
 		int hpLoss=CMLib.dice().roll(adjustedLevel(invoker(),0),8,0)
-                  +CMLib.dice().roll(invoker().getGroupMembers(new HashSet<MOB>()).size()-1,8,0);
+				  +CMLib.dice().roll(invoker().getGroupMembers(new HashSet<MOB>()).size()-1,8,0);
 		CMLib.combat().postDamage(invoker,mob,this,hpLoss,CMMsg.MASK_ALWAYS|CMMsg.TYP_CAST_SPELL,Weapon.TYPE_BURSTING,"^SThe flamenco dance <DAMAGE> <T-NAME>!^?");
 		return true;
 	}

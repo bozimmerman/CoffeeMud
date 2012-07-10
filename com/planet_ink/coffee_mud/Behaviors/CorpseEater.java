@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -36,10 +36,10 @@ public class CorpseEater extends ActiveTicker
 {
 	public String ID(){return "CorpseEater";}
 	protected int canImproveCode(){return Behavior.CAN_MOBS;}
-    private boolean EatItems=false;
+	private boolean EatItems=false;
 	public CorpseEater()
 	{
-        super();
+		super();
 		minTicks=5; maxTicks=20; chance=75;
 		tickReset();
 	}
@@ -49,11 +49,11 @@ public class CorpseEater extends ActiveTicker
 		return "corpse eating";
 	}
 	
-    public void setParms(String newParms) 
+	public void setParms(String newParms) 
 	{
-        super.setParms(newParms);
-        EatItems=(newParms.toUpperCase().indexOf("EATITEMS") > 0);
-    }
+		super.setParms(newParms);
+		EatItems=(newParms.toUpperCase().indexOf("EATITEMS") > 0);
+	}
 
 
 	public static MOB makeMOBfromCorpse(DeadBody corpse, String type)
@@ -98,22 +98,22 @@ public class CorpseEater extends ActiveTicker
 				{
 					if(getParms().length()>0)
 					{
-                        if(((DeadBody)I).playerCorpse())
-                        {
-                            if(getParms().toUpperCase().indexOf("+PLAYER")<0)
-                                continue;
-                        }
-                        else
-                        if((getParms().toUpperCase().indexOf("-NPC")>=0)
-                        ||(getParms().toUpperCase().indexOf("-MOB")>=0))
-                            continue;
-                        MOB mob2=makeMOBfromCorpse((DeadBody)I,null);
-						if(!CMLib.masking().maskCheck(getParms(),mob2,false))
-                        {
-                            mob2.destroy();
+						if(((DeadBody)I).playerCorpse())
+						{
+							if(getParms().toUpperCase().indexOf("+PLAYER")<0)
+								continue;
+						}
+						else
+						if((getParms().toUpperCase().indexOf("-NPC")>=0)
+						||(getParms().toUpperCase().indexOf("-MOB")>=0))
 							continue;
-                        }
-                        mob2.destroy();
+						MOB mob2=makeMOBfromCorpse((DeadBody)I,null);
+						if(!CMLib.masking().maskCheck(getParms(),mob2,false))
+						{
+							mob2.destroy();
+							continue;
+						}
+						mob2.destroy();
 					}
 					else
 					if(((DeadBody)I).playerCorpse())

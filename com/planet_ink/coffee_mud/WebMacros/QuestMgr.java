@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -42,7 +42,7 @@ public class QuestMgr extends StdWebMacro
 		java.util.Map<String,String> parms=parseParms(parm);
 		Quest Q=null;
 		MOB M = Authenticate.getAuthenticatedMob(httpReq);
-        String name=(M==null)?"Someone":M.Name();
+		String name=(M==null)?"Someone":M.Name();
 		if(parms.containsKey("CREATE"))
 		{
 			Q=(Quest)CMClass.getCommon("DefaultQuest");
@@ -60,13 +60,13 @@ public class QuestMgr extends StdWebMacro
 		if(last.length()>0)
 		{
 			Q=CMLib.quests().fetchQuest(last);
-            if(Q==null)
-            {
-            	String newLast=CMStrings.replaceAll(last,"*","@");
-                for(int q=0;q<CMLib.quests().numQuests();q++)
-                    if((""+CMLib.quests().fetchQuest(q)).equals(newLast))
-                    { Q=CMLib.quests().fetchQuest(q); break;}
-            }
+			if(Q==null)
+			{
+				String newLast=CMStrings.replaceAll(last,"*","@");
+				for(int q=0;q<CMLib.quests().numQuests();q++)
+					if((""+CMLib.quests().fetchQuest(q)).equals(newLast))
+					{ Q=CMLib.quests().fetchQuest(q); break;}
+			}
 			if(Q==null) return "";
 			if(parms.containsKey("MODIFY"))
 			{
@@ -74,7 +74,7 @@ public class QuestMgr extends StdWebMacro
 				if(err.length()>0) return err;
 				httpReq.addRequestParameters("QUEST",Q.name());
 				CMLib.quests().save();
-	            Log.sysOut("QuestMgr",name+" modified quest '"+Q.name()+"'");
+				Log.sysOut("QuestMgr",name+" modified quest '"+Q.name()+"'");
 			}
 			if(parms.containsKey("DELETE"))
 			{
@@ -84,7 +84,7 @@ public class QuestMgr extends StdWebMacro
 				CMFile F=new CMFile(Resources.makeFileResourceName("quests/"+Q.name()+".quest"),M,false,true);
 				if(F.exists())
 				{
-	                Log.sysOut("QuestMgr",name+" deleted quest '"+Q.name()+"'");
+					Log.sysOut("QuestMgr",name+" deleted quest '"+Q.name()+"'");
 					if(F.delete())
 						return "Quest script file '"+Resources.makeFileResourceName("quests/"+Q.name()+".quest")+"' deleted.";
 				}
@@ -104,29 +104,29 @@ public class QuestMgr extends StdWebMacro
 				Q.stopQuest();
 				return "Quest '"+Q.name()+"' stopped.";
 			}
-            if(parms.containsKey("ENABLE"))
-            {
-                if(!Q.suspended())
-                    return "Quest '"+Q.name()+"' was not disabled.";
-                Q.setSuspended(false);
-                return "Quest '"+Q.name()+"' enabled.";
-            }
-            if(parms.containsKey("DISABLE"))
-            {
-                if(Q.suspended())
-                    return "Quest '"+Q.name()+"' was already disabled.";
-                Q.setSuspended(true);
-                if(Q.running())
-                    Q.stopQuest();
-                return "Quest '"+Q.name()+"' disabled.";
-            }
-            if(parms.containsKey("STEP"))
-            {
-                if(!Q.running())
-                    return "Quest '"+Q.name()+"' was not running.";
-                Q.stepQuest();
-                return "Quest '"+Q.name()+"' stepped.";
-            }
+			if(parms.containsKey("ENABLE"))
+			{
+				if(!Q.suspended())
+					return "Quest '"+Q.name()+"' was not disabled.";
+				Q.setSuspended(false);
+				return "Quest '"+Q.name()+"' enabled.";
+			}
+			if(parms.containsKey("DISABLE"))
+			{
+				if(Q.suspended())
+					return "Quest '"+Q.name()+"' was already disabled.";
+				Q.setSuspended(true);
+				if(Q.running())
+					Q.stopQuest();
+				return "Quest '"+Q.name()+"' disabled.";
+			}
+			if(parms.containsKey("STEP"))
+			{
+				if(!Q.running())
+					return "Quest '"+Q.name()+"' was not running.";
+				Q.stepQuest();
+				return "Quest '"+Q.name()+"' stepped.";
+			}
 		}
 		return "";
 	}
@@ -148,14 +148,14 @@ public class QuestMgr extends StdWebMacro
 		else
 			redirect=false;
 
-        script=CMStrings.replaceAll(script,"&amp;","&");
+		script=CMStrings.replaceAll(script,"&amp;","&");
 
-        String postFix="";
-        int x=script.toUpperCase().indexOf("<?XML");
-        if(x>=0) {
-            postFix=script.substring(x);
-            script=script.substring(0,x);
-        }
+		String postFix="";
+		int x=script.toUpperCase().indexOf("<?XML");
+		if(x>=0) {
+			postFix=script.substring(x);
+			script=script.substring(0,x);
+		}
 		script=CMStrings.replaceAll(script,"'","`");
 		if(redirect)
 			script=CMStrings.replaceAll(script,";","\\;");

@@ -26,7 +26,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -184,7 +184,7 @@ public class Ring_Protection extends Ring_Ornamental implements MiscMagic
 				material=RawMaterial.RESOURCE_PEARL;
 				break;
 			case GOLD_RING_EMERALD:
-			    if(basePhyStats().ability()==0)
+				if(basePhyStats().ability()==0)
 					basePhyStats().setAbility(50);
 				secretIdentity="Fox Guard. (Ring of Protection +50)";
 				baseGoldValue+=5000;
@@ -192,7 +192,7 @@ public class Ring_Protection extends Ring_Ornamental implements MiscMagic
 				break;
 			default:
 				double pct=Math.random();
-			    if(basePhyStats().ability()==0)
+				if(basePhyStats().ability()==0)
 					basePhyStats().setAbility((int)Math.round(pct*49));
 				baseGoldValue+=basePhyStats().ability()*100;
 				secretIdentity="A ring of protection + "+basePhyStats().ability()+".";

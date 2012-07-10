@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -66,9 +66,9 @@ public class ShallowWater extends StdRoom implements Drink
 	{
 		super.executeMsg(myHost,msg);
 		
-	    if((domainType()==Room.DOMAIN_INDOORS_UNDERWATER)||(domainType()==Room.DOMAIN_OUTDOORS_UNDERWATER))
-	    	CMLib.commands().handleHygenicMessage(msg, 100, PlayerStats.HYGIENE_WATERCLEAN);
-	    
+		if((domainType()==Room.DOMAIN_INDOORS_UNDERWATER)||(domainType()==Room.DOMAIN_OUTDOORS_UNDERWATER))
+			CMLib.commands().handleHygenicMessage(msg, 100, PlayerStats.HYGIENE_WATERCLEAN);
+		
 		if(msg.amITarget(this)&&(msg.targetMinor()==CMMsg.TYP_DRINK))
 		{
 			MOB mob=msg.source();
@@ -90,8 +90,8 @@ public class ShallowWater extends StdRoom implements Drink
 	public void setThirstQuenched(int amount){}
 	public void setLiquidHeld(int amount){}
 	public void setLiquidRemaining(int amount){}
-    public boolean disappearsAfterDrinking(){return false;}
+	public boolean disappearsAfterDrinking(){return false;}
 	public boolean containsDrink(){return true;}
-    public int amountTakenToFillMe(Drink theSource){return 0;}
+	public int amountTakenToFillMe(Drink theSource){return 0;}
 	public List<Integer> resourceChoices(){return UnderWater.roomResources;}
 }

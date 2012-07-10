@@ -25,7 +25,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -45,7 +45,7 @@ public class Thief_UndergroundConnections extends ThiefSkill
 	private static final String[] triggerStrings = {"UNDERGROUNDCONNECTIONS"};
 	public String[] triggerStrings(){return triggerStrings;}
 	public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
-    public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_STREETSMARTS;}
+	public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_STREETSMARTS;}
 	protected List<Integer> pathOut=null;
 	protected int hygeineLoss=0;
 	protected String theNoun=null;
@@ -158,7 +158,7 @@ public class Thief_UndergroundConnections extends ThiefSkill
 			}
 			thisRoom.send(follower,leaveMsg);
 			newRoom.bringMobHere(follower,false);
-            thisRoom.delInhabitant(follower);
+			thisRoom.delInhabitant(follower);
 			newRoom.send(follower,enterMsg);
 			follower.basePhyStats().setDisposition(follower.basePhyStats().disposition()|PhyStats.IS_SITTING);
 			follower.phyStats().setDisposition(follower.phyStats().disposition()|PhyStats.IS_SITTING);
@@ -206,7 +206,7 @@ public class Thief_UndergroundConnections extends ThiefSkill
 			return false;
 		}
 		Area A=CMLib.map().areaLocation(target);
-        if((!CMLib.law().isACity(A))
+		if((!CMLib.law().isACity(A))
 		&&(!auto))
 		{
 			mob.tell("You can only use this skill in cities.");
@@ -219,7 +219,7 @@ public class Thief_UndergroundConnections extends ThiefSkill
 			 .plus(TrackingLibrary.TrackingFlag.NOWATER);
 		List<Room> trail=CMLib.tracking().getRadiantRooms(thisRoom,flags,30+(2*getXLEVELLevel(mob)));
 		Vector finalTos=new Vector();
-        Room R=null;
+		Room R=null;
 		for(int c=0;c<trail.size();c++)
 		{
 			R=(Room)trail.get(c);

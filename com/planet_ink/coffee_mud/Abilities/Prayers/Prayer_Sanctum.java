@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -43,30 +43,30 @@ public class Prayer_Sanctum extends Prayer
 	protected int canAffectCode(){return CAN_ROOMS;}
 	public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY;}
 
-    protected boolean inRoom(MOB mob, Room R)
-    {
-        boolean inRoom=((CMLib.law().doesHavePriviledgesHere(mob,R))
-                ||((text().length()>0)&&(mob.Name().equals(text())))
-                ||((text().length()>0)&&(mob.getClanID().equals(text()))&&(CMLib.clans().authCheck(mob.getClanID(), mob.getClanRole(), Clan.Function.HOME_PRIVS))));
-        for(int i=0;i<R.numInhabitants();i++)
-        {
-            MOB M=R.fetchInhabitant(i);
-            if(CMLib.law().doesHavePriviledgesHere(M,R))
-            { inRoom=true; break;}
-            if((text().length()>0)&&(M.Name().equals(text())))
-            { inRoom=true; break;}
-            if((text().length()>0)&&(M.getClanID().equals(text())))
-            { inRoom=true; break;}
+	protected boolean inRoom(MOB mob, Room R)
+	{
+		boolean inRoom=((CMLib.law().doesHavePriviledgesHere(mob,R))
+				||((text().length()>0)&&(mob.Name().equals(text())))
+				||((text().length()>0)&&(mob.getClanID().equals(text()))&&(CMLib.clans().authCheck(mob.getClanID(), mob.getClanRole(), Clan.Function.HOME_PRIVS))));
+		for(int i=0;i<R.numInhabitants();i++)
+		{
+			MOB M=R.fetchInhabitant(i);
+			if(CMLib.law().doesHavePriviledgesHere(M,R))
+			{ inRoom=true; break;}
+			if((text().length()>0)&&(M.Name().equals(text())))
+			{ inRoom=true; break;}
+			if((text().length()>0)&&(M.getClanID().equals(text())))
+			{ inRoom=true; break;}
 
-        }
-        if(!inRoom)
-        {
-            mob.tell("You feel your muscles unwilling to cooperate.");
-            return false;
-        }
-        return true;
-    }
-    
+		}
+		if(!inRoom)
+		{
+			mob.tell("You feel your muscles unwilling to cooperate.");
+			return false;
+		}
+		return true;
+	}
+	
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(affected==null)
@@ -76,10 +76,10 @@ public class Prayer_Sanctum extends Prayer
 		if((msg.targetMinor()==CMMsg.TYP_ENTER)
 		&&(msg.target()==R)
 		&&(!msg.source().Name().equals(text()))
-        &&((msg.source().getClanID().length()==0)||(!msg.source().getClanID().equals(text())))
+		&&((msg.source().getClanID().length()==0)||(!msg.source().getClanID().equals(text())))
 		&&((msg.source().amFollowing()==null)
-            ||((!msg.source().amFollowing().Name().equals(text()))
-                &&(msg.source().amFollowing().getClanID().length()==0)||(!msg.source().amFollowing().getClanID().equals(text()))))
+			||((!msg.source().amFollowing().Name().equals(text()))
+				&&(msg.source().amFollowing().getClanID().length()==0)||(!msg.source().amFollowing().getClanID().equals(text()))))
 		&&(!CMLib.law().doesHavePriviledgesHere(msg.source(),R)))
 		{
 			msg.source().tell("You feel your muscles unwilling to cooperate.");
@@ -114,7 +114,7 @@ public class Prayer_Sanctum extends Prayer
 				else
 				{
 					String t="You feel too peaceful here.";
-                    if(text().indexOf(';')>0)
+					if(text().indexOf(';')>0)
 					{
 						Vector V=CMParms.parseSemicolons(text(),true);
 						t=(String)V.elementAt(CMLib.dice().roll(1,V.size(),-1));
@@ -159,17 +159,17 @@ public class Prayer_Sanctum extends Prayer
 					String clanID=mob.getClanID();
 					if((mob.amFollowing()!=null)&&(clanID.length()==0))
 						clanID=mob.amFollowing().getClanID();
-                	if((clanID.length()>0)
-                    &&(CMLib.law().doesOwnThisProperty(clanID,((Room)target))))
-                        setMiscText(clanID);
-                	
-                    if((clanID.length()>0)&&(CMLib.law().doesOwnThisProperty(clanID,((Room)target))))
-                        beneficialAffect(mob,target,asLevel,0);
-                    else
-                    {
-    					target.addNonUninvokableEffect((Ability)this.copyOf());
-    					CMLib.database().DBUpdateRoom((Room)target);
-                    }
+					if((clanID.length()>0)
+					&&(CMLib.law().doesOwnThisProperty(clanID,((Room)target))))
+						setMiscText(clanID);
+					
+					if((clanID.length()>0)&&(CMLib.law().doesOwnThisProperty(clanID,((Room)target))))
+						beneficialAffect(mob,target,asLevel,0);
+					else
+					{
+						target.addNonUninvokableEffect((Ability)this.copyOf());
+						CMLib.database().DBUpdateRoom((Room)target);
+					}
 				}
 				else
 					beneficialAffect(mob,target,asLevel,0);

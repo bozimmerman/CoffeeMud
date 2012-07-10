@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -39,7 +39,7 @@ public class Chant_CharmAnimal extends Chant
 	public String ID() { return "Chant_CharmAnimal"; }
 	public String name(){ return "Charm Animal";}
 	public String displayText(){return "(Charmed)";}
-    public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_ANIMALAFFINITY;}
+	public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_ANIMALAFFINITY;}
 	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return CAN_MOBS;}
@@ -146,18 +146,18 @@ public class Chant_CharmAnimal extends Chant
 
 		super.unInvoke();
 
-        if((canBeUninvoked()&&(!mob.amDead())))
-        {
-            mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-YOUPOSS> natural-will returns.");
+		if((canBeUninvoked()&&(!mob.amDead())))
+		{
+			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-YOUPOSS> natural-will returns.");
 			if(mob.amFollowing()!=null)
 				CMLib.commands().postFollow(mob,null,false);
 			CMLib.commands().postStand(mob,true);
 			if(mob.isMonster())
 			{
 				if((CMLib.dice().rollPercentage()>50)
-                ||((mob.getStartRoom()!=null)
-                    &&(mob.getStartRoom().getArea()!=mob.location().getArea())
-                    &&(CMLib.flags().isAggressiveTo(mob,null)||(invoker==null)||(!mob.location().isInhabitant(invoker)))))
+				||((mob.getStartRoom()!=null)
+					&&(mob.getStartRoom().getArea()!=mob.location().getArea())
+					&&(CMLib.flags().isAggressiveTo(mob,null)||(invoker==null)||(!mob.location().isInhabitant(invoker)))))
 					CMLib.tracking().wanderAway(mob,true,true);
 				else
 				if((invoker!=null)&&(invoker!=mob))
@@ -166,26 +166,26 @@ public class Chant_CharmAnimal extends Chant
 		}
 	}
 
-    public int castingQuality(MOB mob, Physical target)
-    {
-        if(mob!=null)
-        {
-            if(target instanceof MOB)
-            {
-                if(!CMLib.flags().isAnimalIntelligence((MOB)target))
-                    return Ability.QUALITY_INDIFFERENT;
-                
-            }
-        }
-        return super.castingQuality(mob,target);
-    }
-    
+	public int castingQuality(MOB mob, Physical target)
+	{
+		if(mob!=null)
+		{
+			if(target instanceof MOB)
+			{
+				if(!CMLib.flags().isAnimalIntelligence((MOB)target))
+					return Ability.QUALITY_INDIFFERENT;
+				
+			}
+		}
+		return super.castingQuality(mob,target);
+	}
+	
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
-        Room R=CMLib.map().roomLocation(target);
-        if(R==null) R=mob.location();
+		Room R=CMLib.map().roomLocation(target);
+		if(R==null) R=mob.location();
 
 		if(!CMLib.flags().isAnimalIntelligence(target))
 		{

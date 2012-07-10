@@ -25,7 +25,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -35,10 +35,10 @@ import java.util.*;
 */
 public class Log
 {
-    /** final date format for headers */
-    public static final SimpleDateFormat dateFormat=new SimpleDateFormat("yyyyMMdd.HHmm.ss");
-    /** SPACES for headers */
-    private static final String SPACES="                                                                                               ";
+	/** final date format for headers */
+	public static final SimpleDateFormat dateFormat=new SimpleDateFormat("yyyyMMdd.HHmm.ss");
+	/** SPACES for headers */
+	private static final String SPACES="                                                                                               ";
 	/**	always to "log" */
 	private PrintWriter fileOutWriter=null;
 	/** always to systemout */
@@ -48,43 +48,43 @@ public class Log
 	/** log name */
 	private String 		logName = "application";
 	private String 		LOGNAME = "APPLICATION";
-    private final Map<String,String>		FLAGS=new Hashtable<String,String>();
-    private final Map<String,PrintWriter[]> WRITERS=new Hashtable<String,PrintWriter[]>();
-    private static final Log[] 				logs=new Log[256];
-    
-    public Log()
-    {
-        super();
-        char threadCode=Thread.currentThread().getThreadGroup().getName().charAt(0);
-        if(logs[threadCode]==null)
-            logs[threadCode]=this;
-    }
-    private static final Log l(){ return logs[Thread.currentThread().getThreadGroup().getName().charAt(0)];}
-    public static final Log l(char threadCode){return logs[threadCode];}
-    public static final Log instance()
-    {
-        Log log=l();
-        if(log==null) 
-            log=new Log();
-        return log;
-    }
-    public static final Log newInstance()
-    {
-    	final char threadCode=Thread.currentThread().getThreadGroup().getName().charAt(0);
-        logs[threadCode]=new Log();
-        return l();
-    }
-    public static final void shareWith(final char threadCode) 
-    {
-    	final char tc=Thread.currentThread().getThreadGroup().getName().charAt(0);
-        if(logs[threadCode]!=null)
-            logs[tc]=logs[threadCode];
-        else
-        if(logs[tc]!=null)
-            logs[threadCode]=logs[tc];
-        else
-            logs[tc]=logs[threadCode]=new Log();
-    }
+	private final Map<String,String>		FLAGS=new Hashtable<String,String>();
+	private final Map<String,PrintWriter[]> WRITERS=new Hashtable<String,PrintWriter[]>();
+	private static final Log[] 				logs=new Log[256];
+	
+	public Log()
+	{
+		super();
+		char threadCode=Thread.currentThread().getThreadGroup().getName().charAt(0);
+		if(logs[threadCode]==null)
+			logs[threadCode]=this;
+	}
+	private static final Log l(){ return logs[Thread.currentThread().getThreadGroup().getName().charAt(0)];}
+	public static final Log l(char threadCode){return logs[threadCode];}
+	public static final Log instance()
+	{
+		Log log=l();
+		if(log==null) 
+			log=new Log();
+		return log;
+	}
+	public static final Log newInstance()
+	{
+		final char threadCode=Thread.currentThread().getThreadGroup().getName().charAt(0);
+		logs[threadCode]=new Log();
+		return l();
+	}
+	public static final void shareWith(final char threadCode) 
+	{
+		final char tc=Thread.currentThread().getThreadGroup().getName().charAt(0);
+		if(logs[threadCode]!=null)
+			logs[tc]=logs[threadCode];
+		else
+		if(logs[tc]!=null)
+			logs[threadCode]=logs[tc];
+		else
+			logs[tc]=logs[threadCode]=new Log();
+	}
 
 	/**
 	 * Optional method to determine if message is a masked
@@ -118,25 +118,25 @@ public class Log
 	}
 
 
-    private final boolean isWriterOn(final String name)
-    {
-    	final String flag=prop(name);
-        if(flag==null) return true;
-        if(flag.length()==0) return false;
-        if(flag.startsWith("OFF")) return false;
-        return true;
-    }
-    
-    public final String getLogFilename(final String name)
-    {
-    	final String flag=prop(name.toUpperCase().trim());
+	private final boolean isWriterOn(final String name)
+	{
+		final String flag=prop(name);
+		if(flag==null) return true;
+		if(flag.length()==0) return false;
+		if(flag.startsWith("OFF")) return false;
+		return true;
+	}
+	
+	public final String getLogFilename(final String name)
+	{
+		final String flag=prop(name.toUpperCase().trim());
 		if(flag.startsWith("OWNFILE"))
 			return logName+"_"+name.toLowerCase()+".log";
 		if((flag.startsWith("FILE"))||(flag.startsWith("BOTH")))
 			return logName+".log";
 		return null;
-    }
-    
+	}
+	
 	/**
 	 * Returns an appropriate writer for the given ON, OFF, FILE, or OWNFILE
  	 *
@@ -161,7 +161,7 @@ public class Log
 		else
 		if(flag.length()>0)
 		{
-            if(flag.startsWith("OFF")) return null;
+			if(flag.startsWith("OFF")) return null;
 			if(flag.startsWith("ON"))
 			{
 				for(int i=0;i<10;i++)
@@ -192,13 +192,13 @@ public class Log
 					Log.errOut("Log",e);
 				}
 			}
-            int x=flag.length();
+			int x=flag.length();
 			while(Character.isDigit(flag.charAt(--x)))
 				{}
 			int max=s_int(flag.substring(x+1));
 			for(int i=max+1;i<10;i++)
 				writers[i]=null;
-        	return writers[priority];
+			return writers[priority];
 		}
 		return null;
 	}
@@ -212,13 +212,13 @@ public class Log
 	 */
 	private final String prop(String type)
 	{
-        String s=(String)FLAGS.get(type);
-        if(s==null)
-        {
-    		s=System.getProperty("LOG."+LOGNAME+"_"+type.toUpperCase().trim());
-    		if(s==null) s="";
-            FLAGS.put(type,s);
-        }
+		String s=(String)FLAGS.get(type);
+		if(s==null)
+		{
+			s=System.getProperty("LOG."+LOGNAME+"_"+type.toUpperCase().trim());
+			if(s==null) s="";
+			FLAGS.put(type,s);
+		}
 		return s;
 	}
 
@@ -274,7 +274,7 @@ public class Log
 	{
 		logName=newLogName;
 		LOGNAME=logName.toUpperCase().trim();
-        FLAGS.clear();
+		FLAGS.clear();
 		try
 		{
 			File directoryPath = null;
@@ -327,7 +327,7 @@ public class Log
 			final FileOutputStream fileStream=new FileOutputStream(fileOut);
 			fileOutWriter=new PrintWriter(fileStream,true);
 			System.setErr(new PrintStream(fileStream));
-	        WRITERS.clear();
+			WRITERS.clear();
 		}
 		catch(IOException e)
 		{
@@ -383,22 +383,22 @@ public class Log
 				try {
 					if(reader.ready())
 						line=reader.readLine();
-			    }
-			    catch ( final IOException ignore ){}
+				}
+				catch ( final IOException ignore ){}
 				if(line==null) close();
 				return line;
 			}
 			public void close() {
 				{
-				    try
-				    {
-				        if ( reader != null )
-				        {
-				            reader.close();
-				            reader = null;
-				        }
-				    }
-				    catch ( final IOException ignore ){}
+					try
+					{
+						if ( reader != null )
+						{
+							reader.close();
+							reader = null;
+						}
+					}
+					catch ( final IOException ignore ){}
 				}
 			}
 		};
@@ -428,18 +428,18 @@ public class Log
 		}
 		finally
 		{
-		    try
-		    {
-		        if ( reader != null )
-		        {
-		            reader.close();
-		            reader = null;
-		        }
-		    }
-		    catch ( final IOException ignore )
-		    {
+			try
+			{
+				if ( reader != null )
+				{
+					reader.close();
+					reader = null;
+				}
+			}
+			catch ( final IOException ignore )
+			{
 
-		    }
+			}
 		}
 		return buf;
 	}
@@ -464,15 +464,15 @@ public class Log
 	* @param Message The message to print
 	* @return String The header and message, formatted
 	*/
-    private static final String getLogHeader(final String Type, final String Module, final String Message)
-    {
-    	final String date=dateFormat.format(Calendar.getInstance().getTime());
-    	final StringBuffer Header=new StringBuffer((date+SPACES).substring(0,18));
-        Header.append((Type+SPACES).substring(0,6));
-        Header.append((Module+SPACES).substring(0,15));
-        Header.append(Message);
-        return Header.toString();
-    }
+	private static final String getLogHeader(final String Type, final String Module, final String Message)
+	{
+		final String date=dateFormat.format(Calendar.getInstance().getTime());
+		final StringBuffer Header=new StringBuffer((date+SPACES).substring(0,18));
+		Header.append((Type+SPACES).substring(0,6));
+		Header.append((Module+SPACES).substring(0,15));
+		Header.append(Message);
+		return Header.toString();
+	}
 
 	public static final void infoOut(final String Out) { infoOut("UNKN",Out); }
 	public static final void sysOut(final String Out){ infoOut(Out); }
@@ -531,24 +531,24 @@ public class Log
 			final PrintWriter outWriter=l().getWriter(Type,priority);
 			if(outWriter!=null)
 			{
-			    if(e!=null)
-			    {
-			    	outWriter.println(getLogHeader(Type,Module, e.getMessage()));
+				if(e!=null)
+				{
+					outWriter.println(getLogHeader(Type,Module, e.getMessage()));
 					e.printStackTrace(outWriter);
 					outWriter.flush();
-			    }
-			    else
-			    	outWriter.println(getLogHeader(Type,Module,"Null/Unknown error occurred."));
+				}
+				else
+					outWriter.println(getLogHeader(Type,Module,"Null/Unknown error occurred."));
 				if(l().prop(Type).startsWith("BOTH"))
 				{
-				    if(e!=null)
-				    {
-				    	System.out.println(getLogHeader(Type,Module, e.getMessage()));
+					if(e!=null)
+					{
+						System.out.println(getLogHeader(Type,Module, e.getMessage()));
 						e.printStackTrace(System.out);
 						System.out.flush();
-				    }
-				    else
-				    	System.out.println(getLogHeader(Type,Module,"Null/Unknown error occurred."));
+					}
+					else
+						System.out.println(getLogHeader(Type,Module,"Null/Unknown error occurred."));
 				}
 				l().close(outWriter);
 			}
@@ -700,19 +700,19 @@ public class Log
 	public static final boolean killsChannelAt(int priority) { return l().getWriter("kills",priority)!=null;}
 	public static final boolean combatChannelAt(int priority) { return l().getWriter("combat",priority)!=null;}
 	
-    /** totally optional, this is the list of maskable error message types.  Useful for internet apps */
-    private final static String[] maskErrMsgs={
-        "broken pipe",
-        "reset by peer",
-        "socket closed",
-        "connection abort",
-        "connection reset",
-        "network is unreachable",
-        "jvm_recv",
-        "timed out",
-        "stream closed",
-        "no route to host",
-        "protocol not available"
-    };
+	/** totally optional, this is the list of maskable error message types.  Useful for internet apps */
+	private final static String[] maskErrMsgs={
+		"broken pipe",
+		"reset by peer",
+		"socket closed",
+		"connection abort",
+		"connection reset",
+		"network is unreachable",
+		"jvm_recv",
+		"timed out",
+		"stream closed",
+		"no route to host",
+		"protocol not available"
+	};
 
 }

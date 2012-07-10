@@ -31,7 +31,7 @@ import java.util.concurrent.TimeUnit;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -42,35 +42,35 @@ import java.util.concurrent.TimeUnit;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class HTTPserver extends Thread implements MudHost
 {
-    private static final float HOST_VERSION_MAJOR=(float)1.0;
-    private static final float HOST_VERSION_MINOR=(float)0.3;
-    private static final String[] STATUS_STRINGS={"waiting","processing","done"};
-    private static CMProps webCommon=null;
+	private static final float HOST_VERSION_MAJOR=(float)1.0;
+	private static final float HOST_VERSION_MINOR=(float)0.3;
+	private static final String[] STATUS_STRINGS={"waiting","processing","done"};
+	private static CMProps webCommon=null;
 
 	// this gets sent in HTTP response
 	//  also used by @WEBSERVERVERSION@
-    public final static String getServerVersionString()
-    {
-    	return "CoffeeMud HTTPserver/" + HOST_VERSION_MAJOR + "." + HOST_VERSION_MINOR; 
-    }
+	public final static String getServerVersionString()
+	{
+		return "CoffeeMud HTTPserver/" + HOST_VERSION_MAJOR + "." + HOST_VERSION_MINOR; 
+	}
 
 	private final long 	startupTime = System.currentTimeMillis();
 	private CMProps 	 page=null;
 	private boolean 	 isOK = false;
-    private boolean 	 isAdminServer = false;
-    private ServerSocket servsock=null;
+	private boolean 	 isAdminServer = false;
+	private ServerSocket servsock=null;
 	private MudHost 	 mud;
 	private String 		 partialName;
-    private int 		 state=0;
-    private int 		 myPort=27744;
-    private int 		 myServerNumber=0;
-    private boolean 	 acceptConnections=true;
-    private int 		 maxThreads = 10;
-    private int 		 maxTimeoutMins = 45;
-    private String 		 serverDir = null;
-    private String 		 serverTemplateDir = null;
-    private FileGrabber	 pageGrabber=new FileGrabber(this);
-    private FileGrabber	 templateGrabber=new FileGrabber(this);
+	private int 		 state=0;
+	private int 		 myPort=27744;
+	private int 		 myServerNumber=0;
+	private boolean 	 acceptConnections=true;
+	private int 		 maxThreads = 10;
+	private int 		 maxTimeoutMins = 45;
+	private String 		 serverDir = null;
+	private String 		 serverTemplateDir = null;
+	private FileGrabber	 pageGrabber=new FileGrabber(this);
+	private FileGrabber	 templateGrabber=new FileGrabber(this);
 	private CMThreadPoolExecutor threadPool;
 
 	public HTTPserver(MudHost a_mud, String a_name, int num)
@@ -91,9 +91,9 @@ public class HTTPserver extends Thread implements MudHost
 	public MudHost getMUD()	{return mud;}
 	public String getServerDir() {return serverDir;}
 	public String getServerTemplateDir() {return serverTemplateDir;}
-    public long getUptimeSecs() { return (System.currentTimeMillis()-startupTime)/1000;}
-    public FileGrabber getPageGrabber() { return pageGrabber;}
-    public FileGrabber getTemplateGrabber() { return templateGrabber;}
+	public long getUptimeSecs() { return (System.currentTimeMillis()-startupTime)/1000;}
+	public FileGrabber getPageGrabber() { return pageGrabber;}
+	public FileGrabber getTemplateGrabber() { return templateGrabber;}
 
 	public Properties getCommonPropPage()
 	{
@@ -218,19 +218,19 @@ public class HTTPserver extends Thread implements MudHost
 		return true;
 	}
 
-    public void acceptConnection(Socket sock) 
-        throws SocketException, IOException
-    {
-        if(acceptConnections)
-        {
-            while(CMLib.threads().isAllSuspended()) {
-                try { Thread.sleep(1000); } catch(Exception e) { throw new IOException(e.getMessage());}
-            }
-            state=1;
-            ProcessHTTPrequest W=new ProcessHTTPrequest(sock,this,page,isAdminServer);
-            threadPool.execute(W);
-        }
-    }
+	public void acceptConnection(Socket sock) 
+		throws SocketException, IOException
+	{
+		if(acceptConnections)
+		{
+			while(CMLib.threads().isAllSuspended()) {
+				try { Thread.sleep(1000); } catch(Exception e) { throw new IOException(e.getMessage());}
+			}
+			state=1;
+			ProcessHTTPrequest W=new ProcessHTTPrequest(sock,this,page,isAdminServer);
+			threadPool.execute(W);
+		}
+	}
 	
 	public void run()
 	{
@@ -289,7 +289,7 @@ public class HTTPserver extends Thread implements MudHost
 		{
 			try
 			{
-                state=0;
+				state=0;
 				sock=servsock.accept();
 				acceptConnection(sock);
 			} 
@@ -314,7 +314,7 @@ public class HTTPserver extends Thread implements MudHost
 			}
 			sock = null;
 		}
-        state=2;
+		state=2;
 		try
 		{
 			if(servsock!=null)
@@ -382,37 +382,37 @@ public class HTTPserver extends Thread implements MudHost
 	{
 		return page.getStr("PORT");
 	}
-    public String getHost(){return getName();}
-    public void shutdown(Session S, boolean keepItDown, String externalCommand){
-        shutdown(S);
-    }
-    public String getStatus()
-    {
-        return STATUS_STRINGS[state];
-    }
-    public void setAcceptConnections(boolean truefalse){ acceptConnections=truefalse;}
-    public boolean isAcceptingConnections(){ return acceptConnections;}
+	public String getHost(){return getName();}
+	public void shutdown(Session S, boolean keepItDown, String externalCommand){
+		shutdown(S);
+	}
+	public String getStatus()
+	{
+		return STATUS_STRINGS[state];
+	}
+	public void setAcceptConnections(boolean truefalse){ acceptConnections=truefalse;}
+	public boolean isAcceptingConnections(){ return acceptConnections;}
 
-    public String getLanguage() 
-    {
-    	String lang = CMProps.instance().getStr("LANGUAGE").toUpperCase().trim();
-    	if(lang.length()==0) return "English";
-    	for(int i=0;i<LanguageLibrary.ISO_LANG_CODES.length;i++)
-    		if(lang.equals(LanguageLibrary.ISO_LANG_CODES[i][0]))
-    			return LanguageLibrary.ISO_LANG_CODES[i][1];
-    	return "English";
-    }
+	public String getLanguage() 
+	{
+		String lang = CMProps.instance().getStr("LANGUAGE").toUpperCase().trim();
+		if(lang.length()==0) return "English";
+		for(int i=0;i<LanguageLibrary.ISO_LANG_CODES.length;i++)
+			if(lang.equals(LanguageLibrary.ISO_LANG_CODES[i][0]))
+				return LanguageLibrary.ISO_LANG_CODES[i][1];
+		return "English";
+	}
 
-    public List<Runnable> getOverdueThreads()
-    {
-    	Vector<Runnable> V=new Vector();
-    	V.addAll(threadPool.getTimeoutOutRuns(Integer.MAX_VALUE));
-    	return V;
-    }
+	public List<Runnable> getOverdueThreads()
+	{
+		Vector<Runnable> V=new Vector();
+		V.addAll(threadPool.getTimeoutOutRuns(Integer.MAX_VALUE));
+		return V;
+	}
 
-    public String executeCommand(String cmd)
-        throws Exception
-    {
-        throw new Exception("Not implemented");
-    }
+	public String executeCommand(String cmd)
+		throws Exception
+	{
+		throw new Exception("Not implemented");
+	}
 }

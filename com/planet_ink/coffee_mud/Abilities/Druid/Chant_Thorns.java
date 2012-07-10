@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -39,7 +39,7 @@ public class Chant_Thorns extends Chant
 	public String ID() { return "Chant_Thorns"; }
 	public String name(){return "Thorns";}
 	public String displayText(){return "(Thorns)";}
-    public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_SHAPE_SHIFTING;}
+	public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_SHAPE_SHIFTING;}
 	public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
 	protected int canAffectCode(){return CAN_MOBS;}
 	final static String msgStr="The thorns around <S-NAME> <DAMAGE> <T-NAME>!";
@@ -87,8 +87,8 @@ public class Chant_Thorns extends Chant
 						if(msg2.value()<=0)
 						{
 							int damage = CMLib.dice().roll( 1,
-							                                (int)Math.round( ((double) adjustedLevel( invoker(), 0 ) ) / 3.0 ),
-							                                1 );
+															(int)Math.round( ((double) adjustedLevel( invoker(), 0 ) ) / 3.0 ),
+															1 );
 							CMLib.combat().postDamage(mob,source,this,damage,CMMsg.MASK_ALWAYS|CMMsg.TYP_CAST_SPELL,Weapon.TYPE_PIERCING,msgStr);
 						}
 					}

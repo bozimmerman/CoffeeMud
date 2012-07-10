@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -51,12 +51,12 @@ public class RandomTraps extends ActiveTicker
 	protected boolean doRooms=false;
 
 	protected Vector restrictedLocales=null;
-    private long tickStatus=Tickable.STATUS_NOT;
-    public long getTickStatus(){return tickStatus;}
+	private long tickStatus=Tickable.STATUS_NOT;
+	public long getTickStatus(){return tickStatus;}
 
 	public RandomTraps()
 	{
-        super();
+		super();
 		tickReset();
 	}
 
@@ -67,7 +67,7 @@ public class RandomTraps extends ActiveTicker
 
 	public void setParms(String newParms)
 	{
-        maintained=new Vector();
+		maintained=new Vector();
 		doAnyItems=false;
 		doAnyContainers=false;
 		doDooredContainers=false;
@@ -227,21 +227,21 @@ public class RandomTraps extends ActiveTicker
 
 	public boolean tick(Tickable ticking, int tickID)
 	{
-        tickStatus=Tickable.STATUS_START;
+		tickStatus=Tickable.STATUS_START;
 		super.tick(ticking,tickID);
-        tickStatus=Tickable.STATUS_MISC+0;
+		tickStatus=Tickable.STATUS_MISC+0;
 		for(int i=maintained.size()-1;i>=0;i--)
 			if(CMLib.utensils().fetchMyTrap(maintained.elementAt(i))==null)
 				maintained.removeElementAt(i);
 		if(maintained.size()>=maxTraps)
-        {
-            tickStatus=Tickable.STATUS_NOT;
+		{
+			tickStatus=Tickable.STATUS_NOT;
 			return true;
-        }
-        tickStatus=Tickable.STATUS_MISC+1;
+		}
+		tickStatus=Tickable.STATUS_MISC+1;
 		if((canAct(ticking,tickID))||(maintained.size()<minTraps))
 		{
-            tickStatus=Tickable.STATUS_MISC+2;
+			tickStatus=Tickable.STATUS_MISC+2;
 			Vector allTraps=new Vector();
 			if(maintained.size()<avgTraps)
 				for(Enumeration<Ability> e=CMClass.abilities();e.hasMoreElements();)
@@ -251,43 +251,43 @@ public class RandomTraps extends ActiveTicker
 						allTraps.addElement(A);
 				}
 
-            tickStatus=Tickable.STATUS_MISC+3;
-            
+			tickStatus=Tickable.STATUS_MISC+3;
+			
 			if(maintained.size()<avgTraps)
 			{
 				Vector<Physical> elligible=new Vector<Physical>();
 				if(ticking instanceof Room)
-                {
-                    tickStatus=Tickable.STATUS_MISC+4;
+				{
+					tickStatus=Tickable.STATUS_MISC+4;
 					makeRoomElligible((Room)ticking,elligible);
-                }
+				}
 				else
 				if((ticking instanceof Area)&&(((Area)ticking).metroSize()>0))
 				{
-                    tickStatus=Tickable.STATUS_MISC+5;
+					tickStatus=Tickable.STATUS_MISC+5;
 					for(Enumeration m=((Area)ticking).getMetroMap();m.hasMoreElements();)
 						makeRoomElligible((Room)m.nextElement(),elligible);
 				}
 				else
 					return true;
-                
-                tickStatus=Tickable.STATUS_MISC+6;
+				
+				tickStatus=Tickable.STATUS_MISC+6;
 				if(elligible.size()==0)
 					return true;
 
 				int oldSize=elligible.size();
 				for(int r=0;r<oldSize;r++)
 				{
-                    tickStatus=Tickable.STATUS_MISC+7;
+					tickStatus=Tickable.STATUS_MISC+7;
 					Room R=null;
 					try{R=(Room)elligible.elementAt(r);}catch(IndexOutOfBoundsException e){}
 					if(R==null) continue;
 
-                    
+					
 					if((doAnyDoors)||(doAnyLockedDoors))
 					for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 					{
-                        tickStatus=Tickable.STATUS_MISC+8;
+						tickStatus=Tickable.STATUS_MISC+8;
 						if(((R.rawDoors()[d]!=null) // important optimization
 						&&(R.rawDoors()[d].roomID().length()>0)))
 						{
@@ -300,31 +300,31 @@ public class RandomTraps extends ActiveTicker
 							&&((R.getReverseExit(d)==null)
 							   ||(!elligible.contains(R.getReverseExit(d)))))
 							{
-	                            tickStatus=Tickable.STATUS_MISC+9;
+								tickStatus=Tickable.STATUS_MISC+9;
 								if(E.hasALock()&&(E.isLocked())&&(doAnyLockedDoors))
 									elligible.addElement(E);
 								else
 								if(doAnyDoors)
 									elligible.addElement(E);
 							}
-	                        tickStatus=Tickable.STATUS_MISC+10;
+							tickStatus=Tickable.STATUS_MISC+10;
 						}
 					}
 
-                    tickStatus=Tickable.STATUS_MISC+21;
+					tickStatus=Tickable.STATUS_MISC+21;
 					if((doAnyItems)||(doAnyContainers)||(doDooredContainers)||(doLockedContainers))
 					for(int i=0;i<R.numItems();i++)
 					{
-                        tickStatus=Tickable.STATUS_MISC+22;
+						tickStatus=Tickable.STATUS_MISC+22;
 						Item I=R.getItem(i);
 						if((CMLib.flags().isGettable(I))
 						&&(!elligible.contains(I))
 						&&(!I.ID().endsWith("Wallpaper")))
 						{
-                            tickStatus=Tickable.STATUS_MISC+23;
+							tickStatus=Tickable.STATUS_MISC+23;
 							if(I instanceof Container)
 							{
-                                tickStatus=Tickable.STATUS_MISC+24;
+								tickStatus=Tickable.STATUS_MISC+24;
 								Container C=(Container)I;
 								if(C.hasALid()&&(!C.isOpen()))
 								{
@@ -342,31 +342,31 @@ public class RandomTraps extends ActiveTicker
 							if(doAnyItems)
 								elligible.addElement(I);
 						}
-                        tickStatus=Tickable.STATUS_MISC+25;
+						tickStatus=Tickable.STATUS_MISC+25;
 					}
-                    tickStatus=Tickable.STATUS_MISC+26;
+					tickStatus=Tickable.STATUS_MISC+26;
 				}
 
-                tickStatus=Tickable.STATUS_MISC+27;
+				tickStatus=Tickable.STATUS_MISC+27;
 				if(!doRooms)
 				while((elligible.size()>0)&&(elligible.firstElement() instanceof Room))
 					elligible.removeElementAt(0);
 
-                tickStatus=Tickable.STATUS_MISC+28;
+				tickStatus=Tickable.STATUS_MISC+28;
 				for(int e=elligible.size()-1;e>=0;e--)
 				{
-                    tickStatus=Tickable.STATUS_MISC+29;
+					tickStatus=Tickable.STATUS_MISC+29;
 					if((maintained.contains(elligible.elementAt(e)))
 					||(CMLib.utensils().fetchMyTrap(elligible.elementAt(e))!=null))
 						elligible.removeElementAt(e);
-                    tickStatus=Tickable.STATUS_MISC+30;
+					tickStatus=Tickable.STATUS_MISC+30;
 				}
 
 				if(elligible.size()==0)
 					return true;
 
-                tickStatus=Tickable.STATUS_MISC+31;
-                Physical P=elligible.elementAt(CMLib.dice().roll(1,elligible.size(),-1));
+				tickStatus=Tickable.STATUS_MISC+31;
+				Physical P=elligible.elementAt(CMLib.dice().roll(1,elligible.size(),-1));
 
 				Vector elligibleTraps=new Vector();
 				for(int t=0;t<allTraps.size();t++)
@@ -376,7 +376,7 @@ public class RandomTraps extends ActiveTicker
 				if(elligibleTraps.size()==0)
 					return true;
 
-                tickStatus=Tickable.STATUS_MISC+32;
+				tickStatus=Tickable.STATUS_MISC+32;
 				Trap T=(Trap)elligibleTraps.elementAt(CMLib.dice().roll(1,elligibleTraps.size(),-1));
 				T=(Trap)T.copyOf();
 				T.setProficiency(100);
@@ -384,10 +384,10 @@ public class RandomTraps extends ActiveTicker
 				T.setSavable(false);
 				P.addEffect(T);
 				maintained.addElement(P);
-                tickStatus=Tickable.STATUS_MISC+33;
+				tickStatus=Tickable.STATUS_MISC+33;
 			}
 		}
-        tickStatus=Tickable.STATUS_NOT;
+		tickStatus=Tickable.STATUS_NOT;
 		return true;
 	}
 }

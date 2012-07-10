@@ -25,7 +25,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -61,7 +61,7 @@ public class Song_Ode extends Song
 		{""+CMMsg.TYP_ACID,"ca",""+CharStats.STAT_SAVE_ACID,"<O-NAME> drips with warnings about acid!"},
 		{""+CMMsg.TYP_ELECTRIC,"ca",""+CharStats.STAT_SAVE_ELECTRIC,"The electric one, <O-NAME>, has shown us how to stay grounded!"},
 		{""+CMMsg.TYP_LOOK,"es",""+(PhyStats.CAN_SEE_DARK|PhyStats.CAN_SEE_HIDDEN),"<O-NAME> is ever watchful, and has opened our eyes!"},
-        {""+CMMsg.TYP_EXAMINE,"es",""+(PhyStats.CAN_SEE_BONUS|PhyStats.CAN_SEE_METAL),"<O-NAME> is a carefuly observer, and never misses the finest detail!"},
+		{""+CMMsg.TYP_EXAMINE,"es",""+(PhyStats.CAN_SEE_BONUS|PhyStats.CAN_SEE_METAL),"<O-NAME> is a carefuly observer, and never misses the finest detail!"},
 		{""+CMMsg.TYP_JUSTICE,"ca",""+CharStats.STAT_SAVE_JUSTICE,"The dreadful <O-NAME> shows us the way out of danger!"},
 		{""+CMMsg.TYP_MIND,"ca",""+CharStats.STAT_SAVE_MIND,"<O-NAME>, the deceiver, reminds us to keep our wits!"},
 		{""+CMMsg.TYP_PARALYZE,"ca",""+CharStats.STAT_SAVE_PARALYSIS,"<O-NAME> paralyzes <O-HIS-HER> enemies, that we may stay free!"},
@@ -244,16 +244,16 @@ public class Song_Ode extends Song
 		super.executeMsg(myHost,msg);
 	}
 
-    public int castingQuality(MOB mob, Physical target)
-    {
-        if(mob!=null)
-        {
-            if((mob.isMonster())&&(mob.isInCombat()))
-                return Ability.QUALITY_INDIFFERENT;
-        }
-        return super.castingQuality(mob,target);
-    }
-    
+	public int castingQuality(MOB mob, Physical target)
+	{
+		if(mob!=null)
+		{
+			if((mob.isMonster())&&(mob.isInCombat()))
+				return Ability.QUALITY_INDIFFERENT;
+		}
+		return super.castingQuality(mob,target);
+	}
+	
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		MOB mob=(MOB)affected;
@@ -349,7 +349,7 @@ public class Song_Ode extends Song
 
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-        timeOut=0;
+		timeOut=0;
 		if(auto) return false;
 
 		Hashtable H=getSongs();
@@ -385,9 +385,9 @@ public class Song_Ode extends Song
 			String key=(String)e.nextElement();
 			if(CMLib.english().containsString(key,name))
 			{
-                invoker=mob;
-                originRoom=mob.location();
-                commonRoomSet=getInvokerScopeRoomSet(null);
+				invoker=mob;
+				originRoom=mob.location();
+				commonRoomSet=getInvokerScopeRoomSet(null);
 				name=key;
 				song=(String)H.get(name);
 				benefits=null;
@@ -416,9 +416,9 @@ public class Song_Ode extends Song
 		if(success)
 		{
 			unsingAll(mob,mob);
-            invoker=mob;
-            originRoom=mob.location();
-            commonRoomSet=getInvokerScopeRoomSet(null);
+			invoker=mob;
+			originRoom=mob.location();
+			commonRoomSet=getInvokerScopeRoomSet(null);
 			whom=target;
 			String str="^S<S-NAME> begin(s) to compose an "+songOf()+".^?";
 			CMMsg msg=CMClass.getMsg(mob,null,this,(auto?CMMsg.MASK_ALWAYS:0)|CMMsg.MSG_DELICATE_SMALL_HANDS_ACT,str);

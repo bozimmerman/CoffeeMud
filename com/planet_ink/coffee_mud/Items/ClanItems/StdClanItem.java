@@ -26,7 +26,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -43,10 +43,10 @@ public class StdClanItem extends StdItem implements ClanItem
 	public int ciType(){return ciType;}
 	public void setCIType(int type){ ciType=type;}
 	private long lastClanCheck=System.currentTimeMillis();
-    private Environmental riteOwner=null;
-    public Environmental rightfulOwner(){return riteOwner;}
-    public void setRightfulOwner(Environmental E){riteOwner=E;}
-    
+	private Environmental riteOwner=null;
+	public Environmental rightfulOwner(){return riteOwner;}
+	public void setRightfulOwner(Environmental E){riteOwner=E;}
+	
 	public StdClanItem()
 	{
 		super();
@@ -66,34 +66,34 @@ public class StdClanItem extends StdItem implements ClanItem
 
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
-        super.executeMsg(myHost,msg);
-	    if((System.currentTimeMillis()-lastClanCheck)>TimeManager.MILI_HOUR/2)
-	    {
-		    if((clanID().length()>0)&&(owner() instanceof MOB)&&(!amDestroyed()))
-		    {
-		    	if((CMLib.clans().getClan(clanID())==null)
-		    	||((!((MOB)owner()).getClanID().equals(clanID()))&&(ciType()!=ClanItem.CI_PROPAGANDA)))
-		    	{
-		    		Room R=CMLib.map().roomLocation(this);
-                    setRightfulOwner(null);
+		super.executeMsg(myHost,msg);
+		if((System.currentTimeMillis()-lastClanCheck)>TimeManager.MILI_HOUR/2)
+		{
+			if((clanID().length()>0)&&(owner() instanceof MOB)&&(!amDestroyed()))
+			{
+				if((CMLib.clans().getClan(clanID())==null)
+				||((!((MOB)owner()).getClanID().equals(clanID()))&&(ciType()!=ClanItem.CI_PROPAGANDA)))
+				{
+					Room R=CMLib.map().roomLocation(this);
+					setRightfulOwner(null);
 					unWear();
 					removeFromOwnerContainer();
 					if(owner()!=R) R.moveItemTo(this,ItemPossessor.Expire.Player_Drop);
 					if(R!=null)
 						R.showHappens(CMMsg.MSG_OK_VISUAL,name()+" is dropped!");
-		    	}
-		    }
-		    lastClanCheck=System.currentTimeMillis();
-	    }
+				}
+			}
+			lastClanCheck=System.currentTimeMillis();
+		}
 	}
-    
+	
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(StdClanItem.stdOkMessage(this,msg))
 			return super.okMessage(myHost,msg);
 		return false;
 	}
-    
+	
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!StdClanItem.standardTick(this,tickID))
@@ -115,7 +115,7 @@ public class StdClanItem extends StdItem implements ClanItem
 		}
 		return false;
 	}
-    
+	
 	public static boolean standardTick(Tickable ticking, int tickID)
 	{
 		if(tickID!=Tickable.TICKID_CLANITEM)
@@ -124,47 +124,47 @@ public class StdClanItem extends StdItem implements ClanItem
 		||(((ClanItem)ticking).clanID().length()==0)
 		||(((Item)ticking).amDestroyed()))
 			return true;
-        ClanItem CI=(ClanItem)ticking;
-        if(CI.owner() instanceof MOB)
-        {
-    		MOB M=((MOB)((Item)ticking).owner());
-    		if((!M.getClanID().equals(CI.clanID()))
-    		&&(CI.ciType()!=ClanItem.CI_PROPAGANDA))
-    		{
-    			if(M.location()!=null)
-    			{
-                    CI.unWear();
-                    CI.removeFromOwnerContainer();
-                    CI.setRightfulOwner(null);
-    				if(CI.owner()!=M.location())
-    					M.location().moveItemTo(CI,ItemPossessor.Expire.Player_Drop);
-    				M.location().show(M,CI,CMMsg.MSG_OK_VISUAL,"<S-NAME> drop(s) <T-NAME>.");
-    				return false;
-    			}
-    		}
-    		else
-    		if((CI.amWearingAt(Wearable.IN_INVENTORY))
-    		&&(M.isMonster())
-    		&&(!wearingAClanItem(M))
-    		&&(CMLib.flags().isInTheGame(M,true)))
-    		{
-    			CI.setContainer(null);
-    			CI.wearAt(CI.rawProperLocationBitmap());
-    		}
-        }
-        else
-        if((CI.owner() instanceof Room)
-        &&(CI.rightfulOwner() instanceof MOB))
-        {
-            if(CI.container() instanceof DeadBody)
-                CI.setContainer(null);
-            MOB M=(MOB)CI.rightfulOwner();
-            if(M.amDestroyed())
-                CI.setRightfulOwner(null);
-            else
-            if(!M.amDead())
-                M.moveItemTo(CI);
-        }
+		ClanItem CI=(ClanItem)ticking;
+		if(CI.owner() instanceof MOB)
+		{
+			MOB M=((MOB)((Item)ticking).owner());
+			if((!M.getClanID().equals(CI.clanID()))
+			&&(CI.ciType()!=ClanItem.CI_PROPAGANDA))
+			{
+				if(M.location()!=null)
+				{
+					CI.unWear();
+					CI.removeFromOwnerContainer();
+					CI.setRightfulOwner(null);
+					if(CI.owner()!=M.location())
+						M.location().moveItemTo(CI,ItemPossessor.Expire.Player_Drop);
+					M.location().show(M,CI,CMMsg.MSG_OK_VISUAL,"<S-NAME> drop(s) <T-NAME>.");
+					return false;
+				}
+			}
+			else
+			if((CI.amWearingAt(Wearable.IN_INVENTORY))
+			&&(M.isMonster())
+			&&(!wearingAClanItem(M))
+			&&(CMLib.flags().isInTheGame(M,true)))
+			{
+				CI.setContainer(null);
+				CI.wearAt(CI.rawProperLocationBitmap());
+			}
+		}
+		else
+		if((CI.owner() instanceof Room)
+		&&(CI.rightfulOwner() instanceof MOB))
+		{
+			if(CI.container() instanceof DeadBody)
+				CI.setContainer(null);
+			MOB M=(MOB)CI.rightfulOwner();
+			if(M.amDestroyed())
+				CI.setRightfulOwner(null);
+			else
+			if(!M.amDead())
+				M.moveItemTo(CI);
+		}
 		return true;
 	}
 
@@ -237,8 +237,8 @@ public class StdClanItem extends StdItem implements ClanItem
 			{
 				Item I=targetMOB.getItem(i);
 				if((I!=null)
-                &&(I instanceof ClanItem)
-                &&((((ClanItem)myHost).ciType()!=ClanItem.CI_PROPAGANDA)||(((ClanItem)I).ciType()==ClanItem.CI_PROPAGANDA)))
+				&&(I instanceof ClanItem)
+				&&((((ClanItem)myHost).ciType()!=ClanItem.CI_PROPAGANDA)||(((ClanItem)I).ciType()==ClanItem.CI_PROPAGANDA)))
 				{ alreadyHasOne=I; break;}
 			}
 			if(alreadyHasOne!=null)
@@ -266,8 +266,8 @@ public class StdClanItem extends StdItem implements ClanItem
 			{
 				LegalBehavior theLaw=CMLib.law().getLegalBehavior(startRoom.getArea());
 				if((theLaw!=null)
-                &&(theLaw.rulingOrganization()!=null)
-                &&(theLaw.rulingOrganization().equals(targetMOB.getClanID())))
+				&&(theLaw.rulingOrganization()!=null)
+				&&(theLaw.rulingOrganization().equals(targetMOB.getClanID())))
 				{
 					if(giver!=null)
 						giver.tell("You can only give a clan item to a conquered mob within the conquered area.");
@@ -291,7 +291,7 @@ public class StdClanItem extends StdItem implements ClanItem
 		{
 			MOB targetMOB=(MOB)msg.target();
 			if((!targetMOB.getClanID().equals(((ClanItem)myHost).clanID()))
-            &&(((ClanItem)myHost).ciType()!=ClanItem.CI_PROPAGANDA))
+			&&(((ClanItem)myHost).ciType()!=ClanItem.CI_PROPAGANDA))
 			{
 				msg.source().tell("You cannot give this item to "+targetMOB.name()+".");
 				return false;
@@ -302,12 +302,12 @@ public class StdClanItem extends StdItem implements ClanItem
 		}
 		else
 		if((msg.amITarget(myHost)||(msg.target()==((ClanItem)myHost).ultimateContainer(null)))
-        &&(((ClanItem)myHost).clanID().length()>0))
+		&&(((ClanItem)myHost).clanID().length()>0))
 		{
-	        if((msg.targetMinor()==CMMsg.TYP_GET)
-	        ||(msg.targetMinor()==CMMsg.TYP_PUSH)
-	        ||(msg.targetMinor()==CMMsg.TYP_PULL)
-	        ||(msg.targetMinor()==CMMsg.TYP_CAST_SPELL))
+			if((msg.targetMinor()==CMMsg.TYP_GET)
+			||(msg.targetMinor()==CMMsg.TYP_PUSH)
+			||(msg.targetMinor()==CMMsg.TYP_PULL)
+			||(msg.targetMinor()==CMMsg.TYP_CAST_SPELL))
 			{
 				if(msg.source().getClanID().length()==0)
 				{
@@ -337,24 +337,24 @@ public class StdClanItem extends StdItem implements ClanItem
 						msg.source().tell("You must be at war with this clan to take one of their items.");
 						return false;
 					}
-	                Room room=msg.source().location();
-	                if((room!=null)&&(room.getArea()!=null))
-	                {
-	                    LegalBehavior theLaw=CMLib.law().getLegalBehavior(room.getArea());
-	                    if((theLaw!=null)&&(theLaw.rulingOrganization()!=null)&&(theLaw.rulingOrganization().equals(((ClanItem)myHost).clanID())))
-	                    {
-	                        msg.source().tell("You'll need to conquer this area to do that.");
-	                        return false;
-	                    }
-	                    if((theLaw!=null)&&(!theLaw.isFullyControlled()))
-	                    {
-	                        msg.source().tell("Your clan does not yet fully control the area.");
-	                        return false;
-	                    }
-	                }
+					Room room=msg.source().location();
+					if((room!=null)&&(room.getArea()!=null))
+					{
+						LegalBehavior theLaw=CMLib.law().getLegalBehavior(room.getArea());
+						if((theLaw!=null)&&(theLaw.rulingOrganization()!=null)&&(theLaw.rulingOrganization().equals(((ClanItem)myHost).clanID())))
+						{
+							msg.source().tell("You'll need to conquer this area to do that.");
+							return false;
+						}
+						if((theLaw!=null)&&(!theLaw.isFullyControlled()))
+						{
+							msg.source().tell("Your clan does not yet fully control the area.");
+							return false;
+						}
+					}
 				}
 			}
-        }
+		}
 		return true;
 	}
 
@@ -366,14 +366,14 @@ public class StdClanItem extends StdItem implements ClanItem
 		&&(((ClanItem)myHost).ciType()!=ClanItem.CI_PROPAGANDA))
 		{
 			MOB M=msg.source();
-            if(M.getClanID().equals(((ClanItem)myHost).clanID()))
-            {
-                if(M.isMonster())
-                    ((ClanItem)myHost).setRightfulOwner(M);
-                else
-                    ((ClanItem)myHost).setRightfulOwner(null);
-            }
-            else
+			if(M.getClanID().equals(((ClanItem)myHost).clanID()))
+			{
+				if(M.isMonster())
+					((ClanItem)myHost).setRightfulOwner(M);
+				else
+					((ClanItem)myHost).setRightfulOwner(null);
+			}
+			else
 			{
 				Clan C=M.getMyClan();
 				if(M.location()!=null)

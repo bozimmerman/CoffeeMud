@@ -23,7 +23,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -49,7 +49,7 @@ public class Disease_Malaria extends Disease
 	protected String DISEASE_AFFECT(){return "<S-NAME> ache(s) and sneeze(s). AAAAAAAAAAAAAACHOOO!!!!";}
 	public int abilityCode(){return DiseaseAffect.SPREAD_CONSUMPTION|DiseaseAffect.SPREAD_PROXIMITY|DiseaseAffect.SPREAD_CONTACT|DiseaseAffect.SPREAD_STD;}
 	public int difficultyLevel(){return 1;}
-    private boolean norecurse=false;
+	private boolean norecurse=false;
 	protected int conDown=0;
 	protected int tickUp=0;
 
@@ -102,9 +102,9 @@ public class Disease_Malaria extends Disease
 			conDown=-1;
 			MOB diseaser=invoker;
 			if(diseaser==null) diseaser=affected;
-            norecurse=true;
+			norecurse=true;
 			CMLib.combat().postDeath(diseaser,affected,null);
-            norecurse=false;
+			norecurse=false;
 		}
 	}
 

@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -36,89 +36,89 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Prayer_HolyAura extends Prayer implements MendingSkill
 {
-    public String ID() { return "Prayer_HolyAura"; }
-    public String name(){ return "Holy Aura";}
-    public String displayText(){ return "(Holy Aura)";}
-    protected int canAffectCode(){return Ability.CAN_MOBS;}
-    protected int canTargetCode(){return Ability.CAN_MOBS;}
-    public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
-    public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_BLESSING;}
-    public long flags(){return Ability.FLAG_HOLY;}
+	public String ID() { return "Prayer_HolyAura"; }
+	public String name(){ return "Holy Aura";}
+	public String displayText(){ return "(Holy Aura)";}
+	protected int canAffectCode(){return Ability.CAN_MOBS;}
+	protected int canTargetCode(){return Ability.CAN_MOBS;}
+	public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
+	public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_BLESSING;}
+	public long flags(){return Ability.FLAG_HOLY;}
 
-    public boolean supportsMending(Physical item)
-    { 
-        return (item instanceof MOB)
-                &&((Prayer_Bless.getSomething((MOB)item,true)!=null)
-                    ||(CMLib.flags().domainAffects(item,Ability.DOMAIN_CURSING).size()>0));
-    }
+	public boolean supportsMending(Physical item)
+	{ 
+		return (item instanceof MOB)
+				&&((Prayer_Bless.getSomething((MOB)item,true)!=null)
+					||(CMLib.flags().domainAffects(item,Ability.DOMAIN_CURSING).size()>0));
+	}
 
-    public void affectPhyStats(Physical affected, PhyStats affectableStats)
-    {
-        super.affectPhyStats(affected,affectableStats);
-        if(affected==null) return;
-        if(!(affected instanceof MOB)) return;
+	public void affectPhyStats(Physical affected, PhyStats affectableStats)
+	{
+		super.affectPhyStats(affected,affectableStats);
+		if(affected==null) return;
+		if(!(affected instanceof MOB)) return;
 
-        int xlvl=super.getXLEVELLevel(invoker());
-        affectableStats.setArmor(affectableStats.armor()-10-(4*xlvl));
-        affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()+10+(2*xlvl));
-    }
+		int xlvl=super.getXLEVELLevel(invoker());
+		affectableStats.setArmor(affectableStats.armor()-10-(4*xlvl));
+		affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()+10+(2*xlvl));
+	}
 
-    public void unInvoke()
-    {
-        // undo the affects of this spell
-        if((affected==null)||(!(affected instanceof MOB)))
-            return;
-        MOB mob=(MOB)affected;
+	public void unInvoke()
+	{
+		// undo the affects of this spell
+		if((affected==null)||(!(affected instanceof MOB)))
+			return;
+		MOB mob=(MOB)affected;
 
-        super.unInvoke();
+		super.unInvoke();
 
-        if(canBeUninvoked())
-            if((mob.location()!=null)&&(!mob.amDead()))
-                mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-YOUPOSS> holy aura fades.");
-    }
+		if(canBeUninvoked())
+			if((mob.location()!=null)&&(!mob.amDead()))
+				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-YOUPOSS> holy aura fades.");
+	}
 
-    public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
-    {
-        MOB target=this.getTarget(mob,commands,givenTarget);
-        if(target==null) return false;
+	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
+	{
+		MOB target=this.getTarget(mob,commands,givenTarget);
+		if(target==null) return false;
 
-        if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
-            return false;
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
+			return false;
 
-        boolean success=proficiencyCheck(mob,0,auto);
+		boolean success=proficiencyCheck(mob,0,auto);
 
-        if(success)
-        {
-            // it worked, so build a copy of this ability,
-            // and add it to the affects list of the
-            // affected MOB.  Then tell everyone else
-            // what happened.
-            CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),(auto?"<T-NAME> become(s) clothed in holiness.":"^S<S-NAME> "+prayForWord(mob)+" to clothe <T-NAMESELF> in holiness.^?")+CMProps.msp("bless.wav",10));
-            if(mob.location().okMessage(mob,msg))
-            {
-                mob.location().send(mob,msg);
-                Item I=Prayer_Bless.getSomething(target,true);
-                HashSet<Item> alreadyDone=new HashSet<Item>();
-                while((I!=null)&&(!alreadyDone.contains(I)))
-                {
-                    alreadyDone.add(I);
-                    CMMsg msg2=CMClass.getMsg(target,I,null,CMMsg.MASK_ALWAYS|CMMsg.MSG_DROP,"<S-NAME> release(s) <T-NAME>.");
-                    target.location().send(target,msg2);
-                    Prayer_Bless.endLowerCurses(I,CMLib.ableMapper().lowestQualifyingLevel(ID()));
-                    I.recoverPhyStats();
-                    I=Prayer_Bless.getSomething(target,true);
-                }
-                Prayer_Bless.endAllOtherBlessings(mob,target,CMLib.ableMapper().lowestQualifyingLevel(ID()));
-                Prayer_Bless.endLowerCurses(target,CMLib.ableMapper().lowestQualifyingLevel(ID()));
-                beneficialAffect(mob,target,asLevel,0);
-                target.recoverPhyStats();
-            }
-        }
-        else
-            return beneficialWordsFizzle(mob,target,"<S-NAME> "+prayWord(mob)+" for holiness, but nothing happens.");
+		if(success)
+		{
+			// it worked, so build a copy of this ability,
+			// and add it to the affects list of the
+			// affected MOB.  Then tell everyone else
+			// what happened.
+			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),(auto?"<T-NAME> become(s) clothed in holiness.":"^S<S-NAME> "+prayForWord(mob)+" to clothe <T-NAMESELF> in holiness.^?")+CMProps.msp("bless.wav",10));
+			if(mob.location().okMessage(mob,msg))
+			{
+				mob.location().send(mob,msg);
+				Item I=Prayer_Bless.getSomething(target,true);
+				HashSet<Item> alreadyDone=new HashSet<Item>();
+				while((I!=null)&&(!alreadyDone.contains(I)))
+				{
+					alreadyDone.add(I);
+					CMMsg msg2=CMClass.getMsg(target,I,null,CMMsg.MASK_ALWAYS|CMMsg.MSG_DROP,"<S-NAME> release(s) <T-NAME>.");
+					target.location().send(target,msg2);
+					Prayer_Bless.endLowerCurses(I,CMLib.ableMapper().lowestQualifyingLevel(ID()));
+					I.recoverPhyStats();
+					I=Prayer_Bless.getSomething(target,true);
+				}
+				Prayer_Bless.endAllOtherBlessings(mob,target,CMLib.ableMapper().lowestQualifyingLevel(ID()));
+				Prayer_Bless.endLowerCurses(target,CMLib.ableMapper().lowestQualifyingLevel(ID()));
+				beneficialAffect(mob,target,asLevel,0);
+				target.recoverPhyStats();
+			}
+		}
+		else
+			return beneficialWordsFizzle(mob,target,"<S-NAME> "+prayWord(mob)+" for holiness, but nothing happens.");
 
 
-        // return whether it worked
-        return success;
-    }
+		// return whether it worked
+		return success;
+	}
 }

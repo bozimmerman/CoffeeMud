@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -43,7 +43,7 @@ public class Fighter_Sweep extends FighterSkill
 	public String[] triggerStrings(){return triggerStrings;}
 	protected int canAffectCode(){return Ability.CAN_MOBS;}
 	protected int canTargetCode(){return 0;}
-    public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_DIRTYFIGHTING;}
+	public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_DIRTYFIGHTING;}
 	public int usageType(){return USAGE_MOVEMENT;}
 
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
@@ -114,11 +114,11 @@ public class Fighter_Sweep extends FighterSkill
 		boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
-            CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MSG_NOISYMOVEMENT,"^F^<FIGHT^><S-NAME> sweep(s)!^</FIGHT^>^?");
-            CMLib.color().fixSourceFightColor(msg);
+			CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MSG_NOISYMOVEMENT,"^F^<FIGHT^><S-NAME> sweep(s)!^</FIGHT^>^?");
+			CMLib.color().fixSourceFightColor(msg);
 			if(mob.location().okMessage(mob,msg))
 			{
-                mob.location().send(mob,msg);
+				mob.location().send(mob,msg);
 				invoker=mob;
 				mob.addEffect(this);
 				mob.recoverPhyStats();

@@ -23,7 +23,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -64,9 +64,9 @@ public class Ingredients extends BagOfEndlessness
 		I.setContainer(this);
 		if(I instanceof Decayable)
 		{
-		    ((Decayable)I).setDecayTime(0);
-		    Ability A=I.fetchEffect("Poison_Rotten");
-		    if(A!=null) I.delEffect(A);
+			((Decayable)I).setDecayTime(0);
+			Ability A=I.fetchEffect("Poison_Rotten");
+			if(A!=null) I.delEffect(A);
 		}
 		if(owner() instanceof Room)
 			((Room)owner()).addItem(I);
@@ -92,9 +92,9 @@ public class Ingredients extends BagOfEndlessness
 		&&(((Item)msg.tool()).container()==this)
 		&&(((Item)msg.tool()).owner() !=null))
 		{
-		    ((Decayable)msg.tool()).setDecayTime(0);
-		    Ability A=((Item)msg.tool()).fetchEffect("Poison_Rotten");
-		    if(A!=null) ((Item)msg.tool()).delEffect(A);
+			((Decayable)msg.tool()).setDecayTime(0);
+			Ability A=((Item)msg.tool()).fetchEffect("Poison_Rotten");
+			if(A!=null) ((Item)msg.tool()).delEffect(A);
 		}
 		super.executeMsg(myHost,msg);
 	}

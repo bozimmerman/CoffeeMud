@@ -25,7 +25,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -111,9 +111,9 @@ public class Power_TrapSense extends SuperPower
 			ShopKeeper SK=CMLib.coffeeShops().getShopKeeper(P);
 			if(SK!=null)
 			{
-    			for(Iterator<Environmental> i=SK.getShop().getStoreInventory();i.hasNext();)
-    			{
-    				Environmental E2=(Environmental)i.next();
+				for(Iterator<Environmental> i=SK.getShop().getStoreInventory();i.hasNext();)
+				{
+					Environmental E2=(Environmental)i.next();
 					if(E2 instanceof Item)
 						if(trapCheck((Item)E2).length()>0)
 							return P.name()+" has something trapped in stock.\n";

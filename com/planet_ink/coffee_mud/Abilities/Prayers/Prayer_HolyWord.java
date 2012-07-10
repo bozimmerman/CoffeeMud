@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -36,134 +36,134 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Prayer_HolyWord extends Prayer implements MendingSkill
 {
-    public String ID() { return "Prayer_HolyWord"; }
-    public String name(){ return "Holy Word";}
-    public String displayText(){ return "(Holy Word)";}
-    protected int canAffectCode(){return Ability.CAN_MOBS;}
-    protected int canTargetCode(){return Ability.CAN_MOBS;}
-    public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
-    public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_BLESSING;}
-    public long flags(){return Ability.FLAG_HOLY;}
+	public String ID() { return "Prayer_HolyWord"; }
+	public String name(){ return "Holy Word";}
+	public String displayText(){ return "(Holy Word)";}
+	protected int canAffectCode(){return Ability.CAN_MOBS;}
+	protected int canTargetCode(){return Ability.CAN_MOBS;}
+	public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
+	public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_BLESSING;}
+	public long flags(){return Ability.FLAG_HOLY;}
 
-    public boolean supportsMending(Physical item)
-    { 
-        return (item instanceof MOB)
-                &&((Prayer_Bless.getSomething((MOB)item,true)!=null)
-                    ||(CMLib.flags().domainAffects(item,Ability.DOMAIN_CURSING).size()>0));
-    }
+	public boolean supportsMending(Physical item)
+	{ 
+		return (item instanceof MOB)
+				&&((Prayer_Bless.getSomething((MOB)item,true)!=null)
+					||(CMLib.flags().domainAffects(item,Ability.DOMAIN_CURSING).size()>0));
+	}
 
-    public void affectPhyStats(Physical affected, PhyStats affectableStats)
-    {
-        super.affectPhyStats(affected,affectableStats);
-        if(affected==null) return;
-        if(!(affected instanceof MOB)) return;
-        MOB mob=(MOB)affected;
+	public void affectPhyStats(Physical affected, PhyStats affectableStats)
+	{
+		super.affectPhyStats(affected,affectableStats);
+		if(affected==null) return;
+		if(!(affected instanceof MOB)) return;
+		MOB mob=(MOB)affected;
 
-        if(mob==invoker) return;
-        int xlvl=super.getXLEVELLevel(invoker());
-        if(CMLib.flags().isGood(mob))
-        {
-            affectableStats.setArmor(affectableStats.armor()-15-(6*xlvl));
-            affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()+20+(4*xlvl));
-        }
-        else
-        if(CMLib.flags().isEvil(mob))
-        {
-            affectableStats.setArmor(affectableStats.armor()+15+(6*xlvl));
-            affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()-20-(4*xlvl));
-        }
-    }
-
-
-
-    public void unInvoke()
-    {
-        // undo the affects of this spell
-        if((affected==null)||(!(affected instanceof MOB)))
-            return;
-        MOB mob=(MOB)affected;
-
-        super.unInvoke();
-
-        if(canBeUninvoked())
-            if((mob.location()!=null)&&(!mob.amDead()))
-                mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-YOUPOSS> blinding holy aura fades.");
-    }
-
-    public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
-    {
-        if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
-            return false;
-
-        boolean success=proficiencyCheck(mob,0,auto);
-
-        String str=(auto?"The holy word is spoken.":"^S<S-NAME> speak(s) the holy word"+ofDiety(mob)+" to <T-NAMESELF>.^?")+CMProps.msp("bless.wav",10);
-        String missStr="<S-NAME> speak(s) the holy word"+ofDiety(mob)+", but nothing happens.";
-        Room room=mob.location();
-        if(room!=null)
-        for(int i=0;i<room.numInhabitants();i++)
-        {
-            MOB target=room.fetchInhabitant(i);
-            if(target==null) break;
-
-            int affectType=CMMsg.MSG_CAST_VERBAL_SPELL;
-            if(auto) affectType=affectType|CMMsg.MASK_ALWAYS;
-            if(CMLib.flags().isEvil(target))
-                affectType=affectType|CMMsg.MASK_MALICIOUS;
-
-            if(success)
-            {
-                // it worked, so build a copy of this ability,
-                // and add it to the affects list of the
-                // affected MOB.  Then tell everyone else
-                // what happened.
-                CMMsg msg=CMClass.getMsg(mob,target,this,affectType,str);
-                if(mob.location().okMessage(mob,msg))
-                {
-                    mob.location().send(mob,msg);
-                    if(msg.value()<=0)
-                    {
-                        if(CMLib.flags().canBeHeardSpeakingBy(mob,target))
-                        {
-                            str=null;
-                            Item I=Prayer_Bless.getSomething(target,true);
-                            HashSet<Item> alreadyDone=new HashSet<Item>();
-                            while((I!=null)&&(!alreadyDone.contains(I)))
-                            {
-                                alreadyDone.add(I);
-                                CMMsg msg2=CMClass.getMsg(target,I,null,CMMsg.MASK_ALWAYS|CMMsg.MSG_DROP,"<S-NAME> release(s) <T-NAME>.");
-                                target.location().send(target,msg2);
-                                Prayer_Bless.endLowerCurses(I,CMLib.ableMapper().lowestQualifyingLevel(ID()));
-                                I.recoverPhyStats();
-                                I=Prayer_Bless.getSomething(target,true);
-                            }
-                            Prayer_Bless.endAllOtherBlessings(mob,target,CMLib.ableMapper().lowestQualifyingLevel(ID()));
-                            Prayer_Bless.endLowerCurses(target,CMLib.ableMapper().lowestQualifyingLevel(ID()));
-                            beneficialAffect(mob,target,asLevel,0);
-                            target.recoverPhyStats();
-                        }
-                        else
-                        if(CMath.bset(affectType,CMMsg.MASK_MALICIOUS))
-                            maliciousFizzle(mob,target,"<T-NAME> did not hear the word!");
-                        else
-                            beneficialWordsFizzle(mob,target,"<T-NAME> did not hear the word!");
-
-                    }
-                }
-            }
-            else
-            {
-                if(CMath.bset(affectType,CMMsg.MASK_MALICIOUS))
-                    maliciousFizzle(mob,target,missStr);
-                else
-                    beneficialWordsFizzle(mob,target,missStr);
-                missStr=null;
-                return false;
-            }
-        }
+		if(mob==invoker) return;
+		int xlvl=super.getXLEVELLevel(invoker());
+		if(CMLib.flags().isGood(mob))
+		{
+			affectableStats.setArmor(affectableStats.armor()-15-(6*xlvl));
+			affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()+20+(4*xlvl));
+		}
+		else
+		if(CMLib.flags().isEvil(mob))
+		{
+			affectableStats.setArmor(affectableStats.armor()+15+(6*xlvl));
+			affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()-20-(4*xlvl));
+		}
+	}
 
 
-        // return whether it worked
-        return success;
-    }
+
+	public void unInvoke()
+	{
+		// undo the affects of this spell
+		if((affected==null)||(!(affected instanceof MOB)))
+			return;
+		MOB mob=(MOB)affected;
+
+		super.unInvoke();
+
+		if(canBeUninvoked())
+			if((mob.location()!=null)&&(!mob.amDead()))
+				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-YOUPOSS> blinding holy aura fades.");
+	}
+
+	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
+	{
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
+			return false;
+
+		boolean success=proficiencyCheck(mob,0,auto);
+
+		String str=(auto?"The holy word is spoken.":"^S<S-NAME> speak(s) the holy word"+ofDiety(mob)+" to <T-NAMESELF>.^?")+CMProps.msp("bless.wav",10);
+		String missStr="<S-NAME> speak(s) the holy word"+ofDiety(mob)+", but nothing happens.";
+		Room room=mob.location();
+		if(room!=null)
+		for(int i=0;i<room.numInhabitants();i++)
+		{
+			MOB target=room.fetchInhabitant(i);
+			if(target==null) break;
+
+			int affectType=CMMsg.MSG_CAST_VERBAL_SPELL;
+			if(auto) affectType=affectType|CMMsg.MASK_ALWAYS;
+			if(CMLib.flags().isEvil(target))
+				affectType=affectType|CMMsg.MASK_MALICIOUS;
+
+			if(success)
+			{
+				// it worked, so build a copy of this ability,
+				// and add it to the affects list of the
+				// affected MOB.  Then tell everyone else
+				// what happened.
+				CMMsg msg=CMClass.getMsg(mob,target,this,affectType,str);
+				if(mob.location().okMessage(mob,msg))
+				{
+					mob.location().send(mob,msg);
+					if(msg.value()<=0)
+					{
+						if(CMLib.flags().canBeHeardSpeakingBy(mob,target))
+						{
+							str=null;
+							Item I=Prayer_Bless.getSomething(target,true);
+							HashSet<Item> alreadyDone=new HashSet<Item>();
+							while((I!=null)&&(!alreadyDone.contains(I)))
+							{
+								alreadyDone.add(I);
+								CMMsg msg2=CMClass.getMsg(target,I,null,CMMsg.MASK_ALWAYS|CMMsg.MSG_DROP,"<S-NAME> release(s) <T-NAME>.");
+								target.location().send(target,msg2);
+								Prayer_Bless.endLowerCurses(I,CMLib.ableMapper().lowestQualifyingLevel(ID()));
+								I.recoverPhyStats();
+								I=Prayer_Bless.getSomething(target,true);
+							}
+							Prayer_Bless.endAllOtherBlessings(mob,target,CMLib.ableMapper().lowestQualifyingLevel(ID()));
+							Prayer_Bless.endLowerCurses(target,CMLib.ableMapper().lowestQualifyingLevel(ID()));
+							beneficialAffect(mob,target,asLevel,0);
+							target.recoverPhyStats();
+						}
+						else
+						if(CMath.bset(affectType,CMMsg.MASK_MALICIOUS))
+							maliciousFizzle(mob,target,"<T-NAME> did not hear the word!");
+						else
+							beneficialWordsFizzle(mob,target,"<T-NAME> did not hear the word!");
+
+					}
+				}
+			}
+			else
+			{
+				if(CMath.bset(affectType,CMMsg.MASK_MALICIOUS))
+					maliciousFizzle(mob,target,missStr);
+				else
+					beneficialWordsFizzle(mob,target,missStr);
+				missStr=null;
+				return false;
+			}
+		}
+
+
+		// return whether it worked
+		return success;
+	}
 }

@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -46,43 +46,43 @@ public class Prayer_CurseFlames extends Prayer
 	public int maxRange(){return adjustedMaxInvokerRange(5);}
 	public int minRange(){return 0;}
 
-    public int castingQuality(MOB mob, Physical target)
-    {
-        if(mob!=null)
-        {
-            if(target instanceof MOB)
-            {
-                if(getFireSource((MOB)target)==null)
-                    return Ability.QUALITY_INDIFFERENT;
-            }
-        }
-        return super.castingQuality(mob,target);
-    }
-    
+	public int castingQuality(MOB mob, Physical target)
+	{
+		if(mob!=null)
+		{
+			if(target instanceof MOB)
+			{
+				if(getFireSource((MOB)target)==null)
+					return Ability.QUALITY_INDIFFERENT;
+			}
+		}
+		return super.castingQuality(mob,target);
+	}
+	
 	private Item getFireSource(MOB target)
 	{
-        Item fireSource=null;
-        for(int i=0;i<target.numItems();i++)
-        {
-            Item I=target.getItem(i);
-            if((CMLib.flags().isOnFire(I))&&(I.container()==null))
-            {
-                fireSource=I;
-                break;
-            }
-        }
+		Item fireSource=null;
+		for(int i=0;i<target.numItems();i++)
+		{
+			Item I=target.getItem(i);
+			if((CMLib.flags().isOnFire(I))&&(I.container()==null))
+			{
+				fireSource=I;
+				break;
+			}
+		}
 
-        if(fireSource==null)
-        for(int i=0;i<target.location().numItems();i++)
-        {
-            Item I=target.location().getItem(i);
-            if((CMLib.flags().isOnFire(I))&&(I.container()==null))
-            {
-                fireSource=I;
-                break;
-            }
-        }
-        return null;
+		if(fireSource==null)
+		for(int i=0;i<target.location().numItems();i++)
+		{
+			Item I=target.location().getItem(i);
+			if((CMLib.flags().isOnFire(I))&&(I.container()==null))
+			{
+				fireSource=I;
+				break;
+			}
+		}
+		return null;
 	}
 	
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)

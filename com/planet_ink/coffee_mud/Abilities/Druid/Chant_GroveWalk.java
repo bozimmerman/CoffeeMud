@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -38,7 +38,7 @@ public class Chant_GroveWalk extends Chant
 {
 	public String ID() { return "Chant_GroveWalk"; }
 	public String name(){ return "Grove Walk";}
-    public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_SHAPE_SHIFTING;}
+	public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_SHAPE_SHIFTING;}
 	public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return 0;}
@@ -65,13 +65,13 @@ public class Chant_GroveWalk extends Chant
 					Item I=R.getItem(i);
 					if((I!=null)&&(I.ID().equals("DruidicMonument")))
 					{
-					    newRoom=R;
+						newRoom=R;
 						break;
 					}
 				}
 				if(newRoom!=null) break;
 			}
-	    }catch(NoSuchElementException e){}
+		}catch(NoSuchElementException e){}
 		if(!hereok)
 		{
 			mob.tell("There is no druidic monument here.  You can only use this chant in a druidic grove.");

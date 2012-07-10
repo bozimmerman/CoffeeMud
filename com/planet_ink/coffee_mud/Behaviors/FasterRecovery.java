@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -77,7 +77,7 @@ public class FasterRecovery extends StdBehavior
 	
 	public void doBe(MOB M, int burst, int health, int hits, int mana, int move)
 	{
-	    if(M==null) return;
+		if(M==null) return;
 		for(int i2=0;i2<burst;i2++)
 			M.tick(M,Tickable.TICKID_MOB);
 		for(int i2=0;i2<health;i2++)
@@ -117,7 +117,7 @@ public class FasterRecovery extends StdBehavior
 		{
 			MOB M=room.fetchInhabitant(i);
 			if(M!=null)
-			    doBe(M,burst,health,hits,mana,move);
+				doBe(M,burst,health,hits,mana,move);
 		}
 	}
 	public void doBe(Area area, int burst, int health, int hits, int mana, int move)
@@ -144,13 +144,13 @@ public class FasterRecovery extends StdBehavior
 		else
 		if(ticking instanceof Rideable)
 		{
-		    Rider R=null;
-		    for(int r=0;r<((Rideable)ticking).numRiders();r++)
-		    {
-		        R=((Rideable)ticking).fetchRider(r);
-		        if(R instanceof MOB)
+			Rider R=null;
+			for(int r=0;r<((Rideable)ticking).numRiders();r++)
+			{
+				R=((Rideable)ticking).fetchRider(r);
+				if(R instanceof MOB)
 					doBe((MOB)R,burst,health,hits,mana,move);
-		    }
+			}
 		}
 		else
 		if(ticking instanceof MOB)
@@ -158,13 +158,13 @@ public class FasterRecovery extends StdBehavior
 		else
 		if(ticking instanceof Item)
 		{
-		    if(CMLib.flags().isGettable((Item)ticking)
-		    &&(((Item)ticking).owner() instanceof MOB)
-		    &&(!((Item)ticking).amWearingAt(Wearable.IN_INVENTORY)))
+			if(CMLib.flags().isGettable((Item)ticking)
+			&&(((Item)ticking).owner() instanceof MOB)
+			&&(!((Item)ticking).amWearingAt(Wearable.IN_INVENTORY)))
 				doBe((MOB)((Item)ticking).owner(),burst,health,hits,mana,move);
-		    else
-		    if(!CMLib.flags().isGettable((Item)ticking)
-		    &&(((Item)ticking).owner() instanceof Room))
+			else
+			if(!CMLib.flags().isGettable((Item)ticking)
+			&&(((Item)ticking).owner() instanceof Room))
 				doBe((Room)((Item)ticking).owner(),burst,health,hits,mana,move);
 		}
 		return true;

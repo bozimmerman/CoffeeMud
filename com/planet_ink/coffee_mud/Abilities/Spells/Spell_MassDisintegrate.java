@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -106,17 +106,17 @@ public class Spell_MassDisintegrate extends Spell
 			{
 				Item I=mob.location().getItem(i);
 				if((I!=null)&&(I.container()==null))
-                {
+				{
 					List<DeadBody> DBs=CMLib.utensils().getDeadBodies(I);
-                    boolean ok=true;
-                    for(DeadBody DB : DBs)
-                    {
-                        if(DB.playerCorpse()
-                        &&(!((DeadBody)I).mobName().equals(mob.Name())))
-                            ok=false;
-                    }
-                    if(ok) V.addElement(I);
-                }
+					boolean ok=true;
+					for(DeadBody DB : DBs)
+					{
+						if(DB.playerCorpse()
+						&&(!((DeadBody)I).mobName().equals(mob.Name())))
+							ok=false;
+					}
+					if(ok) V.addElement(I);
+				}
 			}
 			for(int i=0;i<V.size();i++)
 			{
@@ -125,12 +125,12 @@ public class Spell_MassDisintegrate extends Spell
 				||(!((DeadBody)I).playerCorpse())
 				||(((DeadBody)I).mobName().equals(mob.Name())))
 				{
-                    CMMsg msg=CMClass.getMsg(mob,I,this,verbalCastCode(mob,I,auto),I.name()+" disintegrates!");
-                    if(mob.location().okMessage(mob,msg))
-                    {
-                        mob.location().send(mob,msg);
-    					I.destroy();
-                    }
+					CMMsg msg=CMClass.getMsg(mob,I,this,verbalCastCode(mob,I,auto),I.name()+" disintegrates!");
+					if(mob.location().okMessage(mob,msg))
+					{
+						mob.location().send(mob,msg);
+						I.destroy();
+					}
 				}
 			}
 			mob.location().recoverRoomStats();

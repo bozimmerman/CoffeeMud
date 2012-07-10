@@ -25,7 +25,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -38,13 +38,13 @@ public class Prop_Retainable extends Property
 	public String ID() { return "Prop_Retainable"; }
 	public String name(){ return "Ability to set Price/Retainability of a pet.";}
 	protected int canAffectCode(){return Ability.CAN_MOBS;}
-    protected Room lastRoom=null;
+	protected Room lastRoom=null;
 
 	protected long payPeriodLengthInMilliseconds=0;
 	protected int payPeriodLengthInMudDays=0;
 	protected int payAmountPerPayPeriod=0;
 	protected long lastPayDayTimestamp=0;
-    protected long lastMoveIn=0;
+	protected long lastMoveIn=0;
 
 	public String accountForYourself()
 	{ return "Retainable";	}
@@ -92,18 +92,18 @@ public class Prop_Retainable extends Property
 			MOB mob=(MOB)affected;
 			if(mob.location()!=null)
 			{
-                if((lastMoveIn>0)&&((System.currentTimeMillis()-lastMoveIn)>4))
-                {
-                    lastMoveIn=0;
-                    if(mob.location()==lastRoom)
-                    {
-                        if((mob.amFollowing()!=null)&&(mob.location().isInhabitant(mob.amFollowing())))
-                            CMLib.commands().postSay(mob,mob.amFollowing(),"Is this my new permanent post?  If so, order me to NOFOLLOW and I'll stay here.",false,false);
-                        else
-                        if(mob.location().numPCInhabitants()>0)
-                            CMLib.commands().postSay(mob,mob.amFollowing(),"I guess this is my new permanent posting?",false,false);
-                    }
-                }
+				if((lastMoveIn>0)&&((System.currentTimeMillis()-lastMoveIn)>4))
+				{
+					lastMoveIn=0;
+					if(mob.location()==lastRoom)
+					{
+						if((mob.amFollowing()!=null)&&(mob.location().isInhabitant(mob.amFollowing())))
+							CMLib.commands().postSay(mob,mob.amFollowing(),"Is this my new permanent post?  If so, order me to NOFOLLOW and I'll stay here.",false,false);
+						else
+						if(mob.location().numPCInhabitants()>0)
+							CMLib.commands().postSay(mob,mob.amFollowing(),"I guess this is my new permanent posting?",false,false);
+					}
+				}
 				if(payPeriodLengthInMudDays>0)
 				{
 					if(lastPayDayTimestamp==0)
@@ -149,10 +149,10 @@ public class Prop_Retainable extends Property
 							return false;
 						}
 						boolean paid=CMLib.beanCounter().modifyLocalBankGold(mob.location().getArea(),
-						        owner,
-						        CMLib.utensils().getFormattedDate(mob)+": Withdrawal of "+CMLib.beanCounter().nameCurrencyShort(mob,payAmountPerPayPeriod)+": Payroll: "+Name(),
-						        CMLib.beanCounter().getCurrency(mob),
-						        (double)(-payAmountPerPayPeriod));
+								owner,
+								CMLib.utensils().getFormattedDate(mob)+": Withdrawal of "+CMLib.beanCounter().nameCurrencyShort(mob,payAmountPerPayPeriod)+": Payroll: "+Name(),
+								CMLib.beanCounter().getCurrency(mob),
+								(double)(-payAmountPerPayPeriod));
 						if(paid)
 							CMLib.commands().postSay(mob,null,"Payday!",false,false);
 						else
@@ -170,26 +170,26 @@ public class Prop_Retainable extends Property
 		return true;
 	}
 
-    public void tellSkills(MOB me, MOB toMe)
-    {
-        StringBuffer skills = new StringBuffer("");
-        if(me instanceof ShopKeeper)
-            skills.append(", selling "+CMLib.coffeeShops().storeKeeperString(((ShopKeeper)me).getShop()).toLowerCase());
-        for(Enumeration<Ability> a=me.allAbilities();a.hasMoreElements();)
-        {
-            Ability A=a.nextElement();
-            if(A!=null)
-            {
-	            if(A.proficiency() == 0)
-	                A.setProficiency(50 + me.phyStats().level() - CMLib.ableMapper().lowestQualifyingLevel(A.ID()));
-	            skills.append(", " + A.name());
-            }
-        }
-        if(me instanceof ShopKeeper)
-            skills.append(".  Once I'm at my permanent post, you may give me appropriate items to sell at any time");
-        if(skills.length()>2)
-            CMLib.commands().postSay(me, toMe, "My skills include: " + skills.substring(2) + ".",false,false);
-    }
+	public void tellSkills(MOB me, MOB toMe)
+	{
+		StringBuffer skills = new StringBuffer("");
+		if(me instanceof ShopKeeper)
+			skills.append(", selling "+CMLib.coffeeShops().storeKeeperString(((ShopKeeper)me).getShop()).toLowerCase());
+		for(Enumeration<Ability> a=me.allAbilities();a.hasMoreElements();)
+		{
+			Ability A=a.nextElement();
+			if(A!=null)
+			{
+				if(A.proficiency() == 0)
+					A.setProficiency(50 + me.phyStats().level() - CMLib.ableMapper().lowestQualifyingLevel(A.ID()));
+				skills.append(", " + A.name());
+			}
+		}
+		if(me instanceof ShopKeeper)
+			skills.append(".  Once I'm at my permanent post, you may give me appropriate items to sell at any time");
+		if(skills.length()>2)
+			CMLib.commands().postSay(me, toMe, "My skills include: " + skills.substring(2) + ".",false,false);
+	}
 
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
@@ -199,18 +199,18 @@ public class Prop_Retainable extends Property
 			MOB mob=(MOB)affected;
 			if(mob.location()!=null)
 			{
-                if((msg.tool()==affected)
-                &&(msg.targetMinor()==CMMsg.TYP_BUY))
-                {
-                    tellSkills(mob,msg.source());
-                    if(payPeriodLengthInMudDays>0)
-                        CMLib.commands().postSay(mob,msg.source(),"I accept your terms of employment, and I understand I will be paid "+CMLib.beanCounter().abbreviatedPrice(mob,(double)payAmountPerPayPeriod)+" every "+payPeriodLengthInMudDays+" days.",false,false);
-                    else
-                        CMLib.commands().postSay(mob,msg.source(),"I accept your terms of employment.",false,false);
-                    CMLib.commands().postSay(mob,msg.source(),"Please show me the way to my permanent post.",false,false);
-                    lastPayDayTimestamp=0;
-                }
-                else
+				if((msg.tool()==affected)
+				&&(msg.targetMinor()==CMMsg.TYP_BUY))
+				{
+					tellSkills(mob,msg.source());
+					if(payPeriodLengthInMudDays>0)
+						CMLib.commands().postSay(mob,msg.source(),"I accept your terms of employment, and I understand I will be paid "+CMLib.beanCounter().abbreviatedPrice(mob,(double)payAmountPerPayPeriod)+" every "+payPeriodLengthInMudDays+" days.",false,false);
+					else
+						CMLib.commands().postSay(mob,msg.source(),"I accept your terms of employment.",false,false);
+					CMLib.commands().postSay(mob,msg.source(),"Please show me the way to my permanent post.",false,false);
+					lastPayDayTimestamp=0;
+				}
+				else
 				if(mob.amFollowing()!=null)
 				{
 					Room room=mob.location();
@@ -221,7 +221,7 @@ public class Prop_Retainable extends Property
 						lastRoom=room;
 						mob.basePhyStats().setRejuv(0);
 						mob.setStartRoom(room);
-                        lastMoveIn=System.currentTimeMillis();
+						lastMoveIn=System.currentTimeMillis();
 					}
 					if((msg.sourceMinor()==CMMsg.TYP_SHUTDOWN)
 					||((msg.targetMinor()==CMMsg.TYP_EXPIRE)&&((msg.target()==room)||(msg.target()==mob)||(msg.target()==mob.amFollowing())))

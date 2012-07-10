@@ -23,7 +23,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -79,7 +79,7 @@ public class Wand_Advancement extends StdWand implements ArchonOnly
 				&&(x>=0)
 				&&(mob.session().previousCMD()!=null)
 				&&(CMParms.combine(mob.session().previousCMD(),0).toUpperCase().indexOf("LEVEL UP")<0))
-				    mob.tell("The wand fizzles in an irritating way.");
+					mob.tell("The wand fizzles in an irritating way.");
 				else
 				if(x>=0)
 				{
@@ -91,10 +91,10 @@ public class Wand_Advancement extends StdWand implements ArchonOnly
 						{
 							mob.location().send(mob,msg2);
 							if((target.charStats().getCurrentClass().leveless())
-                            ||(target.charStats().isLevelCapped(target.charStats().getCurrentClass()))
+							||(target.charStats().isLevelCapped(target.charStats().getCurrentClass()))
 							||(target.charStats().getMyRace().leveless())
 							||(CMSecurity.isDisabled(CMSecurity.DisFlag.LEVELS)))
-							    mob.tell("The wand will not work on such as "+target.name()+".");
+								mob.tell("The wand will not work on such as "+target.name()+".");
 							else
 							if((target.getExpNeededLevel()==Integer.MAX_VALUE)
 							||(target.charStats().getCurrentClass().expless())

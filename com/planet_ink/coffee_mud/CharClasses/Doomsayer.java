@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -46,13 +46,13 @@ public class Doomsayer extends Cleric
 
 	public Doomsayer()
 	{
-        super();
+		super();
 		maxStatAdj[CharStats.STAT_STRENGTH]=4;
 		maxStatAdj[CharStats.STAT_WISDOM]=4;
-    }
-    public void initializeClass()
-    {
-        super.initializeClass();
+	}
+	public void initializeClass()
+	{
+		super.initializeClass();
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Recall",100,true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Swim",false);
 
@@ -78,7 +78,7 @@ public class Doomsayer extends Cleric
 		CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Prayer_Faithless",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),6,"Prayer_FlameWeapon",false);
-        CMLib.ableMapper().addCharAbilityMapping(ID(),6,"Prayer_CauseFatigue",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),6,"Prayer_CauseFatigue",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Prayer_Curse",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Prayer_Cannibalism",false);
@@ -112,7 +112,7 @@ public class Doomsayer extends Cleric
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Prayer_Blindness",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Skill_AttackHalf",false);
-        CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Prayer_InfuseUnholiness",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Prayer_InfuseUnholiness",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),18,"Prayer_DoomAura",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),18,"Prayer_ProtectElements",false);

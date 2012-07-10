@@ -23,7 +23,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -44,7 +44,7 @@ public class Fighter_Tumble extends FighterSkill
 	public String[] triggerStrings(){return triggerStrings;}
 	protected int canAffectCode(){return Ability.CAN_MOBS;}
 	protected int canTargetCode(){return 0;}
-    public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_ACROBATIC;}
+	public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_ACROBATIC;}
 	public int usageType(){return USAGE_MOVEMENT;}
 
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
@@ -54,7 +54,7 @@ public class Fighter_Tumble extends FighterSkill
 		   invoker=(MOB)affected;
 		if(invoker!=null)
 		{
-            float f=(float)CMath.mul(0.2,getXLEVELLevel(invoker));
+			float f=(float)CMath.mul(0.2,getXLEVELLevel(invoker));
 			affectableStats.setDamage(affectableStats.damage()-(int)Math.round(CMath.div(affectableStats.damage(),2.0+f)));
 			affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()-(int)Math.round(CMath.div(affectableStats.attackAdjustment(),2.0+f)));
 		}
@@ -87,20 +87,20 @@ public class Fighter_Tumble extends FighterSkill
 		return true;
 	}
 
-    public int castingQuality(MOB mob, Physical target)
-    {
-        if(mob!=null)
-        {
-            if(mob.fetchEffect(this.ID())!=null)
-                return Ability.QUALITY_INDIFFERENT;
-            if(!mob.isInCombat())
-                return Ability.QUALITY_INDIFFERENT;
-            if(!CMLib.flags().aliveAwakeMobile(mob,true))
-                return Ability.QUALITY_INDIFFERENT;
-        }
-        return super.castingQuality(mob,target);
-    }
-    
+	public int castingQuality(MOB mob, Physical target)
+	{
+		if(mob!=null)
+		{
+			if(mob.fetchEffect(this.ID())!=null)
+				return Ability.QUALITY_INDIFFERENT;
+			if(!mob.isInCombat())
+				return Ability.QUALITY_INDIFFERENT;
+			if(!CMLib.flags().aliveAwakeMobile(mob,true))
+				return Ability.QUALITY_INDIFFERENT;
+		}
+		return super.castingQuality(mob,target);
+	}
+	
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if(mob.fetchEffect(this.ID())!=null)

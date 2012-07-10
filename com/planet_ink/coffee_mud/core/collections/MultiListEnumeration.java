@@ -13,7 +13,7 @@ Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
 You may obtain a copy of the License at
 
-    http://www.apache.org/licenses/LICENSE-2.0
+	http://www.apache.org/licenses/LICENSE-2.0
 
 Unless required by applicable law or agreed to in writing, software
 distributed under the License is distributed on an "AS IS" BASIS,
@@ -26,36 +26,36 @@ public class MultiListEnumeration<K> implements Enumeration<K>
 	private final LinkedList<List<K>> lists=new LinkedList<List<K>>();
 	private volatile Iterator<List<K>> listIter = null; 
 	private volatile Iterator<K> iter = null; 
-    
+	
 	public MultiListEnumeration(final List<K>... esets) 
-    {
-        if((esets!=null)&&(esets.length>0))
-        	lists.addAll(Arrays.asList(esets));
+	{
+		if((esets!=null)&&(esets.length>0))
+			lists.addAll(Arrays.asList(esets));
 		setup(false);
-    }
-    
+	}
+	
 	public MultiListEnumeration(final List<List<K>> esetss, final boolean diffMethodSignature) 
-    {
-        if((esetss!=null)&&(esetss.size()>0))
-        	lists.addAll(esetss);
+	{
+		if((esetss!=null)&&(esetss.size()>0))
+			lists.addAll(esetss);
 		setup(false);
-    }
-    
+	}
+	
 	public MultiListEnumeration(final List<K> eset) 
-    {
+	{
 		lists.add(eset);
 		setup(false);
-    }
-    
+	}
+	
 	private void setup(final boolean startOver)
 	{
 		if(startOver||(listIter==null))
 			listIter=lists.iterator();
-    	if(startOver||(iter == null))
-    	{
-    		if(listIter.hasNext())
-	    		iter=listIter.next().iterator();
-    	}
+		if(startOver||(iter == null))
+		{
+			if(listIter.hasNext())
+				iter=listIter.next().iterator();
+		}
 	}
 	
 	public void addEnumeration(List<K> set)
@@ -65,19 +65,19 @@ public class MultiListEnumeration<K> implements Enumeration<K>
 		setup(true);
 	}
 	
-    public boolean hasMoreElements() 
-    { 
-    	if(iter==null) return false;
-    	if(iter.hasNext()) return true;
-    	while((!iter.hasNext())&&(listIter.hasNext()))
-    		iter = listIter.next().iterator();
-    	return iter.hasNext();
-    }
-    
-    public K nextElement() 
-    {
-    	if(!hasMoreElements())
-    		throw new NoSuchElementException();
-    	return iter.next();
-    }
+	public boolean hasMoreElements() 
+	{ 
+		if(iter==null) return false;
+		if(iter.hasNext()) return true;
+		while((!iter.hasNext())&&(listIter.hasNext()))
+			iter = listIter.next().iterator();
+		return iter.hasNext();
+	}
+	
+	public K nextElement() 
+	{
+		if(!hasMoreElements())
+			throw new NoSuchElementException();
+		return iter.next();
+	}
 }

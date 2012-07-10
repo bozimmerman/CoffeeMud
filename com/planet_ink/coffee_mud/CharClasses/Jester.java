@@ -25,7 +25,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -61,10 +61,10 @@ public class Jester extends StdCharClass
 		super();
 		maxStatAdj[CharStats.STAT_CHARISMA]=4;
 		maxStatAdj[CharStats.STAT_DEXTERITY]=4;
-    }
-    public void initializeClass()
-    {
-        super.initializeClass();
+	}
+	public void initializeClass()
+	{
+		super.initializeClass();
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Specialization_EdgedWeapon",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Specialization_Ranged",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Specialization_Sword",true);
@@ -73,7 +73,7 @@ public class Jester extends StdCharClass
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Write",50,true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Swim",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Juggle",true);
-        CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Befriend",50,true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Befriend",50,true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_BellyRolling",true);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Song_Nothing",100,true);
@@ -220,7 +220,7 @@ public class Jester extends StdCharClass
 		}
 	}
 
-    public int adjustExperienceGain(MOB host, MOB mob, MOB victim, int amount){ return Bard.bardAdjustExperienceGain(host, mob,victim,amount,6.0);}
+	public int adjustExperienceGain(MOB host, MOB mob, MOB victim, int amount){ return Bard.bardAdjustExperienceGain(host, mob,victim,amount,6.0);}
 	public String getOtherLimitsDesc(){return "";}
 	public String getOtherBonusDesc(){return "Receives 2%/level bonus to saves versus poison.  Receives extra natural damaging skill. Receives group bonus combat experience when in an intelligent group, and more for a group of players.  Receives exploration and pub-finding experience based on danger level.";}
 	public List<Item> outfit(MOB myChar)

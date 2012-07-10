@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -45,8 +45,8 @@ public class Prop_PracticeDummy extends Property
 	
 	public void setMiscText(String newMiscText)
 	{
-	    super.setMiscText(newMiscText);
-	    unkillable=newMiscText.toUpperCase().indexOf("KILL")<0;
+		super.setMiscText(newMiscText);
+		unkillable=newMiscText.toUpperCase().indexOf("KILL")<0;
 	}
 
 	public void affectCharState(MOB mob, CharState affectableMaxState)
@@ -67,14 +67,14 @@ public class Prop_PracticeDummy extends Property
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(!super.okMessage(myHost,msg)) 
-		    return false;
+			return false;
 		if((affected instanceof MOB)
 		&&(msg.amISource((MOB)affected)))
 		{
 			if((msg.sourceMinor()==CMMsg.TYP_DEATH)&&(unkillable))
 			{
-			    msg.source().tell("You are not allowed to die.");
-			    return false;
+				msg.source().tell("You are not allowed to die.");
+				return false;
 			}
 			else
 			if(CMath.bset(msg.targetMajor(),CMMsg.MASK_MALICIOUS))

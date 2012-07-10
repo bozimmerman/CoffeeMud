@@ -24,7 +24,7 @@ import java.util.Vector;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -39,7 +39,7 @@ public class Chant_Darkvision extends Chant
 	public String ID() { return "Chant_Darkvision"; }
 	public String name(){return "Darkvision";}
 	public String displayText(){return "(Darkvision)";}
-    public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_DEEPMAGIC;}
+	public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_DEEPMAGIC;}
 	public int abstractQuality(){ return Ability.QUALITY_OK_SELF;}
 	protected int canAffectCode(){return CAN_MOBS;}
 
@@ -49,16 +49,16 @@ public class Chant_Darkvision extends Chant
 		affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_SEE_DARK);
 	}
 
-    public int castingQuality(MOB mob, Physical target)
-    {
-        if(mob!=null)
-        {
-            if(!CMLib.flags().canBeSeenBy(mob.location(), mob))
-                return super.castingQuality(mob, target,Ability.QUALITY_BENEFICIAL_SELF);
-        }
-        return super.castingQuality(mob,target);
-    }
-    
+	public int castingQuality(MOB mob, Physical target)
+	{
+		if(mob!=null)
+		{
+			if(!CMLib.flags().canBeSeenBy(mob.location(), mob))
+				return super.castingQuality(mob, target,Ability.QUALITY_BENEFICIAL_SELF);
+		}
+		return super.castingQuality(mob,target);
+	}
+	
 	public void unInvoke()
 	{
 		// undo the affects of this spell

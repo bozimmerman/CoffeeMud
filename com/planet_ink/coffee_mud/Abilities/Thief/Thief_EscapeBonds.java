@@ -25,7 +25,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -41,7 +41,7 @@ public class Thief_EscapeBonds extends ThiefSkill
 	public String displayText(){return "(Slipping from your bonds)";}
 	protected int canAffectCode(){return CAN_MOBS;}
 	protected int canTargetCode(){return 0;}
-    public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_BINDING;}
+	public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_BINDING;}
 	public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 	private static final String[] triggerStrings = {"ESCAPEBONDS","ESCAPE"};
 	public String[] triggerStrings(){return triggerStrings;}
@@ -59,7 +59,7 @@ public class Thief_EscapeBonds extends ThiefSkill
 			if(V.size()==0)
 			{ unInvoke(); return false;}
 			int newStrength=mob.charStats().getStat(CharStats.STAT_STRENGTH)
-                           +getXLEVELLevel(mob)
+						   +getXLEVELLevel(mob)
 						   +(mob.charStats().getStat(CharStats.STAT_DEXTERITY)*2);
 			CMMsg msg=CMClass.getMsg(mob,null,null,CMMsg.MSG_HANDS,"<S-NAME> slip(s) and wiggle(s) in <S-HIS-HER> bonds.");
 			for(int v=0;v<V.size();v++)
@@ -86,23 +86,23 @@ public class Thief_EscapeBonds extends ThiefSkill
 		}
 	}
 
-    public int castingQuality(MOB mob, Physical target)
-    {
-        if(mob!=null)
-        {
-            if(mob.fetchEffect(this.ID())!=null)
-                return Ability.QUALITY_INDIFFERENT;
-            if((!CMLib.flags().aliveAwakeMobile(mob,true))||(!CMLib.flags().isBound(mob)))
-                return Ability.QUALITY_INDIFFERENT;
-            List<Ability> V=CMLib.flags().flaggedAffects(mob,Ability.FLAG_BINDING);
-            if(V.size()==0)
-                return Ability.QUALITY_INDIFFERENT;
-            return super.castingQuality(mob, target,Ability.QUALITY_BENEFICIAL_SELF);
-        }
-        return super.castingQuality(mob,target);
-    }
+	public int castingQuality(MOB mob, Physical target)
+	{
+		if(mob!=null)
+		{
+			if(mob.fetchEffect(this.ID())!=null)
+				return Ability.QUALITY_INDIFFERENT;
+			if((!CMLib.flags().aliveAwakeMobile(mob,true))||(!CMLib.flags().isBound(mob)))
+				return Ability.QUALITY_INDIFFERENT;
+			List<Ability> V=CMLib.flags().flaggedAffects(mob,Ability.FLAG_BINDING);
+			if(V.size()==0)
+				return Ability.QUALITY_INDIFFERENT;
+			return super.castingQuality(mob, target,Ability.QUALITY_BENEFICIAL_SELF);
+		}
+		return super.castingQuality(mob,target);
+	}
 
-    
+	
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=mob;

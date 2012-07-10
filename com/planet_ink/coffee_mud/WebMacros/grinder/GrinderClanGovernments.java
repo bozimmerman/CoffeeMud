@@ -25,7 +25,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -35,14 +35,14 @@ import java.util.*;
 */
 public class GrinderClanGovernments
 {
-    public String name()    {return this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);}
+	public String name()	{return this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);}
 
-    public String runMacro(ExternalHTTPRequests httpReq, String parm)
-    {
-        String last=httpReq.getRequestParameter("GOVERNMENT");
-        if(last==null) return " @break@";
-        if(last.length()>0)
-        {
+	public String runMacro(ExternalHTTPRequests httpReq, String parm)
+	{
+		String last=httpReq.getRequestParameter("GOVERNMENT");
+		if(last==null) return " @break@";
+		if(last.length()>0)
+		{
 			ClanGovernment G=null;
 			if(CMath.isInteger(last))
 			{
@@ -57,7 +57,7 @@ public class GrinderClanGovernments
 				Set<Integer> usedTypeIDs=new HashSet<Integer>();
 				for(ClanGovernment G2 : CMLib.clans().getStockGovernments())
 					usedTypeIDs.add(Integer.valueOf(G2.getID()));
-        		G=CMLib.clans().createGovernment(httpReq.getRequestParameter("NAME"));
+				G=CMLib.clans().createGovernment(httpReq.getRequestParameter("NAME"));
 				for(int i=0;i<CMLib.clans().getStockGovernments().length;i++)
 					if(!usedTypeIDs.contains(Integer.valueOf(i)))
 					{
@@ -67,40 +67,40 @@ public class GrinderClanGovernments
 					}
 			}
 				
-            String str=null;
-            str=httpReq.getRequestParameter("NAME");
-            if(str!=null) G.setName(str);
-            str=httpReq.getRequestParameter("ACCEPTPOS");
-            if(str!=null) G.setAcceptPos(CMath.s_int(str));
-            str=httpReq.getRequestParameter("AUTOROLE");
-            if(str!=null) G.setAutoRole(CMath.s_int(str));
-            str=httpReq.getRequestParameter("SHORTDESC");
-            if(str!=null) G.setShortDesc(str);
-            str=httpReq.getRequestParameter("REQUIREDMASK");
-            if(str!=null){ G.setRequiredMaskStr(str);}
-            str=httpReq.getRequestParameter("ISPUBLIC");
-            G.setPublic((str==null)?false:str.equalsIgnoreCase("on"));
-            str=httpReq.getRequestParameter("ISFAMILYONLY");
-            G.setFamilyOnly((str==null)?false:str.equalsIgnoreCase("on"));
-            str=httpReq.getRequestParameter("XPLEVELFORMULA");
-            if(str!=null) G.setXpCalculationFormulaStr(str);
-            str=httpReq.getRequestParameter("OVERRIDEMINMEMBERS");
-            if(str!=null) G.setOverrideMinMembers((str.trim().length()==0)?null:Integer.valueOf(CMath.s_int(str)));
-            str=httpReq.getRequestParameter("CONQUESTENABLED");
-            G.setConquestEnabled((str==null)?false:str.equalsIgnoreCase("on"));
-            str=httpReq.getRequestParameter("CONQUESTITEMLOYALTY");
-            G.setConquestItemLoyalty((str==null)?false:str.equalsIgnoreCase("on"));
-            str=httpReq.getRequestParameter("CONQUESTDEITYBASIS");
-            G.setConquestByWorship((str==null)?false:str.equalsIgnoreCase("on"));
-            str=httpReq.getRequestParameter("MAXVOTEDAYS");
-            if(str!=null) G.setMaxVoteDays(CMath.s_int(str));
-            str=httpReq.getRequestParameter("VOTEQUORUMPCT");
-            if(str!=null) G.setVoteQuorumPct(CMath.s_int(str));
-            str=httpReq.getRequestParameter("AUTOPROMOTEBY");
-            if(str!=null) G.setAutoPromoteBy((Clan.AutoPromoteFlag)CMath.s_valueOf(Clan.AutoPromoteFlag.values(), str));
-            str=httpReq.getRequestParameter("LONGDESC");
-            if(str!=null) G.setLongDesc(str);
-            String old=httpReq.getRequestParameter("VOTEFUNCS");
+			String str=null;
+			str=httpReq.getRequestParameter("NAME");
+			if(str!=null) G.setName(str);
+			str=httpReq.getRequestParameter("ACCEPTPOS");
+			if(str!=null) G.setAcceptPos(CMath.s_int(str));
+			str=httpReq.getRequestParameter("AUTOROLE");
+			if(str!=null) G.setAutoRole(CMath.s_int(str));
+			str=httpReq.getRequestParameter("SHORTDESC");
+			if(str!=null) G.setShortDesc(str);
+			str=httpReq.getRequestParameter("REQUIREDMASK");
+			if(str!=null){ G.setRequiredMaskStr(str);}
+			str=httpReq.getRequestParameter("ISPUBLIC");
+			G.setPublic((str==null)?false:str.equalsIgnoreCase("on"));
+			str=httpReq.getRequestParameter("ISFAMILYONLY");
+			G.setFamilyOnly((str==null)?false:str.equalsIgnoreCase("on"));
+			str=httpReq.getRequestParameter("XPLEVELFORMULA");
+			if(str!=null) G.setXpCalculationFormulaStr(str);
+			str=httpReq.getRequestParameter("OVERRIDEMINMEMBERS");
+			if(str!=null) G.setOverrideMinMembers((str.trim().length()==0)?null:Integer.valueOf(CMath.s_int(str)));
+			str=httpReq.getRequestParameter("CONQUESTENABLED");
+			G.setConquestEnabled((str==null)?false:str.equalsIgnoreCase("on"));
+			str=httpReq.getRequestParameter("CONQUESTITEMLOYALTY");
+			G.setConquestItemLoyalty((str==null)?false:str.equalsIgnoreCase("on"));
+			str=httpReq.getRequestParameter("CONQUESTDEITYBASIS");
+			G.setConquestByWorship((str==null)?false:str.equalsIgnoreCase("on"));
+			str=httpReq.getRequestParameter("MAXVOTEDAYS");
+			if(str!=null) G.setMaxVoteDays(CMath.s_int(str));
+			str=httpReq.getRequestParameter("VOTEQUORUMPCT");
+			if(str!=null) G.setVoteQuorumPct(CMath.s_int(str));
+			str=httpReq.getRequestParameter("AUTOPROMOTEBY");
+			if(str!=null) G.setAutoPromoteBy((Clan.AutoPromoteFlag)CMath.s_valueOf(Clan.AutoPromoteFlag.values(), str));
+			str=httpReq.getRequestParameter("LONGDESC");
+			if(str!=null) G.setLongDesc(str);
+			String old=httpReq.getRequestParameter("VOTEFUNCS");
 			Set<String> voteFuncs=new HashSet<String>();
 			if((old!=null)&&(old.length()>0))
 			{
@@ -112,7 +112,7 @@ public class GrinderClanGovernments
 					x++;
 				}
 			}
-            
+			
 			List<ClanPosition> posList=new Vector<ClanPosition>();
 			String posDexStr="0";
 			int posDex=0;
@@ -159,10 +159,10 @@ public class GrinderClanGovernments
 				posDexStr=Integer.toString(posDex);
 			}
 			G.setPositions(posList.toArray(new ClanPosition[0]));
-	        GrinderRaces.setDynAbilities(G,httpReq);
-	        GrinderRaces.setDynEffects(G,httpReq);
-        }
-        
-        return "";
-    }
+			GrinderRaces.setDynAbilities(G,httpReq);
+			GrinderRaces.setDynEffects(G,httpReq);
+		}
+		
+		return "";
+	}
 }

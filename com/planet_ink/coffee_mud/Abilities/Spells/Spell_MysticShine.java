@@ -25,7 +25,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -67,15 +67,15 @@ public class Spell_MysticShine extends Spell
 	{
 		Physical target=getTarget(mob,mob.location(),givenTarget,commands,Wearable.FILTER_ANY);
 		if(target==null){
-		    return false;
+			return false;
 		}
 		if((!(target instanceof Item))
-        ||(((((Item)target).material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_METAL)
-            &&((((Item)target).material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_MITHRIL)))
-        {
-		    mob.tell("This magic only affects metallic items.");
-		    return false;
-        }
+		||(((((Item)target).material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_METAL)
+			&&((((Item)target).material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_MITHRIL)))
+		{
+			mob.tell("This magic only affects metallic items.");
+			return false;
+		}
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;

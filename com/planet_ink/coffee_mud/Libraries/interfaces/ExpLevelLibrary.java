@@ -21,7 +21,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -31,19 +31,19 @@ import java.util.*;
 */
 public interface ExpLevelLibrary extends CMLibrary
 {
-    /**
-     * Returns how much experience a player must have to be the given level.
-     * @param level the level to base the exp on
-     * @return the amount of experiene required to be the given level
-     */
+	/**
+	 * Returns how much experience a player must have to be the given level.
+	 * @param level the level to base the exp on
+	 * @return the amount of experiene required to be the given level
+	 */
 	public int getLevelExperience(int level);
 	
-    public void handleExperienceChange(CMMsg msg);
-    
-    public int adjustedExperience(MOB mob, MOB victim, int amount);
-    
-    public boolean postExperience(MOB mob, MOB victim, String homage, int amount, boolean quiet);
-    
+	public void handleExperienceChange(CMMsg msg);
+	
+	public int adjustedExperience(MOB mob, MOB victim, int amount);
+	
+	public boolean postExperience(MOB mob, MOB victim, String homage, int amount, boolean quiet);
+	
 	public StringBuffer baseLevelAdjuster(MOB mob, int adjuster);
 	
 	public void level(MOB mob);
@@ -70,12 +70,12 @@ public interface ExpLevelLibrary extends CMLibrary
 	 */
 	public MOB fillOutMOB(CharClass C, int level);
 	
-    /**
-     * Returns the amount of hp the given player would have being
-     * their current base class.
-     * @param mob the mob who would be this class
-     * @return the amount of hp a pc of this class should have
-     */
+	/**
+	 * Returns the amount of hp the given player would have being
+	 * their current base class.
+	 * @param mob the mob who would be this class
+	 * @return the amount of hp a pc of this class should have
+	 */
 	public int getPlayerHitPoints(MOB mob);
 	/**
 	 * Returns the amount of mana the given mob would have being

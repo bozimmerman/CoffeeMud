@@ -23,7 +23,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -56,16 +56,16 @@ public class Trap_FloodRoom extends StdTrap
 		return num;
 	}
 
-    public List<Item> getTrapComponents() {
-        Vector V=new Vector();
-        for(int i=0;i<100;i++)
-            V.addElement(CMLib.materials().makeItemResource(RawMaterial.RESOURCE_STONE));
-        for(int i=0;i<10;i++)
-            V.addElement(CMClass.getBasicItem("Waterskin"));
-        return V;
-    }
-    
-    protected void killWaterskins(MOB mob)
+	public List<Item> getTrapComponents() {
+		Vector V=new Vector();
+		for(int i=0;i<100;i++)
+			V.addElement(CMLib.materials().makeItemResource(RawMaterial.RESOURCE_STONE));
+		for(int i=0;i<10;i++)
+			V.addElement(CMClass.getBasicItem("Waterskin"));
+		return V;
+	}
+	
+	protected void killWaterskins(MOB mob)
 	{
 		if(mob==null) return;
 		if(mob.location()==null) return;

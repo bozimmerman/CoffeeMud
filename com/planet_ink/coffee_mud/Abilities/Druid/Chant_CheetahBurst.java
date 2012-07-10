@@ -24,7 +24,7 @@ import java.util.Vector;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -39,15 +39,15 @@ public class Chant_CheetahBurst extends Chant
 	public String ID() { return "Chant_CheetahBurst"; }
 	public String name(){return "Cheetah Burst";}
 	public String displayText(){return "(Cheetah Burst)";}
-    public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_SHAPE_SHIFTING;}
+	public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_SHAPE_SHIFTING;}
 	public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_SELF;}
 	protected int canAffectCode(){return CAN_MOBS;}
 	protected int cheetahTick=3;
 
 	public Chant_CheetahBurst()
 	{
-	    super();
-	    cheetahTick = 3;
+		super();
+		cheetahTick = 3;
 	}
 
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)

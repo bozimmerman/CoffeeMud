@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -43,7 +43,7 @@ public class Thief_DeathTrap extends ThiefSkill implements Trap
 	private static final String[] triggerStrings = {"DEATHTRAP"};
 	public String[] triggerStrings(){return triggerStrings;}
 	public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
-    public int classificationCode() {   return Ability.ACODE_SKILL|Ability.DOMAIN_TRAPPING; }
+	public int classificationCode() {   return Ability.ACODE_SKILL|Ability.DOMAIN_TRAPPING; }
 	protected boolean sprung=false;
 
 	public boolean disabled(){return false;}
@@ -57,12 +57,12 @@ public class Thief_DeathTrap extends ThiefSkill implements Trap
 	public boolean maySetTrap(MOB mob, int asLevel){return false;}
 	public boolean canSetTrapOn(MOB mob, Physical P){return false;}
 	public String requiresToSet(){return "";}
-    public List<Item> getTrapComponents() {
-        Vector V=new Vector();
-        for(int i=0;i<100;i++)
-        V.addElement(CMLib.materials().makeItemResource(RawMaterial.RESOURCE_IRON));
-        return V;
-    }
+	public List<Item> getTrapComponents() {
+		Vector V=new Vector();
+		for(int i=0;i<100;i++)
+		V.addElement(CMLib.materials().makeItemResource(RawMaterial.RESOURCE_IRON));
+		return V;
+	}
 	public Trap setTrap(MOB mob, Physical P, int trapBonus, int qualifyingClassLevel, boolean perm)
 	{
 		if(P==null) return null;
@@ -127,15 +127,15 @@ public class Thief_DeathTrap extends ThiefSkill implements Trap
 		return true;
 	}
 
-    public int castingQuality(MOB mob, Physical target)
-    {
-        if(mob!=null)
-        {
-            if(mob.isInCombat())
-                return Ability.QUALITY_INDIFFERENT;
-        }
-        return super.castingQuality(mob,target);
-    }
+	public int castingQuality(MOB mob, Physical target)
+	{
+		if(mob!=null)
+		{
+			if(mob.isInCombat())
+				return Ability.QUALITY_INDIFFERENT;
+		}
+		return super.castingQuality(mob,target);
+	}
 
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
@@ -152,11 +152,11 @@ public class Thief_DeathTrap extends ThiefSkill implements Trap
 			mob.tell("You need 100 pounds of raw metal to build this trap.");
 			return false;
 		}
-        if(mob.isInCombat())
-        {
-            mob.tell("You are too busy to get that done right now.");
-            return false;
-        }
+		if(mob.isInCombat())
+		{
+			mob.tell("You are too busy to get that done right now.");
+			return false;
+		}
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;

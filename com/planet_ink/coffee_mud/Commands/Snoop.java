@@ -23,7 +23,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -88,11 +88,11 @@ public class Snoop extends StdCommand
 		if(SnoopOn==null)
 			mob.tell("You can't find anyone to snoop on by that name.");
 		else
-        if(!CMLib.flags().isInTheGame(SnoopOn.mob(),true))
-            mob.tell(SnoopOn.mob().Name()+" is not yet fully in the game.");
-        else
+		if(!CMLib.flags().isInTheGame(SnoopOn.mob(),true))
+			mob.tell(SnoopOn.mob().Name()+" is not yet fully in the game.");
+		else
 		if(CMSecurity.isASysOp(SnoopOn.mob())&&(!CMSecurity.isASysOp(mob)))
-		    mob.tell("Only another Archon can snoop on "+SnoopOn.mob().name()+".");
+			mob.tell("Only another Archon can snoop on "+SnoopOn.mob().name()+".");
 		else
 		{
 			Vector snoop=new Vector();

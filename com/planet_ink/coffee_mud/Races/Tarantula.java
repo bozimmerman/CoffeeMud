@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -43,7 +43,7 @@ public class Tarantula extends StdRace
 	public int weightVariance(){return 0;}
 	public long forbiddenWornBits(){return Integer.MAX_VALUE;}
 	public String racialCategory(){return "Arachnid";}
-    private String[]racialAbilityNames={"Poison_Venom"};
+	private String[]racialAbilityNames={"Poison_Venom"};
 	private int[]racialAbilityLevels={1};
 	private int[]racialAbilityProficiencies={25};
 	private boolean[]racialAbilityQuals={false};
@@ -52,7 +52,7 @@ public class Tarantula extends StdRace
 	public int[] racialAbilityProficiencies(){return racialAbilityProficiencies;}
 	public boolean[] racialAbilityQuals(){return racialAbilityQuals;}
 
-	//                                an ey ea he ne ar ha to le fo no gi mo wa ta wi
+	//  							  an ey ea he ne ar ha to le fo no gi mo wa ta wi
 	private static final int[] parts={2 ,99,0 ,1 ,0 ,0 ,0 ,1 ,8 ,8 ,0 ,0 ,1 ,0 ,0 ,0 };
 	public int[] bodyMask(){return parts;}
 

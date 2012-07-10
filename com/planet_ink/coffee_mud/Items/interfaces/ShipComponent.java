@@ -20,7 +20,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -32,26 +32,26 @@ public interface ShipComponent extends Item
 {
 	public interface ShipEngine extends ShipComponent
 	{
-	    public int getMaxThrust();
-	    public void setMaxThrust(int max);
-	    public int getThrust();
-	    public void setThrust(int max);
+		public int getMaxThrust();
+		public void setMaxThrust(int max);
+		public int getThrust();
+		public void setThrust(int max);
 	}
 	public interface ShipPowerSource extends ShipComponent
 	{
-	    
+		
 	}
 	public interface ShipWeapon extends ShipComponent
 	{
-	    
+		
 	}
 	public interface ShipSensor extends ShipComponent
 	{
-	    
+		
 	}
 	public interface ShipEnviroControl extends ShipComponent
 	{
-	    
+		
 	}
 	public interface ShipPanel extends ShipComponent
 	{
@@ -63,7 +63,7 @@ public interface ShipComponent extends Item
 		public final static int COMPONENT_PANEL_COMPUTER=5;
 		public final static int COMPONENT_PANEL_ENVIRO=6;
 		public final static String[] COMPONENT_PANEL_DESC={
-		    "ANY","WEAPON","ENGINE","SENSOR","POWER","COMPUTER","ENVIRO-CONTROL"
+			"ANY","WEAPON","ENGINE","SENSOR","POWER","COMPUTER","ENVIRO-CONTROL"
 		};
 		
 		public int panelType();

@@ -25,7 +25,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -42,7 +42,7 @@ public class Chant_SummonDustdevil extends Chant
 	public String displayText(){return "(Summon Dustdevil)";}
 	public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
 	public int enchantQuality(){return Ability.QUALITY_INDIFFERENT;}
-    public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_WEATHER_MASTERY;}
+	public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_WEATHER_MASTERY;}
 	protected int canAffectCode(){return CAN_MOBS;}
 	protected int canTargetCode(){return 0;}
 	public long flags(){return Ability.FLAG_SUMMONING;}
@@ -74,7 +74,7 @@ public class Chant_SummonDustdevil extends Chant
 					{
 						Item I=(Item)V.elementAt(i);
 						if((mob.maxCarry()>=mob.phyStats().weight()+I.phyStats().weight())
-                        &&(mob.maxItems()>=(mob.numItems()+I.numberOfItems())))
+						&&(mob.maxItems()>=(mob.numItems()+I.numberOfItems())))
 							CMLib.commands().postGet(mob,null,I,false);
 						else
 							giveUp=true;
@@ -162,25 +162,25 @@ public class Chant_SummonDustdevil extends Chant
 		}
 	}
 
-    public int castingQuality(MOB mob, Physical target)
-    {
-        if(mob!=null)
-        {
-            Room R=mob.location();
-            if(R!=null)
-            {
-                if((R.domainType()&Room.INDOORS)>0)
-                    return Ability.QUALITY_INDIFFERENT;
-                if((R.domainType()==Room.DOMAIN_OUTDOORS_UNDERWATER)
-                ||(R.domainType()==Room.DOMAIN_OUTDOORS_WATERSURFACE))
-                    return Ability.QUALITY_INDIFFERENT;
-                if(mob.isInCombat())
-                    return Ability.QUALITY_INDIFFERENT;
-                
-            }
-        }
-        return super.castingQuality(mob,target);
-    }
+	public int castingQuality(MOB mob, Physical target)
+	{
+		if(mob!=null)
+		{
+			Room R=mob.location();
+			if(R!=null)
+			{
+				if((R.domainType()&Room.INDOORS)>0)
+					return Ability.QUALITY_INDIFFERENT;
+				if((R.domainType()==Room.DOMAIN_OUTDOORS_UNDERWATER)
+				||(R.domainType()==Room.DOMAIN_OUTDOORS_WATERSURFACE))
+					return Ability.QUALITY_INDIFFERENT;
+				if(mob.isInCombat())
+					return Ability.QUALITY_INDIFFERENT;
+				
+			}
+		}
+		return super.castingQuality(mob,target);
+	}
 
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{

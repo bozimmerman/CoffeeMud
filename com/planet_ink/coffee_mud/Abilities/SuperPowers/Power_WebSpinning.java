@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -80,30 +80,30 @@ public class Power_WebSpinning extends SuperPower
 		else
 		if(affected instanceof Item)
 		{
-		    if(msg.target()==affected)
-		    {
-		        if(msg.targetMinor()==CMMsg.TYP_GET)
-		            msg.addTrailerMsg(CMClass.getMsg(msg.source(),msg.target(),null,CMMsg.MSG_OK_VISUAL,"<T-NAME> is covered in sticky webbing!",null,null));
-		        else
-		        if((msg.targetMinor()==CMMsg.TYP_DROP)
-		        &&(((Item)affected).owner()==msg.source()))
-		        {
-		            msg.source().tell(msg.source(),affected,null,"<T-NAME> is too sticky to let go of!");
-		            return false;
-		        }
-		    }
+			if(msg.target()==affected)
+			{
+				if(msg.targetMinor()==CMMsg.TYP_GET)
+					msg.addTrailerMsg(CMClass.getMsg(msg.source(),msg.target(),null,CMMsg.MSG_OK_VISUAL,"<T-NAME> is covered in sticky webbing!",null,null));
+				else
+				if((msg.targetMinor()==CMMsg.TYP_DROP)
+				&&(((Item)affected).owner()==msg.source()))
+				{
+					msg.source().tell(msg.source(),affected,null,"<T-NAME> is too sticky to let go of!");
+					return false;
+				}
+			}
 		}
 		else
 		if(affected instanceof Exit)
 		{
-		    if(msg.target()==affected)
-		    {
-		        if(msg.targetMinor()==CMMsg.TYP_OPEN)
-		        {
-		            msg.source().tell(msg.source(),affected,null,"<T-NAME> is held fast by gobs of webbing!");
-		            return false;
-		        }
-		    }
+			if(msg.target()==affected)
+			{
+				if(msg.targetMinor()==CMMsg.TYP_OPEN)
+				{
+					msg.source().tell(msg.source(),affected,null,"<T-NAME> is held fast by gobs of webbing!");
+					return false;
+				}
+			}
 		}
 		return super.okMessage(myHost,msg);
 	}
@@ -140,7 +140,7 @@ public class Power_WebSpinning extends SuperPower
 
 		if(success)
 		{
-		    CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_NOISYMOVEMENT,(auto?"":"^S<S-NAME> shoot(s) and spin(s) a web at <T-NAMESELF>!^?")+CMProps.msp("web.wav",40));
+			CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_NOISYMOVEMENT,(auto?"":"^S<S-NAME> shoot(s) and spin(s) a web at <T-NAMESELF>!^?")+CMProps.msp("web.wav",40));
 			if((mob.location().okMessage(mob,msg))&&(target.fetchEffect(this.ID())==null))
 			{
 				mob.location().send(mob,msg);

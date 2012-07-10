@@ -23,7 +23,7 @@ Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
 You may obtain a copy of the License at
 
-    http://www.apache.org/licenses/LICENSE-2.0
+	http://www.apache.org/licenses/LICENSE-2.0
 
 Unless required by applicable law or agreed to in writing, software
 distributed under the License is distributed on an "AS IS" BASIS,
@@ -43,85 +43,85 @@ public class AutoInvoke extends StdCommand
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
-	    Vector abilities=new Vector();
-	    for(int a=0;a<mob.numAbilities();a++)
-	    {
-	        Ability A=mob.fetchAbility(a);
-	        if((A!=null)
-	        &&(A.isAutoInvoked())
-	        &&((A.classificationCode()&Ability.ALL_ACODES)!=Ability.ACODE_LANGUAGE)
-	        &&((A.classificationCode()&Ability.ALL_ACODES)!=Ability.ACODE_PROPERTY))
-	            abilities.addElement(A.ID());
-	    }
+		Vector abilities=new Vector();
+		for(int a=0;a<mob.numAbilities();a++)
+		{
+			Ability A=mob.fetchAbility(a);
+			if((A!=null)
+			&&(A.isAutoInvoked())
+			&&((A.classificationCode()&Ability.ALL_ACODES)!=Ability.ACODE_LANGUAGE)
+			&&((A.classificationCode()&Ability.ALL_ACODES)!=Ability.ACODE_PROPERTY))
+				abilities.addElement(A.ID());
+		}
 
-	    Vector effects=new Vector();
-	    for(int a=0;a<mob.numEffects();a++)
-	    {
-	        Ability A=mob.fetchEffect(a);
-	        if((A!=null)
-	        &&(abilities.contains(A.ID()))
-	        &&(!A.isSavable()))
-	            effects.addElement(A.ID());
-	    }
+		Vector effects=new Vector();
+		for(int a=0;a<mob.numEffects();a++)
+		{
+			Ability A=mob.fetchEffect(a);
+			if((A!=null)
+			&&(abilities.contains(A.ID()))
+			&&(!A.isSavable()))
+				effects.addElement(A.ID());
+		}
 
-	    StringBuffer str=new StringBuffer("^xAuto-invoking abilities:^?^.\n\r^N");
-	    for(int a=0;a<abilities.size();a++)
-	    {
-	        Ability A=mob.fetchAbility((String)abilities.elementAt(a));
-	        if(A!=null)
-	        {
-		        if(effects.contains(A.ID()))
-		            str.append(CMStrings.padRight(A.Name(),20)+"^xAuto-invoking abilities:^?^.\n\r^N");
-		        else
-		            str.append(CMStrings.padRight(A.Name(),20)+"^xAuto-invoking abilities:^?^.\n\r^N");
-	        }
-	    }
+		StringBuffer str=new StringBuffer("^xAuto-invoking abilities:^?^.\n\r^N");
+		for(int a=0;a<abilities.size();a++)
+		{
+			Ability A=mob.fetchAbility((String)abilities.elementAt(a));
+			if(A!=null)
+			{
+				if(effects.contains(A.ID()))
+					str.append(CMStrings.padRight(A.Name(),20)+"^xAuto-invoking abilities:^?^.\n\r^N");
+				else
+					str.append(CMStrings.padRight(A.Name(),20)+"^xAuto-invoking abilities:^?^.\n\r^N");
+			}
+		}
 
-	    mob.tell(str.toString());
-	    if(mob.session()!=null)
-	    {
-		    String s=mob.session().prompt("Enter one to toggle or RETURN: ","");
-		    Ability foundA=null;
-		    if(s.length()>0)
-		    {
-		        for(int a=0;a<abilities.size();a++)
-		        {
-			        Ability A=mob.fetchAbility((String)abilities.elementAt(a));
-			        if((A!=null)&&(A.name().equalsIgnoreCase(s)))
-			        { foundA=A; break;}
-		        }
-		        if(foundA==null)
-		        for(int a=0;a<abilities.size();a++)
-		        {
-			        Ability A=mob.fetchAbility((String)abilities.elementAt(a));
-			        if((A!=null)&&(CMLib.english().containsString(A.name(),s)))
-			        { foundA=A; break;}
-		        }
-		        if(foundA==null)
-		            mob.tell("'"+s+"' is invalid.");
-		        else
-		        if(effects.contains(foundA.ID()))
-		        {
-		            foundA=mob.fetchEffect(foundA.ID());
-		            if(foundA!=null)
-		            {
-		                mob.delEffect(foundA);
-			            if(mob.fetchEffect(foundA.ID())!=null)
-			                mob.tell(foundA.name()+" failed to successfully deactivate.");
-			            else
-			                mob.tell(foundA.name()+" successfully deactivated.");
-			        }
-		        }
-		        else
-		        {
-		            foundA.autoInvocation(mob);
-		            if(mob.fetchEffect(foundA.ID())!=null)
-		                mob.tell(foundA.name()+" successfully invoked.");
-		            else
-		                mob.tell(foundA.name()+" failed to successfully invoke.");
-		        }
-		    }
-	    }
+		mob.tell(str.toString());
+		if(mob.session()!=null)
+		{
+			String s=mob.session().prompt("Enter one to toggle or RETURN: ","");
+			Ability foundA=null;
+			if(s.length()>0)
+			{
+				for(int a=0;a<abilities.size();a++)
+				{
+					Ability A=mob.fetchAbility((String)abilities.elementAt(a));
+					if((A!=null)&&(A.name().equalsIgnoreCase(s)))
+					{ foundA=A; break;}
+				}
+				if(foundA==null)
+				for(int a=0;a<abilities.size();a++)
+				{
+					Ability A=mob.fetchAbility((String)abilities.elementAt(a));
+					if((A!=null)&&(CMLib.english().containsString(A.name(),s)))
+					{ foundA=A; break;}
+				}
+				if(foundA==null)
+					mob.tell("'"+s+"' is invalid.");
+				else
+				if(effects.contains(foundA.ID()))
+				{
+					foundA=mob.fetchEffect(foundA.ID());
+					if(foundA!=null)
+					{
+						mob.delEffect(foundA);
+						if(mob.fetchEffect(foundA.ID())!=null)
+							mob.tell(foundA.name()+" failed to successfully deactivate.");
+						else
+							mob.tell(foundA.name()+" successfully deactivated.");
+					}
+				}
+				else
+				{
+					foundA.autoInvocation(mob);
+					if(mob.fetchEffect(foundA.ID())!=null)
+						mob.tell(foundA.name()+" successfully invoked.");
+					else
+						mob.tell(foundA.name()+" failed to successfully invoke.");
+				}
+			}
+		}
 		return false;
 	}
 

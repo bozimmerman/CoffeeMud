@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -56,19 +56,19 @@ public class Spell_Shove extends Spell
 		}
 		if(dir<0)
 		{
-		    if(mob.isMonster())
-		    {
-		        for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
-		            if((mob.location().getRoomInDir(d)!=null)
-		            &&(mob.location().getExitInDir(d)!=null)
-		            &&(mob.location().getExitInDir(d).isOpen()))
-		                dir=d;
-		    }
-		    if(dir<0)
-		    {
-    			mob.tell("Shove whom which direction?  Try north, south, east, or west...");
-    			return false;
-		    }
+			if(mob.isMonster())
+			{
+				for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
+					if((mob.location().getRoomInDir(d)!=null)
+					&&(mob.location().getExitInDir(d)!=null)
+					&&(mob.location().getExitInDir(d).isOpen()))
+						dir=d;
+			}
+			if(dir<0)
+			{
+				mob.tell("Shove whom which direction?  Try north, south, east, or west...");
+				return false;
+			}
 		}
 		if((mob.location().getRoomInDir(dir)==null)
 		   ||(mob.location().getExitInDir(dir)==null)

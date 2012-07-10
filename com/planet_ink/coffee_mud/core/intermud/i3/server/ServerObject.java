@@ -20,7 +20,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *        http://www.apache.org/licenses/LICENSE-2.0
+ *  	  http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -76,56 +76,56 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
  * @version 1.0
  */
 public interface ServerObject {
-    /**
-     * This method should make it such that getDestructed()
-     * returns true and the object is no longer valid for
-     * the system.
-     * @see #getDestructed
-     */
-    public abstract void destruct();
+	/**
+	 * This method should make it such that getDestructed()
+	 * returns true and the object is no longer valid for
+	 * the system.
+	 * @see #getDestructed
+	 */
+	public abstract void destruct();
 
-    /**
-     * Triggered every server cycle by the server to see if this
-     * object has an event to process.  If this object has an
-     * event to process, this method should then trigger the
-     * processing of that event.
-     */
-    public void processEvent();
+	/**
+	 * Triggered every server cycle by the server to see if this
+	 * object has an event to process.  If this object has an
+	 * event to process, this method should then trigger the
+	 * processing of that event.
+	 */
+	public void processEvent();
 
-    /**
-     * Signifies that thsi object has been marked for destruction
-     * and that all references to this object should be nulled
-     * out as soon as they notice.
-     * @return true if the object is marked for destruction, false otherwise
-     */
-    public abstract boolean getDestructed();
+	/**
+	 * Signifies that thsi object has been marked for destruction
+	 * and that all references to this object should be nulled
+	 * out as soon as they notice.
+	 * @return true if the object is marked for destruction, false otherwise
+	 */
+	public abstract boolean getDestructed();
 
-    /**
-     * This method is used to find the unique object id for this
-     * object.  The object id is assigned by the server through
-     * the setObjectId() method.  An implementation should thus
-     * keep track of this object id, not allow anything else to
-     * modify it, and return it through this getObjectId() method.
-     * @return the object id as assigned by the server
-     * @see #setObjectId
-     */
-     public abstract String getObjectId();
+	/**
+	 * This method is used to find the unique object id for this
+	 * object.  The object id is assigned by the server through
+	 * the setObjectId() method.  An implementation should thus
+	 * keep track of this object id, not allow anything else to
+	 * modify it, and return it through this getObjectId() method.
+	 * @return the object id as assigned by the server
+	 * @see #setObjectId
+	 */
+	 public abstract String getObjectId();
 
-     /**
-      * This method should be used to set the object's unique
-      * object id which the object should be keeping track of.
-      * Make sure that this can only get set once.  The proper
-      * code for this method probably should be something like:
-      * <PRE>
-      * public final void setObjectId(String id) {
-      *   if( object_id != null ) {
-      *     return;
-      *   }
-      *   object_id = id;
-      * }
-      * </PRE>
-      * @param id the unique value to which the id is being set
-      * @see #getObjectId
-      */
-     public abstract void setObjectId(String id);
+	 /**
+	  * This method should be used to set the object's unique
+	  * object id which the object should be keeping track of.
+	  * Make sure that this can only get set once.  The proper
+	  * code for this method probably should be something like:
+	  * <PRE>
+	  * public final void setObjectId(String id) {
+	  *   if( object_id != null ) {
+	  * 	return;
+	  *   }
+	  *   object_id = id;
+	  * }
+	  * </PRE>
+	  * @param id the unique value to which the id is being set
+	  * @see #getObjectId
+	  */
+	 public abstract void setObjectId(String id);
 }

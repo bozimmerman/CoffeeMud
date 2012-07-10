@@ -22,7 +22,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -45,12 +45,12 @@ public class JournalMessageNext extends StdWebMacro
 		{
 			MOB M = Authenticate.getAuthenticatedMob(httpReq);
 			if((M==null)||(!CMSecurity.isASysOp(M)))
-			    return " @break@";
+				return " @break@";
 		}
 		
-        String srch=httpReq.getRequestParameter("JOURNALMESSAGESEARCH");
-        if(srch!=null) 
-        	srch=srch.toLowerCase();
+		String srch=httpReq.getRequestParameter("JOURNALMESSAGESEARCH");
+		if(srch!=null) 
+			srch=srch.toLowerCase();
 		String last=httpReq.getRequestParameter("JOURNALMESSAGE");
 		int cardinal=CMath.s_int(httpReq.getRequestParameter("JOURNALCARDINAL"));
 		if(parms.containsKey("RESET"))
@@ -63,22 +63,22 @@ public class JournalMessageNext extends StdWebMacro
 			return "";
 		}
 		MOB M = Authenticate.getAuthenticatedMob(httpReq);
-        cardinal++;
-        JournalsLibrary.JournalEntry entry = null;
-        List<JournalsLibrary.JournalEntry> msgs = JournalInfo.getMessages(httpReq, journalName);
-        while((entry==null)||(!CMLib.journals().canReadMessage(entry,srch,M,parms.containsKey("NOPRIV"))))
-        {
-        	entry = JournalInfo.getNextEntry(msgs,last);
-    		if(entry==null)
-    		{
-    			httpReq.addRequestParameters("JOURNALMESSAGE","");
-    			if(parms.containsKey("EMPTYOK"))
-    				return "<!--EMPTY-->";
-    			return " @break@";
-    		}
-    		last=entry.key;
-        }
-        entry.cardinal=cardinal;
+		cardinal++;
+		JournalsLibrary.JournalEntry entry = null;
+		List<JournalsLibrary.JournalEntry> msgs = JournalInfo.getMessages(httpReq, journalName);
+		while((entry==null)||(!CMLib.journals().canReadMessage(entry,srch,M,parms.containsKey("NOPRIV"))))
+		{
+			entry = JournalInfo.getNextEntry(msgs,last);
+			if(entry==null)
+			{
+				httpReq.addRequestParameters("JOURNALMESSAGE","");
+				if(parms.containsKey("EMPTYOK"))
+					return "<!--EMPTY-->";
+				return " @break@";
+			}
+			last=entry.key;
+		}
+		entry.cardinal=cardinal;
 		httpReq.addRequestParameters("JOURNALCARDINAL",""+cardinal);
 		httpReq.addRequestParameters("JOURNALMESSAGE",last);
 		return "";

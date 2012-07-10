@@ -25,7 +25,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -40,25 +40,25 @@ public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
 	public String ID() { return "EnhancedCraftingSkill"; }
 	public String name(){ return "Enhanced Crafting Skill";}
 
-    public Hashtable parametersFields(){ return new Hashtable();}
-    public String parametersFormat(){ return ""; }
-    
+	public Hashtable parametersFields(){ return new Hashtable();}
+	public String parametersFormat(){ return ""; }
+	
 	protected int materialAdjustments=0;
-    protected static final int TYPE_LITECRAFT=0;
-    protected static final int TYPE_DURACRAFT=1;
-    protected static final int TYPE_QUALCRAFT=2;
-    protected static final int TYPE_LTHLCRAFT=3;
-    protected static final int TYPE_CNTRCRAFT=4;
-    protected final static String[] STAGE_KEY={"LITE","DURA","QUAL","LTHL","CNTR"};
-    protected final static String[][] STAGE_TYPES={
-        {"Light","Supple","Agile"},
-        {"Strong","Reinforced","Fortified"},
-        {"Fine","Beautiful","Exquisite"},
-        {"Damaging","Brutal","Lethal"},
-        {"Even","Balanced","Counterbalanced"},
-    };
+	protected static final int TYPE_LITECRAFT=0;
+	protected static final int TYPE_DURACRAFT=1;
+	protected static final int TYPE_QUALCRAFT=2;
+	protected static final int TYPE_LTHLCRAFT=3;
+	protected static final int TYPE_CNTRCRAFT=4;
+	protected final static String[] STAGE_KEY={"LITE","DURA","QUAL","LTHL","CNTR"};
+	protected final static String[][] STAGE_TYPES={
+		{"Light","Supple","Agile"},
+		{"Strong","Reinforced","Fortified"},
+		{"Fine","Beautiful","Exquisite"},
+		{"Damaging","Brutal","Lethal"},
+		{"Even","Balanced","Counterbalanced"},
+	};
 
-    public boolean supportsDeconstruction() { return true; }
+	public boolean supportsDeconstruction() { return true; }
 
 	protected int[][] fetchFoundResourceData(MOB mob,
 											 int req1Required,
@@ -196,15 +196,15 @@ public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
 		return value;
 	}
 
-    protected int getLocalExpCode(String exp)
-    {
-        if(exp==null) return -1;
-        exp=exp.toUpperCase();
-        for(int i=0;i<STAGE_KEY.length;i++)
-            if(exp.startsWith(STAGE_KEY[i]))
-                return i;
-        return -1;
-    }
+	protected int getLocalExpCode(String exp)
+	{
+		if(exp==null) return -1;
+		exp=exp.toUpperCase();
+		for(int i=0;i<STAGE_KEY.length;i++)
+			if(exp.startsWith(STAGE_KEY[i]))
+				return i;
+		return -1;
+	}
 
 	protected String applyName(String name, String word)
 	{
@@ -235,16 +235,16 @@ public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
 		//startStr=CMStrings.replaceAll(startStr,oldName,item.Name());
 	}
 
-    public Vector getThisSkillsExpertises()
-    {
-        Vector V=new Vector();
-        for(int x=ExpertiseLibrary.XFLAG_X1;x<=ExpertiseLibrary.XFLAG_X5;x++)
-        {
-            String s=CMLib.expertises().getApplicableExpertise(ID(),x);
-            if(s!=null) V.addElement(s);
-        }
-        return V;
-    }
+	public Vector getThisSkillsExpertises()
+	{
+		Vector V=new Vector();
+		for(int x=ExpertiseLibrary.XFLAG_X1;x<=ExpertiseLibrary.XFLAG_X5;x++)
+		{
+			String s=CMLib.expertises().getApplicableExpertise(ID(),x);
+			if(s!=null) V.addElement(s);
+		}
+		return V;
+	}
 
 	protected List<List<String>> loadList(StringBuffer str)
 	{
@@ -280,21 +280,21 @@ public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
 	public void enhanceList(MOB mob)
 	{
 		StringBuffer extras=new StringBuffer("");
-        String stage=null;
-        String key=null;
-        Vector types=getThisSkillsExpertises();
+		String stage=null;
+		String key=null;
+		Vector types=getThisSkillsExpertises();
 		for(int t=0;t<types.size();t++)
 		{
-            key=(String)types.elementAt(t);
-            int stages=CMLib.expertises().getStages(key);
-            int code=getLocalExpCode(key);
-            if(code>=0)
+			key=(String)types.elementAt(t);
+			int stages=CMLib.expertises().getStages(key);
+			int code=getLocalExpCode(key);
+			if(code>=0)
 			for(int s=stages-1;s>=0;s--)
-            {
-                stage=CMath.convertToRoman(s+1);
+			{
+				stage=CMath.convertToRoman(s+1);
 				if((mob.fetchExpertise(key+stage)!=null)||(mob.fetchExpertise(key+(s+1))!=null))
 					extras.append(STAGE_TYPES[code][s]+", ");
-            }
+			}
 		}
 		if(extras.length()>0)
 			commonTell(mob,"You can use your expertises to enhance this skill by " +
@@ -315,21 +315,21 @@ public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
 			&&(!cmd.equalsIgnoreCase("scan")))
 			{
 				boolean foundSomething=true;
-                String stage=null;
-                Vector experTypes=getThisSkillsExpertises();
+				String stage=null;
+				Vector experTypes=getThisSkillsExpertises();
 				while(foundSomething)
 				{
 					foundSomething=false;
-                    String key=null;
-                    for(int t=0;t<experTypes.size();t++)
-                    {
-                        key=(String)experTypes.elementAt(t);
-                        int stages=CMLib.expertises().getStages(key);
-                        int code=getLocalExpCode(key);
-                        if(code>=0)
+					String key=null;
+					for(int t=0;t<experTypes.size();t++)
+					{
+						key=(String)experTypes.elementAt(t);
+						int stages=CMLib.expertises().getStages(key);
+						int code=getLocalExpCode(key);
+						if(code>=0)
 						for(int s=stages-1;s>=0;s--)
-                        {
-                            stage=CMath.convertToRoman(s+1);
+						{
+							stage=CMath.convertToRoman(s+1);
 							if(((mob.fetchExpertise(key+stage)!=null)||(mob.fetchExpertise(key+(s+1))!=null))
 							&&(cmd.equalsIgnoreCase(STAGE_TYPES[code][s])))
 							{
@@ -346,7 +346,7 @@ public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
 									break; // you can do any from a stage, but only 1 per stage!
 								}
 							}
-                        }
+						}
 					}
 				}
 			}
@@ -370,25 +370,25 @@ public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
 		if(WA!=null)
 			WA.setMiscText((WA.text()+" "+stat+adjustment).trim());
 	}
-    public void addSpellAdjustment(Item item, String spell, String parm)
-    {
-        Ability WA=item.fetchEffect("Prop_WearSpellCast");
-        if(WA==null)
-        {
-            WA=CMClass.getAbility("Prop_WearSpellCast");
-            item.addNonUninvokableEffect(WA);
-        }
-        else
-        if(CMLib.english().containsString(WA.text().toUpperCase(),spell))
-            return;
-        if(WA!=null)
-        {
-            if(WA.text().length()>0)
-                WA.setMiscText(WA.text()+";"+spell+"("+parm+")");
-            else
-                WA.setMiscText(spell+"("+parm+")");
-        }
-    }
+	public void addSpellAdjustment(Item item, String spell, String parm)
+	{
+		Ability WA=item.fetchEffect("Prop_WearSpellCast");
+		if(WA==null)
+		{
+			WA=CMClass.getAbility("Prop_WearSpellCast");
+			item.addNonUninvokableEffect(WA);
+		}
+		else
+		if(CMLib.english().containsString(WA.text().toUpperCase(),spell))
+			return;
+		if(WA!=null)
+		{
+			if(WA.text().length()>0)
+				WA.setMiscText(WA.text()+";"+spell+"("+parm+")");
+			else
+				WA.setMiscText(spell+"("+parm+")");
+		}
+	}
 
 	public void enhanceItem(MOB mob, Item item, DVector types)
 	{
@@ -467,9 +467,9 @@ public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
 					case 2:
 						applyName(item,STAGE_TYPES[type][stage]);
 						item.setBaseValue(atLeast1(item.baseGoldValue(),2.5));
-                        if((item instanceof Armor)
-                        &&(!CMath.bset(((Armor)item).getLayerAttributes(),Armor.LAYERMASK_MULTIWEAR)))
-    						addSpellAdjustment(item,"Spell_WellDressed","1");
+						if((item instanceof Armor)
+						&&(!CMath.bset(((Armor)item).getLayerAttributes(),Armor.LAYERMASK_MULTIWEAR)))
+							addSpellAdjustment(item,"Spell_WellDressed","1");
 						affect.tickDown+=Math.round(0.75 * (double)affect.tickDown);
 						break;
 					}

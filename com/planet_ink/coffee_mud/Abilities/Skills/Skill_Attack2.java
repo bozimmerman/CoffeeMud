@@ -23,7 +23,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -39,7 +39,7 @@ public class Skill_Attack2 extends StdSkill
 	protected int canAffectCode(){return CAN_MOBS;}
 	protected int canTargetCode(){return 0;}
 	public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
-    public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_MARTIALLORE;}
+	public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_MARTIALLORE;}
 	public boolean isAutoInvoked(){return true;}
 	public boolean canBeUninvoked(){return false;}
 	protected int attackToNerf(){ return 2;}
@@ -52,10 +52,10 @@ public class Skill_Attack2 extends StdSkill
 
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
-        if((affected instanceof MOB)&&(((MOB)affected).isInCombat()))
-    		affectableStats.setSpeed(affectableStats.speed()+(numberOfFullAttacks()*(proficiency()/100.0)));
+		if((affected instanceof MOB)&&(((MOB)affected).isInCombat()))
+			affectableStats.setSpeed(affectableStats.speed()+(numberOfFullAttacks()*(proficiency()/100.0)));
 		if((freeToNerf)&& (affectableStats.attackAdjustment()>0))
-        	affectableStats.setAttackAdjustment((int)Math.round((double)affectableStats.attackAdjustment() * nerfAmount()));
+			affectableStats.setAttackAdjustment((int)Math.round((double)affectableStats.attackAdjustment() * nerfAmount()));
 	}
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{

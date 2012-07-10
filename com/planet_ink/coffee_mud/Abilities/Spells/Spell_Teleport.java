@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -40,18 +40,18 @@ public class Spell_Teleport extends Spell
 	protected int canTargetCode(){return 0;}
 	public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_CONJURATION;}
 	public long flags(){return Ability.FLAG_TRANSPORTING;}
-    public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
+	public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
 
-    private boolean isBadRoom(final Room room, final MOB mob, final Room newRoom)
-    {
-    	return (room==null)
-        ||(room==newRoom)
-        ||(room.getArea()==newRoom.getArea())
-        ||(room==mob.location())
-        ||(!CMLib.flags().canAccess(mob,room))
-        ||(CMLib.law().getLandTitle(room)!=null);
-    }
-    
+	private boolean isBadRoom(final Room room, final MOB mob, final Room newRoom)
+	{
+		return (room==null)
+		||(room==newRoom)
+		||(room.getArea()==newRoom.getArea())
+		||(room==mob.location())
+		||(!CMLib.flags().canAccess(mob,room))
+		||(CMLib.law().getLandTitle(room)!=null);
+	}
+	
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 

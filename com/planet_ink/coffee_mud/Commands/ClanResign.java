@@ -23,7 +23,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -38,7 +38,7 @@ public class ClanResign extends StdCommand
 
 	private final String[] access={"CLANRESIGN"};
 	public String[] getAccessWords(){return access;}
-    
+	
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
@@ -58,16 +58,16 @@ public class ClanResign extends StdCommand
 				if(check.equalsIgnoreCase("Y"))
 				{
 					if(C!=null)
-                        CMLib.clans().clanAnnounce(mob,"Member resigned from "+C.getGovernmentName()+" "+C.name()+": "+mob.Name());
+						CMLib.clans().clanAnnounce(mob,"Member resigned from "+C.getGovernmentName()+" "+C.name()+": "+mob.Name());
 					if(C!=null)
-                        C.delMember(mob);
+						C.delMember(mob);
 					else
-                    {
-                        CMLib.database().DBUpdateClanMembership(mob.Name(), "", 0);
-                        mob.setClanID("");
-                        mob.setClanRole(0);
+					{
+						CMLib.database().DBUpdateClanMembership(mob.Name(), "", 0);
+						mob.setClanID("");
+						mob.setClanRole(0);
 						CMLib.database().DBUpdateClanMembership(mob.Name(),"",0);
-                    }
+					}
 				}
 				else
 				{

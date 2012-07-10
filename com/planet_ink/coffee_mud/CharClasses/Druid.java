@@ -26,7 +26,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -56,16 +56,16 @@ public class Druid extends StdCharClass
 	private HashSet requiredWeaponMaterials=buildRequiredWeaponMaterials();
 	protected HashSet requiredWeaponMaterials(){return requiredWeaponMaterials;}
 	public int requiredArmorSourceMinor(){return CMMsg.TYP_CAST_SPELL;}
-    public static Hashtable animalChecking=new Hashtable();
+	public static Hashtable animalChecking=new Hashtable();
 
 	public Druid()
 	{
 		super();
 		maxStatAdj[CharStats.STAT_CONSTITUTION]=7;
-    }
-    public void initializeClass()
-    {
-        super.initializeClass();
+	}
+	public void initializeClass()
+	{
+		super.initializeClass();
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Write",0,true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Recall",50,true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Revoke",false);
@@ -209,22 +209,22 @@ public class Druid extends StdCharClass
 	{
 		super.grantAbilities(mob,isBorrowedClass);
 
-        if(mob.playerStats()==null)
-        {
-            List<AbilityMapper.AbilityMapping> V=CMLib.ableMapper().getUpToLevelListings(ID(),
-                                                mob.charStats().getClassLevel(ID()),
-                                                false,
-                                                false);
+		if(mob.playerStats()==null)
+		{
+			List<AbilityMapper.AbilityMapping> V=CMLib.ableMapper().getUpToLevelListings(ID(),
+												mob.charStats().getClassLevel(ID()),
+												false,
+												false);
 			for(AbilityMapper.AbilityMapping able : V)
 			{
 				Ability A=CMClass.getAbility(able.abilityID);
-                if((A!=null)
-                &&((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_CHANT)
-                &&(!CMLib.ableMapper().getDefaultGain(ID(),true,A.ID())))
-                    giveMobAbility(mob,A,CMLib.ableMapper().getDefaultProficiency(ID(),true,A.ID()),CMLib.ableMapper().getDefaultParm(ID(),true,A.ID()),isBorrowedClass);
-            }
-            return;
-        }
+				if((A!=null)
+				&&((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_CHANT)
+				&&(!CMLib.ableMapper().getDefaultGain(ID(),true,A.ID())))
+					giveMobAbility(mob,A,CMLib.ableMapper().getDefaultProficiency(ID(),true,A.ID()),CMLib.ableMapper().getDefaultParm(ID(),true,A.ID()),isBorrowedClass);
+			}
+			return;
+		}
 
 		Vector grantable=new Vector();
 
@@ -332,77 +332,77 @@ public class Druid extends StdCharClass
 		}
 		return true;
 	}
-    
-    public static void doAnimalFollowerLevelingCheck(CharClass C, Environmental host, CMMsg msg)
-    {
-        if((msg.sourceMessage()==null)
-        &&(msg.sourceMinor()==CMMsg.TYP_LEVEL)
-        &&(msg.source().isMonster()))
-        {
-        	final MOB druidM=msg.source().amUltimatelyFollowing();
-	        if((druidM!=null)
-	        &&(!druidM.isMonster())
-	        &&(druidM.charStats().getCurrentClass().ID().equals(C.ID()))
-	        &&(CMLib.flags().isAnimalIntelligence(msg.source())
-	          ||msg.source().charStats().getMyRace().racialCategory().equalsIgnoreCase("Vegetation")
-	          ||msg.source().charStats().getMyRace().racialCategory().equalsIgnoreCase("Stone Golem")))
-	        {
-	            int xp=msg.source().phyStats().level()*5;
-	            if(xp>0)
-	            {
-	                druidM.tell("Your stewardship has benefitted "+msg.source().name()+".");
-	                CMLib.leveler().postExperience(druidM,null,null,xp,false);
-	            }
-	        }
-        }
-    }
-    
-    public static void doAnimalFreeingCheck(CharClass C, Environmental host, CMMsg msg)
-    {
-        if((msg.source()!=host)
-        &&(msg.sourceMinor()==CMMsg.TYP_NOFOLLOW)
-        &&(msg.source().isMonster())
-        &&(host instanceof MOB)
-        &&(!((MOB)host).isMonster())
-        &&(msg.target()==host)
-        &&(msg.source().getStartRoom()!=null)
-        &&(CMLib.law().isACity(msg.source().getStartRoom().getArea()))
-        &&(((MOB)host).charStats().getCurrentClass().ID().equals(C.ID()))
-        &&(CMLib.flags().isAnimalIntelligence(msg.source())
-          ||msg.source().charStats().getMyRace().racialCategory().equalsIgnoreCase("Vegetation")
-          ||msg.source().charStats().getMyRace().racialCategory().equalsIgnoreCase("Stone Golem"))
-        &&(CMLib.flags().flaggedAffects(msg.source(),Ability.FLAG_SUMMONING).size()==0)
-        &&(msg.source().location()!=null)
-        &&(!msg.source().amDestroyed())
-        &&(CMLib.flags().isInTheGame((MOB)host,true))
-        &&(!CMLib.law().isACity(msg.source().location().getArea())))
-        {
-            Object[] stuff=(Object[])animalChecking.get(host);
-            Room room=msg.source().location();
-            if((stuff==null)||(System.currentTimeMillis()-((Long)stuff[0]).longValue()>(room.getArea().getTimeObj().getDaysInMonth()*room.getArea().getTimeObj().getHoursInDay()*CMProps.getMillisPerMudHour())))
-            {
-                stuff=new Object[3];
-                stuff[0]=Long.valueOf(System.currentTimeMillis());
-                animalChecking.remove(host);
-                animalChecking.put(host,stuff);
-                stuff[1]=Integer.valueOf(0);
-                stuff[2]=new Vector();
-            }
-            if((((Integer)stuff[1]).intValue()<19)&&(!((List)stuff[2]).contains(""+msg.source())))
-            {
-                stuff[1]=Integer.valueOf(((Integer)stuff[1]).intValue()+1);
-                ((MOB)host).tell("You have freed "+msg.source().name()+" from "+(msg.source().getStartRoom().getArea().name())+".");
-                CMLib.leveler().postExperience((MOB)host,null,null,((Integer)stuff[1]).intValue(),false);
-            }
-        }
-    }
+	
+	public static void doAnimalFollowerLevelingCheck(CharClass C, Environmental host, CMMsg msg)
+	{
+		if((msg.sourceMessage()==null)
+		&&(msg.sourceMinor()==CMMsg.TYP_LEVEL)
+		&&(msg.source().isMonster()))
+		{
+			final MOB druidM=msg.source().amUltimatelyFollowing();
+			if((druidM!=null)
+			&&(!druidM.isMonster())
+			&&(druidM.charStats().getCurrentClass().ID().equals(C.ID()))
+			&&(CMLib.flags().isAnimalIntelligence(msg.source())
+			  ||msg.source().charStats().getMyRace().racialCategory().equalsIgnoreCase("Vegetation")
+			  ||msg.source().charStats().getMyRace().racialCategory().equalsIgnoreCase("Stone Golem")))
+			{
+				int xp=msg.source().phyStats().level()*5;
+				if(xp>0)
+				{
+					druidM.tell("Your stewardship has benefitted "+msg.source().name()+".");
+					CMLib.leveler().postExperience(druidM,null,null,xp,false);
+				}
+			}
+		}
+	}
+	
+	public static void doAnimalFreeingCheck(CharClass C, Environmental host, CMMsg msg)
+	{
+		if((msg.source()!=host)
+		&&(msg.sourceMinor()==CMMsg.TYP_NOFOLLOW)
+		&&(msg.source().isMonster())
+		&&(host instanceof MOB)
+		&&(!((MOB)host).isMonster())
+		&&(msg.target()==host)
+		&&(msg.source().getStartRoom()!=null)
+		&&(CMLib.law().isACity(msg.source().getStartRoom().getArea()))
+		&&(((MOB)host).charStats().getCurrentClass().ID().equals(C.ID()))
+		&&(CMLib.flags().isAnimalIntelligence(msg.source())
+		  ||msg.source().charStats().getMyRace().racialCategory().equalsIgnoreCase("Vegetation")
+		  ||msg.source().charStats().getMyRace().racialCategory().equalsIgnoreCase("Stone Golem"))
+		&&(CMLib.flags().flaggedAffects(msg.source(),Ability.FLAG_SUMMONING).size()==0)
+		&&(msg.source().location()!=null)
+		&&(!msg.source().amDestroyed())
+		&&(CMLib.flags().isInTheGame((MOB)host,true))
+		&&(!CMLib.law().isACity(msg.source().location().getArea())))
+		{
+			Object[] stuff=(Object[])animalChecking.get(host);
+			Room room=msg.source().location();
+			if((stuff==null)||(System.currentTimeMillis()-((Long)stuff[0]).longValue()>(room.getArea().getTimeObj().getDaysInMonth()*room.getArea().getTimeObj().getHoursInDay()*CMProps.getMillisPerMudHour())))
+			{
+				stuff=new Object[3];
+				stuff[0]=Long.valueOf(System.currentTimeMillis());
+				animalChecking.remove(host);
+				animalChecking.put(host,stuff);
+				stuff[1]=Integer.valueOf(0);
+				stuff[2]=new Vector();
+			}
+			if((((Integer)stuff[1]).intValue()<19)&&(!((List)stuff[2]).contains(""+msg.source())))
+			{
+				stuff[1]=Integer.valueOf(((Integer)stuff[1]).intValue()+1);
+				((MOB)host).tell("You have freed "+msg.source().name()+" from "+(msg.source().getStartRoom().getArea().name())+".");
+				CMLib.leveler().postExperience((MOB)host,null,null,((Integer)stuff[1]).intValue(),false);
+			}
+		}
+	}
 
-    public void executeMsg(Environmental host, CMMsg msg){ super.executeMsg(host,msg); Druid.doAnimalFollowerLevelingCheck(this,host,msg); Druid.doAnimalFreeingCheck(this,host,msg);}
-    
-    public boolean isValidClassDivider(MOB killer, MOB killed, MOB mob, Set<MOB> followers)
-    {
+	public void executeMsg(Environmental host, CMMsg msg){ super.executeMsg(host,msg); Druid.doAnimalFollowerLevelingCheck(this,host,msg); Druid.doAnimalFreeingCheck(this,host,msg);}
+	
+	public boolean isValidClassDivider(MOB killer, MOB killed, MOB mob, Set<MOB> followers)
+	{
 		if((mob!=null)
-        &&(mob!=killed)
+		&&(mob!=killed)
 		&&(!mob.amDead())
 		&&((!mob.isMonster())||(!CMLib.flags().isAnimalIntelligence(mob)))
 		&&((mob.getVictim()==killed)

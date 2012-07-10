@@ -23,7 +23,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -38,18 +38,18 @@ public class OutFit extends StdCommand
 
 	private final String[] access={"OUTFIT"};
 	public String[] getAccessWords(){return access;}
-    public boolean preExecute(MOB mob, Vector commands, int metaFlags, int secondsElapsed, double actionsRemaining)
-    throws java.io.IOException
+	public boolean preExecute(MOB mob, Vector commands, int metaFlags, int secondsElapsed, double actionsRemaining)
+	throws java.io.IOException
 	{
-    	if(secondsElapsed>8.0)
-    		mob.tell("You feel your outfit plea is almost answered.");
-    	else
-    	if(secondsElapsed>4.0)
-    		mob.tell("Your plea swirls around you.");
-    	else
-    	if(actionsRemaining>0.0)
-    		mob.tell("You invoke a plea for mystical outfitting and await the answer.");
-	    return true;
+		if(secondsElapsed>8.0)
+			mob.tell("You feel your outfit plea is almost answered.");
+		else
+		if(secondsElapsed>4.0)
+			mob.tell("Your plea swirls around you.");
+		else
+		if(actionsRemaining>0.0)
+			mob.tell("You invoke a plea for mystical outfitting and await the answer.");
+		return true;
 	}
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
@@ -68,14 +68,14 @@ public class OutFit extends StdCommand
 		mob.tell("\n\rUseful equipment appears mysteriously out of the java plain.");
 		return false;
 	}
-    public double combatActionsCost(final MOB mob, final List<String> cmds)
-    {
-    	return CMProps.getCombatActionCost(ID(),CMath.div(CMProps.getIntVar(CMProps.SYSTEMI_DEFCOMCMDTIME),25.0));
-    }
-    public double actionsCost(MOB mob, List<String> cmds)
-    {
-    	return CMProps.getActionCost(ID(),CMath.div(CMProps.getIntVar(CMProps.SYSTEMI_DEFCMDTIME),25.0));
-    }
+	public double combatActionsCost(final MOB mob, final List<String> cmds)
+	{
+		return CMProps.getCombatActionCost(ID(),CMath.div(CMProps.getIntVar(CMProps.SYSTEMI_DEFCOMCMDTIME),25.0));
+	}
+	public double actionsCost(MOB mob, List<String> cmds)
+	{
+		return CMProps.getActionCost(ID(),CMath.div(CMProps.getIntVar(CMProps.SYSTEMI_DEFCMDTIME),25.0));
+	}
 	public boolean canBeOrdered(){return false;}
 
 	

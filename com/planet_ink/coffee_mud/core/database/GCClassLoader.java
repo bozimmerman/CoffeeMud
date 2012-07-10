@@ -28,7 +28,7 @@ import java.util.regex.Pattern;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -38,56 +38,56 @@ import java.util.regex.Pattern;
 */
 public class GCClassLoader
 {
-    protected DBConnector DB=null;
-    public GCClassLoader(DBConnector newDB)
-    {
-        DB=newDB;
-    }
-    
-    public List<DatabaseEngine.AckRecord> DBReadClasses()
-    {
-        DBConnection D=null;
-        Vector<DatabaseEngine.AckRecord> rows=new Vector<DatabaseEngine.AckRecord>();
-        try
-        {
-            D=DB.DBFetch();
-            ResultSet R=D.query("SELECT * FROM CMCCAC");
-            while(R.next())
-            {
-            	DatabaseEngine.AckRecord ack = new DatabaseEngine.AckRecord(
-                	DBConnections.getRes(R,"CMCCID"),
-	                DBConnections.getRes(R,"CMCDAT"),
-	                "GenCharClass");
-                rows.addElement(ack);
-            }
-        }
-        catch(Exception sqle)
-        {
-            Log.errOut("DataLoader",sqle);
-        }
-        finally
-        {
-	        DB.DBDone(D);
-        }
-        // log comment
-        return rows;
-    }
-    
-    public void DBDeleteClass(String classID)
-    {
-        DB.update("DELETE FROM CMCCAC WHERE CMCCID='"+classID+"'");
-    }
-    
-    public void DBCreateClass(String classID, String data)
-    {
-        DB.updateWithClobs(
-         "INSERT INTO CMCCAC ("
-         +"CMCCID, "
-         +"CMCDAT "
-         +") values ("
-         +"'"+classID+"',"
-         +"?"
-         +")", 
-         data+" ");
-    }
+	protected DBConnector DB=null;
+	public GCClassLoader(DBConnector newDB)
+	{
+		DB=newDB;
+	}
+	
+	public List<DatabaseEngine.AckRecord> DBReadClasses()
+	{
+		DBConnection D=null;
+		Vector<DatabaseEngine.AckRecord> rows=new Vector<DatabaseEngine.AckRecord>();
+		try
+		{
+			D=DB.DBFetch();
+			ResultSet R=D.query("SELECT * FROM CMCCAC");
+			while(R.next())
+			{
+				DatabaseEngine.AckRecord ack = new DatabaseEngine.AckRecord(
+					DBConnections.getRes(R,"CMCCID"),
+					DBConnections.getRes(R,"CMCDAT"),
+					"GenCharClass");
+				rows.addElement(ack);
+			}
+		}
+		catch(Exception sqle)
+		{
+			Log.errOut("DataLoader",sqle);
+		}
+		finally
+		{
+			DB.DBDone(D);
+		}
+		// log comment
+		return rows;
+	}
+	
+	public void DBDeleteClass(String classID)
+	{
+		DB.update("DELETE FROM CMCCAC WHERE CMCCID='"+classID+"'");
+	}
+	
+	public void DBCreateClass(String classID, String data)
+	{
+		DB.updateWithClobs(
+		 "INSERT INTO CMCCAC ("
+		 +"CMCCID, "
+		 +"CMCDAT "
+		 +") values ("
+		 +"'"+classID+"',"
+		 +"?"
+		 +")", 
+		 data+" ");
+	}
 }

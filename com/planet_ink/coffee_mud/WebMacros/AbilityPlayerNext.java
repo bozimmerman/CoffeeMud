@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -68,19 +68,19 @@ public class AbilityPlayerNext extends StdWebMacro
 			return " @break@";
 		}
 
-        Vector abilities=new Vector();
-        HashSet foundIDs=new HashSet();
-        for(Enumeration<Ability> a=M.allAbilities();a.hasMoreElements();)
-        {
-            Ability A=a.nextElement();
-            if((A!=null)&&(!foundIDs.contains(A.ID())))
-            {
-                foundIDs.add(A.ID());
-                abilities.addElement(A);
-            }
-        }
-        foundIDs.clear();
-        foundIDs=null;
+		Vector abilities=new Vector();
+		HashSet foundIDs=new HashSet();
+		for(Enumeration<Ability> a=M.allAbilities();a.hasMoreElements();)
+		{
+			Ability A=a.nextElement();
+			if((A!=null)&&(!foundIDs.contains(A.ID())))
+			{
+				foundIDs.add(A.ID());
+				abilities.addElement(A);
+			}
+		}
+		foundIDs.clear();
+		foundIDs=null;
 		for(int a=0;a<abilities.size();a++)
 		{
 			Ability A=(Ability)abilities.elementAt(a);
@@ -131,7 +131,7 @@ public class AbilityPlayerNext extends StdWebMacro
 				}
 			}
 			if(parms.containsKey("NOT")) 
-                okToShow=!okToShow;
+				okToShow=!okToShow;
 			if(okToShow)
 			{
 				if((last==null)||((last.length()>0)&&(last.equals(lastID))&&(!A.ID().equals(lastID))))

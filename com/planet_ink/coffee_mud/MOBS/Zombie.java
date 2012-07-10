@@ -23,7 +23,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -43,8 +43,8 @@ public class Zombie extends Undead
 		setDisplayText("a skeleton slowly moves about.");
 		setMoney(10);
 		basePhyStats.setWeight(30);
-        baseCharStats().setMyRace(CMClass.getRace("Undead"));
-        baseCharStats().getMyRace().startRacing(this,false);
+		baseCharStats().setMyRace(CMClass.getRace("Undead"));
+		baseCharStats().getMyRace().startRacing(this,false);
 
 		basePhyStats().setDamage(8);
 		basePhyStats().setLevel(2);

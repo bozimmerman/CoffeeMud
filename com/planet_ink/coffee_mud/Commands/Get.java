@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -103,7 +103,7 @@ public class Get extends StdCommand
 				quiet=((Boolean)commands.elementAt(1)).booleanValue();
 			boolean success=get(mob,container,item,quiet);
 			if(item instanceof Coins)
-			    ((Coins)item).putCoinsBack();
+				((Coins)item).putCoinsBack();
 			if(item instanceof RawMaterial)
 				((RawMaterial)item).rebundle();
 			return success;
@@ -130,7 +130,7 @@ public class Get extends StdCommand
 		int c=0;
 
 		int maxToGet=CMLib.english().calculateMaxToGive(mob,commands,containers.size()==0,R,true);
-        if(maxToGet<0) return false;
+		if(maxToGet<0) return false;
 
 		String whatToGet=CMParms.combine(commands,0);
 		String unmodifiedWhatToGet=whatToGet;
@@ -143,7 +143,7 @@ public class Get extends StdCommand
 			Vector V=new Vector();
 			Container container=null;
 			if(containers.size()>0) 
-			    container=(Container)containers.get(c++);
+				container=(Container)containers.get(c++);
 			int addendum=1;
 			String addendumStr="";
 			boolean doBugFix = true;
@@ -190,7 +190,7 @@ public class Get extends StdCommand
 			{
 				Container container=(Container)containers.get(0);
 				if(container.isOpen())
-                    mob.tell(mob,container,null,"You don't see '"+unmodifiedWhatToGet+"' in <T-NAME>.");
+					mob.tell(mob,container,null,"You don't see '"+unmodifiedWhatToGet+"' in <T-NAME>.");
 				else
 					mob.tell(container.name()+" is closed.");
 			}
@@ -199,20 +199,20 @@ public class Get extends StdCommand
 				mob.tell("You don't see anything here.");
 			else
 			{
-			    java.util.List<Container> V=CMLib.english().possibleContainers(mob,containerCommands,Wearable.FILTER_ANY,false);
-			    if(V.size()==0)
+				java.util.List<Container> V=CMLib.english().possibleContainers(mob,containerCommands,Wearable.FILTER_ANY,false);
+				if(V.size()==0)
 					mob.tell("You don't see '"+containerName+"' here.");
 				else
-			    if(V.size()==1)
+				if(V.size()==1)
 					mob.tell(mob,(Item)V.get(0),null,"You don't see '"+unmodifiedWhatToGet+"' in <T-NAME> here.");
-			    else
+				else
 					mob.tell("You don't see '"+unmodifiedWhatToGet+"' in any '"+containerName+"'.");
 			}
 		}
 		return false;
 	}
-    public double combatActionsCost(final MOB mob, final List<String> cmds){return CMProps.getCombatActionCost(ID());}
-    public double actionsCost(final MOB mob, final List<String> cmds){return CMProps.getActionCost(ID());}
+	public double combatActionsCost(final MOB mob, final List<String> cmds){return CMProps.getCombatActionCost(ID());}
+	public double actionsCost(final MOB mob, final List<String> cmds){return CMProps.getActionCost(ID());}
 	public boolean canBeOrdered(){return true;}
 
 	

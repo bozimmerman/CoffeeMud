@@ -23,7 +23,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -42,7 +42,7 @@ public class Skill_Meditation extends StdSkill
 	public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 	private static final String[] triggerStrings = {"MEDITATE"};
 	public String[] triggerStrings(){return triggerStrings;}
-    public int classificationCode() {   return Ability.ACODE_SKILL|Ability.DOMAIN_FITNESS; }
+	public int classificationCode() {   return Ability.ACODE_SKILL|Ability.DOMAIN_FITNESS; }
 
 	public void unInvoke()
 	{
@@ -109,10 +109,10 @@ public class Skill_Meditation extends StdSkill
 		&&(CMLib.flags().isSitting(mob)))
 		{
 			double man=(double)((mob.charStats().getStat(CharStats.STAT_INTELLIGENCE)
-                            +(2*getXLEVELLevel(mob))
-                            +mob.charStats().getStat(CharStats.STAT_WISDOM)));
+							+(2*getXLEVELLevel(mob))
+							+mob.charStats().getStat(CharStats.STAT_WISDOM)));
 			mob.curState().adjMana( (int)Math.round( ( man * .1 ) + ( ( mob.phyStats().level() + ( 2.0 * getXLEVELLevel( mob ) ) ) / 2.0 ) ),
-			                        mob.maxState() );
+									mob.maxState() );
 		}
 		else
 		{

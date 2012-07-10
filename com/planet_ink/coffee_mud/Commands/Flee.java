@@ -23,7 +23,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -54,30 +54,30 @@ public class Flee extends Go
 				return false;
 			}
 		}
-        
-        boolean XPloss=true;
-        MOB fighting=mob.getVictim();
-        if(fighting!=null)
-        {
-        	Set<MOB> H=CMLib.combat().allCombatants(mob);
-            for(Iterator i=H.iterator();i.hasNext();)
-            {
-                MOB M=(MOB)i.next();
-                if(CMLib.flags().aliveAwakeMobileUnbound(M,true))
-                {
-                    XPloss=true;
-                    break;
-                }
-                XPloss=false;
-            }
-        }
-        
-        if((!XPloss)&&(direction.length()==0))
-        {
-            mob.tell("You stop fighting.");
-            direction="NOWHERE";
-        }
-        
+		
+		boolean XPloss=true;
+		MOB fighting=mob.getVictim();
+		if(fighting!=null)
+		{
+			Set<MOB> H=CMLib.combat().allCombatants(mob);
+			for(Iterator i=H.iterator();i.hasNext();)
+			{
+				MOB M=(MOB)i.next();
+				if(CMLib.flags().aliveAwakeMobileUnbound(M,true))
+				{
+					XPloss=true;
+					break;
+				}
+				XPloss=false;
+			}
+		}
+		
+		if((!XPloss)&&(direction.length()==0))
+		{
+			mob.tell("You stop fighting.");
+			direction="NOWHERE";
+		}
+		
 		int directionCode=-1;
 		if(!direction.equals("NOWHERE"))
 		{
@@ -124,11 +124,11 @@ public class Flee extends Go
 				{
 					int gainedExperience=(int)Math.round(CMath.mul(expLost[0],1.0-pctHPremaining))/4;
 					if((fighting!=mob)
-                    &&(gainedExperience>0)
-                    &&((mob.session()==null)
-                       ||(fighting.session()==null)
-                       ||(!mob.session().getAddress().equals(fighting.session().getAddress()))))
-						    CMLib.leveler().postExperience(fighting,null,null,gainedExperience,false);
+					&&(gainedExperience>0)
+					&&((mob.session()==null)
+					   ||(fighting.session()==null)
+					   ||(!mob.session().getAddress().equals(fighting.session().getAddress()))))
+							CMLib.leveler().postExperience(fighting,null,null,gainedExperience,false);
 				}
 			}
 		}

@@ -25,7 +25,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -38,18 +38,18 @@ public class Play_Tempo extends Play
 	public String ID() { return "Play_Tempo"; }
 	public String name(){ return "Tempo";}
 	public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
-    protected boolean HAS_QUANTITATIVE_ASPECT(){return false;}
+	protected boolean HAS_QUANTITATIVE_ASPECT(){return false;}
 
-    public int castingQuality(MOB mob, Physical target)
-    {
-        if(mob!=null)
-        {
-            if(mob.isInCombat())
-                return Ability.QUALITY_INDIFFERENT;
-        }
-        return super.castingQuality(mob,target);
-    }
-    
+	public int castingQuality(MOB mob, Physical target)
+	{
+		if(mob!=null)
+		{
+			if(mob.isInCombat())
+				return Ability.QUALITY_INDIFFERENT;
+		}
+		return super.castingQuality(mob,target);
+	}
+	
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID))
@@ -57,9 +57,9 @@ public class Play_Tempo extends Play
 		if((affected!=null)&&(affected instanceof MOB))
 		{
 			MOB mob=(MOB)affected;
-    		for(final Enumeration<Ability> a=mob.effects();a.hasMoreElements();)
-    		{
-    			final Ability A=a.nextElement();
+			for(final Enumeration<Ability> a=mob.effects();a.hasMoreElements();)
+			{
+				final Ability A=a.nextElement();
 				if((A!=null)
 				&&((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_COMMON_SKILL))
 					A.tick(mob,Tickable.TICKID_MOB);

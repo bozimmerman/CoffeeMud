@@ -23,7 +23,7 @@ import java.util.List;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -40,84 +40,84 @@ import java.util.List;
 @SuppressWarnings("rawtypes")
 public interface LandTitle extends Environmental
 {
-    /**
-     * The value of the property in base currency values
-     * @return the price of the property
-     */
+	/**
+	 * The value of the property in base currency values
+	 * @return the price of the property
+	 */
 	public int landPrice();
-    /**
-     * set the value of the property in base currency values
-     * @param price the price of the property
-     */
+	/**
+	 * set the value of the property in base currency values
+	 * @param price the price of the property
+	 */
 	public void setLandPrice(int price);
-    /**
-     * Get the owner of the property, usually a clan name or a player name.
-     * @return the name of the owner of the property
-     */
+	/**
+	 * Get the owner of the property, usually a clan name or a player name.
+	 * @return the name of the owner of the property
+	 */
 	public String landOwner();
-    /**
-     * Set the owner of the property, usually a clan name or a player name.
-     * @param owner the name of the owner of the property
-     */
+	/**
+	 * Set the owner of the property, usually a clan name or a player name.
+	 * @param owner the name of the owner of the property
+	 */
 	public void setLandOwner(String owner);
 	
-    /**
-     * Get the actual clan or mob owner of the property, or null if it can not.
-     * @return the owner of the property
-     */
+	/**
+	 * Get the actual clan or mob owner of the property, or null if it can not.
+	 * @return the owner of the property
+	 */
 	public CMObject landOwnerObject();
-    /**
-     * Get the roomID or the Area name of the property for sale
-     * @return the roomID or the Area  name of the property for sale
-     */
+	/**
+	 * Get the roomID or the Area name of the property for sale
+	 * @return the roomID or the Area  name of the property for sale
+	 */
 	public String landPropertyID();
-    /**
-     * Set the roomID or the Area name of the property for sale
-     * @param landID the roomID or the Area  name of the property for sale
-     */
+	/**
+	 * Set the roomID or the Area name of the property for sale
+	 * @param landID the roomID or the Area  name of the property for sale
+	 */
 	public void setLandPropertyID(String landID);
-    
-    /**
-     * Checks for changes in the content or condition of the rooms represented
-     * by this title and saves the changes to the database, if necessary.
-     * @param optPlayerList - null, or a vector of player names for quick confirms
-     * @see LandTitle#updateTitle()
-     */
+	
+	/**
+	 * Checks for changes in the content or condition of the rooms represented
+	 * by this title and saves the changes to the database, if necessary.
+	 * @param optPlayerList - null, or a vector of player names for quick confirms
+	 * @see LandTitle#updateTitle()
+	 */
 	public void updateLot(List optPlayerList);
-    /**
-     * Simply resaves the rooms represented by this title to reflect change
-     * in ownership or price.  The state of the rooms is not inspected or
-     * updated as in updateLot.
-     * @see LandTitle#updateLot(List)
-     */
+	/**
+	 * Simply resaves the rooms represented by this title to reflect change
+	 * in ownership or price.  The state of the rooms is not inspected or
+	 * updated as in updateLot.
+	 * @see LandTitle#updateLot(List)
+	 */
 	public void updateTitle();
-    
-    /**
-     * The complete set of room objects represented by this title
-     * @see com.planet_ink.coffee_mud.Locales.interfaces.Room
-     * @return a Vector of the complete set of Room objects represented by this title
-     */
+	
+	/**
+	 * The complete set of room objects represented by this title
+	 * @see com.planet_ink.coffee_mud.Locales.interfaces.Room
+	 * @return a Vector of the complete set of Room objects represented by this title
+	 */
 	public List<Room> getPropertyRooms();
-    /**
-     * Whether this property is a rental.
-     * @return true if the property is rental, false if ownable outright
-     */
+	/**
+	 * Whether this property is a rental.
+	 * @return true if the property is rental, false if ownable outright
+	 */
 	public boolean rentalProperty();
-    /**
-     * Sets whether this property is a rental.
-     * @param truefalse true if the property is rental, false if ownable outright
-     */
+	/**
+	 * Sets whether this property is a rental.
+	 * @param truefalse true if the property is rental, false if ownable outright
+	 */
 	public void setRentalProperty(boolean truefalse);
-    /**
-     * If back taxes is owned on this property, this is how the value is set.  The
-     * value should be in base coffeemud currency
-     * @param amount the back  taxes owed
-     */
+	/**
+	 * If back taxes is owned on this property, this is how the value is set.  The
+	 * value should be in base coffeemud currency
+	 * @param amount the back  taxes owed
+	 */
 	public void setBackTaxes(int amount);
-    /**
-     * If back taxes is owned on this property, this is how the value is retreived.  The
-     * value should be in base coffeemud currency
-     * @return amount the back  taxes owed
-     */
+	/**
+	 * If back taxes is owned on this property, this is how the value is retreived.  The
+	 * value should be in base coffeemud currency
+	 * @return amount the back  taxes owed
+	 */
 	public int backTaxes();
 }

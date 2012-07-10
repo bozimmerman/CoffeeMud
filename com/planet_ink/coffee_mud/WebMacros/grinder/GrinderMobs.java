@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -35,23 +35,23 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class GrinderMobs
 {
-    private static final String[] okparms={
-      "NAME","CLASSES","DISPLAYTEXT","DESCRIPTION",
-      " LEVEL"," ABILITY"," REJUV"," MISCTEXT",
-      "RACE","GENDER","HEIGHT","WEIGHT",
-      "SPEED","ATTACK","DAMAGE","ARMOR",
-      "ALIGNMENT","MONEY","ISRIDEABLE","RIDEABLETYPE",
-      "MOBSHELD","ISSHOPKEEPER","SHOPKEEPERTYPE","ISGENERIC",
-      "ISBANKER","COININT","ITEMINT","BANKNAME","SHOPPREJ",
-      "ISDEITY","CLEREQ","CLERIT","WORREQ","WORRIT",
-      "CLESIN","WORSIN","CLEPOW","CURSES","POWERS",
-      "CLANID","TATTOOS","EXPERTISES",
-      "BUDGET","DEVALRATE","INVRESETRATE","IMAGE",
-      "ISPOSTMAN","POSTCHAIN","POSTMIN","POSTLBS",
-      "POSTHOLD","POSTNEW","POSTHELD","IGNOREMASK",
-      "LOANINT","SVCRIT","AUCCHAIN","LIVELIST","TIMELIST",
-      "TIMELISTPCT","LIVECUT","TIMECUT","MAXDAYS",
-      "MINDAYS","ISAUCTION","DEITYID"};
+	private static final String[] okparms={
+	  "NAME","CLASSES","DISPLAYTEXT","DESCRIPTION",
+	  " LEVEL"," ABILITY"," REJUV"," MISCTEXT",
+	  "RACE","GENDER","HEIGHT","WEIGHT",
+	  "SPEED","ATTACK","DAMAGE","ARMOR",
+	  "ALIGNMENT","MONEY","ISRIDEABLE","RIDEABLETYPE",
+	  "MOBSHELD","ISSHOPKEEPER","SHOPKEEPERTYPE","ISGENERIC",
+	  "ISBANKER","COININT","ITEMINT","BANKNAME","SHOPPREJ",
+	  "ISDEITY","CLEREQ","CLERIT","WORREQ","WORRIT",
+	  "CLESIN","WORSIN","CLEPOW","CURSES","POWERS",
+	  "CLANID","TATTOOS","EXPERTISES",
+	  "BUDGET","DEVALRATE","INVRESETRATE","IMAGE",
+	  "ISPOSTMAN","POSTCHAIN","POSTMIN","POSTLBS",
+	  "POSTHOLD","POSTNEW","POSTHELD","IGNOREMASK",
+	  "LOANINT","SVCRIT","AUCCHAIN","LIVELIST","TIMELIST",
+	  "TIMELISTPCT","LIVECUT","TIMECUT","MAXDAYS",
+	  "MINDAYS","ISAUCTION","DEITYID"};
 	public static String senses(Physical P, ExternalHTTPRequests httpReq, java.util.Map<String,String> parms)
 	{
 		P.basePhyStats().setSensesMask(0);
@@ -77,7 +77,7 @@ public class GrinderMobs
 
 	public static String abilities(MOB M, ExternalHTTPRequests httpReq, java.util.Map<String,String> parms)
 	{
-        boolean player=M.playerStats()!=null;
+		boolean player=M.playerStats()!=null;
 		while(M.numAbilities()>0)
 		{
 			Ability A=M.fetchAbility(0);
@@ -95,15 +95,15 @@ public class GrinderMobs
 				{
 					Ability B=CMClass.getAbility(aff);
 					if(B==null) return "Unknown Ability '"+aff+"'.";
-                    if(player)
-                    {
-                        String prof=httpReq.getRequestParameter("ABPOF"+num);
-                        if(prof==null) prof="0";
-                        String txt=httpReq.getRequestParameter("ABTXT"+num);
-                        if(txt==null) txt="";
-                        B.setProficiency(CMath.s_int(prof));
-                        B.setMiscText(txt);
-                    }
+					if(player)
+					{
+						String prof=httpReq.getRequestParameter("ABPOF"+num);
+						if(prof==null) prof="0";
+						String txt=httpReq.getRequestParameter("ABTXT"+num);
+						if(txt==null) txt="";
+						B.setProficiency(CMath.s_int(prof));
+						B.setMiscText(txt);
+					}
 					M.addAbility(B);
 					B.autoInvocation(M);
 				}
@@ -133,10 +133,10 @@ public class GrinderMobs
 					Faction F=CMLib.factions().getFaction(whichFaction);
 					if(F!=null)
 					{
-    					int amt=Integer.valueOf(howMuch).intValue();
-    					if(amt<F.minimum()) amt=F.minimum();
-    					if(amt>F.maximum()) amt=F.maximum();
-    					E.addFaction(F.factionID(),amt);
+						int amt=Integer.valueOf(howMuch).intValue();
+						if(amt<F.minimum()) amt=F.minimum();
+						if(amt>F.maximum()) amt=F.maximum();
+						E.addFaction(F.factionID(),amt);
 					}
 				}
 				num++;
@@ -163,7 +163,7 @@ public class GrinderMobs
 			{
 				if(aff.length()>0)
 				{
-                    boolean clericOnly=(httpReq.isRequestParameter("BLONLY"+num))&&(httpReq.getRequestParameter("BLONLY"+num)).equalsIgnoreCase("on");
+					boolean clericOnly=(httpReq.isRequestParameter("BLONLY"+num))&&(httpReq.getRequestParameter("BLONLY"+num)).equalsIgnoreCase("on");
 					Ability B=CMClass.getAbility(aff);
 					if(B==null) return "Unknown Blessing '"+aff+"'.";
 					E.addBlessing(B,clericOnly);
@@ -192,7 +192,7 @@ public class GrinderMobs
 				if(aff.length()>0)
 				{
 					Ability B=CMClass.getAbility(aff);
-                    boolean clericOnly=(httpReq.isRequestParameter("CUONLY"+num))&&(httpReq.getRequestParameter("CUONLY"+num)).equalsIgnoreCase("on");
+					boolean clericOnly=(httpReq.isRequestParameter("CUONLY"+num))&&(httpReq.getRequestParameter("CUONLY"+num)).equalsIgnoreCase("on");
 					if(B==null) return "Unknown Curse '"+aff+"'.";
 					E.addCurse(B,clericOnly);
 				}
@@ -216,7 +216,7 @@ public class GrinderMobs
 				{
 					ExpertiseLibrary.ExpertiseDefinition def=CMLib.expertises().getDefinition(aff);
 					if(def==null) 
-                        return "Unknown Expertise '"+aff+"'.";
+						return "Unknown Expertise '"+aff+"'.";
 					E.addExpertise(def.ID);
 				}
 				num++;
@@ -231,38 +231,38 @@ public class GrinderMobs
 	{
 		if(httpReq.isRequestParameter("ITEM1"))
 		{
-		    Vector items=new Vector();
-		    Vector cstrings=new Vector();
+			Vector items=new Vector();
+			Vector cstrings=new Vector();
 			for(int i=1;;i++)
 			{
-                String MATCHING=httpReq.getRequestParameter("ITEM"+i);
-                String WORN=httpReq.getRequestParameter("ITEMWORN"+i);
-                if(MATCHING==null) break;
-                Item I2=RoomData.getItemFromAnywhere(allitems,MATCHING);
-                if(I2!=null)
-                {
-                    if(!CMath.isNumber(MATCHING))
-                        I2=(Item)I2.copyOf();
-                    boolean worn=((WORN!=null)&&(WORN.equalsIgnoreCase("on")));
-                    I2.setContainer(null);
-                    I2.unWear();
-                    if(worn) I2.wearEvenIfImpossible(M);
+				String MATCHING=httpReq.getRequestParameter("ITEM"+i);
+				String WORN=httpReq.getRequestParameter("ITEMWORN"+i);
+				if(MATCHING==null) break;
+				Item I2=RoomData.getItemFromAnywhere(allitems,MATCHING);
+				if(I2!=null)
+				{
+					if(!CMath.isNumber(MATCHING))
+						I2=(Item)I2.copyOf();
+					boolean worn=((WORN!=null)&&(WORN.equalsIgnoreCase("on")));
+					I2.setContainer(null);
+					I2.unWear();
+					if(worn) I2.wearEvenIfImpossible(M);
 					happilyAddItem(I2,M);
 					items.addElement(I2);
-                    I2.setContainer(null);
-                    String CONTAINER=httpReq.getRequestParameter("ITEMCONT"+i);
-                    cstrings.addElement((CONTAINER==null)?"":CONTAINER);
-                }
-            }
-            for(int i=0;i<cstrings.size();i++)
-            {
-                String CONTAINER=(String)cstrings.elementAt(i);
-                if(CONTAINER.length()==0) continue;
-                Item I2=(Item)items.elementAt(i);
-                Item C2=(Item)CMLib.english().fetchEnvironmental(items,CONTAINER,true);
-                if(C2 instanceof Container)
-                	I2.setContainer((Container)C2);
-            }
+					I2.setContainer(null);
+					String CONTAINER=httpReq.getRequestParameter("ITEMCONT"+i);
+					cstrings.addElement((CONTAINER==null)?"":CONTAINER);
+				}
+			}
+			for(int i=0;i<cstrings.size();i++)
+			{
+				String CONTAINER=(String)cstrings.elementAt(i);
+				if(CONTAINER.length()==0) continue;
+				Item I2=(Item)items.elementAt(i);
+				Item C2=(Item)CMLib.english().fetchEnvironmental(items,CONTAINER,true);
+				if(C2 instanceof Container)
+					I2.setContainer((Container)C2);
+			}
 			for(int i=0;i<allitems.size();i++)
 			{
 				Item I=(Item)allitems.elementAt(i);
@@ -316,13 +316,13 @@ public class GrinderMobs
 		if(mobCode==null) return "@break@";
 
 		String newClassID=httpReq.getRequestParameter("CLASSES");
-    	synchronized(("SYNC"+((R!=null)?R.roomID():"null")).intern())
-    	{
-    		if(R!=null)
-    		{
-	    		R=CMLib.map().getRoom(R);
+		synchronized(("SYNC"+((R!=null)?R.roomID():"null")).intern())
+		{
+			if(R!=null)
+			{
+				R=CMLib.map().getRoom(R);
 				CMLib.map().resetRoom(R);
-    		}
+			}
 
 			MOB M=null;
 			if(mobCode.equals("NEW")||mobCode.equals("NEWDEITY")||mobCode.startsWith("NEWCATA-"))
@@ -425,9 +425,9 @@ public class GrinderMobs
 					M.basePhyStats().setArmor(CMath.s_int(old));
 					break;
 				case 16: // alignment
-				    for(int v=0;v<Faction.ALIGN_NAMES.length;v++)
-				        if(old.equalsIgnoreCase(Faction.ALIGN_NAMES[v]))
-				            CMLib.factions().setAlignment(M,v);
+					for(int v=0;v<Faction.ALIGN_NAMES.length;v++)
+						if(old.equalsIgnoreCase(Faction.ALIGN_NAMES[v]))
+							CMLib.factions().setAlignment(M,v);
 					break;
 				case 17: // money
 					CMLib.beanCounter().setMoney(M,CMath.s_int(old));
@@ -552,113 +552,113 @@ public class GrinderMobs
 						((ShopKeeper)M).setInvResetRate(CMath.s_int(old));
 					break;
 				case 45: // image
-				    M.setImage(old);
-				    break;
-	            case 46: // is postman
-	                break;
-	            case 47: // postal chain
-	                if(M instanceof PostOffice)
-	                    ((PostOffice)M).setPostalChain(old);
-	                break;
-	            case 48: // minimum postage
-	                if(M instanceof PostOffice)
-	                    ((PostOffice)M).setMinimumPostage(CMath.s_double(old));
-	                break;
-	            case 49: // postage per pound after first
-	                if(M instanceof PostOffice)
-	                    ((PostOffice)M).setPostagePerPound(CMath.s_double(old));
-	                break;
-	            case 50: // holding fee per pound per month
-	                if(M instanceof PostOffice)
-	                    ((PostOffice)M).setHoldFeePerPound(CMath.s_double(old));
-	                break;
-	            case 51: // new box fee
-	                if(M instanceof PostOffice)
-	                    ((PostOffice)M).setFeeForNewBox(CMath.s_double(old));
-	                break;
-	            case 52: // maximum months held
-	                if(M instanceof PostOffice)
-	                    ((PostOffice)M).setMaxMudMonthsHeld(CMath.s_int(old));
-	                break;
-	            case 53: // shopkeeper ignore mask
-	                if(M instanceof ShopKeeper)
-	                    ((ShopKeeper)M).setIgnoreMask(old);
-	                break;
+					M.setImage(old);
+					break;
+				case 46: // is postman
+					break;
+				case 47: // postal chain
+					if(M instanceof PostOffice)
+						((PostOffice)M).setPostalChain(old);
+					break;
+				case 48: // minimum postage
+					if(M instanceof PostOffice)
+						((PostOffice)M).setMinimumPostage(CMath.s_double(old));
+					break;
+				case 49: // postage per pound after first
+					if(M instanceof PostOffice)
+						((PostOffice)M).setPostagePerPound(CMath.s_double(old));
+					break;
+				case 50: // holding fee per pound per month
+					if(M instanceof PostOffice)
+						((PostOffice)M).setHoldFeePerPound(CMath.s_double(old));
+					break;
+				case 51: // new box fee
+					if(M instanceof PostOffice)
+						((PostOffice)M).setFeeForNewBox(CMath.s_double(old));
+					break;
+				case 52: // maximum months held
+					if(M instanceof PostOffice)
+						((PostOffice)M).setMaxMudMonthsHeld(CMath.s_int(old));
+					break;
+				case 53: // shopkeeper ignore mask
+					if(M instanceof ShopKeeper)
+						((ShopKeeper)M).setIgnoreMask(old);
+					break;
 				case 54: // loan interest
 					if((M instanceof Banker)&&(old.length()>0))
 						((Banker)M).setLoanInterest(CMath.s_double(old));
 					break;
-                case 55: // service ritual
-                    if(M instanceof Deity)
-                        ((Deity)M).setServiceRitual(old);
-                    break;
-	            case 56: // auction house
-	                if(M instanceof Auctioneer)
-	                    ((Auctioneer)M).setAuctionHouse(old);
-	                break;
-	            case 57: // live list
-	                //if(M instanceof Auctioneer)
-	                //	if(old.length()==0)
+				case 55: // service ritual
+					if(M instanceof Deity)
+						((Deity)M).setServiceRitual(old);
+					break;
+				case 56: // auction house
+					if(M instanceof Auctioneer)
+						((Auctioneer)M).setAuctionHouse(old);
+					break;
+				case 57: // live list
+					//if(M instanceof Auctioneer)
+					//	if(old.length()==0)
 					//		((Auctioneer)M).setLiveListingPrice(-1.0);
 					//	else
 					//		((Auctioneer)M).setLiveListingPrice(CMath.s_double(old));
-	                break;
-	            case 58: // timed list
-	                if(M instanceof Auctioneer)
-	                	if(old.length()==0)
+					break;
+				case 58: // timed list
+					if(M instanceof Auctioneer)
+						if(old.length()==0)
 							((Auctioneer)M).setTimedListingPrice(-1.0);
 						else
 							((Auctioneer)M).setTimedListingPrice(CMath.s_double(old));
-	                break;
-	            case 59: // timed list pct
-	                if(M instanceof Auctioneer)
-	                	if(old.length()==0)
+					break;
+				case 59: // timed list pct
+					if(M instanceof Auctioneer)
+						if(old.length()==0)
 							((Auctioneer)M).setTimedListingPct(-1.0);
 						else
 							((Auctioneer)M).setTimedListingPct(CMath.s_pct(old));
-	                break;
-	            case 60: // live cut
-	                //if(M instanceof Auctioneer)
-	                //	if(old.length()==0)
+					break;
+				case 60: // live cut
+					//if(M instanceof Auctioneer)
+					//	if(old.length()==0)
 					//		((Auctioneer)M).setLiveFinalCutPct(-1.0);
 					//	else
 					//		((Auctioneer)M).setLiveFinalCutPct(CMath.s_pct(old));
-	                break;
-	            case 61: // timed cut
-	                if(M instanceof Auctioneer)
-	                	if(old.length()==0)
+					break;
+				case 61: // timed cut
+					if(M instanceof Auctioneer)
+						if(old.length()==0)
 							((Auctioneer)M).setTimedFinalCutPct(-1.0);
 						else
 							((Auctioneer)M).setTimedFinalCutPct(CMath.s_pct(old));
-	                break;
-	            case 62: // max days
-	                if(M instanceof Auctioneer)
-	                	if(old.length()==0)
+					break;
+				case 62: // max days
+					if(M instanceof Auctioneer)
+						if(old.length()==0)
 							((Auctioneer)M).setMaxTimedAuctionDays(-1);
 						else
 							((Auctioneer)M).setMaxTimedAuctionDays(CMath.s_int(old));
-	                break;
-	            case 63: // min days
-	                if(M instanceof Auctioneer)
-	                	if(old.length()==0)
+					break;
+				case 63: // min days
+					if(M instanceof Auctioneer)
+						if(old.length()==0)
 							((Auctioneer)M).setMinTimedAuctionDays(-1);
 						else
 							((Auctioneer)M).setMinTimedAuctionDays(CMath.s_int(old));
-	                break;
-	            case 64: // is auction
-	                break;
-                case 65: // deity
-                    /*
-                    if(old.length()==0)
-                        M.setWorshipCharID("");
-                    else
-                    if(CMLib.map().getDeity(old)!=null)
-                        M.setWorshipCharID(CMLib.map().getDeity(old).Name());
-                    */
-                    break;
-                case 66: // money variation
-                    M.setMoneyVariation(CMath.s_double(old));
-                    break;
+					break;
+				case 64: // is auction
+					break;
+				case 65: // deity
+					/*
+					if(old.length()==0)
+						M.setWorshipCharID("");
+					else
+					if(CMLib.map().getDeity(old)!=null)
+						M.setWorshipCharID(CMLib.map().getDeity(old).Name());
+					*/
+					break;
+				case 66: // money variation
+					M.setMoneyVariation(CMath.s_double(old));
+					break;
 				}
 			}
 
@@ -709,15 +709,15 @@ public class GrinderMobs
 								SK.getShop().addStoreInventory(O,CMath.s_int(theparm),CMath.s_int(theprice));
 						}
 						else
-				        if(MATCHING.startsWith("CATALOG-"))
-				        {
-				            Environmental O=RoomData.getMOBFromCatalog(MATCHING);
-				            if(O==null) 
-				                O=RoomData.getItemFromAnywhere(null,MATCHING);
-                            if(O!=null)
-                                SK.getShop().addStoreInventory((Environmental)O.copyOf(),CMath.s_int(theparm),CMath.s_int(theprice));
-				        }
-				        else
+						if(MATCHING.startsWith("CATALOG-"))
+						{
+							Environmental O=RoomData.getMOBFromCatalog(MATCHING);
+							if(O==null) 
+								O=RoomData.getItemFromAnywhere(null,MATCHING);
+							if(O!=null)
+								SK.getShop().addStoreInventory((Environmental)O.copyOf(),CMath.s_int(theparm),CMath.s_int(theprice));
+						}
+						else
 						if(MATCHING.indexOf('@')>0)
 						{
 							Environmental O=null;
@@ -760,23 +760,23 @@ public class GrinderMobs
 					}
 				}
 
-                int num=1;
-                if((M instanceof Economics)
-                &&(httpReq.isRequestParameter("IPRIC1")))
-                {
-                    Vector prics=new Vector();
-                    String DOUBLE=httpReq.getRequestParameter("IPRIC"+num);
-                    String MASK=httpReq.getRequestParameter("IPRICM"+num);
-                    while((DOUBLE!=null)&&(MASK!=null))
-                    {
-                        if(CMath.isNumber(DOUBLE))
-                            prics.addElement((DOUBLE+" "+MASK).trim());
-                        num++;
-                        DOUBLE=httpReq.getRequestParameter("IPRIC"+num);
-                        MASK=httpReq.getRequestParameter("IPRICM"+num);
-                    }
-                    ((Economics)M).setItemPricingAdjustments(CMParms.toStringArray(prics));
-                }
+				int num=1;
+				if((M instanceof Economics)
+				&&(httpReq.isRequestParameter("IPRIC1")))
+				{
+					Vector prics=new Vector();
+					String DOUBLE=httpReq.getRequestParameter("IPRIC"+num);
+					String MASK=httpReq.getRequestParameter("IPRICM"+num);
+					while((DOUBLE!=null)&&(MASK!=null))
+					{
+						if(CMath.isNumber(DOUBLE))
+							prics.addElement((DOUBLE+" "+MASK).trim());
+						num++;
+						DOUBLE=httpReq.getRequestParameter("IPRIC"+num);
+						MASK=httpReq.getRequestParameter("IPRICM"+num);
+					}
+					((Economics)M).setItemPricingAdjustments(CMParms.toStringArray(prics));
+				}
 			}
 
 			M.recoverPhyStats();
@@ -787,30 +787,30 @@ public class GrinderMobs
 			String newMobCode=null;
 			if(R==null)
 			{
-			    if(mobCode.startsWith("CATALOG-")||mobCode.startsWith("NEWCATA-"))
-			    {
-		            MOB M2=CMLib.catalog().getCatalogMob(mobCode.substring(8));
-			        if((M2!=null)&&(!M.Name().equalsIgnoreCase(M2.Name())))
-			            M.setName(M2.Name());
-                    newMobCode=mobCode;
-			        if(M2==null)
-			        {
-			        	CMLib.catalog().addCatalog(M);
-	                    Log.infoOut("GrinderItems",whom.Name()+" created catalog MOB "+M.Name());
-			        }
-			        else
-			        {
-			        	CMLib.catalog().updateCatalog(M);
-	                    Log.infoOut("GrinderItems",whom.Name()+" updated catalog MOB "+M.Name());
-			        }
-                    copyMOB=M;
-			    }
-			    else 
-			    {
-    				RoomData.contributeMOBs(new XVector(M));
-                    MOB M2=RoomData.getReferenceMOB(M);
-    				newMobCode=RoomData.getMOBCode(RoomData.getMOBCache(),M2);
-			    }
+				if(mobCode.startsWith("CATALOG-")||mobCode.startsWith("NEWCATA-"))
+				{
+					MOB M2=CMLib.catalog().getCatalogMob(mobCode.substring(8));
+					if((M2!=null)&&(!M.Name().equalsIgnoreCase(M2.Name())))
+						M.setName(M2.Name());
+					newMobCode=mobCode;
+					if(M2==null)
+					{
+						CMLib.catalog().addCatalog(M);
+						Log.infoOut("GrinderItems",whom.Name()+" created catalog MOB "+M.Name());
+					}
+					else
+					{
+						CMLib.catalog().updateCatalog(M);
+						Log.infoOut("GrinderItems",whom.Name()+" updated catalog MOB "+M.Name());
+					}
+					copyMOB=M;
+				}
+				else 
+				{
+					RoomData.contributeMOBs(new XVector(M));
+					MOB M2=RoomData.getReferenceMOB(M);
+					newMobCode=RoomData.getMOBCode(RoomData.getMOBCache(),M2);
+				}
 			}
 			else
 			{
@@ -832,7 +832,7 @@ public class GrinderMobs
 			httpReq.addRequestParameters("MOB",newMobCode);
 			if(!copyMOB.sameAs(M))
 				Log.sysOut("Grinder",whom.Name()+" modified mob "+copyMOB.Name()+((R!=null)?" in room "+R.roomID():"")+".");
-    	}
+		}
 		return "";
 	}
 }

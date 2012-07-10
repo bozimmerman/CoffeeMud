@@ -25,7 +25,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -44,7 +44,7 @@ public class Thief_Embezzle extends ThiefSkill
 	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	private static final String[] triggerStrings = {"EMBEZZLE"};
 	public String[] triggerStrings(){return triggerStrings;}
-    public int classificationCode() {   return Ability.ACODE_SKILL|Ability.DOMAIN_CRIMINAL; }
+	public int classificationCode() {   return Ability.ACODE_SKILL|Ability.DOMAIN_CRIMINAL; }
 	protected boolean disregardsArmorCheck(MOB mob){return true;}
 	public Vector mobs=new Vector();
 	private DVector lastOnes=new DVector(2);
@@ -88,15 +88,15 @@ public class Thief_Embezzle extends ThiefSkill
 		return super.okMessage(myHost,msg);
 	}
 
-    public int castingQuality(MOB mob, Physical target)
-    {
-        if(mob!=null)
-        {
-            if(mob.isInCombat())
-                return Ability.QUALITY_INDIFFERENT;
-        }
-        return super.castingQuality(mob,target);
-    }
+	public int castingQuality(MOB mob, Physical target)
+	{
+		if(mob!=null)
+		{
+			if(mob.isInCombat())
+				return Ability.QUALITY_INDIFFERENT;
+		}
+		return super.castingQuality(mob,target);
+	}
 
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
@@ -105,11 +105,11 @@ public class Thief_Embezzle extends ThiefSkill
 			mob.tell("Embezzle money from whose accounts?");
 			return false;
 		}
-        MOB target=null;
-        if((target==null)&&(givenTarget!=null)&&(givenTarget instanceof MOB)) 
-            target=(MOB)givenTarget;
-        else
-            target=mob.location().fetchInhabitant(CMParms.combine(commands,0));
+		MOB target=null;
+		if((target==null)&&(givenTarget!=null)&&(givenTarget instanceof MOB)) 
+			target=(MOB)givenTarget;
+		else
+			target=mob.location().fetchInhabitant(CMParms.combine(commands,0));
 		if((target==null)||(target.amDead())||(!CMLib.flags().canBeSeenBy(target,mob)))
 		{
 			mob.tell("You don't see '"+CMParms.combine(commands,1)+"' here.");
@@ -120,11 +120,11 @@ public class Thief_Embezzle extends ThiefSkill
 			mob.tell("You can't embezzle from "+target.name()+"'s accounts.");
 			return false;
 		}
-        if(mob.isInCombat())
-        {
-            mob.tell("You are too busy to embezzle.");
-            return false;
-        }
+		if(mob.isInCombat())
+		{
+			mob.tell("You are too busy to embezzle.");
+			return false;
+		}
 		Banker bank=(Banker)target;
 		Ability A=target.fetchEffect(ID());
 		if(A!=null)
@@ -141,17 +141,17 @@ public class Thief_Embezzle extends ThiefSkill
 		}
 
 		Item myCoins=null;
-        String myAcct=mob.Name();
-        if(bank.isSold(ShopKeeper.DEAL_CLANBANKER))
-        {
-            if(mob.getClanID().length()>0)
-            {
-                myAcct=mob.getClanID();
-                myCoins=bank.findDepositInventory(mob.getClanID(),"1");
-            }
-        }
-        else
-            myCoins=bank.findDepositInventory(mob.Name(),"1");
+		String myAcct=mob.Name();
+		if(bank.isSold(ShopKeeper.DEAL_CLANBANKER))
+		{
+			if(mob.getClanID().length()>0)
+			{
+				myAcct=mob.getClanID();
+				myCoins=bank.findDepositInventory(mob.getClanID(),"1");
+			}
+		}
+		else
+			myCoins=bank.findDepositInventory(mob.Name(),"1");
 		if((myCoins==null)||(!(myCoins instanceof Coins)))
 		{
 			mob.tell("You don't have your own account with "+target.name()+".");
@@ -167,9 +167,9 @@ public class Thief_Embezzle extends ThiefSkill
 			String possVic=(String)accounts.get(CMLib.dice().roll(1,accounts.size(),-1));
 			Item C=bank.findDepositInventory(possVic,"1");
 			if((C!=null)
-	        &&(C instanceof Coins)
-	        &&((((Coins)C).getTotalValue()/50.0)>0.0)
-	        &&(!mob.Name().equals(possVic)))
+			&&(C instanceof Coins)
+			&&((((Coins)C).getTotalValue()/50.0)>0.0)
+			&&(!mob.Name().equals(possVic)))
 			{
 				hisCoins=(Coins)C;
 				victim=possVic;
@@ -187,7 +187,7 @@ public class Thief_Embezzle extends ThiefSkill
 		boolean success=proficiencyCheck(mob,(-(levelDiff+(timesPicked(mob)*50))),auto);
 		if((success)&&(hisAmount>0)&&(hisCoins!=null))
 		{
-		    String str="<S-NAME> embezzle(s) "+CMLib.beanCounter().nameCurrencyShort(target,hisAmount)+" from the "+victim+" account maintained by <T-NAME>.";
+			String str="<S-NAME> embezzle(s) "+CMLib.beanCounter().nameCurrencyShort(target,hisAmount)+" from the "+victim+" account maintained by <T-NAME>.";
 			CMMsg msg=CMClass.getMsg(mob,target,this,(auto?CMMsg.MASK_ALWAYS:0)|CMMsg.MSG_THIEF_ACT,str,null,str);
 			if(mob.location().okMessage(mob,msg))
 			{

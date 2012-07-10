@@ -23,7 +23,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -85,7 +85,7 @@ public class Skill_Joke extends BardSkill
 					break;
 				case 2:
 					joke=  "What did the "+ob[1]+" say to the "+ob[2]+"?\n\r"
-					      +"'You are "+de[1]+" "+ob[3]+"!'";
+						  +"'You are "+de[1]+" "+ob[3]+"!'";
 					break;
 				case 3:
 				{
@@ -93,27 +93,27 @@ public class Skill_Joke extends BardSkill
 					String jokerName=mob.name();
 					if(mob==target) jokerName="Someone";
 					joke= jokerName+": 'Knock, knock!'\n\r"
-					     +targetName+": 'Who's there?'\n\r"
-					     +jokerName+": 'A "+ob[1]+".'\n\r"
-					     +targetName+": 'A "+ob[1]+" who?'\n\r"
-					     +jokerName+": '"+de[1]+" "+ob[2]+"!'";
+						 +targetName+": 'Who's there?'\n\r"
+						 +jokerName+": 'A "+ob[1]+".'\n\r"
+						 +targetName+": 'A "+ob[1]+" who?'\n\r"
+						 +jokerName+": '"+de[1]+" "+ob[2]+"!'";
 					break;
 				}
 				case 4:
 					joke= "Q: What's the difference between a "+ob[1]+" and a "+ob[2]+"?\n\r"
-					     +"A: A "+ob[1]+" is "+de[1]+" "+ob[3]+"!";
+						 +"A: A "+ob[1]+" is "+de[1]+" "+ob[3]+"!";
 					break;
 				case 5:
 					joke= "Q: What did the big "+ob[1]+" say to the little "+ob[1]+"?\n\r"
-					     +"A: 'You are "+de[1]+" "+ob[2]+"!'";
+						 +"A: 'You are "+de[1]+" "+ob[2]+"!'";
 					break;
 				case 6:
 					joke= "Q: What do you call "+de[1]+" "+ob[1]+" without "+de[2]+" "+ob[2]+"?\n\r"
-					     +"A: "+CMStrings.capitalizeAndLower(de[3])+" "+ob[3]+"!";
+						 +"A: "+CMStrings.capitalizeAndLower(de[3])+" "+ob[3]+"!";
 					break;
 				case 7:
 					joke= "Q: When is "+de[1]+" "+ob[1]+" not "+de[1]+" "+ob[1]+"?\n\r"
-					     +"A: When it's "+de[2]+" "+ob[2]+"!'";
+						 +"A: When it's "+de[2]+" "+ob[2]+"!'";
 					break;
 				}
 				str="<S-NAME> joke(s) to <T-NAMESELF>:\n\r"+joke;

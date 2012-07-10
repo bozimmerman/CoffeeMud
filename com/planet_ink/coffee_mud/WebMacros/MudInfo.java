@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -34,30 +34,30 @@ import java.util.*;
 */
 public class MudInfo extends StdWebMacro
 {
-    public String name()    {return this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);}
-    public boolean isAdminMacro()   {return false;}
+	public String name()	{return this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);}
+	public boolean isAdminMacro()   {return false;}
 
-    public String runMacro(ExternalHTTPRequests httpReq, String parm)
-    {
-        java.util.Map<String,String> parms=parseParms(parm);
-        if(parms.containsKey("DOMAIN"))
-            return CMProps.getVar(CMProps.SYSTEM_MUDDOMAIN);
-        if(parms.containsKey("EMAILOK"))
-            return ""+(CMProps.getVar(CMProps.SYSTEM_MAILBOX).length()>0);
-        if(parms.containsKey("MAILBOX"))
-            return CMProps.getVar(CMProps.SYSTEM_MAILBOX);
-        if(parms.containsKey("NAME"))
-            return CMProps.getVar(CMProps.SYSTEM_MUDNAME);
-        if(parms.containsKey("CHARSET"))
-            return CMProps.getVar(CMProps.SYSTEM_CHARSETOUTPUT);
-        if(parms.containsKey("PORT"))
-        {
-            String ports=CMProps.getVar(CMProps.SYSTEM_MUDPORTS).trim();
-            int x=ports.indexOf(' ');
-            if(x<0)
-                return clearWebMacros(ports);
-            return clearWebMacros(ports.substring(0,x));
-        }
-        return "";
-    }
+	public String runMacro(ExternalHTTPRequests httpReq, String parm)
+	{
+		java.util.Map<String,String> parms=parseParms(parm);
+		if(parms.containsKey("DOMAIN"))
+			return CMProps.getVar(CMProps.SYSTEM_MUDDOMAIN);
+		if(parms.containsKey("EMAILOK"))
+			return ""+(CMProps.getVar(CMProps.SYSTEM_MAILBOX).length()>0);
+		if(parms.containsKey("MAILBOX"))
+			return CMProps.getVar(CMProps.SYSTEM_MAILBOX);
+		if(parms.containsKey("NAME"))
+			return CMProps.getVar(CMProps.SYSTEM_MUDNAME);
+		if(parms.containsKey("CHARSET"))
+			return CMProps.getVar(CMProps.SYSTEM_CHARSETOUTPUT);
+		if(parms.containsKey("PORT"))
+		{
+			String ports=CMProps.getVar(CMProps.SYSTEM_MUDPORTS).trim();
+			int x=ports.indexOf(' ');
+			if(x<0)
+				return clearWebMacros(ports);
+			return clearWebMacros(ports.substring(0,x));
+		}
+		return "";
+	}
 }

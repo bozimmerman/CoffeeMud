@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -39,28 +39,28 @@ public class Chant_GrowClub extends Chant
 	public String ID() { return "Chant_GrowClub"; }
 	public String name(){ return "Grow Club";}
 	public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PLANTGROWTH;}
-    public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
+	public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return 0;}
 
-    public int castingQuality(MOB mob, Physical target)
-    {
-        if(mob!=null)
-        {
-            if((mob.isInCombat())&&(mob.fetchWieldedItem()==null))
-            {
-                Room R=mob.location();
-                if((R!=null)
-                &&(R.findItem(null,"club")==null)
-                &&((R.domainType()==Room.DOMAIN_OUTDOORS_WOODS)
-                ||((R.myResource()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_WOODEN)
-                ||(R.domainType()==Room.DOMAIN_OUTDOORS_JUNGLE)))
-                    return super.castingQuality(mob, target,Ability.QUALITY_BENEFICIAL_SELF);
-            }
-        }
-        return super.castingQuality(mob,target);
-    }
-    
+	public int castingQuality(MOB mob, Physical target)
+	{
+		if(mob!=null)
+		{
+			if((mob.isInCombat())&&(mob.fetchWieldedItem()==null))
+			{
+				Room R=mob.location();
+				if((R!=null)
+				&&(R.findItem(null,"club")==null)
+				&&((R.domainType()==Room.DOMAIN_OUTDOORS_WOODS)
+				||((R.myResource()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_WOODEN)
+				||(R.domainType()==Room.DOMAIN_OUTDOORS_JUNGLE)))
+					return super.castingQuality(mob, target,Ability.QUALITY_BENEFICIAL_SELF);
+			}
+		}
+		return super.castingQuality(mob,target);
+	}
+	
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if((mob.location().domainType()!=Room.DOMAIN_OUTDOORS_WOODS)

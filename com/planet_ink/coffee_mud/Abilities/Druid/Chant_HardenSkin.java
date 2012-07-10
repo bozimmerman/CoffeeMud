@@ -25,7 +25,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -40,7 +40,7 @@ public class Chant_HardenSkin extends Chant
 	public String ID() { return "Chant_HardenSkin"; }
 	public String name(){ return "Harden Skin";}
 	public String displayText(){return "(Harden Skin)";}
-    public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_SHAPE_SHIFTING;}
+	public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_SHAPE_SHIFTING;}
 	public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
 
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
@@ -52,7 +52,7 @@ public class Chant_HardenSkin extends Chant
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{
 		super.affectCharStats(affected,affectableStats);
-        int bonus=(2*super.getXLEVELLevel(invoker()));
+		int bonus=(2*super.getXLEVELLevel(invoker()));
 		affectableStats.setStat(CharStats.STAT_SAVE_COLD,affectableStats.getStat(CharStats.STAT_SAVE_COLD)+10+affected.phyStats().level()+bonus);
 		affectableStats.setStat(CharStats.STAT_SAVE_FIRE,affectableStats.getStat(CharStats.STAT_SAVE_FIRE)+affected.phyStats().level()+bonus);
 		affectableStats.setStat(CharStats.STAT_SAVE_WATER,affectableStats.getStat(CharStats.STAT_SAVE_WATER)+25+affected.phyStats().level()+bonus);

@@ -26,7 +26,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -43,16 +43,16 @@ public class Song_Thanks extends Song
 	protected boolean skipStandardSongInvoke(){return true;}
 	protected boolean maliciousButNotAggressiveFlag(){return true;}
 
-    public int castingQuality(MOB mob, Physical target)
-    {
-        if(mob!=null)
-        {
-            if(mob.isInCombat()&&(mob.isMonster()))
-                return Ability.QUALITY_INDIFFERENT;
-        }
-        return super.castingQuality(mob,target);
-    }
-    
+	public int castingQuality(MOB mob, Physical target)
+	{
+		if(mob!=null)
+		{
+			if(mob.isInCombat()&&(mob.isMonster()))
+				return Ability.QUALITY_INDIFFERENT;
+		}
+		return super.castingQuality(mob,target);
+	}
+	
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID))
@@ -117,7 +117,7 @@ public class Song_Thanks extends Song
 	}
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-        timeOut=0;
+		timeOut=0;
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 

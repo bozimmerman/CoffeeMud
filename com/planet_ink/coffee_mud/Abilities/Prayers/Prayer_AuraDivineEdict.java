@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -45,8 +45,8 @@ public class Prayer_AuraDivineEdict extends Prayer
 	public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_SELF;}
 	protected int overrideMana(){return Integer.MAX_VALUE;}
 	public long flags(){return Ability.FLAG_HOLY;}
-    protected String godName="the gods";
-    protected boolean noRecurse=false;
+	protected String godName="the gods";
+	protected boolean noRecurse=false;
 
 
 	public void unInvoke()
@@ -130,16 +130,16 @@ public class Prayer_AuraDivineEdict extends Prayer
 		return true;
 	}
 	
-    public int castingQuality(MOB mob, Physical target)
-    {
-        if(mob!=null)
-        {
-            if(mob.isInCombat())
-                return Ability.QUALITY_INDIFFERENT;
-        }
-        return super.castingQuality(mob,target);
-    }
-    
+	public int castingQuality(MOB mob, Physical target)
+	{
+		if(mob!=null)
+		{
+			if(mob.isInCombat())
+				return Ability.QUALITY_INDIFFERENT;
+		}
+		return super.castingQuality(mob,target);
+	}
+	
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=mob;

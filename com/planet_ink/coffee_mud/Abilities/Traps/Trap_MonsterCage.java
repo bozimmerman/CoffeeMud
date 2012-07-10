@@ -23,7 +23,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -92,16 +92,16 @@ public class Trap_MonsterCage extends StdTrap
 		super.unInvoke();
 	}
 
-    public List<Item> getTrapComponents() {
-        Vector V=new Vector();
-        Item I=CMClass.getItem("GenCaged");
-        ((CagedAnimal)I).setCageText(text());
-        I.recoverPhyStats();
-        I.text();
-        V.addElement(I);
-        return V;
-    }
-    
+	public List<Item> getTrapComponents() {
+		Vector V=new Vector();
+		Item I=CMClass.getItem("GenCaged");
+		((CagedAnimal)I).setCageText(text());
+		I.recoverPhyStats();
+		I.text();
+		V.addElement(I);
+		return V;
+	}
+	
 	public boolean canSetTrapOn(MOB mob, Physical P)
 	{
 		if(!super.canSetTrapOn(mob,P)) return false;

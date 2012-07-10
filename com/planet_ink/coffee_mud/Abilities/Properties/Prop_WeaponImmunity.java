@@ -23,7 +23,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -46,26 +46,26 @@ public class Prop_WeaponImmunity extends Property
 	}
 	public void setMiscText(String newValue)
 	{
-	    super.setMiscText(newValue);
-	    flags=new Hashtable();
-	    Vector<String> V=CMParms.parse(newValue.toUpperCase());
-	    Object c=null;
-	    String s=null;
-	    for(int v=0;v<V.size();v++)
-	    {
-	        s=(String)V.elementAt(v);
-	        c=new Character(s.charAt(0));
-	        if((s.charAt(0)=='-')||(s.charAt(0)=='+'))
-	            s=s.substring(1);
-	        else
-	            c=new Character('+');
-	        if(s.startsWith("LEVEL"))
-	        {
-	            c=((Character)c).charValue()+" "+s.substring(5).trim();
-	            s=s.substring(5).trim();
-	        }
-            flags.put(s,c);
-	    }
+		super.setMiscText(newValue);
+		flags=new Hashtable();
+		Vector<String> V=CMParms.parse(newValue.toUpperCase());
+		Object c=null;
+		String s=null;
+		for(int v=0;v<V.size();v++)
+		{
+			s=(String)V.elementAt(v);
+			c=new Character(s.charAt(0));
+			if((s.charAt(0)=='-')||(s.charAt(0)=='+'))
+				s=s.substring(1);
+			else
+				c=new Character('+');
+			if(s.startsWith("LEVEL"))
+			{
+				c=((Character)c).charValue()+" "+s.substring(5).trim();
+				s=s.substring(5).trim();
+			}
+			flags.put(s,c);
+		}
 
 	}
 
@@ -111,10 +111,10 @@ public class Prop_WeaponImmunity extends Property
 			if((foundPlusMinus==null)&&(msg.tool() instanceof Weapon))
 			{
 				Weapon W=(Weapon)msg.tool();
-			    foundPlusMinus=(Character)flags.get(Weapon.TYPE_DESCS[W.weaponType()]);
-			    foundPlusMinus=(Character)flags.get(Weapon.CLASS_DESCS[W.weaponClassification()]);
-			    foundPlusMinus=(Character)flags.get((CMLib.flags().isABonusItems(W))?"MAGIC":"NONMAGIC");
-			    foundPlusMinus=(Character)flags.get(RawMaterial.CODES.NAME((W).material()));
+				foundPlusMinus=(Character)flags.get(Weapon.TYPE_DESCS[W.weaponType()]);
+				foundPlusMinus=(Character)flags.get(Weapon.CLASS_DESCS[W.weaponClassification()]);
+				foundPlusMinus=(Character)flags.get((CMLib.flags().isABonusItems(W))?"MAGIC":"NONMAGIC");
+				foundPlusMinus=(Character)flags.get(RawMaterial.CODES.NAME((W).material()));
 				if(foundPlusMinus!=null)
 				{
 					if((foundPlusMinus.charValue()=='-')&&(immune))
@@ -125,7 +125,7 @@ public class Prop_WeaponImmunity extends Property
 				}
 				else
 				{
-				    Object O=flags.get("LEVEL");
+					Object O=flags.get("LEVEL");
 					if((O!=null)&&(O instanceof String)&&(((String)O).length()>3))
 					{
 						String lvl=(String)O;
@@ -156,7 +156,7 @@ public class Prop_WeaponImmunity extends Property
 				case Ability.ACODE_CHANT:
 				case Ability.ACODE_SONG:
 					{
-				    	foundPlusMinus=(Character)flags.get("MAGICSKILLS");
+						foundPlusMinus=(Character)flags.get("MAGICSKILLS");
 						if(foundPlusMinus==null) foundPlusMinus=(Character)flags.get("MAGIC");
 						if(foundPlusMinus!=null)
 						{

@@ -13,7 +13,7 @@ Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
 You may obtain a copy of the License at
 
-    http://www.apache.org/licenses/LICENSE-2.0
+	http://www.apache.org/licenses/LICENSE-2.0
 
 Unless required by applicable law or agreed to in writing, software
 distributed under the License is distributed on an "AS IS" BASIS,
@@ -180,71 +180,71 @@ public class AutoPlayTester
 		System.out.println("Executing: "+filename);
 		String js=getJavaScript(filename);
 		
-        Context cx = Context.enter();
-        try
-        {
-            JScriptEvent scope = new JScriptEvent(this);
-            cx.initStandardObjects(scope);
-            scope.defineFunctionProperties(JScriptEvent.functions, JScriptEvent.class,
-                                           ScriptableObject.DONTENUM);
-            cx.evaluateString(scope, js.toString(),"<cmd>", 1, null);
-        }
-        catch(Exception e)
-        {
-            System.err.println("JSCRIPT Error: "+e.getMessage());
-        }
-        Context.exit();
+		Context cx = Context.enter();
+		try
+		{
+			JScriptEvent scope = new JScriptEvent(this);
+			cx.initStandardObjects(scope);
+			scope.defineFunctionProperties(JScriptEvent.functions, JScriptEvent.class,
+										   ScriptableObject.DONTENUM);
+			cx.evaluateString(scope, js.toString(),"<cmd>", 1, null);
+		}
+		catch(Exception e)
+		{
+			System.err.println("JSCRIPT Error: "+e.getMessage());
+		}
+		Context.exit();
 	}
 	
-    protected static class JScriptEvent extends ScriptableObject
-    {
-        public String getClassName(){ return "JScriptEvent";}
-        static final long serialVersionUID=43;
-        protected AutoPlayTester testObj;
-        public static final String[] functions={ "tester", "toJavaString", "writeLine", "login", "stdout", 
-        										 "stderr", "waitFor", "waitForMultiMatch", "startsWith", 
-        										 "name","rand","sleep"};
-        public AutoPlayTester tester() { return testObj;}
-        public String toJavaString(Object O){return Context.toString(O);}
-        public boolean startsWith(Object O1, Object O2){ try { return toJavaString(O1).startsWith(toJavaString(O2)); } catch(Exception e) {return false; } }
-        public boolean login(){ return testObj.login();}
-        public String name() { return testObj.name;}
-        public void stdout(Object O) { try { System.out.println(toJavaString(O)); } catch(Exception e) { } }
-        public void sleep(Object O) { try { Thread.sleep(Long.valueOf(toJavaString(O)).longValue()); } catch(Exception e) { } }
-        public void stderr(Object O) { try { System.err.println(toJavaString(O)); } catch(Exception e) { } }
-        public int rand(int x){ int y=(int)Math.round(Math.floor(Math.random() * (((double)x)-0.001))); return (y>0)?y:-y;}
-        public Object waitFor(Object regexO)
-        {
-        	try {
-	        	return testObj.waitFor(toJavaString(regexO),1)[0];
-        	} catch(Exception e) { return null; }
-        }
-        public Object waitForMultiMatch(Object regexO, Object numMatches)
-        {
-        	try {
-	        	return testObj.waitFor(toJavaString(regexO),Integer.parseInt(toJavaString(numMatches)));
-        	} catch(Exception e) { return null; }
-        }
-        public boolean writeLine(Object O) 
-        {
-        	try {
-	        	testObj.writeln(toJavaString(O));
-	        	return true;
-        	} catch(Exception e) { return false; }
-        }
-        
-        public JScriptEvent(AutoPlayTester testObj)
-        {
-        	this.testObj=testObj;
-        }
-    }
-    
-    public final static int s_int(final String INT)
-    {
-        try{ return Integer.parseInt(INT); }
-        catch(Exception e){ return 0;}
-    }
-    
+	protected static class JScriptEvent extends ScriptableObject
+	{
+		public String getClassName(){ return "JScriptEvent";}
+		static final long serialVersionUID=43;
+		protected AutoPlayTester testObj;
+		public static final String[] functions={ "tester", "toJavaString", "writeLine", "login", "stdout", 
+												 "stderr", "waitFor", "waitForMultiMatch", "startsWith", 
+												 "name","rand","sleep"};
+		public AutoPlayTester tester() { return testObj;}
+		public String toJavaString(Object O){return Context.toString(O);}
+		public boolean startsWith(Object O1, Object O2){ try { return toJavaString(O1).startsWith(toJavaString(O2)); } catch(Exception e) {return false; } }
+		public boolean login(){ return testObj.login();}
+		public String name() { return testObj.name;}
+		public void stdout(Object O) { try { System.out.println(toJavaString(O)); } catch(Exception e) { } }
+		public void sleep(Object O) { try { Thread.sleep(Long.valueOf(toJavaString(O)).longValue()); } catch(Exception e) { } }
+		public void stderr(Object O) { try { System.err.println(toJavaString(O)); } catch(Exception e) { } }
+		public int rand(int x){ int y=(int)Math.round(Math.floor(Math.random() * (((double)x)-0.001))); return (y>0)?y:-y;}
+		public Object waitFor(Object regexO)
+		{
+			try {
+				return testObj.waitFor(toJavaString(regexO),1)[0];
+			} catch(Exception e) { return null; }
+		}
+		public Object waitForMultiMatch(Object regexO, Object numMatches)
+		{
+			try {
+				return testObj.waitFor(toJavaString(regexO),Integer.parseInt(toJavaString(numMatches)));
+			} catch(Exception e) { return null; }
+		}
+		public boolean writeLine(Object O) 
+		{
+			try {
+				testObj.writeln(toJavaString(O));
+				return true;
+			} catch(Exception e) { return false; }
+		}
+		
+		public JScriptEvent(AutoPlayTester testObj)
+		{
+			this.testObj=testObj;
+		}
+	}
+	
+	public final static int s_int(final String INT)
+	{
+		try{ return Integer.parseInt(INT); }
+		catch(Exception e){ return 0;}
+	}
+	
 	public static void main(String[] args)
 	{
 		if(args.length<4)

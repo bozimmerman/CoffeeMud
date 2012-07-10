@@ -26,7 +26,7 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -54,48 +54,48 @@ public class GenCoins extends GenItem implements Coins
 
 	public String Name()
 	{
-        return CMLib.beanCounter().getDenominationName(getCurrency(),getDenomination(),getNumberOfCoins());
+		return CMLib.beanCounter().getDenominationName(getCurrency(),getDenomination(),getNumberOfCoins());
 	}
 	public String displayText()
 	{
-        return CMLib.beanCounter().getDenominationName(getCurrency(),getDenomination(),getNumberOfCoins())+((getNumberOfCoins()==1)?" lies here.":" lie here.");
+		return CMLib.beanCounter().getDenominationName(getCurrency(),getDenomination(),getNumberOfCoins())+((getNumberOfCoins()==1)?" lies here.":" lie here.");
 	}
 
-    protected boolean abilityImbuesMagic(){return false;}
+	protected boolean abilityImbuesMagic(){return false;}
 	public void setDynamicMaterial()
 	{
-	    if((CMLib.english().containsString(name(),"note"))
-	    ||(CMLib.english().containsString(name(),"bill"))
-	    ||(CMLib.english().containsString(name(),"dollar")))
-	        setMaterial(RawMaterial.RESOURCE_PAPER);
-	    else
-	    {
-	    	RawMaterial.CODES codes = RawMaterial.CODES.instance();
+		if((CMLib.english().containsString(name(),"note"))
+		||(CMLib.english().containsString(name(),"bill"))
+		||(CMLib.english().containsString(name(),"dollar")))
+			setMaterial(RawMaterial.RESOURCE_PAPER);
+		else
+		{
+			RawMaterial.CODES codes = RawMaterial.CODES.instance();
 			for(int s=0;s<codes.total();s++)
-			    if(CMLib.english().containsString(name(),codes.name(s)))
-			    {
-			        setMaterial(codes.get(s));
-			        break;
-			    }
-	    }
+				if(CMLib.english().containsString(name(),codes.name(s)))
+				{
+					setMaterial(codes.get(s));
+					break;
+				}
+		}
 		setDescription(CMLib.beanCounter().getConvertableDescription(getCurrency(),getDenomination()));
 	}
 	public long getNumberOfCoins(){return phyStats().ability();}
 	public void setNumberOfCoins(long number)
 	{
-	    if(number<Integer.MAX_VALUE)
-		    basePhyStats().setAbility((int)number);
-	    else
-		    basePhyStats().setAbility(Integer.MAX_VALUE);
-	    recoverPhyStats();
+		if(number<Integer.MAX_VALUE)
+			basePhyStats().setAbility((int)number);
+		else
+			basePhyStats().setAbility(Integer.MAX_VALUE);
+		recoverPhyStats();
 	}
 	public double getDenomination(){return denomination;}
 	public void setDenomination(double valuePerCoin)
 	{
-	    if(valuePerCoin==0.0)
-	        valuePerCoin=1.0;
-	    denomination=valuePerCoin;
-	    setDynamicMaterial();
+		if(valuePerCoin==0.0)
+			valuePerCoin=1.0;
+		denomination=valuePerCoin;
+		setDynamicMaterial();
 	}
 	public double getTotalValue(){return CMath.mul(getDenomination(),getNumberOfCoins());}
 	public String getCurrency(){return currency;}
@@ -118,8 +118,8 @@ public class GenCoins extends GenItem implements Coins
 
 	public boolean putCoinsBack()
 	{
-	    if(amDestroyed())
-	        return false;
+		if(amDestroyed())
+			return false;
 		Coins alternative=null;
 		if(owner() instanceof Room)
 		{
@@ -128,11 +128,11 @@ public class GenCoins extends GenItem implements Coins
 			{
 				Item I=R.getItem(i);
 				if((I!=null)
-			    &&(I!=this)
-			    &&(I instanceof Coins)
-			    &&(((Coins)I).getDenomination()==getDenomination())
-			    &&((Coins)I).getCurrency().equals(getCurrency())
-			    &&(I.container()==container()))
+				&&(I!=this)
+				&&(I instanceof Coins)
+				&&(((Coins)I).getDenomination()==getDenomination())
+				&&((Coins)I).getCurrency().equals(getCurrency())
+				&&(I.container()==container()))
 				{
 					alternative=(Coins)I;
 					break;
@@ -147,11 +147,11 @@ public class GenCoins extends GenItem implements Coins
 			{
 				Item I=M.getItem(i);
 				if((I!=null)
-			    &&(I!=this)
-			    &&(I instanceof Coins)
-			    &&(((Coins)I).getDenomination()==getDenomination())
-			    &&((Coins)I).getCurrency().equals(getCurrency())
-			    &&(I.container()==container()))
+				&&(I!=this)
+				&&(I instanceof Coins)
+				&&(((Coins)I).getDenomination()==getDenomination())
+				&&((Coins)I).getCurrency().equals(getCurrency())
+				&&(I.container()==container()))
 				{
 					alternative=(Coins)I;
 					break;
@@ -177,9 +177,9 @@ public class GenCoins extends GenItem implements Coins
 		case 0: return ""+getNumberOfCoins();
 		case 1: return ""+getCurrency();
 		case 2: return ""+getDenomination();
-        default:
-            return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
-        }
+		default:
+			return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
+		}
 	}
 	public void setStat(String code, String val)
 	{
@@ -191,9 +191,9 @@ public class GenCoins extends GenItem implements Coins
 		case 0: setNumberOfCoins(CMath.s_parseIntExpression(val)); break;
 		case 1: setCurrency(val); break;
 		case 2: setDenomination(CMath.s_double(val)); break;
-        default:
-            CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code, val);
-            break;
+		default:
+			CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code, val);
+			break;
 		}
 	}
 	protected int getCodeNum(String code){
@@ -205,7 +205,7 @@ public class GenCoins extends GenItem implements Coins
 	public String[] getStatCodes()
 	{
 		if(codes!=null) return codes;
-        String[] MYCODES=CMProps.getStatCodesList(GenCoins.MYCODES,this);
+		String[] MYCODES=CMProps.getStatCodesList(GenCoins.MYCODES,this);
 		String[] superCodes=GenericBuilder.GENITEMCODES;
 		codes=new String[superCodes.length+MYCODES.length];
 		int i=0;

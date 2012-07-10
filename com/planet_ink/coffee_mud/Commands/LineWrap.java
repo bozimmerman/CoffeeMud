@@ -23,7 +23,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -42,29 +42,29 @@ public class LineWrap extends StdCommand
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
-	    if((mob==null)||(mob.playerStats()==null))
-	        return false;
-	    
+		if((mob==null)||(mob.playerStats()==null))
+			return false;
+		
 		if(commands.size()<2)
 		{
-		    String wrap=(mob.playerStats().getWrap()!=0)?(""+mob.playerStats().getWrap()):"Disabled";
+			String wrap=(mob.playerStats().getWrap()!=0)?(""+mob.playerStats().getWrap()):"Disabled";
 			mob.tell("Change your line wrap to what? Your current line wrap setting is: "+wrap+". Enter a number larger than 10 or 'disable'.");
 			return false;
 		}
 		String newWrap=CMParms.combine(commands,1);
 		int newVal=mob.playerStats().getWrap();
 		if((CMath.isInteger(newWrap))&&(CMath.s_int(newWrap)>10))
-		    newVal=CMath.s_int(newWrap);
+			newVal=CMath.s_int(newWrap);
 		else
 		if("DISABLED".startsWith(newWrap.toUpperCase()))
-		    newVal=0;
+			newVal=0;
 		else
 		{
 			mob.tell("'"+newWrap+"' is not a valid setting. Enter a number larger than 10 or 'disable'.");
-		    return false;
+			return false;
 		}
 		mob.playerStats().setWrap(newVal);
-	    String wrap=(mob.playerStats().getWrap()!=0)?(""+mob.playerStats().getWrap()):"Disabled";
+		String wrap=(mob.playerStats().getWrap()!=0)?(""+mob.playerStats().getWrap()):"Disabled";
 		mob.tell("Your new line wrap setting is: "+wrap+".");
 		return false;
 	}

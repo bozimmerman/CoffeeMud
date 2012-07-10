@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -72,7 +72,7 @@ public class IndoorWaterSurface extends StdRoom implements Drink
 	public void setLiquidHeld(int amount){}
 	public void setLiquidRemaining(int amount){}
 	public boolean containsDrink(){return true;}
-    public boolean disappearsAfterDrinking(){return false;}
-    public int amountTakenToFillMe(Drink theSource){return 0;}
+	public boolean disappearsAfterDrinking(){return false;}
+	public int amountTakenToFillMe(Drink theSource){return 0;}
 	public List<Integer> resourceChoices(){return UnderWater.roomResources;}
 }

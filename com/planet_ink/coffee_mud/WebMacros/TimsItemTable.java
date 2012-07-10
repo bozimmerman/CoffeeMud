@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -85,9 +85,9 @@ public class TimsItemTable extends StdWebMacro
 							break;
 						if(!(M instanceof ShopKeeper)) continue;
 						ShopKeeper SK=(ShopKeeper)M;
-			            for(Iterator<Environmental> i=SK.getShop().getStoreInventory();i.hasNext();)
-			            {
-			                Environmental E=(Environmental)i.next();
+						for(Iterator<Environmental> i=SK.getShop().getStoreInventory();i.hasNext();)
+						{
+							Environmental E=(Environmental)i.next();
 							if((endTime>0)&&(System.currentTimeMillis()>endTime))
 								break;
 							if((E instanceof Item)
@@ -102,29 +102,29 @@ public class TimsItemTable extends StdWebMacro
 		if(parms.containsKey("CRAFTED"))
 		{
 			str.append("<TR><TD>Name</TD><TD>LVL</TD><TD>TVLV</TD><TD>DIFF</TD><TD>DIFF%</TD><TD>ARM</TD><TD>ATT</TD><TD>DAM</TD><TD>ADJ</TD><TD>CAST</TD><TD>RESIST</TD></TR>");
-		    List<ItemCraftor> allCraftingSkills=new SVector<ItemCraftor>();
+			List<ItemCraftor> allCraftingSkills=new SVector<ItemCraftor>();
 			for(Enumeration<Ability> e=CMClass.abilities();e.hasMoreElements();)
 			{
 				Ability A=(Ability)e.nextElement();
 				if(A instanceof ItemCraftor)
 					allCraftingSkills.add((ItemCraftor)A.copyOf());
 			}
-		    List<ItemCraftor> craftingSkills=new SVector<ItemCraftor>();
+			List<ItemCraftor> craftingSkills=new SVector<ItemCraftor>();
 			for(ItemCraftor skill : allCraftingSkills)
 			{
-			    int ii=CMLib.ableMapper().lowestQualifyingLevel(skill.ID());
-			    for(int i=0;i<=craftingSkills.size();i++)
-			    	if(i>=craftingSkills.size())
-			    	{
-				    	craftingSkills.add(skill);
-				    	break;
-			    	}
-			    	else
-			    	if(ii<CMLib.ableMapper().lowestQualifyingLevel(craftingSkills.get(i).ID()))
-			    	{
-			    		craftingSkills.add(i,skill);
-			    		break;
-			    	}
+				int ii=CMLib.ableMapper().lowestQualifyingLevel(skill.ID());
+				for(int i=0;i<=craftingSkills.size();i++)
+					if(i>=craftingSkills.size())
+					{
+						craftingSkills.add(skill);
+						break;
+					}
+					else
+					if(ii<CMLib.ableMapper().lowestQualifyingLevel(craftingSkills.get(i).ID()))
+					{
+						craftingSkills.add(i,skill);
+						break;
+					}
 			}
 			for(ItemCraftor skill : craftingSkills)
 			{
@@ -199,7 +199,7 @@ public class TimsItemTable extends StdWebMacro
 		}
 		else
 			str.append("<TR><TD><FONT COLOR=RED>Unknown parms: "+CMParms.toStringList(parms)+".  Try WORLD or ITEMS.</TD></TR>");
-        return clearWebMacros(str)+"</TABLE>";
+		return clearWebMacros(str)+"</TABLE>";
 	}
 	
 	public boolean doneBefore(Vector V, Item I)

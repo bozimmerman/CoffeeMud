@@ -23,7 +23,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -93,8 +93,8 @@ public class StdSmokable extends StdContainer implements Light
 			{
 				if(((LightSource.inTheRain(room)&&(goesOutInTheRain()))
 					||(LightSource.inTheWater(msg.source(),room)))
-			    &&(durationTicks>0)
-			    &&(mob.isMine(this)))
+				&&(durationTicks>0)
+				&&(mob.isMine(this)))
 				{
 					mob.tell("It's too wet to light "+name()+" here.");
 					return false;
@@ -133,15 +133,15 @@ public class StdSmokable extends StdContainer implements Light
 					MOB mob=(MOB)owner();
 					if((mob.location()!=null)
 					&&(CMLib.flags().aliveAwakeMobile(mob,true)))
-                    {
+					{
 						tickStatus=Tickable.STATUS_WEATHER;
 						mob.location().show(mob,this,this,CMMsg.MSG_HANDS,"<S-NAME> puff(s) on <T-NAME>.");
-                        if((CMLib.dice().roll(1,1000,0)==1)&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.AUTODISEASE)))
-                        {
-                            Ability A=CMClass.getAbility("Disease_Cancer");
-                            if(A!=null) A.invoke(mob,mob,true,0);
-                        }
-                    }
+						if((CMLib.dice().roll(1,1000,0)==1)&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.AUTODISEASE)))
+						{
+							Ability A=CMClass.getAbility("Disease_Cancer");
+							if(A!=null) A.invoke(mob,mob,true,0);
+						}
+					}
 				}
 				tickStatus=Tickable.STATUS_NOT;
 				return true;
@@ -149,7 +149,7 @@ public class StdSmokable extends StdContainer implements Light
 			if(owner() instanceof Room)
 			{
 				tickStatus=Tickable.STATUS_CLASS;
-                Room R=(Room)owner;
+				Room R=(Room)owner;
 				if(R.numInhabitants()>0)
 					R.showHappens(CMMsg.MSG_OK_VISUAL,name()+" burns out.");
 				if(destroyedWhenBurnedOut())
@@ -160,7 +160,7 @@ public class StdSmokable extends StdContainer implements Light
 			if(owner() instanceof MOB)
 			{
 				tickStatus=Tickable.STATUS_DEAD;
-                MOB M=(MOB)owner();
+				MOB M=(MOB)owner();
 				M.tell(M,null,this,"<O-NAME> burns out.");
 				durationTicks=0;
 				if(destroyedWhenBurnedOut())
@@ -169,8 +169,8 @@ public class StdSmokable extends StdContainer implements Light
 				M.recoverCharStats();
 				M.recoverMaxState();
 				M.recoverPhyStats();
-                if(M.location()!=null)
-    				M.location().recoverRoomStats();
+				if(M.location()!=null)
+					M.location().recoverRoomStats();
 			}
 			light(false);
 			durationTicks=0;
@@ -179,16 +179,16 @@ public class StdSmokable extends StdContainer implements Light
 		return false;
 	}
 
-    public void getAddictedTo(MOB mob, Item item)
-    {
-        Ability A=mob.fetchEffect("Addictions");
-        if(A==null)
-        {
-            A=CMClass.getAbility("Addictions");
-            if(A!=null) A.invoke(mob,item,true,0);
-        }
-    }
-    
+	public void getAddictedTo(MOB mob, Item item)
+	{
+		Ability A=mob.fetchEffect("Addictions");
+		if(A==null)
+		{
+			A=CMClass.getAbility("Addictions");
+			if(A!=null) A.invoke(mob,item,true,0);
+		}
+	}
+	
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		MOB mob=msg.source();
@@ -196,7 +196,7 @@ public class StdSmokable extends StdContainer implements Light
 		Room room=mob.location();
 		if(room==null) return;
 		if(((LightSource.inTheRain(room)&&goesOutInTheRain())
-           ||(LightSource.inTheWater(msg.source(),room)))
+		   ||(LightSource.inTheWater(msg.source(),room)))
 		&&(isLit())
 		&&(durationTicks>0)
 		&&(mob.isMine(this))
@@ -229,18 +229,18 @@ public class StdSmokable extends StdContainer implements Light
 					if(capacity>0)
 					{
 						List<Item> V=getContents();
-                        Item I=null;
+						Item I=null;
 						for(int v=0;v<V.size();v++)
-                        {
-                            I=(Item)V.get(v);
-                            if(CMLib.dice().roll(1,100,0)==1)
-                                getAddictedTo(msg.source(),I);
-                            I.destroy();
-                        }
+						{
+							I=(Item)V.get(v);
+							if(CMLib.dice().roll(1,100,0)==1)
+								getAddictedTo(msg.source(),I);
+							I.destroy();
+						}
 					}
-                    else
-                    if(CMLib.dice().roll(1,100,0)==1)
-                        getAddictedTo(msg.source(),this);
+					else
+					if(CMLib.dice().roll(1,100,0)==1)
+						getAddictedTo(msg.source(),this);
 
 					light(true);
 					CMLib.threads().startTickDown(this,Tickable.TICKID_LIGHT_FLICKERS,1);

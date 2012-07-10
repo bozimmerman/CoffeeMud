@@ -24,7 +24,7 @@ import java.io.IOException;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -105,9 +105,9 @@ public class Restring extends StdCommand
 				while(!ok)
 				{
 					int showNumber=0;
-                    CMLib.genEd().genName(mob,thang,++showNumber,showFlag);
-                    CMLib.genEd().genDisplayText(mob,thang,++showNumber,showFlag);
-                    CMLib.genEd().genDescription(mob,thang,++showNumber,showFlag);
+					CMLib.genEd().genName(mob,thang,++showNumber,showFlag);
+					CMLib.genEd().genDisplayText(mob,thang,++showNumber,showFlag);
+					CMLib.genEd().genDescription(mob,thang,++showNumber,showFlag);
 					if(showFlag<-900){ ok=true; break;}
 					if(showFlag>0){ showFlag=-1; continue;}
 					showFlag=CMath.s_int(mob.session().prompt("Edit which? ",""));
@@ -130,7 +130,7 @@ public class Restring extends StdCommand
 	public boolean securityCheck(MOB mob)
 	{
 		return CMSecurity.isAllowedStartsWith(mob,mob.location(),"CMD")
-		     ||CMSecurity.isAllowed(mob,mob.location(),"RESTRING");
+			 ||CMSecurity.isAllowed(mob,mob.location(),"RESTRING");
 	}
 
 	

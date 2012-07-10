@@ -23,7 +23,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -223,36 +223,36 @@ public interface Ability extends Environmental
 	 * @param actionsRemaining number of free actions the player is defficient.
 	 * @return whether the skill should be allowed to invoke.  false cancels altogether.
 	 */
-    public boolean preInvoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel, int secondsElapsed, double actionsRemaining);
-    
-    /**
-     * This method is called when a player or the system invokes this skill,  
-     * casts this spell, etc.
-     * Calls the more complete invoke method without an empty command strings vector
-     * unless target is non-null, in which case the vector will contain the name
-     * of the target. 
+	public boolean preInvoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel, int secondsElapsed, double actionsRemaining);
+	
+	/**
+	 * This method is called when a player or the system invokes this skill,  
+	 * casts this spell, etc.
+	 * Calls the more complete invoke method without an empty command strings vector
+	 * unless target is non-null, in which case the vector will contain the name
+	 * of the target. 
 	 * @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#invoke(MOB, Vector, Physical, boolean, int)
 	 * @param mob the player or mob invoking the skill
 	 * @param target null, unless being auto-invoked. Represents an override target.
 	 * @param auto false if player enters command, true if system invokes the command
 	 * @param asLevel -1, unless being auto-invoked, when it is the level to invoke it at.
-     * @return whether the skill successfully invoked.
-     */
+	 * @return whether the skill successfully invoked.
+	 */
 	public boolean invoke(MOB mob, Physical target, boolean auto, int asLevel);
 	
-    /**
-     * This method is called when a player or the system invokes this skill,  
-     * casts this spell, etc.
-     * Calls the more complete invoke method without an empty command strings vector
-     * unless target is non-null, in which case the vector will contain the name
-     * of the target. 
+	/**
+	 * This method is called when a player or the system invokes this skill,  
+	 * casts this spell, etc.
+	 * Calls the more complete invoke method without an empty command strings vector
+	 * unless target is non-null, in which case the vector will contain the name
+	 * of the target. 
 	 * @param mob the player or mob invoking the skill
 	 * @param commands the parameters entered for the skill (minus trigger word)
 	 * @param target null, unless being auto-invoked. Represents an override target.
 	 * @param auto false if player enters command, true if system invokes the command
 	 * @param asLevel -1, unless being auto-invoked, when it is the level to invoke it at.
-     * @return whether the skill successfully invoked.
-     */
+	 * @return whether the skill successfully invoked.
+	 */
 	public boolean invoke(MOB mob, Vector commands, Physical target, boolean auto, int asLevel);
 
 	/**
@@ -525,19 +525,19 @@ public interface Ability extends Environmental
 	 * @param mob the mob whose factions to check
 	 * @return whether there are any faction reasons not to cast this.
 	 */
-    public boolean appropriateToMyFactions(MOB mob);
-    
-    /**
-     * This method calculates the strength level of this skill for the
-     * given mob, and taking into account the given override-level (asLevel).
-     * The level returned should be based on a minimum baseline level (usually
-     * the class level of the class that qualifies for this skill at the
-     * lowest level), and should take into account the number of levels the
-     * mob has over and above that in appropriate classes
-     * @param mob the mob to evaluate the skill level of
-     * @param asLevel if greater than 0, this method always returns it
-     * @return the level of power the given mob has in this skill.
-     */
+	public boolean appropriateToMyFactions(MOB mob);
+	
+	/**
+	 * This method calculates the strength level of this skill for the
+	 * given mob, and taking into account the given override-level (asLevel).
+	 * The level returned should be based on a minimum baseline level (usually
+	 * the class level of the class that qualifies for this skill at the
+	 * lowest level), and should take into account the number of levels the
+	 * mob has over and above that in appropriate classes
+	 * @param mob the mob to evaluate the skill level of
+	 * @param asLevel if greater than 0, this method always returns it
+	 * @return the level of power the given mob has in this skill.
+	 */
 	public int adjustedLevel(MOB mob, int asLevel);
 
 	/**
@@ -683,125 +683,125 @@ public interface Ability extends Environmental
 	public static final int DOMAIN_DANCING=11<<5;
 	/** constant mask returned by classificationCode() designating this ability as being Playing @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#classificationCode() */
 	public static final int DOMAIN_PLAYING=12<<5;
-    /** constant mask returned by classificationCode() designating this ability as being Deceptive @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#classificationCode() */
-    public static final int DOMAIN_DECEPTIVE=13<<5;
-    /** constant mask returned by classificationCode() designating this ability as being Detrapping @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#classificationCode() */
-    public static final int DOMAIN_DETRAP=14<<5;
-    /** constant mask returned by classificationCode() designating this ability as being RopeUsing @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#classificationCode() */
-    public static final int DOMAIN_BINDING=15<<5;
-    /** constant mask returned by classificationCode() designating this ability as being Stealing @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#classificationCode() */
-    public static final int DOMAIN_STEALING=16<<5;
-    /** constant mask returned by classificationCode() designating this ability as being Stealthy @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#classificationCode() */
-    public static final int DOMAIN_STEALTHY=17<<5;
-    /** constant mask returned by classificationCode() designating this ability as being Trapping @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#classificationCode() */
-    public static final int DOMAIN_TRAPPING=18<<5;
-    /** constant mask returned by classificationCode() designating this ability as being Alert @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#classificationCode() */
-    public static final int DOMAIN_ALERT=19<<5;
-    /** constant mask returned by classificationCode() designating this ability as being holy protection @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#classificationCode() */
-    public static final int DOMAIN_HOLYPROTECTION=20<<5;
-    /** constant mask returned by classificationCode() designating this ability as being healing @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#classificationCode() */
-    public static final int DOMAIN_HEALING=21<<5;
-    /** constant mask returned by classificationCode() designating this ability as being vexing @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#classificationCode() */
-    public static final int DOMAIN_VEXING=22<<5;
-    /** constant mask returned by classificationCode() designating this ability as being blessing @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#classificationCode() */
-    public static final int DOMAIN_BLESSING=23<<5;
-    /** constant mask returned by classificationCode() designating this ability as being cursing @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#classificationCode() */
-    public static final int DOMAIN_CURSING=24<<5;
-    /** constant mask returned by classificationCode() designating this ability as being evangelistic @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#classificationCode() */
-    public static final int DOMAIN_EVANGELISM=25<<5;
-    /** constant mask returned by classificationCode() designating this ability as being moon summoning @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#classificationCode() */
-    public static final int DOMAIN_MOONSUMMONING=26<<5;
-    /** constant mask returned by classificationCode() designating this ability as being moon altering @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#classificationCode() */
-    public static final int DOMAIN_MOONALTERING=27<<5;
-    /** constant mask returned by classificationCode() designating this ability as being gathering skill @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#classificationCode() */
-    public static final int DOMAIN_GATHERINGSKILL=28<<5;
-    /** constant mask returned by classificationCode() designating this ability as being crafting skill @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#classificationCode() */
-    public static final int DOMAIN_CRAFTINGSKILL=29<<5;
+	/** constant mask returned by classificationCode() designating this ability as being Deceptive @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#classificationCode() */
+	public static final int DOMAIN_DECEPTIVE=13<<5;
+	/** constant mask returned by classificationCode() designating this ability as being Detrapping @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#classificationCode() */
+	public static final int DOMAIN_DETRAP=14<<5;
+	/** constant mask returned by classificationCode() designating this ability as being RopeUsing @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#classificationCode() */
+	public static final int DOMAIN_BINDING=15<<5;
+	/** constant mask returned by classificationCode() designating this ability as being Stealing @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#classificationCode() */
+	public static final int DOMAIN_STEALING=16<<5;
+	/** constant mask returned by classificationCode() designating this ability as being Stealthy @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#classificationCode() */
+	public static final int DOMAIN_STEALTHY=17<<5;
+	/** constant mask returned by classificationCode() designating this ability as being Trapping @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#classificationCode() */
+	public static final int DOMAIN_TRAPPING=18<<5;
+	/** constant mask returned by classificationCode() designating this ability as being Alert @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#classificationCode() */
+	public static final int DOMAIN_ALERT=19<<5;
+	/** constant mask returned by classificationCode() designating this ability as being holy protection @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#classificationCode() */
+	public static final int DOMAIN_HOLYPROTECTION=20<<5;
+	/** constant mask returned by classificationCode() designating this ability as being healing @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#classificationCode() */
+	public static final int DOMAIN_HEALING=21<<5;
+	/** constant mask returned by classificationCode() designating this ability as being vexing @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#classificationCode() */
+	public static final int DOMAIN_VEXING=22<<5;
+	/** constant mask returned by classificationCode() designating this ability as being blessing @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#classificationCode() */
+	public static final int DOMAIN_BLESSING=23<<5;
+	/** constant mask returned by classificationCode() designating this ability as being cursing @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#classificationCode() */
+	public static final int DOMAIN_CURSING=24<<5;
+	/** constant mask returned by classificationCode() designating this ability as being evangelistic @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#classificationCode() */
+	public static final int DOMAIN_EVANGELISM=25<<5;
+	/** constant mask returned by classificationCode() designating this ability as being moon summoning @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#classificationCode() */
+	public static final int DOMAIN_MOONSUMMONING=26<<5;
+	/** constant mask returned by classificationCode() designating this ability as being moon altering @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#classificationCode() */
+	public static final int DOMAIN_MOONALTERING=27<<5;
+	/** constant mask returned by classificationCode() designating this ability as being gathering skill @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#classificationCode() */
+	public static final int DOMAIN_GATHERINGSKILL=28<<5;
+	/** constant mask returned by classificationCode() designating this ability as being crafting skill @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#classificationCode() */
+	public static final int DOMAIN_CRAFTINGSKILL=29<<5;
 	/** constant used to mask classificationCode() designating this ability as being plant growth skil. @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#classificationCode() */
-    public static final int DOMAIN_PLANTGROWTH=30<<5;
+	public static final int DOMAIN_PLANTGROWTH=30<<5;
 	/** constant used to mask classificationCode() designating this ability as being shape shifting skil. @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#classificationCode() */
-    public static final int DOMAIN_SHAPE_SHIFTING=31<<5;
+	public static final int DOMAIN_SHAPE_SHIFTING=31<<5;
 	/** constant used to mask classificationCode() designating this ability as being foolish skil. @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#classificationCode() */
-    public static final int DOMAIN_FOOLISHNESS=32<<5;
+	public static final int DOMAIN_FOOLISHNESS=32<<5;
 	/** constant used to mask classificationCode() designating this ability as being room ward skil. @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#classificationCode() */
-    public static final int DOMAIN_WARDING=33<<5;
+	public static final int DOMAIN_WARDING=33<<5;
 	/** constant used to mask classificationCode() designating this ability as being death lore skil. @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#classificationCode() */
-    public static final int DOMAIN_DEATHLORE=34<<5;
+	public static final int DOMAIN_DEATHLORE=34<<5;
 	/** constant used to mask classificationCode() designating this ability as being weather skil. @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#classificationCode() */
-    public static final int DOMAIN_WEATHER_MASTERY=35<<5;
+	public static final int DOMAIN_WEATHER_MASTERY=35<<5;
 	/** constant used to mask classificationCode() designating this ability as being corrupting skil. @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#classificationCode() */
-    public static final int DOMAIN_CORRUPTION=36<<5;
+	public static final int DOMAIN_CORRUPTION=36<<5;
 	/** constant used to mask classificationCode() designating this ability as being restoring skil. @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#classificationCode() */
-    public static final int DOMAIN_RESTORATION=37<<5;
+	public static final int DOMAIN_RESTORATION=37<<5;
 	/** constant used to mask classificationCode() designating this ability as being neutralizing skil. @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#classificationCode() */
-    public static final int DOMAIN_NEUTRALIZATION=38<<5;
+	public static final int DOMAIN_NEUTRALIZATION=38<<5;
 	/** constant used to mask classificationCode() designating this ability as being neutralizing skil. @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#classificationCode() */
-    public static final int DOMAIN_CREATION=39<<5;
+	public static final int DOMAIN_CREATION=39<<5;
 	/** constant used to mask classificationCode() designating this ability as being communing skil. @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#classificationCode() */
-    public static final int DOMAIN_COMMUNING=40<<5;
-    /** constant used to mask classificationCode() designating this ability as being preserving skil. @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#classificationCode() */
-    public static final int DOMAIN_PRESERVING=41<<5;
-    /** constant used to mask classificationCode() designating this ability as being enduring skil. @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#classificationCode() */
-    public static final int DOMAIN_ENDURING=42<<5;
-    /** constant used to mask classificationCode() designating this ability as being plant control skil. @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#classificationCode() */
-    public static final int DOMAIN_PLANTCONTROL=43<<5;
-    /** constant used to mask classificationCode() designating this ability as being animal affinity skil. @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#classificationCode() */
-    public static final int DOMAIN_ANIMALAFFINITY=44<<5;
-    /** constant used to mask classificationCode() designating this ability as being deep magic skil. @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#classificationCode() */
-    public static final int DOMAIN_DEEPMAGIC=45<<5;
-    /** constant used to mask classificationCode() designating this ability as being breeding skill. @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#classificationCode() */
-    public static final int DOMAIN_BREEDING=46<<5;
-    /** constant used to mask classificationCode() designating this ability as being weapon use skil. @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#classificationCode() */
-    public static final int DOMAIN_WEAPON_USE=47<<5;
-    /** constant used to mask classificationCode() designating this ability as being breeding skill. @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#classificationCode() */
-    public static final int DOMAIN_ROCKCONTROL=48<<5;
-    /** constant used to mask classificationCode() designating this ability as being kicking skill. @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#classificationCode() */
-    public static final int DOMAIN_KICKING=49<<5;
-    /** constant used to mask classificationCode() designating this ability as being punching skill. @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#classificationCode() */
-    public static final int DOMAIN_PUNCHING=50<<5;
-    /** constant used to mask classificationCode() designating this ability as being grappling skill. @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#classificationCode() */
-    public static final int DOMAIN_GRAPPLING=51<<5;
-    /** constant used to mask classificationCode() designating this ability as being calligraphy skill. @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#classificationCode() */
-    public static final int DOMAIN_CALLIGRAPHY=52<<5;
-    /** constant used to mask classificationCode() designating this ability as being poisoning skill. @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#classificationCode() */
-    public static final int DOMAIN_POISONING=53<<5;
-    /** constant used to mask classificationCode() designating this ability as being arcane lore skill. @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#classificationCode() */
-    public static final int DOMAIN_ARCANELORE=54<<5;
-    /** constant used to mask classificationCode() designating this ability as being acrobatic skill. @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#classificationCode() */
-    public static final int DOMAIN_ACROBATIC=55<<5;
-    /** constant used to mask classificationCode() designating this ability as being amorous skill. @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#classificationCode() */
-    public static final int DOMAIN_INFLUENTIAL=56<<5;
-    /** constant used to mask classificationCode() designating this ability as being street smarts skill. @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#classificationCode() */
-    public static final int DOMAIN_STREETSMARTS=57<<5;
-    /** constant used to mask classificationCode() designating this ability as being nature lore skill. @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#classificationCode() */
-    public static final int DOMAIN_NATURELORE=58<<5;
-    /** constant used to mask classificationCode() designating this ability as being dirty fighting skill. @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#classificationCode() */
-    public static final int DOMAIN_DIRTYFIGHTING=59<<5;
-    /** constant used to mask classificationCode() designating this ability as being combat lore skill. @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#classificationCode() */
-    public static final int DOMAIN_COMBATLORE=60<<5;
-    /** constant used to mask classificationCode() designating this ability as being combat fluidity skill. @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#classificationCode() */
-    public static final int DOMAIN_COMBATFLUIDITY=61<<5;
-    /** constant used to mask classificationCode() designating this ability as being evasive skill. @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#classificationCode() */
-    public static final int DOMAIN_EVASIVE=62<<5;
-    /** constant used to mask classificationCode() designating this ability as being martial lore skill. @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#classificationCode() */
-    public static final int DOMAIN_MARTIALLORE=63<<5;
-    /** constant used to mask classificationCode() designating this ability as being racial ability skill. @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#classificationCode() */
-    public static final int DOMAIN_RACIALABILITY=64<<5;
-    /** constant used to mask classificationCode() designating this ability as being racial ability skill. @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#classificationCode() */
-    public static final int DOMAIN_ARTISTIC=65<<5;
-    /** constant used to mask classificationCode() designating this ability as being racial ability skill. @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#classificationCode() */
-    public static final int DOMAIN_ANATOMY=66<<5;
-    /** constant used to mask classificationCode() designating this ability as being racial ability skill. @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#classificationCode() */
-    public static final int DOMAIN_ARMORUSE=67<<5;
-    /** constant used to mask classificationCode() designating this ability as being racial ability skill. @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#classificationCode() */
-    public static final int DOMAIN_SHIELDUSE=68<<5;
-    /** constant used to mask classificationCode() designating this ability as being racial ability skill. @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#classificationCode() */
-    public static final int DOMAIN_CRIMINAL=69<<5;
-    /** constant used to mask classificationCode() designating this ability as being racial ability skill. @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#classificationCode() */
-    public static final int DOMAIN_LEGAL=70<<5;
-    /** constant used to mask classificationCode() designating this ability as being racial ability skill. @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#classificationCode() */
-    public static final int DOMAIN_FITNESS=71<<5;
-    /** constant used to mask classificationCode() to return only the higher order DOMAIN_* constant. @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#classificationCode() */
+	public static final int DOMAIN_COMMUNING=40<<5;
+	/** constant used to mask classificationCode() designating this ability as being preserving skil. @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#classificationCode() */
+	public static final int DOMAIN_PRESERVING=41<<5;
+	/** constant used to mask classificationCode() designating this ability as being enduring skil. @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#classificationCode() */
+	public static final int DOMAIN_ENDURING=42<<5;
+	/** constant used to mask classificationCode() designating this ability as being plant control skil. @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#classificationCode() */
+	public static final int DOMAIN_PLANTCONTROL=43<<5;
+	/** constant used to mask classificationCode() designating this ability as being animal affinity skil. @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#classificationCode() */
+	public static final int DOMAIN_ANIMALAFFINITY=44<<5;
+	/** constant used to mask classificationCode() designating this ability as being deep magic skil. @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#classificationCode() */
+	public static final int DOMAIN_DEEPMAGIC=45<<5;
+	/** constant used to mask classificationCode() designating this ability as being breeding skill. @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#classificationCode() */
+	public static final int DOMAIN_BREEDING=46<<5;
+	/** constant used to mask classificationCode() designating this ability as being weapon use skil. @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#classificationCode() */
+	public static final int DOMAIN_WEAPON_USE=47<<5;
+	/** constant used to mask classificationCode() designating this ability as being breeding skill. @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#classificationCode() */
+	public static final int DOMAIN_ROCKCONTROL=48<<5;
+	/** constant used to mask classificationCode() designating this ability as being kicking skill. @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#classificationCode() */
+	public static final int DOMAIN_KICKING=49<<5;
+	/** constant used to mask classificationCode() designating this ability as being punching skill. @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#classificationCode() */
+	public static final int DOMAIN_PUNCHING=50<<5;
+	/** constant used to mask classificationCode() designating this ability as being grappling skill. @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#classificationCode() */
+	public static final int DOMAIN_GRAPPLING=51<<5;
+	/** constant used to mask classificationCode() designating this ability as being calligraphy skill. @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#classificationCode() */
+	public static final int DOMAIN_CALLIGRAPHY=52<<5;
+	/** constant used to mask classificationCode() designating this ability as being poisoning skill. @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#classificationCode() */
+	public static final int DOMAIN_POISONING=53<<5;
+	/** constant used to mask classificationCode() designating this ability as being arcane lore skill. @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#classificationCode() */
+	public static final int DOMAIN_ARCANELORE=54<<5;
+	/** constant used to mask classificationCode() designating this ability as being acrobatic skill. @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#classificationCode() */
+	public static final int DOMAIN_ACROBATIC=55<<5;
+	/** constant used to mask classificationCode() designating this ability as being amorous skill. @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#classificationCode() */
+	public static final int DOMAIN_INFLUENTIAL=56<<5;
+	/** constant used to mask classificationCode() designating this ability as being street smarts skill. @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#classificationCode() */
+	public static final int DOMAIN_STREETSMARTS=57<<5;
+	/** constant used to mask classificationCode() designating this ability as being nature lore skill. @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#classificationCode() */
+	public static final int DOMAIN_NATURELORE=58<<5;
+	/** constant used to mask classificationCode() designating this ability as being dirty fighting skill. @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#classificationCode() */
+	public static final int DOMAIN_DIRTYFIGHTING=59<<5;
+	/** constant used to mask classificationCode() designating this ability as being combat lore skill. @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#classificationCode() */
+	public static final int DOMAIN_COMBATLORE=60<<5;
+	/** constant used to mask classificationCode() designating this ability as being combat fluidity skill. @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#classificationCode() */
+	public static final int DOMAIN_COMBATFLUIDITY=61<<5;
+	/** constant used to mask classificationCode() designating this ability as being evasive skill. @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#classificationCode() */
+	public static final int DOMAIN_EVASIVE=62<<5;
+	/** constant used to mask classificationCode() designating this ability as being martial lore skill. @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#classificationCode() */
+	public static final int DOMAIN_MARTIALLORE=63<<5;
+	/** constant used to mask classificationCode() designating this ability as being racial ability skill. @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#classificationCode() */
+	public static final int DOMAIN_RACIALABILITY=64<<5;
+	/** constant used to mask classificationCode() designating this ability as being racial ability skill. @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#classificationCode() */
+	public static final int DOMAIN_ARTISTIC=65<<5;
+	/** constant used to mask classificationCode() designating this ability as being racial ability skill. @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#classificationCode() */
+	public static final int DOMAIN_ANATOMY=66<<5;
+	/** constant used to mask classificationCode() designating this ability as being racial ability skill. @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#classificationCode() */
+	public static final int DOMAIN_ARMORUSE=67<<5;
+	/** constant used to mask classificationCode() designating this ability as being racial ability skill. @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#classificationCode() */
+	public static final int DOMAIN_SHIELDUSE=68<<5;
+	/** constant used to mask classificationCode() designating this ability as being racial ability skill. @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#classificationCode() */
+	public static final int DOMAIN_CRIMINAL=69<<5;
+	/** constant used to mask classificationCode() designating this ability as being racial ability skill. @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#classificationCode() */
+	public static final int DOMAIN_LEGAL=70<<5;
+	/** constant used to mask classificationCode() designating this ability as being racial ability skill. @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#classificationCode() */
+	public static final int DOMAIN_FITNESS=71<<5;
+	/** constant used to mask classificationCode() to return only the higher order DOMAIN_* constant. @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#classificationCode() */
 	public static final int ALL_DOMAINS=(255<<5);
 	/** array of string describtions for the DOMAIN_* constants, indexed by their values */
 	public static final String[] DOMAIN_DESCS={
@@ -809,20 +809,20 @@ public interface Ability extends Environmental
 		"INVOCATION/EVOCATION","ALTERATION","TRANSMUTATION","ENCHANTMENT/CHARM",
 		"CONJURATION", "ARCHON","SINGING","DANCING",
 		"PLAYING","DECEPTIVE","FIND/REMOVE_TRAPS","BINDING",
-        "STEALING","STEALTHY","TRAPPING","ALERT",
-        "HOLY_PROTECTION","HEALING","VEXING","BLESSING",
-        "CURSING","EVANGELISM","MOON_SUMMONING","MOON_ALTERING",
-        "GATHERING","CRAFTING","PLANT_GROWTH","SHAPE_SHIFTING",
-        "FOOLISHNESS","WARDING","DEATH_LORE","WEATHER_MASTERY",
-        "CORRUPTION","RESTORATION","NEUTRALIZATION","CREATION",
-        "COMMUNING","PRESERVING","ENDURING","PLANT_CONTROL",
-        "ANIMAL_AFFINITY","DEEP_MAGIC","BREEDING","WEAPON_USE",
-        "ROCK_CONTROL","KICKING","PUNCHING","GRAPPLING",
-        "CALLIGRAPHY","POISONING","ARCANE_LORE","ACROBATIC",
-        "INFLUENTIAL","STREET_SMARTS","NATURE_LORE","DIRTY_FIGHTING",
-        "COMBAT_LORE","COMBAT_FLUIDITY","EVASIVE","MARTIAL_LORE",
-        "RACIAL_ABILITY","ARTISTIC","ANATOMY","ARMOR_USE",
-        "SHIELD_USE","CRIMINAL","LEGAL","FITNESS"
+		"STEALING","STEALTHY","TRAPPING","ALERT",
+		"HOLY_PROTECTION","HEALING","VEXING","BLESSING",
+		"CURSING","EVANGELISM","MOON_SUMMONING","MOON_ALTERING",
+		"GATHERING","CRAFTING","PLANT_GROWTH","SHAPE_SHIFTING",
+		"FOOLISHNESS","WARDING","DEATH_LORE","WEATHER_MASTERY",
+		"CORRUPTION","RESTORATION","NEUTRALIZATION","CREATION",
+		"COMMUNING","PRESERVING","ENDURING","PLANT_CONTROL",
+		"ANIMAL_AFFINITY","DEEP_MAGIC","BREEDING","WEAPON_USE",
+		"ROCK_CONTROL","KICKING","PUNCHING","GRAPPLING",
+		"CALLIGRAPHY","POISONING","ARCANE_LORE","ACROBATIC",
+		"INFLUENTIAL","STREET_SMARTS","NATURE_LORE","DIRTY_FIGHTING",
+		"COMBAT_LORE","COMBAT_FLUIDITY","EVASIVE","MARTIAL_LORE",
+		"RACIAL_ABILITY","ARTISTIC","ANATOMY","ARMOR_USE",
+		"SHIELD_USE","CRIMINAL","LEGAL","FITNESS"
 	};
 	/** array of string verbs for the DOMAIN_* constants, indexed by their values */
 	public static final String[] DOMAIN_VERBS={
@@ -830,20 +830,20 @@ public interface Ability extends Environmental
 		"In/Evoking","Altering","Transmuting","Enchanting",
 		"Conjuring", "ArChreating","Singing", "Dancing",
 		"Playing","Deceptive","DeTrapping","Binding",
-        "Stealing","Stealthing","Trapping","Watching",
-        "Divinely Protecting","Healing","Vexing","Blessing",
-        "Cursing","Evangelising","Moon Summoning","Moon Altering",
-        "Gathering","Crafting","Plant Growing","Shape Shifting",
-        "Fool-Making","Warding","Death Animating","Weather Mastering",
-        "Corrupting","Restoring","Neutralizing","Creating",
-        "Communing","Preserving","Enduring","Plant Controling",
-        "Animal Befriending","Deep Enchanting","Breeding","Weapon Using",
-        "Rock Controling","Kicking","Punching","Grappling",
-        "Caligraphing","Poisoning","Arcane Loreing","Acrobatisizing",
-        "Influencing","Street Knowing","Nature Loring","Dirty Fighting",
-        "Combat Loring","Combat Fluidisizing","Evading","Matrial Loring",
-        "Racial Knowing","Artmaking","Anatomy","Armor Using",
-        "Shield Using","Crimemaking","Legalizing","Fitness"
+		"Stealing","Stealthing","Trapping","Watching",
+		"Divinely Protecting","Healing","Vexing","Blessing",
+		"Cursing","Evangelising","Moon Summoning","Moon Altering",
+		"Gathering","Crafting","Plant Growing","Shape Shifting",
+		"Fool-Making","Warding","Death Animating","Weather Mastering",
+		"Corrupting","Restoring","Neutralizing","Creating",
+		"Communing","Preserving","Enduring","Plant Controling",
+		"Animal Befriending","Deep Enchanting","Breeding","Weapon Using",
+		"Rock Controling","Kicking","Punching","Grappling",
+		"Caligraphing","Poisoning","Arcane Loreing","Acrobatisizing",
+		"Influencing","Street Knowing","Nature Loring","Dirty Fighting",
+		"Combat Loring","Combat Fluidisizing","Evading","Matrial Loring",
+		"Racial Knowing","Artmaking","Anatomy","Armor Using",
+		"Shield Using","Crimemaking","Legalizing","Fitness"
 	};
 	
 	/** constant descriptions for the minRange()/maxRange() values @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#minRange() */
@@ -875,58 +875,58 @@ public interface Ability extends Environmental
 	public static final long FLAG_PARALYZING=2048;
 	/** constant mask for the flags() method designating that this ability may not be ordered @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#flags() */
 	public static final long FLAG_NOORDERING=4096;
-    /** constant mask for the flags() method designating that this ability is a clan magic @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#flags() */
-    public static final long FLAG_CLANMAGIC=8192;
-    /** constant mask for the flags() method designating that this ability is healing magic @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#flags() */
-    public static final long FLAG_HEALINGMAGIC=16384;
-    /** constant mask for the flags() method designating that this ability is a freezing effect @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#flags() */
-    public static final long FLAG_WATERBASED=32768;
-    /** constant mask for the flags() method designating that this ability is a washing effect @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#flags() */
-    public static final long FLAG_AIRBASED=65536;
-    /** constant mask for the flags() method designating that this ability is a grounded effect @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#flags() */
-    public static final long FLAG_EARTHBASED=131072;
-    /** constant mask for the flags() method designating that this ability is an intoxicating effect @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#flags() */
-    public static final long FLAG_INTOXICATING=262144;
-    /** constant mask for the flags() method designating that this ability adjusts char/phy/base stats @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#flags() */
-    public static final long FLAG_ADJUSTER=524288;
-    /** constant mask for the flags() method designating that this ability resists/saves @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#flags() */
-    public static final long FLAG_RESISTER=1048576;
-    /** constant mask for the flags() method designating that this ability blocks certain negative affects @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#flags() */
-    public static final long FLAG_IMMUNER=2097152;
-    /** constant mask for the flags() method designating that this ability blocks getting and other mundane actions @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#flags() */
-    public static final long FLAG_ZAPPER=2097152;
-    /** constant mask for the flags() method designating that this ability casts some other spell/ability @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#flags() */
-    public static final long FLAG_CASTER=4194304;
-    /** constant mask for the flags() method designating that this ability grants another spell/ability @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#flags() */
-    public static final long FLAG_ENABLER=8388608;
+	/** constant mask for the flags() method designating that this ability is a clan magic @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#flags() */
+	public static final long FLAG_CLANMAGIC=8192;
+	/** constant mask for the flags() method designating that this ability is healing magic @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#flags() */
+	public static final long FLAG_HEALINGMAGIC=16384;
+	/** constant mask for the flags() method designating that this ability is a freezing effect @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#flags() */
+	public static final long FLAG_WATERBASED=32768;
+	/** constant mask for the flags() method designating that this ability is a washing effect @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#flags() */
+	public static final long FLAG_AIRBASED=65536;
+	/** constant mask for the flags() method designating that this ability is a grounded effect @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#flags() */
+	public static final long FLAG_EARTHBASED=131072;
+	/** constant mask for the flags() method designating that this ability is an intoxicating effect @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#flags() */
+	public static final long FLAG_INTOXICATING=262144;
+	/** constant mask for the flags() method designating that this ability adjusts char/phy/base stats @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#flags() */
+	public static final long FLAG_ADJUSTER=524288;
+	/** constant mask for the flags() method designating that this ability resists/saves @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#flags() */
+	public static final long FLAG_RESISTER=1048576;
+	/** constant mask for the flags() method designating that this ability blocks certain negative affects @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#flags() */
+	public static final long FLAG_IMMUNER=2097152;
+	/** constant mask for the flags() method designating that this ability blocks getting and other mundane actions @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#flags() */
+	public static final long FLAG_ZAPPER=2097152;
+	/** constant mask for the flags() method designating that this ability casts some other spell/ability @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#flags() */
+	public static final long FLAG_CASTER=4194304;
+	/** constant mask for the flags() method designating that this ability grants another spell/ability @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#flags() */
+	public static final long FLAG_ENABLER=8388608;
 	
 	/** array of string describtions for the FLAG_* constants, indexed by their values */
 	public static final String[] FLAG_DESCS={
-	    "BINDING",
-	    "MOVING",
-	    "TRANSPORTING",
-	    "WEATHERAFFECTING",
-	    "SUMMONING",
-	    "CHARMING",
-	    "TRACKING",
-	    "HEATING",
-	    "BURNING",
-	    "HOLY",
-	    "UNHOLY",
-	    "PARALYZING",
-	    "NOORDERING",
-        "CLANMAGIC",
-	    "HEALING",
-        "FREEZING",
-        "ELECTROCUTING",
-        "ACIDIZING",
-        "INTOXICATING",
-        "ADJUSTER",
-        "RESISTER",
-        "IMMUNER",
-        "ZAPPER",
-        "CASTER",
-        "ENABLER",
+		"BINDING",
+		"MOVING",
+		"TRANSPORTING",
+		"WEATHERAFFECTING",
+		"SUMMONING",
+		"CHARMING",
+		"TRACKING",
+		"HEATING",
+		"BURNING",
+		"HOLY",
+		"UNHOLY",
+		"PARALYZING",
+		"NOORDERING",
+		"CLANMAGIC",
+		"HEALING",
+		"FREEZING",
+		"ELECTROCUTING",
+		"ACIDIZING",
+		"INTOXICATING",
+		"ADJUSTER",
+		"RESISTER",
+		"IMMUNER",
+		"ZAPPER",
+		"CASTER",
+		"ENABLER",
 	};
 
 	/* constant for the abstractQuality and other methods.  Means that this skill would not make the target happy. @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#abstractQuality()*/

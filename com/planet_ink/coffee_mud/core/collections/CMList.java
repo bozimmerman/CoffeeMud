@@ -11,7 +11,7 @@ Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
 You may obtain a copy of the License at
 
-    http://www.apache.org/licenses/LICENSE-2.0
+	http://www.apache.org/licenses/LICENSE-2.0
 
 Unless required by applicable law or agreed to in writing, software
 distributed under the License is distributed on an "AS IS" BASIS,
@@ -172,27 +172,27 @@ public class CMList<K> implements Serializable, Cloneable, Iterable<K>, Collecti
 	{
 		if((here == null)||(!here.active)) 
 			return;
-	    here.active=false;
-	    size--;
-	    final CMListNode next=here.next;
-	    final CMListNode prev=here.prev;
-	    if(head == here) head=next;
-	    if(tail == here) tail=prev;
-	    if(prev != null) prev.next=next;
-	    if(next != null) next.prev=prev;
-	    final CMListNode randNext=here.randNext;
-	    final CMListNode randPrev=here.randPrev;
-	    if(randNode == here)
-    	{
-	    	if(here.randNext == here)
-	    		randNode = null;
-	    	else
-	    		randNode=here.randNext;
-    	}
-	    if(randPrev != null) randPrev.randNext=randNext;
-	    if(randNext != null) randNext.randPrev=randPrev;
-	    // in time, garbage collector will make all right again.
-	    // in time.
+		here.active=false;
+		size--;
+		final CMListNode next=here.next;
+		final CMListNode prev=here.prev;
+		if(head == here) head=next;
+		if(tail == here) tail=prev;
+		if(prev != null) prev.next=next;
+		if(next != null) next.prev=prev;
+		final CMListNode randNext=here.randNext;
+		final CMListNode randPrev=here.randPrev;
+		if(randNode == here)
+		{
+			if(here.randNext == here)
+				randNode = null;
+			else
+				randNode=here.randNext;
+		}
+		if(randPrev != null) randPrev.randNext=randNext;
+		if(randNext != null) randNext.randPrev=randPrev;
+		// in time, garbage collector will make all right again.
+		// in time.
 	}
 	
 	private synchronized CMListNode addAfter(final CMListNode here, final K arg1)
@@ -721,7 +721,7 @@ public class CMList<K> implements Serializable, Cloneable, Iterable<K>, Collecti
 	}
 
 	@SuppressWarnings("unchecked")
-    @Override
+	@Override
 	public synchronized <T> T[] toArray(T[] arg0) 
 	{
 		if (arg0.length < size)
@@ -751,8 +751,8 @@ public class CMList<K> implements Serializable, Cloneable, Iterable<K>, Collecti
 		int hashCode = 1;
 		Iterator<K> i = iterator();
 		while (i.hasNext()) {
-		    K obj = i.next();
-		    hashCode = 31*hashCode + (obj==null ? 0 : obj.hashCode());
+			K obj = i.next();
+			hashCode = 31*hashCode + (obj==null ? 0 : obj.hashCode());
 		}
 		return hashCode;
 	}

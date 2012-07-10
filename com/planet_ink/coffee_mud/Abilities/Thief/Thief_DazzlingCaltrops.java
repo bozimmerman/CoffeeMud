@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -34,24 +34,24 @@ import java.util.*;
 */
 public class Thief_DazzlingCaltrops extends Thief_Caltrops
 {
-    public String ID() { return "Thief_DazzlingCaltrops"; }
-    public String name(){ return "Dazzling Caltrops";}
-    private static final String[] triggerStrings = {"DAZZLINGCALTROPS"};
-    public String[] triggerStrings(){return triggerStrings;}
-    public String caltropTypeName(){return "dazzling ";}
+	public String ID() { return "Thief_DazzlingCaltrops"; }
+	public String name(){ return "Dazzling Caltrops";}
+	private static final String[] triggerStrings = {"DAZZLINGCALTROPS"};
+	public String[] triggerStrings(){return triggerStrings;}
+	public String caltropTypeName(){return "dazzling ";}
 
-    public void spring(MOB mob)
-    {
-        if((!invoker().mayIFight(mob))
+	public void spring(MOB mob)
+	{
+		if((!invoker().mayIFight(mob))
 		||(invoker().getGroupMembers(new HashSet<MOB>()).contains(mob))
-        ||(CMLib.dice().rollPercentage()<mob.charStats().getSave(CharStats.STAT_SAVE_TRAPS)))
-            mob.location().show(mob,affected,this,CMMsg.MSG_OK_ACTION,"<S-NAME> avoid(s) looking at some "+caltropTypeName()+"caltrops on the floor.");
-        else
-        if(mob.curState().getMana()>6)
-        {
-            mob.curState().adjMana(-CMLib.dice().roll(3+getX1Level(mob),6,3),mob.maxState());
-            mob.location().show(invoker(),mob,this,CMMsg.MSG_OK_ACTION,"The "+caltropTypeName()+"caltrops on the ground sparkle and confuse <T-NAME>");
-        }
-        // does not set sprung flag -- as this trap never goes out of use
-    }
+		||(CMLib.dice().rollPercentage()<mob.charStats().getSave(CharStats.STAT_SAVE_TRAPS)))
+			mob.location().show(mob,affected,this,CMMsg.MSG_OK_ACTION,"<S-NAME> avoid(s) looking at some "+caltropTypeName()+"caltrops on the floor.");
+		else
+		if(mob.curState().getMana()>6)
+		{
+			mob.curState().adjMana(-CMLib.dice().roll(3+getX1Level(mob),6,3),mob.maxState());
+			mob.location().show(invoker(),mob,this,CMMsg.MSG_OK_ACTION,"The "+caltropTypeName()+"caltrops on the ground sparkle and confuse <T-NAME>");
+		}
+		// does not set sprung flag -- as this trap never goes out of use
+	}
 }

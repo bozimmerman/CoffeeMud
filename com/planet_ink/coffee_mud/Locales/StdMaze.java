@@ -23,7 +23,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -41,17 +41,17 @@ public class StdMaze extends StdGrid
 	}
 
 
-    protected Room getGridRoom(int x, int y)
-    {
-        Room R=super.getGridRoom(x,y);
-        if((R!=null)&&(!CMath.bset(R.phyStats().sensesMask(),PhyStats.SENSE_ROOMUNEXPLORABLE)))
-        {
-            R.basePhyStats().setSensesMask(R.basePhyStats().sensesMask()|PhyStats.SENSE_ROOMUNEXPLORABLE);
-            R.phyStats().setSensesMask(R.phyStats().sensesMask()|PhyStats.SENSE_ROOMUNEXPLORABLE);
-        }
-        return R;
-    }
-    protected Room findCenterRoom(int dirCode)
+	protected Room getGridRoom(int x, int y)
+	{
+		Room R=super.getGridRoom(x,y);
+		if((R!=null)&&(!CMath.bset(R.phyStats().sensesMask(),PhyStats.SENSE_ROOMUNEXPLORABLE)))
+		{
+			R.basePhyStats().setSensesMask(R.basePhyStats().sensesMask()|PhyStats.SENSE_ROOMUNEXPLORABLE);
+			R.phyStats().setSensesMask(R.phyStats().sensesMask()|PhyStats.SENSE_ROOMUNEXPLORABLE);
+		}
+		return R;
+	}
+	protected Room findCenterRoom(int dirCode)
 	{
 		Room dirRoom=rawDoors()[dirCode];
 		if(dirRoom!=null)
@@ -122,7 +122,7 @@ public class StdMaze extends StdGrid
 			okRoom=false;
 			for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 			{
-			    if(d==Directions.GATE) continue;
+				if(d==Directions.GATE) continue;
 				Room possRoom=roomDir(x,y,d);
 				if(possRoom!=null)
 					if(visited.get(possRoom)==null)

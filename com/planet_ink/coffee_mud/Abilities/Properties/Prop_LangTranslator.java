@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -40,7 +40,7 @@ public class Prop_LangTranslator extends Property implements Language
 	public String writtenName(){return "Language Translator";}
 	public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
 	protected int canAffectCode(){return CAN_MOBS|CAN_ITEMS|CAN_ROOMS;}
-    protected DVector langs=new DVector(2);
+	protected DVector langs=new DVector(2);
 
 	public String accountForYourself()
 	{ return "Translates spoken language";	}
@@ -65,26 +65,26 @@ public class Prop_LangTranslator extends Property implements Language
 		}
 	}
 
-    public List<String> languagesSupported() 
-    {
-        return langs.getDimensionVector(1);
-    }
-    public boolean translatesLanguage(String language)
-    {
-        return langs.containsIgnoreCase(language);
-    }
-    public int getProficiency(String language) {
-        for(int i=0;i<langs.size();i++)
-            if(((String)langs.elementAt(i,1)).equalsIgnoreCase(language))
-                return ((Integer)langs.elementAt(i,2)).intValue();
-        return 0;
-    }
-    public boolean beingSpoken(String language) { return true; }
-    public void setBeingSpoken(String language, boolean beingSpoken) {}
-    public Map<String, String> translationHash(String language) { return new Hashtable();}
-    public List<String[]> translationVector(String language) { return new Vector();}
-    public String translate(String language, String word) { return word;}
-    
+	public List<String> languagesSupported() 
+	{
+		return langs.getDimensionVector(1);
+	}
+	public boolean translatesLanguage(String language)
+	{
+		return langs.containsIgnoreCase(language);
+	}
+	public int getProficiency(String language) {
+		for(int i=0;i<langs.size();i++)
+			if(((String)langs.elementAt(i,1)).equalsIgnoreCase(language))
+				return ((Integer)langs.elementAt(i,2)).intValue();
+		return 0;
+	}
+	public boolean beingSpoken(String language) { return true; }
+	public void setBeingSpoken(String language, boolean beingSpoken) {}
+	public Map<String, String> translationHash(String language) { return new Hashtable();}
+	public List<String[]> translationVector(String language) { return new Vector();}
+	public String translate(String language, String word) { return word;}
+	
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);
@@ -114,10 +114,10 @@ public class Prop_LangTranslator extends Property implements Language
 				String str=CMStrings.getSayFromMessage(msg.sourceMessage());
 				if(str!=null)
 				{
-				    Environmental target=null;
-				    String sourceName = affected.name();
-				    if(msg.target() instanceof MOB)
-				        target=(MOB)msg.target();
+					Environmental target=null;
+					String sourceName = affected.name();
+					if(msg.target() instanceof MOB)
+						target=(MOB)msg.target();
 					if(CMath.bset(msg.sourceMajor(),CMMsg.MASK_CHANNEL))
 						msg.addTrailerMsg(CMClass.getMsg(msg.source(),null,null,CMMsg.MSG_NOISE|CMMsg.MASK_ALWAYS,sourceName+" say(s) '"+msg.source().name()+" said \""+str+"\" in "+msg.tool().name()+"'"));
 					else

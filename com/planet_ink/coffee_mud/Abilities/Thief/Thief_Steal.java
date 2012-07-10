@@ -25,7 +25,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -41,7 +41,7 @@ public class Thief_Steal extends ThiefSkill
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return CAN_MOBS;}
 	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-    public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_STEALING;}
+	public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_STEALING;}
 	private static final String[] triggerStrings = {"STEAL"};
 	public String[] triggerStrings(){return triggerStrings;}
 	public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
@@ -50,7 +50,7 @@ public class Thief_Steal extends ThiefSkill
 	public int abilityCode(){return code;}
 	public void setAbilityCode(int newCode){code=newCode;}
 
-    protected DVector lastOnes=new DVector(2);
+	protected DVector lastOnes=new DVector(2);
 	protected int timesPicked(MOB target)
 	{
 		int times=0;
@@ -71,41 +71,41 @@ public class Thief_Steal extends ThiefSkill
 		return times+1;
 	}
 
-    public int castingQuality(MOB mob, Physical target)
-    {
-        if(mob!=null)
-        {
-            if(!(target instanceof MOB))
-                return Ability.QUALITY_INDIFFERENT;
-            if((target==null)||((MOB)target).amDead()||(!CMLib.flags().canBeSeenBy(target,mob)))
-                return Ability.QUALITY_INDIFFERENT;
-            if((mob.isInCombat())&&(CMLib.flags().aliveAwakeMobile((MOB)target,true)||(mob.getVictim()!=target)))
-                return Ability.QUALITY_INDIFFERENT;
-            if(!((MOB)target).mayIFight(mob))
-                return Ability.QUALITY_INDIFFERENT;
-        }
-        return super.castingQuality(mob,target);
-    }
+	public int castingQuality(MOB mob, Physical target)
+	{
+		if(mob!=null)
+		{
+			if(!(target instanceof MOB))
+				return Ability.QUALITY_INDIFFERENT;
+			if((target==null)||((MOB)target).amDead()||(!CMLib.flags().canBeSeenBy(target,mob)))
+				return Ability.QUALITY_INDIFFERENT;
+			if((mob.isInCombat())&&(CMLib.flags().aliveAwakeMobile((MOB)target,true)||(mob.getVictim()!=target)))
+				return Ability.QUALITY_INDIFFERENT;
+			if(!((MOB)target).mayIFight(mob))
+				return Ability.QUALITY_INDIFFERENT;
+		}
+		return super.castingQuality(mob,target);
+	}
 
-    
+	
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-        String itemToSteal="all";  
-        if(!auto)
-        {
-    		if(commands.size()<2)
-    		{
-    			mob.tell("Steal what from whom?");
-    			return false;
-    		}
-    		itemToSteal=(String)commands.elementAt(0);
-        }
+		String itemToSteal="all";  
+		if(!auto)
+		{
+			if(commands.size()<2)
+			{
+				mob.tell("Steal what from whom?");
+				return false;
+			}
+			itemToSteal=(String)commands.elementAt(0);
+		}
 
-        MOB target=null;
-        if((target==null)&&(givenTarget!=null)&&(givenTarget instanceof MOB)) 
-            target=(MOB)givenTarget;
-        else
-            target=mob.location().fetchInhabitant(CMParms.combine(commands,1));
+		MOB target=null;
+		if((target==null)&&(givenTarget!=null)&&(givenTarget instanceof MOB)) 
+			target=(MOB)givenTarget;
+		else
+			target=mob.location().fetchInhabitant(CMParms.combine(commands,1));
 		if((target==null)||(target.amDead())||(!CMLib.flags().canBeSeenBy(target,mob)))
 		{
 			mob.tell("You don't see '"+CMParms.combine(commands,1)+"' here.");
@@ -134,8 +134,8 @@ public class Thief_Steal extends ThiefSkill
 		Item stolen=target.fetchCarried(null,itemToSteal);
 		if(stolen instanceof Coins)
 		{
-		    mob.tell("You'll need to try and SWIPE that.");
-		    return false;
+			mob.tell("You'll need to try and SWIPE that.");
+			return false;
 		}
 
 		int discoverChance=(target.charStats().getStat(CharStats.STAT_WISDOM)*5)

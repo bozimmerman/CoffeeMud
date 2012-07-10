@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -47,17 +47,17 @@ public class Spell_DetectWeaknesses extends Spell
 	protected MOB spottedM=null;
 	protected boolean activated=true;
 
-    public int castingQuality(MOB mob, Physical target)
-    {
-        if(target instanceof MOB)
-        {
-        	MOB M=(MOB)target;
-            if(!M.isInCombat())
-                return Ability.QUALITY_INDIFFERENT;
-        }
-        return super.castingQuality(mob,target);
-    }
-    
+	public int castingQuality(MOB mob, Physical target)
+	{
+		if(target instanceof MOB)
+		{
+			MOB M=(MOB)target;
+			if(!M.isInCombat())
+				return Ability.QUALITY_INDIFFERENT;
+		}
+		return super.castingQuality(mob,target);
+	}
+	
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
@@ -66,7 +66,7 @@ public class Spell_DetectWeaknesses extends Spell
 		{
 			if(invoker==null) invoker=(MOB)affected;
 			final int xlvl=super.getXLEVELLevel(invoker);
-	    	final float f=(float)0.2*(float)xlvl;
+			final float f=(float)0.2*(float)xlvl;
 			affectableStats.setDamage(affectableStats.damage()+(int)Math.round(CMath.div(affectableStats.damage(),4.0-f)));
 			affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()+(int)Math.round(CMath.div(affectableStats.attackAdjustment(),4.0-f)));
 		}

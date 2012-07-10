@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -40,7 +40,7 @@ public class Spell_Enlarge extends Spell
 	protected int canTargetCode(){return CAN_ITEMS;}
 	private static final String addOnString=" of ENORMOUS SIZE!!!";
 	public int classificationCode(){	return Ability.ACODE_SPELL|Ability.DOMAIN_ALTERATION;}
-    public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
+	public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
 
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
@@ -95,14 +95,14 @@ public class Spell_Enlarge extends Spell
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-                Ability A=target.fetchEffect("Spell_Shrink");
-                if((A!=null)&&(A.canBeUninvoked()))
-                    A.unInvoke();
-                else
-                {
-    				mob.location().show(mob,target,CMMsg.MSG_OK_ACTION,"<T-NAME> grow(s) to an enormous size!");
-    				beneficialAffect(mob,target,asLevel,100);
-                }
+				Ability A=target.fetchEffect("Spell_Shrink");
+				if((A!=null)&&(A.canBeUninvoked()))
+					A.unInvoke();
+				else
+				{
+					mob.location().show(mob,target,CMMsg.MSG_OK_ACTION,"<T-NAME> grow(s) to an enormous size!");
+					beneficialAffect(mob,target,asLevel,100);
+				}
 			}
 
 		}

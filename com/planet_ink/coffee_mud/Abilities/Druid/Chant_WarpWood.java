@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -42,48 +42,48 @@ public class Chant_WarpWood extends Chant
 	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return Ability.CAN_MOBS|Ability.CAN_ITEMS;}
-    
-    public Item getPossibility(MOB mobTarget)
-    {
-        if(mobTarget!=null)
-        {
-            Vector goodPossibilities=new Vector();
-            Vector possibilities=new Vector();
-            for(int i=0;i<mobTarget.numItems();i++)
-            {
-                Item item=mobTarget.getItem(i);
-                if((item!=null)
-                   &&((item.material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_WOODEN)
-                   &&(item.subjectToWearAndTear()))
-                {
-                    if(item.amWearingAt(Wearable.IN_INVENTORY))
-                        possibilities.addElement(item);
-                    else
-                        goodPossibilities.addElement(item);
-                }
-                if(goodPossibilities.size()>0)
-                    return (Item)goodPossibilities.elementAt(CMLib.dice().roll(1,goodPossibilities.size(),-1));
-                else
-                if(possibilities.size()>0)
-                    return (Item)possibilities.elementAt(CMLib.dice().roll(1,possibilities.size(),-1));
-            }
-        }
-        return null;
-    }
+	
+	public Item getPossibility(MOB mobTarget)
+	{
+		if(mobTarget!=null)
+		{
+			Vector goodPossibilities=new Vector();
+			Vector possibilities=new Vector();
+			for(int i=0;i<mobTarget.numItems();i++)
+			{
+				Item item=mobTarget.getItem(i);
+				if((item!=null)
+				   &&((item.material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_WOODEN)
+				   &&(item.subjectToWearAndTear()))
+				{
+					if(item.amWearingAt(Wearable.IN_INVENTORY))
+						possibilities.addElement(item);
+					else
+						goodPossibilities.addElement(item);
+				}
+				if(goodPossibilities.size()>0)
+					return (Item)goodPossibilities.elementAt(CMLib.dice().roll(1,goodPossibilities.size(),-1));
+				else
+				if(possibilities.size()>0)
+					return (Item)possibilities.elementAt(CMLib.dice().roll(1,possibilities.size(),-1));
+			}
+		}
+		return null;
+	}
 
-    public int castingQuality(MOB mob, Physical target)
-    {
-        if(mob!=null)
-        {
-            if(target instanceof MOB)
-            {
-                Item targetItem=getPossibility((MOB)target);
-                if(targetItem==null)
-                    return Ability.QUALITY_INDIFFERENT;
-            }
-        }
-        return super.castingQuality(mob,target);
-    }
+	public int castingQuality(MOB mob, Physical target)
+	{
+		if(mob!=null)
+		{
+			if(target instanceof MOB)
+			{
+				Item targetItem=getPossibility((MOB)target);
+				if(targetItem==null)
+					return Ability.QUALITY_INDIFFERENT;
+			}
+		}
+		return super.castingQuality(mob,target);
+	}
 
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
@@ -91,14 +91,14 @@ public class Chant_WarpWood extends Chant
 		Item target=getPossibility(mobTarget);
 		if(target==null)
 			target=getTarget(mob,mob.location(),givenTarget,commands,Wearable.FILTER_ANY);
-        if(target==null) 
-            return false;
-        if(((target.material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_WOODEN)
-        ||(!target.subjectToWearAndTear()))
-        {
-            mob.tell("That can't be warped.");
-            return false;
-        }
+		if(target==null) 
+			return false;
+		if(((target.material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_WOODEN)
+		||(!target.subjectToWearAndTear()))
+		{
+			mob.tell("That can't be warped.");
+			return false;
+		}
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;

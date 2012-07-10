@@ -21,7 +21,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -36,11 +36,11 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
  */
 public interface Decayable extends Environmental
 {
-    /**
-     * The time, in milliseconds, when this will rot.  0=never
+	/**
+	 * The time, in milliseconds, when this will rot.  0=never
 	 * @see Decayable#setDecayTime(long)
-     * @return the time in milliseconds when this will rot. 0=never
-     */
+	 * @return the time in milliseconds when this will rot. 0=never
+	 */
 	public long decayTime();
 	/**
 	 * Sets the time, in milliseconds, when this will rot.  0=never

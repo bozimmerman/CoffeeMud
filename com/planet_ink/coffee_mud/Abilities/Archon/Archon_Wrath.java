@@ -23,7 +23,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -68,7 +68,7 @@ public class Archon_Wrath extends ArchonSkill
 			CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MASK_MOVE|CMMsg.TYP_JUSTICE|(auto?CMMsg.MASK_ALWAYS:0),
 									auto?"<T-NAME> <T-IS-ARE> knocked out of <T-HIS-HER> shoes!!!":
 										 "^F**<S-NAME> BLAST(S) <T-NAMESELF>**, knocking <T-HIM-HER> out of <T-HIS-HER> shoes!!^?");
-            CMLib.color().fixSourceFightColor(msg);
+			CMLib.color().fixSourceFightColor(msg);
 			if(target.location().okMessage(mob,msg))
 			{
 				target.location().send(mob,msg);
@@ -85,14 +85,14 @@ public class Archon_Wrath extends ArchonSkill
 					I.removeFromOwnerContainer();
 					target.location().addItem(I,ItemPossessor.Expire.Player_Drop);
 				}
-                Log.sysOut("Banish",mob.name()+" wrathed "+target.name()+".");
-                if(announce)
-                {
-                	Command C=CMClass.getCommand("Announce");
-                	try{
-	            		C.execute(mob,new XVector("ANNOUNCE",target.name()+" is knocked out of "+target.charStats().hisher()+" shoes!!!"),Command.METAFLAG_FORCED);
-                	}catch(Exception e){}
-                }
+				Log.sysOut("Banish",mob.name()+" wrathed "+target.name()+".");
+				if(announce)
+				{
+					Command C=CMClass.getCommand("Announce");
+					try{
+						C.execute(mob,new XVector("ANNOUNCE",target.name()+" is knocked out of "+target.charStats().hisher()+" shoes!!!"),Command.METAFLAG_FORCED);
+					}catch(Exception e){}
+				}
 			}
 		}
 		else

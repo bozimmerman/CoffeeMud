@@ -23,7 +23,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -39,7 +39,7 @@ public class Spell_Claireaudience extends Spell
 	public String displayText(){return "";}
 	protected int canAffectCode(){return CAN_MOBS;}
 	public int classificationCode(){	return Ability.ACODE_SPELL|Ability.DOMAIN_DIVINATION;	}
-    public int abstractQuality(){ return Ability.QUALITY_OK_OTHERS;}
+	public int abstractQuality(){ return Ability.QUALITY_OK_OTHERS;}
 	public static final DVector scries=new DVector(2);
 
 	public void unInvoke()
@@ -106,14 +106,14 @@ public class Spell_Claireaudience extends Spell
 			target=mob.location().fetchInhabitant(mobName);
 		if(target==null)
 		{
-		    try
-		    {
-		    	List<MOB> targets=CMLib.map().findInhabitants(mob.location().getArea().getProperMap(), mob, mobName, 10);
-		    	if(targets.size()==0)
-		    		targets=CMLib.map().findInhabitants(CMLib.map().rooms(), mob, mobName, 10);
-		    	if(targets.size()>0) 
-		    		target=(MOB)targets.get(CMLib.dice().roll(1,targets.size(),-1));
-		    }catch(NoSuchElementException nse){}
+			try
+			{
+				List<MOB> targets=CMLib.map().findInhabitants(mob.location().getArea().getProperMap(), mob, mobName, 10);
+				if(targets.size()==0)
+					targets=CMLib.map().findInhabitants(CMLib.map().rooms(), mob, mobName, 10);
+				if(targets.size()>0) 
+					target=(MOB)targets.get(CMLib.dice().roll(1,targets.size(),-1));
+			}catch(NoSuchElementException nse){}
 		}
 		if(target instanceof Deity) target=null;
 		Room newRoom=mob.location();
@@ -125,10 +125,10 @@ public class Spell_Claireaudience extends Spell
 			return false;
 		}
 
-        if(mob==target) {
-            mob.tell("You can't cast this on yourself!");
-            return false;
-        }
+		if(mob==target) {
+			mob.tell("You can't cast this on yourself!");
+			return false;
+		}
 
 		Ability A=target.fetchEffect(ID());
 		if((A!=null)&&(A.invoker()==mob))

@@ -26,7 +26,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -49,7 +49,7 @@ public class ProtectedCitizens extends ActiveTicker
 
 	public ProtectedCitizens()
 	{
-        super();
+		super();
 		minTicks=1;
 		maxTicks=3;
 		chance=99;
@@ -62,7 +62,7 @@ public class ProtectedCitizens extends ActiveTicker
 	{ 
 		return "whiney citizen";
 	}
-    
+	
 	public void setParms(String parms)
 	{
 		super.setParms(parms);
@@ -99,7 +99,7 @@ public class ProtectedCitizens extends ActiveTicker
 		helperZapper=CMLib.masking().getPreCompiledMask(s.substring(0,x));
 		return helperZapper;
 	}
-    
+	
 	public String[] getClaims()
 	{
 		if(claims!=null) return claims;
@@ -187,7 +187,7 @@ public class ProtectedCitizens extends ActiveTicker
 			&&(!M.isInCombat())
 			&&(!BrotherHelper.isBrother(mob.getVictim(),M,false))
 			&&(canFreelyBehaveNormal(M))
-            &&(!CMLib.flags().isATrackingMonster(M))
+			&&(!CMLib.flags().isATrackingMonster(M))
 			&&(CMLib.flags().canHear(M))))
 			{
 				if(M.location()==thisRoom)
@@ -209,7 +209,7 @@ public class ProtectedCitizens extends ActiveTicker
 		flags = new TrackingLibrary.TrackingFlags()
 				.plus(TrackingLibrary.TrackingFlag.OPENONLY)
 				.plus(TrackingLibrary.TrackingFlag.AREAONLY);
-        CMLib.tracking().getRadiantRooms(thisRoom,rooms,flags,null,radius,null);
+		CMLib.tracking().getRadiantRooms(thisRoom,rooms,flags,null,radius,null);
 		for(int r=0;r<rooms.size();r++)
 		{
 			Room R=(Room)rooms.elementAt(r);

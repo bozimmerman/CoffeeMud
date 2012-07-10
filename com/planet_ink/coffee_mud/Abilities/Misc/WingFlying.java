@@ -25,7 +25,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -46,8 +46,8 @@ public class WingFlying extends StdAbility
 	public boolean putInCommandlist(){return false;}
 	private static final String[] triggerStrings = {"FLAP"};
 	public String[] triggerStrings(){return triggerStrings;}
-    public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_RACIALABILITY;}
-    protected Race flyingRace=null;
+	public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_RACIALABILITY;}
+	protected Race flyingRace=null;
 
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
@@ -61,16 +61,16 @@ public class WingFlying extends StdAbility
 			affectableStats.setDisposition(CMath.unsetb(affectableStats.disposition(),PhyStats.IS_FLYING));
 	}
 
-    public boolean tick(Tickable ticking, int tickID)
-    {
-        if((tickID==Tickable.TICKID_MOB)&&(flyingRace!=null)&&(ticking instanceof MOB)&&(((MOB)ticking).charStats().getMyRace()!=flyingRace))
-        {
-            flyingRace=null;
-            unInvoke();
-        }
-        return super.tick(ticking,tickID);
-    }
-    
+	public boolean tick(Tickable ticking, int tickID)
+	{
+		if((tickID==Tickable.TICKID_MOB)&&(flyingRace!=null)&&(ticking instanceof MOB)&&(((MOB)ticking).charStats().getMyRace()!=flyingRace))
+		{
+			flyingRace=null;
+			unInvoke();
+		}
+		return super.tick(ticking,tickID);
+	}
+	
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=mob;
@@ -88,12 +88,12 @@ public class WingFlying extends StdAbility
 		String str="";
 		if(wasFlying)
 		{
-            flyingRace=null;
+			flyingRace=null;
 			str="<S-NAME> stop(s) flapping <S-HIS-HER> wings.";
 		}
 		else
 		{
-            flyingRace=target.charStats().getMyRace();
+			flyingRace=target.charStats().getMyRace();
 			str="<S-NAME> start(s) flapping <S-HIS-HER> wings.";
 		}
 

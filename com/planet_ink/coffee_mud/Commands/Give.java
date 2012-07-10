@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -65,8 +65,8 @@ public class Give extends StdCommand
 			commands.removeElementAt(commands.size()-1);
 
 		int maxToGive=CMLib.english().calculateMaxToGive(mob,commands,true,mob,false);
-        if(maxToGive<0) return false;
-        
+		if(maxToGive<0) return false;
+		
 		String thingToGive=CMParms.combine(commands,0);
 		int addendum=1;
 		String addendumStr="";
@@ -74,17 +74,17 @@ public class Give extends StdCommand
 		boolean allFlag=(commands.size()>0)?((String)commands.elementAt(0)).equalsIgnoreCase("all"):false;
 		if(thingToGive.toUpperCase().startsWith("ALL.")){ allFlag=true; thingToGive="ALL "+thingToGive.substring(4);}
 		if(thingToGive.toUpperCase().endsWith(".ALL")){ allFlag=true; thingToGive="ALL "+thingToGive.substring(0,thingToGive.length()-4);}
-        boolean onlyGoldFlag=mob.hasOnlyGoldInInventory();
-        Item giveThis=CMLib.english().bestPossibleGold(mob,null,thingToGive);
-        if(giveThis!=null)
-        {
-            if(((Coins)giveThis).getNumberOfCoins()<CMLib.english().numPossibleGold(mob,thingToGive))
-                return false;
-            if(CMLib.flags().canBeSeenBy(giveThis,mob))
-                V.addElement(giveThis);
-        }
+		boolean onlyGoldFlag=mob.hasOnlyGoldInInventory();
+		Item giveThis=CMLib.english().bestPossibleGold(mob,null,thingToGive);
+		if(giveThis!=null)
+		{
+			if(((Coins)giveThis).getNumberOfCoins()<CMLib.english().numPossibleGold(mob,thingToGive))
+				return false;
+			if(CMLib.flags().canBeSeenBy(giveThis,mob))
+				V.addElement(giveThis);
+		}
 		boolean doBugFix = true;
-        if(V.size()==0)
+		if(V.size()==0)
 		while(doBugFix || ((allFlag)&&(addendum<=maxToGive)))
 		{
 			doBugFix=false;
@@ -109,15 +109,15 @@ public class Give extends StdCommand
 						return false;
 				}
 			}
-            if((allFlag)&&(!onlyGoldFlag)&&(giveThis instanceof Coins)&&(thingToGive.equalsIgnoreCase("all")))
-                giveThis=null;
-            else
-            {
-    			if(giveThis==null) break;
-    			if(CMLib.flags().canBeSeenBy(giveThis,mob))
-    				V.addElement(giveThis);
-            }
-            addendumStr="."+(++addendum);
+			if((allFlag)&&(!onlyGoldFlag)&&(giveThis instanceof Coins)&&(thingToGive.equalsIgnoreCase("all")))
+				giveThis=null;
+			else
+			{
+				if(giveThis==null) break;
+				if(CMLib.flags().canBeSeenBy(giveThis,mob))
+					V.addElement(giveThis);
+			}
+			addendumStr="."+(++addendum);
 		}
 
 		if(V.size()==0)
@@ -136,8 +136,8 @@ public class Give extends StdCommand
 		}
 		return false;
 	}
-    public double combatActionsCost(final MOB mob, final List<String> cmds){return CMProps.getCombatActionCost(ID());}
-    public double actionsCost(final MOB mob, final List<String> cmds){return CMProps.getActionCost(ID());}
+	public double combatActionsCost(final MOB mob, final List<String> cmds){return CMProps.getCombatActionCost(ID());}
+	public double actionsCost(final MOB mob, final List<String> cmds){return CMProps.getActionCost(ID());}
 	public boolean canBeOrdered(){return true;}
 
 	

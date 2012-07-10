@@ -25,7 +25,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -35,20 +35,20 @@ import java.util.*;
 */
 public interface MaterialLibrary extends CMLibrary
 {
-    public Environmental unbundle(Item I, int number);
-    public int getMaterialRelativeInt(String s);
-    public int getMaterialCode(String s, boolean exact);
-    public int getResourceCode(String s, boolean exact);
-    public String getResourceDesc(int MASK);
-    public String getMaterialDesc(int MASK);
-    public Item makeItemResource(int type);
-    public PhysicalAgent makeResource(int myResource, String localeCode, boolean noAnimals, String fullName);
-    public void addEffectsToResource(Item I);
-    public int getRandomResourceOfMaterial(int material);
-    public boolean rebundle(Item I);
-    public boolean quickDestroy(Item I);
-    public int destroyResources(MOB E, int howMuch, int finalMaterial, int otherMaterial, Item never);
-    public int destroyResources(Room E, int howMuch, int finalMaterial, int otherMaterial, Item never);
+	public Environmental unbundle(Item I, int number);
+	public int getMaterialRelativeInt(String s);
+	public int getMaterialCode(String s, boolean exact);
+	public int getResourceCode(String s, boolean exact);
+	public String getResourceDesc(int MASK);
+	public String getMaterialDesc(int MASK);
+	public Item makeItemResource(int type);
+	public PhysicalAgent makeResource(int myResource, String localeCode, boolean noAnimals, String fullName);
+	public void addEffectsToResource(Item I);
+	public int getRandomResourceOfMaterial(int material);
+	public boolean rebundle(Item I);
+	public boolean quickDestroy(Item I);
+	public int destroyResources(MOB E, int howMuch, int finalMaterial, int otherMaterial, Item never);
+	public int destroyResources(Room E, int howMuch, int finalMaterial, int otherMaterial, Item never);
 	public Item fetchFoundOtherEncoded(Room E, String otherRequired);
 	public Item fetchFoundOtherEncoded(MOB E, String otherRequired);
 	public Item findMostOfMaterial(Room E, int material);
@@ -61,6 +61,6 @@ public interface MaterialLibrary extends CMLibrary
 	public Item findFirstResource(MOB E, int resource);
 	public Item findFirstResource(Room E, String other);
 	public Item findFirstResource(MOB E, String other);
-    public void adjustResourceName(Item I);
-    public String genericType(Item I);
+	public void adjustResourceName(Item I);
+	public String genericType(Item I);
 }

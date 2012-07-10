@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -40,7 +40,7 @@ public class FireBuilding extends CommonSkill
 	public String name(){ return "Fire Building";}
 	private static final String[] triggerStrings = {"LIGHT","FIREBUILD","FIREBUILDING"};
 	public String[] triggerStrings(){return triggerStrings;}
-    public int classificationCode() {   return Ability.ACODE_COMMON_SKILL|Ability.DOMAIN_NATURELORE; }
+	public int classificationCode() {   return Ability.ACODE_COMMON_SKILL|Ability.DOMAIN_NATURELORE; }
 
 	public Item lighting=null;
 	protected int durationOfBurn=0;
@@ -78,46 +78,46 @@ public class FireBuilding extends CommonSkill
 		super.unInvoke();
 	}
 
-    public boolean fireHere(Room R)
-    {
-        for(int i=0;i<R.numItems();i++)
-        {
-            Item I2=R.getItem(i);
-            if((I2!=null)&&(I2.container()==null)&&(CMLib.flags().isOnFire(I2)))
-                return true;
-        }
-        return false;
-    }
-    
-    public Vector resourceHere(Room R, int material)
-    {
-        Vector here=new Vector();
-        for(int i=0;i<R.numItems();i++)
-        {
-            Item I2=R.getItem(i);
-            if((I2!=null)
-            &&(I2.container()==null)
-            &&(I2 instanceof RawMaterial)
-            &&(((I2.material()&RawMaterial.RESOURCE_MASK)==material)
-                ||(((I2.material())&RawMaterial.MATERIAL_MASK)==material))
-            &&(!CMLib.flags().enchanted(I2)))
-                here.addElement(I2);
-        }
-        return here;
-    }
-    
+	public boolean fireHere(Room R)
+	{
+		for(int i=0;i<R.numItems();i++)
+		{
+			Item I2=R.getItem(i);
+			if((I2!=null)&&(I2.container()==null)&&(CMLib.flags().isOnFire(I2)))
+				return true;
+		}
+		return false;
+	}
+	
+	public Vector resourceHere(Room R, int material)
+	{
+		Vector here=new Vector();
+		for(int i=0;i<R.numItems();i++)
+		{
+			Item I2=R.getItem(i);
+			if((I2!=null)
+			&&(I2.container()==null)
+			&&(I2 instanceof RawMaterial)
+			&&(((I2.material()&RawMaterial.RESOURCE_MASK)==material)
+				||(((I2.material())&RawMaterial.MATERIAL_MASK)==material))
+			&&(!CMLib.flags().enchanted(I2)))
+				here.addElement(I2);
+		}
+		return here;
+	}
+	
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if((mob.isMonster()
 		&&(!CMLib.flags().isAnimalIntelligence(mob)))
 		&&(commands.size()==0))
-        {
-            if((!fireHere(mob.location()))
-            &&(resourceHere(mob.location(),RawMaterial.MATERIAL_WOODEN).size()>0))
-                commands.addElement(((Environmental)resourceHere(mob.location(),RawMaterial.MATERIAL_WOODEN).firstElement()).Name());
-            else
-    			commands.addElement("fire");
-        }
+		{
+			if((!fireHere(mob.location()))
+			&&(resourceHere(mob.location(),RawMaterial.MATERIAL_WOODEN).size()>0))
+				commands.addElement(((Environmental)resourceHere(mob.location(),RawMaterial.MATERIAL_WOODEN).firstElement()).Name());
+			else
+				commands.addElement("fire");
+		}
 
 		if(commands.size()==0)
 		{

@@ -23,7 +23,7 @@ import java.util.Vector;
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *        http://www.apache.org/licenses/LICENSE-2.0
+ *  	  http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -41,13 +41,13 @@ public class ChannelUserReply extends Packet {
 	public ChannelUserReply()
 	{
 		super();
-        type = Packet.CHAN_USER_REP;
+		type = Packet.CHAN_USER_REP;
 	}
 	
-    public ChannelUserReply(Vector v) throws InvalidPacketException {
-        super(v);
-        try {
-            type = Packet.CHAN_USER_REP;
+	public ChannelUserReply(Vector v) throws InvalidPacketException {
+		super(v);
+		try {
+			type = Packet.CHAN_USER_REP;
 			try{
 				userRequested = (String)v.elementAt(6);
 				userVisibleName = (String)v.elementAt(7);
@@ -58,31 +58,31 @@ public class ChannelUserReply extends Packet {
 				case 2: gender='N'; break;
 				}
 			}catch(Exception e){}
-        }
-        catch( ClassCastException e ) {
-            throw new InvalidPacketException();
-        }
-    }
+		}
+		catch( ClassCastException e ) {
+			throw new InvalidPacketException();
+		}
+	}
 
-    public void send() throws InvalidPacketException {
-        if( userRequested == null || userVisibleName == null ) {
-            throw new InvalidPacketException();
-        }
-        super.send();
-    }
+	public void send() throws InvalidPacketException {
+		if( userRequested == null || userVisibleName == null ) {
+			throw new InvalidPacketException();
+		}
+		super.send();
+	}
 
-    public String toString() {
-    	int genderCode = 0;
-    	switch(gender) {
-    	case 'M': genderCode=0; break;
-    	case 'F': genderCode=1; break;
-    	case 'N': genderCode=2; break;
-    	}
+	public String toString() {
+		int genderCode = 0;
+		switch(gender) {
+		case 'M': genderCode=0; break;
+		case 'F': genderCode=1; break;
+		case 'N': genderCode=2; break;
+		}
 		String str="({\"chan-user-req\",5,\"" + I3Server.getMudName() +
-        "\",0,\"" + target_mud + "\",0,\"" + userRequested 
-        + "\",\"" + userVisibleName 
-        + "\"," + genderCode + ",})";
+		"\",0,\"" + target_mud + "\",0,\"" + userRequested 
+		+ "\",\"" + userVisibleName 
+		+ "\"," + genderCode + ",})";
 		return str;
 
-    }
+	}
 }

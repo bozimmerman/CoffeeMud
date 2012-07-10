@@ -25,7 +25,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -40,7 +40,7 @@ public class Emoter extends ActiveTicker
 	protected int expires=0;
 	public Emoter()
 	{
-        super();
+		super();
 		minTicks=10;maxTicks=30;chance=50;expires=0;
 		tickReset();
 	}
@@ -50,7 +50,7 @@ public class Emoter extends ActiveTicker
 	{
 		super.setParms(newParms);
 		expires=CMParms.getParmInt(parms,"expires",0);
-	    inroom=CMParms.getParmStr(parms,"inroom","").toUpperCase();
+		inroom=CMParms.getParmStr(parms,"inroom","").toUpperCase();
 		emotes=null;
 		smells=null;
 	}
@@ -76,49 +76,49 @@ public class Emoter extends ActiveTicker
 		return "emoting";
 	}
 
-    protected boolean setEmoteType(String str)
-    {
-        str=str.toUpperCase().trim();
-        if(str.equals("BROADCAST"))
-            broadcast=true;
-        else
-        if(str.equals("NOBROADCAST"))
-            broadcast=false;
-        else
-        if(str.equals("VISUAL")||(str.equals("SIGHT")))
-            emoteType=EMOTE_TYPE.EMOTE_VISUAL;
-        else
-        if(str.equals("AROMA")||(str.equals("SMELL")))
-            emoteType=EMOTE_TYPE.EMOTE_SMELL;
-        else
-        if(str.equals("SOUND")||(str.equals("NOISE")))
-            emoteType=EMOTE_TYPE.EMOTE_SOUND;
-        else
-        if(str.equals("SOCIAL"))
-            emoteType=EMOTE_TYPE.EMOTE_SOCIAL;
-        else
-            return false;
-        return true;
-    }
-    protected void setEmoteTypes(Vector V, boolean respectOnlyBeginningAndEnd)
+	protected boolean setEmoteType(String str)
 	{
-        if(respectOnlyBeginningAndEnd)
-        {
-            if(setEmoteType((String)V.firstElement()))
-                V.removeElementAt(0);
-            else
-            if(setEmoteType((String)V.lastElement()))
-                V.removeElementAt(V.size()-1);
-        }
-        else
+		str=str.toUpperCase().trim();
+		if(str.equals("BROADCAST"))
+			broadcast=true;
+		else
+		if(str.equals("NOBROADCAST"))
+			broadcast=false;
+		else
+		if(str.equals("VISUAL")||(str.equals("SIGHT")))
+			emoteType=EMOTE_TYPE.EMOTE_VISUAL;
+		else
+		if(str.equals("AROMA")||(str.equals("SMELL")))
+			emoteType=EMOTE_TYPE.EMOTE_SMELL;
+		else
+		if(str.equals("SOUND")||(str.equals("NOISE")))
+			emoteType=EMOTE_TYPE.EMOTE_SOUND;
+		else
+		if(str.equals("SOCIAL"))
+			emoteType=EMOTE_TYPE.EMOTE_SOCIAL;
+		else
+			return false;
+		return true;
+	}
+	protected void setEmoteTypes(Vector V, boolean respectOnlyBeginningAndEnd)
+	{
+		if(respectOnlyBeginningAndEnd)
+		{
+			if(setEmoteType((String)V.firstElement()))
+				V.removeElementAt(0);
+			else
+			if(setEmoteType((String)V.lastElement()))
+				V.removeElementAt(V.size()-1);
+		}
+		else
 		for(int v=V.size()-1;v>=0;v--)
 		{
-            if(setEmoteType((String)V.elementAt(v)))
-                V.removeElementAt(v);
+			if(setEmoteType((String)V.elementAt(v)))
+				V.removeElementAt(v);
 		}
 	}
 
-    protected List<EmoteObj> parseEmotes()
+	protected List<EmoteObj> parseEmotes()
 	{
 		if(emotes!=null) return emotes;
 		broadcast=false;
@@ -158,8 +158,8 @@ public class Emoter extends ActiveTicker
 				{
 					if(emoteType==EMOTE_TYPE.EMOTE_SMELL)
 					{
-					    if(smells==null) smells=new Vector();
-					    smells.add(new EmoteObj(emoteType,thisEmote,broadcast));
+						if(smells==null) smells=new Vector();
+						smells.add(new EmoteObj(emoteType,thisEmote,broadcast));
 					}
 					emotes.add(new EmoteObj(emoteType,thisEmote,broadcast));
 				}
@@ -176,71 +176,71 @@ public class Emoter extends ActiveTicker
 		&&(CMLib.flags().canSmell(msg.source()))
 		&&(smells!=null))
 		{
-		    EmoteObj emote=smells.get(CMLib.dice().roll(1,smells.size(),-1));
-	        MOB emoter=null;
+			EmoteObj emote=smells.get(CMLib.dice().roll(1,smells.size(),-1));
+			MOB emoter=null;
 			if(myHost instanceof Room)
 			{
 				emoter=CMClass.getFactoryMOB();
 				emoteHere((Room)myHost,emoter,emote,msg.source(),false);
-                emoter.destroy();
+				emoter.destroy();
 				return;
 			}
 			Room room=getBehaversRoom(myHost);
 			if(room!=null)
 			{
 				if(myHost instanceof MOB)
-                {
+				{
 					emoter=(MOB)myHost;
-                    emoteHere(room,emoter,emote,null,true);
-                }
+					emoteHere(room,emoter,emote,null,true);
+				}
 				else
 				{
 					if((myHost instanceof Item)&&(!CMLib.flags().isInTheGame(myHost,false)))
 						return;
 					emoter=CMClass.getFactoryMOB();
 					emoter.setName(myHost.name());
-                    emoteHere(room,emoter,emote,null,true);
-                    emoter.destroy();
+					emoteHere(room,emoter,emote,null,true);
+					emoter.destroy();
 				}
 			}
 		}
 	}
 
-    protected void emoteHere(Room room,
-	        			     MOB emoter,
-	        			     EmoteObj emote,
-	        			     MOB emoteTo,
-	        			     boolean Wrapper)
+	protected void emoteHere(Room room,
+							 MOB emoter,
+							 EmoteObj emote,
+							 MOB emoteTo,
+							 boolean Wrapper)
 	{
 		if(room==null) return;
 		if(inroom.length()>0)
 		{
-		    String ID=CMLib.map().getExtendedRoomID(room);
-		    if((ID.length()==0)
-		    ||((!inroom.equals(ID))&&(!inroom.endsWith(ID))&&(inroom.indexOf(ID+";")<0)))
-		        return;
+			String ID=CMLib.map().getExtendedRoomID(room);
+			if((ID.length()==0)
+			||((!inroom.equals(ID))&&(!inroom.endsWith(ID))&&(inroom.indexOf(ID+";")<0)))
+				return;
 		}
 		CMMsg msg;
 		Room oldLoc=emoter.location();
 		String str=emote.msg;
 		if(emoter.location()!=room) emoter.setLocation(room);
-        if(emote.type==EMOTE_TYPE.EMOTE_SOCIAL)
-        {
-            Social S=CMLib.socials().fetchSocial(str,true);
-            if(S==null) S=CMLib.socials().fetchSocial(str,false);
-            if(S!=null)
-            {
-                S.invoke(emoter,CMParms.parse(str),emoteTo,false);
-                return;
-            }
-        }
-        if(Wrapper) str="^E<S-NAME> "+str+" ^?";
+		if(emote.type==EMOTE_TYPE.EMOTE_SOCIAL)
+		{
+			Social S=CMLib.socials().fetchSocial(str,true);
+			if(S==null) S=CMLib.socials().fetchSocial(str,false);
+			if(S!=null)
+			{
+				S.invoke(emoter,CMParms.parse(str),emoteTo,false);
+				return;
+			}
+		}
+		if(Wrapper) str="^E<S-NAME> "+str+" ^?";
 		if(emoteTo!=null)
 		{
-		    emoteTo.tell(emoter,emoteTo,null,str);
-		    return;
+			emoteTo.tell(emoter,emoteTo,null,str);
+			return;
 		}
-        msg=CMClass.getMsg(emoter,null,CMMsg.MSG_EMOTE,str);
+		msg=CMClass.getMsg(emoter,null,CMMsg.MSG_EMOTE,str);
 		if(room.okMessage(emoter,msg))
 			for(int i=0;i<room.numInhabitants();i++)
 			{
@@ -289,20 +289,20 @@ public class Emoter extends ActiveTicker
 					Room R=(Room)r.nextElement();
 					emoteHere(R,emoter,emote,null,false);
 				}
-                emoter.destroy();
+				emoter.destroy();
 				return true;
 			}
 			if(ticking instanceof Room)
 			{
 				emoter=CMClass.getFactoryMOB();
 				emoteHere((Room)ticking,emoter,emote,null,false);
-                emoter.destroy();
+				emoter.destroy();
 				return true;
 			}
 
 			Room room=getBehaversRoom(ticking);
 			if(room==null) return true;
-            boolean killEmoter=false;
+			boolean killEmoter=false;
 			if(ticking instanceof MOB)
 			{
 				if(canFreelyBehaveNormal(ticking))
@@ -314,7 +314,7 @@ public class Emoter extends ActiveTicker
 					return true;
 
 				emoter=CMClass.getFactoryMOB();
-                killEmoter=true;
+				killEmoter=true;
 				MOB mob=getBehaversMOB(ticking);
 				String name=ticking.name();
 				if(ticking instanceof Environmental)
@@ -329,16 +329,16 @@ public class Emoter extends ActiveTicker
 				else
 					emoter.setName(name);
 			}
-            if(emoter==null) return true;
-            emoteHere(room,emoter,emote,null,true);
+			if(emoter==null) return true;
+			emoteHere(room,emoter,emote,null,true);
 
 			if(emote.broadcast)
 			{
 				if(ticking instanceof MOB)
-                {
+				{
 					emoter=CMClass.getFactoryMOB();
-                    killEmoter=true;
-                }
+					killEmoter=true;
+				}
 				for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 				{
 					Room R=room.getRoomInDir(d);
@@ -350,7 +350,7 @@ public class Emoter extends ActiveTicker
 					}
 				}
 			}
-            if(killEmoter) emoter.destroy();
+			if(killEmoter) emoter.destroy();
 		}
 		return true;
 	}

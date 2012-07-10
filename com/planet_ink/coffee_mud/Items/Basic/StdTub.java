@@ -25,7 +25,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -61,7 +61,7 @@ public class StdTub extends StdRideable implements Drink
 
 	public long decayTime(){return decayTime;}
 	public void setDecayTime(long time){decayTime=time;}
-    public boolean disappearsAfterDrinking(){return disappearsAfterDrinking;}
+	public boolean disappearsAfterDrinking(){return disappearsAfterDrinking;}
 	public int thirstQuenched(){return amountOfThirstQuenched;}
 	public int liquidHeld(){return amountOfLiquidHeld;}
 	public int liquidRemaining(){return amountOfLiquidRemaining;}
@@ -78,23 +78,23 @@ public class StdTub extends StdRideable implements Drink
 
 	public boolean containsDrink()
 	{
-        if((!CMLib.flags().isGettable(this))
-        &&(owner()!=null)
-        &&(owner() instanceof Room)
-        &&(((Room)owner()).getArea()!=null)
-        &&(((Room)owner()).getArea().getClimateObj().weatherType((Room)owner())==Climate.WEATHER_DROUGHT))
-            return false;
-        if(liquidRemaining()<1)
-        {
-        	List<Item> V=getContents();
-            for(int v=0;v<V.size();v++)
-                if((V.get(v) instanceof Item)
-                &&(V.get(v) instanceof Drink)
-                &&((((Item)V.get(v)).material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_LIQUID))
-                    return true;
-            return false;
-        }
-        return true;
+		if((!CMLib.flags().isGettable(this))
+		&&(owner()!=null)
+		&&(owner() instanceof Room)
+		&&(((Room)owner()).getArea()!=null)
+		&&(((Room)owner()).getArea().getClimateObj().weatherType((Room)owner())==Climate.WEATHER_DROUGHT))
+			return false;
+		if(liquidRemaining()<1)
+		{
+			List<Item> V=getContents();
+			for(int v=0;v<V.size();v++)
+				if((V.get(v) instanceof Item)
+				&&(V.get(v) instanceof Drink)
+				&&((((Item)V.get(v)).material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_LIQUID))
+					return true;
+			return false;
+		}
+		return true;
 	}
 
 	public String stateString(Rider R)
@@ -239,22 +239,22 @@ public class StdTub extends StdRideable implements Drink
 		return true;
 	}
 
-    public int amountTakenToFillMe(Drink theSource)
-    {
-        int amountToTake=amountOfLiquidHeld-amountOfLiquidRemaining;
-        if(amountOfLiquidHeld>=500000)
-            amountToTake=theSource.liquidRemaining();
-        if(amountToTake>theSource.liquidRemaining())
-            amountToTake=theSource.liquidRemaining();
-        return amountToTake;
-    }
+	public int amountTakenToFillMe(Drink theSource)
+	{
+		int amountToTake=amountOfLiquidHeld-amountOfLiquidRemaining;
+		if(amountOfLiquidHeld>=500000)
+			amountToTake=theSource.liquidRemaining();
+		if(amountToTake>theSource.liquidRemaining())
+			amountToTake=theSource.liquidRemaining();
+		return amountToTake;
+	}
 
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
-	    if(msg.source().riding()==this)
-	    {
-	    	CMLib.commands().handleHygenicMessage(msg, 0, PlayerStats.HYGIENE_WATERCLEAN);
-	    }
+		if(msg.source().riding()==this)
+		{
+			CMLib.commands().handleHygenicMessage(msg, 0, PlayerStats.HYGIENE_WATERCLEAN);
+		}
 
 		if(msg.amITarget(this))
 		{
@@ -271,10 +271,10 @@ public class StdTub extends StdRideable implements Drink
 				if(full)
 					mob.tell("You have drunk all you can.");
 				if(disappearsAfterDrinking)
-                {
-                    destroy();
-                    return;
-                }
+				{
+					destroy();
+					return;
+				}
 				break;
 			case CMMsg.TYP_FILL:
 				if((msg.tool()!=null)&&(msg.tool() instanceof Drink))
@@ -289,10 +289,10 @@ public class StdTub extends StdRideable implements Drink
 					if(amountOfLiquidRemaining>amountOfLiquidHeld)
 						amountOfLiquidRemaining=amountOfLiquidHeld;
 					if((amountOfLiquidRemaining<=0)&&(disappearsAfterDrinking))
-                    {
+					{
 						destroy();
-                        return;
-                    }
+						return;
+					}
 				}
 				break;
 			default:

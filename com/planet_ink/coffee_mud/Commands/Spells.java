@@ -23,7 +23,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -38,21 +38,21 @@ public class Spells  extends Skills
 
 	private final String[] access={"SPELLS","SP"};
 	public String[] getAccessWords(){return access;}
-    
+	
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
 		String qual=CMParms.combine(commands,1).toUpperCase();
 		if(parsedOutIndividualSkill(mob,qual,Ability.ACODE_SPELL))
 			return true;
-        int[] level=new int[1];
-        int[] domain=new int[1];
-        String[] domainName=new String[1];
-        domainName[0]="";
-        level[0]=-1;
-        parseDomainInfo(mob,commands,new XVector(Integer.valueOf(Ability.ACODE_SPELL)),level,domain,domainName);
+		int[] level=new int[1];
+		int[] domain=new int[1];
+		String[] domainName=new String[1];
+		domainName[0]="";
+		level[0]=-1;
+		parseDomainInfo(mob,commands,new XVector(Integer.valueOf(Ability.ACODE_SPELL)),level,domain,domainName);
 		StringBuffer msg=new StringBuffer("");
-        msg.append("\n\r^HYour "+domainName[0].replace('_',' ')+"spells:^? "+getAbilities(mob,mob,Ability.ACODE_SPELL,domain[0],true,level[0]));
+		msg.append("\n\r^HYour "+domainName[0].replace('_',' ')+"spells:^? "+getAbilities(mob,mob,Ability.ACODE_SPELL,domain[0],true,level[0]));
 		if(!mob.isMonster())
 			mob.session().wraplessPrintln(msg.toString()+"\n\r");
 		return false;

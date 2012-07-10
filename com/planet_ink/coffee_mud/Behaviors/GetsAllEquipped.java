@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -39,7 +39,7 @@ public class GetsAllEquipped extends ActiveTicker
 	protected int canImproveCode(){return Behavior.CAN_MOBS;}
 	public GetsAllEquipped()
 	{
-        super();
+		super();
 		maxTicks=5;minTicks=10;chance=100;
 		tickReset();
 	}
@@ -52,13 +52,13 @@ public class GetsAllEquipped extends ActiveTicker
 	}
 
 	public void executeMsg(Environmental host, CMMsg msg)
-    {
-	    super.executeMsg(host,msg);
-        if((msg.sourceMinor()==CMMsg.TYP_DEATH)
-        &&(msg.source()!=host)
-        &&(msg.source().location()!=CMLib.map().roomLocation(host)))
-            DoneEquipping=false;
-    }
+	{
+		super.executeMsg(host,msg);
+		if((msg.sourceMinor()==CMMsg.TYP_DEATH)
+		&&(msg.source()!=host)
+		&&(msg.source().location()!=CMLib.map().roomLocation(host)))
+			DoneEquipping=false;
+	}
 
 	public boolean tick(Tickable ticking, int tickID)
 	{
@@ -73,26 +73,26 @@ public class GetsAllEquipped extends ActiveTicker
 			if(thisRoom.numItems()==0) return true;
 
 			DoneEquipping=true;
-            Vector stuffIHad=new Vector();
-            for(int i=0;i<mob.numItems();i++)
-                stuffIHad.addElement(mob.getItem(i));
-            mob.enqueCommand(new XVector("GET","ALL"),Command.METAFLAG_FORCED,0);
-            Item I=null;
-            Vector dropThisStuff=new Vector();
-            for(int i=0;i<mob.numItems();i++)
-            {
-                I=mob.getItem(i);
-                if((I!=null)&&(!stuffIHad.contains(I)))
-                {
-                    if(I instanceof DeadBody)
-                        dropThisStuff.addElement(I);
-                    else
-                    if((I.container()!=null)&&(I.container() instanceof DeadBody))
-                        I.setContainer(null);
-                }
-            }
-            for(int d=0;d<dropThisStuff.size();d++)
-                mob.enqueCommand(new XVector("DROP",((Item)dropThisStuff.elementAt(d)).Name()),Command.METAFLAG_FORCED,0);
+			Vector stuffIHad=new Vector();
+			for(int i=0;i<mob.numItems();i++)
+				stuffIHad.addElement(mob.getItem(i));
+			mob.enqueCommand(new XVector("GET","ALL"),Command.METAFLAG_FORCED,0);
+			Item I=null;
+			Vector dropThisStuff=new Vector();
+			for(int i=0;i<mob.numItems();i++)
+			{
+				I=mob.getItem(i);
+				if((I!=null)&&(!stuffIHad.contains(I)))
+				{
+					if(I instanceof DeadBody)
+						dropThisStuff.addElement(I);
+					else
+					if((I.container()!=null)&&(I.container() instanceof DeadBody))
+						I.setContainer(null);
+				}
+			}
+			for(int d=0;d<dropThisStuff.size();d++)
+				mob.enqueCommand(new XVector("DROP",((Item)dropThisStuff.elementAt(d)).Name()),Command.METAFLAG_FORCED,0);
 			mob.enqueCommand(new XVector("WEAR","ALL"),Command.METAFLAG_FORCED,0);
 		}
 		return true;

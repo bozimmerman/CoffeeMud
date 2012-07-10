@@ -25,7 +25,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -41,17 +41,17 @@ public class Prop_HereSpellCast extends Prop_HaveSpellCast
 	protected int canAffectCode(){return Ability.CAN_ROOMS;}
 	public boolean bubbleAffect(){return true;}
 	protected int lastNum=-1;
-    private Vector lastMOBs=new Vector();
+	private Vector lastMOBs=new Vector();
 
-    public String accountForYourself()
-    { return spellAccountingsWithMask("Casts "," on those here.");}
+	public String accountForYourself()
+	{ return spellAccountingsWithMask("Casts "," on those here.");}
 
-    public void setMiscText(String newText)
-    { 
-        super.setMiscText(newText);
-        lastMOBs=new Vector();
-    }
-    
+	public void setMiscText(String newText)
+	{ 
+		super.setMiscText(newText);
+		lastMOBs=new Vector();
+	}
+	
 	public void process(MOB mob, Room room, int code) // code=0 add/sub, 1=addon, 2=subon
 	{
 		if((code==2)||((code==0)&&(lastNum!=room.numInhabitants())))
@@ -62,7 +62,7 @@ public class Prop_HereSpellCast extends Prop_HaveSpellCast
 				if((lastMOB.location()!=room)
 				||((mob==lastMOB)&&(code==2)))
 				{
-                    removeMyAffectsFrom(lastMOB);
+					removeMyAffectsFrom(lastMOB);
 					lastMOBs.removeElementAt(v);
 				}
 			}
@@ -72,7 +72,7 @@ public class Prop_HereSpellCast extends Prop_HaveSpellCast
 		&&((code==1)||((code==0)&&(room.isInhabitant(mob)))))
 		{
 			if(addMeIfNeccessary(mob,mob,true,0))
-    			lastMOBs.addElement(mob);
+				lastMOBs.addElement(mob);
 		}
 	}
 

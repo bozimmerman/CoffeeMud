@@ -25,7 +25,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -40,7 +40,7 @@ public class Chant_SenseMetal extends Chant
 	public String ID() { return "Chant_SenseMetal"; }
 	public String name(){return "Sense Metal";}
 	public String displayText(){return "(Sensing Metal)";}
-    public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_ROCKCONTROL;}
+	public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_ROCKCONTROL;}
 	public int abstractQuality(){ return Ability.QUALITY_OK_SELF;}
 	protected int canAffectCode(){return CAN_MOBS;}
 
@@ -59,7 +59,7 @@ public class Chant_SenseMetal extends Chant
 		if((msg.source()==affected)
 		&&(msg.target() instanceof Room)
 		&&(msg.tool()==null)
-        &&((msg.targetMinor()==CMMsg.TYP_LOOK)||(msg.targetMinor()==CMMsg.TYP_EXAMINE))
+		&&((msg.targetMinor()==CMMsg.TYP_LOOK)||(msg.targetMinor()==CMMsg.TYP_EXAMINE))
 		&&(((((Room)msg.target()).myResource()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_METAL)
 		   ||((((Room)msg.target()).myResource()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_MITHRIL)))
 			msg.addTrailerMsg(CMClass.getMsg(msg.source(),null,null,CMMsg.MSG_OK_VISUAL,"You sense metals strongly in the earth here.",CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null));

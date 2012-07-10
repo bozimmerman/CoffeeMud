@@ -25,7 +25,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -45,7 +45,7 @@ public class Fighter_Behead extends FighterSkill
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return Ability.CAN_MOBS;}
 	public int maxRange(){return adjustedMaxInvokerRange(0);}
-    public int classificationCode(){ return Ability.ACODE_SKILL|Ability.DOMAIN_ANATOMY;}
+	public int classificationCode(){ return Ability.ACODE_SKILL|Ability.DOMAIN_ANATOMY;}
 	public int usageType(){return USAGE_MOVEMENT;}
 
 	public int castingQuality(MOB mob, Physical target)
@@ -55,11 +55,11 @@ public class Fighter_Behead extends FighterSkill
 			Race R=((MOB)target).charStats().getMyRace();
 			if(R.bodyMask()[Race.BODY_HEAD]<=0)
 				return Ability.QUALITY_INDIFFERENT;
-	        LegalBehavior B=null;
+			LegalBehavior B=null;
 			if(mob.location()!=null) B=CMLib.law().getLegalBehavior(mob.location());
 			List<LegalWarrant> warrants=new Vector();
 			if(B!=null)
-	            warrants=B.getWarrantsOf(CMLib.law().getLegalObject(mob.location()),(MOB)target);
+				warrants=B.getWarrantsOf(CMLib.law().getLegalObject(mob.location()),(MOB)target);
 			if(warrants.size()==0)
 				return Ability.QUALITY_INDIFFERENT;
 			Item w=mob.fetchWieldedItem();
@@ -79,24 +79,24 @@ public class Fighter_Behead extends FighterSkill
 	
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-	    MOB target=super.getTarget(mob,commands,givenTarget);
-	    if(target==null) return false;
+		MOB target=super.getTarget(mob,commands,givenTarget);
+		if(target==null) return false;
 		Race R=target.charStats().getMyRace();
 		if(R.bodyMask()[Race.BODY_HEAD]<=0)
 		{
-		    mob.tell(target.name()+" has no head!");
-		    return false;
+			mob.tell(target.name()+" has no head!");
+			return false;
 		}
-	    
-        LegalBehavior B=null;
+		
+		LegalBehavior B=null;
 		if(mob.location()!=null) B=CMLib.law().getLegalBehavior(mob.location());
 		List<LegalWarrant> warrants=new Vector();
 		if(B!=null)
-            warrants=B.getWarrantsOf(CMLib.law().getLegalObject(mob.location()),target);
+			warrants=B.getWarrantsOf(CMLib.law().getLegalObject(mob.location()),target);
 		if((warrants.size()==0)&&(!CMSecurity.isAllowed(mob,mob.location(),"ABOVELAW")))
 		{
-		    mob.tell("You are not allowed to behead "+target.Name()+" at this time.");
-		    return false;
+			mob.tell("You are not allowed to behead "+target.Name()+" at this time.");
+			return false;
 		}
 		
 		Item w=mob.fetchWieldedItem();
@@ -183,7 +183,7 @@ public class Fighter_Behead extends FighterSkill
 			if(target.getVictim()==mob) target.makePeace();
 		}
 		else
-		    maliciousFizzle(mob,target,"<S-NAME> attempt(s) a beheading and fail(s)!");
+			maliciousFizzle(mob,target,"<S-NAME> attempt(s) a beheading and fail(s)!");
 		return success;
 	}
 }

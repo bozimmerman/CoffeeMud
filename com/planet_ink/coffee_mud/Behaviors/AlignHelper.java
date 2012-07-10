@@ -25,7 +25,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -58,9 +58,9 @@ public class AlignHelper extends StdBehavior
 		&&(CMLib.flags().canBeSeenBy(source,observer))
 		&&(CMLib.flags().canBeSeenBy(target,observer))
 		&&(!BrotherHelper.isBrother(source,observer,false))
-	    &&( (CMLib.flags().isEvil(target)&&CMLib.flags().isEvil(observer))
-	    	||(CMLib.flags().isNeutral(target)&&CMLib.flags().isNeutral(observer))
-	    	||(CMLib.flags().isGood(target)&&CMLib.flags().isGood(observer))))
+		&&( (CMLib.flags().isEvil(target)&&CMLib.flags().isEvil(observer))
+			||(CMLib.flags().isNeutral(target)&&CMLib.flags().isNeutral(observer))
+			||(CMLib.flags().isGood(target)&&CMLib.flags().isGood(observer))))
 		{
 			Aggressive.startFight(observer,source,true,false,CMLib.flags().getAlignmentName(observer)+" PEOPLE UNITE! CHARGE!");
 		}

@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -61,7 +61,7 @@ public class Archon_Stinkify extends ArchonSkill
 		if(success)
 		{
 			CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MASK_MOVE|CMMsg.TYP_JUSTICE|(auto?CMMsg.MASK_ALWAYS:0),auto?"A stink cloud surrounds <T-NAME>!":"^F<S-NAME> stinkif(ys) <T-NAMESELF>.^?");
-            CMLib.color().fixSourceFightColor(msg);
+			CMLib.color().fixSourceFightColor(msg);
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -69,7 +69,7 @@ public class Archon_Stinkify extends ArchonSkill
 				{
 					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> <S-IS-ARE> stinkier!");
 					target.playerStats().adjHygiene(PlayerStats.HYGIENE_DELIMIT+1);
-	                Log.sysOut("Stinkify",mob.name()+" stinkied "+target.name()+".");
+					Log.sysOut("Stinkify",mob.name()+" stinkied "+target.name()+".");
 				}
 				else
 					mob.tell(mob,target,null,"<T-NAME> is a mob.  Try a player.");

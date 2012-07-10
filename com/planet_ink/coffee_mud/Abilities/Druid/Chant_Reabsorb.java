@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -38,47 +38,47 @@ public class Chant_Reabsorb extends Chant
 {
 	public String ID() { return "Chant_Reabsorb"; }
 	public String name(){return "Reabsorb";}
-    public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_DEEPMAGIC;}
+	public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_DEEPMAGIC;}
 	protected int canTargetCode(){return CAN_ITEMS;}
 	protected int canAffectCode(){return 0;}
 	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 
-    public int castingQuality(MOB mob, Physical target)
-    {
-        if(mob!=null)
-        {
-            if(!(target instanceof Item))
-                return Ability.QUALITY_INDIFFERENT;
-            Room R=mob.location();
-            if(R!=null)
-            {
-                int type=R.domainType();
-                if((type==Room.DOMAIN_INDOORS_STONE)
-                ||(type==Room.DOMAIN_INDOORS_WOOD)
-                ||(type==Room.DOMAIN_INDOORS_MAGIC)
-                ||(type==Room.DOMAIN_INDOORS_UNDERWATER)
-                ||(type==Room.DOMAIN_INDOORS_WATERSURFACE)
-                ||(type==Room.DOMAIN_OUTDOORS_AIR)
-                ||(type==Room.DOMAIN_OUTDOORS_CITY)
-                ||(type==Room.DOMAIN_OUTDOORS_SPACEPORT)
-                ||(type==Room.DOMAIN_OUTDOORS_UNDERWATER)
-                ||(type==Room.DOMAIN_OUTDOORS_WATERSURFACE))
-                    return Ability.QUALITY_INDIFFERENT;
-            }
-        }
-        return super.castingQuality(mob,target);
-    }
-    
-    
+	public int castingQuality(MOB mob, Physical target)
+	{
+		if(mob!=null)
+		{
+			if(!(target instanceof Item))
+				return Ability.QUALITY_INDIFFERENT;
+			Room R=mob.location();
+			if(R!=null)
+			{
+				int type=R.domainType();
+				if((type==Room.DOMAIN_INDOORS_STONE)
+				||(type==Room.DOMAIN_INDOORS_WOOD)
+				||(type==Room.DOMAIN_INDOORS_MAGIC)
+				||(type==Room.DOMAIN_INDOORS_UNDERWATER)
+				||(type==Room.DOMAIN_INDOORS_WATERSURFACE)
+				||(type==Room.DOMAIN_OUTDOORS_AIR)
+				||(type==Room.DOMAIN_OUTDOORS_CITY)
+				||(type==Room.DOMAIN_OUTDOORS_SPACEPORT)
+				||(type==Room.DOMAIN_OUTDOORS_UNDERWATER)
+				||(type==Room.DOMAIN_OUTDOORS_WATERSURFACE))
+					return Ability.QUALITY_INDIFFERENT;
+			}
+		}
+		return super.castingQuality(mob,target);
+	}
+	
+	
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		Item target=this.getTarget(mob,mob.location(),givenTarget,null,commands,Wearable.FILTER_UNWORNONLY);
 		if(target==null) return false;
 		
 		List<DeadBody> V=CMLib.utensils().getDeadBodies(target);
-        for(int v=0;v<V.size();v++)
-        {
-        	DeadBody D=(DeadBody)V.get(v);
+		for(int v=0;v<V.size();v++)
+		{
+			DeadBody D=(DeadBody)V.get(v);
 			if((D!=null)
 			&&(D.playerCorpse())
 			&&(!D.mobName().equals(mob.Name())))
@@ -86,7 +86,7 @@ public class Chant_Reabsorb extends Chant
 				mob.tell("You are not allowed to reabsorb a player corpse.");
 				return false;
 			}
-        }
+		}
 		if(!(target.owner() instanceof Room))
 		{
 			mob.tell("You need to put "+target.name()+" on the ground first.");
@@ -94,13 +94,13 @@ public class Chant_Reabsorb extends Chant
 		}
 		int type=mob.location().domainType();
 		if((type==Room.DOMAIN_INDOORS_STONE)
-		    ||(type==Room.DOMAIN_INDOORS_WOOD)
-		    ||(type==Room.DOMAIN_INDOORS_MAGIC)
-		    ||(type==Room.DOMAIN_INDOORS_UNDERWATER)
-		    ||(type==Room.DOMAIN_INDOORS_WATERSURFACE)
-		    ||(type==Room.DOMAIN_OUTDOORS_AIR)
+			||(type==Room.DOMAIN_INDOORS_WOOD)
+			||(type==Room.DOMAIN_INDOORS_MAGIC)
+			||(type==Room.DOMAIN_INDOORS_UNDERWATER)
+			||(type==Room.DOMAIN_INDOORS_WATERSURFACE)
+			||(type==Room.DOMAIN_OUTDOORS_AIR)
 			||(type==Room.DOMAIN_OUTDOORS_CITY)
-		    ||(type==Room.DOMAIN_OUTDOORS_SPACEPORT)
+			||(type==Room.DOMAIN_OUTDOORS_SPACEPORT)
 			||(type==Room.DOMAIN_OUTDOORS_UNDERWATER)
 			||(type==Room.DOMAIN_OUTDOORS_WATERSURFACE))
 		{

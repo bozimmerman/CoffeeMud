@@ -25,7 +25,7 @@ import java.net.InetAddress;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -37,25 +37,25 @@ public interface ExternalHTTPRequests extends CMLibrary
 {
 	public byte [] doVirtualPage(byte [] data)
 		throws HTTPRedirectException;
-    public String doVirtualPage(String s) 
-        throws HTTPRedirectException;
-    public StringBuffer doVirtualPage(StringBuffer s) 
-        throws HTTPRedirectException;
+	public String doVirtualPage(String s) 
+		throws HTTPRedirectException;
+	public StringBuffer doVirtualPage(StringBuffer s) 
+		throws HTTPRedirectException;
 	public String getServerVersionString();
 	public String getWebServerPortStr();
-    public int getWebServerPort();
+	public int getWebServerPort();
 	public String getHTTPstatus();
 	public String getHTTPstatusInfo();
 	public String getHTTPclientIP();
 	public String getWebServerPartialName();
 	public CMFile grabFile(String filename);
-    public String getMimeType(String a_extension);
+	public String getMimeType(String a_extension);
 	public MudHost getMUD();
 	public boolean isRequestParameter(String key);
 	public String getRequestParameter(String key);
 	public void removeRequestParameter(String key);
 	public void addRequestParameters(String key, String value);
-    public List<String> getAllRequestParameterKeys(String keyMask);
+	public List<String> getAllRequestParameterKeys(String keyMask);
 	public Map<String, String> getVirtualDirectories();
 	public String getRequestEncodedParameters();
 	public InetAddress getServerAddress();

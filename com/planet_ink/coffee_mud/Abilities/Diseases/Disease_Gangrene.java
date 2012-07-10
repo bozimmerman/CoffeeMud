@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -53,7 +53,7 @@ public class Disease_Gangrene extends Disease
 	public int abilityCode(){return 0;}
 	protected int tickUpToDay=0;
 	protected int daysSick=0;
-    private boolean norecurse=false;
+	private boolean norecurse=false;
 
 	public boolean tick(Tickable ticking, int tickID)
 	{
@@ -101,9 +101,9 @@ public class Disease_Gangrene extends Disease
 			{
 				MOB diseaser=invoker;
 				if(diseaser==null) diseaser=affected;
-                norecurse=true;
-                CMLib.combat().postDeath(diseaser,affected,null);
-                norecurse=false;
+				norecurse=true;
+				CMLib.combat().postDeath(diseaser,affected,null);
+				norecurse=false;
 			}
 		}
 	}

@@ -25,7 +25,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -45,7 +45,7 @@ public class Thief_Panhandling extends ThiefSkill
 	private static final String[] triggerStrings = {"PANHANDLE","PANHANDLING"};
 	public String[] triggerStrings(){return triggerStrings;}
 	public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
-    public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_STREETSMARTS;}
+	public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_STREETSMARTS;}
 
 	Vector mobsHitUp=new Vector();
 	int tickTock=0;
@@ -122,13 +122,13 @@ public class Thief_Panhandling extends ThiefSkill
 						CMLib.commands().postSay(mob,mob2,"Gold piece for a poor soul down on "+mob.charStats().hisher()+" luck?",false,false);
 						break;
 					}
-                    if(CMLib.dice().rollPercentage()>(mob2.charStats().getSave(CharStats.STAT_SAVE_JUSTICE)+(CMLib.flags().isGood(mob)?10:0)))
+					if(CMLib.dice().rollPercentage()>(mob2.charStats().getSave(CharStats.STAT_SAVE_JUSTICE)+(CMLib.flags().isGood(mob)?10:0)))
 					{
-					    double total=CMLib.beanCounter().getTotalAbsoluteNativeValue(mob2);
-					    if(total>1.0)
-					    {
-						    total=total/(20.0-(float)getXLEVELLevel(mob));
-						    if(total<1.0) total=1.0;
+						double total=CMLib.beanCounter().getTotalAbsoluteNativeValue(mob2);
+						if(total>1.0)
+						{
+							total=total/(20.0-(float)getXLEVELLevel(mob));
+							if(total<1.0) total=1.0;
 							Coins C=CMLib.beanCounter().makeBestCurrency(mob2,total);
 							if(C!=null)
 							{
@@ -137,7 +137,7 @@ public class Thief_Panhandling extends ThiefSkill
 								mob2.doCommand(CMParms.parse("GIVE \""+C.name()+"\" \""+mob.Name()+"\""),Command.METAFLAG_FORCED);
 								if(!C.amDestroyed()) C.putCoinsBack();
 							}
-					    }
+						}
 					}
 
 					mobsHitUp.addElement(mob2);

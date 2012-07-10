@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -34,30 +34,30 @@ import java.util.*;
 */
 public class Dice extends StdLibrary implements DiceLibrary
 {
-    public String ID(){return "Dice";}
-    private Random randomizer = null;
-    protected LinkedList<CMath.CompiledOperation>  baseNpcHitpointsFormula = null;
+	public String ID(){return "Dice";}
+	private Random randomizer = null;
+	protected LinkedList<CMath.CompiledOperation>  baseNpcHitpointsFormula = null;
 
-    public synchronized Random getRandomizer() {
-    	if(randomizer == null)
-    		randomizer = new Random(System.currentTimeMillis());
-    	return randomizer;
-    }
-    public Dice()
-    {
-    	super();
-    	baseNpcHitpointsFormula=CMath.compileMathExpression(CMProps.getVar(CMProps.SYSTEM_FORMULA_NPCHITPOINTS));
-    	randomizer = new Random(System.currentTimeMillis());
-    }
-    
-    public boolean activate()
-    {
-    	baseNpcHitpointsFormula = CMath.compileMathExpression(CMProps.getVar(CMProps.SYSTEM_FORMULA_NPCHITPOINTS));
-    	return super.activate();
-    }
-    
-    public void propertiesLoaded() { activate(); }
-    
+	public synchronized Random getRandomizer() {
+		if(randomizer == null)
+			randomizer = new Random(System.currentTimeMillis());
+		return randomizer;
+	}
+	public Dice()
+	{
+		super();
+		baseNpcHitpointsFormula=CMath.compileMathExpression(CMProps.getVar(CMProps.SYSTEM_FORMULA_NPCHITPOINTS));
+		randomizer = new Random(System.currentTimeMillis());
+	}
+	
+	public boolean activate()
+	{
+		baseNpcHitpointsFormula = CMath.compileMathExpression(CMProps.getVar(CMProps.SYSTEM_FORMULA_NPCHITPOINTS));
+		return super.activate();
+	}
+	
+	public void propertiesLoaded() { activate(); }
+	
 	public boolean normalizeAndRollLess(int score)
 	{
 		return (rollPercentage()<normalizeBy5(score));
@@ -91,23 +91,23 @@ public class Dice extends StdLibrary implements DiceLibrary
 
 	public Object doublePick(Object[][] set)
 	{
-    	if(set.length==0) return null;
-    	final Object[] sset = set[randomizer.nextInt(set.length)];
-    	if(sset.length==0) return null;
-    	return sset[randomizer.nextInt(sset.length)];
+		if(set.length==0) return null;
+		final Object[] sset = set[randomizer.nextInt(set.length)];
+		if(sset.length==0) return null;
+		return sset[randomizer.nextInt(sset.length)];
 	}
 	
-    public Object pick(Object[] set) 
-    {
-    	if(set.length==0) return null;
-    	return set[randomizer.nextInt(set.length)];
-    }
-    
-    public Object pick(List<? extends Object> set) 
-    {
-    	if(set.size()==0) return null;
-    	return set.get(randomizer.nextInt(set.size()));
-    }
+	public Object pick(Object[] set) 
+	{
+		if(set.length==0) return null;
+		return set[randomizer.nextInt(set.length)];
+	}
+	
+	public Object pick(List<? extends Object> set) 
+	{
+		if(set.size()==0) return null;
+		return set.get(randomizer.nextInt(set.size()));
+	}
 	
 	public int getHPCode(String str)
 	{
@@ -194,19 +194,19 @@ public class Dice extends StdLibrary implements DiceLibrary
 		return stuff;
 	}
 	
-    public int roll(int number, int die, int modifier)
-    {
-    	if(die<=0) 
-    		return modifier;
-    	int total=0;
-        for(int i=0;i<number;i++)
-        	total+=randomizer.nextInt(die)+1;
-        return total + modifier;
-    }
+	public int roll(int number, int die, int modifier)
+	{
+		if(die<=0) 
+			return modifier;
+		int total=0;
+		for(int i=0;i<number;i++)
+			total+=randomizer.nextInt(die)+1;
+		return total + modifier;
+	}
 
-    public int rollPercentage()
-    {
-        return (Math.abs(randomizer.nextInt() % 100)) + 1;
-    }
+	public int rollPercentage()
+	{
+		return (Math.abs(randomizer.nextInt() % 100)) + 1;
+	}
 
 }

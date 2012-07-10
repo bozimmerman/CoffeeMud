@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -39,7 +39,7 @@ public class Chant_NaturalBalance extends Chant
 	public String ID() { return "Chant_NaturalBalance"; }
 	public String name(){ return "Natural Balance";}
 	public String displayText(){return "(Communing with the Natural Balance)";}
-    public int abstractQuality(){ return Ability.QUALITY_OK_SELF;}
+	public int abstractQuality(){ return Ability.QUALITY_OK_SELF;}
 	public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_ENDURING;}
 	protected int canAffectCode(){return Ability.CAN_MOBS;}
 	protected int canTargetCode(){return 0;}

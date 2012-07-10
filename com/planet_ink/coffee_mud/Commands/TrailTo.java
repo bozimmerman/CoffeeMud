@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -44,58 +44,58 @@ public class TrailTo extends StdCommand
 	public String trailTo(Room R1, Vector commands)
 	{
 		int radius=Integer.MAX_VALUE;
-        HashSet<Room> ignoreRooms=null;
-        TrackingLibrary.TrackingFlags flags = new TrackingLibrary.TrackingFlags();
-        for(int c=0;c<commands.size();c++)
-        {
-            String s=(String)commands.elementAt(c);
-            if(s.toUpperCase().startsWith("RADIUS"))
-            {
-                s=s.substring(("RADIUS").length()).trim();
-                if(!s.startsWith("=")) continue;
-                s=s.substring(1);
-                commands.removeElementAt(c);
-                radius=CMath.s_int(s);
-            }
-            else
-            if(s.toUpperCase().startsWith("IGNOREROOMS"))
-            {
-                s=s.substring(("IGNOREROOMS").length()).trim();
-                if(!s.startsWith("=")) continue;
-                s=s.substring(1);
-                commands.removeElementAt(c);
-                List<String> roomList=CMParms.parseCommas(s,true);
-                ignoreRooms=new HashSet<Room>();
-                for(int v=0;v<roomList.size();v++)
-                {
-                    Room R=CMLib.map().getRoom(roomList.get(v));
-                    if(R==null){ return "Ignored room "+roomList.get(v)+" is unknown!";}
-                    if(!ignoreRooms.contains(R))ignoreRooms.add(R);
-                }
-            }
-            else
-            if(s.toUpperCase().startsWith("NOHOME"))
-            {
-                commands.removeElementAt(c);
-                flags.plus(TrackingLibrary.TrackingFlag.NOHOMES);
-            }
-        }
+		HashSet<Room> ignoreRooms=null;
+		TrackingLibrary.TrackingFlags flags = new TrackingLibrary.TrackingFlags();
+		for(int c=0;c<commands.size();c++)
+		{
+			String s=(String)commands.elementAt(c);
+			if(s.toUpperCase().startsWith("RADIUS"))
+			{
+				s=s.substring(("RADIUS").length()).trim();
+				if(!s.startsWith("=")) continue;
+				s=s.substring(1);
+				commands.removeElementAt(c);
+				radius=CMath.s_int(s);
+			}
+			else
+			if(s.toUpperCase().startsWith("IGNOREROOMS"))
+			{
+				s=s.substring(("IGNOREROOMS").length()).trim();
+				if(!s.startsWith("=")) continue;
+				s=s.substring(1);
+				commands.removeElementAt(c);
+				List<String> roomList=CMParms.parseCommas(s,true);
+				ignoreRooms=new HashSet<Room>();
+				for(int v=0;v<roomList.size();v++)
+				{
+					Room R=CMLib.map().getRoom(roomList.get(v));
+					if(R==null){ return "Ignored room "+roomList.get(v)+" is unknown!";}
+					if(!ignoreRooms.contains(R))ignoreRooms.add(R);
+				}
+			}
+			else
+			if(s.toUpperCase().startsWith("NOHOME"))
+			{
+				commands.removeElementAt(c);
+				flags.plus(TrackingLibrary.TrackingFlag.NOHOMES);
+			}
+		}
 		String where=CMParms.combine(commands,1);
 		if(where.length()==0) return "Trail to where? Try a Room ID, 'everyroom', or 'everyarea'.  You can also use the 'areanames', 'nohomes', 'ignorerooms=', and 'confirm!' flags.";
 		if(R1==null) return "Where are you?";
 		boolean confirm=false;
-        boolean areaNames=false;
-        boolean justTheFacts=false;
-        if(where.toUpperCase().endsWith(" AREANAMES"))
-        {
-            where=where.substring(0,where.length()-10).trim();
-            areaNames=true;
-        }
-        if(where.toUpperCase().endsWith(" JUSTTHEFACTS"))
-        {
-            where=where.substring(0,where.length()-13).trim();
-            justTheFacts=true;
-        }
+		boolean areaNames=false;
+		boolean justTheFacts=false;
+		if(where.toUpperCase().endsWith(" AREANAMES"))
+		{
+			where=where.substring(0,where.length()-10).trim();
+			areaNames=true;
+		}
+		if(where.toUpperCase().endsWith(" JUSTTHEFACTS"))
+		{
+			where=where.substring(0,where.length()-13).trim();
+			justTheFacts=true;
+		}
 		if(where.toUpperCase().endsWith(" CONFIRM!"))
 		{
 			where=where.substring(0,where.length()-9).trim();
@@ -130,7 +130,7 @@ public class TrailTo extends StdCommand
 						str.append(CMStrings.padRightPreserve(R.roomID(),30)+": "+trail+"\n\r");
 					}
 				}
-		    }catch(NoSuchElementException nse){}
+			}catch(NoSuchElementException nse){}
 			if(confirm) Log.rawSysOut(str.toString());
 			return str.toString();
 		}

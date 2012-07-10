@@ -23,7 +23,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -64,7 +64,7 @@ public class Chopping extends GatheringSkill
 					commonTell(mob,"You have a good tree for "+foundShortName+".");
 					displayText="You are chopping up "+foundShortName;
 					verb="chopping "+foundShortName;
-                    playSound="chopping.wav";
+					playSound="chopping.wav";
 				}
 				else
 				{
@@ -111,19 +111,19 @@ public class Chopping extends GatheringSkill
 
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-        bundling=false;
+		bundling=false;
 		if((!auto)
 		&&(commands.size()>0)
 		&&(((String)commands.firstElement()).equalsIgnoreCase("bundle")))
 		{
-            bundling=true;
+			bundling=true;
 			if(super.invoke(mob,commands,givenTarget,auto,asLevel))
-			    return super.bundle(mob,commands);
-		    return false;
+				return super.bundle(mob,commands);
+			return false;
 		}
 		
 		verb="chopping";
-        playSound=null;
+		playSound=null;
 		found=null;
 		if(!confirmPossibleMaterialLocation(RawMaterial.MATERIAL_WOODEN,mob.location()))
 		{

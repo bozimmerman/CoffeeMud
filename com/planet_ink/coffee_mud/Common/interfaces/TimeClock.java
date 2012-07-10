@@ -21,7 +21,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -45,43 +45,43 @@ public interface TimeClock extends Tickable, CMCommon
 	 * orientation, and day of the week in a full sentence word
 	 * format.
 	 * 
-     * @see com.planet_ink.coffee_mud.Common.interfaces.TimeClock#getShortTimeDescription()
-     * @see com.planet_ink.coffee_mud.Common.interfaces.TimeClock#getShortestTimeDescription()
-     *  
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.TimeClock#getShortTimeDescription()
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.TimeClock#getShortestTimeDescription()
+	 *  
 	 * @param mob the mob who wants to know the time
 	 * @param room the room the room where the mob is wanting the time
 	 * 
 	 * @return the string representing the date and time
 	 */
 	public String timeDescription(MOB mob, Room room);
-    
-    /**
-     * Gets a shorter time description, showing the date and time in
-     * full sentence format, but skipping lunar orientation.
-     * 
-     * @see com.planet_ink.coffee_mud.Common.interfaces.TimeClock#timeDescription(MOB, Room)
-     * @see com.planet_ink.coffee_mud.Common.interfaces.TimeClock#getShortestTimeDescription()
-     * 
-     * @return the short time description
-     */
-    public String getShortTimeDescription();
-    
-    /**
-     * Gets the shortest time description, showing only the date and
-     * time in brief numeric format.
-     * 
-     * @see com.planet_ink.coffee_mud.Common.interfaces.TimeClock#timeDescription(MOB, Room)
-     * @see com.planet_ink.coffee_mud.Common.interfaces.TimeClock#getShortTimeDescription()
-     * 
-     * @return the shortest time description
-     */
-    public String getShortestTimeDescription();
+	
+	/**
+	 * Gets a shorter time description, showing the date and time in
+	 * full sentence format, but skipping lunar orientation.
+	 * 
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.TimeClock#timeDescription(MOB, Room)
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.TimeClock#getShortestTimeDescription()
+	 * 
+	 * @return the short time description
+	 */
+	public String getShortTimeDescription();
+	
+	/**
+	 * Gets the shortest time description, showing only the date and
+	 * time in brief numeric format.
+	 * 
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.TimeClock#timeDescription(MOB, Room)
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.TimeClock#getShortTimeDescription()
+	 * 
+	 * @return the shortest time description
+	 */
+	public String getShortestTimeDescription();
 	
 	/**
 	 * Gets the current year.
 	 * 
-     * @see com.planet_ink.coffee_mud.Common.interfaces.TimeClock#setYear(int)
-     * 
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.TimeClock#setYear(int)
+	 * 
 	 * @return the current year
 	 */
 	public int getYear();
@@ -89,8 +89,8 @@ public interface TimeClock extends Tickable, CMCommon
 	/**
 	 * Sets the current year.
 	 * 
-     * @see com.planet_ink.coffee_mud.Common.interfaces.TimeClock#getYear()
-     * 
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.TimeClock#getYear()
+	 * 
 	 * @param y the new year
 	 */
 	public void setYear(int y);
@@ -98,8 +98,8 @@ public interface TimeClock extends Tickable, CMCommon
 	/**
 	 * Gets the current month.
 	 * 
-     * @see com.planet_ink.coffee_mud.Common.interfaces.TimeClock#setMonth(int)
-     * 
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.TimeClock#setMonth(int)
+	 * 
 	 * @return the current month
 	 */
 	public int getMonth();
@@ -107,8 +107,8 @@ public interface TimeClock extends Tickable, CMCommon
 	/**
 	 * Sets the current month.
 	 * 
-     * @see com.planet_ink.coffee_mud.Common.interfaces.TimeClock#getMonth()
-     * 
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.TimeClock#getMonth()
+	 * 
 	 * @param m the new month
 	 */
 	public void setMonth(int m);
@@ -116,8 +116,8 @@ public interface TimeClock extends Tickable, CMCommon
 	/**
 	 * Gets the current day of month.
 	 * 
-     * @see com.planet_ink.coffee_mud.Common.interfaces.TimeClock#setDayOfMonth(int)
-     * 
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.TimeClock#setDayOfMonth(int)
+	 * 
 	 * @return the day of month
 	 */
 	public int getDayOfMonth();
@@ -125,8 +125,8 @@ public interface TimeClock extends Tickable, CMCommon
 	/**
 	 * Sets the current day of month.
 	 * 
-     * @see com.planet_ink.coffee_mud.Common.interfaces.TimeClock#getDayOfMonth()
-     * 
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.TimeClock#getDayOfMonth()
+	 * 
 	 * @param d the new day of month
 	 */
 	public void setDayOfMonth(int d);
@@ -134,8 +134,8 @@ public interface TimeClock extends Tickable, CMCommon
 	/**
 	 * Gets the current time of day (the hour).
 	 * 
-     * @see com.planet_ink.coffee_mud.Common.interfaces.TimeClock#setTimeOfDay(int)
-     * 
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.TimeClock#setTimeOfDay(int)
+	 * 
 	 * @return the time of day (hour)
 	 */
 	public int getTimeOfDay();
@@ -143,8 +143,8 @@ public interface TimeClock extends Tickable, CMCommon
 	/**
 	 * Sets the time of day (the hour).
 	 * 
-     * @see com.planet_ink.coffee_mud.Common.interfaces.TimeClock#getTimeOfDay()
-     * 
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.TimeClock#getTimeOfDay()
+	 * 
 	 * @param t the time of day (the hour)
 	 * 
 	 * @return true, if the new time denotes a change of sun-orientation, false otherwise
@@ -154,43 +154,43 @@ public interface TimeClock extends Tickable, CMCommon
 	/**
 	 * Gets the TOD code, which is the sun-orientation (morning, evening, etc)
 	 * 
-     * @see com.planet_ink.coffee_mud.Common.interfaces.TimeClock#setTimeOfDay(int)
-     * @see com.planet_ink.coffee_mud.Common.interfaces.TimeClock#setDawnToDusk(int, int, int, int)
-     * @see com.planet_ink.coffee_mud.Common.interfaces.TimeClock#TIME_DAWN
-     * @see com.planet_ink.coffee_mud.Common.interfaces.TimeClock#TIME_DUSK
-     * @see com.planet_ink.coffee_mud.Common.interfaces.TimeClock#TIME_DAY
-     * @see com.planet_ink.coffee_mud.Common.interfaces.TimeClock#TIME_NIGHT
-     * @see com.planet_ink.coffee_mud.Common.interfaces.TimeClock#TOD_DESC
-     * 
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.TimeClock#setTimeOfDay(int)
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.TimeClock#setDawnToDusk(int, int, int, int)
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.TimeClock#TIME_DAWN
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.TimeClock#TIME_DUSK
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.TimeClock#TIME_DAY
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.TimeClock#TIME_NIGHT
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.TimeClock#TOD_DESC
+	 * 
 	 * @return the TOD code
 	 */
 	public int getTODCode();
 	
-    /**
-     * Gets the moon phase an an enumeration.
-     * 
-     * @see com.planet_ink.coffee_mud.Common.interfaces.TimeClock#MOON_PHASES
-     * @see com.planet_ink.coffee_mud.Common.interfaces.TimeClock#PHASE_DESC
-     * @see com.planet_ink.coffee_mud.Common.interfaces.TimeClock#PHASE_FULL
-     * @see com.planet_ink.coffee_mud.Common.interfaces.TimeClock#PHASE_NEW
-     * 
-     * @return the moon phase as an enumeration
-     */
-    public int getMoonPhase();
-    
-    /**
-     * Gets the season code.
-     * 
-     * @see com.planet_ink.coffee_mud.Common.interfaces.TimeClock#SEASON_DESCS
-     * @see com.planet_ink.coffee_mud.Common.interfaces.TimeClock#SEASON_FALL
-     * @see com.planet_ink.coffee_mud.Common.interfaces.TimeClock#SEASON_SPRING
-     * @see com.planet_ink.coffee_mud.Common.interfaces.TimeClock#SEASON_SUMMER
-     * @see com.planet_ink.coffee_mud.Common.interfaces.TimeClock#SEASON_WINTER
-     * 
-     * @return the season code
-     */
-    public int getSeasonCode();
-    
+	/**
+	 * Gets the moon phase an an enumeration.
+	 * 
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.TimeClock#MOON_PHASES
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.TimeClock#PHASE_DESC
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.TimeClock#PHASE_FULL
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.TimeClock#PHASE_NEW
+	 * 
+	 * @return the moon phase as an enumeration
+	 */
+	public int getMoonPhase();
+	
+	/**
+	 * Gets the season code.
+	 * 
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.TimeClock#SEASON_DESCS
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.TimeClock#SEASON_FALL
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.TimeClock#SEASON_SPRING
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.TimeClock#SEASON_SUMMER
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.TimeClock#SEASON_WINTER
+	 * 
+	 * @return the season code
+	 */
+	public int getSeasonCode();
+	
 	/**
 	 * Alters the time/day by the given number of hours (forward
 	 * or backward)
@@ -203,15 +203,15 @@ public interface TimeClock extends Tickable, CMCommon
 	 * Saves the current time/date information where ever its supposed
 	 * to be saved.  Requires that setLoadName be called before.
 	 * 
-     * @see com.planet_ink.coffee_mud.Common.interfaces.TimeClock#setLoadName(String)
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.TimeClock#setLoadName(String)
 	 */
 	public void save();
 	
 	/**
 	 * Sets the name of this time object for the purposes of database loading
 	 * and saving.  This is required for the save method to do anything at all.
-     * 
-     * @see com.planet_ink.coffee_mud.Common.interfaces.TimeClock#save()
+	 * 
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.TimeClock#save()
 	 * 
 	 * @param name the new load name
 	 */
@@ -219,8 +219,8 @@ public interface TimeClock extends Tickable, CMCommon
 	
 	/**
 	 * Gets the hours in a day.
-     * 
-     * @see com.planet_ink.coffee_mud.Common.interfaces.TimeClock#setHoursInDay(int)
+	 * 
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.TimeClock#setHoursInDay(int)
 	 * 
 	 * @return the hours in a day
 	 */
@@ -228,8 +228,8 @@ public interface TimeClock extends Tickable, CMCommon
 	
 	/**
 	 * Sets the hours in a day.
-     * 
-     * @see com.planet_ink.coffee_mud.Common.interfaces.TimeClock#getHoursInDay()
+	 * 
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.TimeClock#getHoursInDay()
 	 * 
 	 * @param h the new hours in a day
 	 */
@@ -237,8 +237,8 @@ public interface TimeClock extends Tickable, CMCommon
 	
 	/**
 	 * Gets the days in a month.
-     * 
-     * @see com.planet_ink.coffee_mud.Common.interfaces.TimeClock#setDaysInMonth(int)
+	 * 
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.TimeClock#setDaysInMonth(int)
 	 * 
 	 * @return the days in a month
 	 */
@@ -246,8 +246,8 @@ public interface TimeClock extends Tickable, CMCommon
 	
 	/**
 	 * Sets the days in a month.
-     * 
-     * @see com.planet_ink.coffee_mud.Common.interfaces.TimeClock#getDaysInMonth()
+	 * 
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.TimeClock#getDaysInMonth()
 	 * 
 	 * @param d the new days in a month
 	 */
@@ -255,9 +255,9 @@ public interface TimeClock extends Tickable, CMCommon
 	
 	/**
 	 * Gets the months in a year.
-     * 
-     * @see com.planet_ink.coffee_mud.Common.interfaces.TimeClock#setMonthsInYear(String[])
-     * @see com.planet_ink.coffee_mud.Common.interfaces.TimeClock#getMonthNames()
+	 * 
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.TimeClock#setMonthsInYear(String[])
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.TimeClock#getMonthNames()
 	 * 
 	 * @return the months in a year
 	 */
@@ -266,9 +266,9 @@ public interface TimeClock extends Tickable, CMCommon
 	/**
 	 * Gets the month names, in order, indexed by 0.
 	 * 
-     * @see com.planet_ink.coffee_mud.Common.interfaces.TimeClock#setMonthsInYear(String[])
-     * @see com.planet_ink.coffee_mud.Common.interfaces.TimeClock#getMonthNames()
-     * 
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.TimeClock#setMonthsInYear(String[])
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.TimeClock#getMonthNames()
+	 * 
 	 * @return the month names
 	 */
 	public String[] getMonthNames();
@@ -276,9 +276,9 @@ public interface TimeClock extends Tickable, CMCommon
 	/**
 	 * Sets the months in year as a string array of names, arranged in order.
 	 * 
-     * @see com.planet_ink.coffee_mud.Common.interfaces.TimeClock#getMonthNames()
-     * @see com.planet_ink.coffee_mud.Common.interfaces.TimeClock#getMonthsInYear()
-     * 
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.TimeClock#getMonthNames()
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.TimeClock#getMonthsInYear()
+	 * 
 	 * @param months the new month names in a year
 	 */
 	public void setMonthsInYear(String[] months);
@@ -287,14 +287,14 @@ public interface TimeClock extends Tickable, CMCommon
 	 * Gets the dawn to dusk values, indexed by the TOD constants.
 	 * Each entry is an hour when the TOD starts. The order of the
 	 * values is DAWN, DAY, DUSK, NIGHT.
-     * 
-     * @see com.planet_ink.coffee_mud.Common.interfaces.TimeClock#getTODCode()
-     * @see com.planet_ink.coffee_mud.Common.interfaces.TimeClock#setDawnToDusk(int, int, int, int)
-     * @see com.planet_ink.coffee_mud.Common.interfaces.TimeClock#TIME_DAWN
-     * @see com.planet_ink.coffee_mud.Common.interfaces.TimeClock#TIME_DUSK
-     * @see com.planet_ink.coffee_mud.Common.interfaces.TimeClock#TIME_DAY
-     * @see com.planet_ink.coffee_mud.Common.interfaces.TimeClock#TIME_NIGHT
-     * @see com.planet_ink.coffee_mud.Common.interfaces.TimeClock#TOD_DESC
+	 * 
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.TimeClock#getTODCode()
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.TimeClock#setDawnToDusk(int, int, int, int)
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.TimeClock#TIME_DAWN
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.TimeClock#TIME_DUSK
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.TimeClock#TIME_DAY
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.TimeClock#TIME_NIGHT
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.TimeClock#TOD_DESC
 	 * 
 	 * @return the dawn to dusk array
 	 */
@@ -303,14 +303,14 @@ public interface TimeClock extends Tickable, CMCommon
 	/**
 	 * Sets the dawn to dusk values as absolute hours when that particular
 	 * time of day begins.
-     * 
-     * @see com.planet_ink.coffee_mud.Common.interfaces.TimeClock#getDawnToDusk()
-     * @see com.planet_ink.coffee_mud.Common.interfaces.TimeClock#getTODCode()
-     * @see com.planet_ink.coffee_mud.Common.interfaces.TimeClock#TIME_DAWN
-     * @see com.planet_ink.coffee_mud.Common.interfaces.TimeClock#TIME_DUSK
-     * @see com.planet_ink.coffee_mud.Common.interfaces.TimeClock#TIME_DAY
-     * @see com.planet_ink.coffee_mud.Common.interfaces.TimeClock#TIME_NIGHT
-     * @see com.planet_ink.coffee_mud.Common.interfaces.TimeClock#TOD_DESC
+	 * 
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.TimeClock#getDawnToDusk()
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.TimeClock#getTODCode()
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.TimeClock#TIME_DAWN
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.TimeClock#TIME_DUSK
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.TimeClock#TIME_DAY
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.TimeClock#TIME_NIGHT
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.TimeClock#TOD_DESC
 	 * 
 	 * @param dawn the dawn hour
 	 * @param day the day hour
@@ -323,18 +323,18 @@ public interface TimeClock extends Tickable, CMCommon
 	 * Gets the week names, which is the names of the days of each week,
 	 * a string array indexed by the day of the week - 1.
 	 * 
-     * @see com.planet_ink.coffee_mud.Common.interfaces.TimeClock#setDaysInWeek(String[])
-     * @see com.planet_ink.coffee_mud.Common.interfaces.TimeClock#getDaysInWeek()
-     * 
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.TimeClock#setDaysInWeek(String[])
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.TimeClock#getDaysInWeek()
+	 * 
 	 * @return the week names as an array of strings
 	 */
 	public String[] getWeekNames();
 	
 	/**
 	 * Gets the number of days in each week
-     * 
-     * @see com.planet_ink.coffee_mud.Common.interfaces.TimeClock#setDaysInWeek(String[])
-     * @see com.planet_ink.coffee_mud.Common.interfaces.TimeClock#getWeekNames()
+	 * 
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.TimeClock#setDaysInWeek(String[])
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.TimeClock#getWeekNames()
 	 * 
 	 * @return the days in each week
 	 */
@@ -342,9 +342,9 @@ public interface TimeClock extends Tickable, CMCommon
 	
 	/**
 	 * Sets the number of days in each week by naming each of them in a string array
-     * 
-     * @see com.planet_ink.coffee_mud.Common.interfaces.TimeClock#getDaysInWeek()
-     * @see com.planet_ink.coffee_mud.Common.interfaces.TimeClock#getWeekNames()
+	 * 
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.TimeClock#getDaysInWeek()
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.TimeClock#getWeekNames()
 	 * 
 	 * @param days the new days in each week string array
 	 */
@@ -353,8 +353,8 @@ public interface TimeClock extends Tickable, CMCommon
 	/**
 	 * Gets the names of the year, an arbitrary sized list that is rotated 
 	 * through from year to year. (think: "year of the donkey", etc..)
-     * 
-     * @see com.planet_ink.coffee_mud.Common.interfaces.TimeClock#setYearNames(String[])
+	 * 
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.TimeClock#setYearNames(String[])
 	 * 
 	 * @return the year names, if any.
 	 */
@@ -363,63 +363,63 @@ public interface TimeClock extends Tickable, CMCommon
 	/**
 	 * Sets the year names, which is an arbitrary sized list that is rotated
 	 * through from year to year. (think: "year of the donkey", etc..)
-     * 
-     * @see com.planet_ink.coffee_mud.Common.interfaces.TimeClock#getYearNames()
+	 * 
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.TimeClock#getYearNames()
 	 * 
 	 * @param years the new years names
 	 */
 	public void setYearNames(String[] years);
-    
-    /**
-     * Using the current time and date as a yardstick, and assuming constant
-     * running and perfect timing, this method will derive a mud date and time
-     * from the given real life date/time in milliseconds.  
-     * 
-     * @see com.planet_ink.coffee_mud.Common.interfaces.TimeClock#deriveMillisAfter(TimeClock)
-     * @see com.planet_ink.coffee_mud.Common.interfaces.TimeClock#deriveEllapsedTimeString(long)
-     * 
-     * @param millis the milliseconds since 1970
-     * 
-     * @return the time clock object representing that real life time
-     */
-    public TimeClock deriveClock(long millis);
-    
-    /**
-     * This method will discover the difference in mud hours between this time clock
-     * and the given EARLIER clock, assuming they use the same scale of measurement.
-     * It will then return the number of actual milliseconds would have elapsed,
-     * assuming constant running and perfect timing.   
-     * 
-     * @see com.planet_ink.coffee_mud.Common.interfaces.TimeClock#deriveClock(long)
-     * @see com.planet_ink.coffee_mud.Common.interfaces.TimeClock#deriveEllapsedTimeString(long)
-     * 
-     * @param C the earlier time clock object
-     * 
-     * @return the number of milliseconds elapsed since the given clock
-     */
-    public long deriveMillisAfter(TimeClock C);
-    
-    /**
-     * Using the given number of milliseconds, this method will return a string
-     * describing the number of mud days, hours, etc that is represented by
-     * that amount of real time, assuming constant running and perfect timing.
-     * 
-     * @see com.planet_ink.coffee_mud.Common.interfaces.TimeClock#deriveMillisAfter(TimeClock)
-     * @see com.planet_ink.coffee_mud.Common.interfaces.TimeClock#deriveClock(long)
-     * 
-     * @param millis the milliseconds of elapsed time represented
-     * 
-     * @return the string representing the elapsed mud time 
-     */
-    public String deriveEllapsedTimeString(long millis);
-    
-    /**
-     * Initialize ini clock by reading calendar values from the given
-     * properties page.  Does not load current values from anywhere.
-     * 
-     * @param page the properties page
-     */
-    public void initializeINIClock(CMProps page);
+	
+	/**
+	 * Using the current time and date as a yardstick, and assuming constant
+	 * running and perfect timing, this method will derive a mud date and time
+	 * from the given real life date/time in milliseconds.  
+	 * 
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.TimeClock#deriveMillisAfter(TimeClock)
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.TimeClock#deriveEllapsedTimeString(long)
+	 * 
+	 * @param millis the milliseconds since 1970
+	 * 
+	 * @return the time clock object representing that real life time
+	 */
+	public TimeClock deriveClock(long millis);
+	
+	/**
+	 * This method will discover the difference in mud hours between this time clock
+	 * and the given EARLIER clock, assuming they use the same scale of measurement.
+	 * It will then return the number of actual milliseconds would have elapsed,
+	 * assuming constant running and perfect timing.   
+	 * 
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.TimeClock#deriveClock(long)
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.TimeClock#deriveEllapsedTimeString(long)
+	 * 
+	 * @param C the earlier time clock object
+	 * 
+	 * @return the number of milliseconds elapsed since the given clock
+	 */
+	public long deriveMillisAfter(TimeClock C);
+	
+	/**
+	 * Using the given number of milliseconds, this method will return a string
+	 * describing the number of mud days, hours, etc that is represented by
+	 * that amount of real time, assuming constant running and perfect timing.
+	 * 
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.TimeClock#deriveMillisAfter(TimeClock)
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.TimeClock#deriveClock(long)
+	 * 
+	 * @param millis the milliseconds of elapsed time represented
+	 * 
+	 * @return the string representing the elapsed mud time 
+	 */
+	public String deriveEllapsedTimeString(long millis);
+	
+	/**
+	 * Initialize ini clock by reading calendar values from the given
+	 * properties page.  Does not load current values from anywhere.
+	 * 
+	 * @param page the properties page
+	 */
+	public void initializeINIClock(CMProps page);
 	
 	/** The Moon Phase Constant MOON_PHASES, with long sentence descriptions of the various phases. */
 	public final static String[] MOON_PHASES={

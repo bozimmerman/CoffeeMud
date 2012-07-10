@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -43,8 +43,8 @@ public class Spell_FleshStone extends Spell
 
 	public Item statue=null;
 	protected boolean recurse=false;
-    protected CharState prevState=null;
-    
+	protected CharState prevState=null;
+	
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if((tickID==Tickable.TICKID_MOB)
@@ -155,7 +155,7 @@ public class Spell_FleshStone extends Spell
 				statue.destroy();
 			if((mob.location()!=null)&&(!mob.amDead()))
 				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-YOUPOSS> flesh returns to normal.");
-            if(prevState!=null) prevState.copyInto(mob.curState());
+			if(prevState!=null) prevState.copyInto(mob.curState());
 			CMLib.commands().postStand(mob,true);
 		}
 		recurse=false;
@@ -233,7 +233,7 @@ public class Spell_FleshStone extends Spell
 						statue.addEffect(A);
 						A.setAffectedOne(target);
 						statue.recoverPhyStats();
-                        ((Spell_FleshStone)A).prevState=(CharState)target.curState().copyOf();
+						((Spell_FleshStone)A).prevState=(CharState)target.curState().copyOf();
 					}
 				}
 			}

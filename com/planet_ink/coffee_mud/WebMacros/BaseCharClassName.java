@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -48,18 +48,18 @@ public class BaseCharClassName extends StdWebMacro
 			if(C!=null)
 			{
 				if(parms.containsKey("PLURAL"))
-	                return clearWebMacros(CMLib.english().makePlural(C.name()));
+					return clearWebMacros(CMLib.english().makePlural(C.name()));
 				else
-	                return clearWebMacros(C.name());
+					return clearWebMacros(C.name());
 			}
 			for(Enumeration e=CMClass.charClasses();e.hasMoreElements();)
 			{
 				C=(CharClass)e.nextElement();
 				if(C.baseClass().equalsIgnoreCase(last))
 					if(parms.containsKey("PLURAL"))
-	                    return clearWebMacros(CMLib.english().makePlural(C.baseClass()));
+						return clearWebMacros(CMLib.english().makePlural(C.baseClass()));
 					else
-	                    return clearWebMacros(C.baseClass());
+						return clearWebMacros(C.baseClass());
 			}
 		}
 		return "";

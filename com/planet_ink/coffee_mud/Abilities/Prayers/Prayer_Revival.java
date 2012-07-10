@@ -25,7 +25,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -68,7 +68,7 @@ public class Prayer_Revival extends Prayer
 			int levels=0;
 			Vector inhabs=new Vector();
 			Vector clerics=new Vector();
-            int bonus=(2*super.getXLEVELLevel(invoker()));
+			int bonus=(2*super.getXLEVELLevel(invoker()));
 			for(int i=0;i<R.numInhabitants();i++)
 			{
 				MOB M=R.fetchInhabitant(i);

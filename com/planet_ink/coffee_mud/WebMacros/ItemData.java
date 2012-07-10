@@ -25,7 +25,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -38,40 +38,40 @@ public class ItemData extends StdWebMacro
 {
 	public String name()	{return this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);}
 
-    private static final String[] okparms={
-      "NAME","CLASSES","DISPLAYTEXT","DESCRIPTION",
-      "LEVEL","ABILITY","REJUV","MISCTEXT",
-      "MATERIALS","ISGENERIC","ISFOOD","NOURISHMENT",
-      "ISDRINK","LIQUIDHELD","QUENCHED","ISCONTAINER",
-      "CAPACITY","ISARMOR","ARMOR","WORNDATA",
-      "HEIGHT","ISWEAPON","WEAPONTYPE","WEAPONCLASS",
-      "ATTACK","DAMAGE","MINRANGE","MAXRANGE",
-      "SECRETIDENTITY","ISGETTABLE","ISREMOVABLE","ISDROPPABLE",
-      "ISTWOHANDED","ISTRAPPED","READABLESPELLS","ISWAND",
-      "USESREMAIN","VALUE","WEIGHT","ISMAP",
-      "MAPAREAS","ISREADABLE","ISPILL","ISSUPERPILL",
-      "ISPOTION","LIQUIDTYPES","AMMOTYPE","AMMOCAP",
-      "READABLESPELL","ISRIDEABLE","RIDEABLETYPE","MOBSHELD",
-      "HASALID","HASALOCK","KEYCODE","ISWALLPAPER",
-      "READABLETEXT","CONTAINER","ISLIGHTSOURCE","DURATION",
-      "ISUNTWOHANDED","ISCOIN","ISSCROLL","BEINGWORN","NONLOCATABLE",
-      "ISKEY", "CONTENTTYPES","ISINSTRUMENT","INSTRUMENTTYPE",
-      "ISAMMO","ISMOBITEM","ISDUST","ISPERFUME","SMELLS",
-      "IMAGE","ISEXIT","EXITNAME","EXITCLOSEDTEXT","NUMCOINS",
-      "CURRENCY","DENOM","ISRECIPE","RECIPESKILL","RECIPEDATA",
-      "LAYER","SEETHRU","MULTIWEAR","ISCATALOGED","CATARATE",
-      "CATALIVE","CATAMASK","BITE","MAXUSES"};
-    
-    public ItemData()
-    {
-        super();
+	private static final String[] okparms={
+	  "NAME","CLASSES","DISPLAYTEXT","DESCRIPTION",
+	  "LEVEL","ABILITY","REJUV","MISCTEXT",
+	  "MATERIALS","ISGENERIC","ISFOOD","NOURISHMENT",
+	  "ISDRINK","LIQUIDHELD","QUENCHED","ISCONTAINER",
+	  "CAPACITY","ISARMOR","ARMOR","WORNDATA",
+	  "HEIGHT","ISWEAPON","WEAPONTYPE","WEAPONCLASS",
+	  "ATTACK","DAMAGE","MINRANGE","MAXRANGE",
+	  "SECRETIDENTITY","ISGETTABLE","ISREMOVABLE","ISDROPPABLE",
+	  "ISTWOHANDED","ISTRAPPED","READABLESPELLS","ISWAND",
+	  "USESREMAIN","VALUE","WEIGHT","ISMAP",
+	  "MAPAREAS","ISREADABLE","ISPILL","ISSUPERPILL",
+	  "ISPOTION","LIQUIDTYPES","AMMOTYPE","AMMOCAP",
+	  "READABLESPELL","ISRIDEABLE","RIDEABLETYPE","MOBSHELD",
+	  "HASALID","HASALOCK","KEYCODE","ISWALLPAPER",
+	  "READABLETEXT","CONTAINER","ISLIGHTSOURCE","DURATION",
+	  "ISUNTWOHANDED","ISCOIN","ISSCROLL","BEINGWORN","NONLOCATABLE",
+	  "ISKEY", "CONTENTTYPES","ISINSTRUMENT","INSTRUMENTTYPE",
+	  "ISAMMO","ISMOBITEM","ISDUST","ISPERFUME","SMELLS",
+	  "IMAGE","ISEXIT","EXITNAME","EXITCLOSEDTEXT","NUMCOINS",
+	  "CURRENCY","DENOM","ISRECIPE","RECIPESKILL","RECIPEDATA",
+	  "LAYER","SEETHRU","MULTIWEAR","ISCATALOGED","CATARATE",
+	  "CATALIVE","CATAMASK","BITE","MAXUSES"};
+	
+	public ItemData()
+	{
+		super();
 
-    }
+	}
 
 	public String runMacro(ExternalHTTPRequests httpReq, String parm)
 	{
 		java.util.Map<String,String> parms=parseParms(parm);
-        String player=httpReq.getRequestParameter("PLAYER");
+		String player=httpReq.getRequestParameter("PLAYER");
 		String last=httpReq.getRequestParameter("ROOM");
 		if((last==null)&&(player==null)) return " @break@";
 		String itemCode=httpReq.getRequestParameter("ITEM");
@@ -82,11 +82,11 @@ public class ItemData extends StdWebMacro
 
 		String mobNum=httpReq.getRequestParameter("MOB");
 		MOB playerM=null;
-        Room R=null;
-        if(player!=null)
-            playerM=CMLib.players().getLoadPlayer(player);
-        else
-            R=(Room)httpReq.getRequestObjects().get(last);
+		Room R=null;
+		if(player!=null)
+			playerM=CMLib.players().getLoadPlayer(player);
+		else
+			R=(Room)httpReq.getRequestObjects().get(last);
 		if((R==null)&&(player==null)&&(last!=null))
 		{
 			if(!last.equalsIgnoreCase("ANY"))
@@ -100,38 +100,38 @@ public class ItemData extends StdWebMacro
 		}
 		Item I=null;
 		MOB M=null;
-        String sync=("SYNC"+((R!=null)?R.roomID():player));
-    	synchronized(sync.intern())
-    	{
-    		if(R!=null) R=CMLib.map().getRoom(R);
+		String sync=("SYNC"+((R!=null)?R.roomID():player));
+		synchronized(sync.intern())
+		{
+			if(R!=null) R=CMLib.map().getRoom(R);
 
-            if((playerM!=null)&&(R==null))
-            {
-                I=(Item)httpReq.getRequestObjects().get("PLAYER/"+player+"/"+itemCode);
-                if(I==null)
-                {
-                    if(itemCode.equals("NEW"))
-                        I=CMClass.getItem("GenItem");
-                    else
-                        I=RoomData.getItemFromCode(playerM,itemCode);
-                    if(I!=null)
-                        httpReq.getRequestObjects().put("PLAYER/"+player+"/"+itemCode,I);
-                }
-                M=playerM;
-            }
-            else
+			if((playerM!=null)&&(R==null))
+			{
+				I=(Item)httpReq.getRequestObjects().get("PLAYER/"+player+"/"+itemCode);
+				if(I==null)
+				{
+					if(itemCode.equals("NEW"))
+						I=CMClass.getItem("GenItem");
+					else
+						I=RoomData.getItemFromCode(playerM,itemCode);
+					if(I!=null)
+						httpReq.getRequestObjects().put("PLAYER/"+player+"/"+itemCode,I);
+				}
+				M=playerM;
+			}
+			else
 			if((mobNum!=null)&&(mobNum.length()>0))
 			{
-                if(R!=null)
-    				M=(MOB)httpReq.getRequestObjects().get(R.roomID()+"/"+mobNum);
-                else
-                    M=(MOB)httpReq.getRequestObjects().get(mobNum);
+				if(R!=null)
+					M=(MOB)httpReq.getRequestObjects().get(R.roomID()+"/"+mobNum);
+				else
+					M=(MOB)httpReq.getRequestObjects().get(mobNum);
 				if(M==null)
 				{
-                    if(R!=null)
-    					M=RoomData.getMOBFromCode(R,mobNum);
-                    else
-                        M=RoomData.getMOBFromCode(RoomData.getMOBCache(),mobNum);
+					if(R!=null)
+						M=RoomData.getMOBFromCode(R,mobNum);
+					else
+						M=RoomData.getMOBFromCode(RoomData.getMOBCache(),mobNum);
 					if(M==null)
 					{
 						StringBuffer str=new StringBuffer("No MOB?!");
@@ -144,17 +144,17 @@ public class ItemData extends StdWebMacro
 							if((M2!=null)&&(M2.isSavable()))
 							   str.append(M2.Name()+"="+RoomData.getMOBCode(R,M2));
 						}
-	                    return clearWebMacros(str);
+						return clearWebMacros(str);
 					}
-                    if(R!=null)
-    					httpReq.getRequestObjects().put(R.roomID()+"/"+mobNum,M);
-                    else
-                        httpReq.getRequestObjects().put(mobNum,M);
+					if(R!=null)
+						httpReq.getRequestObjects().put(R.roomID()+"/"+mobNum,M);
+					else
+						httpReq.getRequestObjects().put(mobNum,M);
 				}
-                if(R!=null)
-    				I=(Item)httpReq.getRequestObjects().get(R.roomID()+"/"+mobNum+"/"+itemCode);
-                else
-                    I=(Item)httpReq.getRequestObjects().get(mobNum+"/"+itemCode);
+				if(R!=null)
+					I=(Item)httpReq.getRequestObjects().get(R.roomID()+"/"+mobNum+"/"+itemCode);
+				else
+					I=(Item)httpReq.getRequestObjects().get(mobNum+"/"+itemCode);
 				if(I==null)
 				{
 					if(itemCode.equals("NEW"))
@@ -162,12 +162,12 @@ public class ItemData extends StdWebMacro
 					else
 						I=RoomData.getItemFromCode(M,itemCode);
 					if(I!=null)
-                    {
-                        if(R!=null)
-    						httpReq.getRequestObjects().put(R.roomID()+"/"+mobNum+"/"+itemCode,I);
-                        else
-                            httpReq.getRequestObjects().put(mobNum+"/"+itemCode,I);
-                    }
+					{
+						if(R!=null)
+							httpReq.getRequestObjects().put(R.roomID()+"/"+mobNum+"/"+itemCode,I);
+						else
+							httpReq.getRequestObjects().put(mobNum+"/"+itemCode,I);
+					}
 				}
 			}
 			else
@@ -189,15 +189,15 @@ public class ItemData extends StdWebMacro
 				I=(Item)httpReq.getRequestObjects().get(itemCode);
 				if(I==null)
 				{
-	                if(itemCode.startsWith("CATALOG-")||itemCode.startsWith("NEWCATA-"))
-	                {
-	                	I=CMLib.catalog().getCatalogItem(itemCode.substring(8));
-	                    if(I==null)
-	                        I=CMClass.getItem("GenItem");
-				    	else
-				    		I=(Item)I.copyOf();
-	                }
-	                else
+					if(itemCode.startsWith("CATALOG-")||itemCode.startsWith("NEWCATA-"))
+					{
+						I=CMLib.catalog().getCatalogItem(itemCode.substring(8));
+						if(I==null)
+							I=CMClass.getItem("GenItem");
+						else
+							I=(Item)I.copyOf();
+					}
+					else
 					if(itemCode.equals("NEW"))
 						I=CMClass.getItem("GenItem");
 					else
@@ -207,7 +207,7 @@ public class ItemData extends StdWebMacro
 				}
 			}
 
-    	}
+		}
 
 		if(I==null)
 		{
@@ -216,7 +216,7 @@ public class ItemData extends StdWebMacro
 			str.append(", Includes: ");
 			if(M==null)
 			{
-			    if(R!=null)
+				if(R!=null)
 				for(int i=0;i<R.numItems();i++)
 				{
 					Item I2=R.getItem(i);
@@ -229,7 +229,7 @@ public class ItemData extends StdWebMacro
 					Item I2=M.getItem(i);
 					if(I2!=null) str.append(RoomData.getItemCode(M,I2));
 				}
-            return clearWebMacros(str);
+			return clearWebMacros(str);
 		}
 
 		Item oldI=I;
@@ -244,10 +244,10 @@ public class ItemData extends StdWebMacro
 		}
 
 		boolean changedClass=((httpReq.isRequestParameter("CHANGEDCLASS")
-		                     &&httpReq.getRequestParameter("CHANGEDCLASS").equals("true"))
-		                     &&(itemCode.equals("NEW")||itemCode.startsWith("CATALOG-")||itemCode.startsWith("NEWCATA-")));
+							 &&httpReq.getRequestParameter("CHANGEDCLASS").equals("true"))
+							 &&(itemCode.equals("NEW")||itemCode.startsWith("CATALOG-")||itemCode.startsWith("NEWCATA-")));
 		boolean changedLevel=(httpReq.isRequestParameter("CHANGEDLEVEL"))
-		                     &&(httpReq.getRequestParameter("CHANGEDLEVEL")).equals("true");
+							 &&(httpReq.getRequestParameter("CHANGEDLEVEL")).equals("true");
 		if((changedLevel)&&(I.isGeneric()))
 		{
 			int level=CMath.s_int(httpReq.getRequestParameter("LEVEL"));
@@ -312,11 +312,11 @@ public class ItemData extends StdWebMacro
 				case 0: // name
 					if(firstTime)
 					{
-	                    if((itemCode.equalsIgnoreCase("NEW")||itemCode.startsWith("CATALOG-")||itemCode.startsWith("NEWCATA-"))
-                        &&(httpReq.isRequestParameter("NEWITEMNAME")))
-                            old=httpReq.getRequestParameter("NEWITEMNAME");
-                        else
-    					    old=I.Name();
+						if((itemCode.equalsIgnoreCase("NEW")||itemCode.startsWith("CATALOG-")||itemCode.startsWith("NEWCATA-"))
+						&&(httpReq.isRequestParameter("NEWITEMNAME")))
+							old=httpReq.getRequestParameter("NEWITEMNAME");
+						else
+							old=I.Name();
 					}
 					str.append(old);
 					break;
@@ -331,9 +331,9 @@ public class ItemData extends StdWebMacro
 							sorted=(new TreeSet(sortMe)).toArray();
 							Resources.submitResource("MUDGRINDER-ITEMS2:"+parms.containsKey("GENERICONLY"),sorted);
 						}
-                        if(parms.containsKey("CLASSESID"))
-                            str.append(old);
-                        else
+						if(parms.containsKey("CLASSESID"))
+							str.append(old);
+						else
 						for(int r=0;r<sorted.length;r++)
 						{
 							String cnam=(String)sorted[r];
@@ -383,11 +383,11 @@ public class ItemData extends StdWebMacro
 					break;
 				case 9: // is generic
 					if(I.isGeneric())
-                        return "true";
-                    return "false";
+						return "true";
+					return "false";
 				case 10: // is food
 					if(I instanceof Food) return "true";
-                    return "false";
+					return "false";
 				case 11: // nourishment
 					if((firstTime)&&(I instanceof Food))
 						old=""+((Food)I).nourishment();
@@ -395,7 +395,7 @@ public class ItemData extends StdWebMacro
 					break;
 				case 12: // is drink
 					if(I instanceof Drink) return "true";
-                    return "false";
+					return "false";
 				case 13: // liquid held
 					if((firstTime)&&(I instanceof Drink))
 						old=""+((Drink)I).liquidHeld();
@@ -408,7 +408,7 @@ public class ItemData extends StdWebMacro
 					break;
 				case 15: // is container
 					if(I instanceof Container) return "true";
-                    return "false";
+					return "false";
 				case 16: // capacity
 					if((firstTime)&&(I instanceof Container))
 						old=""+((Container)I).capacity();
@@ -416,7 +416,7 @@ public class ItemData extends StdWebMacro
 					break;
 				case 17: // is armor
 					if(I instanceof Armor) return "true";
-                    return "false";
+					return "false";
 				case 18: // armor
 					if(firstTime) old=""+I.basePhyStats().armor();
 					str.append(old);
@@ -433,7 +433,7 @@ public class ItemData extends StdWebMacro
 							else
 								break;
 					}
-			        Wearable.CODES codes = Wearable.CODES.instance();
+					Wearable.CODES codes = Wearable.CODES.instance();
 					for(int i=1;i<codes.total();i++)
 					{
 						String climstr=codes.name(i);
@@ -450,7 +450,7 @@ public class ItemData extends StdWebMacro
 					break;
 				case 21: // is weapon
 					if(I instanceof Weapon) return "true";
-                    return "false";
+					return "false";
 				case 22: // weapon type
 					if((firstTime)&&(I instanceof Weapon))
 						old=""+((Weapon)I).weaponType();
@@ -553,7 +553,7 @@ public class ItemData extends StdWebMacro
 					break;
 				case 35: // is wand
 					if(I instanceof Wand) return "true";
-                    return "false";
+					return "false";
 				case 36: // uses
 					if(firstTime) old=""+I.usesRemaining();
 					str.append(old);
@@ -568,7 +568,7 @@ public class ItemData extends StdWebMacro
 					break;
 				case 39: // is map
 					if(I instanceof com.planet_ink.coffee_mud.Items.interfaces.RoomMap) return "true";
-                    return "false";
+					return "false";
 				case 40: // map areas
 					{
 					String mask=";"+I.readableText();
@@ -601,13 +601,13 @@ public class ItemData extends StdWebMacro
 					break;
 				case 42: // is pill
 					if(I instanceof Pill) return "true";
-                    return "false";
+					return "false";
 				case 43: // is super pill
 					if((I instanceof Pill)&&(CMClass.classID(I).indexOf("SuperPill")>0)) return "true";
-                    return "false";
+					return "false";
 				case 44: // is potion
 					if(I instanceof Potion) return "true";
-                    return "false";
+					return "false";
 				case 45: // liquid types
 					if((firstTime)&&(I instanceof Drink))
 						old=""+((Drink)I).liquidType();
@@ -652,7 +652,7 @@ public class ItemData extends StdWebMacro
 					break;
 				case 49: // is rideable
 					if(I instanceof Rideable) return "true";
-                    return "false";
+					return "false";
 				case 50: // rideable type
 					if((firstTime)&&(I instanceof Rideable))
 						old=""+((Rideable)I).rideBasis();
@@ -693,18 +693,18 @@ public class ItemData extends StdWebMacro
 				case 55: // is wallpaper
 					if(CMClass.classID(I).indexOf("Wallpaper")>=0)
 						return "true";
-                    return "false";
+					return "false";
 				case 56: // readabletext
 					if(firstTime) old=""+I.readableText();
 					str.append(old);
 					break;
 				case 57:
-				    // pushed back to room/mob, where it belongs
-				    //str.append(container(R,M,oldI,I,old,firstTime));
-    				break;
+					// pushed back to room/mob, where it belongs
+					//str.append(container(R,M,oldI,I,old,firstTime));
+					break;
 				case 58: // is light
 					if(I instanceof Light) return "true";
-                    return "false";
+					return "false";
 				case 59:
 					if((firstTime)&&(I instanceof Light))
 						old=""+((Light)I).getDuration();
@@ -724,10 +724,10 @@ public class ItemData extends StdWebMacro
 					break;
 				case 61:
 					if(I instanceof Coins) return "true";
-                    return "false";
+					return "false";
 				case 62:
 					if(I instanceof Scroll) return "true";
-                    return "false";
+					return "false";
 				case 63: // being worn -- pushed back to mob/room
 					if(firstTime)
 						old=I.amWearingAt(Wearable.IN_INVENTORY)?"":"checked";
@@ -746,7 +746,7 @@ public class ItemData extends StdWebMacro
 					break;
 				case 65: // is key
 					if(I instanceof DoorKey) return "true";
-                    return "false";
+					return "false";
 				case 66: // content types
 					if(I instanceof Container)
 					{
@@ -776,7 +776,7 @@ public class ItemData extends StdWebMacro
 					break;
 				case 67: // is instrument
 					if(I instanceof MusicalInstrument) return "true";
-                    return "false";
+					return "false";
 				case 68: // instrument types
 					if((firstTime)&&(I instanceof MusicalInstrument))
 						old=""+((MusicalInstrument)I).instrumentType();
@@ -790,16 +790,16 @@ public class ItemData extends StdWebMacro
 					break;
 				case 69: // is ammunition
 					if(I instanceof Ammunition) return "true";
-                    return "false";
+					return "false";
 				case 70: // is mob item
 					if(M!=null) return "true";
-                    return "false";
+					return "false";
 				case 71: // is dust
 					if(I instanceof MagicDust) return "true";
-                    return "false";
+					return "false";
 				case 72: // is perfume
 					if(I instanceof Perfume) return "true";
-                    return "false";
+					return "false";
 				case 73: // smells
 					if((firstTime)&&(I instanceof Perfume))
 						old=""+((Perfume)I).getSmellList();
@@ -811,18 +811,18 @@ public class ItemData extends StdWebMacro
 					str.append(old);
 					break;
 				case 75: // is exit
-				    if(I instanceof Exit) return "true";
-                    return "false";
+					if(I instanceof Exit) return "true";
+					return "false";
 				case 76: // exit name
-				    if((firstTime)&&(I instanceof Exit))
-				        old=""+((Exit)I).doorName();
-				    str.append(old);
-				    break;
+					if((firstTime)&&(I instanceof Exit))
+						old=""+((Exit)I).doorName();
+					str.append(old);
+					break;
 				case 77: // exit closed text
-				    if((firstTime)&&(I instanceof Exit))
-				        old=""+((Exit)I).closedText();
-				    str.append(old);
-				    break;
+					if((firstTime)&&(I instanceof Exit))
+						old=""+((Exit)I).closedText();
+					str.append(old);
+					break;
 				case 78: // numcoins
 					if((firstTime)&&(I instanceof Coins))
 						old=""+((Coins)I).getNumberOfCoins();
@@ -833,43 +833,43 @@ public class ItemData extends StdWebMacro
 					if((firstTime)&&(I instanceof Coins))
 						old=""+((Coins)I).getCurrency();
 					List<String> cs=CMLib.beanCounter().getAllCurrencies();
-				    str.append("<OPTION VALUE=\"\"");
-				    if(old.length()==0)
-				        str.append(" SELECTED");
-				    str.append(">Default currency");
+					str.append("<OPTION VALUE=\"\"");
+					if(old.length()==0)
+						str.append(" SELECTED");
+					str.append(">Default currency");
 					for(int i=0;i<cs.size();i++)
 					{
-					    if(((String)cs.get(i)).length()>0)
-					    {
-						    str.append("<OPTION VALUE=\""+((String)cs.get(i))+"\"");
-						    if(((String)cs.get(i)).equalsIgnoreCase(old))
-						        str.append(" SELECTED");
-						    str.append(">"+((String)cs.get(i)));
-					    }
+						if(((String)cs.get(i)).length()>0)
+						{
+							str.append("<OPTION VALUE=\""+((String)cs.get(i))+"\"");
+							if(((String)cs.get(i)).equalsIgnoreCase(old))
+								str.append(" SELECTED");
+							str.append(">"+((String)cs.get(i)));
+						}
 					}
 					break;
 				}
 				case 80: // denomination
 				{
-				    String currency=(I instanceof Coins)?currency=((Coins)I).getCurrency():"";
+					String currency=(I instanceof Coins)?currency=((Coins)I).getCurrency():"";
 					if((firstTime)&&(I instanceof Coins))
 						old=""+((Coins)I).getDenomination();
 					MoneyLibrary.MoneyDenomination[] DV=CMLib.beanCounter().getCurrencySet(currency);
 					for(int i=0;i<DV.length;i++)
 					{
-					    str.append("<OPTION VALUE=\""+DV[i].value+"\"");
-					    if(DV[i].value==CMath.s_double(old))
-					        str.append(" SELECTED");
-					    str.append(">"+DV[i].name);
+						str.append("<OPTION VALUE=\""+DV[i].value+"\"");
+						if(DV[i].value==CMath.s_double(old))
+							str.append(" SELECTED");
+						str.append(">"+DV[i].name);
 					}
 					break;
 				}
 				case 81: // isrecipe
-				    if(I instanceof Recipe) return "true";
-                    return "false";
+					if(I instanceof Recipe) return "true";
+					return "false";
 				case 82: // recipeskill
 				{
-				    Ability A=null;
+					Ability A=null;
 					if((firstTime)&&(I instanceof Recipe))
 						old=""+((Recipe)I).getCommonSkillID();
 					for(Enumeration<Ability> e=CMClass.abilities();e.hasMoreElements();)
@@ -880,7 +880,7 @@ public class ItemData extends StdWebMacro
 					 	{
 						 	str.append("<OPTION VALUE=\""+A.ID()+"\"");
 						 	if(A.ID().equalsIgnoreCase(old))
-						 	    str.append(" SELECTED");
+						 		str.append(" SELECTED");
 						 	str.append(">"+A.name());
 					 	}
 					}
@@ -913,48 +913,48 @@ public class ItemData extends StdWebMacro
 					str.append(old);
 					break;
 				case 87: // iscataloged
-				    str.append(""+CMLib.flags().isCataloged(I));
-				    break;
+					str.append(""+CMLib.flags().isCataloged(I));
+					break;
 				case 88: // catarate
-				    if((firstTime)&&(itemCode.startsWith("CATALOG-")||itemCode.startsWith("NEWCATA-")))
-		            {
-		                String name=itemCode.substring(8);
-		                CatalogLibrary.CataData data=CMLib.catalog().getCatalogItemData(name);
-		                if(data!=null)
-		                    old=CMath.toPct(data.getRate());
-		            }
-				    str.append(old+", ");
-				    break;
-                case 89: // catalive
-                    if((firstTime)&&(itemCode.startsWith("CATALOG-")||itemCode.startsWith("NEWCATA-")))
-                    {
-                        String name=itemCode.substring(8);
-                        CatalogLibrary.CataData data=CMLib.catalog().getCatalogItemData(name);
-                        if(data!=null)
-                            old=data.getWhenLive()?"on":"";
-                    }
-                    str.append(((old!=null)&&(old.equalsIgnoreCase("on"))?"CHECKED":"")+", ");
-                    break;
-                case 90: // catamask
-                    if((firstTime)&&(itemCode.startsWith("CATALOG-")||itemCode.startsWith("NEWCATA-")))
-                    {
-                        String name=itemCode.substring(8);
-                        CatalogLibrary.CataData data=CMLib.catalog().getCatalogItemData(name);
-                        if(data!=null)
-                            old=""+data.getMaskStr();
-                    }
-                    str.append(htmlOutgoingFilter(old)+", ");
-                    break;
-                case 91: // bite
-                    if((firstTime)&&(I instanceof Food))
-                        old=""+((Food)I).bite();
-                    str.append(old);
-                    break;
-                case 92: // max uses
-                    if((firstTime)&&(I instanceof Wand))
-                        old=""+((Wand)I).maxUses();
-                    str.append(old);
-                    break;
+					if((firstTime)&&(itemCode.startsWith("CATALOG-")||itemCode.startsWith("NEWCATA-")))
+					{
+						String name=itemCode.substring(8);
+						CatalogLibrary.CataData data=CMLib.catalog().getCatalogItemData(name);
+						if(data!=null)
+							old=CMath.toPct(data.getRate());
+					}
+					str.append(old+", ");
+					break;
+				case 89: // catalive
+					if((firstTime)&&(itemCode.startsWith("CATALOG-")||itemCode.startsWith("NEWCATA-")))
+					{
+						String name=itemCode.substring(8);
+						CatalogLibrary.CataData data=CMLib.catalog().getCatalogItemData(name);
+						if(data!=null)
+							old=data.getWhenLive()?"on":"";
+					}
+					str.append(((old!=null)&&(old.equalsIgnoreCase("on"))?"CHECKED":"")+", ");
+					break;
+				case 90: // catamask
+					if((firstTime)&&(itemCode.startsWith("CATALOG-")||itemCode.startsWith("NEWCATA-")))
+					{
+						String name=itemCode.substring(8);
+						CatalogLibrary.CataData data=CMLib.catalog().getCatalogItemData(name);
+						if(data!=null)
+							old=""+data.getMaskStr();
+					}
+					str.append(htmlOutgoingFilter(old)+", ");
+					break;
+				case 91: // bite
+					if((firstTime)&&(I instanceof Food))
+						old=""+((Food)I).bite();
+					str.append(old);
+					break;
+				case 92: // max uses
+					if((firstTime)&&(I instanceof Wand))
+						old=""+((Wand)I).maxUses();
+					str.append(old);
+					break;
 				}
 				if(firstTime)
 					httpReq.addRequestParameters(okparms[o],old.equals("checked")?"on":old);
@@ -963,14 +963,14 @@ public class ItemData extends StdWebMacro
 			str.append(AreaData.affects(I,httpReq,parms,1));
 			str.append(AreaData.behaves(I,httpReq,parms,1));
 			if(oldI!=null){
-			    I.setContainer(oldI.container());
-			    I.setRawWornCode(oldI.rawWornCode());
+				I.setContainer(oldI.container());
+				I.setRawWornCode(oldI.rawWornCode());
 			}
 
 			String strstr=str.toString();
 			if(strstr.endsWith(", "))
 				strstr=strstr.substring(0,strstr.length()-2);
-            return clearWebMacros(strstr);
+			return clearWebMacros(strstr);
 		}
 		return "";
 	}

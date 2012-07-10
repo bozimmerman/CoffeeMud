@@ -26,7 +26,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -54,21 +54,21 @@ public class Prop_HaveZapper extends Property
 		actual=(text.toUpperCase()+" ").startsWith("ACTUAL ");
 		if(actual) text=text.substring(7);
 		percent=100;
-        int x=text.indexOf('%');
-        if(x>0)
-        {
-	        int mul=1;
-	        int tot=0;
-	        while((--x)>=0)
-	        {
-	            if(Character.isDigit(text.charAt(x)))
-	                tot+=CMath.s_int(""+text.charAt(x))*mul;
-	            else
-	                x=-1;
-	            mul=mul*10;
-	        }
-	        percent=tot;
-        }
+		int x=text.indexOf('%');
+		if(x>0)
+		{
+			int mul=1;
+			int tot=0;
+			while((--x)>=0)
+			{
+				if(Character.isDigit(text.charAt(x)))
+					tot+=CMath.s_int(""+text.charAt(x))*mul;
+				else
+					x=-1;
+				mul=mul*10;
+			}
+			percent=tot;
+		}
 		msgStr=CMParms.getParmStr(text,"MESSAGE",defaultMessage());
 		mask=CMLib.masking().getPreCompiledMask(text);
 	}

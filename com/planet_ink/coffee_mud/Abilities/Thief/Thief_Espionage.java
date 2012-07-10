@@ -25,7 +25,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -45,7 +45,7 @@ public class Thief_Espionage extends ThiefSkill
 	protected int canTargetCode(){return CAN_MOBS;}
 	public int abstractQuality(){return Ability.QUALITY_OK_OTHERS;}
 	private static final String[] triggerStrings = {"ESPIONAGE"};
-    public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_STEALTHY;}
+	public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_STEALTHY;}
 	public String[] triggerStrings(){return triggerStrings;}
 	public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
 	public int code=0;
@@ -58,15 +58,15 @@ public class Thief_Espionage extends ThiefSkill
 		super.executeMsg(myHost,msg);
 		if((msg.othersMajor(CMMsg.MASK_CHANNEL)))
 		{
-	        int channelInt=msg.othersMinor()-CMMsg.TYP_CHANNEL;
+			int channelInt=msg.othersMinor()-CMMsg.TYP_CHANNEL;
 			boolean areareq=CMLib.channels().getChannelFlags(channelInt).contains(ChannelsLibrary.ChannelFlag.SAMEAREA);
-	        if((CMLib.channels().getChannelFlags(channelInt).contains(ChannelsLibrary.ChannelFlag.CLANONLY)
-    	        ||CMLib.channels().getChannelFlags(channelInt).contains(ChannelsLibrary.ChannelFlag.CLANALLYONLY))
-	        &&(invoker()!=null)
-	        &&(invoker().getClanID().length()>0)
-	        &&(!((MOB)affected).getClanID().equals(invoker().getClanID()))
-	        &&(!CMLib.channels().mayReadThisChannel(msg.source(),areareq,invoker(),channelInt)))
-	        	invoker.executeMsg(myHost,msg);
+			if((CMLib.channels().getChannelFlags(channelInt).contains(ChannelsLibrary.ChannelFlag.CLANONLY)
+				||CMLib.channels().getChannelFlags(channelInt).contains(ChannelsLibrary.ChannelFlag.CLANALLYONLY))
+			&&(invoker()!=null)
+			&&(invoker().getClanID().length()>0)
+			&&(!((MOB)affected).getClanID().equals(invoker().getClanID()))
+			&&(!CMLib.channels().mayReadThisChannel(msg.source(),areareq,invoker(),channelInt)))
+				invoker.executeMsg(myHost,msg);
 		}
 	}
 

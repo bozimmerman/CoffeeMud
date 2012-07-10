@@ -21,7 +21,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -31,25 +31,25 @@ import java.util.*;
 */
 public interface LegalLibrary extends CMLibrary
 {
-    public Law getTheLaw(Room R, MOB mob);
-    public LegalBehavior getLegalBehavior(Area A);
-    public LegalBehavior getLegalBehavior(Room R);
-    public Area getLegalObject(Area A);
-    public Area getLegalObject(Room R);
-    
-    public LandTitle getLandTitle(Area area);
-    public LandTitle getLandTitle(Room room);
-    public boolean doesHavePriviledgesHere(MOB mob, Room room);
-    public boolean doesHavePriviledgesInThisDirection(MOB mob, Room room, Exit exit);
-    public boolean doesOwnThisProperty(String name, Room room);
-    public boolean doesOwnThisProperty(MOB mob, Room room);
-    public List<LandTitle> getAllUniqueTitles(Enumeration<Room> e, String owner, boolean includeRentals);
-    public Ability getClericInfusion(Physical room);
-    public Deity getClericInfused(Room room);
-    
-    public boolean isLegalOfficerHere(MOB mob);
-    public boolean isLegalJudgeHere(MOB mob);
-    public boolean isLegalOfficialHere(MOB mob);
-    
-    public boolean isACity(Area A);
+	public Law getTheLaw(Room R, MOB mob);
+	public LegalBehavior getLegalBehavior(Area A);
+	public LegalBehavior getLegalBehavior(Room R);
+	public Area getLegalObject(Area A);
+	public Area getLegalObject(Room R);
+	
+	public LandTitle getLandTitle(Area area);
+	public LandTitle getLandTitle(Room room);
+	public boolean doesHavePriviledgesHere(MOB mob, Room room);
+	public boolean doesHavePriviledgesInThisDirection(MOB mob, Room room, Exit exit);
+	public boolean doesOwnThisProperty(String name, Room room);
+	public boolean doesOwnThisProperty(MOB mob, Room room);
+	public List<LandTitle> getAllUniqueTitles(Enumeration<Room> e, String owner, boolean includeRentals);
+	public Ability getClericInfusion(Physical room);
+	public Deity getClericInfused(Room room);
+	
+	public boolean isLegalOfficerHere(MOB mob);
+	public boolean isLegalJudgeHere(MOB mob);
+	public boolean isLegalOfficialHere(MOB mob);
+	
+	public boolean isACity(Area A);
 }

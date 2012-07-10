@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -67,15 +67,15 @@ public class StdClanPamphlet extends StdClanItem
 		{
 			String rulingClan=null;
 			Room R=((MOB)owner()).location();
-            if((((MOB)owner()).getClanID().length()>0)
+			if((((MOB)owner()).getClanID().length()>0)
 			||(((--tradeTime)<=0)))
 			{
-                LegalBehavior B=CMLib.law().getLegalBehavior(R);
-                if(B!=null) rulingClan=B.rulingOrganization();
+				LegalBehavior B=CMLib.law().getLegalBehavior(R);
+				if(B!=null) rulingClan=B.rulingOrganization();
 			}
 			if((rulingClan!=null)&&(rulingClan.length()>0)
-            &&(!rulingClan.equals(clanID()))
-            &&(((MOB)owner()).getClanID().equals(rulingClan)))
+			&&(!rulingClan.equals(clanID()))
+			&&(((MOB)owner()).getClanID().equals(rulingClan)))
 				((MOB)owner()).setClanID("");
 			if(tradeTime<=0)
 			{
@@ -84,7 +84,7 @@ public class StdClanPamphlet extends StdClanItem
 				if((mob.getClanID().length()==0)
 				&&(rulingClan!=null)
 				&&(rulingClan.length()>0)
-                &&(!rulingClan.equals(clanID()))
+				&&(!rulingClan.equals(clanID()))
 				&&(CMLib.flags().canSpeak(mob))
 				&&(CMLib.flags().aliveAwakeMobileUnbound(mob,true))
 				&&(R!=null))
@@ -105,10 +105,10 @@ public class StdClanPamphlet extends StdClanItem
 						if(mob.location().okMessage(mob,newMsg)&&(!((Item)I).amDestroyed()))
 							mob.location().send(mob,newMsg);
 						if(!M.isMine(I)) 
-                            ((Item)I).destroy();
-                        else
-                        if(mob.isMine(I))
-                            ((Item)I).destroy();
+							((Item)I).destroy();
+						else
+						if(mob.isMine(I))
+							((Item)I).destroy();
 					}
 				}
 			}

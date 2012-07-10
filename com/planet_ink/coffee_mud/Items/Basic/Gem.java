@@ -25,7 +25,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -49,7 +49,7 @@ public class Gem extends StdItem
 	public final static int PEARL			= 10;
 	public final static int EMERALD			= 11;
 	public final static int AMETHYST		= 12;
-    private int lastLevel=-1;
+	private int lastLevel=-1;
 
 	public Gem()
 	{
@@ -62,15 +62,15 @@ public class Gem extends StdItem
 		recoverPhyStats();
 	}
 
-    public void recoverPhyStats()
-    {
-        super.recoverPhyStats();
-        if(lastLevel!=phyStats().level())
-        { 
-            lastLevel=phyStats().level(); 
-            setItemDescription(phyStats.level());
-        }
-    }
+	public void recoverPhyStats()
+	{
+		super.recoverPhyStats();
+		if(lastLevel!=phyStats().level())
+		{ 
+			lastLevel=phyStats().level(); 
+			setItemDescription(phyStats.level());
+		}
+	}
 
 	public void setItemDescription(int level)
 	{

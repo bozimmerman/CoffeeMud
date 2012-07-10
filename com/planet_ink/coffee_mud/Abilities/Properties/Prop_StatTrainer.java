@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -37,10 +37,10 @@ public class Prop_StatTrainer extends Property
 	public String ID() { return "Prop_StatTrainer"; }
 	public String name(){ return "Good training MOB";}
 	protected int canAffectCode(){return Ability.CAN_MOBS;}
-    protected static final int[] all25=new int[CharStats.CODES.instance().total()];
-    static { for(int i : CharStats.CODES.BASE()) all25[i]=25;}
-    protected int[] stats=all25;
-    protected boolean noteach=false;
+	protected static final int[] all25=new int[CharStats.CODES.instance().total()];
+	static { for(int i : CharStats.CODES.BASE()) all25[i]=25;}
+	protected int[] stats=all25;
+	protected boolean noteach=false;
 
 	public String accountForYourself()
 	{ return "Stats Trainer";	}
@@ -60,7 +60,7 @@ public class Prop_StatTrainer extends Property
 			if(newMiscText.toUpperCase().indexOf("NOTEACH")>=0)
 				noteach=true;
 			stats=new int[CharStats.CODES.TOTAL()];
-            for(int i : CharStats.CODES.BASE())
+			for(int i : CharStats.CODES.BASE())
 				stats[i]=CMParms.getParmInt(newMiscText, CMStrings.limit(CharStats.CODES.NAME(i),3), 25);
 		}
 	}

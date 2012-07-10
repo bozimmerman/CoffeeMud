@@ -26,7 +26,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -60,10 +60,10 @@ public class Barbarian extends StdCharClass
 		super();
 		maxStatAdj[CharStats.STAT_STRENGTH]=4;
 		maxStatAdj[CharStats.STAT_CONSTITUTION]=4;
-    }
-    public void initializeClass()
-    {
-        super.initializeClass();
+	}
+	public void initializeClass()
+	{
+		super.initializeClass();
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Write",25,true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Specialization_Axe",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Specialization_BluntWeapon",false);
@@ -151,7 +151,7 @@ public class Barbarian extends StdCharClass
 
 	public String getStatQualDesc(){return "Strength 9+, Constitution 9+";}
 	public String getOtherBonusDesc(){return "Damage reduction 1pt/5 levels.  A 1%/level resistance to Enchantments.  Receives bonus conquest experience.";}
-    public void executeMsg(Environmental host, CMMsg msg){ super.executeMsg(host,msg); Fighter.conquestExperience(this,host,msg);}
+	public void executeMsg(Environmental host, CMMsg msg){ super.executeMsg(host,msg); Fighter.conquestExperience(this,host,msg);}
 	public boolean qualifiesForThisClass(MOB mob, boolean quiet)
 	{
 		if(mob != null)

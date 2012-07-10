@@ -25,7 +25,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -94,28 +94,28 @@ public class Chant_SummonFlyTrap extends Chant
 		}
 	}
 
-    public int castingQuality(MOB mob, Physical target)
-    {
-        if(mob!=null)
-        {
-            Room R=mob.location();
-            if(R!=null)
-            {
-                if((R.domainType()&Room.INDOORS)>0)
-                    return Ability.QUALITY_INDIFFERENT;
-                if((R.domainType()==Room.DOMAIN_OUTDOORS_CITY)
-                ||(R.domainType()==Room.DOMAIN_OUTDOORS_SPACEPORT)
-                ||(R.domainType()==Room.DOMAIN_OUTDOORS_UNDERWATER)
-                ||(R.domainType()==Room.DOMAIN_OUTDOORS_AIR)
-                ||(R.domainType()==Room.DOMAIN_OUTDOORS_WATERSURFACE))
-                    return Ability.QUALITY_INDIFFERENT;
-                if(!mob.isInCombat())
-                    return Ability.QUALITY_INDIFFERENT;
-                
-            }
-        }
-        return super.castingQuality(mob,target);
-    }
+	public int castingQuality(MOB mob, Physical target)
+	{
+		if(mob!=null)
+		{
+			Room R=mob.location();
+			if(R!=null)
+			{
+				if((R.domainType()&Room.INDOORS)>0)
+					return Ability.QUALITY_INDIFFERENT;
+				if((R.domainType()==Room.DOMAIN_OUTDOORS_CITY)
+				||(R.domainType()==Room.DOMAIN_OUTDOORS_SPACEPORT)
+				||(R.domainType()==Room.DOMAIN_OUTDOORS_UNDERWATER)
+				||(R.domainType()==Room.DOMAIN_OUTDOORS_AIR)
+				||(R.domainType()==Room.DOMAIN_OUTDOORS_WATERSURFACE))
+					return Ability.QUALITY_INDIFFERENT;
+				if(!mob.isInCombat())
+					return Ability.QUALITY_INDIFFERENT;
+				
+			}
+		}
+		return super.castingQuality(mob,target);
+	}
 
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{

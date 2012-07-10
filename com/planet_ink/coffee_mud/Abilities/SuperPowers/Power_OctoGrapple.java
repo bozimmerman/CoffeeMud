@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -76,15 +76,15 @@ public class Power_OctoGrapple extends SuperPower
 				{
 					if(mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> struggle(s) against the grappling arms."))
 					{
-					    if(CMLib.dice().rollPercentage()<mob.charStats().getStat(CharStats.STAT_STRENGTH))
-					    {
-					        unInvoke();
-					        if((mob.fetchEffect(ID())==null)&&(invoker!=null)&&(invoker!=mob))
-					        {
-					            Ability A=mob.fetchEffect(ID());
-					            if(A!=null) A.unInvoke();
-					        }
-					    }
+						if(CMLib.dice().rollPercentage()<mob.charStats().getStat(CharStats.STAT_STRENGTH))
+						{
+							unInvoke();
+							if((mob.fetchEffect(ID())==null)&&(invoker!=null)&&(invoker!=mob))
+							{
+								Ability A=mob.fetchEffect(ID());
+								if(A!=null) A.unInvoke();
+							}
+						}
 					}
 				}
 				return false;
@@ -178,7 +178,7 @@ public class Power_OctoGrapple extends SuperPower
 			// what happened.
 			invoker=mob;
 			CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_JUSTICE|(auto?CMMsg.MASK_ALWAYS:0),auto?"<T-NAME> get(s) grappled!":"^F^<FIGHT^><S-NAME> grab(s) <T-NAMESELF> with <S-HIS-HER> huge metallic arms!^</FIGHT^>^?");
-            CMLib.color().fixSourceFightColor(msg);
+			CMLib.color().fixSourceFightColor(msg);
 			if((mob.location().okMessage(mob,msg))&&(msg.value()<=0))
 			{
 				mob.location().send(mob,msg);

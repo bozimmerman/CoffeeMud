@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -45,23 +45,23 @@ public class Chant_SummonLightning extends Chant
 	public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_WEATHER_MASTERY;}
 	public long flags(){return Ability.FLAG_WEATHERAFFECTING|Ability.FLAG_AIRBASED;}
 
-    public int castingQuality(MOB mob, Physical target)
-    {
-         if(mob!=null)
-         {
-             Room R=mob.location();
-             if(R!=null)
-             {
-                 if((R.domainType()&Room.INDOORS)>0)
-                     return Ability.QUALITY_INDIFFERENT;
-                 Area A=R.getArea();
-                 if(A.getClimateObj().weatherType(mob.location())!=Climate.WEATHER_THUNDERSTORM)
-                     return Ability.QUALITY_INDIFFERENT;
-             }
-         }
-         return super.castingQuality(mob,target);
-    }
-    
+	public int castingQuality(MOB mob, Physical target)
+	{
+		 if(mob!=null)
+		 {
+			 Room R=mob.location();
+			 if(R!=null)
+			 {
+				 if((R.domainType()&Room.INDOORS)>0)
+					 return Ability.QUALITY_INDIFFERENT;
+				 Area A=R.getArea();
+				 if(A.getClimateObj().weatherType(mob.location())!=Climate.WEATHER_THUNDERSTORM)
+					 return Ability.QUALITY_INDIFFERENT;
+			 }
+		 }
+		 return super.castingQuality(mob,target);
+	}
+	
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if(((mob.location().domainType()&Room.INDOORS)>0)&&(!auto))

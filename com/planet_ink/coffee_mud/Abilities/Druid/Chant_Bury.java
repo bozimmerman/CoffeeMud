@@ -25,7 +25,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -39,7 +39,7 @@ public class Chant_Bury extends Chant
 {
 	public String ID() { return "Chant_Bury"; }
 	public String name(){ return "Earthfeed";}
-    public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_DEEPMAGIC;}
+	public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_DEEPMAGIC;}
 	public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return Ability.CAN_ITEMS;}
@@ -117,7 +117,7 @@ public class Chant_Bury extends Chant
 			{
 				mob.location().send(mob,msg);
 				if(CMLib.flags().isNeutral(mob))
-                    mob.curState().adjMana(3*target.phyStats().level()*super.getXLEVELLevel(mob),mob.maxState());
+					mob.curState().adjMana(3*target.phyStats().level()*super.getXLEVELLevel(mob),mob.maxState());
 				if(hole==null)
 				{
 					CMMsg holeMsg=CMClass.getMsg(mob, mob.location(),null,CMMsg.MSG_DIG|CMMsg.MASK_ALWAYS, null);

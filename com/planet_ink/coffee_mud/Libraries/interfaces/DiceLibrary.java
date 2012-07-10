@@ -21,7 +21,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -31,16 +31,16 @@ import java.util.*;
 */
 public interface DiceLibrary extends CMLibrary
 {
-    public boolean normalizeAndRollLess(int score);
-    public int normalizeBy5(int score);
-    public int rollHP(int level, int code);
-    public int getHPCode(String str);
-    public int getHPCode(int roll, int dice, int plus);
-    public int[] getHPBreakup(int level, int code);
-    public int roll(int number, int die, int modifier);
-    public Object pick(Object[] set);
-    public Object doublePick(Object[][] set);
-    public Object pick(List<? extends Object> set);
-    public int rollPercentage();
+	public boolean normalizeAndRollLess(int score);
+	public int normalizeBy5(int score);
+	public int rollHP(int level, int code);
+	public int getHPCode(String str);
+	public int getHPCode(int roll, int dice, int plus);
+	public int[] getHPBreakup(int level, int code);
+	public int roll(int number, int die, int modifier);
+	public Object pick(Object[] set);
+	public Object doublePick(Object[][] set);
+	public Object pick(List<? extends Object> set);
+	public int rollPercentage();
 	public Random getRandomizer();
 }

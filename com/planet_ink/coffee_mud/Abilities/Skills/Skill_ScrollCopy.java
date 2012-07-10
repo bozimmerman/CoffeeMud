@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -42,8 +42,8 @@ public class Skill_ScrollCopy extends StdSkill
 	public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 	private static final String[] triggerStrings = {"MEMORIZE"};
 	public String[] triggerStrings(){return triggerStrings;}
-    public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_CALLIGRAPHY;}
-    protected int overrideMana(){return 0;} //-1=normal, Integer.MAX_VALUE=all, Integer.MAX_VALUE-100
+	public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_CALLIGRAPHY;}
+	protected int overrideMana(){return 0;} //-1=normal, Integer.MAX_VALUE=all, Integer.MAX_VALUE-100
 
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
@@ -108,17 +108,17 @@ public class Skill_ScrollCopy extends StdSkill
 		if(success)
 		{
 			if(mob.location().show(mob,target,this,CMMsg.MSG_HANDS,"<S-NAME> memorize(s) '"+thisSpell.name()+"' from <T-NAME>."))
-            {
+			{
 				thisSpell.teach(T,mob);
-                if((mob.fetchAbility(thisSpell.ID())!=null)
-                &&(CMLib.ableMapper().qualifyingClassLevel(mob,this)>=0)
-                &&(CMLib.ableMapper().qualifyingClassLevel(mob,thisSpell)>=0))
-                {
-                    int xp=(int)Math.round(100.0*CMath.div(CMLib.ableMapper().lowestQualifyingLevel(thisSpell.ID()),CMLib.ableMapper().qualifyingClassLevel(mob,this)));
-                    if(xp>=0)
-                        CMLib.leveler().postExperience(mob,null,null,xp,false);
-                }
-            }
+				if((mob.fetchAbility(thisSpell.ID())!=null)
+				&&(CMLib.ableMapper().qualifyingClassLevel(mob,this)>=0)
+				&&(CMLib.ableMapper().qualifyingClassLevel(mob,thisSpell)>=0))
+				{
+					int xp=(int)Math.round(100.0*CMath.div(CMLib.ableMapper().lowestQualifyingLevel(thisSpell.ID()),CMLib.ableMapper().qualifyingClassLevel(mob,this)));
+					if(xp>=0)
+						CMLib.leveler().postExperience(mob,null,null,xp,false);
+				}
+			}
 		}
 		else
 			mob.location().show(mob,null,CMMsg.MSG_HANDS,"<S-NAME> attempt(s) to memorize '"+thisSpell.name()+"' from "+target.name()+", but fail(s).");

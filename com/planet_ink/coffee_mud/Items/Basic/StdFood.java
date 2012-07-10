@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -62,14 +62,14 @@ public class StdFood extends StdItem implements Food
 		amountOfNourishment=amount;
 	}
 
-    public int bite()
-    {
-        return nourishmentPerBite;
-    }
-    public void setBite(int amount)
-    {
-        nourishmentPerBite=amount;
-    }
+	public int bite()
+	{
+		return nourishmentPerBite;
+	}
+	public void setBite(int amount)
+	{
+		nourishmentPerBite=amount;
+	}
 
 	public long decayTime(){return decayTime;}
 	public void setDecayTime(long time){decayTime=time;}
@@ -88,10 +88,10 @@ public class StdFood extends StdItem implements Food
 				||(mob.isMine(this))
 				||(!CMLib.flags().isGettable(this)))
 				{
-	                int amountEaten=nourishmentPerBite;
-	                if((amountEaten<1)||(amountEaten>amountOfNourishment))
-	                    amountEaten=amountOfNourishment;
-	                msg.setValue((amountEaten<amountOfNourishment)?amountEaten:0);
+					int amountEaten=nourishmentPerBite;
+					if((amountEaten<1)||(amountEaten>amountOfNourishment))
+						amountEaten=amountOfNourishment;
+					msg.setValue((amountEaten<amountOfNourishment)?amountEaten:0);
 					return true;
 				}
 				mob.tell("You don't have that.");
@@ -111,20 +111,20 @@ public class StdFood extends StdItem implements Food
 			{
 			case CMMsg.TYP_EAT:
 				boolean hungry=mob.curState().getHunger()<=0;
-			    if((!hungry)
-			    &&(mob.curState().getHunger()>=mob.maxState().maxHunger(mob.baseWeight()))
+				if((!hungry)
+				&&(mob.curState().getHunger()>=mob.maxState().maxHunger(mob.baseWeight()))
 				&&(CMLib.dice().roll(1,100,0)==1)
 				&&(!CMLib.flags().isGolem(msg.source()))
 				&&(msg.source().fetchEffect("Disease_Obesity")==null)
 				&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.AUTODISEASE)))
 				{
-				    Ability A=CMClass.getAbility("Disease_Obesity");
-				    if(A!=null){A.invoke(mob,mob,true,0);}
+					Ability A=CMClass.getAbility("Disease_Obesity");
+					if(A!=null){A.invoke(mob,mob,true,0);}
 				}
-			    int amountEaten=nourishmentPerBite;
-			    if((amountEaten<1)||(amountEaten>amountOfNourishment))
-			        amountEaten=amountOfNourishment;
-			    amountOfNourishment-=amountEaten;
+				int amountEaten=nourishmentPerBite;
+				if((amountEaten<1)||(amountEaten>amountOfNourishment))
+					amountEaten=amountOfNourishment;
+				amountOfNourishment-=amountEaten;
 				boolean full=!mob.curState().adjHunger(amountEaten,mob.maxState().maxHunger(mob.baseWeight()));
 				if((hungry)&&(mob.curState().getHunger()>0))
 					mob.tell("You are no longer hungry.");
@@ -132,7 +132,7 @@ public class StdFood extends StdItem implements Food
 				if(full)
 					mob.tell("You are full.");
 				if(amountOfNourishment<=0)
-    				this.destroy();
+					this.destroy();
 				if(!CMath.bset(msg.targetMajor(),CMMsg.MASK_OPTIMIZE))
 					mob.location().recoverRoomStats();
 				break;

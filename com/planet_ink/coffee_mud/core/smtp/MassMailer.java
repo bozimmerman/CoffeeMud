@@ -28,7 +28,7 @@ import java.io.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -88,7 +88,7 @@ public class MassMailer implements Runnable
 	public boolean deleteEmailIfOld(String journalName, String key, long date, int days)
 	{
 		Calendar IQE=Calendar.getInstance();
-        IQE.setTimeInMillis(date);
+		IQE.setTimeInMillis(date);
 		IQE.add(Calendar.DATE,days);
 		if(IQE.getTimeInMillis()<System.currentTimeMillis())
 		{
@@ -108,9 +108,9 @@ public class MassMailer implements Runnable
 	{
 		long curr=System.currentTimeMillis();
 		Calendar IQE=Calendar.getInstance();
-        IQE.setTimeInMillis(email);
+		IQE.setTimeInMillis(email);
 		Calendar IQC=Calendar.getInstance();
-        IQC.setTimeInMillis(curr);
+		IQC.setTimeInMillis(curr);
 		if(CMath.absDiff(email,curr)<(30*60*1000)) return true;
 		while(IQE.before(IQC))
 		{
@@ -177,9 +177,9 @@ public class MassMailer implements Runnable
 			SMTPLibrary.SMTPClient SC=null;
 			try
 			{
-			    if(CMProps.getVar(CMProps.SYSTEM_SMTPSERVERNAME).length()>0)
+				if(CMProps.getVar(CMProps.SYSTEM_SMTPSERVERNAME).length()>0)
 					SC=CMLib.smtp().getClient(CMProps.getVar(CMProps.SYSTEM_SMTPSERVERNAME),SMTPLibrary.DEFAULT_PORT);
-			    else
+				else
 					SC=CMLib.smtp().getClient(toM.playerStats().getEmail());
 			}
 			catch(BadEmailAddressException be)

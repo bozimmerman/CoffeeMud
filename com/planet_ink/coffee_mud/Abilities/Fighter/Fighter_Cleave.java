@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -46,7 +46,7 @@ public class Fighter_Cleave extends FighterSkill
 
 	protected MOB thisTarget=null;
 	protected MOB nextTarget=null;
-    public int classificationCode(){ return Ability.ACODE_SKILL|Ability.DOMAIN_MARTIALLORE;}
+	public int classificationCode(){ return Ability.ACODE_SKILL|Ability.DOMAIN_MARTIALLORE;}
 
 	public boolean tick(Tickable ticking, int tickID)
 	{
@@ -65,11 +65,11 @@ public class Fighter_Cleave extends FighterSkill
 		{
 			Item w=mob.fetchWieldedItem();
 			if(w==null) w=mob.myNaturalWeapon();
-            CMMsg msg=CMClass.getMsg(mob,nextTarget,this,CMMsg.MSG_NOISYMOVEMENT,"^F^<FIGHT^><S-NAME> CLEAVE(S) INTO <T-NAME>!!^</FIGHT^>^?");
-            CMLib.color().fixSourceFightColor(msg);
+			CMMsg msg=CMClass.getMsg(mob,nextTarget,this,CMMsg.MSG_NOISYMOVEMENT,"^F^<FIGHT^><S-NAME> CLEAVE(S) INTO <T-NAME>!!^</FIGHT^>^?");
+			CMLib.color().fixSourceFightColor(msg);
 			if(mob.location().okMessage(mob,msg))
 			{
-                mob.location().send(mob,msg);
+				mob.location().send(mob,msg);
 				CMLib.combat().postAttack(mob,nextTarget,w);
 				helpProficiency(mob);
 			}

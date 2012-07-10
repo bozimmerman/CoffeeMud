@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -40,32 +40,32 @@ public class Spell_Flagportation extends Spell
 	protected int canTargetCode(){return 0;}
 	public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_CONJURATION;}
 	public long flags(){return Ability.FLAG_TRANSPORTING|Ability.FLAG_CLANMAGIC;}
-    public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
+	public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
 
-    private boolean isBadRoom(final Room room, final MOB mob, final Room newRoom)
-    {
-    	return (room==null)
-        ||(room==newRoom)
-        ||(room.getArea()==newRoom.getArea())
-        ||(room==mob.location())
-        ||(!CMLib.flags().canAccess(mob,room))
-        ||(CMLib.law().getLandTitle(room)!=null);
-    }
-    
+	private boolean isBadRoom(final Room room, final MOB mob, final Room newRoom)
+	{
+		return (room==null)
+		||(room==newRoom)
+		||(room.getArea()==newRoom.getArea())
+		||(room==mob.location())
+		||(!CMLib.flags().canAccess(mob,room))
+		||(CMLib.law().getLandTitle(room)!=null);
+	}
+	
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 
-	    Clan C=mob.getClanID().length()>0?mob.getMyClan():null;
-	    if(C==null)
-	    {
-	        mob.tell("You must belong to a clan to use this spell.");
-	        return false;
-	    }
-	    if((!auto)&&(C.getAuthority(mob.getClanRole(), Clan.Function.ENCHANT)==Clan.Authority.CAN_NOT_DO))
-	    {
-	        mob.tell("You do not have priviledges to use this spell.");
-	        return false;
-	    }
+		Clan C=mob.getClanID().length()>0?mob.getMyClan():null;
+		if(C==null)
+		{
+			mob.tell("You must belong to a clan to use this spell.");
+			return false;
+		}
+		if((!auto)&&(C.getAuthority(mob.getClanRole(), Clan.Function.ENCHANT)==Clan.Authority.CAN_NOT_DO))
+		{
+			mob.tell("You do not have priviledges to use this spell.");
+			return false;
+		}
 		Vector candidates=new Vector();
 		Room R=null;
 		Item I=null;
@@ -76,21 +76,21 @@ public class Spell_Flagportation extends Spell
 				R=(Room)r.nextElement();
 				if(CMLib.flags().canAccess(mob,R))
 				{
-				    for(int i=0;i<R.numItems();i++)
-				    {
-				        I=R.getItem(i);
-				        if((I!=null)
-				        &&(I instanceof ClanItem)
-				        &&(((ClanItem)I).clanID().equals(C.clanID()))
-				        &&(((ClanItem)I).ciType()==ClanItem.CI_FLAG))
-				        {
+					for(int i=0;i<R.numItems();i++)
+					{
+						I=R.getItem(i);
+						if((I!=null)
+						&&(I instanceof ClanItem)
+						&&(((ClanItem)I).clanID().equals(C.clanID()))
+						&&(((ClanItem)I).ciType()==ClanItem.CI_FLAG))
+						{
 							candidates.addElement(R);
 							break;
-				        }
-				    }
+						}
+					}
 				}
 			}
-	    }catch(NoSuchElementException nse){}
+		}catch(NoSuchElementException nse){}
 		if(candidates.size()==0)
 		{
 			mob.tell("You don't have any flags to flagportate to!");

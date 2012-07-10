@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -38,9 +38,9 @@ public class Spell_ClanDonate extends Spell
 	public String ID() { return "Spell_ClanDonate"; }
 	public String name(){return "Clan Donate";}
 	protected int canTargetCode(){return Ability.CAN_ITEMS;}
-    public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
+	public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
 	public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_CONJURATION;}
-    public long flags(){return super.flags()|Ability.FLAG_CLANMAGIC;}
+	public long flags(){return super.flags()|Ability.FLAG_CLANMAGIC;}
 	protected int overrideMana(){return 5;}
 	protected boolean disregardsArmorCheck(MOB mob){return true;}
 
@@ -84,35 +84,35 @@ public class Spell_ClanDonate extends Spell
 			if(mob.location().okMessage(mob,msg))
 			{
 				MOB victim=mob.getVictim();
-                boolean proceed=(target instanceof Coins);
-                if(!proceed){
-                    Room prevRoom=mob.location();
-                    clanDonateRoom.bringMobHere(mob,false);
-                    proceed=CMLib.commands().postDrop(mob,target,true,false);
-                    prevRoom.bringMobHere(mob,false);
-                }
-                if(proceed)
-                {
-    				mob.location().send(mob,msg);
-                    msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_OK_VISUAL,"<T-NAME> appears!");
-                    if(clanDonateRoom.okMessage(mob,msg))
-                    {
-                        mob.location().show(mob,target,this,CMMsg.MSG_OK_VISUAL,"<T-NAME> vanishes!");
-                        if(!clanDonateRoom.isContent(target))
-                            clanDonateRoom.moveItemTo(target,ItemPossessor.Expire.Player_Drop);
-                        if(!(target.amDestroyed()))
-                        {
-                            if(target instanceof Coins)
-                                ((Coins)target).putCoinsBack();
-                            else
-                            if(target instanceof RawMaterial)
-                                ((RawMaterial)target).rebundle();
-                        }
-                        clanDonateRoom.recoverRoomStats();
-                        clanDonateRoom.sendOthers(mob,msg);
-                    }
-                }
-                mob.setVictim(victim);
+				boolean proceed=(target instanceof Coins);
+				if(!proceed){
+					Room prevRoom=mob.location();
+					clanDonateRoom.bringMobHere(mob,false);
+					proceed=CMLib.commands().postDrop(mob,target,true,false);
+					prevRoom.bringMobHere(mob,false);
+				}
+				if(proceed)
+				{
+					mob.location().send(mob,msg);
+					msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_OK_VISUAL,"<T-NAME> appears!");
+					if(clanDonateRoom.okMessage(mob,msg))
+					{
+						mob.location().show(mob,target,this,CMMsg.MSG_OK_VISUAL,"<T-NAME> vanishes!");
+						if(!clanDonateRoom.isContent(target))
+							clanDonateRoom.moveItemTo(target,ItemPossessor.Expire.Player_Drop);
+						if(!(target.amDestroyed()))
+						{
+							if(target instanceof Coins)
+								((Coins)target).putCoinsBack();
+							else
+							if(target instanceof RawMaterial)
+								((RawMaterial)target).rebundle();
+						}
+						clanDonateRoom.recoverRoomStats();
+						clanDonateRoom.sendOthers(mob,msg);
+					}
+				}
+				mob.setVictim(victim);
 			}
 
 		}

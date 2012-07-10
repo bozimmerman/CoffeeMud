@@ -24,7 +24,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *        http://www.apache.org/licenses/LICENSE-2.0
+ *  	  http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -43,28 +43,28 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
  * @version 1.0
  */
 public class I3Server {
-    static private ServerThread thread = null;
-    static private boolean started = false;
+	static private ServerThread thread = null;
+	static private boolean started = false;
 
-    /**
-     * Creates a server thread if one has not yet been
-     * created.
-     * @exception DatabaseException thrown if the database is unreachable
-     * for some reason
-     * @exception ServerSecurityException thrown if an attempt to call start()
-     * is made once the server is running.
-     * @param mud the name of the mud being started
-     */
-    static public void start(String mud, 
+	/**
+	 * Creates a server thread if one has not yet been
+	 * created.
+	 * @exception DatabaseException thrown if the database is unreachable
+	 * for some reason
+	 * @exception ServerSecurityException thrown if an attempt to call start()
+	 * is made once the server is running.
+	 * @param mud the name of the mud being started
+	 */
+	static public void start(String mud, 
 							 int port,
 							 ImudServices imud) 
 	{
 		try
 		{
 			if( started ) {
-			    throw new ServerSecurityException("Illegal attempt to start Server.");
+				throw new ServerSecurityException("Illegal attempt to start Server.");
 			}
-		    started = true;
+			started = true;
 			thread = new ServerThread(mud, port, imud);
 			thread.setDaemon(true);
 			Log.sysOut("I3Server", "InterMud3 Core (c)1996 George Reese");
@@ -75,32 +75,32 @@ public class I3Server {
 			thread=null;
 			Log.errOut("I3Server",e);
 		}
-    }
+	}
 
-    /**
-     * Returns a distinct copy of the class identified.
-     * @exception ObjectLoadException thrown when a problem occurs loading the object
-     * @param file the name of the class being loaded
-     */
-    static public ServerObject copyObject(String file) throws ObjectLoadException {
-        return thread.copyObject(file);
-    }
+	/**
+	 * Returns a distinct copy of the class identified.
+	 * @exception ObjectLoadException thrown when a problem occurs loading the object
+	 * @param file the name of the class being loaded
+	 */
+	static public ServerObject copyObject(String file) throws ObjectLoadException {
+		return thread.copyObject(file);
+	}
 
-    static public ServerObject findObject(String file) throws ObjectLoadException {
-        return thread.findObject(file);
-    }
+	static public ServerObject findObject(String file) throws ObjectLoadException {
+		return thread.findObject(file);
+	}
 
-    static public ServerUser[] getInteractives() {
-        return thread.getInteractives();
-    }
+	static public ServerUser[] getInteractives() {
+		return thread.getInteractives();
+	}
 
-    static public String getMudName() {
-        return thread.getMudName();
-    }
+	static public String getMudName() {
+		return thread.getMudName();
+	}
 
-    static public int getPort() {
-        return thread.getPort();
-    }
+	static public int getPort() {
+		return thread.getPort();
+	}
 
 	static public void shutdown()
 	{
@@ -116,10 +116,10 @@ public class I3Server {
 		}catch(Exception e){}
 	}
 	
-    static public void removeObject(ServerObject ob) {
-        if( !ob.getDestructed() ) {
-            return;
-        }
-        thread.removeObject(ob);
-    }
+	static public void removeObject(ServerObject ob) {
+		if( !ob.getDestructed() ) {
+			return;
+		}
+		thread.removeObject(ob);
+	}
 }

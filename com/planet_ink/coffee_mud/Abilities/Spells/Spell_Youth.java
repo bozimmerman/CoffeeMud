@@ -25,7 +25,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -40,7 +40,7 @@ public class Spell_Youth extends Spell
 	public String name(){return "Youth";}
 	public int overrideMana(){return Integer.MAX_VALUE;}
 	public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_TRANSMUTATION;}
-    public int abstractQuality(){ return Ability.QUALITY_OK_OTHERS;}
+	public int abstractQuality(){ return Ability.QUALITY_OK_OTHERS;}
 
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
@@ -63,10 +63,10 @@ public class Spell_Youth extends Spell
 			{
 				mob.location().send(mob,msg);
 				if((target.baseCharStats().getStat(CharStats.STAT_AGE)<=0)
-			        ||(target.baseCharStats().ageCategory()<=Race.AGE_YOUNGADULT))
+					||(target.baseCharStats().ageCategory()<=Race.AGE_YOUNGADULT))
 				{
-				    mob.tell(mob,target,null,"The magic appears to have had no effect upon <T-NAME>.");
-				    success=false;
+					mob.tell(mob,target,null,"The magic appears to have had no effect upon <T-NAME>.");
+					success=false;
 				}
 				else
 				{
@@ -80,22 +80,22 @@ public class Spell_Youth extends Spell
 						age=age-chart[Race.AGE_ANCIENT];
 						int num=(diff>0)?(int)Math.abs(Math.floor(CMath.div(age,diff))):0;
 						if(num<=0)
-						    age=(int)Math.round(CMath.div(chart[cat]+chart[cat-1],2.0));
+							age=(int)Math.round(CMath.div(chart[cat]+chart[cat-1],2.0));
 						else
-						    age=target.baseCharStats().getStat(CharStats.STAT_AGE)-diff;
+							age=target.baseCharStats().getStat(CharStats.STAT_AGE)-diff;
 					}
 					else
-					    age=(int)Math.round(CMath.div(chart[cat]+chart[cat-1],2.0));
+						age=(int)Math.round(CMath.div(chart[cat]+chart[cat-1],2.0));
 					if(target.playerStats()!=null)
 					{
-					    TimeClock C=CMLib.time().globalClock();
-					    target.playerStats().getBirthday()[2]=C.getYear()-age;
-					    int day=C.getDayOfMonth();
-					    int month=C.getMonth();
-					    int bday=mob.playerStats().getBirthday()[0];
-					    int bmonth=mob.playerStats().getBirthday()[1];
-					    if((month<bmonth)||((month==bmonth)&&(day<bday)))
-					        age--;
+						TimeClock C=CMLib.time().globalClock();
+						target.playerStats().getBirthday()[2]=C.getYear()-age;
+						int day=C.getDayOfMonth();
+						int month=C.getMonth();
+						int bday=mob.playerStats().getBirthday()[0];
+						int bmonth=mob.playerStats().getBirthday()[1];
+						if((month<bmonth)||((month==bmonth)&&(day<bday)))
+							age--;
 						target.baseCharStats().setStat(CharStats.STAT_AGE,age);
 					}
 					else

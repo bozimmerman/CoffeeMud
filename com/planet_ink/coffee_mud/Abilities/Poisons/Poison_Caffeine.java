@@ -23,7 +23,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -50,28 +50,28 @@ public class Poison_Caffeine extends Poison {
 
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{
-	    affectableStats.setStat(CharStats.STAT_DEXTERITY,affectableStats.getStat(CharStats.STAT_DEXTERITY)+1);
+		affectableStats.setStat(CharStats.STAT_DEXTERITY,affectableStats.getStat(CharStats.STAT_DEXTERITY)+1);
 	}
 
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
-	    super.affectPhyStats(affected,affectableStats);
+		super.affectPhyStats(affected,affectableStats);
 		affectableStats.setSpeed(affectableStats.speed() + 0.25);
-	    int oldDisposition=affectableStats.disposition();
-	    oldDisposition=oldDisposition&(~(PhyStats.IS_SLEEPING|PhyStats.IS_SNEAKING|PhyStats.IS_SITTING));
-	    affectableStats.setDisposition(oldDisposition);
+		int oldDisposition=affectableStats.disposition();
+		oldDisposition=oldDisposition&(~(PhyStats.IS_SLEEPING|PhyStats.IS_SNEAKING|PhyStats.IS_SITTING));
+		affectableStats.setDisposition(oldDisposition);
 	}
 
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
-	    if((affected==null)||(!(affected instanceof MOB)))
-	            return true;
+		if((affected==null)||(!(affected instanceof MOB)))
+				return true;
 
-	    MOB mob=(MOB)affected;
-	    if(msg.amISource(mob)&&((msg.sourceMinor()==CMMsg.TYP_SIT)||(msg.sourceMinor()==CMMsg.TYP_SLEEP))) {
-	        mob.tell("You're too caffeinated for that!");
-	        return false;
-	    }
-	    return true;
+		MOB mob=(MOB)affected;
+		if(msg.amISource(mob)&&((msg.sourceMinor()==CMMsg.TYP_SIT)||(msg.sourceMinor()==CMMsg.TYP_SLEEP))) {
+			mob.tell("You're too caffeinated for that!");
+			return false;
+		}
+		return true;
 	}
 }

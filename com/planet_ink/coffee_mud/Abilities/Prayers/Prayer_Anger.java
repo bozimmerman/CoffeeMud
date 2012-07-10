@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -44,28 +44,28 @@ public class Prayer_Anger extends Prayer
 
 	private boolean anyoneIsFighting(Room R)
 	{
-	    if(R==null) return false;
-        for(int i=0;i<R.numInhabitants();i++)
-        {
-            MOB inhab=R.fetchInhabitant(i);
-            if((inhab!=null)&&(inhab.isInCombat()))
-                return true;
-        }
-        return false;
+		if(R==null) return false;
+		for(int i=0;i<R.numInhabitants();i++)
+		{
+			MOB inhab=R.fetchInhabitant(i);
+			if((inhab!=null)&&(inhab.isInCombat()))
+				return true;
+		}
+		return false;
 	}
 	
-    public int castingQuality(MOB mob, Physical target)
-    {
-        if(mob!=null)
-        {
-            if(!anyoneIsFighting(mob.location()))
-                return Ability.QUALITY_INDIFFERENT;
-            if(mob.location().numInhabitants()>3)
-                return Ability.QUALITY_INDIFFERENT;
-        }
-        return super.castingQuality(mob,target);
-    }
-    
+	public int castingQuality(MOB mob, Physical target)
+	{
+		if(mob!=null)
+		{
+			if(!anyoneIsFighting(mob.location()))
+				return Ability.QUALITY_INDIFFERENT;
+			if(mob.location().numInhabitants()>3)
+				return Ability.QUALITY_INDIFFERENT;
+		}
+		return super.castingQuality(mob,target);
+	}
+	
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))

@@ -22,7 +22,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -32,8 +32,8 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 */
 public class GrinderRoom
 {
-    public int z=0;
-    public int[] xy=null;
+	public int z=0;
+	public int[] xy=null;
 	public String roomID="";
 	private Room roomCache=null;
 	public Room room()
@@ -48,7 +48,7 @@ public class GrinderRoom
 		return roomCache;
 	}
 	public boolean isRoomGood(){return ((roomCache!=null)&&(!roomCache.amDestroyed()));}
-    public GrinderDir[] doors=new GrinderDir[Directions.NUM_DIRECTIONS()];
+	public GrinderDir[] doors=new GrinderDir[Directions.NUM_DIRECTIONS()];
 	public GrinderRoom(String newRoomID)
 	{
 		roomCache=null;
@@ -57,19 +57,19 @@ public class GrinderRoom
 	
 	public void fixExits(Room R)
 	{
-        for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
-        {
-            GrinderDir D=new GrinderDir();
+		for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
+		{
+			GrinderDir D=new GrinderDir();
 			Room R2=R.rawDoors()[d];
-            if(R2!=null)
-            {
-                D.room=R2.roomID();
+			if(R2!=null)
+			{
+				D.room=R2.roomID();
 				Exit E2=R.getRawExit(d);
-                if(E2!=null)
+				if(E2!=null)
 					D.exit=E2;
-            }
-            doors[d]=D;
-        }
+			}
+			doors[d]=D;
+		}
 	}
 	public GrinderRoom(Room R)
 	{

@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -47,9 +47,9 @@ public class Falling extends StdAbility
 	int damageToTake=0;
 	protected int fallTickDown=1;
 
-    protected boolean reversed(){return proficiency()==100;}
+	protected boolean reversed(){return proficiency()==100;}
 
-    protected boolean isWaterSurface(Room R)
+	protected boolean isWaterSurface(Room R)
 	{
 		if(R==null) return false;
 		if((R.domainType()==Room.DOMAIN_INDOORS_WATERSURFACE)
@@ -57,7 +57,7 @@ public class Falling extends StdAbility
 			return true;
 		return false;
 	}
-    protected boolean isUnderWater(Room R)
+	protected boolean isUnderWater(Room R)
 	{
 		if(R==null) return false;
 		if((R.domainType()==Room.DOMAIN_INDOORS_UNDERWATER)
@@ -66,7 +66,7 @@ public class Falling extends StdAbility
 		return false;
 	}
 
-    protected boolean isAirRoom(Room R)
+	protected boolean isAirRoom(Room R)
 	{
 		if(R==null) return false;
 		if((R.domainType()==Room.DOMAIN_INDOORS_AIR)
@@ -75,7 +75,7 @@ public class Falling extends StdAbility
 		return false;
 	}
 
-    protected boolean canFallFrom(Room fromHere, int direction)
+	protected boolean canFallFrom(Room fromHere, int direction)
 	{
 		if((fromHere==null)||(direction<0)||(direction>=Directions.NUM_DIRECTIONS()))
 			return false;
@@ -90,7 +90,7 @@ public class Falling extends StdAbility
 		return true;
 	}
 
-    protected boolean stopFalling(MOB mob)
+	protected boolean stopFalling(MOB mob)
 	{
 		final Room R=mob.location();
 		if(reversed())
@@ -188,7 +188,7 @@ public class Falling extends StdAbility
 			if((room==null)
 			||((room!=null)&&(!room.isContent(item)))
 			||(!CMLib.flags().isGettable(item))
-            ||(item.container()!=null)
+			||(item.container()!=null)
 			||(CMLib.flags().isInFlight(item.ultimateContainer(null)))
 			||(room.getRoomInDir(direction)==null))
 			{
@@ -205,7 +205,7 @@ public class Falling extends StdAbility
 			if(canFallFrom(room,direction))
 			{
 				room.show(invoker,null,item,CMMsg.MSG_OK_ACTION,"<O-NAME> falls "+addStr+".");
-                nextRoom.moveItemTo(item,ItemPossessor.Expire.Player_Drop);
+				nextRoom.moveItemTo(item,ItemPossessor.Expire.Player_Drop);
 				room=nextRoom;
 				nextRoom.show(invoker,null,item,CMMsg.MSG_OK_ACTION,"<O-NAME> falls in from "+(reversed()?"below":"above")+".");
 				return true;

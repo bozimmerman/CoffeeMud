@@ -25,7 +25,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -35,17 +35,17 @@ import java.util.*;
 */
 public interface HelpLibrary extends CMLibrary
 {
-    public List<String> getTopics(boolean archonHelp, boolean standardHelp);
-    public String getActualUsage(Ability A, int which, MOB forMOB);
-    public String fixHelp(String tag, String str, MOB forMOB);
-    public StringBuilder getHelpText(String helpStr, MOB forMOB, boolean favorAHelp);
-    public StringBuilder getHelpText(String helpStr, MOB forMOB, boolean favorAHelp, boolean noFix);
-    public StringBuilder getHelpText(String helpStr, Properties rHelpFile, MOB forMOB);
-    public StringBuilder getHelpList(String helpStr,  Properties rHelpFile1, Properties rHelpFile2, MOB forMOB);
+	public List<String> getTopics(boolean archonHelp, boolean standardHelp);
+	public String getActualUsage(Ability A, int which, MOB forMOB);
+	public String fixHelp(String tag, String str, MOB forMOB);
+	public StringBuilder getHelpText(String helpStr, MOB forMOB, boolean favorAHelp);
+	public StringBuilder getHelpText(String helpStr, MOB forMOB, boolean favorAHelp, boolean noFix);
+	public StringBuilder getHelpText(String helpStr, Properties rHelpFile, MOB forMOB);
+	public StringBuilder getHelpList(String helpStr,  Properties rHelpFile1, Properties rHelpFile2, MOB forMOB);
 	public StringBuilder getHelpText(String helpStr, Properties rHelpFile, MOB forMOB, boolean noFix);
-    public Properties getArcHelpFile();
-    public Properties getHelpFile();
-    public void unloadHelpFile(MOB mob);
-    public boolean isPlayerSkill(String helpStr);
-    public void addHelpEntry(String ID, String text, boolean archon);
+	public Properties getArcHelpFile();
+	public Properties getHelpFile();
+	public void unloadHelpFile(MOB mob);
+	public boolean isPlayerSkill(String helpStr);
+	public void addHelpEntry(String ID, String text, boolean archon);
 }

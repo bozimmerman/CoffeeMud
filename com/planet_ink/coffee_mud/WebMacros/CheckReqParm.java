@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -46,22 +46,22 @@ public class CheckReqParm extends StdWebMacro
 			String equals=(String)parms.get(key);
 			boolean not=false;
 			boolean thisCondition=true;
-            boolean startswith=false;
-            boolean inside=false;
-            boolean endswith=false;
+			boolean startswith=false;
+			boolean inside=false;
+			boolean endswith=false;
 			if(key.startsWith("||")) key=key.substring(2);
-            if(key.startsWith("<")){
-                startswith=true;
-                key=key.substring(1);
-            }
-            if(key.startsWith(">")){
-                endswith=true;
-                key=key.substring(1);
-            }
-            if(key.startsWith("*")){
-                inside=true;
-                key=key.substring(1);
-            }
+			if(key.startsWith("<")){
+				startswith=true;
+				key=key.substring(1);
+			}
+			if(key.startsWith(">")){
+				endswith=true;
+				key=key.substring(1);
+			}
+			if(key.startsWith("*")){
+				inside=true;
+				key=key.substring(1);
+			}
 			
 			if(key.startsWith("!"))
 			{
@@ -76,15 +76,15 @@ public class CheckReqParm extends StdWebMacro
 				else
 				if(check==null) 
 					thisCondition=true;
-                else
-                if(startswith)
-                    thisCondition=!check.startsWith(equals);
-                else
-                if(endswith)
-                    thisCondition=!check.endsWith(equals);
-                else
-                if(inside)
-                    thisCondition=!(check.indexOf(equals)>=0);
+				else
+				if(startswith)
+					thisCondition=!check.startsWith(equals);
+				else
+				if(endswith)
+					thisCondition=!check.endsWith(equals);
+				else
+				if(inside)
+					thisCondition=!(check.indexOf(equals)>=0);
 				else
 				if(!check.equalsIgnoreCase(equals))
 					thisCondition=true;
@@ -99,15 +99,15 @@ public class CheckReqParm extends StdWebMacro
 				if(check==null) 
 					thisCondition=false;
 				else
-                if(startswith)
-                    thisCondition=check.startsWith(equals);
-                else
-                if(endswith)
-                    thisCondition=check.endsWith(equals);
-                else
-                if(inside)
-                    thisCondition=(check.indexOf(equals)>=0);
-                else
+				if(startswith)
+					thisCondition=check.startsWith(equals);
+				else
+				if(endswith)
+					thisCondition=check.endsWith(equals);
+				else
+				if(inside)
+					thisCondition=(check.indexOf(equals)>=0);
+				else
 				if(!check.equalsIgnoreCase(equals))
 					thisCondition=false;
 				else

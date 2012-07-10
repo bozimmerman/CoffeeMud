@@ -21,7 +21,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -52,22 +52,22 @@ public interface CharClass extends Tickable, StatsAffecting, MsgListener, CMObje
 	 * @see CharClass#name()
 	 * @see CharClass#nameSet()
 	 */
-    public String name(int classLevel);
+	public String name(int classLevel);
 
 	/**
 	 * Returns all of the displayable names of this class.  Usually defers to name()
 	 * @see CharClass#name()
 	 * @see CharClass#name(int)
 	 */
-    public String[] nameSet();
+	public String[] nameSet();
 
-    /**
-     * Returns the base-class of this class.  Typically only important in multi-classing
-     * systems that restrict class changing to those classes part of the same base class.
-     * True multi-classing systems don't need to worry about this value.  Can be the same
-     * as the ID() method.
-     * @return the base-class of this class
-     */
+	/**
+	 * Returns the base-class of this class.  Typically only important in multi-classing
+	 * systems that restrict class changing to those classes part of the same base class.
+	 * True multi-classing systems don't need to worry about this value.  Can be the same
+	 * as the ID() method.
+	 * @return the base-class of this class
+	 */
 	public String baseClass();
 
 	/**
@@ -122,40 +122,40 @@ public interface CharClass extends Tickable, StatsAffecting, MsgListener, CMObje
 	 * Returns whether this class is fully defined using the setParms
 	 * method, as opposed to being defined by its Java code.
 	 * @see CharClass#classParms()
-     * @see CharClass#makeGenCharClass()
+	 * @see CharClass#makeGenCharClass()
 	 * @see CharClass#setClassParms(String)
 	 * @return whether this class is defined fully by parameters
 	 */
 	public boolean isGeneric();
 
-    /**
-     * Converts this class into a generic one, if it is not already.
-     * If it is generic, this method returns itself.  Otherwise, the
-     * standard char class is converted to a generic one and returned.
-     * @see CharClass#isGeneric()
-     * @return a generic version of this class.
-     */
-    public CharClass makeGenCharClass();
+	/**
+	 * Converts this class into a generic one, if it is not already.
+	 * If it is generic, this method returns itself.  Otherwise, the
+	 * standard char class is converted to a generic one and returned.
+	 * @see CharClass#isGeneric()
+	 * @return a generic version of this class.
+	 */
+	public CharClass makeGenCharClass();
 	/**
 	 * Returns a Vector of security flag strings granted to all mobs/players
 	 * who are this class, and the given class level or lower.
 	 * @param classLevel the class level of the mob
 	 * @return a vector of security flag strings
 	 */
-    public List<String> getSecurityGroups(int classLevel);
+	public List<String> getSecurityGroups(int classLevel);
 
-    /**
-     * This method should be called whenever a mob has this class added to
-     * their charStats list. Its purpose is to outfit the mob with any
-     * necessary abilities, or perform other necessary changes to the mob
-     * to reflect the class addition or change.  A character class is
-     * considered borrowed if its existence is derived from something else,
-     * or its skills/abilities should not be saved as a permanent feature
-     * of the mob.
-     * @param mob the mob being outfitted with this class
-     * @param isBorrowedClass whether the charclasses skills are borrowed(true) or permanent
-     * @param verifyOnly send true if no skills or changes are to be made
-     */
+	/**
+	 * This method should be called whenever a mob has this class added to
+	 * their charStats list. Its purpose is to outfit the mob with any
+	 * necessary abilities, or perform other necessary changes to the mob
+	 * to reflect the class addition or change.  A character class is
+	 * considered borrowed if its existence is derived from something else,
+	 * or its skills/abilities should not be saved as a permanent feature
+	 * of the mob.
+	 * @param mob the mob being outfitted with this class
+	 * @param isBorrowedClass whether the charclasses skills are borrowed(true) or permanent
+	 * @param verifyOnly send true if no skills or changes are to be made
+	 */
 	public void startCharacter(MOB mob, boolean isBorrowedClass, boolean verifyOnly);
 
 	/**
@@ -176,7 +176,7 @@ public interface CharClass extends Tickable, StatsAffecting, MsgListener, CMObje
 	 * @param followers the killers followers
 	 * @return whether the mob shares in the exp gains
 	 */
-    public boolean isValidClassBeneficiary(MOB killer, MOB killed, MOB mob, Set<MOB> followers);
+	public boolean isValidClassBeneficiary(MOB killer, MOB killed, MOB mob, Set<MOB> followers);
 
 	/**
 	 * Returns whether the given mob should count in the division of experience gained by the killer
@@ -188,16 +188,16 @@ public interface CharClass extends Tickable, StatsAffecting, MsgListener, CMObje
 	 * @param followers the killers followers
 	 * @return whether the mob shares in the exp gains
 	 */
-    public boolean isValidClassDivider(MOB killer, MOB killed, MOB mob, Set<MOB> followers);
-    
-    /**
-     * Typically called when a mob gains a level in this class, to allow the class to 
-     * assign any new skills.  Can also be called just to populate a mob with class skills,
-     * so it should also confirm any lower level skills also.
-     * @see com.planet_ink.coffee_mud.MOBS.interfaces.MOB#addAbility(Ability)
-     * @param mob the mob to give abilities to.
-     * @param isBorrowedClass whether the skills are savable (false) or temporary (true)
-     */
+	public boolean isValidClassDivider(MOB killer, MOB killed, MOB mob, Set<MOB> followers);
+	
+	/**
+	 * Typically called when a mob gains a level in this class, to allow the class to 
+	 * assign any new skills.  Can also be called just to populate a mob with class skills,
+	 * so it should also confirm any lower level skills also.
+	 * @see com.planet_ink.coffee_mud.MOBS.interfaces.MOB#addAbility(Ability)
+	 * @param mob the mob to give abilities to.
+	 * @param isBorrowedClass whether the skills are savable (false) or temporary (true)
+	 */
 	public void grantAbilities(MOB mob, boolean isBorrowedClass);
 	
 	/**
@@ -426,15 +426,15 @@ public interface CharClass extends Tickable, StatsAffecting, MsgListener, CMObje
 	 */
 	public String getMaxStatDesc();
 	
-    /**
-     * Returns the highest class level that can be achieved
-     * by a player who has this class.  Once this level is
-     * reached, the class behaves as it is were levelless.
-     * Default is -1, meaning the cap does not exist.
-     * @return highest class level for this class;
-     */
-    public int getLevelCap();
-    
+	/**
+	 * Returns the highest class level that can be achieved
+	 * by a player who has this class.  Once this level is
+	 * reached, the class behaves as it is were levelless.
+	 * Default is -1, meaning the cap does not exist.
+	 * @return highest class level for this class;
+	 */
+	public int getLevelCap();
+	
 	/**
 	 * Returns a bonus or negative adjustments to the base
 	 * maximum for the CharStats.STAT_* base statistics.
@@ -600,6 +600,6 @@ public interface CharClass extends Tickable, StatsAffecting, MsgListener, CMObje
 	public final static int GENFLAG_NOLEVELS=2;
 	/** for character classes that define themselves using getParms, this can designate expless bitmaps */
 	public final static int GENFLAG_NOEXP=4;
-    /** constant string list naming each of the GENFLAG_* constants in the order of their value */
-    public final static String[] GENFLAG_DESCS={"RACELESS","LEVELLESS","EXPLESS"};
+	/** constant string list naming each of the GENFLAG_* constants in the order of their value */
+	public final static String[] GENFLAG_DESCS={"RACELESS","LEVELLESS","EXPLESS"};
 }

@@ -23,7 +23,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -48,28 +48,28 @@ public class Skill_Recall extends StdSkill
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-        boolean group=false;//"GROUP".startsWith(CMParms.combine(commands,0).toUpperCase());
+		boolean group=false;//"GROUP".startsWith(CMParms.combine(commands,0).toUpperCase());
 		boolean success=(!mob.isInCombat())||proficiencyCheck(mob,getXLEVELLevel(mob)*10,auto);
 		if(success)
 		{
 			Room recalledRoom=mob.location();
 			if(recalledRoom == null) return false;
 			Room recallRoom=CMLib.map().getStartRoom(mob);
-            if((recallRoom==null)&&(!mob.isMonster()))
-            {
-                mob.setStartRoom(CMLib.login().getDefaultStartRoom(mob));
-                recallRoom=CMLib.map().getStartRoom(mob);
-            }
-            
-            if(recallRoom == null)
-            {
-            	mob.tell("You've nowhere to recall TO!");
-            	return false;
-            }
+			if((recallRoom==null)&&(!mob.isMonster()))
+			{
+				mob.setStartRoom(CMLib.login().getDefaultStartRoom(mob));
+				recallRoom=CMLib.map().getStartRoom(mob);
+			}
+			
+			if(recallRoom == null)
+			{
+				mob.tell("You've nowhere to recall TO!");
+				return false;
+			}
 			CMMsg msg=CMClass.getMsg(mob,recalledRoom,this,CMMsg.MSG_RECALL,CMMsg.MSG_LEAVE,CMMsg.MSG_RECALL,auto?"<S-NAME> disappear(s) into the Java Plain!":"<S-NAME> recall(s) body and spirit to the Java Plain!");
 			CMMsg msg2=CMClass.getMsg(mob,recallRoom,this,CMMsg.MASK_MOVE|CMMsg.TYP_RECALL,CMMsg.MASK_MOVE|CMMsg.MSG_ENTER,CMMsg.MASK_MOVE|CMMsg.TYP_RECALL,null);
 			if(((recalledRoom.okMessage(mob,msg))&&(recallRoom.okMessage(mob,msg2)))
-            ||CMSecurity.isAllowed(mob,recalledRoom,"GOTO"))
+			||CMSecurity.isAllowed(mob,recalledRoom,"GOTO"))
 			{
 				if(mob.isInCombat())
 					CMLib.commands().postFlee(mob,"NOWHERE");
@@ -82,29 +82,29 @@ public class Skill_Recall extends StdSkill
 					MOB follower=mob.fetchFollower(f);
 					
 					if((follower!=null)
-                    &&(follower.isMonster())
-                    &&(!follower.isPossessing())
-                    &&(CMLib.flags().isInTheGame(follower,true))
-                    &&(!CMath.bset(follower.getBitmap(),MOB.ATT_AUTOGUARD)))
-                    {
-                        Room fRecalledRoom=recalledRoom;
-                        if(group)fRecalledRoom=follower.location();
-                        msg=CMClass.getMsg(follower,fRecalledRoom,this,CMMsg.MSG_RECALL,CMMsg.MSG_LEAVE,CMMsg.MSG_RECALL,auto?"<S-NAME> disappear(s) into the Java Plain!":"<S-NAME> <S-IS-ARE> sucked into the vortex created by "+mob.name()+"s recall.");
-    					if(((follower.location()==fRecalledRoom))
-    					&&(fRecalledRoom.isInhabitant(follower))
-    					&&(fRecalledRoom.okMessage(follower,msg)||CMSecurity.isAllowed(mob,recalledRoom,"GOTO")))
-    					{
-    						msg2=CMClass.getMsg(follower,fRecalledRoom,this,CMMsg.MASK_MOVE|CMMsg.TYP_RECALL,CMMsg.MASK_MOVE|CMMsg.MSG_ENTER,CMMsg.MASK_MOVE|CMMsg.TYP_RECALL,null);
-    						if(recallRoom.okMessage(follower,msg2)||CMSecurity.isAllowed(mob,recalledRoom,"GOTO"))
-    						{
-    							if(follower.isInCombat())
-    								CMLib.commands().postFlee(follower,("NOWHERE"));
-    							recallRoom.send(follower,msg2);
-    							if(fRecalledRoom.isInhabitant(follower))
-    								recallRoom.bringMobHere(follower,false);
-    						}
-    					}
-                    }
+					&&(follower.isMonster())
+					&&(!follower.isPossessing())
+					&&(CMLib.flags().isInTheGame(follower,true))
+					&&(!CMath.bset(follower.getBitmap(),MOB.ATT_AUTOGUARD)))
+					{
+						Room fRecalledRoom=recalledRoom;
+						if(group)fRecalledRoom=follower.location();
+						msg=CMClass.getMsg(follower,fRecalledRoom,this,CMMsg.MSG_RECALL,CMMsg.MSG_LEAVE,CMMsg.MSG_RECALL,auto?"<S-NAME> disappear(s) into the Java Plain!":"<S-NAME> <S-IS-ARE> sucked into the vortex created by "+mob.name()+"s recall.");
+						if(((follower.location()==fRecalledRoom))
+						&&(fRecalledRoom.isInhabitant(follower))
+						&&(fRecalledRoom.okMessage(follower,msg)||CMSecurity.isAllowed(mob,recalledRoom,"GOTO")))
+						{
+							msg2=CMClass.getMsg(follower,fRecalledRoom,this,CMMsg.MASK_MOVE|CMMsg.TYP_RECALL,CMMsg.MASK_MOVE|CMMsg.MSG_ENTER,CMMsg.MASK_MOVE|CMMsg.TYP_RECALL,null);
+							if(recallRoom.okMessage(follower,msg2)||CMSecurity.isAllowed(mob,recalledRoom,"GOTO"))
+							{
+								if(follower.isInCombat())
+									CMLib.commands().postFlee(follower,("NOWHERE"));
+								recallRoom.send(follower,msg2);
+								if(fRecalledRoom.isInhabitant(follower))
+									recallRoom.bringMobHere(follower,false);
+							}
+						}
+					}
 				}
 			}
 		}

@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -36,8 +36,8 @@ public class AccountOnline extends StdWebMacro
 {
 	public String name()	{return this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);}
 
-    public static final int MAX_IMAGE_SIZE=50*1024;
-    
+	public static final int MAX_IMAGE_SIZE=50*1024;
+	
 	public String runMacro(ExternalHTTPRequests httpReq, String parm)
 	{
 		if(!CMProps.getBoolVar(CMProps.SYSTEMB_MUDSTARTED))
@@ -61,45 +61,45 @@ public class AccountOnline extends StdWebMacro
 				return Boolean.toString(onlineM != null);
 			else 
 			{
-                String login=Authenticate.getLogin(httpReq);
-                if(Authenticate.authenticated(httpReq,login,Authenticate.getPassword(httpReq)))
-                {
-                	if(A==null)
-	        			A = CMLib.players().getLoadAccount(last);
-        			if(A==null) return "false";
-                    boolean canBan=false;
-                    boolean canBoot=false;
-                    
-                    MOB authM=CMLib.players().getLoadPlayer(login);
-                    if((authM!=null)&&(authM.playerStats()!=null)&&(authM.playerStats().getAccount().accountName().equals(A.accountName())))
-                    {
-                        canBan=true;
-                        canBoot=true;
-                    }
-                    else
-                    if(authM!=null)
-                    {
-                        if(CMSecurity.isAllowedEverywhere(authM,"BAN"))
-                            canBan=true;
-                        if(CMSecurity.isAllowedEverywhere(authM,"BOOT"))
-                            canBoot=true;
-                    }
-                    
-                    if(canBan&&(parms.containsKey("BANBYNAME")))
-    					CMSecurity.ban(last);
-                    if(canBan&&(parms.containsKey("BANBYIP")))
-                        CMSecurity.ban(A.lastIP());
-                    if(canBan&&(parms.containsKey("BANBYEMAIL")))
-                        CMSecurity.ban(A.getEmail());
-    				if((onlineM!=null)&&(onlineM.session()!=null))
-    				{
-                        if(canBoot&&(parms.containsKey("BOOT")))
-    					{
-    						onlineM.session().stopSession(false,false,false);
-    						return "false";
-    					}
-    					return "true";
-    				}
+				String login=Authenticate.getLogin(httpReq);
+				if(Authenticate.authenticated(httpReq,login,Authenticate.getPassword(httpReq)))
+				{
+					if(A==null)
+						A = CMLib.players().getLoadAccount(last);
+					if(A==null) return "false";
+					boolean canBan=false;
+					boolean canBoot=false;
+					
+					MOB authM=CMLib.players().getLoadPlayer(login);
+					if((authM!=null)&&(authM.playerStats()!=null)&&(authM.playerStats().getAccount().accountName().equals(A.accountName())))
+					{
+						canBan=true;
+						canBoot=true;
+					}
+					else
+					if(authM!=null)
+					{
+						if(CMSecurity.isAllowedEverywhere(authM,"BAN"))
+							canBan=true;
+						if(CMSecurity.isAllowedEverywhere(authM,"BOOT"))
+							canBoot=true;
+					}
+					
+					if(canBan&&(parms.containsKey("BANBYNAME")))
+						CMSecurity.ban(last);
+					if(canBan&&(parms.containsKey("BANBYIP")))
+						CMSecurity.ban(A.lastIP());
+					if(canBan&&(parms.containsKey("BANBYEMAIL")))
+						CMSecurity.ban(A.getEmail());
+					if((onlineM!=null)&&(onlineM.session()!=null))
+					{
+						if(canBoot&&(parms.containsKey("BOOT")))
+						{
+							onlineM.session().stopSession(false,false,false);
+							return "false";
+						}
+						return "true";
+					}
 				}
 			}
 		}

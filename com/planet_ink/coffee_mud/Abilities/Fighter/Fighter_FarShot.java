@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -44,23 +44,23 @@ public class Fighter_FarShot extends FighterSkill
 	protected int canTargetCode(){return 0;}
 	public boolean isAutoInvoked(){return true;}
 	public boolean canBeUninvoked(){return false;}
-    public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_MARTIALLORE;}
+	public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_MARTIALLORE;}
 	public int checkDown=4;
 
 	protected List<Weapon> qualifiedWeapons=new Vector<Weapon>();
 
-    protected void cloneFix(Ability E)
-    {
-        super.cloneFix(E);
-        qualifiedWeapons=new XVector<Weapon>(((Fighter_FarShot)E).qualifiedWeapons);
-    }
+	protected void cloneFix(Ability E)
+	{
+		super.cloneFix(E);
+		qualifiedWeapons=new XVector<Weapon>(((Fighter_FarShot)E).qualifiedWeapons);
+	}
 
-    public void setMiscText(String newText)
-    {
-        super.setMiscText(newText);
-        qualifiedWeapons=new Vector();
-    }
-    
+	public void setMiscText(String newText)
+	{
+		super.setMiscText(newText);
+		qualifiedWeapons=new Vector();
+	}
+	
 	public void executeMsg(Environmental host, CMMsg msg)
 	{
 		super.executeMsg(host,msg);

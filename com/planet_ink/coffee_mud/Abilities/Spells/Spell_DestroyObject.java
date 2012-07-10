@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -39,7 +39,7 @@ public class Spell_DestroyObject extends Spell
 	public String name(){return "Destroy Object";}
 	protected int canTargetCode(){return CAN_ITEMS;}
 	public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_EVOCATION;}
-    public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
+	public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
 
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
@@ -47,26 +47,26 @@ public class Spell_DestroyObject extends Spell
 		if(target==null) return false;
 
 		List<DeadBody> DBs=CMLib.utensils().getDeadBodies(target);
-        for(int v=0;v<DBs.size();v++)
-        {
-            DeadBody DB=(DeadBody)DBs.get(v);
-    		if(DB.playerCorpse()
-    		&&(!DB.mobName().equals(mob.Name())))
-    		{
-    			mob.tell("You are not allowed to destroy a player corpse.");
-    			return false;
-    		}
-        }
+		for(int v=0;v<DBs.size();v++)
+		{
+			DeadBody DB=(DeadBody)DBs.get(v);
+			if(DB.playerCorpse()
+			&&(!DB.mobName().equals(mob.Name())))
+			{
+				mob.tell("You are not allowed to destroy a player corpse.");
+				return false;
+			}
+		}
 
 		if(!super.invoke(mob,commands, givenTarget, auto,asLevel))
 			return false;
 
 		boolean success=proficiencyCheck(mob,(((mob.phyStats().level()+(2*getXLEVELLevel(mob)))-target.phyStats().level())*25),auto);
 
-        if((target instanceof ClanItem)
-        &&(!((ClanItem)target).clanID().equals(mob.getClanID())))
-            success=false;
-        
+		if((target instanceof ClanItem)
+		&&(!((ClanItem)target).clanID().equals(mob.getClanID())))
+			success=false;
+		
 		if(success)
 		{
 			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),

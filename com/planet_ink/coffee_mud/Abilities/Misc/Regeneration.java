@@ -26,7 +26,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -39,7 +39,7 @@ import java.util.*;
 public class Regeneration extends StdAbility
 {
 	private static final int maxTickDown=3;
-    protected int regenTick=maxTickDown;
+	protected int regenTick=maxTickDown;
 
 	public String ID() { return "Regeneration"; }
 	public String name(){ return "Stat Regeneration";}
@@ -52,7 +52,7 @@ public class Regeneration extends StdAbility
 	public String[] triggerStrings(){return triggerStrings;}
 	public boolean canBeUninvoked(){return false;}
 	public int classificationCode(){return Ability.ACODE_SKILL;}
-    protected int permanentDamage=0;
+	protected int permanentDamage=0;
 
 
 	public boolean tick(Tickable ticking, int tickID)
@@ -184,12 +184,12 @@ public class Regeneration extends StdAbility
 			CMMsg msg=CMClass.getMsg(mob,target,null,CMMsg.MSG_QUIETMOVEMENT,str);
 			if(target.location().okMessage(target,msg))
 			{
-			    target.location().send(target,msg);
+				target.location().send(target,msg);
 				success=beneficialAffect(mob,target,asLevel,0);
 			}
 		}
 
-        return success;
+		return success;
 
 	}
 }

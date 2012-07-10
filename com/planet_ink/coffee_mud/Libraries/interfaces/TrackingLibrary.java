@@ -21,7 +21,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -31,24 +31,24 @@ import java.util.*;
 */
 public interface TrackingLibrary extends CMLibrary
 {
-    public List<Room> findBastardTheBestWay(Room location, Room destRoom, TrackingFlags flags, int maxRadius);
-    public List<Room> findBastardTheBestWay(Room location, List<Room> destRooms, TrackingFlags flags, int maxRadius);
-    public int trackNextDirectionFromHere(List<Room> theTrail, Room location, boolean openOnly);
-    public void stopTracking(MOB mob);
-    public int radiatesFromDir(Room room, List<Room> rooms);
-    public void getRadiantRooms(Room room, List<Room> rooms, TrackingFlags flags, Room radiateTo, int maxDepth, Set<Room> ignoreRooms);
+	public List<Room> findBastardTheBestWay(Room location, Room destRoom, TrackingFlags flags, int maxRadius);
+	public List<Room> findBastardTheBestWay(Room location, List<Room> destRooms, TrackingFlags flags, int maxRadius);
+	public int trackNextDirectionFromHere(List<Room> theTrail, Room location, boolean openOnly);
+	public void stopTracking(MOB mob);
+	public int radiatesFromDir(Room room, List<Room> rooms);
+	public void getRadiantRooms(Room room, List<Room> rooms, TrackingFlags flags, Room radiateTo, int maxDepth, Set<Room> ignoreRooms);
 	public List<Room> getRadiantRooms(Room room, TrackingFlags flags, int maxDepth);
-    public boolean beMobile(MOB mob, boolean dooropen, boolean wander, boolean roomprefer, boolean roomobject, long[] status, List<Room> rooms);
-    public void wanderAway(MOB M, boolean mindPCs, boolean andGoHome);
-    public void wanderFromTo(MOB M, Room toHere, boolean mindPCs);
-    public void wanderIn(MOB M, Room toHere);
-    public boolean walk(MOB mob, int directionCode, boolean flee, boolean nolook);
-    public boolean walk(MOB mob, int directionCode, boolean flee, boolean nolook, boolean noriders);
+	public boolean beMobile(MOB mob, boolean dooropen, boolean wander, boolean roomprefer, boolean roomobject, long[] status, List<Room> rooms);
+	public void wanderAway(MOB M, boolean mindPCs, boolean andGoHome);
+	public void wanderFromTo(MOB M, Room toHere, boolean mindPCs);
+	public void wanderIn(MOB M, Room toHere);
+	public boolean walk(MOB mob, int directionCode, boolean flee, boolean nolook);
+	public boolean walk(MOB mob, int directionCode, boolean flee, boolean nolook, boolean noriders);
 	public boolean run(MOB mob, int directionCode, boolean flee, boolean nolook, boolean noriders);
 	public boolean walk(MOB mob, int directionCode, boolean flee, boolean nolook, boolean noriders, boolean always);
 	public boolean run(MOB mob, int directionCode, boolean flee, boolean nolook, boolean noriders, boolean always);
-    public int findExitDir(MOB mob, Room R, String desc);
-    public int findRoomDir(MOB mob, Room R);
+	public int findExitDir(MOB mob, Room R, String desc);
+	public int findRoomDir(MOB mob, Room R);
 	public List<List<Integer>> findAllTrails(Room from, Room to, List<Room> radiantTrail);
 	public List<List<Integer>> findAllTrails(Room from, List<Room> tos, List<Room> radiantTrail);
 	public String getTrailToDescription(Room R1, List<Room> set, String where, boolean areaNames, boolean confirm, int radius, Set<Room> ignoreRooms, int maxMins);

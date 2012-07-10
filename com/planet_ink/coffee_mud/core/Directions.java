@@ -21,7 +21,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -31,36 +31,36 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 */
 public class Directions
 {
-    public Directions(){
-        super();
-        char c=Thread.currentThread().getThreadGroup().getName().charAt(0);
-        if(dirs[c]==null) dirs[c]=this;
-    }
-    private static Directions d(){ return dirs[Thread.currentThread().getThreadGroup().getName().charAt(0)];}
-    public static Directions d(char c){return dirs[c];}
-    public static Directions instance(){
-    	final Directions d=d();
-        if(d==null) return new Directions();
-        return d;
-    }
-    private static final Directions[] dirs=new Directions[256];
-    
-    private int[] DIRECTIONS_BASE={NORTH,SOUTH,EAST,WEST};
-    private String DIRECTIONS_DESC="N, S, E, W, U, D, or V";
-    private int NUM_DIRECTIONS=7;
+	public Directions(){
+		super();
+		char c=Thread.currentThread().getThreadGroup().getName().charAt(0);
+		if(dirs[c]==null) dirs[c]=this;
+	}
+	private static Directions d(){ return dirs[Thread.currentThread().getThreadGroup().getName().charAt(0)];}
+	public static Directions d(char c){return dirs[c];}
+	public static Directions instance(){
+		final Directions d=d();
+		if(d==null) return new Directions();
+		return d;
+	}
+	private static final Directions[] dirs=new Directions[256];
+	
+	private int[] DIRECTIONS_BASE={NORTH,SOUTH,EAST,WEST};
+	private String DIRECTIONS_DESC="N, S, E, W, U, D, or V";
+	private int NUM_DIRECTIONS=7;
 
 	public static final int NUM_DIRECTIONS(){
-        return d().NUM_DIRECTIONS;
-    }
+		return d().NUM_DIRECTIONS;
+	}
 
-    public static final int[] DIRECTIONS_BASE(){
-        return d().DIRECTIONS_BASE;
-    }
-    
-    public static final String DIRECTIONS_DESC(){
-        return d().DIRECTIONS_DESC;
-    }
-    
+	public static final int[] DIRECTIONS_BASE(){
+		return d().DIRECTIONS_BASE;
+	}
+	
+	public static final String DIRECTIONS_DESC(){
+		return d().DIRECTIONS_DESC;
+	}
+	
 	public static final int NORTH=0;
 	public static final int SOUTH=1;
 	public static final int EAST=2;
@@ -77,26 +77,26 @@ public class Directions
 	
 	public static final String[] DIRECTION_CHARS={"N","S","E","W","U","D","V","NE","NW","SE","SW"};
 	public static final String[][] DIRECTIONS_FULL_CHART={
-	    {"UP",""+UP},
-	    {"ABOVE",""+UP},
-	    {"NORTH",""+NORTH},
-	    {"EAST",""+EAST},
-	    {"WEST",""+WEST},
-	    {"SOUTH",""+SOUTH},
-	    {"NORTHEAST",""+NORTHEAST},
-	    {"NORTHWEST",""+NORTHWEST},
-	    {"SOUTHWEST",""+SOUTHWEST},
-	    {"SOUTHEAST",""+SOUTHEAST},
-	    {"NW",""+NORTHWEST},
-	    {"NE",""+NORTHEAST},
-	    {"SW",""+SOUTHWEST},
-	    {"SE",""+SOUTHEAST},
-	    {"DOWN",""+DOWN},
-	    {"BELOW",""+DOWN},
-	    {"NOWHERE",""+GATE},
-	    {"HERE",""+GATE},
-	    {"THERE",""+GATE},
-	    {"VORTEX",""+GATE}
+		{"UP",""+UP},
+		{"ABOVE",""+UP},
+		{"NORTH",""+NORTH},
+		{"EAST",""+EAST},
+		{"WEST",""+WEST},
+		{"SOUTH",""+SOUTH},
+		{"NORTHEAST",""+NORTHEAST},
+		{"NORTHWEST",""+NORTHWEST},
+		{"SOUTHWEST",""+SOUTHWEST},
+		{"SOUTHEAST",""+SOUTHEAST},
+		{"NW",""+NORTHWEST},
+		{"NE",""+NORTHEAST},
+		{"SW",""+SOUTHWEST},
+		{"SE",""+SOUTHEAST},
+		{"DOWN",""+DOWN},
+		{"BELOW",""+DOWN},
+		{"NOWHERE",""+GATE},
+		{"HERE",""+GATE},
+		{"THERE",""+GATE},
+		{"VORTEX",""+GATE}
 	};
 											   
 	public static final String getDirectionName(final String theDir)
@@ -106,29 +106,29 @@ public class Directions
 
 	public final void reInitialize(final int dirs)
 	{
-	    NUM_DIRECTIONS=dirs;
-	    if(dirs<11)
-	    {
-	        DIRECTIONS_BASE=new int[4];
-	        DIRECTIONS_BASE[0]=NORTH;
-	        DIRECTIONS_BASE[1]=SOUTH;
-	        DIRECTIONS_BASE[2]=EAST;
-	        DIRECTIONS_BASE[3]=WEST;
-	    	DIRECTIONS_DESC="N, S, E, W, U, D, or V";
-	    }
-	    else
-	    {
-	        DIRECTIONS_BASE=new int[8];
-	        DIRECTIONS_BASE[0]=NORTH;
-	        DIRECTIONS_BASE[1]=SOUTH;
-	        DIRECTIONS_BASE[2]=EAST;
-	        DIRECTIONS_BASE[3]=WEST;
-	        DIRECTIONS_BASE[4]=NORTHEAST;
-	        DIRECTIONS_BASE[5]=NORTHWEST;
-	        DIRECTIONS_BASE[6]=SOUTHEAST;
-	        DIRECTIONS_BASE[7]=SOUTHWEST;
-	    	DIRECTIONS_DESC="N, S, E, W, NE, NW, SE, SW, U, D, or V";
-	    }
+		NUM_DIRECTIONS=dirs;
+		if(dirs<11)
+		{
+			DIRECTIONS_BASE=new int[4];
+			DIRECTIONS_BASE[0]=NORTH;
+			DIRECTIONS_BASE[1]=SOUTH;
+			DIRECTIONS_BASE[2]=EAST;
+			DIRECTIONS_BASE[3]=WEST;
+			DIRECTIONS_DESC="N, S, E, W, U, D, or V";
+		}
+		else
+		{
+			DIRECTIONS_BASE=new int[8];
+			DIRECTIONS_BASE[0]=NORTH;
+			DIRECTIONS_BASE[1]=SOUTH;
+			DIRECTIONS_BASE[2]=EAST;
+			DIRECTIONS_BASE[3]=WEST;
+			DIRECTIONS_BASE[4]=NORTHEAST;
+			DIRECTIONS_BASE[5]=NORTHWEST;
+			DIRECTIONS_BASE[6]=SOUTHEAST;
+			DIRECTIONS_BASE[7]=SOUTHWEST;
+			DIRECTIONS_DESC="N, S, E, W, NE, NW, SE, SW, U, D, or V";
+		}
 	}
 	
 	public static final String getDirectionName(final int code)
@@ -171,24 +171,24 @@ public class Directions
 	public static final int getDirectionCode(final String theDir)
 	{
 		final int code=getGoodDirectionCode(theDir);
-	    if(code<0)
-	    {
-	    	final String upDir=theDir.toUpperCase();
+		if(code<0)
+		{
+			final String upDir=theDir.toUpperCase();
 			for(int i=0;i<NUM_DIRECTIONS();i++)
-			    if(upDir.startsWith(DIRECTION_CHARS[i]))
-			        return i;
-	    }
+				if(upDir.startsWith(DIRECTION_CHARS[i]))
+					return i;
+		}
 		return code;
 	}
 	
 	public static final int getGoodDirectionCode(final String theDir)
 	{
-	    if(theDir.length()==0) return -1;
-	    final String upDir=theDir.toUpperCase();
-	    for(int i=0;i<DIRECTIONS_FULL_CHART.length;i++)
-	        if((DIRECTIONS_FULL_CHART[i][0].startsWith(upDir))
-	        &&(CMath.s_int(DIRECTIONS_FULL_CHART[i][1])<NUM_DIRECTIONS()))
-	            return CMath.s_int(DIRECTIONS_FULL_CHART[i][1]); 
+		if(theDir.length()==0) return -1;
+		final String upDir=theDir.toUpperCase();
+		for(int i=0;i<DIRECTIONS_FULL_CHART.length;i++)
+			if((DIRECTIONS_FULL_CHART[i][0].startsWith(upDir))
+			&&(CMath.s_int(DIRECTIONS_FULL_CHART[i][1])<NUM_DIRECTIONS()))
+				return CMath.s_int(DIRECTIONS_FULL_CHART[i][1]); 
 		return -1;
 	}
 	

@@ -10,7 +10,7 @@ Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
 You may obtain a copy of the License at
 
-    http://www.apache.org/licenses/LICENSE-2.0
+	http://www.apache.org/licenses/LICENSE-2.0
 
 Unless required by applicable law or agreed to in writing, software
 distributed under the License is distributed on an "AS IS" BASIS,
@@ -27,15 +27,15 @@ public class FilteredListIterator<K> implements ListIterator<K>
 	private boolean 		initialized = false;
 
 	public FilteredListIterator(ListIterator<K> eset, Filterer<K> fil) 
-    {
+	{
 		iter=eset;
 		filterer=fil;
-    }
-    
+	}
+	
 	public void setFilterer(Filterer<K> fil) 
-    {
+	{
 		filterer=fil;
-    }
+	}
 
 	private void stageNextElement()
 	{
@@ -73,21 +73,21 @@ public class FilteredListIterator<K> implements ListIterator<K>
 		}
 	}
 	
-    public boolean hasNext() 
-    { 
-    	if(!initialized)
-    		initialize();
-    	return nextElement!=null;
-    }
-    
-    public K next() 
-    {
-    	if(!hasNext())
-    		throw new NoSuchElementException();
-    	K element = nextElement;
-    	stageNextElement();
-    	return element;
-    }
+	public boolean hasNext() 
+	{ 
+		if(!initialized)
+			initialize();
+		return nextElement!=null;
+	}
+	
+	public K next() 
+	{
+		if(!hasNext())
+			throw new NoSuchElementException();
+		K element = nextElement;
+		stageNextElement();
+		return element;
+	}
 
 	public void remove() {
 		throw new java.lang.IllegalArgumentException();
@@ -98,9 +98,9 @@ public class FilteredListIterator<K> implements ListIterator<K>
 	}
 
 	public boolean hasPrevious() {
-    	if(!initialized)
-    		initialize();
-    	return prevElement!=null;
+		if(!initialized)
+			initialize();
+		return prevElement!=null;
 	}
 
 	@Override
@@ -110,11 +110,11 @@ public class FilteredListIterator<K> implements ListIterator<K>
 
 	@Override
 	public K previous() {
-    	if(!hasPrevious())
-    		throw new NoSuchElementException();
-    	K element = prevElement;
-    	stagePrevElement();
-    	return element;
+		if(!hasPrevious())
+			throw new NoSuchElementException();
+		K element = prevElement;
+		stagePrevElement();
+		return element;
 	}
 
 	@Override

@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -43,27 +43,27 @@ public class Prayer_NeutralizeLand extends Prayer
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return Ability.CAN_ROOMS;}
 
-    public int castingQuality(MOB mob, Physical target)
-    {
-        if(mob!=null)
-        {
-            Room R=mob.location();
-            if(R!=null)
-            {
-                boolean foundAny=false;
-    			for(final Enumeration<Ability> a=R.effects();a.hasMoreElements();)
-    			{
-    				final Ability A=a.nextElement();
-                    if((A!=null)&&(A.invoker()!=mob))
-                        foundAny=true;
-                }
-                if(!foundAny)
-                    return Ability.QUALITY_INDIFFERENT;
-            }
-        }
-        return super.castingQuality(mob,target);
-    }
-    
+	public int castingQuality(MOB mob, Physical target)
+	{
+		if(mob!=null)
+		{
+			Room R=mob.location();
+			if(R!=null)
+			{
+				boolean foundAny=false;
+				for(final Enumeration<Ability> a=R.effects();a.hasMoreElements();)
+				{
+					final Ability A=a.nextElement();
+					if((A!=null)&&(A.invoker()!=mob))
+						foundAny=true;
+				}
+				if(!foundAny)
+					return Ability.QUALITY_INDIFFERENT;
+			}
+		}
+		return super.castingQuality(mob,target);
+	}
+	
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
@@ -87,8 +87,8 @@ public class Prayer_NeutralizeLand extends Prayer
 				{
 					Ability A=target.fetchEffect(a);
 					if((A!=null)
-                    &&((A.canBeUninvoked())||(A.invoker()==mob)||A.text().equals(mob.Name())||((mob.getClanID().length()>0)&&(A.text().equals(mob.getClanID()))))
-                    &&(!A.isAutoInvoked())
+					&&((A.canBeUninvoked())||(A.invoker()==mob)||A.text().equals(mob.Name())||((mob.getClanID().length()>0)&&(A.text().equals(mob.getClanID()))))
+					&&(!A.isAutoInvoked())
 					&&(((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_SPELL)
 					   ||((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_PRAYER)
 					   ||((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_CHANT)

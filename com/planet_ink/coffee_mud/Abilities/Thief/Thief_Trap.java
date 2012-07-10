@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -40,22 +40,22 @@ public class Thief_Trap extends ThiefSkill
 	protected int canAffectCode(){return Ability.CAN_ITEMS|Ability.CAN_EXITS|Ability.CAN_ROOMS;}
 	protected int canTargetCode(){return Ability.CAN_ITEMS|Ability.CAN_EXITS|Ability.CAN_ROOMS;}
 	public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
-    public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_TRAPPING;}
+	public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_TRAPPING;}
 	private static final String[] triggerStrings = {"TRAP"};
 	public String[] triggerStrings(){return triggerStrings;}
 	public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
 
 	protected int maxLevel(){return Integer.MAX_VALUE;}
 
-    public int castingQuality(MOB mob, Physical target)
-    {
-        if(mob!=null)
-        {
-            if(mob.isInCombat())
-                return Ability.QUALITY_INDIFFERENT;
-        }
-        return super.castingQuality(mob,target);
-    }
+	public int castingQuality(MOB mob, Physical target)
+	{
+		if(mob!=null)
+		{
+			if(mob.isInCombat())
+				return Ability.QUALITY_INDIFFERENT;
+		}
+		return super.castingQuality(mob,target);
+	}
 
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
@@ -74,13 +74,13 @@ public class Thief_Trap extends ThiefSkill
 		Physical trapThis=givenTarget;
 		if(trapThis!=null)
 		{
-		    int cuts=0;
-		    while(((++cuts)<100)&&(theTrap==null))
-		    {
+			int cuts=0;
+			while(((++cuts)<100)&&(theTrap==null))
+			{
 				theTrap=(Trap)traps.elementAt(CMLib.dice().roll(1,traps.size(),-1));
 				if(!theTrap.canSetTrapOn(mob,trapThis))
-				    theTrap=null;
-		    }
+					theTrap=null;
+			}
 		}
 		else
 		if(CMParms.combine(commands,0).equalsIgnoreCase("list"))
@@ -107,12 +107,12 @@ public class Thief_Trap extends ThiefSkill
 		}
 		else
 		{
-            if(mob.isInCombat())
-            {
-                mob.tell("You are too busy to be laying traps at the moment!");
-                return false;
-            }
-            
+			if(mob.isInCombat())
+			{
+				mob.tell("You are too busy to be laying traps at the moment!");
+				return false;
+			}
+			
 			String cmdWord=triggerStrings()[0].toLowerCase();
 			if(commands.size()<2)
 			{
@@ -187,11 +187,11 @@ public class Thief_Trap extends ThiefSkill
 						permanent=true;
 				}
 				if(theTrap!=null)
-                {
+				{
 					theTrap.setTrap(mob,trapThis,getXLEVELLevel(mob),adjustedLevel(mob,asLevel),permanent);
-                    if(permanent)
-                        CMLib.database().DBUpdateRoom(mob.location());
-                }
+					if(permanent)
+						CMLib.database().DBUpdateRoom(mob.location());
+				}
 			}
 			else
 			{

@@ -25,7 +25,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -46,7 +46,7 @@ public class Play extends StdAbility
 	public int classificationCode(){return Ability.ACODE_SONG|Ability.DOMAIN_PLAYING;}
 	public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
 	protected boolean maliciousButNotAggressiveFlag(){return false;}
-    public int maxRange(){return adjustedMaxInvokerRange(2);}
+	public int maxRange(){return adjustedMaxInvokerRange(2);}
 
 	protected int requiredInstrumentType(){return -1;}
 	protected boolean skipStandardSongInvoke(){return false;}
@@ -54,12 +54,12 @@ public class Play extends StdAbility
 	protected boolean skipStandardSongTick(){return false;}
 	protected boolean persistantSong(){return true;}
 	protected String songOf(){return name();}
-    protected boolean HAS_QUANTITATIVE_ASPECT(){return true;}
+	protected boolean HAS_QUANTITATIVE_ASPECT(){return true;}
 
 	protected MusicalInstrument instrument=null;
-    protected long timeOut=0;
-    protected Vector commonRoomSet=null;
-    protected Room originRoom=null;
+	protected long timeOut=0;
+	protected Vector commonRoomSet=null;
+	protected Room originRoom=null;
 
 	public String instrumentName(){
 		if(instrument!=null) return instrument.name();
@@ -68,10 +68,10 @@ public class Play extends StdAbility
 
 	public int adjustedLevel(MOB mob, int asLevel)
 	{
-        int level=super.adjustedLevel(mob,asLevel);
-        if(instrument!=null)
-            level+=instrument.phyStats().ability();
-        return level;
+		int level=super.adjustedLevel(mob,asLevel);
+		if(instrument!=null)
+			level+=instrument.phyStats().ability();
+		return level;
 	}
 	
 	public int invokerLevel()
@@ -121,10 +121,10 @@ public class Play extends StdAbility
 		&&(!maliciousButNotAggressiveFlag())
 		&&(!mob.amDead())
 		&&(mob.isMonster())
-        &&(mob.amFollowing()==null)
-        &&((!(mob instanceof Rideable))||(((Rideable)mob).numRiders()==0))
+		&&(mob.amFollowing()==null)
+		&&((!(mob instanceof Rideable))||(((Rideable)mob).numRiders()==0))
 		&&(!mob.isInCombat())
-        &&(!CMLib.flags().isATrackingMonster(mob))
+		&&(!CMLib.flags().isATrackingMonster(mob))
 		&&(CMLib.flags().aliveAwakeMobile(mob,true)))
 		{
 			if((mob.location()!=originRoom)
@@ -157,19 +157,19 @@ public class Play extends StdAbility
 		return true;
 	}
 
-    public int castingQuality(MOB mob, Physical target)
-    {
-        if(mob!=null)
-        {
-    		for(final Enumeration<Ability> a=mob.effects();a.hasMoreElements();)
-    		{
-    			final Ability A=a.nextElement();
-                if(A instanceof Play)
-                    return Ability.QUALITY_INDIFFERENT;
-    		}
-        }
-        return super.castingQuality(mob,target);
-    }
+	public int castingQuality(MOB mob, Physical target)
+	{
+		if(mob!=null)
+		{
+			for(final Enumeration<Ability> a=mob.effects();a.hasMoreElements();)
+			{
+				final Ability A=a.nextElement();
+				if(A instanceof Play)
+					return Ability.QUALITY_INDIFFERENT;
+			}
+		}
+		return super.castingQuality(mob,target);
+	}
 
 	public void executeMsg(Environmental host, CMMsg msg)
 	{
@@ -282,29 +282,29 @@ public class Play extends StdAbility
 		return instrument;
 	}
 
-    protected Vector getInvokerScopeRoomSet(MOB backupMob)
-    {
-    	if((invoker()==null)
-    	||(invoker().location()==null))
-        {
-    		if((backupMob!=null)&&(backupMob.location()!=null))
-	    		 return new XVector(backupMob.location());
+	protected Vector getInvokerScopeRoomSet(MOB backupMob)
+	{
+		if((invoker()==null)
+		||(invoker().location()==null))
+		{
+			if((backupMob!=null)&&(backupMob.location()!=null))
+				 return new XVector(backupMob.location());
 			return new Vector();
-        }
-    	int depth=super.getXMAXRANGELevel(invoker());
-    	if(depth==0) return new XVector(invoker().location());
-    	Vector rooms=new Vector();
-        // needs to be area-only, because of the aggro-tracking rule
+		}
+		int depth=super.getXMAXRANGELevel(invoker());
+		if(depth==0) return new XVector(invoker().location());
+		Vector rooms=new Vector();
+		// needs to be area-only, because of the aggro-tracking rule
 		TrackingLibrary.TrackingFlags flags;
 		flags = new TrackingLibrary.TrackingFlags()
 				.plus(TrackingLibrary.TrackingFlag.OPENONLY)
 				.plus(TrackingLibrary.TrackingFlag.AREAONLY)
 				.plus(TrackingLibrary.TrackingFlag.NOAIR);
-    	CMLib.tracking().getRadiantRooms(invoker().location(), rooms,flags, null, depth, null);
-    	if(!rooms.contains(invoker().location()))
-    		rooms.addElement(invoker().location());
-    	return rooms;
-    }
+		CMLib.tracking().getRadiantRooms(invoker().location(), rooms,flags, null, depth, null);
+		if(!rooms.contains(invoker().location()))
+			rooms.addElement(invoker().location());
+		return rooms;
+	}
 
 	protected int getCorrectDirToOriginRoom(Room R, int v)
 	{
@@ -338,9 +338,9 @@ public class Play extends StdAbility
 		else
 		{
 			int dir=this.getCorrectDirToOriginRoom(R,v);
-            String songOf=songOf();
-            if(!songOf.equals(this.instrumentName()))
-                songOf="the "+songOf;
+			String songOf=songOf();
+			if(!songOf.equals(this.instrumentName()))
+				songOf="the "+songOf;
 			if(dir>=0)
 				msgStr="^SYou hear "+songOf+" being played "+Directions.getInDirectionName(dir)+"!^?";
 			else
@@ -376,7 +376,7 @@ public class Play extends StdAbility
 	
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-        timeOut=0;
+		timeOut=0;
 		if(!auto)
 		{
 			instrument=getInstrument(mob,requiredInstrumentType(),true);
@@ -440,8 +440,8 @@ public class Play extends StdAbility
 			invoker=mob;
 			originRoom=mob.location();
 			commonRoomSet=getInvokerScopeRoomSet(null);
-            String songOfStr=songOf()+" on ";
-            if(songOf().equalsIgnoreCase(instrumentName())) songOfStr="";
+			String songOfStr=songOf()+" on ";
+			if(songOf().equalsIgnoreCase(instrumentName())) songOfStr="";
 			String str=auto?"^S"+songOf()+" begins to play!^?":"^S<S-NAME> begin(s) to play "+songOfStr+instrumentName()+".^?";
 			if((!auto)&&(mob.fetchEffect(this.ID())!=null))
 				str="^S<S-NAME> start(s) playing "+songOfStr+instrumentName()+" again.^?";
@@ -470,7 +470,7 @@ public class Play extends StdAbility
 							msgType=msgType|CMMsg.MASK_MALICIOUS;
 	
 						if(CMLib.flags().canBeHeardSpeakingBy(invoker,follower)
-                        &&(follower.fetchEffect(this.ID())==null))
+						&&(follower.fetchEffect(this.ID())==null))
 						{
 							CMMsg msg2=CMClass.getMsg(mob,follower,this,msgType|CMMsg.MASK_HANDS,null,msgType,null,msgType,null);
 							CMMsg msg3=msg2;

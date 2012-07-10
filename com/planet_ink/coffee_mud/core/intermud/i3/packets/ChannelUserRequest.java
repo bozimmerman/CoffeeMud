@@ -23,7 +23,7 @@ import java.util.Vector;
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *        http://www.apache.org/licenses/LICENSE-2.0
+ *  	  http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -34,34 +34,34 @@ import java.util.Vector;
  */
 @SuppressWarnings("rawtypes")
 public class ChannelUserRequest extends Packet {
-    public String userToRequest = null;
+	public String userToRequest = null;
 
 	public ChannelUserRequest()
 	{
 		super();
-        type = Packet.CHAN_USER_REQ;
+		type = Packet.CHAN_USER_REQ;
 	}
-    public ChannelUserRequest(Vector v) throws InvalidPacketException {
-        super(v);
-        try {
-            type = Packet.CHAN_USER_REQ;
-            userToRequest = (String)v.elementAt(6);
-        }
-        catch( ClassCastException e ) {
-            throw new InvalidPacketException();
-        }
-    }
+	public ChannelUserRequest(Vector v) throws InvalidPacketException {
+		super(v);
+		try {
+			type = Packet.CHAN_USER_REQ;
+			userToRequest = (String)v.elementAt(6);
+		}
+		catch( ClassCastException e ) {
+			throw new InvalidPacketException();
+		}
+	}
 
-    public void send() throws InvalidPacketException {
-        if( sender_name == null || target_mud == null || sender_mud == null  || userToRequest == null) {
-            throw new InvalidPacketException();
-        }
-        super.send();
-    }
+	public void send() throws InvalidPacketException {
+		if( sender_name == null || target_mud == null || sender_mud == null  || userToRequest == null) {
+			throw new InvalidPacketException();
+		}
+		super.send();
+	}
 
-    public String toString() {
+	public String toString() {
 		String str="({\"chan-user-req\",5,\"" + I3Server.getMudName() +
-               "\",0,\"" + target_mud + "\",0,\"" + userToRequest + "\",})";
+			   "\",0,\"" + target_mud + "\",0,\"" + userToRequest + "\",})";
 		return str;
-    }
+	}
 }

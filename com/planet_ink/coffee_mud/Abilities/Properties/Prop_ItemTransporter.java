@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -41,8 +41,8 @@ public class Prop_ItemTransporter extends Property
 	protected Room roomDestination=null;
 	protected MOB mobDestination=null;
 	protected Container nextDestination=null;
-    protected static Map<String,List<PhysicalAgent>> possiblePossibilities=new Hashtable<String,List<PhysicalAgent>>();
-    protected static Map<String,Integer> lastLooks=new Hashtable<String,Integer>();
+	protected static Map<String,List<PhysicalAgent>> possiblePossibilities=new Hashtable<String,List<PhysicalAgent>>();
+	protected static Map<String,Integer> lastLooks=new Hashtable<String,Integer>();
 
 	public String accountForYourself()
 	{ return "Item Transporter";	}
@@ -115,7 +115,7 @@ public class Prop_ItemTransporter extends Property
 						}
 					}
 				}
-		    }catch(NoSuchElementException e){}
+			}catch(NoSuchElementException e){}
 		}
 		if(possibilities.size()>0)
 		{
@@ -183,7 +183,7 @@ public class Prop_ItemTransporter extends Property
 			&&(msg.target() instanceof Item))
 		||((affected instanceof Room)
 			&&(msg.sourceMinor()==CMMsg.TYP_THROW)
-		    &&(affected==CMLib.map().roomLocation(msg.target()))
+			&&(affected==CMLib.map().roomLocation(msg.target()))
 			&&(msg.tool() instanceof Item)))
 		{
 			if(!setDestination())

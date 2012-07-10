@@ -23,7 +23,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -102,15 +102,15 @@ public class Fishing extends GatheringSkill
 
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-        bundling=false;
+		bundling=false;
 		if((!auto)
 		&&(commands.size()>0)
 		&&(((String)commands.firstElement()).equalsIgnoreCase("bundle")))
 		{
-            bundling=true;
+			bundling=true;
 			if(super.invoke(mob,commands,givenTarget,auto,asLevel))
-			    return super.bundle(mob,commands);
-		    return false;
+				return super.bundle(mob,commands);
+			return false;
 		}
 		
 		int foundFish=-1;
@@ -135,7 +135,7 @@ public class Fishing extends GatheringSkill
 		}
 		verb="fishing";
 		found=null;
-        playSound="fishreel.wav";
+		playSound="fishreel.wav";
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 		if((proficiencyCheck(mob,0,auto))

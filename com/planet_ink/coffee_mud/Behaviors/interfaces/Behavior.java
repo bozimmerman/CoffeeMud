@@ -22,7 +22,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -60,7 +60,7 @@ public interface Behavior extends Tickable, MsgListener, Contingent, Modifiable
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Quest
 	 * @param questName the Quest name
 	 */
-    public void registerDefaultQuest(String questName);
+	public void registerDefaultQuest(String questName);
 
 	/**
 	 * Returns the raw parameter string for this behavior.
@@ -108,27 +108,27 @@ public interface Behavior extends Tickable, MsgListener, Contingent, Modifiable
 	 * @see Behavior#isSavable()
 	 * @param truefalse whether this behavior can be saved as part of its host.
 	 */
-    public void setSavable(boolean truefalse);
+	public void setSavable(boolean truefalse);
 
-    /**
-     * Returns whether this behavior is capable of enhancing the given type
-     * of object designated by E.  It derives from the protected
-     * Behavior.canImproveCode() method.
-     * @see com.planet_ink.coffee_mud.Behaviors.StdBehavior#canImproveCode()
-     * @param E the object to evaluate for this behavior
-     * @return whether the given object can be enhanced by this behavior
-     */
+	/**
+	 * Returns whether this behavior is capable of enhancing the given type
+	 * of object designated by E.  It derives from the protected
+	 * Behavior.canImproveCode() method.
+	 * @see com.planet_ink.coffee_mud.Behaviors.StdBehavior#canImproveCode()
+	 * @param E the object to evaluate for this behavior
+	 * @return whether the given object can be enhanced by this behavior
+	 */
 	public boolean canImprove(PhysicalAgent E);
 
-    /**
-     * Returns whether this behavior is capable of enhancing the given type
-     * of object designated by the can_code.  It derives from the protected
-     * Behavior.canImproveCode() method and uses the Behavior.CAN_* constants.
-     * @see com.planet_ink.coffee_mud.Behaviors.StdBehavior#canImproveCode()
-     * @see Behavior
-     * @param can_code the Behavior.CAN_* mask to evaluate for this behavior
-     * @return whether the given type can be enhanced by this behavior
-     */
+	/**
+	 * Returns whether this behavior is capable of enhancing the given type
+	 * of object designated by the can_code.  It derives from the protected
+	 * Behavior.canImproveCode() method and uses the Behavior.CAN_* constants.
+	 * @see com.planet_ink.coffee_mud.Behaviors.StdBehavior#canImproveCode()
+	 * @see Behavior
+	 * @param can_code the Behavior.CAN_* mask to evaluate for this behavior
+	 * @return whether the given type can be enhanced by this behavior
+	 */
 	public boolean canImprove(int can_code);
 
 	/**

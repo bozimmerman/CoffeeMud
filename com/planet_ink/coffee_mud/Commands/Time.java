@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -49,16 +49,16 @@ public class Time extends StdCommand
 		mob.tell(room.getArea().getTimeObj().timeDescription(mob,room));
 		if((mob.playerStats()!=null)&&(mob.playerStats().getBirthday()!=null))
 		{
-		    TimeClock C=CMLib.time().globalClock();
-		    int day=C.getDayOfMonth();
-		    int month=C.getMonth();
-		    int year=C.getYear();
-		    int bday=mob.playerStats().getBirthday()[0];
-		    int bmonth=mob.playerStats().getBirthday()[1];
-		    if((month>bmonth)||((month==bmonth)&&(day>bday)))
-		        year++;
-		    
-		    StringBuffer timeDesc=new StringBuffer("");
+			TimeClock C=CMLib.time().globalClock();
+			int day=C.getDayOfMonth();
+			int month=C.getMonth();
+			int year=C.getYear();
+			int bday=mob.playerStats().getBirthday()[0];
+			int bmonth=mob.playerStats().getBirthday()[1];
+			if((month>bmonth)||((month==bmonth)&&(day>bday)))
+				year++;
+			
+			StringBuffer timeDesc=new StringBuffer("");
 			if(C.getDaysInWeek()>0)
 			{
 				long x=((long)year)*((long)C.getMonthsInYear())*C.getDaysInMonth();

@@ -25,7 +25,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -40,8 +40,8 @@ public class Chant_Moonbeam extends Chant
 	public String ID() { return "Chant_Moonbeam"; }
 	public String name(){ return "Moonbeam";}
 	public String displayText(){return "(Moonbeam)";}
-    public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_MOONSUMMONING;}
-    public int abstractQuality(){ return Ability.QUALITY_OK_SELF;}
+	public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_MOONSUMMONING;}
+	public int abstractQuality(){ return Ability.QUALITY_OK_SELF;}
 
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
@@ -63,16 +63,16 @@ public class Chant_Moonbeam extends Chant
 		room.recoverRoomStats();
 	}
 
-    public int castingQuality(MOB mob, Physical target)
-    {
-        if(mob!=null)
-        {
-            if(!CMLib.flags().canBeSeenBy(mob.location(), mob))
-                return super.castingQuality(mob, target,Ability.QUALITY_BENEFICIAL_SELF);
-        }
-        return super.castingQuality(mob,target);
-    }
-    
+	public int castingQuality(MOB mob, Physical target)
+	{
+		if(mob!=null)
+		{
+			if(!CMLib.flags().canBeSeenBy(mob.location(), mob))
+				return super.castingQuality(mob, target,Ability.QUALITY_BENEFICIAL_SELF);
+		}
+		return super.castingQuality(mob,target);
+	}
+	
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=mob;

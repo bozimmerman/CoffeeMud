@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -39,7 +39,7 @@ public class Chant_WhisperWard extends Chant implements Trap
 	public String ID() { return "Chant_WhisperWard"; }
 	public String name(){ return "Whisperward";}
 	public String displayText(){return "(Whisperward)";}
-    public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PRESERVING;}
+	public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PRESERVING;}
 	public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 	protected int canAffectCode(){return Ability.CAN_EXITS|Ability.CAN_ITEMS|Ability.CAN_ROOMS;}
 	protected int canTargetCode(){return Ability.CAN_EXITS|Ability.CAN_ITEMS|Ability.CAN_ROOMS;}
@@ -53,7 +53,7 @@ public class Chant_WhisperWard extends Chant implements Trap
 	public int getReset(){return 0;}
 	public boolean maySetTrap(MOB mob, int asLevel){return false;}
 	public boolean canSetTrapOn(MOB mob, Physical P){return false;}
-    public List<Item> getTrapComponents() { return new Vector();}
+	public List<Item> getTrapComponents() { return new Vector();}
 	public String requiresToSet(){return "";}
 	public Trap setTrap(MOB mob, Physical P, int trapBonus, int qualifyingClassLevel, boolean perm)
 	{beneficialAffect(mob,P,qualifyingClassLevel+trapBonus,0); return (Trap)P.fetchEffect(ID());}

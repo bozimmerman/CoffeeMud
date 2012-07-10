@@ -25,7 +25,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -39,26 +39,26 @@ public class Chant_SummonHeat extends Chant
 {
 	public String ID() { return "Chant_SummonHeat"; }
 	public String name(){ return "Summon Heat";}
-    public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
+	public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return 0;}
 	public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_WEATHER_MASTERY;}
 	public long flags(){return Ability.FLAG_WEATHERAFFECTING;}
 
-    public int castingQuality(MOB mob, Physical target)
-    {
-        if(mob!=null)
-        {
-            Room R=mob.location();
-            if(R!=null)
-            {
-                if(CMath.bset(weatherQue(R),WEATHERQUE_HOT))
-                    return super.castingQuality(mob, target,Ability.QUALITY_BENEFICIAL_SELF);
-            }
-        }
-        return super.castingQuality(mob,target);
-    }
-    
+	public int castingQuality(MOB mob, Physical target)
+	{
+		if(mob!=null)
+		{
+			Room R=mob.location();
+			if(R!=null)
+			{
+				if(CMath.bset(weatherQue(R),WEATHERQUE_HOT))
+					return super.castingQuality(mob, target,Ability.QUALITY_BENEFICIAL_SELF);
+			}
+		}
+		return super.castingQuality(mob,target);
+	}
+	
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if(((mob.location().domainType()&Room.INDOORS)>0)&&(!auto))
@@ -79,8 +79,8 @@ public class Chant_SummonHeat extends Chant
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-                Climate C=mob.location().getArea().getClimateObj();
-                Climate oldC=(Climate)C.copyOf();
+				Climate C=mob.location().getArea().getClimateObj();
+				Climate oldC=(Climate)C.copyOf();
 				switch(C.weatherType(mob.location()))
 				{
 				case Climate.WEATHER_BLIZZARD:
@@ -126,7 +126,7 @@ public class Chant_SummonHeat extends Chant
 					break;
 				}
 				C.forceWeatherTick(mob.location().getArea());
-                Chant_CalmWeather.xpWorthyChange(mob,mob.location().getArea(),oldC,C);
+				Chant_CalmWeather.xpWorthyChange(mob,mob.location().getArea(),oldC,C);
 			}
 		}
 		else

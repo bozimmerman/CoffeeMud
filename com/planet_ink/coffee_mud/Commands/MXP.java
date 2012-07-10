@@ -25,7 +25,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -46,25 +46,25 @@ public class MXP extends StdCommand
 		if(!mob.isMonster())
 		{
 			if((!CMath.bset(mob.getBitmap(),MOB.ATT_MXP))
-            ||(!mob.session().clientTelnetMode(Session.TELNET_MXP)))
+			||(!mob.session().clientTelnetMode(Session.TELNET_MXP)))
 			{
-                mob.session().changeTelnetMode(Session.TELNET_MXP,true);
-                if(mob.session().getTerminalType().toLowerCase().startsWith("mushclient"))
-                	mob.session().negotiateTelnetMode(Session.TELNET_MXP);
-                for(int i=0;((i<5)&&(!mob.session().clientTelnetMode(Session.TELNET_MXP)));i++)
-                {
-                    try{mob.session().prompt("",250);}catch(Exception e){}
-                }
-                if(mob.session().clientTelnetMode(Session.TELNET_MXP))
-                {
+				mob.session().changeTelnetMode(Session.TELNET_MXP,true);
+				if(mob.session().getTerminalType().toLowerCase().startsWith("mushclient"))
+					mob.session().negotiateTelnetMode(Session.TELNET_MXP);
+				for(int i=0;((i<5)&&(!mob.session().clientTelnetMode(Session.TELNET_MXP)));i++)
+				{
+					try{mob.session().prompt("",250);}catch(Exception e){}
+				}
+				if(mob.session().clientTelnetMode(Session.TELNET_MXP))
+				{
 					mob.setBitmap(CMath.setb(mob.getBitmap(),MOB.ATT_MXP));
 					StringBuffer mxpText=Resources.getFileResource("text/mxp.txt",true);
-			        if(mxpText!=null)
-			            mob.session().rawOut("\033[6z\n\r"+mxpText.toString()+"\n\r");
+					if(mxpText!=null)
+						mob.session().rawOut("\033[6z\n\r"+mxpText.toString()+"\n\r");
 					mob.tell("MXP codes enabled.\n\r");
-			    }
-                else
-                    mob.tell("Your client does not appear to support MXP.");
+				}
+				else
+					mob.tell("Your client does not appear to support MXP.");
 			}
 			else
 				mob.tell("MXP codes are already enabled.\n\r");

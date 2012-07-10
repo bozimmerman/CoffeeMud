@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -49,73 +49,73 @@ public class StdCoins extends StdItem implements Coins
 		basePhyStats.setWeight(0);
 		recoverPhyStats();
 	}
-    protected boolean abilityImbuesMagic(){return false;}
+	protected boolean abilityImbuesMagic(){return false;}
 
 	public String Name()
 	{
-        return CMLib.beanCounter().getDenominationName(getCurrency(),getDenomination(),getNumberOfCoins());
+		return CMLib.beanCounter().getDenominationName(getCurrency(),getDenomination(),getNumberOfCoins());
 	}
 	public String displayText()
 	{
-        return CMLib.beanCounter().getDenominationName(getCurrency(),getDenomination(),getNumberOfCoins())+((getNumberOfCoins()==1)?" lies here.":" lie here.");
+		return CMLib.beanCounter().getDenominationName(getCurrency(),getDenomination(),getNumberOfCoins())+((getNumberOfCoins()==1)?" lies here.":" lie here.");
 	}
 
 	public void setDynamicMaterial()
 	{
-	    if((CMLib.english().containsString(name(),"note"))
-	    ||(CMLib.english().containsString(name(),"bill"))
-	    ||(CMLib.english().containsString(name(),"dollar")))
-	        setMaterial(RawMaterial.RESOURCE_PAPER);
-	    else
-	    {
-	    	RawMaterial.CODES codes = RawMaterial.CODES.instance();
+		if((CMLib.english().containsString(name(),"note"))
+		||(CMLib.english().containsString(name(),"bill"))
+		||(CMLib.english().containsString(name(),"dollar")))
+			setMaterial(RawMaterial.RESOURCE_PAPER);
+		else
+		{
+			RawMaterial.CODES codes = RawMaterial.CODES.instance();
 			for(int s=0;s<codes.total();s++)
-			    if(CMLib.english().containsString(name(),codes.name(s)))
-			    {
-			        setMaterial(codes.get(s));
-			        break;
-			    }
-	    }
+				if(CMLib.english().containsString(name(),codes.name(s)))
+				{
+					setMaterial(codes.get(s));
+					break;
+				}
+		}
 		setDescription(CMLib.beanCounter().getConvertableDescription(getCurrency(),getDenomination()));
 	}
 	public long getNumberOfCoins(){return phyStats().ability();}
 	public void setNumberOfCoins(long number)
 	{
-	    if(number<=Integer.MAX_VALUE)
-		    basePhyStats().setAbility((int)number);
-	    else
-	        basePhyStats().setAbility(Integer.MAX_VALUE);
-	    phyStats().setAbility(basePhyStats().ability());
-    }
+		if(number<=Integer.MAX_VALUE)
+			basePhyStats().setAbility((int)number);
+		else
+			basePhyStats().setAbility(Integer.MAX_VALUE);
+		phyStats().setAbility(basePhyStats().ability());
+	}
 	public double getDenomination(){return denomination;}
 	public void setDenomination(double valuePerCoin)
 	{
-	    denomination=valuePerCoin;
-	    setMiscText(getCurrency()+"/"+valuePerCoin);
+		denomination=valuePerCoin;
+		setMiscText(getCurrency()+"/"+valuePerCoin);
 	}
 	public double getTotalValue(){return CMath.mul(getDenomination(),getNumberOfCoins());}
 	public String getCurrency(){ return currency;}
 	public void setCurrency(String named)
 	{
-	    currency=named;
-	    setMiscText(named+"/"+getDenomination());
+		currency=named;
+		setMiscText(named+"/"+getDenomination());
 	}
 
 	public void setMiscText(String text)
 	{
-	    super.setMiscText(text);
-	    int x=text.indexOf('/');
-	    if(x>=0)
-	    {
-	        currency=text.substring(0,x);
-	        denomination=CMath.s_double(text.substring(x+1));
-	        setDynamicMaterial();
-	    }
-	    else
-	    {
-	        setDenomination(1.0);
-	        setCurrency("");
-	    }
+		super.setMiscText(text);
+		int x=text.indexOf('/');
+		if(x>=0)
+		{
+			currency=text.substring(0,x);
+			denomination=CMath.s_double(text.substring(x+1));
+			setDynamicMaterial();
+		}
+		else
+		{
+			setDenomination(1.0);
+			setCurrency("");
+		}
 	}
 	public void recoverPhyStats()
 	{
@@ -127,14 +127,14 @@ public class StdCoins extends StdItem implements Coins
 		for(final Enumeration<Ability> a=effects();a.hasMoreElements();)
 		{
 			final Ability A=a.nextElement();
-            if(A!=null)	A.affectPhyStats(this,phyStats);
+			if(A!=null)	A.affectPhyStats(this,phyStats);
 		}
 	}
 
 	public boolean putCoinsBack()
 	{
-	    if(amDestroyed())
-	        return false;
+		if(amDestroyed())
+			return false;
 		Coins alternative=null;
 		if(owner() instanceof Room)
 		{

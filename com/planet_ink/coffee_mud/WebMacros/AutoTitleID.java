@@ -25,7 +25,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -41,11 +41,11 @@ public class AutoTitleID extends StdWebMacro
 	{
 		String last=httpReq.getRequestParameter("AUTOTITLE");
 		if(last==null) return " @break@";
-        java.util.Map<String,String> parms=parseParms(parm);
-        try {
-            if(parms.containsKey("ENCODED"))
-        		return URLEncoder.encode(last,"UTF-8");
-        } catch(Exception e) {}
-        return clearWebMacros(last);
+		java.util.Map<String,String> parms=parseParms(parm);
+		try {
+			if(parms.containsKey("ENCODED"))
+				return URLEncoder.encode(last,"UTF-8");
+		} catch(Exception e) {}
+		return clearWebMacros(last);
 	}
 }

@@ -23,7 +23,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -54,12 +54,12 @@ public class Poison_Hives extends Poison
 	protected String POISON_FAIL(){return "<S-NAME> attempt(s) to poison <T-NAMESELF>, but fail(s).";}
 	protected int POISON_DAMAGE(){return 0;}
 
-    public Poison_Hives()
-    {
-        super();
+	public Poison_Hives()
+	{
+		super();
 
-        poisonTick = 0;
-    }
+		poisonTick = 0;
+	}
 
 	public boolean tick(Tickable ticking, int tickID)
 	{
@@ -70,7 +70,7 @@ public class Poison_Hives extends Poison
 		MOB mob=(MOB)affected;
 		if((!mob.amDead())&&((--poisonTick)<=0))
 		{
-		    poisonTick=POISON_DELAY();
+			poisonTick=POISON_DELAY();
 			mob.location().show(mob,null,CMMsg.MSG_NOISYMOVEMENT,POISON_AFFECT());
 			return true;
 		}

@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -65,7 +65,7 @@ public class Trap_Trap extends StdAbility implements Trap
 	// as these are not standard traps, we return this!
 	public boolean maySetTrap(MOB mob, int asLevel){return false;}
 	public boolean canSetTrapOn(MOB mob, Physical P){return false;}
-    public List<Item> getTrapComponents() { return new Vector(); }
+	public List<Item> getTrapComponents() { return new Vector(); }
 	public String requiresToSet(){return "";}
 	public Trap setTrap(MOB mob, Physical P, int trapBonus, int qualifyingClassLevel, boolean perm)
 	{
@@ -79,17 +79,17 @@ public class Trap_Trap extends StdAbility implements Trap
 		T.setReset(rejuv);
 		T.setInvoker(mob);
 		P.addEffect(T);
-        T.setAbilityCode(trapBonus);
-        if(perm)
-        {
-            T.setSavable(true);
-            T.makeNonUninvokable();
-        }
-        else
-        {
-            T.setSavable(false);
-    		CMLib.threads().startTickDown(T,Tickable.TICKID_TRAP_DESTRUCTION,level*30);
-        }
+		T.setAbilityCode(trapBonus);
+		if(perm)
+		{
+			T.setSavable(true);
+			T.makeNonUninvokable();
+		}
+		else
+		{
+			T.setSavable(false);
+			CMLib.threads().startTickDown(T,Tickable.TICKID_TRAP_DESTRUCTION,level*30);
+		}
 		return T;
 	}
 	public void gas(MOB mob)

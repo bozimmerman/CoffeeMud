@@ -26,7 +26,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -45,13 +45,13 @@ public class Thief_IdentifyBombs extends ThiefSkill
 	public boolean isAutoInvoked(){return true;}
 	public boolean canBeUninvoked(){return false;}
 	protected Room lastRoom=null;
-    public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_DETRAP;}
+	public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_DETRAP;}
 
 	public String trapCheck(Physical P)
 	{
 		if(P!=null)
 		{
-		    Trap T=CMLib.utensils().fetchMyTrap(P);
+			Trap T=CMLib.utensils().fetchMyTrap(P);
 			if((T!=null)&&(T.isABomb()))
 			{
 				if(CMLib.dice().rollPercentage()==1)
@@ -127,9 +127,9 @@ public class Thief_IdentifyBombs extends ThiefSkill
 			ShopKeeper SK=CMLib.coffeeShops().getShopKeeper(P);
 			if(SK!=null)
 			{
-	            for(Iterator<Environmental> i=SK.getShop().getStoreInventory();i.hasNext();)
-	            {
-	                Environmental E2=(Environmental)i.next();
+				for(Iterator<Environmental> i=SK.getShop().getStoreInventory();i.hasNext();)
+				{
+					Environmental E2=(Environmental)i.next();
 					if(E2 instanceof Item)
 						if(trapCheck((Item)E2).length()>0)
 						{

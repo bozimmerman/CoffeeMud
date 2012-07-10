@@ -25,7 +25,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -61,9 +61,9 @@ public class EndlessThinSky extends StdThinGrid
 
 	public CMObject newInstance()
 	{
-	    if(!CMSecurity.isDisabled(CMSecurity.DisFlag.THINGRIDS))
-	        return super.newInstance();
-        return new EndlessSky().newInstance();
+		if(!CMSecurity.isDisabled(CMSecurity.DisFlag.THINGRIDS))
+			return super.newInstance();
+		return new EndlessSky().newInstance();
 	}
 	
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
@@ -96,8 +96,8 @@ public class EndlessThinSky extends StdThinGrid
 		&&(rawDoors()[Directions.UP]!=null)
 		&&(exits[Directions.UP]!=null))
 		{
-		    R.rawDoors()[Directions.UP]=null;
-		    R.setRawExit(Directions.UP,null);
+			R.rawDoors()[Directions.UP]=null;
+			R.setRawExit(Directions.UP,null);
 			linkRoom(R,rawDoors()[Directions.UP],Directions.UP,exits[Directions.UP],exits[Directions.UP]);
 		}
 		else
@@ -126,10 +126,10 @@ public class EndlessThinSky extends StdThinGrid
 		if((y==yGridSize()-1)
 		&&(R.rawDoors()[Directions.DOWN]!=rawDoors()[Directions.DOWN])
 		&&(rawDoors()[Directions.DOWN]!=null)
-	    &&(exits[Directions.DOWN]!=null))
+		&&(exits[Directions.DOWN]!=null))
 		{
-		    R.rawDoors()[Directions.DOWN]=null;
-		    R.setRawExit(Directions.DOWN,null);
+			R.rawDoors()[Directions.DOWN]=null;
+			R.setRawExit(Directions.DOWN,null);
 			linkRoom(R,rawDoors()[Directions.DOWN],Directions.DOWN,exits[Directions.DOWN],exits[Directions.DOWN]);
 		}
 		else
@@ -184,36 +184,36 @@ public class EndlessThinSky extends StdThinGrid
 			if(R2!=null)
 				linkRoom(R,R2,Directions.EAST,ox,ox);
 		}
-        
-        if(Directions.NORTHEAST<Directions.NUM_DIRECTIONS())
-        {
-            if(((x==0)||(y==0))&&(R.rawDoors()[Directions.NORTHWEST]==null))
-            {
-                R2=getMakeSingleGridRoom(xGridSize()-1,yGridSize()-1);
-                if(R2!=null)
-                    linkRoom(R,R2,Directions.NORTHWEST,ox,ox);
-            }
-            else
-            if(((x==xGridSize()-1)||(y==yGridSize()-1))&&(R.rawDoors()[Directions.SOUTHEAST]==null))
-            {
-                R2=getMakeSingleGridRoom(0,0);
-                if(R2!=null)
-                    linkRoom(R,R2,Directions.SOUTHEAST,ox,ox);
-            }
-            
-            if(((x==xGridSize()-1)||(y==0))&&(R.rawDoors()[Directions.NORTHEAST]==null))
-            {
-                R2=getMakeSingleGridRoom(0,yGridSize()-1);
-                if(R2!=null)
-                    linkRoom(R,R2,Directions.NORTHEAST,ox,ox);
-            }
-            else
-            if(((x==0)||(y==yGridSize()-1))&&(R.rawDoors()[Directions.SOUTHWEST]==null))
-            {
-                R2=getMakeSingleGridRoom(xGridSize()-1,0);
-                if(R2!=null)
-                    linkRoom(R,R2,Directions.SOUTHWEST,ox,ox);
-            }
-        }
+		
+		if(Directions.NORTHEAST<Directions.NUM_DIRECTIONS())
+		{
+			if(((x==0)||(y==0))&&(R.rawDoors()[Directions.NORTHWEST]==null))
+			{
+				R2=getMakeSingleGridRoom(xGridSize()-1,yGridSize()-1);
+				if(R2!=null)
+					linkRoom(R,R2,Directions.NORTHWEST,ox,ox);
+			}
+			else
+			if(((x==xGridSize()-1)||(y==yGridSize()-1))&&(R.rawDoors()[Directions.SOUTHEAST]==null))
+			{
+				R2=getMakeSingleGridRoom(0,0);
+				if(R2!=null)
+					linkRoom(R,R2,Directions.SOUTHEAST,ox,ox);
+			}
+			
+			if(((x==xGridSize()-1)||(y==0))&&(R.rawDoors()[Directions.NORTHEAST]==null))
+			{
+				R2=getMakeSingleGridRoom(0,yGridSize()-1);
+				if(R2!=null)
+					linkRoom(R,R2,Directions.NORTHEAST,ox,ox);
+			}
+			else
+			if(((x==0)||(y==yGridSize()-1))&&(R.rawDoors()[Directions.SOUTHWEST]==null))
+			{
+				R2=getMakeSingleGridRoom(xGridSize()-1,0);
+				if(R2!=null)
+					linkRoom(R,R2,Directions.SOUTHWEST,ox,ox);
+			}
+		}
 	}
 }

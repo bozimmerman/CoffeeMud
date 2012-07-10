@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -41,7 +41,7 @@ public class Prayer_CureSerious extends Prayer implements MendingSkill
 	public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
 	public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_HEALING;}
 	public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_HEALINGMAGIC;}
-    protected long minCastWaitTime(){return CMProps.getTickMillis()/2;}
+	protected long minCastWaitTime(){return CMProps.getTickMillis()/2;}
 
 	public boolean supportsMending(Physical item)
 	{ 
@@ -49,21 +49,21 @@ public class Prayer_CureSerious extends Prayer implements MendingSkill
 				&&((((MOB)item).curState()).getHitPoints()<(((MOB)item).maxState()).getHitPoints());
 	}
 	
-    public int castingQuality(MOB mob, Physical target)
-    {
-        if(mob!=null)
-        {
-            if(target instanceof MOB)
-            {
-                if(!supportsMending(target))
-                    return Ability.QUALITY_INDIFFERENT;
-                if(((MOB)target).charStats().getMyRace().racialCategory().equals("Undead"))
-                    return Ability.QUALITY_MALICIOUS;
-            }
-        }
-        return super.castingQuality(mob,target);
-    }
-    
+	public int castingQuality(MOB mob, Physical target)
+	{
+		if(mob!=null)
+		{
+			if(target instanceof MOB)
+			{
+				if(!supportsMending(target))
+					return Ability.QUALITY_INDIFFERENT;
+				if(((MOB)target).charStats().getMyRace().racialCategory().equals("Undead"))
+					return Ability.QUALITY_MALICIOUS;
+			}
+		}
+		return super.castingQuality(mob,target);
+	}
+	
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=this.getTarget(mob,commands,givenTarget);
@@ -90,7 +90,7 @@ public class Prayer_CureSerious extends Prayer implements MendingSkill
 				CMLib.combat().postHealing(mob,target,this,CMMsg.MASK_ALWAYS|CMMsg.TYP_CAST_SPELL,healing,null);
 				if(target.curState().getHitPoints()>oldHP)
 					target.tell("You feel better!");
-                lastCastHelp=System.currentTimeMillis();
+				lastCastHelp=System.currentTimeMillis();
 			}
 		}
 		else

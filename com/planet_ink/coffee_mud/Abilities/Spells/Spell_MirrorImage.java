@@ -25,7 +25,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -111,19 +111,19 @@ public class Spell_MirrorImage extends Spell
 		&&((CMLib.flags().canBeSeenBy(mob,msg.source()))&&(mob.displayText(msg.source()).length()>0)))
 		{
 			StringBuffer Say=new StringBuffer("");
-            boolean compress=CMath.bset(msg.source().getBitmap(),MOB.ATT_COMPRESS);
+			boolean compress=CMath.bset(msg.source().getBitmap(),MOB.ATT_COMPRESS);
 			for(int i=0;i<numberOfImages;i++)
 			{
 				Say.append("^M");
-                if(compress) Say.append(CMLib.flags().colorCodes(mob,mob)+"^M ");
-                if(mob.displayText(msg.source()).length()>0)
-                    Say.append(CMStrings.endWithAPeriod(CMStrings.capitalizeFirstLetter(mob.displayText(msg.source()))));
-                else
-                    Say.append(CMStrings.endWithAPeriod(CMStrings.capitalizeFirstLetter(mob.name())));
-                if(!compress)
-                    Say.append(CMLib.flags().colorCodes(mob,msg.source())+"^N\n\r");
-                else
-                    Say.append("^N");
+				if(compress) Say.append(CMLib.flags().colorCodes(mob,mob)+"^M ");
+				if(mob.displayText(msg.source()).length()>0)
+					Say.append(CMStrings.endWithAPeriod(CMStrings.capitalizeFirstLetter(mob.displayText(msg.source()))));
+				else
+					Say.append(CMStrings.endWithAPeriod(CMStrings.capitalizeFirstLetter(mob.name())));
+				if(!compress)
+					Say.append(CMLib.flags().colorCodes(mob,msg.source())+"^N\n\r");
+				else
+					Say.append("^N");
 			}
 			if(Say.toString().length()>0)
 			{

@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -44,17 +44,17 @@ public class Thief_TurfWar extends ThiefSkill
 	private static final String[] triggerStrings = {"TURFWAR"};
 	public String[] triggerStrings(){return triggerStrings;}
 	public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
-    public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_STREETSMARTS;}
-    public static Ability sparringRoomA=null;
-    protected MOB defender=null;
-    protected long defenderPKILLMask=0;
-    protected long timeToNextCast = 0;
+	public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_STREETSMARTS;}
+	public static Ability sparringRoomA=null;
+	protected MOB defender=null;
+	protected long defenderPKILLMask=0;
+	protected long timeToNextCast = 0;
 	public int getTicksBetweenCasts() { return CMProps.getIntVar(CMProps.SYSTEMI_TICKSPERMUDMONTH);}
 	public long getTimeOfNextCast(){ return timeToNextCast; }
 	public void setTimeOfNextCast(long absoluteTime) { timeToNextCast=absoluteTime;}
 
-    public static synchronized Ability getSparringRoom()
-    {
+	public static synchronized Ability getSparringRoom()
+	{
 		if(sparringRoomA==null)
 		{
 			sparringRoomA=CMClass.getAbility("Prop_SparringRoom");
@@ -65,8 +65,8 @@ public class Thief_TurfWar extends ThiefSkill
 			}
 		}
 		return sparringRoomA;
-    }
-    
+	}
+	
 	public boolean okMessage(Environmental host, CMMsg msg)
 	{
 		if(!super.okMessage(host,msg))
@@ -81,9 +81,9 @@ public class Thief_TurfWar extends ThiefSkill
 	public boolean isADefender(Room R, MOB M)
 	{
 		if(R==null) return false;
-        Ability A=R.fetchEffect("Thief_TagTurf");
+		Ability A=R.fetchEffect("Thief_TagTurf");
 		if(A==null) return false;
-        return ((A.text().equals(M.Name())
+		return ((A.text().equals(M.Name())
 				||((M.getClanID().length()>0)&&(M.getClanID().equals(A.text()))&&(M.getClanRole()>0))));
 	}
 	
@@ -194,26 +194,26 @@ public class Thief_TurfWar extends ThiefSkill
 			return false;
 		}
 		
-        A=target.fetchEffect("Thief_TagTurf");
-        Clan turfC=null;
-        MOB turfM=null;
+		A=target.fetchEffect("Thief_TagTurf");
+		Clan turfC=null;
+		MOB turfM=null;
 		if(A!=null)
 		{
-            if((A.text().equals(mob.Name())
-        		||((mob.getClanID().length()>0)&&(mob.getClanID().equals(A.text()))&&(mob.getClanRole()>0))))
-            {
-                mob.tell("You can't declare war on your own turf!");
-                return true;
-            }
-            turfC=CMLib.clans().getClan(A.text());
-            if(turfC==null)
-            	turfM=CMLib.players().getLoadPlayer(A.text());
-            if(turfM==null)
-            {
-            	A.unInvoke();
-                mob.tell("This turf is untagged.");
-                return true;
-            }
+			if((A.text().equals(mob.Name())
+				||((mob.getClanID().length()>0)&&(mob.getClanID().equals(A.text()))&&(mob.getClanRole()>0))))
+			{
+				mob.tell("You can't declare war on your own turf!");
+				return true;
+			}
+			turfC=CMLib.clans().getClan(A.text());
+			if(turfC==null)
+				turfM=CMLib.players().getLoadPlayer(A.text());
+			if(turfM==null)
+			{
+				A.unInvoke();
+				mob.tell("This turf is untagged.");
+				return true;
+			}
 		}
 		else
 		{

@@ -23,7 +23,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -41,7 +41,7 @@ public class Butchering extends GatheringSkill
 	public String[] triggerStrings(){return triggerStrings;}
 
 	public String supportedResourceString(){return "FLESH|LEATHER|BLOOD|BONE|MILK|EGGS|WOOL";}
-    protected DeadBody body=null;
+	protected DeadBody body=null;
 	protected boolean failed=false;
 	public Butchering()
 	{
@@ -102,15 +102,15 @@ public class Butchering extends GatheringSkill
 		body=null;
 		Item I=null;
 		
-        bundling=false;
+		bundling=false;
 		if((!auto)
 		&&(commands.size()>0)
 		&&(((String)commands.firstElement()).equalsIgnoreCase("bundle")))
 		{
-            bundling=true;
+			bundling=true;
 			if(super.invoke(mob,commands,givenTarget,auto,asLevel))
-			    return super.bundle(mob,commands);
-		    return false;
+				return super.bundle(mob,commands);
+			return false;
 		}
 		
 		
@@ -137,7 +137,7 @@ public class Butchering extends GatheringSkill
 		if(I==null) return false;
 		if((!(I instanceof DeadBody))
 		   ||(((DeadBody)I).charStats()==null)
-           ||((DeadBody)I).playerCorpse()
+		   ||((DeadBody)I).playerCorpse()
 		   ||(((DeadBody)I).charStats().getMyRace()==null))
 		{
 			commonTell(mob,"You can't butcher "+I.name()+".");
@@ -158,7 +158,7 @@ public class Butchering extends GatheringSkill
 			mob.location().send(mob,msg);
 			body=(DeadBody)I;
 			verb="skinning and butchering "+I.name();
-            playSound="ripping.wav";
+			playSound="ripping.wav";
 			int duration=((I.phyStats().weight()/(10+getXLEVELLevel(mob))));
 			if(duration<3) duration=3;
 			if(duration>40) duration=40;

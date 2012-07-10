@@ -25,7 +25,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -103,7 +103,7 @@ public class Spell_IronGrip extends Spell
 			if((msg.amISource(mob))
 			&&(msg.sourceMinor()==CMMsg.TYP_THROW)
 			&&(msg.tool() instanceof Item)
-            &&(!((Item)msg.tool()).amWearingAt(Wearable.IN_INVENTORY))
+			&&(!((Item)msg.tool()).amWearingAt(Wearable.IN_INVENTORY))
 			&&(mob.isMine(msg.tool())))
 			{
 				mob.location().show(mob,null,msg.tool(),CMMsg.MSG_OK_ACTION,"<S-NAME> attempt(s) to let go of <O-NAME>, but <S-HIS-HER> grip is too strong!");

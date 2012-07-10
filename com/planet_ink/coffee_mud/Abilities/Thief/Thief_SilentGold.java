@@ -25,7 +25,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -41,7 +41,7 @@ public class Thief_SilentGold extends ThiefSkill
 	public String name(){ return "Silent AutoGold";}
 	protected int canAffectCode(){return CAN_MOBS;}
 	protected int canTargetCode(){return 0;}
-    public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_STEALING;}
+	public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_STEALING;}
 	public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
 	private static final String[] triggerStrings = {"SILENTGOLD"};
 	public String[] triggerStrings(){return triggerStrings;}
@@ -58,16 +58,16 @@ public class Thief_SilentGold extends ThiefSkill
 			&&(msg!=lastMsg)
 			&&(msg.source().location()==((MOB)affected).location()))
 			{
-			    lastMsg=msg;
-			    double money=CMLib.beanCounter().getTotalAbsoluteNativeValue(msg.source());
-                double exper=(double)getXLEVELLevel((MOB)affected);
-                double gold=money/10.0*((2.0+exper)/2);
+				lastMsg=msg;
+				double money=CMLib.beanCounter().getTotalAbsoluteNativeValue(msg.source());
+				double exper=(double)getXLEVELLevel((MOB)affected);
+				double gold=money/10.0*((2.0+exper)/2);
 				if(gold>0.0)
 				{
 					Coins C=CMLib.beanCounter().makeBestCurrency(msg.source(),gold);
 					if((C!=null)&&(C.getNumberOfCoins()>0))
 					{
-					    CMLib.beanCounter().subtractMoney(msg.source(),C.getTotalValue());
+						CMLib.beanCounter().subtractMoney(msg.source(),C.getTotalValue());
 						MOB mob=(MOB)affected;
 						mob.location().addItem(C,ItemPossessor.Expire.Monster_EQ);
 						mob.location().recoverRoomStats();

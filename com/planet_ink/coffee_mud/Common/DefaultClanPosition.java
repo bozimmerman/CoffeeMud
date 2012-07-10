@@ -22,7 +22,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -33,8 +33,8 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 public class DefaultClanPosition implements ClanPosition
 {
-    public String ID(){return "DefaultClanPosition";}
-    
+	public String ID(){return "DefaultClanPosition";}
+	
 	/** the named ID of the position */
 	protected String 	ID;
 	/** the named ID of the position */
@@ -54,22 +54,22 @@ public class DefaultClanPosition implements ClanPosition
 	/** a chart of whether this position can perform the indexed function in this government */
 	protected Clan.Authority[] functionChart;
 	
-    /** return a new instance of the object*/
-    public CMObject newInstance(){try{return (CMObject)getClass().newInstance();}catch(Exception e){return new DefaultClanPosition();}}
-    public void initializeClass(){}
-    public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
-    public CMObject copyOf()
-    {
-        try
-        {
-            return (ClanPosition)this.clone();
-        }
-        catch(CloneNotSupportedException e)
-        {
-            return new DefaultClanPosition();
-        }
-    }
-    
+	/** return a new instance of the object*/
+	public CMObject newInstance(){try{return (CMObject)getClass().newInstance();}catch(Exception e){return new DefaultClanPosition();}}
+	public void initializeClass(){}
+	public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
+	public CMObject copyOf()
+	{
+		try
+		{
+			return (ClanPosition)this.clone();
+		}
+		catch(CloneNotSupportedException e)
+		{
+			return new DefaultClanPosition();
+		}
+	}
+	
 	public String getID() {
 		return ID;
 	}

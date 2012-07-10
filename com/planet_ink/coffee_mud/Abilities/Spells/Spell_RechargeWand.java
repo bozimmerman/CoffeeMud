@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -40,7 +40,7 @@ public class Spell_RechargeWand extends Spell
 	protected int canTargetCode(){return CAN_ITEMS;}
 	public int overrideMana(){return 100;}
 	public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_ENCHANTMENT;}
-    public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
+	public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
 
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
@@ -69,20 +69,20 @@ public class Spell_RechargeWand extends Spell
 					mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,"<T-NAME> glow(s) brightly then disintigrates!");
 					target.destroy();
 				}
-                else 
+				else 
 				{
-                    boolean willBreak = false;
-                    if((((Wand)target).usesRemaining()+10) >= ((Wand)target).maxUses())
-                        willBreak = true;
+					boolean willBreak = false;
+					if((((Wand)target).usesRemaining()+10) >= ((Wand)target).maxUses())
+						willBreak = true;
 					((Wand)target).setUsesRemaining(((Wand)target).usesRemaining()+5);
-                    if(!(willBreak)) 
+					if(!(willBreak)) 
 					{
-                        mob.location().show(mob, target, CMMsg.MSG_OK_VISUAL, "<T-NAME> glow(s) brightly!");
-                    }
-                    else 
+						mob.location().show(mob, target, CMMsg.MSG_OK_VISUAL, "<T-NAME> glow(s) brightly!");
+					}
+					else 
 					{
-                        mob.location().show(mob, target, CMMsg.MSG_OK_VISUAL, "<T-NAME> glow(s) brightly and begins to hum.  It clearly cannot hold more magic.");
-                    }
+						mob.location().show(mob, target, CMMsg.MSG_OK_VISUAL, "<T-NAME> glow(s) brightly and begins to hum.  It clearly cannot hold more magic.");
+					}
 				}
 			}
 

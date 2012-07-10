@@ -25,7 +25,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -62,19 +62,19 @@ public class Prayer_MassCureDisease extends Prayer implements MendingSkill
 		return offenders;
 	}
 
-    public int castingQuality(MOB mob, Physical target)
-    {
-        if(mob!=null)
-        {
-            if(target instanceof MOB)
-            {
-                if(supportsMending((MOB)target))
-                    return super.castingQuality(mob, target,Ability.QUALITY_BENEFICIAL_OTHERS);
-            }
-        }
-        return super.castingQuality(mob,target);
-    }
-    
+	public int castingQuality(MOB mob, Physical target)
+	{
+		if(mob!=null)
+		{
+			if(target instanceof MOB)
+			{
+				if(supportsMending((MOB)target))
+					return super.castingQuality(mob, target,Ability.QUALITY_BENEFICIAL_OTHERS);
+			}
+		}
+		return super.castingQuality(mob,target);
+	}
+	
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
@@ -92,12 +92,12 @@ public class Prayer_MassCureDisease extends Prayer implements MendingSkill
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-                boolean worked=false;
-    			TrackingLibrary.TrackingFlags flags=new TrackingLibrary.TrackingFlags();
-    			List<Room> checkSet=CMLib.tracking().getRadiantRooms(mob.location(),flags,100);
-    			for(Iterator<Room> r=checkSet.iterator();r.hasNext();)
-    			{
-    				Room R=CMLib.map().getRoom(r.next());
+				boolean worked=false;
+				TrackingLibrary.TrackingFlags flags=new TrackingLibrary.TrackingFlags();
+				List<Room> checkSet=CMLib.tracking().getRadiantRooms(mob.location(),flags,100);
+				for(Iterator<Room> r=checkSet.iterator();r.hasNext();)
+				{
+					Room R=CMLib.map().getRoom(r.next());
 					for(int m=0;m<R.numInhabitants();m++)
 					{
 						MOB target=R.fetchInhabitant(m);
@@ -109,30 +109,30 @@ public class Prayer_MassCureDisease extends Prayer implements MendingSkill
 								boolean badOnes=false;
 								for(int a=offensiveAffects.size()-1;a>=0;a--)
 								{
-								    Ability A=((Ability)offensiveAffects.get(a));
-								    if(A instanceof DiseaseAffect)
-								    {
-								        if((A.invoker()!=mob)
-								        &&((((DiseaseAffect)A).difficultyLevel()*10)>adjustedLevel(mob,asLevel)))
-								            badOnes=true;
-								        else
+									Ability A=((Ability)offensiveAffects.get(a));
+									if(A instanceof DiseaseAffect)
+									{
+										if((A.invoker()!=mob)
+										&&((((DiseaseAffect)A).difficultyLevel()*10)>adjustedLevel(mob,asLevel)))
+											badOnes=true;
+										else
 											A.unInvoke();
-								    }
-								    else
-								        A.unInvoke();
-                                    if(target.fetchEffect(A.ID())==null)
-                                        worked=true;
+									}
+									else
+										A.unInvoke();
+									if(target.fetchEffect(A.ID())==null)
+										worked=true;
 								}
 								if(badOnes)
-								    mob.tell(mob,target,null,"<T-NAME> had diseases too powerful for this magic.");
+									mob.tell(mob,target,null,"<T-NAME> had diseases too powerful for this magic.");
 								if(!CMLib.flags().stillAffectedBy(target,offensiveAffects,false))
 									target.tell("You feel much better!");
 							}
 						}
 					}
 				}
-                if((worked)&&(!auto))
-                    mob.tell("Your healing prayer has cured the sick.");
+				if((worked)&&(!auto))
+					mob.tell("Your healing prayer has cured the sick.");
 			}
 		}
 		else

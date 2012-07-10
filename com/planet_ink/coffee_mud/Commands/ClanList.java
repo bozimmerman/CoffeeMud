@@ -23,7 +23,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -41,7 +41,7 @@ public class ClanList extends StdCommand
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
-	    boolean trophySystemActive=CMLib.clans().trophySystemActive();
+		boolean trophySystemActive=CMLib.clans().trophySystemActive();
 		StringBuffer head=new StringBuffer("");
 		head.append("^x[");
 		head.append(CMStrings.padRight("Clan Name",30)+"| ");
@@ -58,12 +58,12 @@ public class ClanList extends StdCommand
 			if(!thisClan.isPubliclyListedFor(mob))
 				continue;
 			
-            StringBuffer trophySet = new StringBuffer("");
-            if(trophySystemActive)
-                for(int i=0;i<Clan.TROPHY_DESCS_SHORT.length;i++)
-                    if((Clan.TROPHY_DESCS_SHORT[i].length()>0)&&(CMath.bset(thisClan.getTrophies(),i)))
-                        trophySet.append(Clan.TROPHY_DESCS_SHORT[i]+" ");
-            
+			StringBuffer trophySet = new StringBuffer("");
+			if(trophySystemActive)
+				for(int i=0;i<Clan.TROPHY_DESCS_SHORT.length;i++)
+					if((Clan.TROPHY_DESCS_SHORT[i].length()>0)&&(CMath.bset(thisClan.getTrophies(),i)))
+						trophySet.append(Clan.TROPHY_DESCS_SHORT[i]+" ");
+			
 			msg.append(" ");
 			msg.append("^<CLAN^>"+CMStrings.padRight(CMStrings.removeColors(thisClan.clanID()),30)+"^</CLAN^>  ");
 			msg.append(CMStrings.padRight(thisClan.getGovernmentName(),10)+"  ");
@@ -88,7 +88,7 @@ public class ClanList extends StdCommand
 			}
 			msg.append(CMStrings.padRight(status,7)+"  ");
 			msg.append(CMStrings.padRight(Integer.toString(thisClan.getSize()),7)+"   ");
-	        msg.append(trophySet);
+			msg.append(trophySet);
 			msg.append("\n\r");
 		}
 		mob.tell(head.toString()+msg.toString());

@@ -23,7 +23,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -40,7 +40,7 @@ public class Poison_Alcohol extends Poison
 	private static final String[] triggerStrings = {"POISONALCOHOL"};
 	public String displayText(){ return (drunkness<=3)?"(Tipsy)":((drunkness<10)?"(Drunk)":"(Smashed)");}
 	public String[] triggerStrings(){return triggerStrings;}
-    public long flags(){return super.flags()|Ability.FLAG_INTOXICATING;}
+	public long flags(){return super.flags()|Ability.FLAG_INTOXICATING;}
 
 	protected int POISON_TICKS(){return 65;}
 	protected int POISON_DELAY(){return 1;}
@@ -90,25 +90,25 @@ public class Poison_Alcohol extends Poison
 		super.unInvoke();
 	}
 
-    protected boolean catchIt(MOB mob, Physical target)
-    {
-        boolean caughtIt=super.catchIt(mob,target);
-        if(!(affected instanceof Drink)) 
-        	return caughtIt;
-        if(CMLib.dice().roll(1,1000,0)>(alchoholContribution()*alchoholContribution()*alchoholContribution()))
-            return caughtIt;
-        if((target!=null)&&(target instanceof MOB)&&(target.fetchEffect(ID())==null))
-        {
-            MOB targetMOB=(MOB)target;
-            Ability A=targetMOB.fetchEffect("Addictions");
-            if(A==null)
-            {
-                A=CMClass.getAbility("Addictions");
-                if(A!=null) A.invoke(targetMOB,affected,true,0);
-            }
-        }
-        return caughtIt;
-    }
+	protected boolean catchIt(MOB mob, Physical target)
+	{
+		boolean caughtIt=super.catchIt(mob,target);
+		if(!(affected instanceof Drink)) 
+			return caughtIt;
+		if(CMLib.dice().roll(1,1000,0)>(alchoholContribution()*alchoholContribution()*alchoholContribution()))
+			return caughtIt;
+		if((target!=null)&&(target instanceof MOB)&&(target.fetchEffect(ID())==null))
+		{
+			MOB targetMOB=(MOB)target;
+			Ability A=targetMOB.fetchEffect("Addictions");
+			if(A==null)
+			{
+				A=CMClass.getAbility("Addictions");
+				if(A!=null) A.invoke(targetMOB,affected,true,0);
+			}
+		}
+		return caughtIt;
+	}
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID))
@@ -297,7 +297,7 @@ public class Poison_Alcohol extends Poison
 				Room R=(((MOB)givenTarget).location()!=null)?((MOB)givenTarget).location():mob.location();
 				if(R.okMessage(mob,msg))
 				{
-				    R.send(mob,msg);
+					R.send(mob,msg);
 					if(msg.value()<=0)
 					{
 						R.show((MOB)givenTarget,null,CMMsg.MSG_OK_VISUAL,POISON_START());

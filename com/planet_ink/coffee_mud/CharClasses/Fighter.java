@@ -25,7 +25,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -58,10 +58,10 @@ public class Fighter extends StdCharClass
 	{
 		super();
 		maxStatAdj[CharStats.STAT_STRENGTH]=7;
-    }
-    public void initializeClass()
-    {
-        super.initializeClass();
+	}
+	public void initializeClass()
+	{
+		super.initializeClass();
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Write",50,true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Specialization_Axe",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Specialization_BluntWeapon",true);
@@ -167,9 +167,9 @@ public class Fighter extends StdCharClass
 		if(mob.playerStats()==null)
 		{
 			List<AbilityMapper.AbilityMapping> V=CMLib.ableMapper().getUpToLevelListings(ID(),
-            												 mob.charStats().getClassLevel(ID()),
-            												 false,
-            												 false);
+															 mob.charStats().getClassLevel(ID()),
+															 false,
+															 false);
 			for(AbilityMapper.AbilityMapping able : V)
 			{
 				Ability A=CMClass.getAbility(able.abilityID);
@@ -181,30 +181,30 @@ public class Fighter extends StdCharClass
 		}
 	}
 
-    public void executeMsg(Environmental host, CMMsg msg){ super.executeMsg(host,msg); Fighter.conquestExperience(this,host,msg);}
-    public String getOtherBonusDesc(){return "Receives bonus conquest experience.";}
-    public static void conquestExperience(CharClass C, Environmental host, CMMsg msg)
-    {
-        if((msg.targetMinor()==CMMsg.TYP_AREAAFFECT)
-        &&(msg.target() instanceof Area)
-        &&(msg.targetMessage()!=null)
-        &&(msg.targetMessage().equalsIgnoreCase("CONQUEST"))
-        &&(host instanceof MOB)
-        &&(((MOB)host).charStats().getCurrentClass().ID().equals(C.ID()))
-        &&(msg.source().Name().equals(((MOB)host).getClanID()))
-        )
-        {
-            Area A=(Area)msg.target();
-            int xp=(int)Math.round(50.0*CMath.div(A.getAreaIStats()[Area.AREASTAT_AVGLEVEL],((MOB)host).phyStats().level()));
-            if(xp>500) xp=500;
-            if(xp>0)
-            {
-                ((MOB)host).tell("^YVictory!!^N");
-                CMLib.leveler().postExperience((MOB)host,null,null,xp,false);
-            }
-        }
-    }
-    
+	public void executeMsg(Environmental host, CMMsg msg){ super.executeMsg(host,msg); Fighter.conquestExperience(this,host,msg);}
+	public String getOtherBonusDesc(){return "Receives bonus conquest experience.";}
+	public static void conquestExperience(CharClass C, Environmental host, CMMsg msg)
+	{
+		if((msg.targetMinor()==CMMsg.TYP_AREAAFFECT)
+		&&(msg.target() instanceof Area)
+		&&(msg.targetMessage()!=null)
+		&&(msg.targetMessage().equalsIgnoreCase("CONQUEST"))
+		&&(host instanceof MOB)
+		&&(((MOB)host).charStats().getCurrentClass().ID().equals(C.ID()))
+		&&(msg.source().Name().equals(((MOB)host).getClanID()))
+		)
+		{
+			Area A=(Area)msg.target();
+			int xp=(int)Math.round(50.0*CMath.div(A.getAreaIStats()[Area.AREASTAT_AVGLEVEL],((MOB)host).phyStats().level()));
+			if(xp>500) xp=500;
+			if(xp>0)
+			{
+				((MOB)host).tell("^YVictory!!^N");
+				CMLib.leveler().postExperience((MOB)host,null,null,xp,false);
+			}
+		}
+	}
+	
 	public List<Item> outfit(MOB myChar)
 	{
 		if(outfitChoices==null)

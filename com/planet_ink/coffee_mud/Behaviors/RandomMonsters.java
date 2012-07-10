@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -52,28 +52,28 @@ public class RandomMonsters extends ActiveTicker
 	
 	public List<String> externalFiles()
 	{
-        Vector xmlfiles=new Vector();
-        String theseparms=getParms();
+		Vector xmlfiles=new Vector();
+		String theseparms=getParms();
 		int x=theseparms.indexOf(';');
 		String filename=(x>=0)?theseparms.substring(x+1):theseparms;
 		if(filename.trim().length()==0)
-		    return null;
+			return null;
 		int start=filename.indexOf("<MOBS>");
 		if((start<0)||(start>20))
 		{
 			int extraSemicolon=filename.indexOf(';');
 			if(extraSemicolon>=0) filename=filename.substring(0,extraSemicolon);
 			if(filename.trim().length()>0)
-			    xmlfiles.addElement(filename.trim());
-		    return xmlfiles;
-	    }
+				xmlfiles.addElement(filename.trim());
+			return xmlfiles;
+		}
 		return null;
 	}
 
 
 	public void setParms(String newParms)
 	{
-        maintained=new Vector();
+		maintained=new Vector();
 		int x=newParms.indexOf(';');
 		String oldParms=newParms;
 		restrictedLocales=null;
@@ -153,7 +153,7 @@ public class RandomMonsters extends ActiveTicker
 
 	public RandomMonsters()
 	{
-        super();
+		super();
 		tickReset();
 	}
 
@@ -187,13 +187,13 @@ public class RandomMonsters extends ActiveTicker
 			String error=CMLib.coffeeMaker().addMOBsFromXML(filename,monsters,null);
 			String thangName="null";
 			if(thang instanceof Room)
-			    thangName=CMLib.map().getExtendedRoomID((Room)thang);
+				thangName=CMLib.map().getExtendedRoomID((Room)thang);
 			else
 			if((thang instanceof MOB)&&(((MOB)thang).getStartRoom())!=null)
-			    thangName=CMLib.map().getExtendedRoomID(((MOB)thang).getStartRoom());
+				thangName=CMLib.map().getExtendedRoomID(((MOB)thang).getStartRoom());
 			else
 			if(thang!=null)
-			    thangName=thang.name();
+				thangName=thang.name();
 			if(error.length()>0)
 			{
 				Log.errOut("RandomMonsters","Error on import of xml for '"+thangName+"': "+error+".");
@@ -218,13 +218,13 @@ public class RandomMonsters extends ActiveTicker
 				StringBuffer buf=Resources.getFileResource(filename,true);
 				String thangName="null";
 				if(thang instanceof Room)
-				    thangName=CMLib.map().getExtendedRoomID((Room)thang);
+					thangName=CMLib.map().getExtendedRoomID((Room)thang);
 				else
 				if((thang instanceof MOB)&&(((MOB)thang).getStartRoom())!=null)
-				    thangName=CMLib.map().getExtendedRoomID(((MOB)thang).getStartRoom());
+					thangName=CMLib.map().getExtendedRoomID(((MOB)thang).getStartRoom());
 				else
 				if(thang!=null)
-				    thangName=thang.name();
+					thangName=thang.name();
 
 				if((buf==null)||(buf.length()<20))
 				{

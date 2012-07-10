@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -37,14 +37,14 @@ public class Prop_Resistance extends Prop_HaveResister
 	public String ID() { return "Prop_Resistance"; }
 	public String name(){ return "Resistance to Stuff";}
 	protected int canAffectCode(){return Ability.CAN_MOBS;}
-    public boolean bubbleAffect(){return false;}
-    
-    public String accountForYourself()
-    { return "Have resistances: "+describeResistance(text());}
-    
-    public boolean canResist(Environmental E)
-    {
-        return ((E instanceof MOB)
-                &&(E==affected));
-    }
+	public boolean bubbleAffect(){return false;}
+	
+	public String accountForYourself()
+	{ return "Have resistances: "+describeResistance(text());}
+	
+	public boolean canResist(Environmental E)
+	{
+		return ((E instanceof MOB)
+				&&(E==affected));
+	}
 }

@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -41,7 +41,7 @@ public class Spell_WizardLock extends Spell
 	protected int canAffectCode(){return CAN_ITEMS|CAN_EXITS;}
 	protected int canTargetCode(){return Ability.CAN_ITEMS|Ability.CAN_EXITS;}
 	public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_ALTERATION;}
-    public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
+	public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
 
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
@@ -60,7 +60,7 @@ public class Spell_WizardLock extends Spell
 			&&(CMLib.law().doesHavePriviledgesInThisDirection(mob,msg.source().location(),(Exit)msg.target()))
 			&&(text().toUpperCase().indexOf("MALICIOUS")<0)))
 				return true;
-        
+		
 		switch(msg.targetMinor())
 		{
 		case CMMsg.TYP_OPEN:
@@ -72,7 +72,7 @@ public class Spell_WizardLock extends Spell
 		case CMMsg.TYP_JUSTICE:
 			if(!msg.targetMajor(CMMsg.MASK_DELICATE))
 				return true;
-        //$FALL-THROUGH$
+		//$FALL-THROUGH$
 		case CMMsg.TYP_DELICATE_HANDS_ACT:
 			mob.tell(affected.name()+" appears to be magically protected.");
 			return false;

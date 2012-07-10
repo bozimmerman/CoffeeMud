@@ -25,7 +25,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -56,9 +56,9 @@ public class Prayer_PeaceRitual extends Prayer
 			return false;
 
 		MOB mob=(MOB)affected;
-        List<String> channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.CLANINFO);
-        for(int i=0;i<channels.size();i++)
-    		CMLib.commands().postChannel((String)channels.get(i),clan2,mob.name()+" located in '"+mob.location().displayText()+" is performing a peace ritual on behalf of "+clan2+".",false);
+		List<String> channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.CLANINFO);
+		for(int i=0;i<channels.size();i++)
+			CMLib.commands().postChannel((String)channels.get(i),clan2,mob.name()+" located in '"+mob.location().displayText()+" is performing a peace ritual on behalf of "+clan2+".",false);
 		return super.tick(ticking,tickID);
 	}
 
@@ -113,20 +113,20 @@ public class Prayer_PeaceRitual extends Prayer
 					C2.setClanRelations(C1.clanID(),Clan.REL_HOSTILE,System.currentTimeMillis());
 					C2.update();
 				}
-                List<String> channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.CLANINFO);
-                for(int i=0;i<channels.size();i++)
-                    CMLib.commands().postChannel((String)channels.get(i),"ALL","There is now peace between "+C1.name()+" and "+C2.name()+".",false);
+				List<String> channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.CLANINFO);
+				for(int i=0;i<channels.size();i++)
+					CMLib.commands().postChannel((String)channels.get(i),"ALL","There is now peace between "+C1.name()+" and "+C2.name()+".",false);
 			}
 		}
 	}
 
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-        Physical target=mob;
-        if((auto)&&(givenTarget!=null)) target=givenTarget;
-        if(target.fetchEffect(this.ID())!=null)
+		Physical target=mob;
+		if((auto)&&(givenTarget!=null)) target=givenTarget;
+		if(target.fetchEffect(this.ID())!=null)
 		{
-            mob.tell(mob,target,null,"<T-NAME> <T-IS-ARE> already affected by "+name()+".");
+			mob.tell(mob,target,null,"<T-NAME> <T-IS-ARE> already affected by "+name()+".");
 			return false;
 		}
 		if((mob.getClanID().length()==0)||(mob.getMyClan()==null))

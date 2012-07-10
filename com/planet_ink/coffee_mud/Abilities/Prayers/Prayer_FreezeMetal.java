@@ -25,7 +25,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -46,12 +46,12 @@ public class Prayer_FreezeMetal extends Prayer
 	protected int canTargetCode(){return CAN_ITEMS|CAN_MOBS;}
 	public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY|Ability.FLAG_WATERBASED;}
 
-    protected Vector affectedItems=new Vector();
-    public void setMiscText(String newText)
-    {
-        super.setMiscText(newText);
-        affectedItems=new Vector();
-    }
+	protected Vector affectedItems=new Vector();
+	public void setMiscText(String newText)
+	{
+		super.setMiscText(newText);
+		affectedItems=new Vector();
+	}
 
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
@@ -102,8 +102,8 @@ public class Prayer_FreezeMetal extends Prayer
 				CMLib.combat().postDamage(invoker,mob,this,damage,CMMsg.MASK_ALWAYS|CMMsg.TYP_COLD,Weapon.TYPE_BURSTING,item.name()+" <DAMAGE> <T-NAME>!");
 			}
 		}
-        if((!mob.isInCombat())&&(mob!=invoker)&&(mob.location().isInhabitant(invoker))&&(CMLib.flags().canBeSeenBy(invoker,mob)))
-            CMLib.combat().postAttack(mob,invoker,mob.fetchWieldedItem());
+		if((!mob.isInCombat())&&(mob!=invoker)&&(mob.location().isInhabitant(invoker))&&(CMLib.flags().canBeSeenBy(invoker,mob)))
+			CMLib.combat().postAttack(mob,invoker,mob.fetchWieldedItem());
 		return true;
 	}
 

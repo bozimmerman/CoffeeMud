@@ -26,7 +26,7 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.XMLLibrary.XMLpiece;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -37,8 +37,8 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.XMLLibrary.XMLpiece;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class XMLManager extends StdLibrary implements XMLLibrary
 {
-    public String ID(){return "XMLManager";}
-    
+	public String ID(){return "XMLManager";}
+	
 	public String parseOutAngleBrackets(String s)
 	{
 		int x=s.indexOf('<');
@@ -164,7 +164,7 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 	 */
 	public String convertXMLtoTag(String TName, String Data)
 	{
-	    if(Data.length()==0)
+		if(Data.length()==0)
 			return "<"+TName+" />";
 		return "<"+TName+">"+Data+"</"+TName+">";
 	}
@@ -255,14 +255,14 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 		for(int x=0;x<blk.length();x++)
 			if(Character.isWhitespace(blk.charAt(x)))
 			{
-			    if(!blk.substring(x).trim().startsWith("/"))
-			    {
-                    parmList.putAll(parseParms(blk.substring(x).trim()));
-			    	if(blk.endsWith("/"))
-				    	return blk.substring(0,x).trim()+" /";
-			    	return blk.substring(0,x).trim();
-			    }
-		        break;
+				if(!blk.substring(x).trim().startsWith("/"))
+				{
+					parmList.putAll(parseParms(blk.substring(x).trim()));
+					if(blk.endsWith("/"))
+						return blk.substring(0,x).trim()+" /";
+					return blk.substring(0,x).trim();
+				}
+				break;
 			}
 		return blk;
 	}
@@ -392,32 +392,32 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 		return s_double(getValFromPieces(V,tag));
 	}
 
-    protected boolean acceptableTag(StringBuffer str, int start, int end)
-    {
-        while(Character.isWhitespace(str.charAt(start)))
-            start++;
-        while(Character.isWhitespace(str.charAt(end)))
-            end--;
-        if((start>=end)
-        ||(end>(start+250))
-        ||((str.charAt(start)!='/')&&(!Character.isLetter(str.charAt(start)))))
-            return false;
-        if(start+1==end) return true;
-        if(CMLib.coffeeFilter().getTagTable().containsKey(str.substring(start,end).toUpperCase()))
-            return false;
-        return true;
-    }
+	protected boolean acceptableTag(StringBuffer str, int start, int end)
+	{
+		while(Character.isWhitespace(str.charAt(start)))
+			start++;
+		while(Character.isWhitespace(str.charAt(end)))
+			end--;
+		if((start>=end)
+		||(end>(start+250))
+		||((str.charAt(start)!='/')&&(!Character.isLetter(str.charAt(start)))))
+			return false;
+		if(start+1==end) return true;
+		if(CMLib.coffeeFilter().getTagTable().containsKey(str.substring(start,end).toUpperCase()))
+			return false;
+		return true;
+	}
 
-    protected XMLpiece nextXML(StringBuffer buf, XMLpiece parent, int start)
-    {
-        int end=-1;
-        start--;
-        while((end<(start+1))||(!acceptableTag(buf,start+1,end)))
-        {
-            start=buf.indexOf("<",start+1);
-            if(start<0) return null;
-            end=buf.indexOf(">",start);
-            if(end<=start) return null;
+	protected XMLpiece nextXML(StringBuffer buf, XMLpiece parent, int start)
+	{
+		int end=-1;
+		start--;
+		while((end<(start+1))||(!acceptableTag(buf,start+1,end)))
+		{
+			start=buf.indexOf("<",start+1);
+			if(start<0) return null;
+			end=buf.indexOf(">",start);
+			if(end<=start) return null;
 			if((buf.charAt(start+1)=='!')&&(buf.substring(start,start+4).equals("<!--")))
 			{
 				int commentEnd=buf.indexOf("-->",start+1);
@@ -440,14 +440,14 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 				start=commentEnd;
 				continue;
 			}
-            int nextStart=buf.indexOf("<",start+1);
-            while((nextStart>=0)&&(nextStart<end))
-            {
-                start=nextStart;
-                nextStart=buf.indexOf("<",start+1);
-            }
-        }
-        Hashtable parmList = new Hashtable();
+			int nextStart=buf.indexOf("<",start+1);
+			while((nextStart>=0)&&(nextStart<end))
+			{
+				start=nextStart;
+				nextStart=buf.indexOf("<",start+1);
+			}
+		}
+		Hashtable parmList = new Hashtable();
 		String tag=parseOutParms(buf.substring(start+1,end).trim(),parmList).toUpperCase().trim();
 
 		if(!tag.startsWith("/"))
@@ -498,8 +498,8 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 
 	public List<XMLpiece> parseAllXML(String buf)
 	{  
-        return parseAllXML(new StringBuffer(buf));
-    }
+		return parseAllXML(new StringBuffer(buf));
+	}
 
 	public List<XMLpiece> parseAllXML(StringBuffer buf)
 	{
@@ -552,34 +552,34 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 
 	public String getParmValue(Map<String, String> parmSet, String Tag)
 	{
-        if((parmSet != null)&&(Tag != null))
-            return (String)parmSet.get(Tag.toUpperCase().trim());
-        return null;
+		if((parmSet != null)&&(Tag != null))
+			return (String)parmSet.get(Tag.toUpperCase().trim());
+		return null;
 	}
 
 	public String getXMLList(List<String> V)
-    {
-        StringBuffer str=new StringBuffer("");
-        if(V!=null)
-        for(String s : V)
-        	if(s!=null)
-	        {
-	            if(s.trim().length()==0)
-	                str.append("<X />");
-	            else
-	                str.append("<X>"+parseOutAngleBrackets(s)+"</X>");
-	        }
-        return str.toString();
-    }
-    
-    public List<String> parseXMLList(String numberedList)
-    {
-    	List<XMLLibrary.XMLpiece> xml=parseAllXML(numberedList);
-        Vector<String> V=new Vector<String>();
-        for(int v=0;v<xml.size();v++)
-            V.addElement(this.restoreAngleBrackets(((XMLLibrary.XMLpiece)xml.get(v)).value));
-        return V;
-    }
-    
+	{
+		StringBuffer str=new StringBuffer("");
+		if(V!=null)
+		for(String s : V)
+			if(s!=null)
+			{
+				if(s.trim().length()==0)
+					str.append("<X />");
+				else
+					str.append("<X>"+parseOutAngleBrackets(s)+"</X>");
+			}
+		return str.toString();
+	}
+	
+	public List<String> parseXMLList(String numberedList)
+	{
+		List<XMLLibrary.XMLpiece> xml=parseAllXML(numberedList);
+		Vector<String> V=new Vector<String>();
+		for(int v=0;v<xml.size();v++)
+			V.addElement(this.restoreAngleBrackets(((XMLLibrary.XMLpiece)xml.get(v)).value));
+		return V;
+	}
+	
 
 }

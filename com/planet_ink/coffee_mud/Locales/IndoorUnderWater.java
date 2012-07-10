@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -75,7 +75,7 @@ public class IndoorUnderWater extends StdRoom implements Drink
 		super.executeMsg(myHost,msg);
 		UnderWater.sinkAffects(this,msg);
 	}
-    public boolean disappearsAfterDrinking(){return false;}
+	public boolean disappearsAfterDrinking(){return false;}
 	public int thirstQuenched(){return 500;}
 	public int liquidHeld(){return Integer.MAX_VALUE-1000;}
 	public int liquidRemaining(){return Integer.MAX_VALUE-1000;}
@@ -84,7 +84,7 @@ public class IndoorUnderWater extends StdRoom implements Drink
 	public void setThirstQuenched(int amount){}
 	public void setLiquidHeld(int amount){}
 	public void setLiquidRemaining(int amount){}
-    public int amountTakenToFillMe(Drink theSource){return 0;}
+	public int amountTakenToFillMe(Drink theSource){return 0;}
 	public boolean containsDrink(){return true;}
 	public List<Integer> resourceChoices(){return UnderWater.roomResources;}
 }

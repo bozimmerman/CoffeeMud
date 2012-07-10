@@ -25,7 +25,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -42,7 +42,7 @@ public class Scrapping extends CommonSkill
 	private static final String[] triggerStrings = {"SCRAP","SCRAPPING"};
 	public String[] triggerStrings(){return triggerStrings;}
 	protected ExpertiseLibrary.SkillCostDefinition getRawTrainingCost() { return CMProps.getSkillTrainCostFormula(ID()); }
-    public int classificationCode() {   return Ability.ACODE_COMMON_SKILL|Ability.DOMAIN_NATURELORE; }
+	public int classificationCode() {   return Ability.ACODE_COMMON_SKILL|Ability.DOMAIN_NATURELORE; }
 
 	protected Item found=null;
 	boolean fireRequired=false;
@@ -195,7 +195,7 @@ public class Scrapping extends CommonSkill
 		messedUp=!proficiencyCheck(mob,0,auto);
 		found=CMLib.materials().makeItemResource(I.material());
 		foundShortName="nothing";
-        playSound="ripping.wav";
+		playSound="ripping.wav";
 		if(found!=null)
 			foundShortName=RawMaterial.CODES.NAME(found.material()).toLowerCase();
 		CMMsg msg=CMClass.getMsg(mob,I,this,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> start(s) scrapping "+I.name()+".");
@@ -204,13 +204,13 @@ public class Scrapping extends CommonSkill
 			mob.location().send(mob,msg);
 			for(int v=0;v<V.size();v++)
 			{
-			    if(((I.material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_PRECIOUS)
-			    ||((I.material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_METAL)
-			    ||((I.material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_MITHRIL))
-			        duration+=((Item)V.elementAt(v)).phyStats().weight();
-			    else
-			        duration+=((Item)V.elementAt(v)).phyStats().weight()/2;
-			    ((Item)V.elementAt(v)).destroy();
+				if(((I.material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_PRECIOUS)
+				||((I.material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_METAL)
+				||((I.material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_MITHRIL))
+					duration+=((Item)V.elementAt(v)).phyStats().weight();
+				else
+					duration+=((Item)V.elementAt(v)).phyStats().weight()/2;
+				((Item)V.elementAt(v)).destroy();
 			}
 			beneficialAffect(mob,mob,asLevel,duration);
 		}

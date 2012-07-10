@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -38,7 +38,7 @@ public class Spell_ClanHome extends Spell
 	public String ID() { return "Spell_ClanHome"; }
 	public String name(){return "Clan Home";}
 	protected int canTargetCode(){return 0;}
-    public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
+	public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
 	public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_CONJURATION;}
 	public long flags(){return Ability.FLAG_TRANSPORTING|Ability.FLAG_CLANMAGIC;}
 	protected boolean disregardsArmorCheck(MOB mob){return true;}
@@ -63,11 +63,11 @@ public class Spell_ClanHome extends Spell
 			mob.tell("You can't use this magic to get there from here.");
 			return false;
 		}
-        if(!CMLib.law().doesOwnThisProperty(mob.getClanID(),clanHomeRoom))
-        {
-            mob.tell("Your clan no longer owns that room.");
-            return false;
-        }
+		if(!CMLib.law().doesOwnThisProperty(mob.getClanID(),clanHomeRoom))
+		{
+			mob.tell("Your clan no longer owns that room.");
+			return false;
+		}
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;

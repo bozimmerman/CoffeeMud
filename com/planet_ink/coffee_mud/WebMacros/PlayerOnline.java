@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -36,8 +36,8 @@ public class PlayerOnline extends StdWebMacro
 {
 	public String name()	{return this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);}
 
-    public static final int MAX_IMAGE_SIZE=50*1024;
-    
+	public static final int MAX_IMAGE_SIZE=50*1024;
+	
 	public String runMacro(ExternalHTTPRequests httpReq, String parm)
 	{
 		if(!CMProps.getBoolVar(CMProps.SYSTEMB_MUDSTARTED))
@@ -64,79 +64,79 @@ public class PlayerOnline extends StdWebMacro
 				}
 				if(M!=null)
 				{
-	                String login=Authenticate.getLogin(httpReq);
-	                if(Authenticate.authenticated(httpReq,login,Authenticate.getPassword(httpReq)))
-	                {
-	                    boolean canBan=false;
-	                    boolean canModify=false;
-	                    boolean canBoot=false;
-	                    
-	                    MOB authM=CMLib.players().getLoadPlayer(login);
-	                    if((authM!=null)&&(authM.Name().equals(M.Name())))
-	                    {
-	                        canBan=true;
-	                        canModify=true;
-	                        canBoot=true;
-	                    }
-	                    else
-	                    if(authM!=null)
-	                    {
-	                        if(CMSecurity.isAllowedEverywhere(authM,"BAN"))
-	                            canBan=true;
-	                        if(CMSecurity.isAllowedEverywhere(authM,"CMDPLAYERS"))
-	                            canModify=true;
-	                        if(CMSecurity.isAllowedEverywhere(authM,"BOOT"))
-	                            canBoot=true;
-	                    }
-	                    
-	                    if(canBan&&(parms.containsKey("BANBYNAME")))
-	    					CMSecurity.ban(last);
-	                    if(canBan&&(parms.containsKey("BANBYIP")))
-	                        CMSecurity.ban(M.session().getAddress());
-	                    if(canModify&&(parms.containsKey("DELIMG")))
-	                    {
-	                        if(M.rawImage().length()>0)
-	                        {
-	                            M.setImage("");
-	                            CMLib.database().DBUpdatePlayerMOBOnly(M);
-	                        }
-	                    }
-	                    if(canBan&&(parms.containsKey("BANBYEMAIL")))
-	                        CMSecurity.ban(M.playerStats().getEmail());
-	                    if(canModify&&(parms.containsKey("NEWIMAGE")))
-	                    {
-	                        Resources.removeResource("CMPORTRAIT-"+M.Name());
-	                        String file=httpReq.getRequestParameter("FILE");
-	                        if(file==null) file="";
-	                        byte[] buf=(byte[])httpReq.getRequestObjects().get("FILE");
-	                        if(file.length()==0) return "File not uploaded -- no name!";
-	                        if(file.toUpperCase().endsWith(".GIF")
-	                        ||file.toUpperCase().endsWith(".JPG")
-	                        ||file.toUpperCase().endsWith(".JPEG")
-	                        ||file.toUpperCase().endsWith(".BMP"))
-	                        {
-	                            if(buf==null) return "File `"+file+"` not uploaded -- no buffer!";
-	                            if(buf.length>MAX_IMAGE_SIZE) return "File `"+file+"` not uploaded -- size exceeds "+MAX_IMAGE_SIZE+" byte limit!";
-	                            String encoded=B64Encoder.B64encodeBytes(buf);
-	                            M.setImage("PlayerPortrait?PLAYER="+M.Name()+"&FILENAME="+M.Name()+System.currentTimeMillis()+file);
-	                            CMLib.database().DBUpdatePlayerMOBOnly(M);
-	                            CMLib.database().DBReCreateData(M.Name(),"CMPORTRAIT","CMPORTRAIT-"+M.Name(),encoded);
-	                            Resources.submitResource("CMPORTRAIT-"+M.Name(),buf);
-	                            return "Image successfully uploaded.";
-	                        }
-	                        return "File not uploaded -- wrong type!";
-	                    }
-	                    
-	    				if(M.session()!=null)
-	    				{
-	                        if(canBoot&&(parms.containsKey("BOOT")))
-	    					{
-	    						M.session().stopSession(false,false,false);
-	    						return "false";
-	    					}
-	    					return "true";
-	    				}
-	                }
+					String login=Authenticate.getLogin(httpReq);
+					if(Authenticate.authenticated(httpReq,login,Authenticate.getPassword(httpReq)))
+					{
+						boolean canBan=false;
+						boolean canModify=false;
+						boolean canBoot=false;
+						
+						MOB authM=CMLib.players().getLoadPlayer(login);
+						if((authM!=null)&&(authM.Name().equals(M.Name())))
+						{
+							canBan=true;
+							canModify=true;
+							canBoot=true;
+						}
+						else
+						if(authM!=null)
+						{
+							if(CMSecurity.isAllowedEverywhere(authM,"BAN"))
+								canBan=true;
+							if(CMSecurity.isAllowedEverywhere(authM,"CMDPLAYERS"))
+								canModify=true;
+							if(CMSecurity.isAllowedEverywhere(authM,"BOOT"))
+								canBoot=true;
+						}
+						
+						if(canBan&&(parms.containsKey("BANBYNAME")))
+							CMSecurity.ban(last);
+						if(canBan&&(parms.containsKey("BANBYIP")))
+							CMSecurity.ban(M.session().getAddress());
+						if(canModify&&(parms.containsKey("DELIMG")))
+						{
+							if(M.rawImage().length()>0)
+							{
+								M.setImage("");
+								CMLib.database().DBUpdatePlayerMOBOnly(M);
+							}
+						}
+						if(canBan&&(parms.containsKey("BANBYEMAIL")))
+							CMSecurity.ban(M.playerStats().getEmail());
+						if(canModify&&(parms.containsKey("NEWIMAGE")))
+						{
+							Resources.removeResource("CMPORTRAIT-"+M.Name());
+							String file=httpReq.getRequestParameter("FILE");
+							if(file==null) file="";
+							byte[] buf=(byte[])httpReq.getRequestObjects().get("FILE");
+							if(file.length()==0) return "File not uploaded -- no name!";
+							if(file.toUpperCase().endsWith(".GIF")
+							||file.toUpperCase().endsWith(".JPG")
+							||file.toUpperCase().endsWith(".JPEG")
+							||file.toUpperCase().endsWith(".BMP"))
+							{
+								if(buf==null) return "File `"+file+"` not uploaded -- no buffer!";
+								if(buf.length>MAX_IMAGE_SIZE) return "File `"+file+"` not uploaded -- size exceeds "+MAX_IMAGE_SIZE+" byte limit!";
+								String encoded=B64Encoder.B64encodeBytes(buf);
+								M.setImage("PlayerPortrait?PLAYER="+M.Name()+"&FILENAME="+M.Name()+System.currentTimeMillis()+file);
+								CMLib.database().DBUpdatePlayerMOBOnly(M);
+								CMLib.database().DBReCreateData(M.Name(),"CMPORTRAIT","CMPORTRAIT-"+M.Name(),encoded);
+								Resources.submitResource("CMPORTRAIT-"+M.Name(),buf);
+								return "Image successfully uploaded.";
+							}
+							return "File not uploaded -- wrong type!";
+						}
+						
+						if(M.session()!=null)
+						{
+							if(canBoot&&(parms.containsKey("BOOT")))
+							{
+								M.session().stopSession(false,false,false);
+								return "false";
+							}
+							return "true";
+						}
+					}
 				}
 			}
 		}

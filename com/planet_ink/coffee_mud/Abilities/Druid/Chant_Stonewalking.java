@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -39,7 +39,7 @@ public class Chant_Stonewalking extends Chant
 	public String ID() { return "Chant_Stonewalking"; }
 	public String name(){return "Stonewalking";}
 	public String displayText(){return "(Stonewalking spell)";}
-    public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_ROCKCONTROL;}
+	public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_ROCKCONTROL;}
 	public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_SELF;}
 	protected int canAffectCode(){return CAN_MOBS;}
 
@@ -103,22 +103,22 @@ public class Chant_Stonewalking extends Chant
 			}
 	}
 
-    public int castingQuality(MOB mob, Physical target)
-    {
-        if(mob!=null)
-        {
-            Room R=mob.location();
-            if(R!=null)
-            {
-                if((R.domainType()!=Room.DOMAIN_INDOORS_CAVE)
-                &&(R.domainType()!=Room.DOMAIN_INDOORS_STONE)
-                &&(R.domainType()!=Room.DOMAIN_OUTDOORS_MOUNTAINS)
-                &&(R.domainType()!=Room.DOMAIN_OUTDOORS_ROCKS))
-                    return Ability.QUALITY_INDIFFERENT;
-            }
-        }
-        return super.castingQuality(mob,target);
-    }
+	public int castingQuality(MOB mob, Physical target)
+	{
+		if(mob!=null)
+		{
+			Room R=mob.location();
+			if(R!=null)
+			{
+				if((R.domainType()!=Room.DOMAIN_INDOORS_CAVE)
+				&&(R.domainType()!=Room.DOMAIN_INDOORS_STONE)
+				&&(R.domainType()!=Room.DOMAIN_OUTDOORS_MOUNTAINS)
+				&&(R.domainType()!=Room.DOMAIN_OUTDOORS_ROCKS))
+					return Ability.QUALITY_INDIFFERENT;
+			}
+		}
+		return super.castingQuality(mob,target);
+	}
 
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{

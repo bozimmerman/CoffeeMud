@@ -25,7 +25,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -46,80 +46,80 @@ public class Allergies extends StdAbility
 	public int classificationCode(){return Ability.ACODE_PROPERTY;}
 	public boolean isAutoInvoked(){return true;}
 	public boolean canBeUninvoked(){return false;}
-    protected HashSet resourceAllergies=new HashSet();
-    protected HashSet raceAllergies=new HashSet();
-    protected int allergicCheckDown=0;
+	protected HashSet resourceAllergies=new HashSet();
+	protected HashSet raceAllergies=new HashSet();
+	protected int allergicCheckDown=0;
 	
 	public void setMiscText(String newText)
 	{
-	    super.setMiscText(newText);
-	    resourceAllergies.clear();
-	    raceAllergies.clear();
-	    Vector<String> V=CMParms.parse(newText.toUpperCase().trim());
-	    RawMaterial.CODES codes = RawMaterial.CODES.instance();
-	    for(int s=0;s<codes.total();s++)
-	        if(V.contains(codes.names()[s]))
-	            resourceAllergies.add(Integer.valueOf(codes.get(s)));
-	    Race R=null;
-        for(Enumeration r=CMClass.races();r.hasMoreElements();)
-        {
-            R=(Race)r.nextElement();
-            if(V.contains(R.ID().toUpperCase()))
-                raceAllergies.add(R);
-        }
+		super.setMiscText(newText);
+		resourceAllergies.clear();
+		raceAllergies.clear();
+		Vector<String> V=CMParms.parse(newText.toUpperCase().trim());
+		RawMaterial.CODES codes = RawMaterial.CODES.instance();
+		for(int s=0;s<codes.total();s++)
+			if(V.contains(codes.names()[s]))
+				resourceAllergies.add(Integer.valueOf(codes.get(s)));
+		Race R=null;
+		for(Enumeration r=CMClass.races();r.hasMoreElements();)
+		{
+			R=(Race)r.nextElement();
+			if(V.contains(R.ID().toUpperCase()))
+				raceAllergies.add(R);
+		}
 	}
 	
 	public boolean tick(Tickable ticking, int tickID)
 	{
-	    if(!super.tick(ticking,tickID))
-	        return false;
-	    if(((++allergicCheckDown)>10)
-	    &&(affected instanceof MOB))
-	    {
-	        allergicCheckDown=0;
-	        MOB mob=(MOB)affected;
-	        if((CMLib.flags().aliveAwakeMobile(mob,true))&&(CMLib.flags().isInTheGame(mob,true)))
-	        {
-	            Room R=CMLib.map().roomLocation(mob);
-	            if(raceAllergies.size()>0)
-	            {
-		            MOB M=null;
-		            for(int i=0;i<R.numInhabitants();i++)
-		            {
-		                M=R.fetchInhabitant(i);
-		                if((M!=null)&&(M!=mob)&&(raceAllergies.contains(M.charStats().getMyRace())))
-		                    R.show(mob,null,this,CMMsg.TYP_NOISYMOVEMENT,"<S-NAME> sneeze(s)! AAAAACHHHOOOO!");
-		            }
-	            }
-	            else
-	            if(resourceAllergies.size()>0)
-	            {
-		            Item I=null;
-		            for(int i=0;i<R.numItems();i++)
-		            {
-		                I=R.getItem(i);
-		                if((I!=null)
-		                &&(I.container()==null)
-		                &&(resourceAllergies.contains(Integer.valueOf(I.material()))))
-		                    R.show(mob,null,this,CMMsg.TYP_NOISYMOVEMENT,"<S-NAME> sneeze(s)! AAAAACHHHOOOO!");
-		            }
-		            if(R.numInhabitants()>0)
-		            {
-			            MOB M=R.fetchRandomInhabitant();
-			            if(M!=null)
-			            for(int i=0;i<M.numItems();i++)
-			            {
-			                I=M.getItem(i);
-			                if((I!=null)
-			                &&(I.container()==null)
-			                &&(resourceAllergies.contains(Integer.valueOf(I.material()))))
-			                    R.show(mob,null,this,CMMsg.TYP_NOISYMOVEMENT,"<S-NAME> sneeze(s)! AAAAACHHHOOOO!");
-			            }
-		            }
-	            }
-	        }
-	    }
-	    return true;
+		if(!super.tick(ticking,tickID))
+			return false;
+		if(((++allergicCheckDown)>10)
+		&&(affected instanceof MOB))
+		{
+			allergicCheckDown=0;
+			MOB mob=(MOB)affected;
+			if((CMLib.flags().aliveAwakeMobile(mob,true))&&(CMLib.flags().isInTheGame(mob,true)))
+			{
+				Room R=CMLib.map().roomLocation(mob);
+				if(raceAllergies.size()>0)
+				{
+					MOB M=null;
+					for(int i=0;i<R.numInhabitants();i++)
+					{
+						M=R.fetchInhabitant(i);
+						if((M!=null)&&(M!=mob)&&(raceAllergies.contains(M.charStats().getMyRace())))
+							R.show(mob,null,this,CMMsg.TYP_NOISYMOVEMENT,"<S-NAME> sneeze(s)! AAAAACHHHOOOO!");
+					}
+				}
+				else
+				if(resourceAllergies.size()>0)
+				{
+					Item I=null;
+					for(int i=0;i<R.numItems();i++)
+					{
+						I=R.getItem(i);
+						if((I!=null)
+						&&(I.container()==null)
+						&&(resourceAllergies.contains(Integer.valueOf(I.material()))))
+							R.show(mob,null,this,CMMsg.TYP_NOISYMOVEMENT,"<S-NAME> sneeze(s)! AAAAACHHHOOOO!");
+					}
+					if(R.numInhabitants()>0)
+					{
+						MOB M=R.fetchRandomInhabitant();
+						if(M!=null)
+						for(int i=0;i<M.numItems();i++)
+						{
+							I=M.getItem(i);
+							if((I!=null)
+							&&(I.container()==null)
+							&&(resourceAllergies.contains(Integer.valueOf(I.material()))))
+								R.show(mob,null,this,CMMsg.TYP_NOISYMOVEMENT,"<S-NAME> sneeze(s)! AAAAACHHHOOOO!");
+						}
+					}
+				}
+			}
+		}
+		return true;
 	}
 	
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
@@ -127,35 +127,35 @@ public class Allergies extends StdAbility
 		if((affected!=null)
 		&&(affected instanceof MOB))
 		{
-		    if(msg.source()==affected)
-		    {
-		        if((msg.targetMinor()==CMMsg.TYP_EAT)
-		        &&(((msg.target() instanceof Item)&&(resourceAllergies.contains(Integer.valueOf(((Item)msg.target()).material()))))
-	                ||((msg.target() instanceof MOB)&&(raceAllergies.contains(((MOB)msg.target()).charStats().getMyRace())))))
-	            {
-	                Ability A=CMClass.getAbility("Poison_Heartstopper");
-	                if(A!=null) A.invoke(msg.source(),msg.source(),true,0);
-	            }
-		        else
-		        if((msg.targetMinor()==CMMsg.TYP_GET)
-		        &&((msg.target() instanceof Item)&&(resourceAllergies.contains(Integer.valueOf(((Item)msg.target()).material())))))
-		        {
-	                Ability A=CMClass.getAbility("Poison_Hives");
-	                if(A!=null) A.invoke(msg.source(),msg.source(),true,0);
-		        }
-		    }
-		    else
-		    if((msg.target()==affected)
-		    &&(raceAllergies.contains(msg.source().charStats().getMyRace()))
+			if(msg.source()==affected)
+			{
+				if((msg.targetMinor()==CMMsg.TYP_EAT)
+				&&(((msg.target() instanceof Item)&&(resourceAllergies.contains(Integer.valueOf(((Item)msg.target()).material()))))
+					||((msg.target() instanceof MOB)&&(raceAllergies.contains(((MOB)msg.target()).charStats().getMyRace())))))
+				{
+					Ability A=CMClass.getAbility("Poison_Heartstopper");
+					if(A!=null) A.invoke(msg.source(),msg.source(),true,0);
+				}
+				else
+				if((msg.targetMinor()==CMMsg.TYP_GET)
+				&&((msg.target() instanceof Item)&&(resourceAllergies.contains(Integer.valueOf(((Item)msg.target()).material())))))
+				{
+					Ability A=CMClass.getAbility("Poison_Hives");
+					if(A!=null) A.invoke(msg.source(),msg.source(),true,0);
+				}
+			}
+			else
+			if((msg.target()==affected)
+			&&(raceAllergies.contains(msg.source().charStats().getMyRace()))
 			&&((msg.targetMajor(CMMsg.MASK_HANDS))
 			   ||(msg.targetMajor(CMMsg.MASK_MOVE)))
-		    &&(((MOB)affected).location()!=null)
-		    &&(((MOB)affected).location().isInhabitant(msg.source()))
-		    &&((msg.tool()==null)||((!msg.tool().ID().equals("Poison_Hives"))&&(!msg.tool().ID().equals("Poison_Heartstopper")))))
-		    {
-                Ability A=CMClass.getAbility("Poison_Hives");
-                if(A!=null) A.invoke(msg.source(),affected,true,0);
-		    }
+			&&(((MOB)affected).location()!=null)
+			&&(((MOB)affected).location().isInhabitant(msg.source()))
+			&&((msg.tool()==null)||((!msg.tool().ID().equals("Poison_Hives"))&&(!msg.tool().ID().equals("Poison_Heartstopper")))))
+			{
+				Ability A=CMClass.getAbility("Poison_Hives");
+				if(A!=null) A.invoke(msg.source(),affected,true,0);
+			}
 		}
 		super.executeMsg(myHost,msg);
 	}
@@ -175,7 +175,7 @@ public class Allergies extends StdAbility
 		{
 			choice=CMParms.combine(commands,1);
 			while(commands.size()>1)
-			    commands.removeElementAt(1);
+				commands.removeElementAt(1);
 		}
 		MOB target=getTarget(mob,commands,givenTarget);
 		
@@ -188,47 +188,47 @@ public class Allergies extends StdAbility
 		if(success)
 		{
 			Vector allChoices=new Vector();
-		    for(int code : RawMaterial.CODES.ALL())
-		        if(((code&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_LIQUID)
-		        &&((code&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_ENERGY)
-		        &&(code!=RawMaterial.RESOURCE_COTTON)
-		        &&(code!=RawMaterial.RESOURCE_IRON)
-		        &&(code!=RawMaterial.RESOURCE_WOOD))
-			        allChoices.addElement(RawMaterial.CODES.NAME(code));
-		    Race R=null;
-	        for(Enumeration r=CMClass.races();r.hasMoreElements();)
-	        {
-	            R=(Race)r.nextElement();
-	            allChoices.addElement(R.ID().toUpperCase());
-	        }
-	        String allergies="";
-	        if((choice.length()>0)&&(allChoices.contains(choice.toUpperCase())))
-                allergies=choice.toUpperCase();
-	        else
-	        for(int i=0;i<allChoices.size();i++)
-	            if((CMLib.dice().roll(1,allChoices.size(),0)==1)
-	            &&(!(((String)allChoices.elementAt(i)).equalsIgnoreCase(mob.charStats().getMyRace().ID().toUpperCase()))))
-	                allergies+=" "+(String)allChoices.elementAt(i);
-	        if(allergies.length()==0) return false;
-	        
+			for(int code : RawMaterial.CODES.ALL())
+				if(((code&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_LIQUID)
+				&&((code&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_ENERGY)
+				&&(code!=RawMaterial.RESOURCE_COTTON)
+				&&(code!=RawMaterial.RESOURCE_IRON)
+				&&(code!=RawMaterial.RESOURCE_WOOD))
+					allChoices.addElement(RawMaterial.CODES.NAME(code));
+			Race R=null;
+			for(Enumeration r=CMClass.races();r.hasMoreElements();)
+			{
+				R=(Race)r.nextElement();
+				allChoices.addElement(R.ID().toUpperCase());
+			}
+			String allergies="";
+			if((choice.length()>0)&&(allChoices.contains(choice.toUpperCase())))
+				allergies=choice.toUpperCase();
+			else
+			for(int i=0;i<allChoices.size();i++)
+				if((CMLib.dice().roll(1,allChoices.size(),0)==1)
+				&&(!(((String)allChoices.elementAt(i)).equalsIgnoreCase(mob.charStats().getMyRace().ID().toUpperCase()))))
+					allergies+=" "+(String)allChoices.elementAt(i);
+			if(allergies.length()==0) return false;
+			
 			CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_OK_VISUAL,"");
 			if(target.location()!=null)
 			{
 				if(target.location().okMessage(target,msg))
 				{
-				    target.location().send(target,msg);
-				    Ability A=(Ability)copyOf();
-				    A.setMiscText(allergies.trim());
-				    target.addNonUninvokableEffect(A);
+					target.location().send(target,msg);
+					Ability A=(Ability)copyOf();
+					A.setMiscText(allergies.trim());
+					target.addNonUninvokableEffect(A);
 				}
 			}
 			else
 			{
-			    Ability A=(Ability)copyOf();
-			    A.setMiscText(allergies.trim());
-			    target.addNonUninvokableEffect(A);
+				Ability A=(Ability)copyOf();
+				A.setMiscText(allergies.trim());
+				target.addNonUninvokableEffect(A);
 			}
 		}
-        return success;
+		return success;
 	}
 }

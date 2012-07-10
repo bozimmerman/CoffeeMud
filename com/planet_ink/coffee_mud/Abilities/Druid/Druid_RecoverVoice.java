@@ -25,7 +25,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -44,7 +44,7 @@ public class Druid_RecoverVoice extends StdAbility
 	protected int canTargetCode(){return 0;}
 	private static final String[] triggerStrings = {"VRECOVER","RECOVERVOICE"};
 	public String[] triggerStrings(){return triggerStrings;}
-    public int classificationCode() {   return Ability.ACODE_SKILL|Ability.DOMAIN_FITNESS; }
+	public int classificationCode() {   return Ability.ACODE_SKILL|Ability.DOMAIN_FITNESS; }
 
 
 	public List<Ability> returnOffensiveAffects(MOB caster, Physical fromMe)
@@ -66,22 +66,22 @@ public class Druid_RecoverVoice extends StdAbility
 						offenders.addElement(A);
 			}
 		}
-        newMOB.destroy();
+		newMOB.destroy();
 		return offenders;
 	}
 
-    public int castingQuality(MOB mob, Physical target)
-    {
-        if(mob!=null)
-        {
-            if(target instanceof MOB)
-            {
-                if(returnOffensiveAffects(mob,((MOB)target)).size()==0)
-                    return Ability.QUALITY_INDIFFERENT;
-            }
-        }
-        return super.castingQuality(mob,target);
-    }
+	public int castingQuality(MOB mob, Physical target)
+	{
+		if(mob!=null)
+		{
+			if(target instanceof MOB)
+			{
+				if(returnOffensiveAffects(mob,((MOB)target)).size()==0)
+					return Ability.QUALITY_INDIFFERENT;
+			}
+		}
+		return super.castingQuality(mob,target);
+	}
 
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{

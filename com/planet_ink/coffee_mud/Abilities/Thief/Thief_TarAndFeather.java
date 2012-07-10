@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -45,36 +45,36 @@ public class Thief_TarAndFeather extends ThiefSkill
 	public String[] triggerStrings(){return triggerStrings;}
 	protected int overrideMana(){return 100;}
 	public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
-    public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_LEGAL;}
+	public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_LEGAL;}
 
 	public void affectPhyStats(Physical host, PhyStats stats)
 	{
-	    if((affected==null)||(!(affected instanceof Item)))
-            return;
-	    if((((Item)affected).amWearingAt(Wearable.IN_INVENTORY))||(((Item)affected).amDestroyed()))
-	    {
-	        Item I=(Item)affected;
-	        affected.delEffect(this);
-	        setAffectedOne(null);
-	        I.destroy();
-	    }
+		if((affected==null)||(!(affected instanceof Item)))
+			return;
+		if((((Item)affected).amWearingAt(Wearable.IN_INVENTORY))||(((Item)affected).amDestroyed()))
+		{
+			Item I=(Item)affected;
+			affected.delEffect(this);
+			setAffectedOne(null);
+			I.destroy();
+		}
 	}
 	
-    public int castingQuality(MOB mob, Physical target)
-    {
-        if(mob!=null)
-        {
-            if(!(target instanceof MOB))
-                return Ability.QUALITY_INDIFFERENT;
-            if(mob.isInCombat())
-                return Ability.QUALITY_INDIFFERENT;
-            if(CMLib.flags().isSitting(mob))
-                return Ability.QUALITY_INDIFFERENT;
-            if((!CMLib.flags().isBoundOrHeld(target))&&(!CMLib.flags().isSleeping(target)))
-                return Ability.QUALITY_INDIFFERENT;
-        }
-        return super.castingQuality(mob,target);
-    }
+	public int castingQuality(MOB mob, Physical target)
+	{
+		if(mob!=null)
+		{
+			if(!(target instanceof MOB))
+				return Ability.QUALITY_INDIFFERENT;
+			if(mob.isInCombat())
+				return Ability.QUALITY_INDIFFERENT;
+			if(CMLib.flags().isSitting(mob))
+				return Ability.QUALITY_INDIFFERENT;
+			if((!CMLib.flags().isBoundOrHeld(target))&&(!CMLib.flags().isSleeping(target)))
+				return Ability.QUALITY_INDIFFERENT;
+		}
+		return super.castingQuality(mob,target);
+	}
 
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
@@ -86,13 +86,13 @@ public class Thief_TarAndFeather extends ThiefSkill
 		MOB target=getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 
-        if(CMLib.flags().isSitting(mob))
-        {
-            mob.tell("You need to stand up!");
-            return false;
-        }
-        if(!CMLib.flags().aliveAwakeMobileUnbound(mob,false))
-            return false;
+		if(CMLib.flags().isSitting(mob))
+		{
+			mob.tell("You need to stand up!");
+			return false;
+		}
+		if(!CMLib.flags().aliveAwakeMobileUnbound(mob,false))
+			return false;
 		if((!auto)&&(!CMLib.flags().isBoundOrHeld(target))&&(!CMLib.flags().isSleeping(target)))
 		{
 			mob.tell(target.name()+" must be prone or bound first.");
@@ -100,12 +100,12 @@ public class Thief_TarAndFeather extends ThiefSkill
 		}
 		for(int i=0;i<target.numItems();i++)
 		{
-		    Item I=target.getItem(i);
-		    if((I!=null)&&(!I.amWearingAt(Wearable.IN_INVENTORY))&&(!I.amWearingAt(Wearable.WORN_FLOATING_NEARBY)))
-		    {
-			    mob.tell(target.name()+" must be undressed first.");
-			    return false;
-		    }
+			Item I=target.getItem(i);
+			if((I!=null)&&(!I.amWearingAt(Wearable.IN_INVENTORY))&&(!I.amWearingAt(Wearable.WORN_FLOATING_NEARBY)))
+			{
+				mob.tell(target.name()+" must be undressed first.");
+				return false;
+			}
 		}
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
@@ -118,40 +118,40 @@ public class Thief_TarAndFeather extends ThiefSkill
 			Item I=CMClass.getArmor("GenArmor");
 			if(I!=null)
 			{
-			    target.addItem(I);
-			    long wearCode=0;
-			    Wearable.CODES codes = Wearable.CODES.instance();
-			    for(int i=0;i<codes.all_ordered().length;i++)
-			    {
-			    	long code = codes.all_ordered()[i];
-			        if((!CMath.bset(target.charStats().getWearableRestrictionsBitmap(),code))
-			        &&(code!=Wearable.WORN_FLOATING_NEARBY)
-			        &&(code!=Wearable.WORN_EYES)
-			        &&(code!=Wearable.WORN_MOUTH))
-				        wearCode|=code;
-			    }
-			    for(int i=0;i<Race.BODY_WEARGRID.length;i++)
-			    {
-			        if((target.charStats().getBodyPart(i)<=0)
-			        &&(Race.BODY_WEARGRID[i][1]>0))
-			            wearCode=CMath.unsetb(wearCode,Race.BODY_WEARGRID[i][0]);
-			    }
+				target.addItem(I);
+				long wearCode=0;
+				Wearable.CODES codes = Wearable.CODES.instance();
+				for(int i=0;i<codes.all_ordered().length;i++)
+				{
+					long code = codes.all_ordered()[i];
+					if((!CMath.bset(target.charStats().getWearableRestrictionsBitmap(),code))
+					&&(code!=Wearable.WORN_FLOATING_NEARBY)
+					&&(code!=Wearable.WORN_EYES)
+					&&(code!=Wearable.WORN_MOUTH))
+						wearCode|=code;
+				}
+				for(int i=0;i<Race.BODY_WEARGRID.length;i++)
+				{
+					if((target.charStats().getBodyPart(i)<=0)
+					&&(Race.BODY_WEARGRID[i][1]>0))
+						wearCode=CMath.unsetb(wearCode,Race.BODY_WEARGRID[i][0]);
+				}
 				I.setRawProperLocationBitmap(wearCode);
-			    I.setRawWornCode(wearCode);
-			    I.setName("a coating of tar and feathers");
-			    I.setDisplayText("a pile of tar and feathers sits here.");
-			    I.basePhyStats().setSensesMask(PhyStats.SENSE_ITEMNOREMOVE);
-			    I.phyStats().setSensesMask(PhyStats.SENSE_ITEMNOREMOVE);
-			    I.setRawLogicalAnd(true);
-			    I.addNonUninvokableEffect((Ability)this.copyOf());
-			    Behavior B=CMClass.getBehavior("Decay");
-			    long thetime=(long)CMProps.getIntVar(CMProps.SYSTEMI_TICKSPERMUDDAY)*3;
-			    B.setParms("notrigger=1 answer=dissolves! min="+thetime+" max="+thetime+" chance=100");
-			    I.addBehavior(B);
+				I.setRawWornCode(wearCode);
+				I.setName("a coating of tar and feathers");
+				I.setDisplayText("a pile of tar and feathers sits here.");
+				I.basePhyStats().setSensesMask(PhyStats.SENSE_ITEMNOREMOVE);
+				I.phyStats().setSensesMask(PhyStats.SENSE_ITEMNOREMOVE);
+				I.setRawLogicalAnd(true);
+				I.addNonUninvokableEffect((Ability)this.copyOf());
+				Behavior B=CMClass.getBehavior("Decay");
+				long thetime=(long)CMProps.getIntVar(CMProps.SYSTEMI_TICKSPERMUDDAY)*3;
+				B.setParms("notrigger=1 answer=dissolves! min="+thetime+" max="+thetime+" chance=100");
+				I.addBehavior(B);
 			}
 		}
 		else
-		    maliciousFizzle(mob,target,"<S-NAME> attempt(s) to tar and feather <T-NAMESELF>, but fail(s).");
+			maliciousFizzle(mob,target,"<S-NAME> attempt(s) to tar and feather <T-NAMESELF>, but fail(s).");
 		return success;
 	}
 }

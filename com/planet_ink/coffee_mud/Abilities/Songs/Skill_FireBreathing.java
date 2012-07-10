@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -47,27 +47,27 @@ public class Skill_FireBreathing extends BardSkill
 
 	public Item getFireSource(MOB mob)
 	{
-        for(int i=0;i<mob.numItems();i++)
-        {
-            Item I=mob.getItem(i);
-            if((CMLib.flags().isOnFire(I))
-            &&(!I.amWearingAt(Wearable.IN_INVENTORY))
-            &&(I.container()==null))
-                return I;
-        }
-        return null;
+		for(int i=0;i<mob.numItems();i++)
+		{
+			Item I=mob.getItem(i);
+			if((CMLib.flags().isOnFire(I))
+			&&(!I.amWearingAt(Wearable.IN_INVENTORY))
+			&&(I.container()==null))
+				return I;
+		}
+		return null;
 	}
 	
-    public int castingQuality(MOB mob, Physical target)
-    {
-        if(mob!=null)
-        {
-            if(getFireSource(mob)==null)
-                return Ability.QUALITY_INDIFFERENT;
-        }
-        return super.castingQuality(mob,target);
-    }
-    
+	public int castingQuality(MOB mob, Physical target)
+	{
+		if(mob!=null)
+		{
+			if(getFireSource(mob)==null)
+				return Ability.QUALITY_INDIFFERENT;
+		}
+		return super.castingQuality(mob,target);
+	}
+	
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=this.getTarget(mob,commands,givenTarget);
@@ -100,7 +100,7 @@ public class Skill_FireBreathing extends BardSkill
 			{
 				mob.location().send(mob,msg);
 				mob.location().send(mob,msg2);
-                int numDice = (int)Math.round(CMath.div(adjustedLevel(mob,asLevel)+(2*super.getX1Level(mob)),1.5))+1;
+				int numDice = (int)Math.round(CMath.div(adjustedLevel(mob,asLevel)+(2*super.getX1Level(mob)),1.5))+1;
 				int damage = CMLib.dice().roll(3, numDice, 0);
 				if(msg2.value()>0)
 					damage = (int)Math.round(CMath.div(damage,2.0));

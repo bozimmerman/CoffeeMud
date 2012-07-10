@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -38,54 +38,54 @@ public class Spell_Shatter extends Spell
 	public String ID() { return "Spell_Shatter"; }
 	public String name(){return "Shatter";}
 	protected int canTargetCode(){return CAN_MOBS|CAN_ITEMS;}
-    public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
+	public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
 	public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_ALTERATION;}
-    
-    public Item getItem(MOB mobTarget)
-    {
-        Vector goodPossibilities=new Vector();
-        Vector possibilities=new Vector();
-        for(int i=0;i<mobTarget.numItems();i++)
-        {
-            Item item=mobTarget.getItem(i);
-            if((item!=null)
-               &&(item.subjectToWearAndTear()))
-            {
-                if(item.amWearingAt(Wearable.IN_INVENTORY))
-                    possibilities.addElement(item);
-                else
-                    goodPossibilities.addElement(item);
-            }
-        }
-        if(goodPossibilities.size()>0)
-            return (Item)goodPossibilities.elementAt(CMLib.dice().roll(1,goodPossibilities.size(),-1));
-        else
-        if(possibilities.size()>0)
-            return (Item)possibilities.elementAt(CMLib.dice().roll(1,possibilities.size(),-1));
-        return null;
-    }
+	
+	public Item getItem(MOB mobTarget)
+	{
+		Vector goodPossibilities=new Vector();
+		Vector possibilities=new Vector();
+		for(int i=0;i<mobTarget.numItems();i++)
+		{
+			Item item=mobTarget.getItem(i);
+			if((item!=null)
+			   &&(item.subjectToWearAndTear()))
+			{
+				if(item.amWearingAt(Wearable.IN_INVENTORY))
+					possibilities.addElement(item);
+				else
+					goodPossibilities.addElement(item);
+			}
+		}
+		if(goodPossibilities.size()>0)
+			return (Item)goodPossibilities.elementAt(CMLib.dice().roll(1,goodPossibilities.size(),-1));
+		else
+		if(possibilities.size()>0)
+			return (Item)possibilities.elementAt(CMLib.dice().roll(1,possibilities.size(),-1));
+		return null;
+	}
 
-    public int castingQuality(MOB mob, Physical target)
-    {
-        if(mob!=null)
-        {
-            if((target instanceof MOB)&&(mob!=target))
-            {
-                Item I=getItem((MOB)target);
-                if(I==null)
-                    return Ability.QUALITY_INDIFFERENT;
-            }
-        }
-        return super.castingQuality(mob,target);
-    }
-    
+	public int castingQuality(MOB mob, Physical target)
+	{
+		if(mob!=null)
+		{
+			if((target instanceof MOB)&&(mob!=target))
+			{
+				Item I=getItem((MOB)target);
+				if(I==null)
+					return Ability.QUALITY_INDIFFERENT;
+			}
+		}
+		return super.castingQuality(mob,target);
+	}
+	
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		MOB mobTarget=getTarget(mob,commands,givenTarget,true,false);
 		Item target=null;
 		if(mobTarget!=null)
 		{
-            target=getItem(mob);
+			target=getItem(mob);
 			if(target==null)
 				return maliciousFizzle(mob,mobTarget,"<S-NAME> attempt(s) a shattering spell at <T-NAMESELF>, but nothing happens.");
 		}
@@ -94,8 +94,8 @@ public class Spell_Shatter extends Spell
 			target=getTarget(mobTarget,mobTarget.location(),givenTarget,commands,Wearable.FILTER_ANY);
 
 		if(target==null) return false;
-        Room R=CMLib.map().roomLocation(target);
-        if(R==null) R=mob.location();
+		Room R=CMLib.map().roomLocation(target);
+		if(R==null) R=mob.location();
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;

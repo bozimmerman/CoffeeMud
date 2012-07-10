@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -56,23 +56,23 @@ public class Chant_PlantMaze extends Chant
 		return super.tick(ticking,tickID);
 	}
 
-    public boolean okMessage(Environmental host, CMMsg msg)
-    {
-        if(((msg.sourceMinor()==CMMsg.TYP_QUIT)
-	        ||(msg.sourceMinor()==CMMsg.TYP_SHUTDOWN)
+	public boolean okMessage(Environmental host, CMMsg msg)
+	{
+		if(((msg.sourceMinor()==CMMsg.TYP_QUIT)
+			||(msg.sourceMinor()==CMMsg.TYP_SHUTDOWN)
 			||((msg.targetMinor()==CMMsg.TYP_EXPIRE)&&(msg.target()==oldRoom))
 			||(msg.sourceMinor()==CMMsg.TYP_ROOMRESET))
-        &&(msg.source().location()!=null)
-        &&(msg.source().location().getGridParent()==affected))
-        {
-            if(oldRoom!=null)
-                oldRoom.bringMobHere(msg.source(),false);
-            if(msg.source()==invoker)
-                unInvoke();
-        }
-        return super.okMessage(host,msg);
-    }
-    
+		&&(msg.source().location()!=null)
+		&&(msg.source().location().getGridParent()==affected))
+		{
+			if(oldRoom!=null)
+				oldRoom.bringMobHere(msg.source(),false);
+			if(msg.source()==invoker)
+				unInvoke();
+		}
+		return super.okMessage(host,msg);
+	}
+	
 	public void unInvoke()
 	{
 		// undo the affects of this spell
@@ -83,25 +83,25 @@ public class Chant_PlantMaze extends Chant
 		Room room=(Room)affected;
 		if((canBeUninvoked())&&(room instanceof GridLocale)&&(oldRoom!=null))
 			((GridLocale)room).clearGrid(oldRoom);
-        for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
-            room.setRawExit(d,null);
-        super.unInvoke();
-        room.destroy();
+		for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
+			room.setRawExit(d,null);
+		super.unInvoke();
+		room.destroy();
 	}
-    
-    public int castingQuality(MOB mob, Physical target)
-    {
-        if(mob!=null)
-        {
-            Item myPlant=Druid_MyPlants.myPlant(mob.location(),mob,0);
-            if(myPlant==null)
-                return Ability.QUALITY_INDIFFERENT;
-            if(mob.location().roomID().length()==0)
-                return Ability.QUALITY_INDIFFERENT;
-        }
-        return super.castingQuality(mob,target);
-    }
-    
+	
+	public int castingQuality(MOB mob, Physical target)
+	{
+		if(mob!=null)
+		{
+			Item myPlant=Druid_MyPlants.myPlant(mob.location(),mob,0);
+			if(myPlant==null)
+				return Ability.QUALITY_INDIFFERENT;
+			if(mob.location().roomID().length()==0)
+				return Ability.QUALITY_INDIFFERENT;
+		}
+		return super.castingQuality(mob,target);
+	}
+	
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		thePlants=Druid_MyPlants.myPlant(mob.location(),mob,0);

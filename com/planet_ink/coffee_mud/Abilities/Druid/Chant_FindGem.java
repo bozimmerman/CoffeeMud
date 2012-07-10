@@ -25,7 +25,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -39,8 +39,8 @@ public class Chant_FindGem extends Chant_FindPlant
 	public String ID() { return "Chant_FindGem"; }
 	public String name(){ return "Find Gem";}
 	public String displayText(){return "(Finding "+lookingFor+")";}
-    public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_ROCKCONTROL;}
-    public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
+	public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_ROCKCONTROL;}
+	public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
 	public long flags(){return Ability.FLAG_TRACKING;}
 
 	private int[] myMats={RawMaterial.MATERIAL_PRECIOUS,
@@ -50,8 +50,8 @@ public class Chant_FindGem extends Chant_FindPlant
 
 	public Chant_FindGem()
 	{
-	    super();
+		super();
 
-	    lookingFor = "gem";
+		lookingFor = "gem";
 	}
 }

@@ -25,7 +25,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -48,7 +48,7 @@ public class Corpse extends GenContainer implements DeadBody
 	protected long timeOfDeath=System.currentTimeMillis();
 	protected boolean mobPKFlag=false;
 	protected MOB savedMOB=null;
-    
+	
 	public Corpse()
 	{
 		super();
@@ -97,14 +97,14 @@ public class Corpse extends GenContainer implements DeadBody
 		else
 			super.setSecretIdentity(newIdentity);
 	}
-    
-    public void destroy()
-    {
-        super.destroy();
-        if(savedMOB!=null)
-            savedMOB.destroy();
-        savedMOB=null;
-    }
+	
+	public void destroy()
+	{
+		super.destroy();
+		if(savedMOB!=null)
+			savedMOB.destroy();
+		savedMOB=null;
+	}
 
 	public String mobName(){ return mobName;}
 	public void setMobName(String newName){mobName=newName;}
@@ -126,8 +126,8 @@ public class Corpse extends GenContainer implements DeadBody
 	public void setDestroyAfterLooting(boolean truefalse){destroyAfterLooting=truefalse;}
 	public long timeOfDeath(){return timeOfDeath;}
 	public void setTimeOfDeath(long time){timeOfDeath=time;}
-    public void setSavedMOB(MOB mob){savedMOB=mob;}
-    public MOB savedMOB(){return savedMOB;}
+	public void setSavedMOB(MOB mob){savedMOB=mob;}
+	public MOB savedMOB(){return savedMOB;}
 
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
@@ -137,15 +137,15 @@ public class Corpse extends GenContainer implements DeadBody
 		&&(CMLib.flags().isGolem(msg.source()))
 		&&(msg.source().phyStats().height()<0)
 		&&(msg.source().phyStats().weight()<=0)
-        &&(playerCorpse())
-        &&(mobName().length()>0))
+		&&(playerCorpse())
+		&&(mobName().length()>0))
 		{
 			CMLib.utensils().resurrect(msg.source(),msg.source().location(),this,-1);
 			return;
 		}
 		if(msg.amITarget(this)&&(msg.targetMinor()==CMMsg.TYP_SNIFF)
-        &&((System.currentTimeMillis()-timeOfDeath())>(TimeManager.MILI_HOUR/2)))
-		    msg.source().tell(name()+" has definitely started to decay.");
+		&&((System.currentTimeMillis()-timeOfDeath())>(TimeManager.MILI_HOUR/2)))
+			msg.source().tell(name()+" has definitely started to decay.");
 		super.executeMsg(myHost, msg);
 		
 	}
@@ -153,8 +153,8 @@ public class Corpse extends GenContainer implements DeadBody
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if((msg.amITarget(this)||(msg.tool()==this))
-        &&(playerCorpse())
-        &&(mobName().length()>0))
+		&&(playerCorpse())
+		&&(mobName().length()>0))
 		{
 			if((msg.targetMinor()==CMMsg.TYP_SIT)
 			&&(msg.source().name().equalsIgnoreCase(mobName()))
@@ -172,43 +172,43 @@ public class Corpse extends GenContainer implements DeadBody
 					&&(!msg.tool().ID().equalsIgnoreCase("Prayer_PreserveBody"))
 					&&(!msg.tool().ID().equalsIgnoreCase("Song_Rebirth"))))
 			&&(CMProps.getVar(CMProps.SYSTEM_CORPSEGUARD).length()>0)
-	        &&(!msg.targetMajor(CMMsg.MASK_INTERMSG)))
-	        {
-	            if(CMSecurity.isAllowed(msg.source(),msg.source().location(),"CMDITEMS"))
-	                return true;
-	            
-	            MOB ultimateFollowing=msg.source().amUltimatelyFollowing();
-	            if((msg.source().isMonster())
-	            &&((ultimateFollowing==null)||(ultimateFollowing.isMonster())))
-	                return true;
-	            if(CMProps.getVar(CMProps.SYSTEM_CORPSEGUARD).equalsIgnoreCase("ANY"))
-	                return true;
-	            if (mobName().equalsIgnoreCase(msg.source().Name()))
+			&&(!msg.targetMajor(CMMsg.MASK_INTERMSG)))
+			{
+				if(CMSecurity.isAllowed(msg.source(),msg.source().location(),"CMDITEMS"))
 					return true;
-	            else
-	            if(CMProps.getVar(CMProps.SYSTEM_CORPSEGUARD).equalsIgnoreCase("SELFONLY"))
-				{
-	                msg.source().tell("You may not loot another players corpse.");
-	                return false;
-		        }
+				
+				MOB ultimateFollowing=msg.source().amUltimatelyFollowing();
+				if((msg.source().isMonster())
+				&&((ultimateFollowing==null)||(ultimateFollowing.isMonster())))
+					return true;
+				if(CMProps.getVar(CMProps.SYSTEM_CORPSEGUARD).equalsIgnoreCase("ANY"))
+					return true;
+				if (mobName().equalsIgnoreCase(msg.source().Name()))
+					return true;
 				else
-	            if(CMProps.getVar(CMProps.SYSTEM_CORPSEGUARD).equalsIgnoreCase("PKONLY"))
+				if(CMProps.getVar(CMProps.SYSTEM_CORPSEGUARD).equalsIgnoreCase("SELFONLY"))
 				{
-	                if(!(CMath.bset((msg.source()).getBitmap(), MOB.ATT_PLAYERKILL)))
+					msg.source().tell("You may not loot another players corpse.");
+					return false;
+				}
+				else
+				if(CMProps.getVar(CMProps.SYSTEM_CORPSEGUARD).equalsIgnoreCase("PKONLY"))
+				{
+					if(!(CMath.bset((msg.source()).getBitmap(), MOB.ATT_PLAYERKILL)))
 					{
-	                    msg.source().tell("You can not get that.  You are not a player killer.");
-	                    return false;
-	                }
+						msg.source().tell("You can not get that.  You are not a player killer.");
+						return false;
+					}
 					else
 					if(mobPKFlag())
 					{
-	                    msg.source().tell("You can not get that.  "+mobName()+" was not a player killer.");
-	                    return false;
-	                }
+						msg.source().tell("You can not get that.  "+mobName()+" was not a player killer.");
+						return false;
+					}
 				}
-	        }
-	        return true;
+			}
+			return true;
 		}
-        return super.okMessage(myHost, msg);
+		return super.okMessage(myHost, msg);
 	}
 }

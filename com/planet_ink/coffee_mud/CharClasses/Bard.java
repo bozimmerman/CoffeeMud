@@ -25,7 +25,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -59,17 +59,17 @@ public class Bard extends StdCharClass
 	{
 		super();
 		maxStatAdj[CharStats.STAT_CHARISMA]=7;
-    }
-    public void initializeClass()
-    {
-        super.initializeClass();
+	}
+	public void initializeClass()
+	{
+		super.initializeClass();
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Specialization_Natural",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Specialization_Ranged",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Specialization_EdgedWeapon",50,true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Specialization_Sword",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Recall",50,true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Write",50,true);
-        CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Befriend",50,true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Befriend",50,true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Swim",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Song_Detection",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Song_Nothing",true);
@@ -128,136 +128,136 @@ public class Bard extends StdCharClass
 	}
 
 	public int adjustExperienceGain(MOB host, MOB mob, MOB victim, int amount){ return Bard.bardAdjustExperienceGain(host,mob,victim,amount,5.0);}
-    public static int bardAdjustExperienceGain(MOB host, MOB mob, MOB victim, int amount, double rate)
-    {
-        double theAmount=(double)amount;
-        if((mob!=null)&&(victim!=null)&&(theAmount>10.0))
-        {
-	    	if(host == mob)
-	    	{
-	    		Set<MOB> H=mob.getGroupMembers(new HashSet<MOB>());
-	            double origAmount=theAmount;
-	            for(Iterator e=H.iterator();e.hasNext();)
-	            {
-	                MOB mob2=(MOB)e.next();
-	                if((mob2!=mob)
-	                   &&(mob2!=victim)
-	                   &&(mob2.location()!=null)
-	                   &&(mob2.location()==mob.location()))
-	                {
-	                    if(!mob2.isMonster())
-	                        theAmount+=(origAmount/rate);
-	                    else
-	                    if(!CMLib.flags().isAnimalIntelligence(mob2))
-	                        theAmount+=1.0;
-	                }
-	            }
-	        }
-	    	else
-            if((!host.isMonster())&&(!mob.isMonster()))
-            	theAmount = 1.1 * theAmount;
-    	}
-        return (int)Math.round(theAmount);
-    }
+	public static int bardAdjustExperienceGain(MOB host, MOB mob, MOB victim, int amount, double rate)
+	{
+		double theAmount=(double)amount;
+		if((mob!=null)&&(victim!=null)&&(theAmount>10.0))
+		{
+			if(host == mob)
+			{
+				Set<MOB> H=mob.getGroupMembers(new HashSet<MOB>());
+				double origAmount=theAmount;
+				for(Iterator e=H.iterator();e.hasNext();)
+				{
+					MOB mob2=(MOB)e.next();
+					if((mob2!=mob)
+					   &&(mob2!=victim)
+					   &&(mob2.location()!=null)
+					   &&(mob2.location()==mob.location()))
+					{
+						if(!mob2.isMonster())
+							theAmount+=(origAmount/rate);
+						else
+						if(!CMLib.flags().isAnimalIntelligence(mob2))
+							theAmount+=1.0;
+					}
+				}
+			}
+			else
+			if((!host.isMonster())&&(!mob.isMonster()))
+				theAmount = 1.1 * theAmount;
+		}
+		return (int)Math.round(theAmount);
+	}
 
 	public int availabilityCode(){return Area.THEME_FANTASY;}
 
-    public void executeMsg(Environmental host, CMMsg msg)
-    {
-        super.executeMsg(host,msg);
-        Bard.visitationBonusMessage(host,msg);
-    }
-    public static void visitationBonusMessage(Environmental host, CMMsg msg)
-    {
-        if((msg.target() instanceof Room)
-        &&(msg.source()==host)
-        &&(!msg.source().isMonster())
-        &&(msg.targetMinor()==CMMsg.TYP_ENTER)
-        &&(msg.source().playerStats()!=null))
-        {
-            Room R=(Room)msg.target();
-            MOB mob=msg.source();
-            Physical hostP=(Physical)host;
-            if(((R.roomID().length()>0)
-            ||((R.getGridParent()!=null)&&(R.getGridParent().roomID().length()>0)))
-            &&(!msg.source().playerStats().hasVisited(R)))
-            {
-                Area A=R.getArea();
-                MOB M=null;
-                boolean pub=false;
-                for(int m=0;m<R.numInhabitants();m++)
-                {
-                    M=R.fetchInhabitant(m);
-                    if((M instanceof ShopKeeper)
-                    &&(M.getStartRoom()==R))
-                    {
-                    	List<Ability> V2=new Vector<Ability>();
-        				for(Iterator<Environmental> i=((ShopKeeper)M).getShop().getStoreInventory();i.hasNext();)
-        				{
-        					Environmental O=(Environmental)i.next();
-                            if(O instanceof Potion)
-                            {
-                                V2.addAll(((Potion)O).getSpells());
-                                for(int v=V2.size()-1;v>=0;v--)
-                                    if((((Ability)V2.get(v)).classificationCode()&Ability.ALL_ACODES)!=Ability.ACODE_POISON)
-                                        V2.get(v);
+	public void executeMsg(Environmental host, CMMsg msg)
+	{
+		super.executeMsg(host,msg);
+		Bard.visitationBonusMessage(host,msg);
+	}
+	public static void visitationBonusMessage(Environmental host, CMMsg msg)
+	{
+		if((msg.target() instanceof Room)
+		&&(msg.source()==host)
+		&&(!msg.source().isMonster())
+		&&(msg.targetMinor()==CMMsg.TYP_ENTER)
+		&&(msg.source().playerStats()!=null))
+		{
+			Room R=(Room)msg.target();
+			MOB mob=msg.source();
+			Physical hostP=(Physical)host;
+			if(((R.roomID().length()>0)
+			||((R.getGridParent()!=null)&&(R.getGridParent().roomID().length()>0)))
+			&&(!msg.source().playerStats().hasVisited(R)))
+			{
+				Area A=R.getArea();
+				MOB M=null;
+				boolean pub=false;
+				for(int m=0;m<R.numInhabitants();m++)
+				{
+					M=R.fetchInhabitant(m);
+					if((M instanceof ShopKeeper)
+					&&(M.getStartRoom()==R))
+					{
+						List<Ability> V2=new Vector<Ability>();
+						for(Iterator<Environmental> i=((ShopKeeper)M).getShop().getStoreInventory();i.hasNext();)
+						{
+							Environmental O=(Environmental)i.next();
+							if(O instanceof Potion)
+							{
+								V2.addAll(((Potion)O).getSpells());
+								for(int v=V2.size()-1;v>=0;v--)
+									if((((Ability)V2.get(v)).classificationCode()&Ability.ALL_ACODES)!=Ability.ACODE_POISON)
+										V2.get(v);
 
 
-                            }
-                            if(O instanceof Drink)
-                            {
-                                V2.addAll(CMLib.flags().domainAffects((Drink)O,Ability.ACODE_POISON));
-                                String name=" "+O.Name().toLowerCase();
-                                if(name.endsWith(" beer")
-                                ||name.endsWith(" liquor")
-                                ||name.endsWith(" ale")
-                                ||name.endsWith(" whiskey")
-                                ||name.endsWith(" wine"))
-                                	pub=true;
-                            }
-                            for(int v=0;v<V2.size();v++)
-                                pub=pub||CMath.bset(((Ability)V2.get(v)).flags(),Ability.FLAG_INTOXICATING);
-                        }
-                    }
-                }
-                if(pub)
-                {
-                    if(CMLib.leveler().postExperience((MOB)host,null,null,50,true))
-                        msg.addTrailerMsg(CMClass.getMsg((MOB)host,null,null,CMMsg.MSG_OK_VISUAL,"^HYou have discovered a new pub, you gain "+50+" experience.^?",CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null));
-                }
-                if(!mob.playerStats().hasVisited(A))
-                {
-                    mob.playerStats().addRoomVisit(R);
-                    int xp=(int)Math.round(100.0*CMath.div(A.getAreaIStats()[Area.AREASTAT_AVGLEVEL],hostP.phyStats().level()));
-                    if(xp>250) xp=250;
-                    if((xp>0)&&CMLib.leveler().postExperience((MOB)host,null,null,xp,true))
-                        msg.addTrailerMsg(CMClass.getMsg((MOB)host,null,null,CMMsg.MSG_OK_VISUAL,"^HYou have discovered '"+A.name()+"', you gain "+xp+" experience.^?",CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null));
-                }
-                else
-                {
-                    int pctBefore=mob.playerStats().percentVisited((MOB)host,A);
-                    mob.playerStats().addRoomVisit(R);
-                    int pctAfter=mob.playerStats().percentVisited((MOB)host,A);
-                    if((pctBefore<50)&&(pctAfter>=50))
-                    {
-                        int xp=(int)Math.round(50.0*CMath.div(A.getAreaIStats()[Area.AREASTAT_AVGLEVEL],hostP.phyStats().level()));
-                        if(xp>125) xp=125;
-                        if((xp>0)&&CMLib.leveler().postExperience((MOB)host,null,null,xp,true))
-                            msg.addTrailerMsg(CMClass.getMsg((MOB)host,null,null,CMMsg.MSG_OK_VISUAL,"^HYou have familiarized yourself with '"+A.name()+"', you gain "+xp+" experience.^?",CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null));
-                    }
-                    else
-                    if((pctBefore<90)&&(pctAfter>=90))
-                    {
-                        int xp=(int)Math.round(100.0*CMath.div(A.getAreaIStats()[Area.AREASTAT_AVGLEVEL],hostP.phyStats().level()));
-                        if(xp>250) xp=250;
-                        if((xp>0)&&CMLib.leveler().postExperience((MOB)host,null,null,xp,true))
-                            msg.addTrailerMsg(CMClass.getMsg((MOB)host,null,null,CMMsg.MSG_OK_VISUAL,"^HYou have explored '"+A.name()+"', you gain "+xp+" experience.^?",CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null));
-                    }
-                }
+							}
+							if(O instanceof Drink)
+							{
+								V2.addAll(CMLib.flags().domainAffects((Drink)O,Ability.ACODE_POISON));
+								String name=" "+O.Name().toLowerCase();
+								if(name.endsWith(" beer")
+								||name.endsWith(" liquor")
+								||name.endsWith(" ale")
+								||name.endsWith(" whiskey")
+								||name.endsWith(" wine"))
+									pub=true;
+							}
+							for(int v=0;v<V2.size();v++)
+								pub=pub||CMath.bset(((Ability)V2.get(v)).flags(),Ability.FLAG_INTOXICATING);
+						}
+					}
+				}
+				if(pub)
+				{
+					if(CMLib.leveler().postExperience((MOB)host,null,null,50,true))
+						msg.addTrailerMsg(CMClass.getMsg((MOB)host,null,null,CMMsg.MSG_OK_VISUAL,"^HYou have discovered a new pub, you gain "+50+" experience.^?",CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null));
+				}
+				if(!mob.playerStats().hasVisited(A))
+				{
+					mob.playerStats().addRoomVisit(R);
+					int xp=(int)Math.round(100.0*CMath.div(A.getAreaIStats()[Area.AREASTAT_AVGLEVEL],hostP.phyStats().level()));
+					if(xp>250) xp=250;
+					if((xp>0)&&CMLib.leveler().postExperience((MOB)host,null,null,xp,true))
+						msg.addTrailerMsg(CMClass.getMsg((MOB)host,null,null,CMMsg.MSG_OK_VISUAL,"^HYou have discovered '"+A.name()+"', you gain "+xp+" experience.^?",CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null));
+				}
+				else
+				{
+					int pctBefore=mob.playerStats().percentVisited((MOB)host,A);
+					mob.playerStats().addRoomVisit(R);
+					int pctAfter=mob.playerStats().percentVisited((MOB)host,A);
+					if((pctBefore<50)&&(pctAfter>=50))
+					{
+						int xp=(int)Math.round(50.0*CMath.div(A.getAreaIStats()[Area.AREASTAT_AVGLEVEL],hostP.phyStats().level()));
+						if(xp>125) xp=125;
+						if((xp>0)&&CMLib.leveler().postExperience((MOB)host,null,null,xp,true))
+							msg.addTrailerMsg(CMClass.getMsg((MOB)host,null,null,CMMsg.MSG_OK_VISUAL,"^HYou have familiarized yourself with '"+A.name()+"', you gain "+xp+" experience.^?",CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null));
+					}
+					else
+					if((pctBefore<90)&&(pctAfter>=90))
+					{
+						int xp=(int)Math.round(100.0*CMath.div(A.getAreaIStats()[Area.AREASTAT_AVGLEVEL],hostP.phyStats().level()));
+						if(xp>250) xp=250;
+						if((xp>0)&&CMLib.leveler().postExperience((MOB)host,null,null,xp,true))
+							msg.addTrailerMsg(CMClass.getMsg((MOB)host,null,null,CMMsg.MSG_OK_VISUAL,"^HYou have explored '"+A.name()+"', you gain "+xp+" experience.^?",CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null));
+					}
+				}
 
-            }
-        }
-    }
+			}
+		}
+	}
 
 	
 	public void grantAbilities(MOB mob, boolean isBorrowedClass)
@@ -266,9 +266,9 @@ public class Bard extends StdCharClass
 		if(mob.playerStats()==null)
 		{
 			List<AbilityMapper.AbilityMapping> V=CMLib.ableMapper().getUpToLevelListings(ID(),
-                    										 mob.charStats().getClassLevel(ID()),
-                    										 false,
-                    										 false);
+															 mob.charStats().getClassLevel(ID()),
+															 false,
+															 false);
 			for(AbilityMapper.AbilityMapping able : V)
 			{
 				Ability A=CMClass.getAbility(able.abilityID);

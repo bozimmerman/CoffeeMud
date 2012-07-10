@@ -23,7 +23,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -47,9 +47,9 @@ public class DrinkCmd extends StdCommand
 			return false;
 		}
 		commands.removeElementAt(0);
-        if((commands.size()>1)&&(((String)commands.firstElement()).equalsIgnoreCase("from")))
-            commands.removeElementAt(0);
-        
+		if((commands.size()>1)&&(((String)commands.firstElement()).equalsIgnoreCase("from")))
+			commands.removeElementAt(0);
+		
 		Environmental thisThang=null;
 		if((commands.size()==0)&&(mob.location() instanceof Drink))
 			thisThang=mob.location();
@@ -91,8 +91,8 @@ public class DrinkCmd extends StdCommand
 			mob.location().send(mob,newMsg);
 		return false;
 	}
-    public double combatActionsCost(final MOB mob, final List<String> cmds){return CMProps.getCombatActionCost(ID());}
-    public double actionsCost(final MOB mob, final List<String> cmds){return CMProps.getActionCost(ID());}
+	public double combatActionsCost(final MOB mob, final List<String> cmds){return CMProps.getCombatActionCost(ID());}
+	public double actionsCost(final MOB mob, final List<String> cmds){return CMProps.getActionCost(ID());}
 	public boolean canBeOrdered(){return true;}
 
 	

@@ -23,7 +23,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -49,15 +49,15 @@ public class Ban extends StdCommand
 			return false;
 		}
 		banMe=banMe.toUpperCase().trim();
-        int b=CMSecurity.ban(banMe);
-        if(b<0)
-            mob.tell("Logins and IPs matching "+banMe+" are now banned.");
-        else
-        {
+		int b=CMSecurity.ban(banMe);
+		if(b<0)
+			mob.tell("Logins and IPs matching "+banMe+" are now banned.");
+		else
+		{
 			mob.tell("That is already banned.  Do LIST BANNED and check out #"+(b+1)+".");
 			return false;
 		}
-        return true;
+		return true;
 	}
 	
 	public boolean canBeOrdered(){return true;}

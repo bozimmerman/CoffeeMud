@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -62,19 +62,19 @@ public class Prayer_CureDisease extends Prayer implements MendingSkill
 		return offenders;
 	}
 
-    public int castingQuality(MOB mob, Physical target)
-    {
-        if(mob!=null)
-        {
-            if(target instanceof MOB)
-            {
-                if(supportsMending((MOB)target))
-                    return super.castingQuality(mob, target,Ability.QUALITY_BENEFICIAL_OTHERS);
-            }
-        }
-        return super.castingQuality(mob,target);
-    }
-    
+	public int castingQuality(MOB mob, Physical target)
+	{
+		if(mob!=null)
+		{
+			if(target instanceof MOB)
+			{
+				if(supportsMending((MOB)target))
+					return super.castingQuality(mob, target,Ability.QUALITY_BENEFICIAL_OTHERS);
+			}
+		}
+		return super.castingQuality(mob,target);
+	}
+	
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=this.getTarget(mob,commands,givenTarget);
@@ -99,23 +99,23 @@ public class Prayer_CureDisease extends Prayer implements MendingSkill
 				boolean badOnes=false;
 				for(int a=offensiveAffects.size()-1;a>=0;a--)
 				{
-				    Ability A=((Ability)offensiveAffects.get(a));
-				    if(A instanceof DiseaseAffect)
-				    {
-				        if((A.invoker()!=mob)
-				        &&((((DiseaseAffect)A).difficultyLevel()*10)>adjustedLevel(mob,asLevel)))
-				            badOnes=true;
-				        else
+					Ability A=((Ability)offensiveAffects.get(a));
+					if(A instanceof DiseaseAffect)
+					{
+						if((A.invoker()!=mob)
+						&&((((DiseaseAffect)A).difficultyLevel()*10)>adjustedLevel(mob,asLevel)))
+							badOnes=true;
+						else
 							A.unInvoke();
-				    }
-				    else
-				        A.unInvoke();
-				        
+					}
+					else
+						A.unInvoke();
+						
 				}
 				if(badOnes)
-				    mob.location().show(mob,target,null,CMMsg.MSG_OK_VISUAL,"<T-NAME> had diseases too powerful for <S-YOUPOSS> magic.");
+					mob.location().show(mob,target,null,CMMsg.MSG_OK_VISUAL,"<T-NAME> had diseases too powerful for <S-YOUPOSS> magic.");
 				else
-				    mob.location().show(mob,target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> cure(s) the diseases in <T-NAMESELF>.");
+					mob.location().show(mob,target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> cure(s) the diseases in <T-NAMESELF>.");
 				if(!CMLib.flags().stillAffectedBy(target,offensiveAffects,false))
 					target.tell("You feel much better!");
 			}

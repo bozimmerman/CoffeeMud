@@ -25,7 +25,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -125,23 +125,23 @@ public class Song_Friendship extends Song
 			super.unInvoke();
 			if(mob!=invoker)
 			{
-                if((canBeUninvoked()&&(!mob.amDead())))
-                {
-                    mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-YOUPOSS> free-will returns.");
-    				mob.setFollowing(null);
-    				CMLib.commands().postStand(mob,true);
-    				if(mob.isMonster())
-    				{
-                        if((CMLib.dice().rollPercentage()>50)
-                        ||((mob.getStartRoom()!=null)
-                            &&(mob.getStartRoom().getArea()!=mob.location().getArea())
-                            &&(CMLib.flags().isAggressiveTo(mob,null)||(invoker==null)||(!mob.location().isInhabitant(invoker)))))
-    							CMLib.tracking().wanderAway(mob,true,true);
-    					else
-    					if((invoker!=null)&&(invoker!=mob))
-    						mob.setVictim(invoker);
-    				}
-                }
+				if((canBeUninvoked()&&(!mob.amDead())))
+				{
+					mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-YOUPOSS> free-will returns.");
+					mob.setFollowing(null);
+					CMLib.commands().postStand(mob,true);
+					if(mob.isMonster())
+					{
+						if((CMLib.dice().rollPercentage()>50)
+						||((mob.getStartRoom()!=null)
+							&&(mob.getStartRoom().getArea()!=mob.location().getArea())
+							&&(CMLib.flags().isAggressiveTo(mob,null)||(invoker==null)||(!mob.location().isInhabitant(invoker)))))
+								CMLib.tracking().wanderAway(mob,true,true);
+						else
+						if((invoker!=null)&&(invoker!=mob))
+							mob.setVictim(invoker);
+					}
+				}
 			}
 		}
 		else
@@ -150,7 +150,7 @@ public class Song_Friendship extends Song
 
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-        timeOut=0;
+		timeOut=0;
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 

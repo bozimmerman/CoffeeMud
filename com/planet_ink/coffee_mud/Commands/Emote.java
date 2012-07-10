@@ -23,7 +23,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -48,18 +48,18 @@ public class Emote extends StdCommand
 		}
 		String combinedCommands=CMParms.combine(commands,1);
 		combinedCommands=CMProps.applyINIFilter(combinedCommands,CMProps.SYSTEM_EMOTEFILTER);
-        if(combinedCommands.trim().startsWith("'")||combinedCommands.trim().startsWith("`"))
-            combinedCommands=combinedCommands.trim();
-        else
-            combinedCommands=" "+combinedCommands.trim();
+		if(combinedCommands.trim().startsWith("'")||combinedCommands.trim().startsWith("`"))
+			combinedCommands=combinedCommands.trim();
+		else
+			combinedCommands=" "+combinedCommands.trim();
 		String emote="^E<S-NAME>"+combinedCommands+" ^?";
 		CMMsg msg=CMClass.getMsg(mob,null,null,CMMsg.MSG_EMOTE,"^E"+mob.name()+combinedCommands+" ^?",emote,emote);
 		if(mob.location().okMessage(mob,msg))
 			mob.location().send(mob,msg);
 		return false;
 	}
-    public double combatActionsCost(final MOB mob, final List<String> cmds){return CMProps.getCombatActionCost(ID());}
-    public double actionsCost(final MOB mob, final List<String> cmds){return CMProps.getActionCost(ID());}
+	public double combatActionsCost(final MOB mob, final List<String> cmds){return CMProps.getCombatActionCost(ID());}
+	public double actionsCost(final MOB mob, final List<String> cmds){return CMProps.getActionCost(ID());}
 	public boolean canBeOrdered(){return true;}
 
 	

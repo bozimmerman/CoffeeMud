@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -68,29 +68,29 @@ public class LizardManShaman extends LizardMan
 		recoverCharStats();
 	}
 
-    public void addNaturalAbilities()
-    {
-        Ability p1 =CMClass.getAbility("Prayer_ProtGood");
-        p1.setProficiency(CMLib.dice().roll(5, 10, 50));
+	public void addNaturalAbilities()
+	{
+		Ability p1 =CMClass.getAbility("Prayer_ProtGood");
+		p1.setProficiency(CMLib.dice().roll(5, 10, 50));
 		p1.setSavable(false);
-        this.addAbility(p1);
+		this.addAbility(p1);
 
-        Ability p2 =CMClass.getAbility("Prayer_CauseLight");
-        p2.setProficiency(CMLib.dice().roll(5, 10, 50));
+		Ability p2 =CMClass.getAbility("Prayer_CauseLight");
+		p2.setProficiency(CMLib.dice().roll(5, 10, 50));
 		p2.setSavable(false);
-        this.addAbility(p2);
+		this.addAbility(p2);
 
-        Ability p3 =CMClass.getAbility("Prayer_Curse");
-        p3.setProficiency(CMLib.dice().roll(5, 10, 50));
+		Ability p3 =CMClass.getAbility("Prayer_Curse");
+		p3.setProficiency(CMLib.dice().roll(5, 10, 50));
 		p3.setSavable(false);
-        this.addAbility(p3);
+		this.addAbility(p3);
 
-        Ability p4 =CMClass.getAbility("Prayer_Paralyze");
-        p4.setProficiency(CMLib.dice().roll(5, 10, 50));
+		Ability p4 =CMClass.getAbility("Prayer_Paralyze");
+		p4.setProficiency(CMLib.dice().roll(5, 10, 50));
 		p4.setSavable(false);
-        this.addAbility(p4);
+		this.addAbility(p4);
 
-    }
+	}
 
 	public boolean tick(Tickable ticking, int tickID)
 	{
@@ -109,21 +109,21 @@ public class LizardManShaman extends LizardMan
 		return super.tick(ticking,tickID);
 	}
 
-    public boolean castSpell()
-    {
-	    Ability prayer = null;
-        if(CMLib.dice().rollPercentage() < 70)
-            prayer = fetchAbility(CMLib.dice().roll(1,numAbilities(),-1));
-        else
-        {
-            prayer = CMClass.getAbility("Prayer_CureLight");
-            prayer.setProficiency(CMLib.dice().roll(5, 10, 50));
-        }
+	public boolean castSpell()
+	{
+		Ability prayer = null;
+		if(CMLib.dice().rollPercentage() < 70)
+			prayer = fetchAbility(CMLib.dice().roll(1,numAbilities(),-1));
+		else
+		{
+			prayer = CMClass.getAbility("Prayer_CureLight");
+			prayer.setProficiency(CMLib.dice().roll(5, 10, 50));
+		}
 
 		if(prayer!=null)
-		    return prayer.invoke(this,null,false,0);
-        return false;
-    }
+			return prayer.invoke(this,null,false,0);
+		return false;
+	}
 
 
 }

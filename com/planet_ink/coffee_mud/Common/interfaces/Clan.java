@@ -25,7 +25,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -305,15 +305,15 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Clan#setClanLevel(int)
 	 * @return the current clan level
 	 */
-    public int getClanLevel();
-    
-    /**
-     * Sets the new clan level
+	public int getClanLevel();
+	
+	/**
+	 * Sets the new clan level
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Clan#getClanLevel()
-     * @param newClanLevel the new clan level
-     */
-    public void setClanLevel(int newClanLevel);
-    
+	 * @param newClanLevel the new clan level
+	 */
+	public void setClanLevel(int newClanLevel);
+	
 	/**
 	 * Returns the roomID of this clans recall room (their clan home)
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Clan#setRecall(String)
@@ -409,14 +409,14 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
 	 * Called when a member of this clan kills a member of another 
 	 * Will update the clan in the database.
 	 */
-    public void recordClanKill();
-    
-    /**
-     * Returns the number of other-clan kills this clan has recorded.
-     * @return the number of kills.
-     */
-    public int getCurrentClanKills();
-    
+	public void recordClanKill();
+	
+	/**
+	 * Returns the number of other-clan kills this clan has recorded.
+	 * @return the number of kills.
+	 */
+	public int getCurrentClanKills();
+	
 	/**
 	 * Returns the total control points represented by the list of
 	 * controlled areas given.
@@ -467,48 +467,48 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
 	 */
 	public int getMostInRole(int roleID);
 	
-    /**
-     * Returns the friendly descriptive name of a given role in a clan, based
-     * on very specific criteria.
-     * @param roleID the role code of the role to describe
-     * @param titleCase whether or not to uppercase the first word
-     * @param plural whether or not to return the word as a plural
-     * @return the friendly descriptive name of a given role in a clan
-     */
-    public String getRoleName(int roleID, boolean titleCase, boolean plural);
-    
-    /**
-     * For the clan government type, this function will return
-     * the clan role that most closely matches the given string "position".
-     * It will return -1 if no position is found that matches the string.
-     * The returned value will an an official role bitmask.
-     * @param position the name of the position to look for
-     * @return the role mask/code number for this government, oe -1
-     */
-    public int getRoleFromName(String position);
+	/**
+	 * Returns the friendly descriptive name of a given role in a clan, based
+	 * on very specific criteria.
+	 * @param roleID the role code of the role to describe
+	 * @param titleCase whether or not to uppercase the first word
+	 * @param plural whether or not to return the word as a plural
+	 * @return the friendly descriptive name of a given role in a clan
+	 */
+	public String getRoleName(int roleID, boolean titleCase, boolean plural);
+	
+	/**
+	 * For the clan government type, this function will return
+	 * the clan role that most closely matches the given string "position".
+	 * It will return -1 if no position is found that matches the string.
+	 * The returned value will an an official role bitmask.
+	 * @param position the name of the position to look for
+	 * @return the role mask/code number for this government, oe -1
+	 */
+	public int getRoleFromName(String position);
 
-    /**
-     * Returns whether this clan gets listed with the clanlist command.
-     * Does not affect clanlog messaging.
-     * @param mob the person viewing
-     * @return true if it is, false otherwise.
-     */
-    public boolean isPubliclyListedFor(MOB mob);
+	/**
+	 * Returns whether this clan gets listed with the clanlist command.
+	 * Does not affect clanlog messaging.
+	 * @param mob the person viewing
+	 * @return true if it is, false otherwise.
+	 */
+	public boolean isPubliclyListedFor(MOB mob);
 
-    /**
-     * Returns whether this clan only accepts applicants
-     * from people who are family of current members/founder.
-     * @return true if it is, false otherwise.
-     */
-    public boolean isOnlyFamilyApplicants();
-    
-    /**
-     * Returns the list of roles for people in this clan, from
-     * lowest rank to the highest.  Must correspond with roleIDs
-     * @return the role list
-     */
-    public String[] getRolesList();
-    
+	/**
+	 * Returns whether this clan only accepts applicants
+	 * from people who are family of current members/founder.
+	 * @return true if it is, false otherwise.
+	 */
+	public boolean isOnlyFamilyApplicants();
+	
+	/**
+	 * Returns the list of roles for people in this clan, from
+	 * lowest rank to the highest.  Must correspond with roleIDs
+	 * @return the role list
+	 */
+	public String[] getRolesList();
+	
 	/**
 	 * Returns the set of members, where
 	 * each row represents a MemberRecord
@@ -582,8 +582,8 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
 	 * @see Clan#setGovernmentID(int)
 	 * @return the if constant
 	 */
-    public ClanGovernment getGovernment();
-    
+	public ClanGovernment getGovernment();
+	
 	/**
 	 * Returns whether this clan attains conquest loyalty 
 	 * through giving out clan items.
@@ -614,8 +614,8 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
 	 * or null.
 	 * @see Position
 	 * @see Function
-     * @param func the function (or null) they must be able to do
-     * @param mob the mob to check for a top rank
+	 * @param func the function (or null) they must be able to do
+	 * @param mob the mob to check for a top rank
 	 * @return the roleid constant
 	 */
 	public int getTopQualifiedRoleID(Function func, MOB mob);
@@ -636,19 +636,19 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
 	 */
 	public int getNumberRoles();
 	
-    /**
-     * Del a member from this clan
-     * @param M the member to remove
-     */
-    public void delMember(MOB M);
-    
-    /**
-     * Adds a new member to this clan
-     * @param M the member to add
-     * @param role the coded role number
-     */
-    public void addMember(MOB M, int role);
-    
+	/**
+	 * Del a member from this clan
+	 * @param M the member to remove
+	 */
+	public void delMember(MOB M);
+	
+	/**
+	 * Adds a new member to this clan
+	 * @param M the member to add
+	 * @param role the coded role number
+	 */
+	public void addMember(MOB M, int role);
+	
 	/**
 	 * Orders the system to update this clan in the database.
 	 */
@@ -672,66 +672,66 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
 	 */
 	public boolean canBeAssigned(MOB mob, int role);
 
-    /**
-     * Represents an individual clan vote
-     * @author Bo Zimmerman
-     *
-     */
-    public static class ClanVote
-    {
-    	/**
-    	 * Text to describe this vote to the voter.
-    	 */
-        public String voteStarter="";
-        /**
-         * One of the VSTAT_* constants representing
-         * the status of this vote.
-         * @see Clan
-         */
-        public int voteStatus=0;
-        /**
-         * Date/time stamp for when the vote was started.
-         */
-        public long voteStarted=0;
-        /**
-         * The command to execute if the vote passes.
-         */
-        public String matter="";
-        /**
-         * The FUNC_* constant representing this vote.
-         * @see Clan
-         */
-        public int function=0;
-        /**
-         * A 2 dimentional vector of the votes, where each
-         * row is a vote, with dimension 1 being the member name
-         * and dimension 2 being a Boolean representing their choice.
-         */
-        public DVector votes=null;
-    }
-    
-    /**
-     * A internal membership record, as returned by the database 
-     * @author Bo Zimmerman
-     */
-    public class MemberRecord
-    {
-    	public String name;
-    	public int role;
-    	public long timestamp;
-    	public MemberRecord(String name, int role, long timestamp) {
-    		this.name=name; this.role=role; this.timestamp=timestamp;
-    	}
-    	public String toString() { return name;}
-    }
-    
-    /** Vote just started constant for the ClanVote.voteStatus member. @see ClanVote#voteStatus */
+	/**
+	 * Represents an individual clan vote
+	 * @author Bo Zimmerman
+	 *
+	 */
+	public static class ClanVote
+	{
+		/**
+		 * Text to describe this vote to the voter.
+		 */
+		public String voteStarter="";
+		/**
+		 * One of the VSTAT_* constants representing
+		 * the status of this vote.
+		 * @see Clan
+		 */
+		public int voteStatus=0;
+		/**
+		 * Date/time stamp for when the vote was started.
+		 */
+		public long voteStarted=0;
+		/**
+		 * The command to execute if the vote passes.
+		 */
+		public String matter="";
+		/**
+		 * The FUNC_* constant representing this vote.
+		 * @see Clan
+		 */
+		public int function=0;
+		/**
+		 * A 2 dimentional vector of the votes, where each
+		 * row is a vote, with dimension 1 being the member name
+		 * and dimension 2 being a Boolean representing their choice.
+		 */
+		public DVector votes=null;
+	}
+	
+	/**
+	 * A internal membership record, as returned by the database 
+	 * @author Bo Zimmerman
+	 */
+	public class MemberRecord
+	{
+		public String name;
+		public int role;
+		public long timestamp;
+		public MemberRecord(String name, int role, long timestamp) {
+			this.name=name; this.role=role; this.timestamp=timestamp;
+		}
+		public String toString() { return name;}
+	}
+	
+	/** Vote just started constant for the ClanVote.voteStatus member. @see ClanVote#voteStatus */
 	public final static int VSTAT_STARTED=0;
-    /** Vote has failed constant for the ClanVote.voteStatus member. @see ClanVote#voteStatus */
+	/** Vote has failed constant for the ClanVote.voteStatus member. @see ClanVote#voteStatus */
 	public final static int VSTAT_FAILED=1;
-    /** Vote has passed constant for the ClanVote.voteStatus member. @see ClanVote#voteStatus */
+	/** Vote has passed constant for the ClanVote.voteStatus member. @see ClanVote#voteStatus */
 	public final static int VSTAT_PASSED=2;
-    /** Descriptors for the values of ClanVote.voteStatus member. @see ClanVote#voteStatus */
+	/** Descriptors for the values of ClanVote.voteStatus member. @see ClanVote#voteStatus */
 	public final static String[] VSTAT_DESCS={
 		"In Progress",
 		"Failed",
@@ -739,27 +739,27 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
 	};
 
 	
-    /** Stat variables associated with clan objects. */
-    public final static String[] CLAN_STATS={
-        "ACCEPTANCE", // 0
-        "DETAIL", // 1
-        "DONATEROOM", // 2
-        "EXP", // 3
-        "GOVT", // 4
-        "MORGUE", // 5
-        "POLITICS", // 6
-        "PREMISE", // 7
-        "RECALL", // 8
-        "SIZE", // 9
-        "STATUS", // 10
-        "TAXES", // 11
-        "TROPHIES", // 12
-        "TYPE", // 13
-        "AREAS", // 14
-        "MEMBERLIST", // 15
-        "TOPMEMBER", // 16
-        "CLANLEVEL" // 17
-    };
+	/** Stat variables associated with clan objects. */
+	public final static String[] CLAN_STATS={
+		"ACCEPTANCE", // 0
+		"DETAIL", // 1
+		"DONATEROOM", // 2
+		"EXP", // 3
+		"GOVT", // 4
+		"MORGUE", // 5
+		"POLITICS", // 6
+		"PREMISE", // 7
+		"RECALL", // 8
+		"SIZE", // 9
+		"STATUS", // 10
+		"TAXES", // 11
+		"TROPHIES", // 12
+		"TYPE", // 13
+		"AREAS", // 14
+		"MEMBERLIST", // 15
+		"TOPMEMBER", // 16
+		"CLANLEVEL" // 17
+	};
 
 	/** constant for the getStatus() method, denoting normal status. @see Clan#getStatus() .*/
 	public static final int CLANSTATUS_ACTIVE=0;
@@ -784,9 +784,9 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
 	public static final int REL_FRIENDLY=3;
 	/** constant for getClanRelations method, denoting ally with. @see Clan#getClanRelations(String) */
 	public static final int REL_ALLY=4;
-    /** constant used to determine something about clan relations */
-    public static final int[] REL_NEUTRALITYGAUGE={/*REL_NEUTRAL*/0,/*REL_WAR*/4, /*REL_HOSTILE*/1,/*REL_FRIENDLY*/1,/*REL_ALLY*/4};
-    /** table used to determine how two clans are related when their declared relations differ.  both axis are REL_* constants. @see Clan */
+	/** constant used to determine something about clan relations */
+	public static final int[] REL_NEUTRALITYGAUGE={/*REL_NEUTRAL*/0,/*REL_WAR*/4, /*REL_HOSTILE*/1,/*REL_FRIENDLY*/1,/*REL_ALLY*/4};
+	/** table used to determine how two clans are related when their declared relations differ.  both axis are REL_* constants. @see Clan */
 	public static final int[][] RELATIONSHIP_VECTOR={
 	{REL_NEUTRAL,	REL_WAR,		REL_HOSTILE,	REL_FRIENDLY,	REL_FRIENDLY},
 	{REL_WAR,		REL_WAR,		REL_WAR,		REL_WAR,		REL_WAR},
@@ -814,7 +814,7 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
 	/** constant for the getTrophies @see Clan#getTrophies() method. Denotes most areas. */
 	public static final int TROPHY_AREA=4;
 	/** constant for the getTrophies @see Clan#getTrophies() method. Denotes most pkills. */
-    public static final int TROPHY_PK=8;
+	public static final int TROPHY_PK=8;
 	/** descriptor strings for the TROPHY_* constants, ordered by their value.  @see Clan */
 	public static final String TROPHY_DESCS_SHORT[]={"","CP","EXP","","AREA","","","","PK"};
 	/** long descriptor strings for the TROPHY_* constants, ordered by their value.  @see Clan */

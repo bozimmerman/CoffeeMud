@@ -23,7 +23,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -56,8 +56,8 @@ public class NoANSI extends StdCommand
 			{
 				mob.tell("ANSI is already disabled.\n\r");
 			}
-            mob.session().setClientTelnetMode(Session.TELNET_ANSI,false);
-            mob.session().setServerTelnetMode(Session.TELNET_ANSI,false);
+			mob.session().setClientTelnetMode(Session.TELNET_ANSI,false);
+			mob.session().setServerTelnetMode(Session.TELNET_ANSI,false);
 		}
 		return false;
 	}

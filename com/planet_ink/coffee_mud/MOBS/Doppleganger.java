@@ -23,7 +23,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -35,7 +35,7 @@ public class Doppleganger extends StdMOB
 {
 	public String ID(){return "Doppleganger";}
 	protected MOB mimicing=null;
-    protected long ticksSinceMimicing=0;
+	protected long ticksSinceMimicing=0;
 
 	public Doppleganger()
 	{
@@ -43,7 +43,7 @@ public class Doppleganger extends StdMOB
 		revert();
 	}
 
-    protected void revert()
+	protected void revert()
 	{
 		Random randomizer = new Random(System.currentTimeMillis());
 		username="a doppleganger";

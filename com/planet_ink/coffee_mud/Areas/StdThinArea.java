@@ -26,7 +26,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -39,28 +39,28 @@ public class StdThinArea extends StdArea
 	public String ID(){	return "StdThinArea";}
 	public long flags(){return Area.FLAG_THIN;}
 
-    public void addProperRoom(Room R)
-    {
-    	if(R!=null) R.setExpirationDate(WorldMap.ROOM_EXPIRATION_MILLIS);
-    	super.addProperRoom(R);
-    }
+	public void addProperRoom(Room R)
+	{
+		if(R!=null) R.setExpirationDate(WorldMap.ROOM_EXPIRATION_MILLIS);
+		super.addProperRoom(R);
+	}
 	public Room getProperRoom(String roomID)
 	{
-    	if(!isRoom(roomID)) return null;
-    	Room R=super.getRoom(roomID);
-    	if(((R==null)||(R.amDestroyed()))&&(roomID!=null))
-    		return null;
-    	return R;
+		if(!isRoom(roomID)) return null;
+		Room R=super.getRoom(roomID);
+		if(((R==null)||(R.amDestroyed()))&&(roomID!=null))
+			return null;
+		return R;
 	}
 	
-    public Room getRoom(String roomID)
-    {
-    	if(!isRoom(roomID)) return null;
-    	Room R=super.getRoom(roomID);
-    	if(((R==null)||(R.amDestroyed()))&&(roomID!=null))
-    	{
-    		if(roomID.toUpperCase().startsWith(Name().toUpperCase()+"#"))
-	    		roomID=Name()+roomID.substring(Name().length()); // for case sensitive situations
+	public Room getRoom(String roomID)
+	{
+		if(!isRoom(roomID)) return null;
+		Room R=super.getRoom(roomID);
+		if(((R==null)||(R.amDestroyed()))&&(roomID!=null))
+		{
+			if(roomID.toUpperCase().startsWith(Name().toUpperCase()+"#"))
+				roomID=Name()+roomID.substring(Name().length()); // for case sensitive situations
 			R=CMLib.database().DBReadRoomObject(roomID,false);
 			if(R!=null)
 			{
@@ -73,17 +73,17 @@ public class StdThinArea extends StdArea
 				fillInAreaRoom(R);
 				R.setExpirationDate(System.currentTimeMillis()+WorldMap.ROOM_EXPIRATION_MILLIS);
 			}
-    	}
-    	return R;
-    }
+		}
+		return R;
+	}
 	public Enumeration<Room> getProperMap(){return new IteratorEnumeration<Room>(properRooms.values().iterator());}
-    public boolean isRoom(String roomID){ return getProperRoomnumbers().contains(roomID); }
-    public boolean isRoom(Room R)
-    {
-    	if(R==null) return false;
-    	if(R.roomID().length()==0) return super.isRoom(R);
-    	return isRoom(R.roomID());
-    }
+	public boolean isRoom(String roomID){ return getProperRoomnumbers().contains(roomID); }
+	public boolean isRoom(Room R)
+	{
+		if(R==null) return false;
+		if(R.roomID().length()==0) return super.isRoom(R);
+		return isRoom(R.roomID());
+	}
 	public Enumeration<Room> getCompleteMap(){return new CompleteRoomEnumerator(new RoomIDEnumerator(this));}
 	public Enumeration<Room> getMetroMap()
 	{

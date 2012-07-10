@@ -23,7 +23,7 @@ import java.util.Vector;
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *        http://www.apache.org/licenses/LICENSE-2.0
+ *  	  http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -34,36 +34,36 @@ import java.util.Vector;
  */
 @SuppressWarnings("rawtypes")
 public class ChannelWhoRequest extends Packet {
-    public String channel = null;
+	public String channel = null;
 
 	public ChannelWhoRequest()
 	{
 		super();
-        type = Packet.CHAN_WHO_REQ;
+		type = Packet.CHAN_WHO_REQ;
 	}
-    public ChannelWhoRequest(Vector v) throws InvalidPacketException {
-        super(v);
-        try {
-            type = Packet.CHAN_WHO_REQ;
+	public ChannelWhoRequest(Vector v) throws InvalidPacketException {
+		super(v);
+		try {
+			type = Packet.CHAN_WHO_REQ;
 			channel = (String)v.elementAt(6);
-            channel = Intermud.getLocalChannel(channel);
-        }
-        catch( ClassCastException e ) {
-            throw new InvalidPacketException();
-        }
-    }
+			channel = Intermud.getLocalChannel(channel);
+		}
+		catch( ClassCastException e ) {
+			throw new InvalidPacketException();
+		}
+	}
 
-    public void send() throws InvalidPacketException {
-        if( sender_name == null || target_mud == null || sender_mud == null  || channel == null) {
-            throw new InvalidPacketException();
-        }
-        channel = Intermud.getRemoteChannel(channel);
-        super.send();
-    }
+	public void send() throws InvalidPacketException {
+		if( sender_name == null || target_mud == null || sender_mud == null  || channel == null) {
+			throw new InvalidPacketException();
+		}
+		channel = Intermud.getRemoteChannel(channel);
+		super.send();
+	}
 
-    public String toString() {
+	public String toString() {
 		String str="({\"chan-who-req\",5,\"" + I3Server.getMudName() +
-               "\",\"" + sender_name + "\",\"" + target_mud + "\",0,\"" + channel + "\",})";
+			   "\",\"" + sender_name + "\",\"" + target_mud + "\",0,\"" + channel + "\",})";
 		return str;
-    }
+	}
 }

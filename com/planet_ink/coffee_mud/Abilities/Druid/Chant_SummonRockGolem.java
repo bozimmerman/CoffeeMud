@@ -25,7 +25,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -40,7 +40,7 @@ public class Chant_SummonRockGolem extends Chant
 	public String ID() { return "Chant_SummonRockGolem"; }
 	public String name(){ return "Summon Rock Golem";}
 	public String displayText(){return "(Summon Rock Golem)";}
-    public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_ROCKCONTROL;}
+	public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_ROCKCONTROL;}
 	public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
 	public int enchantQuality(){return Ability.QUALITY_INDIFFERENT;}
 	protected int canAffectCode(){return CAN_MOBS;}
@@ -80,21 +80,21 @@ public class Chant_SummonRockGolem extends Chant
 		}
 	}
 
-    public int castingQuality(MOB mob, Physical target)
-    {
-        if(mob!=null)
-        {
-            Room R=mob.location();
-            if(R!=null)
-            {
-                if(R.domainType()!=Room.DOMAIN_INDOORS_CAVE)
-                    return Ability.QUALITY_INDIFFERENT;
-        		if(CMLib.flags().hasAControlledFollower(mob, this))
-                    return Ability.QUALITY_INDIFFERENT;
-            }
-        }
-        return super.castingQuality(mob,target);
-    }
+	public int castingQuality(MOB mob, Physical target)
+	{
+		if(mob!=null)
+		{
+			Room R=mob.location();
+			if(R!=null)
+			{
+				if(R.domainType()!=Room.DOMAIN_INDOORS_CAVE)
+					return Ability.QUALITY_INDIFFERENT;
+				if(CMLib.flags().hasAControlledFollower(mob, this))
+					return Ability.QUALITY_INDIFFERENT;
+			}
+		}
+		return super.castingQuality(mob,target);
+	}
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if(CMLib.flags().hasAControlledFollower(mob, this))
@@ -169,17 +169,17 @@ public class Chant_SummonRockGolem extends Chant
 		newMOB.bringToLife(caster.location(),true);
 		CMLib.beanCounter().clearZeroMoney(newMOB,null);
 		newMOB.location().showOthers(newMOB,null,CMMsg.MSG_OK_ACTION,"<S-NAME> appears out of the cave walls!");
-        MOB victim=caster.getVictim();
+		MOB victim=caster.getVictim();
 		newMOB.setStartRoom(null); // keep before postFollow for Conquest
-        CMLib.commands().postFollow(newMOB,caster,true);
-        if(newMOB.amFollowing()!=caster)
-            caster.tell(newMOB.name()+" seems unwilling to follow you.");
-        else
-        if(victim!=null)
-        {
-            if(newMOB.getVictim()!=victim) newMOB.setVictim(victim);
-            newMOB.location().showOthers(newMOB,victim,CMMsg.MSG_OK_ACTION,"<S-NAME> start(s) attacking <T-NAMESELF>!");
-        }
+		CMLib.commands().postFollow(newMOB,caster,true);
+		if(newMOB.amFollowing()!=caster)
+			caster.tell(newMOB.name()+" seems unwilling to follow you.");
+		else
+		if(victim!=null)
+		{
+			if(newMOB.getVictim()!=victim) newMOB.setVictim(victim);
+			newMOB.location().showOthers(newMOB,victim,CMMsg.MSG_OK_ACTION,"<S-NAME> start(s) attacking <T-NAMESELF>!");
+		}
 		newMOB.addNonUninvokableEffect(this);
 		return(newMOB);
 	}

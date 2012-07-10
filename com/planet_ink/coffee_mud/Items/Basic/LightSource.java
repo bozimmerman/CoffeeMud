@@ -23,7 +23,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -120,7 +120,7 @@ public class LightSource extends StdItem implements Light
 			{
 				if(owner() instanceof Room)
 				{
-                    Room R=(Room)owner();
+					Room R=(Room)owner();
 					if(R.numInhabitants()>0)
 						R.showHappens(CMMsg.MSG_OK_VISUAL,name()+" flickers and burns out.");
 					if(destroyedWhenBurnedOut())
@@ -130,7 +130,7 @@ public class LightSource extends StdItem implements Light
 				else
 				if(owner() instanceof MOB)
 				{
-                    MOB M=(MOB)owner();
+					MOB M=(MOB)owner();
 					M.tell(M,null,this,"<O-NAME> flickers and burns out.");
 					setDuration(0);
 					if(destroyedWhenBurnedOut())
@@ -139,8 +139,8 @@ public class LightSource extends StdItem implements Light
 					M.recoverCharStats();
 					M.recoverMaxState();
 					M.recoverPhyStats();
-                    if(M.location()!=null)
-    					M.location().recoverRoomStats();
+					if(M.location()!=null)
+						M.location().recoverRoomStats();
 				}
 			}
 			light(false);
@@ -162,13 +162,13 @@ public class LightSource extends StdItem implements Light
 	{
 		if((room==null)||(mob==null)) return false;
 		if((room.domainType()==Room.DOMAIN_OUTDOORS_UNDERWATER)
-	    ||(room.domainType()==Room.DOMAIN_INDOORS_UNDERWATER))
-            return true;
-        if((!CMLib.flags().isFlying(mob))
-        &&(mob.riding()==null)
-        &&(CMLib.flags().isSwimmingInWater(mob)))
-            return true;
-        return false;
+		||(room.domainType()==Room.DOMAIN_INDOORS_UNDERWATER))
+			return true;
+		if((!CMLib.flags().isFlying(mob))
+		&&(mob.riding()==null)
+		&&(CMLib.flags().isSwimmingInWater(mob)))
+			return true;
+		return false;
 	}
 
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
@@ -179,7 +179,7 @@ public class LightSource extends StdItem implements Light
 		Room room=mob.location();
 		if(room==null) return;
 		if(((LightSource.inTheRain(room)&&goesOutInTheRain())
-                   ||(LightSource.inTheWater(msg.source(),room)))
+				   ||(LightSource.inTheWater(msg.source(),room)))
 		&&(isLit())
 		&&(getDuration()>0)
 		&&(mob.isMine(this))

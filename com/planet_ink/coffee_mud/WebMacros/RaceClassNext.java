@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -66,13 +66,13 @@ public class RaceClassNext extends StdWebMacro
 				if((last==null)||((last.length()>0)&&(last.equals(lastID))&&(!C.ID().equals(lastID))))
 				{
 					httpReq.addRequestParameters("CLASS",C.ID());
-                    mob.destroy();
+					mob.destroy();
 					return "";
 				}
 				lastID=C.ID();
 			}
 		}
-        mob.destroy();
+		mob.destroy();
 		httpReq.addRequestParameters("CLASS","");
 		if(parms.containsKey("EMPTYOK"))
 			return "<!--EMPTY-->";

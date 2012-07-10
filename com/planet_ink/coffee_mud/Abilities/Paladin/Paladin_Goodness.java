@@ -23,7 +23,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -37,8 +37,8 @@ public class Paladin_Goodness extends PaladinSkill
 {
 	public String ID() { return "Paladin_Goodness"; }
 	public String name(){ return "Paladin`s Goodness";}
-    public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_HOLYPROTECTION;}
-    protected boolean tickTock=false;
+	public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_HOLYPROTECTION;}
+	protected boolean tickTock=false;
 	public Paladin_Goodness()
 	{
 		super();
@@ -60,7 +60,7 @@ public class Paladin_Goodness extends PaladinSkill
 				&&(CMLib.flags().isEvil(target))
 				&&((paladinsGroup.contains(target))
 					||((target.getVictim()==invoker)&&(target.rangeToTarget()==0)))
-			    &&((invoker==null)||(invoker.fetchAbility(ID())==null)||proficiencyCheck(null,0,false)))
+				&&((invoker==null)||(invoker.fetchAbility(ID())==null)||proficiencyCheck(null,0,false)))
 				{
 					
 					int harming=CMLib.dice().roll(1,(invoker!=null)?adjustedLevel(invoker,0):15,0);

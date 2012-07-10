@@ -25,7 +25,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -42,7 +42,7 @@ public class Thief_Forgery extends ThiefSkill
 	protected int canTargetCode(){return Ability.CAN_MOBS;}
 	public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 	private static final String[] triggerStrings = {"FORGERY"};
-    public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_CALLIGRAPHY;}
+	public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_CALLIGRAPHY;}
 	public String[] triggerStrings(){return triggerStrings;}
 
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
@@ -145,9 +145,9 @@ public class Thief_Forgery extends ThiefSkill
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-        int levelDiff=(mob.phyStats().level()+(2*getXLEVELLevel(mob)))-target.phyStats().level();
-        if(levelDiff>0) levelDiff=0;
-        levelDiff*=5;
+		int levelDiff=(mob.phyStats().level()+(2*getXLEVELLevel(mob)))-target.phyStats().level();
+		if(levelDiff>0) levelDiff=0;
+		levelDiff*=5;
 		boolean success=proficiencyCheck(mob,levelDiff,auto);
 
 		if(success)

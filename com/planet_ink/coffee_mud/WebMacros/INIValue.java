@@ -24,7 +24,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -83,7 +83,7 @@ public class INIValue extends StdWebMacro
 		String last=httpReq.getRequestParameter("INI");
 		if((parms.size()==0)&&(last!=null)&&(last.length()>0))
 		{
-            CMProps page=CMProps.loadPropPage(CMProps.getVar(CMProps.SYSTEM_INIPATH));
+			CMProps page=CMProps.loadPropPage(CMProps.getVar(CMProps.SYSTEM_INIPATH));
 			if((page==null)||(!page.isLoaded())) return "";
 			return page.getStr(last);
 		}
@@ -121,7 +121,7 @@ public class INIValue extends StdWebMacro
 					httpReq.addRequestParameters("INI",id);
 					if(parms.containsKey("VALUE"))
 					{
-                        CMProps realPage=CMProps.loadPropPage(CMProps.getVar(CMProps.SYSTEM_INIPATH));
+						CMProps realPage=CMProps.loadPropPage(CMProps.getVar(CMProps.SYSTEM_INIPATH));
 						if(realPage!=null) return realPage.getStr(id);
 					}
 					return "";
@@ -136,7 +136,7 @@ public class INIValue extends StdWebMacro
 		if(!parms.containsKey("MASK")) 
 			return "'MASK' not found!";
 		String mask=((String)parms.get("MASK")).toUpperCase();
-        CMProps page=CMProps.loadPropPage(CMProps.getVar(CMProps.SYSTEM_INIPATH));
+		CMProps page=CMProps.loadPropPage(CMProps.getVar(CMProps.SYSTEM_INIPATH));
 		if((page==null)||(!page.isLoaded())) return "";
 		if(mask.trim().endsWith("*"))
 			for(Enumeration e=page.keys();e.hasMoreElements();)
@@ -146,19 +146,19 @@ public class INIValue extends StdWebMacro
 				{
 					httpReq.addRequestParameters("INI",key);
 					if(parms.containsKey("VALUE"))
-                        return clearWebMacros(page.getStr(key));
+						return clearWebMacros(page.getStr(key));
 					else
 					if(parms.containsKey("INIHELP"))
-                        return clearWebMacros(getHelpFor(key,mask));
+						return clearWebMacros(getHelpFor(key,mask));
 					return "";
 				}
 			}
 		httpReq.addRequestParameters("INI",mask);
 		if(parms.containsKey("VALUE"))
-            return clearWebMacros(page.getStr(mask));
+			return clearWebMacros(page.getStr(mask));
 		else
 		if(parms.containsKey("INIHELP"))
-            return clearWebMacros(getHelpFor(mask,mask));
+			return clearWebMacros(getHelpFor(mask,mask));
 		return "";
 	}
 }

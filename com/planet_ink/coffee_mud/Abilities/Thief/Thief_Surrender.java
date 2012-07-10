@@ -25,7 +25,7 @@ import java.util.*;
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -42,7 +42,7 @@ public class Thief_Surrender extends ThiefSkill
 	protected int canTargetCode(){return 0;}
 	public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
 	private static final String[] triggerStrings = {"SURRENDER"};
-    public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_INFLUENTIAL;}
+	public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_INFLUENTIAL;}
 	public String[] triggerStrings(){return triggerStrings;}
 
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
@@ -71,7 +71,7 @@ public class Thief_Surrender extends ThiefSkill
 		boolean success=proficiencyCheck(mob,0,auto);
 
 		String localCurrency=CMLib.beanCounter().getCurrency(mob.getVictim());
-	    String costWords=CMLib.beanCounter().nameCurrencyShort(localCurrency,goldRequired);
+		String costWords=CMLib.beanCounter().nameCurrencyShort(localCurrency,goldRequired);
 		if(success&&CMLib.beanCounter().getTotalAbsoluteValue(mob,localCurrency)>=goldRequired)
 		{
 			StringBuffer enemiesList=new StringBuffer("");
