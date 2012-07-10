@@ -43,6 +43,8 @@ public class Prop_RideAdjuster extends Prop_HaveAdjuster
 		return super.fixAccoutingsWithMask("Affects on the mounted: "+parameters[0],parameters[1]);
 	}
 
+	public int triggerMask() { return TriggeredAffect.TRIGGER_MOUNT; }
+
 	public boolean canApply(MOB mob)
 	{
 		if(!super.canApply(mob))

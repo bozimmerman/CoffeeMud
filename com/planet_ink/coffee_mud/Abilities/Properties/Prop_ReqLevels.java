@@ -34,7 +34,7 @@ import java.util.*;
    limitations under the License.
 */
 @SuppressWarnings({"unchecked","rawtypes"})
-public class Prop_ReqLevels extends Property
+public class Prop_ReqLevels extends Property implements TriggeredAffect
 {
 	public String ID() { return "Prop_ReqLevels"; }
 	public String name(){ return "Level Limitations";}
@@ -44,6 +44,13 @@ public class Prop_ReqLevels extends Property
 	private boolean allFlag=false;
 	private boolean sysopFlag=false;
 	
+	public long flags(){return Ability.FLAG_ZAPPER;}
+
+	public int triggerMask()
+	{ 
+		return TriggeredAffect.TRIGGER_ENTER;
+	}
+
 	public void setMiscText(String txt)
 	{
 		noFollow=false;

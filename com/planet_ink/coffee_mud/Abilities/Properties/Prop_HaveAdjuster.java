@@ -35,7 +35,7 @@ import java.util.*;
    limitations under the License.
 */
 @SuppressWarnings({"unchecked","rawtypes"})
-public class Prop_HaveAdjuster extends Property
+public class Prop_HaveAdjuster extends Property implements TriggeredAffect
 {
 	public String ID() { return "Prop_HaveAdjuster"; }
 	public String name(){ return "Adjustments to stats when owned";}
@@ -46,6 +46,13 @@ public class Prop_HaveAdjuster extends Property
 	protected Object[] phyStatsChanges=null;
 	protected MaskingLibrary.CompiledZapperMask mask=null;
 	protected String[] parameters=new String[]{"",""};
+
+	public long flags(){return Ability.FLAG_ADJUSTER;}
+
+	public int triggerMask() 
+	{ 
+		return TriggeredAffect.TRIGGER_GET;
+	}
 
 	public boolean addIfPlussed(String newText, String parm, int parmCode, Vector addTo)
 	{

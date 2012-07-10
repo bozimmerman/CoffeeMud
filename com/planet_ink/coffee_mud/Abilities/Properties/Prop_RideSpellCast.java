@@ -49,6 +49,8 @@ public class Prop_RideSpellCast extends Prop_HaveSpellCast
 		lastRiders=new Vector();
 	}
 	
+	public int triggerMask() { return TriggeredAffect.TRIGGER_MOUNT; }
+
 	public void affectPhyStats(Physical host, PhyStats affectableStats)
 	{
 		if(processing) return;

@@ -33,7 +33,7 @@ import java.util.*;
    limitations under the License.
 */
 @SuppressWarnings({"unchecked","rawtypes"})
-public class Prop_ReqEntry extends Property
+public class Prop_ReqEntry extends Property implements TriggeredAffect
 {
 	public String ID() { return "Prop_ReqEntry"; }
 	public String name(){ return "All Room/Exit Limitations";}
@@ -43,6 +43,13 @@ public class Prop_ReqEntry extends Property
 	private String maskS="";
 	private String message="";
 	
+	public long flags(){return Ability.FLAG_ZAPPER;}
+
+	public int triggerMask()
+	{ 
+		return TriggeredAffect.TRIGGER_ENTER;
+	}
+
 	public void setMiscText(String txt)
 	{
 		noFollow=false;

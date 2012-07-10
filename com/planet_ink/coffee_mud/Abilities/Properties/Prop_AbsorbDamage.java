@@ -31,7 +31,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Prop_AbsorbDamage extends Property
+public class Prop_AbsorbDamage extends Property implements TriggeredAffect
 {
 	public String ID() { return "Prop_AbsorbDamage"; }
 	public String name(){ return "Absorb Damage";}
@@ -41,6 +41,11 @@ public class Prop_AbsorbDamage extends Property
 	{
 		String id="Absorbs damage of the following amount and types: "+text();
 		return id;
+	}
+
+	public int triggerMask()
+	{ 
+		return TriggeredAffect.TRIGGER_BEING_HIT;
 	}
 
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)

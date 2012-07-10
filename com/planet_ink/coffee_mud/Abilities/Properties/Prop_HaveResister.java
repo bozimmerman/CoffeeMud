@@ -32,7 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Prop_HaveResister extends Property
+public class Prop_HaveResister extends Property implements TriggeredAffect
 {
 	public String ID() { return "Prop_HaveResister"; }
 	public String name(){ return "Resistance due to ownership";}
@@ -44,6 +44,13 @@ public class Prop_HaveResister extends Property
 	protected boolean ignoreCharStats=true;
 	protected long lastProtection=0;
 	protected int remainingProtection=0;
+
+	public long flags(){return Ability.FLAG_RESISTER;}
+
+	public int triggerMask() 
+	{ 
+		return TriggeredAffect.TRIGGER_GET;
+	}
 
 	public void setMiscText(String newText)
 	{

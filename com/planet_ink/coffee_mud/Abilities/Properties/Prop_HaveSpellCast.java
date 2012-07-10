@@ -40,6 +40,10 @@ public class Prop_HaveSpellCast extends Prop_SpellAdder
 	protected int canAffectCode(){return Ability.CAN_ITEMS;}
 	protected Item myItem=null;
 	
+	public int triggerMask() { return TriggeredAffect.TRIGGER_GET; }
+
+	public long flags(){return Ability.FLAG_CASTER;}
+
 	public String accountForYourself()
 	{ return spellAccountingsWithMask("Casts "," on the owner.");}
 

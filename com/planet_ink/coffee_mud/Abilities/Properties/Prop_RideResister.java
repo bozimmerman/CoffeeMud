@@ -41,6 +41,8 @@ public class Prop_RideResister extends Prop_HaveResister
 	public String accountForYourself()
 	{ return "Those mounted gain resistances: "+describeResistance(text());}
 
+	public int triggerMask() { return TriggeredAffect.TRIGGER_MOUNT; }
+
 	public boolean canResist(Environmental E)
 	{
 		if((affected instanceof Rideable)

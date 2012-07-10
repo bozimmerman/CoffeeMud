@@ -39,9 +39,13 @@ public class Prop_Resistance extends Prop_HaveResister
 	protected int canAffectCode(){return Ability.CAN_MOBS;}
 	public boolean bubbleAffect(){return false;}
 	
+	public long flags(){return Ability.FLAG_RESISTER;}
+
 	public String accountForYourself()
 	{ return "Have resistances: "+describeResistance(text());}
 	
+	public int triggerMask() { return TriggeredAffect.TRIGGER_ALWAYS; }
+
 	public boolean canResist(Environmental E)
 	{
 		return ((E instanceof MOB)

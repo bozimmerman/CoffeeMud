@@ -40,6 +40,9 @@ public class Prop_AstralSpirit extends Property
 	protected int canAffectCode(){return Ability.CAN_MOBS;}
 	private Race race=null;
 	
+	
+	public long flags(){return Ability.FLAG_ADJUSTER|Ability.FLAG_IMMUNER;}
+
 	public Race spiritRace() {
 		if(race==null)
 			race=CMClass.getRace("Spirit");

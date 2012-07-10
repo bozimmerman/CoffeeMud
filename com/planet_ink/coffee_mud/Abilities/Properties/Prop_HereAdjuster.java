@@ -44,6 +44,7 @@ public class Prop_HereAdjuster extends Prop_HaveAdjuster
 		return super.fixAccoutingsWithMask("Affects on those here: "+parameters[0],parameters[1]);
 	}
 
+	public int triggerMask() { return TriggeredAffect.TRIGGER_ENTER; }
 	
 	public boolean canApply(MOB mob)
 	{

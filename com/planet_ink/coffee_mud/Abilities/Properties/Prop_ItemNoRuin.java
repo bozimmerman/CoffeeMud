@@ -41,6 +41,8 @@ public class Prop_ItemNoRuin extends Property
 	public String accountForYourself()
 	{ return "A Prize";    }
 
+	public long flags(){return Ability.FLAG_ADJUSTER;}
+
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.SENSE_ITEMNORUIN);

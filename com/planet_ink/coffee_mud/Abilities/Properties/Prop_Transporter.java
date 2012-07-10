@@ -31,7 +31,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Prop_Transporter extends Property
+public class Prop_Transporter extends Property implements TriggeredAffect
 {
 	public String ID() { return "Prop_Transporter"; }
 	public String name(){ return "Room entering adjuster";}
@@ -40,6 +40,11 @@ public class Prop_Transporter extends Property
 
 	public String accountForYourself()
 	{ return "Zap them elsewhere";	}
+
+	public int triggerMask()
+	{ 
+		return TriggeredAffect.TRIGGER_DROP_PUTIN;
+	}
 
 	public int transCode()
 	{

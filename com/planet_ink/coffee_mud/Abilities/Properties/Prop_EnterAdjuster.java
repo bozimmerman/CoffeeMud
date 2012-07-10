@@ -33,13 +33,20 @@ import java.util.*;
    limitations under the License.
 */
 @SuppressWarnings({"unchecked","rawtypes"})
-public class Prop_EnterAdjuster extends Property
+public class Prop_EnterAdjuster extends Property implements TriggeredAffect
 {
 	public String ID() { return "Prop_EnterAdjuster"; }
 	public String name(){ return "Room entering adjuster";}
 	protected int canAffectCode(){return Ability.CAN_EXITS|Ability.CAN_ROOMS;}
 	protected MaskingLibrary.CompiledZapperMask mask=MaskingLibrary.CompiledZapperMask.EMPTY();
 	protected String[] parameters=new String[]{"",""};
+
+	public long flags(){return Ability.FLAG_ADJUSTER;}
+
+	public int triggerMask()
+	{ 
+		return TriggeredAffect.TRIGGER_ENTER;
+	}
 
 	public void setMiscText(String newText)
 	{

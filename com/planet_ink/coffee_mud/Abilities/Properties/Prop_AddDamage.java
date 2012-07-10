@@ -32,7 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Prop_AddDamage extends Property
+public class Prop_AddDamage extends Property implements TriggeredAffect
 {
 	public String ID() { return "Prop_AddDamage"; }
 	public String name(){ return "Additional Damage";}
@@ -42,6 +42,11 @@ public class Prop_AddDamage extends Property
 	double pctDamage=0.0;
 	int bonusDamage=0;
 	volatile boolean norecurse=false;
+
+	public int triggerMask()
+	{ 
+		return TriggeredAffect.TRIGGER_HITTING_WITH;
+	}
 
 	public String accountForYourself()
 	{

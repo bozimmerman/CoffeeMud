@@ -45,6 +45,8 @@ public class Prop_ClosedSeason extends Property
 	public String accountForYourself()
 	{ return "";	}
 
+	public long flags(){return Ability.FLAG_ADJUSTER;}
+
 	public void setMiscText(String text)
 	{
 		super.setMiscText(text);

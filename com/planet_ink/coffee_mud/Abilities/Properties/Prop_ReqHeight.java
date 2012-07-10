@@ -32,11 +32,18 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Prop_ReqHeight extends Property
+public class Prop_ReqHeight extends Property implements TriggeredAffect
 {
 	public String ID() { return "Prop_ReqHeight"; }
 	public String name(){ return "Height Restrictions";}
 	protected int canAffectCode(){return Ability.CAN_ROOMS|Ability.CAN_AREAS|Ability.CAN_EXITS;}
+
+	public long flags(){return Ability.FLAG_ZAPPER;}
+
+	public int triggerMask()
+	{ 
+		return TriggeredAffect.TRIGGER_ENTER;
+	}
 
 	public String accountForYourself()
 	{ return "Height limit: "+CMath.s_int(text());	}

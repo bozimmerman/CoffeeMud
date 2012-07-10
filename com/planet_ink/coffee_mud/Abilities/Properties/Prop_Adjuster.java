@@ -39,6 +39,7 @@ public class Prop_Adjuster extends Prop_HaveAdjuster
 	public String name(){ return "Adjustments to stats";}
 	protected int canAffectCode(){return Ability.CAN_MOBS;}
 	public boolean bubbleAffect(){return false;}
+	public long flags(){return Ability.FLAG_ADJUSTER;}
 	public boolean canApply(MOB mob)
 	{
 		if((affected!=null)
@@ -47,6 +48,11 @@ public class Prop_Adjuster extends Prop_HaveAdjuster
 		return false;
 	}
 	
+	public int triggerMask() 
+	{ 
+		return TriggeredAffect.TRIGGER_ALWAYS;
+	}
+
 	public String accountForYourself()
 	{
 		return fixAccoutingsWithMask("Effects: "+parameters[0],parameters[1]);

@@ -36,6 +36,9 @@ public class Prop_NoSummon extends Property
 	protected int canAffectCode(){return Ability.CAN_ROOMS|Ability.CAN_AREAS|Ability.CAN_MOBS;}
 	protected boolean nonAggroOK=false;
 	
+
+	public long flags(){return Ability.FLAG_IMMUNER;}
+
 	public void setMiscText(String text)
 	{
 		nonAggroOK=CMParms.parse(text.toUpperCase()).contains("ALLOWNONAGGR");

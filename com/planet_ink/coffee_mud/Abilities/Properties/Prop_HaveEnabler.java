@@ -43,6 +43,10 @@ public class Prop_HaveEnabler extends Prop_SpellAdder
 	protected Vector lastMOBeffected=new Vector();
 	protected boolean processing2=false;
 	
+	public long flags(){return Ability.FLAG_ENABLER;}
+
+	public int triggerMask() { return TriggeredAffect.TRIGGER_GET; }
+	
 	public String accountForYourself()
 	{ return spellAccountingsWithMask("Grants "," to the owner.");}
 

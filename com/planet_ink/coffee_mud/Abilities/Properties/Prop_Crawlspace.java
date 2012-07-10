@@ -40,6 +40,8 @@ public class Prop_Crawlspace extends Property
 	public String accountForYourself()
 	{ return "Must be crawled through.";	}
 
+	public long flags(){return Ability.FLAG_ADJUSTER;}
+
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected, affectableStats);

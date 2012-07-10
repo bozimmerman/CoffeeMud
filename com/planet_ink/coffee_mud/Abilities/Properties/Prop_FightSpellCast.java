@@ -42,6 +42,10 @@ public class Prop_FightSpellCast extends Prop_SpellAdder
 	public String accountForYourself()
 	{ return spellAccountingsWithMask("Casts "," during combat.");}
 
+	public long flags(){return Ability.FLAG_CASTER;}
+
+	public int triggerMask() { return TriggeredAffect.TRIGGER_HITTING_WITH; }
+	
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{}
 	

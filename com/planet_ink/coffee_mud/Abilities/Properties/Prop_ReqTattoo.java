@@ -33,18 +33,25 @@ import java.util.*;
    limitations under the License.
 */
 @SuppressWarnings({"unchecked","rawtypes"})
-public class Prop_ReqTattoo extends Property
+public class Prop_ReqTattoo extends Property implements TriggeredAffect
 {
 	public String ID() { return "Prop_ReqTattoo"; }
 	public String name(){ return "Tattoo Limitations";}
 	protected int canAffectCode(){return Ability.CAN_ROOMS|Ability.CAN_AREAS|Ability.CAN_EXITS|Ability.CAN_ITEMS;}
 	private String themsg="";
 	
+	public long flags(){return Ability.FLAG_ZAPPER;}
+
 	public String accountForYourself()
 	{
 		return "Ownership restricted as follows: "+CMLib.masking().maskDesc(text());
 	}
 	
+	public int triggerMask()
+	{ 
+		return TriggeredAffect.TRIGGER_ENTER;
+	}
+
 	public String text(){ return themsg+";"+super.text();}
 	public void setMiscText(String newText)
 	{

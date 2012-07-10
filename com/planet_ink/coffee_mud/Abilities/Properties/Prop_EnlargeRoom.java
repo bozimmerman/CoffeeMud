@@ -41,6 +41,8 @@ public class Prop_EnlargeRoom extends Property
 	public String accountForYourself()
 	{ return "Enlarged";	}
 
+	public long flags(){return Ability.FLAG_ADJUSTER;}
+
 	protected double dval(String s)
 	{
 		if(s.indexOf('.')>=0)

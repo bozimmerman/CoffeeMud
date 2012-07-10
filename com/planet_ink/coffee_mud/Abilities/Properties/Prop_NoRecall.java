@@ -38,6 +38,8 @@ public class Prop_NoRecall extends Property
 	public String name(){ return "Recall Neuralizing";}
 	protected int canAffectCode(){return Ability.CAN_ROOMS|Ability.CAN_AREAS|Ability.CAN_ITEMS;}
 
+	public long flags(){return Ability.FLAG_ZAPPER;}
+
 	public String accountForYourself()
 	{ return "No Recall Field";	}
 

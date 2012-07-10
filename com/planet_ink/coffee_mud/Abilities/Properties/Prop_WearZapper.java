@@ -44,6 +44,11 @@ public class Prop_WearZapper extends Prop_HaveZapper
 		return "Wearing restricted as follows: "+CMLib.masking().maskDesc(miscText);
 	}
 
+	public int triggerMask() 
+	{ 
+		return TriggeredAffect.TRIGGER_WEAR_WIELD;
+	}
+
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(affected==null) return super.okMessage(myHost, msg);

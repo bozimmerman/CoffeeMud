@@ -42,6 +42,8 @@ public class Prop_Doppleganger extends Property
 	private int minLevel=Integer.MIN_VALUE;
 	protected Physical lastOwner=null;
 
+	public long flags(){return Ability.FLAG_ADJUSTER;}
+
 	public String accountForYourself()
 	{ return "Level Changer";	}
 

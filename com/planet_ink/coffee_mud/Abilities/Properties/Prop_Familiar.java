@@ -62,6 +62,8 @@ public class Prop_Familiar extends Property
 		return "is a familiar MOB";
 	}
 
+	public long flags(){return Ability.FLAG_ADJUSTER;}
+
 	public boolean removeMeFromFamiliarTo()
 	{
 		if(familiarTo!=null)

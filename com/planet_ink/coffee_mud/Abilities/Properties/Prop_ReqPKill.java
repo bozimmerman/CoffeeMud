@@ -32,11 +32,19 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Prop_ReqPKill extends Property
+public class Prop_ReqPKill extends Property implements TriggeredAffect
 {
 	public String ID() { return "Prop_ReqPKill"; }
 	public String name(){ return "Playerkill ONLY Zone";}
 	protected int canAffectCode(){return Ability.CAN_ROOMS|Ability.CAN_AREAS|Ability.CAN_EXITS;}
+
+	public long flags(){return Ability.FLAG_ZAPPER;}
+
+	public int triggerMask()
+	{ 
+		return TriggeredAffect.TRIGGER_ENTER;
+	}
+
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if((affected!=null)

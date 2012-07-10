@@ -32,7 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Prop_CombatAdjuster extends Property
+public class Prop_CombatAdjuster extends Property implements TriggeredAffect
 {
 	public String ID() { return "Prop_CombatAdjuster"; }
 	public String name(){ return "Adjust combat stats";}
@@ -41,6 +41,13 @@ public class Prop_CombatAdjuster extends Property
 	protected double[] alladj={1.0,1.0,1.0,1.0,1.0,1.0};
 	public String accountForYourself()
 	{ return "Adjusted combat stats";	}
+
+	public long flags(){return Ability.FLAG_ADJUSTER;}
+
+	public int triggerMask()
+	{ 
+		return TriggeredAffect.TRIGGER_ALWAYS;
+	}
 
 	public void affectPhyStats(Physical affectedMOB, PhyStats affectableStats)
 	{

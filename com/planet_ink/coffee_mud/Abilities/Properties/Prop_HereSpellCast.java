@@ -46,6 +46,8 @@ public class Prop_HereSpellCast extends Prop_HaveSpellCast
 	public String accountForYourself()
 	{ return spellAccountingsWithMask("Casts "," on those here.");}
 
+	public int triggerMask() { return TriggeredAffect.TRIGGER_ENTER; }
+
 	public void setMiscText(String newText)
 	{ 
 		super.setMiscText(newText);

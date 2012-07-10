@@ -32,7 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Prop_SpellReflecting extends Property
+public class Prop_SpellReflecting extends Property implements TriggeredAffect
 {
 	public String ID() { return "Prop_SpellReflecting"; }
 	public String name(){ return "Spell reflecting property";}
@@ -48,6 +48,13 @@ public class Prop_SpellReflecting extends Property
 
 	public int abilityCode(){return uses;}
 	public void setAbilityCode(int newCode){uses=newCode;}
+	
+	public long flags(){return Ability.FLAG_IMMUNER;}
+
+	public int triggerMask()
+	{ 
+		return TriggeredAffect.TRIGGER_BEING_HIT;
+	}
 
 	public void setMiscText(String newText)
 	{

@@ -45,6 +45,8 @@ public class Prop_StatTrainer extends Property
 	public String accountForYourself()
 	{ return "Stats Trainer";	}
 
+	public long flags(){return Ability.FLAG_ADJUSTER;}
+
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
 		if((!noteach)&&(CMath.bset(affectedMOB.getBitmap(),MOB.ATT_NOTEACH)))

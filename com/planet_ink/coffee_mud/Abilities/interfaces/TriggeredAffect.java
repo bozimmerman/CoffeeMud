@@ -53,6 +53,8 @@ public interface TriggeredAffect extends Ability
 	public final static int TRIGGER_MOUNT=128;
 	/** denotes a property whose affects are triggered by putting something in or dropping the thing*/
 	public final static int TRIGGER_DROP_PUTIN=64;
+	/** denotes a property whose affects are triggered by hitting somethign with the thing*/
+	public final static int TRIGGER_HITTING_WITH=128;
 
 	
 	/**
@@ -62,6 +64,4 @@ public interface TriggeredAffect extends Ability
 	 * @return  a mask of TRIGGER_* constants denoting what triggers the properties
 	 */
 	public int triggerMask();
-	
-	
 }

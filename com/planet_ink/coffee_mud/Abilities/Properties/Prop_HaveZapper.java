@@ -34,7 +34,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Prop_HaveZapper extends Property
+public class Prop_HaveZapper extends Property implements TriggeredAffect
 {
 	public String ID() { return "Prop_HaveZapper"; }
 	public String name(){ return "Restrictions to ownership";}
@@ -47,6 +47,12 @@ public class Prop_HaveZapper extends Property
 	
 	protected String defaultMessage() { return "<O-NAME> flashes and flies out of <S-HIS-HER> hands!";}
 
+	public long flags(){return Ability.FLAG_ZAPPER;}
+
+	public int triggerMask() 
+	{ 
+		return TriggeredAffect.TRIGGER_GET;
+	}
 
 	public void setMiscText(String text)
 	{

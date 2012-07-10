@@ -32,7 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Prop_ReqCapacity extends Property
+public class Prop_ReqCapacity extends Property implements TriggeredAffect
 {
 	public String ID() { return "Prop_ReqCapacity"; }
 	public String name(){ return "Capacity Limitations";}
@@ -44,6 +44,14 @@ public class Prop_ReqCapacity extends Property
 	public int itemCap=Integer.MAX_VALUE;
 	public int maxWeight=Integer.MAX_VALUE;
 	public boolean indoorOnly=false;
+
+	
+	public long flags(){return Ability.FLAG_ZAPPER;}
+
+	public int triggerMask() 
+	{ 
+		return TriggeredAffect.TRIGGER_ENTER;
+	}
 
 	public String accountForYourself()
 	{

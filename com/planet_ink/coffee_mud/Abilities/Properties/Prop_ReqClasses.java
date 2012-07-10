@@ -33,7 +33,7 @@ import java.util.*;
    limitations under the License.
 */
 @SuppressWarnings({"unchecked","rawtypes"})
-public class Prop_ReqClasses extends Property
+public class Prop_ReqClasses extends Property implements TriggeredAffect
 {
 	public String ID() { return "Prop_ReqClasses"; }
 	public String name(){ return "Class Limitations";}
@@ -41,6 +41,13 @@ public class Prop_ReqClasses extends Property
 	private boolean noFollow=false;
 	private boolean noSneak=false;
 	
+	public long flags(){return Ability.FLAG_ZAPPER;}
+
+	public int triggerMask() 
+	{ 
+		return TriggeredAffect.TRIGGER_ENTER;
+	}
+
 	public void setMiscText(String txt)
 	{
 		noFollow=false;

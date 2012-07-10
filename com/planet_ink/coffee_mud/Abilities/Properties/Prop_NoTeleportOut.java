@@ -35,6 +35,8 @@ public class Prop_NoTeleportOut extends Property
 	public String name(){ return "Teleport OUT OF Spell Neutralizing";}
 	protected int canAffectCode(){return Ability.CAN_ROOMS|Ability.CAN_AREAS;}
 
+	public long flags(){return Ability.FLAG_ZAPPER;}
+
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(!super.okMessage(myHost,msg))

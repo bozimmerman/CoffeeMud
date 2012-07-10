@@ -45,6 +45,11 @@ public class Prop_RideZapper extends Prop_HaveZapper
 		return "Mounting restricted as follows: "+CMLib.masking().maskDesc(miscText);
 	}
 
+	public int triggerMask() 
+	{ 
+		return TriggeredAffect.TRIGGER_MOUNT;
+	}
+
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(affected==null) return true;

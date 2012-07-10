@@ -36,6 +36,8 @@ public class Prop_NoCharm extends Property
 	public String name(){ return "Charm Spell Neutralizing";}
 	protected int canAffectCode(){return Ability.CAN_ROOMS|Ability.CAN_AREAS|Ability.CAN_MOBS;}
 
+	public long flags(){return Ability.FLAG_IMMUNER;}
+
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(!super.okMessage(myHost,msg))

@@ -35,6 +35,9 @@ import java.util.*;
 public class Prop_WizInvis extends Property
 {
 	public String ID() { return "Prop_WizInvis"; }
+	
+	public long flags(){return Ability.FLAG_ADJUSTER;}
+
 	public String displayText() 
 	{
 		if(CMath.bset(abilityCode(),PhyStats.IS_CLOAKED|PhyStats.IS_NOT_SEEN))

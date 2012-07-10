@@ -43,6 +43,11 @@ public class Prop_WearResister extends Prop_HaveResister
 	public boolean disabled=false;
 	public boolean layered=false;
 
+	public int triggerMask() 
+	{ 
+		return TriggeredAffect.TRIGGER_WEAR_WIELD;
+	}
+
 	public void check(MOB mob, Armor A)
 	{
 		if(!layered){ checked=true; disabled=false;}

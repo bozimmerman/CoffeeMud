@@ -35,7 +35,7 @@ import java.util.*;
    limitations under the License.
 */
 @SuppressWarnings({"unchecked","rawtypes"})
-public class Prop_SpellAdder extends Property implements AbilityUsing
+public class Prop_SpellAdder extends Property implements AbilityUsing, TriggeredAffect
 {
 	public String ID() { return "Prop_SpellAdder"; }
 	public String name(){ return "Casting spells on oneself";}
@@ -50,6 +50,13 @@ public class Prop_SpellAdder extends Property implements AbilityUsing
 	protected MaskingLibrary.CompiledZapperMask compiledMask=null;
 	protected List<Ability> unrevocableSpells = null;
 	
+	public long flags(){return Ability.FLAG_CASTER;}
+
+	public int triggerMask()
+	{ 
+		return TriggeredAffect.TRIGGER_ALWAYS;
+	}
+
 	protected void finalize()
 	{
 		spellV=null;

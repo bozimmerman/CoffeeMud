@@ -32,12 +32,20 @@ import java.util.*;
    limitations under the License.
 */
 @SuppressWarnings({"unchecked","rawtypes"})
-public class Prop_WeaponImmunity extends Property
+public class Prop_WeaponImmunity extends Property implements TriggeredAffect
 {
 	public String ID() { return "Prop_WeaponImmunity"; }
 	public String name(){ return "Weapon Immunity";}
 	protected int canAffectCode(){return Ability.CAN_MOBS|Ability.CAN_ITEMS;}
 	public Hashtable flags=new Hashtable();
+
+	public int triggerMask()
+	{ 
+		return TriggeredAffect.TRIGGER_BEING_HIT;
+	}
+
+	
+	public long flags(){return Ability.FLAG_IMMUNER;}
 
 	public String accountForYourself()
 	{

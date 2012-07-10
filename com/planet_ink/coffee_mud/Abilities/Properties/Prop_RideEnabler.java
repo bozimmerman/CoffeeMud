@@ -44,6 +44,7 @@ public class Prop_RideEnabler extends Prop_HaveEnabler
 	public String accountForYourself()
 	{ return spellAccountingsWithMask("Grants "," to those mounted.");}
 
+	public int triggerMask() { return TriggeredAffect.TRIGGER_MOUNT; }
 
 	public void setMiscText(String newText)
 	{ 

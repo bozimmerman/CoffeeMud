@@ -52,7 +52,7 @@ import java.util.*;
  * @author FR - Jeremy Vyska; CM - Bo Zimmerman
  * @version 1.0.0.0
  */
-public class Prop_ClanEquipment extends Property
+public class Prop_ClanEquipment extends Property implements TriggeredAffect
 {
 	public String ID()
 	{
@@ -68,6 +68,8 @@ public class Prop_ClanEquipment extends Property
 	{
 		return true;
 	}
+
+	public long flags(){return Ability.FLAG_CASTER;}
 
 	protected int canAffectCode()
 	{
@@ -85,6 +87,15 @@ public class Prop_ClanEquipment extends Property
 	String lastMessage=null;
 	protected CharStats EQadjCharStats=null;
 	protected String secretWord=CMProps.getAnyListFileValue(CMProps.SYSTEMLF_MAGIC_WORDS);
+
+	public int triggerMask() 
+	{ 
+		if(affected instanceof Weapon)
+			return TriggeredAffect.TRIGGER_HITTING_WITH;
+		if(affected instanceof Armor) 
+			return TriggeredAffect.TRIGGER_BEING_HIT;
+		return TriggeredAffect.TRIGGER_USE;
+	}
 
 	public String accountForYourself()
 	{

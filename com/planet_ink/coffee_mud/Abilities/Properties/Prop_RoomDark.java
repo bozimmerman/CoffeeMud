@@ -42,6 +42,8 @@ public class Prop_RoomDark extends Property
 	{ return "Darkened";	}
 
 
+	public long flags(){return Ability.FLAG_ADJUSTER;}
+
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_DARK);

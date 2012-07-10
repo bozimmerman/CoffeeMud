@@ -41,6 +41,8 @@ public class Prop_NoDamage extends Property
 	public String accountForYourself()
 	{ return "Harmless";	}
 
+	public long flags(){return Ability.FLAG_IMMUNER;}
+
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if((msg.targetMinor()==CMMsg.TYP_DAMAGE)

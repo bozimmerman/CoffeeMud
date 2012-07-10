@@ -85,6 +85,17 @@ public class Prop_UseSpellCast extends Prop_SpellAdder
 	public void affectPhyStats(Physical host, PhyStats affectableStats)
 	{}
 	
+	public int triggerMask() 
+	{ 
+		if((affected instanceof Armor)||(affected instanceof Weapon)) 
+			return TriggeredAffect.TRIGGER_WEAR_WIELD;
+		if((affected instanceof Drink)||(affected instanceof Food)) 
+			return TriggeredAffect.TRIGGER_USE;
+		if(affected instanceof Container)
+			return TriggeredAffect.TRIGGER_DROP_PUTIN;
+		return TriggeredAffect.TRIGGER_WEAR_WIELD;
+	}
+
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		if(processing) return;

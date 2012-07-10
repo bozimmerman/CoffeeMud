@@ -33,7 +33,7 @@ import java.util.*;
    limitations under the License.
 */
 @SuppressWarnings({"unchecked","rawtypes"})
-public class Prop_AbilityImmunity extends Property
+public class Prop_AbilityImmunity extends Property implements TriggeredAffect
 {
 	public String ID() { return "Prop_AbilityImmunity"; }
 	public String name(){ return "Ability Immunity";}
@@ -43,6 +43,11 @@ public class Prop_AbilityImmunity extends Property
 	protected Vector messages=new Vector();
 	protected boolean owner = false;
 	protected boolean wearer = false;
+
+	public int triggerMask()
+	{ 
+		return TriggeredAffect.TRIGGER_ALWAYS;
+	}
 
 	public void setMiscText(String newText)
 	{

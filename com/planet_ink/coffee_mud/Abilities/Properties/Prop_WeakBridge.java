@@ -33,7 +33,7 @@ import java.util.*;
    limitations under the License.
 */
 @SuppressWarnings({"unchecked","rawtypes"})
-public class Prop_WeakBridge extends Property
+public class Prop_WeakBridge extends Property implements TriggeredAffect
 {
 	public String ID() { return "Prop_WeakBridge"; }
 	public String name(){ return "Weak Rickity Bridge";}
@@ -44,6 +44,11 @@ public class Prop_WeakBridge extends Property
 	protected int chance=75;
 	protected int ticksDown=100;
 	protected List<MOB> mobsToKill=new Vector();
+
+	public int triggerMask()
+	{ 
+		return TriggeredAffect.TRIGGER_ENTER;
+	}
 
 	public String accountForYourself()
 	{ return "Weak and Rickity";	}
