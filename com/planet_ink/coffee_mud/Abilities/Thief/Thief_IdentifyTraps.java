@@ -126,7 +126,7 @@ public class Thief_IdentifyTraps extends ThiefSkill
         }
         
         CMMsg msg=CMClass.getMsg(mob,unlockThis,this,auto?CMMsg.MSG_OK_ACTION:CMMsg.MSG_DELICATE_HANDS_ACT,null);
-        if(mob.location().okMessage(mob,msg))
+        if(mob.location().okMessage(mob,msg)&&(unlockThis!=null))
         {
             mob.location().send(mob,msg);
             if((unlockThis==lastChecked)&&((theTrap==null)||(theTrap.disabled())))

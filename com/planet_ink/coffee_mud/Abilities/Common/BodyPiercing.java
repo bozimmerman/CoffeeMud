@@ -180,7 +180,7 @@ public class BodyPiercing extends CommonSkill
             return false;
         }
         
-        if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
+        if((!super.invoke(mob,commands,givenTarget,auto,asLevel))||(wornName==null))
             return false;
         if(wornName.toLowerCase().endsWith("s"))
             writing=wearLocName+":Pierced "+wornName.toLowerCase();

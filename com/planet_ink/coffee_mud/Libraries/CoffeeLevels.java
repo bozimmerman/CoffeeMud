@@ -525,7 +525,7 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
         &&((mob.location()!=null)
             ||((victim!=null)&&(victim.location()!=null))))
 		{
-        	String room=CMLib.map().getExtendedRoomID((mob.location()!=null)?mob.location():victim.location());
+        	String room=CMLib.map().getExtendedRoomID((mob.location()!=null)?mob.location():(victim==null)?null:victim.location());
         	String mobName=mob.Name();
         	String vicName=(victim!=null)?victim.Name():"null";
 	    	Log.killsOut("+EXP",room+":"+mobName+":"+vicName+":"+amount+":"+homageMessage);

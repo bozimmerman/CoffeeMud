@@ -102,8 +102,8 @@ public class Thief_DetectTraps extends ThiefSkill
 			}
 		}
         String add=(dirCode>=0)?" "+Directions.getInDirectionName(dirCode):"";
-		CMMsg msg=CMClass.getMsg(mob,unlockThis,this,auto?CMMsg.MSG_OK_ACTION:CMMsg.MSG_DELICATE_HANDS_ACT,auto?null:"<S-NAME> look(s) "+unlockThis.name()+add+" over very carefully.");
-		if(mob.location().okMessage(mob,msg))
+		CMMsg msg=CMClass.getMsg(mob,unlockThis,this,auto?CMMsg.MSG_OK_ACTION:CMMsg.MSG_DELICATE_HANDS_ACT,auto?null:"<S-NAME> look(s) "+((unlockThis==null)?"":unlockThis.name())+add+" over very carefully.");
+		if((unlockThis!=null)&&(mob.location().okMessage(mob,msg)))
 		{
 			mob.location().send(mob,msg);
 			if((unlockThis==lastChecked)&&((theTrap==null)||(theTrap.disabled())))

@@ -127,7 +127,7 @@ public class Spell_Teleport extends Spell
 		}
 
 		CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MASK_MOVE|verbalCastCode(mob,newRoom,auto),"^S<S-NAME> invoke(s) a teleportation spell.^?");
-		if(mob.location().okMessage(mob,msg))
+		if(mob.location().okMessage(mob,msg)&&(newRoom!=null))
 		{
 			mob.location().send(mob,msg);
 			Set<MOB> h=properTargets(mob,givenTarget,false);

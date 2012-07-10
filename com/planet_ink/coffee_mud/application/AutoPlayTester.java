@@ -165,6 +165,7 @@ public class AutoPlayTester
 					js.append(s).append("\n");
 				s=br.readLine();
 			}
+			br.close();
 		}
 		catch(Exception e)
 		{

@@ -911,109 +911,116 @@ public class Backend
    {
       BufferedReader in=new BufferedReader(new FileReader(schema));
 
-      while (true) 
+      try
       {
-         String fakeTableName=in.readLine();
-         if (fakeTableName==null) 
-             break;
-         if (fakeTableName.length()==0) 
-             throw new IOException("Can not read schema: tableName is null");
-         if (fakeTables.get(fakeTableName)!=null) 
-             throw new IOException("Can not read schema: tableName is missing: "+fakeTableName);
-
-         List columns=new Vector();
-         List keys=new Vector();
-         List indexes=new Vector();
-         while (true) 
-         {
-            String line=in.readLine();
-            if (line==null) 
-                break;
-            if (line.length()==0) 
-                break;
-            int split=line.indexOf(' ');
-            if (split<0) 
-                throw new IOException("Can not read schema: expected space in line '"+line+"'");
-            String columnName=line.substring(0,split); 
-            line=line.substring(split+1);
-            split=line.indexOf(' ');
-            String columnType;
-            String[] columnModifiers=null;
-            if (split<0) 
-            {
-               columnType=line;
-               columnModifiers=new String[0];
-            } 
-            else 
-            {
-               columnType=line.substring(0,split);
-               String lineRes=line.substring(split+1).trim();
-               int split2=lineRes.indexOf(' ');
-               if(split2>0)
-                   columnModifiers=new String[]{lineRes.substring(0,split2).trim(),lineRes.substring(split2+1).trim()};
-               else
-                   columnModifiers=new String[]{lineRes};
-            }
-
-            FakeColumn info=new FakeColumn();
-            info.name=columnName;
-            if (columnType.equals("string")) 
-               info.type=FakeColumn.TYPE_STRING;
-            else 
-            if (columnType.equals("integer")) 
-                info.type=FakeColumn.TYPE_INTEGER;
-            else 
-            if (columnType.equals("long")) 
-                info.type=FakeColumn.TYPE_LONG;
-            else 
-            if (columnType.equals("datetime")) 
-                info.type=FakeColumn.TYPE_LONG;
-            else 
-                throw new IOException("Can not read schema: attributeType '"+columnType+"' is unknown");
-            for(String modifier : columnModifiers)
-            {
-                if (modifier.equals("")) 
-                    continue;
-                else
-                if (modifier.equals("NULL")) 
-                   info.canNull=true;
-                else
-                if (modifier.equals("KEY")) 
+          while (true) 
+          {
+             String fakeTableName=in.readLine();
+             if (fakeTableName==null) 
+                 break;
+             if (fakeTableName.length()==0) 
+                 throw new IOException("Can not read schema: tableName is null");
+             if (fakeTables.get(fakeTableName)!=null) 
+                 throw new IOException("Can not read schema: tableName is missing: "+fakeTableName);
+    
+             List columns=new Vector();
+             List keys=new Vector();
+             List indexes=new Vector();
+             while (true) 
+             {
+                String line=in.readLine();
+                if (line==null) 
+                    break;
+                if (line.length()==0) 
+                    break;
+                int split=line.indexOf(' ');
+                if (split<0) 
+                    throw new IOException("Can not read schema: expected space in line '"+line+"'");
+                String columnName=line.substring(0,split); 
+                line=line.substring(split+1);
+                split=line.indexOf(' ');
+                String columnType;
+                String[] columnModifiers=null;
+                if (split<0) 
                 {
-                   info.keyNumber = keys.size();
-                   keys.add(columnName);
-                   info.indexNumber = indexes.size();
-                   indexes.add(columnName);
-                }
-                else
-                if (modifier.equals("INDEX")) 
-                {
-                   info.indexNumber = indexes.size();
-                   indexes.add(columnName);
+                   columnType=line;
+                   columnModifiers=new String[0];
                 } 
                 else 
-                    throw new IOException("Can not read schema: attributeSpecial '"+modifier+"' is unknown");
-            }
-            columns.add(info);
-         }
-
-         FakeTable fakeTable=new FakeTable(fakeTableName, new File(basePath,"fakedb.data."+fakeTableName));
-         fakeTable.columns=new FakeColumn[columns.size()];
-         fakeTable.columnHash = new Hashtable<String,Integer>();
-         int index=0;
-         for (Iterator iter=columns.iterator();iter.hasNext();++index) 
-         {
-            FakeColumn current=(FakeColumn)iter.next();
-            fakeTable.columns[index]=current;
-            fakeTable.columnHash.put(current.name, Integer.valueOf(index));
-         }
-         index=0;
-         fakeTable.columnIndexesOfIndexed=new int[indexes.size()];
-         for (Iterator iter=indexes.iterator();iter.hasNext();++index)
-            fakeTable.columnIndexesOfIndexed[index]=fakeTable.findColumn((String)iter.next());
-
-         fakeTable.open();
-         fakeTables.put(fakeTableName,fakeTable);
+                {
+                   columnType=line.substring(0,split);
+                   String lineRes=line.substring(split+1).trim();
+                   int split2=lineRes.indexOf(' ');
+                   if(split2>0)
+                       columnModifiers=new String[]{lineRes.substring(0,split2).trim(),lineRes.substring(split2+1).trim()};
+                   else
+                       columnModifiers=new String[]{lineRes};
+                }
+    
+                FakeColumn info=new FakeColumn();
+                info.name=columnName;
+                if (columnType.equals("string")) 
+                   info.type=FakeColumn.TYPE_STRING;
+                else 
+                if (columnType.equals("integer")) 
+                    info.type=FakeColumn.TYPE_INTEGER;
+                else 
+                if (columnType.equals("long")) 
+                    info.type=FakeColumn.TYPE_LONG;
+                else 
+                if (columnType.equals("datetime")) 
+                    info.type=FakeColumn.TYPE_LONG;
+                else 
+                    throw new IOException("Can not read schema: attributeType '"+columnType+"' is unknown");
+                for(String modifier : columnModifiers)
+                {
+                    if (modifier.equals("")) 
+                        continue;
+                    else
+                    if (modifier.equals("NULL")) 
+                       info.canNull=true;
+                    else
+                    if (modifier.equals("KEY")) 
+                    {
+                       info.keyNumber = keys.size();
+                       keys.add(columnName);
+                       info.indexNumber = indexes.size();
+                       indexes.add(columnName);
+                    }
+                    else
+                    if (modifier.equals("INDEX")) 
+                    {
+                       info.indexNumber = indexes.size();
+                       indexes.add(columnName);
+                    } 
+                    else 
+                        throw new IOException("Can not read schema: attributeSpecial '"+modifier+"' is unknown");
+                }
+                columns.add(info);
+             }
+    
+             FakeTable fakeTable=new FakeTable(fakeTableName, new File(basePath,"fakedb.data."+fakeTableName));
+             fakeTable.columns=new FakeColumn[columns.size()];
+             fakeTable.columnHash = new Hashtable<String,Integer>();
+             int index=0;
+             for (Iterator iter=columns.iterator();iter.hasNext();++index) 
+             {
+                FakeColumn current=(FakeColumn)iter.next();
+                fakeTable.columns[index]=current;
+                fakeTable.columnHash.put(current.name, Integer.valueOf(index));
+             }
+             index=0;
+             fakeTable.columnIndexesOfIndexed=new int[indexes.size()];
+             for (Iterator iter=indexes.iterator();iter.hasNext();++index)
+                fakeTable.columnIndexesOfIndexed[index]=fakeTable.findColumn((String)iter.next());
+    
+             fakeTable.open();
+             fakeTables.put(fakeTableName,fakeTable);
+          }
+      }
+      finally
+      {
+          in.close();
       }
    }
    

@@ -919,7 +919,7 @@ public class DefaultSession implements Session
                         if(!keepDown)
                         {
                             cmd.add("RESTART");
-                            if(externalCmd.length()>0)
+                            if((externalCmd!=null)&&(externalCmd.length()>0))
                                 cmd.add(externalCmd);
                         }
                         Command C=CMClass.getCommand("Shutdown");

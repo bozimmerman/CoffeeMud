@@ -1477,7 +1477,7 @@ public class Quests extends StdLibrary implements QuestManager
         }
         String newValue=(M!=null)?CMLib.coffeeMaker().getMobXML(M).toString():showValue;
         for(int n=0;n<newMobs.size();n++) ((MOB)newMobs.elementAt(n)).destroy();
-        return newValue.trim();
+        return newValue==null?"":newValue.trim();
     }
     
     protected String addXMLQuestItem(MOB mob, 
@@ -1545,7 +1545,7 @@ public class Quests extends StdLibrary implements QuestManager
         }
         String newValue=(I!=null)?CMLib.coffeeMaker().getItemXML(I).toString():showValue;
         for(int n=0;n<newItems.size();n++) ((Item)newItems.elementAt(n)).destroy();
-        return newValue.trim();
+        return (newValue==null)?"":newValue.trim();
     }
     
     public Vector<Quest> getPlayerPersistantQuests(MOB player)

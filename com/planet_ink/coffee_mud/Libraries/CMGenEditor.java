@@ -2269,8 +2269,9 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
             ||((DV!=null)&&(CMLib.beanCounter().getDenominationIndex(I.getCurrency(), CMath.s_double(newDenom))<0)))
             {
                 StringBuffer allDenoms=new StringBuffer("");
-                for(int i=0;i<DV.length;i++)
-                    allDenoms.append(DV[i].value+"("+DV[i].name+"), ");
+                if(DV!=null)
+                    for(int i=0;i<DV.length;i++)
+                        allDenoms.append(DV[i].value+"("+DV[i].name+"), ");
                 if(allDenoms.toString().endsWith(", "))
                     allDenoms=new StringBuffer(allDenoms.substring(0,allDenoms.length()-2));
                 mob.tell("'"+newDenom+"' is not a defined denomination. Try one of these: "+allDenoms.toString()+".");

@@ -185,6 +185,7 @@ public class Log
 					for(int i=0;i<10;i++)
 						writers[i]=pw;
 					WRITERS.remove(name);
+					pw.close();
 				}
 				catch(IOException e)
 				{
@@ -350,6 +351,7 @@ public class Log
 			String line="";
 			while((line!=null)&&(reader.ready()))
 			{ line=reader.readLine(); num++;}
+			reader.close();
 		}
 		catch(Exception e)
 		{

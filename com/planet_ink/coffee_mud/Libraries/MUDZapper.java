@@ -3652,24 +3652,26 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                         { return false;}
                 break;
             case 49: // +material
-                if(CMParms.contains(entry.parms,RawMaterial.MATERIAL_DESCS[(item.material()&RawMaterial.MATERIAL_MASK)>>8]))
+                if((item!=null)&&CMParms.contains(entry.parms,RawMaterial.MATERIAL_DESCS[(item.material()&RawMaterial.MATERIAL_MASK)>>8]))
                     return false;
                 break;
             case 50: // -material
-                if(!CMParms.contains(entry.parms,RawMaterial.MATERIAL_DESCS[(item.material()&RawMaterial.MATERIAL_MASK)>>8]))
+                if((item!=null)&&(!CMParms.contains(entry.parms,RawMaterial.MATERIAL_DESCS[(item.material()&RawMaterial.MATERIAL_MASK)>>8])))
                     return false;
                 break;
             case 57: // +wornOn
-                for(final Object o : entry.parms)
-                    if((item.rawProperLocationBitmap()&((Long)o).longValue())>0)
-                        return false;
+                if(item!=null)
+                    for(final Object o : entry.parms)
+                        if((item.rawProperLocationBitmap()&((Long)o).longValue())>0)
+                            return false;
                 break;
             case 58: // -wornOn
                 {
                     boolean found=false;
-                    for(final Object o : entry.parms)
-                        if((item.rawProperLocationBitmap()&((Long)o).longValue())>0)
-                        { found=true; break;}
+                    if(item!=null)
+                        for(final Object o : entry.parms)
+                            if((item.rawProperLocationBitmap()&((Long)o).longValue())>0)
+                            { found=true; break;}
                     if(!found) return false;
                 }
                 break;
@@ -3816,11 +3818,11 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                 }
                 break;
             case 51: // +resource
-                if(CMParms.contains(entry.parms,RawMaterial.CODES.NAME(item.material())))
+                if((item!=null)&&CMParms.contains(entry.parms,RawMaterial.CODES.NAME(item.material())))
                     return false;
                 break;
             case 52: // -resource
-                if(!CMParms.contains(entry.parms,RawMaterial.CODES.NAME(item.material())))
+                if((item!=null)&&(!CMParms.contains(entry.parms,RawMaterial.CODES.NAME(item.material()))))
                     return false;
                 break;
             case 53: // -JavaClass
@@ -4109,7 +4111,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                 }
                 else
                 {
-                    if((entry.parms.length>0)&&(item.baseGoldValue()>(((Integer)entry.parms[0]).intValue())))
+                    if((entry.parms.length>0)&&(item!=null)&&(item.baseGoldValue()>(((Integer)entry.parms[0]).intValue())))
                         return false;
                 }
                 break;
@@ -4121,7 +4123,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                 }
                 else
                 {
-                    if((entry.parms.length>0)&&(item.baseGoldValue()<(((Integer)entry.parms[0]).intValue())))
+                    if((entry.parms.length>0)&&(item!=null)&&(item.baseGoldValue()<(((Integer)entry.parms[0]).intValue())))
                         return false;
                 }
                 break;
