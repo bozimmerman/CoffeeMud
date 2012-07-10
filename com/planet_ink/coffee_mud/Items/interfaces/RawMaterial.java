@@ -1042,7 +1042,7 @@ public interface RawMaterial extends Item
      */
     public class CODES
     {
-        @SuppressWarnings("unchecked")
+        @SuppressWarnings("rawtypes")
         public CODES(){
             super();
             char c=Thread.currentThread().getThreadGroup().getName().charAt(0);
@@ -1366,7 +1366,7 @@ public interface RawMaterial extends Item
          * @param code the material/resource code
          * @return an ability, if any.
          */
-        @SuppressWarnings("unchecked")
+        @SuppressWarnings("rawtypes")
         public static Ability[] EFFECTA(int code)
         {
             CODES c=c();
@@ -1432,14 +1432,12 @@ public interface RawMaterial extends Item
                                 return o1.second.compareTo(o2.second);
                             }
                         });
-                    double totalValue=0.0;
                     for(int i=0;i<RawMaterial.DEFAULT_RESOURCE_DATA.length;i++)
                     {
                         int resourceCode=RawMaterial.DEFAULT_RESOURCE_DATA[i][RSCDATAINDX_CODE];
                         int resourceValue=RawMaterial.DEFAULT_RESOURCE_DATA[i][RSCDATAINDX_VALUE];
                         if((resourceCode&RawMaterial.MATERIAL_MASK)==matCode)
                         {
-                            totalValue+=(double)resourceValue;
                             newBucket.add(new Pair<Integer,Double>(Integer.valueOf(resourceCode),Double.valueOf(resourceValue)));
                         }
                     }

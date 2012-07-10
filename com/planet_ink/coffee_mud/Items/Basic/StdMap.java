@@ -34,7 +34,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("unchecked")
+@SuppressWarnings({"unchecked","rawtypes"})
 public class StdMap extends StdItem implements com.planet_ink.coffee_mud.Items.interfaces.RoomMap
 {
 	public String ID(){	return "StdMap";}

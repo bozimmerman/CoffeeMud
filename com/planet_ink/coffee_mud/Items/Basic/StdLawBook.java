@@ -34,7 +34,7 @@ import java.io.IOException;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("unchecked")
+@SuppressWarnings({"unchecked","rawtypes"})
 public class StdLawBook extends StdItem
 {
 	public String ID(){	return "StdLawBook";}
@@ -1380,7 +1380,7 @@ public class StdLawBook extends StdItem
 				if(M!=null)
 				{
 					Room R2=M.getStartRoom();
-					if(R==null) R=M.location();
+					if(R2==null) R2=M.location();
 					if(B.isAnyOfficer(legalO,M))
 						duhOfficers.append(M.name()+" from room '"+R2.displayText()+"'\n\r");
 					else

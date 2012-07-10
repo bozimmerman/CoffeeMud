@@ -48,7 +48,7 @@ import java.util.*;
     once a game is over easier.  It also has methods to keep track of
     one or more Hands, each of which must be attributed to a player.
 */
-@SuppressWarnings("unchecked")
+@SuppressWarnings({"unchecked","rawtypes"})
 public class StdDeckOfCards extends StdHandOfCards implements DeckOfCards
 {
 	public String ID(){	return "StdDeckOfCards";}

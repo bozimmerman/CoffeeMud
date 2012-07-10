@@ -413,7 +413,7 @@ public interface Wearable extends Environmental
      */
     public class CODES
     {
-        @SuppressWarnings("unchecked")
+        @SuppressWarnings("rawtypes")
         public CODES(){
             super();
             char c=Thread.currentThread().getThreadGroup().getName().charAt(0);

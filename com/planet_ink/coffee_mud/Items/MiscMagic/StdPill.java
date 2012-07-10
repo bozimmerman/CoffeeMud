@@ -34,7 +34,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("unchecked")
+@SuppressWarnings({"unchecked","rawtypes"})
 public class StdPill extends StdFood implements Pill
 {
 	public String ID(){	return "StdPill";}
@@ -78,7 +78,6 @@ public class StdPill extends StdFood implements Pill
 	
 	public static Vector getSpells(SpellHolder me)
 	{
-		int baseValue=200;
 		Vector theSpells=new Vector();
 		String names=me.getSpellList();
 		int del=names.indexOf(';');
@@ -91,7 +90,6 @@ public class StdPill extends StdFood implements Pill
 				if((A!=null)&&((A.classificationCode()&Ability.ALL_DOMAINS)!=Ability.DOMAIN_ARCHON))
 				{
 					A=(Ability)A.copyOf();
-					baseValue+=(100*CMLib.ableMapper().lowestQualifyingLevel(A.ID()));
 					theSpells.addElement(A);
 				}
 			}
@@ -104,7 +102,6 @@ public class StdPill extends StdFood implements Pill
 			if(A!=null)
 			{
 				A=(Ability)A.copyOf();
-				baseValue+=(100*CMLib.ableMapper().lowestQualifyingLevel(A.ID()));
 				theSpells.addElement(A);
 			}
 		}
