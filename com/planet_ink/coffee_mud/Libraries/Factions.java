@@ -35,7 +35,7 @@ import java.util.*;
  * <p>limitations under the License.
  */
 
-@SuppressWarnings("unchecked")
+@SuppressWarnings({"unchecked","rawtypes"})
 public class Factions extends StdLibrary implements FactionManager
 {
     public String ID(){return "Factions";}

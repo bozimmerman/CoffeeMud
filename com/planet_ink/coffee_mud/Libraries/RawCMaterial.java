@@ -35,7 +35,7 @@ import java.util.regex.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("unchecked")
+@SuppressWarnings({"unchecked","rawtypes"})
 public class RawCMaterial extends StdLibrary implements MaterialLibrary
 {
     public String ID(){return "RawCMaterial";}

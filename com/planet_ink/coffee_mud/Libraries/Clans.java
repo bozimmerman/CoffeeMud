@@ -39,7 +39,7 @@ import java.util.*;
  * <p>See the License for the specific language governing permissions and
  * <p>limitations under the License.
  */
-@SuppressWarnings("unchecked")
+@SuppressWarnings("rawtypes")
 public class Clans extends StdLibrary implements ClanManager
 {
 	public SHashtable<String,Clan> all				  =new SHashtable<String,Clan>();

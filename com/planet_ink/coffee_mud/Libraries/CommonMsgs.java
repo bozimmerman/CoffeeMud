@@ -36,7 +36,7 @@ import java.lang.ref.WeakReference;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("unchecked")
+@SuppressWarnings({"unchecked","rawtypes"})
 public class CommonMsgs extends StdLibrary implements CommonCommands
 {
     public String ID(){return "CommonMsgs";}

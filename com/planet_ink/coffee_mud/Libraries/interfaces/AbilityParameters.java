@@ -29,7 +29,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("unchecked")
+@SuppressWarnings("rawtypes")
 public interface AbilityParameters extends CMLibrary
 {
     public static final int PARMTYPE_CHOICES=0;

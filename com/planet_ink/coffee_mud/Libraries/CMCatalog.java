@@ -35,7 +35,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("unchecked")
+@SuppressWarnings({"unchecked","rawtypes"})
 public class CMCatalog extends StdLibrary implements CatalogLibrary, Runnable
 {
     public String ID(){return "CMCatalog";}
@@ -201,7 +201,6 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary, Runnable
         Vector<RoomContent> content =new Vector<RoomContent>();
 		if(R!=null)
 		{
-			if(R==null) return content;
             shops=CMLib.coffeeShops().getAllShopkeepers(R,null);
             for(int s=0;s<shops.size();s++)
             {
@@ -455,7 +454,8 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary, Runnable
 	            CMLib.database().DBUpdateItem("CATALOG_ITEMS",(Item)cataP);
 	        
     		CataData data = getCatalogData(cataP);
-    		data.delReference(cataP);
+    		if(data!=null)
+	    		data.delReference(cataP);
     		SHashSet<Physical> ignored=null;
     		if(data!=null)
     			ignored=new SHashSet(data.enumeration());

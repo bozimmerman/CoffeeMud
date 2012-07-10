@@ -36,7 +36,7 @@ import org.mozilla.javascript.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("unchecked")
+@SuppressWarnings({"unchecked","rawtypes"})
 public class Quests extends StdLibrary implements QuestManager
 {
     public String ID(){return "Quests";}

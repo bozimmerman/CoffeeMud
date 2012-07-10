@@ -632,6 +632,7 @@ public class Socials extends StdLibrary implements SocialsList
 		{
 			String backupSocialName=null;
             String socName=socialName.toUpperCase();
+            socialName=null;
 			for(String key : soc.keySet())
 			{
 				if((key.startsWith(socName))&&(key.indexOf(' ')<0))
@@ -646,8 +647,11 @@ public class Socials extends StdLibrary implements SocialsList
 					break;
 				}
 			}
-			if(socialName==null) 
-			    socialName=backupSocialName;
+			if(socialName==null)
+				if(backupSocialName == null)
+					socialName=(String)C.get(0);
+				else
+					socialName=backupSocialName;
 			if(socialName!=null)
 				if(!tryTargets)
 					S=fetchSocial(soc,socialName+theRest,true);

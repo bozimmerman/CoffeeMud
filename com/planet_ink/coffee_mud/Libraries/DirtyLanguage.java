@@ -33,7 +33,7 @@ import java.util.regex.Pattern;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("unchecked")
+@SuppressWarnings({"unchecked","rawtypes"})
 public class DirtyLanguage extends StdLibrary implements LanguageLibrary
 {
     public String ID(){return "DirtyLanguage";}
