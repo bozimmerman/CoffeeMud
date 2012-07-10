@@ -415,7 +415,8 @@ public class Drowness extends StdBehavior
         else
         {
             prayer = CMClass.getAbility("Prayer_CureSerious");
-            prayer.setProficiency(CMLib.dice().roll(5, 10, 50));
+            if(prayer!=null)
+	            prayer.setProficiency(CMLib.dice().roll(5, 10, 50));
         }
 		if(prayer!=null)
 	        return prayer.invoke(mob,null,false,0);

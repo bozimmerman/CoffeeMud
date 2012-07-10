@@ -23,7 +23,7 @@ import java.util.*;
  * <p>Company: http://www.falserealities.com</p>
  * @author Tulath (a.k.a.) Jeremy Vyska
  */
-@SuppressWarnings("unchecked")
+@SuppressWarnings({"unchecked","rawtypes"})
 public class FieryRoom
     extends ActiveTicker {
     public String ID() {

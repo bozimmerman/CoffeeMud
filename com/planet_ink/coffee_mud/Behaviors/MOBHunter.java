@@ -38,7 +38,7 @@ import java.util.*;
  * @version 1.0.0.0
  */
 
-@SuppressWarnings("unchecked")
+@SuppressWarnings({"unchecked","rawtypes"})
 public class MOBHunter extends ActiveTicker
 {
 	public String ID(){return "MOBHunter";}

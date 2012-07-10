@@ -57,7 +57,7 @@ public interface ChattyBehavior extends Behavior
 	 * definitely be saying soon. 
 	 * @author bzimmerman
 	 */
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("rawtypes")
 	public static class ChattyResponse
 	{
 		public ChattyResponse(Vector cmd, int responseDelay) { parsedCommand=cmd; delay=responseDelay;}

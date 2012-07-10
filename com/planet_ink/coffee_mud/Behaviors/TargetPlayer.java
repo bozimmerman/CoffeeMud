@@ -36,7 +36,7 @@ import java.util.*;
  * @author FR - Jeremy Vyska; CM - Bo Zimmerman
  * @version 1.0.0.0
  */
-@SuppressWarnings("unchecked")
+@SuppressWarnings("rawtypes")
 public class TargetPlayer extends ActiveTicker
 {
 	public String ID(){return "TargetPlayer";}

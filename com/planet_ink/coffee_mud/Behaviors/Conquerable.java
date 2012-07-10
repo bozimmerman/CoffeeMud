@@ -35,7 +35,7 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.DatabaseEngine.PlayerData;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("unchecked")
+@SuppressWarnings({"unchecked","rawtypes"})
 public class Conquerable extends Arrest
 {
 	public String ID(){return "Conquerable";}
