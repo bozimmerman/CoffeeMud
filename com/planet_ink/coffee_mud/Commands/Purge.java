@@ -32,7 +32,7 @@ import java.io.IOException;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("unchecked")
+@SuppressWarnings({"unchecked","rawtypes"})
 public class Purge extends StdCommand
 {
 	public Purge(){}

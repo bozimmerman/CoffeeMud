@@ -32,7 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("unchecked")
+@SuppressWarnings({"unchecked","rawtypes"})
 public class ClanVote extends StdCommand
 {
 	public ClanVote(){}
@@ -146,8 +146,7 @@ public class ClanVote extends StdCommand
 							choices+="C";
 						}
 						String enterWhat="to skip";
-						if(myVote!=null)
-							enterWhat=("to keep ("+(myVote.booleanValue()?"Y":"N")+") ");
+						//if(myVote!=null) enterWhat=("to keep ("+(myVote.booleanValue()?"Y":"N")+") "); // no revote
 						boolean updateVote=false;
 						if((prompt.length()>0)&&(mob.session()!=null))
 						{

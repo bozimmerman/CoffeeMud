@@ -33,7 +33,7 @@ import org.mozilla.javascript.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("unchecked")
+@SuppressWarnings("rawtypes")
 public class JRun extends StdCommand
 {
     public JRun(){}

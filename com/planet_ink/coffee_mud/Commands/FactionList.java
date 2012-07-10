@@ -31,7 +31,7 @@ import java.util.*;
  * <p>limitations under the License.
  */
 
-@SuppressWarnings("unchecked")
+@SuppressWarnings("rawtypes")
 public class FactionList extends StdCommand
 {
 	public FactionList(){}

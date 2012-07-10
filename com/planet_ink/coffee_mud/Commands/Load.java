@@ -33,7 +33,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("unchecked")
+@SuppressWarnings({"unchecked","rawtypes"})
 public class Load extends StdCommand
 {
     public Load(){}
@@ -91,14 +91,12 @@ public class Load extends StdCommand
             final XVector ammoV=new XVector(what);
             final List<Item> baseAmmoItems=CMLib.english().fetchItemList(mob,mob,null,ammoV,Wearable.FILTER_UNWORNONLY,false);
             final List<Ammunition> ammos=new XVector<Ammunition>();
-            int totalAmmo=0;
             for(final Iterator<Item> i=baseAmmoItems.iterator();i.hasNext();)
             {
                 final Item I=i.next();
                 if(I instanceof Ammunition)
                 {
                     ammos.add((Ammunition)I);
-                    totalAmmo+=((Ammunition)I).usesRemaining();
                 }
             }
             if(baseAmmoItems.size()==0)

@@ -34,7 +34,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("unchecked")
+@SuppressWarnings({"unchecked","rawtypes"})
 public class Duel extends StdCommand
 {
 	public Duel(){}
@@ -117,10 +117,7 @@ public class Duel extends StdCommand
 			else
 			if(uuT!=null)
 			{
-				if(uiT!=null)
-					mob.tell(mob,target,null,"<T-NAME> is considering a response to your previous challenger and cannot be challenged at this time.");
-				else
-					mob.tell(mob,target,null,"<T-NAME> is considering a response to a previous challenger and cannot be challenged at this time.");
+				mob.tell(mob,target,null,"<T-NAME> is considering a response to a previous challenger and cannot be challenged at this time.");
 				return false;
 			}
 			else

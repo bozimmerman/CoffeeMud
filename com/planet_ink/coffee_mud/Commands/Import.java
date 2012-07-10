@@ -34,7 +34,7 @@ import java.io.IOException;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("unchecked")
+@SuppressWarnings({"unchecked","rawtypes"})
 public class Import extends StdCommand
 {
 	public Import(){}
@@ -4027,6 +4027,7 @@ public class Import extends StdCommand
 						codeLine=eatLineSquiggle(objV).trim();
 						scriptStuff+=codeLine+"~";
 					}
+					codeLine=scriptStuff;
 					// nothing done with the script. :(
 				}
 				else
@@ -5577,6 +5578,7 @@ public class Import extends StdCommand
 							nextLine=eatLineSquiggle(roomV).trim();
 							scriptStuff+=nextLine+"~";
 						}
+						nextLine=scriptStuff;
 						// nothing done with the script. :(
 					}
 					else
@@ -6080,12 +6082,18 @@ public class Import extends StdCommand
 			processRoomRelinks(reLinkTable,areaName,areaRooms,doneRooms);
 			
 			if(newRooms.size()==0)
+			{
 				if(session!=null) session.println("\nDone? No Room!\n\r");
+			}
 			else
 			if(!multiArea)
+			{
 				if(session!=null) session.println("\nDone!!!!!!  A good room to look at would be "+((Room)newRooms.elementAt(0)).roomID()+"\n\r");
+			}
 			else
+			{
 				if(session!=null) session.println("Done!!!\n\r");
+			}
 		}
 		catch(Exception e)
 		{

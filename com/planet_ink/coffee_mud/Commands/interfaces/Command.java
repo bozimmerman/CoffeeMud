@@ -36,7 +36,7 @@ import java.util.Vector;
  * A Command is a thing entered on the command line by players.  It
  * performs some function, right?
  */
-@SuppressWarnings("unchecked")
+@SuppressWarnings("rawtypes")
 public interface Command extends CMObject
 {
 	/**

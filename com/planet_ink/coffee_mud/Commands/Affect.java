@@ -33,7 +33,7 @@ import java.util.concurrent.TimeUnit;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("unchecked")
+@SuppressWarnings("rawtypes")
 public class Affect extends StdCommand
 {
     private final String[] access={"AFFECTS","AFFECT","AFF","AF"};

@@ -31,7 +31,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("unchecked")
+@SuppressWarnings({"unchecked","rawtypes"})
 public class Equipment extends StdCommand
 {
     public Equipment(){}
@@ -47,7 +47,6 @@ public class Equipment extends StdCommand
 
         long wornCode=0;
         String header=null;
-        int found=0;
         String wornName=null;
         Item thisItem=null;
         String tat=null;
@@ -58,7 +57,6 @@ public class Equipment extends StdCommand
         Wearable.CODES codes = Wearable.CODES.instance();
         for(int l=0;l<codes.all_ordered().length;l++)
         {
-            found=0;
             wornCode=codes.all_ordered()[l];
             wornName=codes.name(wornCode);
             if(paragraphView)
@@ -170,7 +168,6 @@ public class Equipment extends StdCommand
                                 continue;
                             alreadyDone.add(thisItem);
                         }
-                        found++;
                         if(CMLib.flags().canBeSeenBy(thisItem,seer))
                         {
                             if(paragraphView)

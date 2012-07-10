@@ -37,7 +37,7 @@ import java.util.*;
  * @version 1.0.0.0
  */
 
-@SuppressWarnings("unchecked")
+@SuppressWarnings("rawtypes")
 public class WillQualify  extends Skills
 {
 	public WillQualify() {}
