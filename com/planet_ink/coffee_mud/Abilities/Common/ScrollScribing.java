@@ -35,7 +35,7 @@ import java.util.*;
    limitations under the License.
 */
 
-@SuppressWarnings("unchecked")
+@SuppressWarnings({"unchecked","rawtypes"})
 public class ScrollScribing extends CraftingSkill implements ItemCraftor
 {
     public String ID() { return "ScrollScribing"; }

@@ -34,7 +34,7 @@ import java.util.*;
    limitations under the License.
 */
 
-@SuppressWarnings("unchecked")
+@SuppressWarnings({"unchecked","rawtypes"})
 public class Blacksmithing extends EnhancedCraftingSkill implements ItemCraftor
 {
     public String ID() { return "Blacksmithing"; }

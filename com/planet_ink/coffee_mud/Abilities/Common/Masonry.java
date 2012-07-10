@@ -36,7 +36,7 @@ import java.util.*;
    limitations under the License.
 */
 
-@SuppressWarnings("unchecked")
+@SuppressWarnings("rawtypes")
 public class Masonry extends CraftingSkill
 {
 	public String ID() { return "Masonry"; }

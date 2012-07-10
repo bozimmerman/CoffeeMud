@@ -32,7 +32,7 @@ import java.util.*;
    limitations under the License.
 */
 
-@SuppressWarnings("unchecked")
+@SuppressWarnings("rawtypes")
 public class Drilling extends GatheringSkill
 {
 	public String ID() { return "Drilling"; }

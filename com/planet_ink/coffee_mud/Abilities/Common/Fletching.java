@@ -35,7 +35,7 @@ import java.util.*;
    limitations under the License.
 */
 
-@SuppressWarnings("unchecked")
+@SuppressWarnings({"unchecked","rawtypes"})
 public class Fletching extends EnhancedCraftingSkill implements ItemCraftor, MendingSkill
 {
     public String ID() { return "Fletching"; }

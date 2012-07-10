@@ -32,7 +32,7 @@ import java.util.*;
    limitations under the License.
 */
 
-@SuppressWarnings("unchecked")
+@SuppressWarnings("rawtypes")
 public class Bandaging extends CommonSkill implements MendingSkill
 {
 	public String ID() { return "Bandaging"; }

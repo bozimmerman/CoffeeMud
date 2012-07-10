@@ -37,7 +37,7 @@ import java.util.regex.Pattern;
    limitations under the License.
 */
 
-@SuppressWarnings("unchecked")
+@SuppressWarnings({"unchecked","rawtypes"})
 public class GenCraftSkill extends EnhancedCraftingSkill implements ItemCraftor
 {
     public String ID = "GenCraftSkill";

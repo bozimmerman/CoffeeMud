@@ -32,7 +32,7 @@ import java.util.*;
    limitations under the License.
 */
 
-@SuppressWarnings("unchecked")
+@SuppressWarnings("rawtypes")
 public class Foraging extends GatheringSkill
 {
 	public String ID() { return "Foraging"; }

@@ -32,7 +32,7 @@ import java.util.*;
    limitations under the License.
 */
 
-@SuppressWarnings("unchecked")
+@SuppressWarnings({"unchecked","rawtypes"})
 public class AnimalTrading extends CommonSkill
 {
 	public String ID() { return "AnimalTrading"; }

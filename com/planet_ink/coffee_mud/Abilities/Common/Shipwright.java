@@ -35,7 +35,7 @@ import java.util.*;
    limitations under the License.
 */
 
-@SuppressWarnings("unchecked")
+@SuppressWarnings({"unchecked","rawtypes"})
 public class Shipwright extends CraftingSkill implements ItemCraftor, MendingSkill
 {
     public String ID() { return "Shipwright"; }

@@ -34,7 +34,7 @@ import java.util.*;
    limitations under the License.
 */
 
-@SuppressWarnings("unchecked")
+@SuppressWarnings({"unchecked","rawtypes"})
 public class MasterArmorsmithing extends Armorsmithing implements ItemCraftor
 {
     public String ID() { return "MasterArmorsmithing"; }
