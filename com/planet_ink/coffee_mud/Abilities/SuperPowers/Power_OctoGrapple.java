@@ -33,7 +33,7 @@ import java.util.*;
    limitations under the License.
 */
 
-@SuppressWarnings("unchecked")
+@SuppressWarnings("rawtypes")
 public class Power_OctoGrapple extends SuperPower
 {
 	public String ID() { return "Power_OctoGrapple"; }

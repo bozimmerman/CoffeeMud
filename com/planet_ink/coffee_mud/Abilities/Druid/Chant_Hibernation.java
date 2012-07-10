@@ -32,7 +32,7 @@ import java.util.*;
    limitations under the License.
 */
 
-@SuppressWarnings("unchecked")
+@SuppressWarnings("rawtypes")
 public class Chant_Hibernation extends Chant
 {
 	public String ID() { return "Chant_Hibernation"; }

@@ -35,7 +35,7 @@ import java.util.*;
    limitations under the License.
 */
 
-@SuppressWarnings("unchecked")
+@SuppressWarnings("rawtypes")
 public class Regeneration extends StdAbility
 {
 	private static final int maxTickDown=3;

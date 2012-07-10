@@ -32,7 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("unchecked")
+@SuppressWarnings("rawtypes")
 public class Skill_Revoke extends StdSkill
 {
 	public String ID() { return "Skill_Revoke"; }

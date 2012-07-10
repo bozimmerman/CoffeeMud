@@ -36,7 +36,7 @@ import java.util.*;
    limitations under the License.
 */
 
-@SuppressWarnings("unchecked")
+@SuppressWarnings({"unchecked","rawtypes"})
 public class StdLanguage extends StdAbility implements Language
 {
     public String ID() { return "StdLanguage"; }

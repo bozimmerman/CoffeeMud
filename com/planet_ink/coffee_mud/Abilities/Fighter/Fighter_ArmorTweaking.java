@@ -34,7 +34,7 @@ import java.util.*;
    limitations under the License.
 */
 
-@SuppressWarnings("unchecked")
+@SuppressWarnings("rawtypes")
 public class Fighter_ArmorTweaking extends FighterSkill
 {
 	public String ID() { return "Fighter_ArmorTweaking"; }

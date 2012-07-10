@@ -32,7 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("unchecked")
+@SuppressWarnings({"unchecked","rawtypes"})
 public class Thief_DeathTrap extends ThiefSkill implements Trap
 {
 	public String ID() { return "Thief_DeathTrap"; }

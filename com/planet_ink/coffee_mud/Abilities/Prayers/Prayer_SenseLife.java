@@ -32,7 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("unchecked")
+@SuppressWarnings("rawtypes")
 public class Prayer_SenseLife extends Prayer
 {
 	public String ID() { return "Prayer_SenseLife"; }

@@ -33,7 +33,7 @@ import java.util.*;
    limitations under the License.
 */
 
-@SuppressWarnings("unchecked")
+@SuppressWarnings({"unchecked","rawtypes"})
 public class ItemRejuv extends StdAbility implements ItemTicker
 {
 	public String ID() { return "ItemRejuv"; }

@@ -32,7 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("unchecked")
+@SuppressWarnings({"unchecked","rawtypes"})
 public class Prop_AbilityImmunity extends Property
 {
 	public String ID() { return "Prop_AbilityImmunity"; }

@@ -34,7 +34,7 @@ import java.util.*;
    limitations under the License.
 */
 
-@SuppressWarnings("unchecked")
+@SuppressWarnings({"unchecked","rawtypes"})
 public class Prayer_CurseMetal extends Prayer
 {
 	public String ID() { return "Prayer_CurseMetal"; }

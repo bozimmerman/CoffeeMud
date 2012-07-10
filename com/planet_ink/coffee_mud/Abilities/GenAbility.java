@@ -34,7 +34,7 @@ import java.util.*;
    limitations under the License.
 */
 
-@SuppressWarnings("unchecked")
+@SuppressWarnings({"unchecked","rawtypes"})
 public class GenAbility extends StdAbility
 {
     // data should be stored in a common instance object .. something common to all genability of same id,

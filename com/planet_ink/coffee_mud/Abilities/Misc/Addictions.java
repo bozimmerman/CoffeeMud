@@ -35,7 +35,7 @@ import java.util.*;
    limitations under the License.
 */
 
-@SuppressWarnings("unchecked")
+@SuppressWarnings("rawtypes")
 public class Addictions extends StdAbility
 {
     public String ID() { return "Addictions"; }

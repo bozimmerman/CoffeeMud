@@ -33,7 +33,7 @@ import java.util.*;
    limitations under the License.
 */
 
-@SuppressWarnings("unchecked")
+@SuppressWarnings("rawtypes")
 public class Disease_MummyRot extends StdAbility implements DiseaseAffect
 {
 	public String ID() { return "Disease_MummyRot"; }

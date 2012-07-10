@@ -20,7 +20,7 @@ import com.planet_ink.coffee_mud.core.interfaces.*;
  * KIND, either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-@SuppressWarnings("unchecked")
+@SuppressWarnings("rawtypes")
 public class Thief_Racketeer extends ThiefSkill
 {
     public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_CRIMINAL;}

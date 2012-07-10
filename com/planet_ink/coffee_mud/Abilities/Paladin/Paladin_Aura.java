@@ -35,7 +35,7 @@ import java.util.*;
    limitations under the License.
 */
 
-@SuppressWarnings("unchecked")
+@SuppressWarnings("rawtypes")
 public class Paladin_Aura extends PaladinSkill
 {
 	public String ID() { return "Paladin_Aura"; }

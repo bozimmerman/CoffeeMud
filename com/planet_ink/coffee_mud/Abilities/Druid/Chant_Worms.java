@@ -33,7 +33,7 @@ import java.util.*;
    limitations under the License.
 */
 
-@SuppressWarnings("unchecked")
+@SuppressWarnings("rawtypes")
 public class Chant_Worms extends Chant implements DiseaseAffect
 {
 	public String ID() { return "Chant_Worms"; }

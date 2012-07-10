@@ -35,7 +35,7 @@ import java.util.Vector;
    limitations under the License.
 */
 
-@SuppressWarnings("unchecked")
+@SuppressWarnings("rawtypes")
 public class Chant_ColdMoon extends Chant
 {
 	public String ID() { return "Chant_ColdMoon"; }

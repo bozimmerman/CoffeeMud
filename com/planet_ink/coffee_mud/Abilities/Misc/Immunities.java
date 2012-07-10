@@ -110,7 +110,7 @@ public class Immunities extends StdAbility
 		return true;
 	}
 	
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("rawtypes")
 	public boolean invoke(MOB mob, Vector commands, Physical target, boolean auto, int asLevel)
 	{
 		StringBuilder immunes=new StringBuilder("");

@@ -33,7 +33,7 @@ import java.util.*;
    limitations under the License.
 */
 
-@SuppressWarnings("unchecked")
+@SuppressWarnings("rawtypes")
 public class Skill_CenterOfAttention extends BardSkill
 {
 	public String ID() { return "Skill_CenterOfAttention"; }

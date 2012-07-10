@@ -33,7 +33,7 @@ import java.util.*;
    limitations under the License.
 */
 
-@SuppressWarnings("unchecked")
+@SuppressWarnings("rawtypes")
 public class Undead_LifeDrain extends StdAbility
 {
 	public String ID() { return "Undead_LifeDrain"; }

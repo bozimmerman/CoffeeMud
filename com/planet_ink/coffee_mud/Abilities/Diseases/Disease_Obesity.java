@@ -34,7 +34,7 @@ import java.util.Vector;
    limitations under the License.
 */
 
-@SuppressWarnings("unchecked")
+@SuppressWarnings("rawtypes")
 public class Disease_Obesity extends Disease
 {
 	public String ID() { return "Disease_Obesity"; }

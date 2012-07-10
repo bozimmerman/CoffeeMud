@@ -34,7 +34,7 @@ import java.util.*;
    limitations under the License.
 */
 
-@SuppressWarnings("unchecked")
+@SuppressWarnings("rawtypes")
 public class Prayer_ConsecrateLand extends Prayer
 {
 	public String ID() { return "Prayer_ConsecrateLand"; }

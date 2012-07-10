@@ -33,7 +33,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("unchecked")
+@SuppressWarnings("rawtypes")
 public class Skill_SongWrite extends BardSkill
 {
 	public String ID() { return "Skill_SongWrite"; }

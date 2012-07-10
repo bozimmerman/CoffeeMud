@@ -35,7 +35,7 @@ import java.util.*;
    limitations under the License.
 */
 
-@SuppressWarnings("unchecked")
+@SuppressWarnings("rawtypes")
 public class Skill_Enslave extends StdSkill
 {
     public String ID() { return "Skill_Enslave"; }

@@ -35,7 +35,7 @@ import java.util.Vector;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("unchecked")
+@SuppressWarnings("rawtypes")
 public class QuestBound implements Ability
 {
 	public String ID() { return "QuestBound"; }

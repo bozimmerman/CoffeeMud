@@ -34,7 +34,7 @@ import java.util.Vector;
    limitations under the License.
 */
 
-@SuppressWarnings("unchecked")
+@SuppressWarnings("rawtypes")
 public class Chant_Dehydrate extends Chant
 {
 	public String ID() { return "Chant_Dehydrate"; }

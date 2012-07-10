@@ -33,7 +33,7 @@ import java.util.*;
    limitations under the License.
 */
 
-@SuppressWarnings("unchecked")
+@SuppressWarnings("rawtypes")
 public class Druid_Bite extends StdAbility
 {
 	public String ID() { return "Druid_Bite"; }

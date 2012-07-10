@@ -35,7 +35,7 @@ import java.util.*;
    limitations under the License.
 */
 
-@SuppressWarnings("unchecked")
+@SuppressWarnings({"unchecked","rawtypes"})
 public class Age extends StdAbility
 {
 	public String ID() { return "Age"; }

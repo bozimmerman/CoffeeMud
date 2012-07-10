@@ -36,7 +36,7 @@ import java.util.*;
  * @version 1.0.0.0
  */
 
-@SuppressWarnings("unchecked")
+@SuppressWarnings("rawtypes")
 public class Spell_CEqParalysis extends Spell_BaseClanEq {
   public String ID() { return "Spell_CEqParalysis"; }
   public String name(){return "ClanEnchant Paralysis";}

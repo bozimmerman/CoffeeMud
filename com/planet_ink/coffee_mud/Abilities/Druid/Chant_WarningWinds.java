@@ -35,7 +35,7 @@ import java.util.*;
    limitations under the License.
 */
 
-@SuppressWarnings("unchecked")
+@SuppressWarnings({"unchecked","rawtypes"})
 public class Chant_WarningWinds extends Chant
 {
 	public String ID() { return "Chant_WarningWinds"; }

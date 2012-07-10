@@ -32,7 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("unchecked")
+@SuppressWarnings("rawtypes")
 public class Spell_Tourettes extends Spell implements DiseaseAffect
 {
 	public String ID() { return "Spell_Tourettes"; }

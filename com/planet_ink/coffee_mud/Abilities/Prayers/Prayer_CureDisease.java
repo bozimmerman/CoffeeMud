@@ -33,7 +33,7 @@ import java.util.*;
    limitations under the License.
 */
 
-@SuppressWarnings("unchecked")
+@SuppressWarnings({"unchecked","rawtypes"})
 public class Prayer_CureDisease extends Prayer implements MendingSkill
 {
 	public String ID() { return "Prayer_CureDisease"; }

@@ -33,7 +33,7 @@ import java.util.*;
    limitations under the License.
 */
 
-@SuppressWarnings("unchecked")
+@SuppressWarnings("rawtypes")
 public class Fighter_AutoBash extends FighterSkill
 {
 	public String ID() { return "Fighter_AutoBash"; }

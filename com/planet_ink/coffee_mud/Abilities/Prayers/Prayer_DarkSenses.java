@@ -33,7 +33,7 @@ import java.util.Vector;
    limitations under the License.
 */
 
-@SuppressWarnings("unchecked")
+@SuppressWarnings("rawtypes")
 public class Prayer_DarkSenses extends Prayer
 {
 	public String ID() { return "Prayer_DarkSenses"; }

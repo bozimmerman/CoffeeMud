@@ -32,7 +32,7 @@ import java.util.*;
    limitations under the License.
 */
 
-@SuppressWarnings("unchecked")
+@SuppressWarnings({"unchecked","rawtypes"})
 public class Druidic extends StdLanguage
 {
 	public String ID() { return "Druidic"; }

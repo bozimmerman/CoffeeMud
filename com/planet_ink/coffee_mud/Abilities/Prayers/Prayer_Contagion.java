@@ -33,7 +33,7 @@ import java.util.*;
    limitations under the License.
 */
 
-@SuppressWarnings("unchecked")
+@SuppressWarnings({"unchecked","rawtypes"})
 public class Prayer_Contagion extends Prayer implements DiseaseAffect
 {
 	public String ID() { return "Prayer_Contagion"; }

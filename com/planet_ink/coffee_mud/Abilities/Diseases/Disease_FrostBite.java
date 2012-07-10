@@ -33,7 +33,7 @@ import java.util.*;
    limitations under the License.
 */
 
-@SuppressWarnings("unchecked")
+@SuppressWarnings({"unchecked","rawtypes"})
 public class Disease_FrostBite extends Disease
 {
     public String ID() { return "Disease_FrostBite"; }

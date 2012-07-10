@@ -32,7 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("unchecked")
+@SuppressWarnings({"unchecked","rawtypes"})
 public class Spell_Teleport extends Spell
 {
 	public String ID() { return "Spell_Teleport"; }
@@ -42,6 +42,16 @@ public class Spell_Teleport extends Spell
 	public long flags(){return Ability.FLAG_TRANSPORTING;}
     public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
 
+    private boolean isBadRoom(final Room room, final MOB mob, final Room newRoom)
+    {
+    	return (room==null)
+        ||(room==newRoom)
+        ||(room.getArea()==newRoom.getArea())
+        ||(room==mob.location())
+        ||(!CMLib.flags().canAccess(mob,room))
+        ||(CMLib.law().getLandTitle(room)!=null);
+    }
+    
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 
@@ -109,15 +119,9 @@ public class Spell_Teleport extends Spell
 		{
 			Room room=null;
 			int x=0;
-			while((room==null)
-            ||(room==newRoom)
-            ||(room.getArea()==newRoom.getArea())
-            ||((++x)>1000)
-            ||(room==mob.location())
-            ||(!CMLib.flags().canAccess(mob,room))
-            ||(CMLib.law().getLandTitle(room)!=null))
+			while(isBadRoom(room,mob,newRoom) && ((++x)<1000))
 				room=CMLib.map().getRandomRoom();
-			if(room==null)
+			if(isBadRoom(room,mob,newRoom))
 				beneficialWordsFizzle(mob,null,"<S-NAME> attempt(s) to invoke transportation, but fizzle(s) the spell.");
 			newRoom=room;
 		}

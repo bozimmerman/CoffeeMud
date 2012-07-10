@@ -34,7 +34,7 @@ import java.util.*;
    limitations under the License.
 */
 
-@SuppressWarnings("unchecked")
+@SuppressWarnings("rawtypes")
 public class Prayer_MajorInfusion extends Prayer implements MendingSkill
 {
     public String ID() { return "Prayer_MajorInfusion"; }

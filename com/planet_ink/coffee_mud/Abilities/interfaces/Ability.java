@@ -39,7 +39,7 @@ import java.util.*;
  * @see com.planet_ink.coffee_mud.MOBS.interfaces.MOB#addAbility(Ability)
  * @see com.planet_ink.coffee_mud.core.interfaces.Affectable#addEffect(Ability)
  */
-@SuppressWarnings("unchecked")
+@SuppressWarnings("rawtypes")
 public interface Ability extends Environmental
 {
 	/**

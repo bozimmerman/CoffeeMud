@@ -33,7 +33,7 @@ import java.util.*;
    limitations under the License.
 */
 
-@SuppressWarnings("unchecked")
+@SuppressWarnings("rawtypes")
 public class Prayer_Doomspout extends Prayer implements DiseaseAffect
 {
 	public String ID() { return "Prayer_Doomspout"; }

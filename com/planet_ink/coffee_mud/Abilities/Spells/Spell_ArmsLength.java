@@ -33,7 +33,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("unchecked")
+@SuppressWarnings("rawtypes")
 public class Spell_ArmsLength extends Spell
 {
 	public String ID() { return "Spell_ArmsLength"; }
@@ -110,7 +110,7 @@ public class Spell_ArmsLength extends Spell
 				int ticks=3 + Math.round(super.getXLEVELLevel(mob)/3);
 				if(!mob.isInCombat())
 					ticks++;
-				beneficialAffect(mob,target,asLevel,3);
+				beneficialAffect(mob,target,asLevel,ticks);
 			}
 		}
 		else

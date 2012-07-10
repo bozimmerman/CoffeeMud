@@ -36,7 +36,7 @@ import java.util.*;
    limitations under the License.
 */
 
-@SuppressWarnings("unchecked")
+@SuppressWarnings("rawtypes")
 public class Prayer_Annul extends Prayer
 {
 	public String ID() { return "Prayer_Annul"; }

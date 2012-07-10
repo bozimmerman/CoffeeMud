@@ -36,7 +36,7 @@ import java.util.*;
  * @version 1.0.0.0
  */
 
-@SuppressWarnings("unchecked")
+@SuppressWarnings("rawtypes")
 public class Prop_ScrapExplode extends Property {
 
 	public String ID() { return "Prop_ScrapExplode"; }

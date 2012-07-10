@@ -35,7 +35,7 @@ import java.util.*;
    limitations under the License.
 */
 
-@SuppressWarnings("unchecked")
+@SuppressWarnings({"unchecked","rawtypes"})
 public class Amputation extends StdAbility implements Amputator
 {
 	public String ID() { return "Amputation"; }

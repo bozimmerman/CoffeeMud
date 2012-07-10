@@ -32,7 +32,7 @@ import java.util.*;
    limitations under the License.
 */
 
-@SuppressWarnings("unchecked")
+@SuppressWarnings("rawtypes")
 public class Chant_SummonFear extends Chant
 {
 	public String ID() { return "Chant_SummonFear"; }

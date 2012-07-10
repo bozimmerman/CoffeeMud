@@ -33,7 +33,7 @@ import java.util.*;
    limitations under the License.
 */
 
-@SuppressWarnings("unchecked")
+@SuppressWarnings("rawtypes")
 public class Prayer_Godstrike extends Prayer
 {
 	public String ID() { return "Prayer_Godstrike"; }

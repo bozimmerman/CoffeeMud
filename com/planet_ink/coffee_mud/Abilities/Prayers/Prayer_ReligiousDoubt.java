@@ -34,7 +34,7 @@ import java.util.*;
    limitations under the License.
 */
 
-@SuppressWarnings("unchecked")
+@SuppressWarnings("rawtypes")
 public class Prayer_ReligiousDoubt extends Prayer
 {
     public static final long DOUBT_TIME=TimeManager.MILI_HOUR;

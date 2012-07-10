@@ -36,7 +36,7 @@ import java.util.*;
  * @version 1.0.0.0
  */
 
-@SuppressWarnings("unchecked")
+@SuppressWarnings("rawtypes")
 public class Spell_CEqPoison extends Spell_BaseClanEq {
   public String ID() { return "Spell_CEqPoison"; }
   public String name(){return "ClanEnchant Poison";}

@@ -34,7 +34,7 @@ import java.util.*;
    limitations under the License.
 */
 
-@SuppressWarnings("unchecked")
+@SuppressWarnings({"unchecked","rawtypes"})
 public class DiseaseCure extends StdAbility
 {
 	public String ID() { return "DiseaseCure"; }

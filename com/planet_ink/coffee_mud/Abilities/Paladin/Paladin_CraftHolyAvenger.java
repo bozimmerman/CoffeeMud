@@ -35,7 +35,7 @@ import java.util.*;
    limitations under the License.
 */
 
-@SuppressWarnings("unchecked")
+@SuppressWarnings("rawtypes")
 public class Paladin_CraftHolyAvenger extends EnhancedCraftingSkill
 {
 	public String ID() { return "Paladin_CraftHolyAvenger"; }

@@ -34,7 +34,7 @@ import java.util.*;
    limitations under the License.
 */
 
-@SuppressWarnings("unchecked")
+@SuppressWarnings("rawtypes")
 public class Druid_KnowPlants extends StdAbility
 {
 	public String ID() { return "Druid_KnowPlants"; }

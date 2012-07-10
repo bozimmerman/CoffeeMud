@@ -36,7 +36,7 @@ import java.util.*;
  * @version 1.0.0.0
  */
 
-@SuppressWarnings("unchecked")
+@SuppressWarnings("rawtypes")
 public class Spell_CEqFire extends Spell_BaseClanEq {
   public String ID() { return "Spell_CEqFire"; }
   public String name(){return "ClanEnchant Fire";}

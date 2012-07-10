@@ -33,7 +33,7 @@ import java.util.*;
    limitations under the License.
 */
 
-@SuppressWarnings("unchecked")
+@SuppressWarnings({"unchecked","rawtypes"})
 public class Prayer_Curse extends Prayer
 {
 	public String ID() { return "Prayer_Curse"; }

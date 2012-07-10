@@ -32,7 +32,7 @@ import java.util.*;
    limitations under the License.
 */
 
-@SuppressWarnings("unchecked")
+@SuppressWarnings("rawtypes")
 public class Fighter_Tumble extends FighterSkill
 {
 	public int hits=0;

@@ -34,7 +34,7 @@ import java.util.*;
    limitations under the License.
 */
 
-@SuppressWarnings("unchecked")
+@SuppressWarnings({"unchecked","rawtypes"})
 public class Paladin_SummonMount extends StdAbility
 {
 	public String ID() { return "Paladin_SummonMount"; }

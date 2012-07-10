@@ -34,7 +34,7 @@ import java.util.*;
    limitations under the License.
 */
 
-@SuppressWarnings("unchecked")
+@SuppressWarnings("rawtypes")
 public class Fighter_AtemiStrike extends MonkSkill
 {
 	public String ID() { return "Fighter_AtemiStrike"; }

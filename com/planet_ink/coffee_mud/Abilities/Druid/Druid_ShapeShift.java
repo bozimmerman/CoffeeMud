@@ -33,7 +33,7 @@ import java.util.*;
    limitations under the License.
 */
 
-@SuppressWarnings("unchecked")
+@SuppressWarnings({"unchecked","rawtypes"})
 public class Druid_ShapeShift extends StdAbility
 {
 	public String ID() { return "Druid_ShapeShift"; }

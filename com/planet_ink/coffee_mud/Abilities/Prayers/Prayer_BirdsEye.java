@@ -35,7 +35,7 @@ import java.util.*;
    limitations under the License.
 */
 
-@SuppressWarnings("unchecked")
+@SuppressWarnings({"unchecked","rawtypes"})
 public class Prayer_BirdsEye extends Prayer
 {
 	public String ID() { return "Prayer_BirdsEye"; }

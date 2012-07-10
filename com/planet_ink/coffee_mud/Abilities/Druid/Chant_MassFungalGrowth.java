@@ -35,7 +35,7 @@ import java.util.*;
    limitations under the License.
 */
 
-@SuppressWarnings("unchecked")
+@SuppressWarnings({"unchecked","rawtypes"})
 public class Chant_MassFungalGrowth extends Chant_SummonFungus
 {
 	public String ID() { return "Chant_MassFungalGrowth"; }

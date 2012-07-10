@@ -33,7 +33,7 @@ import java.util.*;
    limitations under the License.
 */
 
-@SuppressWarnings("unchecked")
+@SuppressWarnings("rawtypes")
 public class Chant_WindShape extends Chant
 {
 	public String ID() { return "Chant_WindShape"; }

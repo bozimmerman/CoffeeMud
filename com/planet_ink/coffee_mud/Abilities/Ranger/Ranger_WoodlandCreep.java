@@ -35,7 +35,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("unchecked")
+@SuppressWarnings("rawtypes")
 public class Ranger_WoodlandCreep extends StdAbility
 {
 	public String ID() { return "Ranger_WoodlandCreep"; }

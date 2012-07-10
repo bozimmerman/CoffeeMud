@@ -34,7 +34,7 @@ import java.util.*;
    limitations under the License.
 */
 
-@SuppressWarnings("unchecked")
+@SuppressWarnings("rawtypes")
 public class Chant_PlantWall extends Chant
 {
 	public String ID() { return "Chant_PlantWall"; }

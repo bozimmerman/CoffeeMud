@@ -32,7 +32,7 @@ import java.util.*;
    limitations under the License.
 */
 
-@SuppressWarnings("unchecked")
+@SuppressWarnings({"unchecked","rawtypes"})
 public class Poison_Alcohol extends Poison
 {
 	public String ID() { return "Poison_Alcohol"; }

@@ -35,7 +35,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("unchecked")
+@SuppressWarnings({"unchecked","rawtypes"})
 public class Prop_RoomForSale extends Property implements LandTitle
 {
     public String ID() { return "Prop_RoomForSale"; }

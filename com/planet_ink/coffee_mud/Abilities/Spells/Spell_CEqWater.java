@@ -36,7 +36,7 @@ import java.util.*;
  * @version 1.0.0.0
  */
 
-@SuppressWarnings("unchecked")
+@SuppressWarnings("rawtypes")
 public class Spell_CEqWater extends Spell_BaseClanEq {
   public String ID() { return "Spell_CEqWater"; }
   public String name(){return "ClanEnchant Water";}

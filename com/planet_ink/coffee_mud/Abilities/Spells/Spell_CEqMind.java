@@ -36,7 +36,7 @@ import java.util.*;
  * @version 1.0.0.0
  */
 
-@SuppressWarnings("unchecked")
+@SuppressWarnings("rawtypes")
 public class Spell_CEqMind extends Spell_BaseClanEq {
   public String ID() { return "Spell_CEqMind"; }
   public String name(){return "ClanEnchant Mind";}

@@ -39,7 +39,7 @@ import java.util.*;
     Respect to all who work on Coffee, keep the tradition going!
 */
 
-@SuppressWarnings("unchecked")
+@SuppressWarnings({"unchecked","rawtypes"})
 public class ThievesCant extends StdLanguage
 {
     public String ID() { return "ThievesCant"; }
