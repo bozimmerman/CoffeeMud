@@ -41,7 +41,7 @@ import com.planet_ink.coffee_mud.core.exceptions.*;
    limitations under the License.
 */
 
-@SuppressWarnings("unchecked")
+@SuppressWarnings({"unchecked","rawtypes"})
 public class ProcessHTTPrequest implements CMRunnable, ExternalHTTPRequests
 {
     public String ID(){return "ProcessHTTPrequest";}

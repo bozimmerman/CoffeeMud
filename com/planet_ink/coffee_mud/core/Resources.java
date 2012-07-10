@@ -271,7 +271,7 @@ public class Resources
 		return null;
 	}
 
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("rawtypes")
 	public static final Object prepareObject(final Object obj)
 	{
         if(obj instanceof Vector) ((Vector)obj).trimToSize();

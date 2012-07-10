@@ -766,7 +766,6 @@ public class JournalLoader
 		synchronized(Journal.toUpperCase().intern())
 		{
 			long now=System.currentTimeMillis();
-			if(entry==null) return;
 			if(entry.subj.length()>255) 
 				entry.subj=entry.subj.substring(0,255);
 			if(entry.key==null)

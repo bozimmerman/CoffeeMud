@@ -45,7 +45,7 @@ import java.util.*;
  *
  */
 
-@SuppressWarnings("unchecked")
+@SuppressWarnings({"unchecked","rawtypes"})
 public final class IMC2Driver extends Thread {
 
     Socket sa;

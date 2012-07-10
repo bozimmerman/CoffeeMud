@@ -40,7 +40,6 @@ import org.mozilla.javascript.ScriptableObject;
 public class CMLib
 {
     public final String getClassName(){return "CMLib";}
-	private static final long serialVersionUID=42;
     private static final SVector<MudHost> mudThreads=new SVector<MudHost>();
     private static final CMLib[] libs=new CMLib[256];
     public CMLib(){

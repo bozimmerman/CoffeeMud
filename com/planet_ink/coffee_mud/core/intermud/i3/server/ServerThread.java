@@ -52,7 +52,7 @@ import java.util.Hashtable;
  * @version 1.0
  * @see com.planet_ink.coffee_mud.core.intermud.i3.server.I3Server
  */
-@SuppressWarnings("unchecked")
+@SuppressWarnings({"unchecked","rawtypes"})
 public class ServerThread extends Thread {
     private java.util.Date      boot_time=null;
     private int                 count  = 1;

@@ -19,7 +19,7 @@ limitations under the License.
 */
 public class EmptyEnumeration<K> implements Enumeration<K>
 {
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings("rawtypes")
 	public static final Enumeration INSTANCE=new EmptyEnumeration();
     
     private EmptyEnumeration(){}

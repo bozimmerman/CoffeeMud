@@ -494,8 +494,7 @@ public class DBInterface implements DatabaseEngine
         }
         catch(Exception e)
         {
-            if(e!=null) throw new CMException(e.getMessage());
-            throw new CMException("Unknown error");
+        	throw new CMException((e==null)?"Unknown error":e.getMessage());
         }
         finally
         {
@@ -535,8 +534,7 @@ public class DBInterface implements DatabaseEngine
         }
         catch(Exception e)
         {
-            if(e!=null) throw new CMException(e.getMessage());
-            throw new CMException("Unknown error");
+            throw new CMException((e==null)?"Unknown error":e.getMessage());
         }
         finally
         {

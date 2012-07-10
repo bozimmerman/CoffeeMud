@@ -33,7 +33,7 @@ import java.util.Vector;
  * limitations under the License.
  *
  */
-@SuppressWarnings("unchecked")
+@SuppressWarnings({"unchecked","rawtypes"})
 public class ListenThread extends Thread {
     private ServerSocket listen;
     private Vector clients;

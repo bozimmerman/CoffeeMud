@@ -37,7 +37,7 @@ import java.util.List;
  * for sale, or implemented as Items representing the sellable title.
  * @author Bo Zimmerman
  */
-@SuppressWarnings("unchecked")
+@SuppressWarnings("rawtypes")
 public interface LandTitle extends Environmental
 {
     /**

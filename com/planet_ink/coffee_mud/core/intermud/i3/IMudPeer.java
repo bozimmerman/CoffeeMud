@@ -43,7 +43,7 @@ import java.io.ObjectOutputStream;
  * limitations under the License.
  *
  */
-@SuppressWarnings("unchecked")
+@SuppressWarnings({"unchecked","rawtypes"})
 public class IMudPeer implements PersistentPeer
 {
 	Object myobj=null;

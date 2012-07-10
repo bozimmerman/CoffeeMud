@@ -30,7 +30,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("unchecked")
+@SuppressWarnings({"unchecked","rawtypes"})
 public class DVector implements Cloneable, java.io.Serializable
 {
 	public static final long 	serialVersionUID=43353454350L;

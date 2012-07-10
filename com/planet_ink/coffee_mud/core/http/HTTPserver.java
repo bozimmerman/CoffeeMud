@@ -39,7 +39,7 @@ import java.util.concurrent.TimeUnit;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("unchecked")
+@SuppressWarnings({"unchecked","rawtypes"})
 public class HTTPserver extends Thread implements MudHost
 {
     private static final float HOST_VERSION_MAJOR=(float)1.0;
@@ -319,8 +319,6 @@ public class HTTPserver extends Thread implements MudHost
 		{
 			if(servsock!=null)
 				servsock.close();
-			if(sock!=null)
-				sock.close();
 		}
 		catch(IOException e)
 		{

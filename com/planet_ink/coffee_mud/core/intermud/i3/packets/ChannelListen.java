@@ -33,7 +33,7 @@ import java.util.Vector;
  * limitations under the License.
  *
  */
-@SuppressWarnings("unchecked")
+@SuppressWarnings("rawtypes")
 public class ChannelListen extends Packet  {
     public String channel = null;
 	public String onoff="0";

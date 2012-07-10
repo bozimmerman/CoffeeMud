@@ -60,7 +60,7 @@ import java.util.concurrent.TimeUnit;
  * @see com.planet_ink.coffee_mud.core.intermud.i3.persist.PersistentPeer
  */
 
-@SuppressWarnings("unchecked")
+@SuppressWarnings({"unchecked","rawtypes"})
 public class Intermud implements Runnable, Persistent, Serializable
 {
 	public static final long serialVersionUID=0;

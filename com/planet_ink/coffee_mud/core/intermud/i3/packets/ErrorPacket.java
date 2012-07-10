@@ -32,7 +32,7 @@ import java.util.Vector;
  * limitations under the License.
  *
  */
-@SuppressWarnings("unchecked")
+@SuppressWarnings("rawtypes")
 public class ErrorPacket extends Packet 
 {
 	public String error_code="";

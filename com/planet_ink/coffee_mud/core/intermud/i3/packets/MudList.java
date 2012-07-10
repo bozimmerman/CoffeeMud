@@ -38,7 +38,7 @@ import java.io.Serializable;
  * limitations under the License.
  *
  */
-@SuppressWarnings("unchecked")
+@SuppressWarnings({"unchecked","rawtypes"})
 public class MudList implements Serializable 
 {
 	public static final long serialVersionUID=0;

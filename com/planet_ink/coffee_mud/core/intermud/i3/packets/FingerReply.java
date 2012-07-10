@@ -32,7 +32,7 @@ import java.util.Vector;
  * limitations under the License.
  *
  */
-@SuppressWarnings("unchecked")
+@SuppressWarnings("rawtypes")
 public class FingerReply extends Packet {
 	public String visible_name="";
 	public String title = "";

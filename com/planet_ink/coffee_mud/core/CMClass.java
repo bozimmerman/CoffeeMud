@@ -48,7 +48,7 @@ import org.mozilla.javascript.optimizer.*;
  * simply returned as the template, in cases where the objects are shared).
  * @author Bo Zimmerman
  */
-@SuppressWarnings("unchecked")
+@SuppressWarnings({"unchecked","rawtypes"})
 public class CMClass extends ClassLoader
 {
     protected static boolean debugging=false; 

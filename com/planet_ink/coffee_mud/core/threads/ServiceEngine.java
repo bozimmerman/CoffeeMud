@@ -625,7 +625,6 @@ public class ServiceEngine implements ThreadEngine
 
     public boolean shutdown() {
         //int numTicks=tickGroup.size();
-        int which=0;
         while(ticks.size()>0)
         {
             //Log.sysOut("ServiceEngine","Shutting down all tick "+which+"/"+numTicks+"...");
@@ -637,7 +636,6 @@ public class ServiceEngine implements ThreadEngine
                 ticks.remove(tock);
             }
             try{Thread.sleep(100);}catch(Exception e){}
-            which++;
         }
         CMProps.setUpAllLowVar(CMProps.SYSTEM_MUDSTATUS,"Shutting down...shutting down Service Engine: "+ID()+": thread shutdown");
         thread.shutdown();

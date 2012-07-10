@@ -41,7 +41,7 @@ import java.net.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("unchecked")
+@SuppressWarnings({"unchecked","rawtypes"})
 public class IMudClient implements I3Interface
 {
     public String ID(){return "IMudClient";}

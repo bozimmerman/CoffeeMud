@@ -32,7 +32,7 @@ import java.util.Vector;
  * limitations under the License.
  *
  */
-@SuppressWarnings("unchecked")
+@SuppressWarnings("rawtypes")
 public class MudAuthReply extends Packet 
 {
     public long key=0;

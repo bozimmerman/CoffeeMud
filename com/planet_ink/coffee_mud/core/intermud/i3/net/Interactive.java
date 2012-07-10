@@ -39,7 +39,7 @@ import java.util.Vector;
  * @author George Reese (borg@imaginary.com)
  * @version 1.0
  */
-@SuppressWarnings("unchecked")
+@SuppressWarnings({"unchecked","rawtypes"})
 public abstract class Interactive implements ServerUser {
     /**
      * Given a user name, this method will build a unique
@@ -549,7 +549,7 @@ public abstract class Interactive implements ServerUser {
  * @version 1.0
  * @see com.planet_ink.coffee_mud.core.intermud.i3.net.Interactive
  */
-@SuppressWarnings("unchecked")
+@SuppressWarnings({"unchecked","rawtypes"})
 class InputThread implements Runnable {
     private Vector                  input_buffer;
     private BufferedReader 			stream;

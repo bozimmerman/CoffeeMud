@@ -61,7 +61,7 @@ VFS:relative path from /coffeemud/ -- read/write access to virtual file sys
 LIST: (affected by killx, cmdplayers, loadunload, cmdclans, ban, nopurge,
        cmditems, cmdmobs, cmdrooms, sessions, cmdareas, listadmin, stat)
 */ 
-@SuppressWarnings("unchecked")
+@SuppressWarnings({"unchecked","rawtypes"})
 public class CMSecurity
 {
     protected final long                    startTime        =System.currentTimeMillis();

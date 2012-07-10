@@ -911,18 +911,16 @@ public class ProcessSMTPrequest implements Runnable
         }
         catch (Exception e)
         {
-            if(e==null)
-                Log.errOut(runnableName,"Exception: Unknown (NULL-e)");
-            else
+            final String errorMessage=(e==null)?"Exception: Unknown (NULL-e)":e.getMessage();
+            final StringBuilder msg = new StringBuilder(errorMessage==null?"EMPTY e.getMessage()":errorMessage);
+            if(e!=null)
             {
-                final String errorMessage=e.getMessage();
-                final StringBuilder msg = new StringBuilder(errorMessage==null?"EMPTY e.getMessage()":errorMessage);
-                final StackTraceElement[] ts = e.getStackTrace();
-                if(ts != null)
-                    for(StackTraceElement t : ts)
-                        msg.append(" ").append(t.getFileName()).append("(").append(t.getLineNumber()).append(")");
-                Log.errOut(runnableName,"Exception: " + msg.toString() );
+	            final StackTraceElement[] ts = e.getStackTrace();
+	            if(ts != null)
+	                for(StackTraceElement t : ts)
+	                    msg.append(" ").append(t.getFileName()).append("(").append(t.getLineNumber()).append(")");
             }
+            Log.errOut(runnableName,"Exception: " + msg.toString() );
         }
         
         try

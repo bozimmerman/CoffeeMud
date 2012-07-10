@@ -41,7 +41,7 @@ import java.util.NoSuchElementException;
  * @author George Reese (borg@imaginary.com)
  * @version 1.0
  */
-@SuppressWarnings("unchecked")
+@SuppressWarnings("rawtypes")
 public class PersistenceException extends Exception 
 {
 	public static final long serialVersionUID=0;
@@ -97,7 +97,7 @@ public class PersistenceException extends Exception
     }
 }
 
-@SuppressWarnings("unchecked")
+@SuppressWarnings("rawtypes")
 final class PersistenceExceptionEnumeration implements Enumeration {
   private Exception exception;
 

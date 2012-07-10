@@ -1385,7 +1385,7 @@ public class CMProps extends Properties
         return pre+"^<IMAGE '"+fixedFilenames[1]+"' URL=\""+fixedFilenames[0]+"\" "+parms+"^>^N"+post;
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({"unchecked","rawtypes"})
     public static final String getHashedMXPImage(final String key)
     {
         Map<String,String> H=(Map)Resources.getResource("MXP_IMAGES");
@@ -1405,7 +1405,7 @@ public class CMProps extends Properties
         return s;
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({"unchecked","rawtypes"})
     public static final String getDefaultMXPImage(final Object O)
     {
         if((getVar(SYSTEM_MXPIMAGEPATH).length()==0)

@@ -32,7 +32,7 @@ import java.util.Vector;
  * limitations under the License.
  *
  */
-@SuppressWarnings("unchecked")
+@SuppressWarnings("rawtypes")
 public class ChannelUserReply extends Packet {
 	public String userRequested=null;
 	public String userVisibleName=null;
