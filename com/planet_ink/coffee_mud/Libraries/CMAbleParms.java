@@ -720,17 +720,28 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 		}
 	}
 
-	public static List<Integer> extraMaterial(final ItemCraftor A, final Item I)
+	public static List<Integer> extraMaterial(final ItemCraftor C, final Item I)
 	{
+		final SPairList<Integer,Double> bucket = RawMaterial.CODES.instance().getValueSortedBucket(I.material());
 		List<Integer> extraMatsV=new Vector<Integer>();
 		/*
-		 * behaviors/properties of the item + 1
+		 * behaviors/properties of the item
 		 */
 		int numExtra=0;
 		for(Enumeration<Ability> a=I.effects(); a.hasMoreElements();)
 		{
-			//Ability A=a.nextElement();
+			Ability A=a.nextElement();
+			if(A.isSavable())
+			{
+				numExtra++;
+			}
 		}
+		for(Enumeration<Behavior> b=I.behaviors(); b.hasMoreElements();)
+		{
+			Behavior B=b.nextElement();
+			if(B.isSavable()) numExtra++;
+		}
+		
 		return extraMatsV;
 	}
 	

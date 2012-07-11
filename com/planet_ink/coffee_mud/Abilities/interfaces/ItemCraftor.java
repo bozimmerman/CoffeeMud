@@ -163,4 +163,12 @@ public interface ItemCraftor extends Ability
 	 * @return true if mundane items can be demonstructed into recipes with this skill.
 	 */
 	public boolean supportsDeconstruction();
+	
+	/**
+	 * Returns the ratio of the weight of material used to make an item with this
+	 * skill versus the item weight when finished
+	 * @param bundling true if the item being created is just a raw resource bundle
+	 * @return the ratio of the weight of material used to make an item with this
+	 */
+	public double getItemWeightMultiplier(boolean bundling);
 }

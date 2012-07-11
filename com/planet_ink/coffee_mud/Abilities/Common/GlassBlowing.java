@@ -287,7 +287,7 @@ public class GlassBlowing extends CraftingSkill implements ItemCraftor
 		playSound="fire.wav";
 		building.setDisplayText(itemName+" lies here");
 		building.setDescription(itemName+". ");
-		building.basePhyStats().setWeight(woodRequired);
+		building.basePhyStats().setWeight((int)Math.round( (double)woodRequired * this.getItemWeightMultiplier( bundling )));
 		building.setBaseValue(CMath.s_int((String)foundRecipe.get(RCP_VALUE)));
 
 		if(data[0][FOUND_CODE]==RawMaterial.RESOURCE_SAND)

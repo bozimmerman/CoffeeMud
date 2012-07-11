@@ -239,7 +239,7 @@ public class InstrumentMaking extends CraftingSkill implements ItemCraftor
 		playSound="sanding.wav";
 		building.setDisplayText(itemName+" lies here");
 		building.setDescription(itemName+". ");
-		building.basePhyStats().setWeight(woodRequired);
+		building.basePhyStats().setWeight((int)Math.round( (double)woodRequired * this.getItemWeightMultiplier( bundling )));
 		building.setBaseValue(CMath.s_int((String)foundRecipe.get(RCP_VALUE)));
 		building.setMaterial(data[0][FOUND_CODE]);
 		building.basePhyStats().setLevel(CMath.s_int((String)foundRecipe.get(RCP_LEVEL)));

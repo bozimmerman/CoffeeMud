@@ -114,6 +114,11 @@ public class Tailoring extends EnhancedCraftingSkill implements ItemCraftor, Men
 		super.unInvoke();
 	}
 
+	public double getItemWeightMultiplier(boolean bundling)
+	{
+		return bundling ? 1.0 : 0.5;
+	}
+
 	protected boolean masterCraftCheck(final Item I)
 	{
 		if(I.basePhyStats().level()>30)
@@ -376,10 +381,7 @@ public class Tailoring extends EnhancedCraftingSkill implements ItemCraftor, Men
 			playSound="scissor.wav";
 			building.setDisplayText(itemName+" lies here");
 			building.setDescription(itemName+". ");
-			if(bundling)
-				building.basePhyStats().setWeight(woodRequired);
-			else
-				building.basePhyStats().setWeight(woodRequired/2);
+			building.basePhyStats().setWeight((int)Math.round( (double)woodRequired * this.getItemWeightMultiplier( bundling )));
 			int hardness=RawMaterial.CODES.HARDNESS(data[0][FOUND_CODE])-1;
 			building.setBaseValue(CMath.s_int((String)foundRecipe.get(RCP_VALUE)));
 			building.setMaterial(data[0][FOUND_CODE]);

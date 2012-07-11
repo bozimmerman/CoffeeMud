@@ -137,6 +137,11 @@ public class Weaving extends EnhancedCraftingSkill implements ItemCraftor, Mendi
 
 	public boolean supportsDeconstruction() { return true; }
 
+	public double getItemWeightMultiplier(boolean bundling)
+	{
+		return bundling ? 1.0 : 0.5;
+	}
+	
 	public boolean mayICraft(final Item I)
 	{
 		if(I==null) return false;
@@ -413,7 +418,7 @@ public class Weaving extends EnhancedCraftingSkill implements ItemCraftor, Mendi
 			verb="weaving "+building.name();
 			building.setDisplayText(itemName+" lies here");
 			building.setDescription(itemName+". ");
-			building.basePhyStats().setWeight(woodRequired/2);
+			building.basePhyStats().setWeight((int)Math.round( (double)woodRequired * this.getItemWeightMultiplier( bundling )));
 			building.setBaseValue(CMath.s_int((String)foundRecipe.get(RCP_VALUE)));
 			building.setMaterial(data[0][FOUND_CODE]);
 			building.basePhyStats().setLevel(CMath.s_int((String)foundRecipe.get(RCP_LEVEL)));

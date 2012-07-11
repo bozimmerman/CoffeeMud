@@ -51,6 +51,11 @@ public class CraftingSkill extends GatheringSkill
 	public CraftingSkill(){super();}
 
 	public String parametersFile(){ return "";}
+	
+	public double getItemWeightMultiplier(boolean bundling)
+	{
+		return 1.0;
+	}
 
 	protected String replacePercent(String thisStr, String withThis)
 	{
@@ -769,6 +774,8 @@ public class CraftingSkill extends GatheringSkill
 		final String parms = C.parametersFormat();
 		List<String> parmSet=CMParms.parseTabs(parms, false);
 		
+		// dont forget to use the C.getItemWeightMultiplier to adjust the material amount!
+		
 		return true;
 	}
 
@@ -797,7 +804,7 @@ public class CraftingSkill extends GatheringSkill
 			final Ability A=I.fetchEffect(i);
 			if((A!=null)
 			&&((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_PROPERTY)
-			&&(A.ID().toUpperCase().indexOf("ZAPPER"))>=0)
+			&&(CMath.bset( A.flags(), Ability.FLAG_ZAPPER )))
 				return false;
 		}
 		if(CMLib.flags().flaggedBehaviors(I, Behavior.FLAG_POTENTIALLYAUTODEATHING).size()>0)

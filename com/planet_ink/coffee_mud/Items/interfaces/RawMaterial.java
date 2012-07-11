@@ -1415,7 +1415,7 @@ public interface RawMaterial extends Item
 		}
 		
 		@SuppressWarnings("unchecked")
-		public SPairList<Integer,Double> getBucket(int material)
+		public SPairList<Integer,Double> getValueSortedBucket(int material)
 		{
 			material=material&RawMaterial.MATERIAL_MASK;
 			if((material<0)||(material>=RawMaterial.MATERIAL_DESCS.length))
@@ -1432,22 +1432,23 @@ public interface RawMaterial extends Item
 								return o1.second.compareTo(o2.second);
 							}
 						});
-					for(int i=0;i<RawMaterial.DEFAULT_RESOURCE_DATA.length;i++)
+					for(int i=0;i<total();i++)
 					{
-						int resourceCode=RawMaterial.DEFAULT_RESOURCE_DATA[i][RSCDATAINDX_CODE];
-						int resourceValue=RawMaterial.DEFAULT_RESOURCE_DATA[i][RSCDATAINDX_VALUE];
+						int resourceCode=get(i);
 						if((resourceCode&RawMaterial.MATERIAL_MASK)==matCode)
 						{
+							int resourceValue=value( resourceCode );
 							newBucket.add(new Pair<Integer,Double>(Integer.valueOf(resourceCode),Double.valueOf(resourceValue)));
 						}
 					}
 					PairSLinkedList<Integer,Double> finalBucket=new PairSLinkedList<Integer,Double>();
-					double which=1.0;
-					double total=(double)newBucket.size();
-					for(Iterator<Pair<Integer,Double>> i=newBucket.iterator();i.hasNext();which+=1.0)
+					final double pieceSize=1.0 / (double)newBucket.size();
+					double currValue = 0.0;
+					for(Iterator<Pair<Integer,Double>> i=newBucket.iterator();i.hasNext();)
 					{
 						Pair<Integer,Double> p=i.next();
-						finalBucket.add(p.first, Double.valueOf(which/total));
+						finalBucket.add(p.first, Double.valueOf(currValue));
+						currValue += pieceSize;
 					}
 					newBuckets[matCode]=finalBucket;
 				}
