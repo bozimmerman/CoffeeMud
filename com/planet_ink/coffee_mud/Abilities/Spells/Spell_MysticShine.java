@@ -42,7 +42,7 @@ public class Spell_MysticShine extends Spell
 	public int abstractQuality(){ return Ability.QUALITY_OK_SELF;}
 	protected int canAffectCode(){return CAN_ITEMS;}
 	protected int canTargetCode(){return CAN_ITEMS;}
-	public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_EVOCATION;}
+	public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_ALTERATION;}
 
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
@@ -57,7 +57,7 @@ public class Spell_MysticShine extends Spell
 		if(affected==null) return;
 		Room room=CMLib.map().roomLocation(affected);
 		if((canBeUninvoked())&&(room!=null))
-			room.showHappens(CMMsg.MSG_OK_VISUAL,affected,"The glow within <S-NAME> dims.");
+			room.showHappens(CMMsg.MSG_OK_VISUAL,affected,"The gleam upon <S-NAME> dims.");
 		super.unInvoke();
 		if((canBeUninvoked())&&(room!=null))
 			room.recoverRoomStats();
@@ -82,7 +82,7 @@ public class Spell_MysticShine extends Spell
 
 		boolean success=proficiencyCheck(mob,0,auto);
 
-		CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"^S<T-NAME> begin(s) to really shine!":"^S<S-NAME> invoke(s) a bright shine upon the surface of <T-NAMESELF>!^?");
+		CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"^S<T-NAME> begin(s) to really shine!":"^S<S-NAME> cause(s) the surface of <T-NAME> to mystically shine!^?");
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);
