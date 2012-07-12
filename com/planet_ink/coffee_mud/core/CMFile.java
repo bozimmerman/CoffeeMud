@@ -1242,8 +1242,13 @@ public class CMFile
 					}
 				}
 				else
-				if((n>=name.length())||(fixedName.charAt(f)!=name.charAt(n)))
-				{ ismatch=false; break; }
+				if((n>=name.length())
+				||(fixedName.charAt(f)!=name.charAt(n))
+				||((f==fixedName.length()-1)&&(n<name.length()-1)))
+				{ 
+					ismatch=false; 
+					break; 
+				}
 			if(ismatch) set.addElement(cset[c]);
 		}
 		if(set.size()==1)
