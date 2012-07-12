@@ -90,7 +90,7 @@ public class Spell_MysticShine extends Spell
 			mob.location().recoverRoomStats(); // attempt to handle followers
 		}
 		else
-			beneficialWordsFizzle(mob,mob.location(),"<S-NAME> attempt(s) to invoke shininess, but fail(s).");
+			beneficialWordsFizzle(mob,mob.location(),"<S-NAME> attempt(s) to cause shininess, but fail(s).");
 
 		return success;
 	}
