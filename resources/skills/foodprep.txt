@@ -10,6 +10,7 @@ cactus preserves	FOOD		7	cactus	1
 grape jelly	FOOD		8	grapes	1												
 butter	FOOD		9	milk	3												
 cream	FOOD		10	milk	2												
+tunafish salad	FOOD		10	tuna	1	milk	1	greens	-1	potatoes	-1						
 pasta	FOOD		11	wheat	1	water	1	eggs	1								
 chocolate	FOOD		12	cocoa	10	milk	1										
 fruit juice	DRINK		13	fruit	1	water	1										
@@ -21,6 +22,7 @@ grape juice	DRINK		18	grapes	1	water	1
 peanut butter	DRINK		18	nuts	1	butter	1										
 olive juice	DRINK		19	olives	1	water	1										
 cactus juice	DRINK		20	cactus	1	water	1										
+shrimp coctail	FOOD		20	shrimp													
 prune juice	DRINK		21	dates	1	water	1										
 egg sandwich	FOOD		22	eggs	1	bread	1										
 cheese sandwich	FOOD		23	cheese	1	bread	1										

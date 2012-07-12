@@ -187,9 +187,9 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 		return true;
 	}
 
-	public Hashtable potContents(Container pot)
+	public Hashtable<String,Integer> potContents(Container pot)
 	{
-		Hashtable h=new Hashtable();
+		Hashtable<String,Integer> h=new Hashtable<String,Integer>();
 		if((pot instanceof Drink)&&(((Drink)pot).liquidRemaining()>0))
 		{
 			if(pot instanceof RawMaterial)
@@ -204,7 +204,14 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 			Item I=(Item)V.get(v);
 			String ing="Unknown";
 			if(I instanceof RawMaterial)
+			{
 				ing=RawMaterial.CODES.NAME(I.material());
+				if(CMParms.indexOf( RawMaterial.CODES.FISHES(), I.material())>=0)
+					ing+="/FISH";
+				else
+				if(CMParms.indexOf( RawMaterial.CODES.BERRIES(), I.material())>=0)
+					ing+="/BERRIES";
+			}
 			else
 			if((((I.material()&RawMaterial.MATERIAL_VEGETATION)>0)
 				||((I.material()&RawMaterial.MATERIAL_LIQUID)>0)

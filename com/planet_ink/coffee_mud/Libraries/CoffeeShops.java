@@ -34,7 +34,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
 public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 {
 	public String ID(){return "CoffeeShops";}
@@ -75,7 +74,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 
 	public List<Environmental> getAllShopkeepers(Room here, MOB notMOB)
 	{
-		Vector V=new Vector();
+		Vector<Environmental> V=new Vector<Environmental>();
 		if(here!=null)
 		{
 			if(getShopKeeper(here)!=null)
@@ -711,7 +710,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 	{
 		StringBuffer str=new StringBuffer("");
 		int csize=0;
-		Vector inventory=new Vector();
+		Vector<Environmental> inventory=new Vector<Environmental>();
 		Environmental E=null;
 		for(int i=0;i<rawInventory.size();i++)
 		{
@@ -1046,7 +1045,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 				MOB M=room.fetchInhabitant(x);
 				if(M!=null){ victims[x][0]=M;victims[x][1]=M.getVictim();}
 			}
-			Vector V=new Vector();
+			Vector<String> V=new Vector<String>();
 			if(A.canTarget(Ability.CAN_MOBS))
 			{
 				V.addElement("$"+mobFor.name()+"$");
@@ -1091,11 +1090,11 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 			String name=buyer.Name();
 			if((shop.isSold(ShopKeeper.DEAL_CLANDSELLER))||(shop.isSold(ShopKeeper.DEAL_CSHIPSELLER)))
 				name=buyer.getClanID();
-			HashSet roomsHandling=new HashSet();
-			Hashtable titles=new Hashtable();
+			HashSet<Environmental> roomsHandling=new HashSet<Environmental>();
+			Map<Environmental,LandTitle> titles=new Hashtable<Environmental,LandTitle>();
 			if((shop.isSold(ShopKeeper.DEAL_CSHIPSELLER))||(shop.isSold(ShopKeeper.DEAL_SHIPSELLER)))
 			{
-				for(Enumeration a=CMLib.map().areas();a.hasMoreElements();)
+				for(Enumeration<Area> a=CMLib.map().areas();a.hasMoreElements();)
 				{
 					Area A=(Area)a.nextElement();
 					if((A instanceof SpaceShip)
@@ -1126,9 +1125,8 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 					titles.put(R,A);
 			}
 
-			for(Enumeration r=titles.keys();r.hasMoreElements();)
+			for(Environmental R : titles.keySet())
 			{
-				Environmental R=(Environmental)r.nextElement();
 				LandTitle A=(LandTitle)titles.get(R);
 				if(!roomsHandling.contains(R))
 				{
@@ -1237,7 +1235,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 		if(shop.isSold(ShopKeeper.DEAL_ANYTHING))
 			return "*Anything*";
 		
-		Vector V=new Vector();
+		Vector<String> V=new Vector<String>();
 		for(int d=1;d<ShopKeeper.DEAL_DESCS.length;d++)
 		if(shop.isSold(d))
 		switch(d)
@@ -1498,7 +1496,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 	public Auctioneer.AuctionData getEnumeratedAuction(String named, String auctionHouse)
 	{
 		List<AuctionData> V=getAuctions(null,auctionHouse);
-		Vector V2=new Vector();
+		Vector<Item> V2=new Vector<Item>();
 		for(int v=0;v<V.size();v++)
 			V2.addElement(((Auctioneer.AuctionData)V.get(v)).auctioningI);
 		Environmental E=CMLib.english().fetchEnvironmental(V2,named,true);
@@ -1537,7 +1535,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 
 	public List<AuctionData> getAuctions(Object ofLike, String auctionHouse)
 	{
-		Vector auctions=new Vector();
+		Vector<AuctionData> auctions=new Vector<AuctionData>();
 		String house="SYSTEM_AUCTIONS_"+auctionHouse.toUpperCase().trim();
 		List<JournalsLibrary.JournalEntry> otherAuctions=CMLib.database().DBReadJournalMsgs(house);
 		for(int o=0;o<otherAuctions.size();o++)
