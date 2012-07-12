@@ -199,7 +199,7 @@ public class Score extends Affect
 		//    msg.append("Your ^<HELP^>observation score^</HELP^> : ^H"+CMLib.flags().getDetectScore(mob)+"^?.\n\r");
 		msg.append("Wimpy is set to ^!"+mob.getWimpHitPoint()+"^? hit points.\n\r");
 		
-		msg.append(getMOBState(mob.session(),mob));
+		msg.append(getMOBState(mob));
 		msg.append(getAffects(mob.session(),mob,false,false));
 		return msg;
 	}

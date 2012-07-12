@@ -39,7 +39,7 @@ public class Affect extends StdCommand
 	private final String[] access={"AFFECTS","AFFECT","AFF","AF"};
 	public String[] getAccessWords(){return access;}
 
-	public String getMOBState(final Session S, final MOB mob)
+	public String getMOBState(final MOB mob)
 	{
 		final StringBuffer msg=new StringBuffer("");
 		if((mob.playerStats()!=null)&&(mob.soulMate()==null)&&(mob.playerStats().getHygiene()>=PlayerStats.HYGIENE_DELIMIT))
@@ -196,7 +196,7 @@ public class Affect extends StdCommand
 				
 			}
 			if(S==mob.session())
-				S.colorOnlyPrintln("\n\r"+getMOBState(S, mob)+"\n\r");
+				S.colorOnlyPrintln("\n\r"+getMOBState(mob)+"\n\r");
 			if(S==mob.session())
 				S.colorOnlyPrint("^!You are affected by: ^?");
 			String msg=getAffects(S,mob,CMath.bset(mob.getBitmap(),MOB.ATT_SYSOPMSGS),CMath.bset(mob.getBitmap(),MOB.ATT_SYSOPMSGS));
