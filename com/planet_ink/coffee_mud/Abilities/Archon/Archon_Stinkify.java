@@ -68,7 +68,7 @@ public class Archon_Stinkify extends ArchonSkill
 				if(target.playerStats()!=null)
 				{
 					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> <S-IS-ARE> stinkier!");
-					target.playerStats().adjHygiene(target.playerStats().getHygiene() + PlayerStats.HYGIENE_DELIMIT+1);
+					target.playerStats().adjHygiene(PlayerStats.HYGIENE_DELIMIT+1);
 					Log.sysOut("Stinkify",mob.name()+" stinkied "+target.name()+".");
 				}
 				else
