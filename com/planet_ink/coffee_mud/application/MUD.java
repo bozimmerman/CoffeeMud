@@ -1327,7 +1327,14 @@ public class MUD extends Thread implements MudHost
 		new CMLib(); // initialize this threads libs
 		
 		if(iniFiles.size()==0) iniFiles.addElement("coffeemud.ini");
-		if(nameID.length()==0) nameID="Unnamed CoffeeMud";
+		if((nameID.length()==0)||(nameID.equalsIgnoreCase( "CoffeeMud" )))
+		{
+			nameID="Unnamed CoffeeMud "+(CMLib.dice().roll( 1, 100000, 0 ));
+			System.err.println("*** Please give your mud a unique name!! ***");
+		}
+		else
+		if(nameID.equalsIgnoreCase( "TheRealCoffeeMudCopyright2000-2012ByBoZimmerman" ))
+			nameID="CoffeeMud";
 		String iniFile=(String)iniFiles.firstElement();
 		CMProps page=CMProps.loadPropPage("//"+iniFile);
 		if ((page==null)||(!page.isLoaded()))
