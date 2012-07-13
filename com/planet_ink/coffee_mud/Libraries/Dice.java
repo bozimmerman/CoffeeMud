@@ -97,9 +97,47 @@ public class Dice extends StdLibrary implements DiceLibrary
 		return sset[randomizer.nextInt(sset.length)];
 	}
 	
+	public Object pick(Object[] set, Object not)
+	{
+		if(set.length==1)
+		{
+			if(set[0].equals( not ))
+				return null;
+		}
+		else
+		if(set.length==2)
+		{
+			if(set[0].equals( not ))
+				return set[1];
+			if(set[1].equals( not ))
+				return set[0];
+		}
+		XVector<Object> newList = new XVector<Object>(set);
+		newList.remove( not );
+		return pick(newList.toArray(new Object[0]));
+	}
 	public Object pick(Object[] set) 
 	{
 		if(set.length==0) return null;
+		return set[randomizer.nextInt(set.length)];
+	}
+	public int pick(int[] set, int not)
+	{
+		if(CMParms.indexOf( set, not ) >=0)
+		{
+			int[] newSet = new int[set.length];
+			int numGood = 0;
+			for(int x : set)
+				if(x != not)
+					newSet[numGood++] = x;
+			return pick(Arrays.copyOf( newSet, numGood ));
+		}
+		return pick(set);
+	}
+
+	public int pick(int[] set)
+	{
+		if(set.length==0) return -1;
 		return set[randomizer.nextInt(set.length)];
 	}
 	

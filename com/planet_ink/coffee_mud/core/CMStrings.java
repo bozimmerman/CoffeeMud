@@ -1612,6 +1612,21 @@ public class CMStrings
 		return value.booleanValue();
 	}
 
+	public final static int countSubstrings(final String[] set, final String[] things)
+	{
+		if(set==null) return 0;
+		if(things==null) return 0;
+		int total=0;
+		for(String longString : set)
+			for(String subString : things)
+			{
+				int x=0;
+				while((x=longString.indexOf( subString, x ))>=x)
+					total++;
+			}
+		return total;
+	}
+
 	public final static String determineEOLN(final CharSequence str)
 	{
 		if(str!=null) 

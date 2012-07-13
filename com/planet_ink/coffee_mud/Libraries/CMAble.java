@@ -43,11 +43,11 @@ public class CMAble extends StdLibrary implements AbilityMapper
 	protected Map<String, Map<String, AbilityMapping>> 
 										completeAbleMap 			= new SHashtable<String, Map<String, AbilityMapping>>();
 	protected Map<String, Integer>  	lowestQualifyingLevelMap	= new SHashtable<String, Integer>();
-	protected Map<String, Integer>  	maxProficiencyMap   		 = new SHashtable<String, Integer>();
-	protected Map<String, Object>   	allows  					  = new SHashtable<String, Object>();
-	protected Map<Integer, Set<Integer>>completeDomainMap   		 = new SHashtable<Integer,Set<Integer>>();
+	protected Map<String, Integer>  	maxProficiencyMap   		= new SHashtable<String, Integer>();
+	protected Map<String, Object>   	allows  					= new SHashtable<String, Object>();
+	protected Map<Integer, Set<Integer>>completeDomainMap   		= new SHashtable<Integer,Set<Integer>>();
 	protected Map<String, Map<String, AbilityMapping>> 
-										reverseAbilityMap   		 = new TreeMap<String, Map<String, AbilityMapping>>();
+										reverseAbilityMap   		= new TreeMap<String, Map<String, AbilityMapping>>();
 	protected List<AbilityMapping>  	eachClassSet				= null;
 
 	public void addCharAbilityMapping(String ID,
@@ -437,6 +437,15 @@ public class CMAble extends StdLibrary implements AbilityMapper
 		return able;
 	}
 
+	public int getCalculatedMedianLowestQualifyingLevel()
+	{
+		Integer[] allLevelsArray = lowestQualifyingLevelMap.values().toArray(new Integer[0]);
+		Arrays.sort( allLevelsArray );
+		if(allLevelsArray.length==0) return 0;
+		if(allLevelsArray.length==1) return allLevelsArray[0];
+		return allLevelsArray[(int)Math.round( CMath.div( allLevelsArray.length,2.0 ) )];
+	}
+	
 	public void addClassAbility(String abilityID, Map<String, AbilityMapping> ableMap, AbilityMapping able)
 	{
 		if(CMSecurity.isAbilityDisabled(able.abilityID.toUpperCase())) return;

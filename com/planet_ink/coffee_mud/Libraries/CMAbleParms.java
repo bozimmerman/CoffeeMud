@@ -43,7 +43,16 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 {
 	public String ID(){return "CMAbleParms";}
 
-	protected Map<String,AbilityParmEditor> DEFAULT_EDITORS = null; 
+	protected Map<String,AbilityParmEditor> DEFAULT_EDITORS = null;
+
+	protected final static Integer[] ALL_BUCKET_MATERIAL_CHOICES = new Integer[]{RawMaterial.MATERIAL_CLOTH, RawMaterial.MATERIAL_METAL, RawMaterial.MATERIAL_LEATHER, 
+			RawMaterial.MATERIAL_LIQUID, RawMaterial.MATERIAL_WOODEN, RawMaterial.MATERIAL_PRECIOUS,RawMaterial.MATERIAL_VEGETATION, RawMaterial.MATERIAL_ROCK };
+	protected final static int[] ALLOWED_BUCKET_ACODES = new int[]{Ability.ACODE_CHANT,Ability.ACODE_SPELL,Ability.ACODE_PRAYER,Ability.ACODE_SONG,Ability.ACODE_SKILL,
+			Ability.ACODE_THIEF_SKILL}; 
+	protected final static int[] ALLOWED_BUCKET_QUALITIES = new int[]{Ability.QUALITY_BENEFICIAL_OTHERS,Ability.QUALITY_BENEFICIAL_SELF,Ability.QUALITY_INDIFFERENT,
+			Ability.QUALITY_OK_OTHERS,Ability.QUALITY_OK_SELF};
+	protected final static String[] ADJUSTER_TOKENS = new String[]{"+","-","="};
+	protected final static String[] RESISTER_IMMUNER_TOKENS = new String[]{"%",";"};
 
 	public CMAbleParms()
 	{
@@ -719,30 +728,140 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 			Resources.removeMultiLists(recipeFilename);
 		}
 	}
-
-	public static List<Integer> extraMaterial(final ItemCraftor C, final Item I)
+	
+	protected static int getAppropriateResourceBucket(final Item I, final Object A)
 	{
-		final SPairList<Integer,Double> bucket = RawMaterial.CODES.instance().getValueSortedBucket(I.material());
-		List<Integer> extraMatsV=new Vector<Integer>();
+		final int myMaterial = ((I.material() & RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_MITHRIL) ? RawMaterial.MATERIAL_METAL : (I.material() & RawMaterial.MATERIAL_MASK);
+		if(A instanceof Behavior)
+			return ((Integer)CMLib.dice().pick( new Integer[]{RawMaterial.MATERIAL_LEATHER, RawMaterial.MATERIAL_VEGETATION}, myMaterial )).intValue();
+		if(A instanceof Ability)
+		{
+			switch(((Ability)A).abilityCode() & Ability.ALL_ACODES)
+			{
+				case Ability.ACODE_CHANT: 
+					return ((Integer)CMLib.dice().pick( new Integer[]{RawMaterial.MATERIAL_VEGETATION, RawMaterial.MATERIAL_ROCK}, myMaterial )).intValue();
+				case Ability.ACODE_SPELL: 
+					return ((Integer)CMLib.dice().pick( new Integer[]{RawMaterial.MATERIAL_WOODEN, RawMaterial.MATERIAL_PRECIOUS}, myMaterial )).intValue();
+				case Ability.ACODE_PRAYER: 
+					return ((Integer)CMLib.dice().pick( new Integer[]{RawMaterial.MATERIAL_METAL, RawMaterial.MATERIAL_ROCK}, myMaterial )).intValue();
+				case Ability.ACODE_SONG: 
+					return ((Integer)CMLib.dice().pick( new Integer[]{RawMaterial.MATERIAL_LIQUID, RawMaterial.MATERIAL_WOODEN}, myMaterial )).intValue();
+				case Ability.ACODE_THIEF_SKILL:
+				case Ability.ACODE_SKILL: 
+					return ((Integer)CMLib.dice().pick( new Integer[]{RawMaterial.MATERIAL_CLOTH, RawMaterial.MATERIAL_METAL}, myMaterial )).intValue();
+				case Ability.ACODE_PROPERTY:
+					if(A instanceof TriggeredAffect)
+						return ((Integer)CMLib.dice().pick( new Integer[]{RawMaterial.MATERIAL_PRECIOUS, RawMaterial.MATERIAL_METAL}, myMaterial )).intValue();
+					break;
+				default:
+					break;
+			}
+		}
+		return ((Integer)CMLib.dice().pick( ALL_BUCKET_MATERIAL_CHOICES, myMaterial )).intValue();
+	}
+
+	protected static void addExtraMaterial(final Map<Integer,int[]> extraMatsM, final Item I, final Object A, double weight)
+	{
+		int times = 1;
+		if(weight >= 1.0)
+		{
+			times = (int)Math.round(weight / 1.0);
+			weight=.99;
+		}
+		final SPairList<Integer,Double> bucket = RawMaterial.CODES.instance().getValueSortedBucket(getAppropriateResourceBucket(I,A));
+		Integer resourceCode = (bucket.size()==0) ? Integer.valueOf(CMLib.dice().pick( RawMaterial.CODES.ALL(), I.material() )) : bucket.get( 0 ).first;
+		for(Iterator<Pair<Integer,Double>> b = bucket.iterator(); b.hasNext();)
+		{
+			final Pair<Integer,Double> p = b.next();
+			if(weight <= p.second.doubleValue())
+			{
+				resourceCode = p.first;
+				break;
+			}
+		}
+		resourceCode = Integer.valueOf( resourceCode.intValue() );
+		for(int x=0;x<times;x++)
+		{
+			int[] amt = extraMatsM.get( resourceCode );
+			if(amt == null)
+				extraMatsM.put( resourceCode, new int[]{1} );
+			else
+				amt[0]++;
+		}
+	}
+	
+	protected static void addExtraAbilityMaterial(final Map<Integer,int[]> extraMatsM, final Item I, final Ability A)
+	{
+		double level = (double)CMLib.ableMapper().lowestQualifyingLevel( A.ID() );
+		if( level <= 0.0 )
+		{
+			level = (double)I.basePhyStats().level();
+			if( level <= 0.0 ) level = 1.0;
+			addExtraMaterial(extraMatsM, I, A, CMath.div( CMProps.getIntVar( CMProps.SYSTEMI_LASTPLAYERLEVEL ), level ));
+		}
+		else
+		{
+			double levelCap = (double)CMLib.ableMapper().getCalculatedMedianLowestQualifyingLevel();
+			addExtraMaterial(extraMatsM, I, A, ( levelCap * 2.0) / level);
+		}
+	}
+
+	public static Map<Integer,int[]> extraMaterial(final Item I)
+	{
+		Map<Integer,int[]> extraMatsM=new TreeMap<Integer,int[]>();
 		/*
 		 * behaviors/properties of the item
 		 */
-		int numExtra=0;
 		for(Enumeration<Ability> a=I.effects(); a.hasMoreElements();)
 		{
 			Ability A=a.nextElement();
 			if(A.isSavable())
 			{
-				numExtra++;
+				if((A.abilityCode() & Ability.ALL_ACODES) == Ability.ACODE_PROPERTY)
+				{
+					if(A instanceof AbilityUsing)
+					{
+						for(Enumeration<Ability> a1=((AbilityUsing)A).abilities(); a1.hasMoreElements(); )
+						{
+							addExtraAbilityMaterial(extraMatsM,I,a1.nextElement());
+						}
+					}
+					if(A instanceof TriggeredAffect)
+					{
+						if((A.flags() & Ability.FLAG_ADJUSTER) != 0)
+						{
+							int count = CMStrings.countSubstrings( new String[]{A.text()}, ADJUSTER_TOKENS );
+							if(count == 0) count = 1;
+							for(int i=0;i<count;i++)
+								addExtraAbilityMaterial(extraMatsM,I,A);
+						}
+						else
+						if((A.flags() & (Ability.FLAG_RESISTER | Ability.FLAG_IMMUNER)) != 0)
+						{
+							int count = CMStrings.countSubstrings( new String[]{A.text()}, RESISTER_IMMUNER_TOKENS );
+							if(count == 0) count = 1;
+							for(int i=0;i<count;i++)
+								addExtraAbilityMaterial(extraMatsM,I,A);
+						}
+					}
+				}
+				else
+				if((CMParms.indexOf(ALLOWED_BUCKET_ACODES, A.abilityCode() & Ability.ALL_ACODES ) >=0)
+				&&(CMParms.indexOf( ALLOWED_BUCKET_QUALITIES, A.abstractQuality()) >=0 ))
+				{
+					addExtraAbilityMaterial(extraMatsM,I,A);
+				}
 			}
 		}
 		for(Enumeration<Behavior> b=I.behaviors(); b.hasMoreElements();)
 		{
 			Behavior B=b.nextElement();
-			if(B.isSavable()) numExtra++;
+			if(B.isSavable())
+			{
+				addExtraMaterial(extraMatsM, I, B, CMath.div( CMProps.getIntVar( CMProps.SYSTEMI_LASTPLAYERLEVEL ), I.basePhyStats().level() ));
+			}
 		}
-		
-		return extraMatsV;
+		return extraMatsM;
 	}
 	
 	public synchronized Map<String,AbilityParmEditor> getEditors()
@@ -754,7 +873,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 				new AbilityParmEditorImpl("SPELL_ID","The Spell ID",PARMTYPE_CHOICES) {
 					public void createChoices() { createChoices(CMClass.abilities());}
 					public String defaultValue(){ return "Spell_ID";}
-					public String convertFromItem(Item I) 
+					public String convertFromItem(final ItemCraftor A, final Item I) 
 					{ 
 						if(I instanceof Potion)
 							return ((Potion)I).getSpellList();
@@ -767,7 +886,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 				new AbilityParmEditorImpl("RESOURCE_NAME","Resource",PARMTYPE_CHOICES) {
 					public void createChoices() { createChoices(RawMaterial.CODES.NAMES());}
 					public String defaultValue(){ return "IRON";}
-					public String convertFromItem(Item I)
+					public String convertFromItem(final ItemCraftor A, final Item I)
 					{ 
 						return RawMaterial.CODES.NAME(I.material());
 					}
@@ -775,7 +894,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 				new AbilityParmEditorImpl("ITEM_NAME","Item Final Name",PARMTYPE_STRING){
 					public void createChoices() {}
 					public String defaultValue(){ return "Item Name";}
-					public String convertFromItem(Item I) 
+					public String convertFromItem(final ItemCraftor A, final Item I) 
 					{ 
 						String oldName=I.Name();
 						String newName=CMStrings.replaceWord(oldName, RawMaterial.CODES.NAME(I.material()), "%");
@@ -798,7 +917,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 				new AbilityParmEditorImpl("ITEM_LEVEL","Lvl",PARMTYPE_NUMBER){
 					public void createChoices() {}
 					public String defaultValue(){ return "1";}
-					public String convertFromItem(Item I) 
+					public String convertFromItem(final ItemCraftor A, final Item I) 
 					{ 
 						if((I instanceof Weapon)||(I instanceof Armor))
 						{
@@ -812,7 +931,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 				new AbilityParmEditorImpl("BUILD_TIME_TICKS","Time",PARMTYPE_NUMBER){
 					public void createChoices() {}
 					public String defaultValue(){ return "20";}
-					public String convertFromItem(Item I)
+					public String convertFromItem(final ItemCraftor A, final Item I)
 					{ 
 						return ""+(10 + (I.basePhyStats().level()/2));
 					}
@@ -821,9 +940,9 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 					public void createChoices() {}
 					public boolean confirmValue(String oldVal) { return true;}
 					public String defaultValue(){ return "10";}
-					public String convertFromItem(Item I)
+					public String convertFromItem(final ItemCraftor A, final Item I)
 					{ 
-						return ""+(I.basePhyStats().weight());
+						return ""+Math.round(CMath.mul(I.basePhyStats().weight(),(A!=null)?A.getItemWeightMultiplier(false):1.0));
 					}
 				},
 				new AbilityParmEditorImpl("MATERIALS_REQUIRED","Amount/Cmp",PARMTYPE_SPECIAL){
@@ -868,11 +987,36 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 						}
 						return oldVal;
 					}
-					public String convertFromItem(Item I)
+					public String convertFromItem(final ItemCraftor A, final Item I)
 					{ 
-						int amt=I.basePhyStats().weight()-1;
-						if(amt>0) return ""+amt;
-						return ""+1;
+						int amt=(int)Math.round(CMath.mul(I.basePhyStats().weight()-1,(A!=null)?A.getItemWeightMultiplier(false):1.0));
+						if(amt<1) amt=1;
+						Map<Integer,int[]> extraMatsM = CMAbleParms.extraMaterial( I );
+						if((extraMatsM == null) || (extraMatsM.size()==0))
+						{
+							return ""+amt;
+						}
+						List<AbilityComponent> comps=new Vector<AbilityComponent>();
+						AbilityComponent able=CMLib.ableMapper().createBlankAbilityComponent();
+						able.setConnector(AbilityComponent.CompConnector.AND);
+						able.setAmount(amt);
+						able.setMask("");
+						able.setConsumed(true);
+						able.setLocation(AbilityComponent.CompLocation.ONGROUND);
+						able.setType(AbilityComponent.CompType.MATERIAL, I.material() & RawMaterial.MATERIAL_MASK);
+						comps.add(able);
+						for(Integer resourceCode : extraMatsM.keySet())
+						{
+							able=CMLib.ableMapper().createBlankAbilityComponent();
+							able.setConnector(AbilityComponent.CompConnector.AND);
+							able.setAmount(extraMatsM.get(resourceCode)[0]);
+							able.setMask("");
+							able.setConsumed(true);
+							able.setLocation(AbilityComponent.CompLocation.ONGROUND);
+							able.setType(AbilityComponent.CompType.RESOURCE, resourceCode);
+							comps.add(able);
+						}
+						return CMLib.ableMapper().getAbilityComponentCodedString(comps);
 					}
 					public String webField(ExternalHTTPRequests httpReq, java.util.Map<String,String> parms, String oldVal, String fieldName) {
 						String value=webValue(httpReq,parms,oldVal,fieldName);
@@ -1027,7 +1171,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 					public void createChoices() {}
 					public boolean confirmValue(String oldVal) { return true;}
 					public String defaultValue(){ return "";}
-					public String convertFromItem(Item I)
+					public String convertFromItem(final ItemCraftor A, final Item I)
 					{ 
 						return "";
 					}
@@ -1035,7 +1179,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 				new AbilityParmEditorImpl("ITEM_BASE_VALUE","Value",PARMTYPE_NUMBER){
 					public void createChoices() {}
 					public String defaultValue(){ return "5";}
-					public String convertFromItem(Item I) 
+					public String convertFromItem(final ItemCraftor A, final Item I) 
 					{
 						return ""+I.baseGoldValue();
 					}
@@ -1060,7 +1204,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 						}
 						createChoices(V2);
 					}
-					public String convertFromItem(Item I) 
+					public String convertFromItem(final ItemCraftor A, final Item I) 
 					{ 
 						if(I.isGeneric()) return I.ID();
 						if(I instanceof Weapon) return "GenWeapon";
@@ -1158,7 +1302,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 						}
 						return newVal.toString();
 					}
-					public String convertFromItem(Item I) 
+					public String convertFromItem(final ItemCraftor C, final Item I) 
 					{ 
 						if(!(I instanceof Armor)) return "HELD";
 						Armor A=(Armor)I;
@@ -1215,7 +1359,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 					public int appliesToClass(Object o) { return (o instanceof Container)?1:-1;}
 					public void createChoices() {}
 					public String defaultValue(){ return "20";}
-					public String convertFromItem(Item I) 
+					public String convertFromItem(final ItemCraftor A, final Item I) 
 					{ 
 						if(I instanceof Container)
 							return ""+((Container)I).capacity();
@@ -1226,7 +1370,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 					public int appliesToClass(Object o) { return (o instanceof Armor)?2:-1;}
 					public void createChoices() {}
 					public String defaultValue(){ return "1";}
-					public String convertFromItem(Item I) 
+					public String convertFromItem(final ItemCraftor A, final Item I) 
 					{
 						return ""+I.basePhyStats().armor();
 					}
@@ -1235,7 +1379,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 					public void createChoices() { createBinaryChoices(Container.CONTAIN_DESCS);}
 					public int appliesToClass(Object o) { return (o instanceof Container)?1:-1;}
 					public String defaultValue(){ return "0";}
-					public String convertFromItem(Item I) 
+					public String convertFromItem(final ItemCraftor A, final Item I) 
 					{
 						if(!(I instanceof Container))
 							return "";
@@ -1259,7 +1403,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 					}
 					public int appliesToClass(Object o) { return (o instanceof Container)?1:-1;}
 					public String defaultValue(){ return "";}
-					public String convertFromItem(Item I) 
+					public String convertFromItem(final ItemCraftor A, final Item I) 
 					{
 						if(!(I instanceof Container))
 							return "";
@@ -1289,7 +1433,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 							return CMClass.getAbility(oldVal)!=null;
 						return CMClass.getAbility(oldVal.substring(0,y))!=null;
 					}
-					public String convertFromItem(Item I) 
+					public String convertFromItem(final ItemCraftor A, final Item I) 
 					{
 						return CMLib.ableParms().encodeCodedSpells(I);
 					}
@@ -1427,7 +1571,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 					public int appliesToClass(Object o) { return (o instanceof Weapon)?2:-1;}
 					public void createChoices() {}
 					public String defaultValue(){ return "1";}
-					public String convertFromItem(Item I) 
+					public String convertFromItem(final ItemCraftor A, final Item I) 
 					{ 
 						if(I instanceof Weapon)
 							return ""+((Weapon)I).basePhyStats().damage();
@@ -1438,7 +1582,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 					public int appliesToClass(Object o) { return (o instanceof Container)?1:-1;}
 					public void createChoices() { createChoices(new String[]{"","LID","LOCK"});}
 					public String defaultValue(){ return "";}
-					public String convertFromItem(Item I) 
+					public String convertFromItem(final ItemCraftor A, final Item I) 
 					{
 						if(!(I instanceof Container))
 							return "";
@@ -1452,7 +1596,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 					public int appliesToClass(Object o) { return ((!(o instanceof Armor))&&(!(o instanceof Container))&&(!(o instanceof Drink)))?1:-1;}
 					public void createChoices() { createChoices(new String[]{"","STATUE"});}
 					public String defaultValue(){ return "";}
-					public String convertFromItem(Item I) 
+					public String convertFromItem(final ItemCraftor A, final Item I) 
 					{ 
 						if(I instanceof Weapon) return "";
 						if(I instanceof Armor) return "";
@@ -1469,7 +1613,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 					public int appliesToClass(Object o) { return (o instanceof Rideable)?3:-1;}
 					public void createChoices() { createChoices(new String[]{"","CHAIR","TABLE","LADDER","ENTER","BED"});}
 					public String defaultValue(){ return "";}
-					public String convertFromItem(Item I) 
+					public String convertFromItem(final ItemCraftor A, final Item I) 
 					{
 						if(!(I instanceof Rideable)) return "";
 						switch(((Rideable)I).rideBasis())
@@ -1487,7 +1631,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 					public int appliesToClass(Object o) { return (o instanceof Drink)?4:-1;}
 					public void createChoices() {}
 					public String defaultValue(){ return "25";}
-					public String convertFromItem(Item I) 
+					public String convertFromItem(final ItemCraftor A, final Item I) 
 					{
 						if(!(I instanceof Drink)) return "";
 						return ""+((Drink)I).liquidHeld();
@@ -1497,7 +1641,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 					public int appliesToClass(Object o) { return (o instanceof Weapon)?2:-1;}
 					public void createChoices() { createChoices(Weapon.CLASS_DESCS);}
 					public String defaultValue(){ return "BLUNT";}
-					public String convertFromItem(Item I) 
+					public String convertFromItem(final ItemCraftor A, final Item I) 
 					{ 
 						if(I instanceof Weapon)
 							return Weapon.CLASS_DESCS[((Weapon)I).weaponClassification()];
@@ -1508,7 +1652,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 					public int appliesToClass(Object o) { return (o instanceof Light)?5:-1;}
 					public void createChoices() { createChoices(new String[]{"","SMOKE"});}
 					public String defaultValue(){ return "";}
-					public String convertFromItem(Item I) 
+					public String convertFromItem(final ItemCraftor A, final Item I) 
 					{
 						if(!(I instanceof Light)) return "";
 						if((I instanceof Container)
@@ -1522,7 +1666,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 					public int appliesToClass(Object o) { return (o instanceof Weapon)?2:-1;}
 					public void createChoices() {}
 					public String defaultValue(){ return "1";}
-					public String convertFromItem(Item I) 
+					public String convertFromItem(final ItemCraftor A, final Item I) 
 					{ 
 						if(I instanceof Weapon)
 							return ((Weapon)I).rawLogicalAnd()?"2":"1";
@@ -1533,7 +1677,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 					public int appliesToClass(Object o) { return (o instanceof Light)?5:-1;}
 					public void createChoices() {}
 					public String defaultValue(){ return "10";}
-					public String convertFromItem(Item I) 
+					public String convertFromItem(final ItemCraftor A, final Item I) 
 					{
 						if(I instanceof Light)
 							return ""+((Light)I).getDuration();
@@ -1544,7 +1688,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 					public int appliesToClass(Object o) { return (o instanceof ClanItem)?10:-1;}
 					public void createChoices() { createNumberedChoices(ClanItem.CI_DESC);}
 					public String defaultValue(){ return "1";}
-					public String convertFromItem(Item I) 
+					public String convertFromItem(final ItemCraftor A, final Item I) 
 					{
 						if(I instanceof ClanItem)
 							return ""+((ClanItem)I).ciType();
@@ -1554,7 +1698,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 				new AbilityParmEditorImpl("CLAN_EXPERIENCE_COST_AMOUNT","Exp",PARMTYPE_NUMBER) {
 					public void createChoices() {}
 					public String defaultValue(){ return "100";}
-					public String convertFromItem(Item I)
+					public String convertFromItem(final ItemCraftor A, final Item I)
 					{
 						if(!(I instanceof ClanItem)) return "100";
 						if(I.getClass().getName().toString().indexOf("Flag")>0)
@@ -1570,7 +1714,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 					public int appliesToClass(Object o) { return o.getClass().getName().toString().indexOf("LawBook")>0?5:-1;}
 					public void createChoices() { createChoices(new String[]{"","AREA"});}
 					public String defaultValue(){ return "";}
-					public String convertFromItem(Item I)
+					public String convertFromItem(final ItemCraftor A, final Item I)
 					{
 						return (I.getClass().getName().toString().indexOf("LawBook")>0)?"AREA":"";
 					}
@@ -1578,7 +1722,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 				new AbilityParmEditorImpl("READABLE_TEXT","Read",PARMTYPE_STRINGORNULL) {
 					public void createChoices() {}
 					public String defaultValue(){ return "";}
-					public String convertFromItem(Item I) 
+					public String convertFromItem(final ItemCraftor A, final Item I) 
 					{
 						if(CMLib.flags().isReadable(I))
 							return I.readableText();
@@ -1600,7 +1744,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 						createChoices(V);
 					}
 					public String defaultValue(){ return "";}
-					public String convertFromItem(Item I)
+					public String convertFromItem(final ItemCraftor A, final Item I)
 					{
 						if(I.getClass().getName().toString().indexOf("LawBook")>0)
 							return "";
@@ -1612,7 +1756,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 				new AbilityParmEditorImpl("FOOD_DRINK","ETyp",PARMTYPE_CHOICES) {
 					public void createChoices() { createChoices(new String[]{"","FOOD","DRINK","SOAP","GenPerfume"});}
 					public String defaultValue(){ return "";}
-					public String convertFromItem(Item I)
+					public String convertFromItem(final ItemCraftor A, final Item I)
 					{
 						final String str=(I.name()+" "+I.displayText()+" "+I.description()).toUpperCase();
 						if(str.startsWith("SOAP ") || str.endsWith(" SOAP") || (str.indexOf("SOAP")>0))
@@ -1630,7 +1774,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 					public void createChoices() {}
 					public int appliesToClass(Object o) { return (o instanceof Perfume)?5:-1;}
 					public String defaultValue(){ return "";}
-					public String convertFromItem(Item I)
+					public String convertFromItem(final ItemCraftor A, final Item I)
 					{
 						if(I instanceof Perfume)
 							return ((Perfume)I).getSmellList();
@@ -1650,7 +1794,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 						}
 						return oldVal;
 					}
-					public String convertFromItem(Item I)
+					public String convertFromItem(final ItemCraftor A, final Item I)
 					{
 						return "";
 					}
@@ -1716,7 +1860,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 						}
 						return true;
 					}
-					public String convertFromItem(Item I)
+					public String convertFromItem(final ItemCraftor A, final Item I)
 					{
 						return "";
 					}
@@ -1777,7 +1921,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 					public void createChoices() {}
 					public int appliesToClass(Object o) { return ((o instanceof Weapon)||(o instanceof Ammunition))?2:-1;}
 					public String defaultValue(){ return "arrows";}
-					public String convertFromItem(Item I)
+					public String convertFromItem(final ItemCraftor A, final Item I)
 					{
 						if(I instanceof Ammunition)
 							return ""+((Ammunition)I).ammunitionType();
@@ -1788,7 +1932,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 					public void createChoices() {}
 					public int appliesToClass(Object o) { return ((o instanceof Weapon)||(o instanceof Ammunition))?2:-1;}
 					public String defaultValue(){ return "1";}
-					public String convertFromItem(Item I)
+					public String convertFromItem(final ItemCraftor A, final Item I)
 					{
 						if(I instanceof Ammunition)
 							return ""+((Ammunition)I).usesRemaining();
@@ -1802,7 +1946,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 					public int appliesToClass(Object o) { return ((o instanceof Weapon)&&(!(o instanceof Ammunition)))?2:-1;}
 					public void createChoices() {} 
 					public String defaultValue(){ return "5";}
-					public String convertFromItem(Item I)
+					public String convertFromItem(final ItemCraftor A, final Item I)
 					{
 						if((I instanceof Ammunition)||(I instanceof Weapon))
 							return ""+I.maxRange();
@@ -1815,7 +1959,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 						V.addAll(new XVector<String>(RawMaterial.MATERIAL_DESCS));
 						createChoices(V);
 					}
-					public String convertFromItem(Item I)
+					public String convertFromItem(final ItemCraftor A, final Item I)
 					{
 						if(CMStrings.containsWordIgnoreCase(I.Name(),"rice"))
 							return "RICE";
@@ -1832,7 +1976,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 						V.addElement("");
 						createChoices(V);
 					}
-					public String convertFromItem(Item I)
+					public String convertFromItem(final ItemCraftor A, final Item I)
 					{ 
 						return "";
 					}
@@ -1841,7 +1985,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 				new AbilityParmEditorImpl("HERB_NAME","Herb Final Name",PARMTYPE_STRING) {
 					public void createChoices() {}
 					public String defaultValue(){ return "Herb Name";}
-					public String convertFromItem(Item I) 
+					public String convertFromItem(final ItemCraftor A, final Item I) 
 					{ 
 						if(I.material()==RawMaterial.RESOURCE_HERBS)
 							return CMStrings.lastWordIn(I.Name());
@@ -1852,7 +1996,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 					public void createChoices() {}
 					public int appliesToClass(Object o) { return (o instanceof Rideable)?3:-1;}
 					public String defaultValue(){ return "2";}
-					public String convertFromItem(Item I) 
+					public String convertFromItem(final ItemCraftor A, final Item I) 
 					{ 
 						if(I instanceof Rideable)
 							return ""+((Rideable)I).riderCapacity();
@@ -1862,7 +2006,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 				new AbilityParmEditorImpl("METAL_OR_WOOD","Metal",PARMTYPE_CHOICES) {
 					public void createChoices() { createChoices(new String[]{"METAL","WOOD"});}
 					public String defaultValue(){ return "METAL";}
-					public String convertFromItem(Item I) 
+					public String convertFromItem(final ItemCraftor A, final Item I) 
 					{
 						switch(I.material()&RawMaterial.MATERIAL_MASK)
 						{
@@ -1882,7 +2026,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 						for(int x=0;x<choices().size();x++)
 							choices().setElementAt(x,1,((String)choices().elementAt(x,1)).toUpperCase());
 					}
-					public String convertFromItem(Item I)
+					public String convertFromItem(final ItemCraftor A, final Item I)
 					{
 						return ""; // absolutely no way to determine
 					}
@@ -1989,7 +2133,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 					public void createChoices() { createChoices(MusicalInstrument.TYPE_DESC); }
 					public int appliesToClass(Object o) { return (o instanceof MusicalInstrument)?5:-1;}
 					public String defaultValue(){ return "DRUMS";}
-					public String convertFromItem(Item I) 
+					public String convertFromItem(final ItemCraftor A, final Item I) 
 					{
 						if(I instanceof MusicalInstrument)
 							return MusicalInstrument.TYPE_DESC[((MusicalInstrument)I).instrumentType()];
@@ -1999,7 +2143,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 				new AbilityParmEditorImpl("STONE_FLAG","Stone",PARMTYPE_CHOICES) {
 					public void createChoices() { createChoices(new String[]{"","STONE"});}
 					public String defaultValue(){ return "";}
-					public String convertFromItem(Item I)
+					public String convertFromItem(final ItemCraftor A, final Item I)
 					{
 						if(I.material()==RawMaterial.RESOURCE_STONE)
 							return "STONE";
@@ -2009,12 +2153,12 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 				new AbilityParmEditorImpl("POSE_NAME","Pose Word",PARMTYPE_ONEWORD) {
 					public void createChoices() {}
 					public String defaultValue(){ return "New Post";}
-					public String convertFromItem(Item I) { return ""; }
+					public String convertFromItem(final ItemCraftor A, final Item I) { return ""; }
 				},
 				new AbilityParmEditorImpl("POSE_DESCRIPTION","Pose Description",PARMTYPE_STRING) {
 					public void createChoices() {}
 					public String defaultValue(){ return "<S-NAME> is standing here.";}
-					public String convertFromItem(Item I) 
+					public String convertFromItem(final ItemCraftor A, final Item I) 
 					{
 						if(!(I instanceof DeadBody)) return "";
 						String pose=I.displayText();
@@ -2031,7 +2175,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 				new AbilityParmEditorImpl("WOOD_METAL_CLOTH","",PARMTYPE_CHOICES) {
 					public void createChoices() { createChoices(new String[]{"WOOD","METAL","CLOTH"});}
 					public String defaultValue(){ return "WOOD";}
-					public String convertFromItem(Item I) 
+					public String convertFromItem(final ItemCraftor A, final Item I) 
 					{
 						switch(I.material()&RawMaterial.MATERIAL_MASK)
 						{
@@ -2046,20 +2190,20 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 				new AbilityParmEditorImpl("WEAPON_TYPE","W.Type",PARMTYPE_CHOICES) {
 					public int appliesToClass(Object o) { return (o instanceof Weapon)?2:-1;}
 					public void createChoices() { createChoices(Weapon.TYPE_DESCS);}
-					public String convertFromItem(Item I){ return (I instanceof Weapon) ? Weapon.TYPE_DESCS[((Weapon)I).weaponType()] : ""; }
+					public String convertFromItem(final ItemCraftor A, final Item I){ return (I instanceof Weapon) ? Weapon.TYPE_DESCS[((Weapon)I).weaponType()] : ""; }
 					public String defaultValue(){ return "BASHING";}
 				},
 				new AbilityParmEditorImpl("ATTACK_MODIFICATION","Att.",PARMTYPE_NUMBER) {
 					public void createChoices() {}
 					public int appliesToClass(Object o) { return (o instanceof Weapon)?2:-1;}
-					public String convertFromItem(Item I){ return ""+((I instanceof Weapon)?((Weapon)I).basePhyStats().attackAdjustment():0); }
+					public String convertFromItem(final ItemCraftor A, final Item I){ return ""+((I instanceof Weapon)?((Weapon)I).basePhyStats().attackAdjustment():0); }
 					public String defaultValue(){ return "0";}
 				},
 				new AbilityParmEditorImpl("N_A","N/A",PARMTYPE_STRING) {
 					public void createChoices() {}
 					public int appliesToClass(Object o) { return -1;}
 					public String defaultValue(){ return "";}
-					public String convertFromItem(Item I){ return ""; }
+					public String convertFromItem(final ItemCraftor A, final Item I){ return ""; }
 					public boolean confirmValue(String oldVal) { return oldVal.trim().length()==0||oldVal.equals("0");}
 					public String commandLinePrompt(MOB mob, String oldVal, int[] showNumber, int showFlag) throws java.io.IOException
 					{ return "";}
@@ -2070,9 +2214,9 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 						createChoices(RawMaterial.CODES.NAMES()); 
 						choices().addElement("","");
 					}
-					public String convertFromItem(Item I)
+					public String convertFromItem(final ItemCraftor A, final Item I)
 					{ 
-						int amt=I.basePhyStats().weight()-1;
+						int amt=(int)Math.round(CMath.mul(I.basePhyStats().weight()-1,(A!=null)?A.getItemWeightMultiplier(false):1.0));
 						if(amt<1) amt=1;
 						return RawMaterial.CODES.NAME(I.material())+"/"+amt;
 					}

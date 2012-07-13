@@ -774,8 +774,6 @@ public class CraftingSkill extends GatheringSkill
 		final String parms = C.parametersFormat();
 		List<String> parmSet=CMParms.parseTabs(parms, false);
 		
-		// dont forget to use the C.getItemWeightMultiplier to adjust the material amount!
-		
 		return true;
 	}
 

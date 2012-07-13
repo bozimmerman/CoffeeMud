@@ -38,7 +38,10 @@ public interface DiceLibrary extends CMLibrary
 	public int getHPCode(int roll, int dice, int plus);
 	public int[] getHPBreakup(int level, int code);
 	public int roll(int number, int die, int modifier);
+	public Object pick(Object[] set, Object not);
 	public Object pick(Object[] set);
+	public int pick(int[] set, int not);
+	public int pick(int[] set);
 	public Object doublePick(Object[][] set);
 	public Object pick(List<? extends Object> set);
 	public int rollPercentage();
