@@ -79,6 +79,8 @@ public class GenCraftSkill extends EnhancedCraftingSkill implements ItemCraftor
 
 	protected DoorKey key=null;
 
+	public boolean supportsDeconstruction() { return false; }
+
 	private static final Object[] makeEmpty()
 	{
 		Object[] O=new Object[NUM_VS];

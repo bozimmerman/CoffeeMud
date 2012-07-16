@@ -1101,6 +1101,9 @@ public class CraftingSkill extends GatheringSkill
 	
 	protected boolean doLearnRecipe(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
+		commands=new XVector(commands);
+		commands.remove(0);
+		
 		commonTell(mob,"Not yet implemented");
 		return false;
 	}
