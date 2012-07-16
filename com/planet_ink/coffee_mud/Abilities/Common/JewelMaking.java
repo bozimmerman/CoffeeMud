@@ -47,9 +47,9 @@ public class JewelMaking extends EnhancedCraftingSkill implements ItemCraftor, M
 		"ITEM_NAME\tITEM_LEVEL\tBUILD_TIME_TICKS\tMATERIALS_REQUIRED\tITEM_BASE_VALUE\t"
 		+"ITEM_CLASS_ID\tSTATUE||CODED_WEAR_LOCATION\tN_A\tBASE_ARMOR_AMOUNT\tOPTIONAL_RESOURCE_OR_MATERIAL\tCODED_SPELL_LIST";}
 
-	protected static final int RCP_FINALNAME=0;
-	protected static final int RCP_LEVEL=1;
-	protected static final int RCP_TICKS=2;
+	//protected static final int RCP_FINALNAME=0;
+	//protected static final int RCP_LEVEL=1;
+	//protected static final int RCP_TICKS=2;
 	protected static final int RCP_WOOD=3;
 	protected static final int RCP_VALUE=4;
 	protected static final int RCP_CLASSTYPE=5;
@@ -173,7 +173,7 @@ public class JewelMaking extends EnhancedCraftingSkill implements ItemCraftor, M
 				||I.fitsOn(Armor.WORN_LEFT_WRIST)
 				||I.fitsOn(Armor.WORN_RIGHT_WRIST))
 					return true;
-				return false;
+				return (isANativeItem(I.Name()));
 			}
 			if(I.rawProperLocationBitmap()==Wearable.WORN_HELD)
 				return true;
@@ -199,9 +199,9 @@ public class JewelMaking extends EnhancedCraftingSkill implements ItemCraftor, M
 				||I.fitsOn(Armor.WORN_LEFT_WRIST)
 				||I.fitsOn(Armor.WORN_RIGHT_WRIST)))
 					return true;
-			return false;
+			return (isANativeItem(I.Name()));
 		}
-		return false;
+		return (isANativeItem(I.Name()));
 	}
 
 	public boolean supportsMending(Physical I){ return canMend(null,I,true);}

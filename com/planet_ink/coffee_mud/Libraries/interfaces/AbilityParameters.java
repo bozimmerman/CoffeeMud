@@ -2,6 +2,7 @@ package com.planet_ink.coffee_mud.Libraries.interfaces;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
+import com.planet_ink.coffee_mud.core.exceptions.CMException;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
 import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
@@ -66,10 +67,12 @@ public interface AbilityParameters extends CMLibrary
 	public void parseWearLocation(short[] layerAtt, short[] layers, long[] wornLoc, boolean[] logicalAnd, double[] hardBonus, String wearLocation);
 	public void modifyRecipesList(MOB mob, String recipeFilename, String recipeFormat) throws java.io.IOException;
 	public void testRecipeParsing(String recipeFilename, String recipeFormat, boolean save);
+	public void testRecipeParsing(StringBuffer recipesString, String recipeFormat) throws CMException;
 	public AbilityRecipeData parseRecipe(String recipeFilename, String recipeFormat);
 	public Map<String,AbilityParmEditor> getEditors();
 	public void resaveRecipeFile(MOB mob, String recipeFilename, Vector<DVector> rowsV, Vector<String> columnsV, boolean saveVFS);
 	public StringBuffer getRecipeList(ItemCraftor iA);
+	public String makeRecipeFromItem(final ItemCraftor C, final Item I) throws CMException;
 	
 	public static interface AbilityRecipeData 
 	{

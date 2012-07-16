@@ -313,12 +313,37 @@ public class CommonSkill extends StdAbility
 			{
 				int x=-1;
 				String setMat=set.get(i);
-				for(int j=0;j<RawMaterial.MATERIAL_DESCS.length;j++)
-					if(RawMaterial.MATERIAL_DESCS[j].equalsIgnoreCase(setMat))
-					{ 
-						x=RawMaterial.MATERIAL_CODES[j];
-						break;
+				if(setMat.startsWith("_"))
+					x=RawMaterial.CODES.FIND_IgnoreCase(setMat.substring(1));
+				else
+				{
+					int y=setMat.indexOf('-');
+					List<String> restV=null;
+					if(y>0)
+					{
+						restV=CMParms.parseAny(setMat.substring(y+1),"-", true);
+						setMat=setMat.substring(0, y);
 					}
+    				for(int j=0;j<RawMaterial.MATERIAL_DESCS.length;j++)
+    					if(RawMaterial.MATERIAL_DESCS[j].equalsIgnoreCase(setMat))
+    					{ 
+    						x=RawMaterial.MATERIAL_CODES[j];
+    						if((restV!=null)&&(restV.size()>0))
+    						{
+    							List<Integer> rscsV=new XVector<Integer>(RawMaterial.CODES.COMPOSE_RESOURCES(x));
+    							for(String sv : restV)
+    							{
+    								int code = RawMaterial.CODES.FIND_CaseSensitive(sv);
+    								if(code >=0)
+    									rscsV.remove(Integer.valueOf(code));
+    							}
+								for(int codeDex=0;codeDex<rscsV.size()-1;codeDex++)
+									finalSet.add(rscsV.get(codeDex));
+								x=rscsV.get(rscsV.size()-1).intValue();
+    						}
+    						break;
+    					}
+				}
 				if(x<0)
 					x=RawMaterial.CODES.FIND_IgnoreCase(setMat);
 				if(x>=0)

@@ -295,6 +295,7 @@ public class Test extends StdCommand
 					List<ItemCraftor.ItemKeyPair> allItems=allSets.get(I);
 					for(ItemCraftor.ItemKeyPair P : allItems)
 					{
+						if(P.item.material()!=RawMaterial.RESOURCE_WHITE_GOLD)
 						for(ItemCraftor oI : allSets.keySet())
 						{
 							if(oI.supportsDeconstruction())
@@ -302,7 +303,9 @@ public class Test extends StdCommand
 								if(!oI.mayICraft(P.item))
 								{
 									if(oI==I)
+									{
 										Log.sysOut("INFO",P.item.name()+" can't even be built by "+oI.ID());
+									}
 								}
 								else
 								{

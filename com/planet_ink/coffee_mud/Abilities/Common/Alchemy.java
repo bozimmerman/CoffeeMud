@@ -100,7 +100,8 @@ public class Alchemy extends CraftingSkill implements ItemCraftor
 		if((spells == null)||(spells.size()==0))
 			return false;
 		for(Ability A : spells)
-			if((A.classificationCode()&Ability.ALL_ACODES)!=Ability.ACODE_SPELL)
+			if(((A.classificationCode()&Ability.ALL_ACODES)!=Ability.ACODE_SPELL)
+			&&((A.classificationCode()&Ability.ALL_ACODES)!=Ability.ACODE_PRAYER))
 				return false;
 		return true;
 	}

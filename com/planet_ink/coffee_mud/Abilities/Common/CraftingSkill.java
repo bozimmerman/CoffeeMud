@@ -2,6 +2,7 @@ package com.planet_ink.coffee_mud.Abilities.Common;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
+import com.planet_ink.coffee_mud.core.exceptions.CMException;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.ItemCraftor.ItemKeyPair;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
@@ -11,6 +12,7 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.ExpertiseLibrary;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -47,6 +49,11 @@ public class CraftingSkill extends GatheringSkill
 	protected boolean mending=false;
 	protected boolean refitting=false;
 	protected boolean messedUp=false;
+
+	// common recipe definition indexes
+	protected static final int RCP_FINALNAME=0;
+	protected static final int RCP_LEVEL=1;
+	protected static final int RCP_TICKS=2;
 
 	public CraftingSkill(){super();}
 
@@ -134,7 +141,10 @@ public class CraftingSkill extends GatheringSkill
 			&&(((Recipe)I).getCommonSkillID().equalsIgnoreCase(ID())))
 			{
 				if(!clonedYet){ recipes=new XVector<List<String>>(recipes); clonedYet=true;}
-				V=loadList(new StringBuffer(((Recipe)I).getRecipeCodeLine()));
+				StringBuffer allRecipeLines=new StringBuffer("");
+				for(String recipeLine : ((Recipe)I).getRecipeCodeLines())
+					allRecipeLines.append(recipeLine);
+				V=loadList(allRecipeLines);
 				for(int v=0;v<V.size();v++)
 				{
 					V2=V.get(v);
@@ -147,7 +157,7 @@ public class CraftingSkill extends GatheringSkill
 							recipes.add(V2);
 						else
 						{
-							Log.errOut(ID(),"Not enough parms ("+lastRecipeV.size()+"<="+V2.size()+"): "+((Recipe)I).getRecipeCodeLine());
+							Log.errOut(ID(),"Not enough parms ("+lastRecipeV.size()+"<="+V2.size()+"): "+CMParms.combine(V2));
 							while(V2.size()<lastRecipeV.size()) V2.add("");
 							while(V2.size()>lastRecipeV.size()) V2.remove(V2.size()-1);
 							recipes.add(V2);
@@ -761,7 +771,7 @@ public class CraftingSkill extends GatheringSkill
 		return false;
 	}
 
-	public boolean deconstructRecipeInto(final Item I, final Recipe R)
+	protected boolean deconstructRecipeInto(final Item I, final Recipe R)
 	{
 		
 		if((I==null)||(R==null))
@@ -771,9 +781,21 @@ public class CraftingSkill extends GatheringSkill
 		ItemCraftor C=(ItemCraftor)this;
 		if(!C.supportsDeconstruction())
 			return false;
-		final String parms = C.parametersFormat();
-		List<String> parmSet=CMParms.parseTabs(parms, false);
-		
+		if(!C.mayICraft(I))
+			return false;
+		List<String> existingRecipes=new XVector<String>(R.getRecipeCodeLines());
+		if(R.getTotalRecipePages() <=existingRecipes.size())
+			return false;
+		try
+		{
+    		existingRecipes.add(CMLib.ableParms().makeRecipeFromItem(C, I));
+    		R.setRecipeCodeLines(existingRecipes.toArray(new String[0]));
+		}
+		catch(CMException cme)
+		{
+			Log.errOut("CraftingSkill",cme.getMessage());
+			return false;
+		}
 		return true;
 	}
 
@@ -810,6 +832,105 @@ public class CraftingSkill extends GatheringSkill
 		return true;
 	}
 
+	public boolean isANativeItem(String name)
+	{
+		name=CMLib.english().stripPunctuation(name);
+		List<String> nameV=CMParms.parse(name.toUpperCase());
+		List<List<String>> recipes = this.loadRecipes();
+		if(nameV.size()==0) return false;
+		TreeSet<String> allExpertiseWords=(TreeSet<String>)Resources.getResource("CRAFTING_SKILL_EXPERTISE_WORDS");
+		if(allExpertiseWords == null)
+		{
+			if (this instanceof EnhancedCraftingSkill)
+			{
+    			List<ExpertiseLibrary.ExpertiseDefinition> V = ((EnhancedCraftingSkill)this).getAllThisSkillsDefinitions();
+    			allExpertiseWords = new TreeSet<String>();
+    			for(final ExpertiseLibrary.ExpertiseDefinition def : V )
+    			{
+    				if(def.data != null)
+    					for(String s : def.data)
+    						allExpertiseWords.add(s.toUpperCase());
+    			}
+    			Resources.submitResource("CRAFTING_SKILL_EXPERTISE_WORDS", allExpertiseWords);
+			}
+			else
+				allExpertiseWords=new TreeSet<String>();
+		}
+		for(List<String> recipe : recipes)
+		{
+			if(recipe.size() <= RCP_FINALNAME)
+				continue;
+			String thisOnesName = recipe.get(RCP_FINALNAME);
+			List<String> thisOneNameV=CMParms.parse(thisOnesName.toUpperCase());
+			boolean match=false;
+			for(int n=0,o=0;;n++)
+			{
+				if((n==nameV.size())&&(o==thisOneNameV.size()))
+					break;
+				if((n==nameV.size())&&(o<thisOneNameV.size()))
+				{
+					match=false;
+					break;
+				}
+				final String nw=nameV.get(n);
+				if(CMLib.english().isAnArticle(nw))
+				{
+					// ignoring ALL articles!
+				}
+				else
+				if(allExpertiseWords.contains(nw))
+				{
+					match=true;
+					// wasted real word, wait to match recipe word
+				}
+				else
+				if(o==thisOneNameV.size())
+				{
+					match=false;
+					break;
+				}
+				else
+				if(thisOneNameV.get(o).equals("%"))
+				{
+					if(RawMaterial.CODES.FIND_CaseSensitive(nw)>=0)
+					{
+						o++; // match!
+						match=true;
+					}
+					else
+					{
+						match=false;
+						break;
+					}
+				}
+				else
+				{
+					final String ow=CMLib.english().stripPunctuation(thisOneNameV.get(o));
+					if(CMLib.english().isAnArticle(ow))
+					{
+						// ignoring all articles
+						o++;
+						n--;
+					}
+					else
+    				if(nw.equals(ow))
+    				{
+						o++; // match!
+						match=true;
+    				}
+    				else
+    				{
+    					match=false;
+    					break;
+    				}
+				}
+			}
+			if(match)
+				return true;
+		}
+		return false;
+	}
+	
 	public boolean mayICraft(final MOB crafterM, final Item I)
 	{
 		if(!mayICraft(I))

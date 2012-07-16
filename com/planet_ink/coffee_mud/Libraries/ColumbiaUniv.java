@@ -44,7 +44,7 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
 	protected Properties helpMap=new Properties();
 	protected DVector rawDefinitions=new DVector(7);
 
-	public ExpertiseLibrary.ExpertiseDefinition addDefinition(String ID, String name, String baseName, String listMask, String finalMask, String[] costs)
+	public ExpertiseLibrary.ExpertiseDefinition addDefinition(String ID, String name, String baseName, String listMask, String finalMask, String[] costs, String[] data)
 	{
 		ExpertiseLibrary.ExpertiseDefinition def=getDefinition(ID);
 		if(def!=null) return  def;
@@ -59,6 +59,7 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
 		def.baseName=baseName;
 		def.addListMask(listMask);
 		def.addFinalMask(finalMask);
+		def.data=(data==null)?new String[0]:data;
 		int practices=CMath.s_int(costs[0]);
 		int trains=CMath.s_int(costs[1]);
 		int qpCost=CMath.s_int(costs[2]);
@@ -237,6 +238,7 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
 		String s=null;
 		String skillMask=null;
 		String[] costs=new String[5];
+		String[] data=new String[0];
 		String WKID=null;
 		String name,WKname=null;
 		String listMask,WKlistMask=null;
@@ -247,6 +249,38 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
 		if(row.trim().startsWith("#")||row.trim().startsWith(";")||(row.trim().length()==0)) return null;
 		int x=row.indexOf('=');
 		if(x<0) return "Error: Invalid line! Not comment, whitespace, and does not contain an = sign!"; 
+		if(row.trim().toUpperCase().startsWith("DATA_"))
+		{
+			String lastID=ID;
+			ID=row.substring(0,x).toUpperCase();
+			row=row.substring(x+1);
+			ID=ID.substring(5).toUpperCase();
+			if(ID.length()==0) ID=lastID;
+			if((lastID==null)||(lastID.length()==0))
+				return "Error: No last expertise found for data: "+lastID+"="+row;
+			else
+			if(this.getDefinition(ID)!=null)
+			{
+				def=getDefinition(ID);
+				WKID=def.name.toUpperCase().replace(' ','_');
+				if(addIfPossible)
+				{
+					def.data=CMParms.parseCommas(row,true).toArray(new String[0]);
+				}
+			}
+			else
+			{
+				List<String> stages=getStageCodes(ID);
+				if(addIfPossible)
+    				for(int s1=0;s1<stages.size();s1++)
+    				{
+    					def=getDefinition(stages.get(s1));
+    					if(def==null) continue;
+    					def.data=CMParms.parseCommas(row,true).toArray(new String[0]);
+    				}
+			}
+			return null;
+		}
 		if(row.trim().toUpperCase().startsWith("HELP_"))
 		{
 			String lastID=ID;
@@ -346,7 +380,7 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
 				}
 				WKlistMask=expertMath(WKlistMask,l);
 				WKfinalMask=expertMath(WKfinalMask,l);
-				def=addDefinition(WKID,WKname,baseName,WKlistMask,WKfinalMask,costs);
+				def=addDefinition(WKID,WKname,baseName,WKlistMask,WKfinalMask,costs,data);
 				if(def!=null){
 					def.compiledFinalMask();
 					def.compiledListMask();

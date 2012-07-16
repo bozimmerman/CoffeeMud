@@ -42,15 +42,15 @@ public class Sculpting extends EnhancedCraftingSkill implements ItemCraftor, Men
 	public String name(){ return "Sculpting";}
 	private static final String[] triggerStrings = {"SCULPT","SCULPTING"};
 	public String[] triggerStrings(){return triggerStrings;}
-	public String supportedResourceString(){return "ROCK|STONE";}
+	public String supportedResourceString(){return "ROCK-BONE|STONE";}
 	public String parametersFormat(){ return 
 		"ITEM_NAME\tITEM_LEVEL\tBUILD_TIME_TICKS\tMATERIALS_REQUIRED\tITEM_BASE_VALUE\t"
 		+"ITEM_CLASS_ID\tSTATUE||LID_LOCK||RIDE_BASIS\tCONTAINER_CAPACITY||LIGHT_DURATION\t"
 		+"CONTAINER_TYPE\tCODED_SPELL_LIST";}
 
-	protected static final int RCP_FINALNAME=0;
-	protected static final int RCP_LEVEL=1;
-	protected static final int RCP_TICKS=2;
+	//protected static final int RCP_FINALNAME=0;
+	//protected static final int RCP_LEVEL=1;
+	//protected static final int RCP_TICKS=2;
 	protected static final int RCP_WOOD=3;
 	protected static final int RCP_VALUE=4;
 	protected static final int RCP_CLASSTYPE=5;

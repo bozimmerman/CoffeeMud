@@ -48,9 +48,9 @@ public class Shipwright extends CraftingSkill implements ItemCraftor, MendingSki
 		+"ITEM_CLASS_ID\tRIDE_BASIS\tCONTAINER_CAPACITY||RIDE_CAPACITY\tCONTAINER_TYPE\t"
 		+"CODED_SPELL_LIST";}
 
-	protected static final int RCP_FINALNAME=0;
-	protected static final int RCP_LEVEL=1;
-	protected static final int RCP_TICKS=2;
+	//protected static final int RCP_FINALNAME=0;
+	//protected static final int RCP_LEVEL=1;
+	//protected static final int RCP_TICKS=2;
 	protected static final int RCP_WOOD=3;
 	protected static final int RCP_VALUE=4;
 	protected static final int RCP_CLASSTYPE=5;

@@ -39,13 +39,14 @@ public class GenRecipe extends GenReadable implements Recipe
 {
 	public String ID(){	return "GenRecipe";}
 	protected String commonSkillID="";
-	protected String recipeLine="";
+	protected String[] recipeLines=new String[0];
 	public GenRecipe()
 	{
 		super();
 		setName("a generic recipe");
 		setDisplayText("a generic recipe sits here.");
 		setMaterial(RawMaterial.RESOURCE_PAPER);
+		setUsesRemaining(1);
 		recoverPhyStats();
 	}
 
@@ -54,10 +55,12 @@ public class GenRecipe extends GenReadable implements Recipe
 	public void recoverPhyStats(){CMLib.flags().setReadable(this,true); super.recoverPhyStats();}
 	public String getCommonSkillID(){return commonSkillID;}
 	public void setCommonSkillID(String ID){commonSkillID=ID;}
-	public String getRecipeCodeLine(){return recipeLine;}
-	public void setRecipeCodeLine(String line){recipeLine=line;}
+	public String[] getRecipeCodeLines(){return recipeLines;}
+	public void setRecipeCodeLines(String[] lines){recipeLines=lines;}
+    public int getTotalRecipePages() { return super.usesRemaining(); }
+    public void setTotalRecipePages(int numRemaining) { super.setUsesRemaining(numRemaining); }
 	
-	private final static String[] MYCODES={"SKILLID","RECIPE"};
+	private final static String[] MYCODES={"SKILLID","RECIPES","NUMRECIPES"};
 	public String getStat(String code)
 	{
 		if(CMLib.coffeeMaker().getGenItemCodeNum(code)>=0)
@@ -65,7 +68,16 @@ public class GenRecipe extends GenReadable implements Recipe
 		switch(getCodeNum(code))
 		{
 		case 0: return ""+getCommonSkillID();
-		case 1: return ""+getRecipeCodeLine();
+		case 1: 
+			{
+				StringBuilder str=new StringBuilder("");
+				for(String s : recipeLines)
+					str.append(s).append("\n");
+				if(str.length()==0) return "";
+				String recipeStr = str.toString();
+				return recipeStr.substring(0,recipeStr.length()-1);
+			}
+		case 2: return ""+this.getTotalRecipePages();
 		default:
 			return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
 		}
@@ -78,7 +90,8 @@ public class GenRecipe extends GenReadable implements Recipe
 		switch(getCodeNum(code))
 		{
 		case 0: setCommonSkillID(val); break;
-		case 1: setRecipeCodeLine(val); break;
+		case 1: setRecipeCodeLines(CMParms.parseAny(val, '\n', true).toArray(new String[0])); break;
+		case 2: int x=CMath.s_int(val); setTotalRecipePages(x>0?x:1); break;
 		default:
 			CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code, val);
 			break;

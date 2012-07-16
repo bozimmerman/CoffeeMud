@@ -51,22 +51,26 @@ public interface ExpertiseLibrary extends CMLibrary
 	};
 	public static class ExpertiseDefinition
 	{
-		public String ID="";
-		public String name="";
-		public String baseName="";
-		private String uncompiledListMask="";
+		public String 	ID="";
+		public String 	name="";
+		public String 	baseName="";
+		public String[] data=new String[0];
+		private String 	uncompiledListMask="";
+		private String 	uncompiledFinalMask="";
+		private int 	minLevel=Integer.MIN_VALUE+1;
 		private MaskingLibrary.CompiledZapperMask compiledListMask=null;
-		private String uncompiledFinalMask="";
 		public ExpertiseDefinition parent=null;
 		private MaskingLibrary.CompiledZapperMask compiledFinalMask=null;
-		private int minLevel=Integer.MIN_VALUE+1;
 		public int getMinimumLevel()
 		{
 			if(minLevel==Integer.MIN_VALUE+1)
 				minLevel=CMLib.masking().minMaskLevel(allRequirements(),0);
 			return minLevel;
 		}
-		
+		public String[] getData()
+		{
+			return data;
+		}
 		public MaskingLibrary.CompiledZapperMask compiledListMask()
 		{
 			if((this.compiledListMask==null)&&(uncompiledListMask.length()>0))
@@ -258,7 +262,7 @@ public interface ExpertiseLibrary extends CMLibrary
 		}
 	}
 
-	public ExpertiseDefinition addDefinition(String ID, String name, String baseName, String listMask, String finalMask, String[] costs);
+	public ExpertiseDefinition addDefinition(String ID, String name, String baseName, String listMask, String finalMask, String[] costs, String[] data);
 	public void delDefinition(String ID);
 	public ExpertiseDefinition getDefinition(String ID);
 	public ExpertiseDefinition findDefinition(String ID, boolean exactOnly);

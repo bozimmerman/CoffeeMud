@@ -49,9 +49,9 @@ public class LeatherWorking extends EnhancedCraftingSkill implements ItemCraftor
 		+"CONTAINER_CAPACITY||LIQUID_CAPACITY||WEAPON_HANDS_REQUIRED\tBASE_DAMAGE||BASE_ARMOR_AMOUNT\t"
 		+"CONTAINER_TYPE\tCODED_SPELL_LIST";}
 
-	protected static final int RCP_FINALNAME=0;
-	protected static final int RCP_LEVEL=1;
-	protected static final int RCP_TICKS=2;
+	//protected static final int RCP_FINALNAME=0;
+	//protected static final int RCP_LEVEL=1;
+	//protected static final int RCP_TICKS=2;
 	protected static final int RCP_WOOD=3;
 	protected static final int RCP_VALUE=4;
 	protected static final int RCP_CLASSTYPE=5;
@@ -152,9 +152,9 @@ public class LeatherWorking extends EnhancedCraftingSkill implements ItemCraftor
 		if(CMLib.flags().isDeadlyOrMaliciousEffect(I)) 
 			return false;
 		if(I.basePhyStats().level()>30)
-			return false;
+			return (isANativeItem(I.Name()));
 		if(I.name().toUpperCase().startsWith("DESIGNER")||(I.name().toUpperCase().indexOf(" DESIGNER ")>0))
-			return false;
+			return (isANativeItem(I.Name()));
 		if(I instanceof Armor)
 		{
 			final long noWearLocations=Wearable.WORN_LEFT_FINGER|Wearable.WORN_RIGHT_FINGER|Wearable.WORN_EARS;
@@ -193,7 +193,7 @@ public class LeatherWorking extends EnhancedCraftingSkill implements ItemCraftor
 			return true;
 		if(I.rawProperLocationBitmap()==Wearable.WORN_HELD)
 			return true;
-		return false;
+		return (isANativeItem(I.Name()));
 	}
 
 	public boolean supportsMending(Physical item){ return canMend(null,item,true);}

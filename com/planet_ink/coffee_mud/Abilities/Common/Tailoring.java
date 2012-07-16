@@ -49,9 +49,9 @@ public class Tailoring extends EnhancedCraftingSkill implements ItemCraftor, Men
 		+"CONTAINER_CAPACITY||WEAPON_HANDS_REQUIRED\tBASE_ARMOR_AMOUNT||BASE_DAMAGE\t"
 		+"CONTAINER_TYPE\tCODED_SPELL_LIST";}
 
-	protected static final int RCP_FINALNAME=0;
-	protected static final int RCP_LEVEL=1;
-	protected static final int RCP_TICKS=2;
+	//protected static final int RCP_FINALNAME=0;
+	//protected static final int RCP_LEVEL=1;
+	//protected static final int RCP_TICKS=2;
 	protected static final int RCP_WOOD=3;
 	protected static final int RCP_VALUE=4;
 	protected static final int RCP_CLASSTYPE=5;
@@ -138,9 +138,9 @@ public class Tailoring extends EnhancedCraftingSkill implements ItemCraftor, Men
 		if(CMLib.flags().isDeadlyOrMaliciousEffect(I)) 
 			return false;
 		if(!masterCraftCheck(I))
-			return false;
+			return (isANativeItem(I.Name()));
 		if(I.baseGoldValue()>I.basePhyStats().level())
-			return false;
+			return (isANativeItem(I.Name()));
 		if(I instanceof Rideable)
 		{
 			Rideable R=(Rideable)I;
@@ -158,7 +158,7 @@ public class Tailoring extends EnhancedCraftingSkill implements ItemCraftor, Men
 		{
 			final long nonWearablePlaces=Wearable.WORN_FEET|Wearable.WORN_LEFT_FINGER|Wearable.WORN_RIGHT_FINGER|Wearable.WORN_EARS|Wearable.WORN_EYES;
 			if((I.rawProperLocationBitmap()&nonWearablePlaces)>0) 
-				return false;
+				return (isANativeItem(I.Name()));
 			return true;
 		}
 		if(I instanceof Weapon)
@@ -166,10 +166,10 @@ public class Tailoring extends EnhancedCraftingSkill implements ItemCraftor, Men
 			if(I.basePhyStats().damage()!=0) 
 				return false;
 			if(I.basePhyStats().attackAdjustment()!=0) 
-				return false;
+				return (isANativeItem(I.Name()));
 			return true;
 		}
-		return false;
+		return (isANativeItem(I.Name()));
 	}
 
 	public boolean supportsMending(Physical item){ return canMend(null,item,true);}

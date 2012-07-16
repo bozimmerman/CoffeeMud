@@ -47,9 +47,9 @@ public class Armorsmithing extends EnhancedCraftingSkill implements ItemCraftor,
 		+ "ITEM_BASE_VALUE\tITEM_CLASS_ID\tCODED_WEAR_LOCATION\tCONTAINER_CAPACITY\t"
 		+ "BASE_ARMOR_AMOUNT\tCONTAINER_TYPE\tCODED_SPELL_LIST";}
 
-	protected static final int RCP_FINALNAME=0;
-	protected static final int RCP_LEVEL=1;
-	protected static final int RCP_TICKS=2;
+	//protected static final int RCP_FINALNAME=0;
+	//protected static final int RCP_LEVEL=1;
+	//protected static final int RCP_TICKS=2;
 	protected static final int RCP_WOOD=3;
 	protected static final int RCP_VALUE=4;
 	protected static final int RCP_CLASSTYPE=5;
@@ -141,13 +141,13 @@ public class Armorsmithing extends EnhancedCraftingSkill implements ItemCraftor,
 		if(I instanceof Shield)
 			return true;
 		if(!masterCraftCheck(I))
-			return false;
+			return isANativeItem(I.Name());
 		if(I.fitsOn(Wearable.WORN_RIGHT_FINGER)
 		 ||I.fitsOn(Wearable.WORN_LEFT_FINGER)
 		 ||I.fitsOn(Wearable.WORN_EARS)
 		 ||I.fitsOn(Wearable.WORN_HELD)
 		 ||I.fitsOn(Wearable.WORN_EYES))
-			return false;
+			return isANativeItem(I.Name());
 		return true;
 	}
 

@@ -60,6 +60,8 @@ public class CageBuilding extends Wainwrighting
 		if((C.containTypes()==Container.CONTAIN_CAGED)
 		||(C.containTypes()==(Container.CONTAIN_BODIES|Container.CONTAIN_CAGED)))
 			return true;
+		if(isANativeItem(I.Name()))
+			return true;
 		return false;
 	}
 

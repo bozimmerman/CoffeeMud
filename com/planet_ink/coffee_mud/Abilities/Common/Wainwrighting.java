@@ -48,9 +48,9 @@ public class Wainwrighting extends CraftingSkill implements ItemCraftor
 		+"ITEM_CLASS_ID\tLID_LOCK\tCONTAINER_CAPACITY\tRIDE_CAPACITY\tCONTAINER_TYPE\t"
 		+"CODED_SPELL_LIST";}
 
-	protected static final int RCP_FINALNAME=0;
-	protected static final int RCP_LEVEL=1;
-	protected static final int RCP_TICKS=2;
+	//protected static final int RCP_FINALNAME=0;
+	//protected static final int RCP_LEVEL=1;
+	//protected static final int RCP_TICKS=2;
 	protected static final int RCP_WOOD=3;
 	protected static final int RCP_VALUE=4;
 	protected static final int RCP_CLASSTYPE=5;
@@ -84,6 +84,8 @@ public class Wainwrighting extends CraftingSkill implements ItemCraftor
 			return false;
 		if(CMLib.flags().isDeadlyOrMaliciousEffect(I)) 
 			return false;
+		if(isANativeItem(I.Name()))
+			return true;
 		if(I instanceof Container)
 		{
 			Container C=(Container)I;
@@ -106,7 +108,7 @@ public class Wainwrighting extends CraftingSkill implements ItemCraftor
 				return false;
 			}
 		}
-		return false;
+		return (isANativeItem(I.Name()));
 	}
 
 	public void unInvoke()

@@ -887,9 +887,50 @@ public class ItemData extends StdWebMacro
 					break;
 				}
 				case 83: // recipedata
-					if((firstTime)&&(I instanceof Recipe))
-						old=CMStrings.replaceAll(((Recipe)I).getRecipeCodeLine(),"\t",",");
-					str.append(old);
+					if(I instanceof Recipe)
+					{
+						String prefix=parms.get("RECIPEPREFIX");
+						if(prefix==null) prefix="";
+						String postfix=parms.get("RECIPEPOSTFIX");
+						if(postfix==null) postfix="";
+						String fieldName=parms.get("RECIPEFIELDNAME");
+						if(fieldName==null)
+							str.append("!!ERROR!!");
+						else
+						{
+							String thisFieldName=CMStrings.replaceAll(fieldName,"###","0");
+							List<String> allData=new LinkedList<String>();
+							int x=0;
+							if(httpReq.isRequestParameter(thisFieldName))
+							{
+    							while(httpReq.isRequestParameter(thisFieldName))
+    							{
+    								String value=httpReq.getRequestParameter(thisFieldName);
+    								if(value.length()>0)
+    									allData.add(value);
+    								thisFieldName=CMStrings.replaceAll(fieldName,"###",""+(++x));
+    							}
+							}
+							else
+							{
+								String[] allRecipes=((Recipe)I).getRecipeCodeLines();
+								for(String recipe : allRecipes)
+								{
+    								if(recipe.length()>0)
+    									allData.add(CMStrings.replaceAll(recipe,"\t",","));
+								}
+							}
+							allData.add("");
+							for(x=0;x<allData.size();x++)
+							{
+								String recipeLine=allData.get(x);
+								thisFieldName=CMStrings.replaceAll(fieldName,"###",""+x);
+								String myPrefix=CMStrings.replaceAll(prefix,fieldName,thisFieldName);
+								String myPostfix=CMStrings.replaceAll(postfix,fieldName,thisFieldName);
+								str.append(myPrefix).append(super.htmlOutgoingFilter(recipeLine)).append(myPostfix);
+							}
+						}
+					}
 					break;
 				case 84: // layer
 					if((firstTime)&&(I instanceof Armor))

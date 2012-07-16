@@ -362,6 +362,16 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 		return null;
 	}
 
+	public List<XMLpiece> getPiecesFromPieces(List<XMLpiece> V, String tag)
+	{
+		if(V==null) return null;
+		List<XMLpiece> pieces = new ArrayList<XMLpiece>();
+		for(int v=0;v<V.size();v++)
+			if(((XMLpiece)V.get(v)).tag.equalsIgnoreCase(tag))
+				pieces.add((XMLpiece)V.get(v));
+		return pieces;
+	}
+
 	public boolean getBoolFromPieces(List<XMLpiece> V, String tag)
 	{
 		String val=getValFromPieces(V,tag);

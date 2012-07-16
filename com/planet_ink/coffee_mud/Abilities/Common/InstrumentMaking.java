@@ -47,9 +47,9 @@ public class InstrumentMaking extends CraftingSkill implements ItemCraftor
 		"ITEM_NAME\tITEM_LEVEL\tBUILD_TIME_TICKS\tMATERIALS_REQUIRED\tITEM_BASE_VALUE\t"
 		+"ITEM_CLASS_ID\tRIDE_CAPACITY||CODED_WEAR_LOCATION\tMETAL_OR_WOOD\tOPTIONAL_RACE_ID\tINSTRUMENT_TYPE";}
 
-	protected static final int RCP_FINALNAME=0;
-	protected static final int RCP_LEVEL=1;
-	protected static final int RCP_TICKS=2;
+	//protected static final int RCP_FINALNAME=0;
+	//protected static final int RCP_LEVEL=1;
+	//protected static final int RCP_TICKS=2;
 	protected static final int RCP_WOOD=3;
 	protected static final int RCP_VALUE=4;
 	protected static final int RCP_CLASSTYPE=5;
@@ -80,6 +80,8 @@ public class InstrumentMaking extends CraftingSkill implements ItemCraftor
 			return false;
 		if(CMLib.flags().isDeadlyOrMaliciousEffect(I)) 
 			return false;
+		if(isANativeItem(I.Name()))
+			return true;
 		if(I instanceof MusicalInstrument)
 			return true;
 		return false;

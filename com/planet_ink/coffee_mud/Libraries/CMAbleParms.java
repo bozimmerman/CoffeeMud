@@ -45,7 +45,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 
 	protected Map<String,AbilityParmEditor> DEFAULT_EDITORS = null;
 
-	protected final static Integer[] ALL_BUCKET_MATERIAL_CHOICES = new Integer[]{RawMaterial.MATERIAL_CLOTH, RawMaterial.MATERIAL_METAL, RawMaterial.MATERIAL_LEATHER, 
+	protected final static int[] ALL_BUCKET_MATERIAL_CHOICES = new int[]{RawMaterial.MATERIAL_CLOTH, RawMaterial.MATERIAL_METAL, RawMaterial.MATERIAL_LEATHER, 
 			RawMaterial.MATERIAL_LIQUID, RawMaterial.MATERIAL_WOODEN, RawMaterial.MATERIAL_PRECIOUS,RawMaterial.MATERIAL_VEGETATION, RawMaterial.MATERIAL_ROCK };
 	protected final static int[] ALLOWED_BUCKET_ACODES = new int[]{Ability.ACODE_CHANT,Ability.ACODE_SPELL,Ability.ACODE_PRAYER,Ability.ACODE_SONG,Ability.ACODE_SKILL,
 			Ability.ACODE_THIEF_SKILL}; 
@@ -186,7 +186,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 		hardBonus[0]=(int)Math.round(hardBonus[0] * hardnessMultiplier);
 	}
 
-	public Vector parseRecipeFormatColumns(String recipeFormat) 
+	public Vector<Object> parseRecipeFormatColumns(String recipeFormat) 
 	{
 		char C = '\0';
 		StringBuffer currentColumn = new StringBuffer("");
@@ -262,6 +262,50 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 		return columnsV;
 	}
 
+	public String makeRecipeFromItem(final ItemCraftor C, final Item I) throws CMException
+	{
+		Vector<Object> columns = parseRecipeFormatColumns(C.parametersFormat());
+		Map<String,AbilityParmEditor> editors = this.getEditors();
+		StringBuilder recipe = new StringBuilder("");
+		for(int d=0;d<columns.size();d++) 
+		{
+			if(columns.get(d) instanceof String)
+			{
+				AbilityParmEditor A = (AbilityParmEditor)editors.get(columns.get(d));
+				if((A == null)||(A.appliesToClass(I)<0))
+					A = (AbilityParmEditor)editors.get("N_A");
+				columns.set(d,A.ID());
+			}
+			else
+			if(columns.get(0) instanceof List)
+			{
+				AbilityParmEditor applicableA = null;
+				List colV=(List)columns.get(0);
+				for(int c=0;c<colV.size();c++)
+				{
+					AbilityParmEditor A = (AbilityParmEditor)editors.get(colV.get(c));
+					if(A==null) 
+						throw new CMException("Col name "+(colV.get(c))+" is not defined.");
+					if((applicableA==null)
+							||(A.appliesToClass(I) > applicableA.appliesToClass(I)))
+						applicableA = A;
+				}
+				if((applicableA == null)||(applicableA.appliesToClass(I)<0))
+					applicableA = (AbilityParmEditor)editors.get("N_A");
+				columns.set(d,applicableA.ID());
+			}
+			else
+				throw new CMException("Col name "+(columns.get(d))+" is not defined.");
+			AbilityParmEditor A = (AbilityParmEditor)editors.get((String)columns.get(d));
+			if(A==null)
+				throw new CMException("Editor name "+(columns.get(d))+" is not defined.");
+			if(d>0)
+				recipe.append("\t");
+			recipe.append(A.convertFromItem(C, I));
+		}
+		return recipe.toString();
+	}
+	
 	protected static int getClassFieldIndex(DVector dataRow)
 	{
 		for(int d=0;d<dataRow.size();d++)
@@ -371,6 +415,8 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 						c++;
 					}
 				}
+				if((str.length()==0)&&(c<columnsV.size()-1))
+					break;
 				if(!div.equals("..."))
 				{
 					lastDiv = div;
@@ -403,6 +449,11 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 	protected boolean fixDataColumn(DVector dataRow, int rowShow) throws CMException
 	{
 		Item classModelI = getSampleItem(dataRow);
+		return fixDataColumn(dataRow,rowShow,classModelI);
+	}
+	
+	protected boolean fixDataColumn(DVector dataRow, int rowShow, final Item classModelI) throws CMException
+	{
 		Map<String,AbilityParmEditor> editors = getEditors();
 		if(classModelI == null) {
 			Log.errOut("CMAbleParms","Data row "+rowShow+" discarded due to null/empty classID");
@@ -450,7 +501,8 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 	protected void fixDataColumns(Vector<DVector> rowsV) throws CMException
 	{
 		DVector dataRow = new DVector(2);
-		for(int r=0;r<rowsV.size();r++) {
+		for(int r=0;r<rowsV.size();r++) 
+		{
 			dataRow=(DVector)rowsV.elementAt(r);
 			if(!fixDataColumn(dataRow,r))
 			{
@@ -470,23 +522,33 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 		return str;
 	}
 
+	public void testRecipeParsing(StringBuffer recipesString, String recipeFormat) throws CMException
+	{
+		testRecipeParsing(recipesString,recipeFormat,null);
+	}
+	
 	public void testRecipeParsing(String recipeFilename, String recipeFormat, boolean save)
 	{
 		StringBuffer str=new CMFile(Resources.buildResourcePath("skills")+recipeFilename,null,true).text();
+		try
+		{
+			testRecipeParsing(str,recipeFormat,save?recipeFilename:null);
+		} catch(CMException e) {
+			
+			Log.errOut("CMAbleParms","File: "+recipeFilename+": "+e.getMessage());
+			return;
+		}
+	}
+	
+	public void testRecipeParsing(StringBuffer str, String recipeFormat, String saveRecipeFilename) throws CMException
+	{
 		Vector columnsV = parseRecipeFormatColumns(recipeFormat);
 		int numberOfDataColumns = 0;
 		for(int c = 0; c < columnsV.size(); c++)
 			if(columnsV.elementAt(c) instanceof List)
 				numberOfDataColumns++;
-		Vector<DVector> rowsV = null;
-		try
-		{
-			rowsV = parseDataRows(str,columnsV,numberOfDataColumns);
-			fixDataColumns(rowsV);
-		} catch(CMException e) {
-			Log.errOut("CMAbleParms","File: "+recipeFilename+": "+e.getMessage());
-			return;
-		}
+		Vector<DVector> rowsV = parseDataRows(str,columnsV,numberOfDataColumns);
+		fixDataColumns(rowsV);
 		Map<String,AbilityParmEditor> editors = getEditors();
 		DVector editRow = null;
 		int[] showNumber = {0};
@@ -513,8 +575,8 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 		}
 		fakeSession.setMob(null);
 		mob.destroy();
-		if(save)
-			resaveRecipeFile(mob,recipeFilename,rowsV,columnsV,false);
+		if(saveRecipeFilename!=null)
+			resaveRecipeFile(mob,saveRecipeFilename,rowsV,columnsV,false);
 	}
 
 	protected void calculateRecipeCols(int[] lengths, String[] headers, Vector<DVector> rowsV)
@@ -733,31 +795,31 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 	{
 		final int myMaterial = ((I.material() & RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_MITHRIL) ? RawMaterial.MATERIAL_METAL : (I.material() & RawMaterial.MATERIAL_MASK);
 		if(A instanceof Behavior)
-			return ((Integer)CMLib.dice().pick( new Integer[]{RawMaterial.MATERIAL_LEATHER, RawMaterial.MATERIAL_VEGETATION}, myMaterial )).intValue();
+			return CMLib.dice().pick( new int[]{RawMaterial.MATERIAL_LEATHER, RawMaterial.MATERIAL_VEGETATION}, myMaterial );
 		if(A instanceof Ability)
 		{
 			switch(((Ability)A).abilityCode() & Ability.ALL_ACODES)
 			{
 				case Ability.ACODE_CHANT: 
-					return ((Integer)CMLib.dice().pick( new Integer[]{RawMaterial.MATERIAL_VEGETATION, RawMaterial.MATERIAL_ROCK}, myMaterial )).intValue();
+					return CMLib.dice().pick( new int[]{RawMaterial.MATERIAL_VEGETATION, RawMaterial.MATERIAL_ROCK}, myMaterial );
 				case Ability.ACODE_SPELL: 
-					return ((Integer)CMLib.dice().pick( new Integer[]{RawMaterial.MATERIAL_WOODEN, RawMaterial.MATERIAL_PRECIOUS}, myMaterial )).intValue();
+					return CMLib.dice().pick( new int[]{RawMaterial.MATERIAL_WOODEN, RawMaterial.MATERIAL_PRECIOUS}, myMaterial );
 				case Ability.ACODE_PRAYER: 
-					return ((Integer)CMLib.dice().pick( new Integer[]{RawMaterial.MATERIAL_METAL, RawMaterial.MATERIAL_ROCK}, myMaterial )).intValue();
+					return CMLib.dice().pick( new int[]{RawMaterial.MATERIAL_METAL, RawMaterial.MATERIAL_ROCK}, myMaterial );
 				case Ability.ACODE_SONG: 
-					return ((Integer)CMLib.dice().pick( new Integer[]{RawMaterial.MATERIAL_LIQUID, RawMaterial.MATERIAL_WOODEN}, myMaterial )).intValue();
+					return CMLib.dice().pick( new int[]{RawMaterial.MATERIAL_LIQUID, RawMaterial.MATERIAL_WOODEN}, myMaterial );
 				case Ability.ACODE_THIEF_SKILL:
 				case Ability.ACODE_SKILL: 
-					return ((Integer)CMLib.dice().pick( new Integer[]{RawMaterial.MATERIAL_CLOTH, RawMaterial.MATERIAL_METAL}, myMaterial )).intValue();
+					return CMLib.dice().pick( new int[]{RawMaterial.MATERIAL_CLOTH, RawMaterial.MATERIAL_METAL}, myMaterial );
 				case Ability.ACODE_PROPERTY:
 					if(A instanceof TriggeredAffect)
-						return ((Integer)CMLib.dice().pick( new Integer[]{RawMaterial.MATERIAL_PRECIOUS, RawMaterial.MATERIAL_METAL}, myMaterial )).intValue();
+						return CMLib.dice().pick( new int[]{RawMaterial.MATERIAL_PRECIOUS, RawMaterial.MATERIAL_METAL}, myMaterial );
 					break;
 				default:
 					break;
 			}
 		}
-		return ((Integer)CMLib.dice().pick( ALL_BUCKET_MATERIAL_CHOICES, myMaterial )).intValue();
+		return CMLib.dice().pick( ALL_BUCKET_MATERIAL_CHOICES, myMaterial );
 	}
 
 	protected static void addExtraMaterial(final Map<Integer,int[]> extraMatsM, final Item I, final Object A, double weight)
@@ -1003,7 +1065,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 						able.setMask("");
 						able.setConsumed(true);
 						able.setLocation(AbilityComponent.CompLocation.ONGROUND);
-						able.setType(AbilityComponent.CompType.MATERIAL, I.material() & RawMaterial.MATERIAL_MASK);
+						able.setType(AbilityComponent.CompType.MATERIAL, Integer.valueOf(I.material() & RawMaterial.MATERIAL_MASK));
 						comps.add(able);
 						for(Integer resourceCode : extraMatsM.keySet())
 						{

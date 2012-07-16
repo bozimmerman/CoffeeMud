@@ -45,9 +45,9 @@ public class Smelting extends CraftingSkill
 	public String supportedResourceString(){return "METAL|MITHRIL";}
 	public String parametersFormat(){ return "ITEM_NAME\tITEM_LEVEL\tBUILD_TIME_TICKS\t\t\t\tRESOURCE_NAME\tRESOURCE_NAME";}
 
-	protected static final int RCP_FINALNAME=0;
-	protected static final int RCP_LEVEL=1;
-	protected static final int RCP_TICKS=2;
+	//protected static final int RCP_FINALNAME=0;
+	//protected static final int RCP_LEVEL=1;
+	//protected static final int RCP_TICKS=2;
 	//private static final int RCP_WOOD_ALWAYSONEONE=3;
 	//private static final int RCP_VALUE_DONTMATTER=4;
 	//private static final int RCP_CLASSTYPE=5;

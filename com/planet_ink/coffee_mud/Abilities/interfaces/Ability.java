@@ -894,11 +894,11 @@ public interface Ability extends Environmental
 	/** constant mask for the flags() method designating that this ability blocks certain negative affects @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#flags() */
 	public static final long FLAG_IMMUNER=2097152;
 	/** constant mask for the flags() method designating that this ability blocks getting and other mundane actions @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#flags() */
-	public static final long FLAG_ZAPPER=2097152;
+	public static final long FLAG_ZAPPER=4194304;
 	/** constant mask for the flags() method designating that this ability casts some other spell/ability @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#flags() */
-	public static final long FLAG_CASTER=4194304;
+	public static final long FLAG_CASTER=8388608;
 	/** constant mask for the flags() method designating that this ability grants another spell/ability @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#flags() */
-	public static final long FLAG_ENABLER=8388608;
+	public static final long FLAG_ENABLER=16777216;
 	
 	/** array of string describtions for the FLAG_* constants, indexed by their values */
 	public static final String[] FLAG_DESCS={

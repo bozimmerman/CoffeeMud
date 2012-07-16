@@ -50,9 +50,9 @@ public class Torturesmithing extends CraftingSkill implements ItemCraftor
 	   +"CONTAINER_CAPACITY||LIQUID_CAPACITY\t"
 	   +"BASE_ARMOR_AMOUNT\tWOOD_METAL_CLOTH\tCODED_SPELL_LIST";}
 
-	protected static final int RCP_FINALNAME=0;
-	protected static final int RCP_LEVEL=1;
-	protected static final int RCP_TICKS=2;
+	//protected static final int RCP_FINALNAME=0;
+	//protected static final int RCP_LEVEL=1;
+	//protected static final int RCP_TICKS=2;
 	protected static final int RCP_WOOD=3;
 	protected static final int RCP_VALUE=4;
 	protected static final int RCP_CLASSTYPE=5;
@@ -101,14 +101,14 @@ public class Torturesmithing extends CraftingSkill implements ItemCraftor
 		if(I instanceof Shield)
 			return false;
 		if(I instanceof Weapon)
-			return false;
+			return (isANativeItem(I.Name()));
 		if(I instanceof Armor)
 			return true;
 		if(I instanceof FalseLimb)
 			return true;
 		if(I.rawProperLocationBitmap()==Wearable.WORN_HELD)
 			return true;
-		return false;
+		return (isANativeItem(I.Name()));
 	}
 
 	public boolean supportsMending(Physical I){ return canMend(null,I,true);}

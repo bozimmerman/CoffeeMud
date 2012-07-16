@@ -34,7 +34,9 @@ public interface Recipe extends Item
 {
 	public String getCommonSkillID();
 	public void setCommonSkillID(String ID);
-	public String getRecipeCodeLine();
-	public void setRecipeCodeLine(String line);
+	public int getTotalRecipePages();
+	public void setTotalRecipePages(int numRemaining);
+	public String[] getRecipeCodeLines();
+	public void setRecipeCodeLines(String[] lines);
 }
 

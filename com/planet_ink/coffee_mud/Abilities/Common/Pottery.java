@@ -3,6 +3,7 @@ import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.ItemCraftor.ItemKeyPair;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
 import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
@@ -41,15 +42,15 @@ public class Pottery extends CraftingSkill implements ItemCraftor
 	public String name(){ return "Pottery";}
 	private static final String[] triggerStrings = {"POT","POTTERY"};
 	public String[] triggerStrings(){return triggerStrings;}
-	public String supportedResourceString(){return "CLAY|CHINA";}
+	public String supportedResourceString(){return "_CLAY|_CHINA";}
 	public String parametersFormat(){ return 
 		"ITEM_NAME\tITEM_LEVEL\tBUILD_TIME_TICKS\tMATERIALS_REQUIRED\t"
 		+"ITEM_BASE_VALUE\tITEM_CLASS_ID\tLID_LOCK||STONE_FLAG\t"
 		+"CONTAINER_CAPACITY||LIQUID_CAPACITY\tCODED_SPELL_LIST";}
 
-	protected static final int RCP_FINALNAME=0;
-	protected static final int RCP_LEVEL=1;
-	protected static final int RCP_TICKS=2;
+	//protected static final int RCP_FINALNAME=0;
+	//protected static final int RCP_LEVEL=1;
+	//protected static final int RCP_TICKS=2;
 	protected static final int RCP_WOOD=3;
 	protected static final int RCP_VALUE=4;
 	protected static final int RCP_CLASSTYPE=5;
@@ -138,7 +139,7 @@ public class Pottery extends CraftingSkill implements ItemCraftor
 			return true;
 		if(I.rawProperLocationBitmap()==Wearable.WORN_HELD)
 			return true;
-		return false;
+		return (isANativeItem(I.Name()));
 	}
 
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)

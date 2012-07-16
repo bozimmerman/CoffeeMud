@@ -1540,20 +1540,26 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		}
 	}
 
-	protected void genRecipe(MOB mob, Recipe E, int showNumber, int showFlag)
+	protected void genRecipe(MOB mob, final Recipe E, int showNumber, int showFlag)
 	throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
-		String prompt="Recipe Data ";
-		mob.tell(showNumber+". "+prompt+": "+E.getCommonSkillID()+".");
-		mob.tell(CMStrings.padRight(" ",(""+showNumber).length()+2+prompt.length())+": "+CMStrings.replaceAll(E.getRecipeCodeLine(),"\t",",")+".");
-		if((showFlag!=showNumber)&&(showFlag>-999)) return;
-		while(!mob.session().isStopped())
+		StringBuilder str=new StringBuilder(showNumber+". Recipe Data: "+E.getCommonSkillID()+" ("+E.getTotalRecipePages()+"): ");
+		for(String line : E.getRecipeCodeLines())
 		{
-			String newName=mob.session().prompt("Enter new skill id (?)\n\r:","");
+			int x=line.indexOf('\t');
+			int len=line.length()>10?10:line.length();
+			str.append(line.substring(0,(x<0)?len:x)).append(' ');
+		}
+		mob.tell(str.toString());
+		final Session S=mob.session();
+		if((S==null)||((showFlag!=showNumber)&&(showFlag>-999))) return;
+		while(!S.isStopped())
+		{
+			String newName=S.prompt("Enter new skill id (?)\n\r:","");
 			if(newName.equalsIgnoreCase("?"))
 			{
-				StringBuffer str=new StringBuffer("");
+				str=new StringBuilder("");
 				Ability A=null;
 				for(Enumeration<Ability> e=CMClass.abilities();e.hasMoreElements();)
 				{
@@ -1581,11 +1587,89 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				break;
 			}
 		}
-		String newName=mob.session().prompt("Enter new data line\n\r:","");
-		if(newName.length()>0)
-			E.setRecipeCodeLine(CMStrings.replaceAll(newName,",","\t"));
+		String newCount=mob.session().prompt("Enter new maximum recipe count ("+E.getTotalRecipePages()+"):","");
+		if((newCount.length()>0)&&(CMath.s_int(newCount)>0))
+			E.setTotalRecipePages(CMath.s_int(newCount));
 		else
 			mob.tell("(no change)");
+		Ability A=CMClass.getAbility(E.getCommonSkillID());
+		final ItemCraftor C;
+		if((A!=null)&&(A.classificationCode()==(Ability.ACODE_COMMON_SKILL|Ability.DOMAIN_CRAFTINGSKILL))&&(A instanceof ItemCraftor))
+		{
+			C=(ItemCraftor)A;
+			if(C!=null) mob.tell("Params: "+CMStrings.replaceAll(C.parametersFormat(), "\t", ","));
+		}
+		else
+			C = null;
+		while(!S.isStopped())
+		{
+			String[] recipes = E.getRecipeCodeLines();
+			str=new StringBuilder("");
+			for(int i=1;i<=recipes.length;i++)
+				str.append(i+") "+CMStrings.replaceAll(recipes[i-1],"\t",",")).append("\n");
+			if(recipes.length<E.getTotalRecipePages())
+    			str.append((recipes.length+1)+") ADD NEW RECIPE").append("\n");
+			mob.tell(str.toString());
+			String newName=mob.session().prompt("Enter a number to add/edit/remove\n\r:","");
+			int x=CMath.s_int(newName);
+			if((x<=0)||(x>E.getTotalRecipePages()))
+				break;
+			List<String> recipeList = new XVector<String>(recipes);
+			class Checker { public String getErrors(String line)
+			{
+				if(C==null)
+					return "Skill "+E.getCommonSkillID()+" is not a crafting skill!";
+				try
+				{
+    				CMLib.ableParms().testRecipeParsing(new StringBuffer(CMStrings.replaceAll(line,",","\t")), C.parametersFormat());
+				}
+				catch(CMException cme)
+				{
+					return cme.getMessage();
+				}
+				return null;
+			} }
+			if(x<=recipes.length)
+			{
+				String newLine=mob.session().prompt("Re-Enter this line, or NULL to delete (?).\n\r:","");
+				if(newLine.equalsIgnoreCase("?"))
+					mob.tell((C==null)?"?":CMStrings.replaceAll(C.parametersFormat(), "\t", ","));
+				else
+				if(newLine.equalsIgnoreCase("null"))
+					recipeList.remove(x-1);
+				else
+				if(newLine.length()==0)
+					mob.tell("(No change)");
+				else
+				{
+    				String errors = new Checker().getErrors(newLine);
+    				if((errors==null)||(errors.length()==0))
+    					recipeList.add(x-1, CMStrings.replaceAll(newLine,",","\t"));
+    				else
+    					mob.tell("Error: "+errors+", aborting change.");
+				}
+			}
+			else
+			{
+				String newLine=mob.session().prompt("Enter a new line, or enter to cancel (?).\n\r:","");
+				if((newLine!=null)&&(newLine.trim().length()>0))
+				{
+					if(newLine.equalsIgnoreCase("?"))
+						mob.tell((C==null)?"?":CMStrings.replaceAll(C.parametersFormat(), "\t", ","));
+					else
+					{
+        				String errors = new Checker().getErrors(newLine);
+        				if((errors==null)||(errors.length()==0))
+        					recipeList.add(CMStrings.replaceAll(newLine,",","\t"));
+        				else
+        					mob.tell("Error: "+errors+", aborting change.");
+					}
+				}
+				else
+					mob.tell("(No change)");
+			}
+			E.setRecipeCodeLines(recipeList.toArray(new String[0]));
+		}
 	}
 
 	protected void genGettable(MOB mob, Item I, int showNumber, int showFlag)

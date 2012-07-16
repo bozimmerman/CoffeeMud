@@ -442,8 +442,8 @@ public class CMAble extends StdLibrary implements AbilityMapper
 		Integer[] allLevelsArray = lowestQualifyingLevelMap.values().toArray(new Integer[0]);
 		Arrays.sort( allLevelsArray );
 		if(allLevelsArray.length==0) return 0;
-		if(allLevelsArray.length==1) return allLevelsArray[0];
-		return allLevelsArray[(int)Math.round( CMath.div( allLevelsArray.length,2.0 ) )];
+		if(allLevelsArray.length==1) return allLevelsArray[0].intValue();
+		return allLevelsArray[(int)Math.round( CMath.div( allLevelsArray.length,2.0 ) )].intValue();
 	}
 	
 	public void addClassAbility(String abilityID, Map<String, AbilityMapping> ableMap, AbilityMapping able)

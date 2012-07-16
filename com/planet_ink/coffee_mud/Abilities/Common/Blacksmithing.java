@@ -47,9 +47,9 @@ public class Blacksmithing extends EnhancedCraftingSkill implements ItemCraftor
 	   +"ITEM_BASE_VALUE\tITEM_CLASS_ID\tSTATUE||RIDE_BASIS||CONTAINER_TYPE_OR_LIDLOCK\t"
 	   +"CONTAINER_CAPACITY||LIQUID_CAPACITY\tCODED_SPELL_LIST";}
 
-	protected static final int RCP_FINALNAME=0;
-	protected static final int RCP_LEVEL=1;
-	protected static final int RCP_TICKS=2;
+	//protected static final int RCP_FINALNAME=0;
+	//protected static final int RCP_LEVEL=1;
+	//protected static final int RCP_TICKS=2;
 	protected static final int RCP_WOOD=3;
 	protected static final int RCP_VALUE=4;
 	protected static final int RCP_CLASSTYPE=5;
@@ -90,6 +90,8 @@ public class Blacksmithing extends EnhancedCraftingSkill implements ItemCraftor
 			return false;
 		if(CMLib.flags().isDeadlyOrMaliciousEffect(I)) 
 			return false;
+		if(isANativeItem(I.Name()) && (!(I instanceof Armor)) && (!(I instanceof Weapon)))
+			return true;
 		if(I instanceof Rideable)
 		{
 			Rideable R=(Rideable)I;
@@ -123,7 +125,7 @@ public class Blacksmithing extends EnhancedCraftingSkill implements ItemCraftor
 			return true;
 		if(I.rawProperLocationBitmap()==Wearable.WORN_HELD)
 			return true;
-		return false;
+		return (isANativeItem(I.Name()));
 	}
 
 	public void unInvoke()

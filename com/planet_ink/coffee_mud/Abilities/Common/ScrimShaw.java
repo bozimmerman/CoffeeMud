@@ -48,9 +48,9 @@ public class ScrimShaw extends EnhancedCraftingSkill implements ItemCraftor, Men
 		+"ITEM_CLASS_ID\tSTATUE||LID_LOCK||WEAPON_CLASS||RIDE_BASIS\t"
 		+"CONTAINER_CAPACITY||BASE_DAMAGE||LIGHT_DURATION";}
 
-	protected static final int RCP_FINALNAME=0;
-	protected static final int RCP_LEVEL=1;
-	protected static final int RCP_TICKS=2;
+	//protected static final int RCP_FINALNAME=0;
+	//protected static final int RCP_LEVEL=1;
+	//protected static final int RCP_TICKS=2;
 	protected static final int RCP_WOOD=3;
 	protected static final int RCP_VALUE=4;
 	protected static final int RCP_CLASSTYPE=5;
@@ -154,7 +154,7 @@ public class ScrimShaw extends EnhancedCraftingSkill implements ItemCraftor, Men
 			return true;
 		if(I.rawProperLocationBitmap()==Wearable.WORN_HELD)
 			return true;
-		return false;
+		return (isANativeItem(I.Name()));
 	}
 
 	public boolean supportsMending(Physical item){ return canMend(null,item,true);}

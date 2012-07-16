@@ -49,9 +49,9 @@ public class Costuming extends EnhancedCraftingSkill implements ItemCraftor, Men
 		+"CONTAINER_CAPACITY||WEAPON_HANDS_REQUIRED\tBASE_ARMOR_AMOUNT||BASE_DAMAGE\t"
 		+"CONTAINER_TYPE\tCODED_SPELL_LIST";}
 
-	protected static final int RCP_FINALNAME=0;
-	protected static final int RCP_LEVEL=1;
-	protected static final int RCP_TICKS=2;
+	//protected static final int RCP_FINALNAME=0;
+	//protected static final int RCP_LEVEL=1;
+	//protected static final int RCP_TICKS=2;
 	protected static final int RCP_WOOD=3;
 	protected static final int RCP_VALUE=4;
 	protected static final int RCP_CLASSTYPE=5;
@@ -137,6 +137,8 @@ public class Costuming extends EnhancedCraftingSkill implements ItemCraftor, Men
 			return false;
 		if(CMLib.flags().isDeadlyOrMaliciousEffect(I)) 
 			return false;
+		if(isANativeItem(I.Name()) && (I instanceof Armor))
+			return true;
 		if(I.baseGoldValue()<I.basePhyStats().level())
 			return false;
 		if(I instanceof Armor)
@@ -157,7 +159,7 @@ public class Costuming extends EnhancedCraftingSkill implements ItemCraftor, Men
 				return false;
 			return true;
 		}
-		return false;
+		return (isANativeItem(I.Name()));
 	}
 
 	public boolean supportsMending(Physical item){ return canMend(null,item,true);}

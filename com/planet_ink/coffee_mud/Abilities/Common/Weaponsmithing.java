@@ -49,9 +49,9 @@ public class Weaponsmithing extends EnhancedCraftingSkill implements ItemCraftor
 		+"ITEM_CLASS_ID\tWEAPON_CLASS\tWEAPON_TYPE\tBASE_DAMAGE\tATTACK_MODIFICATION\t"
 		+"WEAPON_HANDS_REQUIRED\tMAXIMUM_RANGE\tOPTIONAL_RESOURCE_OR_MATERIAL\tCODED_SPELL_LIST";}
 
-	protected static final int RCP_FINALNAME=0;
-	protected static final int RCP_LEVEL=1;
-	protected static final int RCP_TICKS=2;
+	//protected static final int RCP_FINALNAME=0;
+	//protected static final int RCP_LEVEL=1;
+	//protected static final int RCP_TICKS=2;
 	protected static final int RCP_WOOD=3;
 	protected static final int RCP_VALUE=4;
 	protected static final int RCP_CLASSTYPE=5;
@@ -179,7 +179,7 @@ public class Weaponsmithing extends EnhancedCraftingSkill implements ItemCraftor
 		if(CMLib.flags().isDeadlyOrMaliciousEffect(I)) 
 			return false;
 		if(!masterCraftCheck(I))
-			return false;
+			return (isANativeItem(I.Name()));
 		if(!(I instanceof Weapon))
 			return false;
 		Weapon W=(Weapon)I;

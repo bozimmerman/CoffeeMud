@@ -75,20 +75,36 @@ public class GatheringSkill extends CommonSkill
 			if(str.length()>0)
 			{
 				boolean found=false;
-				if(str.startsWith("-"))
+				if(str.startsWith("_"))
 				{
 					int rsc=RawMaterial.CODES.FIND_IgnoreCase(str.substring(1));
 					if(rsc>=0)
-						maskV.remove(Integer.valueOf(rsc));
-					found=true;
+					{
+						maskV.add(Integer.valueOf(rsc));
+    					found=true;
+					}
 				}
 				if(!found)
 				{
+					List<Integer> notResources=new ArrayList<Integer>();
+					int y=str.indexOf('-');
+					if(y>0)
+					{
+    					List<String> restV=CMParms.parseAny(str.substring(y+1),"-",true);
+    					str=str.substring(0,y);
+    					for(String sv : restV)
+    					{
+    						 int code=RawMaterial.CODES.FIND_CaseSensitive(sv);
+    						 if(code >= 0)
+        						 notResources.add(Integer.valueOf(code));
+    					}
+					}
 					int matIndex=CMParms.indexOfIgnoreCase(RawMaterial.MATERIAL_DESCS, str);
 					if(matIndex>=0)
 					{
-						List<Integer> rscs=RawMaterial.CODES.COMPOSE_RESOURCES(matIndex);
+						List<Integer> rscs=new XVector<Integer>(RawMaterial.CODES.COMPOSE_RESOURCES(matIndex));
 						maskV.addAll(rscs);
+						maskV.removeAll(notResources);
 						found=rscs.size()>0;
 					}
 				}

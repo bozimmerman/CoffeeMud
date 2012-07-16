@@ -42,14 +42,14 @@ public class GlassBlowing extends CraftingSkill implements ItemCraftor
 	public String name(){ return "Glass Blowing";}
 	private static final String[] triggerStrings = {"GLASSBLOW","GLASSBLOWING"};
 	public String[] triggerStrings(){return triggerStrings;}
-	public String supportedResourceString(){return "GLASS|SAND";}
+	public String supportedResourceString(){return "_GLASS|SAND";}
 	public String parametersFormat(){ return 
 		"ITEM_NAME\tITEM_LEVEL\tBUILD_TIME_TICKS\tMATERIALS_REQUIRED\tITEM_BASE_VALUE\t"
 	   +"ITEM_CLASS_ID\tLID_LOCK\tCONTAINER_CAPACITY||LIQUID_CAPACITY\tCODED_SPELL_LIST";}
 
-	protected static final int RCP_FINALNAME=0;
-	protected static final int RCP_LEVEL=1;
-	protected static final int RCP_TICKS=2;
+	//protected static final int RCP_FINALNAME=0;
+	//protected static final int RCP_LEVEL=1;
+	//protected static final int RCP_TICKS=2;
 	protected static final int RCP_WOOD=3;
 	protected static final int RCP_VALUE=4;
 	protected static final int RCP_CLASSTYPE=5;
@@ -147,7 +147,7 @@ public class GlassBlowing extends CraftingSkill implements ItemCraftor
 			return true;
 		if(I.rawProperLocationBitmap()==Wearable.WORN_HELD)
 			return true;
-		return false;
+		return (isANativeItem(I.Name()));
 	}
 
 	public boolean supportsMending(Physical I){ return canMend(null,I,true);}

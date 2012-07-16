@@ -48,9 +48,10 @@ public class Carpentry extends EnhancedCraftingSkill implements ItemCraftor
 	   +"LID_LOCK||STATUE||RIDE_BASIS||WEAPON_CLASS||CODED_WEAR_LOCATION||SMOKE_FLAG\t"
 	   +"CONTAINER_CAPACITY||WEAPON_HANDS_REQUIRED||LIQUID_CAPACITY||LIGHT_DURATION\t"
 	   +"BASE_ARMOR_AMOUNT||BASE_DAMAGE\tCONTAINER_TYPE||ATTACK_MODIFICATION\tCODED_SPELL_LIST";}
-	protected static final int RCP_FINALNAME=0;
-	protected static final int RCP_LEVEL=1;
-	protected static final int RCP_TICKS=2;
+
+	//protected static final int RCP_FINALNAME=0;
+	//protected static final int RCP_LEVEL=1;
+	//protected static final int RCP_TICKS=2;
 	protected static final int RCP_WOOD=3;
 	protected static final int RCP_VALUE=4;
 	protected static final int RCP_CLASSTYPE=5;
@@ -155,7 +156,7 @@ public class Carpentry extends EnhancedCraftingSkill implements ItemCraftor
 		if(I instanceof Weapon)
 		{
 			Weapon W=(Weapon)I;
-			if((W.weaponClassification()!=Weapon.CLASS_BLUNT)
+			if(((W.weaponClassification()!=Weapon.CLASS_BLUNT)&&(W.weaponClassification()!=Weapon.CLASS_STAFF))
 			||(W.requiresAmmunition()))
 				return false;
 			return true;
@@ -165,7 +166,7 @@ public class Carpentry extends EnhancedCraftingSkill implements ItemCraftor
 		if(I instanceof Ammunition)
 			return false;
 		if(I instanceof Armor)
-			return false;
+			return (isANativeItem(I.Name()));
 		if(I instanceof Container)
 		{
 			Container C=(Container)I;
@@ -180,7 +181,7 @@ public class Carpentry extends EnhancedCraftingSkill implements ItemCraftor
 			return true;
 		if(I.rawProperLocationBitmap()==Wearable.WORN_HELD)
 			return true;
-		return false;
+		return (isANativeItem(I.Name()));
 	}
 
 	public boolean supportsMending(Physical I){ return canMend(null,I,true);}

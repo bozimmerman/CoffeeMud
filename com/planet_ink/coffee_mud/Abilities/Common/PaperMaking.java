@@ -47,9 +47,9 @@ public class PaperMaking extends CraftingSkill implements ItemCraftor
 		"ITEM_NAME\tITEM_LEVEL\tBUILD_TIME_TICKS\tMATERIALS_REQUIRED\tITEM_BASE_VALUE\t"
 		+"ITEM_CLASS_ID\tRESOURCE_OR_MATERIAL\tN_A\tN_A\tCODED_SPELL_LIST";}
 
-	protected static final int RCP_FINALNAME=0;
-	protected static final int RCP_LEVEL=1;
-	protected static final int RCP_TICKS=2;
+	//protected static final int RCP_FINALNAME=0;
+	//protected static final int RCP_LEVEL=1;
+	//protected static final int RCP_TICKS=2;
 	protected static final int RCP_WOOD=3;
 	protected static final int RCP_VALUE=4;
 	protected static final int RCP_CLASSTYPE=5;
@@ -217,6 +217,8 @@ public class PaperMaking extends CraftingSkill implements ItemCraftor
 		if(((data[0][FOUND_CODE]&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_WOODEN)
 		||(data[0][FOUND_CODE]==RawMaterial.RESOURCE_RICE))
 			building.setMaterial(RawMaterial.RESOURCE_PAPER);
+		if(building instanceof Recipe)
+			((Recipe)building).setTotalRecipePages(CMath.s_int(woodRequiredStr));
 		building.basePhyStats().setLevel(CMath.s_int((String)foundRecipe.get(RCP_LEVEL)));
 		building.recoverPhyStats();
 		building.text();

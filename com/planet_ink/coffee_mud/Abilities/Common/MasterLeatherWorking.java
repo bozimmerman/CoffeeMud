@@ -49,9 +49,9 @@ public class MasterLeatherWorking extends EnhancedCraftingSkill implements ItemC
 		+"CONTAINER_CAPACITY||LIQUID_CAPACITY||WEAPON_HANDS_REQUIRED\tBASE_DAMAGE||BASE_ARMOR_AMOUNT\t"
 		+"CONTAINER_TYPE\tCODED_SPELL_LIST";}
 
-	protected static final int RCP_FINALNAME=0;
-	protected static final int RCP_LEVEL=1;
-	protected static final int RCP_TICKS=2;
+	//protected static final int RCP_FINALNAME=0;
+	//protected static final int RCP_LEVEL=1;
+	//protected static final int RCP_TICKS=2;
 	protected static final int RCP_WOOD=3;
 	protected static final int RCP_VALUE=4;
 	protected static final int RCP_CLASSTYPE=5;
@@ -113,12 +113,12 @@ public class MasterLeatherWorking extends EnhancedCraftingSkill implements ItemC
 		if(CMLib.flags().isDeadlyOrMaliciousEffect(I)) 
 			return false;
 		if(I.basePhyStats().level()<31)
-			return false;
+			return (isANativeItem(I.Name()));
 		if(I instanceof Armor)
 		{
 			final long noWearLocations=Wearable.WORN_LEFT_FINGER|Wearable.WORN_RIGHT_FINGER|Wearable.WORN_EARS;
 			if((I.rawProperLocationBitmap() & noWearLocations)>0)
-				return false;
+				return (isANativeItem(I.Name()));
 			return true;
 		}
 		if(I instanceof Rideable)
@@ -142,7 +142,7 @@ public class MasterLeatherWorking extends EnhancedCraftingSkill implements ItemC
 			Weapon W=(Weapon)I;
 			if((W.requiresAmmunition())||(W.weaponClassification()==Weapon.CLASS_FLAILED))
 				return true;
-			return false;
+			return (isANativeItem(I.Name()));
 		}
 		if(I instanceof Container)
 			return true;
@@ -152,7 +152,7 @@ public class MasterLeatherWorking extends EnhancedCraftingSkill implements ItemC
 			return true;
 		if(I.rawProperLocationBitmap()==Wearable.WORN_HELD)
 			return true;
-		return false;
+		return (isANativeItem(I.Name()));
 	}
 
 	public boolean supportsMending(Physical item){ return canMend(null,item,true);}

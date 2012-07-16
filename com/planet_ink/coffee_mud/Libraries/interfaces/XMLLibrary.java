@@ -97,6 +97,13 @@ public interface XMLLibrary extends CMLibrary
 	 */
 	public List<XMLpiece> getContentsFromPieces(List<XMLpiece> V, String tag);
 	/**
+	 * Returns all tags inside the gives set that match this tag name
+	 * @param V the container tags contents
+	 * @param tag the tag to look for
+	 * @return all the tags contained in tag
+	 */
+	public List<XMLpiece> getPiecesFromPieces(List<XMLpiece> V, String tag);
+	/**
 	 * Returns the xml tag node for the given tag name, if found in the
 	 * given tag container contents
 	 * @param V the tag container contents

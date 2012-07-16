@@ -496,7 +496,20 @@ public class GrinderItems
 					break;
 				case 79: // recipedata
 					if(I instanceof Recipe)
-						((Recipe)I).setRecipeCodeLine(CMStrings.replaceAll(old,",","\t"));
+					{
+						String fieldName=parms.get("RECIPEFIELDNAME");
+						if(fieldName==null) return "No recipefieldname!";
+						int x=0;
+						String thisFieldname = CMStrings.replaceAll(fieldName,"###", ""+x);
+						List<String> finalData=new ArrayList<String>();
+						while(httpReq.isRequestParameter(thisFieldname))
+						{
+							old = httpReq.getRequestParameter(thisFieldname);
+							finalData.add(CMStrings.replaceAll(old,",","\t"));
+							thisFieldname = CMStrings.replaceAll(fieldName,"###", ""+(++x));
+						}
+						((Recipe)I).setRecipeCodeLines(finalData.toArray(new String[0]));
+					}
 					break;
 				case 80: // layer
 					if(I instanceof Armor)
