@@ -117,12 +117,15 @@ public class Alchemy extends CraftingSkill implements ItemCraftor
 				{
 					if(messedUp)
 					{
-						building.destroy();
+						if(activity==CraftingActivity.LEARNING)
+							commonEmote(mob,"<S-NAME> fail(s) to learn how to make "+building.name()+".");
+						else
 						if(oldName.length()>0)
 							commonTell(mob,"Something went wrong! "+(Character.toUpperCase(oldName.charAt(0))+oldName.substring(1))+" explodes!");
+						building.destroy();
 					}
 					else
-					if(activity==CraftingSkill.CraftingActivity.LEARNING)
+					if(activity==CraftingActivity.LEARNING)
 					{
 						deconstructRecipeInto( building, recipeHolder );
 						building.destroy();
