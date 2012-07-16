@@ -130,6 +130,11 @@ public class ClanCrafting extends CraftingSkill implements ItemCraftor
 		return true;
 	}
 
+	public String getDecodedComponentsDescription(final MOB mob, final List<String> recipe)
+	{
+		return "Not implemented";
+	}
+
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		int autoGenerate=0;

@@ -110,7 +110,7 @@ public interface ItemCraftor extends Ability
 	 * @param recipe the name of the item to make
 	 * @return a vector of Item(s)
 	 */
-	public ItemKeyPair craftItem(String recipe);
+	public ItemKeyPair craftItem(String recipeName);
 	
 	/**
 	 * Crafts the item specified by the recipe name, of the specified
@@ -121,7 +121,7 @@ public interface ItemCraftor extends Ability
 	 * @param material the rawmaterial code to make the item out of
 	 * @return a vector of Item(s)
 	 */
-	public ItemKeyPair craftItem(String recipe, int material);
+	public ItemKeyPair craftItem(String recipeName, int material);
 	
 	/**
 	 * Returns a Vector of Integer objects where each Integer
@@ -171,4 +171,19 @@ public interface ItemCraftor extends Ability
 	 * @return the ratio of the weight of material used to make an item with this
 	 */
 	public double getItemWeightMultiplier(boolean bundling);
+
+	/**
+	 * Given a raw recipe, returns a description of the required components to build it.
+	 * @param mob the potential builder
+	 * @param recipe the raw recipe description
+	 * @return a descriptive string
+	 */
+	public String getDecodedComponentsDescription(final MOB mob, final List<String> recipe);
+	
+	/**
+	 * Given a raw recipe, returns the raw name and level of the item built therefrom.
+	 * @param recipe the raw recipe description
+	 * @return a descriptive pair
+	 */
+	public Pair<String,Integer> getDecodedItemNameAndLevel(final List<String> recipe);
 }

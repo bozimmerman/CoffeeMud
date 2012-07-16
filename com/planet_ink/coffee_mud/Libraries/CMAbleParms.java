@@ -271,21 +271,27 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 		{
 			if(columns.get(d) instanceof String)
 			{
+				String name = (String)columns.get( d );
 				AbilityParmEditor A = (AbilityParmEditor)editors.get(columns.get(d));
-				if((A == null)||(A.appliesToClass(I)<0))
+				if((A==null)||(name.length()<3))
+				{
+					recipe.append("\t");
+					continue;
+				}
+				if(A.appliesToClass(I)<0)
 					A = (AbilityParmEditor)editors.get("N_A");
 				columns.set(d,A.ID());
 			}
 			else
-			if(columns.get(0) instanceof List)
+			if(columns.get(d) instanceof List)
 			{
 				AbilityParmEditor applicableA = null;
-				List colV=(List)columns.get(0);
+				List colV=(List)columns.get(d);
 				for(int c=0;c<colV.size();c++)
 				{
 					AbilityParmEditor A = (AbilityParmEditor)editors.get(colV.get(c));
 					if(A==null) 
-						throw new CMException("Col name "+(colV.get(c))+" is not defined.");
+						throw new CMException("Column name "+(colV.get(c))+" is not found.");
 					if((applicableA==null)
 							||(A.appliesToClass(I) > applicableA.appliesToClass(I)))
 						applicableA = A;
@@ -295,12 +301,10 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 				columns.set(d,applicableA.ID());
 			}
 			else
-				throw new CMException("Col name "+(columns.get(d))+" is not defined.");
+				throw new CMException("Col name "+(columns.get(d))+" is not a String or List.");
 			AbilityParmEditor A = (AbilityParmEditor)editors.get((String)columns.get(d));
 			if(A==null)
 				throw new CMException("Editor name "+(columns.get(d))+" is not defined.");
-			if(d>0)
-				recipe.append("\t");
 			recipe.append(A.convertFromItem(C, I));
 		}
 		return recipe.toString();
@@ -984,7 +988,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 						if((I instanceof Weapon)||(I instanceof Armor))
 						{
 							int timsLevel = CMLib.itemBuilder().timsLevelCalculator(I);
-							if((timsLevel > 0 ) && (timsLevel < CMProps.getIntVar(CMProps.SYSTEMI_LASTPLAYERLEVEL)))
+							if((timsLevel > I.basePhyStats().level() ) && (timsLevel < CMProps.getIntVar(CMProps.SYSTEMI_LASTPLAYERLEVEL)))
 								return ""+timsLevel;
 						}
 						return ""+I.basePhyStats().level();

@@ -84,7 +84,12 @@ public class Alchemy extends CraftingSkill implements ItemCraftor
 	public String parametersFile(){ return "alchemy.txt";}
 	protected List<List<String>> loadRecipes(){return super.loadRecipes(parametersFile());}
 
-	public boolean supportsDeconstruction() { return true; }
+	public boolean supportsDeconstruction() { return false; }
+
+	public String getDecodedComponentsDescription(final MOB mob, final List<String> recipe)
+	{
+		return "Not implemented";
+	}
 
 	public boolean mayICraft(final Item I)
 	{
@@ -187,7 +192,7 @@ public class Alchemy extends CraftingSkill implements ItemCraftor
 		randomRecipeFix(mob,addRecipes(mob,loadRecipes()),commands,0);
 		if(commands.size()<1)
 		{
-			commonTell(mob,"Brew what? Enter \"brew list\" for a list, \"brew learn <item>\" to learn recipes.");
+			commonTell(mob,"Brew what? Enter \"brew list\" for a list.");
 			return false;
 		}
 		List<List<String>> recipes=addRecipes(mob,loadRecipes());
@@ -219,11 +224,6 @@ public class Alchemy extends CraftingSkill implements ItemCraftor
 			if(toggler!=1) buf.append("\n\r");
 			commonTell(mob,buf.toString());
 			return true;
-		}
-		else
-		if((commands.firstElement() instanceof String)&&(((String)commands.firstElement())).equalsIgnoreCase("learn"))
-		{
-			return doLearnRecipe(mob, commands, givenTarget, auto, asLevel);
 		}
 		else
 		if((!auto)&&(commands.size()<2))

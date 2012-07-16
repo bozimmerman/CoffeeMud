@@ -137,6 +137,11 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 	public String parametersFile(){ return "recipes.txt";}
 	protected List<List<String>> loadRecipes(){return super.loadRecipes(parametersFile());}
 
+	public String getDecodedComponentsDescription(final MOB mob, final List<String> recipe)
+	{
+		return "Not implemented";
+	}
+
 	public void unInvoke()
 	{
 		if(canBeUninvoked())

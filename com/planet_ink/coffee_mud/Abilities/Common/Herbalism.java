@@ -87,6 +87,11 @@ public class Herbalism extends CraftingSkill implements ItemCraftor
 
 	public boolean supportsDeconstruction() { return true; }
 
+	public String getDecodedComponentsDescription(final MOB mob, final List<String> recipe)
+	{
+		return "Not implemented";
+	}
+
 	public boolean mayICraft(final Item I)
 	{
 		if(I==null) return false;

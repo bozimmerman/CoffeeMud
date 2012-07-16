@@ -2369,3 +2369,4 @@ ruthless programmer, and sentenced to a quick death.
 1. MUDGrinder area editor has easier to manage parent/child areas & subops -- the old multiselect thing was unbearable.
 2. GenBook now uses the Message Maker (from the SHELL command) to add book chapters.
 3. (Internal) Database connections can now be kept alive with pings.  See new coffeemud.ini entry: DBPINGINTERVALMINS
+4. Most crafting skills now support a LEARN command to gain the recipes to certain found items.

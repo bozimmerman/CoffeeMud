@@ -133,6 +133,11 @@ public class ScrollScribing extends CraftingSkill implements ItemCraftor
 		return building;
 	}
 	
+	public String getDecodedComponentsDescription(final MOB mob, final List<String> recipe)
+	{
+		return "Not implemented";
+	}
+
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if((auto)&&(commands.size()>0)&&(commands.firstElement() instanceof Integer))

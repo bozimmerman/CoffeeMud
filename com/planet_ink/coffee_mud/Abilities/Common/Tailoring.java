@@ -198,6 +198,11 @@ public class Tailoring extends EnhancedCraftingSkill implements ItemCraftor, Men
 		return true;
 	}
 
+	public String getDecodedComponentsDescription(final MOB mob, final List<String> recipe)
+	{
+		return super.getComponentDescription( mob, recipe, RCP_WOOD );
+	}
+
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		int autoGenerate=0;

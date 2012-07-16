@@ -899,6 +899,8 @@ public interface Ability extends Environmental
 	public static final long FLAG_CASTER=8388608;
 	/** constant mask for the flags() method designating that this ability grants another spell/ability @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#flags() */
 	public static final long FLAG_ENABLER=16777216;
+	/** constant mask for the flags() method designating that the thing with this ability cant be learned as a recipe @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#flags() */
+	public static final long FLAG_UNCRAFTABLE=33554432L;
 	
 	/** array of string describtions for the FLAG_* constants, indexed by their values */
 	public static final String[] FLAG_DESCS={
@@ -927,6 +929,7 @@ public interface Ability extends Environmental
 		"ZAPPER",
 		"CASTER",
 		"ENABLER",
+		"UNCRAFTABLE"
 	};
 
 	/* constant for the abstractQuality and other methods.  Means that this skill would not make the target happy. @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#abstractQuality()*/

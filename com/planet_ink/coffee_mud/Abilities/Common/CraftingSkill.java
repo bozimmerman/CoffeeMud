@@ -519,7 +519,7 @@ public class CraftingSkill extends GatheringSkill
 		return craftItem(null,material);
 	}
 
-	public ItemKeyPair craftItem(String recipe, int material)
+	public ItemKeyPair craftItem(String recipeName, int material)
 	{
 		Item building=null;
 		DoorKey key=null;
@@ -532,7 +532,7 @@ public class CraftingSkill extends GatheringSkill
 		{
 			Vector V=new Vector();
 			V.addElement(Integer.valueOf(material));
-			if(recipe!=null) V.addElement(recipe);
+			if(recipeName!=null) V.addElement(recipeName);
 			invoke(mob,V,null,true,-1);
 			if((V.size()>0)&&(V.lastElement() instanceof Item))
 			{
@@ -588,12 +588,12 @@ public class CraftingSkill extends GatheringSkill
 		return allItems;
 	}
 
-	public ItemKeyPair craftItem(String recipe)
+	public ItemKeyPair craftItem(String recipeName)
 	{
 		List<Integer> rscs=myResources();
 		if(rscs.size()==0) rscs=new XVector(Integer.valueOf(RawMaterial.RESOURCE_WOOD));
 		int material=((Integer)rscs.get(CMLib.dice().roll(1,rscs.size(),-1))).intValue();
-		return craftItem(recipe,material);
+		return craftItem(recipeName,material);
 	}
 
 	public List<ItemKeyPair> craftAllItemSets()
@@ -791,6 +791,7 @@ public class CraftingSkill extends GatheringSkill
 		{
     		existingRecipes.add(CMLib.ableParms().makeRecipeFromItem(C, I));
     		R.setRecipeCodeLines(existingRecipes.toArray(new String[0]));
+    		R.setCommonSkillID( ID() );
 		}
 		catch(CMException cme)
 		{
@@ -823,11 +824,20 @@ public class CraftingSkill extends GatheringSkill
 		for(int i=0;i<I.numEffects();i++)
 		{
 			final Ability A=I.fetchEffect(i);
-			if((A!=null)
-			&&((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_PROPERTY)
-			&&(CMath.bset( A.flags(), Ability.FLAG_ZAPPER )))
-				return false;
+			if(A!=null)
+			{
+				if(((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_PROPERTY)
+				&&(CMath.bset( A.flags(), Ability.FLAG_ZAPPER )))
+					return false;
+				if(CMath.bset( A.flags(), Ability.FLAG_UNCRAFTABLE ))
+					return false;
+			}
 		}
+		for(int i=0;i<I.numBehaviors();i++)
+			if(I.fetchBehavior( i ) instanceof ScriptingEngine)
+				return false;
+		if(I.numScripts()>0)
+			return false;
 		if(CMLib.flags().flaggedBehaviors(I, Behavior.FLAG_POTENTIALLYAUTODEATHING).size()>0)
 			return false;
 		return true;
@@ -1070,6 +1080,11 @@ public class CraftingSkill extends GatheringSkill
 		}
 		return new LinkedList<Object>();
 	}
+	
+	public Pair<String,Integer> getDecodedItemNameAndLevel(final List<String> recipe)
+	{
+		return new Pair<String,Integer>(recipe.get( RCP_FINALNAME ), CMath.s_int(recipe.get( RCP_LEVEL )));
+	}
 
 	public String getComponentDescription(final MOB mob, final List<String> recipe, final int RCP_WOOD)
 	{
@@ -1110,7 +1125,7 @@ public class CraftingSkill extends GatheringSkill
 		}
 		commands=new XVector(commands);
 		commands.remove(0);
-		if(commands.size()<2)
+		if(commands.size()<1)
 		{
 			commonTell(mob,"You've failed to specify which item to deconstruct and learn.");
 			return false;
@@ -1118,6 +1133,11 @@ public class CraftingSkill extends GatheringSkill
 		building=getTarget(mob,mob.location(),givenTarget,commands,Wearable.FILTER_UNWORNONLY);
 		if(building == null)
 			return false;
+		if(building.owner() instanceof Room)
+		{
+			commonTell(mob,"You need to pick that up first.");
+			return false;
+		}
 		if(!mayICraft( mob, building ))
 		{
 			commonTell(mob,"You can't learn anything about "+building.name()+" with "+name()+".");

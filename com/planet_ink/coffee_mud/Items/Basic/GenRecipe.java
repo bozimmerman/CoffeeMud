@@ -47,16 +47,53 @@ public class GenRecipe extends GenReadable implements Recipe
 		setDisplayText("a generic recipe sits here.");
 		setMaterial(RawMaterial.RESOURCE_PAPER);
 		setUsesRemaining(1);
+		setReadableText("");
 		recoverPhyStats();
 	}
 
+	public void executeMsg(final Environmental myHost, final CMMsg msg)
+	{
+		if(msg.amITarget( this ) && (msg.targetMinor()==CMMsg.TYP_READ) && (super.readableText().length()==0) && (recipeLines.length>0))
+		{
+			StringBuilder str = new StringBuilder("");
+			Ability A=CMClass.getAbility( getCommonSkillID() );
+			if(getTotalRecipePages() > 1)
+			{
+				str.append( name()+" contains "+recipeLines.length+" recipe(s)/schematic(s) out of "+getTotalRecipePages()+" total entries.\n\r");
+				if(A!=null) str.append( "The following recipes are for the "+A.name()+" skill:\n\r" );
+			}
+			else
+				if(A!=null) str.append( "The following recipe is for the "+A.name()+" skill:\n\r" );
+			if(A instanceof ItemCraftor)
+			{
+				ItemCraftor C=(ItemCraftor)A;
+				for(String line : recipeLines)
+				{
+					// inside knowledge
+					List<String> V=CMParms.parseTabs( line, false );
+					V.add( "" );
+					Pair<String,Integer> nameAndLevel = C.getDecodedItemNameAndLevel( V );
+					String components = C.getDecodedComponentsDescription( msg.source(), V );
+					String name=CMStrings.replaceAll( nameAndLevel.first, "% ", "");
+					
+					str.append( name).append(", level "+nameAndLevel.second);
+					if(CMath.s_int(components)>0)
+						str.append( ", which requires "+components+" standard components.\n\r");
+					else
+						str.append( ", which requires: "+components+".\n\r");
+				}
+			}
+			super.setReadableText( str.substring( 0, str.length()-2 ));
+		}
+		super.executeMsg( myHost, msg );
+	}
 
 	public boolean isGeneric(){return true;}
 	public void recoverPhyStats(){CMLib.flags().setReadable(this,true); super.recoverPhyStats();}
 	public String getCommonSkillID(){return commonSkillID;}
 	public void setCommonSkillID(String ID){commonSkillID=ID;}
 	public String[] getRecipeCodeLines(){return recipeLines;}
-	public void setRecipeCodeLines(String[] lines){recipeLines=lines;}
+	public void setRecipeCodeLines(String[] lines){recipeLines=lines; setReadableText(""); }
     public int getTotalRecipePages() { return super.usesRemaining(); }
     public void setTotalRecipePages(int numRemaining) { super.setUsesRemaining(numRemaining); }
 	

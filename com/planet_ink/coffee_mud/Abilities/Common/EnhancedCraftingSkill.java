@@ -334,6 +334,11 @@ public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
 		return defs;
 	}
 	
+	public String getDecodedComponentsDescription(final MOB mob, final List<String> recipe)
+	{
+		return "Not implemented";
+	}
+
 	public DVector enhancedTypes(MOB mob, Vector commands)
 	{
 		String cmd=null;
