@@ -162,6 +162,11 @@ public class InstrumentMaking extends CraftingSkill implements ItemCraftor
 			commonTell(mob,buf.toString());
 			return true;
 		}
+		else
+		if((commands.firstElement() instanceof String)&&(((String)commands.firstElement())).equalsIgnoreCase("learn"))
+		{
+			return doLearnRecipe(mob, commands, givenTarget, auto, asLevel);
+		}
 		building=null;
 		int amount=-1;
 		if((commands.size()>1)&&(CMath.isNumber((String)commands.lastElement())))

@@ -203,6 +203,12 @@ public class Shipwright extends CraftingSkill implements ItemCraftor, MendingSki
 			commonTell(mob,buf.toString());
 			return true;
 		}
+		else
+		if((commands.firstElement() instanceof String)&&(((String)commands.firstElement())).equalsIgnoreCase("learn"))
+		{
+			return doLearnRecipe(mob, commands, givenTarget, auto, asLevel);
+		}
+		else
 		if(str.equalsIgnoreCase("scan"))
 			return publicScan(mob,commands);
 		else

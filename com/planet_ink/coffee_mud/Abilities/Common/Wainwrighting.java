@@ -189,6 +189,11 @@ public class Wainwrighting extends CraftingSkill implements ItemCraftor
 			commonTell(mob,buf.toString());
 			return true;
 		}
+		else
+		if((commands.firstElement() instanceof String)&&(((String)commands.firstElement())).equalsIgnoreCase("learn"))
+		{
+			return doLearnRecipe(mob, commands, givenTarget, auto, asLevel);
+		}
 		building=null;
 		key=null;
 		messedUp=false;

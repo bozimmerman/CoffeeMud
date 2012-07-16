@@ -211,6 +211,11 @@ public class Alchemy extends CraftingSkill implements ItemCraftor
 			return true;
 		}
 		else
+		if((commands.firstElement() instanceof String)&&(((String)commands.firstElement())).equalsIgnoreCase("learn"))
+		{
+			return doLearnRecipe(mob, commands, givenTarget, auto, asLevel);
+		}
+		else
 		if((!auto)&&(commands.size()<2))
 		{
 			commonEmote(mob,"You must specify what magic you wish to brew, and the container to brew it in.");

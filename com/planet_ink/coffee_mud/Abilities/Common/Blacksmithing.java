@@ -199,6 +199,11 @@ public class Blacksmithing extends EnhancedCraftingSkill implements ItemCraftor
 			enhanceList(mob);
 			return true;
 		}
+		else
+		if((commands.firstElement() instanceof String)&&(((String)commands.firstElement())).equalsIgnoreCase("learn"))
+		{
+			return doLearnRecipe(mob, commands, givenTarget, auto, asLevel);
+		}
 
 		building=null;
 		messedUp=false;

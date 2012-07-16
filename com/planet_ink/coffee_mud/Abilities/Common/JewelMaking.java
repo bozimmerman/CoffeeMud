@@ -285,6 +285,11 @@ public class JewelMaking extends EnhancedCraftingSkill implements ItemCraftor, M
 			return true;
 		}
 		else
+		if((commands.firstElement() instanceof String)&&(((String)commands.firstElement())).equalsIgnoreCase("learn"))
+		{
+			return doLearnRecipe(mob, commands, givenTarget, auto, asLevel);
+		}
+		else
 		if((str.equalsIgnoreCase("encrust"))||(str.equalsIgnoreCase("mount")))
 		{
 			String word=str.toLowerCase();

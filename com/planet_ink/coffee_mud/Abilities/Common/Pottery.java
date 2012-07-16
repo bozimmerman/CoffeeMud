@@ -191,6 +191,11 @@ public class Pottery extends CraftingSkill implements ItemCraftor
 			commonTell(mob,buf.toString());
 			return true;
 		}
+		else
+		if((commands.firstElement() instanceof String)&&(((String)commands.firstElement())).equalsIgnoreCase("learn"))
+		{
+			return doLearnRecipe(mob, commands, givenTarget, auto, asLevel);
+		}
 		Item fire=getRequiredFire(mob,autoGenerate);
 		if(fire==null) return false;
 		building=null;

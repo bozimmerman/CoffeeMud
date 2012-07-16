@@ -1098,4 +1098,10 @@ public class CraftingSkill extends GatheringSkill
 		}
 		return "?";
 	}
+	
+	protected boolean doLearnRecipe(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
+	{
+		commonTell(mob,"Not yet implemented");
+		return false;
+	}
 }
