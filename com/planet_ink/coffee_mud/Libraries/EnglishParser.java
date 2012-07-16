@@ -67,8 +67,9 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 	
 	public boolean isAnArticle(String s)
 	{
+		s=s.toLowerCase();
 		for(int a=0;a<articles.length;a++)
-			if(s.toLowerCase().equals(articles[a]))
+			if(s.equals(articles[a]))
 				return true;
 		return false;
 	}

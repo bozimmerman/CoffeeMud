@@ -977,6 +977,17 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 									}
 								}
 						}
+						if(newName.indexOf( '%' )<0)
+						{
+							List<String> V=CMParms.parseSpaces( newName,true);
+							for(int i=0;i<V.size()-1;i++)
+								if(CMLib.english().isAnArticle( V.get( i ) ))
+								{
+									V.add( i, "%" );
+									break;
+								}
+							newName=CMParms.combine( V );
+						}
 						return newName;
 					}
 				}, 
