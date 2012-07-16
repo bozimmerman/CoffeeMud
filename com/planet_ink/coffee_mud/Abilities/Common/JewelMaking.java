@@ -231,7 +231,7 @@ public class JewelMaking extends EnhancedCraftingSkill implements ItemCraftor, M
 		randomRecipeFix(mob,addRecipes(mob,loadRecipes()),commands,autoGenerate);
 		if(commands.size()==0)
 		{
-			commonTell(mob,"Make what? Enter \"jewel list\" for a list.  You may also enter jewel encrust <gem name> <item name>, or jewel mount <gem name> <item name>, or jewel refit <item name>, or jewel scan, or jewel mend <item name>.");
+			commonTell(mob,"Make what? Enter \"jewel list\" for a list.  You may also enter jewel encrust <gem name> <item name>, or jewel mount <gem name> <item name>, or jewel refit <item name>, jewel learn <item> <paper>, or jewel scan, or jewel mend <item name>.");
 			return false;
 		}
 		if((!auto)

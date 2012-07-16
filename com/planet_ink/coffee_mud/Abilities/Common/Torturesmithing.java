@@ -138,7 +138,7 @@ public class Torturesmithing extends CraftingSkill implements ItemCraftor
 		randomRecipeFix(mob,addRecipes(mob,loadRecipes()),commands,autoGenerate);
 		if(commands.size()==0)
 		{
-			commonTell(mob,"Make what? Enter \""+triggerStrings()[0].toLowerCase()+" list\" for a list.");
+			commonTell(mob,"Make what? Enter \""+triggerStrings()[0].toLowerCase()+" list\" for a list, \""+triggerStrings()[0].toLowerCase()+" learn <item> <paper>\" to gain recipes.");
 			return false;
 		}
 		List<List<String>> recipes=addRecipes(mob,loadRecipes());

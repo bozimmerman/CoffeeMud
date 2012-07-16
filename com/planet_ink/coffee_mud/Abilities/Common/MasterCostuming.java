@@ -64,7 +64,7 @@ public class MasterCostuming extends Costuming
 		randomRecipeFix(mob,addRecipes(mob,loadRecipes()),commands,autoGenerate);
 		if(commands.size()==0)
 		{
-			commonTell(mob,"Make what? Enter \"mcostume list\" for a list, \"mcostume scan\", \"mcostume refit\", or \"mcostume mend <item>\".");
+			commonTell(mob,"Make what? Enter \"mcostume list\" for a list, \"mcostume scan\", \"mcostume refit\", \"mcostume learn <item> <paper>\", or \"mcostume mend <item>\".");
 			return false;
 		}
 		if(autoGenerate>0)

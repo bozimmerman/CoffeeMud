@@ -119,7 +119,7 @@ public class InstrumentMaking extends CraftingSkill implements ItemCraftor
 		randomRecipeFix(mob,addRecipes(mob,loadRecipes()),commands,autoGenerate);
 		if(commands.size()==0)
 		{
-			commonTell(mob,"Make what Instrument? Enter \"instrumentmake list\" for a list.");
+			commonTell(mob,"Make what Instrument? Enter \"instrumentmake list\" for a list, \"instrumentmake learn <item> <paper>\" to gain recipes.");
 			return false;
 		}
 		if((!auto)

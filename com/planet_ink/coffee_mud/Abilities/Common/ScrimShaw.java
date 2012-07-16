@@ -183,7 +183,7 @@ public class ScrimShaw extends EnhancedCraftingSkill implements ItemCraftor, Men
 		randomRecipeFix(mob,addRecipes(mob,loadRecipes()),commands,autoGenerate);
 		if(commands.size()==0)
 		{
-			commonTell(mob,"Scrim what? Enter \"scrim list\" for a list, \"scrim scan\", or \"scrim mend <item>\".");
+			commonTell(mob,"Scrim what? Enter \"scrim list\" for a list, \"scrim scan\", \"scrim learn <item> <paper>\" to gain recipes, or \"scrim mend <item>\".");
 			return false;
 		}
 		if((!auto)

@@ -190,7 +190,7 @@ public class Herbalism extends CraftingSkill implements ItemCraftor
 		}
 		if(commands.size()<1)
 		{
-			commonTell(mob,"Brew what? Enter \"hbrew list\" for a list.");
+			commonTell(mob,"Brew what? Enter \"hbrew list\" for a list, \"hbrew learn <item> <paper>\" to learn recipes.");
 			return false;
 		}
 		List<List<String>> recipes=addRecipes(mob,loadRecipes());

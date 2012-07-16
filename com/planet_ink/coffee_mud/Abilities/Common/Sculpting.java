@@ -155,7 +155,7 @@ public class Sculpting extends EnhancedCraftingSkill implements ItemCraftor, Men
 		randomRecipeFix(mob,addRecipes(mob,loadRecipes()),commands,autoGenerate);
 		if(commands.size()==0)
 		{
-			commonTell(mob,"Sculpt what? Enter \"sculpt list\" for a list, \"sculpt scan\", or \"sculpt mend <item>\".");
+			commonTell(mob,"Sculpt what? Enter \"sculpt list\" for a list, \"sculpt scan\", \"sculpt learn <item> <paper>\", or \"sculpt mend <item>\".");
 			return false;
 		}
 		if((!auto)

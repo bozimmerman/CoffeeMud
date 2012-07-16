@@ -198,7 +198,7 @@ public class Tailoring extends EnhancedCraftingSkill implements ItemCraftor, Men
 		randomRecipeFix(mob,addRecipes(mob,loadRecipes()),commands,autoGenerate);
 		if(commands.size()==0)
 		{
-			commonTell(mob,"Knit what? Enter \"knit list\" for a list, \"knit refit <item>\" to resize, \"knit scan\", or \"knit mend <item>\".");
+			commonTell(mob,"Knit what? Enter \"knit list\" for a list, \"knit refit <item>\" to resize, \"knit learn <item> <paper>\", \"knit scan\", or \"knit mend <item>\".");
 			return false;
 		}
 		if((!auto)

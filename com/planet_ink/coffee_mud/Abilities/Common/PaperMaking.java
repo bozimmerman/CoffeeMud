@@ -104,7 +104,7 @@ public class PaperMaking extends CraftingSkill implements ItemCraftor
 		randomRecipeFix(mob,addRecipes(mob,loadRecipes()),commands,autoGenerate);
 		if(commands.size()==0)
 		{
-			commonTell(mob,"Papermake what? Enter \"Papermake list\" for a list.");
+			commonTell(mob,"Papermake what? Enter \"papermake list\" for a list, \"papermake learn <item> <paper>\" to gain recipes.");
 			return false;
 		}
 		if((!auto)

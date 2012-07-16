@@ -211,7 +211,7 @@ public class Carpentry extends EnhancedCraftingSkill implements ItemCraftor
 		randomRecipeFix(mob,addRecipes(mob,loadRecipes()),commands,autoGenerate);
 		if(commands.size()==0)
 		{
-			commonTell(mob,"Carve what? Enter \"carve list\" for a list, \"carve refit <item>\" to resize shoes or armor, \"carve scan\", or \"carve mend <item>\".");
+			commonTell(mob,"Carve what? Enter \"carve list\" for a list, \"carve refit <item>\" to resize shoes or armor, \"carve learn <item> <paper>\", \"carve scan\", or \"carve mend <item>\".");
 			return false;
 		}
 		if((!auto)

@@ -239,7 +239,7 @@ public class MasterLeatherWorking extends EnhancedCraftingSkill implements ItemC
 		randomRecipeFix(mob,addRecipes(mob,loadRecipes()),commands,autoGenerate);
 		if(commands.size()==0)
 		{
-			commonTell(mob,"Make what? Enter \"mleatherwork list\" for a list, \"mleatherwork refit <item>\" to resize, \"mleatherwork scan\", or \"mleatherwork mend <item>\".");
+			commonTell(mob,"Make what? Enter \"mleatherwork list\" for a list, \"mleatherwork refit <item>\" to resize, \"mleatherwork learn <item> <paper>\", \"mleatherwork scan\", or \"mleatherwork mend <item>\".");
 			return false;
 		}
 		if((!auto)

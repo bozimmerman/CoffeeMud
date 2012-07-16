@@ -188,7 +188,7 @@ public class Costuming extends EnhancedCraftingSkill implements ItemCraftor, Men
 		randomRecipeFix(mob,addRecipes(mob,loadRecipes()),commands,autoGenerate);
 		if(commands.size()==0)
 		{
-			commonTell(mob,"Costume what? Enter \"Costume list\" for a list, \"Costume refit <item>\" to resize, \"Costume scan\", or \"Costume mend <item>\".");
+			commonTell(mob,"Costume what? Enter \"costume list\" for a list, \"costume refit <item>\" to resize, \"costume learn <item> <paper>\", \"costume scan\", or \"costume mend <item>\".");
 			return false;
 		}
 		if((!auto)

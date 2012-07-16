@@ -216,7 +216,7 @@ public class Weaponsmithing extends EnhancedCraftingSkill implements ItemCraftor
 		randomRecipeFix(mob,addRecipes(mob,loadRecipes()),commands,autoGenerate);
 		if(commands.size()==0)
 		{
-			commonTell(mob,"Make what? Enter \"weaponsmith list\" for a list, \"weaponsmith scan\", or \"weaponsmith mend <item>\".");
+			commonTell(mob,"Make what? Enter \"weaponsmith list\" for a list, \"weaponsmith scan\", \"weaponsmith learn <item> <paper>\", or \"weaponsmith mend <item>\".");
 			return false;
 		}
 		if((!auto)

@@ -165,7 +165,7 @@ public class Shipwright extends CraftingSkill implements ItemCraftor, MendingSki
 		randomRecipeFix(mob,addRecipes(mob,loadRecipes()),commands,autoGenerate);
 		if(commands.size()==0)
 		{
-			commonTell(mob,"Shipwright what? Enter \"shipwright list\" for a list, \"shipwright scan\", or \"shipwright mend <item>\".");
+			commonTell(mob,"Shipwright what? Enter \"shipwright list\" for a list, \"shipwright scan\", \"shipwright learn <item> <paper>\", or \"shipwright mend <item>\".");
 			return false;
 		}
 		if((!auto)

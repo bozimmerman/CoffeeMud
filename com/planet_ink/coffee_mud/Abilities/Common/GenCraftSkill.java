@@ -415,6 +415,7 @@ public class GenCraftSkill extends EnhancedCraftingSkill implements ItemCraftor
 			StringBuilder features=new StringBuilder(noun+" what? Enter \""+noun.toLowerCase()+" list\" for a list");
 			if(canMendB.booleanValue()) features.append(", \""+noun.toLowerCase()+" mend <item>\" to mend broken items, \""+noun.toLowerCase()+" scan\" to scan for mendable items");
 			if(canRefitB.booleanValue()) features.append(", \""+noun.toLowerCase()+" refit <item>\" to resize wearables");
+			if(canLearnB.booleanValue()) features.append(", \""+noun.toLowerCase()+" learn <item> <paper>\" to gain recipes");
 			if(canBundleB.booleanValue()) features.append(", \""+noun.toLowerCase()+" bundle\" to make bundles");
 			features.append(".");
 			commonTell(mob,features.toString());

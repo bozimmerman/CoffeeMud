@@ -177,7 +177,7 @@ public class Alchemy extends CraftingSkill implements ItemCraftor
 		randomRecipeFix(mob,addRecipes(mob,loadRecipes()),commands,0);
 		if(commands.size()<1)
 		{
-			commonTell(mob,"Brew what? Enter \"brew list\" for a list.");
+			commonTell(mob,"Brew what? Enter \"brew list\" for a list, \"brew learn <item> <paper>\" to learn recipes.");
 			return false;
 		}
 		List<List<String>> recipes=addRecipes(mob,loadRecipes());

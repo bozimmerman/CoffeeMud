@@ -156,7 +156,7 @@ public class Cobbling extends EnhancedCraftingSkill implements ItemCraftor, Mend
 		randomRecipeFix(mob,addRecipes(mob,loadRecipes()),commands,autoGenerate);
 		if(commands.size()==0)
 		{
-			commonTell(mob,"Make what? Enter \"cobble list\" for a list, \"cobble refit <item>\" to resize, \"cobble scan\", or \"cobble mend <item>\".");
+			commonTell(mob,"Make what? Enter \"cobble list\" for a list, \"cobble refit <item>\" to resize, \"cobble learn <item> <paper>\", \"cobble scan\", or \"cobble mend <item>\".");
 			return false;
 		}
 		if((!auto)

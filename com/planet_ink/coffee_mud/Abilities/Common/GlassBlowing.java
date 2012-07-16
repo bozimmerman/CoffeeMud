@@ -176,7 +176,7 @@ public class GlassBlowing extends CraftingSkill implements ItemCraftor
 		randomRecipeFix(mob,addRecipes(mob,loadRecipes()),commands,autoGenerate);
 		if(commands.size()==0)
 		{
-			commonTell(mob,"Make what? Enter \"glassblow list\" for a list.");
+			commonTell(mob,"Make what? Enter \"glassblow list\" for a list, \"glassblow learn <item> <paper>\" to gain recipes.");
 			return false;
 		}
 		if((!auto)

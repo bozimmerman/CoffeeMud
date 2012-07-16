@@ -58,7 +58,7 @@ public class Apothecary extends Cooking
 		defaultDrinkSound = "hotspring.wav";
 	}
 
-	public boolean supportsDeconstruction() { return true; }
+	public boolean supportsDeconstruction() { return false; }
 
 	public boolean mayICraft(final Item I)
 	{
