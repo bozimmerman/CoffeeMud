@@ -2,6 +2,7 @@ package com.planet_ink.coffee_mud.Abilities.Common;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
+import com.planet_ink.coffee_mud.Abilities.Common.CraftingSkill.CraftingActivity;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
 import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
@@ -85,15 +86,27 @@ public class Shipwright extends CraftingSkill implements ItemCraftor, MendingSki
 				{
 					if(messedUp)
 					{
-						if(mending)
+						if(activity == CraftingActivity.MENDING)
 							messedUpCrafting(mob);
+						else
+						if(activity == CraftingActivity.LEARNING)
+						{
+							commonEmote(mob,"<S-NAME> fail(s) to learn how to make "+building.name()+".");
+							building.destroy();
+						}
 						else
 							commonEmote(mob,"<S-NAME> mess(es) up carving "+building.name()+".");
 					}
 					else
 					{
-						if(mending)
+						if(activity == CraftingActivity.MENDING)
 							building.setUsesRemaining(100);
+						else
+						if(activity==CraftingActivity.LEARNING)
+						{
+							deconstructRecipeInto( building, recipeHolder );
+							building.destroy();
+						}
 						else
 						{
 							dropAWinner(mob,building);
@@ -108,7 +121,7 @@ public class Shipwright extends CraftingSkill implements ItemCraftor, MendingSki
 				}
 				building=null;
 				key=null;
-				mending=false;
+				activity = CraftingActivity.CRAFTING;
 			}
 		}
 		super.unInvoke();
@@ -165,7 +178,7 @@ public class Shipwright extends CraftingSkill implements ItemCraftor, MendingSki
 		randomRecipeFix(mob,addRecipes(mob,loadRecipes()),commands,autoGenerate);
 		if(commands.size()==0)
 		{
-			commonTell(mob,"Shipwright what? Enter \"shipwright list\" for a list, \"shipwright scan\", \"shipwright learn <item> <paper>\", or \"shipwright mend <item>\".");
+			commonTell(mob,"Shipwright what? Enter \"shipwright list\" for a list, \"shipwright scan\", \"shipwright learn <item>\", or \"shipwright mend <item>\".");
 			return false;
 		}
 		if((!auto)
@@ -215,13 +228,13 @@ public class Shipwright extends CraftingSkill implements ItemCraftor, MendingSki
 		if(str.equalsIgnoreCase("mend"))
 		{
 			building=null;
-			mending=false;
+			activity = CraftingActivity.CRAFTING;
 			key=null;
 			messedUp=false;
 			Vector newCommands=CMParms.parse(CMParms.combine(commands,1));
 			building=getTarget(mob,mob.location(),givenTarget,newCommands,Wearable.FILTER_UNWORNONLY);
 			if(!canMend(mob,building,false)) return false;
-			mending=true;
+			activity = CraftingActivity.MENDING;
 			if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 				return false;
 			startStr="<S-NAME> start(s) mending "+building.name()+".";
@@ -231,10 +244,9 @@ public class Shipwright extends CraftingSkill implements ItemCraftor, MendingSki
 		else
 		{
 			building=null;
-			mending=false;
+			activity = CraftingActivity.CRAFTING;
 			key=null;
 			messedUp=false;
-			refitting=false;
 			aborted=false;
 			int amount=-1;
 			if((commands.size()>1)&&(CMath.isNumber((String)commands.lastElement())))

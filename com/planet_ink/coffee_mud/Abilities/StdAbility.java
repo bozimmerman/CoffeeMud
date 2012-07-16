@@ -310,7 +310,9 @@ public class StdAbility implements Ability
 
 		savable=false; // makes it so that the effect does not save!
 
-		tickTime+=addedTickTime(invokerMOB,tickTime);
+		if((classificationCode() != (Ability.ACODE_COMMON_SKILL|Ability.DOMAIN_CRAFTINGSKILL))
+		&&(classificationCode() != (Ability.ACODE_COMMON_SKILL|Ability.DOMAIN_GATHERINGSKILL)))
+			tickTime+=addedTickTime(invokerMOB,tickTime);
 		if(invoker()!=null)
 			for(int c=0;c<invoker().charStats().numClasses();c++)
 				tickTime=invoker().charStats().getMyClass(c).classDurationModifier(invoker(),this,tickTime);

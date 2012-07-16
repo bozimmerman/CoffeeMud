@@ -2,6 +2,7 @@ package com.planet_ink.coffee_mud.Abilities.Common;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
+import com.planet_ink.coffee_mud.Abilities.Common.CraftingSkill.CraftingActivity;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
 import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
@@ -86,20 +87,32 @@ public class Cobbling extends EnhancedCraftingSkill implements ItemCraftor, Mend
 				{
 					if(messedUp)
 					{
-						if(mending)
+						if(activity == CraftingActivity.MENDING)
 							messedUpCrafting(mob);
 						else
-						if(refitting)
+						if(activity == CraftingActivity.LEARNING)
+						{
+							commonEmote(mob,"<S-NAME> fail(s) to learn how to make "+building.name()+".");
+							building.destroy();
+						}
+						else
+						if(activity == CraftingActivity.REFITTING)
 							commonEmote(mob,"<S-NAME> mess(es) up refitting "+building.name()+".");
 						else
 							commonEmote(mob,"<S-NAME> mess(es) up cobbling "+building.name()+".");
 					}
 					else
 					{
-						if(mending)
+						if(activity == CraftingActivity.MENDING)
 							building.setUsesRemaining(100);
 						else
-						if(refitting)
+						if(activity==CraftingActivity.LEARNING)
+						{
+							deconstructRecipeInto( building, recipeHolder );
+							building.destroy();
+						}
+						else
+						if(activity == CraftingActivity.REFITTING)
 						{
 							building.basePhyStats().setHeight(0);
 							building.recoverPhyStats();
@@ -109,7 +122,7 @@ public class Cobbling extends EnhancedCraftingSkill implements ItemCraftor, Mend
 					}
 				}
 				building=null;
-				mending=false;
+				activity = CraftingActivity.CRAFTING;
 			}
 		}
 		super.unInvoke();
@@ -156,7 +169,7 @@ public class Cobbling extends EnhancedCraftingSkill implements ItemCraftor, Mend
 		randomRecipeFix(mob,addRecipes(mob,loadRecipes()),commands,autoGenerate);
 		if(commands.size()==0)
 		{
-			commonTell(mob,"Make what? Enter \"cobble list\" for a list, \"cobble refit <item>\" to resize, \"cobble learn <item> <paper>\", \"cobble scan\", or \"cobble mend <item>\".");
+			commonTell(mob,"Make what? Enter \"cobble list\" for a list, \"cobble refit <item>\" to resize, \"cobble learn <item>\", \"cobble scan\", or \"cobble mend <item>\".");
 			return false;
 		}
 		if((!auto)
@@ -220,12 +233,12 @@ public class Cobbling extends EnhancedCraftingSkill implements ItemCraftor, Mend
 		if(str.equalsIgnoreCase("mend"))
 		{
 			building=null;
-			mending=false;
+			activity = CraftingActivity.CRAFTING;
 			messedUp=false;
 			Vector newCommands=CMParms.parse(CMParms.combine(commands,1));
 			building=getTarget(mob,mob.location(),givenTarget,newCommands,Wearable.FILTER_UNWORNONLY);
 			if(!canMend(mob, building,false)) return false;
-			mending=true;
+			activity = CraftingActivity.MENDING;
 			if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 				return false;
 			startStr="<S-NAME> start(s) mending "+building.name()+".";
@@ -236,8 +249,7 @@ public class Cobbling extends EnhancedCraftingSkill implements ItemCraftor, Mend
 		if(str.equalsIgnoreCase("refit"))
 		{
 			building=null;
-			mending=false;
-			refitting=false;
+			activity = CraftingActivity.CRAFTING;
 			messedUp=false;
 			Vector newCommands=CMParms.parse(CMParms.combine(commands,1));
 			building=getTarget(mob,mob.location(),givenTarget,newCommands,Wearable.FILTER_UNWORNONLY);
@@ -257,7 +269,7 @@ public class Cobbling extends EnhancedCraftingSkill implements ItemCraftor, Mend
 				commonTell(mob,building.name()+" is already the right size.");
 				return false;
 			}
-			refitting=true;
+			activity = CraftingActivity.REFITTING;
 			if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 				return false;
 			startStr="<S-NAME> start(s) refitting "+building.name()+".";
@@ -267,9 +279,8 @@ public class Cobbling extends EnhancedCraftingSkill implements ItemCraftor, Mend
 		else
 		{
 			building=null;
-			mending=false;
+			activity = CraftingActivity.CRAFTING;
 			messedUp=false;
-			refitting=false;
 			aborted=false;
 			int amount=-1;
 			if((commands.size()>1)&&(CMath.isNumber((String)commands.lastElement())))

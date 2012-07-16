@@ -45,9 +45,10 @@ public class CraftingSkill extends GatheringSkill
 	public int classificationCode(){return Ability.ACODE_COMMON_SKILL|Ability.DOMAIN_CRAFTINGSKILL;}
 	public String accountForYourself(){return name()+" requires: "+supportedResourceString();}
 	protected Item building=null;
+	protected Recipe recipeHolder = null;
 	protected boolean fireRequired=true;
-	protected boolean mending=false;
-	protected boolean refitting=false;
+	protected enum CraftingActivity { CRAFTING, MENDING, LEARNING, REFITTING };
+	protected CraftingActivity activity = CraftingActivity.CRAFTING;
 	protected boolean messedUp=false;
 
 	// common recipe definition indexes
@@ -1101,10 +1102,71 @@ public class CraftingSkill extends GatheringSkill
 	
 	protected boolean doLearnRecipe(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
+		recipeHolder=null;
+		if((!(this instanceof ItemCraftor))||(!((ItemCraftor)this).supportsDeconstruction()))
+		{
+			commonTell(mob,"You don't know how to learn new recipes with this skill.");
+			return false;
+		}
 		commands=new XVector(commands);
 		commands.remove(0);
-		
-		commonTell(mob,"Not yet implemented");
-		return false;
+		if(commands.size()<2)
+		{
+			commonTell(mob,"You've failed to specify which item to deconstruct and learn.");
+			return false;
+		}
+		building=getTarget(mob,mob.location(),givenTarget,commands,Wearable.FILTER_UNWORNONLY);
+		if(building == null)
+			return false;
+		if(!mayICraft( mob, building ))
+		{
+			commonTell(mob,"You can't learn anything about "+building.name()+" with "+name()+".");
+			return false;
+		}
+		if(!building.amWearingAt( Item.IN_INVENTORY ))
+		{
+			commonTell(mob,"You need to remove "+building.name()+" first.");
+			return false;
+		}
+		if((building instanceof Container)&&(((Container)building).getContents().size()>0))
+		{
+			commonTell(mob,"You need to empty "+building.name()+" first.");
+			return false;
+		}
+		recipeHolder=null;
+		for(int i=0;i<mob.numItems();i++)
+		{
+			Item I=mob.getItem( i );
+			if((I instanceof Recipe)&&(I.container()==null))
+			{
+				Recipe R=(Recipe)I;
+				if(((R.getCommonSkillID().length()==0)||(R.getCommonSkillID().equalsIgnoreCase( ID() )))
+				&&(R.getTotalRecipePages() > R.getRecipeCodeLines().length))
+				{
+					recipeHolder=R;
+					break;
+				}
+			}
+		}
+		if(recipeHolder==null)
+		{
+			commonTell(mob,"You need to have either a blank recipe page or book, or one already containing recipes for "+name()+" that has blank pages.");
+			return false;
+		}
+		activity = CraftingActivity.LEARNING;
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
+			return false;
+		displayText="You are deconstructing "+building.name();
+		verb="deconstructing "+building.name();
+		messedUp=!proficiencyCheck(mob,0,auto);
+		CMMsg msg=CMClass.getMsg(mob,building,this,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> start(s) deconstructing and studying <T-NAMESELF>.");
+		if(mob.location().okMessage(mob,msg))
+		{
+			mob.location().send(mob,msg);
+			building=(Item)msg.target();
+			int duration = getDuration(10+building.phyStats().level(),mob,building.phyStats().level(),10);
+			beneficialAffect(mob,mob,asLevel,duration);
+		}
+		return true;
 	}
 }

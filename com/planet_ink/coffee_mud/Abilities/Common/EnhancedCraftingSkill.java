@@ -2,6 +2,7 @@ package com.planet_ink.coffee_mud.Abilities.Common;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
+import com.planet_ink.coffee_mud.Abilities.Common.CraftingSkill.CraftingActivity;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
 import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
@@ -434,7 +435,7 @@ public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
 		EnhancedCraftingSkill affect=(EnhancedCraftingSkill)mob.fetchEffect(ID());
 		if((affect!=null)
 		&&(!affect.aborted)
-		&&(!affect.mending)
+		&&(activity == CraftingActivity.CRAFTING)
 		&&(item!=null))
 		{
 			for(int t=0;t<types.size();t++)

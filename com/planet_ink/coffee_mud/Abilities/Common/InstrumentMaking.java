@@ -2,6 +2,7 @@ package com.planet_ink.coffee_mud.Abilities.Common;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
+import com.planet_ink.coffee_mud.Abilities.Common.CraftingSkill.CraftingActivity;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
 import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
@@ -97,7 +98,19 @@ public class InstrumentMaking extends CraftingSkill implements ItemCraftor
 				if((building!=null)&&(!aborted))
 				{
 					if(messedUp)
-						commonEmote(mob,"<S-NAME> mess(es) up making "+building.name()+".");
+					{
+						if(activity == CraftingActivity.LEARNING)
+							commonEmote(mob,"<S-NAME> fail(s) to learn how to make "+building.name()+".");
+						else
+							commonEmote(mob,"<S-NAME> mess(es) up making "+building.name()+".");
+						building.destroy();
+					}
+					else
+					if(activity==CraftingActivity.LEARNING)
+					{
+						deconstructRecipeInto( building, recipeHolder );
+						building.destroy();
+					}
 					else
 						dropAWinner(mob,building);
 				}
@@ -119,7 +132,7 @@ public class InstrumentMaking extends CraftingSkill implements ItemCraftor
 		randomRecipeFix(mob,addRecipes(mob,loadRecipes()),commands,autoGenerate);
 		if(commands.size()==0)
 		{
-			commonTell(mob,"Make what Instrument? Enter \"instrumentmake list\" for a list, \"instrumentmake learn <item> <paper>\" to gain recipes.");
+			commonTell(mob,"Make what Instrument? Enter \"instrumentmake list\" for a list, \"instrumentmake learn <item>\" to gain recipes.");
 			return false;
 		}
 		if((!auto)

@@ -2,6 +2,7 @@ package com.planet_ink.coffee_mud.Abilities.Common;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
+import com.planet_ink.coffee_mud.Abilities.Common.CraftingSkill.CraftingActivity;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
 import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
@@ -87,20 +88,32 @@ public class Carpentry extends EnhancedCraftingSkill implements ItemCraftor
 				{
 					if(messedUp)
 					{
-						if(mending)
+						if(activity == CraftingActivity.MENDING)
 							messedUpCrafting(mob);
 						else
-						if(refitting)
+						if(activity == CraftingActivity.LEARNING)
+						{
+							commonEmote(mob,"<S-NAME> fail(s) to learn how to make "+building.name()+".");
+							building.destroy();
+						}
+						else
+						if(activity == CraftingActivity.REFITTING)
 							commonEmote(mob,"<S-NAME> mess(es) up refitting "+building.name()+".");
 						else
 							commonEmote(mob,"<S-NAME> mess(es) up carving "+building.name()+".");
 					}
 					else
 					{
-						if(mending)
+						if(activity == CraftingActivity.MENDING)
 							building.setUsesRemaining(100);
 						else
-						if(refitting)
+						if(activity==CraftingActivity.LEARNING)
+						{
+							deconstructRecipeInto( building, recipeHolder );
+							building.destroy();
+						}
+						else
+						if(activity == CraftingActivity.REFITTING)
 						{
 							building.basePhyStats().setHeight(0);
 							building.recoverPhyStats();
@@ -119,7 +132,7 @@ public class Carpentry extends EnhancedCraftingSkill implements ItemCraftor
 				}
 				building=null;
 				key=null;
-				mending=false;
+				activity = CraftingActivity.CRAFTING;
 			}
 		}
 		super.unInvoke();
@@ -211,7 +224,7 @@ public class Carpentry extends EnhancedCraftingSkill implements ItemCraftor
 		randomRecipeFix(mob,addRecipes(mob,loadRecipes()),commands,autoGenerate);
 		if(commands.size()==0)
 		{
-			commonTell(mob,"Carve what? Enter \"carve list\" for a list, \"carve refit <item>\" to resize shoes or armor, \"carve learn <item> <paper>\", \"carve scan\", or \"carve mend <item>\".");
+			commonTell(mob,"Carve what? Enter \"carve list\" for a list, \"carve refit <item>\" to resize shoes or armor, \"carve learn <item>\", \"carve scan\", or \"carve mend <item>\".");
 			return false;
 		}
 		if((!auto)
@@ -275,13 +288,13 @@ public class Carpentry extends EnhancedCraftingSkill implements ItemCraftor
 		if(str.equalsIgnoreCase("mend"))
 		{
 			building=null;
-			mending=false;
+			activity = CraftingActivity.CRAFTING;
 			key=null;
 			messedUp=false;
 			Vector newCommands=CMParms.parse(CMParms.combine(commands,1));
 			building=getTarget(mob,mob.location(),givenTarget,newCommands,Wearable.FILTER_UNWORNONLY);
 			if(!canMend(mob, building,false)) return false;
-			mending=true;
+			activity = CraftingActivity.MENDING;
 			if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 				return false;
 			startStr="<S-NAME> start(s) mending "+building.name()+".";
@@ -292,8 +305,7 @@ public class Carpentry extends EnhancedCraftingSkill implements ItemCraftor
 		if(str.equalsIgnoreCase("refit"))
 		{
 			building=null;
-			mending=false;
-			refitting=false;
+			activity = CraftingActivity.CRAFTING;
 			messedUp=false;
 			Vector newCommands=CMParms.parse(CMParms.combine(commands,1));
 			building=getTarget(mob,mob.location(),givenTarget,newCommands,Wearable.FILTER_UNWORNONLY);
@@ -313,7 +325,7 @@ public class Carpentry extends EnhancedCraftingSkill implements ItemCraftor
 				commonTell(mob,building.name()+" is already the right size.");
 				return false;
 			}
-			refitting=true;
+			activity = CraftingActivity.REFITTING;
 			if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 				return false;
 			startStr="<S-NAME> start(s) refitting "+building.name()+".";
@@ -323,8 +335,7 @@ public class Carpentry extends EnhancedCraftingSkill implements ItemCraftor
 		else
 		{
 			building=null;
-			mending=false;
-			refitting=false;
+			activity = CraftingActivity.CRAFTING;
 			aborted=false;
 			key=null;
 			messedUp=false;

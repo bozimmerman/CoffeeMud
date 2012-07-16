@@ -2,6 +2,7 @@ package com.planet_ink.coffee_mud.Abilities.Common;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
+import com.planet_ink.coffee_mud.Abilities.Common.CraftingSkill.CraftingActivity;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
 import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
@@ -84,15 +85,27 @@ public class ScrimShaw extends EnhancedCraftingSkill implements ItemCraftor, Men
 				{
 					if(messedUp)
 					{
-						if(mending)
+						if(activity == CraftingActivity.MENDING)
 							messedUpCrafting(mob);
+						else
+						if(activity == CraftingActivity.LEARNING)
+						{
+							commonEmote(mob,"<S-NAME> fail(s) to learn how to make "+building.name()+".");
+							building.destroy();
+						}
 						else
 							commonTell(mob,"<S-NAME> mess(es) up scrimshawing "+building.name()+".");
 					}
 					else
 					{
-						if(mending)
+						if(activity == CraftingActivity.MENDING)
 							building.setUsesRemaining(100);
+						else
+						if(activity==CraftingActivity.LEARNING)
+						{
+							deconstructRecipeInto( building, recipeHolder );
+							building.destroy();
+						}
 						else
 						{
 							dropAWinner(mob,building);
@@ -107,7 +120,7 @@ public class ScrimShaw extends EnhancedCraftingSkill implements ItemCraftor, Men
 				}
 				building=null;
 				key=null;
-				mending=false;
+				activity = CraftingActivity.CRAFTING;
 			}
 		}
 		super.unInvoke();
@@ -183,7 +196,7 @@ public class ScrimShaw extends EnhancedCraftingSkill implements ItemCraftor, Men
 		randomRecipeFix(mob,addRecipes(mob,loadRecipes()),commands,autoGenerate);
 		if(commands.size()==0)
 		{
-			commonTell(mob,"Scrim what? Enter \"scrim list\" for a list, \"scrim scan\", \"scrim learn <item> <paper>\" to gain recipes, or \"scrim mend <item>\".");
+			commonTell(mob,"Scrim what? Enter \"scrim list\" for a list, \"scrim scan\", \"scrim learn <item>\" to gain recipes, or \"scrim mend <item>\".");
 			return false;
 		}
 		if((!auto)
@@ -233,13 +246,13 @@ public class ScrimShaw extends EnhancedCraftingSkill implements ItemCraftor, Men
 		if(str.equalsIgnoreCase("mend"))
 		{
 			building=null;
-			mending=false;
+			activity = CraftingActivity.CRAFTING;
 			key=null;
 			messedUp=false;
 			Vector newCommands=CMParms.parse(CMParms.combine(commands,1));
 			building=getTarget(mob,mob.location(),givenTarget,newCommands,Wearable.FILTER_UNWORNONLY);
 			if(!canMend(mob,building,false)) return false;
-			mending=true;
+			activity = CraftingActivity.MENDING;
 			if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 				return false;
 			startStr="<S-NAME> start(s) mending "+building.name()+".";
@@ -249,10 +262,9 @@ public class ScrimShaw extends EnhancedCraftingSkill implements ItemCraftor, Men
 		else
 		{
 			building=null;
-			mending=false;
+			activity = CraftingActivity.CRAFTING;
 			key=null;
 			messedUp=false;
-			refitting=false;
 			aborted=false;
 			int amount=-1;
 			if((commands.size()>1)&&(CMath.isNumber((String)commands.lastElement())))

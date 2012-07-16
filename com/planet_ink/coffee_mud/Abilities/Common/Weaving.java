@@ -2,6 +2,7 @@ package com.planet_ink.coffee_mud.Abilities.Common;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
+import com.planet_ink.coffee_mud.Abilities.Common.CraftingSkill.CraftingActivity;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
 import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
@@ -67,8 +68,7 @@ public class Weaving extends EnhancedCraftingSkill implements ItemCraftor, Mendi
 		super();
 
 		building = null;
-		mending = false;
-		refitting = false;
+		activity = CraftingActivity.CRAFTING;
 		messedUp = false;
 	}
 
@@ -97,20 +97,32 @@ public class Weaving extends EnhancedCraftingSkill implements ItemCraftor, Mendi
 				{
 					if(messedUp)
 					{
-						if(mending)
+						if(activity == CraftingActivity.MENDING)
 							messedUpCrafting(mob);
 						else
-						if(refitting)
+						if(activity == CraftingActivity.LEARNING)
+						{
+							commonEmote(mob,"<S-NAME> fail(s) to learn how to make "+building.name()+".");
+							building.destroy();
+						}
+						else
+						if(activity == CraftingActivity.REFITTING)
 							commonEmote(mob,"<S-NAME> mess(es) up refitting "+building.name()+".");
 						else
 							commonEmote(mob,"<S-NAME> mess(es) up weaving "+building.name()+".");
 					}
 					else
 					{
-						if(mending)
+						if(activity == CraftingActivity.MENDING)
 							building.setUsesRemaining(100);
 						else
-						if(refitting)
+						if(activity==CraftingActivity.LEARNING)
+						{
+							deconstructRecipeInto( building, recipeHolder );
+							building.destroy();
+						}
+						else
+						if(activity == CraftingActivity.REFITTING)
 						{
 							building.basePhyStats().setHeight(0);
 							building.recoverPhyStats();
@@ -129,7 +141,7 @@ public class Weaving extends EnhancedCraftingSkill implements ItemCraftor, Mendi
 				}
 				building=null;
 				key=null;
-				mending=false;
+				activity = CraftingActivity.CRAFTING;
 			}
 		}
 		super.unInvoke();
@@ -222,7 +234,7 @@ public class Weaving extends EnhancedCraftingSkill implements ItemCraftor, Mendi
 		randomRecipeFix(mob,addRecipes(mob,loadRecipes()),commands,autoGenerate);
 		if(commands.size()==0)
 		{
-			commonTell(mob,"Weave what? Enter \"weave list\" for a list, \"weave refit <item>\" to resize, \"weave learn <item> <paper>\", \"weave scan\", or \"weave mend <item>\".");
+			commonTell(mob,"Weave what? Enter \"weave list\" for a list, \"weave refit <item>\" to resize, \"weave learn <item>\", \"weave scan\", or \"weave mend <item>\".");
 			return false;
 		}
 		if((!auto)
@@ -286,13 +298,13 @@ public class Weaving extends EnhancedCraftingSkill implements ItemCraftor, Mendi
 		if(str.equalsIgnoreCase("mend"))
 		{
 			building=null;
-			mending=false;
+			activity = CraftingActivity.CRAFTING;
 			messedUp=false;
 			key=null;
 			Vector newCommands=CMParms.parse(CMParms.combine(commands,1));
 			building=getTarget(mob,mob.location(),givenTarget,newCommands,Wearable.FILTER_UNWORNONLY);
 			if(!canMend(mob,building,false)) return false;
-			mending=true;
+			activity = CraftingActivity.MENDING;
 			if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 				return false;
 			startStr="<S-NAME> start(s) mending "+building.name()+".";
@@ -303,9 +315,8 @@ public class Weaving extends EnhancedCraftingSkill implements ItemCraftor, Mendi
 		if(str.equalsIgnoreCase("refit"))
 		{
 			building=null;
-			mending=false;
+			activity = CraftingActivity.CRAFTING;
 			key=null;
-			refitting=false;
 			messedUp=false;
 			Vector newCommands=CMParms.parse(CMParms.combine(commands,1));
 			building=getTarget(mob,mob.location(),givenTarget,newCommands,Wearable.FILTER_UNWORNONLY);
@@ -330,7 +341,7 @@ public class Weaving extends EnhancedCraftingSkill implements ItemCraftor, Mendi
 				commonTell(mob,building.name()+" is already the right size.");
 				return false;
 			}
-			refitting=true;
+			activity = CraftingActivity.REFITTING;
 			if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 				return false;
 			startStr="<S-NAME> start(s) refitting "+building.name()+".";
@@ -340,9 +351,8 @@ public class Weaving extends EnhancedCraftingSkill implements ItemCraftor, Mendi
 		else
 		{
 			building=null;
-			mending=false;
+			activity = CraftingActivity.CRAFTING;
 			messedUp=false;
-			refitting=false;
 			aborted=false;
 			key=null;
 			int amount=-1;

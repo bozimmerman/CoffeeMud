@@ -117,8 +117,15 @@ public class Alchemy extends CraftingSkill implements ItemCraftor
 				{
 					if(messedUp)
 					{
+						building.destroy();
 						if(oldName.length()>0)
 							commonTell(mob,"Something went wrong! "+(Character.toUpperCase(oldName.charAt(0))+oldName.substring(1))+" explodes!");
+					}
+					else
+					if(activity==CraftingSkill.CraftingActivity.LEARNING)
+					{
+						deconstructRecipeInto( building, recipeHolder );
+						building.destroy();
 					}
 					else
 						mob.addItem(building);
@@ -177,7 +184,7 @@ public class Alchemy extends CraftingSkill implements ItemCraftor
 		randomRecipeFix(mob,addRecipes(mob,loadRecipes()),commands,0);
 		if(commands.size()<1)
 		{
-			commonTell(mob,"Brew what? Enter \"brew list\" for a list, \"brew learn <item> <paper>\" to learn recipes.");
+			commonTell(mob,"Brew what? Enter \"brew list\" for a list, \"brew learn <item>\" to learn recipes.");
 			return false;
 		}
 		List<List<String>> recipes=addRecipes(mob,loadRecipes());

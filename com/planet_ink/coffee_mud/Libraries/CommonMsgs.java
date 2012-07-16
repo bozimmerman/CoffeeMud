@@ -740,6 +740,8 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 				response.append("It is mostly made of a kind of "+RawMaterial.MATERIAL_NOUNDESCS[(item.material()&RawMaterial.MATERIAL_MASK)>>8].toLowerCase()+".  ");
 			else
 				response.append("It is mostly made of "+RawMaterial.CODES.NAME(item.material()).toLowerCase()+".  ");
+			if((item instanceof Recipe)&&((Recipe)item).getTotalRecipePages()>1)
+				response.append( "There are "+((Recipe)item).getTotalRecipePages()+" blank pages/entries remaining.  " );
 			if((item instanceof Weapon)&&((mob==null)||mob.charStats().getStat(CharStats.STAT_INTELLIGENCE)>10)) {
 				response.append("It is a ");
 				if((item.rawLogicalAnd())&&CMath.bset(item.rawProperLocationBitmap(),Wearable.WORN_WIELD|Wearable.WORN_HELD))

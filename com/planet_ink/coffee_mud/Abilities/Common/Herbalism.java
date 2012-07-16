@@ -2,6 +2,7 @@ package com.planet_ink.coffee_mud.Abilities.Common;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
+import com.planet_ink.coffee_mud.Abilities.Common.CraftingSkill.CraftingActivity;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.ItemCraftor.ItemKeyPair;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
@@ -150,8 +151,18 @@ public class Herbalism extends CraftingSkill implements ItemCraftor
 				{
 					if(messedUp)
 					{
+						if(activity == CraftingActivity.LEARNING)
+							commonEmote(mob,"<S-NAME> fail(s) to learn how to make "+building.name()+".");
+						else
 						if(oldName.length()>0)
 							commonTell(mob,"Something went wrong! "+(Character.toUpperCase(oldName.charAt(0))+oldName.substring(1))+" explodes!");
+						building.destroy();
+					}
+					else
+					if(activity==CraftingActivity.LEARNING)
+					{
+						deconstructRecipeInto( building, recipeHolder );
+						building.destroy();
 					}
 					else
 						mob.addItem(building);
@@ -190,7 +201,7 @@ public class Herbalism extends CraftingSkill implements ItemCraftor
 		}
 		if(commands.size()<1)
 		{
-			commonTell(mob,"Brew what? Enter \"hbrew list\" for a list, \"hbrew learn <item> <paper>\" to learn recipes.");
+			commonTell(mob,"Brew what? Enter \"hbrew list\" for a list, \"hbrew learn <item>\" to learn recipes.");
 			return false;
 		}
 		List<List<String>> recipes=addRecipes(mob,loadRecipes());
