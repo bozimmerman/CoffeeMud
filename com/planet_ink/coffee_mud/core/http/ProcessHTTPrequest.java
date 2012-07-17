@@ -98,6 +98,7 @@ public class ProcessHTTPrequest implements CMRunnable, ExternalHTTPRequests
 	private boolean virtualPage;
 	private boolean completed=false;
 	private boolean debugMacros=false;
+	private Map<String,String> headers = new TreeMap<String,String>();
 
 	private Hashtable objects=null;
 
@@ -950,294 +951,297 @@ public class ProcessHTTPrequest implements CMRunnable, ExternalHTTPRequests
 		try
 		{
 			processStartTime=System.currentTimeMillis();
-		try
-		{
-		String hdrRedirectTo = null;
-
-		DataOutputStream sout = null;
-		ByteArrayOutputStream bout=null;
-
-		byte[] replyData = null;
-		String contentHeader=null;
-
-		status = S_200;
-		try
-		{
-			//sout = new DataOutputStream(new BufferedOutputStream(sock.getOutputStream()));
-			bout=new ByteArrayOutputStream();
-			sout = new DataOutputStream(bout);
-
-			GrabbedFile requestedFile;
-			headersOnly = false;
-
-			virtualPage = false;
-			sock.setSoTimeout(10000);
-			String totalRequest=getHTTPRequest(sock.getInputStream());
-			boolean processOK = process(totalRequest);
-
-			if (processOK)
+			boolean keepAlive = true;
+			while(keepAlive)
 			{
-				if(requestMain==null) requestMain="";
-				String filename = requestMain;
-
-				// now do the web path macro check, complete
-				// with zmud correction;
-				int lastSlash=filename.lastIndexOf('/');
-				String macCheck=(lastSlash>=0)?filename.substring(lastSlash+1):filename;
-				lastSlash=macCheck.indexOf('?');
-				if(lastSlash>=0) macCheck=macCheck.substring(0,lastSlash);
-				lastSlash=macCheck.indexOf('&');
-				if(lastSlash>=0) macCheck=macCheck.substring(0,lastSlash);
-				WebMacro W=CMClass.getWebMacro(macCheck.toUpperCase());
-				if((W!=null)&&(W.isAWebPath())&&((!W.isAdminMacro())||(isAdminServer)))
-				{
-					requestedFile=null;
-					virtualPage=false;
-					if(W.preferBinary())
-						replyData=W.runBinaryMacro(this,"");
-					else
-					{
-						virtualPage=true;
-						replyData=W.runMacro(this,"").getBytes();
-					}
-					filename=W.getFilename(this,filename);
-				}
-				else
-					requestedFile = pageGrabber.grabFile(filename);
-
-				if(W!=null) contentHeader=W.getSpecialContentHeader(filename);
-
-				if(requestedFile!=null)
-				switch (requestedFile.state)
-				{
-					case GrabbedFile.STATE_OK:
-						break;
-					case GrabbedFile.STATE_IS_DIRECTORY:
-						if (!filename.endsWith( "/" ))
-							filename += '/';
-						filename += page.getStr("DEFAULTFILE");
-						requestedFile = pageGrabber.grabFile(filename);
-						if (requestedFile.state != GrabbedFile.STATE_OK)
-						{
-							status = S_401;
-							statusExtra = "Directory listing for <i>" + requestMain + "</i> denied.";
-							processOK = false;
-						}
-						break;
-
-					case GrabbedFile.STATE_BAD_FILENAME:
-						status = S_400;
-						statusExtra = "The requested URL <i>" + requestMain + "</i> is invalid.";
-						processOK = false;
-						break;
-					case GrabbedFile.STATE_NOT_FOUND:
-						status = S_404;
-						statusExtra = "The requested URL <i>" + requestMain + "</i> was not found on this server.";
-						processOK = false;
-						break;
-					case GrabbedFile.STATE_SECURITY_VIOLATION:
-						status = S_401;
-						statusExtra = "Denied access to <i>" + requestMain + "</i>. WARNING: I will never be your best friend.";
-						processOK = false;
-						break;
-
-					//case GrabbedFile.INTERNAL_ERROR:
-					default:
-						status = S_500;
-						statusExtra = "An internal error occured.";
-						processOK = false;
-						break;
-				}
-
-				if (processOK)
-				{
-					String exten;
-					try { exten = filename.substring(filename.lastIndexOf('.')); }
-					catch (Exception e) {exten = "";}
-					if (exten==null) exten = "";
-
-					mimetype = getMimeType(exten);
-
-					if (mimetype.length() == 0)
-						mimetype = "application/octet-stream";	// default to raw binary
-
-					if (page.getStr("VIRTUALPAGEEXTENSION").equalsIgnoreCase(exten) )
-						virtualPage = true;
-
-					if((replyData==null)&&(requestedFile!=null))
-					{
-						try
-						{
-							replyData=requestedFile.file.raw();
-							if(replyData.length==0)
-							{
-								replyData=null;
-								throw new IOException("File not found!");
-							}
-						}
-						catch (IOException e)
-						{
-							status = S_500;
-							statusExtra = "IO error while reading URL <I>" + request +"</I>";
-							processOK = false;
-						}
-					}
-				}
-			}
-
-			// build error page
-			if (!processOK || replyData == null)
-			{
-				if(totalRequest.equalsIgnoreCase("MUD"))
-				{
-					return;
-				}
-				
-				//mimetype = "text/html";
-				mimetype = getMimeType(page.getStr("VIRTUALPAGEEXTENSION"));
-
-				if (mimetype.length() == 0)
-					mimetype = "application/octet-stream";	// default to raw binary
-
-				// try to get an error page from the template directory
-				//  if it doesn't exist, make a simple error page and return that
-				try
-				{
-					//requestedFile = new File("web" + CMFile.pathSeparator + "error" + page.getStr("VIRTUALPAGEEXTENSION") );
-					///requestedFile = new File(webServer.getServerTemplateDir() + CMFile.pathSeparator + "error" + page.getStr("VIRTUALPAGEEXTENSION") );
-					requestedFile = templateGrabber.grabFile("error" + page.getStr("VIRTUALPAGEEXTENSION"));
-
-					if (requestedFile.state == GrabbedFile.STATE_OK)
-					{
-						virtualPage = true;
-						replyData=requestedFile.file.raw();
-						if(replyData.length==0)
-						{
-							replyData=null;
-							throw new IOException("File not found!");
-						}
-					}
-					else
-						replyData = null;
-				}
-				catch (Exception e)
-				{
-					replyData = null;
-				}
-
-				if (replyData == null)
-				{
-					// make the builtin error page
-					virtualPage = false;
-					mimetype = "text/html";
-					replyData = WebHelper.makeErrorPage(status,statusExtra);
-				}
-
-			}
-
-
-			if(virtualPage)
-			{
-				try
-				{
-					replyData = doVirtualPage(replyData);
-				}
-				catch (HTTPRedirectException e)
-				{
-					status = S_303;
-					hdrRedirectTo = e.getMessage();
-					replyData = makeRedirectPage(hdrRedirectTo).getBytes();
-				}
-			}
-
-			// first the status header
-			sout.writeBytes("HTTP/1.0 " + status + cr);
-
-			// other headers
-			// may add content-length at some point, shouldn't
-			//  be necassary though
-			// should also probably add Last-Modified
-			if (hdrRedirectTo != null)
-			{
-				sout.writeBytes("Location: " + hdrRedirectTo + cr);
-			}
-
-
-			sout.writeBytes("Server: " + HTTPserver.getServerVersionString() + cr);
-			sout.writeBytes("MIME-Version: 1.0" + cr);
-			if(contentHeader!=null)
-				sout.writeBytes(contentHeader);
-			else
-				sout.writeBytes("Content-Type: " + mimetype + "; charset="+CMProps.getVar(CMProps.SYSTEM_CHARSETOUTPUT)+cr);
-			if ((replyData != null))
-			{
-				sout.writeBytes("Content-Length: " + replyData.length);
-				sout.writeBytes( cr );
-			}
-			if (!headersOnly)
-			{
-				if ((replyData != null))
-				{
-					// must insert a blank line before message body
-					sout.writeBytes( cr );
-					sout.write(replyData);
-				}
-			}
-
-		}
-		catch (Exception e)
-		{
-			String errMsg=e.getMessage()==null?e.toString():e.getMessage();
-			if((errMsg!=null)
-			&&((!Log.isMaskedErrMsg(errMsg))
-				||(CMSecurity.isDebugging(CMSecurity.DbgFlag.HTTPERR))))
-			{
-				Log.errOut(getName(),"Exception: " + errMsg );
-				if((!(e instanceof java.net.SocketException))
-				||(CMSecurity.isDebugging(CMSecurity.DbgFlag.HTTPERREXT)))
-					Log.errOut(getName(),e);
-			}
-		}
-
-		if((Log.debugChannelOn())&&(CMSecurity.isDebugging(CMSecurity.DbgFlag.HTTPREQ))&&(replyData!=null))
-			Log.debugOut(getName(), sock.getInetAddress().getHostAddress() + ":" + (command==null?"(null)":command + " " + (request==null?"(null)":request)) +
-					":" + status +" ("+replyData.length+")");
-
-
-		try
-		{
-			if (sout != null)
-			{
-
-				sout.flush();
-				OutputStream o=sock.getOutputStream();
-				if(bout!=null)
-					o.write(bout.toByteArray());
-				o.flush();
-				sout.close();
-				o.close();
-				sout = null;
-			}
-		}
-		catch (Exception e)	{}
-
-		try
-		{
-			if (sock != null)
-			{
-				sock.close();
-				sock = null;
+				keepAlive=false;
+        		String hdrRedirectTo = null;
+        
+        		DataOutputStream sout = null;
+        		ByteArrayOutputStream bout=null;
+        
+        		byte[] replyData = null;
+        		String contentHeader=null;
+        
+        		status = S_200;
+        		try
+        		{
+        			//sout = new DataOutputStream(new BufferedOutputStream(sock.getOutputStream()));
+        			bout=new ByteArrayOutputStream();
+        			sout = new DataOutputStream(bout);
+        
+        			GrabbedFile requestedFile;
+        			headersOnly = false;
+        
+        			virtualPage = false;
+        			sock.setSoTimeout(15000);
+        			String totalRequest=getHTTPRequest(sock.getInputStream());
+        			keepAlive = "Keep-Alive".equals(headers.get("CONNECTION"));
+        			boolean processOK = process(totalRequest);
+        
+        			if (processOK)
+        			{
+        				if(requestMain==null) requestMain="";
+        				String filename = requestMain;
+        
+        				// now do the web path macro check, complete
+        				// with zmud correction;
+        				int lastSlash=filename.lastIndexOf('/');
+        				String macCheck=(lastSlash>=0)?filename.substring(lastSlash+1):filename;
+        				lastSlash=macCheck.indexOf('?');
+        				if(lastSlash>=0) macCheck=macCheck.substring(0,lastSlash);
+        				lastSlash=macCheck.indexOf('&');
+        				if(lastSlash>=0) macCheck=macCheck.substring(0,lastSlash);
+        				WebMacro W=CMClass.getWebMacro(macCheck.toUpperCase());
+        				if((W!=null)&&(W.isAWebPath())&&((!W.isAdminMacro())||(isAdminServer)))
+        				{
+        					requestedFile=null;
+        					virtualPage=false;
+        					if(W.preferBinary())
+        						replyData=W.runBinaryMacro(this,"");
+        					else
+        					{
+        						virtualPage=true;
+        						replyData=W.runMacro(this,"").getBytes();
+        					}
+        					filename=W.getFilename(this,filename);
+        				}
+        				else
+        					requestedFile = pageGrabber.grabFile(filename);
+        
+        				if(W!=null) contentHeader=W.getSpecialContentHeader(filename);
+        
+        				if(requestedFile!=null)
+        				switch (requestedFile.state)
+        				{
+        					case GrabbedFile.STATE_OK:
+        						break;
+        					case GrabbedFile.STATE_IS_DIRECTORY:
+        						if (!filename.endsWith( "/" ))
+        							filename += '/';
+        						filename += page.getStr("DEFAULTFILE");
+        						requestedFile = pageGrabber.grabFile(filename);
+        						if (requestedFile.state != GrabbedFile.STATE_OK)
+        						{
+        							status = S_401;
+        							statusExtra = "Directory listing for <i>" + requestMain + "</i> denied.";
+        							processOK = false;
+        						}
+        						break;
+        
+        					case GrabbedFile.STATE_BAD_FILENAME:
+        						status = S_400;
+        						statusExtra = "The requested URL <i>" + requestMain + "</i> is invalid.";
+        						processOK = false;
+        						break;
+        					case GrabbedFile.STATE_NOT_FOUND:
+        						status = S_404;
+        						statusExtra = "The requested URL <i>" + requestMain + "</i> was not found on this server.";
+        						processOK = false;
+        						break;
+        					case GrabbedFile.STATE_SECURITY_VIOLATION:
+        						status = S_401;
+        						statusExtra = "Denied access to <i>" + requestMain + "</i>. WARNING: I will never be your best friend.";
+        						processOK = false;
+        						break;
+        
+        					//case GrabbedFile.INTERNAL_ERROR:
+        					default:
+        						status = S_500;
+        						statusExtra = "An internal error occured.";
+        						processOK = false;
+        						break;
+        				}
+        
+        				if (processOK)
+        				{
+        					String exten;
+        					try { exten = filename.substring(filename.lastIndexOf('.')); }
+        					catch (Exception e) {exten = "";}
+        					if (exten==null) exten = "";
+        
+        					mimetype = getMimeType(exten);
+        
+        					if (mimetype.length() == 0)
+        						mimetype = "application/octet-stream";	// default to raw binary
+        
+        					if (page.getStr("VIRTUALPAGEEXTENSION").equalsIgnoreCase(exten) )
+        						virtualPage = true;
+        
+        					if((replyData==null)&&(requestedFile!=null))
+        					{
+        						try
+        						{
+        							replyData=requestedFile.file.raw();
+        							if(replyData.length==0)
+        							{
+        								replyData=null;
+        								throw new IOException("File not found!");
+        							}
+        						}
+        						catch (IOException e)
+        						{
+        							status = S_500;
+        							statusExtra = "IO error while reading URL <I>" + request +"</I>";
+        							processOK = false;
+        						}
+        					}
+        				}
+        			}
+        
+        			// build error page
+        			if (!processOK || replyData == null)
+        			{
+        				if(totalRequest.equalsIgnoreCase("MUD"))
+        				{
+        					return;
+        				}
+        				
+        				//mimetype = "text/html";
+        				mimetype = getMimeType(page.getStr("VIRTUALPAGEEXTENSION"));
+        
+        				if (mimetype.length() == 0)
+        					mimetype = "application/octet-stream";	// default to raw binary
+        
+        				// try to get an error page from the template directory
+        				//  if it doesn't exist, make a simple error page and return that
+        				try
+        				{
+        					//requestedFile = new File("web" + CMFile.pathSeparator + "error" + page.getStr("VIRTUALPAGEEXTENSION") );
+        					///requestedFile = new File(webServer.getServerTemplateDir() + CMFile.pathSeparator + "error" + page.getStr("VIRTUALPAGEEXTENSION") );
+        					requestedFile = templateGrabber.grabFile("error" + page.getStr("VIRTUALPAGEEXTENSION"));
+        
+        					if (requestedFile.state == GrabbedFile.STATE_OK)
+        					{
+        						virtualPage = true;
+        						replyData=requestedFile.file.raw();
+        						if(replyData.length==0)
+        						{
+        							replyData=null;
+        							throw new IOException("File not found!");
+        						}
+        					}
+        					else
+        						replyData = null;
+        				}
+        				catch (Exception e)
+        				{
+        					replyData = null;
+        				}
+        
+        				if (replyData == null)
+        				{
+        					// make the builtin error page
+        					virtualPage = false;
+        					mimetype = "text/html";
+        					replyData = WebHelper.makeErrorPage(status,statusExtra);
+        				}
+        
+        			}
+        
+        
+        			if(virtualPage)
+        			{
+        				try
+        				{
+        					replyData = doVirtualPage(replyData);
+        				}
+        				catch (HTTPRedirectException e)
+        				{
+        					status = S_303;
+        					hdrRedirectTo = e.getMessage();
+        					replyData = makeRedirectPage(hdrRedirectTo).getBytes();
+        				}
+        			}
+        
+        			// first the status header
+        			sout.writeBytes("HTTP/1.0 " + status + cr);
+        
+        			// other headers
+        			// may add content-length at some point, shouldn't
+        			//  be necassary though
+        			// should also probably add Last-Modified
+        			if (hdrRedirectTo != null)
+        			{
+        				sout.writeBytes("Location: " + hdrRedirectTo + cr);
+        			}
+        
+        
+        			sout.writeBytes("Server: " + HTTPserver.getServerVersionString() + cr);
+        			sout.writeBytes("MIME-Version: 1.0" + cr);
+        			if(keepAlive)
+        			{
+            			sout.writeBytes("Connection: Keep-Alive" + cr);
+            			sout.writeBytes("Keep-Alive: timeout=15, max=5" + cr);
+        			}
+        			if(contentHeader!=null)
+        				sout.writeBytes(contentHeader);
+        			else
+        				sout.writeBytes("Content-Type: " + mimetype + "; charset="+CMProps.getVar(CMProps.SYSTEM_CHARSETOUTPUT)+cr);
+        			if ((replyData != null))
+        			{
+        				sout.writeBytes("Content-Length: " + replyData.length);
+        				sout.writeBytes( cr );
+        			}
+        			if (!headersOnly)
+        			{
+        				if ((replyData != null))
+        				{
+        					// must insert a blank line before message body
+        					sout.writeBytes( cr );
+        					sout.write(replyData);
+        				}
+        			}
+        
+        		}
+        		catch (Exception e)
+        		{
+        			String errMsg=e.getMessage()==null?e.toString():e.getMessage();
+        			if((errMsg!=null)
+        			&&((!Log.isMaskedErrMsg(errMsg))
+        				||(CMSecurity.isDebugging(CMSecurity.DbgFlag.HTTPERR))))
+        			{
+        				Log.errOut(getName(),"Exception: " + errMsg );
+        				if((!(e instanceof java.net.SocketException))
+        				||(CMSecurity.isDebugging(CMSecurity.DbgFlag.HTTPERREXT)))
+        					Log.errOut(getName(),e);
+        			}
+        		}
+        
+        		if((Log.debugChannelOn())&&(CMSecurity.isDebugging(CMSecurity.DbgFlag.HTTPREQ))&&(replyData!=null))
+        			Log.debugOut(getName(), sock.getInetAddress().getHostAddress() + ":" + (command==null?"(null)":command + " " + (request==null?"(null)":request)) +
+        					":" + status +" ("+replyData.length+")"+(keepAlive?": keep-alive":""));
+        
+        		try
+        		{
+        			if (sout != null)
+        			{
+        
+        				sout.flush();
+        				OutputStream o=sock.getOutputStream();
+        				if(bout!=null)
+        					o.write(bout.toByteArray());
+        				o.flush();
+        			}
+        		}
+        		catch (Exception e)	{}
 			}
 		}
-		catch (Exception e)	{}
-		}
-		catch (Throwable t) {
+		catch (Throwable t) 
+		{
 			Log.errOut("ProcessHTTPrequest", t);
-		}
-		
 		}
 		finally
 		{
+    		try
+    		{
+    			if (sock != null)
+    			{
+    				sock.close();
+    				sock = null;
+    			}
+    		}
+    		catch (Exception e)	{}
 			completed=true;
 		}
 	}
@@ -1360,6 +1364,21 @@ public class ProcessHTTPrequest implements CMRunnable, ExternalHTTPRequests
 				Log.errOut(getName(),e.getMessage());
 			if(CMSecurity.isDebugging(CMSecurity.DbgFlag.HTTPERREXT))
 				Log.errOut(getName(),e);
+		}
+		finally
+		{
+			headers = new TreeMap<String,String>();
+			for(int i=0;i<data.size();i++)
+			{
+				Object o=data.get(i);
+				if(o instanceof String)
+				{
+					String s=(String)o;
+					int x=s.indexOf(':');
+					if(x>0)
+						headers.put(s.substring(0, x).trim().toUpperCase(), s.substring(x+1).trim());
+				}
+			}
 		}
 		if(data.size()==0)
 			data.addElement(new String(out.toByteArray()));
