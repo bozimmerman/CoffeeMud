@@ -81,6 +81,12 @@ public class Alchemy extends CraftingSkill implements ItemCraftor
 		return super.tick(ticking,tickID);
 	}
 
+	protected boolean doLearnRecipe(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
+	{
+		fireRequired=false;
+		return super.doLearnRecipe( mob, commands, givenTarget, auto, asLevel );
+	}
+	
 	public String parametersFile(){ return "alchemy.txt";}
 	protected List<List<String>> loadRecipes(){return super.loadRecipes(parametersFile());}
 

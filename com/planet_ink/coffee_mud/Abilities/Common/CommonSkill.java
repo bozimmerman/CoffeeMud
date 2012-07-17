@@ -217,7 +217,10 @@ public class CommonSkill extends StdAbility
 
 	public Item getRequiredFire(MOB mob,int autoGenerate)
 	{
-		if(autoGenerate>0) return CMClass.getItem("StdItem");
+		if(autoGenerate>0) 
+			return CMClass.getItem("StdItem");
+		if((this instanceof CraftingSkill)&&(!((CraftingSkill)this).fireRequired))
+			return CMClass.getItem("StdItem");
 		Item fire=null;
 		for(int i=0;i<mob.location().numItems();i++)
 		{

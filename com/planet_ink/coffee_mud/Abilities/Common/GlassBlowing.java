@@ -76,6 +76,12 @@ public class GlassBlowing extends CraftingSkill implements ItemCraftor
 	public String parametersFile(){ return "glassblowing.txt";}
 	protected List<List<String>> loadRecipes(){return super.loadRecipes(parametersFile());}
 
+	protected boolean doLearnRecipe(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
+	{
+		fireRequired=false;
+		return super.doLearnRecipe( mob, commands, givenTarget, auto, asLevel );
+	}
+
 	public void unInvoke()
 	{
 		if(canBeUninvoked())
@@ -185,6 +191,7 @@ public class GlassBlowing extends CraftingSkill implements ItemCraftor
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		int autoGenerate=0;
+		fireRequired=true;
 		if((auto)&&(commands.size()>0)&&(commands.firstElement() instanceof Integer))
 		{
 			autoGenerate=((Integer)commands.firstElement()).intValue();
