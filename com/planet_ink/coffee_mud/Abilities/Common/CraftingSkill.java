@@ -47,7 +47,7 @@ public class CraftingSkill extends GatheringSkill
 	protected Item building=null;
 	protected Recipe recipeHolder = null;
 	protected boolean fireRequired=true;
-	protected enum CraftingActivity { CRAFTING, MENDING, LEARNING, REFITTING };
+	protected enum CraftingActivity { CRAFTING, MENDING, LEARNING, REFITTING }
 	protected CraftingActivity activity = CraftingActivity.CRAFTING;
 	protected boolean messedUp=false;
 
@@ -1083,7 +1083,7 @@ public class CraftingSkill extends GatheringSkill
 	
 	public Pair<String,Integer> getDecodedItemNameAndLevel(final List<String> recipe)
 	{
-		return new Pair<String,Integer>(recipe.get( RCP_FINALNAME ), CMath.s_int(recipe.get( RCP_LEVEL )));
+		return new Pair<String,Integer>(recipe.get( RCP_FINALNAME ), Integer.valueOf(CMath.s_int(recipe.get( RCP_LEVEL ))));
 	}
 
 	public String getComponentDescription(final MOB mob, final List<String> recipe, final int RCP_WOOD)
