@@ -983,7 +983,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 							for(int i=0;i<V.size()-1;i++)
 								if(CMLib.english().isAnArticle( V.get( i ) ))
 								{
-									V.add( i, "%" );
+									V.add( i+1, "%" );
 									break;
 								}
 							newName=CMParms.combine( V );

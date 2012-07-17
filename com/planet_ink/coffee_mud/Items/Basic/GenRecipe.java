@@ -105,11 +105,13 @@ public class GenRecipe extends GenReadable implements Recipe
 					{
 						List<String> V=CMParms.parseTabs( recipeLines[0], false );
 						Pair<String,Integer> nameAndLevel = ((ItemCraftor)A).getDecodedItemNameAndLevel( V );
+						String itemName=CMStrings.replaceAll( nameAndLevel.first, "% ","");
+						itemName=CMStrings.replaceAll( itemName, " % ","");
 						if(x>=0)
-							replaceName=CMStrings.replaceAll( Name(), "%", nameAndLevel.first );
+							replaceName=CMStrings.replaceAll( Name(), "%", itemName );
 						else
 						if(Name().indexOf(" of ")<0)
-							replaceName=Name()+" of "+nameAndLevel.first;
+							replaceName=Name()+" of "+itemName;
 					}
 				}
 				else
