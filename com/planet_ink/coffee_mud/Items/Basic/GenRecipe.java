@@ -40,6 +40,7 @@ public class GenRecipe extends GenReadable implements Recipe
 	public String ID(){	return "GenRecipe";}
 	protected String commonSkillID="";
 	protected String[] recipeLines=new String[0];
+	protected String replaceName = null;
 	public GenRecipe()
 	{
 		super();
@@ -70,7 +71,6 @@ public class GenRecipe extends GenReadable implements Recipe
 				for(String line : recipeLines)
 				{
 					List<String> V=CMParms.parseTabs( line, false );
-					V.add( "" );
 					Pair<String,Integer> nameAndLevel = C.getDecodedItemNameAndLevel( V );
 					String components = C.getDecodedComponentsDescription( msg.source(), V );
 					String name=CMStrings.replaceAll( nameAndLevel.first, "% ", "");
@@ -88,18 +88,37 @@ public class GenRecipe extends GenReadable implements Recipe
 	}
 
 	public boolean isGeneric(){return true;}
-	public void recoverPhyStats(){CMLib.flags().setReadable(this,true); super.recoverPhyStats();}
+	public void recoverPhyStats()
+	{
+		CMLib.flags().setReadable(this,true); 
+		super.recoverPhyStats();
+		if((replaceName==null)&&(this.getTotalRecipePages()==1)&&(recipeLines.length==1)&&(this.getCommonSkillID().length()>0))
+		{
+			replaceName="";
+			Ability A=CMClass.getAbility(this.getCommonSkillID());
+			if(A instanceof ItemCraftor)
+			{
+				List<String> V=CMParms.parseTabs( recipeLines[0], false );
+				Pair<String,Integer> nameAndLevel = ((ItemCraftor)A).getDecodedItemNameAndLevel( V );
+				if(Name().indexOf(" of ")<0)
+					replaceName=Name()+" of "+nameAndLevel.first;
+			}
+		}
+		if((replaceName!=null)&&(replaceName.length()>0)&&(phyStats().newName()==null))
+			phyStats().setName(replaceName);
+	}
 	public String getCommonSkillID(){return commonSkillID;}
 	public void setCommonSkillID(String ID){commonSkillID=ID;}
 	public String[] getRecipeCodeLines(){return recipeLines;}
 	public void setRecipeCodeLines(String[] lines)
 	{
-		recipeLines=lines; 
+		recipeLines=lines;
 		setReadableText("");
+		replaceName = null;
 	}
     public int getTotalRecipePages() { return super.usesRemaining(); }
     public void setTotalRecipePages(int numRemaining) { super.setUsesRemaining(numRemaining); }
-	
+    
 	private final static String[] MYCODES={"SKILLID","RECIPES","NUMRECIPES"};
 	public String getStat(String code)
 	{
