@@ -988,6 +988,10 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 								}
 							newName=CMParms.combine( V );
 						}
+						if(newName.indexOf( '%' )<0)
+						{
+							newName="a % "+newName;
+						}
 						return newName;
 					}
 				}, 

@@ -69,7 +69,6 @@ public class GenRecipe extends GenReadable implements Recipe
 				ItemCraftor C=(ItemCraftor)A;
 				for(String line : recipeLines)
 				{
-					// inside knowledge
 					List<String> V=CMParms.parseTabs( line, false );
 					V.add( "" );
 					Pair<String,Integer> nameAndLevel = C.getDecodedItemNameAndLevel( V );
@@ -93,7 +92,11 @@ public class GenRecipe extends GenReadable implements Recipe
 	public String getCommonSkillID(){return commonSkillID;}
 	public void setCommonSkillID(String ID){commonSkillID=ID;}
 	public String[] getRecipeCodeLines(){return recipeLines;}
-	public void setRecipeCodeLines(String[] lines){recipeLines=lines; setReadableText(""); }
+	public void setRecipeCodeLines(String[] lines)
+	{
+		recipeLines=lines; 
+		setReadableText("");
+	}
     public int getTotalRecipePages() { return super.usesRemaining(); }
     public void setTotalRecipePages(int numRemaining) { super.setUsesRemaining(numRemaining); }
 	
