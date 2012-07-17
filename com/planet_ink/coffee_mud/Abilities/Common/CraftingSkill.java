@@ -143,8 +143,14 @@ public class CraftingSkill extends GatheringSkill
 			{
 				if(!clonedYet){ recipes=new XVector<List<String>>(recipes); clonedYet=true;}
 				StringBuffer allRecipeLines=new StringBuffer("");
-				for(String recipeLine : ((Recipe)I).getRecipeCodeLines())
-					allRecipeLines.append(recipeLine);
+				if(((Recipe)I).getRecipeCodeLines().length>0)
+				{
+					for(String recipeLine : ((Recipe)I).getRecipeCodeLines())
+					{
+						allRecipeLines.append(recipeLine);
+						allRecipeLines.append( "\n" );
+					}
+				}
 				V=loadList(allRecipeLines);
 				for(int v=0;v<V.size();v++)
 				{

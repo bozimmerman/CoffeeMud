@@ -70,7 +70,7 @@ public class GenRecipe extends GenReadable implements Recipe
 				ItemCraftor C=(ItemCraftor)A;
 				for(String line : recipeLines)
 				{
-					List<String> V=CMParms.parseTabs( line, false );
+					List<String> V=CMParms.parseTabs( line+" ", false );
 					Pair<String,Integer> nameAndLevel = C.getDecodedItemNameAndLevel( V );
 					String components = C.getDecodedComponentsDescription( msg.source(), V );
 					String name=CMStrings.replaceAll( nameAndLevel.first, "% ", "");
