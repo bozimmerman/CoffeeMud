@@ -1644,7 +1644,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				{
     				String errors = new Checker().getErrors(newLine);
     				if((errors==null)||(errors.length()==0))
-    					recipeList.add(x-1, CMStrings.replaceAll(newLine,",","\t"));
+    					recipeList.set(x-1, CMStrings.replaceAll(newLine,",","\t"));
     				else
     					mob.tell("Error: "+errors+", aborting change.");
 				}
