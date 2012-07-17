@@ -44,6 +44,7 @@ public class CommonSkill extends StdAbility
 	public String[] triggerStrings(){return triggerStrings;}
 	public String supportedResourceString(){return "";}
 	public static final Map<String,Integer[]> resourcesMap=new Hashtable<String,Integer[]>();
+	protected static Item fakeFire=null;
 
 	public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 	protected String displayText="(Doing something productive)";
@@ -217,10 +218,17 @@ public class CommonSkill extends StdAbility
 
 	public Item getRequiredFire(MOB mob,int autoGenerate)
 	{
-		if(autoGenerate>0) 
-			return CMClass.getItem("StdItem");
-		if((this instanceof CraftingSkill)&&(!((CraftingSkill)this).fireRequired))
-			return CMClass.getItem("StdItem");
+		if((autoGenerate>0) 
+		||((this instanceof CraftingSkill)&&(!((CraftingSkill)this).fireRequired)))
+		{
+			if(fakeFire != null)
+				return fakeFire;
+			fakeFire =CMClass.getBasicItem( "StdItem" );
+			fakeFire.basePhyStats().setDisposition( fakeFire.basePhyStats().disposition() | PhyStats.IS_GLOWING | PhyStats.IS_LIGHTSOURCE );
+			fakeFire.addNonUninvokableEffect( CMClass.getAbility( "Burning" ) );
+			fakeFire.recoverPhyStats();
+			return fakeFire;
+		}
 		Item fire=null;
 		for(int i=0;i<mob.location().numItems();i++)
 		{
