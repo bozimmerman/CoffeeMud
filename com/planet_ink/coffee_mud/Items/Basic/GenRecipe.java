@@ -92,20 +92,35 @@ public class GenRecipe extends GenReadable implements Recipe
 	{
 		CMLib.flags().setReadable(this,true); 
 		super.recoverPhyStats();
-		if((recipeLines.length==1)&&(replaceName==null)&&(this.getTotalRecipePages()==1)&&(this.getCommonSkillID().length()>0))
+		if(this.getTotalRecipePages()==1)
 		{
-			replaceName="";
-			Ability A=CMClass.getAbility(this.getCommonSkillID());
-			if(A instanceof ItemCraftor)
+			if(replaceName==null)
 			{
-				List<String> V=CMParms.parseTabs( recipeLines[0], false );
-				Pair<String,Integer> nameAndLevel = ((ItemCraftor)A).getDecodedItemNameAndLevel( V );
-				if(Name().indexOf(" of ")<0)
-					replaceName=Name()+" of "+nameAndLevel.first;
+				int x=Name().indexOf( '%' );
+				if((recipeLines!=null)&&(recipeLines.length==1)&&(this.getCommonSkillID().length()>0))
+				{
+					replaceName="";
+					Ability A=CMClass.getAbility(this.getCommonSkillID());
+					if(A instanceof ItemCraftor)
+					{
+						List<String> V=CMParms.parseTabs( recipeLines[0], false );
+						Pair<String,Integer> nameAndLevel = ((ItemCraftor)A).getDecodedItemNameAndLevel( V );
+						if(x>=0)
+							replaceName=CMStrings.replaceAll( Name(), "%", nameAndLevel.first );
+						else
+						if(Name().indexOf(" of ")<0)
+							replaceName=Name()+" of "+nameAndLevel.first;
+					}
+				}
+				else
+				if(x>=0)
+				{
+					replaceName=CMStrings.replaceAll( Name(), "%", "" );
+				}
 			}
+			if((replaceName!=null)&&(replaceName.length()>0)&&(phyStats().newName()==null))
+				phyStats().setName(replaceName);
 		}
-		if((replaceName!=null)&&(replaceName.length()>0)&&(phyStats().newName()==null))
-			phyStats().setName(replaceName);
 	}
 	public String getCommonSkillID(){return commonSkillID;}
 	public void setCommonSkillID(String ID){commonSkillID=ID;}
