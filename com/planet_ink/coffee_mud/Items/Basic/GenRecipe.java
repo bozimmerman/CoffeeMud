@@ -96,10 +96,10 @@ public class GenRecipe extends GenReadable implements Recipe
 		{
 			if(replaceName==null)
 			{
+				replaceName="";
 				int x=Name().indexOf( '%' );
 				if((recipeLines!=null)&&(recipeLines.length==1)&&(this.getCommonSkillID().length()>0))
 				{
-					replaceName="";
 					Ability A=CMClass.getAbility(this.getCommonSkillID());
 					if(A instanceof ItemCraftor)
 					{
