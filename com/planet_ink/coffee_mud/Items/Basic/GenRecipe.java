@@ -92,7 +92,7 @@ public class GenRecipe extends GenReadable implements Recipe
 	{
 		CMLib.flags().setReadable(this,true); 
 		super.recoverPhyStats();
-		if((replaceName==null)&&(this.getTotalRecipePages()==1)&&(recipeLines.length==1)&&(this.getCommonSkillID().length()>0))
+		if((recipeLines.length==1)&&(replaceName==null)&&(this.getTotalRecipePages()==1)&&(this.getCommonSkillID().length()>0))
 		{
 			replaceName="";
 			Ability A=CMClass.getAbility(this.getCommonSkillID());
