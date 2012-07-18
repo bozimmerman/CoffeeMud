@@ -976,7 +976,7 @@ public class ProcessHTTPrequest implements CMRunnable, ExternalHTTPRequests
         			virtualPage = false;
         			sock.setSoTimeout(15000);
         			String totalRequest=getHTTPRequest(sock.getInputStream());
-        			keepAlive = "Keep-Alive".equals(headers.get("CONNECTION"));
+        			//keepAlive = "Keep-Alive".equals(headers.get("CONNECTION"));
         			boolean processOK = process(totalRequest);
         
         			if (processOK)
