@@ -1417,14 +1417,15 @@ public interface RawMaterial extends Item
 		@SuppressWarnings("unchecked")
 		public SPairList<Integer,Double> getValueSortedBucket(int material)
 		{
-			material=material&RawMaterial.MATERIAL_MASK;
+			material=(material&RawMaterial.MATERIAL_MASK)>>8;
 			if((material<0)||(material>=RawMaterial.MATERIAL_DESCS.length))
 				return null;
 			if(buckets == null)
 			{
-				PairSLinkedList<Integer,Double>[] newBuckets=new PairSLinkedList[RawMaterial.MATERIAL_DESCS.length];
-				for(int matCode=0;matCode<RawMaterial.MATERIAL_DESCS.length;matCode++)
+                SPairList<Integer,Double>[] newBuckets=new SPairList[RawMaterial.MATERIAL_DESCS.length];
+				for(int matIndex=0;matIndex<RawMaterial.MATERIAL_DESCS.length;matIndex++)
 				{
+					int matCode = (matIndex << 8);
 					TreeSet<Pair<Integer,Double>> newBucket=new TreeSet<Pair<Integer,Double>>(
 						new Comparator<Pair<Integer,Double>>()
 						{
@@ -1441,7 +1442,7 @@ public interface RawMaterial extends Item
 							newBucket.add(new Pair<Integer,Double>(Integer.valueOf(resourceCode),Double.valueOf(resourceValue)));
 						}
 					}
-					PairSLinkedList<Integer,Double> finalBucket=new PairSLinkedList<Integer,Double>();
+					PairSVector<Integer,Double> finalBucket=new PairSVector<Integer,Double>();
 					final double pieceSize=1.0 / (double)newBucket.size();
 					double currValue = 0.0;
 					for(Iterator<Pair<Integer,Double>> i=newBucket.iterator();i.hasNext();)
@@ -1450,7 +1451,7 @@ public interface RawMaterial extends Item
 						finalBucket.add(p.first, Double.valueOf(currValue));
 						currValue += pieceSize;
 					}
-					newBuckets[matCode]=finalBucket;
+					newBuckets[matIndex]=finalBucket;
 				}
 				buckets=newBuckets;
 			}

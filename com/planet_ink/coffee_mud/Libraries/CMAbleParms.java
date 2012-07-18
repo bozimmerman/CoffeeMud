@@ -834,25 +834,31 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 			times = (int)Math.round(weight / 1.0);
 			weight=.99;
 		}
-		final SPairList<Integer,Double> bucket = RawMaterial.CODES.instance().getValueSortedBucket(getAppropriateResourceBucket(I,A));
-		Integer resourceCode = (bucket.size()==0) ? Integer.valueOf(CMLib.dice().pick( RawMaterial.CODES.ALL(), I.material() )) : bucket.get( 0 ).first;
-		for(Iterator<Pair<Integer,Double>> b = bucket.iterator(); b.hasNext();)
+		final int myBucket = getAppropriateResourceBucket(I,A);
+		if(myBucket != RawMaterial.RESOURCE_NOTHING)
 		{
-			final Pair<Integer,Double> p = b.next();
-			if(weight <= p.second.doubleValue())
-			{
-				resourceCode = p.first;
-				break;
-			}
-		}
-		resourceCode = Integer.valueOf( resourceCode.intValue() );
-		for(int x=0;x<times;x++)
-		{
-			int[] amt = extraMatsM.get( resourceCode );
-			if(amt == null)
-				extraMatsM.put( resourceCode, new int[]{1} );
-			else
-				amt[0]++;
+    		final SPairList<Integer,Double> bucket = RawMaterial.CODES.instance().getValueSortedBucket(myBucket);
+    		Integer resourceCode = (bucket.size()==0) 
+    				? Integer.valueOf(CMLib.dice().pick( RawMaterial.CODES.ALL(), I.material() )) 
+    				: bucket.get( (weight>=.99) ? bucket.size()-1 : 0 ).first;
+    		for(Iterator<Pair<Integer,Double>> b = bucket.iterator(); b.hasNext();)
+    		{
+    			final Pair<Integer,Double> p = b.next();
+    			if(weight <= p.second.doubleValue())
+    			{
+    				resourceCode = p.first;
+    				break;
+    			}
+    		}
+    		resourceCode = Integer.valueOf( resourceCode.intValue() );
+    		for(int x=0;x<times;x++)
+    		{
+    			int[] amt = extraMatsM.get( resourceCode );
+    			if(amt == null)
+    				extraMatsM.put( resourceCode, new int[]{1} );
+    			else
+    				amt[0]++;
+    		}
 		}
 	}
 	
@@ -863,12 +869,12 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 		{
 			level = (double)I.basePhyStats().level();
 			if( level <= 0.0 ) level = 1.0;
-			addExtraMaterial(extraMatsM, I, A, CMath.div( CMProps.getIntVar( CMProps.SYSTEMI_LASTPLAYERLEVEL ), level ));
+			addExtraMaterial(extraMatsM, I, A, CMath.div( level, CMProps.getIntVar( CMProps.SYSTEMI_LASTPLAYERLEVEL ) ));
 		}
 		else
 		{
 			double levelCap = (double)CMLib.ableMapper().getCalculatedMedianLowestQualifyingLevel();
-			addExtraMaterial(extraMatsM, I, A, ( levelCap * 2.0) / level);
+			addExtraMaterial(extraMatsM, I, A, CMath.div(level , ( levelCap * 2.0)));
 		}
 	}
 
