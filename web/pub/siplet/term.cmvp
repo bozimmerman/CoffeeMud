@@ -14,7 +14,7 @@ var theapplet = null;
 var lastReceived = new Date().getTime();
 
 var limit=50000;
-var pingDelay=1500;
+var pingDelay=500;
 var halflimit=limit/2;
 var tenthlimit=limit/10;
 var errorState=false;
@@ -177,7 +177,7 @@ function addToWindow(s)
             }
             thespan.innerHTML=x;
         }
-        thespan.innerHTML=thespan.innerHTML+s;
+        thespan.innerHTML+=s;
         theend.scrollIntoView(false);
         if(mynum != top.term.currentWindow)
 	    	top.bar.lightgreenColor(mynum);
@@ -269,7 +269,8 @@ function displayData()
 {
 	if(theapplet==null) 
 		return;
-	myHttp.exec('POLL&TOKEN='+theapplet,function(success,status,txt){
+	myHttp.exec('POLL&TOKEN='+theapplet,function(success,status,txt)
+	{
 	    if(!success)
 	    	goOffline();
 	    else
