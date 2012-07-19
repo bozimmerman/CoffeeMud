@@ -136,6 +136,16 @@ public interface TimeManager extends CMLibrary
 	public String date2MonthString(long time, boolean shortName);
 
 	/**
+	 * Returns time in HH:MMap format, unless the day is other
+	 * than today, in which case it prepends yy/m/d.
+	 * 
+	 * <br><br><b>Usage:</b> String ENDMM=date2BriefString(time,true);
+	 * @param time The time in miliseconds
+	 * @return String The date string
+	 **/
+	public String date2BriefString(long time);
+
+	/**
 	 * Returns the month/day for a given date
 	 * 
 	 * <br><br><b>Usage:</b> String ENDMM=date2MonthDateString();

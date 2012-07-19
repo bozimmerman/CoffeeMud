@@ -17,6 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import com.planet_ink.coffee_mud.core.threads.*;
 
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 /*
    Copyright 2000-2012 Bo Zimmerman
@@ -285,9 +286,9 @@ public class ListCmd extends StdCommand
 				if(tArray[i] instanceof CMSupportThread)
 				{
 					CMSupportThread t = (CMSupportThread)tArray[i];
-					lines.append("Support Thread "+t.getName()+" "
+					lines.append("Thread "+t.getName()+" "
 							+"-"+t.getStatus()
-							+" ("+t.activeTimeMillis()+"ms)\n\r");
+							+" ("+CMLib.time().date2EllapsedTime(t.activeTimeMillis(), TimeUnit.MILLISECONDS, true)+")\n\r");
 				}
 				else
 				{

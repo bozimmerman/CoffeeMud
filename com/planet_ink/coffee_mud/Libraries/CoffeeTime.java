@@ -446,6 +446,19 @@ public class CoffeeTime extends StdLibrary implements TimeManager
 		return date2HRString(C)+":"+date2MINString(C)+" "+date2AMPMString(C);
 	}
 	
+	public String date2BriefString(long time)
+	{
+		Calendar C=makeCalendar(time);
+		Calendar nowC=Calendar.getInstance();
+		StringBuilder str=new StringBuilder();
+		if((nowC.get(Calendar.YEAR)!=C.get(Calendar.YEAR))
+		||(nowC.get(Calendar.MONTH)!=C.get(Calendar.MONTH))
+		||(nowC.get(Calendar.DATE)!=C.get(Calendar.DATE)))
+			str.append(C.get(Calendar.YEAR)).append("/").append(C.get(Calendar.MONTH)+1).append("/").append(C.get(Calendar.DATE)).append(" ");
+		str.append(date2HRString(C)).append(":").append(date2MINString(C)).append(date2AMPMString(C).toLowerCase());
+		return str.toString();
+	}
+	
 	private Calendar makeCalendar(long time)
 	{
 		Calendar C=Calendar.getInstance();
@@ -538,7 +551,7 @@ public class CoffeeTime extends StdLibrary implements TimeManager
 		}
 		if(minUnit == TimeUnit.SECONDS) return str.toString().trim();
 		if(str.length()>0) str.append(shortest?" ":", ");
-		return time+(shortest?"ms":" milliseconds");
+		return str.append(time+(shortest?"ms":" milliseconds")).toString().trim();
 	}
 	
 	public String date2SmartEllapsedTime(long time, boolean shortest)

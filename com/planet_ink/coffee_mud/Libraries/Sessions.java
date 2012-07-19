@@ -126,6 +126,7 @@ public class Sessions extends StdLibrary implements SessionsList
 		if(!thread.isStarted())
 		{
 			thread.setStatus("sleeping");
+			thread.disableDBCheck();
 			thread.start();
 		}
 		return true;

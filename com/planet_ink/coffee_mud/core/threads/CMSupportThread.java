@@ -33,6 +33,7 @@ public class CMSupportThread extends Thread implements CMRunnable
 	private long 	 tickTotal=0;
 	private String 	 status="";
 	private boolean  debugging=false;
+	private boolean  checkDBHealth=true;
 	private long 	 sleepTime=0;
 	private Runnable engine=null;
 
@@ -61,6 +62,11 @@ public class CMSupportThread extends Thread implements CMRunnable
 	public String getStatus()
 	{
 		return status;
+	}
+
+	public void disableDBCheck()
+	{
+		checkDBHealth=false;
 	}
 	
 	public boolean shutdown() {
@@ -94,35 +100,46 @@ public class CMSupportThread extends Thread implements CMRunnable
 			while(!CMProps.getBoolVar(CMProps.SYSTEMB_MUDSTARTED))
 				try{Thread.sleep(1000);}catch(Exception e){}
 			lastStart=System.currentTimeMillis();
+			setStatus("sleeping");
 			while(true)
 			{
 				try
 				{
 					while(CMLib.threads().isAllSuspended())
 						try{Thread.sleep(2000);}catch(Exception e){}
-					if(!CMSecurity.isDisabled(disableFlag))
+					try
 					{
-						setStatus("checking database health");
-						String ok=CMLib.database().errorStatus();
-						if((ok.length()!=0)&&(!ok.startsWith("OK")))
-							Log.errOut(getName(),"DB: "+ok);
-						else
-						{
-							lastStop=System.currentTimeMillis();
-							milliTotal+=(lastStop-lastStart);
-							tickTotal++;
-							setStatus("stopped at "+lastStop+", prev was "+(lastStop-lastStart)+"ms");
-							setStatus("sleeping");
-							Thread.sleep(sleepTime);
-							lastStart=System.currentTimeMillis();
-							setStatus("starting run at: "+lastStart);
-							engine.run();
-						}
+    					if(!CMSecurity.isDisabled(disableFlag))
+    					{
+    						if(checkDBHealth)
+    						{
+        						setStatus("checking database health");
+        						String ok=CMLib.database().errorStatus();
+        						setStatus("sleeping");
+        						if((ok.length()!=0)&&(!ok.startsWith("OK")))
+        						{
+        							Log.errOut(getName(),"DB: "+ok);
+            						Thread.sleep(10000);
+            						continue;
+        						}
+    						}
+    						lastStop=System.currentTimeMillis();
+    						milliTotal+=(lastStop-lastStart);
+    						tickTotal++;
+    						//setStatus("stopped at "+lastStop+", prev was "+(lastStop-lastStart)+"ms");
+    						Thread.sleep(sleepTime);
+    						lastStart=System.currentTimeMillis();
+    						setStatus("started at: "+CMLib.time().date2BriefString(lastStart));
+    						engine.run();
+    					}
+    					else
+    					{
+    						Thread.sleep(sleepTime);
+    					}
 					}
-					else
+					finally
 					{
-						status="sleeping";
-						Thread.sleep(sleepTime);
+						setStatus("sleeping");
 					}
 				}
 				catch(InterruptedException ioe)
