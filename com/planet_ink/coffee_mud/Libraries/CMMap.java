@@ -1880,7 +1880,7 @@ public class CMMap extends StdLibrary implements WorldMap
 		if(thread==null)
 			thread=new CMSupportThread("THMap"+Thread.currentThread().getThreadGroup().getName().charAt(0), 
 					MudHost.TIME_SAVETHREAD_SLEEP, this, CMSecurity.isDebugging(CMSecurity.DbgFlag.MAPTHREAD), CMSecurity.DisFlag.MAPTHREAD);
-		if(!thread.started)
+		if(!thread.isStarted())
 			thread.start();
 		return true;
 	}
@@ -1902,7 +1902,7 @@ public class CMMap extends StdLibrary implements WorldMap
 		
 		final boolean corpsesOnly=CMSecurity.isSaveFlag("ROOMITEMS");
 		final boolean noMobs=CMSecurity.isSaveFlag("ROOMMOBS");
-		thread.status("expiration sweep");
+		thread.setStatus("expiration sweep");
 		final long currentTime=System.currentTimeMillis();
 		final boolean debug=CMSecurity.isDebugging(CMSecurity.DbgFlag.VACUUM);
 		final MOB expireM=getFactoryMOB(null);
@@ -1953,7 +1953,7 @@ public class CMMap extends StdLibrary implements WorldMap
 					for(int s=0;s<stuffToGo.size();s++)
 					{
 						Environmental E=(Environmental)stuffToGo.elementAt(s);
-						thread.status("expiring "+E.Name());
+						thread.setStatus("expiring "+E.Name());
 						expireMsg.setTarget(E);
 						if(R.okMessage(expireM,expireMsg))
 							R.sendOthers(expireM,expireMsg);
@@ -1969,7 +1969,7 @@ public class CMMap extends StdLibrary implements WorldMap
 				R=(Room)roomsToGo.elementAt(r);
 				expireM.setLocation(R);
 				expireMsg.setTarget(R);
-				thread.status("expirating room "+getExtendedRoomID(R));
+				thread.setStatus("expirating room "+getExtendedRoomID(R));
 				if(debug)
 				{
 					String roomID=getExtendedRoomID(R);
@@ -1981,7 +1981,7 @@ public class CMMap extends StdLibrary implements WorldMap
 			
 		}
 		catch(java.util.NoSuchElementException e){}
-		thread.status("title sweeping");
+		thread.setStatus("title sweeping");
 		List<String> playerList=CMLib.database().getUserList();
 		try
 		{
@@ -1991,19 +1991,19 @@ public class CMMap extends StdLibrary implements WorldMap
 				LandTitle T=CMLib.law().getLandTitle(R);
 				if(T!=null)
 				{
-					thread.status("checking title in "+R.roomID()+": "+Runtime.getRuntime().freeMemory());
+					thread.setStatus("checking title in "+R.roomID()+": "+Runtime.getRuntime().freeMemory());
 					T.updateLot(playerList);
-					thread.status("title sweeping");
+					thread.setStatus("title sweeping");
 				}
 			}
 		}catch(NoSuchElementException nse){}
 		
-		thread.status("cleaning scripts");
+		thread.setStatus("cleaning scripts");
 		for(String areaKey : scriptHostMap.keySet())
 			cleanScriptHosts(scriptHostMap.get(areaKey), null, true);
 		
 		long lastDateTime=System.currentTimeMillis()-(5*TimeManager.MILI_MINUTE);
-		thread.status("checking");
+		thread.setStatus("checking");
 		try
 		{
 			for(Enumeration r=rooms();r.hasMoreElements();)
@@ -2032,10 +2032,10 @@ public class CMMap extends StdLibrary implements WorldMap
 							}
 							else
 								Log.errOut(thread.getName(),"Player "+mob.name()+" in room "+R.roomID()+" unticked (is ticking="+(ticked)+", dead="+isDead+", Home="+wasFrom+") since: "+CMLib.time().date2String(mob.lastTickedDateTime())+"."+(ticked?"":"  This mob has been put aside."));
-							thread.status("destroying unticked mob "+mob.name());
+							thread.setStatus("destroying unticked mob "+mob.name());
 							if(CMLib.players().getPlayer(mob.Name())==null) mob.destroy();
 							R.delInhabitant(mob);
-							thread.status("checking");
+							thread.setStatus("checking");
 						}
 					}
 				}

@@ -123,7 +123,7 @@ public class CoffeeTables extends StdLibrary implements StatisticsLibrary
 		if(thread==null)
 			thread=new CMSupportThread("THStats"+Thread.currentThread().getThreadGroup().getName().charAt(0), 
 					MudHost.TIME_SAVETHREAD_SLEEP, this, CMSecurity.isDebugging(CMSecurity.DbgFlag.STATSTHREAD), CMSecurity.DisFlag.STATSTHREAD);
-		if(!thread.started)
+		if(!thread.isStarted())
 			thread.start();
 		return true;
 	}

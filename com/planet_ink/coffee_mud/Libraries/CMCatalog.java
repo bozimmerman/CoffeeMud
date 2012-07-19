@@ -703,7 +703,7 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary, Runnable
 		if(thread==null)
 			thread=new CMSupportThread("THCatalog"+Thread.currentThread().getThreadGroup().getName().charAt(0), 
 					MudHost.TIME_SAVETHREAD_SLEEP, this, CMSecurity.isDebugging(CMSecurity.DbgFlag.CATALOGTHREAD), CMSecurity.DisFlag.CATALOGTHREAD);
-		if(!thread.started)
+		if(!thread.isStarted())
 			thread.start();
 		return true;
 	}
@@ -718,7 +718,7 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary, Runnable
 	
 	public void forceTick()
 	{
-		if(thread.status.equalsIgnoreCase("sleeping"))
+		if(thread.getStatus().equalsIgnoreCase("sleeping"))
 		{
 			thread.interrupt();
 			return;
@@ -729,7 +729,7 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary, Runnable
 	{
 		if(!CMSecurity.isDisabled(CMSecurity.DisFlag.CATALOGTHREAD))
 		{
-			thread.status("checking catalog references.");
+			thread.setStatus("checking catalog references.");
 			String[] names = getCatalogItemNames();
 			for(int n=0;n<names.length;n++)
 			{

@@ -123,9 +123,9 @@ public class Sessions extends StdLibrary implements SessionsList
 		if(thread==null)
 			thread=new CMSupportThread("THSessions"+Thread.currentThread().getThreadGroup().getName().charAt(0), 
 					100, this, CMSecurity.isDebugging(CMSecurity.DbgFlag.UTILITHREAD), CMSecurity.DisFlag.SESSIONTHREAD);
-		if(!thread.started)
+		if(!thread.isStarted())
 		{
-			thread.status("sleeping");
+			thread.setStatus("sleeping");
 			thread.start();
 		}
 		return true;
@@ -195,7 +195,7 @@ public class Sessions extends StdLibrary implements SessionsList
 		||(CMSecurity.isDisabled(CMSecurity.DisFlag.SESSIONTHREAD)))
 			return;
 		lastSweepTime = System.currentTimeMillis();
-		thread.status("checking player sessions.");
+		thread.setStatus("checking player sessions.");
 		for(Session S : all)
 		{
 			long time=System.currentTimeMillis()-S.lastLoopTime();
@@ -231,9 +231,9 @@ public class Sessions extends StdLibrary implements SessionsList
 							if(S instanceof Thread)
 								thread.debugDumpStack("Sessions",(Thread)S);
 						}
-						thread.status("killing session ");
+						thread.setStatus("killing session ");
 						stopSessionAtAllCosts(S);
-						thread.status("checking player sessions.");
+						thread.setStatus("checking player sessions.");
 					}
 					else
 					if(time>check)
@@ -273,9 +273,9 @@ public class Sessions extends StdLibrary implements SessionsList
 					}
 					if((S.getStatus()!=1)||((S.previousCMD()!=null)&&(S.previousCMD().size()>0)))
 						Log.errOut(thread.getName(),"STATUS  was :"+S.getStatus()+", LASTCMD was :"+((S.previousCMD()!=null)?S.previousCMD().toString():""));
-					thread.status("killing session ");
+					thread.setStatus("killing session ");
 					stopSessionAtAllCosts(S);
-					thread.status("checking player sessions");
+					thread.setStatus("checking player sessions");
 				}
 			}
 		}

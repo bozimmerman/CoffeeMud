@@ -292,7 +292,7 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 	
 	public void expirationJournalSweep()
 	{
-		thread.status("expiration journal sweeping");
+		thread.setStatus("expiration journal sweeping");
 		try
 		{
 			for(Enumeration<CommandJournal> e=commandJournals();e.hasMoreElements();)
@@ -301,7 +301,7 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 				String num=CMJ.getFlag(CommandJournalFlags.EXPIRE);
 				if((num!=null)&&(CMath.isNumber(num)))
 				{
-					thread.status("updating journal "+CMJ.NAME());
+					thread.setStatus("updating journal "+CMJ.NAME());
 					List<JournalsLibrary.JournalEntry> items=CMLib.database().DBReadJournalMsgs(CMJ.JOURNAL_NAME());
 					if(items!=null)
 					for(int i=items.size()-1;i>=0;i--)
@@ -317,7 +317,7 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 							CMLib.database().DBDeleteJournal(CMJ.JOURNAL_NAME(),entry.key);
 						}
 					}
-					thread.status("command journal sweeping");
+					thread.setStatus("command journal sweeping");
 				}
 			}
 		}catch(NoSuchElementException nse){}
@@ -329,7 +329,7 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 				String num=FMJ.getFlag(CommandJournalFlags.EXPIRE);
 				if((num!=null)&&(CMath.isNumber(num)))
 				{
-					thread.status("updating journal "+FMJ.NAME());
+					thread.setStatus("updating journal "+FMJ.NAME());
 					List<JournalsLibrary.JournalEntry> items=CMLib.database().DBReadJournalMsgs(FMJ.NAME());
 					if(items!=null)
 					for(int i=items.size()-1;i>=0;i--)
@@ -348,7 +348,7 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 							}
 						}
 					}
-					thread.status("forum journal sweeping");
+					thread.setStatus("forum journal sweeping");
 				}
 			}
 		}catch(NoSuchElementException nse){}
@@ -358,7 +358,7 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 		if(thread==null)
 			thread=new CMSupportThread("THJournals"+Thread.currentThread().getThreadGroup().getName().charAt(0), 
 					MudHost.TIME_SAVETHREAD_SLEEP, this, CMSecurity.isDebugging(CMSecurity.DbgFlag.JOURNALTHREAD), CMSecurity.DisFlag.JOURNALTHREAD);
-		if(!thread.started)
+		if(!thread.isStarted())
 			thread.start();
 		return true;
 	}

@@ -401,23 +401,23 @@ public class ServiceEngine implements ThreadEngine
 					if(curThreadNum==threadNum) {
 						String instrCode=itemCode.substring(xend);
 						if(instrCode.equalsIgnoreCase("miliTotal"))
-							return ""+thread.milliTotal;
+							return ""+thread.activeTimeMillis();
 						if(instrCode.equalsIgnoreCase("milliTotal"))
-							return ""+thread.milliTotal;
+							return ""+thread.activeTimeMillis();
 						if(instrCode.equalsIgnoreCase("status"))
-							return ""+thread.status;
+							return ""+thread.getStatus();
 						if(instrCode.equalsIgnoreCase("name"))
 							return ""+thread.getName();
 						if(instrCode.equalsIgnoreCase("MilliTotalTime"))
-							return CMLib.english().returnTime(thread.milliTotal,0);
+							return CMLib.english().returnTime(thread.activeTimeMillis(),0);
 						if(instrCode.equalsIgnoreCase("MiliTotalTime"))
-							return CMLib.english().returnTime(thread.milliTotal,0);
+							return CMLib.english().returnTime(thread.activeTimeMillis(),0);
 						if(instrCode.equalsIgnoreCase("MilliTotalTimePlusAverage"))
-							return CMLib.english().returnTime(thread.milliTotal,thread.tickTotal);
+							return CMLib.english().returnTime(thread.activeTimeMillis(),thread.getTotalTicks());
 						if(instrCode.equalsIgnoreCase("MiliTotalTimePlusAverage"))
-							return CMLib.english().returnTime(thread.milliTotal,thread.tickTotal);
+							return CMLib.english().returnTime(thread.activeTimeMillis(),thread.getTotalTicks());
 						if(instrCode.equalsIgnoreCase("TickTotal"))
-							return ""+thread.tickTotal;
+							return ""+thread.getTotalTicks();
 						break;
 					}
 					curThreadNum++;
@@ -807,7 +807,7 @@ public class ServiceEngine implements ThreadEngine
 	public String getServiceThreadSummary(Thread T)
 	{
 		if(T instanceof CMSupportThread)
-			return " ("+((CMSupportThread)T).status+")";
+			return " ("+((CMSupportThread)T).getStatus()+")";
 		else
 		if(T instanceof MudHost)
 			return " ("+((MudHost)T).getStatus()+")";
@@ -836,9 +836,9 @@ public class ServiceEngine implements ThreadEngine
 	{
 		long lastDateTime=System.currentTimeMillis()-(5*TimeManager.MILI_MINUTE);
 		long longerDateTime=System.currentTimeMillis()-(120*TimeManager.MILI_MINUTE);
-		thread.status("checking");
+		thread.setStatus("checking");
 
-		thread.status("checking tick groups.");
+		thread.setStatus("checking tick groups.");
 		DVector orderedDeaths=new DVector(3);
 		try
 		{
@@ -894,7 +894,7 @@ public class ServiceEngine implements ThreadEngine
 		for(int i=0;i<orderedDeaths.size();i++)
 			Log.errOut(thread.getName(),(String)orderedDeaths.elementAt(i,2));
 			
-		thread.status("killing tick groups.");
+		thread.setStatus("killing tick groups.");
 		for(int x=0;x<orderedDeaths.size();x++)
 		{
 			Tick almostTock=(Tick)orderedDeaths.elementAt(x,3);
@@ -924,7 +924,7 @@ public class ServiceEngine implements ThreadEngine
 			}
 		}
 
-		thread.status("Checking mud threads");
+		thread.setStatus("Checking mud threads");
 		for(int m=0;m<CMLib.hosts().size();m++)
 		{
 			List<Runnable> badThreads=((MudHost)CMLib.hosts().get(m)).getOverdueThreads();
@@ -934,7 +934,7 @@ public class ServiceEngine implements ThreadEngine
 					String threadName=((Thread)T).getName();
 					if(T instanceof Tickable)
 						threadName=((Tickable)T).name()+" ("+((Tickable)T).ID()+"): "+((Tickable)T).getTickStatus();
-					thread.status("Killing "+threadName);
+					thread.setStatus("Killing "+threadName);
 					Log.errOut("Killing stray thread: "+threadName);
 					CMLib.killThread((Thread)T,100,1);
 				}
@@ -942,7 +942,7 @@ public class ServiceEngine implements ThreadEngine
 					Log.errOut("Unable to kill stray runnable: "+T.toString());
 		}
 		
-		thread.status("Done checking threads");
+		thread.setStatus("Done checking threads");
 	}
 
 	public void run()
@@ -962,7 +962,7 @@ public class ServiceEngine implements ThreadEngine
 		if(thread==null)
 			thread=new CMSupportThread("THThreads"+Thread.currentThread().getThreadGroup().getName().charAt(0), 
 					MudHost.TIME_UTILTHREAD_SLEEP, this, CMSecurity.isDebugging(CMSecurity.DbgFlag.UTILITHREAD),CMSecurity.DisFlag.UTILITHREAD);
-		if(!thread.started)
+		if(!thread.isStarted())
 			thread.start();
 		return true;
 	}

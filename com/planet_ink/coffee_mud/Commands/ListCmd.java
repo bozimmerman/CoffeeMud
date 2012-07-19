@@ -14,6 +14,7 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
+import com.planet_ink.coffee_mud.core.threads.*;
 
 import java.util.*;
 
@@ -280,6 +281,14 @@ public class ListCmd extends StdCommand
 							+"-"+((TickableGroup)tArray[i]).lastTicked().name()
 							+"-"+((TickableGroup)tArray[i]).lastTicked().getTickStatus()
 							+" ("+CMLib.threads().getTickStatusSummary(((TickableGroup)tArray[i]).lastTicked())+")\n\r");
+				else
+				if(tArray[i] instanceof CMSupportThread)
+				{
+					CMSupportThread t = (CMSupportThread)tArray[i];
+					lines.append("Support Thread "+t.getName()+" "
+							+"-"+t.getStatus()
+							+" ("+t.activeTimeMillis()+"ms)\n\r");
+				}
 				else
 				{
 					String status=CMLib.threads().getServiceThreadSummary(tArray[i]);

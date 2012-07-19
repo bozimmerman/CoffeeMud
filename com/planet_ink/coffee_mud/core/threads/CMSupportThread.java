@@ -23,20 +23,20 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
-public class CMSupportThread extends Thread
+public class CMSupportThread extends Thread implements CMRunnable
 {
-	public boolean 	started=false;
-	public boolean 	shutDown=false;
-	public long 	lastStart=0;
-	public long 	lastStop=0;
-	public long 	milliTotal=0;
-	public long 	tickTotal=0;
-	public String 	status="";
-	public boolean 	debugging=false;
-	public long 	sleepTime=0;
-	public Runnable engine=null;
+	private boolean  started=false;
+	private boolean  shutDown=false;
+	private long 	 lastStart=0;
+	private long 	 lastStop=0;
+	private long 	 milliTotal=0;
+	private long 	 tickTotal=0;
+	private String 	 status="";
+	private boolean  debugging=false;
+	private long 	 sleepTime=0;
+	private Runnable engine=null;
 
-	public CMSecurity.DisFlag disableFlag;
+	private CMSecurity.DisFlag disableFlag;
 	
 	public CMSupportThread(String name, long sleep, Runnable engine, boolean debugging, CMSecurity.DisFlag disableFlag) {
 		this.engine=engine;
@@ -47,10 +47,20 @@ public class CMSupportThread extends Thread
 		setDaemon(true);
 	}
 	
-	public void status(String s)
+	public void setStatus(String s)
 	{
 		status=s;
 		if(debugging) Log.debugOut(getName(),s);
+	}
+	
+	public boolean isStarted()
+	{
+		return started;
+	}
+	
+	public String getStatus()
+	{
+		return status;
 	}
 	
 	public boolean shutdown() {
@@ -92,7 +102,7 @@ public class CMSupportThread extends Thread
 						try{Thread.sleep(2000);}catch(Exception e){}
 					if(!CMSecurity.isDisabled(disableFlag))
 					{
-						status("checking database health");
+						setStatus("checking database health");
 						String ok=CMLib.database().errorStatus();
 						if((ok.length()!=0)&&(!ok.startsWith("OK")))
 							Log.errOut(getName(),"DB: "+ok);
@@ -101,11 +111,11 @@ public class CMSupportThread extends Thread
 							lastStop=System.currentTimeMillis();
 							milliTotal+=(lastStop-lastStart);
 							tickTotal++;
-							status("stopped at "+lastStop+", prev was "+(lastStop-lastStart)+"ms");
-							status("sleeping");
+							setStatus("stopped at "+lastStop+", prev was "+(lastStop-lastStart)+"ms");
+							setStatus("sleeping");
 							Thread.sleep(sleepTime);
 							lastStart=System.currentTimeMillis();
-							status("starting run at: "+lastStart);
+							setStatus("starting run at: "+lastStart);
 							engine.run();
 						}
 					}
@@ -135,4 +145,9 @@ public class CMSupportThread extends Thread
 		}
 		Log.sysOut(getName(),"Shutdown complete.");
 	}
+
+	@Override
+    public long activeTimeMillis() { return milliTotal; }
+	
+	public long getTotalTicks() { return tickTotal; }
 }
