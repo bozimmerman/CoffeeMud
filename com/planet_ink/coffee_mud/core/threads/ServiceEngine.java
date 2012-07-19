@@ -43,23 +43,17 @@ public class ServiceEngine implements ThreadEngine
 {
 	public static final long STATUS_ALLMISCTICKS=Tickable.STATUS_MISC|Tickable.STATUS_MISC2|Tickable.STATUS_MISC3|Tickable.STATUS_MISC4|Tickable.STATUS_MISC5|Tickable.STATUS_MISC6;
 	
-	private CMSupportThread  thread=null;
-	protected SLinkedList<Tick> 		ticks=new SLinkedList<Tick>();
-	private boolean 					isSuspended=false;
-	private int 						max_objects_per_thread=0;
-	private CMThreadPoolExecutor		threadPool;
+	private CMSupportThread  		thread=null;
+	protected SLinkedList<Tick> 	ticks=new SLinkedList<Tick>();
+	private boolean 				isSuspended=false;
+	private int 					max_objects_per_thread=0;
+	private CMThreadPoolExecutor[]	threadPools=new CMThreadPoolExecutor[256];
 	
 	public String ID(){return "ServiceEngine";}
 	public CMObject newInstance(){try{return (CMObject)getClass().newInstance();}catch(Exception e){return new ServiceEngine();}}
 	
 	public void initializeClass() 
 	{
-		final int minThreads = CMProps.getIntVar(CMProps.SYSTEMI_MINSESSIONTHREADS);
-		int maxThreads = CMProps.getIntVar(CMProps.SYSTEMI_MAXSESSIONTHREADS);
-		if(maxThreads<=0) maxThreads=Integer.MAX_VALUE;
-		final String sessionThreadGroupName="Sess"+Thread.currentThread().getThreadGroup().getName().charAt(0);
-		threadPool = new CMThreadPoolExecutor(sessionThreadGroupName,minThreads, maxThreads, 5, TimeUnit.MINUTES, 5, 1024);
-		threadPool.setThreadFactory(new CMThreadFactory(sessionThreadGroupName));
 	}
 	public CMObject copyOf(){try{return (CMObject)this.clone();}catch(Exception e){return newInstance();}}
 	public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
@@ -69,6 +63,20 @@ public class ServiceEngine implements ThreadEngine
 	public ServiceEngine() 
 	{ 
 		initializeClass();
+	}
+
+	protected CMThreadPoolExecutor getPoolExecutor()
+	{
+		final char threadGroupNum=Thread.currentThread().getThreadGroup().getName().charAt(0);
+		final CMThreadPoolExecutor pool = threadPools[threadGroupNum];
+		if(pool != null) return pool;
+		final int minThreads = CMProps.getIntVar(CMProps.SYSTEMI_MINSESSIONTHREADS);
+		int maxThreads = CMProps.getIntVar(CMProps.SYSTEMI_MAXSESSIONTHREADS);
+		if(maxThreads<=0) maxThreads=Integer.MAX_VALUE;
+		final String sessionThreadGroupName="Sess"+threadGroupNum;
+		threadPools[threadGroupNum] = new CMThreadPoolExecutor(sessionThreadGroupName,minThreads, maxThreads, 5, TimeUnit.MINUTES, 5, 1024);
+		threadPools[threadGroupNum].setThreadFactory(new CMThreadFactory(sessionThreadGroupName));
+		return threadPools[threadGroupNum];
 	}
 	
 	public Iterator<Tick> tickGroups()
@@ -80,7 +88,7 @@ public class ServiceEngine implements ThreadEngine
 	{
 		try
 		{
-			threadPool.execute(R);
+			getPoolExecutor().execute(R);
 		}
 		catch(Exception e)
 		{
@@ -650,7 +658,9 @@ public class ServiceEngine implements ThreadEngine
 		CMProps.setUpAllLowVar(CMProps.SYSTEM_MUDSTATUS,"Shutting down...shutting down Service Engine: "+ID()+": saving time objects");
 		for(int t=0;t<timeObjects.size();t++)
 			((TimeClock)timeObjects.elementAt(t)).save();
-		threadPool.shutdown();
+		for(CMThreadPoolExecutor pool : threadPools)
+			if(pool != null)
+        		pool.shutdown();
 		Log.sysOut("ServiceEngine","Shutdown complete.");
 		return true;
 	}
