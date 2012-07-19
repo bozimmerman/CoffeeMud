@@ -1,6 +1,7 @@
 package com.planet_ink.coffee_mud.Libraries;
 import com.planet_ink.coffee_mud.core.exceptions.BadEmailAddressException;
 import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.threads.CMSupportThread;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
@@ -40,9 +41,9 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 	public SVector<MOB> 			playersList    = new SVector<MOB>();
 	public SVector<PlayerAccount>     accountsList    = new SVector<PlayerAccount>();
 	
-	private ThreadEngine.SupportThread thread=null;
+	private CMSupportThread thread=null;
 	
-	public ThreadEngine.SupportThread getSupportThread() { return thread;}
+	public CMSupportThread getSupportThread() { return thread;}
 	
 	public int numPlayers() { return playersList.size(); }
 	public synchronized void addPlayer(MOB newOne)
@@ -693,7 +694,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 
 	public boolean activate() {
 		if(thread==null)
-			thread=new ThreadEngine.SupportThread("THPlayers"+Thread.currentThread().getThreadGroup().getName().charAt(0), 
+			thread=new CMSupportThread("THPlayers"+Thread.currentThread().getThreadGroup().getName().charAt(0), 
 					MudHost.TIME_SAVETHREAD_SLEEP, this, CMSecurity.isDebugging(CMSecurity.DbgFlag.PLAYERTHREAD), CMSecurity.DisFlag.PLAYERTHREAD);
 		if(!thread.started)
 			thread.start();

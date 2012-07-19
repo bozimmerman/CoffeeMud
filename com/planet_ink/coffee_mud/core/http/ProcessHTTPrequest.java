@@ -2,6 +2,7 @@ package com.planet_ink.coffee_mud.core.http;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.intermud.IMudClient;
 import com.planet_ink.coffee_mud.core.threads.CMRunnable;
+import com.planet_ink.coffee_mud.core.threads.CMSupportThread;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
@@ -153,7 +154,7 @@ public class ProcessHTTPrequest implements CMRunnable, ExternalHTTPRequests
 	public String getHTTPstatusInfo()	{return statusExtra==null?"":statusExtra;}
 	public boolean activate(){ return true;}
 	public boolean shutdown(){ return true;}
-	public ThreadEngine.SupportThread getSupportThread() { return null;}
+	public CMSupportThread getSupportThread() { return null;}
 	public boolean isCompleted(){ return completed;}
 	
 	public CMFile grabFile(String fn)

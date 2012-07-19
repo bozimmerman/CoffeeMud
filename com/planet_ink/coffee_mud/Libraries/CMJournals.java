@@ -1,5 +1,6 @@
 package com.planet_ink.coffee_mud.Libraries;
 import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.threads.CMSupportThread;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
@@ -42,8 +43,8 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 	protected SHashtable<String,ForumJournal> forumJournals=new SHashtable<String,ForumJournal>();
 	public final Vector emptyVector=new Vector(1);
 	
-	private ThreadEngine.SupportThread thread=null;
-	public ThreadEngine.SupportThread getSupportThread() { return thread;}
+	private CMSupportThread thread=null;
+	public CMSupportThread getSupportThread() { return thread;}
 	
 	protected Hashtable<String,JournalSummaryStats> getSummaryStats()
 	{
@@ -355,7 +356,7 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 	
 	public boolean activate() {
 		if(thread==null)
-			thread=new ThreadEngine.SupportThread("THJournals"+Thread.currentThread().getThreadGroup().getName().charAt(0), 
+			thread=new CMSupportThread("THJournals"+Thread.currentThread().getThreadGroup().getName().charAt(0), 
 					MudHost.TIME_SAVETHREAD_SLEEP, this, CMSecurity.isDebugging(CMSecurity.DbgFlag.JOURNALTHREAD), CMSecurity.DisFlag.JOURNALTHREAD);
 		if(!thread.started)
 			thread.start();

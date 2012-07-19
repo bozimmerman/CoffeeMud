@@ -155,9 +155,11 @@ public class CMThreadPoolExecutor extends ThreadPoolExecutor
 						{
 							CMRunnable leastWorstOffender=null;
 							for(CMRunnable r : timedOut)
+							{
 								if((leastWorstOffender != null)
 								&&(r.activeTimeMillis() < leastWorstOffender.activeTimeMillis()))
 									leastWorstOffender=r;
+							}
 							if(leastWorstOffender!=null)
 							{
 								if(p.second.activeTimeMillis() < leastWorstOffender.activeTimeMillis())

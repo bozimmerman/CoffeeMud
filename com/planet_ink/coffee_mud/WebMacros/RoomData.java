@@ -1,5 +1,6 @@
 package com.planet_ink.coffee_mud.WebMacros;
 import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.threads.CMSupportThread;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.core.exceptions.HTTPRedirectException;
@@ -8,7 +9,6 @@ import com.planet_ink.coffee_mud.Areas.interfaces.*;
 import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
-import com.planet_ink.coffee_mud.Libraries.interfaces.ThreadEngine.SupportThread;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
@@ -20,9 +20,6 @@ import com.planet_ink.coffee_mud.WebMacros.grinder.GrinderRooms;
 import java.net.InetAddress;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
-
-
-
 /*
    Copyright 2000-2012 Bo Zimmerman
 
@@ -855,7 +852,7 @@ public class RoomData extends StdWebMacro
 			public boolean isRequestParameter(String key) { return params.containsKey(key.toUpperCase()); }
 			public void removeRequestParameter(String key) { params.remove(key.toUpperCase()); }
 			public boolean activate() { return httpReq.activate(); }
-			public SupportThread getSupportThread() { return httpReq.getSupportThread(); }
+			public CMSupportThread getSupportThread() { return httpReq.getSupportThread(); }
 			public void propertiesLoaded() { httpReq.propertiesLoaded(); }
 			public boolean shutdown() { return httpReq.shutdown(); }
 			public String ID() { return httpReq.ID(); }

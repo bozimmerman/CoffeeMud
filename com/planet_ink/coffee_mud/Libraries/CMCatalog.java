@@ -1,5 +1,6 @@
 package com.planet_ink.coffee_mud.Libraries;
 import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.threads.CMSupportThread;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
@@ -39,9 +40,9 @@ import java.util.*;
 public class CMCatalog extends StdLibrary implements CatalogLibrary, Runnable
 {
 	public String ID(){return "CMCatalog";}
-	private ThreadEngine.SupportThread thread=null;
+	private CMSupportThread thread=null;
 	
-	public ThreadEngine.SupportThread getSupportThread() { return thread;}
+	public CMSupportThread getSupportThread() { return thread;}
 	
 	public DVector icatalog=new DVector(2);
 	public DVector mcatalog=new DVector(2);
@@ -700,7 +701,7 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary, Runnable
 	
 	public boolean activate() {
 		if(thread==null)
-			thread=new ThreadEngine.SupportThread("THCatalog"+Thread.currentThread().getThreadGroup().getName().charAt(0), 
+			thread=new CMSupportThread("THCatalog"+Thread.currentThread().getThreadGroup().getName().charAt(0), 
 					MudHost.TIME_SAVETHREAD_SLEEP, this, CMSecurity.isDebugging(CMSecurity.DbgFlag.CATALOGTHREAD), CMSecurity.DisFlag.CATALOGTHREAD);
 		if(!thread.started)
 			thread.start();

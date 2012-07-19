@@ -1,5 +1,6 @@
 package com.planet_ink.coffee_mud.Libraries;
 import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.threads.CMSupportThread;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
@@ -54,8 +55,8 @@ public class CMMap extends StdLibrary implements WorldMap
 	protected Map<String,Object> 
 							SCRIPT_HOST_SEMAPHORES=new Hashtable<String,Object>();
 	
-	private ThreadEngine.SupportThread  thread     = null;
-	public ThreadEngine.SupportThread getSupportThread() { return thread;}
+	private CMSupportThread  thread     = null;
+	public CMSupportThread getSupportThread() { return thread;}
 	
 	protected int getGlobalIndex(Vector list, String name)
 	{
@@ -1877,7 +1878,7 @@ public class CMMap extends StdLibrary implements WorldMap
 	public boolean activate() 
 	{
 		if(thread==null)
-			thread=new ThreadEngine.SupportThread("THMap"+Thread.currentThread().getThreadGroup().getName().charAt(0), 
+			thread=new CMSupportThread("THMap"+Thread.currentThread().getThreadGroup().getName().charAt(0), 
 					MudHost.TIME_SAVETHREAD_SLEEP, this, CMSecurity.isDebugging(CMSecurity.DbgFlag.MAPTHREAD), CMSecurity.DisFlag.MAPTHREAD);
 		if(!thread.started)
 			thread.start();

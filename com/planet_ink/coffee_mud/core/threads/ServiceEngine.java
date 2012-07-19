@@ -43,7 +43,7 @@ public class ServiceEngine implements ThreadEngine
 {
 	public static final long STATUS_ALLMISCTICKS=Tickable.STATUS_MISC|Tickable.STATUS_MISC2|Tickable.STATUS_MISC3|Tickable.STATUS_MISC4|Tickable.STATUS_MISC5|Tickable.STATUS_MISC6;
 	
-	private ThreadEngine.SupportThread  thread=null;
+	private CMSupportThread  thread=null;
 	protected SLinkedList<Tick> 		ticks=new SLinkedList<Tick>();
 	private boolean 					isSuspended=false;
 	private int 						max_objects_per_thread=0;
@@ -64,7 +64,7 @@ public class ServiceEngine implements ThreadEngine
 	public CMObject copyOf(){try{return (CMObject)this.clone();}catch(Exception e){return newInstance();}}
 	public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
 	public void propertiesLoaded(){}
-	public ThreadEngine.SupportThread getSupportThread() { return thread;}
+	public CMSupportThread getSupportThread() { return thread;}
 	
 	public ServiceEngine() 
 	{ 
@@ -396,7 +396,7 @@ public class ServiceEngine implements ThreadEngine
 			for(Enumeration<CMLibrary> e=CMLib.libraries();e.hasMoreElements();)
 			{
 				CMLibrary lib=(CMLibrary)e.nextElement();
-				ThreadEngine.SupportThread thread=lib.getSupportThread();
+				CMSupportThread thread=lib.getSupportThread();
 				if(thread!=null) {
 					if(curThreadNum==threadNum) {
 						String instrCode=itemCode.substring(xend);
@@ -806,8 +806,8 @@ public class ServiceEngine implements ThreadEngine
 	}
 	public String getServiceThreadSummary(Thread T)
 	{
-		if(T instanceof ThreadEngine.SupportThread)
-			return " ("+((ThreadEngine.SupportThread)T).status+")";
+		if(T instanceof CMSupportThread)
+			return " ("+((CMSupportThread)T).status+")";
 		else
 		if(T instanceof MudHost)
 			return " ("+((MudHost)T).getStatus()+")";
@@ -960,7 +960,7 @@ public class ServiceEngine implements ThreadEngine
 	
 	public boolean activate() {
 		if(thread==null)
-			thread=new ThreadEngine.SupportThread("THThreads"+Thread.currentThread().getThreadGroup().getName().charAt(0), 
+			thread=new CMSupportThread("THThreads"+Thread.currentThread().getThreadGroup().getName().charAt(0), 
 					MudHost.TIME_UTILTHREAD_SLEEP, this, CMSecurity.isDebugging(CMSecurity.DbgFlag.UTILITHREAD),CMSecurity.DisFlag.UTILITHREAD);
 		if(!thread.started)
 			thread.start();

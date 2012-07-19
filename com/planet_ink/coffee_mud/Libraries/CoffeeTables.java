@@ -1,5 +1,6 @@
 package com.planet_ink.coffee_mud.Libraries;
 import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.threads.CMSupportThread;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
@@ -35,9 +36,9 @@ public class CoffeeTables extends StdLibrary implements StatisticsLibrary
 {
 	public String ID(){return "CoffeeTables";}
 	public CoffeeTableRow todays=null;
-	private ThreadEngine.SupportThread thread=null;
+	private CMSupportThread thread=null;
 	
-	public ThreadEngine.SupportThread getSupportThread() { return thread;}
+	public CMSupportThread getSupportThread() { return thread;}
 	
 	public void update()
 	{
@@ -120,7 +121,7 @@ public class CoffeeTables extends StdLibrary implements StatisticsLibrary
 	
 	public boolean activate() {
 		if(thread==null)
-			thread=new ThreadEngine.SupportThread("THStats"+Thread.currentThread().getThreadGroup().getName().charAt(0), 
+			thread=new CMSupportThread("THStats"+Thread.currentThread().getThreadGroup().getName().charAt(0), 
 					MudHost.TIME_SAVETHREAD_SLEEP, this, CMSecurity.isDebugging(CMSecurity.DbgFlag.STATSTHREAD), CMSecurity.DisFlag.STATSTHREAD);
 		if(!thread.started)
 			thread.start();

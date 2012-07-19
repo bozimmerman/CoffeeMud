@@ -6,6 +6,7 @@ import com.planet_ink.coffee_mud.MOBS.interfaces.MOB;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.threads.CMSupportThread;
 
 /* 
    Copyright 2000-2012 Bo Zimmerman
@@ -25,7 +26,7 @@ import com.planet_ink.coffee_mud.core.interfaces.*;
 public class Sessions extends StdLibrary implements SessionsList
 {
 	public String ID(){return "Sessions";}
-	private ThreadEngine.SupportThread thread=null;
+	private CMSupportThread thread=null;
 	private volatile long lastSweepTime = System.currentTimeMillis(); 
 	
 	public SLinkedList<Session> all=new SLinkedList<Session>();
@@ -40,7 +41,7 @@ public class Sessions extends StdLibrary implements SessionsList
 		}
 	};
 	
-	public ThreadEngine.SupportThread getSupportThread() { return thread;}
+	public CMSupportThread getSupportThread() { return thread;}
 	
 	public Iterator<Session> all(){return all.iterator();}
 	public Iterable<Session> allIterable(){return all;}
@@ -120,7 +121,7 @@ public class Sessions extends StdLibrary implements SessionsList
 	public boolean activate() 
 	{
 		if(thread==null)
-			thread=new ThreadEngine.SupportThread("THSessions"+Thread.currentThread().getThreadGroup().getName().charAt(0), 
+			thread=new CMSupportThread("THSessions"+Thread.currentThread().getThreadGroup().getName().charAt(0), 
 					100, this, CMSecurity.isDebugging(CMSecurity.DbgFlag.UTILITHREAD), CMSecurity.DisFlag.SESSIONTHREAD);
 		if(!thread.started)
 		{
