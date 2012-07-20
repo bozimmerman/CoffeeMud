@@ -129,7 +129,7 @@ public class CMSupportThread extends Thread implements CMRunnable
     						//setStatus("stopped at "+lastStop+", prev was "+(lastStop-lastStart)+"ms");
     						Thread.sleep(sleepTime);
     						lastStart=System.currentTimeMillis();
-    						setStatus("started at: "+CMLib.time().date2BriefString(lastStart));
+    						setStatus("started "+CMLib.time().date2BriefString(lastStart));
     						engine.run();
     					}
     					else
@@ -164,7 +164,15 @@ public class CMSupportThread extends Thread implements CMRunnable
 	}
 
 	@Override
-    public long activeTimeMillis() { return milliTotal; }
+    public long activeTimeMillis() 
+	{
+		final long ls = lastStart;
+		final long le = lastStop;
+		final long mt = milliTotal;
+		if(le > ls)
+    		return mt;
+		return mt + (System.currentTimeMillis()-ls);
+	}
 	
 	public long getTotalTicks() { return tickTotal; }
 }
