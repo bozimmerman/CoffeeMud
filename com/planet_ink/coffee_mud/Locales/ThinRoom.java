@@ -62,7 +62,7 @@ public class ThinRoom implements Room {
 	public int domainConditions(){return Room.CONDITION_NORMAL;}
 	public int myResource(){return -1;}
 	public void setResource(int resourceCode){}
-	public List<Integer> resourceChoices(){empty.clear(); return empty;}
+	public List<Integer> resourceChoices(){return empty;}
 	public void toggleMobility(boolean onoff){}
 	public boolean getMobility(){return true;}
 	private boolean recurse=false;
