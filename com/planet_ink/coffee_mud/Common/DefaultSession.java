@@ -1211,22 +1211,30 @@ public class DefaultSession implements Session
 	{
 		if((in==null)||(out==null)) return "";
 		input=new StringBuffer("");
-		long start=System.currentTimeMillis();
+		final long start=System.currentTimeMillis();
+		final long timeoutTime= (maxTime<=0) ? Long.MAX_VALUE : (start + maxTime);
+		long nextPingAtTime=start + PINGTIMEOUT;
 		try
 		{
 			suspendCommandLine=true;
+			long now;
+			long lastC;
 			while((!killFlag)
-			&&((maxTime<=0)||((System.currentTimeMillis()-start)<maxTime)))
-				if(nonBlockingIn(true)==0)
+			&&((now=System.currentTimeMillis())<timeoutTime))
+				if((lastC=nonBlockingIn(true))==0)
 					break;
 				else
+				if(lastC == -1)
 				{
-					if((System.currentTimeMillis()-lastPing)>PINGTIMEOUT)
+					if(now > nextPingAtTime)
+					{
 						out('\0');
-					CMLib.s_sleep(100);
+						nextPingAtTime=now +PINGTIMEOUT;
+					}
+					CMLib.s_sleep(100); // if they entered nothing, make sure we dont do a busy poll
 				}
 			suspendCommandLine=false;
-			if((maxTime>0)&&((System.currentTimeMillis()-start)>=maxTime))
+			if(System.currentTimeMillis()>=timeoutTime)
 				throw new java.io.InterruptedIOException(TIMEOUT_MSG);
 
 			StringBuffer inStr=CMLib.coffeeFilter().simpleInFilter(input,CMSecurity.isAllowed(mob,(mob!=null)?mob.location():null,"MXPTAGS"));
