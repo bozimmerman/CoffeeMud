@@ -63,7 +63,7 @@ public interface RawMaterial extends Item
 	public final static int MATERIAL_LIQUID=11<<8;
 	public final static int MATERIAL_PRECIOUS=12<<8;
 	public final static int MATERIAL_ENERGY=13<<8;
-	public final static int MATERIAL_PLASTIC=14<<8;
+	public final static int MATERIAL_SYNTHETIC=14<<8;
 
 	public final static int MATERIAL_MASK=255<<8;
 	
@@ -71,7 +71,7 @@ public interface RawMaterial extends Item
 		MATERIAL_UNKNOWN,MATERIAL_CLOTH,MATERIAL_LEATHER,MATERIAL_METAL,
 		MATERIAL_MITHRIL,MATERIAL_WOODEN,MATERIAL_GLASS,MATERIAL_VEGETATION,
 		MATERIAL_FLESH,MATERIAL_PAPER,MATERIAL_ROCK,MATERIAL_LIQUID,
-		MATERIAL_PRECIOUS,MATERIAL_ENERGY,MATERIAL_PLASTIC    
+		MATERIAL_PRECIOUS,MATERIAL_ENERGY,MATERIAL_SYNTHETIC    
 	};
 	
 	public final static String[] MATERIAL_DESCS={
@@ -89,7 +89,7 @@ public interface RawMaterial extends Item
 	"LIQUID",
 	"PRECIOUS",
 	"ENERGY",
-	"PLASTIC"};
+	"SYNTHETIC"};
 	
 	public final static String[] MATERIAL_NOUNDESCS={
 		"Unknown material",
@@ -208,8 +208,8 @@ public interface RawMaterial extends Item
 	public final static int RESOURCE_HERBS=MATERIAL_VEGETATION|97;
 	public final static int RESOURCE_VINE=MATERIAL_VEGETATION|98;
 	public final static int RESOURCE_FLOWERS=MATERIAL_VEGETATION|99;
-	public final static int RESOURCE_PLASTIC=MATERIAL_PLASTIC|100;
-	public final static int RESOURCE_RUBBER=MATERIAL_PLASTIC|101;
+	public final static int RESOURCE_PLASTIC=MATERIAL_SYNTHETIC|100;
+	public final static int RESOURCE_RUBBER=MATERIAL_SYNTHETIC|101;
 	public final static int RESOURCE_EBONY=MATERIAL_ROCK|102;
 	public final static int RESOURCE_IVORY=MATERIAL_ROCK|103;
 	public final static int RESOURCE_WAX=MATERIAL_FLESH|104;
@@ -285,6 +285,9 @@ public interface RawMaterial extends Item
 	public final static int RESOURCE_CHROMIUM=MATERIAL_METAL|174;
 	public final static int RESOURCE_WHITE_GOLD=MATERIAL_METAL|175;
 	public final static int RESOURCE_DRAGONSCALES=MATERIAL_METAL|176;
+	public final static int RESOURCE_PLASMA=MATERIAL_ENERGY|177;
+	public final static int RESOURCE_ELECTRICITY=MATERIAL_ENERGY|178;
+	public final static int RESOURCE_DEUTERIUM=MATERIAL_SYNTHETIC|179;
 	public final static int RESOURCE_MASK=255;
 
 	
@@ -466,6 +469,9 @@ public interface RawMaterial extends Item
 	"CHROMIUM",// 174
 	"WHITE_GOLD",// 175
 	"DRAGONSCALES",// 176
+	"PLASMA", // 177
+	"ELECTRICITY", // 178
+	"SYNTHETIC", // 179
 	};
 	
 	public final static String[] DEFAULT_RESOURCE_EFFECTS={
@@ -646,6 +652,9 @@ public interface RawMaterial extends Item
 	"",// 174
 	"",// 175
 	"",// 176
+	"",// 177
+	"",// 178
+	"",// 179
 	};
 	
 	public final static int RSCDATAINDX_CODE=0;
@@ -833,7 +842,11 @@ public interface RawMaterial extends Item
 	{RESOURCE_CHROMIUM, 	  80,    1,    6, 1550},
 	{RESOURCE_WHITE_GOLD,    150,    1,    5, 1450},
 	{RESOURCE_DRAGONSCALES,   50,    1,    6,  800},
+	{RESOURCE_PLASMA,  	 	 100,    0,    0,    0},
+	{RESOURCE_ELECTRICITY,   100,    0,    0,    0},
+	{RESOURCE_DEUTERIUM,     100,    0,    0,    0},
 	};
+	// full code, base value, frequency, hardness (1-10), bouancy
 	
 	public static final int[] DEFAULT_FISHES={
 	RESOURCE_FISH,
@@ -1034,6 +1047,9 @@ public interface RawMaterial extends Item
 		"",//RESOURCE_CHROMIUM
 		"",//RESOURCE_WHITE_GOLD
 		"",//RESOURCE_DRAGONSCALES
+		"",//RESOURCE_PLASMA
+		"",//RESOURCE_ELECTRICITY
+		"",//RESOURCE_DEUTERIUM
 		};
 	
 	/**

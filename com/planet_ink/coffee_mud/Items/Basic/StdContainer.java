@@ -455,6 +455,8 @@ public class StdContainer extends StdItem implements Container
 					&&(((Armor)E).fitsOn(Wearable.WORN_FEET)))
 						return true;
 					break;
+				case CONTAIN_RAWMATERIALS:
+					return (E instanceof RawMaterial);
 				case CONTAIN_OTHERWEAPONS:
 					if((E instanceof Weapon)
 					&&(((Weapon)E).weaponClassification()!=Weapon.CLASS_SWORD)

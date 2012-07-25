@@ -78,6 +78,7 @@ public interface Container extends Item
 	public static final int CONTAIN_SMOKEABLES=8192;
 	public static final int CONTAIN_SSCOMPONENTS=16384;
 	public static final int CONTAIN_FOOTWEAR=32768;
+	public static final int CONTAIN_RAWMATERIALS=65536;
 	public static final String[] CONTAIN_DESCS={"ANYTHING",
 												"LIQUID",
 												"COINS",
@@ -94,5 +95,6 @@ public interface Container extends Item
 												"CLOTHES",
 												"SMOKEABLES",
 												"SS COMPONENTS",
-												"FOOTWEAR"};
+												"FOOTWEAR",
+												"RAWMATERIALS"};
 }

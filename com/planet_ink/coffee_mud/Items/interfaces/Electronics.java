@@ -42,4 +42,28 @@ public interface Electronics extends Item, Technical
 	
 	public boolean activated();
 	public void activate(boolean truefalse);
+	
+	public interface PowerSource extends Electronics
+	{
+	}
+	
+	public interface PowerGenerator extends PowerSource
+	{
+		public int[] getConsumedFuelTypes();
+		public void setConsumedFuelType(int[] resources);
+		public int getGeneratedAmountPerTick();
+		public void setGenerationAmountPerTick(int amt);
+	}
+	
+	public interface ElecPanel extends Electronics
+	{
+		public static enum ElecPanelType
+		{
+			ANY,WEAPON,ENGINE,SENSOR,POWER,COMPUTER,ENVIRO_CONTROL,GENERATOR
+		}
+		
+		public ElecPanelType panelType();
+		public void setPanelType(ElecPanelType type);
+	}
+	
 }

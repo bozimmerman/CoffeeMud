@@ -74,7 +74,8 @@ public class GenSSPortal extends StdPortal implements Electronics
 	public boolean activated(){return true;}
 	
 	private final static String[] MYCODES={"HASLOCK","HASLID","CAPACITY",
-							  "CONTAINTYPES","RIDEBASIS","MOBSHELD"};
+							  "CONTAINTYPES","RIDEBASIS","MOBSHELD",
+							  "FUELTYPE","POWERCAP","ACTIVATED","POWERREM"};
 	public String getStat(String code)
 	{
 		if(CMLib.coffeeMaker().getGenItemCodeNum(code)>=0)
@@ -87,6 +88,10 @@ public class GenSSPortal extends StdPortal implements Electronics
 		case 3: return ""+containTypes();
 		case 4: return ""+rideBasis();
 		case 5: return ""+riderCapacity();
+		case 6: return ""+fuelType();
+		case 7: return ""+powerCapacity();
+		case 8: return ""+activated();
+		case 9: return ""+powerRemaining();
 		default:
 			return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
 		}
@@ -104,6 +109,15 @@ public class GenSSPortal extends StdPortal implements Electronics
 		case 3: setContainTypes(CMath.s_parseBitLongExpression(Container.CONTAIN_DESCS,val)); break;
 		case 4: break;
 		case 5: break;
+		case 6:{
+			int x=CMath.s_parseListIntExpression(RawMaterial.CODES.NAMES(), val);
+			x=((x>=0)&&(x<RawMaterial.RESOURCE_MASK))?RawMaterial.CODES.GET(x):x;
+			setFuelType(x); 
+			break;
+		   } 
+		case 7: setPowerCapacity(CMath.s_parseIntExpression(val)); break;
+		case 8: activate(CMath.s_bool(val)); break;
+		case 9: setPowerRemaining(CMath.s_parseLongExpression(val)); break;
 		default:
 			CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code, val);
 			break;

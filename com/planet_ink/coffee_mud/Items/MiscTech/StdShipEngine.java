@@ -31,25 +31,32 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class GenSSBattery extends GenShipComponent 
-implements ShipComponent.ShipPowerSource
+public class StdShipEngine extends StdElecItem
+	implements ShipComponent.ShipEngine
 {
-	public String ID(){	return "GenSSBattery";}
-	public GenSSBattery()
+	public String ID(){	return "StdShipEngine";}
+	public StdShipEngine()
 	{
 		super();
-		setName("a generic ships battery");
-		basePhyStats.setWeight(50);
-		setDisplayText("a generic ships battery sits here.");
+		setName("a ships engine");
+		basePhyStats.setWeight(500);
+		setDisplayText("a ships engine sits here.");
 		setDescription("");
-		baseGoldValue=5000;
+		baseGoldValue=500000;
 		basePhyStats().setLevel(1);
 		recoverPhyStats();
 		setMaterial(RawMaterial.RESOURCE_STEEL);
+		setFuelType(RawMaterial.RESOURCE_PLASMA);
 	}
 	public boolean sameAs(Environmental E)
 	{
-		if(!(E instanceof GenSSBattery)) return false;
+		if(!(E instanceof StdShipEngine)) return false;
 		return super.sameAs(E);
 	}
+	protected int maxThrust=1000;
+	public int getMaxThrust(){return maxThrust;}
+	public void setMaxThrust(int max){maxThrust=max;}
+	protected int thrust=1000;
+	public int getThrust(){return thrust;}
+	public void setThrust(int current){thrust=current;}
 }

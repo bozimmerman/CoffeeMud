@@ -10,6 +10,7 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.Electronics.ElecPanel.ElecPanelType;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -379,17 +380,20 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 			text.append(CMLib.xml().convertXMLtoTag("FUELT",((Electronics)E).fuelType()));
 			text.append(CMLib.xml().convertXMLtoTag("POWC",""+((Electronics)E).powerCapacity()));
 			text.append(CMLib.xml().convertXMLtoTag("POWR",""+((Electronics)E).powerRemaining()));
+			text.append(CMLib.xml().convertXMLtoTag("EACT", ""+((Electronics)E).activated()));
 		}
-		if(E instanceof ShipComponent)
+		if(E instanceof Electronics.ElecPanel)
 		{
-			if(E instanceof ShipComponent.ShipPanel)
-			{
-				text.append(CMLib.xml().convertXMLtoTag("SSPANELT",""+((ShipComponent.ShipPanel)E).panelType()));
-			}
-			if(E instanceof ShipComponent.ShipEngine)
-			{
-				text.append(CMLib.xml().convertXMLtoTag("SSTHRUST",""+((ShipComponent.ShipEngine)E).getMaxThrust()));
-			}
+			text.append(CMLib.xml().convertXMLtoTag("SSPANELT",""+((Electronics.ElecPanel)E).panelType().name()));
+		}
+		if(E instanceof ShipComponent.ShipEngine)
+		{
+			text.append(CMLib.xml().convertXMLtoTag("SSTHRUST",""+((ShipComponent.ShipEngine)E).getMaxThrust()));
+		}
+		if(E instanceof Electronics.PowerGenerator)
+		{
+			text.append(CMLib.xml().convertXMLtoTag("ECONSTYP",CMParms.toStringList(((Electronics.PowerGenerator)E).getConsumedFuelTypes())));
+			text.append(CMLib.xml().convertXMLtoTag("EGENAMT",""+((Electronics.PowerGenerator)E).getGeneratedAmountPerTick()));
 		}
 		if(E instanceof Recipe)
 		{
@@ -2310,17 +2314,26 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 			((Electronics)E).setFuelType(CMLib.xml().getIntFromPieces(buf,"FUELT"));
 			((Electronics)E).setPowerCapacity(CMLib.xml().getIntFromPieces(buf,"POWC"));
 			((Electronics)E).setPowerRemaining(CMLib.xml().getIntFromPieces(buf,"POWR"));
+			((Electronics)E).activate(CMLib.xml().getBoolFromPieces(buf, "EACT"));
 		}
-		if(E instanceof ShipComponent)
+		if(E instanceof Electronics.ElecPanel)
 		{
-			if(E instanceof ShipComponent.ShipPanel)
-			{
-				((ShipComponent.ShipPanel)E).setPanelType(CMLib.xml().getIntFromPieces(buf,"SSPANELT"));
-			}
-			if(E instanceof ShipComponent.ShipEngine)
-			{
-				((ShipComponent.ShipEngine)E).setMaxThrust(CMLib.xml().getIntFromPieces(buf,"SSTHRUST"));
-			}
+			ElecPanelType type = ElecPanelType.valueOf(CMLib.xml().getValFromPieces(buf,"SSPANELT"));
+			if(type != null)
+				((Electronics.ElecPanel)E).setPanelType(type);
+		}
+		if(E instanceof ShipComponent.ShipEngine)
+		{
+			((ShipComponent.ShipEngine)E).setMaxThrust(CMLib.xml().getIntFromPieces(buf,"SSTHRUST"));
+		}
+		if(E instanceof Electronics.PowerGenerator)
+		{
+			((Electronics.PowerGenerator)E).setGenerationAmountPerTick(CMLib.xml().getIntFromPieces(buf,"EGENAMT"));
+			List<String> mats = CMParms.parseCommas(CMLib.xml().getValFromPieces(buf,"ECONSTYP"),true);
+			int[] newMats = new int[mats.size()];
+			for(int x=0;x<mats.size();x++)
+				newMats[x]=CMath.s_int(mats.get(x).trim());
+			((Electronics.PowerGenerator)E).setConsumedFuelType(newMats);
 		}
 		if(E instanceof Coins)
 		{

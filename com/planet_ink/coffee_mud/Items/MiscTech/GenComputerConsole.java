@@ -14,7 +14,9 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
+
 import java.util.*;
+
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 
 /* 
@@ -32,21 +34,23 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class GenShipComponent extends StdShipComponent
+public class GenComputerConsole extends StdComputerConsole
 {
-	public String ID(){	return "GenShipComponent";}
+	public String ID(){	return "GenSSConsole";}
 	protected String readableText="";
-	public GenShipComponent()
+	
+	public GenComputerConsole()
 	{
 		super();
-		setName("a generic ships component");
+		setName("a computer console");
 		basePhyStats.setWeight(2);
-		setDisplayText("a generic ships component sits here.");
 		setDescription("");
 		baseGoldValue=5;
-		basePhyStats().setLevel(1);
-		recoverPhyStats();
+		containType=Container.CONTAIN_SSCOMPONENTS;
+		setLidsNLocks(true,true,false,false);
+		capacity=500;
 		setMaterial(RawMaterial.RESOURCE_STEEL);
+		recoverPhyStats();
 	}
 
 	public boolean isGeneric(){return true;}
@@ -64,16 +68,25 @@ public class GenShipComponent extends StdShipComponent
 		CMLib.coffeeMaker().setPropertiesStr(this,newText,false);
 		recoverPhyStats();
 	}
-
-	private final static String[] MYCODES={"FUELTYPE","POWERCAP"};
+	private final static String[] MYCODES={"HASLOCK","HASLID","CAPACITY",
+							  "CONTAINTYPES","RIDEBASIS","MOBSHELD",
+							  "FUELTYPE","POWERCAP","ACTIVATED","POWERREM"};
 	public String getStat(String code)
 	{
 		if(CMLib.coffeeMaker().getGenItemCodeNum(code)>=0)
 			return CMLib.coffeeMaker().getGenItemStat(this,code);
 		switch(getCodeNum(code))
 		{
-		case 0: return ""+fuelType();
-		case 1: return ""+powerCapacity();
+		case 0: return ""+hasALock();
+		case 1: return ""+hasALid();
+		case 2: return ""+capacity();
+		case 3: return ""+containTypes();
+		case 4: return ""+rideBasis();
+		case 5: return ""+riderCapacity();
+		case 6: return ""+fuelType();
+		case 7: return ""+powerCapacity();
+		case 8: return ""+activated();
+		case 9: return ""+powerRemaining();
 		default:
 			return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
 		}
@@ -85,15 +98,23 @@ public class GenShipComponent extends StdShipComponent
 		else
 		switch(getCodeNum(code))
 		{
-		case 0:{
+		case 0: setLidsNLocks(hasALid(),isOpen(),CMath.s_bool(val),false); break;
+		case 1: setLidsNLocks(CMath.s_bool(val),isOpen(),hasALock(),false); break;
+		case 2: setCapacity(CMath.s_parseIntExpression(val)); break;
+		case 3: setContainTypes(CMath.s_parseBitLongExpression(Container.CONTAIN_DESCS,val)); break;
+		case 4: setRideBasis(CMath.s_parseListIntExpression(Rideable.RIDEABLE_DESCS,val)); break;
+		case 5: setRiderCapacity(CMath.s_parseIntExpression(val)); break;
+		case 6:{
 				int x=CMath.s_parseListIntExpression(RawMaterial.CODES.NAMES(), val);
 				x=((x>=0)&&(x<RawMaterial.RESOURCE_MASK))?RawMaterial.CODES.GET(x):x;
 				setFuelType(x); 
 				break;
 			   } 
-		case 1: setPowerCapacity(CMath.s_parseLongExpression(val)); break;
+		case 7: setPowerCapacity(CMath.s_parseLongExpression(val)); break;
+		case 8: activate(CMath.s_bool(val)); break;
+		case 9: setPowerRemaining(CMath.s_parseLongExpression(val)); break;
 		default:
-			CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code,val);
+			CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code, val);
 			break;
 		}
 	}
@@ -106,7 +127,7 @@ public class GenShipComponent extends StdShipComponent
 	public String[] getStatCodes()
 	{
 		if(codes!=null) return codes;
-		String[] MYCODES=CMProps.getStatCodesList(GenShipComponent.MYCODES,this);
+		String[] MYCODES=CMProps.getStatCodesList(GenComputerConsole.MYCODES,this);
 		String[] superCodes=GenericBuilder.GENITEMCODES;
 		codes=new String[superCodes.length+MYCODES.length];
 		int i=0;
@@ -118,10 +139,10 @@ public class GenShipComponent extends StdShipComponent
 	}
 	public boolean sameAs(Environmental E)
 	{
-		if(!(E instanceof GenShipComponent)) return false;
-		String[] theCodes=getStatCodes();
-		for(int i=0;i<theCodes.length;i++)
-			if(!E.getStat(theCodes[i]).equals(getStat(theCodes[i])))
+		if(!(E instanceof GenComputerConsole)) return false;
+		String[] codes=getStatCodes();
+		for(int i=0;i<codes.length;i++)
+			if(!E.getStat(codes[i]).equals(getStat(codes[i])))
 				return false;
 		return true;
 	}

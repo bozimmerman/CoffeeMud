@@ -10,14 +10,12 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.GenericBuilder;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
-
-import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 
 /* 
    Copyright 2000-2012 Bo Zimmerman
@@ -34,25 +32,22 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class GenSSConsole extends StdShipConsole
+public class GenElecGenerator extends StdElecGenerator
 {
-	public String ID(){	return "GenSSConsole";}
+	public String ID(){	return "GenElecGenerator";}
 	protected String readableText="";
-	
-	public GenSSConsole()
+	public GenElecGenerator()
 	{
 		super();
-		setName("a computer console");
+		setName("a generic generator");
 		basePhyStats.setWeight(2);
+		setDisplayText("a generic generator sits here.");
 		setDescription("");
 		baseGoldValue=5;
-		containType=Container.CONTAIN_SSCOMPONENTS;
-		setLidsNLocks(true,true,false,false);
-		capacity=500;
-		setMaterial(RawMaterial.RESOURCE_STEEL);
+		basePhyStats().setLevel(1);
 		recoverPhyStats();
+		setMaterial(RawMaterial.RESOURCE_STEEL);
 	}
-
 	public boolean isGeneric(){return true;}
 
 	public String text()
@@ -68,9 +63,8 @@ public class GenSSConsole extends StdShipConsole
 		CMLib.coffeeMaker().setPropertiesStr(this,newText,false);
 		recoverPhyStats();
 	}
-	private final static String[] MYCODES={"HASLOCK","HASLID","CAPACITY",
-							  "CONTAINTYPES","RIDEBASIS","MOBSHELD",
-							  "FUELTYPE","POWERCAP"};
+
+	private final static String[] MYCODES={"HASLOCK","HASLID","CAPACITY","CONTAINTYPES","FUELTYPE","POWERCAP","POWERREM","CONSUMEDTYPES","GENAMTPER"};
 	public String getStat(String code)
 	{
 		if(CMLib.coffeeMaker().getGenItemCodeNum(code)>=0)
@@ -81,10 +75,21 @@ public class GenSSConsole extends StdShipConsole
 		case 1: return ""+hasALid();
 		case 2: return ""+capacity();
 		case 3: return ""+containTypes();
-		case 4: return ""+rideBasis();
-		case 5: return ""+riderCapacity();
-		case 6: return ""+fuelType();
-		case 7: return ""+powerCapacity();
+		case 4: return ""+fuelType();
+		case 5: return ""+powerCapacity();
+		case 6: 
+		{
+			StringBuilder str=new StringBuilder("");
+			for(int i=0;i<getConsumedFuelTypes().length;i++)
+			{
+				if(i>0) str.append(", ");
+				str.append(RawMaterial.CODES.NAME(getConsumedFuelTypes()[i]));
+			}
+			return str.toString();
+		}
+		case 7: return ""+powerRemaining();
+		case 8: return ""+getGeneratedAmountPerTick();
+		case 9: return ""+activated();
 		default:
 			return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
 		}
@@ -100,15 +105,28 @@ public class GenSSConsole extends StdShipConsole
 		case 1: setLidsNLocks(CMath.s_bool(val),isOpen(),hasALock(),false); break;
 		case 2: setCapacity(CMath.s_parseIntExpression(val)); break;
 		case 3: setContainTypes(CMath.s_parseBitLongExpression(Container.CONTAIN_DESCS,val)); break;
-		case 4: setRideBasis(CMath.s_parseListIntExpression(Rideable.RIDEABLE_DESCS,val)); break;
-		case 5: setRiderCapacity(CMath.s_parseIntExpression(val)); break;
-		case 6:{
+		case 4:{
 				int x=CMath.s_parseListIntExpression(RawMaterial.CODES.NAMES(), val);
 				x=((x>=0)&&(x<RawMaterial.RESOURCE_MASK))?RawMaterial.CODES.GET(x):x;
 				setFuelType(x); 
 				break;
 			   } 
+		case 5: setPowerCapacity(CMath.s_parseLongExpression(val)); break;
+		case 6:{
+				List<String> mats = CMParms.parseCommas(val,true);
+				int[] newMats = new int[mats.size()];
+				for(int x=0;x<mats.size();x++)
+				{
+					int rsccode = RawMaterial.CODES.FIND_CaseSensitive(mats.get(x).trim());
+					if(rsccode > 0)
+						newMats[x] = rsccode;
+				}
+				super.setConsumedFuelType(newMats);
+				break;
+			   }
 		case 7: setPowerCapacity(CMath.s_parseLongExpression(val)); break;
+		case 8: setGenerationAmountPerTick(CMath.s_parseIntExpression(val)); break;
+		case 9: activate(CMath.s_bool(val)); break;
 		default:
 			CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code, val);
 			break;
@@ -123,7 +141,7 @@ public class GenSSConsole extends StdShipConsole
 	public String[] getStatCodes()
 	{
 		if(codes!=null) return codes;
-		String[] MYCODES=CMProps.getStatCodesList(GenSSConsole.MYCODES,this);
+		String[] MYCODES=CMProps.getStatCodesList(GenElecGenerator.MYCODES,this);
 		String[] superCodes=GenericBuilder.GENITEMCODES;
 		codes=new String[superCodes.length+MYCODES.length];
 		int i=0;
@@ -135,10 +153,10 @@ public class GenSSConsole extends StdShipConsole
 	}
 	public boolean sameAs(Environmental E)
 	{
-		if(!(E instanceof GenSSConsole)) return false;
-		String[] codes=getStatCodes();
-		for(int i=0;i<codes.length;i++)
-			if(!E.getStat(codes[i]).equals(getStat(codes[i])))
+		if(!(E instanceof GenElecGenerator)) return false;
+		String[] theCodes=getStatCodes();
+		for(int i=0;i<theCodes.length;i++)
+			if(!E.getStat(theCodes[i]).equals(getStat(theCodes[i])))
 				return false;
 		return true;
 	}

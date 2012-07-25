@@ -86,7 +86,7 @@ public class StdArmor extends StdContainer implements Armor
 			switch(material()&RawMaterial.MATERIAL_MASK)
 			{
 			case RawMaterial.MATERIAL_CLOTH: return name()+" has a small tear ("+usesRemaining()+"%)";
-			case RawMaterial.MATERIAL_PLASTIC:
+			case RawMaterial.MATERIAL_SYNTHETIC:
 			case RawMaterial.MATERIAL_GLASS: return name()+" has a few hairline cracks ("+usesRemaining()+"%)";
 			case RawMaterial.MATERIAL_LEATHER: return name()+" is a bit scuffed ("+usesRemaining()+"%)";
 			case RawMaterial.MATERIAL_METAL:
@@ -104,7 +104,7 @@ public class StdArmor extends StdContainer implements Armor
 			case RawMaterial.MATERIAL_PAPER: return name()+" has a a few tears and rips ("+usesRemaining()+"%)";
 			case RawMaterial.MATERIAL_ROCK:
 			case RawMaterial.MATERIAL_PRECIOUS:
-			case RawMaterial.MATERIAL_PLASTIC:
+			case RawMaterial.MATERIAL_SYNTHETIC:
 			case RawMaterial.MATERIAL_GLASS: return name()+" is cracked ("+usesRemaining()+"%)";
 			case RawMaterial.MATERIAL_FLESH:
 			case RawMaterial.MATERIAL_LEATHER: return name()+" is torn ("+usesRemaining()+"%)";
@@ -123,7 +123,7 @@ public class StdArmor extends StdContainer implements Armor
 			case RawMaterial.MATERIAL_CLOTH: return name()+" has numerous tears and rips ("+usesRemaining()+"%)";
 			case RawMaterial.MATERIAL_ROCK:
 			case RawMaterial.MATERIAL_PRECIOUS:
-			case RawMaterial.MATERIAL_PLASTIC:
+			case RawMaterial.MATERIAL_SYNTHETIC:
 			case RawMaterial.MATERIAL_GLASS: return name()+" has numerous streaking cracks ("+usesRemaining()+"%)";
 			case RawMaterial.MATERIAL_FLESH:
 			case RawMaterial.MATERIAL_LEATHER: return name()+" is badly torn up ("+usesRemaining()+"%)";
@@ -140,7 +140,7 @@ public class StdArmor extends StdContainer implements Armor
 			case RawMaterial.MATERIAL_PAPER:
 			case RawMaterial.MATERIAL_CLOTH: return name()+" is a shredded mess ("+usesRemaining()+"%)";
 			case RawMaterial.MATERIAL_ROCK:
-			case RawMaterial.MATERIAL_PLASTIC:
+			case RawMaterial.MATERIAL_SYNTHETIC:
 			case RawMaterial.MATERIAL_PRECIOUS:
 			case RawMaterial.MATERIAL_GLASS: return name()+" is practically shards ("+usesRemaining()+"%)";
 			case RawMaterial.MATERIAL_FLESH:
@@ -388,7 +388,7 @@ public class StdArmor extends StdContainer implements Armor
 						break;
 					}
 					break;
-				case RawMaterial.MATERIAL_PLASTIC:
+				case RawMaterial.MATERIAL_SYNTHETIC:
 					switch(weaponType)
 					{
 					case Weapon.TYPE_FROSTING:
@@ -569,7 +569,7 @@ public class StdArmor extends StdContainer implements Armor
 		case RawMaterial.MATERIAL_PRECIOUS:
 		case RawMaterial.MATERIAL_VEGETATION:
 		case RawMaterial.MATERIAL_FLESH:
-		case RawMaterial.MATERIAL_PLASTIC:
+		case RawMaterial.MATERIAL_SYNTHETIC:
 			affectableStats.setStat(CharStats.STAT_SAVE_FIRE,affectableStats.getStat(CharStats.STAT_SAVE_FIRE)+2);
 			break;
 		case RawMaterial.MATERIAL_ENERGY:

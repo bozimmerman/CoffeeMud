@@ -531,7 +531,7 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
 		case RawMaterial.MATERIAL_PAPER:
 		case RawMaterial.MATERIAL_WOODEN:
 		case RawMaterial.MATERIAL_GLASS:
-		case RawMaterial.MATERIAL_PLASTIC:
+		case RawMaterial.MATERIAL_SYNTHETIC:
 		case RawMaterial.MATERIAL_ROCK:
 		case RawMaterial.MATERIAL_PRECIOUS:
 		{

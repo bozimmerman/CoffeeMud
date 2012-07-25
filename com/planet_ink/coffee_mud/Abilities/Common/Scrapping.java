@@ -180,7 +180,7 @@ public class Scrapping extends CommonSkill
 		fireRequired=false;
 		if(((I.material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_GLASS)
 		||((I.material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_METAL)
-		||((I.material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_PLASTIC)
+		||((I.material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_SYNTHETIC)
 		||((I.material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_MITHRIL))
 		{
 			Item fire=getRequiredFire(mob,0);

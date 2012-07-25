@@ -31,7 +31,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class GenBattery extends GenElecItem
+public class GenBattery extends GenElecItem implements Electronics.PowerSource
 {
 	public String ID(){	return "GenBattery";}
 	public GenBattery()
@@ -45,6 +45,8 @@ public class GenBattery extends GenElecItem
 		basePhyStats().setLevel(1);
 		recoverPhyStats();
 		setMaterial(RawMaterial.RESOURCE_STEEL);
+		super.setPowerCapacity(1000);
+		super.setPowerRemaining(1000);
 	}
 	public boolean sameAs(Environmental E)
 	{

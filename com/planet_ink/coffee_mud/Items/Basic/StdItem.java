@@ -508,7 +508,8 @@ public class StdItem implements Item
 			}
 		}
 		else
-		if(tickID!=Tickable.TICKID_CLANITEM)
+		if((tickID!=Tickable.TICKID_CLANITEM)
+		&&(tickID!=Tickable.TICKID_ELEC_GENERATOR))
 		{
 			if(affects!=null)
 			{
@@ -625,7 +626,7 @@ public class StdItem implements Item
 	}
 	
 	public void setSavable(boolean truefalse){ CMLib.flags().setSavable(this, truefalse);}
-
+	
 	protected boolean canWearComplete(MOB mob, long wearWhere)
 	{
 		if(!canWear(mob,wearWhere))

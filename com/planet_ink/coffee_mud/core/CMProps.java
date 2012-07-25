@@ -1598,22 +1598,44 @@ public class CMProps extends Properties
 			if(image==null) image=getHashedMXPImage(H,"SCROLL_*");
 		}
 		else
+		if(O instanceof Electronics.PowerGenerator)
+		{
+			final String key = "POWERGENERATOR_"+((Electronics)O).ID().toUpperCase();
+			if(H.containsKey(key))
+				image=getHashedMXPImage(H,"POWERGENERATOR_"+key);
+			else
+    			image=getHashedMXPImage(H,"POWERGENERATOR");
+		}
+		else
+		if(O instanceof Electronics.PowerSource)
+		{
+			final String key = "POWERSOURCE_"+((Electronics)O).ID().toUpperCase();
+			if(H.containsKey(key))
+				image=getHashedMXPImage(H,key);
+			else
+			image=getHashedMXPImage(H,"POWERSOURCE");
+		}
+		else
+		if(O instanceof Electronics.ElecPanel)
+		{
+			final String key = "ELECPANEL_"+((Electronics)O).ID().toUpperCase();
+			if(H.containsKey(key))
+				image=getHashedMXPImage(H,key);
+			else
+			image=getHashedMXPImage(H,"ELECPANEL");
+		}
+		else
 		if(O instanceof ShipComponent)
 		{
-			if(H.containsKey("SHIPCOMP_"+((ShipComponent)O).ID().toUpperCase()))
-				image=getHashedMXPImage(H,"SHIPCOMP_"+((ShipComponent)O).ID().toUpperCase());
+			final String key = "SHIPCOMP_"+((ShipComponent)O).ID().toUpperCase();
+			if(H.containsKey(key))
+				image=getHashedMXPImage(H,key);
 			else
 			if(O instanceof ShipComponent.ShipEngine)
 				image=getHashedMXPImage(H,"SHIPCOMP_ENGINE");
 			else
 			if(O instanceof ShipComponent.ShipEnviroControl)
 				image=getHashedMXPImage(H,"SHIPCOMP_ENVIRO");
-			else
-			if(O instanceof ShipComponent.ShipPanel)
-				image=getHashedMXPImage(H,"SHIPCOMP_PANEL");
-			else
-			if(O instanceof ShipComponent.ShipPowerSource)
-				image=getHashedMXPImage(H,"SHIPCOMP_POWER");
 			else
 			if(O instanceof ShipComponent.ShipSensor)
 				image=getHashedMXPImage(H,"SHIPCOMP_SENSOR");

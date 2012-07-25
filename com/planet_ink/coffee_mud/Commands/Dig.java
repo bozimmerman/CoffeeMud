@@ -50,7 +50,7 @@ public class Dig extends StdCommand
 			if(item.Name().toLowerCase().indexOf("shovel")>=0)
 				return 5+item.phyStats().weight();
 			return 1+(item.phyStats().weight()/5);
-		case RawMaterial.MATERIAL_PLASTIC:
+		case RawMaterial.MATERIAL_SYNTHETIC:
 		case RawMaterial.MATERIAL_ROCK:
 		case RawMaterial.MATERIAL_GLASS:
 			if(item.Name().toLowerCase().indexOf("shovel")>=0)

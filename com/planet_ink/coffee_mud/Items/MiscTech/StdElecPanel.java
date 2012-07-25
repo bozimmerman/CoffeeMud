@@ -32,27 +32,11 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class GenSSPanel extends GenShipContainer
-	implements ShipComponent.ShipPanel
+public class StdElecPanel extends StdElecContainer implements Electronics.ElecPanel
 {
-	public String ID(){	return "GenSSPanel";}
-	public GenSSPanel()
-	{
-		super();
-		setName("a generic space ship panel");
-		basePhyStats.setWeight(2);
-		setDescription("");
-		baseGoldValue=5;
-		containType=Container.CONTAIN_SSCOMPONENTS;
-		setLidsNLocks(true,true,false,false);
-		capacity=500;
-		setMaterial(RawMaterial.RESOURCE_STEEL);
-		recoverPhyStats();
-	}
-
-	protected int panelType=ShipComponent.ShipPanel.COMPONENT_PANEL_ANY;
-	public int panelType(){return panelType;}
-	public void setPanelType(int type){panelType=type;}
+	protected ElecPanelType panelType=ElecPanelType.ANY;
+	public ElecPanelType panelType(){return panelType;}
+	public void setPanelType(ElecPanelType type){panelType=type;}
 	
 	public String displayText(){
 		if(isOpen())
@@ -62,24 +46,26 @@ public class GenSSPanel extends GenShipContainer
 	public boolean canContain(Environmental E)
 	{
 		if(!super.canContain(E)) return false;
-		if(E instanceof ShipComponent)
+		if(E instanceof Electronics)
 		{
 			switch(panelType())
 			{
-			case ShipComponent.ShipPanel.COMPONENT_PANEL_ANY:
+			case ANY:
 				return true;
-			case ShipComponent.ShipPanel.COMPONENT_PANEL_ENGINE:
+			case ENGINE:
 				return E instanceof ShipComponent.ShipEngine;
-			case ShipComponent.ShipPanel.COMPONENT_PANEL_POWER:
-				return E instanceof ShipComponent.ShipPowerSource;
-			case ShipComponent.ShipPanel.COMPONENT_PANEL_SENSOR:
+			case POWER:
+				return E instanceof PowerSource;
+			case SENSOR:
 				return E instanceof ShipComponent.ShipSensor;
-			case ShipComponent.ShipPanel.COMPONENT_PANEL_WEAPON:
+			case WEAPON:
 				return E instanceof ShipComponent.ShipWeapon;
-			case ShipComponent.ShipPanel.COMPONENT_PANEL_COMPUTER:
+			case COMPUTER:
 				return E instanceof Software;
-			case ShipComponent.ShipPanel.COMPONENT_PANEL_ENVIRO:
+			case ENVIRO_CONTROL:
 				return E instanceof ShipComponent.ShipEnviroControl;
+			case GENERATOR:
+				return E instanceof PowerGenerator;
 			default:
 				return true;
 			}
@@ -88,4 +74,5 @@ public class GenSSPanel extends GenShipContainer
 	}
 
 	public boolean isGeneric(){return true;}
+
 }

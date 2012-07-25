@@ -32,11 +32,11 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class StdShipConsole extends StdRideable 
-	implements Electronics, ShipComponent, ShipComponent.ShipPanel
+public class StdComputerConsole extends StdRideable 
+	implements Electronics, ShipComponent, Electronics.ElecPanel
 {
 	public String ID(){	return "StdShipConsole";}
-	public StdShipConsole()
+	public StdComputerConsole()
 	{
 		super();
 		setName("a computer console");
@@ -63,9 +63,9 @@ public class StdShipConsole extends StdRideable
 	public boolean activated(){return activated;}
 	public void activate(boolean truefalse){activated=truefalse;}
 	
-	protected int panelType=ShipComponent.ShipPanel.COMPONENT_PANEL_COMPUTER;
-	public int panelType(){return panelType;}
-	public void setPanelType(int type){panelType=type;}
+	protected ElecPanelType panelType=Electronics.ElecPanel.ElecPanelType.COMPUTER;
+	public ElecPanelType panelType(){return panelType;}
+	public void setPanelType(ElecPanelType type){panelType=type;}
 	
 	protected long lastSoftwareCheck=0;
 	protected List<Software> software=null;

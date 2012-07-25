@@ -578,7 +578,7 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 					  ||(I.material()==RawMaterial.RESOURCE_WOOL))))
 					ok=false;
 				break;
-			case RawMaterial.MATERIAL_PLASTIC:
+			case RawMaterial.MATERIAL_SYNTHETIC:
 			case RawMaterial.MATERIAL_WOODEN:
 				if((allowedArmorLevel==CharClass.ARMOR_CLOTH)
 				||(allowedArmorLevel==CharClass.ARMOR_OREONLY)
@@ -794,7 +794,7 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 					break;
 				case RawMaterial.MATERIAL_ROCK:
 				case RawMaterial.MATERIAL_PRECIOUS:
-				case RawMaterial.MATERIAL_PLASTIC:
+				case RawMaterial.MATERIAL_SYNTHETIC:
 					ruinDescAdder=CMStrings.capitalizeFirstLetter(I2.name())+" is cracked and ruined beyond repair."; 
 					break;
 				case RawMaterial.MATERIAL_UNKNOWN:

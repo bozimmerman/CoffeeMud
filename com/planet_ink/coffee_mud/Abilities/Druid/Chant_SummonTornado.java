@@ -177,7 +177,7 @@ public class Chant_SummonTornado extends Chant
 							case RawMaterial.MATERIAL_PAPER:
 							case RawMaterial.MATERIAL_VEGETATION:
 							case RawMaterial.MATERIAL_WOODEN:
-							case RawMaterial.MATERIAL_PLASTIC:
+							case RawMaterial.MATERIAL_SYNTHETIC:
 								I.setUsesRemaining(I.usesRemaining()-50);
 								break;
 							case RawMaterial.MATERIAL_METAL:

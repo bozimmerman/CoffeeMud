@@ -166,7 +166,7 @@ public class FieryRoom
 				case RawMaterial.MATERIAL_GLASS:
 				case RawMaterial.MATERIAL_METAL:
 				case RawMaterial.MATERIAL_MITHRIL:
-				case RawMaterial.MATERIAL_PLASTIC:
+				case RawMaterial.MATERIAL_SYNTHETIC:
 				case RawMaterial.MATERIAL_PRECIOUS:
 				case RawMaterial.MATERIAL_ROCK:
 				case RawMaterial.MATERIAL_UNKNOWN: {

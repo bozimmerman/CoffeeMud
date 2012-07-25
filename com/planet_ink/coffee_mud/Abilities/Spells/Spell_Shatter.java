@@ -125,7 +125,7 @@ public class Spell_Shatter extends Spell
 					case RawMaterial.MATERIAL_PAPER:
 					case RawMaterial.MATERIAL_CLOTH:
 					case RawMaterial.MATERIAL_VEGETATION:
-					case RawMaterial.MATERIAL_PLASTIC:
+					case RawMaterial.MATERIAL_SYNTHETIC:
 					case RawMaterial.MATERIAL_LEATHER:
 					case RawMaterial.MATERIAL_FLESH:
 						damage=(int)Math.round(CMath.div(damage,3.0));

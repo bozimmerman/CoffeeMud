@@ -44,8 +44,13 @@ public class StdElecItem extends StdItem implements Electronics
 
 		material=RawMaterial.RESOURCE_STEEL;
 		baseGoldValue=0;
+		fuelType=RawMaterial.RESOURCE_ELECTRICITY;
 		recoverPhyStats();
 	}
+	/** Standard component weights
+	 *  1 ROOM=500, THRUSTER,POWERPLANT=100.  COMM=20.  LIFESUPP=50,
+	 *  FUEL=2730, CONSOLE=1,  JOHNGLEN=130, MAX ACC=5.5G
+	 */
 
 	protected int fuelType=RawMaterial.RESOURCE_ENERGY;
 	public int fuelType(){return fuelType;}

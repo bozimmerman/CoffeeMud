@@ -622,11 +622,11 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 	protected void genAuthor(MOB mob, Area A, int showNumber, int showFlag) throws IOException
 	{   A.setAuthorID(prompt(mob,A.getAuthorID(),showNumber,showFlag,"Author",true,false,"Area Author's Name"));}
 
-	protected void genPanelType(MOB mob, ShipComponent.ShipPanel S, int showNumber, int showFlag)
+	protected void genPanelType(MOB mob, Electronics.ElecPanel S, int showNumber, int showFlag)
 	throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
-		String componentType=CMStrings.capitalizeAndLower(ShipComponent.ShipPanel.COMPONENT_PANEL_DESC[S.panelType()].toLowerCase());
+		String componentType=CMStrings.capitalizeAndLower(S.panelType().name().toLowerCase());
 		mob.tell(showNumber+". Panel Type: '"+componentType+"'.");
 		if((showFlag!=showNumber)&&(showFlag>-999)) return;
 		boolean continueThis=true;
@@ -638,16 +638,16 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			{
 				if(newName.equalsIgnoreCase("?"))
 				{
-					mob.tell("Component Types: "+CMParms.toStringList(ShipComponent.ShipPanel.COMPONENT_PANEL_DESC));
+					mob.tell("Component Types: "+CMParms.toStringList(Electronics.ElecPanel.ElecPanelType.values()));
 					continueThis=true;
 				}
 				else
 				{
-					int newType=-1;
-					for(int i=0;i<ShipComponent.ShipPanel.COMPONENT_PANEL_DESC.length;i++)
-						if(ShipComponent.ShipPanel.COMPONENT_PANEL_DESC[i].equalsIgnoreCase(newName))
-							newType=i;
-					if(newType<0)
+					Electronics.ElecPanel.ElecPanelType newType=null;
+					for(int i=0;i<Electronics.ElecPanel.ElecPanelType.values().length;i++)
+						if(Electronics.ElecPanel.ElecPanelType.values()[i].name().equalsIgnoreCase(newName))
+							newType=Electronics.ElecPanel.ElecPanelType.values()[i];
+					if(newType==null)
 					{
 						mob.tell("'"+newName+"' is not recognized.  Try '?' for a list.");
 						continueThis=true;
@@ -2290,9 +2290,17 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 
 	}
 
-	public void genAbility(MOB mob, Physical P, int showNumber, int showFlag) throws IOException
-	{ P.basePhyStats().setAbility(prompt(mob,P.basePhyStats().ability(),showNumber,showFlag,"Magical Ability")); }
+	public void genAbility(MOB mob, Physical P, int showNumber, int showFlag, String prompt) throws IOException
+	{ P.basePhyStats().setAbility(prompt(mob,P.basePhyStats().ability(),showNumber,showFlag,prompt)); }
 
+	public void genAbility(MOB mob, Physical P, int showNumber, int showFlag) throws IOException
+	{
+		if(P instanceof Electronics)
+    		genAbility(mob,P,showNumber,showFlag,"Technical Level");
+		else
+    		genAbility(mob,P,showNumber,showFlag,"Magical Ability"); 
+	}
+	
 	protected void genCoinStuff(MOB mob, Coins I, int showNumber, int showFlag)
 	throws IOException
 	{
@@ -2627,13 +2635,73 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		}
 	}
 
-
-	protected void genMaterialCode(MOB mob, Item E, int showNumber, int showFlag)
-		throws IOException
+	protected void genConsumedMaterials(MOB mob, Electronics.PowerGenerator E, int showNumber, int showFlag) throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
-		mob.tell(showNumber+". Material Type: '"+RawMaterial.CODES.NAME(E.material())+"'.");
-		if((showFlag!=showNumber)&&(showFlag>-999)) return;
+		boolean q=false;
+		Session S=mob.session();
+		while((S!=null)&&(!S.isStopped())&&(!q))
+		{
+    		StringBuilder str=new StringBuilder("");
+    		for(int i=0;i<E.getConsumedFuelTypes().length;i++)
+    		{
+    			if(i>0) str.append(", ");
+    			str.append(RawMaterial.CODES.NAME(E.getConsumedFuelTypes()[i]));
+    		}
+    		mob.tell(showNumber+". Consumed Resources: '"+str.toString()+"'.");
+    		if((showFlag!=showNumber)&&(showFlag>-999)) return;
+			String newType=mob.session().prompt("Enter a resource to add/remove (?)\n\r:","");
+			if((newType==null)||(newType.length()==0))
+				return;
+			else
+			if(newType.equals("?"))
+			{
+				StringBuffer say=new StringBuffer("");
+				for(String codeName : RawMaterial.CODES.NAMES())
+					say.append(codeName+", ");
+				mob.tell(say.toString().substring(0,say.length()-2));
+				q=false;
+			}
+			else
+			{
+				q=true;
+				int newValue=RawMaterial.CODES.FIND_IgnoreCase(newType);
+				if(newValue>=0)
+				{
+					if(CMParms.contains(E.getConsumedFuelTypes(), newValue))
+					{
+						int[] newSet=new int[E.getConsumedFuelTypes().length-1];
+						for(int o=0,n=0;o<E.getConsumedFuelTypes().length;o++)
+							if(E.getConsumedFuelTypes()[o]!=newValue)
+							newSet[n++]=E.getConsumedFuelTypes()[o];
+						E.setConsumedFuelType(newSet);
+					}
+					else
+					{
+						int[] newSet=Arrays.copyOf(E.getConsumedFuelTypes(),E.getConsumedFuelTypes().length+1);
+						newSet[newSet.length-1]=newValue;
+						E.setConsumedFuelType(newSet);
+					}
+				}
+				else
+					mob.tell("Unknown resource: '"+newType+"'.  Use ? for a list.");
+			}
+		}
+	}
+
+	protected void genMaterialCode(MOB mob, Item E, int showNumber, int showFlag)
+			throws IOException
+	{
+		if((showFlag>0)&&(showFlag!=showNumber)) return;
+		E.setMaterial(genAnyMaterialCode(mob,E,"Material Type",E.material(),showNumber,showFlag));
+	}
+	
+	protected int genAnyMaterialCode(MOB mob, Item E, String prompt, int currMat, int showNumber, int showFlag)
+		throws IOException
+	{
+		if((showFlag>0)&&(showFlag!=showNumber)) return currMat;
+		mob.tell(showNumber+". "+prompt+": '"+RawMaterial.CODES.NAME(E.material())+"'.");
+		if((showFlag!=showNumber)&&(showFlag>-999)) return currMat;
 		boolean q=false;
 		while((mob.session()!=null)&&(!mob.session().isStopped())&&(!q))
 		{
@@ -2651,11 +2719,12 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				q=true;
 				int newValue=RawMaterial.CODES.FIND_IgnoreCase(newType);
 				if(newValue>=0)
-					E.setMaterial(newValue);
+					currMat=newValue;
 				else
 					mob.tell("(no change)");
 			}
 		}
+		return currMat;
 	}
 
 	protected void genInstrumentType(MOB mob, MusicalInstrument E, int showNumber, int showFlag)
@@ -6657,10 +6726,20 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			genMaterialCode(mob,me,++showNumber,showFlag);
 			if(me instanceof ClanItem)
 				genClanItem(mob,(ClanItem)me,++showNumber,showFlag);
-			if(me instanceof ShipComponent)
+			if(me instanceof Electronics)
 			{
-				if(me instanceof ShipComponent.ShipPanel)
-					genPanelType(mob,(ShipComponent.ShipPanel)me,++showNumber,showFlag);
+				Electronics E=(Electronics)me;
+				E.setFuelType(genAnyMaterialCode(mob,me,"Energy type",E.fuelType(),++showNumber,showFlag));
+				E.setPowerCapacity(prompt(mob, E.powerCapacity(), showNumber, showFlag, "Pow Capacity"));
+				E.setPowerRemaining(prompt(mob, E.powerRemaining(), showNumber, showFlag, "Pow Remaining"));
+			}
+			if(me instanceof Electronics.ElecPanel)
+				genPanelType(mob,(Electronics.ElecPanel)me,++showNumber,showFlag);
+			if(me instanceof Electronics.PowerGenerator)
+			{
+				Electronics.PowerGenerator E=(Electronics.PowerGenerator)me;
+				genConsumedMaterials(mob, E, ++showNumber, showFlag);
+				E.setGenerationAmountPerTick(prompt(mob, E.getGeneratedAmountPerTick(), showNumber, showFlag, "Gen Amt/Tick"));
 			}
 			if(me instanceof PackagedItems)
 				((PackagedItems)me).setNumberOfItemsInPackage(prompt(mob,((PackagedItems)me).numberOfItemsInPackage(),++showNumber,showFlag,"Number of items in the package"));
@@ -6931,10 +7010,20 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			genLevel(mob,me,++showNumber,showFlag);
 			genRejuv(mob,me,++showNumber,showFlag);
 			genCapacity(mob,me,++showNumber,showFlag);
-			if(me instanceof ShipComponent)
+			if(me instanceof Electronics)
 			{
-				if(me instanceof ShipComponent.ShipPanel)
-					genPanelType(mob,(ShipComponent.ShipPanel)me,++showNumber,showFlag);
+				Electronics E=(Electronics)me;
+				E.setFuelType(genAnyMaterialCode(mob,me,"Energy type",E.fuelType(),++showNumber,showFlag));
+				E.setPowerCapacity(prompt(mob, E.powerCapacity(), showNumber, showFlag, "Pow Capacity"));
+				E.setPowerRemaining(prompt(mob, E.powerRemaining(), showNumber, showFlag, "Pow Remaining"));
+			}
+			if(me instanceof Electronics.ElecPanel)
+				genPanelType(mob,(Electronics.ElecPanel)me,++showNumber,showFlag);
+			if(me instanceof Electronics.PowerGenerator)
+			{
+				Electronics.PowerGenerator E=(Electronics.PowerGenerator)me;
+				genConsumedMaterials(mob, E, ++showNumber, showFlag);
+				E.setGenerationAmountPerTick(prompt(mob, E.getGeneratedAmountPerTick(), showNumber, showFlag, "Gen Amt/Tick"));
 			}
 			genLidsNLocks(mob,me,++showNumber,showFlag);
 			genMaterialCode(mob,me,++showNumber,showFlag);

@@ -98,7 +98,7 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 			case RawMaterial.MATERIAL_ENERGY:
 				useArray=metalPoints;
 				break;
-			case RawMaterial.MATERIAL_PLASTIC:
+			case RawMaterial.MATERIAL_SYNTHETIC:
 			case RawMaterial.MATERIAL_LEATHER:
 			case RawMaterial.MATERIAL_GLASS:
 			case RawMaterial.MATERIAL_ROCK:
@@ -493,7 +493,7 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 				case RawMaterial.MATERIAL_ENERGY:
 					break;
 				case RawMaterial.MATERIAL_WOODEN:
-				case RawMaterial.MATERIAL_PLASTIC:
+				case RawMaterial.MATERIAL_SYNTHETIC:
 					damage-=4;
 					baseattack-=0;
 					break;
@@ -564,7 +564,7 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 					baseattack-=10;
 					break;
 				case RawMaterial.MATERIAL_LEATHER:
-				case RawMaterial.MATERIAL_PLASTIC:
+				case RawMaterial.MATERIAL_SYNTHETIC:
 					damage-=2;
 					baseattack-=0;
 					break;
@@ -632,7 +632,7 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 			case RawMaterial.MATERIAL_ENERGY:
 				useArray=metalPoints;
 				break;
-			case RawMaterial.MATERIAL_PLASTIC:
+			case RawMaterial.MATERIAL_SYNTHETIC:
 			case RawMaterial.MATERIAL_LEATHER:
 			case RawMaterial.MATERIAL_GLASS:
 			case RawMaterial.MATERIAL_ROCK:
@@ -675,7 +675,7 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 						break;
 					case RawMaterial.MATERIAL_LEATHER:
 					case RawMaterial.MATERIAL_GLASS:
-					case RawMaterial.MATERIAL_PLASTIC:
+					case RawMaterial.MATERIAL_SYNTHETIC:
 					case RawMaterial.MATERIAL_ROCK:
 					case RawMaterial.MATERIAL_WOODEN:
 						weightpts+=codes.material_weight_points()[i+1][1];
@@ -931,7 +931,7 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 			case RawMaterial.MATERIAL_ENERGY:
 				useArray=metalPoints;
 				break;
-			case RawMaterial.MATERIAL_PLASTIC:
+			case RawMaterial.MATERIAL_SYNTHETIC:
 			case RawMaterial.MATERIAL_LEATHER:
 			case RawMaterial.MATERIAL_GLASS:
 			case RawMaterial.MATERIAL_ROCK:

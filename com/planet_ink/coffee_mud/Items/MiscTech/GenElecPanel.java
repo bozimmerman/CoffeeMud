@@ -14,7 +14,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 
@@ -33,16 +32,16 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class GenShipContainer extends StdShipContainer
+public class GenElecPanel extends StdElecPanel
 {
-	public String ID(){	return "GenShipContainer";}
+	public String ID(){	return "GenElecPanel";}
 	protected String readableText="";
-	public GenShipContainer()
+	public GenElecPanel()
 	{
 		super();
-		setName("a generic ships container");
+		setName("a generic electronics panel");
 		basePhyStats.setWeight(2);
-		setDisplayText("a generic ships container sits here.");
+		setDisplayText("a generic electric panel is mounted here.");
 		setDescription("");
 		baseGoldValue=5;
 		basePhyStats().setLevel(1);
@@ -66,15 +65,10 @@ public class GenShipContainer extends StdShipContainer
 		recoverPhyStats();
 	}
 
-	public String keyName()
-	{
-		return readableText;
-	}
-	public void setKeyName(String newKeyName)
-	{
-		readableText=newKeyName;
-	}
-	private final static String[] MYCODES={"HASLOCK","HASLID","CAPACITY","CONTAINTYPES","FUELTYPE","POWERCAP"};
+	private final static String[] MYCODES={"HASLOCK","HASLID","CAPACITY",
+											"CONTAINTYPES","FUELTYPE","POWERCAP",
+											"ACTIVATED","POWERREM","PANTYPE"
+											};
 	public String getStat(String code)
 	{
 		if(CMLib.coffeeMaker().getGenItemCodeNum(code)>=0)
@@ -87,6 +81,9 @@ public class GenShipContainer extends StdShipContainer
 		case 3: return ""+containTypes();
 		case 4: return ""+fuelType();
 		case 5: return ""+powerCapacity();
+		case 6: return ""+activated();
+		case 7: return ""+powerRemaining();
+		case 8: return ""+panelType();
 		default:
 			return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
 		}
@@ -109,6 +106,12 @@ public class GenShipContainer extends StdShipContainer
 				break;
 			   } 
 		case 5: setPowerCapacity(CMath.s_parseLongExpression(val)); break;
+		case 6: activate(CMath.s_bool(val)); break;
+		case 7: setPowerRemaining(CMath.s_parseLongExpression(val)); break;
+		case 8: try{
+					setPanelType(Electronics.ElecPanel.ElecPanelType.valueOf(val.toUpperCase().trim())); 
+        		}catch(Exception e){}
+        		break;
 		default:
 			CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code, val);
 			break;
@@ -123,7 +126,7 @@ public class GenShipContainer extends StdShipContainer
 	public String[] getStatCodes()
 	{
 		if(codes!=null) return codes;
-		String[] MYCODES=CMProps.getStatCodesList(GenShipContainer.MYCODES,this);
+		String[] MYCODES=CMProps.getStatCodesList(GenElecPanel.MYCODES,this);
 		String[] superCodes=GenericBuilder.GENITEMCODES;
 		codes=new String[superCodes.length+MYCODES.length];
 		int i=0;
@@ -135,7 +138,7 @@ public class GenShipContainer extends StdShipContainer
 	}
 	public boolean sameAs(Environmental E)
 	{
-		if(!(E instanceof GenShipComponent)) return false;
+		if(!(E instanceof GenElecPanel)) return false;
 		String[] theCodes=getStatCodes();
 		for(int i=0;i<theCodes.length;i++)
 			if(!E.getStat(theCodes[i]).equals(getStat(theCodes[i])))

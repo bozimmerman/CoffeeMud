@@ -60,7 +60,7 @@ public class Spell_Meld extends Spell
 					RawMaterial.MATERIAL_LEATHER,
 					RawMaterial.MATERIAL_VEGETATION,
 					RawMaterial.MATERIAL_WOODEN,
-					RawMaterial.MATERIAL_PLASTIC,
+					RawMaterial.MATERIAL_SYNTHETIC,
 					RawMaterial.MATERIAL_METAL,
 					RawMaterial.MATERIAL_ROCK,
 					RawMaterial.MATERIAL_PRECIOUS,

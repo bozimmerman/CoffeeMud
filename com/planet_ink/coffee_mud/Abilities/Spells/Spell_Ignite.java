@@ -51,7 +51,7 @@ public class Spell_Ignite extends Spell
 			durationOfBurn=20+I.phyStats().weight();
 			break;
 		case RawMaterial.MATERIAL_CLOTH:
-		case RawMaterial.MATERIAL_PLASTIC:
+		case RawMaterial.MATERIAL_SYNTHETIC:
 		case RawMaterial.MATERIAL_PAPER:
 			durationOfBurn=5+I.phyStats().weight();
 			break;

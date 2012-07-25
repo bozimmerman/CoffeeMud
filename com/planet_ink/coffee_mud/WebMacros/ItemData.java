@@ -60,7 +60,7 @@ public class ItemData extends StdWebMacro
 	  "IMAGE","ISEXIT","EXITNAME","EXITCLOSEDTEXT","NUMCOINS",
 	  "CURRENCY","DENOM","ISRECIPE","RECIPESKILL","RECIPEDATA",
 	  "LAYER","SEETHRU","MULTIWEAR","ISCATALOGED","CATARATE",
-	  "CATALIVE","CATAMASK","BITE","MAXUSES"};
+	  "CATALIVE","CATAMASK","BITE","MAXUSES","ISELECTRONIC"};
 	
 	public ItemData()
 	{
@@ -995,6 +995,9 @@ public class ItemData extends StdWebMacro
 					if((firstTime)&&(I instanceof Wand))
 						old=""+((Wand)I).maxUses();
 					str.append(old);
+					break;
+				case 93: // iselectronic
+					str.append(I instanceof Electronics);
 					break;
 				}
 				if(firstTime)

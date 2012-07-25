@@ -28,7 +28,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public interface ShipComponent extends Item
+public interface ShipComponent extends Electronics
 {
 	public interface ShipEngine extends ShipComponent
 	{
@@ -36,10 +36,6 @@ public interface ShipComponent extends Item
 		public void setMaxThrust(int max);
 		public int getThrust();
 		public void setThrust(int max);
-	}
-	public interface ShipPowerSource extends ShipComponent
-	{
-		
 	}
 	public interface ShipWeapon extends ShipComponent
 	{
@@ -52,21 +48,5 @@ public interface ShipComponent extends Item
 	public interface ShipEnviroControl extends ShipComponent
 	{
 		
-	}
-	public interface ShipPanel extends ShipComponent
-	{
-		public final static int COMPONENT_PANEL_ANY=0;
-		public final static int COMPONENT_PANEL_WEAPON=1;
-		public final static int COMPONENT_PANEL_ENGINE=2;
-		public final static int COMPONENT_PANEL_SENSOR=3;
-		public final static int COMPONENT_PANEL_POWER=4;
-		public final static int COMPONENT_PANEL_COMPUTER=5;
-		public final static int COMPONENT_PANEL_ENVIRO=6;
-		public final static String[] COMPONENT_PANEL_DESC={
-			"ANY","WEAPON","ENGINE","SENSOR","POWER","COMPUTER","ENVIRO-CONTROL"
-		};
-		
-		public int panelType();
-		public void setPanelType(int type);
 	}
 }
