@@ -97,12 +97,27 @@ public class StdElecGenerator extends StdElecContainer implements Electronics.Po
 	{
 		if(!super.tick(ticking, tickID))
 			return false;
-		tickStatus=Tickable.STATUS_START;
-		if((tickID==Tickable.TICKID_ELEC_GENERATOR) && (activated()))
+		if(tickID==Tickable.TICKID_ELEC_GENERATOR)
 		{
-			//TODO: behave like a generator
+			
 		}
-		tickStatus=Tickable.STATUS_NOT;
-		return !amDestroyed();
+		return true;
+	}
+	
+	public void executeMsg(Environmental myHost, CMMsg msg)
+	{
+		super.executeMsg(myHost, msg);
+		if(msg.amITarget(this))
+		{
+			if((msg.sourceMinor()==CMMsg.TYP_POWERCURRENT)&&(msg.tool()==this))
+			{
+    			if(((powerCapacity() - powerRemaining()) >= getGeneratedAmountPerTick())
+    			||(powerRemaining() < getGeneratedAmountPerTick()))
+    			{
+    				//TODO: decrease fuel, and potentially put into cold state!
+    				setPowerRemaining(powerRemaining() + getGeneratedAmountPerTick());
+    			}
+			}
+		}
 	}
 }

@@ -120,4 +120,10 @@ public interface LandTitle extends Environmental
 	 * @return amount the back  taxes owed
 	 */
 	public int backTaxes();
+	
+	/**
+	 * Returns a unique id for this particular title and the rooms is represents, even if the rooms change.
+	 * @return a unique id
+	 */
+	public String getTitleID();
 }

@@ -194,6 +194,23 @@ public class StdTitle extends StdItem implements LandTitle
 		return new Vector();
 	}
 
+	public String getTitleID()
+	{
+		Room R=CMLib.map().getRoom(landPropertyID());
+		if(R!=null)
+		{
+			LandTitle A=CMLib.law().getLandTitle(R);
+			if(A!=null) return A.getTitleID();
+		}
+		Area area=CMLib.map().getArea(landPropertyID());
+		if(area!=null)
+		{
+			LandTitle A=CMLib.law().getLandTitle(area);
+			if(A!=null) return A.getTitleID();
+		}
+		return "";
+	}
+
 	public void recoverPhyStats(){CMLib.flags().setReadable(this,true); super.recoverPhyStats();}
 
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)

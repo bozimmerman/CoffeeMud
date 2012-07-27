@@ -61,6 +61,19 @@ public class Prop_LotsForSale extends Prop_RoomForSale
 		return true;
 	}
 
+	public String getTitleID()
+	{
+		if(affected instanceof Room)
+			return "LAND_TITLE_FOR#"+CMLib.map().getExtendedRoomID((Room)affected);
+		else
+		{
+			Room R=CMLib.map().getRoom(landPropertyID());
+			if(R!=null) 
+				return "LAND_TITLE_FOR#"+CMLib.map().getExtendedRoomID(R);
+		}
+		return "";
+	}
+	
 	public void updateLot(List optPlayerList)
 	{
 		Environmental EV=affected;

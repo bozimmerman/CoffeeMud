@@ -78,6 +78,13 @@ public class Prop_AreaForSale extends Property implements LandTitle
 		return text().substring(0,text().indexOf('/'));
 	}
 
+	public String getTitleID()
+	{
+		if(affected != null)
+    		return "LAND_TITLE_FOR#"+affected.Name();
+		return "";
+	}
+
 	public CMObject landOwnerObject()
 	{
 		String owner=landOwner();

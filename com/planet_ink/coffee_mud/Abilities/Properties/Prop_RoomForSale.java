@@ -153,6 +153,19 @@ public class Prop_RoomForSale extends Property implements LandTitle
 		}
 	}
 
+	public String getTitleID()
+	{
+		if(affected instanceof Room)
+			return "LAND_TITLE_FOR#"+CMLib.map().getExtendedRoomID((Room)affected);
+		else
+		{
+			Room R=CMLib.map().getRoom(landPropertyID());
+			if(R!=null) 
+				return "LAND_TITLE_FOR#"+CMLib.map().getExtendedRoomID(R);
+		}
+		return "";
+	}
+	
 	public String landPropertyID()
 	{
 		if((affected!=null)&&(affected instanceof Room))

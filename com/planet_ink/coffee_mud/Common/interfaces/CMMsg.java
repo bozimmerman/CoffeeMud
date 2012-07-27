@@ -945,6 +945,8 @@ public interface CMMsg extends CMCommon
 	public static final int TYP_POSSESS=105;
 	/** MINOR_MASK minor action code type, denoting dispossession of a possessed body */
 	public static final int TYP_DISPOSSESS=106;
+	/** MINOR_MASK minor action code type, denoting power current flowing */
+	public static final int TYP_POWERCURRENT=107;
 
 	/** MINOR_MASK minor action code type, denoting a channel action -- 2000-2047 are channels*/
 	public static final int TYP_CHANNEL=2000; //(2000-2047 are channels)
@@ -970,7 +972,7 @@ public interface CMMsg extends CMCommon
 		"DAMAGE", "HEALING", "ROOMRESET", "RELOAD", "SNIFF", "ACTIVATE", "DEACTIVATE", 
 		"FACTIONCHANGE", "LOGIN", "LEVEL", "EXAMINE", "ORDER","EXPIRE","BORROW","HUH",
 		"LIFE", "BID", "CLANEVENT", "UNLOAD", "DUELCHALLENGE", "LEGALWARRANT", "DIG", 
-		"PREINVOKE","POSSESS","DISPOSSESS"
+		"PREINVOKE","POSSESS","DISPOSSESS","POWERCURRENT"
 	};
 	
 	/** Index string descriptions of all the MAJOR_MASK code MAKS_s */
@@ -1250,4 +1252,6 @@ public interface CMMsg extends CMCommon
 	public static final int MSG_POSSESS=TYP_POSSESS;
 	/** combined MAJOR and MINOR codes for useful event message type for a un-possession*/
 	public static final int MSG_DISPOSSESS=TYP_DISPOSSESS;
+	/** combined MAJOR and MINOR codes for useful event message type for power current flow*/
+	public static final int MSG_POWERCURRENT=CMMsg.MASK_ALWAYS|TYP_POWERCURRENT;
 }

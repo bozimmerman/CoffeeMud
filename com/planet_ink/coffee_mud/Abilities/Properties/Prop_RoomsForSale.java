@@ -70,7 +70,19 @@ public class Prop_RoomsForSale extends Prop_RoomForSale
 		return V;
 	}
 
-
+	public String getTitleID()
+	{
+		if(affected instanceof Room)
+			return "LAND_TITLE_FOR#"+CMLib.map().getExtendedRoomID((Room)affected);
+		else
+		{
+			Room R=CMLib.map().getRoom(landPropertyID());
+			if(R!=null) 
+				return "LAND_TITLE_FOR#"+CMLib.map().getExtendedRoomID(R);
+		}
+		return "";
+	}
+	
 	// update title, since it may affect room clusters, worries about EVERYONE
 	public void updateTitle()
 	{
