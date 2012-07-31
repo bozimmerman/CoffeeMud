@@ -32,7 +32,6 @@ limitations under the License.
 public class CMThreadPoolExecutor extends ThreadPoolExecutor 
 {
 	protected PairSVector<Thread,CMRunnable> active = new PairSVector<Thread,CMRunnable>();
-	protected LinkedList<CMRunnable> waitingQueue = new LinkedList<CMRunnable>();
 	protected long  				 timeoutMillis;
 	protected CMThreadFactory   	 threadFactory;
 	protected int   				 queueSize = 0;
@@ -45,7 +44,7 @@ public class CMThreadPoolExecutor extends ThreadPoolExecutor
 								long keepAliveTime, TimeUnit unit, 
 								long timeoutMins, int queueSize) 
 	{
-		super(corePoolSize, maximumPoolSize, keepAliveTime, unit, new SynchronousQueue<Runnable>());
+		super(corePoolSize, maximumPoolSize, keepAliveTime, unit, new ArrayBlockingQueue<Runnable>(queueSize));
 		timeoutMillis=timeoutMins * 60 * 1000;
 		this.poolName=poolName;
 		threadFactory=new CMThreadFactory(poolName);
@@ -53,30 +52,6 @@ public class CMThreadPoolExecutor extends ThreadPoolExecutor
 		this.queueSize=queueSize;
 	}
 
-	protected boolean unWait(boolean thread)
-	{
-		if(waitingQueue.size()>0)
-		{
-			final CMRunnable runner;
-			synchronized(waitingQueue)
-			{
-				if(waitingQueue.size()>0)
-					runner=waitingQueue.removeFirst();
-				else
-					runner=null;
-			}
-			if(runner!=null)
-			{
-				if(thread)
-					new Thread(){public void run(){CMLib.s_sleep(1);execute(runner);}}.start();
-				else
-					execute(runner);
-				return true;
-			}
-		}
-		return false;
-	}
-	
 	protected void beforeExecute(Thread t, Runnable r) 
 	{ 
 		synchronized(active)
@@ -93,7 +68,6 @@ public class CMThreadPoolExecutor extends ThreadPoolExecutor
 			if(r instanceof CMRunnable)
 				active.removeSecond((CMRunnable)r);
 		}
-		unWait(true);
 	}
 
 	public void execute(Runnable r)
@@ -114,20 +88,6 @@ public class CMThreadPoolExecutor extends ThreadPoolExecutor
 				Collection<CMRunnable> runsKilled = getTimeoutOutRuns(1);
 				for(CMRunnable runnable : runsKilled)
 					Log.errOut("Pool_"+poolName,"Old(er) Runnable killed: "+runnable.toString());
-				synchronized(waitingQueue)
-				{
-					if(waitingQueue.contains(r))
-					{
-						return;
-					}
-					if(waitingQueue.size() < queueSize)
-					{
-						waitingQueue.addLast((CMRunnable)r);
-						return;
-					}
-					else
-						Log.errOut("Pool_"+poolName,"Thread not executed: queue full!");
-				}
 			}
 			lastRejectTime=System.currentTimeMillis();
 			rejectCount++;
