@@ -1016,6 +1016,39 @@ public interface CharStats extends CMCommon, Modifiable
 		 * @return the CMMsg mapping of the stat
 		 */
 		public static int CMMSGMAP(int code) { return c().statCMMsgMapping[code];}
+
+		/**
+		 * Returns the code for the given stat name
+		 * @param name the case insensitive name
+		 * @param exactOnly true to only return exact matches, false to do otherwise
+		 * @return the stat code
+		 */
+		public int find(String name, boolean exactOnly)
+		{
+			for(int i=0;i<total();i++)
+			{
+				if((name.equalsIgnoreCase(name(i)))
+				||(name.equalsIgnoreCase(desc(i)))
+				||(name.equalsIgnoreCase(abbr(i))))
+					return i;
+			}
+			if(exactOnly) return -1;
+			for(int i=0;i<total();i++)
+			{
+				if((name(i).toLowerCase().startsWith(name))||(desc(i).toLowerCase().startsWith(name)))
+					return i;
+			}
+			return -1;
+		}
+		
+		/**
+		 * Returns the code for the given stat name
+		 * @param name the case insensitive name
+		 * @param exactOnly true to only return exact matches, false to do otherwise
+		 * @return the stat code
+		 */
+		public static int findWhole(String name, boolean exactOnly) { return c().find(name, exactOnly); }
+		
 		/**
 		 * Adds a new base stat to this object for all mobs and players to share
 		 * @param abbr 1-3 letter short code for this stat

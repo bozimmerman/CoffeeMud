@@ -45,12 +45,12 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 	public Hashtable startRooms=new Hashtable();
 	public Hashtable deathRooms=new Hashtable();
 	public Hashtable bodyRooms=new Hashtable();
+	public static final int BASE_MIN_STAT_POINTS=3;
 
-	public void reRollStats(MOB mob, CharStats C)
+	protected int getTotalStatPoints()
 	{
-		// from Ashera
-		int basemax = CMProps.getIntVar(CMProps.SYSTEMI_BASEMAXSTAT);
-		int basemin = 3;
+		final int basemax = CMProps.getIntVar(CMProps.SYSTEMI_BASEMAXSTAT);
+		final int basemin = BASE_MIN_STAT_POINTS;
 
 		int points = CMProps.getIntVar(CMProps.SYSTEMI_MAXSTAT);
 		// Make sure there are enough points
@@ -61,13 +61,19 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		if (points > (basemax - 1) * CharStats.CODES.BASE().length)
 				points = (basemax - 1) * CharStats.CODES.BASE().length;
 
-		int[] stats=new int[CharStats.CODES.TOTAL()];
-		for(int i=0;i<stats.length;i++)
-			stats[i]=basemin;
-
 		// Subtract stat minimums from point total to get distributable points
-		int pointsLeft = points - (basemin * CharStats.CODES.BASE().length);
-
+		return points - (basemin * CharStats.CODES.BASE().length);
+	}
+	
+	public void reRollStats(MOB mob, CharStats C)
+	{
+		final int basemax = CMProps.getIntVar(CMProps.SYSTEMI_BASEMAXSTAT);
+		
+		int[] stats=new int[CharStats.CODES.BASE().length];
+		for(int i=0;i<stats.length;i++)
+			stats[i]=BASE_MIN_STAT_POINTS;
+		
+		int pointsLeft = getTotalStatPoints();
 		while (pointsLeft > 0)
 		{
 			int whichStat = CharStats.CODES.BASE()[CMLib.dice().roll(1,CharStats.CODES.BASE().length,-1)];
@@ -766,6 +772,28 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		}
 		throw new java.io.IOException("Session is dead!");
 	}
+
+	protected String buildQualifyingClassList(List<CharClass> classes, String finalConnector)
+	{
+		StringBuilder list = new StringBuilder("");
+		for(Iterator<CharClass> i=classes.iterator(); i.hasNext(); )
+		{
+			CharClass C = i.next();
+			if(!i.hasNext())
+			{
+				if (list.length()>0)
+				{
+					list.append("^?"+finalConnector+" ^?");
+				}
+				list.append(C.name());
+			}
+			else
+			{
+				list.append(C.name()+"^?, ^?");
+			}
+		}
+		return list.toString();
+	}
 	
 	public LoginResult createCharacter(PlayerAccount acct, String login, Session session)
 		throws java.io.IOException
@@ -775,7 +803,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		login=CMStrings.capitalizeAndLower(login.trim());
 		
 		StringBuffer introText=new CMFile(Resources.buildResourcePath("text")+"newchar.txt",null,true).text();
-		try { introText = CMLib.httpUtils().doVirtualPage(introText);}catch(Exception ex){}
+		try { introText = CMLib.httpUtils().doVirtualPage(introText); }catch(Exception ex){}
 		session.println(null,null,null,"\n\r\n\r"+introText.toString());
 
 		boolean emailPassword=((CMProps.getVar(CMProps.SYSTEM_EMAILREQ).toUpperCase().startsWith("PASS"))
@@ -975,7 +1003,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 				}
 			}
 			mob.baseCharStats().setMyRace(newRace);
-	
+
 			mob.baseState().setHitPoints(CMProps.getIntVar(CMProps.SYSTEMI_STARTHP));
 			mob.baseState().setMovement(CMProps.getIntVar(CMProps.SYSTEMI_STARTMOVE));
 			mob.baseState().setMana(CMProps.getIntVar(CMProps.SYSTEMI_STARTMANA));
@@ -998,54 +1026,117 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 			try { introText = CMLib.httpUtils().doVirtualPage(introText);}catch(Exception ex){}
 			session.println(null,null,null,"\n\r\n\r"+introText.toString());
 	
-			boolean mayCont=true;
-			StringBuffer listOfClasses=new StringBuffer("??? no classes ???");
-			if(CMProps.getIntVar(CMProps.SYSTEMI_STARTSTAT)>0) {
+			List<CharClass> qualifyingClassListV=new Vector(1);
+			if(CMProps.getIntVar(CMProps.SYSTEMI_STARTSTAT)>0)
+			{
 				mob.baseCharStats().setAllBaseValues(CMProps.getIntVar(CMProps.SYSTEMI_STARTSTAT));
 				mob.recoverCharStats();
 			}
 			else
-			while(mayCont)
 			{
-				reRollStats(mob,mob.baseCharStats());
-				mob.recoverCharStats();
-				List<CharClass> V=classQualifies(mob,theme);
-				if((V.size()>0)||CMSecurity.isDisabled(CMSecurity.DisFlag.CLASSES))
+				final boolean randomRoll = CMProps.getIntVar(CMProps.SYSTEMI_STARTSTAT) == 0;
+				int pointsLeft = getTotalStatPoints();
+				for(int i=0;i<CharStats.CODES.BASE().length;i++)
+					mob.baseCharStats().setStat(i,BASE_MIN_STAT_POINTS);
+				while(!session.isStopped())
 				{
-					StringBuffer classes=new StringBuffer("");
-					listOfClasses = new StringBuffer("");
-					for(int v=0;v<V.size();v++)
-						if(v==V.size()-1)
+					if(randomRoll)
+						reRollStats(mob,mob.baseCharStats());
+
+					mob.recoverCharStats();
+					qualifyingClassListV=classQualifies(mob,theme);
+					CharStats unmodifiedCT = (CharStats)mob.charStats().copyOf();
+					List<String> validStats = new ArrayList(CharStats.CODES.BASE().length);
+					for(int i : CharStats.CODES.BASE())
+						validStats.add(CMStrings.capitalizeAndLower(CharStats.CODES.NAME(i)));
+						
+					if((qualifyingClassListV.size()>0)||CMSecurity.isDisabled(CMSecurity.DisFlag.CLASSES))
+					{
+						int max=CMProps.getIntVar(CMProps.SYSTEMI_BASEMAXSTAT);
+						StringBuffer statstr=new StringBuffer("Your current stats are: \n\r");
+						CharStats CT=mob.charStats();
+						for(int i : CharStats.CODES.BASE())
+							statstr.append(CMStrings.padRight(CMStrings.capitalizeAndLower(CharStats.CODES.DESC(i)),15)
+									+": "+CMStrings.padRight(Integer.toString(CT.getStat(i)),2)+"/"+(max+CT.getStat(CharStats.CODES.toMAXBASE(i)))+"\n\r");
+						statstr.append(CMStrings.padRight("STATS TOTAL",15)+": "+CMProps.getIntVar(CMProps.SYSTEMI_MAXSTAT)+"/"+(CMProps.getIntVar(CMProps.SYSTEMI_BASEMAXSTAT)*6));
+						session.println(statstr.toString());
+						if(!CMSecurity.isDisabled(CMSecurity.DisFlag.CLASSES)
+						&&(!mob.baseCharStats().getMyRace().classless())
+						&&((qualifyingClassListV.size()!=1)||(!CMProps.getVar(CMProps.SYSTEM_MULTICLASS).startsWith("APP-"))))
+							session.println("\n\rThis would qualify you for ^H"+buildQualifyingClassList(qualifyingClassListV,"and")+"^N.");
+	
+						if(randomRoll)
 						{
-							if (v != 0)
-							{
-								classes.append("^?and ^?");
-								listOfClasses.append("^?or ^?");
-							}
-							classes.append(((CharClass)V.get(v)).name());
-							listOfClasses.append(((CharClass)V.get(v)).name());
+							if(!session.confirm("^!Would you like to re-roll (y/N)?^N","N"))
+								break;
 						}
 						else
 						{
-							classes.append(((CharClass)V.get(v)).name()+"^?, ^?");
-							listOfClasses.append(((CharClass)V.get(v)).name()+"^?, ^?");
+							String promptStr;
+							if(pointsLeft == 0)
+							{
+								session.println("^!You have no more points remaining.^N");
+								promptStr = "^!Enter -Stat name to remove a point, or ENTER when you are done:^N";
+							}
+							else
+							{
+								session.println("^!You have "+pointsLeft+" points remaining.^N");
+								promptStr = "^!Enter a Stat name to add a point, or -Stat name to remove a point:^N";
+							}
+								
+							String prompt = session.prompt(promptStr);
+							if((prompt!=null)&&(prompt.trim().length()>0))
+							{
+								prompt = prompt.trim();
+								boolean remove = prompt.startsWith("-");
+								int amount = 1;
+								if(remove) prompt = prompt.substring(1).trim();
+								int space = prompt.lastIndexOf(' ');
+								if((space > 0)&&(CMath.isInteger(prompt.substring(space+1).trim())))
+								{
+									String numStr = prompt.substring(space+1).trim();
+									prompt = prompt.substring(0,space).trim();
+									int num = CMath.s_int(numStr);
+									if((num > -1000)&&(num < 1000)&&(num != 0))
+										amount=num;
+									if(amount < 0)
+									{
+										remove=true;
+										amount = amount * -1;
+									}
+								}
+								int code = CharStats.CODES.findWhole(prompt, false);
+								if((code < 0) || (!validStats.contains(CMStrings.capitalizeAndLower(CharStats.CODES.NAME(code)))))
+								{
+									session.println("^r'"+prompt+"' is an unknown code.  Try one of these: "+CMParms.toStringList(validStats)+"^N");
+								}
+								else
+								if((!remove)&&(pointsLeft - amount < 0))
+								{
+									session.println("^rYou don't have enough remaining points to do that.^N");
+								}
+								else
+								{
+									String friendlyName = CMStrings.capitalizeAndLower(CharStats.CODES.NAME(code));
+									if(CT.getStat(code) >= max)
+										session.println("^rYou can not raise '"+friendlyName+" any further.^N");
+									else
+									if(remove && CT.getStat(code) <= unmodifiedCT.getStat(code))
+										session.println("^rYou can not lower '"+friendlyName+" any further.^N");
+									else
+									if(CT.getStat(code)+amount > max)
+										session.println("^rYou can not raise '"+friendlyName+" any by that amount.^N");
+									else
+									if(remove && (CT.getStat(code)-amount < unmodifiedCT.getStat(code)))
+										session.println("^rYou can not lower '"+friendlyName+" any further.^N");
+									{
+										if(remove) amount = amount * -1;
+										CT.setStat(code, CT.getStat(code)+amount);
+									}
+								}
+							}
 						}
-	
-					int max=CMProps.getIntVar(CMProps.SYSTEMI_BASEMAXSTAT);
-					StringBuffer statstr=new StringBuffer("Your current stats are: \n\r");
-					CharStats CT=mob.charStats();
-					for(int i : CharStats.CODES.BASE())
-						statstr.append(CMStrings.padRight(CMStrings.capitalizeAndLower(CharStats.CODES.DESC(i)),15)
-								+": "+CMStrings.padRight(Integer.toString(CT.getStat(i)),2)+"/"+(max+CT.getStat(CharStats.CODES.toMAXBASE(i)))+"\n\r");
-					statstr.append(CMStrings.padRight("TOTAL POINTS",15)+": "+CMProps.getIntVar(CMProps.SYSTEMI_MAXSTAT)+"/"+(CMProps.getIntVar(CMProps.SYSTEMI_BASEMAXSTAT)*6));
-					session.println(statstr.toString());
-					if(!CMSecurity.isDisabled(CMSecurity.DisFlag.CLASSES)
-					&&!mob.baseCharStats().getMyRace().classless()
-					&&((V.size()!=1)||(!CMProps.getVar(CMProps.SYSTEM_MULTICLASS).startsWith("APP-"))))
-						session.println("\n\rThis would qualify you for ^H"+classes.toString()+"^N.");
-	
-					if(!session.confirm("^!Would you like to re-roll (y/N)?^N","N"))
-						mayCont=false;
+					}
 				}
 			}
 			executeScript(mob,extraScripts.get("STATS"));
@@ -1077,45 +1168,48 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 			if(qualClasses.size()==1)
 				newClass=(CharClass)qualClasses.get(0);
 			else
-			while(newClass==null)
 			{
-				session.print("\n\r^!Please choose from the following Classes:\n\r");
-				session.print("^H[" + listOfClasses.toString() + "]^N");
-				String ClassStr=session.prompt("\n\r: ","");
-				if(ClassStr.trim().equalsIgnoreCase("?"))
-					session.println(null,null,null,"\n\r"+new CMFile(Resources.buildResourcePath("text")+"classes.txt",null,true).text().toString());
-				else
+				String listOfClasses = buildQualifyingClassList(qualifyingClassListV, "or");
+				while(newClass==null)
 				{
-					newClass=CMClass.findCharClass(ClassStr);
-					if(newClass==null)
-					for(CharClass C : qualClasses)
+					session.print("\n\r^!Please choose from the following Classes:\n\r");
+					session.print("^H[" + listOfClasses + "]^N");
+					String ClassStr=session.prompt("\n\r: ","");
+					if(ClassStr.trim().equalsIgnoreCase("?"))
+						session.println(null,null,null,"\n\r"+new CMFile(Resources.buildResourcePath("text")+"classes.txt",null,true).text().toString());
+					else
 					{
-						if(C.name().equalsIgnoreCase(ClassStr))
+						newClass=CMClass.findCharClass(ClassStr);
+						if(newClass==null)
+						for(CharClass C : qualClasses)
 						{
-							newClass=C;
-							break;
+							if(C.name().equalsIgnoreCase(ClassStr))
+							{
+								newClass=C;
+								break;
+							}
 						}
-					}
-					if(newClass==null)
-					for(CharClass C : qualClasses)
-					{
-						if(C.name().toUpperCase().startsWith(ClassStr.toUpperCase()))
+						if(newClass==null)
+						for(CharClass C : qualClasses)
 						{
-							newClass=C;
-							break;
+							if(C.name().toUpperCase().startsWith(ClassStr.toUpperCase()))
+							{
+								newClass=C;
+								break;
+							}
 						}
-					}
-					if((newClass!=null)&&(canChangeToThisClass(mob,newClass,theme)))
-					{
-						StringBuilder str=CMLib.help().getHelpText(newClass.ID().toUpperCase(),mob,false,false);
-						if(str!=null){
-							session.println("\n\r^N"+str.toString()+"\n\r");
+						if((newClass!=null)&&(canChangeToThisClass(mob,newClass,theme)))
+						{
+							StringBuilder str=CMLib.help().getHelpText(newClass.ID().toUpperCase(),mob,false,false);
+							if(str!=null){
+								session.println("\n\r^N"+str.toString()+"\n\r");
+							}
+							if(!session.confirm("^NIs ^H"+newClass.name()+"^N correct (Y/n)?","Y"))
+								newClass=null;
 						}
-						if(!session.confirm("^NIs ^H"+newClass.name()+"^N correct (Y/n)?","Y"))
+						else
 							newClass=null;
 					}
-					else
-						newClass=null;
 				}
 			}
 			mob.basePhyStats().setLevel(1);
