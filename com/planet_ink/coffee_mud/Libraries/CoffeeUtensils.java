@@ -965,6 +965,56 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 		return false;
 	}
 	
+	public long[][] compileConditionalRange(List<String> condV, int numDigits, final int startOfRange, final int endOfRange)
+	{
+		long[][] finalSet = new long[endOfRange - startOfRange + 1][];
+		for(String cond : condV)
+		{
+			Vector<String> V=CMParms.parse(cond.trim());
+			if(V.size()<2) continue;
+			long[] vals=new long[numDigits];
+			for(int i=0;i<numDigits;i++)
+				if(i+1<V.size())
+					vals[i]=CMath.s_long(V.elementAt(i+1));
+			cond=((String)V.firstElement()).trim();
+			int start=startOfRange;
+			int finish=endOfRange;
+			if(cond.startsWith("<="))
+				finish=CMath.s_int(cond.substring(2).trim());
+			else
+			if(cond.startsWith(">="))
+				start=CMath.s_int(cond.substring(2).trim());
+			else
+			if(cond.startsWith("=="))
+			{
+				start=CMath.s_int(cond.substring(2).trim());
+				finish=start;
+			}
+			else
+			if(cond.startsWith("="))
+			{
+				start=CMath.s_int(cond.substring(1).trim());
+				finish=start;
+			}
+			else
+			if(cond.startsWith(">"))
+				start=CMath.s_int(cond.substring(1).trim())+1;
+			else
+			if(cond.startsWith("<"))
+				finish=CMath.s_int(cond.substring(1).trim())-1;
+
+			if((start>=startOfRange)&&(finish<=endOfRange)&&(start<=finish))
+			{
+				for(int s=start;s<=finish;s++)
+				{
+					if(finalSet[s-startOfRange]==null)
+						finalSet[s-startOfRange] = vals;
+				}
+			}
+		}
+		return finalSet;
+	}
+	
 	public String builtPrompt(MOB mob)
 	{
 		StringBuffer buf=new StringBuffer("\n\r");

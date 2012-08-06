@@ -2371,3 +2371,5 @@ ruthless programmer, and sentenced to a quick death.
 3. (Internal) Database connections can now be kept alive with pings.  See new coffeemud.ini entry: DBPINGINTERVALMINS
 4. Most crafting skills now support a LEARN command to gain the recipes to certain found items.
 5. Players can now spend points to create their new character stats, if you let them.  See coffeemud.ini entry: STARTSTAT
+6. You can now define the training point costs to stat changes with STATSCOST in your coffeemud.ini file
+7. Change the items all characters get at creation time with STARTINGITEMS in your coffeemud.ini file

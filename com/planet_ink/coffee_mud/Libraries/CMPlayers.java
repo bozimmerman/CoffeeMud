@@ -38,8 +38,12 @@ import java.util.*;
 public class CMPlayers extends StdLibrary implements PlayerLibrary
 {
 	public String ID(){return "CMPlayers";}
-	public SVector<MOB> 			playersList    = new SVector<MOB>();
-	public SVector<PlayerAccount>     accountsList    = new SVector<PlayerAccount>();
+	
+	protected SVector<MOB> 			playersList			= new SVector<MOB>();
+	protected SVector<PlayerAccount>accountsList		= new SVector<PlayerAccount>();
+	protected long[] 				autoPurgeDaysLevels	=new long[1];
+	protected long[] 				prePurgeLevels		=new long[1];
+	protected int					autoPurgeHash		=0;
 	
 	private CMSupportThread thread=null;
 	
@@ -455,51 +459,21 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 	{
 		if(CMSecurity.isDisabled(CMSecurity.DisFlag.AUTOPURGE))
 			return true;
-		
-		long[] levels=new long[2001];
-		long[] prePurgeLevels=new long[2001];
-		for(int i=0;i<levels.length;i++) levels[i]=0;
-		for(int i=0;i<prePurgeLevels.length;i++) prePurgeLevels[i]=0;
 		String mask=CMProps.getVar(CMProps.SYSTEM_AUTOPURGE);
-		List<String> maskV=CMParms.parseCommas(mask.trim(),false);
-		for(int mv=0;mv<maskV.size();mv++)
+		if(mask.hashCode() != this.autoPurgeHash)
 		{
-			Vector<String> V=CMParms.parse(((String)maskV.get(mv)).trim());
-			if(V.size()<2) continue;
-			long val=CMath.s_long((String)V.elementAt(1));
-			if(val<=0) continue;
-			long prepurge=0;
-			if(V.size()>2)
-				prepurge=CMath.s_long((String)V.elementAt(2));
-			String cond=((String)V.firstElement()).trim();
-			int start=0;
-			int finish=levels.length-1;
-			if(cond.startsWith("<="))
-				finish=CMath.s_int(cond.substring(2).trim());
-			else
-			if(cond.startsWith(">="))
-				start=CMath.s_int(cond.substring(2).trim());
-			else
-			if(cond.startsWith("=="))
+			int lastLevel=CMProps.getIntVar(CMProps.SYSTEMI_LASTPLAYERLEVEL)+100;
+			long[][] presorted=CMLib.utensils().compileConditionalRange(CMParms.parseCommas(mask.trim(),true), 2, 0, lastLevel);
+			autoPurgeDaysLevels=new long[lastLevel+1];
+			prePurgeLevels=new long[lastLevel+1];
+			for(int i=0;i<autoPurgeDaysLevels.length;i++) autoPurgeDaysLevels[i]=0;
+			for(int i=0;i<prePurgeLevels.length;i++) prePurgeLevels[i]=0;
+			for(int i=0;i<presorted.length;i++)
 			{
-				start=CMath.s_int(cond.substring(2).trim());
-				finish=start;
-			}
-			else
-			if(cond.startsWith("="))
-			{
-				start=CMath.s_int(cond.substring(1).trim());
-				finish=start;
-			}
-			else
-			if(cond.startsWith(">"))
-				start=CMath.s_int(cond.substring(1).trim())+1;
-			else
-			if(cond.startsWith("<"))
-				finish=CMath.s_int(cond.substring(1).trim())-1;
-
-			if((start>=0)&&(finish<levels.length)&&(start<=finish))
-			{
+				final long[] set=presorted[i];
+				long val=set[0];
+				if(set[0]<=0) continue;
+				long prepurge=set[1];
 				long realVal=(val*TimeManager.MILI_DAY);
 				long purgePoint=realVal-(prepurge*TimeManager.MILI_DAY);
 				if(val <= 0)
@@ -507,12 +481,10 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 					realVal = 0;
 					purgePoint = 0;
 				}
-				for(int s=start;s<=finish;s++)
-				{
-					if(levels[s]==0) levels[s]=realVal;
-					if(prePurgeLevels[s]==0) prePurgeLevels[s]=purgePoint;
-				}
+				if(autoPurgeDaysLevels[i]==0) autoPurgeDaysLevels[i]=realVal;
+				if(prePurgeLevels[i]==0) prePurgeLevels[i]=purgePoint;
 			}
+			this.autoPurgeHash=mask.hashCode();
 		}
 		thread.setStatus("autopurge process");
 		List<PlayerLibrary.ThinPlayer> allUsers=CMLib.database().getExtendedUserList();
@@ -526,27 +498,27 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 			long userLastLoginDateTime=user.last;
 			long purgeDateTime;
 			long warnDateTime;
-			if(level>levels.length)
+			if(level>autoPurgeDaysLevels.length)
 			{
-				if(levels[levels.length-1]==0)
+				if(autoPurgeDaysLevels[autoPurgeDaysLevels.length-1]==0)
 				{
 					if(CMSecurity.isDebugging(CMSecurity.DbgFlag.AUTOPURGE))
 						Log.debugOut(thread.getName(),name+" last on "+CMLib.time().date2String(userLastLoginDateTime)+".  Nothing will be done about it.");
 					continue;
 				}
-				purgeDateTime=userLastLoginDateTime + levels[levels.length-1];
+				purgeDateTime=userLastLoginDateTime + autoPurgeDaysLevels[autoPurgeDaysLevels.length-1];
 				warnDateTime=userLastLoginDateTime + prePurgeLevels[prePurgeLevels.length-1];
 			}
 			else
 			if(level>=0)
 			{
-				if(levels[level]==0)
+				if(autoPurgeDaysLevels[level]==0)
 				{
 					if(CMSecurity.isDebugging(CMSecurity.DbgFlag.AUTOPURGE))
 						Log.debugOut(thread.getName(),name+" last on "+CMLib.time().date2String(userLastLoginDateTime)+".  Nothing will be done about it.");
 					continue;
 				}
-				purgeDateTime=userLastLoginDateTime + levels[level];
+				purgeDateTime=userLastLoginDateTime + autoPurgeDaysLevels[level];
 				warnDateTime=userLastLoginDateTime + prePurgeLevels[level];
 			}
 			else

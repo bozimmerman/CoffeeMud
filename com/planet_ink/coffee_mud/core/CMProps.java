@@ -138,7 +138,9 @@ public class CMProps extends Properties
 	public static final int SYSTEM_WIZLISTMASK=79;
 	public static final int SYSTEM_AUTOREACTION=80;
 	public static final int SYSTEM_POSEFILTER=81;
-	public static final int NUM_SYSTEM=82;
+	public static final int SYSTEM_STARTINGITEMS=82;
+	public static final int SYSTEM_STATCOSTS=83;
+	public static final int NUM_SYSTEM=84;
 
 	public static final int SYSTEMI_EXPRATE=0;
 	public static final int SYSTEMI_SKYSIZE=1;
@@ -1048,6 +1050,7 @@ public class CMProps extends Properties
 		setUpLowVar(SYSTEM_I3ROUTERS,getStr("I3ROUTERS"));
 		setVar(SYSTEM_AUTOREACTION,getStr("AUTOREACTION"));
 		setVar(SYSTEM_WIZLISTMASK,getStr("WIZLISTMASK"));
+		setUpLowVar(SYSTEM_STARTINGITEMS,getStr("STARTINGITEMS","1 Waterskin, 1 Ration, 1 Torch"));
 		setVar(SYSTEM_PREJUDICE,getStr("PREJUDICE"));
 		setUpLowVar(SYSTEM_PRICEFACTORS,getStr("PRICEFACTORS"));
 		setVar(SYSTEM_IGNOREMASK,getStr("IGNOREMASK"));
@@ -1062,6 +1065,7 @@ public class CMProps extends Properties
 		p().emoteFilter.clear();
 		p().emoteFilter.addAll(CMParms.parse((getStr("EMOTEFILTER")).toUpperCase()));
 		setVar(SYSTEM_POSEFILTER,getStr("POSEFILTER"));
+		setVar(SYSTEM_STATCOSTS,getStr("STATCOSTS","<18 1, <22 2, <25 3, <99 5"));
 		p().poseFilter.clear();
 		p().poseFilter.addAll(CMParms.parse((getStr("POSEFILTER")).toUpperCase()));
 		setVar(SYSTEM_SAYFILTER,getStr("SAYFILTER"));
