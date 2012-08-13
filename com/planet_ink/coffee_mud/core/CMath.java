@@ -174,6 +174,27 @@ public class CMath
 	}
 	
 	/**
+	 * Returns which object in the object array is same as the
+	 * string, when cast to a string.
+	 * @param o array of objects
+	 * @param s the string to look
+	 * @return the object or null
+	 */
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+    public final static Enum<? extends Enum> s_valueOf(Class<? extends Enum> c, String s)
+	{
+		if((c==null)||(s==null)) return null;
+		try
+		{
+			return Enum.valueOf(c, s);
+		}
+		catch(Exception e)
+		{
+			return null;
+		}
+	}
+	
+	/**
 	 * Returns true if the string is a number (float or int)
 	 * @param s the string to test
 	 * @return true if a number, false otherwise
