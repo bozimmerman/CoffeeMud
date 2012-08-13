@@ -2318,9 +2318,16 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 		}
 		if(E instanceof Electronics.ElecPanel)
 		{
-			ElecPanelType type = ElecPanelType.valueOf(CMLib.xml().getValFromPieces(buf,"SSPANELT"));
-			if(type != null)
-				((Electronics.ElecPanel)E).setPanelType(type);
+			final String panelType=CMLib.xml().getValFromPieces(buf,"SSPANELT");
+			try
+			{
+    			ElecPanelType type = ElecPanelType.valueOf(panelType);
+    			if(type != null) ((Electronics.ElecPanel)E).setPanelType(type);
+			} 
+			catch(Exception e)
+			{
+				Log.errOut("CoffeeMaker",E.name()+" has illegal elec panel type: "+panelType);
+			}
 		}
 		if(E instanceof ShipComponent.ShipEngine)
 		{
