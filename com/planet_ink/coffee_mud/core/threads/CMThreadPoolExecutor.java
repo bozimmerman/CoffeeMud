@@ -6,6 +6,7 @@ import java.util.LinkedList;
 import java.util.concurrent.*;
 import java.util.concurrent.*;
 
+import com.planet_ink.coffee_mud.Common.interfaces.Session;
 import com.planet_ink.coffee_mud.core.CMLib;
 import com.planet_ink.coffee_mud.core.Log;
 import com.planet_ink.coffee_mud.core.collections.Pair;
@@ -87,7 +88,22 @@ public class CMThreadPoolExecutor extends ThreadPoolExecutor
 			{
 				Collection<CMRunnable> runsKilled = getTimeoutOutRuns(1);
 				for(CMRunnable runnable : runsKilled)
-					Log.errOut("Pool_"+poolName,"Old(er) Runnable killed: "+runnable.toString());
+				{
+					if(runnable instanceof Session)
+					{
+						Session S=(Session)runnable;
+						StringBuilder sessionInfo=new StringBuilder("");
+						sessionInfo.append("status="+S.getStatus()+" ");
+						sessionInfo.append("active="+S.activeTimeMillis()+" ");
+						sessionInfo.append("online="+S.getMillisOnline()+" ");
+						sessionInfo.append("lastloop="+(System.currentTimeMillis()-S.lastLoopTime())+" ");
+						sessionInfo.append("addr="+S.getAddress()+" ");
+						sessionInfo.append("mob="+((S.mob()==null)?"null":S.mob().Name()));
+    					Log.errOut("Pool_"+poolName,"Old(er) Runnable killed: "+sessionInfo.toString());
+					}
+					else
+    					Log.errOut("Pool_"+poolName,"Old(er) Runnable killed: "+runnable.toString());
+				}
 			}
 			lastRejectTime=System.currentTimeMillis();
 			rejectCount++;

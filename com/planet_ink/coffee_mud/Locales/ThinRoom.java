@@ -50,7 +50,7 @@ public class ThinRoom implements Room {
 	public long getTickStatus(){return Tickable.STATUS_NOT;}
 	protected String roomID="";
 	protected Area myArea=null;
-	protected static final Vector empty=new ReadOnlyVector();
+	protected static final Vector empty=new ReadOnlyVector(1);
 	protected static final Exit[] exits=new Exit[Directions.NUM_DIRECTIONS()];
 	protected static final Room[] rooms=new Room[Directions.NUM_DIRECTIONS()];
 	public String roomID(){return roomID;}

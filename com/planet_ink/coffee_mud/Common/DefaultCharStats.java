@@ -60,11 +60,15 @@ public class DefaultCharStats implements CharStats
 	}
 	public void setAllBaseValues(int def)
 	{
+		if((def>Short.MAX_VALUE)||(def<Short.MIN_VALUE))
+			Log.errOut("Value out of range",new CMException("Value out of range: "+def+" for all"));
 		for(int i : CharStats.CODES.BASE())
 			stats[i]=(short)def;
 	}
 	public void setAllValues(int def)
 	{
+		if((def>Short.MAX_VALUE)||(def<Short.MIN_VALUE))
+			Log.errOut("Value out of range",new CMException("Value out of range: "+def+" for all"));
 		for(int i: CharStats.CODES.ALL())
 			stats[i]=(short)def;
 		unwearableBitmap=0;
@@ -280,7 +284,12 @@ public class DefaultCharStats implements CharStats
 		CharStats.CODES C = CharStats.CODES.instance(); 
 		for(int x : C.all())
 			if((!C.isBase(x))&&(x!=CharStats.STAT_GENDER)&&(V.size()>0))
-				stats[x]=CMath.s_short((String)V.remove(0));
+			{
+				final long val=CMath.s_long((String)V.remove(0));
+				if((val>Short.MAX_VALUE)||(val<Short.MIN_VALUE))
+					Log.errOut("Value out of range","Value out of range: "+val+" for "+x+" from "+str);
+				stats[x]=(short)val;
+			}
 	}
 	public void setRaceName(String newRaceName){raceName=newRaceName;}
 	public String raceName(){
