@@ -174,11 +174,10 @@ public class CMath
 	}
 	
 	/**
-	 * Returns which object in the object array is same as the
-	 * string, when cast to a string.
-	 * @param o array of objects
+	 * Returns the matching enum.  Case Sensitive!
+	 * @param c the enum class to look in
 	 * @param s the string to look
-	 * @return the object or null
+	 * @return the enum or null
 	 */
 	@SuppressWarnings({ "unchecked", "rawtypes" })
     public final static Enum<? extends Enum> s_valueOf(Class<? extends Enum> c, String s)
