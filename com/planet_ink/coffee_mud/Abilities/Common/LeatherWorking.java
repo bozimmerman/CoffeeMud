@@ -66,7 +66,7 @@ public class LeatherWorking extends EnhancedCraftingSkill implements ItemCraftor
 	protected List<List<String>> loadRecipes()
 	{
 		String filename=parametersFile();
-		List<List<String>> recipes=(List<List<String>>)Resources.getResource("PARSED: "+filename);
+		List<List<String>> recipes=(List<List<String>>)Resources.getResource("PARSED_RECIPE: "+filename);
 		if(recipes==null)
 		{
 			StringBuffer str=new CMFile(Resources.buildResourcePath("skills")+filename,null,true).text();
@@ -98,7 +98,7 @@ public class LeatherWorking extends EnhancedCraftingSkill implements ItemCraftor
 				for(int i=0;i<pleaseAdd2.size();i++)
 					recipes.add(pleaseAdd2.get(i));
 			}
-			Resources.submitResource("PARSED: "+filename,recipes);
+			Resources.submitResource("PARSED_RECIPE: "+filename,recipes);
 		}
 		return recipes;
 	}

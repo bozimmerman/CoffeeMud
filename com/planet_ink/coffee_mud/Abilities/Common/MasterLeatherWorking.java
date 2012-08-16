@@ -184,7 +184,7 @@ public class MasterLeatherWorking extends EnhancedCraftingSkill implements ItemC
 	protected List<List<String>> loadRecipes()
 	{
 		String filename=parametersFile();
-		List<List<String>> recipes=(List<List<String>>)Resources.getResource("PARSED: "+filename);
+		List<List<String>> recipes=(List<List<String>>)Resources.getResource("PARSED_RECIPE: "+filename);
 		if(recipes==null)
 		{
 			StringBuffer str=new CMFile(Resources.buildResourcePath("skills")+filename,null,true).text();
@@ -234,7 +234,7 @@ public class MasterLeatherWorking extends EnhancedCraftingSkill implements ItemC
 				for(int i=0;i<pleaseAdd.size();i++)
 					recipes.add(pleaseAdd.get(i));
 			}
-			Resources.submitResource("PARSED: "+filename,recipes);
+			Resources.submitResource("PARSED_RECIPE: "+filename,recipes);
 		}
 		return recipes;
 	}

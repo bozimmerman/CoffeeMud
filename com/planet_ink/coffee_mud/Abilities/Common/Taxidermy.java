@@ -73,7 +73,7 @@ public class Taxidermy extends CraftingSkill
 	protected List<List<String>> loadRecipes()
 	{
 		String filename="taxidermy.txt";
-		List<List<String>> V=(List<List<String>>)Resources.getResource("PARSED: "+filename);
+		List<List<String>> V=(List<List<String>>)Resources.getResource("PARSED_RECIPE: "+filename);
 		if(V==null)
 		{
 			V=new Vector();
@@ -103,7 +103,7 @@ public class Taxidermy extends CraftingSkill
 				V.add(V2);
 			if(V.size()==0)
 				Log.errOut("Taxidermy","Poses not found!");
-			Resources.submitResource("PARSED: "+filename,V);
+			Resources.submitResource("PARSED_RECIPE: "+filename,V);
 		}
 		return V;
 	}

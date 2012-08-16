@@ -328,12 +328,12 @@ public class Resources
 	
 	public final StringBuffer _getFileResource(final String filename, final boolean reportErrors)
 	{
-		Object rsc=_getResource(filename);
+		Object rsc=_getResource("FILE: "+filename);
 		if(rsc != null)
 			return _toStringBuffer(rsc);
 		StringBuffer buf=new CMFile(makeFileResourceName(filename),null,reportErrors).text();
 		if(!CMProps.getBoolVar(CMProps.SYSTEMB_FILERESOURCENOCACHE))
-			_submitResource(filename,buf);
+			_submitResource("FILE: "+filename,buf);
 		return buf;
 	}
 

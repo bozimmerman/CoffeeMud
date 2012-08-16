@@ -145,18 +145,18 @@ public class Socials extends StdLibrary implements SocialsList
 	@SuppressWarnings("unchecked")
 	public Map<String, List<Social>> getSocialHash()
 	{
-		Map<String,List<Social>> soc=(Map<String,List<Social>>)Resources.getResource("PARSED: "+filename);
+		Map<String,List<Social>> soc=(Map<String,List<Social>>)Resources.getResource("PARSED_SOCIALS: "+filename);
 		if(soc==null)
 		{
 			soc=new Hashtable<String,List<Social>>();
-			Resources.submitResource("PARSED: "+filename,soc);
+			Resources.submitResource("PARSED_SOCIALS: "+filename,soc);
 			List<String> V=Resources.getFileLineVector(new CMFile(filename,null,true).text());
 			putSocialsInHash(soc,V);
 			unloadDerivedResources();
 		}
 		return soc;
 	}
-	public boolean isLoaded() { return Resources.getResource("PARSED: "+filename)!=null; }
+	public boolean isLoaded() { return Resources.getResource("PARSED_SOCIALS: "+filename)!=null; }
 	
 	private String realName(String name) 
 	{
@@ -212,7 +212,7 @@ public class Socials extends StdLibrary implements SocialsList
 
 	public void unloadSocials() 
 	{
-		Resources.removeResource("PARSED: "+filename);
+		Resources.removeResource("PARSED_SOCIALS: "+filename);
 		unloadDerivedResources();
 	}
 	
