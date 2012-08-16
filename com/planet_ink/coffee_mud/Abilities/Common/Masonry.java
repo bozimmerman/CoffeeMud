@@ -288,7 +288,7 @@ public class Masonry extends CraftingSkill
 								room=CMLib.map().getRoom(room);
 								Exit x=CMClass.getExit("GenExit");
 								Exit x2=CMClass.getExit("GenExit");
-								x.setName("an archway");
+								x.setName("a portcullis");
 								x.setDescription("A portcullis lies this way.");
 								x.setExitParams("portcullis","lower","raise","A portcullis blocks your way.");
 								x.setDoorsNLocks(true,false,true,false,false,false);
