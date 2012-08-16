@@ -78,7 +78,6 @@ public class Train extends StdCommand
 			else
 				teacherName=null;
 		}
-		
 
 		String abilityName=CMParms.combine(commands,0).toUpperCase();
 		StringBuffer thingsToTrainFor=new StringBuffer("");
@@ -261,7 +260,6 @@ public class Train extends StdCommand
 				if(teacher.charStats().getMyClass(c).baseClass().equals(mob.charStats().getCurrentClass().baseClass()))
 					canTeach=true;
 			if((!canTeach)
-			&&(!mob.charStats().getCurrentClass().baseClass().equals("Commoner"))
 			&&(teacher.charStats().getClassLevel(theClass)<1))
 			{
 				if((!CMProps.getVar(CMProps.SYSTEM_MULTICLASS).startsWith("MULTI"))
