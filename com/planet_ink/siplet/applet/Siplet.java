@@ -57,7 +57,7 @@ public class Siplet
 
 	public String info()
 	{
-		return "Siplet V"+VERSION_MAJOR+"."+VERSION_MINOR+" (C)2005-2011 Bo Zimmerman";
+		return "Siplet V"+VERSION_MAJOR+"."+VERSION_MINOR+" (C)2005-2012 Bo Zimmerman";
 	}
 
 	public void start()

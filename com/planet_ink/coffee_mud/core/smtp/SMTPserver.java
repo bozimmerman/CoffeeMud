@@ -143,7 +143,7 @@ public class SMTPserver extends Thread implements Tickable
 		if (!displayedBlurb)
 		{
 			displayedBlurb = true;
-			//Log.sysOut(getName(),"SMTPserver (C)2005-2011 Bo Zimmerman");
+			//Log.sysOut(getName(),"SMTPserver (C)2005-2012 Bo Zimmerman");
 		}
 		if(mailbox.length()==0)
 			Log.sysOut(getName(),"Player mail box system is disabled.");
