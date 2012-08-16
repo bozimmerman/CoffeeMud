@@ -44,12 +44,11 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 	public Hashtable<String,String> startRooms=new Hashtable<String,String>();
 	public Hashtable<String,String> deathRooms=new Hashtable<String,String>();
 	public Hashtable<String,String> bodyRooms=new Hashtable<String,String>();
-	public static final int BASE_MIN_STAT_POINTS=3;
 
 	protected int getTotalStatPoints()
 	{
 		final int basemax = CMProps.getIntVar(CMProps.SYSTEMI_BASEMAXSTAT);
-		final int basemin = BASE_MIN_STAT_POINTS;
+		final int basemin = CMProps.getIntVar(CMProps.SYSTEMI_BASEMINSTAT);
 
 		int points = CMProps.getIntVar(CMProps.SYSTEMI_MAXSTAT);
 		// Make sure there are enough points
@@ -70,7 +69,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		
 		int[] stats=new int[CharStats.CODES.BASE().length];
 		for(int i=0;i<stats.length;i++)
-			stats[i]=BASE_MIN_STAT_POINTS;
+			stats[i]=CMProps.getIntVar(CMProps.SYSTEMI_BASEMINSTAT);
 		
 		int pointsLeft = getTotalStatPoints();
 		while (pointsLeft > 0)
@@ -810,7 +809,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 			final boolean randomRoll = CMProps.getIntVar(CMProps.SYSTEMI_STARTSTAT) == 0;
 			int pointsLeft = getTotalStatPoints();
 			for(int i=0;i<CharStats.CODES.BASE().length;i++)
-				mob.baseCharStats().setStat(i,BASE_MIN_STAT_POINTS);
+				mob.baseCharStats().setStat(i,CMProps.getIntVar(CMProps.SYSTEMI_BASEMINSTAT));
 			mob.recoverCharStats();
 			CharStats unmodifiedCT = (CharStats)mob.charStats().copyOf();
 			List<String> validStats = new ArrayList<String>(CharStats.CODES.BASE().length);

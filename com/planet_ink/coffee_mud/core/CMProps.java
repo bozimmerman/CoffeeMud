@@ -218,7 +218,8 @@ public class CMProps extends Properties
 	public static final int SYSTEMI_MINSESSIONTHREADS=73;
 	public static final int SYSTEMI_MAXSESSIONTHREADS=74;
 	public static final int SYSTEMI_DUELTICKDOWN=75;
-	public static final int NUMI_SYSTEM=76;
+	public static final int SYSTEMI_BASEMINSTAT=76;
+	public static final int NUMI_SYSTEM=77;
 
 	public static final int SYSTEMB_MOBCOMPRESS=0;
 	public static final int SYSTEMB_ITEMDCOMPRESS=1;
@@ -1159,6 +1160,7 @@ public class CMProps extends Properties
 		setIntVar(SYSTEMI_SKYSIZE,getStr("SKYSIZE"));
 		setIntVar(SYSTEMI_MAXSTAT,getStr("MAXSTATS"));
 		setIntVar(SYSTEMI_BASEMAXSTAT,getStr("BASEMAXSTAT","18"));
+		setIntVar(SYSTEMI_BASEMINSTAT,getStr("BASEMINSTAT","3"));
 		setIntVar(SYSTEMI_STARTSTAT,getStr("STARTSTAT"));
 		setIntVar(SYSTEMI_DEFCMDTIME,(int)Math.round(CMProps.setExceptionCosts(getStr("DEFCMDTIME"),p().cmdActionCostExceptions)*100.0));
 		setIntVar(SYSTEMI_DEFCOMCMDTIME,(int)Math.round(CMProps.setExceptionCosts(getStr("DEFCOMCMDTIME"),p().cmdComActionCostExceptions)*100.0));
