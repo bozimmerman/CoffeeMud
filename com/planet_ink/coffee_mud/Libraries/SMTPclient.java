@@ -37,7 +37,6 @@ import com.planet_ink.coffee_mud.core.exceptions.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
 public class SMTPclient extends StdLibrary implements SMTPLibrary, SMTPLibrary.SMTPClient
 {
 	public String ID(){return "SMTPclient";}
@@ -55,7 +54,7 @@ public class SMTPclient extends StdLibrary implements SMTPLibrary, SMTPLibrary.S
 	{
 		try
 		{
-			Hashtable env = new Hashtable();
+			Hashtable<String,String> env = new Hashtable<String,String>();
 			env.put("java.naming.factory.initial",
 					"com.sun.jndi.dns.DnsContextFactory");
 			DirContext ictx = new InitialDirContext( env );
@@ -124,20 +123,20 @@ public class SMTPclient extends StdLibrary implements SMTPLibrary, SMTPLibrary.S
 		if(x>=0) throw new BadEmailAddressException("Malformed email address");
 		x=emailAddress.indexOf('@');
 		String domain=emailAddress.substring(x+1).trim();
-		Vector addys=new Vector();
+		Vector<String> addys=new Vector<String>();
 		Attribute mx=doMXLookup(domain);
 		boolean connected=false;
 		try{
 			if((mx!=null)&&(mx.size()>0))
-			for(NamingEnumeration e=mx.getAll();e.hasMore();)
-				addys.addElement(e.next());
+			for(NamingEnumeration<?> e=mx.getAll();e.hasMore();)
+				addys.addElement((String)e.next());
 		}
 		catch(javax.naming.NamingException ne)
 		{
 		}
 		if(addys.size()==0)
 			addys.addElement(domain);
-		for(Enumeration e=addys.elements();e.hasMoreElements();)
+		for(Enumeration<String> e=addys.elements();e.hasMoreElements();)
 		{
 			String hostid=(String)e.nextElement();
 			int y=hostid.lastIndexOf(' ');
@@ -500,7 +499,7 @@ public class SMTPclient extends StdLibrary implements SMTPLibrary, SMTPLibrary.S
 	{
 		public SMTPHostAuth(String unparsedServerInfo)
 		{
-			Vector info=CMParms.parseCommas(unparsedServerInfo,false);
+			Vector<String> info=CMParms.parseCommas(unparsedServerInfo,false);
 			if(info.size()==0) return;
 			host = (String)info.remove(0);
 			if((info.size()==0)||(host.length()==0)) return;

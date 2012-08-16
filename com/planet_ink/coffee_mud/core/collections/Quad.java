@@ -15,17 +15,12 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
-public final class Quad<T,K,L,M> 
+public class Quad<T,K,L,M> extends Triad<T,K,L>
 {
-	public T first;
-	public K second;
-	public L third;
 	public M fourth;
 	public Quad(T frst, K scnd, L thrd, M frth)
 	{
-		first=frst;
-		second=scnd;
-		third=thrd;
+		super(frst,scnd,thrd);
 		fourth=frth;
 	}
 	public static final class FirstConverter<T,K,L,M> implements Converter<Quad<T,K,L, M>,T> 

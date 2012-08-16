@@ -33,7 +33,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
 public interface WorldMap extends CMLibrary, Runnable
 {
 	public final static long ROOM_EXPIRATION_MILLIS=2500000;
@@ -156,7 +155,7 @@ public interface WorldMap extends CMLibrary, Runnable
 		public Room room(){return roomW.get();}
 		public PhysicalAgent obj(){return objW.get();}
 		public LocatedPair(final Room room, final PhysicalAgent obj)
-		{ this.roomW=new WeakReference(room); this.objW=new WeakReference(obj);}
+		{ this.roomW=new WeakReference<Room>(room); this.objW=new WeakReference<PhysicalAgent>(obj);}
 	}
 	
 	public static class CrossExit
@@ -173,10 +172,10 @@ public interface WorldMap extends CMLibrary, Runnable
 		}
 	}
 	
-	public class CompleteRoomIDEnumerator implements Enumeration
+	public class CompleteRoomIDEnumerator implements Enumeration<String>
 	{
-		Enumeration roomIDEnumerator=null;
-		Enumeration areaEnumerator=null;
+		Enumeration<String> roomIDEnumerator=null;
+		Enumeration<Area> areaEnumerator=null;
 		public CompleteRoomIDEnumerator(WorldMap map){areaEnumerator=map.areas();}
 		public boolean hasMoreElements()
 		{

@@ -35,17 +35,16 @@ import java.util.*;
    limitations under the License.
 */
 
-@SuppressWarnings({"unchecked","rawtypes"})
 public class SlaveryParser extends StdLibrary implements SlaveryLibrary
 {
 	public String ID(){return "SlaveryParser";}
 	public boolean tick(Tickable ticking, int tickID) { return true; }
 	public Object[] fpmap=null;
 	
-	public Vector findMatch(MOB mob, Vector prereq)
+	public List<Map<String,String>> findMatch(MOB mob, List<String> prereq)
 	{
-		Vector possibilities=new Vector();
-		Hashtable map=new Hashtable();
+		List<Map<String,String>> possibilities=new Vector<Map<String,String>>();
+		Map<String,String> map=new Hashtable<String,String>();
 		if(fpmap==null)
 		{
 			fpmap=new Object[pmap.length];
@@ -61,7 +60,7 @@ public class SlaveryParser extends StdLibrary implements SlaveryLibrary
 		for(int i=0;i<req.length;i++)
 		{
 			socials[i]=CMLib.socials().fetchSocial(req[i],true);
-			commands[i]=CMLib.english().findCommand(mob,new XVector(req[i].toUpperCase()));
+			commands[i]=CMLib.english().findCommand(mob,new XVector<String>(req[i].toUpperCase()));
 		}
 		for(int p=0;p<fpmap.length;p++)
 		{
@@ -158,8 +157,8 @@ public class SlaveryParser extends StdLibrary implements SlaveryLibrary
 			if(CMSecurity.isDebugging(CMSecurity.DbgFlag.GEAS))
 				Log.debugOut("GEAS","POSS-"+pmap[p][1]);
 			map.put("INSTR",pmap[p][1]);
-			possibilities.addElement(map);
-			map=new Hashtable();
+			possibilities.add(map);
+			map=new Hashtable<String,String>();
 		}
 		return possibilities;
 	}
@@ -180,10 +179,10 @@ public class SlaveryParser extends StdLibrary implements SlaveryLibrary
 
 	public geasSteps processRequest(MOB you, MOB me, String req)
 	{
-		Vector REQ=CMParms.parse(req.toLowerCase().trim());
+		Vector<String> REQ=CMParms.parse(req.toLowerCase().trim());
 		for(int v=0;v<REQ.size();v++)
 			REQ.setElementAt(cleanWord((String)REQ.elementAt(v)),v);
-		Vector poss=findMatch(me,REQ);
+		List<Map<String,String>> poss=findMatch(me,REQ);
 		if(poss.size()==0)
 		{
 			req=CMParms.combine(REQ,0);
@@ -220,11 +219,11 @@ public class SlaveryParser extends StdLibrary implements SlaveryLibrary
 			for(int i=0;i<poss.size();i++)
 			{
 				geasStep g=new geasStep(geasSteps);
-				Hashtable map=(Hashtable)poss.elementAt(i);
-				Vector all=CMParms.parseSemicolons((String)map.get("INSTR"),true);
+				Map<String,String> map=(Map<String,String>)poss.get(i);
+				Vector<String> all=CMParms.parseSemicolons((String)map.get("INSTR"),true);
 				if(CMSecurity.isDebugging(CMSecurity.DbgFlag.GEAS))
 					Log.debugOut("GEAS",CMParms.toStringList(all));
-				g.que=new Vector();
+				g.que=new Vector<List<String>>();
 				for(int a=0;a<all.size();a++)
 					g.que.add(CMParms.parse((String)all.elementAt(a)));
 				if(you!=null)   map.put("%c",you.name());

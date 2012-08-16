@@ -31,7 +31,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("rawtypes")
 public interface QuestManager extends CMLibrary
 {
 	public Quest objectInUse(Environmental E);
@@ -43,7 +42,7 @@ public interface QuestManager extends CMLibrary
 	public void addQuest(Quest Q);
 	public void delQuest(Quest Q);
 	public void save();
-	public Vector parseQuestSteps(List<String> script, int startLine, boolean rawLineInput);
+	public List<String> parseQuestSteps(List<String> script, int startLine, boolean rawLineInput);
 	public List<List<String>> parseQuestCommandLines(List<?> script, String cmdOnly, int startLine);
 	
 	public int getHolidayIndex(String named);
@@ -57,11 +56,11 @@ public interface QuestManager extends CMLibrary
 	public Object getHolidayFile();
 	public RawHolidayData getEncodedHolidayData(String dataFromStepsFile);
 	public List<List<String>> breakOutMudChatVs(String MUDCHAT, DVector behaviors);
-	public String breakOutMaskString(String s, Vector p);
+	public String breakOutMaskString(String s, List<String> p);
 	
 	public DVector getQuestTemplate(MOB mob, String fileToGet);
 	public Quest questMaker(MOB mob);
-	public Vector<Quest> getPlayerPersistantQuests(MOB player);
+	public List<Quest> getPlayerPersistantQuests(MOB player);
 
 	public class RawHolidayData
 	{
@@ -178,7 +177,7 @@ public interface QuestManager extends CMLibrary
 			Environmental E=CMLib.english().fetchEnvironmental(Arrays.asList(ES),(String)str,false);
 			if(E==null)
 				throw new CMException("'"+str+"' was not found.  You must enter one of the following: "+choiceNames.toString());
-			return CMLib.english().getContextName(choices,E);
+			return CMLib.english().getContextName(ES,E);
 		}},
 		new GenericEditor.CMEval(){ public Object eval(Object str, Object[] choices, boolean emptyOK) throws CMException { //string
 			if(!(str instanceof String)) throw new CMException("Bad type: "+((str==null)?"null":str.getClass().getName()));
@@ -251,7 +250,7 @@ public interface QuestManager extends CMLibrary
 			Environmental E=CMLib.english().fetchEnvironmental(Arrays.asList(ES),(String)str,false);
 			if(E==null)
 				throw new CMException("'"+str+"' was not found.  You must enter one of the following: "+choiceNames.toString());
-			return CMLib.english().getContextName(choices,E);
+			return CMLib.english().getContextName(ES,E);
 		}},
 		new GenericEditor.CMEval(){ public Object eval(Object str, Object[] choices, boolean emptyOK) throws CMException { //designame
 			if(!(str instanceof String)) throw new CMException("Bad type: "+((str==null)?"null":str.getClass().getName()));
@@ -285,7 +284,7 @@ public interface QuestManager extends CMLibrary
 		}},
 		new GenericEditor.CMEval(){ public Object eval(Object str, Object[] choices, boolean emptyOK) throws CMException { //zappermask
 			if(!(str instanceof String)) throw new CMException("Bad type: "+((str==null)?"null":str.getClass().getName()));
-			Vector errors=new Vector(1);
+			Vector<String> errors=new Vector<String>(1);
 			if(!CMLib.masking().syntaxCheck((String)str,errors))
 				throw new CMException("Mask Error: "+CMParms.toStringList(errors));
 			return str;

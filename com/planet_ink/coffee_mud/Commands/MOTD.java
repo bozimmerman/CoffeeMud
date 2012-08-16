@@ -195,7 +195,7 @@ public class MOTD extends StdCommand
 						buf.append("\n\r^ZYou have mail waiting. Enter 'EMAIL BOX' to read.^?^.\n\r");
 				}
 				
-				Vector<Quest> qQVec=CMLib.quests().getPlayerPersistantQuests(mob);
+				List<Quest> qQVec=CMLib.quests().getPlayerPersistantQuests(mob);
 				if(mob.session()!=null)
 					if(buf.length()>0)
 					{

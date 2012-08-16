@@ -39,7 +39,6 @@ import java.util.regex.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
 public class CMGenEditor extends StdLibrary implements GenericEditor
 {
 	public String ID(){return "CMGenEditor";}
@@ -5740,16 +5739,16 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		}
 	}
 
-	protected DVector genClassAbleMod(MOB mob, DVector sets, String ableID, int origLevelIndex, int origAbleIndex)
+	@SuppressWarnings("unchecked")
+    protected DVector genClassAbleMod(MOB mob, DVector sets, String ableID, int origLevelIndex, int origAbleIndex)
 	throws IOException
 	{
-
 		Integer level=null;
 		if(origLevelIndex>=0)
 		{
 			if(mob.session().confirm("Enter Y to DELETE, or N to modify (y/N)?","N"))
 			{
-				List set=(List)sets.elementAt(origLevelIndex,2);
+				List<AbilityMapper.AbilityMapping> set=(List<AbilityMapper.AbilityMapping>)sets.elementAt(origLevelIndex,2);
 				set.remove(origAbleIndex);
 				return null;
 			}
@@ -5778,7 +5777,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		}
 		else
 		{
-			List levelSet=(List)sets.elementAt(origLevelIndex,2);
+			List<AbilityMapper.AbilityMapping> levelSet=(List<AbilityMapper.AbilityMapping>)sets.elementAt(origLevelIndex,2);
 			aMAP=(AbilityMapper.AbilityMapping)levelSet.get(origAbleIndex);
 			levelSet.remove(origAbleIndex);
 			origAbleIndex=-1;
@@ -5793,7 +5792,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			sets.addElement(level,levelSet);
 		}
 		else
-			levelSet=(List)sets.elementAt(newlevelIndex,2);
+			levelSet=(List<AbilityMapper.AbilityMapping>)sets.elementAt(newlevelIndex,2);
 		aMAP.defaultProficiency=CMath.s_int(mob.session().prompt("Enter the (default) proficiency level ("+aMAP.defaultProficiency+"): ",aMAP.defaultProficiency+""));
 		aMAP.maxProficiency=CMath.s_int(mob.session().prompt("Enter the (maximum) proficiency level ("+aMAP.maxProficiency+"): ",aMAP.maxProficiency+""));
 		aMAP.autoGain=mob.session().confirm("Is this skill automatically gained"+(aMAP.autoGain?"(Y/n)":"(y/N)")+"?",""+aMAP.autoGain);
@@ -5821,7 +5820,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		return sets;
 	}
 
-	protected void genClassAbilities(MOB mob, CharClass E, int showNumber, int showFlag)
+	@SuppressWarnings("unchecked")
+    protected void genClassAbilities(MOB mob, CharClass E, int showNumber, int showFlag)
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
@@ -5881,7 +5881,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			{
 				int index=levelSets.indexOf(Integer.valueOf(i));
 				if(index<0) continue;
-				List set=(List)levelSets.elementAt(index,2);
+				List<AbilityMapper.AbilityMapping> set=(List<AbilityMapper.AbilityMapping>)levelSets.elementAt(index,2);
 				for(int s=0;s<set.size();s++)
 				{
 					AbilityMapper.AbilityMapping aMAP=(AbilityMapper.AbilityMapping)set.get(s);
@@ -5906,10 +5906,10 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			{
 				int lvlIndex=-1;
 				int ableIndex=-1;
-				List myLevelSet=null;
+				List<AbilityMapper.AbilityMapping> myLevelSet=null;
 				for(int s=0;s<levelSets.size();s++)
 				{
-					List lvls=(List)levelSets.elementAt(s,2);
+					List<AbilityMapper.AbilityMapping> lvls=(List<AbilityMapper.AbilityMapping>)levelSets.elementAt(s,2);
 					for(int l=0;l<lvls.size();l++)
 						if(CMLib.english().containsString(((AbilityMapper.AbilityMapping)lvls.get(l)).abilityID,newName))
 						{
@@ -5961,7 +5961,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 					for(int s=0;s<levelSets.size();s++)
 					{
 						Integer lvl=(Integer)levelSets.elementAt(s,1);
-						List<AbilityMapper.AbilityMapping> lvls=(List)levelSets.elementAt(s,2);
+						List<AbilityMapper.AbilityMapping> lvls=(List<AbilityMapper.AbilityMapping>)levelSets.elementAt(s,2);
 						for(int l=0;l<lvls.size();l++)
 						{
 							AbilityMapper.AbilityMapping aMAP=(AbilityMapper.AbilityMapping)lvls.get(l);
@@ -8083,7 +8083,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		Map<String,AbilityMapper.AbilityMapping> subMap=map.get(eachOrAll.toUpperCase().trim());
 		AbilityMapper.AbilityMapping mapped = subMap.get(me.ID().toUpperCase());
 		if(mapped==null)
-			mapped=CMLib.ableMapper().makeAbilityMapping(me.ID(),1,me.ID(),0,100,"",true,false, true,new Vector(),"",null);
+			mapped=CMLib.ableMapper().makeAbilityMapping(me.ID(),1,me.ID(),0,100,"",true,false, true,new Vector<String>(),"",null);
 		boolean ok=false;
 		while(!ok)
 		{

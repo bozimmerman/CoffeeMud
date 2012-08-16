@@ -29,27 +29,26 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("rawtypes")
 public interface ListingLibrary extends CMLibrary
 {
 
 	public String itemSeenString(MOB viewerM, Environmental item, boolean useName, boolean longLook, boolean sysMsgs);
 	public int getReps(MOB viewerM, Environmental item, List<? extends Environmental> theRest, boolean useName, boolean longLook);
 	public void appendReps(int reps, StringBuilder say, boolean compress);
-	public StringBuilder lister(MOB viewerM, List<Item> items, boolean useName, String tag, String tagParm, boolean longLook, boolean compress);
+	public StringBuilder lister(MOB viewerM, List<? extends Environmental> items, boolean useName, String tag, String tagParm, boolean longLook, boolean compress);
 	public StringBuilder reallyList(MOB viewerM, Map<String,? extends Object> these, int ofType);
 	public StringBuilder reallyList(MOB viewerM, Map<String,? extends Object> these);
 	public StringBuilder reallyList(MOB viewerM, Map<String,? extends Object> these, Room likeRoom);
-	public StringBuilder reallyList(MOB viewerM, Vector these, int ofType);
-	public StringBuilder reallyList(MOB viewerM, Enumeration these, int ofType);
-	public StringBuilder reallyList(MOB viewerM, Vector these);
-	public StringBuilder reallyList(MOB viewerM, Enumeration these);
-	public StringBuilder reallyList(MOB viewerM, Vector these, Room likeRoom);
+	public StringBuilder reallyList(MOB viewerM, Vector<? extends Object> these, int ofType);
+	public StringBuilder reallyList(MOB viewerM, Enumeration<? extends Object> these, int ofType);
+	public StringBuilder reallyList(MOB viewerM, Vector<? extends Object> these);
+	public StringBuilder reallyList(MOB viewerM, Enumeration<? extends Object> these);
+	public StringBuilder reallyList(MOB viewerM, Vector<? extends Object> these, Room likeRoom);
 	public StringBuilder reallyList(MOB viewerM, Map<String,? extends Object> these, int ofType, Room likeRoom);
-	public StringBuilder reallyList(MOB viewerM, Vector these, int ofType, Room likeRoom);
-	public StringBuilder reallyList(MOB viewerM, Enumeration these, Room likeRoom);
-	public StringBuilder reallyList(MOB viewerM, Enumeration these, int ofType, Room likeRoom);
-	public StringBuilder reallyList2Cols(MOB viewerM, Enumeration these, int ofType, Room likeRoom);
+	public StringBuilder reallyList(MOB viewerM, Vector<? extends Object> these, int ofType, Room likeRoom);
+	public StringBuilder reallyList(MOB viewerM, Enumeration<? extends Object> these, Room likeRoom);
+	public StringBuilder reallyList(MOB viewerM, Enumeration<? extends Object> these, int ofType, Room likeRoom);
+	public StringBuilder reallyList2Cols(MOB viewerM, Enumeration<? extends Object> these, int ofType, Room likeRoom);
 	public StringBuilder fourColumns(MOB viewerM, List<String> reverseList);
 	public StringBuilder fourColumns(MOB viewerM, List<String> reverseList, String tag);
 	public StringBuilder makeColumns(MOB viewerM, List<String> reverseList, String tag, int numCols);

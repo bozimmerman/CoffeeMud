@@ -263,10 +263,10 @@ public class CMAble extends StdLibrary implements AbilityMapper
 		}
 		if((extraMask!=null)&&(extraMask.trim().length()>0))
 		{
-			Vector preReqsOf=CMLib.masking().getAbilityEduReqs(extraMask);
+			List<String> preReqsOf=CMLib.masking().getAbilityEduReqs(extraMask);
 			for(int v=0;v<preReqsOf.size();v++)
 			{
-				String s=(String)preReqsOf.elementAt(v);
+				String s=(String)preReqsOf.get(v);
 				if((s.indexOf('*')>=0)||(s.indexOf(',')>=0))
 				{
 					String ID2=ID;

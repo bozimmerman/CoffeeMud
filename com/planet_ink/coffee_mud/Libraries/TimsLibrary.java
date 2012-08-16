@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
 public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 {
 	public String ID(){return "TimsLibrary";}
@@ -119,7 +118,7 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 		if(CAST!=null)
 		{
 			String ID=CAST.ID().toUpperCase();
-			Vector theSpells=new Vector();
+			Vector<Ability> theSpells=new Vector<Ability>();
 			String names=CAST.text();
 			int del=names.indexOf(';');
 			while(del>=0)
@@ -250,7 +249,8 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 		oldI.destroy(); // this was a copy
 	}
 	
-	public boolean itemFix(Item I, int lvlOr0, StringBuffer changes)
+	@SuppressWarnings("unchecked")
+    public boolean itemFix(Item I, int lvlOr0, StringBuffer changes)
 	{
 		Item oldI = (changes!=null)?(Item)I.copyOf():null;
 		
@@ -308,7 +308,7 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 			if((TLVL>0)&&(TLVL>Math.round(CMath.mul(lvl,1.1))))
 			{
 				//int FTLVL=TLVL;
-				Vector illegalNums=new Vector();
+				Vector<Integer> illegalNums=new Vector<Integer>();
 				//Log.sysOut("Reset",I.name()+"("+I.basePhyStats().level()+") "+TLVL+", "+I.basePhyStats().armor()+"/"+I.basePhyStats().attackAdjustment()+"/"+I.basePhyStats().damage()+"/"+((ADJ!=null)?ADJ.text():"null"));
 				while((TLVL>Math.round(CMath.mul(lvl,1.1)))&&(illegalNums.size()<4))
 				{
@@ -444,7 +444,7 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 										 int reach,
 										 long worndata)
 	{
-		Hashtable vals=new Hashtable();
+		Hashtable<String,String> vals=new Hashtable<String,String>();
 		int materialvalue=RawMaterial.CODES.VALUE(material);
 		int[] castMul=new int[1];
 		Ability[] RET=getTimsAdjResCast(I,castMul);
@@ -1002,7 +1002,7 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 		if(CAST!=null)
 		{
 			String ID=CAST.ID().toUpperCase();
-			Vector theSpells=new Vector();
+			Vector<Ability> theSpells=new Vector<Ability>();
 			String names=CAST.text();
 			int del=names.indexOf(';');
 			while(del>=0)
@@ -1029,12 +1029,13 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 		return level;
 	}
 
+	@SuppressWarnings("unchecked")
 	public synchronized List<Ability> getCombatSpellSet()
 	{
 		List<Ability> spellSet=(List<Ability>)Resources.getResource("COMPLETE_SPELL_SET");
 		if(spellSet==null)
 		{
-			spellSet=new Vector();
+			spellSet=new Vector<Ability>();
 			Ability A=null;
 			for(Enumeration<Ability> e=CMClass.abilities();e.hasMoreElements();)
 			{

@@ -32,18 +32,17 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("rawtypes")
 public interface AreaGenerationLibrary extends CMLibrary
 {
-	public void buildDefinedIDSet(List<XMLpiece> xmlRoot, Hashtable defined);
-	public Vector findItems(XMLLibrary.XMLpiece piece, Hashtable defined) throws CMException;
-	public Vector findMobs(XMLLibrary.XMLpiece piece, Hashtable defined) throws CMException;
-	public String findString(String tagName, XMLLibrary.XMLpiece piece, Hashtable defined) throws CMException;
-	public Room buildRoom(XMLLibrary.XMLpiece piece, Hashtable defined, Exit[] exits, int direction) throws CMException;
-	public void checkRequirements(XMLLibrary.XMLpiece piece, Hashtable defined) throws CMException;
-	public Map<String,String> getUnfilledRequirements(Hashtable defined, XMLLibrary.XMLpiece piece);
-	public Area buildArea(XMLLibrary.XMLpiece piece, Hashtable defined, int direction) throws CMException;
-	public boolean fillInArea(XMLLibrary.XMLpiece piece, Hashtable defined, Area A, int direction) throws CMException;
+	public void buildDefinedIDSet(List<XMLpiece> xmlRoot, Map<String,Object> defined);
+	public List<Item> findItems(XMLLibrary.XMLpiece piece, Map<String,Object> defined) throws CMException;
+	public List<MOB> findMobs(XMLLibrary.XMLpiece piece, Map<String,Object> defined) throws CMException;
+	public String findString(String tagName, XMLLibrary.XMLpiece piece, Map<String,Object> defined) throws CMException;
+	public Room buildRoom(XMLLibrary.XMLpiece piece, Map<String,Object> defined, Exit[] exits, int direction) throws CMException;
+	public void checkRequirements(XMLLibrary.XMLpiece piece, Map<String,Object> defined) throws CMException;
+	public Map<String,String> getUnfilledRequirements(Map<String,Object> defined, XMLLibrary.XMLpiece piece);
+	public Area buildArea(XMLLibrary.XMLpiece piece, Map<String,Object> defined, int direction) throws CMException;
+	public boolean fillInArea(XMLLibrary.XMLpiece piece, Map<String,Object> defined, Area A, int direction) throws CMException;
 	public LayoutManager getLayoutManager(String named);
 	
 	public static interface LayoutManager

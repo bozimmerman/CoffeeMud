@@ -36,7 +36,6 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
 public class MUDHelp extends StdLibrary implements HelpLibrary
 {
 	public String ID(){return "MUDHelp";}
@@ -97,7 +96,7 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 
 	public List<String> getTopics(boolean archonHelp, boolean standardHelp)
 	{
-		Vector reverseList=new Vector();
+		Vector<String> reverseList=new Vector<String>();
 		Properties rHelpFile=null;
 		if(archonHelp)
 			rHelpFile=getArcHelpFile();
@@ -107,7 +106,7 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 				rHelpFile=getHelpFile();
 			else
 			{
-				for(Enumeration e=rHelpFile.keys();e.hasMoreElements();)
+				for(Enumeration<Object> e=rHelpFile.keys();e.hasMoreElements();)
 				{
 					String ptop = (String)e.nextElement();
 					String thisTag=rHelpFile.getProperty(ptop);
@@ -119,7 +118,7 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 			}
 		}
 		if(rHelpFile!=null)
-		for(Enumeration e=rHelpFile.keys();e.hasMoreElements();)
+		for(Enumeration<Object> e=rHelpFile.keys();e.hasMoreElements();)
 		{
 			String ptop = (String)e.nextElement();
 			String thisTag=rHelpFile.getProperty(ptop);
@@ -249,11 +248,11 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 		if(str.startsWith("<CURRENCY>")||worldCurrency)
 		{
 			str=str.substring(worldCurrency?12:10);
-			Vector currencies=new Vector();
+			Vector<String> currencies=new Vector<String>();
 			if((forMOB==null)||(forMOB.location()==null)||(worldCurrency))
 			{
 				worldCurrency=true;
-				for(Enumeration e=CMLib.map().areas();e.hasMoreElements();)
+				for(Enumeration<Area> e=CMLib.map().areas();e.hasMoreElements();)
 				{
 					String currency=CMLib.beanCounter().getCurrency((Area)e.nextElement());
 					if(!currencies.contains(currency))
@@ -265,7 +264,7 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 			StringBuilder help=new StringBuilder("");
 			if(worldCurrency)
 				help.append("\n\r"+CMStrings.padRight("World Currencies",20)+":");
-			for(Enumeration e=currencies.elements();e.hasMoreElements();)
+			for(Enumeration<String> e=currencies.elements();e.hasMoreElements();)
 			{
 				String currency=(String)e.nextElement();
 				if(worldCurrency)
@@ -298,7 +297,7 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 		{
 			str=str.substring(11);
 			ExpertiseLibrary.ExpertiseDefinition def=null;
-			for(Enumeration e=CMLib.expertises().definitions();e.hasMoreElements();)
+			for(Enumeration<ExpertiseLibrary.ExpertiseDefinition> e=CMLib.expertises().definitions();e.hasMoreElements();)
 			{
 				def=(ExpertiseLibrary.ExpertiseDefinition)e.nextElement();
 				if(def.name.toUpperCase().replace(' ','_').equals(tag.toUpperCase()))
@@ -424,7 +423,7 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 				name=name.substring(6);
 			}
 			name=name.replace('_',' ');
-			Vector helpedPreviously=new Vector();
+			Vector<Ability> helpedPreviously=new Vector<Ability>();
 			String subTag=tag;
 			while(subTag.indexOf('_')!=subTag.lastIndexOf('_'))
 			{
@@ -477,9 +476,9 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 						int school=(A.classificationCode()&Ability.ALL_DOMAINS)>>5;
 						prepend.append(CMStrings.capitalizeAndLower(Ability.DOMAIN_DESCS[school].replace('_',' ')));
 					}
-					Vector avail=new Vector();
-					Hashtable sortedByLevel=new Hashtable();
-					for(Enumeration c=CMClass.charClasses();c.hasMoreElements();)
+					Vector<String> avail=new Vector<String>();
+					Hashtable<Integer,int[]> sortedByLevel=new Hashtable<Integer,int[]>();
+					for(Enumeration<CharClass> c=CMClass.charClasses();c.hasMoreElements();)
 					{
 						CharClass C=(CharClass)c.nextElement();
 						int lvl=CMLib.ableMapper().getQualifyingLevel(C.ID(),true,A.ID());
@@ -494,7 +493,7 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 							avail.addElement(C.name(lvl)+"("+lvl+")");
 						}
 					}
-					for(Enumeration e=sortedByLevel.keys();e.hasMoreElements();)
+					for(Enumeration<Integer> e=sortedByLevel.keys();e.hasMoreElements();)
 					{
 						Integer I=(Integer)e.nextElement();
 						if(((int[])sortedByLevel.get(I))[0]>2)
@@ -684,7 +683,7 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 		{
 			String ahelpStr=helpStr.replaceAll("_"," ").trim();
 			if(areaTag) ahelpStr=ahelpStr.substring(9);
-			for(Enumeration e=CMLib.map().areas();e.hasMoreElements();)
+			for(Enumeration<Area> e=CMLib.map().areas();e.hasMoreElements();)
 			{
 				Area A=(Area)e.nextElement();
 				if(A.name().equalsIgnoreCase(ahelpStr))
@@ -745,19 +744,16 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 				if(D != null)
 				{
 					Command CMD=CMClass.getCommand("Deities");
-					Vector commands=new XVector("DEITY",D);
 					try {
-						CMD.execute(forMOB, commands, Command.METAFLAG_FORCED);
+						thisTag=(String)CMD.executeInternal(forMOB, Command.METAFLAG_FORCED, D);
 						helpStr = D.Name().toUpperCase();
-						if((commands.size()==1)&&(commands.firstElement() instanceof String))
-							thisTag=(String)commands.firstElement();
 					}catch(Exception e){}
 				}
 				
 			}
 			// INEXACT searches start here
 			if(!found)
-				for(Enumeration e=rHelpFile.keys();e.hasMoreElements();)
+				for(Enumeration<Object> e=rHelpFile.keys();e.hasMoreElements();)
 				{
 					String key=((String)e.nextElement()).toUpperCase();
 					if(key.startsWith(helpStr))
@@ -784,7 +780,7 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 			}
 			
 			if(!found)
-				for(Enumeration e=rHelpFile.keys();e.hasMoreElements();)
+				for(Enumeration<Object> e=rHelpFile.keys();e.hasMoreElements();)
 				{
 					String key=((String)e.nextElement()).toUpperCase();
 					if(CMLib.english().containsString(key,helpStr))
@@ -829,7 +825,7 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 			}
 			
 			if(!found)
-				for(Enumeration e=CMLib.map().areas();e.hasMoreElements();)
+				for(Enumeration<Area> e=CMLib.map().areas();e.hasMoreElements();)
 				{
 					Area A=(Area)e.nextElement();
 					if(CMLib.english().containsString(A.name(),ahelpStr))
@@ -919,22 +915,22 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 		helpStr=helpStr.toUpperCase().trim();
 		if(helpStr.indexOf(' ')>=0)
 			helpStr=helpStr.replace(' ','_');
-		Vector matches=new Vector();
+		List<String> matches=new Vector<String>();
 
-		for(Enumeration e=rHelpFile1.keys();e.hasMoreElements();)
+		for(Enumeration<Object> e=rHelpFile1.keys();e.hasMoreElements();)
 		{
 			String key=(String)e.nextElement();
 			String prop=rHelpFile1.getProperty(key,"");
 			if((key.toUpperCase().indexOf(helpStr)>=0)||(CMLib.english().containsString(prop,helpStr)))
-				matches.addElement(key.toUpperCase());
+				matches.add(key.toUpperCase());
 		}
 		if(rHelpFile2!=null)
-		for(Enumeration e=rHelpFile2.keys();e.hasMoreElements();)
+		for(Enumeration<Object> e=rHelpFile2.keys();e.hasMoreElements();)
 		{
 			String key=(String)e.nextElement();
 			String prop=rHelpFile1.getProperty(key,"");
 			if((key.toUpperCase().indexOf(helpStr)>=0)||(CMLib.english().containsString(prop,helpStr)))
-				matches.addElement(key.toUpperCase());
+				matches.add(key.toUpperCase());
 		}
 		if(matches.size()==0)
 			return new StringBuilder("");
@@ -966,7 +962,7 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
    				//DVector suspiciousPairs=suspiciousTags(arcHelpFile);
    				//for(int d=0;d<suspiciousPairs.size();d++)
    				//	Syst/em.out.pri/ntln(suspiciousPairs.elementAt(d,1)+": "+suspiciousPairs.elementAt(d,2));
-   				for(Enumeration e=arcHelpFile.keys();e.hasMoreElements();)
+   				for(Enumeration<Object> e=arcHelpFile.keys();e.hasMoreElements();)
    				{
    					String key=(String)e.nextElement();
    					String entry=(String)arcHelpFile.get(key);
@@ -998,7 +994,7 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 	{
 		String k=null;
 		DVector pairs=new DVector(2);
-		for(Enumeration e=p.keys();e.hasMoreElements();)
+		for(Enumeration<Object> e=p.keys();e.hasMoreElements();)
 		{
 			k=(String)e.nextElement();
 			for(int i=0;i<k.length();i++)

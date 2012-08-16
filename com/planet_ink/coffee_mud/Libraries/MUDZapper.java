@@ -34,7 +34,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
 public class MUDZapper extends StdLibrary implements MaskingLibrary
 {
 	public String ID(){return "MUDZapper";}
@@ -100,7 +99,8 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 		return savedRaces;
 	}
 	
-	public CompiledZapperMask getPreCompiledMask(final String str)
+	@SuppressWarnings("unchecked")
+    public CompiledZapperMask getPreCompiledMask(final String str)
 	{
 		Hashtable<String,CompiledZapperMask> H=(Hashtable<String,CompiledZapperMask>)Resources.getResource("SYSTEM_HASHED_MASKS");
 		if(H==null)
@@ -118,7 +118,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 		return V;
 	}
 
-	public Hashtable<String,Integer> getMaskCodes()
+	public Map<String,Integer> getMaskCodes()
 	{
 		if(zapCodes.size()==0)
 		{
@@ -329,7 +329,8 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 		int x=str.indexOf('&');
 		if(x>=0)
 		{
-			Vector V=CMParms.parseAny(str,'&',true);
+			Vector<Object> V=new Vector<Object>();
+			V.addAll(CMParms.parseAny(str,'&',true));
 			String s=null;
 			for(int v=0;v<V.size();v++)
 			{
@@ -428,11 +429,11 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 	}
 
 
-	protected boolean skillFlagCheck(final Vector V, final char plusMinus, final int fromHere, final MOB mob)
+	protected boolean skillFlagCheck(final List<String> V, final char plusMinus, final int fromHere, final MOB mob)
 	{
 		for(int v=fromHere;v<V.size();v++)
 		{
-			final String str=(String)V.elementAt(v);
+			final String str=(String)V.get(v);
 			if(str.length()==0) continue;
 			if(getMaskCodes().containsKey(str))
 				return false;
@@ -534,11 +535,11 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 		return Integer.MIN_VALUE;
 	}
 
-	protected boolean fromHereEqual(final Vector V, final char plusMinus, final int fromHere, final String find)
+	protected boolean fromHereEqual(final List<String> V, final char plusMinus, final int fromHere, final String find)
 	{
 		for(int v=fromHere;v<V.size();v++)
 		{
-			final String str=(String)V.elementAt(v);
+			final String str=(String)V.get(v);
 			if(str.length()==0) continue;
 			if(getMaskCodes().containsKey(str))
 				return false;
@@ -547,11 +548,11 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 		return false;
 	}
 
-	protected boolean fromHereStartsWith(final Vector V, final char plusMinus, final int fromHere, final String find)
+	protected boolean fromHereStartsWith(final List<String> V, final char plusMinus, final int fromHere, final String find)
 	{
 		for(int v=fromHere;v<V.size();v++)
 		{
-			final String str=(String)V.elementAt(v);
+			final String str=(String)V.get(v);
 			if(str.length()==0) continue;
 			if(getMaskCodes().containsKey(str))
 				return false;
@@ -565,11 +566,11 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 		return CMLib.factions().getFactionRangeByCodeName(s);
 	}
 
-	protected boolean fromHereEndsWith(final Vector V, final char plusMinus, final int fromHere, final String find)
+	protected boolean fromHereEndsWith(final List<String> V, final char plusMinus, final int fromHere, final String find)
 	{
 		for(int v=fromHere;v<V.size();v++)
 		{
-			final String str=(String)V.elementAt(v);
+			final String str=(String)V.get(v);
 			if(str.length()==0) continue;
 			if(getMaskCodes().containsKey(str))
 				return false;
@@ -604,7 +605,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 	{
 		if(text.trim().length()==0) return "Anyone";
 		StringBuffer buf=new StringBuffer("");
-		final Hashtable zapCodes=getMaskCodes();
+		final Map<String,Integer> zapCodes=getMaskCodes();
 		final Vector<String> V=CMParms.parse(text.toUpperCase());
 		int val=-1;
 		for(int v=0;v<V.size();v++)
@@ -2098,14 +2099,14 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 		return buf.toString();
 	}
 
-	public boolean syntaxCheck(final String mask, final Vector errorSink)
+	public boolean syntaxCheck(final String mask, final List<String> errorSink)
 	{
 		if(mask.trim().length()==0) return true;
 		Vector<String> V=CMParms.parse(mask.toUpperCase());
 		for(int v=0;v<V.size();v++)
 		{
 			String str=(String)V.elementAt(v);
-			Hashtable zapCodes=getMaskCodes();
+			Map<String,Integer> zapCodes=getMaskCodes();
 			if(zapCodes.containsKey(str)) return true;
 			for(final SavedClass C : charClasses())
 			{
@@ -2137,16 +2138,16 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 			&&(CMLib.factions().isRangeCodeName(str.substring(1))))
 				return true;
 		}
-		errorSink.addElement("No valid zapper codes found.");
+		errorSink.add("No valid zapper codes found.");
 		return false;
 	}
 	
-	public Vector getAbilityEduReqs(final String text)
+	public List<String> getAbilityEduReqs(final String text)
 	{
-		final Vector preReqs=new Vector();
+		final Vector<String> preReqs=new Vector<String>();
 		if(text.trim().length()==0)
 			return preReqs;
-		final Hashtable zapCodes=getMaskCodes();
+		final Map<String,Integer> zapCodes=getMaskCodes();
 		final Vector<String> V=CMParms.parse(text.toUpperCase());
 		String str2;
 		for(int v=0;v<V.size();v++)
@@ -2192,7 +2193,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 					break;
 				case 101: // -skillflag
 				{
-					final Vector objs=new Vector();
+					final Vector<Object> objs=new Vector<Object>();
 					Object o=null;
 					for(int v2=v+1;v2<V.size();v2++)
 					{
@@ -2326,7 +2327,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 	{
 		final Vector<CompiledZapperMaskEntry> buf=new Vector<CompiledZapperMaskEntry>();
 		if(text.trim().length()==0) return new CompiledZapperMask(new boolean[]{false,false},buf.toArray(new CompiledZapperMaskEntry[0]));
-		final Hashtable<String,Integer> zapCodes=getMaskCodes();
+		final Map<String,Integer> zapCodes=getMaskCodes();
 		final Vector<String> V=CMParms.parse(text.toUpperCase());
 		boolean buildItemFlag=false;
 		boolean buildRoomFlag=false;
@@ -3226,9 +3227,9 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 	protected Room outdoorRoom(Area A)
 	{
 		Room R=null;
-		for(final Enumeration e=A.getMetroMap();e.hasMoreElements();)
+		for(final Enumeration<Room> e=A.getMetroMap();e.hasMoreElements();)
 		{
-			R=(Room)e.nextElement();
+			R=e.nextElement();
 			if((R.domainType()&Room.INDOORS)==0) return R;
 		}
 		return A.getRandomMetroRoom();
@@ -4225,11 +4226,11 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 				   return false;
 				break;
 			case 116: // +groupsize
-				if((entry.parms.length>0)&&(mob.getGroupMembers(new HashSet(1)).size()<(((Integer)entry.parms[0]).intValue())))
+				if((entry.parms.length>0)&&(mob.getGroupMembers(new HashSet<MOB>(1)).size()<(((Integer)entry.parms[0]).intValue())))
 				   return false;
 				break;
 			case 115: // -groupsize
-				if((entry.parms.length>0)&&(mob.getGroupMembers(new HashSet(1)).size()>(((Integer)entry.parms[0]).intValue())))
+				if((entry.parms.length>0)&&(mob.getGroupMembers(new HashSet<MOB>(1)).size()>(((Integer)entry.parms[0]).intValue())))
 				   return false;
 				break;
 			case 118: // -if

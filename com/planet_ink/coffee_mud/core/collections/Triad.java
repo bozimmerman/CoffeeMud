@@ -15,15 +15,12 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
-public final class Triad<T,K,L> 
+public class Triad<T,K,L> extends Pair<T,K> 
 {
-	public T first;
-	public K second;
 	public L third;
 	public Triad(T frst, K scnd, L thrd)
 	{
-		first=frst;
-		second=scnd;
+		super(frst,scnd);
 		third=thrd;
 	}
 	public static final class FirstConverter<T,K,L> implements Converter<Triad<T,K,L>,T> 

@@ -33,13 +33,12 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("rawtypes")
 public interface MaskingLibrary extends CMLibrary
 {
-	public Hashtable getMaskCodes();
+	public Map<String,Integer> getMaskCodes();
 	public String rawMaskHelp();
 	public String maskHelp(final String CR, final String word);
-	public Vector getAbilityEduReqs(final String text);
+	public List<String> getAbilityEduReqs(final String text);
 	public String maskDesc(final String text);
 	public String maskDesc(final String text, final boolean skipFirstWord);
 	public CompiledZapperMask maskCompile(final String text);
@@ -48,7 +47,7 @@ public interface MaskingLibrary extends CMLibrary
 	public boolean maskCheck(final String text, final Environmental E, final boolean actual);
 	public boolean maskCheck(final CompiledZapperMask cset, final PlayerLibrary.ThinPlayer E);
 	public boolean maskCheck(final String text, final PlayerLibrary.ThinPlayer E);
-	public boolean syntaxCheck(final String text, final Vector errorSink);
+	public boolean syntaxCheck(final String text, final List<String> errorSink);
 	public int minMaskLevel(final String text, final int minMinLevel);
 	public String[] separateMaskStrs(final String newText);
 

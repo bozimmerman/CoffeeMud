@@ -38,7 +38,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
  */
-@SuppressWarnings({"unchecked","rawtypes"})
 public class CMAbleParms extends StdLibrary implements AbilityParameters
 {
 	public String ID(){return "CMAbleParms";}
@@ -262,7 +261,8 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 		return columnsV;
 	}
 
-	public String makeRecipeFromItem(final ItemCraftor C, final Item I) throws CMException
+	@SuppressWarnings("unchecked")
+    public String makeRecipeFromItem(final ItemCraftor C, final Item I) throws CMException
 	{
 		Vector<Object> columns = parseRecipeFormatColumns(C.parametersFormat());
 		Map<String,AbilityParmEditor> editors = this.getEditors();
@@ -286,7 +286,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 			if(columns.get(d) instanceof List)
 			{
 				AbilityParmEditor applicableA = null;
-				List colV=(List)columns.get(d);
+				List<AbilityParmEditor> colV=(List<AbilityParmEditor>)columns.get(d);
 				for(int c=0;c<colV.size();c++)
 				{
 					AbilityParmEditor A = (AbilityParmEditor)editors.get(colV.get(c));
@@ -310,7 +310,8 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 		return recipe.toString();
 	}
 	
-	protected static int getClassFieldIndex(DVector dataRow)
+	@SuppressWarnings("unchecked")
+    protected static int getClassFieldIndex(DVector dataRow)
 	{
 		for(int d=0;d<dataRow.size();d++)
 			if(dataRow.elementAt(d,1) instanceof List) 
@@ -329,7 +330,8 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 		return -1;
 	}
 
-	protected Item getSampleItem(DVector dataRow)
+	@SuppressWarnings("unchecked")
+    protected Item getSampleItem(DVector dataRow)
 	{
 		boolean classIDRequired = false;
 		String classID = null;
@@ -389,7 +391,8 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 		return null;
 	}
 
-	protected Vector<DVector> parseDataRows(StringBuffer recipeData, Vector<Object> columnsV, int numberOfDataColumns)
+	@SuppressWarnings("unchecked")
+    protected Vector<DVector> parseDataRows(StringBuffer recipeData, Vector<? extends Object> columnsV, int numberOfDataColumns)
 		throws CMException
 	{
 		StringBuffer str = new StringBuffer(recipeData.toString());
@@ -456,7 +459,8 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 		return fixDataColumn(dataRow,rowShow,classModelI);
 	}
 	
-	protected boolean fixDataColumn(DVector dataRow, int rowShow, final Item classModelI) throws CMException
+	@SuppressWarnings("unchecked")
+    protected boolean fixDataColumn(DVector dataRow, int rowShow, final Item classModelI) throws CMException
 	{
 		Map<String,AbilityParmEditor> editors = getEditors();
 		if(classModelI == null) {
@@ -544,14 +548,16 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 		}
 	}
 	
-	public void testRecipeParsing(StringBuffer str, String recipeFormat, String saveRecipeFilename) throws CMException
+	@SuppressWarnings("unchecked")
+    public void testRecipeParsing(StringBuffer str, String recipeFormat, String saveRecipeFilename) throws CMException
 	{
-		Vector columnsV = parseRecipeFormatColumns(recipeFormat);
+		Vector<? extends Object> columnsV = parseRecipeFormatColumns(recipeFormat);
 		int numberOfDataColumns = 0;
 		for(int c = 0; c < columnsV.size(); c++)
 			if(columnsV.elementAt(c) instanceof List)
 				numberOfDataColumns++;
 		Vector<DVector> rowsV = parseDataRows(str,columnsV,numberOfDataColumns);
+		Vector<String> convertedColumnsV=(Vector<String>)columnsV;
 		fixDataColumns(rowsV);
 		Map<String,AbilityParmEditor> editors = getEditors();
 		DVector editRow = null;
@@ -580,7 +586,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 		fakeSession.setMob(null);
 		mob.destroy();
 		if(saveRecipeFilename!=null)
-			resaveRecipeFile(mob,saveRecipeFilename,rowsV,columnsV,false);
+			resaveRecipeFile(mob,saveRecipeFilename,rowsV,convertedColumnsV,false);
 	}
 
 	protected void calculateRecipeCols(int[] lengths, String[] headers, Vector<DVector> rowsV)
@@ -669,7 +675,8 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 		return list;
 	}
 
-	public void modifyRecipesList(MOB mob, String recipeFilename, String recipeFormat) throws java.io.IOException
+	@SuppressWarnings("unchecked")
+    public void modifyRecipesList(MOB mob, String recipeFilename, String recipeFormat) throws java.io.IOException
 	{
 		Map<String,AbilityParmEditor> editors = getEditors();
 		AbilityRecipeData recipe = parseRecipe(recipeFilename, recipeFormat);
@@ -829,7 +836,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 	protected static boolean isResourceCodeRoomMapped(final int resourceCode)
 	{
 		final Integer I=Integer.valueOf(resourceCode);
-		for(Enumeration e=CMClass.locales();e.hasMoreElements();)
+		for(Enumeration<Room> e=CMClass.locales();e.hasMoreElements();)
 		{
 			Room R=(Room)e.nextElement();
 			if(!(R instanceof GridLocale))
@@ -2057,8 +2064,8 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 					}
 				},
 				new AbilityParmEditorImpl("RESOURCE_OR_MATERIAL","Rsc/Mat",PARMTYPE_CHOICES) {
-					public void createChoices() {
-						Vector V=new XVector<String>(RawMaterial.CODES.NAMES());
+                    public void createChoices() {
+						Vector<String> V=new XVector<String>(RawMaterial.CODES.NAMES());
 						V.addAll(new XVector<String>(RawMaterial.MATERIAL_DESCS));
 						createChoices(V);
 					}
@@ -2480,8 +2487,8 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 		public int getClassFieldIndex() { return classFieldIndex;}
 		public String recipeFilename(){ return recipeFilename;}
 		public String recipeFormat(){ return recipeFormat;}
-		public Vector dataRows() { return dataRows;}
-		public Vector columns() { return columns;}
+		public Vector<DVector> dataRows() { return dataRows;}
+		public Vector<? extends Object> columns() { return columns;}
 		public int[] columnLengths() { return columnLengths;}
 		public String[] columnHeaders(){ return columnHeaders;}
 		public int numberOfDataColumns(){ return numberOfDataColumns;}
@@ -2533,7 +2540,8 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 			}
 			return false;
 		}
-		public String[] fakeUserInput(String oldVal) {
+		@SuppressWarnings("unchecked")
+        public String[] fakeUserInput(String oldVal) {
 			boolean emptyOK = false;
 			switch(fieldType) {
 			case PARMTYPE_STRINGORNULL:
@@ -2713,7 +2721,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 		}
 		
 		public abstract void createChoices(); 
-		public DVector createChoices(Enumeration e) 
+		public DVector createChoices(Enumeration<? extends Object> e) 
 		{
 			if(choices != null) return choices;
 			choices = new DVector(2);
@@ -2734,7 +2742,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 			}
 			return choices;
 		}
-		public DVector createChoices(Vector V) { return createChoices(V.elements());}
+		public DVector createChoices(Vector<? extends Object> V) { return createChoices(V.elements());}
 		public DVector createChoices(String[] S) { return createChoices(new XVector<String>(S).elements());}
 		public DVector createBinaryChoices(String[] S) { 
 			if(choices != null) return choices;

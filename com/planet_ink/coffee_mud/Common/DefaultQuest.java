@@ -2911,9 +2911,9 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 			else
 			if(getSpawn()==SPAWN_ANY)
 			{
-				Vector parsed=CMLib.quests().parseQuestSteps(baseScript,0,false);
+				List<String> parsed=CMLib.quests().parseQuestSteps(baseScript,0,false);
 				for(int p=0;p<parsed.size();p++)
-					spawnQuest((String)parsed.elementAt(p),baseScript,true);
+					spawnQuest((String)parsed.get(p),baseScript,true);
 			}
 			lastStartDateTime=System.currentTimeMillis();
 			enterDormantState();

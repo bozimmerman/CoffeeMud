@@ -33,7 +33,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
 public class CMLister extends StdLibrary implements ListingLibrary
 {
 	public String ID(){return "CMLister";}
@@ -110,9 +109,9 @@ public class CMLister extends StdLibrary implements ListingLibrary
 			say.append(" ("+CMStrings.padLeftPreserve(""+(reps+1),2)+") ");
 	}
 	
-	public String summarizeTheRest(MOB viewerM, List<Item> things, boolean compress) 
+	public String summarizeTheRest(MOB viewerM, List<? extends Environmental> things, boolean compress) 
 	{
-		Vector restV=new Vector();
+		Vector<String> restV=new Vector<String>();
 		Item I=null;
 		String name="";
 		boolean otherItemsHere=false;
@@ -147,7 +146,7 @@ public class CMLister extends StdLibrary implements ListingLibrary
 	}
 	
 	public StringBuilder lister(MOB viewerM, 
-								List<Item> items,
+								List<? extends Environmental> items,
 								boolean useName, 
 								String tag,
 								String tagParm,
@@ -254,23 +253,23 @@ public class CMLister extends StdLibrary implements ListingLibrary
 	{
 		return reallyList(viewerM,these,-1,likeRoom);
 	}
-	public StringBuilder reallyList(MOB viewerM, Vector these, int ofType)
+	public StringBuilder reallyList(MOB viewerM, Vector<? extends Object> these, int ofType)
 	{
 		return reallyList(viewerM,these.elements(),ofType,null);
 	}
-	public StringBuilder reallyList(MOB viewerM, Enumeration these, int ofType)
+	public StringBuilder reallyList(MOB viewerM, Enumeration<? extends Object> these, int ofType)
 	{
 		return reallyList(viewerM,these,ofType,null);
 	}
-	public StringBuilder reallyList(MOB viewerM, Vector these)
+	public StringBuilder reallyList(MOB viewerM, Vector<? extends Object> these)
 	{
 		return reallyList(viewerM,these.elements(),-1,null);
 	}
-	public StringBuilder reallyList(MOB viewerM, Enumeration these)
+	public StringBuilder reallyList(MOB viewerM, Enumeration<? extends Object> these)
 	{
 		return reallyList(viewerM,these,-1,null);
 	}
-	public StringBuilder reallyList(MOB viewerM, Vector these, Room likeRoom)
+	public StringBuilder reallyList(MOB viewerM, Vector<? extends Object> these, Room likeRoom)
 	{
 		return reallyList(viewerM,these.elements(),-1,likeRoom);
 	}
@@ -324,17 +323,17 @@ public class CMLister extends StdLibrary implements ListingLibrary
 		return lines;
 	}
 
-	public StringBuilder reallyList(MOB viewerM, Vector these, int ofType, Room likeRoom)
+	public StringBuilder reallyList(MOB viewerM, Vector<? extends Object> these, int ofType, Room likeRoom)
 	{ return reallyList(viewerM,these.elements(),ofType,likeRoom);}
-	public StringBuilder reallyList(MOB viewerM, Enumeration these, Room likeRoom)
+	public StringBuilder reallyList(MOB viewerM, Enumeration<? extends Object> these, Room likeRoom)
 	{ return reallyList(viewerM,these,-1,likeRoom);}
-	public StringBuilder reallyList(MOB viewerM, Enumeration these, int ofType, Room likeRoom)
+	public StringBuilder reallyList(MOB viewerM, Enumeration<? extends Object> these, int ofType, Room likeRoom)
 	{
 		StringBuilder lines=new StringBuilder("");
 		if(!these.hasMoreElements()) return lines;
 		int column=0;
 		int COL_LEN=ListingLibrary.ColFixer.fixColWidth(24.0, viewerM);
-		for(Enumeration e=these;e.hasMoreElements();)
+		for(Enumeration<? extends Object> e=these;e.hasMoreElements();)
 		{
 			Object thisThang=e.nextElement();
 			String list=null;
@@ -377,13 +376,13 @@ public class CMLister extends StdLibrary implements ListingLibrary
 		lines.append("\n\r");
 		return lines;
 	}
-	public StringBuilder reallyList2Cols(MOB viewerM, Enumeration these, int ofType, Room likeRoom)
+	public StringBuilder reallyList2Cols(MOB viewerM, Enumeration<? extends Object> these, int ofType, Room likeRoom)
 	{
 		StringBuilder lines=new StringBuilder("");
 		if(!these.hasMoreElements()) return lines;
 		int column=0;
 		int COL_LEN=ListingLibrary.ColFixer.fixColWidth(37.0, viewerM);
-		for(Enumeration e=these;e.hasMoreElements();)
+		for(Enumeration<? extends Object> e=these;e.hasMoreElements();)
 		{
 			Object thisThang=e.nextElement();
 			String list=null;

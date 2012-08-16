@@ -33,7 +33,6 @@ import java.util.regex.Pattern;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
 public class DirtyLanguage extends StdLibrary implements LanguageLibrary
 {
 	public String ID(){return "DirtyLanguage";}
@@ -133,9 +132,9 @@ public class DirtyLanguage extends StdLibrary implements LanguageLibrary
 		return buf.toString();
 	}
 	
-	protected Hashtable loadFileSections(String filename)
+	protected Hashtable<String,DVector> loadFileSections(String filename)
 	{
-		Hashtable parserSections=new Hashtable();
+		Hashtable<String,DVector> parserSections=new Hashtable<String,DVector>();
 		CMFile F=new CMFile(filename,null,false,true);
 		if(!F.exists()){ Log.errOut("Language file "+filename+" not found! This mud is in deep doo-doo!"); return null;}
 		StringBuffer alldata=F.text();
@@ -144,8 +143,8 @@ public class DirtyLanguage extends StdLibrary implements LanguageLibrary
 		DVector currentSection=null;
 		DVector globalDefinitions=new DVector(2);
 		DVector localDefinitions=new DVector(2);
-		Hashtable currentSectionReplaceStrs=new Hashtable();
-		HashSet currentSectionIgnoreStrs=new HashSet();
+		Hashtable<String,String> currentSectionReplaceStrs=new Hashtable<String,String>();
+		HashSet<String> currentSectionIgnoreStrs=new HashSet<String>();
 		DVector sectionIndexes=new DVector(2);
 		DVector wholeFile=new DVector(2);
 		for(int v=0;v<V.size();v++)
@@ -163,8 +162,8 @@ public class DirtyLanguage extends StdLibrary implements LanguageLibrary
 				&&(currentSection!=null))
 					currentSection.addElement("IGNOREWHOLE",currentSectionIgnoreStrs,currentSectionIgnoreStrs);
 				currentSection=new DVector(3);
-				currentSectionReplaceStrs=new Hashtable();
-				currentSectionIgnoreStrs=new HashSet();
+				currentSectionReplaceStrs=new Hashtable<String,String>();
+				currentSectionIgnoreStrs=new HashSet<String>();
 				parserSections.put(s.substring(1,x).toUpperCase(),currentSection);
 				sectionIndexes.addElement(s.substring(1,x).toUpperCase(),Integer.valueOf(v));
 				localDefinitions.clear();
@@ -327,10 +326,11 @@ public class DirtyLanguage extends StdLibrary implements LanguageLibrary
 		return "PARSER_"+language.toUpperCase()+"_"+country.toUpperCase();
 	}
 	
-	public DVector getLanguageParser(String parser)
+	@SuppressWarnings("unchecked")
+    public DVector getLanguageParser(String parser)
 	{
 		final String parserKey=getLanguageParserKey();
-		Hashtable parserSections=(Hashtable)Resources.getResource(parserKey);
+		Hashtable<String,DVector> parserSections=(Hashtable<String,DVector>)Resources.getResource(parserKey);
 		if(parserSections==null)
 		{
 			parserSections=loadFileSections("resources/parser_"+language.toUpperCase()+"_"+country.toUpperCase()+".properties");
@@ -339,10 +339,11 @@ public class DirtyLanguage extends StdLibrary implements LanguageLibrary
 		return (DVector)parserSections.get(parser);
 	}
 	
-	public DVector getLanguageTranslator(String parser)
+	@SuppressWarnings("unchecked")
+    public DVector getLanguageTranslator(String parser)
 	{
 		final String translatorKey=getLanguageTranslatorKey();
-		Hashtable translationSections=(Hashtable)Resources.getResource(translatorKey);
+		Hashtable<String,DVector> translationSections=(Hashtable<String,DVector>)Resources.getResource(translatorKey);
 		if(translationSections==null)
 		{
 			translationSections=loadFileSections("resources/translation_"+language.toUpperCase()+"_"+country.toUpperCase()+".properties");
@@ -379,7 +380,8 @@ public class DirtyLanguage extends StdLibrary implements LanguageLibrary
 		return nothingDone;
 	}
 	
-	public List<List<String>> preCommandParser(List<String> CMDS)
+	@SuppressWarnings("unchecked")
+    public List<List<String>> preCommandParser(List<String> CMDS)
 	{
 		List<String> MORE_CMDS=new Vector<String>();
 		String combinedWithTabs=CMParms.combineWithTabs(CMDS,0);
@@ -394,7 +396,7 @@ public class DirtyLanguage extends StdLibrary implements LanguageLibrary
 		String wit=null;
 		int strLen=-1;
 		int autoIgnoreLen=0;
-		HashSet ignoreSet=null;
+		HashSet<String> ignoreSet=null;
 		for(int p=0;p<parser.size();p++)
 		{
 			I=(Integer)HASHED_CMDS.get(parser.elementAt(p,1));
@@ -427,7 +429,7 @@ public class DirtyLanguage extends StdLibrary implements LanguageLibrary
 			}
 			case CMD_REPLACEWHOLE:
 			{
-				rep=(String)((Hashtable)parser.elementAt(p,2)).get(combinedWithTabs.toLowerCase());
+				rep=(String)((Hashtable<String,String>)parser.elementAt(p,2)).get(combinedWithTabs.toLowerCase());
 				if(rep!=null)
 				{
 					insertExpansion(MORE_CMDS,rep,0,combinedWithTabs.length(),true);
@@ -466,7 +468,7 @@ public class DirtyLanguage extends StdLibrary implements LanguageLibrary
 			}
 			case CMD_IGNOREWHOLE:
 			{
-				ignoreSet=(HashSet)parser.elementAt(p,2);
+				ignoreSet=(HashSet<String>)parser.elementAt(p,2);
 				if(ignoreSet.contains(combinedWithTabs.toLowerCase()))
 					return new XVector<List<String>>();
 				break;
@@ -484,7 +486,7 @@ public class DirtyLanguage extends StdLibrary implements LanguageLibrary
 			{
 				if(ignoreSet==null)
 				{
-					ignoreSet=new HashSet();
+					ignoreSet=new HashSet<String>();
 					parser.addElement("IGNOREWHOLE",ignoreSet,ignoreSet);
 				}
 				ignoreSet.add(combinedWithTabs.toLowerCase());
@@ -499,7 +501,8 @@ public class DirtyLanguage extends StdLibrary implements LanguageLibrary
 		return FINAL_CMDS;
 	}
 	
-	protected String basicParser(String str, String section, boolean nullIfLonger, boolean isParser)
+	@SuppressWarnings("unchecked")
+    protected String basicParser(String str, String section, boolean nullIfLonger, boolean isParser)
 	{
 		if(str==null) return null;
 		DVector parser=isParser?getLanguageParser(section):getLanguageTranslator(section);
@@ -509,7 +512,7 @@ public class DirtyLanguage extends StdLibrary implements LanguageLibrary
 		String oldStr=str;
 		int autoIgnoreLen=0;
 		Integer I=null;
-		HashSet ignoreSet=null;
+		HashSet<String> ignoreSet=null;
 		String rep=null;
 		String wit=null;
 		for(int p=0;p<parser.size();p++)
@@ -529,7 +532,7 @@ public class DirtyLanguage extends StdLibrary implements LanguageLibrary
 			}
 			case CMD_REPLACEWHOLE:
 			{
-				rep=(String)((Hashtable)parser.elementAt(p,2)).get(str.toLowerCase());
+				rep=(String)((Hashtable<String,String>)parser.elementAt(p,2)).get(str.toLowerCase());
 				if(rep!=null) return rep;
 				break;
 			}
@@ -555,7 +558,7 @@ public class DirtyLanguage extends StdLibrary implements LanguageLibrary
 			}
 			case CMD_IGNOREWHOLE:
 			{
-				ignoreSet=(HashSet)parser.elementAt(p,2);
+				ignoreSet=(HashSet<String>)parser.elementAt(p,2);
 				if(ignoreSet.contains(str.toLowerCase()))
 					return null;
 				break;
@@ -572,7 +575,7 @@ public class DirtyLanguage extends StdLibrary implements LanguageLibrary
 			{
 				if(ignoreSet==null)
 				{
-					ignoreSet=new HashSet();
+					ignoreSet=new HashSet<String>();
 					parser.addElement("IGNOREWHOLE",ignoreSet,ignoreSet);
 				}
 				ignoreSet.add(oldStr.toLowerCase());

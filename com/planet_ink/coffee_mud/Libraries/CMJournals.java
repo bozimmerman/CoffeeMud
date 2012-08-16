@@ -34,19 +34,18 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
 public class CMJournals extends StdLibrary implements JournalsLibrary
 {
 	public String ID(){return "CMJournals";}
 	public final int QUEUE_SIZE=100;
 	protected SHashtable<String,CommandJournal> commandJournals=new SHashtable<String,CommandJournal>();
 	protected SHashtable<String,ForumJournal> forumJournals=new SHashtable<String,ForumJournal>();
-	public final Vector emptyVector=new Vector(1);
 	
 	private CMSupportThread thread=null;
 	public CMSupportThread getSupportThread() { return thread;}
 	
-	protected Hashtable<String,JournalSummaryStats> getSummaryStats()
+	@SuppressWarnings("unchecked")
+    protected Hashtable<String,JournalSummaryStats> getSummaryStats()
 	{
 		Hashtable<String,JournalSummaryStats> journalSummaryStats;
 		journalSummaryStats= (Hashtable<String,JournalSummaryStats>)Resources.getResource("FORUM_JOURNAL_STATS");
@@ -238,14 +237,15 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 		return forumJournals.size();
 	}
 	
-	public HashSet<String> getArchonJournalNames()
+	@SuppressWarnings("unchecked")
+    public HashSet<String> getArchonJournalNames()
 	{
 		HashSet<String> H = (HashSet<String>)Resources.getResource("ARCHON_ONLY_JOURNALS");
 		if(H == null)
 		{
 			Item I=null;
 			H=new HashSet<String>();
-			for(Enumeration e=CMClass.basicItems();e.hasMoreElements();)
+			for(Enumeration<Item> e=CMClass.basicItems();e.hasMoreElements();)
 			{
 				I=(Item)e.nextElement();
 				if((I instanceof ArchonOnly)

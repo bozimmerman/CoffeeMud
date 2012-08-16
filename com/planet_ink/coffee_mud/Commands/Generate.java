@@ -183,7 +183,7 @@ public class Generate extends StdCommand
 					V.addElement(A);
 				break;
 			case MOB:
-				V=CMLib.percolator().findMobs(piece, definedIDs);
+				V.addAll(CMLib.percolator().findMobs(piece, definedIDs));
 				break;
 			case LOCALE:
 			{
@@ -194,7 +194,7 @@ public class Generate extends StdCommand
 				break;
 			}
 			case ITEM:
-				V=CMLib.percolator().findItems(piece, definedIDs);
+				V.addAll(CMLib.percolator().findItems(piece, definedIDs));
 				break;
 			default:
 				break;

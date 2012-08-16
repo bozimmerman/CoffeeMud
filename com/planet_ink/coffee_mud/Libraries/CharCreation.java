@@ -38,13 +38,12 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
 public class CharCreation extends StdLibrary implements CharCreationLibrary
 {
 	public String ID(){return "CharCreation";}
-	public Hashtable startRooms=new Hashtable();
-	public Hashtable deathRooms=new Hashtable();
-	public Hashtable bodyRooms=new Hashtable();
+	public Hashtable<String,String> startRooms=new Hashtable<String,String>();
+	public Hashtable<String,String> deathRooms=new Hashtable<String,String>();
+	public Hashtable<String,String> bodyRooms=new Hashtable<String,String>();
 	public static final int BASE_MIN_STAT_POINTS=3;
 
 	protected int getTotalStatPoints()
@@ -117,9 +116,9 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 	
 	public List<CharClass> classQualifies(MOB mob, int theme)
 	{
-		Vector them=new Vector();
-		HashSet doneClasses=new HashSet();
-		for(Enumeration c=CMClass.charClasses();c.hasMoreElements();)
+		Vector<CharClass> them=new Vector<CharClass>();
+		HashSet<String> doneClasses=new HashSet<String>();
+		for(Enumeration<CharClass> c=CMClass.charClasses();c.hasMoreElements();)
 		{
 			CharClass C=(CharClass)c.nextElement();
 			if(doneClasses.contains(C.ID())) continue;
@@ -133,9 +132,9 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 
 	public List<Race> raceQualifies(MOB mob, int theme)
 	{
-		Vector qualRaces = new Vector();
-		HashSet doneRaces=new HashSet();
-		for(Enumeration r=CMClass.races();r.hasMoreElements();)
+		Vector<Race> qualRaces = new Vector<Race>();
+		HashSet<String> doneRaces=new HashSet<String>();
+		for(Enumeration<Race> r=CMClass.races();r.hasMoreElements();)
 		{
 			Race R=(Race)r.nextElement();
 			if(doneRaces.contains(R.ID())) continue;
@@ -171,7 +170,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 			if(DEFAULT_BADNAMES.indexOf(" "+str+" ")>=0)
 				return false;
 		}
-		Vector V2=CMParms.parseCommas(CMProps.getVar(CMProps.SYSTEM_BADNAMES),true);
+		Vector<String> V2=CMParms.parseCommas(CMProps.getVar(CMProps.SYSTEM_BADNAMES),true);
 		for(int v2=0;v2<V2.size();v2++)
 		{
 			String str2=(String)V2.elementAt(v2);
@@ -188,14 +187,14 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		for(int c=0;c<login.length();c++)
 			if((login.charAt(c)!=' ')&&(!Character.isLetter(login.charAt(c))))
 				return false;
-		for(Enumeration d=CMLib.map().deities();d.hasMoreElements();)
+		for(Enumeration<Deity> d=CMLib.map().deities();d.hasMoreElements();)
 		{
 			MOB D=(MOB)d.nextElement();
 			if((CMLib.english().containsString(D.ID(),login))
 			||(CMLib.english().containsString(D.Name(),login)))
 				return false;
 		}
-		for(Enumeration m=CMClass.mobTypes();m.hasMoreElements();)
+		for(Enumeration<MOB> m=CMClass.mobTypes();m.hasMoreElements();)
 		{
 			MOB M=(MOB)m.nextElement();
 			if((CMLib.english().containsString(M.Name(),login))
@@ -203,7 +202,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 				return false;
 		}
 
-		for(Enumeration e=CMLib.clans().clans();e.hasMoreElements();)
+		for(Enumeration<Clan> e=CMLib.clans().clans();e.hasMoreElements();)
 		{
 			Clan C=(Clan)e.nextElement();
 			if((CMLib.english().containsString(C.clanID(),login))
@@ -312,7 +311,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 	{
 		Hashtable<String,List<String>> extraScripts=new Hashtable<String,List<String>>();
 		final String[] VALID_SCRIPT_CODES={"PASSWORD","EMAIL","ANSI","THEME","RACE","GENDER","STATS","CLASS","FACTIONS","END"}; 				   
-		Vector extras=CMParms.parseCommas(CMProps.getVar(CMProps.SYSTEM_CHARCREATIONSCRIPTS),true);
+		Vector<String> extras=CMParms.parseCommas(CMProps.getVar(CMProps.SYSTEM_CHARCREATIONSCRIPTS),true);
 		for(int e=0;e<extras.size();e++) {
 			String s=(String)extras.elementAt(e);
 			int x=s.indexOf(':');
@@ -334,7 +333,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 				s=s.substring(x+1);
 			}
 			List<String> V=extraScripts.get(code);
-			if(V==null){ V=new Vector(); extraScripts.put(code,V);}
+			if(V==null){ V=new Vector<String>(); extraScripts.put(code,V);}
 			V.add(s.trim());
 		}
 		return extraScripts;
@@ -814,10 +813,10 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 				mob.baseCharStats().setStat(i,BASE_MIN_STAT_POINTS);
 			mob.recoverCharStats();
 			CharStats unmodifiedCT = (CharStats)mob.charStats().copyOf();
-			List<String> validStats = new ArrayList(CharStats.CODES.BASE().length);
+			List<String> validStats = new ArrayList<String>(CharStats.CODES.BASE().length);
 			for(int i : CharStats.CODES.BASE())
 				validStats.add(CMStrings.capitalizeAndLower(CharStats.CODES.NAME(i)));
-			List<CharClass> qualifyingClassListV=new Vector(1);
+			List<CharClass> qualifyingClassListV=new Vector<CharClass>(1);
 			while(!session.isStopped())
 			{
 				if(randomRoll)
@@ -1042,7 +1041,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 										||(CMath.bset(newRace.availabilityCode(),Area.THEME_SKILLONLYMASK))))
 					newRace=null;
 				if(newRace==null)
-					for(Enumeration r=CMClass.races();r.hasMoreElements();)
+					for(Enumeration<Race> r=CMClass.races();r.hasMoreElements();)
 					{
 						Race R=(Race)r.nextElement();
 						if((R.name().equalsIgnoreCase(raceStr))
@@ -1055,7 +1054,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 						}
 					}
 				if(newRace==null)
-					for(Enumeration r=CMClass.races();r.hasMoreElements();)
+					for(Enumeration<Race> r=CMClass.races();r.hasMoreElements();)
 					{
 						Race R=(Race)r.nextElement();
 						if((R.name().toUpperCase().startsWith(raceStr.toUpperCase()))
@@ -1103,7 +1102,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 					session.println(null,null,null,"\n\r\n\r"+intro.toString());
 				}
 				StringBuffer menu=new StringBuffer("Select one: ");
-				Vector namedChoices=new Vector();
+				Vector<String> namedChoices=new Vector<String>();
 				for(int m=0;m<mine.size();m++)
 				{
 					Faction.FactionRange FR=CMLib.factions().getRange(F.factionID(),((Integer)mine.get(m)).intValue());
@@ -2014,7 +2013,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 	public void setGlobalBitmaps(MOB mob)
 	{
 		if(mob==null) return;
-		Vector defaultFlagsV=CMParms.parseCommas(CMProps.getVar(CMProps.SYSTEM_DEFAULTPLAYERFLAGS).toUpperCase(),true);
+		Vector<String> defaultFlagsV=CMParms.parseCommas(CMProps.getVar(CMProps.SYSTEM_DEFAULTPLAYERFLAGS).toUpperCase(),true);
 		for(int v=0;v<defaultFlagsV.size();v++)
 		{
 			int x=CMParms.indexOf(MOB.AUTODESC,(String)defaultFlagsV.elementAt(v));
@@ -2054,7 +2053,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 			{
 				Command C=CMClass.getCommand("WizInv");
 				if((C!=null)&&(C.securityCheck(mob)||C.securityCheck(mob)))
-					C.execute(mob,new XVector("WIZINV"),0);
+					C.execute(mob,new XVector<Object>("WIZINV"),0);
 			}
 			showTheNews(mob);
 			Room startRoom = mob.location();
@@ -2094,7 +2093,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 			{
 				Command C=CMClass.getCommand("WizInv");
 				if((C!=null)&&(C.securityCheck(mob)||C.securityCheck(mob)))
-					C.execute(mob,new XVector("WIZINV"),0);
+					C.execute(mob,new XVector<Object>("WIZINV"),0);
 			}
 			showTheNews(mob);
 			mob.bringToLife(mob.location(),true);
@@ -2290,7 +2289,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 
 	public void pageRooms(CMProps page, Map<String, String> table, String start)
 	{
-		for(Enumeration i=page.keys();i.hasMoreElements();)
+		for(Enumeration<Object> i=page.keys();i.hasMoreElements();)
 		{
 			String k=(String)i.nextElement();
 			if(k.startsWith(start+"_"))
@@ -2303,26 +2302,26 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 
 	public void initStartRooms(CMProps page)
 	{
-		startRooms=new Hashtable();
+		startRooms=new Hashtable<String,String>();
 		pageRooms(page,startRooms,"START");
 	}
 
 	public void initDeathRooms(CMProps page)
 	{
-		deathRooms=new Hashtable();
+		deathRooms=new Hashtable<String,String>();
 		pageRooms(page,deathRooms,"DEATH");
 	}
 
 	public void initBodyRooms(CMProps page)
 	{
-		bodyRooms=new Hashtable();
+		bodyRooms=new Hashtable<String,String>();
 		pageRooms(page,bodyRooms,"MORGUE");
 	}
 
 	public boolean shutdown() {
-		bodyRooms=new Hashtable();
-		startRooms=new Hashtable();
-		deathRooms=new Hashtable();
+		bodyRooms=new Hashtable<String,String>();
+		startRooms=new Hashtable<String,String>();
+		deathRooms=new Hashtable<String,String>();
 		return true;
 	}
 

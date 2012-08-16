@@ -33,14 +33,14 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
 public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
 {
 	public String ID(){return "ColumbiaUniv";}
 
 	protected SHashtable<String,ExpertiseLibrary.ExpertiseDefinition> completeEduMap=new SHashtable<String,ExpertiseLibrary.ExpertiseDefinition>();
 	protected SHashtable<String,List<String>> baseEduSetLists=new SHashtable<String,List<String>>();
-	protected Hashtable[] completeUsageMap=new Hashtable[ExpertiseLibrary.NUM_XFLAGS];
+	@SuppressWarnings("unchecked")
+    protected Hashtable<String,String>[] completeUsageMap=new Hashtable[ExpertiseLibrary.NUM_XFLAGS];
 	protected Properties helpMap=new Properties();
 	protected DVector rawDefinitions=new DVector(7);
 
@@ -125,8 +125,8 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
 	public List<ExpertiseDefinition> myQualifiedExpertises(MOB mob)
 	{
 		ExpertiseDefinition D=null;
-		List<ExpertiseDefinition> V=new Vector();
-		for(Enumeration e=definitions();e.hasMoreElements();)
+		List<ExpertiseDefinition> V=new Vector<ExpertiseDefinition>();
+		for(Enumeration<ExpertiseDefinition> e=definitions();e.hasMoreElements();)
 		{
 			D=(ExpertiseDefinition)e.nextElement();
 			if(((D.compiledFinalMask()==null)||(CMLib.masking().maskCheck(D.compiledFinalMask(),mob,true)))
@@ -138,8 +138,8 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
 	public List<ExpertiseDefinition> myListableExpertises(MOB mob)
 	{
 		ExpertiseDefinition D=null;
-		List<ExpertiseDefinition> V=new Vector();
-		for(Enumeration e=definitions();e.hasMoreElements();)
+		List<ExpertiseDefinition> V=new Vector<ExpertiseDefinition>();
+		for(Enumeration<ExpertiseDefinition> e=definitions();e.hasMoreElements();)
 		{
 			D=(ExpertiseDefinition)e.nextElement();
 			if((D.compiledListMask()==null)||(CMLib.masking().maskCheck(D.compiledListMask(),mob,true)))
@@ -183,7 +183,7 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
 	public List<String> getStageCodes(String baseExpertiseCode)
 	{
 		String key=null;
-		if(baseExpertiseCode==null) return new ReadOnlyVector(1);
+		if(baseExpertiseCode==null) return new ReadOnlyVector<String>(1);
 		baseExpertiseCode=baseExpertiseCode.toUpperCase();
 		if(!baseEduSetLists.containsKey(baseExpertiseCode))
 		{
@@ -192,7 +192,7 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
 				if(!baseEduSetLists.containsKey(baseExpertiseCode))
 				{
 					List<String> codes=new LinkedList<String>();
-					for(Enumeration e=completeEduMap.keys();e.hasMoreElements();)
+					for(Enumeration<String> e=completeEduMap.keys();e.hasMoreElements();)
 					{
 						key=(String)e.nextElement();
 						if(key.startsWith(baseExpertiseCode)
@@ -234,7 +234,7 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
 	public String confirmExpertiseLine(String row, String ID, boolean addIfPossible)
 	{
 		int levels=0;
-		HashSet flags=new HashSet();
+		HashSet<String> flags=new HashSet<String>();
 		String s=null;
 		String skillMask=null;
 		String[] costs=new String[5];
@@ -243,7 +243,7 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
 		String name,WKname=null;
 		String listMask,WKlistMask=null;
 		String finalMask,WKfinalMask=null;
-		Vector skillsToRegister=null;
+		List<String> skillsToRegister=null;
 		ExpertiseLibrary.ExpertiseDefinition def=null;
 		boolean didOne=false;
 		if(row.trim().startsWith("#")||row.trim().startsWith(";")||(row.trim().length()==0)) return null;
@@ -332,7 +332,7 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
 		}
 		ID=row.substring(0,x).toUpperCase();
 		row=row.substring(x+1);
-		Vector parts=CMParms.parseCommas(row,false);
+		Vector<String> parts=CMParms.parseCommas(row,false);
 		if(parts.size()!=11)
 			return "Error: Expertise row malformed (Requires 11 entries/10 commas): "+ID+"="+row;
 		name=(String)parts.elementAt(0);
@@ -392,14 +392,14 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
 		for(int u=0;u<completeUsageMap.length;u++)
 			if(flags.contains(ExpertiseLibrary.XFLAG_CODES[u]))
 				for(int k=0;k<skillsToRegister.size();k++)
-					completeUsageMap[u].put((String)skillsToRegister.elementAt(k),ID);
+					completeUsageMap[u].put((String)skillsToRegister.get(k),ID);
 		return addIfPossible?ID:null;
 	}
 	
 	public void recompileExpertises()
 	{
 		for(int u=0;u<completeUsageMap.length;u++)
-			completeUsageMap[u]=new Hashtable();
+			completeUsageMap[u]=new Hashtable<String,String>();
 		helpMap.clear();
 		List<String> V=Resources.getFileLineVector(Resources.getFileResource("skills/expertises.txt",true));
 		String ID=null,WKID=null;

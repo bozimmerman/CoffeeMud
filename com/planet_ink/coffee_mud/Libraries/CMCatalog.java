@@ -36,7 +36,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
 public class CMCatalog extends StdLibrary implements CatalogLibrary, Runnable
 {
 	public String ID(){return "CMCatalog";}
@@ -149,22 +148,32 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary, Runnable
 		return names;
 	}
 	
-	public String[] getCatalogItemNames() { return makeCatalogNames(icatalog.getDimensionVector(1)); }
-	public String[] getCatalogMobNames() { return makeCatalogNames(mcatalog.getDimensionVector(1)); }
+	@SuppressWarnings("unchecked")
+    public String[] getCatalogItemNames() 
+	{ 
+		return makeCatalogNames((Vector<Environmental>)icatalog.getDimensionVector(1)); 
+	}
+	@SuppressWarnings("unchecked")
+    public String[] getCatalogMobNames() 
+	{ 
+		return makeCatalogNames((Vector<Environmental>)mcatalog.getDimensionVector(1)); 
+	}
 	
-	public Item[] getCatalogItems(){
-		Vector itemsV=icatalog.getDimensionVector(1);
+	@SuppressWarnings("unchecked")
+    public Item[] getCatalogItems(){
+		Vector<Item> itemsV=icatalog.getDimensionVector(1);
 		Item[] items=new Item[itemsV.size()];
 		int x=0;
-		for(Iterator i=itemsV.iterator();i.hasNext();)
+		for(Iterator<Item> i=itemsV.iterator();i.hasNext();)
 			items[x++]=(Item)i.next();
 		return items;
 	}
-	public MOB[] getCatalogMobs(){
-		Vector mobsV=mcatalog.getDimensionVector(1);
+	@SuppressWarnings("unchecked")
+    public MOB[] getCatalogMobs(){
+		Vector<MOB> mobsV=mcatalog.getDimensionVector(1);
 		MOB[] mobs=new MOB[mobsV.size()];
 		int x=0;
-		for(Iterator i=mobsV.iterator();i.hasNext();)
+		for(Iterator<MOB> i=mobsV.iterator();i.hasNext();)
 			mobs[x++]=(MOB)i.next();
 		return mobs;
 	}
@@ -283,7 +292,7 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary, Runnable
 			if(E instanceof ShopKeeper)
 			{
 				ShopKeeper SK=(ShopKeeper)E;
-				Vector newShop=new Vector();
+				Vector<Environmental> newShop=new Vector<Environmental>();
 				for(RoomContent C : content)
 				{
 					if((C.holder()==SK)&&(!C.deleted()))
@@ -459,7 +468,7 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary, Runnable
 				data.delReference(cataP);
 			SHashSet<Physical> ignored=null;
 			if(data!=null)
-				ignored=new SHashSet(data.enumeration());
+				ignored=new SHashSet<Physical>(data.enumeration());
 			else
 				ignored=new SHashSet<Physical>(1);
 			Physical P;
@@ -475,7 +484,7 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary, Runnable
 					changeCatalogFlag(P,true);
 				}
 			}
-			Vector all=new Vector();
+			Vector<Environmental> all=new Vector<Environmental>();
 			String srchStr="$"+cataP.Name()+"$";
 			boolean isMob=(cataP instanceof MOB);
 			if(cataP instanceof MOB)
@@ -491,9 +500,9 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary, Runnable
 				all.addAll(CMLib.map().findShopStockers(CMLib.map().rooms(),null, srchStr, 50));
 				all.addAll(CMLib.map().findShopStockers(null,null, srchStr, 50));
 			}
-			HashSet doneShops=new HashSet();
+			HashSet<ShopKeeper> doneShops=new HashSet<ShopKeeper>();
 			ShopKeeper SK=null;
-			for(Enumeration e=all.elements();e.hasMoreElements();)
+			for(Enumeration<Environmental> e=all.elements();e.hasMoreElements();)
 			{
 				P=(Physical)e.nextElement();
 				if((CMLib.flags().isCataloged(P))
@@ -669,7 +678,7 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary, Runnable
 	{
 		if(M==null) return null;
 		CatalogLibrary.CataData data=null;
-		Vector selections=null;
+		Vector<Item> selections=null;
 		synchronized(icatalog)
 		{
 			try
@@ -684,8 +693,8 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary, Runnable
 					&&(CMLib.masking().maskCheck(data.getMaskV(),M,true)))
 					{
 						if(selections==null)
-							selections=new Vector();
-						selections.addElement(icatalog.elementAt(d,1));
+							selections=new Vector<Item>();
+						selections.addElement((Item)icatalog.elementAt(d,1));
 					}
 				}
 			} catch(IndexOutOfBoundsException e) {}
@@ -903,11 +912,11 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary, Runnable
 				o=(Environmental)refs.elementAt(r).get();
 				if(o==null)
 				{
-					refs.setElementAt(new WeakReference(P),r);
+					refs.setElementAt(new WeakReference<Physical>(P),r);
 					return;
 				}
 			}
-			refs.addElement(new WeakReference(P));
+			refs.addElement(new WeakReference<Physical>(P));
 		}
 		
 		public boolean isReference(Physical P) {

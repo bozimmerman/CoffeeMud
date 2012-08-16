@@ -31,7 +31,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("rawtypes")
 public interface CommonCommands extends CMLibrary
 {
 	public void tickAging(MOB mob, long millisSinceLast);
@@ -39,7 +38,7 @@ public interface CommonCommands extends CMLibrary
 	public void delGlobalMonitor(MsgMonitor M);
 	public void monitorGlobalMessage(Room room, CMMsg msg);
 	public void addGlobalMonitor(MsgMonitor M);
-	public boolean forceStandardCommand(MOB mob, String command, Vector parms);
+	public boolean forceStandardCommand(MOB mob, String command, Vector<Object> parms);
 	public Object forceInternalCommand(MOB mob, String command, Object... parms);
 	public Object unforcedInternalCommand(MOB mob, String command, Object... parms);
 	public StringBuilder getScore(MOB mob);

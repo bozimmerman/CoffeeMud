@@ -33,7 +33,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
 public class CMChannels extends StdLibrary implements ChannelsLibrary
 {
 	public String ID(){return "CMChannels";}
@@ -49,8 +48,8 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 	public List<String> ichannelList=new Vector<String>();
 	public List<String> imc2channelList=new Vector<String>();
 	public List<List<ChannelMsg>> channelQue=new Vector<List<ChannelMsg>>();
-	public final static List<ChannelMsg> emptyQueue=new ReadOnlyList<ChannelMsg>(new Vector(1));
-	public final static Set<ChannelFlag> emptyFlags=new ReadOnlySet<ChannelFlag>(new HashSet(1));
+	public final static List<ChannelMsg> emptyQueue=new ReadOnlyList<ChannelMsg>(new Vector<ChannelMsg>(1));
+	public final static Set<ChannelFlag> emptyFlags=new ReadOnlySet<ChannelFlag>(new HashSet<ChannelFlag>(1));
 	
 	public int getNumChannels()
 	{
@@ -234,7 +233,7 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 
 	public List<String> getFlaggedChannelNames(ChannelFlag flag)
 	{
-		List<String> channels=new Vector();
+		List<String> channels=new Vector<String>();
 		for(int c=0;c<channelNames.size();c++)
 			if(channelFlags.get(c).contains(flag))
 				channels.add(channelNames.get(c).toUpperCase());
@@ -268,13 +267,13 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 		numChannelsLoaded=0;
 		numIChannelsLoaded=0;
 		numImc2ChannelsLoaded=0;
-		channelNames=new Vector();
-		channelMasks=new Vector();
+		channelNames=new Vector<String>();
+		channelMasks=new Vector<String>();
 		channelColorOverrides=new Vector<String>();
 		channelFlags=new Vector<HashSet<ChannelFlag>>();
-		ichannelList=new Vector();
-		imc2channelList=new Vector();
-		channelQue=new Vector();
+		ichannelList=new Vector<String>();
+		imc2channelList=new Vector<String>();
+		channelQue=new Vector<List<ChannelMsg>>();
 	}
 	
 	public boolean shutdown()
@@ -347,7 +346,7 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 				&&(mySession.amBeingSnoopedBy(S))
 				&&(!mayReadThisChannel(S.mob(),channelCode,false)))
 				{
-					if(invalid==null) invalid=new Vector();
+					if(invalid==null) invalid=new Vector<Session>();
 					invalid.add(S);
 					mySession.stopBeingSnoopedBy(S);
 				}
@@ -430,7 +429,7 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 			imc2channelList.add("");
 			channelNames.add(item.toUpperCase().trim());
 			channelFlags.add(flags);
-			channelQue.add(new Vector());
+			channelQue.add(new Vector<ChannelMsg>());
 		}
 		while(ilist.length()>0)
 		{
@@ -456,7 +455,7 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 			String ichan=item.substring(y2+1).trim();
 			item=item.substring(0,y1);
 			channelNames.add(item.toUpperCase().trim());
-			channelQue.add(new Vector());
+			channelQue.add(new Vector<ChannelMsg>());
 			HashSet<ChannelFlag> flags=new HashSet<ChannelFlag>();
 			String[] colorOverride=new String[]{""};
 			channelMasks.add(parseOutFlags(lvl,flags,colorOverride));
@@ -489,7 +488,7 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 			String ichan=item.substring(y2+1).trim();
 			item=item.substring(0,y1);
 			channelNames.add(item.toUpperCase().trim());
-			channelQue.add(new Vector());
+			channelQue.add(new Vector<ChannelMsg>());
 			HashSet<ChannelFlag> flags=new HashSet<ChannelFlag>();
 			String[] colorOverride=new String[]{""};
 			channelMasks.add(parseOutFlags(lvl,flags,colorOverride));
@@ -502,7 +501,7 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 		if(!CMSecurity.isDisabled(CMSecurity.DisFlag.CHANNELAUCTION))
 		{
 			channelNames.add("AUCTION");
-			channelQue.add(new Vector());
+			channelQue.add(new Vector<ChannelMsg>());
 			channelMasks.add("");
 			channelFlags.add(new HashSet<ChannelFlag>());
 			channelColorOverrides.add("");

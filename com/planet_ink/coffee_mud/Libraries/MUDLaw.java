@@ -36,7 +36,6 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
 public class MUDLaw extends StdLibrary implements LegalLibrary
 {
 	public String ID(){return "MUDLaw";}
@@ -58,7 +57,7 @@ public class MUDLaw extends StdLibrary implements LegalLibrary
 		List<Behavior> V=CMLib.flags().flaggedBehaviors(A,Behavior.FLAG_LEGALBEHAVIOR);
 		if(V.size()>0) return (LegalBehavior)V.get(0);
 		LegalBehavior B=null;
-		for(Enumeration e=A.getParents();e.hasMoreElements();)
+		for(Enumeration<Area> e=A.getParents();e.hasMoreElements();)
 		{
 			B=getLegalBehavior((Area)e.nextElement());
 			if(B!=null) break;
@@ -79,7 +78,7 @@ public class MUDLaw extends StdLibrary implements LegalLibrary
 		if(V.size()>0) return A;
 		Area A2=null;
 		Area A3=null;
-		for(Enumeration e=A.getParents();e.hasMoreElements();)
+		for(Enumeration<Area> e=A.getParents();e.hasMoreElements();)
 		{
 			A2=(Area)e.nextElement();
 			A3=getLegalObject(A2);
@@ -99,7 +98,7 @@ public class MUDLaw extends StdLibrary implements LegalLibrary
 		int streets=0;
 		int buildings=0;
 		Room R=null;
-		for(Enumeration e=A.getCompleteMap();e.hasMoreElements();)
+		for(Enumeration<Room> e=A.getCompleteMap();e.hasMoreElements();)
 		{
 			R=(Room)e.nextElement();
 			if((R==null)||(R.roomID()==null)||(R.roomID().length()==0)) continue;
@@ -120,8 +119,8 @@ public class MUDLaw extends StdLibrary implements LegalLibrary
 	
 	public List<LandTitle> getAllUniqueTitles(Enumeration<Room> e, String owner, boolean includeRentals)
 	{
-		Vector V=new Vector();
-		HashSet roomsDone=new HashSet();
+		Vector<LandTitle> V=new Vector<LandTitle>();
+		HashSet<Room> roomsDone=new HashSet<Room>();
 		Room R=null;
 		for(;e.hasMoreElements();)
 		{

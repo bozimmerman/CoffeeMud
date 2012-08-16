@@ -110,7 +110,7 @@ public class Questwins extends StdCommand
 		else
 		if(commands.size()==1)
 		{
-			Vector<Quest> qQVec=CMLib.quests().getPlayerPersistantQuests(mob);
+			List<Quest> qQVec=CMLib.quests().getPlayerPersistantQuests(mob);
 			Vector<String> qVec = new Vector<String>();
 			for(Quest Q : qQVec)
 			{

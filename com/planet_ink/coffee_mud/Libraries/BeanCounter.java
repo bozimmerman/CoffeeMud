@@ -35,7 +35,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
 public class BeanCounter extends StdLibrary implements MoneyLibrary
 {
 	public String ID(){return "BeanCounter";}
@@ -62,7 +61,7 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 		return createCurrencySet(currencies,currency);
 	}
 	
-	protected MoneyDenomination[] createCurrencySet(Hashtable currencies, String currency)
+	protected MoneyDenomination[] createCurrencySet(Hashtable<String,MoneyDenomination[]> currencies, String currency)
 	{
 		int x=currency.indexOf('=');
 		if(x<0) return null;
@@ -70,12 +69,12 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 		if(currencies.containsKey(code))
 			return (MoneyDenomination[])currencies.get(code);
 		currency=currency.substring(x+1).trim();
-		Vector CV=CMParms.parseSemicolons(currency,true);
+		Vector<String> CV=CMParms.parseSemicolons(currency,true);
 		Vector<MoneyDenomination> DV=new Vector<MoneyDenomination>();
 		String s=null;
 		String num=null;
 		double d=0.0;
-		Vector currencyNames=new Vector();
+		Vector<String> currencyNames=new Vector<String>();
 		for(int v=0;v<CV.size();v++)
 		{
 			s=(String)CV.elementAt(v);
@@ -167,7 +166,7 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 	{
 		if(allCurrencyDenominationNames.containsKey(currency))
 			return allCurrencyDenominationNames.get(currency);
-		return new Vector();
+		return new Vector<String>(1);
 	}
 
 	public double lowestAbbreviatedDenomination(String currency)
@@ -313,7 +312,7 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 	public double[] getBestDenominations(String currency, double absoluteValue)
 	{
 		MoneyDenomination[] DV=getCurrencySet(currency);
-		Vector V=new Vector();
+		Vector<Double> V=new Vector<Double>();
 		if(DV!=null)
 		for(int d=DV.length-1;d>=0;d--)
 		{
@@ -604,7 +603,7 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 
 	public List<Coins> makeAllCurrency(String currency, double absoluteValue)
 	{
-		Vector V=new Vector();
+		Vector<Coins> V=new Vector<Coins>();
 		double[] ds=getBestDenominations(currency,absoluteValue);
 		for(int d=0;d<ds.length;d++)
 		{
@@ -792,7 +791,7 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 	{
 		Banker B=null;
 		Room R=null;
-		for(Enumeration e=CMLib.map().banks();e.hasMoreElements();)
+		for(Enumeration<Banker> e=CMLib.map().banks();e.hasMoreElements();)
 		{
 			B=(Banker)e.nextElement();
 			R=CMLib.map().roomLocation(B);
@@ -814,10 +813,10 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 									   String currency,
 									   double absoluteAmount)
 	{
-		HashSet triedBanks=new HashSet();
+		HashSet<String> triedBanks=new HashSet<String>();
 		if(modifyThisAreaBankGold(A,triedBanks,owner,explanation,currency,absoluteAmount))
 			return true;
-		for(Enumeration e=A.getParents();e.hasMoreElements();)
+		for(Enumeration<Area> e=A.getParents();e.hasMoreElements();)
 		{
 			Area A2=(Area)e.nextElement();
 			if(modifyThisAreaBankGold(A2,triedBanks,owner,explanation,currency,absoluteAmount))
@@ -916,14 +915,14 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 	public void clearInventoryMoney(MOB mob, String currency)
 	{
 		if(mob==null) return;
-		Vector clear=null;
+		Vector<Item> clear=null;
 		Item I=null;
 		for(int i=0;i<mob.numItems();i++)
 		{
 			I=mob.getItem(i);
 			if(I instanceof Coins)
 			{
-				if(clear==null) clear=new Vector();
+				if(clear==null) clear=new Vector<Item>();
 				if(currency==null)
 					clear.addElement(I);
 				else
@@ -965,7 +964,7 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 
 	public List<Coins> getStandardCurrency(Room R, Item container, String currency)
 	{
-		Vector V=new Vector();
+		Vector<Coins> V=new Vector<Coins>();
 		if(R==null) return V;
 		for(int i=0;i<R.numItems();i++)
 		{
@@ -974,7 +973,7 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 			&&(I instanceof Coins)
 			&&((currency==null)||((Coins)I).getCurrency().equalsIgnoreCase(currency))
 			&&(I.container()==container))
-				V.addElement(I);
+				V.addElement((Coins)I);
 		}
 		return V;
 	}
@@ -986,7 +985,7 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 	
 	public List<Coins> getStandardCurrency(MOB mob, Item container, String currency)
 	{
-		Vector V=new Vector();
+		Vector<Coins> V=new Vector<Coins>();
 		if(mob==null) return V;
 		if(((currency==null)||(currency.equals(getCurrency(mob))))&&(mob.getMoney()>0)&&(container==null))
 		{
@@ -1000,7 +999,7 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 			&&(I instanceof Coins)
 			&&((currency==null)||((Coins)I).getCurrency().equalsIgnoreCase(currency))
 			&&(I.container()==container))
-				V.addElement(I);
+				V.addElement((Coins)I);
 		}
 		return V;
 	}

@@ -35,7 +35,6 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
 public class Sense extends StdLibrary implements CMFlagLibrary
 {
 	public String ID(){return "Sense";}
@@ -232,7 +231,7 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 		{
 			Faction F=null;
 			Faction.FactionRange FR=null;
-			for(Enumeration e=((MOB)P).fetchFactions();e.hasMoreElements();)
+			for(Enumeration<String> e=((MOB)P).fetchFactions();e.hasMoreElements();)
 			{
 				F=CMLib.factions().getFaction((String)e.nextElement());
 				if(F!=null)
@@ -270,7 +269,7 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 		{
 			Faction F=null;
 			Faction.FactionRange FR=null;
-			for(Enumeration e=((MOB)P).fetchFactions();e.hasMoreElements();)
+			for(Enumeration<String> e=((MOB)P).fetchFactions();e.hasMoreElements();)
 			{
 				F=CMLib.factions().getFaction((String)e.nextElement());
 				if(F!=null)
@@ -352,7 +351,7 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 		{
 			Faction F=null;
 			Faction.FactionRange FR=null;
-			for(Enumeration e=((MOB)E).fetchFactions();e.hasMoreElements();)
+			for(Enumeration<String> e=((MOB)E).fetchFactions();e.hasMoreElements();)
 			{
 				F=CMLib.factions().getFaction((String)e.nextElement());
 				if(F!=null)
@@ -380,7 +379,7 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 		{
 			Faction F=null;
 			Faction.FactionRange FR=null;
-			for(Enumeration e=((MOB)P).fetchFactions();e.hasMoreElements();)
+			for(Enumeration<String> e=((MOB)P).fetchFactions();e.hasMoreElements();)
 			{
 				F=CMLib.factions().getFaction((String)e.nextElement());
 				if(F!=null)
@@ -982,7 +981,7 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 
 	public List<Behavior> flaggedBehaviors(PhysicalAgent P, long flag)
 	{
-		Vector V=new Vector();
+		Vector<Behavior> V=new Vector<Behavior>();
 		if(P!=null)
 			for(Enumeration<Behavior> e=P.behaviors();e.hasMoreElements();)
 			{
@@ -1343,7 +1342,7 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 			if(isAControlledFollower(invoker, R.fetchInhabitant(r), A))
 				return true;
 		Set<MOB> H = invoker.getGroupMembers(new HashSet<MOB>());
-		for(Iterator i=H.iterator();i.hasNext();)
+		for(Iterator<MOB> i=H.iterator();i.hasNext();)
 			if(isAControlledFollower(invoker, (MOB)i.next(), A))
 				return true;
 		return false;

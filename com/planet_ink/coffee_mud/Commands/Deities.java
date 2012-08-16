@@ -31,7 +31,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
+@SuppressWarnings("rawtypes")
 public class Deities extends StdCommand
 {
 	public Deities(){}
@@ -97,16 +97,16 @@ public class Deities extends StdCommand
 		return msg.toString();
 	}
 	
+	public Object executeInternal(MOB mob, int metaFlags, Object... args) throws java.io.IOException
+	{
+		if((args.length>0)&&(args[0] instanceof Deity))
+			return this.getDeityInformation(mob, (Deity)args[0]);
+		return null;
+	}
+	
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
-		if((commands.size()>1)&&(commands.elementAt(1) instanceof Deity))
-		{
-			Deity D=(Deity)commands.elementAt(1);
-			commands.clear();
-			commands.addElement(this.getDeityInformation(mob, D));
-		}
-		
 		String str=CMParms.combine(commands,1).toUpperCase();
 		StringBuffer msg=new StringBuffer("");
 		if(str.length()==0)

@@ -33,7 +33,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
 public class AutoTitles extends StdLibrary implements AutoTitlesLibrary
 {
 	public String ID(){return "AutoTitles";}
@@ -58,7 +57,7 @@ public class AutoTitles extends StdLibrary implements AutoTitlesLibrary
 			for(Triad<String,String,MaskingLibrary.CompiledZapperMask> triad : autoTitles)
 				if(triad.first.equalsIgnoreCase(title))
 					return "Error: Duplicate title: "+title+"="+mask+"!";
-			autoTitles.add(new Triad(title,mask,CMLib.masking().maskCompile(mask)));
+			autoTitles.add(new Triad<String,String,MaskingLibrary.CompiledZapperMask>(title,mask,CMLib.masking().maskCompile(mask)));
 		}
 		return null;
 	}
@@ -188,7 +187,7 @@ public class AutoTitles extends StdLibrary implements AutoTitlesLibrary
 			if(WKID.startsWith("Error: "))
 				Log.errOut("CharCreation",WKID);
 		}
-		for(Enumeration e=CMLib.players().players();e.hasMoreElements();)
+		for(Enumeration<MOB> e=CMLib.players().players();e.hasMoreElements();)
 		{
 			MOB M=(MOB)e.nextElement();
 			if(M.playerStats()!=null)

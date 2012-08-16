@@ -35,7 +35,6 @@ import java.util.*;
  * <p>limitations under the License.
  */
 
-@SuppressWarnings({"unchecked","rawtypes"})
 public class Factions extends StdLibrary implements FactionManager
 {
 	public String ID(){return "Factions";}
@@ -54,7 +53,7 @@ public class Factions extends StdLibrary implements FactionManager
 	}
 	public void reloadFactions(String factionList)
 	{
-		Vector preLoadFactions=CMParms.parseSemicolons(factionList,true);
+		Vector<String> preLoadFactions=CMParms.parseSemicolons(factionList,true);
 		clearFactions();
 		for(int i=0;i<preLoadFactions.size();i++)
 			getFaction((String)preLoadFactions.elementAt(i));
@@ -84,8 +83,8 @@ public class Factions extends StdLibrary implements FactionManager
 	{
 		if(FR==null) return "";
 		Faction F=FR.getFaction();
-		Vector relevantFactions=new Vector();
-		for(Enumeration e=F.ranges();e.hasMoreElements();)
+		Vector<FactionRange> relevantFactions=new Vector<FactionRange>();
+		for(Enumeration<FactionRange> e=F.ranges();e.hasMoreElements();)
 		{
 			Faction.FactionRange FR2=(Faction.FactionRange)e.nextElement();
 			if(FR2.codeName().equalsIgnoreCase(FR.codeName()))
@@ -105,7 +104,7 @@ public class Factions extends StdLibrary implements FactionManager
 	{
 		Faction F=(Faction)CMClass.getCommon("DefaultFaction");
 		F.initializeFaction(buf,factionID);
-		for(Enumeration e=F.ranges();e.hasMoreElements();)
+		for(Enumeration<FactionRange> e=F.ranges();e.hasMoreElements();)
 		{
 			Faction.FactionRange FR=(Faction.FactionRange)e.nextElement();
 			String CodeName=(FR.codeName().length()>0)?FR.codeName().toUpperCase():FR.name().toUpperCase();
@@ -156,7 +155,7 @@ public class Factions extends StdLibrary implements FactionManager
 	public Faction getFactionByName(String factionNamed) 
 	{
 		Faction F;
-		for(Enumeration e=factionSet.keys();e.hasMoreElements();) 
+		for(Enumeration<String> e=factionSet.keys();e.hasMoreElements();) 
 		{
 			F=(Faction)factionSet.get(e.nextElement());
 			if(F.name().equalsIgnoreCase(factionNamed)) 
@@ -387,7 +386,7 @@ public class Factions extends StdLibrary implements FactionManager
 		else
 		{
 			Faction F=null;
-			for(Enumeration e=factions();e.hasMoreElements();)
+			for(Enumeration<Faction> e=factions();e.hasMoreElements();)
 			{
 				F=(Faction)e.nextElement();
 				if(((F.getInternalFlags()&Faction.IFLAG_IGNOREAUTO)==0)
@@ -445,7 +444,7 @@ public class Factions extends StdLibrary implements FactionManager
 			Vector<Faction.FactionChangeEvent> outSiders=new Vector<Faction.FactionChangeEvent>();
 			Vector<Faction.FactionChangeEvent> timers=new Vector<Faction.FactionChangeEvent>();
 			HashSet<Faction> factionsDone=new HashSet<Faction>();
-			for(Enumeration e=factionSet.elements();e.hasMoreElements();)
+			for(Enumeration<Faction> e=factionSet.elements();e.hasMoreElements();)
 			{
 				F=(Faction)e.nextElement();
 				if((F.getInternalFlags()&Faction.IFLAG_CUSTOMTICK)==0)
@@ -493,7 +492,7 @@ public class Factions extends StdLibrary implements FactionManager
 		int bottom=Integer.MAX_VALUE;
 		int top=Integer.MIN_VALUE;
 		int pct=getPercent(AlignID(),faction);
-		Enumeration e = getRanges(AlignID());
+		Enumeration<FactionRange> e = getRanges(AlignID());
 		if(e!=null)
 		for(;e.hasMoreElements();) 
 		{
@@ -522,7 +521,7 @@ public class Factions extends StdLibrary implements FactionManager
 	{
 		int bottom=Integer.MAX_VALUE;
 		int top=Integer.MIN_VALUE;
-		Enumeration e = getRanges(AlignID());
+		Enumeration<FactionRange> e = getRanges(AlignID());
 		if(e==null) return 0;
 		for(;e.hasMoreElements();) 
 		{
@@ -602,7 +601,7 @@ public class Factions extends StdLibrary implements FactionManager
 			{
 				StringBuffer list=new StringBuffer(showNumber+". Faction Division/Ranges List:\n\r");
 				list.append(CMStrings.padRight("   Code",16)+CMStrings.padRight("Name",21)+CMStrings.padRight("Min",11)+CMStrings.padRight("Max",11)+CMStrings.padRight("Align",6)+"\n\r");
-				for(Enumeration e=me.ranges();e.hasMoreElements();)
+				for(Enumeration<FactionRange> e=me.ranges();e.hasMoreElements();)
 				{
 					Faction.FactionRange FR=(Faction.FactionRange)e.nextElement();
 					list.append(CMStrings.padRight("   "+FR.codeName(),15)+" ");
@@ -644,7 +643,7 @@ public class Factions extends StdLibrary implements FactionManager
 					if(newName.length()==0)
 						error99=true;
 					else
-					for(Enumeration e=me.ranges();e.hasMoreElements();)
+					for(Enumeration<FactionRange> e=me.ranges();e.hasMoreElements();)
 					{
 						Faction.FactionRange FR3=(Faction.FactionRange)e.nextElement();
 						if(FR3.name().equalsIgnoreCase(FR.name())&&(FR3!=FR))
@@ -705,14 +704,14 @@ public class Factions extends StdLibrary implements FactionManager
 			// non-auto defaults
 			error=true;
 			if(!me.defaults().hasMoreElements())
-				me.setDefaults(new XVector("0"));
+				me.setDefaults(new XVector<String>("0"));
 			++showNumber;
 			while(error&&(mob.session()!=null)&&(!mob.session().isStopped()))
 			{
 				error=false;
 				String newDefaults=CMLib.genEd().prompt(mob,CMParms.toSemicolonList(me.defaults()),showNumber,showFlag,"Other default values with zapper masks (semicolon delimited).\n\r    ");
 				if((showFlag!=showNumber)&&(showFlag>-999)) break;
-				Vector V=CMParms.parseSemicolons(newDefaults,true);
+				Vector<String> V=CMParms.parseSemicolons(newDefaults,true);
 				if(V.size()==0)
 				{
 					mob.tell("This field may not be empty.");
@@ -830,7 +829,7 @@ public class Factions extends StdLibrary implements FactionManager
 			{
 				StringBuffer list=new StringBuffer(showNumber+". Cross-Faction Relations:\n\r");
 				list.append("    Faction"+CMStrings.padRight("",25)+"Percentage change\n\r");
-				for(Enumeration e=me.relationFactions();e.hasMoreElements();)
+				for(Enumeration<String> e=me.relationFactions();e.hasMoreElements();)
 				{
 					String key=(String)e.nextElement();
 					double value=me.getRelation(key);
@@ -848,7 +847,7 @@ public class Factions extends StdLibrary implements FactionManager
 				if(which.length()==0)
 					break;
 				Faction theF=null;
-				for(Enumeration e=me.relationFactions();e.hasMoreElements();)
+				for(Enumeration<String> e=me.relationFactions();e.hasMoreElements();)
 				{
 					String key=(String)e.nextElement();
 					Faction F=CMLib.factions().getFaction(key);
@@ -899,7 +898,7 @@ public class Factions extends StdLibrary implements FactionManager
 				int numChanges=0;
 				StringBuffer choices=new StringBuffer("");
 				Hashtable<Character,Faction.FactionChangeEvent> choicesHashed=new Hashtable<Character,Faction.FactionChangeEvent>(); 
-				for(Enumeration e=me.changeEventKeys();e.hasMoreElements();)
+				for(Enumeration<String> e=me.changeEventKeys();e.hasMoreElements();)
 				{
 					Faction.FactionChangeEvent[] CEs=me.getChangeEvents((String)e.nextElement());
 					if(CEs!=null)
@@ -1024,7 +1023,7 @@ public class Factions extends StdLibrary implements FactionManager
 						+"\n\r");
 				int numUsages=0;
 				StringBuffer choices=new StringBuffer("0\n\r");
-				for(Enumeration e=me.abilityUsages();e.hasMoreElements();)
+				for(Enumeration<Faction.FactionAbilityUsage> e=me.abilityUsages();e.hasMoreElements();)
 				{
 					Faction.FactionAbilityUsage CA=(Faction.FactionAbilityUsage)e.nextElement();
 					if(CA!=null)
@@ -1137,9 +1136,9 @@ public class Factions extends StdLibrary implements FactionManager
 						+"\n\r");
 				int numAffBehavs=0;
 				StringBuffer choices=new StringBuffer("0\n\r");
-				Vector IDs=new Vector();
+				Vector<String> IDs=new Vector<String>();
 				String ID=null;
-				for(Enumeration e=me.affectsBehavs();e.hasMoreElements();)
+				for(Enumeration<String> e=me.affectsBehavs();e.hasMoreElements();)
 				{
 					ID=(String)e.nextElement();
 					String[] parms=me.getAffectBehav(ID);
@@ -1273,9 +1272,9 @@ public class Factions extends StdLibrary implements FactionManager
 						+"\n\r");
 				int numReactions=0;
 				StringBuffer choices=new StringBuffer("0\n\r");
-				Vector reactions=new Vector();
+				Vector<Faction.FactionReactionItem> reactions=new Vector<Faction.FactionReactionItem>();
 				Faction.FactionReactionItem item=null;
-				for(Enumeration e=me.reactions();e.hasMoreElements();)
+				for(Enumeration<Faction.FactionReactionItem> e=me.reactions();e.hasMoreElements();)
 				{
 					item=(Faction.FactionReactionItem)e.nextElement();
 					list.append("    "+((char)('A'+numReactions)+") "));
@@ -1331,7 +1330,7 @@ public class Factions extends StdLibrary implements FactionManager
 					if(rangeCode.equalsIgnoreCase("?"))
 					{
 						StringBuffer str=new StringBuffer("");
-						for(Enumeration e=me.ranges();e.hasMoreElements();)
+						for(Enumeration<Faction.FactionRange> e=me.ranges();e.hasMoreElements();)
 						{
 							Faction.FactionRange FR=(Faction.FactionRange)e.nextElement();
 							str.append(FR.codeName()+" ");
@@ -1343,7 +1342,7 @@ public class Factions extends StdLibrary implements FactionManager
 					if(!rangeCode.equals(oldData[0]))
 					{
 						cont=true;
-						for(Enumeration e=me.ranges();e.hasMoreElements();)
+						for(Enumeration<Faction.FactionRange> e=me.ranges();e.hasMoreElements();)
 							if(((Faction.FactionRange)e.nextElement()).codeName().equalsIgnoreCase(rangeCode))
 							{
 								newData[0]=rangeCode;

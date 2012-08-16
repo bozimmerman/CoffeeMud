@@ -36,7 +36,6 @@ import java.lang.ref.WeakReference;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
 public class CommonMsgs extends StdLibrary implements CommonCommands
 {
 	public String ID(){return "CommonMsgs";}
@@ -101,7 +100,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 		return Boolean.FALSE;
 	}
 
-	public boolean forceStandardCommand(MOB mob, String command, Vector parms)
+	public boolean forceStandardCommand(MOB mob, String command, Vector<Object> parms)
 	{
 		try
 		{
@@ -140,7 +139,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 			if(W.get()==M)
 				return;
 		}
-		globalMonitors.add(new WeakReference(M));
+		globalMonitors.add(new WeakReference<MsgMonitor>(M));
 	}
 	
 	public void delGlobalMonitor(MsgMonitor M)
@@ -157,7 +156,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 	
 	public StringBuilder getScore(MOB mob)
 	{
-		Vector V=new Vector();
+		Vector<Object> V=new Vector<Object>();
 		forceStandardCommand(mob,"Score",V);
 		if((V.size()==1)&&(V.firstElement() instanceof StringBuilder))
 			return (StringBuilder)V.firstElement();
@@ -165,7 +164,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 	}
 	public StringBuilder getEquipment(MOB viewer, MOB mob)
 	{
-		Vector V=new Vector();
+		Vector<Object> V=new Vector<Object>();
 		V.addElement(viewer);
 		forceStandardCommand(mob,"Equipment",V);
 		if((V.size()>1)&&(V.elementAt(1) instanceof StringBuilder))
@@ -174,7 +173,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 	}
 	public StringBuilder getInventory(MOB viewer, MOB mob)
 	{
-		Vector V=new Vector();
+		Vector<Object> V=new Vector<Object>();
 		V.addElement(viewer);
 		forceStandardCommand(mob,"Inventory",V);
 		if((V.size()>1)&&(V.elementAt(1) instanceof StringBuilder))
@@ -188,7 +187,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 							boolean systemMsg)
 	{
 		forceStandardCommand(mob,"Channel",
-						  new XVector(Boolean.valueOf(systemMsg),channelName,message));
+						  new XVector<Object>(Boolean.valueOf(systemMsg),channelName,message));
 	}
 
 	public void postChannel(String channelName,
@@ -208,41 +207,41 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 
 	public boolean postDrop(MOB mob, Environmental dropThis, boolean quiet, boolean optimized)
 	{
-		return forceStandardCommand(mob,"Drop",new XVector(dropThis,Boolean.valueOf(quiet),Boolean.valueOf(optimized)));
+		return forceStandardCommand(mob,"Drop",new XVector<Object>(dropThis,Boolean.valueOf(quiet),Boolean.valueOf(optimized)));
 	}
 	public boolean postGet(MOB mob, Item container, Item getThis, boolean quiet)
 	{
 		if(container==null)
-			return forceStandardCommand(mob,"Get",new XVector(getThis,Boolean.valueOf(quiet)));
-		return forceStandardCommand(mob,"Get",new XVector(getThis,container,Boolean.valueOf(quiet)));
+			return forceStandardCommand(mob,"Get",new XVector<Object>(getThis,Boolean.valueOf(quiet)));
+		return forceStandardCommand(mob,"Get",new XVector<Object>(getThis,container,Boolean.valueOf(quiet)));
 	}
 
 	public boolean postRemove(MOB mob, Item item, boolean quiet)
 	{
 		if(quiet)
-			return forceStandardCommand(mob,"Remove",new XVector("REMOVE",item,"QUIETLY"));
-		return forceStandardCommand(mob,"Remove",new XVector("REMOVE",item));
+			return forceStandardCommand(mob,"Remove",new XVector<Object>("REMOVE",item,"QUIETLY"));
+		return forceStandardCommand(mob,"Remove",new XVector<Object>("REMOVE",item));
 	}
 
 	public void postLook(MOB mob, boolean quiet)
 	{
 		if(quiet)
-			forceStandardCommand(mob,"Look",new XVector("LOOK","UNOBTRUSIVELY"));
+			forceStandardCommand(mob,"Look",new XVector<Object>("LOOK","UNOBTRUSIVELY"));
 		else
-			forceStandardCommand(mob,"Look",new XVector("LOOK"));
+			forceStandardCommand(mob,"Look",new XVector<Object>("LOOK"));
 	}
 
 	public void postFlee(MOB mob, String whereTo)
 	{
-		forceStandardCommand(mob,"Flee",new XVector("FLEE",whereTo));
+		forceStandardCommand(mob,"Flee",new XVector<Object>("FLEE",whereTo));
 	}
 
 	public void postSheath(MOB mob, boolean ifPossible)
 	{
 		if(ifPossible)
-			forceStandardCommand(mob,"Sheath",new XVector("SHEATH","IFPOSSIBLE"));
+			forceStandardCommand(mob,"Sheath",new XVector<Object>("SHEATH","IFPOSSIBLE"));
 		else
-			forceStandardCommand(mob,"Sheath",new XVector("SHEATH"));
+			forceStandardCommand(mob,"Sheath",new XVector<Object>("SHEATH"));
 	}
 
 	public void postDraw(MOB mob, boolean doHold, boolean ifNecessary)
@@ -250,25 +249,25 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 		if(ifNecessary)
 		{
 			if(doHold)
-				forceStandardCommand(mob,"Draw",new XVector("DRAW","HELD","IFNECESSARY"));
+				forceStandardCommand(mob,"Draw",new XVector<Object>("DRAW","HELD","IFNECESSARY"));
 			else
-				forceStandardCommand(mob,"Draw",new XVector("DRAW","IFNECESSARY"));
+				forceStandardCommand(mob,"Draw",new XVector<Object>("DRAW","IFNECESSARY"));
 		}
 		else
-			forceStandardCommand(mob,"Draw",new XVector("DRAW"));
+			forceStandardCommand(mob,"Draw",new XVector<Object>("DRAW"));
 	}
 
 	public void postStand(MOB mob, boolean ifNecessary)
 	{
 		if(ifNecessary)
-			forceStandardCommand(mob,"Stand",new XVector("STAND","IFNECESSARY"));
+			forceStandardCommand(mob,"Stand",new XVector<Object>("STAND","IFNECESSARY"));
 		else
-			forceStandardCommand(mob,"Stand",new XVector("STAND"));
+			forceStandardCommand(mob,"Stand",new XVector<Object>("STAND"));
 	}
 
 	public void postSleep(MOB mob)
 	{
-		forceStandardCommand(mob,"Sleep",new XVector("SLEEP"));
+		forceStandardCommand(mob,"Sleep",new XVector<Object>("SLEEP"));
 	}
 
 	public void postFollow(MOB follower, MOB leader, boolean quiet)
@@ -276,16 +275,16 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 		if(leader!=null)
 		{
 			if(quiet)
-				forceStandardCommand(follower,"Follow",new XVector("FOLLOW",leader,"UNOBTRUSIVELY"));
+				forceStandardCommand(follower,"Follow",new XVector<Object>("FOLLOW",leader,"UNOBTRUSIVELY"));
 			else
-				forceStandardCommand(follower,"Follow",new XVector("FOLLOW",leader));
+				forceStandardCommand(follower,"Follow",new XVector<Object>("FOLLOW",leader));
 		}
 		else
 		{
 			if(quiet)
-				forceStandardCommand(follower,"Follow",new XVector("FOLLOW","SELF","UNOBTRUSIVELY"));
+				forceStandardCommand(follower,"Follow",new XVector<Object>("FOLLOW","SELF","UNOBTRUSIVELY"));
 			else
-				forceStandardCommand(follower,"Follow",new XVector("FOLLOW","SELF"));
+				forceStandardCommand(follower,"Follow",new XVector<Object>("FOLLOW","SELF"));
 		}
 	}
 
@@ -498,7 +497,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 		&&(CMProps.getIntVar(CMProps.SYSTEMI_MANACONSUMEAMT)>0)
 		&&((--manaConsumeCounter)<=0))
 		{
-			Vector expenseAffects=new Vector();
+			Vector<Ability> expenseAffects=new Vector<Ability>();
 			manaConsumeCounter=CMProps.getIntVar(CMProps.SYSTEMI_MANACONSUMETIME);
 			for(final Enumeration<Ability> a=mob.effects();a.hasMoreElements();)
 			{
@@ -836,7 +835,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 				||((contitem instanceof Drink)&&(((Drink)contitem).liquidRemaining()>0))))
 			{
 				buf.append(item.name()+" contains:^<!ENTITY container \""+CMStrings.removeColors(item.name())+"\"^>"+(CMath.bset(mob.getBitmap(),MOB.ATT_COMPRESS)?" ":"\n\r"));
-				Vector newItems=new Vector();
+				Vector<Item> newItems=new Vector<Item>();
 				if((item instanceof Drink)&&(((Drink)item).liquidRemaining()>0))
 				{
 					RawMaterial l=(RawMaterial)CMClass.getItem("GenLiquidResource");
@@ -1022,7 +1021,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 				String roomDesc=room.roomDescription(mob);
 				if(lookCode==LOOK_LONG)
 				{
-					Vector keyWords=null;
+					Vector<String> keyWords=null;
 					String word=null;
 					int x=0;
 					for(int c=0;c<room.numItems();c++)
@@ -1080,7 +1079,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 			}
 		}
 
-		Vector viewItems=new Vector();
+		Vector<Item> viewItems=new Vector<Item>();
 		int itemsInTheDarkness=0;
 		for(int c=0;c<room.numItems();c++)
 		{
@@ -1148,7 +1147,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 				if(awarenessA!=null) 
 				{
 					sess.colorOnlyPrintln("", true);
-					final Vector list=new Vector();
+					final Vector<Object> list=new Vector<Object>();
 					awarenessA.invoke(mob, list, mob.location(), true, CMProps.getIntVar(CMProps.SYSTEMI_AWARERANGE));
 					for(Object o : list)
 						sess.colorOnlyPrintln((String)o, true);
@@ -1313,12 +1312,12 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 				if(isAClearExitView(mob,room,exit)&&(direction>=0)&&(room!=null))
 				{
 					List<Room> view=null;
-					Vector items=new Vector();
+					Vector<Environmental> items=new Vector<Environmental>();
 					if(room.getGridParent()!=null)
 						view=room.getGridParent().getAllRooms();
 					else
 					{
-						view=new Vector();
+						view=new Vector<Room>();
 						view.add(room);
 						for(int i=0;i<5;i++)
 						{
@@ -1329,19 +1328,18 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 								view.add(room);
 						}
 					}
-					Environmental E=null;
 					for(int r=0;r<view.size();r++)
 					{
 						room=(Room)view.get(r);
 						for(int i=0;i<room.numItems();i++)
 						{
-							E=room.getItem(i);
-							if(E!=null) items.addElement(E);
+							Item E=room.getItem(i);
+							if(E!=null) items.add(E);
 						}
 						for(int i=0;i<room.numInhabitants();i++)
 						{
-							E=room.fetchInhabitant(i);
-							if(E!=null) items.addElement(E);
+							MOB E=room.fetchInhabitant(i);
+							if(E!=null) items.add(E);
 						}
 					}
 					StringBuilder seenThatWay=CMLib.lister().lister(msg.source(),items,true,"","",false,true);

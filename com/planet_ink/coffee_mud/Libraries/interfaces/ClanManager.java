@@ -30,7 +30,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("rawtypes")
 /**
  * This library manages the list of Clans in the game, and helps
  * administer their most basic functions.
@@ -279,5 +278,5 @@ public interface ClanManager extends CMLibrary
 	 * @param voteIfNecessary true to start a vote if one is needed, false to just return true.
 	 * @return true to execute the given command, and false not to.
 	 */
-	public boolean goForward(MOB mob, Clan C, Vector commands, Clan.Function function, boolean voteIfNecessary);
+	public boolean goForward(MOB mob, Clan C, Vector<? extends Object> commands, Clan.Function function, boolean voteIfNecessary);
 }

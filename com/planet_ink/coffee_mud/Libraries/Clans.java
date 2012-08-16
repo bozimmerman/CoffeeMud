@@ -39,7 +39,6 @@ import java.util.*;
  * <p>See the License for the specific language governing permissions and
  * <p>limitations under the License.
  */
-@SuppressWarnings("rawtypes")
 public class Clans extends StdLibrary implements ClanManager
 {
 	public SHashtable<String,Clan> all				  =new SHashtable<String,Clan>();
@@ -48,7 +47,7 @@ public class Clans extends StdLibrary implements ClanManager
 	public String ID(){return "Clans";}
 	public boolean shutdown()
 	{
-		for(Enumeration e=all.elements();e.hasMoreElements();)
+		for(Enumeration<Clan> e=all.elements();e.hasMoreElements();)
 		{
 			Clan C=(Clan)e.nextElement();
 			CMLib.threads().deleteTick(C,Tickable.TICKID_CLAN);
@@ -69,7 +68,7 @@ public class Clans extends StdLibrary implements ClanManager
 		&&((i1==Clan.REL_WAR)
 		   ||(i1==Clan.REL_ALLY)))
 		   return i1==relation;
-		for(Enumeration e=clans();e.hasMoreElements();)
+		for(Enumeration<Clan> e=clans();e.hasMoreElements();)
 		{
 			Clan C=(Clan)e.nextElement();
 			if((C!=C1)&&(C!=C2))
@@ -101,7 +100,7 @@ public class Clans extends StdLibrary implements ClanManager
 		int rel=Clan.RELATIONSHIP_VECTOR[i1][i2];
 		if(rel==Clan.REL_WAR) return Clan.REL_WAR;
 		if(rel==Clan.REL_ALLY) return Clan.REL_ALLY;
-		for(Enumeration e=clans();e.hasMoreElements();)
+		for(Enumeration<Clan> e=clans();e.hasMoreElements();)
 		{
 			Clan C=(Clan)e.nextElement();
 			if((C!=C1)
@@ -118,7 +117,7 @@ public class Clans extends StdLibrary implements ClanManager
 		if(id.length()==0) return null;
 		Clan C=(Clan)all.get(id.toUpperCase());
 		if(C!=null) return C;
-		for(Enumeration e=all.elements();e.hasMoreElements();)
+		for(Enumeration<Clan> e=all.elements();e.hasMoreElements();)
 		{
 			C=(Clan)e.nextElement();
 			if(CMLib.english().containsString(CMStrings.removeColors(C.name()),id))
@@ -130,7 +129,7 @@ public class Clans extends StdLibrary implements ClanManager
 	{
 		Clan C=getClan(id);
 		if(C!=null) return C;
-		for(Enumeration e=all.elements();e.hasMoreElements();)
+		for(Enumeration<Clan> e=all.elements();e.hasMoreElements();)
 		{
 			C=(Clan)e.nextElement();
 			if(CMLib.english().containsString(CMStrings.removeColors(C.name()),id))
@@ -188,7 +187,7 @@ public class Clans extends StdLibrary implements ClanManager
 
 	public void tickAllClans()
 	{
-		for(Enumeration e=clans();e.hasMoreElements();)
+		for(Enumeration<Clan> e=clans();e.hasMoreElements();)
 		{
 			Clan C=(Clan)e.nextElement();
 			C.tick(C,Tickable.TICKID_CLAN);
@@ -236,7 +235,7 @@ public class Clans extends StdLibrary implements ClanManager
 		
 	}
 	
-	public boolean goForward(MOB mob, Clan C, Vector commands, Clan.Function function, boolean voteIfNecessary)
+	public boolean goForward(MOB mob, Clan C, Vector<? extends Object> commands, Clan.Function function, boolean voteIfNecessary)
 	{
 		if((mob==null)||(C==null)) return false;
 		Clan.Authority allowed=C.getAuthority(mob.getClanRole(),function);
@@ -252,7 +251,7 @@ public class Clans extends StdLibrary implements ClanManager
 		   return false;
 		if(!voteIfNecessary) return true;
 		String matter=CMParms.combine(commands,0);
-		for(Enumeration e=C.votes();e.hasMoreElements();)
+		for(Enumeration<Clan.ClanVote> e=C.votes();e.hasMoreElements();)
 		{
 			Clan.ClanVote CV=(Clan.ClanVote)e.nextElement();
 			if((CV.voteStarter.equalsIgnoreCase(mob.Name()))

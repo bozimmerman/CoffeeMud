@@ -30,7 +30,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("rawtypes")
 public interface AbilityParameters extends CMLibrary
 {
 	public static final int PARMTYPE_CHOICES=0;
@@ -45,8 +44,8 @@ public interface AbilityParameters extends CMLibrary
 	{
 		public String ID();
 		public int parmType();
-		public DVector createChoices(Enumeration e);
-		public DVector createChoices(Vector V);
+		public DVector createChoices(Enumeration<? extends Object> e);
+		public DVector createChoices(Vector<? extends Object> V);
 		public DVector createChoices(String[] S);
 		public DVector choices();
 		public int appliesToClass(Object o);
@@ -78,8 +77,9 @@ public interface AbilityParameters extends CMLibrary
 	{
 		public String recipeFilename();
 		public String recipeFormat();
-		public Vector dataRows();
-		public Vector columns();
+		public Vector<DVector> dataRows();
+		@SuppressWarnings("rawtypes")
+        public Vector columns();
 		public int[] columnLengths();
 		public String[] columnHeaders();
 		public int numberOfDataColumns();

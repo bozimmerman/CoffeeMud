@@ -35,7 +35,6 @@ import java.util.regex.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
 public class RawCMaterial extends StdLibrary implements MaterialLibrary
 {
 	public String ID(){return "RawCMaterial";}
@@ -78,7 +77,7 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
 	{
 		if((item==null)||(item.amDestroyed())) 
 			return false;
-		Vector found=new Vector();
+		Vector<Item> found=new Vector<Item>();
 		found.addElement(item);
 		Item I=null;
 		Environmental owner=item.owner();
@@ -152,7 +151,7 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
 		if(bundle==null) bundle=item;
 		found.removeElement(bundle);
 		if(lowestNonZeroFoodNumber==Long.MAX_VALUE) lowestNonZeroFoodNumber=0;
-		Hashtable foundAblesH=new Hashtable();
+		Hashtable<String,Ability> foundAblesH=new Hashtable<String,Ability>();
 		Ability A=null;
 		for(int i=0;i<found.size();i++)
 		{
@@ -178,7 +177,7 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
 		}
 		if(bundle instanceof Decayable)
 			((Decayable)bundle).setDecayTime(lowestNonZeroFoodNumber);
-		for(Enumeration e=foundAblesH.keys();e.hasMoreElements();)
+		for(Enumeration<String> e=foundAblesH.keys();e.hasMoreElements();)
 		{
 			A=(Ability)foundAblesH.get(e.nextElement());
 			if(bundle.fetchEffect(A.ID())==null)
@@ -667,7 +666,7 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
 	{ return destroyResources(getAllItems(E),E,howMuch,finalMaterial,otherMaterial,never);}
 	public int destroyResources(MOB E, int howMuch, int finalMaterial, int otherMaterial, Item never)
 	{ return destroyResources(getAllItems(E),E,howMuch,finalMaterial,otherMaterial,never);}
-	public int destroyResources(Vector V,
+	public int destroyResources(List<Item> V,
 								Environmental addTo,
 								int howMuch,
 								int finalMaterial,
@@ -680,7 +679,7 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
 		if((howMuch>0)||(otherMaterial>0))
 		for(int i=V.size()-1;i>=0;i--)
 		{
-			Item I=(Item)V.elementAt(i);
+			Item I=(Item)V.get(i);
 			if(I==null) break;
 			if(I==never) continue;
 
@@ -742,7 +741,7 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
 	
 	public Item findFirstResource(Room E, String other){return findFirstResource(getAllItems(E),other);}
 	public Item findFirstResource(MOB E, String other){return findFirstResource(getAllItems(E),other);}
-	public Item findFirstResource(Vector V, String other)
+	public Item findFirstResource(List<Item> V, String other)
 	{
 		if((other==null)||(other.length()==0))
 			return null;
@@ -753,11 +752,11 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
 	}
 	public Item findFirstResource(Room E, int resource){return findFirstResource(getAllItems(E),resource);}
 	public Item findFirstResource(MOB E, int resource){return findFirstResource(getAllItems(E),resource);}
-	protected Item findFirstResource(Vector V, int resource)
+	protected Item findFirstResource(List<Item> V, int resource)
 	{
 		for(int i=0;i<V.size();i++)
 		{
-			Item I=(Item)V.elementAt(i);
+			Item I=(Item)V.get(i);
 			if((I instanceof RawMaterial)
 			&&(I.material()==resource)
 			&&(!CMLib.flags().isOnFire(I))
@@ -770,7 +769,7 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
 	
 	public Item findMostOfMaterial(Room E, String other){return findMostOfMaterial(getAllItems(E),other);}
 	public Item findMostOfMaterial(MOB E, String other){return findMostOfMaterial(getAllItems(E),other);}
-	protected Item findMostOfMaterial(Vector V, String other)
+	protected Item findMostOfMaterial(List<Item> V, String other)
 	{
 		if((other==null)||(other.length()==0))
 			return null;
@@ -782,12 +781,12 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
 
 	public int findNumberOfResource(Room E, int resource){return findNumberOfResource(getAllItems(E),resource);}
 	public int findNumberOfResource(MOB E, int resource){return findNumberOfResource(getAllItems(E),resource);}
-	protected int findNumberOfResource(Vector V, int resource)
+	protected int findNumberOfResource(List<Item> V, int resource)
 	{
 		int foundWood=0;
 		for(int i=0;i<V.size();i++)
 		{
-			Item I=(Item)V.elementAt(i);
+			Item I=(Item)V.get(i);
 			if((I instanceof RawMaterial)
 			&&(I.material()==resource)
 			&&(!CMLib.flags().isOnFire(I))
@@ -800,14 +799,14 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
 
 	public Item findMostOfMaterial(Room E, int material){return findMostOfMaterial(getAllItems(E),material);}
 	public Item findMostOfMaterial(MOB E, int material){return findMostOfMaterial(getAllItems(E),material);}
-	protected Item findMostOfMaterial(Vector V, int material)
+	protected Item findMostOfMaterial(List<Item> V, int material)
 	{
 		int most=0;
 		int mostMaterial=-1;
 		Item mostItem=null;
 		for(int i=0;i<V.size();i++)
 		{
-			Item I=(Item)V.elementAt(i);
+			Item I=(Item)V.get(i);
 			if((I instanceof RawMaterial)
 			&&((I.material()&RawMaterial.MATERIAL_MASK)==material)
 			&&(I.material()!=mostMaterial)
@@ -827,34 +826,34 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
 		return mostItem;
 	}
 
-	protected Vector getAllItems(Room R)
+	protected List<Item> getAllItems(Room R)
 	{
-		Vector V=new Vector();
+		List<Item> V=new Vector<Item>();
 		Item I=null;
 		if(R!=null)
 		for(int r=0;r<R.numItems();r++)
 		{
 			I=R.getItem(r);
-			if(I!=null)V.addElement(I);
+			if(I!=null)V.add(I);
 		}
 		return V;
 	}
-	protected Vector getAllItems(MOB M)
+	protected List<Item> getAllItems(MOB M)
 	{
-		Vector V=new Vector();
+		List<Item> V=new Vector<Item>();
 		Item I=null;
 		if(M!=null)
 		for(int i=0;i<M.numItems();i++)
 		{
 			I=M.getItem(i);
-			if(I!=null)V.addElement(I);
+			if(I!=null)V.add(I);
 		}
 		return V;
 	}
 	
 	public Item fetchFoundOtherEncoded(Room E, String otherRequired){return fetchFoundOtherEncoded(getAllItems(E),otherRequired);}
 	public Item fetchFoundOtherEncoded(MOB E, String otherRequired){return fetchFoundOtherEncoded(getAllItems(E),otherRequired);}
-	protected Item fetchFoundOtherEncoded(Vector V, String otherRequired)
+	protected Item fetchFoundOtherEncoded(List<Item> V, String otherRequired)
 	{
 		if((otherRequired==null)||(otherRequired.trim().length()==0))
 			return null;

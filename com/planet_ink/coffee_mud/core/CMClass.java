@@ -1461,7 +1461,7 @@ public class CMClass extends ClassLoader
 		return new XVector(new TreeSet(v));
 	}
 
-	public static final Vector loadClassList(final String filePath, String auxPath, final String subDir, final Class<?> ancestorC1, final boolean quiet)
+	public static final Vector<Object> loadClassList(final String filePath, String auxPath, final String subDir, final Class<?> ancestorC1, final boolean quiet)
 	{
 		final Vector v=new Vector();
 		int x=auxPath.indexOf(';');

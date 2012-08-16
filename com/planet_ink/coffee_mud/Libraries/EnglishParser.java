@@ -37,7 +37,6 @@ import java.util.regex.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
 public class EnglishParser extends StdLibrary implements EnglishParsing
 {
 	public String ID(){return "EnglishParser";}
@@ -45,7 +44,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 	public static boolean[] PUNCTUATION_TABLE=null;
 	public final static char[] ALL_CHRS="ALL".toCharArray();
 	public final static String[] fwords={"calf", "half", "knife", "life", "wife", "elf", "self", "shelf", "leaf", "sheaf", "thief", "loaf", "wolf"};
-	public final static List<Environmental> empty=new ReadOnlyVector(1);
+	public final static List<Environmental> empty=new ReadOnlyVector<Environmental>(1);
 	
 	public String toEnglishStringList(final String[] V)
 	{
@@ -263,7 +262,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 		&&(!CMSecurity.isCommandDisabled(CMClass.classID(C).toUpperCase())))
 			return C;
 
-		Ability A=getToEvoke(mob,new XVector(commands));
+		Ability A=getToEvoke(mob,new XVector<String>(commands));
 		if((A!=null)
 		&&(!CMSecurity.isAbilityDisabled(A.ID().toUpperCase())))
 			return A;
@@ -303,13 +302,13 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 		for(Enumeration<Ability> a=mob.allAbilities();a.hasMoreElements();)
 		{
 			A=a.nextElement();
-			HashSet tried=new HashSet();
+			HashSet<String> tried=new HashSet<String>();
 			if((A!=null)&&(A.triggerStrings()!=null))
 				for(int t=0;t<A.triggerStrings().length;t++)
 					if((A.triggerStrings()[t].toUpperCase().startsWith(firstWord))
 					&&(!tried.contains(A.triggerStrings()[t])))
 					{
-						Vector commands2=new XVector(commands);
+						Vector<String> commands2=new XVector<String>(commands);
 						commands2.setElementAt(A.triggerStrings()[t],0);
 						Ability A2=getToEvoke(mob,commands2);
 						if((A2!=null)&&(!CMSecurity.isAbilityDisabled(A2.ID().toUpperCase())))
@@ -400,7 +399,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 	{
 		if(mob==null) return null;
 		Ability A=null;
-		HashSet done=new HashSet();
+		HashSet<String[]> done=new HashSet<String[]>();
 		for(Enumeration<Ability> a=mob.allAbilities();a.hasMoreElements();)
 		{
 			A=a.nextElement();
@@ -543,7 +542,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 		}
 		return evokableAbility.preInvoke(mob,commands,null,false,0,secondsElapsed,actionsRemaining);
 	}
-	public void evoke(MOB mob, Vector commands)
+	public void evoke(MOB mob, Vector<String> commands)
 	{
 		Ability evokableAbility=getToEvoke(mob,commands);
 		if(evokableAbility==null)
@@ -782,8 +781,8 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 	}
 
 	public int getContextNumber(ItemCollection cont, Environmental E){ return getContextNumber(toCollection(cont),E);}
-	public int getContextNumber(Object[] list, Environmental E){ return getContextNumber(new XVector(list),E);}
-	public int getContextNumber(Collection list, Environmental E)
+	public int getContextNumber(Environmental[] list, Environmental E){ return getContextNumber(new XVector<Environmental>(list),E);}
+	public int getContextNumber(Collection<? extends Environmental> list, Environmental E)
 	{
 		if(list==null) return 0;
 		int context=1;
@@ -800,17 +799,17 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 			}
 		return -1;
 	}
-	private Collection toCollection(ItemCollection cont)
+	private Collection<? extends Environmental> toCollection(ItemCollection cont)
 	{
-		LinkedList list=new LinkedList();
+		LinkedList<Item> list=new LinkedList<Item>();
 		for(Enumeration<Item> i=cont.items();i.hasMoreElements();)
 			list.add(i.nextElement());
 		return list;
 	}
 	
 	public int getContextSameNumber(ItemCollection cont, Environmental E){ return getContextSameNumber(toCollection(cont),E);}
-	public int getContextSameNumber(Object[] list, Environmental E){ return getContextSameNumber(new XVector(list),E);}
-	public int getContextSameNumber(Collection list, Environmental E)
+	public int getContextSameNumber(Environmental[] list, Environmental E){ return getContextSameNumber(new XVector<Environmental>(list),E);}
+	public int getContextSameNumber(Collection<? extends Environmental> list, Environmental E)
 	{
 		if(list==null) return 0;
 		int context=1;
@@ -828,8 +827,8 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 		return -1;
 	}
 	public String getContextName(ItemCollection cont, Environmental E){ return getContextName(toCollection(cont),E);}
-	public String getContextName(Object[] list, Environmental E){ return getContextName(new XVector(list),E);}
-	public String getContextName(Collection list, Environmental E)
+	public String getContextName(Environmental[] list, Environmental E){ return getContextName(new XVector<Environmental>(list),E);}
+	public String getContextName(Collection<? extends Environmental> list, Environmental E)
 	{
 		if(list==null) return E.name();
 		int number=getContextNumber(list,E);
@@ -839,8 +838,8 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 	}
 
 	public String getContextSameName(ItemCollection cont, Environmental E){ return getContextSameName(toCollection(cont),E);}
-	public String getContextSameName(Object[] list, Environmental E){ return getContextSameName(new XVector(list),E);}
-	public String getContextSameName(Collection list, Environmental E)
+	public String getContextSameName(Environmental[] list, Environmental E){ return getContextSameName(new XVector<Environmental>(list),E);}
+	public String getContextSameName(Collection<? extends Environmental> list, Environmental E)
 	{
 		if(list==null) return E.name();
 		int number=getContextSameNumber(list,E);
@@ -909,7 +908,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 	{
 		int addendum=1;
 		String addendumStr="";
-		List<Item> V=new Vector();
+		List<Item> V=new Vector<Item>();
 
 		int maxToItem=Integer.MAX_VALUE;
 		if((commands.size()>1)
@@ -952,7 +951,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 		
 		if(preferredLoc==Wearable.FILTER_WORNONLY)
 		{
-			Vector V2=new Vector();
+			Vector<Item> V2=new Vector<Item>();
 			short topLayer=0;
 			short curLayer=0;
 			int which=-1;
@@ -976,7 +975,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 		else
 		if(preferredLoc==Wearable.FILTER_UNWORNONLY)
 		{
-			Vector V2=new Vector();
+			Vector<Item> V2=new Vector<Item>();
 			short topLayer=0;
 			short curLayer=0;
 			int which=-1;
@@ -1293,7 +1292,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 
 	public List<Container> possibleContainers(MOB mob, List<String> commands, int wornFilter, boolean withContentOnly)
 	{
-		Vector V=new Vector();
+		Vector<Container> V=new Vector<Container>();
 		if(commands.size()==1)
 			return V;
 
@@ -1349,7 +1348,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 			&&((!withContentOnly)||(((Container)E).getContents().size()>0))
 			&&(CMLib.flags().canBeSeenBy(E,mob)||mob.isMine(E)))
 			{
-				V.addElement(E);
+				V.addElement((Container)E);
 				if(V.size()==1)
 				{
 					while((fromDex>=0)&&(commands.size()>fromDex))
@@ -1617,7 +1616,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 
 	public List<Environmental> fetchEnvironmentals(List<? extends Environmental> list, String srchStr, boolean exactOnly)
 	{
-		Vector<Environmental> matches=new Vector(1);
+		Vector<Environmental> matches=new Vector<Environmental>(1);
 		if(list.size()==0) return matches;
 		FetchFlags flags=fetchFlags(srchStr);
 		if(flags==null) return matches;
@@ -1828,7 +1827,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 
 	public List<Item> fetchAvailableItems(List<Item> list, String srchStr, Item goodLocation, int wornReqCode, boolean exactOnly)
 	{
-		Vector<Item> matches=new Vector(1);
+		Vector<Item> matches=new Vector<Item>(1);
 		if(list.size()==0) return matches;
 		FetchFlags flags=fetchFlags(srchStr);
 		if(flags==null) return matches;

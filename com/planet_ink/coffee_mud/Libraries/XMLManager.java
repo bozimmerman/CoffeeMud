@@ -34,7 +34,6 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.XMLLibrary.XMLpiece;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
 public class XMLManager extends StdLibrary implements XMLLibrary
 {
 	public String ID(){return "XMLManager";}
@@ -249,7 +248,7 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 		return Blob;
 	}
 
-	protected String parseOutParms(String blk, Hashtable parmList)
+	protected String parseOutParms(String blk, Map<String,String> parmList)
 	{
 		blk=blk.trim();
 		for(int x=0;x<blk.length();x++)
@@ -268,9 +267,9 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 	}
 
 
-	protected Hashtable parseParms(String Blob)
+	protected Map<String,String> parseParms(String Blob)
 	{
-		Hashtable H=new Hashtable();
+		Map<String,String> H=new Hashtable<String,String>();
 		StringBuffer curVal=null;
 		StringBuffer key=new StringBuffer("");
 		boolean quoteMode=false;
@@ -457,7 +456,7 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 				nextStart=buf.indexOf("<",start+1);
 			}
 		}
-		Hashtable parmList = new Hashtable();
+		Map<String,String> parmList = new Hashtable<String,String>();
 		String tag=parseOutParms(buf.substring(start+1,end).trim(),parmList).toUpperCase().trim();
 
 		if(!tag.startsWith("/"))
@@ -468,7 +467,7 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 			{
 				piece.tag=tag.substring(0,tag.length()-1).trim();
 				piece.value="";
-				piece.contents=new Vector();
+				piece.contents=new Vector<XMLpiece>();
 				piece.outerStart=start;
 				piece.outerEnd=end;
 			}
@@ -477,7 +476,7 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 				piece.tag=tag.trim();
 				piece.outerStart=start;
 				piece.innerStart=end+1;
-				piece.contents=new Vector();
+				piece.contents=new Vector<XMLpiece>();
 				XMLpiece next=null;
 				while(next!=piece)
 				{
@@ -513,7 +512,7 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 
 	public List<XMLpiece> parseAllXML(StringBuffer buf)
 	{
-		Vector<XMLpiece> V=new Vector();
+		Vector<XMLpiece> V=new Vector<XMLpiece>();
 		int end=-1;
 		XMLpiece next=nextXML(buf,null,end+1);
 		while(next!=null)

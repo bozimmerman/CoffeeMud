@@ -33,7 +33,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
 public class MUDFight extends StdLibrary implements CombatLibrary
 {
 	public String ID(){return "MUDFight";}
@@ -83,10 +82,10 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 	
 	public Set<MOB> allPossibleCombatants(MOB mob, boolean beRuthless)
 	{
-		SHashSet h=new SHashSet();
+		HashSet<MOB> h=new HashSet<MOB>();
 		Room thisRoom=mob.location();
 		if(thisRoom==null) return null;
-		Set<MOB> h1=mob.getGroupMembers(new SHashSet());
+		Set<MOB> h1=mob.getGroupMembers(new HashSet<MOB>());
 		for(int m=0;m<thisRoom.numInhabitants();m++)
 		{
 			MOB inhab=thisRoom.fetchInhabitant(m);
@@ -107,10 +106,10 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 		if(A.abstractQuality()!=Ability.QUALITY_MALICIOUS)
 		{
 			if(caster.Name().equalsIgnoreCase("somebody"))
-				h=new SHashSet();
+				h=new HashSet<MOB>();
 			else
-				h=caster.getGroupMembers(new SHashSet());
-			for(Iterator e=h.iterator();e.hasNext();)
+				h=caster.getGroupMembers(new HashSet<MOB>());
+			for(Iterator<MOB> e=h.iterator();e.hasNext();)
 			{
 				MOB M=(MOB)e.next();
 				if(M.location()!=caster.location())
@@ -202,16 +201,16 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 	
 	public Set<MOB> allCombatants(MOB mob)
 	{
-		SHashSet h=new SHashSet();
+		HashSet<MOB> h=new HashSet<MOB>();
 		Room thisRoom=mob.location();
 		if(thisRoom==null) return null;
 		if(!mob.isInCombat()) return null;
 
 		Set<MOB> h1=null;
 		if(mob.Name().equalsIgnoreCase("nobody"))
-			h1=new SHashSet();
+			h1=new HashSet<MOB>();
 		else
-			h1=mob.getGroupMembers(new SHashSet());
+			h1=mob.getGroupMembers(new HashSet<MOB>());
 		for(int m=0;m<thisRoom.numInhabitants();m++)
 		{
 			MOB inhab=thisRoom.fetchInhabitant(m);
@@ -232,7 +231,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 	public void makePeaceInGroup(MOB mob)
 	{
 		Set<MOB> myGroup=mob.getGroupMembers(new HashSet<MOB>());
-		for(Iterator e=myGroup.iterator();e.hasNext();)
+		for(Iterator<MOB> e=myGroup.iterator();e.hasNext();)
 		{
 			MOB mob2=(MOB)e.next();
 			if(mob2.isInCombat()&&(myGroup.contains(mob2.getVictim())))
@@ -616,7 +615,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 			if((done[i]!=null)&&(done[i].contains(leader)))
 				return;
 		if(level>=done.length) return;
-		if(done[level]==null) done[level]=new Vector();
+		if(done[level]==null) done[level]=new Vector<MOB>();
 		done[level].add(leader);
 		for(int f=0;f<leader.numFollowers();f++)
 		{
@@ -636,12 +635,13 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 		return leader;
 	}
 
-	public List<MOB>[] getFormation(MOB mob)
+	@SuppressWarnings("unchecked")
+    public List<MOB>[] getFormation(MOB mob)
 	{
 		MOB leader=mob;
 		if(leader.amFollowing()!=null)
 			leader=leader.amUltimatelyFollowing();
-		Vector[] done=new Vector[20];
+		Vector<MOB>[] done=(Vector<MOB>[])new Vector[20];
 		processFormation(done,leader,0);
 		return done;
 	}
@@ -684,7 +684,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 		{
 			C=killer.charStats().getCurrentClass();
 			MOB M=killer;
-			HashSet checked=new HashSet();
+			HashSet<MOB> checked=new HashSet<MOB>();
 			checked.add(M);
 			while(M.isMonster()
 			&&(M.amFollowing()!=null)
@@ -703,7 +703,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 
 	protected Set<MOB> getCombatBeneficiaries(MOB killer, MOB killed, Room deathRoom, Set<MOB> beneficiaries, CharClass combatCharClass)
 	{
-		Set<MOB> followers=(killer!=null)?killer.getGroupMembers(new SHashSet()):(new SHashSet());
+		Set<MOB> followers=(killer!=null)?killer.getGroupMembers(new HashSet<MOB>()):(new SHashSet<MOB>());
 		if(combatCharClass==null) combatCharClass=CMClass.getCharClass("StdCharClass");
 		if(deathRoom!=null)
 		{
@@ -722,8 +722,8 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 
 	public Set<MOB> getCombatBeneficiaries(MOB killer, MOB killed, CharClass combatCharClass)
 	{
-		if((killer==null)||(killed==null)) return new SHashSet();
-		SHashSet<MOB> beneficiaries=new SHashSet();
+		if((killer==null)||(killed==null)) return new SHashSet<MOB>();
+		SHashSet<MOB> beneficiaries=new SHashSet<MOB>();
 		Room R=killer.location();
 		if(R!=null) getCombatBeneficiaries(killer,killed,R,beneficiaries,combatCharClass);
 		R=killed.location();
@@ -733,7 +733,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 
 	protected Set<MOB> getCombatDividers(MOB killer, MOB killed, Room deathRoom, Set<MOB> dividers, CharClass combatCharClass)
 	{
-		Set<MOB> followers=(killer!=null)?killer.getGroupMembers(new SHashSet()):(new SHashSet());
+		Set<MOB> followers=(killer!=null)?killer.getGroupMembers(new SHashSet<MOB>()):(new SHashSet<MOB>());
 		if(combatCharClass==null) combatCharClass=CMClass.getCharClass("StdCharClass");
 		if(deathRoom!=null)
 		{
@@ -752,8 +752,8 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 
 	public Set<MOB> getCombatDividers(MOB killer, MOB killed, CharClass combatCharClass)
 	{
-		if((killer==null)||(killed==null)) return new SHashSet();
-		Set<MOB> dividers=new SHashSet();
+		if((killer==null)||(killed==null)) return new HashSet<MOB>();
+		Set<MOB> dividers=new HashSet<MOB>();
 		Room R=killer.location();
 		if(R!=null) getCombatDividers(killer,killed,R,dividers,combatCharClass);
 		R=killed.location();
@@ -784,8 +784,8 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 		String currency=CMLib.beanCounter().getCurrency(target);
 		double deadMoney=CMLib.beanCounter().getTotalAbsoluteValue(target,currency);
 		double myAmountOfDeadMoney=0.0;
-		Vector goldLooters=new Vector();
-		for(Iterator e=beneficiaries.iterator();e.hasNext();)
+		Vector<MOB> goldLooters=new Vector<MOB>();
+		for(Iterator<MOB> e=beneficiaries.iterator();e.hasNext();)
 		{
 			MOB M=(MOB)e.next();
 			if(((CMath.bset(M.getBitmap(),MOB.ATT_AUTOGOLD))
@@ -1169,7 +1169,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 					&&(target.fetchEffect("Injury")==null))
 					{
 						Ability A=CMClass.getAbility("Injury");
-						if(A!=null) A.invoke(target,new XVector(msg),target,true,0);
+						if(A!=null) A.invoke(target,new XVector<Object>(msg),target,true,0);
 					}
 				}
 			}
@@ -1389,13 +1389,13 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 		}
 	}
 
-	public Vector getAllInProximity(MOB to, int distance)
+	public List<MOB> getAllInProximity(MOB to, int distance)
 	{
 		Room R=to.location();
-		Vector V=new Vector();
+		Vector<MOB> V=new Vector<MOB>();
 		V.addElement(to);
 		if(R==null) return V;
-		Vector everyV=new Vector();
+		Vector<MOB> everyV=new Vector<MOB>();
 		for(int i=0;i<R.numInhabitants();i++)
 			everyV.addElement(R.fetchInhabitant(i));
 		if(!everyV.contains(to)) everyV.addElement(to);
@@ -1572,14 +1572,14 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 		int expAmount=100;
 		int expAddition=25;
 
-		for(Iterator i=dividers.iterator();i.hasNext();)
+		for(Iterator<MOB> i=dividers.iterator();i.hasNext();)
 		{
 			MOB mob=(MOB)i.next();
 			totalLevels += (mob.phyStats().level()*mob.phyStats().level());
 			expAmount += expAddition;
 			expAddition -= expAddition/4;
 		}
-		for(Iterator i=killers.iterator();i.hasNext();)
+		for(Iterator<MOB> i=killers.iterator();i.hasNext();)
 		{
 			MOB mob=(MOB)i.next();
 			int myAmount=(int)Math.round(CMath.mul(expAmount,CMath.div(mob.phyStats().level()*mob.phyStats().level(),totalLevels)));
@@ -1647,7 +1647,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 			whatToDo=CMProps.getVar(CMProps.SYSTEM_MOBDEATH).toUpperCase();
 		else
 			whatToDo=CMProps.getVar(CMProps.SYSTEM_PLAYERDEATH).toUpperCase();
-		Vector whatsToDo=CMParms.parseCommas(whatToDo,true);
+		Vector<String> whatsToDo=CMParms.parseCommas(whatToDo,true);
 		double[] fakeVarVals={1.0,1.0,1.0};
 		for(int w=0;w<whatsToDo.size();w++)
 		{
@@ -1712,7 +1712,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 				int tickDown=CMath.s_parseIntExpression(whatToDo.substring(4).trim(),varVals);
 				if((A!=null)&&(tickDown>0))
 				{
-					A.invoke(mob,new XVector(""+tickDown,"SAFELY"),mob,true,0);
+					A.invoke(mob,new XVector<Object>(""+tickDown,"SAFELY"),mob,true,0);
 					mob.resetToMaxState();
 				}
 			}

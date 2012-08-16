@@ -30,7 +30,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
 public interface SlaveryLibrary extends CMLibrary
 {
 	public final static int STEP_EVAL=0;
@@ -41,15 +40,16 @@ public interface SlaveryLibrary extends CMLibrary
 	public final static int STEP_INT5=5;
 	public final static int STEP_ALLDONE=-999;
 
-	public Vector findMatch(MOB mob, Vector prereq);
+	public List<Map<String,String>> findMatch(MOB mob, List<String> prereq);
 	public String cleanWord(String s);
 	public geasSteps processRequest(MOB you, MOB me, String req);
 
 
-	public static class geasSteps extends Vector
+	public static class geasSteps extends Vector<geasStep>
 	{
 		public static final long serialVersionUID=Long.MAX_VALUE;
-		public Vector bothered=new Vector();
+		public Vector<Room> botheredPlaces=new Vector<Room>();
+		public Vector<MOB> botheredMOBs=new Vector<MOB>();
 		public boolean done=false;
 		public MOB you=null;
 		public MOB me=null;
@@ -124,18 +124,18 @@ public interface SlaveryLibrary extends CMLibrary
 		}
 		public void move(int moveCode)
 		{
-			if(!bothered.contains(me.location()))
-				bothered.addElement(me.location());
+			if(!botheredPlaces.contains(me.location()))
+				botheredPlaces.addElement(me.location());
 			if(CMSecurity.isDebugging(CMSecurity.DbgFlag.GEAS))
 				Log.debugOut("GEAS","BEINGMOBILE: "+moveCode);
 			if(moveCode==0)
 			{
-				if(!CMLib.tracking().beMobile(me,true,true,false,true,null,bothered))
+				if(!CMLib.tracking().beMobile(me,true,true,false,true,null,botheredPlaces))
 					CMLib.tracking().beMobile(me,true,true,false,false,null,null);
 			}
 			else
 			{
-				if(!CMLib.tracking().beMobile(me,true,true,true,false,null,bothered))
+				if(!CMLib.tracking().beMobile(me,true,true,true,false,null,botheredPlaces))
 					CMLib.tracking().beMobile(me,true,true,false,false,null,null);
 			}
 		}
@@ -178,11 +178,11 @@ public interface SlaveryLibrary extends CMLibrary
 					if((M!=null)
 					&&(M!=me)
 					&&(!CMLib.flags().isAnimalIntelligence(M))
-					&&(!mySteps.bothered.contains(M)))
+					&&(!mySteps.botheredMOBs.contains(M)))
 					{
 						CMLib.commands().postSay(me,M,msgOrQ,false,false);
 						bothering=M;
-						mySteps.bothered.addElement(M);
+						mySteps.botheredMOBs.addElement(M);
 						if(CMSecurity.isDebugging(CMSecurity.DbgFlag.GEAS))
 							Log.debugOut("GEAS","BOTHERING: "+bothering.name());
 						return true;

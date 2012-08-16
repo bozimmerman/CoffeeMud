@@ -37,7 +37,6 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-@SuppressWarnings({"unchecked","rawtypes"})
 public class Polls extends StdLibrary implements PollManager
 {
 	public String ID(){return "Polls";}
@@ -100,10 +99,11 @@ public class Polls extends StdLibrary implements PollManager
 		return null;
 	}
 	
-	public List<Poll>[] getMyPollTypes(MOB mob, boolean login)
+	@SuppressWarnings("unchecked")
+    public List<Poll>[] getMyPollTypes(MOB mob, boolean login)
 	{
 		Iterator<Poll> i=getPollList();
-		List<Poll> list[]=new List[3];
+		List<Poll> list[]=(List<Poll>[])new List[3];
 		for(int l=0;l<3;l++)
 			list[l]=new Vector<Poll>();
 		for(;i.hasNext();)
@@ -234,7 +234,7 @@ public class Polls extends StdLibrary implements PollManager
 			else
 			{ try{P.setExpiration(CMLib.time().string2Millis(expirationDate.trim()));}catch(Exception e){}}
 					
-			Vector del=new Vector();
+			Vector<Poll.PollOption> del=new Vector<Poll.PollOption>();
 			for(int i=0;i<P.getOptions().size();i++)
 			{
 				Poll.PollOption PO=(Poll.PollOption)P.getOptions().get(i);
@@ -361,7 +361,7 @@ public class Polls extends StdLibrary implements PollManager
 		P.setAuthor(data.byName);
 		P.setSubject(data.subject);
 		P.setDescription(data.description);
-		Vector options=new Vector();
+		Vector<Poll.PollOption> options=new Vector<Poll.PollOption>();
 		P.setOptions(options);
 		String optionsXML=data.options;
 		List<XMLLibrary.XMLpiece> V2=CMLib.xml().parseAllXML(optionsXML);
@@ -379,7 +379,7 @@ public class Polls extends StdLibrary implements PollManager
 		}
 		P.setFlags(data.flag);
 		P.setQualZapper(data.qual);
-		Vector results=new Vector();
+		Vector<Poll.PollResult> results=new Vector<Poll.PollResult>();
 		P.setResults(results);
 		String resultsXML=data.results;
 		V2=CMLib.xml().parseAllXML(resultsXML);
