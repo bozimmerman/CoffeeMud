@@ -590,6 +590,4 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 			V.addElement(this.restoreAngleBrackets(((XMLLibrary.XMLpiece)xml.get(v)).value));
 		return V;
 	}
-	
-
 }
