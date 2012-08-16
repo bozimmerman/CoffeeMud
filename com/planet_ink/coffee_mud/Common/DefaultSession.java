@@ -1148,33 +1148,11 @@ public class DefaultSession implements Session
 							out(""+(char)13+(char)10);  // CR
 						break;
 					}
-					case 26:
+					case 27:
 					{
 						lastWasCR = false;
 						lastWasLF = false;
 						// don't let them enter ANSI escape sequences...
-						c = -1;
-						break;
-					}
-					case 255:
-					case 241:
-					case 242:
-					case 243:
-					case 244:
-					case 245:
-					case 246:
-					case 247:
-					case 248:
-					case 249:
-					case 250:
-					case 251:
-					case 252:
-					case 253:
-					case 254:
-					{
-						lastWasCR = false;
-						lastWasLF = false;
-						// don't let them enter telnet codes, except IAC, which is handled...
 						c = -1;
 						break;
 					}
