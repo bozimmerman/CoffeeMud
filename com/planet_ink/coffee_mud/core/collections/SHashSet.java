@@ -69,7 +69,7 @@ public class SHashSet<K> implements Serializable, Iterable<K>, Collection<K>, Se
 		T=new HashSet<K>();
 		if(E!=null)
 			for(K o : E)
-				add(o);
+				T.add(o);
 	}
 	
 	public synchronized void addAll(Enumeration<K> E)
@@ -121,6 +121,9 @@ public class SHashSet<K> implements Serializable, Iterable<K>, Collection<K>, Se
 	@Override
 	public synchronized boolean add(K e) {
 		T=(HashSet<K>)T.clone();
+		return T.add(e);
+	}
+	public synchronized boolean addUnsafe(K e) {
 		return T.add(e);
 	}
 	@SuppressWarnings("unchecked")

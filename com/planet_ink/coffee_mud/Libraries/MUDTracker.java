@@ -742,31 +742,33 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 		return move(mob,directionCode,flee,nolook,noriders,always,true);
 	}
 	
-	public boolean move(MOB mob, int directionCode, boolean flee, boolean nolook, boolean noriders, boolean always, boolean running)
+	public boolean move(final MOB mob, final int directionCode, final boolean flee, final boolean nolook, final boolean noriders, final boolean always, final boolean running)
 	{
 		if(directionCode<0) return false;
 		if(mob==null) return false;
-		Room thisRoom=mob.location();
+		final Room thisRoom=mob.location();
 		if(thisRoom==null) return false;
-		Room destRoom=thisRoom.getRoomInDir(directionCode);
-		Exit exit=thisRoom.getExitInDir(directionCode);
+		final Room destRoom=thisRoom.getRoomInDir(directionCode);
+		final Exit exit=thisRoom.getExitInDir(directionCode);
 		if(destRoom==null)
 		{
 			mob.tell("You can't go that way.");
 			return false;
 		}
 
-		Exit opExit=thisRoom.getReverseExit(directionCode);
-		String directionName=(directionCode==Directions.GATE)&&(exit!=null)?"through "+exit.name():Directions.getDirectionName(directionCode);
-		String otherDirectionName=(Directions.getOpDirectionCode(directionCode)==Directions.GATE)&&(exit!=null)?exit.name():Directions.getFromDirectionName(Directions.getOpDirectionCode(directionCode));
+		final Exit opExit=thisRoom.getReverseExit(directionCode);
+		final String directionName=(directionCode==Directions.GATE)&&(exit!=null)?"through "+exit.name():Directions.getDirectionName(directionCode);
+		final String otherDirectionName=(Directions.getOpDirectionCode(directionCode)==Directions.GATE)&&(exit!=null)?exit.name():Directions.getFromDirectionName(Directions.getOpDirectionCode(directionCode));
 
-		int generalMask=always?CMMsg.MASK_ALWAYS:0;
-		int leaveCode=generalMask|CMMsg.MSG_LEAVE;
+		final int generalMask=always?CMMsg.MASK_ALWAYS:0;
+		final int leaveCode;
 		if(flee)
 			leaveCode=generalMask|CMMsg.MSG_FLEE;
+		else
+			leaveCode=generalMask|CMMsg.MSG_LEAVE;
 
-		CMMsg enterMsg=null;
-		CMMsg leaveMsg=null;
+		final CMMsg enterMsg;
+		final CMMsg leaveMsg;
 		if((mob.riding()!=null)&&(mob.riding().mobileRideBasis()))
 		{
 			enterMsg=CMClass.getMsg(mob,destRoom,exit,generalMask|CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,"<S-NAME> ride(s) "+mob.riding().name()+" in from "+otherDirectionName+".");
@@ -777,7 +779,7 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 			enterMsg=CMClass.getMsg(mob,destRoom,exit,generalMask|CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,"<S-NAME> "+CMLib.flags().dispositionString(mob,CMFlagLibrary.flag_arrives)+" from "+otherDirectionName+".");
 			leaveMsg=CMClass.getMsg(mob,thisRoom,opExit,leaveCode,((flee)?"You flee "+directionName+".":null),leaveCode,null,leaveCode,((flee)?"<S-NAME> flee(s) "+directionName+".":"<S-NAME> "+CMLib.flags().dispositionString(mob,CMFlagLibrary.flag_leaves)+" "+directionName+"."));
 		}
-		boolean gotoAllowed=CMSecurity.isAllowed(mob,destRoom,"GOTO");
+		final boolean gotoAllowed=(!mob.isMonster()) && CMSecurity.isAllowed(mob,destRoom,"GOTO");
 		if((exit==null)&&(!gotoAllowed))
 		{
 			mob.tell("You can't go that way.");
