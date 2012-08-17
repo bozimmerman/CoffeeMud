@@ -487,23 +487,23 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 		return new CompiledZapperMaskEntry(entryType.intValue(),parms.toArray(new Object[0]));
 	}
 
-	protected StringBuffer levelHelp(final String lvl, final char c, final String append)
+	protected StringBuilder levelHelp(final String lvl, final char c, final String append)
 	{
 		if(lvl.startsWith(c+">=")&&(CMath.isNumber(lvl.substring(3).trim())))
-			return new StringBuffer(append+"levels greater than or equal to "+lvl.substring(3).trim()+".  ");
+			return new StringBuilder(append+"levels greater than or equal to "+lvl.substring(3).trim()+".  ");
 		else
 		if(lvl.startsWith(c+"<=")&&(CMath.isNumber(lvl.substring(3).trim())))
-			return new StringBuffer(append+"levels less than or equal to "+lvl.substring(3).trim()+".  ");
+			return new StringBuilder(append+"levels less than or equal to "+lvl.substring(3).trim()+".  ");
 		else
 		if(lvl.startsWith(c+">")&&(CMath.isNumber(lvl.substring(2).trim())))
-			return new StringBuffer(append+"levels greater than "+lvl.substring(2).trim()+".  ");
+			return new StringBuilder(append+"levels greater than "+lvl.substring(2).trim()+".  ");
 		else
 		if(lvl.startsWith(c+"<")&&(CMath.isNumber(lvl.substring(2).trim())))
-			return new StringBuffer(append+"levels less than "+lvl.substring(2).trim()+".  ");
+			return new StringBuilder(append+"levels less than "+lvl.substring(2).trim()+".  ");
 		else
 		if(lvl.startsWith(c+"=")&&(CMath.isNumber(lvl.substring(2).trim())))
-			return new StringBuffer(append+"level "+lvl.substring(2).trim()+".  ");
-		return new StringBuffer("");
+			return new StringBuilder(append+"level "+lvl.substring(2).trim()+".  ");
+		return new StringBuilder("");
 	}
 
 	protected int determineSeason(String str)
@@ -604,7 +604,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 	public String maskDesc(final String text, final boolean skipFirstWord)
 	{
 		if(text.trim().length()==0) return "Anyone";
-		StringBuffer buf=new StringBuffer("");
+		StringBuilder buf=new StringBuilder("");
 		final Map<String,Integer> zapCodes=getMaskCodes();
 		final Vector<String> V=CMParms.parse(text.toUpperCase());
 		int val=-1;
@@ -632,7 +632,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 						}
 					}
 					if(buf.toString().endsWith(", "))
-						buf=new StringBuffer(buf.substring(0,buf.length()-2));
+						buf=new StringBuilder(buf.substring(0,buf.length()-2));
 					buf.append(".  ");
 					}
 					break;
@@ -658,7 +658,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 							}
 						}
 						if(buf.toString().endsWith(", "))
-							buf=new StringBuffer(buf.substring(0,buf.length()-2));
+							buf=new StringBuilder(buf.substring(0,buf.length()-2));
 						buf.append(".  ");
 					}
 					break;
@@ -675,7 +675,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 						for(final String s : cats)
 							buf.append(s+", ");
 						if(buf.toString().endsWith(", "))
-							buf=new StringBuffer(buf.substring(0,buf.length()-2));
+							buf=new StringBuilder(buf.substring(0,buf.length()-2));
 						buf.append(".  ");
 					}
 					break;
@@ -692,7 +692,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 						for(final String s : cats)
 							buf.append(s+", ");
 						if(buf.toString().endsWith(", "))
-							buf=new StringBuffer(buf.substring(0,buf.length()-2));
+							buf=new StringBuilder(buf.substring(0,buf.length()-2));
 						buf.append(".  ");
 					}
 					break;
@@ -706,7 +706,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 						if(fromHereStartsWith(V,'+',v+1,Faction.ALIGN_NAMES[Faction.ALIGN_NEUTRAL].substring(0,3)))
 							buf.append(Faction.ALIGN_NAMES[Faction.ALIGN_NEUTRAL].toLowerCase()+", ");
 						if(buf.toString().endsWith(", "))
-							buf=new StringBuffer(buf.substring(0,buf.length()-2));
+							buf=new StringBuilder(buf.substring(0,buf.length()-2));
 						buf.append(".  ");
 					}
 					break;
@@ -720,7 +720,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 						if(fromHereStartsWith(V,'+',v+1,"NEUTER"))
 							buf.append("Neuter");
 						if(buf.toString().endsWith(", "))
-							buf=new StringBuffer(buf.substring(0,buf.length()-2));
+							buf=new StringBuilder(buf.substring(0,buf.length()-2));
 						buf.append(".  ");
 					}
 					break;
@@ -754,7 +754,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 								buf.append(str2.substring(1)+", ");
 						}
 						if(buf.toString().endsWith(", "))
-							buf=new StringBuffer(buf.substring(0,buf.length()-2));
+							buf=new StringBuilder(buf.substring(0,buf.length()-2));
 						buf.append(".  ");
 					}
 					break;
@@ -770,7 +770,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 								buf.append(str2.substring(1)+", ");
 						}
 						if(buf.toString().endsWith(", "))
-							buf=new StringBuffer(buf.substring(0,buf.length()-2));
+							buf=new StringBuilder(buf.substring(0,buf.length()-2));
 						buf.append(".  ");
 					}
 					break;
@@ -786,7 +786,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 								buf.append(str2.substring(1)+", ");
 						}
 						if(buf.toString().endsWith(", "))
-							buf=new StringBuffer(buf.substring(0,buf.length()-2));
+							buf=new StringBuilder(buf.substring(0,buf.length()-2));
 						buf.append(".  ");
 					}
 				break;
@@ -802,7 +802,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 								buf.append(str2.substring(1)+", ");
 						}
 						if(buf.toString().endsWith(", "))
-							buf=new StringBuffer(buf.substring(0,buf.length()-2));
+							buf=new StringBuilder(buf.substring(0,buf.length()-2));
 						buf.append(".  ");
 					}
 					break;
@@ -818,7 +818,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 								buf.append(str2.substring(1)+", ");
 						}
 						if(buf.toString().endsWith(", "))
-							buf=new StringBuffer(buf.substring(0,buf.length()-2));
+							buf=new StringBuilder(buf.substring(0,buf.length()-2));
 						buf.append(".  ");
 					}
 				break;
@@ -834,7 +834,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 								buf.append(str2.substring(1)+", ");
 						}
 						if(buf.toString().endsWith(", "))
-							buf=new StringBuffer(buf.substring(0,buf.length()-2));
+							buf=new StringBuilder(buf.substring(0,buf.length()-2));
 						buf.append(".  ");
 					}
 					break;
@@ -853,7 +853,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 							}
 						}
 						if(buf.toString().endsWith(", "))
-							buf=new StringBuffer(buf.substring(0,buf.length()-2));
+							buf=new StringBuilder(buf.substring(0,buf.length()-2));
 						buf.append(".  ");
 					}
 				break;
@@ -872,7 +872,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 							}
 						}
 						if(buf.toString().endsWith(", "))
-							buf=new StringBuffer(buf.substring(0,buf.length()-2));
+							buf=new StringBuilder(buf.substring(0,buf.length()-2));
 						buf.append(".  ");
 					}
 					break;
@@ -903,7 +903,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 							}
 						}
 						if(buf.toString().endsWith(", "))
-							buf=new StringBuffer(buf.substring(0,buf.length()-2));
+							buf=new StringBuilder(buf.substring(0,buf.length()-2));
 						buf.append(".  ");
 					}
 				break;
@@ -937,7 +937,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 							}
 						}
 						if(buf.toString().endsWith(", "))
-							buf=new StringBuffer(buf.substring(0,buf.length()-2));
+							buf=new StringBuilder(buf.substring(0,buf.length()-2));
 						buf.append(".  ");
 					}
 				break;
@@ -971,7 +971,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 							}
 						}
 						if(buf.toString().endsWith(", "))
-							buf=new StringBuffer(buf.substring(0,buf.length()-2));
+							buf=new StringBuilder(buf.substring(0,buf.length()-2));
 						buf.append(".  ");
 					}
 					break;
@@ -1002,7 +1002,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 							}
 						}
 						if(buf.toString().endsWith(", "))
-							buf=new StringBuffer(buf.substring(0,buf.length()-2));
+							buf=new StringBuilder(buf.substring(0,buf.length()-2));
 						buf.append(".  ");
 					}
 					break;
@@ -1018,7 +1018,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 								buf.append(str2.substring(1)+", ");
 						}
 						if(buf.toString().endsWith(", "))
-							buf=new StringBuffer(buf.substring(0,buf.length()-2));
+							buf=new StringBuilder(buf.substring(0,buf.length()-2));
 						buf.append(".  ");
 					}
 					break;
@@ -1034,7 +1034,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 								buf.append(str2.substring(1)+", ");
 						}
 						if(buf.toString().endsWith(", "))
-							buf=new StringBuffer(buf.substring(0,buf.length()-2));
+							buf=new StringBuilder(buf.substring(0,buf.length()-2));
 						buf.append(".  ");
 					}
 					break;
@@ -1054,7 +1054,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 							}
 						}
 						if(buf.toString().endsWith(", "))
-							buf=new StringBuffer(buf.substring(0,buf.length()-2));
+							buf=new StringBuilder(buf.substring(0,buf.length()-2));
 						buf.append(".  ");
 					}
 					break;
@@ -1074,7 +1074,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 							}
 						}
 						if(buf.toString().endsWith(", "))
-							buf=new StringBuffer(buf.substring(0,buf.length()-2));
+							buf=new StringBuilder(buf.substring(0,buf.length()-2));
 						buf.append(".  ");
 					}
 					break;
@@ -1094,7 +1094,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 							}
 						}
 						if(buf.toString().endsWith(", "))
-							buf=new StringBuffer(buf.substring(0,buf.length()-2));
+							buf=new StringBuilder(buf.substring(0,buf.length()-2));
 						buf.append(".  ");
 					}
 					break;
@@ -1114,7 +1114,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 							}
 						}
 						if(buf.toString().endsWith(", "))
-							buf=new StringBuffer(buf.substring(0,buf.length()-2));
+							buf=new StringBuilder(buf.substring(0,buf.length()-2));
 						buf.append(".  ");
 					}
 					break;
@@ -1134,7 +1134,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 							}
 						}
 						if(buf.toString().endsWith(", "))
-							buf=new StringBuffer(buf.substring(0,buf.length()-2));
+							buf=new StringBuilder(buf.substring(0,buf.length()-2));
 						buf.append(".  ");
 					}
 					break;
@@ -1154,7 +1154,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 							}
 						}
 						if(buf.toString().endsWith(", "))
-							buf=new StringBuffer(buf.substring(0,buf.length()-2));
+							buf=new StringBuilder(buf.substring(0,buf.length()-2));
 						buf.append(".  ");
 					}
 					break;
@@ -1170,7 +1170,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 								buf.append(CMath.s_int(str2.substring(1).trim())+", ");
 						}
 						if(buf.toString().endsWith(", "))
-							buf=new StringBuffer(buf.substring(0,buf.length()-2));
+							buf=new StringBuilder(buf.substring(0,buf.length()-2));
 						buf.append(".  ");
 					}
 					break;
@@ -1186,7 +1186,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 								buf.append(CMath.s_int(str2.substring(1).trim())+", ");
 						}
 						if(buf.toString().endsWith(", "))
-							buf=new StringBuffer(buf.substring(0,buf.length()-2));
+							buf=new StringBuilder(buf.substring(0,buf.length()-2));
 						buf.append(".  ");
 					}
 					break;
@@ -1213,7 +1213,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 								}
 						}
 						if(buf.toString().endsWith(", "))
-							buf=new StringBuffer(buf.substring(0,buf.length()-2));
+							buf=new StringBuilder(buf.substring(0,buf.length()-2));
 						buf.append(".  ");
 					}
 					break;
@@ -1240,7 +1240,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 								}
 						}
 						if(buf.toString().endsWith(", "))
-							buf=new StringBuffer(buf.substring(0,buf.length()-2));
+							buf=new StringBuilder(buf.substring(0,buf.length()-2));
 						buf.append(".  ");
 					}
 					break;
@@ -1268,7 +1268,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 							}
 					}
 					if(buf.toString().endsWith(", "))
-						buf=new StringBuffer(buf.substring(0,buf.length()-2));
+						buf=new StringBuilder(buf.substring(0,buf.length()-2));
 					buf.append(".  ");
 				}
 				break;
@@ -1295,7 +1295,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 							}
 					}
 					if(buf.toString().endsWith(", "))
-						buf=new StringBuffer(buf.substring(0,buf.length()-2));
+						buf=new StringBuilder(buf.substring(0,buf.length()-2));
 					buf.append(".  ");
 				}
 				break;
@@ -1312,7 +1312,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 								buf.append(CMath.s_int(str2.substring(1).trim())+", ");
 						}
 						if(buf.toString().endsWith(", "))
-							buf=new StringBuffer(buf.substring(0,buf.length()-2));
+							buf=new StringBuilder(buf.substring(0,buf.length()-2));
 						buf.append(".  ");
 					}
 					break;
@@ -1328,7 +1328,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 								buf.append(CMath.s_int(str2.substring(1).trim())+", ");
 						}
 						if(buf.toString().endsWith(", "))
-							buf=new StringBuffer(buf.substring(0,buf.length()-2));
+							buf=new StringBuilder(buf.substring(0,buf.length()-2));
 						buf.append(".  ");
 					}
 					break;
@@ -1344,7 +1344,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 								buf.append(CMath.s_int(str2.substring(1).trim())+", ");
 						}
 						if(buf.toString().endsWith(", "))
-							buf=new StringBuffer(buf.substring(0,buf.length()-2));
+							buf=new StringBuilder(buf.substring(0,buf.length()-2));
 						buf.append(".  ");
 					}
 					break;
@@ -1360,7 +1360,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 								buf.append(CMath.s_int(str2.substring(1).trim())+", ");
 						}
 						if(buf.toString().endsWith(", "))
-							buf=new StringBuffer(buf.substring(0,buf.length()-2));
+							buf=new StringBuilder(buf.substring(0,buf.length()-2));
 						buf.append(".  ");
 					}
 					break;
@@ -1423,7 +1423,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 							}
 						}
 						if(buf.toString().endsWith(", "))
-							buf=new StringBuffer(buf.substring(0,buf.length()-2));
+							buf=new StringBuilder(buf.substring(0,buf.length()-2));
 						buf.append(".  ");
 					}
 					break;
@@ -1443,7 +1443,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 							}
 						}
 						if(buf.toString().endsWith(", "))
-							buf=new StringBuffer(buf.substring(0,buf.length()-2));
+							buf=new StringBuilder(buf.substring(0,buf.length()-2));
 						buf.append(".  ");
 					}
 					break;
@@ -1463,7 +1463,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 							}
 						}
 						if(buf.toString().endsWith(", "))
-							buf=new StringBuffer(buf.substring(0,buf.length()-2));
+							buf=new StringBuilder(buf.substring(0,buf.length()-2));
 						buf.append(".  ");
 					}
 					break;
@@ -1483,7 +1483,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 							}
 						}
 						if(buf.toString().endsWith(", "))
-							buf=new StringBuffer(buf.substring(0,buf.length()-2));
+							buf=new StringBuilder(buf.substring(0,buf.length()-2));
 						buf.append(".  ");
 					}
 					break;
@@ -1499,7 +1499,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 								buf.append(str2.substring(1)+", ");
 						}
 						if(buf.toString().endsWith(", "))
-							buf=new StringBuffer(buf.substring(0,buf.length()-2));
+							buf=new StringBuilder(buf.substring(0,buf.length()-2));
 						buf.append(".  ");
 					}
 					break;
@@ -1515,7 +1515,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 								buf.append(str2.substring(1)+", ");
 						}
 						if(buf.toString().endsWith(", "))
-							buf=new StringBuffer(buf.substring(0,buf.length()-2));
+							buf=new StringBuilder(buf.substring(0,buf.length()-2));
 						buf.append(".  ");
 					}
 					break;
@@ -1531,7 +1531,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 								buf.append(str2.substring(1)+", ");
 						}
 						if(buf.toString().endsWith(", "))
-							buf=new StringBuffer(buf.substring(0,buf.length()-2));
+							buf=new StringBuilder(buf.substring(0,buf.length()-2));
 						buf.append(".  ");
 					}
 					break;
@@ -1547,7 +1547,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 								buf.append(str2.substring(1)+", ");
 						}
 						if(buf.toString().endsWith(", "))
-							buf=new StringBuffer(buf.substring(0,buf.length()-2));
+							buf=new StringBuilder(buf.substring(0,buf.length()-2));
 						buf.append(".  ");
 					}
 					break;
@@ -1563,7 +1563,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 								buf.append(str2.substring(1)+", ");
 						}
 						if(buf.toString().endsWith(", "))
-							buf=new StringBuffer(buf.substring(0,buf.length()-2));
+							buf=new StringBuilder(buf.substring(0,buf.length()-2));
 						buf.append(".  ");
 					}
 					break;
@@ -1579,7 +1579,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 								buf.append(str2.substring(1)+", ");
 						}
 						if(buf.toString().endsWith(", "))
-							buf=new StringBuffer(buf.substring(0,buf.length()-2));
+							buf=new StringBuilder(buf.substring(0,buf.length()-2));
 						buf.append(".  ");
 					}
 					break;
@@ -1604,7 +1604,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 							}
 						}
 						if(buf.toString().endsWith(", "))
-							buf=new StringBuffer(buf.substring(0,buf.length()-2));
+							buf=new StringBuilder(buf.substring(0,buf.length()-2));
 						buf.append(".  ");
 					}
 					break;
@@ -1629,7 +1629,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 							}
 						}
 						if(buf.toString().endsWith(", "))
-							buf=new StringBuffer(buf.substring(0,buf.length()-2));
+							buf=new StringBuilder(buf.substring(0,buf.length()-2));
 						buf.append(".  ");
 					}
 					break;
@@ -1651,7 +1651,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 								buf.append(str2.substring(1)+", ");
 						}
 						if(buf.toString().endsWith(", "))
-							buf=new StringBuffer(buf.substring(0,buf.length()-2));
+							buf=new StringBuilder(buf.substring(0,buf.length()-2));
 						buf.append(".  ");
 					}
 					break;
@@ -1667,7 +1667,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 								buf.append(str2.substring(1)+", ");
 						}
 						if(buf.toString().endsWith(", "))
-							buf=new StringBuffer(buf.substring(0,buf.length()-2));
+							buf=new StringBuilder(buf.substring(0,buf.length()-2));
 						buf.append(".  ");
 					}
 					break;
@@ -1680,7 +1680,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 								buf.append(C.name+", ");
 						}
 						if(buf.toString().endsWith(", "))
-							buf=new StringBuffer(buf.substring(0,buf.length()-2));
+							buf=new StringBuilder(buf.substring(0,buf.length()-2));
 						buf.append(".  ");
 					}
 					break;
@@ -1693,7 +1693,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 								buf.append(C.name+", ");
 						}
 						if(buf.toString().endsWith(", "))
-							buf=new StringBuffer(buf.substring(0,buf.length()-2));
+							buf=new StringBuilder(buf.substring(0,buf.length()-2));
 						buf.append(".  ");
 					}
 					break;
@@ -1857,7 +1857,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 								buf.append(str2.substring(1)+", ");
 						}
 						if(buf.toString().endsWith(", "))
-							buf=new StringBuffer(buf.substring(0,buf.length()-2));
+							buf=new StringBuilder(buf.substring(0,buf.length()-2));
 						buf.append(".  ");
 					}
 					break;
@@ -1873,7 +1873,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 								buf.append(str2.substring(1)+", ");
 						}
 						if(buf.toString().endsWith(", "))
-							buf=new StringBuffer(buf.substring(0,buf.length()-2));
+							buf=new StringBuilder(buf.substring(0,buf.length()-2));
 						buf.append(".  ");
 					}
 					break;
@@ -1889,7 +1889,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 							buf.append(str2.substring(1)+", ");
 					}
 					if(buf.toString().endsWith(", "))
-						buf=new StringBuffer(buf.substring(0,buf.length()-2));
+						buf=new StringBuilder(buf.substring(0,buf.length()-2));
 					buf.append(".  ");
 				}
 				break;
@@ -1905,7 +1905,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 								buf.append(str2.substring(1)+", ");
 						}
 						if(buf.toString().endsWith(", "))
-							buf=new StringBuffer(buf.substring(0,buf.length()-2));
+							buf=new StringBuilder(buf.substring(0,buf.length()-2));
 						buf.append(".  ");
 					}
 					break;
@@ -1921,7 +1921,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 								buf.append(str2.substring(1)+", ");
 						}
 						if(buf.toString().endsWith(", "))
-							buf=new StringBuffer(buf.substring(0,buf.length()-2));
+							buf=new StringBuilder(buf.substring(0,buf.length()-2));
 						buf.append(".  ");
 					}
 					break;
@@ -1937,7 +1937,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 							buf.append(str2.substring(1)+", ");
 					}
 					if(buf.toString().endsWith(", "))
-						buf=new StringBuffer(buf.substring(0,buf.length()-2));
+						buf=new StringBuilder(buf.substring(0,buf.length()-2));
 					buf.append(".  ");
 				}
 				break;
@@ -1959,7 +1959,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 							}
 						}
 						if(buf.toString().endsWith(", "))
-							buf=new StringBuffer(buf.substring(0,buf.length()-2));
+							buf=new StringBuilder(buf.substring(0,buf.length()-2));
 						buf.append(".  ");
 					}
 					break;
@@ -1981,7 +1981,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 							}
 						}
 						if(buf.toString().endsWith(", "))
-							buf=new StringBuffer(buf.substring(0,buf.length()-2));
+							buf=new StringBuilder(buf.substring(0,buf.length()-2));
 						buf.append(".  ");
 					}
 					break;
@@ -2004,9 +2004,9 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 						}
 					}
 					if(buf.toString().endsWith(", "))
-						buf=new StringBuffer(buf.substring(0,buf.length()-2));
+						buf=new StringBuilder(buf.substring(0,buf.length()-2));
 					if(buf.toString().endsWith("; "))
-						buf=new StringBuffer(buf.substring(0,buf.length()-2));
+						buf=new StringBuilder(buf.substring(0,buf.length()-2));
 					buf.append(".  ");
 				}
 				break;
@@ -2052,7 +2052,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 						}
 					}
 					if(buf.toString().endsWith(", "))
-						buf=new StringBuffer(buf.substring(0,buf.length()-2));
+						buf=new StringBuilder(buf.substring(0,buf.length()-2));
 					buf.append(".  ");
 					break;
 				}
