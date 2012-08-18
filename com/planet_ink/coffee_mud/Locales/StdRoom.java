@@ -1463,9 +1463,10 @@ public class StdRoom implements Room
 			mob=(MOB)CMLib.english().fetchEnvironmental(inhabitants,inhabitantID, false);
 		return mob;
 	}
+	private static final ReadOnlyVector<MOB> emptyMOBV=new ReadOnlyVector<MOB>(1);
 	public List<MOB> fetchInhabitants(String inhabitantID)
 	{
-		if(inhabitants.size()==0) return new Vector<MOB>(1);
+		if(inhabitants.size()==0) return emptyMOBV;
 		List inhabs=CMLib.english().fetchEnvironmentals(inhabitants,inhabitantID,true);
 		if(inhabs.size()==0)
 			inhabs=CMLib.english().fetchEnvironmentals(inhabitants,inhabitantID, false);

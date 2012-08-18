@@ -179,7 +179,6 @@ public class Mobile extends ActiveTicker implements MobileBehavior
 	{
 		tickStatus=Tickable.STATUS_MISC2+0;
 		super.tick(ticking,tickID);
-		tickStatus=Tickable.STATUS_MISC2+1;
 		if(ticksSuspended>0)
 		{
 			ticksSuspended--;
@@ -190,7 +189,6 @@ public class Mobile extends ActiveTicker implements MobileBehavior
 		&&(!((MOB)ticking).isInCombat())
 		&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.MOBILITY)))
 		{
-			tickStatus=Tickable.STATUS_MISC2+2;
 			Vector objections=null;
 			final MOB mob=(MOB)ticking;
 			final Room room=mob.location();
@@ -200,7 +198,6 @@ public class Mobile extends ActiveTicker implements MobileBehavior
 			&&(room.getArea().getAreaState()>=Area.STATE_PASSIVE))
 				return true;
 			
-			tickStatus=Tickable.STATUS_MISC2+15;
 			if((!CMLib.flags().canWorkOnSomething(mob)) && (CMLib.dice().roll(1,100,0)>1))
 			{
 				tickDown=0;
@@ -209,21 +206,16 @@ public class Mobile extends ActiveTicker implements MobileBehavior
 			
 			for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 			{
-				tickStatus=Tickable.STATUS_MISC2+3;
 				Room R=room.getRoomInDir(d);
-				tickStatus=Tickable.STATUS_MISC2+4;
 				if((R!=null)&&(!okRoomForMe(room,R)))
 				{
-					tickStatus=Tickable.STATUS_MISC2+5;
 					if(objections==null) objections=new Vector();
 					objections.addElement(R);
 				}
-				tickStatus=Tickable.STATUS_MISC2+6;
 			}
 			tickStatus=Tickable.STATUS_MISC2+16;
 			altStatusTaker=new long[1];
 			CMLib.tracking().beMobile((MOB)ticking,dooropen,wander,false,objections!=null,altStatusTaker,objections);
-			tickStatus=Tickable.STATUS_MISC2+17;
 			if(mob.location()==room)
 				tickDown=0;
 		}

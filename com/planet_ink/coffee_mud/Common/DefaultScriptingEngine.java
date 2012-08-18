@@ -527,9 +527,12 @@ public class DefaultScriptingEngine implements ScriptingEngine
 		registeredSpecialEvents=new HashSet();
 		noTrigger=new Hashtable();
 		myScript=newParms;
-		scriptKey=null;
 		if(oncesDone.size()>0)
 			oncesDone.clear();
+		if(myScript.length()>100)
+			scriptKey="PARSEDPRG: "+myScript.substring(0,100)+myScript.length()+myScript.hashCode();
+		else
+			scriptKey="PARSEDPRG: "+myScript;
 	}
 
 	public boolean isFreeToBeTriggered(Tickable affecting)
@@ -8954,14 +8957,6 @@ public class DefaultScriptingEngine implements ScriptingEngine
 
 	public String getScriptResourceKey()
 	{
-		if(scriptKey==null)
-		{
-			final String script=getScript();
-			if(script.length()>100)
-				scriptKey="PARSEDPRG: "+script.substring(0,100)+script.length()+script.hashCode();
-			else
-				scriptKey="PARSEDPRG: "+script;
-		}
 		return scriptKey;
 	}
 	

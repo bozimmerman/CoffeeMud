@@ -36,6 +36,43 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 public class MUDTracker extends StdLibrary implements TrackingLibrary
 {
 	public String ID(){return "MUDTracker";}
+	protected Hashtable<Integer,Vector<String>> directionCommandSets=new Hashtable<Integer,Vector<String>>();
+	protected Hashtable<Integer,Vector<String>> openCommandSets=new Hashtable<Integer,Vector<String>>();
+	protected Hashtable<Integer,Vector<String>> closeCommandSets=new Hashtable<Integer,Vector<String>>();
+
+	
+	protected Vector<String> getDirectionCommandSet(int direction)
+	{
+		Integer dir=Integer.valueOf(direction);
+		if(!directionCommandSets.containsKey(dir))
+		{
+    		Vector<String> V=new ReadOnlyVector<String>(Directions.getDirectionName(direction));
+    		directionCommandSets.put(dir, V);
+		}
+		return directionCommandSets.get(dir);
+	}
+	
+	protected Vector<String> getOpenCommandSet(int direction)
+	{
+		Integer dir=Integer.valueOf(direction);
+		if(!directionCommandSets.containsKey(dir))
+		{
+    		Vector<String> V=new ReadOnlyVector<String>(CMParms.parse("OPEN "+Directions.getDirectionName(direction)));
+    		directionCommandSets.put(dir, V);
+		}
+		return directionCommandSets.get(dir);
+	}
+	
+	protected Vector<String> getCloseCommandSet(int direction)
+	{
+		Integer dir=Integer.valueOf(direction);
+		if(!directionCommandSets.containsKey(dir))
+		{
+    		Vector<String> V=new ReadOnlyVector<String>(CMParms.parse("CLOSE "+Directions.getDirectionName(direction)));
+    		directionCommandSets.put(dir, V);
+		}
+		return directionCommandSets.get(dir);
+	}
 	
 	public List<Room> findBastardTheBestWay(Room location,
 											Room destRoom,
@@ -268,7 +305,7 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 						&&((R.domainType()==Room.DOMAIN_INDOORS_WATERSURFACE)
 						   ||(R.domainType()==Room.DOMAIN_INDOORS_UNDERWATER)
 						   ||(R.domainType()==Room.DOMAIN_OUTDOORS_UNDERWATER)
-							||(R.domainType()==Room.DOMAIN_OUTDOORS_WATERSURFACE)))
+						   ||(R.domainType()==Room.DOMAIN_OUTDOORS_WATERSURFACE)))
 					||((noEmptyGrids)
 						&&(R.getGridParent()!=null)
 						&&(R.getGridParent().roomID().length()==0)))
@@ -294,25 +331,25 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 		{ A.unInvoke(); mob.delEffect(A);}
 	}
 
-	public boolean beMobile(MOB mob,
-							boolean dooropen,
-							boolean wander,
-							boolean roomprefer,
-							boolean roomobject,
-							long[] status,
-							List<Room> rooms)
+	public boolean beMobile(final MOB mob,
+							final boolean dooropen,
+							final boolean wander,
+							final boolean roomprefer,
+							final boolean roomobject,
+							final long[] status,
+							final List<Room> rooms)
 	{
 		return beMobile(mob,dooropen,wander,roomprefer,roomobject,true,status,rooms);
 
 	}
-	private boolean beMobile(MOB mob,
+	private boolean beMobile(final MOB mob,
 							 boolean dooropen,
-							 boolean wander,
-							 boolean roomprefer,
-							 boolean roomobject,
-							 boolean sneakIfAble,
-							 long[] status,
-							 List<Room> rooms)
+							 final boolean wander,
+							 final boolean roomprefer,
+							 final boolean roomobject,
+							 final boolean sneakIfAble,
+							 final long[] status,
+							 final List<Room> rooms)
 	{
 		if(status!=null)status[0]=Tickable.STATUS_MISC7+0;
 
@@ -329,7 +366,7 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 		if(status!=null)status[0]=Tickable.STATUS_MISC7+1;
 		for(int m=0;m<oldRoom.numInhabitants();m++)
 		{
-			MOB inhab=oldRoom.fetchInhabitant(m);
+			final MOB inhab=oldRoom.fetchInhabitant(m);
 			if((inhab!=null)
 			&&(!inhab.isMonster())
 			&&(CMSecurity.isAllowed(inhab,oldRoom,"CMDMOBS")
@@ -427,8 +464,8 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 
 		if(status!=null)status[0]=Tickable.STATUS_MISC7+11;
 
-		if((CMLib.law().getLandTitle(nextRoom)!=null)
-		&&(CMLib.law().getLandTitle(nextRoom).landOwner().length()>0))
+		final LandTitle landTitle=CMLib.law().getLandTitle(nextRoom);
+		if((landTitle!=null)&&(landTitle.landOwner().length()>0))
 			dooropen=false;
 
 		boolean reclose=false;
@@ -453,7 +490,7 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 			if(status!=null)status[0]=Tickable.STATUS_MISC7+15;
 			if(!nextExit.isOpen())
 			{
-				mob.doCommand(CMParms.parse("OPEN "+Directions.getDirectionName(direction)),Command.METAFLAG_FORCED);
+				mob.doCommand(getOpenCommandSet(direction),Command.METAFLAG_FORCED);
 				if(nextExit.isOpen())
 					reclose=true;
 			}
@@ -473,8 +510,7 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 		{
 			if(status!=null)status[0]=Tickable.STATUS_MISC7+17;
 			Ability A=mob.fetchAbility("Skill_Swim");
-			Vector<String> V=new Vector<String>();
-			V.add(Directions.getDirectionName(direction));
+			Vector<String> V=getDirectionCommandSet(direction);
 			if(A.proficiency()<50)	A.setProficiency(CMLib.dice().roll(1,50,A.adjustedLevel(mob,0)*15));
 			CharState oldState=(CharState)mob.curState().copyOf();
 			A.invoke(mob,V,null,false,0);
@@ -490,8 +526,7 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 			if(status!=null)status[0]=Tickable.STATUS_MISC7+18;
 			Ability A=mob.fetchAbility("Skill_Climb");
 			if(A==null )A=mob.fetchAbility("Power_SuperClimb");
-			Vector<String> V=new Vector<String>();
-			V.add(Directions.getDirectionName(direction));
+			Vector<String> V=getDirectionCommandSet(direction);
 			if(A.proficiency()<50)	A.setProficiency(CMLib.dice().roll(1,50,A.adjustedLevel(mob,0)*15));
 			CharState oldState=(CharState)mob.curState().copyOf();
 			A.invoke(mob,V,null,false,0);
@@ -503,8 +538,7 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 		{
 			if(status!=null)status[0]=Tickable.STATUS_MISC7+19;
 			Ability A=mob.fetchAbility("Thief_Sneak");
-			Vector<String> V=new Vector<String>();
-			V.add(Directions.getDirectionName(direction));
+			Vector<String> V=getDirectionCommandSet(direction);
 			if(A.proficiency()<50)
 			{
 				A.setProficiency(CMLib.dice().roll(1,50,A.adjustedLevel(mob,0)*15));
@@ -512,10 +546,11 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 				if(A2!=null)
 					A2.setProficiency(CMLib.dice().roll(1,50,A.adjustedLevel(mob,0)*15));
 			}
-			CharState oldState=(CharState)mob.curState().copyOf();
+			final int oldMana=mob.curState().getMana();
+			final int oldMove=mob.curState().getMovement();
 			A.invoke(mob,V,null,false,0);
-			mob.curState().setMana(oldState.getMana());
-			mob.curState().setMovement(oldState.getMovement());
+			mob.curState().setMana(oldMana);
+			mob.curState().setMovement(oldMove);
 		}
 		else
 		{
@@ -532,7 +567,7 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 			&&(opExit.isOpen()))
 			{
 				if(status!=null)status[0]=Tickable.STATUS_MISC7+22;
-				mob.doCommand(CMParms.parse("CLOSE "+Directions.getDirectionName(opDirection)),Command.METAFLAG_FORCED);
+				mob.doCommand(getCloseCommandSet(opDirection),Command.METAFLAG_FORCED);
 				if((opExit.hasALock())&&(relock))
 				{
 					if(status!=null)status[0]=Tickable.STATUS_MISC7+23;

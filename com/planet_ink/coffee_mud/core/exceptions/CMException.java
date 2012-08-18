@@ -25,5 +25,9 @@ public class CMException extends CoffeeMudException
 	public CMException(String s) {
 		super(s);
 	}
+	public CMException(String s, Exception e)
+	{
+		super(s,e);
+	}
 
 }

@@ -73,7 +73,7 @@ public class TockClient implements Comparable<TockClient>
 		return 0;
 	}
 	
-	public boolean tickTicker(boolean allSuspended)
+	public boolean tickTicker(final boolean allSuspended)
 	{
 		if((suspended)||(allSuspended))
 			return false;

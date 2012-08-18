@@ -421,7 +421,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 			A.destroy();
 			if(t instanceof CMException)
 				throw (CMException)t;
-			throw new CMException(t.getMessage());
+			throw new CMException(t.getMessage(),t);
 		}
 		return true;
 	}

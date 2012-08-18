@@ -308,7 +308,7 @@ public class StdAutoGenInstance extends StdArea implements AutoGenArea
 					}
 					catch(CMException cme)
 					{
-						Log.errOut("StdAutoGenInstance","Unable to build area: "+cme.getMessage());
+						Log.errOut("StdAutoGenInstance",cme);
 						msg.source().tell("Failed to finish entering the new area.  Try again later.");
 						return false;
 					}
