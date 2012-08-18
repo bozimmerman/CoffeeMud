@@ -200,6 +200,7 @@ public class ThinRoom implements Room {
 							  int allCode,
 							  String allMessage){return true;}
 
+	public void eachInhabitant(final EachApplicable<MOB> applier){}
 	public MOB fetchInhabitant(String inhabitantID){return null;}
 	public MOB fetchRandomInhabitant() { return null; }
 	public List<MOB> fetchInhabitants(String inhabitantID){return new Vector(1);}
@@ -228,6 +229,7 @@ public class ThinRoom implements Room {
 	public boolean isContent(Item item){return false;}
 	public Item findItem(Item goodLocation, String itemID){return null;}
 	public Item getItem(int i){return null;}
+	public void eachItem(final EachApplicable<Item> applier){}
 	public Item getRandomItem(){return null;}
 	public Enumeration<Item> items(){ return EmptyEnumeration.INSTANCE;}
 	public Item getItem(String s){return null;}
@@ -248,6 +250,7 @@ public class ThinRoom implements Room {
 	public void addNonUninvokableEffect(Ability to){}
 	public void delEffect(Ability to){}
 	public void delAllEffects(boolean unInvoke){}
+	public void eachEffect(final EachApplicable<Ability> applier){}
 	public int numEffects(){ return 0;}
 	public Enumeration<Ability> effects(){return EmptyEnumeration.INSTANCE;}
 	public Ability fetchEffect(int index){return null;}
@@ -258,6 +261,7 @@ public class ThinRoom implements Room {
 	public int numBehaviors(){return 0;}
 	public Enumeration<Behavior> behaviors() { return EmptyEnumeration.INSTANCE;}
 	public Behavior fetchBehavior(int index){return null;}
+	public void eachBehavior(final EachApplicable<Behavior> applier){}
 	public Behavior fetchBehavior(String ID){return null;}
 	public void addScript(ScriptingEngine S){}
 	public void delScript(ScriptingEngine S) {}
@@ -265,6 +269,7 @@ public class ThinRoom implements Room {
 	public int numScripts(){return 0;}
 	public Enumeration<ScriptingEngine> scripts() { return EmptyEnumeration.INSTANCE;}
 	public ScriptingEngine fetchScript(int x){ return null;}
+	public void eachScript(final EachApplicable<ScriptingEngine> applier){}
 	public boolean isGeneric(){return false;}
 	public int getSaveStatIndex(){return getStatCodes().length;}
 	private static final String[] CODES={"CLASS"};

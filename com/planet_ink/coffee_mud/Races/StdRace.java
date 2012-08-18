@@ -639,7 +639,8 @@ public class StdRace implements Race
 				Ability A=CMClass.getAbility(racialEffectNames()[v]);
 				if(A!=null)
 				{
-					A.setProficiency(CMLib.ableMapper().getMaxProficiency(mob,true,A.ID()));
+					// mob was set to null here to make the cache map actually relevant .. see caching below
+					A.setProficiency(CMLib.ableMapper().getMaxProficiency((MOB)null,true,A.ID()));
 					A.setMiscText(racialEffectParms()[v]);
 					A.makeNonUninvokable();
 					A.setSavable(false); // must go AFTER the ablve
@@ -647,6 +648,7 @@ public class StdRace implements Race
 				}
 			}
 		}
+		racialEffectMap.put(level, finalV);
 		return finalV;
 	}
 

@@ -140,4 +140,10 @@ public interface Affectable
 	 * @param unInvoke send true to uninvoke before deleting
 	 */
 	public void delAllEffects(boolean unInvoke);
+
+	/**
+	 * Applies the given code to each effect on this object
+	 * @param applier code to execute against each object
+	 */
+	public void eachEffect(final EachApplicable<Ability> applier);
 }

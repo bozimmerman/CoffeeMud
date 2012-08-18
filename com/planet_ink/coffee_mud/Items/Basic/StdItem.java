@@ -66,6 +66,7 @@ public class StdItem implements Item
 	protected PhyStats basePhyStats=(PhyStats)CMClass.getCommon("DefaultPhyStats");
 
 	protected boolean destroyed=false;
+	protected final Item me=this;
 
 	public StdItem()
 	{
@@ -126,12 +127,9 @@ public class StdItem implements Item
 	public void recoverPhyStats()
 	{
 		basePhyStats.copyInto(phyStats);
-		for(final Enumeration<Ability> a=effects();a.hasMoreElements();)
-		{
-			final Ability A=a.nextElement();
-			if(A!=null)
-				A.affectPhyStats(this,phyStats);
-		}
+		eachEffect(new EachApplicable<Ability>(){ public final void apply(final Ability A) {
+			A.affectPhyStats(me,phyStats);
+        } });
 		if(((phyStats().ability()>0)&&abilityImbuesMagic())||(this instanceof MiscMagic))
 			phyStats().setDisposition(phyStats().disposition()|PhyStats.IS_BONUS);
 		if((owner()!=null)
@@ -417,7 +415,7 @@ public class StdItem implements Item
 	public boolean isReadable(){ return CMLib.flags().isReadable(this);}
 	public void setReadable(boolean truefalse){ CMLib.flags().setReadable(this, truefalse);}
 
-	public void affectPhyStats(Physical affected, PhyStats affectableStats)
+	public void affectPhyStats(final Physical affected, final PhyStats affectableStats)
 	{
 		if(affected instanceof Room)
 		{
@@ -443,30 +441,21 @@ public class StdItem implements Item
 			&&((!(affected instanceof MOB))||(((MOB)affected).riding()!=this)))
 				affectableStats.setWeight(affectableStats.weight()+phyStats().weight());
 		}
-		for(final Enumeration<Ability> a=effects();a.hasMoreElements();)
-		{
-			final Ability A=a.nextElement();
-			if((A!=null)&&(A.bubbleAffect()))
-			   A.affectPhyStats(affected,affectableStats);
-		}
+		eachEffect(new EachApplicable<Ability>(){ public final void apply(final Ability A) {
+			if(A.bubbleAffect()) A.affectPhyStats(affected,affectableStats);
+        }});
 	}
-	public void affectCharStats(MOB affectedMob, CharStats affectableStats)
+	public void affectCharStats(final MOB affectedMob, final CharStats affectableStats)
 	{
-		for(final Enumeration<Ability> a=effects();a.hasMoreElements();)
-		{
-			final Ability A=a.nextElement();
-			if((A!=null)&&(A.bubbleAffect()))
-			   A.affectCharStats(affectedMob,affectableStats);
-		}
+		eachEffect(new EachApplicable<Ability>(){ public final void apply(final Ability A) {
+			if(A.bubbleAffect()) A.affectCharStats(affectedMob,affectableStats);
+        }});
 	}
-	public void affectCharState(MOB affectedMob, CharState affectableMaxState)
+	public void affectCharState(final MOB affectedMob, final CharState affectableMaxState)
 	{
-		for(final Enumeration<Ability> a=effects();a.hasMoreElements();)
-		{
-			final Ability A=a.nextElement();
-			if((A!=null)&&(A.bubbleAffect()))
-			   A.affectCharState(affectedMob,affectableMaxState);
-		}
+		eachEffect(new EachApplicable<Ability>(){ public final void apply(final Ability A) {
+			if(A.bubbleAffect()) A.affectCharState(affectedMob,affectableMaxState);
+        }});
 	}
 	public void setMiscText(String newText)
 	{
@@ -481,47 +470,33 @@ public class StdItem implements Item
 	public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
 
 	public long getTickStatus(){return tickStatus;}
-	public boolean tick(Tickable ticking, int tickID)
+	public boolean tick(final Tickable ticking, final int tickID)
 	{
 		if(destroyed) 
 			return false;
 		tickStatus=Tickable.STATUS_START;
 		if(tickID==Tickable.TICKID_ITEM_BEHAVIOR)
 		{
-			int numB=numBehaviors();
-			Tickable T=null;
-			for(int b=0;b<numB;b++)
-			{
-				tickStatus=Tickable.STATUS_BEHAVIOR+b;
-				T=fetchBehavior(b);
-				if(T!=null)
-					T.tick(ticking,tickID);
-			}
-			int numS=numScripts();
-			if((numB<=0)&&(numS<=0)) return false;
-			for(int s=0;s<numS;s++)
-			{
-				tickStatus=Tickable.STATUS_SCRIPT+s;
-				T=fetchScript(s);
-				if(T!=null)
-					T.tick(ticking,tickID);
-			}
+			tickStatus=Tickable.STATUS_BEHAVIOR;
+			eachBehavior(new EachApplicable<Behavior>(){ public final void apply(final Behavior B){
+				B.tick(ticking,tickID);
+			} });
+			tickStatus=Tickable.STATUS_SCRIPT;
+			eachScript(new EachApplicable<ScriptingEngine>(){ public final void apply(final ScriptingEngine S){
+				S.tick(ticking,tickID);
+			} });
+			if((numBehaviors()==0)&&(numScripts()==0))
+				return false;
 		}
 		else
 		if((tickID!=Tickable.TICKID_CLANITEM)
 		&&(tickID!=Tickable.TICKID_ELEC_GENERATOR))
 		{
-			if(affects!=null)
-			{
-				Ability A=null;
-				for(int a=0;a<affects.size();a++)
-				{
-					A=(Ability)affects.elementAt(a);
-					tickStatus=Tickable.STATUS_AFFECT+a;
-					if(!A.tick(ticking,tickID))
-						A.unInvoke();
-				}
-			}
+			tickStatus=Tickable.STATUS_AFFECT;
+			eachEffect(new EachApplicable<Ability>(){ public final void apply(final Ability A){
+				if(!A.tick(ticking,tickID))
+					A.unInvoke();
+			} });
 		}
 		tickStatus=Tickable.STATUS_NOT;
 		return !amDestroyed();
@@ -1118,25 +1093,15 @@ public class StdItem implements Item
 	{
 		// the order that these things are checked in should
 		// be holy, and etched in stone.
-		MsgListener N=null;
-		for(int b=0;b<numBehaviors();b++)
-		{
-			N=fetchBehavior(b);
-			if(N!=null)
-				N.executeMsg(this,msg);
-		}
-		for(int s=0;s<numScripts();s++)
-		{
-			N=fetchScript(s);
-			if(N!=null)
-				N.executeMsg(this,msg);
-		}
-		for(final Enumeration<Ability> a=effects();a.hasMoreElements();)
-		{
-			N=a.nextElement();
-			if(N!=null)
-				N.executeMsg(this,msg);
-		}
+		eachBehavior(new EachApplicable<Behavior>(){ public final void apply(final Behavior B){
+			B.executeMsg(me,msg);
+		} });
+		eachScript(new EachApplicable<ScriptingEngine>(){ public final void apply(final ScriptingEngine S){
+			S.executeMsg(me,msg);
+		} });
+		eachEffect(new EachApplicable<Ability>(){ public final void apply(final Ability A) {
+			A.executeMsg(me, msg);
+        }});
 
 		MOB mob=msg.source();
 		if((msg.tool()==this)
@@ -1312,9 +1277,22 @@ public class StdItem implements Item
 		if(affects.remove(to))
 			to.setAffectedOne(null);
 	}
+	public void eachEffect(final EachApplicable<Ability> applier)
+	{
+		final List<Ability> affects=this.affects;
+		if(affects==null) return;
+		try
+		{
+    		for(int a=0;a<affects.size();a++)
+    		{
+    			final Ability A=affects.get(a);
+    			if(A!=null) applier.apply(A);
+    		}
+		} catch(ArrayIndexOutOfBoundsException e){}
+	}
 	public void delAllEffects(boolean unInvoke)
 	{
-		SVector<Ability> affects=this.affects;
+		final SVector<Ability> affects=this.affects;
 		if(affects==null) return;
 		Ability keepThisOne=null;
 		for(int a=numEffects()-1;a>=0;a--)
@@ -1426,6 +1404,18 @@ public class StdItem implements Item
 				return B;
 		return null;
 	}
+	public void eachBehavior(final EachApplicable<Behavior> applier)
+	{
+		final List<Behavior> behaviors=this.behaviors;
+		if(behaviors!=null)
+		try{
+    		for(int a=0;a<behaviors.size();a++)
+    		{
+    			final Behavior B=behaviors.get(a);
+    			if(B!=null) applier.apply(B);
+    		}
+    	} catch(ArrayIndexOutOfBoundsException e){}
+	}
 	
 	/** Manipulation of the scripts list */
 	public void addScript(ScriptingEngine S)
@@ -1471,19 +1461,29 @@ public class StdItem implements Item
 	public int numScripts(){return (scripts==null)?0:scripts.size();}
 	public Enumeration<ScriptingEngine> scripts() { return (scripts==null)?EmptyEnumeration.INSTANCE:scripts.elements();}
 	public ScriptingEngine fetchScript(int x){try{return (ScriptingEngine)scripts.elementAt(x);}catch(Exception e){} return null;}
+	public void eachScript(final EachApplicable<ScriptingEngine> applier)
+	{
+		final List<ScriptingEngine> scripts=this.scripts;
+		if(scripts!=null)
+		try{
+    		for(int a=0;a<scripts.size();a++)
+    		{
+    			final ScriptingEngine S=scripts.get(a);
+    			if(S!=null) applier.apply(S);
+    		}
+    	} catch(ArrayIndexOutOfBoundsException e){}
+	}
 	
 	protected String tackOns()
 	{
-		String identity="";
+		final StringBuilder identity=new StringBuilder("");
 		if(numEffects()>0)
-			identity+="\n\rHas the following magical properties: ";
-		for(final Enumeration<Ability> a=effects();a.hasMoreElements();)
-		{
-			final Ability A=a.nextElement();
-			if((A!=null)&&(A.accountForYourself().length()>0))
-				identity+="\n\r"+A.accountForYourself();
-		}
-		return identity;
+			identity.append("\n\rHas the following magical properties: ");
+		eachEffect(new EachApplicable<Ability>(){ public final void apply(final Ability A) {
+			if(A.accountForYourself().length()>0)
+				identity.append("\n\r"+A.accountForYourself());
+        }});
+		return identity.toString();
 	}
 
 	public int maxRange(){return 0;}

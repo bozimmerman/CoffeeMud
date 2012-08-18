@@ -2,6 +2,7 @@ package com.planet_ink.coffee_mud.core.interfaces;
 
 import java.util.Enumeration;
 
+import com.planet_ink.coffee_mud.Abilities.interfaces.Ability;
 import com.planet_ink.coffee_mud.Behaviors.interfaces.Behavior;
 import com.planet_ink.coffee_mud.Common.interfaces.ScriptingEngine;
 
@@ -81,6 +82,12 @@ public interface Behavable
 	public Enumeration<Behavior> behaviors();
 
 	/**
+	 * Applies the given code to each behavior on this object
+	 * @param applier code to execute against each object
+	 */
+	public void eachBehavior(final EachApplicable<Behavior> applier);
+
+	/**
 	 * Add a new runnable script to this object.  Objects which are
 	 * not mobs or areas will gain a temporary tick service for
 	 * this script.
@@ -128,4 +135,9 @@ public interface Behavable
 	 */
 	public Enumeration<ScriptingEngine> scripts();
 	
+	/**
+	 * Applies the given code to each scripting engine on this object
+	 * @param applier code to execute against each object
+	 */
+	public void eachScript(final EachApplicable<ScriptingEngine> applier);
 }

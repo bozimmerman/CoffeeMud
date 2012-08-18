@@ -72,4 +72,28 @@ public class TockClient implements Comparable<TockClient>
 		if(tickID<arg0.tickID) return -1;
 		return 0;
 	}
+	
+	public boolean tickTicker(boolean allSuspended)
+	{
+		if((suspended)||(allSuspended))
+			return false;
+
+		if((--tickDown)<1)
+		{
+			tickDown=reTickDown;
+			try
+			{
+				if(!clientObject.tick(clientObject,tickID))
+				{
+					return true;
+				}
+			}
+			catch(Exception t)
+			{
+				Log.errOut("ServiceEngine",t);
+				return true;
+			}
+		}
+		return false;
+	}
 }

@@ -734,7 +734,8 @@ protected boolean[] clanAbilityQuals		=null;
 				Ability A=CMClass.getAbility(clanEffectNames[v]);
 				if(A!=null)
 				{
-					A.setProficiency(CMLib.ableMapper().getMaxProficiency(mob, true, A.ID()));
+					// mob was set to null here to make the cache map actually relevant .. see caching below
+					A.setProficiency(CMLib.ableMapper().getMaxProficiency((MOB)null, true, A.ID()));
 					A.setMiscText(clanEffectParms[v]);
 					A.makeNonUninvokable();
 					A.setSavable(false); // must go AFTER the ablve

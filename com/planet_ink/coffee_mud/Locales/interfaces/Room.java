@@ -238,6 +238,11 @@ public interface Room extends PhysicalAgent, ItemPossessor
 	public int numPCInhabitants();
 	public MOB fetchPCInhabitant(int i);
 	public void bringMobHere(MOB mob, boolean andFollowers);
+	/**
+	 * Applies the given code to each mob in this room
+	 * @param applier code to execute against each object
+	 */
+	public void eachInhabitant(final EachApplicable<MOB> applier);
 
 	public String getContextName(Environmental E);
 

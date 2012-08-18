@@ -44,20 +44,20 @@ public class StdMOB implements MOB
 {
 	public String ID(){return "StdMOB";}
 	
-	public String      username="";
+	public String      		username="";
 
-	protected String   clanID=null;
+	protected String   		clanID=null;
 	protected WeakReference<Clan>
-					   cachedClan=null;
-	protected int      clanRole=0;
+					   		cachedClan=null;
+	protected int      		clanRole=0;
 
-	protected CharStats baseCharStats=(CharStats)CMClass.getCommon("DefaultCharStats");
-	protected CharStats charStats=(CharStats)CMClass.getCommon("DefaultCharStats");
+	protected CharStats 	baseCharStats=(CharStats)CMClass.getCommon("DefaultCharStats");
+	protected CharStats 	charStats=(CharStats)CMClass.getCommon("DefaultCharStats");
 
-	protected PhyStats  phyStats=(PhyStats)CMClass.getCommon("DefaultPhyStats");
-	protected PhyStats  basePhyStats=(PhyStats)CMClass.getCommon("DefaultPhyStats");
+	protected PhyStats  	phyStats=(PhyStats)CMClass.getCommon("DefaultPhyStats");
+	protected PhyStats  	basePhyStats=(PhyStats)CMClass.getCommon("DefaultPhyStats");
 
-	protected PlayerStats playerStats=null;
+	protected PlayerStats 	playerStats=null;
 
 	protected boolean   	amDead=false;
 	protected volatile Room location=null;
@@ -65,13 +65,13 @@ public class StdMOB implements MOB
 	protected Rideable  	riding=null;
 
 	protected volatile Session   mySession=null;
-	protected boolean   pleaseDestroy=false;
-	protected Object	description=null;
-	protected String	displayText="";
-	protected String	rawImageName=null;
-	protected String	cachedImageName=null;
-	protected Object	miscText=null;
-	protected String[]  xtraValues=null;
+	protected boolean   	pleaseDestroy=false;
+	protected Object		description=null;
+	protected String		displayText="";
+	protected String		rawImageName=null;
+	protected String		cachedImageName=null;
+	protected Object		miscText=null;
+	protected String[]  	xtraValues=null;
 	
 	protected volatile WeakReference<Item>  possibleWieldedItem=null;
 	protected volatile WeakReference<Item>  possibleHeldItem=null;
@@ -79,19 +79,20 @@ public class StdMOB implements MOB
 	protected long  	tickStatus=Tickable.STATUS_NOT;
 
 	/* containers of items and attributes*/
-	protected volatile SVector<Item>   inventory   = new SVector<Item>(1);
-	protected SVector<Ability>  	   abilitys    = new SVector<Ability>(1);
-	protected volatile SVector<Ability>affects     = new SVector<Ability>(1);
-	protected SVector<Behavior> 	   behaviors   = new SVector<Behavior>(1);
-	protected SVector<Tattoo>   	   tattoos     = new SVector<Tattoo>(1);
-	protected SVector<String>   	   expertises  = new SVector<String>(1);
-	protected SVector<Follower> 	   followers   = null;
-	protected LinkedList<QMCommand>    commandQue  = new LinkedList<QMCommand>();
-	protected SVector<ScriptingEngine> scripts     = new SVector(1);
-	protected ChameleonList<Ability>   racialAffects= null;
-	protected ChameleonList<Ability>   clanAffects = null;
-	protected SHashtable<String,Faction.FactionData> 
-									   factions    = new SHashtable<String,Faction.FactionData>(1);
+	protected final SVector<Item>			 inventory    = new SVector<Item>(1);
+	protected final SVector<Ability>		 abilitys     = new SVector<Ability>(1);
+	protected final SVector<Ability>		 affects      = new SVector<Ability>(1);
+	protected final SVector<Behavior>		 behaviors    = new SVector<Behavior>(1);
+	protected final SVector<Tattoo>			 tattoos      = new SVector<Tattoo>(1);
+	protected final SVector<String>			 expertises   = new SVector<String>(1);
+	protected volatile SVector<Follower>	 followers    = null;
+	protected final LinkedList<QMCommand>    commandQue   = new LinkedList<QMCommand>();
+	protected final SVector<ScriptingEngine> scripts      = new SVector(1);
+	protected volatile ChameleonList<Ability>racialAffects= null;
+	protected volatile ChameleonList<Ability>clanAffects  = null;
+	protected final MOB						 me		      = this;
+	protected final SHashtable<String,Faction.FactionData> 
+									   		 factions     = new SHashtable<String,Faction.FactionData>(1);
 
 	// gained attributes
 	protected int   	experience=0;
@@ -314,7 +315,7 @@ public class StdMOB implements MOB
 			basePhyStats=(PhyStats)M.basePhyStats().copyOf();
 			phyStats=(PhyStats)M.phyStats().copyOf();
 		}
-		affects=new SVector(1);
+		affects.setSize(0);
 		baseCharStats=(CharStats)M.baseCharStats().copyOf();
 		charStats=(CharStats)M.charStats().copyOf();
 		baseState=(CharState)M.baseState().copyOf();
@@ -322,13 +323,13 @@ public class StdMOB implements MOB
 		maxState=(CharState)M.maxState().copyOf();
 		pleaseDestroy=false;
 
-		inventory=new SVector<Item>(1);
-		commandQue  = new LinkedList<QMCommand>();
+		inventory.setSize(0);
+		commandQue.clear();
 		followers=null;
-		abilitys=new SVector<Ability>(1);
-		affects=new SVector<Ability>(1);
-		behaviors=new SVector<Behavior>(1);
-		scripts=new SVector<ScriptingEngine>(1);
+		abilitys.setSize(0);
+		affects.setSize(0);
+		behaviors.setSize(0);
+		scripts.setSize(0);
 		Item I=null;
 		for(int i=0;i<M.numItems();i++)
 		{
@@ -428,20 +429,13 @@ public class StdMOB implements MOB
 				cStats.getMyClass(c).affectPhyStats(this,phyStats);
 			cStats.getMyRace().affectPhyStats(this,phyStats);
 		}
-		for(final Enumeration<Item> i=items();i.hasMoreElements();)
-		{
-			final Item I=i.nextElement();
-			if(I!=null)
-			{
-				I.recoverPhyStats();
-				I.affectPhyStats(this,phyStats);
-			}
-		}
-		for(final Enumeration<Ability> a=effects();a.hasMoreElements();)
-		{
-			final Ability A=a.nextElement();
-			if(A!=null) A.affectPhyStats(this,phyStats);
-		}
+		eachItem(new EachApplicable<Item>(){ public final void apply(final Item I){
+			I.recoverPhyStats();
+			I.affectPhyStats(me,phyStats);
+		} });
+		eachEffect(new EachApplicable<Ability>(){ public final void apply(final Ability A) {
+			A.affectPhyStats(me,phyStats);
+        } });
 		for(final Enumeration e=factions.elements();e.hasMoreElements();)
 			((Faction.FactionData)e.nextElement()).affectPhyStats(this,phyStats);
 		/* the follower light exception*/
@@ -506,16 +500,12 @@ public class StdMOB implements MOB
 
 		final Rideable riding = riding(); if(riding!=null) riding.affectCharStats(this,charStats);
 		final Deity deity = getMyDeity(); if(deity!=null) deity.affectCharStats(this,charStats);
-		for(final Enumeration<Ability> a=effects();a.hasMoreElements();)
-		{
-			final Ability A=a.nextElement();
-			if(A!=null) A.affectCharStats(this,charStats);
-		}
-		for(final Enumeration<Item> i=items();i.hasMoreElements();)
-		{
-			final Item I=i.nextElement();
-			if(I!=null) I.affectCharStats(this,charStats);
-		}
+		eachEffect(new EachApplicable<Ability>(){ public final void apply(final Ability A) {
+			A.affectCharStats(me,charStats);
+        } });
+		eachItem(new EachApplicable<Item>(){ public final void apply(final Item I){
+			I.affectCharStats(me,charStats);
+		} });
 		if(location()!=null)
 			location().affectCharStats(this,charStats);
 
@@ -595,16 +585,12 @@ public class StdMOB implements MOB
 		final int num=charStats.numClasses();
 		for(int c=0;c<num;c++)
 			charStats.getMyClass(c).affectCharState(this,maxState);
-		for(final Enumeration<Ability> a=effects();a.hasMoreElements();)
-		{
-			final Ability A=a.nextElement();
-			if(A!=null) A.affectCharState(this,maxState);
-		}
-		for(final Enumeration<Item> i=items();i.hasMoreElements();)
-		{
-			final Item I=i.nextElement();
-			if(I!=null) I.affectCharState(this,maxState);
-		}
+		eachEffect(new EachApplicable<Ability>(){ public final void apply(final Ability A) {
+			A.affectCharState(me,maxState);
+        } });
+		eachItem(new EachApplicable<Item>(){ public final void apply(final Item I){
+			I.affectCharState(me,maxState);
+		} });
 		for(final Enumeration e=factions.elements();e.hasMoreElements();)
 			((Faction.FactionData)e.nextElement()).affectCharState(this,maxState);
 		if(location()!=null)
@@ -642,7 +628,10 @@ public class StdMOB implements MOB
 	{
 		CMLib.map().registerWorldObjectDestroyed(null,getStartRoom(),this);
 		try { CMLib.catalog().changeCatalogUsage(this,false);} catch(Exception t){}
-		if((CMSecurity.isDebugging(CMSecurity.DbgFlag.MISSINGKIDS))&&(fetchEffect("Age")!=null)&&CMath.isInteger(fetchEffect("Age").text())&&(CMath.s_long(fetchEffect("Age").text())>Short.MAX_VALUE))
+		if((CMSecurity.isDebugging(CMSecurity.DbgFlag.MISSINGKIDS))
+		&&(fetchEffect("Age")!=null)
+		&&CMath.isInteger(fetchEffect("Age").text())
+		&&(CMath.s_long(fetchEffect("Age").text())>Short.MAX_VALUE))
 			Log.debugOut("MISSKIDS",new Exception(Name()+" went missing form "+CMLib.map().getExtendedRoomID(CMLib.map().roomLocation(this))));
 		if(soulMate()!=null) dispossess(false);
 		final MOB possessor=CMLib.utensils().getMobPossessingAnother(this);
@@ -669,16 +658,16 @@ public class StdMOB implements MOB
 		mySession=null;
 		rawImageName=null;
 		cachedImageName=null;
-		inventory=new SVector<Item>(1);
+		inventory.setSize(0);
 		followers=null;
-		abilitys=new SVector<Ability>(1);
-		affects=new SVector<Ability>(1);
-		behaviors=new SVector<Behavior>(1);
-		tattoos=new SVector<Tattoo>(1);
-		expertises=new SVector<String>(1);
-		factions=new SHashtable<String, Faction.FactionData>(1);
-		commandQue=new LinkedList<QMCommand>();
-		scripts=new SVector<ScriptingEngine>(1);
+		abilitys.setSize(0);
+		affects.setSize(0);
+		behaviors.setSize(0);
+		tattoos.setSize(0);
+		expertises.setSize(0);
+		factions.clear();
+		commandQue.clear();
+		scripts.setSize(0);
 		curState=maxState;
 		worshipCharID="";
 		liegeID="";
@@ -737,9 +726,22 @@ public class StdMOB implements MOB
 	{
 		clanID=clan;
 		if((clan==null)||(clan.trim().length()==0))
-			cachedClan=null;
+		{
+			if(cachedClan != null)
+			{
+    			cachedClan=null;
+    			clanAffects=null;
+			}
+		}
 		else
-			cachedClan=new WeakReference(CMLib.clans().getClan(clan));
+		{
+			final Clan newClan=CMLib.clans().getClan(clan);
+			if(newClan != cachedClan)
+			{
+				cachedClan=new WeakReference(newClan);
+				clanAffects=null;
+			}
+		}
 	}
 	public int getClanRole(){return clanRole;}
 	public void setClanRole(int role){clanRole=role;}
@@ -1180,7 +1182,7 @@ public class StdMOB implements MOB
 			   &&(((Rideable)this).numRiders()>0)
 			   &&(((Rideable)this).stateStringSubject(((Rideable)this).fetchRider(0)).length()>0))
 			{
-				final Rideable me=(Rideable)this;
+				final Rideable me=(Rideable)this.me;
 				final String first=me.stateStringSubject(me.fetchRider(0));
 				sendBack.append(" "+first+" ");
 				for(int r=0;r<me.numRiders();r++)
@@ -2288,17 +2290,12 @@ public class StdMOB implements MOB
 			cStats.getMyRace().executeMsg(this,msg);
 		}
 		
-		for(final Enumeration<Behavior> b=behaviors();b.hasMoreElements();)
-		{
-			final Behavior B=b.nextElement();
-			if(B!=null) B.executeMsg(this,msg);
-		}
-
-		for(final Enumeration<ScriptingEngine> s=scripts();s.hasMoreElements();)
-		{
-			final ScriptingEngine S=s.nextElement();
-			if(S!=null) S.executeMsg(this,msg);
-		}
+		eachBehavior(new EachApplicable<Behavior>(){ public final void apply(final Behavior B){
+			B.executeMsg(me,msg);
+		} });
+		eachScript(new EachApplicable<ScriptingEngine>(){ public final void apply(final ScriptingEngine S){
+			S.executeMsg(me,msg);
+		} });
 		
 		final MOB srcM=msg.source();
 
@@ -2317,7 +2314,6 @@ public class StdMOB implements MOB
 			case CMMsg.TYP_DAMAGE: CMLib.combat().handleBeingDamaged(msg); break;
 			default: break;
 		}
-
 
 		// now go on to source activities
 		if((msg.sourceCode()!=CMMsg.NO_EFFECT)&&(msg.amISource(this)))
@@ -2543,17 +2539,13 @@ public class StdMOB implements MOB
 				CMLib.commands().handleObserveComesToLife(this,srcM,msg);
 		}
 
-		for(final Enumeration<Item> i=items();i.hasMoreElements();)
-		{
-			final Item I=i.nextElement();
-			if(I!=null) I.executeMsg(this,msg);
-		}
+		eachItem(new EachApplicable<Item>(){ public final void apply(final Item I){
+			I.executeMsg(me,msg);
+		} });
 
-		for(final Enumeration<Ability> a=effects();a.hasMoreElements();)
-		{
-			final Ability A=a.nextElement();
-			if(A!=null) A.executeMsg(this,msg);
-		}
+		eachEffect(new EachApplicable<Ability>(){ public final void apply(final Ability A) {
+    		A.executeMsg(me,msg);
+        } });
 
 		for(final Enumeration e=factions.elements();e.hasMoreElements();)
 		{
@@ -2567,7 +2559,7 @@ public class StdMOB implements MOB
 
 	public long getTickStatus(){return tickStatus;}
 
-	public boolean tick(Tickable ticking, int tickID)
+	public boolean tick(final Tickable ticking, final int tickID)
 	{
 		if(pleaseDestroy) return false;
 		tickStatus=Tickable.STATUS_START;
@@ -2711,29 +2703,21 @@ public class StdMOB implements MOB
 			}
 
 			tickStatus=Tickable.STATUS_AFFECT;
-			for(final Enumeration<Ability> t=effects();t.hasMoreElements();)
-			{
-				final Ability T=t.nextElement();
-				if(!T.tick(ticking,tickID))
-					T.unInvoke();
-			}
+			eachEffect(new EachApplicable<Ability>(){ public final void apply(final Ability A) {
+				if(!A.tick(ticking,tickID))
+					A.unInvoke();
+            } });
 
 			manaConsumeCounter=CMLib.commands().tickManaConsumption(this,manaConsumeCounter);
 
 			tickStatus=Tickable.STATUS_BEHAVIOR;
-			for(final Enumeration<Behavior> t=behaviors();t.hasMoreElements();)
-			{
-				final Behavior T=t.nextElement();
-				if(T!=null) T.tick(ticking,tickID);
-			}
-
+			eachBehavior(new EachApplicable<Behavior>(){ public final void apply(final Behavior B){
+				B.tick(ticking,tickID);
+			} });
 			tickStatus=Tickable.STATUS_SCRIPT;
-			for(final Enumeration<ScriptingEngine> t=scripts();t.hasMoreElements();)
-			{
-				final ScriptingEngine T=t.nextElement();
-				if(T!=null) T.tick(ticking,tickID);
-
-			}
+			eachScript(new EachApplicable<ScriptingEngine>(){ public final void apply(final ScriptingEngine S){
+				S.tick(ticking,tickID);
+			} });
 			if(isMonster)
 			{
 				for(final Enumeration<Faction.FactionData> t=factions.elements();t.hasMoreElements();)
@@ -2858,6 +2842,18 @@ public class StdMOB implements MOB
 		}
 		catch(java.lang.ArrayIndexOutOfBoundsException x){}
 		return null;
+	}
+	public void eachItem(final EachApplicable<Item> applier)
+	{
+		final List<Item> contents=this.inventory;
+		if(contents!=null)
+		try{
+    		for(int a=0;a<contents.size();a++)
+    		{
+    			final Item I=contents.get(a);
+    			if(I!=null) applier.apply(I);
+    		}
+    	} catch(ArrayIndexOutOfBoundsException e){}
 	}
 	public Item getRandomItem()
 	{
@@ -3257,6 +3253,27 @@ public class StdMOB implements MOB
 		if(affects.removeElement(to))
 			to.setAffectedOne(null);
 	}
+	public void eachEffect(final EachApplicable<Ability> applier)
+	{
+		final List<Ability> affects=this.affects;
+		if(affects!=null)
+		try{
+    		for(int a=0;a<affects.size();a++)
+    			applier.apply(affects.get(a));
+    	} catch(ArrayIndexOutOfBoundsException e){}
+		final List<Ability> racialEffects=racialEffects();
+		try{
+			if(racialEffects.size()>0)
+        		for(final Ability A : racialEffects)
+        			applier.apply(A);
+    	} catch(ArrayIndexOutOfBoundsException e){}
+		final List<Ability> clanEffects=clanEffects();
+		try{
+			if(clanEffects.size()>0)
+        		for(final Ability A : clanEffects)
+        			applier.apply(A);
+    	} catch(ArrayIndexOutOfBoundsException e){}
+	}
 	public void delAllEffects(boolean unInvoke)
 	{
 		for(int a=numEffects()-1;a>=0;a--)
@@ -3361,6 +3378,15 @@ public class StdMOB implements MOB
 			if(B.ID().equalsIgnoreCase(ID))
 				return B;
 		return null;
+	}
+	public void eachBehavior(final EachApplicable<Behavior> applier)
+	{
+		final List<Behavior> behaviors=this.behaviors;
+		if(behaviors!=null)
+		try{
+    		for(int a=0;a<behaviors.size();a++)
+    			applier.apply(behaviors.get(a));
+    	} catch(ArrayIndexOutOfBoundsException e){}
 	}
 
 	private void clearExpertiseCache()
@@ -3512,6 +3538,18 @@ public class StdMOB implements MOB
 	public int numScripts(){return (scripts==null)?0:scripts.size();}
 	public Enumeration<ScriptingEngine> scripts() { return (scripts==null)?EmptyEnumeration.INSTANCE:scripts.elements();}
 	public ScriptingEngine fetchScript(int x){try{return (ScriptingEngine)scripts.elementAt(x);}catch(Exception e){} return null;}
+	public void eachScript(final EachApplicable<ScriptingEngine> applier)
+	{
+		final List<ScriptingEngine> scripts=this.scripts;
+		if(scripts!=null)
+		try{
+    		for(int a=0;a<scripts.size();a++)
+    		{
+    			final ScriptingEngine S=scripts.get(a);
+    			if(S!=null) applier.apply(S);
+    		}
+    	} catch(ArrayIndexOutOfBoundsException e){}
+	}
 
 	/** Manipulation of the tatoo list */
 	public void addTattoo(Tattoo of)
@@ -3602,7 +3640,7 @@ public class StdMOB implements MOB
 	}
 	public List<String> fetchFactionRanges()
 	{
-		final Vector V=new Vector();
+		final Vector<String> V=new Vector<String>(factions.size());
 		for(final Enumeration e=fetchFactions();e.hasMoreElements();)
 		{
 			final Faction F=CMLib.factions().getFaction((String)e.nextElement());

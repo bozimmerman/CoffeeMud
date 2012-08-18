@@ -37,6 +37,42 @@ import java.util.*;
 public class StdAbility implements Ability
 {
 	public String ID() { return "StdAbility"; }
+	
+	protected int[]		mobUsageCost	= null;
+	protected short[] 	expertise		= null;
+	protected boolean 	isAnAutoEffect	= false;
+	protected int 		proficiency		= 0;
+	protected boolean 	savable			= true;
+	protected String 	miscText		= "";
+	protected MOB 		invoker			= null;
+	protected Physical 	affected		= null;
+	protected boolean 	canBeUninvoked	= true;
+	protected boolean 	unInvoked		= false;
+	protected int 		tickDown		= -1;
+	protected long 		lastCastHelp	= 0;
+	protected boolean 	amDestroyed		= false;
+
+	public StdAbility()
+	{
+		super();
+		//CMClass.bumpCounter(this,CMClass.CMObjectType.ABILITY);//removed for mem & perf
+	}
+	//protected void finalize(){ CMClass.unbumpCounter(this,CMClass.CMObjectType.ABILITY); }//removed for mem & perf
+
+	public CMObject newInstance()
+	{
+		try
+		{
+			expertise=null;
+			return (CMObject)this.getClass().newInstance();
+		}
+		catch(Exception e)
+		{
+			Log.errOut(ID(),e);
+		}
+		return new StdAbility();
+	}
+
 	public String Name(){return name();}
 	public String name(){ return "an ability";}
 	public String description(){return "&";}
@@ -125,7 +161,6 @@ public class StdAbility implements Ability
 	
 	public String miscTextFormat(){return CMParms.FORMAT_UNDEFINED;}
 	public long flags(){return 0;}
-	protected short[] expertise=null;
 	public int usageType(){return USAGE_MANA;}
 	protected int overrideMana(){return -1;} //-1=normal, Integer.MAX_VALUE=all, Integer.MAX_VALUE-100
 	public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
@@ -234,37 +269,6 @@ public class StdAbility implements Ability
 										 Ability.CAN_ROOMS|
 										 Ability.CAN_EXITS;}
 
-	protected boolean isAnAutoEffect=false;
-	protected int proficiency=0;
-	protected boolean savable=true;
-	public String miscText="";
-	protected MOB invoker=null;
-	protected Physical affected=null;
-	protected boolean canBeUninvoked=true;
-	protected boolean unInvoked=false;
-	protected int tickDown=-1;
-	protected long lastCastHelp=0;
-
-	public StdAbility()
-	{
-		super();
-		//CMClass.bumpCounter(this,CMClass.CMObjectType.ABILITY);//removed for mem & perf
-	}
-	//protected void finalize(){ CMClass.unbumpCounter(this,CMClass.CMObjectType.ABILITY); }//removed for mem & perf
-
-	public CMObject newInstance()
-	{
-		try
-		{
-			expertise=null;
-			return (CMObject)this.getClass().newInstance();
-		}
-		catch(Exception e)
-		{
-			Log.errOut(ID(),e);
-		}
-		return new StdAbility();
-	}
 	public int classificationCode(){ return Ability.ACODE_SKILL; }
 
 	public long expirationDate()
@@ -278,7 +282,6 @@ public class StdAbility implements Ability
 	public boolean isNowAnAutoEffect(){ return isAnAutoEffect; }
 	public boolean isSavable(){ return savable;}
 	public void setSavable(boolean truefalse)   { savable=truefalse; }
-	protected boolean amDestroyed=false;
 	public void destroy(){amDestroyed=true; affected=null; invoker=null; miscText=null; }
 	public boolean amDestroyed(){return amDestroyed;}
 	public void setName(String newName){}
@@ -655,7 +658,11 @@ public class StdAbility implements Ability
 	}
 
 	public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
-	protected void cloneFix(Ability E){expertise=null;}
+	protected void cloneFix(Ability E)
+	{
+		expertise=null;
+		mobUsageCost=null;
+	}
 	public CMObject copyOf()
 	{
 		try
@@ -838,6 +845,16 @@ public class StdAbility implements Ability
 			usage[2]=overrideMana();
 			return usage;
 		}
+		final boolean mobUsage=mob.isMonster();
+		if(mobUsageCost!=null)
+		{
+			if((!mobUsage)
+			||(mob.phyStats().level()!=mobUsageCost[4])
+			||((System.currentTimeMillis()&0xffffffffL)>mobUsageCost[5]))
+				mobUsageCost=null;
+			else
+				return mobUsageCost;
+		}
 		if(usageType()==Ability.USAGE_NADA) return new int[3];
 
 		int diff=0;
@@ -878,7 +895,14 @@ public class StdAbility implements Ability
 			consumed=costOverrides[AbilityMapper.AbilityMapping.COST_MANA].intValue();
 			if((consumed<minimum)&&(consumed>=0)) minimum=consumed;
 		}
-		return buildCostArray(mob,consumed,minimum);
+		final int[] usageCost=buildCostArray(mob,consumed,minimum);
+		if(mobUsage)
+		{
+			mobUsageCost=Arrays.copyOf(usageCost, 5);
+			mobUsageCost[4]=mob.phyStats().level();
+			mobUsageCost[5]=(int)(System.currentTimeMillis()&0xffffffffL)+(30*60*1000);
+		}
+		return usageCost;
 	}
 
 	public void helpProficiency(MOB mob)
@@ -1467,7 +1491,6 @@ public class StdAbility implements Ability
 
 		return true;
 	}
-
 
 	public void teach(MOB teacher, MOB student)
 	{

@@ -3,6 +3,7 @@ package com.planet_ink.coffee_mud.core.threads;
 import com.planet_ink.coffee_mud.core.CMLib;
 import com.planet_ink.coffee_mud.core.CMProps;
 import com.planet_ink.coffee_mud.core.CMSecurity;
+import com.planet_ink.coffee_mud.core.CMStrings;
 import com.planet_ink.coffee_mud.core.Log;
 import com.planet_ink.coffee_mud.core.interfaces.CMObject;
 import com.planet_ink.coffee_mud.core.interfaces.Tickable;
@@ -25,19 +26,19 @@ limitations under the License.
 */
 public class CMSupportThread extends Thread implements CMRunnable
 {
-	private boolean  started=false;
-	private boolean  shutDown=false;
-	private long 	 lastStart=0;
-	private long 	 lastStop=0;
-	private long 	 milliTotal=0;
-	private long 	 tickTotal=0;
-	private String 	 status="";
-	private boolean  debugging=false;
-	private boolean  checkDBHealth=true;
-	private long 	 sleepTime=0;
-	private Runnable engine=null;
+	private volatile boolean  	started=false;
+	private volatile boolean  	shutDown=false;
+	private volatile long 	 	lastStart=0;
+	private volatile long 	 	lastStop=0;
+	private volatile long 	 	milliTotal=0;
+	private volatile long 	 	tickTotal=0;
+	private String			 	status="unknown";
+	private final boolean		debugging;
+	private volatile boolean  	checkDBHealth=true;
+	private final long 	 		sleepTime;
+	private final Runnable 		engine;
 
-	private CMSecurity.DisFlag disableFlag;
+	private final CMSecurity.DisFlag  disableFlag;
 	
 	public CMSupportThread(String name, long sleep, Runnable engine, boolean debugging, CMSecurity.DisFlag disableFlag) {
 		this.engine=engine;
@@ -51,7 +52,7 @@ public class CMSupportThread extends Thread implements CMRunnable
 	public void setStatus(String s)
 	{
 		status=s;
-		if(debugging) Log.debugOut(getName(),s);
+		if(debugging) Log.debugOut(getName(),getStatus());
 	}
 	
 	public boolean isStarted()
@@ -61,6 +62,10 @@ public class CMSupportThread extends Thread implements CMRunnable
 	
 	public String getStatus()
 	{
+		if(status.equals("{LASTSTART}"))
+		{
+			return "started "+CMLib.time().date2BriefString(lastStart);
+		}
 		return status;
 	}
 
@@ -78,7 +83,7 @@ public class CMSupportThread extends Thread implements CMRunnable
 	public void debugDumpStack(final String ID, Thread theThread)
 	{
 		// I wish Java had compiler directives.  Would be great to un-comment this for 1.5 JVMs
-		java.lang.StackTraceElement[] s=(java.lang.StackTraceElement[])theThread.getStackTrace();
+		java.lang.StackTraceElement[] s=theThread.getStackTrace();
 		StringBuffer dump = new StringBuffer("");
 		for(int i=0;i<s.length;i++)
 			dump.append("\n   "+s[i].getClassName()+": "+s[i].getMethodName()+"("+s[i].getFileName()+": "+s[i].getLineNumber()+")");
@@ -129,7 +134,7 @@ public class CMSupportThread extends Thread implements CMRunnable
     						//setStatus("stopped at "+lastStop+", prev was "+(lastStop-lastStart)+"ms");
     						Thread.sleep(sleepTime);
     						lastStart=System.currentTimeMillis();
-    						setStatus("started "+CMLib.time().date2BriefString(lastStart));
+    						setStatus("LASTSTART");
     						engine.run();
     					}
     					else

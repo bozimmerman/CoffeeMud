@@ -62,6 +62,7 @@ public class StdSpaceShip implements Area, SpaceObject, SpaceShip
 	protected PhyStats  	phyStats		=(PhyStats)CMClass.getCommon("DefaultPhyStats");
 	protected PhyStats  	basePhyStats	=(PhyStats)CMClass.getCommon("DefaultPhyStats");
 	protected boolean   	initializedArea =false;
+	protected final Area 	me			 	=this;
 	
 	protected SVector<Ability>  		affects=new SVector<Ability>(1);
 	protected SVector<Behavior> 		behaviors=new SVector<Behavior>(1);
@@ -171,12 +172,9 @@ public class StdSpaceShip implements Area, SpaceObject, SpaceShip
 	public void recoverPhyStats()
 	{
 		basePhyStats.copyInto(phyStats);
-		for(final Enumeration<Ability> a=effects();a.hasMoreElements();)
-		{
-			final Ability A=a.nextElement();
-			if(A!=null)
-				A.affectPhyStats(this,phyStats);
-		}
+		eachEffect(new EachApplicable<Ability>(){ public final void apply(final Ability A) {
+			if(A!=null) A.affectPhyStats(me,phyStats);
+        }});
 	}
 	public void setBasePhyStats(PhyStats newStats)
 	{
@@ -403,27 +401,15 @@ public class StdSpaceShip implements Area, SpaceObject, SpaceShip
 	
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
-		MsgListener N=null;
-		for(int b=0;b<numBehaviors();b++)
-		{
-			N=fetchBehavior(b);
-			if(N!=null)
-				N.executeMsg(this,msg);
-		}
-		
-		for(int s=0;s<numScripts();s++)
-		{
-			N=fetchScript(s);
-			if(N!=null)
-				N.executeMsg(this,msg);
-		}
-		
-		for(final Enumeration<Ability> a=effects();a.hasMoreElements();)
-		{
-			N=a.nextElement();
-			if(N!=null)
-				N.executeMsg(this,msg);
-		}
+		eachBehavior(new EachApplicable<Behavior>(){ public final void apply(final Behavior B){
+			B.executeMsg(me, msg);
+		} });
+		eachScript(new EachApplicable<ScriptingEngine>(){ public final void apply(final ScriptingEngine S){
+			S.executeMsg(me, msg);
+		} });
+		eachEffect(new EachApplicable<Ability>(){ public final void apply(final Ability A) {
+			A.executeMsg(me,msg);
+        }});
 	}
 
 	public Enumeration<Room> getCompleteMap(){return getProperMap();}
@@ -440,7 +426,7 @@ public class StdSpaceShip implements Area, SpaceObject, SpaceShip
 	}
 
 	public long getTickStatus(){ return tickStatus;}
-	public boolean tick(Tickable ticking, int tickID)
+	public boolean tick(final Tickable ticking, final int tickID)
 	{
 		if(flag>=Area.STATE_STOPPED) return false;
 		tickStatus=Tickable.STATUS_START;
@@ -448,24 +434,18 @@ public class StdSpaceShip implements Area, SpaceObject, SpaceShip
 		{
 			getTimeObj().tick(this,tickID);
 			tickStatus=Tickable.STATUS_BEHAVIOR;
-			for(Behavior B : behaviors)
-				if(B!=null)
-					B.tick(ticking,tickID);
+			eachBehavior(new EachApplicable<Behavior>(){ public final void apply(final Behavior B){
+				B.tick(ticking,tickID);
+			} });
 			tickStatus=Tickable.STATUS_SCRIPT;
-			for(ScriptingEngine SE : scripts)
-				if(SE!=null) 
-					SE.tick(ticking,tickID);
-
+			eachScript(new EachApplicable<ScriptingEngine>(){ public final void apply(final ScriptingEngine S){
+				S.tick(ticking,tickID);
+			} });
 			tickStatus=Tickable.STATUS_AFFECT;
-			for(final Enumeration<Ability> a=effects();a.hasMoreElements();)
-			{
-				final Ability A=a.nextElement();
-				if(A!=null)
-				{
-					if(!A.tick(ticking,tickID))
-						A.unInvoke();
-				}
-			}
+			eachEffect(new EachApplicable<Ability>(){ public final void apply(final Ability A) {
+				if(!A.tick(ticking,tickID))
+					A.unInvoke();
+	        }});
 		}
 		tickStatus=Tickable.STATUS_NOT;
 		return true;
@@ -509,6 +489,18 @@ public class StdSpaceShip implements Area, SpaceObject, SpaceShip
 		affects.removeElement(to);
 		if(affects.size()<size)
 			to.setAffectedOne(null);
+	}
+	public void eachEffect(final EachApplicable<Ability> applier)
+	{
+		final List<Ability> affects=this.affects;
+		if(affects==null) return;
+		try{
+    		for(int a=0;a<affects.size();a++)
+    		{
+    			final Ability A=affects.get(a);
+    			if(A!=null) applier.apply(A);
+    		}
+		} catch(ArrayIndexOutOfBoundsException e){}
 	}
 	public void delAllEffects(boolean unInvoke)
 	{
@@ -751,6 +743,18 @@ public class StdSpaceShip implements Area, SpaceObject, SpaceShip
 		}
 		return null;
 	}
+	public void eachBehavior(final EachApplicable<Behavior> applier)
+	{
+		final List<Behavior> behaviors=this.behaviors;
+		if(behaviors!=null)
+		try{
+    		for(int a=0;a<behaviors.size();a++)
+    		{
+    			final Behavior B=behaviors.get(a);
+    			if(B!=null) applier.apply(B);
+    		}
+    	} catch(ArrayIndexOutOfBoundsException e){}
+	}
 
 	/** Manipulation of the scripts list */
 	public void addScript(ScriptingEngine S)
@@ -779,6 +783,18 @@ public class StdSpaceShip implements Area, SpaceObject, SpaceShip
 	public int numScripts(){return (scripts==null)?0:scripts.size();}
 	public Enumeration<ScriptingEngine> scripts() { return (scripts==null)?EmptyEnumeration.INSTANCE:scripts.elements();}
 	public ScriptingEngine fetchScript(int x){try{return (ScriptingEngine)scripts.elementAt(x);}catch(Exception e){} return null;}
+	public void eachScript(final EachApplicable<ScriptingEngine> applier)
+	{
+		final List<ScriptingEngine> scripts=this.scripts;
+		if(scripts!=null)
+		try{
+    		for(int a=0;a<scripts.size();a++)
+    		{
+    			final ScriptingEngine S=scripts.get(a);
+    			if(S!=null) applier.apply(S);
+    		}
+    	} catch(ArrayIndexOutOfBoundsException e){}
+	}
 	
 	public void addProperRoom(Room R)
 	{

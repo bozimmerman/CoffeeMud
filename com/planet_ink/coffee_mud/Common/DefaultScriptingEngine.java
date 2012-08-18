@@ -76,6 +76,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 	protected Environmental lastLoaded=null;
 	protected String myScript="";
 	protected String defaultQuestName="";
+	protected String scriptKey=null;
 	protected boolean debugBadScripts=false;
 
 	public DefaultScriptingEngine()
@@ -526,6 +527,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 		registeredSpecialEvents=new HashSet();
 		noTrigger=new Hashtable();
 		myScript=newParms;
+		scriptKey=null;
 		if(oncesDone.size()>0)
 			oncesDone.clear();
 	}
@@ -8952,10 +8954,15 @@ public class DefaultScriptingEngine implements ScriptingEngine
 
 	public String getScriptResourceKey()
 	{
-		if(getScript().length()>100)
-			return "PARSEDPRG: "+getScript().substring(0,100)+getScript().length()+getScript().hashCode();
-		else
-			return "PARSEDPRG: "+getScript();
+		if(scriptKey==null)
+		{
+			final String script=getScript();
+			if(script.length()>100)
+				scriptKey="PARSEDPRG: "+script.substring(0,100)+script.length()+script.hashCode();
+			else
+				scriptKey="PARSEDPRG: "+script;
+		}
+		return scriptKey;
 	}
 	
 	protected List<DVector> getScripts()

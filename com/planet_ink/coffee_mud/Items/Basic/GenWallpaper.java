@@ -302,6 +302,7 @@ public class GenWallpaper implements Item
 	public void delEffect(Ability to){}
 	public void delAllEffects(boolean unInvoke){}
 	public int numEffects(){return 0;}
+	public void eachEffect(final EachApplicable<Ability> applier){}
 	public Enumeration<Ability> effects(){return EmptyEnumeration.INSTANCE;}
 	public Ability fetchEffect(int index){return null;}
 	public Ability fetchEffect(String ID){return null;}
@@ -314,12 +315,14 @@ public class GenWallpaper implements Item
 	public Enumeration<Behavior> behaviors() { return EmptyEnumeration.INSTANCE;}
 	public Behavior fetchBehavior(int index){return null;}
 	public Behavior fetchBehavior(String ID){return null;}
+	public void eachBehavior(final EachApplicable<Behavior> applier){}
 	public void addScript(ScriptingEngine S){}
 	public void delScript(ScriptingEngine S) {}
 	public void delAllScripts(){}
 	public int numScripts(){return 0;}
 	public Enumeration<ScriptingEngine> scripts() { return EmptyEnumeration.INSTANCE;}
 	public ScriptingEngine fetchScript(int x){ return null;}
+	public void eachScript(final EachApplicable<ScriptingEngine> applier){}
 
 	public int getSaveStatIndex(){return getStatCodes().length;}
 	private static final String[] CODES={"CLASS","NAME","DESCRIPTION","ISREADABLE","READABLETEXT"};

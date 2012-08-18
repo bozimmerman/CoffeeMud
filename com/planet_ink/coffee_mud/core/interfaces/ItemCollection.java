@@ -3,6 +3,7 @@ package com.planet_ink.coffee_mud.core.interfaces;
 import java.util.Enumeration;
 import java.util.List;
 
+import com.planet_ink.coffee_mud.Behaviors.interfaces.Behavior;
 import com.planet_ink.coffee_mud.Items.interfaces.Item;
 /*
 Copyright 2000-2012 Bo Zimmerman
@@ -124,4 +125,9 @@ public interface ItemCollection extends CMObject
 	 * @param destroy true to also destroy the items
 	 */
 	public void delAllItems(boolean destroy);
+	/**
+	 * Applies the given code to each item in this collection
+	 * @param applier code to execute against each object
+	 */
+	public void eachItem(final EachApplicable<Item> applier);
 }

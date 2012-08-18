@@ -37,33 +37,35 @@ import java.util.*;
 public class StdRoom implements Room
 {
 	public String ID(){return "StdRoom";}
-	protected String	 myID="";
-	protected String	 name="the room";
-	protected String	 displayText="Standard Room";
-	protected String	 rawImageName=null;
-	protected String	 cachedImageName=null;
-	protected Object	 description=null;
-	protected Area  	 myArea=null;
-	protected PhyStats   phyStats=(PhyStats)CMClass.getCommon("DefaultPhyStats");
-	protected PhyStats   basePhyStats=(PhyStats)CMClass.getCommon("DefaultPhyStats");
-	public Exit[]   	 exits=new Exit[Directions.NUM_DIRECTIONS()];
-	public Room[]   	 doors=new Room[Directions.NUM_DIRECTIONS()];
-	protected String[]   xtraValues=null;
-	protected boolean    mobility=true;
-	protected GridLocale gridParent=null;
-	protected long  	 tickStatus=Tickable.STATUS_NOT;
-	protected long  	 expirationDate=0;
+	protected String	 	myID="";
+	protected String	 	name="the room";
+	protected String	 	displayText="Standard Room";
+	protected String	 	rawImageName=null;
+	protected String	 	cachedImageName=null;
+	protected Object	 	description=null;
+	protected Area  	 	myArea=null;
+	protected PhyStats   	phyStats=(PhyStats)CMClass.getCommon("DefaultPhyStats");
+	protected PhyStats   	basePhyStats=(PhyStats)CMClass.getCommon("DefaultPhyStats");
+	public final Exit[]  	exits=new Exit[Directions.NUM_DIRECTIONS()];
+	public final Room[]  	doors=new Room[Directions.NUM_DIRECTIONS()];
+	protected String[]   	xtraValues=null;
+	protected boolean    	mobility=true;
+	protected GridLocale 	gridParent=null;
+	protected long  	 	tickStatus=Tickable.STATUS_NOT;
+	protected long  	 	expirationDate=0;
 	protected SVector<Ability>  		affects=null;
 	protected SVector<Behavior> 		behaviors=null;
 	protected SVector<ScriptingEngine>  scripts=null;
-	protected volatile SVector<MOB> 	inhabitants=new SVector(1);
-	protected volatile SVector<Item>	contents=new SVector(1);
+	protected final SVector<MOB> 		inhabitants=new SVector(1);
+	protected final SVector<Item>		contents=new SVector(1);
+	protected final Room 	  			me=this;
 
 	// base move points and thirst points per round
 	protected int myResource=-1;
 	protected long resourceFound=0;
 	protected boolean amDestroyed=false;
 	protected boolean skyedYet=false;
+	
 	public StdRoom()
 	{
 		super();
@@ -133,13 +135,13 @@ public class StdRoom implements Room
 		basePhyStats=(PhyStats)R.basePhyStats().copyOf();
 		phyStats=(PhyStats)R.phyStats().copyOf();
 
-		contents=new SVector(1);
-		inhabitants=new SVector(1);
+		contents.setSize(0);
+		inhabitants.setSize(0);
 		affects=null;
 		behaviors=null;
 		scripts=null;
-		exits=new Exit[Directions.NUM_DIRECTIONS()];
-		doors=new Room[Directions.NUM_DIRECTIONS()];
+		Arrays.fill(exits, null);
+		Arrays.fill(doors, null);
 		for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 		{
 			if(R.getRawExit(d)!=null)
@@ -666,11 +668,9 @@ public class StdRoom implements Room
 				break;
 			}
 		}
-		for(final Enumeration<Item> i=items();i.hasMoreElements();)
-		{
-			final Item I=i.nextElement();
-			I.executeMsg(this,msg);
-		}
+		eachItem(new EachApplicable<Item>(){ public final void apply(final Item I){
+			I.executeMsg(me, msg);
+		} });
 
 		for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 		{
@@ -679,55 +679,41 @@ public class StdRoom implements Room
 				E.executeMsg(this,msg);
 		}
 
-		for(final Enumeration<Behavior> b=behaviors();b.hasMoreElements();)
-		{
-			final Behavior B=b.nextElement();
-			B.executeMsg(this,msg);
-		}
-		
-		for(final Enumeration<ScriptingEngine> s=scripts();s.hasMoreElements();)
-		{
-			final ScriptingEngine S=s.nextElement();
-			S.executeMsg(this,msg);
-		}
-		
-		for(final Enumeration<Ability> a=effects();a.hasMoreElements();)
-		{
-			final Ability A=a.nextElement();
-			A.executeMsg(this,msg);
-		}
+		eachBehavior(new EachApplicable<Behavior>(){ public final void apply(final Behavior B){
+			B.executeMsg(me, msg);
+		} });
+		eachScript(new EachApplicable<ScriptingEngine>(){ public final void apply(final ScriptingEngine S){
+			S.executeMsg(me, msg);
+		} });
+		eachEffect(new EachApplicable<Ability>(){ public final void apply(final Ability A) {
+			A.executeMsg(me,msg);
+		} });
 		
 		if(msg.sourceMinor()==CMMsg.TYP_SHUTDOWN)
 		{
 			try
 			{
-				MOB M=null;
 				if(CMSecurity.isSaveFlag("ROOMMOBS"))
 				{
 					if(roomID().length()==0)
-					for(int m=0;m<numInhabitants();m++)
-					{
-						M=fetchInhabitant(m);
-						if((M!=null)
-						&&(M.isSavable())
-						&&(M.getStartRoom()!=this)
-						&&(M.getStartRoom()!=null)
-						&&(M.getStartRoom().roomID().length()>0))
-							M.getStartRoom().bringMobHere(M,false);
-					}
+						eachInhabitant(new EachApplicable<MOB>(){ public final void apply(final MOB M){
+							if((M.isSavable())
+							&&(M.getStartRoom()!=me)
+							&&(M.getStartRoom()!=null)
+							&&(M.getStartRoom().roomID().length()>0))
+								M.getStartRoom().bringMobHere(M,false);
+						} });
 				}
 				else
 				if(CMSecurity.isSaveFlag("ROOMSHOPS"))
 				{
-					for(int m=0;m<numInhabitants();m++)
-					{
-						M=fetchInhabitant(m);
+					eachInhabitant(new EachApplicable<MOB>(){ public final void apply(final MOB M){
 						if((M instanceof ShopKeeper)
 						&&(M.isSavable())
-						&&(M.getStartRoom()!=this)
+						&&(M.getStartRoom()!=me)
 						&&(M.getStartRoom()!=null))
 							M.getStartRoom().bringMobHere(M,false);
-					}
+					} });
 				}
 			}catch(NoSuchElementException e){}
 		}
@@ -736,14 +722,12 @@ public class StdRoom implements Room
 		{
 			synchronized(("SYNC"+roomID()).intern())
 			{
-				LinkedList<DeadBody> deadBodies=new LinkedList<DeadBody>();
-				for(Enumeration<Item> j=items();j.hasMoreElements();)
-				{
-					Item I=j.nextElement();
+				final LinkedList<DeadBody> deadBodies=new LinkedList<DeadBody>();
+				eachItem(new EachApplicable<Item>(){ public final void apply(final Item I){
 					if((I instanceof DeadBody)
 					&&(((DeadBody)I).playerCorpse()))
 						deadBodies.add((DeadBody)I);
-				}
+				} });
 				for(DeadBody D : deadBodies)
 				{
 					MOB M=CMLib.players().getLoadPlayer(D.mobName());
@@ -768,39 +752,33 @@ public class StdRoom implements Room
 					final Vector bodies=new Vector(1);
 					if(CMSecurity.isSaveFlag("ROOMMOBS"))
 					{
-						for(final Enumeration<MOB> m=inhabitants();m.hasMoreElements();)
-						{
-							final MOB M=m.nextElement();
+						eachInhabitant(new EachApplicable<MOB>(){ public final void apply(final MOB M){
 							if(M.isSavable())
 							{
-								M.setStartRoom(this);
+								M.setStartRoom(me);
 								M.text(); // this permanizes his current state
 							}
-						}
+						} });
 						CMLib.database().DBUpdateMOBs(this);
 					}
 					else
 					if(CMSecurity.isSaveFlag("ROOMSHOPS"))
 					{
-						for(final Enumeration<MOB> m=inhabitants();m.hasMoreElements();)
-						{
-							final MOB M=m.nextElement();
+						eachInhabitant(new EachApplicable<MOB>(){ public final void apply(final MOB M){
 							if((M.isSavable())
 							&&(M instanceof ShopKeeper)
-							&&(M.getStartRoom()==this))
+							&&(M.getStartRoom()==me))
 								shopmobs.addElement(M);
-						}
+						} });
 						if(shopmobs.size()>0)
 							CMLib.database().DBUpdateTheseMOBs(this,shopmobs);
 					}
 					if(CMSecurity.isSaveFlag("ROOMITEMS"))
 					{
-						for(final Enumeration<Item> i=items();i.hasMoreElements();)
-						{
-							final Item I=i.nextElement();
+						eachItem(new EachApplicable<Item>(){ public final void apply(final Item I){
 							if(I instanceof DeadBody)
-								bodies.addElement(I);
-						}
+								bodies.add((DeadBody)I);
+						} });
 						for(int i=0;i<bodies.size();i++)
 							((Item)bodies.elementAt(i)).destroy();
 						CMLib.database().DBUpdateItems(this);
@@ -822,18 +800,16 @@ public class StdRoom implements Room
 
 	public void startItemRejuv()
 	{
-		for(final Enumeration<Item> i=items();i.hasMoreElements();)
-		{
-			final Item item=i.nextElement();
+		eachItem(new EachApplicable<Item>(){ public final void apply(final Item item){
 			if(item.container()==null)
 			{
 				final ItemTicker I=(ItemTicker)CMClass.getAbility("ItemRejuv");
 				I.unloadIfNecessary(item);
 				if((item.phyStats().rejuv()<Integer.MAX_VALUE)
 				&&(item.phyStats().rejuv()>0))
-					I.loadMeUp(item,this);
+					I.loadMeUp(item,me);
 			}
-		}
+		} });
 	}
 	
 	public long getTickStatus(){return tickStatus;}
@@ -842,29 +818,23 @@ public class StdRoom implements Room
 		tickStatus=Tickable.STATUS_START;
 		if(tickID==Tickable.TICKID_ROOM_BEHAVIOR)
 		{
+			if((numBehaviors()>0)&&(numScripts()<=0)) return false;
 			tickStatus=Tickable.STATUS_BEHAVIOR;
-			for(final Enumeration<Behavior> b=behaviors();b.hasMoreElements();)
-			{
-				final Behavior B=b.nextElement();
-				B.tick(ticking,tickID);
-			}
-			if((numBehaviors()<=0)&&(numScripts()<=0)) return false;
+			eachBehavior(new EachApplicable<Behavior>(){ public final void apply(final Behavior B){
+				B.tick(ticking, tickID);
+			} });
 			tickStatus=Tickable.STATUS_SCRIPT;
-			for(final Enumeration<ScriptingEngine> s=scripts();s.hasMoreElements();)
-			{
-				final ScriptingEngine S=s.nextElement();
-				S.tick(ticking,tickID);
-			}
+			eachScript(new EachApplicable<ScriptingEngine>(){ public final void apply(final ScriptingEngine S){
+				S.tick(ticking, tickID);
+			} });
 		}
 		else
 		{
 			tickStatus=Tickable.STATUS_AFFECT;
-			for(final Enumeration<Ability> a=effects();a.hasMoreElements();)
-			{
-				final Ability A=a.nextElement();
-				if(!A.tick(ticking,tickID))
-					A.unInvoke();
-			}
+			eachEffect(new EachApplicable<Ability>(){ public final void apply(final Ability A) {
+    			if(!A.tick(ticking,tickID))
+    				A.unInvoke();
+	        } });
 		}
 		tickStatus=Tickable.STATUS_NOT;
 		return !amDestroyed();
@@ -885,40 +855,30 @@ public class StdRoom implements Room
 		if(myArea!=null)
 			myArea.affectPhyStats(this,phyStats());
 
-		for(final Enumeration<Ability> a=effects();a.hasMoreElements();)
-		{
-			final Ability A=a.nextElement();
-			A.affectPhyStats(this,phyStats);
-		}
-		for(final Enumeration<Item> i=items();i.hasMoreElements();)
-		{
-			final Item I=i.nextElement();
-			I.affectPhyStats(this,phyStats);
-		}
-		for(final Enumeration<MOB> m=inhabitants();m.hasMoreElements();)
-		{
-			final MOB M=m.nextElement();
-			M.affectPhyStats(this,phyStats);
-		}
+		eachEffect(new EachApplicable<Ability>(){ public final void apply(final Ability A) {
+			A.affectPhyStats(me,phyStats);
+        } });
+		eachItem(new EachApplicable<Item>(){ public final void apply(final Item I){
+			I.affectPhyStats(me,phyStats);
+		} });
+		eachInhabitant(new EachApplicable<MOB>(){ public final void apply(final MOB M){
+			M.affectPhyStats(me,phyStats);
+		} });
 	}
 	public void recoverRoomStats()
 	{
 		recoverPhyStats();
-		for(final Enumeration<MOB> m=inhabitants();m.hasMoreElements();)
-		{
-			final MOB M=m.nextElement();
+		eachInhabitant(new EachApplicable<MOB>(){ public final void apply(final MOB M){
 			M.recoverCharStats();
 			M.recoverPhyStats();
 			M.recoverMaxState();
-		}
+		} });
 		for(final Exit X : exits)
 			if(X!=null) 
 				X.recoverPhyStats();
-		for(final Enumeration<Item> i=items();i.hasMoreElements();)
-		{
-			final Item I=i.nextElement();
+		eachItem(new EachApplicable<Item>(){ public final void apply(final Item I){
 			I.recoverPhyStats();
-		}
+		} });
 	}
 
 	public void setBasePhyStats(PhyStats newStats)
@@ -926,7 +886,7 @@ public class StdRoom implements Room
 		basePhyStats=(PhyStats)newStats.copyOf();
 	}
 
-	public void affectPhyStats(Physical affected, PhyStats affectableStats)
+	public void affectPhyStats(final Physical affected, final PhyStats affectableStats)
 	{
 		getArea().affectPhyStats(affected,affectableStats);
 		//if(phyStats().sensesMask()>0)
@@ -935,32 +895,23 @@ public class StdRoom implements Room
 			&((~(PhyStats.IS_DARK|PhyStats.IS_LIGHTSOURCE|PhyStats.IS_SLEEPING|PhyStats.IS_HIDDEN)));
 		if(disposition>0)
 			affectableStats.setDisposition(affectableStats.disposition()|disposition);
-		for(final Enumeration<Ability> a=effects();a.hasMoreElements();)
-		{
-			final Ability A=a.nextElement();
-			if(A.bubbleAffect())
-			   A.affectPhyStats(affected,affectableStats);
-		}
+		eachEffect(new EachApplicable<Ability>(){ public final void apply(final Ability A) {
+			if(A.bubbleAffect()) A.affectPhyStats(affected,affectableStats);
+        } });
 	}
-	public void affectCharStats(MOB affectedMob, CharStats affectableStats)
+	public void affectCharStats(final MOB affectedMob, final CharStats affectableStats)
 	{
 		getArea().affectCharStats(affectedMob,affectableStats);
-		for(final Enumeration<Ability> a=effects();a.hasMoreElements();)
-		{
-			final Ability A=a.nextElement();
-			if(A.bubbleAffect())
-			   A.affectCharStats(affectedMob,affectableStats);
-		}
+		eachEffect(new EachApplicable<Ability>(){ public final void apply(final Ability A) {
+			if(A.bubbleAffect()) A.affectCharStats(affectedMob,affectableStats);
+        } });
 	}
-	public void affectCharState(MOB affectedMob, CharState affectableMaxState)
+	public void affectCharState(final MOB affectedMob, final CharState affectableMaxState)
 	{
 		getArea().affectCharState(affectedMob,affectableMaxState);
-		for(final Enumeration<Ability> a=effects();a.hasMoreElements();)
-		{
-			final Ability A=a.nextElement();
-			if(A.bubbleAffect())
-			   A.affectCharState(affectedMob,affectableMaxState);
-		}
+		eachEffect(new EachApplicable<Ability>(){ public final void apply(final Ability A) {
+			if(A.bubbleAffect()) A.affectCharState(affectedMob,affectableMaxState);
+        } });
 	}
 	public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
 
@@ -1461,13 +1412,13 @@ public class StdRoom implements Room
 		phyStats=basePhyStats;
 		for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 			setRawExit(d,null);
-		exits=new Exit[Directions.NUM_DIRECTIONS()];
-		doors=new Room[Directions.NUM_DIRECTIONS()];
+		Arrays.fill(exits, null);
+		Arrays.fill(doors, null);
 		affects=null;
 		behaviors=null;
 		scripts=null;
-		contents=new SVector(1);
-		inhabitants=new SVector(1);
+		contents.setSize(0);
+		inhabitants.setSize(0);
 		gridParent=null;
 		amDestroyed=true;
 	}
@@ -1572,6 +1523,18 @@ public class StdRoom implements Room
 		}
 		catch(java.lang.ArrayIndexOutOfBoundsException x){}
 		return null;
+	}
+	public void eachInhabitant(final EachApplicable<MOB> applier)
+	{
+		final List<MOB> inhabitants=this.inhabitants;
+		if(contents!=null)
+		try{
+    		for(int a=0;a<inhabitants.size();a++)
+    		{
+    			final MOB M=inhabitants.get(a);
+    			if(M!=null) applier.apply(M);
+    		}
+    	} catch(ArrayIndexOutOfBoundsException e){}
 	}
 	public void delInhabitant(MOB mob)
 	{
@@ -1691,6 +1654,18 @@ public class StdRoom implements Room
 		catch(java.lang.ArrayIndexOutOfBoundsException x){}
 		return null;
 	}
+	public void eachItem(final EachApplicable<Item> applier)
+	{
+		final List<Item> contents=this.contents;
+		if(contents!=null)
+		try{
+    		for(int a=0;a<contents.size();a++)
+    		{
+    			final Item I=contents.get(a);
+    			if(I!=null) applier.apply(I);
+    		}
+    	} catch(ArrayIndexOutOfBoundsException e){}
+	}
 	public Item getRandomItem()
 	{
 		if(numItems()==0) return null;
@@ -1781,13 +1756,12 @@ public class StdRoom implements Room
 		String newThingName=CMLib.lang().preItemParser(thingName);
 		if(newThingName!=null) thingName=newThingName;
 		PhysicalAgent found=null;
-		final SVector V=contents.copyOf();
-		for(final Exit X : exits)
-			if(X!=null)
-				V.addElement(X);
-		V.addAll(inhabitants);
-		found=(PhysicalAgent)CMLib.english().fetchAvailable(V,thingName,goodLocation,Wearable.FILTER_ANY,true);
-		if(found==null) found=(PhysicalAgent)CMLib.english().fetchAvailable(V,thingName,goodLocation,Wearable.FILTER_ANY,false);
+		if(contents.size()>0) found=(PhysicalAgent)CMLib.english().fetchAvailable(contents,thingName,goodLocation,Wearable.FILTER_ANY,true);
+		if(found==null) found=(PhysicalAgent)CMLib.english().fetchAvailable(Arrays.asList(exits),thingName,goodLocation,Wearable.FILTER_ANY,true);
+		if((found==null)&&(inhabitants.size()>0)) found=(PhysicalAgent)CMLib.english().fetchAvailable(inhabitants,thingName,goodLocation,Wearable.FILTER_ANY,true);
+		if((found==null)&&(contents.size()>0)) found=(PhysicalAgent)CMLib.english().fetchAvailable(contents,thingName,goodLocation,Wearable.FILTER_ANY,false);
+		if(found==null) found=(PhysicalAgent)CMLib.english().fetchAvailable(Arrays.asList(exits),thingName,goodLocation,Wearable.FILTER_ANY,false);
+		if((found==null)&&(inhabitants.size()>0)) found=(PhysicalAgent)CMLib.english().fetchAvailable(inhabitants,thingName,goodLocation,Wearable.FILTER_ANY,false);
 
 		if((found!=null) // the smurfy well exception
 		&&(found instanceof Item)
@@ -1813,13 +1787,12 @@ public class StdRoom implements Room
 		String newThingName=CMLib.lang().preItemParser(thingName);
 		if(newThingName!=null) thingName=newThingName;
 		PhysicalAgent found=null;
-		final SVector V=inhabitants.copyOf();
-		V.addAll(contents);
-		for(final Exit X : exits)
-			if(X!=null)
-				V.addElement(X);
-		found=(PhysicalAgent)CMLib.english().fetchAvailable(V,thingName,goodLocation,Wearable.FILTER_ANY,true);
-		if(found==null) found=(PhysicalAgent)CMLib.english().fetchAvailable(V,thingName,goodLocation,Wearable.FILTER_ANY,false);
+		if(inhabitants.size()>0) found=(PhysicalAgent)CMLib.english().fetchAvailable(inhabitants,thingName,goodLocation,Wearable.FILTER_ANY,true);
+		if((found==null)&&(contents.size()>0)) found=(PhysicalAgent)CMLib.english().fetchAvailable(contents,thingName,goodLocation,Wearable.FILTER_ANY,true);
+		if(found==null) found=(PhysicalAgent)CMLib.english().fetchAvailable(Arrays.asList(exits),thingName,goodLocation,Wearable.FILTER_ANY,true);
+		if((found==null)&&(inhabitants.size()>0)) found=(PhysicalAgent)CMLib.english().fetchAvailable(inhabitants,thingName,goodLocation,Wearable.FILTER_ANY,false);
+		if((found==null)&&(contents.size()>0)) found=(PhysicalAgent)CMLib.english().fetchAvailable(contents,thingName,goodLocation,Wearable.FILTER_ANY,false);
+		if(found==null) found=(PhysicalAgent)CMLib.english().fetchAvailable(Arrays.asList(exits),thingName,goodLocation,Wearable.FILTER_ANY,false);
 		if(found==null)
 		{
 			newThingName=CMLib.lang().failedItemParser(thingName);
@@ -1930,6 +1903,19 @@ public class StdRoom implements Room
 				affects=new SVector(1);
 		}
 	}
+	public void eachEffect(final EachApplicable<Ability> applier)
+	{
+		final List<Ability> affects=this.affects;
+		if(affects==null) return;
+		try
+		{
+    		for(int a=0;a<affects.size();a++)
+    		{
+    			final Ability A=affects.get(a);
+    			if(A!=null) applier.apply(A);
+    		}
+		} catch(ArrayIndexOutOfBoundsException e){}
+	}
 	public void delAllEffects(boolean unInvoke)
 	{
 		if(affects==null) return;
@@ -2031,6 +2017,18 @@ public class StdRoom implements Room
 				return B;
 		return null;
 	}
+	public void eachBehavior(final EachApplicable<Behavior> applier)
+	{
+		final List<Behavior> behaviors=this.behaviors;
+		if(behaviors!=null)
+		try{
+    		for(int a=0;a<behaviors.size();a++)
+    		{
+    			final Behavior B=behaviors.get(a);
+    			if(B!=null) applier.apply(B);
+    		}
+    	} catch(ArrayIndexOutOfBoundsException e){}
+	}
 
 	/** Manipulation of the scripts list */
 	public void addScript(ScriptingEngine S)
@@ -2074,6 +2072,18 @@ public class StdRoom implements Room
 	public int numScripts(){return (scripts==null)?0:scripts.size();}
 	public Enumeration<ScriptingEngine> scripts() { return (scripts==null)?EmptyEnumeration.INSTANCE:scripts.elements();}
 	public ScriptingEngine fetchScript(int x){try{return (ScriptingEngine)scripts.elementAt(x);}catch(Exception e){} return null;}
+	public void eachScript(final EachApplicable<ScriptingEngine> applier)
+	{
+		final List<ScriptingEngine> scripts=this.scripts;
+		if(scripts!=null)
+		try{
+    		for(int a=0;a<scripts.size();a++)
+    		{
+    			final ScriptingEngine S=scripts.get(a);
+    			if(S!=null) applier.apply(S);
+    		}
+    	} catch(ArrayIndexOutOfBoundsException e){}
+	}
 	
 	public int getSaveStatIndex(){return (xtraValues==null)?getStatCodes().length:getStatCodes().length-xtraValues.length;}
 	protected static final String[] STDCODES={"CLASS","DISPLAY","DESCRIPTION","TEXT","AFFBEHAV","IMAGE"};

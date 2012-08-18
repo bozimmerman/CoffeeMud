@@ -46,7 +46,7 @@ public class DefaultCharStats implements CharStats
 	protected short[] stats=new short[CharStats.CODES.instance().total()];
 	protected CharClass[] myClasses=null;
 	protected Integer[] myLevels=null;
-	protected Race myRace=null;
+	protected Race myRace;
 	protected String raceName=null;
 	protected String genderName=null;
 	protected String displayClassName=null;
@@ -57,6 +57,8 @@ public class DefaultCharStats implements CharStats
 	public DefaultCharStats()
 	{
 		reset();
+		setMyRace(CMClass.getRace("StdRace"));
+		setCurrentClass(CMClass.getCharClass("StdCharClass"));
 	}
 	public void setAllBaseValues(int def)
 	{
@@ -439,8 +441,6 @@ public class DefaultCharStats implements CharStats
 	}
 	public CharClass getCurrentClass()
 	{
-		if(myClasses==null)
-			setCurrentClass(CMClass.getCharClass("StdCharClass"));
 		return myClasses[myClasses.length-1];
 	}
 	
@@ -454,8 +454,6 @@ public class DefaultCharStats implements CharStats
 	
 	public Race getMyRace()
 	{
-		if(myRace==null) 
-			myRace=CMClass.getRace("StdRace");
 		return myRace;
 	}
 	

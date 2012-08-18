@@ -465,7 +465,7 @@ public class ServiceEngine implements ThreadEngine
 					&&((here==null)||(((ItemTicker)E2).properLocation()==here)))
 					{
 						C.tickDown=0;
-						if(Tick.tickTicker(C,false))
+						if(C.tickTicker(false))
 							almostTock.delTicker(C);
 					}
 					else
@@ -479,7 +479,7 @@ public class ServiceEngine implements ThreadEngine
 					{
 						C.tickDown=0;
 						((MOB)E2).phyStats().setRejuv(0);
-						if(Tick.tickTicker(C,false))
+						if(C.tickTicker(false))
 							almostTock.delTicker(C);
 					}
 				}
@@ -507,20 +507,20 @@ public class ServiceEngine implements ThreadEngine
 					E2=C.clientObject;
 					if(here==null)
 					{
-						if(Tick.tickTicker(C,false))
+						if(C.tickTicker(false))
 							almostTock.delTicker(C);
 					}
 					else
 					if(isHere(E2,here))
 					{
-						if(Tick.tickTicker(C,isSuspended))
+						if(C.tickTicker(isSuspended))
 							almostTock.delTicker(C);
 					}
 					else
 					if((E2 instanceof Ability)
 					&&(isHere(((Ability)E2).affecting(),here)))
 					{
-						if(Tick.tickTicker(C,isSuspended))
+						if(C.tickTicker(isSuspended))
 							almostTock.delTicker(C);
 					}
 				}

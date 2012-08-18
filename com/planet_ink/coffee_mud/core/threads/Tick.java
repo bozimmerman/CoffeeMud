@@ -43,16 +43,15 @@ public class Tick extends Thread implements TickableGroup, Cloneable
 	
 	public volatile long lastStart=0;
 	public volatile long lastStop=0;
-	public volatile long milliTotal=0;
-	public volatile long tickTotal=0;
-	public volatile boolean solitaryTicker=false;
+	public long milliTotal=0;
+	public long tickTotal=0;
+	public boolean solitaryTicker=false;
 	public volatile boolean awake=false;
-	public volatile TockClient lastClient=null;
+	public TockClient lastClient=null;
 
 	private static volatile int tickObjReference=0;
 	
-	private volatile long SUBTRACT_TIME=0;
-	private volatile STreeSet<TockClient> tickers=new STreeSet<TockClient>();
+	private final STreeSet<TockClient> tickers=new STreeSet<TockClient>();
 	
 	public Tick(long sleep)
 	{
@@ -86,7 +85,8 @@ public class Tick extends Thread implements TickableGroup, Cloneable
 		try
 		{
 			Tick T=(Tick)this.clone();
-			T.tickers=tickers.copyOf();
+			T.tickers.clear();
+			T.tickers.addAll(tickers);
 			return T;
 		}
 		catch(Exception e){}
@@ -202,30 +202,6 @@ public class Tick extends Thread implements TickableGroup, Cloneable
 		CMLib.killThread(this,10,1);
 	}
 
-	public static boolean tickTicker(TockClient C, boolean allSuspended)
-	{
-		if((C.suspended)||(allSuspended))
-			return false;
-
-		if((--C.tickDown)<1)
-		{
-			C.tickDown=C.reTickDown;
-			try
-			{
-				if(!C.clientObject.tick(C.clientObject,C.tickID))
-				{
-					return true;
-				}
-			}
-			catch(Exception t)
-			{
-				Log.errOut("ServiceEngine",t);
-				return true;
-			}
-		}
-		return false;
-	}
-
 	public void run()
 	{
 		lastStart=System.currentTimeMillis();
@@ -234,7 +210,7 @@ public class Tick extends Thread implements TickableGroup, Cloneable
 			try
 			{
 				lastStop=System.currentTimeMillis();
-				SUBTRACT_TIME=(lastStop-lastStart);
+				long SUBTRACT_TIME=(lastStop-lastStart);
 				milliTotal+=(lastStop-lastStart);
 				tickTotal++;
 				awake=false;
@@ -249,17 +225,18 @@ public class Tick extends Thread implements TickableGroup, Cloneable
 				awake=true;
 				lastStart=System.currentTimeMillis();
 				lastClient=null;
+				final boolean allSuspended=CMLib.threads().isAllSuspended();
 				if((CMProps.getBoolVar(CMProps.SYSTEMB_MUDSTARTED))
-				&&(!CMLib.threads().isAllSuspended()))
+				&&(!allSuspended))
 				{
 					for(Iterator<TockClient> i=tickers();i.hasNext();)
 					{
 						final TockClient client=i.next();
 						lastClient=client;
 						client.lastStart=System.currentTimeMillis();
-						if(tickTicker(client,CMLib.threads().isAllSuspended()))
+						if(client.tickTicker(allSuspended))
 						{
-							delTicker(client);
+							delTicker(client); // cant do i.remove, its an streeset
 						}
 						client.lastStop=System.currentTimeMillis();
 						client.milliTotal+=(client.lastStop-client.lastStart);

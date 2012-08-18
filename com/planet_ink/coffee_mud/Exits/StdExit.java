@@ -49,6 +49,7 @@ public class StdExit implements Exit
 	protected SVector<Ability>  		affects=null;
 	protected SVector<Behavior> 		behaviors=null;
 	protected SVector<ScriptingEngine>  scripts=null;
+	protected final Exit 				me=this;
 	
 	public StdExit()
 	{
@@ -103,12 +104,9 @@ public class StdExit implements Exit
 	public void recoverPhyStats()
 	{
 		basePhyStats.copyInto(phyStats);
-		for(final Enumeration<Ability> a=effects();a.hasMoreElements();)
-		{
-			final Ability A=a.nextElement();
-			if(A!=null)
-				A.affectPhyStats(this,phyStats);
-		}
+		eachEffect(new EachApplicable<Ability>(){ public final void apply(final Ability A) {
+			A.affectPhyStats(me,phyStats);
+        }});
 	}
 	public void setBasePhyStats(PhyStats newStats)
 	{
@@ -501,27 +499,15 @@ public class StdExit implements Exit
 
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
-		MsgListener N=null;
-		for(int b=0;b<numBehaviors();b++)
-		{
-			N=fetchBehavior(b);
-			if(N!=null)
-				N.executeMsg(this,msg);
-		}
-		
-		for(int s=0;s<numScripts();s++)
-		{
-			N=fetchScript(s);
-			if(N!=null)
-				N.executeMsg(this,msg);
-		}
-		
-		for(final Enumeration<Ability> a=effects();a.hasMoreElements();)
-		{
-			N=a.nextElement();
-			if(N!=null)
-				N.executeMsg(this,msg);
-		}
+		eachBehavior(new EachApplicable<Behavior>(){ public final void apply(final Behavior B){
+			B.executeMsg(me, msg);
+		} });
+		eachScript(new EachApplicable<ScriptingEngine>(){ public final void apply(final ScriptingEngine S){
+			S.executeMsg(me, msg);
+		} });
+		eachEffect(new EachApplicable<Ability>(){ public final void apply(final Ability A) {
+			A.executeMsg(me,msg);
+        }});
 
 		MOB mob=msg.source();
 		if((!msg.amITarget(this))&&(msg.tool()!=this))
@@ -566,7 +552,7 @@ public class StdExit implements Exit
 	}
 	public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
 
-	public boolean tick(Tickable ticking, int tickID)
+	public boolean tick(final Tickable ticking, final int tickID)
 	{
 		if(amDestroyed()) return false;
 		
@@ -586,35 +572,20 @@ public class StdExit implements Exit
 		else
 		if(tickID==Tickable.TICKID_EXIT_BEHAVIOR)
 		{
-			int numB=numBehaviors();
-			Tickable T=null;
-			for(int b=0;b<numB;b++)
-			{
-				T=fetchBehavior(b);
-				if(T!=null)
-					T.tick(ticking,tickID);
-			}
-			int numS=numScripts();
-			if((numB<=0)&&(numS<=0)) return false;
-			for(int s=0;s<numS;s++)
-			{
-				T=fetchScript(s);
-				if(T!=null)
-					T.tick(ticking,tickID);
-			}
+			eachBehavior(new EachApplicable<Behavior>(){ public final void apply(final Behavior B){
+				B.tick(ticking, tickID);
+			} });
+			eachScript(new EachApplicable<ScriptingEngine>(){ public final void apply(final ScriptingEngine S){
+				S.tick(ticking, tickID);
+			} });
 			return !amDestroyed();
 		}
 		else
 		{
-			for(final Enumeration<Ability> a=effects();a.hasMoreElements();)
-			{
-				final Ability A=a.nextElement();
-				if(A!=null)
-				{
-					if(!A.tick(ticking,tickID))
-						A.unInvoke();
-				}
-			}
+			eachEffect(new EachApplicable<Ability>(){ public final void apply(final Ability A) {
+				if(!A.tick(ticking,tickID))
+					A.unInvoke();
+	        }});
 			return true;
 		}
 	}
@@ -689,6 +660,18 @@ public class StdExit implements Exit
 		if(affects==null) return;
 		if(affects.remove(to))
 			to.setAffectedOne(null);
+	}
+	public void eachEffect(final EachApplicable<Ability> applier)
+	{
+		final List<Ability> affects=this.affects;
+		if(affects==null) return;
+		try{
+    		for(int a=0;a<affects.size();a++)
+    		{
+    			final Ability A=affects.get(a);
+    			if(A!=null) applier.apply(A);
+    		}
+    	} catch(ArrayIndexOutOfBoundsException e){}
 	}
 	public void delAllEffects(boolean unInvoke)
 	{
@@ -793,6 +776,18 @@ public class StdExit implements Exit
 				return B;
 		return null;
 	}
+	public void eachBehavior(final EachApplicable<Behavior> applier)
+	{
+		final List<Behavior> behaviors=this.behaviors;
+		if(behaviors!=null)
+		try{
+    		for(int a=0;a<behaviors.size();a++)
+    		{
+    			final Behavior B=behaviors.get(a);
+    			if(B!=null) applier.apply(B);
+    		}
+    	} catch(ArrayIndexOutOfBoundsException e){}
+	}
 	
 	/** Manipulation of the scripts list */
 	public void addScript(ScriptingEngine S)
@@ -837,6 +832,18 @@ public class StdExit implements Exit
 	@SuppressWarnings("unchecked")
 	public Enumeration<ScriptingEngine> scripts() { return (scripts==null)?EmptyEnumeration.INSTANCE:scripts.elements();}
 	public ScriptingEngine fetchScript(int x){try{return (ScriptingEngine)scripts.elementAt(x);}catch(Exception e){} return null;}
+	public void eachScript(final EachApplicable<ScriptingEngine> applier)
+	{
+		final List<ScriptingEngine> scripts=this.scripts;
+		if(scripts!=null)
+		try{
+    		for(int a=0;a<scripts.size();a++)
+    		{
+    			final ScriptingEngine S=scripts.get(a);
+    			if(S!=null) applier.apply(S);
+    		}
+    	} catch(ArrayIndexOutOfBoundsException e){}
+	}
 	
 	public int openDelayTicks()    { return 45;}
 	public void setOpenDelayTicks(int numTicks){}

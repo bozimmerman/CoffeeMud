@@ -177,7 +177,10 @@ public class SVector<T> extends CopyOnWriteArrayList<T> implements Serializable,
 	}
 
 	public synchronized void setSize(int newSize) {
-		throw new IllegalArgumentException();
+		if(newSize==0)
+			clear();
+		else
+    		throw new IllegalArgumentException();
 	}
 
 	public synchronized void trimToSize() {

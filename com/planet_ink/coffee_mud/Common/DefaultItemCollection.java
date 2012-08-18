@@ -144,6 +144,18 @@ public class DefaultItemCollection implements ItemCollection, CMCommon
 			}
 		contents.clear();
 	}
+	public void eachItem(final EachApplicable<Item> applier)
+	{
+		final List<Item> contents=this.contents;
+		if(contents!=null)
+		try{
+    		for(int a=0;a<contents.size();a++)
+    		{
+    			final Item I=contents.get(a);
+    			if(I!=null) applier.apply(I);
+    		}
+    	} catch(ArrayIndexOutOfBoundsException e){}
+	}
 
 	public Item getItem(int i)
 	{

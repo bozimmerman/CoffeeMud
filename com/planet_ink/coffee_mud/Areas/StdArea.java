@@ -73,6 +73,7 @@ public class StdArea implements Area
 	protected SVector<Behavior> 	  behaviors 	 =new SVector<Behavior>(1);
 	protected SVector<String>   	  subOps		 =new SVector<String>(1);
 	protected SVector<ScriptingEngine>scripts   	 =new SVector<ScriptingEngine>(1);
+	protected final Area 			  me			 =this;
 
 	public void initializeClass(){}
 	public long flags(){return 0;}
@@ -251,12 +252,9 @@ public class StdArea implements Area
 	public void recoverPhyStats()
 	{
 		basePhyStats.copyInto(phyStats);
-		for(final Enumeration<Ability> a=effects();a.hasMoreElements();)
-		{
-			final Ability A=a.nextElement();
-			if(A!=null)
-				A.affectPhyStats(this,phyStats);
-		}
+		eachEffect(new EachApplicable<Ability>(){ public final void apply(final Ability A) {
+			A.affectPhyStats(me,phyStats);
+        } });
 	}
 	public void setBasePhyStats(PhyStats newStats)
 	{
@@ -706,27 +704,15 @@ public class StdArea implements Area
 
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
-		MsgListener N=null;
-		for(int b=0;b<numBehaviors();b++)
-		{
-			N=fetchBehavior(b);
-			if(N!=null)
-				N.executeMsg(this,msg);
-		}
-
-		for(int s=0;s<numScripts();s++)
-		{
-			N=fetchScript(s);
-			if(N!=null)
-				N.executeMsg(this,msg);
-		}
-
-		for(final Enumeration<Ability> a=effects();a.hasMoreElements();)
-		{
-			N=a.nextElement();
-			if(N!=null)
-				N.executeMsg(this,msg);
-		}
+		eachBehavior(new EachApplicable<Behavior>(){ public final void apply(final Behavior B){
+			B.executeMsg(me,msg);
+		} });
+		eachScript(new EachApplicable<ScriptingEngine>(){ public final void apply(final ScriptingEngine S){
+			S.executeMsg(me,msg);
+		} });
+		eachEffect(new EachApplicable<Ability>(){ public final void apply(final Ability A) {
+			A.executeMsg(me,msg);
+        } });
 
 		if((msg.sourceMinor()==CMMsg.TYP_RETIRE)
 		&&(amISubOp(msg.source().Name())))
@@ -739,7 +725,7 @@ public class StdArea implements Area
 
 	public long getTickStatus(){ return tickStatus;}
 
-	public boolean tick(Tickable ticking, int tickID)
+	public boolean tick(final Tickable ticking, final int tickID)
 	{
 		if((flag>=Area.STATE_STOPPED)||(amDestroyed()))
 			return false;
@@ -760,32 +746,26 @@ public class StdArea implements Area
 			tickStatus=Tickable.STATUS_REBIRTH;
 			getTimeObj().tick(this,tickID);
 			tickStatus=Tickable.STATUS_BEHAVIOR;
-			for(Behavior B : behaviors)
-				if(B!=null)
-					B.tick(ticking,tickID);
+			eachBehavior(new EachApplicable<Behavior>(){ public final void apply(final Behavior B){
+				B.tick(ticking,tickID);
+			} });
 			tickStatus=Tickable.STATUS_SCRIPT;
-			for(ScriptingEngine SE : scripts)
-				if(SE!=null)
-					SE.tick(ticking,tickID);
-
-			for(final Enumeration<Ability> a=effects();a.hasMoreElements();)
-			{
-				final Ability A=a.nextElement();
-				if(A!=null)
-				{
-					tickStatus=Tickable.STATUS_AFFECT;
-					if(!A.tick(ticking,tickID))
-						A.unInvoke();
-				}
-			}
+			eachScript(new EachApplicable<ScriptingEngine>(){ public final void apply(final ScriptingEngine S){
+				S.tick(ticking,tickID);
+			} });
+			tickStatus=Tickable.STATUS_AFFECT;
+			eachEffect(new EachApplicable<Ability>(){ public final void apply(final Ability A) {
+				if(!A.tick(ticking,tickID))
+					A.unInvoke();
+	        } });
 		}
 		tickStatus=Tickable.STATUS_NOT;
 		return true;
 	}
 
-	public void affectPhyStats(Physical affected, PhyStats affectableStats)
+	public void affectPhyStats(final Physical affected, final PhyStats affectableStats)
 	{
-		int senses=phyStats.sensesMask()&(~(PhyStats.SENSE_UNLOCATABLE|PhyStats.CAN_NOT_SEE));
+		final int senses=phyStats.sensesMask()&(~(PhyStats.SENSE_UNLOCATABLE|PhyStats.CAN_NOT_SEE));
 		if(senses>0) affectableStats.setSensesMask(affectableStats.sensesMask()|senses);
 		int disposition=phyStats().disposition()
 			&((~(PhyStats.IS_SLEEPING|PhyStats.IS_HIDDEN)));
@@ -804,30 +784,21 @@ public class StdArea implements Area
 		if(disposition>0)
 			affectableStats.setDisposition(affectableStats.disposition()|disposition);
 		affectableStats.setWeight(affectableStats.weight()+phyStats().weight());
-		for(final Enumeration<Ability> a=effects();a.hasMoreElements();)
-		{
-			final Ability A=a.nextElement();
-			if((A!=null)&&(A.bubbleAffect()))
-			   A.affectPhyStats(affected,affectableStats);
-		}
+		eachEffect(new EachApplicable<Ability>(){ public final void apply(final Ability A) {
+			if(A.bubbleAffect()) A.affectPhyStats(affected,affectableStats);
+        } });
 	}
-	public void affectCharStats(MOB affectedMob, CharStats affectableStats)
+	public void affectCharStats(final MOB affectedMob, final CharStats affectableStats)
 	{
-		for(final Enumeration<Ability> a=effects();a.hasMoreElements();)
-		{
-			final Ability A=a.nextElement();
-			if((A!=null)&&(A.bubbleAffect()))
-			   A.affectCharStats(affectedMob,affectableStats);
-		}
+		eachEffect(new EachApplicable<Ability>(){ public final void apply(final Ability A) {
+			if(A.bubbleAffect()) A.affectCharStats(affectedMob,affectableStats);
+        }});
 	}
-	public void affectCharState(MOB affectedMob, CharState affectableMaxState)
+	public void affectCharState(final MOB affectedMob, final CharState affectableMaxState)
 	{
-		for(final Enumeration<Ability> a=effects();a.hasMoreElements();)
-		{
-			final Ability A=a.nextElement();
-			if((A!=null)&&(A.bubbleAffect()))
-			   A.affectCharState(affectedMob,affectableMaxState);
-		}
+		eachEffect(new EachApplicable<Ability>(){ public final void apply(final Ability A) {
+			if(A.bubbleAffect()) A.affectCharState(affectedMob,affectableMaxState);
+        } });
 	}
 
 	public void addNonUninvokableEffect(Ability to)
@@ -852,6 +823,18 @@ public class StdArea implements Area
 		affects.removeElement(to);
 		if(affects.size()<size)
 			to.setAffectedOne(null);
+	}
+	public void eachEffect(final EachApplicable<Ability> applier)
+	{
+		final List<Ability> affects=this.affects;
+		if(affects==null) return;
+		try{
+    		for(int a=0;a<affects.size();a++)
+    		{
+    			final Ability A=affects.get(a);
+    			if(A!=null) applier.apply(A);
+    		}
+		} catch(ArrayIndexOutOfBoundsException e){}
 	}
 	public void delAllEffects(boolean unInvoke)
 	{
@@ -982,6 +965,18 @@ public class StdArea implements Area
 	public Enumeration<ScriptingEngine> scripts() { return scripts.elements();}
 	public ScriptingEngine fetchScript(int x){try{return (ScriptingEngine)scripts.elementAt(x);}catch(Exception e){} return null;}
 	public void delAllScripts() { scripts.clear(); }
+	public void eachScript(final EachApplicable<ScriptingEngine> applier)
+	{
+		final List<ScriptingEngine> scripts=this.scripts;
+		if(scripts!=null)
+		try{
+    		for(int a=0;a<scripts.size();a++)
+    		{
+    			final ScriptingEngine S=scripts.get(a);
+    			if(S!=null) applier.apply(S);
+    		}
+    	} catch(ArrayIndexOutOfBoundsException e){}
+	}
 
 	public int maxRange(){return Integer.MAX_VALUE;}
 	public int minRange(){return Integer.MIN_VALUE;}
@@ -1149,6 +1144,18 @@ public class StdArea implements Area
 			if((B!=null)&&(B.ID().equalsIgnoreCase(ID)))
 				return B;
 		return null;
+	}
+	public void eachBehavior(final EachApplicable<Behavior> applier)
+	{
+		final List<Behavior> behaviors=this.behaviors;
+		if(behaviors!=null)
+		try{
+    		for(int a=0;a<behaviors.size();a++)
+    		{
+    			final Behavior B=behaviors.get(a);
+    			if(B!=null) applier.apply(B);
+    		}
+    	} catch(ArrayIndexOutOfBoundsException e){}
 	}
 
 	public int properSize()
