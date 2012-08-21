@@ -606,6 +606,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 			}
 		}
 		addDefinition("MOB_NAME",M.Name(),defined);
+		M.baseCharStats().setMyRace(CMClass.getRace("StdRace"));
 		
 		String value = findOptionalString("LEVEL",piece,defined);
 		if(value != null) {

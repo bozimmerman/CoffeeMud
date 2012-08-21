@@ -104,7 +104,8 @@ public class DefaultCharStats implements CharStats
 					((DefaultCharStats)intoStats).myLevels[i]=myLevels[i];
 			else
 				((DefaultCharStats)intoStats).myLevels=(Integer[])myLevels.clone();
-			((DefaultCharStats)intoStats).myRace=myRace;
+			if(myRace!=null)
+    			((DefaultCharStats)intoStats).myRace=myRace;
 			((DefaultCharStats)intoStats).raceName=raceName;
 			((DefaultCharStats)intoStats).genderName=genderName;
 			((DefaultCharStats)intoStats).displayClassName=displayClassName;
@@ -457,7 +458,11 @@ public class DefaultCharStats implements CharStats
 		return myRace;
 	}
 	
-	public void setMyRace(Race newVal){myRace=newVal;}
+	public void setMyRace(Race newVal)
+	{
+		if(newVal != null)
+    		myRace=newVal;
+	}
 	public int getBodyPart(int racialPartNumber)
 	{
 		int num=getMyRace().bodyMask()[racialPartNumber];
@@ -573,7 +578,8 @@ public class DefaultCharStats implements CharStats
 		DefaultCharStats newOne=new DefaultCharStats();
 		if(myClasses!=null)
 			newOne.myClasses=(CharClass[])myClasses.clone();
-		newOne.myRace=myRace;
+		if(myRace!=null)
+			newOne.myRace=myRace;
 		if(myLevels!=null)
 			newOne.myLevels=(Integer[])myLevels.clone();
 		if(bodyAlterations!=null)
