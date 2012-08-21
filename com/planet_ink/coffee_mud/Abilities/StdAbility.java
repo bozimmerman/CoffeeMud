@@ -849,8 +849,7 @@ public class StdAbility implements Ability
 			if(!overrideCache.containsKey(ID()))
 			{
     			short[] usage=new short[3];
-    			final int overrideMana=overrideMana();
-    			Arrays.fill(usage,overrideMana>Short.MAX_VALUE?Short.MAX_VALUE:(short)overrideMana);
+    			Arrays.fill(usage,overrideMana());
     			overrideCache.put(ID(), usage);
 			}
 			return overrideCache.get(ID());
@@ -909,10 +908,10 @@ public class StdAbility implements Ability
     		if(!ignoreClassOverride)
     			costOverrides=CMLib.ableMapper().getCostOverrides(mob,ID());
     		consumed=CMProps.getMaxManaException(ID());
-    		if(consumed==Integer.MIN_VALUE) consumed=(short)CMProps.getIntVar(CMProps.SYSTEMI_MANACOST);
+    		if(consumed==Short.MIN_VALUE) consumed=(short)CMProps.getIntVar(CMProps.SYSTEMI_MANACOST);
     		if(consumed<0) consumed=(short)(50+lowest);
     		minimum=(short)CMProps.getMinManaException(ID());
-    		if(minimum==Integer.MIN_VALUE)
+    		if(minimum==Short.MIN_VALUE)
     			minimum=(short)CMProps.getIntVar(CMProps.SYSTEMI_MANAMINCOST);
     		if(minimum<0){ minimum=(short)lowest; if(minimum<5) minimum=5;}
     		if(diff>0) consumed=(short)(consumed - (consumed /10 * diff));
@@ -928,7 +927,7 @@ public class StdAbility implements Ability
 		final short[] usageCost=buildCostArray(mob,consumed,minimum);
 		if(rebuildCache)
 		{
-			if(consumed > Short.MAX_VALUE)
+			if(consumed > Short.MAX_VALUE-101)
 				overrideCache[myCacheIndex]=new short[]{consumed,minimum};
 			else
 				overrideCache[myCacheIndex]=usageCost;

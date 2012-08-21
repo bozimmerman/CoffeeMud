@@ -163,7 +163,7 @@ public class Spell_PryingEye extends Spell
 				eyeM.baseState().setMovement(10000);
 				eyeM.setMoney(0);
 				eyeM.setLocation(R);
-				eyeM.basePhyStats().setRejuv(Integer.MAX_VALUE);
+				eyeM.basePhyStats().setRejuv(PhyStats.NO_REJUV);
 				eyeM.addNonUninvokableEffect(CMClass.getAbility("Prop_ModExperience"));
 				eyeM.recoverCharStats();
 				eyeM.recoverPhyStats();

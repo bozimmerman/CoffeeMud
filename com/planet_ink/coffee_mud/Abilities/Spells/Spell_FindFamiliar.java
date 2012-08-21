@@ -109,7 +109,7 @@ public class Spell_FindFamiliar extends Spell
 		MOB newMOB=CMClass.getMOB("GenMOB");
 		newMOB.basePhyStats().setAbility(7);
 		newMOB.basePhyStats().setLevel(level);
-		newMOB.basePhyStats().setRejuv(Integer.MAX_VALUE);
+		newMOB.basePhyStats().setRejuv(PhyStats.NO_REJUV);
 		newMOB.baseCharStats().setStat(CharStats.STAT_GENDER,'M');
 		int choice=CMLib.dice().roll(1,9,-1);
 		switch(choice)

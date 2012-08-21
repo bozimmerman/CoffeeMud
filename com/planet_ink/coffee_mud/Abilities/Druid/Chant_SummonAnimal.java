@@ -224,7 +224,7 @@ public class Chant_SummonAnimal extends Chant
 		}
 
 		newMOB.setLocation(caster.location());
-		newMOB.basePhyStats().setRejuv(Integer.MAX_VALUE);
+		newMOB.basePhyStats().setRejuv(PhyStats.NO_REJUV);
 		newMOB.recoverCharStats();
 		newMOB.recoverPhyStats();
 		newMOB.recoverMaxState();

@@ -245,7 +245,7 @@ public class Chant_SummonDustdevil extends Chant
 		newMOB.basePhyStats().setSensesMask(newMOB.basePhyStats().sensesMask()|PhyStats.CAN_SEE_INVISIBLE);
 		newMOB.basePhyStats().setSensesMask(newMOB.basePhyStats().sensesMask()|PhyStats.CAN_SEE_HIDDEN);
 		newMOB.setLocation(caster.location());
-		newMOB.basePhyStats().setRejuv(Integer.MAX_VALUE);
+		newMOB.basePhyStats().setRejuv(PhyStats.NO_REJUV);
 		newMOB.basePhyStats().setDamage(1);
 		newMOB.basePhyStats().setAttackAdjustment(0);
 		newMOB.basePhyStats().setArmor(100);

@@ -239,7 +239,7 @@ public class Chant_SaplingWorkers extends Chant
 		newMOB.basePhyStats().setSensesMask(newMOB.basePhyStats().sensesMask()|PhyStats.CAN_SEE_DARK);
 		newMOB.addNonUninvokableEffect(CMClass.getAbility("Prop_ModExperience"));
 		newMOB.setLocation(caster.location());
-		newMOB.basePhyStats().setRejuv(Integer.MAX_VALUE);
+		newMOB.basePhyStats().setRejuv(PhyStats.NO_REJUV);
 		newMOB.setMiscText(newMOB.text());
 		newMOB.recoverCharStats();
 		newMOB.recoverPhyStats();

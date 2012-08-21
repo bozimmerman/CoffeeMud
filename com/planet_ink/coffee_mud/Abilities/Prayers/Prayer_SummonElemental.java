@@ -134,7 +134,7 @@ public class Prayer_SummonElemental extends Prayer
 		newMOB.basePhyStats().setLevel(level/2);
 		CMLib.factions().setAlignment(newMOB,Faction.ALIGN_NEUTRAL);
 		newMOB.basePhyStats().setWeight(850);
-		newMOB.basePhyStats().setRejuv(Integer.MAX_VALUE);
+		newMOB.basePhyStats().setRejuv(PhyStats.NO_REJUV);
 		newMOB.basePhyStats().setDamage(caster.phyStats().damage()/2);
 		newMOB.basePhyStats().setAttackAdjustment(caster.phyStats().attackAdjustment()/2);
 		newMOB.basePhyStats().setArmor(caster.phyStats().armor()/2);

@@ -168,7 +168,7 @@ public class Chant_BrownMold extends Chant
 		newMOB.basePhyStats().setAbility(newMOB.basePhyStats().ability()*2);
 		newMOB.basePhyStats().setSensesMask(newMOB.basePhyStats().sensesMask()|PhyStats.CAN_SEE_DARK);
 		newMOB.setLocation(caster.location());
-		newMOB.basePhyStats().setRejuv(Integer.MAX_VALUE);
+		newMOB.basePhyStats().setRejuv(PhyStats.NO_REJUV);
 		newMOB.basePhyStats().setDamage(25);
 		newMOB.basePhyStats().setAttackAdjustment(60);
 		newMOB.basePhyStats().setArmor(-super.getX1Level(caster));

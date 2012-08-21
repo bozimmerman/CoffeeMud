@@ -894,7 +894,7 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 		List<Coins> V=getStandardCurrency(mob,null);
 		for(int i=0;i<V.size();i++)
 			money+=Math.round(((Coins)V.get(i)).getTotalValue());
-		if(money>Integer.MAX_VALUE) return Integer.MAX_VALUE;
+		if(money>Integer.MAX_VALUE/2) return Integer.MAX_VALUE/2;
 		return (int)money;
 	}
 

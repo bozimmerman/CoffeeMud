@@ -105,7 +105,7 @@ public class Spell_SummonArmy extends Spell
 				{
 					MOB newMOB=CMClass.getMOB(choices[CMLib.dice().roll(1,choices.length,-1)]);
 					newMOB.setLocation(mob.location());
-					newMOB.basePhyStats().setRejuv(Integer.MAX_VALUE);
+					newMOB.basePhyStats().setRejuv(PhyStats.NO_REJUV);
 					newMOB.recoverCharStats();
 					newMOB.recoverPhyStats();
 					newMOB.recoverMaxState();

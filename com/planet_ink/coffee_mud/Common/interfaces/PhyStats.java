@@ -43,6 +43,9 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
  */
 public interface PhyStats extends CMCommon, Modifiable
 {
+	/** Constant shortcut for setting the rejuvination rate on a mob so that it will NOT rejuv. */
+	public static final int NO_REJUV=Integer.MAX_VALUE;
+	
 	/**
 	 * Returns a bitmask for sense related flags of mobs (CAN_ constants), or 
 	 * miscellaneous runtime flags for items and other Physicals (SENSE_ constants). 

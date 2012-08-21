@@ -212,7 +212,7 @@ public class Chant_SummonSapling extends Chant
 		newMOB.baseCharStats().setStat(CharStats.STAT_GENDER,'N');
 		newMOB.basePhyStats().setSensesMask(newMOB.basePhyStats().sensesMask()|PhyStats.CAN_SEE_DARK);
 		newMOB.setLocation(caster.location());
-		newMOB.basePhyStats().setRejuv(Integer.MAX_VALUE);
+		newMOB.basePhyStats().setRejuv(PhyStats.NO_REJUV);
 		newMOB.setMiscText(newMOB.text());
 		newMOB.recoverCharStats();
 		newMOB.recoverPhyStats();

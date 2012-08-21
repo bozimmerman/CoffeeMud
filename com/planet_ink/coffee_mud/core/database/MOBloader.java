@@ -634,7 +634,7 @@ public class MOBloader
 					newMOB.setMiscText(DBConnections.getResQuietly(R,"CMFOTX"));
 					newMOB.basePhyStats().setLevel(((int)DBConnections.getLongRes(R,"CMFOLV")));
 					newMOB.basePhyStats().setAbility((int)DBConnections.getLongRes(R,"CMFOAB"));
-					newMOB.basePhyStats().setRejuv(Integer.MAX_VALUE);
+					newMOB.basePhyStats().setRejuv(PhyStats.NO_REJUV);
 					newMOB.recoverPhyStats();
 					newMOB.recoverCharStats();
 					newMOB.recoverMaxState();

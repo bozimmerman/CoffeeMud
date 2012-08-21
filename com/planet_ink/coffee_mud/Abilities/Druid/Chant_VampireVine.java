@@ -87,7 +87,7 @@ public class Chant_VampireVine extends Chant_SummonVine
 		newMOB.basePhyStats().setAbility(newMOB.basePhyStats().ability()*2);
 		newMOB.basePhyStats().setSensesMask(newMOB.basePhyStats().sensesMask()|PhyStats.CAN_SEE_DARK);
 		newMOB.setLocation(caster.location());
-		newMOB.basePhyStats().setRejuv(Integer.MAX_VALUE);
+		newMOB.basePhyStats().setRejuv(PhyStats.NO_REJUV);
 		newMOB.basePhyStats().setDamage(30+(9*(level/5)));
 		newMOB.basePhyStats().setAttackAdjustment(10+(level));
 		newMOB.basePhyStats().setArmor(100-(30+(level/2)));

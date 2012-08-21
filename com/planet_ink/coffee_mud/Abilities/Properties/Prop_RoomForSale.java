@@ -360,7 +360,7 @@ public class Prop_RoomForSale extends Property implements LandTitle
 						if((I.phyStats().rejuv()!=Integer.MAX_VALUE)
 						&&(I.phyStats().rejuv()!=0))
 						{
-							I.basePhyStats().setRejuv(Integer.MAX_VALUE);
+							I.basePhyStats().setRejuv(PhyStats.NO_REJUV);
 							I.recoverPhyStats();
 						}
 					}
@@ -465,7 +465,7 @@ public class Prop_RoomForSale extends Property implements LandTitle
 				if((I.phyStats().rejuv()!=Integer.MAX_VALUE)
 				&&(I.phyStats().rejuv()!=0))
 				{
-					I.basePhyStats().setRejuv(Integer.MAX_VALUE);
+					I.basePhyStats().setRejuv(PhyStats.NO_REJUV);
 					I.recoverPhyStats();
 					updateItems=true;
 				}

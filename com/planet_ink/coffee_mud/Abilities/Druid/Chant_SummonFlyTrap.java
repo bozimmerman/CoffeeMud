@@ -184,7 +184,7 @@ public class Chant_SummonFlyTrap extends Chant
 		newMOB.addNonUninvokableEffect(CMClass.getAbility("Prop_ModExperience"));
 		newMOB.basePhyStats().setSensesMask(newMOB.basePhyStats().sensesMask()|PhyStats.CAN_SEE_DARK);
 		newMOB.setLocation(caster.location());
-		newMOB.basePhyStats().setRejuv(Integer.MAX_VALUE);
+		newMOB.basePhyStats().setRejuv(PhyStats.NO_REJUV);
 		newMOB.setBitmap(MOB.ATT_AUTOASSIST);
 		newMOB.setMiscText(newMOB.text());
 		newMOB.recoverCharStats();

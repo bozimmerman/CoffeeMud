@@ -148,7 +148,7 @@ public class Spell_SummonFlyer extends Spell
 		newMOB.basePhyStats().setDisposition(newMOB.basePhyStats().disposition()|PhyStats.IS_FLYING);
 		newMOB.basePhyStats().setLevel(level);
 		newMOB.basePhyStats().setWeight(500);
-		newMOB.basePhyStats().setRejuv(Integer.MAX_VALUE);
+		newMOB.basePhyStats().setRejuv(PhyStats.NO_REJUV);
 		newMOB.baseCharStats().setMyRace(CMClass.getRace("Horse"));
 		newMOB.baseCharStats().setStat(CharStats.STAT_GENDER,'M');
 		newMOB.baseCharStats().getMyRace().startRacing(newMOB,false);

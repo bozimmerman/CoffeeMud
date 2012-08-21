@@ -2175,7 +2175,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			P.basePhyStats().setRejuv(newLevel);
 			if((P.basePhyStats().rejuv()==0)&&(P instanceof MOB))
 			{
-				P.basePhyStats().setRejuv(Integer.MAX_VALUE);
+				P.basePhyStats().setRejuv(PhyStats.NO_REJUV);
 				mob.tell(P.Name()+" will now never rejuvinate.");
 			}
 		}

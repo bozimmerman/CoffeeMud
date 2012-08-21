@@ -344,8 +344,8 @@ public interface Ability extends Environmental
 	 * movement, or hit points are required to invoke this skill.
 	 * Use the Ability.USAGEINDEX_* constants to index the array.
 	 * A value of 0-1000 is an absolute cost.  A value of 
-	 * Integer.MAX_VALUE means to use all of the mana, movement, 
-	 * hit points.  A value of Integer.MAXVALUE-100 and up 
+	 * Short.MAX_VALUE means to use all of the mana, movement, 
+	 * hit points.  A value of Short.MAXVALUE-100 and up 
 	 * represents a percentage of the cost. 
 	 * The values in this method MUST be accompanied by properly
 	 * set usageType() bitmap.

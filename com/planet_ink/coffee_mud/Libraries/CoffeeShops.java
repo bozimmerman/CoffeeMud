@@ -982,7 +982,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 	{
 		if((seller==null)||(seller.location()==null)||(product==null)||(shop==null)||(mobFor==null))
 			return false;
-		product.basePhyStats().setRejuv(Integer.MAX_VALUE);
+		product.basePhyStats().setRejuv(PhyStats.NO_REJUV);
 		product.recoverPhyStats();
 		product.setMiscText(product.text());
 		Ability slaveA=null;

@@ -138,7 +138,7 @@ public class Spell_SummonEnemy extends Spell
 		}
 		if(monster==null) return null;
 		monster=(MOB)monster.copyOf();
-		monster.basePhyStats().setRejuv(Integer.MAX_VALUE);
+		monster.basePhyStats().setRejuv(PhyStats.NO_REJUV);
 		monster.recoverCharStats();
 		monster.recoverPhyStats();
 		monster.recoverMaxState();

@@ -160,7 +160,7 @@ public class Chant_SummonRockGolem extends Chant
 		newMOB.addAbility(CMClass.getAbility("Fighter_Kick"));
 		newMOB.addBehavior(CMClass.getBehavior("CombatAbilities"));
 		newMOB.setLocation(caster.location());
-		newMOB.basePhyStats().setRejuv(Integer.MAX_VALUE);
+		newMOB.basePhyStats().setRejuv(PhyStats.NO_REJUV);
 		newMOB.setMiscText(newMOB.text());
 		newMOB.recoverCharStats();
 		newMOB.recoverPhyStats();

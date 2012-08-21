@@ -69,7 +69,7 @@ public class Chant_VineMass extends Chant_SummonVine
 			newMOB.addAbility(A);
 			newMOB.basePhyStats().setSensesMask(newMOB.basePhyStats().sensesMask()|PhyStats.CAN_SEE_DARK);
 			newMOB.setLocation(caster.location());
-			newMOB.basePhyStats().setRejuv(Integer.MAX_VALUE);
+			newMOB.basePhyStats().setRejuv(PhyStats.NO_REJUV);
 			newMOB.basePhyStats().setDamage(6+(5*(level/5)));
 			newMOB.basePhyStats().setAttackAdjustment(10);
 			newMOB.basePhyStats().setArmor(100-(30+(level/2)));
