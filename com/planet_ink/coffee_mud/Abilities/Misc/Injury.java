@@ -457,7 +457,7 @@ public class Injury extends StdAbility
 				return false;
 			super.tickDown=2;
 			Ability A=(Ability)copyOf();
-			A.startTickDown(mob,givenTarget,Integer.MAX_VALUE/2);
+			A.startTickDown(mob,givenTarget,Ability.TICKS_ALMOST_FOREVER);
 			if((commands!=null)&&(commands.size()>0)&&(commands.firstElement() instanceof CMMsg))
 			{
 				A=givenTarget.fetchEffect(ID());

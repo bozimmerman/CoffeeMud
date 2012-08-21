@@ -168,7 +168,7 @@ public class Skill_Enslave extends StdSkill
 			&&(room.isInhabitant(mob)))
 			{
 				lastRoom=room;
-				mob.basePhyStats().setRejuv(0);
+				mob.basePhyStats().setRejuv(PhyStats.NO_REJUV);
 				mob.setStartRoom(room);
 			}
 		}

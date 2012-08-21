@@ -2173,7 +2173,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		if((newLevel>0)||(rlevel.trim().equals("0")))
 		{
 			P.basePhyStats().setRejuv(newLevel);
-			if((P.basePhyStats().rejuv()==0)&&(P instanceof MOB))
+			if(((P.basePhyStats().rejuv()==0)||(P.basePhyStats().rejuv()==PhyStats.NO_REJUV))&&(P instanceof MOB))
 			{
 				P.basePhyStats().setRejuv(PhyStats.NO_REJUV);
 				mob.tell(P.Name()+" will now never rejuvinate.");
@@ -7296,7 +7296,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			for(final Enumeration<Item> i=cataM.items();i.hasMoreElements();)
 			{
 				final Item I=i.nextElement();
-				if((I!=null)&&(I.basePhyStats().rejuv()>0)&&(I.basePhyStats().rejuv()<Integer.MAX_VALUE)&&(session!=null))
+				if((I!=null)&&(I.basePhyStats().rejuv()>0)&&(I.basePhyStats().rejuv()!=PhyStats.NO_REJUV)&&(session!=null))
 				{
 					if(session.confirm("\n\r**This mob has variable equipment in the catalog, would you like to reset it first (Y/n)? ","Y"))
 					{

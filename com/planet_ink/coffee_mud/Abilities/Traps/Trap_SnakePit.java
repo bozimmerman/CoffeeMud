@@ -149,7 +149,7 @@ public class Trap_SnakePit extends Trap_RoomPit
 			if(monster!=null)
 			{
 				monsters.addElement(monster);
-				monster.basePhyStats().setRejuv(0);
+				monster.basePhyStats().setRejuv(PhyStats.NO_REJUV);
 				monster.bringToLife(target.location(),true);
 				monster.setVictim(target);
 				if(target.getVictim()==null)

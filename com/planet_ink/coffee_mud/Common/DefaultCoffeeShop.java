@@ -337,8 +337,8 @@ public class DefaultCoffeeShop implements CoffeeShop
 					}
 					item=copyItem;
 				}
-			((Physical)item).basePhyStats().setRejuv(0);
-			((Physical)item).phyStats().setRejuv(0);
+			((Physical)item).basePhyStats().setRejuv(PhyStats.NO_REJUV);
+			((Physical)item).phyStats().setRejuv(PhyStats.NO_REJUV);
 		}
 		return item;
 	}

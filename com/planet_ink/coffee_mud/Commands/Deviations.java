@@ -253,7 +253,7 @@ public class Deviations extends StdCommand
 				itemResults.append(CMStrings.padRight(""+getDeviation(
 												I.baseGoldValue(),
 												vals,"VALUE"),5)+" ");
-				itemResults.append(CMStrings.padRight(""+((I.phyStats().rejuv()==Integer.MAX_VALUE)?" MAX":""+I.phyStats().rejuv()),5)+" ");
+				itemResults.append(CMStrings.padRight(""+((I.phyStats().rejuv()==PhyStats.NO_REJUV)?" MAX":""+I.phyStats().rejuv()),5)+" ");
 				if(I instanceof Weapon)
 					itemResults.append(CMStrings.padRight(""+I.basePhyStats().weight(),4));
 				else
@@ -283,7 +283,7 @@ public class Deviations extends StdCommand
 				mobResults.append(CMStrings.padRight(""+getDeviation(
 												(int)Math.round(M.basePhyStats().speed()),
 												(int)Math.round(CMLib.leveler().getLevelMOBSpeed(M))),5)+" ");
-				mobResults.append(CMStrings.padRight(""+((M.phyStats().rejuv()==Integer.MAX_VALUE)?" MAX":""+M.phyStats().rejuv()) ,5)+" ");
+				mobResults.append(CMStrings.padRight(""+((M.phyStats().rejuv()==PhyStats.NO_REJUV)?" MAX":""+M.phyStats().rejuv()) ,5)+" ");
 				if(useFaction!=null) 
 					mobResults.append(CMStrings.padRight(""+(M.fetchFaction(useFaction.factionID())==Integer.MAX_VALUE?"N/A":""+M.fetchFaction(useFaction.factionID())),7)+" ");
 				int reallyWornCount = 0;

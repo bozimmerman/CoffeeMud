@@ -106,7 +106,7 @@ public class Prayer_AuraStrife extends Prayer
 			{
 				MOB M=mob.location().fetchInhabitant(m);
 				if((M!=null)&&(M!=invoker())&&(!invokerGroup.contains(M))&&(!M.Name().equals(mob.getLiegeID())))
-					beneficialAffect(invoker,M,0,Integer.MAX_VALUE-1000);
+					beneficialAffect(invoker,M,0,Ability.TICKS_FOREVER);
 			}
 		}
 		return true;

@@ -492,7 +492,7 @@ public class StdCharClass implements CharClass
 		PhyStats RS=(PhyStats)CMClass.getCommon("DefaultPhyStats");
 		RS.setAllValues(0);
 		affectPhyStats(fakeMOB,RS);
-		RS.setRejuv(0);
+		RS.setRejuv(PhyStats.NO_REJUV);
 		CR.setStat("ESTATS",CMLib.coffeeMaker().getPhyStatsStr(RS));
 
 		CharStats S1=(CharStats)CMClass.getCommon("DefaultCharStats");

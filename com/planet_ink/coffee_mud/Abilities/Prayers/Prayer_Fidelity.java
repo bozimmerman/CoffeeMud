@@ -99,7 +99,7 @@ public class Prayer_Fidelity extends Prayer
 			{
 				mob.location().send(mob,msg);
 				mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> gain(s) the fidelity geas!");
-				beneficialAffect(mob,target,asLevel,(Integer.MAX_VALUE/2));
+				beneficialAffect(mob,target,asLevel,Ability.TICKS_ALMOST_FOREVER);
 			}
 		}
 		else

@@ -130,7 +130,7 @@ public class Trap_MonsterCage extends StdTrap
 				monster=((CagedAnimal)I).unCageMe();
 				if(monster!=null)
 				{
-					monster.basePhyStats().setRejuv(0);
+					monster.basePhyStats().setRejuv(PhyStats.NO_REJUV);
 					monster.bringToLife(target.location(),true);
 					monster.setVictim(target);
 					if(target.getVictim()==null)

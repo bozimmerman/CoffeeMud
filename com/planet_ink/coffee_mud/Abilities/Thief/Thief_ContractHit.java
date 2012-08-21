@@ -91,7 +91,7 @@ public class Thief_ContractHit extends ThiefSkill
 					M.basePhyStats().setArmor(CMLib.leveler().getLevelMOBArmor(M));
 					M.basePhyStats().setAttackAdjustment(CMLib.leveler().getLevelAttack(M));
 					M.basePhyStats().setDamage(CMLib.leveler().getLevelMOBDamage(M));
-					M.basePhyStats().setRejuv(0);
+					M.basePhyStats().setRejuv(PhyStats.NO_REJUV);
 					M.baseState().setMana(CMLib.leveler().getLevelMana(M));
 					M.baseState().setMovement(CMLib.leveler().getLevelMana(M));
 					M.baseState().setHitPoints(CMLib.dice().rollHP(level, M.basePhyStats().level()));

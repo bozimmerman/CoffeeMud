@@ -192,7 +192,7 @@ public class Soiled extends StdAbility
 		// affected MOB.  Then tell everyone else
 		// what happened.
 		Ability A=(Ability)copyOf();
-		A.startTickDown(mob,target,Integer.MAX_VALUE/2);
+		A.startTickDown(mob,target,Ability.TICKS_ALMOST_FOREVER);
 		Environmental msgTarget=target;
 		if(target instanceof CagedAnimal) msgTarget=((CagedAnimal)target).unCageMe();
 		mob.location().show(mob,msgTarget,CMMsg.MSG_OK_VISUAL,"<T-NAME> has soiled <T-HIM-HERSELF>!");
@@ -202,7 +202,7 @@ public class Soiled extends StdAbility
 			if((pants!=null)&&(pants.fetchEffect(ID())==null))
 			{
 				A=(Ability)copyOf();
-				A.startTickDown((MOB)target,pants,Integer.MAX_VALUE/2);
+				A.startTickDown((MOB)target,pants,Ability.TICKS_ALMOST_FOREVER);
 			}
 		}
 		return true;

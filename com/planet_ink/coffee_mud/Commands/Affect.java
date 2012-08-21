@@ -127,7 +127,7 @@ public class Affect extends StdCommand
 				{
 					long tr=A.expirationDate();
 					if(A.invoker()!=null) tr=tr-(System.currentTimeMillis()-A.invoker().lastTickedDateTime());
-					if(tr<(Integer.MAX_VALUE/2))
+					if(tr<Ability.TICKS_ALMOST_FOREVER)
 						disp+=" ^.^N"+CMLib.time().date2EllapsedTime(tr, TimeUnit.SECONDS, true);
 				}
 				if(xtra)

@@ -127,7 +127,7 @@ public class Chant_HowlersMoon extends Chant
 					else
 					if((d>66)&&(invoker()!=null)&&(invoker().location()==room))
 						target.setVictim(invoker());
-					beneficialAffect(target,target,0,Integer.MAX_VALUE/2);
+					beneficialAffect(target,target,0,Ability.TICKS_ALMOST_FOREVER);
 				}
 				else
 				{

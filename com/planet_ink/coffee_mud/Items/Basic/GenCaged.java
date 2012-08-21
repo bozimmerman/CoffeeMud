@@ -122,7 +122,7 @@ public class GenCaged extends GenItem implements CagedAnimal
 		}
 		CMLib.coffeeMaker().setPropertiesStr(newOne,idat,true);
 		M=(MOB)newOne;
-		M.basePhyStats().setRejuv(0);
+		M.basePhyStats().setRejuv(PhyStats.NO_REJUV);
 		M.setStartRoom(null);
 		if(M.isGeneric())
 			CMLib.coffeeMaker().resetGenMOB(M,M.text());

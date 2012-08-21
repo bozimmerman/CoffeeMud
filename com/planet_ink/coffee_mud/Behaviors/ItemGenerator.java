@@ -312,7 +312,7 @@ public class ItemGenerator extends ActiveTicker
 					}
 
 					I=(Item)I.copyOf();
-					I.basePhyStats().setRejuv(0);
+					I.basePhyStats().setRejuv(PhyStats.NO_REJUV);
 					I.recoverPhyStats();
 					I.text();
 					if(SK!=null)

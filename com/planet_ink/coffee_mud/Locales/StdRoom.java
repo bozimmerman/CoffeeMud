@@ -805,7 +805,7 @@ public class StdRoom implements Room
 			{
 				final ItemTicker I=(ItemTicker)CMClass.getAbility("ItemRejuv");
 				I.unloadIfNecessary(item);
-				if((item.phyStats().rejuv()<Integer.MAX_VALUE)
+				if((item.phyStats().rejuv()!=PhyStats.NO_REJUV)
 				&&(item.phyStats().rejuv()>0))
 					I.loadMeUp(item,me);
 			}

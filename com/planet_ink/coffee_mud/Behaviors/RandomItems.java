@@ -314,7 +314,7 @@ public class RandomItems extends ActiveTicker
 				if(I!=null)
 				{
 					I=(Item)I.copyOf();
-					I.basePhyStats().setRejuv(0);
+					I.basePhyStats().setRejuv(PhyStats.NO_REJUV);
 					I.recoverPhyStats();
 					I.text();
 					if(SK!=null)

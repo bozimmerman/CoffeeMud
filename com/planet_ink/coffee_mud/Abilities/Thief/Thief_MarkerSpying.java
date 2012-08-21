@@ -71,7 +71,7 @@ public class Thief_MarkerSpying extends ThiefSkill
 				MOB invoker=invoker();
 				unInvoke();
 				if((mark!=null)&&(mark.fetchEffect(ID())==null)&&(invoker!=null))
-					beneficialAffect(invoker,mark,0,Integer.MAX_VALUE-1000);
+					beneficialAffect(invoker,mark,0,Ability.TICKS_FOREVER);
 			}
 		}
 		return super.tick(ticking,tickID);

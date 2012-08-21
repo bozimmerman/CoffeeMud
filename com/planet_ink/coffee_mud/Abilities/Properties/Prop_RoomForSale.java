@@ -252,7 +252,7 @@ public class Prop_RoomForSale extends Property implements LandTitle
 						if((M!=null)
 						&&(M.isSavable())
 						&&(M.getStartRoom()==R)
-						&&((M.basePhyStats().rejuv()==0)||(M.basePhyStats().rejuv()==Integer.MAX_VALUE)))
+						&&((M.basePhyStats().rejuv()==0)||(M.basePhyStats().rejuv()==PhyStats.NO_REJUV)))
 						{
 							CMLib.catalog().updateCatalogIntegrity(M);
 							mobs.addElement(M);
@@ -357,7 +357,7 @@ public class Prop_RoomForSale extends Property implements LandTitle
 							now+=(TimeManager.MILI_MINUTE*CMProps.getIntVar(CMProps.SYSTEMI_EXPIRE_PLAYER_DROP));
 							I.setExpirationDate(now);
 						}
-						if((I.phyStats().rejuv()!=Integer.MAX_VALUE)
+						if((I.phyStats().rejuv()!=PhyStats.NO_REJUV)
 						&&(I.phyStats().rejuv()!=0))
 						{
 							I.basePhyStats().setRejuv(PhyStats.NO_REJUV);

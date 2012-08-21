@@ -904,7 +904,7 @@ public class StdMOB implements MOB
 				if (follower.location() != null)
 				{
 					MOB newFol = (MOB) follower.copyOf();
-					newFol.basePhyStats().setRejuv(0);
+					newFol.basePhyStats().setRejuv(PhyStats.NO_REJUV);
 					newFol.text();
 					follower.killMeDead(false);
 					addFollower(newFol, ((Integer) oldFollowers.elementAt(f, 2)).intValue());

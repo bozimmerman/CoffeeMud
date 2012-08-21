@@ -113,7 +113,7 @@ public class Prayer_AuraFear extends Prayer
 							{
 								R.show(M,null,affected,CMMsg.MASK_EYES|CMMsg.MSG_HANDS|CMMsg.MASK_SOUND,"<S-NAME> cringe(s) in fear at the sight of <O-NAME>.");
 								Ability A=CMClass.getAbility("Spell_Fear");
-								if(A!=null) A.startTickDown(blame,M,Integer.MAX_VALUE/3);
+								if(A!=null) A.startTickDown(blame,M,Ability.TICKS_ALMOST_FOREVER);
 							}
 						}
 						else
@@ -145,7 +145,7 @@ public class Prayer_AuraFear extends Prayer
 							{
 								R.show(M,null,affected,CMMsg.MASK_EYES|CMMsg.MSG_HANDS|CMMsg.MASK_SOUND,"<S-NAME> cringe(s) in fear at the sight of <O-NAME>.");
 								Ability A=CMClass.getAbility("Spell_Fear");
-								if(A!=null) A.startTickDown(blame,M,Integer.MAX_VALUE/3);
+								if(A!=null) A.startTickDown(blame,M,Ability.TICKS_ALMOST_FOREVER);
 							}
 						}
 					}

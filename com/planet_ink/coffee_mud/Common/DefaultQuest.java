@@ -2316,7 +2316,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 							if(q.room!=null)
 							{
 								q.mob.setStartRoom(null);
-								q.mob.basePhyStats().setRejuv(0);
+								q.mob.basePhyStats().setRejuv(PhyStats.NO_REJUV);
 								q.mob.basePhyStats().setDisposition(q.mob.basePhyStats().disposition()|PhyStats.IS_UNSAVABLE);
 								q.mob.recoverPhyStats();
 								q.mob.text();
@@ -2400,7 +2400,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 							}
 							if(q.room!=null)
 							{
-								q.item.basePhyStats().setRejuv(0);
+								q.item.basePhyStats().setRejuv(PhyStats.NO_REJUV);
 								q.item.basePhyStats().setDisposition(q.item.basePhyStats().disposition()|PhyStats.IS_UNSAVABLE);
 								q.item.recoverPhyStats();
 								q.item.text();

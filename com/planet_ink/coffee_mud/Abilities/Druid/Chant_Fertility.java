@@ -136,7 +136,7 @@ public class Chant_Fertility extends Chant
 					}
 				}
 				mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> seem(s) extremely fertile!");
-				beneficialAffect(mob,target,asLevel,(Integer.MAX_VALUE/2));
+				beneficialAffect(mob,target,asLevel,Ability.TICKS_ALMOST_FOREVER);
 			}
 		}
 		else

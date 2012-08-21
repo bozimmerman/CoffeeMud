@@ -1936,7 +1936,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 			if(ILOC.length()>0)
 				LOCmap.put(newOne,ILOC);
 			setPropertiesStr(newOne,idat,true);
-			if(newOne.basePhyStats().rejuv()>0&&newOne.basePhyStats().rejuv()<Integer.MAX_VALUE)
+			if(newOne.basePhyStats().rejuv()>0&&newOne.basePhyStats().rejuv()!=PhyStats.NO_REJUV)
 				variableEq=true;
 			newOne.wearAt(wornCode);
 		}
@@ -2017,7 +2017,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 			setPropertiesStr(newOne,idat,true);
 			if((newOne instanceof Physical)
 			&&(((Physical)newOne).basePhyStats().rejuv()>0)
-			&&(((Physical)newOne).basePhyStats().rejuv()<Integer.MAX_VALUE))
+			&&(((Physical)newOne).basePhyStats().rejuv()!=PhyStats.NO_REJUV))
 				variableEq=true;
 			shopmob.getShop().addStoreInventory(newOne,numStock,stockPrice);
 		}

@@ -219,7 +219,7 @@ public class Prop_Retainable extends Property
 					&&(room.isInhabitant(mob)))
 					{
 						lastRoom=room;
-						mob.basePhyStats().setRejuv(0);
+						mob.basePhyStats().setRejuv(PhyStats.NO_REJUV);
 						mob.setStartRoom(room);
 						lastMoveIn=System.currentTimeMillis();
 					}

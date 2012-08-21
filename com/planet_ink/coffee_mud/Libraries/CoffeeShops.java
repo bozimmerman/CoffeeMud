@@ -879,7 +879,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 				shop.getShop().addStoreInventory(newMOB);
 				((MOB)product).setFollowing(null);
 				if((((MOB)product).basePhyStats().rejuv()>0)
-				&&(((MOB)product).basePhyStats().rejuv()<Integer.MAX_VALUE)
+				&&(((MOB)product).basePhyStats().rejuv()!=PhyStats.NO_REJUV)
 				&&(((MOB)product).getStartRoom()!=null))
 					((MOB)product).killMeDead(false);
 				else

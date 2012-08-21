@@ -390,7 +390,7 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 					for(int i=0;i<mob.numItems();i++)
 					{
 						Item I=mob.getItem(i);
-						if((I!=null)&&(I.basePhyStats().rejuv()>0)&&(I.basePhyStats().rejuv()<Integer.MAX_VALUE))
+						if((I!=null)&&(I.basePhyStats().rejuv()>0)&&(I.basePhyStats().rejuv()!=PhyStats.NO_REJUV))
 						{
 							List<Item> V=null;
 							for(int r=0;r<rivals.size();r++)
@@ -416,8 +416,8 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 									mob.delItem(I);
 								else
 								{
-									I.basePhyStats().setRejuv(0);
-									I.phyStats().setRejuv(0);
+									I.basePhyStats().setRejuv(PhyStats.NO_REJUV);
+									I.phyStats().setRejuv(PhyStats.NO_REJUV);
 								}
 							}
 						}
@@ -449,8 +449,8 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 									mob.delItem(I);
 								else
 								{
-									I.basePhyStats().setRejuv(0);
-									I.phyStats().setRejuv(0);
+									I.basePhyStats().setRejuv(PhyStats.NO_REJUV);
+									I.phyStats().setRejuv(PhyStats.NO_REJUV);
 								}
 							}
 						}
@@ -464,7 +464,7 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 							Environmental E=(Environmental)i.next();
 							if((E instanceof Item)
 							&&(((Item)E).basePhyStats().rejuv()>0)
-							&&(((Item)E).basePhyStats().rejuv()<Integer.MAX_VALUE))
+							&&(((Item)E).basePhyStats().rejuv()!=PhyStats.NO_REJUV))
 								V.add((Item)E);
 						}
 						for(Item I : V)
@@ -473,8 +473,8 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 								shop.delAllStoreInventory(I);
 							else
 							{
-								I.basePhyStats().setRejuv(0);
-								I.phyStats().setRejuv(0);
+								I.basePhyStats().setRejuv(PhyStats.NO_REJUV);
+								I.phyStats().setRejuv(PhyStats.NO_REJUV);
 							}
 						}
 					}

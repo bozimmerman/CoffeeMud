@@ -314,7 +314,7 @@ public class RandomMonsters extends ActiveTicker
 					M=(MOB)M.copyOf();
 					tickStatus=Tickable.STATUS_MISC+4;
 					M.setStartRoom(null);
-					M.basePhyStats().setRejuv(0);
+					M.basePhyStats().setRejuv(PhyStats.NO_REJUV);
 					M.recoverPhyStats();
 					tickStatus=Tickable.STATUS_MISC+5;
 					M.text();

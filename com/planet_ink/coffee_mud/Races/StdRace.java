@@ -700,7 +700,7 @@ public class StdRace implements Race
 		RS.setAllValues(0);
 		MOB fakeMOB=CMClass.getMOB("StdMOB");
 		affectPhyStats(fakeMOB,RS);
-		RS.setRejuv(0);
+		RS.setRejuv(PhyStats.NO_REJUV);
 		GR.setStat("ESTATS",CMLib.coffeeMaker().getPhyStatsStr(RS));
 
 		CharStats S1=(CharStats)CMClass.getCommon("DefaultCharStats");
@@ -906,7 +906,7 @@ public class StdRace implements Race
 		RS.setHeight((RS1.height()+RS2.height())/2);
 		RS.setSpeed((RS1.speed()+RS2.speed())/2.0);
 		RS.setWeight((RS1.weight()+RS2.weight())/2);
-		RS.setRejuv(0);
+		RS.setRejuv(PhyStats.NO_REJUV);
 		GR.setStat("ESTATS",CMLib.coffeeMaker().getPhyStatsStr(RS));
 
 		CharStats SETSTAT1=(CharStats)CMClass.getCommon("DefaultCharStats");

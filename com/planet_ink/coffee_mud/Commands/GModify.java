@@ -60,7 +60,7 @@ public class GModify extends StdCommand
 		&&(stat.equalsIgnoreCase("REJUV"))
 		&&(E instanceof Physical))
 		{
-			if(((Physical)E).basePhyStats().rejuv()==Integer.MAX_VALUE)
+			if(((Physical)E).basePhyStats().rejuv()==PhyStats.NO_REJUV)
 				return "0";
 			return ""+((Physical)E).basePhyStats().rejuv();
 		}

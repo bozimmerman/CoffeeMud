@@ -474,11 +474,11 @@ public class ServiceEngine implements ThreadEngine
 					&&(((MOB)E2).amDead())
 					&&((here==null)||(((MOB)E2).getStartRoom()==here))
 					&&(((MOB)E2).basePhyStats().rejuv()>0)
-					&&(((MOB)E2).basePhyStats().rejuv()<Integer.MAX_VALUE)
+					&&(((MOB)E2).basePhyStats().rejuv()!=PhyStats.NO_REJUV)
 					&&(((MOB)E2).phyStats().rejuv()>0))
 					{
 						C.tickDown=0;
-						((MOB)E2).phyStats().setRejuv(0);
+						((MOB)E2).phyStats().setRejuv(PhyStats.NO_REJUV);
 						if(C.tickTicker(false))
 							almostTock.delTicker(C);
 					}

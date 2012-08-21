@@ -128,7 +128,7 @@ public class Chant_Crossbreed extends Chant
 			{
 				mob.location().send(mob,msg);
 				mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> seem(s) strangely fertile!");
-				beneficialAffect(mob,target,asLevel,(Integer.MAX_VALUE/2));
+				beneficialAffect(mob,target,asLevel,Ability.TICKS_ALMOST_FOREVER);
 			}
 		}
 		else

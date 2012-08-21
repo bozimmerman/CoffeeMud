@@ -223,8 +223,8 @@ public class Dueler extends StdAbility
 			tA.init(tmob);
 			mob.setVictim(tmob);
 			tmob.setVictim(mob);
-			A.startTickDown(mob, mob, Integer.MAX_VALUE-2);
-			tA.startTickDown(tmob, tmob, Integer.MAX_VALUE-2);
+			A.startTickDown(mob, mob, Ability.TICKS_FOREVER);
+			tA.startTickDown(tmob, tmob, Ability.TICKS_FOREVER);
 		}
 		return true;
 	}
