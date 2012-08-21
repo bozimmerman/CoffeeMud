@@ -154,7 +154,7 @@ public class Paladin_Defend extends StdAbility
 			{
 				mob.location().send(mob,msg);
 				fullRound=false;
-				beneficialAffect(mob,mob,asLevel,Integer.MAX_VALUE);
+				beneficialAffect(mob,mob,asLevel,Ability.TICKS_FOREVER);
 			}
 		}
 		else

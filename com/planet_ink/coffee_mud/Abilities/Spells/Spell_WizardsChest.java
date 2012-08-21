@@ -135,7 +135,7 @@ public class Spell_WizardsChest extends Spell
 				mob.location().send(mob,msg);
 				if(target instanceof Container)
 				{
-					beneficialAffect(mob,target,asLevel,Integer.MAX_VALUE/2);
+					beneficialAffect(mob,target,asLevel,Ability.TICKS_ALMOST_FOREVER);
 					Container container=(Container)target;
 					container.setLidsNLocks(container.hasALid(),false,container.hasALock(),true);
 					mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,"<T-NAME> look(s) well protected!");

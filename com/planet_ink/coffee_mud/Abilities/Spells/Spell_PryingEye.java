@@ -176,7 +176,7 @@ public class Spell_PryingEye extends Spell
 				if(eyeM.amDead()||eyeM.amDestroyed()) 
 					return false;
 				eyeM.setSession(mob.session());
-				beneficialAffect(mob,eyeM,asLevel,Integer.MAX_VALUE /2);
+				beneficialAffect(mob,eyeM,asLevel,Ability.TICKS_ALMOST_FOREVER);
 				Spell_PryingEye A=(Spell_PryingEye)eyeM.fetchEffect(ID());
 				if(A==null)
 					eyeM.destroy();

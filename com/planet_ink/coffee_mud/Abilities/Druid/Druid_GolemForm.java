@@ -293,7 +293,7 @@ public class Druid_GolemForm extends StdAbility
 				raceName=getRaceName(classLevel);
 				newRace=getRace(classLevel);
 				raceLevel=getRaceLevel(classLevel);
-				beneficialAffect(mob,mob,asLevel,Integer.MAX_VALUE);
+				beneficialAffect(mob,mob,asLevel,Ability.TICKS_FOREVER);
 				raceName=CMStrings.capitalizeAndLower(CMLib.english().startWithAorAn(raceName.toLowerCase()));
 				CMLib.utensils().confirmWearability(mob);
 			}

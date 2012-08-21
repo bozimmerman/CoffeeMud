@@ -166,7 +166,7 @@ public class Chant_Hibernation extends Chant
 			{
 				mob.location().send(mob,msg);
 				oldState=mob.curState();
-				beneficialAffect(mob,mob,asLevel,Integer.MAX_VALUE-1000);
+				beneficialAffect(mob,mob,asLevel,Ability.TICKS_FOREVER);
 				helpProficiency(mob);
 			}
 		}

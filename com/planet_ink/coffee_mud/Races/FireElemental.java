@@ -58,7 +58,7 @@ public class FireElemental extends StdRace
 	private static final int[] parts={-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1};
 	public int[] bodyMask(){return parts;}
 
-	private int[] agingChart={0,0,0,0,0,Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE};
+	private int[] agingChart={0,0,0,0,0,YEARS_AGE_LIVES_FOREVER,YEARS_AGE_LIVES_FOREVER,YEARS_AGE_LIVES_FOREVER,YEARS_AGE_LIVES_FOREVER};
 	public int[] getAgingChart(){return agingChart;}
 	
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)

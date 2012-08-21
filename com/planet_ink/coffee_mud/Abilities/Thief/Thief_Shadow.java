@@ -247,7 +247,7 @@ public class Thief_Shadow extends ThiefSkill
 			{
 				mob.location().send(mob,msg);
 				shadowing=target;
-				if(beneficialAffect(mob,target,asLevel,Integer.MAX_VALUE-1000))
+				if(beneficialAffect(mob,target,asLevel,Ability.TICKS_FOREVER))
 				{
 					A=(Thief_Shadow)target.fetchEffect(ID());
 					if(A!=null)

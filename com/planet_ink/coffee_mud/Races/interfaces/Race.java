@@ -35,27 +35,6 @@ import java.util.*;
  */
 public interface Race extends Tickable, StatsAffecting, MsgListener, CMObject, Modifiable
 {
-	/** Age constant for an infant */
-	public final static int AGE_INFANT=0;
-	/** Age constant for a toddler */
-	public final static int AGE_TODDLER=1;
-	/** Age constant for a child */
-	public final static int AGE_CHILD=2;
-	/** Age constant for a yound adultt */
-	public final static int AGE_YOUNGADULT=3;
-	/** Age constant for the mature adult */
-	public final static int AGE_MATURE=4;
-	/** Age constant for the middle aged adult*/
-	public final static int AGE_MIDDLEAGED=5;
-	/** Age constant for the old*/
-	public final static int AGE_OLD=6;
-	/** Age constant for the very old*/
-	public final static int AGE_VENERABLE=7;
-	/** Age constant for the very very old*/
-	public final static int AGE_ANCIENT=8;
-	/** Constant string list for the names of the age constants, in their order of value */
-	public final static String[] AGE_DESCS={"Infant","Toddler","Child","Young adult","Adult", "Mature", "Old", "Venerable", "Ancient"};
-
 	/**
 	 * Return a nice, displayable name for this race
 	 * @return the races name
@@ -371,6 +350,30 @@ public interface Race extends Tickable, StatsAffecting, MsgListener, CMObject, M
 	 * @return the list of racial languages granted to those of this race
 	 */
 	public String getLanguagesDesc();
+
+	/** Age constant for an infant */
+	public final static int AGE_INFANT=0;
+	/** Age constant for a toddler */
+	public final static int AGE_TODDLER=1;
+	/** Age constant for a child */
+	public final static int AGE_CHILD=2;
+	/** Age constant for a yound adultt */
+	public final static int AGE_YOUNGADULT=3;
+	/** Age constant for the mature adult */
+	public final static int AGE_MATURE=4;
+	/** Age constant for the middle aged adult*/
+	public final static int AGE_MIDDLEAGED=5;
+	/** Age constant for the old*/
+	public final static int AGE_OLD=6;
+	/** Age constant for the very old*/
+	public final static int AGE_VENERABLE=7;
+	/** Age constant for the very very old*/
+	public final static int AGE_ANCIENT=8;
+	/** Constant string list for the names of the age constants, in their order of value */
+	public final static String[] AGE_DESCS={"Infant","Toddler","Child","Young adult","Adult", "Mature", "Old", "Venerable", "Ancient"};
+
+	/** Age in Years constant for an immortal thing */
+	public final static int YEARS_AGE_LIVES_FOREVER=Integer.MAX_VALUE;
 
 	/** body part constant representing antenea*/
 	public final static int BODY_ANTENEA=0;

@@ -106,7 +106,7 @@ public class Archon_Hush extends ArchonSkill
 			{
 				mob.location().send(mob,msg);
 				mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> <S-IS-ARE> hushed!");
-				beneficialAffect(mob,target,asLevel,Integer.MAX_VALUE/2);
+				beneficialAffect(mob,target,asLevel,Ability.TICKS_ALMOST_FOREVER);
 				Log.sysOut("Banish",mob.name()+" hushed "+target.name()+".");
 			}
 		}

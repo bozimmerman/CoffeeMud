@@ -96,7 +96,7 @@ public class Chant_StrikeBarren extends Chant
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				beneficialAffect(mob,target,asLevel,Integer.MAX_VALUE/2);
+				beneficialAffect(mob,target,asLevel,Ability.TICKS_ALMOST_FOREVER);
 			}
 		}
 		else

@@ -95,7 +95,7 @@ public class Spell_ContinualLight extends Spell
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);
-			beneficialAffect(mob,target,asLevel,Integer.MAX_VALUE-100);
+			beneficialAffect(mob,target,asLevel,Ability.TICKS_FOREVER);
 			mob.location().recoverRoomStats(); // attempt to handle followers
 		}
 		else

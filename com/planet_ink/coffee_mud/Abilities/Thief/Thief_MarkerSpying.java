@@ -139,7 +139,7 @@ public class Thief_MarkerSpying extends ThiefSkill
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				beneficialAffect(mob,target,asLevel,Integer.MAX_VALUE-1000);
+				beneficialAffect(mob,target,asLevel,Ability.TICKS_FOREVER);
 			}
 		}
 		return success;

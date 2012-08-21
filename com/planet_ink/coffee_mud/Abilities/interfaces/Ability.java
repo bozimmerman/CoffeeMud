@@ -42,6 +42,11 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public interface Ability extends Environmental
 {
+	/** Constant shortcut for setting the ticks remaining on the skill to basically be endless. */
+	public static final int TICKS_FOREVER=Integer.MAX_VALUE-1000;
+	/** Constant shortcut for setting the ticks remaining on the skill to basically be almost endless. */
+	public static final int TICKS_ALMOST_FOREVER=Integer.MAX_VALUE/2;
+	
 	/**
 	 * Returns a bitmap describing the general 
 	 * classification of the skill (spell, skill, 

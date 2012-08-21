@@ -171,7 +171,7 @@ public class Thief_HideOther extends ThiefSkill
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				super.beneficialAffect(mob,target,asLevel,Integer.MAX_VALUE/2);
+				super.beneficialAffect(mob,target,asLevel,Ability.TICKS_ALMOST_FOREVER);
 				Thief_HideOther newOne=(Thief_HideOther)target.fetchEffect(ID());
 				if(newOne!=null)
 				{

@@ -148,7 +148,7 @@ public class Chant_FungusFeet extends Chant implements DiseaseAffect
 				if((msg.value()<=0)&&(msg2.value()<=0))
 				{
 					invoker=mob;
-					maliciousAffect(mob,target,asLevel,Integer.MAX_VALUE/2,-1);
+					maliciousAffect(mob,target,asLevel,Ability.TICKS_ALMOST_FOREVER,-1);
 					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"A fungus sprouts up between <S-YOUPOSS> toes!");
 				}
 				else
