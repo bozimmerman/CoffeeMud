@@ -848,6 +848,16 @@ public class StdRoom implements Room
 	{
 		return basePhyStats;
 	}
+	
+	private final EachApplicable<Ability> recoverPhyStatsEffectApplicable=new EachApplicable<Ability>() {
+		public final void apply(final Ability A) { A.affectPhyStats(me,phyStats); } 
+	};
+	private final EachApplicable<Item> recoverPhyStatsItemApplicable=new EachApplicable<Item>(){ 
+		public final void apply(final Item I){ I.affectPhyStats(me,phyStats);} 
+	};
+	private final EachApplicable<MOB> recoverPhyStatsInhabitantApplicable=new EachApplicable<MOB>(){ 
+		public final void apply(final MOB M){ M.affectPhyStats(me,phyStats);} 
+	};
 	public void recoverPhyStats()
 	{
 		basePhyStats.copyInto(phyStats);
@@ -855,30 +865,33 @@ public class StdRoom implements Room
 		if(myArea!=null)
 			myArea.affectPhyStats(this,phyStats());
 
-		eachEffect(new EachApplicable<Ability>(){ public final void apply(final Ability A) {
-			A.affectPhyStats(me,phyStats);
-        } });
-		eachItem(new EachApplicable<Item>(){ public final void apply(final Item I){
-			I.affectPhyStats(me,phyStats);
-		} });
-		eachInhabitant(new EachApplicable<MOB>(){ public final void apply(final MOB M){
-			M.affectPhyStats(me,phyStats);
-		} });
+		eachEffect(recoverPhyStatsEffectApplicable);
+		eachItem(recoverPhyStatsItemApplicable);
+		eachInhabitant(recoverPhyStatsInhabitantApplicable);
 	}
-	public void recoverRoomStats()
-	{
-		recoverPhyStats();
-		eachInhabitant(new EachApplicable<MOB>(){ public final void apply(final MOB M){
+	
+	private final EachApplicable<Item> recoverRoomStatsItemApplicable=new EachApplicable<Item>(){ 
+		public final void apply(final Item I) 
+		{ 
+			I.recoverPhyStats();
+		} 
+	};
+	private final EachApplicable<MOB> recoverRoomStatsInhabitantApplicable=new EachApplicable<MOB>(){ 
+		public final void apply(final MOB M) 
+		{ 
 			M.recoverCharStats();
 			M.recoverPhyStats();
 			M.recoverMaxState();
-		} });
+		} 
+	};
+	public void recoverRoomStats()
+	{
+		recoverPhyStats();
+		eachInhabitant(recoverRoomStatsInhabitantApplicable);
 		for(final Exit X : exits)
 			if(X!=null) 
 				X.recoverPhyStats();
-		eachItem(new EachApplicable<Item>(){ public final void apply(final Item I){
-			I.recoverPhyStats();
-		} });
+		eachItem(recoverRoomStatsItemApplicable);
 	}
 
 	public void setBasePhyStats(PhyStats newStats)
