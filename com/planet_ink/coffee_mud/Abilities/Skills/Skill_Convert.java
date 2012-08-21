@@ -44,7 +44,7 @@ public class Skill_Convert extends StdSkill
 	public String[] triggerStrings(){return triggerStrings;}
 	public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_EVANGELISM;}
 	protected static DVector convertStack=new DVector(2);
-	public int overrideMana(){return 50;}
+	public short overrideMana(){return 50;}
 	public String displayText(){return "";}
 	protected String priorFaith="";
 	

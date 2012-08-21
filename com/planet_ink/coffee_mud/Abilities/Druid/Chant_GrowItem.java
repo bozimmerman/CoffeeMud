@@ -42,7 +42,7 @@ public class Chant_GrowItem extends Chant
 	public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return 0;}
-	protected int overrideMana(){return 50;}
+	protected short overrideMana(){return 50;}
 
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{

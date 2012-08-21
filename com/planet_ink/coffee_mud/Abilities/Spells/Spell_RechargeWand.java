@@ -38,7 +38,7 @@ public class Spell_RechargeWand extends Spell
 	public String ID() { return "Spell_RechargeWand"; }
 	public String name(){return "Recharge Wand";}
 	protected int canTargetCode(){return CAN_ITEMS;}
-	public int overrideMana(){return 100;}
+	public short overrideMana(){return 100;}
 	public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_ENCHANTMENT;}
 	public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
 

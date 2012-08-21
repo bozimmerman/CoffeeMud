@@ -44,7 +44,7 @@ public class Spell_FindFamiliar extends Spell
 	protected int canTargetCode(){return 0;}
 	public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_CONJURATION;}
 	public long flags(){return Ability.FLAG_NOORDERING;}
-	protected int overrideMana(){return Integer.MAX_VALUE;}
+	protected short overrideMana(){return Short.MAX_VALUE;}
 	public int castingQuality(MOB mob, MOB target)
 	{
 		if((target!=null)&&(mob!=target)) return Ability.QUALITY_INDIFFERENT;

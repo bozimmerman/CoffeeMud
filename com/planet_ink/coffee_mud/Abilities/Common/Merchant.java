@@ -41,7 +41,7 @@ public class Merchant extends CommonSkill implements ShopKeeper
 	public String name(){ return "Marketeering";}
 	private static final String[] triggerStrings = {"MARKET"};
 	public String[] triggerStrings(){return triggerStrings;}
-	public int overrideMana(){return 5;}
+	public short overrideMana(){return 5;}
 	public boolean isAutoInvoked(){return true;}
 	public boolean canBeUninvoked(){return false;}
 	protected ExpertiseLibrary.SkillCostDefinition getRawTrainingCost() { return CMProps.getSkillTrainCostFormula(ID()); }

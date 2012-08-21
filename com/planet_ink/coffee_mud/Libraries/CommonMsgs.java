@@ -510,9 +510,12 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 					&&(((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_SPELL)
 						||((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_CHANT)
 						||((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_SONG)
-						||((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_PRAYER))
-					&&(A.usageCost(mob,false)[0]>0))
-						expenseAffects.addElement(A);
+						||((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_PRAYER)))
+					{
+						final Ability myA=mob.fetchAbility(A.ID());
+						if(((myA!=null)&&(myA.usageCost(mob,false)[0]>0))||(A.usageCost(mob, false)[0]>0))
+    						expenseAffects.addElement(A);
+					}
 				}
 			}
 			if(expenseAffects.size()>0)

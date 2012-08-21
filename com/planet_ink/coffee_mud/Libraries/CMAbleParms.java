@@ -57,6 +57,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 	{
 		super();
 	}
+	
 
 	public String encodeCodedSpells(Affectable I)
 	{

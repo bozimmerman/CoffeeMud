@@ -42,7 +42,7 @@ public class Chant_GrowOak extends Chant_SummonPlants
 	public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 	protected int canAffectCode(){return Ability.CAN_ITEMS;}
 	protected int canTargetCode(){return 0;}
-	protected int overrideMana(){return Integer.MAX_VALUE;}
+	protected short overrideMana(){return Short.MAX_VALUE;}
 	protected int hpRemaining=0;
 	protected int lastHp=-1;
 

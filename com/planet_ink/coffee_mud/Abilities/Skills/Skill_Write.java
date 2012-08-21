@@ -42,7 +42,7 @@ public class Skill_Write extends StdSkill
 	private static final String[] triggerStrings = {"WRITE","WR"};
 	public String[] triggerStrings(){return triggerStrings;}
 	public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_CALLIGRAPHY;}
-	public int overrideMana(){return 0;}
+	public short overrideMana(){return 0;}
 
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{

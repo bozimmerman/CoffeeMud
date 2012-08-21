@@ -527,7 +527,20 @@ public class StdMOB implements MOB
 		return basePhyStats;
 	}
 
-	public void recoverPhyStats() {
+	private final EachApplicable<Item> recoverPhyStatsItemApplier=new EachApplicable<Item>() {
+		public final void apply(final Item I) {
+			I.recoverPhyStats();
+			I.affectPhyStats(me, phyStats);
+		}
+	};
+	private final EachApplicable<Ability> recoverPhyStatsAffectApplier=new EachApplicable<Ability>() {
+		public final void apply(final Ability A) {
+			A.affectPhyStats(me, phyStats);
+		}
+	};
+	
+	public void recoverPhyStats() 
+	{
 		basePhyStats.copyInto(phyStats);
 		if (location() != null)
 			location().affectPhyStats(this, phyStats);
@@ -546,17 +559,8 @@ public class StdMOB implements MOB
 				cStats.getMyClass(c).affectPhyStats(this, phyStats);
 			cStats.getMyRace().affectPhyStats(this, phyStats);
 		}
-		eachItem(new EachApplicable<Item>() {
-			public final void apply(final Item I) {
-				I.recoverPhyStats();
-				I.affectPhyStats(me, phyStats);
-			}
-		});
-		eachEffect(new EachApplicable<Ability>() {
-			public final void apply(final Ability A) {
-				A.affectPhyStats(me, phyStats);
-			}
-		});
+		eachItem(recoverPhyStatsItemApplier);
+		eachEffect(recoverPhyStatsAffectApplier);
 		for (final Enumeration e = factions.elements(); e.hasMoreElements();)
 			((Faction.FactionData) e.nextElement()).affectPhyStats(this, phyStats);
 		/* the follower light exception */
@@ -568,18 +572,21 @@ public class StdMOB implements MOB
 		}
 	}
 
-	public void setBasePhyStats(PhyStats newStats) {
+	public void setBasePhyStats(PhyStats newStats) 
+	{
 		basePhyStats = (PhyStats) newStats.copyOf();
 	}
 
-	public int baseWeight() {
+	public int baseWeight() 
+	{
 		if (charStats().getMyRace() == baseCharStats().getMyRace())
 			return basePhyStats().weight() + charStats().getStat(CharStats.STAT_WEIGHTADJ);
 		return charStats().getMyRace().lightestWeight() + charStats().getStat(CharStats.STAT_WEIGHTADJ)
 		        + charStats().getMyRace().weightVariance();
 	}
 
-	public int maxCarry() {
+	public int maxCarry() 
+	{
 		if (CMSecurity.isAllowed(this, location(), "CARRYALL"))
 			return Integer.MAX_VALUE / 2;
 		final double str = (double) charStats().getStat(CharStats.STAT_STRENGTH);
@@ -587,18 +594,21 @@ public class StdMOB implements MOB
 		return (int) Math.round(bodyWeight + ((str + 10.0) * str * bodyWeight / 150.0) + (str * 5.0));
 	}
 
-	public int maxItems() {
+	public int maxItems() 
+	{
 		if (CMSecurity.isAllowed(this, location(), "CARRYALL"))
 			return Integer.MAX_VALUE / 2;
 		return (2 * Wearable.CODES.TOTAL()) + (2 * charStats().getStat(CharStats.STAT_DEXTERITY))
 		        + (2 * phyStats().level());
 	}
 
-	public int maxFollowers() {
+	public int maxFollowers() 
+	{
 		return ((int) Math.round(CMath.div(charStats().getStat(CharStats.STAT_CHARISMA) - 8, 4.0)) + 1);
 	}
 
-	public int totalFollowers() {
+	public int totalFollowers() 
+	{
 		int total = 0;
 		try
 		{
@@ -618,6 +628,17 @@ public class StdMOB implements MOB
 		return charStats;
 	}
 
+	private final EachApplicable<Item> recoverCharStatsItemApplier=new EachApplicable<Item>() {
+		public final void apply(final Item I) {
+			I.affectCharStats(me, charStats);
+		}
+	};
+	private final EachApplicable<Ability> recoverCharStatsAffectApplier=new EachApplicable<Ability>() {
+		public final void apply(final Ability A) {
+			A.affectCharStats(me, charStats);
+		}
+	};
+	
 	public void recoverCharStats() {
 		baseCharStats.setClassLevel(baseCharStats.getCurrentClass(), basePhyStats().level()
 		        - baseCharStats().combinedSubLevels());
@@ -629,16 +650,8 @@ public class StdMOB implements MOB
 		final Deity deity = getMyDeity();
 		if (deity != null)
 			deity.affectCharStats(this, charStats);
-		eachEffect(new EachApplicable<Ability>() {
-			public final void apply(final Ability A) {
-				A.affectCharStats(me, charStats);
-			}
-		});
-		eachItem(new EachApplicable<Item>() {
-			public final void apply(final Item I) {
-				I.affectCharStats(me, charStats);
-			}
-		});
+		eachEffect(recoverCharStatsAffectApplier);
+		eachItem(recoverCharStatsItemApplier);
 		if (location() != null)
 			location().affectCharStats(this, charStats);
 
@@ -659,11 +672,13 @@ public class StdMOB implements MOB
 		}
 	}
 
-	public void setBaseCharStats(CharStats newBaseCharStats) {
+	public void setBaseCharStats(CharStats newBaseCharStats) 
+	{
 		baseCharStats = (CharStats) newBaseCharStats.copyOf();
 	}
 
-	public void affectPhyStats(Physical affected, PhyStats affectableStats) {
+	public void affectPhyStats(Physical affected, PhyStats affectableStats) 
+	{
 		if (affected instanceof Room)
 		{
 			if (CMLib.flags().isLightSource(this))
@@ -675,10 +690,12 @@ public class StdMOB implements MOB
 		}
 	}
 
-	public void affectCharState(MOB affectedMob, CharState affectableMaxState) {
+	public void affectCharState(MOB affectedMob, CharState affectableMaxState) 
+	{
 	}
 
-	public boolean isMarriedToLiege() {
+	public boolean isMarriedToLiege() 
+	{
 		if (getLiegeID().length() == 0)
 			return false;
 		if (getLiegeID().equals(Name()))
@@ -694,19 +711,23 @@ public class StdMOB implements MOB
 		return false;
 	}
 
-	public CharState curState() {
+	public CharState curState() 
+	{
 		return curState;
 	}
 
-	public CharState maxState() {
+	public CharState maxState()
+	{
 		return maxState;
 	}
 
-	public CharState baseState() {
+	public CharState baseState() 
+	{
 		return baseState;
 	}
 
-	public PlayerStats playerStats() {
+	public PlayerStats playerStats() 
+	{
 		if ((playerStats == null) && (soulMate != null))
 			return soulMate.playerStats();
 		return playerStats;
@@ -726,7 +747,19 @@ public class StdMOB implements MOB
 		maxState.copyInto(curState);
 	}
 
-	public void recoverMaxState() {
+	private final EachApplicable<Item> recoverMaxStateItemApplier=new EachApplicable<Item>() {
+		public final void apply(final Item I) {
+			I.affectCharState(me, maxState);
+		}
+	};
+	private final EachApplicable<Ability> recoverMaxStateAffectApplier=new EachApplicable<Ability>() {
+		public final void apply(final Ability A) {
+			A.affectCharState(me, maxState);
+		}
+	};
+	
+	public void recoverMaxState() 
+	{
 		baseState.copyInto(maxState);
 		if (charStats.getMyRace() != null)
 			charStats.getMyRace().affectCharState(this, maxState);
@@ -736,16 +769,8 @@ public class StdMOB implements MOB
 		final int num = charStats.numClasses();
 		for (int c = 0; c < num; c++)
 			charStats.getMyClass(c).affectCharState(this, maxState);
-		eachEffect(new EachApplicable<Ability>() {
-			public final void apply(final Ability A) {
-				A.affectCharState(me, maxState);
-			}
-		});
-		eachItem(new EachApplicable<Item>() {
-			public final void apply(final Item I) {
-				I.affectCharState(me, maxState);
-			}
-		});
+		eachEffect(recoverMaxStateAffectApplier);
+		eachItem(recoverMaxStateItemApplier);
 		for (final Enumeration e = factions.elements(); e.hasMoreElements();)
 			((Faction.FactionData) e.nextElement()).affectCharState(this, maxState);
 		if (location() != null)
@@ -3454,27 +3479,21 @@ public class StdMOB implements MOB
 			{
 				for (int a = 0; a < affects.size(); a++)
 					applier.apply(affects.get(a));
-			} catch (ArrayIndexOutOfBoundsException e)
-			{
-			}
+			} catch (ArrayIndexOutOfBoundsException e){}
 		final List<Ability> racialEffects = racialEffects();
 		try
 		{
 			if (racialEffects.size() > 0)
 				for (final Ability A : racialEffects)
 					applier.apply(A);
-		} catch (ArrayIndexOutOfBoundsException e)
-		{
-		}
+		} catch (ArrayIndexOutOfBoundsException e){}
 		final List<Ability> clanEffects = clanEffects();
 		try
 		{
 			if (clanEffects.size() > 0)
 				for (final Ability A : clanEffects)
 					applier.apply(A);
-		} catch (ArrayIndexOutOfBoundsException e)
-		{
-		}
+		} catch (ArrayIndexOutOfBoundsException e){}
 	}
 
 	public void delAllEffects(boolean unInvoke) {
@@ -3601,13 +3620,13 @@ public class StdMOB implements MOB
 		{
 			final Ability A = a.nextElement();
 			if (A != null)
-				A.clearExpertiseCache();
+				A.clearUsageCache();
 		}
 		for (final Enumeration<Ability> a = personalEffects(); a.hasMoreElements();)
 		{
 			final Ability A = a.nextElement();
 			if (A != null)
-				A.clearExpertiseCache();
+				A.clearUsageCache();
 		}
 	}
 

@@ -206,7 +206,7 @@ public class WaterCurrents extends ActiveTicker
 	}
 	protected static final String[] empty={};
 	protected static final String[] CODES={"CLASS","TEXT"};
-	protected static final int[] cost=new int[3];
+	protected static final short[] cost=new short[3];
 	protected static class AWaterCurrent implements Ability, Cloneable
 	{
 		public AWaterCurrent()
@@ -243,7 +243,7 @@ public class WaterCurrents extends ActiveTicker
 		//protected void finalize(){ CMClass.unbumpCounter(this,CMClass.CMObjectType.ABILITY); }//removed for mem & perf
 		public long expirationDate(){return 0;}
 		public void setExpirationDate(long time){}
-		public void clearExpertiseCache(){}
+		public void clearUsageCache(){}
 
 		public void setName(String newName){}
 		public void setDescription(String newDescription){}
@@ -404,7 +404,7 @@ public class WaterCurrents extends ActiveTicker
 		{ return true;	}
 		public void makeLongLasting(){}
 		public void makeNonUninvokable(){}
-		public int[] usageCost(MOB mob, boolean ignoreClassOverride){return cost;}
+		public short[] usageCost(MOB mob, boolean ignoreClassOverride){return cost;}
 
 
 		public boolean isGeneric(){return false;}

@@ -152,7 +152,7 @@ public class GenAbility extends StdAbility
 	public boolean isAutoInvoked(){return ((Boolean)V(ID,V_AUTO)).booleanValue();}
 	public long flags(){return ((Integer)V(ID,V_FLAG)).intValue();}
 	public int usageType(){return ((Integer)V(ID,V_USAG)).intValue();}
-	protected int overrideMana(){return ((Integer)V(ID,V_OMAN)).intValue();} //-1=normal, Integer.MAX_VALUE=all, Integer.MAX_VALUE-100
+	protected short overrideMana(){return ((Short)V(ID,V_OMAN)).shortValue();} //-1=normal, Short.MAX_VALUE=all, Short.MAX_VALUE-100
 	public int classificationCode(){ return ((Integer)V(ID,V_CLAS)).intValue(); }
 	protected int canAffectCode(){return ((Integer)V(ID,V_CAFF)).intValue(); }
 	protected int canTargetCode(){return ((Integer)V(ID,V_CTAR)).intValue(); }
@@ -630,7 +630,7 @@ public class GenAbility extends StdAbility
 		case 7: SV(ID,V_AUTO,Boolean.valueOf(CMath.s_bool(val))); break;
 		case 8: SV(ID,V_FLAG,Integer.valueOf(convert(Ability.FLAG_DESCS,val,true))); break;
 		case 9: SV(ID,V_CLAS,Integer.valueOf(convertClassAndDomain(val))); break;
-		case 10: SV(ID,V_OMAN,Integer.valueOf(CMath.s_parseIntExpression(val))); break;
+		case 10: SV(ID,V_OMAN,Integer.valueOf(CMath.s_parseIntExpression(val))); CMLib.ableMapper().getHardOverrideManaCache().remove(ID()); break;
 		case 11: SV(ID,V_USAG,Integer.valueOf(convert(Ability.USAGE_DESCS,val,true))); break;
 		case 12: SV(ID,V_CAFF,Integer.valueOf(convert(Ability.CAN_DESCS,val,true))); break;
 		case 13: SV(ID,V_CTAR,Integer.valueOf(convert(Ability.CAN_DESCS,val,true))); break;

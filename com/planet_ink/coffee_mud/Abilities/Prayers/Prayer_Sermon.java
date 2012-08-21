@@ -42,7 +42,7 @@ public class Prayer_Sermon extends Prayer
 	public int abstractQuality(){return Ability.QUALITY_OK_OTHERS;}
 	protected int canAffectCode(){return CAN_MOBS;}
 	public long flags(){return Ability.FLAG_CHARMING|Ability.FLAG_HOLY|Ability.FLAG_UNHOLY;}
-	protected int overrideMana(){return Integer.MAX_VALUE;}
+	protected short overrideMana(){return Short.MAX_VALUE;}
 
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{

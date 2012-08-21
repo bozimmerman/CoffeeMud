@@ -852,19 +852,19 @@ public class CMProps extends Properties
 		}
 	}
 
-	public static final int getMinManaException(final String skillID)
+	public static final short getMinManaException(final String skillID)
 	{
 		final Map<String,Double> DV=p().skillMinManaExceptions;
 		if(DV.containsKey(skillID.toUpperCase()))
-			return DV.get(skillID.toUpperCase()).intValue();
-		return Integer.MIN_VALUE;
+			return DV.get(skillID.toUpperCase()).shortValue();
+		return Short.MIN_VALUE;
 	}
-	public static final int getMaxManaException(final String skillID)
+	public static final short getMaxManaException(final String skillID)
 	{
 		final Map<String,Double> DV=p().skillMaxManaExceptions;
 		if(DV.containsKey(skillID.toUpperCase()))
-			return DV.get(skillID.toUpperCase()).intValue();
-		return Integer.MIN_VALUE;
+			return DV.get(skillID.toUpperCase()).shortValue();
+		return Short.MIN_VALUE;
 	}
 
 	private static final double setExceptionCosts(final String val, final Map<String,Double> set)

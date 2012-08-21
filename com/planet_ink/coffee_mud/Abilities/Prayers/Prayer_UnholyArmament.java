@@ -42,7 +42,7 @@ public class Prayer_UnholyArmament extends Prayer
 	public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_HOLYPROTECTION;}
 	public int abstractQuality(){ return Ability.QUALITY_OK_SELF;}
 	public long flags(){return Ability.FLAG_UNHOLY;}
-	protected int overrideMana(){return Integer.MAX_VALUE;}
+	protected short overrideMana(){return Short.MAX_VALUE;}
 	public static final long[] checkOrder={
 		Wearable.WORN_WIELD,
 		Wearable.WORN_TORSO,

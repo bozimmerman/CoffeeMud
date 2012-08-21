@@ -355,7 +355,7 @@ public interface Ability extends Environmental
 	 * @param ignoreClassOverride whether to ignore Class Overrides
 	 * @return an array of costs, indexed by Ability.USAGEINDEX_*
 	 */
-	public int[] usageCost(MOB mob, boolean ignoreClassOverride);
+	public short[] usageCost(MOB mob, boolean ignoreClassOverride);
 	
 	/**
 	 * Returns a bitmap made up of constants defined by
@@ -579,7 +579,7 @@ public interface Ability extends Environmental
 	 * per skill.  However, whenever new expertises are added, they need to be 
 	 * recalculated.  This method is called to recalculate expertises.
 	 */
-	public void clearExpertiseCache();
+	public void clearUsageCache();
 	
 	/**
 	 * Returns whether the given mob passes their proficiency check in this skill
@@ -616,6 +616,17 @@ public interface Ability extends Environmental
 	public final static int USAGE_HITPOINTS=4;
 	/** constant descriptions for the USAGE_* values @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#usageType() */
 	public final static String[] USAGE_DESCS={"MANA","MOVEMENT","HITPOINTS"};
+	
+	/** index into internal cache used by usageCost(MOB,boolean) @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#usageCost(MOB,boolean) */
+	public final static int CACHEINDEX_PLAYERINFO=0;
+	/** index into internal cache used by usageCost(MOB,boolean) @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#usageCost(MOB,boolean) */
+	public final static int CACHEINDEX_NORMAL=1;
+	/** index into internal cache used by usageCost(MOB,boolean) @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#usageCost(MOB,boolean) */
+	public final static int CACHEINDEX_CLASSLESS=2;
+	/** index into internal cache used by usageCost(MOB,boolean) @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#usageCost(MOB,boolean) */
+	public final static int CACHEINDEX_EXPERTISE=3;
+	/** index into internal cache used by usageCost(MOB,boolean) @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#usageCost(MOB,boolean) */
+	public final static int CACHEINDEX_TOTAL=4;
 	
 	/** index into usageCost(MOB,boolean) array for the amount of mana this skill costs @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#usageCost(MOB,boolean) */
 	public final static int USAGEINDEX_MANA=0;

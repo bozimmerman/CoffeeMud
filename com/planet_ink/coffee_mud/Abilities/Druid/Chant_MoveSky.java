@@ -43,7 +43,7 @@ public class Chant_MoveSky extends Chant
 	public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_MOONSUMMONING;}
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return 0;}
-	protected int overrideMana(){return Integer.MAX_VALUE-99;}
+	protected short overrideMana(){return Short.MAX_VALUE-99;}
 
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{

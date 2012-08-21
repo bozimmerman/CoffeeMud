@@ -44,7 +44,7 @@ public class Prayer_GuardianHearth extends Prayer
 	public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
 	protected int canAffectCode(){return CAN_ROOMS;}
 	protected int canTargetCode(){return CAN_ROOMS;}
-	protected int overrideMana(){return Integer.MAX_VALUE;}
+	protected short overrideMana(){return Short.MAX_VALUE;}
 	public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY;}
 	protected static HashSet prots=null;
 

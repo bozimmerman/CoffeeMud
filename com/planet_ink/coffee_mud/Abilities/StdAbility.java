@@ -38,8 +38,6 @@ public class StdAbility implements Ability
 {
 	public String ID() { return "StdAbility"; }
 	
-	protected int[]		mobUsageCost	= null;
-	protected short[] 	expertise		= null;
 	protected boolean 	isAnAutoEffect	= false;
 	protected int 		proficiency		= 0;
 	protected boolean 	savable			= true;
@@ -52,6 +50,10 @@ public class StdAbility implements Ability
 	protected long 		lastCastHelp	= 0;
 	protected boolean 	amDestroyed		= false;
 
+	protected short[][]	usageCache		= null;
+	
+	private static final short[] STATIC_USAGE_NADA=new short[3];
+	
 	public StdAbility()
 	{
 		super();
@@ -63,7 +65,7 @@ public class StdAbility implements Ability
 	{
 		try
 		{
-			expertise=null;
+			usageCache=null;
 			return (CMObject)this.getClass().newInstance();
 		}
 		catch(Exception e)
@@ -162,7 +164,7 @@ public class StdAbility implements Ability
 	public String miscTextFormat(){return CMParms.FORMAT_UNDEFINED;}
 	public long flags(){return 0;}
 	public int usageType(){return USAGE_MANA;}
-	protected int overrideMana(){return -1;} //-1=normal, Integer.MAX_VALUE=all, Integer.MAX_VALUE-100
+	protected short overrideMana(){return -1;} //-1=normal, Short.MAX_VALUE=all, Short.MAX_VALUE-100
 	public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 	public int enchantQuality(){return abstractQuality();}
 	public void initializeClass(){}
@@ -204,19 +206,29 @@ public class StdAbility implements Ability
 	{
 		if((mob!=null)&&(this.isNowAnAutoEffect()||(this.canBeUninvoked())||this.isAutoInvoked()))
 		{
-			if(expertise!=null) return expertise[code];
-			expertise=new short[ExpertiseLibrary.NUM_XFLAGS];
+			final short[][] usageCache=this.usageCache;
+			if((usageCache!=null)&&(usageCache[Ability.CACHEINDEX_EXPERTISE]!=null))
+				return usageCache[Ability.CACHEINDEX_EXPERTISE][code];
+			final short[] xFlagCache=new short[ExpertiseLibrary.NUM_XFLAGS];
 			for(int x=0;x<ExpertiseLibrary.NUM_XFLAGS;x++)
-				expertise[x]=(short)CMLib.expertises().getApplicableExpertiseLevel(ID(),x,mob);
-			return expertise[code];
+				xFlagCache[x]=(short)CMLib.expertises().getApplicableExpertiseLevel(ID(),x,mob);
+			if(usageCache==null)
+			{
+				final short[][] newUsageCache=new short[Ability.CACHEINDEX_TOTAL][];
+				newUsageCache[Ability.CACHEINDEX_EXPERTISE]=xFlagCache;
+			}
+			else
+				usageCache[Ability.CACHEINDEX_EXPERTISE]=xFlagCache;
+			return xFlagCache[code];
 		}
-		expertise=null;
+		if(usageCache!=null)
+    		usageCache=null;
 		return 0;
 	}
 	
-	public synchronized void clearExpertiseCache()
+	public synchronized void clearUsageCache()
 	{
-		expertise=null;
+		usageCache=null;
 	}
 	
 	protected int getX1Level(MOB mob){return expertise(mob,ExpertiseLibrary.XFLAG_X1);}
@@ -660,8 +672,7 @@ public class StdAbility implements Ability
 	public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
 	protected void cloneFix(Ability E)
 	{
-		expertise=null;
-		mobUsageCost=null;
+		this.usageCache=null;
 	}
 	public CMObject copyOf()
 	{
@@ -760,16 +771,16 @@ public class StdAbility implements Ability
 	}
 	public void setInvoker(MOB mob){invoker=mob;}
 
-	protected int[] buildCostArray(MOB mob, int consumed, int minimum)
+	protected short[] buildCostArray(MOB mob, int consumed, short minimum)
 	{
-		int[] usageCosts=new int[3];
+		short[] usageCosts=new short[3];
 		int costDown=0;
 		if(consumed>2)
 		{
 			costDown=getXLOWCOSTLevel(mob);
 			if(costDown>=consumed)
 				costDown=consumed/2;
-			minimum=minimum-costDown;
+			minimum=(short)(minimum-costDown);
 			if(minimum<5) minimum=5;
 		}
 		boolean useMana=CMath.bset(usageType(),Ability.USAGE_MANA);
@@ -784,123 +795,143 @@ public class StdAbility implements Ability
 		else
 		if((!useMana)&&(useMoves)&&(useHits)) divider=2;
 
-		if(useMana){
-			if(consumed==Integer.MAX_VALUE)
+		if(useMana)
+		{
+			if(consumed==Short.MAX_VALUE)
 			{
-				usageCosts[0]=mob.maxState().getMana()-costDown;
+				usageCosts[0]=(short)(mob.maxState().getMana()-costDown);
 				if(mob.baseState().getMana()>mob.maxState().getMana())
-					usageCosts[0]=mob.baseState().getMana()-costDown;
+					usageCosts[0]=(short)(mob.baseState().getMana()-costDown);
 			}
 			else
-			if(consumed>(Integer.MAX_VALUE-100))
-				usageCosts[0]=(int)Math.round(CMath.mul(mob.maxState().getMana(),CMath.div((Integer.MAX_VALUE-consumed),100.0)))-costDown;
+			if(consumed>(Short.MAX_VALUE-100))
+				usageCosts[0]=(short)(Math.round(CMath.mul(mob.maxState().getMana(),CMath.div((Short.MAX_VALUE-consumed),100.0)))-costDown);
 			else
-			{
-				usageCosts[0]=(consumed-costDown)/divider;
-				if(usageCosts[0]<minimum)    usageCosts[0]=minimum;
-			}
+				usageCosts[0]=(short)((consumed-costDown)/divider);
+			if(usageCosts[0]<minimum) usageCosts[0]=minimum;
 		}
 		if(useMoves){
-			if(consumed==Integer.MAX_VALUE)
+			if(consumed==Short.MAX_VALUE)
 			{
-				usageCosts[1]=mob.maxState().getMovement()-costDown;
+				usageCosts[1]=(short)(mob.maxState().getMovement()-costDown);
 				if(mob.baseState().getMovement()>mob.maxState().getMovement())
-					usageCosts[1]=mob.baseState().getMovement()-costDown;
+					usageCosts[1]=(short)(mob.baseState().getMovement()-costDown);
 			}
 			else
-			if(consumed>(Integer.MAX_VALUE-100))
-				usageCosts[1]=(int)Math.round(CMath.mul(mob.maxState().getMovement(),CMath.div((Integer.MAX_VALUE-consumed),100.0)))-costDown;
+			if(consumed>(Short.MAX_VALUE-100))
+				usageCosts[1]=(short)(Math.round(CMath.mul(mob.maxState().getMovement(),CMath.div((Short.MAX_VALUE-consumed),100.0)))-costDown);
 			else
-			{
-				usageCosts[1]=(consumed-costDown)/divider;
-				if(usageCosts[1]<minimum)    usageCosts[1]=minimum;
-			}
+				usageCosts[1]=(short)((consumed-costDown)/divider);
+			if(usageCosts[1]<minimum) usageCosts[1]=minimum;
 		}
 		if(useHits){
-			if(consumed==Integer.MAX_VALUE)
+			if(consumed==Short.MAX_VALUE)
 			{
-				usageCosts[2]=mob.maxState().getHitPoints()-costDown;
+				usageCosts[2]=(short)(mob.maxState().getHitPoints()-costDown);
 				if(mob.baseState().getHitPoints()>mob.maxState().getHitPoints())
-					usageCosts[2]=mob.baseState().getHitPoints()-costDown;
+					usageCosts[2]=(short)(mob.baseState().getHitPoints()-costDown);
 			}
 			else
-			if(consumed>(Integer.MAX_VALUE-100))
-				usageCosts[2]=(int)Math.round(CMath.mul(mob.maxState().getHitPoints(),CMath.div((Integer.MAX_VALUE-consumed),100.0)))-costDown;
+			if(consumed>(Short.MAX_VALUE-100))
+				usageCosts[2]=(short)(Math.round(CMath.mul(mob.maxState().getHitPoints(),CMath.div((Short.MAX_VALUE-consumed),100.0)))-costDown);
 			else
-			{
-				usageCosts[2]=(consumed-costDown)/divider;
-				if(usageCosts[2]<minimum)    usageCosts[2]=minimum;
-			}
+				usageCosts[2]=(short)((consumed-costDown)/divider);
+			if(usageCosts[2]<minimum)    usageCosts[2]=minimum;
 		}
 		return usageCosts;
 	}
 
-	public int[] usageCost(MOB mob, boolean ignoreClassOverride)
+	public short[] usageCost(MOB mob, boolean ignoreClassOverride)
 	{
 		if(mob==null)
 		{
-			int[] usage=new int[3];
-			usage[0]=overrideMana();
-			usage[1]=overrideMana();
-			usage[2]=overrideMana();
-			return usage;
-		}
-		final boolean mobUsage=mob.isMonster();
-		if(mobUsageCost!=null)
-		{
-			if((!mobUsage)
-			||(mob.phyStats().level()!=mobUsageCost[4])
-			||((System.currentTimeMillis()&0xffffffffL)>mobUsageCost[5]))
-				mobUsageCost=null;
-			else
-				return mobUsageCost;
-		}
-		if(usageType()==Ability.USAGE_NADA) return new int[3];
-
-		int diff=0;
-		int lowest=Integer.MAX_VALUE;
-		for(int c=0;c<mob.charStats().numClasses();c++)
-		{
-			CharClass C=mob.charStats().getMyClass(c);
-			int qualifyingLevel=CMLib.ableMapper().getQualifyingLevel(C.ID(),true,ID());
-			int classLevel=mob.charStats().getClassLevel(C.ID());
-			if((qualifyingLevel>=0)&&(classLevel>=qualifyingLevel))
+			final Map<String,short[]> overrideCache=CMLib.ableMapper().getHardOverrideManaCache();
+			if(!overrideCache.containsKey(ID()))
 			{
-				diff+=(classLevel-qualifyingLevel);
-				if(qualifyingLevel<lowest) lowest=qualifyingLevel;
+    			short[] usage=new short[3];
+    			final int overrideMana=overrideMana();
+    			Arrays.fill(usage,overrideMana>Short.MAX_VALUE?Short.MAX_VALUE:(short)overrideMana);
+    			overrideCache.put(ID(), usage);
 			}
+			return overrideCache.get(ID());
 		}
-		if(lowest==Integer.MAX_VALUE)
+		if(usageType()==Ability.USAGE_NADA) return STATIC_USAGE_NADA;
+		
+		
+		short[][] overrideCache=this.usageCache;
+		boolean rebuildCache=false;
+		if(overrideCache==null)
 		{
-			lowest=CMLib.ableMapper().lowestQualifyingLevel(ID());
-			if(lowest<0) lowest=0;
+			overrideCache=new short[Ability.CACHEINDEX_TOTAL][];
+			this.usageCache=overrideCache;
+			rebuildCache=true;
 		}
-
-		Integer[] costOverrides=null;
-		if(!ignoreClassOverride)
-			costOverrides=CMLib.ableMapper().getCostOverrides(mob,ID());
-		int consumed=CMProps.getMaxManaException(ID());
-		if(consumed==Integer.MIN_VALUE) consumed=CMProps.getIntVar(CMProps.SYSTEMI_MANACOST);
-		if(consumed<0) consumed=50+lowest;
-		int minimum=CMProps.getMinManaException(ID());
-		if(minimum==Integer.MIN_VALUE)
-			minimum=CMProps.getIntVar(CMProps.SYSTEMI_MANAMINCOST);
-		if(minimum<0){ minimum=lowest; if(minimum<5) minimum=5;}
-		if(diff>0) consumed=consumed - (consumed /10 * diff);
-		if(consumed<minimum)
-			consumed=minimum;
-		if(overrideMana()>=0) consumed=overrideMana();
-		if((costOverrides!=null)&&(costOverrides[AbilityMapper.AbilityMapping.COST_MANA]!=null))
+		if((overrideCache[Ability.CACHEINDEX_PLAYERINFO]==null)
+		||(mob.phyStats().level()!=overrideCache[Ability.CACHEINDEX_PLAYERINFO][0])
+		||(mob.charStats().getCurrentClassLevel()!=overrideCache[Ability.CACHEINDEX_PLAYERINFO][1]))
 		{
-			consumed=costOverrides[AbilityMapper.AbilityMapping.COST_MANA].intValue();
-			if((consumed<minimum)&&(consumed>=0)) minimum=consumed;
+			rebuildCache=true;
+			overrideCache[Ability.CACHEINDEX_PLAYERINFO]=new short[]{(short)mob.phyStats().level(),(short)mob.charStats().getCurrentClassLevel()};
 		}
-		final int[] usageCost=buildCostArray(mob,consumed,minimum);
-		if(mobUsage)
+		final int myCacheIndex=ignoreClassOverride?Ability.CACHEINDEX_CLASSLESS:Ability.CACHEINDEX_NORMAL;
+		final short[] myCache=overrideCache[myCacheIndex];
+		short consumed;
+		short minimum;
+		if(!rebuildCache && (myCache!=null ))
 		{
-			mobUsageCost=Arrays.copyOf(usageCost, 5);
-			mobUsageCost[4]=mob.phyStats().level();
-			mobUsageCost[5]=(int)(System.currentTimeMillis()&0xffffffffL)+(30*60*1000);
+			if(myCache.length==3)
+    			return myCache;
+			consumed=myCache[0];
+			minimum=myCache[1];
+		}
+		else
+		{
+    		int diff=0;
+    		int lowest=Integer.MAX_VALUE;
+    		for(int c=0;c<mob.charStats().numClasses();c++)
+    		{
+    			CharClass C=mob.charStats().getMyClass(c);
+    			int qualifyingLevel=CMLib.ableMapper().getQualifyingLevel(C.ID(),true,ID());
+    			int classLevel=mob.charStats().getClassLevel(C.ID());
+    			if((qualifyingLevel>=0)&&(classLevel>=qualifyingLevel))
+    			{
+    				diff+=(classLevel-qualifyingLevel);
+    				if(qualifyingLevel<lowest) lowest=qualifyingLevel;
+    			}
+    		}
+    		if(lowest==Integer.MAX_VALUE)
+    		{
+    			lowest=CMLib.ableMapper().lowestQualifyingLevel(ID());
+    			if(lowest<0) lowest=0;
+    		}
+    
+    		Integer[] costOverrides=null;
+    		if(!ignoreClassOverride)
+    			costOverrides=CMLib.ableMapper().getCostOverrides(mob,ID());
+    		consumed=CMProps.getMaxManaException(ID());
+    		if(consumed==Integer.MIN_VALUE) consumed=(short)CMProps.getIntVar(CMProps.SYSTEMI_MANACOST);
+    		if(consumed<0) consumed=(short)(50+lowest);
+    		minimum=(short)CMProps.getMinManaException(ID());
+    		if(minimum==Integer.MIN_VALUE)
+    			minimum=(short)CMProps.getIntVar(CMProps.SYSTEMI_MANAMINCOST);
+    		if(minimum<0){ minimum=(short)lowest; if(minimum<5) minimum=5;}
+    		if(diff>0) consumed=(short)(consumed - (consumed /10 * diff));
+    		if(consumed<minimum)
+    			consumed=minimum;
+    		if(overrideMana()>=0) consumed=overrideMana();
+    		if((costOverrides!=null)&&(costOverrides[AbilityMapper.AbilityMapping.COST_MANA]!=null))
+    		{
+    			consumed=costOverrides[AbilityMapper.AbilityMapping.COST_MANA].shortValue();
+    			if((consumed<minimum)&&(consumed>=0)) minimum=(short)consumed;
+    		}
+		}
+		final short[] usageCost=buildCostArray(mob,consumed,minimum);
+		if(rebuildCache)
+		{
+			if(consumed > Short.MAX_VALUE)
+				overrideCache[myCacheIndex]=new short[]{consumed,minimum};
+			else
+				overrideCache[myCacheIndex]=usageCost;
 		}
 		return usageCost;
 	}
@@ -956,7 +987,7 @@ public class StdAbility implements Ability
 
 	public boolean invoke(MOB mob, Vector commands, Physical target, boolean auto, int asLevel)
 	{
-		expertise=null;
+		//expertiseCache=null; // this was insane!
 		if((mob!=null)&&(getXMAXRANGELevel(mob)>0))
 			invoker=mob;
 		if((!auto)&&(mob!=null))
@@ -986,7 +1017,7 @@ public class StdAbility implements Ability
 				return false;
 			}
 
-			int[] consumed=usageCost(mob,false);
+			short[] consumed=usageCost(mob,false);
 			if(mob.curState().getMana()<consumed[Ability.USAGEINDEX_MANA])
 			{
 				if(mob.maxState().getMana()==consumed[Ability.USAGEINDEX_MANA])

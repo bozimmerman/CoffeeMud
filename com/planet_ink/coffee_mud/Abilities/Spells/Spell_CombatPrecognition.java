@@ -40,7 +40,7 @@ public class Spell_CombatPrecognition extends Spell
 	public String displayText(){return "(Combat Precognition)";}
 	public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
 	protected int canAffectCode(){return CAN_MOBS;}
-	protected int overrideMana(){return 100;}
+	protected short overrideMana(){return 100;}
 	boolean lastTime=false;
 	public int classificationCode(){	return Ability.ACODE_SPELL|Ability.DOMAIN_DIVINATION;}
 

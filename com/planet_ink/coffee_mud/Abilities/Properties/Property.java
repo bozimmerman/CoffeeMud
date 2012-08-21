@@ -249,8 +249,8 @@ public class Property implements Ability
 	{ return true;	}
 	public void makeLongLasting(){}
 	public void makeNonUninvokable(){}
-	private static final int[] cost=new int[3];
-	public int[] usageCost(MOB mob,boolean ignoreCostOverride){return cost;}
-	public void clearExpertiseCache(){}
+	private static final short[] cost=new short[3];
+	public short[] usageCost(MOB mob,boolean ignoreCostOverride){return cost;}
+	public void clearUsageCache(){}
 	public boolean isGeneric(){return false;}
 }

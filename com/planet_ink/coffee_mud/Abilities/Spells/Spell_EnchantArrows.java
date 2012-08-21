@@ -42,7 +42,7 @@ public class Spell_EnchantArrows extends Spell
 	protected int canTargetCode(){return CAN_ITEMS;}
 	protected int canAffectCode(){return CAN_ITEMS;}
 	public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_ENCHANTMENT;}
-	protected int overrideMana(){return Integer.MAX_VALUE;}
+	protected short overrideMana(){return Short.MAX_VALUE;}
 	public long flags(){return Ability.FLAG_NOORDERING;}
 	public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
 

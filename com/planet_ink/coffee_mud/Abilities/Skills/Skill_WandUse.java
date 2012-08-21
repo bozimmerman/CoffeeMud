@@ -42,5 +42,5 @@ public class Skill_WandUse extends StdSkill
 	protected int canTargetCode(){return 0;}
 	public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
 	public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_ARCANELORE;}
-	public int abilityCode(){expertise=null; return (invoker==null)?0:(getXLEVELLevel(invoker));}
+	public int abilityCode(){usageCache=null; return (invoker==null)?0:(getXLEVELLevel(invoker));}
 }

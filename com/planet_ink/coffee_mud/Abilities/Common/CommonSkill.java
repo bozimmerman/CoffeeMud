@@ -247,41 +247,73 @@ public class CommonSkill extends StdAbility
 		return fire;
 	}
 	
-	public int[] usageCost(MOB mob, boolean ignoreClassOverride)
+	public short[] usageCost(MOB mob, boolean ignoreClassOverride)
 	{
-		if(mob==null)
-		{
-			int[] usage=new int[3];
-			usage[0]=overrideMana();
-			usage[1]=overrideMana();
-			usage[2]=overrideMana();
-			return usage;
-		}
-		if(usageType()==Ability.USAGE_NADA) return new int[3];
+		if(mob==null) 
+			return super.usageCost(null, ignoreClassOverride);
+		if(usageType()==Ability.USAGE_NADA) 
+			return super.usageCost(mob, ignoreClassOverride);
 
-		int consumed=25;
-		int diff=CMLib.ableMapper().qualifyingClassLevel(mob,this)+super.getXLOWCOSTLevel(mob)-CMLib.ableMapper().qualifyingLevel(mob,this);
-		Integer[] costOverrides=null;
-		if(!ignoreClassOverride) 
-			costOverrides=CMLib.ableMapper().getCostOverrides(mob,ID());
-		if(diff>0)
-		switch(diff)
+		short[][] overrideCache=this.usageCache;
+		boolean rebuildCache=false;
+		if(overrideCache==null)
 		{
-		case 1: consumed=20; break;
-		case 2: consumed=16; break;
-		case 3: consumed=13; break;
-		case 4: consumed=11; break;
-		case 5: consumed=8; break;
-		default: consumed=5; break;
+			overrideCache=new short[Ability.CACHEINDEX_TOTAL][];
+			this.usageCache=overrideCache;
+			rebuildCache=true;
 		}
-		if(overrideMana()>=0) consumed=overrideMana();
-		int minimum=5;
-		if((costOverrides!=null)&&(costOverrides[AbilityMapper.AbilityMapping.COST_MANA]!=null))
+		if((overrideCache[Ability.CACHEINDEX_PLAYERINFO]==null)
+		||(mob.phyStats().level()!=overrideCache[Ability.CACHEINDEX_PLAYERINFO][0])
+		||(mob.charStats().getCurrentClassLevel()!=overrideCache[Ability.CACHEINDEX_PLAYERINFO][1]))
 		{
-			consumed=costOverrides[AbilityMapper.AbilityMapping.COST_MANA].intValue();
-			if((consumed<minimum)&&(consumed>=0)) minimum=consumed;
+			rebuildCache=true;
+			overrideCache[Ability.CACHEINDEX_PLAYERINFO]=new short[]{(short)mob.phyStats().level(),(short)mob.charStats().getCurrentClassLevel()};
 		}
-		return buildCostArray(mob,consumed,minimum);
+		final int myCacheIndex=ignoreClassOverride?Ability.CACHEINDEX_CLASSLESS:Ability.CACHEINDEX_NORMAL;
+		final short[] myCache=overrideCache[myCacheIndex];
+		short consumed;
+		short minimum;
+		if(!rebuildCache && (myCache!=null ))
+		{
+			if(myCache.length==3)
+    			return myCache;
+			consumed=myCache[0];
+			minimum=myCache[1];
+		}
+		else
+		{
+    		consumed=25;
+    		int diff=CMLib.ableMapper().qualifyingClassLevel(mob,this)+super.getXLOWCOSTLevel(mob)-CMLib.ableMapper().qualifyingLevel(mob,this);
+    		Integer[] costOverrides=null;
+    		if(!ignoreClassOverride) 
+    			costOverrides=CMLib.ableMapper().getCostOverrides(mob,ID());
+    		if(diff>0)
+    		switch(diff)
+    		{
+    		case 1: consumed=20; break;
+    		case 2: consumed=16; break;
+    		case 3: consumed=13; break;
+    		case 4: consumed=11; break;
+    		case 5: consumed=8; break;
+    		default: consumed=5; break;
+    		}
+    		if(overrideMana()>=0) consumed=overrideMana();
+    		minimum=5;
+    		if((costOverrides!=null)&&(costOverrides[AbilityMapper.AbilityMapping.COST_MANA]!=null))
+    		{
+    			consumed=costOverrides[AbilityMapper.AbilityMapping.COST_MANA].shortValue();
+    			if((consumed<minimum)&&(consumed>=0)) minimum=(short)consumed;
+    		}
+		}
+		short[] usageCost=buildCostArray(mob,consumed,minimum);
+		if(rebuildCache)
+		{
+			if(consumed > Short.MAX_VALUE)
+				overrideCache[myCacheIndex]=new short[]{consumed,minimum};
+			else
+				overrideCache[myCacheIndex]=usageCost;
+		}
+		return usageCost;
 	}
 	
 	public int xlevel(MOB mob)
@@ -471,7 +503,7 @@ public class CommonSkill extends StdAbility
 		// if you can't move, you can't do anything!
 		if(!CMLib.flags().aliveAwakeMobileUnbound(mob,false))
 			return false;
-		int[] consumed=usageCost(mob,false);
+		short[] consumed=usageCost(mob,false);
 		if(mob.curState().getMana()<consumed[Ability.USAGEINDEX_MANA])
 		{
 			if(mob.maxState().getMana()==consumed[Ability.USAGEINDEX_MANA])

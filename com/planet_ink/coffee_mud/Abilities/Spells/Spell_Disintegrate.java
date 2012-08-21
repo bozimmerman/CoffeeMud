@@ -40,7 +40,7 @@ public class Spell_Disintegrate extends Spell
 	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	protected int canTargetCode(){return CAN_ITEMS|CAN_MOBS;}
 	public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_EVOCATION;	}
-	public int overrideMana(){return 100;}
+	public short overrideMana(){return 100;}
 
 
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)

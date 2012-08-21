@@ -42,7 +42,7 @@ public class Spell_Spellbinding extends Spell
 {
 	public String ID() { return "Spell_Spellbinding"; }
 	public String name(){return "Spellbinding";}
-	protected int overrideMana(){return 0;}
+	protected short overrideMana(){return 0;}
 	public String displayText()
 	{
 		StringBuffer bindings=new StringBuffer("");

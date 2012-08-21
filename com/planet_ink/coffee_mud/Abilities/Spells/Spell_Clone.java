@@ -41,7 +41,7 @@ public class Spell_Clone extends Spell
 	public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 	protected int canAffectCode(){return CAN_MOBS;}
 	protected int canTargetCode(){return 0;}
-	public int overrideMana(){return 200;}
+	public short overrideMana(){return 200;}
 	public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_TRANSMUTATION;}
 
 	public void executeMsg(final Environmental myHost, final CMMsg msg)

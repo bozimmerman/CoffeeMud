@@ -45,7 +45,7 @@ public class Thief_Shadowstrike extends ThiefSkill
 	public String[] triggerStrings(){return triggerStrings;}
 	public int classificationCode() {   return Ability.ACODE_SKILL|Ability.DOMAIN_STEALTHY; }
 	public int usageType(){return USAGE_MOVEMENT;}
-	protected int overrideMana(){return 100;}
+	protected short overrideMana(){return 100;}
 
 	public int castingQuality(MOB mob, Physical target)
 	{

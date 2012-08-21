@@ -136,13 +136,18 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 		if(forMOB==null)
 		{
 			forMOB=CMClass.getFactoryMOB();
-			forMOB.maxState().setMana(Integer.MAX_VALUE/2);
-			forMOB.maxState().setMovement(Integer.MAX_VALUE/2);
-			forMOB.maxState().setHitPoints(Integer.MAX_VALUE/2);
+			forMOB.maxState().setMana(Short.MAX_VALUE/2);
+			forMOB.maxState().setMovement(Short.MAX_VALUE/2);
+			forMOB.maxState().setHitPoints(Short.MAX_VALUE/2);
 			destroymob=true;
 		}
+		else
+		{
+			final Ability myA=forMOB.fetchAbility(A.ID());
+			if(myA!=null) A=myA;
+		}
 
-		int[] consumption=A.usageCost(forMOB,true);
+		short[] consumption=A.usageCost(forMOB,true);
 		int whichConsumed=consumption[0];
 		switch(which)
 		{
@@ -151,7 +156,7 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 		case Ability.USAGE_HITPOINTS: whichConsumed=consumption[Ability.USAGEINDEX_HITPOINTS]; break;
 		}
 		if(destroymob) forMOB.destroy();
-		if(whichConsumed==Integer.MAX_VALUE/2) return "all";
+		if(whichConsumed==Short.MAX_VALUE/2) return "all";
 		return ""+whichConsumed;
 	}
 

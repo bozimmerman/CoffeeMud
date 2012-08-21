@@ -979,7 +979,7 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 		return false;
 	}
 
-	public List<Behavior> flaggedBehaviors(PhysicalAgent P, long flag)
+	public List<Behavior> flaggedBehaviors(final PhysicalAgent P, final long flag)
 	{
 		Vector<Behavior> V=new Vector<Behavior>();
 		if(P!=null)
@@ -993,53 +993,35 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 	}
 
 
-	public List<Ability> domainAnyAffects(Physical P, int domain)
+	public List<Ability> domainAnyAffects(final Physical P, final int domain)
 	{
-		final Vector<Ability> V=new Vector<Ability>();
+		final Vector<Ability> V=new Vector<Ability>(1);
 		if(P!=null)
 			if(domain>Ability.ALL_ACODES)
 			{
-				for(final Enumeration<Ability> a=P.effects();a.hasMoreElements();)
-				{
-					final Ability A=a.nextElement();
-					if((A!=null)&&((A.classificationCode()&Ability.ALL_DOMAINS)==domain))
-					{ V.addElement(A);}
-				}
+				P.eachEffect(new EachApplicable<Ability>(){
+	                public void apply(Ability A) {
+	    				if((A.classificationCode()&Ability.ALL_DOMAINS)==domain)
+	    					V.addElement(A);
+	                }
+				});
 			}
 			else
-			for(final Enumeration<Ability> a=P.effects();a.hasMoreElements();)
-			{
-				final Ability A=a.nextElement();
-				if((A!=null)&&((A.classificationCode()&Ability.ALL_ACODES)==domain))
-				{ V.addElement(A);}
-			}
+				P.eachEffect(new EachApplicable<Ability>(){
+	                public void apply(Ability A) {
+	    				if((A.classificationCode()&Ability.ALL_ACODES)==domain)
+	    					V.addElement(A);
+	                }
+				});
 		return V;
 	}
-	public List<Ability> domainAffects(Physical P, int domain)
+	public List<Ability> domainAffects(final Physical P, final int domain)
 	{
-		final Vector<Ability> V=new Vector<Ability>();
-		if(P!=null)
-			if(domain>Ability.ALL_ACODES)
-			{
-				for(final Enumeration<Ability> a=P.effects();a.hasMoreElements();)
-				{
-					final Ability A=a.nextElement();
-					if((A!=null)&&((A.classificationCode()&Ability.ALL_DOMAINS)==domain))
-					{ V.addElement(A);}
-				}
-			}
-			else
-			for(final Enumeration<Ability> a=P.effects();a.hasMoreElements();)
-			{
-				final Ability A=a.nextElement();
-				if((A!=null)&&((A.classificationCode()&Ability.ALL_ACODES)==domain))
-				{ V.addElement(A);}
-			}
-		return V;
+		return domainAnyAffects(P,domain);
 	}
-	public List<Ability> domainAbilities(MOB M, int domain)
+	public List<Ability> domainAbilities(final MOB M, final int domain)
 	{
-		Vector<Ability> V=new Vector<Ability>();
+		Vector<Ability> V=new Vector<Ability>(1);
 		if(M!=null)
 			if(domain>Ability.ALL_ACODES)
 			{
@@ -1059,29 +1041,21 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 			}
 		return V;
 	}
-	public List<Ability> flaggedAnyAffects(Physical P, long flag)
+	public List<Ability> flaggedAnyAffects(final Physical P, final long flag)
 	{
-		Vector<Ability> V=new Vector<Ability>();
+		final Vector<Ability> V=new Vector<Ability>(1);
 		if(P!=null)
-			for(int a=0;a<P.numEffects();a++)
-			{
-				Ability A=P.fetchEffect(a);
-				if((A!=null)&&((A.flags()&flag)>0))
-				{ V.addElement(A);}
-			}
+			P.eachEffect(new EachApplicable<Ability>(){
+                public void apply(Ability A) {
+    				if((A.flags()&flag)>0)
+    					V.addElement(A);
+                }
+			});
 		return V;
 	}
-	public List<Ability> flaggedAffects(Physical P, long flag)
+	public List<Ability> flaggedAffects(final Physical P, final long flag)
 	{
-		Vector<Ability> V=new Vector<Ability>();
-		if(P!=null)
-			for(int a=0;a<P.numEffects();a++)
-			{
-				Ability A=P.fetchEffect(a);
-				if((A!=null)&&(CMath.bset(A.flags(),flag)))
-				{ V.addElement(A);}
-			}
-		return V;
+		return flaggedAnyAffects(P,flag);
 	}
 
 	public List<Ability> flaggedAbilities(MOB M, long flag)

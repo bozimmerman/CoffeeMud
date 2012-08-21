@@ -58,10 +58,10 @@ public class Spell_StoreSpell extends Spell
 	}
 	protected int canTargetCode(){return CAN_ITEMS;}
 	public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_ENCHANTMENT;}
-	protected int overrideMana(){return overridemana;}
+	protected short overrideMana(){return overridemana;}
 	public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
 	public String spellName="";
-	protected int overridemana=-1;
+	protected short overridemana=-1;
 
 	public String getSpeakableName(String name)
 	{
@@ -224,7 +224,7 @@ public class Spell_StoreSpell extends Spell
 		int mana=usageCost(mob,true)[0]+wandThis.usageCost(mob,true)[0];
 		if(mana>mob.maxState().getMana())
 			mana=mob.maxState().getMana();
-		overridemana=mana;
+		overridemana=(short)mana;
 
 		// lose all the mana!
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))

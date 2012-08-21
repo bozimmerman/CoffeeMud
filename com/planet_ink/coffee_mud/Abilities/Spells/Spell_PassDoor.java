@@ -39,7 +39,7 @@ public class Spell_PassDoor extends Spell
 	public String name(){return "Pass Door";}
 	public String displayText(){return "(Pass Door)";}
 	protected int canTargetCode(){return 0;}
-	protected int overrideMana(){return Integer.MAX_VALUE;}
+	protected short overrideMana(){return Short.MAX_VALUE;}
 	public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_CONJURATION;}
 	public long flags(){return Ability.FLAG_TRANSPORTING;}
 	public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}

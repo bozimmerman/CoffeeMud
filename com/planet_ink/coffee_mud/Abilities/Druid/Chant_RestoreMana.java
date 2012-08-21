@@ -42,7 +42,7 @@ public class Chant_RestoreMana extends Chant
 	public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_OTHERS;}
 	protected int canAffectCode(){return Ability.CAN_MOBS;}
 	protected int canTargetCode(){return Ability.CAN_MOBS;}
-	protected int overrideMana(){return 50;}
+	protected short overrideMana(){return 50;}
 	public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PRESERVING;}
 
 	public int castingQuality(MOB mob, Physical target)

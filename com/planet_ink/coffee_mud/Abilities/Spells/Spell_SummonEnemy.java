@@ -42,7 +42,7 @@ public class Spell_SummonEnemy extends Spell
 	protected int canTargetCode(){return 0;}
 	public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_CONJURATION;}
 	public long flags(){return Ability.FLAG_TRANSPORTING|Ability.FLAG_SUMMONING;}
-	protected int overrideMana(){return Integer.MAX_VALUE;}
+	protected short overrideMana(){return Short.MAX_VALUE;}
 	public int enchantQuality(){return Ability.QUALITY_INDIFFERENT;}
 	public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
 

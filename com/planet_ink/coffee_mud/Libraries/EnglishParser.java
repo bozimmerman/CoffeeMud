@@ -1551,6 +1551,21 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 		return new FetchFlags(srchStr,occurrance,allFlag);
 	}
 
+	protected String cleanExtraneousDollarMarkers(String srchStr)
+	{
+		if(srchStr.startsWith("$"))
+		{
+			if(srchStr.endsWith("$")&&(srchStr.length()>1))
+				return srchStr.substring(1,srchStr.length()-1);
+			else
+				return srchStr.substring(1);
+		}
+		else
+		if(srchStr.endsWith("$")) 
+			return srchStr.substring(0,srchStr.length()-1);
+		return srchStr;
+	}
+	
 	public Environmental fetchEnvironmental(Iterable<? extends Environmental> list, String srchStr, boolean exactOnly)
 	{
 		FetchFlags flags=fetchFlags(srchStr);
@@ -1563,16 +1578,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 		{
 			if(exactOnly)
 			{
-				if(srchStr.startsWith("$"))
-				{
-					if(srchStr.endsWith("$")&&(srchStr.length()>1))
-						srchStr=srchStr.substring(1,srchStr.length()-1);
-					else
-						srchStr=srchStr.substring(1);
-				}
-				else
-				if(srchStr.endsWith("$")) 
-					srchStr=srchStr.substring(0,srchStr.length()-1);
+				srchStr=cleanExtraneousDollarMarkers(srchStr);
 				for(final Iterator<? extends Environmental> e=list.iterator();e.hasNext();)
 				{
 					final Environmental E=e.next();
@@ -1628,16 +1634,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 		{
 			if(exactOnly)
 			{
-				if(srchStr.startsWith("$"))
-				{
-					if(srchStr.endsWith("$")&&(srchStr.length()>1))
-						srchStr=srchStr.substring(1,srchStr.length()-1);
-					else
-						srchStr=srchStr.substring(1);
-				}
-				else
-				if(srchStr.endsWith("$")) 
-					srchStr=srchStr.substring(0,srchStr.length()-1);
+				srchStr=cleanExtraneousDollarMarkers(srchStr);
 				for(final Iterator<? extends Environmental> e=list.iterator();e.hasNext();)
 				{
 					final Environmental E=e.next();
@@ -1697,16 +1694,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 		Environmental E=null;
 		if(exactOnly)
 		{
-			if(srchStr.startsWith("$"))
-			{
-				if(srchStr.endsWith("$")&&(srchStr.length()>1))
-					srchStr=srchStr.substring(1,srchStr.length()-1);
-				else
-					srchStr=srchStr.substring(1);
-			}
-			else
-			if(srchStr.endsWith("$")) 
-				srchStr=srchStr.substring(0,srchStr.length()-1);
+			srchStr=cleanExtraneousDollarMarkers(srchStr);
 			for(Iterator<String> k =list.keySet().iterator();k.hasNext();)
 			{
 				E=(Environmental)list.get(k.next());
@@ -1758,16 +1746,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 		{
 			try
 			{
-				if(srchStr.startsWith("$"))
-				{
-					if(srchStr.endsWith("$")&&(srchStr.length()>1))
-						srchStr=srchStr.substring(1,srchStr.length()-1);
-					else
-						srchStr=srchStr.substring(1);
-				}
-				else
-				if(srchStr.endsWith("$")) 
-					srchStr=srchStr.substring(0,srchStr.length()-1);
+				srchStr=cleanExtraneousDollarMarkers(srchStr);
 				for(final Iterator<Item> i=list.iterator();i.hasNext();)
 				{
 					final Item I=i.next();
@@ -1839,16 +1818,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 		{
 			if(exactOnly)
 			{
-				if(srchStr.startsWith("$"))
-				{
-					if(srchStr.endsWith("$")&&(srchStr.length()>1))
-						srchStr=srchStr.substring(1,srchStr.length()-1);
-					else
-						srchStr=srchStr.substring(1);
-				}
-				else
-				if(srchStr.endsWith("$")) 
-					srchStr=srchStr.substring(0,srchStr.length()-1);
+				srchStr=cleanExtraneousDollarMarkers(srchStr);
 				for(final Iterator<Item> i=list.iterator();i.hasNext();)
 				{
 					final Item I=i.next();
@@ -1914,16 +1884,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 		{
 			if(exactOnly)
 			{
-				if(srchStr.startsWith("$"))
-				{
-					if(srchStr.endsWith("$")&&(srchStr.length()>1))
-						srchStr=srchStr.substring(1,srchStr.length()-1);
-					else
-						srchStr=srchStr.substring(1);
-				}
-				else
-				if(srchStr.endsWith("$")) 
-					srchStr=srchStr.substring(0,srchStr.length()-1);
+				srchStr=cleanExtraneousDollarMarkers(srchStr);
 				for(final Iterator<? extends Environmental> e=list.iterator();e.hasNext();)
 				{
 					final Environmental E=e.next();

@@ -361,7 +361,7 @@ public class AbilityData extends StdWebMacro
 					String old=httpReq.getRequestParameter("OVERRIDEMANA");
 					if(old==null) old=""+A.getStat("OVERRIDEMANA");
 					int x=CMath.s_int(old);
-					if((x>0) && (x<Integer.MAX_VALUE-101))
+					if((x>0) && (x<Short.MAX_VALUE-101))
 						str.append(old+", ");
 				}
 				if(parms.containsKey("OVERRIDEMANA"))
@@ -372,9 +372,9 @@ public class AbilityData extends StdWebMacro
 					str.append("<OPTION VALUE=\"-1\""+((o==-1)?" SELECTED":"")+">Use Default");
 					str.append("<OPTION VALUE=\"0\""+((o==0)?" SELECTED":"")+">None (free skill)");
 					str.append("<OPTION VALUE=\"\""+(((o>0)&&(o<Integer.MAX_VALUE-101))?" SELECTED":"")+"\">Custom Value");
-					str.append("<OPTION VALUE=\""+Integer.MAX_VALUE+"\""+((o==Integer.MAX_VALUE)?" SELECTED":"")+">All Mana");
-					for(int v=Integer.MAX_VALUE-5;v>=Integer.MAX_VALUE-95;v-=5) {
-						str.append("<OPTION VALUE=\""+v+"\""+(((o>(v-5))&&(o<=v))?" SELECTED":"")+">"+(Integer.MAX_VALUE-v)+"%");
+					str.append("<OPTION VALUE=\""+Short.MAX_VALUE+"\""+((o==Short.MAX_VALUE)?" SELECTED":"")+">All Mana");
+					for(int v=Short.MAX_VALUE-5;v>=Short.MAX_VALUE-95;v-=5) {
+						str.append("<OPTION VALUE=\""+v+"\""+(((o>(v-5))&&(o<=v))?" SELECTED":"")+">"+(Short.MAX_VALUE-v)+"%");
 					}
 					str.append(", ");
 				}

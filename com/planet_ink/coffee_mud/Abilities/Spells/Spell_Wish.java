@@ -43,7 +43,7 @@ public class Spell_Wish extends Spell
 	public int enchantQuality(){return Ability.QUALITY_INDIFFERENT;}
 	public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
 	public long flags(){return Ability.FLAG_NOORDERING;}
-	protected int overrideMana(){return Integer.MAX_VALUE;}
+	protected short overrideMana(){return Short.MAX_VALUE;}
 
 	protected Physical maybeAdd(Physical E, Vector foundAll, Physical foundThang)
 	{

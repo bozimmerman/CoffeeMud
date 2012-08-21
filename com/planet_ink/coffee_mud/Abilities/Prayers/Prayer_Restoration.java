@@ -40,7 +40,7 @@ public class Prayer_Restoration extends Prayer implements MendingSkill
 	public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
 	public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_HEALING;}
 	public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_HEALINGMAGIC;}
-	protected int overrideMana(){return Integer.MAX_VALUE;}
+	protected short overrideMana(){return Short.MAX_VALUE;}
 
 	public boolean supportsMending(Physical item)
 	{ 

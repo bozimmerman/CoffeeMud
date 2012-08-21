@@ -44,7 +44,7 @@ public class Thief_Flay extends ThiefSkill
 	public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_LEGAL;}
 	private static final String[] triggerStrings = {"FLAY"};
 	public String[] triggerStrings(){return triggerStrings;}
-	protected int overrideMana(){return 100;}
+	protected short overrideMana(){return 100;}
 	public int usageType(){return USAGE_MOVEMENT;}
 	
 	public boolean okMessage(Environmental host, CMMsg msg)

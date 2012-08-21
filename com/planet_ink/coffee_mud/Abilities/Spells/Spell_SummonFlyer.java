@@ -43,7 +43,7 @@ public class Spell_SummonFlyer extends Spell
 	protected int canTargetCode(){return 0;}
 	public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_CONJURATION;}
 	public long flags(){return Ability.FLAG_SUMMONING;}
-	protected int overrideMana(){return 50;}
+	protected short overrideMana(){return 50;}
 	public int enchantQuality(){return Ability.QUALITY_INDIFFERENT;}
 
 	public void unInvoke()
