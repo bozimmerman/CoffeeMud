@@ -115,7 +115,7 @@ public class Aggressive extends StdBehavior
 	{
 		if(!canFreelyBehaveNormal(observer)) return false;
 		Room R=observer.location();
-		if((R!=null)&&(R.getArea().getAreaState()<=Area.STATE_ACTIVE))
+		if((R!=null)&&(R.getArea().getAreaState()<=Area.STATE_ACTIVE)&&(R.numInhabitants()>1))
 		{
 			Set<MOB> groupMembers=observer.getGroupMembers(new HashSet<MOB>());
 			for(int i=0;i<R.numInhabitants();i++)
