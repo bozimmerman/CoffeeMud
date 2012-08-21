@@ -40,7 +40,19 @@ public class DefaultCharStats implements CharStats
 {
 	public String ID(){return "DefaultCharStats";}
 	
-	public CMObject newInstance(){try{return (CMObject)getClass().newInstance();}catch(Exception e){return new DefaultCharStats();}}
+	public CMObject newInstance()
+	{
+		try
+		{
+			final DefaultCharStats newStats=getClass().newInstance();
+			if(newStats.myRace==null) newStats.myRace=CMClass.getRace("StdRace");
+			return newStats;
+		}
+		catch(Exception e)
+		{
+			return new DefaultCharStats();
+		}
+	}
 	public void initializeClass(){}
 	// competency characteristics
 	protected short[] stats=new short[CharStats.CODES.instance().total()];
@@ -60,6 +72,7 @@ public class DefaultCharStats implements CharStats
 		setMyRace(CMClass.getRace("StdRace"));
 		setCurrentClass(CMClass.getCharClass("StdCharClass"));
 	}
+	
 	public void setAllBaseValues(int def)
 	{
 		if((def>Short.MAX_VALUE)||(def<Short.MIN_VALUE))

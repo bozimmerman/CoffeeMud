@@ -33,14 +33,14 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 public class TockClient implements Comparable<TockClient>
 {
 	public final Tickable clientObject;
-	public final int tickID;
-	public final int reTickDown;
-	public int tickDown=0;
-	public boolean suspended=false;
-	public long lastStart=0;
-	public long lastStop=0;
-	public long milliTotal=0;
-	public long tickTotal=0;
+	public final int 	  tickID;
+	public final int 	  reTickDown;
+	public int 			  tickDown=0;
+	public boolean 		  suspended=false;
+	public long 		  lastStart=0;
+	public long 		  lastStop=0;
+	public long 		  milliTotal=0;
+	public long 		  tickTotal=0;
 
 	public TockClient(Tickable newClientObject,
 					  int newTickDown,
@@ -90,7 +90,7 @@ public class TockClient implements Comparable<TockClient>
 			}
 			catch(Exception t)
 			{
-				Log.errOut("ServiceEngine",t);
+				Log.errOut("TockClient",t);
 				return true;
 			}
 		}
