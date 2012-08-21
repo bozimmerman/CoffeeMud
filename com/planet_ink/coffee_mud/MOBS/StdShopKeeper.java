@@ -133,7 +133,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 			{
 				invResetTickDown=finalInvResetRate(); // we should now be at a positive number.
 				if(invResetTickDown<=0)
-					invResetTickDown=Integer.MAX_VALUE;
+					invResetTickDown=Ability.TICKS_FOREVER;
 				else
 				{
 					shop.emptyAllShelves();

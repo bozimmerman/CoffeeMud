@@ -2753,7 +2753,7 @@ public class StdMOB implements MOB
 				tickStatus = Tickable.STATUS_DEAD;
 				if (isMonster)
 				{
-					if ((phyStats().rejuv() < Integer.MAX_VALUE) && (basePhyStats().rejuv() > 0))
+					if ((phyStats().rejuv() != PhyStats.NO_REJUV) && (basePhyStats().rejuv() > 0))
 					{
 						phyStats().setRejuv(phyStats().rejuv() - 1);
 						if ((phyStats().rejuv() < 0) || (CMProps.getBoolVar(CMProps.SYSTEMB_MUDSHUTTINGDOWN)))

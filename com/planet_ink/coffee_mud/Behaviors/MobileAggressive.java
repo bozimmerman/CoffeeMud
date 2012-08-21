@@ -41,6 +41,7 @@ public class MobileAggressive extends Mobile
 	protected boolean misbehave=false;
 	protected String attackMsg=null;
 	protected int aggressiveTickDown=0;
+	protected VeryAggressive veryA=new VeryAggressive();
 	
 	public MobileAggressive()
 	{
@@ -75,6 +76,12 @@ public class MobileAggressive extends Mobile
 		return CMLib.masking().maskCheck(getParms(),M,false);
 	}
 
+	public void executeMsg(Environmental affecting, CMMsg msg)
+	{
+		super.executeMsg(affecting, msg);
+		veryA.executeMsg(affecting, msg);
+	}
+	
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		tickStatus=Tickable.STATUS_MISC+0;
@@ -89,9 +96,9 @@ public class MobileAggressive extends Mobile
 		{
 			aggressiveTickDown=tickWait;
 			tickStatus=Tickable.STATUS_MISC+2;
-			Aggressive.tickAggressively(ticking,tickID,mobkill,misbehave,getParms(),attackMsg);
+			veryA.tickAggressively(ticking,tickID,mobkill,misbehave,getParms(),attackMsg);
 			tickStatus=Tickable.STATUS_MISC+3;
-			VeryAggressive.tickVeryAggressively(ticking,tickID,wander,mobkill,misbehave,getParms(),attackMsg);
+			veryA.tickVeryAggressively(ticking,tickID,wander,mobkill,misbehave,getParms(),attackMsg);
 		}
 		tickStatus=Tickable.STATUS_NOT;
 		return true;

@@ -64,13 +64,7 @@ public class VeryAggressive extends Aggressive
 		return CMLib.masking().maskCheck(getParms(),M,false);
 	}
 
-	public static void tickVeryAggressively(Tickable ticking,
-											int tickID,
-											boolean wander,
-											boolean mobKiller,
-											boolean misBehave,
-											String zapStr,
-											String attackMsg)
+	public void tickVeryAggressively(Tickable ticking, int tickID, boolean wander, boolean mobKiller, boolean misBehave, String zapStr, String attackMsg)
 	{
 		if(tickID!=Tickable.TICKID_MOB) return;
 		if(!canFreelyBehaveNormal(ticking)) return;

@@ -44,7 +44,16 @@ public class Aggressive extends StdBehavior
 	protected boolean mobkill=false;
 	protected boolean misbehave=false;
 	protected String attackMessage=null;
+	protected Room lastRoom=null;
+	protected int lastRoomInhabCount=0;
 
+	public void executeMsg(Environmental affecting, CMMsg msg)
+	{
+		super.executeMsg(affecting, msg);
+		if((msg.sourceMinor()==CMMsg.TYP_ENTER)||(msg.sourceMinor()==CMMsg.TYP_LEAVE))
+			lastRoomInhabCount=-1;
+	}
+	
 	public boolean grantsAggressivenessTo(MOB M)
 	{
 		if(M==null) return true;
@@ -71,11 +80,7 @@ public class Aggressive extends StdBehavior
 		tickDown=tickWait;
 	}
 
-	public static boolean startFight(MOB monster,
-									 MOB mob,
-									 boolean fightMOBs,
-									 boolean misBehave,
-									 String attackMsg)
+	public static boolean startFight(MOB monster, MOB mob, boolean fightMOBs, boolean misBehave, String attackMsg)
 	{
 		if((mob!=null)&&(monster!=null)&&(mob!=monster))
 		{
@@ -85,11 +90,11 @@ public class Aggressive extends StdBehavior
 			&&(R.isInhabitant(mob))
 			&&(R.getArea().getAreaState()<=Area.STATE_ACTIVE)
 			&&((misBehave&&(!monster.isInCombat()))||canFreelyBehaveNormal(monster))
-			&&(!CMLib.flags().isATrackingMonster(mob))
-			&&(!CMLib.flags().isATrackingMonster(monster))
 			&&(CMLib.flags().canBeSeenBy(mob,monster))
 			&&(!CMSecurity.isAllowed(mob,R,"ORDER"))
 			&&(!CMSecurity.isAllowed(mob,R,"CMDROOMS"))
+			&&(!CMLib.flags().isATrackingMonster(mob))
+			&&(!CMLib.flags().isATrackingMonster(monster))
 			&&(!monster.getGroupMembers(new HashSet<MOB>()).contains(mob)))
 			{
 				// special backstab sneak attack!
@@ -111,34 +116,34 @@ public class Aggressive extends StdBehavior
 		}
 		return false;
 	}
-	public static boolean pickAFight(MOB observer, String zapStr, boolean mobKiller, boolean misBehave, String attackMsg)
+	public boolean pickAFight(MOB observer, String zapStr, boolean mobKiller, boolean misBehave, String attackMsg)
 	{
 		if(!canFreelyBehaveNormal(observer)) return false;
 		Room R=observer.location();
-		if((R!=null)&&(R.getArea().getAreaState()<=Area.STATE_ACTIVE)&&(R.numInhabitants()>1))
+		if((R!=null)&&(R.getArea().getAreaState()<=Area.STATE_ACTIVE))
 		{
-			Set<MOB> groupMembers=observer.getGroupMembers(new HashSet<MOB>());
-			for(int i=0;i<R.numInhabitants();i++)
+			if((R!=lastRoom)||(lastRoomInhabCount!=R.numInhabitants()))
 			{
-				MOB mob=R.fetchInhabitant(i);
-				if((mob!=null)
-				&&(mob!=observer)
-				&&((!mob.isMonster())||(mobKiller))
-				&&(CMLib.masking().maskCheck(zapStr,mob,false))
-				&&(!groupMembers.contains(mob))
-				&&(startFight(observer,mob,mobKiller,misBehave,attackMsg)))
-					return true;
+				lastRoom=R;
+				lastRoomInhabCount=R.numInhabitants();
+    			Set<MOB> groupMembers=observer.getGroupMembers(new HashSet<MOB>());
+    			for(int i=0;i<R.numInhabitants();i++)
+    			{
+    				MOB mob=R.fetchInhabitant(i);
+    				if((mob!=null)
+    				&&(mob!=observer)
+    				&&((!mob.isMonster())||(mobKiller))
+    				&&(CMLib.masking().maskCheck(zapStr,mob,false))
+    				&&(!groupMembers.contains(mob))
+    				&&(startFight(observer,mob,mobKiller,misBehave,attackMsg)))
+    					return true;
+    			}
 			}
 		}
 		return false;
 	}
 
-	public static void tickAggressively(Tickable ticking,
-										int tickID,
-										boolean mobKiller,
-										boolean misBehave,
-										String zapStr,
-										String attackMsg)
+	public void tickAggressively(Tickable ticking, int tickID, boolean mobKiller, boolean misBehave, String zapStr, String attackMsg)
 	{
 		if(tickID!=Tickable.TICKID_MOB) return;
 		if(ticking==null) return;

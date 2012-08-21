@@ -844,7 +844,7 @@ public class StdRace implements Race
 		{
 			aging[i]=aging[i]/2;
 			if(aging[i]<0)
-				aging[i]=Integer.MAX_VALUE;
+				aging[i]=Race.YEARS_AGE_LIVES_FOREVER;
 		}
 
 		long race1worn=CMath.s_long(otherRace.getStat("WEAR"));
