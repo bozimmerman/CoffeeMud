@@ -39,7 +39,7 @@ public class StoneRoom extends StdRoom
 	{
 		super();
 		recoverPhyStats();
-		basePhyStats.setWeight(4);
+		basePhyStats.setWeight(1);
 		recoverPhyStats();
 	}
 	public int domainType(){return Room.DOMAIN_INDOORS_STONE;}
