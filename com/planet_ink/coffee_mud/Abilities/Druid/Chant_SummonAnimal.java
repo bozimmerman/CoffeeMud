@@ -133,7 +133,7 @@ public class Chant_SummonAnimal extends Chant
 		if(success)
 		{
 			invoker=mob;
-			CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?"":"^S<S-NAME> chant(s) and summon(s) a companion from the Java Plain.^?");
+			CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?"":"^S<S-NAME> chant(s) and summon(s) a companion from the Java Plane.^?");
 			Room room=mob.location();
 			if(room.okMessage(mob,msg))
 			{

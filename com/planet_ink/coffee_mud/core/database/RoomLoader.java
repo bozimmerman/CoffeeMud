@@ -85,7 +85,7 @@ public class RoomLoader
 				A.setDescription(DBConnections.getRes(R,"CMDESC"));
 				A.setMiscText(DBConnections.getRes(R,"CMROTX"));
 				A.setTechLevel((int)DBConnections.getLongRes(R,"CMTECH"));
-				A.setAreaState(Area.STATE_ACTIVE);
+				A.setAreaState(Area.State.ACTIVE);
 				if(((currentRecordPos%updateBreak)==0)&&(reportStatus))
 					CMProps.setUpLowVar(CMProps.SYSTEM_MUDSTATUS,"Booting: Loading Areas ("+currentRecordPos+" of "+recordCount+")");
 				areas.addElement(A);
@@ -1255,7 +1255,7 @@ public class RoomLoader
 		+"?,"
 		+A.getTechLevel()+")",
 		new String[][]{{A.description()+" ",A.text()+" "}});
-		A.setAreaState(Area.STATE_ACTIVE);
+		A.setAreaState(Area.State.ACTIVE);
 		if(Log.debugChannelOn()&&(CMSecurity.isDebugging(CMSecurity.DbgFlag.CMAREA)||CMSecurity.isDebugging(CMSecurity.DbgFlag.DBROOMS)))
 			Log.debugOut("RoomLoader","Done creating area "+A.name());
 	}
@@ -1337,7 +1337,7 @@ public class RoomLoader
 		if(!A.isSavable()) return;
 		if(Log.debugChannelOn()&&(CMSecurity.isDebugging(CMSecurity.DbgFlag.CMAREA)||CMSecurity.isDebugging(CMSecurity.DbgFlag.DBROOMS)))
 			Log.debugOut("RoomLoader","Destroying area "+A.name());
-		A.setAreaState(Area.STATE_STOPPED);
+		A.setAreaState(Area.State.STOPPED);
 		DB.update("DELETE FROM CMAREA WHERE CMAREA='"+A.Name()+"'");
 		if(Log.debugChannelOn()&&(CMSecurity.isDebugging(CMSecurity.DbgFlag.CMAREA)||CMSecurity.isDebugging(CMSecurity.DbgFlag.DBROOMS)))
 			Log.debugOut("RoomLoader","Done destroying area "+A.name()+".");

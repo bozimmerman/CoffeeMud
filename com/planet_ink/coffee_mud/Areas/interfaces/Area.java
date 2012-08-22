@@ -378,7 +378,7 @@ public interface Area extends Economics, PhysicalAgent
 	 * @see com.planet_ink.coffee_mud.Areas.interfaces.Area#STATE_ACTIVE
 	 * @param newState
 	 */
-	public void setAreaState(int newState);
+	public void setAreaState(State newState);
 	/**
 	 * Area Flags, unlike flags, is a PURELY run-time set that changes depending
 	 * upon how the engine is operating on this area or its content.
@@ -386,7 +386,7 @@ public interface Area extends Economics, PhysicalAgent
 	 * @see com.planet_ink.coffee_mud.Areas.interfaces.Area#STATE_ACTIVE
 	 * @return a numeric state for this area
 	 */
-	public int getAreaState();
+	public State getAreaState();
 	/**
 	 * Adds a SubOp to this area.  This must be a valid Player Name.  A Player with
 	 * this designation will have their AREA security flags activated when in this area.
@@ -676,43 +676,35 @@ public interface Area extends Economics, PhysicalAgent
 	/**	State flag meaning this area is a INSTANCE child type area.  @see com.planet_ink.coffee_mud.Areas.interfaces.Area#flags() */
 	public final static int FLAG_INSTANCE_CHILD=4;
 	
-	/**	Index into area IStats for population.  @see com.planet_ink.coffee_mud.Areas.interfaces.Area#getAreaIStats() */
-	public final static int AREASTAT_POPULATION=0;
-	/**	Index into area IStats for min level.  @see com.planet_ink.coffee_mud.Areas.interfaces.Area#getAreaIStats() */
-	public final static int AREASTAT_MINLEVEL=1;
-	/**	Index into area IStats for max level.  @see com.planet_ink.coffee_mud.Areas.interfaces.Area#getAreaIStats() */
-	public final static int AREASTAT_MAXLEVEL=2;
-	/**	Index into area IStats for avg level.  @see com.planet_ink.coffee_mud.Areas.interfaces.Area#getAreaIStats() */
-	public final static int AREASTAT_AVGLEVEL=3;
-	/**	Index into area IStats for median level.  @see com.planet_ink.coffee_mud.Areas.interfaces.Area#getAreaIStats() */
-	public final static int AREASTAT_MEDLEVEL=4;
-	/**	Index into area IStats for avg alignment.  @see com.planet_ink.coffee_mud.Areas.interfaces.Area#getAreaIStats() */
-	public final static int AREASTAT_AVGALIGN=5;
-	/**	Index into area IStats for median alignment.  @see com.planet_ink.coffee_mud.Areas.interfaces.Area#getAreaIStats() */
-	public final static int AREASTAT_MEDALIGN=6;
-	/**	Index into area IStats for total levels.  @see com.planet_ink.coffee_mud.Areas.interfaces.Area#getAreaIStats() */
-	public final static int AREASTAT_TOTLEVEL=7;
-	/**	Index into area IStats for total intelligent levels.  @see com.planet_ink.coffee_mud.Areas.interfaces.Area#getAreaIStats() */
-	public final static int AREASTAT_INTLEVEL=8;
-	/**	Index into area IStats for number numbered rooms.  @see com.planet_ink.coffee_mud.Areas.interfaces.Area#getAreaIStats() */
-	public final static int AREASTAT_VISITABLEROOMS=9;
-	/**	Index into area IStats for number of these constants.  @see com.planet_ink.coffee_mud.Areas.interfaces.Area#getAreaIStats() */
-	public final static int AREASTAT_INDOORROOMS=10;
-	/**	Index into area IStats for number of these constants.  @see com.planet_ink.coffee_mud.Areas.interfaces.Area#getAreaIStats() */
-	public final static int AREASTAT_NUMBER=11;
-	/** Descriptions of the various area IStat constants.. see @see com.planet_ink.coffee_mud.Areas.interfaces.Area#getAreaIStats() */
-	public final static String[] AREASTAT_DESCS={
-		"POPULATION","MIN_LEVEL","MAX_LEVEL","AVG_LEVEL","MED_LEVEL","AVG_ALIGNMENT","MED_ALIGNMENT","TOTAL_LEVELS","TOTAL_INTELLIGENT_LEVELS","VISITABLE_ROOMS","INDOOR_ROOMS"
-	};
+	/** Various area IStat constants.. see @see com.planet_ink.coffee_mud.Areas.interfaces.Area#getAreaIStats() */
+	public static enum Stats
+	{
+		POPULATION, 
+		MIN_LEVEL,
+		MAX_LEVEL,
+		AVG_LEVEL,
+		MED_LEVEL,
+		AVG_ALIGNMENT,
+		MED_ALIGNMENT,
+		TOTAL_LEVELS,
+		TOTAL_INTELLIGENT_LEVELS,
+		VISITABLE_ROOMS,
+		INDOOR_ROOMS
+	}
 	
-	/**	State flag for area meaning Area is active.  @see com.planet_ink.coffee_mud.Areas.interfaces.Area#getAreaFlags() */
-	public final static int STATE_ACTIVE=0;
-	/**	State flag for area meaning Area is passive.  @see com.planet_ink.coffee_mud.Areas.interfaces.Area#getAreaFlags() */
-	public final static int STATE_PASSIVE=1;
-	/**	State flag for area meaning Area is frozen.  @see com.planet_ink.coffee_mud.Areas.interfaces.Area#getAreaFlags() */
-	public final static int STATE_FROZEN=2;
-	/**	State flag for area meaning Area is dead.  @see com.planet_ink.coffee_mud.Areas.interfaces.Area#getAreaFlags() */
-	public final static int STATE_STOPPED=3;
+	/**	
+	 * State flag for areas.    
+	 * @see com.planet_ink.coffee_mud.Areas.interfaces.Area#getAreaFlags() 
+	 * 
+	 */
+	public static enum State
+	{
+		ACTIVE, /** Area is mobile, threaded, and running */
+		PASSIVE, /** Area is threaded, and running, but not mobile */
+		FROZEN, /** Area is thread, but not running or mobile */
+		STOPPED/** Area is neither threaded, running, nor mobile */
+		
+	}
 	/**	Amount of time of player absence before an area automatically goes from Active to passive */
 	public final static long TIME_PASSIVE_LAPSE=60*1000*30; // 30 mins
 	

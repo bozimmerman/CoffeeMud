@@ -108,6 +108,40 @@ public class CMStrings
 	{ 
 		return (("aeiou").indexOf(Character.toLowerCase(c))>=0);
 	}
+	
+	public final static int indexOfLastVowel(final String s)
+	{ 
+		if(s==null) return -1;
+		for(int i=s.length()-1;i>=0;i--)
+		{
+			if(isVowel(s.charAt(i)))
+				return i;
+		}
+		return -1;
+	}
+	
+	public final static String scrunchWord(String s, final int len)
+	{
+		if(s.length()<=len) return s;
+		s=s.trim();
+		int x=s.lastIndexOf(' ');
+		while((s.length()>len)&&(x>0))
+		{
+			s=s.substring(0,x)+s.substring(x+1);
+			x=s.lastIndexOf(' ');
+		}
+		x=indexOfLastVowel(s);
+		while((s.length()>len)&&(x>0))
+		{
+			s=s.substring(0,x)+s.substring(x+1);
+			x=indexOfLastVowel(s);
+		}
+		if(s.length()>len)
+			return s.substring(0,len);
+		return s;
+	}
+	
+
 
 	public final static boolean containsWordIgnoreCase(final String thisStr, final String word)
 	{

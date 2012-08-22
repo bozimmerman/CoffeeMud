@@ -446,7 +446,7 @@ public class Where extends StdCommand
 				&&(CMLib.flags().canBeLocated(A))
 				&&(A.getAreaIStats()!=null))
 				{
-					int median=A.getAreaIStats()[Area.AREASTAT_MEDLEVEL];
+					int median=A.getAreaIStats()[Area.Stats.MED_LEVEL.ordinal()];
 					int medianDiff=0;
 					int diffLimit=6;
 					if((median<(moblevel+diffLimit))
@@ -459,9 +459,9 @@ public class Where extends StdCommand
 					}
 					whereAdd(levelsVec,A,medianDiff);
 
-					whereAdd(mobsVec,A,A.getAreaIStats()[Area.AREASTAT_POPULATION]);
+					whereAdd(mobsVec,A,A.getAreaIStats()[Area.Stats.POPULATION.ordinal()]);
 
-					int align=A.getAreaIStats()[Area.AREASTAT_MEDALIGN];
+					int align=A.getAreaIStats()[Area.Stats.MED_ALIGNMENT.ordinal()];
 					int alignDiff=((int)Math.abs((double)(alignment-align)));
 					whereAdd(alignVec,A,alignDiff);
 				}
@@ -499,13 +499,13 @@ public class Where extends StdCommand
 			for(int i=scores.size()-1;((i>=0)&&(i>=(scores.size()-15)));i--)
 			{
 				Area A=(Area)scores.elementAt(i,1);
-				int lvl=A.getAreaIStats()[Area.AREASTAT_MEDLEVEL];
-				int align=A.getAreaIStats()[Area.AREASTAT_MEDALIGN];
+				int lvl=A.getAreaIStats()[Area.Stats.MED_LEVEL.ordinal()];
+				int align=A.getAreaIStats()[Area.Stats.MED_ALIGNMENT.ordinal()];
 				
 				msg.append(CMStrings.padRight(A.name(),35))
 				   .append(CMStrings.padRight(Integer.toString(lvl),6))
 				   .append(CMStrings.padRight(CMLib.factions().getRange(CMLib.factions().AlignID(), align).name(),20))
-				   .append(CMStrings.padRight(Integer.toString(A.getAreaIStats()[Area.AREASTAT_POPULATION]),10))
+				   .append(CMStrings.padRight(Integer.toString(A.getAreaIStats()[Area.Stats.POPULATION.ordinal()]),10))
 				   .append("\n\r");
 			}
 			msg.append("\n\r\n\r^HEnter 'HELP (AREA NAME) for more information.^?");

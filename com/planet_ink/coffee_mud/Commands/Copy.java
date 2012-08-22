@@ -139,11 +139,7 @@ public class Copy extends StdCommand
 		if(E==null) E=mob.location().fetchFromRoomFavorItems(srchContainer,name);
 		if(E==null) E=mob.location().fetchFromRoomFavorMOBs(srchContainer,name);
 		if(E==null)	E=mob.findItem(name);
-		if(E==null)
-		{
-			
-		}
-		if(E==null)
+		if((E==null)&&(srchContainer==null))
 		{
 			try
 			{
@@ -159,6 +155,10 @@ public class Copy extends StdCommand
 				if(E==null) 
 					E=CMLib.map().findFirstShopStock(CMLib.map().rooms(), mob, name, 50);
 			}catch(NoSuchElementException e){}
+		}
+		if((E==null)&&(srchContainer==null))
+		{
+			E=CMLib.map().getArea(name);
 		}
 		if(E==null)
 		{
@@ -188,9 +188,9 @@ public class Copy extends StdCommand
 				if(i==0)
 				{
 					if(number>1)
-						room.show(newMOB,null,CMMsg.MSG_OK_ACTION,"Suddenly, "+number+" "+newMOB.name()+"s instantiate from the Java plain.");
+						room.show(newMOB,null,CMMsg.MSG_OK_ACTION,"Suddenly, "+number+" "+newMOB.name()+"s instantiate from the Java Plane.");
 					else
-						room.show(newMOB,null,CMMsg.MSG_OK_ACTION,"Suddenly, "+newMOB.name()+" instantiates from the Java plain.");
+						room.show(newMOB,null,CMMsg.MSG_OK_ACTION,"Suddenly, "+newMOB.name()+" instantiates from the Java Plane.");
 					Log.sysOut("SysopUtils",mob.Name()+" copied "+number+" mob "+newMOB.Name()+".");
 				}
 			}
@@ -315,6 +315,58 @@ public class Copy extends StdCommand
 					}
 					room.showHappens(CMMsg.MSG_OK_ACTION,"Suddenly, "+E.name()+" falls "+Directions.getInDirectionName(dirCode)+".");
 				}
+			}
+			else
+			if(E instanceof Area)
+			{
+				if((!CMSecurity.isAllowed(mob,mob.location(),"CMDAREAS"))
+				||(!CMSecurity.isAllowed(mob,mob.location(),"COPYROOMS")))
+				{
+					mob.tell("You are not allowed to copy "+E.name());
+					return false;
+				}
+				Area newArea=(Area)E.copyOf();
+				while(CMLib.map().getArea(newArea.Name())!=null)
+    				newArea.setName("Copy of "+newArea.Name());
+				newArea.setSavable(true);
+				if(!CMSecurity.isASysOp(mob))
+					newArea.addSubOp(mob.Name());
+				CMLib.map().addArea(newArea);
+				CMLib.database().DBCreateArea(newArea);
+				Map<Room,Room> translationMap=new HashMap<Room,Room>();
+				for(Enumeration<Room> r=((Area)E).getCompleteMap();r.hasMoreElements();)
+				{
+					Room oldR=CMLib.map().getRoom(r.nextElement());
+					if(oldR==null) continue;
+					CMLib.map().resetRoom(oldR);
+					Room R=(Room)oldR.copyOf();
+					R.setArea(newArea); // adds the room to the area
+					int hashDex=R.roomID().indexOf('#');
+					if(hashDex>0)
+						R.setRoomID(newArea.Name()+R.roomID().substring(hashDex));
+					else
+						R.setRoomID(newArea.Name()+R.roomID());
+					translationMap.put(oldR, R);
+				}
+				for(Enumeration<Room> ir=newArea.getCompleteMap();ir.hasMoreElements();)
+				{
+					Room R=CMLib.map().getRoom(ir.nextElement());
+					if(R==null) continue;
+					for(int d=0;d<Directions.NUM_DIRECTIONS();d++)
+					{
+						Room dirR=R.rawDoors()[d];
+						if(translationMap.containsKey(dirR))
+							R.rawDoors()[d]=translationMap.get(dirR);
+					}
+					R.setSavable(true);
+					CMLib.database().DBCreateRoom(R);
+					CMLib.database().DBUpdateMOBs(R);
+					CMLib.database().DBUpdateItems(R);
+					CMLib.database().DBUpdateExits(R);
+					R.startItemRejuv();
+				}
+				room.show(mob,null,CMMsg.MSG_OK_ACTION,"Suddenly, a massive new landscape instantiates from the Java Plane.");
+				Log.sysOut("SysopUtils",mob.Name()+" copied area "+E.Name());
 			}
 			else
 			{

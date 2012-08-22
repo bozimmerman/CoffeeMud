@@ -4,6 +4,7 @@ import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.Area.Stats;
 import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Commands.interfaces.*;
@@ -75,8 +76,8 @@ public class Areas extends StdCommand
 			{
 				TreeSet<Area> levelSorted=new TreeSet<Area>(new Comparator<Area>(){
 					public int compare(Area arg0, Area arg1) {
-						int lvl1=arg0.getAreaIStats()[Area.AREASTAT_MEDLEVEL];
-						int lvl2=arg1.getAreaIStats()[Area.AREASTAT_MEDLEVEL];
+						int lvl1=arg0.getAreaIStats()[Stats.MED_LEVEL.ordinal()];
+						int lvl2=arg1.getAreaIStats()[Stats.MED_LEVEL.ordinal()];
 						if(lvl1==lvl2) return 1;
 						return Integer.valueOf(lvl1).compareTo(Integer.valueOf(lvl2));
 					}
@@ -84,7 +85,7 @@ public class Areas extends StdCommand
 				for(;a.hasMoreElements();) levelSorted.add(a.nextElement());
 				a=new IteratorEnumeration<Area>(levelSorted.iterator());
 				append = " (sorted by level)";
-				addStat=Area.AREASTAT_MEDLEVEL;
+				addStat=Stats.MED_LEVEL.ordinal();
 				commands.remove(i);
 				i--;
 			}
@@ -92,8 +93,8 @@ public class Areas extends StdCommand
 			if(s.toUpperCase().startsWith("SORT="))
 			{
 				int statVal=-1;
-				for(int x=0;x<Area.AREASTAT_DESCS.length;x++)
-					if(s.toUpperCase().endsWith("="+Area.AREASTAT_DESCS[x]))
+				for(int x=0;x<Area.Stats.values().length;x++)
+					if(s.toUpperCase().endsWith("="+Area.Stats.values()[x].name()))
 						statVal=x;
 				if(statVal<0)
 				{
@@ -111,7 +112,7 @@ public class Areas extends StdCommand
 				});
 				for(;a.hasMoreElements();) levelSorted.add(a.nextElement());
 				a=new IteratorEnumeration<Area>(levelSorted.iterator());
-				append = " (sorted by "+Area.AREASTAT_DESCS[statVal].toLowerCase()+")";
+				append = " (sorted by "+Area.Stats.values()[statVal].name().toLowerCase()+")";
 				addStat=sortStat;
 				commands.remove(i);
 				i--;
@@ -137,10 +138,10 @@ public class Areas extends StdCommand
 				if(sysop)
 				switch(A.getAreaState())
 				{
-				case Area.STATE_ACTIVE: name="^w"+name+"^?";break;
-				case Area.STATE_PASSIVE: name="^W"+name+"^?"; break;
-				case Area.STATE_FROZEN: name="^b"+name+"^?"; break;
-				case Area.STATE_STOPPED: name="^r"+name+"^?"; break;
+				case ACTIVE: name="^w"+name+"^?";break;
+				case PASSIVE: name="^W"+name+"^?"; break;
+				case FROZEN: name="^b"+name+"^?"; break;
+				case STOPPED: name="^r"+name+"^?"; break;
 				}
 				if(expression!=null)
 				{
@@ -149,7 +150,7 @@ public class Areas extends StdCommand
 					{
 						Hashtable H=new Hashtable();
 						for(int i=0;i<stats.length;i++)
-							H.put(Area.AREASTAT_DESCS[i],Integer.toString(stats[i]));
+							H.put(Area.Stats.values()[i].name(),Integer.toString(stats[i]));
 						try {
 							if(!CMStrings.parseStringExpression(expression, H,false))
 								continue;

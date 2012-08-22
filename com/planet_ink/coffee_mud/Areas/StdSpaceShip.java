@@ -56,7 +56,7 @@ public class StdSpaceShip implements Area, SpaceObject, SpaceShip
 	protected String		description 	="";
 	protected String		miscText		="";
 	protected SVector<Room> myRooms 		=new SVector();
-	protected int   		flag			=Area.STATE_ACTIVE;
+	protected State   		flag			=State.ACTIVE;
 	protected long  		tickStatus  	=Tickable.STATUS_NOT;
 	protected String		author  		=""; // will be used for owner, I guess.
 	protected PhyStats  	phyStats		=(PhyStats)CMClass.getCommon("DefaultPhyStats");
@@ -192,13 +192,13 @@ public class StdSpaceShip implements Area, SpaceObject, SpaceShip
 	public String getArchivePath(){return "";}
 	public void setArchivePath(String pathFile){}
 	
-	public void setAreaState(int newState)
+	public void setAreaState(State newState)
 	{
-		if((newState==0)&&(!CMLib.threads().isTicking(this,Tickable.TICKID_AREA)))
+		if((newState==State.ACTIVE)&&(!CMLib.threads().isTicking(this,Tickable.TICKID_AREA)))
 			CMLib.threads().startTickDown(this,Tickable.TICKID_AREA,1);
 		flag=newState;
 	}
-	public int getAreaState(){return flag;}
+	public State getAreaState(){return flag;}
 	public boolean amISubOp(String username){return false;}
 	public String getSubOpList(){return "";}
 	public void setSubOpList(String list){}
@@ -311,7 +311,9 @@ public class StdSpaceShip implements Area, SpaceObject, SpaceShip
 				return false;
 		}
 		
-		if((flag>=Area.STATE_FROZEN)||(!CMLib.flags().allowsMovement(this)))
+		if((flag==State.FROZEN)
+		||(flag==State.STOPPED)
+		||(!CMLib.flags().allowsMovement(this)))
 		{
 			if((msg.sourceMinor()==CMMsg.TYP_ENTER)
 			||(msg.sourceMinor()==CMMsg.TYP_LEAVE)
@@ -428,7 +430,7 @@ public class StdSpaceShip implements Area, SpaceObject, SpaceShip
 	public long getTickStatus(){ return tickStatus;}
 	public boolean tick(final Tickable ticking, final int tickID)
 	{
-		if(flag>=Area.STATE_STOPPED) return false;
+		if(flag==State.STOPPED) return false;
 		tickStatus=Tickable.STATUS_START;
 		if(tickID==Tickable.TICKID_AREA)
 		{
@@ -721,7 +723,7 @@ public class StdSpaceShip implements Area, SpaceObject, SpaceShip
 	public int maxRange(){return Integer.MAX_VALUE;}
 	public int minRange(){return Integer.MIN_VALUE;}
 
-	public int[] getAreaIStats(){return new int[Area.AREASTAT_NUMBER];}
+	public int[] getAreaIStats(){return new int[Area.Stats.values().length];}
 	public StringBuffer getAreaStats(){    return new StringBuffer("This is a space ship");}
 
 	public Behavior fetchBehavior(int index)

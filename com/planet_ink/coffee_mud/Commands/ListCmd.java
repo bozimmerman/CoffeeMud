@@ -1882,6 +1882,7 @@ public class ListCmd extends StdCommand
 		/*63*/{"DISABLEFLAG","LISTADMIN"},
 		/*64*/{"ALLQUALIFYS","CMDABILITIES","LISTADMIN"},
 		/*65*/{"NEWS","LISTADMIN","JOURNALS","NEWS"},
+		/*66*/{"AREAS","LISTADMIN","CMDAREAS","CMDROOMS"},
 	};
 
 	public boolean pause(Session sess) 
@@ -1930,6 +1931,183 @@ public class ListCmd extends StdCommand
 		{
 			mob.tell("SQL Query Error: "+e.getMessage());
 		}
+	}
+
+	private enum ListAreaStats 
+	{ 
+		NAME("Name",30), AUTHOR("Auth",15), DESCRIPTION("Desc",50), ROOMS("Rooms",6), STATE("State",10), HIDDEN("Hiddn",6);
+		public String shortName;
+		public Integer len;
+		private ListAreaStats(String shortName, int len)
+		{
+			this.shortName=shortName;
+			this.len=Integer.valueOf(len);
+		}
+		public Object getFromArea(Area A)
+		{
+    		switch(this)
+    		{
+    		case NAME: return A.Name();
+    		case HIDDEN: return ""+CMLib.flags().isHidden(A);
+    		case ROOMS: return Integer.valueOf(A.getProperRoomnumbers().roomCountAllAreas());
+    		case STATE: return A.getAreaState().name();
+    		case AUTHOR: return A.getAuthorID();
+    		case DESCRIPTION: return A.description().replace('\n', ' ').replace('\r', ' ');
+    		default: return "";
+    		}
+		}
+	} 
+
+	public Object getAreaStatFromSomewhere(Area A, String stat)
+	{
+		stat=stat.toUpperCase().trim();
+		ListAreaStats ls=(ListAreaStats)CMath.s_valueOf(ListAreaStats.class, stat);
+		Area.Stats as=(Area.Stats)CMath.s_valueOf(Area.Stats.class, stat);
+		if(ls != null)
+			return ls.getFromArea(A);
+		else
+		if(as!=null)
+			return Integer.valueOf(A.getAreaIStats()[as.ordinal()]);
+		else
+			return null;
+	}
+	
+	public void listAreas(MOB mob, Vector commands)
+	{
+		if(mob==null) return;
+		commands.remove(0);
+		List<String> sortBys=null;
+		List<String> colNames=null;
+		if(commands.size()>0)
+		{
+			List<String> addTos=null;
+			while(commands.size()>0)
+			{
+				if(commands.get(0).toString().equalsIgnoreCase("sortby"))
+				{
+					commands.remove(0);
+					sortBys=new Vector<String>();
+					addTos=sortBys;
+				}
+				else
+				if(commands.get(0).toString().equalsIgnoreCase("cols")||commands.get(0).toString().equalsIgnoreCase("columns"))
+				{
+					commands.remove(0);
+					colNames=new Vector<String>();
+					addTos=sortBys;
+				}
+				else
+				if(addTos!=null)
+				{
+					String stat=commands.get(0).toString().toUpperCase().trim();
+					ListAreaStats ls=(ListAreaStats)CMath.s_valueOf(ListAreaStats.class, stat);
+					Area.Stats as=(Area.Stats)CMath.s_valueOf(Area.Stats.class, stat);
+					if((ls==null)&&(as==null))
+					{
+						mob.tell("'"+stat+"' is not recognized.  Try one of these: "+CMParms.toStringList(ListAreaStats.values())+", "+CMParms.toStringList(Area.Stats.values()));
+						return;
+					}
+					addTos.add(stat);
+					commands.remove(0);
+				}
+				else
+				{
+					mob.tell("'"+commands.get(0).toString()+"' is not recognized.  Try 'columns' or 'sortby' followed by one or more of these: "+CMParms.toStringList(ListAreaStats.values())+", "+CMParms.toStringList(Area.Stats.values()));
+					return;
+				}
+			}
+		}
+		Vector<Triad<String,String,Integer>> columns=new Vector<Triad<String,String,Integer>>();
+		if((colNames!=null)&&(colNames.size()>0))
+		{
+			for(String newCol : colNames)
+			{
+				ListAreaStats ls=(ListAreaStats)CMath.s_valueOf(ListAreaStats.class, newCol);
+				Area.Stats as=(Area.Stats)CMath.s_valueOf(Area.Stats.class, newCol);
+				if(ls!=null)
+		    		columns.add(new Triad<String,String,Integer>(ls.shortName,ls.name(),ls.len));
+				else
+				if(as!=null)
+		    		columns.add(new Triad<String,String,Integer>(CMStrings.scrunchWord(CMStrings.capitalizeAndLower(newCol), 6),as.name(),Integer.valueOf(6)));
+			}
+		}
+		else
+		{
+    		//AREASTAT_DESCS
+    		columns.add(new Triad<String,String,Integer>(ListAreaStats.NAME.shortName,ListAreaStats.NAME.name(),ListAreaStats.NAME.len));
+    		columns.add(new Triad<String,String,Integer>(ListAreaStats.HIDDEN.shortName,ListAreaStats.HIDDEN.name(),ListAreaStats.HIDDEN.len));
+    		columns.add(new Triad<String,String,Integer>(ListAreaStats.ROOMS.shortName,ListAreaStats.ROOMS.name(),ListAreaStats.ROOMS.len));
+    		columns.add(new Triad<String,String,Integer>(ListAreaStats.STATE.shortName,ListAreaStats.STATE.name(),ListAreaStats.STATE.len));
+    		columns.add(new Triad<String,String,Integer>("Pop",Area.Stats.POPULATION.name(),Integer.valueOf(6)));
+    		columns.add(new Triad<String,String,Integer>("MedLv",Area.Stats.MED_LEVEL.name(),Integer.valueOf(6)));
+		}
+		
+		Session s=mob.session();
+		double wrap=(s==null)?78:s.getWrap();
+		double totalCols=0;
+		for(int i=0;i<columns.size();i++)
+			totalCols+=columns.get(i).third.intValue();
+		for(int i=0;i<columns.size();i++)
+		{
+			double colVal=columns.get(i).third.intValue();
+			double pct=CMath.div(colVal,totalCols );
+			int newSize=(int)Math.round(Math.floor(CMath.mul(pct, wrap)));
+			columns.get(i).third=Integer.valueOf(newSize);
+		}
+		
+		StringBuilder str=new StringBuilder("");
+		for(Triad<String,String,Integer> head : columns)
+			str.append(CMStrings.padRight(head.first, head.third.intValue()));
+		str.append("\n\r");
+		Triad<String,String,Integer> lastColomn=columns.get(columns.size()-1);
+		Enumeration<Area> a;
+		if(sortBys!=null)
+		{
+			TreeMap<Comparable,Area> sorted=new TreeMap<Comparable,Area>();
+			for(Enumeration<Area> as=CMLib.map().areas();as.hasMoreElements();)
+			{
+				Area A=as.nextElement();
+				sorted.put(A.name(), A);
+			}
+			for(int si=sortBys.size()-1; si>=0;si--)
+			{
+				TreeMap<Comparable,Area> newsorted=new TreeMap<Comparable,Area>();
+    			for(Iterator<Area> a2=sorted.values().iterator();a2.hasNext();)
+    			{
+    				Area A=a2.next();
+    				Object val=getAreaStatFromSomewhere(A,sortBys.get(si));
+    				if(val==null)
+    				{
+    					newsorted=sorted;
+    					break;
+    				}
+    				newsorted.put((Comparable)val, A);
+    			}
+    			sorted=newsorted;
+			}
+			if(sorted.size()>0)
+				a=new IteratorEnumeration<Area>(sorted.values().iterator());
+			else
+				a=CMLib.map().sortedAreas();
+		}
+		else
+			a=CMLib.map().sortedAreas();
+		for(;a.hasMoreElements();)
+		{
+			Area A=a.nextElement();
+			for(Triad<String,String,Integer> head : columns)
+			{
+				Object val =getAreaStatFromSomewhere(A,head.second);
+				if(val==null) val="?";
+				if(head==lastColomn)
+					str.append(CMStrings.scrunchWord(val.toString(), head.third.intValue()-1));
+				else
+					str.append(CMStrings.padRight(CMStrings.scrunchWord(val.toString(), head.third.intValue()-1), head.third.intValue()));
+			}
+			str.append("\n\r");
+		}
+		if(s!=null)
+    		s.colorOnlyPrint(str.toString(), true);
 	}
 	
 	public void archonlist(MOB mob, Vector commands)
@@ -2058,6 +2236,7 @@ public class ListCmd extends StdCommand
 		case 63: s.println("\n\r^xDisable Settings: ^?^.^N\n\r"+CMParms.toStringList(new XVector<CMSecurity.DisFlag>(CMSecurity.getDisablesEnum()))+"\n\r"); break;
 		case 64: s.wraplessPrintln(listAllQualifies(mob.session(),commands).toString()); break;
 		case 65: listNews(mob,commands); break;
+		case 66: listAreas(mob, commands); break;
 		case 999: listSql(mob,rest); break;
 		default:
 			s.println("List broke?!");

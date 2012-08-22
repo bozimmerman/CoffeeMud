@@ -67,16 +67,16 @@ public class Chant_DruidicConnection extends Chant
 				lastTime=System.currentTimeMillis();
 				Vector V=Druid_MyPlants.myAreaPlantRooms(invoker(),(Area)affected);
 				int pct=0;
-				if(((Area)affected).getAreaIStats()[Area.AREASTAT_VISITABLEROOMS]>10)
-					pct=(int)Math.round(100.0*CMath.div(V.size(),((Area)affected).getAreaIStats()[Area.AREASTAT_VISITABLEROOMS]));
+				if(((Area)affected).getAreaIStats()[Area.Stats.VISITABLE_ROOMS.ordinal()]>10)
+					pct=(int)Math.round(100.0*CMath.div(V.size(),((Area)affected).getAreaIStats()[Area.Stats.VISITABLE_ROOMS.ordinal()]));
 				if(pct<50)
 				{
 					unInvoke();
 					return false;
 				}
 				invoker.tell("Your prolonged connection to this place fills you with harmony!");
-				int xp=(int)Math.round(5.0*CMath.mul(CMath.div(V.size(),((Area)affected).getAreaIStats()[Area.AREASTAT_VISITABLEROOMS])
-											,((Area)affected).getAreaIStats()[Area.AREASTAT_AVGLEVEL]));
+				int xp=(int)Math.round(5.0*CMath.mul(CMath.div(V.size(),((Area)affected).getAreaIStats()[Area.Stats.VISITABLE_ROOMS.ordinal()])
+											,((Area)affected).getAreaIStats()[Area.Stats.AVG_LEVEL.ordinal()]));
 				CMLib.leveler().postExperience(invoker(),null,null,xp,false);
 			}
 		}
@@ -141,8 +141,8 @@ public class Chant_DruidicConnection extends Chant
 		}
 		Vector V=Druid_MyPlants.myAreaPlantRooms(mob,target);
 		int pct=0;
-		if(target.getAreaIStats()[Area.AREASTAT_VISITABLEROOMS]>10)
-			pct=(int)Math.round(100.0*CMath.div(V.size(),target.getAreaIStats()[Area.AREASTAT_VISITABLEROOMS]));
+		if(target.getAreaIStats()[Area.Stats.VISITABLE_ROOMS.ordinal()]>10)
+			pct=(int)Math.round(100.0*CMath.div(V.size(),target.getAreaIStats()[Area.Stats.VISITABLE_ROOMS.ordinal()]));
 		if(pct<50)
 		{
 			if(!quietly)

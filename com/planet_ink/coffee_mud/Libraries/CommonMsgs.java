@@ -468,7 +468,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 			recallingmob.tell(msg.source(),null,msg.tool(),msg.targetMessage());
 			recallingmob.location().delInhabitant(recallingmob);
 			((Room)msg.target()).addInhabitant(recallingmob);
-			((Room)msg.target()).showOthers(recallingmob,null,CMMsg.MSG_ENTER,"<S-NAME> appears out of the Java Plain.");
+			((Room)msg.target()).showOthers(recallingmob,null,CMMsg.MSG_ENTER,"<S-NAME> appears out of the Java Plane.");
 
 			recallingmob.setLocation(((Room)msg.target()));
 			if((recallingmob.riding()!=null)&&(recallingmob.location()!=CMLib.map().roomLocation(recallingmob.riding())))

@@ -156,7 +156,7 @@ public class StdThinInstance extends StdThinArea
 				for(int i=instanceChildren.size()-1;i>=0;i--) 
 				{
 					Area childA=instanceChildren.elementAt(i).A;
-					if(childA.getAreaState() > Area.STATE_ACTIVE)
+					if(childA.getAreaState() != Area.State.ACTIVE)
 					{
 						List<WeakReference<MOB>> V=instanceChildren.elementAt(i).mobs;
 						boolean anyInside=false;
@@ -205,7 +205,7 @@ public class StdThinInstance extends StdThinArea
 			return false;
 		if(CMath.bset(flags(),Area.FLAG_INSTANCE_CHILD))
 			return true;
-		setAreaState(Area.STATE_PASSIVE);
+		setAreaState(Area.State.PASSIVE);
 		if((msg.sourceMinor()==CMMsg.TYP_ENTER)
 		&&(msg.target() instanceof Room)
 		&&(CMath.bset(flags(),Area.FLAG_INSTANCE_PARENT))
@@ -268,7 +268,7 @@ public class StdThinInstance extends StdThinArea
 						newA.addProperRoomnumber(newA.convertToMyArea(e.nextElement()));
 					redirectA=newA;
 					CMLib.map().addArea(newA);
-					newA.setAreaState(Area.STATE_ACTIVE); // starts ticking
+					newA.setAreaState(Area.State.ACTIVE); // starts ticking
 					final List<WeakReference<MOB>> newMobList = new SVector<WeakReference<MOB>>(5);
 					newMobList.add(new WeakReference<MOB>(msg.source()));
 					final AreaInstanceChild child = new AreaInstanceChild(redirectA,newMobList); 

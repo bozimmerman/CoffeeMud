@@ -2373,3 +2373,5 @@ ruthless programmer, and sentenced to a quick death.
 5. Players can now spend points to create their new character stats, if you let them.  See coffeemud.ini entry: STARTSTAT
 6. You can now define the training point costs to stat changes with STATSCOST in your coffeemud.ini file
 7. Change the items all characters get at creation time with STARTINGITEMS in your coffeemud.ini file
+8. Can now COPY areas
+9. LIST command now supports AREAS for admins -- choose your own columns or sortings

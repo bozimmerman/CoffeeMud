@@ -509,22 +509,22 @@ public class Modify extends StdCommand
 			else
 			if(command.equalsIgnoreCase("PASSIVE"))
 			{
-				myArea.setAreaState(Area.STATE_PASSIVE);
+				myArea.setAreaState(Area.State.PASSIVE);
 			}
 			else
 			if(command.equalsIgnoreCase("ACTIVE"))
 			{
-				myArea.setAreaState(Area.STATE_ACTIVE);
+				myArea.setAreaState(Area.State.ACTIVE);
 			}
 			else
 			if(command.equalsIgnoreCase("FROZEN"))
 			{
-				myArea.setAreaState(Area.STATE_FROZEN);
+				myArea.setAreaState(Area.State.FROZEN);
 			}
 			else
 			if(command.equalsIgnoreCase("STOPPED"))
 			{
-				myArea.setAreaState(Area.STATE_STOPPED);
+				myArea.setAreaState(Area.State.STOPPED);
 			}
 			else
 			if(command.equalsIgnoreCase("DESC"))

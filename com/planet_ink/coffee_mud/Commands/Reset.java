@@ -662,7 +662,7 @@ public class Reset extends StdCommand
 						mob.session().rawOut(recordedChanges.toString());
 						recordedChanges.setLength(0);
 					}
-					R.getArea().setAreaState(Area.STATE_FROZEN);
+					R.getArea().setAreaState(Area.State.FROZEN);
 					CMLib.map().resetRoom(R, true);
 					boolean somethingDone=false;
 					for(int m=0;m<R.numInhabitants();m++)
@@ -678,8 +678,8 @@ public class Reset extends StdCommand
 						mob.tell("Room "+R.roomID()+" done.");
 						CMLib.database().DBUpdateMOBs(R);
 					}
-					if(R.getArea().getAreaState()>Area.STATE_ACTIVE)
-						R.getArea().setAreaState(Area.STATE_ACTIVE);
+					if(R.getArea().getAreaState()!=Area.State.ACTIVE)
+						R.getArea().setAreaState(Area.State.ACTIVE);
 				}
 				if(recordedChanges==null)
 					mob.session().print(".");
@@ -728,7 +728,7 @@ public class Reset extends StdCommand
 			for(Enumeration a=CMLib.map().areas();a.hasMoreElements();)
 			{
 				Area A=(Area)a.nextElement();
-				A.setAreaState(Area.STATE_FROZEN);
+				A.setAreaState(Area.State.FROZEN);
 				for(Enumeration r=A.getCompleteMap();r.hasMoreElements();)
 				{
 					Room R=(Room)r.nextElement();
@@ -759,7 +759,8 @@ public class Reset extends StdCommand
 							CMLib.database().DBUpdateMOBs(R);
 					}
 				}
-				if(A.getAreaState()>Area.STATE_ACTIVE) A.setAreaState(Area.STATE_ACTIVE);
+				if(A.getAreaState()!=Area.State.ACTIVE) 
+					A.setAreaState(Area.State.ACTIVE);
 			}
 			mob.session().println("done!");
 		}
@@ -771,7 +772,7 @@ public class Reset extends StdCommand
 			for(Enumeration a=CMLib.map().areas();a.hasMoreElements();)
 			{
 				Area A=(Area)a.nextElement();
-				A.setAreaState(Area.STATE_FROZEN);
+				A.setAreaState(Area.State.FROZEN);
 				for(Enumeration r=A.getCompleteMap();r.hasMoreElements();)
 				{
 					Room R=(Room)r.nextElement();
@@ -798,7 +799,8 @@ public class Reset extends StdCommand
 							CMLib.database().DBUpdateMOBs(R);
 					}
 				}
-				if(A.getAreaState()>Area.STATE_ACTIVE) A.setAreaState(Area.STATE_ACTIVE);
+				if(A.getAreaState()!=Area.State.ACTIVE) 
+					A.setAreaState(Area.State.ACTIVE);
 			}
 			mob.session().println("done!");
 		}
@@ -876,7 +878,7 @@ public class Reset extends StdCommand
 			for(Enumeration a=CMLib.map().areas();a.hasMoreElements();)
 			{
 				Area A=(Area)a.nextElement();
-				A.setAreaState(Area.STATE_FROZEN);
+				A.setAreaState(Area.State.FROZEN);
 				for(Enumeration r=A.getCompleteMap();r.hasMoreElements();)
 				{
 					Room R=(Room)r.nextElement();
@@ -928,7 +930,8 @@ public class Reset extends StdCommand
 						}
 					}
 				}
-				if(A.getAreaState()>Area.STATE_ACTIVE) A.setAreaState(Area.STATE_ACTIVE);
+				if(A.getAreaState()!=Area.State.ACTIVE) 
+					A.setAreaState(Area.State.ACTIVE);
 			}
 			mob.session().println("done!");
 		}
@@ -1011,7 +1014,7 @@ public class Reset extends StdCommand
 				Room R=CMLib.map().getRoom((Room)r.nextElement());
 				if((R==null)||(R.getArea()==null)||(R.roomID().length()==0)) continue;
 				Area A=R.getArea();
-				A.setAreaState(Area.STATE_FROZEN);
+				A.setAreaState(Area.State.FROZEN);
 				if((recordedChanges!=null)&&(recordedChanges.length()>0))
 				{
 					mob.session().rawOut(recordedChanges.toString());
@@ -1075,7 +1078,8 @@ public class Reset extends StdCommand
 					if(recordedChanges==null)
 						mob.session().print(".");
 				}
-				if(A.getAreaState()>Area.STATE_ACTIVE) A.setAreaState(Area.STATE_ACTIVE);
+				if(A.getAreaState()!=Area.State.ACTIVE) 
+					A.setAreaState(Area.State.ACTIVE);
 			}
 			if((recordedChanges!=null)&&(recordedChanges.length()>0))
 				mob.session().rawOut(recordedChanges.toString());
@@ -1112,7 +1116,7 @@ public class Reset extends StdCommand
 			// this is just utility code and will change frequently
 			Area A=mob.location().getArea();
 			CMLib.map().resetArea(A);
-			A.setAreaState(Area.STATE_FROZEN);
+			A.setAreaState(Area.State.FROZEN);
 			Hashtable rememberI=new Hashtable();
 			Hashtable rememberM=new Hashtable();
 			try{
@@ -1286,7 +1290,8 @@ public class Reset extends StdCommand
 			}
 			}
 			catch(java.io.IOException e){}
-			if(A.getAreaState()>Area.STATE_ACTIVE) A.setAreaState(Area.STATE_ACTIVE);
+			if(A.getAreaState()!=Area.State.ACTIVE) 
+				A.setAreaState(Area.State.ACTIVE);
 			mob.tell("Done.");
 		}
 		else

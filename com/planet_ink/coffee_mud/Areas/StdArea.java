@@ -48,7 +48,7 @@ public class StdArea implements Area
 	protected long  	tickStatus  	=Tickable.STATUS_NOT;
 	protected long  	expirationDate  =0;
 	protected long  	lastPlayerTime  =System.currentTimeMillis();
-	protected int   	flag			=Area.STATE_ACTIVE;
+	protected State   	flag			=State.ACTIVE;
 	protected String[]  xtraValues  	=null;
 	protected String	author  		="";
 	protected String	currency		="";
@@ -270,9 +270,10 @@ public class StdArea implements Area
 	public String rawImage(){return imageName;}
 	public void setImage(String newImage){imageName=newImage;}
 
-	public void setAreaState(int newState)
+	public void setAreaState(State newState)
 	{
-		if((newState==0)&&(!CMLib.threads().isTicking(this,Tickable.TICKID_AREA)))
+		if((newState==State.ACTIVE)
+		&&(!CMLib.threads().isTicking(this,Tickable.TICKID_AREA)))
 		{
 			CMLib.threads().startTickDown(this,Tickable.TICKID_AREA,1);
 			if(!CMLib.threads().isTicking(this, Tickable.TICKID_AREA))
@@ -280,7 +281,7 @@ public class StdArea implements Area
 		}
 		flag=newState;
 	}
-	public int getAreaState(){return flag;}
+	public State getAreaState(){return flag;}
 
 	public boolean amISubOp(String username)
 	{
@@ -386,6 +387,9 @@ public class StdArea implements Area
 	{
 		basePhyStats=(PhyStats)areaA.basePhyStats().copyOf();
 		phyStats=(PhyStats)areaA.phyStats().copyOf();
+		properRooms    =new STreeMap<String, Room>(new RoomIDComparator());
+		properRoomIDSet=null;
+		metroRoomIDSet =null;
 
 		if(areaA.parents==null)
 			parents=null;
@@ -611,13 +615,13 @@ public class StdArea implements Area
 		if(!msg.source().isMonster())
 		{
 			lastPlayerTime=System.currentTimeMillis();
-			if((flag==Area.STATE_PASSIVE)
+			if((flag==State.PASSIVE)
 			&&((msg.sourceMinor()==CMMsg.TYP_ENTER)
 			||(msg.sourceMinor()==CMMsg.TYP_LEAVE)
 			||(msg.sourceMinor()==CMMsg.TYP_FLEE)))
-				flag=Area.STATE_ACTIVE;
+				flag=State.ACTIVE;
 		}
-		if((flag>=Area.STATE_FROZEN)||(!CMLib.flags().allowsMovement(this)))
+		if((flag==State.FROZEN)||(flag==State.STOPPED)||(!CMLib.flags().allowsMovement(this)))
 		{
 			if((msg.sourceMinor()==CMMsg.TYP_ENTER)
 			||(msg.sourceMinor()==CMMsg.TYP_LEAVE)
@@ -727,19 +731,19 @@ public class StdArea implements Area
 
 	public boolean tick(final Tickable ticking, final int tickID)
 	{
-		if((flag>=Area.STATE_STOPPED)||(amDestroyed()))
+		if((flag==State.STOPPED)||(amDestroyed()))
 			return false;
 		tickStatus=Tickable.STATUS_START;
 		if(tickID==Tickable.TICKID_AREA)
 		{
-			if((flag<=Area.STATE_ACTIVE)
+			if((flag==State.ACTIVE)
 			&&((System.currentTimeMillis()-lastPlayerTime)>Area.TIME_PASSIVE_LAPSE))
 			{
 				if(CMSecurity.isDisabled(CMSecurity.DisFlag.PASSIVEAREAS)
 				&&(!CMath.bset(flags(), Area.FLAG_INSTANCE_CHILD)))
 					lastPlayerTime=System.currentTimeMillis();
 				else
-					flag=Area.STATE_PASSIVE;
+					flag=State.PASSIVE;
 			}
 			tickStatus=Tickable.STATUS_ALIVE;
 			getClimateObj().tick(this,tickID);
@@ -984,7 +988,7 @@ public class StdArea implements Area
 	public int[] getAreaIStats()
 	{
 		if(!CMProps.getBoolVar(CMProps.SYSTEMB_MUDSTARTED))
-			return new int[Area.AREASTAT_NUMBER];
+			return new int[Area.Stats.values().length];
 		int[] statData=(int[])Resources.getResource("STATS_"+Name().toUpperCase());
 		if(statData!=null) 
 			return statData;
@@ -1000,16 +1004,16 @@ public class StdArea implements Area
 				if(F.showInSpecialReported())
 					theFaction=F;
 			}
-			statData=new int[Area.AREASTAT_NUMBER];
-			statData[Area.AREASTAT_POPULATION]=0;
-			statData[Area.AREASTAT_MINLEVEL]=Integer.MAX_VALUE;
-			statData[Area.AREASTAT_MAXLEVEL]=Integer.MIN_VALUE;
-			statData[Area.AREASTAT_AVGLEVEL]=0;
-			statData[Area.AREASTAT_MEDLEVEL]=0;
-			statData[Area.AREASTAT_AVGALIGN]=0;
-			statData[Area.AREASTAT_TOTLEVEL]=0;
-			statData[Area.AREASTAT_INTLEVEL]=0;
-			statData[Area.AREASTAT_VISITABLEROOMS]=getProperRoomnumbers().roomCountAllAreas();
+			statData=new int[Area.Stats.values().length];
+			statData[Area.Stats.POPULATION.ordinal()]=0;
+			statData[Area.Stats.MIN_LEVEL.ordinal()]=Integer.MAX_VALUE;
+			statData[Area.Stats.MAX_LEVEL.ordinal()]=Integer.MIN_VALUE;
+			statData[Area.Stats.AVG_LEVEL.ordinal()]=0;
+			statData[Area.Stats.MED_LEVEL.ordinal()]=0;
+			statData[Area.Stats.AVG_ALIGNMENT.ordinal()]=0;
+			statData[Area.Stats.TOTAL_LEVELS.ordinal()]=0;
+			statData[Area.Stats.TOTAL_INTELLIGENT_LEVELS.ordinal()]=0;
+			statData[Area.Stats.VISITABLE_ROOMS.ordinal()]=getProperRoomnumbers().roomCountAllAreas();
 			long totalAlignments=0;
 			Room R=null;
 			MOB mob=null;
@@ -1017,9 +1021,9 @@ public class StdArea implements Area
 			{
 				R=(Room)r.nextElement();
 				if(R instanceof GridLocale)
-					statData[Area.AREASTAT_VISITABLEROOMS]--;
+					statData[Area.Stats.VISITABLE_ROOMS.ordinal()]--;
 				if((R.domainType()&Room.INDOORS)>0)
-					statData[Area.AREASTAT_INDOORROOMS]++;
+					statData[Area.Stats.INDOOR_ROOMS.ordinal()]++;
 				for(int i=0;i<R.numInhabitants();i++)
 				{
 					mob=R.fetchInhabitant(i);
@@ -1032,30 +1036,30 @@ public class StdArea implements Area
 							alignRanges.addElement(Integer.valueOf(mob.fetchFaction(theFaction.factionID())));
 							totalAlignments+=mob.fetchFaction(theFaction.factionID());
 						}
-						statData[Area.AREASTAT_POPULATION]++;
-						statData[Area.AREASTAT_TOTLEVEL]+=lvl;
+						statData[Area.Stats.POPULATION.ordinal()]++;
+						statData[Area.Stats.TOTAL_LEVELS.ordinal()]+=lvl;
 						if(!CMLib.flags().isAnimalIntelligence(mob))
-							statData[Area.AREASTAT_INTLEVEL]+=lvl;
-						if(lvl<statData[Area.AREASTAT_MINLEVEL])
-							statData[Area.AREASTAT_MINLEVEL]=lvl;
-						if(lvl>statData[Area.AREASTAT_MAXLEVEL])
-							statData[Area.AREASTAT_MAXLEVEL]=lvl;
+							statData[Area.Stats.TOTAL_INTELLIGENT_LEVELS.ordinal()]+=lvl;
+						if(lvl<statData[Area.Stats.MIN_LEVEL.ordinal()])
+							statData[Area.Stats.MIN_LEVEL.ordinal()]=lvl;
+						if(lvl>statData[Area.Stats.MAX_LEVEL.ordinal()])
+							statData[Area.Stats.MAX_LEVEL.ordinal()]=lvl;
 					}
 				}
 			}
-			if((statData[Area.AREASTAT_POPULATION]==0)||(levelRanges.size()==0))
+			if((statData[Area.Stats.POPULATION.ordinal()]==0)||(levelRanges.size()==0))
 			{
-				statData[Area.AREASTAT_MINLEVEL]=0;
-				statData[Area.AREASTAT_MAXLEVEL]=0;
+				statData[Area.Stats.MIN_LEVEL.ordinal()]=0;
+				statData[Area.Stats.MAX_LEVEL.ordinal()]=0;
 			}
 			else
 			{
 				Collections.sort(levelRanges);
 				Collections.sort(alignRanges);
-				statData[Area.AREASTAT_MEDLEVEL]=((Integer)levelRanges.elementAt((int)Math.round(Math.floor(CMath.div(levelRanges.size(),2.0))))).intValue();
-				statData[Area.AREASTAT_MEDALIGN]=((Integer)alignRanges.elementAt((int)Math.round(Math.floor(CMath.div(alignRanges.size(),2.0))))).intValue();
-				statData[Area.AREASTAT_AVGLEVEL]=(int)Math.round(CMath.div(statData[Area.AREASTAT_TOTLEVEL],statData[Area.AREASTAT_POPULATION]));
-				statData[Area.AREASTAT_AVGALIGN]=(int)Math.round(((double)totalAlignments)/((double)statData[Area.AREASTAT_POPULATION]));
+				statData[Area.Stats.MED_LEVEL.ordinal()]=((Integer)levelRanges.elementAt((int)Math.round(Math.floor(CMath.div(levelRanges.size(),2.0))))).intValue();
+				statData[Area.Stats.MED_ALIGNMENT.ordinal()]=((Integer)alignRanges.elementAt((int)Math.round(Math.floor(CMath.div(alignRanges.size(),2.0))))).intValue();
+				statData[Area.Stats.AVG_LEVEL.ordinal()]=(int)Math.round(CMath.div(statData[Area.Stats.TOTAL_LEVELS.ordinal()],statData[Area.Stats.POPULATION.ordinal()]));
+				statData[Area.Stats.AVG_ALIGNMENT.ordinal()]=(int)Math.round(((double)totalAlignments)/((double)statData[Area.Stats.POPULATION.ordinal()]));
 			}
 
 			Resources.submitResource("STATS_"+Name().toUpperCase(),statData);
@@ -1073,7 +1077,7 @@ public class StdArea implements Area
 		s.append(description()+"\n\r");
 		if(author.length()>0)
 			s.append("Author         : "+author+"\n\r");
-		s.append("Number of rooms: "+statData[Area.AREASTAT_VISITABLEROOMS]+"\n\r");
+		s.append("Number of rooms: "+statData[Area.Stats.VISITABLE_ROOMS.ordinal()]+"\n\r");
 		Faction theFaction=null;
 		for(Enumeration<Faction> e=CMLib.factions().factions();e.hasMoreElements();)
 		{
@@ -1081,14 +1085,14 @@ public class StdArea implements Area
 			if(F.showInSpecialReported())
 				theFaction=F;
 		}
-		if(statData[Area.AREASTAT_POPULATION]==0)
+		if(statData[Area.Stats.POPULATION.ordinal()]==0)
 		{
 			if(getProperRoomnumbers().roomCountAllAreas()/2<properRooms.size())
 				s.append("Population     : 0\n\r");
 		}
 		else
 		{
-			s.append("Population     : "+statData[Area.AREASTAT_POPULATION]+"\n\r");
+			s.append("Population     : "+statData[Area.Stats.POPULATION.ordinal()]+"\n\r");
 			String currName=CMLib.beanCounter().getCurrency(this);
 			if(currName.length()>0)
 				s.append("Currency       : "+CMStrings.capitalizeAndLower(currName)+"\n\r");
@@ -1105,11 +1109,11 @@ public class StdArea implements Area
 						s.append("Controlled by  : "+C.getGovernmentName()+" "+C.name()+"\n\r");
 				}
 			}
-			s.append("Level range    : "+statData[Area.AREASTAT_MINLEVEL]+" to "+statData[Area.AREASTAT_MAXLEVEL]+"\n\r");
-			s.append("Average level  : "+statData[Area.AREASTAT_AVGLEVEL]+"\n\r");
-			s.append("Median level   : "+statData[Area.AREASTAT_MEDLEVEL]+"\n\r");
-			if(theFaction!=null) s.append("Avg. "+CMStrings.padRight(theFaction.name(),10)+": "+theFaction.fetchRangeName(statData[Area.AREASTAT_AVGALIGN])+"\n\r");
-			if(theFaction!=null) s.append("Med. "+CMStrings.padRight(theFaction.name(),10)+": "+theFaction.fetchRangeName(statData[Area.AREASTAT_MEDALIGN])+"\n\r");
+			s.append("Level range    : "+statData[Area.Stats.MIN_LEVEL.ordinal()]+" to "+statData[Area.Stats.MAX_LEVEL.ordinal()]+"\n\r");
+			s.append("Average level  : "+statData[Area.Stats.AVG_LEVEL.ordinal()]+"\n\r");
+			s.append("Median level   : "+statData[Area.Stats.MED_LEVEL.ordinal()]+"\n\r");
+			if(theFaction!=null) s.append("Avg. "+CMStrings.padRight(theFaction.name(),10)+": "+theFaction.fetchRangeName(statData[Area.Stats.AVG_ALIGNMENT.ordinal()])+"\n\r");
+			if(theFaction!=null) s.append("Med. "+CMStrings.padRight(theFaction.name(),10)+": "+theFaction.fetchRangeName(statData[Area.Stats.MED_ALIGNMENT.ordinal()])+"\n\r");
 			try{
 				boolean blurbed=false;
 				String flag=null;

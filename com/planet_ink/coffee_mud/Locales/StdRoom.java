@@ -46,8 +46,8 @@ public class StdRoom implements Room
 	protected Area  	 	myArea=null;
 	protected PhyStats   	phyStats=(PhyStats)CMClass.getCommon("DefaultPhyStats");
 	protected PhyStats   	basePhyStats=(PhyStats)CMClass.getCommon("DefaultPhyStats");
-	public final Exit[]  	exits=new Exit[Directions.NUM_DIRECTIONS()];
-	public final Room[]  	doors=new Room[Directions.NUM_DIRECTIONS()];
+	protected Exit[]  		exits=new Exit[Directions.NUM_DIRECTIONS()];
+	protected Room[]  		doors=new Room[Directions.NUM_DIRECTIONS()];
 	protected String[]   	xtraValues=null;
 	protected boolean    	mobility=true;
 	protected GridLocale 	gridParent=null;
@@ -56,8 +56,8 @@ public class StdRoom implements Room
 	protected SVector<Ability>  		affects=null;
 	protected SVector<Behavior> 		behaviors=null;
 	protected SVector<ScriptingEngine>  scripts=null;
-	protected final SVector<MOB> 		inhabitants=new SVector(1);
-	protected final SVector<Item>		contents=new SVector(1);
+	protected SVector<MOB> 				inhabitants=new SVector(1);
+	protected SVector<Item>				contents=new SVector(1);
 	protected final Room 	  			me=this;
 
 	// base move points and thirst points per round
@@ -135,12 +135,14 @@ public class StdRoom implements Room
 		basePhyStats=(PhyStats)R.basePhyStats().copyOf();
 		phyStats=(PhyStats)R.phyStats().copyOf();
 
-		contents.setSize(0);
-		inhabitants.setSize(0);
+		contents=new SVector<Item>();
+		inhabitants=new SVector<MOB>();
 		affects=null;
 		behaviors=null;
 		scripts=null;
+		exits=new Exit[exits.length];
 		Arrays.fill(exits, null);
+		doors=new Room[doors.length];
 		Arrays.fill(doors, null);
 		for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 		{

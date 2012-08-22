@@ -510,7 +510,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 			Room sellerR=seller.location();
 			if(sellerR!=null)
 			{
-				int medianLevel=sellerR.getArea().getAreaIStats()[Area.AREASTAT_MEDLEVEL];
+				int medianLevel=sellerR.getArea().getAreaIStats()[Area.Stats.MED_LEVEL.ordinal()];
 				if(medianLevel>0)
 				{
 					String range=CMParms.getParmStr(shop.finalPrejudiceFactors(),"RANGE","0");

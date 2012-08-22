@@ -1058,8 +1058,8 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 	{
 		StringBuffer buf=new StringBuffer("");
 		if(area==null) return buf;
-		int oldFlag=area.getAreaState();
-		area.setAreaState(Area.STATE_FROZEN);
+		Area.State oldFlag=area.getAreaState();
+		area.setAreaState(Area.State.FROZEN);
 		buf.append("<AREA>");
 		buf.append(CMLib.xml().convertXMLtoTag("ACLAS",area.ID()));
 		buf.append(CMLib.xml().convertXMLtoTag("ANAME",area.Name()));

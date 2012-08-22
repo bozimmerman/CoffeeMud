@@ -140,8 +140,8 @@ public class Chant_SummonPlants extends Chant
 		boolean bonusWorthy=(Druid_MyPlants.myPlant(room,mob,0)==null);
 		Vector V=Druid_MyPlants.myAreaPlantRooms(mob,room.getArea());
 		int pct=0;
-		if(A.getAreaIStats()[Area.AREASTAT_VISITABLEROOMS]>10)
-			pct=(int)Math.round(100.0*CMath.div(V.size(),A.getAreaIStats()[Area.AREASTAT_VISITABLEROOMS]));
+		if(A.getAreaIStats()[Area.Stats.VISITABLE_ROOMS.ordinal()]>10)
+			pct=(int)Math.round(100.0*CMath.div(V.size(),A.getAreaIStats()[Area.Stats.VISITABLE_ROOMS.ordinal()]));
 		Item I=buildMyPlant(mob,room);
 		if((I!=null)
 		&&((mob.charStats().getCurrentClass().baseClass().equalsIgnoreCase("Druid"))||(CMSecurity.isASysOp(mob))))
@@ -150,7 +150,7 @@ public class Chant_SummonPlants extends Chant
 			{
 				if(pct>0)
 				{
-					int newPct=(int)Math.round(100.0*CMath.div(V.size(),A.getAreaIStats()[Area.AREASTAT_VISITABLEROOMS]));
+					int newPct=(int)Math.round(100.0*CMath.div(V.size(),A.getAreaIStats()[Area.Stats.VISITABLE_ROOMS.ordinal()]));
 					if((newPct>=50)&&(A.fetchEffect("Chant_DruidicConnection")==null))
 					{
 						Ability A2=CMClass.getAbility("Chant_DruidicConnection");

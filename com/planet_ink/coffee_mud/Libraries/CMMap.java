@@ -1645,8 +1645,8 @@ public class CMMap extends StdLibrary implements WorldMap
 	
 	public void resetArea(Area area)
 	{
-		int oldFlag=area.getAreaState();
-		area.setAreaState(Area.STATE_FROZEN);
+		Area.State oldFlag=area.getAreaState();
+		area.setAreaState(Area.State.FROZEN);
 		DVector playersHere=getAllPlayersHere(area,true);
 		for(int p=0;p<playersHere.size();p++)
 		{

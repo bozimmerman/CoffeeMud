@@ -730,7 +730,7 @@ public class DefaultPlayerStats implements PlayerStats
 	}
 	public boolean hasVisited(Area A)
 	{
-		int numRooms=A.getAreaIStats()[Area.AREASTAT_VISITABLEROOMS];
+		int numRooms=A.getAreaIStats()[Area.Stats.VISITABLE_ROOMS.ordinal()];
 		if(numRooms<=0) return true;
 		return roomSet().roomCount(A.Name())>0;
 	}
@@ -763,9 +763,9 @@ public class DefaultPlayerStats implements PlayerStats
 				&&(!CMath.bset(A.flags(),Area.FLAG_INSTANCE_CHILD)))
 				{
 					int[] stats=A.getAreaIStats();
-					if(stats[Area.AREASTAT_VISITABLEROOMS]>0)
+					if(stats[Area.Stats.VISITABLE_ROOMS.ordinal()]>0)
 					{
-						totalRooms+=stats[Area.AREASTAT_VISITABLEROOMS];
+						totalRooms+=stats[Area.Stats.VISITABLE_ROOMS.ordinal()];
 						totalVisits+=roomSet().roomCount(A.Name());
 					}
 				}
@@ -774,7 +774,7 @@ public class DefaultPlayerStats implements PlayerStats
 			double pct=CMath.div(totalVisits,totalRooms);
 			return (int)Math.round(100.0*pct);
 		}
-		int numRooms=A.getAreaIStats()[Area.AREASTAT_VISITABLEROOMS];
+		int numRooms=A.getAreaIStats()[Area.Stats.VISITABLE_ROOMS.ordinal()];
 		if(numRooms<=0) return 100;
 		double pct=CMath.div(roomSet().roomCount(A.Name()),numRooms);
 		return (int)Math.round(100.0*pct);

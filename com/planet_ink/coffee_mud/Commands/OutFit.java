@@ -65,7 +65,7 @@ public class OutFit extends StdCommand
 		mob.tell("\n\r");
 		Command C2=CMClass.getCommand("Equipment");
 		if(C2!=null) C2.execute(mob,CMParms.parse("EQUIPMENT"),metaFlags);
-		mob.tell("\n\rUseful equipment appears mysteriously out of the java plain.");
+		mob.tell("\n\rUseful equipment appears mysteriously out of the Java Plane.");
 		return false;
 	}
 	public double combatActionsCost(final MOB mob, final List<String> cmds)

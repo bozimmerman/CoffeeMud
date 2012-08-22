@@ -75,7 +75,7 @@ public class Spell_Wish extends Spell
 			item.setContainer(null);
 			item.removeFromOwnerContainer();
 			here.addItem(item,ItemPossessor.Expire.Player_Drop);
-			mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,"<T-NAME> appears out of the java plain!");
+			mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,"<T-NAME> appears out of the Java Plane!");
 		}
 	}
 
@@ -259,7 +259,7 @@ public class Spell_Wish extends Spell
 					newMOB.resetToMaxState();
 					newMOB.bringToLife(mob.location(),true);
 					newMOB.location().showOthers(newMOB,null,CMMsg.MSG_OK_ACTION,"<S-NAME> appears!");
-					mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,"Suddenly, "+newMOB.name()+" instantiates from the Java plain.");
+					mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,"Suddenly, "+newMOB.name()+" instantiates from the Java Plane.");
 					newMOB.setFollowing(mob);
 					if(experienceRequired<=0)
 						experienceRequired=0;

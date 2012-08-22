@@ -88,7 +88,7 @@ public class Aggressive extends StdBehavior
 			if((R!=null)
 			&&((!mob.isMonster())||(fightMOBs))
 			&&(R.isInhabitant(mob))
-			&&(R.getArea().getAreaState()<=Area.STATE_ACTIVE)
+			&&(R.getArea().getAreaState()==Area.State.ACTIVE)
 			&&((misBehave&&(!monster.isInCombat()))||canFreelyBehaveNormal(monster))
 			&&(CMLib.flags().canBeSeenBy(mob,monster))
 			&&(!CMSecurity.isAllowed(mob,R,"ORDER"))
@@ -120,7 +120,7 @@ public class Aggressive extends StdBehavior
 	{
 		if(!canFreelyBehaveNormal(observer)) return false;
 		Room R=observer.location();
-		if((R!=null)&&(R.getArea().getAreaState()<=Area.STATE_ACTIVE))
+		if((R!=null)&&(R.getArea().getAreaState()==Area.State.ACTIVE))
 		{
 			if((R!=lastRoom)||(lastRoomInhabCount!=R.numInhabitants()))
 			{

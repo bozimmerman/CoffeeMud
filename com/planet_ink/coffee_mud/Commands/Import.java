@@ -5110,7 +5110,7 @@ public class Import extends StdCommand
 					CMLib.database().DBCreateArea(A);
 				}
 				else
-					A.setAreaState(Area.STATE_FROZEN);
+					A.setAreaState(Area.State.FROZEN);
 				
 				Room R=CMClass.getLocale("StdRoom");
 				String plainRoomID=eatNextLine(roomV);
@@ -6196,7 +6196,7 @@ public class Import extends StdCommand
 		for(Enumeration e=doneRooms.elements();e.hasMoreElements();)
 		{
 			A=((Room)e.nextElement()).getArea();
-			A.setAreaState(Area.STATE_ACTIVE);
+			A.setAreaState(Area.State.ACTIVE);
 		}
 		if(doneRooms.elements().hasMoreElements())
 			for(Enumeration a=CMLib.map().areas();a.hasMoreElements();)

@@ -413,7 +413,7 @@ public class Create extends StdCommand
 		newMOB.bringToLife(mob.location(),true);
 		newMOB.recoverCharStats();
 		newMOB.recoverPhyStats();
-		mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,"Suddenly, "+newMOB.name()+" instantiates from the Java plain.");
+		mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,"Suddenly, "+newMOB.name()+" instantiates from the Java Plane.");
 		if((newMOB.isGeneric())&&(doGenerica))
 			CMLib.genEd().genMiscSet(mob,newMOB);
 		Log.sysOut("Mobs",mob.Name()+" created mob "+newMOB.Name()+".");
