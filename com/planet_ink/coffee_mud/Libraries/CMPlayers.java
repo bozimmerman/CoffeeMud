@@ -39,16 +39,17 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 {
 	public String ID(){return "CMPlayers";}
 	
-	protected SVector<MOB> 			playersList			= new SVector<MOB>();
-	protected SVector<PlayerAccount>accountsList		= new SVector<PlayerAccount>();
-	protected long[] 				autoPurgeDaysLevels	=new long[1];
-	protected long[] 				prePurgeLevels		=new long[1];
-	protected int					autoPurgeHash		=0;
+	protected SVector<MOB> 				playersList			= new SVector<MOB>();
+	protected SVector<PlayerAccount>	accountsList		= new SVector<PlayerAccount>();
+	protected CrossRefTreeMap<MOB,Room> playerLocations		= new CrossRefTreeMap<MOB,Room>(Integer.MAX_VALUE,1);
+	protected long[] 					autoPurgeDaysLevels	= new long[1];
+	protected long[] 					prePurgeLevels		= new long[1];
+	protected int						autoPurgeHash		= 0;
 	
 	private CMSupportThread thread=null;
 	
 	public CMSupportThread getSupportThread() { return thread;}
-	
+
 	public int numPlayers() { return playersList.size(); }
 	public synchronized void addPlayer(MOB newOne)
 	{
@@ -63,8 +64,30 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 	
 	public synchronized void delPlayer(MOB oneToDel) 
 	{ 
-		playersList.remove(oneToDel);
+		if(oneToDel != null)
+		{
+    		playersList.remove(oneToDel);
+    		playerLocations.removeFirst(oneToDel);
+		}
 	}
+	
+	public Set<MOB> getPlayersHere(Room room)
+	{
+		return playerLocations.getSecond(room);
+	}
+	
+	public void changePlayersLocation(MOB mob, Room room)
+	{
+		if(mob != null)
+		{
+    		if(room == null)
+    			playerLocations.removeFirst(mob);
+    		else
+    			playerLocations.change(mob, room);
+		}
+	}
+
+	
 	public PlayerAccount getLoadAccount(String calledThis)
 	{
 		PlayerAccount A = getAccount(calledThis);
@@ -675,6 +698,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 	
 	public boolean shutdown() {
 		playersList.clear();
+		playerLocations.clear();
 		thread.shutdown();
 		return true;
 	}

@@ -1501,31 +1501,8 @@ public class StdRoom implements Room
 	}
 	public int numPCInhabitants()
 	{
-		int numUsers=0;
-		for(int i=0;i<numInhabitants();i++)
-		{
-			MOB inhab=fetchInhabitant(i);
-			if((inhab!=null)
-			&&(!inhab.isMonster()))
-				numUsers++;
-		}
-		return numUsers;
-	}
-	public MOB fetchPCInhabitant(int which)
-	{
-		int numUsers=0;
-		for(int i=0;i<numInhabitants();i++)
-		{
-			MOB inhab=fetchInhabitant(i);
-			if((inhab!=null)
-			&&(!inhab.isMonster()))
-			{
-				if(numUsers==which)
-					return inhab;
-				numUsers++;
-			}
-		}
-		return null;
+		final Set<MOB> playerInhabitants=CMLib.players().getPlayersHere(this);
+		return playerInhabitants.size();
 	}
 	public boolean isInhabitant(MOB mob)
 	{

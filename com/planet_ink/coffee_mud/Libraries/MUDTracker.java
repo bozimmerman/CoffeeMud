@@ -364,17 +364,19 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 		Room oldRoom=mob.location();
 
 		if(status!=null)status[0]=Tickable.STATUS_MISC7+1;
-		for(int m=0;m<oldRoom.numInhabitants();m++)
+		Set<MOB> mobsHere=CMLib.players().getPlayersHere(oldRoom);
+		if(mobsHere.size()>0)
 		{
-			final MOB inhab=oldRoom.fetchInhabitant(m);
-			if((inhab!=null)
-			&&(!inhab.isMonster())
-			&&(CMSecurity.isAllowed(inhab,oldRoom,"CMDMOBS")
-			   ||CMSecurity.isAllowed(inhab,oldRoom,"CMDROOMS")))
-			{
-				if(status!=null)status[0]=Tickable.STATUS_NOT;
-				return false;
-			}
+    		for(MOB inhab : mobsHere)
+    		{
+    			if((!inhab.isMonster())
+    			&&(CMSecurity.isAllowed(inhab,oldRoom,"CMDMOBS")
+    			   ||CMSecurity.isAllowed(inhab,oldRoom,"CMDROOMS")))
+    			{
+    				if(status!=null)status[0]=Tickable.STATUS_NOT;
+    				return false;
+    			}
+    		}
 		}
 
 		if(status!=null)status[0]=Tickable.STATUS_MISC7+2;
@@ -396,6 +398,25 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 			Exit nextExit=oldRoom.getExitInDir(direction);
 			if((nextRoom!=null)&&(nextExit!=null))
 			{
+				Set<MOB> mobsThere=CMLib.players().getPlayersHere(nextRoom);
+				if(mobsThere.size()>0)
+				{
+		    		for(MOB inhab : mobsThere)
+		    		{
+		    			if((inhab!=null)
+		    			&&(!inhab.isMonster())
+		    			&&(CMSecurity.isAllowed(inhab,oldRoom,"CMDMOBS")
+		    			   ||CMSecurity.isAllowed(inhab,oldRoom,"CMDROOMS")))
+		    			{
+		    				if(status!=null)status[0]=Tickable.STATUS_NOT;
+		    				nextRoom=null;
+		    				break;
+		    			}
+		    		}
+		    		if(nextRoom == null)
+		    			continue;
+				}
+				
 				Exit opExit=nextRoom.getExitInDir(Directions.getOpDirectionCode(direction));
 				if(status!=null)status[0]=Tickable.STATUS_MISC7+6;
 				for(final Enumeration<Ability> a=nextExit.effects();a.hasMoreElements();)

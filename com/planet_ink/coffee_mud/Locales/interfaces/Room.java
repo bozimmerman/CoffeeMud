@@ -236,7 +236,6 @@ public interface Room extends PhysicalAgent, ItemPossessor
 	public MOB fetchRandomInhabitant();
 	public MOB fetchInhabitant(int i);
 	public int numPCInhabitants();
-	public MOB fetchPCInhabitant(int i);
 	public void bringMobHere(MOB mob, boolean andFollowers);
 	/**
 	 * Applies the given code to each mob in this room

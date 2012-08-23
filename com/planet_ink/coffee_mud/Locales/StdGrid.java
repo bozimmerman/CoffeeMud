@@ -691,7 +691,10 @@ public class StdGrid extends StdRoom implements GridLocale
 								if((M.getStartRoom()==null)
 								||(M.getStartRoom()==room)
 								||(M.getStartRoom().ID().length()==0))
-									M.destroy();
+								{
+									if(!M.isMonster())
+    									M.destroy();
+								}
 								else
 									M.getStartRoom().bringMobHere(M,false);
 								if(room.isInhabitant(M))

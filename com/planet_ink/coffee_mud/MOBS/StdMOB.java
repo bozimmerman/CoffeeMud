@@ -844,6 +844,8 @@ public class StdMOB implements MOB
 			session().stopSession(false, false, false);
 			CMLib.s_sleep(1000);
 		}
+		if(playerStats!=null)
+			CMLib.players().changePlayersLocation(this,null);
 		removeFromGame(session() != null, true);
 		delAllBehaviors();
 		delAllEffects(false);
@@ -895,6 +897,8 @@ public class StdMOB implements MOB
 			if ((session() != null) && (!CMProps.getBoolVar(CMProps.SYSTEMB_MUDSHUTTINGDOWN)))
 				location().show(this, null, CMMsg.MSG_OK_ACTION, "<S-NAME> vanish(es) in a puff of smoke.");
 		}
+		if(playerStats!=null)
+			CMLib.players().changePlayersLocation(this,null);
 		setFollowing(null);
 		final DVector oldFollowers = new DVector(2);
 		while (numFollowers() > 0)
@@ -1363,6 +1367,8 @@ public class StdMOB implements MOB
 	{
 		lastLocation = location;
 		location = newRoom;
+		if((playerStats != null) && (location != newRoom))
+			CMLib.players().changePlayersLocation(this,newRoom);
 	}
 
 	public Rideable riding() {

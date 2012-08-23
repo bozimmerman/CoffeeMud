@@ -54,7 +54,7 @@ public class CMMap extends StdLibrary implements WorldMap
 	protected Map<String,Object> 
 							SCRIPT_HOST_SEMAPHORES=new Hashtable<String,Object>();
 	
-	private CMSupportThread  thread     = null;
+	private CMSupportThread thread     = null;
 	public CMSupportThread getSupportThread() { return thread;}
 	
 	protected int getGlobalIndex(List<Environmental> list, String name)

@@ -48,7 +48,9 @@ public interface PlayerLibrary extends CMLibrary, Runnable
 	public int savePlayers();
 	public Enumeration<ThinPlayer> thinPlayers(String sort, Map<String, Object> cache);
 	public int getCharThinSortCode(String codeName, boolean loose);
-	public String getThinSortValue(ThinPlayer player, int code); 
+	public String getThinSortValue(ThinPlayer player, int code);
+	public Set<MOB> getPlayersHere(Room room);
+	public void changePlayersLocation(MOB mob, Room room);
 	
 	public static final String[] CHAR_THIN_SORT_CODES={ "NAME","CLASS","RACE","LEVEL","AGE","LAST","EMAIL","IP"};
 	public static final String[] CHAR_THIN_SORT_CODES2={ "CHARACTER","CHARCLASS","RACE","LVL","HOURS","DATE","EMAILADDRESS","LASTIP"};
