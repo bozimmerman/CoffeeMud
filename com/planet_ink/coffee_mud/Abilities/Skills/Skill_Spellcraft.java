@@ -78,7 +78,7 @@ public class Skill_Spellcraft extends StdSkill
 				A.setMiscText(msg.tool().ID());
 				lastID=msg.tool().ID();
 				msg.addTrailerMsg(CMClass.getMsg(mob,msg.source(),A,CMMsg.MSG_OK_VISUAL,"<T-NAME> casts '"+msg.tool().name()+"'.",CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null));
-				helpProficiency(mob);
+				helpProficiency(mob, 0);
 			}
 		}
 	}

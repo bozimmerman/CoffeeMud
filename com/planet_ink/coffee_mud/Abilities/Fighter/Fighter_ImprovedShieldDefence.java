@@ -69,7 +69,7 @@ public class Fighter_ImprovedShieldDefence extends FighterSkill
 		&&(mob.isInCombat())
 		&&(CMLib.dice().rollPercentage()==1)
 		&&(!mob.amDead()))
-			helpProficiency(mob);
+			helpProficiency(mob, 0);
 	}
 
 }

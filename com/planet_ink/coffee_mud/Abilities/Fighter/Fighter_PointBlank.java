@@ -122,7 +122,7 @@ public class Fighter_PointBlank extends FighterSkill
 			&&((mob.fetchAbility(ID())==null)||proficiencyCheck(null,0,false)))
 			{
 				if((CMLib.dice().rollPercentage()<10)&&(mob.isInCombat())&&(mob.rangeToTarget() > 0))
-					helpProficiency(mob);
+					helpProficiency(mob, 0);
 				if(w.fetchEffect(ID())==null)
 				{
 					if(!qualifiedWeapons.contains(w))

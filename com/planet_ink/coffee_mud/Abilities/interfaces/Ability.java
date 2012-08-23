@@ -608,8 +608,9 @@ public interface Ability extends Environmental
 	 * on intelligence and other factors.
 	 * @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#proficiency()
 	 * @param mob the mob whose proficiency in this skill to possibly advance
+	 * @param adjustment up or down to the chance of becoming more proficient
 	 */
-	public void helpProficiency(MOB mob);
+	public void helpProficiency(MOB mob, int adjustment);
 	
 	/** usageType() constant meaning that the skill is free @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#usageType()*/
 	public final static int USAGE_NADA=0;

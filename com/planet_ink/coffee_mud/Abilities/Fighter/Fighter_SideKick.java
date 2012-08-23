@@ -62,7 +62,7 @@ public class Fighter_SideKick extends MonkSkill
 			&&(!anyWeapons(mob)))
 			{
 				if(CMLib.dice().rollPercentage()>95)
-					helpProficiency(mob);
+					helpProficiency(mob, 0);
 				MOB elligibleTarget=null;
 				for(int m=0;m<mob.location().numInhabitants();m++)
 				{

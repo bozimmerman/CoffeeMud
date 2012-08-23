@@ -68,7 +68,7 @@ public class Fighter_CriticalShot extends FighterSkill
 			double pctRecovery=(CMath.div(proficiency(),100.0)*Math.random());
 			int bonus=(int)Math.round(CMath.mul((msg.value()),pctRecovery));
 			msg.setValue(msg.value()+bonus);
-			helpProficiency(mob);
+			helpProficiency(mob, 0);
 		}
 		return true;
 	}

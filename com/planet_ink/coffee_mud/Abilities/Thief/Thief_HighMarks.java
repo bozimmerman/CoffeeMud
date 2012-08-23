@@ -54,7 +54,7 @@ public class Thief_HighMarks extends ThiefSkill
 		&&(msg.tool()!=null)
 		&&(msg.tool().ID().equals("Thief_Mark")))
 		{
-			helpProficiency(mob);
+			helpProficiency(mob, 0);
 			Ability A=mob.fetchAbility("Thief_Mark");
 			float f=(float)getXLEVELLevel(mob);
 			int ableDiv=(int)Math.round(5.0-(f*0.2));

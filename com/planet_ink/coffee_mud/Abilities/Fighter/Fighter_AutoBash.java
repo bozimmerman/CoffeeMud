@@ -63,7 +63,7 @@ public class Fighter_AutoBash extends FighterSkill
 			Ability A=mob.fetchAbility("Skill_Bash");
 			if(A!=null) A.invoke(mob,mob.getVictim(),false,adjustedLevel(mob,0));
 			if(CMLib.dice().rollPercentage()<10)
-				helpProficiency(mob);
+				helpProficiency(mob, 0);
 		}
 		return true;
 	}

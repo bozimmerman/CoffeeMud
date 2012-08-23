@@ -83,7 +83,7 @@ public class Fighter_Stonebody extends FighterSkill
 		&&(msg.targetMinor()==CMMsg.TYP_DAMAGE)
 		&&(regain>0))
 		{
-			helpProficiency(mob);
+			helpProficiency(mob, 0);
 			regain=-1;
 		}
 	}

@@ -75,7 +75,7 @@ public class Skill_Dodge extends StdSkill
 			{
 				doneThisRound=true;
 				mob.location().send(mob,msg2);
-				helpProficiency(mob);
+				helpProficiency(mob, 0);
 				return false;
 			}
 		}

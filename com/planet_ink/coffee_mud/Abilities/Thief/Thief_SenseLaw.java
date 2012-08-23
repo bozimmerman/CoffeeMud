@@ -106,7 +106,7 @@ public class Thief_SenseLaw extends ThiefSkill
 				{
 					mob.tell("You sense: "+buf.toString());
 					oldroom=mob.location();
-					helpProficiency(mob);
+					helpProficiency(mob, 0);
 					lastReport=buf.toString();
 				}
 			}

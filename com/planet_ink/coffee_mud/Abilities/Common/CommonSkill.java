@@ -535,7 +535,7 @@ public class CommonSkill extends StdAbility
 		mob.curState().adjHitPoints(-consumed[2],mob.maxState());
 		activityRoom=mob.location();
 		if(!bundling)
-			helpProficiency(mob);
+			helpProficiency(mob, 0);
 
 		return true;
 	}

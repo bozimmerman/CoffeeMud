@@ -275,7 +275,7 @@ public class Prop_ClanEquipment extends Property implements TriggeredAffect
 						int flameDamage=CMLib.dice().roll(1,6*PowerLevel,1*PowerLevel);
 						CMLib.combat().postDamage(mob,target,null,flameDamage,CMMsg.MASK_MALICIOUS|CMMsg.MASK_ALWAYS|TypeOfEffect,WeaponType,
 								"^F^<FIGHT^>The magic of "+clanName+" <DAMAGE> <T-NAME>!^</FIGHT^>^?");
-						wandUse.helpProficiency(mob);
+						wandUse.helpProficiency(mob, 0);
 						return;
 					}
 				}

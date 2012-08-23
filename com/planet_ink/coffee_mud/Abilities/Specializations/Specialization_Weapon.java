@@ -90,7 +90,7 @@ public class Specialization_Weapon extends StdAbility
 			||(w.weaponClassification()==secondWeaponClass))
 			{
 				if((msg.targetMinor()==CMMsg.TYP_WEAPONATTACK)&&(CMLib.dice().rollPercentage()<10))
-					helpProficiency((MOB)affected);
+					helpProficiency((MOB)affected, 0);
 				else
 				if((msg.targetMinor()==CMMsg.TYP_DAMAGE)
 				&&((w.weaponClassification()==Weapon.CLASS_NATURAL)||(!w.amWearingAt(Wearable.IN_INVENTORY)))

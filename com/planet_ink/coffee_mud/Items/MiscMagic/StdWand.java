@@ -165,7 +165,7 @@ public class StdWand extends StdItem implements Wand
 							mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,this.name()+" glows brightly.");
 							this.setUsesRemaining(this.usesRemaining()-1);
 							A.invoke(mob, V, target, true,phyStats().level());
-							wandUse.helpProficiency(mob);
+							wandUse.helpProficiency(mob, 0);
 							return;
 						}
 					}
@@ -217,7 +217,7 @@ public class StdWand extends StdItem implements Wand
 							mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,me.name()+" glows brightly.");
 							me.setUsesRemaining(me.usesRemaining()-1);
 							A.invoke(mob, V, target, true, me.phyStats().level());
-							wandUse.helpProficiency(mob);
+							wandUse.helpProficiency(mob, 0);
 							return;
 						}
 					}

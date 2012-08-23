@@ -54,7 +54,7 @@ public class Thief_ImprovedSteal extends ThiefSkill
 		&&(msg.tool()!=null)
 		&&(msg.tool().ID().equals("Thief_Steal")))
 		{
-			helpProficiency(mob);
+			helpProficiency(mob, 0);
 			Ability A=mob.fetchAbility("Thief_Steal");
 			float f=(float)getXLEVELLevel(mob);
 			int ableDiv=(int)Math.round(5.0-(f*0.2));

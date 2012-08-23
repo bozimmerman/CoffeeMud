@@ -118,7 +118,7 @@ public class Ranger_Enemy1 extends StdAbility
 		&&(msg.target() instanceof MOB)
 		&&(((MOB)msg.target()).charStats().getMyRace().racialCategory().equals(text()))
 		&&(CMLib.dice().roll(1, 10, 0)==1))
-			helpProficiency(msg.source());
+			helpProficiency(msg.source(), 0);
 		return super.okMessage(myHost, msg);
 	}
 	

@@ -120,7 +120,7 @@ public class Skill_TwoWeaponFighting extends StdSkill
 					primaryWeapon.setRawWornCode(Wearable.WORN_WIELD);
 					mob.recoverPhyStats();
 					if(CMLib.dice().rollPercentage()==1)
-						helpProficiency(mob);
+						helpProficiency(mob, 0);
 				}
 			}
 			attackedSinceLastTick=false;

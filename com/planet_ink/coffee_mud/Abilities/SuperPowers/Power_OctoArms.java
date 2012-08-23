@@ -58,7 +58,7 @@ public class Power_OctoArms extends SuperPower
 			&&(mob.charStats().getBodyPart(Race.BODY_ARM)>2))
 			{
 				if(CMLib.dice().rollPercentage()>95)
-					helpProficiency(mob);
+					helpProficiency(mob, 0);
 				int arms=mob.charStats().getBodyPart(Race.BODY_ARM)-2;
 				if((naturalWeapon==null)
 				||(naturalWeapon.amDestroyed()))

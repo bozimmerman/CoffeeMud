@@ -67,7 +67,7 @@ public class Fighter_Intimidate extends FighterSkill
 				if(target.location()!=lastRoom)
 				{
 					lastRoom=target.location();
-					helpProficiency(target);
+					helpProficiency(target, 0);
 				}
 				if(target.getVictim()==msg.source())
 				{

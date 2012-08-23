@@ -67,7 +67,7 @@ public class Thief_SneakAttack extends ThiefSkill
 		   &&(msg.targetMinor()==CMMsg.TYP_DAMAGE))
 		{
 			oncePerRound=true;
-			helpProficiency((MOB)affected);
+			helpProficiency((MOB)affected, 0);
 		}
 		return true;
 	}

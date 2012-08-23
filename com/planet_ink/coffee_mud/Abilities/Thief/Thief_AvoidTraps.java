@@ -59,7 +59,7 @@ public class Thief_AvoidTraps extends ThiefSkill
 		&&(msg.tool()!=null)
 		&&(msg.tool() instanceof Trap)
 		&&(CMLib.dice().rollPercentage()>90))
-			helpProficiency(mob);
+			helpProficiency(mob, 0);
 		return super.okMessage(myHost,msg);
 	}
 }

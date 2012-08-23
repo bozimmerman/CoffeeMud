@@ -123,7 +123,7 @@ public class Fighter_FarShot extends FighterSkill
 			&&((mob.fetchAbility(ID())==null)||proficiencyCheck(null,0,false)))
 			{
 				if((CMLib.dice().rollPercentage()<10)&&(mob.isInCombat()) && (mob.rangeToTarget() > 0))
-					helpProficiency(mob);
+					helpProficiency(mob, 0);
 				if(!qualifiedWeapons.contains((Weapon)w))
 				{
 					qualifiedWeapons.add((Weapon)w);

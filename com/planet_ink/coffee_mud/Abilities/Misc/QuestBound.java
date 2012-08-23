@@ -103,7 +103,7 @@ public class QuestBound implements Ability
 	public int proficiency(){return 0;}
 	public void setProficiency(int newProficiency){}
 	public boolean proficiencyCheck(MOB mob, int adjustment, boolean auto){return false;}
-	public void helpProficiency(MOB mob){}
+	public void helpProficiency(MOB mob, int adjustment){}
 
 	public Physical affecting(){return affected;}
 	public void setAffectedOne(Physical P){affected=P;}

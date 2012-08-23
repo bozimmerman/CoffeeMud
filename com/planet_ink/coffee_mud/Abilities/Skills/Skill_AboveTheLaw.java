@@ -78,7 +78,7 @@ public class Skill_AboveTheLaw extends StdSkill
 					W.setCrime("pardoned");
 					W.setOffenses(0);
 					if((!isSavable())&&(CMLib.dice().rollPercentage()<10))
-						helpProficiency(mob);
+						helpProficiency(mob, 0);
 				}
 			}
 		}

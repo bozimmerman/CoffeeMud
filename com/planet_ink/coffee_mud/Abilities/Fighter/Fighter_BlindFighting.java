@@ -69,7 +69,7 @@ public class Fighter_BlindFighting extends FighterSkill
 		{
 			seeEnabled=true;
 			if(CMLib.dice().rollPercentage()<10)
-				helpProficiency(mob);
+				helpProficiency(mob, 0);
 		}
 		return true;
 	}

@@ -71,7 +71,7 @@ public class Fighter_Cleave extends FighterSkill
 			{
 				mob.location().send(mob,msg);
 				CMLib.combat().postAttack(mob,nextTarget,w);
-				helpProficiency(mob);
+				helpProficiency(mob, 0);
 			}
 		}
 		thisTarget=null;

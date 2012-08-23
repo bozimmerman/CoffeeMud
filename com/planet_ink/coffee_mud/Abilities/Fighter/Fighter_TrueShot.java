@@ -76,6 +76,6 @@ public class Fighter_TrueShot extends FighterSkill
 		&&(mob.isInCombat())
 		&&(!mob.amDead())
 		&&(msg.target() instanceof MOB))
-			helpProficiency(mob);
+			helpProficiency(mob, 0);
 	}
 }

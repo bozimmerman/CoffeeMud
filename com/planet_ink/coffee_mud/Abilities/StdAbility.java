@@ -935,7 +935,7 @@ public class StdAbility implements Ability
 		return usageCost;
 	}
 
-	public void helpProficiency(MOB mob)
+	public void helpProficiency(MOB mob, int adjustment)
 	{
 		if(mob==null) return;
 		Ability A=mob.fetchAbility(ID());
@@ -950,10 +950,11 @@ public class StdAbility implements Ability
 		if(!A.appropriateToMyFactions(mob))
 			return;
 
-		int maxProficiency = CMLib.ableMapper().getMaxProficiency(mob,true,ID()); 
+		int maxProficiency = CMLib.ableMapper().getMaxProficiency(mob,true,ID());
 		if(A.proficiency()< maxProficiency)
 		{
-			if(((int)Math.round(Math.sqrt(((double)mob.charStats().getStat(CharStats.STAT_INTELLIGENCE)))*34.0*Math.random()))>=A.proficiency())
+			final int currentProficiency=A.proficiency()+adjustment;
+			if(((int)Math.round(Math.sqrt(((double)mob.charStats().getStat(CharStats.STAT_INTELLIGENCE)))*34.0*Math.random()))>=currentProficiency)
 			{
 				int qualLevel=CMLib.ableMapper().qualifyingLevel(mob,A);
 				if((qualLevel<0)||(qualLevel>30)||(CMLib.dice().rollPercentage()<(int)Math.round(100.0*CMath.div(31-qualLevel,30+qualLevel))))
@@ -1061,7 +1062,7 @@ public class StdAbility implements Ability
 			mob.curState().adjMana(-consumed[0],mob.maxState());
 			mob.curState().adjMovement(-consumed[1],mob.maxState());
 			mob.curState().adjHitPoints(-consumed[2],mob.maxState());
-			helpProficiency(mob);
+			helpProficiency(mob, 0);
 			CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MSG_PREINVOKE, null);
 			if(!mob.okMessage(mob, msg))
 				return false;

@@ -83,7 +83,7 @@ public class Thief_MarkInvisibility extends ThiefSkill
 				if(!active)
 				{
 					active=true;
-					helpProficiency(mob);
+					helpProficiency(mob, 0);
 					mob.recoverPhyStats();
 				}
 			}

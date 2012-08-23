@@ -67,7 +67,7 @@ public class Fighter_ShieldBlock extends FighterSkill
 			if(mob.location().okMessage(mob,msg2))
 			{
 				mob.location().send(mob,msg2);
-				helpProficiency(mob);
+				helpProficiency(mob, 0);
 				return false;
 			}
 		}

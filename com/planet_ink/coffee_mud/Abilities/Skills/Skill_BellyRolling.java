@@ -74,7 +74,7 @@ public class Skill_BellyRolling extends StdSkill
 			{
 				doneThisRound=true;
 				mob.location().send(mob,msg2);
-				helpProficiency(mob);
+				helpProficiency(mob, 0);
 				return false;
 			}
 		}

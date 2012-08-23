@@ -84,7 +84,7 @@ public class Fighter_DualParry extends FighterSkill
 					{
 						lastTime=true;
 						mob.location().send(mob,msg2);
-						helpProficiency(mob);
+						helpProficiency(mob, 0);
 						return false;
 					}
 					lastTime=false;

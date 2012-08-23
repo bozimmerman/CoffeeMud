@@ -77,7 +77,7 @@ public class Skill_Attack2 extends StdSkill
 			if(freeToNerf)
 			{
 				if(CMLib.dice().rollPercentage()>97)
-					helpProficiency(mob);
+					helpProficiency(mob, 0);
 				mob.recoverPhyStats();
 				//chargen combat fighter iterations=100 skiplevels=4 export=output6.txt 1 91
 			}

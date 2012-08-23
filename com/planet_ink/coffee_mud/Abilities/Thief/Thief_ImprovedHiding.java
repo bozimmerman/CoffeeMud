@@ -82,7 +82,7 @@ public class Thief_ImprovedHiding extends ThiefSkill
 				if(!active)
 				{
 					active=true;
-					helpProficiency((MOB)affected);
+					helpProficiency((MOB)affected, 0);
 					improve((MOB)affected,true);
 				}
 			}

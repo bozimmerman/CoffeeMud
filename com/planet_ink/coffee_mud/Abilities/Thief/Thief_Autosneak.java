@@ -84,7 +84,7 @@ public class Thief_Autosneak extends ThiefSkill
 							mob.curState().adjMovement(usage[USAGEINDEX_MOVEMENT]/2,mob.maxState());
 					}
 					if(CMLib.dice().rollPercentage()<10)
-						helpProficiency(mob);
+						helpProficiency(mob, 0);
 					noRepeat=false;
 				}
 				return false;

@@ -112,7 +112,7 @@ public class Song_Babble extends Song
 							  CMStrings.substituteSayInMessage(msg.targetMessage(),smsg),
 							  msg.othersCode(),
 							  CMStrings.substituteSayInMessage(msg.othersMessage(),smsg));
-				helpProficiency((MOB)affected);
+				helpProficiency((MOB)affected, 0);
 			}
 		}
 		return super.okMessage(myHost,msg);

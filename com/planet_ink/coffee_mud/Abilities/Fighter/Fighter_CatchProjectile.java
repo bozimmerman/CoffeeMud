@@ -96,7 +96,7 @@ public class Fighter_CatchProjectile extends FighterSkill
 				{
 					mob.location().send(mob,msg2);
 					doneThisRound=true;
-					helpProficiency(mob);
+					helpProficiency(mob, 0);
 					return false;
 				}
 			}

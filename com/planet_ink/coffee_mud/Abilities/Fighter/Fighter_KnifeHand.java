@@ -61,7 +61,7 @@ public class Fighter_KnifeHand extends MonkSkill
 			&&(!anyWeapons(mob)))
 			{
 				if(CMLib.dice().rollPercentage()>95)
-					helpProficiency(mob);
+					helpProficiency(mob, 0);
 				if((naturalWeapon==null)
 				||(naturalWeapon.amDestroyed()))
 				{

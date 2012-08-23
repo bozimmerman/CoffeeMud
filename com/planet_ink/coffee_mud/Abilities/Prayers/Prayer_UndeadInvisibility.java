@@ -80,7 +80,7 @@ public class Prayer_UndeadInvisibility extends Prayer
 				{
 					target.makePeace();
 					target.setVictim(null);
-					helpProficiency((MOB)affected);
+					helpProficiency((MOB)affected, 0);
 				}
 				return false;
 			}

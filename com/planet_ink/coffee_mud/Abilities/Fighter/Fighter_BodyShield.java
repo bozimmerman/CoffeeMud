@@ -77,7 +77,7 @@ public class Fighter_BodyShield extends FighterSkill
 				CMMsg msg2=CMClass.getMsg(mob,mob.getVictim(),this,CMMsg.MSG_DAMAGE,"<S-NAME> use(s) <T-NAMESELF> as a body shield!");
 				msg2.setValue(regain);
 				msg.addTrailerMsg(msg2);
-				helpProficiency(mob);
+				helpProficiency(mob, 0);
 			}
 		}
 		return true;

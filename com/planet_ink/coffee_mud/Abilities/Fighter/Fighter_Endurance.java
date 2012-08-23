@@ -59,7 +59,7 @@ public class Fighter_Endurance extends FighterSkill
 			int bonus=(getXLEVELLevel(mob)/3)+1;
 			for(int x=0;x<bonus;x++)
 				mob.curState().recoverTick(mob,mob.maxState());
-			helpProficiency(mob);
+			helpProficiency(mob, 0);
 		}
 		return super.tick(ticking,tickID);
 	}

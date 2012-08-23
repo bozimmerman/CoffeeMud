@@ -61,7 +61,7 @@ public class Thief_TrapImmunity extends ThiefSkill
 		&&(msg.tool() instanceof Trap))
 		{
 			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> deftly avoid(s) a trap.");
-			helpProficiency(mob);
+			helpProficiency(mob, 0);
 			return false;
 		}
 		return super.okMessage(myHost,msg);

@@ -79,7 +79,7 @@ public class Spell_Brainwash extends Spell
 						  CMStrings.substituteSayInMessage(msg.targetMessage(),str),
 						  msg.othersCode(),
 						  CMStrings.substituteSayInMessage(msg.othersMessage(),str));
-				helpProficiency((MOB)affected);
+				helpProficiency((MOB)affected, 0);
 			}
 		}
 		return super.okMessage(host,msg);

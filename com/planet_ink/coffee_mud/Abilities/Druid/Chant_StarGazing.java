@@ -171,7 +171,7 @@ public class Chant_StarGazing extends Chant
 			{
 				mob.location().send(mob,msg);
 				beneficialAffect(mob,mob,asLevel,Ability.TICKS_FOREVER);
-				helpProficiency(mob);
+				helpProficiency(mob, 0);
 			}
 		}
 		else

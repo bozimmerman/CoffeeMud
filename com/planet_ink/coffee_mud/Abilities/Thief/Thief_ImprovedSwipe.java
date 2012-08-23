@@ -54,7 +54,7 @@ public class Thief_ImprovedSwipe extends ThiefSkill
 		&&(msg.tool()!=null)
 		&&(msg.tool().ID().equals("Thief_Swipe")))
 		{
-			helpProficiency(mob);
+			helpProficiency(mob, 0);
 			Ability A=mob.fetchAbility("Thief_Swipe");
 			float f=(float)getXLEVELLevel(mob);
 			int ableDiv=(int)Math.round(5.0-(f*0.2));

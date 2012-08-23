@@ -56,7 +56,7 @@ public class Thief_IdentifyBombs extends ThiefSkill
 			{
 				if(CMLib.dice().rollPercentage()==1)
 				{
-					helpProficiency((MOB)affected);
+					helpProficiency((MOB)affected, 0);
 					affected.recoverPhyStats();
 				}
 				return P.name()+" is a bomb.\n\r";
@@ -81,7 +81,7 @@ public class Thief_IdentifyBombs extends ThiefSkill
 				{
 					if(CMLib.dice().rollPercentage()==1)
 					{
-						helpProficiency((MOB)affected);
+						helpProficiency((MOB)affected, 0);
 						affected.recoverPhyStats();
 					}
 					msg.append(C.name()+" contains a bomb.");
@@ -118,7 +118,7 @@ public class Thief_IdentifyBombs extends ThiefSkill
 				{
 					if(CMLib.dice().rollPercentage()==1)
 					{
-						helpProficiency((MOB)affected);
+						helpProficiency((MOB)affected, 0);
 						affected.recoverPhyStats();
 					}
 					return P.name()+" is carrying a bomb.";
@@ -135,7 +135,7 @@ public class Thief_IdentifyBombs extends ThiefSkill
 						{
 							if(CMLib.dice().rollPercentage()==1)
 							{
-								helpProficiency((MOB)affected);
+								helpProficiency((MOB)affected, 0);
 								affected.recoverPhyStats();
 							}
 							return P.name()+" has a bomb in stock.";

@@ -154,7 +154,7 @@ public class Skill_Meditation extends StdSkill
 			{
 				mob.location().send(mob,msg);
 				beneficialAffect(mob,mob,asLevel,Ability.TICKS_FOREVER);
-				helpProficiency(mob);
+				helpProficiency(mob, 0);
 			}
 		}
 		else

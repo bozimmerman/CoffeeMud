@@ -109,7 +109,7 @@ public class Fighter_ReturnProjectile extends FighterSkill
 					if(mob.isMine(w))
 						CMLib.combat().postAttack(mob,msg.source(),w);
 					doneThisRound=true;
-					helpProficiency(mob);
+					helpProficiency(mob, 0);
 					return false;
 				}
 			}
