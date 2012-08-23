@@ -41,7 +41,7 @@ public class Spell_Advancement extends Spell
 	public int abstractQuality(){ return Ability.QUALITY_OK_OTHERS;}
 	protected int canAffectCode(){return CAN_MOBS;}
 	protected int canTargetCode(){return CAN_MOBS;}
-	protected short overrideMana(){return 100;}
+	protected int overrideMana(){return 100;}
 	public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_ENCHANTMENT;}
 
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)

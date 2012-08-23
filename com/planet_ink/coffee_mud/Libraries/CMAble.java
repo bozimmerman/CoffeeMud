@@ -49,7 +49,7 @@ public class CMAble extends StdLibrary implements AbilityMapper
 	protected Map<String, Map<String, AbilityMapping>> 
 										reverseAbilityMap   		= new TreeMap<String, Map<String, AbilityMapping>>();
 	protected List<AbilityMapping>  	eachClassSet				= null;
-	protected Map<String,short[]> 		hardOverrideCache			= new Hashtable<String,short[]>(); 
+	protected Map<String,int[]> 		hardOverrideCache			= new Hashtable<String,int[]>(); 
 
 	public void addCharAbilityMapping(String ID,
 									  int qualLevel,
@@ -1443,7 +1443,7 @@ public class CMAble extends StdLibrary implements AbilityMapper
 		return null;
 	}
 
-	public Map<String,short[]> getHardOverrideManaCache()
+	public Map<String, int[]> getHardOverrideManaCache()
 	{
 		return hardOverrideCache;
 	}

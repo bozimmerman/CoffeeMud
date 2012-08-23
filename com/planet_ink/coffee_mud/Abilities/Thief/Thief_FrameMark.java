@@ -42,7 +42,7 @@ public class Thief_FrameMark extends ThiefSkill
 	public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 	private static final String[] triggerStrings = {"FRAME"};
 	public String[] triggerStrings(){return triggerStrings;}
-	protected short overrideMana(){return 50;}
+	protected int overrideMana(){return 50;}
 	public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_STREETSMARTS;}
 
 	public MOB getMark(MOB mob)

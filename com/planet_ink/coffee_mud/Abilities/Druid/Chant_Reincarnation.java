@@ -43,7 +43,7 @@ public class Chant_Reincarnation extends Chant
 	public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_BREEDING;}
 	public int abstractQuality(){return Ability.QUALITY_OK_OTHERS;}
 	public boolean canBeUninvoked(){return false;}
-	protected short overrideMana(){return 200;}
+	protected int overrideMana(){return 200;}
 
 	Race newRace=null;
 

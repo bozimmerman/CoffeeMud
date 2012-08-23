@@ -40,7 +40,7 @@ public class Spell_WordRecall extends Spell
 	protected int canTargetCode(){return 0;}
 	public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 	public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_CONJURATION;}
-	protected short overrideMana(){return Short.MAX_VALUE-90;}
+	protected int overrideMana(){return Ability.COST_ALL-90;}
 	public long flags(){return Ability.FLAG_TRANSPORTING;}
 
 	protected int verbalCastCode(MOB mob, Physical target, boolean auto)

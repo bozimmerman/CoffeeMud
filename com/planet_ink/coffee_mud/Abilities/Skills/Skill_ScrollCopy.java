@@ -43,7 +43,7 @@ public class Skill_ScrollCopy extends StdSkill
 	private static final String[] triggerStrings = {"MEMORIZE"};
 	public String[] triggerStrings(){return triggerStrings;}
 	public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_CALLIGRAPHY;}
-	protected short overrideMana(){return 0;} //-1=normal, Short.MAX_VALUE=all, Short.MAX_VALUE-100
+	protected int overrideMana(){return 0;} //-1=normal, Ability.COST_ALL=all, Ability.COST_PCT
 
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{

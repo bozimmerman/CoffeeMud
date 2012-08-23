@@ -40,7 +40,7 @@ public class Spell_MassDisintegrate extends Spell
 	public int maxRange(){return adjustedMaxInvokerRange(2);}
 	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_EVOCATION;}
-	public short overrideMana(){return 200;}
+	public int overrideMana(){return 200;}
 
 
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)

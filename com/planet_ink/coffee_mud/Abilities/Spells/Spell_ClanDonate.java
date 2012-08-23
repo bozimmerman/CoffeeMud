@@ -41,7 +41,7 @@ public class Spell_ClanDonate extends Spell
 	public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
 	public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_CONJURATION;}
 	public long flags(){return super.flags()|Ability.FLAG_CLANMAGIC;}
-	protected short overrideMana(){return 5;}
+	protected int overrideMana(){return 5;}
 	protected boolean disregardsArmorCheck(MOB mob){return true;}
 
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)

@@ -35,7 +35,7 @@ import java.util.*;
    limitations under the License.
 */
 @SuppressWarnings({"unchecked","rawtypes"})
-public class Prop_SpellAdder extends Property implements AbilityUsing, TriggeredAffect
+public class Prop_SpellAdder extends Property implements AbilityContainer, TriggeredAffect
 {
 	public String ID() { return "Prop_SpellAdder"; }
 	public String name(){ return "Casting spells on oneself";}

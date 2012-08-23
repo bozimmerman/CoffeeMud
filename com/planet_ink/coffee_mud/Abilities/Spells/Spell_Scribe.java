@@ -40,7 +40,7 @@ public class Spell_Scribe extends Spell
 	public String name(){return "Scribe";}
 	protected int canTargetCode(){return CAN_ITEMS;}
 	public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_EVOCATION;}
-	protected short overrideMana(){return Short.MAX_VALUE;}
+	protected int overridemana(){return Ability.COST_ALL;}
 	public long flags(){return Ability.FLAG_NOORDERING;}
 	public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
 

@@ -82,7 +82,6 @@ public class QuestBound implements Ability
 	public boolean isAutoInvoked(){return true;}
 	public boolean isNowAnAutoEffect(){return true;}
 	public List<String> externalFiles(){return null;}
-	public void clearUsageCache(){}
 
 	public boolean canBeTaughtBy(MOB teacher, MOB student){return false;}
 	public boolean canBePracticedBy(MOB teacher, MOB student){return false;}
@@ -282,8 +281,8 @@ public class QuestBound implements Ability
 	
 	public void makeLongLasting(){}
 	public void makeNonUninvokable(){}
-	private static final short[] cost=new short[3];
-	public short[] usageCost(MOB mob,boolean ignoreCostOverride){return cost;}
+	private static final int[] cost=new int[3];
+	public int[] usageCost(MOB mob,boolean ignoreCostOverride){return cost;}
 	
 	public boolean isGeneric(){return false;}
 }

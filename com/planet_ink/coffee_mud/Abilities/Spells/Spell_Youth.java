@@ -38,7 +38,7 @@ public class Spell_Youth extends Spell
 {
 	public String ID() { return "Spell_Youth"; }
 	public String name(){return "Youth";}
-	public short overrideMana(){return Short.MAX_VALUE;}
+	public int overridemana(){return Ability.COST_ALL;}
 	public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_TRANSMUTATION;}
 	public int abstractQuality(){ return Ability.QUALITY_OK_OTHERS;}
 

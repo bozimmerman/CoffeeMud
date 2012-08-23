@@ -82,7 +82,7 @@ public class GrinderAbilities {
 		A.setStat("HELP", old==null?"":old);
 		old=httpReq.getRequestParameter("OVERRIDEMANA");
 		x1=CMath.s_int(old);
-		if(((x1>0)&&(x1<Short.MAX_VALUE-101))) 
+		if(((x1>0)&&(x1<Ability.COST_PCT))) 
 			old=httpReq.getRequestParameter("CUSTOMOVERRIDEMANA");
 		A.setStat("OVERRIDEMANA",(old==null)?"-1":old);
 		V.clear();

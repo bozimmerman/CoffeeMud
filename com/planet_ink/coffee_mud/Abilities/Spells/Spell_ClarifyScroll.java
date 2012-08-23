@@ -37,7 +37,7 @@ public class Spell_ClarifyScroll extends Spell
 {
 	public String ID() { return "Spell_ClarifyScroll"; }
 	public String name(){return "Clarify Scroll";}
-	public short overrideMana(){return 50;}
+	public int overrideMana(){return 50;}
 	protected int canTargetCode(){return CAN_ITEMS;}
 	public int classificationCode(){	return Ability.ACODE_SPELL|Ability.DOMAIN_ENCHANTMENT;	}
 	public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}

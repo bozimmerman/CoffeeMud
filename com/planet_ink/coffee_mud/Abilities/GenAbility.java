@@ -152,7 +152,7 @@ public class GenAbility extends StdAbility
 	public boolean isAutoInvoked(){return ((Boolean)V(ID,V_AUTO)).booleanValue();}
 	public long flags(){return ((Integer)V(ID,V_FLAG)).intValue();}
 	public int usageType(){return ((Integer)V(ID,V_USAG)).intValue();}
-	protected short overrideMana(){return ((Short)V(ID,V_OMAN)).shortValue();} //-1=normal, Short.MAX_VALUE=all, Short.MAX_VALUE-100
+	protected int overrideMana(){return ((Integer)V(ID,V_OMAN)).intValue();} //-1=normal, Ability.COST_ALL=all, Ability.COST_PCT
 	public int classificationCode(){ return ((Integer)V(ID,V_CLAS)).intValue(); }
 	protected int canAffectCode(){return ((Integer)V(ID,V_CAFF)).intValue(); }
 	protected int canTargetCode(){return ((Integer)V(ID,V_CTAR)).intValue(); }

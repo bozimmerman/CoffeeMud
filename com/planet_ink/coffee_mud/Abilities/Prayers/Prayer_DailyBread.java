@@ -43,7 +43,7 @@ public class Prayer_DailyBread extends Prayer
 	public long flags(){return Ability.FLAG_UNHOLY;}
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return Ability.CAN_MOBS;}
-	protected short overrideMana(){return 100;}
+	protected int overrideMana(){return 100;}
 
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{

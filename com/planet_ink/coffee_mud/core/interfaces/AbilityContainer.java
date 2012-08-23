@@ -25,7 +25,7 @@ limitations under the License.
 * @author Bo Zimmerman
 *
 */
-public interface AbilityUsing 
+public interface AbilityContainer 
 {
 	/**
 	 * Adds a new ability to this for use.  

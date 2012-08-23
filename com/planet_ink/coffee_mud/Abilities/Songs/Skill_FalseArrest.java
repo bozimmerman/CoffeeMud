@@ -42,7 +42,7 @@ public class Skill_FalseArrest extends BardSkill
 	public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 	private static final String[] triggerStrings = {"FALSEARREST"};
 	public String[] triggerStrings(){return triggerStrings;}
-	protected short overrideMana(){return 50;}
+	protected int overrideMana(){return 50;}
 	public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_DECEPTIVE;}
 
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)

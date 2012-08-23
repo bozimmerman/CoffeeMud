@@ -126,7 +126,7 @@ public class Wizard extends Mage
 				&&((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_SPELL)
 				&&(!CMLib.ableMapper().getDefaultGain(ID(),false,A.ID())))
 				{
-					short[] cost=A.usageCost(mob,true);
+					int[] cost=A.usageCost(mob,true);
 					int manaCost=cost[Ability.USAGEINDEX_MANA];
 					if(manaCost>0)
 					{

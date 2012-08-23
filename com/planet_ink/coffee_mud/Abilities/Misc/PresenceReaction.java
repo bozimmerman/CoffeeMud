@@ -54,7 +54,6 @@ public class PresenceReaction extends StdAbility
 		super.canBeUninvoked=false;
 	}
 	protected void cloneFix(Ability E){
-		usageCache=null;
 		reactToM=null;
 		previousMood=null;
 		reactToName=null;

@@ -193,5 +193,5 @@ public interface AbilityMapper extends CMLibrary
 	public Map<String, Map<String,AbilityMapping>> getAllQualifiesMap(final Map<String,Object> cache);
 	public AbilityMapping makeAbilityMapping(String ID, int qualLevel, String abilityID, int defaultProficiency, int maxProficiency, String defaultParam, boolean autoGain,
 			 boolean secret, boolean isAllQualified, List<String> preReqSkillsList, String extraMask, Integer[] costOverrides);
-	public Map<String,short[]> getHardOverrideManaCache();
+	public Map<String, int[]> getHardOverrideManaCache();
 }

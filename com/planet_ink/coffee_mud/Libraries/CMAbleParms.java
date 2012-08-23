@@ -915,9 +915,9 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 			{
 				if((A.abilityCode() & Ability.ALL_ACODES) == Ability.ACODE_PROPERTY)
 				{
-					if(A instanceof AbilityUsing)
+					if(A instanceof AbilityContainer)
 					{
-						for(Enumeration<Ability> a1=((AbilityUsing)A).abilities(); a1.hasMoreElements(); )
+						for(Enumeration<Ability> a1=((AbilityContainer)A).abilities(); a1.hasMoreElements(); )
 						{
 							addExtraAbilityMaterial(extraMatsM,I,a1.nextElement());
 						}

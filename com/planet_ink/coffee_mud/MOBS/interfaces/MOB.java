@@ -38,7 +38,7 @@ import java.util.Vector;
  * down to a goblin
  */
 @SuppressWarnings("rawtypes")
-public interface MOB extends Rider, DBIdentifiable, PhysicalAgent, ItemPossessor, AbilityUsing
+public interface MOB extends Rider, DBIdentifiable, PhysicalAgent, ItemPossessor, AbilityContainer
 {
 	public static long AGE_MILLIS_THRESHOLD = 120000;
 	
@@ -195,6 +195,7 @@ public interface MOB extends Rider, DBIdentifiable, PhysicalAgent, ItemPossessor
 	/** Extra functions on ability objects, which includes
 	 * spells, traits, skills, etc.*/
 	public Ability findAbility(String name);
+	public int[][] getAbilityUsageCache(final String abilityID);
 
 	/** Manipulation of the expertise list */
 	public void addExpertise(String of);
@@ -242,14 +243,13 @@ public interface MOB extends Rider, DBIdentifiable, PhysicalAgent, ItemPossessor
 	
 	public static class QMCommand
 	{
-		public Object   commandObj = null;
-		public double   actionDelay = 0.0;
-		public long 	execTime = 0;
-		public long 	nextCheck=System.currentTimeMillis()-1;
-		public int  	seconds=-1;
-		public int  	metaFlags=0;
-		public List<String>
-						commandVector = null;
+		public Object   	commandObj = null;
+		public double   	actionDelay = 0.0;
+		public long 		execTime = 0;
+		public long 		nextCheck=System.currentTimeMillis()-1;
+		public int  		seconds=-1;
+		public int  		metaFlags=0;
+		public List<String>	commandVector = null;
 	}
 
 	public static final int ATT_AUTOGOLD=1;

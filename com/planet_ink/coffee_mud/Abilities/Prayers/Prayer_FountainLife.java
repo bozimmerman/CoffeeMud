@@ -45,7 +45,7 @@ public class Prayer_FountainLife extends Prayer
 	protected int canTargetCode(){return 0;}
 	protected Room SpringLocation=null;
 	protected Item littleSpring=null;
-	protected short overrideMana(){return Short.MAX_VALUE;}
+	protected int overridemana(){return Ability.COST_ALL;}
 
 	public void unInvoke()
 	{

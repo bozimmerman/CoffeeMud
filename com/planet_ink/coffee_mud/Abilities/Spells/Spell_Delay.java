@@ -43,7 +43,7 @@ public class Spell_Delay extends Spell
 	private Ability shooter=null;
 	protected Vector parameters=null;
 	public int classificationCode(){	return Ability.ACODE_SPELL|Ability.DOMAIN_EVOCATION;}
-	protected short overrideMana(){return Short.MAX_VALUE;}
+	protected int overridemana(){return Ability.COST_ALL;}
 	public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
 
 	public void unInvoke()

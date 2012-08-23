@@ -41,7 +41,7 @@ public class Spell_EnchantArmor extends Spell
 	protected int canTargetCode(){return CAN_ITEMS;}
 	public int classificationCode(){	return Ability.ACODE_SPELL|Ability.DOMAIN_ENCHANTMENT;}
 	public long flags(){return Ability.FLAG_NOORDERING;}
-	protected short overrideMana(){return Short.MAX_VALUE;}
+	protected int overridemana(){return Ability.COST_ALL;}
 	public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
 
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)

@@ -42,7 +42,7 @@ public class Spell_DemonGate extends Spell
 	public int enchantQuality(){return Ability.QUALITY_INDIFFERENT;}
 	protected int canAffectCode(){return CAN_MOBS;}
 	protected int canTargetCode(){return 0;}
-	protected short overrideMana(){return 100;}
+	protected int overrideMana(){return 100;}
 	MOB myTarget=null;
 	public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_CONJURATION;}
 	public long flags(){return Ability.FLAG_SUMMONING;}

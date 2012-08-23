@@ -43,7 +43,7 @@ public class Skill_RegionalAwareness extends StdSkill
 	private static final String[] triggerStrings = {"REGION","REGIONALAWARENESS"};
 	public String[] triggerStrings(){return triggerStrings;}
 	public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_NATURELORE;}
-	public short overrideMana(){return 0;}
+	public int overrideMana(){return 0;}
 
 	public char roomColor(Room room)
 	{

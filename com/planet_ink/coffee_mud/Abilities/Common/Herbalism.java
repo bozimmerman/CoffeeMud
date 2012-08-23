@@ -125,10 +125,10 @@ public class Herbalism extends CraftingSkill implements ItemCraftor
 			for(int i=0;i<I.numEffects();i++)
 			{
 				Ability A=I.fetchEffect(i);
-				if(A instanceof AbilityUsing)
+				if(A instanceof AbilityContainer)
 				{
 					boolean chantCheck=false;
-					for(Enumeration<Ability> a=((AbilityUsing)A).abilities();a.hasMoreElements();)
+					for(Enumeration<Ability> a=((AbilityContainer)A).abilities();a.hasMoreElements();)
 						switch(a.nextElement().classificationCode()&Ability.ALL_ACODES)
 						{
 						case Ability.ACODE_CHANT: chantCheck=true; break;

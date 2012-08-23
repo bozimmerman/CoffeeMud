@@ -41,7 +41,7 @@ public class Chant_PlantTrap extends Chant implements Trap
 	public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
 	protected int canAffectCode(){return CAN_ROOMS;}
 	protected int canTargetCode(){return 0;}
-	protected short overrideMana(){return 100;}
+	protected int overrideMana(){return 100;}
 
 	public boolean isABomb(){return false;}
 	public void activateBomb(){}

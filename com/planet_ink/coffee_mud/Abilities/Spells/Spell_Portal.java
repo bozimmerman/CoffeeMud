@@ -40,7 +40,7 @@ public class Spell_Portal extends Spell
 	protected int canTargetCode(){return 0;}
 	public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_EVOCATION;}
 	public long flags(){return Ability.FLAG_TRANSPORTING;}
-	protected short overrideMana(){return Short.MAX_VALUE-90;}
+	protected int overrideMana(){return Ability.COST_ALL-90;}
 	public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
 
 	Room newRoom=null;

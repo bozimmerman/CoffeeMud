@@ -43,7 +43,7 @@ public class Thief_TarAndFeather extends ThiefSkill
 	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	private static final String[] triggerStrings = {"TARANDFEATHER","TAR"};
 	public String[] triggerStrings(){return triggerStrings;}
-	protected short overrideMana(){return 100;}
+	protected int overrideMana(){return 100;}
 	public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
 	public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_LEGAL;}
 

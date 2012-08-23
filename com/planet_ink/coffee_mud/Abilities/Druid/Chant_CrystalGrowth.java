@@ -41,7 +41,7 @@ public class Chant_CrystalGrowth extends Chant
 	public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_ROCKCONTROL;}
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return 0;}
-	protected short overrideMana(){return 50;}
+	protected int overrideMana(){return 50;}
 	public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)

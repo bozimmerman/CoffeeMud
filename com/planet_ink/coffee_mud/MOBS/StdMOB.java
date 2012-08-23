@@ -118,20 +118,22 @@ public class StdMOB implements MOB
 	protected final MOB			 	me				= this;
 
 	/* containers of items and attributes */
-	protected final    SVector<Item>		 	inventory		= new SVector<Item>(1);
-	protected final    SVector<Ability>		 	abilitys		= new SVector<Ability>(1);
-	protected final    SVector<Ability>		 	affects			= new SVector<Ability>(1);
-	protected final    SVector<Behavior>	 	behaviors		= new SVector<Behavior>(1);
-	protected final    SVector<Tattoo>		 	tattoos			= new SVector<Tattoo>(1);
-	protected final    SVector<String>		 	expertises		= new SVector<String>(1);
-	protected volatile SVector<Follower>	 	followers		= null;
-	protected final    LinkedList<QMCommand> 	commandQue		= new LinkedList<QMCommand>();
-	protected final    SVector<ScriptingEngine>	scripts			= new SVector(1);
-	protected volatile ChameleonList<Ability>	racialAffects	= null;
-	protected volatile ChameleonList<Ability>	clanAffects		= null;
-	protected final    SHashtable<String, FData>factions 		= new SHashtable<String, FData>(1);
-	protected volatile WeakReference<Item>	    possWieldedItem = null;
-	protected volatile WeakReference<Item>	 	possHeldItem	= null;
+	protected final    SVector<Item>		 	 inventory		= new SVector<Item>(1);
+	protected final    SVector<Ability>		 	 abilitys		= new SVector<Ability>(1);
+	protected final    int[]					 abilityUseTrig = new int[3];
+	protected final    STreeMap<String,int[][]>	 abilityUseCache= new STreeMap<String,int[][]>();
+	protected final    SVector<Ability>		 	 affects		= new SVector<Ability>(1);
+	protected final    SVector<Behavior>	 	 behaviors		= new SVector<Behavior>(1);
+	protected final    SVector<Tattoo>		 	 tattoos		= new SVector<Tattoo>(1);
+	protected final    SVector<String>		 	 expertises		= new SVector<String>(1);
+	protected volatile SVector<Follower>	 	 followers		= null;
+	protected final    LinkedList<QMCommand> 	 commandQue		= new LinkedList<QMCommand>();
+	protected final    SVector<ScriptingEngine>	 scripts		= new SVector(1);
+	protected volatile ChameleonList<Ability>	 racialAffects	= null;
+	protected volatile ChameleonList<Ability>	 clanAffects	= null;
+	protected final    SHashtable<String, FData> factions 		= new SHashtable<String, FData>(1);
+	protected volatile WeakReference<Item>	     possWieldedItem= null;
+	protected volatile WeakReference<Item>	 	 possHeldItem	= null;
 
 	public StdMOB()
 	{
@@ -3807,20 +3809,30 @@ public class StdMOB implements MOB
 			} catch (ArrayIndexOutOfBoundsException e){}
 	}
 
-	private void clearExpertiseCache() 
+	public int[][] getAbilityUsageCache(final String abilityID)
 	{
-		for (final Enumeration<Ability> a = allAbilities(); a.hasMoreElements();)
+		int[][] ableCache=abilityUseCache.get(abilityID);
+		if(ableCache==null)
 		{
-			final Ability A = a.nextElement();
-			if (A != null)
-				A.clearUsageCache();
+			ableCache=new int[Ability.CACHEINDEX_TOTAL][];
+			abilityUseCache.put(abilityID, ableCache);
 		}
-		for (final Enumeration<Ability> a = personalEffects(); a.hasMoreElements();)
+		if((phyStats().level()!=abilityUseTrig[0])
+		||(charStats().getCurrentClassLevel()!=abilityUseTrig[1])
+		||(charStats().getCurrentClass().hashCode()!=abilityUseTrig[2]))
 		{
-			final Ability A = a.nextElement();
-			if (A != null)
-				A.clearUsageCache();
+			clearAbilityUsageCache();
+			abilityUseTrig[0]=phyStats().level();
+			abilityUseTrig[1]=charStats().getCurrentClassLevel();
+			abilityUseTrig[2]=charStats().getCurrentClass().hashCode();
 		}
+		return ableCache;
+	}
+
+	private void clearAbilityUsageCache() 
+	{
+		Arrays.fill(abilityUseTrig, 0);
+		abilityUseCache.clear();
 	}
 
 	/** Manipulation of the expertise list */
@@ -3829,7 +3841,7 @@ public class StdMOB implements MOB
 		if (fetchExpertise(of) != null)
 			return;
 		expertises.add(of);
-		clearExpertiseCache();
+		clearAbilityUsageCache();
 	}
 
 	public void delExpertise(String of) 
@@ -3838,7 +3850,7 @@ public class StdMOB implements MOB
 		if (of != null)
 		{
 			if (expertises.remove(of))
-				clearExpertiseCache();
+				clearAbilityUsageCache();
 		}
 	}
 
@@ -3847,7 +3859,7 @@ public class StdMOB implements MOB
 		boolean clearExpertiseCache = expertises.size() > 0;
 		expertises.clear();
 		if (clearExpertiseCache)
-			clearExpertiseCache();
+			clearAbilityUsageCache();
 	}
 
 	public int numExpertises() 
