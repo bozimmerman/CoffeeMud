@@ -403,12 +403,12 @@ public class MobData extends StdWebMacro
 				str.append("</TD><TD WIDTH=50%>");
 				str.append("<SELECT NAME=FACTDATA"+(i+1)+">");
 				if(theparm.length()==0) theparm=""+F.findDefault(E);
-				Faction.FactionRange FR=CMLib.factions().getRange(F.factionID(),CMath.s_int(theparm));
+				Faction.FRange FR=CMLib.factions().getRange(F.factionID(),CMath.s_int(theparm));
 				if(FR==null)
 					str.append("<OPTION VALUE=\""+CMath.s_int(theparm)+"\">"+CMath.s_int(theparm));
 				for(Enumeration e=F.ranges();e.hasMoreElements();)
 				{
-					Faction.FactionRange FR2=(Faction.FactionRange)e.nextElement();
+					Faction.FRange FR2=(Faction.FRange)e.nextElement();
 					int value=FR2.low()+(FR2.high()-FR2.low());
 					if(FR2.low()==F.minimum()) value=FR2.low();
 					if(FR2.high()==F.maximum()) value=FR2.high();

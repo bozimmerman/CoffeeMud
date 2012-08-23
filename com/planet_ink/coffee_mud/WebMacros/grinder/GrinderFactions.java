@@ -72,7 +72,7 @@ public class GrinderFactions {
 		
 		int num=0;
 		for(Enumeration e=F.ranges();e.hasMoreElements();)
-			F.delRange((Faction.FactionRange)e.nextElement());
+			F.delRange((Faction.FRange)e.nextElement());
 		while(httpReq.getRequestParameter("RANGENAME"+num)!=null)
 		{
 			old=httpReq.getRequestParameter("RANGENAME"+num);
@@ -143,7 +143,7 @@ public class GrinderFactions {
 			num++;
 		}
 		
-		for(Enumeration<Faction.FactionZapFactor> e=F.factors();e.hasMoreElements();)
+		for(Enumeration<Faction.FZapFactor> e=F.factors();e.hasMoreElements();)
 			F.delFactor(e.nextElement());
 		num=0;
 		while(httpReq.getRequestParameter("ADJFACTOR"+num)!=null)
@@ -202,7 +202,7 @@ public class GrinderFactions {
 		
 		num=0;
 		for(Enumeration e=F.abilityUsages();e.hasMoreElements();)
-			F.delAbilityUsage((Faction.FactionAbilityUsage)e.nextElement());
+			F.delAbilityUsage((Faction.FAbilityUsage)e.nextElement());
 		while(httpReq.getRequestParameter("ABILITYUSE"+num)!=null)
 		{
 			old=httpReq.getRequestParameter("ABILITYUSE"+num);
@@ -231,7 +231,7 @@ public class GrinderFactions {
 		
 		num=0;
 		for(Enumeration e=F.reactions();e.hasMoreElements();)
-			F.delReaction((Faction.FactionReactionItem)e.nextElement());
+			F.delReaction((Faction.FReactionItem)e.nextElement());
 		while(httpReq.getRequestParameter("REACTIONRANGE"+num)!=null)
 		{
 			old=httpReq.getRequestParameter("REACTIONRANGE"+num);

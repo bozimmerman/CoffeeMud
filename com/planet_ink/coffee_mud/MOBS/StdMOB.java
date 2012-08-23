@@ -10,6 +10,7 @@ import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.Faction.FData;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.Basic.StdItem;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
@@ -114,24 +115,23 @@ public class StdMOB implements MOB
 	protected boolean				imMobile		= false;
 
 	protected long					tickStatus		= Tickable.STATUS_NOT;
+	protected final MOB			 	me				= this;
 
 	/* containers of items and attributes */
-	protected final SVector<Item>			 inventory			 = new SVector<Item>(1);
-	protected final SVector<Ability>		 abilitys			 = new SVector<Ability>(1);
-	protected final SVector<Ability>		 affects			 = new SVector<Ability>(1);
-	protected final SVector<Behavior>		 behaviors			 = new SVector<Behavior>(1);
-	protected final SVector<Tattoo>			 tattoos			 = new SVector<Tattoo>(1);
-	protected final SVector<String>			 expertises			 = new SVector<String>(1);
-	protected volatile SVector<Follower>	 followers			 = null;
-	protected final LinkedList<QMCommand>	 commandQue			 = new LinkedList<QMCommand>();
-	protected final SVector<ScriptingEngine> scripts			 = new SVector(1);
-	protected volatile ChameleonList<Ability>racialAffects		 = null;
-	protected volatile ChameleonList<Ability>clanAffects		 = null;
-	protected final MOB						 me					 = this;
-	protected final SHashtable<String, Faction.FactionData> 
-											 factions			 = new SHashtable<String, Faction.FactionData>(1);
-	protected volatile WeakReference<Item>	 possibleWieldedItem = null;
-	protected volatile WeakReference<Item>	 possibleHeldItem	 = null;
+	protected final    SVector<Item>		 	inventory		= new SVector<Item>(1);
+	protected final    SVector<Ability>		 	abilitys		= new SVector<Ability>(1);
+	protected final    SVector<Ability>		 	affects			= new SVector<Ability>(1);
+	protected final    SVector<Behavior>	 	behaviors		= new SVector<Behavior>(1);
+	protected final    SVector<Tattoo>		 	tattoos			= new SVector<Tattoo>(1);
+	protected final    SVector<String>		 	expertises		= new SVector<String>(1);
+	protected volatile SVector<Follower>	 	followers		= null;
+	protected final    LinkedList<QMCommand> 	commandQue		= new LinkedList<QMCommand>();
+	protected final    SVector<ScriptingEngine>	scripts			= new SVector(1);
+	protected volatile ChameleonList<Ability>	racialAffects	= null;
+	protected volatile ChameleonList<Ability>	clanAffects		= null;
+	protected final    SHashtable<String, FData>factions 		= new SHashtable<String, FData>(1);
+	protected volatile WeakReference<Item>	    possWieldedItem = null;
+	protected volatile WeakReference<Item>	 	possHeldItem	= null;
 
 	public StdMOB()
 	{
@@ -575,7 +575,7 @@ public class StdMOB implements MOB
 		eachItem(recoverPhyStatsItemApplier);
 		eachEffect(recoverPhyStatsAffectApplier);
 		for (final Enumeration e = factions.elements(); e.hasMoreElements();)
-			((Faction.FactionData) e.nextElement()).affectPhyStats(this, phyStats);
+			((Faction.FData) e.nextElement()).affectPhyStats(this, phyStats);
 		/* the follower light exception */
 		if (!CMLib.flags().isLightSource(this))
 		{
@@ -673,7 +673,7 @@ public class StdMOB implements MOB
 		charStats.getMyRace().affectCharStats(this, charStats);
 		baseCharStats.getMyRace().agingAffects(this, baseCharStats, charStats);
 		for (final Enumeration e = factions.elements(); e.hasMoreElements();)
-			((Faction.FactionData) e.nextElement()).affectCharStats(this, charStats);
+			((Faction.FData) e.nextElement()).affectCharStats(this, charStats);
 		if ((playerStats != null) && (soulMate == null) && (playerStats.getHygiene() >= PlayerStats.HYGIENE_DELIMIT))
 		{
 			int chaAdjust = (int) (playerStats.getHygiene() / PlayerStats.HYGIENE_DELIMIT);
@@ -786,7 +786,7 @@ public class StdMOB implements MOB
 		eachEffect(recoverMaxStateAffectApplier);
 		eachItem(recoverMaxStateItemApplier);
 		for (final Enumeration e = factions.elements(); e.hasMoreElements();)
-			((Faction.FactionData) e.nextElement()).affectCharState(this, maxState);
+			((Faction.FData) e.nextElement()).affectCharState(this, maxState);
 		if (location() != null)
 			location().affectCharState(this, maxState);
 	}
@@ -1872,7 +1872,7 @@ public class StdMOB implements MOB
 
 		for (final Enumeration e = factions.elements(); e.hasMoreElements();)
 		{
-			final Faction.FactionData fD = (Faction.FactionData) e.nextElement();
+			final Faction.FData fD = (Faction.FData) e.nextElement();
 			if (!fD.getFaction().okMessage(this, msg))
 				return false;
 			if (!fD.okMessage(this, msg))
@@ -2095,8 +2095,8 @@ public class StdMOB implements MOB
 				case CMMsg.TYP_HOLD:
 				case CMMsg.TYP_WIELD:
 				case CMMsg.TYP_REMOVE:
-					possibleWieldedItem = null;
-					possibleHeldItem = null;
+					possWieldedItem = null;
+					possHeldItem = null;
 					break;
 				case CMMsg.TYP_JUSTICE:
 					if ((msg.target() != null) && (isInCombat()) && (msg.target() instanceof Item))
@@ -2869,7 +2869,7 @@ public class StdMOB implements MOB
 
 		for (final Enumeration e = factions.elements(); e.hasMoreElements();)
 		{
-			final Faction.FactionData fD = (Faction.FactionData) e.nextElement();
+			final Faction.FData fD = (Faction.FData) e.nextElement();
 			fD.getFaction().executeMsg(this, msg);
 			fD.executeMsg(this, msg);
 		}
@@ -3063,9 +3063,9 @@ public class StdMOB implements MOB
 			});
 			if (isMonster)
 			{
-				for (final Enumeration<Faction.FactionData> t = factions.elements(); t.hasMoreElements();)
+				for (final Enumeration<Faction.FData> t = factions.elements(); t.hasMoreElements();)
 				{
-					final Faction.FactionData T = t.nextElement();
+					final Faction.FData T = t.nextElement();
 					if (T.requiresUpdating())
 					{
 						final String factionID = T.getFaction().factionID();
@@ -3083,9 +3083,9 @@ public class StdMOB implements MOB
 			}
 
 			tickStatus = Tickable.STATUS_OTHER;
-			for (final Enumeration<Faction.FactionData> t = factions.elements(); t.hasMoreElements();)
+			for (final Enumeration<Faction.FData> t = factions.elements(); t.hasMoreElements();)
 			{
-				final Faction.FactionData T = t.nextElement();
+				final Faction.FData T = t.nextElement();
 				T.tick(ticking, tickID);
 			}
 
@@ -4059,7 +4059,7 @@ public class StdMOB implements MOB
 			start = F.maximum();
 		if (start < F.minimum())
 			start = F.minimum();
-		Faction.FactionData data = factions.get(which);
+		Faction.FData data = factions.get(which);
 		if (data == null)
 		{
 			data = F.makeFactionData(this);
@@ -4087,7 +4087,7 @@ public class StdMOB implements MOB
 
 	public int fetchFaction(String which) 
 	{
-		Faction.FactionData data = factions.get(which.toUpperCase());
+		Faction.FData data = factions.get(which.toUpperCase());
 		if (data == null)
 			return Integer.MAX_VALUE;
 		return data.value();
@@ -4122,7 +4122,7 @@ public class StdMOB implements MOB
 			final Faction F = CMLib.factions().getFaction((String) e.nextElement());
 			if (F == null)
 				continue;
-			final Faction.FactionRange FR = CMLib.factions().getRange(F.factionID(), fetchFaction(F.factionID()));
+			final Faction.FRange FR = CMLib.factions().getRange(F.factionID(), fetchFaction(F.factionID()));
 			if (FR != null)
 				V.addElement(FR.codeName());
 		}
@@ -4267,7 +4267,7 @@ public class StdMOB implements MOB
 
 	public Item fetchWieldedItem() 
 	{
-		WeakReference<Item> wieldRef = possibleWieldedItem;
+		WeakReference<Item> wieldRef = possWieldedItem;
 		if (wieldRef != null)
 		{
 			final Item I = wieldRef.get();
@@ -4276,24 +4276,24 @@ public class StdMOB implements MOB
 			if ((I.owner() == this) && (I.amWearingAt(Wearable.WORN_WIELD)) && (!I.amDestroyed())
 			        && (I.container() == null))
 				return I;
-			possibleWieldedItem = null;
+			possWieldedItem = null;
 		}
 		for (Enumeration<Item> i = items(); i.hasMoreElements();)
 		{
 			final Item I = i.nextElement();
 			if ((I != null) && (I.owner() == this) && (I.amWearingAt(Wearable.WORN_WIELD)) && (I.container() == null))
 			{
-				possibleWieldedItem = new WeakReference(I);
+				possWieldedItem = new WeakReference(I);
 				return I;
 			}
 		}
-		possibleWieldedItem = new WeakReference(null);
+		possWieldedItem = new WeakReference(null);
 		return null;
 	}
 
 	public Item fetchHeldItem() 
 	{
-		WeakReference<Item> heldRef = possibleHeldItem;
+		WeakReference<Item> heldRef = possHeldItem;
 		if (heldRef != null)
 		{
 			final Item I = heldRef.get();
@@ -4304,7 +4304,7 @@ public class StdMOB implements MOB
 			&& (!I.amDestroyed())
 	        && (I.container() == null))
 				return I;
-			possibleHeldItem = null;
+			possHeldItem = null;
 		}
 		for (Enumeration<Item> i = items(); i.hasMoreElements();)
 		{
@@ -4314,11 +4314,11 @@ public class StdMOB implements MOB
 			&& (I.amWearingAt(Wearable.WORN_HELD)) 
 			&& (I.container() == null))
 			{
-				possibleHeldItem = new WeakReference(I);
+				possHeldItem = new WeakReference(I);
 				return I;
 			}
 		}
-		possibleHeldItem = new WeakReference(null);
+		possHeldItem = new WeakReference(null);
 		return null;
 	}
 

@@ -1116,7 +1116,7 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 					}
 					break;
 				case 'a': { buf.append(CMLib.factions().getRangePercent(CMLib.factions().AlignID(),mob.fetchFaction(CMLib.factions().AlignID()))+"%"); c++; break; }
-				case 'A': { final Faction.FactionRange FR=CMLib.factions().getRange(CMLib.factions().AlignID(),mob.fetchFaction(CMLib.factions().AlignID()));buf.append((FR!=null)?FR.name():""+mob.fetchFaction(CMLib.factions().AlignID())); c++; break;}
+				case 'A': { final Faction.FRange FR=CMLib.factions().getRange(CMLib.factions().AlignID(),mob.fetchFaction(CMLib.factions().AlignID()));buf.append((FR!=null)?FR.name():""+mob.fetchFaction(CMLib.factions().AlignID())); c++; break;}
 				case 'B': { buf.append("\n\r"); c++; break;}
 				case 'c': { buf.append(mob.numItems()); c++; break;}
 				case 'C': { buf.append(mob.maxItems()); c++; break;}

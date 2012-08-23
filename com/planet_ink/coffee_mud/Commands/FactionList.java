@@ -67,7 +67,7 @@ public class FactionList extends StdCommand
 	{
 		StringBuffer line=new StringBuffer();
 		line.append("  "+CMStrings.padRight(CMStrings.capitalizeAndLower(CMLib.factions().getName(name).toLowerCase()),21)+" ");
-		Faction.FactionRange FR=CMLib.factions().getRange(name,faction);
+		Faction.FRange FR=CMLib.factions().getRange(name,faction);
 		if(FR==null)
 			line.append(CMStrings.padRight(""+faction,17)+" ");
 		else

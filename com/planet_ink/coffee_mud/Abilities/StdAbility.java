@@ -943,8 +943,7 @@ public class StdAbility implements Ability
 
 		if(!mob.isMonster()) CMLib.coffeeTables().bump(this,CoffeeTableRow.STAT_SKILLUSE);
 
-		if((System.currentTimeMillis()
-		-((StdAbility)A).lastCastHelp)<300000)
+		if((System.currentTimeMillis()-((StdAbility)A).lastCastHelp)<300000)
 			return;
 
 		if(!A.appropriateToMyFactions(mob))

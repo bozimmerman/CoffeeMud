@@ -170,7 +170,7 @@ public class PlayerData extends StdWebMacro
 		case 24: str.append(M.fetchFaction(CMLib.factions().AlignID())+", ");
 				 break;
 		case 25: {
-					Faction.FactionRange FR=CMLib.factions().getRange(CMLib.factions().AlignID(),M.fetchFaction(CMLib.factions().AlignID()));
+					Faction.FRange FR=CMLib.factions().getRange(CMLib.factions().AlignID(),M.fetchFaction(CMLib.factions().AlignID()));
 					if(FR!=null)
 						str.append(FR.name()+", ");
 					else

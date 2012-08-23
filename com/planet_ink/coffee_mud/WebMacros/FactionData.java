@@ -125,7 +125,7 @@ public class FactionData extends StdWebMacro
 						int v=0;
 						for(Enumeration e=F.ranges();e.hasMoreElements();)
 						{
-							Faction.FactionRange FR=(Faction.FactionRange)e.nextElement();
+							Faction.FRange FR=(Faction.FRange)e.nextElement();
 							httpReq.addRequestParameters("RANGENAME"+v,FR.name());
 							httpReq.addRequestParameters("RANGELOW"+v,""+FR.low());
 							httpReq.addRequestParameters("RANGEHIGH"+v,""+FR.high());
@@ -404,9 +404,9 @@ public class FactionData extends StdWebMacro
 					if((mask==null)&&(F.factors()!=null))
 					{
 						int v=0;
-						for(Enumeration<Faction.FactionZapFactor> e=F.factors();e.hasMoreElements();)
+						for(Enumeration<Faction.FZapFactor> e=F.factors();e.hasMoreElements();)
 						{
-							Faction.FactionZapFactor factor=e.nextElement();
+							Faction.FZapFactor factor=e.nextElement();
 							httpReq.addRequestParameters("ADJFACTOR"+v,factor.MOBMask());
 							httpReq.addRequestParameters("ADJFACTORGAIN"+v,CMath.toPct(factor.gainFactor()));
 							httpReq.addRequestParameters("ADJFACTORLOSS"+v,CMath.toPct(factor.gainFactor()));
@@ -501,7 +501,7 @@ public class FactionData extends StdWebMacro
 						int v=0;
 						for(Enumeration e=F.abilityUsages();e.hasMoreElements();v++)
 						{
-							Faction.FactionAbilityUsage E=(Faction.FactionAbilityUsage)e.nextElement();
+							Faction.FAbilityUsage E=(Faction.FAbilityUsage)e.nextElement();
 							if(!E.possibleAbilityID()||CMClass.getAbility(E.abilityFlags())==null)
 							{
 								Vector<String> V=CMParms.parse(E.abilityFlags());
@@ -688,7 +688,7 @@ public class FactionData extends StdWebMacro
 						int v=0;
 						for(Enumeration e=F.reactions();e.hasMoreElements();v++)
 						{
-							Faction.FactionReactionItem item=(Faction.FactionReactionItem)e.nextElement();
+							Faction.FReactionItem item=(Faction.FReactionItem)e.nextElement();
 							httpReq.addRequestParameters("REACTIONRANGE"+v,item.rangeName());
 							httpReq.addRequestParameters("REACTIONABC"+v,item.reactionObjectID());
 							httpReq.addRequestParameters("REACTIONPARM"+v,item.parameters());
@@ -861,7 +861,7 @@ public class FactionData extends StdWebMacro
 		if(oldName==null)
 			for(Enumeration e=F.ranges();e.hasMoreElements();)
 			{
-				Faction.FactionRange FR=(Faction.FactionRange)e.nextElement();
+				Faction.FRange FR=(Faction.FRange)e.nextElement();
 				codes.addElement(FR.codeName(),FR.name());
 			}
 		else

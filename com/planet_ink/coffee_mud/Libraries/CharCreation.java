@@ -1104,7 +1104,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 				Vector<String> namedChoices=new Vector<String>();
 				for(int m=0;m<mine.size();m++)
 				{
-					Faction.FactionRange FR=CMLib.factions().getRange(F.factionID(),((Integer)mine.get(m)).intValue());
+					Faction.FRange FR=CMLib.factions().getRange(F.factionID(),((Integer)mine.get(m)).intValue());
 					if(FR!=null)
 					{
 						namedChoices.addElement(FR.name().toUpperCase());

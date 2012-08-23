@@ -230,7 +230,7 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 		if(P instanceof MOB)
 		{
 			Faction F=null;
-			Faction.FactionRange FR=null;
+			Faction.FRange FR=null;
 			for(Enumeration<String> e=((MOB)P).fetchFactions();e.hasMoreElements();)
 			{
 				F=CMLib.factions().getFaction((String)e.nextElement());
@@ -268,7 +268,7 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 		if(P instanceof MOB)
 		{
 			Faction F=null;
-			Faction.FactionRange FR=null;
+			Faction.FRange FR=null;
 			for(Enumeration<String> e=((MOB)P).fetchFactions();e.hasMoreElements();)
 			{
 				F=CMLib.factions().getFaction((String)e.nextElement());
@@ -350,7 +350,7 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 		if(E instanceof MOB)
 		{
 			Faction F=null;
-			Faction.FactionRange FR=null;
+			Faction.FRange FR=null;
 			for(Enumeration<String> e=((MOB)E).fetchFactions();e.hasMoreElements();)
 			{
 				F=CMLib.factions().getFaction((String)e.nextElement());
@@ -378,7 +378,7 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 		if(P instanceof MOB)
 		{
 			Faction F=null;
-			Faction.FactionRange FR=null;
+			Faction.FRange FR=null;
 			for(Enumeration<String> e=((MOB)P).fetchFactions();e.hasMoreElements();)
 			{
 				F=CMLib.factions().getFaction((String)e.nextElement());

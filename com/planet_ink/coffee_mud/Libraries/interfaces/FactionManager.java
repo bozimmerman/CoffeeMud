@@ -43,11 +43,11 @@ public interface FactionManager extends CMLibrary, Tickable
 	public void clearFactions();
 	public void reloadFactions(String factionList);
 	public boolean isRangeCodeName(String key);
-	public boolean isFactionedThisWay(MOB mob, Faction.FactionRange rangeCode);
-	public String rangeDescription(Faction.FactionRange FR, String andOr);
+	public boolean isFactionedThisWay(MOB mob, Faction.FRange rangeCode);
+	public String rangeDescription(Faction.FRange FR, String andOr);
 	public Faction getFaction(String factionID);
 	public Faction getFactionByRangeCodeName(String rangeCodeName);
-	public Faction.FactionRange getFactionRangeByCodeName(String rangeCodeName);
+	public Faction.FRange getFactionRangeByCodeName(String rangeCodeName);
 	public Faction getFactionByName(String factionNamed);
 	public boolean removeFaction(String factionID); 
 	public String listFactions(); 
@@ -56,8 +56,8 @@ public interface FactionManager extends CMLibrary, Tickable
 	public int getMaximum(String factionID);
 	public int getPercent(String factionID, int faction);
 	public int getPercentFromAvg(String factionID, int faction);
-	public Faction.FactionRange getRange(String factionID, int faction);
-	public Enumeration<Faction.FactionRange> getRanges(String factionID);
+	public Faction.FRange getRange(String factionID, int faction);
+	public Enumeration<Faction.FRange> getRanges(String factionID);
 	public double getRangePercent(String factionID, int faction); 
 	public int getTotal(String factionID);
 	public int getRandom(String factionID);

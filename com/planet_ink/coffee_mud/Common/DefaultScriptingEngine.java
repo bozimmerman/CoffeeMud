@@ -3120,7 +3120,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						value=Integer.toString(myfac);
 					else
 					{
-						Faction.FactionRange FR=CMLib.factions().getRange(F.factionID(),myfac);
+						Faction.FRange FR=CMLib.factions().getRange(F.factionID(),myfac);
 						if(FR==null)
 							value="";
 						else
@@ -4576,7 +4576,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				Environmental E=getArgumentMOB(arg1,source,monster,target,primaryItem,secondaryItem,msg,tmp);
 				if((E!=null)&&((E instanceof MOB)))
 				{
-					Faction.FactionRange FR=CMLib.factions().getRange(CMLib.factions().AlignID(),((MOB)E).fetchFaction(CMLib.factions().AlignID()));
+					Faction.FRange FR=CMLib.factions().getRange(CMLib.factions().AlignID(),((MOB)E).fetchFaction(CMLib.factions().AlignID()));
 					if(FR!=null)
 						results.append(FR.name());
 					else
@@ -5271,7 +5271,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				if((E!=null)&&(E instanceof MOB)&&(((MOB)E).hasFaction(F.factionID())))
 				{
 					int value=((MOB)E).fetchFaction(F.factionID());
-					Faction.FactionRange FR=CMLib.factions().getRange(F.factionID(),value);
+					Faction.FRange FR=CMLib.factions().getRange(F.factionID(),value);
 					if(FR!=null)
 						results.append(FR.name());
 				}
@@ -7829,12 +7829,12 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						themob.addFaction(F.factionID(),CMath.s_int(range.trim()));
 					else
 					{
-						Faction.FactionRange FR=null;
-						Enumeration<Faction.FactionRange> e=CMLib.factions().getRanges(CMLib.factions().AlignID());
+						Faction.FRange FR=null;
+						Enumeration<Faction.FRange> e=CMLib.factions().getRanges(CMLib.factions().AlignID());
 						if(e!=null)
 						for(;e.hasMoreElements();)
 						{
-							Faction.FactionRange FR2=(Faction.FactionRange)e.nextElement();
+							Faction.FRange FR2=(Faction.FRange)e.nextElement();
 							if(FR2.name().equalsIgnoreCase(range))
 							{ FR=FR2; break;}
 						}

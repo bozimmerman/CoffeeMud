@@ -561,7 +561,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 		return false;
 	}
 
-	protected Faction.FactionRange getRange(final String s)
+	protected Faction.FRange getRange(final String s)
 	{
 		return CMLib.factions().getFactionRangeByCodeName(s);
 	}
@@ -1995,7 +1995,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 							break;
 						if(str2.startsWith("+"))
 						{
-							Faction.FactionRange FR=getRange(str2.substring(1).toUpperCase().trim());
+							Faction.FRange FR=getRange(str2.substring(1).toUpperCase().trim());
 							if(FR!=null)
 							{
 								String desc=CMLib.factions().rangeDescription(FR,"or ");
@@ -2088,7 +2088,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 				buf.append(levelHelp(str,'-',"Disallows "));
 				if(str.startsWith("-"))
 				{
-					Faction.FactionRange FR=getRange(str.substring(1));
+					Faction.FRange FR=getRange(str.substring(1));
 					String desc=CMLib.factions().rangeDescription(FR,"and ");
 					if(desc.length()>0) buf.append("Disallows "+desc);
 				}
@@ -2565,7 +2565,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 						if(str2.startsWith(plusMinus))
 						{
 							final String str3=str2.substring(1).toUpperCase().trim();
-							Faction.FactionRange FR=getRange(str3);
+							Faction.FRange FR=getRange(str3);
 							if(FR!=null)
 								parms.addElement(str3);
 						}
@@ -3878,7 +3878,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 					boolean found=false;
 					for(final Object o : entry.parms)
 					{
-						Faction.FactionRange FR=getRange((String)o);
+						Faction.FRange FR=getRange((String)o);
 						if((FR!=null)&&(CMLib.factions().isFactionedThisWay(mob,FR)))
 						{ 
 							found=true; 
@@ -3892,7 +3892,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 				{
 					for(final Object o : entry.parms)
 					{
-						Faction.FactionRange FR=getRange((String)o);
+						Faction.FRange FR=getRange((String)o);
 						if((FR!=null)&&(CMLib.factions().isFactionedThisWay(mob,FR)))
 							return false;
 					}

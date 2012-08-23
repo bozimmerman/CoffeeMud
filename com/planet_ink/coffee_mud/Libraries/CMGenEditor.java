@@ -2764,12 +2764,12 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
 		if(F==null) return;
-		Faction.FactionRange myFR=CMLib.factions().getRange(F.factionID(),E.fetchFaction(F.factionID()));
+		Faction.FRange myFR=CMLib.factions().getRange(F.factionID(),E.fetchFaction(F.factionID()));
 		mob.tell(showNumber+". "+F.name()+": "+((myFR!=null)?myFR.name():"UNDEFINED")+" ("+E.fetchFaction(F.factionID())+")");
 		if((showFlag!=showNumber)&&(showFlag>-999)) return;
-		for(Enumeration<Faction.FactionRange> e=F.ranges();e.hasMoreElements();)
+		for(Enumeration<Faction.FRange> e=F.ranges();e.hasMoreElements();)
 		{
-			Faction.FactionRange FR=(Faction.FactionRange)e.nextElement();
+			Faction.FRange FR=(Faction.FRange)e.nextElement();
 			mob.tell(CMStrings.padRight(FR.name(),20)+": "+FR.low()+" - "+FR.high()+")");
 		}
 		String newOne=mob.session().prompt("Enter a new value\n\r:");
@@ -2778,9 +2778,9 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			E.addFaction(F.factionID(),CMath.s_int(newOne));
 			return;
 		}
-		for(Enumeration<Faction.FactionRange> e=F.ranges();e.hasMoreElements();)
+		for(Enumeration<Faction.FRange> e=F.ranges();e.hasMoreElements();)
 		{
-			Faction.FactionRange FR=(Faction.FactionRange)e.nextElement();
+			Faction.FRange FR=(Faction.FRange)e.nextElement();
 			if(FR.name().toUpperCase().startsWith(newOne.toUpperCase()))
 			{
 				if(FR.low()==F.minimum())
