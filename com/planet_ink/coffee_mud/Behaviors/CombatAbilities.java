@@ -521,8 +521,6 @@ public class CombatAbilities extends StdBehavior
 		}
 		final MOB mob=(MOB)ticking;
 
-		if(!canActAtAll(mob)) 
-			return true;
 		if(!mob.isInCombat())
 		{ 
 			if(aggro!=null)
@@ -534,6 +532,8 @@ public class CombatAbilities extends StdBehavior
 			}
 			if((preCastSet < Integer.MAX_VALUE) && (preCastSet >0) && ((--preCastDown)<=0))
 			{
+				if(!canActAtAll(mob)) 
+					return true;
 				preCastDown=preCastSet;
 				if(!isRightCombatAbilities(mob))
 					return true;
@@ -545,6 +545,9 @@ public class CombatAbilities extends StdBehavior
 		}
 		MOB victim=mob.getVictim();
 		if(victim==null) return true;
+		
+		if(!canActAtAll(mob)) 
+			return true;
 		
 		// insures we only try this once!
 		if(!isRightCombatAbilities(mob))

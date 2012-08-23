@@ -184,10 +184,10 @@ public class Mobile extends ActiveTicker implements MobileBehavior
 			ticksSuspended--;
 			return true;
 		}
-		if((canAct(ticking,tickID))
-		&&(ticking instanceof MOB)
+		if((ticking instanceof MOB)
 		&&(!((MOB)ticking).isInCombat())
-		&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.MOBILITY)))
+		&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.MOBILITY))
+		&&(canAct(ticking,tickID)))
 		{
 			Vector objections=null;
 			final MOB mob=(MOB)ticking;

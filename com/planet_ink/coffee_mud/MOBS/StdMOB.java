@@ -449,6 +449,8 @@ public class StdMOB implements MOB
 		commandQue.clear();
 		followers = null;
 		abilitys.setSize(0);
+		Arrays.fill(abilityUseTrig,0);
+		abilityUseCache.clear();
 		affects.setSize(0);
 		behaviors.setSize(0);
 		scripts.setSize(0);
@@ -866,6 +868,7 @@ public class StdMOB implements MOB
 		inventory.setSize(0);
 		followers = null;
 		abilitys.setSize(0);
+		abilityUseCache.clear();
 		affects.setSize(0);
 		behaviors.setSize(0);
 		tattoos.setSize(0);
@@ -3513,6 +3516,7 @@ public class StdMOB implements MOB
 
 	public void delAllAbilities() {
 		abilitys.clear();
+		abilityUseCache.clear();
 	}
 
 	public int numAbilities() {

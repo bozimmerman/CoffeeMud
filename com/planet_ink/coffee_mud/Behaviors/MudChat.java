@@ -651,12 +651,6 @@ public class MudChat extends StdBehavior implements ChattyBehavior
 		&&(ticking instanceof MOB)
 		&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.MUDCHAT)))
 		{
-			if(!canActAtAll(ticking))
-			{
-				responseQue.clear();
-				return true;
-			}
-
 			if(talkDown>0) talkDown--;
 
 			if(tickDown>=0)
@@ -669,6 +663,12 @@ public class MudChat extends StdBehavior implements ChattyBehavior
 			}
 			if(responseQue.size()==0)
 				lastReactedTo=null;
+			else
+			if(!canActAtAll(ticking))
+			{
+				responseQue.clear();
+				return true;
+			}
 			else
 			for(Iterator<ChattyResponse> riter= responseQue.descendingIterator();riter.hasNext();)
 			{

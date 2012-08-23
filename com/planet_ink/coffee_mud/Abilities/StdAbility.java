@@ -204,17 +204,11 @@ public class StdAbility implements Ability
 		if((mob!=null)&&(this.isNowAnAutoEffect()||(this.canBeUninvoked())||this.isAutoInvoked()))
 		{
 			final int[][] usageCache=mob.getAbilityUsageCache(ID());
-			if((usageCache!=null)&&(usageCache[Ability.CACHEINDEX_EXPERTISE]!=null))
+			if(usageCache[Ability.CACHEINDEX_EXPERTISE]!=null)
 				return usageCache[Ability.CACHEINDEX_EXPERTISE][code];
 			final int[] xFlagCache=new int[ExpertiseLibrary.NUM_XFLAGS];
 			for(int x=0;x<ExpertiseLibrary.NUM_XFLAGS;x++)
 				xFlagCache[x]=CMLib.expertises().getApplicableExpertiseLevel(ID(),x,mob);
-			if(usageCache==null)
-			{
-				final int[][] newUsageCache=new int[Ability.CACHEINDEX_TOTAL][];
-				newUsageCache[Ability.CACHEINDEX_EXPERTISE]=xFlagCache;
-			}
-			else
 				usageCache[Ability.CACHEINDEX_EXPERTISE]=xFlagCache;
 			return xFlagCache[code];
 		}
