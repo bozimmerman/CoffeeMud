@@ -1530,6 +1530,7 @@ public class CMMap extends StdLibrary implements WorldMap
 		}
 		return list;
 	}
+
     protected List<Item> checkInvCachedList(List<Item> list)
 	{
 		if (list != null)
