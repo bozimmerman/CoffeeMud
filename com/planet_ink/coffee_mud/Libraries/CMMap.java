@@ -49,12 +49,12 @@ public class CMMap extends StdLibrary implements WorldMap
 	public List<SpaceObject>	space   		 		= new SVector<SpaceObject>();
 	protected Map<String,Object>SCRIPT_HOST_SEMAPHORES	= new Hashtable<String,Object>();
 	
-	private static final long EXPIRE_1MIN	=1*60*1000;
-	private static final long EXPIRE_5MINS	=5*60*1000;
-	private static final long EXPIRE_10MINS	=10*60*1000;
-	private static final long EXPIRE_20MINS	=20*60*1000;
-	private static final long EXPIRE_30MINS	=30*60*1000;
-	private static final long EXPIRE_1HOUR	=60*60*1000;
+	private static final long EXPIRE_1MIN	= 1*60*1000;
+	private static final long EXPIRE_5MINS	= 5*60*1000;
+	private static final long EXPIRE_10MINS	= 10*60*1000;
+	private static final long EXPIRE_20MINS	= 20*60*1000;
+	private static final long EXPIRE_30MINS	= 30*60*1000;
+	private static final long EXPIRE_1HOUR	= 60*60*1000;
 	public Map<Integer,List<WeakReference<MsgListener>>> 
 								globalHandlers   		= new SHashtable<Integer,List<WeakReference<MsgListener>>>();
 	public Map<String,SLinkedList<LocatedPair>>
