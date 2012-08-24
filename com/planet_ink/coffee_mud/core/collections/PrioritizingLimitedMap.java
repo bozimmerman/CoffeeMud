@@ -59,6 +59,11 @@ public class PrioritizingLimitedMap<T extends Comparable<T>, K> implements Map<T
 		this.threshHoldToExpand=threshHoldToExpand;
 	}
 	
+    public PrioritizingLimitedMap(int itemLimit, long ageLimitMillis)
+	{
+    	this(itemLimit,ageLimitMillis,Integer.MAX_VALUE);
+	}
+	
 	@Override
 	public K get(Object key)
 	{
@@ -149,6 +154,8 @@ public class PrioritizingLimitedMap<T extends Comparable<T>, K> implements Map<T
 		}
 		else
 		{
+			if(p.second!=arg1)
+    			p.second=arg1;
 			p.priority++;
 			p.lastTouch=System.currentTimeMillis();
 			LinkedEntry<T,K> pp=p.prev;
@@ -177,13 +184,20 @@ public class PrioritizingLimitedMap<T extends Comparable<T>, K> implements Map<T
 		{
 			LinkedEntry<T,K> prev=tail;
 			final long timeout=System.currentTimeMillis()-ageLimitMillis;
+			int expands=0;
 			while((prev != null)&&(prev != head)&&(prev.index <=0)&&(map.size() > itemLimit))
 			{
 				final LinkedEntry<T,K> pprev=prev.prev;
+				if(prev.priority > this.threshHoldToExpand)
+					expands++;
+				else
 				if(prev.lastTouch<timeout)
+				{
 					remove(prev.first);
+				}
 				prev=pprev;
 			}
+			itemLimit+=expands;
 		}
 		return arg1;
     }
