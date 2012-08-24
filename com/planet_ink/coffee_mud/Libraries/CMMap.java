@@ -62,9 +62,9 @@ public class CMMap extends StdLibrary implements WorldMap
 	protected final PrioritizingLimitedMap<String,List<Environmental>>
                         		stockItemsFinder 		= new PrioritizingLimitedMap<String,List<Environmental>>(10,10*60*1000,60*60*1000,100);
 	protected final PrioritizingLimitedMap<String,List<Room>>
-                        		roomsFinder		 		= new PrioritizingLimitedMap<String,List<Room>>(10,30*60*1000,60*60*1000,100);
+                        		roomsFinder		 		= new PrioritizingLimitedMap<String,List<Room>>(20,20*60*1000,60*60*1000,100);
 	protected final PrioritizingLimitedMap<String,Area>
-                        		areaFinder		 		= new PrioritizingLimitedMap<String,Area>(10,60*60*1000,60*60*1000,100);
+                        		areaFinder		 		= new PrioritizingLimitedMap<String,Area>(50,30*60*1000,60*60*1000,100);
 
 	private CMSupportThread thread     = null;
 	public CMSupportThread getSupportThread() { return thread;}
@@ -128,6 +128,7 @@ public class CMMap extends StdLibrary implements WorldMap
 
 	public Area getArea(String calledThis)
 	{
+		final boolean disableCaching=CMProps.getBoolVar(CMProps.SYSTEMB_MAPFINDSNOCACHE);
 		Area A=areaFinder.getAndMark(calledThis.toLowerCase());
 		if((A!=null)&&(!A.amDestroyed()))
 			return A;
@@ -136,7 +137,8 @@ public class CMMap extends StdLibrary implements WorldMap
 			A=(Area)a.nextElement();
 			if(A.Name().equalsIgnoreCase(calledThis))
 			{
-				areaFinder.put(calledThis.toLowerCase(), A);
+				if(!disableCaching)
+    				areaFinder.put(calledThis.toLowerCase(), A);
 				return A;
 			}
 		}
@@ -144,6 +146,7 @@ public class CMMap extends StdLibrary implements WorldMap
 	}
 	public Area findAreaStartsWith(String calledThis)
 	{
+		final boolean disableCaching=CMProps.getBoolVar(CMProps.SYSTEMB_MAPFINDSNOCACHE);
 		Area A=getArea(calledThis);
 		if(A!=null) return A;
 		A=areaFinder.getAndMark(calledThis.toLowerCase());
@@ -154,7 +157,8 @@ public class CMMap extends StdLibrary implements WorldMap
 			A=(Area)a.nextElement();
 			if(A.Name().toUpperCase().startsWith(calledThis))
 			{
-				areaFinder.put(calledThis.toLowerCase(), A);
+				if(!disableCaching)
+    				areaFinder.put(calledThis.toLowerCase(), A);
 				return A;
 			}
 		}
@@ -163,6 +167,7 @@ public class CMMap extends StdLibrary implements WorldMap
 
 	public Area findArea(String calledThis)
 	{
+		final boolean disableCaching=CMProps.getBoolVar(CMProps.SYSTEMB_MAPFINDSNOCACHE);
 		Area A=findAreaStartsWith(calledThis);
 		if(A!=null) return A;
 		A=areaFinder.getAndMark(calledThis.toLowerCase());
@@ -173,7 +178,8 @@ public class CMMap extends StdLibrary implements WorldMap
 			A=(Area)a.nextElement();
 			if(CMLib.english().containsString(A.Name(),calledThis))
 			{
-				areaFinder.put(calledThis.toLowerCase(), A);
+				if(!disableCaching)
+    				areaFinder.put(calledThis.toLowerCase(), A);
 				return A;
 			}
 		}
@@ -1520,7 +1526,8 @@ public class CMMap extends StdLibrary implements WorldMap
 		// wish this stuff could be cached, even temporarily, however,
 		// far too much of the world is dynamic, and far too many searches
 		// are looking for dynamic things.  the cached results would be useless
-		// as soon as they are put away.
+		// as soon as they are put away -- that's why the limited caches time them out!
+		final boolean disableCaching=CMProps.getBoolVar(CMProps.SYSTEMB_MAPFINDSNOCACHE);
 		
 		final Vector<Room> rooms=(returnFirst)?null:new Vector<Room>();
 		
@@ -1598,7 +1605,7 @@ public class CMMap extends StdLibrary implements WorldMap
 					if(candidates==null)
 					{
     					candidates=findInhabitants(rightLiberalMap(A), mob, srchStr,returnFirst, timePct);
-    					if((!returnFirst)&&((mob==null)||(mob.isMonster())))
+    					if((!disableCaching)&&(!returnFirst)&&((mob==null)||(mob.isMonster())))
         					mobsFinder.put(srchStr.toLowerCase(), candidates);
         					
 					}
@@ -1620,7 +1627,7 @@ public class CMMap extends StdLibrary implements WorldMap
 					if(candidates==null)
 					{
 						candidates=findRooms(rightLiberalMap(A), mob, srchStr, false,returnFirst, timePct);
-    					if((!returnFirst)&&((mob==null)||(mob.isMonster())))
+    					if((!disableCaching)&&(!returnFirst)&&((mob==null)||(mob.isMonster())))
 							roomsFinder.put(srchStr.toLowerCase(), candidates);
 					}
 					if(candidates.size()>0)
@@ -1641,7 +1648,7 @@ public class CMMap extends StdLibrary implements WorldMap
 					if(candidates==null)
 					{
     					candidates=findRoomItems(rightLiberalMap(A), mob, srchStr, false,returnFirst,timePct);
-    					if((!returnFirst)&&((mob==null)||(mob.isMonster())))
+    					if((!disableCaching)&&(!returnFirst)&&((mob==null)||(mob.isMonster())))
 							roomItemsFinder.put(srchStr.toLowerCase(), candidates);
 					}
 					if(candidates.size()>0)
@@ -1662,7 +1669,7 @@ public class CMMap extends StdLibrary implements WorldMap
 					if(candidates==null)
 					{
 						candidates=findInventory(rightLiberalMap(A), mob, srchStr, returnFirst,timePct);
-    					if((!returnFirst)&&((mob==null)||(mob.isMonster())))
+    					if((!disableCaching)&&(!returnFirst)&&((mob==null)||(mob.isMonster())))
 							invItemsFinder.put(srchStr.toLowerCase(), candidates);
 					}
 					if(candidates.size()>0)
@@ -1683,7 +1690,7 @@ public class CMMap extends StdLibrary implements WorldMap
 					if(candidates==null)
 					{
     					candidates=findShopStock(rightLiberalMap(A), mob, srchStr, returnFirst,false,timePct);
-    					if((!returnFirst)&&((mob==null)||(mob.isMonster())))
+    					if((!disableCaching)&&(!returnFirst)&&((mob==null)||(mob.isMonster())))
 							stockItemsFinder.put(srchStr.toLowerCase(), candidates);
 					}
 					if(candidates.size()>0)

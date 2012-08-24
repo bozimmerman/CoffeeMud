@@ -160,6 +160,7 @@ public class MUD extends Thread implements MudHost
 		CMProps.setBoolVar(CMProps.SYSTEMB_ROOMDNOCACHE,nocache.contains("ROOMDESC"));
 		CMProps.setBoolVar(CMProps.SYSTEMB_FILERESOURCENOCACHE, nocache.contains("FILERESOURCES"));
 		CMProps.setBoolVar(CMProps.SYSTEMB_CATALOGNOCACHE, nocache.contains("CATALOG"));
+		CMProps.setBoolVar(CMProps.SYSTEMB_MAPFINDSNOCACHE,nocache.contains("MAPFINDERS"));
 
 		DBConnector currentDBconnector=null;
 		String dbClass=page.getStr("DBCLASS");

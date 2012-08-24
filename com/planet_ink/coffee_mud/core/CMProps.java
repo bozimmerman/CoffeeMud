@@ -234,7 +234,8 @@ public class CMProps extends Properties
 	public static final int SYSTEMB_INTRODUCTIONSYSTEM=10;
 	public static final int SYSTEMB_FILERESOURCENOCACHE=11;
 	public static final int SYSTEMB_CATALOGNOCACHE=12;
-	public static final int NUMB_SYSTEM=13;
+	public static final int SYSTEMB_MAPFINDSNOCACHE=13;
+	public static final int NUMB_SYSTEM=14;
 
 	public static final int NUML_SYSTEM=0;
 
