@@ -1329,7 +1329,7 @@ public class MUD extends Thread implements MudHost
 		new CMLib(); // initialize this threads libs
 		
 		if(iniFiles.size()==0) iniFiles.addElement("coffeemud.ini");
-		if((nameID.length()==0)||(nameID.equalsIgnoreCase( "CoffeeMud" )))
+		if((nameID.length()==0)||(nameID.equalsIgnoreCase( "CoffeeMud" ))||nameID.equalsIgnoreCase("Your Muds Name"))
 		{
 			long idNumber=new Random(System.currentTimeMillis()).nextLong();
 			try
@@ -1352,8 +1352,8 @@ public class MUD extends Thread implements MudHost
     			}
 			}catch(Exception e1){}
 			if(idNumber<0) idNumber=idNumber*-1;
-			nameID="Unnamed CoffeeMud "+idNumber;
-			System.err.println("*** Please give your mud a unique name!! ***");
+			nameID=nameID+" "+idNumber;
+			System.err.println("*** Please give your mud a unique name in mud.bat or mudUNIX.sh!! ***");
 		}
 		else
 		if(nameID.equalsIgnoreCase( "TheRealCoffeeMudCopyright2000-2012ByBoZimmerman" ))
