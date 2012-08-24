@@ -33,6 +33,7 @@ import com.planet_ink.coffee_mud.core.intermud.i3.server.I3Server;
 
 import java.io.PrintWriter; // for writing to sockets
 import java.io.IOException;
+import java.lang.reflect.Method;
 import java.net.*;
 import java.util.*;
 import java.sql.*;
@@ -1330,7 +1331,29 @@ public class MUD extends Thread implements MudHost
 		if(iniFiles.size()==0) iniFiles.addElement("coffeemud.ini");
 		if((nameID.length()==0)||(nameID.equalsIgnoreCase( "CoffeeMud" )))
 		{
-			nameID="Unnamed CoffeeMud "+(CMLib.dice().roll( 1, 100000, 0 ));
+			long idNumber=new Random(System.currentTimeMillis()).nextLong();
+			if(idNumber<0) idNumber=idNumber*-1;
+			try
+			{
+				idNumber=0;
+    			for(Enumeration<NetworkInterface> e=NetworkInterface.getNetworkInterfaces();e.hasMoreElements();)
+    			{
+    				NetworkInterface n=e.nextElement();
+    				idNumber^=n.getDisplayName().hashCode();
+    				try
+    				{
+    					Method m=n.getClass().getMethod("getHardwareAddress");
+    					Object o=m.invoke(n);
+    					if(o instanceof byte[])
+    					{
+    						for(int i=0;i<((byte[])o).length;i++)
+    							idNumber^=(long)(((byte[])o)[0] << (i*8));
+    					}
+    				}catch(Exception e1){}
+    			}
+			}catch(Exception e1){}
+			if(idNumber<0) idNumber=idNumber*-1;
+			nameID="Unnamed CoffeeMud "+idNumber;
 			System.err.println("*** Please give your mud a unique name!! ***");
 		}
 		else
