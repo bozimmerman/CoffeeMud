@@ -49,22 +49,28 @@ public class CMMap extends StdLibrary implements WorldMap
 	public List<SpaceObject>	space   		 		= new SVector<SpaceObject>();
 	protected Map<String,Object>SCRIPT_HOST_SEMAPHORES	= new Hashtable<String,Object>();
 	
+	private static final long EXPIRE_1MIN	=1*60*1000;
+	private static final long EXPIRE_5MINS	=5*60*1000;
+	private static final long EXPIRE_10MINS	=10*60*1000;
+	private static final long EXPIRE_20MINS	=20*60*1000;
+	private static final long EXPIRE_30MINS	=30*60*1000;
+	private static final long EXPIRE_1HOUR	=60*60*1000;
 	public Map<Integer,List<WeakReference<MsgListener>>> 
 								globalHandlers   		= new SHashtable<Integer,List<WeakReference<MsgListener>>>();
 	public Map<String,SLinkedList<LocatedPair>>
 								scriptHostMap    		= new STreeMap<String,SLinkedList<LocatedPair>>();
 	protected final PrioritizingLimitedMap<String,List<MOB>>
-								mobsFinder		 		= new PrioritizingLimitedMap<String,List<MOB>>(10,5*60*1000,10*60*1000,100);
+								mobsFinder		 		= new PrioritizingLimitedMap<String,List<MOB>>(10,EXPIRE_5MINS,EXPIRE_10MINS,100);
 	protected final PrioritizingLimitedMap<String,List<Item>>
-								roomItemsFinder	 		= new PrioritizingLimitedMap<String,List<Item>>(10,5*60*1000,10*60*1000,100);
+								roomItemsFinder	 		= new PrioritizingLimitedMap<String,List<Item>>(10,EXPIRE_5MINS,EXPIRE_10MINS,100);
 	protected final PrioritizingLimitedMap<String,List<Item>>
-                        		invItemsFinder	 		= new PrioritizingLimitedMap<String,List<Item>>(10,60*1000,10*60*1000,100);
+                        		invItemsFinder	 		= new PrioritizingLimitedMap<String,List<Item>>(10,EXPIRE_1MIN,EXPIRE_10MINS,100);
 	protected final PrioritizingLimitedMap<String,List<Environmental>>
-                        		stockItemsFinder 		= new PrioritizingLimitedMap<String,List<Environmental>>(10,10*60*1000,60*60*1000,100);
+                        		stockItemsFinder 		= new PrioritizingLimitedMap<String,List<Environmental>>(10,EXPIRE_10MINS,EXPIRE_1HOUR,100);
 	protected final PrioritizingLimitedMap<String,List<Room>>
-                        		roomsFinder		 		= new PrioritizingLimitedMap<String,List<Room>>(20,20*60*1000,60*60*1000,100);
+                        		roomsFinder		 		= new PrioritizingLimitedMap<String,List<Room>>(20,EXPIRE_20MINS,EXPIRE_1HOUR,100);
 	protected final PrioritizingLimitedMap<String,Area>
-                        		areaFinder		 		= new PrioritizingLimitedMap<String,Area>(50,30*60*1000,60*60*1000,100);
+                        		areaFinder		 		= new PrioritizingLimitedMap<String,Area>(50,EXPIRE_30MINS,EXPIRE_1HOUR,100);
 
 	private CMSupportThread thread     = null;
 	public CMSupportThread getSupportThread() { return thread;}
