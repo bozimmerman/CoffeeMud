@@ -118,20 +118,20 @@ public class StdMOB implements MOB
 	protected final MOB			 	me				= this;
 
 	/* containers of items and attributes */
-	protected final    SVector<Item>		 	 inventory		= new SVector<Item>(1);
-	protected final    SVector<Ability>		 	 abilitys		= new SVector<Ability>(1);
-	protected final    int[]					 abilityUseTrig = new int[3];
-	protected final    STreeMap<String,int[][]>	 abilityUseCache= new STreeMap<String,int[][]>();
-	protected final    SVector<Ability>		 	 affects		= new SVector<Ability>(1);
-	protected final    SVector<Behavior>	 	 behaviors		= new SVector<Behavior>(1);
-	protected final    SVector<Tattoo>		 	 tattoos		= new SVector<Tattoo>(1);
-	protected final    SVector<String>		 	 expertises		= new SVector<String>(1);
+	protected 		   SVector<Item>		 	 inventory		= new SVector<Item>(1);
+	protected 		   SVector<Ability>		 	 abilitys		= new SVector<Ability>(1);
+	protected 		   int[]					 abilityUseTrig = new int[3];
+	protected 		   STreeMap<String,int[][]>	 abilityUseCache= new STreeMap<String,int[][]>();
+	protected 		   SVector<Ability>		 	 affects		= new SVector<Ability>(1);
+	protected 		   SVector<Behavior>	 	 behaviors		= new SVector<Behavior>(1);
+	protected 		   SVector<Tattoo>		 	 tattoos		= new SVector<Tattoo>(1);
+	protected 		   SVector<String>		 	 expertises		= new SVector<String>(1);
 	protected volatile SVector<Follower>	 	 followers		= null;
-	protected final    LinkedList<QMCommand> 	 commandQue		= new LinkedList<QMCommand>();
-	protected final    SVector<ScriptingEngine>	 scripts		= new SVector(1);
+	protected 		   LinkedList<QMCommand> 	 commandQue		= new LinkedList<QMCommand>();
+	protected 		   SVector<ScriptingEngine>	 scripts		= new SVector(1);
 	protected volatile ChameleonList<Ability>	 racialAffects	= null;
 	protected volatile ChameleonList<Ability>	 clanAffects	= null;
-	protected final    SHashtable<String, FData> factions 		= new SHashtable<String, FData>(1);
+	protected 		   SHashtable<String, FData> factions 		= new SHashtable<String, FData>(1);
 	protected volatile WeakReference<Item>	     possWieldedItem= null;
 	protected volatile WeakReference<Item>	 	 possHeldItem	= null;
 
@@ -445,15 +445,40 @@ public class StdMOB implements MOB
 		maxState = (CharState) M.maxState().copyOf();
 		pleaseDestroy = false;
 
-		inventory.setSize(0);
-		commandQue.clear();
+		inventory= new SVector<Item>(1);
+		abilitys= new SVector<Ability>(1);
+		abilityUseTrig = new int[3];
+		abilityUseCache= new STreeMap<String,int[][]>();
+		affects	= new SVector<Ability>(1);
+		behaviors= new SVector<Behavior>(1);
+		tattoos	= new SVector<Tattoo>(1);
+		expertises = new SVector<String>(1);
 		followers = null;
-		abilitys.setSize(0);
-		Arrays.fill(abilityUseTrig,0);
-		abilityUseCache.clear();
-		affects.setSize(0);
-		behaviors.setSize(0);
-		scripts.setSize(0);
+		commandQue = new LinkedList<QMCommand>();
+		scripts	= new SVector(1);
+		racialAffects = null;
+		clanAffects	= null;
+		factions = new SHashtable<String, FData>(1);
+		possWieldedItem= null;
+		possHeldItem = null;
+		setClanID(M.getClanID());
+		
+		for(Enumeration<String> e=M.fetchFactions();e.hasMoreElements();)
+		{
+			String fac=e.nextElement();
+			addFaction(fac, M.fetchFaction(fac));
+		}
+		for(Enumeration<Tattoo> e=M.tattoos();e.hasMoreElements();)
+		{
+			Tattoo t=e.nextElement();
+			addTattoo(t.copyOf());
+		}
+		for(int i=0;i<M.numExpertises();i++)
+		{
+			String x=M.fetchExpertise(i);
+			if(x!=null) addExpertise(x);
+		}
+		
 		Item I = null;
 		for (int i = 0; i < M.numItems(); i++)
 		{
