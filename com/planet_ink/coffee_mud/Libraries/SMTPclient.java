@@ -357,7 +357,10 @@ public class SMTPclient extends StdLibrary implements SMTPLibrary, SMTPLibrary.S
 		  throw ioe;
 		}
 		String host = local.getHostName();
-		sendLine(debug,"HELO " + host);
+		if((auth != null) && (auth.getAuthType().length()>0))
+    		sendLine(debug,"EHLO " + host);
+		else
+    		sendLine(debug,"HELO " + host);
 		rstr = reply.readLine();
 		if(debug) Log.debugOut("SMTPclient",rstr);
 		if ((rstr==null)||(!rstr.startsWith("250"))) throw new ProtocolException(""+rstr);
