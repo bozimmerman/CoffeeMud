@@ -1519,6 +1519,38 @@ public class CMMap extends StdLibrary implements WorldMap
 		if(maxMillis<=0) return false;
 		return ((System.currentTimeMillis() - startTime)) > maxMillis;
 	}
+
+    protected List<MOB> checkMOBCachedList(List<MOB> list)
+	{
+		if (list != null)
+		{
+			for(Environmental E : list)
+				if(E.amDestroyed())
+					return null;
+		}
+		return list;
+	}
+    protected List<Item> checkInvCachedList(List<Item> list)
+	{
+		if (list != null)
+		{
+			for(Item E : list)
+				if((E.amDestroyed())||(!(E.owner() instanceof MOB)))
+					return null;
+		}
+		return list;
+	}
+	
+    protected List<Item> checkRoomItemCachedList(List<Item> list)
+	{
+		if (list != null)
+		{
+			for(Item E : list)
+				if((E.amDestroyed())||(!(E.owner() instanceof Room)))
+					return null;
+		}
+		return list;
+	}
 	
 	protected List<Room> findWorldRoomsLiberally(MOB mob, 
 												 String cmd, 
@@ -1604,7 +1636,7 @@ public class CMMap extends StdLibrary implements WorldMap
 					List<MOB> candidates=null;
 					if((mob==null)||(mob.isMonster()))
 					{
-    					candidates=mobsFinder.getAndMark(srchStr.toLowerCase());
+    					candidates=checkMOBCachedList(mobsFinder.getAndMark(srchStr.toLowerCase()));
 						if(returnFirst&&(candidates!=null)&&(candidates.size()>1))
 							candidates=new XVector<MOB>(candidates.get(0));
 					}
@@ -1647,7 +1679,7 @@ public class CMMap extends StdLibrary implements WorldMap
 					List<Item> candidates=null;
 					if((mob==null)||(mob.isMonster()))
 					{
-						candidates=roomItemsFinder.getAndMark(srchStr.toLowerCase());
+						candidates=checkRoomItemCachedList(roomItemsFinder.getAndMark(srchStr.toLowerCase()));
 						if(returnFirst&&(candidates!=null)&&(candidates.size()>1))
 							candidates=new XVector<Item>(candidates.get(0));
 					}
@@ -1668,7 +1700,7 @@ public class CMMap extends StdLibrary implements WorldMap
 					List<Item> candidates=null;
 					if((mob==null)||(mob.isMonster()))
 					{
-						candidates=invItemsFinder.getAndMark(srchStr.toLowerCase());
+						candidates=checkInvCachedList(invItemsFinder.getAndMark(srchStr.toLowerCase()));
 						if(returnFirst&&(candidates!=null)&&(candidates.size()>1))
 							candidates=new XVector<Item>(candidates.get(0));
 					}
