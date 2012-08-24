@@ -454,7 +454,10 @@ public class Dragon extends StdMOB
 	public void recoverCharStats()
 	{
 		super.recoverCharStats();
-		charStats().setStat(CharStats.STAT_SAVE_MAGIC,charStats().getStat(CharStats.STAT_SAVE_MAGIC)+DragonAge()*5);
+		int dragonAge=DragonAge();
+		if((dragonAge<0)||(dragonAge>20))
+			dragonAge=20;
+		charStats().setStat(CharStats.STAT_SAVE_MAGIC,charStats().getStat(CharStats.STAT_SAVE_MAGIC)+dragonAge*5);
 		switch(DragonColor())
 		{
 		case GOLD:
