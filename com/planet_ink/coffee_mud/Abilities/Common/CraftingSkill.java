@@ -64,7 +64,7 @@ public class CraftingSkill extends GatheringSkill
 	{
 		return 1.0;
 	}
-
+	
 	protected String replacePercent(String thisStr, String withThis)
 	{
 		if(withThis.length()==0)
@@ -845,6 +845,11 @@ public class CraftingSkill extends GatheringSkill
 		if(I.numScripts()>0)
 			return false;
 		if(CMLib.flags().flaggedBehaviors(I, Behavior.FLAG_POTENTIALLYAUTODEATHING).size()>0)
+			return false;
+		Item I2=CMClass.getItem(I.ID());
+		if(CMLib.flags().isGettable(I)!=CMLib.flags().isGettable(I2))
+			return false;
+		if(CMLib.flags().isRemovable(I)!=CMLib.flags().isRemovable(I2))
 			return false;
 		return true;
 	}

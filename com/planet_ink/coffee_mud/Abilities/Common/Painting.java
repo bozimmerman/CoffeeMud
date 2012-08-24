@@ -158,7 +158,7 @@ public class Painting extends CommonSkill
 			building=CMClass.getItem("GenWallpaper");
 			building.setName(name);
 			building.setDescription(desc);
-			building.setSecretIdentity("This is the work of "+mob.Name()+".");
+			building.setSecretIdentity(getBrand(mob));
 		}
 		else
 		if(I!=null)
@@ -175,7 +175,7 @@ public class Painting extends CommonSkill
 			building.setBaseValue(I.baseGoldValue()*(CMLib.dice().roll(1,5,0)));
 			building.setMaterial(I.material());
 			building.basePhyStats().setLevel(I.basePhyStats().level());
-			building.setSecretIdentity("This is the work of "+mob.Name()+".");
+			building.setSecretIdentity(getBrand(mob));
 			I.destroy();
 		}
 		String startStr="<S-NAME> start(s) painting "+building.name()+".";

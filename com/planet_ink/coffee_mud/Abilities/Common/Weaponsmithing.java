@@ -405,7 +405,7 @@ public class Weaponsmithing extends EnhancedCraftingSkill implements ItemCraftor
 			building.setBaseValue((CMath.s_int((String)foundRecipe.get(RCP_VALUE))/4)+(woodRequired*(RawMaterial.CODES.VALUE(data[0][FOUND_CODE]))));
 			building.setMaterial(data[0][FOUND_CODE]);
 			building.basePhyStats().setLevel(CMath.s_int((String)foundRecipe.get(RCP_LEVEL))+(hardness*3));
-			building.setSecretIdentity("This is the work of "+mob.Name()+".");
+			building.setSecretIdentity(getBrand(mob));
 			if(bundling) building.setBaseValue(lostValue);
 			addSpells(building,spell);
 			if(building instanceof Weapon)

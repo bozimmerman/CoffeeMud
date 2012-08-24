@@ -345,7 +345,7 @@ public class ScrimShaw extends EnhancedCraftingSkill implements ItemCraftor, Men
 			building.setBaseValue(CMath.s_int((String)foundRecipe.get(RCP_VALUE))+(woodRequired*(RawMaterial.CODES.VALUE(data[0][FOUND_CODE]))));
 			building.setMaterial(data[0][FOUND_CODE]);
 			building.basePhyStats().setLevel(CMath.s_int((String)foundRecipe.get(RCP_LEVEL)));
-			building.setSecretIdentity("This is the work of "+mob.Name()+".");
+			building.setSecretIdentity(getBrand(mob));
 			int capacity=CMath.s_int((String)foundRecipe.get(RCP_CAPACITY));
 			String spell=(foundRecipe.size()>RCP_SPELL)?((String)foundRecipe.get(RCP_SPELL)).trim():"";
 			if(bundling) building.setBaseValue(lostValue);

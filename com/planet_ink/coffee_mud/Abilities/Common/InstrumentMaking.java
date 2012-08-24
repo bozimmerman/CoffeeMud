@@ -273,7 +273,7 @@ public class InstrumentMaking extends CraftingSkill implements ItemCraftor
 		for(int i=0;i<MusicalInstrument.TYPE_DESC.length;i++)
 			if(type.equalsIgnoreCase(MusicalInstrument.TYPE_DESC[i]))
 				((MusicalInstrument)building).setInstrumentType(i);
-		building.setSecretIdentity("This is the work of "+mob.Name()+".");
+		building.setSecretIdentity(getBrand(mob));
 		if(building instanceof Rideable)
 		{
 			((Rideable)building).setRideBasis(Rideable.RIDEABLE_SIT);

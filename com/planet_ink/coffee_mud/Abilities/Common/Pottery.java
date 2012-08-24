@@ -300,7 +300,7 @@ public class Pottery extends CraftingSkill implements ItemCraftor
 		if(building.name().toUpperCase().indexOf("CHINA ")>=0)
 			building.setMaterial(RawMaterial.RESOURCE_CHINA);
 		building.basePhyStats().setLevel(CMath.s_int((String)foundRecipe.get(RCP_LEVEL)));
-		building.setSecretIdentity("This is the work of "+mob.Name()+".");
+		building.setSecretIdentity(getBrand(mob));
 		int capacity=CMath.s_int((String)foundRecipe.get(RCP_CAPACITY));
 		String spell=(foundRecipe.size()>RCP_SPELL)?((String)foundRecipe.get(RCP_SPELL)).trim():"";
 		addSpells(building,spell);

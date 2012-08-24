@@ -134,6 +134,25 @@ public class Lacquerring extends CommonSkill
 		Item target=mob.fetchCarried(null,(String)commands.firstElement());
 		if((target==null)||(!CMLib.flags().canBeSeenBy(target,mob)))
 		{
+			target=mob.location().findItem(null, (String)commands.firstElement());
+			if((target!=null)&&(CMLib.flags().canBeSeenBy(target,mob)))
+			{
+				Set<MOB> followers=mob.getGroupMembers(new TreeSet<MOB>());
+				boolean ok=false;
+				for(MOB M : followers)
+				{
+					if(target.secretIdentity().indexOf(getBrand(M))>=0)
+						ok=true;
+				}
+				if(!ok)
+				{
+					commonTell(mob,"You aren't allowed to work on '"+((String)commands.firstElement())+"'.");
+					return false;
+				}
+			}
+		}
+		if((target==null)||(!CMLib.flags().canBeSeenBy(target,mob)))
+		{
 			commonTell(mob,"You don't seem to have a '"+((String)commands.firstElement())+"'.");
 			return false;
 		}

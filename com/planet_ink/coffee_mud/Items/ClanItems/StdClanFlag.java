@@ -251,14 +251,13 @@ public class StdClanFlag extends StdItem implements ClanItem
 					{
 						int relation=Clan.REL_WAR;
 						Clan C=CMLib.clans().getClan(clanID());
-						if(C!=null)
-							relation=C.getClanRelations(rulingClan);
-						else
+						if(C==null)
 						{
-							C=CMLib.clans().getClan(rulingClan);
-							if(C!=null)
-								relation=C.getClanRelations(clanID());
+							msg.source().tell("This ancient relic from a lost clan fades out of existence.");
+							this.destroy();
+							return false;
 						}
+						relation=C.getClanRelations(rulingClan);
 						if(relation!=Clan.REL_WAR)
 						{
 							msg.source().tell("You must be at war with this clan to put down your flag on their area.");

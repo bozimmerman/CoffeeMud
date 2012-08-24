@@ -421,7 +421,7 @@ public class Carpentry extends EnhancedCraftingSkill implements ItemCraftor
 			int hardness=RawMaterial.CODES.HARDNESS(data[0][FOUND_CODE])-3;
 			building.basePhyStats().setLevel(CMath.s_int((String)foundRecipe.get(RCP_LEVEL))+(hardness));
 			if(building.basePhyStats().level()<1) building.basePhyStats().setLevel(1);
-			building.setSecretIdentity("This is the work of "+mob.Name()+".");
+			building.setSecretIdentity(getBrand(mob));
 			int capacity=CMath.s_int((String)foundRecipe.get(RCP_CAPACITY));
 			long canContain=getContainerType((String)foundRecipe.get(RCP_CONTAINMASK));
 			int armordmg=CMath.s_int((String)foundRecipe.get(RCP_ARMORDMG));

@@ -158,6 +158,14 @@ public class CommonSkill extends StdAbility
 		return 0;
 	}
 	
+	protected String getBrand(MOB mob)
+	{
+		if(mob==null)
+    		return "This is the work of an anonymous craftsman.";
+		else
+    		return "This is the work of "+mob.Name()+".";
+	}
+
 	protected void commonTell(MOB mob, Environmental target, Environmental tool, String str)
 	{
 		if(mob.isMonster()&&(mob.amFollowing()!=null))

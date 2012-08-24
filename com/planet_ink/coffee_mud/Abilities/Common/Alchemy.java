@@ -351,7 +351,7 @@ public class Alchemy extends CraftingSkill implements ItemCraftor
 			oldName=building.name();
 			building.destroy();
 			building=buildItem(theSpell);
-			building.setSecretIdentity("This is the work of "+mob.Name()+".");
+			building.setSecretIdentity(getBrand(mob));
 
 			int duration=CMLib.ableMapper().qualifyingLevel(mob,theSpell)*5;
 			if(duration<10) duration=10;
