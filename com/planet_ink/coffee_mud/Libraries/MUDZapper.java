@@ -102,14 +102,16 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 	@SuppressWarnings("unchecked")
     public CompiledZapperMask getPreCompiledMask(final String str)
 	{
-		Hashtable<String,CompiledZapperMask> H=(Hashtable<String,CompiledZapperMask>)Resources.getResource("SYSTEM_HASHED_MASKS");
+		PrioritizingLimitedMap<String,CompiledZapperMask> H
+				=(PrioritizingLimitedMap<String,CompiledZapperMask>)
+				Resources.getResource("SYSTEM_HASHED_MASKS");
 		if(H==null)
 		{ 
-			H=new Hashtable<String,CompiledZapperMask>(); 
+			H=new PrioritizingLimitedMap<String,CompiledZapperMask>(200, 10*60*1000, Long.MAX_VALUE, 50); 
 			Resources.submitResource("SYSTEM_HASHED_MASKS",H); 
 		}
 		final String lowerStr=(str==null)?"":str.toLowerCase().trim();
-		CompiledZapperMask V=H.get(lowerStr);
+		CompiledZapperMask V=H.getAndMark(lowerStr);
 		if(V==null)
 		{
 			V=maskCompile(str);
