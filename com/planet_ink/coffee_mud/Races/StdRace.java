@@ -629,7 +629,7 @@ public class StdRace implements Race
 
 		if(racialEffectMap.containsKey(level))
 			return racialEffectMap.get(level); 
-		final List<Ability> finalV = new Vector<Ability>();
+		final CMObjUniqSortSVec<Ability> finalV = new CMObjUniqSortSVec<Ability>();
 		for(int v=0;v<racialEffectLevels().length;v++)
 		{
 			if((racialEffectLevels()[v]<=level.intValue())
@@ -648,6 +648,7 @@ public class StdRace implements Race
 				}
 			}
 		}
+		finalV.trimToSize();
 		racialEffectMap.put(level, finalV);
 		return finalV;
 	}
@@ -1102,7 +1103,7 @@ public class StdRace implements Race
 		if(racialAbilityMap.containsKey(level))
 			return racialAbilityMap.get(level);
 		List<AbilityMapper.AbilityMapping> V=CMLib.ableMapper().getUpToLevelListings(ID(),level.intValue(),true,(mob!=null));
-		List<Ability> finalV=new Vector();
+		CMObjUniqSortSVec<Ability> finalV=new CMObjUniqSortSVec<Ability>(V.size());
 		for(AbilityMapper.AbilityMapping able : V)
 		{
 			Ability A=CMClass.getAbility(able.abilityID);
@@ -1114,6 +1115,7 @@ public class StdRace implements Race
 				finalV.add(A);
 			}
 		}
+		finalV.trimToSize();
 		racialAbilityMap.put(level,finalV);
 		return finalV;
 	}

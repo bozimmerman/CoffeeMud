@@ -693,7 +693,7 @@ protected boolean[] clanAbilityQuals		=null;
 		if(clanAbilityMap.containsKey(level))
 			return clanAbilityMap.get(level);
 		List<AbilityMapper.AbilityMapping> V=CMLib.ableMapper().getUpToLevelListings(ID(),level.intValue(),true,true);
-		List<Ability> finalV=new Vector<Ability>();
+		CMObjUniqSortSVec<Ability> finalV=new CMObjUniqSortSVec<Ability>();
 		for(AbilityMapper.AbilityMapping able : V)
 		{
 			Ability A=CMClass.getAbility(able.abilityID);
@@ -705,6 +705,7 @@ protected boolean[] clanAbilityQuals		=null;
 				finalV.add(A);
 			}
 		}
+		finalV.trimToSize();
 		clanAbilityMap.put(level,finalV);
 		return finalV;
 	}
@@ -724,7 +725,7 @@ protected boolean[] clanAbilityQuals		=null;
 		
 		if(clanEffectMap.containsKey(level))
 			return clanEffectMap.get(level); 
-		final List<Ability> finalV = new Vector<Ability>();
+		final CMObjUniqSortSVec<Ability> finalV = new CMObjUniqSortSVec<Ability>();
 		for(int v=0;v<clanEffectLevels.length;v++)
 		{
 			if((clanEffectLevels[v]<=level.intValue())
@@ -743,6 +744,7 @@ protected boolean[] clanAbilityQuals		=null;
 				}
 			}
 		}
+		finalV.trimToSize();
 		clanEffectMap.put(level,finalV);
 		return finalV;
 	}
