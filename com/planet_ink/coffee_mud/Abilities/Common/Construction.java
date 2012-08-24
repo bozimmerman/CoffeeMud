@@ -74,7 +74,8 @@ public class Construction extends CraftingSkill
 		{"Description","0","0","0","0"},
 		{"Secret Door","200","1","1","0"},
 		{"Window","50","1","1","1"},
-		{"Crawlway","250","1","1","1"}//,{"Stairs","350","1","0","0"}
+		{"Crawlway","250","1","1","1"},
+		//{"Stairs","350","1","0","0"}
 	};
 
 	protected Room room=null;
@@ -103,6 +104,25 @@ public class Construction extends CraftingSkill
 		return E2;
 	}
 
+	
+	private boolean isUpstairs(Room room, HashSet<Room> doneRooms)
+	{
+		Room downRoom=room.getRoomInDir(Directions.DOWN);
+		if((downRoom!=null)&&(downRoom.ID().length()>0)&&(CMLib.law().getLandTitle(downRoom)!=null))
+			return true;
+		doneRooms.add(room);
+		for(int d=0;d<Directions.NUM_DIRECTIONS();d++)
+		{
+			Room sideRoom=room.getRoomInDir(d);
+			if((sideRoom!=null)&&(sideRoom.ID().length()>0)&&(CMLib.law().getLandTitle(sideRoom)!=null))
+			{
+				if(isUpstairs(sideRoom,doneRooms))
+					return true;
+			}
+		}
+		return false;
+	}
+	
 	public void unInvoke()
 	{
 		if(canBeUninvoked())
@@ -251,7 +271,54 @@ public class Construction extends CraftingSkill
 						}
 						break;
 					case BUILD_STAIRS:
+					{
+						synchronized(("SYNC"+room.roomID()).intern())
+						{
+							room=CMLib.map().getRoom(room);
+							int floor=0;
+							Room upRoom=room;
+							while((upRoom!=null)&&(upRoom.ID().length()>0)&&(CMLib.law().getLandTitle(upRoom)!=null))
+							{
+								upRoom=upRoom.getRoomInDir(Directions.UP);
+								floor++;
+							}
+							upRoom=CMClass.getLocale(CMClass.classID(room));
+							upRoom.setRoomID(room.getArea().getNewRoomID(room,Directions.UP));
+							if(upRoom.roomID().length()==0)
+							{
+								commonTell(mob,"You've failed to build the stairs!");
+								break;
+							}
+							upRoom.setArea(room.getArea());
+							LandTitle newTitle=CMLib.law().getLandTitle(room);
+							if((newTitle!=null)&&(CMLib.law().getLandTitle(upRoom)==null))
+							{
+								newTitle=(LandTitle)((Ability)newTitle).copyOf();
+								newTitle.setLandPropertyID(upRoom.roomID());
+								newTitle.setLandOwner("");
+								newTitle.setBackTaxes(0);
+								upRoom.addNonUninvokableEffect((Ability)newTitle);
+							}
+							room.rawDoors()[Directions.UP]=upRoom;
+							Exit upExit=CMClass.getExit("OpenDescriptable");
+							upExit.setDisplayText("Upstairs to the "+(floor+1)+CMath.numAppendage(floor+1)+" floor.");
+							room.setRawExit(Directions.UP,upExit);
+							
+							Exit downExit=CMClass.getExit("OpenDescriptable");
+							downExit.setDisplayText("Downstairs to the "+(floor)+CMath.numAppendage(floor)+" floor.");
+							upRoom.rawDoors()[Directions.DOWN]=room;
+							upRoom.setRawExit(Directions.DOWN,downExit);
+							if(CMSecurity.isDebugging(CMSecurity.DbgFlag.PROPERTY))
+								Log.debugOut("Lots4Sale",upRoom.roomID()+" created and put up for sale.");
+							CMLib.database().DBCreateRoom(upRoom);
+							if(newTitle!=null)
+								newTitle.updateLot(null);
+							upRoom.getArea().fillInAreaRoom(upRoom);
+							CMLib.database().DBUpdateExits(upRoom);
+							CMLib.database().DBUpdateExits(room);
+						}
 						break;
+					}
 					case BUILD_WALL:
 					case BUILD_FENCE:
 						{
@@ -577,8 +644,44 @@ public class Construction extends CraftingSkill
 		}
 		String dirName=(String)commands.lastElement();
 		dir=Directions.getGoodDirectionCode(dirName);
+		if((doingCode==BUILD_DEMOLISH)&&(dirName.equalsIgnoreCase("stairs")))
+		{
+			
+			int floor=0;
+			Room upRoom=room;
+			while((upRoom!=null)&&(upRoom.ID().length()>0)&&(CMLib.law().getLandTitle(upRoom)!=null))
+			{
+				upRoom=upRoom.getRoomInDir(Directions.UP);
+				floor++;
+			}
+			if(floor<=1)
+			{
+				commonTell(mob,"There is no upper floor here.");
+				return false;
+			}
+			if(floor>2)
+			{
+				commonTell(mob,"You need to demolish the upper floors first");
+				return false;
+			}
+			dir=-1;
+		}
+		else
 		if((doingCode==BUILD_DEMOLISH)&&(dirName.equalsIgnoreCase("roof")))
 		{
+			
+			int floor=0;
+			Room upRoom=room;
+			while((upRoom!=null)&&(upRoom.ID().length()>0)&&(CMLib.law().getLandTitle(upRoom)!=null))
+			{
+				upRoom=upRoom.getRoomInDir(Directions.UP);
+				floor++;
+			}
+			if(floor>1)
+			{
+				commonTell(mob,"You need to demolish the upper floors first");
+				return false;
+			}
 			if(mob.location().domainType() == Room.DOMAIN_INDOORS_CAVE)
 			{
 				commonTell(mob,"A cave can not have its roof demolished.");
