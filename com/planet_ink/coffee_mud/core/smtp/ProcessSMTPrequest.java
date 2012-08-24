@@ -700,12 +700,17 @@ public class ProcessSMTPrequest implements Runnable
 									{
 										int size=CMath.s_int(parmparms.trim().toUpperCase().substring(5));
 										if(size>server.getMaxMsgSize())
+										{
 											replyData=("552 String exceeds size limit. But you were nice to tell me!"+cr).getBytes();
+											error=true;
+										}
 									}
 									else
+									{
 										replyData=("502 Parameters not supported... \""+parmparms+"\""+cr).getBytes();
+    									error=true;
+    								}
 								}
-								else
 								if(!error)
 								{
 									String name=validLocalAccount(parm);
