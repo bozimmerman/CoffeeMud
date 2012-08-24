@@ -640,6 +640,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 		Room room=CMLib.map().getRoom(thisName);
 		if((room!=null)&&(room.roomID().equalsIgnoreCase(thisName)))
 			return room;
+		
 		List<Room> rooms=new Vector(1);
 		if((imHere!=null)&&(imHere.getArea()!=null))
 			rooms=CMLib.map().findAreaRoomsLiberally(null, imHere.getArea(), thisName, "RIEPM",100);

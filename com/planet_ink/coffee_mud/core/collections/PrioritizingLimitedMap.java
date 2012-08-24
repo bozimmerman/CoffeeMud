@@ -30,7 +30,8 @@ limitations under the License.
 public class PrioritizingLimitedMap<T extends Comparable<T>, K> implements Map<T, K>
 {
 	protected int  		 itemLimit;
-	protected final long ageLimitMillis;
+	protected final long touchAgeLimitMillis;
+	protected final long maxAgeLimitMillis;
 	protected int 		 threshHoldToExpand;
 	
 	
@@ -41,6 +42,7 @@ public class PrioritizingLimitedMap<T extends Comparable<T>, K> implements Map<T
 		public volatile int 			 priority=0;
 		public volatile int  			 index=0;
 		public volatile long			 lastTouch=System.currentTimeMillis(); 
+		public final    long  			 birthDate=System.currentTimeMillis();
 		public LinkedEntry(V frst, W scnd)
         {
 	        super(frst, scnd);
@@ -51,17 +53,18 @@ public class PrioritizingLimitedMap<T extends Comparable<T>, K> implements Map<T
 	protected volatile LinkedEntry<T,K>  tail=null;
 	protected final TreeMap<T,LinkedEntry<T,K>> map=new TreeMap<T,LinkedEntry<T,K>>(); 
 
-    public PrioritizingLimitedMap(int itemLimit, long ageLimitMillis, int threshHoldToExpand)
+    public PrioritizingLimitedMap(int itemLimit, long touchAgeLimitMillis, long maxAgeLimitMillis, int threshHoldToExpand)
 	{
 		if(itemLimit<=0) itemLimit=1;
 		this.itemLimit=itemLimit;
-		this.ageLimitMillis=ageLimitMillis;
+		this.touchAgeLimitMillis=touchAgeLimitMillis;
+		this.maxAgeLimitMillis=maxAgeLimitMillis;
 		this.threshHoldToExpand=threshHoldToExpand;
 	}
 	
-    public PrioritizingLimitedMap(int itemLimit, long ageLimitMillis)
+    public PrioritizingLimitedMap(int itemLimit, long touchAgeLimitMillis, long maxAgeLimitMillis)
 	{
-    	this(itemLimit,ageLimitMillis,Integer.MAX_VALUE);
+    	this(itemLimit,touchAgeLimitMillis,maxAgeLimitMillis,Integer.MAX_VALUE);
 	}
 	
 	@Override
@@ -131,6 +134,67 @@ public class PrioritizingLimitedMap<T extends Comparable<T>, K> implements Map<T
 	@Override
     public Set<T> keySet() { return map.keySet(); }
 
+	private void markFoundAgain(LinkedEntry<T,K> p)
+	{
+		p.priority++;
+		p.lastTouch=System.currentTimeMillis();
+		LinkedEntry<T,K> pp=p.prev;
+		while((pp!=null) && (p.priority > pp.priority))
+		{
+			LinkedEntry<T,K> pn=p.next;
+			int ppIndex=pp.index;
+			pp.index=p.index;
+			p.index=ppIndex;
+			p.prev=pp.prev;
+			p.next=pp;
+			if(pp.prev==null)
+				head=p;
+			else
+				pp.prev.next=p;
+			pp.prev=p;
+			if(pn != null)
+				pn.prev=pp;
+			else
+				tail=pp;
+			pp.next=pn;
+			pp=p.prev;
+		}
+	}
+	
+	private void trimDeadwood()
+	{
+		if(map.size() > itemLimit)
+		{
+			LinkedEntry<T,K> prev=tail;
+			final long touchTimeout=System.currentTimeMillis()-touchAgeLimitMillis;
+			final long maxAgeTimeout=System.currentTimeMillis()-maxAgeLimitMillis;
+			int expands=0;
+			while((prev != null)&&(prev != head)&&(prev.index <=0)&&(map.size() > itemLimit))
+			{
+				final LinkedEntry<T,K> pprev=prev.prev;
+				if((prev.lastTouch<touchTimeout)||(prev.birthDate<maxAgeTimeout))
+					remove(prev.first);
+				else
+				if(prev.priority > this.threshHoldToExpand)
+					expands=1; // dont want to count the same ones every time through
+				prev=pprev;
+			}
+			itemLimit+=expands;
+		}
+	}
+	
+	public synchronized K getAndMark(T arg0)
+	{
+		LinkedEntry<T,K> p=map.get(arg0);
+		if(p!=null)
+		{
+			markFoundAgain(p);
+			trimDeadwood();
+			return p.second;
+		}
+		return null;
+	}
+	
 	@Override
     public synchronized K put(T arg0, K arg1) {
 		LinkedEntry<T,K> p=map.get(arg0);
@@ -156,49 +220,9 @@ public class PrioritizingLimitedMap<T extends Comparable<T>, K> implements Map<T
 		{
 			if(p.second!=arg1)
     			p.second=arg1;
-			p.priority++;
-			p.lastTouch=System.currentTimeMillis();
-			LinkedEntry<T,K> pp=p.prev;
-			while((pp!=null) && (p.priority > pp.priority))
-			{
-				LinkedEntry<T,K> pn=p.next;
-				int ppIndex=pp.index;
-				pp.index=p.index;
-				p.index=ppIndex;
-				p.prev=pp.prev;
-				p.next=pp;
-				if(pp.prev==null)
-					head=p;
-				else
-    				pp.prev.next=p;
-				pp.prev=p;
-				if(pn != null)
-    				pn.prev=pp;
-				else
-					tail=pp;
-				pp.next=pn;
-				pp=p.prev;
-			}
+			markFoundAgain(p);
 		}
-		if(map.size() > itemLimit)
-		{
-			LinkedEntry<T,K> prev=tail;
-			final long timeout=System.currentTimeMillis()-ageLimitMillis;
-			int expands=0;
-			while((prev != null)&&(prev != head)&&(prev.index <=0)&&(map.size() > itemLimit))
-			{
-				final LinkedEntry<T,K> pprev=prev.prev;
-				if(prev.priority > this.threshHoldToExpand)
-					expands=1; // dont want to count the same ones every time through
-				else
-				if(prev.lastTouch<timeout)
-				{
-					remove(prev.first);
-				}
-				prev=pprev;
-			}
-			itemLimit+=expands;
-		}
+		trimDeadwood();
 		return arg1;
     }
 
