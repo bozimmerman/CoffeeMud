@@ -49,12 +49,20 @@ public class Thief_KillLog extends ThiefSkill
 	protected boolean disregardsArmorCheck(MOB mob){return true;}
 	public String[] triggerStrings(){return triggerStrings;}
 	public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_COMBATLORE;}
-	Hashtable theList=new Hashtable();
+	protected Hashtable theList=new Hashtable();
+	protected Thief_Mark lastMarker=null;
 	public MOB mark=null;
 
 	public MOB getMark(MOB mob)
 	{
-		Thief_Mark A=(Thief_Mark)mob.fetchEffect("Thief_Mark");
+		Thief_Mark A=null;
+		if((lastMarker != null)&&(lastMarker.affecting()==mob)&&(!lastMarker.amDestroyed())&&(lastMarker.mark!=null))
+			A=lastMarker;
+		if(A==null)
+		{
+			A=(Thief_Mark)mob.fetchEffect("Thief_Mark");
+			lastMarker=A;
+		}
 		if(A!=null)
 			return A.mark;
 		return null;
