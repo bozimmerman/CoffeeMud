@@ -169,8 +169,8 @@ GIVE_PROG 'stdcoins' 'gencoins'
 			ENDIF
 		ELSE
 			say $n The ante is $<$i BJANTE>.
-			MPOLOAD $%GOLDAMT($o)%
-			give $%GOLDAMT($o)% $n
+			MPOLOAD $o
+			give $o $n
 		ENDIF
 	ENDIF
 ~
