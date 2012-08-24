@@ -70,9 +70,13 @@ public class PrioritizingLimitedMap<T extends Comparable<T>, K> implements Map<T
 	@Override
 	public K get(Object key)
 	{
-		final LinkedEntry<T,K> p=map.get(key);
+		LinkedEntry<T,K> p=map.get(key);
 		if(p!=null)
-    		return p.second;
+		{
+			markFoundAgain(p);
+			trimDeadwood();
+			return p.second;
+		}
 		return null;
 	}
 
@@ -181,18 +185,6 @@ public class PrioritizingLimitedMap<T extends Comparable<T>, K> implements Map<T
 			}
 			itemLimit+=expands;
 		}
-	}
-	
-	public synchronized K getAndMark(T arg0)
-	{
-		LinkedEntry<T,K> p=map.get(arg0);
-		if(p!=null)
-		{
-			markFoundAgain(p);
-			trimDeadwood();
-			return p.second;
-		}
-		return null;
 	}
 	
 	@Override

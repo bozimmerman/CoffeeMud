@@ -49,31 +49,20 @@ public class CMMap extends StdLibrary implements WorldMap
 	public List<SpaceObject>	space   		 		= new SVector<SpaceObject>();
 	protected Map<String,Object>SCRIPT_HOST_SEMAPHORES	= new Hashtable<String,Object>();
 	
+	public Map<Integer,List<WeakReference<MsgListener>>> 
+								globalHandlers   		= new SHashtable<Integer,List<WeakReference<MsgListener>>>();
+	public Map<String,SLinkedList<LocatedPair>>
+								scriptHostMap    		= new STreeMap<String,SLinkedList<LocatedPair>>();
+
+	private CMSupportThread 	thread     = null;
+	public CMSupportThread getSupportThread() { return thread;}
+	
 	private static final long EXPIRE_1MIN	= 1*60*1000;
 	private static final long EXPIRE_5MINS	= 5*60*1000;
 	private static final long EXPIRE_10MINS	= 10*60*1000;
 	private static final long EXPIRE_20MINS	= 20*60*1000;
 	private static final long EXPIRE_30MINS	= 30*60*1000;
 	private static final long EXPIRE_1HOUR	= 60*60*1000;
-	public Map<Integer,List<WeakReference<MsgListener>>> 
-								globalHandlers   		= new SHashtable<Integer,List<WeakReference<MsgListener>>>();
-	public Map<String,SLinkedList<LocatedPair>>
-								scriptHostMap    		= new STreeMap<String,SLinkedList<LocatedPair>>();
-	protected final PrioritizingLimitedMap<String,List<MOB>>
-								mobsFinder		 		= new PrioritizingLimitedMap<String,List<MOB>>(10,EXPIRE_5MINS,EXPIRE_10MINS,100);
-	protected final PrioritizingLimitedMap<String,List<Item>>
-								roomItemsFinder	 		= new PrioritizingLimitedMap<String,List<Item>>(10,EXPIRE_5MINS,EXPIRE_10MINS,100);
-	protected final PrioritizingLimitedMap<String,List<Item>>
-                        		invItemsFinder	 		= new PrioritizingLimitedMap<String,List<Item>>(10,EXPIRE_1MIN,EXPIRE_10MINS,100);
-	protected final PrioritizingLimitedMap<String,List<Environmental>>
-                        		stockItemsFinder 		= new PrioritizingLimitedMap<String,List<Environmental>>(10,EXPIRE_10MINS,EXPIRE_1HOUR,100);
-	protected final PrioritizingLimitedMap<String,List<Room>>
-                        		roomsFinder		 		= new PrioritizingLimitedMap<String,List<Room>>(20,EXPIRE_20MINS,EXPIRE_1HOUR,100);
-	protected final PrioritizingLimitedMap<String,Area>
-                        		areaFinder		 		= new PrioritizingLimitedMap<String,Area>(50,EXPIRE_30MINS,EXPIRE_1HOUR,100);
-
-	private CMSupportThread thread     = null;
-	public CMSupportThread getSupportThread() { return thread;}
 	
 	protected int getGlobalIndex(List<Environmental> list, String name)
 	{
@@ -135,7 +124,8 @@ public class CMMap extends StdLibrary implements WorldMap
 	public Area getArea(String calledThis)
 	{
 		final boolean disableCaching=CMProps.getBoolVar(CMProps.SYSTEMB_MAPFINDSNOCACHE);
-		Area A=areaFinder.getAndMark(calledThis.toLowerCase());
+		final Map<String,Area> finder=getAreaFinder();
+		Area A=finder.get(calledThis.toLowerCase());
 		if((A!=null)&&(!A.amDestroyed()))
 			return A;
 		for(Enumeration<Area> a=areas();a.hasMoreElements();)
@@ -144,7 +134,7 @@ public class CMMap extends StdLibrary implements WorldMap
 			if(A.Name().equalsIgnoreCase(calledThis))
 			{
 				if(!disableCaching)
-    				areaFinder.put(calledThis.toLowerCase(), A);
+					finder.put(calledThis.toLowerCase(), A);
 				return A;
 			}
 		}
@@ -155,7 +145,8 @@ public class CMMap extends StdLibrary implements WorldMap
 		final boolean disableCaching=CMProps.getBoolVar(CMProps.SYSTEMB_MAPFINDSNOCACHE);
 		Area A=getArea(calledThis);
 		if(A!=null) return A;
-		A=areaFinder.getAndMark(calledThis.toLowerCase());
+		final Map<String,Area> finder=getAreaFinder();
+		A=finder.get(calledThis.toLowerCase());
 		if((A!=null)&&(!A.amDestroyed()))
 			return A;
 		for(Enumeration<Area> a=areas();a.hasMoreElements();)
@@ -164,7 +155,7 @@ public class CMMap extends StdLibrary implements WorldMap
 			if(A.Name().toUpperCase().startsWith(calledThis))
 			{
 				if(!disableCaching)
-    				areaFinder.put(calledThis.toLowerCase(), A);
+    				finder.put(calledThis.toLowerCase(), A);
 				return A;
 			}
 		}
@@ -176,7 +167,8 @@ public class CMMap extends StdLibrary implements WorldMap
 		final boolean disableCaching=CMProps.getBoolVar(CMProps.SYSTEMB_MAPFINDSNOCACHE);
 		Area A=findAreaStartsWith(calledThis);
 		if(A!=null) return A;
-		A=areaFinder.getAndMark(calledThis.toLowerCase());
+		final Map<String,Area> finder=getAreaFinder();
+		A=finder.get(calledThis.toLowerCase());
 		if((A!=null)&&(!A.amDestroyed()))
 			return A;
 		for(Enumeration<Area> a=areas();a.hasMoreElements();)
@@ -185,7 +177,7 @@ public class CMMap extends StdLibrary implements WorldMap
 			if(CMLib.english().containsString(A.Name(),calledThis))
 			{
 				if(!disableCaching)
-    				areaFinder.put(calledThis.toLowerCase(), A);
+    				finder.put(calledThis.toLowerCase(), A);
 				return A;
 			}
 		}
@@ -1553,6 +1545,77 @@ public class CMMap extends StdLibrary implements WorldMap
 		return list;
 	}
 	
+    @SuppressWarnings("unchecked")
+    public Map<String,List<MOB>> getMOBFinder()
+    {
+    	Map<String,List<MOB>> finder=(Map<String,List<MOB>>)Resources.getResource("SYSTEM_MOB_FINDER_CACHE");
+    	if(finder==null)
+    	{
+    		finder=new PrioritizingLimitedMap<String,List<MOB>>(10,EXPIRE_5MINS,EXPIRE_10MINS,100);
+    		Resources.submitResource("SYSTEM_MOB_FINDER_CACHE",finder);
+    	}
+    	return finder;
+    }
+    @SuppressWarnings("unchecked")
+    public Map<String,Area> getAreaFinder()
+    {
+    	Map<String,Area> finder=(Map<String,Area>)Resources.getResource("SYSTEM_AREA_FINDER_CACHE");
+    	if(finder==null)
+    	{
+    		finder=new PrioritizingLimitedMap<String,Area>(50,EXPIRE_30MINS,EXPIRE_1HOUR,100);
+    		Resources.submitResource("SYSTEM_AREA_FINDER_CACHE",finder);
+    	}
+    	return finder;
+    }
+    
+    @SuppressWarnings("unchecked")
+    public Map<String,List<Item>> getRoomItemFinder()
+    {
+    	Map<String,List<Item>> finder=(Map<String,List<Item>>)Resources.getResource("SYSTEM_RITEM_FINDER_CACHE");
+    	if(finder==null)
+    	{
+    		finder=new PrioritizingLimitedMap<String,List<Item>>(10,EXPIRE_5MINS,EXPIRE_10MINS,100);
+    		Resources.submitResource("SYSTEM_RITEM_FINDER_CACHE",finder);
+    	}
+    	return finder;
+    }
+    
+    @SuppressWarnings("unchecked")
+    public Map<String,List<Item>> getInvItemFinder()
+    {
+    	Map<String,List<Item>> finder=(Map<String,List<Item>>)Resources.getResource("SYSTEM_IITEM_FINDER_CACHE");
+    	if(finder==null)
+    	{
+    		finder=new PrioritizingLimitedMap<String,List<Item>>(10,EXPIRE_1MIN,EXPIRE_10MINS,100);
+    		Resources.submitResource("SYSTEM_IITEM_FINDER_CACHE",finder);
+    	}
+    	return finder;
+    }
+    
+    @SuppressWarnings("unchecked")
+    public Map<String,List<Environmental>> getStockFinder()
+    {
+    	Map<String,List<Environmental>> finder=(Map<String,List<Environmental>>)Resources.getResource("SYSTEM_STOCK_FINDER_CACHE");
+    	if(finder==null)
+    	{
+    		finder=new PrioritizingLimitedMap<String,List<Environmental>>(10,EXPIRE_10MINS,EXPIRE_1HOUR,100);
+    		Resources.submitResource("SYSTEM_STOCK_FINDER_CACHE",finder);
+    	}
+    	return finder;
+    }
+    
+    @SuppressWarnings("unchecked")
+    public Map<String,List<Room>> getRoomFinder()
+    {
+    	Map<String,List<Room>> finder=(Map<String,List<Room>>)Resources.getResource("SYSTEM_ROOM_FINDER_CACHE");
+    	if(finder==null)
+    	{
+    		finder=new PrioritizingLimitedMap<String,List<Room>>(20,EXPIRE_20MINS,EXPIRE_1HOUR,100);
+    		Resources.submitResource("SYSTEM_ROOM_FINDER_CACHE",finder);
+    	}
+    	return finder;
+    }
+    
 	protected List<Room> findWorldRoomsLiberally(MOB mob, 
 												 String cmd, 
 												 String srchWhatAERIPMVK, 
@@ -1634,10 +1697,12 @@ public class CMMap extends StdLibrary implements WorldMap
 				// no good, so look for room inhabitants
 				if(searchInhabs && room==null)
 				{
+					final Map<String,List<MOB>> finder=getMOBFinder();
 					List<MOB> candidates=null;
+					
 					if((mob==null)||(mob.isMonster()))
 					{
-    					candidates=checkMOBCachedList(mobsFinder.getAndMark(srchStr.toLowerCase()));
+    					candidates=checkMOBCachedList(finder.get(srchStr.toLowerCase()));
 						if(returnFirst&&(candidates!=null)&&(candidates.size()>1))
 							candidates=new XVector<MOB>(candidates.get(0));
 					}
@@ -1645,7 +1710,7 @@ public class CMMap extends StdLibrary implements WorldMap
 					{
     					candidates=findInhabitants(rightLiberalMap(A), mob, srchStr,returnFirst, timePct);
     					if((!disableCaching)&&(!returnFirst)&&((mob==null)||(mob.isMonster())))
-        					mobsFinder.put(srchStr.toLowerCase(), candidates);
+    						finder.put(srchStr.toLowerCase(), candidates);
         					
 					}
 					if(candidates.size()>0)
@@ -1656,10 +1721,11 @@ public class CMMap extends StdLibrary implements WorldMap
 				// now check room text
 				if(searchRooms && room==null)
 				{
+					final Map<String,List<Room>> finder=getRoomFinder();
 					List<Room> candidates=null;
 					if((mob==null)||(mob.isMonster()))
 					{
-						candidates=roomsFinder.getAndMark(srchStr.toLowerCase());
+						candidates=finder.get(srchStr.toLowerCase());
 						if(returnFirst&&(candidates!=null)&&(candidates.size()>1))
 							candidates=new XVector<Room>(candidates.get(0));
 					}
@@ -1667,7 +1733,7 @@ public class CMMap extends StdLibrary implements WorldMap
 					{
 						candidates=findRooms(rightLiberalMap(A), mob, srchStr, false,returnFirst, timePct);
     					if((!disableCaching)&&(!returnFirst)&&((mob==null)||(mob.isMonster())))
-							roomsFinder.put(srchStr.toLowerCase(), candidates);
+    						finder.put(srchStr.toLowerCase(), candidates);
 					}
 					if(candidates.size()>0)
 						room=addWorldRoomsLiberally(rooms,candidates);
@@ -1677,10 +1743,11 @@ public class CMMap extends StdLibrary implements WorldMap
 				// check floor items
 				if(searchItems && room==null)
 				{
+					final Map<String,List<Item>> finder=getRoomItemFinder();
 					List<Item> candidates=null;
 					if((mob==null)||(mob.isMonster()))
 					{
-						candidates=checkRoomItemCachedList(roomItemsFinder.getAndMark(srchStr.toLowerCase()));
+						candidates=checkRoomItemCachedList(finder.get(srchStr.toLowerCase()));
 						if(returnFirst&&(candidates!=null)&&(candidates.size()>1))
 							candidates=new XVector<Item>(candidates.get(0));
 					}
@@ -1688,7 +1755,7 @@ public class CMMap extends StdLibrary implements WorldMap
 					{
     					candidates=findRoomItems(rightLiberalMap(A), mob, srchStr, false,returnFirst,timePct);
     					if((!disableCaching)&&(!returnFirst)&&((mob==null)||(mob.isMonster())))
-							roomItemsFinder.put(srchStr.toLowerCase(), candidates);
+    						finder.put(srchStr.toLowerCase(), candidates);
 					}
 					if(candidates.size()>0)
 						room=addWorldRoomsLiberally(rooms,candidates);
@@ -1698,10 +1765,11 @@ public class CMMap extends StdLibrary implements WorldMap
 				// check inventories
 				if(searchInventories && room==null)
 				{
+					final Map<String,List<Item>> finder=getInvItemFinder();
 					List<Item> candidates=null;
 					if((mob==null)||(mob.isMonster()))
 					{
-						candidates=checkInvCachedList(invItemsFinder.getAndMark(srchStr.toLowerCase()));
+						candidates=checkInvCachedList(finder.get(srchStr.toLowerCase()));
 						if(returnFirst&&(candidates!=null)&&(candidates.size()>1))
 							candidates=new XVector<Item>(candidates.get(0));
 					}
@@ -1709,7 +1777,7 @@ public class CMMap extends StdLibrary implements WorldMap
 					{
 						candidates=findInventory(rightLiberalMap(A), mob, srchStr, returnFirst,timePct);
     					if((!disableCaching)&&(!returnFirst)&&((mob==null)||(mob.isMonster())))
-							invItemsFinder.put(srchStr.toLowerCase(), candidates);
+    						finder.put(srchStr.toLowerCase(), candidates);
 					}
 					if(candidates.size()>0)
 						room=addWorldRoomsLiberally(rooms,candidates);
@@ -1719,10 +1787,11 @@ public class CMMap extends StdLibrary implements WorldMap
 				// check stocks
 				if(searchStocks && room==null)
 				{
+					final Map<String,List<Environmental>> finder=getStockFinder();
 					List<Environmental> candidates=null;
 					if((mob==null)||(mob.isMonster()))
 					{
-						candidates=stockItemsFinder.getAndMark(srchStr.toLowerCase());
+						candidates=finder.get(srchStr.toLowerCase());
 						if(returnFirst&&(candidates!=null)&&(candidates.size()>1))
 							candidates=new XVector<Environmental>(candidates.get(0));
 					}
@@ -1730,7 +1799,7 @@ public class CMMap extends StdLibrary implements WorldMap
 					{
     					candidates=findShopStock(rightLiberalMap(A), mob, srchStr, returnFirst,false,timePct);
     					if((!disableCaching)&&(!returnFirst)&&((mob==null)||(mob.isMonster())))
-							stockItemsFinder.put(srchStr.toLowerCase(), candidates);
+    						finder.put(srchStr.toLowerCase(), candidates);
 					}
 					if(candidates.size()>0)
 						room=addWorldRoomsLiberally(rooms,candidates);
