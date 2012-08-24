@@ -189,7 +189,7 @@ public class PrioritizingLimitedMap<T extends Comparable<T>, K> implements Map<T
 			{
 				final LinkedEntry<T,K> pprev=prev.prev;
 				if(prev.priority > this.threshHoldToExpand)
-					expands++;
+					expands=1; // dont want to count the same ones every time through
 				else
 				if(prev.lastTouch<timeout)
 				{
