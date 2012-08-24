@@ -1332,7 +1332,6 @@ public class MUD extends Thread implements MudHost
 		if((nameID.length()==0)||(nameID.equalsIgnoreCase( "CoffeeMud" )))
 		{
 			long idNumber=new Random(System.currentTimeMillis()).nextLong();
-			if(idNumber<0) idNumber=idNumber*-1;
 			try
 			{
 				idNumber=0;
