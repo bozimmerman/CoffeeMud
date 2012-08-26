@@ -37,6 +37,8 @@ public interface TrackingLibrary extends CMLibrary
 	public void stopTracking(MOB mob);
 	public int radiatesFromDir(Room room, List<Room> rooms);
 	public void getRadiantRooms(Room room, List<Room> rooms, TrackingFlags flags, Room radiateTo, int maxDepth, Set<Room> ignoreRooms);
+	public List<Room> getRadiantRooms(final Room room, final RFilters filters, final int maxDepth);
+	public void getRadiantRooms(final Room room, List<Room> rooms, final RFilters filters, final Room radiateTo, final int maxDepth, final Set<Room> ignoreRooms);
 	public List<Room> getRadiantRooms(Room room, TrackingFlags flags, int maxDepth);
 	public boolean beMobile(MOB mob, boolean dooropen, boolean wander, boolean roomprefer, boolean roomobject, long[] status, List<Room> rooms);
 	public void wanderAway(MOB M, boolean mindPCs, boolean andGoHome);
@@ -49,14 +51,90 @@ public interface TrackingLibrary extends CMLibrary
 	public boolean run(MOB mob, int directionCode, boolean flee, boolean nolook, boolean noriders, boolean always);
 	public int findExitDir(MOB mob, Room R, String desc);
 	public int findRoomDir(MOB mob, Room R);
+	public List<Integer> getShortestTrail(final List<List<Integer>> finalSets);
 	public List<List<Integer>> findAllTrails(Room from, Room to, List<Room> radiantTrail);
 	public List<List<Integer>> findAllTrails(Room from, List<Room> tos, List<Room> radiantTrail);
 	public String getTrailToDescription(Room R1, List<Room> set, String where, boolean areaNames, boolean confirm, int radius, Set<Room> ignoreRooms, int maxMins);
 	
-	public static enum TrackingFlag {NOHOMES,OPENONLY,AREAONLY,NOEMPTYGRIDS,NOAIR,NOWATER}
+	public static abstract class RFilter
+	{
+		private RFilter next=null;
+		public abstract boolean isFilteredOut(final Room R, final Exit E, final int dir);
+	}
 	
-	public static class TrackingFlags extends HashSet<TrackingFlag> {
-		private static final long serialVersionUID = 1L;
-		public TrackingFlags plus(TrackingFlag flag) { add(flag); return this;}
+	public static class RFilters
+	{
+		private RFilter head=null;
+		public boolean isFilteredOut(final Room R, final Exit E, final int dir)
+		{
+			RFilter me=head;
+			while(me!=null)
+			{
+				if(me.isFilteredOut(R,E,dir))
+					return true;
+				me=me.next;
+			}
+			return false;
+		}
+		public RFilters plus(RFilter filter) 
+		{ 
+			RFilter me=head;
+			if(me==null)
+				head=filter;
+			else
+			{
+    			while(me.next!=null)
+    				me=me.next;
+    			me.next=filter;
+			}
+			return this;
+		}
+	}
+	
+	public static enum TrackingFlag 
+	{
+		NOHOMES(new RFilter(){ public boolean isFilteredOut(final Room R, final Exit E, final int dir){ 
+			return CMLib.law().getLandTitle(R)!=null; 
+		}}),
+		OPENONLY(new RFilter(){ public boolean isFilteredOut(final Room R, final Exit E, final int dir){ 
+			return !E.isOpen();
+		}}),
+		AREAONLY(new RFilter(){ public boolean isFilteredOut(final Room R, final Exit E, final int dir){ 
+			return CMLib.law().getLandTitle(R)!=null; 
+		}}),
+		NOEMPTYGRIDS(new RFilter(){ public boolean isFilteredOut(final Room R, final Exit E, final int dir){ 
+			return (R.getGridParent()!=null)&&(R.getGridParent().roomID().length()==0); 
+		}}),
+		NOAIR(new RFilter(){ public boolean isFilteredOut(final Room R, final Exit E, final int dir){ 
+			return (R.domainType()==Room.DOMAIN_INDOORS_AIR) ||(R.domainType()==Room.DOMAIN_OUTDOORS_AIR); 
+		}}),
+		NOWATER(new RFilter(){  public boolean isFilteredOut(final Room R, final Exit E, final int dir){ 
+			return (R.domainType()==Room.DOMAIN_INDOORS_WATERSURFACE)
+				   ||(R.domainType()==Room.DOMAIN_INDOORS_UNDERWATER)
+				   ||(R.domainType()==Room.DOMAIN_OUTDOORS_UNDERWATER)
+				   ||(R.domainType()==Room.DOMAIN_OUTDOORS_WATERSURFACE); 
+		}});
+		public RFilter myFilter;
+		private TrackingFlag(RFilter filter)
+		{
+			this.myFilter=filter;
+		}
+	}
+	
+	public static class TrackingFlags extends HashSet<TrackingFlag> 
+	{
+        private static final long serialVersionUID = -6914706649617909073L;
+		private int hashCode=(int)serialVersionUID;
+		public TrackingFlags plus(TrackingFlag flag) 
+		{ 
+			add(flag); 
+			hashCode^=flag.hashCode();
+			return this;
+		}
+		@Override
+		public int hashCode()
+		{
+			return hashCode;
+		}
 	}
 }

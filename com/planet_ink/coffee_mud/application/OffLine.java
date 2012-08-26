@@ -1,23 +1,35 @@
 	package com.planet_ink.coffee_mud.application;
 import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.threads.CMSupportThread;
 import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.core.CMFile.CMVFSDir;
+import com.planet_ink.coffee_mud.core.CMFile.CMVFSFile;
 import com.planet_ink.coffee_mud.core.collections.*;
+import com.planet_ink.coffee_mud.core.database.DBConnector;
+import com.planet_ink.coffee_mud.core.exceptions.CMException;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
 import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.Clan.MemberRecord;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.DatabaseEngine;
+import com.planet_ink.coffee_mud.Libraries.interfaces.JournalsLibrary.JournalEntry;
+import com.planet_ink.coffee_mud.Libraries.interfaces.JournalsLibrary.JournalSummaryStats;
 import com.planet_ink.coffee_mud.Libraries.interfaces.LanguageLibrary;
+import com.planet_ink.coffee_mud.Libraries.interfaces.PlayerLibrary.ThinPlayer;
+import com.planet_ink.coffee_mud.Libraries.interfaces.PlayerLibrary.ThinnerPlayer;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.MOB.Tattoo;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 	import java.net.*;
-	import java.util.*;
-	import java.sql.*;
+import java.util.*;
+import java.sql.*;
 import java.io.*;
 
 	/*
@@ -96,6 +108,7 @@ public class OffLine extends Thread implements MudHost
 
 		while (!serverIsRunning && isOK)
 		{
+			try{Thread.sleep(1000);}catch(Exception e){}
 		}
 		if (!isOK)
 		{
@@ -108,8 +121,7 @@ public class OffLine extends Thread implements MudHost
 		System.out.println("Initialization complete.");
 		return true;
 	}
-
-
+	
 	private void closeSocks(Socket sock, BufferedReader in, PrintWriter out)
 	{
 		try
@@ -284,8 +296,13 @@ public class OffLine extends Thread implements MudHost
 		int q_len = 6;
 		Socket sock=null;
 		serverIsRunning = false;
-
-		if (!isOK)  return;
+		new CMLib(); // forces this thread to HAVE a library
+		new Resources();
+		if (!isOK)
+		{
+			System.err.println("Cancelling MUD server on port "+port);
+			return;
+		}
 
 		InetAddress bindAddr = null;
 
@@ -297,7 +314,7 @@ public class OffLine extends Thread implements MudHost
 			}
 			catch (UnknownHostException e)
 			{
-				System.out.println("ERROR: MUD Server could not bind to address " + bind);
+				System.err.println("ERROR: MUD Server could not bind to address " + bind);
 			}
 		}
 
@@ -311,20 +328,26 @@ public class OffLine extends Thread implements MudHost
 
 			while(true)
 			{
-				state=0;
-				sock=servsock.accept();
-				acceptConnection(sock);
+				try
+				{
+    				state=0;
+    				sock=servsock.accept();
+    				acceptConnection(sock);
+				}
+				catch(Exception t)
+				{
+					if((!(t instanceof java.net.SocketException))
+					||(t.getMessage()==null)
+					||(t.getMessage().toLowerCase().indexOf("socket closed")<0))
+					{
+						t.printStackTrace(System.err);
+					}
+				}
 			}
 		}
 		catch(Exception t)
 		{
-			if((!(t instanceof java.net.SocketException))
-			||(t.getMessage()==null)
-			||(t.getMessage().toLowerCase().indexOf("socket closed")<0))
-			{
-				t.printStackTrace();
-			}
-
+			t.printStackTrace(System.err);
 			if (!serverIsRunning)
 				isOK = false;
 		}
@@ -384,6 +407,7 @@ public class OffLine extends Thread implements MudHost
 	public static void main(String a[])
 	{
 		CMProps page=null;
+		new CMLib(); // forces this thread to HAVE a library
 
 		String nameID="";
 		String iniFile="coffeemud.ini";

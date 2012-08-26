@@ -39,6 +39,9 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 	protected Hashtable<Integer,Vector<String>> directionCommandSets=new Hashtable<Integer,Vector<String>>();
 	protected Hashtable<Integer,Vector<String>> openCommandSets=new Hashtable<Integer,Vector<String>>();
 	protected Hashtable<Integer,Vector<String>> closeCommandSets=new Hashtable<Integer,Vector<String>>();
+	protected Hashtable<TrackingFlags,RFilters> trackingFilters=new Hashtable<TrackingFlags,RFilters>();
+	protected static final TrackingFlags		EMPTY_FLAGS=new TrackingFlags();
+	protected static final RFilters				EMPTY_FILTERS=new RFilters();
 
 	
 	protected Vector<String> getDirectionCommandSet(int direction)
@@ -242,20 +245,40 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 		return -1;
 	}
 
-	public List<Room> getRadiantRooms(Room room,
-								  TrackingFlags flags,
-								  int maxDepth)
+	public List<Room> getRadiantRooms(final Room room, final TrackingFlags flags, final int maxDepth)
 	{
-		List<Room> V=new Vector<Room>();
+		final List<Room> V=new Vector<Room>();
 		getRadiantRooms(room,V,flags,null,maxDepth,null);
 		return V;
 	}
-	public void getRadiantRooms(Room room,
-								List<Room> rooms,
-								TrackingFlags flags,
-								Room radiateTo,
-								int maxDepth,
-								Set<Room> ignoreRooms)
+	public List<Room> getRadiantRooms(final Room room, final RFilters filters, final int maxDepth)
+	{
+		final List<Room> V=new Vector<Room>();
+		getRadiantRooms(room,V,filters,null,maxDepth,null);
+		return V;
+	}
+	
+	public void getRadiantRooms(final Room room, List<Room> rooms, TrackingFlags flags, final Room radiateTo, final int maxDepth, final Set<Room> ignoreRooms)
+	{
+		if(flags == null)
+			flags = EMPTY_FLAGS;
+		RFilters filters=trackingFilters.get(flags);
+		if(filters==null)
+		{
+			if(flags.size()==0)
+				filters=EMPTY_FILTERS;
+			else
+			{
+    			filters=new RFilters();
+    			for(TrackingFlag flag : flags)
+    				filters.plus(flag.myFilter);
+			}
+			trackingFilters.put(flags, filters);
+		}
+		getRadiantRooms(room, rooms, filters, radiateTo, maxDepth, ignoreRooms);
+	}
+	
+	public void getRadiantRooms(final Room room, List<Room> rooms, final RFilters filters, final Room radiateTo, final int maxDepth, final Set<Room> ignoreRooms)
 	{
 		int depth=0;
 		if(room==null) return;
@@ -264,20 +287,15 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 		rooms.add(room);
 		if(rooms instanceof Vector<?>)
 			((Vector<Room>)rooms).ensureCapacity(200);
+		if(ignoreRooms != null)
+			H.addAll(ignoreRooms);
 		for(int r=0;r<rooms.size();r++)
 			H.add(rooms.get(r));
 		int min=0;
 		int size=rooms.size();
-		boolean radiateToSomewhere=(radiateTo!=null);
 		Room R1=null;
 		Room R=null;
 		Exit E=null;
-		boolean nohomes = (flags!=null) && flags.contains(TrackingFlag.NOHOMES);
-		boolean openOnly = (flags!=null) && flags.contains(TrackingFlag.OPENONLY);
-		boolean areaOnly = (flags!=null) && flags.contains(TrackingFlag.AREAONLY);
-		boolean noEmptyGrids = (flags!=null) && flags.contains(TrackingFlag.NOEMPTYGRIDS);
-		boolean noAir = (flags!=null) && flags.contains(TrackingFlag.NOAIR);
-		boolean noWater = (flags!=null) && flags.contains(TrackingFlag.NOWATER);
 
 		int r=0;
 		int d=0;
@@ -291,29 +309,13 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 					R=R1.getRoomInDir(d);
 					E=R1.getExitInDir(d);
 
-					if((R==null)
-					||(E==null)
-					||((ignoreRooms!=null)&&(ignoreRooms.contains(R)))
+					if((R==null)||(E==null)
 					||(H.contains(R))
-					||((areaOnly)&&(R.getArea()!=room.getArea()))
-					||((openOnly)&&(!E.isOpen()))
-					||((noAir)
-						&&((R.domainType()==Room.DOMAIN_INDOORS_AIR)
-						 	||(R.domainType()==Room.DOMAIN_OUTDOORS_AIR)))
-					||((nohomes)&&(CMLib.law().getLandTitle(R)!=null))
-					||((noWater)
-						&&((R.domainType()==Room.DOMAIN_INDOORS_WATERSURFACE)
-						   ||(R.domainType()==Room.DOMAIN_INDOORS_UNDERWATER)
-						   ||(R.domainType()==Room.DOMAIN_OUTDOORS_UNDERWATER)
-						   ||(R.domainType()==Room.DOMAIN_OUTDOORS_WATERSURFACE)))
-					||((noEmptyGrids)
-						&&(R.getGridParent()!=null)
-						&&(R.getGridParent().roomID().length()==0)))
+					||(filters.isFilteredOut(R, E, d)))
 						continue;
 					rooms.add(R);
 					H.add(R);
-					if((radiateToSomewhere)
-					&&(R==radiateTo))
+					if(R==radiateTo) // R can't be null here, so if they are equal, time to go!
 						return;
 				}
 			}
@@ -1030,7 +1032,17 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 		return dir;
 	}
 
-	public List<List<Integer>> findAllTrails(Room from, Room to, List<Room> radiantTrail)
+	public List<Integer> getShortestTrail(final List<List<Integer>> finalSets)
+	{
+		if((finalSets==null)||(finalSets.size()==0)) return null;
+		List<Integer> shortest=finalSets.get(0);
+		for(int i=1;i<finalSets.size();i++)
+			if(finalSets.get(i).size()<shortest.size())
+				shortest=finalSets.get(i);
+		return shortest;
+	}
+	
+	public List<List<Integer>> findAllTrails(final Room from, final Room to, final List<Room> radiantTrail)
 	{
 		List<List<Integer>> finalSets=new Vector<List<Integer>>();
 		if((from==null)||(to==null)||(from==to)) return finalSets;
@@ -1063,7 +1075,7 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 		return finalSets;
 	}
 
-	public List<List<Integer>> findAllTrails(Room from, List<Room> tos, List<Room> radiantTrail)
+	public List<List<Integer>> findAllTrails(final Room from, final List<Room> tos, final List<Room> radiantTrail)
 	{
 		List<List<Integer>> finalSets=new Vector<List<Integer>>();
 		if(from==null) return finalSets;
