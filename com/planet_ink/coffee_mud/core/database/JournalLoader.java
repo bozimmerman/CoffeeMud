@@ -709,8 +709,7 @@ public class JournalLoader
 			String oldmsg=entry.msg;
 			int replies = entry.replies+1;
 			message=oldmsg+JournalsLibrary.JOURNAL_BOUNDARY
-			 +"^yReply from^N: "+from+"%0D"
-			 +"^yDate/Time ^N: "+CMLib.time().date2String(now)+"%0D"
+			 +"^yReply from^N: "+from+"    ^yDate/Time ^N: "+CMLib.time().date2String(now)+"%0D"
 			 +message;
 			String sql="UPDATE CMJRNL SET CMUPTM="+now+", CMMSGT=?, CMREPL="+replies+" WHERE CMJKEY='"+oldkey+"'";
 			if(CMSecurity.isDebugging(CMSecurity.DbgFlag.CMJRNL)) Log.debugOut("JournalLoader",sql);

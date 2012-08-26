@@ -41,23 +41,31 @@ public class MOTD extends StdCommand
 {
 	public MOTD(){}
 
-	private final String[] access={"MOTD"};
+	private final String[] access={"MOTD","NEWS"};
 	public String[] getAccessWords(){return access;}
+	private static Vector<String> DEFAULT_CMD=new ReadOnlyVector<String>(new String[]{"MOTD","AGAIN"});
+	
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
 		boolean pause=false;
-		if((commands!=null)&&(commands.size()>1)&&(((String)commands.lastElement()).equalsIgnoreCase("PAUSE")))
+		if(commands!=null)
 		{
-			pause = true;
-			commands.removeElementAt(commands.size()-1);
+			if((((String)commands.lastElement()).equalsIgnoreCase("PAUSE")))
+			{
+				pause = true;
+				commands.removeElementAt(commands.size()-1);
+			}
+			if(commands.size()==1)
+			{
+				commands.add("AGAIN");
+			}
 		}
-		
-		if((commands!=null)
-		&&(commands.size()>1)
-		&&(mob.playerStats()!=null)
-		&&(CMParms.combine(commands,1).equalsIgnoreCase("AGAIN")
-		   ||CMParms.combine(commands,1).equalsIgnoreCase("NEW")))
+		else
+			commands=DEFAULT_CMD;
+		String parm=CMParms.combine(commands,1);
+		if((mob.playerStats()!=null)
+		&&(parm.equalsIgnoreCase("AGAIN")||parm.equalsIgnoreCase("NEW")))
 		{
 			StringBuffer buf=new StringBuffer("");
 			try
@@ -214,18 +222,35 @@ public class MOTD extends StdCommand
 			catch(HTTPRedirectException e){}
 			return false;
 		}
-		
-		if(CMath.bset(mob.getBitmap(),MOB.ATT_DAILYMESSAGE))
+		if(parm.equalsIgnoreCase("ON"))
 		{
-			mob.setBitmap(CMath.unsetb(mob.getBitmap(),MOB.ATT_DAILYMESSAGE));
-			mob.tell("The daily message has been turned on.");
+    		if(CMath.bset(mob.getBitmap(),MOB.ATT_DAILYMESSAGE))
+    		{
+    			mob.setBitmap(CMath.unsetb(mob.getBitmap(),MOB.ATT_DAILYMESSAGE));
+    			mob.tell("The daily messages have been turned on.");
+    		}
+    		else
+    		{
+    			mob.tell("The daily messages are already on.");
+    		}
+		}
+		else
+		if(parm.equalsIgnoreCase("OFF"))
+		{
+    		if(!CMath.bset(mob.getBitmap(),MOB.ATT_DAILYMESSAGE))
+    		{
+    			mob.setBitmap(CMath.setb(mob.getBitmap(),MOB.ATT_DAILYMESSAGE));
+    			mob.tell("The daily messages have been turned off.");
+    		}
+    		else
+    		{
+    			mob.tell("The daily messages are already off.");
+    		}
 		}
 		else
 		{
-			mob.setBitmap(CMath.setb(mob.getBitmap(),MOB.ATT_DAILYMESSAGE));
-			mob.tell("The daily message has been turned off.");
+			mob.tell("'"+parm+"' is not a valid parameter.  Try ON, OFF, or AGAIN.");
 		}
-		mob.tell("Enter MOTD AGAIN to see the message over again.");
 		return false;
 	}
 	
